@@ -1,0 +1,3 @@
+Zone areaId 503 — eine Zeile pro Wegpunkt; Links inline.
+
+#28687 | s;Kalimdor;Dustwallow Marsh;Witch Hill;Sentry Point§s;Kalimdor;Marschen von Dustwallow;Hexenhügel;Späherwacht§s;Kalimdor;Marécage d'Âprefange;Colline des sorcières;Halte de la Vigie | x=-3476.59 y=-4109.08 | size=1

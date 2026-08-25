@@ -1,0 +1,4 @@
+Zone areaId 15644 — eine Zeile pro Wegpunkt; Links inline.
+
+#16898 | auto Hall of Arms;Ironforge;1§auto Halle der Waffen;Eisenschmiede;1§auto Hall of Arms;Forgefer;1 | x=-5022.80029296875 y=-1253.800048828125 | size=1 | links=#24811(auto Ironforge;62):16 c5114.1:23 #4249(auto The Military Ward;Ironforge;2):43 #27005(auto Hall of Arms;Ironforge;2):12
+#27005 | auto Hall of Arms;Ironforge;2§auto Halle der Waffen;Eisenschmiede;2§auto Hall of Arms;Forgefer;2 | x=-5014.80029296875 y=-1263.5 | size=1 | links=c9984.1:5 #16898(auto Hall of Arms;Ironforge;1):12

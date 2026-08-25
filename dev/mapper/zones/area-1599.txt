@@ -1,0 +1,3 @@
+Zone areaId 1599 — eine Zeile pro Wegpunkt; Links inline.
+
+#28650 | s;Kalimdor;The Barrens;The Mor'shan Rampart;Mor'shan Base Camp§s;Kalimdor;Das Brachland;Der Mor'shan-Schutzwall;Mor'shan-Stützpunkt§s;Kalimdor;Les Tarides;Le Rempart de Mor'shan;Mor'shan Base Camp | x=1035.13 y=-2113.34 | size=1

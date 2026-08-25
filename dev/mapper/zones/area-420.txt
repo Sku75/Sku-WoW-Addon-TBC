@@ -1,0 +1,3 @@
+Zone areaId 420 — eine Zeile pro Wegpunkt; Links inline.
+
+#28640 | s;Kalimdor;Ashenvale;Mystral Lake;Silverwind Refuge§s;Kalimdor;Eschental;Mystralsee;Silberwindzuflucht§s;Kalimdor;Orneval;Mystral Lake;Silverwind Refuge | x=2130.27 y=-1190.25 | size=1 | links=#5396(auto Ashenvale;98):19 #16207(auto Ashenvale;295):4

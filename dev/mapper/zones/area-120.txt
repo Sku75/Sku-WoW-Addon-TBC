@@ -1,0 +1,3 @@
+Zone areaId 120 — eine Zeile pro Wegpunkt; Links inline.
+
+#28809 | s;Eastern Kingdoms;Elwynn Forest;Forest's Edge;Westbrook Garrison§s;Östliche Königreiche;Wald von Elwynn;Der Waldrand;Weststromgarnison§s;Royaumes de l'est;Forêt d'Elwynn;Forest's Edge;Westbrook Garrison | x=-9615.71 y=-667.327 | size=1 | links=#11342(auto Elwynn Forest;111):74 #20233(auto Elwynn Forest;180):191 #21751(auto Elwynn Forest;192):37

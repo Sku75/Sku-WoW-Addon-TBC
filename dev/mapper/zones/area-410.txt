@@ -1,0 +1,3 @@
+Zone areaId 410 — eine Zeile pro Wegpunkt; Links inline.
+
+#28670 | s;Kalimdor;Durotar;Razorwind Canyon;Razorwind Canyon§s;Kalimdor;Durotar;Klingenschlucht;Klingenschlucht§s;Kalimdor;Durotar;Razorwind Canyon;Razorwind Canyon | x=636.963 y=-4534.04 | size=1

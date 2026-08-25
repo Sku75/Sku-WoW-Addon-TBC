@@ -1,0 +1,3 @@
+Zone areaId 269 — eine Zeile pro Wegpunkt; Links inline.
+
+#6062 | auto;1634473720176348698377§auto;1634473720176348698377§auto;1634473720176348698377 | x=-4668.80029296875 y=-2698.60009765625 | size=1 | links=#24580(passage;from;Dun Algaz;Loch Modan;to;Dun Algaz;Wetlands):178 c1342.1:10

@@ -1,0 +1,5 @@
+Zone areaId 2657 — eine Zeile pro Wegpunkt; Links inline.
+
+#9009 | auto Valley of Bones;Desolace;1§auto Tal der Knochen;Desolace;1§auto Vallée des ossements;Désolace;1 | x=-789.7000122070312 y=2173.5 | size=5 | links=#19461(auto Hellfire Peninsula;505):176 #17197(auto Expedition Point;Hellfire Peninsula;1):323
+#19138 | auto Valley of Bones;Desolace;2§auto Tal der Knochen;Desolace;2§auto Vallée des ossements;Désolace;2 | x=-669.7000122070312 y=2218.800048828125 | size=5 | links=#16268(auto Hellfire Peninsula;429):71 #21403(auto Hellfire Peninsula;566):86
+#28661 | s;Kalimdor;Desolace;Mannoroc Coven;Valley of Bones§s;Kalimdor;Desolace;Mannorocs Koven;Tal der Knochen§s;Kalimdor;Désolace;Convent de Mannoroc;Vallée des ossements | x=-2251.19 y=-1513.55 | size=1

@@ -1,0 +1,479 @@
+Zone areaId 1657 — eine Zeile pro Wegpunkt; Links inline.
+
+#81 | auto Darnassus;1§auto Darnassus;1§auto Darnassus;1 | x=9785.7001953125 y=2290.5 | size=1 | links=#7312(centralpoint;Tradesmen's Terrace UNUSED;Darnassus):17 #14385(auto Darnassus;185):15
+#171 | auto Darnassus;2§auto Darnassus;2§auto Darnassus;2 | x=10104.1005859375 y=2598 | size=1 | links=#17910(auto Darnassus;221):6 #27470(auto Darnassus;319):10
+#263 | auto Darnassus;3§auto Darnassus;3§auto Darnassus;3 | x=10096.2001953125 y=2282.300048828125 | size=1 | links=#16782(central location;Craftsmen's Terrace;Darnassus):23 #16895(auto Darnassus;210):14 #23419(auto Darnassus;276):46
+#356 | auto Darnassus;4§auto Darnassus;4§auto Darnassus;4 | x=10166.900390625 y=2510.699951171875 | size=1 | links=#2988(auto Darnassus;35):10 c10056.1:12
+#365 | auto Inside Temple of the Moon;Darnassus;5§auto Drinnen Tempel des Mondes;Darnassus;5§auto Inside Temple of the Moon;Darnassus;5 | x=9634.5 y=2471.5 | size=1 | links=#13111(auto Inside Temple of the Moon;Darnassus;168):18 #26157(auto Inside Temple of the Moon;Darnassus;303):3 c7740.1:24
+#442 | auto Darnassus;6§auto Darnassus;6§auto Darnassus;6 | x=10088.7998046875 y=2408.800048828125 | size=1 | links=#20305(auto Darnassus;246):4 #27796(auto Darnassus;321):17
+#532 | auto Darnassus;7§auto Darnassus;7§auto Darnassus;7 | x=9932.2001953125 y=2498.300048828125 | size=1 | links=#21430(auto Darnassus;255):19 #23818(auto Darnassus;284):22 #26999(auto Darnassus;311):16 #28584(s;A;Mailbox;1;Darnassus):9 c19173.2:9
+#533 | auto Darnassus;8§auto Darnassus;8§auto Darnassus;8 | x=10084.400390625 y=2347.199951171875 | size=1 | links=#19886(auto Darnassus;243):19 #20729(auto Darnassus;249):7
+#556 | auto inside;Darnassus;9§auto drinnen;Darnassus;9§auto intérieur;Darnassus;9 | x=10184.1005859375 y=2579.199951171875 | size=1 | links=#12373(auto inside;Darnassus;158):3 c3516.1:14
+#671 | auto Darnassus;10§auto Darnassus;10§auto Darnassus;10 | x=10122.900390625 y=2595.60009765625 | size=1 | links=#773(auto Darnassus;12):15 #11379(auto Darnassus;142):4
+#702 | auto Darnassus;11§auto Darnassus;11§auto Darnassus;11 | x=9847.400390625 y=2246.400146484375 | size=1 | links=#19633(auto Darnassus;240):28 #22516(auto Darnassus;266):18
+#773 | auto Darnassus;12§auto Darnassus;12§auto Darnassus;12 | x=10125.7001953125 y=2580.199951171875 | size=1 | links=#671(auto Darnassus;10):15 #21134(auto Darnassus;251):35 #22765(auto Darnassus;268):7
+#831 | auto Darnassus;14§auto Darnassus;14§auto Darnassus;14 | x=9653.400390625 y=2334.10009765625 | size=1 | links=#8067(auto Darnassus;91):49 #11649(auto Darnassus;145):20 #43766(auto Darnassus;334):27
+#904 | auto Darnassus;15§auto Darnassus;15§auto Darnassus;15 | x=9913.2998046875 y=2504 | size=1 | links=#11174(auto Darnassus;139):26 #21430(auto Darnassus;255):5
+#945 | auto Darnassus;16§auto Darnassus;16§auto Darnassus;16 | x=9908.900390625 y=2531.5 | size=1 | links=#8676(auto Darnassus;99):45 #14060(auto Darnassus;179):23 #21430(auto Darnassus;255):23
+#962 | auto Inside Temple of the Moon;Darnassus;17§auto Drinnen Tempel des Mondes;Darnassus;17§auto Inside Temple of the Moon;Darnassus;17 | x=9583.400390625 y=2501.300048828125 | size=1 | links=#15698(auto Inside Temple of the Moon;Darnassus;198):20 #27230(auto Inside Temple of the Moon;Darnassus;315):11
+#983 | auto Inside Temple of the Moon;Darnassus;18§auto Drinnen Tempel des Mondes;Darnassus;18§auto Inside Temple of the Moon;Darnassus;18 | x=9594.400390625 y=2508.5 | size=1 | links=#16194(auto Inside Temple of the Moon;Darnassus;201):14 #17025(auto Inside Temple of the Moon;Darnassus;211):20
+#1046 | auto Darnassus;19§auto Darnassus;19§auto Darnassus;19 | x=9951.2001953125 y=2292 | size=1 | links=#15775(auto Darnassus;200):21 #25276(central location;Darnassus):11
+#1076 | auto Darnassus;20§auto Darnassus;20§auto Darnassus;20 | x=10119.2998046875 y=2604 | size=1 | links=#2431(auto Darnassus;29):5 #3224(auto Darnassus;39):6
+#1083 | auto Darnassus;21§auto Darnassus;21§auto Darnassus;21 | x=9746 y=2306.10009765625 | size=1 | links=#21777(auto Darnassus;259):5 c4175.1:21
+#1251 | auto Darnassus;22§auto Darnassus;22§auto Darnassus;22 | x=9847.5 y=2371 | size=1 | links=#17815(auto Darnassus;220):28 #26908(auto Darnassus;308):29
+#1284 | auto Darnassus;23§auto Darnassus;23§auto Darnassus;23 | x=10210.2001953125 y=2509.199951171875 | size=1 | links=#7812(auto Darnassus;87):12 #10605(auto Darnassus;127):11
+#1373 | auto Darnassus;24§auto Darnassus;24§auto Darnassus;24 | x=9693.6005859375 y=2408.400146484375 | size=1 | links=#14584(auto Darnassus;188):31 #14881(auto Darnassus;192):9
+#1902 | auto Darnassus;25§auto Darnassus;25§auto Darnassus;25 | x=10056.1005859375 y=2223.400146484375 | size=1 | links=#3365(auto Darnassus;41):22 #25840(auto Darnassus;301):22
+#1932 | auto Darnassus;26§auto Darnassus;26§auto Darnassus;26 | x=10089.900390625 y=2565 | size=1 | links=#4536(auto Darnassus;53):14 c4163.1:19
+#2171 | auto Darnassus;27§auto Darnassus;27§auto Darnassus;27 | x=10175.5 y=2476.10009765625 | size=1 | links=#6263(auto Darnassus;68):11 #10151(auto Darnassus;118):9
+#2194 | auto Inside Temple of the Moon;Darnassus;28§auto Drinnen Tempel des Mondes;Darnassus;28§auto Inside Temple of the Moon;Darnassus;28 | x=9628 y=2491.300048828125 | size=1 | links=#17025(auto Inside Temple of the Moon;Darnassus;211):17 #19957(auto Inside Temple of the Moon;Darnassus;245):29 c4092.1:25
+#2431 | auto Darnassus;29§auto Darnassus;29§auto Darnassus;29 | x=10122.1005859375 y=2599 | size=1 | links=#1076(auto Darnassus;20):5 #23537(auto Darnassus;279):6
+#2516 | auto Darnassus;30§auto Darnassus;30§auto Darnassus;30 | x=10104 y=2409.60009765625 | size=1 | links=#27796(auto Darnassus;321):17 c3681.27:41
+#2726 | auto Darnassus;31§auto Darnassus;31§auto Darnassus;31 | x=10080.6005859375 y=2278.400146484375 | size=1 | links=#4181(auto Darnassus;48):17 #11617(auto Darnassus;144):5 c4159.1:11
+#2807 | auto Darnassus;32§auto Darnassus;32§auto Darnassus;32 | x=9718.2998046875 y=2286.300048828125 | size=1 | links=#9014(auto Darnassus;102):9 c4175.1:13
+#2835 | auto inside;Darnassus;33§auto drinnen;Darnassus;33§auto intérieur;Darnassus;33 | x=10163.6005859375 y=2562.800048828125 | size=1 | links=#12306(auto inside;Darnassus;156):8 #12953(auto Darnassus;163):15
+#2876 | auto Darnassus;34§auto Darnassus;34§auto Darnassus;34 | x=10008.6005859375 y=2284.60009765625 | size=1 | links=#8680(auto Darnassus;100):22 #12018(auto Darnassus;151):26
+#2988 | auto Darnassus;35§auto Darnassus;35§auto Darnassus;35 | x=10168 y=2500.60009765625 | size=1 | links=#356(auto Darnassus;4):10 #17403(auto Darnassus;215):9
+#3005 | auto Darnassus;36§auto Darnassus;36§auto Darnassus;36 | x=10105.5 y=2591.199951171875 | size=1 | links=#4057(auto Darnassus;45):5 #10715(auto Darnassus;130):6
+#3206 | auto inside;Darnassus;37§auto drinnen;Darnassus;37§auto intérieur;Darnassus;37 | x=10187.6005859375 y=2580.699951171875 | size=1 | links=#16540(auto inside;Darnassus;207):1 #25410(auto inside;Darnassus;298):2
+#3209 | auto Darnassus;38§auto Darnassus;38§auto Darnassus;38 | x=10077.6005859375 y=2523.5 | size=1 | links=#8138(auto Darnassus;93):10 #10980(auto Darnassus;133):13
+#3224 | auto Darnassus;39§auto Darnassus;39§auto Darnassus;39 | x=10112.900390625 y=2605.800048828125 | size=1 | links=#1076(auto Darnassus;20):6 #17910(auto Darnassus;221):6
+#3351 | auto Darnassus;40§auto Darnassus;40§auto Darnassus;40 | x=9975 y=2154.800048828125 | size=1 | links=#11875(auto Darnassus;150):42 #18509(auto Darnassus;228):24
+#3365 | auto Darnassus;41§auto Darnassus;41§auto Darnassus;41 | x=10051.7998046875 y=2245.10009765625 | size=1 | links=#1902(auto Darnassus;25):22 #14266(auto Darnassus;183):11
+#3824 | auto Darnassus;42§auto Darnassus;42§auto Darnassus;42 | x=9882.6005859375 y=2435.699951171875 | size=1 | links=#7578(auto Darnassus;83):20 #17815(auto Darnassus;220):45
+#3862 | auto Darnassus;43§auto Darnassus;43§auto Darnassus;43 | x=10107.1005859375 y=2603.10009765625 | size=1 | links=#9367(auto Darnassus;108):6 #10715(auto Darnassus;130):6
+#3931 | auto Darnassus;44§auto Darnassus;44§auto Darnassus;44 | x=10055.400390625 y=2212.10009765625 | size=1 | links=#10565(auto Darnassus;126):11 #19151(auto Darnassus;237):24
+#4057 | auto Darnassus;45§auto Darnassus;45§auto Darnassus;45 | x=10110.1005859375 y=2587.60009765625 | size=1 | links=#3005(auto Darnassus;36):5 #6082(auto Darnassus;66):6
+#4066 | auto Darnassus;46§auto Darnassus;46§auto Darnassus;46 | x=9895 y=2281.800048828125 | size=1 | links=#9764(auto Darnassus;114):31 #23088(auto Darnassus;271):32
+#4081 | auto Darnassus;47§auto Darnassus;47§auto Darnassus;47 | x=10100 y=2545.800048828125 | size=1 | links=#8116(auto Darnassus;92):8 #10835(auto Darnassus;131):8
+#4181 | auto Darnassus;48§auto Darnassus;48§auto Darnassus;48 | x=10072.6005859375 y=2294.5 | size=1 | links=#2726(auto Darnassus;31):17 #12018(auto Darnassus;151):38 #16782(central location;Craftsmen's Terrace;Darnassus):9
+#4268 | auto Darnassus;49§auto Darnassus;49§auto Darnassus;49 | x=10076 y=2570.400146484375 | size=1 | links=#23097(auto Darnassus;272):16 #23538(auto Darnassus;280):12
+#4273 | auto Darnassus;50§auto Darnassus;50§auto Darnassus;50 | x=10149.6005859375 y=2633.199951171875 | size=1 | links=#24591(auto Darnassus;292):47 c9047.1:41
+#4297 | auto Darnassus;51§auto Darnassus;51§auto Darnassus;51 | x=10133.2001953125 y=2513.800048828125 | size=1 | links=#14530(auto Darnassus;187):7 #27182(auto Darnassus;314):14
+#4397 | auto inside;Darnassus;52§auto drinnen;Darnassus;52§auto intérieur;Darnassus;52 | x=10185.2998046875 y=2566.10009765625 | size=1 | links=#27653(auto inside;Darnassus;320):4 c4217.1:6
+#4536 | auto Darnassus;53§auto Darnassus;53§auto Darnassus;53 | x=10096 y=2578.199951171875 | size=1 | links=#1932(auto Darnassus;26):14 #27470(auto Darnassus;319):13
+#4669 | auto inside;Darnassus;54§auto drinnen;Darnassus;54§auto intérieur;Darnassus;54 | x=10168.2001953125 y=2579.699951171875 | size=1 | links=#19104(auto inside;Darnassus;234):6 #23544(auto inside;Darnassus;281):5
+#4738 | auto inside;Darnassus;55§auto drinnen;Darnassus;55§auto intérieur;Darnassus;55 | x=10188.1005859375 y=2575.699951171875 | size=1 | links=#24789(auto inside;Darnassus;296):1 #47516(auto Inside;Cenarion Enclave;Darnassus;350):2
+#4885 | auto Darnassus;56§auto Darnassus;56§auto Darnassus;56 | x=9755.1005859375 y=2274.300048828125 | size=1 | links=#16369(auto Darnassus;204):6 #28308(auto Darnassus;326):7
+#5035 | auto Darnassus;57§auto Darnassus;57§auto Darnassus;57 | x=10107.900390625 y=2583.800048828125 | size=1 | links=#8573(auto Darnassus;98):5 #11358(auto Darnassus;141):4
+#5129 | auto Darnassus;58§auto Darnassus;58§auto Darnassus;58 | x=10192.2998046875 y=2482.800048828125 | size=1 | links=#6263(auto Darnassus;68):7 #12468(auto Darnassus;159):6
+#5230 | auto Darnassus;60§auto Darnassus;60§auto Darnassus;60 | x=10038.2001953125 y=2256.699951171875 | size=1 | links=#21437(auto Darnassus;256):7 #28326(auto Darnassus;327):12
+#5318 | auto Darnassus;61§auto Darnassus;61§auto Darnassus;61 | x=10017.400390625 y=2504.699951171875 | size=1 | links=#19536(auto Darnassus;239):36 #26954(auto Darnassus;310):18
+#5451 | auto Inside Temple of the Moon;Darnassus;62§auto Drinnen Tempel des Mondes;Darnassus;62§auto Inside Temple of the Moon;Darnassus;62 | x=9648.2001953125 y=2519.699951171875 | size=1 | links=#11075(auto Inside Temple of the Moon;Darnassus;137):3 #15578(quest target;well;Tempel des Mondes;Darnassus):3
+#5831 | auto Darnassus;63§auto Darnassus;63§auto Darnassus;63 | x=10151.5 y=2572.10009765625 | size=1 | links=#17437(auto Darnassus;216):19 #21134(auto Darnassus;251):23
+#5954 | auto Darnassus;64§auto Darnassus;64§auto Darnassus;64 | x=9946.5 y=2599.800048828125 | size=1 | links=#8156(auto Darnassus;94):17 #13632(auto Darnassus;174):30 #28125(portal;Darnassus;to;flight master):7
+#6034 | auto Inside Temple of the Moon;Darnassus;65§auto Drinnen Tempel des Mondes;Darnassus;65§auto Inside Temple of the Moon;Darnassus;65 | x=9589.7001953125 y=2527.300048828125 | size=1 | links=#10375(auto Inside Temple of the Moon;Darnassus;124):5 #16194(auto Inside Temple of the Moon;Darnassus;201):6
+#6082 | auto Darnassus;66§auto Darnassus;66§auto Darnassus;66 | x=10116.7998046875 y=2588.300048828125 | size=1 | links=#4057(auto Darnassus;45):6 #23537(auto Darnassus;279):6
+#6119 | auto Darnassus;67§auto Darnassus;67§auto Darnassus;67 | x=9948.2001953125 y=2443.10009765625 | size=1 | links=#13617(auto Darnassus;173):50 c26007.1:41
+#6263 | auto Darnassus;68§auto Darnassus;68§auto Darnassus;68 | x=10186.7998046875 y=2477.10009765625 | size=1 | links=#2171(auto Darnassus;27):11 #5129(auto Darnassus;58):7
+#6433 | auto Darnassus;69§auto Darnassus;69§auto Darnassus;69 | x=10192.1005859375 y=2527.60009765625 | size=1 | links=#7090(auto Darnassus;77):7 #13009(auto Darnassus;165):4
+#6589 | auto Darnassus;70§auto Darnassus;70§auto Darnassus;70 | x=10184.7001953125 y=2336.900146484375 | size=1 | links=#17599(auto Darnassus;218):35 #22093(auto Darnassus;265):22 c3468.1:82
+#6617 | auto inside;Darnassus;71§auto drinnen;Darnassus;71§auto intérieur;Darnassus;71 | x=10171.6005859375 y=2558.300048828125 | size=1 | links=#16307(auto inside;Darnassus;203):11 #17334(auto inside;Darnassus;214):9
+#6744 | auto Darnassus;72§auto Darnassus;72§auto Darnassus;72 | x=9853.400390625 y=2327.300048828125 | size=1 | links=#26784(auto Darnassus;306):8 #27849(auto Darnassus;322):20
+#6822 | auto Darnassus;73§auto Darnassus;73§auto Darnassus;73 | x=9984 y=2252.5 | size=1 | links=#10367(auto Darnassus;123):32 #23200(auto Darnassus;273):14
+#6889 | auto Darnassus;74§auto Darnassus;74§auto Darnassus;74 | x=9708.5 y=2356.699951171875 | size=1 | links=#9098(auto Darnassus;104):9 #15417(auto Darnassus;197):15
+#7013 | auto Darnassus;75§auto Darnassus;75§auto Darnassus;75 | x=9733.7998046875 y=2443.199951171875 | size=1 | links=#14065(auto Darnassus;180):14 #20845(auto Darnassus;250):14
+#7044 | auto Darnassus;76§auto Darnassus;76§auto Darnassus;76 | x=10189.6005859375 y=2523 | size=1 | links=#13009(auto Darnassus;165):2 c4138.1:11
+#7090 | auto Darnassus;77§auto Darnassus;77§auto Darnassus;77 | x=10199.6005859375 y=2528.800048828125 | size=1 | links=#6433(auto Darnassus;69):7 #8387(auto Darnassus;97):6
+#7174 | auto Darnassus;78§auto Darnassus;78§auto Darnassus;78 | x=9749.7001953125 y=2329.199951171875 | size=1 | links=#7312(centralpoint;Tradesmen's Terrace UNUSED;Darnassus):37 #9098(auto Darnassus;104):42
+#7312 | centralpoint;Tradesmen's Terrace UNUSED;Darnassus§zentralerpunkt;Die Terrasse der Händler;Darnassus§point central;Tradesmen's Terrace UNUSED;Darnassus | x=9769 y=2296.800048828125 | size=1 | links=#81(auto Darnassus;1):17 #7174(auto Darnassus;78):37 #16369(auto Darnassus;204):25
+#7340 | auto Darnassus;79§auto Darnassus;79§auto Darnassus;79 | x=10085 y=2348.699951171875 | size=1 | links=#19107(auto Darnassus;235):11 #24695(auto Darnassus;294):13
+#7519 | auto Darnassus;81§auto Darnassus;81§auto Darnassus;81 | x=10137.900390625 y=2392.699951171875 | size=1 | links=#18403(auto Darnassus;227):12 c4211.1:14
+#7539 | auto Darnassus;82§auto Darnassus;82§auto Darnassus;82 | x=9949.6005859375 y=2366.900146484375 | size=1 | links=#13617(auto Darnassus;173):25 #13714(auto Darnassus;176):21
+#7578 | auto Darnassus;83§auto Darnassus;83§auto Darnassus;83 | x=9887.7998046875 y=2455.60009765625 | size=1 | links=#3824(auto Darnassus;42):20 #19007(auto Darnassus;233):32 #23532(auto Darnassus;278):33
+#7587 | auto Darnassus;84§auto Darnassus;84§auto Darnassus;84 | x=9770.400390625 y=2234.800048828125 | size=1 | links=#47517(auto Darnassus;351):22 c4169.1:42
+#7619 | auto inside;Darnassus;85§auto drinnen;Darnassus;85§auto intérieur;Darnassus;85 | x=10182.2001953125 y=2578.300048828125 | size=1 | links=#9463(auto inside;Darnassus;109):2 #12086(auto inside;Darnassus;153):1
+#7710 | auto Darnassus;86§auto Darnassus;86§auto Darnassus;86 | x=9735.1005859375 y=2283.800048828125 | size=1 | links=#21174(auto Darnassus;253):12 #21777(auto Darnassus;259):23
+#7812 | auto Darnassus;87§auto Darnassus;87§auto Darnassus;87 | x=10199.7001953125 y=2502.199951171875 | size=1 | links=#1284(auto Darnassus;23):12 #47509(auto Darnassus;343):6
+#7958 | auto Darnassus;88§auto Darnassus;88§auto Darnassus;88 | x=9777.7001953125 y=2278.5 | size=1 | links=#9134(auto Darnassus;105):8 c4235.1:4
+#7982 | auto Darnassus;89§auto Darnassus;89§auto Darnassus;89 | x=9765.6005859375 y=2527 | size=1 | links=#13008(auto Darnassus;164):46 #13258(auto Darnassus;170):46
+#7994 | auto Darnassus;90§auto Darnassus;90§auto Darnassus;90 | x=9808 y=2218.5 | size=1 | links=#19633(auto Darnassus;240):26 #47517(auto Darnassus;351):18
+#8067 | auto Darnassus;91§auto Darnassus;91§auto Darnassus;91 | x=9688 y=2298.5 | size=1 | links=#831(auto Darnassus;14):49 #20567(auto Darnassus;247):42
+#8116 | auto Darnassus;92§auto Darnassus;92§auto Darnassus;92 | x=10102 y=2537.900146484375 | size=1 | links=#4081(auto Darnassus;47):8 #8160(auto Darnassus;95):14
+#8138 | auto Darnassus;93§auto Darnassus;93§auto Darnassus;93 | x=10086.1005859375 y=2528.800048828125 | size=1 | links=#3209(auto Darnassus;38):10 #21288(auto Darnassus;254):16 c3517.1:5 c883.3:28
+#8156 | auto Darnassus;94§auto Darnassus;94§auto Darnassus;94 | x=9935.2998046875 y=2613.5 | size=1 | links=#5954(auto Darnassus;64):17 c7316.1:27
+#8160 | auto Darnassus;95§auto Darnassus;95§auto Darnassus;95 | x=10097.6005859375 y=2524 | size=1 | links=#8116(auto Darnassus;92):14 #9654(auto Darnassus;111):12
+#8335 | auto Darnassus;96§auto Darnassus;96§auto Darnassus;96 | x=10093.7001953125 y=2271 | size=1 | links=#11684(auto Darnassus;147):3 #17119(auto Darnassus;212):3
+#8387 | auto Darnassus;97§auto Darnassus;97§auto Darnassus;97 | x=10206.2001953125 y=2527.199951171875 | size=1 | links=#7090(auto Darnassus;77):6 #10605(auto Darnassus;127):8
+#8573 | auto Darnassus;98§auto Darnassus;98§auto Darnassus;98 | x=10102.7001953125 y=2585 | size=1 | links=#5035(auto Darnassus;57):5 #17144(auto Darnassus;213):4
+#8676 | auto Darnassus;99§auto Darnassus;99§auto Darnassus;99 | x=9948.400390625 y=2554.900146484375 | size=1 | links=#945(auto Darnassus;16):45 #13632(auto Darnassus;174):14 #19536(auto Darnassus;239):50
+#8680 | auto Darnassus;100§auto Darnassus;100§auto Darnassus;100 | x=9985.7998046875 y=2282.5 | size=1 | links=#2876(auto Darnassus;34):22 #25276(central location;Darnassus):34
+#8727 | auto Darnassus;101§auto Darnassus;101§auto Darnassus;101 | x=10205.400390625 y=2580.199951171875 | size=1 | links=#11770(auto Darnassus;149):13 #28263(auto Darnassus;325):18
+#9014 | auto Darnassus;102§auto Darnassus;102§auto Darnassus;102 | x=9725.7001953125 y=2279.699951171875 | size=1 | links=#2807(auto Darnassus;32):9 #20567(auto Darnassus;247):16
+#9082 | auto Darnassus;103§auto Darnassus;103§auto Darnassus;103 | x=9768.7998046875 y=2265.400146484375 | size=1 | links=#28308(auto Darnassus;326):8 c4173.1:3
+#9098 | auto Darnassus;104§auto Darnassus;104§auto Darnassus;104 | x=9717.7001953125 y=2357.199951171875 | size=1 | links=#6889(auto Darnassus;74):9 #7174(auto Darnassus;78):42 #14881(auto Darnassus;192):52
+#9134 | auto Darnassus;105§auto Darnassus;105§auto Darnassus;105 | x=9770.2998046875 y=2283.10009765625 | size=1 | links=#7958(auto Darnassus;88):8 #23680(auto Darnassus;282):7
+#9186 | auto inside;Darnassus;106§auto drinnen;Darnassus;106§auto intérieur;Darnassus;106 | x=10179.7001953125 y=2583.900146484375 | size=1 | links=#12373(auto inside;Darnassus;158):3 #16636(auto inside;Darnassus;208):8
+#9238 | auto inside;Darnassus;107§auto drinnen;Darnassus;107§auto intérieur;Darnassus;107 | x=10168.7001953125 y=2568.5 | size=1 | links=#14383(auto inside;Darnassus;184):5 #23544(auto inside;Darnassus;281):5
+#9367 | auto Darnassus;108§auto Darnassus;108§auto Darnassus;108 | x=10113.2001953125 y=2606.199951171875 | size=1 | links=#3862(auto Darnassus;43):6 #11120(auto Darnassus;138):5
+#9463 | auto inside;Darnassus;109§auto drinnen;Darnassus;109§auto intérieur;Darnassus;109 | x=10183 y=2576 | size=1 | links=#7619(auto inside;Darnassus;85):2 #10560(auto inside;Darnassus;125):1
+#9577 | auto Darnassus;110§auto Darnassus;110§auto Darnassus;110 | x=10039.2001953125 y=2146.10009765625 | size=1 | links=#11875(auto Darnassus;150):32 c6491.1:33
+#9654 | auto Darnassus;111§auto Darnassus;111§auto Darnassus;111 | x=10085.1005859375 y=2521.900146484375 | size=1 | links=#8160(auto Darnassus;95):12 #14406(auto Darnassus;186):8
+#9709 | auto Darnassus;112§auto Darnassus;112§auto Darnassus;112 | x=9873.900390625 y=2256.900146484375 | size=1 | links=#21143(auto Darnassus;252):14 #24098(auto Darnassus;286):12
+#9764 | auto Darnassus;114§auto Darnassus;114§auto Darnassus;114 | x=9863.7001953125 y=2282.10009765625 | size=1 | links=#4066(auto Darnassus;46):31 #13023(auto Darnassus;166):12 #23202(auto Darnassus;274):10
+#9829 | auto Darnassus;115§auto Darnassus;115§auto Darnassus;115 | x=10167.400390625 y=2288.800048828125 | size=1 | links=#22093(auto Darnassus;265):28 #23419(auto Darnassus;276):64 #27255(auto Darnassus;317):16
+#9852 | auto Darnassus;116§auto Darnassus;116§auto Darnassus;116 | x=10156.2001953125 y=2514.199951171875 | size=1 | links=#13535(auto Darnassus;172):5 #25498(auto Darnassus;299):8
+#10099 | auto Inside Temple of the Moon;Darnassus;117§auto Drinnen Tempel des Mondes;Darnassus;117§auto Inside Temple of the Moon;Darnassus;117 | x=9596.400390625 y=2561.60009765625 | size=1 | links=#11066(auto Inside Temple of the Moon;Darnassus;136):14 #19916(auto Inside Temple of the Moon;Darnassus;244):17
+#10151 | auto Darnassus;118§auto Darnassus;118§auto Darnassus;118 | x=10168.7998046875 y=2482.400146484375 | size=1 | links=#2171(auto Darnassus;27):9 #17403(auto Darnassus;215):8
+#10226 | auto Darnassus;119§auto Darnassus;119§auto Darnassus;119 | x=9764.6005859375 y=2204.300048828125 | size=1 | links=#27064(auto Darnassus;312):15 c4521.1:4
+#10241 | auto Darnassus;120§auto Darnassus;120§auto Darnassus;120 | x=9831.6005859375 y=2268.10009765625 | size=1 | links=#11268(auto Darnassus;140):5 #22516(auto Darnassus;266):18 #22925(auto Darnassus;269):14
+#10245 | auto Darnassus;121§auto Darnassus;121§auto Darnassus;121 | x=9611.400390625 y=2348.900146484375 | size=1 | links=#18785(auto Darnassus;231):8 c4172.1:8 c4234.1:4
+#10367 | auto Darnassus;123§auto Darnassus;123§auto Darnassus;123 | x=9989.5 y=2220.10009765625 | size=1 | links=#6822(auto Darnassus;73):32 #24572(auto Darnassus;291):32
+#10375 | auto Inside Temple of the Moon;Darnassus;124§auto Drinnen Tempel des Mondes;Darnassus;124§auto Inside Temple of the Moon;Darnassus;124 | x=9595.1005859375 y=2529 | size=1 | links=#6034(auto Inside Temple of the Moon;Darnassus;65):5 #18246(auto Inside Temple of the Moon;Darnassus;225):12
+#10560 | auto inside;Darnassus;125§auto drinnen;Darnassus;125§auto intérieur;Darnassus;125 | x=10184.2001953125 y=2574.900146484375 | size=1 | links=#9463(auto inside;Darnassus;109):1 #24661(auto inside;Darnassus;293):1
+#10565 | auto Darnassus;126§auto Darnassus;126§auto Darnassus;126 | x=10057.2998046875 y=2200.60009765625 | size=1 | links=#3931(auto Darnassus;44):11 #14591(auto Darnassus;190):13
+#10605 | auto Darnassus;127§auto Darnassus;127§auto Darnassus;127 | x=10211.7001953125 y=2520.400146484375 | size=1 | links=#1284(auto Darnassus;23):11 #8387(auto Darnassus;97):8
+#10643 | auto Darnassus;128§auto Darnassus;128§auto Darnassus;128 | x=9828.400390625 y=2279.900146484375 | size=1 | links=#13023(auto Darnassus;166):23 #14385(auto Darnassus;185):28
+#10662 | auto Darnassus;129§auto Darnassus;129§auto Darnassus;129 | x=9811.900390625 y=2243.60009765625 | size=1 | links=#19535(auto Darnassus;238):6 #23453(auto Darnassus;277):13 c4231.1:7
+#10715 | auto Darnassus;130§auto Darnassus;130§auto Darnassus;130 | x=10104 y=2597.800048828125 | size=1 | links=#3005(auto Darnassus;36):6 #3862(auto Darnassus;43):6
+#10835 | auto Darnassus;131§auto Darnassus;131§auto Darnassus;131 | x=10092.2001953125 y=2549 | size=1 | links=#4081(auto Darnassus;47):8 c4163.1:8
+#10963 | auto Darnassus;132§auto Darnassus;132§auto Darnassus;132 | x=10069.2001953125 y=2551.10009765625 | size=1 | links=#14590(auto Darnassus;189):12 c4214.1:25
+#10980 | auto Darnassus;133§auto Darnassus;133§auto Darnassus;133 | x=10066.1005859375 y=2516.699951171875 | size=1 | links=#3209(auto Darnassus;38):13 #26876(auto Darnassus;307):19
+#10991 | auto inside;Darnassus;134§auto drinnen;Darnassus;134§auto intérieur;Darnassus;134 | x=10196.11988122858 y=2571.720915476085 | size=1 | links=#11577(auto inside;Darnassus;143):5 #19781(auto inside;Darnassus;241):9
+#10993 | auto Darnassus;135§auto Darnassus;135§auto Darnassus;135 | x=9677.7998046875 y=2454.699951171875 | size=1 | links=#22010(auto Darnassus;264):28 c10878.1:28
+#11066 | auto Inside Temple of the Moon;Darnassus;136§auto Drinnen Tempel des Mondes;Darnassus;136§auto Inside Temple of the Moon;Darnassus;136 | x=9588 y=2549.900146484375 | size=1 | links=#10099(auto Inside Temple of the Moon;Darnassus;117):14 #27165(auto Inside Temple of the Moon;Darnassus;313):18
+#11075 | auto Inside Temple of the Moon;Darnassus;137§auto Drinnen Tempel des Mondes;Darnassus;137§auto Inside Temple of the Moon;Darnassus;137 | x=9651.5 y=2518.10009765625 | size=1 | links=#5451(auto Inside Temple of the Moon;Darnassus;62):3 #14900(spawn location;Temple of the Moon;Darnassus):5
+#11120 | auto Darnassus;138§auto Darnassus;138§auto Darnassus;138 | x=10118.900390625 y=2604.5 | size=1 | links=#9367(auto Darnassus;108):5 #11379(auto Darnassus;142):5
+#11174 | auto Darnassus;139§auto Darnassus;139§auto Darnassus;139 | x=9886.900390625 y=2500.400146484375 | size=1 | links=#904(auto Darnassus;15):26 #19007(auto Darnassus;233):17
+#11176 | guild vault;Darnassus§gildenbank;Darnassus§guild vault;Darnassus | x=9936.7001953125 y=2516.5 | size=1 | links=#26999(auto Darnassus;311):4
+#11268 | auto Darnassus;140§auto Darnassus;140§auto Darnassus;140 | x=9830.400390625 y=2262.800048828125 | size=1 | links=#10241(auto Darnassus;120):5 #23453(auto Darnassus;277):23
+#11358 | auto Darnassus;141§auto Darnassus;141§auto Darnassus;141 | x=10112.1005859375 y=2582.300048828125 | size=1 | links=#5035(auto Darnassus;57):4 #22765(auto Darnassus;268):6
+#11379 | auto Darnassus;142§auto Darnassus;142§auto Darnassus;142 | x=10121.7001953125 y=2600 | size=1 | links=#671(auto Darnassus;10):4 #11120(auto Darnassus;138):5
+#11577 | auto inside;Darnassus;143§auto drinnen;Darnassus;143§auto intérieur;Darnassus;143 | x=10190.6005859375 y=2573 | size=1 | links=#10991(auto inside;Darnassus;134):5 #27653(auto inside;Darnassus;320):6
+#11617 | auto Darnassus;144§auto Darnassus;144§auto Darnassus;144 | x=10086 y=2279.800048828125 | size=1 | links=#2726(auto Darnassus;31):5 #26945(auto Darnassus;309):3
+#11649 | auto Darnassus;145§auto Darnassus;145§auto Darnassus;145 | x=9643.400390625 y=2352.199951171875 | size=1 | links=#831(auto Darnassus;14):20 #18785(auto Darnassus;231):25 c14380.1:14
+#11659 | auto Darnassus;146§auto Darnassus;146§auto Darnassus;146 | x=9920.900390625 y=2343.900146484375 | size=1 | links=#13714(auto Darnassus;176):29 #20704(auto Darnassus;248):16
+#11684 | auto Darnassus;147§auto Darnassus;147§auto Darnassus;147 | x=10091.6005859375 y=2274.199951171875 | size=1 | links=#8335(auto Darnassus;96):3 #26945(auto Darnassus;309):4
+#11711 | auto Inside Temple of the Moon;Darnassus;148§auto Drinnen Tempel des Mondes;Darnassus;148§auto Inside Temple of the Moon;Darnassus;148 | x=9670.1005859375 y=2486.699951171875 | size=1 | links=#13111(auto Inside Temple of the Moon;Darnassus;168):20 #21983(auto Inside Temple of the Moon;Darnassus;263):19
+#11770 | auto Darnassus;149§auto Darnassus;149§auto Darnassus;149 | x=10209.2998046875 y=2567.699951171875 | size=1 | links=#8727(auto Darnassus;101):13 #12137(auto Darnassus;154):23
+#11875 | auto Darnassus;150§auto Darnassus;150§auto Darnassus;150 | x=10015.1005859375 y=2168.10009765625 | size=1 | links=#3351(auto Darnassus;40):42 #9577(auto Darnassus;110):32 #24572(auto Darnassus;291):31
+#12018 | auto Darnassus;151§auto Darnassus;151§auto Darnassus;151 | x=10034.7998046875 y=2285.5 | size=1 | links=#2876(auto Darnassus;34):26 #4181(auto Darnassus;48):38 #14946(auto Darnassus;193):18
+#12047 | auto Inside Temple of the Moon;Darnassus;152§auto Drinnen Tempel des Mondes;Darnassus;152§auto Inside Temple of the Moon;Darnassus;152 | x=9685.5 y=2524.800048828125 | size=1 | links=#13008(auto Darnassus;164):33 #21551(central location;Tempel des Mondes;Darnassus):14
+#12086 | auto inside;Darnassus;153§auto drinnen;Darnassus;153§auto intérieur;Darnassus;153 | x=10182.2998046875 y=2579.900146484375 | size=1 | links=#7619(auto inside;Darnassus;85):1 #22605(auto inside;Darnassus;267):1
+#12137 | auto Darnassus;154§auto Darnassus;154§auto Darnassus;154 | x=10232.2998046875 y=2562.400146484375 | size=1 | links=#11770(auto Darnassus;149):23 #15094(auto Darnassus;195):22
+#12306 | auto inside;Darnassus;156§auto drinnen;Darnassus;156§auto intérieur;Darnassus;156 | x=10169.1005859375 y=2569.300048828125 | size=1 | links=#2835(auto inside;Darnassus;33):8 c4218.1:17 c4220.1:11
+#12352 | auto Darnassus;157§auto Darnassus;157§auto Darnassus;157 | x=10181.7001953125 y=2522 | size=1 | links=#25742(auto Darnassus;300):15 c4146.1:11
+#12373 | auto inside;Darnassus;158§auto drinnen;Darnassus;158§auto intérieur;Darnassus;158 | x=10183.2001953125 y=2582.199951171875 | size=1 | links=#556(auto inside;Darnassus;9):3 #9186(auto inside;Darnassus;106):3
+#12468 | auto Darnassus;159§auto Darnassus;159§auto Darnassus;159 | x=10194.2001953125 y=2488.5 | size=1 | links=#5129(auto Darnassus;58):6 #47509(auto Darnassus;343):9
+#12560 | auto Darnassus;160§auto Darnassus;160§auto Darnassus;160 | x=10268.400390625 y=2528.5 | size=1 | links=#18840(auto Darnassus;232):10 #23886(auto Darnassus;285):33
+#12806 | auto Darnassus;161§auto Darnassus;161§auto Darnassus;161 | x=9838.7001953125 y=2312.10009765625 | size=1 | links=#26908(auto Darnassus;308):30 #27849(auto Darnassus;322):7
+#12830 | auto inside;Darnassus;162§auto drinnen;Darnassus;162§auto intérieur;Darnassus;162 | x=10187.6005859375 y=2575.60009765625 | size=1 | links=#14262(auto inside;Darnassus;182):2 #24661(auto inside;Darnassus;293):1
+#12953 | auto Darnassus;163§auto Darnassus;163§auto Darnassus;163 | x=10152.1005859375 y=2552.699951171875 | size=1 | links=#2835(auto inside;Darnassus;33):15 #21134(auto Darnassus;251):8
+#12974 | Mailbox;Craftsmen's Terrace;Darnassus§briefkasten;Die Terrasse der Handwerker;Darnassus§Boîte aux lettres;Terrasse des Artisans;Darnassus | x=10123.1005859375 y=2228 | size=1 | links=#23419(auto Darnassus;276):15 c6735.1:5
+#13008 | auto Darnassus;164§auto Darnassus;164§auto Darnassus;164 | x=9719 y=2525.800048828125 | size=1 | links=#7982(auto Darnassus;89):46 #12047(auto Inside Temple of the Moon;Darnassus;152):33 #21658(auto Darnassus;258):38 #22010(auto Darnassus;264):55 c3562.1:4
+#13009 | auto Darnassus;165§auto Darnassus;165§auto Darnassus;165 | x=10188.2998046875 y=2524.900146484375 | size=1 | links=#6433(auto Darnassus;69):4 #7044(auto Darnassus;76):2
+#13023 | auto Darnassus;166§auto Darnassus;166§auto Darnassus;166 | x=9851.5 y=2281.800048828125 | size=1 | links=#9764(auto Darnassus;114):12 #10643(auto Darnassus;128):23 #22516(auto Darnassus;266):17 #27849(auto Darnassus;322):27
+#13109 | auto Darnassus;167§auto Darnassus;167§auto Darnassus;167 | x=10072.6005859375 y=2611.60009765625 | size=1 | links=#23097(auto Darnassus;272):27 #24591(auto Darnassus;292):40
+#13111 | auto Inside Temple of the Moon;Darnassus;168§auto Drinnen Tempel des Mondes;Darnassus;168§auto Inside Temple of the Moon;Darnassus;168 | x=9653 y=2474.60009765625 | size=1 | links=#365(auto Inside Temple of the Moon;Darnassus;5):18 #11711(auto Inside Temple of the Moon;Darnassus;148):20
+#13157 | auto Darnassus;169§auto Darnassus;169§auto Darnassus;169 | x=10094.6005859375 y=2231.10009765625 | size=1 | links=#18216(auto Darnassus;224):16 #25840(auto Darnassus;301):17
+#13258 | auto Darnassus;170§auto Darnassus;170§auto Darnassus;170 | x=9812.1005859375 y=2527.699951171875 | size=1 | links=#7982(auto Darnassus;89):46 #18603(auto Darnassus;230):38
+#13286 | auto Darnassus;171§auto Darnassus;171§auto Darnassus;171 | x=9979.900390625 y=2345.699951171875 | size=1 | links=#13714(auto Darnassus;176):29 #21454(auto Darnassus;257):10
+#13535 | auto Darnassus;172§auto Darnassus;172§auto Darnassus;172 | x=10161.7998046875 y=2515.300048828125 | size=1 | links=#9852(auto Darnassus;116):5 c10056.1:9
+#13617 | auto Darnassus;173§auto Darnassus;173§auto Darnassus;173 | x=9948.7001953125 y=2392.400146484375 | size=1 | links=#6119(auto Darnassus;67):50 #7539(auto Darnassus;82):25
+#13632 | auto Darnassus;174§auto Darnassus;174§auto Darnassus;174 | x=9946.5 y=2569.60009765625 | size=1 | links=#5954(auto Darnassus;64):30 #8676(auto Darnassus;99):14
+#13674 | auto Darnassus;175§auto Darnassus;175§auto Darnassus;175 | x=10105.7001953125 y=2383.900146484375 | size=1 | links=#17599(auto Darnassus;218):61 #18403(auto Darnassus;227):21 #19886(auto Darnassus;243):32 #27796(auto Darnassus;321):13
+#13714 | auto Darnassus;176§auto Darnassus;176§auto Darnassus;176 | x=9950.7001953125 y=2345.60009765625 | size=1 | links=#7539(auto Darnassus;82):21 #11659(auto Darnassus;146):29 #13286(auto Darnassus;171):29 #15775(auto Darnassus;200):32
+#13947 | auto Darnassus;177§auto Darnassus;177§auto Darnassus;177 | x=10218.7998046875 y=2478.199951171875 | size=1 | links=#23886(auto Darnassus;285):36 c3681.34:19
+#14043 | auto Darnassus;178§auto Darnassus;178§auto Darnassus;178 | x=9934.6005859375 y=2199.60009765625 | size=1 | links=#15764(auto Darnassus;199):18 c4181.1:14 c4241.1:18
+#14060 | auto Darnassus;179§auto Darnassus;179§auto Darnassus;179 | x=9885.900390625 y=2530 | size=1 | links=#945(auto Darnassus;16):23 #18603(auto Darnassus;230):35
+#14065 | auto Darnassus;180§auto Darnassus;180§auto Darnassus;180 | x=9722.7001953125 y=2452.10009765625 | size=1 | links=#7013(auto Darnassus;75):14 #22010(auto Darnassus;264):31
+#14185 | auto Darnassus;181§auto Darnassus;181§auto Darnassus;181 | x=10033.2998046875 y=2426.900146484375 | size=1 | links=#18560(auto Darnassus;229):15
+#14262 | auto inside;Darnassus;182§auto drinnen;Darnassus;182§auto intérieur;Darnassus;182 | x=10188.2998046875 y=2577.5 | size=1 | links=#12830(auto inside;Darnassus;162):2 #24277(auto inside;Darnassus;289):2
+#14266 | auto Darnassus;183§auto Darnassus;183§auto Darnassus;183 | x=10040.900390625 y=2242.60009765625 | size=1 | links=#3365(auto Darnassus;41):11 #28326(auto Darnassus;327):1
+#14383 | auto inside;Darnassus;184§auto drinnen;Darnassus;184§auto intérieur;Darnassus;184 | x=10173.2998046875 y=2564.699951171875 | size=1 | links=#9238(auto inside;Darnassus;107):5 c4217.1:5
+#14385 | auto Darnassus;185§auto Darnassus;185§auto Darnassus;185 | x=9800.7001953125 y=2285.10009765625 | size=1 | links=#81(auto Darnassus;1):15 #10643(auto Darnassus;128):28
+#14406 | auto Darnassus;186§auto Darnassus;186§auto Darnassus;186 | x=10077.6005859375 y=2525 | size=1 | links=#9654(auto Darnassus;111):8 #14590(auto Darnassus;189):16
+#14530 | auto Darnassus;187§auto Darnassus;187§auto Darnassus;187 | x=10140.2001953125 y=2512.300048828125 | size=1 | links=#4297(auto Darnassus;51):7 #25498(auto Darnassus;299):7
+#14584 | auto Darnassus;188§auto Darnassus;188§auto Darnassus;188 | x=9662.1005859375 y=2409.800048828125 | size=1 | links=#1373(auto Darnassus;24):31 c10878.1:22
+#14590 | auto Darnassus;189§auto Darnassus;189§auto Darnassus;189 | x=10069.2998046875 y=2539 | size=1 | links=#10963(auto Darnassus;132):12 #14406(auto Darnassus;186):16 c4215.1:21
+#14591 | auto Darnassus;190§auto Darnassus;190§auto Darnassus;190 | x=10070.400390625 y=2204.199951171875 | size=1 | links=#10565(auto Darnassus;126):13 c4161.1:7 c5191.1:11
+#14763 | auto Darnassus;191§auto Darnassus;191§auto Darnassus;191 | x=9863.900390625 y=2243.5 | size=1 | links=#21143(auto Darnassus;252):8 c4230.1:4
+#14881 | auto Darnassus;192§auto Darnassus;192§auto Darnassus;192 | x=9703 y=2407.900146484375 | size=1 | links=#1373(auto Darnassus;24):9 #9098(auto Darnassus;104):52
+#14900 | spawn location;Temple of the Moon;Darnassus§spawnpunkt;Tempel des Mondes;Darnassus§spawn location;Temple of the Moon;Darnassus | x=9656.5 y=2518.300048828125 | size=1 | links=#11075(auto Inside Temple of the Moon;Darnassus;137):5 c4165.1:9
+#14946 | auto Darnassus;193§auto Darnassus;193§auto Darnassus;193 | x=10037.5 y=2304.199951171875 | size=1 | links=#12018(auto Darnassus;151):18 #25120(auto Darnassus;297):16
+#14955 | auto Darnassus;194§auto Darnassus;194§auto Darnassus;194 | x=10097.6005859375 y=2256.199951171875 | size=1 | links=#19139(auto Darnassus;236):3 c11083.1:6
+#15094 | auto Darnassus;195§auto Darnassus;195§auto Darnassus;195 | x=10253.7998046875 y=2557 | size=1 | links=#12137(auto Darnassus;154):22 #18840(auto Darnassus;232):21
+#15129 | auto inside;Darnassus;196§auto drinnen;Darnassus;196§auto intérieur;Darnassus;196 | x=10176.7998046875 y=2586.10009765625 | size=1 | links=#19104(auto inside;Darnassus;234):4 #27248(auto inside;Darnassus;316):5
+#15417 | auto Darnassus;197§auto Darnassus;197§auto Darnassus;197 | x=9694.7998046875 y=2364.699951171875 | size=1 | links=#6889(auto Darnassus;74):15 #26012(auto Darnassus;302):12
+#15578 | quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête;well;Tempel des Mondes;Darnassus | x=9644.400390625 y=2520.900146484375 | size=1 | links=#5451(auto Inside Temple of the Moon;Darnassus;62):3
+#15698 | auto Inside Temple of the Moon;Darnassus;198§auto Drinnen Tempel des Mondes;Darnassus;198§auto Inside Temple of the Moon;Darnassus;198 | x=9596.2001953125 y=2484.699951171875 | size=1 | links=#962(auto Inside Temple of the Moon;Darnassus;17):20 #18026(auto Inside Temple of the Moon;Darnassus;223):20
+#15764 | auto Darnassus;199§auto Darnassus;199§auto Darnassus;199 | x=9953.5 y=2200.199951171875 | size=1 | links=#14043(auto Darnassus;178):18 #18509(auto Darnassus;228):54 #27900(auto Darnassus;323):52
+#15775 | auto Darnassus;200§auto Darnassus;200§auto Darnassus;200 | x=9950.7001953125 y=2313.300048828125 | size=1 | links=#1046(auto Darnassus;19):21 #13714(auto Darnassus;176):32
+#16194 | auto Inside Temple of the Moon;Darnassus;201§auto Drinnen Tempel des Mondes;Darnassus;201§auto Inside Temple of the Moon;Darnassus;201 | x=9587.7001953125 y=2520.800048828125 | size=1 | links=#983(auto Inside Temple of the Moon;Darnassus;18):14 #6034(auto Inside Temple of the Moon;Darnassus;65):6
+#16286 | auto inside;Darnassus;202§auto drinnen;Darnassus;202§auto intérieur;Darnassus;202 | x=10190.400390625 y=2556.900146484375 | size=1 | links=#17334(auto inside;Darnassus;214):9 #19781(auto inside;Darnassus;241):6
+#16307 | auto inside;Darnassus;203§auto drinnen;Darnassus;203§auto intérieur;Darnassus;203 | x=10161.900390625 y=2564.199951171875 | size=1 | links=#6617(auto inside;Darnassus;71):11 #17449(auto inside;Darnassus;217):11
+#16369 | auto Darnassus;204§auto Darnassus;204§auto Darnassus;204 | x=9751 y=2279.400146484375 | size=1 | links=#4885(auto Darnassus;56):6 #7312(centralpoint;Tradesmen's Terrace UNUSED;Darnassus):25 c4169.1:30
+#16537 | auto Darnassus;206§auto Darnassus;206§auto Darnassus;206 | x=9950.7998046875 y=2073.199951171875 | size=1 | links=#18509(auto Darnassus;228):73 #24148(auto Darnassus;288):58
+#16540 | auto inside;Darnassus;207§auto drinnen;Darnassus;207§auto intérieur;Darnassus;207 | x=10188.7001953125 y=2579.5 | size=1 | links=#3206(auto inside;Darnassus;37):1 #47516(auto Inside;Cenarion Enclave;Darnassus;350):1
+#16636 | auto inside;Darnassus;208§auto drinnen;Darnassus;208§auto intérieur;Darnassus;208 | x=10171.400390625 y=2583.699951171875 | size=1 | links=#9186(auto inside;Darnassus;106):8 #17449(auto inside;Darnassus;217):12
+#16782 | central location;Craftsmen's Terrace;Darnassus§zentralpunkt;Die Terrasse der Handwerker;Darnassus§emplacement central;Terrasse des Artisans;Darnassus | x=10080.7998046875 y=2300.199951171875 | size=1 | links=#263(auto Darnassus;3):23 #4181(auto Darnassus;48):9 #21883(auto Darnassus;261):38
+#16848 | auto Darnassus;209§auto Darnassus;209§auto Darnassus;209 | x=10025.5 y=2377.800048828125 | size=1 | links=#18560(auto Darnassus;229):38 #24102(auto Darnassus;287):41
+#16895 | auto Darnassus;210§auto Darnassus;210§auto Darnassus;210 | x=10107.2998046875 y=2291.699951171875 | size=1 | links=#263(auto Darnassus;3):14 c4229.1:6
+#17025 | auto Inside Temple of the Moon;Darnassus;211§auto Drinnen Tempel des Mondes;Darnassus;211§auto Inside Temple of the Moon;Darnassus;211 | x=9611.7998046875 y=2497.5 | size=1 | links=#983(auto Inside Temple of the Moon;Darnassus;18):20 #2194(auto Inside Temple of the Moon;Darnassus;28):17
+#17119 | auto Darnassus;212§auto Darnassus;212§auto Darnassus;212 | x=10095.7998046875 y=2267.800048828125 | size=1 | links=#8335(auto Darnassus;96):3 #24730(auto Darnassus;295):6
+#17144 | auto Darnassus;213§auto Darnassus;213§auto Darnassus;213 | x=10099.2998046875 y=2587.300048828125 | size=1 | links=#8573(auto Darnassus;98):4 c2796.1:13 c3561.1:6
+#17334 | auto inside;Darnassus;214§auto drinnen;Darnassus;214§auto intérieur;Darnassus;214 | x=10181.1005859375 y=2556.800048828125 | size=1 | links=#6617(auto inside;Darnassus;71):9 #16286(auto inside;Darnassus;202):9
+#17403 | auto Darnassus;215§auto Darnassus;215§auto Darnassus;215 | x=10167.400390625 y=2490.900146484375 | size=1 | links=#2988(auto Darnassus;35):9 #10151(auto Darnassus;118):8
+#17437 | auto Darnassus;216§auto Darnassus;216§auto Darnassus;216 | x=10152 y=2591.5 | size=1 | links=#5831(auto Darnassus;63):19 #22972(auto Darnassus;270):11 #27367(auto Darnassus;318):11
+#17449 | auto inside;Darnassus;217§auto drinnen;Darnassus;217§auto intérieur;Darnassus;217 | x=10162.400390625 y=2575.400146484375 | size=1 | links=#16307(auto inside;Darnassus;203):11 #16636(auto inside;Darnassus;208):12
+#17599 | auto Darnassus;218§auto Darnassus;218§auto Darnassus;218 | x=10164.2001953125 y=2366 | size=1 | links=#6589(auto Darnassus;70):35 #13674(auto Darnassus;175):61
+#17732 | auto Inside Temple of the Moon;Darnassus;219§auto Drinnen Tempel des Mondes;Darnassus;219§auto Inside Temple of the Moon;Darnassus;219 | x=9683.7998046875 y=2530.199951171875 | size=1 | links=#21950(auto Inside Temple of the Moon;Darnassus;262):14 #21983(auto Inside Temple of the Moon;Darnassus;263):26 c4090.1:16 c11401.1:21 c17105.1:19
+#17815 | auto Darnassus;220§auto Darnassus;220§auto Darnassus;220 | x=9861.7001953125 y=2395.699951171875 | size=1 | links=#1251(auto Darnassus;22):28 #3824(auto Darnassus;42):45
+#17910 | auto Darnassus;221§auto Darnassus;221§auto Darnassus;221 | x=10106.7001953125 y=2603.800048828125 | size=1 | links=#171(auto Darnassus;2):6 #3224(auto Darnassus;39):6
+#18024 | auto Inside Temple of the Moon;Darnassus;222§auto Drinnen Tempel des Mondes;Darnassus;222§auto Inside Temple of the Moon;Darnassus;222 | x=9668 y=2509 | size=1 | links=#19957(auto Inside Temple of the Moon;Darnassus;245):18 #21551(central location;Tempel des Mondes;Darnassus):16
+#18026 | auto Inside Temple of the Moon;Darnassus;223§auto Drinnen Tempel des Mondes;Darnassus;223§auto Inside Temple of the Moon;Darnassus;223 | x=9613.2001953125 y=2474.10009765625 | size=1 | links=#15698(auto Inside Temple of the Moon;Darnassus;198):20 #26157(auto Inside Temple of the Moon;Darnassus;303):17
+#18216 | auto Darnassus;224§auto Darnassus;224§auto Darnassus;224 | x=10110.2998046875 y=2237.300048828125 | size=1 | links=#13157(auto Darnassus;169):16 #23419(auto Darnassus;276):13
+#18246 | auto Inside Temple of the Moon;Darnassus;225§auto Drinnen Tempel des Mondes;Darnassus;225§auto Inside Temple of the Moon;Darnassus;225 | x=9607.7001953125 y=2525.800048828125 | size=1 | links=#10375(auto Inside Temple of the Moon;Darnassus;124):12 #23702(auto Inside Temple of the Moon;Darnassus;283):9
+#18292 | auto Inside Temple of the Moon;Darnassus;226§auto Drinnen Tempel des Mondes;Darnassus;226§auto Inside Temple of the Moon;Darnassus;226 | x=9668.6005859375 y=2562.10009765625 | size=1 | links=#21950(auto Inside Temple of the Moon;Darnassus;262):21 #24406(auto Inside Temple of the Moon;Darnassus;290):40
+#18403 | auto Darnassus;227§auto Darnassus;227§auto Darnassus;227 | x=10126.400390625 y=2389.199951171875 | size=1 | links=#7519(auto Darnassus;81):12 #13674(auto Darnassus;175):21
+#18509 | auto Darnassus;228§auto Darnassus;228§auto Darnassus;228 | x=9952 y=2146.199951171875 | size=1 | links=#3351(auto Darnassus;40):24 #15764(auto Darnassus;199):54 #16537(auto Darnassus;206):73
+#18560 | auto Darnassus;229§auto Darnassus;229§auto Darnassus;229 | x=10022.7001953125 y=2416.10009765625 | size=1 | links=#14185(auto Darnassus;181):15 #16848(auto Darnassus;209):38
+#18603 | auto Darnassus;230§auto Darnassus;230§auto Darnassus;230 | x=9850.5 y=2528.5 | size=1 | links=#13258(auto Darnassus;170):38 #14060(auto Darnassus;179):35
+#18758 | passage;Darnassus;to;Teldrassil§passage;Darnassus;zum;Teldrassil§passage;Darnassus;vers;Teldrassil | x=9988.2001953125 y=2013.099975585938 | size=1 | links=#17658(passage;Teldrassil;to;Darnassus):15 #24148(auto Darnassus;288):14
+#18785 | auto Darnassus;231§auto Darnassus;231§auto Darnassus;231 | x=9617.7001953125 y=2355 | size=1 | links=#10245(auto Darnassus;121):8 #11649(auto Darnassus;145):25
+#18840 | auto Darnassus;232§auto Darnassus;232§auto Darnassus;232 | x=10264.5 y=2538.10009765625 | size=1 | links=#12560(auto Darnassus;160):10 #15094(auto Darnassus;195):21
+#19007 | auto Darnassus;233§auto Darnassus;233§auto Darnassus;233 | x=9876.7998046875 y=2486.699951171875 | size=1 | links=#7578(auto Darnassus;83):32 #11174(auto Darnassus;139):17
+#19104 | auto inside;Darnassus;234§auto drinnen;Darnassus;234§auto intérieur;Darnassus;234 | x=10172.2998046875 y=2584.199951171875 | size=1 | links=#4669(auto inside;Darnassus;54):6 #15129(auto inside;Darnassus;196):4
+#19107 | auto Darnassus;235§auto Darnassus;235§auto Darnassus;235 | x=10078.2998046875 y=2358.199951171875 | size=1 | links=#7340(auto Darnassus;79):11 c4784.1:10
+#19139 | auto Darnassus;236§auto Darnassus;236§auto Darnassus;236 | x=10099.2001953125 y=2259.199951171875 | size=1 | links=#14955(auto Darnassus;194):3 #24730(auto Darnassus;295):2
+#19151 | auto Darnassus;237§auto Darnassus;237§auto Darnassus;237 | x=10050.400390625 y=2235.800048828125 | size=1 | links=#3931(auto Darnassus;44):24 #21437(auto Darnassus;256):22
+#19535 | auto Darnassus;238§auto Darnassus;238§auto Darnassus;238 | x=9805.2998046875 y=2245.900146484375 | size=1 | links=#10662(auto Darnassus;129):6 #47518(auto Darnassus;352):21
+#19536 | auto Darnassus;239§auto Darnassus;239§auto Darnassus;239 | x=9984.7998046875 y=2520.5 | size=1 | links=#5318(auto Darnassus;61):36 #8676(auto Darnassus;99):50 #23818(auto Darnassus;284):50
+#19633 | auto Darnassus;240§auto Darnassus;240§auto Darnassus;240 | x=9833.900390625 y=2220.900146484375 | size=1 | links=#702(auto Darnassus;11):28 #7994(auto Darnassus;90):26 c11709.1:23
+#19781 | auto inside;Darnassus;241§auto drinnen;Darnassus;241§auto intérieur;Darnassus;241 | x=10194.2001953125 y=2562.199951171875 | size=1 | links=#10991(auto inside;Darnassus;134):9 #16286(auto inside;Darnassus;202):6
+#19856 | auto Inside Temple of the Moon;Darnassus;242§auto Drinnen Tempel des Mondes;Darnassus;242§auto Inside Temple of the Moon;Darnassus;242 | x=9597 y=2511.300048828125 | size=1 | links=#23702(auto Inside Temple of the Moon;Darnassus;283):10 #27230(auto Inside Temple of the Moon;Darnassus;315):9
+#19886 | auto Darnassus;243§auto Darnassus;243§auto Darnassus;243 | x=10102.900390625 y=2351.699951171875 | size=1 | links=#533(auto Darnassus;8):19 #13674(auto Darnassus;175):32 #21883(auto Darnassus;261):22
+#19916 | auto Inside Temple of the Moon;Darnassus;244§auto Drinnen Tempel des Mondes;Darnassus;244§auto Inside Temple of the Moon;Darnassus;244 | x=9610.6005859375 y=2571.699951171875 | size=1 | links=#10099(auto Inside Temple of the Moon;Darnassus;117):17 #24406(auto Inside Temple of the Moon;Darnassus;290):20
+#19957 | auto Inside Temple of the Moon;Darnassus;245§auto Drinnen Tempel des Mondes;Darnassus;245§auto Inside Temple of the Moon;Darnassus;245 | x=9657.5 y=2494.300048828125 | size=1 | links=#2194(auto Inside Temple of the Moon;Darnassus;28):29 #18024(auto Inside Temple of the Moon;Darnassus;222):18
+#20305 | auto Darnassus;246§auto Darnassus;246§auto Darnassus;246 | x=10089.2998046875 y=2413.60009765625 | size=1 | links=#442(auto Darnassus;6):4 c4210.1:5
+#20567 | auto Darnassus;247§auto Darnassus;247§auto Darnassus;247 | x=9715.2998046875 y=2266.400146484375 | size=1 | links=#8067(auto Darnassus;91):42 #9014(auto Darnassus;102):16 c4169.1:20
+#20704 | auto Darnassus;248§auto Darnassus;248§auto Darnassus;248 | x=9916.400390625 y=2327.800048828125 | size=1 | links=#11659(auto Darnassus;146):16 c4164.1:17 c4203.1:13 c6142.1:19 c11866.1:7
+#20729 | auto Darnassus;249§auto Darnassus;249§auto Darnassus;249 | x=10083.6005859375 y=2354.300048828125 | size=1 | links=#533(auto Darnassus;8):7 c11041.1:6
+#20845 | auto Darnassus;250§auto Darnassus;250§auto Darnassus;250 | x=9744.900390625 y=2434.199951171875 | size=1 | links=#7013(auto Darnassus;75):14 c4204.1:13 c4216.1:11
+#21134 | auto Darnassus;251§auto Darnassus;251§auto Darnassus;251 | x=10143.7001953125 y=2549.60009765625 | size=1 | links=#773(auto Darnassus;12):35 #5831(auto Darnassus;63):23 #12953(auto Darnassus;163):8 #25259(central location;Cenarion Enclave;Darnassus):26
+#21143 | auto Darnassus;252§auto Darnassus;252§auto Darnassus;252 | x=9872.7001953125 y=2242.699951171875 | size=1 | links=#9709(auto Darnassus;112):14 #14763(auto Darnassus;191):8
+#21174 | auto Darnassus;253§auto Darnassus;253§auto Darnassus;253 | x=9725.400390625 y=2291.5 | size=1 | links=#7710(auto Darnassus;86):12 c4180.1:6
+#21288 | auto Darnassus;254§auto Darnassus;254§auto Darnassus;254 | x=10099.7998046875 y=2538.199951171875 | size=1 | links=#8138(auto Darnassus;93):16 #25259(central location;Cenarion Enclave;Darnassus):19
+#21430 | auto Darnassus;255§auto Darnassus;255§auto Darnassus;255 | x=9915.6005859375 y=2509 | size=1 | links=#532(auto Darnassus;7):19 #904(auto Darnassus;15):5 #945(auto Darnassus;16):23
+#21437 | auto Darnassus;256§auto Darnassus;256§auto Darnassus;256 | x=10045.7001953125 y=2257.699951171875 | size=1 | links=#5230(auto Darnassus;60):7 #19151(auto Darnassus;237):22
+#21454 | auto Darnassus;257§auto Darnassus;257§auto Darnassus;257 | x=9981.2001953125 y=2335.5 | size=1 | links=#13286(auto Darnassus;171):10 c4087.1:21 c4088.1:13
+#21551 | central location;Tempel des Mondes;Darnassus§zentralpunkt;Tempel des Mondes;Darnassus§emplacement central;Tempel des Mondes;Darnassus | x=9670.900390625 y=2524.900146484375 | size=1 | links=#12047(auto Inside Temple of the Moon;Darnassus;152):14 #18024(auto Inside Temple of the Moon;Darnassus;222):16 #26493(auto Inside Temple of the Moon;Darnassus;304):11
+#21658 | auto Darnassus;258§auto Darnassus;258§auto Darnassus;258 | x=9705.2001953125 y=2562.10009765625 | size=1 | links=#13008(auto Darnassus;164):38 #26601(auto Darnassus;305):40
+#21777 | auto Darnassus;259§auto Darnassus;259§auto Darnassus;259 | x=9750 y=2302.5 | size=1 | links=#1083(auto Darnassus;21):5 #7710(auto Darnassus;86):23
+#21883 | auto Darnassus;261§auto Darnassus;261§auto Darnassus;261 | x=10105.400390625 y=2329.800048828125 | size=1 | links=#16782(central location;Craftsmen's Terrace;Darnassus):38 #19886(auto Darnassus;243):22 #24695(auto Darnassus;294):14
+#21950 | auto Inside Temple of the Moon;Darnassus;262§auto Drinnen Tempel des Mondes;Darnassus;262§auto Inside Temple of the Moon;Darnassus;262 | x=9680.7998046875 y=2544.60009765625 | size=1 | links=#17732(auto Inside Temple of the Moon;Darnassus;219):14 #18292(auto Inside Temple of the Moon;Darnassus;226):21
+#21983 | auto Inside Temple of the Moon;Darnassus;263§auto Drinnen Tempel des Mondes;Darnassus;263§auto Inside Temple of the Moon;Darnassus;263 | x=9680.2001953125 y=2503.60009765625 | size=1 | links=#11711(auto Inside Temple of the Moon;Darnassus;148):19 #17732(auto Inside Temple of the Moon;Darnassus;219):26
+#22010 | auto Darnassus;264§auto Darnassus;264§auto Darnassus;264 | x=9699 y=2473.60009765625 | size=1 | links=#10993(auto Darnassus;135):28 #13008(auto Darnassus;164):55 #14065(auto Darnassus;180):31
+#22093 | auto Darnassus;265§auto Darnassus;265§auto Darnassus;265 | x=10180.5 y=2314.400146484375 | size=1 | links=#6589(auto Darnassus;70):22 #9829(auto Darnassus;115):28
+#22516 | auto Darnassus;266§auto Darnassus;266§auto Darnassus;266 | x=9850 y=2264.5 | size=1 | links=#702(auto Darnassus;11):18 #10241(auto Darnassus;120):18 #13023(auto Darnassus;166):17
+#22605 | auto inside;Darnassus;267§auto drinnen;Darnassus;267§auto intérieur;Darnassus;267 | x=10183.7001953125 y=2581.199951171875 | size=1 | links=#12086(auto inside;Darnassus;153):1 #25410(auto inside;Darnassus;298):2
+#22765 | auto Darnassus;268§auto Darnassus;268§auto Darnassus;268 | x=10118.7001953125 y=2582 | size=1 | links=#773(auto Darnassus;12):7 #11358(auto Darnassus;141):6
+#22925 | auto Darnassus;269§auto Darnassus;269§auto Darnassus;269 | x=9817.900390625 y=2271.10009765625 | size=1 | links=#10241(auto Darnassus;120):14 c4171.1:24 c4232.1:12 c4233.1:24
+#22972 | auto Darnassus;270§auto Darnassus;270§auto Darnassus;270 | x=10144.900390625 y=2600.199951171875 | size=1 | links=#17437(auto Darnassus;216):11 #27367(auto Darnassus;318):10
+#23088 | auto Darnassus;271§auto Darnassus;271§auto Darnassus;271 | x=9927.6005859375 y=2280.199951171875 | size=1 | links=#4066(auto Darnassus;46):32 #25276(central location;Darnassus):23
+#23097 | auto Darnassus;272§auto Darnassus;272§auto Darnassus;272 | x=10067.900390625 y=2584.5 | size=1 | links=#4268(auto Darnassus;49):16 #13109(auto Darnassus;167):27
+#23200 | auto Darnassus;273§auto Darnassus;273§auto Darnassus;273 | x=9969.400390625 y=2251.5 | size=1 | links=#6822(auto Darnassus;73):14 #27900(auto Darnassus;323):16
+#23202 | auto Darnassus;274§auto Darnassus;274§auto Darnassus;274 | x=9863.400390625 y=2271.199951171875 | size=1 | links=#9764(auto Darnassus;114):10 #24098(auto Darnassus;286):9
+#23325 | auto Darnassus;275§auto Darnassus;275§auto Darnassus;275 | x=10096.2998046875 y=2252 | size=1 | links=c4168.1:10 c11050.1:15
+#23419 | auto Darnassus;276§auto Darnassus;276§auto Darnassus;276 | x=10122.2001953125 y=2243.400146484375 | size=1 | links=#263(auto Darnassus;3):46 #9829(auto Darnassus;115):64 #12974(Mailbox;Craftsmen's Terrace;Darnassus):15 #18216(auto Darnassus;224):13 c6735.1:19
+#23453 | auto Darnassus;277§auto Darnassus;277§auto Darnassus;277 | x=9824.7998046875 y=2239.900146484375 | size=1 | links=#10662(auto Darnassus;129):13 #11268(auto Darnassus;140):23
+#23532 | auto Darnassus;278§auto Darnassus;278§auto Darnassus;278 | x=9855.7998046875 y=2444.60009765625 | size=1 | links=#7578(auto Darnassus;83):33 #28465(auto Darnassus;329):13
+#23537 | auto Darnassus;279§auto Darnassus;279§auto Darnassus;279 | x=10121.2998046875 y=2592.5 | size=1 | links=#2431(auto Darnassus;29):6 #6082(auto Darnassus;66):6
+#23538 | auto Darnassus;280§auto Darnassus;280§auto Darnassus;280 | x=10081.400390625 y=2559.10009765625 | size=1 | links=#4268(auto Darnassus;49):12 c3517.1:25
+#23544 | auto inside;Darnassus;281§auto drinnen;Darnassus;281§auto intérieur;Darnassus;281 | x=10166.7001953125 y=2573.900146484375 | size=1 | links=#4669(auto inside;Darnassus;54):5 #9238(auto inside;Darnassus;107):5
+#23680 | auto Darnassus;282§auto Darnassus;282§auto Darnassus;282 | x=9766.2998046875 y=2277.300048828125 | size=1 | links=#9134(auto Darnassus;105):7 #28308(auto Darnassus;326):9
+#23702 | auto Inside Temple of the Moon;Darnassus;283§auto Drinnen Tempel des Mondes;Darnassus;283§auto Inside Temple of the Moon;Darnassus;283 | x=9606.2001953125 y=2516.400146484375 | size=1 | links=#18246(auto Inside Temple of the Moon;Darnassus;225):9 #19856(auto Inside Temple of the Moon;Darnassus;242):10
+#23818 | auto Darnassus;284§auto Darnassus;284§auto Darnassus;284 | x=9949.1005859375 y=2484.199951171875 | size=1 | links=#532(auto Darnassus;7):22 #19536(auto Darnassus;239):50
+#23886 | auto Darnassus;285§auto Darnassus;285§auto Darnassus;285 | x=10245.2998046875 y=2503.60009765625 | size=1 | links=#12560(auto Darnassus;160):33 #13947(auto Darnassus;177):36
+#24098 | auto Darnassus;286§auto Darnassus;286§auto Darnassus;286 | x=9863 y=2262.10009765625 | size=1 | links=#9709(auto Darnassus;112):12 #23202(auto Darnassus;274):9 c4170.1:8
+#24102 | auto Darnassus;287§auto Darnassus;287§auto Darnassus;287 | x=9998.7001953125 y=2345.900146484375 | size=1 | links=#16848(auto Darnassus;209):41 #25120(auto Darnassus;297):44
+#24148 | auto Darnassus;288§auto Darnassus;288§auto Darnassus;288 | x=9987.6005859375 y=2027.800048828125 | size=1 | links=#16537(auto Darnassus;206):58 #18758(passage;Darnassus;to;Teldrassil):14
+#24277 | auto inside;Darnassus;289§auto drinnen;Darnassus;289§auto intérieur;Darnassus;289 | x=10188 y=2579.60009765625 | size=1 | links=#14262(auto inside;Darnassus;182):2 #28361(auto inside;Darnassus;328):2
+#24406 | auto Inside Temple of the Moon;Darnassus;290§auto Drinnen Tempel des Mondes;Darnassus;290§auto Inside Temple of the Moon;Darnassus;290 | x=9630.400390625 y=2575.900146484375 | size=1 | links=#18292(auto Inside Temple of the Moon;Darnassus;226):40 #19916(auto Inside Temple of the Moon;Darnassus;244):20 c7313.1:25
+#24572 | auto Darnassus;291§auto Darnassus;291§auto Darnassus;291 | x=9990.6005859375 y=2187.400146484375 | size=1 | links=#10367(auto Darnassus;123):32 #11875(auto Darnassus;150):31
+#24591 | auto Darnassus;292§auto Darnassus;292§auto Darnassus;292 | x=10102.2001953125 y=2639.10009765625 | size=1 | links=#4273(auto Darnassus;50):47 #13109(auto Darnassus;167):40
+#24661 | auto inside;Darnassus;293§auto drinnen;Darnassus;293§auto intérieur;Darnassus;293 | x=10186 y=2574.900146484375 | size=1 | links=#10560(auto inside;Darnassus;125):1 #12830(auto inside;Darnassus;162):1
+#24695 | auto Darnassus;294§auto Darnassus;294§auto Darnassus;294 | x=10095.1005859375 y=2340.300048828125 | size=1 | links=#7340(auto Darnassus;79):13 #21883(auto Darnassus;261):14
+#24730 | auto Darnassus;295§auto Darnassus;295§auto Darnassus;295 | x=10099.5 y=2261.900146484375 | size=1 | links=#17119(auto Darnassus;212):6 #19139(auto Darnassus;236):2
+#24789 | auto inside;Darnassus;296§auto drinnen;Darnassus;296§auto intérieur;Darnassus;296 | x=10186.5 y=2574.5 | size=1 | links=#4738(auto inside;Darnassus;55):1 #28250(auto inside;Darnassus;324):2
+#25120 | auto Darnassus;297§auto Darnassus;297§auto Darnassus;297 | x=10022 y=2308.300048828125 | size=1 | links=#14946(auto Darnassus;193):16 #24102(auto Darnassus;287):44
+#25259 | central location;Cenarion Enclave;Darnassus§zentralpunkt;Die Enklave des Cenarius;Darnassus§emplacement central;Enclave cénarienne;Darnassus | x=10118.7998046875 y=2541.10009765625 | size=1 | links=#21134(auto Darnassus;251):26 #21288(auto Darnassus;254):19 #27182(auto Darnassus;314):21 c4730.1:13 c4753.1:14
+#25276 | central location;Darnassus§zentralpunkt;Darnassus§emplacement central;Darnassus | x=9951.400390625 y=2280.5 | size=1 | links=#1046(auto Darnassus;19):11 #8680(auto Darnassus;100):34 #23088(auto Darnassus;271):23 #27900(auto Darnassus;323):27 c8026.1:11
+#25410 | auto inside;Darnassus;298§auto drinnen;Darnassus;298§auto intérieur;Darnassus;298 | x=10185.7001953125 y=2581.5 | size=1 | links=#3206(auto inside;Darnassus;37):2 #22605(auto inside;Darnassus;267):2
+#25498 | auto Darnassus;299§auto Darnassus;299§auto Darnassus;299 | x=10147.5 y=2512.400146484375 | size=1 | links=#9852(auto Darnassus;116):8 #14530(auto Darnassus;187):7
+#25742 | auto Darnassus;300§auto Darnassus;300§auto Darnassus;300 | x=10190.7998046875 y=2535.10009765625 | size=1 | links=#12352(auto Darnassus;157):15 c7296.1:16
+#25840 | auto Darnassus;301§auto Darnassus;301§auto Darnassus;301 | x=10078.1005859375 y=2226.5 | size=1 | links=#1902(auto Darnassus;25):22 #13157(auto Darnassus;169):17
+#26012 | auto Darnassus;302§auto Darnassus;302§auto Darnassus;302 | x=9688.1005859375 y=2375.400146484375 | size=1 | links=#15417(auto Darnassus;197):12 c4236.1:18
+#26157 | auto Inside Temple of the Moon;Darnassus;303§auto Drinnen Tempel des Mondes;Darnassus;303§auto Inside Temple of the Moon;Darnassus;303 | x=9630.7001953125 y=2471 | size=1 | links=#365(auto Inside Temple of the Moon;Darnassus;5):3 #18026(auto Inside Temple of the Moon;Darnassus;223):17
+#26306 | Darnassian Protector;Darnassus;1;46.57;22.7§Beschützer von Darnassus;Darnassus;1;46.57;22.7§Protecteur de Darnassus;Darnassus;1;46.57;22.7 | x=10076.63469403398 y=2448.270589960487 | size=1
+#26493 | auto Inside Temple of the Moon;Darnassus;304§auto Drinnen Tempel des Mondes;Darnassus;304§auto Inside Temple of the Moon;Darnassus;304 | x=9659.5 y=2525.900146484375 | size=1 | links=#21551(central location;Tempel des Mondes;Darnassus):11 c4091.1:12 c4165.1:17
+#26601 | auto Darnassus;305§auto Darnassus;305§auto Darnassus;305 | x=9675.7998046875 y=2590.60009765625 | size=1 | links=#21658(auto Darnassus;258):40 c2912.1:37
+#26784 | auto Darnassus;306§auto Darnassus;306§auto Darnassus;306 | x=9860.7001953125 y=2331.699951171875 | size=1 | links=#6744(auto Darnassus;72):8 c8669.1:15 c8723.1:12
+#26876 | auto Darnassus;307§auto Darnassus;307§auto Darnassus;307 | x=10049.5 y=2507.10009765625 | size=1 | links=#10980(auto Darnassus;133):19 #26954(auto Darnassus;310):16
+#26908 | auto Darnassus;308§auto Darnassus;308§auto Darnassus;308 | x=9842.5 y=2342.400146484375 | size=1 | links=#1251(auto Darnassus;22):29 #12806(auto Darnassus;161):30
+#26945 | auto Darnassus;309§auto Darnassus;309§auto Darnassus;309 | x=10089 y=2278.400146484375 | size=1 | links=#11617(auto Darnassus;144):3 #11684(auto Darnassus;147):4
+#26954 | auto Darnassus;310§auto Darnassus;310§auto Darnassus;310 | x=10034.900390625 y=2499.300048828125 | size=1 | links=#5318(auto Darnassus;61):18 #26876(auto Darnassus;307):16
+#26999 | auto Darnassus;311§auto Darnassus;311§auto Darnassus;311 | x=9940.2998046875 y=2513.199951171875 | size=1 | links=#532(auto Darnassus;7):16 #11176(guild vault;Darnassus):4 c4209.1:6
+#27064 | auto Darnassus;312§auto Darnassus;312§auto Darnassus;312 | x=9780 y=2203.800048828125 | size=1 | links=#10226(auto Darnassus;119):15 #47518(auto Darnassus;352):27
+#27165 | auto Inside Temple of the Moon;Darnassus;313§auto Drinnen Tempel des Mondes;Darnassus;313§auto Inside Temple of the Moon;Darnassus;313 | x=9581.6005859375 y=2532.5 | size=1 | links=#11066(auto Inside Temple of the Moon;Darnassus;136):18 #27230(auto Inside Temple of the Moon;Darnassus;315):21
+#27182 | auto Darnassus;314§auto Darnassus;314§auto Darnassus;314 | x=10119.900390625 y=2519.900146484375 | size=1 | links=#4297(auto Darnassus;51):14 #25259(central location;Cenarion Enclave;Darnassus):21
+#27230 | auto Inside Temple of the Moon;Darnassus;315§auto Drinnen Tempel des Mondes;Darnassus;315§auto Inside Temple of the Moon;Darnassus;315 | x=9587.5 y=2512.199951171875 | size=1 | links=#962(auto Inside Temple of the Moon;Darnassus;17):11 #19856(auto Inside Temple of the Moon;Darnassus;242):9 #27165(auto Inside Temple of the Moon;Darnassus;313):21
+#27248 | auto inside;Darnassus;316§auto drinnen;Darnassus;316§auto intérieur;Darnassus;316 | x=10182.2998046875 y=2584.699951171875 | size=1 | links=#15129(auto inside;Darnassus;196):5 #28361(auto inside;Darnassus;328):5
+#27255 | auto Darnassus;317§auto Darnassus;317§auto Darnassus;317 | x=10153.7001953125 y=2298 | size=1 | links=#9829(auto Darnassus;115):16 #43762(auto Darnassus;330):23 c11070.1:18
+#27367 | auto Darnassus;318§auto Darnassus;318§auto Darnassus;318 | x=10155.2998046875 y=2602.300048828125 | size=1 | links=#17437(auto Darnassus;216):11 #22972(auto Darnassus;270):10
+#27470 | auto Darnassus;319§auto Darnassus;319§auto Darnassus;319 | x=10105 y=2587.900146484375 | size=1 | links=#171(auto Darnassus;2):10 #4536(auto Darnassus;53):13
+#27653 | auto inside;Darnassus;320§auto drinnen;Darnassus;320§auto intérieur;Darnassus;320 | x=10184.900390625 y=2570.699951171875 | size=1 | links=#4397(auto inside;Darnassus;52):4 #11577(auto inside;Darnassus;143):6
+#27655 | central location§zentralpunkt§emplacement central | x=9769.6005859375 y=2298.800048828125 | size=1
+#27796 | auto Darnassus;321§auto Darnassus;321§auto Darnassus;321 | x=10096.6005859375 y=2393.5 | size=1 | links=#442(auto Darnassus;6):17 #2516(auto Darnassus;30):17 #13674(auto Darnassus;175):13
+#27849 | auto Darnassus;322§auto Darnassus;322§auto Darnassus;322 | x=9845.1005859375 y=2308.199951171875 | size=1 | links=#6744(auto Darnassus;72):20 #12806(auto Darnassus;161):7 #13023(auto Darnassus;166):27
+#27900 | auto Darnassus;323§auto Darnassus;323§auto Darnassus;323 | x=9952.5 y=2252.800048828125 | size=1 | links=#15764(auto Darnassus;199):52 #23200(auto Darnassus;273):16 #25276(central location;Darnassus):27
+#28125 | portal;Darnassus;to;flight master§portal;Darnassus;zum;Flugpunkt§portal;Darnassus;vers;flight master | x=9946.2001953125 y=2607.10009765625 | size=1 | links=#2409(portal;Rut'theran Village;Teldrassil;to;Darnassus):2010 #5954(auto Darnassus;64):7
+#28250 | auto inside;Darnassus;324§auto drinnen;Darnassus;324§auto intérieur;Darnassus;324 | x=10184.900390625 y=2573 | size=1 | links=#24789(auto inside;Darnassus;296):2 c4218.1:2
+#28263 | auto Darnassus;325§auto Darnassus;325§auto Darnassus;325 | x=10198.7998046875 y=2597.699951171875 | size=1 | links=#8727(auto Darnassus;101):18 c9047.1:19 c3681.8:46
+#28308 | auto Darnassus;326§auto Darnassus;326§auto Darnassus;326 | x=9761.1005859375 y=2269.900146484375 | size=1 | links=#4885(auto Darnassus;56):7 #9082(auto Darnassus;103):8 #23680(auto Darnassus;282):9
+#28326 | auto Darnassus;327§auto Darnassus;327§auto Darnassus;327 | x=10040.2001953125 y=2244 | size=1 | links=#5230(auto Darnassus;60):12 #14266(auto Darnassus;183):1
+#28361 | auto inside;Darnassus;328§auto drinnen;Darnassus;328§auto intérieur;Darnassus;328 | x=10186.5 y=2581.800048828125 | size=1 | links=#24277(auto inside;Darnassus;289):2 #27248(auto inside;Darnassus;316):5
+#28465 | auto Darnassus;329§auto Darnassus;329§auto Darnassus;329 | x=9842.5 y=2440.300048828125 | size=1 | links=#23532(auto Darnassus;278):13 c4156.1:9 c4221.1:10 c4222.1:6
+#28584 | s;A;Mailbox;1;Darnassus§s;a;Briefkasten;1;Darnassus§s;A;Boîte aux lettres;1;Darnassus | x=9941.205078125 y=2500.212646484375 | size=1 | links=#532(auto Darnassus;7):9
+#28585 | s;A;Mailbox;2;Darnassus§s;a;Briefkasten;2;Darnassus§s;A;Boîte aux lettres;2;Darnassus | x=10122.08203125 y=2227.37451171875 | size=1
+#28673 | s;Kalimdor;capital;Darnassus§s;Kalimdor;Hauptstadt;Darnassus§s;Kalimdor;capital;Darnassus | x=9951.75 y=-2254.5 | size=1
+#28744 | s;Kalimdor;capital;Darnassus§s;Kalimdor;Hauptstadt;Darnassus§s;Kalimdor;capital;Darnassus | x=9951.75 y=-2254.5 | size=1
+#43762 | auto Darnassus;330§auto Darnassus;330§auto Darnassus;330 | x=10157.900390625 y=2320.699951171875 | size=1 | links=#27255(auto Darnassus;317):23 #43763(auto Darnassus;331):24
+#43763 | auto Darnassus;331§auto Darnassus;331§auto Darnassus;331 | x=10136.5 y=2332.900146484375 | size=1 | links=#43762(auto Darnassus;330):24 #43764(auto Darnassus;332):13
+#43764 | auto Darnassus;332§auto Darnassus;332§auto Darnassus;332 | x=10130.400390625 y=2320.699951171875 | size=1 | links=#43763(auto Darnassus;331):13 #43765(auto Darnassus;333):14
+#43765 | auto Darnassus;333§auto Darnassus;333§auto Darnassus;333 | x=10142.900390625 y=2313.699951171875 | size=1 | links=#43764(auto Darnassus;332):14
+#43766 | auto Darnassus;334§auto Darnassus;334§auto Darnassus;334 | x=9677.5 y=2347.5 | size=1 | links=#831(auto Darnassus;14):27 #43767(auto Darnassus;335):12
+#43767 | auto Darnassus;335§auto Darnassus;335§auto Darnassus;335 | x=9686.1005859375 y=2337.900146484375 | size=1 | links=#43766(auto Darnassus;334):12 #43768(auto Darnassus;336):8 #43769(auto Darnassus;337):14
+#43768 | auto Darnassus;336§auto Darnassus;336§auto Darnassus;336 | x=9690.7998046875 y=2330.400146484375 | size=1 | links=#43767(auto Darnassus;335):8 c4177.1:5
+#43769 | auto Darnassus;337§auto Darnassus;337§auto Darnassus;337 | x=9698.2998046875 y=2345.699951171875 | size=1 | links=#43767(auto Darnassus;335):14 #43770(auto Darnassus;338):8
+#43770 | auto Darnassus;338§auto Darnassus;338§auto Darnassus;338 | x=9702.5 y=2338.10009765625 | size=1 | links=#43769(auto Darnassus;337):8 c4240.1:3
+#43771 | auto Darnassus;339§auto Darnassus;339§auto Darnassus;339 | x=9661.7998046875 y=2284.60009765625 | size=1 | links=#43772(auto Darnassus;340):15 o19877.1:12
+#43772 | auto Darnassus;340§auto Darnassus;340§auto Darnassus;340 | x=9652.5 y=2296.400146484375 | size=1 | links=#43771(auto Darnassus;339):15 #43773(auto Darnassus;341):21
+#43773 | auto Darnassus;341§auto Darnassus;341§auto Darnassus;341 | x=9669.400390625 y=2309.400146484375 | size=1 | links=#43772(auto Darnassus;340):21 #43774(auto Darnassus;342):21
+#43774 | auto Darnassus;342§auto Darnassus;342§auto Darnassus;342 | x=9686.2998046875 y=2322.5 | size=1 | links=#43773(auto Darnassus;341):21 c4240.1:18
+#47509 | auto Darnassus;343§auto Darnassus;343§auto Darnassus;343 | x=10194.7998046875 y=2497.800048828125 | size=1 | links=#7812(auto Darnassus;87):6 #12468(auto Darnassus;159):9 #47510(auto Darnassus;344):7
+#47510 | auto Darnassus;344§auto Darnassus;344§auto Darnassus;344 | x=10189.7998046875 y=2503.60009765625 | size=1 | links=#47509(auto Darnassus;343):7 #47511(auto Darnassus;345):4
+#47511 | auto Darnassus;345§auto Darnassus;345§auto Darnassus;345 | x=10186 y=2505.699951171875 | size=1 | links=#47510(auto Darnassus;344):4 #47512(auto Darnassus;346):5
+#47512 | auto Darnassus;346§auto Darnassus;346§auto Darnassus;346 | x=10180.2001953125 y=2506.10009765625 | size=1 | links=#47511(auto Darnassus;345):5 #47513(auto Darnassus;347):4
+#47513 | auto Darnassus;347§auto Darnassus;347§auto Darnassus;347 | x=10176.2998046875 y=2503.60009765625 | size=1 | links=#47512(auto Darnassus;346):4 #47514(auto Darnassus;348):7
+#47514 | auto Darnassus;348§auto Darnassus;348§auto Darnassus;348 | x=10178.5 y=2496.800048828125 | size=1 | links=#47513(auto Darnassus;347):7 c4205.1:9 c10089.1:9
+#47516 | auto Inside;Cenarion Enclave;Darnassus;350§auto Drinnen;drinnen;Die Enklave des Cenarius;Darnassus;350§auto Intérieur;Enclave cénarienne;Darnassus;350 | x=10189.2001953125 y=2577.60009765625 | size=1 | links=#4738(auto inside;Darnassus;55):2 #16540(auto inside;Darnassus;207):1
+#47517 | auto Darnassus;351§auto Darnassus;351§auto Darnassus;351 | x=9792.362149464441 y=2228.386070306933 | size=1 | links=#7587(auto Darnassus;84):22 #7994(auto Darnassus;90):18
+#47518 | auto Darnassus;352§auto Darnassus;352§auto Darnassus;352 | x=9794.900390625 y=2226.900146484375 | size=1 | links=#19535(auto Darnassus;238):21 #27064(auto Darnassus;312):27
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c2796.1 | links=#17144(auto Darnassus;213):13
+c2912.1 | links=#26601(auto Darnassus;305):37
+c3468.1 | links=#6589(auto Darnassus;70):82 c883.10:10 c883.13:38
+c3516.1 | links=#556(auto inside;Darnassus;9):14
+c3517.1 | links=#8138(auto Darnassus;93):5 #23538(auto Darnassus;280):25
+c3561.1 | links=#17144(auto Darnassus;213):6
+c3562.1 | links=#13008(auto Darnassus;164):4
+c4087.1 | links=#21454(auto Darnassus;257):21 c4088.1:15 c7315.1:4
+c4088.1 | links=#21454(auto Darnassus;257):13 c4087.1:15
+c4090.1 | links=#17732(auto Inside Temple of the Moon;Darnassus;219):16
+c4091.1 | links=#26493(auto Inside Temple of the Moon;Darnassus;304):12
+c4092.1 | links=#2194(auto Inside Temple of the Moon;Darnassus;28):25
+c4138.1 | links=#7044(auto Darnassus;76):11
+c4146.1 | links=#12352(auto Darnassus;157):11 c10056.1:15
+c4155.1 | links=c4209.1:3
+c4156.1 | links=#28465(auto Darnassus;329):9
+c4159.1 | links=#2726(auto Darnassus;31):11 c11050.1:8 c14725.1:7
+c4160.1 | links=c4226.1:10 c11041.1:10
+c4161.1 | links=#14591(auto Darnassus;190):7 c5047.1:9
+c4163.1 | links=#1932(auto Darnassus;26):19 #10835(auto Darnassus;131):8
+c4164.1 | links=#20704(auto Darnassus;248):17 c6142.1:7
+c4165.1 | links=#14900(spawn location;Temple of the Moon;Darnassus):9 #26493(auto Inside Temple of the Moon;Darnassus;304):17
+c4168.1 | links=#23325(auto Darnassus;275):10
+c4169.1 | links=#7587(auto Darnassus;84):42 #16369(auto Darnassus;204):30 #20567(auto Darnassus;247):20
+c4170.1 | links=#24098(auto Darnassus;286):8
+c4171.1 | links=#22925(auto Darnassus;269):24
+c4172.1 | links=#10245(auto Darnassus;121):8
+c4173.1 | links=#9082(auto Darnassus;103):3
+c4175.1 | links=#1083(auto Darnassus;21):21 #2807(auto Darnassus;32):13
+c4177.1 | links=#43768(auto Darnassus;336):5
+c4180.1 | links=#21174(auto Darnassus;253):6
+c4181.1 | links=#14043(auto Darnassus;178):14 c8665.1:6
+c4203.1 | links=#20704(auto Darnassus;248):13 c6142.1:10
+c4204.1 | links=#20845(auto Darnassus;250):13
+c4205.1 | links=#47514(auto Darnassus;348):9 c4244.1:2
+c4208.1 | links=c4209.1:3
+c4209.1 | links=#26999(auto Darnassus;311):6 c4155.1:3 c4208.1:3
+c4210.1 | links=#20305(auto Darnassus;246):5 c4223.1:5
+c4211.1 | links=#7519(auto Darnassus;81):14
+c4212.1 | links=c4225.1:9 c6034.1:4 c6292.1:5 c11081.1:4 c11083.1:4
+c4213.1 | links=c4228.1:11 c11070.1:4
+c4214.1 | links=#10963(auto Darnassus;132):25
+c4215.1 | links=#14590(auto Darnassus;189):21
+c4216.1 | links=#20845(auto Darnassus;250):11
+c4217.1 | links=#4397(auto inside;Darnassus;52):6 #14383(auto inside;Darnassus;184):5
+c4218.1 | links=#12306(auto inside;Darnassus;156):17 #28250(auto inside;Darnassus;324):2
+c4219.1 | links=c4220.1:8
+c4220.1 | links=#12306(auto inside;Darnassus;156):11 c4219.1:8
+c4221.1 | links=#28465(auto Darnassus;329):10
+c4222.1 | links=#28465(auto Darnassus;329):6
+c4223.1 | links=c4210.1:5
+c4225.1 | links=c4212.1:9
+c4226.1 | links=c4160.1:10 c11042.1:5
+c4228.1 | links=c4213.1:11
+c4229.1 | links=#16895(auto Darnassus;210):6
+c4230.1 | links=#14763(auto Darnassus;191):4
+c4231.1 | links=#10662(auto Darnassus;129):7
+c4232.1 | links=#22925(auto Darnassus;269):12
+c4233.1 | links=#22925(auto Darnassus;269):24
+c4234.1 | links=#10245(auto Darnassus;121):4
+c4235.1 | links=#7958(auto Darnassus;88):4
+c4236.1 | links=#26012(auto Darnassus;302):18
+c4240.1 | links=#43770(auto Darnassus;338):3 #43774(auto Darnassus;342):18
+c4241.1 | links=#14043(auto Darnassus;178):18 c8665.1:11
+c4244.1 | links=c4205.1:2
+c4521.1 | links=#10226(auto Darnassus;119):4
+c4730.1 | links=#25259(central location;Cenarion Enclave;Darnassus):13
+c4753.1 | links=#25259(central location;Cenarion Enclave;Darnassus):14
+c4783.1 | links=c4784.1:10
+c4784.1 | links=#19107(auto Darnassus;235):10 c4783.1:10 c4786.1:7
+c4786.1 | links=c4784.1:7
+c5047.1 | links=c4161.1:9
+c5191.1 | links=#14591(auto Darnassus;190):11
+c6034.1 | links=c4212.1:4
+c6142.1 | links=#20704(auto Darnassus;248):19 c4164.1:7 c4203.1:10
+c6292.1 | links=c4212.1:5
+c6491.1 | links=#9577(auto Darnassus;110):33
+c6735.1 | links=#12974(Mailbox;Craftsmen's Terrace;Darnassus):5 #23419(auto Darnassus;276):19
+c7296.1 | links=#25742(auto Darnassus;300):16
+c7313.1 | links=#24406(auto Inside Temple of the Moon;Darnassus;290):25
+c7315.1 | links=c4087.1:4
+c7316.1 | links=#8156(auto Darnassus;94):27 c11700.1:6
+c7740.1 | links=#365(auto Inside Temple of the Moon;Darnassus;5):24
+c8026.1 | links=#25276(central location;Darnassus):11
+c8665.1 | links=c4181.1:6 c4241.1:11
+c8669.1 | links=#26784(auto Darnassus;306):15
+c8723.1 | links=#26784(auto Darnassus;306):12
+c9047.1 | links=#4273(auto Darnassus;50):41 #28263(auto Darnassus;325):19
+c10056.1 | links=#356(auto Darnassus;4):12 #13535(auto Darnassus;172):9 c4146.1:15
+c10089.1 | links=#47514(auto Darnassus;348):9
+c10878.1 | links=#10993(auto Darnassus;135):28 #14584(auto Darnassus;188):22
+c11041.1 | links=#20729(auto Darnassus;249):6 c4160.1:10
+c11042.1 | links=c4226.1:5
+c11050.1 | links=#23325(auto Darnassus;275):15 c4159.1:8
+c11070.1 | links=#27255(auto Darnassus;317):18 c4213.1:4
+c11081.1 | links=c4212.1:4
+c11083.1 | links=#14955(auto Darnassus;194):6 c4212.1:4
+c11401.1 | links=#17732(auto Inside Temple of the Moon;Darnassus;219):21
+c11700.1 | links=c7316.1:6
+c11709.1 | links=#19633(auto Darnassus;240):23
+c11866.1 | links=#20704(auto Darnassus;248):7
+c14380.1 | links=#11649(auto Darnassus;145):14
+c14725.1 | links=c4159.1:7
+c17105.1 | links=#17732(auto Inside Temple of the Moon;Darnassus;219):19
+c26007.1 | links=#6119(auto Darnassus;67):41
+o19877.1 | links=#43771(auto Darnassus;339):12
+c19173.2 | links=#532(auto Darnassus;7):9
+c883.3 | links=#8138(auto Darnassus;93):28 c3681.31:15
+c4423.5 | links=c3681.27:15
+c3681.8 | links=#28263(auto Darnassus;325):46
+c883.10 | links=c3468.1:10
+c883.13 | links=c3468.1:38 c3681.34:8
+c3681.27 | links=#2516(auto Darnassus;30):41 c4423.5:15 c3681.31:41
+c3681.31 | links=c883.3:15 c3681.27:41
+c3681.34 | links=#13947(auto Darnassus;177):19 c883.13:8

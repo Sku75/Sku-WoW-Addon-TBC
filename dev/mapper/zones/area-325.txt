@@ -1,0 +1,3 @@
+Zone areaId 325 — eine Zeile pro Wegpunkt; Links inline.
+
+#28747 | s;Eastern Kingdoms;Arathi Highlands;Stromgarde Keep;The Tower of Arathor§s;Östliche Königreiche;Arathihochland;Burg Stromgarde;Der Turm von Arathor§s;Royaumes de l'est;Hautes-terres d'Arathi;Stromgarde Keep;The Tower of Arathor | x=-1778.21 y=-1513.16 | size=1

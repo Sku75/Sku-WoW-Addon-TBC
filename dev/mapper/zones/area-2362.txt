@@ -1,0 +1,3 @@
+Zone areaId 2362 — eine Zeile pro Wegpunkt; Links inline.
+
+#28691 | s;Kalimdor;Moonglade;Lake Elune'ara;Shrine of Remulos§s;Kalimdor;Moonglade;Der Elune'ara See;Schrein von Remulos§s;Kalimdor;Reflet-de-Lune;Lac Elune'ara;Sanctuaire de Remulos | x=7856.18 y=-2215.45 | size=1

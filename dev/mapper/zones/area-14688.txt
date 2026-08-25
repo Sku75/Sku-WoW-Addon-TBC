@@ -1,0 +1,4 @@
+Zone areaId 14688 — eine Zeile pro Wegpunkt; Links inline.
+
+#2183 | The High Seat;Ironforge§Der Hohe Sitz;Eisenschmiede§The High Seat;Forgefer | x=-4852 y=-1039.400024414063 | size=1 | links=c2784.1:21 #16585(auto The High Seat;Ironforge;1):25
+#16585 | auto The High Seat;Ironforge;1§auto Der Hohe Sitz;Eisenschmiede;1§auto The High Seat;Forgefer;1 | x=-4836.30029296875 y=-1058.900024414063 | size=1 | links=c16013.1:10 #2183(The High Seat;Ironforge):25 #19351(auto The Great Forge;Ironforge;50):10

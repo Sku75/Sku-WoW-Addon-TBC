@@ -1,0 +1,3 @@
+Zone areaId 360 — eine Zeile pro Wegpunkt; Links inline.
+
+#28694 | s;Kalimdor;Mulgore;The Golden Plains;The Venture Co. Mine§s;Kalimdor;Mulgore;Die goldenen Ebenen;Mine der Venture Co,§s;Kalimdor;Mulgore;Les plaines dorées;The Venture Co. Mine | x=-1501.49 y=-1036.19 | size=1

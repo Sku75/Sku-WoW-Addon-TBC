@@ -1,0 +1,479 @@
+Zone areaId 3521 — eine Zeile pro Wegpunkt; Links inline.
+
+#278 | auto Zangarmarsh;1§auto Zangarmarschen;1§auto Marécage de Zangar;1 | x=-249.6999969482422 y=6053 | size=1 | links=#10948(auto Zangarmarsh;162):48 #20048(auto Zangarmarsh;306):72
+#280 | auto Zangarmarsh;2§auto Zangarmarschen;2§auto Marécage de Zangar;2 | x=-24.70000076293945 y=7620.39990234375 | size=5 | links=#22655(auto Zangarmarsh;355):60
+#375 | auto Zangarmarsh;3§auto Zangarmarschen;3§auto Marécage de Zangar;3 | x=222 y=7937 | size=1 | links=#12081(auto Zangarmarsh;179):12
+#418 | auto Zangarmarsh;4§auto Zangarmarschen;4§auto Marécage de Zangar;4 | x=-259 y=5498.30029296875 | size=1 | links=#7442(auto Zangarmarsh;103):7 #26100(auto Zangarmarsh;402):9
+#492 | auto Zangarmarsh;5§auto Zangarmarschen;5§auto Marécage de Zangar;5 | x=834.9000244140625 y=7749.89990234375 | size=1 | links=#21517(auto Zangarmarsh;336):15
+#547 | auto Zangarmarsh;6§auto Zangarmarschen;6§auto Marécage de Zangar;6 | x=1275.599975585938 y=8308.2001953125 | size=5 | links=#21991(auto Zangarmarsh;348):126
+#590 | auto Zangarmarsh;7§auto Zangarmarschen;7§auto Marécage de Zangar;7 | x=1205.800048828125 y=8486.900390625 | size=5 | links=#13546(auto Zangarmarsh;203):36 #15940(auto Zangarmarsh;245):96
+#714 | auto Zangarmarsh;8§auto Zangarmarschen;8§auto Marécage de Zangar;8 | x=1.5 y=5520 | size=1 | links=#3101(auto Zangarmarsh;35):20 #7141(auto Zangarmarsh;100):66
+#779 | auto Zangarmarsh;9§auto Zangarmarschen;9§auto Marécage de Zangar;9 | x=91.20000457763672 y=6136.80029296875 | size=1 | links=#3223(auto Zangarmarsh;37):19 #12729(auto Zangarmarsh;193):23
+#1053 | auto Zangarmarsh;10§auto Zangarmarschen;10§auto Marécage de Zangar;10 | x=1026.400024414063 y=8265.6005859375 | size=1 | links=#11966(auto Zangarmarsh;177):5 #21684(auto Zangarmarsh;337):4
+#1162 | auto Zangarmarsh;11§auto Zangarmarschen;11§auto Marécage de Zangar;11 | x=-142.6000061035156 y=7519.30029296875 | size=5 | links=#22655(auto Zangarmarsh;355):100
+#1189 | auto Zangarmarsh;12§auto Zangarmarschen;12§auto Marécage de Zangar;12 | x=526.6000366210938 y=6643.2001953125 | size=1 | links=#9333(auto Zangarmarsh;134):68
+#1196 | auto Zangarmarsh;13§auto Zangarmarschen;13§auto Marécage de Zangar;13 | x=1173.800048828125 y=8413.400390625 | size=1 | links=#20049(auto Zangarmarsh;307):25 #27049(auto Zangarmarsh;425):17
+#1405 | auto Zangarmarsh;14§auto Zangarmarschen;14§auto Marécage de Zangar;14 | x=-1075 y=5214.10009765625 | size=1
+#1406 | Twin Spire Ruins;west§Ruinen der Zwillingsspitze;westlich§Ruines des flèches jumelles;west | x=356.3000183105469 y=7335.10009765625 | size=1 | links=#16014(auto Zangarmarsh;247):35
+#1453 | auto Zangarmarsh;15§auto Zangarmarschen;15§auto Marécage de Zangar;15 | x=82.0999984741211 y=5302.39990234375 | size=1 | links=#22052(auto Zangarmarsh;349):18 #23688(auto Zangarmarsh;367):29
+#1765 | auto Zangarmarsh;16§auto Zangarmarschen;16§auto Marécage de Zangar;16 | x=-256.7000122070313 y=5303.30029296875 | size=1 | links=#16512(auto Hellfire Peninsula;439):25 #6116(entry and exit;Zangarmarsh;to;Hellfire Peninsula):29
+#1774 | auto Zangarmarsh;17§auto Zangarmarschen;17§auto Marécage de Zangar;17 | x=-70.0999984741211 y=5544.39990234375 | size=1 | links=#11703(auto Zangarmarsh;172):18 #18358(auto Zangarmarsh;288):16
+#1802 | auto Zangarmarsh;18§auto Zangarmarschen;18§auto Marécage de Zangar;18 | x=1036.900024414063 y=8266 | size=1 | links=#28229(auto Zangarmarsh;438):9
+#1873 | auto Zangarmarsh;19§auto Zangarmarschen;19§auto Marécage de Zangar;19 | x=-607.2999877929688 y=5987.39990234375 | size=1 | links=#12141(auto Zangarmarsh;181):50 #23769(auto Zangarmarsh;369):53
+#2030 | auto Zangarmarsh;20§auto Zangarmarschen;20§auto Marécage de Zangar;20 | x=-1221.099975585938 y=5778.60009765625 | size=1 | links=#7508(auto Zangarmarsh;104):25 #18725(auto Zangarmarsh;294):32
+#2081 | auto Zangarmarsh;21§auto Zangarmarschen;21§auto Marécage de Zangar;21 | x=-262.7000122070313 y=5504.60009765625 | size=1 | links=#16089(auto Zangarmarsh;249):9 #22283(auto Zangarmarsh;351):8
+#2139 | auto Zangarmarsh;22§auto Zangarmarschen;22§auto Marécage de Zangar;22 | x=-705.9000244140625 y=6011.89990234375 | size=1 | links=#9394(auto Zangarmarsh;135):57 #12141(auto Zangarmarsh;181):55
+#2160 | auto Zangarmarsh;23§auto Zangarmarschen;23§auto Marécage de Zangar;23 | x=353.7000122070313 y=6111.30029296875 | size=1 | links=#8459(auto Zangarmarsh;118):46 #20427(auto Zangarmarsh;317):21
+#2222 | auto Zangarmarsh;24§auto Zangarmarschen;24§auto Marécage de Zangar;24 | x=126.9000015258789 y=6747.7001953125 | size=1 | links=#10813(auto Zangarmarsh;158):34 #12633(auto Zangarmarsh;192):36
+#2531 | auto Zangarmarsh;25§auto Zangarmarschen;25§auto Marécage de Zangar;25 | x=1111.800048828125 y=8235.400390625 | size=1 | links=#21991(auto Zangarmarsh;348):56 #25327(auto Zangarmarsh;391):56
+#2561 | auto Zangarmarsh;26§auto Zangarmarschen;26§auto Marécage de Zangar;26 | x=433.8999938964844 y=6419.2001953125 | size=1 | links=#20059(auto Zangarmarsh;308):40
+#2571 | auto Zangarmarsh;27§auto Zangarmarschen;27§auto Marécage de Zangar;27 | x=1017.299987792969 y=7438.39990234375 | size=1 | links=#20516(auto Zangarmarsh;319):17 #28022(auto Zangarmarsh;436):24
+#2590 | entry and exit;Zangarmarsh;to;Terokkar Forest§ein- und ausgang;Zangarmarschen;zu;wälder von terokkar§entrée et sortie;Marécage de Zangar;vers;Forêt de Terokkar | x=-1166.300048828125 y=5328.5 | size=1 | links=#46085(auto Terokkar Forest;129):35 #46086(entry and exit;Zangarmarsh;to;Terrokar Forest):14
+#2604 | auto Zangarmarsh;28§auto Zangarmarschen;28§auto Marécage de Zangar;28 | x=-679.7000122070312 y=5393.60009765625 | size=1 | links=#6806(auto Zangarmarsh;93):14
+#2653 | auto Zangarmarsh;29§auto Zangarmarschen;29§auto Marécage de Zangar;29 | x=478 y=6343.5 | size=1 | links=#14990(auto Zangarmarsh;227):65 #20059(auto Zangarmarsh;308):47
+#2722 | auto Zangarmarsh;30§auto Zangarmarschen;30§auto Marécage de Zangar;30 | x=496.3999938964844 y=8810.1005859375 | size=5
+#2813 | auto Zangarmarsh;31§auto Zangarmarschen;31§auto Marécage de Zangar;31 | x=-1089.900024414063 y=6144.2001953125 | size=5 | links=#6799(auto Zangarmarsh;92):79 #10444(entry and exit;Zangarmarsh;to;Nagrand):88
+#2858 | auto Zangarmarsh;32§auto Zangarmarschen;32§auto Marécage de Zangar;32 | x=1025.400024414063 y=8265.2998046875 | size=1 | links=#11757(auto Zangarmarsh;174):6 #25595(auto Zangarmarsh;397):6
+#2896 | auto Zangarmarsh;33§auto Zangarmarschen;33§auto Marécage de Zangar;33 | x=898.2999877929688 y=8116 | size=5 | links=#14104(auto Zangarmarsh;215):39 #27644(auto Zangarmarsh;431):90
+#2922 | auto Zangarmarsh;34§auto Zangarmarschen;34§auto Marécage de Zangar;34 | x=1699.599975585938 y=8564.900390625 | size=1 | links=#9424(auto Zangarmarsh;136):24 #24012(auto Zangarmarsh;371):27
+#3101 | auto Zangarmarsh;35§auto Zangarmarschen;35§auto Marécage de Zangar;35 | x=-18.30000114440918 y=5526.60009765625 | size=1 | links=#714(auto Zangarmarsh;8):20 #23348(auto Zangarmarsh;362):23
+#3153 | auto Zangarmarsh;36§auto Zangarmarschen;36§auto Marécage de Zangar;36 | x=76.20000457763672 y=5244.89990234375 | size=1 | links=#4657(central location;Swamprat Post):50 #23688(auto Zangarmarsh;367):29
+#3223 | auto Zangarmarsh;37§auto Zangarmarschen;37§auto Marécage de Zangar;37 | x=110.2000045776367 y=6131.60009765625 | size=1 | links=#779(auto Zangarmarsh;9):19 #10365(auto Zangarmarsh;151):76
+#3267 | auto Zangarmarsh;38§auto Zangarmarschen;38§auto Marécage de Zangar;38 | x=268.1269997396157 y=7872.126357200428 | size=1 | links=#9166(auto Zangarmarsh;129):10
+#3292 | auto Zangarmarsh;39§auto Zangarmarschen;39§auto Marécage de Zangar;39 | x=-349.7000122070313 y=8414.6005859375 | size=1 | links=#7503(entry and exit;Zangarmarsh;to;Nagrand;two):80 #15265(auto Zangarmarsh;230):36
+#3367 | auto Zangarmarsh;40§auto Zangarmarschen;40§auto Marécage de Zangar;40 | x=262.8000183105469 y=6028.10009765625 | size=1 | links=#4501(auto Zangarmarsh;59):14 #10041(auto Zangarmarsh;145):5
+#3377 | auto Zangarmarsh;41§auto Zangarmarschen;41§auto Marécage de Zangar;41 | x=68.30000305175781 y=6820.39990234375 | size=1 | links=#10813(auto Zangarmarsh;158):59 #28290(auto Zangarmarsh;439):36
+#3509 | auto Zangarmarsh;42§auto Zangarmarschen;42§auto Marécage de Zangar;42 | x=1656 y=8603.7001953125 | size=1 | links=#11731(auto Zangarmarsh;173):15 #24012(auto Zangarmarsh;371):39
+#3567 | auto Zangarmarsh;43§auto Zangarmarschen;43§auto Marécage de Zangar;43 | x=-254.8000030517578 y=5414.10009765625 | size=1 | links=#21844(auto Zangarmarsh;344):23 #23220(auto Zangarmarsh;360):29
+#3574 | Mailbox;Cenarion Refuge§briefkasten;Zuflucht des Cenarius§Boîte aux lettres;Refuge cénarien | x=-200.4000091552734 y=5507.10009765625 | size=1 | links=#14815(central location;Cenarion Refuge):16
+#3808 | auto Zangarmarsh;44§auto Zangarmarschen;44§auto Marécage de Zangar;44 | x=48.5 y=7071.5 | size=1 | links=#17230(auto Zangarmarsh;270):35 #20933(auto Zangarmarsh;330):92
+#3860 | auto Zangarmarsh;45§auto Zangarmarschen;45§auto Marécage de Zangar;45 | x=53.5 y=5376.80029296875 | size=1 | links=#15794(auto Zangarmarsh;241):50 #22052(auto Zangarmarsh;349):63 #26175(auto Zangarmarsh;404):66
+#3861 | auto Zangarmarsh;46§auto Zangarmarschen;46§auto Marécage de Zangar;46 | x=143.3000030517578 y=8472.7998046875 | size=1 | links=#14547(auto Zangarmarsh;222):48 #26218(auto Zangarmarsh;406):62
+#3910 | auto Zangarmarsh;47§auto Zangarmarschen;47§auto Marécage de Zangar;47 | x=287.8000183105469 y=7849.10009765625 | size=1 | links=#20101(auto Zangarmarsh;309):28 #24210(auto Zangarmarsh;378):36
+#3930 | auto Zangarmarsh;48§auto Zangarmarschen;48§auto Marécage de Zangar;48 | x=-168.8000030517578 y=8322.1005859375 | size=5 | links=#11432(auto Zangarmarsh;166):115 #20331(auto Zangarmarsh;314):88
+#3970 | auto Zangarmarsh;49§auto Zangarmarschen;49§auto Marécage de Zangar;49 | x=-858.4000244140625 y=5416.30029296875 | size=1 | links=#18813(auto Zangarmarsh;295):87 #23589(auto Zangarmarsh;365):45
+#4020 | auto Zangarmarsh;50§auto Zangarmarschen;50§auto Marécage de Zangar;50 | x=-138.9000091552734 y=5556.2001953125 | size=1 | links=#20748(auto Zangarmarsh;325):25 #22323(auto Zangarmarsh;352):32
+#4022 | auto Zangarmarsh;51§auto Zangarmarschen;51§auto Marécage de Zangar;51 | x=282.6000061035156 y=6088.60009765625 | size=1 | links=#26671(auto Zangarmarsh;421):16
+#4034 | auto Zangarmarsh;52§auto Zangarmarschen;52§auto Marécage de Zangar;52 | x=335.5 y=5407.39990234375 | size=5 | links=#11117(auto Zangarmarsh;163):77 #19802(auto Zangarmarsh;303):77
+#4061 | auto Zangarmarsh;53§auto Zangarmarschen;53§auto Marécage de Zangar;53 | x=-1277.900024414063 y=5828.89990234375 | size=1 | links=#21747(auto Zangarmarsh;341):22 #26442(auto Zangarmarsh;413):40
+#4140 | auto Zangarmarsh;54§auto Zangarmarschen;54§auto Marécage de Zangar;54 | x=1376.300048828125 y=8592 | size=5 | links=#9330(auto Zangarmarsh;133):64
+#4172 | Mailbox;Orebor Harborage§briefkasten;Oreborzuflucht§Boîte aux lettres;Havre d'Orebor | x=1029.400024414063 y=7361.5 | size=1
+#4310 | auto Zangarmarsh;55§auto Zangarmarschen;55§auto Marécage de Zangar;55 | x=-230.3000030517578 y=5554.10009765625 | size=1 | links=#21692(auto Zangarmarsh;338):52 #22323(auto Zangarmarsh;352):59
+#4315 | auto Zangarmarsh;56§auto Zangarmarschen;56§auto Marécage de Zangar;56 | x=-1293.099975585938 y=5802.80029296875 | size=1 | links=#12288(auto Zangarmarsh;184):26 #18587(auto Zangarmarsh;290):20
+#4456 | auto Zangarmarsh;57§auto Zangarmarschen;57§auto Marécage de Zangar;57 | x=-641.7000122070312 y=5381.30029296875 | size=1 | links=#6806(auto Zangarmarsh;93):43 #11488(auto Zangarmarsh;169):53
+#4469 | auto Zangarmarsh;58§auto Zangarmarschen;58§auto Marécage de Zangar;58 | x=710.4000244140625 y=6006.2001953125 | size=5 | links=#15907(auto Zangarmarsh;244):133 #19840(auto Zangarmarsh;304):114
+#4501 | auto Zangarmarsh;59§auto Zangarmarschen;59§auto Marécage de Zangar;59 | x=274.7000122070313 y=6019.10009765625 | size=1 | links=#3367(auto Zangarmarsh;40):14 #14114(auto Zangarmarsh;216):10
+#4532 | auto Zangarmarsh;60§auto Zangarmarschen;60§auto Marécage de Zangar;60 | x=1186.300048828125 y=8430.2001953125 | size=1 | links=#27049(auto Zangarmarsh;425):8
+#4538 | auto Zangarmarsh;61§auto Zangarmarschen;61§auto Marécage de Zangar;61 | x=54.40000152587891 y=6137.80029296875 | size=1 | links=#11374(auto Zangarmarsh;165):46 #12729(auto Zangarmarsh;193):24
+#4561 | auto Zangarmarsh;62§auto Zangarmarschen;62§auto Marécage de Zangar;62 | x=826.7999877929688 y=8059.5 | size=5 | links=#14104(auto Zangarmarsh;215):52 #25008(auto Zangarmarsh;387):57
+#4587 | auto Zangarmarsh;63§auto Zangarmarschen;63§auto Marécage de Zangar;63 | x=1187.5 y=8145 | size=1
+#4657 | central location;Swamprat Post§zentralpunkt;Sumpfrattenposten§emplacement central;Poste du Rat des marais | x=105 y=5203.5 | size=1 | links=#3153(auto Zangarmarsh;36):50 #9599(auto Zangarmarsh;141):32
+#4746 | auto Zangarmarsh;64§auto Zangarmarschen;64§auto Marécage de Zangar;64 | x=234.6999969482422 y=6112.80029296875 | size=1 | links=#10365(auto Zangarmarsh;151):59 #11484(auto Zangarmarsh;168):38
+#4800 | entry and exit;Orebor Harborage;to;Blade's Edge Mountains§ein- und ausgang;Oreborzuflucht;zu;schergrat§entrée et sortie;Havre d'Orebor;vers;Les Tranchantes | x=1016.600036621094 y=7303.80029296875 | size=1 | links=#10218(entry and exit;Blade's Edge Mountains;to;Zangarmarsh):9
+#4829 | auto Zangarmarsh;65§auto Zangarmarschen;65§auto Marécage de Zangar;65 | x=-1148.099975585938 y=5737.10009765625 | size=1 | links=#7715(auto Zangarmarsh;107):16 #17763(auto Zangarmarsh;279):36
+#4986 | auto Zangarmarsh;66§auto Zangarmarschen;66§auto Marécage de Zangar;66 | x=251.1999969482422 y=7768 | size=1 | links=#20101(auto Zangarmarsh;309):79 #23403(auto Zangarmarsh;363):27
+#5008 | auto Zangarmarsh;67§auto Zangarmarschen;67§auto Marécage de Zangar;67 | x=-1316.900024414063 y=5867.30029296875 | size=1 | links=#17222(auto Zangarmarsh;269):20 #20373(auto Zangarmarsh;315):25
+#5053 | auto Zangarmarsh;68§auto Zangarmarschen;68§auto Marécage de Zangar;68 | x=-1094.599975585938 y=5661 | size=1 | links=#15183(auto Zangarmarsh;228):48 #20390(auto Zangarmarsh;316):67
+#5163 | auto Zangarmarsh;69§auto Zangarmarschen;69§auto Marécage de Zangar;69 | x=-161.6000061035156 y=7189.60009765625 | size=5 | links=#20165(auto Zangarmarsh;312):143 #27304(auto Zangarmarsh;427):73 #28140(auto Zangarmarsh;437):81
+#5200 | auto Zangarmarsh;70§auto Zangarmarschen;70§auto Marécage de Zangar;70 | x=159.1000061035156 y=8863.400390625 | size=5 | links=#10615(auto Zangarmarsh;157):86 #22071(auto Zangarmarsh;350):85
+#5201 | auto Zangarmarsh;71§auto Zangarmarschen;71§auto Marécage de Zangar;71 | x=333.1000061035156 y=7590 | size=1 | links=#16988(auto Zangarmarsh;267):53 #26357(auto Zangarmarsh;410):28
+#5238 | auto Zangarmarsh;72§auto Zangarmarschen;72§auto Marécage de Zangar;72 | x=-320.3000183105469 y=5480.7001953125 | size=1 | links=#21844(auto Zangarmarsh;344):70 #24303(auto Zangarmarsh;380):52 #25832(auto Zangarmarsh;399):33
+#5314 | auto Zangarmarsh;73§auto Zangarmarschen;73§auto Marécage de Zangar;73 | x=-250.3000030517578 y=5508.60009765625 | size=1 | links=#6358(auto Zangarmarsh;84):7
+#5693 | auto Zangarmarsh;74§auto Zangarmarschen;74§auto Marécage de Zangar;74 | x=111.0999984741211 y=7587.7001953125 | size=1 | links=#9520(auto Zangarmarsh;139):53 #11953(auto Zangarmarsh;176):64
+#5732 | auto Zangarmarsh;75§auto Zangarmarschen;75§auto Marécage de Zangar;75 | x=236.5 y=6922.80029296875 | size=1 | links=#14489(auto Zangarmarsh;221):69 #21774(auto Zangarmarsh;342):68
+#5834 | auto Zangarmarsh;76§auto Zangarmarschen;76§auto Marécage de Zangar;76 | x=-404.6000061035156 y=6046.89990234375 | size=1 | links=#6212(auto Zangarmarsh;81):50 #9430(auto Zangarmarsh;137):32
+#5854 | auto Zangarmarsh;77§auto Zangarmarschen;77§auto Marécage de Zangar;77 | x=985.4000244140625 y=7407.5 | size=1 | links=#11779(auto Zangarmarsh;175):43
+#5975 | auto Zangarmarsh;78§auto Zangarmarschen;78§auto Marécage de Zangar;78 | x=34.20000076293945 y=8534 | size=5 | links=#26218(auto Zangarmarsh;406):66
+#6116 | entry and exit;Zangarmarsh;to;Hellfire Peninsula§ein- und ausgang;Zangarmarschen;zu;höllenfeuerhalbinsel§entrée et sortie;Marécage de Zangar;vers;Péninsule des Flammes infernales | x=-242.4000091552734 y=5328.7001953125 | size=1 | links=#1765(auto Zangarmarsh;16):29 #10100(auto Zangarmarsh;146):11
+#6175 | auto Zangarmarsh;79§auto Zangarmarschen;79§auto Marécage de Zangar;79 | x=690.7999877929688 y=5432.80029296875 | size=1 | links=#27183(auto Zangarmarsh;426):32
+#6199 | auto Zangarmarsh;80§auto Zangarmarschen;80§auto Marécage de Zangar;80 | x=-1237.200073242188 y=5803.80029296875 | size=1 | links=#14332(auto Zangarmarsh;218):27
+#6212 | auto Zangarmarsh;81§auto Zangarmarschen;81§auto Marécage de Zangar;81 | x=-354 y=6048 | size=1 | links=#5834(auto Zangarmarsh;76):50 #10948(auto Zangarmarsh;162):56
+#6237 | auto Zangarmarsh;82§auto Zangarmarschen;82§auto Marécage de Zangar;82 | x=-187.5 y=6280.2001953125 | size=1 | links=#19677(auto Zangarmarsh;301):39
+#6348 | auto Zangarmarsh;83§auto Zangarmarschen;83§auto Marécage de Zangar;83 | x=505.5 y=6538.89990234375 | size=1 | links=#9333(auto Zangarmarsh;134):38
+#6358 | auto Zangarmarsh;84§auto Zangarmarschen;84§auto Marécage de Zangar;84 | x=-257.3999938964844 y=5510.89990234375 | size=1 | links=#5314(auto Zangarmarsh;73):7 #7442(auto Zangarmarsh;103):7
+#6392 | auto Zangarmarsh;85§auto Zangarmarschen;85§auto Marécage de Zangar;85 | x=323.6000061035156 y=6070.80029296875 | size=1 | links=#18692(auto Zangarmarsh;292):23
+#6400 | auto Zangarmarsh;86§auto Zangarmarschen;86§auto Marécage de Zangar;86 | x=333.8999938964844 y=6493.39990234375 | size=1 | links=#22943(auto Zangarmarsh;357):85 #24124(auto Zangarmarsh;373):111
+#6438 | auto Zangarmarsh;87§auto Zangarmarschen;87§auto Marécage de Zangar;87 | x=153.5 y=7685.80029296875 | size=1 | links=#8277(auto Zangarmarsh;114):27 #11953(auto Zangarmarsh;176):50 #15766(auto Zangarmarsh;240):27 #17308(auto Zangarmarsh;273):65
+#6497 | auto Zangarmarsh;88§auto Zangarmarschen;88§auto Marécage de Zangar;88 | x=445 y=7848 | size=1 | links=#11515(auto Zangarmarsh;170):35 #20719(auto Zangarmarsh;324):85
+#6512 | auto Zangarmarsh;89§auto Zangarmarschen;89§auto Marécage de Zangar;89 | x=1147.300048828125 y=8154.10009765625 | size=1 | links=#23271(auto Zangarmarsh;361):21
+#6543 | auto Zangarmarsh;90§auto Zangarmarschen;90§auto Marécage de Zangar;90 | x=822.6000366210938 y=7784.60009765625 | size=1 | links=#16573(auto Zangarmarsh;259):33 #21517(auto Zangarmarsh;336):22
+#6586 | auto Zangarmarsh;91§auto Zangarmarschen;91§auto Marécage de Zangar;91 | x=81.0999984741211 y=7243.89990234375 | size=1 | links=#19721(auto Zangarmarsh;302):72 #24144(auto Zangarmarsh;375):82
+#6799 | auto Zangarmarsh;92§auto Zangarmarschen;92§auto Marécage de Zangar;92 | x=-1031.800048828125 y=6089.30029296875 | size=1 | links=#2813(auto Zangarmarsh;31):79 #7905(auto Zangarmarsh;108):36
+#6806 | auto Zangarmarsh;93§auto Zangarmarschen;93§auto Marécage de Zangar;93 | x=-685.1000366210938 y=5380.10009765625 | size=1 | links=#2604(auto Zangarmarsh;28):14 #4456(auto Zangarmarsh;57):43 #27786(auto Zangarmarsh;432):62
+#6814 | auto Zangarmarsh;94§auto Zangarmarschen;94§auto Marécage de Zangar;94 | x=-566.4000244140625 y=5422.80029296875 | size=1 | links=#11488(auto Zangarmarsh;169):34 #27897(auto Zangarmarsh;435):66
+#6824 | auto Zangarmarsh;95§auto Zangarmarschen;95§auto Marécage de Zangar;95 | x=801.9000244140625 y=7331.39990234375 | size=5 | links=#6836(auto Zangarmarsh;96):118 #12749(auto Zangarmarsh;195):54 #20759(auto Zangarmarsh;326):83 #27557(auto Zangarmarsh;430):77
+#6836 | auto Zangarmarsh;96§auto Zangarmarschen;96§auto Marécage de Zangar;96 | x=837.7999877929688 y=7444.5 | size=5 | links=#6824(auto Zangarmarsh;95):118 #21988(auto Zangarmarsh;347):127
+#6853 | auto Zangarmarsh;97§auto Zangarmarschen;97§auto Marécage de Zangar;97 | x=680.2999877929688 y=7436.2001953125 | size=5 | links=#24835(auto Zangarmarsh;385):104 #27557(auto Zangarmarsh;430):89
+#6960 | auto Zangarmarsh;98§auto Zangarmarschen;98§auto Marécage de Zangar;98 | x=317.7000122070313 y=8923.7998046875 | size=5 | links=#15532(auto Zangarmarsh;235):64 #15816(auto Zangarmarsh;242):53
+#7092 | auto Zangarmarsh;99§auto Zangarmarschen;99§auto Marécage de Zangar;99 | x=738 y=5661.80029296875 | size=5 | links=#10552(auto Zangarmarsh;156):62 #15746(auto Zangarmarsh;239):78
+#7141 | auto Zangarmarsh;100§auto Zangarmarschen;100§auto Marécage de Zangar;100 | x=49.29999923706055 y=5474.10009765625 | size=1 | links=#714(auto Zangarmarsh;8):66 #26175(auto Zangarmarsh;404):31
+#7355 | auto Zangarmarsh;101§auto Zangarmarschen;101§auto Marécage de Zangar;101 | x=586.9000244140625 y=8755.2998046875 | size=5 | links=#19159(auto Zangarmarsh;298):90
+#7383 | auto Zangarmarsh;102§auto Zangarmarschen;102§auto Marécage de Zangar;102 | x=218.8000030517578 y=8564.900390625 | size=1 | links=#15661(auto Zangarmarsh;237):12
+#7442 | auto Zangarmarsh;103§auto Zangarmarschen;103§auto Marécage de Zangar;103 | x=-262.3999938964844 y=5505.10009765625 | size=1 | links=#418(auto Zangarmarsh;4):7 #6358(auto Zangarmarsh;84):7
+#7503 | entry and exit;Zangarmarsh;to;Nagrand;two§ein- und ausgang;Zangarmarschen;zu;nagrand;zwei§entrée et sortie;Marécage de Zangar;vers;Nagrand;deux | x=-429.8999938964844 y=8416.1005859375 | size=1 | links=#3292(auto Zangarmarsh;39):80
+#7508 | auto Zangarmarsh;104§auto Zangarmarschen;104§auto Marécage de Zangar;104 | x=-1197.700073242188 y=5788.10009765625 | size=1 | links=#2030(auto Zangarmarsh;20):25 #8756(auto Zangarmarsh;123):27
+#7509 | auto Zangarmarsh;105§auto Zangarmarschen;105§auto Marécage de Zangar;105 | x=1033.300048828125 y=8266.400390625 | size=1 | links=#9694(auto Zangarmarsh;142):13 #11966(auto Zangarmarsh;177):4
+#7573 | auto Zangarmarsh;106§auto Zangarmarschen;106§auto Marécage de Zangar;106 | x=-188 y=6999.10009765625 | size=5 | links=#20165(auto Zangarmarsh;312):58
+#7715 | auto Zangarmarsh;107§auto Zangarmarschen;107§auto Marécage de Zangar;107 | x=-1140.400024414063 y=5722.30029296875 | size=1 | links=#4829(auto Zangarmarsh;65):16 #15183(auto Zangarmarsh;228):32
+#7905 | auto Zangarmarsh;108§auto Zangarmarschen;108§auto Marécage de Zangar;108 | x=-998.2000122070312 y=6074.7001953125 | size=1 | links=#6799(auto Zangarmarsh;92):36 #26376(auto Zangarmarsh;411):42
+#8052 | auto Zangarmarsh;109§auto Zangarmarschen;109§auto Marécage de Zangar;109 | x=197.6000061035156 y=8492.2001953125 | size=1 | links=#17276(auto Zangarmarsh;271):15
+#8103 | auto Zangarmarsh;110§auto Zangarmarschen;110§auto Marécage de Zangar;110 | x=489.6000061035156 y=6084.7001953125 | size=5 | links=#24833(auto Zangarmarsh;384):65 #26667(auto Zangarmarsh;419):118
+#8125 | auto Zangarmarsh;111§auto Zangarmarschen;111§auto Marécage de Zangar;111 | x=-911.5 y=5905.60009765625 | size=1 | links=#12090(auto Zangarmarsh;180):31 #26221(auto Zangarmarsh;407):56
+#8198 | auto Zangarmarsh;112§auto Zangarmarschen;112§auto Marécage de Zangar;112 | x=-460.2000122070313 y=6016.60009765625 | size=1 | links=#9430(auto Zangarmarsh;137):32 #13558(auto Zangarmarsh;204):51
+#8199 | auto Zangarmarsh;113§auto Zangarmarschen;113§auto Marécage de Zangar;113 | x=307.6000061035156 y=8186.60009765625 | size=5 | links=#15992(auto Zangarmarsh;246):66 #27016(auto Zangarmarsh;424):30
+#8277 | auto Zangarmarsh;114§auto Zangarmarschen;114§auto Marécage de Zangar;114 | x=136.8000030517578 y=7707.39990234375 | size=5 | links=#6438(auto Zangarmarsh;87):27 #14971(auto Zangarmarsh;226):46
+#8434 | auto Zangarmarsh;115§auto Zangarmarschen;115§auto Marécage de Zangar;115 | x=439.8000183105469 y=7627.2001953125 | size=5 | links=#12388(auto Zangarmarsh;186):109 #16988(auto Zangarmarsh;267):81
+#8443 | auto Zangarmarsh;116§auto Zangarmarschen;116§auto Marécage de Zangar;116 | x=-956.9000244140625 y=5456.5 | size=1 | links=#17598(auto Zangarmarsh;277):90 #23589(auto Zangarmarsh;365):63
+#8450 | auto Zangarmarsh;117§auto Zangarmarschen;117§auto Marécage de Zangar;117 | x=-36.10000228881836 y=8915.5 | size=5 | links=#12916(auto Zangarmarsh;197):72
+#8459 | auto Zangarmarsh;118§auto Zangarmarschen;118§auto Marécage de Zangar;118 | x=310 y=6095.39990234375 | size=1 | links=#2160(auto Zangarmarsh;23):46 #15402(auto Zangarmarsh;232):19
+#8464 | auto Zangarmarsh;119§auto Zangarmarschen;119§auto Marécage de Zangar;119 | x=-26.30000114440918 y=8720.5 | size=5 | links=#12916(auto Zangarmarsh;197):133 #20711(auto Zangarmarsh;323):70
+#8498 | auto Zangarmarsh;120§auto Zangarmarschen;120§auto Marécage de Zangar;120 | x=1667.099975585938 y=8538.2998046875 | size=1 | links=#9424(auto Zangarmarsh;136):42 #16452(auto Zangarmarsh;258):38
+#8657 | auto Zangarmarsh;121§auto Zangarmarschen;121§auto Marécage de Zangar;121 | x=-104.9000015258789 y=7836.7001953125 | size=1 | links=#22893(auto Zangarmarsh;356):44
+#8716 | auto Zangarmarsh;122§auto Zangarmarschen;122§auto Marécage de Zangar;122 | x=1027.300048828125 y=8268 | size=1 | links=#16160(auto Zangarmarsh;253):5 #28229(auto Zangarmarsh;438):6
+#8756 | auto Zangarmarsh;123§auto Zangarmarschen;123§auto Marécage de Zangar;123 | x=-1190.400024414063 y=5814.39990234375 | size=1 | links=#7508(auto Zangarmarsh;104):27 #9279(auto Zangarmarsh;132):39
+#8859 | auto Zangarmarsh;124§auto Zangarmarschen;124§auto Marécage de Zangar;124 | x=926.1000366210938 y=8185.89990234375 | size=5
+#8946 | auto Zangarmarsh;125§auto Zangarmarschen;125§auto Marécage de Zangar;125 | x=1183.900024414063 y=8207.2998046875 | size=5 | links=#21991(auto Zangarmarsh;348):38 #23271(auto Zangarmarsh;361):43
+#8949 | auto Zangarmarsh;126§auto Zangarmarschen;126§auto Marécage de Zangar;126 | x=-919.2000122070312 y=5310.2001953125 | size=1 | links=#15483(auto Zangarmarsh;233):36
+#9013 | auto Zangarmarsh;127§auto Zangarmarschen;127§auto Marécage de Zangar;127 | x=295.5 y=7640.2001953125 | size=1 | links=#24852(auto Zangarmarsh;386):44 #26625(auto Zangarmarsh;417):19
+#9165 | auto Zangarmarsh;128§auto Zangarmarschen;128§auto Marécage de Zangar;128 | x=42.40000152587891 y=7133.30029296875 | size=1 | links=#17230(auto Zangarmarsh;270):30 #24144(auto Zangarmarsh;375):35
+#9166 | auto Zangarmarsh;129§auto Zangarmarschen;129§auto Marécage de Zangar;129 | x=278.7000122070313 y=7875 | size=1 | links=#3267(auto Zangarmarsh;38):10
+#9167 | auto Zangarmarsh;130§auto Zangarmarschen;130§auto Marécage de Zangar;130 | x=688 y=6385.30029296875 | size=1
+#9191 | auto Zangarmarsh;131§auto Zangarmarschen;131§auto Marécage de Zangar;131 | x=-1318.5 y=5897.89990234375 | size=1 | links=#19308(auto Zangarmarsh;299):34 #26442(auto Zangarmarsh;413):39
+#9279 | auto Zangarmarsh;132§auto Zangarmarschen;132§auto Marécage de Zangar;132 | x=-1176.200073242188 y=5851.7001953125 | size=1 | links=#8756(auto Zangarmarsh;123):39 #20128(auto Zangarmarsh;310):28
+#9330 | auto Zangarmarsh;133§auto Zangarmarschen;133§auto Marécage de Zangar;133 | x=1436.400024414063 y=8616.2998046875 | size=5 | links=#4140(auto Zangarmarsh;54):64 #10274(auto Zangarmarsh;149):58
+#9333 | auto Zangarmarsh;134§auto Zangarmarschen;134§auto Marécage de Zangar;134 | x=518.7999877929688 y=6575.10009765625 | size=1 | links=#1189(auto Zangarmarsh;12):68 #6348(auto Zangarmarsh;83):38
+#9394 | auto Zangarmarsh;135§auto Zangarmarschen;135§auto Marécage de Zangar;135 | x=-762.6000366210938 y=6018.7001953125 | size=1 | links=#2139(auto Zangarmarsh;22):57 #23609(auto Zangarmarsh;366):56
+#9424 | auto Zangarmarsh;136§auto Zangarmarschen;136§auto Marécage de Zangar;136 | x=1709.400024414063 y=8542.2998046875 | size=1 | links=#2922(auto Zangarmarsh;34):24 #8498(auto Zangarmarsh;120):42
+#9430 | auto Zangarmarsh;137§auto Zangarmarschen;137§auto Marécage de Zangar;137 | x=-428.3999938964844 y=6024.80029296875 | size=1 | links=#5834(auto Zangarmarsh;76):32 #8198(auto Zangarmarsh;112):32
+#9431 | auto Zangarmarsh;138§auto Zangarmarschen;138§auto Marécage de Zangar;138 | x=-1014.100036621094 y=5388.89990234375 | size=1 | links=#10260(auto Zangarmarsh;147):25 #13468(auto Zangarmarsh;200):34
+#9520 | auto Zangarmarsh;139§auto Zangarmarschen;139§auto Marécage de Zangar;139 | x=114.5 y=7534.80029296875 | size=1 | links=#5693(auto Zangarmarsh;74):53 #20654(auto Zangarmarsh;321):52
+#9552 | auto Zangarmarsh;140§auto Zangarmarschen;140§auto Marécage de Zangar;140 | x=-226 y=5472.60009765625 | size=1 | links=#10884(auto Zangarmarsh;161):30 #11518(auto Zangarmarsh;171):35 #14815(central location;Cenarion Refuge):29
+#9599 | auto Zangarmarsh;141§auto Zangarmarschen;141§auto Marécage de Zangar;141 | x=114.4000015258789 y=5172.80029296875 | size=1 | links=#4657(central location;Swamprat Post):32
+#9694 | auto Zangarmarsh;142§auto Zangarmarschen;142§auto Marécage de Zangar;142 | x=1038 y=8253.5 | size=1 | links=#7509(auto Zangarmarsh;105):13 #25327(auto Zangarmarsh;391):30
+#9924 | auto Zangarmarsh;143§auto Zangarmarschen;143§auto Marécage de Zangar;143 | x=-940.9000244140625 y=5359.80029296875 | size=1 | links=#13468(auto Zangarmarsh;200):44 #15483(auto Zangarmarsh;233):48
+#9932 | auto Zangarmarsh;144§auto Zangarmarschen;144§auto Marécage de Zangar;144 | x=294.1000061035156 y=6049.89990234375 | size=1 | links=#18692(auto Zangarmarsh;292):21
+#10041 | auto Zangarmarsh;145§auto Zangarmarschen;145§auto Marécage de Zangar;145 | x=257.3999938964844 y=6027.30029296875 | size=1 | links=#3367(auto Zangarmarsh;40):5 #10270(central location;Telredor):21
+#10100 | auto Zangarmarsh;146§auto Zangarmarschen;146§auto Marécage de Zangar;146 | x=-233.8000030517578 y=5335.89990234375 | size=1 | links=#6116(entry and exit;Zangarmarsh;to;Hellfire Peninsula):11 #13660(auto Zangarmarsh;208):36
+#10260 | auto Zangarmarsh;147§auto Zangarmarschen;147§auto Marécage de Zangar;147 | x=-1038.099975585938 y=5381.60009765625 | size=1 | links=#9431(auto Zangarmarsh;138):25 #24274(auto Zangarmarsh;379):40 #25408(auto Zangarmarsh;393):66 #46086(entry and exit;Zangarmarsh;to;Terrokar Forest):132
+#10270 | central location;Telredor§zentralpunkt;Telredor§emplacement central;Telredor | x=265.3000183105469 y=6046.89990234375 | size=1 | links=#10041(auto Zangarmarsh;145):21 #12484(auto Zangarmarsh;190):15 #16094(auto Zangarmarsh;250):32 #18573(auto Zangarmarsh;289):10
+#10272 | auto Zangarmarsh;148§auto Zangarmarschen;148§auto Marécage de Zangar;148 | x=1029.300048828125 y=8500.7001953125 | size=1 | links=#16705(auto Zangarmarsh;261):18 #17973(auto Zangarmarsh;281):43
+#10274 | auto Zangarmarsh;149§auto Zangarmarschen;149§auto Marécage de Zangar;149 | x=1494.5 y=8615.7998046875 | size=1 | links=#9330(auto Zangarmarsh;133):58 #17429(auto Zangarmarsh;275):86
+#10289 | auto Zangarmarsh;150§auto Zangarmarschen;150§auto Marécage de Zangar;150 | x=223.5 y=7829.7001953125 | size=1 | links=#27509(auto Zangarmarsh;428):20
+#10365 | auto Zangarmarsh;151§auto Zangarmarschen;151§auto Marécage de Zangar;151 | x=177.6999969482422 y=6096.5 | size=1 | links=#3223(auto Zangarmarsh;37):76 #4746(auto Zangarmarsh;64):59 #23736(auto Zangarmarsh;368):65
+#10444 | entry and exit;Zangarmarsh;to;Nagrand§ein- und ausgang;Zangarmarschen;zu;nagrand§entrée et sortie;Marécage de Zangar;vers;Nagrand | x=-1161.200073242188 y=6196.80029296875 | size=1 | links=#2813(auto Zangarmarsh;31):88
+#10476 | auto Zangarmarsh;152§auto Zangarmarschen;152§auto Marécage de Zangar;152 | x=-38.5 y=6176.5 | size=5 | links=#14376(auto Zangarmarsh;219):31
+#10503 | auto Zangarmarsh;153§auto Zangarmarschen;153§auto Marécage de Zangar;153 | x=413.1000061035156 y=7754.2001953125 | size=5 | links=#11515(auto Zangarmarsh;170):117 #18284(auto Zangarmarsh;287):67
+#10510 | auto Zangarmarsh;154§auto Zangarmarschen;154§auto Marécage de Zangar;154 | x=-915.7000122070312 y=5750.39990234375 | size=1 | links=#22514(auto Zangarmarsh;354):71 #26387(auto Zangarmarsh;412):70
+#10531 | auto Zangarmarsh;155§auto Zangarmarschen;155§auto Marécage de Zangar;155 | x=221.1999969482422 y=7201.60009765625 | size=1 | links=#14928(auto Zangarmarsh;224):72 #18137(auto Zangarmarsh;286):117
+#10552 | auto Zangarmarsh;156§auto Zangarmarschen;156§auto Marécage de Zangar;156 | x=799.9000244140625 y=5653.10009765625 | size=5 | links=#7092(auto Zangarmarsh;99):62
+#10615 | auto Zangarmarsh;157§auto Zangarmarschen;157§auto Marécage de Zangar;157 | x=78.80000305175781 y=8896.400390625 | size=5 | links=#5200(auto Zangarmarsh;70):86
+#10813 | auto Zangarmarsh;158§auto Zangarmarschen;158§auto Marécage de Zangar;158 | x=110.2000045776367 y=6778.30029296875 | size=1 | links=#2222(auto Zangarmarsh;24):34 #3377(auto Zangarmarsh;41):59
+#10819 | auto Zangarmarsh;159§auto Zangarmarschen;159§auto Marécage de Zangar;159 | x=87.30000305175781 y=7404 | size=1 | links=#19721(auto Zangarmarsh;302):87 #24204(auto Zangarmarsh;377):47
+#10854 | auto Zangarmarsh;160§auto Zangarmarschen;160§auto Marécage de Zangar;160 | x=218.4000091552734 y=7956.60009765625 | size=1 | links=#12081(auto Zangarmarsh;179):9 #25161(auto Zangarmarsh;389):7
+#10884 | auto Zangarmarsh;161§auto Zangarmarschen;161§auto Marécage de Zangar;161 | x=-227.3000030517578 y=5442.5 | size=1 | links=#9552(auto Zangarmarsh;140):30 #23220(auto Zangarmarsh;360):35
+#10948 | auto Zangarmarsh;162§auto Zangarmarschen;162§auto Marécage de Zangar;162 | x=-298 y=6054.39990234375 | size=1 | links=#278(auto Zangarmarsh;1):48 #6212(auto Zangarmarsh;81):56 #27874(auto Zangarmarsh;434):44
+#11117 | auto Zangarmarsh;163§auto Zangarmarschen;163§auto Marécage de Zangar;163 | x=289.6000061035156 y=5345.2001953125 | size=5 | links=#4034(auto Zangarmarsh;52):77 #25048(auto Zangarmarsh;388):104
+#11267 | auto Zangarmarsh;164§auto Zangarmarschen;164§auto Marécage de Zangar;164 | x=-158.4000091552734 y=6954.80029296875 | size=1 | links=#20039(auto Zangarmarsh;305):48 #25573(auto Zangarmarsh;396):43
+#11310 | entry and exit;Orebor Harborage§ein- und ausgang;Oreborzuflucht§entrée et sortie;Havre d'Orebor | x=940.2999877929688 y=7376 | size=1 | links=#11779(auto Zangarmarsh;175):46 #20759(auto Zangarmarsh;326):71
+#11374 | auto Zangarmarsh;165§auto Zangarmarschen;165§auto Marécage de Zangar;165 | x=8.199999809265137 y=6146.30029296875 | size=1 | links=#4538(auto Zangarmarsh;61):46 #14376(auto Zangarmarsh;219):49
+#11432 | auto Zangarmarsh;166§auto Zangarmarschen;166§auto Marécage de Zangar;166 | x=-196.1999969482422 y=8210.1005859375 | size=5 | links=#3930(auto Zangarmarsh;48):115 #16121(auto Zangarmarsh;251):54 #27528(auto Zangarmarsh;429):61
+#11444 | auto Zangarmarsh;167§auto Zangarmarschen;167§auto Marécage de Zangar;167 | x=-227.8000030517578 y=7957.2001953125 | size=5
+#11484 | auto Zangarmarsh;168§auto Zangarmarschen;168§auto Marécage de Zangar;168 | x=272.6000061035156 y=6115.60009765625 | size=1 | links=#4746(auto Zangarmarsh;64):38 #15402(auto Zangarmarsh;232):23
+#11488 | auto Zangarmarsh;169§auto Zangarmarschen;169§auto Marécage de Zangar;169 | x=-599.6000366210938 y=5414.10009765625 | size=1 | links=#4456(auto Zangarmarsh;57):53 #6814(auto Zangarmarsh;94):34
+#11515 | auto Zangarmarsh;170§auto Zangarmarschen;170§auto Marécage de Zangar;170 | x=480.5 y=7850 | size=5 | links=#6497(auto Zangarmarsh;88):35 #10503(auto Zangarmarsh;153):117 #12406(auto Zangarmarsh;189):112 #14050(auto Zangarmarsh;213):75
+#11518 | auto Zangarmarsh;171§auto Zangarmarschen;171§auto Marécage de Zangar;171 | x=-251.5 y=5496.80029296875 | size=1 | links=#9552(auto Zangarmarsh;140):35 #27871(auto Zangarmarsh;433):14
+#11703 | auto Zangarmarsh;172§auto Zangarmarschen;172§auto Marécage de Zangar;172 | x=-51.90000152587891 y=5546.5 | size=1 | links=#1774(auto Zangarmarsh;17):18 #23348(auto Zangarmarsh;362):15
+#11731 | auto Zangarmarsh;173§auto Zangarmarschen;173§auto Marécage de Zangar;173 | x=1646.800048828125 y=8615.6005859375 | size=1 | links=#3509(auto Zangarmarsh;42):15 #17418(auto Zangarmarsh;274):33
+#11757 | auto Zangarmarsh;174§auto Zangarmarschen;174§auto Marécage de Zangar;174 | x=1030.800048828125 y=8268.5 | size=1 | links=#2858(auto Zangarmarsh;32):6 #20832(auto Zangarmarsh;328):4
+#11779 | auto Zangarmarsh;175§auto Zangarmarschen;175§auto Marécage de Zangar;175 | x=985.2999877929688 y=7364.2001953125 | size=1 | links=#5854(auto Zangarmarsh;77):43 #11310(entry and exit;Orebor Harborage):46 #28022(auto Zangarmarsh;436):56
+#11953 | auto Zangarmarsh;176§auto Zangarmarschen;176§auto Marécage de Zangar;176 | x=116.5 y=7651.89990234375 | size=5 | links=#5693(auto Zangarmarsh;74):64 #6438(auto Zangarmarsh;87):50 #14244(auto Zangarmarsh;217):75
+#11966 | auto Zangarmarsh;177§auto Zangarmarschen;177§auto Marécage de Zangar;177 | x=1030.200073242188 y=8269.6005859375 | size=1 | links=#1053(auto Zangarmarsh;10):5 #7509(auto Zangarmarsh;105):4
+#12032 | auto Zangarmarsh;178§auto Zangarmarschen;178§auto Marécage de Zangar;178 | x=379.2000122070313 y=6292.80029296875 | size=1 | links=#14990(auto Zangarmarsh;227):48 #18048(auto Zangarmarsh;283):20 #21469(auto Zangarmarsh;335):82
+#12068 | Twin Spire Ruins;east§Ruinen der Zwillingsspitze;östlich§Ruines des flèches jumelles;east | x=320.8999938964844 y=6836.80029296875 | size=1 | links=#14489(auto Zangarmarsh;221):62
+#12081 | auto Zangarmarsh;179§auto Zangarmarschen;179§auto Marécage de Zangar;179 | x=215.1999969482422 y=7947.80029296875 | size=1 | links=#375(auto Zangarmarsh;3):12 #10854(auto Zangarmarsh;160):9
+#12090 | auto Zangarmarsh;180§auto Zangarmarschen;180§auto Marécage de Zangar;180 | x=-913.2000122070312 y=5874.5 | size=1 | links=#8125(auto Zangarmarsh;111):31 #22514(auto Zangarmarsh;354):52
+#12141 | auto Zangarmarsh;181§auto Zangarmarschen;181§auto Marécage de Zangar;181 | x=-657.7000122070312 y=5983.39990234375 | size=1 | links=#1873(auto Zangarmarsh;19):50 #2139(auto Zangarmarsh;22):55 #18820(auto Zangarmarsh;296):31
+#12214 | auto Zangarmarsh;182§auto Zangarmarschen;182§auto Marécage de Zangar;182 | x=262.7000122070313 y=8495.2001953125 | size=1 | links=#20833(auto Zangarmarsh;329):9
+#12281 | auto Zangarmarsh;183§auto Zangarmarschen;183§auto Marécage de Zangar;183 | x=1010.799987792969 y=8472.2998046875 | size=1 | links=#14959(auto Zangarmarsh;225):12 #16705(auto Zangarmarsh;261):15
+#12288 | auto Zangarmarsh;184§auto Zangarmarschen;184§auto Marécage de Zangar;184 | x=-1276.700073242188 y=5781.89990234375 | size=1 | links=#4315(auto Zangarmarsh;56):26 #14332(auto Zangarmarsh;218):22
+#12297 | auto Zangarmarsh;185§auto Zangarmarschen;185§auto Marécage de Zangar;185 | x=639.9000244140625 y=7867.39990234375 | size=1
+#12388 | auto Zangarmarsh;186§auto Zangarmarschen;186§auto Marécage de Zangar;186 | x=537.7999877929688 y=7578 | size=5 | links=#8434(auto Zangarmarsh;115):109 #24835(auto Zangarmarsh;385):96
+#12397 | auto Zangarmarsh;187§auto Zangarmarschen;187§auto Marécage de Zangar;187 | x=-64.20000457763672 y=8593.5 | size=5 | links=#20711(auto Zangarmarsh;323):67 #25548(auto Zangarmarsh;394):34
+#12404 | auto Zangarmarsh;188§auto Zangarmarschen;188§auto Marécage de Zangar;188 | x=-132.6999969482422 y=7056.5 | size=1 | links=#20165(auto Zangarmarsh;312):23
+#12406 | auto Zangarmarsh;189§auto Zangarmarschen;189§auto Marécage de Zangar;189 | x=413.1000061035156 y=7939.7001953125 | size=5 | links=#11515(auto Zangarmarsh;170):112 #24142(auto Zangarmarsh;374):64
+#12484 | auto Zangarmarsh;190§auto Zangarmarschen;190§auto Marécage de Zangar;190 | x=271.8999938964844 y=6061.39990234375 | size=1 | links=#10270(central location;Telredor):15 #26671(auto Zangarmarsh;421):17
+#12522 | auto Zangarmarsh;191§auto Zangarmarschen;191§auto Marécage de Zangar;191 | x=298.6000061035156 y=8048.39990234375 | size=5 | links=#15992(auto Zangarmarsh;246):81 #24142(auto Zangarmarsh;374):98
+#12633 | auto Zangarmarsh;192§auto Zangarmarschen;192§auto Marécage de Zangar;192 | x=155.6999969482422 y=6724.7001953125 | size=1 | links=#2222(auto Zangarmarsh;24):36 #21811(auto Zangarmarsh;343):75
+#12729 | auto Zangarmarsh;193§auto Zangarmarschen;193§auto Marécage de Zangar;193 | x=73.4000015258789 y=6122 | size=1 | links=#779(auto Zangarmarsh;9):23 #4538(auto Zangarmarsh;61):24
+#12731 | auto Zangarmarsh;194§auto Zangarmarschen;194§auto Marécage de Zangar;194 | x=155.3000030517578 y=8435.1005859375 | size=5 | links=#14547(auto Zangarmarsh;222):43 #17892(auto Zangarmarsh;280):78
+#12749 | auto Zangarmarsh;195§auto Zangarmarschen;195§auto Marécage de Zangar;195 | x=830.7999877929688 y=7285.60009765625 | size=5 | links=#6824(auto Zangarmarsh;95):54 #20361(graveyard;Zangarmarsh;northwest):51
+#12867 | auto Zangarmarsh;196§auto Zangarmarschen;196§auto Marécage de Zangar;196 | x=-944.5 y=5181.7001953125 | size=1 | links=#16928(auto Zangarmarsh;265):33
+#12916 | auto Zangarmarsh;197§auto Zangarmarschen;197§auto Marécage de Zangar;197 | x=-63 y=8848.7001953125 | size=5 | links=#8450(auto Zangarmarsh;117):72 #8464(auto Zangarmarsh;119):133
+#12999 | auto Zangarmarsh;198§auto Zangarmarschen;198§auto Marécage de Zangar;198 | x=-204.6999969482422 y=5515 | size=1 | links=#13490(auto Zangarmarsh;201):20 #14815(central location;Cenarion Refuge):18
+#13014 | auto Zangarmarsh;199§auto Zangarmarschen;199§auto Marécage de Zangar;199 | x=1030.800048828125 y=7350.89990234375 | size=1
+#13468 | auto Zangarmarsh;200§auto Zangarmarschen;200§auto Marécage de Zangar;200 | x=-980.2000122070312 y=5380.89990234375 | size=1 | links=#9431(auto Zangarmarsh;138):34 #9924(auto Zangarmarsh;143):44 #23589(auto Zangarmarsh;365):86
+#13490 | auto Zangarmarsh;201§auto Zangarmarschen;201§auto Marécage de Zangar;201 | x=-184.8000030517578 y=5519.60009765625 | size=1 | links=#12999(auto Zangarmarsh;198):20 #25550(auto Zangarmarsh;395):11
+#13497 | auto Zangarmarsh;202§auto Zangarmarschen;202§auto Marécage de Zangar;202 | x=-251 y=5511 | size=1 | links=#17302(auto Zangarmarsh;272):8 #21705(auto Zangarmarsh;339):9
+#13546 | auto Zangarmarsh;203§auto Zangarmarschen;203§auto Marécage de Zangar;203 | x=1169.700073242188 y=8482.7001953125 | size=1 | links=#590(auto Zangarmarsh;7):36 #20806(auto Zangarmarsh;327):36
+#13558 | auto Zangarmarsh;204§auto Zangarmarschen;204§auto Marécage de Zangar;204 | x=-502.8999938964844 y=5987.60009765625 | size=1 | links=#8198(auto Zangarmarsh;112):51 #18591(auto Zangarmarsh;291):27
+#13575 | auto Zangarmarsh;205§auto Zangarmarschen;205§auto Marécage de Zangar;205 | x=911 y=8277.7998046875 | size=5
+#13576 | auto Zangarmarsh;206§auto Zangarmarschen;206§auto Marécage de Zangar;206 | x=204.4000091552734 y=8473 | size=1 | links=#14547(auto Zangarmarsh;222):18 #15585(auto Zangarmarsh;236):29
+#13623 | auto Zangarmarsh;207§auto Zangarmarschen;207§auto Marécage de Zangar;207 | x=-453.2000122070313 y=5462.2001953125 | size=1 | links=#16874(auto Zangarmarsh;263):44 #20256(auto Zangarmarsh;313):20
+#13660 | auto Zangarmarsh;208§auto Zangarmarschen;208§auto Marécage de Zangar;208 | x=-219.1999969482422 y=5369.10009765625 | size=1 | links=#10100(auto Zangarmarsh;146):36 #23220(auto Zangarmarsh;360):38
+#13702 | auto Zangarmarsh;209§auto Zangarmarschen;209§auto Marécage de Zangar;209 | x=1036.300048828125 y=8463 | size=1 | links=#14959(auto Zangarmarsh;225):14 #18050(auto Zangarmarsh;284):16
+#13767 | auto Zangarmarsh;210§auto Zangarmarschen;210§auto Marécage de Zangar;210 | x=-249.6000061035156 y=5508.5 | size=1 | links=#22283(auto Zangarmarsh;351):8 #26100(auto Zangarmarsh;402):8
+#13846 | auto Zangarmarsh;211§auto Zangarmarschen;211§auto Marécage de Zangar;211 | x=138.9000091552734 y=8280.900390625 | size=5 | links=#17892(auto Zangarmarsh;280):79 #18704(auto Zangarmarsh;293):65
+#13969 | auto Zangarmarsh;212§auto Zangarmarschen;212§auto Marécage de Zangar;212 | x=990.2999877929688 y=8439.2001953125 | size=5
+#14050 | auto Zangarmarsh;213§auto Zangarmarschen;213§auto Marécage de Zangar;213 | x=555.7000122070312 y=7851.60009765625 | size=1 | links=#11515(auto Zangarmarsh;170):75
+#14087 | auto Zangarmarsh;214§auto Zangarmarschen;214§auto Marécage de Zangar;214 | x=-948.2000122070312 y=5630.80029296875 | size=1 | links=#17598(auto Zangarmarsh;277):83 #18110(auto Zangarmarsh;285):95 #26387(auto Zangarmarsh;412):57
+#14104 | auto Zangarmarsh;215§auto Zangarmarschen;215§auto Marécage de Zangar;215 | x=872.2000122070312 y=8086.2001953125 | size=5 | links=#2896(auto Zangarmarsh;33):39 #4561(auto Zangarmarsh;62):52
+#14114 | auto Zangarmarsh;216§auto Zangarmarschen;216§auto Marécage de Zangar;216 | x=278 y=6009.2001953125 | size=1 | links=#4501(auto Zangarmarsh;59):10 #24355(auto Zangarmarsh;381):47
+#14244 | auto Zangarmarsh;217§auto Zangarmarschen;217§auto Marécage de Zangar;217 | x=50.10000228881836 y=7687 | size=5 | links=#11953(auto Zangarmarsh;176):75
+#14332 | auto Zangarmarsh;218§auto Zangarmarschen;218§auto Marécage de Zangar;218 | x=-1254.400024414063 y=5782.7001953125 | size=1 | links=#6199(auto Zangarmarsh;80):27 #12288(auto Zangarmarsh;184):22
+#14376 | auto Zangarmarsh;219§auto Zangarmarschen;219§auto Marécage de Zangar;219 | x=-41.20000076293945 y=6145 | size=1 | links=#10476(auto Zangarmarsh;152):31 #11374(auto Zangarmarsh;165):49 #15836(auto Zangarmarsh;243):126
+#14377 | auto Zangarmarsh;220§auto Zangarmarschen;220§auto Marécage de Zangar;220 | x=928.4000244140625 y=5596.10009765625 | size=1
+#14489 | auto Zangarmarsh;221§auto Zangarmarschen;221§auto Marécage de Zangar;221 | x=262.1000061035156 y=6858 | size=1 | links=#5732(auto Zangarmarsh;75):69 #12068(Twin Spire Ruins;east):62
+#14547 | auto Zangarmarsh;222§auto Zangarmarschen;222§auto Marécage de Zangar;222 | x=190.6000061035156 y=8460.7998046875 | size=1 | links=#3861(auto Zangarmarsh;46):48 #12731(auto Zangarmarsh;194):43 #13576(auto Zangarmarsh;206):18
+#14566 | auto Zangarmarsh;223§auto Zangarmarschen;223§auto Marécage de Zangar;223 | x=-359.3999938964844 y=8262.900390625 | size=5 | links=#16121(auto Zangarmarsh;251):121 #25807(auto Zangarmarsh;398):47
+#14815 | central location;Cenarion Refuge§zentralpunkt;Zuflucht des Cenarius§emplacement central;Refuge cénarien | x=-215.4000091552734 y=5500.30029296875 | size=1 | links=#3574(Mailbox;Cenarion Refuge):16 #9552(auto Zangarmarsh;140):29 #12999(auto Zangarmarsh;198):18
+#14928 | auto Zangarmarsh;224§auto Zangarmarschen;224§auto Marécage de Zangar;224 | x=274.7000122070313 y=7250.30029296875 | size=1 | links=#10531(auto Zangarmarsh;155):72 #16014(auto Zangarmarsh;247):98
+#14959 | auto Zangarmarsh;225§auto Zangarmarschen;225§auto Marécage de Zangar;225 | x=1022.100036621094 y=8467 | size=1 | links=#12281(auto Zangarmarsh;183):12 #13702(auto Zangarmarsh;209):14
+#14971 | auto Zangarmarsh;226§auto Zangarmarschen;226§auto Marécage de Zangar;226 | x=170.6999969482422 y=7739 | size=5 | links=#8277(auto Zangarmarsh;114):46
+#14990 | auto Zangarmarsh;227§auto Zangarmarschen;227§auto Marécage de Zangar;227 | x=426.2000122070313 y=6303.80029296875 | size=1 | links=#2653(auto Zangarmarsh;29):65 #12032(auto Zangarmarsh;178):48
+#15183 | auto Zangarmarsh;228§auto Zangarmarschen;228§auto Marécage de Zangar;228 | x=-1113.200073242188 y=5705.39990234375 | size=1 | links=#5053(auto Zangarmarsh;68):48 #7715(auto Zangarmarsh;107):32
+#15215 | auto Zangarmarsh;229§auto Zangarmarschen;229§auto Marécage de Zangar;229 | x=217.6999969482422 y=6647.89990234375 | size=1 | links=#21811(auto Zangarmarsh;343):25 #22943(auto Zangarmarsh;357):108
+#15265 | auto Zangarmarsh;230§auto Zangarmarschen;230§auto Marécage de Zangar;230 | x=-319.8000183105469 y=8394.2998046875 | size=5 | links=#3292(auto Zangarmarsh;39):36
+#15397 | auto Zangarmarsh;231§auto Zangarmarschen;231§auto Marécage de Zangar;231 | x=389.7000122070313 y=8863.2001953125 | size=5 | links=#15816(auto Zangarmarsh;242):60
+#15402 | auto Zangarmarsh;232§auto Zangarmarschen;232§auto Marécage de Zangar;232 | x=294.8000183105469 y=6107.80029296875 | size=1 | links=#8459(auto Zangarmarsh;118):19 #11484(auto Zangarmarsh;168):23
+#15483 | auto Zangarmarsh;233§auto Zangarmarschen;233§auto Marécage de Zangar;233 | x=-956 y=5313.89990234375 | size=1 | links=#8949(auto Zangarmarsh;126):36 #9924(auto Zangarmarsh;143):48
+#15512 | auto Zangarmarsh;234§auto Zangarmarschen;234§auto Marécage de Zangar;234 | x=-338.8999938964844 y=7254.5 | size=1 | links=#16632(auto Zangarmarsh;260):35 #27304(auto Zangarmarsh;427):115
+#15532 | auto Zangarmarsh;235§auto Zangarmarschen;235§auto Marécage de Zangar;235 | x=256.6000061035156 y=8903.900390625 | size=1 | links=#6960(auto Zangarmarsh;98):64 #22071(auto Zangarmarsh;350):30
+#15585 | auto Zangarmarsh;236§auto Zangarmarschen;236§auto Marécage de Zangar;236 | x=217.9000091552734 y=8499 | size=1 | links=#13576(auto Zangarmarsh;206):29 #17276(auto Zangarmarsh;271):12 #20833(auto Zangarmarsh;329):39
+#15661 | auto Zangarmarsh;237§auto Zangarmarschen;237§auto Marécage de Zangar;237 | x=217.1000061035156 y=8552.400390625 | size=1 | links=#7383(auto Zangarmarsh;102):12
+#15709 | auto Zangarmarsh;238§auto Zangarmarschen;238§auto Marécage de Zangar;238 | x=-283.8999938964844 y=6219 | size=1 | links=#20611(auto Zangarmarsh;320):55 #21914(auto Zangarmarsh;346):25
+#15746 | auto Zangarmarsh;239§auto Zangarmarschen;239§auto Marécage de Zangar;239 | x=662.6000366210938 y=5641.7001953125 | size=5 | links=#7092(auto Zangarmarsh;99):78
+#15766 | auto Zangarmarsh;240§auto Zangarmarschen;240§auto Marécage de Zangar;240 | x=173.6999969482422 y=7667.5 | size=5 | links=#6438(auto Zangarmarsh;87):27 #16393(auto Zangarmarsh;257):37 #24852(auto Zangarmarsh;386):82
+#15794 | auto Zangarmarsh;241§auto Zangarmarschen;241§auto Marécage de Zangar;241 | x=100.5 y=5358.80029296875 | size=5 | links=#3860(auto Zangarmarsh;45):50 #25048(auto Zangarmarsh;388):85
+#15816 | auto Zangarmarsh;242§auto Zangarmarschen;242§auto Marécage de Zangar;242 | x=371.6000061035156 y=8920.900390625 | size=5 | links=#6960(auto Zangarmarsh;98):53 #15397(auto Zangarmarsh;231):60
+#15836 | auto Zangarmarsh;243§auto Zangarmarschen;243§auto Marécage de Zangar;243 | x=-163.6000061035156 y=6113.80029296875 | size=1 | links=#14376(auto Zangarmarsh;219):126 #20048(auto Zangarmarsh;306):32
+#15907 | auto Zangarmarsh;244§auto Zangarmarschen;244§auto Marécage de Zangar;244 | x=599.2999877929688 y=6080.80029296875 | size=5 | links=#4469(auto Zangarmarsh;58):133 #24833(auto Zangarmarsh;384):68
+#15940 | auto Zangarmarsh;245§auto Zangarmarschen;245§auto Marécage de Zangar;245 | x=1277.800048828125 y=8422.5 | size=5 | links=#590(auto Zangarmarsh;7):96
+#15992 | auto Zangarmarsh;246§auto Zangarmarschen;246§auto Marécage de Zangar;246 | x=276.8000183105469 y=8127.10009765625 | size=5 | links=#8199(auto Zangarmarsh;113):66 #12522(auto Zangarmarsh;191):81 #20666(auto Zangarmarsh;322):98
+#16014 | auto Zangarmarsh;247§auto Zangarmarschen;247§auto Marécage de Zangar;247 | x=321 y=7337.39990234375 | size=1 | links=#1406(Twin Spire Ruins;west):35 #14928(auto Zangarmarsh;224):98
+#16041 | auto Zangarmarsh;248§auto Zangarmarschen;248§auto Marécage de Zangar;248 | x=-860 y=6037.89990234375 | size=1 | links=#23609(auto Zangarmarsh;366):45 #26009(auto Zangarmarsh;401):51
+#16089 | auto Zangarmarsh;249§auto Zangarmarschen;249§auto Marécage de Zangar;249 | x=-256.5 y=5497.2001953125 | size=1 | links=#2081(auto Zangarmarsh;21):9 #21705(auto Zangarmarsh;339):9
+#16094 | auto Zangarmarsh;250§auto Zangarmarschen;250§auto Marécage de Zangar;250 | x=234.5 y=6058.30029296875 | size=1 | links=#10270(central location;Telredor):32
+#16121 | auto Zangarmarsh;251§auto Zangarmarschen;251§auto Marécage de Zangar;251 | x=-250.1999969482422 y=8209.6005859375 | size=5 | links=#11432(auto Zangarmarsh;166):54 #14566(auto Zangarmarsh;223):121
+#16151 | auto Zangarmarsh;252§auto Zangarmarschen;252§auto Marécage de Zangar;252 | x=653.7999877929688 y=7943.39990234375 | size=5
+#16160 | auto Zangarmarsh;253§auto Zangarmarschen;253§auto Marécage de Zangar;253 | x=1033.099975585938 y=8266.7001953125 | size=1 | links=#8716(auto Zangarmarsh;122):5 #25595(auto Zangarmarsh;397):5
+#16178 | auto Zangarmarsh;254§auto Zangarmarschen;254§auto Marécage de Zangar;254 | x=957.1000366210938 y=8398 | size=5
+#16293 | auto Zangarmarsh;255§auto Zangarmarschen;255§auto Marécage de Zangar;255 | x=242.3000030517578 y=7900.60009765625 | size=1 | links=#25924(auto Zangarmarsh;400):14 #26189(auto Zangarmarsh;405):32
+#16392 | auto Zangarmarsh;256§auto Zangarmarschen;256§auto Marécage de Zangar;256 | x=269.1000061035156 y=8508.7998046875 | size=1 | links=#20833(auto Zangarmarsh;329):13
+#16393 | auto Zangarmarsh;257§auto Zangarmarschen;257§auto Marécage de Zangar;257 | x=208.1999969482422 y=7682.10009765625 | size=1 | links=#15766(auto Zangarmarsh;240):37
+#16452 | auto Zangarmarsh;258§auto Zangarmarschen;258§auto Marécage de Zangar;258 | x=1643.099975585938 y=8507.7001953125 | size=1 | links=#8498(auto Zangarmarsh;120):38 #22495(auto Zangarmarsh;353):57
+#16573 | auto Zangarmarsh;259§auto Zangarmarschen;259§auto Marécage de Zangar;259 | x=790.1000366210938 y=7794 | size=1 | links=#6543(auto Zangarmarsh;90):33 #18861(auto Zangarmarsh;297):71
+#16632 | auto Zangarmarsh;260§auto Zangarmarschen;260§auto Marécage de Zangar;260 | x=-374.3000183105469 y=7256.5 | size=1 | links=#15512(auto Zangarmarsh;234):35
+#16648 | Mailbox;Telredor§briefkasten;Telredor§Boîte aux lettres;Telredor | x=287.8000183105469 y=6081.89990234375 | size=1 | links=#26671(auto Zangarmarsh;421):9
+#16705 | auto Zangarmarsh;261§auto Zangarmarschen;261§auto Marécage de Zangar;261 | x=1020.5 y=8484.7998046875 | size=1 | links=#10272(auto Zangarmarsh;148):18 #12281(auto Zangarmarsh;183):15
+#16813 | auto Zangarmarsh;262§auto Zangarmarschen;262§auto Marécage de Zangar;262 | x=37 y=7188.30029296875 | size=5 | links=#23016(auto Zangarmarsh;358):73 #24144(auto Zangarmarsh;375):27
+#16874 | auto Zangarmarsh;263§auto Zangarmarschen;263§auto Marécage de Zangar;263 | x=-414.3000183105469 y=5484.7001953125 | size=1 | links=#13623(auto Zangarmarsh;207):44 #24303(auto Zangarmarsh;380):42
+#16912 | auto Zangarmarsh;264§auto Zangarmarschen;264§auto Marécage de Zangar;264 | x=316.7000122070313 y=7655.89990234375 | size=5 | links=#18284(auto Zangarmarsh;287):76 #26625(auto Zangarmarsh;417):24
+#16928 | auto Zangarmarsh;265§auto Zangarmarschen;265§auto Marécage de Zangar;265 | x=-966.2999877929688 y=5207.30029296875 | size=1 | links=#12867(auto Zangarmarsh;196):33
+#16936 | auto Zangarmarsh;266§auto Zangarmarschen;266§auto Marécage de Zangar;266 | x=140.4000091552734 y=7084.2001953125 | size=1 | links=#18137(auto Zangarmarsh;286):76 #26781(auto Zangarmarsh;423):105
+#16988 | auto Zangarmarsh;267§auto Zangarmarschen;267§auto Marécage de Zangar;267 | x=382.2000122070313 y=7569.89990234375 | size=5 | links=#5201(auto Zangarmarsh;71):53 #8434(auto Zangarmarsh;115):81
+#17044 | auto Zangarmarsh;268§auto Zangarmarschen;268§auto Marécage de Zangar;268 | x=-336.8000183105469 y=6203.7001953125 | size=1 | links=#21914(auto Zangarmarsh;346):31
+#17222 | auto Zangarmarsh;269§auto Zangarmarschen;269§auto Marécage de Zangar;269 | x=-1331.400024414063 y=5881.80029296875 | size=1 | links=#5008(auto Zangarmarsh;67):20 #19308(auto Zangarmarsh;299):41
+#17230 | auto Zangarmarsh;270§auto Zangarmarschen;270§auto Marécage de Zangar;270 | x=34.10000228881836 y=7103.89990234375 | size=1 | links=#3808(auto Zangarmarsh;44):35 #9165(auto Zangarmarsh;128):30
+#17276 | auto Zangarmarsh;271§auto Zangarmarschen;271§auto Marécage de Zangar;271 | x=206.9000091552734 y=8504.1005859375 | size=1 | links=#8052(auto Zangarmarsh;109):15 #15585(auto Zangarmarsh;236):12
+#17302 | auto Zangarmarsh;272§auto Zangarmarschen;272§auto Marécage de Zangar;272 | x=-259.6000061035156 y=5510.89990234375 | size=1 | links=#13497(auto Zangarmarsh;202):8 #27871(auto Zangarmarsh;433):5
+#17308 | auto Zangarmarsh;273§auto Zangarmarschen;273§auto Marécage de Zangar;273 | x=207.6999969482422 y=7721.7001953125 | size=1 | links=#6438(auto Zangarmarsh;87):65 #23403(auto Zangarmarsh;363):37
+#17418 | auto Zangarmarsh;274§auto Zangarmarschen;274§auto Marécage de Zangar;274 | x=1615.5 y=8603.1005859375 | size=1 | links=#11731(auto Zangarmarsh;173):33 #17429(auto Zangarmarsh;275):36
+#17429 | auto Zangarmarsh;275§auto Zangarmarschen;275§auto Marécage de Zangar;275 | x=1580.800048828125 y=8612.7001953125 | size=1 | links=#10274(auto Zangarmarsh;149):86 #17418(auto Zangarmarsh;274):36
+#17454 | auto Zangarmarsh;276§auto Zangarmarschen;276§auto Marécage de Zangar;276 | x=591.7000122070312 y=8579.1005859375 | size=5 | links=#19159(auto Zangarmarsh;298):90
+#17598 | auto Zangarmarsh;277§auto Zangarmarschen;277§auto Marécage de Zangar;277 | x=-953.5 y=5547.2001953125 | size=1 | links=#8443(auto Zangarmarsh;116):90 #14087(auto Zangarmarsh;214):83
+#17672 | auto Zangarmarsh;278§auto Zangarmarschen;278§auto Marécage de Zangar;278 | x=1046.800048828125 y=8480.400390625 | size=1 | links=#18050(auto Zangarmarsh;284):9
+#17763 | auto Zangarmarsh;279§auto Zangarmarschen;279§auto Marécage de Zangar;279 | x=-1183.900024414063 y=5730.2001953125 | size=1 | links=#4829(auto Zangarmarsh;65):36 #26700(auto Zangarmarsh;422):25
+#17892 | auto Zangarmarsh;280§auto Zangarmarschen;280§auto Marécage de Zangar;280 | x=132.8000030517578 y=8360.2998046875 | size=5 | links=#12731(auto Zangarmarsh;194):78 #13846(auto Zangarmarsh;211):79
+#17973 | auto Zangarmarsh;281§auto Zangarmarschen;281§auto Marécage de Zangar;281 | x=989.2000122070312 y=8483.900390625 | size=1 | links=#10272(auto Zangarmarsh;148):43
+#17988 | auto Zangarmarsh;282§auto Zangarmarschen;282§auto Marécage de Zangar;282 | x=379.6000061035156 y=5276.39990234375 | size=5
+#18048 | auto Zangarmarsh;283§auto Zangarmarschen;283§auto Marécage de Zangar;283 | x=380.3000183105469 y=6272.30029296875 | size=1 | links=#12032(auto Zangarmarsh;178):20 #28396(auto Zangarmarsh;440):40
+#18050 | auto Zangarmarsh;284§auto Zangarmarschen;284§auto Marécage de Zangar;284 | x=1050.599975585938 y=8471.7001953125 | size=1 | links=#13702(auto Zangarmarsh;209):16 #17672(auto Zangarmarsh;278):9
+#18110 | auto Zangarmarsh;285§auto Zangarmarschen;285§auto Marécage de Zangar;285 | x=-1038.200073242188 y=5662.5 | size=1 | links=#14087(auto Zangarmarsh;214):95 #20390(auto Zangarmarsh;316):66
+#18137 | auto Zangarmarsh;286§auto Zangarmarschen;286§auto Marécage de Zangar;286 | x=217.3000030517578 y=7084.39990234375 | size=1 | links=#10531(auto Zangarmarsh;155):117 #16936(auto Zangarmarsh;266):76 #21774(auto Zangarmarsh;342):97 #22558(Twin Spire Ruins;Zangarmarsh):29
+#18284 | auto Zangarmarsh;287§auto Zangarmarschen;287§auto Marécage de Zangar;287 | x=352.8999938964844 y=7723.39990234375 | size=5 | links=#10503(auto Zangarmarsh;153):67 #16912(auto Zangarmarsh;264):76
+#18358 | auto Zangarmarsh;288§auto Zangarmarschen;288§auto Marécage de Zangar;288 | x=-86.20000457763672 y=5545.2001953125 | size=1 | links=#1774(auto Zangarmarsh;17):16 #20748(auto Zangarmarsh;325):28
+#18573 | auto Zangarmarsh;289§auto Zangarmarschen;289§auto Marécage de Zangar;289 | x=272.3000183105469 y=6039 | size=1 | links=#10270(central location;Telredor):10
+#18587 | auto Zangarmarsh;290§auto Zangarmarschen;290§auto Marécage de Zangar;290 | x=-1310.400024414063 y=5814.30029296875 | size=1 | links=#4315(auto Zangarmarsh;56):20 #20373(auto Zangarmarsh;315):28
+#18591 | auto Zangarmarsh;291§auto Zangarmarschen;291§auto Marécage de Zangar;291 | x=-530.7999877929688 y=5988.10009765625 | size=1 | links=#13558(auto Zangarmarsh;204):27 #23769(auto Zangarmarsh;369):23
+#18692 | auto Zangarmarsh;292§auto Zangarmarschen;292§auto Marécage de Zangar;292 | x=300.2000122070313 y=6070.5 | size=1 | links=#6392(auto Zangarmarsh;85):23 #9932(auto Zangarmarsh;144):21 #26671(auto Zangarmarsh;421):15
+#18704 | auto Zangarmarsh;293§auto Zangarmarschen;293§auto Marécage de Zangar;293 | x=147 y=8216.1005859375 | size=5 | links=#13846(auto Zangarmarsh;211):65 #20666(auto Zangarmarsh;322):60
+#18725 | auto Zangarmarsh;294§auto Zangarmarschen;294§auto Marécage de Zangar;294 | x=-1222 y=5746.10009765625 | size=1 | links=#2030(auto Zangarmarsh;20):32 #26700(auto Zangarmarsh;422):19
+#18813 | auto Zangarmarsh;295§auto Zangarmarschen;295§auto Marécage de Zangar;295 | x=-774.6000366210938 y=5391.39990234375 | size=1 | links=#3970(auto Zangarmarsh;49):87 #27786(auto Zangarmarsh;432):28
+#18820 | auto Zangarmarsh;296§auto Zangarmarschen;296§auto Marécage de Zangar;296 | x=-681.2999877929688 y=5962.39990234375 | size=1 | links=#12141(auto Zangarmarsh;181):31
+#18861 | auto Zangarmarsh;297§auto Zangarmarschen;297§auto Marécage de Zangar;297 | x=721 y=7812.89990234375 | size=1 | links=#16573(auto Zangarmarsh;259):71
+#19159 | auto Zangarmarsh;298§auto Zangarmarschen;298§auto Marécage de Zangar;298 | x=610.5 y=8667.7998046875 | size=5 | links=#7355(auto Zangarmarsh;101):90 #17454(auto Zangarmarsh;276):90
+#19308 | auto Zangarmarsh;299§auto Zangarmarschen;299§auto Marécage de Zangar;299 | x=-1343.200073242188 y=5921.30029296875 | size=1 | links=#9191(auto Zangarmarsh;131):34 #17222(auto Zangarmarsh;269):41
+#19499 | auto Zangarmarsh;300§auto Zangarmarschen;300§auto Marécage de Zangar;300 | x=-187.6999969482422 y=8441.2001953125 | size=1 | links=#20331(auto Zangarmarsh;314):56 #24198(auto Zangarmarsh;376):50
+#19677 | auto Zangarmarsh;301§auto Zangarmarschen;301§auto Marécage de Zangar;301 | x=-220.3000030517578 y=6258.89990234375 | size=1 | links=#6237(auto Zangarmarsh;82):39 #20611(auto Zangarmarsh;320):22
+#19721 | auto Zangarmarsh;302§auto Zangarmarschen;302§auto Marécage de Zangar;302 | x=77.0999984741211 y=7316.60009765625 | size=1 | links=#6586(auto Zangarmarsh;91):72 #10819(auto Zangarmarsh;159):87
+#19802 | auto Zangarmarsh;303§auto Zangarmarschen;303§auto Marécage de Zangar;303 | x=369.6000061035156 y=5477.39990234375 | size=5 | links=#4034(auto Zangarmarsh;52):77
+#19840 | auto Zangarmarsh;304§auto Zangarmarschen;304§auto Marécage de Zangar;304 | x=798.4000244140625 y=5932.7001953125 | size=5 | links=#4469(auto Zangarmarsh;58):114 #26115(auto Zangarmarsh;403):95
+#20039 | auto Zangarmarsh;305§auto Zangarmarschen;305§auto Marécage de Zangar;305 | x=-205.8000030517578 y=6944.5 | size=5 | links=#11267(auto Zangarmarsh;164):48
+#20048 | auto Zangarmarsh;306§auto Zangarmarschen;306§auto Marécage de Zangar;306 | x=-190.3000030517578 y=6094.89990234375 | size=1 | links=#278(auto Zangarmarsh;1):72 #15836(auto Zangarmarsh;243):32
+#20049 | auto Zangarmarsh;307§auto Zangarmarschen;307§auto Marécage de Zangar;307 | x=1150.599975585938 y=8423.2998046875 | size=1 | links=#1196(auto Zangarmarsh;13):25 #20806(auto Zangarmarsh;327):29
+#20059 | auto Zangarmarsh;308§auto Zangarmarschen;308§auto Marécage de Zangar;308 | x=458.7000122070313 y=6387.10009765625 | size=1 | links=#2561(auto Zangarmarsh;26):40 #2653(auto Zangarmarsh;29):47
+#20101 | auto Zangarmarsh;309§auto Zangarmarschen;309§auto Marécage de Zangar;309 | x=259.7000122070313 y=7847.5 | size=1 | links=#3910(auto Zangarmarsh;47):28 #4986(auto Zangarmarsh;66):79 #24532(auto Zangarmarsh;382):28 #27509(auto Zangarmarsh;428):20
+#20128 | auto Zangarmarsh;310§auto Zangarmarschen;310§auto Marécage de Zangar;310 | x=-1195.700073242188 y=5872.10009765625 | size=1 | links=#9279(auto Zangarmarsh;132):28 #26275(auto Zangarmarsh;409):32
+#20148 | auto Zangarmarsh;311§auto Zangarmarschen;311§auto Marécage de Zangar;311 | x=1008.700012207031 y=7470.2001953125 | size=1 | links=#20516(auto Zangarmarsh;319):15
+#20165 | auto Zangarmarsh;312§auto Zangarmarschen;312§auto Marécage de Zangar;312 | x=-153.6999969482422 y=7046.5 | size=5 | links=#5163(auto Zangarmarsh;69):143 #7573(auto Zangarmarsh;106):58 #12404(auto Zangarmarsh;188):23
+#20256 | auto Zangarmarsh;313§auto Zangarmarschen;313§auto Marécage de Zangar;313 | x=-470.3999938964844 y=5450.60009765625 | size=1 | links=#13623(auto Zangarmarsh;207):20 #27897(auto Zangarmarsh;435):34
+#20331 | auto Zangarmarsh;314§auto Zangarmarschen;314§auto Marécage de Zangar;314 | x=-219.9000091552734 y=8394.2998046875 | size=5 | links=#3930(auto Zangarmarsh;48):88 #19499(auto Zangarmarsh;300):56
+#20361 | graveyard;Zangarmarsh;northwest§friedhof;Zangarmarschen;nordwestlich§graveyard;Marécage de Zangar;northwest | x=882.7000122070312 y=7285.60009765625 | size=1 | links=#12749(auto Zangarmarsh;195):51
+#20373 | auto Zangarmarsh;315§auto Zangarmarschen;315§auto Marécage de Zangar;315 | x=-1309.900024414063 y=5842.5 | size=1 | links=#5008(auto Zangarmarsh;67):25 #18587(auto Zangarmarsh;290):28
+#20390 | auto Zangarmarsh;316§auto Zangarmarschen;316§auto Marécage de Zangar;316 | x=-1065.900024414063 y=5722.60009765625 | size=1 | links=#5053(auto Zangarmarsh;68):67 #18110(auto Zangarmarsh;285):66
+#20427 | auto Zangarmarsh;317§auto Zangarmarschen;317§auto Marécage de Zangar;317 | x=371.2000122070313 y=6123.10009765625 | size=1 | links=#2160(auto Zangarmarsh;23):21 #26667(auto Zangarmarsh;419):64
+#20480 | auto Zangarmarsh;318§auto Zangarmarschen;318§auto Marécage de Zangar;318 | x=42.90000152587891 y=6909.5 | size=1 | links=#20933(auto Zangarmarsh;330):69 #28290(auto Zangarmarsh;439):58
+#20516 | auto Zangarmarsh;319§auto Zangarmarschen;319§auto Marécage de Zangar;319 | x=1013.200012207031 y=7455.10009765625 | size=1 | links=#2571(auto Zangarmarsh;27):17 #20148(auto Zangarmarsh;311):15
+#20611 | auto Zangarmarsh;320§auto Zangarmarschen;320§auto Marécage de Zangar;320 | x=-232.3000030517578 y=6239.5 | size=1 | links=#15709(auto Zangarmarsh;238):55 #19677(auto Zangarmarsh;301):22
+#20654 | auto Zangarmarsh;321§auto Zangarmarschen;321§auto Marécage de Zangar;321 | x=105.3000030517578 y=7482.80029296875 | size=1 | links=#9520(auto Zangarmarsh;139):52 #24204(auto Zangarmarsh;377):35
+#20666 | auto Zangarmarsh;322§auto Zangarmarschen;322§auto Marécage de Zangar;322 | x=189.6000061035156 y=8173.10009765625 | size=5 | links=#15992(auto Zangarmarsh;246):98 #18704(auto Zangarmarsh;293):60
+#20711 | auto Zangarmarsh;323§auto Zangarmarschen;323§auto Marécage de Zangar;323 | x=-63.70000076293945 y=8661 | size=5 | links=#8464(auto Zangarmarsh;119):70 #12397(auto Zangarmarsh;187):67
+#20719 | auto Zangarmarsh;324§auto Zangarmarschen;324§auto Marécage de Zangar;324 | x=359.5 y=7852.80029296875 | size=1 | links=#6497(auto Zangarmarsh;88):85 #24210(auto Zangarmarsh;378):35
+#20748 | auto Zangarmarsh;325§auto Zangarmarschen;325§auto Marécage de Zangar;325 | x=-113.5999984741211 y=5551.10009765625 | size=1 | links=#4020(auto Zangarmarsh;50):25 #18358(auto Zangarmarsh;288):28
+#20759 | auto Zangarmarsh;326§auto Zangarmarschen;326§auto Marécage de Zangar;326 | x=869.4000244140625 y=7380 | size=5 | links=#6824(auto Zangarmarsh;95):83 #11310(entry and exit;Orebor Harborage):71
+#20806 | auto Zangarmarsh;327§auto Zangarmarschen;327§auto Marécage de Zangar;327 | x=1168.200073242188 y=8446.7001953125 | size=1 | links=#13546(auto Zangarmarsh;203):36 #20049(auto Zangarmarsh;307):29
+#20832 | auto Zangarmarsh;328§auto Zangarmarschen;328§auto Marécage de Zangar;328 | x=1032.800048828125 y=8264.400390625 | size=1 | links=#11757(auto Zangarmarsh;174):4 #21684(auto Zangarmarsh;337):4
+#20833 | auto Zangarmarsh;329§auto Zangarmarschen;329§auto Marécage de Zangar;329 | x=256.8000183105469 y=8502.5 | size=1 | links=#12214(auto Zangarmarsh;182):9 #15585(auto Zangarmarsh;236):39 #16392(auto Zangarmarsh;256):13 #21116(auto Zangarmarsh;332):8
+#20933 | auto Zangarmarsh;330§auto Zangarmarschen;330§auto Marécage de Zangar;330 | x=42.70000076293945 y=6979.10009765625 | size=1 | links=#3808(auto Zangarmarsh;44):92 #20480(auto Zangarmarsh;318):69
+#21040 | auto Zangarmarsh;331§auto Zangarmarschen;331§auto Marécage de Zangar;331 | x=410.5 y=6197.2001953125 | size=1 | links=#26667(auto Zangarmarsh;419):23 #28396(auto Zangarmarsh;440):40
+#21116 | auto Zangarmarsh;332§auto Zangarmarschen;332§auto Marécage de Zangar;332 | x=250.6999969482422 y=8496.2998046875 | size=1 | links=#20833(auto Zangarmarsh;329):8
+#21183 | auto Zangarmarsh;333§auto Zangarmarschen;333§auto Marécage de Zangar;333 | x=660.5 y=5569.10009765625 | size=5 | links=#27183(auto Zangarmarsh;426):110
+#21339 | elevator;Telredor;down§fahrstuhl;Telredor;Unten§elevator;Telredor;bas | x=285.8000183105469 y=5912.30029296875 | size=1 | links=#21731(auto Zangarmarsh;340):31
+#21372 | auto Zangarmarsh;334§auto Zangarmarschen;334§auto Marécage de Zangar;334 | x=-343.1000061035156 y=6131 | size=1 | links=#21914(auto Zangarmarsh;346):82 #27874(auto Zangarmarsh;434):44
+#21469 | auto Zangarmarsh;335§auto Zangarmarschen;335§auto Marécage de Zangar;335 | x=375.1000061035156 y=6375.10009765625 | size=1 | links=#12032(auto Zangarmarsh;178):82 #24124(auto Zangarmarsh;373):37
+#21517 | auto Zangarmarsh;336§auto Zangarmarschen;336§auto Marécage de Zangar;336 | x=834.7000122070312 y=7765.10009765625 | size=1 | links=#492(auto Zangarmarsh;5):15 #6543(auto Zangarmarsh;90):22
+#21684 | auto Zangarmarsh;337§auto Zangarmarschen;337§auto Marécage de Zangar;337 | x=1028.700073242188 y=8262 | size=1 | links=#1053(auto Zangarmarsh;10):4 #20832(auto Zangarmarsh;328):4
+#21692 | auto Zangarmarsh;338§auto Zangarmarschen;338§auto Marécage de Zangar;338 | x=-278.2000122070313 y=5533.5 | size=1 | links=#4310(auto Zangarmarsh;55):52 #25832(auto Zangarmarsh;399):33
+#21705 | auto Zangarmarsh;339§auto Zangarmarschen;339§auto Marécage de Zangar;339 | x=-248.1000061035156 y=5501.80029296875 | size=1 | links=#13497(auto Zangarmarsh;202):9 #16089(auto Zangarmarsh;249):9
+#21731 | auto Zangarmarsh;340§auto Zangarmarschen;340§auto Marécage de Zangar;340 | x=284.6000061035156 y=5943.30029296875 | size=1 | links=#21339(elevator;Telredor;down):31 #26670(auto Zangarmarsh;420):33
+#21747 | auto Zangarmarsh;341§auto Zangarmarschen;341§auto Marécage de Zangar;341 | x=-1255.400024414063 y=5830.2001953125 | size=1 | links=#4061(auto Zangarmarsh;53):22 #25378(auto Zangarmarsh;392):24
+#21774 | auto Zangarmarsh;342§auto Zangarmarschen;342§auto Marécage de Zangar;342 | x=212.5 y=6986.80029296875 | size=1 | links=#5732(auto Zangarmarsh;75):68 #18137(auto Zangarmarsh;286):97
+#21811 | auto Zangarmarsh;343§auto Zangarmarschen;343§auto Marécage de Zangar;343 | x=210.6000061035156 y=6672.60009765625 | size=1 | links=#12633(auto Zangarmarsh;192):75 #15215(auto Zangarmarsh;229):25
+#21844 | auto Zangarmarsh;344§auto Zangarmarschen;344§auto Marécage de Zangar;344 | x=-273.6000061035156 y=5427.5 | size=1 | links=#3567(auto Zangarmarsh;43):23 #5238(auto Zangarmarsh;72):70
+#21911 | auto Zangarmarsh;345§auto Zangarmarschen;345§auto Marécage de Zangar;345 | x=-211.9000091552734 y=7770.5 | size=5
+#21914 | auto Zangarmarsh;346§auto Zangarmarschen;346§auto Marécage de Zangar;346 | x=-305 y=6204.2001953125 | size=1 | links=#15709(auto Zangarmarsh;238):25 #17044(auto Zangarmarsh;268):31 #21372(auto Zangarmarsh;334):82
+#21988 | auto Zangarmarsh;347§auto Zangarmarschen;347§auto Marécage de Zangar;347 | x=792.7999877929688 y=7563.39990234375 | size=5 | links=#6836(auto Zangarmarsh;96):127 #26636(auto Zangarmarsh;418):141
+#21991 | auto Zangarmarsh;348§auto Zangarmarschen;348§auto Marécage de Zangar;348 | x=1168.200073242188 y=8242.2001953125 | size=1 | links=#547(auto Zangarmarsh;6):126 #2531(auto Zangarmarsh;25):56 #8946(auto Zangarmarsh;125):38
+#22052 | auto Zangarmarsh;349§auto Zangarmarschen;349§auto Marécage de Zangar;349 | x=82.70000457763672 y=5320.89990234375 | size=1 | links=#1453(auto Zangarmarsh;15):18 #3860(auto Zangarmarsh;45):63
+#22071 | auto Zangarmarsh;350§auto Zangarmarschen;350§auto Marécage de Zangar;350 | x=228 y=8914.2998046875 | size=5 | links=#5200(auto Zangarmarsh;70):85 #15532(auto Zangarmarsh;235):30
+#22283 | auto Zangarmarsh;351§auto Zangarmarschen;351§auto Marécage de Zangar;351 | x=-257.8000183105469 y=5511.30029296875 | size=1 | links=#2081(auto Zangarmarsh;21):8 #13767(auto Zangarmarsh;210):8
+#22323 | auto Zangarmarsh;352§auto Zangarmarschen;352§auto Marécage de Zangar;352 | x=-171.1999969482422 y=5553.10009765625 | size=1 | links=#4020(auto Zangarmarsh;50):32 #4310(auto Zangarmarsh;55):59
+#22495 | auto Zangarmarsh;353§auto Zangarmarschen;353§auto Marécage de Zangar;353 | x=1686.300048828125 y=8469.6005859375 | size=1 | links=#16452(auto Zangarmarsh;258):57
+#22514 | auto Zangarmarsh;354§auto Zangarmarschen;354§auto Marécage de Zangar;354 | x=-915.7000122070312 y=5821.80029296875 | size=1 | links=#10510(auto Zangarmarsh;154):71 #12090(auto Zangarmarsh;180):52
+#22558 | Twin Spire Ruins;Zangarmarsh§Ruinen der Zwillingsspitze;Zangarmarschen§Ruines des flèches jumelles;Marécage de Zangar | x=247 y=7083.7001953125 | size=1 | links=#18137(auto Zangarmarsh;286):29
+#22655 | auto Zangarmarsh;355§auto Zangarmarschen;355§auto Marécage de Zangar;355 | x=-55.40000152587891 y=7568.5 | size=5 | links=#280(auto Zangarmarsh;2):60 #1162(auto Zangarmarsh;11):100
+#22893 | auto Zangarmarsh;356§auto Zangarmarschen;356§auto Marécage de Zangar;356 | x=-107.3000030517578 y=7792.39990234375 | size=5 | links=#8657(auto Zangarmarsh;121):44
+#22943 | auto Zangarmarsh;357§auto Zangarmarschen;357§auto Marécage de Zangar;357 | x=277.7000122070313 y=6557.30029296875 | size=1 | links=#6400(auto Zangarmarsh;86):85 #15215(auto Zangarmarsh;229):108
+#23016 | auto Zangarmarsh;358§auto Zangarmarschen;358§auto Marécage de Zangar;358 | x=-34.60000228881836 y=7204.89990234375 | size=1 | links=#16813(auto Zangarmarsh;262):73 #28140(auto Zangarmarsh;437):46
+#23215 | auto Zangarmarsh;359§auto Zangarmarschen;359§auto Marécage de Zangar;359 | x=-817.6000366210938 y=5979.80029296875 | size=1 | links=#23609(auto Zangarmarsh;366):37
+#23220 | auto Zangarmarsh;360§auto Zangarmarschen;360§auto Marécage de Zangar;360 | x=-226.5 y=5406.80029296875 | size=1 | links=#3567(auto Zangarmarsh;43):29 #10884(auto Zangarmarsh;161):35 #13660(auto Zangarmarsh;208):38
+#23271 | auto Zangarmarsh;361§auto Zangarmarschen;361§auto Marécage de Zangar;361 | x=1157.900024414063 y=8172.7001953125 | size=1 | links=#6512(auto Zangarmarsh;89):21 #8946(auto Zangarmarsh;125):43
+#23348 | auto Zangarmarsh;362§auto Zangarmarschen;362§auto Marécage de Zangar;362 | x=-38.70000076293945 y=5537.7001953125 | size=1 | links=#3101(auto Zangarmarsh;35):23 #11703(auto Zangarmarsh;172):15
+#23403 | auto Zangarmarsh;363§auto Zangarmarschen;363§auto Marécage de Zangar;363 | x=237.8000030517578 y=7744.39990234375 | size=1 | links=#4986(auto Zangarmarsh;66):27 #17308(auto Zangarmarsh;273):37
+#23526 | elevator;Telredor;top§fahrstuhl;Telredor;oben§elevator;Telredor;top | x=282.8999938964844 y=5962.10009765625 | size=1 | links=#24355(auto Zangarmarsh;381):0
+#23548 | auto Zangarmarsh;364§auto Zangarmarschen;364§auto Marécage de Zangar;364 | x=1121.5 y=8115.7001953125 | size=1 | links=#23939(auto Zangarmarsh;370):67
+#23589 | auto Zangarmarsh;365§auto Zangarmarschen;365§auto Marécage de Zangar;365 | x=-904.1000366210938 y=5421.5 | size=1 | links=#3970(auto Zangarmarsh;49):45 #8443(auto Zangarmarsh;116):63 #13468(auto Zangarmarsh;200):86
+#23609 | auto Zangarmarsh;366§auto Zangarmarschen;366§auto Marécage de Zangar;366 | x=-819.2999877929688 y=6017 | size=1 | links=#9394(auto Zangarmarsh;135):56 #16041(auto Zangarmarsh;248):45 #23215(auto Zangarmarsh;359):37
+#23688 | auto Zangarmarsh;367§auto Zangarmarschen;367§auto Marécage de Zangar;367 | x=74.5999984741211 y=5274.30029296875 | size=1 | links=#1453(auto Zangarmarsh;15):29 #3153(auto Zangarmarsh;36):29
+#23736 | auto Zangarmarsh;368§auto Zangarmarschen;368§auto Marécage de Zangar;368 | x=207.3000030517578 y=6037.80029296875 | size=1 | links=#10365(auto Zangarmarsh;151):65 #24094(auto Zangarmarsh;372):56
+#23769 | auto Zangarmarsh;369§auto Zangarmarschen;369§auto Marécage de Zangar;369 | x=-554.1000366210938 y=5990.60009765625 | size=1 | links=#1873(auto Zangarmarsh;19):53 #18591(auto Zangarmarsh;291):23
+#23939 | auto Zangarmarsh;370§auto Zangarmarschen;370§auto Marécage de Zangar;370 | x=1056.400024414063 y=8133.60009765625 | size=1 | links=#23548(auto Zangarmarsh;364):67 #27644(auto Zangarmarsh;431):79
+#24012 | auto Zangarmarsh;371§auto Zangarmarschen;371§auto Marécage de Zangar;371 | x=1672.800048828125 y=8568.400390625 | size=1 | links=#2922(auto Zangarmarsh;34):27 #3509(auto Zangarmarsh;42):39
+#24094 | auto Zangarmarsh;372§auto Zangarmarschen;372§auto Marécage de Zangar;372 | x=256.8999938964844 y=6009.89990234375 | size=1 | links=#23736(auto Zangarmarsh;368):56 #26670(auto Zangarmarsh;420):41
+#24124 | auto Zangarmarsh;373§auto Zangarmarschen;373§auto Marécage de Zangar;373 | x=338.3000183105469 y=6382 | size=1 | links=#6400(auto Zangarmarsh;86):111 #21469(auto Zangarmarsh;335):37
+#24142 | auto Zangarmarsh;374§auto Zangarmarschen;374§auto Marécage de Zangar;374 | x=382.5 y=7996.30029296875 | size=5 | links=#12406(auto Zangarmarsh;189):64 #12522(auto Zangarmarsh;191):98
+#24144 | auto Zangarmarsh;375§auto Zangarmarschen;375§auto Marécage de Zangar;375 | x=53.60000228881836 y=7166.60009765625 | size=1 | links=#6586(auto Zangarmarsh;91):82 #9165(auto Zangarmarsh;128):35 #16813(auto Zangarmarsh;262):27 #26781(auto Zangarmarsh;423):28
+#24198 | auto Zangarmarsh;376§auto Zangarmarschen;376§auto Marécage de Zangar;376 | x=-191.6999969482422 y=8491.2001953125 | size=1 | links=#19499(auto Zangarmarsh;300):50
+#24204 | auto Zangarmarsh;377§auto Zangarmarschen;377§auto Marécage de Zangar;377 | x=87.20000457763672 y=7451.7001953125 | size=5 | links=#10819(auto Zangarmarsh;159):47 #20654(auto Zangarmarsh;321):35
+#24210 | auto Zangarmarsh;378§auto Zangarmarschen;378§auto Marécage de Zangar;378 | x=324.5 y=7851.5 | size=1 | links=#3910(auto Zangarmarsh;47):36 #20719(auto Zangarmarsh;324):35
+#24274 | auto Zangarmarsh;379§auto Zangarmarschen;379§auto Marécage de Zangar;379 | x=-1057.5 y=5416.80029296875 | size=1 | links=#10260(auto Zangarmarsh;147):40
+#24303 | auto Zangarmarsh;380§auto Zangarmarschen;380§auto Marécage de Zangar;380 | x=-372.3000183105469 y=5484.10009765625 | size=1 | links=#5238(auto Zangarmarsh;72):52 #16874(auto Zangarmarsh;263):42
+#24355 | auto Zangarmarsh;381§auto Zangarmarschen;381§auto Marécage de Zangar;381 | x=282.8999938964844 y=5962.10009765625 | size=1 | links=#14114(auto Zangarmarsh;216):47 #23526(elevator;Telredor;top):0
+#24532 | auto Zangarmarsh;382§auto Zangarmarschen;382§auto Marécage de Zangar;382 | x=286.3000183105469 y=7836.60009765625 | size=1 | links=#20101(auto Zangarmarsh;309):28
+#24622 | auto Zangarmarsh;383§auto Zangarmarschen;383§auto Marécage de Zangar;383 | x=-1032.599975585938 y=5285.5 | size=1 | links=#25408(auto Zangarmarsh;393):29
+#24833 | auto Zangarmarsh;384§auto Zangarmarschen;384§auto Marécage de Zangar;384 | x=541.5 y=6044.39990234375 | size=5 | links=#8103(auto Zangarmarsh;110):65 #15907(auto Zangarmarsh;244):68
+#24835 | auto Zangarmarsh;385§auto Zangarmarschen;385§auto Marécage de Zangar;385 | x=604.2000122070312 y=7508.30029296875 | size=5 | links=#6853(auto Zangarmarsh;97):104 #12388(auto Zangarmarsh;186):96
+#24852 | auto Zangarmarsh;386§auto Zangarmarschen;386§auto Marécage de Zangar;386 | x=251.1000061035156 y=7637.89990234375 | size=5 | links=#9013(auto Zangarmarsh;127):44 #15766(auto Zangarmarsh;240):82
+#25008 | auto Zangarmarsh;387§auto Zangarmarschen;387§auto Marécage de Zangar;387 | x=769.4000244140625 y=8051.80029296875 | size=5 | links=#4561(auto Zangarmarsh;62):57
+#25048 | auto Zangarmarsh;388§auto Zangarmarschen;388§auto Marécage de Zangar;388 | x=185.1000061035156 y=5350.5 | size=5 | links=#11117(auto Zangarmarsh;163):104 #15794(auto Zangarmarsh;241):85
+#25161 | auto Zangarmarsh;389§auto Zangarmarschen;389§auto Marécage de Zangar;389 | x=226.1000061035156 y=7956 | size=1 | links=#10854(auto Zangarmarsh;160):7 #26602(auto Zangarmarsh;416):11
+#25212 | auto Zangarmarsh;390§auto Zangarmarschen;390§auto Marécage de Zangar;390 | x=-270.2000122070313 y=8312.6005859375 | size=1 | links=#27528(auto Zangarmarsh;429):65
+#25327 | auto Zangarmarsh;391§auto Zangarmarschen;391§auto Marécage de Zangar;391 | x=1056.099975585938 y=8229.2001953125 | size=1 | links=#2531(auto Zangarmarsh;25):56 #9694(auto Zangarmarsh;142):30 #26600(auto Zangarmarsh;415):50
+#25378 | auto Zangarmarsh;392§auto Zangarmarschen;392§auto Marécage de Zangar;392 | x=-1244.200073242188 y=5851.5 | size=1 | links=#21747(auto Zangarmarsh;341):24 #26275(auto Zangarmarsh;409):22
+#25408 | auto Zangarmarsh;393§auto Zangarmarschen;393§auto Marécage de Zangar;393 | x=-1038.599975585938 y=5314.7001953125 | size=1 | links=#10260(auto Zangarmarsh;147):66 #24622(auto Zangarmarsh;383):29
+#25548 | auto Zangarmarsh;394§auto Zangarmarschen;394§auto Marécage de Zangar;394 | x=-75.5 y=8560.7001953125 | size=5 | links=#12397(auto Zangarmarsh;187):34
+#25550 | auto Zangarmarsh;395§auto Zangarmarschen;395§auto Marécage de Zangar;395 | x=-174.1000061035156 y=5523.2001953125 | size=1 | links=#13490(auto Zangarmarsh;201):11
+#25573 | auto Zangarmarsh;396§auto Zangarmarschen;396§auto Marécage de Zangar;396 | x=-120.3000030517578 y=6934.5 | size=5 | links=#11267(auto Zangarmarsh;164):43
+#25595 | auto Zangarmarsh;397§auto Zangarmarschen;397§auto Marécage de Zangar;397 | x=1030.900024414063 y=8261.900390625 | size=1 | links=#2858(auto Zangarmarsh;32):6 #16160(auto Zangarmarsh;253):5
+#25807 | auto Zangarmarsh;398§auto Zangarmarschen;398§auto Marécage de Zangar;398 | x=-348.3999938964844 y=8309.5 | size=5 | links=#14566(auto Zangarmarsh;223):47
+#25832 | auto Zangarmarsh;399§auto Zangarmarschen;399§auto Marécage de Zangar;399 | x=-301.5 y=5508.89990234375 | size=1 | links=#5238(auto Zangarmarsh;72):33 #21692(auto Zangarmarsh;338):33
+#25924 | auto Zangarmarsh;400§auto Zangarmarschen;400§auto Marécage de Zangar;400 | x=237 y=7914.30029296875 | size=1 | links=#16293(auto Zangarmarsh;255):14
+#26009 | auto Zangarmarsh;401§auto Zangarmarschen;401§auto Marécage de Zangar;401 | x=-911 y=6040 | size=1 | links=#16041(auto Zangarmarsh;248):51 #26221(auto Zangarmarsh;407):77 #26376(auto Zangarmarsh;411):53
+#26100 | auto Zangarmarsh;402§auto Zangarmarschen;402§auto Marécage de Zangar;402 | x=-249.9000091552734 y=5499.89990234375 | size=1 | links=#418(auto Zangarmarsh;4):9 #13767(auto Zangarmarsh;210):8
+#26115 | auto Zangarmarsh;403§auto Zangarmarschen;403§auto Marécage de Zangar;403 | x=809.4000244140625 y=6027.39990234375 | size=5 | links=#19840(auto Zangarmarsh;304):95 #26268(auto Blade's Edge Mountains;149):29
+#26175 | auto Zangarmarsh;404§auto Zangarmarschen;404§auto Marécage de Zangar;404 | x=55.70000076293945 y=5443.30029296875 | size=1 | links=#3860(auto Zangarmarsh;45):66 #7141(auto Zangarmarsh;100):31
+#26189 | auto Zangarmarsh;405§auto Zangarmarschen;405§auto Marécage de Zangar;405 | x=254.9000091552734 y=7870.7001953125 | size=1 | links=#16293(auto Zangarmarsh;255):32
+#26218 | auto Zangarmarsh;406§auto Zangarmarschen;406§auto Marécage de Zangar;406 | x=82.5 y=8487.6005859375 | size=5 | links=#3861(auto Zangarmarsh;46):62 #5975(auto Zangarmarsh;78):66
+#26221 | auto Zangarmarsh;407§auto Zangarmarschen;407§auto Marécage de Zangar;407 | x=-911 y=5962.30029296875 | size=1 | links=#8125(auto Zangarmarsh;111):56 #26009(auto Zangarmarsh;401):77
+#26250 | auto Zangarmarsh;408§auto Zangarmarschen;408§auto Marécage de Zangar;408 | x=561.9000244140625 y=6230.2001953125 | size=1
+#26275 | auto Zangarmarsh;409§auto Zangarmarschen;409§auto Marécage de Zangar;409 | x=-1227.700073242188 y=5867.39990234375 | size=1 | links=#20128(auto Zangarmarsh;310):32 #25378(auto Zangarmarsh;392):22
+#26357 | auto Zangarmarsh;410§auto Zangarmarschen;410§auto Marécage de Zangar;410 | x=304.8000183105469 y=7592.7001953125 | size=1 | links=#5201(auto Zangarmarsh;71):28
+#26376 | auto Zangarmarsh;411§auto Zangarmarschen;411§auto Marécage de Zangar;411 | x=-963.6000366210938 y=6049.60009765625 | size=1 | links=#7905(auto Zangarmarsh;108):42 #26009(auto Zangarmarsh;401):53
+#26387 | auto Zangarmarsh;412§auto Zangarmarschen;412§auto Marécage de Zangar;412 | x=-917.1000366210938 y=5679.60009765625 | size=1 | links=#10510(auto Zangarmarsh;154):70 #14087(auto Zangarmarsh;214):57
+#26442 | auto Zangarmarsh;413§auto Zangarmarschen;413§auto Marécage de Zangar;413 | x=-1294.5 y=5866 | size=1 | links=#4061(auto Zangarmarsh;53):40 #9191(auto Zangarmarsh;131):39
+#26569 | auto Zangarmarsh;414§auto Zangarmarschen;414§auto Marécage de Zangar;414 | x=1291.800048828125 y=8555.2001953125 | size=5
+#26600 | auto Zangarmarsh;415§auto Zangarmarschen;415§auto Marécage de Zangar;415 | x=1038.800048828125 y=8181.89990234375 | size=1 | links=#25327(auto Zangarmarsh;391):50 #27644(auto Zangarmarsh;431):64
+#26602 | auto Zangarmarsh;416§auto Zangarmarschen;416§auto Marécage de Zangar;416 | x=231.4000091552734 y=7946.2001953125 | size=1 | links=#25161(auto Zangarmarsh;389):11
+#26625 | auto Zangarmarsh;417§auto Zangarmarschen;417§auto Marécage de Zangar;417 | x=292.6000061035156 y=7659.60009765625 | size=1 | links=#9013(auto Zangarmarsh;127):19 #16912(auto Zangarmarsh;264):24
+#26636 | auto Zangarmarsh;418§auto Zangarmarschen;418§auto Marécage de Zangar;418 | x=764.5 y=7702.2001953125 | size=5 | links=#21988(auto Zangarmarsh;347):141
+#26667 | auto Zangarmarsh;419§auto Zangarmarschen;419§auto Marécage de Zangar;419 | x=411.2000122070313 y=6173.5 | size=1 | links=#8103(auto Zangarmarsh;110):118 #20427(auto Zangarmarsh;317):64 #21040(auto Zangarmarsh;331):23
+#26670 | auto Zangarmarsh;420§auto Zangarmarschen;420§auto Marécage de Zangar;420 | x=281.8999938964844 y=5977.10009765625 | size=1 | links=#21731(auto Zangarmarsh;340):33 #24094(auto Zangarmarsh;372):41
+#26671 | auto Zangarmarsh;421§auto Zangarmarschen;421§auto Marécage de Zangar;421 | x=284.8999938964844 y=6072.60009765625 | size=1 | links=#4022(auto Zangarmarsh;51):16 #12484(auto Zangarmarsh;190):17 #16648(Mailbox;Telredor):9 #18692(auto Zangarmarsh;292):15
+#26700 | auto Zangarmarsh;422§auto Zangarmarschen;422§auto Marécage de Zangar;422 | x=-1209.599975585938 y=5730.5 | size=1 | links=#17763(auto Zangarmarsh;279):25 #18725(auto Zangarmarsh;294):19
+#26781 | auto Zangarmarsh;423§auto Zangarmarschen;423§auto Marécage de Zangar;423 | x=82.0999984741211 y=7171.60009765625 | size=5 | links=#16936(auto Zangarmarsh;266):105 #24144(auto Zangarmarsh;375):28
+#27016 | auto Zangarmarsh;424§auto Zangarmarschen;424§auto Marécage de Zangar;424 | x=335 y=8174.2001953125 | size=1 | links=#8199(auto Zangarmarsh;113):30
+#27049 | auto Zangarmarsh;425§auto Zangarmarschen;425§auto Marécage de Zangar;425 | x=1188.800048828125 y=8421.6005859375 | size=1 | links=#1196(auto Zangarmarsh;13):17 #4532(auto Zangarmarsh;60):8
+#27183 | auto Zangarmarsh;426§auto Zangarmarschen;426§auto Marécage de Zangar;426 | x=672.5 y=5459.2001953125 | size=1 | links=#6175(auto Zangarmarsh;79):32 #21183(auto Zangarmarsh;333):110
+#27304 | auto Zangarmarsh;427§auto Zangarmarschen;427§auto Marécage de Zangar;427 | x=-229.9000091552734 y=7216.5 | size=5 | links=#5163(auto Zangarmarsh;69):73 #15512(auto Zangarmarsh;234):115
+#27509 | auto Zangarmarsh;428§auto Zangarmarschen;428§auto Marécage de Zangar;428 | x=240.3000030517578 y=7840.60009765625 | size=1 | links=#10289(auto Zangarmarsh;150):20 #20101(auto Zangarmarsh;309):20
+#27528 | auto Zangarmarsh;429§auto Zangarmarschen;429§auto Marécage de Zangar;429 | x=-226.4000091552734 y=8264.2001953125 | size=5 | links=#11432(auto Zangarmarsh;166):61 #25212(auto Zangarmarsh;390):65
+#27557 | auto Zangarmarsh;430§auto Zangarmarschen;430§auto Marécage de Zangar;430 | x=730 y=7361.39990234375 | size=5 | links=#6824(auto Zangarmarsh;95):77 #6853(auto Zangarmarsh;97):89
+#27644 | auto Zangarmarsh;431§auto Zangarmarschen;431§auto Marécage de Zangar;431 | x=979.7999877929688 y=8155.5 | size=5 | links=#2896(auto Zangarmarsh;33):90 #23939(auto Zangarmarsh;370):79 #26600(auto Zangarmarsh;415):64
+#27786 | auto Zangarmarsh;432§auto Zangarmarschen;432§auto Marécage de Zangar;432 | x=-747.2000122070312 y=5385.2001953125 | size=1 | links=#6806(auto Zangarmarsh;93):62 #18813(auto Zangarmarsh;295):28
+#27871 | auto Zangarmarsh;433§auto Zangarmarschen;433§auto Marécage de Zangar;433 | x=-262.2000122070313 y=5506.30029296875 | size=1 | links=#11518(auto Zangarmarsh;171):14 #17302(auto Zangarmarsh;272):5
+#27874 | auto Zangarmarsh;434§auto Zangarmarschen;434§auto Marécage de Zangar;434 | x=-320.8000183105469 y=6092.10009765625 | size=1 | links=#10948(auto Zangarmarsh;162):44 #21372(auto Zangarmarsh;334):44
+#27897 | auto Zangarmarsh;435§auto Zangarmarschen;435§auto Marécage de Zangar;435 | x=-504.6000061035156 y=5447 | size=1 | links=#6814(auto Zangarmarsh;94):66 #20256(auto Zangarmarsh;313):34
+#28022 | auto Zangarmarsh;436§auto Zangarmarschen;436§auto Marécage de Zangar;436 | x=1006.400024414063 y=7416.80029296875 | size=1 | links=#2571(auto Zangarmarsh;27):24 #11779(auto Zangarmarsh;175):56
+#28140 | auto Zangarmarsh;437§auto Zangarmarschen;437§auto Marécage de Zangar;437 | x=-81.4000015258789 y=7204.30029296875 | size=5 | links=#5163(auto Zangarmarsh;69):81 #23016(auto Zangarmarsh;358):46
+#28229 | auto Zangarmarsh;438§auto Zangarmarschen;438§auto Marécage de Zangar;438 | x=1028.599975585938 y=8261.2001953125 | size=1 | links=#1802(auto Zangarmarsh;18):9 #8716(auto Zangarmarsh;122):6
+#28290 | auto Zangarmarsh;439§auto Zangarmarschen;439§auto Marécage de Zangar;439 | x=48.70000076293945 y=6851.39990234375 | size=1 | links=#3377(auto Zangarmarsh;41):36 #20480(auto Zangarmarsh;318):58
+#28396 | auto Zangarmarsh;440§auto Zangarmarschen;440§auto Marécage de Zangar;440 | x=392 y=6233.30029296875 | size=1 | links=#18048(auto Zangarmarsh;283):40 #21040(auto Zangarmarsh;331):40
+#46086 | entry and exit;Zangarmarsh;to;Terrokar Forest§Ein- und Ausgang;Zangarmarschen;zu;Wälder von Terokkar§entrée et sortie;Marécage de Zangar;vers;Terrokar Forest | x=-1164.400024414063 y=5342.5 | size=1 | links=#2590(entry and exit;Zangarmarsh;to;Terokkar Forest):14 #10260(auto Zangarmarsh;147):132
+#48820 | auto Inside;Umbrafen Village;Zangarmarsh;441§auto Drinnen;Umbrafenn;Zangarmarschen;441§auto Intérieur;Umbretourbe;Marécage de Zangar;441 | x=-1099.800048828125 y=5199.80029296875 | size=1 | links=#48821(auto Inside;Umbrafen Village;Zangarmarsh;442):3
+#48821 | auto Inside;Umbrafen Village;Zangarmarsh;442§auto Drinnen;Umbrafenn;Zangarmarschen;442§auto Intérieur;Umbretourbe;Marécage de Zangar;442 | x=-1102.700073242188 y=5197.30029296875 | size=1 | links=#48820(auto Inside;Umbrafen Village;Zangarmarsh;441):3 #48822(auto Inside;Umbrafen Village;Zangarmarsh;443):4
+#48822 | auto Inside;Umbrafen Village;Zangarmarsh;443§auto Drinnen;Umbrafenn;Zangarmarschen;443§auto Intérieur;Umbretourbe;Marécage de Zangar;443 | x=-1101.099975585938 y=5193.60009765625 | size=1 | links=#48821(auto Inside;Umbrafen Village;Zangarmarsh;442):4 #48823(auto Inside;Umbrafen Village;Zangarmarsh;444):3
+#48823 | auto Inside;Umbrafen Village;Zangarmarsh;444§auto Drinnen;Umbrafenn;Zangarmarschen;444§auto Intérieur;Umbretourbe;Marécage de Zangar;444 | x=-1097.400024414063 y=5193.2001953125 | size=1 | links=#48822(auto Inside;Umbrafen Village;Zangarmarsh;443):3 #48824(auto Inside;Umbrafen Village;Zangarmarsh;445):3
+#48824 | auto Inside;Umbrafen Village;Zangarmarsh;445§auto Drinnen;Umbrafenn;Zangarmarschen;445§auto Intérieur;Umbretourbe;Marécage de Zangar;445 | x=-1095.200073242188 y=5195.7001953125 | size=1 | links=#48823(auto Inside;Umbrafen Village;Zangarmarsh;444):3 #48825(auto Inside;Umbrafen Village;Zangarmarsh;446):4
+#48825 | auto Inside;Umbrafen Village;Zangarmarsh;446§auto Drinnen;Umbrafenn;Zangarmarschen;446§auto Intérieur;Umbretourbe;Marécage de Zangar;446 | x=-1096.400024414063 y=5199.7001953125 | size=1 | links=#48824(auto Inside;Umbrafen Village;Zangarmarsh;445):4 #48826(auto Inside;Umbrafen Village;Zangarmarsh;447):4
+#48826 | auto Inside;Umbrafen Village;Zangarmarsh;447§auto Drinnen;Umbrafenn;Zangarmarschen;447§auto Intérieur;Umbretourbe;Marécage de Zangar;447 | x=-1100.700073242188 y=5199.60009765625 | size=1 | links=#48825(auto Inside;Umbrafen Village;Zangarmarsh;446):4 #48827(auto Inside;Umbrafen Village;Zangarmarsh;448):4
+#48827 | auto Inside;Umbrafen Village;Zangarmarsh;448§auto Drinnen;Umbrafenn;Zangarmarschen;448§auto Intérieur;Umbretourbe;Marécage de Zangar;448 | x=-1102 y=5195.60009765625 | size=1 | links=#48826(auto Inside;Umbrafen Village;Zangarmarsh;447):4 #48828(auto Inside;Umbrafen Village;Zangarmarsh;449):3
+#48828 | auto Inside;Umbrafen Village;Zangarmarsh;449§auto Drinnen;Umbrafenn;Zangarmarschen;449§auto Intérieur;Umbretourbe;Marécage de Zangar;449 | x=-1100.099975585938 y=5193.2001953125 | size=1 | links=#48827(auto Inside;Umbrafen Village;Zangarmarsh;448):3 #48829(auto Inside;Umbrafen Village;Zangarmarsh;450):4
+#48829 | auto Inside;Umbrafen Village;Zangarmarsh;450§auto Drinnen;Umbrafenn;Zangarmarschen;450§auto Intérieur;Umbretourbe;Marécage de Zangar;450 | x=-1095.599975585938 y=5194.89990234375 | size=1 | links=#48828(auto Inside;Umbrafen Village;Zangarmarsh;449):4 #48830(auto Inside;Umbrafen Village;Zangarmarsh;451):3
+#48830 | auto Inside;Umbrafen Village;Zangarmarsh;451§auto Drinnen;Umbrafenn;Zangarmarschen;451§auto Intérieur;Umbretourbe;Marécage de Zangar;451 | x=-1095.300048828125 y=5198.30029296875 | size=1 | links=#48829(auto Inside;Umbrafen Village;Zangarmarsh;450):3 #48831(auto Inside;Umbrafen Village;Zangarmarsh;452):3
+#48831 | auto Inside;Umbrafen Village;Zangarmarsh;452§auto Drinnen;Umbrafenn;Zangarmarschen;452§auto Intérieur;Umbretourbe;Marécage de Zangar;452 | x=-1099 y=5199.80029296875 | size=1 | links=#48830(auto Inside;Umbrafen Village;Zangarmarsh;451):3 #48832(auto Inside;Umbrafen Village;Zangarmarsh;453):4
+#48832 | auto Inside;Umbrafen Village;Zangarmarsh;453§auto Drinnen;Umbrafenn;Zangarmarschen;453§auto Intérieur;Umbretourbe;Marécage de Zangar;453 | x=-1102 y=5196.80029296875 | size=1 | links=#48831(auto Inside;Umbrafen Village;Zangarmarsh;452):4 #48833(auto Inside;Umbrafen Village;Zangarmarsh;454):3
+#48833 | auto Inside;Umbrafen Village;Zangarmarsh;454§auto Drinnen;Umbrafenn;Zangarmarschen;454§auto Intérieur;Umbretourbe;Marécage de Zangar;454 | x=-1100.400024414063 y=5193.30029296875 | size=1 | links=#48832(auto Inside;Umbrafen Village;Zangarmarsh;453):3 #48834(auto Inside;Umbrafen Village;Zangarmarsh;455):3
+#48834 | auto Inside;Umbrafen Village;Zangarmarsh;455§auto Drinnen;Umbrafenn;Zangarmarschen;455§auto Intérieur;Umbretourbe;Marécage de Zangar;455 | x=-1096.700073242188 y=5193.89990234375 | size=1 | links=#48833(auto Inside;Umbrafen Village;Zangarmarsh;454):3 #48835(auto Inside;Umbrafen Village;Zangarmarsh;456):4
+#48835 | auto Inside;Umbrafen Village;Zangarmarsh;456§auto Drinnen;Umbrafenn;Zangarmarschen;456§auto Intérieur;Umbretourbe;Marécage de Zangar;456 | x=-1095.5 y=5197.89990234375 | size=1 | links=#48834(auto Inside;Umbrafen Village;Zangarmarsh;455):4 #48836(auto Umbrafen Village;Zangarmarsh;457):4
+#48836 | auto Umbrafen Village;Zangarmarsh;457§auto Umbrafenn;Zangarmarschen;457§auto Umbretourbe;Marécage de Zangar;457 | x=-1098.700073242188 y=5201.2001953125 | size=1 | links=#48835(auto Inside;Umbrafen Village;Zangarmarsh;456):4 #48837(auto Umbrafen Village;Zangarmarsh;458):5
+#48837 | auto Umbrafen Village;Zangarmarsh;458§auto Umbrafenn;Zangarmarschen;458§auto Umbretourbe;Marécage de Zangar;458 | x=-1104.400024414063 y=5200.10009765625 | size=1 | links=#48836(auto Umbrafen Village;Zangarmarsh;457):5

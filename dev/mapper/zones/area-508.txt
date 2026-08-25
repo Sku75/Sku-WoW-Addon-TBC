@@ -1,0 +1,3 @@
+Zone areaId 508 — eine Zeile pro Wegpunkt; Links inline.
+
+#28679 | s;Kalimdor;Dustwallow Marsh;The Dragonmurk;Stonemaul Ruins§s;Kalimdor;Marschen von Dustwallow;Das Drachendüster;Die Stonemaul Ruinen§s;Kalimdor;Marécage d'Âprefange;Le cloaque aux dragons;Ruines Cognepierres | x=-4346.02 y=-3321.15 | size=1

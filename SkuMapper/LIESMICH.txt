@@ -1,4 +1,4 @@
-SkuMapper 4.8 (Karten-Tool fuer Sku)
+SkuMapper 5.0 (Karten-Tool fuer Sku)
 
 Wozu
 - Zum Erstellen und Bearbeiten von Kartendaten (Wegpunkte, Routen) fuer das SkuAddon.
@@ -10,8 +10,32 @@ Einbau
 2. Karte oeffnen: Escape, Tastenbelegung, Kategorie Other (Sonstiges), Eintrag
    "Open Sku Minimap" eine Taste zuweisen, dann diese Taste druecken.
 
-Kartendaten
-- Import und Export laufen ueber ein Textfeld (Copy/Paste): /sku import bzw. /sku export.
+Kartendaten abgeben (der normale Weg seit 5.0)
+1. Im Spiel:  /sku save <kurzer Kommentar>   (z.B.: /sku save Westfall Wegpunkte)
+2. Im Spiel:  /reload                        (erst das schreibt die Daten auf die Platte)
+3. Im SkuMapper-Addon-Ordner die Datei HandInMapData.bat doppelklicken.
+   Sie legt eine ZIP-Datei auf den Desktop.
+4. Diese ZIP an das Sku-Team senden. Fertig — kein Kopieren, kein WTF-Ordner.
+Es darf frei ueberall gemappt werden; das Zusammenfuehren mit der Arbeit anderer
+Mapper uebernimmt das Sku-Team (Wegpunkt fuer Wegpunkt, nichts geht verloren).
+
+Kartendaten (alt)
+- Import und Export ueber ein Textfeld (Copy/Paste): /sku import bzw. /sku export.
+
+Neu in 5.0
+- Abgabe-Arbeitsablauf: /sku save <Kommentar> + /reload + HandInMapData.bat
+  (siehe oben). Der Kommentar hilft dem Team zu verstehen, was gemacht wurde.
+- Jede Datenbasis hat jetzt eine KARTENNUMMER. Das Tool merkt sich, auf welcher
+  Nummer die eigene Arbeit aufsetzt, und gibt sie bei der Abgabe mit — so kann
+  nichts mehr verwechselt oder ueberschrieben werden.
+- Neue Wegpunkte werden mit der Spielphase (Era/TBC/WotLK) gestempelt, in der
+  sie gesetzt wurden — die Anniversary-Zeitlinie ist zyklisch und Karten
+  unterscheiden sich zwischen den Phasen.
+- Franzoesische Namen bleiben erhalten: das Tool kannte bisher nur en/de und
+  hat beim Speichern die dritte Namensspalte (frFR) verworfen bzw. Namen mit
+  drei Spalten falsch zerlegt. Jetzt werden alle Spalten korrekt behandelt.
+- Laedt die Basisdaten aus dem aktuellen Sku-Routenformat (die Datei besteht
+  jetzt aus mehreren Abschnitts-Buildern; 4.9 haette daraus leer gestartet).
 
 Neu in 4.9
 - Die Basis-Kartendaten werden wieder aus Skus AKTUELLEN Routendaten geladen

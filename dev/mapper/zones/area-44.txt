@@ -1,0 +1,936 @@
+Zone areaId 44 — eine Zeile pro Wegpunkt; Links inline.
+
+#55 | auto Redridge Mountains;1§auto Rotkammgebirge;1§auto Les Carmines;1 | x=-9293.6005859375 y=-2929.5 | size=1 | links=#4153(auto Redridge Mountains;57):3 #6319(auto Redridge Mountains;89):3
+#82 | auto Redridge Mountains;2§auto Rotkammgebirge;2§auto Les Carmines;2 | x=-9131.2998046875 y=-2475.400146484375 | size=1 | links=#15854(auto Redridge Mountains;240):21 #25546(auto Redridge Mountains;403):13
+#147 | quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake Everstill;Les Carmines | x=-9366.2001953125 y=-2471.900146484375 | size=1 | links=o154357.2:75 o179487.4:72 c422.9:51 c14270.29:52
+#235 | auto Redridge Mountains;3§auto Rotkammgebirge;3§auto Les Carmines;3 | x=-8753 y=-2256.10009765625 | size=1 | links=#4699(auto Redridge Mountains;61):6 #25118(auto Redridge Mountains;396):10
+#241 | auto Redridge Mountains;4§auto Rotkammgebirge;4§auto Les Carmines;4 | x=-9120.5 y=-2515.900146484375 | size=1 | links=#14809(auto Redridge Mountains;224):14 #20958(crossing;Redridge Mountains):12
+#259 | auto Redridge Mountains;5§auto Rotkammgebirge;5§auto Les Carmines;5 | x=-9278 y=-3300.60009765625 | size=1 | links=#11291(auto Redridge Mountains;175):3 #27514(auto Redridge Mountains;426):2
+#362 | auto Redridge Mountains;6§auto Rotkammgebirge;6§auto Les Carmines;6 | x=-9287.5 y=-3293.199951171875 | size=1 | links=#17886(auto Redridge Mountains;277):2 #25379(auto Redridge Mountains;399):2
+#565 | auto Redridge Mountains;7§auto Rotkammgebirge;7§auto Les Carmines;7 | x=-9408.400390625 y=-2275 | size=1 | links=#12667(auto Redridge Mountains;197):30 #12991(auto Redridge Mountains;202):56
+#624 | auto Redridge Mountains;8§auto Rotkammgebirge;8§auto Les Carmines;8 | x=-8736.2001953125 y=-2327.300048828125 | size=1 | links=#11345(auto Redridge Mountains;176):13 #20552(auto Redridge Mountains;320):16
+#642 | auto Redridge Mountains;9§auto Rotkammgebirge;9§auto Les Carmines;9 | x=-9691.5 y=-2156.199951171875 | size=1 | links=#5268(auto Redridge Mountains;72):30 #8605(auto Redridge Mountains;130):26 c547.14:30 c547.15:32 c442.21:20 c547.21:43
+#716 | auto Redridge Mountains;10§auto Rotkammgebirge;10§auto Les Carmines;10 | x=-9385.2001953125 y=-3088 | size=1 | links=#15261(auto Redridge Mountains;232):5 #18347(auto Redridge Mountains;285):4
+#821 | auto Redridge Mountains;11§auto Rotkammgebirge;11§auto Les Carmines;11 | x=-8716.2998046875 y=-2582.5 | size=1 | links=#5362(auto Redridge Mountains;74):28 #27380(auto Redridge Mountains;423):21 c547.5:10
+#867 | auto Redridge Mountains;12§auto Rotkammgebirge;12§auto Les Carmines;12 | x=-9628.400390625 y=-2091.400146484375 | size=1 | links=#13269(auto Redridge Mountains;206):50 #14137(auto Redridge Mountains;215):33 #21634(auto Redridge Mountains;340):71
+#881 | down;Stonewatch Tower;Redridge Mountains§unten;Turm der Steinwacht;Rotkammgebirge§bas;Tour de Guet-de-pierre;Les Carmines | x=-9290.5 y=-2941.400146484375 | size=1 | links=#11952(auto Redridge Mountains;186):5
+#905 | auto Redridge Mountains;13§auto Rotkammgebirge;13§auto Les Carmines;13 | x=-9049 y=-2466.400146484375 | size=1 | links=#5356(auto Redridge Mountains;73):6 c430.24:21
+#920 | auto Redridge Mountains;14§auto Rotkammgebirge;14§auto Les Carmines;14 | x=-9284.2001953125 y=-3301.300048828125 | size=1 | links=#7532(auto Redridge Mountains;112):3 #7725(auto Redridge Mountains;116):2
+#938 | auto Redridge Mountains;15§auto Rotkammgebirge;15§auto Les Carmines;15 | x=-9330.7998046875 y=-3031.199951171875 | size=1 | links=#14473(auto Redridge Mountains;220):17 #18700(auto Redridge Mountains;293):24 c4065.4:10
+#1043 | auto Redridge Mountains;16§auto Rotkammgebirge;16§auto Les Carmines;16 | x=-9162.900390625 y=-2957.300048828125 | size=1 | links=#2624(auto Redridge Mountains;37):23 #15499(auto Redridge Mountains;235):32
+#1138 | auto Redridge Mountains;17§auto Rotkammgebirge;17§auto Les Carmines;17 | x=-9265.2001953125 y=-3002.5 | size=1 | links=#14143(auto Redridge Mountains;216):25 #21703(auto Redridge Mountains;343):29 #27569(auto Redridge Mountains;428):23 c4065.19:23
+#1163 | auto Redridge Mountains;18§auto Rotkammgebirge;18§auto Les Carmines;18 | x=-8813.5 y=-1978.200073242188 | size=1 | links=#12163(auto Redridge Mountains;190):10 #18087(auto Redridge Mountains;280):11
+#1215 | auto Redridge Mountains;19§auto Rotkammgebirge;19§auto Les Carmines;19 | x=-9297.7998046875 y=-2943.699951171875 | size=1 | links=#4814(auto Redridge Mountains;66):2 #21280(auto Redridge Mountains;336):4
+#1243 | auto Redridge Mountains;20§auto Rotkammgebirge;20§auto Les Carmines;20 | x=-9304.1005859375 y=-2986.60009765625 | size=1 | links=#28058(auto Redridge Mountains;439):18 c4064.6:12 c4065.22:4
+#1302 | auto Redridge Mountains;21§auto Rotkammgebirge;21§auto Les Carmines;21 | x=-9724 y=-1873.400024414063 | size=1 | links=#24660(auto Redridge Mountains;391):97 #28527(auto Redridge Mountains;449):64 c442.10:33 c442.14:53
+#1411 | auto Redridge Mountains;22§auto Rotkammgebirge;22§auto Les Carmines;22 | x=-8890.1005859375 y=-2239.60009765625 | size=1 | links=#7348(auto Redridge Mountains;106):19 #8754(auto Redridge Mountains;132):11 c446.34:15
+#1424 | auto Redridge Mountains;23§auto Rotkammgebirge;23§auto Les Carmines;23 | x=-9231.5 y=-2197 | size=1 | links=#3490(auto Redridge Mountains;49):14 #11504(auto Redridge Mountains;179):10
+#1483 | auto Redridge Mountains;24§auto Rotkammgebirge;24§auto Les Carmines;24 | x=-8725.900390625 y=-2249.800048828125 | size=1 | links=#15565(auto Redridge Mountains;238):9 c4463.14:14
+#1504 | auto Redridge Mountains;25§auto Rotkammgebirge;25§auto Les Carmines;25 | x=-9287 y=-2946.5 | size=1 | links=#3866(auto Redridge Mountains;54):3 #18626(auto Redridge Mountains;291):2
+#1537 | auto Redridge Mountains;26§auto Rotkammgebirge;26§auto Les Carmines;26 | x=-9253.2001953125 y=-2006.300048828125 | size=1 | links=#10809(auto Redridge Mountains;164):13 #25383(auto Redridge Mountains;400):8
+#1688 | auto Redridge Mountains;27§auto Rotkammgebirge;27§auto Les Carmines;27 | x=-8918 y=-2029.099975585938 | size=1 | links=#12961(auto Redridge Mountains;201):12 c580.7:11
+#1771 | auto Redridge Mountains;28§auto Rotkammgebirge;28§auto Les Carmines;28 | x=-9692.7001953125 y=-2336.400146484375 | size=1 | links=#3277(auto Redridge Mountains;46):50 #26383(auto Redridge Mountains;412):44 c442.17:31
+#1808 | auto Redridge Mountains;29§auto Rotkammgebirge;29§auto Les Carmines;29 | x=-9118.6005859375 y=-2589.199951171875 | size=1 | links=#5899(auto Redridge Mountains;83):15 #22085(auto Redridge Mountains;346):21
+#1912 | auto Redridge Mountains;30§auto Rotkammgebirge;30§auto Les Carmines;30 | x=-8810.900390625 y=-2186.10009765625 | size=1 | links=#17163(auto Redridge Mountains;263):10 c435.21:8
+#2047 | auto Redridge Mountains;31§auto Rotkammgebirge;31§auto Les Carmines;31 | x=-9014.2998046875 y=-2427.300048828125 | size=1 | links=#23028(auto Redridge Mountains;370):12 #25180(auto Redridge Mountains;397):13
+#2065 | auto Redridge Mountains;32§auto Rotkammgebirge;32§auto Les Carmines;32 | x=-8764.6005859375 y=-2378.400146484375 | size=1 | links=#9726(auto Redridge Mountains;143):25 #24728(auto Redridge Mountains;393):5 c615.2:38 c584.4:17 c615.5:12
+#2300 | auto Redridge Mountains;33§auto Rotkammgebirge;33§auto Les Carmines;33 | x=-9327.900390625 y=-3384.5 | size=1 | links=#3249(auto Redridge Mountains;45):30 #22913(auto Redridge Mountains;368):29
+#2330 | auto Redridge Mountains;34§auto Rotkammgebirge;34§auto Les Carmines;34 | x=-9272.2998046875 y=-3301.5 | size=5 | links=#12533(auto Redridge Mountains;194):1 #27514(auto Redridge Mountains;426):2
+#2485 | auto Redridge Mountains;35§auto Rotkammgebirge;35§auto Les Carmines;35 | x=-9403.1005859375 y=-3060.300048828125 | size=1 | links=#19487(auto Redridge Mountains;305):5 #27865(auto Redridge Mountains;436):4
+#2560 | auto Redridge Mountains;36§auto Rotkammgebirge;36§auto Les Carmines;36 | x=-9421.1005859375 y=-2094.60009765625 | size=1 | links=#16284(auto Redridge Mountains;245):35 #23492(auto Redridge Mountains;379):17
+#2624 | auto Redridge Mountains;37§auto Rotkammgebirge;37§auto Les Carmines;37 | x=-9152.1005859375 y=-2936.10009765625 | size=1 | links=#1043(auto Redridge Mountains;16):23 #24565(auto Redridge Mountains;390):27
+#2770 | auto Redridge Mountains;38§auto Rotkammgebirge;38§auto Les Carmines;38 | x=-9603.2001953125 y=-2756 | size=1 | links=#21247(auto Redridge Mountains;335):31 c428.13:37
+#2844 | auto Redridge Mountains;39§auto Rotkammgebirge;39§auto Les Carmines;39 | x=-8783.400390625 y=-2195.10009765625 | size=1 | links=c4463.17:8 c435.22:7
+#2874 | auto Redridge Mountains;40§auto Rotkammgebirge;40§auto Les Carmines;40 | x=-9130.900390625 y=-2188.5 | size=1 | links=#5762(auto Redridge Mountains;80):23 #25403(auto Redridge Mountains;401):41
+#2921 | auto Redridge Mountains;41§auto Rotkammgebirge;41§auto Les Carmines;41 | x=-9285.5 y=-3289.400146484375 | size=1 | links=#16746(auto Redridge Mountains;250):2 #25379(auto Redridge Mountains;399):2
+#3004 | auto Redridge Mountains;42§auto Rotkammgebirge;42§auto Les Carmines;42 | x=-9281.400390625 y=-3285.5 | size=1 | links=#3777(auto Redridge Mountains;53):3 #16746(auto Redridge Mountains;250):3
+#3079 | auto Redridge Mountains;43§auto Rotkammgebirge;43§auto Les Carmines;43 | x=-9281.7001953125 y=-3323.800048828125 | size=1 | links=#16765(auto Redridge Mountains;251):3 #27458(entry and exit;Tower of Ilgalar;Redridge Mountains):3
+#3162 | auto Redridge Mountains;44§auto Rotkammgebirge;44§auto Les Carmines;44 | x=-8779.400390625 y=-2491.800048828125 | size=1 | links=c4463.8:29 c547.13:32
+#3249 | auto Redridge Mountains;45§auto Rotkammgebirge;45§auto Les Carmines;45 | x=-9357.1005859375 y=-3377 | size=1 | links=#2300(auto Redridge Mountains;33):30 c947.2:11 c431.3:46 c568.3:24 c947.3:47
+#3277 | auto Redridge Mountains;46§auto Rotkammgebirge;46§auto Les Carmines;46 | x=-9688.7001953125 y=-2386.300048828125 | size=1 | links=#1771(auto Redridge Mountains;28):50 #19390(auto Redridge Mountains;303):29
+#3348 | auto Redridge Mountains;47§auto Rotkammgebirge;47§auto Les Carmines;47 | x=-9000.2001953125 y=-2394.199951171875 | size=1 | links=#8365(auto Redridge Mountains;128):40 #25180(auto Redridge Mountains;397):22
+#3403 | auto Redridge Mountains;48§auto Rotkammgebirge;48§auto Les Carmines;48 | x=-8854.6005859375 y=-1942.300048828125 | size=1 | links=#28365(auto Redridge Mountains;447):22 c580.5:25 c446.13:12
+#3490 | auto Redridge Mountains;49§auto Rotkammgebirge;49§auto Les Carmines;49 | x=-9231.2998046875 y=-2211.10009765625 | size=1 | links=#1424(auto Redridge Mountains;23):14 #6603(auto Redridge Mountains;96):24
+#3523 | auto Redridge Mountains;50§auto Rotkammgebirge;50§auto Les Carmines;50 | x=-8774.5 y=-2261.10009765625 | size=1 | links=#13416(auto Redridge Mountains;208):10 #25118(auto Redridge Mountains;396):12
+#3568 | entry and exit;Stonewatch Keep;Redridge Mountains§ein- und ausgang;Burg Steinwacht;Rotkammgebirge§entrée et sortie;Donjon de Guet-de-pierre;Les Carmines | x=-9386.2998046875 y=-3047.800048828125 | size=1 | links=#9859(auto Redridge Mountains;149):1 #12150(auto Redridge Mountains;189):3
+#3570 | auto Redridge Mountains;51§auto Rotkammgebirge;51§auto Les Carmines;51 | x=-9284 y=-2948.5 | size=1 | links=#12128(auto Redridge Mountains;187):6 #12869(auto Redridge Mountains;200):5
+#3585 | auto Redridge Mountains;52§auto Rotkammgebirge;52§auto Les Carmines;52 | x=-9068.2998046875 y=-2000.700073242188 | size=1 | links=#17916(auto Redridge Mountains;279):12 #26423(auto Redridge Mountains;413):10
+#3777 | auto Redridge Mountains;53§auto Rotkammgebirge;53§auto Les Carmines;53 | x=-9277.5 y=-3285.199951171875 | size=1 | links=#3004(auto Redridge Mountains;42):3 #17031(auto Redridge Mountains;260):3
+#3866 | auto Redridge Mountains;54§auto Rotkammgebirge;54§auto Les Carmines;54 | x=-9283.5 y=-2944.900146484375 | size=1 | links=#1504(auto Redridge Mountains;25):3 #12509(auto Redridge Mountains;193):3
+#4097 | auto Redridge Mountains;55§auto Rotkammgebirge;55§auto Les Carmines;55 | x=-9632.7001953125 y=-2636.800048828125 | size=1 | links=#4235(auto Redridge Mountains;59):32 #12351(auto Redridge Mountains;192):29 c548.9:13 c548.10:17 c441.14:64 c441.16:75 c14270.16:13
+#4139 | auto Redridge Mountains;56§auto Rotkammgebirge;56§auto Les Carmines;56 | x=-9250.400390625 y=-2236.900146484375 | size=1 | links=#19565(auto Redridge Mountains;307):21 c793.1:3 c956.1:5
+#4153 | auto Redridge Mountains;57§auto Rotkammgebirge;57§auto Les Carmines;57 | x=-9296.400390625 y=-2931.10009765625 | size=1 | links=#55(auto Redridge Mountains;1):3 #9379(auto Redridge Mountains;140):3
+#4157 | top;ramp;Stonewatch Tower;Redridge Mountains§oben;rampe;Turm der Steinwacht;Rotkammgebirge§top;ramp;Tour de Guet-de-pierre;Les Carmines | x=-9283.1005859375 y=-2938.800048828125 | size=1 | links=#23754(auto Redridge Mountains;381):4
+#4227 | auto Redridge Mountains;58§auto Rotkammgebirge;58§auto Les Carmines;58 | x=-9115.7001953125 y=-2556.400146484375 | size=1 | links=#5899(auto Redridge Mountains;83):17 #14809(auto Redridge Mountains;224):27
+#4235 | auto Redridge Mountains;59§auto Rotkammgebirge;59§auto Les Carmines;59 | x=-9629.6005859375 y=-2669.199951171875 | size=1 | links=#4097(auto Redridge Mountains;55):32 #16831(auto Redridge Mountains;254):33 c1083.9:19 c428.19:26
+#4541 | passage;from;Redridge Mountains;to;Searing Gorge§passage;von;Rotkammgebirge;nach;Sengende Schlucht§passage;de;Les Carmines;vers;Gorge des Vents brûlants | x=-8668.5 y=-2580.699951171875 | size=1 | links=#27380(auto Redridge Mountains;423):26 #1337(auto Burning Steppes;21):7
+#4591 | auto Redridge Mountains;60§auto Rotkammgebirge;60§auto Les Carmines;60 | x=-9223.5 y=-2154.699951171875 | size=1 | links=#7330(down;Lakeshire Inn):4 #7712(auto Redridge Mountains;115):12
+#4599 | top;ramp;Tower of Ilgalar;Redridge Mountains§oben;rampe;Der Turm von Ilgalar;Rotkammgebirge§top;ramp;Tower of Ilgalar;Les Carmines | x=-9267.5 y=-3296.60009765625 | size=1 | links=#9762(auto Redridge Mountains;145):7 #17518(auto Redridge Mountains;271):6 #18123(auto Redridge Mountains;281):3
+#4699 | auto Redridge Mountains;61§auto Rotkammgebirge;61§auto Les Carmines;61 | x=-8746.400390625 y=-2254.300048828125 | size=1 | links=#235(auto Redridge Mountains;3):6 #11459(auto Redridge Mountains;178):6
+#4767 | auto Redridge Mountains;62§auto Rotkammgebirge;62§auto Les Carmines;62 | x=-9393.6005859375 y=-3072.699951171875 | size=1 | links=#5576(auto Redridge Mountains;78):7 #9768(auto Redridge Mountains;146):6
+#4791 | auto Redridge Mountains;63§auto Rotkammgebirge;63§auto Les Carmines;63 | x=-9303 y=-2309 | size=1 | links=#20829(auto Redridge Mountains;326):23 o154357.7:44
+#4792 | auto Redridge Mountains;64§auto Rotkammgebirge;64§auto Les Carmines;64 | x=-9453 y=-2229.699951171875 | size=1 | links=#6445(auto Redridge Mountains;91):44 c1070.1:12
+#4810 | auto Redridge Mountains;65§auto Rotkammgebirge;65§auto Les Carmines;65 | x=-9265.7001953125 y=-3295.400146484375 | size=1 | links=#6737(auto Redridge Mountains;99):5 #10989(auto Redridge Mountains;167):3
+#4814 | auto Redridge Mountains;66§auto Rotkammgebirge;66§auto Les Carmines;66 | x=-9296.2001953125 y=-2946.10009765625 | size=1 | links=#1215(auto Redridge Mountains;19):2 #12726(auto Redridge Mountains;198):3
+#4891 | auto Redridge Mountains;67§auto Rotkammgebirge;67§auto Les Carmines;67 | x=-9292.6005859375 y=-3296.60009765625 | size=1 | links=#17613(auto Redridge Mountains;274):3 #20275(auto Redridge Mountains;314):4
+#5033 | auto Redridge Mountains;68§auto Rotkammgebirge;68§auto Les Carmines;68 | x=-9277.6005859375 y=-3299.300048828125 | size=1 | links=#9689(auto Redridge Mountains;142):2 #21457(auto Redridge Mountains;339):3
+#5095 | auto Redridge Mountains;69§auto Rotkammgebirge;69§auto Les Carmines;69 | x=-8876.1005859375 y=-2188.10009765625 | size=1 | links=#8288(auto Redridge Mountains;127):5 c445.3:15
+#5195 | auto Redridge Mountains;70§auto Rotkammgebirge;70§auto Les Carmines;70 | x=-9420.900390625 y=-3046.5 | size=1 | links=#20160(auto Redridge Mountains;312):8 c486.1:35 c436.17:9 c4065.18:29 c4065.30:6
+#5202 | auto Redridge Mountains;71§auto Rotkammgebirge;71§auto Les Carmines;71 | x=-9145.7998046875 y=-2257.800048828125 | size=1 | links=#5849(auto Redridge Mountains;82):9 #9272(auto Redridge Mountains;137):16
+#5268 | auto Redridge Mountains;72§auto Rotkammgebirge;72§auto Les Carmines;72 | x=-9697.5 y=-2185.900146484375 | size=1 | links=#642(auto Redridge Mountains;9):30 #21133(auto Redridge Mountains;333):26
+#5356 | auto Redridge Mountains;73§auto Rotkammgebirge;73§auto Les Carmines;73 | x=-9043.2001953125 y=-2463 | size=1 | links=#905(auto Redridge Mountains;13):6 c426.15:10
+#5362 | auto Redridge Mountains;74§auto Rotkammgebirge;74§auto Les Carmines;74 | x=-8745.1005859375 y=-2583.10009765625 | size=1 | links=#821(auto Redridge Mountains;11):28 c547.4:36
+#5364 | auto Redridge Mountains;75§auto Rotkammgebirge;75§auto Les Carmines;75 | x=-8802.2001953125 y=-1992.099975585938 | size=1 | links=#10580(auto Redridge Mountains;161):8 #12163(auto Redridge Mountains;190):8
+#5366 | auto Redridge Mountains;76§auto Rotkammgebirge;76§auto Les Carmines;76 | x=-9162.900390625 y=-2846.60009765625 | size=1 | links=#20491(auto Redridge Mountains;317):28 c428.20:38
+#5450 | auto Redridge Mountains;77§auto Rotkammgebirge;77§auto Les Carmines;77 | x=-9279.400390625 y=-3292.10009765625 | size=1 | links=#11829(auto Redridge Mountains;183):3 #21925(auto Redridge Mountains;344):3
+#5576 | auto Redridge Mountains;78§auto Rotkammgebirge;78§auto Les Carmines;78 | x=-9386.6005859375 y=-3070.5 | size=1 | links=#4767(auto Redridge Mountains;62):7 #28184(auto Redridge Mountains;441):4
+#5662 | auto Redridge Mountains;79§auto Rotkammgebirge;79§auto Les Carmines;79 | x=-9258.6005859375 y=-2147 | size=1 | links=#19948(entry and exit;Lakeshire Inn):11 #20674(auto Redridge Mountains;324):31 c381.1:25 c859.1:11 c1678.1:22
+#5762 | auto Redridge Mountains;80§auto Rotkammgebirge;80§auto Les Carmines;80 | x=-9128.6005859375 y=-2165.10009765625 | size=1 | links=#2874(auto Redridge Mountains;40):23 #6478(auto Redridge Mountains;92):41 c430.10:16
+#5779 | auto Redridge Mountains;81§auto Rotkammgebirge;81§auto Les Carmines;81 | x=-9096.400390625 y=-2489.60009765625 | size=1 | links=#17295(auto Redridge Mountains;266):20 #20958(crossing;Redridge Mountains):23
+#5814 | entry and exit;Rethban Caverns;Redridge Mountains§ein- und ausgang;Rethbanhöhlen;Rotkammgebirge§entrée et sortie;Rethban Caverns;Les Carmines | x=-8980.5 y=-2016.099975585938 | size=1 | links=#26714(auto Redridge Mountains;415):11 c580.6:14
+#5849 | auto Redridge Mountains;82§auto Rotkammgebirge;82§auto Les Carmines;82 | x=-9151.5 y=-2265 | size=1 | links=#5202(auto Redridge Mountains;71):9 #21148(auto Redridge Mountains;334):9
+#5899 | auto Redridge Mountains;83§auto Rotkammgebirge;83§auto Les Carmines;83 | x=-9114.2998046875 y=-2574 | size=1 | links=#1808(auto Redridge Mountains;29):15 #4227(auto Redridge Mountains;58):17
+#5938 | auto Redridge Mountains;84§auto Rotkammgebirge;84§auto Les Carmines;84 | x=-8821.5 y=-1960.599975585938 | size=1 | links=#18087(auto Redridge Mountains;280):8 c445.1:19 c711.1:20
+#6021 | auto Redridge Mountains;85§auto Rotkammgebirge;85§auto Les Carmines;85 | x=-9485 y=-3358.699951171875 | size=1 | links=#11275(auto Redridge Mountains;174):35 #22406(auto Redridge Mountains;355):42
+#6068 | auto Redridge Mountains;86§auto Rotkammgebirge;86§auto Les Carmines;86 | x=-9289.2998046875 y=-3290.10009765625 | size=1 | links=#17613(auto Redridge Mountains;274):3 #19518(auto Redridge Mountains;306):3
+#6262 | auto Redridge Mountains;87§auto Rotkammgebirge;87§auto Les Carmines;87 | x=-9009.900390625 y=-2012.200073242188 | size=1 | links=#14514(auto Redridge Mountains;222):13 #28478(auto Redridge Mountains;448):9
+#6314 | auto Redridge Mountains;88§auto Rotkammgebirge;88§auto Les Carmines;88 | x=-9206.900390625 y=-3243.800048828125 | size=1 | links=#6950(auto Redridge Mountains;103):30 #28198(auto Redridge Mountains;442):46
+#6319 | auto Redridge Mountains;89§auto Rotkammgebirge;89§auto Les Carmines;89 | x=-9290 y=-2928.300048828125 | size=1 | links=#55(auto Redridge Mountains;1):3 #19084(auto Redridge Mountains;298):4
+#6354 | auto Redridge Mountains;90§auto Rotkammgebirge;90§auto Les Carmines;90 | x=-9384.7998046875 y=-3057.60009765625 | size=1 | links=#12150(auto Redridge Mountains;189):6 #26573(auto Redridge Mountains;414):4
+#6445 | auto Redridge Mountains;91§auto Rotkammgebirge;91§auto Les Carmines;91 | x=-9448.2998046875 y=-2185.60009765625 | size=1 | links=#4792(auto Redridge Mountains;64):44 #16427(auto Redridge Mountains;247):36
+#6478 | auto Redridge Mountains;92§auto Rotkammgebirge;92§auto Les Carmines;92 | x=-9116.1005859375 y=-2125.900146484375 | size=1 | links=#5762(auto Redridge Mountains;80):41 c426.8:33
+#6501 | auto Redridge Mountains;93§auto Rotkammgebirge;93§auto Les Carmines;93 | x=-8881 y=-2205.60009765625 | size=1 | links=#18652(auto Redridge Mountains;292):9 #19867(auto Redridge Mountains;310):7
+#6524 | auto Redridge Mountains;94§auto Rotkammgebirge;94§auto Les Carmines;94 | x=-8945.1005859375 y=-2602.900146484375 | size=1 | links=#20261(auto Redridge Mountains;313):35 #28346(auto Redridge Mountains;446):27
+#6552 | auto Redridge Mountains;95§auto Rotkammgebirge;95§auto Les Carmines;95 | x=-9550.900390625 y=-2203.800048828125 | size=1 | links=#12667(auto Redridge Mountains;197):130 #21634(auto Redridge Mountains;340):65
+#6603 | auto Redridge Mountains;96§auto Rotkammgebirge;96§auto Les Carmines;96 | x=-9255.7998046875 y=-2210.699951171875 | size=1 | links=#3490(auto Redridge Mountains;49):24 #7096(central location;Lakeshire;Redridge Mountains):15 o60.1:12
+#6701 | auto Redridge Mountains;97§auto Rotkammgebirge;97§auto Les Carmines;97 | x=-9366 y=-3057.5 | size=1 | links=#10255(auto Redridge Mountains;156):12 #23040(auto Redridge Mountains;371):6
+#6735 | auto Redridge Mountains;98§auto Rotkammgebirge;98§auto Les Carmines;98 | x=-9193.7001953125 y=-2091.300048828125 | size=1 | links=#8065(auto Redridge Mountains;123):45 #23988(auto Redridge Mountains;385):15 #24516(auto Redridge Mountains;389):28
+#6737 | auto Redridge Mountains;99§auto Rotkammgebirge;99§auto Les Carmines;99 | x=-9264.7001953125 y=-3301.10009765625 | size=1 | links=#4810(auto Redridge Mountains;65):5 #10481(auto Redridge Mountains;159):5
+#6776 | auto Redridge Mountains;100§auto Rotkammgebirge;100§auto Les Carmines;100 | x=-9214 y=-2221.800048828125 | size=1 | links=#18431(auto Redridge Mountains;286):6 c344.1:4
+#6849 | auto Redridge Mountains;101§auto Rotkammgebirge;101§auto Les Carmines;101 | x=-9282.5 y=-2928.10009765625 | size=1 | links=#17914(auto Redridge Mountains;278):5 #26362(auto Redridge Mountains;411):6
+#6879 | auto Redridge Mountains;102§auto Rotkammgebirge;102§auto Les Carmines;102 | x=-9237.2998046875 y=-2148.900146484375 | size=1 | links=#17146(auto Redridge Mountains;262):6 #19948(entry and exit;Lakeshire Inn):9
+#6950 | auto Redridge Mountains;103§auto Rotkammgebirge;103§auto Les Carmines;103 | x=-9203.400390625 y=-3213.5 | size=1 | links=#6314(auto Redridge Mountains;88):30 #27411(auto Redridge Mountains;424):38
+#7096 | central location;Lakeshire;Redridge Mountains§zentralpunkt;Seenhain;Rotkammgebirge§emplacement central;Lakeshire;Les Carmines | x=-9270.900390625 y=-2211.10009765625 | size=1 | links=#6603(auto Redridge Mountains;96):15 #13107(auto Redridge Mountains;205):25 #19565(auto Redridge Mountains;307):26 c777.1:13 c790.1:13 c791.1:18
+#7147 | auto Redridge Mountains;104§auto Rotkammgebirge;104§auto Les Carmines;104 | x=-9682.2998046875 y=-2097.199951171875 | size=1 | links=#8605(auto Redridge Mountains;130):33 #14137(auto Redridge Mountains;215):24 c547.10:30
+#7269 | auto Redridge Mountains;105§auto Rotkammgebirge;105§auto Les Carmines;105 | x=-8699 y=-2242 | size=1 | links=#24812(auto Redridge Mountains;394):6 c4463.14:13
+#7330 | down;Lakeshire Inn§unten;Gasthaus Seenhain§bas;Lakeshire Inn | x=-9227.5 y=-2156.800048828125 | size=1 | links=#4591(auto Redridge Mountains;60):4 #17146(auto Redridge Mountains;262):10 #28013(auto Redridge Mountains;438):7 c6727.1:3
+#7348 | auto Redridge Mountains;106§auto Rotkammgebirge;106§auto Les Carmines;106 | x=-8889.400390625 y=-2259.10009765625 | size=1 | links=#1411(auto Redridge Mountains;22):19 #8214(auto Redridge Mountains;125):36
+#7443 | auto Redridge Mountains;107§auto Rotkammgebirge;107§auto Les Carmines;107 | x=-9342 y=-2207.199951171875 | size=1 | links=#20503(auto Redridge Mountains;318):17 c7009.1:28 c8965.1:9
+#7449 | auto Redridge Mountains;108§auto Rotkammgebirge;108§auto Les Carmines;108 | x=-8673.900390625 y=-2286.5 | size=1 | links=#23205(entry and exit;cave;Render's Rock;Redridge Mountains):13 #25813(auto Redridge Mountains;406):8
+#7464 | auto Redridge Mountains;109§auto Rotkammgebirge;109§auto Les Carmines;109 | x=-9290.7001953125 y=-3307.400146484375 | size=1 | links=#10382(auto Redridge Mountains;158):3 #11040(auto Redridge Mountains;168):6
+#7507 | auto Redridge Mountains;110§auto Rotkammgebirge;110§auto Les Carmines;110 | x=-9579.7998046875 y=-3312.199951171875 | size=1 | links=#11275(auto Redridge Mountains;174):78 c437.1:31
+#7526 | auto Redridge Mountains;111§auto Rotkammgebirge;111§auto Les Carmines;111 | x=-9156.5 y=-2620.400146484375 | size=1 | links=#22085(auto Redridge Mountains;346):27 #22498(auto Redridge Mountains;358):19 c616.10:14
+#7532 | auto Redridge Mountains;112§auto Rotkammgebirge;112§auto Les Carmines;112 | x=-9280.900390625 y=-3301.60009765625 | size=1 | links=#920(auto Redridge Mountains;14):3 #22608(auto Redridge Mountains;361):3
+#7537 | auto Redridge Mountains;113§auto Rotkammgebirge;113§auto Les Carmines;113 | x=-9296.900390625 y=-2941 | size=1 | links=#9066(auto Redridge Mountains;136):10 #11952(auto Redridge Mountains;186):7
+#7693 | auto Redridge Mountains;114§auto Rotkammgebirge;114§auto Les Carmines;114 | x=-9275.1005859375 y=-3312.199951171875 | size=1 | links=#13797(auto Redridge Mountains;214):3 #21638(auto Redridge Mountains;341):4
+#7712 | auto Redridge Mountains;115§auto Rotkammgebirge;115§auto Les Carmines;115 | x=-9210.900390625 y=-2154.10009765625 | size=1 | links=#4591(auto Redridge Mountains;60):12 #23394(auto Redridge Mountains;378):4 c5620.1:3 o180523.1:7
+#7725 | auto Redridge Mountains;116§auto Rotkammgebirge;116§auto Les Carmines;116 | x=-9286.900390625 y=-3301 | size=1 | links=#920(auto Redridge Mountains;14):2 #15071(auto Redridge Mountains;228):2
+#7732 | auto Redridge Mountains;117§auto Rotkammgebirge;117§auto Les Carmines;117 | x=-9282.6005859375 y=-3333.10009765625 | size=1 | links=#27458(entry and exit;Tower of Ilgalar;Redridge Mountains):5 #28283(auto Redridge Mountains;445):8
+#7805 | auto Redridge Mountains;118§auto Rotkammgebirge;118§auto Les Carmines;118 | x=-8889.1005859375 y=-2055.199951171875 | size=1 | links=#16833(auto Redridge Mountains;255):19 c580.9:16
+#7914 | auto Redridge Mountains;119§auto Rotkammgebirge;119§auto Les Carmines;119 | x=-9284.1005859375 y=-3310 | size=1 | links=#9772(auto Redridge Mountains;147):3 #13403(auto Redridge Mountains;207):4
+#8003 | auto Redridge Mountains;120§auto Rotkammgebirge;120§auto Les Carmines;120 | x=-8795.400390625 y=-2252.699951171875 | size=1 | links=#8095(auto Redridge Mountains;124):10 #13416(auto Redridge Mountains;208):12
+#8022 | auto Redridge Mountains;121§auto Rotkammgebirge;121§auto Les Carmines;121 | x=-8820 y=-2221.10009765625 | size=1 | links=#16875(auto Redridge Mountains;256):8 #20385(auto Redridge Mountains;315):12
+#8045 | auto Redridge Mountains;122§auto Rotkammgebirge;122§auto Les Carmines;122 | x=-8662.900390625 y=-2255.300048828125 | size=1 | links=#14360(auto Redridge Mountains;219):21 #22090(auto Redridge Mountains;347):10 c435.12:6
+#8065 | auto Redridge Mountains;123§auto Rotkammgebirge;123§auto Les Carmines;123 | x=-9238.7001953125 y=-2088.10009765625 | size=1 | links=#6735(auto Redridge Mountains;98):45 #18762(focus point;Lakeshire;Redridge Mountains):22 #20674(auto Redridge Mountains;324):30
+#8095 | auto Redridge Mountains;124§auto Rotkammgebirge;124§auto Les Carmines;124 | x=-8798.7998046875 y=-2242.800048828125 | size=1 | links=#8003(auto Redridge Mountains;120):10 #13070(auto Redridge Mountains;204):7
+#8214 | auto Redridge Mountains;125§auto Rotkammgebirge;125§auto Les Carmines;125 | x=-8920.7001953125 y=-2278.5 | size=1 | links=#7348(auto Redridge Mountains;106):36 #22552(auto Redridge Mountains;359):24
+#8261 | auto Redridge Mountains;126§auto Rotkammgebirge;126§auto Les Carmines;126 | x=-8808 y=-2051.5 | size=1 | links=c446.12:12 c580.12:7
+#8288 | auto Redridge Mountains;127§auto Rotkammgebirge;127§auto Les Carmines;127 | x=-8874.7998046875 y=-2193.800048828125 | size=1 | links=#5095(auto Redridge Mountains;69):5 #18652(auto Redridge Mountains;292):4
+#8353 | passage;from;Three Corners;Redridge Mountains;to;Elwynn Forest§passage;von;Drei Ecken;Rotkammgebirge;zum;Wald von Elwynn§passage;de;Trois chemins;Les Carmines;vers;Forêt d'Elwynn | x=-9608.5 y=-1738.700073242188 | size=1 | links=#7221(passage;Elwynn Forest;to;Redridge Mountains):19 #15010(auto Redridge Mountains;227):59
+#8365 | auto Redridge Mountains;128§auto Rotkammgebirge;128§auto Les Carmines;128 | x=-8982.400390625 y=-2358.199951171875 | size=1 | links=#3348(auto Redridge Mountains;47):40 #10379(auto Redridge Mountains;157):34
+#8441 | auto Redridge Mountains;129§auto Rotkammgebirge;129§auto Les Carmines;129 | x=-9380.900390625 y=-2274.300048828125 | size=1 | links=o154357.5:29 o154357.12:37
+#8605 | auto Redridge Mountains;130§auto Rotkammgebirge;130§auto Les Carmines;130 | x=-9687.7998046875 y=-2129.900146484375 | size=1 | links=#642(auto Redridge Mountains;9):26 #7147(auto Redridge Mountains;104):33
+#8633 | auto Redridge Mountains;131§auto Rotkammgebirge;131§auto Les Carmines;131 | x=-9031 y=-2581.900146484375 | size=1 | links=#9733(auto Redridge Mountains;144):28 #17036(auto Redridge Mountains;261):44
+#8754 | auto Redridge Mountains;132§auto Rotkammgebirge;132§auto Les Carmines;132 | x=-8887.6005859375 y=-2228.10009765625 | size=1 | links=#1411(auto Redridge Mountains;22):11 #18718(auto Redridge Mountains;294):7
+#8762 | auto Redridge Mountains;133§auto Rotkammgebirge;133§auto Les Carmines;133 | x=-9275.7998046875 y=-2311.800048828125 | size=1 | links=#20829(auto Redridge Mountains;326):16 c382.1:16
+#8847 | auto Redridge Mountains;134§auto Rotkammgebirge;134§auto Les Carmines;134 | x=-9179.2001953125 y=-2798.800048828125 | size=1 | links=#12595(auto Redridge Mountains;195):40 c428.20:11
+#8877 | auto Redridge Mountains;135§auto Rotkammgebirge;135§auto Les Carmines;135 | x=-8802.1005859375 y=-1953.300048828125 | size=1 | links=#11064(auto Redridge Mountains;169):16 #11086(auto Redridge Mountains;170):22
+#9066 | auto Redridge Mountains;136§auto Rotkammgebirge;136§auto Les Carmines;136 | x=-9297.7001953125 y=-2930.900146484375 | size=1 | links=#7537(auto Redridge Mountains;113):10 #26362(auto Redridge Mountains;411):9
+#9161 | Lieutenant Fangore;Galardell Valley;Redridge Mountains§Leutnant Fangor;Galardelltal;Rotkammgebirge§Lieutenant Tripecroc;Vallée de Galardell;Les Carmines | x=-9128 y=-3308.699951171875 | size=1 | links=#12777(auto Redridge Mountains;199):34 c432.11:5
+#9272 | auto Redridge Mountains;137§auto Rotkammgebirge;137§auto Les Carmines;137 | x=-9140.400390625 y=-2242.300048828125 | size=1 | links=#5202(auto Redridge Mountains;71):16 #25403(auto Redridge Mountains;401):13
+#9284 | auto Redridge Mountains;138§auto Rotkammgebirge;138§auto Les Carmines;138 | x=-9039.2001953125 y=-1991.700073242188 | size=1 | links=#17699(auto Redridge Mountains;275):14 #20895(auto Redridge Mountains;327):9
+#9294 | waters;Render's Rock;Redridge Mountains§gewässer;Renders Fels;Rotkammgebirge§eaux;Rocher des Etripeurs;Les Carmines | x=-8804.5 y=-2204.699951171875 | size=1 | links=c435.20:24
+#9326 | auto Redridge Mountains;139§auto Rotkammgebirge;139§auto Les Carmines;139 | x=-9276.900390625 y=-1941.200073242188 | size=1 | links=c345.1:32 c547.2:22
+#9350 | top;Lakeshire Inn§oben;Gasthaus Seenhain§top;Lakeshire Inn | x=-9224.2998046875 y=-2159.60009765625 | size=1 | links=#25056(auto Redridge Mountains;395):10 c266.1:15 c3091.1:10
+#9379 | auto Redridge Mountains;140§auto Rotkammgebirge;140§auto Les Carmines;140 | x=-9298.6005859375 y=-2933.800048828125 | size=1 | links=#4153(auto Redridge Mountains;57):3 #21280(auto Redridge Mountains;336):5
+#9688 | auto Redridge Mountains;141§auto Rotkammgebirge;141§auto Les Carmines;141 | x=-8715.7998046875 y=-2326.900146484375 | size=1 | links=#11345(auto Redridge Mountains;176):8 #15963(auto Redridge Mountains;241):4
+#9689 | auto Redridge Mountains;142§auto Rotkammgebirge;142§auto Les Carmines;142 | x=-9276.400390625 y=-3297.699951171875 | size=1 | links=#5033(auto Redridge Mountains;68):2 #17278(auto Redridge Mountains;265):2
+#9726 | auto Redridge Mountains;143§auto Rotkammgebirge;143§auto Les Carmines;143 | x=-8767.7001953125 y=-2353.10009765625 | size=1 | links=#2065(auto Redridge Mountains;32):25 #20552(auto Redridge Mountains;320):24
+#9733 | auto Redridge Mountains;144§auto Rotkammgebirge;144§auto Les Carmines;144 | x=-9051.5 y=-2561.699951171875 | size=1 | links=#8633(auto Redridge Mountains;131):28 #15485(auto Redridge Mountains;234):43 #22176(auto Redridge Mountains;348):27 c14272.3:45
+#9762 | auto Redridge Mountains;145§auto Rotkammgebirge;145§auto Les Carmines;145 | x=-9261.7001953125 y=-3302.10009765625 | size=1 | links=#4599(top;ramp;Tower of Ilgalar;Redridge Mountains):7 #22791(auto Redridge Mountains;365):11
+#9768 | auto Redridge Mountains;146§auto Rotkammgebirge;146§auto Les Carmines;146 | x=-9399.7998046875 y=-3073.5 | size=1 | links=#4767(auto Redridge Mountains;62):6 #20109(auto Redridge Mountains;311):6
+#9772 | auto Redridge Mountains;147§auto Rotkammgebirge;147§auto Les Carmines;147 | x=-9287.5 y=-3309.300048828125 | size=1 | links=#7914(auto Redridge Mountains;119):3 #28236(auto Redridge Mountains;443):2
+#9832 | auto Redridge Mountains;148§auto Rotkammgebirge;148§auto Les Carmines;148 | x=-9288.2998046875 y=-2945.699951171875 | size=1 | links=#13759(auto Redridge Mountains;213):3 #27116(auto Redridge Mountains;418):2
+#9859 | auto Redridge Mountains;149§auto Rotkammgebirge;149§auto Les Carmines;149 | x=-9386.7998046875 y=-3046 | size=1 | links=#3568(entry and exit;Stonewatch Keep;Redridge Mountains):1 #24059(auto Redridge Mountains;386):11
+#9901 | auto Redridge Mountains;150§auto Rotkammgebirge;150§auto Les Carmines;150 | x=-9262.400390625 y=-3344.400146484375 | size=1 | links=#16221(auto Redridge Mountains;244):14 c568.10:12
+#9934 | auto Redridge Mountains;151§auto Rotkammgebirge;151§auto Les Carmines;151 | x=-9034.5 y=-2449.900146484375 | size=1 | links=#23028(auto Redridge Mountains;370):17 c426.15:5
+#10075 | auto Redridge Mountains;152§auto Rotkammgebirge;152§auto Les Carmines;152 | x=-9084.400390625 y=-2123.800048828125 | size=1 | links=#19663(auto Redridge Mountains;308):42 c426.2:32 c430.8:30
+#10094 | auto Redridge Mountains;153§auto Rotkammgebirge;153§auto Les Carmines;153 | x=-9441.900390625 y=-3424.5 | size=1 | links=#25458(auto Redridge Mountains;402):23 c568.2:19
+#10112 | auto Redridge Mountains;154§auto Rotkammgebirge;154§auto Les Carmines;154 | x=-8667.1005859375 y=-2578.199951171875 | size=1 | links=#27380(auto Redridge Mountains;423):27
+#10158 | auto Redridge Mountains;155§auto Rotkammgebirge;155§auto Les Carmines;155 | x=-9248.900390625 y=-1971.099975585938 | size=1 | links=#16294(auto Redridge Mountains;246):14 #28281(auto Redridge Mountains;444):12
+#10255 | auto Redridge Mountains;156§auto Rotkammgebirge;156§auto Les Carmines;156 | x=-9364.1005859375 y=-3069.800048828125 | size=1 | links=#6701(auto Redridge Mountains;97):12 #11231(auto Redridge Mountains;172):4
+#10379 | auto Redridge Mountains;157§auto Rotkammgebirge;157§auto Les Carmines;157 | x=-8962.7998046875 y=-2330.199951171875 | size=1 | links=#8365(auto Redridge Mountains;128):34 #20957(auto Redridge Mountains;330):17 c446.26:15 c446.33:18
+#10382 | auto Redridge Mountains;158§auto Rotkammgebirge;158§auto Les Carmines;158 | x=-9291.900390625 y=-3304 | size=1 | links=#7464(auto Redridge Mountains;109):3 #15071(auto Redridge Mountains;228):3
+#10481 | auto Redridge Mountains;159§auto Rotkammgebirge;159§auto Les Carmines;159 | x=-9268 y=-3304.900146484375 | size=1 | links=#6737(auto Redridge Mountains;99):5 #15405(auto Redridge Mountains;233):3
+#10533 | auto Redridge Mountains;160§auto Rotkammgebirge;160§auto Les Carmines;160 | x=-8794.2998046875 y=-2469.5 | size=1 | links=#25793(auto Redridge Mountains;405):33 c547.13:25
+#10580 | auto Redridge Mountains;161§auto Rotkammgebirge;161§auto Les Carmines;161 | x=-8793.900390625 y=-1992.800048828125 | size=1 | links=#5364(auto Redridge Mountains;75):8 #21397(auto Redridge Mountains;338):9
+#10764 | auto Redridge Mountains;162§auto Rotkammgebirge;162§auto Les Carmines;162 | x=-8804 y=-2581.400146484375 | size=1 | links=#23112(auto Redridge Mountains;374):36 c547.4:23
+#10790 | auto Redridge Mountains;163§auto Rotkammgebirge;163§auto Les Carmines;163 | x=-9292.7998046875 y=-2937.10009765625 | size=1 | links=#22240(auto Redridge Mountains;350):3 #22756(auto Redridge Mountains;364):2
+#10809 | auto Redridge Mountains;164§auto Rotkammgebirge;164§auto Les Carmines;164 | x=-9250.1005859375 y=-2019.900024414063 | size=1 | links=#1537(auto Redridge Mountains;26):13 #22460(auto Redridge Mountains;356):9 c620.2:10 c620.3:10
+#10934 | auto Redridge Mountains;165§auto Rotkammgebirge;165§auto Les Carmines;165 | x=-9383.7001953125 y=-3052.300048828125 | size=1 | links=#15116(auto Redridge Mountains;229):17 #27211(auto Redridge Mountains;419):6 c4065.14:2
+#10982 | auto Redridge Mountains;166§auto Rotkammgebirge;166§auto Les Carmines;166 | x=-9138.6005859375 y=-2324.60009765625 | size=1 | links=#15148(auto Redridge Mountains;230):19 #27621(auto Redridge Mountains;429):18 c430.12:37
+#10989 | auto Redridge Mountains;167§auto Rotkammgebirge;167§auto Les Carmines;167 | x=-9267.400390625 y=-3292.699951171875 | size=1 | links=#4810(auto Redridge Mountains;65):3 #18596(auto Redridge Mountains;290):4
+#11040 | auto Redridge Mountains;168§auto Rotkammgebirge;168§auto Les Carmines;168 | x=-9286.1005859375 y=-3311.5 | size=1 | links=#7464(auto Redridge Mountains;109):6 #11850(auto Redridge Mountains;184):2
+#11064 | auto Redridge Mountains;169§auto Rotkammgebirge;169§auto Les Carmines;169 | x=-8798.2001953125 y=-1969.099975585938 | size=1 | links=#8877(auto Redridge Mountains;135):16 #18895(auto Redridge Mountains;296):9
+#11086 | auto Redridge Mountains;170§auto Rotkammgebirge;170§auto Les Carmines;170 | x=-8811.5 y=-1932.599975585938 | size=1 | links=#8877(auto Redridge Mountains;135):22 c580.2:17
+#11171 | auto Redridge Mountains;171§auto Rotkammgebirge;171§auto Les Carmines;171 | x=-9203.7998046875 y=-2340.300048828125 | size=1 | links=#15148(auto Redridge Mountains;230):47 #16994(auto Redridge Mountains;259):35 #18480(auto Redridge Mountains;287):47
+#11231 | auto Redridge Mountains;172§auto Rotkammgebirge;172§auto Les Carmines;172 | x=-9368.2998046875 y=-3070.900146484375 | size=1 | links=#10255(auto Redridge Mountains;156):4 #23117(auto Redridge Mountains;376):5
+#11242 | auto Redridge Mountains;173§auto Rotkammgebirge;173§auto Les Carmines;173 | x=-9277.1005859375 y=-2938.5 | size=1 | links=#12128(auto Redridge Mountains;187):5 #17914(auto Redridge Mountains;278):6
+#11275 | auto Redridge Mountains;174§auto Rotkammgebirge;174§auto Les Carmines;174 | x=-9503.1005859375 y=-3328.400146484375 | size=1 | links=#6021(auto Redridge Mountains;85):35 #7507(auto Redridge Mountains;110):78 c545.5:37
+#11291 | auto Redridge Mountains;175§auto Rotkammgebirge;175§auto Les Carmines;175 | x=-9281.7998046875 y=-3300 | size=1 | links=#259(auto Redridge Mountains;5):3 #25232(auto Redridge Mountains;398):3
+#11345 | auto Redridge Mountains;176§auto Rotkammgebirge;176§auto Les Carmines;176 | x=-8722.900390625 y=-2323.10009765625 | size=1 | links=#624(auto Redridge Mountains;8):13 #9688(auto Redridge Mountains;141):8
+#11429 | auto Redridge Mountains;177§auto Rotkammgebirge;177§auto Les Carmines;177 | x=-9282.2001953125 y=-3285.900146484375 | size=1 | links=#15589(auto Redridge Mountains;239):3 #23961(auto Redridge Mountains;384):3
+#11459 | auto Redridge Mountains;178§auto Rotkammgebirge;178§auto Les Carmines;178 | x=-8741.2001953125 y=-2250.800048828125 | size=1 | links=#4699(auto Redridge Mountains;61):6 #15565(auto Redridge Mountains;238):5
+#11504 | auto Redridge Mountains;179§auto Rotkammgebirge;179§auto Les Carmines;179 | x=-9221.5 y=-2196.800048828125 | size=1 | links=#1424(auto Redridge Mountains;23):10 c900.1:20
+#11575 | auto Redridge Mountains;180§auto Rotkammgebirge;180§auto Les Carmines;180 | x=-9274.400390625 y=-3316.699951171875 | size=1 | links=#22791(auto Redridge Mountains;365):8 #27830(auto Redridge Mountains;435):7
+#11586 | auto Redridge Mountains;181§auto Rotkammgebirge;181§auto Les Carmines;181 | x=-9293.2998046875 y=-2944.400146484375 | size=1 | links=#18626(auto Redridge Mountains;291):3 #23116(auto Redridge Mountains;375):3
+#11828 | auto Redridge Mountains;182§auto Rotkammgebirge;182§auto Les Carmines;182 | x=-9144.1005859375 y=-2294.199951171875 | size=1 | links=#18827(auto Redridge Mountains;295):12 #27621(auto Redridge Mountains;429):13
+#11829 | auto Redridge Mountains;183§auto Rotkammgebirge;183§auto Les Carmines;183 | x=-9279.400390625 y=-3295.300048828125 | size=1 | links=#5450(auto Redridge Mountains;77):3 #22608(auto Redridge Mountains;361):3
+#11850 | auto Redridge Mountains;184§auto Rotkammgebirge;184§auto Les Carmines;184 | x=-9283.7998046875 y=-3312.199951171875 | size=1 | links=#11040(auto Redridge Mountains;168):2 #13797(auto Redridge Mountains;214):4
+#11853 | auto Redridge Mountains;185§auto Rotkammgebirge;185§auto Les Carmines;185 | x=-8702.2998046875 y=-2320.699951171875 | size=1 | links=#16633(auto Redridge Mountains;249):16 c584.1:10 c615.9:9
+#11952 | auto Redridge Mountains;186§auto Rotkammgebirge;186§auto Les Carmines;186 | x=-9292.2998046875 y=-2947 | size=1 | links=#881(down;Stonewatch Tower;Redridge Mountains):5 #7537(auto Redridge Mountains;113):7 #20835(entry and exit;Stonewatch Tower;Redridge Mountains):6
+#12128 | auto Redridge Mountains;187§auto Rotkammgebirge;187§auto Les Carmines;187 | x=-9279 y=-2943.900146484375 | size=1 | links=#3570(auto Redridge Mountains;51):6 #11242(auto Redridge Mountains;173):5
+#12132 | auto Redridge Mountains;188§auto Rotkammgebirge;188§auto Les Carmines;188 | x=-9291.7001953125 y=-3304.699951171875 | size=1 | links=#20275(auto Redridge Mountains;314):3 #28236(auto Redridge Mountains;443):3
+#12150 | auto Redridge Mountains;189§auto Rotkammgebirge;189§auto Les Carmines;189 | x=-9386 y=-3051.400146484375 | size=1 | links=#3568(entry and exit;Stonewatch Keep;Redridge Mountains):3 #6354(auto Redridge Mountains;90):6
+#12163 | auto Redridge Mountains;190§auto Rotkammgebirge;190§auto Les Carmines;190 | x=-8810 y=-1988 | size=1 | links=#1163(auto Redridge Mountains;18):10 #5364(auto Redridge Mountains;75):8
+#12261 | auto Redridge Mountains;191§auto Rotkammgebirge;191§auto Les Carmines;191 | x=-9223.7001953125 y=-2066 | size=1 | links=#18762(focus point;Lakeshire;Redridge Mountains):13 c3087.1:19
+#12351 | auto Redridge Mountains;192§auto Rotkammgebirge;192§auto Les Carmines;192 | x=-9638.2001953125 y=-2607.400146484375 | size=1 | links=#4097(auto Redridge Mountains;55):29 #27107(auto Redridge Mountains;417):32
+#12509 | auto Redridge Mountains;193§auto Rotkammgebirge;193§auto Les Carmines;193 | x=-9281.2998046875 y=-2942.60009765625 | size=1 | links=#3866(auto Redridge Mountains;54):3 #17303(auto Redridge Mountains;267):4
+#12533 | auto Redridge Mountains;194§auto Rotkammgebirge;194§auto Les Carmines;194 | x=-9270.400390625 y=-3301.900146484375 | size=1 | links=#2330(auto Redridge Mountains;34):1 #27872(auto Redridge Mountains;437):3
+#12595 | auto Redridge Mountains;195§auto Rotkammgebirge;195§auto Les Carmines;195 | x=-9190.6005859375 y=-2760.300048828125 | size=1 | links=#8847(auto Redridge Mountains;134):40 #28558(auto Redridge Mountains;451):25
+#12627 | auto Redridge Mountains;196§auto Rotkammgebirge;196§auto Les Carmines;196 | x=-9071 y=-2403.699951171875 | size=1 | links=#28109(auto Redridge Mountains;440):18 c430.16:34
+#12667 | auto Redridge Mountains;197§auto Rotkammgebirge;197§auto Les Carmines;197 | x=-9438.400390625 y=-2270.900146484375 | size=1 | links=#565(auto Redridge Mountains;7):30 #6552(auto Redridge Mountains;95):130 c903.1:30 c931.1:36 c1070.1:33 c14272.2:106
+#12726 | auto Redridge Mountains;198§auto Rotkammgebirge;198§auto Les Carmines;198 | x=-9293.5 y=-2948.199951171875 | size=1 | links=#4814(auto Redridge Mountains;66):3 #12869(auto Redridge Mountains;200):4
+#12777 | auto Redridge Mountains;199§auto Rotkammgebirge;199§auto Les Carmines;199 | x=-9147.7001953125 y=-3337.300048828125 | size=1 | links=#9161(Lieutenant Fangore;Galardell Valley;Redridge Mountains):34 c432.2:27 c432.13:47 c568.24:14
+#12869 | auto Redridge Mountains;200§auto Rotkammgebirge;200§auto Les Carmines;200 | x=-9289.2001953125 y=-2949.300048828125 | size=1 | links=#3570(auto Redridge Mountains;51):5 #12726(auto Redridge Mountains;198):4
+#12961 | auto Redridge Mountains;201§auto Rotkammgebirge;201§auto Les Carmines;201 | x=-8917.900390625 y=-2016.5 | size=1 | links=#1688(auto Redridge Mountains;27):12 #14270(auto Redridge Mountains;217):13
+#12991 | auto Redridge Mountains;202§auto Rotkammgebirge;202§auto Les Carmines;202 | x=-9351.7998046875 y=-2280.10009765625 | size=1 | links=#565(auto Redridge Mountains;7):56 #19105(auto Redridge Mountains;299):77
+#13010 | auto Redridge Mountains;203§auto Rotkammgebirge;203§auto Les Carmines;203 | x=-9184.400390625 y=-2706.699951171875 | size=1 | links=#21660(auto Redridge Mountains;342):39 #28558(auto Redridge Mountains;451):30
+#13070 | auto Redridge Mountains;204§auto Rotkammgebirge;204§auto Les Carmines;204 | x=-8803.2998046875 y=-2237 | size=1 | links=#8095(auto Redridge Mountains;124):7 #23922(auto Redridge Mountains;383):3
+#13107 | auto Redridge Mountains;205§auto Rotkammgebirge;205§auto Les Carmines;205 | x=-9296 y=-2213 | size=1 | links=#7096(central location;Lakeshire;Redridge Mountains):25 #20503(auto Redridge Mountains;318):28
+#13269 | auto Redridge Mountains;206§auto Rotkammgebirge;206§auto Les Carmines;206 | x=-9591.2001953125 y=-2057.199951171875 | size=1 | links=#867(auto Redridge Mountains;12):50 #20635(auto Redridge Mountains;322):52 c442.22:42
+#13403 | auto Redridge Mountains;207§auto Rotkammgebirge;207§auto Les Carmines;207 | x=-9280 y=-3310.60009765625 | size=1 | links=#7914(auto Redridge Mountains;119):4 #26059(auto Redridge Mountains;410):2
+#13416 | auto Redridge Mountains;208§auto Rotkammgebirge;208§auto Les Carmines;208 | x=-8784.2001953125 y=-2258 | size=1 | links=#3523(auto Redridge Mountains;50):10 #8003(auto Redridge Mountains;120):12
+#13421 | auto Redridge Mountains;209§auto Rotkammgebirge;209§auto Les Carmines;209 | x=-9290.1005859375 y=-2944.699951171875 | size=1 | links=#27116(auto Redridge Mountains;418):1 o76.1:6
+#13526 | auto Redridge Mountains;210§auto Rotkammgebirge;210§auto Les Carmines;210 | x=-8827.1005859375 y=-2183.300048828125 | size=1 | links=#18344(auto Redridge Mountains;284):14 c435.20:8 c435.21:8
+#13541 | auto Redridge Mountains;211§auto Rotkammgebirge;211§auto Les Carmines;211 | x=-9405.2001953125 y=-3029.699951171875 | size=1 | links=#17555(auto Redridge Mountains;272):12 #19476(auto Redridge Mountains;304):9
+#13553 | auto Redridge Mountains;212§auto Rotkammgebirge;212§auto Les Carmines;212 | x=-9272.2001953125 y=-3300.400146484375 | size=1 | links=#15405(auto Redridge Mountains;233):3 #17278(auto Redridge Mountains;265):3
+#13759 | auto Redridge Mountains;213§auto Rotkammgebirge;213§auto Les Carmines;213 | x=-9284.400390625 y=-2944.900146484375 | size=1 | links=#9832(auto Redridge Mountains;148):3 #20898(auto Redridge Mountains;328):2
+#13797 | auto Redridge Mountains;214§auto Rotkammgebirge;214§auto Les Carmines;214 | x=-9279 y=-3312.900146484375 | size=1 | links=#7693(auto Redridge Mountains;114):3 #11850(auto Redridge Mountains;184):4
+#14137 | auto Redridge Mountains;215§auto Rotkammgebirge;215§auto Les Carmines;215 | x=-9661 y=-2086 | size=1 | links=#867(auto Redridge Mountains;12):33 #7147(auto Redridge Mountains;104):24
+#14143 | auto Redridge Mountains;216§auto Rotkammgebirge;216§auto Les Carmines;216 | x=-9240.6005859375 y=-3007.699951171875 | size=1 | links=#1138(auto Redridge Mountains;17):25 #28389(crossing;Stonewatch;Redridge Mountains):39
+#14270 | auto Redridge Mountains;217§auto Rotkammgebirge;217§auto Les Carmines;217 | x=-8919.6005859375 y=-2003.5 | size=1 | links=#12961(auto Redridge Mountains;201):13 c446.11:9
+#14337 | auto Redridge Mountains;218§auto Rotkammgebirge;218§auto Les Carmines;218 | x=-9196.2998046875 y=-3051.10009765625 | size=1 | links=#17253(auto Redridge Mountains;264):28 #28389(crossing;Stonewatch;Redridge Mountains):37
+#14360 | auto Redridge Mountains;219§auto Rotkammgebirge;219§auto Les Carmines;219 | x=-8682.7001953125 y=-2246.300048828125 | size=1 | links=#8045(auto Redridge Mountains;122):21 #24812(auto Redridge Mountains;394):14 c435.11:4
+#14473 | auto Redridge Mountains;220§auto Rotkammgebirge;220§auto Les Carmines;220 | x=-9346.1005859375 y=-3022 | size=1 | links=#938(auto Redridge Mountains;15):17 #17375(auto Redridge Mountains;269):21
+#14494 | auto Redridge Mountains;221§auto Rotkammgebirge;221§auto Les Carmines;221 | x=-9198.6005859375 y=-2904.400146484375 | size=1 | links=#27692(auto Redridge Mountains;430):15 c4463.2:13 c440.8:10
+#14514 | auto Redridge Mountains;222§auto Rotkammgebirge;222§auto Les Carmines;222 | x=-9002.1005859375 y=-2023.300048828125 | size=1 | links=#6262(auto Redridge Mountains;87):13 #26714(auto Redridge Mountains;415):16
+#14604 | auto Redridge Mountains;223§auto Rotkammgebirge;223§auto Les Carmines;223 | x=-9651.7998046875 y=-2545.900146484375 | size=1 | links=#16903(auto Redridge Mountains;257):35 #27107(auto Redridge Mountains;417):31 c423.9:31
+#14809 | auto Redridge Mountains;224§auto Rotkammgebirge;224§auto Les Carmines;224 | x=-9123 y=-2529.699951171875 | size=1 | links=#241(auto Redridge Mountains;4):14 #4227(auto Redridge Mountains;58):27
+#14834 | auto Redridge Mountains;225§auto Rotkammgebirge;225§auto Les Carmines;225 | x=-9274.2001953125 y=-3303.5 | size=1 | links=#17518(auto Redridge Mountains;271):3 #21457(auto Redridge Mountains;339):2
+#14948 | auto Redridge Mountains;226§auto Rotkammgebirge;226§auto Les Carmines;226 | x=-8770.2998046875 y=-1997.200073242188 | size=1 | links=#21073(auto Redridge Mountains;332):19 c580.10:12
+#15010 | auto Redridge Mountains;227§auto Rotkammgebirge;227§auto Les Carmines;227 | x=-9614.6005859375 y=-1797.700073242188 | size=1 | links=#8353(passage;from;Three Corners;Redridge Mountains;to;Elwynn Forest):59 #20556(auto Redridge Mountains;321):71 c442.15:29
+#15071 | auto Redridge Mountains;228§auto Rotkammgebirge;228§auto Les Carmines;228 | x=-9289.6005859375 y=-3300.800048828125 | size=1 | links=#7725(auto Redridge Mountains;116):2 #10382(auto Redridge Mountains;158):3
+#15116 | auto Redridge Mountains;229§auto Rotkammgebirge;229§auto Les Carmines;229 | x=-9384.2001953125 y=-3069.60009765625 | size=1 | links=#10934(auto Redridge Mountains;165):17 c334.1:12
+#15148 | auto Redridge Mountains;230§auto Rotkammgebirge;230§auto Les Carmines;230 | x=-9157.900390625 y=-2328 | size=1 | links=#10982(auto Redridge Mountains;166):19 #11171(auto Redridge Mountains;171):47
+#15166 | auto Redridge Mountains;231§auto Rotkammgebirge;231§auto Les Carmines;231 | x=-9268.400390625 y=-3306.400146484375 | size=1 | links=#21638(auto Redridge Mountains;341):5 #27872(auto Redridge Mountains;437):3
+#15261 | auto Redridge Mountains;232§auto Rotkammgebirge;232§auto Les Carmines;232 | x=-9390.400390625 y=-3087.199951171875 | size=1 | links=#716(auto Redridge Mountains;10):5 #22285(auto Redridge Mountains;352):4
+#15405 | auto Redridge Mountains;233§auto Rotkammgebirge;233§auto Les Carmines;233 | x=-9271.5 y=-3303.800048828125 | size=1 | links=#10481(auto Redridge Mountains;159):3 #13553(auto Redridge Mountains;212):3
+#15485 | auto Redridge Mountains;234§auto Rotkammgebirge;234§auto Les Carmines;234 | x=-9036.2998046875 y=-2520.60009765625 | size=1 | links=#9733(auto Redridge Mountains;144):43 c14272.1:30 c14272.6:31 c14272.8:31 c428.14:35 c441.20:33 c441.23:40
+#15499 | auto Redridge Mountains;235§auto Rotkammgebirge;235§auto Les Carmines;235 | x=-9180.6005859375 y=-2984 | size=1 | links=#1043(auto Redridge Mountains;16):32 #28389(crossing;Stonewatch;Redridge Mountains):36
+#15537 | auto Redridge Mountains;236§auto Rotkammgebirge;236§auto Les Carmines;236 | x=-9672 y=-2467.400146484375 | size=1 | links=#16903(auto Redridge Mountains;257):45 #19390(auto Redridge Mountains;303):53 c423.1:47
+#15559 | auto Redridge Mountains;237§auto Rotkammgebirge;237§auto Les Carmines;237 | x=-9432.7001953125 y=-3028.10009765625 | size=1 | links=#17563(auto Redridge Mountains;273):5 #19476(auto Redridge Mountains;304):18
+#15565 | auto Redridge Mountains;238§auto Rotkammgebirge;238§auto Les Carmines;238 | x=-8735.5 y=-2251.60009765625 | size=1 | links=#1483(auto Redridge Mountains;24):9 #11459(auto Redridge Mountains;178):5 c615.14:8
+#15589 | auto Redridge Mountains;239§auto Rotkammgebirge;239§auto Les Carmines;239 | x=-9278.7998046875 y=-3286.5 | size=1 | links=#11429(auto Redridge Mountains;177):3 #21925(auto Redridge Mountains;344):2
+#15854 | auto Redridge Mountains;240§auto Rotkammgebirge;240§auto Les Carmines;240 | x=-9138.6005859375 y=-2455.10009765625 | size=1 | links=#82(auto Redridge Mountains;2):21 #16141(auto Redridge Mountains;243):36
+#15963 | auto Redridge Mountains;241§auto Rotkammgebirge;241§auto Les Carmines;241 | x=-8711.6005859375 y=-2329.10009765625 | size=1 | links=#9688(auto Redridge Mountains;141):4 c615.9:4
+#16124 | auto Redridge Mountains;242§auto Rotkammgebirge;242§auto Les Carmines;242 | x=-8676 y=-2303.5 | size=1 | links=#16633(auto Redridge Mountains;249):17 #23205(entry and exit;cave;Render's Rock;Redridge Mountains):4 c435.9:15
+#16141 | auto Redridge Mountains;243§auto Rotkammgebirge;243§auto Les Carmines;243 | x=-9160 y=-2425.699951171875 | size=1 | links=#15854(auto Redridge Mountains;240):36 #26026(auto Redridge Mountains;408):43 c440.20:10 c440.21:9
+#16221 | auto Redridge Mountains;244§auto Rotkammgebirge;244§auto Les Carmines;244 | x=-9276.5 y=-3344.900146484375 | size=1 | links=#9901(auto Redridge Mountains;150):14 #28283(auto Redridge Mountains;445):7 c431.11:13 c568.11:6
+#16284 | auto Redridge Mountains;245§auto Rotkammgebirge;245§auto Les Carmines;245 | x=-9406.400390625 y=-2061.900146484375 | size=1 | links=#2560(auto Redridge Mountains;36):35 c6491.1:41
+#16294 | auto Redridge Mountains;246§auto Rotkammgebirge;246§auto Les Carmines;246 | x=-9250 y=-1985.400024414063 | size=1 | links=#10158(auto Redridge Mountains;155):14 #25383(auto Redridge Mountains;400):13 c1933.1:7
+#16427 | auto Redridge Mountains;247§auto Rotkammgebirge;247§auto Les Carmines;247 | x=-9435 y=-2151.5 | size=1 | links=#6445(auto Redridge Mountains;91):36 #23492(auto Redridge Mountains;379):40
+#16436 | auto Redridge Mountains;248§auto Rotkammgebirge;248§auto Les Carmines;248 | x=-9310.400390625 y=-2149.5 | size=1 | links=#22946(auto Redridge Mountains;369):16 c348.1:8 c1680.1:8
+#16633 | auto Redridge Mountains;249§auto Rotkammgebirge;249§auto Les Carmines;249 | x=-8692.5 y=-2307.800048828125 | size=1 | links=#11853(auto Redridge Mountains;185):16 #16124(auto Redridge Mountains;242):17 c435.8:11
+#16746 | auto Redridge Mountains;250§auto Rotkammgebirge;250§auto Les Carmines;250 | x=-9283.6005859375 y=-3287.60009765625 | size=1 | links=#2921(auto Redridge Mountains;41):2 #3004(auto Redridge Mountains;42):3
+#16765 | auto Redridge Mountains;251§auto Rotkammgebirge;251§auto Les Carmines;251 | x=-9281.2001953125 y=-3319.900146484375 | size=1 | links=#3079(auto Redridge Mountains;43):3 #26059(auto Redridge Mountains;410):6
+#16769 | auto Redridge Mountains;252§auto Rotkammgebirge;252§auto Les Carmines;252 | x=-9199.7998046875 y=-2381.400146484375 | size=1 | links=#16994(auto Redridge Mountains;259):23 c485.27:30
+#16811 | auto Redridge Mountains;253§auto Rotkammgebirge;253§auto Les Carmines;253 | x=-8793.7001953125 y=-2053.10009765625 | size=1 | links=#27769(auto Redridge Mountains;433):11 c446.12:6
+#16831 | auto Redridge Mountains;254§auto Rotkammgebirge;254§auto Les Carmines;254 | x=-9628 y=-2702.60009765625 | size=1 | links=#4235(auto Redridge Mountains;59):33 #21247(auto Redridge Mountains;335):27 c441.3:29
+#16833 | auto Redridge Mountains;255§auto Rotkammgebirge;255§auto Les Carmines;255 | x=-8907 y=-2048.5 | size=1 | links=#7805(auto Redridge Mountains;118):19 c580.7:12
+#16875 | auto Redridge Mountains;256§auto Rotkammgebirge;256§auto Les Carmines;256 | x=-8826.2001953125 y=-2215.300048828125 | size=1 | links=#8022(auto Redridge Mountains;121):8 #27765(auto Redridge Mountains;432):9 c4463.16:12
+#16903 | auto Redridge Mountains;257§auto Rotkammgebirge;257§auto Les Carmines;257 | x=-9659.6005859375 y=-2511.60009765625 | size=1 | links=#14604(auto Redridge Mountains;223):35 #15537(auto Redridge Mountains;236):45 c441.2:44 c424.13:55
+#16938 | auto Redridge Mountains;258§auto Rotkammgebirge;258§auto Les Carmines;258 | x=-9391.400390625 y=-3077.60009765625 | size=1 | links=#22243(auto Redridge Mountains;351):3 #22285(auto Redridge Mountains;352):4
+#16994 | auto Redridge Mountains;259§auto Rotkammgebirge;259§auto Les Carmines;259 | x=-9180.7001953125 y=-2367.800048828125 | size=1 | links=#11171(auto Redridge Mountains;171):35 #16769(auto Redridge Mountains;252):23 #26026(auto Redridge Mountains;408):31
+#17031 | auto Redridge Mountains;260§auto Rotkammgebirge;260§auto Les Carmines;260 | x=-9274.1005859375 y=-3286.400146484375 | size=1 | links=#3777(auto Redridge Mountains;53):3 #18596(auto Redridge Mountains;290):5
+#17036 | auto Redridge Mountains;261§auto Rotkammgebirge;261§auto Les Carmines;261 | x=-8996.6005859375 y=-2610 | size=1 | links=#8633(auto Redridge Mountains;131):44 #28346(auto Redridge Mountains;446):24
+#17146 | auto Redridge Mountains;262§auto Rotkammgebirge;262§auto Les Carmines;262 | x=-9237.5 y=-2155.400146484375 | size=1 | links=#6879(auto Redridge Mountains;102):6 #7330(down;Lakeshire Inn):10 c789.1:4
+#17163 | auto Redridge Mountains;263§auto Rotkammgebirge;263§auto Les Carmines;263 | x=-8800.2001953125 y=-2186 | size=1 | links=#1912(auto Redridge Mountains;30):10 c4463.17:11
+#17253 | auto Redridge Mountains;264§auto Rotkammgebirge;264§auto Les Carmines;264 | x=-9184.400390625 y=-3077.300048828125 | size=1 | links=#14337(auto Redridge Mountains;218):28 #28535(auto Redridge Mountains;450):30
+#17278 | auto Redridge Mountains;265§auto Rotkammgebirge;265§auto Les Carmines;265 | x=-9273.6005859375 y=-3297.60009765625 | size=1 | links=#9689(auto Redridge Mountains;142):2 #13553(auto Redridge Mountains;212):3
+#17295 | auto Redridge Mountains;266§auto Rotkammgebirge;266§auto Les Carmines;266 | x=-9077 y=-2482 | size=1 | links=#5779(auto Redridge Mountains;81):20 c430.24:10
+#17303 | auto Redridge Mountains;267§auto Rotkammgebirge;267§auto Les Carmines;267 | x=-9280 y=-2938.300048828125 | size=1 | links=#12509(auto Redridge Mountains;193):4 #21027(auto Redridge Mountains;331):3
+#17324 | auto Redridge Mountains;268§auto Rotkammgebirge;268§auto Les Carmines;268 | x=-9103.900390625 y=-2085 | size=1 | links=#24314(auto Redridge Mountains;388):39 c430.9:12
+#17375 | auto Redridge Mountains;269§auto Rotkammgebirge;269§auto Les Carmines;269 | x=-9366.1005859375 y=-3013.900146484375 | size=1 | links=#14473(auto Redridge Mountains;220):21 #21480(central location;Stonewatch;Redridge Mountains):22 c436.6:15 c4065.17:15
+#17488 | auto Redridge Mountains;270§auto Rotkammgebirge;270§auto Les Carmines;270 | x=-9235 y=-2956.800048828125 | size=1 | links=#18316(auto Redridge Mountains;283):25 #27569(auto Redridge Mountains;428):32 c485.21:24
+#17518 | auto Redridge Mountains;271§auto Rotkammgebirge;271§auto Les Carmines;271 | x=-9271.1005859375 y=-3301.60009765625 | size=1 | links=#4599(top;ramp;Tower of Ilgalar;Redridge Mountains):6 #14834(auto Redridge Mountains;225):3
+#17555 | auto Redridge Mountains;272§auto Rotkammgebirge;272§auto Les Carmines;272 | x=-9397.6005859375 y=-3019.199951171875 | size=1 | links=#13541(auto Redridge Mountains;211):12 #21480(central location;Stonewatch;Redridge Mountains):10
+#17563 | auto Redridge Mountains;273§auto Rotkammgebirge;273§auto Les Carmines;273 | x=-9430.6005859375 y=-3033.60009765625 | size=1 | links=#15559(auto Redridge Mountains;237):5 #20160(auto Redridge Mountains;312):7
+#17613 | auto Redridge Mountains;274§auto Rotkammgebirge;274§auto Les Carmines;274 | x=-9291.6005859375 y=-3293.199951171875 | size=1 | links=#4891(auto Redridge Mountains;67):3 #6068(auto Redridge Mountains;86):3
+#17699 | auto Redridge Mountains;275§auto Rotkammgebirge;275§auto Les Carmines;275 | x=-9025.1005859375 y=-1987.5 | size=1 | links=#9284(auto Redridge Mountains;138):14 #28478(auto Redridge Mountains;448):19
+#17750 | auto Redridge Mountains;276§auto Rotkammgebirge;276§auto Les Carmines;276 | x=-9061.7001953125 y=-2050.699951171875 | size=1 | links=#21979(auto Redridge Mountains;345):15 #24314(auto Redridge Mountains;388):15
+#17886 | auto Redridge Mountains;277§auto Rotkammgebirge;277§auto Les Carmines;277 | x=-9287.2001953125 y=-3295.699951171875 | size=1 | links=#362(auto Redridge Mountains;6):2 #25232(auto Redridge Mountains;398):3
+#17914 | auto Redridge Mountains;278§auto Rotkammgebirge;278§auto Les Carmines;278 | x=-9278.6005859375 y=-2932.60009765625 | size=1 | links=#6849(auto Redridge Mountains;101):5 #11242(auto Redridge Mountains;173):6
+#17916 | auto Redridge Mountains;279§auto Rotkammgebirge;279§auto Les Carmines;279 | x=-9073.1005859375 y=-2012.200073242188 | size=1 | links=#3585(auto Redridge Mountains;52):12 #22463(auto Redridge Mountains;357):15
+#18087 | auto Redridge Mountains;280§auto Rotkammgebirge;280§auto Les Carmines;280 | x=-8816 y=-1967.200073242188 | size=1 | links=#1163(auto Redridge Mountains;18):11 #5938(auto Redridge Mountains;84):8
+#18123 | auto Redridge Mountains;281§auto Rotkammgebirge;281§auto Les Carmines;281 | x=-9264.5 y=-3295.5 | size=1 | links=#4599(top;ramp;Tower of Ilgalar;Redridge Mountains):3 c819.11:11
+#18251 | auto Redridge Mountains;282§auto Rotkammgebirge;282§auto Les Carmines;282 | x=-8772.2998046875 y=-2405.10009765625 | size=1 | links=#22314(auto Redridge Mountains;354):21 #24728(auto Redridge Mountains;393):22
+#18316 | auto Redridge Mountains;283§auto Rotkammgebirge;283§auto Les Carmines;283 | x=-9219.5 y=-2936.10009765625 | size=1 | links=#17488(auto Redridge Mountains;270):25 #27692(auto Redridge Mountains;430):22
+#18344 | auto Redridge Mountains;284§auto Rotkammgebirge;284§auto Les Carmines;284 | x=-8833.1005859375 y=-2196.800048828125 | size=1 | links=#13526(auto Redridge Mountains;210):14 #27765(auto Redridge Mountains;432):10 c435.20:9
+#18347 | auto Redridge Mountains;285§auto Rotkammgebirge;285§auto Les Carmines;285 | x=-9380.7001953125 y=-3087.10009765625 | size=1 | links=#716(auto Redridge Mountains;10):4 #18583(auto Redridge Mountains;289):5
+#18353 | central location;Three Corners;Redridge Mountains§zentralpunkt;Drei Ecken;Rotkammgebirge§emplacement central;Trois chemins;Les Carmines | x=-9585 y=-1936.700073242188 | size=1 | links=#20556(auto Redridge Mountains;321):70 #20635(auto Redridge Mountains;322):67 #24660(auto Redridge Mountains;391):56 c464.1:11 c712.12:38 c547.29:29
+#18431 | auto Redridge Mountains;286§auto Rotkammgebirge;286§auto Les Carmines;286 | x=-9213.2001953125 y=-2215.800048828125 | size=1 | links=#6776(auto Redridge Mountains;100):6 c900.1:2
+#18480 | auto Redridge Mountains;287§auto Rotkammgebirge;287§auto Les Carmines;287 | x=-9237.1005859375 y=-2305.900146484375 | size=1 | links=#11171(auto Redridge Mountains;171):47 #20927(auto Redridge Mountains;329):21
+#18518 | auto Redridge Mountains;288§auto Rotkammgebirge;288§auto Les Carmines;288 | x=-8832.2001953125 y=-2054.60009765625 | size=1 | links=#27780(auto Redridge Mountains;434):9 c580.12:17
+#18583 | auto Redridge Mountains;289§auto Rotkammgebirge;289§auto Les Carmines;289 | x=-9377 y=-3082.699951171875 | size=1 | links=#18347(auto Redridge Mountains;285):5 #24233(auto Redridge Mountains;387):6
+#18596 | auto Redridge Mountains;290§auto Rotkammgebirge;290§auto Les Carmines;290 | x=-9269.7001953125 y=-3289.400146484375 | size=1 | links=#10989(auto Redridge Mountains;167):4 #17031(auto Redridge Mountains;260):5
+#18626 | auto Redridge Mountains;291§auto Rotkammgebirge;291§auto Les Carmines;291 | x=-9289.900390625 y=-2946.10009765625 | size=1 | links=#1504(auto Redridge Mountains;25):2 #11586(auto Redridge Mountains;181):3
+#18652 | auto Redridge Mountains;292§auto Rotkammgebirge;292§auto Les Carmines;292 | x=-8878.7001953125 y=-2195.900146484375 | size=1 | links=#6501(auto Redridge Mountains;93):9 #8288(auto Redridge Mountains;127):4
+#18700 | auto Redridge Mountains;293§auto Rotkammgebirge;293§auto Les Carmines;293 | x=-9308.5 y=-3021.400146484375 | size=1 | links=#938(auto Redridge Mountains;15):24 #21703(auto Redridge Mountains;343):18
+#18718 | auto Redridge Mountains;294§auto Rotkammgebirge;294§auto Les Carmines;294 | x=-8885.400390625 y=-2220.5 | size=1 | links=#8754(auto Redridge Mountains;132):7 #19867(auto Redridge Mountains;310):7
+#18762 | focus point;Lakeshire;Redridge Mountains§bündelpunkt;Seenhain;Rotkammgebirge§focus point;Lakeshire;Les Carmines | x=-9237.2998046875 y=-2065.300048828125 | size=1 | links=#8065(auto Redridge Mountains;123):22 #12261(auto Redridge Mountains;191):13 c342.1:21 c620.1:10 c812.1:23
+#18827 | auto Redridge Mountains;295§auto Rotkammgebirge;295§auto Les Carmines;295 | x=-9150.400390625 y=-2283.699951171875 | size=1 | links=#11828(auto Redridge Mountains;182):12 #22287(auto Redridge Mountains;353):5
+#18895 | auto Redridge Mountains;296§auto Rotkammgebirge;296§auto Les Carmines;296 | x=-8790.6005859375 y=-1975.200073242188 | size=1 | links=#11064(auto Redridge Mountains;169):9 #21073(auto Redridge Mountains;332):10 c580.11:6
+#18959 | auto Redridge Mountains;297§auto Rotkammgebirge;297§auto Les Carmines;297 | x=-9194.2001953125 y=-3333.5 | size=1 | links=c429.23:34 c568.24:36
+#19084 | auto Redridge Mountains;298§auto Rotkammgebirge;298§auto Les Carmines;298 | x=-9285.5 y=-2928.900146484375 | size=1 | links=#6319(auto Redridge Mountains;89):4 #20776(auto Redridge Mountains;325):4
+#19105 | auto Redridge Mountains;299§auto Rotkammgebirge;299§auto Les Carmines;299 | x=-9275.1005859375 y=-2287.10009765625 | size=1 | links=#12991(auto Redridge Mountains;202):77 #20927(auto Redridge Mountains;329):20 c341.1:19 c382.1:14
+#19143 | auto Redridge Mountains;300§auto Rotkammgebirge;300§auto Les Carmines;300 | x=-9703.400390625 y=-2234.300048828125 | size=1 | links=#21133(auto Redridge Mountains;333):22 #23064(auto Redridge Mountains;372):28 c547.19:8
+#19185 | auto Redridge Mountains;301§auto Rotkammgebirge;301§auto Les Carmines;301 | x=-8853.6005859375 y=-2497.800048828125 | size=1 | links=c437.9:21 c4463.10:25 c485.25:19
+#19198 | passage;from;Three Corners;Redridge Mountains;to;Duskwood§passage;von;Drei Ecken;Rotkammgebirge;zum;Dämmerwald§passage;de;Trois chemins;Les Carmines;vers;Bois de la Pénombre | x=-9890.6005859375 y=-1713.599975585938 | size=1 | links=#27912(passage;from;Duskwood;to;Redridge Mountains):11 #21328(auto Redridge Mountains;337):20
+#19369 | auto Redridge Mountains;302§auto Rotkammgebirge;302§auto Les Carmines;302 | x=-8771.7001953125 y=-2188 | size=1 | links=#20544(auto Redridge Mountains;319):5 c435.22:7
+#19390 | auto Redridge Mountains;303§auto Rotkammgebirge;303§auto Les Carmines;303 | x=-9684.1005859375 y=-2415.400146484375 | size=1 | links=#3277(auto Redridge Mountains;46):29 #15537(auto Redridge Mountains;236):53 c547.20:49
+#19476 | auto Redridge Mountains;304§auto Rotkammgebirge;304§auto Les Carmines;304 | x=-9414.2998046875 y=-3030.800048828125 | size=1 | links=#13541(auto Redridge Mountains;211):9 #15559(auto Redridge Mountains;237):18
+#19487 | auto Redridge Mountains;305§auto Rotkammgebirge;305§auto Les Carmines;305 | x=-9397.2001953125 y=-3059.5 | size=1 | links=#2485(auto Redridge Mountains;35):5 #26573(auto Redridge Mountains;414):7
+#19518 | auto Redridge Mountains;306§auto Rotkammgebirge;306§auto Les Carmines;306 | x=-9287 y=-3287.900146484375 | size=1 | links=#6068(auto Redridge Mountains;86):3 #23961(auto Redridge Mountains;384):2
+#19565 | auto Redridge Mountains;307§auto Rotkammgebirge;307§auto Les Carmines;307 | x=-9271.6005859375 y=-2237.10009765625 | size=1 | links=#4139(auto Redridge Mountains;56):21 #7096(central location;Lakeshire;Redridge Mountains):26 c341.1:32
+#19663 | auto Redridge Mountains;308§auto Rotkammgebirge;308§auto Les Carmines;308 | x=-9066.7998046875 y=-2162.10009765625 | size=1 | links=#10075(auto Redridge Mountains;152):42 #27087(auto Redridge Mountains;416):22
+#19829 | auto Redridge Mountains;309§auto Rotkammgebirge;309§auto Les Carmines;309 | x=-9838.7001953125 y=-1771.5 | size=1 | links=#21328(auto Redridge Mountains;337):58 #28527(auto Redridge Mountains;449):90 c442.8:32 c442.9:21
+#19867 | auto Redridge Mountains;310§auto Rotkammgebirge;310§auto Les Carmines;310 | x=-8881.7001953125 y=-2213.5 | size=1 | links=#6501(auto Redridge Mountains;93):7 #18718(auto Redridge Mountains;294):7
+#19948 | entry and exit;Lakeshire Inn§ein- und ausgang;Gasthaus Seenhain§entrée et sortie;Lakeshire Inn | x=-9247.1005859375 y=-2148.5 | size=1 | links=#5662(auto Redridge Mountains;79):11 #6879(auto Redridge Mountains;102):9 #28614(s;u;Mailbox;2;Redridge Mountains):5 c9982.1:4
+#20109 | auto Redridge Mountains;311§auto Rotkammgebirge;311§auto Les Carmines;311 | x=-9405.7998046875 y=-3073.800048828125 | size=1 | links=#9768(auto Redridge Mountains;146):6 #25603(auto Redridge Mountains;404):6
+#20160 | auto Redridge Mountains;312§auto Rotkammgebirge;312§auto Les Carmines;312 | x=-9425.7001953125 y=-3039.5 | size=1 | links=#5195(auto Redridge Mountains;70):8 #17563(auto Redridge Mountains;273):7
+#20261 | auto Redridge Mountains;313§auto Rotkammgebirge;313§auto Les Carmines;313 | x=-8916 y=-2582.300048828125 | size=1 | links=#6524(auto Redridge Mountains;94):35 #20653(auto Redridge Mountains;323):29
+#20275 | auto Redridge Mountains;314§auto Rotkammgebirge;314§auto Les Carmines;314 | x=-9292.7998046875 y=-3301 | size=1 | links=#4891(auto Redridge Mountains;67):4 #12132(auto Redridge Mountains;188):3
+#20385 | auto Redridge Mountains;315§auto Rotkammgebirge;315§auto Les Carmines;315 | x=-8811.6005859375 y=-2230.699951171875 | size=1 | links=#8022(auto Redridge Mountains;121):12 #23922(auto Redridge Mountains;383):8
+#20392 | auto Redridge Mountains;316§auto Rotkammgebirge;316§auto Les Carmines;316 | x=-9250.7001953125 y=-3371.300048828125 | size=1 | links=#22207(auto Redridge Mountains;349):22 #22913(auto Redridge Mountains;368):49
+#20491 | auto Redridge Mountains;317§auto Rotkammgebirge;317§auto Les Carmines;317 | x=-9155.2001953125 y=-2874.5 | size=1 | links=#5366(auto Redridge Mountains;76):28 #24565(auto Redridge Mountains;390):36
+#20503 | auto Redridge Mountains;318§auto Rotkammgebirge;318§auto Les Carmines;318 | x=-9324.6005859375 y=-2209.699951171875 | size=1 | links=#7443(auto Redridge Mountains;107):17 #13107(auto Redridge Mountains;205):28 c848.1:8
+#20544 | auto Redridge Mountains;319§auto Rotkammgebirge;319§auto Les Carmines;319 | x=-8767.1005859375 y=-2184.900146484375 | size=1 | links=#19369(auto Redridge Mountains;302):5 c349.1:10
+#20552 | auto Redridge Mountains;320§auto Rotkammgebirge;320§auto Les Carmines;320 | x=-8749.2998046875 y=-2337.300048828125 | size=1 | links=#624(auto Redridge Mountains;8):16 #9726(auto Redridge Mountains;143):24
+#20556 | auto Redridge Mountains;321§auto Rotkammgebirge;321§auto Les Carmines;321 | x=-9598.2998046875 y=-1867 | size=1 | links=#15010(auto Redridge Mountains;227):71 #18353(central location;Three Corners;Redridge Mountains):70
+#20635 | auto Redridge Mountains;322§auto Rotkammgebirge;322§auto Les Carmines;322 | x=-9589 y=-2004.5 | size=1 | links=#13269(auto Redridge Mountains;206):52 #18353(central location;Three Corners;Redridge Mountains):67 c442.19:26
+#20653 | auto Redridge Mountains;323§auto Rotkammgebirge;323§auto Les Carmines;323 | x=-8895.7998046875 y=-2561.10009765625 | size=1 | links=#20261(auto Redridge Mountains;313):29 c547.9:25
+#20674 | auto Redridge Mountains;324§auto Rotkammgebirge;324§auto Les Carmines;324 | x=-9250.7001953125 y=-2116.300048828125 | size=1 | links=#5662(auto Redridge Mountains;79):31 #8065(auto Redridge Mountains;123):30
+#20776 | auto Redridge Mountains;325§auto Rotkammgebirge;325§auto Les Carmines;325 | x=-9281.7998046875 y=-2931.800048828125 | size=1 | links=#19084(auto Redridge Mountains;298):4 #21027(auto Redridge Mountains;331):3
+#20829 | auto Redridge Mountains;326§auto Rotkammgebirge;326§auto Les Carmines;326 | x=-9285.7001953125 y=-2325.199951171875 | size=1 | links=#4791(auto Redridge Mountains;63):23 #8762(auto Redridge Mountains;133):16
+#20835 | entry and exit;Stonewatch Tower;Redridge Mountains§ein- und ausgang;Turm der Steinwacht;Rotkammgebirge§entrée et sortie;Tour de Guet-de-pierre;Les Carmines | x=-9294.400390625 y=-2952.900146484375 | size=1 | links=#11952(auto Redridge Mountains;186):6 #27281(auto Redridge Mountains;420):6
+#20895 | auto Redridge Mountains;327§auto Rotkammgebirge;327§auto Les Carmines;327 | x=-9048.2998046875 y=-1990.300048828125 | size=1 | links=#9284(auto Redridge Mountains;138):9 #26423(auto Redridge Mountains;413):12
+#20898 | auto Redridge Mountains;328§auto Rotkammgebirge;328§auto Les Carmines;328 | x=-9282.5 y=-2943 | size=1 | links=#13759(auto Redridge Mountains;213):2 c4065.26:3
+#20927 | auto Redridge Mountains;329§auto Rotkammgebirge;329§auto Les Carmines;329 | x=-9256.2998046875 y=-2296 | size=1 | links=#18480(auto Redridge Mountains;287):21 #19105(auto Redridge Mountains;299):20
+#20957 | auto Redridge Mountains;330§auto Rotkammgebirge;330§auto Les Carmines;330 | x=-8964.7001953125 y=-2312.5 | size=1 | links=#10379(auto Redridge Mountains;157):17 #25850(auto Redridge Mountains;407):25
+#20958 | crossing;Redridge Mountains§Kreuzungspunkt;Rotkammgebirge§traversée;Les Carmines | x=-9113.1005859375 y=-2505.800048828125 | size=1 | links=#241(auto Redridge Mountains;4):12 #5779(auto Redridge Mountains;81):23 #22597(auto Redridge Mountains;360):31 #25546(auto Redridge Mountains;403):22
+#21027 | auto Redridge Mountains;331§auto Rotkammgebirge;331§auto Les Carmines;331 | x=-9280 y=-2934.699951171875 | size=1 | links=#17303(auto Redridge Mountains;267):3 #20776(auto Redridge Mountains;325):3
+#21073 | auto Redridge Mountains;332§auto Rotkammgebirge;332§auto Les Carmines;332 | x=-8782.2001953125 y=-1982.200073242188 | size=1 | links=#14948(auto Redridge Mountains;226):19 #18895(auto Redridge Mountains;296):10 #21397(auto Redridge Mountains;338):6
+#21133 | auto Redridge Mountains;333§auto Rotkammgebirge;333§auto Les Carmines;333 | x=-9703.2001953125 y=-2211.400146484375 | size=1 | links=#5268(auto Redridge Mountains;72):26 #19143(auto Redridge Mountains;300):22
+#21148 | auto Redridge Mountains;334§auto Rotkammgebirge;334§auto Les Carmines;334 | x=-9155.7998046875 y=-2273.5 | size=1 | links=#5849(auto Redridge Mountains;82):9 #22287(auto Redridge Mountains;353):6
+#21247 | auto Redridge Mountains;335§auto Rotkammgebirge;335§auto Les Carmines;335 | x=-9621.1005859375 y=-2729.5 | size=1 | links=#2770(auto Redridge Mountains;38):31 #16831(auto Redridge Mountains;254):27
+#21280 | auto Redridge Mountains;336§auto Rotkammgebirge;336§auto Les Carmines;336 | x=-9299.5 y=-2939.199951171875 | size=1 | links=#1215(auto Redridge Mountains;19):4 #9379(auto Redridge Mountains;140):5
+#21328 | auto Redridge Mountains;337§auto Rotkammgebirge;337§auto Les Carmines;337 | x=-9871.900390625 y=-1723.099975585938 | size=1 | links=#19198(passage;from;Three Corners;Redridge Mountains;to;Duskwood):20 #19829(auto Redridge Mountains;309):58
+#21397 | auto Redridge Mountains;338§auto Rotkammgebirge;338§auto Les Carmines;338 | x=-8785.7998046875 y=-1988.099975585938 | size=1 | links=#10580(auto Redridge Mountains;161):9 #21073(auto Redridge Mountains;332):6
+#21457 | auto Redridge Mountains;339§auto Rotkammgebirge;339§auto Les Carmines;339 | x=-9276.1005859375 y=-3302.300048828125 | size=1 | links=#5033(auto Redridge Mountains;68):3 #14834(auto Redridge Mountains;225):2
+#21480 | central location;Stonewatch;Redridge Mountains§zentralpunkt;Steinwacht;Rotkammgebirge§emplacement central;Stonewatch;Les Carmines | x=-9388.2001953125 y=-3013.60009765625 | size=1 | links=#17375(auto Redridge Mountains;269):22 #17555(auto Redridge Mountains;272):10 #27363(auto Redridge Mountains;421):17 c436.3:5 c4065.7:12
+#21634 | auto Redridge Mountains;340§auto Rotkammgebirge;340§auto Les Carmines;340 | x=-9581.900390625 y=-2146.199951171875 | size=1 | links=#867(auto Redridge Mountains;12):71 #6552(auto Redridge Mountains;95):65
+#21638 | auto Redridge Mountains;341§auto Rotkammgebirge;341§auto Les Carmines;341 | x=-9271.400390625 y=-3310.60009765625 | size=1 | links=#7693(auto Redridge Mountains;114):4 #15166(auto Redridge Mountains;231):5
+#21660 | auto Redridge Mountains;342§auto Rotkammgebirge;342§auto Les Carmines;342 | x=-9180.1005859375 y=-2667.10009765625 | size=1 | links=#13010(auto Redridge Mountains;203):39 #27737(auto Redridge Mountains;431):25 c505.11:17
+#21703 | auto Redridge Mountains;343§auto Rotkammgebirge;343§auto Les Carmines;343 | x=-9293.400390625 y=-3010.60009765625 | size=1 | links=#1138(auto Redridge Mountains;17):29 #18700(auto Redridge Mountains;293):18 c4065.19:13
+#21925 | auto Redridge Mountains;344§auto Rotkammgebirge;344§auto Les Carmines;344 | x=-9278.900390625 y=-3288.699951171875 | size=1 | links=#5450(auto Redridge Mountains;77):3 #15589(auto Redridge Mountains;239):2
+#21979 | auto Redridge Mountains;345§auto Rotkammgebirge;345§auto Les Carmines;345 | x=-9068 y=-2036.099975585938 | size=1 | links=#17750(auto Redridge Mountains;276):15 #22463(auto Redridge Mountains;357):11 c430.21:18
+#22085 | auto Redridge Mountains;346§auto Rotkammgebirge;346§auto Les Carmines;346 | x=-9134.400390625 y=-2603.5 | size=1 | links=#1808(auto Redridge Mountains;29):21 #7526(auto Redridge Mountains;111):27
+#22090 | auto Redridge Mountains;347§auto Rotkammgebirge;347§auto Les Carmines;347 | x=-8670.400390625 y=-2263.300048828125 | size=1 | links=#8045(auto Redridge Mountains;122):10 c615.12:9 c4463.13:3
+#22176 | auto Redridge Mountains;348§auto Rotkammgebirge;348§auto Les Carmines;348 | x=-9072.5 y=-2544.5 | size=1 | links=#9733(auto Redridge Mountains;144):27 #22597(auto Redridge Mountains;360):25
+#22207 | auto Redridge Mountains;349§auto Rotkammgebirge;349§auto Les Carmines;349 | x=-9236.1005859375 y=-3354.5 | size=1 | links=#20392(auto Redridge Mountains;316):22 #27549(auto Redridge Mountains;427):43 c568.10:18 c429.23:52
+#22240 | auto Redridge Mountains;350§auto Rotkammgebirge;350§auto Les Carmines;350 | x=-9296.2998046875 y=-2938.199951171875 | size=1 | links=#10790(auto Redridge Mountains;163):3 #23116(auto Redridge Mountains;375):3
+#22243 | auto Redridge Mountains;351§auto Rotkammgebirge;351§auto Les Carmines;351 | x=-9390.6005859375 y=-3074.199951171875 | size=1 | links=#16938(auto Redridge Mountains;258):3 #22826(auto Redridge Mountains;366):11
+#22285 | auto Redridge Mountains;352§auto Rotkammgebirge;352§auto Les Carmines;352 | x=-9390.6005859375 y=-3082.5 | size=1 | links=#15261(auto Redridge Mountains;232):4 #16938(auto Redridge Mountains;258):4
+#22287 | auto Redridge Mountains;353§auto Rotkammgebirge;353§auto Les Carmines;353 | x=-9153.7998046875 y=-2279.199951171875 | size=1 | links=#18827(auto Redridge Mountains;295):5 #21148(auto Redridge Mountains;334):6
+#22314 | auto Redridge Mountains;354§auto Rotkammgebirge;354§auto Les Carmines;354 | x=-8773.2001953125 y=-2427 | size=1 | links=#18251(auto Redridge Mountains;282):21 #25793(auto Redridge Mountains;405):15
+#22406 | auto Redridge Mountains;355§auto Rotkammgebirge;355§auto Les Carmines;355 | x=-9483.2001953125 y=-3401 | size=1 | links=#6021(auto Redridge Mountains;85):42 #25458(auto Redridge Mountains;402):25
+#22460 | auto Redridge Mountains;356§auto Rotkammgebirge;356§auto Les Carmines;356 | x=-9247.400390625 y=-2029.400024414063 | size=1 | links=#10809(auto Redridge Mountains;164):9 c342.1:16 c1671.1:2
+#22463 | auto Redridge Mountains;357§auto Rotkammgebirge;357§auto Les Carmines;357 | x=-9064.2001953125 y=-2025.400024414063 | size=1 | links=#17916(auto Redridge Mountains;279):15 #21979(auto Redridge Mountains;345):11 #23096(auto Redridge Mountains;373):7
+#22498 | auto Redridge Mountains;358§auto Rotkammgebirge;358§auto Les Carmines;358 | x=-9171.7998046875 y=-2632.800048828125 | size=1 | links=#7526(auto Redridge Mountains;111):19 #27737(auto Redridge Mountains;431):13
+#22552 | auto Redridge Mountains;359§auto Rotkammgebirge;359§auto Les Carmines;359 | x=-8944.7998046875 y=-2280.300048828125 | size=1 | links=#8214(auto Redridge Mountains;125):24 #25850(auto Redridge Mountains;407):18 c430.14:38 c430.28:9
+#22597 | auto Redridge Mountains;360§auto Rotkammgebirge;360§auto Les Carmines;360 | x=-9092.7001953125 y=-2529.300048828125 | size=1 | links=#20958(crossing;Redridge Mountains):31 #22176(auto Redridge Mountains;348):25
+#22608 | auto Redridge Mountains;361§auto Rotkammgebirge;361§auto Les Carmines;361 | x=-9280.1005859375 y=-3298.699951171875 | size=1 | links=#7532(auto Redridge Mountains;112):3 #11829(auto Redridge Mountains;183):3
+#22718 | auto Redridge Mountains;362§auto Rotkammgebirge;362§auto Les Carmines;362 | x=-8771.2998046875 y=-2017.599975585938 | size=1 | links=#26046(auto Redridge Mountains;409):14 c580.10:9
+#22742 | auto Redridge Mountains;363§auto Rotkammgebirge;363§auto Les Carmines;363 | x=-9214.400390625 y=-2164.199951171875 | size=1 | links=#25056(auto Redridge Mountains;395):5 #28013(auto Redridge Mountains;438):11
+#22756 | auto Redridge Mountains;364§auto Rotkammgebirge;364§auto Les Carmines;364 | x=-9290.7001953125 y=-2937.60009765625 | size=1 | links=#10790(auto Redridge Mountains;163):2 #23754(auto Redridge Mountains;381):3
+#22791 | auto Redridge Mountains;365§auto Rotkammgebirge;365§auto Les Carmines;365 | x=-9266.7998046875 y=-3312.900146484375 | size=1 | links=#9762(auto Redridge Mountains;145):11 #11575(auto Redridge Mountains;180):8
+#22826 | auto Redridge Mountains;366§auto Rotkammgebirge;366§auto Les Carmines;366 | x=-9379 y=-3072.5 | size=1 | links=#22243(auto Redridge Mountains;351):11 #23117(auto Redridge Mountains;376):4
+#22885 | auto Redridge Mountains;367§auto Rotkammgebirge;367§auto Les Carmines;367 | x=-9219 y=-3178.800048828125 | size=1 | links=c432.5:35 c433.18:14
+#22913 | auto Redridge Mountains;368§auto Rotkammgebirge;368§auto Les Carmines;368 | x=-9298.900390625 y=-3381.300048828125 | size=1 | links=#2300(auto Redridge Mountains;33):29 #20392(auto Redridge Mountains;316):49
+#22946 | auto Redridge Mountains;369§auto Rotkammgebirge;369§auto Les Carmines;369 | x=-9294.900390625 y=-2155.199951171875 | size=1 | links=#16436(auto Redridge Mountains;248):16 c1678.1:30
+#23028 | auto Redridge Mountains;370§auto Rotkammgebirge;370§auto Les Carmines;370 | x=-9021.400390625 y=-2437.900146484375 | size=1 | links=#2047(auto Redridge Mountains;31):12 #9934(auto Redridge Mountains;151):17 c430.25:15
+#23040 | auto Redridge Mountains;371§auto Rotkammgebirge;371§auto Les Carmines;371 | x=-9366.7998046875 y=-3051.10009765625 | size=1 | links=#6701(auto Redridge Mountains;97):6 #27211(auto Redridge Mountains;419):10
+#23064 | auto Redridge Mountains;372§auto Rotkammgebirge;372§auto Les Carmines;372 | x=-9702.400390625 y=-2262.300048828125 | size=1 | links=#19143(auto Redridge Mountains;300):28 #26383(auto Redridge Mountains;412):30 c424.15:26 c441.17:39
+#23096 | auto Redridge Mountains;373§auto Rotkammgebirge;373§auto Les Carmines;373 | x=-9058 y=-2021.099975585938 | size=1 | links=#22463(auto Redridge Mountains;357):7 c426.6:13 c430.7:12
+#23112 | auto Redridge Mountains;374§auto Rotkammgebirge;374§auto Les Carmines;374 | x=-8833.7001953125 y=-2560.199951171875 | size=1 | links=#10764(auto Redridge Mountains;162):36 c547.9:38
+#23116 | auto Redridge Mountains;375§auto Rotkammgebirge;375§auto Les Carmines;375 | x=-9295.5 y=-2941.400146484375 | size=1 | links=#11586(auto Redridge Mountains;181):3 #22240(auto Redridge Mountains;350):3
+#23117 | auto Redridge Mountains;376§auto Rotkammgebirge;376§auto Les Carmines;376 | x=-9374.1005859375 y=-3071.699951171875 | size=1 | links=#11231(auto Redridge Mountains;172):5 #22826(auto Redridge Mountains;366):4
+#23205 | entry and exit;cave;Render's Rock;Redridge Mountains§ein- und ausgang;höhle;Renders Fels;Rotkammgebirge§entrée et sortie;cave;Rocher des Etripeurs;Les Carmines | x=-8675.6005859375 y=-2299.5 | size=1 | links=#7449(auto Redridge Mountains;108):13 #16124(auto Redridge Mountains;242):4
+#23317 | auto Redridge Mountains;377§auto Rotkammgebirge;377§auto Les Carmines;377 | x=-8936.5 y=-1987.200073242188 | size=1 | links=#27376(auto Redridge Mountains;422):9 c580.13:12 c446.15:13
+#23394 | auto Redridge Mountains;378§auto Rotkammgebirge;378§auto Les Carmines;378 | x=-9206.7001953125 y=-2153.900146484375 | size=1 | links=#7712(auto Redridge Mountains;115):4 c3089.1:6
+#23492 | auto Redridge Mountains;379§auto Rotkammgebirge;379§auto Les Carmines;379 | x=-9424 y=-2112.199951171875 | size=1 | links=#2560(auto Redridge Mountains;36):17 #16427(auto Redridge Mountains;247):40
+#23661 | auto Redridge Mountains;380§auto Rotkammgebirge;380§auto Les Carmines;380 | x=-9181.6005859375 y=-3136.5 | size=1 | links=#27411(auto Redridge Mountains;424):42 #28535(auto Redridge Mountains;450):30 c434.10:22 c433.19:28
+#23754 | auto Redridge Mountains;381§auto Rotkammgebirge;381§auto Les Carmines;381 | x=-9287.2998046875 y=-2938.199951171875 | size=1 | links=#4157(top;ramp;Stonewatch Tower;Redridge Mountains):4 #22756(auto Redridge Mountains;364):3
+#23805 | auto Redridge Mountains;382§auto Rotkammgebirge;382§auto Les Carmines;382 | x=-8870.6005859375 y=-2533 | size=1 | links=c547.9:18 c4463.10:15 c485.24:15
+#23922 | auto Redridge Mountains;383§auto Rotkammgebirge;383§auto Les Carmines;383 | x=-8806.6005859375 y=-2237.10009765625 | size=1 | links=#13070(auto Redridge Mountains;204):3 #20385(auto Redridge Mountains;315):8 c435.23:8
+#23961 | auto Redridge Mountains;384§auto Rotkammgebirge;384§auto Les Carmines;384 | x=-9285.2998046875 y=-3286.60009765625 | size=1 | links=#11429(auto Redridge Mountains;177):3 #19518(auto Redridge Mountains;306):2
+#23988 | auto Redridge Mountains;385§auto Rotkammgebirge;385§auto Les Carmines;385 | x=-9178.7998046875 y=-2085.60009765625 | size=1 | links=#6735(auto Redridge Mountains;98):15 c3088.1:6
+#24059 | auto Redridge Mountains;386§auto Rotkammgebirge;386§auto Les Carmines;386 | x=-9387.5 y=-3034.5 | size=1 | links=#9859(auto Redridge Mountains;149):11 #27363(auto Redridge Mountains;421):3
+#24233 | auto Redridge Mountains;387§auto Rotkammgebirge;387§auto Les Carmines;387 | x=-9379.2998046875 y=-3076.900146484375 | size=1 | links=#18583(auto Redridge Mountains;289):6 #28184(auto Redridge Mountains;441):7
+#24314 | auto Redridge Mountains;388§auto Rotkammgebirge;388§auto Les Carmines;388 | x=-9072 y=-2062.300048828125 | size=1 | links=#17324(auto Redridge Mountains;268):39 #17750(auto Redridge Mountains;276):15 c426.2:30
+#24516 | auto Redridge Mountains;389§auto Rotkammgebirge;389§auto Les Carmines;389 | x=-9172.7998046875 y=-2110.800048828125 | size=1 | links=#6735(auto Redridge Mountains;98):28 c3090.1:5
+#24565 | auto Redridge Mountains;390§auto Rotkammgebirge;390§auto Les Carmines;390 | x=-9146 y=-2909.400146484375 | size=1 | links=#2624(auto Redridge Mountains;37):27 #20491(auto Redridge Mountains;317):36
+#24660 | auto Redridge Mountains;391§auto Rotkammgebirge;391§auto Les Carmines;391 | x=-9632.6005859375 y=-1907.200073242188 | size=1 | links=#1302(auto Redridge Mountains;21):97 #18353(central location;Three Corners;Redridge Mountains):56
+#24670 | auto Redridge Mountains;392§auto Rotkammgebirge;392§auto Les Carmines;392 | x=-8960.5 y=-2001.700073242188 | size=1 | links=c580.6:12 c446.15:14
+#24728 | auto Redridge Mountains;393§auto Rotkammgebirge;393§auto Les Carmines;393 | x=-8764.900390625 y=-2383.900146484375 | size=1 | links=#2065(auto Redridge Mountains;32):5 #18251(auto Redridge Mountains;282):22 c615.8:5
+#24812 | auto Redridge Mountains;394§auto Rotkammgebirge;394§auto Les Carmines;394 | x=-8694.2001953125 y=-2237.60009765625 | size=1 | links=#7269(auto Redridge Mountains;105):6 #14360(auto Redridge Mountains;219):14 c435.13:10
+#25056 | auto Redridge Mountains;395§auto Rotkammgebirge;395§auto Les Carmines;395 | x=-9214.1005859375 y=-2158.900146484375 | size=1 | links=#9350(top;Lakeshire Inn):10 #22742(auto Redridge Mountains;363):5
+#25118 | auto Redridge Mountains;396§auto Rotkammgebirge;396§auto Les Carmines;396 | x=-8762.2998046875 y=-2260.10009765625 | size=1 | links=#235(auto Redridge Mountains;3):10 #3523(auto Redridge Mountains;50):12 c435.18:6 c435.24:3
+#25180 | auto Redridge Mountains;397§auto Rotkammgebirge;397§auto Les Carmines;397 | x=-9010.2001953125 y=-2414.5 | size=1 | links=#2047(auto Redridge Mountains;31):13 #3348(auto Redridge Mountains;47):22 c430.25:13
+#25232 | auto Redridge Mountains;398§auto Rotkammgebirge;398§auto Les Carmines;398 | x=-9285.1005859375 y=-3298.699951171875 | size=1 | links=#11291(auto Redridge Mountains;175):3 #17886(auto Redridge Mountains;277):3
+#25379 | auto Redridge Mountains;399§auto Rotkammgebirge;399§auto Les Carmines;399 | x=-9287 y=-3291.10009765625 | size=1 | links=#362(auto Redridge Mountains;6):2 #2921(auto Redridge Mountains;41):2
+#25383 | auto Redridge Mountains;400§auto Rotkammgebirge;400§auto Les Carmines;400 | x=-9255 y=-1998.400024414063 | size=1 | links=#1537(auto Redridge Mountains;26):8 #16294(auto Redridge Mountains;246):13
+#25403 | auto Redridge Mountains;401§auto Rotkammgebirge;401§auto Les Carmines;401 | x=-9134.400390625 y=-2229.900146484375 | size=1 | links=#2874(auto Redridge Mountains;40):41 #9272(auto Redridge Mountains;137):13 c426.9:21
+#25458 | auto Redridge Mountains;402§auto Rotkammgebirge;402§auto Les Carmines;402 | x=-9463.900390625 y=-3417.699951171875 | size=1 | links=#10094(auto Redridge Mountains;153):23 #22406(auto Redridge Mountains;355):25
+#25546 | auto Redridge Mountains;403§auto Rotkammgebirge;403§auto Les Carmines;403 | x=-9127.2001953125 y=-2488.5 | size=1 | links=#82(auto Redridge Mountains;2):13 #20958(crossing;Redridge Mountains):22
+#25603 | auto Redridge Mountains;404§auto Rotkammgebirge;404§auto Les Carmines;404 | x=-9407.1005859375 y=-3067.300048828125 | size=1 | links=#20109(auto Redridge Mountains;311):6 #27865(auto Redridge Mountains;436):6
+#25793 | auto Redridge Mountains;405§auto Rotkammgebirge;405§auto Les Carmines;405 | x=-8784.1005859375 y=-2437.900146484375 | size=1 | links=#10533(auto Redridge Mountains;160):33 #22314(auto Redridge Mountains;354):15 c615.3:17 c615.4:20
+#25813 | auto Redridge Mountains;406§auto Rotkammgebirge;406§auto Les Carmines;406 | x=-8673.900390625 y=-2278.400146484375 | size=1 | links=#7449(auto Redridge Mountains;108):8 c615.12:9
+#25850 | auto Redridge Mountains;407§auto Rotkammgebirge;407§auto Les Carmines;407 | x=-8962.2998046875 y=-2287.60009765625 | size=1 | links=#20957(auto Redridge Mountains;330):25 #22552(auto Redridge Mountains;359):18
+#26026 | auto Redridge Mountains;408§auto Rotkammgebirge;408§auto Les Carmines;408 | x=-9152.7001953125 y=-2382.800048828125 | size=1 | links=#16141(auto Redridge Mountains;243):43 #16994(auto Redridge Mountains;259):31
+#26046 | auto Redridge Mountains;409§auto Rotkammgebirge;409§auto Les Carmines;409 | x=-8778.900390625 y=-2029.700073242188 | size=1 | links=#22718(auto Redridge Mountains;362):14 #27769(auto Redridge Mountains;433):16
+#26059 | auto Redridge Mountains;410§auto Rotkammgebirge;410§auto Les Carmines;410 | x=-9280.7001953125 y=-3313.199951171875 | size=1 | links=#13403(auto Redridge Mountains;207):2 #16765(auto Redridge Mountains;251):6
+#26362 | auto Redridge Mountains;411§auto Rotkammgebirge;411§auto Les Carmines;411 | x=-9288.7998046875 y=-2926.900146484375 | size=1 | links=#6849(auto Redridge Mountains;101):6 #9066(auto Redridge Mountains;136):9
+#26383 | auto Redridge Mountains;412§auto Rotkammgebirge;412§auto Les Carmines;412 | x=-9698.6005859375 y=-2292.300048828125 | size=1 | links=#1771(auto Redridge Mountains;28):44 #23064(auto Redridge Mountains;372):30
+#26423 | auto Redridge Mountains;413§auto Rotkammgebirge;413§auto Les Carmines;413 | x=-9058.900390625 y=-1996.200073242188 | size=1 | links=#3585(auto Redridge Mountains;52):10 #20895(auto Redridge Mountains;327):12
+#26573 | auto Redridge Mountains;414§auto Rotkammgebirge;414§auto Les Carmines;414 | x=-9389.400390625 y=-3059 | size=1 | links=#6354(auto Redridge Mountains;90):4 #19487(auto Redridge Mountains;305):7
+#26714 | auto Redridge Mountains;415§auto Rotkammgebirge;415§auto Les Carmines;415 | x=-8986.2998046875 y=-2026.200073242188 | size=1 | links=#5814(entry and exit;Rethban Caverns;Redridge Mountains):11 #14514(auto Redridge Mountains;222):16
+#27087 | auto Redridge Mountains;416§auto Rotkammgebirge;416§auto Les Carmines;416 | x=-9061.1005859375 y=-2183.5 | size=1 | links=#19663(auto Redridge Mountains;308):22 c446.8:31
+#27107 | auto Redridge Mountains;417§auto Rotkammgebirge;417§auto Les Carmines;417 | x=-9643.5 y=-2575.800048828125 | size=1 | links=#12351(auto Redridge Mountains;192):32 #14604(auto Redridge Mountains;223):31 c428.12:53
+#27116 | auto Redridge Mountains;418§auto Rotkammgebirge;418§auto Les Carmines;418 | x=-9290.400390625 y=-2945.800048828125 | size=1 | links=#9832(auto Redridge Mountains;148):2 #13421(auto Redridge Mountains;209):1
+#27211 | auto Redridge Mountains;419§auto Rotkammgebirge;419§auto Les Carmines;419 | x=-9377 y=-3052 | size=1 | links=#10934(auto Redridge Mountains;165):6 #23040(auto Redridge Mountains;371):10
+#27281 | auto Redridge Mountains;420§auto Rotkammgebirge;420§auto Les Carmines;420 | x=-9297.1005859375 y=-2959.10009765625 | size=1 | links=#20835(entry and exit;Stonewatch Tower;Redridge Mountains):6 #28058(auto Redridge Mountains;439):10
+#27363 | auto Redridge Mountains;421§auto Rotkammgebirge;421§auto Les Carmines;421 | x=-9387.2998046875 y=-3031.10009765625 | size=1 | links=#21480(central location;Stonewatch;Redridge Mountains):17 #24059(auto Redridge Mountains;386):3 c436.4:7
+#27376 | auto Redridge Mountains;422§auto Rotkammgebirge;422§auto Les Carmines;422 | x=-8927.7001953125 y=-1990.300048828125 | size=1 | links=#23317(auto Redridge Mountains;377):9 c446.11:7
+#27380 | auto Redridge Mountains;423§auto Rotkammgebirge;423§auto Les Carmines;423 | x=-8694.5 y=-2581.900146484375 | size=1 | links=#821(auto Redridge Mountains;11):21 #4541(passage;from;Redridge Mountains;to;Searing Gorge):26 #10112(auto Redridge Mountains;154):27
+#27411 | auto Redridge Mountains;424§auto Rotkammgebirge;424§auto Les Carmines;424 | x=-9186 y=-3178.800048828125 | size=1 | links=#6950(auto Redridge Mountains;103):38 #23661(auto Redridge Mountains;380):42 c433.17:21 c433.18:31
+#27416 | auto Redridge Mountains;425§auto Rotkammgebirge;425§auto Les Carmines;425 | x=-8857.7001953125 y=-2056.400146484375 | size=1 | links=#27780(auto Redridge Mountains;434):16 c580.9:14
+#27458 | entry and exit;Tower of Ilgalar;Redridge Mountains§ein- und ausgang;Der Turm von Ilgalar;Rotkammgebirge§entrée et sortie;Tower of Ilgalar;Les Carmines | x=-9282.400390625 y=-3327.60009765625 | size=1 | links=#3079(auto Redridge Mountains;43):3 #7732(auto Redridge Mountains;117):5 c431.12:4 c431.13:3
+#27514 | auto Redridge Mountains;426§auto Rotkammgebirge;426§auto Les Carmines;426 | x=-9275.2001953125 y=-3301.10009765625 | size=1 | links=#259(auto Redridge Mountains;5):2 #2330(auto Redridge Mountains;34):2
+#27549 | auto Redridge Mountains;427§auto Rotkammgebirge;427§auto Les Carmines;427 | x=-9243.6005859375 y=-3397.300048828125 | size=1 | links=#22207(auto Redridge Mountains;349):43 o31.1:12
+#27569 | auto Redridge Mountains;428§auto Rotkammgebirge;428§auto Les Carmines;428 | x=-9256.6005859375 y=-2981 | size=1 | links=#1138(auto Redridge Mountains;17):23 #17488(auto Redridge Mountains;270):32
+#27621 | auto Redridge Mountains;429§auto Rotkammgebirge;429§auto Les Carmines;429 | x=-9137.900390625 y=-2306 | size=1 | links=#10982(auto Redridge Mountains;166):18 #11828(auto Redridge Mountains;182):13
+#27692 | auto Redridge Mountains;430§auto Rotkammgebirge;430§auto Les Carmines;430 | x=-9206.2998046875 y=-2917.699951171875 | size=1 | links=#14494(auto Redridge Mountains;221):15 #18316(auto Redridge Mountains;283):22
+#27737 | auto Redridge Mountains;431§auto Rotkammgebirge;431§auto Les Carmines;431 | x=-9182.2998046875 y=-2641.800048828125 | size=1 | links=#21660(auto Redridge Mountains;342):25 #22498(auto Redridge Mountains;358):13
+#27765 | auto Redridge Mountains;432§auto Rotkammgebirge;432§auto Les Carmines;432 | x=-8829.5 y=-2206.900146484375 | size=1 | links=#16875(auto Redridge Mountains;256):9 #18344(auto Redridge Mountains;284):10
+#27769 | auto Redridge Mountains;433§auto Rotkammgebirge;433§auto Les Carmines;433 | x=-8787.7001953125 y=-2043.5 | size=1 | links=#16811(auto Redridge Mountains;253):11 #26046(auto Redridge Mountains;409):16
+#27780 | auto Redridge Mountains;434§auto Rotkammgebirge;434§auto Les Carmines;434 | x=-8841.5 y=-2055.400146484375 | size=1 | links=#18518(auto Redridge Mountains;288):9 #27416(auto Redridge Mountains;425):16 c446.16:17
+#27830 | auto Redridge Mountains;435§auto Rotkammgebirge;435§auto Les Carmines;435 | x=-9281.5 y=-3316.10009765625 | size=1 | links=#11575(auto Redridge Mountains;180):7 c397.1:11 c429.14:10
+#27865 | auto Redridge Mountains;436§auto Rotkammgebirge;436§auto Les Carmines;436 | x=-9407.6005859375 y=-3061.10009765625 | size=1 | links=#2485(auto Redridge Mountains;35):4 #25603(auto Redridge Mountains;404):6
+#27872 | auto Redridge Mountains;437§auto Rotkammgebirge;437§auto Les Carmines;437 | x=-9266.7001953125 y=-3302.800048828125 | size=1 | links=#12533(auto Redridge Mountains;194):3 #15166(auto Redridge Mountains;231):3
+#28013 | auto Redridge Mountains;438§auto Rotkammgebirge;438§auto Les Carmines;438 | x=-9226.1005859375 y=-2164 | size=1 | links=#7330(down;Lakeshire Inn):7 #22742(auto Redridge Mountains;363):11
+#28058 | auto Redridge Mountains;439§auto Rotkammgebirge;439§auto Les Carmines;439 | x=-9299.7001953125 y=-2968.900146484375 | size=1 | links=#1243(auto Redridge Mountains;20):18 #27281(auto Redridge Mountains;420):10
+#28109 | auto Redridge Mountains;440§auto Rotkammgebirge;440§auto Les Carmines;440 | x=-9053.7998046875 y=-2410.199951171875 | size=1 | links=#12627(auto Redridge Mountains;196):18 c426.12:19
+#28184 | auto Redridge Mountains;441§auto Rotkammgebirge;441§auto Les Carmines;441 | x=-9381.7001953125 y=-3069.900146484375 | size=1 | links=#5576(auto Redridge Mountains;78):4 #24233(auto Redridge Mountains;387):7
+#28198 | auto Redridge Mountains;442§auto Rotkammgebirge;442§auto Les Carmines;442 | x=-9196.7001953125 y=-3288.900146484375 | size=1 | links=#6314(auto Redridge Mountains;88):46 c429.23:25
+#28236 | auto Redridge Mountains;443§auto Rotkammgebirge;443§auto Les Carmines;443 | x=-9289.900390625 y=-3307.900146484375 | size=1 | links=#9772(auto Redridge Mountains;147):2 #12132(auto Redridge Mountains;188):3
+#28281 | auto Redridge Mountains;444§auto Rotkammgebirge;444§auto Les Carmines;444 | x=-9251.7001953125 y=-1958.5 | size=1 | links=#10158(auto Redridge Mountains;155):12 c547.2:14
+#28283 | auto Redridge Mountains;445§auto Rotkammgebirge;445§auto Les Carmines;445 | x=-9283.400390625 y=-3341.10009765625 | size=1 | links=#7732(auto Redridge Mountains;117):8 #16221(auto Redridge Mountains;244):7
+#28346 | auto Redridge Mountains;446§auto Rotkammgebirge;446§auto Les Carmines;446 | x=-8972.5 y=-2603.800048828125 | size=1 | links=#6524(auto Redridge Mountains;94):27 #17036(auto Redridge Mountains;261):24
+#28365 | auto Redridge Mountains;447§auto Rotkammgebirge;447§auto Les Carmines;447 | x=-8848 y=-1964.300048828125 | size=1 | links=#3403(auto Redridge Mountains;48):22 c446.14:14
+#28389 | crossing;Stonewatch;Redridge Mountains§kreuzung;Steinwacht;Rotkammgebirge§traversée;Stonewatch;Les Carmines | x=-9201.7001953125 y=-3014.300048828125 | size=1 | links=#14143(auto Redridge Mountains;216):39 #14337(auto Redridge Mountains;218):37 #15499(auto Redridge Mountains;235):36
+#28478 | auto Redridge Mountains;448§auto Rotkammgebirge;448§auto Les Carmines;448 | x=-9013.7998046875 y=-2003.099975585938 | size=1 | links=#6262(auto Redridge Mountains;87):9 #17699(auto Redridge Mountains;275):19
+#28527 | auto Redridge Mountains;449§auto Rotkammgebirge;449§auto Les Carmines;449 | x=-9764 y=-1823.200073242188 | size=1 | links=#1302(auto Redridge Mountains;21):64 #19829(auto Redridge Mountains;309):90 c442.4:29
+#28535 | auto Redridge Mountains;450§auto Rotkammgebirge;450§auto Les Carmines;450 | x=-9176.2998046875 y=-3106.800048828125 | size=1 | links=#17253(auto Redridge Mountains;264):30 #23661(auto Redridge Mountains;380):30
+#28558 | auto Redridge Mountains;451§auto Rotkammgebirge;451§auto Les Carmines;451 | x=-9195.400390625 y=-2734.900146484375 | size=5 | links=#12595(auto Redridge Mountains;195):25 #13010(auto Redridge Mountains;203):30 c505.5:7
+#28614 | s;u;Mailbox;2;Redridge Mountains§s;u;Briefkasten;2;Rotkammgebirge§s;u;Boîte aux lettres;2;Les Carmines | x=-9249.728515625 y=-2143.93310546875 | size=1 | links=#19948(entry and exit;Lakeshire Inn):5
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c266.1 | links=#9350(top;Lakeshire Inn):15
+c334.1 | links=#15116(auto Redridge Mountains;229):12 c335.1:5
+c335.1 | links=c334.1:5
+c341.1 | links=#19105(auto Redridge Mountains;299):19 #19565(auto Redridge Mountains;307):32 c415.1:32
+c342.1 | links=#18762(focus point;Lakeshire;Redridge Mountains):21 #22460(auto Redridge Mountains;356):16
+c343.1 | links=c3087.1:5
+c344.1 | links=#6776(auto Redridge Mountains;100):4
+c345.1 | links=#9326(auto Redridge Mountains;139):32 c547.1:14
+c346.1 | links=c5620.1:5
+c348.1 | links=#16436(auto Redridge Mountains;248):8
+c349.1 | links=#20544(auto Redridge Mountains;319):10
+c379.1 | links=o180523.1:3
+c381.1 | links=#5662(auto Redridge Mountains;79):25 c791.1:22 c936.1:16
+c382.1 | links=#8762(auto Redridge Mountains;133):16 #19105(auto Redridge Mountains;299):14
+c397.1 | links=#27830(auto Redridge Mountains;435):11 c429.14:3
+c415.1 | links=c341.1:32
+c423.1 | links=#15537(auto Redridge Mountains;236):47
+c424.1 | links=c423.2:11
+c428.1 | links=c441.6:31 c441.9:20
+c434.1 | links=c432.5:20
+c437.1 | links=#7507(auto Redridge Mountains;110):31 c485.6:29 c485.9:23
+c440.1 | links=c485.2:34 c485.9:73
+c441.1 | links=c505.1:6 c485.5:50 c441.12:21
+c445.1 | links=#5938(auto Redridge Mountains;84):19 c580.14:4
+c464.1 | links=#18353(central location;Three Corners;Redridge Mountains):11
+c485.1 | links=c485.2:25
+c486.1 | links=#5195(auto Redridge Mountains;70):35 c4065.5:6
+c505.1 | links=c441.1:6 c485.3:59 c485.4:96
+c518.1 | links=c445.2:2 c445.3:7
+c544.1 | links=c544.3:13 c545.4:12
+c545.1 | links=c545.2:14
+c547.1 | links=c345.1:14 c721.2:10
+c579.1 | links=c429.9:33
+c584.1 | links=#11853(auto Redridge Mountains;185):10 c4463.12:14
+c620.1 | links=#18762(focus point;Lakeshire;Redridge Mountains):10
+c711.1 | links=#5938(auto Redridge Mountains;84):20
+c712.1 | links=c547.21:29
+c777.1 | links=#7096(central location;Lakeshire;Redridge Mountains):13
+c789.1 | links=#17146(auto Redridge Mountains;262):4
+c790.1 | links=#7096(central location;Lakeshire;Redridge Mountains):13
+c791.1 | links=#7096(central location;Lakeshire;Redridge Mountains):18 c381.1:22 c934.1:14
+c793.1 | links=#4139(auto Redridge Mountains;56):3
+c812.1 | links=#18762(focus point;Lakeshire;Redridge Mountains):23 c851.1:7
+c848.1 | links=#20503(auto Redridge Mountains;318):8
+c851.1 | links=c812.1:7
+c859.1 | links=#5662(auto Redridge Mountains;79):11
+c900.1 | links=#11504(auto Redridge Mountains;179):20 #18431(auto Redridge Mountains;286):2
+c903.1 | links=#12667(auto Redridge Mountains;197):30
+c931.1 | links=#12667(auto Redridge Mountains;197):36 c1070.1:9
+c934.1 | links=c791.1:14
+c936.1 | links=c381.1:16
+c947.1 | links=c568.14:28 c433.17:33
+c956.1 | links=#4139(auto Redridge Mountains;56):5
+c1070.1 | links=#4792(auto Redridge Mountains;64):12 #12667(auto Redridge Mountains;197):33 c931.1:9
+c1083.1 | links=c14270.21:44 c14270.23:7
+c1671.1 | links=#22460(auto Redridge Mountains;356):2
+c1678.1 | links=#5662(auto Redridge Mountains;79):22 #22946(auto Redridge Mountains;369):30
+c1680.1 | links=#16436(auto Redridge Mountains;248):8
+c1933.1 | links=#16294(auto Redridge Mountains;246):7
+c3085.1 | links=c3089.1:4
+c3087.1 | links=#12261(auto Redridge Mountains;191):19 c343.1:5
+c3088.1 | links=#23988(auto Redridge Mountains;385):6
+c3089.1 | links=#23394(auto Redridge Mountains;378):6 c3085.1:4
+c3090.1 | links=#24516(auto Redridge Mountains;389):5
+c3091.1 | links=#9350(top;Lakeshire Inn):10
+c3096.1 | links=c4463.1:9
+c4064.1 | links=c4065.19:9
+c4463.1 | links=c3096.1:9 c440.6:10
+c5607.1 | links=c5608.1:1
+c5608.1 | links=c5607.1:1 c7009.1:18
+c5620.1 | links=#7712(auto Redridge Mountains;115):3 c346.1:5
+c6166.1 | links=c6727.1:9
+c6491.1 | links=#16284(auto Redridge Mountains;245):41
+c6727.1 | links=#7330(down;Lakeshire Inn):3 c6166.1:9 c6728.1:0
+c6728.1 | links=c6727.1:0
+c6966.1 | links=c7009.1:4
+c7009.1 | links=#7443(auto Redridge Mountains;107):28 c5608.1:18 c6966.1:4
+c8962.1 | links=c8965.1:1
+c8965.1 | links=#7443(auto Redridge Mountains;107):9 c8962.1:1
+c9982.1 | links=#19948(entry and exit;Lakeshire Inn):4 o47.1:2
+c14269.1 | links=c14269.2:87 c578.9:47
+c14270.1 | links=o154357.2:29 c14270.13:43
+c14272.1 | links=#15485(auto Redridge Mountains;234):30
+o31.1 | links=#27549(auto Redridge Mountains;427):12
+o47.1 | links=c9982.1:2
+o60.1 | links=#6603(auto Redridge Mountains;96):12
+o76.1 | links=#13421(auto Redridge Mountains;209):6
+o103628.1 | links=c819.11:2
+o154357.1 | links=o154357.8:59
+o180523.1 | links=#7712(auto Redridge Mountains;115):7 c379.1:3
+c423.2 | links=c424.1:11 c424.2:6 c423.9:24
+c424.2 | links=c423.2:6 c424.12:7
+c426.2 | links=#10075(auto Redridge Mountains;152):32 #24314(auto Redridge Mountains;388):30 c426.7:33 c441.18:6
+c428.2 | links=c428.13:48
+c431.2 | links=c568.2:30 c431.3:15 c947.12:17 c947.13:31
+c432.2 | links=#12777(auto Redridge Mountains;199):27 c568.22:24
+c437.2 | links=c485.9:35 c485.12:4
+c441.2 | links=#16903(auto Redridge Mountains;257):44
+c445.2 | links=c518.1:2
+c485.2 | links=c440.1:34 c485.1:25 c485.14:48
+c544.2 | links=c544.3:2
+c545.2 | links=c545.1:14 c545.4:11 c545.5:11
+c547.2 | links=#9326(auto Redridge Mountains;139):22 #28281(auto Redridge Mountains;444):14
+c568.2 | links=#10094(auto Redridge Mountains;153):19 c431.2:30
+c580.2 | links=#11086(auto Redridge Mountains;170):17 c580.5:25
+c584.2 | links=c435.9:12
+c615.2 | links=#2065(auto Redridge Mountains;32):38
+c620.2 | links=#10809(auto Redridge Mountains;164):10
+c721.2 | links=c547.1:10
+c947.2 | links=#3249(auto Redridge Mountains;45):11
+c1083.2 | links=c548.10:10 c422.14:14 c14270.19:13
+c4463.2 | links=#14494(auto Redridge Mountains;221):13
+c14269.2 | links=c14269.1:87
+c14270.2 | links=c1083.9:23 c14270.21:30
+c14271.2 | links=c712.9:55
+c14272.2 | links=#12667(auto Redridge Mountains;197):106
+o154357.2 | links=#147(quest target;Lake Everstill;Redridge Mountains):75 c14270.1:29 o154357.3:24 c14270.15:4 c14270.31:26
+c424.3 | links=c14271.3:6 c424.4:11 c712.9:62
+c426.3 | links=c426.4:5 c426.5:6 c430.21:14
+c428.3 | links=c441.6:40 c428.13:56
+c431.3 | links=#3249(auto Redridge Mountains;45):46 c431.2:15 c568.3:29
+c432.3 | links=c947.7:5 c568.15:29
+c434.3 | links=c432.5:18
+c436.3 | links=#21480(central location;Stonewatch;Redridge Mountains):5 c4065.6:1
+c440.3 | links=c485.5:38 c440.6:62 c485.11:41
+c441.3 | links=#16831(auto Redridge Mountains;254):29
+c445.3 | links=#5095(auto Redridge Mountains;69):15 c518.1:7 c445.6:11 c430.19:8
+c485.3 | links=c505.1:59
+c544.3 | links=c544.1:13 c544.2:2 c545.3:4
+c545.3 | links=c544.3:4
+c568.3 | links=#3249(auto Redridge Mountains;45):24 c431.3:29
+c584.3 | links=c584.4:39 c615.6:20 c615.7:23 c4463.11:19
+c615.3 | links=#25793(auto Redridge Mountains;405):17
+c620.3 | links=#10809(auto Redridge Mountains;164):10
+c947.3 | links=#3249(auto Redridge Mountains;45):47 c429.4:13 c431.4:13 c431.5:11 c429.9:19 c429.10:11
+c1083.3 | links=c14270.11:28 c14270.20:15
+c14271.3 | links=c424.3:6 c423.4:5 c423.13:8
+c14272.3 | links=#9733(auto Redridge Mountains;144):45 c14272.10:42 c14272.11:23 c428.17:17 c428.18:28 c441.25:40
+o154357.3 | links=o154357.2:24 o154357.5:70
+o179487.3 | links=c578.9:139 c14270.23:76
+c423.4 | links=c14271.3:5
+c424.4 | links=c424.3:11
+c426.4 | links=c426.3:5
+c429.4 | links=c947.3:13
+c430.4 | links=c426.7:18
+c431.4 | links=c947.3:13
+c432.4 | links=c947.4:5
+c433.4 | links=c432.5:16
+c434.4 | links=c432.5:13
+c436.4 | links=#27363(auto Redridge Mountains;421):7 c4065.6:7
+c442.4 | links=#28527(auto Redridge Mountains;449):29 c442.5:16
+c485.4 | links=c505.1:96 c485.14:30
+c545.4 | links=c544.1:12 c545.2:11
+c547.4 | links=#5362(auto Redridge Mountains;74):36 #10764(auto Redridge Mountains;162):23
+c568.4 | links=c431.5:14
+c584.4 | links=#2065(auto Redridge Mountains;32):17 c584.3:39
+c615.4 | links=#25793(auto Redridge Mountains;405):20
+c712.4 | links=c712.12:19
+c947.4 | links=c432.4:5 c432.8:5 c432.9:8
+c1083.4 | links=c548.13:9
+c4065.4 | links=#938(auto Redridge Mountains;15):10
+c14271.4 | links=c424.11:4 c423.12:3 c423.13:22
+o154357.4 | links=o154357.11:44
+o179487.4 | links=#147(quest target;Lake Everstill;Redridge Mountains):72
+c426.5 | links=c426.3:6
+c428.5 | links=c428.6:56 c441.9:27
+c431.5 | links=c947.3:11 c568.4:14 c947.8:14
+c432.5 | links=#22885(auto Redridge Mountains;367):35 c434.1:20 c434.3:18 c433.4:16 c434.4:13 c947.11:24
+c433.5 | links=c947.11:6
+c436.5 | links=c4065.7:3
+c441.5 | links=c428.13:14
+c442.5 | links=c442.4:16
+c485.5 | links=c441.1:50 c440.3:38
+c505.5 | links=#28558(auto Redridge Mountains;451):7
+c545.5 | links=#11275(auto Redridge Mountains;174):37 c545.2:11
+c547.5 | links=#821(auto Redridge Mountains;11):10
+c580.5 | links=#3403(auto Redridge Mountains;48):25 c580.2:25
+c615.5 | links=#2065(auto Redridge Mountains;32):12
+c712.5 | links=c423.8:4
+c947.5 | links=c432.7:35
+c1083.5 | links=c422.13:8
+c4065.5 | links=c486.1:6
+c14271.5 | links=c424.10:4 c423.11:3
+o154357.5 | links=#8441(auto Redridge Mountains;129):29 o154357.3:70 o154357.7:29 c14270.9:47
+c426.6 | links=#23096(auto Redridge Mountains;373):13
+c428.6 | links=c428.5:56 c441.12:39
+c429.6 | links=c429.9:18
+c436.6 | links=#17375(auto Redridge Mountains;269):15 c4065.10:5
+c440.6 | links=c4463.1:10 c440.3:62
+c441.6 | links=c428.1:31 c428.3:40
+c442.6 | links=c442.11:56 c442.16:23
+c445.6 | links=c445.3:11
+c485.6 | links=c437.1:29 c485.7:7
+c580.6 | links=#5814(entry and exit;Rethban Caverns;Redridge Mountains):14 #24670(auto Redridge Mountains;392):12
+c615.6 | links=c584.3:20
+c1083.6 | links=c14270.21:25
+c4064.6 | links=#1243(auto Redridge Mountains;20):12
+c4065.6 | links=c436.3:1 c436.4:7
+c4463.6 | links=c437.7:6 c4463.8:25
+c14272.6 | links=#15485(auto Redridge Mountains;234):31
+o154357.6 | links=o154357.10:49 o154357.12:32
+c426.7 | links=c426.2:33 c430.4:18
+c430.7 | links=#23096(auto Redridge Mountains;373):12
+c432.7 | links=c947.5:35 c568.26:13
+c435.7 | links=c4463.12:6
+c437.7 | links=c4463.6:6
+c485.7 | links=c485.6:7 c485.12:11
+c580.7 | links=#1688(auto Redridge Mountains;27):11 #16833(auto Redridge Mountains;255):12
+c615.7 | links=c584.3:23
+c947.7 | links=c432.3:5 c568.12:4 c568.13:4 c568.14:5
+c1083.7 | links=c14270.11:6
+c4065.7 | links=#21480(central location;Stonewatch;Redridge Mountains):12 c436.5:3 c4065.8:4
+c14271.7 | links=c424.8:4 c423.11:4
+o154357.7 | links=#4791(auto Redridge Mountains;63):44 o154357.5:29
+o179487.7 | links=c14270.13:3
+c423.8 | links=c712.5:4 c712.12:14 c14271.13:4
+c424.8 | links=c14271.7:4 c424.14:26 c423.15:5
+c426.8 | links=#6478(auto Redridge Mountains;92):33 c430.9:0 c441.18:30
+c430.8 | links=#10075(auto Redridge Mountains;152):30
+c432.8 | links=c947.4:5 c568.22:4
+c435.8 | links=#16633(auto Redridge Mountains;249):11
+c440.8 | links=#14494(auto Redridge Mountains;221):10 c485.19:8 c485.22:19
+c442.8 | links=#19829(auto Redridge Mountains;309):32
+c446.8 | links=#27087(auto Redridge Mountains;416):31
+c615.8 | links=#24728(auto Redridge Mountains;393):5
+c947.8 | links=c431.5:14
+c1083.8 | links=c548.14:26
+c4065.8 | links=c4065.7:4
+c4463.8 | links=#3162(auto Redridge Mountains;44):29 c4463.6:25 c4463.9:37
+c14272.8 | links=#15485(auto Redridge Mountains;234):31
+o154357.8 | links=o154357.1:59 o154357.9:56
+c422.9 | links=#147(quest target;Lake Everstill;Redridge Mountains):51
+c423.9 | links=#14604(auto Redridge Mountains;223):31 c423.2:24
+c424.9 | links=c424.10:3 c423.15:3
+c426.9 | links=#25403(auto Redridge Mountains;401):21
+c429.9 | links=c579.1:33 c947.3:19 c429.6:18
+c430.9 | links=#17324(auto Redridge Mountains;268):12 c426.8:0
+c432.9 | links=c947.4:8
+c435.9 | links=#16124(auto Redridge Mountains;242):15 c584.2:12
+c437.9 | links=#19185(auto Redridge Mountains;301):21 c437.10:3
+c441.9 | links=c428.1:20 c428.5:27
+c442.9 | links=#19829(auto Redridge Mountains;309):21
+c485.9 | links=c437.1:23 c440.1:73 c437.2:35
+c547.9 | links=#20653(auto Redridge Mountains;323):25 #23112(auto Redridge Mountains;374):38 #23805(auto Redridge Mountains;382):18
+c548.9 | links=#4097(auto Redridge Mountains;55):13
+c578.9 | links=c14269.1:47 o179487.3:139
+c580.9 | links=#7805(auto Redridge Mountains;118):16 #27416(auto Redridge Mountains;425):14
+c615.9 | links=#11853(auto Redridge Mountains;185):9 #15963(auto Redridge Mountains;241):4
+c712.9 | links=c14271.2:55 c424.3:62 c547.15:19
+c1083.9 | links=#4235(auto Redridge Mountains;59):19 c14270.2:23 c422.13:20
+c4065.9 | links=c4065.10:5
+c4463.9 | links=c4463.8:37
+c14270.9 | links=o154357.5:47
+o154357.9 | links=o154357.8:56 o154357.11:36
+c424.10 | links=c14271.5:4 c424.9:3
+c429.10 | links=c947.3:11
+c430.10 | links=#5762(auto Redridge Mountains;80):16
+c434.10 | links=#23661(auto Redridge Mountains;380):22
+c437.10 | links=c437.9:3
+c442.10 | links=#1302(auto Redridge Mountains;21):33 c442.11:17
+c485.10 | links=c485.11:23
+c547.10 | links=#7147(auto Redridge Mountains;104):30
+c548.10 | links=#4097(auto Redridge Mountains;55):17 c1083.2:10
+c568.10 | links=#9901(auto Redridge Mountains;150):12 #22207(auto Redridge Mountains;349):18
+c580.10 | links=#14948(auto Redridge Mountains;226):12 #22718(auto Redridge Mountains;362):9
+c616.10 | links=#7526(auto Redridge Mountains;111):14
+c819.10 | links=c429.20:3
+c4065.10 | links=c436.6:5 c4065.9:5
+c4463.10 | links=#19185(auto Redridge Mountains;301):25 #23805(auto Redridge Mountains;382):15
+c14272.10 | links=c14272.3:42
+o154357.10 | links=o154357.6:49 o154357.11:54
+c423.11 | links=c14271.5:3 c14271.7:4
+c424.11 | links=c14271.4:4
+c430.11 | links=c580.14:4
+c431.11 | links=#16221(auto Redridge Mountains;244):13
+c432.11 | links=#9161(Lieutenant Fangore;Galardell Valley;Redridge Mountains):5 c431.19:12 c429.22:10
+c435.11 | links=#14360(auto Redridge Mountains;219):4
+c442.11 | links=c442.6:56 c442.10:17
+c446.11 | links=#14270(auto Redridge Mountains;217):9 #27376(auto Redridge Mountains;422):7
+c485.11 | links=c440.3:41 c485.10:23
+c505.11 | links=#21660(auto Redridge Mountains;342):17
+c548.11 | links=c422.14:11
+c568.11 | links=#16221(auto Redridge Mountains;244):6
+c580.11 | links=#18895(auto Redridge Mountains;296):6
+c615.11 | links=c4463.12:8
+c819.11 | links=#18123(auto Redridge Mountains;281):11 o103628.1:2 c429.20:3
+c947.11 | links=c432.5:24 c433.5:6
+c4463.11 | links=c584.3:19
+c14270.11 | links=c1083.3:28 c1083.7:6 c14270.17:17
+c14272.11 | links=c14272.3:23
+o154357.11 | links=o154357.4:44 o154357.9:36 o154357.10:54
+c423.12 | links=c14271.4:3
+c424.12 | links=c424.2:7
+c426.12 | links=#28109(auto Redridge Mountains;440):19 c426.14:3
+c428.12 | links=#27107(auto Redridge Mountains;417):53
+c430.12 | links=#10982(auto Redridge Mountains;166):37 c430.16:32
+c431.12 | links=#27458(entry and exit;Tower of Ilgalar;Redridge Mountains):4
+c435.12 | links=#8045(auto Redridge Mountains;122):6
+c441.12 | links=c441.1:21 c428.6:39
+c446.12 | links=#8261(auto Redridge Mountains;126):12 #16811(auto Redridge Mountains;253):6
+c485.12 | links=c437.2:4 c485.7:11
+c548.12 | links=c14270.21:10
+c568.12 | links=c947.7:4
+c580.12 | links=#8261(auto Redridge Mountains;126):7 #18518(auto Redridge Mountains;288):17
+c615.12 | links=#22090(auto Redridge Mountains;347):9 #25813(auto Redridge Mountains;406):9
+c712.12 | links=#18353(central location;Three Corners;Redridge Mountains):38 c712.4:19 c423.8:14
+c947.12 | links=c431.2:17
+c4463.12 | links=c584.1:14 c435.7:6 c615.11:8
+o154357.12 | links=#8441(auto Redridge Mountains;129):37 o154357.6:32
+c422.13 | links=c1083.5:8 c1083.9:20
+c423.13 | links=c14271.3:8 c14271.4:22
+c424.13 | links=#16903(auto Redridge Mountains;257):55
+c426.13 | links=c426.14:6
+c428.13 | links=#2770(auto Redridge Mountains;38):37 c428.2:48 c428.3:56 c441.5:14
+c431.13 | links=#27458(entry and exit;Tower of Ilgalar;Redridge Mountains):3
+c432.13 | links=#12777(auto Redridge Mountains;199):47 c568.25:8 c568.26:13
+c435.13 | links=#24812(auto Redridge Mountains;394):10
+c440.13 | links=c440.14:5
+c442.13 | links=c442.22:13
+c446.13 | links=#3403(auto Redridge Mountains;48):12 c446.20:9
+c547.13 | links=#3162(auto Redridge Mountains;44):32 #10533(auto Redridge Mountains;160):25 c485.25:24
+c548.13 | links=c1083.4:9 c14270.20:11 c14270.21:24
+c568.13 | links=c947.7:4
+c578.13 | links=c578.19:23
+c580.13 | links=#23317(auto Redridge Mountains;377):12
+c947.13 | links=c431.2:31
+c4463.13 | links=#22090(auto Redridge Mountains;347):3
+c14270.13 | links=c14270.1:43 o179487.7:3
+c14271.13 | links=c423.8:4
+c422.14 | links=c1083.2:14 c548.11:11
+c424.14 | links=c424.8:26 c14271.15:15
+c426.14 | links=c426.12:3 c426.13:6 c430.25:14
+c428.14 | links=#15485(auto Redridge Mountains;234):35
+c429.14 | links=#27830(auto Redridge Mountains;435):10 c397.1:3
+c430.14 | links=#22552(auto Redridge Mountains;359):38 c430.15:4 c446.24:8 c446.25:7
+c436.14 | links=c4065.17:13
+c440.14 | links=c440.13:5 c485.21:3
+c441.14 | links=#4097(auto Redridge Mountains;55):64
+c442.14 | links=#1302(auto Redridge Mountains;21):53
+c446.14 | links=#28365(auto Redridge Mountains;447):14
+c485.14 | links=c485.2:48 c485.4:30
+c547.14 | links=#642(auto Redridge Mountains;9):30 c441.33:13
+c548.14 | links=c1083.8:26 c14270.20:20
+c568.14 | links=c947.1:28 c947.7:5
+c580.14 | links=c445.1:4 c430.11:4
+c615.14 | links=#15565(auto Redridge Mountains;238):8
+c4065.14 | links=#10934(auto Redridge Mountains;165):2
+c4463.14 | links=#1483(auto Redridge Mountains;24):14 #7269(auto Redridge Mountains;105):13
+c423.15 | links=c424.8:5 c424.9:3
+c424.15 | links=#23064(auto Redridge Mountains;372):26
+c426.15 | links=#5356(auto Redridge Mountains;73):10 #9934(auto Redridge Mountains;151):5
+c428.15 | links=c441.25:12
+c430.15 | links=c430.14:4
+c436.15 | links=c4065.18:6
+c442.15 | links=#15010(auto Redridge Mountains;227):29
+c446.15 | links=#23317(auto Redridge Mountains;377):13 #24670(auto Redridge Mountains;392):14
+c547.15 | links=#642(auto Redridge Mountains;9):32 c712.9:19
+c568.15 | links=c432.3:29 c429.21:12
+c14270.15 | links=o154357.2:4 c14270.30:35
+c14271.15 | links=c424.14:15 c423.16:13 c424.16:14
+c423.16 | links=c14271.15:13
+c424.16 | links=c14271.15:14 c547.19:22
+c430.16 | links=#12627(auto Redridge Mountains;196):34 c430.12:32
+c441.16 | links=#4097(auto Redridge Mountains;55):75
+c442.16 | links=c442.6:23
+c446.16 | links=#27780(auto Redridge Mountains;434):17
+c4463.16 | links=#16875(auto Redridge Mountains;256):12
+c14270.16 | links=#4097(auto Redridge Mountains;55):13
+c428.17 | links=c14272.3:17
+c433.17 | links=#27411(auto Redridge Mountains;424):21 c947.1:33
+c436.17 | links=#5195(auto Redridge Mountains;70):9
+c440.17 | links=c440.18:5 c485.22:10
+c441.17 | links=#23064(auto Redridge Mountains;372):39
+c442.17 | links=#1771(auto Redridge Mountains;28):31
+c4065.17 | links=#17375(auto Redridge Mountains;269):15 c436.14:13
+c4463.17 | links=#2844(auto Redridge Mountains;39):8 #17163(auto Redridge Mountains;263):11 c435.19:10
+c14270.17 | links=c14270.11:17
+c422.18 | links=c14270.28:7
+c428.18 | links=c14272.3:28
+c433.18 | links=#22885(auto Redridge Mountains;367):14 #27411(auto Redridge Mountains;424):31
+c435.18 | links=#25118(auto Redridge Mountains;396):6
+c440.18 | links=c440.17:5
+c441.18 | links=c426.2:6 c426.8:30
+c4065.18 | links=#5195(auto Redridge Mountains;70):29 c436.15:6
+c428.19 | links=#4235(auto Redridge Mountains;59):26
+c430.19 | links=c445.3:8
+c431.19 | links=c432.11:12 c568.25:16
+c433.19 | links=#23661(auto Redridge Mountains;380):28
+c435.19 | links=c4463.17:10
+c442.19 | links=#20635(auto Redridge Mountains;322):26
+c485.19 | links=c440.8:8
+c547.19 | links=#19143(auto Redridge Mountains;300):8 c424.16:22
+c578.19 | links=c578.13:23 c422.20:29 c578.20:36 c578.21:28
+c4065.19 | links=#1138(auto Redridge Mountains;17):23 #21703(auto Redridge Mountains;343):13 c4064.1:9 c4065.22:15
+c14270.19 | links=c1083.2:13 c14270.20:28
+c422.20 | links=c578.19:29
+c428.20 | links=#5366(auto Redridge Mountains;76):38 #8847(auto Redridge Mountains;134):11
+c429.20 | links=c819.10:3 c819.11:3
+c435.20 | links=#9294(waters;Render's Rock;Redridge Mountains):24 #13526(auto Redridge Mountains;210):8 #18344(auto Redridge Mountains;284):9
+c440.20 | links=#16141(auto Redridge Mountains;243):10 c440.23:16
+c441.20 | links=#15485(auto Redridge Mountains;234):33 c430.24:18
+c442.20 | links=c547.28:31 c547.29:10
+c446.20 | links=c446.13:9
+c547.20 | links=#19390(auto Redridge Mountains;303):49 c441.31:15
+c578.20 | links=c578.19:36 c14270.31:22
+c14270.20 | links=c1083.3:15 c548.13:11 c548.14:20 c14270.19:28
+c429.21 | links=c568.15:12
+c430.21 | links=#21979(auto Redridge Mountains;345):18 c426.3:14
+c435.21 | links=#1912(auto Redridge Mountains;30):8 #13526(auto Redridge Mountains;210):8
+c440.21 | links=#16141(auto Redridge Mountains;243):9
+c442.21 | links=#642(auto Redridge Mountains;9):20
+c485.21 | links=#17488(auto Redridge Mountains;270):24 c440.14:3
+c547.21 | links=#642(auto Redridge Mountains;9):43 c712.1:29
+c578.21 | links=c578.19:28
+c14270.21 | links=c1083.1:44 c14270.2:30 c1083.6:25 c548.12:10 c548.13:24 c14270.22:26
+c429.22 | links=c432.11:10
+c435.22 | links=#2844(auto Redridge Mountains;39):7 #19369(auto Redridge Mountains;302):7
+c442.22 | links=#13269(auto Redridge Mountains;206):42 c442.13:13
+c485.22 | links=c440.8:19 c440.17:10
+c568.22 | links=c432.2:24 c432.8:4
+c4065.22 | links=#1243(auto Redridge Mountains;20):4 c4065.19:15
+c14270.22 | links=c14270.21:26
+c429.23 | links=#18959(auto Redridge Mountains;297):34 #22207(auto Redridge Mountains;349):52 #28198(auto Redridge Mountains;442):25
+c435.23 | links=#23922(auto Redridge Mountains;383):8
+c440.23 | links=c440.20:16 c485.31:2
+c441.23 | links=#15485(auto Redridge Mountains;234):40
+c14270.23 | links=c1083.1:7 o179487.3:76
+c430.24 | links=#905(auto Redridge Mountains;13):21 #17295(auto Redridge Mountains;266):10 c441.20:18
+c435.24 | links=#25118(auto Redridge Mountains;396):3
+c446.24 | links=c430.14:8 c446.35:6
+c485.24 | links=#23805(auto Redridge Mountains;382):15
+c568.24 | links=#12777(auto Redridge Mountains;199):14 #18959(auto Redridge Mountains;297):36
+c430.25 | links=#23028(auto Redridge Mountains;370):15 #25180(auto Redridge Mountains;397):13 c426.14:14
+c441.25 | links=c14272.3:40 c428.15:12
+c446.25 | links=c430.14:7
+c485.25 | links=#19185(auto Redridge Mountains;301):19 c547.13:24
+c568.25 | links=c432.13:8 c431.19:16
+c446.26 | links=#10379(auto Redridge Mountains;157):15
+c568.26 | links=c432.7:13 c432.13:13
+c4065.26 | links=#20898(auto Redridge Mountains;328):3
+c485.27 | links=#16769(auto Redridge Mountains;252):30 c485.28:5
+c430.28 | links=#22552(auto Redridge Mountains;359):9
+c485.28 | links=c485.27:5 c485.29:3
+c547.28 | links=c442.20:31
+c14270.28 | links=c422.18:7 c14270.29:11
+c485.29 | links=c485.28:3
+c547.29 | links=#18353(central location;Three Corners;Redridge Mountains):29 c442.20:10
+c14270.29 | links=#147(quest target;Lake Everstill;Redridge Mountains):52 c14270.28:11
+c4065.30 | links=#5195(auto Redridge Mountains;70):6
+c14270.30 | links=c14270.15:35
+c441.31 | links=c547.20:15
+c485.31 | links=c440.23:2
+c14270.31 | links=o154357.2:26 c578.20:22
+c441.33 | links=c547.14:13
+c446.33 | links=#10379(auto Redridge Mountains;157):18
+c446.34 | links=#1411(auto Redridge Mountains;22):15
+c446.35 | links=c446.24:6

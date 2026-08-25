@@ -1,0 +1,3 @@
+Zone areaId 321 — eine Zeile pro Wegpunkt; Links inline.
+
+#28750 | s;Eastern Kingdoms;Arathi Highlands;Hammerfall§s;Östliche Königreiche;Arathihochland;Hammerfall§s;Royaumes de l'est;Hautes-terres d'Arathi;Trépas-d'Orgrim | x=-991.57 y=-3528.34 | size=1

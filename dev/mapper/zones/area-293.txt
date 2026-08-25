@@ -1,0 +1,3 @@
+Zone areaId 293 — eine Zeile pro Wegpunkt; Links inline.
+
+#22033 | auto;1635631184508293150553§auto;1635631184508293150553§auto;1635631184508293150553 | x=-813 y=-1556 | size=1 | links=#16096(auto Hillsbrad Foothills;259):74 #25057(passage;from;Thoradin's Wall;Hillsbrad Foothills;to;Thoradin's Wall;Arathi Highlands):28

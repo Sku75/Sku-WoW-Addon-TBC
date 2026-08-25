@@ -1,0 +1,3 @@
+Zone areaId 362 — eine Zeile pro Wegpunkt; Links inline.
+
+#28669 | s;Kalimdor;Durotar;Razor Hill;Razor Hill§s;Kalimdor;Durotar;Klingenhügel;Klingenhügel§s;Kalimdor;Durotar;Razor Hill;Razor Hill | x=312.659 y=-4745.52 | size=1

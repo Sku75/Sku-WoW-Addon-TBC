@@ -1,0 +1,4 @@
+Zone areaId 4613 — eine Zeile pro Wegpunkt; Links inline.
+
+#46909 | auto Dalaran City;403§auto Dalaran;403§auto Dalaran City;403 | x=5852.998300263896 y=479.7630946511289 | size=1 | links=#38975(auto Dalaran;21):14
+#46911 | auto Inside;Legendary Leather;Dalaran;405§auto Drinnen;Legendäre Leder;Dalaran;405§auto Intérieur;Legendary Leather;Dalaran;405 | x=5907.7001953125 y=751.2000122070312 | size=1 | links=#39121(auto Dalaran;147):5

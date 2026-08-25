@@ -1,0 +1,3 @@
+Zone areaId 1997 — eine Zeile pro Wegpunkt; Links inline.
+
+#28735 | s;Kalimdor;Felwood;Bloodvenom Falls;Bloodvenom Post §s;Kalimdor;Teufelswald;Die Blutgiftfälle;Blutgiftposten§s;Kalimdor;Gangrebois;Chutes de la Vénéneuse;Poste de la Vénéneuse | x=5111.98 y=-353.403 | size=1

@@ -1,0 +1,1295 @@
+Zone areaId 490 — eine Zeile pro Wegpunkt; Links inline.
+
+#41 | auto Un'Goro Crater;1§auto Krater von Un'Goro;1§auto Cratère d'Un'Goro;1 | x=-6717.80029296875 y=-2223.900146484375 | size=1 | links=#15751(auto Un'Goro Crater;363):12 #18444(auto Un'Goro Crater;420):32
+#54 | auto Un'Goro Crater;2§auto Krater von Un'Goro;2§auto Cratère d'Un'Goro;2 | x=-6224.30029296875 y=-469.3000183105469 | size=1 | links=#788(auto Un'Goro Crater;20):40 #21283(passage;from;Un'Goro Crater;to;Silithus):2
+#110 | auto Un'Goro Crater;3§auto Krater von Un'Goro;3§auto Cratère d'Un'Goro;3 | x=-8153.2001953125 y=-2069.199951171875 | size=1 | links=#9189(auto Un'Goro Crater;211):20 #24183(auto Un'Goro Crater;543):38
+#119 | auto Un'Goro Crater;4§auto Krater von Un'Goro;4§auto Cratère d'Un'Goro;4 | x=-6514.80029296875 y=-545.1000366210938 | size=1 | links=#10313(entry and exit;ramp;Un'Goro Crater;to;Silithus):15 #13064(auto Un'Goro Crater;299):18
+#126 | auto Un'Goro Crater;5§auto Krater von Un'Goro;5§auto Cratère d'Un'Goro;5 | x=-7196.2001953125 y=-318 | size=1 | links=#25454(auto Un'Goro Crater;569):10 c9167.54:25
+#148 | auto Un'Goro Crater;6§auto Krater von Un'Goro;6§auto Cratère d'Un'Goro;6 | x=-7584.7001953125 y=-440.3000183105469 | size=1 | links=#7475(auto Un'Goro Crater;175):38 #27783(auto Un'Goro Crater;626):40
+#177 | auto Un'Goro Crater;7§auto Krater von Un'Goro;7§auto Cratère d'Un'Goro;7 | x=-6428.60009765625 y=-552.5 | size=1 | links=#15420(auto Un'Goro Crater;356):24 #25312(auto Un'Goro Crater;563):22
+#188 | auto Un'Goro Crater;8§auto Krater von Un'Goro;8§auto Cratère d'Un'Goro;8 | x=-6315.30029296875 y=-1117.400024414063 | size=1 | links=#7772(auto Un'Goro Crater;182):40 #25710(auto Un'Goro Crater;577):16
+#226 | auto Un'Goro Crater;9§auto Krater von Un'Goro;9§auto Cratère d'Un'Goro;9 | x=-6987.80029296875 y=-1429.900024414063 | size=1 | links=#8769(auto Un'Goro Crater;200):28 #19616(ramp;down;Fire Plume Ridge;Un'Goro Crater):11
+#242 | auto Un'Goro Crater;10§auto Krater von Un'Goro;10§auto Cratère d'Un'Goro;10 | x=-7727.39990234375 y=-2084.800048828125 | size=1 | links=#26000(auto Un'Goro Crater;586):40 #26943(auto Un'Goro Crater;606):58
+#424 | auto Un'Goro Crater;11§auto Krater von Un'Goro;11§auto Cratère d'Un'Goro;11 | x=-6154.39990234375 y=-1107.900024414063 | size=1 | links=#15285(auto Un'Goro Crater;349):23 #25627(auto Un'Goro Crater;573):21 c3000.1:14
+#457 | auto Un'Goro Crater;12§auto Krater von Un'Goro;12§auto Cratère d'Un'Goro;12 | x=-7420.89990234375 y=-306.2000122070313 | size=1 | links=#6872(auto Un'Goro Crater;160):26 c9167.38:30
+#460 | auto Un'Goro Crater;13§auto Krater von Un'Goro;13§auto Cratère d'Un'Goro;13 | x=-7315.5 y=-1147.700073242188 | size=1 | links=#1752(auto Un'Goro Crater;41):75 #24177(auto Un'Goro Crater;542):42
+#502 | auto Un'Goro Crater;14§auto Krater von Un'Goro;14§auto Cratère d'Un'Goro;14 | x=-6919.60009765625 y=-1502.900024414063 | size=1 | links=#12537(auto Un'Goro Crater;285):36 #27249(auto Un'Goro Crater;616):29
+#523 | auto Un'Goro Crater;15§auto Krater von Un'Goro;15§auto Cratère d'Un'Goro;15 | x=-7297.30029296875 y=-1294.900024414063 | size=1 | links=#6546(auto Un'Goro Crater;149):4 #16563(auto Un'Goro Crater;381):2
+#591 | auto Un'Goro Crater;16§auto Krater von Un'Goro;16§auto Cratère d'Un'Goro;16 | x=-7016.60009765625 y=-342.8999938964844 | size=1 | links=#9513(auto Un'Goro Crater;216):14 o164659.24:13
+#666 | auto Un'Goro Crater;17§auto Krater von Un'Goro;17§auto Cratère d'Un'Goro;17 | x=-7195.7001953125 y=-1113.800048828125 | size=1 | links=#19271(auto Un'Goro Crater;443):23 #22653(auto Un'Goro Crater;517):40
+#678 | auto Un'Goro Crater;18§auto Krater von Un'Goro;18§auto Cratère d'Un'Goro;18 | x=-6871.80029296875 y=-2223.5 | size=1 | links=#11738(auto Un'Goro Crater;271):57 #18112(auto Un'Goro Crater;415):45 #20204(auto Un'Goro Crater;466):22 c6556.11:30
+#764 | auto Un'Goro Crater;19§auto Krater von Un'Goro;19§auto Cratère d'Un'Goro;19 | x=-7826.7001953125 y=-1288.400024414063 | size=1 | links=#13688(auto Un'Goro Crater;315):52 c6551.6:36 c6551.9:42 c2914.17:84
+#788 | auto Un'Goro Crater;20§auto Krater von Un'Goro;20§auto Cratère d'Un'Goro;20 | x=-6220.2001953125 y=-509.8000183105469 | size=1 | links=#54(auto Un'Goro Crater;2):40 #15344(auto Un'Goro Crater;354):28
+#792 | auto Un'Goro Crater;21§auto Krater von Un'Goro;21§auto Cratère d'Un'Goro;21 | x=-8042.60009765625 y=-1231.700073242188 | size=1 | links=#25477(auto Un'Goro Crater;570):16 c6553.12:8
+#842 | auto Un'Goro Crater;22§auto Krater von Un'Goro;22§auto Cratère d'Un'Goro;22 | x=-7129.2001953125 y=-1093.400024414063 | size=1 | links=#1357(auto Un'Goro Crater;32):35 #5105(auto Un'Goro Crater;115):28
+#858 | auto Un'Goro Crater;23§auto Krater von Un'Goro;23§auto Cratère d'Un'Goro;23 | x=-7681.5 y=-1882.300048828125 | size=1 | links=#28252(auto Un'Goro Crater;638):0
+#911 | auto Un'Goro Crater;24§auto Krater von Un'Goro;24§auto Cratère d'Un'Goro;24 | x=-6762.89990234375 y=-2216 | size=1 | links=#5553(auto Un'Goro Crater;124):28 #11738(auto Un'Goro Crater;271):51 #18444(auto Un'Goro Crater;420):42 c6500.2:19
+#972 | auto Un'Goro Crater;25§auto Krater von Un'Goro;25§auto Cratère d'Un'Goro;25 | x=-6991 y=-2366.10009765625 | size=1 | links=#24896(auto Un'Goro Crater;555):26 #28222(auto Un'Goro Crater;636):20 c9165.2:16
+#1055 | auto Un'Goro Crater;26§auto Krater von Un'Goro;26§auto Cratère d'Un'Goro;26 | x=-7572.60009765625 y=-2224.800048828125 | size=1 | links=#3765(auto Un'Goro Crater;85):34 #6156(auto Un'Goro Crater;138):83 #26546(auto Un'Goro Crater;600):66 o164778.2:31
+#1122 | auto Un'Goro Crater;27§auto Krater von Un'Goro;27§auto Cratère d'Un'Goro;27 | x=-7084.39990234375 y=-1817.099975585938 | size=1 | links=#9990(auto Un'Goro Crater;232):71 #14445(auto Un'Goro Crater;332):37
+#1125 | auto Un'Goro Crater;28§auto Krater von Un'Goro;28§auto Cratère d'Un'Goro;28 | x=-6684.7001953125 y=-648.7000122070312 | size=1 | links=o164779.9:40 c2914.10:31 c6512.51:24
+#1147 | auto Un'Goro Crater;29§auto Krater von Un'Goro;29§auto Cratère d'Un'Goro;29 | x=-7820.7001953125 y=-1788.300048828125 | size=1 | links=o164658.10:15 c6505.27:27
+#1153 | auto Un'Goro Crater;30§auto Krater von Un'Goro;30§auto Cratère d'Un'Goro;30 | x=-7290.30029296875 y=-1304.599975585938 | size=1 | links=#6507(auto Un'Goro Crater;148):23 #16563(auto Un'Goro Crater;381):9
+#1260 | auto Un'Goro Crater;31§auto Krater von Un'Goro;31§auto Cratère d'Un'Goro;31 | x=-7486.5 y=-2320.60009765625 | size=1 | links=#1420(auto Un'Goro Crater;34):13 #2854(auto Un'Goro Crater;59):7
+#1357 | auto Un'Goro Crater;32§auto Krater von Un'Goro;32§auto Cratère d'Un'Goro;32 | x=-7163.7001953125 y=-1084.800048828125 | size=1 | links=#842(auto Un'Goro Crater;22):35 #5150(auto Un'Goro Crater;117):81 #17888(auto Un'Goro Crater;410):38 #19271(auto Un'Goro Crater;443):28
+#1386 | auto Un'Goro Crater;33§auto Krater von Un'Goro;33§auto Cratère d'Un'Goro;33 | x=-6372.60009765625 y=-978.4000244140625 | size=1 | links=#6490(auto Un'Goro Crater;147):62 #26449(auto Un'Goro Crater;598):45
+#1420 | auto Un'Goro Crater;34§auto Krater von Un'Goro;34§auto Cratère d'Un'Goro;34 | x=-7479.10009765625 y=-2331.800048828125 | size=1 | links=#1260(auto Un'Goro Crater;31):13 #25785(auto Un'Goro Crater;580):12
+#1513 | auto Un'Goro Crater;35§auto Krater von Un'Goro;35§auto Cratère d'Un'Goro;35 | x=-7119.80029296875 y=-1372.300048828125 | size=1 | links=#11591(auto Un'Goro Crater;270):5 #24810(auto Un'Goro Crater;553):7
+#1526 | auto Un'Goro Crater;36§auto Krater von Un'Goro;36§auto Cratère d'Un'Goro;36 | x=-6608.60009765625 y=-688.1000366210938 | size=1 | links=#3859(auto Un'Goro Crater;88):69 #20535(auto Un'Goro Crater;472):63
+#1619 | auto Un'Goro Crater;37§auto Krater von Un'Goro;37§auto Cratère d'Un'Goro;37 | x=-6251.39990234375 y=-1527.599975585938 | size=1 | links=#14008(auto Un'Goro Crater;323):13 #17986(auto Un'Goro Crater;413):37 #26609(auto Un'Goro Crater;602):18
+#1700 | auto Un'Goro Crater;38§auto Krater von Un'Goro;38§auto Cratère d'Un'Goro;38 | x=-8007.39990234375 y=-1148.700073242188 | size=1 | links=#16955(auto Un'Goro Crater;393):14 #28457(auto Un'Goro Crater;644):13 c6554.2:6
+#1744 | auto Un'Goro Crater;39§auto Krater von Un'Goro;39§auto Cratère d'Un'Goro;39 | x=-7481.60009765625 y=-2308.300048828125 | size=1 | links=#2854(auto Un'Goro Crater;59):6 #24268(auto Un'Goro Crater;545):7
+#1748 | auto Un'Goro Crater;40§auto Krater von Un'Goro;40§auto Cratère d'Un'Goro;40 | x=-7991.60009765625 y=-1139.300048828125 | size=1 | links=#3622(auto Un'Goro Crater;77):9 #27446(auto Un'Goro Crater;621):20
+#1752 | auto Un'Goro Crater;41§auto Krater von Un'Goro;41§auto Cratère d'Un'Goro;41 | x=-7347.2001953125 y=-1215.700073242188 | size=1 | links=#460(auto Un'Goro Crater;13):75 #14052(auto Un'Goro Crater;326):34
+#1767 | auto Un'Goro Crater;42§auto Krater von Un'Goro;42§auto Cratère d'Un'Goro;42 | x=-7235.5 y=-1437.200073242188 | size=1 | links=#23229(auto Un'Goro Crater;524):26 #25878(auto Un'Goro Crater;583):19 c6521.3:8
+#1833 | auto Un'Goro Crater;43§auto Krater von Un'Goro;43§auto Cratère d'Un'Goro;43 | x=-7641.10009765625 y=-1372.200073242188 | size=1 | links=#14998(auto Un'Goro Crater;341):45 #18586(auto Un'Goro Crater;424):46
+#1837 | auto Un'Goro Crater;44§auto Krater von Un'Goro;44§auto Cratère d'Un'Goro;44 | x=-6926.10009765625 y=-414.8000183105469 | size=1 | links=#3517(auto Un'Goro Crater;72):57 #9465(auto Un'Goro Crater;215):53
+#1848 | auto Un'Goro Crater;45§auto Krater von Un'Goro;45§auto Cratère d'Un'Goro;45 | x=-7947.60009765625 y=-2141.800048828125 | size=1 | links=#17326(auto Un'Goro Crater;399):40 #20369(auto Un'Goro Crater;471):28
+#1921 | auto Un'Goro Crater;46§auto Krater von Un'Goro;46§auto Cratère d'Un'Goro;46 | x=-7667.39990234375 y=-588.2999877929688 | size=1 | links=#8399(auto Un'Goro Crater;191):47 #13602(auto Un'Goro Crater;313):85 #23566(auto Un'Goro Crater;535):48
+#2050 | auto Un'Goro Crater;47§auto Krater von Un'Goro;47§auto Cratère d'Un'Goro;47 | x=-6687 y=-2024.900024414063 | size=1 | links=c6509.5:15 o164781.9:10
+#2086 | auto Un'Goro Crater;48§auto Krater von Un'Goro;48§auto Cratère d'Un'Goro;48 | x=-6292.89990234375 y=-1156.200073242188 | size=1 | links=#7565(auto Un'Goro Crater;177):18 #22751(auto Un'Goro Crater;519):20
+#2162 | auto Un'Goro Crater;49§auto Krater von Un'Goro;49§auto Cratère d'Un'Goro;49 | x=-6077 y=-1044.200073242188 | size=1 | links=#9729(auto Un'Goro Crater;226):13 #15184(auto Un'Goro Crater;346):10
+#2277 | auto Un'Goro Crater;50§auto Krater von Un'Goro;50§auto Cratère d'Un'Goro;50 | x=-6196.2001953125 y=-1118.300048828125 | size=1 | links=#8996(central location;Marshal's Refuge;Un'Goro Crater):19 #17950(auto Un'Goro Crater;411):37 c9157.2:8
+#2328 | auto Un'Goro Crater;51§auto Krater von Un'Goro;51§auto Cratère d'Un'Goro;51 | x=-7009.2001953125 y=-1308.400024414063 | size=1 | links=#4096(auto Un'Goro Crater;93):38 #13183(auto Un'Goro Crater;301):46
+#2338 | auto Un'Goro Crater;52§auto Krater von Un'Goro;52§auto Cratère d'Un'Goro;52 | x=-7526.60009765625 y=-2144.699951171875 | size=1 | links=#11424(auto Un'Goro Crater;266):29 #24755(auto Un'Goro Crater;552):20 o164658.2:24
+#2348 | auto Un'Goro Crater;53§auto Krater von Un'Goro;53§auto Cratère d'Un'Goro;53 | x=-8008.80029296875 y=-1299.200073242188 | size=1 | links=#3321(auto Un'Goro Crater;69):7 #14358(auto Un'Goro Crater;330):13 c6553.5:4
+#2391 | auto Un'Goro Crater;54§auto Krater von Un'Goro;54§auto Cratère d'Un'Goro;54 | x=-7397.89990234375 y=-2078.5 | size=1 | links=#2718(auto Un'Goro Crater;57):26 #15800(auto Un'Goro Crater;364):12 o164958.37:47
+#2518 | auto Un'Goro Crater;55§auto Krater von Un'Goro;55§auto Cratère d'Un'Goro;55 | x=-8096.10009765625 y=-1474.700073242188 | size=1 | links=#11955(auto Un'Goro Crater;273):15 #23682(auto Un'Goro Crater;536):44
+#2642 | auto Un'Goro Crater;56§auto Krater von Un'Goro;56§auto Cratère d'Un'Goro;56 | x=-6292.5 y=-569.2000122070312 | size=1 | links=#6015(auto Un'Goro Crater;136):22 #27856(auto Un'Goro Crater;630):28
+#2718 | auto Un'Goro Crater;57§auto Krater von Un'Goro;57§auto Cratère d'Un'Goro;57 | x=-7382.10009765625 y=-2056.699951171875 | size=1 | links=#2391(auto Un'Goro Crater;54):26 c6508.3:31
+#2760 | auto Un'Goro Crater;58§auto Krater von Un'Goro;58§auto Cratère d'Un'Goro;58 | x=-6387.30029296875 y=-2007.400024414063 | size=1 | links=#16335(auto Un'Goro Crater;377):28 #27949(auto Un'Goro Crater;633):14 c6516.8:4
+#2854 | auto Un'Goro Crater;59§auto Krater von Un'Goro;59§auto Cratère d'Un'Goro;59 | x=-7481.2001953125 y=-2315 | size=1 | links=#1260(auto Un'Goro Crater;31):7 #1744(auto Un'Goro Crater;39):6
+#2898 | auto Un'Goro Crater;60§auto Krater von Un'Goro;60§auto Cratère d'Un'Goro;60 | x=-7070.2001953125 y=-2107.199951171875 | size=1 | links=#14826(auto Un'Goro Crater;340):45 #28240(auto Un'Goro Crater;637):41
+#2902 | auto Un'Goro Crater;61§auto Krater von Un'Goro;61§auto Cratère d'Un'Goro;61 | x=-7426.39990234375 y=-976.1000366210938 | size=1 | links=#6073(auto Un'Goro Crater;137):52 #27320(auto Un'Goro Crater;618):108
+#2909 | auto Un'Goro Crater;62§auto Krater von Un'Goro;62§auto Cratère d'Un'Goro;62 | x=-7406.2001953125 y=-1283.099975585938 | size=1 | links=#15255(auto Un'Goro Crater;347):33 #26412(auto Un'Goro Crater;596):31
+#2968 | auto Un'Goro Crater;63§auto Krater von Un'Goro;63§auto Cratère d'Un'Goro;63 | x=-6920.60009765625 y=-213.6999969482422 | size=1 | links=#17140(auto Un'Goro Crater;398):20 o164660.15:20
+#3053 | auto Un'Goro Crater;64§auto Krater von Un'Goro;64§auto Cratère d'Un'Goro;64 | x=-8011.7001953125 y=-913.4000244140625 | size=1 | links=#16614(auto Un'Goro Crater;383):49 #27918(auto Un'Goro Crater;632):53
+#3058 | auto Un'Goro Crater;65§auto Krater von Un'Goro;65§auto Cratère d'Un'Goro;65 | x=-7007.807863734905 y=-1218.557264371961 | size=1 | links=#6224(auto Un'Goro Crater;142):34 #13183(auto Un'Goro Crater;301):44
+#3116 | auto Un'Goro Crater;66§auto Krater von Un'Goro;66§auto Cratère d'Un'Goro;66 | x=-6630.10009765625 y=-871 | size=1 | links=#13006(auto Un'Goro Crater;297):36 #21239(auto Un'Goro Crater;489):46 o164958.5:22
+#3131 | auto Un'Goro Crater;67§auto Krater von Un'Goro;67§auto Cratère d'Un'Goro;67 | x=-7071.2001953125 y=-421.2000122070313 | size=5 | links=#7384(auto Un'Goro Crater;173):82 #16976(auto Un'Goro Crater;394):51
+#3306 | auto Un'Goro Crater;68§auto Krater von Un'Goro;68§auto Cratère d'Un'Goro;68 | x=-8118.10009765625 y=-1401 | size=1 | links=#4342(auto Un'Goro Crater;102):21 #6427(auto Un'Goro Crater;146):11
+#3321 | auto Un'Goro Crater;69§auto Krater von Un'Goro;69§auto Cratère d'Un'Goro;69 | x=-8003.30029296875 y=-1303.900024414063 | size=1 | links=#2348(auto Un'Goro Crater;53):7 #26330(auto Un'Goro Crater;593):14
+#3414 | auto Un'Goro Crater;70§auto Krater von Un'Goro;70§auto Cratère d'Un'Goro;70 | x=-7860.30029296875 y=-2080.60009765625 | size=1 | links=#11865(auto Un'Goro Crater;272):24 #15302(auto Un'Goro Crater;350):23
+#3425 | auto Un'Goro Crater;71§auto Krater von Un'Goro;71§auto Cratère d'Un'Goro;71 | x=-7288.39990234375 y=-1456.400024414063 | size=1 | links=#19776(auto Un'Goro Crater;457):15 #26537(auto Un'Goro Crater;599):19
+#3517 | auto Un'Goro Crater;72§auto Krater von Un'Goro;72§auto Cratère d'Un'Goro;72 | x=-6979.30029296875 y=-392.1000061035156 | size=1 | links=#1837(auto Un'Goro Crater;44):57 #7719(auto Un'Goro Crater;179):18
+#3563 | auto Un'Goro Crater;73§auto Krater von Un'Goro;73§auto Cratère d'Un'Goro;73 | x=-7874 y=-654.9000244140625 | size=1 | links=#15018(auto Un'Goro Crater;342):30 #17577(auto Un'Goro Crater;404):55
+#3572 | auto Un'Goro Crater;74§auto Krater von Un'Goro;74§auto Cratère d'Un'Goro;74 | x=-6365.30029296875 y=-1896.099975585938 | size=1 | links=#4807(auto Un'Goro Crater;111):16 #21153(auto Un'Goro Crater;487):27 #21644(auto Un'Goro Crater;498):14
+#3601 | auto Un'Goro Crater;75§auto Krater von Un'Goro;75§auto Cratère d'Un'Goro;75 | x=-8178.2001953125 y=-1572.599975585938 | size=1 | links=#21033(auto Un'Goro Crater;485):37 c9166.15:30
+#3608 | auto Un'Goro Crater;76§auto Krater von Un'Goro;76§auto Cratère d'Un'Goro;76 | x=-8085.5 y=-1503.099975585938 | size=1 | links=#9665(auto Un'Goro Crater;224):54 #11955(auto Un'Goro Crater;273):15 c6553.1:16
+#3622 | auto Un'Goro Crater;77§auto Krater von Un'Goro;77§auto Cratère d'Un'Goro;77 | x=-8001.30029296875 y=-1140.099975585938 | size=1 | links=#1748(auto Un'Goro Crater;40):9 c6554.2:4
+#3629 | auto Un'Goro Crater;78§auto Krater von Un'Goro;78§auto Cratère d'Un'Goro;78 | x=-6484.10009765625 y=-523.1000366210938 | size=1 | links=#4209(auto Un'Goro Crater;98):19 #13064(auto Un'Goro Crater;299):20
+#3664 | auto Un'Goro Crater;79§auto Krater von Un'Goro;79§auto Cratère d'Un'Goro;79 | x=-7176.30029296875 y=-605.9000244140625 | size=1 | links=#21318(auto Un'Goro Crater;490):41 c10302.1:34
+#3670 | auto Un'Goro Crater;80§auto Krater von Un'Goro;80§auto Cratère d'Un'Goro;80 | x=-7615.5 y=-1764.5 | size=1 | links=#20587(auto Un'Goro Crater;474):44 c6581.1:23
+#3710 | auto Un'Goro Crater;81§auto Krater von Un'Goro;81§auto Cratère d'Un'Goro;81 | x=-8086.60009765625 y=-2118.900146484375 | size=1 | links=#13206(auto Un'Goro Crater;302):22 #18727(auto Un'Goro Crater;427):54
+#3734 | auto Un'Goro Crater;82§auto Krater von Un'Goro;82§auto Cratère d'Un'Goro;82 | x=-7506.2001953125 y=-424.7000122070313 | size=1 | links=#10570(auto Un'Goro Crater;241):26 #24291(auto Un'Goro Crater;546):28
+#3743 | auto Un'Goro Crater;83§auto Krater von Un'Goro;83§auto Cratère d'Un'Goro;83 | x=-7116.5 y=-1296.400024414063 | size=1 | links=#10769(auto Un'Goro Crater;249):9 #19374(auto Un'Goro Crater;446):13 #24915(auto Un'Goro Crater;556):6
+#3746 | auto Un'Goro Crater;84§auto Krater von Un'Goro;84§auto Cratère d'Un'Goro;84 | x=-6291.89990234375 y=-1240.800048828125 | size=1 | links=#5359(auto Un'Goro Crater;119):32 #16266(auto Un'Goro Crater;376):35
+#3765 | auto Un'Goro Crater;85§auto Krater von Un'Goro;85§auto Cratère d'Un'Goro;85 | x=-7552.5 y=-2196.300048828125 | size=1 | links=#1055(auto Un'Goro Crater;26):34 #24755(auto Un'Goro Crater;552):37 o164781.12:39
+#3841 | auto Un'Goro Crater;86§auto Krater von Un'Goro;86§auto Cratère d'Un'Goro;86 | x=-8125.2001953125 y=-1513.900024414063 | size=1 | links=#24973(auto Un'Goro Crater;559):17 #25596(auto Un'Goro Crater;572):22
+#3852 | auto Un'Goro Crater;87§auto Krater von Un'Goro;87§auto Cratère d'Un'Goro;87 | x=-7295 y=-1077.700073242188 | size=1 | links=#26567(auto Un'Goro Crater;601):43 #27320(auto Un'Goro Crater;618):58 o157936.2:63
+#3859 | auto Un'Goro Crater;88§auto Krater von Un'Goro;88§auto Cratère d'Un'Goro;88 | x=-6630.7001953125 y=-754.5 | size=1 | links=#1526(auto Un'Goro Crater;36):69 #15671(auto Un'Goro Crater;362):48 c6559.14:42
+#3897 | auto Un'Goro Crater;89§auto Krater von Un'Goro;89§auto Cratère d'Un'Goro;89 | x=-7163.2001953125 y=-373.7000122070313 | size=1 | links=#9956(auto Un'Goro Crater;231):9 #13564(auto Un'Goro Crater;311):19 #17328(auto Un'Goro Crater;400):21
+#3923 | auto Un'Goro Crater;90§auto Krater von Un'Goro;90§auto Cratère d'Un'Goro;90 | x=-7718.89990234375 y=-1703.599975585938 | size=1 | links=c6506.2:43 c6506.4:61 c6505.6:33 c6505.38:29
+#3928 | auto Un'Goro Crater;91§auto Krater von Un'Goro;91§auto Cratère d'Un'Goro;91 | x=-6380 y=-547.7000122070312 | size=1 | links=#25312(auto Un'Goro Crater;563):25 #25518(auto Un'Goro Crater;571):29
+#4012 | auto Un'Goro Crater;92§auto Krater von Un'Goro;92§auto Cratère d'Un'Goro;92 | x=-7057.7001953125 y=-1955.099975585938 | size=1 | links=#12762(auto Un'Goro Crater;289):51 #15343(auto Un'Goro Crater;353):44
+#4096 | auto Un'Goro Crater;93§auto Krater von Un'Goro;93§auto Cratère d'Un'Goro;93 | x=-7000.89990234375 y=-1346 | size=1 | links=#2328(auto Un'Goro Crater;51):38 #12992(auto Un'Goro Crater;296):27
+#4111 | auto Un'Goro Crater;94§auto Krater von Un'Goro;94§auto Cratère d'Un'Goro;94 | x=-8069 y=-1272.5 | size=1 | links=#28463(auto Un'Goro Crater;645):14 c6582.1:4
+#4184 | auto Un'Goro Crater;95§auto Krater von Un'Goro;95§auto Cratère d'Un'Goro;95 | x=-6720.30029296875 y=-790.2000122070312 | size=1 | links=#15671(auto Un'Goro Crater;362):61 #20287(auto Un'Goro Crater;468):110 c6512.16:16
+#4186 | auto Un'Goro Crater;96§auto Krater von Un'Goro;96§auto Cratère d'Un'Goro;96 | x=-7215.89990234375 y=-1399.300048828125 | size=1 | links=#23229(auto Un'Goro Crater;524):22 c9999.1:23
+#4191 | auto Un'Goro Crater;97§auto Krater von Un'Goro;97§auto Cratère d'Un'Goro;97 | x=-6078.60009765625 y=-1063.900024414063 | size=1 | links=#9729(auto Un'Goro Crater;226):6 #17543(auto Un'Goro Crater;403):13
+#4209 | auto Un'Goro Crater;98§auto Krater von Un'Goro;98§auto Cratère d'Un'Goro;98 | x=-6465.30029296875 y=-517.4000244140625 | size=1 | links=#3629(auto Un'Goro Crater;78):19 #15420(auto Un'Goro Crater;356):26
+#4218 | auto Un'Goro Crater;99§auto Krater von Un'Goro;99§auto Cratère d'Un'Goro;99 | x=-8162.39990234375 y=-1331.099975585938 | size=1 | links=#18579(auto Un'Goro Crater;423):30 o157936.29:26
+#4258 | auto Un'Goro Crater;100§auto Krater von Un'Goro;100§auto Cratère d'Un'Goro;100 | x=-7442.80029296875 y=-272 | size=1 | links=#15315(auto Un'Goro Crater;351):34 c9167.9:39 c9167.38:11
+#4260 | auto Un'Goro Crater;101§auto Krater von Un'Goro;101§auto Cratère d'Un'Goro;101 | x=-6460.5 y=-2071.800048828125 | size=1 | links=#8533(auto Un'Goro Crater;194):25 #28532(auto Un'Goro Crater;651):23 c9162.9:13
+#4342 | auto Un'Goro Crater;102§auto Krater von Un'Goro;102§auto Cratère d'Un'Goro;102 | x=-8098.30029296875 y=-1392.599975585938 | size=1 | links=#3306(auto Un'Goro Crater;68):21 #13801(auto Un'Goro Crater;318):41 #16759(auto Un'Goro Crater;389):18 #23682(auto Un'Goro Crater;536):39
+#4446 | auto Un'Goro Crater;103§auto Krater von Un'Goro;103§auto Cratère d'Un'Goro;103 | x=-7953.39990234375 y=-842.7000122070312 | size=1 | links=#12066(auto Un'Goro Crater;276):74 #27002(auto Un'Goro Crater;607):33 #27918(auto Un'Goro Crater;632):46
+#4473 | auto Un'Goro Crater;104§auto Krater von Un'Goro;104§auto Cratère d'Un'Goro;104 | x=-8219.2998046875 y=-1117 | size=1 | links=#5413(auto Un'Goro Crater;122):29 #19492(auto Un'Goro Crater;451):20
+#4517 | auto Un'Goro Crater;105§auto Krater von Un'Goro;105§auto Cratère d'Un'Goro;105 | x=-7895.89990234375 y=-2136.10009765625 | size=1 | links=#11865(auto Un'Goro Crater;272):42 #20369(auto Un'Goro Crater;471):26
+#4640 | auto Un'Goro Crater;106§auto Krater von Un'Goro;106§auto Cratère d'Un'Goro;106 | x=-6297.10009765625 y=-1501.5 | size=1 | links=#11304(auto Un'Goro Crater;261):14 #13935(auto Un'Goro Crater;321):6
+#4650 | auto Un'Goro Crater;107§auto Krater von Un'Goro;107§auto Cratère d'Un'Goro;107 | x=-6324.39990234375 y=-1533.700073242188 | size=1 | links=#16646(auto Un'Goro Crater;384):72 #20289(auto Un'Goro Crater;469):40 c6510.23:35
+#4694 | auto Un'Goro Crater;108§auto Krater von Un'Goro;108§auto Cratère d'Un'Goro;108 | x=-6329.39990234375 y=-1951.400024414063 | size=1 | links=#8675(auto Un'Goro Crater;196):12 #22571(auto Un'Goro Crater;516):15
+#4701 | auto Un'Goro Crater;109§auto Krater von Un'Goro;109§auto Cratère d'Un'Goro;109 | x=-6430.7001953125 y=-2058.400146484375 | size=1 | links=#8533(auto Un'Goro Crater;194):8 o164659.7:8
+#4752 | auto Un'Goro Crater;110§auto Krater von Un'Goro;110§auto Cratère d'Un'Goro;110 | x=-8209 y=-2094.800048828125 | size=1 | links=#15091(passage;from;Un'Goro Crater;to;Tanaris):25 #24183(auto Un'Goro Crater;543):23
+#4807 | auto Un'Goro Crater;111§auto Krater von Un'Goro;111§auto Cratère d'Un'Goro;111 | x=-6348.89990234375 y=-1898.400024414063 | size=1 | links=#3572(auto Un'Goro Crater;74):16 #8386(auto Un'Goro Crater;190):20
+#4866 | auto Un'Goro Crater;112§auto Krater von Un'Goro;112§auto Cratère d'Un'Goro;112 | x=-6101.30029296875 y=-1072.700073242188 | size=1 | links=#10435(auto Un'Goro Crater;238):19 #17543(auto Un'Goro Crater;403):12
+#4879 | auto Un'Goro Crater;113§auto Krater von Un'Goro;113§auto Cratère d'Un'Goro;113 | x=-6523.89990234375 y=-566.6000366210938 | size=1 | links=#9661(auto Un'Goro Crater;223):11 #9784(auto Un'Goro Crater;227):20 #10313(entry and exit;ramp;Un'Goro Crater;to;Silithus):7
+#5063 | auto Un'Goro Crater;114§auto Krater von Un'Goro;114§auto Cratère d'Un'Goro;114 | x=-6997.30029296875 y=-1403.800048828125 | size=1 | links=#12992(auto Un'Goro Crater;296):30 #19616(ramp;down;Fire Plume Ridge;Un'Goro Crater):17
+#5105 | auto Un'Goro Crater;115§auto Krater von Un'Goro;115§auto Cratère d'Un'Goro;115 | x=-7102.754339452658 y=-1104.77014079782 | size=1 | links=#842(auto Un'Goro Crater;22):28 #27816(auto Un'Goro Crater;628):25
+#5123 | auto Un'Goro Crater;116§auto Krater von Un'Goro;116§auto Cratère d'Un'Goro;116 | x=-8097.2001953125 y=-1173.300048828125 | size=1 | links=#12239(auto Un'Goro Crater;280):11 #16045(auto Un'Goro Crater;369):5
+#5150 | auto Un'Goro Crater;117§auto Krater von Un'Goro;117§auto Cratère d'Un'Goro;117 | x=-7145.7001953125 y=-1005.799987792969 | size=5 | links=#1357(auto Un'Goro Crater;32):81 #8854(auto Un'Goro Crater;205):58 c6512.38:13
+#5235 | auto Un'Goro Crater;118§auto Krater von Un'Goro;118§auto Cratère d'Un'Goro;118 | x=-7041.5 y=-2296.10009765625 | size=1 | links=#12517(auto Un'Goro Crater;284):114 #14625(auto Un'Goro Crater;334):15 #21722(auto Un'Goro Crater;501):6 c6511.28:41
+#5359 | auto Un'Goro Crater;119§auto Krater von Un'Goro;119§auto Cratère d'Un'Goro;119 | x=-6297 y=-1272.5 | size=1 | links=#3746(auto Un'Goro Crater;84):32 #6183(auto Un'Goro Crater;140):96 o164958.8:35
+#5360 | auto Un'Goro Crater;120§auto Krater von Un'Goro;120§auto Cratère d'Un'Goro;120 | x=-7003.60009765625 y=-1597.5 | size=1 | links=#18215(auto Un'Goro Crater;417):58 #26132(auto Un'Goro Crater;589):45 o164958.14:54 c1420.24:25
+#5409 | auto Un'Goro Crater;121§auto Krater von Un'Goro;121§auto Cratère d'Un'Goro;121 | x=-7372.60009765625 y=-2307 | size=1 | links=#5621(auto Un'Goro Crater;128):19 #7042(auto Un'Goro Crater;167):15
+#5413 | auto Un'Goro Crater;122§auto Krater von Un'Goro;122§auto Cratère d'Un'Goro;122 | x=-8190.10009765625 y=-1120 | size=1 | links=#4473(auto Un'Goro Crater;104):29 #8473(auto Un'Goro Crater;193):48 #14769(auto Un'Goro Crater;338):12
+#5468 | auto Un'Goro Crater;123§auto Krater von Un'Goro;123§auto Cratère d'Un'Goro;123 | x=-7636.89990234375 y=-2022.900024414063 | size=1 | links=#8348(auto Un'Goro Crater;188):41 #27097(auto Un'Goro Crater;609):37
+#5553 | auto Un'Goro Crater;124§auto Krater von Un'Goro;124§auto Cratère d'Un'Goro;124 | x=-6761 y=-2187.900146484375 | size=1 | links=#911(auto Un'Goro Crater;24):28 #10664(auto Un'Goro Crater;246):26
+#5565 | auto Un'Goro Crater;125§auto Krater von Un'Goro;125§auto Cratère d'Un'Goro;125 | x=-6699.39990234375 y=-2155.900146484375 | size=1 | links=#17022(auto Un'Goro Crater;395):70 #18444(auto Un'Goro Crater;420):46
+#5598 | auto Un'Goro Crater;126§auto Krater von Un'Goro;126§auto Cratère d'Un'Goro;126 | x=-7038.89990234375 y=-1555.300048828125 | size=1 | links=#9307(auto Un'Goro Crater;213):32 #18474(auto Un'Goro Crater;421):36 #26132(auto Un'Goro Crater;589):24
+#5616 | auto Un'Goro Crater;127§auto Krater von Un'Goro;127§auto Cratère d'Un'Goro;127 | x=-7434.2001953125 y=-1490.800048828125 | size=1 | links=c9163.20:22
+#5621 | auto Un'Goro Crater;128§auto Krater von Un'Goro;128§auto Cratère d'Un'Goro;128 | x=-7357 y=-2296 | size=1 | links=#5409(auto Un'Goro Crater;121):19 #11216(auto Un'Goro Crater;259):34 #25138(auto Un'Goro Crater;561):52
+#5736 | auto Un'Goro Crater;129§auto Krater von Un'Goro;129§auto Cratère d'Un'Goro;129 | x=-8034.39990234375 y=-1656.099975585938 | size=1 | links=#5917(auto Un'Goro Crater;134):26 #6995(auto Un'Goro Crater;165):26 c6510.46:10
+#5789 | auto Un'Goro Crater;130§auto Krater von Un'Goro;130§auto Cratère d'Un'Goro;130 | x=-7034.60009765625 y=-1426.800048828125 | size=1 | links=#10551(auto Un'Goro Crater;240):4 #24641(auto Un'Goro Crater;550):4
+#5851 | auto Un'Goro Crater;131§auto Krater von Un'Goro;131§auto Cratère d'Un'Goro;131 | x=-6256.89990234375 y=-590.9000244140625 | size=1 | links=#14762(auto Un'Goro Crater;337):32 #27856(auto Un'Goro Crater;630):14
+#5902 | auto Un'Goro Crater;132§auto Krater von Un'Goro;132§auto Cratère d'Un'Goro;132 | x=-7256.80029296875 y=-1134.099975585938 | size=1 | links=#12080(auto Un'Goro Crater;277):36 #26567(auto Un'Goro Crater;601):34
+#5911 | auto Un'Goro Crater;133§auto Krater von Un'Goro;133§auto Cratère d'Un'Goro;133 | x=-7920.60009765625 y=-1369.400024414063 | size=1 | links=#19137(auto Un'Goro Crater;437):19 c6553.15:36
+#5917 | auto Un'Goro Crater;134§auto Krater von Un'Goro;134§auto Cratère d'Un'Goro;134 | x=-8026 y=-1681.400024414063 | size=1 | links=#5736(auto Un'Goro Crater;129):26 #13345(auto Un'Goro Crater;304):34
+#5957 | auto Un'Goro Crater;135§auto Krater von Un'Goro;135§auto Cratère d'Un'Goro;135 | x=-6461.7001953125 y=-1110.200073242188 | size=1 | links=#16706(auto Un'Goro Crater;386):29 c6518.4:20 c6518.6:30
+#6015 | auto Un'Goro Crater;136§auto Krater von Un'Goro;136§auto Cratère d'Un'Goro;136 | x=-6310.89990234375 y=-555.5 | size=1 | links=#2642(auto Un'Goro Crater;56):22 #10903(auto Un'Goro Crater;253):27
+#6073 | auto Un'Goro Crater;137§auto Krater von Un'Goro;137§auto Cratère d'Un'Goro;137 | x=-7459.89990234375 y=-935.4000244140625 | size=1 | links=#2902(auto Un'Goro Crater;61):52 #8789(auto Un'Goro Crater;202):56 c6502.1:42
+#6156 | auto Un'Goro Crater;138§auto Krater von Un'Goro;138§auto Cratère d'Un'Goro;138 | x=-7491.89990234375 y=-2248.10009765625 | size=1 | links=#1055(auto Un'Goro Crater;26):83 #25074(auto Un'Goro Crater;560):36
+#6182 | auto Un'Goro Crater;139§auto Krater von Un'Goro;139§auto Cratère d'Un'Goro;139 | x=-8111.39990234375 y=-1241.400024414063 | size=1 | links=#27864(auto Un'Goro Crater;631):13 c6554.5:12
+#6183 | auto Un'Goro Crater;140§auto Krater von Un'Goro;140§auto Cratère d'Un'Goro;140 | x=-6389.30029296875 y=-1300.599975585938 | size=1 | links=#5359(auto Un'Goro Crater;119):96 #8444(auto Un'Goro Crater;192):27 #8935(auto Un'Goro Crater;208):47 o164780.5:41
+#6193 | auto Un'Goro Crater;141§auto Krater von Un'Goro;141§auto Cratère d'Un'Goro;141 | x=-6086 y=-1023.299987792969 | size=1 | links=#15184(auto Un'Goro Crater;346):13 #20703(auto Un'Goro Crater;477):13
+#6224 | auto Un'Goro Crater;142§auto Krater von Un'Goro;142§auto Cratère d'Un'Goro;142 | x=-7025.754339452659 y=-1189.144193994517 | size=1 | links=#3058(auto Un'Goro Crater;65):34 #22465(auto Un'Goro Crater;511):51
+#6245 | auto Un'Goro Crater;143§auto Krater von Un'Goro;143§auto Cratère d'Un'Goro;143 | x=-7220.89990234375 y=-1471.099975585938 | size=1 | links=#16558(auto Un'Goro Crater;380):13 c6521.3:28
+#6307 | entry and exit;The Slithering Scar;Un'Goro Crater§ein- und ausgang;Die wuchernde Narbe;Krater von Un'Goro§entrée et sortie;La Balafre sinueuse;Cratère d'Un'Goro | x=-7896.5 y=-1335.700073242188 | size=1 | links=c6554.3:36 c6552.12:32
+#6339 | auto Un'Goro Crater;144§auto Krater von Un'Goro;144§auto Cratère d'Un'Goro;144 | x=-6478.30029296875 y=-1787.400024414063 | size=1 | links=#13523(auto Un'Goro Crater;306):60 #23115(auto Un'Goro Crater;521):61 o164778.3:64 c6514.4:26
+#6397 | auto Un'Goro Crater;145§auto Krater von Un'Goro;145§auto Cratère d'Un'Goro;145 | x=-6490.80029296875 y=-770.2999877929688 | size=1 | links=#6653(auto Un'Goro Crater;152):37 #8697(auto Un'Goro Crater;197):33
+#6427 | auto Un'Goro Crater;146§auto Krater von Un'Goro;146§auto Cratère d'Un'Goro;146 | x=-8125 y=-1391.5 | size=1 | links=#3306(auto Un'Goro Crater;68):11 o164779.13:4
+#6490 | auto Un'Goro Crater;147§auto Krater von Un'Goro;147§auto Cratère d'Un'Goro;147 | x=-6381.80029296875 y=-916.9000244140625 | size=1 | links=#1386(auto Un'Goro Crater;33):62 #24618(auto Un'Goro Crater;548):40
+#6507 | auto Un'Goro Crater;148§auto Krater von Un'Goro;148§auto Cratère d'Un'Goro;148 | x=-7273.39990234375 y=-1320.5 | size=1 | links=#1153(auto Un'Goro Crater;30):23 #6838(auto Un'Goro Crater;158):21
+#6546 | auto Un'Goro Crater;149§auto Krater von Un'Goro;149§auto Cratère d'Un'Goro;149 | x=-7301.80029296875 y=-1295.700073242188 | size=1 | links=#523(auto Un'Goro Crater;15):4 #13744(auto Un'Goro Crater;316):9
+#6568 | auto Un'Goro Crater;150§auto Krater von Un'Goro;150§auto Cratère d'Un'Goro;150 | x=-7016.30029296875 y=-1128.099975585938 | size=1 | links=#22465(auto Un'Goro Crater;511):37 o164958.46:10
+#6623 | auto Un'Goro Crater;151§auto Krater von Un'Goro;151§auto Cratère d'Un'Goro;151 | x=-7043.30029296875 y=-2072.199951171875 | size=1 | links=#28240(auto Un'Goro Crater;637):24 o164661.7:31
+#6653 | auto Un'Goro Crater;152§auto Krater von Un'Goro;152§auto Cratère d'Un'Goro;152 | x=-6482.80029296875 y=-806.7999877929688 | size=1 | links=#6397(auto Un'Goro Crater;145):37 #16754(auto Un'Goro Crater;388):37 c6512.24:62
+#6769 | auto Un'Goro Crater;153§auto Krater von Un'Goro;153§auto Cratère d'Un'Goro;153 | x=-8149.60009765625 y=-1135 | size=1 | links=#11482(auto Un'Goro Crater;268):16 #14769(auto Un'Goro Crater;338):30
+#6786 | auto Un'Goro Crater;154§auto Krater von Un'Goro;154§auto Cratère d'Un'Goro;154 | x=-7908.5 y=-1893.800048828125 | size=1 | links=#22557(auto Un'Goro Crater;513):43 #27153(auto Un'Goro Crater;612):53 o164778.9:29
+#6795 | auto Un'Goro Crater;155§auto Krater von Un'Goro;155§auto Cratère d'Un'Goro;155 | x=-7062.2001953125 y=-1423.300048828125 | size=1 | links=#17659(auto Un'Goro Crater;407):3 #23445(auto Un'Goro Crater;530):4
+#6801 | auto Un'Goro Crater;156§auto Krater von Un'Goro;156§auto Cratère d'Un'Goro;156 | x=-7143.2001953125 y=-761.9000244140625 | size=5 | links=#18630(auto Un'Goro Crater;425):65 #19971(auto Un'Goro Crater;461):49
+#6820 | auto Un'Goro Crater;157§auto Krater von Un'Goro;157§auto Cratère d'Un'Goro;157 | x=-6367.80029296875 y=-1849 | size=1 | links=#21153(auto Un'Goro Crater;487):27 #24022(entry and exit;cave;Fungal Rock;Un'Goro Crater):9
+#6838 | auto Un'Goro Crater;158§auto Krater von Un'Goro;158§auto Cratère d'Un'Goro;158 | x=-7258.10009765625 y=-1336 | size=1 | links=#6507(auto Un'Goro Crater;148):21 #12715(auto Un'Goro Crater;287):17
+#6869 | auto Un'Goro Crater;159§auto Krater von Un'Goro;159§auto Cratère d'Un'Goro;159 | x=-6491.30029296875 y=-696.9000244140625 | size=1 | links=#8697(auto Un'Goro Crater;197):39 #27134(auto Un'Goro Crater;610):25 c6512.20:16
+#6872 | auto Un'Goro Crater;160§auto Krater von Un'Goro;160§auto Cratère d'Un'Goro;160 | x=-7398 y=-319.8999938964844 | size=1 | links=#457(auto Un'Goro Crater;12):26 #27015(auto Un'Goro Crater;608):13 #28443(auto Un'Goro Crater;643):15 o164781.6:28
+#6876 | auto Un'Goro Crater;161§auto Krater von Un'Goro;161§auto Cratère d'Un'Goro;161 | x=-6998.5 y=-308.8000183105469 | size=1 | links=#9513(auto Un'Goro Crater;216):24 #20180(auto Un'Goro Crater;465):19 o164781.21:42 c9167.56:23
+#6909 | auto Un'Goro Crater;162§auto Krater von Un'Goro;162§auto Cratère d'Un'Goro;162 | x=-7183.10009765625 y=-2325.699951171875 | size=1 | links=#19959(auto Un'Goro Crater;460):21 #28466(auto Un'Goro Crater;646):13
+#6920 | auto Un'Goro Crater;163§auto Krater von Un'Goro;163§auto Cratère d'Un'Goro;163 | x=-6375.80029296875 y=-1817.800048828125 | size=1 | links=#14802(auto Un'Goro Crater;339):12 c6514.3:10
+#6963 | auto Un'Goro Crater;164§auto Krater von Un'Goro;164§auto Cratère d'Un'Goro;164 | x=-7360.60009765625 y=-379.2000122070313 | size=1 | links=#11298(auto Un'Goro Crater;260):10 #12010(auto Un'Goro Crater;274):52 #28515(auto Un'Goro Crater;649):33
+#6995 | auto Un'Goro Crater;165§auto Krater von Un'Goro;165§auto Cratère d'Un'Goro;165 | x=-8043.10009765625 y=-1631.400024414063 | size=1 | links=#5736(auto Un'Goro Crater;129):26 #15371(auto Un'Goro Crater;355):44
+#7017 | auto Un'Goro Crater;166§auto Krater von Un'Goro;166§auto Cratère d'Un'Goro;166 | x=-7239.10009765625 y=-624.4000244140625 | size=1 | links=#9034(auto Un'Goro Crater;209):4 #22328(auto Un'Goro Crater;509):5
+#7042 | auto Un'Goro Crater;167§auto Krater von Un'Goro;167§auto Cratère d'Un'Goro;167 | x=-7381.89990234375 y=-2319.900146484375 | size=1 | links=#5409(auto Un'Goro Crater;121):15 #7158(auto Un'Goro Crater;170):8
+#7062 | auto Un'Goro Crater;168§auto Krater von Un'Goro;168§auto Cratère d'Un'Goro;168 | x=-7229.2001953125 y=-640 | size=1 | links=#13547(auto Un'Goro Crater;309):7 #23171(auto Un'Goro Crater;522):6
+#7142 | auto Un'Goro Crater;169§auto Krater von Un'Goro;169§auto Cratère d'Un'Goro;169 | x=-7270.30029296875 y=-1211 | size=1 | links=#19261(auto Un'Goro Crater;442):22 c10541.2:36
+#7158 | auto Un'Goro Crater;170§auto Krater von Un'Goro;170§auto Cratère d'Un'Goro;170 | x=-7387.10009765625 y=-2313.10009765625 | size=1 | links=#7042(auto Un'Goro Crater;167):8 #26833(auto Un'Goro Crater;605):4
+#7235 | auto Un'Goro Crater;171§auto Krater von Un'Goro;171§auto Cratère d'Un'Goro;171 | x=-6402.10009765625 y=-1939.599975585938 | size=1 | links=#13055(auto Un'Goro Crater;298):14 c6516.2:24
+#7370 | auto Un'Goro Crater;172§auto Krater von Un'Goro;172§auto Cratère d'Un'Goro;172 | x=-7197.39990234375 y=-1311.5 | size=1 | links=#9106(auto Un'Goro Crater;210):12 c9376.1:21
+#7384 | auto Un'Goro Crater;173§auto Krater von Un'Goro;173§auto Cratère d'Un'Goro;173 | x=-7088.39990234375 y=-501.8999938964844 | size=5 | links=#3131(auto Un'Goro Crater;67):82 #14019(auto Un'Goro Crater;324):58
+#7434 | auto Un'Goro Crater;174§auto Krater von Un'Goro;174§auto Cratère d'Un'Goro;174 | x=-7045 y=-1425.200073242188 | size=1 | links=#24641(auto Un'Goro Crater;550):6 #27839(auto Un'Goro Crater;629):5
+#7475 | auto Un'Goro Crater;175§auto Krater von Un'Goro;175§auto Cratère d'Un'Goro;175 | x=-7546.7001953125 y=-441.5 | size=1 | links=#148(auto Un'Goro Crater;6):38 #24291(auto Un'Goro Crater;546):15
+#7553 | auto Un'Goro Crater;176§auto Krater von Un'Goro;176§auto Cratère d'Un'Goro;176 | x=-6221.30029296875 y=-1101.5 | size=1 | links=#22829(auto Un'Goro Crater;520):19 #24684(auto Un'Goro Crater;551):12
+#7565 | auto Un'Goro Crater;177§auto Krater von Un'Goro;177§auto Cratère d'Un'Goro;177 | x=-6301.30029296875 y=-1172.900024414063 | size=1 | links=#2086(auto Un'Goro Crater;48):18 #21387(auto Un'Goro Crater;491):16 c9618.1:10
+#7664 | auto Un'Goro Crater;178§auto Krater von Un'Goro;178§auto Cratère d'Un'Goro;178 | x=-7929.2001953125 y=-2020.099975585938 | size=1 | links=#22293(auto Un'Goro Crater;508):43 #22716(auto Un'Goro Crater;518):43
+#7719 | auto Un'Goro Crater;179§auto Krater von Un'Goro;179§auto Cratère d'Un'Goro;179 | x=-6997.2001953125 y=-388.1000061035156 | size=1 | links=#3517(auto Un'Goro Crater;72):18 #16976(auto Un'Goro Crater;394):43
+#7757 | auto Un'Goro Crater;180§auto Krater von Un'Goro;180§auto Cratère d'Un'Goro;180 | x=-6711.2001953125 y=-578.7999877929688 | size=1 | links=#8783(auto Un'Goro Crater;201):29 #11104(auto Un'Goro Crater;258):15
+#7759 | auto Un'Goro Crater;181§auto Krater von Un'Goro;181§auto Cratère d'Un'Goro;181 | x=-7020.80029296875 y=-1425.700073242188 | size=1 | links=#8805(auto Un'Goro Crater;203):3 #16213(auto Un'Goro Crater;372):6
+#7772 | auto Un'Goro Crater;182§auto Krater von Un'Goro;182§auto Cratère d'Un'Goro;182 | x=-6337.10009765625 y=-1083.099975585938 | size=1 | links=#188(auto Un'Goro Crater;8):40 #15632(auto Un'Goro Crater;361):42 #19572(auto Un'Goro Crater;452):31 o164658.6:45
+#7828 | auto Un'Goro Crater;183§auto Krater von Un'Goro;183§auto Cratère d'Un'Goro;183 | x=-6876.60009765625 y=-2114.300048828125 | size=1 | links=#18112(auto Un'Goro Crater;415):63 #25437(auto Un'Goro Crater;567):74
+#7930 | auto Un'Goro Crater;184§auto Krater von Un'Goro;184§auto Cratère d'Un'Goro;184 | x=-7243.7001953125 y=-612.2999877929688 | size=1 | links=#9034(auto Un'Goro Crater;209):8 #24638(auto Un'Goro Crater;549):13
+#7967 | auto Un'Goro Crater;185§auto Krater von Un'Goro;185§auto Cratère d'Un'Goro;185 | x=-6737.5 y=-497.2000122070313 | size=1 | links=#8783(auto Un'Goro Crater;201):56 #16247(auto Un'Goro Crater;374):51
+#8068 | auto Un'Goro Crater;186§auto Krater von Un'Goro;186§auto Cratère d'Un'Goro;186 | x=-6080.5 y=-996.2000122070312 | size=1 | links=#20703(auto Un'Goro Crater;477):18 #27992(auto Un'Goro Crater;634):16
+#8129 | auto Un'Goro Crater;187§auto Krater von Un'Goro;187§auto Cratère d'Un'Goro;187 | x=-7450.80029296875 y=-403.6000061035156 | size=1 | links=#10570(auto Un'Goro Crater;241):32 #12010(auto Un'Goro Crater;274):40
+#8348 | auto Un'Goro Crater;188§auto Krater von Un'Goro;188§auto Cratère d'Un'Goro;188 | x=-7662.89990234375 y=-2055.800048828125 | size=1 | links=#5468(auto Un'Goro Crater;123):41 #26943(auto Un'Goro Crater;606):34 o164658.1:24
+#8360 | auto Un'Goro Crater;189§auto Krater von Un'Goro;189§auto Cratère d'Un'Goro;189 | x=-6118.60009765625 y=-1131.700073242188 | size=1 | links=#15285(auto Un'Goro Crater;349):19 c9460.2:7
+#8386 | auto Un'Goro Crater;190§auto Krater von Un'Goro;190§auto Cratère d'Un'Goro;190 | x=-6329 y=-1895.900024414063 | size=1 | links=#4807(auto Un'Goro Crater;111):20 #26624(auto Un'Goro Crater;603):28
+#8399 | auto Un'Goro Crater;191§auto Krater von Un'Goro;191§auto Cratère d'Un'Goro;191 | x=-7711.39990234375 y=-607.1000366210938 | size=1 | links=#1921(auto Un'Goro Crater;46):47 #15498(auto Un'Goro Crater;357):63
+#8444 | auto Un'Goro Crater;192§auto Krater von Un'Goro;192§auto Cratère d'Un'Goro;192 | x=-6411.39990234375 y=-1316.5 | size=1 | links=#6183(auto Un'Goro Crater;140):27 #8935(auto Un'Goro Crater;208):64 #10614(auto Un'Goro Crater;244):42 #21006(auto Un'Goro Crater;484):85 c2914.5:32 c6518.14:27
+#8473 | auto Un'Goro Crater;193§auto Krater von Un'Goro;193§auto Cratère d'Un'Goro;193 | x=-8229.2001953125 y=-1092.099975585938 | size=1 | links=#5413(auto Un'Goro Crater;122):48 c9166.11:42 c9166.17:26
+#8533 | auto Un'Goro Crater;194§auto Krater von Un'Goro;194§auto Cratère d'Un'Goro;194 | x=-6436.10009765625 y=-2065.199951171875 | size=1 | links=#4260(auto Un'Goro Crater;101):25 #4701(auto Un'Goro Crater;109):8
+#8536 | auto Un'Goro Crater;195§auto Krater von Un'Goro;195§auto Cratère d'Un'Goro;195 | x=-7000.60009765625 y=-2433.400146484375 | size=1 | links=o164779.8:34 c9165.9:17
+#8675 | auto Un'Goro Crater;196§auto Krater von Un'Goro;196§auto Cratère d'Un'Goro;196 | x=-6323.80029296875 y=-1939.800048828125 | size=1 | links=#4694(auto Un'Goro Crater;108):12 #26624(auto Un'Goro Crater;603):19
+#8697 | auto Un'Goro Crater;197§auto Krater von Un'Goro;197§auto Cratère d'Un'Goro;197 | x=-6491 y=-736.4000244140625 | size=1 | links=#6397(auto Un'Goro Crater;145):33 #6869(auto Un'Goro Crater;159):39 c6498.2:29 c6512.25:36
+#8713 | auto Un'Goro Crater;198§auto Krater von Un'Goro;198§auto Cratère d'Un'Goro;198 | x=-7054.39990234375 y=-1424.800048828125 | size=1 | links=#23445(auto Un'Goro Crater;530):3 #27839(auto Un'Goro Crater;629):4
+#8734 | auto Un'Goro Crater;199§auto Krater von Un'Goro;199§auto Cratère d'Un'Goro;199 | x=-6359.39990234375 y=-2027.900024414063 | size=1 | links=#24873(auto Un'Goro Crater;554):14 #24925(auto Un'Goro Crater;557):11 c6514.8:6
+#8769 | auto Un'Goro Crater;200§auto Krater von Un'Goro;200§auto Cratère d'Un'Goro;200 | x=-6986 y=-1458.400024414063 | size=1 | links=#226(auto Un'Goro Crater;9):28 #26385(auto Un'Goro Crater;595):42
+#8783 | auto Un'Goro Crater;201§auto Krater von Un'Goro;201§auto Cratère d'Un'Goro;201 | x=-6723.30029296875 y=-552.4000244140625 | size=1 | links=#7757(auto Un'Goro Crater;180):29 #7967(auto Un'Goro Crater;185):56
+#8789 | auto Un'Goro Crater;202§auto Krater von Un'Goro;202§auto Cratère d'Un'Goro;202 | x=-7512.30029296875 y=-915.2999877929688 | size=1 | links=#6073(auto Un'Goro Crater;137):56 #20581(auto Un'Goro Crater;473):92
+#8805 | auto Un'Goro Crater;203§auto Krater von Un'Goro;203§auto Cratère d'Un'Goro;203 | x=-7024.10009765625 y=-1427.200073242188 | size=1 | links=#7759(auto Un'Goro Crater;181):3 #10551(auto Un'Goro Crater;240):5
+#8846 | auto Un'Goro Crater;204§auto Krater von Un'Goro;204§auto Cratère d'Un'Goro;204 | x=-7105.7001953125 y=-1376.300048828125 | size=1 | links=#11591(auto Un'Goro Crater;270):9 #21595(auto Un'Goro Crater;496):6
+#8854 | auto Un'Goro Crater;205§auto Krater von Un'Goro;205§auto Cratère d'Un'Goro;205 | x=-7120.80029296875 y=-952.4000244140625 | size=5 | links=#5150(auto Un'Goro Crater;117):58 #19216(auto Un'Goro Crater;440):71 c9167.15:39 c6559.21:25 c6559.31:34
+#8909 | auto Un'Goro Crater;206§auto Krater von Un'Goro;206§auto Cratère d'Un'Goro;206 | x=-7205.10009765625 y=-391.5 | size=1 | links=#14642(auto Un'Goro Crater;335):35 #17328(auto Un'Goro Crater;400):24
+#8927 | auto Un'Goro Crater;207§auto Krater von Un'Goro;207§auto Cratère d'Un'Goro;207 | x=-7139.80029296875 y=-1344.800048828125 | size=1 | links=#10468(auto Un'Goro Crater;239):15 #24963(auto Un'Goro Crater;558):9 c6521.5:11
+#8935 | auto Un'Goro Crater;208§auto Krater von Un'Goro;208§auto Cratère d'Un'Goro;208 | x=-6395.60009765625 y=-1253.800048828125 | size=1 | links=#6183(auto Un'Goro Crater;140):47 #8444(auto Un'Goro Crater;192):64 #14160(auto Un'Goro Crater;328):13
+#8996 | central location;Marshal's Refuge;Un'Goro Crater§zentralpunkt;Marschalls Zuflucht;Krater von Un'Goro§emplacement central;Refuge des Marshal;Cratère d'Un'Goro | x=-6184.89990234375 y=-1102.900024414063 | size=1 | links=#2277(auto Un'Goro Crater;50):19 #24684(auto Un'Goro Crater;551):27 #25627(auto Un'Goro Crater;573):15 c8737.1:24 c9997.1:23 c10977.1:24 c6491.3:50 c9157.4:8
+#9034 | auto Un'Goro Crater;209§auto Krater von Un'Goro;209§auto Cratère d'Un'Goro;209 | x=-7240.7001953125 y=-620.2999877929688 | size=1 | links=#7017(auto Un'Goro Crater;166):4 #7930(auto Un'Goro Crater;184):8
+#9106 | auto Un'Goro Crater;210§auto Krater von Un'Goro;210§auto Cratère d'Un'Goro;210 | x=-7199.39990234375 y=-1324.099975585938 | size=1 | links=#7370(auto Un'Goro Crater;172):12 o164910.1:2
+#9189 | auto Un'Goro Crater;211§auto Krater von Un'Goro;211§auto Cratère d'Un'Goro;211 | x=-8135.89990234375 y=-2079.400146484375 | size=1 | links=#110(auto Un'Goro Crater;3):20 #13206(auto Un'Goro Crater;302):40
+#9286 | auto Un'Goro Crater;212§auto Krater von Un'Goro;212§auto Cratère d'Un'Goro;212 | x=-8198.2001953125 y=-1548.200073242188 | size=1 | links=#21033(auto Un'Goro Crater;485):42 c9166.9:24
+#9307 | auto Un'Goro Crater;213§auto Krater von Un'Goro;213§auto Cratère d'Un'Goro;213 | x=-7055.89990234375 y=-1527.900024414063 | size=1 | links=#5598(auto Un'Goro Crater;126):32 c6520.2:26
+#9380 | auto Un'Goro Crater;214§auto Krater von Un'Goro;214§auto Cratère d'Un'Goro;214 | x=-7153.60009765625 y=-1294.200073242188 | size=1 | links=#14703(auto Un'Goro Crater;336):11 #25356(auto Un'Goro Crater;564):27 c6521.13:8
+#9465 | auto Un'Goro Crater;215§auto Krater von Un'Goro;215§auto Cratère d'Un'Goro;215 | x=-6877.89990234375 y=-439.1000061035156 | size=1 | links=#1837(auto Un'Goro Crater;44):53 #28356(auto Un'Goro Crater;640):73
+#9513 | auto Un'Goro Crater;216§auto Krater von Un'Goro;216§auto Cratère d'Un'Goro;216 | x=-7011.10009765625 y=-329.3000183105469 | size=1 | links=#591(auto Un'Goro Crater;16):14 #6876(auto Un'Goro Crater;161):24
+#9537 | auto Un'Goro Crater;217§auto Krater von Un'Goro;217§auto Cratère d'Un'Goro;217 | x=-8041.5 y=-1200.5 | size=1 | links=#12898(auto Un'Goro Crater;293):28 c6555.5:28
+#9540 | auto Un'Goro Crater;218§auto Krater von Un'Goro;218§auto Cratère d'Un'Goro;218 | x=-7243.5 y=-598.9000244140625 | size=1 | links=#24638(auto Un'Goro Crater;549):14 c10302.1:34
+#9546 | auto Un'Goro Crater;219§auto Krater von Un'Goro;219§auto Cratère d'Un'Goro;219 | x=-7380.414924963677 y=-1453.864894119589 | size=1 | links=#21113(auto Un'Goro Crater;486):31
+#9564 | auto Un'Goro Crater;220§auto Krater von Un'Goro;220§auto Cratère d'Un'Goro;220 | x=-8106.10009765625 y=-1205.099975585938 | size=1 | links=c6555.6:22 c6553.10:7
+#9571 | auto Un'Goro Crater;221§auto Krater von Un'Goro;221§auto Cratère d'Un'Goro;221 | x=-8035.60009765625 y=-1016.200012207031 | size=1 | links=#16614(auto Un'Goro Crater;383):55 #19672(auto Un'Goro Crater;456):51
+#9594 | auto Un'Goro Crater;222§auto Krater von Un'Goro;222§auto Cratère d'Un'Goro;222 | x=-6394.39990234375 y=-2037.400024414063 | size=1 | links=#12740(auto Un'Goro Crater;288):10 #24873(auto Un'Goro Crater;554):23
+#9661 | auto Un'Goro Crater;223§auto Krater von Un'Goro;223§auto Cratère d'Un'Goro;223 | x=-6530.60009765625 y=-575.5 | size=1 | links=#4879(auto Un'Goro Crater;113):11 #10898(auto Un'Goro Crater;251):26 #20913(auto Un'Goro Crater;483):17
+#9665 | auto Un'Goro Crater;224§auto Krater von Un'Goro;224§auto Cratère d'Un'Goro;224 | x=-8070.80029296875 y=-1556 | size=1 | links=#3608(auto Un'Goro Crater;76):54 #15371(auto Un'Goro Crater;355):35
+#9724 | auto Un'Goro Crater;225§auto Krater von Un'Goro;225§auto Cratère d'Un'Goro;225 | x=-8005.2001953125 y=-1244.200073242188 | size=1 | links=#9793(auto Un'Goro Crater;229):22 #20877(auto Un'Goro Crater;482):12
+#9729 | auto Un'Goro Crater;226§auto Krater von Un'Goro;226§auto Cratère d'Un'Goro;226 | x=-6078 y=-1057.700073242188 | size=1 | links=#2162(auto Un'Goro Crater;49):13 #4191(auto Un'Goro Crater;97):6
+#9784 | auto Un'Goro Crater;227§auto Krater von Un'Goro;227§auto Cratère d'Un'Goro;227 | x=-6508.5 y=-580.2000122070312 | size=1 | links=#4879(auto Un'Goro Crater;113):20 #16880(auto Un'Goro Crater;390):28
+#9790 | auto Un'Goro Crater;228§auto Krater von Un'Goro;228§auto Cratère d'Un'Goro;228 | x=-6733.39990234375 y=-1051.800048828125 | size=1 | links=#18997(auto Un'Goro Crater;436):15 #23356(auto Un'Goro Crater;528):24 c9167.20:19
+#9793 | auto Un'Goro Crater;229§auto Krater von Un'Goro;229§auto Cratère d'Un'Goro;229 | x=-8004.7001953125 y=-1222.099975585938 | size=1 | links=#9724(auto Un'Goro Crater;225):22 #19451(auto Un'Goro Crater;450):17
+#9836 | auto Un'Goro Crater;230§auto Krater von Un'Goro;230§auto Cratère d'Un'Goro;230 | x=-8106.80029296875 y=-1222.400024414063 | size=1 | links=#10128(auto Un'Goro Crater;234):39 #16045(auto Un'Goro Crater;369):46
+#9956 | auto Un'Goro Crater;231§auto Krater von Un'Goro;231§auto Cratère d'Un'Goro;231 | x=-7162.7001953125 y=-364 | size=1 | links=#3897(auto Un'Goro Crater;89):9 #18953(auto Un'Goro Crater;433):13
+#9990 | auto Un'Goro Crater;232§auto Krater von Un'Goro;232§auto Cratère d'Un'Goro;232 | x=-7068.80029296875 y=-1747.800048828125 | size=1 | links=#1122(auto Un'Goro Crater;27):71 #10197(auto Un'Goro Crater;235):51
+#10077 | auto Un'Goro Crater;233§auto Krater von Un'Goro;233§auto Cratère d'Un'Goro;233 | x=-7160.5 y=-2276.199951171875 | size=1 | links=#12517(auto Un'Goro Crater;284):19 #23508(auto Un'Goro Crater;531):29 #26036(auto Un'Goro Crater;587):67
+#10128 | auto Un'Goro Crater;234§auto Krater von Un'Goro;234§auto Cratère d'Un'Goro;234 | x=-8110.10009765625 y=-1262.099975585938 | size=1 | links=#9836(auto Un'Goro Crater;230):39 #26417(auto Un'Goro Crater;597):43
+#10197 | auto Un'Goro Crater;235§auto Krater von Un'Goro;235§auto Cratère d'Un'Goro;235 | x=-7058.39990234375 y=-1697 | size=1 | links=#9990(auto Un'Goro Crater;232):51 #18377(auto Un'Goro Crater;419):26
+#10222 | auto Un'Goro Crater;236§auto Krater von Un'Goro;236§auto Cratère d'Un'Goro;236 | x=-8113.39990234375 y=-1352.700073242188 | size=1 | links=#16759(auto Un'Goro Crater;389):25 #18579(auto Un'Goro Crater;423):23
+#10313 | entry and exit;ramp;Un'Goro Crater;to;Silithus§ein- und ausgang;rampe;Krater von Un'Goro;zum;silithus§entrée et sortie;ramp;Cratère d'Un'Goro;vers;Silithus | x=-6521 y=-559.5 | size=1 | links=#119(auto Un'Goro Crater;4):15 #4879(auto Un'Goro Crater;113):7
+#10342 | auto Un'Goro Crater;237§auto Krater von Un'Goro;237§auto Cratère d'Un'Goro;237 | x=-7908.2001953125 y=-1270.300048828125 | size=1 | links=c6552.6:31 c6552.20:45
+#10435 | auto Un'Goro Crater;238§auto Krater von Un'Goro;238§auto Cratère d'Un'Goro;238 | x=-6111.5 y=-1056.099975585938 | size=1 | links=#4866(auto Un'Goro Crater;112):19 #16721(auto Un'Goro Crater;387):25
+#10468 | auto Un'Goro Crater;239§auto Krater von Un'Goro;239§auto Cratère d'Un'Goro;239 | x=-7133.60009765625 y=-1359.099975585938 | size=1 | links=#8927(auto Un'Goro Crater;207):15 #13913(auto Un'Goro Crater;320):6
+#10551 | auto Un'Goro Crater;240§auto Krater von Un'Goro;240§auto Cratère d'Un'Goro;240 | x=-7029.7001953125 y=-1427.599975585938 | size=1 | links=#5789(auto Un'Goro Crater;130):4 #8805(auto Un'Goro Crater;203):5
+#10570 | auto Un'Goro Crater;241§auto Krater von Un'Goro;241§auto Cratère d'Un'Goro;241 | x=-7480.89990234375 y=-415.6000061035156 | size=1 | links=#3734(auto Un'Goro Crater;82):26 #8129(auto Un'Goro Crater;187):32
+#10571 | auto Un'Goro Crater;242§auto Krater von Un'Goro;242§auto Cratère d'Un'Goro;242 | x=-7767.80029296875 y=-1412.800048828125 | size=1 | links=#11344(auto Un'Goro Crater;263):35 #13552(auto Un'Goro Crater;310):42 c6553.27:14
+#10595 | auto Un'Goro Crater;243§auto Krater von Un'Goro;243§auto Cratère d'Un'Goro;243 | x=-7122.592862595639 y=-1577.093526620333 | size=1 | links=#18474(auto Un'Goro Crater;421):50 #28480(auto Un'Goro Crater;647):35
+#10614 | auto Un'Goro Crater;244§auto Krater von Un'Goro;244§auto Cratère d'Un'Goro;244 | x=-6450.60009765625 y=-1333.400024414063 | size=1 | links=#8444(auto Un'Goro Crater;192):42 #19786(auto Un'Goro Crater;458):75 c6519.10:54 c9163.11:13
+#10644 | auto Un'Goro Crater;245§auto Krater von Un'Goro;245§auto Cratère d'Un'Goro;245 | x=-6029.60009765625 y=-983.1000366210938 | size=1 | links=#17631(auto Un'Goro Crater;406):7 #21531(auto Un'Goro Crater;494):8
+#10664 | auto Un'Goro Crater;246§auto Krater von Un'Goro;246§auto Cratère d'Un'Goro;246 | x=-6750.10009765625 y=-2163.300048828125 | size=1 | links=#5553(auto Un'Goro Crater;124):26 c9162.2:16
+#10669 | auto Un'Goro Crater;247§auto Krater von Un'Goro;247§auto Cratère d'Un'Goro;247 | x=-7133.60009765625 y=-2221.699951171875 | size=1 | links=#16510(auto Un'Goro Crater;379):26 #23508(auto Un'Goro Crater;531):39
+#10744 | auto Un'Goro Crater;248§auto Krater von Un'Goro;248§auto Cratère d'Un'Goro;248 | x=-6545 y=-1932.900024414063 | size=1 | links=#20708(auto Un'Goro Crater;478):57 #21212(auto Un'Goro Crater;488):91 c6517.6:59
+#10769 | auto Un'Goro Crater;249§auto Krater von Un'Goro;249§auto Cratère d'Un'Goro;249 | x=-7111.7001953125 y=-1304.400024414063 | size=1 | links=#3743(auto Un'Goro Crater;83):9 #19374(auto Un'Goro Crater;446):15 c10541.1:19 c6521.6:8
+#10824 | auto Un'Goro Crater;250§auto Krater von Un'Goro;250§auto Cratère d'Un'Goro;250 | x=-7745.10009765625 y=-799.2999877929688 | size=1 | links=#18678(auto Un'Goro Crater;426):82 #20112(auto Un'Goro Crater;464):119 o161527.3:48
+#10898 | auto Un'Goro Crater;251§auto Krater von Un'Goro;251§auto Cratère d'Un'Goro;251 | x=-6536.2001953125 y=-601.7999877929688 | size=1 | links=#9661(auto Un'Goro Crater;223):26 #23515(auto Un'Goro Crater;532):53
+#10900 | auto Un'Goro Crater;252§auto Krater von Un'Goro;252§auto Cratère d'Un'Goro;252 | x=-6664.30029296875 y=-1423.099975585938 | size=1 | links=#12836(auto Un'Goro Crater;291):56 #20773(auto Un'Goro Crater;480):79
+#10903 | auto Un'Goro Crater;253§auto Krater von Un'Goro;253§auto Cratère d'Un'Goro;253 | x=-6338 y=-550.7999877929688 | size=1 | links=#6015(auto Un'Goro Crater;136):27 #25518(auto Un'Goro Crater;571):12
+#10924 | auto Un'Goro Crater;254§auto Krater von Un'Goro;254§auto Cratère d'Un'Goro;254 | x=-8216.7998046875 y=-1329.099975585938 | size=1 | links=o164778.16:31 o157936.29:27
+#11017 | auto Un'Goro Crater;255§auto Krater von Un'Goro;255§auto Cratère d'Un'Goro;255 | x=-6796.10009765625 y=-1720.599975585938 | size=1 | links=c6517.3:35 c6511.19:26
+#11029 | auto Un'Goro Crater;256§auto Krater von Un'Goro;256§auto Cratère d'Un'Goro;256 | x=-7803.80029296875 y=-564.9000244140625 | size=1 | links=#15170(auto Un'Goro Crater;345):69 #25668(auto Un'Goro Crater;575):79
+#11103 | auto Un'Goro Crater;257§auto Krater von Un'Goro;257§auto Cratère d'Un'Goro;257 | x=-8006.5 y=-1169.200073242188 | size=1 | links=#15327(auto Un'Goro Crater;352):8 #28457(auto Un'Goro Crater;644):6
+#11104 | auto Un'Goro Crater;258§auto Krater von Un'Goro;258§auto Cratère d'Un'Goro;258 | x=-6702.60009765625 y=-591.7000122070312 | size=1 | links=#7757(auto Un'Goro Crater;180):15 #19166(auto Un'Goro Crater;438):6 c9164.6:63
+#11216 | auto Un'Goro Crater;259§auto Krater von Un'Goro;259§auto Cratère d'Un'Goro;259 | x=-7322.60009765625 y=-2294.5 | size=1 | links=#5621(auto Un'Goro Crater;128):34 #25138(auto Un'Goro Crater;561):85 #26036(auto Un'Goro Crater;587):95 c6560.4:26
+#11298 | auto Un'Goro Crater;260§auto Krater von Un'Goro;260§auto Cratère d'Un'Goro;260 | x=-7356.89990234375 y=-369.2000122070313 | size=1 | links=#6963(auto Un'Goro Crater;164):10 #22241(auto Un'Goro Crater;507):19
+#11304 | auto Un'Goro Crater;261§auto Krater von Un'Goro;261§auto Cratère d'Un'Goro;261 | x=-6286.89990234375 y=-1511.300048828125 | size=1 | links=#4640(auto Un'Goro Crater;106):14 #26609(auto Un'Goro Crater;602):20
+#11335 | auto Un'Goro Crater;262§auto Krater von Un'Goro;262§auto Cratère d'Un'Goro;262 | x=-7205.39990234375 y=-1514.599975585938 | size=1 | links=#11439(auto Un'Goro Crater;267):29 #17103(auto Un'Goro Crater;396):24
+#11344 | auto Un'Goro Crater;263§auto Krater von Un'Goro;263§auto Cratère d'Un'Goro;263 | x=-7797.39990234375 y=-1393.200073242188 | size=1 | links=#10571(auto Un'Goro Crater;242):35 #11507(auto Un'Goro Crater;269):65 c6551.5:78 c6552.5:106 c6552.8:63 c6551.12:64 c6551.13:37 c6552.17:30
+#11385 | auto Un'Goro Crater;264§auto Krater von Un'Goro;264§auto Cratère d'Un'Goro;264 | x=-7017.60009765625 y=-2327.10009765625 | size=1 | links=#17790(auto Un'Goro Crater;409):19 #24896(auto Un'Goro Crater;555):20
+#11388 | auto Un'Goro Crater;265§auto Krater von Un'Goro;265§auto Cratère d'Un'Goro;265 | x=-7395.39990234375 y=-2309.300048828125 | size=1 | links=#26833(auto Un'Goro Crater;605):7 o164660.2:6
+#11424 | auto Un'Goro Crater;266§auto Krater von Un'Goro;266§auto Cratère d'Un'Goro;266 | x=-7498.80029296875 y=-2135 | size=1 | links=#2338(auto Un'Goro Crater;52):29 #25943(auto Un'Goro Crater;585):58
+#11439 | auto Un'Goro Crater;267§auto Krater von Un'Goro;267§auto Cratère d'Un'Goro;267 | x=-7218.5 y=-1541.400024414063 | size=1 | links=#11335(auto Un'Goro Crater;262):29 #19399(auto Un'Goro Crater;448):40 #27767(auto Un'Goro Crater;625):32
+#11482 | auto Un'Goro Crater;268§auto Krater von Un'Goro;268§auto Cratère d'Un'Goro;268 | x=-8137.60009765625 y=-1145.900024414063 | size=1 | links=#6769(auto Un'Goro Crater;153):16 #16917(auto Un'Goro Crater;391):11
+#11507 | auto Un'Goro Crater;269§auto Krater von Un'Goro;269§auto Cratère d'Un'Goro;269 | x=-7853.39990234375 y=-1358.700073242188 | size=1 | links=#11344(auto Un'Goro Crater;263):65 c6552.12:19 c6551.13:28
+#11591 | auto Un'Goro Crater;270§auto Krater von Un'Goro;270§auto Cratère d'Un'Goro;270 | x=-7114 y=-1372.300048828125 | size=1 | links=#1513(auto Un'Goro Crater;35):5 #8846(auto Un'Goro Crater;204):9
+#11738 | auto Un'Goro Crater;271§auto Krater von Un'Goro;271§auto Cratère d'Un'Goro;271 | x=-6814.5 y=-2220.400146484375 | size=1 | links=#678(auto Un'Goro Crater;18):57 #911(auto Un'Goro Crater;24):51
+#11865 | auto Un'Goro Crater;272§auto Krater von Un'Goro;272§auto Cratère d'Un'Goro;272 | x=-7868 y=-2103.900146484375 | size=1 | links=#3414(auto Un'Goro Crater;70):24 #4517(auto Un'Goro Crater;105):42 #13943(auto Un'Goro Crater;322):23
+#11955 | auto Un'Goro Crater;273§auto Krater von Un'Goro;273§auto Cratère d'Un'Goro;273 | x=-8093.7001953125 y=-1489.599975585938 | size=1 | links=#2518(auto Un'Goro Crater;55):15 #3608(auto Un'Goro Crater;76):15 #25596(auto Un'Goro Crater;572):18
+#12010 | auto Un'Goro Crater;274§auto Krater von Un'Goro;274§auto Cratère d'Un'Goro;274 | x=-7412.39990234375 y=-390 | size=1 | links=#6963(auto Un'Goro Crater;164):52 #8129(auto Un'Goro Crater;187):40
+#12029 | auto Un'Goro Crater;275§auto Krater von Un'Goro;275§auto Cratère d'Un'Goro;275 | x=-8041.30029296875 y=-1294.599975585938 | size=1 | links=#14358(auto Un'Goro Crater;330):19 #28463(auto Un'Goro Crater;645):21
+#12066 | auto Un'Goro Crater;276§auto Krater von Un'Goro;276§auto Cratère d'Un'Goro;276 | x=-7879.30029296875 y=-840.7000122070312 | size=1 | links=#4446(auto Un'Goro Crater;103):74 #18678(auto Un'Goro Crater;426):59 o161527.1:55
+#12080 | auto Un'Goro Crater;277§auto Krater von Un'Goro;277§auto Cratère d'Un'Goro;277 | x=-7247.80029296875 y=-1169.099975585938 | size=1 | links=#5902(auto Un'Goro Crater;132):36 #19261(auto Un'Goro Crater;442):25 #22653(auto Un'Goro Crater;517):36
+#12120 | auto Un'Goro Crater;278§auto Krater von Un'Goro;278§auto Cratère d'Un'Goro;278 | x=-7826.60009765625 y=-2053.5 | size=1 | links=#15302(auto Un'Goro Crater;350):23 #18975(auto Un'Goro Crater;434):21 c6505.1:69
+#12218 | auto Un'Goro Crater;279§auto Krater von Un'Goro;279§auto Cratère d'Un'Goro;279 | x=-7472.2001953125 y=-2272.400146484375 | size=1 | links=#17968(auto Un'Goro Crater;412):26 #25074(auto Un'Goro Crater;560):15
+#12239 | auto Un'Goro Crater;280§auto Krater von Un'Goro;280§auto Cratère d'Un'Goro;280 | x=-8102.80029296875 y=-1163.099975585938 | size=1 | links=#5123(auto Un'Goro Crater;116):11 #15905(auto Un'Goro Crater;366):14
+#12315 | auto Un'Goro Crater;281§auto Krater von Un'Goro;281§auto Cratère d'Un'Goro;281 | x=-6957.60009765625 y=-1090.599975585938 | size=1 | links=#13525(auto Un'Goro Crater;307):66 #25728(auto Un'Goro Crater;578):47
+#12435 | auto Un'Goro Crater;282§auto Krater von Un'Goro;282§auto Cratère d'Un'Goro;282 | x=-7305 y=-359.3000183105469 | size=1 | links=#19307(auto Un'Goro Crater;444):28 #28515(auto Un'Goro Crater;649):27
+#12505 | auto Un'Goro Crater;283§auto Krater von Un'Goro;283§auto Cratère d'Un'Goro;283 | x=-7306.724591729741 y=-1509.629581693542 | size=1 | links=#19399(auto Un'Goro Crater;448):54
+#12517 | auto Un'Goro Crater;284§auto Krater von Un'Goro;284§auto Cratère d'Un'Goro;284 | x=-7156.10009765625 y=-2295.60009765625 | size=1 | links=#5235(auto Un'Goro Crater;118):114 #10077(auto Un'Goro Crater;233):19 #27135(auto Un'Goro Crater;611):16 c6511.7:14
+#12537 | auto Un'Goro Crater;285§auto Krater von Un'Goro;285§auto Cratère d'Un'Goro;285 | x=-6954.89990234375 y=-1493.099975585938 | size=1 | links=#502(auto Un'Goro Crater;14):36 #26385(auto Un'Goro Crater;595):21 o164781.13:49
+#12664 | auto Un'Goro Crater;286§auto Krater von Un'Goro;286§auto Cratère d'Un'Goro;286 | x=-8064 y=-1192.300048828125 | size=1 | links=#12898(auto Un'Goro Crater;293):16 c6552.10:7
+#12715 | auto Un'Goro Crater;287§auto Krater von Un'Goro;287§auto Cratère d'Un'Goro;287 | x=-7244.60009765625 y=-1347.599975585938 | size=1 | links=#6838(auto Un'Goro Crater;158):17 #20026(auto Un'Goro Crater;462):16
+#12740 | auto Un'Goro Crater;288§auto Krater von Un'Goro;288§auto Cratère d'Un'Goro;288 | x=-6400.89990234375 y=-2028.900024414063 | size=1 | links=#9594(auto Un'Goro Crater;222):10 #27949(auto Un'Goro Crater;633):12
+#12762 | auto Un'Goro Crater;289§auto Krater von Un'Goro;289§auto Cratère d'Un'Goro;289 | x=-7062 y=-2006.599975585938 | size=1 | links=#4012(auto Un'Goro Crater;92):51 #28240(auto Un'Goro Crater;637):59
+#12809 | auto Un'Goro Crater;290§auto Krater von Un'Goro;290§auto Cratère d'Un'Goro;290 | x=-7322.5 y=-1294.300048828125 | size=1 | links=#13744(auto Un'Goro Crater;316):10 #21534(auto Un'Goro Crater;495):11
+#12836 | auto Un'Goro Crater;291§auto Krater von Un'Goro;291§auto Cratère d'Un'Goro;291 | x=-6716.80029296875 y=-1442.900024414063 | size=1 | links=#10900(auto Un'Goro Crater;252):56 #23880(auto Un'Goro Crater;539):87 c9163.14:42 c6510.17:22
+#12870 | auto Un'Goro Crater;292§auto Krater von Un'Goro;292§auto Cratère d'Un'Goro;292 | x=-6478.60009765625 y=-1621.599975585938 | size=1 | links=#14512(auto Un'Goro Crater;333):60 #26144(auto Un'Goro Crater;590):50 c6510.8:22 c6510.11:83
+#12898 | auto Un'Goro Crater;293§auto Krater von Un'Goro;293§auto Cratère d'Un'Goro;293 | x=-8069.30029296875 y=-1207.400024414063 | size=1 | links=#9537(auto Un'Goro Crater;217):28 #12664(auto Un'Goro Crater;286):16 #23238(auto Un'Goro Crater;525):16 c6553.9:11 c6553.11:25
+#12919 | auto Un'Goro Crater;294§auto Krater von Un'Goro;294§auto Cratère d'Un'Goro;294 | x=-6192.2001953125 y=-1056.200073242188 | size=1 | links=#23560(auto Un'Goro Crater;533):19 #24684(auto Un'Goro Crater;551):42 c9119.1:12
+#12990 | auto Un'Goro Crater;295§auto Krater von Un'Goro;295§auto Cratère d'Un'Goro;295 | x=-7970.80029296875 y=-1740.099975585938 | size=1 | links=#13345(auto Un'Goro Crater;304):60 #28017(auto Un'Goro Crater;635):55 c6505.5:15 c6505.25:17
+#12992 | auto Un'Goro Crater;296§auto Krater von Un'Goro;296§auto Cratère d'Un'Goro;296 | x=-6997.89990234375 y=-1372.900024414063 | size=1 | links=#4096(auto Un'Goro Crater;93):27 #5063(auto Un'Goro Crater;114):30
+#13006 | auto Un'Goro Crater;297§auto Krater von Un'Goro;297§auto Cratère d'Un'Goro;297 | x=-6629.30029296875 y=-834.4000244140625 | size=1 | links=#3116(auto Un'Goro Crater;66):36 #14427(auto Un'Goro Crater;331):31
+#13055 | auto Un'Goro Crater;298§auto Krater von Un'Goro;298§auto Cratère d'Un'Goro;298 | x=-6396.2001953125 y=-1953.300048828125 | size=1 | links=#7235(auto Un'Goro Crater;171):14 c9623.1:23
+#13064 | auto Un'Goro Crater;299§auto Krater von Un'Goro;299§auto Cratère d'Un'Goro;299 | x=-6502.5 y=-531 | size=1 | links=#119(auto Un'Goro Crater;4):18 #3629(auto Un'Goro Crater;78):20
+#13159 | auto Un'Goro Crater;300§auto Krater von Un'Goro;300§auto Cratère d'Un'Goro;300 | x=-6355.10009765625 y=-1769.5 | size=1 | links=#15047(auto Un'Goro Crater;343):10 #15941(auto Un'Goro Crater;368):24
+#13183 | auto Un'Goro Crater;301§auto Krater von Un'Goro;301§auto Cratère d'Un'Goro;301 | x=-7001.254339452659 y=-1262.410410916696 | size=1 | links=#2328(auto Un'Goro Crater;51):46 #3058(auto Un'Goro Crater;65):44
+#13206 | auto Un'Goro Crater;302§auto Krater von Un'Goro;302§auto Cratère d'Un'Goro;302 | x=-8103.60009765625 y=-2104.400146484375 | size=1 | links=#3710(auto Un'Goro Crater;81):22 #9189(auto Un'Goro Crater;211):40
+#13305 | auto Un'Goro Crater;303§auto Krater von Un'Goro;303§auto Cratère d'Un'Goro;303 | x=-7124.5 y=-358.3000183105469 | size=1 | links=#13564(auto Un'Goro Crater;311):23 #25806(auto Un'Goro Crater;581):18
+#13345 | auto Un'Goro Crater;304§auto Krater von Un'Goro;304§auto Cratère d'Un'Goro;304 | x=-8026.39990234375 y=-1716.200073242188 | size=1 | links=#5917(auto Un'Goro Crater;134):34 #12990(auto Un'Goro Crater;295):60
+#13347 | auto Un'Goro Crater;305§auto Krater von Un'Goro;305§auto Cratère d'Un'Goro;305 | x=-7215.10009765625 y=-650 | size=1 | links=#20722(auto Un'Goro Crater;479):4 #27794(auto Un'Goro Crater;627):4
+#13523 | auto Un'Goro Crater;306§auto Krater von Un'Goro;306§auto Cratère d'Un'Goro;306 | x=-6489.5 y=-1846.599975585938 | size=1 | links=#6339(auto Un'Goro Crater;144):60 #20708(auto Un'Goro Crater;478):50 c6527.10:25
+#13525 | auto Un'Goro Crater;307§auto Krater von Un'Goro;307§auto Cratère d'Un'Goro;307 | x=-6893.10009765625 y=-1076.599975585938 | size=1 | links=#12315(auto Un'Goro Crater;281):66 #19671(auto Un'Goro Crater;455):62
+#13532 | auto Un'Goro Crater;308§auto Krater von Un'Goro;308§auto Cratère d'Un'Goro;308 | x=-7918.89990234375 y=-1815.200073242188 | size=1 | links=#22557(auto Un'Goro Crater;513):36 #28017(auto Un'Goro Crater;635):44 c6506.16:25 c6505.26:27
+#13547 | auto Un'Goro Crater;309§auto Krater von Un'Goro;309§auto Cratère d'Un'Goro;309 | x=-7223.80029296875 y=-644.5 | size=1 | links=#7062(auto Un'Goro Crater;168):7 #27794(auto Un'Goro Crater;627):5
+#13552 | auto Un'Goro Crater;310§auto Krater von Un'Goro;310§auto Cratère d'Un'Goro;310 | x=-7725.5 y=-1405.300048828125 | size=1 | links=#10571(auto Un'Goro Crater;242):42 #18586(auto Un'Goro Crater;424):44
+#13564 | auto Un'Goro Crater;311§auto Krater von Un'Goro;311§auto Cratère d'Un'Goro;311 | x=-7147.5 y=-362.5 | size=1 | links=#3897(auto Un'Goro Crater;89):19 #13305(auto Un'Goro Crater;303):23
+#13565 | auto Un'Goro Crater;312§auto Krater von Un'Goro;312§auto Cratère d'Un'Goro;312 | x=-7421.89990234375 y=-2380.5 | size=1 | links=#22421(auto Un'Goro Crater;510):33 c9165.11:40 c9165.12:29 o164660.13:35
+#13602 | auto Un'Goro Crater;313§auto Krater von Un'Goro;313§auto Cratère d'Un'Goro;313 | x=-7677.5 y=-672.7999877929688 | size=1 | links=#1921(auto Un'Goro Crater;46):85 #20112(auto Un'Goro Crater;464):74
+#13647 | Living Blaze;Un'Goro Crater;20;55.55;57.9§Lebendiges Feuer;Krater von Un'Goro;20;55.55;57.9§Brasier vivant;Cratère d'Un'Goro;20;55.55;57.9 | x=-7343.364417981429 y=-1486.490516832833 | size=1
+#13680 | auto Un'Goro Crater;314§auto Krater von Un'Goro;314§auto Cratère d'Un'Goro;314 | x=-7874.5 y=-2073.300048828125 | size=1 | links=#15302(auto Un'Goro Crater;350):28 #21438(auto Un'Goro Crater;493):31
+#13688 | auto Un'Goro Crater;315§auto Krater von Un'Goro;315§auto Cratère d'Un'Goro;315 | x=-7785.80029296875 y=-1321.599975585938 | size=1 | links=#764(auto Un'Goro Crater;19):52 c6552.18:54
+#13744 | auto Un'Goro Crater;316§auto Krater von Un'Goro;316§auto Cratère d'Un'Goro;316 | x=-7311.7001953125 y=-1294.5 | size=1 | links=#6546(auto Un'Goro Crater;149):9 #12809(auto Un'Goro Crater;290):10
+#13762 | auto Un'Goro Crater;317§auto Krater von Un'Goro;317§auto Cratère d'Un'Goro;317 | x=-6956.10009765625 y=-279.6000061035156 | size=1 | links=#22479(auto Un'Goro Crater;512):30 c9167.52:15
+#13801 | auto Un'Goro Crater;318§auto Krater von Un'Goro;318§auto Cratère d'Un'Goro;318 | x=-8082.2001953125 y=-1354 | size=1 | links=#4342(auto Un'Goro Crater;102):41 #26417(auto Un'Goro Crater;597):54
+#13879 | auto Un'Goro Crater;319§auto Krater von Un'Goro;319§auto Cratère d'Un'Goro;319 | x=-7366.89990234375 y=-1276.900024414063 | size=1 | links=#14052(auto Un'Goro Crater;326):32 #15255(auto Un'Goro Crater;347):27
+#13913 | auto Un'Goro Crater;320§auto Krater von Un'Goro;320§auto Cratère d'Un'Goro;320 | x=-7137 y=-1364.800048828125 | size=1 | links=#10468(auto Un'Goro Crater;239):6 #18913(auto Un'Goro Crater;430):7
+#13935 | auto Un'Goro Crater;321§auto Krater von Un'Goro;321§auto Cratère d'Un'Goro;321 | x=-6300.39990234375 y=-1496.300048828125 | size=1 | links=#4640(auto Un'Goro Crater;106):6 #20289(auto Un'Goro Crater;469):12
+#13943 | auto Un'Goro Crater;322§auto Krater von Un'Goro;322§auto Cratère d'Un'Goro;322 | x=-7846.5 y=-2113.800048828125 | size=1 | links=#11865(auto Un'Goro Crater;272):23 c9619.1:7
+#14008 | auto Un'Goro Crater;323§auto Krater von Un'Goro;323§auto Cratère d'Un'Goro;323 | x=-6255.89990234375 y=-1540 | size=1 | links=#1619(auto Un'Goro Crater;37):13 o164659.1:22
+#14019 | auto Un'Goro Crater;324§auto Krater von Un'Goro;324§auto Cratère d'Un'Goro;324 | x=-7121.10009765625 y=-550.2999877929688 | size=5 | links=#7384(auto Un'Goro Crater;173):58 #21318(auto Un'Goro Crater;490):61
+#14042 | auto Un'Goro Crater;325§auto Krater von Un'Goro;325§auto Cratère d'Un'Goro;325 | x=-7094 y=-1382.599975585938 | size=1 | links=#18977(auto Un'Goro Crater;435):8 #21595(auto Un'Goro Crater;496):8
+#14052 | auto Un'Goro Crater;326§auto Krater von Un'Goro;326§auto Cratère d'Un'Goro;326 | x=-7367 y=-1244.099975585938 | size=1 | links=#1752(auto Un'Goro Crater;41):34 #13879(auto Un'Goro Crater;319):32
+#14077 | auto Un'Goro Crater;327§auto Krater von Un'Goro;327§auto Cratère d'Un'Goro;327 | x=-7444.39990234375 y=-1356.599975585938 | size=1 | links=c6500.1:40 c9163.27:10
+#14160 | auto Un'Goro Crater;328§auto Krater von Un'Goro;328§auto Cratère d'Un'Goro;328 | x=-6398.7001953125 y=-1240.800048828125 | size=1 | links=#8935(auto Un'Goro Crater;208):13 #28409(auto Un'Goro Crater;641):18
+#14316 | auto Un'Goro Crater;329§auto Krater von Un'Goro;329§auto Cratère d'Un'Goro;329 | x=-6733.2001953125 y=-1770.300048828125 | size=1 | links=#20811(auto Un'Goro Crater;481):47 c6527.7:26
+#14358 | auto Un'Goro Crater;330§auto Krater von Un'Goro;330§auto Cratère d'Un'Goro;330 | x=-8022.10009765625 y=-1298.200073242188 | size=1 | links=#2348(auto Un'Goro Crater;53):13 #12029(auto Un'Goro Crater;275):19
+#14427 | auto Un'Goro Crater;331§auto Krater von Un'Goro;331§auto Cratère d'Un'Goro;331 | x=-6652.5 y=-813.2000122070312 | size=1 | links=#13006(auto Un'Goro Crater;297):31 #15671(auto Un'Goro Crater;362):20 c9167.8:8
+#14445 | auto Un'Goro Crater;332§auto Krater von Un'Goro;332§auto Cratère d'Un'Goro;332 | x=-7076.60009765625 y=-1854.099975585938 | size=1 | links=#1122(auto Un'Goro Crater;27):37 #15343(auto Un'Goro Crater;353):58
+#14512 | auto Un'Goro Crater;333§auto Krater von Un'Goro;333§auto Cratère d'Un'Goro;333 | x=-6419.39990234375 y=-1608.400024414063 | size=1 | links=#12870(auto Un'Goro Crater;292):60 #16646(auto Un'Goro Crater;384):73 o164661.1:67 c6510.9:50 c6510.20:36
+#14625 | auto Un'Goro Crater;334§auto Krater von Un'Goro;334§auto Cratère d'Un'Goro;334 | x=-7037.39990234375 y=-2281.10009765625 | size=1 | links=#5235(auto Un'Goro Crater;118):15 #27309(auto Un'Goro Crater;617):77 c6511.30:54
+#14642 | auto Un'Goro Crater;335§auto Krater von Un'Goro;335§auto Cratère d'Un'Goro;335 | x=-7239.7001953125 y=-381.8000183105469 | size=1 | links=#8909(auto Un'Goro Crater;206):35 #19307(auto Un'Goro Crater;444):40
+#14703 | auto Un'Goro Crater;336§auto Krater von Un'Goro;336§auto Cratère d'Un'Goro;336 | x=-7156.60009765625 y=-1283.599975585938 | size=1 | links=#9380(auto Un'Goro Crater;214):11 c9376.1:29
+#14762 | auto Un'Goro Crater;337§auto Krater von Un'Goro;337§auto Cratère d'Un'Goro;337 | x=-6225.10009765625 y=-595.2999877929688 | size=1 | links=#5851(auto Un'Goro Crater;131):32 #19890(auto Un'Goro Crater;459):28
+#14769 | auto Un'Goro Crater;338§auto Krater von Un'Goro;338§auto Cratère d'Un'Goro;338 | x=-8177.39990234375 y=-1122.599975585938 | size=1 | links=#5413(auto Un'Goro Crater;122):12 #6769(auto Un'Goro Crater;153):30 o164779.6:28 c9166.10:26 c9166.16:41
+#14802 | auto Un'Goro Crater;339§auto Krater von Un'Goro;339§auto Cratère d'Un'Goro;339 | x=-6372.5 y=-1829.5 | size=1 | links=#6920(auto Un'Goro Crater;163):12 #28737(s;Kalimdor;Un'Goro Crater;Lakkari Tar Pits;Fungal Rock):7
+#14826 | auto Un'Goro Crater;340§auto Krater von Un'Goro;340§auto Cratère d'Un'Goro;340 | x=-7089.2001953125 y=-2148 | size=1 | links=#2898(auto Un'Goro Crater;60):45 #16510(auto Un'Goro Crater;379):62
+#14998 | auto Un'Goro Crater;341§auto Krater von Un'Goro;341§auto Cratère d'Un'Goro;341 | x=-7602.7001953125 y=-1348.400024414063 | size=1 | links=#1833(auto Un'Goro Crater;43):45 #22051(auto Un'Goro Crater;505):28 #27488(auto Un'Goro Crater;623):51 c6557.24:20
+#15018 | auto Un'Goro Crater;342§auto Krater von Un'Goro;342§auto Cratère d'Un'Goro;342 | x=-7852.60009765625 y=-633.6000366210938 | size=1 | links=#3563(auto Un'Goro Crater;73):30 #25668(auto Un'Goro Crater;575):28 c6503.3:52
+#15047 | auto Un'Goro Crater;343§auto Krater von Un'Goro;343§auto Cratère d'Un'Goro;343 | x=-6364.30029296875 y=-1773.800048828125 | size=1 | links=#13159(auto Un'Goro Crater;300):10 o164779.3:15
+#15091 | passage;from;Un'Goro Crater;to;Tanaris§passage;von;Krater von Un'Goro;nach;Tanaris§passage;de;Cratère d'Un'Goro;vers;Tanaris | x=-8233.2998046875 y=-2086.199951171875 | size=1 | links=#1761(passage;from;Tanaris;to;Un'Goro Crater):2 #4752(auto Un'Goro Crater;110):25
+#15137 | auto Un'Goro Crater;344§auto Krater von Un'Goro;344§auto Cratère d'Un'Goro;344 | x=-7491.80029296875 y=-1292.900024414063 | size=1 | links=#24381(auto Un'Goro Crater;547):47 #26412(auto Un'Goro Crater;596):61 #26635(auto Un'Goro Crater;604):57 c6500.1:39 c6510.58:42 c6510.61:21
+#15170 | auto Un'Goro Crater;345§auto Krater von Un'Goro;345§auto Cratère d'Un'Goro;345 | x=-7736.10009765625 y=-548.4000244140625 | size=1 | links=#11029(auto Un'Goro Crater;256):69 #15498(auto Un'Goro Crater;357):0
+#15184 | auto Un'Goro Crater;346§auto Krater von Un'Goro;346§auto Cratère d'Un'Goro;346 | x=-6077.5 y=-1033.800048828125 | size=1 | links=#2162(auto Un'Goro Crater;49):10 #6193(auto Un'Goro Crater;141):13
+#15255 | auto Un'Goro Crater;347§auto Krater von Un'Goro;347§auto Cratère d'Un'Goro;347 | x=-7378.80029296875 y=-1301.5 | size=1 | links=#2909(auto Un'Goro Crater;62):33 #13879(auto Un'Goro Crater;319):27 c6491.2:33
+#15259 | auto Un'Goro Crater;348§auto Krater von Un'Goro;348§auto Cratère d'Un'Goro;348 | x=-6990.80029296875 y=-273.5 | size=1 | links=#19435(auto Un'Goro Crater;449):37 #22479(auto Un'Goro Crater;512):12
+#15285 | auto Un'Goro Crater;349§auto Krater von Un'Goro;349§auto Cratère d'Un'Goro;349 | x=-6135.39990234375 y=-1121.800048828125 | size=1 | links=#424(auto Un'Goro Crater;11):23 #8360(auto Un'Goro Crater;189):19
+#15302 | auto Un'Goro Crater;350§auto Krater von Un'Goro;350§auto Cratère d'Un'Goro;350 | x=-7849 y=-2060.300048828125 | size=1 | links=#3414(auto Un'Goro Crater;70):23 #12120(auto Un'Goro Crater;278):23 #13680(auto Un'Goro Crater;314):28 #18975(auto Un'Goro Crater;434):25
+#15315 | auto Un'Goro Crater;351§auto Krater von Un'Goro;351§auto Cratère d'Un'Goro;351 | x=-7476.7001953125 y=-265.8999938964844 | size=1 | links=#4258(auto Un'Goro Crater;100):34 #25369(auto Un'Goro Crater;566):28 o164778.17:11 c9167.23:18
+#15327 | auto Un'Goro Crater;352§auto Krater von Un'Goro;352§auto Cratère d'Un'Goro;352 | x=-8007.10009765625 y=-1178.099975585938 | size=1 | links=#11103(auto Un'Goro Crater;257):8 #20263(auto Un'Goro Crater;467):11
+#15343 | auto Un'Goro Crater;353§auto Krater von Un'Goro;353§auto Cratère d'Un'Goro;353 | x=-7066.39990234375 y=-1911.200073242188 | size=1 | links=#4012(auto Un'Goro Crater;92):44 #14445(auto Un'Goro Crater;332):58
+#15344 | auto Un'Goro Crater;354§auto Krater von Un'Goro;354§auto Cratère d'Un'Goro;354 | x=-6219.10009765625 y=-538.4000244140625 | size=1 | links=#788(auto Un'Goro Crater;20):28 #19890(auto Un'Goro Crater;459):28
+#15371 | auto Un'Goro Crater;355§auto Krater von Un'Goro;355§auto Cratère d'Un'Goro;355 | x=-8056.2001953125 y=-1588.5 | size=1 | links=#6995(auto Un'Goro Crater;165):44 #9665(auto Un'Goro Crater;224):35 c6557.12:43 o164781.15:51 o157936.18:42
+#15420 | auto Un'Goro Crater;356§auto Krater von Un'Goro;356§auto Cratère d'Un'Goro;356 | x=-6444.30029296875 y=-534 | size=1 | links=#177(auto Un'Goro Crater;7):24 #4209(auto Un'Goro Crater;98):26
+#15498 | auto Un'Goro Crater;357§auto Krater von Un'Goro;357§auto Cratère d'Un'Goro;357 | x=-7736.10009765625 y=-548.4000244140625 | size=1 | links=#8399(auto Un'Goro Crater;191):63 #15170(auto Un'Goro Crater;345):0
+#15502 | auto Un'Goro Crater;358§auto Krater von Un'Goro;358§auto Cratère d'Un'Goro;358 | x=-7976.60009765625 y=-1103.900024414063 | size=1 | links=#27447(auto Un'Goro Crater;622):6 c6554.1:19 c6555.2:15
+#15575 | auto Un'Goro Crater;359§auto Krater von Un'Goro;359§auto Cratère d'Un'Goro;359 | x=-6340 y=-2017 | size=1 | links=#24925(auto Un'Goro Crater;557):10 #27389(auto Un'Goro Crater;619):18 c6516.7:5
+#15631 | auto Un'Goro Crater;360§auto Krater von Un'Goro;360§auto Cratère d'Un'Goro;360 | x=-8008.5 y=-1279.700073242188 | size=1 | links=#23561(auto Un'Goro Crater;534):16 c6553.5:14
+#15632 | auto Un'Goro Crater;361§auto Krater von Un'Goro;361§auto Cratère d'Un'Goro;361 | x=-6360.7001953125 y=-1047.400024414063 | size=1 | links=#7772(auto Un'Goro Crater;182):42 #26449(auto Un'Goro Crater;598):27 c6518.13:23
+#15671 | auto Un'Goro Crater;362§auto Krater von Un'Goro;362§auto Cratère d'Un'Goro;362 | x=-6658.89990234375 y=-793.9000244140625 | size=1 | links=#3859(auto Un'Goro Crater;88):48 #4184(auto Un'Goro Crater;95):61 #14427(auto Un'Goro Crater;331):20
+#15751 | auto Un'Goro Crater;363§auto Krater von Un'Goro;363§auto Cratère d'Un'Goro;363 | x=-6705.30029296875 y=-2225 | size=1 | links=#41(auto Un'Goro Crater;1):12 o164661.2:14
+#15800 | auto Un'Goro Crater;364§auto Krater von Un'Goro;364§auto Cratère d'Un'Goro;364 | x=-7408.7001953125 y=-2084.60009765625 | size=1 | links=#2391(auto Un'Goro Crater;54):12 #25943(auto Un'Goro Crater;585):45
+#15809 | auto Un'Goro Crater;365§auto Krater von Un'Goro;365§auto Cratère d'Un'Goro;365 | x=-7632.80029296875 y=-1946.900024414063 | size=1 | links=#27097(auto Un'Goro Crater;609):38 #28252(auto Un'Goro Crater;638):80 c6506.11:24 o164958.39:10
+#15905 | auto Un'Goro Crater;366§auto Krater von Un'Goro;366§auto Cratère d'Un'Goro;366 | x=-8114.2001953125 y=-1154.400024414063 | size=1 | links=#12239(auto Un'Goro Crater;280):14 #16917(auto Un'Goro Crater;391):13
+#15916 | auto Un'Goro Crater;367§auto Krater von Un'Goro;367§auto Cratère d'Un'Goro;367 | x=-7194.60009765625 y=-2423.300048828125 | size=1 | links=#18849(auto Un'Goro Crater;429):22 c6491.1:19 o169217.1:2 o164661.3:22
+#15941 | auto Un'Goro Crater;368§auto Krater von Un'Goro;368§auto Cratère d'Un'Goro;368 | x=-6330.5 y=-1765.400024414063 | size=1 | links=#13159(auto Un'Goro Crater;300):24 #20683(auto Un'Goro Crater;475):15
+#16045 | auto Un'Goro Crater;369§auto Krater von Un'Goro;369§auto Cratère d'Un'Goro;369 | x=-8093.60009765625 y=-1177.700073242188 | size=1 | links=#5123(auto Un'Goro Crater;116):5 #9836(auto Un'Goro Crater;230):46 #26270(auto Un'Goro Crater;592):56
+#16060 | auto Un'Goro Crater;370§auto Krater von Un'Goro;370§auto Cratère d'Un'Goro;370 | x=-6519.30029296875 y=-2048.60009765625 | size=1 | links=#16243(auto Un'Goro Crater;373):34 #28532(auto Un'Goro Crater;651):40 c6509.7:8
+#16129 | auto Un'Goro Crater;371§auto Krater von Un'Goro;371§auto Cratère d'Un'Goro;371 | x=-7523.2001953125 y=-1171.5 | size=1 | links=#23727(auto Un'Goro Crater;537):123 #24381(auto Un'Goro Crater;547):77 c6557.25:43 c9163.28:40 c9163.34:13
+#16213 | auto Un'Goro Crater;372§auto Krater von Un'Goro;372§auto Cratère d'Un'Goro;372 | x=-7017.10009765625 y=-1420.599975585938 | size=1 | links=#7759(auto Un'Goro Crater;181):6 #18753(auto Un'Goro Crater;428):15 c6521.4:1
+#16243 | auto Un'Goro Crater;373§auto Krater von Un'Goro;373§auto Cratère d'Un'Goro;373 | x=-6547.7001953125 y=-2029.599975585938 | size=1 | links=#16060(auto Un'Goro Crater;370):34 #21212(auto Un'Goro Crater;488):18 c6511.4:14
+#16247 | auto Un'Goro Crater;374§auto Krater von Un'Goro;374§auto Cratère d'Un'Goro;374 | x=-6757.5 y=-449.3999938964844 | size=1 | links=#7967(auto Un'Goro Crater;185):51 #28356(auto Un'Goro Crater;640):47
+#16258 | auto Un'Goro Crater;375§auto Krater von Un'Goro;375§auto Cratère d'Un'Goro;375 | x=-6472.39990234375 y=-650.1000366210938 | size=1 | links=#16880(auto Un'Goro Crater;390):55 #27134(auto Un'Goro Crater;610):25
+#16266 | auto Un'Goro Crater;376§auto Krater von Un'Goro;376§auto Cratère d'Un'Goro;376 | x=-6292.60009765625 y=-1205.599975585938 | size=1 | links=#3746(auto Un'Goro Crater;84):35 c9618.1:23 o164660.3:14
+#16335 | auto Un'Goro Crater;377§auto Krater von Un'Goro;377§auto Cratère d'Un'Goro;377 | x=-6363.7001953125 y=-1991.5 | size=1 | links=#2760(auto Un'Goro Crater;58):28 #22571(auto Un'Goro Crater;516):37 c6514.5:6
+#16359 | auto Un'Goro Crater;378§auto Krater von Un'Goro;378§auto Cratère d'Un'Goro;378 | x=-6165.5 y=-1555.400024414063 | size=1 | links=c9166.2:36 c9166.4:56 o164778.5:28 c9166.8:24
+#16510 | auto Un'Goro Crater;379§auto Krater von Un'Goro;379§auto Cratère d'Un'Goro;379 | x=-7130.2001953125 y=-2195.5 | size=1 | links=#10669(auto Un'Goro Crater;247):26 #14826(auto Un'Goro Crater;340):62 o164781.4:32
+#16558 | auto Un'Goro Crater;380§auto Krater von Un'Goro;380§auto Cratère d'Un'Goro;380 | x=-7209.89990234375 y=-1478.700073242188 | size=1 | links=#6245(auto Un'Goro Crater;143):13 #17103(auto Un'Goro Crater;396):12
+#16563 | auto Un'Goro Crater;381§auto Krater von Un'Goro;381§auto Cratère d'Un'Goro;381 | x=-7295.7001953125 y=-1297.200073242188 | size=1 | links=#523(auto Un'Goro Crater;15):2 #1153(auto Un'Goro Crater;30):9
+#16588 | auto Un'Goro Crater;382§auto Krater von Un'Goro;382§auto Cratère d'Un'Goro;382 | x=-6021.30029296875 y=-1014 | size=1 | links=#27422(auto Un'Goro Crater;620):13 c9117.1:12
+#16614 | auto Un'Goro Crater;383§auto Krater von Un'Goro;383§auto Cratère d'Un'Goro;383 | x=-8026.30029296875 y=-961.2000122070312 | size=1 | links=#3053(auto Un'Goro Crater;64):49 #9571(auto Un'Goro Crater;221):55
+#16646 | auto Un'Goro Crater;384§auto Krater von Un'Goro;384§auto Cratère d'Un'Goro;384 | x=-6346.39990234375 y=-1603.300048828125 | size=1 | links=#4650(auto Un'Goro Crater;107):72 #14512(auto Un'Goro Crater;333):73 c6510.9:35
+#16653 | auto Un'Goro Crater;385§auto Krater von Un'Goro;385§auto Cratère d'Un'Goro;385 | x=-6922.60009765625 y=-257.6000061035156 | size=1 | links=#17140(auto Un'Goro Crater;398):25 o157936.14:20 c9167.58:14
+#16706 | auto Un'Goro Crater;386§auto Krater von Un'Goro;386§auto Cratère d'Un'Goro;386 | x=-6478.89990234375 y=-1134 | size=1 | links=#5957(auto Un'Goro Crater;135):29 #17113(auto Un'Goro Crater;397):32 o164658.5:47
+#16721 | auto Un'Goro Crater;387§auto Krater von Un'Goro;387§auto Cratère d'Un'Goro;387 | x=-6131.7001953125 y=-1072.300048828125 | size=1 | links=#10435(auto Un'Goro Crater;238):25 c9274.1:14
+#16754 | auto Un'Goro Crater;388§auto Krater von Un'Goro;388§auto Cratère d'Un'Goro;388 | x=-6456.39990234375 y=-834 | size=1 | links=#6653(auto Un'Goro Crater;152):37 #28522(auto Un'Goro Crater;650):28 o164661.12:34
+#16759 | auto Un'Goro Crater;389§auto Krater von Un'Goro;389§auto Cratère d'Un'Goro;389 | x=-8099.80029296875 y=-1374 | size=1 | links=#4342(auto Un'Goro Crater;102):18 #10222(auto Un'Goro Crater;236):25
+#16880 | auto Un'Goro Crater;390§auto Krater von Un'Goro;390§auto Cratère d'Un'Goro;390 | x=-6484.7001953125 y=-596.4000244140625 | size=1 | links=#9784(auto Un'Goro Crater;227):28 #16258(auto Un'Goro Crater;375):55
+#16917 | auto Un'Goro Crater;391§auto Krater von Un'Goro;391§auto Cratère d'Un'Goro;391 | x=-8127.30029296875 y=-1152 | size=1 | links=#11482(auto Un'Goro Crater;268):11 #15905(auto Un'Goro Crater;366):13
+#16925 | auto Un'Goro Crater;392§auto Krater von Un'Goro;392§auto Cratère d'Un'Goro;392 | x=-7091.10009765625 y=-1405.900024414063 | size=1 | links=#25871(auto Un'Goro Crater;582):8 #28496(auto Un'Goro Crater;648):8
+#16955 | auto Un'Goro Crater;393§auto Krater von Un'Goro;393§auto Cratère d'Un'Goro;393 | x=-8016 y=-1137.300048828125 | size=1 | links=#1700(auto Un'Goro Crater;38):14 #23813(auto Un'Goro Crater;538):10
+#16976 | auto Un'Goro Crater;394§auto Krater von Un'Goro;394§auto Cratère d'Un'Goro;394 | x=-7040.39990234375 y=-380.5 | size=1 | links=#3131(auto Un'Goro Crater;67):51 #7719(auto Un'Goro Crater;179):43 #19661(auto Un'Goro Crater;454):10 #21670(auto Un'Goro Crater;500):27 c6559.1:11
+#17022 | auto Un'Goro Crater;395§auto Krater von Un'Goro;395§auto Cratère d'Un'Goro;395 | x=-6657.10009765625 y=-2099.400146484375 | size=1 | links=#5565(auto Un'Goro Crater;125):70 #21212(auto Un'Goro Crater;488):120 c6511.24:19
+#17103 | auto Un'Goro Crater;396§auto Krater von Un'Goro;396§auto Cratère d'Un'Goro;396 | x=-7204.10009765625 y=-1489.800048828125 | size=1 | links=#11335(auto Un'Goro Crater;262):24 #16558(auto Un'Goro Crater;380):12
+#17113 | auto Un'Goro Crater;397§auto Krater von Un'Goro;397§auto Cratère d'Un'Goro;397 | x=-6473.89990234375 y=-1166.300048828125 | size=1 | links=#16706(auto Un'Goro Crater;386):32 c6518.1:57 o164779.2:26 c6510.30:44
+#17140 | auto Un'Goro Crater;398§auto Krater von Un'Goro;398§auto Cratère d'Un'Goro;398 | x=-6928 y=-232.5 | size=1 | links=#2968(auto Un'Goro Crater;63):20 #16653(auto Un'Goro Crater;385):25 #19435(auto Un'Goro Crater;449):39
+#17326 | auto Un'Goro Crater;399§auto Krater von Un'Goro;399§auto Cratère d'Un'Goro;399 | x=-7977.39990234375 y=-2114.10009765625 | size=1 | links=#1848(auto Un'Goro Crater;45):40 #18727(auto Un'Goro Crater;427):55
+#17328 | auto Un'Goro Crater;400§auto Krater von Un'Goro;400§auto Cratère d'Un'Goro;400 | x=-7181.5 y=-385.6000061035156 | size=1 | links=#3897(auto Un'Goro Crater;89):21 #8909(auto Un'Goro Crater;206):24
+#17386 | auto Un'Goro Crater;401§auto Krater von Un'Goro;401§auto Cratère d'Un'Goro;401 | x=-7981.7001953125 y=-1314.200073242188 | size=1 | links=#26330(auto Un'Goro Crater;593):10 c6553.3:13
+#17486 | auto Un'Goro Crater;402§auto Krater von Un'Goro;402§auto Cratère d'Un'Goro;402 | x=-6999.7001953125 y=-1847.599975585938 | size=1 | links=o157936.11:24 c6511.15:53
+#17543 | auto Un'Goro Crater;403§auto Krater von Un'Goro;403§auto Cratère d'Un'Goro;403 | x=-6088.39990234375 y=-1073.200073242188 | size=1 | links=#4191(auto Un'Goro Crater;97):13 #4866(auto Un'Goro Crater;112):12
+#17577 | auto Un'Goro Crater;404§auto Krater von Un'Goro;404§auto Cratère d'Un'Goro;404 | x=-7915.5 y=-691.5 | size=1 | links=#3563(auto Un'Goro Crater;73):55 #19197(auto Un'Goro Crater;439):52 c9167.59:8
+#17606 | auto Un'Goro Crater;405§auto Krater von Un'Goro;405§auto Cratère d'Un'Goro;405 | x=-6197.80029296875 y=-1542 | size=1 | links=#17986(auto Un'Goro Crater;413):18 c9166.8:14
+#17631 | auto Un'Goro Crater;406§auto Krater von Un'Goro;406§auto Cratère d'Un'Goro;406 | x=-6036.89990234375 y=-982.2000122070312 | size=1 | links=#10644(auto Un'Goro Crater;245):7 #22563(auto Un'Goro Crater;515):12
+#17659 | auto Un'Goro Crater;407§auto Krater von Un'Goro;407§auto Cratère d'Un'Goro;407 | x=-7065.89990234375 y=-1422.300048828125 | size=1 | links=#6795(auto Un'Goro Crater;155):3 #18933(auto Un'Goro Crater;432):7
+#17751 | auto Un'Goro Crater;408§auto Krater von Un'Goro;408§auto Cratère d'Un'Goro;408 | x=-6753.89990234375 y=-1069.400024414063 | size=1 | links=#18997(auto Un'Goro Crater;436):12 #19671(auto Un'Goro Crater;455):77
+#17790 | auto Un'Goro Crater;409§auto Krater von Un'Goro;409§auto Cratère d'Un'Goro;409 | x=-7022.10009765625 y=-2308.10009765625 | size=1 | links=#11385(auto Un'Goro Crater;264):19 #21722(auto Un'Goro Crater;501):16
+#17888 | auto Un'Goro Crater;410§auto Krater von Un'Goro;410§auto Cratère d'Un'Goro;410 | x=-7200.60009765625 y=-1095.400024414063 | size=1 | links=#1357(auto Un'Goro Crater;32):38 #26567(auto Un'Goro Crater;601):56
+#17950 | auto Un'Goro Crater;411§auto Krater von Un'Goro;411§auto Cratère d'Un'Goro;411 | x=-6231.89990234375 y=-1128.200073242188 | size=1 | links=#2277(auto Un'Goro Crater;50):37 #24684(auto Un'Goro Crater;551):39 #28412(auto Un'Goro Crater;642):24
+#17968 | auto Un'Goro Crater;412§auto Krater von Un'Goro;412§auto Cratère d'Un'Goro;412 | x=-7491.7001953125 y=-2290.60009765625 | size=1 | links=#12218(auto Un'Goro Crater;279):26 #24268(auto Un'Goro Crater;545):12
+#17986 | auto Un'Goro Crater;413§auto Krater von Un'Goro;413§auto Cratère d'Un'Goro;413 | x=-6214.30029296875 y=-1534.700073242188 | size=1 | links=#1619(auto Un'Goro Crater;37):37 #17606(auto Un'Goro Crater;405):18 c9166.3:50
+#18043 | auto Un'Goro Crater;414§auto Krater von Un'Goro;414§auto Cratère d'Un'Goro;414 | x=-7243.60009765625 y=-1393.700073242188 | size=1 | links=#23229(auto Un'Goro Crater;524):19 c6521.2:18
+#18112 | auto Un'Goro Crater;415§auto Krater von Un'Goro;415§auto Cratère d'Un'Goro;415 | x=-6872.60009765625 y=-2178.10009765625 | size=1 | links=#678(auto Un'Goro Crater;18):45 #7828(auto Un'Goro Crater;183):63 c6511.2:33
+#18160 | auto Un'Goro Crater;416§auto Krater von Un'Goro;416§auto Cratère d'Un'Goro;416 | x=-7684 y=-1832.400024414063 | size=1 | links=#28252(auto Un'Goro Crater;638):49 o161505.1:42
+#18215 | auto Un'Goro Crater;417§auto Krater von Un'Goro;417§auto Cratère d'Un'Goro;417 | x=-7035.7001953125 y=-1646.400024414063 | size=1 | links=#5360(auto Un'Goro Crater;120):58 #18377(auto Un'Goro Crater;419):30
+#18349 | auto Un'Goro Crater;418§auto Krater von Un'Goro;418§auto Cratère d'Un'Goro;418 | x=-8006.89990234375 y=-1468.400024414063 | size=1 | links=c6551.1:25 c6553.21:28
+#18377 | auto Un'Goro Crater;419§auto Krater von Un'Goro;419§auto Cratère d'Un'Goro;419 | x=-7053.80029296875 y=-1670.5 | size=1 | links=#10197(auto Un'Goro Crater;235):26 #18215(auto Un'Goro Crater;417):30
+#18444 | auto Un'Goro Crater;420§auto Krater von Un'Goro;420§auto Cratère d'Un'Goro;420 | x=-6726.89990234375 y=-2193 | size=1 | links=#41(auto Un'Goro Crater;1):32 #911(auto Un'Goro Crater;24):42 #5565(auto Un'Goro Crater;125):46
+#18474 | auto Un'Goro Crater;421§auto Krater von Un'Goro;421§auto Cratère d'Un'Goro;421 | x=-7073.7001953125 y=-1565.200073242188 | size=1 | links=#5598(auto Un'Goro Crater;126):36 #10595(auto Un'Goro Crater;243):50
+#18522 | auto Un'Goro Crater;422§auto Krater von Un'Goro;422§auto Cratère d'Un'Goro;422 | x=-7812.2001953125 y=-2084.699951171875 | size=1 | links=#18975(auto Un'Goro Crater;434):19 #26000(auto Un'Goro Crater;586):47
+#18579 | auto Un'Goro Crater;423§auto Krater von Un'Goro;423§auto Cratère d'Un'Goro;423 | x=-8136.2001953125 y=-1346.300048828125 | size=1 | links=#4218(auto Un'Goro Crater;99):30 #10222(auto Un'Goro Crater;236):23 c9166.18:15
+#18586 | auto Un'Goro Crater;424§auto Krater von Un'Goro;424§auto Cratère d'Un'Goro;424 | x=-7685.10009765625 y=-1387.5 | size=1 | links=#1833(auto Un'Goro Crater;43):46 #13552(auto Un'Goro Crater;310):44 c9166.14:12 c9163.30:34 c6510.59:31
+#18630 | auto Un'Goro Crater;425§auto Krater von Un'Goro;425§auto Cratère d'Un'Goro;425 | x=-7154.7001953125 y=-697.1000366210938 | size=5 | links=#6801(auto Un'Goro Crater;156):65 #22185(auto Un'Goro Crater;506):32 #23261(auto Un'Goro Crater;526):54
+#18678 | auto Un'Goro Crater;426§auto Krater von Un'Goro;426§auto Cratère d'Un'Goro;426 | x=-7819.80029296875 y=-833.9000244140625 | size=1 | links=#10824(auto Un'Goro Crater;250):82 #12066(auto Un'Goro Crater;276):59 c6583.1:41
+#18727 | auto Un'Goro Crater;427§auto Krater von Un'Goro;427§auto Cratère d'Un'Goro;427 | x=-8032.60009765625 y=-2117 | size=1 | links=#3710(auto Un'Goro Crater;81):54 #17326(auto Un'Goro Crater;399):55
+#18753 | auto Un'Goro Crater;428§auto Krater von Un'Goro;428§auto Cratère d'Un'Goro;428 | x=-7001.5 y=-1420.300048828125 | size=1 | links=#16213(auto Un'Goro Crater;372):15 #19616(ramp;down;Fire Plume Ridge;Un'Goro Crater):13
+#18849 | auto Un'Goro Crater;429§auto Krater von Un'Goro;429§auto Cratère d'Un'Goro;429 | x=-7195.89990234375 y=-2400.699951171875 | size=1 | links=#15916(auto Un'Goro Crater;367):22 #25366(auto Un'Goro Crater;565):35
+#18913 | auto Un'Goro Crater;430§auto Krater von Un'Goro;430§auto Cratère d'Un'Goro;430 | x=-7131.80029296875 y=-1370.700073242188 | size=1 | links=#13913(auto Un'Goro Crater;320):7 #24810(auto Un'Goro Crater;553):4
+#18928 | auto Un'Goro Crater;431§auto Krater von Un'Goro;431§auto Cratère d'Un'Goro;431 | x=-8095.7001953125 y=-1212 | size=1 | links=c6555.6:13 c2914.11:12
+#18933 | auto Un'Goro Crater;432§auto Krater von Un'Goro;432§auto Cratère d'Un'Goro;432 | x=-7072.7001953125 y=-1419 | size=1 | links=#17659(auto Un'Goro Crater;407):7 #28496(auto Un'Goro Crater;648):21
+#18953 | auto Un'Goro Crater;433§auto Krater von Un'Goro;433§auto Cratère d'Un'Goro;433 | x=-7175.89990234375 y=-360.2000122070313 | size=1 | links=#9956(auto Un'Goro Crater;231):13 #19378(auto Un'Goro Crater;447):15
+#18975 | auto Un'Goro Crater;434§auto Krater von Un'Goro;434§auto Cratère d'Un'Goro;434 | x=-7828.60009765625 y=-2074.800048828125 | size=1 | links=#12120(auto Un'Goro Crater;278):21 #15302(auto Un'Goro Crater;350):25 #18522(auto Un'Goro Crater;422):19
+#18977 | auto Un'Goro Crater;435§auto Krater von Un'Goro;435§auto Cratère d'Un'Goro;435 | x=-7090.80029296875 y=-1390.599975585938 | size=1 | links=#14042(auto Un'Goro Crater;325):8 #25871(auto Un'Goro Crater;582):7
+#18997 | auto Un'Goro Crater;436§auto Krater von Un'Goro;436§auto Cratère d'Un'Goro;436 | x=-6742.39990234375 y=-1064 | size=1 | links=#9790(auto Un'Goro Crater;228):15 #17751(auto Un'Goro Crater;408):12
+#19137 | auto Un'Goro Crater;437§auto Krater von Un'Goro;437§auto Cratère d'Un'Goro;437 | x=-7938.60009765625 y=-1362.200073242188 | size=1 | links=#5911(auto Un'Goro Crater;133):19 c6553.28:25
+#19166 | auto Un'Goro Crater;438§auto Krater von Un'Goro;438§auto Cratère d'Un'Goro;438 | x=-6696.30029296875 y=-593 | size=1 | links=#11104(auto Un'Goro Crater;258):6 #21639(auto Un'Goro Crater;497):46 c2914.10:28
+#19197 | auto Un'Goro Crater;439§auto Krater von Un'Goro;439§auto Cratère d'Un'Goro;439 | x=-7908 y=-743.7000122070312 | size=1 | links=#17577(auto Un'Goro Crater;404):52 #25141(auto Un'Goro Crater;562):45
+#19216 | auto Un'Goro Crater;440§auto Krater von Un'Goro;440§auto Cratère d'Un'Goro;440 | x=-7137.60009765625 y=-882.5 | size=5 | links=#8854(auto Un'Goro Crater;205):71 #19971(auto Un'Goro Crater;461):73
+#19237 | auto Un'Goro Crater;441§auto Krater von Un'Goro;441§auto Cratère d'Un'Goro;441 | x=-6340.5 y=-1732.900024414063 | size=1 | links=#20683(auto Un'Goro Crater;475):18 o164661.11:11
+#19261 | auto Un'Goro Crater;442§auto Krater von Un'Goro;442§auto Cratère d'Un'Goro;442 | x=-7262.30029296875 y=-1189.5 | size=1 | links=#7142(auto Un'Goro Crater;169):22 #12080(auto Un'Goro Crater;277):25
+#19271 | auto Un'Goro Crater;443§auto Krater von Un'Goro;443§auto Cratère d'Un'Goro;443 | x=-7172.2001953125 y=-1112.099975585938 | size=1 | links=#666(auto Un'Goro Crater;17):23 #1357(auto Un'Goro Crater;32):28 c6521.22:26
+#19307 | auto Un'Goro Crater;444§auto Krater von Un'Goro;444§auto Cratère d'Un'Goro;444 | x=-7278.7001953125 y=-370.8999938964844 | size=1 | links=#12435(auto Un'Goro Crater;282):28 #14642(auto Un'Goro Crater;335):40
+#19357 | auto Un'Goro Crater;445§auto Krater von Un'Goro;445§auto Cratère d'Un'Goro;445 | x=-6315.2001953125 y=-1151.700073242188 | size=1 | links=#21387(auto Un'Goro Crater;491):13 #25710(auto Un'Goro Crater;577):17
+#19374 | auto Un'Goro Crater;446§auto Krater von Un'Goro;446§auto Cratère d'Un'Goro;446 | x=-7126.80029296875 y=-1305.200073242188 | size=1 | links=#3743(auto Un'Goro Crater;83):13 #10769(auto Un'Goro Crater;249):15 #25356(auto Un'Goro Crater;564):23
+#19378 | auto Un'Goro Crater;447§auto Krater von Un'Goro;447§auto Cratère d'Un'Goro;447 | x=-7181.7001953125 y=-345.8999938964844 | size=1 | links=#18953(auto Un'Goro Crater;433):15 #25454(auto Un'Goro Crater;569):20
+#19399 | auto Un'Goro Crater;448§auto Krater von Un'Goro;448§auto Cratère d'Un'Goro;448 | x=-7258.920776620159 y=-1535.22403437403 | size=1 | links=#11439(auto Un'Goro Crater;267):40 #12505(auto Un'Goro Crater;283):54
+#19435 | auto Un'Goro Crater;449§auto Krater von Un'Goro;449§auto Cratère d'Un'Goro;449 | x=-6964.80029296875 y=-245.9000091552734 | size=1 | links=#15259(auto Un'Goro Crater;348):37 #17140(auto Un'Goro Crater;398):39 c9167.53:14
+#19451 | auto Un'Goro Crater;450§auto Krater von Un'Goro;450§auto Cratère d'Un'Goro;450 | x=-8004.39990234375 y=-1204.5 | size=1 | links=#9793(auto Un'Goro Crater;229):17 c6555.5:13
+#19492 | auto Un'Goro Crater;451§auto Krater von Un'Goro;451§auto Cratère d'Un'Goro;451 | x=-8230 y=-1134.200073242188 | size=1 | links=#4473(auto Un'Goro Crater;104):20 o164658.9:32
+#19572 | auto Un'Goro Crater;452§auto Krater von Un'Goro;452§auto Cratère d'Un'Goro;452 | x=-6356.39990234375 y=-1108.400024414063 | size=1 | links=#7772(auto Un'Goro Crater;182):31 c6519.5:34
+#19610 | auto Un'Goro Crater;453§auto Krater von Un'Goro;453§auto Cratère d'Un'Goro;453 | x=-6284.89990234375 y=-1997.099975585938 | size=1 | links=#21927(auto Un'Goro Crater;502):14 c9622.1:12
+#19616 | ramp;down;Fire Plume Ridge;Un'Goro Crater§rampe;unten;Feuersäulengrat;Krater von Un'Goro§ramp;bas;Crête de la Fournaise;Cratère d'Un'Goro | x=-6988.10009765625 y=-1418.300048828125 | size=1 | links=#226(auto Un'Goro Crater;9):11 #5063(auto Un'Goro Crater;114):17 #18753(auto Un'Goro Crater;428):13
+#19661 | auto Un'Goro Crater;454§auto Krater von Un'Goro;454§auto Cratère d'Un'Goro;454 | x=-7040.80029296875 y=-370.1000061035156 | size=1 | links=#16976(auto Un'Goro Crater;394):10 #25448(auto Un'Goro Crater;568):14
+#19671 | auto Un'Goro Crater;455§auto Krater von Un'Goro;455§auto Cratère d'Un'Goro;455 | x=-6831.2001953125 y=-1068 | size=1 | links=#13525(auto Un'Goro Crater;307):62 #17751(auto Un'Goro Crater;408):77 o164780.7:37
+#19672 | auto Un'Goro Crater;456§auto Krater von Un'Goro;456§auto Cratère d'Un'Goro;456 | x=-8057.30029296875 y=-1063.300048828125 | size=1 | links=#9571(auto Un'Goro Crater;221):51 #26270(auto Un'Goro Crater;592):63
+#19776 | auto Un'Goro Crater;457§auto Krater von Un'Goro;457§auto Cratère d'Un'Goro;457 | x=-7304.10009765625 y=-1456.900024414063 | size=1 | links=#3425(auto Un'Goro Crater;71):15 c6520.11:16
+#19786 | auto Un'Goro Crater;458§auto Krater von Un'Goro;458§auto Cratère d'Un'Goro;458 | x=-6518 y=-1367.800048828125 | size=1 | links=#10614(auto Un'Goro Crater;244):75 #20773(auto Un'Goro Crater;480):76 c6518.10:41 c6518.12:47
+#19890 | auto Un'Goro Crater;459§auto Krater von Un'Goro;459§auto Cratère d'Un'Goro;459 | x=-6219.5 y=-567.1000366210938 | size=1 | links=#14762(auto Un'Goro Crater;337):28 #15344(auto Un'Goro Crater;354):28
+#19959 | auto Un'Goro Crater;460§auto Krater von Un'Goro;460§auto Cratère d'Un'Goro;460 | x=-7193.2001953125 y=-2344.300048828125 | size=1 | links=#6909(auto Un'Goro Crater;162):21 #20325(auto Un'Goro Crater;470):5 #25366(auto Un'Goro Crater;565):24
+#19971 | auto Un'Goro Crater;461§auto Krater von Un'Goro;461§auto Cratère d'Un'Goro;461 | x=-7151.7001953125 y=-810.6000366210938 | size=5 | links=#6801(auto Un'Goro Crater;156):49 #19216(auto Un'Goro Crater;440):73
+#20026 | auto Un'Goro Crater;462§auto Krater von Un'Goro;462§auto Cratère d'Un'Goro;462 | x=-7239.10009765625 y=-1362.700073242188 | size=1 | links=#12715(auto Un'Goro Crater;287):16 c6521.2:12
+#20095 | auto Un'Goro Crater;463§auto Krater von Un'Goro;463§auto Cratère d'Un'Goro;463 | x=-6411.89990234375 y=-1023.900024414063 | size=1 | links=#26449(auto Un'Goro Crater;598):35 c6518.5:48
+#20112 | auto Un'Goro Crater;464§auto Krater von Un'Goro;464§auto Cratère d'Un'Goro;464 | x=-7642.5 y=-738.7999877929688 | size=1 | links=#10824(auto Un'Goro Crater;250):119 #13602(auto Un'Goro Crater;313):74 c6503.1:57
+#20180 | auto Un'Goro Crater;465§auto Krater von Un'Goro;465§auto Cratère d'Un'Goro;465 | x=-6987 y=-292.7000122070313 | size=1 | links=#6876(auto Un'Goro Crater;161):19 #22479(auto Un'Goro Crater;512):7
+#20204 | auto Un'Goro Crater;466§auto Krater von Un'Goro;466§auto Cratère d'Un'Goro;466 | x=-6891.60009765625 y=-2233.5 | size=1 | links=#678(auto Un'Goro Crater;18):22 #27309(auto Un'Goro Crater;617):78
+#20263 | auto Un'Goro Crater;467§auto Krater von Un'Goro;467§auto Cratère d'Un'Goro;467 | x=-8010.7001953125 y=-1188.5 | size=1 | links=#15327(auto Un'Goro Crater;352):11 c6555.5:6
+#20287 | auto Un'Goro Crater;468§auto Krater von Un'Goro;468§auto Cratère d'Un'Goro;468 | x=-6725.80029296875 y=-900.6000366210938 | size=5 | links=#4184(auto Un'Goro Crater;95):110 c6559.3:62 c6559.6:36 c6512.19:23
+#20289 | auto Un'Goro Crater;469§auto Krater von Un'Goro;469§auto Cratère d'Un'Goro;469 | x=-6312.39990234375 y=-1494.700073242188 | size=1 | links=#4650(auto Un'Goro Crater;107):40 #13935(auto Un'Goro Crater;321):12 #25696(auto Un'Goro Crater;576):51
+#20325 | auto Un'Goro Crater;470§auto Krater von Un'Goro;470§auto Cratère d'Un'Goro;470 | x=-7198 y=-2340.699951171875 | size=1 | links=#19959(auto Un'Goro Crater;460):5 #26188(auto Un'Goro Crater;591):9
+#20369 | auto Un'Goro Crater;471§auto Krater von Un'Goro;471§auto Cratère d'Un'Goro;471 | x=-7920 y=-2146.60009765625 | size=1 | links=#1848(auto Un'Goro Crater;45):28 #4517(auto Un'Goro Crater;105):26
+#20409 | quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Crête de la Fournaise;Cratère d'Un'Goro | x=-7109.89990234375 y=-1287 | size=1 | links=#24915(auto Un'Goro Crater;556):5
+#20535 | auto Un'Goro Crater;472§auto Krater von Un'Goro;472§auto Cratère d'Un'Goro;472 | x=-6606.5 y=-624.7000122070312 | size=1 | links=#1526(auto Un'Goro Crater;36):63 #23515(auto Un'Goro Crater;532):20
+#20581 | auto Un'Goro Crater;473§auto Krater von Un'Goro;473§auto Cratère d'Un'Goro;473 | x=-7604.5 y=-906.7999877929688 | size=1 | links=#8789(auto Un'Goro Crater;202):92 #21662(auto Un'Goro Crater;499):71 o161521.1:19
+#20587 | auto Un'Goro Crater;474§auto Krater von Un'Goro;474§auto Cratère d'Un'Goro;474 | x=-7644.80029296875 y=-1798.5 | size=1 | links=#3670(auto Un'Goro Crater;80):44 o161505.1:13
+#20683 | auto Un'Goro Crater;475§auto Krater von Un'Goro;475§auto Cratère d'Un'Goro;475 | x=-6333.10009765625 y=-1749.800048828125 | size=1 | links=#15941(auto Un'Goro Crater;368):15 #19237(auto Un'Goro Crater;441):18
+#20690 | auto Un'Goro Crater;476§auto Krater von Un'Goro;476§auto Cratère d'Un'Goro;476 | x=-6702 y=-1018.700012207031 | size=1 | links=#23356(auto Un'Goro Crater;528):21 c1420.1:17
+#20703 | auto Un'Goro Crater;477§auto Krater von Un'Goro;477§auto Cratère d'Un'Goro;477 | x=-6092.10009765625 y=-1010.900024414063 | size=1 | links=#6193(auto Un'Goro Crater;141):13 #8068(auto Un'Goro Crater;186):18
+#20708 | auto Un'Goro Crater;478§auto Krater von Un'Goro;478§auto Cratère d'Un'Goro;478 | x=-6501.7001953125 y=-1895.200073242188 | size=1 | links=#10744(auto Un'Goro Crater;248):57 #13523(auto Un'Goro Crater;306):50 o164781.10:24
+#20722 | auto Un'Goro Crater;479§auto Krater von Un'Goro;479§auto Cratère d'Un'Goro;479 | x=-7211 y=-649.7999877929688 | size=1 | links=#13347(auto Un'Goro Crater;305):4 #24924(quest target;Golakka Hot Springs;Un'Goro Crater):5
+#20773 | auto Un'Goro Crater;480§auto Krater von Un'Goro;480§auto Cratère d'Un'Goro;480 | x=-6589.7001953125 y=-1394.900024414063 | size=1 | links=#10900(auto Un'Goro Crater;252):79 #19786(auto Un'Goro Crater;458):76 c6518.9:34 c6518.11:13 c6519.12:54
+#20811 | auto Un'Goro Crater;481§auto Krater von Un'Goro;481§auto Cratère d'Un'Goro;481 | x=-6728 y=-1817.300048828125 | size=1 | links=#14316(auto Un'Goro Crater;329):47 c6509.17:36 c6509.23:24
+#20877 | auto Un'Goro Crater;482§auto Krater von Un'Goro;482§auto Cratère d'Un'Goro;482 | x=-7998.7001953125 y=-1254.900024414063 | size=1 | links=#9724(auto Un'Goro Crater;225):12 c6555.4:9
+#20913 | auto Un'Goro Crater;483§auto Krater von Un'Goro;483§auto Cratère d'Un'Goro;483 | x=-6547.89990234375 y=-574.2999877929688 | size=1 | links=#9661(auto Un'Goro Crater;223):17 #28542(auto Un'Goro Crater;653):61
+#21006 | auto Un'Goro Crater;484§auto Krater von Un'Goro;484§auto Cratère d'Un'Goro;484 | x=-6376.60009765625 y=-1394.300048828125 | size=1 | links=#8444(auto Un'Goro Crater;192):85 #25696(auto Un'Goro Crater;576):86 c6557.8:32 o164958.9:33
+#21033 | auto Un'Goro Crater;485§auto Krater von Un'Goro;485§auto Cratère d'Un'Goro;485 | x=-8156.60009765625 y=-1541.400024414063 | size=1 | links=#3601(auto Un'Goro Crater;75):37 #9286(auto Un'Goro Crater;212):42 #24973(auto Un'Goro Crater;559):24 c9166.13:11
+#21113 | auto Un'Goro Crater;486§auto Krater von Un'Goro;486§auto Cratère d'Un'Goro;486 | x=-7376.80029296875 y=-1423 | size=1 | links=#9546(auto Un'Goro Crater;219):31 #27179(auto Un'Goro Crater;614):40
+#21153 | auto Un'Goro Crater;487§auto Krater von Un'Goro;487§auto Cratère d'Un'Goro;487 | x=-6380.39990234375 y=-1873.200073242188 | size=1 | links=#3572(auto Un'Goro Crater;74):27 #6820(auto Un'Goro Crater;157):27
+#21212 | auto Un'Goro Crater;488§auto Krater von Un'Goro;488§auto Cratère d'Un'Goro;488 | x=-6564.89990234375 y=-2022.5 | size=1 | links=#10744(auto Un'Goro Crater;248):91 #16243(auto Un'Goro Crater;373):18 #17022(auto Un'Goro Crater;395):120 o164780.2:38 c6509.11:45 c6511.26:16
+#21239 | auto Un'Goro Crater;489§auto Krater von Un'Goro;489§auto Cratère d'Un'Goro;489 | x=-6655.89990234375 y=-909.5 | size=1 | links=#3116(auto Un'Goro Crater;66):46 #24050(auto Un'Goro Crater;540):51 c9167.16:34
+#21283 | passage;from;Un'Goro Crater;to;Silithus§passage;von;Krater von Un'Goro;nach;silithus§passage;de;Cratère d'Un'Goro;vers;Silithus | x=-6226.2001953125 y=-467 | size=1 | links=#54(auto Un'Goro Crater;2):2 #22277(passage;from;Silithus;to;Un'Goro Crater):1
+#21318 | auto Un'Goro Crater;490§auto Krater von Un'Goro;490§auto Cratère d'Un'Goro;490 | x=-7135 y=-609.9000244140625 | size=5 | links=#3664(auto Un'Goro Crater;79):41 #14019(auto Un'Goro Crater;324):61 #23261(auto Un'Goro Crater;526):46
+#21387 | auto Un'Goro Crater;491§auto Krater von Un'Goro;491§auto Cratère d'Un'Goro;491 | x=-6315.60009765625 y=-1164.900024414063 | size=1 | links=#7565(auto Un'Goro Crater;177):16 #19357(auto Un'Goro Crater;445):13 c6519.2:33
+#21425 | auto Un'Goro Crater;492§auto Krater von Un'Goro;492§auto Cratère d'Un'Goro;492 | x=-6703.80029296875 y=-685.7000122070312 | size=1 | links=c9164.6:32 o164779.9:8
+#21438 | auto Un'Goro Crater;493§auto Krater von Un'Goro;493§auto Cratère d'Un'Goro;493 | x=-7906.2001953125 y=-2076 | size=1 | links=#13680(auto Un'Goro Crater;314):31 #22716(auto Un'Goro Crater;518):19
+#21531 | auto Un'Goro Crater;494§auto Krater von Un'Goro;494§auto Cratère d'Un'Goro;494 | x=-6021.60009765625 y=-984.7000122070312 | size=1 | links=#10644(auto Un'Goro Crater;245):8 #27422(auto Un'Goro Crater;620):16
+#21534 | auto Un'Goro Crater;495§auto Krater von Un'Goro;495§auto Cratère d'Un'Goro;495 | x=-7333.60009765625 y=-1297.5 | size=1 | links=#12809(auto Un'Goro Crater;290):11 c6491.2:24
+#21595 | auto Un'Goro Crater;496§auto Krater von Un'Goro;496§auto Cratère d'Un'Goro;496 | x=-7099.60009765625 y=-1376.700073242188 | size=1 | links=#8846(auto Un'Goro Crater;204):6 #14042(auto Un'Goro Crater;325):8
+#21639 | auto Un'Goro Crater;497§auto Krater von Un'Goro;497§auto Cratère d'Un'Goro;497 | x=-6651.80029296875 y=-578.7000122070312 | size=1 | links=#19166(auto Un'Goro Crater;438):46 #28542(auto Un'Goro Crater;653):43
+#21644 | auto Un'Goro Crater;498§auto Krater von Un'Goro;498§auto Cratère d'Un'Goro;498 | x=-6378.30029296875 y=-1903.400024414063 | size=1 | links=#3572(auto Un'Goro Crater;74):14 c6516.2:20
+#21662 | auto Un'Goro Crater;499§auto Krater von Un'Goro;499§auto Cratère d'Un'Goro;499 | x=-7561.30029296875 y=-963.4000244140625 | size=1 | links=#20581(auto Un'Goro Crater;473):71 #23727(auto Un'Goro Crater;537):98
+#21670 | auto Un'Goro Crater;500§auto Krater von Un'Goro;500§auto Cratère d'Un'Goro;500 | x=-7066.5 y=-373.5 | size=1 | links=#16976(auto Un'Goro Crater;394):27 #25806(auto Un'Goro Crater;581):43
+#21722 | auto Un'Goro Crater;501§auto Krater von Un'Goro;501§auto Cratère d'Un'Goro;501 | x=-7036.80029296875 y=-2300.400146484375 | size=1 | links=#5235(auto Un'Goro Crater;118):6 #17790(auto Un'Goro Crater;409):16
+#21927 | auto Un'Goro Crater;502§auto Krater von Un'Goro;502§auto Cratère d'Un'Goro;502 | x=-6297.30029296875 y=-2005.300048828125 | size=1 | links=#19610(auto Un'Goro Crater;453):14 #23201(auto Un'Goro Crater;523):17 c6514.7:13
+#21974 | auto Un'Goro Crater;503§auto Krater von Un'Goro;503§auto Cratère d'Un'Goro;503 | x=-6405.89990234375 y=-1756.300048828125 | size=1 | links=#23413(auto Un'Goro Crater;529):36 c6513.2:60 c6513.3:13 o157936.3:11 o164779.3:38 c6513.4:22 c6513.5:52
+#22000 | auto Un'Goro Crater;504§auto Krater von Un'Goro;504§auto Cratère d'Un'Goro;504 | x=-6380.7001953125 y=-1793.400024414063 | size=1 | links=c6514.3:16 o164779.3:11
+#22051 | auto Un'Goro Crater;505§auto Krater von Un'Goro;505§auto Cratère d'Un'Goro;505 | x=-7581.39990234375 y=-1329.800048828125 | size=1 | links=#14998(auto Un'Goro Crater;341):28 #26635(auto Un'Goro Crater;604):39 c6510.49:15
+#22185 | auto Un'Goro Crater;506§auto Krater von Un'Goro;506§auto Cratère d'Un'Goro;506 | x=-7187.30029296875 y=-698.4000244140625 | size=1 | links=#18630(auto Un'Goro Crater;425):32 o180216.2:28
+#22241 | auto Un'Goro Crater;507§auto Krater von Un'Goro;507§auto Cratère d'Un'Goro;507 | x=-7374.39990234375 y=-360 | size=1 | links=#11298(auto Un'Goro Crater;260):19 #22560(auto Un'Goro Crater;514):13
+#22293 | auto Un'Goro Crater;508§auto Krater von Un'Goro;508§auto Cratère d'Un'Goro;508 | x=-7918.39990234375 y=-1978.300048828125 | size=1 | links=#7664(auto Un'Goro Crater;178):43 #27153(auto Un'Goro Crater;612):40
+#22328 | auto Un'Goro Crater;509§auto Krater von Un'Goro;509§auto Cratère d'Un'Goro;509 | x=-7236 y=-629 | size=1 | links=#7017(auto Un'Goro Crater;166):5 #23171(auto Un'Goro Crater;522):5
+#22421 | auto Un'Goro Crater;510§auto Krater von Un'Goro;510§auto Cratère d'Un'Goro;510 | x=-7435.10009765625 y=-2349.699951171875 | size=1 | links=#13565(auto Un'Goro Crater;312):33 #28534(auto Un'Goro Crater;652):19 c9165.13:19
+#22465 | auto Un'Goro Crater;511§auto Krater von Un'Goro;511§auto Cratère d'Un'Goro;511 | x=-7050.507570766155 y=-1144.350607793384 | size=1 | links=#6224(auto Un'Goro Crater;142):51 #6568(auto Un'Goro Crater;150):37 #27816(auto Un'Goro Crater;628):39
+#22479 | auto Un'Goro Crater;512§auto Krater von Un'Goro;512§auto Cratère d'Un'Goro;512 | x=-6986.5 y=-285 | size=1 | links=#13762(auto Un'Goro Crater;317):30 #15259(auto Un'Goro Crater;348):12 #20180(auto Un'Goro Crater;465):7 c9167.52:16
+#22557 | auto Un'Goro Crater;513§auto Krater von Un'Goro;513§auto Cratère d'Un'Goro;513 | x=-7917.89990234375 y=-1851.599975585938 | size=1 | links=#6786(auto Un'Goro Crater;154):43 #13532(auto Un'Goro Crater;308):36 c6505.21:12
+#22560 | auto Un'Goro Crater;514§auto Krater von Un'Goro;514§auto Cratère d'Un'Goro;514 | x=-7384.2001953125 y=-350.6000061035156 | size=1 | links=#22241(auto Un'Goro Crater;507):13 #27015(auto Un'Goro Crater;608):20
+#22563 | auto Un'Goro Crater;515§auto Krater von Un'Goro;515§auto Cratère d'Un'Goro;515 | x=-6049.10009765625 y=-983.2999877929688 | size=1 | links=#17631(auto Un'Goro Crater;406):12 #27992(auto Un'Goro Crater;634):18
+#22571 | auto Un'Goro Crater;516§auto Krater von Un'Goro;516§auto Cratère d'Un'Goro;516 | x=-6339.5 y=-1963.5 | size=1 | links=#4694(auto Un'Goro Crater;108):15 #16335(auto Un'Goro Crater;377):37 c6516.6:4
+#22653 | auto Un'Goro Crater;517§auto Krater von Un'Goro;517§auto Cratère d'Un'Goro;517 | x=-7228.7001953125 y=-1137.5 | size=1 | links=#666(auto Un'Goro Crater;17):40 #12080(auto Un'Goro Crater;277):36
+#22716 | auto Un'Goro Crater;518§auto Krater von Un'Goro;518§auto Cratère d'Un'Goro;518 | x=-7920.5 y=-2062.400146484375 | size=1 | links=#7664(auto Un'Goro Crater;178):43 #21438(auto Un'Goro Crater;493):19
+#22751 | auto Un'Goro Crater;519§auto Krater von Un'Goro;519§auto Cratère d'Un'Goro;519 | x=-6272.5 y=-1151.300048828125 | size=1 | links=#2086(auto Un'Goro Crater;48):20 #28412(auto Un'Goro Crater;642):21
+#22829 | auto Un'Goro Crater;520§auto Krater von Un'Goro;520§auto Cratère d'Un'Goro;520 | x=-6241.2001953125 y=-1102.700073242188 | size=1 | links=#7553(auto Un'Goro Crater;176):19 c9998.1:11
+#23115 | auto Un'Goro Crater;521§auto Krater von Un'Goro;521§auto Cratère d'Un'Goro;521 | x=-6466.60009765625 y=-1727.200073242188 | size=1 | links=#6339(auto Un'Goro Crater;144):61 #23413(auto Un'Goro Crater;529):31 #26144(auto Un'Goro Crater;590):60 c2914.7:27
+#23171 | auto Un'Goro Crater;522§auto Krater von Un'Goro;522§auto Cratère d'Un'Goro;522 | x=-7232.60009765625 y=-633.9000244140625 | size=1 | links=#7062(auto Un'Goro Crater;168):6 #22328(auto Un'Goro Crater;509):5
+#23201 | auto Un'Goro Crater;523§auto Krater von Un'Goro;523§auto Cratère d'Un'Goro;523 | x=-6314.60009765625 y=-2007.700073242188 | size=1 | links=#21927(auto Un'Goro Crater;502):17 #27389(auto Un'Goro Crater;619):14 c6516.9:3
+#23229 | auto Un'Goro Crater;524§auto Krater von Un'Goro;524§auto Cratère d'Un'Goro;524 | x=-7234.89990234375 y=-1411.200073242188 | size=1 | links=#1767(auto Un'Goro Crater;42):26 #4186(auto Un'Goro Crater;96):22 #18043(auto Un'Goro Crater;414):19
+#23238 | auto Un'Goro Crater;525§auto Krater von Un'Goro;525§auto Cratère d'Un'Goro;525 | x=-8081.89990234375 y=-1197 | size=1 | links=#12898(auto Un'Goro Crater;293):16 c6555.6:8
+#23261 | auto Un'Goro Crater;526§auto Krater von Un'Goro;526§auto Cratère d'Un'Goro;526 | x=-7120.80029296875 y=-654.5 | size=5 | links=#18630(auto Un'Goro Crater;425):54 #21318(auto Un'Goro Crater;490):46
+#23340 | auto Un'Goro Crater;527§auto Krater von Un'Goro;527§auto Cratère d'Un'Goro;527 | x=-7838.30029296875 y=-1261.900024414063 | size=1 | links=c6551.9:25 c6552.20:24
+#23356 | auto Un'Goro Crater;528§auto Krater von Un'Goro;528§auto Cratère d'Un'Goro;528 | x=-6715.39990234375 y=-1035.700073242188 | size=1 | links=#9790(auto Un'Goro Crater;228):24 #20690(auto Un'Goro Crater;476):21
+#23413 | auto Un'Goro Crater;529§auto Krater von Un'Goro;529§auto Cratère d'Un'Goro;529 | x=-6437.10009765625 y=-1737.900024414063 | size=1 | links=#21974(auto Un'Goro Crater;503):36 #23115(auto Un'Goro Crater;521):31
+#23445 | auto Un'Goro Crater;530§auto Krater von Un'Goro;530§auto Cratère d'Un'Goro;530 | x=-7058.2001953125 y=-1424.800048828125 | size=1 | links=#6795(auto Un'Goro Crater;155):4 #8713(auto Un'Goro Crater;198):3
+#23508 | auto Un'Goro Crater;531§auto Krater von Un'Goro;531§auto Cratère d'Un'Goro;531 | x=-7134.89990234375 y=-2260.900146484375 | size=1 | links=#10077(auto Un'Goro Crater;233):29 #10669(auto Un'Goro Crater;247):39 c6511.11:20
+#23515 | auto Un'Goro Crater;532§auto Krater von Un'Goro;532§auto Cratère d'Un'Goro;532 | x=-6586.89990234375 y=-620.2000122070312 | size=1 | links=#10898(auto Un'Goro Crater;251):53 #20535(auto Un'Goro Crater;472):20
+#23560 | auto Un'Goro Crater;533§auto Krater von Un'Goro;533§auto Cratère d'Un'Goro;533 | x=-6173 y=-1059.5 | size=1 | links=#12919(auto Un'Goro Crater;294):19 c12959.1:17
+#23561 | auto Un'Goro Crater;534§auto Krater von Un'Goro;534§auto Cratère d'Un'Goro;534 | x=-8000.30029296875 y=-1265.400024414063 | size=1 | links=#15631(auto Un'Goro Crater;360):16 c6555.4:13
+#23566 | auto Un'Goro Crater;535§auto Krater von Un'Goro;535§auto Cratère d'Un'Goro;535 | x=-7638.30029296875 y=-549.6000366210938 | size=1 | links=#1921(auto Un'Goro Crater;46):48 #25930(auto Un'Goro Crater;584):72 c6501.2:31 c6504.2:34
+#23682 | auto Un'Goro Crater;536§auto Krater von Un'Goro;536§auto Cratère d'Un'Goro;536 | x=-8107.60009765625 y=-1431.400024414063 | size=1 | links=#2518(auto Un'Goro Crater;55):44 #4342(auto Un'Goro Crater;102):39
+#23727 | auto Un'Goro Crater;537§auto Krater von Un'Goro;537§auto Cratère d'Un'Goro;537 | x=-7513 y=-1048.800048828125 | size=1 | links=#16129(auto Un'Goro Crater;371):123 #21662(auto Un'Goro Crater;499):98 c9163.50:35
+#23813 | auto Un'Goro Crater;538§auto Krater von Un'Goro;538§auto Cratère d'Un'Goro;538 | x=-8023 y=-1129 | size=1 | links=#16955(auto Un'Goro Crater;393):10
+#23880 | auto Un'Goro Crater;539§auto Krater von Un'Goro;539§auto Cratère d'Un'Goro;539 | x=-6798.80029296875 y=-1474.599975585938 | size=1 | links=#12836(auto Un'Goro Crater;291):87 #27249(auto Un'Goro Crater;616):98 o164958.20:98
+#24022 | entry and exit;cave;Fungal Rock;Un'Goro Crater§ein- und ausgang;höhle;Fungusfels;Krater von Un'Goro§entrée et sortie;cave;Rocher fongique;Cratère d'Un'Goro | x=-6368.7001953125 y=-1839.700073242188 | size=1 | links=#6820(auto Un'Goro Crater;157):9 c6516.4:0
+#24050 | auto Un'Goro Crater;540§auto Krater von Un'Goro;540§auto Cratère d'Un'Goro;540 | x=-6668.80029296875 y=-959.2000122070312 | size=1 | links=#21239(auto Un'Goro Crater;489):51 c1420.1:50
+#24082 | auto Un'Goro Crater;541§auto Krater von Un'Goro;541§auto Cratère d'Un'Goro;541 | x=-6939.7001953125 y=-2453.800048828125 | size=1 | links=#26345(auto Un'Goro Crater;594):28 c9165.7:54 c9165.8:14 c9165.17:9 o164659.20:29
+#24177 | auto Un'Goro Crater;542§auto Krater von Un'Goro;542§auto Cratère d'Un'Goro;542 | x=-7285.30029296875 y=-1117.400024414063 | size=1 | links=#460(auto Un'Goro Crater;13):42 #26567(auto Un'Goro Crater;601):33 o157936.30:23
+#24183 | auto Un'Goro Crater;543§auto Krater von Un'Goro;543§auto Cratère d'Un'Goro;543 | x=-8188.2001953125 y=-2084.10009765625 | size=1 | links=#110(auto Un'Goro Crater;3):38 #4752(auto Un'Goro Crater;110):23
+#24201 | auto Un'Goro Crater;544§auto Krater von Un'Goro;544§auto Cratère d'Un'Goro;544 | x=-6998.10009765625 y=-1528.800048828125 | size=1 | links=#26132(auto Un'Goro Crater;589):29 #26385(auto Un'Goro Crater;595):37
+#24268 | auto Un'Goro Crater;545§auto Krater von Un'Goro;545§auto Cratère d'Un'Goro;545 | x=-7485.5 y=-2301.800048828125 | size=1 | links=#1744(auto Un'Goro Crater;39):7 #17968(auto Un'Goro Crater;412):12
+#24291 | auto Un'Goro Crater;546§auto Krater von Un'Goro;546§auto Cratère d'Un'Goro;546 | x=-7532.30029296875 y=-435.2000122070313 | size=1 | links=#3734(auto Un'Goro Crater;82):28 #7475(auto Un'Goro Crater;175):15 c6501.1:82
+#24381 | auto Un'Goro Crater;547§auto Krater von Un'Goro;547§auto Cratère d'Un'Goro;547 | x=-7506.5 y=-1247.300048828125 | size=1 | links=#15137(auto Un'Goro Crater;344):47 #16129(auto Un'Goro Crater;371):77 c6510.58:23
+#24618 | auto Un'Goro Crater;548§auto Krater von Un'Goro;548§auto Cratère d'Un'Goro;548 | x=-6398 y=-880.2999877929688 | size=1 | links=#6490(auto Un'Goro Crater;147):40 #28522(auto Un'Goro Crater;650):46 c6557.9:12 c9167.18:59
+#24638 | auto Un'Goro Crater;549§auto Krater von Un'Goro;549§auto Cratère d'Un'Goro;549 | x=-7255.7001953125 y=-607.2999877929688 | size=1 | links=#7930(auto Un'Goro Crater;184):13 #9540(auto Un'Goro Crater;218):14 o164958.25:17
+#24641 | auto Un'Goro Crater;550§auto Krater von Un'Goro;550§auto Cratère d'Un'Goro;550 | x=-7039 y=-1426.099975585938 | size=1 | links=#5789(auto Un'Goro Crater;130):4 #7434(auto Un'Goro Crater;174):6
+#24684 | auto Un'Goro Crater;551§auto Krater von Un'Goro;551§auto Cratère d'Un'Goro;551 | x=-6211 y=-1094.300048828125 | size=1 | links=#7553(auto Un'Goro Crater;176):12 #8996(central location;Marshal's Refuge;Un'Goro Crater):27 #12919(auto Un'Goro Crater;294):42 #17950(auto Un'Goro Crater;411):39
+#24755 | auto Un'Goro Crater;552§auto Krater von Un'Goro;552§auto Cratère d'Un'Goro;552 | x=-7538.39990234375 y=-2161.199951171875 | size=1 | links=#2338(auto Un'Goro Crater;52):20 #3765(auto Un'Goro Crater;85):37
+#24810 | auto Un'Goro Crater;553§auto Krater von Un'Goro;553§auto Cratère d'Un'Goro;553 | x=-7127.2001953125 y=-1371.700073242188 | size=1 | links=#1513(auto Un'Goro Crater;35):7 #18913(auto Un'Goro Crater;430):4
+#24873 | auto Un'Goro Crater;554§auto Krater von Un'Goro;554§auto Cratère d'Un'Goro;554 | x=-6371.10009765625 y=-2035.900024414063 | size=1 | links=#8734(auto Un'Goro Crater;199):14 #9594(auto Un'Goro Crater;222):23
+#24896 | auto Un'Goro Crater;555§auto Krater von Un'Goro;555§auto Cratère d'Un'Goro;555 | x=-7007.10009765625 y=-2344.699951171875 | size=1 | links=#972(auto Un'Goro Crater;25):26 #11385(auto Un'Goro Crater;264):20
+#24915 | auto Un'Goro Crater;556§auto Krater von Un'Goro;556§auto Cratère d'Un'Goro;556 | x=-7113.10009765625 y=-1291.300048828125 | size=1 | links=#3743(auto Un'Goro Crater;83):6 #20409(quest target;Fire Plume Ridge;Un'Goro Crater):5
+#24924 | quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§objectif de quête;Sources de Golakka;Cratère d'Un'Goro | x=-7205.2001953125 y=-649.7000122070312 | size=1 | links=#20722(auto Un'Goro Crater;479):5
+#24925 | auto Un'Goro Crater;557§auto Krater von Un'Goro;557§auto Cratère d'Un'Goro;557 | x=-6349.30029296875 y=-2021.900024414063 | size=1 | links=#8734(auto Un'Goro Crater;199):11 #15575(auto Un'Goro Crater;359):10
+#24963 | auto Un'Goro Crater;558§auto Krater von Un'Goro;558§auto Cratère d'Un'Goro;558 | x=-7141.60009765625 y=-1335.400024414063 | size=1 | links=#8927(auto Un'Goro Crater;207):9 #25356(auto Un'Goro Crater;564):15 c6521.14:19
+#24973 | auto Un'Goro Crater;559§auto Krater von Un'Goro;559§auto Cratère d'Un'Goro;559 | x=-8140.10009765625 y=-1523.200073242188 | size=1 | links=#3841(auto Un'Goro Crater;86):17 #21033(auto Un'Goro Crater;485):24
+#25074 | auto Un'Goro Crater;560§auto Krater von Un'Goro;560§auto Cratère d'Un'Goro;560 | x=-7459.10009765625 y=-2264.5 | size=1 | links=#6156(auto Un'Goro Crater;138):36 #12218(auto Un'Goro Crater;279):15 #25138(auto Un'Goro Crater;561):54 o164779.1:51
+#25138 | auto Un'Goro Crater;561§auto Krater von Un'Goro;561§auto Cratère d'Un'Goro;561 | x=-7407.7001953125 y=-2283.900146484375 | size=1 | links=#5621(auto Un'Goro Crater;128):52 #11216(auto Un'Goro Crater;259):85 #25074(auto Un'Goro Crater;560):54
+#25141 | auto Un'Goro Crater;562§auto Krater von Un'Goro;562§auto Cratère d'Un'Goro;562 | x=-7919.39990234375 y=-787.6000366210938 | size=1 | links=#19197(auto Un'Goro Crater;439):45 #27002(auto Un'Goro Crater;607):32
+#25312 | auto Un'Goro Crater;563§auto Krater von Un'Goro;563§auto Cratère d'Un'Goro;563 | x=-6405.80029296875 y=-550.2999877929688 | size=1 | links=#177(auto Un'Goro Crater;7):22 #3928(auto Un'Goro Crater;91):25
+#25356 | auto Un'Goro Crater;564§auto Krater von Un'Goro;564§auto Cratère d'Un'Goro;564 | x=-7145.10009765625 y=-1320.300048828125 | size=1 | links=#9380(auto Un'Goro Crater;214):27 #19374(auto Un'Goro Crater;446):23 #24963(auto Un'Goro Crater;558):15
+#25366 | auto Un'Goro Crater;565§auto Krater von Un'Goro;565§auto Cratère d'Un'Goro;565 | x=-7202.80029296875 y=-2366.300048828125 | size=1 | links=#18849(auto Un'Goro Crater;429):35 #19959(auto Un'Goro Crater;460):24
+#25369 | auto Un'Goro Crater;566§auto Krater von Un'Goro;566§auto Cratère d'Un'Goro;566 | x=-7456.39990234375 y=-246.6000061035156 | size=1 | links=#15315(auto Un'Goro Crater;351):28 c9167.37:26
+#25437 | auto Un'Goro Crater;567§auto Krater von Un'Goro;567§auto Cratère d'Un'Goro;567 | x=-6875.60009765625 y=-2040.200073242188 | size=1 | links=#7828(auto Un'Goro Crater;183):74 o161526.1:38 o164780.3:46 c6560.5:63
+#25448 | auto Un'Goro Crater;568§auto Krater von Un'Goro;568§auto Cratère d'Un'Goro;568 | x=-7029.60009765625 y=-361.3999938964844 | size=1 | links=#19661(auto Un'Goro Crater;454):14 o164659.24:9
+#25454 | auto Un'Goro Crater;569§auto Krater von Un'Goro;569§auto Cratère d'Un'Goro;569 | x=-7190.7001953125 y=-327.5 | size=1 | links=#126(auto Un'Goro Crater;5):10 #19378(auto Un'Goro Crater;447):20
+#25477 | auto Un'Goro Crater;570§auto Krater von Un'Goro;570§auto Cratère d'Un'Goro;570 | x=-8056.7001953125 y=-1224 | size=1 | links=#792(auto Un'Goro Crater;21):16 c6553.9:11
+#25518 | auto Un'Goro Crater;571§auto Krater von Un'Goro;571§auto Cratère d'Un'Goro;571 | x=-6350.7001953125 y=-549.1000366210938 | size=1 | links=#3928(auto Un'Goro Crater;91):29 #10903(auto Un'Goro Crater;253):12
+#25544 | OBJECT;157936;Un'Goro Dirt Pile;Un'Goro Crater;28;55.97;56.86§OBJEKT;157936;Erdhaufen von Un'Goro;Krater von Un'Goro;28;55.97;56.86§OBJET;157936;Tas de poussière d'Un'Goro;Cratère d'Un'Goro;28;55.97;56.86 | x=-7320.741852411486 y=-1493.276099096808 | size=1
+#25596 | auto Un'Goro Crater;572§auto Krater von Un'Goro;572§auto Cratère d'Un'Goro;572 | x=-8105.10009765625 y=-1504.099975585938 | size=1 | links=#3841(auto Un'Goro Crater;86):22 #11955(auto Un'Goro Crater;273):18
+#25627 | auto Un'Goro Crater;573§auto Krater von Un'Goro;573§auto Cratère d'Un'Goro;573 | x=-6171.7001953125 y=-1094.800048828125 | size=1 | links=#424(auto Un'Goro Crater;11):21 #8996(central location;Marshal's Refuge;Un'Goro Crater):15 c9272.1:28
+#25653 | auto Un'Goro Crater;574§auto Krater von Un'Goro;574§auto Cratère d'Un'Goro;574 | x=-6972.39990234375 y=-2414.300048828125 | size=1 | links=#26345(auto Un'Goro Crater;594):23 #28222(auto Un'Goro Crater;636):33 c9165.9:17 c9165.10:46
+#25668 | auto Un'Goro Crater;575§auto Krater von Un'Goro;575§auto Cratère d'Un'Goro;575 | x=-7869.30029296875 y=-610.6000366210938 | size=1 | links=#11029(auto Un'Goro Crater;256):79 #15018(auto Un'Goro Crater;342):28 c6501.10:23 o161527.11:8
+#25696 | auto Un'Goro Crater;576§auto Krater von Un'Goro;576§auto Cratère d'Un'Goro;576 | x=-6305.80029296875 y=-1443.400024414063 | size=1 | links=#20289(auto Un'Goro Crater;469):51 #21006(auto Un'Goro Crater;484):86 c6510.1:26 c6510.2:55 o164659.5:69
+#25710 | auto Un'Goro Crater;577§auto Krater von Un'Goro;577§auto Cratère d'Un'Goro;577 | x=-6314.2001953125 y=-1134.300048828125 | size=1 | links=#188(auto Un'Goro Crater;8):16 #19357(auto Un'Goro Crater;445):17
+#25728 | auto Un'Goro Crater;578§auto Krater von Un'Goro;578§auto Cratère d'Un'Goro;578 | x=-6998.7001953125 y=-1114.700073242188 | size=1 | links=#12315(auto Un'Goro Crater;281):47 o164958.46:15
+#25782 | auto Un'Goro Crater;579§auto Krater von Un'Goro;579§auto Cratère d'Un'Goro;579 | x=-7948.10009765625 y=-1322.800048828125 | size=1 | links=c6553.3:21 c6554.3:17
+#25785 | auto Un'Goro Crater;580§auto Krater von Un'Goro;580§auto Cratère d'Un'Goro;580 | x=-7467.5 y=-2335.10009765625 | size=1 | links=#1420(auto Un'Goro Crater;34):12 #28534(auto Un'Goro Crater;652):16
+#25806 | auto Un'Goro Crater;581§auto Krater von Un'Goro;581§auto Cratère d'Un'Goro;581 | x=-7109.60009765625 y=-368.5 | size=1 | links=#13305(auto Un'Goro Crater;303):18 #21670(auto Un'Goro Crater;500):43
+#25871 | auto Un'Goro Crater;582§auto Krater von Un'Goro;582§auto Cratère d'Un'Goro;582 | x=-7089.39990234375 y=-1397.599975585938 | size=1 | links=#16925(auto Un'Goro Crater;392):8 #18977(auto Un'Goro Crater;435):7
+#25878 | auto Un'Goro Crater;583§auto Krater von Un'Goro;583§auto Cratère d'Un'Goro;583 | x=-7253.10009765625 y=-1444.800048828125 | size=1 | links=#1767(auto Un'Goro Crater;42):19 #26537(auto Un'Goro Crater;599):17
+#25930 | auto Un'Goro Crater;584§auto Krater von Un'Goro;584§auto Cratère d'Un'Goro;584 | x=-7668.5 y=-484.1000061035156 | size=1 | links=#23566(auto Un'Goro Crater;535):72 #27783(auto Un'Goro Crater;626):60
+#25943 | auto Un'Goro Crater;585§auto Krater von Un'Goro;585§auto Cratère d'Un'Goro;585 | x=-7444.10009765625 y=-2113.800048828125 | size=1 | links=#11424(auto Un'Goro Crater;266):58 #15800(auto Un'Goro Crater;364):45 o157936.33:79
+#26000 | auto Un'Goro Crater;586§auto Krater von Un'Goro;586§auto Cratère d'Un'Goro;586 | x=-7766.5 y=-2096.10009765625 | size=1 | links=#242(auto Un'Goro Crater;10):40 #18522(auto Un'Goro Crater;422):47 o164658.3:27
+#26036 | auto Un'Goro Crater;587§auto Krater von Un'Goro;587§auto Cratère d'Un'Goro;587 | x=-7227.7001953125 y=-2285.10009765625 | size=1 | links=#10077(auto Un'Goro Crater;233):67 #11216(auto Un'Goro Crater;259):95
+#26102 | auto Un'Goro Crater;588§auto Krater von Un'Goro;588§auto Cratère d'Un'Goro;588 | x=-6765.30029296875 y=-2129.900146484375 | size=1 | links=c9162.2:26 o164661.13:21
+#26132 | auto Un'Goro Crater;589§auto Krater von Un'Goro;589§auto Cratère d'Un'Goro;589 | x=-7015 y=-1553.099975585938 | size=1 | links=#5360(auto Un'Goro Crater;120):45 #5598(auto Un'Goro Crater;126):24 #24201(auto Un'Goro Crater;544):29
+#26144 | auto Un'Goro Crater;590§auto Krater von Un'Goro;590§auto Cratère d'Un'Goro;590 | x=-6489.2001953125 y=-1671.400024414063 | size=1 | links=#12870(auto Un'Goro Crater;292):50 #23115(auto Un'Goro Crater;521):60 c6510.7:35 o164778.7:26
+#26188 | auto Un'Goro Crater;591§auto Krater von Un'Goro;591§auto Cratère d'Un'Goro;591 | x=-7198.2001953125 y=-2331.699951171875 | size=1 | links=#20325(auto Un'Goro Crater;470):9 o164957.1:10
+#26270 | auto Un'Goro Crater;592§auto Krater von Un'Goro;592§auto Cratère d'Un'Goro;592 | x=-8075.10009765625 y=-1124.200073242188 | size=1 | links=#16045(auto Un'Goro Crater;369):56 #19672(auto Un'Goro Crater;456):63
+#26330 | auto Un'Goro Crater;593§auto Krater von Un'Goro;593§auto Cratère d'Un'Goro;593 | x=-7992.39990234375 y=-1313.5 | size=1 | links=#3321(auto Un'Goro Crater;69):14 #17386(auto Un'Goro Crater;401):10
+#26345 | auto Un'Goro Crater;594§auto Krater von Un'Goro;594§auto Cratère d'Un'Goro;594 | x=-6955.89990234375 y=-2430.5 | size=1 | links=#24082(auto Un'Goro Crater;541):28 #25653(auto Un'Goro Crater;574):23
+#26385 | auto Un'Goro Crater;595§auto Krater von Un'Goro;595§auto Cratère d'Un'Goro;595 | x=-6975.2001953125 y=-1499.700073242188 | size=1 | links=#8769(auto Un'Goro Crater;200):42 #12537(auto Un'Goro Crater;285):21 #24201(auto Un'Goro Crater;544):37
+#26412 | auto Un'Goro Crater;596§auto Krater von Un'Goro;596§auto Cratère d'Un'Goro;596 | x=-7434.89990234375 y=-1270.300048828125 | size=1 | links=#2909(auto Un'Goro Crater;62):31 #15137(auto Un'Goro Crater;344):61 c9163.38:22
+#26417 | auto Un'Goro Crater;597§auto Krater von Un'Goro;597§auto Cratère d'Un'Goro;597 | x=-8088.7001953125 y=-1300.300048828125 | size=1 | links=#10128(auto Un'Goro Crater;234):43 #13801(auto Un'Goro Crater;318):54
+#26449 | auto Un'Goro Crater;598§auto Krater von Un'Goro;598§auto Cratère d'Un'Goro;598 | x=-6376 y=-1024.099975585938 | size=1 | links=#1386(auto Un'Goro Crater;33):45 #15632(auto Un'Goro Crater;361):27 #20095(auto Un'Goro Crater;463):35
+#26537 | auto Un'Goro Crater;599§auto Krater von Un'Goro;599§auto Cratère d'Un'Goro;599 | x=-7269.80029296875 y=-1451.300048828125 | size=1 | links=#3425(auto Un'Goro Crater;71):19 #25878(auto Un'Goro Crater;583):17
+#26546 | auto Un'Goro Crater;600§auto Krater von Un'Goro;600§auto Cratère d'Un'Goro;600 | x=-7638.7001953125 y=-2225.400146484375 | size=1 | links=#1055(auto Un'Goro Crater;26):66 #28354(auto Un'Goro Crater;639):57
+#26567 | auto Un'Goro Crater;601§auto Krater von Un'Goro;601§auto Cratère d'Un'Goro;601 | x=-7257.30029296875 y=-1099.5 | size=1 | links=#3852(auto Un'Goro Crater;87):43 #5902(auto Un'Goro Crater;132):34 #17888(auto Un'Goro Crater;410):56 #24177(auto Un'Goro Crater;542):33
+#26609 | auto Un'Goro Crater;602§auto Krater von Un'Goro;602§auto Cratère d'Un'Goro;602 | x=-6267.2001953125 y=-1517.599975585938 | size=1 | links=#1619(auto Un'Goro Crater;37):18 #11304(auto Un'Goro Crater;261):20
+#26624 | auto Un'Goro Crater;603§auto Krater von Un'Goro;603§auto Cratère d'Un'Goro;603 | x=-6317.5 y=-1921.700073242188 | size=1 | links=#8386(auto Un'Goro Crater;190):28 #8675(auto Un'Goro Crater;196):19
+#26635 | auto Un'Goro Crater;604§auto Krater von Un'Goro;604§auto Cratère d'Un'Goro;604 | x=-7546 y=-1313.099975585938 | size=1 | links=#15137(auto Un'Goro Crater;344):57 #22051(auto Un'Goro Crater;505):39 c6557.11:36 c9163.39:33 c6510.54:30
+#26833 | auto Un'Goro Crater;605§auto Krater von Un'Goro;605§auto Cratère d'Un'Goro;605 | x=-7387.5 y=-2308.900146484375 | size=1 | links=#7158(auto Un'Goro Crater;170):4 #11388(auto Un'Goro Crater;265):7
+#26943 | auto Un'Goro Crater;606§auto Krater von Un'Goro;606§auto Cratère d'Un'Goro;606 | x=-7669.39990234375 y=-2089.60009765625 | size=1 | links=#242(auto Un'Goro Crater;10):58 #8348(auto Un'Goro Crater;188):34 #28354(auto Un'Goro Crater;639):97 c6560.6:62 c6556.10:68
+#27002 | auto Un'Goro Crater;607§auto Krater von Un'Goro;607§auto Cratère d'Un'Goro;607 | x=-7931.60009765625 y=-817.2999877929688 | size=1 | links=#4446(auto Un'Goro Crater;103):33 #25141(auto Un'Goro Crater;562):32
+#27015 | auto Un'Goro Crater;608§auto Krater von Un'Goro;608§auto Cratère d'Un'Goro;608 | x=-7389.5 y=-330.7000122070313 | size=1 | links=#6872(auto Un'Goro Crater;160):13 #22560(auto Un'Goro Crater;514):20 c9167.39:5
+#27097 | auto Un'Goro Crater;609§auto Krater von Un'Goro;609§auto Cratère d'Un'Goro;609 | x=-7634.7001953125 y=-1985.300048828125 | size=1 | links=#5468(auto Un'Goro Crater;123):37 #15809(auto Un'Goro Crater;365):38
+#27134 | auto Un'Goro Crater;610§auto Krater von Un'Goro;610§auto Cratère d'Un'Goro;610 | x=-6480.89990234375 y=-673.7000122070312 | size=1 | links=#6869(auto Un'Goro Crater;159):25 #16258(auto Un'Goro Crater;375):25
+#27135 | auto Un'Goro Crater;611§auto Krater von Un'Goro;611§auto Cratère d'Un'Goro;611 | x=-7170.39990234375 y=-2303.900146484375 | size=1 | links=#12517(auto Un'Goro Crater;284):16 #28466(auto Un'Goro Crater;646):11
+#27153 | auto Un'Goro Crater;612§auto Krater von Un'Goro;612§auto Cratère d'Un'Goro;612 | x=-7895.7001953125 y=-1945.300048828125 | size=1 | links=#6786(auto Un'Goro Crater;154):53 #22293(auto Un'Goro Crater;508):40 c6506.13:26
+#27176 | auto Un'Goro Crater;613§auto Krater von Un'Goro;613§auto Cratère d'Un'Goro;613 | x=-7347.10009765625 y=-1338.300048828125 | size=1 | links=#27179(auto Un'Goro Crater;614):49 c6491.2:21
+#27179 | auto Un'Goro Crater;614§auto Krater von Un'Goro;614§auto Cratère d'Un'Goro;614 | x=-7366.542528779309 y=-1383.577248715201 | size=1 | links=#21113(auto Un'Goro Crater;486):40 #27176(auto Un'Goro Crater;613):49
+#27203 | auto Un'Goro Crater;615§auto Krater von Un'Goro;615§auto Cratère d'Un'Goro;615 | x=-8013.89990234375 y=-1417.900024414063 | size=1 | links=c6552.14:23 c6553.21:23
+#27249 | auto Un'Goro Crater;616§auto Krater von Un'Goro;616§auto Cratère d'Un'Goro;616 | x=-6890.89990234375 y=-1508.800048828125 | size=1 | links=#502(auto Un'Goro Crater;14):29 #23880(auto Un'Goro Crater;539):98 c6560.7:51 c6511.21:44
+#27309 | auto Un'Goro Crater;617§auto Krater von Un'Goro;617§auto Cratère d'Un'Goro;617 | x=-6960.5 y=-2270.5 | size=1 | links=#14625(auto Un'Goro Crater;334):77 #20204(auto Un'Goro Crater;466):78 o164658.4:6 c6509.24:33 c6509.25:25
+#27320 | auto Un'Goro Crater;618§auto Krater von Un'Goro;618§auto Cratère d'Un'Goro;618 | x=-7344.30029296875 y=-1047.099975585938 | size=1 | links=#2902(auto Un'Goro Crater;61):108 #3852(auto Un'Goro Crater;87):58
+#27389 | auto Un'Goro Crater;619§auto Krater von Un'Goro;619§auto Cratère d'Un'Goro;619 | x=-6328.80029296875 y=-2002.900024414063 | size=1 | links=#15575(auto Un'Goro Crater;359):18 #23201(auto Un'Goro Crater;523):14 c6514.9:5
+#27422 | auto Un'Goro Crater;620§auto Krater von Un'Goro;620§auto Cratère d'Un'Goro;620 | x=-6019.60009765625 y=-1000.700012207031 | size=1 | links=#16588(auto Un'Goro Crater;382):13 #21531(auto Un'Goro Crater;494):16
+#27446 | auto Un'Goro Crater;621§auto Krater von Un'Goro;621§auto Cratère d'Un'Goro;621 | x=-7982.2001953125 y=-1121.300048828125 | size=1 | links=#1748(auto Un'Goro Crater;40):20 #27447(auto Un'Goro Crater;622):11
+#27447 | auto Un'Goro Crater;622§auto Krater von Un'Goro;622§auto Cratère d'Un'Goro;622 | x=-7979 y=-1110.300048828125 | size=1 | links=#15502(auto Un'Goro Crater;358):6 #27446(auto Un'Goro Crater;621):11
+#27488 | auto Un'Goro Crater;623§auto Krater von Un'Goro;623§auto Cratère d'Un'Goro;623 | x=-7585.80029296875 y=-1397.300048828125 | size=1 | links=#14998(auto Un'Goro Crater;341):51 c6557.7:15 c9163.40:15 c9163.41:19
+#27563 | auto Un'Goro Crater;624§auto Krater von Un'Goro;624§auto Cratère d'Un'Goro;624 | x=-6162.5 y=-1152.700073242188 | size=1 | links=c9118.1:19 c6491.3:12
+#27767 | auto Un'Goro Crater;625§auto Krater von Un'Goro;625§auto Cratère d'Un'Goro;625 | x=-7189.945132588814 y=-1556.077360528493 | size=1 | links=#11439(auto Un'Goro Crater;267):32 #28480(auto Un'Goro Crater;647):35
+#27783 | auto Un'Goro Crater;626§auto Krater von Un'Goro;626§auto Cratère d'Un'Goro;626 | x=-7625.60009765625 y=-441.1000061035156 | size=1 | links=#148(auto Un'Goro Crater;6):40 #25930(auto Un'Goro Crater;584):60 c6501.3:8
+#27794 | auto Un'Goro Crater;627§auto Krater von Un'Goro;627§auto Cratère d'Un'Goro;627 | x=-7219.5 y=-647.7000122070312 | size=1 | links=#13347(auto Un'Goro Crater;305):4 #13547(auto Un'Goro Crater;309):5
+#27816 | auto Un'Goro Crater;628§auto Krater von Un'Goro;628§auto Cratère d'Un'Goro;628 | x=-7083.714289060345 y=-1122.203995756913 | size=1 | links=#5105(auto Un'Goro Crater;115):25 #22465(auto Un'Goro Crater;511):39
+#27839 | auto Un'Goro Crater;629§auto Krater von Un'Goro;629§auto Cratère d'Un'Goro;629 | x=-7050.10009765625 y=-1424.599975585938 | size=1 | links=#7434(auto Un'Goro Crater;174):5 #8713(auto Un'Goro Crater;198):4
+#27856 | auto Un'Goro Crater;630§auto Krater von Un'Goro;630§auto Cratère d'Un'Goro;630 | x=-6271.39990234375 y=-588.7000122070312 | size=1 | links=#2642(auto Un'Goro Crater;56):28 #5851(auto Un'Goro Crater;131):14
+#27864 | auto Un'Goro Crater;631§auto Krater von Un'Goro;631§auto Cratère d'Un'Goro;631 | x=-8117.30029296875 y=-1253.099975585938 | size=1 | links=#6182(auto Un'Goro Crater;139):13 c6554.4:13
+#27918 | auto Un'Goro Crater;632§auto Krater von Un'Goro;632§auto Cratère d'Un'Goro;632 | x=-7996.2001953125 y=-862.1000366210938 | size=1 | links=#3053(auto Un'Goro Crater;64):53 #4446(auto Un'Goro Crater;103):46 c6512.2:23
+#27949 | auto Un'Goro Crater;633§auto Krater von Un'Goro;633§auto Cratère d'Un'Goro;633 | x=-6399.39990234375 y=-2016 | size=1 | links=#2760(auto Un'Goro Crater;58):14 #12740(auto Un'Goro Crater;288):12 c6513.7:6
+#27992 | auto Un'Goro Crater;634§auto Krater von Un'Goro;634§auto Cratère d'Un'Goro;634 | x=-6067.2001953125 y=-987.1000366210938 | size=1 | links=#8068(auto Un'Goro Crater;186):16 #22563(auto Un'Goro Crater;515):18
+#28017 | auto Un'Goro Crater;635§auto Krater von Un'Goro;635§auto Cratère d'Un'Goro;635 | x=-7924.89990234375 y=-1771 | size=1 | links=#12990(auto Un'Goro Crater;295):55 #13532(auto Un'Goro Crater;308):44 c6506.1:26 c6505.24:65
+#28222 | auto Un'Goro Crater;636§auto Krater von Un'Goro;636§auto Cratère d'Un'Goro;636 | x=-6990.7001953125 y=-2386.10009765625 | size=1 | links=#972(auto Un'Goro Crater;25):20 #25653(auto Un'Goro Crater;574):33
+#28240 | auto Un'Goro Crater;637§auto Krater von Un'Goro;637§auto Cratère d'Un'Goro;637 | x=-7067.30029296875 y=-2066.300048828125 | size=1 | links=#2898(auto Un'Goro Crater;60):41 #6623(auto Un'Goro Crater;151):24 #12762(auto Un'Goro Crater;289):59 c6508.22:22
+#28252 | auto Un'Goro Crater;638§auto Krater von Un'Goro;638§auto Cratère d'Un'Goro;638 | x=-7681.5 y=-1882.300048828125 | size=1 | links=#858(auto Un'Goro Crater;23):0 #15809(auto Un'Goro Crater;365):80 #18160(auto Un'Goro Crater;416):49
+#28354 | auto Un'Goro Crater;639§auto Krater von Un'Goro;639§auto Cratère d'Un'Goro;639 | x=-7680.2001953125 y=-2186.199951171875 | size=1 | links=#26546(auto Un'Goro Crater;600):57 #26943(auto Un'Goro Crater;606):97
+#28356 | auto Un'Goro Crater;640§auto Krater von Un'Goro;640§auto Cratère d'Un'Goro;640 | x=-6805.39990234375 y=-448.2000122070313 | size=1 | links=#9465(auto Un'Goro Crater;215):73 #16247(auto Un'Goro Crater;374):47 c6559.33:77
+#28409 | auto Un'Goro Crater;641§auto Krater von Un'Goro;641§auto Cratère d'Un'Goro;641 | x=-6404.89990234375 y=-1223.900024414063 | size=1 | links=#14160(auto Un'Goro Crater;328):18 c6519.1:15
+#28412 | auto Un'Goro Crater;642§auto Krater von Un'Goro;642§auto Cratère d'Un'Goro;642 | x=-6254.2001953125 y=-1139.200073242188 | size=1 | links=#17950(auto Un'Goro Crater;411):24 #22751(auto Un'Goro Crater;519):21
+#28443 | auto Un'Goro Crater;643§auto Krater von Un'Goro;643§auto Cratère d'Un'Goro;643 | x=-7412.5 y=-325.2000122070313 | size=1 | links=#6872(auto Un'Goro Crater;160):15 o164661.9:19
+#28457 | auto Un'Goro Crater;644§auto Krater von Un'Goro;644§auto Cratère d'Un'Goro;644 | x=-8006.10009765625 y=-1162.599975585938 | size=1 | links=#1700(auto Un'Goro Crater;38):13 #11103(auto Un'Goro Crater;257):6
+#28463 | auto Un'Goro Crater;645§auto Krater von Un'Goro;645§auto Cratère d'Un'Goro;645 | x=-8057.89990234375 y=-1281.200073242188 | size=1 | links=#4111(auto Un'Goro Crater;94):14 #12029(auto Un'Goro Crater;275):21
+#28466 | auto Un'Goro Crater;646§auto Krater von Un'Goro;646§auto Cratère d'Un'Goro;646 | x=-7178 y=-2313.10009765625 | size=1 | links=#6909(auto Un'Goro Crater;162):13 #27135(auto Un'Goro Crater;611):11
+#28480 | auto Un'Goro Crater;647§auto Krater von Un'Goro;647§auto Cratère d'Un'Goro;647 | x=-7156.292569626889 y=-1566.993428964083 | size=1 | links=#10595(auto Un'Goro Crater;243):35 #27767(auto Un'Goro Crater;625):35
+#28496 | auto Un'Goro Crater;648§auto Krater von Un'Goro;648§auto Cratère d'Un'Goro;648 | x=-7093.89990234375 y=-1414.099975585938 | size=1 | links=#16925(auto Un'Goro Crater;392):8 #18933(auto Un'Goro Crater;432):21
+#28515 | auto Un'Goro Crater;649§auto Krater von Un'Goro;649§auto Cratère d'Un'Goro;649 | x=-7332 y=-361.5 | size=1 | links=#6963(auto Un'Goro Crater;164):33 #12435(auto Un'Goro Crater;282):27
+#28522 | auto Un'Goro Crater;650§auto Krater von Un'Goro;650§auto Cratère d'Un'Goro;650 | x=-6434.30029296875 y=-851.6000366210938 | size=1 | links=#16754(auto Un'Goro Crater;388):28 #24618(auto Un'Goro Crater;548):46 o164958.4:32
+#28532 | auto Un'Goro Crater;651§auto Krater von Un'Goro;651§auto Cratère d'Un'Goro;651 | x=-6482.30029296875 y=-2064.300048828125 | size=1 | links=#4260(auto Un'Goro Crater;101):23 #16060(auto Un'Goro Crater;370):40 c6509.4:66 c6511.8:37 c6509.12:35
+#28534 | auto Un'Goro Crater;652§auto Krater von Un'Goro;652§auto Cratère d'Un'Goro;652 | x=-7453.80029296875 y=-2344.5 | size=1 | links=#22421(auto Un'Goro Crater;510):19 #25785(auto Un'Goro Crater;580):16
+#28542 | auto Un'Goro Crater;653§auto Krater von Un'Goro;653§auto Cratère d'Un'Goro;653 | x=-6608.89990234375 y=-571.4000244140625 | size=1 | links=#20913(auto Un'Goro Crater;483):61 #21639(auto Un'Goro Crater;497):43
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c1420.1 | links=#20690(auto Un'Goro Crater;476):17 #24050(auto Un'Goro Crater;540):50
+c3000.1 | links=#424(auto Un'Goro Crater;11):14 c9270.1:5
+c6491.1 | links=#15916(auto Un'Goro Crater;367):19
+c6498.1 | links=c6527.2:76 c6510.14:18
+c6500.1 | links=#14077(auto Un'Goro Crater;327):40 #15137(auto Un'Goro Crater;344):39 c9163.10:17 o164658.11:49 c9166.25:6
+c6501.1 | links=#24291(auto Un'Goro Crater;546):82
+c6502.1 | links=#6073(auto Un'Goro Crater;137):42
+c6503.1 | links=#20112(auto Un'Goro Crater;464):57 c6502.3:87
+c6504.1 | links=o161527.2:10 o161527.3:13
+c6505.1 | links=#12120(auto Un'Goro Crater;278):69 c6505.3:40
+c6506.1 | links=#28017(auto Un'Goro Crater;635):26
+c6507.1 | links=c6508.3:74
+c6509.1 | links=c6509.3:93
+c6510.1 | links=#25696(auto Un'Goro Crater;576):26
+c6511.1 | links=c6556.2:71 o164658.15:48
+c6512.1 | links=c2914.2:60 c9167.18:54
+c6517.1 | links=c6517.2:46 c6527.6:52
+c6518.1 | links=#17113(auto Un'Goro Crater;397):57
+c6519.1 | links=#28409(auto Un'Goro Crater;641):15
+c6520.1 | links=c6521.4:2
+c6521.1 | links=c6520.2:68 c10541.3:13
+c6527.1 | links=o164778.3:11 o164779.5:88 o164958.12:57
+c6551.1 | links=#18349(auto Un'Goro Crater;418):25
+c6552.1 | links=c6552.7:35 c6551.10:42
+c6553.1 | links=#3608(auto Un'Goro Crater;76):16
+c6554.1 | links=#15502(auto Un'Goro Crater;358):19 c6555.1:21
+c6555.1 | links=c6554.1:21
+c6556.1 | links=c6511.14:42 c6511.21:39
+c6559.1 | links=#16976(auto Un'Goro Crater;394):11
+c6560.1 | links=c6560.7:40
+c6581.1 | links=#3670(auto Un'Goro Crater;80):23 c6505.2:30 c6506.3:27 c6505.32:26
+c6582.1 | links=#4111(auto Un'Goro Crater;94):4 c6553.6:11 c6555.7:14
+c6583.1 | links=#18678(auto Un'Goro Crater;426):41
+c6584.1 | links=c6559.4:34
+c8737.1 | links=#8996(central location;Marshal's Refuge;Un'Goro Crater):24 c6491.3:26
+c9117.1 | links=#16588(auto Un'Goro Crater;382):12
+c9118.1 | links=#27563(auto Un'Goro Crater;624):19
+c9119.1 | links=#12919(auto Un'Goro Crater;294):12 c9157.1:10
+c9157.1 | links=c9119.1:10
+c9162.1 | links=c9162.6:77
+c9165.1 | links=c6509.4:6
+c9166.1 | links=c6510.48:18
+c9270.1 | links=c3000.1:5 c9271.1:3
+c9271.1 | links=c9270.1:3 c9273.1:7
+c9272.1 | links=#25627(auto Un'Goro Crater;573):28 c9273.1:8 c12959.1:11
+c9273.1 | links=c9271.1:7 c9272.1:8 c9274.1:3
+c9274.1 | links=#16721(auto Un'Goro Crater;387):14 c9273.1:3
+c9376.1 | links=#7370(auto Un'Goro Crater;172):21 #14703(auto Un'Goro Crater;336):29
+c9460.1 | links=c10583.1:6
+c9618.1 | links=#7565(auto Un'Goro Crater;177):10 #16266(auto Un'Goro Crater;376):23
+c9619.1 | links=#13943(auto Un'Goro Crater;322):7 o157936.6:1
+c9622.1 | links=#19610(auto Un'Goro Crater;453):12
+c9623.1 | links=#13055(auto Un'Goro Crater;298):23
+c9997.1 | links=#8996(central location;Marshal's Refuge;Un'Goro Crater):23 c12959.1:22 o174682.1:3
+c9998.1 | links=#22829(auto Un'Goro Crater;520):11
+c9999.1 | links=#4186(auto Un'Goro Crater;96):23
+c10302.1 | links=#3664(auto Un'Goro Crater;79):34 #9540(auto Un'Goro Crater;218):34
+c10541.1 | links=#10769(auto Un'Goro Crater;249):19
+c10583.1 | links=c9460.1:6 c9460.2:8
+c10977.1 | links=#8996(central location;Marshal's Refuge;Un'Goro Crater):24
+c12959.1 | links=#23560(auto Un'Goro Crater;533):17 c9272.1:11 c9997.1:22
+c15583.1 | links=c6551.6:8
+o161504.1 | links=o161505.1:11
+o161505.1 | links=#18160(auto Un'Goro Crater;416):42 #20587(auto Un'Goro Crater;474):13 o161504.1:11 o164659.2:25 o164659.11:49
+o161521.1 | links=#20581(auto Un'Goro Crater;473):19
+o161526.1 | links=#25437(auto Un'Goro Crater;567):38 c6556.2:24
+o161527.1 | links=#12066(auto Un'Goro Crater;276):55
+o164658.1 | links=#8348(auto Un'Goro Crater;188):24
+o164659.1 | links=#14008(auto Un'Goro Crater;323):22 o164955.1:5
+o164660.1 | links=c6511.32:52
+o164661.1 | links=#14512(auto Un'Goro Crater;333):67
+o164778.1 | links=c6509.3:55
+o164779.1 | links=#25074(auto Un'Goro Crater;560):51 o164661.6:45
+o164910.1 | links=#9106(auto Un'Goro Crater;210):2
+o164955.1 | links=o164659.1:5
+o164956.1 | links=o164661.9:8
+o164957.1 | links=#26188(auto Un'Goro Crater;591):10
+o164958.1 | links=c6510.9:35
+o166863.1 | links=c6508.3:24
+o169217.1 | links=#15916(auto Un'Goro Crater;367):2
+o174682.1 | links=c9997.1:3
+o180216.1 | links=o180216.3:74
+c2914.2 | links=c6512.1:60 c6512.6:66 c6519.6:40 c6518.7:70 c6512.18:35
+c6491.2 | links=#15255(auto Un'Goro Crater;347):33 #21534(auto Un'Goro Crater;495):24 #27176(auto Un'Goro Crater;613):21
+c6498.2 | links=#8697(auto Un'Goro Crater;197):29
+c6500.2 | links=#911(auto Un'Goro Crater;24):19
+c6501.2 | links=#23566(auto Un'Goro Crater;535):31
+c6503.2 | links=c6512.2:36
+c6504.2 | links=#23566(auto Un'Goro Crater;535):34
+c6505.2 | links=c6581.1:30
+c6506.2 | links=#3923(auto Un'Goro Crater;90):43
+c6507.2 | links=c6508.3:38
+c6509.2 | links=c9162.7:31 c2914.12:42
+c6510.2 | links=#25696(auto Un'Goro Crater;576):55
+c6511.2 | links=#18112(auto Un'Goro Crater;415):33 c6511.29:23
+c6512.2 | links=#27918(auto Un'Goro Crater;632):23 c6503.2:36
+c6513.2 | links=#21974(auto Un'Goro Crater;503):60 o164958.2:39
+c6516.2 | links=#7235(auto Un'Goro Crater;171):24 #21644(auto Un'Goro Crater;498):20
+c6517.2 | links=c6517.1:46 c6527.4:31 c6510.38:77
+c6518.2 | links=c6519.3:49 c6518.4:39 c6519.5:39
+c6519.2 | links=#21387(auto Un'Goro Crater;491):33
+c6520.2 | links=#9307(auto Un'Goro Crater;213):26 c6521.1:68
+c6521.2 | links=#18043(auto Un'Goro Crater;414):18 #20026(auto Un'Goro Crater;462):12
+c6527.2 | links=c6498.1:76 c6517.8:35 c6517.9:34
+c6551.2 | links=c6552.6:53
+c6552.2 | links=c6554.5:9
+c6554.2 | links=#1700(auto Un'Goro Crater;38):6 #3622(auto Un'Goro Crater;77):4
+c6555.2 | links=#15502(auto Un'Goro Crater;358):15
+c6556.2 | links=c6511.1:71 o161526.1:24 c6511.9:52 c6509.19:60 c6511.23:47
+c6560.2 | links=c6510.6:46
+c9157.2 | links=#2277(auto Un'Goro Crater;50):8
+c9162.2 | links=#10664(auto Un'Goro Crater;246):16 #26102(auto Un'Goro Crater;588):26 c6509.9:27
+c9165.2 | links=#972(auto Un'Goro Crater;25):16 c9165.3:38
+c9166.2 | links=#16359(auto Un'Goro Crater;378):36
+c9460.2 | links=#8360(auto Un'Goro Crater;189):7 c10583.1:8
+c10541.2 | links=#7142(auto Un'Goro Crater;169):36
+o157936.2 | links=#3852(auto Un'Goro Crater;87):63 c6512.3:48
+o161527.2 | links=c6504.1:10
+o164658.2 | links=#2338(auto Un'Goro Crater;52):24 c6511.32:15
+o164659.2 | links=o161505.1:25
+o164660.2 | links=#11388(auto Un'Goro Crater;265):6
+o164661.2 | links=#15751(auto Un'Goro Crater;363):14
+o164778.2 | links=#1055(auto Un'Goro Crater;26):31
+o164779.2 | links=#17113(auto Un'Goro Crater;397):26 c6518.8:5
+o164780.2 | links=#21212(auto Un'Goro Crater;488):38 c9162.3:35 c6511.10:52
+o164958.2 | links=c6513.2:39
+o180216.2 | links=#22185(auto Un'Goro Crater;506):28 o180216.3:88
+c2914.3 | links=c6509.14:44 c6511.18:11 c6509.19:61
+c6491.3 | links=#8996(central location;Marshal's Refuge;Un'Goro Crater):50 #27563(auto Un'Goro Crater;624):12 c8737.1:26
+c6498.3 | links=c9167.13:69 c6559.33:111
+c6501.3 | links=#27783(auto Un'Goro Crater;626):8
+c6502.3 | links=c6503.1:87
+c6503.3 | links=#15018(auto Un'Goro Crater;342):52
+c6505.3 | links=c6505.1:40 o164779.4:28 c6506.8:16
+c6506.3 | links=c6581.1:27 c6505.7:40
+c6508.3 | links=#2718(auto Un'Goro Crater;57):31 c6507.1:74 o166863.1:24 c6507.2:38
+c6509.3 | links=c6509.1:93 o164778.1:55 c6511.16:17 c1420.18:62
+c6511.3 | links=c6509.9:52
+c6512.3 | links=o157936.2:48
+c6513.3 | links=#21974(auto Un'Goro Crater;503):13
+c6514.3 | links=#6920(auto Un'Goro Crater;163):10 #22000(auto Un'Goro Crater;504):16
+c6517.3 | links=#11017(auto Un'Goro Crater;255):35
+c6518.3 | links=o164658.6:24
+c6519.3 | links=c6518.2:49
+c6521.3 | links=#1767(auto Un'Goro Crater;42):8 #6245(auto Un'Goro Crater;143):28
+c6527.3 | links=c6517.13:47 c6510.28:61 o164958.44:90
+c6551.3 | links=c6551.4:33 c6553.16:33
+c6552.3 | links=c6552.14:50 c6553.28:24
+c6553.3 | links=#17386(auto Un'Goro Crater;401):13 #25782(auto Un'Goro Crater;579):21
+c6554.3 | links=#6307(entry and exit;The Slithering Scar;Un'Goro Crater):36 #25782(auto Un'Goro Crater;579):17
+c6556.3 | links=c9162.5:34 c6509.15:44
+c6557.3 | links=o164958.44:24
+c6559.3 | links=#20287(auto Un'Goro Crater;468):62
+c9162.3 | links=o164780.2:35
+c9165.3 | links=c9165.2:38
+c9166.3 | links=#17986(auto Un'Goro Crater;413):50 o164778.6:4
+c10541.3 | links=c6521.1:13
+o157936.3 | links=#21974(auto Un'Goro Crater;503):11
+o161527.3 | links=#10824(auto Un'Goro Crater;250):48 c6504.1:13
+o164658.3 | links=#26000(auto Un'Goro Crater;586):27
+o164659.3 | links=o164958.3:62
+o164660.3 | links=#16266(auto Un'Goro Crater;376):14
+o164661.3 | links=#15916(auto Un'Goro Crater;367):22
+o164778.3 | links=#6339(auto Un'Goro Crater;144):64 c6527.1:11
+o164779.3 | links=#15047(auto Un'Goro Crater;343):15 #21974(auto Un'Goro Crater;503):38 #22000(auto Un'Goro Crater;504):11
+o164780.3 | links=#25437(auto Un'Goro Crater;567):46
+o164958.3 | links=o164659.3:62 c6560.4:30 c6556.7:36
+o180216.3 | links=o180216.1:74 o180216.2:88
+c1420.4 | links=o157936.11:25
+c6506.4 | links=#3923(auto Un'Goro Crater;90):61 c6505.9:28 c6505.10:46
+c6509.4 | links=#28532(auto Un'Goro Crater;651):66 c9165.1:6
+c6510.4 | links=c6510.6:47 c9163.22:48 c6510.34:62
+c6511.4 | links=#16243(auto Un'Goro Crater;373):14
+c6513.4 | links=#21974(auto Un'Goro Crater;503):22
+c6514.4 | links=#6339(auto Un'Goro Crater;144):26
+c6516.4 | links=#24022(entry and exit;cave;Fungal Rock;Un'Goro Crater):0 #28737(s;Kalimdor;Un'Goro Crater;Lakkari Tar Pits;Fungal Rock):3
+c6517.4 | links=c6527.7:33
+c6518.4 | links=#5957(auto Un'Goro Crater;135):20 c6518.2:39
+c6519.4 | links=o164958.8:31
+c6521.4 | links=#16213(auto Un'Goro Crater;372):1 c6520.1:2
+c6527.4 | links=c6517.2:31
+c6551.4 | links=c6551.3:33 c6552.14:59
+c6552.4 | links=o157936.15:67
+c6554.4 | links=#27864(auto Un'Goro Crater;631):13
+c6555.4 | links=#20877(auto Un'Goro Crater;482):9 #23561(auto Un'Goro Crater;534):13 c6551.11:12
+c6556.4 | links=c6511.27:40 c6511.29:20
+c6559.4 | links=c6584.1:34 c9167.13:57
+c6560.4 | links=#11216(auto Un'Goro Crater;259):26 o164958.3:30
+c9157.4 | links=#8996(central location;Marshal's Refuge;Un'Goro Crater):8
+c9162.4 | links=c9162.6:23 c6556.8:66 c6511.9:42 o164958.31:63
+c9164.4 | links=c6512.5:36 c6559.22:57
+c9165.4 | links=c6509.12:9
+c9166.4 | links=#16359(auto Un'Goro Crater;378):56 o164661.8:9
+c10541.4 | links=c6521.22:12
+o164658.4 | links=#27309(auto Un'Goro Crater;617):6
+o164660.4 | links=o164958.8:48
+o164661.4 | links=c6509.6:43
+o164779.4 | links=c6505.3:28 c6506.7:52 c6505.12:79
+o164780.4 | links=c6512.5:63 o157936.5:24
+o164781.4 | links=#16510(auto Un'Goro Crater;379):32 c6509.10:14 o164958.38:10
+o164958.4 | links=#28522(auto Un'Goro Crater;650):32
+c2914.5 | links=#8444(auto Un'Goro Crater;192):32
+c6505.5 | links=#12990(auto Un'Goro Crater;295):15
+c6506.5 | links=c6505.10:34
+c6509.5 | links=#2050(auto Un'Goro Crater;47):15 c6511.5:20
+c6511.5 | links=c6509.5:20 c6509.21:70
+c6512.5 | links=c9164.4:36 o164780.4:63
+c6513.5 | links=#21974(auto Un'Goro Crater;503):52 o164958.7:7
+c6514.5 | links=#16335(auto Un'Goro Crater;377):6
+c6517.5 | links=c6527.12:42 o157936.32:91
+c6518.5 | links=#20095(auto Un'Goro Crater;463):48
+c6519.5 | links=#19572(auto Un'Goro Crater;452):34 c6518.2:39
+c6521.5 | links=#8927(auto Un'Goro Crater;207):11
+c6527.5 | links=c6527.7:63
+c6551.5 | links=#11344(auto Un'Goro Crater;263):78
+c6552.5 | links=#11344(auto Un'Goro Crater;263):106
+c6553.5 | links=#2348(auto Un'Goro Crater;53):4 #15631(auto Un'Goro Crater;360):14
+c6554.5 | links=#6182(auto Un'Goro Crater;139):12 c6552.2:9
+c6555.5 | links=#9537(auto Un'Goro Crater;217):28 #19451(auto Un'Goro Crater;450):13 #20263(auto Un'Goro Crater;467):6
+c6560.5 | links=#25437(auto Un'Goro Crater;567):63 c6511.6:15
+c9162.5 | links=c6556.3:34 c6511.12:25
+c9164.5 | links=c9164.6:56 o164779.9:25 c6512.16:64
+c9165.5 | links=c6511.23:41
+c10541.5 | links=c6520.11:9
+o157936.5 | links=o164780.4:24
+o164658.5 | links=#16706(auto Un'Goro Crater;386):47
+o164659.5 | links=#25696(auto Un'Goro Crater;576):69
+o164778.5 | links=#16359(auto Un'Goro Crater;378):28
+o164779.5 | links=c6527.1:88 c6511.33:57
+o164780.5 | links=#6183(auto Un'Goro Crater;140):41
+o164958.5 | links=#3116(auto Un'Goro Crater;66):22
+c2914.6 | links=c6510.38:11
+c6505.6 | links=#3923(auto Un'Goro Crater;90):33 o164659.10:29
+c6506.6 | links=c6505.10:47
+c6509.6 | links=o164661.4:43 c6556.11:30
+c6510.6 | links=c6560.2:46 c6510.4:47 o157936.32:81
+c6511.6 | links=c6560.5:15
+c6512.6 | links=c2914.2:66
+c6516.6 | links=#22571(auto Un'Goro Crater;516):4
+c6517.6 | links=#10744(auto Un'Goro Crater;248):59 c6517.7:20
+c6518.6 | links=#5957(auto Un'Goro Crater;135):30
+c6519.6 | links=c2914.2:40
+c6521.6 | links=#10769(auto Un'Goro Crater;249):8
+c6527.6 | links=c6517.1:52 c6511.19:32
+c6551.6 | links=#764(auto Un'Goro Crater;19):36 c15583.1:8
+c6552.6 | links=#10342(auto Un'Goro Crater;237):31 c6551.2:53 c6553.29:24
+c6553.6 | links=c6582.1:11
+c6555.6 | links=#9564(auto Un'Goro Crater;220):22 #18928(auto Un'Goro Crater;431):13 #23238(auto Un'Goro Crater;525):8
+c6559.6 | links=#20287(auto Un'Goro Crater;468):36
+c6560.6 | links=#26943(auto Un'Goro Crater;606):62
+c9162.6 | links=c9162.1:77 c9162.4:23
+c9164.6 | links=#11104(auto Un'Goro Crater;258):63 #21425(auto Un'Goro Crater;492):32 c9164.5:56
+c9165.6 | links=c9162.10:37 o164958.29:21
+o157936.6 | links=c9619.1:1
+o161527.6 | links=o161527.7:5
+o164658.6 | links=#7772(auto Un'Goro Crater;182):45 c6518.3:24
+o164661.6 | links=o164779.1:45
+o164778.6 | links=c9166.3:4
+o164779.6 | links=#14769(auto Un'Goro Crater;338):28
+o164781.6 | links=#6872(auto Un'Goro Crater;160):28
+c2914.7 | links=#23115(auto Un'Goro Crater;521):27
+c6505.7 | links=c6506.3:40 o164659.10:38
+c6506.7 | links=o164779.4:52
+c6509.7 | links=#16060(auto Un'Goro Crater;370):8
+c6510.7 | links=#26144(auto Un'Goro Crater;590):35
+c6511.7 | links=#12517(auto Un'Goro Crater;284):14
+c6513.7 | links=#27949(auto Un'Goro Crater;633):6
+c6514.7 | links=#21927(auto Un'Goro Crater;502):13
+c6516.7 | links=#15575(auto Un'Goro Crater;359):5
+c6517.7 | links=c6517.6:20
+c6518.7 | links=c2914.2:70
+c6527.7 | links=#14316(auto Un'Goro Crater;329):26 c6517.4:33 c6527.5:63
+c6551.7 | links=c6553.31:73 c9164.43:44
+c6552.7 | links=c6552.1:35 c6552.19:32
+c6553.7 | links=c6553.13:38
+c6555.7 | links=c6582.1:14
+c6556.7 | links=o164958.3:36
+c6557.7 | links=#27488(auto Un'Goro Crater;623):15
+c6560.7 | links=#27249(auto Un'Goro Crater;616):51 c6560.1:40
+c9162.7 | links=c6509.2:31
+c9165.7 | links=#24082(auto Un'Goro Crater;541):54
+c9166.7 | links=c9166.15:27
+c9600.7 | links=c9163.47:16 c6510.62:22
+o161527.7 | links=o161527.6:5 o161527.9:10
+o164659.7 | links=#4701(auto Un'Goro Crater;109):8
+o164661.7 | links=#6623(auto Un'Goro Crater;151):31
+o164778.7 | links=#26144(auto Un'Goro Crater;590):26
+o164780.7 | links=#19671(auto Un'Goro Crater;455):37
+o164958.7 | links=c6513.5:7
+c6505.8 | links=c6505.10:59
+c6506.8 | links=c6505.3:16 c6505.13:19
+c6510.8 | links=#12870(auto Un'Goro Crater;292):22
+c6511.8 | links=#28532(auto Un'Goro Crater;651):37
+c6514.8 | links=#8734(auto Un'Goro Crater;199):6
+c6516.8 | links=#2760(auto Un'Goro Crater;58):4
+c6517.8 | links=c6527.2:35
+c6518.8 | links=o164779.2:5
+c6519.8 | links=c6518.11:57
+c6527.8 | links=c6527.9:28 c6517.11:40 o164958.18:24
+c6551.8 | links=c6551.9:65 c6553.24:71
+c6552.8 | links=#11344(auto Un'Goro Crater;263):63
+c6553.8 | links=c6552.20:51
+c6556.8 | links=c9162.4:66
+c6557.8 | links=#21006(auto Un'Goro Crater;484):32
+c9162.8 | links=o164958.10:8 c6511.24:21
+c9165.8 | links=#24082(auto Un'Goro Crater;541):14
+c9166.8 | links=#16359(auto Un'Goro Crater;378):24 #17606(auto Un'Goro Crater;405):14
+c9167.8 | links=#14427(auto Un'Goro Crater;331):8
+o164658.8 | links=o157936.32:128 o164958.42:80 c6510.45:47
+o164661.8 | links=c9166.4:9
+o164779.8 | links=#8536(auto Un'Goro Crater;195):34
+o164958.8 | links=#5359(auto Un'Goro Crater;119):35 c6519.4:31 o164660.4:48
+c1420.9 | links=c6511.15:44 c6510.16:46
+c2914.9 | links=c6557.20:44 c9163.22:57 c9163.24:23 c6510.25:87 c6510.26:69
+c6505.9 | links=c6506.4:28
+c6509.9 | links=c9162.2:27 c6511.3:52
+c6510.9 | links=#14512(auto Un'Goro Crater;333):50 #16646(auto Un'Goro Crater;384):35 o164958.1:35
+c6511.9 | links=c6556.2:52 c9162.4:42
+c6514.9 | links=#27389(auto Un'Goro Crater;619):5
+c6516.9 | links=#23201(auto Un'Goro Crater;523):3
+c6517.9 | links=c6527.2:34
+c6518.9 | links=#20773(auto Un'Goro Crater;480):34
+c6527.9 | links=c6527.8:28
+c6551.9 | links=#764(auto Un'Goro Crater;19):42 #23340(auto Un'Goro Crater;527):25 c6551.8:65 c6552.9:47 c6553.32:46
+c6552.9 | links=c6551.9:47 c6553.20:37
+c6553.9 | links=#12898(auto Un'Goro Crater;293):11 #25477(auto Un'Goro Crater;570):11
+c6555.9 | links=c6553.10:11
+c6556.9 | links=c6511.18:20
+c6557.9 | links=#24618(auto Un'Goro Crater;548):12
+c9162.9 | links=#4260(auto Un'Goro Crater;101):13
+c9165.9 | links=#8536(auto Un'Goro Crater;195):17 #25653(auto Un'Goro Crater;574):17
+c9166.9 | links=#9286(auto Un'Goro Crater;212):24 c9166.24:37
+c9167.9 | links=#4258(auto Un'Goro Crater;100):39
+o157936.9 | links=o164781.12:5
+o161527.9 | links=o161527.7:10 o161527.11:7 c9164.51:21
+o164658.9 | links=#19492(auto Un'Goro Crater;451):32
+o164661.9 | links=#28443(auto Un'Goro Crater;643):19 o164956.1:8
+o164778.9 | links=#6786(auto Un'Goro Crater;154):29
+o164779.9 | links=#1125(auto Un'Goro Crater;28):40 #21425(auto Un'Goro Crater;492):8 c9164.5:25
+o164780.9 | links=c9165.14:34
+o164781.9 | links=#2050(auto Un'Goro Crater;47):10
+o164958.9 | links=#21006(auto Un'Goro Crater;484):33
+c2914.10 | links=#1125(auto Un'Goro Crater;28):31 #19166(auto Un'Goro Crater;438):28
+c6501.10 | links=#25668(auto Un'Goro Crater;575):23 o161527.12:24
+c6505.10 | links=c6506.4:46 c6506.5:34 c6506.6:47 c6505.8:59 c6505.29:27
+c6506.10 | links=c6506.11:6
+c6509.10 | links=o164781.4:14
+c6511.10 | links=o164780.2:52 c2914.12:55 c6509.16:67 c6509.21:40 c6509.22:62
+c6517.10 | links=o164958.12:36
+c6518.10 | links=#19786(auto Un'Goro Crater;458):41
+c6519.10 | links=#10614(auto Un'Goro Crater;244):54
+c6527.10 | links=#13523(auto Un'Goro Crater;306):25
+c6551.10 | links=c6552.1:42 c6553.19:12
+c6552.10 | links=#12664(auto Un'Goro Crater;286):7
+c6553.10 | links=#9564(auto Un'Goro Crater;220):7 c6555.9:11
+c6556.10 | links=#26943(auto Un'Goro Crater;606):68
+c9162.10 | links=c9165.6:37 c6509.18:53
+c9163.10 | links=c6500.1:17
+c9165.10 | links=#25653(auto Un'Goro Crater;574):46
+c9166.10 | links=#14769(auto Un'Goro Crater;338):26
+o164658.10 | links=#1147(auto Un'Goro Crater;29):15 o164958.35:6
+o164659.10 | links=c6505.6:29 c6505.7:38
+o164781.10 | links=#20708(auto Un'Goro Crater;478):24
+o164958.10 | links=c9162.8:8
+c2914.11 | links=#18928(auto Un'Goro Crater;431):12
+c6506.11 | links=#15809(auto Un'Goro Crater;365):24 c6506.10:6
+c6509.11 | links=#21212(auto Un'Goro Crater;488):45
+c6510.11 | links=#12870(auto Un'Goro Crater;292):83 c6510.14:34
+c6511.11 | links=#23508(auto Un'Goro Crater;531):20
+c6517.11 | links=c6527.8:40 o164958.18:47 o164958.44:72
+c6518.11 | links=#20773(auto Un'Goro Crater;480):13 c6519.8:57
+c6520.11 | links=#19776(auto Un'Goro Crater;457):16 c10541.5:9
+c6551.11 | links=c6555.4:12
+c6552.11 | links=c6553.16:45 c6553.22:46
+c6553.11 | links=#12898(auto Un'Goro Crater;293):25
+c6556.11 | links=#678(auto Un'Goro Crater;18):30 c6509.6:30
+c6557.11 | links=#26635(auto Un'Goro Crater;604):36
+c9163.11 | links=#10614(auto Un'Goro Crater;244):13
+c9165.11 | links=#13565(auto Un'Goro Crater;312):40 c9165.14:41
+c9166.11 | links=#8473(auto Un'Goro Crater;193):42
+o157936.11 | links=#17486(auto Un'Goro Crater;402):24 c1420.4:25
+o161527.11 | links=#25668(auto Un'Goro Crater;575):8 o161527.9:7
+o164658.11 | links=c6500.1:49
+o164659.11 | links=o161505.1:49
+o164661.11 | links=#19237(auto Un'Goro Crater;441):11
+c2914.12 | links=c6509.2:42 c6511.10:55
+c6505.12 | links=o164779.4:79
+c6509.12 | links=#28532(auto Un'Goro Crater;651):35 c9165.4:9
+c6511.12 | links=c9162.5:25 c6511.16:16
+c6518.12 | links=#19786(auto Un'Goro Crater;458):47
+c6519.12 | links=#20773(auto Un'Goro Crater;480):54 c6519.13:22
+c6527.12 | links=c6517.5:42
+c6551.12 | links=#11344(auto Un'Goro Crater;263):64
+c6552.12 | links=#6307(entry and exit;The Slithering Scar;Un'Goro Crater):32 #11507(auto Un'Goro Crater;269):19 c6553.15:40
+c6553.12 | links=#792(auto Un'Goro Crater;21):8
+c6556.12 | links=o164958.12:41
+c6557.12 | links=#15371(auto Un'Goro Crater;355):43
+c9163.12 | links=o157936.13:38
+c9165.12 | links=#13565(auto Un'Goro Crater;312):29 c9165.16:39
+o161527.12 | links=c6501.10:24
+o164661.12 | links=#16754(auto Un'Goro Crater;388):34
+o164781.12 | links=#3765(auto Un'Goro Crater;85):39 o157936.9:5
+o164958.12 | links=c6527.1:57 c6517.10:36 c6556.12:41
+c1420.13 | links=o164958.46:18
+c6505.13 | links=c6506.8:19
+c6506.13 | links=#27153(auto Un'Goro Crater;612):26
+c6509.13 | links=c6509.20:44 c6511.23:55
+c6511.13 | links=c6511.23:35
+c6517.13 | links=c6527.3:47
+c6518.13 | links=#15632(auto Un'Goro Crater;361):23
+c6519.13 | links=c6519.12:22
+c6521.13 | links=#9380(auto Un'Goro Crater;214):8 o157936.22:17
+c6551.13 | links=#11344(auto Un'Goro Crater;263):37 #11507(auto Un'Goro Crater;269):28
+c6553.13 | links=c6553.7:38 c6552.14:56
+c9165.13 | links=#22421(auto Un'Goro Crater;510):19
+c9166.13 | links=#21033(auto Un'Goro Crater;485):11
+c9167.13 | links=c6498.3:69 c6559.4:57
+o157936.13 | links=c9163.12:38 c6510.38:48
+o164660.13 | links=#13565(auto Un'Goro Crater;312):35
+o164661.13 | links=#26102(auto Un'Goro Crater;588):21
+o164779.13 | links=#6427(auto Un'Goro Crater;146):4
+o164781.13 | links=#12537(auto Un'Goro Crater;285):49 o157936.16:8
+o164958.13 | links=c6511.30:28
+c6509.14 | links=c2914.3:44
+c6510.14 | links=c6498.1:18 c6510.11:34 c6518.15:82 c6510.36:57 c6510.37:44
+c6511.14 | links=c6556.1:42
+c6518.14 | links=#8444(auto Un'Goro Crater;192):27
+c6521.14 | links=#24963(auto Un'Goro Crater;558):19
+c6552.14 | links=#27203(auto Un'Goro Crater;615):23 c6552.3:50 c6551.4:59 c6553.13:56
+c6553.14 | links=c6553.22:37
+c6559.14 | links=#3859(auto Un'Goro Crater;88):42
+c9163.14 | links=#12836(auto Un'Goro Crater;291):42
+c9165.14 | links=o164780.9:34 c9165.11:41
+c9166.14 | links=#18586(auto Un'Goro Crater;424):12 o164958.48:42 c9163.49:34 c6510.56:44
+o157936.14 | links=#16653(auto Un'Goro Crater;385):20
+o164958.14 | links=#5360(auto Un'Goro Crater;120):54 c1420.18:100 c6510.29:23
+c6509.15 | links=c6556.3:44
+c6511.15 | links=#17486(auto Un'Goro Crater;402):53 c1420.9:44 c1420.18:77
+c6518.15 | links=c6510.14:82
+c6553.15 | links=#5911(auto Un'Goro Crater;133):36 c6552.12:40 o157936.15:26
+c9166.15 | links=#3601(auto Un'Goro Crater;75):30 c9166.7:27
+c9167.15 | links=#8854(auto Un'Goro Crater;205):39
+o157936.15 | links=c6552.4:67 c6553.15:26
+o164658.15 | links=c6511.1:48
+o164660.15 | links=#2968(auto Un'Goro Crater;63):20
+o164781.15 | links=#15371(auto Un'Goro Crater;355):51 c6510.46:62
+c6506.16 | links=#13532(auto Un'Goro Crater;308):25 c6505.20:27
+c6509.16 | links=c6511.10:67 c6511.25:49
+c6510.16 | links=c1420.9:46
+c6511.16 | links=c6509.3:17 c6511.12:16
+c6512.16 | links=#4184(auto Un'Goro Crater;95):16 c9164.5:64
+c6553.16 | links=c6551.3:33 c6552.11:45
+c9165.16 | links=c9165.12:39 o164659.21:17
+c9166.16 | links=#14769(auto Un'Goro Crater;338):41
+c9167.16 | links=#21239(auto Un'Goro Crater;489):34
+o157936.16 | links=o164781.13:8
+o164778.16 | links=#10924(auto Un'Goro Crater;254):31
+c2914.17 | links=#764(auto Un'Goro Crater;19):84
+c6509.17 | links=#20811(auto Un'Goro Crater;481):36 c6511.25:35
+c6510.17 | links=#12836(auto Un'Goro Crater;291):22
+c6511.17 | links=o157936.17:46
+c6552.17 | links=#11344(auto Un'Goro Crater;263):30
+c9165.17 | links=#24082(auto Un'Goro Crater;541):9
+c9166.17 | links=#8473(auto Un'Goro Crater;193):26
+o157936.17 | links=c6511.17:46 o164958.29:8
+o164778.17 | links=#15315(auto Un'Goro Crater;351):11
+c1420.18 | links=c6509.3:62 o164958.14:100 c6511.15:77 c6510.31:42
+c6509.18 | links=c9162.10:53 o164958.20:45
+c6511.18 | links=c2914.3:11 c6556.9:20
+c6512.18 | links=c2914.2:35
+c6552.18 | links=#13688(auto Un'Goro Crater;315):54 c6553.27:39 c9163.31:32
+c6553.18 | links=c6552.21:27
+c9166.18 | links=#18579(auto Un'Goro Crater;423):15
+c9167.18 | links=#24618(auto Un'Goro Crater;548):59 c6512.1:54 c6559.22:48
+o157936.18 | links=#15371(auto Un'Goro Crater;355):42
+o164658.18 | links=c9167.54:64
+o164958.18 | links=c6527.8:24 c6517.11:47
+c6506.19 | links=c1420.28:21
+c6509.19 | links=c6556.2:60 c2914.3:61
+c6511.19 | links=#11017(auto Un'Goro Crater;255):26 c6527.6:32
+c6512.19 | links=#20287(auto Un'Goro Crater;468):23
+c6552.19 | links=c6552.7:32 c6552.21:15
+c6553.19 | links=c6551.10:12 c6553.29:59
+c6557.19 | links=c9163.24:21 c6510.30:41
+c9166.19 | links=o157936.29:7
+c6505.20 | links=c6506.16:27
+c6509.20 | links=c6509.13:44
+c6510.20 | links=#14512(auto Un'Goro Crater;333):36
+c6511.20 | links=c6511.21:34
+c6512.20 | links=#6869(auto Un'Goro Crater;159):16
+c6552.20 | links=#10342(auto Un'Goro Crater;237):45 #23340(auto Un'Goro Crater;527):24 c6553.8:51 c6552.22:15
+c6553.20 | links=c6552.9:37 c6552.21:72 c6553.31:39
+c6557.20 | links=c2914.9:44
+c9163.20 | links=#5616(auto Un'Goro Crater;127):22
+c9167.20 | links=#9790(auto Un'Goro Crater;228):19
+o164659.20 | links=#24082(auto Un'Goro Crater;541):29
+o164958.20 | links=#23880(auto Un'Goro Crater;539):98 c6509.18:45 c6510.38:25
+c1420.21 | links=c6510.45:36
+c6505.21 | links=#22557(auto Un'Goro Crater;513):12
+c6509.21 | links=c6511.5:70 c6511.10:40
+c6511.21 | links=#27249(auto Un'Goro Crater;616):44 c6556.1:39 c6511.20:34
+c6552.21 | links=c6553.18:27 c6552.19:15 c6553.20:72 c6553.26:57
+c6553.21 | links=#18349(auto Un'Goro Crater;418):28 #27203(auto Un'Goro Crater;615):23
+c6559.21 | links=#8854(auto Un'Goro Crater;205):25
+o164659.21 | links=c9165.16:17
+o164781.21 | links=#6876(auto Un'Goro Crater;161):42
+c6508.22 | links=#28240(auto Un'Goro Crater;637):22
+c6509.22 | links=c6511.10:62
+c6511.22 | links=o164958.31:22
+c6521.22 | links=#19271(auto Un'Goro Crater;443):26 c10541.4:12
+c6552.22 | links=c6552.20:15
+c6553.22 | links=c6552.11:46 c6553.14:37
+c6559.22 | links=c9164.4:57 c9167.18:48
+c9163.22 | links=c6510.4:48 c2914.9:57 c6510.28:51
+o157936.22 | links=c6521.13:17
+c6509.23 | links=#20811(auto Un'Goro Crater;481):24
+c6510.23 | links=#4650(auto Un'Goro Crater;107):35
+c6511.23 | links=c6556.2:47 c9165.5:41 c6509.13:55 c6511.13:35 o164958.32:54
+c9167.23 | links=#15315(auto Un'Goro Crater;351):18
+c1420.24 | links=#5360(auto Un'Goro Crater;120):25
+c6505.24 | links=#28017(auto Un'Goro Crater;635):65 c6505.27:14 c6505.29:45
+c6509.24 | links=#27309(auto Un'Goro Crater;617):33
+c6511.24 | links=#17022(auto Un'Goro Crater;395):19 c9162.8:21
+c6512.24 | links=#6653(auto Un'Goro Crater;152):62
+c6553.24 | links=c6551.8:71
+c6557.24 | links=#14998(auto Un'Goro Crater;341):20
+c9163.24 | links=c2914.9:23 c6557.19:21
+c9166.24 | links=c9166.9:37
+o164659.24 | links=#591(auto Un'Goro Crater;16):13 #25448(auto Un'Goro Crater;568):9
+c6505.25 | links=#12990(auto Un'Goro Crater;295):17
+c6509.25 | links=#27309(auto Un'Goro Crater;617):25
+c6510.25 | links=c2914.9:87
+c6511.25 | links=c6509.16:49 c6509.17:35
+c6512.25 | links=#8697(auto Un'Goro Crater;197):36
+c6557.25 | links=#16129(auto Un'Goro Crater;371):43
+c9166.25 | links=c6500.1:6
+o164958.25 | links=#24638(auto Un'Goro Crater;549):17
+c6505.26 | links=#13532(auto Un'Goro Crater;308):27
+c6510.26 | links=c2914.9:69
+c6511.26 | links=#21212(auto Un'Goro Crater;488):16
+c6553.26 | links=c6552.21:57 c6553.30:25
+c6557.26 | links=c6505.38:68
+c6505.27 | links=#1147(auto Un'Goro Crater;29):27 c6505.24:14
+c6509.27 | links=c6511.30:28
+c6511.27 | links=c6556.4:40
+c6553.27 | links=#10571(auto Un'Goro Crater;242):14 c6552.18:39
+c9163.27 | links=#14077(auto Un'Goro Crater;327):10 c6510.39:3
+c1420.28 | links=c6506.19:21 c6505.28:35
+c6505.28 | links=c1420.28:35 o164958.35:39
+c6510.28 | links=c6527.3:61 c9163.22:51
+c6511.28 | links=#5235(auto Un'Goro Crater;118):41
+c6553.28 | links=#19137(auto Un'Goro Crater;437):25 c6552.3:24
+c9163.28 | links=#16129(auto Un'Goro Crater;371):40
+c6505.29 | links=c6505.10:27 c6505.24:45
+c6510.29 | links=o164958.14:23
+c6511.29 | links=c6511.2:23 c6556.4:20
+c6553.29 | links=c6552.6:24 c6553.19:59
+o157936.29 | links=#4218(auto Un'Goro Crater;99):26 #10924(auto Un'Goro Crater;254):27 c9166.19:7
+o164958.29 | links=c9165.6:21 o157936.17:8
+c6510.30 | links=#17113(auto Un'Goro Crater;397):44 c6557.19:41
+c6511.30 | links=#14625(auto Un'Goro Crater;334):54 o164958.13:28 c6509.27:28
+c6553.30 | links=c6553.26:25
+c9163.30 | links=#18586(auto Un'Goro Crater;424):34
+o157936.30 | links=#24177(auto Un'Goro Crater;542):23
+c6510.31 | links=c1420.18:42
+c6511.31 | links=c6511.32:58
+c6553.31 | links=c6551.7:73 c6553.20:39
+c6559.31 | links=#8854(auto Un'Goro Crater;205):34
+c9163.31 | links=c6552.18:32
+o164958.31 | links=c9162.4:63 c6511.22:22
+c6505.32 | links=c6581.1:26
+c6511.32 | links=o164660.1:52 o164658.2:15 c6511.31:58
+c6553.32 | links=c6551.9:46
+o157936.32 | links=c6517.5:91 c6510.6:81 o164658.8:128 c6510.45:81
+o164958.32 | links=c6511.23:54
+c6511.33 | links=o164779.5:57
+c6559.33 | links=#28356(auto Un'Goro Crater;640):77 c6498.3:111
+o157936.33 | links=#25943(auto Un'Goro Crater;585):79
+c6510.34 | links=c6510.4:62
+c9163.34 | links=#16129(auto Un'Goro Crater;371):13
+o164958.35 | links=o164658.10:6 c6505.28:39
+c6510.36 | links=c6510.14:57
+c6510.37 | links=c6510.14:44
+c9167.37 | links=#25369(auto Un'Goro Crater;566):26
+o164958.37 | links=#2391(auto Un'Goro Crater;54):47
+c6505.38 | links=#3923(auto Un'Goro Crater;90):29 c6557.26:68
+c6510.38 | links=c6517.2:77 c2914.6:11 o157936.13:48 o164958.20:25 c6510.41:46
+c6512.38 | links=#5150(auto Un'Goro Crater;117):13
+c9163.38 | links=#26412(auto Un'Goro Crater;596):22
+c9167.38 | links=#457(auto Un'Goro Crater;12):30 #4258(auto Un'Goro Crater;100):11
+o164958.38 | links=o164781.4:10
+c6510.39 | links=c9163.27:3
+c9163.39 | links=#26635(auto Un'Goro Crater;604):33 c9163.43:59
+c9167.39 | links=#27015(auto Un'Goro Crater;608):5
+o164958.39 | links=#15809(auto Un'Goro Crater;365):10
+c9163.40 | links=#27488(auto Un'Goro Crater;623):15
+c6510.41 | links=c6510.38:46
+c9163.41 | links=#27488(auto Un'Goro Crater;623):19
+o164958.42 | links=o164658.8:80
+c9163.43 | links=c9163.39:59 c6510.48:43
+c9164.43 | links=c6551.7:44
+o164958.44 | links=c6527.3:90 c6557.3:24 c6517.11:72
+c6510.45 | links=o164658.8:47 c1420.21:36 o157936.32:81
+c6510.46 | links=#5736(auto Un'Goro Crater;129):10 o164781.15:62
+c9163.46 | links=c6510.48:34
+o164958.46 | links=#6568(auto Un'Goro Crater;150):10 #25728(auto Un'Goro Crater;578):15 c1420.13:18
+c9163.47 | links=c9600.7:16 c6510.48:21
+c6510.48 | links=c9166.1:18 c9163.43:43 c9163.46:34 c9163.47:21 c6510.52:23
+o164958.48 | links=c9166.14:42
+c6510.49 | links=#22051(auto Un'Goro Crater;505):15
+c9163.49 | links=c9166.14:34
+c9163.50 | links=#23727(auto Un'Goro Crater;537):35
+c6512.51 | links=#1125(auto Un'Goro Crater;28):24
+c9164.51 | links=o161527.9:21
+c6510.52 | links=c6510.48:23
+c9167.52 | links=#13762(auto Un'Goro Crater;317):15 #22479(auto Un'Goro Crater;512):16
+c9167.53 | links=#19435(auto Un'Goro Crater;449):14
+c6510.54 | links=#26635(auto Un'Goro Crater;604):30
+c9167.54 | links=#126(auto Un'Goro Crater;5):25 o164658.18:64
+c6510.56 | links=c9166.14:44
+c9167.56 | links=#6876(auto Un'Goro Crater;161):23
+c6510.58 | links=#15137(auto Un'Goro Crater;344):42 #24381(auto Un'Goro Crater;547):23
+c9167.58 | links=#16653(auto Un'Goro Crater;385):14
+c6510.59 | links=#18586(auto Un'Goro Crater;424):31
+c9167.59 | links=#17577(auto Un'Goro Crater;404):8
+c6510.61 | links=#15137(auto Un'Goro Crater;344):21
+c6510.62 | links=c9600.7:22

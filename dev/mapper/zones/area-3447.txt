@@ -1,0 +1,3 @@
+Zone areaId 3447 — eine Zeile pro Wegpunkt; Links inline.
+
+#28696 | s;Kalimdor;Silithus;Hive'Regal;Ortell's Hideout§s;Kalimdor;Silithus;Bau des Regalschwarms;Ortells Unterschlupf§s;Kalimdor;Silithus;Ruche'Regal;La planque d'Ortell | x=-7586.17 y=-226.396 | size=1

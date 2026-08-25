@@ -1,0 +1,3 @@
+Zone areaId 20 — eine Zeile pro Wegpunkt; Links inline.
+
+#28815 | s;Eastern Kingdoms;Westfall;Moonbrook§s;Östliche Königreiche;Westfall;Moonbrook§s;Royaumes de l'est;Marche de l'Ouest;Moonbrook | x=-11017.066 y=-1510.168 | size=1

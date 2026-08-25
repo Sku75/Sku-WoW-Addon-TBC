@@ -1,0 +1,3 @@
+Zone areaId 2541 — eine Zeile pro Wegpunkt; Links inline.
+
+#28712 | s;Kalimdor;Stonetalon Mountains;Sishir Canyon;Sishir Canyon§s;Kalimdor;Steinkrallengebirge;Sishircanyon;Sishircanyon§s;Kalimdor;Les Serres-Rocheuses;Canyon de Sishir;Canyon de Sishir | x=515.845 y=-624.05 | size=1

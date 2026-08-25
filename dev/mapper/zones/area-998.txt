@@ -1,0 +1,3 @@
+Zone areaId 998 — eine Zeile pro Wegpunkt; Links inline.
+
+#28782 | s;Eastern Kingdoms;Redridge Mountains;Render's Camp;Render's Rock§s;Östliche Königreiche;Rotkammgebirge;Renders Lager;Renders Fels§s;Royaumes de l'est;Les Carmines;Camp des Etripeurs;Rocher des Etripeurs | x=-8674.12 y=-2290.05 | size=1

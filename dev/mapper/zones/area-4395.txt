@@ -1,0 +1,5 @@
+Zone areaId 4395 — eine Zeile pro Wegpunkt; Links inline.
+
+#39041 | Zom Bocom;Apprentice Arena Vendor;Dalaran;1;56.57;56.92§Zom Bocom;arenaverkäuferlehrling;Dalaran;1;56.57;56.92§Zom Bocom;Apprentice Arena Vendor;Dalaran;1;56.57;56.92 | x=5761.538566271021 y=581.1655453776317 | size=1
+#39043 | Nargle Lashcord;Veteran Arena Vendor;Dalaran;1;56.28;56.55§Nargel Peitschleine;Arenaverkäuferveteran;Dalaran;1;56.28;56.55§Nargle Cinglecorde;Veteran Arena Vendor;Dalaran;1;56.28;56.55 | x=5753.159328007017 y=582.086281336336 | size=1
+#39044 | Xazi Smolderpipe;Arena Vendor;Dalaran;1;56.37;56.95§Xazi Schmauchpfeife;Arenaverkäufer;Dalaran;1;56.37;56.95§Xazi Fumetuyère;Arena Vendor;Dalaran;1;56.37;56.95 | x=5754.536426822879 y=584.2642545637698 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 348 — eine Zeile pro Wegpunkt; Links inline.
+
+#28769 | s;Eastern Kingdoms;The Hinterlands;Aerie Peak§s;Östliche Königreiche;Hinterland;Aerie Peak§s;Royaumes de l'est;Les Hinterlands;Aerie Peak | x=234.85 y=-2127.76 | size=1

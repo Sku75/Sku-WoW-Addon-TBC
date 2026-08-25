@@ -1,0 +1,3 @@
+Zone areaId 411 — eine Zeile pro Wegpunkt; Links inline.
+
+#28635 | s;Kalimdor;Ashenvale;Maestra's Post;Bathran's Haunt§s;Kalimdor;Eschental;Maestras Posten;Bathrans Schlupfwinkel§s;Kalimdor;Orneval;Maestra's Post;Bathran's Haunt | x=3827.37 y=-161.305 | size=1

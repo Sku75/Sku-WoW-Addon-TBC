@@ -1,0 +1,3 @@
+Zone areaId 392 — eine Zeile pro Wegpunkt; Links inline.
+
+#28656 | s;Kalimdor;The Barrens;Ratchet§s;Kalimdor;Das Brachland;Ratchet§s;Kalimdor;Les Tarides;Ratchet | x=-951.364 y=-3680.07 | size=1

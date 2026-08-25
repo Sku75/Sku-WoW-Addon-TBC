@@ -1,0 +1,241 @@
+Zone areaId 3557 — eine Zeile pro Wegpunkt; Links inline.
+
+#118 | auto The Exodar;1§auto Die Exodar;1§auto L’Exodar;1 | x=-3992.900146484375 y=-11854 | size=1 | links=#3360(auto The Exodar;25):24 #21564(auto The Exodar;166):17
+#359 | auto The Exodar;2§auto Die Exodar;2§auto L’Exodar;2 | x=-4056.10009765625 y=-11358.5 | size=1 | links=#2195(auto The Exodar;16):11 #21568(auto The Exodar;167):15
+#423 | auto The Exodar;3§auto Die Exodar;3§auto L’Exodar;3 | x=-3870.800048828125 y=-11581.5 | size=1 | links=#14573(auto The Exodar;103):21 #24354(auto The Exodar;196):14
+#434 | auto The Exodar;4§auto Die Exodar;4§auto L’Exodar;4 | x=-4212.39990234375 y=-11654.7998046875 | size=1 | links=#23552(auto The Exodar;186):20 #23765(auto The Exodar;190):20
+#697 | auto The Exodar;5§auto Die Exodar;5§auto L’Exodar;5 | x=-4123 y=-11419.900390625 | size=1 | links=#17226(auto The Exodar;133):17 #27334(auto The Exodar;226):18
+#873 | auto The Exodar;6§auto Die Exodar;6§auto L’Exodar;6 | x=-4247.89990234375 y=-11553.7998046875 | size=1 | links=#22693(auto The Exodar;180):14
+#901 | auto The Exodar;7§auto Die Exodar;7§auto L’Exodar;7 | x=-4047.900146484375 y=-11762.400390625 | size=1 | links=#16807(auto The Exodar;126):19 #25907(auto The Exodar;212):5
+#1063 | auto The Exodar;8§auto Die Exodar;8§auto L’Exodar;8 | x=-4062.900146484375 y=-11513.2001953125 | size=1 | links=#9526(auto The Exodar;74):20 #25171(auto The Exodar;205):18
+#1164 | auto The Exodar;9§auto Die Exodar;9§auto L’Exodar;9 | x=-3850.10009765625 y=-11693 | size=1 | links=#4922(auto The Exodar;37):28 #14668(auto The Exodar;105):30
+#1377 | auto The Exodar;10§auto Die Exodar;10§auto L’Exodar;10 | x=-4154 y=-11619.7001953125 | size=1 | links=#15337(auto The Exodar;116):25 #20543(auto The Exodar;156):56
+#1427 | auto The Exodar;11§auto Die Exodar;11§auto L’Exodar;11 | x=-4174.60009765625 y=-11613.5 | size=1 | links=#20170(auto The Exodar;152):32 #26109(auto The Exodar;216):24
+#1722 | auto The Exodar;12§auto Die Exodar;12§auto L’Exodar;12 | x=-4127.39990234375 y=-11566.5 | size=1 | links=#7765(auto The Exodar;61):22 #15337(auto The Exodar;116):34
+#1927 | auto The Exodar;13§auto Die Exodar;13§auto L’Exodar;13 | x=-3896.199951171875 y=-11562.7998046875 | size=1 | links=#7291(auto The Exodar;57):10 #26073(auto The Exodar;215):21
+#2067 | auto The Exodar;14§auto Die Exodar;14§auto L’Exodar;14 | x=-4003.400146484375 y=-11933.6005859375 | size=1 | links=#15260(auto The Exodar;115):28 #19285(auto The Exodar;145):34
+#2084 | auto The Exodar;15§auto Die Exodar;15§auto L’Exodar;15 | x=-3828.900146484375 y=-11683.7998046875 | size=1 | links=#6177(auto The Exodar;47):56 #6606(auto The Exodar;50):30
+#2195 | auto The Exodar;16§auto Die Exodar;16§auto L’Exodar;16 | x=-4044.400146484375 y=-11360.400390625 | size=1 | links=#359(auto The Exodar;2):11
+#2344 | auto The Exodar;17§auto Die Exodar;17§auto L’Exodar;17 | x=-3818.400146484375 y=-11398.5 | size=1 | links=#24211(auto The Exodar;195):23 #25933(auto The Exodar;213):19
+#2346 | auto The Exodar;18§auto Die Exodar;18§auto L’Exodar;18 | x=-4109.10009765625 y=-11623 | size=1 | links=#15337(auto The Exodar;116):41
+#2669 | auto The Exodar;19§auto Die Exodar;19§auto L’Exodar;19 | x=-4064 y=-11983.900390625 | size=1 | links=#7403(auto Azuremyst Isle;185):27 #24779(auto The Exodar;202):20
+#2757 | auto The Exodar;20§auto Die Exodar;20§auto L’Exodar;20 | x=-3869.900146484375 y=-11642.2001953125 | size=1 | links=#12477(auto The Exodar;92):17 #23452(auto The Exodar;185):36
+#2833 | auto The Exodar;21§auto Die Exodar;21§auto L’Exodar;21 | x=-3827.5 y=-11341.2998046875 | size=1 | links=#18390(auto The Exodar;142):39 #23587(auto The Exodar;188):18 #27173(auto The Exodar;224):52
+#2893 | auto The Exodar;22§auto Die Exodar;22§auto L’Exodar;22 | x=-3757 y=-11695.5 | size=1 | links=#18139(auto The Exodar;139):9
+#2897 | auto The Exodar;23§auto Die Exodar;23§auto L’Exodar;23 | x=-3843.900146484375 y=-11591.2998046875 | size=1 | links=#17145(auto The Exodar;130):24
+#3335 | auto The Exodar;24§auto Die Exodar;24§auto L’Exodar;24 | x=-3896.400146484375 y=-11841.2998046875 | size=1 | links=#9415(auto The Exodar;73):18 #26959(auto The Exodar;222):23
+#3360 | auto The Exodar;25§auto Die Exodar;25§auto L’Exodar;25 | x=-4004.5 y=-11875.2998046875 | size=1 | links=#118(auto The Exodar;1):24 #15260(auto The Exodar;115):45
+#3487 | auto The Exodar;26§auto Die Exodar;26§auto L’Exodar;26 | x=-3878.60009765625 y=-11517.5 | size=1 | links=#20942(auto The Exodar;164):7 #26073(auto The Exodar;215):27
+#3627 | auto The Exodar;27§auto Die Exodar;27§auto L’Exodar;27 | x=-3707.5 y=-11460.900390625 | size=1 | links=#9162(auto The Exodar;71):8 #10961(auto The Exodar;84):15
+#3792 | auto The Exodar;28§auto Die Exodar;28§auto L’Exodar;28 | x=-4000.800048828125 y=-11601.5 | size=1 | links=#22488(auto The Exodar;178):51
+#4248 | auto The Exodar;29§auto Die Exodar;29§auto L’Exodar;29 | x=-3799.199951171875 y=-11698.2001953125 | size=1 | links=#5296(Mailbox;Seat of the Naaru;The Exodar):9 #6606(auto The Exodar;50):38 #11221(auto The Exodar;86):13 #20271(auto The Exodar;153):8
+#4344 | auto The Exodar;30§auto Die Exodar;30§auto L’Exodar;30 | x=-3884.400146484375 y=-11496.7001953125 | size=1 | links=#18298(auto The Exodar;141):8 #20942(auto The Exodar;164):13
+#4418 | auto The Exodar;31§auto Die Exodar;31§auto L’Exodar;31 | x=-4213.30029296875 y=-11684.7998046875 | size=1 | links=#7941(auto The Exodar;62):10 #23552(auto The Exodar;186):13
+#4432 | auto The Exodar;32§auto Die Exodar;32§auto L’Exodar;32 | x=-4093.5 y=-11525.5 | size=1 | links=#8090(auto The Exodar;64):33 #15203(auto The Exodar;113):18
+#4590 | auto The Exodar;33§auto Die Exodar;33§auto L’Exodar;33 | x=-3994 y=-11718.6005859375 | size=1 | links=#8929(auto The Exodar;69):19 #11705(auto The Exodar;88):17
+#4786 | auto The Exodar;34§auto Die Exodar;34§auto L’Exodar;34 | x=-4289.10009765625 y=-11806 | size=1 | links=#11986(auto The Exodar;90):16 #17697(auto The Exodar;136):13
+#4860 | auto The Exodar;35§auto Die Exodar;35§auto L’Exodar;35 | x=-4273.60009765625 y=-11832.7998046875 | size=1 | links=#11986(auto The Exodar;90):14 #14735(auto The Exodar;106):20
+#4892 | auto The Exodar;36§auto Die Exodar;36§auto L’Exodar;36 | x=-4224.80029296875 y=-11776 | size=1 | links=#5875(auto The Exodar;45):33 #6083(auto The Exodar;46):35 #15145(auto The Exodar;112):40 #27008(auto The Exodar;223):36
+#4922 | auto The Exodar;37§auto Die Exodar;37§auto L’Exodar;37 | x=-3868 y=-11715.2001953125 | size=1 | links=#1164(auto The Exodar;9):28 #6441(auto The Exodar;49):38
+#5120 | auto The Exodar;38§auto Die Exodar;38§auto L’Exodar;38 | x=-3869 y=-11736.900390625 | size=1 | links=#6606(auto The Exodar;50):41 #24025(auto The Exodar;192):23
+#5296 | Mailbox;Seat of the Naaru;The Exodar§briefkasten;Sitz der Naaru;Die Exodar§Boîte aux lettres;Seat of the Naaru;L’Exodar | x=-3802.900146484375 y=-11689.7001953125 | size=1 | links=#4248(auto The Exodar;29):9
+#5297 | auto The Exodar;39§auto Die Exodar;39§auto L’Exodar;39 | x=-3990.300048828125 y=-11403.400390625 | size=1 | links=#5750(auto The Exodar;43):13
+#5350 | auto The Exodar;40§auto Die Exodar;40§auto L’Exodar;40 | x=-4099.7001953125 y=-11720.2001953125 | size=1 | links=#10025(auto The Exodar;77):2 #24528(auto The Exodar;199):16
+#5513 | auto The Exodar;41§auto Die Exodar;41§auto L’Exodar;41 | x=-3848.10009765625 y=-11830.7001953125 | size=1 | links=#9415(auto The Exodar;73):33 #22365(auto The Exodar;175):28
+#5529 | auto The Exodar;42§auto Die Exodar;42§auto L’Exodar;42 | x=-4051.199951171875 y=-11772.900390625 | size=1 | links=#25907(auto The Exodar;212):5
+#5750 | auto The Exodar;43§auto Die Exodar;43§auto L’Exodar;43 | x=-3992.400146484375 y=-11390.2001953125 | size=1 | links=#5297(auto The Exodar;39):13 #9882(auto The Exodar;75):25
+#5870 | auto The Exodar;44§auto Die Exodar;44§auto L’Exodar;44 | x=-4140.5 y=-11755.7001953125 | size=1 | links=#14611(auto The Exodar;104):24
+#5875 | auto The Exodar;45§auto Die Exodar;45§auto L’Exodar;45 | x=-4257.80029296875 y=-11775.1005859375 | size=1 | links=#4892(auto The Exodar;36):33
+#6083 | auto The Exodar;46§auto Die Exodar;46§auto L’Exodar;46 | x=-4223.60009765625 y=-11811.5 | size=1 | links=#4892(auto The Exodar;36):35
+#6177 | auto The Exodar;47§auto Die Exodar;47§auto L’Exodar;47 | x=-3839.400146484375 y=-11628.2998046875 | size=1 | links=#2084(auto The Exodar;15):56 #24021(auto The Exodar;191):29
+#6294 | auto The Exodar;48§auto Die Exodar;48§auto L’Exodar;48 | x=-4050.400146484375 y=-11944.1005859375 | size=1 | links=#15260(auto The Exodar;115):37 #24779(auto The Exodar;202):22
+#6441 | auto The Exodar;49§auto Die Exodar;49§auto L’Exodar;49 | x=-3902.300048828125 y=-11733.5 | size=1 | links=#4922(auto The Exodar;37):38 #26860(auto The Exodar;220):17
+#6606 | auto The Exodar;50§auto Die Exodar;50§auto L’Exodar;50 | x=-3833.699951171875 y=-11714.2998046875 | size=1 | links=#2084(auto The Exodar;15):30 #4248(auto The Exodar;29):38 #5120(auto The Exodar;38):41
+#6722 | auto The Exodar;51§auto Die Exodar;51§auto L’Exodar;51 | x=-4021.60009765625 y=-11703.7001953125 | size=1 | links=#7992(auto The Exodar;63):28 #21621(auto The Exodar;168):40
+#6925 | auto The Exodar;52§auto Die Exodar;52§auto L’Exodar;52 | x=-4050.699951171875 y=-11870.2998046875 | size=1 | links=#16356(auto The Exodar;123):23 #20632(auto The Exodar;159):40
+#7006 | auto The Exodar;53§auto Die Exodar;53§auto L’Exodar;53 | x=-3768.400146484375 y=-11455.900390625 | size=1 | links=#20276(auto The Exodar;154):19 #26333(auto The Exodar;219):35
+#7106 | auto The Exodar;54§auto Die Exodar;54§auto L’Exodar;54 | x=-4140.5 y=-11473.7001953125 | size=1 | links=#7249(auto The Exodar;56):27 #19423(auto The Exodar;147):20 #25384(auto The Exodar;209):11 #26283(auto The Exodar;218):26
+#7211 | auto The Exodar;55§auto Die Exodar;55§auto L’Exodar;55 | x=-3942.800048828125 y=-11721 | size=1 | links=#13601(auto The Exodar;98):28 #26860(auto The Exodar;220):27
+#7249 | auto The Exodar;56§auto Die Exodar;56§auto L’Exodar;56 | x=-4140.7001953125 y=-11501.1005859375 | size=1 | links=#7106(auto The Exodar;54):27 #15203(auto The Exodar;113):34
+#7291 | auto The Exodar;57§auto Die Exodar;57§auto L’Exodar;57 | x=-3890.900146484375 y=-11571.900390625 | size=1 | links=#1927(auto The Exodar;13):10
+#7423 | auto The Exodar;58§auto Die Exodar;58§auto L’Exodar;58 | x=-5037.186422315295 y=-11343.38742176541 | size=1 | links=#13758(auto The Exodar;99):72 #16292(auto The Exodar;122):44
+#7531 | auto The Exodar;59§auto Die Exodar;59§auto L’Exodar;59 | x=-4061.900146484375 y=-11482.2001953125 | size=1 | links=#8090(auto The Exodar;64):20 #8204(auto The Exodar;65):15
+#7702 | auto The Exodar;60§auto Die Exodar;60§auto L’Exodar;60 | x=-4263 y=-11811.2001953125 | size=1 | links=#11986(auto The Exodar;90):19
+#7765 | auto The Exodar;61§auto Die Exodar;61§auto L’Exodar;61 | x=-4118.10009765625 y=-11545.900390625 | size=1 | links=#1722(auto The Exodar;12):22 #15203(auto The Exodar;113):28
+#7941 | auto The Exodar;62§auto Die Exodar;62§auto L’Exodar;62 | x=-4219.30029296875 y=-11693.400390625 | size=1 | links=#4418(auto The Exodar;31):10 #17959(auto The Exodar;138):20
+#7992 | auto The Exodar;63§auto Die Exodar;63§auto L’Exodar;63 | x=-4003.199951171875 y=-11681.7998046875 | size=1 | links=#6722(auto The Exodar;51):28 #8241(auto The Exodar;66):30 #14001(auto The Exodar;100):30
+#8090 | auto The Exodar;64§auto Die Exodar;64§auto L’Exodar;64 | x=-4071.699951171875 y=-11500.5 | size=1 | links=#4432(auto The Exodar;32):33 #7531(auto The Exodar;59):20
+#8204 | auto The Exodar;65§auto Die Exodar;65§auto L’Exodar;65 | x=-4052.5 y=-11470.400390625 | size=1 | links=#7531(auto The Exodar;59):15 #17566(auto The Exodar;135):28 #24066(auto The Exodar;193):27
+#8241 | auto The Exodar;66§auto Die Exodar;66§auto L’Exodar;66 | x=-3975.800048828125 y=-11669.1005859375 | size=1 | links=#7992(auto The Exodar;63):30 #13018(auto The Exodar;95):33 #13601(auto The Exodar;98):34
+#8739 | auto The Exodar;67§auto Die Exodar;67§auto L’Exodar;67 | x=-4035.400146484375 y=-11448.1005859375 | size=1 | links=#14827(auto The Exodar;107):21 #21880(auto The Exodar;170):17
+#8761 | auto The Exodar;68§auto Die Exodar;68§auto L’Exodar;68 | x=-3819.800048828125 y=-11560.2001953125 | size=1 | links=#17145(auto The Exodar;130):14 #24150(auto The Exodar;194):16
+#8929 | auto The Exodar;69§auto Die Exodar;69§auto L’Exodar;69 | x=-4010.699951171875 y=-11728.7001953125 | size=1 | links=#4590(auto The Exodar;33):19
+#9112 | auto The Exodar;70§auto Die Exodar;70§auto L’Exodar;70 | x=-3833 y=-11510.400390625 | size=1 | links=#15093(auto The Exodar;110):24 #28081(auto The Exodar;232):34
+#9162 | auto The Exodar;71§auto Die Exodar;71§auto L’Exodar;71 | x=-3703.5 y=-11468.900390625 | size=1 | links=#3627(auto The Exodar;27):8 #15724(auto The Exodar;118):8
+#9164 | auto The Exodar;72§auto Die Exodar;72§auto L’Exodar;72 | x=-4065.10009765625 y=-11548.7998046875 | size=1 | links=#13098(auto The Exodar;96):14
+#9415 | auto The Exodar;73§auto Die Exodar;73§auto L’Exodar;73 | x=-3878.300048828125 y=-11845.900390625 | size=1 | links=#3335(auto The Exodar;24):18 #5513(auto The Exodar;41):33
+#9526 | auto The Exodar;74§auto Die Exodar;74§auto L’Exodar;74 | x=-4082.900146484375 y=-11519.6005859375 | size=1 | links=#1063(auto The Exodar;8):20 #19926(auto The Exodar;150):20
+#9882 | auto The Exodar;75§auto Die Exodar;75§auto L’Exodar;75 | x=-3990.699951171875 y=-11364.900390625 | size=1 | links=#5750(auto The Exodar;43):25 #20771(auto The Exodar;161):39
+#9991 | auto The Exodar;76§auto Die Exodar;76§auto L’Exodar;76 | x=-3869.699951171875 y=-11439.2001953125 | size=1 | links=#27173(auto The Exodar;224):61
+#10025 | auto The Exodar;77§auto Die Exodar;77§auto L’Exodar;77 | x=-4097.2001953125 y=-11720.900390625 | size=1 | links=#5350(auto The Exodar;40):2 #10836(auto The Exodar;82):26 #21621(auto The Exodar;168):37
+#10037 | auto The Exodar;78§auto Die Exodar;78§auto L’Exodar;78 | x=-3795.900146484375 y=-11529.900390625 | size=1 | links=#14963(auto The Exodar;108):38 #24150(auto The Exodar;194):22
+#10511 | auto The Exodar;79§auto Die Exodar;79§auto L’Exodar;79 | x=-3973.300048828125 y=-11815.7001953125 | size=1 | links=#20380(auto The Exodar;155):34 #21564(auto The Exodar;166):25
+#10730 | auto The Exodar;80§auto Die Exodar;80§auto L’Exodar;80 | x=-3880.300048828125 y=-11729.900390625 | size=1 | links=#18819(auto The Exodar;143):43 #27188(auto The Exodar;225):39
+#10785 | auto The Exodar;81§auto Die Exodar;81§auto L’Exodar;81 | x=-4082.400146484375 y=-11354.6005859375 | size=1 | links=#20738(auto The Exodar;160):23 #21568(auto The Exodar;167):11
+#10836 | auto The Exodar;82§auto Die Exodar;82§auto L’Exodar;82 | x=-4122.30029296875 y=-11729 | size=1 | links=#10025(auto The Exodar;77):26 #14611(auto The Exodar;104):27
+#10914 | auto The Exodar;83§auto Die Exodar;83§auto L’Exodar;83 | x=-3920.400146484375 y=-11589 | size=1 | links=#11000(auto The Exodar;85):11 #13296(auto The Exodar;97):21
+#10961 | auto The Exodar;84§auto Die Exodar;84§auto L’Exodar;84 | x=-3702.800048828125 y=-11446.2998046875 | size=1 | links=#3627(auto The Exodar;27):15 #25231(auto The Exodar;207):17
+#11000 | auto The Exodar;85§auto Die Exodar;85§auto L’Exodar;85 | x=-3920.699951171875 y=-11600.5 | size=1 | links=#10914(auto The Exodar;83):11 #24637(auto The Exodar;201):10
+#11221 | auto The Exodar;86§auto Die Exodar;86§auto L’Exodar;86 | x=-3811 y=-11691.1005859375 | size=1 | links=#4248(auto The Exodar;29):13 #22252(auto The Exodar;173):25
+#11238 | auto The Exodar;87§auto Die Exodar;87§auto L’Exodar;87 | x=-4128.2001953125 y=-11673.900390625 | size=1 | links=#12646(auto The Exodar;93):45 #16546(auto The Exodar;124):26 #24528(auto The Exodar;199):38
+#11705 | auto The Exodar;88§auto Die Exodar;88§auto L’Exodar;88 | x=-3979.10009765625 y=-11710.1005859375 | size=1 | links=#4590(auto The Exodar;33):17 #21943(auto The Exodar;171):8
+#11981 | auto The Exodar;89§auto Die Exodar;89§auto L’Exodar;89 | x=-4116.89990234375 y=-11512.6005859375 | size=1 | links=#19926(auto The Exodar;150):14 #24874(auto The Exodar;203):14
+#11986 | auto The Exodar;90§auto Die Exodar;90§auto L’Exodar;90 | x=-4280.60009765625 y=-11820.2998046875 | size=1 | links=#4786(auto The Exodar;34):16 #4860(auto The Exodar;35):14 #7702(auto The Exodar;60):19
+#12347 | auto The Exodar;91§auto Die Exodar;91§auto L’Exodar;91 | x=-4097.7001953125 y=-11871.6005859375 | size=1 | links=#16356(auto The Exodar;123):42 #22346(auto The Exodar;174):33
+#12477 | auto The Exodar;92§auto Die Exodar;92§auto L’Exodar;92 | x=-3887.699951171875 y=-11639.6005859375 | size=1 | links=#2757(auto The Exodar;20):17 #16282(auto The Exodar;121):17
+#12646 | auto The Exodar;93§auto Die Exodar;93§auto L’Exodar;93 | x=-4083.199951171875 y=-11679.400390625 | size=1 | links=#11238(auto The Exodar;87):45 #14001(auto The Exodar;100):50
+#12963 | auto The Exodar;94§auto Die Exodar;94§auto L’Exodar;94 | x=-3883.5 y=-11630.5 | size=1 | links=#16947(auto The Exodar;128):38 #22455(auto The Exodar;177):16
+#13018 | auto The Exodar;95§auto Die Exodar;95§auto L’Exodar;95 | x=-3959.900146484375 y=-11639.5 | size=1 | links=#8241(auto The Exodar;66):33 #25185(auto The Exodar;206):24
+#13098 | auto The Exodar;96§auto Die Exodar;96§auto L’Exodar;96 | x=-4078.10009765625 y=-11542.1005859375 | size=1 | links=#9164(auto The Exodar;72):14
+#13296 | auto The Exodar;97§auto Die Exodar;97§auto L’Exodar;97 | x=-3920.300048828125 y=-11567.7001953125 | size=1 | links=#10914(auto The Exodar;83):21 #16930(auto The Exodar;127):14
+#13601 | auto The Exodar;98§auto Die Exodar;98§auto L’Exodar;98 | x=-3963.699951171875 y=-11701.900390625 | size=1 | links=#7211(auto The Exodar;55):28 #8241(auto The Exodar;66):34 #19255(Mailbox;auction house;Seat of the Naaru;The Exodar):10 #21943(auto The Exodar;171):9
+#13758 | auto The Exodar;99§auto Die Exodar;99§auto L’Exodar;99 | x=-4965.977082010523 y=-11328.06424176332 | size=1 | links=#5794(auto Azuremyst Isle;155):64 #7423(auto The Exodar;58):72
+#14001 | auto The Exodar;100§auto Die Exodar;100§auto L’Exodar;100 | x=-4033.10009765625 y=-11677.7001953125 | size=1 | links=#7992(auto The Exodar;63):30 #12646(auto The Exodar;93):50
+#14101 | auto The Exodar;101§auto Die Exodar;101§auto L’Exodar;101 | x=-3768 y=-11686.1005859375 | size=1 | links=#18139(auto The Exodar;139):10 #23386(auto The Exodar;184):9
+#14419 | auto The Exodar;102§auto Die Exodar;102§auto L’Exodar;102 | x=-4158.7001953125 y=-11643.1005859375 | size=1 | links=#26109(auto The Exodar;216):9 #26193(auto The Exodar;217):13
+#14573 | auto The Exodar;103§auto Die Exodar;103§auto L’Exodar;103 | x=-3863 y=-11561.7998046875 | size=1 | links=#423(auto The Exodar;3):21 #28081(auto The Exodar;232):25
+#14611 | auto The Exodar;104§auto Die Exodar;104§auto L’Exodar;104 | x=-4149.89990234375 y=-11733.1005859375 | size=1 | links=#5870(auto The Exodar;44):24 #10836(auto The Exodar;82):27 #15145(auto The Exodar;112):46 #19287(auto The Exodar;146):21
+#14668 | auto The Exodar;105§auto Die Exodar;105§auto L’Exodar;105 | x=-3849.400146484375 y=-11662.1005859375 | size=1 | links=#1164(auto The Exodar;9):30 #22455(auto The Exodar;177):30
+#14735 | auto The Exodar;106§auto Die Exodar;106§auto L’Exodar;106 | x=-4262.2001953125 y=-11850.400390625 | size=1 | links=#4860(auto The Exodar;35):20 #19906(auto The Exodar;149):43
+#14827 | auto The Exodar;107§auto Die Exodar;107§auto L’Exodar;107 | x=-4045.10009765625 y=-11429.400390625 | size=1 | links=#8739(auto The Exodar;67):21 #28067(auto The Exodar;231):13
+#14963 | auto The Exodar;108§auto Die Exodar;108§auto L’Exodar;108 | x=-3776.800048828125 y=-11496.2001953125 | size=1 | links=#10037(auto The Exodar;78):38 #20276(auto The Exodar;154):25 #20900(auto The Exodar;163):43
+#15012 | auto The Exodar;109§auto Die Exodar;109§auto L’Exodar;109 | x=-3961.5 y=-11544 | size=1 | links=#23681(auto The Exodar;189):49
+#15093 | auto The Exodar;110§auto Die Exodar;110§auto L’Exodar;110 | x=-3821.10009765625 y=-11488.900390625 | size=1 | links=#9112(auto The Exodar;70):24 #20900(auto The Exodar;163):23
+#15107 | auto The Exodar;111§auto Die Exodar;111§auto L’Exodar;111 | x=-3786.400146484375 y=-11423.2001953125 | size=1 | links=#15221(auto The Exodar;114):39
+#15145 | auto The Exodar;112§auto Die Exodar;112§auto L’Exodar;112 | x=-4188.80029296875 y=-11757.7998046875 | size=1 | links=#4892(auto The Exodar;36):40 #14611(auto The Exodar;104):46
+#15203 | auto The Exodar;113§auto Die Exodar;113§auto L’Exodar;113 | x=-4110.2001953125 y=-11518.2001953125 | size=1 | links=#4432(auto The Exodar;32):18 #7249(auto The Exodar;56):34 #7765(auto The Exodar;61):28
+#15221 | auto The Exodar;114§auto Die Exodar;114§auto L’Exodar;114 | x=-3804.699951171875 y=-11457.7998046875 | size=1 | links=#15107(auto The Exodar;111):39 #20900(auto The Exodar;163):12
+#15260 | auto The Exodar;115§auto Die Exodar;115§auto L’Exodar;115 | x=-4025.900146484375 y=-11916 | size=1 | links=#2067(auto The Exodar;14):28 #3360(auto The Exodar;25):45 #6294(auto The Exodar;48):37 #16356(auto The Exodar;123):42
+#15337 | auto The Exodar;116§auto Die Exodar;116§auto L’Exodar;116 | x=-4141.7001953125 y=-11597.6005859375 | size=1 | links=#1377(auto The Exodar;10):25 #1722(auto The Exodar;12):34 #2346(auto The Exodar;18):41
+#15352 | auto The Exodar;117§auto Die Exodar;117§auto L’Exodar;117 | x=-3734.300048828125 y=-11432.7998046875 | size=1 | links=#25231(auto The Exodar;207):16 #26333(auto The Exodar;219):12
+#15724 | auto The Exodar;118§auto Die Exodar;118§auto L’Exodar;118 | x=-3700.10009765625 y=-11476.7001953125 | size=1 | links=#9162(auto The Exodar;71):8
+#15886 | auto The Exodar;119§auto Die Exodar;119§auto L’Exodar;119 | x=-3949.900146484375 y=-11653.1005859375 | size=1 | links=#16947(auto The Exodar;128):37 #20144(auto The Exodar;151):45
+#16100 | auto The Exodar;120§auto Die Exodar;120§auto L’Exodar;120 | x=-5085.144871497542 y=-11258.87518316844 | size=1 | links=#16292(auto The Exodar;122):71
+#16282 | auto The Exodar;121§auto Die Exodar;121§auto L’Exodar;121 | x=-3894.10009765625 y=-11656.1005859375 | size=1 | links=#12477(auto The Exodar;92):17 #20629(auto The Exodar;158):12
+#16292 | auto The Exodar;122§auto Die Exodar;122§auto L’Exodar;122 | x=-5080.173564752522 y=-11330.22803204905 | size=1 | links=#7423(auto The Exodar;58):44 #16100(auto The Exodar;120):71
+#16356 | auto The Exodar;123§auto Die Exodar;123§auto L’Exodar;123 | x=-4060.300048828125 y=-11891.400390625 | size=1 | links=#6925(auto The Exodar;52):23 #12347(auto The Exodar;91):42 #15260(auto The Exodar;115):42 #22536(Mailbox;The Exodar;top;city gate):13
+#16546 | auto The Exodar;124§auto Die Exodar;124§auto L’Exodar;124 | x=-4151.60009765625 y=-11661.1005859375 | size=1 | links=#11238(auto The Exodar;87):26 #20543(auto The Exodar;156):32
+#16686 | auto The Exodar;125§auto Die Exodar;125§auto L’Exodar;125 | x=-4076.400146484375 y=-11414.5 | size=1 | links=#20738(auto The Exodar;160):36 #24066(auto The Exodar;193):33
+#16807 | auto The Exodar;126§auto Die Exodar;126§auto L’Exodar;126 | x=-4062.400146484375 y=-11749.7998046875 | size=5 | links=#901(auto The Exodar;7):19 #28328(auto The Exodar;233):37
+#16930 | auto The Exodar;127§auto Die Exodar;127§auto L’Exodar;127 | x=-3918.5 y=-11553.6005859375 | size=1 | links=#13296(auto The Exodar;97):14 #17186(guild vault;The Exodar):14
+#16947 | auto The Exodar;128§auto Die Exodar;128§auto L’Exodar;128 | x=-3921.800048828125 y=-11628.900390625 | size=1 | links=#12963(auto The Exodar;94):38 #15886(auto The Exodar;119):37
+#16972 | auto The Exodar;129§auto Die Exodar;129§auto L’Exodar;129 | x=-4016.400146484375 y=-11524.7001953125 | size=1 | links=#17566(auto The Exodar;135):36 #27883(auto The Exodar;228):40
+#17145 | auto The Exodar;130§auto Die Exodar;130§auto L’Exodar;130 | x=-3830.400146484375 y=-11570.400390625 | size=1 | links=#2897(auto The Exodar;23):24 #8761(auto The Exodar;68):14
+#17166 | auto The Exodar;131§auto Die Exodar;131§auto L’Exodar;131 | x=-3810.60009765625 y=-11368.6005859375 | size=1 | links=#23587(auto The Exodar;188):13 #24211(auto The Exodar;195):13
+#17175 | auto The Exodar;132§auto Die Exodar;132§auto L’Exodar;132 | x=-3979.5 y=-11492.900390625 | size=1 | links=#23681(auto The Exodar;189):11 #28052(auto The Exodar;230):6
+#17186 | guild vault;The Exodar§gildenbank;Die Exodar§guild vault;L’Exodar | x=-3904.300048828125 y=-11558.2998046875 | size=1 | links=#16930(auto The Exodar;127):14
+#17226 | auto The Exodar;133§auto Die Exodar;133§auto L’Exodar;133 | x=-4134.60009765625 y=-11432.6005859375 | size=1 | links=#697(auto The Exodar;5):17 #19423(auto The Exodar;147):22
+#17395 | Mailbox;Bank;Seat of the Naaru;The Exodar§briefkasten;bank;Sitz der Naaru;Die Exodar§Boîte aux lettres;Bank;Seat of the Naaru;L’Exodar | x=-3912.900146484375 y=-11606.7998046875 | size=1 | links=#24637(auto The Exodar;201):6
+#17445 | auto The Exodar;134§auto Die Exodar;134§auto L’Exodar;134 | x=-4035.900146484375 y=-11486.5 | size=1 | links=#21880(auto The Exodar;170):21 #25171(auto The Exodar;205):20
+#17566 | auto The Exodar;135§auto Die Exodar;135§auto L’Exodar;135 | x=-4036.199951171875 y=-11493.5 | size=1 | links=#8204(auto The Exodar;65):28 #16972(auto The Exodar;129):36 #20861(auto The Exodar;162):36 #24544(auto The Exodar;200):25
+#17697 | auto The Exodar;136§auto Die Exodar;136§auto L’Exodar;136 | x=-4296.5 y=-11794.7998046875 | size=1 | links=#4786(auto The Exodar;34):13
+#17709 | auto The Exodar;137§auto Die Exodar;137§auto L’Exodar;137 | x=-3718.400146484375 y=-11393.400390625 | size=1 | links=#23577(auto The Exodar;187):7
+#17959 | auto The Exodar;138§auto Die Exodar;138§auto L’Exodar;138 | x=-4231.7001953125 y=-11709.6005859375 | size=1 | links=#7941(auto The Exodar;62):20
+#18139 | auto The Exodar;139§auto Die Exodar;139§auto L’Exodar;139 | x=-3766.60009765625 y=-11696.400390625 | size=1 | links=#2893(auto The Exodar;22):9 #14101(auto The Exodar;101):10
+#18278 | auto The Exodar;140§auto Die Exodar;140§auto L’Exodar;140 | x=-4088.10009765625 y=-11406.7001953125 | size=1 | links=#25064(auto The Exodar;204):17 #27334(auto The Exodar;226):19
+#18298 | auto The Exodar;141§auto Die Exodar;141§auto L’Exodar;141 | x=-3887.10009765625 y=-11488.400390625 | size=1 | links=#4344(auto The Exodar;30):8
+#18390 | auto The Exodar;142§auto Die Exodar;142§auto L’Exodar;142 | x=-3788 y=-11335.7001953125 | size=1 | links=#2833(auto The Exodar;21):39 #25906(auto The Exodar;211):36
+#18819 | auto The Exodar;143§auto Die Exodar;143§auto L’Exodar;143 | x=-3923.300048828125 y=-11730.2001953125 | size=1 | links=#10730(auto The Exodar;80):43 #20144(auto The Exodar;151):44
+#19121 | auto The Exodar;144§auto Die Exodar;144§auto L’Exodar;144 | x=-3888.199951171875 y=-11624.2998046875 | size=1 | links=#24021(auto The Exodar;191):19 #24354(auto The Exodar;196):32 #24637(auto The Exodar;201):32
+#19255 | Mailbox;auction house;Seat of the Naaru;The Exodar§briefkasten;auktionshaus;Sitz der Naaru;Die Exodar§Boîte aux lettres;auction house;Seat of the Naaru;L’Exodar | x=-3974.300048828125 y=-11700 | size=1 | links=#13601(auto The Exodar;98):10 #21943(auto The Exodar;171):7
+#19285 | auto The Exodar;145§auto Die Exodar;145§auto L’Exodar;145 | x=-3972.800048828125 y=-11949.900390625 | size=1 | links=#2067(auto The Exodar;14):34 #27995(auto The Exodar;229):24
+#19287 | auto The Exodar;146§auto Die Exodar;146§auto L’Exodar;146 | x=-4168.60009765625 y=-11721.7998046875 | size=5 | links=#14611(auto The Exodar;104):21 #20543(auto The Exodar;156):55
+#19423 | auto The Exodar;147§auto Die Exodar;147§auto L’Exodar;147 | x=-4143.10009765625 y=-11453.7001953125 | size=1 | links=#7106(auto The Exodar;54):20 #17226(auto The Exodar;133):22
+#19477 | auto The Exodar;148§auto Die Exodar;148§auto L’Exodar;148 | x=-4195.39990234375 y=-11616.6005859375 | size=1 | links=#23210(auto The Exodar;182):32
+#19906 | auto The Exodar;149§auto Die Exodar;149§auto L’Exodar;149 | x=-4226.30029296875 y=-11825 | size=1 | links=#14735(auto The Exodar;106):43 #22049(auto The Exodar;172):24
+#19926 | auto The Exodar;150§auto Die Exodar;150§auto L’Exodar;150 | x=-4103.30029296875 y=-11517.2001953125 | size=1 | links=#9526(auto The Exodar;74):20 #11981(auto The Exodar;89):14
+#20144 | auto The Exodar;151§auto Die Exodar;151§auto L’Exodar;151 | x=-3954.5 y=-11698.7001953125 | size=1 | links=#15886(auto The Exodar;119):45 #18819(auto The Exodar;143):44
+#20170 | auto The Exodar;152§auto Die Exodar;152§auto L’Exodar;152 | x=-4193.2001953125 y=-11586.400390625 | size=1 | links=#1427(auto The Exodar;11):32 #20608(auto The Exodar;157):17 #27607(auto The Exodar;227):22
+#20271 | auto The Exodar;153§auto Die Exodar;153§auto L’Exodar;153 | x=-3791.699951171875 y=-11695 | size=1 | links=#4248(auto The Exodar;29):8 #21801(auto The Exodar;169):3
+#20276 | auto The Exodar;154§auto Die Exodar;154§auto L’Exodar;154 | x=-3780.60009765625 y=-11471.1005859375 | size=1 | links=#7006(auto The Exodar;53):19 #14963(auto The Exodar;108):25 #20900(auto The Exodar;163):29
+#20380 | auto The Exodar;155§auto Die Exodar;155§auto L’Exodar;155 | x=-3939.5 y=-11810.7001953125 | size=1 | links=#10511(auto The Exodar;79):34 #26959(auto The Exodar;222):29
+#20543 | auto The Exodar;156§auto Die Exodar;156§auto L’Exodar;156 | x=-4182.80029296875 y=-11668.6005859375 | size=1 | links=#1377(auto The Exodar;10):56 #16546(auto The Exodar;124):32 #19287(auto The Exodar;146):55 #23552(auto The Exodar;186):23
+#20608 | auto The Exodar;157§auto Die Exodar;157§auto L’Exodar;157 | x=-4207.60009765625 y=-11576.7001953125 | size=1 | links=#20170(auto The Exodar;152):17 #22649(auto The Exodar;179):13
+#20629 | auto The Exodar;158§auto Die Exodar;158§auto L’Exodar;158 | x=-3897.400146484375 y=-11668.2001953125 | size=1 | links=#16282(auto The Exodar;121):12
+#20632 | auto The Exodar;159§auto Die Exodar;159§auto L’Exodar;159 | x=-4038.300048828125 y=-11832.1005859375 | size=1 | links=#6925(auto The Exodar;52):40
+#20738 | auto The Exodar;160§auto Die Exodar;160§auto L’Exodar;160 | x=-4076.900146484375 y=-11377.7001953125 | size=1 | links=#10785(auto The Exodar;81):23 #16686(auto The Exodar;125):36
+#20771 | auto The Exodar;161§auto Die Exodar;161§auto L’Exodar;161 | x=-4024.10009765625 y=-11386.7001953125 | size=1 | links=#9882(auto The Exodar;75):39 #24362(auto The Exodar;197):28
+#20861 | auto The Exodar;162§auto Die Exodar;162§auto L’Exodar;162 | x=-4007.199951171875 y=-11470.900390625 | size=1 | links=#17566(auto The Exodar;135):36 #23681(auto The Exodar;189):37
+#20900 | auto The Exodar;163§auto Die Exodar;163§auto L’Exodar;163 | x=-3810.400146484375 y=-11468.400390625 | size=1 | links=#14963(auto The Exodar;108):43 #15093(auto The Exodar;110):23 #15221(auto The Exodar;114):12 #20276(auto The Exodar;154):29
+#20942 | auto The Exodar;164§auto Die Exodar;164§auto L’Exodar;164 | x=-3880.699951171875 y=-11509.900390625 | size=1 | links=#3487(auto The Exodar;26):7 #4344(auto The Exodar;30):13
+#21466 | auto The Exodar;165§auto Die Exodar;165§auto L’Exodar;165 | x=-4112.89990234375 y=-11772.400390625 | size=1 | links=#10319(auto Azuremyst Isle;253):37 #16098(auto Azuremyst Isle;386):31 #24325(auto Azuremyst Isle;567):31 #26028(auto The Exodar;214):23 #28328(auto The Exodar;233):18
+#21564 | auto The Exodar;166§auto Die Exodar;166§auto L’Exodar;166 | x=-3984.800048828125 y=-11838 | size=1 | links=#118(auto The Exodar;1):17 #10511(auto The Exodar;79):25
+#21568 | auto The Exodar;167§auto Die Exodar;167§auto L’Exodar;167 | x=-4071 y=-11355.900390625 | size=1 | links=#359(auto The Exodar;2):15 #10785(auto The Exodar;81):11
+#21621 | auto The Exodar;168§auto Die Exodar;168§auto L’Exodar;168 | x=-4060.60009765625 y=-11713.7998046875 | size=1 | links=#6722(auto The Exodar;51):40 #10025(auto The Exodar;77):37
+#21801 | auto The Exodar;169§auto Die Exodar;169§auto L’Exodar;169 | x=-3788.5 y=-11696.2998046875 | size=1 | links=#20271(auto The Exodar;153):3 #23288(auto The Exodar;183):9
+#21880 | auto The Exodar;170§auto Die Exodar;170§auto L’Exodar;170 | x=-4031.300048828125 y=-11465.2001953125 | size=1 | links=#8739(auto The Exodar;67):17 #17445(auto The Exodar;134):21
+#21943 | auto The Exodar;171§auto Die Exodar;171§auto L’Exodar;171 | x=-3971.699951171875 y=-11706.6005859375 | size=1 | links=#11705(auto The Exodar;88):8 #13601(auto The Exodar;98):9 #19255(Mailbox;auction house;Seat of the Naaru;The Exodar):7
+#22049 | auto The Exodar;172§auto Die Exodar;172§auto L’Exodar;172 | x=-4207.39990234375 y=-11810.1005859375 | size=1 | links=#19906(auto The Exodar;149):24 #27008(auto The Exodar;223):25
+#22252 | auto The Exodar;173§auto Die Exodar;173§auto L’Exodar;173 | x=-3813 y=-11665.400390625 | size=1 | links=#11221(auto The Exodar;86):25
+#22346 | auto The Exodar;174§auto Die Exodar;174§auto L’Exodar;174 | x=-4109.7001953125 y=-11840.1005859375 | size=1 | links=#12347(auto The Exodar;91):33 #26028(auto The Exodar;214):44
+#22365 | auto The Exodar;175§auto Die Exodar;175§auto L’Exodar;175 | x=-3833.400146484375 y=-11805.900390625 | size=1 | links=#5513(auto The Exodar;41):28 #25343(auto The Exodar;208):31
+#22366 | auto The Exodar;176§auto Die Exodar;176§auto L’Exodar;176 | x=-4177 y=-11476.900390625 | size=1 | links=#26283(auto The Exodar;218):9
+#22455 | auto The Exodar;177§auto Die Exodar;177§auto L’Exodar;177 | x=-3870.10009765625 y=-11639.5 | size=1 | links=#12963(auto The Exodar;94):16 #14668(auto The Exodar;105):30
+#22488 | auto The Exodar;178§auto Die Exodar;178§auto L’Exodar;178 | x=-4036.5 y=-11564 | size=1 | links=#3792(auto The Exodar;28):51
+#22536 | Mailbox;The Exodar;top;city gate§briefkasten;Die Exodar;oben;stadttor§Boîte aux lettres;L’Exodar;top;city gate | x=-4054.699951171875 y=-11904.2001953125 | size=1 | links=#5489(auto Azuremyst Isle;148):163 #16356(auto The Exodar;123):13
+#22649 | auto The Exodar;179§auto Die Exodar;179§auto L’Exodar;179 | x=-4219.60009765625 y=-11569.5 | size=1 | links=#20608(auto The Exodar;157):13 #22693(auto The Exodar;180):17
+#22693 | auto The Exodar;180§auto Die Exodar;180§auto L’Exodar;180 | x=-4235 y=-11561 | size=1 | links=#873(auto The Exodar;6):14 #22649(auto The Exodar;179):17
+#22916 | auto The Exodar;181§auto Die Exodar;181§auto L’Exodar;181 | x=-4254.80029296875 y=-11645.7001953125 | size=1 | links=#25829(auto The Exodar;210):37
+#23210 | auto The Exodar;182§auto Die Exodar;182§auto L’Exodar;182 | x=-4192.89990234375 y=-11648.7998046875 | size=1 | links=#19477(auto The Exodar;148):32 #26193(auto The Exodar;217):23
+#23288 | auto The Exodar;183§auto Die Exodar;183§auto L’Exodar;183 | x=-3778.60009765625 y=-11695.400390625 | size=1 | links=#21801(auto The Exodar;169):9 #23386(auto The Exodar;184):8
+#23386 | auto The Exodar;184§auto Die Exodar;184§auto L’Exodar;184 | x=-3777.800048828125 y=-11687.400390625 | size=1 | links=#14101(auto The Exodar;101):9 #23288(auto The Exodar;183):8
+#23452 | auto The Exodar;185§auto Die Exodar;185§auto L’Exodar;185 | x=-3850.199951171875 y=-11672.5 | size=1 | links=#2757(auto The Exodar;20):36 #27188(auto The Exodar;225):28
+#23552 | auto The Exodar;186§auto Die Exodar;186§auto L’Exodar;186 | x=-4205.39990234375 y=-11674.1005859375 | size=1 | links=#434(auto The Exodar;4):20 #4418(auto The Exodar;31):13 #20543(auto The Exodar;156):23 #25829(auto The Exodar;210):19
+#23577 | auto The Exodar;187§auto Die Exodar;187§auto L’Exodar;187 | x=-3722.60009765625 y=-11387.7998046875 | size=1 | links=#17709(auto The Exodar;137):7 #26947(auto The Exodar;221):11
+#23587 | auto The Exodar;188§auto Die Exodar;188§auto L’Exodar;188 | x=-3817.900146484375 y=-11356.7001953125 | size=1 | links=#2833(auto The Exodar;21):18 #17166(auto The Exodar;131):13
+#23681 | auto The Exodar;189§auto Die Exodar;189§auto L’Exodar;189 | x=-3987.10009765625 y=-11502.1005859375 | size=1 | links=#15012(auto The Exodar;109):49 #17175(auto The Exodar;132):11 #20861(auto The Exodar;162):37
+#23765 | auto The Exodar;190§auto Die Exodar;190§auto L’Exodar;190 | x=-4214.30029296875 y=-11634.2998046875 | size=1 | links=#434(auto The Exodar;4):20 #24486(auto The Exodar;198):34
+#24021 | auto The Exodar;191§auto Die Exodar;191§auto L’Exodar;191 | x=-3868.400146484375 y=-11626.5 | size=1 | links=#6177(auto The Exodar;47):29 #19121(auto The Exodar;144):19
+#24025 | auto The Exodar;192§auto Die Exodar;192§auto L’Exodar;192 | x=-3854.699951171875 y=-11755.7998046875 | size=1 | links=#5120(auto The Exodar;38):23 #25343(auto The Exodar;208):23
+#24066 | auto The Exodar;193§auto Die Exodar;193§auto L’Exodar;193 | x=-4063 y=-11445 | size=1 | links=#8204(auto The Exodar;65):27 #16686(auto The Exodar;125):33 #24362(auto The Exodar;197):45
+#24150 | auto The Exodar;194§auto Die Exodar;194§auto L’Exodar;194 | x=-3809.199951171875 y=-11547.6005859375 | size=1 | links=#8761(auto The Exodar;68):16 #10037(auto The Exodar;78):22
+#24211 | auto The Exodar;195§auto Die Exodar;195§auto L’Exodar;195 | x=-3803.699951171875 y=-11380.7001953125 | size=1 | links=#2344(auto The Exodar;17):23 #17166(auto The Exodar;131):13
+#24354 | auto The Exodar;196§auto Die Exodar;196§auto L’Exodar;196 | x=-3880.199951171875 y=-11592.6005859375 | size=1 | links=#423(auto The Exodar;3):14 #19121(auto The Exodar;144):32
+#24362 | auto The Exodar;197§auto Die Exodar;197§auto L’Exodar;197 | x=-4047.5 y=-11402.2998046875 | size=1 | links=#20771(auto The Exodar;161):28 #24066(auto The Exodar;193):45
+#24486 | auto The Exodar;198§auto Die Exodar;198§auto L’Exodar;198 | x=-4214.5 y=-11599.400390625 | size=1 | links=#23765(auto The Exodar;190):34 #27607(auto The Exodar;227):6
+#24528 | auto The Exodar;199§auto Die Exodar;199§auto L’Exodar;199 | x=-4107.89990234375 y=-11706.1005859375 | size=1 | links=#5350(auto The Exodar;40):16 #11238(auto The Exodar;87):38
+#24544 | auto The Exodar;200§auto Die Exodar;200§auto L’Exodar;200 | x=-4043.699951171875 y=-11517.7001953125 | size=1 | links=#17566(auto The Exodar;135):25
+#24637 | auto The Exodar;201§auto Die Exodar;201§auto L’Exodar;201 | x=-3917.699951171875 y=-11610.7001953125 | size=1 | links=#11000(auto The Exodar;85):10 #17395(Mailbox;Bank;Seat of the Naaru;The Exodar):6 #19121(auto The Exodar;144):32 #25185(auto The Exodar;206):27
+#24779 | auto The Exodar;202§auto Die Exodar;202§auto L’Exodar;202 | x=-4060.699951171875 y=-11963.7998046875 | size=1 | links=#2669(auto The Exodar;19):20 #6294(auto The Exodar;48):22
+#24874 | auto The Exodar;203§auto Die Exodar;203§auto L’Exodar;203 | x=-4130 y=-11505.5 | size=1 | links=#21948(auto Azuremyst Isle;516):15 #11981(auto The Exodar;89):14
+#25064 | auto The Exodar;204§auto Die Exodar;204§auto L’Exodar;204 | x=-4070.5 y=-11410.400390625 | size=1 | links=#18278(auto The Exodar;140):17 #28067(auto The Exodar;231):18
+#25171 | auto The Exodar;205§auto Die Exodar;205§auto L’Exodar;205 | x=-4048 y=-11502.900390625 | size=1 | links=#1063(auto The Exodar;8):18 #17445(auto The Exodar;134):20
+#25185 | auto The Exodar;206§auto Die Exodar;206§auto L’Exodar;206 | x=-3943.900146484375 y=-11620.400390625 | size=1 | links=#13018(auto The Exodar;95):24 #24637(auto The Exodar;201):27 #28381(auto The Exodar;234):47
+#25231 | auto The Exodar;207§auto Die Exodar;207§auto L’Exodar;207 | x=-3718.60009765625 y=-11438.6005859375 | size=1 | links=#10961(auto The Exodar;84):17 #15352(auto The Exodar;117):16
+#25343 | auto The Exodar;208§auto Die Exodar;208§auto L’Exodar;208 | x=-3840.5 y=-11774.7001953125 | size=1 | links=#22365(auto The Exodar;175):31 #24025(auto The Exodar;192):23
+#25384 | auto The Exodar;209§auto Die Exodar;209§auto L’Exodar;209 | x=-4128.60009765625 y=-11472.6005859375 | size=1 | links=#7106(auto The Exodar;54):11
+#25829 | auto The Exodar;210§auto Die Exodar;210§auto L’Exodar;210 | x=-4223.39990234375 y=-11665.6005859375 | size=1 | links=#22916(auto The Exodar;181):37 #23552(auto The Exodar;186):19
+#25906 | auto The Exodar;211§auto Die Exodar;211§auto L’Exodar;211 | x=-3756.699951171875 y=-11354.7001953125 | size=1 | links=#18390(auto The Exodar;142):36 #26947(auto The Exodar;221):35
+#25907 | auto The Exodar;212§auto Die Exodar;212§auto L’Exodar;212 | x=-4049.400146484375 y=-11768 | size=5 | links=#901(auto The Exodar;7):5 #5529(auto The Exodar;42):5
+#25933 | auto The Exodar;213§auto Die Exodar;213§auto L’Exodar;213 | x=-3837.300048828125 y=-11393.7001953125 | size=1 | links=#2344(auto The Exodar;17):19
+#26028 | auto The Exodar;214§auto Die Exodar;214§auto L’Exodar;214 | x=-4115.5 y=-11795.6005859375 | size=1 | links=#5489(auto Azuremyst Isle;148):43 #21466(auto The Exodar;165):23 #22346(auto The Exodar;174):44
+#26073 | auto The Exodar;215§auto Die Exodar;215§auto L’Exodar;215 | x=-3888.900146484375 y=-11542.6005859375 | size=1 | links=#1927(auto The Exodar;13):21 #3487(auto The Exodar;26):27
+#26109 | auto The Exodar;216§auto Die Exodar;216§auto L’Exodar;216 | x=-4160.80029296875 y=-11633.7998046875 | size=1 | links=#1427(auto The Exodar;11):24 #14419(auto The Exodar;102):9
+#26193 | auto The Exodar;217§auto Die Exodar;217§auto L’Exodar;217 | x=-4169.89990234375 y=-11650.2001953125 | size=1 | links=#14419(auto The Exodar;102):13 #23210(auto The Exodar;182):23
+#26283 | auto The Exodar;218§auto Die Exodar;218§auto L’Exodar;218 | x=-4167.10009765625 y=-11476.5 | size=1 | links=#7106(auto The Exodar;54):26 #22366(auto The Exodar;176):9
+#26333 | auto The Exodar;219§auto Die Exodar;219§auto L’Exodar;219 | x=-3746.10009765625 y=-11428.2998046875 | size=1 | links=#7006(auto The Exodar;53):35 #15352(auto The Exodar;117):12
+#26860 | auto The Exodar;220§auto Die Exodar;220§auto L’Exodar;220 | x=-3920 y=-11736.400390625 | size=1 | links=#6441(auto The Exodar;49):17 #7211(auto The Exodar;55):27
+#26947 | auto The Exodar;221§auto Die Exodar;221§auto L’Exodar;221 | x=-3731.10009765625 y=-11379.7998046875 | size=1 | links=#23577(auto The Exodar;187):11 #25906(auto The Exodar;211):35
+#26959 | auto The Exodar;222§auto Die Exodar;222§auto L’Exodar;222 | x=-3915.800048828125 y=-11827.900390625 | size=1 | links=#3335(auto The Exodar;24):23 #20380(auto The Exodar;155):29
+#27008 | auto The Exodar;223§auto Die Exodar;223§auto L’Exodar;223 | x=-4191.30029296875 y=-11790.6005859375 | size=1 | links=#4892(auto The Exodar;36):36 #22049(auto The Exodar;172):25
+#27173 | auto The Exodar;224§auto Die Exodar;224§auto L’Exodar;224 | x=-3865.60009765625 y=-11377.7998046875 | size=1 | links=#2833(auto The Exodar;21):52 #9991(auto The Exodar;76):61
+#27188 | auto The Exodar;225§auto Die Exodar;225§auto L’Exodar;225 | x=-3853.699951171875 y=-11700.400390625 | size=1 | links=#10730(auto The Exodar;80):39 #23452(auto The Exodar;185):28
+#27334 | auto The Exodar;226§auto Die Exodar;226§auto L’Exodar;226 | x=-4107.39990234375 y=-11410.400390625 | size=1 | links=#697(auto The Exodar;5):18 #18278(auto The Exodar;140):19
+#27607 | auto The Exodar;227§auto Die Exodar;227§auto L’Exodar;227 | x=-4215.10009765625 y=-11592.7998046875 | size=1 | links=#20170(auto The Exodar;152):22 #24486(auto The Exodar;198):6
+#27883 | auto The Exodar;228§auto Die Exodar;228§auto L’Exodar;228 | x=-3989.699951171875 y=-11555.1005859375 | size=1 | links=#16972(auto The Exodar;129):40 #28381(auto The Exodar;234):32
+#27995 | auto The Exodar;229§auto Die Exodar;229§auto L’Exodar;229 | x=-3948.699951171875 y=-11952.2001953125 | size=1 | links=#27706(auto Azuremyst Isle;651):20 #19285(auto The Exodar;145):24
+#28052 | auto The Exodar;230§auto Die Exodar;230§auto L’Exodar;230 | x=-3975.800048828125 y=-11487.7001953125 | size=1 | links=#17175(auto The Exodar;132):6
+#28067 | auto The Exodar;231§auto Die Exodar;231§auto L’Exodar;231 | x=-4054.60009765625 y=-11419.2998046875 | size=1 | links=#14827(auto The Exodar;107):13 #25064(auto The Exodar;204):18
+#28081 | auto The Exodar;232§auto Die Exodar;232§auto L’Exodar;232 | x=-3848.699951171875 y=-11541 | size=1 | links=#9112(auto The Exodar;70):34 #14573(auto The Exodar;103):25
+#28328 | auto The Exodar;233§auto Die Exodar;233§auto L’Exodar;233 | x=-4097.60009765625 y=-11762.5 | size=5 | links=#16807(auto The Exodar;126):37 #21466(auto The Exodar;165):18
+#28381 | auto The Exodar;234§auto Die Exodar;234§auto L’Exodar;234 | x=-3972.5 y=-11582.7998046875 | size=1 | links=#25185(auto The Exodar;206):47 #27883(auto The Exodar;228):32

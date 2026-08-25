@@ -1,0 +1,3 @@
+Zone areaId 108 — eine Zeile pro Wegpunkt; Links inline.
+
+#28816 | s;Eastern Kingdoms;Westfall;Sentinel Hill§s;Östliche Königreiche;Westfall;Späherkuppe§s;Royaumes de l'est;Marche de l'Ouest;Sentinel Hill | x=-10503.7 y=-1027.76 | size=1

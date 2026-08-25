@@ -1,0 +1,3 @@
+Zone areaId 227 — eine Zeile pro Wegpunkt; Links inline.
+
+#28792 | s;Eastern Kingdoms;Silverpine Forest;Valgan's Field;Valgan's Field§s;Östliche Königreiche;Silberwald;Valgans Feld;Valgans Feld§s;Royaumes de l'est;Forêt des Pins argentés;Valgan's Field;Valgan's Field | x=908.754 y=-1255.63 | size=1

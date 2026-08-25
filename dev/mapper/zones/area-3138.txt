@@ -1,0 +1,3 @@
+Zone areaId 3138 — eine Zeile pro Wegpunkt; Links inline.
+
+#28648 | s;Kalimdor;Azshara;The Ruined Reaches;Rethress Sanctum§s;Kalimdor;Azshara;Die verfallenen Gegenden;Rethress Sanktum§s;Kalimdor;Azshara;Les Confins dévastés;Sanctuaire de Rethress | x=2195.67 y=-6438.33 | size=1

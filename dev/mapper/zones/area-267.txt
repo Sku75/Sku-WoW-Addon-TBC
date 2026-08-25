@@ -1,0 +1,1144 @@
+Zone areaId 267 — eine Zeile pro Wegpunkt; Links inline.
+
+#9 | auto Hillsbrad Foothills;1§auto Vorgebirge des Hügellands;1§auto Contreforts de Hautebrande;1 | x=-737 y=63.5 | size=1 | links=#16092(auto Hillsbrad Foothills;258):15 #19503(auto Hillsbrad Foothills;318):21 c2269.28:5
+#24 | auto Hillsbrad Foothills;2§auto Vorgebirge des Hügellands;2§auto Contreforts de Hautebrande;2 | x=-856.5 y=-569.7999877929688 | size=1 | links=#28023(top;inn;Southshore):0
+#29 | auto Hillsbrad Foothills;3§auto Vorgebirge des Hügellands;3§auto Contreforts de Hautebrande;3 | x=-764.6000366210938 y=69.30000305175781 | size=1 | links=#8182(auto Hillsbrad Foothills;133):18 #9131(auto Hillsbrad Foothills;154):32 #16092(auto Hillsbrad Foothills;258):16 c2503.6:3
+#68 | auto Hillsbrad Foothills;4§auto Vorgebirge des Hügellands;4§auto Contreforts de Hautebrande;4 | x=-296.8999938964844 y=-1114 | size=1 | links=#3213(auto Hillsbrad Foothills;52):85 #26483(auto Hillsbrad Foothills;431):68 c2408.14:18
+#143 | auto Hillsbrad Foothills;5§auto Vorgebirge des Hügellands;5§auto Contreforts de Hautebrande;5 | x=-618.2999877929688 y=-158 | size=1 | links=#4593(auto Hillsbrad Foothills;76):80 #7020(auto Hillsbrad Foothills;117):51 #8401(auto Hillsbrad Foothills;136):24 c2268.6:43
+#157 | auto Hillsbrad Foothills;6§auto Vorgebirge des Hügellands;6§auto Contreforts de Hautebrande;6 | x=-148.4000091552734 y=-1808 | size=1 | links=#2403(auto Hillsbrad Foothills;38):16 #6308(passage;from;Hillsbrad Foothills;to;The Hinterlands):14
+#161 | auto Hillsbrad Foothills;7§auto Vorgebirge des Hügellands;7§auto Contreforts de Hautebrande;7 | x=-506.8999938964844 y=-1644 | size=1 | links=#23996(auto Hillsbrad Foothills;392):63 #25274(auto Hillsbrad Foothills;417):88
+#162 | auto Hillsbrad Foothills;8§auto Vorgebirge des Hügellands;8§auto Contreforts de Hautebrande;8 | x=-819.7999877929688 y=150.4000091552734 | size=1 | links=#2252(auto Hillsbrad Foothills;33):12 #8666(auto Hillsbrad Foothills;140):14 c2269.22:26 c2269.36:5
+#172 | auto Hillsbrad Foothills;9§auto Vorgebirge des Hügellands;9§auto Contreforts de Hautebrande;9 | x=-1305.599975585938 y=-1225.099975585938 | size=1 | links=#4777(auto Hillsbrad Foothills;79):19 #5977(auto Hillsbrad Foothills;97):12 #25919(auto Hillsbrad Foothills;427):21
+#296 | auto Hillsbrad Foothills;10§auto Vorgebirge des Hügellands;10§auto Contreforts de Hautebrande;10 | x=-852.2999877929688 y=-580 | size=1 | links=#9383(auto Hillsbrad Foothills;159):3 #25471(auto Hillsbrad Foothills;420):3
+#519 | auto Hillsbrad Foothills;11§auto Vorgebirge des Hügellands;11§auto Contreforts de Hautebrande;11 | x=-1303.800048828125 y=-1253.400024414063 | size=1 | links=#8134(auto Hillsbrad Foothills;131):6 #17900(auto Hillsbrad Foothills;291):8
+#536 | auto Hillsbrad Foothills;12§auto Vorgebirge des Hügellands;12§auto Contreforts de Hautebrande;12 | x=-43.29999923706055 y=-1294.400024414063 | size=1 | links=#11884(auto Hillsbrad Foothills;199):60 #21388(auto Hillsbrad Foothills;352):26
+#637 | auto Hillsbrad Foothills;13§auto Vorgebirge des Hügellands;13§auto Contreforts de Hautebrande;13 | x=-442.5 y=-521.5 | size=1 | links=#6536(auto Hillsbrad Foothills;105):80 #18559(crossing;three;Hillsbrad Foothills):64
+#761 | auto Hillsbrad Foothills;14§auto Vorgebirge des Hügellands;14§auto Contreforts de Hautebrande;14 | x=-471.7000122070313 y=-1342.200073242188 | size=1 | links=#27038(auto Hillsbrad Foothills;442):5 c2260.10:9
+#888 | auto Hillsbrad Foothills;15§auto Vorgebirge des Hügellands;15§auto Contreforts de Hautebrande;15 | x=-361.7000122070313 y=55.29999923706055 | size=1 | links=#4973(auto Hillsbrad Foothills;85):8 #18789(auto Hillsbrad Foothills;306):11
+#1026 | auto Hillsbrad Foothills;16§auto Vorgebirge des Hügellands;16§auto Contreforts de Hautebrande;16 | x=-785.7000122070312 y=-507 | size=1 | links=#3073(auto Hillsbrad Foothills;48):10 c3541.1:11
+#1127 | auto Hillsbrad Foothills;17§auto Vorgebirge des Hügellands;17§auto Contreforts de Hautebrande;17 | x=-550.1000366210938 y=-145.3000030517578 | size=5 | links=#1991(auto Hillsbrad Foothills;29):35 #8401(auto Hillsbrad Foothills;136):46 c2442.3:36 c2384.5:2 c721.6:28
+#1137 | auto Hillsbrad Foothills;18§auto Vorgebirge des Hügellands;18§auto Contreforts de Hautebrande;18 | x=-373.7000122070313 y=-118.3000030517578 | size=5 | links=#3201(auto Hillsbrad Foothills;51):30 #11844(auto Hillsbrad Foothills;198):30
+#1179 | auto Hillsbrad Foothills;19§auto Vorgebirge des Hügellands;19§auto Contreforts de Hautebrande;19 | x=-635.2999877929688 y=-68.5 | size=1 | links=#2462(auto Hillsbrad Foothills;42):41 #7020(auto Hillsbrad Foothills;117):42 #22657(auto Hillsbrad Foothills;366):21
+#1281 | auto Hillsbrad Foothills;20§auto Vorgebirge des Hügellands;20§auto Contreforts de Hautebrande;20 | x=-1317.700073242188 y=-1254.5 | size=1 | links=#14706(auto Hillsbrad Foothills;238):5 #17900(auto Hillsbrad Foothills;291):9
+#1311 | auto Hillsbrad Foothills;21§auto Vorgebirge des Hügellands;21§auto Contreforts de Hautebrande;21 | x=-354.7000122070313 y=14.80000019073486 | size=1 | links=#21577(auto Hillsbrad Foothills;355):12 #23950(auto Hillsbrad Foothills;390):7
+#1353 | auto Hillsbrad Foothills;22§auto Vorgebirge des Hügellands;22§auto Contreforts de Hautebrande;22 | x=-829.4000244140625 y=182.1000061035156 | size=1 | links=#2252(auto Hillsbrad Foothills;33):20 #28064(auto Hillsbrad Foothills;458):21 c2269.23:2
+#1402 | auto Hillsbrad Foothills;23§auto Vorgebirge des Hügellands;23§auto Contreforts de Hautebrande;23 | x=-27.20000076293945 y=-883.1000366210938 | size=1 | links=#4637(auto Hillsbrad Foothills;77):28 #6527(auto Hillsbrad Foothills;104):19 c2389.1:39
+#1486 | auto Hillsbrad Foothills;24§auto Vorgebirge des Hügellands;24§auto Contreforts de Hautebrande;24 | x=-854.1000366210938 y=-571.6000366210938 | size=1 | links=#28023(top;inn;Southshore):3 c3980.1:12
+#1569 | auto Hillsbrad Foothills;25§auto Vorgebirge des Hügellands;25§auto Contreforts de Hautebrande;25 | x=-652.5 y=-564.6000366210938 | size=1 | links=#16249(auto Hillsbrad Foothills;260):62 #27381(auto Hillsbrad Foothills;450):51
+#1628 | Miner Hackett;Azurelode Mine;Hillsbrad Foothills;one§Minenarbeiter Hackett;Der Azurschacht;Vorgebirge des Hügellands;eins§Mineur Hackett;Azurelode Mine;Contreforts de Hautebrande;un | x=-808.6000366210938 y=71.20000457763672 | size=1 | links=#19063(auto Hillsbrad Foothills;310):8
+#1705 | auto Hillsbrad Foothills;26§auto Vorgebirge des Hügellands;26§auto Contreforts de Hautebrande;26 | x=-1318.099975585938 y=-1250.5 | size=1 | links=#11132(auto Hillsbrad Foothills;191):19 #15754(auto Hillsbrad Foothills;254):17 #25919(auto Hillsbrad Foothills;427):11
+#1746 | auto Hillsbrad Foothills;27§auto Vorgebirge des Hügellands;27§auto Contreforts de Hautebrande;27 | x=-856.2999877929688 y=196.6999969482422 | size=1 | links=#2075(auto Hillsbrad Foothills;30):6 #21779(auto Hillsbrad Foothills;359):5 c2270.1:2
+#1751 | auto Hillsbrad Foothills;28§auto Vorgebirge des Hügellands;28§auto Contreforts de Hautebrande;28 | x=-573.7000122070312 y=2.900000095367432 | size=1 | links=#9313(auto Hillsbrad Foothills;158):32 #14813(auto Hillsbrad Foothills;239):36 #19758(auto Hillsbrad Foothills;327):28 c2268.15:5
+#1991 | auto Hillsbrad Foothills;29§auto Vorgebirge des Hügellands;29§auto Contreforts de Hautebrande;29 | x=-514.9000244140625 y=-142.6000061035156 | size=5 | links=#1127(auto Hillsbrad Foothills;17):35 #10879(auto Hillsbrad Foothills;188):38 #27251(auto Hillsbrad Foothills;447):52
+#2075 | auto Hillsbrad Foothills;30§auto Vorgebirge des Hügellands;30§auto Contreforts de Hautebrande;30 | x=-851.4000244140625 y=192.9000091552734 | size=1 | links=#1746(auto Hillsbrad Foothills;27):6 #9560(auto Hillsbrad Foothills;167):8
+#2096 | auto Hillsbrad Foothills;31§auto Vorgebirge des Hügellands;31§auto Contreforts de Hautebrande;31 | x=-416.8999938964844 y=-833.7999877929688 | size=1 | links=#10290(crossing;two;Hillsbrad Foothills):65 #14690(auto Hillsbrad Foothills;237):65
+#2245 | auto Hillsbrad Foothills;32§auto Vorgebirge des Hügellands;32§auto Contreforts de Hautebrande;32 | x=-792.5 y=-498.3000183105469 | size=1 | links=#3073(auto Hillsbrad Foothills;48):3 #18373(auto Hillsbrad Foothills;298):14
+#2252 | auto Hillsbrad Foothills;33§auto Vorgebirge des Hügellands;33§auto Contreforts de Hautebrande;33 | x=-821.7000122070312 y=163 | size=1 | links=#162(auto Hillsbrad Foothills;8):12 #1353(auto Hillsbrad Foothills;22):20 c2269.25:3
+#2266 | auto Hillsbrad Foothills;34§auto Vorgebirge des Hügellands;34§auto Contreforts de Hautebrande;34 | x=-589.7000122070312 y=-1493.700073242188 | size=1 | links=#27225(auto Hillsbrad Foothills;445):5 c2261.1:21
+#2315 | auto Hillsbrad Foothills;35§auto Vorgebirge des Hügellands;35§auto Contreforts de Hautebrande;35 | x=-586.7999877929688 y=449.8000183105469 | size=1 | links=#5377(auto Hillsbrad Foothills;87):51 #10200(passage;from;Hillsbrad Foothills;to;Silverpine Forest):175 #17583(auto Hillsbrad Foothills;288):118
+#2332 | Mailbox;Tarren Mill;Hillsbrad Foothills§briefkasten;Tarrens Mühle;Vorgebirge des Hügellands§Boîte aux lettres;Tarren Mill;Contreforts de Hautebrande | x=-20.5 y=-929.4000244140625 | size=1 | links=#23003(entry and exit;inn;Tarren Mill;Hillsbrad Foothills):3 #27341(s;u;Mailbox;2;Hillsbrad Foothills):0 c10057.1:2
+#2349 | auto Hillsbrad Foothills;36§auto Vorgebirge des Hügellands;36§auto Contreforts de Hautebrande;36 | x=-604.6000366210938 y=-99.20000457763672 | size=1 | links=#7020(auto Hillsbrad Foothills;117):36 c2451.1:20 c2268.7:3
+#2388 | auto Hillsbrad Foothills;37§auto Vorgebirge des Hügellands;37§auto Contreforts de Hautebrande;37 | x=-388 y=53.5 | size=1 | links=#18789(auto Hillsbrad Foothills;306):15
+#2403 | auto Hillsbrad Foothills;38§auto Vorgebirge des Hügellands;38§auto Contreforts de Hautebrande;38 | x=-162.6999969482422 y=-1798.900024414063 | size=1 | links=#157(auto Hillsbrad Foothills;6):16 #16629(auto Hillsbrad Foothills;265):76
+#2407 | auto Hillsbrad Foothills;39§auto Vorgebirge des Hügellands;39§auto Contreforts de Hautebrande;39 | x=-10.5 y=-921 | size=5 | links=#6891(auto Hillsbrad Foothills;111):13 #25413(auto Hillsbrad Foothills;418):6
+#2413 | auto Hillsbrad Foothills;40§auto Vorgebirge des Hügellands;40§auto Contreforts de Hautebrande;40 | x=-742.4000244140625 y=-699.4000244140625 | size=1 | links=o1767.1:78 c2385.2:115 c2408.5:25 c2408.6:78 c2348.11:55 c2384.42:70 c2354.43:25
+#2425 | auto Hillsbrad Foothills;41§auto Vorgebirge des Hügellands;41§auto Contreforts de Hautebrande;41 | x=-863.5 y=-647.5 | size=1 | links=#14396(auto Hillsbrad Foothills;232):36 #18310(auto Hillsbrad Foothills;297):29
+#2446 | Captured Farmer;one;Tarren Mill;Hillsbrad Foothills§Gefangener Bauer;eins;Tarrens Mühle;Vorgebirge des Hügellands§Fermier capturé;un;Tarren Mill;Contreforts de Hautebrande | x=0.300000011920929 y=-946 | size=1 | links=#21754(auto Hillsbrad Foothills;358):3 c2284.3:0
+#2462 | auto Hillsbrad Foothills;42§auto Vorgebirge des Hügellands;42§auto Contreforts de Hautebrande;42 | x=-654.2999877929688 y=-31.20000076293945 | size=1 | links=#1179(auto Hillsbrad Foothills;19):41 #7020(auto Hillsbrad Foothills;117):80 #8863(auto Hillsbrad Foothills;145):20 #18529(crossing;four;Hillsbrad Foothills):74
+#2523 | entry and exit;inn;Southshore§ein- und ausgang;gasthaus;Süderstade§entrée et sortie;inn;Austrivage | x=-849.2000122070312 y=-547.5 | size=1 | links=#23633(auto Hillsbrad Foothills;383):10 #28626(s;u;Mailbox;1;Hillsbrad Foothills):1
+#2578 | auto Hillsbrad Foothills;43§auto Vorgebirge des Hügellands;43§auto Contreforts de Hautebrande;43 | x=-194.1999969482422 y=-375.3999938964844 | size=1 | links=#14171(auto Hillsbrad Foothills;228):16 c2249.16:14
+#2694 | auto Hillsbrad Foothills;44§auto Vorgebirge des Hügellands;44§auto Contreforts de Hautebrande;44 | x=-592.6000366210938 y=-1533.099975585938 | size=1 | links=#6719(auto Hillsbrad Foothills;110):8 c2260.12:7
+#2938 | entry and exit;Dun Garok;Hillsbrad Foothills§ein- und ausgang;Dun Garok;Vorgebirge des Hügellands§entrée et sortie;Dun Garok;Contreforts de Hautebrande | x=-1277.5 y=-1205.700073242188 | size=1 | links=#7782(auto Hillsbrad Foothills;128):7 #23237(auto Hillsbrad Foothills;375):7
+#2946 | auto Hillsbrad Foothills;45§auto Vorgebirge des Hügellands;45§auto Contreforts de Hautebrande;45 | x=-392.1000061035156 y=-1659.900024414063 | size=5 | links=#12776(auto Hillsbrad Foothills;210):76 #25274(auto Hillsbrad Foothills;417):34
+#2986 | auto Hillsbrad Foothills;46§auto Vorgebirge des Hügellands;46§auto Contreforts de Hautebrande;46 | x=-187.3000030517578 y=-350.3000183105469 | size=1 | links=#3741(auto Hillsbrad Foothills;61):16 #28276(auto Hillsbrad Foothills;462):25
+#3036 | auto Hillsbrad Foothills;47§auto Vorgebirge des Hügellands;47§auto Contreforts de Hautebrande;47 | x=-816 y=100.2000045776367 | size=1 | links=#9273(auto Hillsbrad Foothills;157):21 #16305(auto Hillsbrad Foothills;262):24 #19063(auto Hillsbrad Foothills;310):25 c2269.14:11
+#3073 | auto Hillsbrad Foothills;48§auto Vorgebirge des Hügellands;48§auto Contreforts de Hautebrande;48 | x=-794.6000366210938 y=-500.6000061035156 | size=1 | links=#1026(auto Hillsbrad Foothills;16):10 #2245(auto Hillsbrad Foothills;32):3
+#3097 | auto Hillsbrad Foothills;49§auto Vorgebirge des Hügellands;49§auto Contreforts de Hautebrande;49 | x=-483 y=-927.6000366210938 | size=1 | links=#10277(auto Hillsbrad Foothills;177):32 #14690(auto Hillsbrad Foothills;237):51 c2408.4:36 c2350.13:34
+#3124 | auto Hillsbrad Foothills;50§auto Vorgebirge des Hügellands;50§auto Contreforts de Hautebrande;50 | x=-1301.599975585938 y=-1266.099975585938 | size=1 | links=#8134(auto Hillsbrad Foothills;131):10 #10559(auto Hillsbrad Foothills;183):11
+#3201 | auto Hillsbrad Foothills;51§auto Vorgebirge des Hügellands;51§auto Contreforts de Hautebrande;51 | x=-403.3999938964844 y=-125.0999984741211 | size=5 | links=#1137(auto Hillsbrad Foothills;18):30 #8865(auto Hillsbrad Foothills;146):30
+#3213 | auto Hillsbrad Foothills;52§auto Vorgebirge des Hügellands;52§auto Contreforts de Hautebrande;52 | x=-211.6999969482422 y=-1121.300048828125 | size=1 | links=#68(auto Hillsbrad Foothills;4):85 #22117(auto Hillsbrad Foothills;363):73 c2408.16:10
+#3278 | auto Hillsbrad Foothills;53§auto Vorgebirge des Hügellands;53§auto Contreforts de Hautebrande;53 | x=-799 y=-569.7000122070312 | size=1 | links=#3681(auto Hillsbrad Foothills;59):27 #24478(auto Hillsbrad Foothills;401):37
+#3281 | auto Hillsbrad Foothills;54§auto Vorgebirge des Hügellands;54§auto Contreforts de Hautebrande;54 | x=-1342.5 y=-1270.800048828125 | size=1 | links=#11132(auto Hillsbrad Foothills;191):11 #12401(auto Hillsbrad Foothills;207):6
+#3393 | auto Hillsbrad Foothills;55§auto Vorgebirge des Hügellands;55§auto Contreforts de Hautebrande;55 | x=-549.7999877929688 y=-1590.900024414063 | size=1 | links=#20125(auto Hillsbrad Foothills;334):16 c2261.52:5
+#3437 | auto Hillsbrad Foothills;56§auto Vorgebirge des Hügellands;56§auto Contreforts de Hautebrande;56 | x=-1356.300048828125 y=-1238.5 | size=1 | links=#10076(auto Hillsbrad Foothills;175):5 #12686(auto Hillsbrad Foothills;209):11
+#3528 | auto Hillsbrad Foothills;57§auto Vorgebirge des Hügellands;57§auto Contreforts de Hautebrande;57 | x=-274.8999938964844 y=-403.8000183105469 | size=1 | links=#11717(entry and exit;cave;Darrow Hill;Hillsbrad Foothills):13 #28225(auto Hillsbrad Foothills;461):17
+#3571 | central location;Southshore;Hillsbrad Foothills§zentralpunkt;Süderstade;Vorgebirge des Hügellands§emplacement central;Austrivage;Contreforts de Hautebrande | x=-856.7999877929688 y=-533.1000366210938 | size=1 | links=#11792(auto Hillsbrad Foothills;197):31 #18755(auto Hillsbrad Foothills;305):21 #24986(auto Hillsbrad Foothills;411):22 #28626(s;u;Mailbox;1;Hillsbrad Foothills):14 c2263.1:17 c2711.1:11 c9978.1:13
+#3584 | auto Hillsbrad Foothills;58§auto Vorgebirge des Hügellands;58§auto Contreforts de Hautebrande;58 | x=-8.600000381469727 y=-1136.200073242188 | size=1 | links=#10706(auto Hillsbrad Foothills;185):88 #20777(auto Hillsbrad Foothills;344):90 #22117(auto Hillsbrad Foothills;363):132 c2408.12:24 c2408.13:50
+#3681 | auto Hillsbrad Foothills;59§auto Vorgebirge des Hügellands;59§auto Contreforts de Hautebrande;59 | x=-820.5 y=-587.4000244140625 | size=1 | links=#3278(auto Hillsbrad Foothills;53):27 #13085(auto Hillsbrad Foothills;212):13 #13665(auto Hillsbrad Foothills;221):24 c2386.3:7
+#3704 | auto Hillsbrad Foothills;60§auto Vorgebirge des Hügellands;60§auto Contreforts de Hautebrande;60 | x=-523.1000366210938 y=-1474.800048828125 | size=1 | links=#26872(auto Hillsbrad Foothills;440):19 c2244.6:22 c2261.9:9
+#3741 | auto Hillsbrad Foothills;61§auto Vorgebirge des Hügellands;61§auto Contreforts de Hautebrande;61 | x=-192.8000030517578 y=-334.7000122070313 | size=1 | links=#2986(auto Hillsbrad Foothills;46):16 o1768.1:6 c2249.5:13
+#3762 | auto Hillsbrad Foothills;62§auto Vorgebirge des Hügellands;62§auto Contreforts de Hautebrande;62 | x=-351.7000122070313 y=84.9000015258789 | size=1 | links=#26726(auto Hillsbrad Foothills;436):8 c2266.8:4 c2266.10:5
+#3795 | auto Hillsbrad Foothills;63§auto Vorgebirge des Hügellands;63§auto Contreforts de Hautebrande;63 | x=142.3000030517578 y=-1199.099975585938 | size=1 | links=#17258(auto Hillsbrad Foothills;279):51 #20648(passage;river;from;Hillsbrad Foothills;to;Alterac Mountains):66
+#3797 | auto Hillsbrad Foothills;64§auto Vorgebirge des Hügellands;64§auto Contreforts de Hautebrande;64 | x=-629.7999877929688 y=39 | size=1 | links=#14813(auto Hillsbrad Foothills;239):30 #18529(crossing;four;Hillsbrad Foothills):44 #19764(auto Hillsbrad Foothills;328):41 c2268.1:22 c2265.5:45 c2351.20:45
+#3977 | auto Hillsbrad Foothills;65§auto Vorgebirge des Hügellands;65§auto Contreforts de Hautebrande;65 | x=-488.8999938964844 y=115.3000030517578 | size=1 | links=c2335.1:2 o1761.1:1
+#4098 | auto Hillsbrad Foothills;66§auto Vorgebirge des Hügellands;66§auto Contreforts de Hautebrande;66 | x=-244.9000091552734 y=-1683.800048828125 | size=1 | links=#16629(auto Hillsbrad Foothills;265):65 #26686(auto Hillsbrad Foothills;434):67
+#4141 | auto Hillsbrad Foothills;67§auto Vorgebirge des Hügellands;67§auto Contreforts de Hautebrande;67 | x=-696.6000366210938 y=126.2000045776367 | size=5 | links=#6618(auto Hillsbrad Foothills;109):64 #9024(auto Hillsbrad Foothills;151):121 #18529(crossing;four;Hillsbrad Foothills):88 c2356.42:47
+#4146 | auto Hillsbrad Foothills;68§auto Vorgebirge des Hügellands;68§auto Contreforts de Hautebrande;68 | x=-602.7999877929688 y=-2.299999952316284 | size=1 | links=#6977(auto Hillsbrad Foothills;115):12 #14813(auto Hillsbrad Foothills;239):21
+#4188 | auto Hillsbrad Foothills;69§auto Vorgebirge des Hügellands;69§auto Contreforts de Hautebrande;69 | x=-472.3999938964844 y=-1600.900024414063 | size=1 | links=#16650(auto Hillsbrad Foothills;266):17 #21086(auto Hillsbrad Foothills;347):12 c2244.25:6
+#4237 | auto Hillsbrad Foothills;70§auto Vorgebirge des Hügellands;70§auto Contreforts de Hautebrande;70 | x=-1290.200073242188 y=-1244.5 | size=1 | links=#17472(auto Hillsbrad Foothills;283):11
+#4264 | auto Hillsbrad Foothills;71§auto Vorgebirge des Hügellands;71§auto Contreforts de Hautebrande;71 | x=-853.7999877929688 y=-567.2000122070312 | size=1 | links=#28023(top;inn;Southshore):4 c2361.1:8
+#4272 | auto Hillsbrad Foothills;72§auto Vorgebirge des Hügellands;72§auto Contreforts de Hautebrande;72 | x=-46.20000076293945 y=-968.9000244140625 | size=1 | links=#16971(auto Hillsbrad Foothills;275):9 c2399.1:5 c2402.1:5
+#4339 | Neema;Waitress;Hillsbrad Foothills;1;51.13;59.24§Neema;Kellnerin;Vorgebirge des Hügellands;1;51.13;59.24§Neema;Waitress;Contreforts de Hautebrande;1;51.13;59.24 | x=-863.9000244140625 y=-569.4000244140625 | size=1
+#4377 | auto Hillsbrad Foothills;73§auto Vorgebirge des Hügellands;73§auto Contreforts de Hautebrande;73 | x=-1001.200012207031 y=-1071.300048828125 | size=5 | links=#5388(auto Hillsbrad Foothills;89):85 #14820(auto Hillsbrad Foothills;240):28
+#4511 | auto Hillsbrad Foothills;74§auto Vorgebirge des Hügellands;74§auto Contreforts de Hautebrande;74 | x=-856.6000366210938 y=61 | size=1 | links=#23312(auto Hillsbrad Foothills;377):24 c2269.16:9 c2269.17:19 c2269.19:12
+#4555 | auto Hillsbrad Foothills;75§auto Vorgebirge des Hügellands;75§auto Contreforts de Hautebrande;75 | x=-37.10000228881836 y=-1351.400024414063 | size=1 | links=#7455(auto Hillsbrad Foothills;123):16 #19639(auto Hillsbrad Foothills;325):11
+#4593 | auto Hillsbrad Foothills;76§auto Vorgebirge des Hügellands;76§auto Contreforts de Hautebrande;76 | x=-586 y=-231.1999969482422 | size=1 | links=#143(auto Hillsbrad Foothills;5):80 #42904(auto Hillsbrad Foothills;475):68
+#4637 | auto Hillsbrad Foothills;77§auto Vorgebirge des Hügellands;77§auto Contreforts de Hautebrande;77 | x=-49 y=-864.2999877929688 | size=5 | links=#1402(auto Hillsbrad Foothills;23):28 #11114(auto Hillsbrad Foothills;190):38 #16881(auto Hillsbrad Foothills;272):37
+#4682 | auto Hillsbrad Foothills;78§auto Vorgebirge des Hügellands;78§auto Contreforts de Hautebrande;78 | x=-539.5 y=-1521.599975585938 | size=1 | links=#6602(auto Hillsbrad Foothills;107):10 #21149(auto Hillsbrad Foothills;350):6
+#4777 | auto Hillsbrad Foothills;79§auto Vorgebirge des Hügellands;79§auto Contreforts de Hautebrande;79 | x=-1292.700073242188 y=-1239.900024414063 | size=1 | links=#172(auto Hillsbrad Foothills;9):19 #13108(auto Hillsbrad Foothills;213):9
+#4784 | auto Hillsbrad Foothills;80§auto Vorgebirge des Hügellands;80§auto Contreforts de Hautebrande;80 | x=-1117.900024414063 y=-1177.800048828125 | size=5 | links=#5388(auto Hillsbrad Foothills;89):72 #5947(auto Hillsbrad Foothills;95):79 #26027(auto Hillsbrad Foothills;429):56 c2344.1:31
+#4793 | auto Hillsbrad Foothills;81§auto Vorgebirge des Hügellands;81§auto Contreforts de Hautebrande;81 | x=-41.79999923706055 y=-1388.099975585938 | size=1 | links=#9241(auto Hillsbrad Foothills;156):24 #19639(auto Hillsbrad Foothills;325):26
+#4794 | auto Hillsbrad Foothills;82§auto Vorgebirge des Hügellands;82§auto Contreforts de Hautebrande;82 | x=-712.1000366210938 y=-580.5 | size=1 | links=#16249(auto Hillsbrad Foothills;260):17 c6491.1:14
+#4815 | auto Hillsbrad Foothills;83§auto Vorgebirge des Hügellands;83§auto Contreforts de Hautebrande;83 | x=-505 y=-1033 | size=1 | links=#10277(auto Hillsbrad Foothills;177):75 #15531(auto Hillsbrad Foothills;249):99
+#4861 | passage;from;Hillsbrad Foothills;to;Alterac Mountains§passage;von;Vorgebirge des Hügellands;nach;Alteracgebirge§passage;de;Contreforts de Hautebrande;vers;Montagnes d'Alterac | x=198.8000030517578 y=-680 | size=1 | links=#22371(passage;from;Alterac Mountains;to;Hillsbrad Foothills):3 #14224(auto Hillsbrad Foothills;229):39
+#4888 | auto Hillsbrad Foothills;84§auto Vorgebirge des Hügellands;84§auto Contreforts de Hautebrande;84 | x=-1333.200073242188 y=-1226.200073242188 | size=1 | links=#19314(auto Hillsbrad Foothills;313):18 #25210(auto Hillsbrad Foothills;414):7 c14275.1:6
+#4973 | auto Hillsbrad Foothills;85§auto Vorgebirge des Hügellands;85§auto Contreforts de Hautebrande;85 | x=-352.8000183105469 y=55 | size=1 | links=#888(auto Hillsbrad Foothills;15):8 #6580(auto Hillsbrad Foothills;106):31 #21577(auto Hillsbrad Foothills;355):34 #26726(auto Hillsbrad Foothills;436):21 c2266.7:8 c2360.9:7
+#5209 | auto Hillsbrad Foothills;86§auto Vorgebirge des Hügellands;86§auto Contreforts de Hautebrande;86 | x=-500.2000122070313 y=-384 | size=1 | links=#6536(auto Hillsbrad Foothills;105):74 #42904(auto Hillsbrad Foothills;475):106 c2354.1:30 c2354.19:38
+#5377 | auto Hillsbrad Foothills;87§auto Vorgebirge des Hügellands;87§auto Contreforts de Hautebrande;87 | x=-586.1000366210938 y=398.6000061035156 | size=1 | links=#2315(auto Hillsbrad Foothills;35):51 #7039(auto Hillsbrad Foothills;118):139 c2214.1:25
+#5380 | auto Hillsbrad Foothills;88§auto Vorgebirge des Hügellands;88§auto Contreforts de Hautebrande;88 | x=-604 y=-1486.099975585938 | size=1 | links=#27225(auto Hillsbrad Foothills;445):10 c2244.16:4
+#5388 | auto Hillsbrad Foothills;89§auto Vorgebirge des Hügellands;89§auto Contreforts de Hautebrande;89 | x=-1062.5 y=-1131.300048828125 | size=5 | links=#4377(auto Hillsbrad Foothills;73):85 #4784(auto Hillsbrad Foothills;80):72
+#5539 | auto Hillsbrad Foothills;90§auto Vorgebirge des Hügellands;90§auto Contreforts de Hautebrande;90 | x=-1304 y=-1228.200073242188 | size=1 | links=#26054(auto Hillsbrad Foothills;430):7 c14275.3:9
+#5606 | auto Hillsbrad Foothills;91§auto Vorgebirge des Hügellands;91§auto Contreforts de Hautebrande;91 | x=-13 y=-965.7999877929688 | size=1 | links=#7462(auto Hillsbrad Foothills;125):7 #15264(auto Hillsbrad Foothills;245):9
+#5632 | auto Hillsbrad Foothills;92§auto Vorgebirge des Hügellands;92§auto Contreforts de Hautebrande;92 | x=-308.6000061035156 y=207.6999969482422 | size=5 | links=#6975(auto Hillsbrad Foothills;114):81 #17482(auto Hillsbrad Foothills;284):64 c2356.5:22 c2349.6:9
+#5710 | auto Hillsbrad Foothills;93§auto Vorgebirge des Hügellands;93§auto Contreforts de Hautebrande;93 | x=-1324.300048828125 y=-1273.5 | size=1 | links=#8741(auto Hillsbrad Foothills;142):2 #17365(auto Hillsbrad Foothills;281):2
+#5738 | auto Hillsbrad Foothills;94§auto Vorgebirge des Hügellands;94§auto Contreforts de Hautebrande;94 | x=-777.2000122070312 y=-546.1000366210938 | size=1 | links=#22835(auto Hillsbrad Foothills;370):27 #24478(auto Hillsbrad Foothills;401):28 c2436.1:4
+#5947 | auto Hillsbrad Foothills;95§auto Vorgebirge des Hügellands;95§auto Contreforts de Hautebrande;95 | x=-1177.900024414063 y=-1126 | size=5 | links=#4784(auto Hillsbrad Foothills;80):79 #8748(auto Hillsbrad Foothills;143):86
+#5952 | auto Hillsbrad Foothills;96§auto Vorgebirge des Hügellands;96§auto Contreforts de Hautebrande;96 | x=-494.1000061035156 y=120.7000045776367 | size=1 | links=#9987(auto Hillsbrad Foothills;173):8 #18202(auto Hillsbrad Foothills;296):8 c2448.1:10
+#5977 | auto Hillsbrad Foothills;97§auto Vorgebirge des Hügellands;97§auto Contreforts de Hautebrande;97 | x=-1313.800048828125 y=-1215.5 | size=1 | links=#172(auto Hillsbrad Foothills;9):12 #13434(auto Hillsbrad Foothills;217):8
+#6098 | auto Hillsbrad Foothills;98§auto Vorgebirge des Hügellands;98§auto Contreforts de Hautebrande;98 | x=-102.0999984741211 y=-1600.800048828125 | size=1 | links=#24273(auto Alterac Mountains;246):14 #9481(auto Hillsbrad Foothills;165):22
+#6124 | auto Hillsbrad Foothills;99§auto Vorgebirge des Hügellands;99§auto Contreforts de Hautebrande;99 | x=-406.7000122070313 y=-1075.300048828125 | size=1 | links=#11191(auto Hillsbrad Foothills;193):77 #26483(auto Hillsbrad Foothills;431):51 c2349.20:14
+#6219 | auto Hillsbrad Foothills;100§auto Vorgebirge des Hügellands;100§auto Contreforts de Hautebrande;100 | x=-149.9000091552734 y=-876.2000122070312 | size=5 | links=#8337(auto Hillsbrad Foothills;134):9 c2400.1:21 c3539.1:12
+#6241 | auto Hillsbrad Foothills;101§auto Vorgebirge des Hügellands;101§auto Contreforts de Hautebrande;101 | x=-545.5 y=-1543.800048828125 | size=1 | links=#21171(auto Hillsbrad Foothills;351):13 #27402(auto Hillsbrad Foothills;451):6 c2261.3:27
+#6308 | passage;from;Hillsbrad Foothills;to;The Hinterlands§passage;von;Vorgebirge des Hügellands;nach;Hinterland§passage;de;Contreforts de Hautebrande;vers;Les Hinterlands | x=-134.5 y=-1810 | size=1 | links=#13050(passage;from;The Hinterlands;to;Hillsbrad Foothills):4 #157(auto Hillsbrad Foothills;6):14
+#6311 | passage;from;Hillsbrad Fields;Hillsbrad Foothills;to;Alterac Mountains§passage;von;Die Felder des Hügellands;Vorgebirge des Hügellands;nach;alteracgebirge§passage;de;Hillsbrad Fields;Contreforts de Hautebrande;vers;Montagnes d'Alterac | x=-205.8000030517578 y=172.1999969482422 | size=1 | links=#11720(auto Alterac Mountains;110):22 #17482(auto Hillsbrad Foothills;284):46
+#6408 | Hillsbrad Fields;west;Hillsbrad Foothills§Die Felder des Hügellands;westlich;Vorgebirge des Hügellands§Hillsbrad Fields;west;Contreforts de Hautebrande | x=-451 y=269.3000183105469 | size=1 | links=#6975(auto Hillsbrad Foothills;114):74 #17583(auto Hillsbrad Foothills;288):107 c2350.35:26 c2351.39:16
+#6410 | auto Hillsbrad Foothills;102§auto Vorgebirge des Hügellands;102§auto Contreforts de Hautebrande;102 | x=-478.7000122070313 y=-97.9000015258789 | size=1 | links=#19354(auto Hillsbrad Foothills;314):21 #27251(auto Hillsbrad Foothills;447):27 c2360.22:12
+#6475 | auto Hillsbrad Foothills;103§auto Vorgebirge des Hügellands;103§auto Contreforts de Hautebrande;103 | x=-279.6000061035156 y=-272.2000122070313 | size=1 | links=c2248.7:12 o2714.8:8 c2248.9:29 c2249.11:31
+#6527 | auto Hillsbrad Foothills;104§auto Vorgebirge des Hügellands;104§auto Contreforts de Hautebrande;104 | x=-26.20000076293945 y=-902.5 | size=1 | links=#1402(auto Hillsbrad Foothills;23):19 #9962(auto Hillsbrad Foothills;172):8 #13872(auto Hillsbrad Foothills;224):10 #18570(auto Hillsbrad Foothills;302):10
+#6536 | auto Hillsbrad Foothills;105§auto Vorgebirge des Hügellands;105§auto Contreforts de Hautebrande;105 | x=-454.3000183105469 y=-442.1000061035156 | size=1 | links=#637(auto Hillsbrad Foothills;13):80 #5209(auto Hillsbrad Foothills;86):74 c2354.20:33
+#6580 | auto Hillsbrad Foothills;106§auto Vorgebirge des Hügellands;106§auto Contreforts de Hautebrande;106 | x=-322.1000061035156 y=63.90000152587891 | size=1 | links=#4973(auto Hillsbrad Foothills;85):31 #9028(auto Hillsbrad Foothills;152):35
+#6602 | auto Hillsbrad Foothills;107§auto Vorgebirge des Hügellands;107§auto Contreforts de Hautebrande;107 | x=-540.7999877929688 y=-1511.300048828125 | size=1 | links=#4682(auto Hillsbrad Foothills;78):10 #27892(auto Hillsbrad Foothills;456):8 c2261.24:27
+#6616 | auto Hillsbrad Foothills;108§auto Vorgebirge des Hügellands;108§auto Contreforts de Hautebrande;108 | x=-507.8999938964844 y=27.10000038146973 | size=1 | links=#9313(auto Hillsbrad Foothills;158):42 #15233(auto Hillsbrad Foothills;244):25 c2387.2:13 c2268.4:41 c620.7:20 c2268.11:12
+#6618 | auto Hillsbrad Foothills;109§auto Vorgebirge des Hügellands;109§auto Contreforts de Hautebrande;109 | x=-650.6000366210938 y=172.1000061035156 | size=1 | links=#4141(auto Hillsbrad Foothills;67):64 #12236(auto Hillsbrad Foothills;203):38 #18529(crossing;four;Hillsbrad Foothills):133
+#6719 | auto Hillsbrad Foothills;110§auto Vorgebirge des Hügellands;110§auto Contreforts de Hautebrande;110 | x=-585.1000366210938 y=-1529.700073242188 | size=1 | links=#2694(auto Hillsbrad Foothills;44):8 #21105(auto Hillsbrad Foothills;349):5
+#6891 | auto Hillsbrad Foothills;111§auto Vorgebirge des Hügellands;111§auto Contreforts de Hautebrande;111 | x=-17.30000114440918 y=-933.2000122070312 | size=1 | links=#2407(auto Hillsbrad Foothills;39):13 #21657(auto Hillsbrad Foothills;357):8
+#6917 | Darren Malvew;Stablehand;Hillsbrad Foothills;1;52.42;55.96§Darren Malve;Stallknecht;Vorgebirge des Hügellands;1;52.42;55.96§Darren Malvew;Stablehand;Contreforts de Hautebrande;1;52.42;55.96 | x=-794 y=-610.6000366210938 | size=1
+#6929 | auto Hillsbrad Foothills;112§auto Vorgebirge des Hügellands;112§auto Contreforts de Hautebrande;112 | x=-6.200000286102295 y=-940.4000244140625 | size=1 | links=#21657(auto Hillsbrad Foothills;357):4 #21754(auto Hillsbrad Foothills;358):5
+#6974 | auto Hillsbrad Foothills;113§auto Vorgebirge des Hügellands;113§auto Contreforts de Hautebrande;113 | x=-920.1000366210938 y=-587 | size=1 | links=#6983(auto Hillsbrad Foothills;116):38 #19457(auto Hillsbrad Foothills;317):21
+#6975 | auto Hillsbrad Foothills;114§auto Vorgebirge des Hügellands;114§auto Contreforts de Hautebrande;114 | x=-385.6000061035156 y=233.3000030517578 | size=5 | links=#5632(auto Hillsbrad Foothills;92):81 #6408(Hillsbrad Fields;west;Hillsbrad Foothills):74 c2349.56:4
+#6977 | auto Hillsbrad Foothills;115§auto Vorgebirge des Hügellands;115§auto Contreforts de Hautebrande;115 | x=-603.7000122070312 y=-14.5 | size=1 | links=#4146(auto Hillsbrad Foothills;68):12 #25239(auto Hillsbrad Foothills;415):19 c2267.11:7 c2266.23:11
+#6983 | auto Hillsbrad Foothills;116§auto Vorgebirge des Hügellands;116§auto Contreforts de Hautebrande;116 | x=-957.5 y=-596.6000366210938 | size=1 | links=#6974(auto Hillsbrad Foothills;113):38 c2371.4:41 c2369.11:46
+#7020 | auto Hillsbrad Foothills;117§auto Vorgebirge des Hügellands;117§auto Contreforts de Hautebrande;117 | x=-639 y=-110.4000015258789 | size=1 | links=#143(auto Hillsbrad Foothills;5):51 #1179(auto Hillsbrad Foothills;19):42 #2349(auto Hillsbrad Foothills;36):36 #2462(auto Hillsbrad Foothills;42):80 c2349.47:73
+#7039 | auto Hillsbrad Foothills;118§auto Vorgebirge des Hügellands;118§auto Contreforts de Hautebrande;118 | x=-611.7000122070312 y=261.2000122070313 | size=1 | links=#5377(auto Hillsbrad Foothills;87):139 #12236(auto Hillsbrad Foothills;203):61 #17583(auto Hillsbrad Foothills;288):129
+#7089 | auto Hillsbrad Foothills;119§auto Vorgebirge des Hügellands;119§auto Contreforts de Hautebrande;119 | x=-326.7000122070313 y=-680.6000366210938 | size=1 | links=#10288(auto Hillsbrad Foothills;178):18 #22986(auto Hillsbrad Foothills;372):15
+#7264 | auto Hillsbrad Foothills;120§auto Vorgebirge des Hügellands;120§auto Contreforts de Hautebrande;120 | x=-532.7999877929688 y=-1528.599975585938 | size=1 | links=#7456(auto Hillsbrad Foothills;124):4 #11938(auto Hillsbrad Foothills;200):9
+#7402 | auto Hillsbrad Foothills;121§auto Vorgebirge des Hügellands;121§auto Contreforts de Hautebrande;121 | x=-1355.599975585938 y=-1254.400024414063 | size=1 | links=#9988(auto Hillsbrad Foothills;174):7 #15039(auto Hillsbrad Foothills;242):3
+#7432 | auto Hillsbrad Foothills;122§auto Vorgebirge des Hügellands;122§auto Contreforts de Hautebrande;122 | x=-426.8999938964844 y=-58.90000152587891 | size=1 | links=#16885(auto Hillsbrad Foothills;274):41 #25916(auto Hillsbrad Foothills;426):8 #28336(auto Hillsbrad Foothills;464):46 c2360.13:9 c2266.16:13
+#7455 | auto Hillsbrad Foothills;123§auto Vorgebirge des Hügellands;123§auto Contreforts de Hautebrande;123 | x=-53.10000228881836 y=-1350.900024414063 | size=1 | links=#4555(auto Hillsbrad Foothills;75):16 #13368(auto Hillsbrad Foothills;216):24
+#7456 | auto Hillsbrad Foothills;124§auto Vorgebirge des Hügellands;124§auto Contreforts de Hautebrande;124 | x=-536.7999877929688 y=-1527.800048828125 | size=1 | links=#7264(auto Hillsbrad Foothills;120):4 #21149(auto Hillsbrad Foothills;350):1
+#7462 | auto Hillsbrad Foothills;125§auto Vorgebirge des Hügellands;125§auto Contreforts de Hautebrande;125 | x=-12.10000038146973 y=-958.2000122070312 | size=1 | links=#5606(auto Hillsbrad Foothills;91):7 c2397.1:6
+#7571 | auto Hillsbrad Foothills;126§auto Vorgebirge des Hügellands;126§auto Contreforts de Hautebrande;126 | x=-502.6000061035156 y=103.4000015258789 | size=1 | links=#28101(auto Hillsbrad Foothills;459):11 c2387.3:4
+#7778 | auto Hillsbrad Foothills;127§auto Vorgebirge des Hügellands;127§auto Contreforts de Hautebrande;127 | x=-61.20000076293945 y=-902.6000366210938 | size=1 | links=#15356(auto Hillsbrad Foothills;246):7 #16881(auto Hillsbrad Foothills;272):17
+#7782 | auto Hillsbrad Foothills;128§auto Vorgebirge des Hügellands;128§auto Contreforts de Hautebrande;128 | x=-1271.900024414063 y=-1201 | size=1 | links=#2938(entry and exit;Dun Garok;Hillsbrad Foothills):7 c2344.3:29 c2345.4:7 c2344.6:7
+#7878 | auto Hillsbrad Foothills;129§auto Vorgebirge des Hügellands;129§auto Contreforts de Hautebrande;129 | x=-541 y=90.4000015258789 | size=1 | links=c2387.6:14 c2268.12:38 c2267.15:24 c2268.17:17
+#8027 | entry and exit;Durnholde Keep;Hillsbrad Foothills§ein- und ausgang;Burg Durnholde;Vorgebirge des Hügellands§entrée et sortie;Durnholde Keep;Contreforts de Hautebrande | x=-595.2000122070312 y=-1380.200073242188 | size=1 | links=#23563(crossing;one;Hillsbrad Foothills):95 c2261.12:37 c2261.13:6 c2261.14:6
+#8102 | auto Hillsbrad Foothills;130§auto Vorgebirge des Hügellands;130§auto Contreforts de Hautebrande;130 | x=-495.7000122070313 y=-1468.5 | size=1 | links=#26872(auto Hillsbrad Foothills;440):10 c2244.10:13
+#8134 | auto Hillsbrad Foothills;131§auto Vorgebirge des Hügellands;131§auto Contreforts de Hautebrande;131 | x=-1307.800048828125 y=-1258 | size=1 | links=#519(auto Hillsbrad Foothills;11):6 #3124(auto Hillsbrad Foothills;50):10
+#8173 | auto Hillsbrad Foothills;132§auto Vorgebirge des Hügellands;132§auto Contreforts de Hautebrande;132 | x=-883.9000244140625 y=223.1999969482422 | size=1 | links=#15574(auto Hillsbrad Foothills;251):39 #21944(auto Hillsbrad Foothills;360):27 c2270.6:7
+#8182 | auto Hillsbrad Foothills;133§auto Vorgebirge des Hügellands;133§auto Contreforts de Hautebrande;133 | x=-781.7000122070312 y=76.70000457763672 | size=1 | links=#29(auto Hillsbrad Foothills;3):18 #16305(auto Hillsbrad Foothills;262):17 c2305.1:15
+#8337 | auto Hillsbrad Foothills;134§auto Vorgebirge des Hügellands;134§auto Contreforts de Hautebrande;134 | x=-142.3000030517578 y=-881.2999877929688 | size=1 | links=#6219(auto Hillsbrad Foothills;100):9 #24471(auto Hillsbrad Foothills;400):19
+#8357 | auto Hillsbrad Foothills;135§auto Vorgebirge des Hügellands;135§auto Contreforts de Hautebrande;135 | x=-1268.599975585938 y=-1230.700073242188 | size=1 | links=#13108(auto Hillsbrad Foothills;213):24 #27491(auto Hillsbrad Foothills;453):7
+#8401 | auto Hillsbrad Foothills;136§auto Vorgebirge des Hügellands;136§auto Contreforts de Hautebrande;136 | x=-596.6000366210938 y=-147.5 | size=5 | links=#143(auto Hillsbrad Foothills;5):24 #1127(auto Hillsbrad Foothills;17):46
+#8489 | auto Hillsbrad Foothills;137§auto Vorgebirge des Hügellands;137§auto Contreforts de Hautebrande;137 | x=-824.2999877929688 y=-506 | size=1 | links=#14638(auto Hillsbrad Foothills;236):6 #24986(auto Hillsbrad Foothills;411):21
+#8538 | auto Hillsbrad Foothills;138§auto Vorgebirge des Hügellands;138§auto Contreforts de Hautebrande;138 | x=-129.5 y=-1639.599975585938 | size=1 | links=#9481(auto Hillsbrad Foothills;165):26 #20461(auto Hillsbrad Foothills;340):14
+#8542 | auto Hillsbrad Foothills;139§auto Vorgebirge des Hügellands;139§auto Contreforts de Hautebrande;139 | x=-1318 y=-1213.300048828125 | size=1 | links=#25210(auto Hillsbrad Foothills;414):12 c2304.1:6
+#8666 | auto Hillsbrad Foothills;140§auto Vorgebirge des Hügellands;140§auto Contreforts de Hautebrande;140 | x=-833.2000122070312 y=143.9000091552734 | size=1 | links=#162(auto Hillsbrad Foothills;8):14 #9273(auto Hillsbrad Foothills;157):36
+#8726 | auto Hillsbrad Foothills;141§auto Vorgebirge des Hügellands;141§auto Contreforts de Hautebrande;141 | x=-810.9000244140625 y=178.9000091552734 | size=1 | links=#23412(auto Hillsbrad Foothills;380):14 #27060(auto Hillsbrad Foothills;443):22 c2269.2:5
+#8741 | auto Hillsbrad Foothills;142§auto Vorgebirge des Hügellands;142§auto Contreforts de Hautebrande;142 | x=-1322 y=-1271.800048828125 | size=1 | links=#5710(auto Hillsbrad Foothills;93):2 #21617(auto Hillsbrad Foothills;356):5
+#8748 | auto Hillsbrad Foothills;143§auto Vorgebirge des Hügellands;143§auto Contreforts de Hautebrande;143 | x=-1213 y=-1046.800048828125 | size=5 | links=#5947(auto Hillsbrad Foothills;95):86 #20122(auto Hillsbrad Foothills;333):31
+#8855 | auto Hillsbrad Foothills;144§auto Vorgebirge des Hügellands;144§auto Contreforts de Hautebrande;144 | x=-504.8999938964844 y=112.7000045776367 | size=1 | links=#10742(auto Hillsbrad Foothills;186):7 #18202(auto Hillsbrad Foothills;296):10 c2448.1:9
+#8863 | auto Hillsbrad Foothills;145§auto Vorgebirge des Hügellands;145§auto Contreforts de Hautebrande;145 | x=-634.2999877929688 y=-30.10000038146973 | size=1 | links=#2462(auto Hillsbrad Foothills;42):20 #16545(auto Hillsbrad Foothills;264):13 c2268.8:12
+#8865 | auto Hillsbrad Foothills;146§auto Vorgebirge des Hügellands;146§auto Contreforts de Hautebrande;146 | x=-429.8999938964844 y=-141 | size=5 | links=#3201(auto Hillsbrad Foothills;51):30 #10879(auto Hillsbrad Foothills;188):46
+#8878 | auto Hillsbrad Foothills;147§auto Vorgebirge des Hügellands;147§auto Contreforts de Hautebrande;147 | x=-798.2000122070312 y=-604.7999877929688 | size=1 | links=#10682(auto Hillsbrad Foothills;184):11 #13665(auto Hillsbrad Foothills;221):14 c2382.1:7
+#8903 | auto Hillsbrad Foothills;148§auto Vorgebirge des Hügellands;148§auto Contreforts de Hautebrande;148 | x=-261.1000061035156 y=-310.2000122070313 | size=1 | links=c2248.8:17 c2249.10:16
+#8905 | auto Hillsbrad Foothills;149§auto Vorgebirge des Hügellands;149§auto Contreforts de Hautebrande;149 | x=-379 y=67.9000015258789 | size=1 | links=#18789(auto Hillsbrad Foothills;306):11 c2360.8:13
+#9023 | auto Hillsbrad Foothills;150§auto Vorgebirge des Hügellands;150§auto Contreforts de Hautebrande;150 | x=-736.5 y=-1399.599975585938 | size=1 | links=#16096(auto Hillsbrad Foothills;259):100 #23563(crossing;one;Hillsbrad Foothills):111
+#9024 | auto Hillsbrad Foothills;151§auto Vorgebirge des Hügellands;151§auto Contreforts de Hautebrande;151 | x=-817.4000244140625 y=117.9000015258789 | size=5 | links=#4141(auto Hillsbrad Foothills;67):121 #10966(auto Hillsbrad Foothills;189):59
+#9028 | auto Hillsbrad Foothills;152§auto Vorgebirge des Hügellands;152§auto Contreforts de Hautebrande;152 | x=-291.8999938964844 y=45.29999923706055 | size=5 | links=#6580(auto Hillsbrad Foothills;106):35 #16755(auto Hillsbrad Foothills;268):43
+#9060 | auto Hillsbrad Foothills;153§auto Vorgebirge des Hügellands;153§auto Contreforts de Hautebrande;153 | x=-567.2999877929688 y=37 | size=1 | links=#18571(auto Hillsbrad Foothills;303):10 #24200(auto Hillsbrad Foothills;393):7 o1736.1:5
+#9131 | auto Hillsbrad Foothills;154§auto Vorgebirge des Hügellands;154§auto Contreforts de Hautebrande;154 | x=-775.4000244140625 y=38.29999923706055 | size=1 | links=#29(auto Hillsbrad Foothills;3):32 c2269.27:9
+#9179 | auto Hillsbrad Foothills;155§auto Vorgebirge des Hügellands;155§auto Contreforts de Hautebrande;155 | x=-378.6000061035156 y=-674.1000366210938 | size=1 | links=#10288(auto Hillsbrad Foothills;178):38 #16838(auto Hillsbrad Foothills;271):33 #18559(crossing;three;Hillsbrad Foothills):104
+#9241 | auto Hillsbrad Foothills;156§auto Vorgebirge des Hügellands;156§auto Contreforts de Hautebrande;156 | x=-64.0999984741211 y=-1397 | size=1 | links=#4793(auto Hillsbrad Foothills;81):24 #18442(auto Hillsbrad Foothills;299):12
+#9273 | auto Hillsbrad Foothills;157§auto Vorgebirge des Hügellands;157§auto Contreforts de Hautebrande;157 | x=-836 y=107.8000030517578 | size=1 | links=#3036(auto Hillsbrad Foothills;47):21 #8666(auto Hillsbrad Foothills;140):36 #19992(auto Hillsbrad Foothills;331):13
+#9313 | auto Hillsbrad Foothills;158§auto Vorgebirge des Hügellands;158§auto Contreforts de Hautebrande;158 | x=-550.2999877929688 y=24.80000114440918 | size=1 | links=#1751(auto Hillsbrad Foothills;28):32 #6616(auto Hillsbrad Foothills;108):42 #24200(auto Hillsbrad Foothills;393):13 c2404.1:14 c2265.6:12
+#9383 | auto Hillsbrad Foothills;159§auto Vorgebirge des Hügellands;159§auto Contreforts de Hautebrande;159 | x=-848.7999877929688 y=-581 | size=1 | links=#296(auto Hillsbrad Foothills;10):3 c2228.1:3
+#9385 | auto Hillsbrad Foothills;160§auto Vorgebirge des Hügellands;160§auto Contreforts de Hautebrande;160 | x=-497.6000061035156 y=-61.90000152587891 | size=1 | links=#23493(auto Hillsbrad Foothills;381):29 #27251(auto Hillsbrad Foothills;447):29 c2267.9:4 c2360.18:16
+#9408 | auto Hillsbrad Foothills;161§auto Vorgebirge des Hügellands;161§auto Contreforts de Hautebrande;161 | x=131 y=-705.2000122070312 | size=1 | links=#12280(auto Hillsbrad Foothills;204):74 #14224(auto Hillsbrad Foothills;229):35
+#9448 | auto Hillsbrad Foothills;162§auto Vorgebirge des Hügellands;162§auto Contreforts de Hautebrande;162 | x=-40.29999923706055 y=-950.2999877929688 | size=1 | links=#16971(auto Hillsbrad Foothills;275):10 #26814(auto Hillsbrad Foothills;438):6 c2229.1:6
+#9457 | auto Hillsbrad Foothills;163§auto Vorgebirge des Hügellands;163§auto Contreforts de Hautebrande;163 | x=-1324.5 y=-1231 | size=1 | links=#10556(auto Hillsbrad Foothills;182):9 #24976(auto Hillsbrad Foothills;410):5
+#9464 | auto Hillsbrad Foothills;164§auto Vorgebirge des Hügellands;164§auto Contreforts de Hautebrande;164 | x=-825 y=-971.5 | size=5 | links=#9644(auto Hillsbrad Foothills;168):85 #24611(auto Hillsbrad Foothills;403):32 c2373.4:38
+#9481 | auto Hillsbrad Foothills;165§auto Vorgebirge des Hügellands;165§auto Contreforts de Hautebrande;165 | x=-118.9000015258789 y=-1615.200073242188 | size=1 | links=#6098(auto Hillsbrad Foothills;98):22 #8538(auto Hillsbrad Foothills;138):26
+#9545 | auto Hillsbrad Foothills;166§auto Vorgebirge des Hügellands;166§auto Contreforts de Hautebrande;166 | x=-501.3000183105469 y=-1601.5 | size=1 | links=#20125(auto Hillsbrad Foothills;334):33 #21086(auto Hillsbrad Foothills;347):22
+#9560 | auto Hillsbrad Foothills;167§auto Vorgebirge des Hügellands;167§auto Contreforts de Hautebrande;167 | x=-845.4000244140625 y=186.4000091552734 | size=1 | links=#2075(auto Hillsbrad Foothills;30):8 #27060(auto Hillsbrad Foothills;443):19
+#9644 | auto Hillsbrad Foothills;168§auto Vorgebirge des Hügellands;168§auto Contreforts de Hautebrande;168 | x=-764.7999877929688 y=-1032.900024414063 | size=5 | links=#9464(auto Hillsbrad Foothills;164):85 #26547(auto Hillsbrad Foothills;432):55
+#9712 | auto Hillsbrad Foothills;169§auto Vorgebirge des Hügellands;169§auto Contreforts de Hautebrande;169 | x=-26.80000114440918 y=-941.7999877929688 | size=1 | links=c2395.1:18 c2397.1:16 c2401.1:6 c2419.1:4
+#9760 | central location;Tarren Mill;Hillsbrad Foothills§zentralpunkt;Tarrens Mühle;Vorgebirge des Hügellands§emplacement central;Tarren Mill;Contreforts de Hautebrande | x=-32.29999923706055 y=-927.2000122070312 | size=1 | links=#10146(auto Hillsbrad Foothills;176):9 #18570(auto Hillsbrad Foothills;302):17 #23003(entry and exit;inn;Tarren Mill;Hillsbrad Foothills):13 c2215.1:4 c2418.1:13
+#9830 | auto Hillsbrad Foothills;170§auto Vorgebirge des Hügellands;170§auto Contreforts de Hautebrande;170 | x=-1292.200073242188 y=-1250.900024414063 | size=1 | links=#10559(auto Hillsbrad Foothills;183):6 #13108(auto Hillsbrad Foothills;213):6
+#9900 | auto Hillsbrad Foothills;171§auto Vorgebirge des Hügellands;171§auto Contreforts de Hautebrande;171 | x=-955.2999877929688 y=-1025.400024414063 | size=1 | links=#24505(auto Hillsbrad Foothills;402):7 o1723.5:22
+#9921 | Phin Odelic;Questgiver;Hillsbrad Foothills;1;50.35;59.05§Phin Odelic;Questgeber;Vorgebirge des Hügellands;1;50.35;59.05§Phin Odelic;Questgiver;Contreforts de Hautebrande;1;50.35;59.05 | x=-859.6000366210938 y=-544.4000244140625 | size=1
+#9962 | auto Hillsbrad Foothills;172§auto Vorgebirge des Hügellands;172§auto Contreforts de Hautebrande;172 | x=-17.60000038146973 y=-902 | size=1 | links=#6527(auto Hillsbrad Foothills;104):8 #24821(auto Hillsbrad Foothills;407):5 c2390.1:6
+#9987 | auto Hillsbrad Foothills;173§auto Vorgebirge des Hügellands;173§auto Contreforts de Hautebrande;173 | x=-486 y=120.3000030517578 | size=1 | links=#5952(auto Hillsbrad Foothills;96):8 c2335.1:3 o1759.1:1
+#9988 | auto Hillsbrad Foothills;174§auto Vorgebirge des Hügellands;174§auto Contreforts de Hautebrande;174 | x=-1350.099975585938 y=-1260 | size=1 | links=#7402(auto Hillsbrad Foothills;121):7 #10436(auto Hillsbrad Foothills;181):9
+#10076 | auto Hillsbrad Foothills;175§auto Vorgebirge des Hügellands;175§auto Contreforts de Hautebrande;175 | x=-1352.700073242188 y=-1242.400024414063 | size=1 | links=#3437(auto Hillsbrad Foothills;56):5 #15562(auto Hillsbrad Foothills;250):6 #19314(auto Hillsbrad Foothills;313):6
+#10146 | auto Hillsbrad Foothills;176§auto Vorgebirge des Hügellands;176§auto Contreforts de Hautebrande;176 | x=-34.90000152587891 y=-935.9000244140625 | size=1 | links=#9760(central location;Tarren Mill;Hillsbrad Foothills):9 #26814(auto Hillsbrad Foothills;438):8 c2278.1:5 c2419.1:6
+#10200 | passage;from;Hillsbrad Foothills;to;Silverpine Forest§passage;von;Vorgebirge des Hügellands;nach;Silberwald§passage;de;Contreforts de Hautebrande;vers;Forêt des Pins argentés | x=-586.7999877929688 y=625.7999877929688 | size=1 | links=#15140(auto Silverpine Forest;274):41 #2315(auto Hillsbrad Foothills;35):175
+#10277 | auto Hillsbrad Foothills;177§auto Vorgebirge des Hügellands;177§auto Contreforts de Hautebrande;177 | x=-491.3000183105469 y=-958.7999877929688 | size=1 | links=#3097(auto Hillsbrad Foothills;49):32 #4815(auto Hillsbrad Foothills;83):75 #14079(auto Hillsbrad Foothills;226):16 c2349.60:64
+#10288 | auto Hillsbrad Foothills;178§auto Vorgebirge des Hügellands;178§auto Contreforts de Hautebrande;178 | x=-340.3000183105469 y=-667.4000244140625 | size=1 | links=#7089(auto Hillsbrad Foothills;119):18 #9179(auto Hillsbrad Foothills;155):38
+#10290 | crossing;two;Hillsbrad Foothills§kreuzung;zwei;Vorgebirge des Hügellands§traversée;deux;Contreforts de Hautebrande | x=-381.6000061035156 y=-779 | size=1 | links=#2096(auto Hillsbrad Foothills;31):65 #12308(auto Hillsbrad Foothills;205):53 #16838(auto Hillsbrad Foothills;271):79
+#10304 | auto Hillsbrad Foothills;179§auto Vorgebirge des Hügellands;179§auto Contreforts de Hautebrande;179 | x=-894.9000244140625 y=-708.2000122070312 | size=1 | links=#14396(auto Hillsbrad Foothills;232):33 c2385.9:41
+#10397 | auto Hillsbrad Foothills;180§auto Vorgebirge des Hügellands;180§auto Contreforts de Hautebrande;180 | x=-664.9000244140625 y=-1585.099975585938 | size=5 | links=#16822(auto Hillsbrad Foothills;270):54 #23996(auto Hillsbrad Foothills;392):105
+#10436 | auto Hillsbrad Foothills;181§auto Vorgebirge des Hügellands;181§auto Contreforts de Hautebrande;181 | x=-1342.700073242188 y=-1253.900024414063 | size=1 | links=#9988(auto Hillsbrad Foothills;174):9 #15754(auto Hillsbrad Foothills;254):9
+#10556 | auto Hillsbrad Foothills;182§auto Vorgebirge des Hügellands;182§auto Contreforts de Hautebrande;182 | x=-1331.200073242188 y=-1238.099975585938 | size=1 | links=#9457(auto Hillsbrad Foothills;163):9 #19373(auto Hillsbrad Foothills;315):5
+#10559 | auto Hillsbrad Foothills;183§auto Vorgebirge des Hügellands;183§auto Contreforts de Hautebrande;183 | x=-1293.599975585938 y=-1257.599975585938 | size=1 | links=#3124(auto Hillsbrad Foothills;50):11 #9830(auto Hillsbrad Foothills;170):6
+#10682 | auto Hillsbrad Foothills;184§auto Vorgebirge des Hügellands;184§auto Contreforts de Hautebrande;184 | x=-788.4000244140625 y=-599.4000244140625 | size=1 | links=#8878(auto Hillsbrad Foothills;147):11 c2357.1:6
+#10706 | auto Hillsbrad Foothills;185§auto Vorgebirge des Hügellands;185§auto Contreforts de Hautebrande;185 | x=78.5999984741211 y=-1153.5 | size=1 | links=#3584(auto Hillsbrad Foothills;58):88 #17258(auto Hillsbrad Foothills;279):26
+#10742 | auto Hillsbrad Foothills;186§auto Vorgebirge des Hügellands;186§auto Contreforts de Hautebrande;186 | x=-512.1000366210938 y=113.5 | size=1 | links=#8855(auto Hillsbrad Foothills;144):7 #27269(auto Hillsbrad Foothills;448):4
+#10874 | auto Hillsbrad Foothills;187§auto Vorgebirge des Hügellands;187§auto Contreforts de Hautebrande;187 | x=-972.9000244140625 y=-1039.200073242188 | size=1 | links=#14820(auto Hillsbrad Foothills;240):14 #24505(auto Hillsbrad Foothills;402):15
+#10879 | auto Hillsbrad Foothills;188§auto Vorgebirge des Hügellands;188§auto Contreforts de Hautebrande;188 | x=-476 y=-140.4000091552734 | size=5 | links=#1991(auto Hillsbrad Foothills;29):38 #8865(auto Hillsbrad Foothills;146):46
+#10966 | auto Hillsbrad Foothills;189§auto Vorgebirge des Hügellands;189§auto Contreforts de Hautebrande;189 | x=-877 y=115.0999984741211 | size=1 | links=#9024(auto Hillsbrad Foothills;151):59 #19629(auto Hillsbrad Foothills;324):53
+#10969 | Bartolo Ginsetti;Questgiver;Hillsbrad Foothills;1;49.43;55.53§Bartolo Ginsetti;Questgeber;Vorgebirge des Hügellands;1;49.43;55.53§Bartolo Ginsetti;Questgiver;Contreforts de Hautebrande;1;49.43;55.53 | x=-784.7000122070312 y=-515 | size=1
+#11114 | auto Hillsbrad Foothills;190§auto Vorgebirge des Hügellands;190§auto Contreforts de Hautebrande;190 | x=-39 y=-827.5 | size=1 | links=#4637(auto Hillsbrad Foothills;77):38 #25602(auto Hillsbrad Foothills;422):39
+#11132 | auto Hillsbrad Foothills;191§auto Vorgebirge des Hügellands;191§auto Contreforts de Hautebrande;191 | x=-1333.599975585938 y=-1262.900024414063 | size=1 | links=#1705(auto Hillsbrad Foothills;26):19 #3281(auto Hillsbrad Foothills;54):11
+#11138 | auto Hillsbrad Foothills;192§auto Vorgebirge des Hügellands;192§auto Contreforts de Hautebrande;192 | x=-135.4000091552734 y=-717 | size=1 | links=#24279(auto Hillsbrad Foothills;395):61 #27242(auto Hillsbrad Foothills;446):65
+#11191 | auto Hillsbrad Foothills;193§auto Vorgebirge des Hügellands;193§auto Contreforts de Hautebrande;193 | x=-452.2000122070313 y=-1012.5 | size=1 | links=#6124(auto Hillsbrad Foothills;99):77 #14079(auto Hillsbrad Foothills;226):49 c2408.8:50
+#11259 | auto Hillsbrad Foothills;194§auto Vorgebirge des Hügellands;194§auto Contreforts de Hautebrande;194 | x=-350.5 y=11.90000057220459 | size=1 | links=#24365(auto Hillsbrad Foothills;397):8 #27863(auto Hillsbrad Foothills;455):8
+#11355 | centralpoint;down;inn;Southshore§zentralerpunkt;unten;gasthaus;Süderstade§point central;bas;inn;Austrivage | x=-855.1000366210938 y=-567.7000122070312 | size=1 | links=#17242(auto Hillsbrad Foothills;278):6 #25471(auto Hillsbrad Foothills;420):10 c2352.1:3 c17218.1:4 o180523.1:2
+#11647 | auto Hillsbrad Foothills;195§auto Vorgebirge des Hügellands;195§auto Contreforts de Hautebrande;195 | x=-12.40000057220459 y=-929.7000122070312 | size=1 | links=#14552(auto Hillsbrad Foothills;234):6 c2393.1:6
+#11681 | auto Hillsbrad Foothills;196§auto Vorgebirge des Hügellands;196§auto Contreforts de Hautebrande;196 | x=-17.70000076293945 y=-1418.200073242188 | size=1 | links=#14119(auto Hillsbrad Foothills;227):20 #22894(auto Hillsbrad Foothills;371):30
+#11717 | entry and exit;cave;Darrow Hill;Hillsbrad Foothills§ein- und ausgang;höhle;Darrohügel;Vorgebirge des Hügellands§entrée et sortie;cave;Colline de Darrow;Contreforts de Hautebrande | x=-281.6000061035156 y=-415.2000122070313 | size=1 | links=#3528(auto Hillsbrad Foothills;57):13 #25768(auto Hillsbrad Foothills;423):30
+#11792 | auto Hillsbrad Foothills;197§auto Vorgebirge des Hügellands;197§auto Contreforts de Hautebrande;197 | x=-887.4000244140625 y=-540.6000366210938 | size=1 | links=#3571(central location;Southshore;Hillsbrad Foothills):31 #17089(auto Hillsbrad Foothills;277):42 #26017(auto Hillsbrad Foothills;428):16
+#11844 | auto Hillsbrad Foothills;198§auto Vorgebirge des Hügellands;198§auto Contreforts de Hautebrande;198 | x=-353.3999938964844 y=-95.80000305175781 | size=5 | links=#1137(auto Hillsbrad Foothills;18):30 #13678(auto Hillsbrad Foothills;222):50
+#11884 | auto Hillsbrad Foothills;199§auto Vorgebirge des Hügellands;199§auto Contreforts de Hautebrande;199 | x=-97.70000457763672 y=-1319.900024414063 | size=1 | links=#536(auto Hillsbrad Foothills;12):60 #23326(ramp;down;mountain;Hillsbrad Foothills):24
+#11938 | auto Hillsbrad Foothills;200§auto Vorgebirge des Hügellands;200§auto Contreforts de Hautebrande;200 | x=-523.7999877929688 y=-1527.300048828125 | size=1 | links=#7264(auto Hillsbrad Foothills;120):9 #25258(auto Hillsbrad Foothills;416):19
+#11988 | auto Hillsbrad Foothills;201§auto Vorgebirge des Hügellands;201§auto Contreforts de Hautebrande;201 | x=-1294.800048828125 y=-1200.200073242188 | size=1 | links=#19507(auto Hillsbrad Foothills;319):11 #23237(auto Hillsbrad Foothills;375):15
+#12105 | Sergeant Hartman;Questgiver;Hillsbrad Foothills;1;50.43;56.89§Unteroffizier Hartman;Questgeber;Vorgebirge des Hügellands;1;50.43;56.89§Sergent Hartman;Questgiver;Contreforts de Hautebrande;1;50.43;56.89 | x=-822.8587948051337 y=-531.470896157094 | size=1
+#12142 | auto Hillsbrad Foothills;202§auto Vorgebirge des Hügellands;202§auto Contreforts de Hautebrande;202 | x=-461.7000122070313 y=-1469.800048828125 | size=1 | links=#20822(auto Hillsbrad Foothills;345):9 c2428.1:8 c2261.26:11 c2261.33:5
+#12236 | auto Hillsbrad Foothills;203§auto Vorgebirge des Hügellands;203§auto Contreforts de Hautebrande;203 | x=-626.5 y=201.5 | size=1 | links=#6618(auto Hillsbrad Foothills;109):38 #7039(auto Hillsbrad Foothills;118):61
+#12280 | auto Hillsbrad Foothills;204§auto Vorgebirge des Hügellands;204§auto Contreforts de Hautebrande;204 | x=56.40000152587891 y=-708.7999877929688 | size=1 | links=#9408(auto Hillsbrad Foothills;161):74 #26311(crossing;Hillsbrad Foothills):77
+#12308 | auto Hillsbrad Foothills;205§auto Vorgebirge des Hügellands;205§auto Contreforts de Hautebrande;205 | x=-332.8999938964844 y=-756.9000244140625 | size=1 | links=#10290(crossing;two;Hillsbrad Foothills):53 #17502(auto Hillsbrad Foothills;286):44
+#12314 | auto Hillsbrad Foothills;206§auto Vorgebirge des Hügellands;206§auto Contreforts de Hautebrande;206 | x=-510.2000122070313 y=-1389 | size=1 | links=#18557(auto Hillsbrad Foothills;300):19 #22692(auto Hillsbrad Foothills;368):26 c2244.9:16
+#12401 | auto Hillsbrad Foothills;207§auto Vorgebirge des Hügellands;207§auto Contreforts de Hautebrande;207 | x=-1337.599975585938 y=-1274.900024414063 | size=1 | links=#3281(auto Hillsbrad Foothills;54):6 #15813(auto Hillsbrad Foothills;255):4 c14275.2:7
+#12524 | auto Hillsbrad Foothills;208§auto Vorgebirge des Hügellands;208§auto Contreforts de Hautebrande;208 | x=-9.800000190734863 y=-1726.099975585938 | size=1 | links=#3721(auto Alterac Mountains;31):13 #13067(auto Hillsbrad Foothills;211):27
+#12686 | auto Hillsbrad Foothills;209§auto Vorgebirge des Hügellands;209§auto Contreforts de Hautebrande;209 | x=-1365.300048828125 y=-1246.300048828125 | size=1 | links=#3437(auto Hillsbrad Foothills;56):11 #15039(auto Hillsbrad Foothills;242):9
+#12776 | auto Hillsbrad Foothills;210§auto Vorgebirge des Hügellands;210§auto Contreforts de Hautebrande;210 | x=-320.5 y=-1633.599975585938 | size=5 | links=#2946(auto Hillsbrad Foothills;45):76 #26686(auto Hillsbrad Foothills;434):23 c2473.1:20 c2474.1:37 c14280.3:49
+#13067 | auto Hillsbrad Foothills;211§auto Vorgebirge des Hügellands;211§auto Contreforts de Hautebrande;211 | x=-34.90000152587891 y=-1713.800048828125 | size=1 | links=#12524(auto Hillsbrad Foothills;208):27 #13685(auto Hillsbrad Foothills;223):28
+#13085 | auto Hillsbrad Foothills;212§auto Vorgebirge des Hügellands;212§auto Contreforts de Hautebrande;212 | x=-829.4000244140625 y=-577.7000122070312 | size=1 | links=#3681(auto Hillsbrad Foothills;59):13 #15076(auto Hillsbrad Foothills;243):24 c3543.1:14
+#13108 | auto Hillsbrad Foothills;213§auto Vorgebirge des Hügellands;213§auto Contreforts de Hautebrande;213 | x=-1286.400024414063 y=-1247.400024414063 | size=1 | links=#4777(auto Hillsbrad Foothills;79):9 #8357(auto Hillsbrad Foothills;135):24 #9830(auto Hillsbrad Foothills;170):6
+#13246 | auto Hillsbrad Foothills;214§auto Vorgebirge des Hügellands;214§auto Contreforts de Hautebrande;214 | x=-450.8999938964844 y=-1555.300048828125 | size=1 | links=#16650(auto Hillsbrad Foothills;266):33 #22699(auto Hillsbrad Foothills;369):25 c2244.19:6 c2261.35:6 c2261.36:9
+#13298 | auto Hillsbrad Foothills;215§auto Vorgebirge des Hügellands;215§auto Contreforts de Hautebrande;215 | x=-854.2999877929688 y=224.5 | size=1 | links=#14003(auto Hillsbrad Foothills;225):15 #21944(auto Hillsbrad Foothills;360):6
+#13368 | auto Hillsbrad Foothills;216§auto Vorgebirge des Hügellands;216§auto Contreforts de Hautebrande;216 | x=-77.9000015258789 y=-1352.200073242188 | size=1 | links=#7455(auto Hillsbrad Foothills;123):24 #19878(auto Hillsbrad Foothills;329):36
+#13434 | auto Hillsbrad Foothills;217§auto Vorgebirge des Hügellands;217§auto Contreforts de Hautebrande;217 | x=-1319.400024414063 y=-1209.099975585938 | size=1 | links=#5977(auto Hillsbrad Foothills;97):8 #19507(auto Hillsbrad Foothills;319):26 #24787(auto Hillsbrad Foothills;406):9
+#13580 | auto Hillsbrad Foothills;218§auto Vorgebirge des Hügellands;218§auto Contreforts de Hautebrande;218 | x=-861.9000244140625 y=-490.3000183105469 | size=1 | links=#18755(auto Hillsbrad Foothills;305):21 #24332(auto Hillsbrad Foothills;396):13 c2378.1:3
+#13612 | auto Hillsbrad Foothills;219§auto Vorgebirge des Hügellands;219§auto Contreforts de Hautebrande;219 | x=-766.7000122070312 y=166.3000030517578 | size=1 | links=#17549(auto Hillsbrad Foothills;287):29 #25889(auto Hillsbrad Foothills;425):19 c2269.3:5
+#13646 | auto Hillsbrad Foothills;220§auto Vorgebirge des Hügellands;220§auto Contreforts de Hautebrande;220 | x=-865.6000366210938 y=-581.2000122070312 | size=1 | links=#18120(auto Hillsbrad Foothills;294):6
+#13665 | auto Hillsbrad Foothills;221§auto Vorgebirge des Hügellands;221§auto Contreforts de Hautebrande;221 | x=-811.1000366210938 y=-610.5 | size=1 | links=#3681(auto Hillsbrad Foothills;59):24 #8878(auto Hillsbrad Foothills;147):14 c620.1:7
+#13678 | auto Hillsbrad Foothills;222§auto Vorgebirge des Hügellands;222§auto Contreforts de Hautebrande;222 | x=-328.5 y=-51.29999923706055 | size=5 | links=#11844(auto Hillsbrad Foothills;198):50 #23632(auto Hillsbrad Foothills;382):35 #25465(auto Hillsbrad Foothills;419):40
+#13685 | auto Hillsbrad Foothills;223§auto Vorgebirge des Hügellands;223§auto Contreforts de Hautebrande;223 | x=-61.60000228881836 y=-1704.099975585938 | size=1 | links=#13067(auto Hillsbrad Foothills;211):28 #24379(auto Hillsbrad Foothills;399):30
+#13842 | Wesley;Stable Master;Hillsbrad Foothills;1;50.42;58.8§Wesley;Stallmeister;Vorgebirge des Hügellands;1;50.42;58.8§Wesley;Stable Master;Contreforts de Hautebrande;1;50.42;58.8 | x=-854.5 y=-546.6000366210938 | size=1
+#13872 | auto Hillsbrad Foothills;224§auto Vorgebirge des Hügellands;224§auto Contreforts de Hautebrande;224 | x=-37.10000228881836 y=-903.5 | size=1 | links=#6527(auto Hillsbrad Foothills;104):10 #24909(auto Hillsbrad Foothills;409):4
+#14003 | auto Hillsbrad Foothills;225§auto Vorgebirge des Hügellands;225§auto Contreforts de Hautebrande;225 | x=-846.9000244140625 y=210.8000030517578 | size=1 | links=#13298(auto Hillsbrad Foothills;215):15 #28064(auto Hillsbrad Foothills;458):11
+#14079 | auto Hillsbrad Foothills;226§auto Vorgebirge des Hügellands;226§auto Contreforts de Hautebrande;226 | x=-483.3999938964844 y=-973.6000366210938 | size=1 | links=#10277(auto Hillsbrad Foothills;177):16 #11191(auto Hillsbrad Foothills;193):49 c2408.1:37 c2354.17:96 c2350.21:47
+#14119 | auto Hillsbrad Foothills;227§auto Vorgebirge des Hügellands;227§auto Contreforts de Hautebrande;227 | x=-37.60000228881836 y=-1413.700073242188 | size=1 | links=#11681(auto Hillsbrad Foothills;196):20 #18564(auto Hillsbrad Foothills;301):14 c6766.1:12 c6766.2:12
+#14171 | auto Hillsbrad Foothills;228§auto Vorgebirge des Hügellands;228§auto Contreforts de Hautebrande;228 | x=-208.8000030517578 y=-367 | size=1 | links=#2578(auto Hillsbrad Foothills;43):16 c2248.3:4 c2249.4:28 c2248.6:19
+#14224 | auto Hillsbrad Foothills;229§auto Vorgebirge des Hügellands;229§auto Contreforts de Hautebrande;229 | x=159.6000061035156 y=-684.7000122070312 | size=1 | links=#4861(passage;from;Hillsbrad Foothills;to;Alterac Mountains):39 #9408(auto Hillsbrad Foothills;161):35
+#14273 | auto Hillsbrad Foothills;230§auto Vorgebirge des Hügellands;230§auto Contreforts de Hautebrande;230 | x=-719.9000244140625 y=157 | size=1 | links=#17549(auto Hillsbrad Foothills;287):24 #22113(auto Hillsbrad Foothills;362):31 c2356.20:11 c2269.26:11 c2269.30:29
+#14313 | auto Hillsbrad Foothills;231§auto Vorgebirge des Hügellands;231§auto Contreforts de Hautebrande;231 | x=-802.1000366210938 y=122.7000045776367 | size=1 | links=#23243(auto Hillsbrad Foothills;376):22 #26847(auto Hillsbrad Foothills;439):18 c2269.31:7
+#14396 | auto Hillsbrad Foothills;232§auto Vorgebirge des Hügellands;232§auto Contreforts de Hautebrande;232 | x=-886.2999877929688 y=-675.9000244140625 | size=1 | links=#2425(auto Hillsbrad Foothills;41):36 #10304(auto Hillsbrad Foothills;179):33 c2371.10:33
+#14434 | auto Hillsbrad Foothills;233§auto Vorgebirge des Hügellands;233§auto Contreforts de Hautebrande;233 | x=-380 y=-9.5 | size=1 | links=#20676(auto Hillsbrad Foothills;341):17 #21553(auto Hillsbrad Foothills;354):17 c2266.11:22
+#14552 | auto Hillsbrad Foothills;234§auto Vorgebirge des Hügellands;234§auto Contreforts de Hautebrande;234 | x=-17.10000038146973 y=-934.4000244140625 | size=1 | links=#11647(auto Hillsbrad Foothills;195):6 #19224(Delia Verana;Tarren Mill;Hillsbrad Foothills):3 #20267(auto Hillsbrad Foothills;335):10 #23003(entry and exit;inn;Tarren Mill;Hillsbrad Foothills):3 c2392.1:3
+#14631 | auto Hillsbrad Foothills;235§auto Vorgebirge des Hügellands;235§auto Contreforts de Hautebrande;235 | x=-235.9000091552734 y=-386.8000183105469 | size=1 | links=#16297(auto Hillsbrad Foothills;261):18 #28225(auto Hillsbrad Foothills;461):28
+#14638 | auto Hillsbrad Foothills;236§auto Vorgebirge des Hügellands;236§auto Contreforts de Hautebrande;236 | x=-823.1000366210938 y=-499.8000183105469 | size=1 | links=#8489(auto Hillsbrad Foothills;137):6 c2365.1:7
+#14690 | auto Hillsbrad Foothills;237§auto Vorgebirge des Hügellands;237§auto Contreforts de Hautebrande;237 | x=-463.2000122070313 y=-880.4000244140625 | size=1 | links=#2096(auto Hillsbrad Foothills;31):65 #3097(auto Hillsbrad Foothills;49):51 c2350.14:49
+#14706 | auto Hillsbrad Foothills;238§auto Vorgebirge des Hügellands;238§auto Contreforts de Hautebrande;238 | x=-1321 y=-1250.099975585938 | size=1 | links=#1281(auto Hillsbrad Foothills;20):5 #19373(auto Hillsbrad Foothills;315):9
+#14813 | auto Hillsbrad Foothills;239§auto Vorgebirge des Hügellands;239§auto Contreforts de Hautebrande;239 | x=-606.7000122070312 y=18.89999961853027 | size=1 | links=#1751(auto Hillsbrad Foothills;28):36 #3797(auto Hillsbrad Foothills;64):30 #4146(auto Hillsbrad Foothills;68):21 c2387.7:20
+#14820 | auto Hillsbrad Foothills;240§auto Vorgebirge des Hügellands;240§auto Contreforts de Hautebrande;240 | x=-984.4000244140625 y=-1048.5 | size=1 | links=#4377(auto Hillsbrad Foothills;73):28 #10874(auto Hillsbrad Foothills;187):14
+#14872 | auto Hillsbrad Foothills;241§auto Vorgebirge des Hügellands;241§auto Contreforts de Hautebrande;241 | x=-843.6000366210938 y=-586.7999877929688 | size=1 | links=#16672(auto Hillsbrad Foothills;267):8 #20825(auto Hillsbrad Foothills;346):18
+#15039 | auto Hillsbrad Foothills;242§auto Vorgebirge des Hügellands;242§auto Contreforts de Hautebrande;242 | x=-1358.900024414063 y=-1253.900024414063 | size=1 | links=#7402(auto Hillsbrad Foothills;121):3 #12686(auto Hillsbrad Foothills;209):9
+#15076 | auto Hillsbrad Foothills;243§auto Vorgebirge des Hügellands;243§auto Contreforts de Hautebrande;243 | x=-831.4000244140625 y=-553.7000122070312 | size=1 | links=#13085(auto Hillsbrad Foothills;212):24
+#15233 | auto Hillsbrad Foothills;244§auto Vorgebirge des Hügellands;244§auto Contreforts de Hautebrande;244 | x=-482.8000183105469 y=21.89999961853027 | size=1 | links=#6616(auto Hillsbrad Foothills;108):25 #23107(auto Hillsbrad Foothills;374):28
+#15264 | auto Hillsbrad Foothills;245§auto Vorgebirge des Hügellands;245§auto Contreforts de Hautebrande;245 | x=-14.90000057220459 y=-974.7000122070312 | size=1 | links=#5606(auto Hillsbrad Foothills;91):9 c2429.1:5
+#15356 | auto Hillsbrad Foothills;246§auto Vorgebirge des Hügellands;246§auto Contreforts de Hautebrande;246 | x=-59.40000152587891 y=-909.9000244140625 | size=1 | links=#7778(auto Hillsbrad Foothills;127):7
+#15423 | auto Hillsbrad Foothills;247§auto Vorgebirge des Hügellands;247§auto Contreforts de Hautebrande;247 | x=-546.4000244140625 y=-106.9000015258789 | size=1 | links=#28513(auto Hillsbrad Foothills;465):7 c2264.1:5 c2264.2:3
+#15466 | auto Hillsbrad Foothills;248§auto Vorgebirge des Hügellands;248§auto Contreforts de Hautebrande;248 | x=-825.5 y=-1455.300048828125 | size=5 | links=#16096(auto Hillsbrad Foothills;259):60 #21420(auto Hillsbrad Foothills;353):74
+#15531 | auto Hillsbrad Foothills;249§auto Vorgebirge des Hügellands;249§auto Contreforts de Hautebrande;249 | x=-571 y=-1107.5 | size=1 | links=#4815(auto Hillsbrad Foothills;83):99 #28218(auto Hillsbrad Foothills;460):142 c2260.15:59 c2244.26:36 c2349.49:75
+#15562 | auto Hillsbrad Foothills;250§auto Vorgebirge des Hügellands;250§auto Contreforts de Hautebrande;250 | x=-1357.5 y=-1246.700073242188 | size=1 | links=#10076(auto Hillsbrad Foothills;175):6 #27451(auto Hillsbrad Foothills;452):12
+#15574 | auto Hillsbrad Foothills;251§auto Vorgebirge des Hügellands;251§auto Contreforts de Hautebrande;251 | x=-903.6000366210938 y=189 | size=1 | links=#8173(auto Hillsbrad Foothills;132):39 #19629(auto Hillsbrad Foothills;324):29 c2270.7:34
+#15704 | auto Hillsbrad Foothills;252§auto Vorgebirge des Hügellands;252§auto Contreforts de Hautebrande;252 | x=49.10000228881836 y=-1499.900024414063 | size=1 | links=#12558(auto Alterac Mountains;125):21 #16005(auto Hillsbrad Foothills;257):10
+#15735 | auto Hillsbrad Foothills;253§auto Vorgebirge des Hügellands;253§auto Contreforts de Hautebrande;253 | x=-854.2999877929688 y=-585 | size=1 | links=#16672(auto Hillsbrad Foothills;267):4 #25471(auto Hillsbrad Foothills;420):6
+#15754 | auto Hillsbrad Foothills;254§auto Vorgebirge des Hügellands;254§auto Contreforts de Hautebrande;254 | x=-1335.099975585938 y=-1247.800048828125 | size=1 | links=#1705(auto Hillsbrad Foothills;26):17 #10436(auto Hillsbrad Foothills;181):9 c2344.8:7 c2344.11:5
+#15813 | auto Hillsbrad Foothills;255§auto Vorgebirge des Hügellands;255§auto Contreforts de Hautebrande;255 | x=-1338.900024414063 y=-1279.200073242188 | size=1 | links=#12401(auto Hillsbrad Foothills;207):4 #20376(auto Hillsbrad Foothills;337):11
+#15873 | auto Hillsbrad Foothills;256§auto Vorgebirge des Hügellands;256§auto Contreforts de Hautebrande;256 | x=-136.1999969482422 y=-1690 | size=1 | links=#16398(auto Hillsbrad Foothills;263):17 #20274(auto Hillsbrad Foothills;336):14
+#16005 | auto Hillsbrad Foothills;257§auto Vorgebirge des Hügellands;257§auto Contreforts de Hautebrande;257 | x=41.79999923706055 y=-1492.900024414063 | size=1 | links=#15704(auto Hillsbrad Foothills;252):10 #19456(auto Hillsbrad Foothills;316):23
+#16092 | auto Hillsbrad Foothills;258§auto Vorgebirge des Hügellands;258§auto Contreforts de Hautebrande;258 | x=-749 y=73.5999984741211 | size=1 | links=#9(auto Hillsbrad Foothills;1):15 #29(auto Hillsbrad Foothills;3):16 #27325(auto Hillsbrad Foothills;449):28 c2269.12:11
+#16096 | auto Hillsbrad Foothills;259§auto Vorgebirge des Hügellands;259§auto Contreforts de Hautebrande;259 | x=-776.7999877929688 y=-1491.400024414063 | size=1 | links=#9023(auto Hillsbrad Foothills;150):100 #15466(auto Hillsbrad Foothills;248):60 #16822(auto Hillsbrad Foothills;270):93 #22033(auto;1635631184508293150553):74
+#16249 | auto Hillsbrad Foothills;260§auto Vorgebirge des Hügellands;260§auto Contreforts de Hautebrande;260 | x=-715.2999877929688 y=-563.7999877929688 | size=1 | links=#1569(auto Hillsbrad Foothills;25):62 #4794(auto Hillsbrad Foothills;82):17 #19549(auto Hillsbrad Foothills;321):35 #22835(auto Hillsbrad Foothills;370):37 c2379.1:13
+#16297 | auto Hillsbrad Foothills;261§auto Vorgebirge des Hügellands;261§auto Contreforts de Hautebrande;261 | x=-218.1000061035156 y=-383.1000061035156 | size=1 | links=#14631(auto Hillsbrad Foothills;235):18 #20447(auto Hillsbrad Foothills;339):8
+#16305 | auto Hillsbrad Foothills;262§auto Vorgebirge des Hügellands;262§auto Contreforts de Hautebrande;262 | x=-794 y=89.20000457763672 | size=1 | links=#3036(auto Hillsbrad Foothills;47):24 #8182(auto Hillsbrad Foothills;133):17 #19063(auto Hillsbrad Foothills;310):14
+#16398 | auto Hillsbrad Foothills;263§auto Vorgebirge des Hügellands;263§auto Contreforts de Hautebrande;263 | x=-147.3000030517578 y=-1676.5 | size=1 | links=#15873(auto Hillsbrad Foothills;256):17 #19273(auto Hillsbrad Foothills;312):11
+#16545 | auto Hillsbrad Foothills;264§auto Vorgebirge des Hügellands;264§auto Contreforts de Hautebrande;264 | x=-621.2999877929688 y=-30.80000114440918 | size=1 | links=#8863(auto Hillsbrad Foothills;145):13 #25239(auto Hillsbrad Foothills;415):9
+#16629 | auto Hillsbrad Foothills;265§auto Vorgebirge des Hügellands;265§auto Contreforts de Hautebrande;265 | x=-209.6000061035156 y=-1738.5 | size=1 | links=#2403(auto Hillsbrad Foothills;38):76 #4098(auto Hillsbrad Foothills;66):65
+#16650 | auto Hillsbrad Foothills;266§auto Vorgebirge des Hügellands;266§auto Contreforts de Hautebrande;266 | x=-464.8999938964844 y=-1585.5 | size=1 | links=#4188(auto Hillsbrad Foothills;69):17 #13246(auto Hillsbrad Foothills;214):33 c2261.47:4
+#16672 | auto Hillsbrad Foothills;267§auto Vorgebirge des Hügellands;267§auto Contreforts de Hautebrande;267 | x=-851.9000244140625 y=-588.4000244140625 | size=1 | links=#14872(auto Hillsbrad Foothills;241):8 #15735(auto Hillsbrad Foothills;253):4
+#16755 | auto Hillsbrad Foothills;268§auto Vorgebirge des Hügellands;268§auto Contreforts de Hautebrande;268 | x=-278.6000061035156 y=3.600000143051148 | size=5 | links=#9028(auto Hillsbrad Foothills;152):43 #23632(auto Hillsbrad Foothills;382):39
+#16815 | auto Hillsbrad Foothills;269§auto Vorgebirge des Hügellands;269§auto Contreforts de Hautebrande;269 | x=-898.7999877929688 y=-915.5 | size=1 | links=#22104(auto Hillsbrad Foothills;361):27 c2372.3:16 c2348.7:56
+#16822 | auto Hillsbrad Foothills;270§auto Vorgebirge des Hügellands;270§auto Contreforts de Hautebrande;270 | x=-713.4000244140625 y=-1559.800048828125 | size=5 | links=#10397(auto Hillsbrad Foothills;180):54 #16096(auto Hillsbrad Foothills;259):93 c2356.2:6 c2349.97:24
+#16838 | auto Hillsbrad Foothills;271§auto Vorgebirge des Hügellands;271§auto Contreforts de Hautebrande;271 | x=-399.1000061035156 y=-701.1000366210938 | size=1 | links=#9179(auto Hillsbrad Foothills;155):33 #10290(crossing;two;Hillsbrad Foothills):79 #18559(crossing;three;Hillsbrad Foothills):120
+#16881 | auto Hillsbrad Foothills;272§auto Vorgebirge des Hügellands;272§auto Contreforts de Hautebrande;272 | x=-74.70000457763672 y=-891.6000366210938 | size=1 | links=#4637(auto Hillsbrad Foothills;77):37 #7778(auto Hillsbrad Foothills;127):17 #16884(auto Hillsbrad Foothills;273):23
+#16884 | auto Hillsbrad Foothills;273§auto Vorgebirge des Hügellands;273§auto Contreforts de Hautebrande;273 | x=-98.30000305175781 y=-894 | size=1 | links=#16881(auto Hillsbrad Foothills;272):23 c2396.1:22
+#16885 | auto Hillsbrad Foothills;274§auto Vorgebirge des Hügellands;274§auto Contreforts de Hautebrande;274 | x=-442.2000122070313 y=-97.0999984741211 | size=1 | links=#7432(auto Hillsbrad Foothills;122):41 #17487(auto Hillsbrad Foothills;285):7 c2266.15:6
+#16971 | auto Hillsbrad Foothills;275§auto Vorgebirge des Hügellands;275§auto Contreforts de Hautebrande;275 | x=-43.60000228881836 y=-960.2000122070312 | size=1 | links=#4272(auto Hillsbrad Foothills;72):9 #9448(auto Hillsbrad Foothills;162):10
+#17019 | auto Hillsbrad Foothills;276§auto Vorgebirge des Hügellands;276§auto Contreforts de Hautebrande;276 | x=-1213.800048828125 y=-1162 | size=1 | links=#18930(auto Hillsbrad Foothills;307):20 c2345.2:22 c2345.3:21
+#17089 | auto Hillsbrad Foothills;277§auto Vorgebirge des Hügellands;277§auto Contreforts de Hautebrande;277 | x=-883.9000244140625 y=-583.2000122070312 | size=1 | links=#11792(auto Hillsbrad Foothills;197):42 #18310(auto Hillsbrad Foothills;297):38 #19457(auto Hillsbrad Foothills;317):15
+#17242 | auto Hillsbrad Foothills;278§auto Vorgebirge des Hügellands;278§auto Contreforts de Hautebrande;278 | x=-856.2000122070312 y=-561.2999877929688 | size=1 | links=#11355(centralpoint;down;inn;Southshore):6 #18192(auto Hillsbrad Foothills;295):5
+#17258 | auto Hillsbrad Foothills;279§auto Vorgebirge des Hügellands;279§auto Contreforts de Hautebrande;279 | x=99.70000457763672 y=-1170.099975585938 | size=1 | links=#3795(auto Hillsbrad Foothills;63):51 #10706(auto Hillsbrad Foothills;185):26 c2408.11:27
+#17269 | auto Hillsbrad Foothills;280§auto Vorgebirge des Hügellands;280§auto Contreforts de Hautebrande;280 | x=-404.3000183105469 y=23 | size=1 | links=#21577(auto Hillsbrad Foothills;355):39 #23107(auto Hillsbrad Foothills;374):49 #25533(auto Hillsbrad Foothills;421):9 c2268.2:21
+#17365 | auto Hillsbrad Foothills;281§auto Vorgebirge des Hügellands;281§auto Contreforts de Hautebrande;281 | x=-1326.099975585938 y=-1274.900024414063 | size=1 | links=#5710(auto Hillsbrad Foothills;93):2 #22567(auto Hillsbrad Foothills;365):5 #26697(auto Hillsbrad Foothills;435):5
+#17374 | auto Hillsbrad Foothills;282§auto Vorgebirge des Hügellands;282§auto Contreforts de Hautebrande;282 | x=-338.8000183105469 y=-706.5 | size=1 | links=#22986(auto Hillsbrad Foothills;372):13 o181620.1:13 c17108.2:4
+#17472 | auto Hillsbrad Foothills;283§auto Vorgebirge des Hügellands;283§auto Contreforts de Hautebrande;283 | x=-1298.700073242188 y=-1251.599975585938 | size=1 | links=#4237(auto Hillsbrad Foothills;70):11 #17645(auto Hillsbrad Foothills;289):13
+#17482 | auto Hillsbrad Foothills;284§auto Vorgebirge des Hügellands;284§auto Contreforts de Hautebrande;284 | x=-251.5 y=177.9000091552734 | size=5 | links=#5632(auto Hillsbrad Foothills;92):64 #6311(passage;from;Hillsbrad Fields;Hillsbrad Foothills;to;Alterac Mountains):46
+#17487 | auto Hillsbrad Foothills;285§auto Vorgebirge des Hügellands;285§auto Contreforts de Hautebrande;285 | x=-441.3000183105469 y=-104.5999984741211 | size=1 | links=#16885(auto Hillsbrad Foothills;274):7 c2403.1:4
+#17502 | auto Hillsbrad Foothills;286§auto Vorgebirge des Hügellands;286§auto Contreforts de Hautebrande;286 | x=-291.1000061035156 y=-741.6000366210938 | size=1 | links=#12308(auto Hillsbrad Foothills;205):44 #23850(auto Hillsbrad Foothills;388):50
+#17549 | auto Hillsbrad Foothills;287§auto Vorgebirge des Hügellands;287§auto Contreforts de Hautebrande;287 | x=-738.6000366210938 y=173.5 | size=1 | links=#13612(auto Hillsbrad Foothills;219):29 #14273(auto Hillsbrad Foothills;230):24 c2269.5:16
+#17583 | auto Hillsbrad Foothills;288§auto Vorgebirge des Hügellands;288§auto Contreforts de Hautebrande;288 | x=-520 y=352.2000122070313 | size=5 | links=#2315(auto Hillsbrad Foothills;35):118 #6408(Hillsbrad Fields;west;Hillsbrad Foothills):107 #7039(auto Hillsbrad Foothills;118):129 c2350.34:39 c2351.41:36
+#17645 | auto Hillsbrad Foothills;289§auto Vorgebirge des Hügellands;289§auto Contreforts de Hautebrande;289 | x=-1308.800048828125 y=-1260.400024414063 | size=1 | links=#17472(auto Hillsbrad Foothills;283):13 #21617(auto Hillsbrad Foothills;356):11 c2345.7:4 c2344.9:4
+#17724 | auto Hillsbrad Foothills;290§auto Vorgebirge des Hügellands;290§auto Contreforts de Hautebrande;290 | x=-482.8000183105469 y=-1432.900024414063 | size=1 | links=#19579(auto Hillsbrad Foothills;322):22 #24763(auto Hillsbrad Foothills;404):24
+#17900 | auto Hillsbrad Foothills;291§auto Vorgebirge des Hügellands;291§auto Contreforts de Hautebrande;291 | x=-1310.300048828125 y=-1248.300048828125 | size=1 | links=#519(auto Hillsbrad Foothills;11):8 #1281(auto Hillsbrad Foothills;20):9
+#18065 | auto Hillsbrad Foothills;292§auto Vorgebirge des Hügellands;292§auto Contreforts de Hautebrande;292 | x=-532 y=-559 | size=1 | links=#18559(crossing;three;Hillsbrad Foothills):102 #27381(auto Hillsbrad Foothills;450):72
+#18079 | auto Hillsbrad Foothills;293§auto Vorgebirge des Hügellands;293§auto Contreforts de Hautebrande;293 | x=-502.8999938964844 y=-1367.300048828125 | size=1 | links=#18557(auto Hillsbrad Foothills;300):13 #27527(auto Hillsbrad Foothills;454):5 c2244.8:6
+#18120 | auto Hillsbrad Foothills;294§auto Vorgebirge des Hügellands;294§auto Contreforts de Hautebrande;294 | x=-858.9000244140625 y=-582.5 | size=1 | links=#13646(auto Hillsbrad Foothills;220):6 #28023(top;inn;Southshore):12
+#18192 | auto Hillsbrad Foothills;295§auto Vorgebirge des Hügellands;295§auto Contreforts de Hautebrande;295 | x=-858.4000244140625 y=-556.5 | size=1 | links=#17242(auto Hillsbrad Foothills;278):5 #23633(auto Hillsbrad Foothills;383):11
+#18202 | auto Hillsbrad Foothills;296§auto Vorgebirge des Hügellands;296§auto Contreforts de Hautebrande;296 | x=-494.8000183105469 y=112.4000015258789 | size=1 | links=#5952(auto Hillsbrad Foothills;96):8 #8855(auto Hillsbrad Foothills;144):10
+#18310 | auto Hillsbrad Foothills;297§auto Vorgebirge des Hügellands;297§auto Contreforts de Hautebrande;297 | x=-871.9000244140625 y=-619.6000366210938 | size=1 | links=#2425(auto Hillsbrad Foothills;41):29 #17089(auto Hillsbrad Foothills;277):38
+#18351 | Drull;Questgiver;Hillsbrad Foothills;1;75.36;41.55§Drull;Questgeber;Vorgebirge des Hügellands;1;75.36;41.55§Drull;Questgiver;Contreforts de Hautebrande;1;75.36;41.55 | x=-486.4157192728117 y=-1344.65355065799 | size=1
+#18373 | auto Hillsbrad Foothills;298§auto Vorgebirge des Hügellands;298§auto Contreforts de Hautebrande;298 | x=-780.9000244140625 y=-507.5 | size=1 | links=#2245(auto Hillsbrad Foothills;32):14 #18940(auto Hillsbrad Foothills;308):5 c2381.1:10
+#18442 | auto Hillsbrad Foothills;299§auto Vorgebirge des Hügellands;299§auto Contreforts de Hautebrande;299 | x=-66.0999984741211 y=-1409.200073242188 | size=1 | links=#9241(auto Hillsbrad Foothills;156):12 #18564(auto Hillsbrad Foothills;301):15
+#18529 | crossing;four;Hillsbrad Foothills§kreuzung;vier;Vorgebirge des Hügellands§traversée;quatre;Contreforts de Hautebrande | x=-674.2999877929688 y=40.70000076293945 | size=1 | links=#2462(auto Hillsbrad Foothills;42):74 #3797(auto Hillsbrad Foothills;64):44 #4141(auto Hillsbrad Foothills;67):88 #6618(auto Hillsbrad Foothills;109):133
+#18557 | auto Hillsbrad Foothills;300§auto Vorgebirge des Hügellands;300§auto Contreforts de Hautebrande;300 | x=-494.2000122070313 y=-1378.099975585938 | size=1 | links=#12314(auto Hillsbrad Foothills;206):19 #18079(auto Hillsbrad Foothills;293):13 c2261.20:16
+#18559 | crossing;three;Hillsbrad Foothills§kreuzung;drei;Vorgebirge des Hügellands§traversée;trois;Contreforts de Hautebrande | x=-432.8000183105469 y=-585.2000122070312 | size=1 | links=#637(auto Hillsbrad Foothills;13):64 #9179(auto Hillsbrad Foothills;155):104 #16838(auto Hillsbrad Foothills;271):120 #18065(auto Hillsbrad Foothills;292):102 #25087(auto Hillsbrad Foothills;412):108 c2384.1:78
+#18564 | auto Hillsbrad Foothills;301§auto Vorgebirge des Hügellands;301§auto Contreforts de Hautebrande;301 | x=-51.79999923706055 y=-1414.599975585938 | size=1 | links=#14119(auto Hillsbrad Foothills;227):14 #18442(auto Hillsbrad Foothills;299):15
+#18570 | auto Hillsbrad Foothills;302§auto Vorgebirge des Hügellands;302§auto Contreforts de Hautebrande;302 | x=-22.86640010573475 y=-911.9924727938742 | size=1 | links=#6527(auto Hillsbrad Foothills;104):10 #9760(central location;Tarren Mill;Hillsbrad Foothills):17 c2770.1:5
+#18571 | auto Hillsbrad Foothills;303§auto Vorgebirge des Hügellands;303§auto Contreforts de Hautebrande;303 | x=-578 y=39.29999923706055 | size=1 | links=#9060(auto Hillsbrad Foothills;153):10 #28285(auto Hillsbrad Foothills;463):6 c2265.3:4
+#18706 | auto Hillsbrad Foothills;304§auto Vorgebirge des Hügellands;304§auto Contreforts de Hautebrande;304 | x=16.89999961853027 y=-1468.900024414063 | size=1 | links=#19456(auto Hillsbrad Foothills;316):12 #19601(auto Hillsbrad Foothills;323):17
+#18755 | auto Hillsbrad Foothills;305§auto Vorgebirge des Hügellands;305§auto Contreforts de Hautebrande;305 | x=-861.2999877929688 y=-511.8999938964844 | size=1 | links=#3571(central location;Southshore;Hillsbrad Foothills):21 #13580(auto Hillsbrad Foothills;218):21 c2263.1:9
+#18789 | auto Hillsbrad Foothills;306§auto Vorgebirge des Hügellands;306§auto Contreforts de Hautebrande;306 | x=-373.3000183105469 y=57.79999923706055 | size=1 | links=#888(auto Hillsbrad Foothills;15):11 #2388(auto Hillsbrad Foothills;37):15 #8905(auto Hillsbrad Foothills;149):11
+#18930 | auto Hillsbrad Foothills;307§auto Vorgebirge des Hügellands;307§auto Contreforts de Hautebrande;307 | x=-1193.300048828125 y=-1161.5 | size=1 | links=#17019(auto Hillsbrad Foothills;276):20 #24371(auto Hillsbrad Foothills;398):0
+#18940 | auto Hillsbrad Foothills;308§auto Vorgebirge des Hügellands;308§auto Contreforts de Hautebrande;308 | x=-784.2000122070312 y=-512.5 | size=1 | links=#18373(auto Hillsbrad Foothills;298):5 c2438.1:2
+#19050 | auto Hillsbrad Foothills;309§auto Vorgebirge des Hügellands;309§auto Contreforts de Hautebrande;309 | x=-411.8000183105469 y=-57.70000076293945 | size=1 | links=#23778(auto Hillsbrad Foothills;385):9 #25916(auto Hillsbrad Foothills;426):6
+#19063 | auto Hillsbrad Foothills;310§auto Vorgebirge des Hügellands;310§auto Contreforts de Hautebrande;310 | x=-803.7000122070312 y=78.4000015258789 | size=1 | links=#1628(Miner Hackett;Azurelode Mine;Hillsbrad Foothills;one):8 #3036(auto Hillsbrad Foothills;47):25 #16305(auto Hillsbrad Foothills;262):14 c2305.1:13
+#19075 | auto Hillsbrad Foothills;311§auto Vorgebirge des Hügellands;311§auto Contreforts de Hautebrande;311 | x=-532.7000122070312 y=-1424.5 | size=1 | links=#23846(auto Hillsbrad Foothills;387):21 c2261.11:15
+#19224 | Delia Verana;Tarren Mill;Hillsbrad Foothills§Delia Verana;Tarrens Mühle;Vorgebirge des Hügellands§Delia Verana;Tarren Mill;Contreforts de Hautebrande | x=-15 y=-936.9000244140625 | size=1 | links=#14552(auto Hillsbrad Foothills;234):3
+#19273 | auto Hillsbrad Foothills;312§auto Vorgebirge des Hügellands;312§auto Contreforts de Hautebrande;312 | x=-150.3000030517578 y=-1665.800048828125 | size=1 | links=#16398(auto Hillsbrad Foothills;263):11 #23752(auto Hillsbrad Foothills;384):7
+#19314 | auto Hillsbrad Foothills;313§auto Vorgebirge des Hügellands;313§auto Contreforts de Hautebrande;313 | x=-1347.400024414063 y=-1238.700073242188 | size=1 | links=#4888(auto Hillsbrad Foothills;84):18 #10076(auto Hillsbrad Foothills;175):6
+#19354 | auto Hillsbrad Foothills;314§auto Vorgebirge des Hügellands;314§auto Contreforts de Hautebrande;314 | x=-457.5 y=-99.5 | size=1 | links=#6410(auto Hillsbrad Foothills;102):21 c2266.15:9
+#19373 | auto Hillsbrad Foothills;315§auto Vorgebirge des Hügellands;315§auto Contreforts de Hautebrande;315 | x=-1327.599975585938 y=-1242.700073242188 | size=1 | links=#10556(auto Hillsbrad Foothills;182):5 #14706(auto Hillsbrad Foothills;238):9 #21101(auto Hillsbrad Foothills;348):15
+#19428 | Magistrate Henry Maleb;Questgiver;Hillsbrad Foothills;1;48.14;59.11§Magistrat Henry Maleb;Questgeber;Vorgebirge des Hügellands;1;48.14;59.11§Magistrat Henry Maleb;Questgiver;Contreforts de Hautebrande;1;48.14;59.11 | x=-861.1000366210938 y=-473.7000122070313 | size=1
+#19456 | auto Hillsbrad Foothills;316§auto Vorgebirge des Hügellands;316§auto Contreforts de Hautebrande;316 | x=22.30000114440918 y=-1480.300048828125 | size=1 | links=#16005(auto Hillsbrad Foothills;257):23 #18706(auto Hillsbrad Foothills;304):12
+#19457 | auto Hillsbrad Foothills;317§auto Vorgebirge des Hügellands;317§auto Contreforts de Hautebrande;317 | x=-899.1000366210938 y=-583.1000366210938 | size=1 | links=#6974(auto Hillsbrad Foothills;113):21 #17089(auto Hillsbrad Foothills;277):15 c2367.1:24
+#19503 | auto Hillsbrad Foothills;318§auto Vorgebirge des Hügellands;318§auto Contreforts de Hautebrande;318 | x=-722.5 y=47.29999923706055 | size=1 | links=#9(auto Hillsbrad Foothills;1):21 c2503.10:4 c2269.32:18 c2269.33:12 c2269.34:12 c2269.35:21
+#19507 | auto Hillsbrad Foothills;319§auto Vorgebirge des Hügellands;319§auto Contreforts de Hautebrande;319 | x=-1300.700073242188 y=-1190.800048828125 | size=1 | links=#11988(auto Hillsbrad Foothills;201):11 #13434(auto Hillsbrad Foothills;217):26
+#19523 | auto Hillsbrad Foothills;320§auto Vorgebirge des Hügellands;320§auto Contreforts de Hautebrande;320 | x=-982 y=-1333.300048828125 | size=5 | links=#23930(auto Hillsbrad Foothills;389):60 #24768(auto Hillsbrad Foothills;405):49
+#19549 | auto Hillsbrad Foothills;321§auto Vorgebirge des Hügellands;321§auto Contreforts de Hautebrande;321 | x=-714.7999877929688 y=-528.7000122070312 | size=1 | links=#16249(auto Hillsbrad Foothills;260):35 c2432.1:15
+#19575 | Tog'thar;Questgiver;Hillsbrad Foothills;1;79.75;39.64§Tog'thar;Questgeber;Vorgebirge des Hügellands;1;79.75;39.64§Tog'thar;Questgiver;Contreforts de Hautebrande;1;79.75;39.64 | x=-445.6167723804254 y=-1485.279109094164 | size=1
+#19579 | auto Hillsbrad Foothills;322§auto Vorgebirge des Hügellands;322§auto Contreforts de Hautebrande;322 | x=-497 y=-1450.200073242188 | size=1 | links=#17724(auto Hillsbrad Foothills;290):22 #26872(auto Hillsbrad Foothills;440):18 c2260.7:5
+#19601 | auto Hillsbrad Foothills;323§auto Vorgebirge des Hügellands;323§auto Contreforts de Hautebrande;323 | x=11.69999980926514 y=-1452.300048828125 | size=1 | links=#18706(auto Hillsbrad Foothills;304):17 #22894(auto Hillsbrad Foothills;371):15 o178325.1:7
+#19629 | auto Hillsbrad Foothills;324§auto Vorgebirge des Hügellands;324§auto Contreforts de Hautebrande;324 | x=-883.2999877929688 y=168 | size=1 | links=#10966(auto Hillsbrad Foothills;189):53 #15574(auto Hillsbrad Foothills;251):29 #19728(auto Hillsbrad Foothills;326):20 c2270.2:14 c2270.3:20
+#19639 | auto Hillsbrad Foothills;325§auto Vorgebirge des Hügellands;325§auto Contreforts de Hautebrande;325 | x=-35.79999923706055 y=-1362.599975585938 | size=1 | links=#4555(auto Hillsbrad Foothills;75):11 #4793(auto Hillsbrad Foothills;81):26
+#19728 | auto Hillsbrad Foothills;326§auto Vorgebirge des Hügellands;326§auto Contreforts de Hautebrande;326 | x=-868.2000122070312 y=182.1999969482422 | size=1 | links=#19629(auto Hillsbrad Foothills;324):20 c2503.1:5
+#19758 | auto Hillsbrad Foothills;327§auto Vorgebirge des Hügellands;327§auto Contreforts de Hautebrande;327 | x=-551.6000366210938 y=-15.60000038146973 | size=1 | links=#1751(auto Hillsbrad Foothills;28):28 c2268.9:17
+#19764 | auto Hillsbrad Foothills;328§auto Vorgebirge des Hügellands;328§auto Contreforts de Hautebrande;328 | x=-588.6000366210938 y=47 | size=1 | links=#3797(auto Hillsbrad Foothills;64):41 #28285(auto Hillsbrad Foothills;463):7 c2265.4:8
+#19878 | auto Hillsbrad Foothills;329§auto Vorgebirge des Hügellands;329§auto Contreforts de Hautebrande;329 | x=-114.2000045776367 y=-1354.099975585938 | size=1 | links=#13368(auto Hillsbrad Foothills;216):36 #23326(ramp;down;mountain;Hillsbrad Foothills):19
+#19945 | auto Hillsbrad Foothills;330§auto Vorgebirge des Hügellands;330§auto Contreforts de Hautebrande;330 | x=-1235.900024414063 y=421.5 | size=1 | links=c7071.1:15 c7068.3:13 c7071.3:13
+#19992 | auto Hillsbrad Foothills;331§auto Vorgebirge des Hügellands;331§auto Contreforts de Hautebrande;331 | x=-840 y=94.70000457763672 | size=1 | links=#9273(auto Hillsbrad Foothills;157):13 #23312(auto Hillsbrad Foothills;377):12 c2269.21:8
+#20012 | auto Hillsbrad Foothills;332§auto Vorgebirge des Hügellands;332§auto Contreforts de Hautebrande;332 | x=-815.9000244140625 y=-553.9000244140625 | size=1 | links=c2277.1:3 c2363.1:6
+#20122 | auto Hillsbrad Foothills;333§auto Vorgebirge des Hügellands;333§auto Contreforts de Hautebrande;333 | x=-1225 y=-1017.299987792969 | size=5 | links=#8748(auto Hillsbrad Foothills;143):31 c2368.2:35
+#20125 | auto Hillsbrad Foothills;334§auto Vorgebirge des Hügellands;334§auto Contreforts de Hautebrande;334 | x=-534.4000244140625 y=-1597.400024414063 | size=1 | links=#3393(auto Hillsbrad Foothills;55):16 #9545(auto Hillsbrad Foothills;166):33 o179488.8:11
+#20267 | auto Hillsbrad Foothills;335§auto Vorgebirge des Hügellands;335§auto Contreforts de Hautebrande;335 | x=-7.5 y=-938.5 | size=1 | links=#14552(auto Hillsbrad Foothills;234):10 c2388.1:4 c3982.1:4
+#20274 | auto Hillsbrad Foothills;336§auto Vorgebirge des Hügellands;336§auto Contreforts de Hautebrande;336 | x=-121.8000030517578 y=-1692.5 | size=1 | links=#15873(auto Hillsbrad Foothills;256):14 #24379(auto Hillsbrad Foothills;399):30
+#20376 | auto Hillsbrad Foothills;337§auto Vorgebirge des Hügellands;337§auto Contreforts de Hautebrande;337 | x=-1331.599975585938 y=-1287.700073242188 | size=1 | links=#15813(auto Hillsbrad Foothills;255):11 #22567(auto Hillsbrad Foothills;365):13
+#20411 | auto Hillsbrad Foothills;338§auto Vorgebirge des Hügellands;338§auto Contreforts de Hautebrande;338 | x=-340.2000122070313 y=22.60000038146973 | size=1 | links=#27863(auto Hillsbrad Foothills;455):6 c2266.6:5
+#20447 | auto Hillsbrad Foothills;339§auto Vorgebirge des Hügellands;339§auto Contreforts de Hautebrande;339 | x=-210.5 y=-379.8999938964844 | size=1 | links=#16297(auto Hillsbrad Foothills;261):8 #28276(auto Hillsbrad Foothills;462):12
+#20461 | auto Hillsbrad Foothills;340§auto Vorgebirge des Hügellands;340§auto Contreforts de Hautebrande;340 | x=-137.1999969482422 y=-1652 | size=1 | links=#8538(auto Hillsbrad Foothills;138):14 #23752(auto Hillsbrad Foothills;384):11
+#20648 | passage;river;from;Hillsbrad Foothills;to;Alterac Mountains§passage;flusslauf;von;Vorgebirge des Hügellands;nach;Alteracgebirge§passage;river;de;Contreforts de Hautebrande;vers;Montagnes d'Alterac | x=198.1000061035156 y=-1235.200073242188 | size=1 | links=#23368(auto Alterac Mountains;238):23 #3795(auto Hillsbrad Foothills;63):66
+#20676 | auto Hillsbrad Foothills;341§auto Vorgebirge des Hügellands;341§auto Contreforts de Hautebrande;341 | x=-393.6000061035156 y=-20.30000114440918 | size=1 | links=#14434(auto Hillsbrad Foothills;233):17 #25465(auto Hillsbrad Foothills;419):32 #28336(auto Hillsbrad Foothills;464):34 c2268.2:29
+#20744 | auto Hillsbrad Foothills;342§auto Vorgebirge des Hügellands;342§auto Contreforts de Hautebrande;342 | x=-343.5 y=7.5 | size=1 | links=#23950(auto Hillsbrad Foothills;390):6 #27925(auto Hillsbrad Foothills;457):5 c2266.13:6
+#20766 | auto Hillsbrad Foothills;343§auto Vorgebirge des Hügellands;343§auto Contreforts de Hautebrande;343 | x=-404.5 y=-66.30000305175781 | size=1 | links=#23778(auto Hillsbrad Foothills;385):7 c2360.11:7
+#20777 | auto Hillsbrad Foothills;344§auto Vorgebirge des Hügellands;344§auto Contreforts de Hautebrande;344 | x=-41.60000228881836 y=-1220.800048828125 | size=5 | links=#3584(auto Hillsbrad Foothills;58):90 #21388(auto Hillsbrad Foothills;352):52
+#20822 | auto Hillsbrad Foothills;345§auto Vorgebirge des Hügellands;345§auto Contreforts de Hautebrande;345 | x=-468.5 y=-1463.099975585938 | size=1 | links=#12142(auto Hillsbrad Foothills;202):9 c2244.14:10
+#20825 | auto Hillsbrad Foothills;346§auto Vorgebirge des Hügellands;346§auto Contreforts de Hautebrande;346 | x=-843.4000244140625 y=-604.9000244140625 | size=1 | links=#14872(auto Hillsbrad Foothills;241):18 c2705.1:10
+#21086 | auto Hillsbrad Foothills;347§auto Vorgebirge des Hügellands;347§auto Contreforts de Hautebrande;347 | x=-480.6000061035156 y=-1610.700073242188 | size=1 | links=#4188(auto Hillsbrad Foothills;69):12 #9545(auto Hillsbrad Foothills;166):22 c2261.48:9
+#21101 | auto Hillsbrad Foothills;348§auto Vorgebirge des Hügellands;348§auto Contreforts de Hautebrande;348 | x=-1316.099975585938 y=-1232.099975585938 | size=1 | links=#19373(auto Hillsbrad Foothills;315):15 #26054(auto Hillsbrad Foothills;430):6
+#21105 | auto Hillsbrad Foothills;349§auto Vorgebirge des Hügellands;349§auto Contreforts de Hautebrande;349 | x=-580.5 y=-1527.400024414063 | size=1 | links=#6719(auto Hillsbrad Foothills;110):5 #21171(auto Hillsbrad Foothills;351):28 c2244.2:7
+#21149 | auto Hillsbrad Foothills;350§auto Vorgebirge des Hügellands;350§auto Contreforts de Hautebrande;350 | x=-538.4000244140625 y=-1527.900024414063 | size=1 | links=#4682(auto Hillsbrad Foothills;78):6 #7456(auto Hillsbrad Foothills;124):1
+#21171 | auto Hillsbrad Foothills;351§auto Vorgebirge des Hügellands;351§auto Contreforts de Hautebrande;351 | x=-552.7999877929688 y=-1532.200073242188 | size=1 | links=#6241(auto Hillsbrad Foothills;101):13 #21105(auto Hillsbrad Foothills;349):28 #27892(auto Hillsbrad Foothills;456):19
+#21388 | auto Hillsbrad Foothills;352§auto Vorgebirge des Hügellands;352§auto Contreforts de Hautebrande;352 | x=-30.39999961853027 y=-1271.599975585938 | size=1 | links=#536(auto Hillsbrad Foothills;12):26 #20777(auto Hillsbrad Foothills;344):52
+#21420 | auto Hillsbrad Foothills;353§auto Vorgebirge des Hügellands;353§auto Contreforts de Hautebrande;353 | x=-887.7000122070312 y=-1413.5 | size=5 | links=#15466(auto Hillsbrad Foothills;248):74 #24768(auto Hillsbrad Foothills;405):74
+#21553 | auto Hillsbrad Foothills;354§auto Vorgebirge des Hügellands;354§auto Contreforts de Hautebrande;354 | x=-372 y=5.700000286102295 | size=1 | links=#14434(auto Hillsbrad Foothills;233):17 #21577(auto Hillsbrad Foothills;355):18 c2266.9:9 c2360.10:15
+#21577 | auto Hillsbrad Foothills;355§auto Vorgebirge des Hügellands;355§auto Contreforts de Hautebrande;355 | x=-364.7000122070313 y=23.10000038146973 | size=1 | links=#1311(auto Hillsbrad Foothills;21):12 #4973(auto Hillsbrad Foothills;85):34 #17269(auto Hillsbrad Foothills;280):39 #21553(auto Hillsbrad Foothills;354):18 c2274.1:11
+#21617 | auto Hillsbrad Foothills;356§auto Vorgebirge des Hügellands;356§auto Contreforts de Hautebrande;356 | x=-1317.800048828125 y=-1267.900024414063 | size=1 | links=#8741(auto Hillsbrad Foothills;142):5 #17645(auto Hillsbrad Foothills;289):11
+#21657 | auto Hillsbrad Foothills;357§auto Vorgebirge des Hügellands;357§auto Contreforts de Hautebrande;357 | x=-10.40000057220459 y=-938.7000122070312 | size=1 | links=#6891(auto Hillsbrad Foothills;111):8 #6929(auto Hillsbrad Foothills;112):4
+#21754 | auto Hillsbrad Foothills;358§auto Vorgebirge des Hügellands;358§auto Contreforts de Hautebrande;358 | x=-1.5 y=-943.4000244140625 | size=1 | links=#2446(Captured Farmer;one;Tarren Mill;Hillsbrad Foothills):3 #6929(auto Hillsbrad Foothills;112):5 c2284.1:5 o1728.1:1 c2284.2:6
+#21779 | auto Hillsbrad Foothills;359§auto Vorgebirge des Hügellands;359§auto Contreforts de Hautebrande;359 | x=-860.7000122070312 y=192.6999969482422 | size=1 | links=#1746(auto Hillsbrad Foothills;27):5 c2503.1:7
+#21944 | auto Hillsbrad Foothills;360§auto Vorgebirge des Hügellands;360§auto Contreforts de Hautebrande;360 | x=-857.1000366210938 y=230.5 | size=1 | links=#8173(auto Hillsbrad Foothills;132):27 #13298(auto Hillsbrad Foothills;215):6
+#21962 | Darla Harris;Gryphon Master;Hillsbrad Foothills;1;49.34;52.27§Darla Harris;Greifenmeisterin;Vorgebirge des Hügellands;1;49.34;52.27§Darla Harris;Gryphon Master;Contreforts de Hautebrande;1;49.34;52.27 | x=-716 y=-513.2999877929688 | size=1
+#22104 | auto Hillsbrad Foothills;361§auto Vorgebirge des Hügellands;361§auto Contreforts de Hautebrande;361 | x=-879.4000244140625 y=-934.7000122070312 | size=1 | links=#16815(auto Hillsbrad Foothills;269):27 #24611(auto Hillsbrad Foothills;403):33
+#22113 | auto Hillsbrad Foothills;362§auto Vorgebirge des Hügellands;362§auto Contreforts de Hautebrande;362 | x=-734.9000244140625 y=129.1999969482422 | size=1 | links=#14273(auto Hillsbrad Foothills;230):31 #27325(auto Hillsbrad Foothills;449):28 c2503.3:14 c2503.4:9 c2269.7:6
+#22117 | auto Hillsbrad Foothills;363§auto Vorgebirge des Hügellands;363§auto Contreforts de Hautebrande;363 | x=-141.3000030517578 y=-1141 | size=1 | links=#3213(auto Hillsbrad Foothills;52):73 #3584(auto Hillsbrad Foothills;58):132 c2408.9:19 c2408.10:61
+#22177 | Mallen Swain;Tailoring Supplies;Hillsbrad Foothills;1;61.9;20.98§Mallen Knab;Schneiderbedarf;Vorgebirge des Hügellands;1;61.9;20.98§Mallen Legallant;Tailoring Supplies;Contreforts de Hautebrande;1;61.9;20.98 | x=-47.34044386574583 y=-916.2398220668891 | size=1
+#22361 | auto Hillsbrad Foothills;364§auto Vorgebirge des Hügellands;364§auto Contreforts de Hautebrande;364 | x=-530.7000122070312 y=-71.5 | size=1 | links=#28513(auto Hillsbrad Foothills;465):32 c2268.9:42
+#22567 | auto Hillsbrad Foothills;365§auto Vorgebirge des Hügellands;365§auto Contreforts de Hautebrande;365 | x=-1321.5 y=-1278.700073242188 | size=1 | links=#17365(auto Hillsbrad Foothills;281):5 #20376(auto Hillsbrad Foothills;337):13
+#22657 | auto Hillsbrad Foothills;366§auto Vorgebirge des Hügellands;366§auto Contreforts de Hautebrande;366 | x=-614.2000122070312 y=-69.5999984741211 | size=1 | links=#1179(auto Hillsbrad Foothills;19):21 c2451.1:23
+#22670 | auto Hillsbrad Foothills;367§auto Vorgebirge des Hügellands;367§auto Contreforts de Hautebrande;367 | x=-1339.900024414063 y=-1220.800048828125 | size=1 | links=#25811(auto Hillsbrad Foothills;424):9 #26992(auto Hillsbrad Foothills;441):8
+#22692 | auto Hillsbrad Foothills;368§auto Vorgebirge des Hügellands;368§auto Contreforts de Hautebrande;368 | x=-530.9000244140625 y=-1405.700073242188 | size=1 | links=#12314(auto Hillsbrad Foothills;206):26 c2260.6:19
+#22699 | auto Hillsbrad Foothills;369§auto Vorgebirge des Hügellands;369§auto Contreforts de Hautebrande;369 | x=-473.7000122070313 y=-1543.5 | size=1 | links=#13246(auto Hillsbrad Foothills;214):25 c2261.7:7 c2261.8:24
+#22835 | auto Hillsbrad Foothills;370§auto Vorgebirge des Hügellands;370§auto Contreforts de Hautebrande;370 | x=-749.7999877929688 y=-550.2999877929688 | size=1 | links=#5738(auto Hillsbrad Foothills;94):27 #16249(auto Hillsbrad Foothills;260):37
+#22894 | auto Hillsbrad Foothills;371§auto Vorgebirge des Hügellands;371§auto Contreforts de Hautebrande;371 | x=4.200000286102295 y=-1439.200073242188 | size=1 | links=#11681(auto Hillsbrad Foothills;196):30 #19601(auto Hillsbrad Foothills;323):15 o178325.1:17
+#22986 | auto Hillsbrad Foothills;372§auto Vorgebirge des Hügellands;372§auto Contreforts de Hautebrande;372 | x=-332.8999938964844 y=-694.7999877929688 | size=1 | links=#7089(auto Hillsbrad Foothills;119):15 #17374(auto Hillsbrad Foothills;282):13 c17108.1:12 c17108.3:9
+#23003 | entry and exit;inn;Tarren Mill;Hillsbrad Foothills§ein- und ausgang;gasthaus;Tarrens Mühle;Vorgebirge des Hügellands§entrée et sortie;inn;Tarren Mill;Contreforts de Hautebrande | x=-20.60000038146973 y=-932.9000244140625 | size=1 | links=#2332(Mailbox;Tarren Mill;Hillsbrad Foothills):3 #9760(central location;Tarren Mill;Hillsbrad Foothills):13 #14552(auto Hillsbrad Foothills;234):3 c2401.1:4 o2008.1:2
+#23076 | auto Hillsbrad Foothills;373§auto Vorgebirge des Hügellands;373§auto Contreforts de Hautebrande;373 | x=-501 y=79.9000015258789 | size=1 | links=#23367(auto Hillsbrad Foothills;378):7 c2268.13:16
+#23107 | auto Hillsbrad Foothills;374§auto Vorgebirge des Hügellands;374§auto Contreforts de Hautebrande;374 | x=-454 y=25.20000076293945 | size=1 | links=#15233(auto Hillsbrad Foothills;244):28 #17269(auto Hillsbrad Foothills;280):49 #28336(auto Hillsbrad Foothills;464):45 c2449.1:5 c2268.14:9
+#23143 | Barkeep Kelly;Bartender;Hillsbrad Foothills;1;51.57;58.57§Barkeeper Kelly;Schankkellner;Vorgebirge des Hügellands;1;51.57;58.57§Kelly le serveur;Bartender;Contreforts de Hautebrande;1;51.57;58.57 | x=-849.7000122070312 y=-583.7000122070312 | size=1
+#23237 | auto Hillsbrad Foothills;375§auto Vorgebirge des Hügellands;375§auto Contreforts de Hautebrande;375 | x=-1283.300048828125 y=-1210.700073242188 | size=1 | links=#2938(entry and exit;Dun Garok;Hillsbrad Foothills):7 #11988(auto Hillsbrad Foothills;201):15 #27491(auto Hillsbrad Foothills;453):16 c2346.1:2
+#23243 | auto Hillsbrad Foothills;376§auto Vorgebirge des Hügellands;376§auto Contreforts de Hautebrande;376 | x=-781.5 y=113.3000030517578 | size=1 | links=#14313(auto Hillsbrad Foothills;231):22 #26612(auto Hillsbrad Foothills;433):29 c2503.2:5
+#23312 | auto Hillsbrad Foothills;377§auto Vorgebirge des Hügellands;377§auto Contreforts de Hautebrande;377 | x=-846.7000122070312 y=83.70000457763672 | size=1 | links=#4511(auto Hillsbrad Foothills;74):24 #19992(auto Hillsbrad Foothills;331):12 c2450.1:13 c2269.18:7
+#23326 | ramp;down;mountain;Hillsbrad Foothills§rampe;unten;berg;Vorgebirge des Hügellands§ramp;bas;mountain;Contreforts de Hautebrande | x=-117.3000030517578 y=-1334.800048828125 | size=1 | links=#11884(auto Hillsbrad Foothills;199):24 #19878(auto Hillsbrad Foothills;329):19
+#23367 | auto Hillsbrad Foothills;378§auto Vorgebirge des Hügellands;378§auto Contreforts de Hautebrande;378 | x=-500.5 y=87 | size=1 | links=#23076(auto Hillsbrad Foothills;373):7 c2387.3:13
+#23407 | auto Hillsbrad Foothills;379§auto Vorgebirge des Hügellands;379§auto Contreforts de Hautebrande;379 | x=-861.5 y=-566.9000244140625 | size=1 | links=#28023(top;inn;Southshore):5 c3542.1:7
+#23412 | auto Hillsbrad Foothills;380§auto Vorgebirge des Hügellands;380§auto Contreforts de Hautebrande;380 | x=-799 y=170.6999969482422 | size=1 | links=#8726(auto Hillsbrad Foothills;141):14 #25889(auto Hillsbrad Foothills;425):15 c2269.4:6
+#23493 | auto Hillsbrad Foothills;381§auto Vorgebirge des Hügellands;381§auto Contreforts de Hautebrande;381 | x=-501.3999938964844 y=-32.5 | size=1 | links=#9385(auto Hillsbrad Foothills;160):29 c2268.4:26 c2360.12:21
+#23563 | crossing;one;Hillsbrad Foothills§kreuzung;eins;Vorgebirge des Hügellands§traversée;un;Contreforts de Hautebrande | x=-664.9000244140625 y=-1314.5 | size=1 | links=#8027(entry and exit;Durnholde Keep;Hillsbrad Foothills):95 #9023(auto Hillsbrad Foothills;150):111 #28218(auto Hillsbrad Foothills;460):85
+#23632 | auto Hillsbrad Foothills;382§auto Vorgebirge des Hügellands;382§auto Contreforts de Hautebrande;382 | x=-308.6000061035156 y=-22.20000076293945 | size=5 | links=#13678(auto Hillsbrad Foothills;222):35 #16755(auto Hillsbrad Foothills;268):39
+#23633 | auto Hillsbrad Foothills;383§auto Vorgebirge des Hügellands;383§auto Contreforts de Hautebrande;383 | x=-847.5 y=-558.2999877929688 | size=1 | links=#2523(entry and exit;inn;Southshore):10 #18192(auto Hillsbrad Foothills;295):11
+#23752 | auto Hillsbrad Foothills;384§auto Vorgebirge des Hügellands;384§auto Contreforts de Hautebrande;384 | x=-145.4000091552734 y=-1659.800048828125 | size=1 | links=#19273(auto Hillsbrad Foothills;312):7 #20461(auto Hillsbrad Foothills;340):11
+#23778 | auto Hillsbrad Foothills;385§auto Vorgebirge des Hügellands;385§auto Contreforts de Hautebrande;385 | x=-411.7000122070313 y=-67.30000305175781 | size=1 | links=#19050(auto Hillsbrad Foothills;309):9 #20766(auto Hillsbrad Foothills;343):7
+#23807 | auto Hillsbrad Foothills;386§auto Vorgebirge des Hügellands;386§auto Contreforts de Hautebrande;386 | x=-1337.800048828125 y=-1269.900024414063 | size=1 | links=#26697(auto Hillsbrad Foothills;435):9 #27451(auto Hillsbrad Foothills;452):18
+#23846 | auto Hillsbrad Foothills;387§auto Vorgebirge des Hügellands;387§auto Contreforts de Hautebrande;387 | x=-550.6000366210938 y=-1411.800048828125 | size=1 | links=#19075(auto Hillsbrad Foothills;311):21 c2261.12:17
+#23850 | auto Hillsbrad Foothills;388§auto Vorgebirge des Hügellands;388§auto Contreforts de Hautebrande;388 | x=-241.6999969482422 y=-729.2999877929688 | size=1 | links=#17502(auto Hillsbrad Foothills;286):50 #27242(auto Hillsbrad Foothills;446):42
+#23930 | auto Hillsbrad Foothills;389§auto Vorgebirge des Hügellands;389§auto Contreforts de Hautebrande;389 | x=-1015.600036621094 y=-1283.300048828125 | size=5 | links=#19523(auto Hillsbrad Foothills;320):60 #26027(auto Hillsbrad Foothills;429):91
+#23950 | auto Hillsbrad Foothills;390§auto Vorgebirge des Hügellands;390§auto Contreforts de Hautebrande;390 | x=-348.8000183105469 y=10.5 | size=1 | links=#1311(auto Hillsbrad Foothills;21):7 #20744(auto Hillsbrad Foothills;342):6
+#23953 | auto Hillsbrad Foothills;391§auto Vorgebirge des Hügellands;391§auto Contreforts de Hautebrande;391 | x=-20.10000038146973 y=-760.2999877929688 | size=1 | links=#25602(auto Hillsbrad Foothills;422):37 #26311(crossing;Hillsbrad Foothills):57
+#23996 | auto Hillsbrad Foothills;392§auto Vorgebirge des Hügellands;392§auto Contreforts de Hautebrande;392 | x=-567.5 y=-1624.400024414063 | size=5 | links=#161(auto Hillsbrad Foothills;7):63 #10397(auto Hillsbrad Foothills;180):105
+#24200 | auto Hillsbrad Foothills;393§auto Vorgebirge des Hügellands;393§auto Contreforts de Hautebrande;393 | x=-561.4000244140625 y=32.60000228881836 | size=1 | links=#9060(auto Hillsbrad Foothills;153):7 #9313(auto Hillsbrad Foothills;158):13
+#24262 | auto Hillsbrad Foothills;394§auto Vorgebirge des Hügellands;394§auto Contreforts de Hautebrande;394 | x=-876.1000366210938 y=-480.3000183105469 | size=1 | links=#24332(auto Hillsbrad Foothills;396):10 c2276.1:16
+#24279 | auto Hillsbrad Foothills;395§auto Vorgebirge des Hügellands;395§auto Contreforts de Hautebrande;395 | x=-74.20000457763672 y=-714.6000366210938 | size=1 | links=#11138(auto Hillsbrad Foothills;192):61 #26311(crossing;Hillsbrad Foothills):54
+#24332 | auto Hillsbrad Foothills;396§auto Vorgebirge des Hügellands;396§auto Contreforts de Hautebrande;396 | x=-875.7000122070312 y=-490.8999938964844 | size=1 | links=#13580(auto Hillsbrad Foothills;218):13 #24262(auto Hillsbrad Foothills;394):10
+#24365 | auto Hillsbrad Foothills;397§auto Vorgebirge des Hügellands;397§auto Contreforts de Hautebrande;397 | x=-344.2000122070313 y=6.700000286102295 | size=1 | links=#11259(auto Hillsbrad Foothills;194):8 c232.1:4
+#24371 | auto Hillsbrad Foothills;398§auto Vorgebirge des Hügellands;398§auto Contreforts de Hautebrande;398 | x=-1193.300048828125 y=-1161.5 | size=1 | links=#18930(auto Hillsbrad Foothills;307):0 c2344.1:47 c2345.1:54 c2344.2:14
+#24379 | auto Hillsbrad Foothills;399§auto Vorgebirge des Hügellands;399§auto Contreforts de Hautebrande;399 | x=-91.30000305175781 y=-1696.700073242188 | size=1 | links=#13685(auto Hillsbrad Foothills;223):30 #20274(auto Hillsbrad Foothills;336):30
+#24471 | auto Hillsbrad Foothills;400§auto Vorgebirge des Hügellands;400§auto Contreforts de Hautebrande;400 | x=-124.8000030517578 y=-889.7999877929688 | size=1 | links=#8337(auto Hillsbrad Foothills;134):19 c2396.1:7
+#24478 | auto Hillsbrad Foothills;401§auto Vorgebirge des Hügellands;401§auto Contreforts de Hautebrande;401 | x=-802.7000122070312 y=-532.2999877929688 | size=1 | links=#3278(auto Hillsbrad Foothills;53):37 #5738(auto Hillsbrad Foothills;94):28 #24986(auto Hillsbrad Foothills;411):34 c2277.1:24 c2438.1:24 c15199.1:20 c620.3:14
+#24505 | auto Hillsbrad Foothills;402§auto Vorgebirge des Hügellands;402§auto Contreforts de Hautebrande;402 | x=-960.7999877929688 y=-1029.900024414063 | size=1 | links=#9900(auto Hillsbrad Foothills;171):7 #10874(auto Hillsbrad Foothills;187):15
+#24611 | auto Hillsbrad Foothills;403§auto Vorgebirge des Hügellands;403§auto Contreforts de Hautebrande;403 | x=-851.9000244140625 y=-953.1000366210938 | size=1 | links=#9464(auto Hillsbrad Foothills;164):32 #22104(auto Hillsbrad Foothills;361):33
+#24763 | auto Hillsbrad Foothills;404§auto Vorgebirge des Hügellands;404§auto Contreforts de Hautebrande;404 | x=-460.8999938964844 y=-1422.300048828125 | size=1 | links=#17724(auto Hillsbrad Foothills;290):24 c2244.17:23 c2261.32:1
+#24768 | auto Hillsbrad Foothills;405§auto Vorgebirge des Hügellands;405§auto Contreforts de Hautebrande;405 | x=-947.2999877929688 y=-1368.300048828125 | size=5 | links=#19523(auto Hillsbrad Foothills;320):49 #21420(auto Hillsbrad Foothills;353):74
+#24787 | auto Hillsbrad Foothills;406§auto Vorgebirge des Hügellands;406§auto Contreforts de Hautebrande;406 | x=-1327 y=-1215.5 | size=1 | links=#13434(auto Hillsbrad Foothills;217):9 #25811(auto Hillsbrad Foothills;424):5 o1727.1:7
+#24821 | auto Hillsbrad Foothills;407§auto Vorgebirge des Hügellands;407§auto Contreforts de Hautebrande;407 | x=-12.30000019073486 y=-901.1000366210938 | size=1 | links=#9962(auto Hillsbrad Foothills;172):5 c2216.1:5 c2230.1:4 c2391.1:5
+#24894 | auto Hillsbrad Foothills;408§auto Vorgebirge des Hügellands;408§auto Contreforts de Hautebrande;408 | x=-513 y=-1355.900024414063 | size=1 | links=#27527(auto Hillsbrad Foothills;454):9 c2260.5:13 c2244.7:3
+#24909 | auto Hillsbrad Foothills;409§auto Vorgebirge des Hügellands;409§auto Contreforts de Hautebrande;409 | x=-42 y=-904.1000366210938 | size=1 | links=#13872(auto Hillsbrad Foothills;224):4 c2410.1:2 c2437.1:5
+#24976 | auto Hillsbrad Foothills;410§auto Vorgebirge des Hügellands;410§auto Contreforts de Hautebrande;410 | x=-1328.200073242188 y=-1226.400024414063 | size=1 | links=#9457(auto Hillsbrad Foothills;163):5 #26992(auto Hillsbrad Foothills;441):6
+#24986 | auto Hillsbrad Foothills;411§auto Vorgebirge des Hügellands;411§auto Contreforts de Hautebrande;411 | x=-836.2999877929688 y=-523.5 | size=1 | links=#3571(central location;Southshore;Hillsbrad Foothills):22 #8489(auto Hillsbrad Foothills;137):21 #24478(auto Hillsbrad Foothills;401):34 c2263.1:18
+#25057 | passage;from;Thoradin's Wall;Hillsbrad Foothills;to;Thoradin's Wall;Arathi Highlands§passage;von;Thoradinswall;Vorgebirge des Hügellands;nach;Thoradinswall;Arathihochland§passage;de;Mur de Thoradin;Contreforts de Hautebrande;vers;Mur de Thoradin;Hautes-terres d'Arathi | x=-831.9000244140625 y=-1577.200073242188 | size=1 | links=#26795(passage;from;Arathi Highlands;to;Thoradin's Wall):6 #22033(auto;1635631184508293150553):28
+#25087 | auto Hillsbrad Foothills;412§auto Vorgebirge des Hügellands;412§auto Contreforts de Hautebrande;412 | x=-360.1000061035156 y=-504.3999938964844 | size=5 | links=#18559(crossing;three;Hillsbrad Foothills):108 #25768(auto Hillsbrad Foothills;423):89 c2354.7:45 c2384.10:28 c2354.22:28
+#25193 | auto Hillsbrad Foothills;413§auto Vorgebirge des Hügellands;413§auto Contreforts de Hautebrande;413 | x=-397 y=67.0999984741211 | size=1 | links=#26802(auto Hillsbrad Foothills;437):23 c2360.1:27 c2266.3:45 c2266.4:26 c2360.4:25 c2360.8:23
+#25210 | auto Hillsbrad Foothills;414§auto Vorgebirge des Hügellands;414§auto Contreforts de Hautebrande;414 | x=-1327.400024414063 y=-1221.400024414063 | size=1 | links=#4888(auto Hillsbrad Foothills;84):7 #8542(auto Hillsbrad Foothills;139):12
+#25239 | auto Hillsbrad Foothills;415§auto Vorgebirge des Hügellands;415§auto Contreforts de Hautebrande;415 | x=-611.6000366210938 y=-31.89999961853027 | size=1 | links=#6977(auto Hillsbrad Foothills;115):19 #16545(auto Hillsbrad Foothills;264):9 c2267.3:15 c2267.4:31
+#25258 | auto Hillsbrad Foothills;416§auto Vorgebirge des Hügellands;416§auto Contreforts de Hautebrande;416 | x=-515.7999877929688 y=-1509.900024414063 | size=1 | links=#11938(auto Hillsbrad Foothills;200):19 c2244.5:5 c2261.8:29 c2261.9:26
+#25274 | auto Hillsbrad Foothills;417§auto Vorgebirge des Hügellands;417§auto Contreforts de Hautebrande;417 | x=-423.3999938964844 y=-1673.599975585938 | size=5 | links=#161(auto Hillsbrad Foothills;7):88 #2946(auto Hillsbrad Foothills;45):34 c14280.1:31
+#25413 | auto Hillsbrad Foothills;418§auto Vorgebirge des Hügellands;418§auto Contreforts de Hautebrande;418 | x=-4.900000095367432 y=-923.6000366210938 | size=1 | links=#2407(auto Hillsbrad Foothills;39):6 c2393.1:3
+#25465 | auto Hillsbrad Foothills;419§auto Vorgebirge des Hügellands;419§auto Contreforts de Hautebrande;419 | x=-365.8999938964844 y=-37 | size=5 | links=#13678(auto Hillsbrad Foothills;222):40 #20676(auto Hillsbrad Foothills;341):32
+#25471 | auto Hillsbrad Foothills;420§auto Vorgebirge des Hügellands;420§auto Contreforts de Hautebrande;420 | x=-855.2000122070312 y=-578.2999877929688 | size=1 | links=#296(auto Hillsbrad Foothills;10):3 #11355(centralpoint;down;inn;Southshore):10 #15735(auto Hillsbrad Foothills;253):6
+#25533 | auto Hillsbrad Foothills;421§auto Vorgebirge des Hügellands;421§auto Contreforts de Hautebrande;421 | x=-401.8999938964844 y=32.60000228881836 | size=1 | links=#17269(auto Hillsbrad Foothills;280):9 #26802(auto Hillsbrad Foothills;437):11
+#25602 | auto Hillsbrad Foothills;422§auto Vorgebirge des Hügellands;422§auto Contreforts de Hautebrande;422 | x=-13.40000057220459 y=-797.2000122070312 | size=1 | links=#11114(auto Hillsbrad Foothills;190):39 #23953(auto Hillsbrad Foothills;391):37
+#25768 | auto Hillsbrad Foothills;423§auto Vorgebirge des Hügellands;423§auto Contreforts de Hautebrande;423 | x=-296.7000122070313 y=-441.8999938964844 | size=1 | links=#11717(entry and exit;cave;Darrow Hill;Hillsbrad Foothills):30 #25087(auto Hillsbrad Foothills;412):89 c2248.12:38 c2248.14:37
+#25811 | auto Hillsbrad Foothills;424§auto Vorgebirge des Hügellands;424§auto Contreforts de Hautebrande;424 | x=-1332.300048828125 y=-1214.5 | size=1 | links=#22670(auto Hillsbrad Foothills;367):9 #24787(auto Hillsbrad Foothills;406):5
+#25889 | auto Hillsbrad Foothills;425§auto Vorgebirge des Hügellands;425§auto Contreforts de Hautebrande;425 | x=-786.1000366210938 y=161.6000061035156 | size=1 | links=#13612(auto Hillsbrad Foothills;219):19 #23412(auto Hillsbrad Foothills;380):15
+#25916 | auto Hillsbrad Foothills;426§auto Vorgebirge des Hügellands;426§auto Contreforts de Hautebrande;426 | x=-418.5 y=-58.20000076293945 | size=1 | links=#7432(auto Hillsbrad Foothills;122):8 #19050(auto Hillsbrad Foothills;309):6
+#25919 | auto Hillsbrad Foothills;427§auto Vorgebirge des Hügellands;427§auto Contreforts de Hautebrande;427 | x=-1321.200073242188 y=-1239.300048828125 | size=1 | links=#172(auto Hillsbrad Foothills;9):21 #1705(auto Hillsbrad Foothills;26):11
+#26017 | auto Hillsbrad Foothills;428§auto Vorgebirge des Hügellands;428§auto Contreforts de Hautebrande;428 | x=-903.7999877929688 y=-541.5 | size=1 | links=#11792(auto Hillsbrad Foothills;197):16 c2367.1:16 c2383.1:12 c3540.1:30
+#26027 | auto Hillsbrad Foothills;429§auto Vorgebirge des Hügellands;429§auto Contreforts de Hautebrande;429 | x=-1083.5 y=-1222.200073242188 | size=5 | links=#4784(auto Hillsbrad Foothills;80):56 #23930(auto Hillsbrad Foothills;389):91
+#26054 | auto Hillsbrad Foothills;430§auto Vorgebirge des Hügellands;430§auto Contreforts de Hautebrande;430 | x=-1309.599975585938 y=-1233.099975585938 | size=1 | links=#5539(auto Hillsbrad Foothills;90):7 #21101(auto Hillsbrad Foothills;348):6
+#26311 | crossing;Hillsbrad Foothills§kreuzungspunkt;Vorgebirge des Hügellands§traversée;Contreforts de Hautebrande | x=-20.70000076293945 y=-702.6000366210938 | size=1 | links=#12280(auto Hillsbrad Foothills;204):77 #23953(auto Hillsbrad Foothills;391):57 #24279(auto Hillsbrad Foothills;395):54
+#26348 | Vinna Wayne;Tarren Mill;Hillsbrad Foothills§Vinna Wayne;Tarrens Mühle;Vorgebirge des Hügellands§Vinna Wayne;Tarren Mill;Contreforts de Hautebrande | x=-23.89999961853027 y=-959.5 | size=1
+#26483 | auto Hillsbrad Foothills;431§auto Vorgebirge des Hügellands;431§auto Contreforts de Hautebrande;431 | x=-364.5 y=-1105.400024414063 | size=1 | links=#68(auto Hillsbrad Foothills;4):68 #6124(auto Hillsbrad Foothills;99):51 c2408.15:11
+#26547 | auto Hillsbrad Foothills;432§auto Vorgebirge des Hügellands;432§auto Contreforts de Hautebrande;432 | x=-711.7000122070312 y=-1047.900024414063 | size=5 | links=#9644(auto Hillsbrad Foothills;168):55 c2260.9:41
+#26612 | auto Hillsbrad Foothills;433§auto Vorgebirge des Hügellands;433§auto Contreforts de Hautebrande;433 | x=-751.9000244140625 y=112.5999984741211 | size=1 | links=#23243(auto Hillsbrad Foothills;376):29 #27325(auto Hillsbrad Foothills;449):15
+#26686 | auto Hillsbrad Foothills;434§auto Vorgebirge des Hügellands;434§auto Contreforts de Hautebrande;434 | x=-299.1000061035156 y=-1642.900024414063 | size=1 | links=#4098(auto Hillsbrad Foothills;66):67 #12776(auto Hillsbrad Foothills;210):23
+#26697 | auto Hillsbrad Foothills;435§auto Vorgebirge des Hügellands;435§auto Contreforts de Hautebrande;435 | x=-1331.5 y=-1277 | size=1 | links=#17365(auto Hillsbrad Foothills;281):5 #23807(auto Hillsbrad Foothills;386):9
+#26726 | auto Hillsbrad Foothills;436§auto Vorgebirge des Hügellands;436§auto Contreforts de Hautebrande;436 | x=-351.8999938964844 y=76.0999984741211 | size=1 | links=#3762(auto Hillsbrad Foothills;62):8 #4973(auto Hillsbrad Foothills;85):21
+#26802 | auto Hillsbrad Foothills;437§auto Vorgebirge des Hügellands;437§auto Contreforts de Hautebrande;437 | x=-399.7000122070313 y=43.5 | size=1 | links=#25193(auto Hillsbrad Foothills;413):23 #25533(auto Hillsbrad Foothills;421):11
+#26814 | auto Hillsbrad Foothills;438§auto Vorgebirge des Hügellands;438§auto Contreforts de Hautebrande;438 | x=-38.10000228881836 y=-943.9000244140625 | size=1 | links=#9448(auto Hillsbrad Foothills;162):6 #10146(auto Hillsbrad Foothills;176):8
+#26847 | auto Hillsbrad Foothills;439§auto Vorgebirge des Hügellands;439§auto Contreforts de Hautebrande;439 | x=-816.4000244140625 y=133.8000030517578 | size=1 | links=#14313(auto Hillsbrad Foothills;231):18 c2269.13:9
+#26872 | auto Hillsbrad Foothills;440§auto Vorgebirge des Hügellands;440§auto Contreforts de Hautebrande;440 | x=-506.1000061035156 y=-1465.800048828125 | size=1 | links=#3704(auto Hillsbrad Foothills;60):19 #8102(auto Hillsbrad Foothills;130):10 #19579(auto Hillsbrad Foothills;322):18 c620.2:6
+#26992 | auto Hillsbrad Foothills;441§auto Vorgebirge des Hügellands;441§auto Contreforts de Hautebrande;441 | x=-1334.200073242188 y=-1226.800048828125 | size=1 | links=#22670(auto Hillsbrad Foothills;367):8 #24976(auto Hillsbrad Foothills;410):6
+#27038 | auto Hillsbrad Foothills;442§auto Vorgebirge des Hügellands;442§auto Contreforts de Hautebrande;442 | x=-474.1000061035156 y=-1347 | size=1 | links=#761(auto Hillsbrad Foothills;14):5 c4075.1:7
+#27060 | auto Hillsbrad Foothills;443§auto Vorgebirge des Hügellands;443§auto Contreforts de Hautebrande;443 | x=-827.9000244140625 y=194.1000061035156 | size=1 | links=#8726(auto Hillsbrad Foothills;141):22 #9560(auto Hillsbrad Foothills;167):19 c2269.1:8
+#27081 | auto Hillsbrad Foothills;444§auto Vorgebirge des Hügellands;444§auto Contreforts de Hautebrande;444 | x=-513 y=122.3000030517578 | size=1 | links=#27269(auto Hillsbrad Foothills;448):13 c2448.1:8 c2387.5:7
+#27132 | Chef Jessen;Questgiver;Hillsbrad Foothills;1;51.89;58.68§Küchenchef Jessen;Questgeber;Vorgebirge des Hügellands;1;51.89;58.68§Chef Jessen;Questgiver;Contreforts de Hautebrande;1;51.89;58.68 | x=-851.7000122070312 y=-593.5 | size=1
+#27225 | auto Hillsbrad Foothills;445§auto Vorgebirge des Hügellands;445§auto Contreforts de Hautebrande;445 | x=-594.7999877929688 y=-1491.200073242188 | size=1 | links=#2266(auto Hillsbrad Foothills;34):5 #5380(auto Hillsbrad Foothills;88):10
+#27242 | auto Hillsbrad Foothills;446§auto Vorgebirge des Hügellands;446§auto Contreforts de Hautebrande;446 | x=-200.6000061035156 y=-719.6000366210938 | size=1 | links=#11138(auto Hillsbrad Foothills;192):65 #23850(auto Hillsbrad Foothills;388):42
+#27251 | auto Hillsbrad Foothills;447§auto Vorgebirge des Hügellands;447§auto Contreforts de Hautebrande;447 | x=-505.1000061035156 y=-90.5999984741211 | size=1 | links=#1991(auto Hillsbrad Foothills;29):52 #6410(auto Hillsbrad Foothills;102):27 #9385(auto Hillsbrad Foothills;160):29
+#27269 | auto Hillsbrad Foothills;448§auto Vorgebirge des Hügellands;448§auto Contreforts de Hautebrande;448 | x=-513.6000366210938 y=109.2000045776367 | size=1 | links=#10742(auto Hillsbrad Foothills;186):4 #27081(auto Hillsbrad Foothills;444):13 #28101(auto Hillsbrad Foothills;459):4
+#27325 | auto Hillsbrad Foothills;449§auto Vorgebirge des Hügellands;449§auto Contreforts de Hautebrande;449 | x=-741.4000244140625 y=101.4000015258789 | size=1 | links=#16092(auto Hillsbrad Foothills;258):28 #22113(auto Hillsbrad Foothills;362):28 #26612(auto Hillsbrad Foothills;433):15 c2269.6:10 c2269.9:10
+#27341 | s;u;Mailbox;2;Hillsbrad Foothills§s;u;Briefkasten;2;Vorgebirge von Hillsbrad§s;u;Boîte aux lettres;2;Contreforts de Hautebrande | x=-20.71158093774981 y=-929.4359135193254 | size=1 | links=#2332(Mailbox;Tarren Mill;Hillsbrad Foothills):0
+#27381 | auto Hillsbrad Foothills;450§auto Vorgebirge des Hügellands;450§auto Contreforts de Hautebrande;450 | x=-602.6000366210938 y=-577.2999877929688 | size=1 | links=#1569(auto Hillsbrad Foothills;25):51 #18065(auto Hillsbrad Foothills;292):72 #42882(auto Hillsbrad Foothills;466):30 c2354.45:58
+#27402 | auto Hillsbrad Foothills;451§auto Vorgebirge des Hügellands;451§auto Contreforts de Hautebrande;451 | x=-548 y=-1549.300048828125 | size=1 | links=#6241(auto Hillsbrad Foothills;101):6 c2261.4:6
+#27451 | auto Hillsbrad Foothills;452§auto Vorgebirge des Hügellands;452§auto Contreforts de Hautebrande;452 | x=-1350.200073242188 y=-1256.300048828125 | size=1 | links=#15562(auto Hillsbrad Foothills;250):12 #23807(auto Hillsbrad Foothills;386):18
+#27491 | auto Hillsbrad Foothills;453§auto Vorgebirge des Hügellands;453§auto Contreforts de Hautebrande;453 | x=-1273.599975585938 y=-1224.5 | size=1 | links=#8357(auto Hillsbrad Foothills;135):7 #23237(auto Hillsbrad Foothills;375):16 c2345.5:4
+#27527 | auto Hillsbrad Foothills;454§auto Vorgebirge des Hügellands;454§auto Contreforts de Hautebrande;454 | x=-506.5 y=-1362.800048828125 | size=1 | links=#18079(auto Hillsbrad Foothills;293):5 #24894(auto Hillsbrad Foothills;408):9
+#27863 | auto Hillsbrad Foothills;455§auto Vorgebirge des Hügellands;455§auto Contreforts de Hautebrande;455 | x=-344.6000061035156 y=18.39999961853027 | size=1 | links=#11259(auto Hillsbrad Foothills;194):8 #20411(auto Hillsbrad Foothills;338):6
+#27892 | auto Hillsbrad Foothills;456§auto Vorgebirge des Hügellands;456§auto Contreforts de Hautebrande;456 | x=-548.7999877929688 y=-1512.900024414063 | size=1 | links=#6602(auto Hillsbrad Foothills;107):8 #21171(auto Hillsbrad Foothills;351):19 c2244.2:28 c2260.4:10 o179486.7:8
+#27925 | auto Hillsbrad Foothills;457§auto Vorgebirge des Hügellands;457§auto Contreforts de Hautebrande;457 | x=-340.2000122070313 y=12.30000019073486 | size=1 | links=#20744(auto Hillsbrad Foothills;342):5 c2266.6:5
+#28023 | top;inn;Southshore§oben;gasthaus;Süderstade§top;inn;Austrivage | x=-857.1000366210938 y=-569.7999877929688 | size=1 | links=#24(auto Hillsbrad Foothills;2):0 #1486(auto Hillsbrad Foothills;24):3 #4264(auto Hillsbrad Foothills;71):4 #18120(auto Hillsbrad Foothills;294):12 #23407(auto Hillsbrad Foothills;379):5
+#28064 | auto Hillsbrad Foothills;458§auto Vorgebirge des Hügellands;458§auto Contreforts de Hautebrande;458 | x=-841.2999877929688 y=200.6000061035156 | size=1 | links=#1353(auto Hillsbrad Foothills;22):21 #14003(auto Hillsbrad Foothills;225):11 c2269.24:4
+#28101 | auto Hillsbrad Foothills;459§auto Vorgebirge des Hügellands;459§auto Contreforts de Hautebrande;459 | x=-513.7000122070312 y=104.4000015258789 | size=1 | links=#7571(auto Hillsbrad Foothills;126):11 #27269(auto Hillsbrad Foothills;448):4 c2387.4:2
+#28218 | auto Hillsbrad Foothills;460§auto Vorgebirge des Hügellands;460§auto Contreforts de Hautebrande;460 | x=-621.6000366210938 y=-1240.700073242188 | size=1 | links=#15531(auto Hillsbrad Foothills;249):142 #23563(crossing;one;Hillsbrad Foothills):85 c2349.49:110
+#28225 | auto Hillsbrad Foothills;461§auto Vorgebirge des Hügellands;461§auto Contreforts de Hautebrande;461 | x=-264.3000183105469 y=-389.7000122070313 | size=1 | links=#3528(auto Hillsbrad Foothills;57):17 #14631(auto Hillsbrad Foothills;235):28 c2248.4:7
+#28276 | auto Hillsbrad Foothills;462§auto Vorgebirge des Hügellands;462§auto Contreforts de Hautebrande;462 | x=-201.1000061035156 y=-372.3000183105469 | size=1 | links=#2986(auto Hillsbrad Foothills;46):25 #20447(auto Hillsbrad Foothills;339):12 o2714.3:6
+#28285 | auto Hillsbrad Foothills;463§auto Vorgebirge des Hügellands;463§auto Contreforts de Hautebrande;463 | x=-583 y=42.79999923706055 | size=1 | links=#18571(auto Hillsbrad Foothills;303):6 #19764(auto Hillsbrad Foothills;328):7
+#28336 | auto Hillsbrad Foothills;464§auto Vorgebirge des Hügellands;464§auto Contreforts de Hautebrande;464 | x=-427.7000122070313 y=-12.5 | size=1 | links=#7432(auto Hillsbrad Foothills;122):46 #20676(auto Hillsbrad Foothills;341):34 #23107(auto Hillsbrad Foothills;374):45
+#28513 | auto Hillsbrad Foothills;465§auto Vorgebirge des Hügellands;465§auto Contreforts de Hautebrande;465 | x=-546.4000244140625 y=-99.80000305175781 | size=1 | links=#15423(auto Hillsbrad Foothills;247):7 #22361(auto Hillsbrad Foothills;364):32
+#28626 | s;u;Mailbox;1;Hillsbrad Foothills§s;u;Briefkasten;1;Vorgebirge von Hillsbrad§s;u;Boîte aux lettres;1;Contreforts de Hautebrande | x=-850.1333618164062 y=-546.13330078125 | size=1 | links=#2523(entry and exit;inn;Southshore):1 #3571(central location;Southshore;Hillsbrad Foothills):14
+#42882 | auto Hillsbrad Foothills;466§auto Vorgebirge des Hügellands;466§auto Contreforts de Hautebrande;466 | x=-597.1000366210938 y=-547.2000122070312 | size=1 | links=#27381(auto Hillsbrad Foothills;450):30 c25901.1:18 c26401.1:15
+#42896 | auto Hillsbrad Foothills;467§auto Vorgebirge des Hügellands;467§auto Contreforts de Hautebrande;467 | x=-919.5 y=-416.1000061035156 | size=1 | links=#42897(auto Hillsbrad Foothills;468):65 c2376.1:25
+#42897 | auto Hillsbrad Foothills;468§auto Vorgebirge des Hügellands;468§auto Contreforts de Hautebrande;468 | x=-874.6000366210938 y=-369 | size=1 | links=#42896(auto Hillsbrad Foothills;467):65 #42898(auto Hillsbrad Foothills;469):43
+#42898 | auto Hillsbrad Foothills;469§auto Vorgebirge des Hügellands;469§auto Contreforts de Hautebrande;469 | x=-831.7000122070312 y=-361.2000122070313 | size=1 | links=#42897(auto Hillsbrad Foothills;468):43 #42899(auto Hillsbrad Foothills;470):51
+#42899 | auto Hillsbrad Foothills;470§auto Vorgebirge des Hügellands;470§auto Contreforts de Hautebrande;470 | x=-780.7999877929688 y=-366.2000122070313 | size=1 | links=#42898(auto Hillsbrad Foothills;469):51 #42900(auto Hillsbrad Foothills;471):39
+#42900 | auto Hillsbrad Foothills;471§auto Vorgebirge des Hügellands;471§auto Contreforts de Hautebrande;471 | x=-745.5 y=-384.3999938964844 | size=1 | links=#42899(auto Hillsbrad Foothills;470):39 #42901(auto Hillsbrad Foothills;472):51
+#42901 | auto Hillsbrad Foothills;472§auto Vorgebirge des Hügellands;472§auto Contreforts de Hautebrande;472 | x=-709.7999877929688 y=-346.7000122070313 | size=1 | links=#42900(auto Hillsbrad Foothills;471):51 #42902(auto Hillsbrad Foothills;473):40
+#42902 | auto Hillsbrad Foothills;473§auto Vorgebirge des Hügellands;473§auto Contreforts de Hautebrande;473 | x=-669.6000366210938 y=-343 | size=1 | links=#42901(auto Hillsbrad Foothills;472):40 #42903(auto Hillsbrad Foothills;474):50
+#42903 | auto Hillsbrad Foothills;474§auto Vorgebirge des Hügellands;474§auto Contreforts de Hautebrande;474 | x=-620.9000244140625 y=-329 | size=1 | links=#42902(auto Hillsbrad Foothills;473):50 #42904(auto Hillsbrad Foothills;475):77
+#42904 | auto Hillsbrad Foothills;475§auto Vorgebirge des Hügellands;475§auto Contreforts de Hautebrande;475 | x=-553.2000122070312 y=-291.3000183105469 | size=1 | links=#4593(auto Hillsbrad Foothills;76):68 #5209(auto Hillsbrad Foothills;86):106 #42903(auto Hillsbrad Foothills;474):77
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c232.1 | links=#24365(auto Hillsbrad Foothills;397):4
+c620.1 | links=#13665(auto Hillsbrad Foothills;221):7
+c2214.1 | links=#5377(auto Hillsbrad Foothills;87):25
+c2215.1 | links=#9760(central location;Tarren Mill;Hillsbrad Foothills):4
+c2216.1 | links=#24821(auto Hillsbrad Foothills;407):5
+c2228.1 | links=#9383(auto Hillsbrad Foothills;159):3
+c2229.1 | links=#9448(auto Hillsbrad Foothills;162):6
+c2230.1 | links=#24821(auto Hillsbrad Foothills;407):4
+c2238.1 | links=o1722.1:1
+c2244.1 | links=c2260.1:9 c2260.12:9
+c2260.1 | links=c2244.1:9
+c2261.1 | links=#2266(auto Hillsbrad Foothills;34):21 c2260.4:15 c2261.23:17
+c2263.1 | links=#3571(central location;Southshore;Hillsbrad Foothills):17 #18755(auto Hillsbrad Foothills;305):9 #24986(auto Hillsbrad Foothills;411):18
+c2264.1 | links=#15423(auto Hillsbrad Foothills;247):5
+c2265.1 | links=c2404.1:16 c2265.2:18
+c2266.1 | links=c2360.3:16 c2266.5:13
+c2267.1 | links=c2451.1:15 c2267.2:40 c2266.20:24
+c2268.1 | links=#3797(auto Hillsbrad Foothills;64):22
+c2269.1 | links=#27060(auto Hillsbrad Foothills;443):8
+c2270.1 | links=#1746(auto Hillsbrad Foothills;27):2
+c2274.1 | links=#21577(auto Hillsbrad Foothills;355):11 o1720.1:1
+c2276.1 | links=#24262(auto Hillsbrad Foothills;394):16
+c2277.1 | links=#20012(auto Hillsbrad Foothills;332):3 #24478(auto Hillsbrad Foothills;401):24
+c2278.1 | links=#10146(auto Hillsbrad Foothills;176):5 c17092.1:3 o1763.1:2
+c2284.1 | links=#21754(auto Hillsbrad Foothills;358):5
+c2304.1 | links=#8542(auto Hillsbrad Foothills;139):6
+c2305.1 | links=#8182(auto Hillsbrad Foothills;133):15 #19063(auto Hillsbrad Foothills;310):13
+c2335.1 | links=#3977(auto Hillsbrad Foothills;65):2 #9987(auto Hillsbrad Foothills;173):3
+c2344.1 | links=#4784(auto Hillsbrad Foothills;80):31 #24371(auto Hillsbrad Foothills;398):47
+c2345.1 | links=#24371(auto Hillsbrad Foothills;398):54 c2345.11:19
+c2346.1 | links=#23237(auto Hillsbrad Foothills;375):2
+c2352.1 | links=#11355(centralpoint;down;inn;Southshore):3
+c2354.1 | links=#5209(auto Hillsbrad Foothills;86):30
+c2357.1 | links=#10682(auto Hillsbrad Foothills;184):6
+c2360.1 | links=#25193(auto Hillsbrad Foothills;413):27 c2360.2:25 c2360.5:19 c2360.8:15
+c2361.1 | links=#4264(auto Hillsbrad Foothills;71):8 c2362.1:3
+c2362.1 | links=c2361.1:3
+c2363.1 | links=#20012(auto Hillsbrad Foothills;332):6 c2380.1:4
+c2365.1 | links=#14638(auto Hillsbrad Foothills;236):7
+c2367.1 | links=#19457(auto Hillsbrad Foothills;317):24 #26017(auto Hillsbrad Foothills;428):16 c2383.1:5
+c2372.1 | links=o1723.5:15 c14278.8:16 c14278.10:19
+c2373.1 | links=c14278.1:32 o3695.4:8
+c2376.1 | links=#42896(auto Hillsbrad Foothills;467):25 c2377.1:20
+c2377.1 | links=c2376.1:20 c2377.3:46 c2376.8:75
+c2378.1 | links=#13580(auto Hillsbrad Foothills;218):3
+c2379.1 | links=#16249(auto Hillsbrad Foothills;260):13
+c2380.1 | links=c2363.1:4
+c2381.1 | links=#18373(auto Hillsbrad Foothills;298):10
+c2382.1 | links=#8878(auto Hillsbrad Foothills;147):7
+c2383.1 | links=#26017(auto Hillsbrad Foothills;428):12 c2367.1:5
+c2384.1 | links=#18559(crossing;three;Hillsbrad Foothills):78
+c2385.1 | links=c2348.7:128 c2348.19:91
+c2387.1 | links=c2268.10:16
+c2388.1 | links=#20267(auto Hillsbrad Foothills;335):4
+c2389.1 | links=#1402(auto Hillsbrad Foothills;23):39
+c2390.1 | links=#9962(auto Hillsbrad Foothills;172):6
+c2391.1 | links=#24821(auto Hillsbrad Foothills;407):5
+c2392.1 | links=#14552(auto Hillsbrad Foothills;234):3
+c2393.1 | links=#11647(auto Hillsbrad Foothills;195):6 #25413(auto Hillsbrad Foothills;418):3
+c2395.1 | links=#9712(auto Hillsbrad Foothills;169):18
+c2396.1 | links=#16884(auto Hillsbrad Foothills;273):22 #24471(auto Hillsbrad Foothills;400):7
+c2397.1 | links=#7462(auto Hillsbrad Foothills;125):6 #9712(auto Hillsbrad Foothills;169):16
+c2398.1 | links=c2400.1:12
+c2399.1 | links=#4272(auto Hillsbrad Foothills;72):5
+c2400.1 | links=#6219(auto Hillsbrad Foothills;100):21 c2398.1:12
+c2401.1 | links=#9712(auto Hillsbrad Foothills;169):6 #23003(entry and exit;inn;Tarren Mill;Hillsbrad Foothills):4
+c2402.1 | links=#4272(auto Hillsbrad Foothills;72):5
+c2403.1 | links=#17487(auto Hillsbrad Foothills;285):4 c2360.23:4
+c2404.1 | links=#9313(auto Hillsbrad Foothills;158):14 c2265.1:16
+c2408.1 | links=#14079(auto Hillsbrad Foothills;226):37
+c2410.1 | links=#24909(auto Hillsbrad Foothills;409):2
+c2418.1 | links=#9760(central location;Tarren Mill;Hillsbrad Foothills):13
+c2419.1 | links=#9712(auto Hillsbrad Foothills;169):4 #10146(auto Hillsbrad Foothills;176):6
+c2427.1 | links=c2244.10:2
+c2428.1 | links=#12142(auto Hillsbrad Foothills;202):8 o179488.7:13 c2261.27:11
+c2429.1 | links=#15264(auto Hillsbrad Foothills;245):5 c6491.2:18
+c2432.1 | links=#19549(auto Hillsbrad Foothills;321):15
+c2436.1 | links=#5738(auto Hillsbrad Foothills;94):4
+c2437.1 | links=#24909(auto Hillsbrad Foothills;409):5
+c2438.1 | links=#18940(auto Hillsbrad Foothills;308):2 #24478(auto Hillsbrad Foothills;401):24
+c2448.1 | links=#5952(auto Hillsbrad Foothills;96):10 #8855(auto Hillsbrad Foothills;144):9 #27081(auto Hillsbrad Foothills;444):8
+c2449.1 | links=#23107(auto Hillsbrad Foothills;374):5
+c2450.1 | links=#23312(auto Hillsbrad Foothills;377):13
+c2451.1 | links=#2349(auto Hillsbrad Foothills;36):20 #22657(auto Hillsbrad Foothills;366):23 c2267.1:15 c2267.7:30
+c2473.1 | links=#12776(auto Hillsbrad Foothills;210):20
+c2474.1 | links=#12776(auto Hillsbrad Foothills;210):37
+c2503.1 | links=#19728(auto Hillsbrad Foothills;326):5 #21779(auto Hillsbrad Foothills;359):7
+c2698.1 | links=c2349.14:89
+c2705.1 | links=#20825(auto Hillsbrad Foothills;346):10
+c2711.1 | links=#3571(central location;Southshore;Hillsbrad Foothills):11
+c2770.1 | links=#18570(auto Hillsbrad Foothills;302):5
+c3536.1 | links=o1722.1:19
+c3539.1 | links=#6219(auto Hillsbrad Foothills;100):12
+c3540.1 | links=#26017(auto Hillsbrad Foothills;428):30 c2386.25:11
+c3541.1 | links=#1026(auto Hillsbrad Foothills;16):11
+c3542.1 | links=#23407(auto Hillsbrad Foothills;379):7
+c3543.1 | links=#13085(auto Hillsbrad Foothills;212):14
+c3980.1 | links=#1486(auto Hillsbrad Foothills;24):12
+c3982.1 | links=#20267(auto Hillsbrad Foothills;335):4
+c4075.1 | links=#27038(auto Hillsbrad Foothills;442):7 c2244.15:12 c2261.20:13
+c6491.1 | links=#4794(auto Hillsbrad Foothills;82):14 o1767.1:34
+c6766.1 | links=#14119(auto Hillsbrad Foothills;227):12
+c7071.1 | links=#19945(auto Hillsbrad Foothills;330):15 c2375.12:169
+c9978.1 | links=#3571(central location;Southshore;Hillsbrad Foothills):13
+c10057.1 | links=#2332(Mailbox;Tarren Mill;Hillsbrad Foothills):2
+c14275.1 | links=#4888(auto Hillsbrad Foothills;84):6
+c14276.1 | links=c2374.5:22 c2375.6:36
+c14278.1 | links=c2373.1:32 c14278.9:30
+c14280.1 | links=#25274(auto Hillsbrad Foothills;417):31 c2356.89:56
+c15199.1 | links=#24478(auto Hillsbrad Foothills;401):20
+c16090.1 | links=c2385.12:64
+c17066.1 | links=c25962.1:8
+c17092.1 | links=c2278.1:3
+c17108.1 | links=#22986(auto Hillsbrad Foothills;372):12
+c17218.1 | links=#11355(centralpoint;down;inn;Southshore):4
+c25901.1 | links=#42882(auto Hillsbrad Foothills;466):18 c25962.1:11
+c25962.1 | links=c17066.1:8 c25901.1:11
+c26401.1 | links=#42882(auto Hillsbrad Foothills;466):15
+o1720.1 | links=c2274.1:1
+o1721.1 | links=
+o1722.1 | links=c2238.1:1 c3536.1:19 c2261.26:11 c2261.29:8
+o1723.1 | links=c2372.2:21 o1723.2:14 o1723.3:11 c620.11:14
+o1727.1 | links=#24787(auto Hillsbrad Foothills;406):7
+o1728.1 | links=#21754(auto Hillsbrad Foothills;358):1
+o1736.1 | links=#9060(auto Hillsbrad Foothills;153):5
+o1759.1 | links=#9987(auto Hillsbrad Foothills;173):1
+o1761.1 | links=#3977(auto Hillsbrad Foothills;65):1
+o1763.1 | links=c2278.1:2
+o1767.1 | links=#2413(auto Hillsbrad Foothills;40):78 c6491.1:34
+o1768.1 | links=#3741(auto Hillsbrad Foothills;61):6
+o1769.1 | links=c2249.13:27 c2249.14:14 c2248.15:17 c2249.16:37
+o2008.1 | links=#23003(entry and exit;inn;Tarren Mill;Hillsbrad Foothills):2
+o2714.1 | links=c2249.3:9
+o3659.1 | links=c2374.5:11 c2374.6:3 c2375.10:10
+o92013.1 | links=c2374.4:7 c2375.6:8 c2374.7:57 c2375.7:10
+o178325.1 | links=#19601(auto Hillsbrad Foothills;323):7 #22894(auto Hillsbrad Foothills;371):17
+o179486.1 | links=c2261.23:13
+o180523.1 | links=#11355(centralpoint;down;inn;Southshore):2
+o181620.1 | links=#17374(auto Hillsbrad Foothills;282):13
+c620.2 | links=#26872(auto Hillsbrad Foothills;440):6
+c2244.2 | links=#21105(auto Hillsbrad Foothills;349):7 #27892(auto Hillsbrad Foothills;456):28 c2261.5:10
+c2248.2 | links=c2248.13:9
+c2249.2 | links=c2249.9:16
+c2260.2 | links=c2261.2:22 c2261.3:19 o179486.5:20 o179486.8:17
+c2261.2 | links=c2260.2:22 o179486.6:10
+c2264.2 | links=#15423(auto Hillsbrad Foothills;247):3
+c2265.2 | links=c2265.1:18
+c2266.2 | links=c2360.5:6
+c2267.2 | links=c2267.1:40
+c2268.2 | links=#17269(auto Hillsbrad Foothills;280):21 #20676(auto Hillsbrad Foothills;341):29
+c2269.2 | links=#8726(auto Hillsbrad Foothills;141):5
+c2270.2 | links=#19629(auto Hillsbrad Foothills;324):14
+c2284.2 | links=#21754(auto Hillsbrad Foothills;358):6
+c2344.2 | links=#24371(auto Hillsbrad Foothills;398):14
+c2345.2 | links=#17019(auto Hillsbrad Foothills;276):22
+c2347.2 | links=c2356.69:20
+c2354.2 | links=c2354.3:31
+c2356.2 | links=#16822(auto Hillsbrad Foothills;270):6
+c2360.2 | links=c2360.1:25 c2266.3:19 c2360.4:12
+c2368.2 | links=#20122(auto Hillsbrad Foothills;333):35 c2370.3:23 c2370.4:18 c2368.10:113
+c2372.2 | links=o1723.1:21 c2373.4:26 c14278.9:18
+c2373.2 | links=o1723.4:3
+c2375.2 | links=c2375.3:18 c2376.13:72 c2375.16:48
+c2376.2 | links=c2377.2:12 c2377.12:14
+c2377.2 | links=c2376.2:12
+c2385.2 | links=#2413(auto Hillsbrad Foothills;40):115 c2348.12:27
+c2387.2 | links=#6616(auto Hillsbrad Foothills;108):13 c2268.13:22
+c2408.2 | links=c2408.3:89 c2384.42:73
+c2503.2 | links=#23243(auto Hillsbrad Foothills;376):5
+c6491.2 | links=c2429.1:18
+c6766.2 | links=#14119(auto Hillsbrad Foothills;227):12
+c14275.2 | links=#12401(auto Hillsbrad Foothills;207):7
+c14278.2 | links=o1723.5:12
+c14279.2 | links=c2349.47:51
+c14280.2 | links=c2356.3:31 c2349.9:71 c2349.99:15
+c17108.2 | links=#17374(auto Hillsbrad Foothills;282):4
+o1723.2 | links=o1723.1:14 c14278.7:5
+o2714.2 | links=c2248.10:10
+o3659.2 | links=c2376.18:5
+o179486.2 | links=c620.12:13 c2261.21:25 c2261.22:16
+o179488.2 | links=c2261.47:9
+c620.3 | links=#24478(auto Hillsbrad Foothills;401):14
+c2244.3 | links=c2260.3:8
+c2248.3 | links=#14171(auto Hillsbrad Foothills;228):4
+c2249.3 | links=o2714.1:9 c2248.5:19 c2249.6:29
+c2260.3 | links=c2244.3:8 c2261.4:13
+c2261.3 | links=#6241(auto Hillsbrad Foothills;101):27 c2260.2:19
+c2265.3 | links=#18571(auto Hillsbrad Foothills;303):4
+c2266.3 | links=#25193(auto Hillsbrad Foothills;413):45 c2360.2:19 c2360.3:36
+c2267.3 | links=#25239(auto Hillsbrad Foothills;415):15 c620.4:6
+c2269.3 | links=#13612(auto Hillsbrad Foothills;219):5
+c2270.3 | links=#19629(auto Hillsbrad Foothills;324):20
+c2284.3 | links=#2446(Captured Farmer;one;Tarren Mill;Hillsbrad Foothills):0
+c2344.3 | links=#7782(auto Hillsbrad Foothills;128):29 c2345.3:19 c2344.4:15 c2344.24:30
+c2345.3 | links=#17019(auto Hillsbrad Foothills;276):21 c2344.3:19 c2346.6:28
+c2348.3 | links=c2348.19:57
+c2354.3 | links=c2354.2:31 c2354.19:60
+c2356.3 | links=c14280.2:31
+c2360.3 | links=c2266.1:16 c2266.3:36 c2266.4:20
+c2368.3 | links=c2370.3:62 c2369.13:52
+c2369.3 | links=c2371.4:22 c2369.9:31 c2371.12:38
+c2370.3 | links=c2368.2:23 c2368.3:62 c2370.4:12
+c2372.3 | links=#16815(auto Hillsbrad Foothills;269):16 c2372.7:13
+c2373.3 | links=c14278.10:21
+c2374.3 | links=c2375.3:9
+c2375.3 | links=c2375.2:18 c2374.3:9
+c2376.3 | links=c2377.6:19 c2377.7:80 c2377.12:17
+c2377.3 | links=c2377.1:46
+c2385.3 | links=c2348.10:46 c2356.51:61
+c2386.3 | links=#3681(auto Hillsbrad Foothills;59):7
+c2387.3 | links=#7571(auto Hillsbrad Foothills;126):4 #23367(auto Hillsbrad Foothills;378):13
+c2408.3 | links=c2408.2:89
+c2442.3 | links=#1127(auto Hillsbrad Foothills;17):36
+c2503.3 | links=#22113(auto Hillsbrad Foothills;362):14
+c7068.3 | links=#19945(auto Hillsbrad Foothills;330):13
+c7071.3 | links=#19945(auto Hillsbrad Foothills;330):13
+c14275.3 | links=#5539(auto Hillsbrad Foothills;90):9
+c14278.3 | links=o1723.5:24
+c14280.3 | links=#12776(auto Hillsbrad Foothills;210):49
+c17108.3 | links=#22986(auto Hillsbrad Foothills;372):9
+o1723.3 | links=o1723.1:11 c14278.4:14 o1723.4:31 c2373.6:17 o1723.6:25
+o2714.3 | links=#28276(auto Hillsbrad Foothills;462):6
+o3659.3 | links=c2260.10:9
+o179486.3 | links=c2261.23:19
+o179488.3 | links=c2244.17:8
+c620.4 | links=c2267.3:6 c2267.5:3
+c2248.4 | links=#28225(auto Hillsbrad Foothills;461):7 c2248.5:23
+c2249.4 | links=#14171(auto Hillsbrad Foothills;228):28 c2249.6:24
+c2260.4 | links=#27892(auto Hillsbrad Foothills;456):10 c2261.1:15
+c2261.4 | links=#27402(auto Hillsbrad Foothills;451):6 c2260.3:13 c2261.49:5
+c2265.4 | links=#19764(auto Hillsbrad Foothills;328):8
+c2266.4 | links=#25193(auto Hillsbrad Foothills;413):26 c2360.3:20 c2266.5:10
+c2267.4 | links=#25239(auto Hillsbrad Foothills;415):31 c2267.6:32 c2267.10:24 c2266.21:32
+c2268.4 | links=#6616(auto Hillsbrad Foothills;108):41 #23493(auto Hillsbrad Foothills;381):26 c2266.22:15
+c2269.4 | links=#23412(auto Hillsbrad Foothills;380):6
+c2344.4 | links=c2344.3:15 c2345.9:12
+c2345.4 | links=#7782(auto Hillsbrad Foothills;128):7
+c2360.4 | links=#25193(auto Hillsbrad Foothills;413):25 c2360.2:12
+c2369.4 | links=c2371.8:22
+c2370.4 | links=c2368.2:18 c2370.3:12
+c2371.4 | links=#6983(auto Hillsbrad Foothills;116):41 c2369.3:22 c2369.11:31
+c2372.4 | links=c2373.4:13
+c2373.4 | links=#9464(auto Hillsbrad Foothills;164):38 c2372.2:26 c2372.4:13
+c2374.4 | links=o92013.1:7
+c2375.4 | links=c2374.5:17
+c2387.4 | links=#28101(auto Hillsbrad Foothills;459):2
+c2408.4 | links=#3097(auto Hillsbrad Foothills;49):36
+c2503.4 | links=#22113(auto Hillsbrad Foothills;362):9
+c14278.4 | links=o1723.3:14 c2372.8:11
+o1723.4 | links=c2373.2:3 o1723.3:31 c2372.7:11 c2372.10:16
+o2714.4 | links=c2249.5:8
+o3695.4 | links=c2373.1:8 o1723.5:48 c14278.10:30
+o179486.4 | links=c2260.6:9
+c2244.5 | links=#25258(auto Hillsbrad Foothills;416):5
+c2248.5 | links=c2249.3:19 c2248.4:23
+c2249.5 | links=#3741(auto Hillsbrad Foothills;61):13 o2714.4:8 c2249.17:5
+c2260.5 | links=#24894(auto Hillsbrad Foothills;408):13 c2261.16:11
+c2261.5 | links=c2244.2:10
+c2265.5 | links=#3797(auto Hillsbrad Foothills;64):45
+c2266.5 | links=c2266.1:13 c2266.4:10 c2360.7:10
+c2267.5 | links=c620.4:3 c2266.19:7
+c2269.5 | links=#17549(auto Hillsbrad Foothills;287):16
+c2344.5 | links=c2345.5:2
+c2345.5 | links=#27491(auto Hillsbrad Foothills;453):4 c2344.5:2
+c2356.5 | links=#5632(auto Hillsbrad Foothills;92):22
+c2360.5 | links=c2360.1:19 c2266.2:6
+c2369.5 | links=c2369.6:47 c2369.9:56 c2369.11:40
+c2371.5 | links=c2371.6:11 c2369.10:27 c2371.14:44
+c2372.5 | links=c2348.7:27 c2372.10:17
+c2373.5 | links=o1723.6:13
+c2374.5 | links=c14276.1:22 o3659.1:11 c2375.4:17
+c2375.5 | links=c2375.7:23
+c2376.5 | links=c2376.6:25 c2377.7:32
+c2384.5 | links=#1127(auto Hillsbrad Foothills;17):2
+c2387.5 | links=#27081(auto Hillsbrad Foothills;444):7
+c2408.5 | links=#2413(auto Hillsbrad Foothills;40):25
+o1723.5 | links=#9900(auto Hillsbrad Foothills;171):22 c2372.1:15 c14278.2:12 c14278.3:24 o3695.4:48 o1723.6:20 c2372.9:13
+o2714.5 | links=c2248.16:9
+o179486.5 | links=c2260.2:20
+o179488.5 | links=c2244.17:7
+c620.6 | links=c2360.21:10
+c721.6 | links=#1127(auto Hillsbrad Foothills;17):28
+c2244.6 | links=#3704(auto Hillsbrad Foothills;60):22 c2261.11:18
+c2248.6 | links=#14171(auto Hillsbrad Foothills;228):19 o2714.7:16 c2249.8:25 c2249.9:15
+c2249.6 | links=c2249.3:29 c2249.4:24
+c2260.6 | links=#22692(auto Hillsbrad Foothills;368):19 o179486.4:9 c2261.21:14
+c2265.6 | links=#9313(auto Hillsbrad Foothills;158):12
+c2266.6 | links=#20411(auto Hillsbrad Foothills;338):5 #27925(auto Hillsbrad Foothills;457):5
+c2267.6 | links=c2267.4:32
+c2268.6 | links=#143(auto Hillsbrad Foothills;5):43
+c2269.6 | links=#27325(auto Hillsbrad Foothills;449):10
+c2270.6 | links=#8173(auto Hillsbrad Foothills;132):7
+c2344.6 | links=#7782(auto Hillsbrad Foothills;128):7
+c2346.6 | links=c2345.3:28
+c2349.6 | links=#5632(auto Hillsbrad Foothills;92):9
+c2354.6 | links=c2384.6:77 c2248.13:19
+c2369.6 | links=c2369.5:47
+c2371.6 | links=c2371.5:11 c2371.7:32
+c2373.6 | links=o1723.3:17
+c2374.6 | links=o3659.1:3
+c2375.6 | links=c14276.1:36 o92013.1:8
+c2376.6 | links=c2376.5:25 c2377.8:16
+c2377.6 | links=c2376.3:19
+c2384.6 | links=c2354.6:77 c2354.10:64
+c2385.6 | links=c2348.11:57
+c2387.6 | links=#7878(auto Hillsbrad Foothills;129):14
+c2408.6 | links=#2413(auto Hillsbrad Foothills;40):78 c2385.9:68
+c2503.6 | links=#29(auto Hillsbrad Foothills;3):3
+c14278.6 | links=c2372.10:9
+o1723.6 | links=o1723.3:25 c2373.5:13 o1723.5:20
+o2714.6 | links=c2249.10:8
+o179486.6 | links=c2261.2:10
+c620.7 | links=#6616(auto Hillsbrad Foothills;108):20
+c2244.7 | links=#24894(auto Hillsbrad Foothills;408):3
+c2248.7 | links=#6475(auto Hillsbrad Foothills;103):12
+c2249.7 | links=c2248.16:20 c2249.16:24
+c2260.7 | links=#19579(auto Hillsbrad Foothills;322):5 c2244.14:15
+c2261.7 | links=#22699(auto Hillsbrad Foothills;369):7
+c2266.7 | links=#4973(auto Hillsbrad Foothills;85):8
+c2267.7 | links=c2451.1:30
+c2268.7 | links=#2349(auto Hillsbrad Foothills;36):3
+c2269.7 | links=#22113(auto Hillsbrad Foothills;362):6
+c2270.7 | links=#15574(auto Hillsbrad Foothills;251):34
+c2344.7 | links=
+c2345.7 | links=#17645(auto Hillsbrad Foothills;289):4
+c2348.7 | links=#16815(auto Hillsbrad Foothills;269):56 c2385.1:128 c2372.5:27
+c2354.7 | links=#25087(auto Hillsbrad Foothills;412):45
+c2360.7 | links=c2266.5:10
+c2369.7 | links=c2369.8:21 c2371.14:20 c2371.16:25
+c2371.7 | links=c2371.6:32 c2371.11:51
+c2372.7 | links=c2372.3:13 o1723.4:11 c2372.10:17
+c2374.7 | links=o92013.1:57 c2374.8:27
+c2375.7 | links=o92013.1:10 c2375.5:23
+c2377.7 | links=c2376.3:80 c2376.5:32 c2377.9:28
+c2387.7 | links=#14813(auto Hillsbrad Foothills;239):20
+c2408.7 | links=c2384.42:14
+c14278.7 | links=o1723.2:5
+o2714.7 | links=c2248.6:16
+o3659.7 | links=c2261.48:6
+o179486.7 | links=#27892(auto Hillsbrad Foothills;456):8
+o179488.7 | links=c2428.1:13
+c620.8 | links=c2267.14:13
+c2244.8 | links=#18079(auto Hillsbrad Foothills;293):6
+c2248.8 | links=#8903(auto Hillsbrad Foothills;148):17 c2248.10:18
+c2249.8 | links=c2248.6:25 c2249.10:18
+c2261.8 | links=#22699(auto Hillsbrad Foothills;369):24 #25258(auto Hillsbrad Foothills;416):29
+c2266.8 | links=#3762(auto Hillsbrad Foothills;62):4
+c2268.8 | links=#8863(auto Hillsbrad Foothills;145):12
+c2344.8 | links=#15754(auto Hillsbrad Foothills;254):7
+c2360.8 | links=#8905(auto Hillsbrad Foothills;149):13 #25193(auto Hillsbrad Foothills;413):23 c2360.1:15
+c2369.8 | links=c2369.7:21 c2371.15:23
+c2371.8 | links=c2369.4:22 c2369.10:38
+c2372.8 | links=c14278.4:11
+c2374.8 | links=c2374.7:27 c2375.12:31 c2375.14:13
+c2375.8 | links=c2375.10:46 c2374.11:16
+c2376.8 | links=c2377.1:75 c2377.8:13 c2377.9:20
+c2377.8 | links=c2376.6:16 c2376.8:13
+c2387.8 | links=c2267.14:17
+c2408.8 | links=#11191(auto Hillsbrad Foothills;193):50
+c14278.8 | links=c2372.1:16 c620.10:2
+o2714.8 | links=#6475(auto Hillsbrad Foothills;103):8
+o179486.8 | links=c2260.2:17
+o179488.8 | links=#20125(auto Hillsbrad Foothills;334):11
+c2244.9 | links=#12314(auto Hillsbrad Foothills;206):16
+c2248.9 | links=#6475(auto Hillsbrad Foothills;103):29 c2249.12:26
+c2249.9 | links=c2249.2:16 c2248.6:15
+c2260.9 | links=#26547(auto Hillsbrad Foothills;432):41 c2244.21:72 c2261.39:15 c2349.49:67
+c2261.9 | links=#3704(auto Hillsbrad Foothills;60):9 #25258(auto Hillsbrad Foothills;416):26 c2244.18:5
+c2266.9 | links=#21553(auto Hillsbrad Foothills;354):9
+c2267.9 | links=#9385(auto Hillsbrad Foothills;160):4
+c2268.9 | links=#19758(auto Hillsbrad Foothills;327):17 #22361(auto Hillsbrad Foothills;364):42
+c2269.9 | links=#27325(auto Hillsbrad Foothills;449):10
+c2344.9 | links=#17645(auto Hillsbrad Foothills;289):4
+c2345.9 | links=c2344.4:12
+c2349.9 | links=c14280.2:71
+c2360.9 | links=#4973(auto Hillsbrad Foothills;85):7
+c2369.9 | links=c2369.3:31 c2369.5:56 c2371.9:29
+c2371.9 | links=c2369.9:29 c2371.10:51 c2371.11:39
+c2372.9 | links=o1723.5:13
+c2374.9 | links=c2374.11:13
+c2375.9 | links=c2375.12:11 c2375.25:23
+c2376.9 | links=c2377.12:99 c2376.13:38
+c2377.9 | links=c2377.7:28 c2376.8:20
+c2385.9 | links=#10304(auto Hillsbrad Foothills;179):41 c2408.6:68 c2385.11:35
+c2387.9 | links=c2268.10:16 c2267.14:25
+c2408.9 | links=#22117(auto Hillsbrad Foothills;363):19
+c14278.9 | links=c14278.1:30 c2372.2:18
+o179486.9 | links=c2244.15:18
+c620.10 | links=c14278.8:2
+c2244.10 | links=#8102(auto Hillsbrad Foothills;130):13 c2427.1:2
+c2248.10 | links=o2714.2:10 c2248.8:18 c2249.12:17
+c2249.10 | links=#8903(auto Hillsbrad Foothills;148):16 o2714.6:8 c2249.8:18
+c2260.10 | links=#761(auto Hillsbrad Foothills;14):9 o3659.3:9 c2244.11:11
+c2266.10 | links=#3762(auto Hillsbrad Foothills;62):5
+c2267.10 | links=c2267.4:24
+c2268.10 | links=c2387.1:16 c2387.9:16
+c2348.10 | links=c2385.3:46
+c2354.10 | links=c2384.6:64 c2384.36:47
+c2360.10 | links=#21553(auto Hillsbrad Foothills;354):15
+c2368.10 | links=c2368.2:113 c2385.12:69 c2368.15:110
+c2369.10 | links=c2371.5:27 c2371.8:38 c2371.11:53
+c2371.10 | links=#14396(auto Hillsbrad Foothills;232):33 c2371.9:51 c2371.12:28
+c2372.10 | links=o1723.4:16 c2372.5:17 c14278.6:9 c2372.7:17
+c2374.10 | links=c2375.14:17 c2375.15:21
+c2375.10 | links=o3659.1:10 c2375.8:46
+c2384.10 | links=#25087(auto Hillsbrad Foothills;412):28
+c2408.10 | links=#22117(auto Hillsbrad Foothills;363):61
+c2503.10 | links=#19503(auto Hillsbrad Foothills;318):4
+c14278.10 | links=c2372.1:19 c2373.3:21 o3695.4:30
+o179486.10 | links=c2261.34:10
+c620.11 | links=o1723.1:14
+c2244.11 | links=c2260.10:11 c2261.28:12
+c2249.11 | links=#6475(auto Hillsbrad Foothills;103):31
+c2260.11 | links=c2261.34:10
+c2261.11 | links=#19075(auto Hillsbrad Foothills;311):15 c2244.6:18
+c2266.11 | links=#14434(auto Hillsbrad Foothills;233):22
+c2267.11 | links=#6977(auto Hillsbrad Foothills;115):7
+c2268.11 | links=#6616(auto Hillsbrad Foothills;108):12
+c2344.11 | links=#15754(auto Hillsbrad Foothills;254):5
+c2345.11 | links=c2345.1:19
+c2348.11 | links=#2413(auto Hillsbrad Foothills;40):55 c2385.6:57
+c2360.11 | links=#20766(auto Hillsbrad Foothills;343):7 c2266.12:5
+c2369.11 | links=#6983(auto Hillsbrad Foothills;116):46 c2371.4:31 c2369.5:40 c2369.12:35
+c2371.11 | links=c2371.7:51 c2371.9:39 c2369.10:53
+c2374.11 | links=c2375.8:16 c2374.9:13 c2375.17:17
+c2375.11 | links=c2374.14:23 c2375.15:49
+c2376.11 | links=c2376.13:51
+c2377.11 | links=
+c2385.11 | links=c2385.9:35
+c2408.11 | links=#17258(auto Hillsbrad Foothills;279):27
+c620.12 | links=o179486.2:13 c2261.24:11
+c2244.12 | links=
+c2248.12 | links=#25768(auto Hillsbrad Foothills;423):38 c2248.17:31
+c2249.12 | links=c2248.9:26 c2248.10:17
+c2260.12 | links=#2694(auto Hillsbrad Foothills;44):7 c2244.1:9
+c2261.12 | links=#8027(entry and exit;Durnholde Keep;Hillsbrad Foothills):37 #23846(auto Hillsbrad Foothills;387):17
+c2266.12 | links=c2360.11:5
+c2267.12 | links=c2268.13:23 c2267.14:30
+c2268.12 | links=#7878(auto Hillsbrad Foothills;129):38 c2268.13:15
+c2269.12 | links=#16092(auto Hillsbrad Foothills;258):11
+c2348.12 | links=c2385.2:27
+c2360.12 | links=#23493(auto Hillsbrad Foothills;381):21 c2360.15:19 c2360.16:30 c2360.17:17 c2360.18:26 c2360.20:21
+c2369.12 | links=c2369.11:35
+c2371.12 | links=c2369.3:38 c2371.10:28
+c2374.12 | links=c2375.17:11
+c2375.12 | links=c7071.1:169 c2374.8:31 c2375.9:11
+c2377.12 | links=c2376.2:14 c2376.3:17 c2376.9:99
+c2385.12 | links=c16090.1:64 c2368.10:69 c2344.23:40
+c2408.12 | links=#3584(auto Hillsbrad Foothills;58):24
+c2248.13 | links=c2248.2:9 c2354.6:19 c2248.14:30
+c2249.13 | links=o1769.1:27
+c2260.13 | links=c2244.21:22
+c2261.13 | links=#8027(entry and exit;Durnholde Keep;Hillsbrad Foothills):6
+c2266.13 | links=#20744(auto Hillsbrad Foothills;342):6
+c2267.13 | links=c2267.14:21
+c2268.13 | links=#23076(auto Hillsbrad Foothills;373):16 c2387.2:22 c2267.12:23 c2268.12:15
+c2269.13 | links=#26847(auto Hillsbrad Foothills;439):9 c2269.37:3
+c2350.13 | links=#3097(auto Hillsbrad Foothills;49):34
+c2360.13 | links=#7432(auto Hillsbrad Foothills;122):9
+c2369.13 | links=c2368.3:52 c2371.19:33
+c2371.13 | links=c2371.15:28 c2369.16:26
+c2376.13 | links=c2375.2:72 c2376.9:38 c2376.11:51 c2376.18:20
+c2377.13 | links=c2376.18:6
+c2408.13 | links=#3584(auto Hillsbrad Foothills;58):50
+c2244.14 | links=#20822(auto Hillsbrad Foothills;345):10 c2260.7:15
+c2248.14 | links=#25768(auto Hillsbrad Foothills;423):37 c2248.13:30
+c2249.14 | links=o1769.1:14
+c2261.14 | links=#8027(entry and exit;Durnholde Keep;Hillsbrad Foothills):6
+c2266.14 | links=c2360.14:14 c2360.19:13 c2360.21:17
+c2267.14 | links=c620.8:13 c2387.8:17 c2387.9:25 c2267.12:30 c2267.13:21
+c2268.14 | links=#23107(auto Hillsbrad Foothills;374):9
+c2269.14 | links=#3036(auto Hillsbrad Foothills;47):11
+c2349.14 | links=c2698.1:89 c2356.16:32 c2356.89:82
+c2350.14 | links=#14690(auto Hillsbrad Foothills;237):49
+c2360.14 | links=c2266.14:14
+c2371.14 | links=c2371.5:44 c2369.7:20 c2371.16:36
+c2374.14 | links=c2375.11:23 c2374.16:26
+c2375.14 | links=c2374.8:13 c2374.10:17
+c2408.14 | links=#68(auto Hillsbrad Foothills;4):18
+c2244.15 | links=c4075.1:12 o179486.9:18
+c2248.15 | links=o1769.1:17
+c2249.15 | links=c2248.16:17
+c2260.15 | links=#15531(auto Hillsbrad Foothills;249):59 c2260.16:30
+c2266.15 | links=#16885(auto Hillsbrad Foothills;274):6 #19354(auto Hillsbrad Foothills;314):9
+c2267.15 | links=#7878(auto Hillsbrad Foothills;129):24
+c2268.15 | links=#1751(auto Hillsbrad Foothills;28):5
+c2360.15 | links=c2360.12:19
+c2368.15 | links=c2368.10:110
+c2371.15 | links=c2369.8:23 c2371.13:28
+c2375.15 | links=c2374.10:21 c2375.11:49
+c2408.15 | links=#26483(auto Hillsbrad Foothills;431):11
+c2244.16 | links=#5380(auto Hillsbrad Foothills;88):4 c2261.34:13
+c2248.16 | links=o2714.5:9 c2249.7:20 c2249.15:17
+c2249.16 | links=#2578(auto Hillsbrad Foothills;43):14 o1769.1:37 c2249.7:24
+c2260.16 | links=c2260.15:30 c2244.23:19
+c2261.16 | links=c2260.5:11
+c2266.16 | links=#7432(auto Hillsbrad Foothills;122):13
+c2269.16 | links=#4511(auto Hillsbrad Foothills;74):9
+c2356.16 | links=c2349.14:32 c2356.83:14
+c2360.16 | links=c2360.12:30
+c2369.16 | links=c2371.13:26 c2371.19:29
+c2371.16 | links=c2369.7:25 c2371.14:36
+c2374.16 | links=c2374.14:26 c2349.38:145
+c2375.16 | links=c2375.2:48 c2375.17:20
+c2408.16 | links=#3213(auto Hillsbrad Foothills;52):10
+c2244.17 | links=#24763(auto Hillsbrad Foothills;404):23 o179488.3:8 o179488.5:7
+c2248.17 | links=c2248.12:31
+c2249.17 | links=c2249.5:5
+c2266.17 | links=c2266.18:8 c2360.21:7
+c2268.17 | links=#7878(auto Hillsbrad Foothills;129):17
+c2269.17 | links=#4511(auto Hillsbrad Foothills;74):19
+c2354.17 | links=#14079(auto Hillsbrad Foothills;226):96
+c2360.17 | links=c2360.12:17
+c2375.17 | links=c2374.11:17 c2374.12:11 c2375.16:20
+c2244.18 | links=c2261.9:5
+c2261.18 | links=c2261.19:8
+c2266.18 | links=c2266.17:8 c2360.18:12
+c2269.18 | links=#23312(auto Hillsbrad Foothills;377):7
+c2360.18 | links=#9385(auto Hillsbrad Foothills;160):16 c2360.12:26 c2266.18:12
+c2376.18 | links=o3659.2:5 c2376.13:20 c2377.13:6
+c2244.19 | links=#13246(auto Hillsbrad Foothills;214):6
+c2261.19 | links=c2261.18:8 c2261.20:15
+c2266.19 | links=c2267.5:7
+c2269.19 | links=#4511(auto Hillsbrad Foothills;74):12
+c2348.19 | links=c2385.1:91 c2348.3:57
+c2354.19 | links=#5209(auto Hillsbrad Foothills;86):38 c2354.3:60
+c2360.19 | links=c2266.14:13
+c2371.19 | links=c2369.13:33 c2369.16:29
+c2244.20 | links=c2261.39:15
+c2261.20 | links=#18557(auto Hillsbrad Foothills;300):16 c4075.1:13 c2261.19:15
+c2266.20 | links=c2267.1:24
+c2349.20 | links=#6124(auto Hillsbrad Foothills;99):14
+c2351.20 | links=#3797(auto Hillsbrad Foothills;64):45
+c2354.20 | links=#6536(auto Hillsbrad Foothills;105):33
+c2356.20 | links=#14273(auto Hillsbrad Foothills;230):11
+c2360.20 | links=c2360.12:21
+c2244.21 | links=c2260.9:72 c2260.13:22 c2261.42:13
+c2261.21 | links=o179486.2:25 c2260.6:14
+c2266.21 | links=c2267.4:32
+c2269.21 | links=#19992(auto Hillsbrad Foothills;331):8
+c2350.21 | links=#14079(auto Hillsbrad Foothills;226):47
+c2360.21 | links=c620.6:10 c2266.14:17 c2266.17:7
+c2384.21 | links=c2354.35:34 c2354.44:49
+c2261.22 | links=o179486.2:16 c2261.23:26
+c2266.22 | links=c2268.4:15
+c2269.22 | links=#162(auto Hillsbrad Foothills;8):26
+c2354.22 | links=#25087(auto Hillsbrad Foothills;412):28
+c2360.22 | links=#6410(auto Hillsbrad Foothills;102):12
+c2244.23 | links=c2260.16:19 c2356.50:17
+c2261.23 | links=c2261.1:17 o179486.1:13 o179486.3:19 c2261.22:26
+c2266.23 | links=#6977(auto Hillsbrad Foothills;115):11
+c2269.23 | links=#1353(auto Hillsbrad Foothills;22):2
+c2344.23 | links=c2385.12:40 c2344.25:29
+c2360.23 | links=c2403.1:4
+c2261.24 | links=#6602(auto Hillsbrad Foothills;107):27 c620.12:11
+c2269.24 | links=#28064(auto Hillsbrad Foothills;458):4
+c2344.24 | links=c2344.3:30 c2344.25:16
+c2244.25 | links=#4188(auto Hillsbrad Foothills;69):6
+c2269.25 | links=#2252(auto Hillsbrad Foothills;33):3
+c2344.25 | links=c2344.23:29 c2344.24:16
+c2375.25 | links=c2375.9:23
+c2386.25 | links=c3540.1:11
+c2244.26 | links=#15531(auto Hillsbrad Foothills;249):36
+c2261.26 | links=#12142(auto Hillsbrad Foothills;202):11 o1722.1:11
+c2269.26 | links=#14273(auto Hillsbrad Foothills;230):11
+c2261.27 | links=c2428.1:11
+c2269.27 | links=#9131(auto Hillsbrad Foothills;154):9
+c2261.28 | links=c2244.11:12
+c2269.28 | links=#9(auto Hillsbrad Foothills;1):5
+c2261.29 | links=o1722.1:8
+c2356.29 | links=c2356.51:36 c2356.66:47
+c2269.30 | links=#14273(auto Hillsbrad Foothills;230):29
+c2269.31 | links=#14313(auto Hillsbrad Foothills;231):7
+c2261.32 | links=#24763(auto Hillsbrad Foothills;404):1
+c2269.32 | links=#19503(auto Hillsbrad Foothills;318):18
+c2261.33 | links=#12142(auto Hillsbrad Foothills;202):5
+c2269.33 | links=#19503(auto Hillsbrad Foothills;318):12
+c2261.34 | links=o179486.10:10 c2260.11:10 c2244.16:13
+c2269.34 | links=#19503(auto Hillsbrad Foothills;318):12
+c2350.34 | links=#17583(auto Hillsbrad Foothills;288):39
+c2384.34 | links=c2354.45:22
+c2261.35 | links=#13246(auto Hillsbrad Foothills;214):6
+c2269.35 | links=#19503(auto Hillsbrad Foothills;318):21
+c2350.35 | links=#6408(Hillsbrad Fields;west;Hillsbrad Foothills):26 c2350.39:30
+c2354.35 | links=c2384.21:34
+c2261.36 | links=#13246(auto Hillsbrad Foothills;214):9
+c2269.36 | links=#162(auto Hillsbrad Foothills;8):5
+c2384.36 | links=c2354.10:47
+c2269.37 | links=c2269.13:3
+c2349.38 | links=c2374.16:145 c2349.41:77
+c2261.39 | links=c2260.9:15 c2244.20:15
+c2350.39 | links=c2350.35:30
+c2351.39 | links=#6408(Hillsbrad Fields;west;Hillsbrad Foothills):16
+c2349.41 | links=c2349.38:77 c2356.46:102
+c2351.41 | links=#17583(auto Hillsbrad Foothills;288):36
+c2261.42 | links=c2244.21:13
+c2356.42 | links=#4141(auto Hillsbrad Foothills;67):47 c2356.46:82
+c2384.42 | links=#2413(auto Hillsbrad Foothills;40):70 c2408.2:73 c2408.7:14
+c2354.43 | links=#2413(auto Hillsbrad Foothills;40):25
+c2354.44 | links=c2384.21:49 c2354.45:63
+c2354.45 | links=#27381(auto Hillsbrad Foothills;450):58 c2384.34:22 c2354.44:63
+c2356.46 | links=c2349.41:102 c2356.42:82
+c2261.47 | links=#16650(auto Hillsbrad Foothills;266):4 o179488.2:9
+c2349.47 | links=#7020(auto Hillsbrad Foothills;117):73 c14279.2:51
+c2261.48 | links=#21086(auto Hillsbrad Foothills;347):9 o3659.7:6
+c2261.49 | links=c2261.4:5
+c2349.49 | links=#15531(auto Hillsbrad Foothills;249):75 #28218(auto Hillsbrad Foothills;460):110 c2260.9:67
+c2356.50 | links=c2244.23:17
+c2356.51 | links=c2385.3:61 c2356.29:36
+c2261.52 | links=#3393(auto Hillsbrad Foothills;55):5
+c2349.56 | links=#6975(auto Hillsbrad Foothills;114):4
+c2349.60 | links=#10277(auto Hillsbrad Foothills;177):64 c2356.66:35
+c2356.66 | links=c2356.29:47 c2349.60:35
+c2356.69 | links=c2347.2:20 c2356.89:24 c2349.94:15
+c2356.76 | links=c2349.94:11
+c2356.83 | links=c2356.16:14
+c2356.84 | links=c2349.97:36
+c2356.89 | links=c14280.1:56 c2349.14:82 c2356.69:24
+c2349.94 | links=c2356.69:15 c2356.76:11
+c2349.97 | links=#16822(auto Hillsbrad Foothills;270):24 c2356.84:36
+c2349.98 | links=c2349.103:54
+c2349.99 | links=c14280.2:15
+c2349.103 | links=c2349.98:54

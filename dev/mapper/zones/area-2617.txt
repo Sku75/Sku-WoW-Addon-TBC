@@ -1,0 +1,3 @@
+Zone areaId 2617 — eine Zeile pro Wegpunkt; Links inline.
+
+#28660 | s;Kalimdor;Desolace;Mannoroc Coven;Scrabblescrew's Camp§s;Kalimdor;Desolace;Mannorocs Koven;Scrabblescrews Lager§s;Kalimdor;Désolace;Convent de Mannoroc;Camp de Fouillevis | x=-1407.87 y=-1493.13 | size=1

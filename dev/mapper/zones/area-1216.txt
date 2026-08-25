@@ -1,0 +1,3 @@
+Zone areaId 1216 — eine Zeile pro Wegpunkt; Links inline.
+
+#28736 | s;Kalimdor;Felwood;Felpaw Village;Timbermaw Hold A§s;Kalimdor;Teufelswald;Revier der Teufelspfoten;Holzschlundfeste A§s;Kalimdor;Gangrebois;Village de Gangrepatte;Timbermaw Hold A | x=6817.78 y=-2097.68 | size=1

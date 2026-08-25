@@ -1,0 +1,3 @@
+Zone areaId 262 — eine Zeile pro Wegpunkt; Links inline.
+
+#28728 | s;Kalimdor;Teldrassil;Ban'ethil Hollow;Ban'ethil Barrow Den§s;Kalimdor;Teldrassil;Ban'ethil Hollow;Grabhügel von Ban'ethil§s;Kalimdor;Teldrassil;Creux de Ban'ethil;Ban'ethil Barrow Den | x=9864.17 y=-1557.41 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 2419 — eine Zeile pro Wegpunkt; Links inline.
+
+#28752 | s;Eastern Kingdoms;Burning Steppes;Terror Wing Path;Slither Rock§s;Östliche Königreiche;Brennende Steppe;Schreckenspfad;Schlitterfels§s;Royaumes de l'est;Steppes ardentes;Chemin de l'Aile de la terreur;Roc sinueux | x=-7652.52 y=-3030.61 | size=1

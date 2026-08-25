@@ -1,0 +1,8 @@
+Zone areaId 809 — eine Zeile pro Wegpunkt; Links inline.
+
+#4056 | auto Gates of Ironforge;1§auto Tore von Eisenschmiede;1§auto Portes de Forgefer;1 | x=-5081.7001953125 y=-743.6000366210938 | size=1 | links=#9401(auto Gates of Ironforge;2):107 #24203(auto Gates of Ironforge;4):42
+#9401 | auto Gates of Ironforge;2§auto Tore von Eisenschmiede;2§auto Portes de Forgefer;2 | x=-5189 y=-733.7000122070312 | size=1 | links=#4056(auto Gates of Ironforge;1):107 #17090(auto Gates of Ironforge;3):17
+#17090 | auto Gates of Ironforge;3§auto Tore von Eisenschmiede;3§auto Portes de Forgefer;3 | x=-5195.7001953125 y=-717.6000366210938 | size=1 | links=#20838(auto Dun Morogh;247):38 #9401(auto Gates of Ironforge;2):17
+#24203 | auto Gates of Ironforge;4§auto Tore von Eisenschmiede;4§auto Portes de Forgefer;4 | x=-5050.89990234375 y=-773.2000122070312 | size=1 | links=#4056(auto Gates of Ironforge;1):42 #28002(Gates of Ironforge;Dun Morogh;one):29
+#25989 | entry and exit;Gates of Ironforge§ein- und ausgang;Tore von Eisenschmiede§entrée et sortie;Portes de Forgefer | x=-5028.60009765625 y=-824 | size=1 | links=#14532(auto Ironforge;32):22
+#28002 | Gates of Ironforge;Dun Morogh;one§Tore von Eisenschmiede;Dun Morogh;eins§Portes de Forgefer;Dun Morogh;un | x=-5043.60009765625 y=-801.7000122070312 | size=1 | links=#24911(auto Dun Morogh;297):15 c15011.1:21 #24203(auto Gates of Ironforge;4):29

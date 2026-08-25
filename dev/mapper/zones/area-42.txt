@@ -1,0 +1,3 @@
+Zone areaId 42 — eine Zeile pro Wegpunkt; Links inline.
+
+#28755 | s;Eastern Kingdoms;Duskwood;Darkshire;Darkshire§s;Östliche Königreiche;Dämmerwald;Dunkelhain;Dunkelhain§s;Royaumes de l'est;Bois de la Pénombre;Darkshire;Darkshire | x=-10564.7 y=-1170.65 | size=1

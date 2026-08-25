@@ -1,0 +1,3 @@
+Zone areaId 4742 — eine Zeile pro Wegpunkt; Links inline.
+
+#42095 | auto Hrothgar's Landing;1§auto Hrothgars Landestelle;1§auto Hrothgar's Landing;1 | x=9218.1005859375 y=961.6000366210938 | size=1 | links=#42096(auto Icecrown;183):77

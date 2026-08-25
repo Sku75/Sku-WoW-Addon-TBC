@@ -1,0 +1,3 @@
+Zone areaId 2979 — eine Zeile pro Wegpunkt; Links inline.
+
+#28668 | s;Kalimdor;Durotar;Thunder Ridge;Tor'kren Farm§s;Kalimdor;Durotar;Donnergrat;Tor'krens Hof§s;Kalimdor;Durotar;Thunder Ridge;Ferme de Tor'kren | x=726.297 y=-4242.41 | size=1

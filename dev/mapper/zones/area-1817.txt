@@ -1,0 +1,3 @@
+Zone areaId 1817 — eine Zeile pro Wegpunkt; Links inline.
+
+#28794 | s;Eastern Kingdoms;Swamp of Sorrows;Stagalbog;Stagalbog Cave§s;Östliche Königreiche;Sümpfe des Elends;Stagalbog;Stagalboghöhle§s;Royaumes de l'est;Marais des Chagrins;Stagalbog;Caverne de Stagalbog | x=-10803.2 y=-3739.01 | size=1 | links=#52246(auto Stagalboghöhle;Swamp of Sorrows;274):3

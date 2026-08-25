@@ -1,0 +1,3 @@
+Zone areaId 463 — eine Zeile pro Wegpunkt; Links inline.
+
+#28710 | s;Kalimdor;Stonetalon Mountains;Windshear Crag;Cragpool Lake§s;Kalimdor;Steinkrallengebirge;Die Scherwindklippe;Felskesselsee§s;Kalimdor;Les Serres-Rocheuses;Windshear Crag;Cragpool Lake | x=1543.57 y=-70.1338 | size=1

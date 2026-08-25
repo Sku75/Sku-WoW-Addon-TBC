@@ -1,0 +1,3 @@
+Zone areaId 2252 — eine Zeile pro Wegpunkt; Links inline.
+
+#28742 | s;Kalimdor;Winterspring;Lake Kel'Theril;The Ruins of Kel'Theril§s;Kalimdor;Winterspring;Kel'Therilsee;Die Ruinen von Kel'Theril§s;Kalimdor;Berceau-de-l'Hiver;Lac Kel'Theril;Les ruines de Kel'Theril | x=6426.76 y=-4304.99 | size=1

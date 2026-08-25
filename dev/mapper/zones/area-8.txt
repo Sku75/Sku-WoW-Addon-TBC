@@ -1,0 +1,436 @@
+Zone areaId 8 — eine Zeile pro Wegpunkt; Links inline.
+
+#26 | auto Swamp of Sorrows;1§auto Sümpfe des Elends;1§auto Marais des Chagrins;1 | x=-10265.7998046875 y=-3055.199951171875 | size=1 | links=#8829(auto Swamp of Sorrows;58):8 #16711(auto Swamp of Sorrows;102):8
+#320 | auto Swamp of Sorrows;2§auto Sümpfe des Elends;2§auto Marais des Chagrins;2 | x=-10463.7998046875 y=-3322.400146484375 | size=1 | links=#1578(auto Swamp of Sorrows;16):5 c7623.1:4
+#334 | auto Swamp of Sorrows;3§auto Sümpfe des Elends;3§auto Marais des Chagrins;3 | x=-10257.400390625 y=-3013.800048828125 | size=1 | links=#24549(auto Swamp of Sorrows;149):24 #26890(auto Swamp of Sorrows;162):17
+#360 | auto Swamp of Sorrows;4§auto Sümpfe des Elends;4§auto Marais des Chagrins;4 | x=-10254 y=-2918.900146484375 | size=1 | links=#28053(auto Swamp of Sorrows;170):14 #28254(auto Swamp of Sorrows;173):11
+#404 | auto Swamp of Sorrows;5§auto Sümpfe des Elends;5§auto Marais des Chagrins;5 | x=-10233.900390625 y=-2839.800048828125 | size=1 | links=#9581(auto Swamp of Sorrows;60):13 c767.23:8
+#527 | auto Swamp of Sorrows;6§auto Sümpfe des Elends;6§auto Marais des Chagrins;6 | x=-10464.5 y=-3328.800048828125 | size=1 | links=#1578(auto Swamp of Sorrows;16):2 #19229(auto Swamp of Sorrows;116):2
+#735 | auto Swamp of Sorrows;7§auto Sümpfe des Elends;7§auto Marais des Chagrins;7 | x=-10387.2001953125 y=-2412.699951171875 | size=1 | links=#3030(auto Swamp of Sorrows;24):29 #8411(auto Swamp of Sorrows;56):41
+#808 | auto Swamp of Sorrows;8§auto Sümpfe des Elends;8§auto Marais des Chagrins;8 | x=-10481.2998046875 y=-2814.199951171875 | size=1 | links=#1482(auto Swamp of Sorrows;13):31 #27838(auto Swamp of Sorrows;168):30
+#910 | auto Swamp of Sorrows;9§auto Sümpfe des Elends;9§auto Marais des Chagrins;9 | x=-10385.6005859375 y=-2689.800048828125 | size=1 | links=#17465(auto Swamp of Sorrows;107):19 #26129(crossing;Splinterspear Junction;Swamp of Sorrows):8
+#931 | auto Swamp of Sorrows;10§auto Sümpfe des Elends;10§auto Marais des Chagrins;10 | x=-9943.2998046875 y=-3724.60009765625 | size=1 | links=#16484(auto Swamp of Sorrows;99):8 o22550.2:11
+#976 | auto Swamp of Sorrows;11§auto Sümpfe des Elends;11§auto Marais des Chagrins;11 | x=-10007.2001953125 y=-3573.199951171875 | size=1 | links=#14509(auto Swamp of Sorrows;85):17 #24223(auto Swamp of Sorrows;147):24
+#1449 | auto Swamp of Sorrows;12§auto Sümpfe des Elends;12§auto Marais des Chagrins;12 | x=-10315.2001953125 y=-2658.60009765625 | size=1 | links=#6894(auto Swamp of Sorrows;41):47 #15686(auto Swamp of Sorrows;96):26
+#1482 | auto Swamp of Sorrows;13§auto Sümpfe des Elends;13§auto Marais des Chagrins;13 | x=-10464.400390625 y=-2787.199951171875 | size=1 | links=#808(auto Swamp of Sorrows;8):31 #20107(auto Swamp of Sorrows;119):39
+#1498 | auto Swamp of Sorrows;14§auto Sümpfe des Elends;14§auto Marais des Chagrins;14 | x=-10380.900390625 y=-2637.800048828125 | size=1 | links=#16684(auto Swamp of Sorrows;101):17 #17465(auto Swamp of Sorrows;107):32
+#1517 | auto Swamp of Sorrows;15§auto Sümpfe des Elends;15§auto Marais des Chagrins;15 | x=-10503.7001953125 y=-3796.300048828125 | size=1 | links=c1063.1:35 o30855.1:71 o30854.8:16
+#1578 | auto Swamp of Sorrows;16§auto Sümpfe des Elends;16§auto Marais des Chagrins;16 | x=-10466.7998046875 y=-3326.900146484375 | size=1 | links=#320(auto Swamp of Sorrows;2):5 #527(auto Swamp of Sorrows;6):2
+#1696 | auto Swamp of Sorrows;17§auto Sümpfe des Elends;17§auto Marais des Chagrins;17 | x=-10462 y=-3227.300048828125 | size=1 | links=#18386(auto Swamp of Sorrows;110):14 #27927(city gate;Stonard;Swamp of Sorrows):7
+#1831 | auto Swamp of Sorrows;18§auto Sümpfe des Elends;18§auto Marais des Chagrins;18 | x=-10208.6005859375 y=-3215 | size=1 | links=#11879(auto Swamp of Sorrows;71):9 #20529(auto Swamp of Sorrows;125):5
+#2254 | auto Swamp of Sorrows;19§auto Sümpfe des Elends;19§auto Marais des Chagrins;19 | x=-10152.900390625 y=-3505.300048828125 | size=1 | links=#8059(auto Swamp of Sorrows;54):43 #28060(auto Swamp of Sorrows;171):70 #52154(auto Swamp of Sorrows;182):46
+#2276 | auto Swamp of Sorrows;20§auto Sümpfe des Elends;20§auto Marais des Chagrins;20 | x=-10057.2001953125 y=-3476.60009765625 | size=1 | links=#7597(auto Swamp of Sorrows;49):30 #23611(auto Swamp of Sorrows;143):34
+#2302 | auto Swamp of Sorrows;21§auto Sümpfe des Elends;21§auto Marais des Chagrins;21 | x=-10484 y=-3257.10009765625 | size=1 | links=#6903(auto Swamp of Sorrows;42):14 c6930.1:3
+#2744 | auto Swamp of Sorrows;22§auto Sümpfe des Elends;22§auto Marais des Chagrins;22 | x=-10253.900390625 y=-3586.10009765625 | size=1 | links=#23854(auto Swamp of Sorrows;145):89 #28060(auto Swamp of Sorrows;171):61
+#2778 | auto Swamp of Sorrows;23§auto Sümpfe des Elends;23§auto Marais des Chagrins;23 | x=-10507.400390625 y=-3252.900146484375 | size=1 | links=#7151(auto Swamp of Sorrows;45):5 #16299(auto Swamp of Sorrows;98):6 #27194(auto Swamp of Sorrows;165):7
+#2904 | passage;from;Swamp of Sorrows;to;Blasted Lands§passage;von;sümpfe des elends;nach;Verwüstete Lande§passage;de;Marais des Chagrins;vers;Terres foudroyées | x=-10665.400390625 y=-2982.400146484375 | size=1 | links=#1514(passage;from;Blasted Lands;to;Swamp of Sorrows):2 #27415(auto Swamp of Sorrows;166):30
+#3030 | auto Swamp of Sorrows;24§auto Sümpfe des Elends;24§auto Marais des Chagrins;24 | x=-10379.1005859375 y=-2440.800048828125 | size=1 | links=#735(auto Swamp of Sorrows;7):29 #11096(auto Swamp of Sorrows;69):40
+#3548 | auto Swamp of Sorrows;25§auto Sümpfe des Elends;25§auto Marais des Chagrins;25 | x=-10429.2998046875 y=-3282.5 | size=1 | links=#3643(auto Swamp of Sorrows;26):11 #9847(central location;Stonard;Swamp of Sorrows):27
+#3643 | auto Swamp of Sorrows;26§auto Sümpfe des Elends;26§auto Marais des Chagrins;26 | x=-10419.2998046875 y=-3288.300048828125 | size=1 | links=#3548(auto Swamp of Sorrows;25):11 #14962(auto Swamp of Sorrows;92):11
+#3655 | auto Swamp of Sorrows;27§auto Sümpfe des Elends;27§auto Marais des Chagrins;27 | x=-9935.7998046875 y=-3679.800048828125 | size=1 | links=#5799(auto Swamp of Sorrows;33):11 #20150(auto Swamp of Sorrows;121):19
+#3768 | Ongeku;Fallow Sanctuary;Swamp of Sorrows§Ongeku;Zuflucht der Verirrten;Sümpfe des Elends§Ongeku;Fallow Sanctuary;Marais des Chagrins | x=-9958.7001953125 y=-3629.400146484375 | size=1 | links=c1106.4:12 c763.5:21
+#4087 | auto Swamp of Sorrows;28§auto Sümpfe des Elends;28§auto Marais des Chagrins;28 | x=-10251.900390625 y=-2886.199951171875 | size=1 | links=#25168(auto Swamp of Sorrows;152):17 #28053(auto Swamp of Sorrows;170):18 c14448.18:16
+#4370 | auto Swamp of Sorrows;29§auto Sümpfe des Elends;29§auto Marais des Chagrins;29 | x=-10269.7998046875 y=-3078.10009765625 | size=1 | links=#14529(auto Swamp of Sorrows;87):32 #16711(auto Swamp of Sorrows;102):14 c14448.3:30
+#5051 | auto Swamp of Sorrows;30§auto Sümpfe des Elends;30§auto Marais des Chagrins;30 | x=-10458.5 y=-3184.5 | size=1 | links=#22468(auto Swamp of Sorrows;137):40 #22586(auto Swamp of Sorrows;138):12
+#5128 | auto Swamp of Sorrows;31§auto Sümpfe des Elends;31§auto Marais des Chagrins;31 | x=-10452.900390625 y=-3611.900146484375 | size=1 | links=#12379(auto Swamp of Sorrows;75):28 c742.2:33 o30854.15:48
+#5758 | auto Swamp of Sorrows;32§auto Sümpfe des Elends;32§auto Marais des Chagrins;32 | x=-10097.5 y=-2810.400146484375 | size=1 | links=#7733(auto Swamp of Sorrows;51):10 #23971(central location;The Harborage;Swamp of Sorrows):13
+#5799 | auto Swamp of Sorrows;33§auto Sümpfe des Elends;33§auto Marais des Chagrins;33 | x=-9927.400390625 y=-3687.900146484375 | size=5 | links=#3655(auto Swamp of Sorrows;27):11 #13104(auto Swamp of Sorrows;78):9
+#5888 | auto Swamp of Sorrows;34§auto Sümpfe des Elends;34§auto Marais des Chagrins;34 | x=-10532.5 y=-3042.5 | size=1 | links=#8123(crossing;Swamp of Sorrows;an):6 #21971(auto Swamp of Sorrows;135):34
+#6346 | auto Swamp of Sorrows;35§auto Sümpfe des Elends;35§auto Marais des Chagrins;35 | x=-10208.2998046875 y=-2841.60009765625 | size=1 | links=#13708(auto Swamp of Sorrows;80):15 c14448.10:8 c767.23:17
+#6642 | auto Swamp of Sorrows;36§auto Sümpfe des Elends;36§auto Marais des Chagrins;36 | x=-10473.2001953125 y=-3330 | size=1 | links=#18723(auto Swamp of Sorrows;111):3 #20661(auto Swamp of Sorrows;126):4
+#6678 | auto Swamp of Sorrows;37§auto Sümpfe des Elends;37§auto Marais des Chagrins;37 | x=-10465.2001953125 y=-3337.800048828125 | size=1 | links=#11760(auto Swamp of Sorrows;70):6 #19229(auto Swamp of Sorrows;116):6
+#6685 | auto Swamp of Sorrows;38§auto Sümpfe des Elends;38§auto Marais des Chagrins;38 | x=-10516.7001953125 y=-2378.900146484375 | size=1 | links=#12499(auto Swamp of Sorrows;76):44 #18118(auto Swamp of Sorrows;109):36
+#6788 | auto Swamp of Sorrows;39§auto Sümpfe des Elends;39§auto Marais des Chagrins;39 | x=-10352.7998046875 y=-2744.10009765625 | size=1 | links=#23512(auto Swamp of Sorrows;142):15 o2553.1:5
+#6867 | auto Swamp of Sorrows;40§auto Sümpfe des Elends;40§auto Marais des Chagrins;40 | x=-10232.5 y=-2592.800048828125 | size=1 | links=#14609(auto Swamp of Sorrows;89):25 c764.5:33 c764.11:14
+#6894 | auto Swamp of Sorrows;41§auto Sümpfe des Elends;41§auto Marais des Chagrins;41 | x=-10355.900390625 y=-2683.900146484375 | size=1 | links=#1449(auto Swamp of Sorrows;12):47 #17465(auto Swamp of Sorrows;107):32
+#6903 | auto Swamp of Sorrows;42§auto Sümpfe des Elends;42§auto Marais des Chagrins;42 | x=-10469.900390625 y=-3260.800048828125 | size=1 | links=#2302(auto Swamp of Sorrows;21):14 #21163(auto Swamp of Sorrows;129):7 #52261(auto Inside;Stonard;Swamp of Sorrows;289):21
+#7036 | auto Swamp of Sorrows;43§auto Sümpfe des Elends;43§auto Marais des Chagrins;43 | x=-10419.5 y=-3260.300048828125 | size=1 | links=#8919(auto Swamp of Sorrows;59):12 #9847(central location;Stonard;Swamp of Sorrows):25 c5416.1:21
+#7110 | auto Swamp of Sorrows;44§auto Sümpfe des Elends;44§auto Marais des Chagrins;44 | x=-10457.1005859375 y=-2404.10009765625 | size=1 | links=#8411(auto Swamp of Sorrows;56):29 #18118(auto Swamp of Sorrows;109):27
+#7151 | auto Swamp of Sorrows;45§auto Sümpfe des Elends;45§auto Marais des Chagrins;45 | x=-10508.6005859375 y=-3258 | size=1 | links=#2778(auto Swamp of Sorrows;23):5 #13626(auto Swamp of Sorrows;79):9
+#7185 | auto Swamp of Sorrows;46§auto Sümpfe des Elends;46§auto Marais des Chagrins;46 | x=-9903.400390625 y=-3701.699951171875 | size=1 | links=#21312(auto Swamp of Sorrows;130):5 o28024.1:2
+#7368 | auto Swamp of Sorrows;47§auto Sümpfe des Elends;47§auto Marais des Chagrins;47 | x=-10425.7998046875 y=-2730.60009765625 | size=1 | links=#20107(auto Swamp of Sorrows;119):30 #20236(auto Swamp of Sorrows;122):22
+#7562 | auto Swamp of Sorrows;48§auto Sümpfe des Elends;48§auto Marais des Chagrins;48 | x=-10493.400390625 y=-3242 | size=1 | links=#14645(auto Swamp of Sorrows;91):6 #27709(auto Swamp of Sorrows;167):6
+#7597 | auto Swamp of Sorrows;49§auto Sümpfe des Elends;49§auto Marais des Chagrins;49 | x=-10045.2998046875 y=-3504.699951171875 | size=1 | links=#2276(auto Swamp of Sorrows;20):30 #10147(auto Swamp of Sorrows;67):34 o22550.4:18
+#7690 | auto Swamp of Sorrows;50§auto Sümpfe des Elends;50§auto Marais des Chagrins;50 | x=-10416.2001953125 y=-2514.699951171875 | size=1 | links=#11096(auto Swamp of Sorrows;69):41 c861.5:48
+#7733 | auto Swamp of Sorrows;51§auto Sümpfe des Elends;51§auto Marais des Chagrins;51 | x=-10088.5 y=-2805 | size=1 | links=#5758(auto Swamp of Sorrows;32):10 c11198.1:5
+#7935 | auto Swamp of Sorrows;52§auto Sümpfe des Elends;52§auto Marais des Chagrins;52 | x=-10254.2998046875 y=-2970 | size=1 | links=#24213(auto Swamp of Sorrows;146):21 #24549(auto Swamp of Sorrows;149):18
+#7940 | auto Swamp of Sorrows;53§auto Sümpfe des Elends;53§auto Marais des Chagrins;53 | x=-10523.7001953125 y=-3020.60009765625 | size=1 | links=#8123(crossing;Swamp of Sorrows;an):17 #18935(auto Swamp of Sorrows;113):30
+#8059 | auto Swamp of Sorrows;54§auto Sümpfe des Elends;54§auto Marais des Chagrins;54 | x=-10134.2001953125 y=-3466.400146484375 | size=1 | links=#2254(auto Swamp of Sorrows;19):43 #15222(auto Swamp of Sorrows;95):83
+#8123 | crossing;Swamp of Sorrows;an§kreuzungspunkt;Sümpfe des Elends;ein§traversée;Marais des Chagrins;an | x=-10527.2001953125 y=-3038.10009765625 | size=1 | links=#5888(auto Swamp of Sorrows;34):6 #7940(auto Swamp of Sorrows;53):17 #17719(auto Swamp of Sorrows;108):31 c861.4:12
+#8130 | auto Swamp of Sorrows;55§auto Sümpfe des Elends;55§auto Marais des Chagrins;55 | x=-10099.7998046875 y=-2823.800048828125 | size=1 | links=#26933(auto Swamp of Sorrows;163):6 c1776.1:5
+#8411 | auto Swamp of Sorrows;56§auto Sümpfe des Elends;56§auto Marais des Chagrins;56 | x=-10428.400390625 y=-2408.800048828125 | size=1 | links=#735(auto Swamp of Sorrows;7):41 #7110(auto Swamp of Sorrows;44):29
+#8723 | auto Swamp of Sorrows;57§auto Sümpfe des Elends;57§auto Marais des Chagrins;57 | x=-10258.6005859375 y=-2825.10009765625 | size=1 | links=#9581(auto Swamp of Sorrows;60):17 #19344(auto Swamp of Sorrows;118):31
+#8829 | auto Swamp of Sorrows;58§auto Sümpfe des Elends;58§auto Marais des Chagrins;58 | x=-10264.2998046875 y=-3046.400146484375 | size=1 | links=#26(auto Swamp of Sorrows;1):8 #26890(auto Swamp of Sorrows;162):15
+#8919 | auto Swamp of Sorrows;59§auto Sümpfe des Elends;59§auto Marais des Chagrins;59 | x=-10407.5 y=-3262.5 | size=1 | links=#7036(auto Swamp of Sorrows;43):12 c984.1:6 c8176.1:3
+#9344 | passage;from;Swamp of Sorrows;to;Deadwind Pass§passage;von;Sümpfe des Elends;nach;gebirgspass der totenwinde§passage;de;Marais des Chagrins;vers;Défilé de Deuillevent | x=-10555.900390625 y=-2342.60009765625 | size=1 | links=#12499(auto Swamp of Sorrows;76):20 #227(passage;from;Deadwind Pass;to;Swamp of Sorrows):10
+#9581 | auto Swamp of Sorrows;60§auto Sümpfe des Elends;60§auto Marais des Chagrins;60 | x=-10247.5 y=-2838.199951171875 | size=1 | links=#404(auto Swamp of Sorrows;5):13 #8723(auto Swamp of Sorrows;57):17 #27977(auto Swamp of Sorrows;169):18
+#9610 | auto Swamp of Sorrows;61§auto Sümpfe des Elends;61§auto Marais des Chagrins;61 | x=-10463.2998046875 y=-3320.699951171875 | size=1 | links=#20661(auto Swamp of Sorrows;126):12 c17109.1:2 c27705.1:6
+#9643 | auto Swamp of Sorrows;62§auto Sümpfe des Elends;62§auto Marais des Chagrins;62 | x=-10511.6005859375 y=-2938 | size=1 | links=#12087(auto Swamp of Sorrows;72):22 #14561(auto Swamp of Sorrows;88):25
+#9847 | central location;Stonard;Swamp of Sorrows§zentralpunkt;Steinard;Sümpfe des Elends§emplacement central;Stonard;Marais des Chagrins | x=-10444.900390625 y=-3260.10009765625 | size=1 | links=#3548(auto Swamp of Sorrows;25):27 #7036(auto Swamp of Sorrows;43):25 #12573(s;u;Mailbox;Swamp of Sorrows):19 #18386(auto Swamp of Sorrows;110):22 #18838(auto Swamp of Sorrows;112):29 #21163(auto Swamp of Sorrows;129):17 c982.1:30 c983.1:20 c1775.1:15 c6026.1:24 c10049.1:20
+#9950 | auto Swamp of Sorrows;63§auto Sümpfe des Elends;63§auto Marais des Chagrins;63 | x=-10103.900390625 y=-3257.400146484375 | size=1 | links=#20479(auto Swamp of Sorrows;124):34 #25228(auto Swamp of Sorrows;154):28
+#9999 | auto Swamp of Sorrows;64§auto Sümpfe des Elends;64§auto Marais des Chagrins;64 | x=-10271.7001953125 y=-3143 | size=1 | links=#14397(auto Swamp of Sorrows;84):29 #14529(auto Swamp of Sorrows;87):32 c767.21:24
+#10045 | auto Swamp of Sorrows;65§auto Sümpfe des Elends;65§auto Marais des Chagrins;65 | x=-10158.900390625 y=-3238 | size=1 | links=#20454(auto Swamp of Sorrows;123):22 #20479(auto Swamp of Sorrows;124):24 c755.2:20 o28604.2:36
+#10113 | auto Swamp of Sorrows;66§auto Sümpfe des Elends;66§auto Marais des Chagrins;66 | x=-10339.1005859375 y=-2780.10009765625 | size=1 | links=#21090(auto Swamp of Sorrows;128):20 #21861(auto Swamp of Sorrows;134):23 c858.1:55
+#10147 | auto Swamp of Sorrows;67§auto Sümpfe des Elends;67§auto Marais des Chagrins;67 | x=-10019 y=-3527 | size=1 | links=#7597(auto Swamp of Sorrows;49):34 #24223(auto Swamp of Sorrows;147):23
+#10530 | auto Swamp of Sorrows;68§auto Sümpfe des Elends;68§auto Marais des Chagrins;68 | x=-10306.1005859375 y=-2808.699951171875 | size=1 | links=#19344(auto Swamp of Sorrows;118):19 #21090(auto Swamp of Sorrows;128):22
+#11096 | auto Swamp of Sorrows;69§auto Sümpfe des Elends;69§auto Marais des Chagrins;69 | x=-10396.7001953125 y=-2477.800048828125 | size=1 | links=#3030(auto Swamp of Sorrows;24):40 #7690(auto Swamp of Sorrows;50):41
+#11760 | auto Swamp of Sorrows;70§auto Sümpfe des Elends;70§auto Marais des Chagrins;70 | x=-10471.6005859375 y=-3340.60009765625 | size=1 | links=#6678(auto Swamp of Sorrows;37):6 #12769(auto Swamp of Sorrows;77):7
+#11879 | auto Swamp of Sorrows;71§auto Sümpfe des Elends;71§auto Marais des Chagrins;71 | x=-10217.7998046875 y=-3211.300048828125 | size=1 | links=#1831(auto Swamp of Sorrows;18):9 #13725(auto Swamp of Sorrows;81):12
+#12087 | auto Swamp of Sorrows;72§auto Sümpfe des Elends;72§auto Marais des Chagrins;72 | x=-10517.7998046875 y=-2915.900146484375 | size=1 | links=#9643(auto Swamp of Sorrows;62):22 #16621(auto Swamp of Sorrows;100):13
+#12164 | auto Swamp of Sorrows;73§auto Sümpfe des Elends;73§auto Marais des Chagrins;73 | x=-9981.6005859375 y=-3599 | size=1 | links=#14509(auto Swamp of Sorrows;85):18 c763.5:16
+#12270 | auto Swamp of Sorrows;74§auto Sümpfe des Elends;74§auto Marais des Chagrins;74 | x=-10177 y=-2841.699951171875 | size=1 | links=#13708(auto Swamp of Sorrows;80):15 #25979(auto Swamp of Sorrows;157):13
+#12379 | auto Swamp of Sorrows;75§auto Sümpfe des Elends;75§auto Marais des Chagrins;75 | x=-10477.900390625 y=-3626.300048828125 | size=1 | links=#5128(auto Swamp of Sorrows;31):28 c743.1:27 c862.3:22 o30854.13:98
+#12499 | auto Swamp of Sorrows;76§auto Sümpfe des Elends;76§auto Marais des Chagrins;76 | x=-10558.7001953125 y=-2363.400146484375 | size=1 | links=#6685(auto Swamp of Sorrows;38):44 #9344(passage;from;Swamp of Sorrows;to;Deadwind Pass):20
+#12573 | s;u;Mailbox;Swamp of Sorrows§s;u;Briefkasten;Sümpfe des Elends§s;u;Boîte aux lettres;Marais des Chagrins | x=-10463.86333775425 y=-3264.782093140355 | size=1 | links=#9847(central location;Stonard;Swamp of Sorrows):19 c10049.1:3
+#12769 | auto Swamp of Sorrows;77§auto Sümpfe des Elends;77§auto Marais des Chagrins;77 | x=-10477.400390625 y=-3336.60009765625 | size=1 | links=#11760(auto Swamp of Sorrows;70):7 #18723(auto Swamp of Sorrows;111):7
+#13104 | auto Swamp of Sorrows;78§auto Sümpfe des Elends;78§auto Marais des Chagrins;78 | x=-9918.6005859375 y=-3692.400146484375 | size=1 | links=#5799(auto Swamp of Sorrows;33):9 #21312(auto Swamp of Sorrows;130):16
+#13626 | auto Swamp of Sorrows;79§auto Sümpfe des Elends;79§auto Marais des Chagrins;79 | x=-10502.6005859375 y=-3264.900146484375 | size=1 | links=#7151(auto Swamp of Sorrows;45):9 #23152(auto Swamp of Sorrows;139):7
+#13708 | auto Swamp of Sorrows;80§auto Sümpfe des Elends;80§auto Marais des Chagrins;80 | x=-10192.7998046875 y=-2842.400146484375 | size=1 | links=#6346(auto Swamp of Sorrows;35):15 #12270(auto Swamp of Sorrows;74):15
+#13725 | auto Swamp of Sorrows;81§auto Sümpfe des Elends;81§auto Marais des Chagrins;81 | x=-10229.5 y=-3206 | size=1 | links=#11879(auto Swamp of Sorrows;71):12 #25613(auto Swamp of Sorrows;156):5
+#13859 | auto Swamp of Sorrows;82§auto Sümpfe des Elends;82§auto Marais des Chagrins;82 | x=-10497.1005859375 y=-3261 | size=1 | links=#20121(auto Swamp of Sorrows;120):3 #25043(auto Swamp of Sorrows;150):2
+#14283 | auto Swamp of Sorrows;83§auto Sümpfe des Elends;83§auto Marais des Chagrins;83 | x=-10593.900390625 y=-3029.300048828125 | size=1 | links=#21971(auto Swamp of Sorrows;135):29 #22265(auto Swamp of Sorrows;136):24
+#14397 | auto Swamp of Sorrows;84§auto Sümpfe des Elends;84§auto Marais des Chagrins;84 | x=-10260.400390625 y=-3170.400146484375 | size=1 | links=#9999(auto Swamp of Sorrows;64):29 #28321(auto Swamp of Sorrows;174):26 c767.41:27
+#14509 | auto Swamp of Sorrows;85§auto Sümpfe des Elends;85§auto Marais des Chagrins;85 | x=-9995.7998046875 y=-3587.10009765625 | size=1 | links=#976(auto Swamp of Sorrows;11):17 #12164(auto Swamp of Sorrows;73):18 c17115.5:21
+#14517 | auto Swamp of Sorrows;86§auto Sümpfe des Elends;86§auto Marais des Chagrins;86 | x=-10456.7998046875 y=-3312.900146484375 | size=1 | links=#28068(auto Swamp of Sorrows;172):6 c17109.1:7
+#14529 | auto Swamp of Sorrows;87§auto Sümpfe des Elends;87§auto Marais des Chagrins;87 | x=-10272.6005859375 y=-3110.60009765625 | size=1 | links=#4370(auto Swamp of Sorrows;29):32 #9999(auto Swamp of Sorrows;64):32
+#14561 | auto Swamp of Sorrows;88§auto Sümpfe des Elends;88§auto Marais des Chagrins;88 | x=-10507.2001953125 y=-2962.900146484375 | size=1 | links=#9643(auto Swamp of Sorrows;62):25 #18935(auto Swamp of Sorrows;113):30
+#14609 | auto Swamp of Sorrows;89§auto Sümpfe des Elends;89§auto Marais des Chagrins;89 | x=-10248.2998046875 y=-2612.60009765625 | size=1 | links=#6867(auto Swamp of Sorrows;40):25 #15686(auto Swamp of Sorrows;96):62 c764.7:34
+#14618 | auto Swamp of Sorrows;90§auto Sümpfe des Elends;90§auto Marais des Chagrins;90 | x=-10681 y=-2532.900146484375 | size=1 | links=#21796(auto Swamp of Sorrows;133):22 c5353.1:36
+#14645 | auto Swamp of Sorrows;91§auto Sümpfe des Elends;91§auto Marais des Chagrins;91 | x=-10499.6005859375 y=-3243.800048828125 | size=1 | links=#7562(auto Swamp of Sorrows;48):6 #16299(auto Swamp of Sorrows;98):7
+#14962 | auto Swamp of Sorrows;92§auto Sümpfe des Elends;92§auto Marais des Chagrins;92 | x=-10418.900390625 y=-3299.900146484375 | size=1 | links=#3643(auto Swamp of Sorrows;26):11 c3622.1:14
+#15155 | auto Swamp of Sorrows;93§auto Sümpfe des Elends;93§auto Marais des Chagrins;93 | x=-10501.7998046875 y=-2879.10009765625 | size=1 | links=#16621(auto Swamp of Sorrows;100):26 #18971(auto Swamp of Sorrows;114):9
+#15210 | auto Swamp of Sorrows;94§auto Sümpfe des Elends;94§auto Marais des Chagrins;94 | x=-10078.6005859375 y=-3352.300048828125 | size=1 | links=#16793(auto Swamp of Sorrows;103):14 #26259(auto Swamp of Sorrows;158):27
+#15222 | auto Swamp of Sorrows;95§auto Sümpfe des Elends;95§auto Marais des Chagrins;95 | x=-10077 y=-3405.5 | size=1 | links=#8059(auto Swamp of Sorrows;54):83 #23611(auto Swamp of Sorrows;143):40 #26259(auto Swamp of Sorrows;158):26 c862.5:15 c755.7:15
+#15686 | auto Swamp of Sorrows;96§auto Sümpfe des Elends;96§auto Marais des Chagrins;96 | x=-10288.400390625 y=-2660.60009765625 | size=1 | links=#1449(auto Swamp of Sorrows;12):26 #14609(auto Swamp of Sorrows;89):62
+#15986 | auto Swamp of Sorrows;97§auto Sümpfe des Elends;97§auto Marais des Chagrins;97 | x=-10628.6005859375 y=-3002.900146484375 | size=1 | links=#22265(auto Swamp of Sorrows;136):18 #27415(auto Swamp of Sorrows;166):11 c7572.1:7
+#16299 | auto Swamp of Sorrows;98§auto Sümpfe des Elends;98§auto Marais des Chagrins;98 | x=-10506.1005859375 y=-3246.5 | size=1 | links=#2778(auto Swamp of Sorrows;23):6 #14645(auto Swamp of Sorrows;91):7
+#16484 | auto Swamp of Sorrows;99§auto Sümpfe des Elends;99§auto Marais des Chagrins;99 | x=-9950.7998046875 y=-3720 | size=1 | links=#931(auto Swamp of Sorrows;10):8 c5622.1:7
+#16621 | auto Swamp of Sorrows;100§auto Sümpfe des Elends;100§auto Marais des Chagrins;100 | x=-10512.7001953125 y=-2903.10009765625 | size=1 | links=#12087(auto Swamp of Sorrows;72):13 #15155(auto Swamp of Sorrows;93):26 c4953.2:35
+#16684 | auto Swamp of Sorrows;101§auto Sümpfe des Elends;101§auto Marais des Chagrins;101 | x=-10378.2998046875 y=-2621 | size=1 | links=#1498(auto Swamp of Sorrows;14):17 #26656(auto Swamp of Sorrows;161):14 c861.1:13
+#16711 | auto Swamp of Sorrows;102§auto Sümpfe des Elends;102§auto Marais des Chagrins;102 | x=-10267.7998046875 y=-3063.400146484375 | size=1 | links=#26(auto Swamp of Sorrows;1):8 #4370(auto Swamp of Sorrows;29):14
+#16793 | auto Swamp of Sorrows;103§auto Sümpfe des Elends;103§auto Marais des Chagrins;103 | x=-10077.900390625 y=-3337.60009765625 | size=1 | links=#15210(auto Swamp of Sorrows;94):14 #17417(auto Swamp of Sorrows;106):25 c757.5:8
+#17072 | auto Swamp of Sorrows;104§auto Sümpfe des Elends;104§auto Marais des Chagrins;104 | x=-10364.2998046875 y=-2738.5 | size=1 | links=#21579(auto Swamp of Sorrows;131):11 #23614(auto Swamp of Sorrows;144):13
+#17397 | auto Swamp of Sorrows;105§auto Sümpfe des Elends;105§auto Marais des Chagrins;105 | x=-10089.1005859375 y=-2829.900146484375 | size=1 | links=#26933(auto Swamp of Sorrows;163):5 c11198.2:3
+#17417 | auto Swamp of Sorrows;106§auto Sümpfe des Elends;106§auto Marais des Chagrins;106 | x=-10079.6005859375 y=-3312.10009765625 | size=1 | links=#16793(auto Swamp of Sorrows;103):25 #25228(auto Swamp of Sorrows;154):34
+#17465 | auto Swamp of Sorrows;107§auto Sümpfe des Elends;107§auto Marais des Chagrins;107 | x=-10385.2001953125 y=-2670.300048828125 | size=1 | links=#910(auto Swamp of Sorrows;9):19 #1498(auto Swamp of Sorrows;14):32 #6894(auto Swamp of Sorrows;41):32 c858.21:44
+#17719 | auto Swamp of Sorrows;108§auto Sümpfe des Elends;108§auto Marais des Chagrins;108 | x=-10504 y=-3059.60009765625 | size=1 | links=#8123(crossing;Swamp of Sorrows;an):31 #19337(auto Swamp of Sorrows;117):53
+#18118 | auto Swamp of Sorrows;109§auto Sümpfe des Elends;109§auto Marais des Chagrins;109 | x=-10483 y=-2393.699951171875 | size=1 | links=#6685(auto Swamp of Sorrows;38):36 #7110(auto Swamp of Sorrows;44):27
+#18386 | auto Swamp of Sorrows;110§auto Sümpfe des Elends;110§auto Marais des Chagrins;110 | x=-10455.400390625 y=-3239.699951171875 | size=1 | links=#1696(auto Swamp of Sorrows;17):14 #9847(central location;Stonard;Swamp of Sorrows):22
+#18723 | auto Swamp of Sorrows;111§auto Sümpfe des Elends;111§auto Marais des Chagrins;111 | x=-10476.2998046875 y=-3329.5 | size=1 | links=#6642(auto Swamp of Sorrows;36):3 #12769(auto Swamp of Sorrows;77):7
+#18838 | auto Swamp of Sorrows;112§auto Sümpfe des Elends;112§auto Marais des Chagrins;112 | x=-10442.400390625 y=-3289.300048828125 | size=1 | links=#9847(central location;Stonard;Swamp of Sorrows):29 #25267(auto Swamp of Sorrows;155):13 c982.1:8
+#18935 | auto Swamp of Sorrows;113§auto Sümpfe des Elends;113§auto Marais des Chagrins;113 | x=-10518.2998046875 y=-2990.900146484375 | size=1 | links=#7940(auto Swamp of Sorrows;53):30 #14561(auto Swamp of Sorrows;88):30
+#18971 | auto Swamp of Sorrows;114§auto Sümpfe des Elends;114§auto Marais des Chagrins;114 | x=-10498.2998046875 y=-2870 | size=1 | links=#15155(auto Swamp of Sorrows;93):9 #27838(auto Swamp of Sorrows;168):27 c5476.1:50 c1084.19:23
+#19101 | auto Swamp of Sorrows;115§auto Sümpfe des Elends;115§auto Marais des Chagrins;115 | x=-10198.900390625 y=-3219.5 | size=1 | links=#20454(auto Swamp of Sorrows;123):21 #20529(auto Swamp of Sorrows;125):4 c757.6:11
+#19229 | auto Swamp of Sorrows;116§auto Sümpfe des Elends;116§auto Marais des Chagrins;116 | x=-10464.1005859375 y=-3331.60009765625 | size=1 | links=#527(auto Swamp of Sorrows;6):2 #6678(auto Swamp of Sorrows;37):6
+#19337 | auto Swamp of Sorrows;117§auto Sümpfe des Elends;117§auto Marais des Chagrins;117 | x=-10478.2998046875 y=-3106.800048828125 | size=1 | links=#17719(auto Swamp of Sorrows;108):53 #22468(auto Swamp of Sorrows;137):42
+#19344 | auto Swamp of Sorrows;118§auto Sümpfe des Elends;118§auto Marais des Chagrins;118 | x=-10288.2001953125 y=-2815.5 | size=1 | links=#8723(auto Swamp of Sorrows;57):31 #10530(auto Swamp of Sorrows;68):19
+#20107 | auto Swamp of Sorrows;119§auto Sümpfe des Elends;119§auto Marais des Chagrins;119 | x=-10447.2001953125 y=-2752.10009765625 | size=1 | links=#1482(auto Swamp of Sorrows;13):39 #7368(auto Swamp of Sorrows;47):30
+#20121 | auto Swamp of Sorrows;120§auto Sümpfe des Elends;120§auto Marais des Chagrins;120 | x=-10493.5 y=-3260.199951171875 | size=1 | links=#13859(auto Swamp of Sorrows;82):3 c6930.1:6
+#20150 | auto Swamp of Sorrows;121§auto Sümpfe des Elends;121§auto Marais des Chagrins;121 | x=-9945.5 y=-3662.400146484375 | size=1 | links=#3655(auto Swamp of Sorrows;27):19 c1106.4:23 c17115.4:14
+#20236 | auto Swamp of Sorrows;122§auto Sümpfe des Elends;122§auto Marais des Chagrins;122 | x=-10408.7001953125 y=-2716.10009765625 | size=1 | links=#7368(auto Swamp of Sorrows;47):22 #26129(crossing;Splinterspear Junction;Swamp of Sorrows):27
+#20454 | auto Swamp of Sorrows;123§auto Sümpfe des Elends;123§auto Marais des Chagrins;123 | x=-10180 y=-3229 | size=1 | links=#10045(auto Swamp of Sorrows;65):22 #19101(auto Swamp of Sorrows;115):21
+#20479 | auto Swamp of Sorrows;124§auto Sümpfe des Elends;124§auto Marais des Chagrins;124 | x=-10136.6005859375 y=-3247.199951171875 | size=1 | links=#9950(auto Swamp of Sorrows;63):34 #10045(auto Swamp of Sorrows;65):24
+#20529 | auto Swamp of Sorrows;125§auto Sümpfe des Elends;125§auto Marais des Chagrins;125 | x=-10203.2998046875 y=-3217.300048828125 | size=1 | links=#1831(auto Swamp of Sorrows;18):5 #19101(auto Swamp of Sorrows;115):4
+#20661 | auto Swamp of Sorrows;126§auto Sümpfe des Elends;126§auto Marais des Chagrins;126 | x=-10469.1005859375 y=-3331.400146484375 | size=1 | links=#6642(auto Swamp of Sorrows;36):4 #9610(auto Swamp of Sorrows;61):12 c988.1:7 c1386.1:7 c12807.1:6
+#20780 | auto Swamp of Sorrows;127§auto Sümpfe des Elends;127§auto Marais des Chagrins;127 | x=-10254.2001953125 y=-2940.199951171875 | size=1 | links=#24213(auto Swamp of Sorrows;146):8 #28254(auto Swamp of Sorrows;173):10
+#21090 | auto Swamp of Sorrows;128§auto Sümpfe des Elends;128§auto Marais des Chagrins;128 | x=-10323.2001953125 y=-2793.699951171875 | size=1 | links=#10113(auto Swamp of Sorrows;66):20 #10530(auto Swamp of Sorrows;68):22
+#21163 | auto Swamp of Sorrows;129§auto Sümpfe des Elends;129§auto Marais des Chagrins;129 | x=-10462.400390625 y=-3261.800048828125 | size=1 | links=#6903(auto Swamp of Sorrows;42):7 #9847(central location;Stonard;Swamp of Sorrows):17
+#21312 | auto Swamp of Sorrows;130§auto Sümpfe des Elends;130§auto Marais des Chagrins;130 | x=-9908.2998046875 y=-3705.10009765625 | size=1 | links=#7185(auto Swamp of Sorrows;46):5 #13104(auto Swamp of Sorrows;78):16 c5391.1:21 o22550.2:29
+#21579 | auto Swamp of Sorrows;131§auto Sümpfe des Elends;131§auto Marais des Chagrins;131 | x=-10370.2998046875 y=-2728.800048828125 | size=1 | links=#17072(auto Swamp of Sorrows;104):11 #23512(auto Swamp of Sorrows;142):13 #24447(auto Swamp of Sorrows;148):13
+#21596 | auto Swamp of Sorrows;132§auto Sümpfe des Elends;132§auto Marais des Chagrins;132 | x=-10147.7998046875 y=-2839.199951171875 | size=1 | links=#23183(auto Swamp of Sorrows;140):27 #25979(auto Swamp of Sorrows;157):15 c767.24:10
+#21796 | auto Swamp of Sorrows;133§auto Sümpfe des Elends;133§auto Marais des Chagrins;133 | x=-10660.6005859375 y=-2524.5 | size=1 | links=#14618(auto Swamp of Sorrows;90):22 c740.2:53
+#21861 | auto Swamp of Sorrows;134§auto Sümpfe des Elends;134§auto Marais des Chagrins;134 | x=-10349.7001953125 y=-2759.60009765625 | size=1 | links=#10113(auto Swamp of Sorrows;66):23 #23614(auto Swamp of Sorrows;144):11
+#21971 | auto Swamp of Sorrows;135§auto Sümpfe des Elends;135§auto Marais des Chagrins;135 | x=-10567 y=-3040.800048828125 | size=1 | links=#5888(auto Swamp of Sorrows;34):34 #14283(auto Swamp of Sorrows;83):29
+#22265 | auto Swamp of Sorrows;136§auto Sümpfe des Elends;136§auto Marais des Chagrins;136 | x=-10612.400390625 y=-3012.800048828125 | size=1 | links=#14283(auto Swamp of Sorrows;83):24 #15986(auto Swamp of Sorrows;97):18
+#22468 | auto Swamp of Sorrows;137§auto Sümpfe des Elends;137§auto Marais des Chagrins;137 | x=-10457.2001953125 y=-3143.800048828125 | size=1 | links=#5051(auto Swamp of Sorrows;30):40 #19337(auto Swamp of Sorrows;117):42
+#22586 | auto Swamp of Sorrows;138§auto Sümpfe des Elends;138§auto Marais des Chagrins;138 | x=-10460 y=-3197.199951171875 | size=1 | links=#5051(auto Swamp of Sorrows;30):12 #26520(auto Swamp of Sorrows;159):13
+#23152 | auto Swamp of Sorrows;139§auto Sümpfe des Elends;139§auto Marais des Chagrins;139 | x=-10495.6005859375 y=-3266.400146484375 | size=1 | links=#13626(auto Swamp of Sorrows;79):7 c8177.1:5
+#23183 | auto Swamp of Sorrows;140§auto Sümpfe des Elends;140§auto Marais des Chagrins;140 | x=-10120.1005859375 y=-2835.199951171875 | size=1 | links=#21596(auto Swamp of Sorrows;132):27 #23971(central location;The Harborage;Swamp of Sorrows):20 c11198.8:8
+#23430 | auto Swamp of Sorrows;141§auto Sümpfe des Elends;141§auto Marais des Chagrins;141 | x=-10410.2998046875 y=-2573.300048828125 | size=1 | links=#25109(auto Swamp of Sorrows;151):16 c861.5:13
+#23512 | auto Swamp of Sorrows;142§auto Sümpfe des Elends;142§auto Marais des Chagrins;142 | x=-10356.400390625 y=-2729.400146484375 | size=1 | links=#6788(auto Swamp of Sorrows;39):15 #21579(auto Swamp of Sorrows;131):13 #24447(auto Swamp of Sorrows;148):23
+#23611 | auto Swamp of Sorrows;143§auto Sümpfe des Elends;143§auto Marais des Chagrins;143 | x=-10071.1005859375 y=-3445.5 | size=1 | links=#2276(auto Swamp of Sorrows;20):34 #15222(auto Swamp of Sorrows;95):40 c757.7:20
+#23614 | auto Swamp of Sorrows;144§auto Sümpfe des Elends;144§auto Marais des Chagrins;144 | x=-10357.400390625 y=-2750.60009765625 | size=1 | links=#17072(auto Swamp of Sorrows;104):13 #21861(auto Swamp of Sorrows;134):11
+#23854 | auto Swamp of Sorrows;145§auto Sümpfe des Elends;145§auto Marais des Chagrins;145 | x=-10330.5 y=-3631.900146484375 | size=1 | links=#2744(auto Swamp of Sorrows;22):89 #27162(auto Swamp of Sorrows;164):51
+#23971 | central location;The Harborage;Swamp of Sorrows§zentralpunkt;Der sichere Hafen;Sümpfe des Elends§emplacement central;Le Havre boueux;Marais des Chagrins | x=-10108.6005859375 y=-2817.699951171875 | size=1 | links=#5758(auto Swamp of Sorrows;32):13 #23183(auto Swamp of Sorrows;140):20 c1776.1:7 c11874.1:13 c17127.1:4 c18221.1:8
+#24213 | auto Swamp of Sorrows;146§auto Sümpfe des Elends;146§auto Marais des Chagrins;146 | x=-10254.2001953125 y=-2948.60009765625 | size=1 | links=#7935(auto Swamp of Sorrows;52):21 #20780(auto Swamp of Sorrows;127):8
+#24223 | auto Swamp of Sorrows;147§auto Sümpfe des Elends;147§auto Marais des Chagrins;147 | x=-10014.6005859375 y=-3549.800048828125 | size=1 | links=#976(auto Swamp of Sorrows;11):24 #10147(auto Swamp of Sorrows;67):23 c759.6:15 o22550.6:15 c759.12:16
+#24447 | auto Swamp of Sorrows;148§auto Sümpfe des Elends;148§auto Marais des Chagrins;148 | x=-10376.5 y=-2717.199951171875 | size=1 | links=#21579(auto Swamp of Sorrows;131):13 #23512(auto Swamp of Sorrows;142):23 #26129(crossing;Splinterspear Junction;Swamp of Sorrows):21
+#24549 | auto Swamp of Sorrows;149§auto Sümpfe des Elends;149§auto Marais des Chagrins;149 | x=-10255.5 y=-2988.900146484375 | size=1 | links=#334(auto Swamp of Sorrows;3):24 #7935(auto Swamp of Sorrows;52):18 c767.17:26
+#25043 | auto Swamp of Sorrows;150§auto Sümpfe des Elends;150§auto Marais des Chagrins;150 | x=-10499.1005859375 y=-3259.60009765625 | size=1 | links=#13859(auto Swamp of Sorrows;82):2 #27194(auto Swamp of Sorrows;165):3
+#25109 | auto Swamp of Sorrows;151§auto Sümpfe des Elends;151§auto Marais des Chagrins;151 | x=-10396.900390625 y=-2582.60009765625 | size=1 | links=#23430(auto Swamp of Sorrows;141):16 #26656(auto Swamp of Sorrows;161):29
+#25168 | auto Swamp of Sorrows;152§auto Sümpfe des Elends;152§auto Marais des Chagrins;152 | x=-10251.2998046875 y=-2868.800048828125 | size=1 | links=#4087(auto Swamp of Sorrows;28):17 #27977(auto Swamp of Sorrows;169):12
+#25199 | auto Swamp of Sorrows;153§auto Sümpfe des Elends;153§auto Marais des Chagrins;153 | x=-10104.7001953125 y=-2402.900146484375 | size=1 | links=#26620(auto Swamp of Sorrows;160):38 c765.2:52
+#25228 | auto Swamp of Sorrows;154§auto Sümpfe des Elends;154§auto Marais des Chagrins;154 | x=-10083.2001953125 y=-3277.60009765625 | size=1 | links=#9950(auto Swamp of Sorrows;63):28 #17417(auto Swamp of Sorrows;106):34 c755.6:13
+#25267 | auto Swamp of Sorrows;155§auto Sümpfe des Elends;155§auto Marais des Chagrins;155 | x=-10448.7998046875 y=-3301.10009765625 | size=1 | links=#18838(auto Swamp of Sorrows;112):13 #28068(auto Swamp of Sorrows;172):7
+#25613 | auto Swamp of Sorrows;156§auto Sümpfe des Elends;156§auto Marais des Chagrins;156 | x=-10234.1005859375 y=-3203.300048828125 | size=1 | links=#13725(auto Swamp of Sorrows;81):5 #28321(auto Swamp of Sorrows;174):15 c767.9:25
+#25979 | auto Swamp of Sorrows;157§auto Sümpfe des Elends;157§auto Marais des Chagrins;157 | x=-10163.5 y=-2841.5 | size=1 | links=#12270(auto Swamp of Sorrows;74):13 #21596(auto Swamp of Sorrows;132):15
+#26129 | crossing;Splinterspear Junction;Swamp of Sorrows§kreuzung;Splitterspeerkreuzung;Sümpfe des Elends§traversée;Croisement de Lance-brisée;Marais des Chagrins | x=-10387.1005859375 y=-2698.400146484375 | size=1 | links=#910(auto Swamp of Sorrows;9):8 #20236(auto Swamp of Sorrows;122):27 #24447(auto Swamp of Sorrows;148):21 c861.3:5
+#26259 | auto Swamp of Sorrows;158§auto Sümpfe des Elends;158§auto Marais des Chagrins;158 | x=-10078.2001953125 y=-3379.400146484375 | size=1 | links=#15210(auto Swamp of Sorrows;94):27 #15222(auto Swamp of Sorrows;95):26
+#26520 | auto Swamp of Sorrows;159§auto Sümpfe des Elends;159§auto Marais des Chagrins;159 | x=-10462.2998046875 y=-3210.10009765625 | size=1 | links=#22586(auto Swamp of Sorrows;138):13 #27927(city gate;Stonard;Swamp of Sorrows):9
+#26620 | auto Swamp of Sorrows;160§auto Sümpfe des Elends;160§auto Marais des Chagrins;160 | x=-10101.7998046875 y=-2364.400146484375 | size=1 | links=#25199(auto Swamp of Sorrows;153):38 c1081.1:15
+#26656 | auto Swamp of Sorrows;161§auto Sümpfe des Elends;161§auto Marais des Chagrins;161 | x=-10380 y=-2606.60009765625 | size=1 | links=#16684(auto Swamp of Sorrows;101):14 #25109(auto Swamp of Sorrows;151):29
+#26890 | auto Swamp of Sorrows;162§auto Sümpfe des Elends;162§auto Marais des Chagrins;162 | x=-10261.1005859375 y=-3031.400146484375 | size=1 | links=#334(auto Swamp of Sorrows;3):17 #8829(auto Swamp of Sorrows;58):15
+#26933 | auto Swamp of Sorrows;163§auto Sümpfe des Elends;163§auto Marais des Chagrins;163 | x=-10094.2001953125 y=-2827.10009765625 | size=1 | links=#8130(auto Swamp of Sorrows;55):6 #17397(auto Swamp of Sorrows;105):5
+#27162 | auto Swamp of Sorrows;164§auto Sümpfe des Elends;164§auto Marais des Chagrins;164 | x=-10367.900390625 y=-3667.800048828125 | size=1 | links=#23854(auto Swamp of Sorrows;145):51 o30854.15:63
+#27194 | auto Swamp of Sorrows;165§auto Sümpfe des Elends;165§auto Marais des Chagrins;165 | x=-10501.7001953125 y=-3257 | size=1 | links=#2778(auto Swamp of Sorrows;23):7 #25043(auto Swamp of Sorrows;150):3
+#27415 | auto Swamp of Sorrows;166§auto Sümpfe des Elends;166§auto Marais des Chagrins;166 | x=-10637.7001953125 y=-2995.199951171875 | size=1 | links=#2904(passage;from;Swamp of Sorrows;to;Blasted Lands):30 #15986(auto Swamp of Sorrows;97):11
+#27709 | auto Swamp of Sorrows;167§auto Sümpfe des Elends;167§auto Marais des Chagrins;167 | x=-10488.2001953125 y=-3245.300048828125 | size=1 | links=#7562(auto Swamp of Sorrows;48):6 c989.1:4
+#27838 | auto Swamp of Sorrows;168§auto Sümpfe des Elends;168§auto Marais des Chagrins;168 | x=-10493.6005859375 y=-2842.60009765625 | size=1 | links=#808(auto Swamp of Sorrows;8):30 #18971(auto Swamp of Sorrows;114):27
+#27927 | city gate;Stonard;Swamp of Sorrows§stadttor;Steinard;Sümpfe des Elends§city gate;Stonard;Marais des Chagrins | x=-10462.400390625 y=-3219.800048828125 | size=1 | links=#1696(auto Swamp of Sorrows;17):7 #26520(auto Swamp of Sorrows;159):9
+#27977 | auto Swamp of Sorrows;169§auto Sümpfe des Elends;169§auto Marais des Chagrins;169 | x=-10250.900390625 y=-2856.10009765625 | size=1 | links=#9581(auto Swamp of Sorrows;60):18 #25168(auto Swamp of Sorrows;152):12 c858.3:33
+#28053 | auto Swamp of Sorrows;170§auto Sümpfe des Elends;170§auto Marais des Chagrins;170 | x=-10254 y=-2904.699951171875 | size=1 | links=#360(auto Swamp of Sorrows;4):14 #4087(auto Swamp of Sorrows;28):18
+#28060 | auto Swamp of Sorrows;171§auto Sümpfe des Elends;171§auto Marais des Chagrins;171 | x=-10214.5 y=-3538.800048828125 | size=1 | links=#2254(auto Swamp of Sorrows;19):70 #2744(auto Swamp of Sorrows;22):61 #52148(auto Swamp of Sorrows;176):39
+#28068 | auto Swamp of Sorrows;172§auto Sümpfe des Elends;172§auto Marais des Chagrins;172 | x=-10453.2001953125 y=-3307.5 | size=1 | links=#14517(auto Swamp of Sorrows;86):6 #25267(auto Swamp of Sorrows;155):7
+#28254 | auto Swamp of Sorrows;173§auto Sümpfe des Elends;173§auto Marais des Chagrins;173 | x=-10254.1005859375 y=-2929.900146484375 | size=1 | links=#360(auto Swamp of Sorrows;4):11 #20780(auto Swamp of Sorrows;127):10
+#28321 | auto Swamp of Sorrows;174§auto Sümpfe des Elends;174§auto Marais des Chagrins;174 | x=-10244 y=-3191.699951171875 | size=1 | links=#14397(auto Swamp of Sorrows;84):26 #25613(auto Swamp of Sorrows;156):15
+#52147 | Temple of Atal'Hakkar dungeon entrance§Tempel von Atal'Hakkar Instanz Eingang§Temple of Atal'Hakkar dungeon entrance | x=-10476.7001953125 y=-3821.400146484375 | size=1 | links=c1063.1:4
+#52148 | auto Swamp of Sorrows;176§auto Sümpfe des Elends;176§auto Marais des Chagrins;176 | x=-10209.400390625 y=-3577.5 | size=1 | links=#28060(auto Swamp of Sorrows;171):39 c744.3:37
+#52149 | auto Swamp of Sorrows;177§auto Sümpfe des Elends;177§auto Marais des Chagrins;177 | x=-10207.5 y=-3614.400146484375 | size=1 | links=#52150(auto Swamp of Sorrows;178):31 c744.3:14
+#52150 | auto Swamp of Sorrows;178§auto Sümpfe des Elends;178§auto Marais des Chagrins;178 | x=-10205.6005859375 y=-3645.60009765625 | size=1 | links=#52149(auto Swamp of Sorrows;177):31 #52151(auto Swamp of Sorrows;179):37
+#52151 | auto Swamp of Sorrows;179§auto Sümpfe des Elends;179§auto Marais des Chagrins;179 | x=-10206.2998046875 y=-3683.10009765625 | size=1 | links=#52150(auto Swamp of Sorrows;178):37 #52152(auto Swamp of Sorrows;180):43
+#52152 | auto Swamp of Sorrows;180§auto Sümpfe des Elends;180§auto Marais des Chagrins;180 | x=-10209.6005859375 y=-3726.199951171875 | size=1 | links=#52151(auto Swamp of Sorrows;179):43 #52153(auto Pool of Tears;Swamp of Sorrows;181):42
+#52153 | auto Pool of Tears;Swamp of Sorrows;181§auto Tränenteich;Sümpfe des Elends;181§auto Le bassin des larmes;Marais des Chagrins;181 | x=-10212.2998046875 y=-3769.10009765625 | size=1 | links=#52152(auto Swamp of Sorrows;180):42 c14445.1:34
+#52154 | auto Swamp of Sorrows;182§auto Sümpfe des Elends;182§auto Marais des Chagrins;182 | x=-10132.7998046875 y=-3547.400146484375 | size=1 | links=#2254(auto Swamp of Sorrows;19):46 #52155(auto Das Fallow Heiligtum;Swamp of Sorrows;183):31
+#52155 | auto Das Fallow Heiligtum;Swamp of Sorrows;183§auto Das Fallow Heiligtum;Sümpfe des Elends;183§auto Das Fallow Heiligtum;Marais des Chagrins;183 | x=-10120.400390625 y=-3576.300048828125 | size=1 | links=#52154(auto Swamp of Sorrows;182):31 #52156(auto Das Fallow Heiligtum;Swamp of Sorrows;184):29
+#52156 | auto Das Fallow Heiligtum;Swamp of Sorrows;184§auto Das Fallow Heiligtum;Sümpfe des Elends;184§auto Das Fallow Heiligtum;Marais des Chagrins;184 | x=-10091.2001953125 y=-3581.60009765625 | size=1 | links=#52155(auto Das Fallow Heiligtum;Swamp of Sorrows;183):29 #52157(auto Das Fallow Heiligtum;Swamp of Sorrows;185):22
+#52157 | auto Das Fallow Heiligtum;Swamp of Sorrows;185§auto Das Fallow Heiligtum;Sümpfe des Elends;185§auto Das Fallow Heiligtum;Marais des Chagrins;185 | x=-10089.2001953125 y=-3604.300048828125 | size=1 | links=#52156(auto Das Fallow Heiligtum;Swamp of Sorrows;184):22 #52158(auto Das Fallow Heiligtum;Swamp of Sorrows;186):23
+#52158 | auto Das Fallow Heiligtum;Swamp of Sorrows;186§auto Das Fallow Heiligtum;Sümpfe des Elends;186§auto Das Fallow Heiligtum;Marais des Chagrins;186 | x=-10093.400390625 y=-3627.699951171875 | size=1 | links=#52157(auto Das Fallow Heiligtum;Swamp of Sorrows;185):23 #52159(auto Swamp of Sorrows;187):39
+#52159 | auto Swamp of Sorrows;187§auto Sümpfe des Elends;187§auto Marais des Chagrins;187 | x=-10080.400390625 y=-3664.800048828125 | size=1 | links=#52158(auto Das Fallow Heiligtum;Swamp of Sorrows;186):39 #52160(auto Swamp of Sorrows;188):37
+#52160 | auto Swamp of Sorrows;188§auto Sümpfe des Elends;188§auto Marais des Chagrins;188 | x=-10071 y=-3701 | size=1 | links=#52159(auto Swamp of Sorrows;187):37 #52161(auto Swamp of Sorrows;189):42
+#52161 | auto Swamp of Sorrows;189§auto Sümpfe des Elends;189§auto Marais des Chagrins;189 | x=-10056.7998046875 y=-3741.10009765625 | size=1 | links=#52160(auto Swamp of Sorrows;188):42 #52162(auto Swamp of Sorrows;190):47
+#52162 | auto Swamp of Sorrows;190§auto Sümpfe des Elends;190§auto Marais des Chagrins;190 | x=-10038.7001953125 y=-3784.5 | size=1 | links=#52161(auto Swamp of Sorrows;189):47 #52163(auto Swamp of Sorrows;191):40
+#52163 | auto Swamp of Sorrows;191§auto Sümpfe des Elends;191§auto Marais des Chagrins;191 | x=-10021 y=-3821.400146484375 | size=1 | links=#52162(auto Swamp of Sorrows;190):40 #52164(auto Swamp of Sorrows;192):43
+#52164 | auto Swamp of Sorrows;192§auto Sümpfe des Elends;192§auto Marais des Chagrins;192 | x=-10004.2998046875 y=-3861.900146484375 | size=1 | links=#52163(auto Swamp of Sorrows;191):43 #52165(auto Swamp of Sorrows;193):32
+#52165 | auto Swamp of Sorrows;193§auto Sümpfe des Elends;193§auto Marais des Chagrins;193 | x=-9979.6005859375 y=-3883 | size=1 | links=#52164(auto Swamp of Sorrows;192):32 #52166(auto Swamp of Sorrows;194):36
+#52166 | auto Swamp of Sorrows;194§auto Sümpfe des Elends;194§auto Marais des Chagrins;194 | x=-9947.7001953125 y=-3901.60009765625 | size=1 | links=#52165(auto Swamp of Sorrows;193):36 #52167(auto Swamp of Sorrows;195):40
+#52167 | auto Swamp of Sorrows;195§auto Sümpfe des Elends;195§auto Marais des Chagrins;195 | x=-9920.1005859375 y=-3931.699951171875 | size=1 | links=#52166(auto Swamp of Sorrows;194):40 #52168(auto Swamp of Sorrows;196):43
+#52168 | auto Swamp of Sorrows;196§auto Sümpfe des Elends;196§auto Marais des Chagrins;196 | x=-9888.400390625 y=-3961.199951171875 | size=1 | links=#52167(auto Swamp of Sorrows;195):43 #52169(auto Swamp of Sorrows;197):34
+#52169 | auto Swamp of Sorrows;197§auto Sümpfe des Elends;197§auto Marais des Chagrins;197 | x=-9864.400390625 y=-3986.300048828125 | size=1 | links=#52168(auto Swamp of Sorrows;196):34 #52170(auto Swamp of Sorrows;198):63
+#52170 | auto Swamp of Sorrows;198§auto Sümpfe des Elends;198§auto Marais des Chagrins;198 | x=-9819.2998046875 y=-4030.800048828125 | size=1 | links=#52169(auto Swamp of Sorrows;197):63 #52171(auto Misty Reed Strand;Swamp of Sorrows;199):33
+#52171 | auto Misty Reed Strand;Swamp of Sorrows;199§auto Nebelschilfstrand;Sümpfe des Elends;199§auto Misty Reed Strand;Marais des Chagrins;199 | x=-9797.2001953125 y=-4056.10009765625 | size=1 | links=#52170(auto Swamp of Sorrows;198):33 #52172(auto Misty Reed Strand;Swamp of Sorrows;200):28
+#52172 | auto Misty Reed Strand;Swamp of Sorrows;200§auto Nebelschilfstrand;Sümpfe des Elends;200§auto Misty Reed Strand;Marais des Chagrins;200 | x=-9779.2001953125 y=-4078.300048828125 | size=1 | links=#52171(auto Misty Reed Strand;Swamp of Sorrows;199):28 #52173(auto Misty Reed Strand;Swamp of Sorrows;201):31 #52177(auto Misty Reed Strand;Swamp of Sorrows;205):16
+#52173 | auto Misty Reed Strand;Swamp of Sorrows;201§auto Nebelschilfstrand;Sümpfe des Elends;201§auto Misty Reed Strand;Marais des Chagrins;201 | x=-9761.900390625 y=-4052.300048828125 | size=1 | links=#52172(auto Misty Reed Strand;Swamp of Sorrows;200):31 #52174(auto Misty Reed Strand;Swamp of Sorrows;202):33
+#52174 | auto Misty Reed Strand;Swamp of Sorrows;202§auto Nebelschilfstrand;Sümpfe des Elends;202§auto Misty Reed Strand;Marais des Chagrins;202 | x=-9735.7998046875 y=-4031.10009765625 | size=1 | links=#52173(auto Misty Reed Strand;Swamp of Sorrows;201):33 #52175(auto Misty Reed Strand;Swamp of Sorrows;203):34
+#52175 | auto Misty Reed Strand;Swamp of Sorrows;203§auto Nebelschilfstrand;Sümpfe des Elends;203§auto Misty Reed Strand;Marais des Chagrins;203 | x=-9711.2001953125 y=-4006.5 | size=1 | links=#52174(auto Misty Reed Strand;Swamp of Sorrows;202):34 #52176(auto Misty Reed Strand;Swamp of Sorrows;204):23
+#52176 | auto Misty Reed Strand;Swamp of Sorrows;204§auto Nebelschilfstrand;Sümpfe des Elends;204§auto Misty Reed Strand;Marais des Chagrins;204 | x=-9696.7001953125 y=-3988 | size=1 | links=#52175(auto Misty Reed Strand;Swamp of Sorrows;203):23
+#52177 | auto Misty Reed Strand;Swamp of Sorrows;205§auto Nebelschilfstrand;Sümpfe des Elends;205§auto Misty Reed Strand;Marais des Chagrins;205 | x=-9789.2001953125 y=-4091.199951171875 | size=1 | links=#52172(auto Misty Reed Strand;Swamp of Sorrows;200):16 #52178(auto Misty Reed Strand;Swamp of Sorrows;206):56
+#52178 | auto Misty Reed Strand;Swamp of Sorrows;206§auto Nebelschilfstrand;Sümpfe des Elends;206§auto Misty Reed Strand;Marais des Chagrins;206 | x=-9829 y=-4130.80029296875 | size=1 | links=#52177(auto Misty Reed Strand;Swamp of Sorrows;205):56 #52179(auto Misty Reed Strand;Swamp of Sorrows;207):29
+#52179 | auto Misty Reed Strand;Swamp of Sorrows;207§auto Nebelschilfstrand;Sümpfe des Elends;207§auto Misty Reed Strand;Marais des Chagrins;207 | x=-9853.1005859375 y=-4147.60009765625 | size=1 | links=#52178(auto Misty Reed Strand;Swamp of Sorrows;206):29 #52180(auto Misty Reed Strand;Swamp of Sorrows;208):41
+#52180 | auto Misty Reed Strand;Swamp of Sorrows;208§auto Nebelschilfstrand;Sümpfe des Elends;208§auto Misty Reed Strand;Marais des Chagrins;208 | x=-9878.1005859375 y=-4180.80029296875 | size=1 | links=#52179(auto Misty Reed Strand;Swamp of Sorrows;207):41 #52181(auto Misty Reed Strand;Swamp of Sorrows;209):46
+#52181 | auto Misty Reed Strand;Swamp of Sorrows;209§auto Nebelschilfstrand;Sümpfe des Elends;209§auto Misty Reed Strand;Marais des Chagrins;209 | x=-9908.7998046875 y=-4215.80029296875 | size=1 | links=#52180(auto Misty Reed Strand;Swamp of Sorrows;208):46 #52182(auto Misty Reed Strand;Swamp of Sorrows;210):47
+#52182 | auto Misty Reed Strand;Swamp of Sorrows;210§auto Nebelschilfstrand;Sümpfe des Elends;210§auto Misty Reed Strand;Marais des Chagrins;210 | x=-9948 y=-4242.80029296875 | size=1 | links=#52181(auto Misty Reed Strand;Swamp of Sorrows;209):47 #52183(auto Misty Reed Strand;Swamp of Sorrows;211):47
+#52183 | auto Misty Reed Strand;Swamp of Sorrows;211§auto Nebelschilfstrand;Sümpfe des Elends;211§auto Misty Reed Strand;Marais des Chagrins;211 | x=-9992.5 y=-4260.2001953125 | size=1 | links=#52182(auto Misty Reed Strand;Swamp of Sorrows;210):47 #52184(auto Misty Reed Strand;Swamp of Sorrows;212):53
+#52184 | auto Misty Reed Strand;Swamp of Sorrows;212§auto Nebelschilfstrand;Sümpfe des Elends;212§auto Misty Reed Strand;Marais des Chagrins;212 | x=-10042.400390625 y=-4279.10009765625 | size=1 | links=#52183(auto Misty Reed Strand;Swamp of Sorrows;211):53 #52185(auto Misty Reed Strand;Swamp of Sorrows;213):53
+#52185 | auto Misty Reed Strand;Swamp of Sorrows;213§auto Nebelschilfstrand;Sümpfe des Elends;213§auto Misty Reed Strand;Marais des Chagrins;213 | x=-10091.400390625 y=-4301.30029296875 | size=1 | links=#52184(auto Misty Reed Strand;Swamp of Sorrows;212):53 #52186(auto Misty Reed Strand;Swamp of Sorrows;214):66
+#52186 | auto Misty Reed Strand;Swamp of Sorrows;214§auto Nebelschilfstrand;Sümpfe des Elends;214§auto Misty Reed Strand;Marais des Chagrins;214 | x=-10154.2998046875 y=-4323.60009765625 | size=1 | links=#52185(auto Misty Reed Strand;Swamp of Sorrows;213):66 o24798.3:120
+#52187 | auto Misty Reed Strand;Swamp of Sorrows;215§auto Nebelschilfstrand;Sümpfe des Elends;215§auto Misty Reed Strand;Marais des Chagrins;215 | x=-10298 y=-4384.39990234375 | size=1 | links=#52188(auto Misty Reed Strand;Swamp of Sorrows;216):36 o24798.3:42
+#52188 | auto Misty Reed Strand;Swamp of Sorrows;216§auto Nebelschilfstrand;Sümpfe des Elends;216§auto Misty Reed Strand;Marais des Chagrins;216 | x=-10334.2001953125 y=-4381.30029296875 | size=1 | links=#52187(auto Misty Reed Strand;Swamp of Sorrows;215):36 #52189(auto Misty Reed Strand;Swamp of Sorrows;217):33
+#52189 | auto Misty Reed Strand;Swamp of Sorrows;217§auto Nebelschilfstrand;Sümpfe des Elends;217§auto Misty Reed Strand;Marais des Chagrins;217 | x=-10363.1005859375 y=-4363.80029296875 | size=1 | links=#52188(auto Misty Reed Strand;Swamp of Sorrows;216):33 #52190(auto Misty Reed Strand;Swamp of Sorrows;218):33
+#52190 | auto Misty Reed Strand;Swamp of Sorrows;218§auto Nebelschilfstrand;Sümpfe des Elends;218§auto Misty Reed Strand;Marais des Chagrins;218 | x=-10395.400390625 y=-4354.10009765625 | size=1 | links=#52189(auto Misty Reed Strand;Swamp of Sorrows;217):33 #52191(auto Misty Reed Strand;Swamp of Sorrows;219):38
+#52191 | auto Misty Reed Strand;Swamp of Sorrows;219§auto Nebelschilfstrand;Sümpfe des Elends;219§auto Misty Reed Strand;Marais des Chagrins;219 | x=-10433.400390625 y=-4353.30029296875 | size=1 | links=#52190(auto Misty Reed Strand;Swamp of Sorrows;218):38 #52192(auto Misty Reed Strand;Swamp of Sorrows;220):32
+#52192 | auto Misty Reed Strand;Swamp of Sorrows;220§auto Nebelschilfstrand;Sümpfe des Elends;220§auto Misty Reed Strand;Marais des Chagrins;220 | x=-10464.2001953125 y=-4343.30029296875 | size=1 | links=#52191(auto Misty Reed Strand;Swamp of Sorrows;219):32 #52193(auto Misty Reed Strand;Swamp of Sorrows;221):25
+#52193 | auto Misty Reed Strand;Swamp of Sorrows;221§auto Nebelschilfstrand;Sümpfe des Elends;221§auto Misty Reed Strand;Marais des Chagrins;221 | x=-10489.2001953125 y=-4345 | size=1 | links=#52192(auto Misty Reed Strand;Swamp of Sorrows;220):25 #52194(auto Misty Reed Strand;Swamp of Sorrows;222):38
+#52194 | auto Misty Reed Strand;Swamp of Sorrows;222§auto Nebelschilfstrand;Sümpfe des Elends;222§auto Misty Reed Strand;Marais des Chagrins;222 | x=-10527.1005859375 y=-4337.80029296875 | size=1 | links=#52193(auto Misty Reed Strand;Swamp of Sorrows;221):38 #52195(auto Misty Reed Strand;Swamp of Sorrows;223):33
+#52195 | auto Misty Reed Strand;Swamp of Sorrows;223§auto Nebelschilfstrand;Sümpfe des Elends;223§auto Misty Reed Strand;Marais des Chagrins;223 | x=-10557.900390625 y=-4324.30029296875 | size=1 | links=#52194(auto Misty Reed Strand;Swamp of Sorrows;222):33 #52196(auto Misty Reed Strand;Swamp of Sorrows;224):23
+#52196 | auto Misty Reed Strand;Swamp of Sorrows;224§auto Nebelschilfstrand;Sümpfe des Elends;224§auto Misty Reed Strand;Marais des Chagrins;224 | x=-10575.7001953125 y=-4339 | size=1 | links=#52195(auto Misty Reed Strand;Swamp of Sorrows;223):23 #52197(auto Misty Reed Strand;Swamp of Sorrows;225):25
+#52197 | auto Misty Reed Strand;Swamp of Sorrows;225§auto Nebelschilfstrand;Sümpfe des Elends;225§auto Misty Reed Strand;Marais des Chagrins;225 | x=-10601 y=-4340.60009765625 | size=1 | links=#52196(auto Misty Reed Strand;Swamp of Sorrows;224):25 #52198(auto Misty Reed Strand;Swamp of Sorrows;226):38
+#52198 | auto Misty Reed Strand;Swamp of Sorrows;226§auto Nebelschilfstrand;Sümpfe des Elends;226§auto Misty Reed Strand;Marais des Chagrins;226 | x=-10636.2001953125 y=-4324.7001953125 | size=1 | links=#52197(auto Misty Reed Strand;Swamp of Sorrows;225):38 #52199(auto Misty Reed Strand;Swamp of Sorrows;227):24
+#52199 | auto Misty Reed Strand;Swamp of Sorrows;227§auto Nebelschilfstrand;Sümpfe des Elends;227§auto Misty Reed Strand;Marais des Chagrins;227 | x=-10652.2998046875 y=-4306.10009765625 | size=1 | links=#52198(auto Misty Reed Strand;Swamp of Sorrows;226):24 #52200(auto Misty Reed Strand;Swamp of Sorrows;228):24
+#52200 | auto Misty Reed Strand;Swamp of Sorrows;228§auto Nebelschilfstrand;Sümpfe des Elends;228§auto Misty Reed Strand;Marais des Chagrins;228 | x=-10671.2998046875 y=-4290.60009765625 | size=1 | links=#52199(auto Misty Reed Strand;Swamp of Sorrows;227):24 #52201(auto Misty Reed Strand;Swamp of Sorrows;229):28
+#52201 | auto Misty Reed Strand;Swamp of Sorrows;229§auto Nebelschilfstrand;Sümpfe des Elends;229§auto Misty Reed Strand;Marais des Chagrins;229 | x=-10693.900390625 y=-4273.10009765625 | size=1 | links=#52200(auto Misty Reed Strand;Swamp of Sorrows;228):28 #52202(auto Misty Reed Strand;Swamp of Sorrows;230):33
+#52202 | auto Misty Reed Strand;Swamp of Sorrows;230§auto Nebelschilfstrand;Sümpfe des Elends;230§auto Misty Reed Strand;Marais des Chagrins;230 | x=-10725.1005859375 y=-4261.89990234375 | size=1 | links=#52201(auto Misty Reed Strand;Swamp of Sorrows;229):33 #52203(auto Misty Reed Strand;Swamp of Sorrows;231):31
+#52203 | auto Misty Reed Strand;Swamp of Sorrows;231§auto Nebelschilfstrand;Sümpfe des Elends;231§auto Misty Reed Strand;Marais des Chagrins;231 | x=-10745.6005859375 y=-4238.5 | size=1 | links=#52202(auto Misty Reed Strand;Swamp of Sorrows;230):31 #52204(auto Misty Reed Strand;Swamp of Sorrows;232):21
+#52204 | auto Misty Reed Strand;Swamp of Sorrows;232§auto Nebelschilfstrand;Sümpfe des Elends;232§auto Misty Reed Strand;Marais des Chagrins;232 | x=-10765.6005859375 y=-4230.2001953125 | size=1 | links=#52203(auto Misty Reed Strand;Swamp of Sorrows;231):21 #52205(auto Misty Reed Strand;Swamp of Sorrows;233):23
+#52205 | auto Misty Reed Strand;Swamp of Sorrows;233§auto Nebelschilfstrand;Sümpfe des Elends;233§auto Misty Reed Strand;Marais des Chagrins;233 | x=-10787.6005859375 y=-4223 | size=1 | links=#52204(auto Misty Reed Strand;Swamp of Sorrows;232):23 #52206(auto Misty Reed Strand;Swamp of Sorrows;234):25
+#52206 | auto Misty Reed Strand;Swamp of Sorrows;234§auto Nebelschilfstrand;Sümpfe des Elends;234§auto Misty Reed Strand;Marais des Chagrins;234 | x=-10811.7001953125 y=-4215.80029296875 | size=1 | links=#52205(auto Misty Reed Strand;Swamp of Sorrows;233):25 #52207(auto Misty Reed Strand;Swamp of Sorrows;235):43
+#52207 | auto Misty Reed Strand;Swamp of Sorrows;235§auto Nebelschilfstrand;Sümpfe des Elends;235§auto Misty Reed Strand;Marais des Chagrins;235 | x=-10852.900390625 y=-4201.10009765625 | size=1 | links=#52206(auto Misty Reed Strand;Swamp of Sorrows;234):43 #52208(auto Misty Reed Strand;Swamp of Sorrows;236):31
+#52208 | auto Misty Reed Strand;Swamp of Sorrows;236§auto Nebelschilfstrand;Sümpfe des Elends;236§auto Misty Reed Strand;Marais des Chagrins;236 | x=-10883.900390625 y=-4196.5 | size=1 | links=#52207(auto Misty Reed Strand;Swamp of Sorrows;235):31 #52209(auto Misty Reed Strand;Swamp of Sorrows;237):39
+#52209 | auto Misty Reed Strand;Swamp of Sorrows;237§auto Nebelschilfstrand;Sümpfe des Elends;237§auto Misty Reed Strand;Marais des Chagrins;237 | x=-10911.6005859375 y=-4168.60009765625 | size=1 | links=#52208(auto Misty Reed Strand;Swamp of Sorrows;236):39 #52210(auto Misty Reed Strand;Swamp of Sorrows;238):39
+#52210 | auto Misty Reed Strand;Swamp of Sorrows;238§auto Nebelschilfstrand;Sümpfe des Elends;238§auto Misty Reed Strand;Marais des Chagrins;238 | x=-10937.5 y=-4138.7001953125 | size=1 | links=#52209(auto Misty Reed Strand;Swamp of Sorrows;237):39 #52211(auto Misty Reed Strand;Swamp of Sorrows;239):33
+#52211 | auto Misty Reed Strand;Swamp of Sorrows;239§auto Nebelschilfstrand;Sümpfe des Elends;239§auto Misty Reed Strand;Marais des Chagrins;239 | x=-10966.7998046875 y=-4122.89990234375 | size=1 | links=#52210(auto Misty Reed Strand;Swamp of Sorrows;238):33 #52212(auto Misty Reed Strand;Swamp of Sorrows;240):42
+#52212 | auto Misty Reed Strand;Swamp of Sorrows;240§auto Nebelschilfstrand;Sümpfe des Elends;240§auto Misty Reed Strand;Marais des Chagrins;240 | x=-11008.1005859375 y=-4114.60009765625 | size=1 | links=#52211(auto Misty Reed Strand;Swamp of Sorrows;239):42 #52213(auto Misty Reed Strand;Swamp of Sorrows;241):26
+#52213 | auto Misty Reed Strand;Swamp of Sorrows;241§auto Nebelschilfstrand;Sümpfe des Elends;241§auto Misty Reed Strand;Marais des Chagrins;241 | x=-11033.2998046875 y=-4106.7001953125 | size=1 | links=#52212(auto Misty Reed Strand;Swamp of Sorrows;240):26 #52214(auto Misty Reed Strand;Swamp of Sorrows;242):38
+#52214 | auto Misty Reed Strand;Swamp of Sorrows;242§auto Nebelschilfstrand;Sümpfe des Elends;242§auto Misty Reed Strand;Marais des Chagrins;242 | x=-11049.7001953125 y=-4072.10009765625 | size=1 | links=#52213(auto Misty Reed Strand;Swamp of Sorrows;241):38 #52215(auto Misty Reed Strand;Swamp of Sorrows;243):38
+#52215 | auto Misty Reed Strand;Swamp of Sorrows;243§auto Nebelschilfstrand;Sümpfe des Elends;243§auto Misty Reed Strand;Marais des Chagrins;243 | x=-11073 y=-4041.300048828125 | size=1 | links=#52214(auto Misty Reed Strand;Swamp of Sorrows;242):38 #52216(auto Misty Reed Strand;Swamp of Sorrows;244):38
+#52216 | auto Misty Reed Strand;Swamp of Sorrows;244§auto Nebelschilfstrand;Sümpfe des Elends;244§auto Misty Reed Strand;Marais des Chagrins;244 | x=-11080.900390625 y=-4003.60009765625 | size=1 | links=#52215(auto Misty Reed Strand;Swamp of Sorrows;243):38 #52217(auto Misty Reed Strand;Swamp of Sorrows;245):41
+#52217 | auto Misty Reed Strand;Swamp of Sorrows;245§auto Nebelschilfstrand;Sümpfe des Elends;245§auto Misty Reed Strand;Marais des Chagrins;245 | x=-11083.7998046875 y=-3961.800048828125 | size=1 | links=#52216(auto Misty Reed Strand;Swamp of Sorrows;244):41 #52218(auto Misty Reed Strand;Swamp of Sorrows;246):27
+#52218 | auto Misty Reed Strand;Swamp of Sorrows;246§auto Nebelschilfstrand;Sümpfe des Elends;246§auto Misty Reed Strand;Marais des Chagrins;246 | x=-11088.2998046875 y=-3934.800048828125 | size=1 | links=#52217(auto Misty Reed Strand;Swamp of Sorrows;245):27 #52219(auto Misty Reed Strand;Swamp of Sorrows;247):22
+#52219 | auto Misty Reed Strand;Swamp of Sorrows;247§auto Nebelschilfstrand;Sümpfe des Elends;247§auto Misty Reed Strand;Marais des Chagrins;247 | x=-11085.900390625 y=-3912.300048828125 | size=1 | links=#52218(auto Misty Reed Strand;Swamp of Sorrows;246):22 #52220(auto Misty Reed Strand;Swamp of Sorrows;248):20
+#52220 | auto Misty Reed Strand;Swamp of Sorrows;248§auto Nebelschilfstrand;Sümpfe des Elends;248§auto Misty Reed Strand;Marais des Chagrins;248 | x=-11093.1005859375 y=-3893 | size=1 | links=#52219(auto Misty Reed Strand;Swamp of Sorrows;247):20 #52221(auto The Forbidding Sea;Swamp of Sorrows;249):21
+#52221 | auto The Forbidding Sea;Swamp of Sorrows;249§auto Das verbotene Meer;Sümpfe des Elends;249§auto La Mer interdite;Marais des Chagrins;249 | x=-11101.2998046875 y=-3873 | size=1 | links=#52220(auto Misty Reed Strand;Swamp of Sorrows;248):21 #52222(auto Misty Reed Strand;Swamp of Sorrows;250):19
+#52222 | auto Misty Reed Strand;Swamp of Sorrows;250§auto Nebelschilfstrand;Sümpfe des Elends;250§auto Misty Reed Strand;Marais des Chagrins;250 | x=-11096.5 y=-3853.800048828125 | size=1 | links=#52221(auto The Forbidding Sea;Swamp of Sorrows;249):19 #52223(auto The Forbidding Sea;Swamp of Sorrows;251):19
+#52223 | auto The Forbidding Sea;Swamp of Sorrows;251§auto Das verbotene Meer;Sümpfe des Elends;251§auto La Mer interdite;Marais des Chagrins;251 | x=-11105.2998046875 y=-3836.60009765625 | size=1 | links=#52222(auto Misty Reed Strand;Swamp of Sorrows;250):19
+#52224 | auto Misty Reed Post;Swamp of Sorrows;252§auto Nebelschilfposten;Sümpfe des Elends;252§auto Poste de Brumejonc;Marais des Chagrins;252 | x=-10844.1005859375 y=-4089 | size=1 | links=#52226(auto Misty Reed Post;Swamp of Sorrows;254):18 c5592.1:14 #28793(s;Eastern Kingdoms;Swamp of Sorrows;Misty Reed Strand;Misty Reed Post):11 c863.3:9
+#52225 | auto Misty Reed Post;Swamp of Sorrows;253§auto Nebelschilfposten;Sümpfe des Elends;253§auto Poste de Brumejonc;Marais des Chagrins;253 | x=-10848.7998046875 y=-4125.30029296875 | size=1 | links=#52226(auto Misty Reed Post;Swamp of Sorrows;254):37 c5593.1:18
+#52226 | auto Misty Reed Post;Swamp of Sorrows;254§auto Nebelschilfposten;Sümpfe des Elends;254§auto Poste de Brumejonc;Marais des Chagrins;254 | x=-10826.1005859375 y=-4095 | size=1 | links=#52224(auto Misty Reed Post;Swamp of Sorrows;252):18 #52225(auto Misty Reed Post;Swamp of Sorrows;253):37 #52227(auto Swamp of Sorrows;255):32
+#52227 | auto Swamp of Sorrows;255§auto Sümpfe des Elends;255§auto Marais des Chagrins;255 | x=-10793.900390625 y=-4097.80029296875 | size=1 | links=#52226(auto Misty Reed Post;Swamp of Sorrows;254):32 #52228(auto Swamp of Sorrows;256):37
+#52228 | auto Swamp of Sorrows;256§auto Sümpfe des Elends;256§auto Marais des Chagrins;256 | x=-10756.900390625 y=-4105.7001953125 | size=1 | links=#52227(auto Swamp of Sorrows;255):37 #52229(auto Swamp of Sorrows;257):37
+#52229 | auto Swamp of Sorrows;257§auto Sümpfe des Elends;257§auto Marais des Chagrins;257 | x=-10720.1005859375 y=-4101.30029296875 | size=1 | links=#52228(auto Swamp of Sorrows;256):37 #52230(auto Sorrowmurk;Swamp of Sorrows;258):37
+#52230 | auto Sorrowmurk;Swamp of Sorrows;258§auto Sorrowmurk;Sümpfe des Elends;258§auto Noirchagrin;Marais des Chagrins;258 | x=-10682.7998046875 y=-4097.30029296875 | size=1 | links=#52229(auto Swamp of Sorrows;257):37 #52231(auto Sorrowmurk;Swamp of Sorrows;259):39
+#52231 | auto Sorrowmurk;Swamp of Sorrows;259§auto Sorrowmurk;Sümpfe des Elends;259§auto Noirchagrin;Marais des Chagrins;259 | x=-10644.5 y=-4106.80029296875 | size=1 | links=#52230(auto Sorrowmurk;Swamp of Sorrows;258):39 #52232(auto Sorrowmurk;Swamp of Sorrows;260):29
+#52232 | auto Sorrowmurk;Swamp of Sorrows;260§auto Sorrowmurk;Sümpfe des Elends;260§auto Noirchagrin;Marais des Chagrins;260 | x=-10632.2998046875 y=-4080.400146484375 | size=1 | links=#52231(auto Sorrowmurk;Swamp of Sorrows;259):29 #52233(auto Sorrowmurk;Swamp of Sorrows;261):28
+#52233 | auto Sorrowmurk;Swamp of Sorrows;261§auto Sorrowmurk;Sümpfe des Elends;261§auto Noirchagrin;Marais des Chagrins;261 | x=-10623.400390625 y=-4053 | size=1 | links=#52232(auto Sorrowmurk;Swamp of Sorrows;260):28 #52234(auto Pool of Tears;Swamp of Sorrows;262):51
+#52234 | auto Pool of Tears;Swamp of Sorrows;262§auto Tränenteich;Sümpfe des Elends;262§auto Le bassin des larmes;Marais des Chagrins;262 | x=-10597.5 y=-4008.300048828125 | size=1 | links=#52233(auto Sorrowmurk;Swamp of Sorrows;261):51 #52235(auto Pool of Tears;Swamp of Sorrows;263):38
+#52235 | auto Pool of Tears;Swamp of Sorrows;263§auto Tränenteich;Sümpfe des Elends;263§auto Le bassin des larmes;Marais des Chagrins;263 | x=-10582.7998046875 y=-3972.699951171875 | size=1 | links=#52234(auto Pool of Tears;Swamp of Sorrows;262):38 #52236(auto Pool of Tears;Swamp of Sorrows;264):15 o30854.1:66 o30855.1:122
+#52236 | auto Pool of Tears;Swamp of Sorrows;264§auto Tränenteich;Sümpfe des Elends;264§auto Le bassin des larmes;Marais des Chagrins;264 | x=-10580.5 y=-3987.900146484375 | size=1 | links=#52235(auto Pool of Tears;Swamp of Sorrows;263):15 #52237(auto Pool of Tears;Swamp of Sorrows;265):60
+#52237 | auto Pool of Tears;Swamp of Sorrows;265§auto Tränenteich;Sümpfe des Elends;265§auto Le bassin des larmes;Marais des Chagrins;265 | x=-10526.7998046875 y=-4015.400146484375 | size=1 | links=#52236(auto Pool of Tears;Swamp of Sorrows;264):60 #52238(auto Sorrowmurk;Swamp of Sorrows;266):34
+#52238 | auto Sorrowmurk;Swamp of Sorrows;266§auto Sorrowmurk;Sümpfe des Elends;266§auto Noirchagrin;Marais des Chagrins;266 | x=-10500.400390625 y=-4037.60009765625 | size=1 | links=#52237(auto Pool of Tears;Swamp of Sorrows;265):34 o30854.2:9
+#52245 | auto Stagalbog;Swamp of Sorrows;273§auto Stagalbog;Sümpfe des Elends;273§auto Stagalbog;Marais des Chagrins;273 | x=-10769.2998046875 y=-3745.199951171875 | size=1 | links=#52246(auto Stagalboghöhle;Swamp of Sorrows;274):31 #52255(auto Stagalbog;Swamp of Sorrows;283):46
+#52246 | auto Stagalboghöhle;Swamp of Sorrows;274§auto Stagalboghöhle;Sümpfe des Elends;274§auto Stagalboghöhle;Marais des Chagrins;274 | x=-10800.2998046875 y=-3741 | size=1 | links=#52245(auto Stagalbog;Swamp of Sorrows;273):31 #28794(s;Eastern Kingdoms;Swamp of Sorrows;Stagalbog;Stagalbog Cave):3
+#52255 | auto Stagalbog;Swamp of Sorrows;283§auto Stagalbog;Sümpfe des Elends;283§auto Stagalbog;Marais des Chagrins;283 | x=-10723.1005859375 y=-3741.10009765625 | size=1 | links=#52245(auto Stagalbog;Swamp of Sorrows;273):46 #52256(auto Stagalbog;Swamp of Sorrows;284):46
+#52256 | auto Stagalbog;Swamp of Sorrows;284§auto Stagalbog;Sümpfe des Elends;284§auto Stagalbog;Marais des Chagrins;284 | x=-10679.5 y=-3756.199951171875 | size=1 | links=#52255(auto Stagalbog;Swamp of Sorrows;283):46 #52257(auto Pool of Tears;Swamp of Sorrows;285):39
+#52257 | auto Pool of Tears;Swamp of Sorrows;285§auto Tränenteich;Sümpfe des Elends;285§auto Le bassin des larmes;Marais des Chagrins;285 | x=-10644.7001953125 y=-3775.800048828125 | size=1 | links=#52256(auto Stagalbog;Swamp of Sorrows;284):39 o30855.3:62
+#52258 | auto The Shifting Mire;Swamp of Sorrows;286§auto Der Wabersumpf;Sümpfe des Elends;286§auto Le Bourbier changeant;Marais des Chagrins;286 | x=-10193.5 y=-3316.199951171875 | size=1 | links=#52259(auto The Shifting Mire;Swamp of Sorrows;287):24 c5477.1:24
+#52259 | auto The Shifting Mire;Swamp of Sorrows;287§auto Der Wabersumpf;Sümpfe des Elends;287§auto Le Bourbier changeant;Marais des Chagrins;287 | x=-10169 y=-3319 | size=1 | links=#52258(auto The Shifting Mire;Swamp of Sorrows;286):24 #52260(auto The Shifting Mire;Swamp of Sorrows;288):23
+#52260 | auto The Shifting Mire;Swamp of Sorrows;288§auto Der Wabersumpf;Sümpfe des Elends;288§auto Le Bourbier changeant;Marais des Chagrins;288 | x=-10151.1005859375 y=-3303.800048828125 | size=1 | links=#52259(auto The Shifting Mire;Swamp of Sorrows;287):23 o28604.2:32
+#52261 | auto Inside;Stonard;Swamp of Sorrows;289§auto Drinnen;Stonard;Sümpfe des Elends;289§auto Intérieur;Stonard;Marais des Chagrins;289 | x=-10490.6005859375 y=-3254.60009765625 | size=1 | links=#6903(auto Swamp of Sorrows;42):21 c5591.1:8
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c740.1 | links=c740.2:37 c767.34:68
+c741.1 | links=c740.2:40 c740.3:44
+c743.1 | links=#12379(auto Swamp of Sorrows;75):27
+c759.1 | links=o22550.1:4
+c761.1 | links=c17113.1:4 c763.5:8 o22550.7:6
+c762.1 | links=o22550.1:13 c1106.6:5
+c763.1 | links=c762.3:4 c1106.4:11
+c765.1 | links=c765.2:65 c764.8:47
+c858.1 | links=#10113(auto Swamp of Sorrows;66):55
+c861.1 | links=#16684(auto Swamp of Sorrows;101):13
+c980.1 | links=c984.1:14
+c981.1 | links=c8176.1:8
+c982.1 | links=#9847(central location;Stonard;Swamp of Sorrows):30 #18838(auto Swamp of Sorrows;112):8 c6026.1:13
+c983.1 | links=#9847(central location;Stonard;Swamp of Sorrows):20
+c984.1 | links=#8919(auto Swamp of Sorrows;59):6 c980.1:14
+c985.1 | links=c6930.1:15
+c987.1 | links=c3622.1:8
+c988.1 | links=#20661(auto Swamp of Sorrows;126):7
+c989.1 | links=#27709(auto Swamp of Sorrows;167):4
+c1063.1 | links=#1517(auto Swamp of Sorrows;15):35 #52147(Temple of Atal'Hakkar dungeon entrance):4 c1063.2:31
+c1081.1 | links=#26620(auto Swamp of Sorrows;160):15
+c1106.1 | links=o22550.3:6
+c1386.1 | links=#20661(auto Swamp of Sorrows;126):7
+c1442.1 | links=c7623.1:4
+c1443.1 | links=c7623.1:4
+c1775.1 | links=#9847(central location;Stonard;Swamp of Sorrows):15
+c1776.1 | links=#8130(auto Swamp of Sorrows;55):5 #23971(central location;The Harborage;Swamp of Sorrows):7
+c3622.1 | links=#14962(auto Swamp of Sorrows;92):14 c987.1:8
+c5353.1 | links=#14618(auto Swamp of Sorrows;90):36
+c5391.1 | links=#21312(auto Swamp of Sorrows;130):21
+c5399.1 | links=
+c5416.1 | links=#7036(auto Swamp of Sorrows;43):21
+c5476.1 | links=#18971(auto Swamp of Sorrows;114):50
+c5477.1 | links=#52258(auto The Shifting Mire;Swamp of Sorrows;286):24 o32569.1:21
+c5591.1 | links=#52261(auto Inside;Stonard;Swamp of Sorrows;289):8 c7643.1:6 o180523.1:6
+c5592.1 | links=#52224(auto Misty Reed Post;Swamp of Sorrows;252):14
+c5593.1 | links=#52225(auto Misty Reed Post;Swamp of Sorrows;253):18
+c5622.1 | links=#16484(auto Swamp of Sorrows;99):7 o22550.1:13
+c6026.1 | links=#9847(central location;Stonard;Swamp of Sorrows):24 c982.1:13 c10049.1:12
+c6930.1 | links=#2302(auto Swamp of Sorrows;21):3 #20121(auto Swamp of Sorrows;120):6 c985.1:15
+c7572.1 | links=#15986(auto Swamp of Sorrows;97):7
+c7623.1 | links=#320(auto Swamp of Sorrows;2):4 c1442.1:4 c1443.1:4
+c7643.1 | links=c5591.1:6
+c8176.1 | links=#8919(auto Swamp of Sorrows;59):3 c981.1:8
+c8177.1 | links=#23152(auto Swamp of Sorrows;139):5
+c10049.1 | links=#9847(central location;Stonard;Swamp of Sorrows):20 #12573(s;u;Mailbox;Swamp of Sorrows):3 c6026.1:12
+c11198.1 | links=#7733(auto Swamp of Sorrows;51):5
+c11874.1 | links=#23971(central location;The Harborage;Swamp of Sorrows):13
+c12807.1 | links=#20661(auto Swamp of Sorrows;126):6
+c14445.1 | links=#52153(auto Pool of Tears;Swamp of Sorrows;181):34
+c17109.1 | links=#9610(auto Swamp of Sorrows;61):2 #14517(auto Swamp of Sorrows;86):7
+c17113.1 | links=c761.1:4
+c17127.1 | links=#23971(central location;The Harborage;Swamp of Sorrows):4 c17531.1:2
+c17531.1 | links=c17127.1:2
+c18221.1 | links=#23971(central location;The Harborage;Swamp of Sorrows):8
+c27705.1 | links=#9610(auto Swamp of Sorrows;61):6
+o2553.1 | links=#6788(auto Swamp of Sorrows;39):5
+o22550.1 | links=c759.1:4 c762.1:13 c5622.1:13 o22550.3:4
+o28024.1 | links=#7185(auto Swamp of Sorrows;46):2
+o28604.1 | links=c762.2:2
+o30854.1 | links=#52235(auto Pool of Tears;Swamp of Sorrows;263):66 o30855.3:148
+o30855.1 | links=#1517(auto Swamp of Sorrows;15):71 #52235(auto Pool of Tears;Swamp of Sorrows;263):122 o179493.3:61
+o32569.1 | links=c5477.1:21
+o180523.1 | links=c5591.1:6
+c740.2 | links=#21796(auto Swamp of Sorrows;133):53 c740.1:37 c741.1:40 c741.3:65
+c741.2 | links=c740.3:52
+c742.2 | links=#5128(auto Swamp of Sorrows;31):33
+c755.2 | links=#10045(auto Swamp of Sorrows;65):20 c4953.5:8 c14448.17:9
+c757.2 | links=c764.2:54 c764.3:69 c862.5:31
+c761.2 | links=o22550.2:7
+c762.2 | links=o28604.1:2 c1106.6:5
+c764.2 | links=c757.2:54
+c765.2 | links=#25199(auto Swamp of Sorrows;153):52 c765.1:65 c766.19:44
+c1063.2 | links=c1063.1:31
+c4953.2 | links=#16621(auto Swamp of Sorrows;100):35
+c11198.2 | links=#17397(auto Swamp of Sorrows;105):3
+o22550.2 | links=#931(auto Swamp of Sorrows;10):11 #21312(auto Swamp of Sorrows;130):29 c761.2:7
+o28604.2 | links=#10045(auto Swamp of Sorrows;65):36 #52260(auto The Shifting Mire;Swamp of Sorrows;288):32
+o30854.2 | links=#52238(auto Sorrowmurk;Swamp of Sorrows;266):9
+c740.3 | links=c741.1:44 c741.2:52
+c741.3 | links=c740.2:65
+c744.3 | links=#52148(auto Swamp of Sorrows;176):37 #52149(auto Swamp of Sorrows;177):14
+c762.3 | links=c763.1:4
+c764.3 | links=c757.2:69
+c858.3 | links=#27977(auto Swamp of Sorrows;169):33
+c861.3 | links=#26129(crossing;Splinterspear Junction;Swamp of Sorrows):5
+c862.3 | links=#12379(auto Swamp of Sorrows;75):22
+c863.3 | links=#52224(auto Misty Reed Post;Swamp of Sorrows;252):9
+c1106.3 | links=c762.4:6
+c14448.3 | links=#4370(auto Swamp of Sorrows;29):30 c767.39:12
+o22550.3 | links=c1106.1:6 o22550.1:4
+o24798.3 | links=#52186(auto Misty Reed Strand;Swamp of Sorrows;214):120 #52187(auto Misty Reed Strand;Swamp of Sorrows;215):42
+o28604.3 | links=c759.8:8
+o30854.3 | links=o30856.8:53
+o30855.3 | links=#52257(auto Pool of Tears;Swamp of Sorrows;285):62 o30854.1:148 o30854.13:123
+o30856.3 | links=o30854.5:63 o30856.8:68
+o179493.3 | links=o30855.1:61 o30856.22:79
+c762.4 | links=c1106.3:6 c763.5:16
+c861.4 | links=#8123(crossing;Swamp of Sorrows;an):12
+c1106.4 | links=#3768(Ongeku;Fallow Sanctuary;Swamp of Sorrows):12 #20150(auto Swamp of Sorrows;121):23 c763.1:11
+c17115.4 | links=#20150(auto Swamp of Sorrows;121):14
+o22550.4 | links=#7597(auto Swamp of Sorrows;49):18 c759.5:2
+c757.5 | links=#16793(auto Swamp of Sorrows;103):8
+c759.5 | links=o22550.4:2
+c763.5 | links=#3768(Ongeku;Fallow Sanctuary;Swamp of Sorrows):21 #12164(auto Swamp of Sorrows;73):16 c761.1:8 c762.4:16
+c764.5 | links=#6867(auto Swamp of Sorrows;40):33 c764.6:39
+c861.5 | links=#7690(auto Swamp of Sorrows;50):48 #23430(auto Swamp of Sorrows;141):13
+c862.5 | links=#15222(auto Swamp of Sorrows;95):15 c757.2:31
+c4953.5 | links=c755.2:8
+c17115.5 | links=#14509(auto Swamp of Sorrows;85):21
+o30854.5 | links=o30856.3:63 o30854.6:70
+c741.6 | links=c858.26:47 c767.34:59
+c755.6 | links=#25228(auto Swamp of Sorrows;154):13
+c757.6 | links=#19101(auto Swamp of Sorrows;115):11
+c759.6 | links=#24223(auto Swamp of Sorrows;147):15
+c764.6 | links=c764.5:39 c764.8:43
+c1106.6 | links=c762.1:5 c762.2:5
+o22550.6 | links=#24223(auto Swamp of Sorrows;147):15 c759.8:5
+o30854.6 | links=o30854.5:70 o30854.13:30
+c755.7 | links=#15222(auto Swamp of Sorrows;95):15
+c757.7 | links=#23611(auto Swamp of Sorrows;143):20
+c764.7 | links=#14609(auto Swamp of Sorrows;89):34
+o22550.7 | links=c761.1:6
+c759.8 | links=o28604.3:8 o22550.6:5
+c764.8 | links=c765.1:47 c764.6:43
+c11198.8 | links=#23183(auto Swamp of Sorrows;140):8
+o30854.8 | links=#1517(auto Swamp of Sorrows;15):16 o30854.13:68
+o30856.8 | links=o30854.3:53 o30856.3:68
+c767.9 | links=#25613(auto Swamp of Sorrows;156):25
+c14448.10 | links=#6346(auto Swamp of Sorrows;35):8
+c764.11 | links=#6867(auto Swamp of Sorrows;40):14
+c759.12 | links=#24223(auto Swamp of Sorrows;147):16
+o30854.13 | links=#12379(auto Swamp of Sorrows;75):98 o30855.3:123 o30854.6:30 o30854.8:68
+o30854.15 | links=#5128(auto Swamp of Sorrows;31):48 #27162(auto Swamp of Sorrows;164):63
+c767.17 | links=#24549(auto Swamp of Sorrows;149):26
+c14448.17 | links=c755.2:9
+c14448.18 | links=#4087(auto Swamp of Sorrows;28):16
+c766.19 | links=c765.2:44
+c1084.19 | links=#18971(auto Swamp of Sorrows;114):23
+c767.21 | links=#9999(auto Swamp of Sorrows;64):24
+c858.21 | links=#17465(auto Swamp of Sorrows;107):44 c858.26:50
+o30856.22 | links=o179493.3:79
+c767.23 | links=#404(auto Swamp of Sorrows;5):8 #6346(auto Swamp of Sorrows;35):17
+c767.24 | links=#21596(auto Swamp of Sorrows;132):10
+c858.26 | links=c741.6:47 c858.21:50
+c767.34 | links=c740.1:68 c741.6:59
+c767.39 | links=c14448.3:12
+c767.41 | links=#14397(auto Swamp of Sorrows;84):27

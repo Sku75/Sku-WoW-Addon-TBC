@@ -1,0 +1,665 @@
+Zone areaId 1637 — eine Zeile pro Wegpunkt; Links inline.
+
+#167 | auto Orgrimmar;1§auto Orgrimmar;1§auto Orgrimmar;1 | x=1669.5 y=-4335.30029296875 | size=1 | links=#6106(auto Orgrimmar;97):2 #13799(auto Orgrimmar;217):2
+#287 | auto Orgrimmar;2§auto Orgrimmar;2§auto Orgrimmar;2 | x=1651.900024414063 y=-4359.80029296875 | size=1 | links=#13383(auto Orgrimmar;209):10 #23887(auto Orgrimmar;394):16
+#312 | auto Orgrimmar;3§auto Orgrimmar;3§auto Orgrimmar;3 | x=1964.099975585938 y=-4750.60009765625 | size=1 | links=#23478(auto Orgrimmar;386):10 #24063(auto Orgrimmar;397):13
+#332 | auto Orgrimmar;4§auto Orgrimmar;4§auto Orgrimmar;4 | x=1730.400024414063 y=-4487.10009765625 | size=1 | links=#10305(auto Orgrimmar;166):11 #23713(auto Orgrimmar;389):18
+#422 | auto Orgrimmar;5§auto Orgrimmar;5§auto Orgrimmar;5 | x=1670.400024414063 y=-4323.10009765625 | size=1 | links=#20292(auto Orgrimmar;331):2 #27267(auto Orgrimmar;447):3
+#595 | auto Orgrimmar;6§auto Orgrimmar;6§auto Orgrimmar;6 | x=1566 y=-4308.10009765625 | size=1 | links=#17509(auto Orgrimmar;283):9 #26710(auto Orgrimmar;434):8
+#617 | auto Orgrimmar;7§auto Orgrimmar;7§auto Orgrimmar;7 | x=1687.400024414063 y=-3901.10009765625 | size=1 | links=#8137(auto Orgrimmar;126):40 #14045(auto Orgrimmar;221):12
+#726 | auto Orgrimmar;8§auto Orgrimmar;8§auto Orgrimmar;8 | x=1670.300048828125 y=-4338.30029296875 | size=1 | links=#4709(auto Orgrimmar;72):2 #26692(auto Orgrimmar;433):3
+#816 | auto Orgrimmar;9§auto Orgrimmar;9§auto Orgrimmar;9 | x=1668.300048828125 y=-4335.5 | size=1 | links=#13569(auto Orgrimmar;216):3 #23580(auto Orgrimmar;387):5
+#819 | auto Orgrimmar;10§auto Orgrimmar;10§auto Orgrimmar;10 | x=1854.400024414063 y=-4477.39990234375 | size=1 | links=#11619(auto Orgrimmar;189):9 #23826(auto Orgrimmar;392):6
+#839 | auto Orgrimmar;11§auto Orgrimmar;11§auto Orgrimmar;11 | x=1956.700073242188 y=-4461.30029296875 | size=1 | links=#12095(auto Orgrimmar;192):4 #15731(auto Orgrimmar;248):3
+#866 | auto Orgrimmar;12§auto Orgrimmar;12§auto Orgrimmar;12 | x=1468.300048828125 y=-4162.2001953125 | size=1 | links=#2513(auto Orgrimmar;44):4 #19731(auto Orgrimmar;324):3
+#987 | auto Orgrimmar;13§auto Orgrimmar;13§auto Orgrimmar;13 | x=1538.599975585938 y=-4156 | size=1 | links=#1000(auto Orgrimmar;14):11 #18097(auto Orgrimmar;297):28 #23871(auto Orgrimmar;393):27
+#1000 | auto Orgrimmar;14§auto Orgrimmar;14§auto Orgrimmar;14 | x=1548.200073242188 y=-4163.10009765625 | size=1 | links=#987(auto Orgrimmar;13):11 #1861(auto Orgrimmar;36):22
+#1008 | auto Orgrimmar;15§auto Orgrimmar;15§auto Orgrimmar;15 | x=1677.800048828125 y=-4336.30029296875 | size=1 | links=#9105(auto Orgrimmar;143):2 #28129(auto Orgrimmar;464):2
+#1061 | auto Orgrimmar;16§auto Orgrimmar;16§auto Orgrimmar;16 | x=2070.300048828125 y=-4604.30029296875 | size=1 | links=#27139(auto Orgrimmar;445):8 #28153(auto Orgrimmar;465):7 c7294.1:5
+#1121 | auto Orgrimmar;17§auto Orgrimmar;17§auto Orgrimmar;17 | x=2070.400146484375 y=-4755.80029296875 | size=1 | links=#24658(auto Orgrimmar;405):20 #28492(auto Orgrimmar;471):56
+#1191 | auto Orgrimmar;18§auto Orgrimmar;18§auto Orgrimmar;18 | x=1886.900024414063 y=-4477.60009765625 | size=1 | links=#11460(auto Orgrimmar;184):22 #11502(auto Orgrimmar;185):39 #23104(auto Orgrimmar;381):15
+#1262 | auto Orgrimmar;19§auto Orgrimmar;19§auto Orgrimmar;19 | x=1436.400024414063 y=-4421.2001953125 | size=1 | links=#15062(auto Orgrimmar;235):59 #16334(auto Orgrimmar;261):50
+#1327 | auto Orgrimmar;20§auto Orgrimmar;20§auto Orgrimmar;20 | x=1797.700073242188 y=-4528.7001953125 | size=1 | links=#11523(auto Orgrimmar;187):45 #16120(auto Orgrimmar;257):12 #20688(auto Orgrimmar;336):23 #21615(auto Orgrimmar;356):37
+#1407 | auto Orgrimmar;21§auto Orgrimmar;21§auto Orgrimmar;21 | x=1831.300048828125 y=-4389.30029296875 | size=1 | links=#5420(auto Orgrimmar;85):12 #24780(auto Orgrimmar;406):9
+#1445 | auto Orgrimmar;22§auto Orgrimmar;22§auto Orgrimmar;22 | x=1907.200073242188 y=-4693.80029296875 | size=1 | links=#2713(auto Orgrimmar;45):30 #23014(auto Orgrimmar;379):20 #26996(auto Orgrimmar;443):13
+#1491 | auto Orgrimmar;23§auto Orgrimmar;23§auto Orgrimmar;23 | x=1931.099975585938 y=-4662.89990234375 | size=1 | links=#5724(auto Orgrimmar;90):33 #20254(auto Orgrimmar;330):33 #23014(auto Orgrimmar;379):18
+#1533 | auto Orgrimmar;24§auto Orgrimmar;24§auto Orgrimmar;24 | x=1605.099975585938 y=-4363 | size=1 | links=#5039(auto Orgrimmar;74):10 #22926(auto Orgrimmar;378):18
+#1547 | auto Orgrimmar;25§auto Orgrimmar;25§auto Orgrimmar;25 | x=1525.099975585938 y=-4355.80029296875 | size=1 | links=#14306(auto Orgrimmar;225):9 c3313.1:4 c5817.1:4
+#1556 | auto Orgrimmar;26§auto Orgrimmar;26§auto Orgrimmar;26 | x=1960.700073242188 y=-4465 | size=5 | links=#13136(auto Orgrimmar;207):3 #27414(auto Orgrimmar;449):3
+#1557 | auto Orgrimmar;27§auto Orgrimmar;27§auto Orgrimmar;27 | x=1670.300048828125 y=-4307.5 | size=1 | links=#10749(auto Orgrimmar;177):7 #18102(auto Orgrimmar;298):10
+#1572 | auto Orgrimmar;28§auto Orgrimmar;28§auto Orgrimmar;28 | x=1963.300048828125 y=-4787.30029296875 | size=1 | links=#16161(auto Orgrimmar;258):16 #26929(auto Orgrimmar;442):5 c3354.1:22
+#1685 | auto Orgrimmar;29§auto Orgrimmar;29§auto Orgrimmar;29 | x=1952 y=-4722.10009765625 | size=1 | links=#12760(auto Orgrimmar;201):14 c4485.1:13
+#1724 | auto Orgrimmar;30§auto Orgrimmar;30§auto Orgrimmar;30 | x=1883.400024414063 y=-4701.7001953125 | size=1 | links=#6790(auto Orgrimmar;110):8 c3359.1:8
+#1736 | auto Orgrimmar;31§auto Orgrimmar;31§auto Orgrimmar;31 | x=1785.5 y=-4303.60009765625 | size=1 | links=#22175(auto Orgrimmar;367):11 #27749(auto Orgrimmar;454):11
+#1743 | auto Orgrimmar;32§auto Orgrimmar;32§auto Orgrimmar;32 | x=1889.5 y=-4444.60009765625 | size=1 | links=#6734(auto Orgrimmar;107):10 #22535(auto Orgrimmar;370):10 #27862(auto Orgrimmar;458):24
+#1781 | auto Orgrimmar;33§auto Orgrimmar;33§auto Orgrimmar;33 | x=1871.900024414063 y=-4337.7001953125 | size=1 | links=#4431(auto Orgrimmar;68):20 #21918(auto Orgrimmar;362):6
+#1804 | auto Orgrimmar;34§auto Orgrimmar;34§auto Orgrimmar;34 | x=1958.200073242188 y=-4463.5 | size=1 | links=#8782(auto Orgrimmar;138):3 #14805(auto Orgrimmar;230):3
+#1842 | auto Orgrimmar;35§auto Orgrimmar;35§auto Orgrimmar;35 | x=1996.599975585938 y=-4781.5 | size=1 | links=#17766(auto Orgrimmar;289):9 c14942.1:16 c20385.1:11
+#1861 | auto Orgrimmar;36§auto Orgrimmar;36§auto Orgrimmar;36 | x=1549.099975585938 y=-4185.30029296875 | size=1 | links=#1000(auto Orgrimmar;14):22 #9541(auto Orgrimmar;154):43 #23646(central location;Valley of Spirits;Orgrimmar):22
+#1926 | auto Orgrimmar;37§auto Orgrimmar;37§auto Orgrimmar;37 | x=2022.5 y=-4704.80029296875 | size=1 | links=#18052(auto Orgrimmar;296):8 c3357.1:7 c3358.1:4
+#1938 | auto Orgrimmar;38§auto Orgrimmar;38§auto Orgrimmar;38 | x=2020.099975585938 y=-4726.80029296875 | size=1 | links=#8331(central location;Valley of Honor;Orgrimmar):31 #13021(auto Orgrimmar;206):27
+#1980 | Blacksmith;one;Valley of Honor;Orgrimmar§schmiede;eins;Tal der Ehre;Orgrimmar§Forge;un;Valley of Honor;Orgrimmar | x=2019.800048828125 y=-4688 | size=1 | links=#7014(auto Orgrimmar;113):4
+#1989 | auto Orgrimmar;39§auto Orgrimmar;39§auto Orgrimmar;39 | x=1631.300048828125 y=-4315.39990234375 | size=1 | links=#5154(auto Orgrimmar;77):4 #9871(auto Orgrimmar;159):7
+#2071 | auto Orgrimmar;40§auto Orgrimmar;40§auto Orgrimmar;40 | x=1604.099975585938 y=-4380.60009765625 | size=1 | links=#5039(auto Orgrimmar;74):6 #28384(auto Orgrimmar;469):5
+#2076 | auto Orgrimmar;41§auto Orgrimmar;41§auto Orgrimmar;41 | x=1466.300048828125 y=-4171.5 | size=1 | links=#2513(auto Orgrimmar;44):4 #21625(auto Orgrimmar;357):4
+#2185 | auto Orgrimmar;42§auto Orgrimmar;42§auto Orgrimmar;42 | x=2096 y=-4659.10009765625 | size=1 | links=#2731(auto Orgrimmar;46):17 #9479(auto Orgrimmar;152):49 #17570(auto Orgrimmar;286):40
+#2430 | auto Orgrimmar;43§auto Orgrimmar;43§auto Orgrimmar;43 | x=1564.400024414063 y=-4417.7001953125 | size=1 | links=#22908(auto Orgrimmar;377):11 #27584(auto Orgrimmar;452):12
+#2513 | auto Orgrimmar;44§auto Orgrimmar;44§auto Orgrimmar;44 | x=1467.300048828125 y=-4166.80029296875 | size=1 | links=#866(auto Orgrimmar;12):4 #2076(auto Orgrimmar;41):4
+#2713 | auto Orgrimmar;45§auto Orgrimmar;45§auto Orgrimmar;45 | x=1896.300048828125 y=-4722.60009765625 | size=1 | links=#1445(auto Orgrimmar;22):30 #22091(auto Orgrimmar;364):23
+#2731 | auto Orgrimmar;46§auto Orgrimmar;46§auto Orgrimmar;46 | x=2081.300048828125 y=-4649.60009765625 | size=1 | links=#2185(auto Orgrimmar;42):17 #15748(auto Orgrimmar;250):23
+#2739 | auto Orgrimmar;47§auto Orgrimmar;47§auto Orgrimmar;47 | x=1393.900024414063 y=-4366.2001953125 | size=1 | links=#15062(auto Orgrimmar;235):35 #28569(passage;from;Orgrimmar;to;Durotar):7
+#2751 | auto Orgrimmar;48§auto Orgrimmar;48§auto Orgrimmar;48 | x=1671.200073242188 y=-4436.30029296875 | size=1 | links=#3617(auto Orgrimmar;58):9 #10447(auto Orgrimmar;171):14
+#2894 | auto Orgrimmar;49§auto Orgrimmar;49§auto Orgrimmar;49 | x=1836.700073242188 y=-4242.2001953125 | size=1 | links=#5267(auto Orgrimmar;80):20 #20887(auto Orgrimmar;342):16
+#2899 | auto Orgrimmar;50§auto Orgrimmar;50§auto Orgrimmar;50 | x=2097.800048828125 y=-4831.39990234375 | size=1 | links=#5510(auto Orgrimmar;87):4 #20761(auto Orgrimmar;339):7
+#3009 | auto Orgrimmar;51§auto Orgrimmar;51§auto Orgrimmar;51 | x=1677.200073242188 y=-4338.80029296875 | size=1 | links=#23921(auto Orgrimmar;395):2 #25419(auto Orgrimmar;415):3
+#3088 | auto Orgrimmar;52§auto Orgrimmar;52§auto Orgrimmar;52 | x=1774.200073242188 y=-4488.80029296875 | size=1 | links=#5861(auto Orgrimmar;91):7 c3368.1:5 c3399.1:5 c3400.1:4
+#3178 | auto Orgrimmar;53§auto Orgrimmar;53§auto Orgrimmar;53 | x=1928.800048828125 y=-4250.80029296875 | size=1 | links=#10722(auto Orgrimmar;176):32 #18968(auto Orgrimmar;312):20
+#3212 | auto Orgrimmar;54§auto Orgrimmar;54§auto Orgrimmar;54 | x=1504.099975585938 y=-4221.5 | size=1 | links=#6305(auto Orgrimmar;99):4 #7433(auto Orgrimmar;123):11
+#3471 | auto Orgrimmar;55§auto Orgrimmar;55§auto Orgrimmar;55 | x=1877.5 y=-4528.5 | size=1 | links=#10997(auto Orgrimmar;179):18 #15083(auto Orgrimmar;236):14
+#3515 | auto Orgrimmar;56§auto Orgrimmar;56§auto Orgrimmar;56 | x=1618.300048828125 y=-4432.30029296875 | size=1 | links=#19040(auto Orgrimmar;316):9 #19586(central location;Valley of Strength;Orgrimmar):35 #24930(auto Orgrimmar;409):44
+#3599 | auto Orgrimmar;57§auto Orgrimmar;57§auto Orgrimmar;57 | x=1820.5 y=-4371.30029296875 | size=1 | links=#22744(auto Orgrimmar;372):13 #24780(auto Orgrimmar;406):11
+#3617 | auto Orgrimmar;58§auto Orgrimmar;58§auto Orgrimmar;58 | x=1666.700073242188 y=-4427.80029296875 | size=1 | links=#2751(auto Orgrimmar;48):9 #5473(auto Orgrimmar;86):15
+#3739 | auto Orgrimmar;59§auto Orgrimmar;59§auto Orgrimmar;59 | x=2085.900146484375 y=-4815.10009765625 | size=1 | links=#25563(auto Orgrimmar;417):6 #28492(auto Orgrimmar;471):6
+#3761 | auto Orgrimmar;60§auto Orgrimmar;60§auto Orgrimmar;60 | x=1946 y=-4441.5 | size=1 | links=#6005(auto Orgrimmar;96):15 #26280(auto Orgrimmar;428):17
+#3875 | auto Orgrimmar;61§auto Orgrimmar;61§auto Orgrimmar;61 | x=1787.900024414063 y=-4227.60009765625 | size=1 | links=#4826(auto Orgrimmar;73):8 #16550(auto Orgrimmar;264):17 #26441(auto Orgrimmar;429):19
+#3966 | auto Orgrimmar;62§auto Orgrimmar;62§auto Orgrimmar;62 | x=1697.599975585938 y=-4274.7001953125 | size=1 | links=#6742(auto Orgrimmar;108):9 #21587(auto Orgrimmar;354):6
+#4130 | auto Orgrimmar;63§auto Orgrimmar;63§auto Orgrimmar;63 | x=1918.200073242188 y=-4429.89990234375 | size=1 | links=#5358(auto Orgrimmar;84):2 #13417(auto Orgrimmar;211):3
+#4195 | auto Orgrimmar;64§auto Orgrimmar;64§auto Orgrimmar;64 | x=1690.099975585938 y=-4267.2001953125 | size=1 | links=#20490(auto Orgrimmar;333):4 #21353(auto Orgrimmar;352):5
+#4210 | auto Orgrimmar;65§auto Orgrimmar;65§auto Orgrimmar;65 | x=1753.700073242188 y=-4482.89990234375 | size=1 | links=#5622(auto Orgrimmar;88):8 #22647(auto Orgrimmar;371):10
+#4215 | auto Orgrimmar;66§auto Orgrimmar;66§auto Orgrimmar;66 | x=2025.5 y=-4679.80029296875 | size=1 | links=#7014(auto Orgrimmar;113):11 #15089(auto Orgrimmar;237):40 #20996(auto Orgrimmar;345):5
+#4247 | Bounty Hunter Kolark;Questgiver;Orgrimmar;1;75.05;23.13§Kopfgeldjäger Kolark;Questgeber;Orgrimmar;1;75.05;23.13§Chasseur de primes Kolark;Questgiver;Orgrimmar;1;75.05;23.13 | x=2048.148348914229 y=-4724.51690945284 | size=1
+#4321 | auto Orgrimmar;67§auto Orgrimmar;67§auto Orgrimmar;67 | x=1675.400024414063 y=-4332.10009765625 | size=1 | links=#9105(auto Orgrimmar;143):2 #10293(auto Orgrimmar;164):2
+#4431 | auto Orgrimmar;68§auto Orgrimmar;68§auto Orgrimmar;68 | x=1862.900024414063 y=-4319.30029296875 | size=1 | links=#1781(auto Orgrimmar;33):20 #5271(auto Orgrimmar;81):43
+#4454 | auto Orgrimmar;69§auto Orgrimmar;69§auto Orgrimmar;69 | x=1849.5 y=-4412.89990234375 | size=1 | links=#5420(auto Orgrimmar;85):17 #15687(auto Orgrimmar;245):36
+#4477 | auto Orgrimmar;70§auto Orgrimmar;70§auto Orgrimmar;70 | x=1702.900024414063 y=-4273.89990234375 | size=1 | links=#10329(auto Orgrimmar;168):3 #13397(auto Orgrimmar;210):3
+#4697 | auto Orgrimmar;71§auto Orgrimmar;71§auto Orgrimmar;71 | x=2064.900146484375 y=-4817.2001953125 | size=1 | links=#28024(auto Orgrimmar;463):7 #28492(auto Orgrimmar;471):16 c7792.1:9 c10266.1:13
+#4709 | auto Orgrimmar;72§auto Orgrimmar;72§auto Orgrimmar;72 | x=1671.700073242188 y=-4340.30029296875 | size=1 | links=#726(auto Orgrimmar;8):2 #15304(auto Orgrimmar;240):2
+#4826 | auto Orgrimmar;73§auto Orgrimmar;73§auto Orgrimmar;73 | x=1780 y=-4223.60009765625 | size=1 | links=#3875(auto Orgrimmar;61):8 #7233(auto Orgrimmar;119):8 #11184(auto Orgrimmar;180):20
+#5039 | auto Orgrimmar;74§auto Orgrimmar;74§auto Orgrimmar;74 | x=1605 y=-4373.89990234375 | size=1 | links=#1533(auto Orgrimmar;24):10 #2071(auto Orgrimmar;40):6
+#5061 | auto Orgrimmar;75§auto Orgrimmar;75§auto Orgrimmar;75 | x=1912.800048828125 y=-4284.39990234375 | size=1 | links=#5271(auto Orgrimmar;81):24 #10722(auto Orgrimmar;176):17
+#5107 | auto Orgrimmar;76§auto Orgrimmar;76§auto Orgrimmar;76 | x=2086.400146484375 y=-4609 | size=1 | links=#21734(auto Orgrimmar;359):19 #28153(auto Orgrimmar;465):15
+#5154 | auto Orgrimmar;77§auto Orgrimmar;77§auto Orgrimmar;77 | x=1628.200073242188 y=-4312.80029296875 | size=1 | links=#1989(auto Orgrimmar;39):4 #8898(auto Orgrimmar;140):5
+#5193 | auto Orgrimmar;78§auto Orgrimmar;78§auto Orgrimmar;78 | x=1555.099975585938 y=-4330.5 | size=1 | links=#13560(auto Orgrimmar;214):17 #17509(auto Orgrimmar;283):17
+#5217 | auto Orgrimmar;79§auto Orgrimmar;79§auto Orgrimmar;79 | x=1623.300048828125 y=-4329.10009765625 | size=1 | links=#9871(auto Orgrimmar;159):14 #13987(auto Orgrimmar;220):13
+#5267 | auto Orgrimmar;80§auto Orgrimmar;80§auto Orgrimmar;80 | x=1856.800048828125 y=-4247.30029296875 | size=1 | links=#2894(auto Orgrimmar;49):20 #14144(auto Orgrimmar;224):17
+#5271 | auto Orgrimmar;81§auto Orgrimmar;81§auto Orgrimmar;81 | x=1888.099975585938 y=-4284.10009765625 | size=1 | links=#4431(auto Orgrimmar;68):43 #5061(auto Orgrimmar;75):24 #15220(auto Orgrimmar;238):14
+#5300 | auto Orgrimmar;82§auto Orgrimmar;82§auto Orgrimmar;82 | x=1747.400024414063 y=-4301.7001953125 | size=1 | links=#17832(auto Orgrimmar;292):8 #23173(auto Orgrimmar;384):16
+#5304 | auto Orgrimmar;83§auto Orgrimmar;83§auto Orgrimmar;83 | x=1740.300048828125 y=-4439.89990234375 | size=1 | links=#10142(auto Orgrimmar;163):20 #20809(auto Orgrimmar;340):24 c14377.1:13
+#5358 | auto Orgrimmar;84§auto Orgrimmar;84§auto Orgrimmar;84 | x=1915.700073242188 y=-4430.10009765625 | size=1 | links=#4130(auto Orgrimmar;63):2 #12333(auto Orgrimmar;193):3
+#5420 | auto Orgrimmar;85§auto Orgrimmar;85§auto Orgrimmar;85 | x=1838 y=-4400.30029296875 | size=1 | links=#1407(auto Orgrimmar;21):12 #4454(auto Orgrimmar;69):17
+#5473 | auto Orgrimmar;86§auto Orgrimmar;86§auto Orgrimmar;86 | x=1665 y=-4412.80029296875 | size=1 | links=#3617(auto Orgrimmar;58):15 #19586(central location;Valley of Strength;Orgrimmar):17 #21285(auto Orgrimmar;351):9 #23118(auto Orgrimmar;383):19
+#5510 | auto Orgrimmar;87§auto Orgrimmar;87§auto Orgrimmar;87 | x=2102.10009765625 y=-4832.2001953125 | size=1 | links=#2899(auto Orgrimmar;50):4 #28007(auto Orgrimmar;462):5
+#5622 | auto Orgrimmar;88§auto Orgrimmar;88§auto Orgrimmar;88 | x=1747.200073242188 y=-4477.10009765625 | size=1 | links=#4210(auto Orgrimmar;65):8 #27543(auto Orgrimmar;451):9
+#5683 | auto Orgrimmar;89§auto Orgrimmar;89§auto Orgrimmar;89 | x=1979.200073242188 y=-4695.2001953125 | size=1 | links=#8331(central location;Valley of Honor;Orgrimmar):22 #14132(auto Orgrimmar;223):13
+#5724 | auto Orgrimmar;90§auto Orgrimmar;90§auto Orgrimmar;90 | x=1953.599975585938 y=-4687.2001953125 | size=1 | links=#1491(auto Orgrimmar;23):33 #12760(auto Orgrimmar;201):21 #14132(auto Orgrimmar;223):12
+#5852 | central location;Cleft of Shadow;Orgrimmar§zentralpunkt;Die Kluft der Schatten;Orgrimmar§emplacement central;Cleft of Shadow;Orgrimmar | x=1800.099975585938 y=-4330.30029296875 | size=1 | links=#8315(auto Orgrimmar;131):26 #9595(auto Orgrimmar;156):13 #16647(auto Orgrimmar;269):17 #27749(auto Orgrimmar;454):18
+#5861 | auto Orgrimmar;91§auto Orgrimmar;91§auto Orgrimmar;91 | x=1773.5 y=-4496.60009765625 | size=1 | links=#3088(auto Orgrimmar;52):7 #22032(auto Orgrimmar;363):4
+#5866 | auto Orgrimmar;92§auto Orgrimmar;92§auto Orgrimmar;92 | x=1921.900024414063 y=-4145.2001953125 | size=1 | links=#8402(Thrall;Grommash Hold;Orgrimmar):20 #19562(auto Orgrimmar;322):23
+#5905 | auto Orgrimmar;93§auto Orgrimmar;93§auto Orgrimmar;93 | x=2141.400146484375 y=-4640 | size=1 | links=#17570(auto Orgrimmar;286):9 #24508(auto Orgrimmar;403):9 #27071(auto Orgrimmar;444):9
+#5949 | auto Orgrimmar;94§auto Orgrimmar;94§auto Orgrimmar;94 | x=1651.200073242188 y=-4266.2001953125 | size=1 | links=#8602(auto Orgrimmar;135):15 #13210(auto Orgrimmar;208):15
+#5985 | auto Orgrimmar;95§auto Orgrimmar;95§auto Orgrimmar;95 | x=1837.5 y=-4489 | size=1 | links=#9953(auto Orgrimmar;161):10 #15538(auto Orgrimmar;243):14
+#6005 | auto Orgrimmar;96§auto Orgrimmar;96§auto Orgrimmar;96 | x=1936.300048828125 y=-4454.10009765625 | size=1 | links=#3761(auto Orgrimmar;60):15 #18772(auto Orgrimmar;311):20
+#6106 | auto Orgrimmar;97§auto Orgrimmar;97§auto Orgrimmar;97 | x=1670.700073242188 y=-4332.7001953125 | size=1 | links=#167(auto Orgrimmar;1):2 #10293(auto Orgrimmar;164):2
+#6244 | auto Orgrimmar;98§auto Orgrimmar;98§auto Orgrimmar;98 | x=2052.900146484375 y=-4619 | size=1 | links=#15748(auto Orgrimmar;250):18 #27139(auto Orgrimmar;445):14
+#6305 | auto Orgrimmar;99§auto Orgrimmar;99§auto Orgrimmar;99 | x=1507.900024414063 y=-4219.60009765625 | size=1 | links=#3212(auto Orgrimmar;54):4 #19238(auto Orgrimmar;318):5
+#6370 | auto Orgrimmar;100§auto Orgrimmar;100§auto Orgrimmar;100 | x=1729.800048828125 y=-4402 | size=1 | links=#10142(auto Orgrimmar;163):20 #17777(auto Orgrimmar;291):20
+#6387 | auto Orgrimmar;101§auto Orgrimmar;101§auto Orgrimmar;101 | x=1483.400024414063 y=-4150.89990234375 | size=1 | links=#15572(auto Orgrimmar;244):9 #18097(auto Orgrimmar;297):27
+#6423 | auto Orgrimmar;102§auto Orgrimmar;102§auto Orgrimmar;102 | x=1477.900024414063 y=-4186.7001953125 | size=1 | links=#9541(auto Orgrimmar;154):28 #21264(auto Orgrimmar;350):9
+#6431 | auto Orgrimmar;103§auto Orgrimmar;103§auto Orgrimmar;103 | x=1699.200073242188 y=-4264.2001953125 | size=1 | links=#6832(auto Orgrimmar;112):3 #9929(auto Orgrimmar;160):3
+#6541 | auto Orgrimmar;104§auto Orgrimmar;104§auto Orgrimmar;104 | x=1911.5 y=-4765 | size=1 | links=#17860(auto Orgrimmar;294):9 c3410.1:11
+#6611 | auto Orgrimmar;105§auto Orgrimmar;105§auto Orgrimmar;105 | x=1949.700073242188 y=-4463.7001953125 | size=1 | links=#9085(auto Orgrimmar;142):9 #15731(auto Orgrimmar;248):3 c3348.1:5
+#6674 | auto Orgrimmar;106§auto Orgrimmar;106§auto Orgrimmar;106 | x=1661.200073242188 y=-3862.10009765625 | size=1 | links=#16384(auto Orgrimmar;263):16 #26777(auto Orgrimmar;439):20
+#6734 | auto Orgrimmar;107§auto Orgrimmar;107§auto Orgrimmar;107 | x=1897 y=-4451.60009765625 | size=1 | links=#1743(auto Orgrimmar;32):10 c3404.1:11 c3405.1:7
+#6742 | auto Orgrimmar;108§auto Orgrimmar;108§auto Orgrimmar;108 | x=1693.5 y=-4283.2001953125 | size=1 | links=#3966(auto Orgrimmar;62):9 #27844(auto Orgrimmar;457):30 #28435(auto Orgrimmar;470):15
+#6780 | auto Orgrimmar;109§auto Orgrimmar;109§auto Orgrimmar;109 | x=1906.400024414063 y=-4421.10009765625 | size=1 | links=#8270(auto Orgrimmar;129):15 #11982(auto Orgrimmar;191):14 #12378(auto Orgrimmar;194):8
+#6790 | auto Orgrimmar;110§auto Orgrimmar;110§auto Orgrimmar;110 | x=1888.200073242188 y=-4694.80029296875 | size=1 | links=#1724(auto Orgrimmar;30):8 #26996(auto Orgrimmar;443):11
+#6791 | auto Orgrimmar;111§auto Orgrimmar;111§auto Orgrimmar;111 | x=1913.099975585938 y=-4438.7001953125 | size=1 | links=#9205(auto Orgrimmar;147):3 #24783(auto Orgrimmar;407):3
+#6832 | auto Orgrimmar;112§auto Orgrimmar;112§auto Orgrimmar;112 | x=1696.200073242188 y=-4266.10009765625 | size=1 | links=#6431(auto Orgrimmar;103):3 #21587(auto Orgrimmar;354):3
+#7014 | auto Orgrimmar;113§auto Orgrimmar;113§auto Orgrimmar;113 | x=2015.800048828125 y=-4685.89990234375 | size=1 | links=#1980(Blacksmith;one;Valley of Honor;Orgrimmar):4 #4215(auto Orgrimmar;66):11 #8331(central location;Valley of Honor;Orgrimmar):21 #20996(auto Orgrimmar;345):11
+#7018 | auto Orgrimmar;114§auto Orgrimmar;114§auto Orgrimmar;114 | x=2006.800048828125 y=-4649 | size=1 | links=#7179(auto Orgrimmar;117):8 #14889(auto Orgrimmar;232):10
+#7078 | auto Orgrimmar;115§auto Orgrimmar;115§auto Orgrimmar;115 | x=1685.400024414063 y=-4386 | size=1 | links=#10602(auto Orgrimmar;174):16 #23118(auto Orgrimmar;383):13
+#7131 | auto Orgrimmar;116§auto Orgrimmar;116§auto Orgrimmar;116 | x=1590 y=-4111.5 | size=1 | links=#10509(auto Orgrimmar;172):13 #16689(auto Orgrimmar;270):12
+#7179 | auto Orgrimmar;117§auto Orgrimmar;117§auto Orgrimmar;117 | x=1999.599975585938 y=-4653.10009765625 | size=1 | links=#7018(auto Orgrimmar;114):8 c3332.1:6 c3333.1:10 c7951.1:8 c15186.1:7 c16076.1:10
+#7222 | auto Orgrimmar;118§auto Orgrimmar;118§auto Orgrimmar;118 | x=1919.300048828125 y=-4440.5 | size=1 | links=#9205(auto Orgrimmar;147):3 #23227(auto Orgrimmar;385):2
+#7233 | auto Orgrimmar;119§auto Orgrimmar;119§auto Orgrimmar;119 | x=1782 y=-4215.30029296875 | size=1 | links=#4826(auto Orgrimmar;73):8 c3342.1:10
+#7253 | auto Orgrimmar;120§auto Orgrimmar;120§auto Orgrimmar;120 | x=1780.300048828125 y=-4379.5 | size=1 | links=#18280(auto Orgrimmar;301):21 #26735(auto Orgrimmar;436):12 c3329.1:18
+#7272 | auto Orgrimmar;121§auto Orgrimmar;121§auto Orgrimmar;121 | x=1753.5 y=-4251.60009765625 | size=1 | links=#16226(auto Orgrimmar;259):15 #16995(auto Orgrimmar;273):9
+#7292 | auto Orgrimmar;122§auto Orgrimmar;122§auto Orgrimmar;122 | x=1660.700073242188 y=-4267 | size=1 | links=#13832(auto Orgrimmar;218):26 #28435(auto Orgrimmar;470):20
+#7433 | auto Orgrimmar;123§auto Orgrimmar;123§auto Orgrimmar;123 | x=1492.5 y=-4224.39990234375 | size=1 | links=#3212(auto Orgrimmar;54):11 #22866(auto Orgrimmar;376):4
+#7540 | auto Orgrimmar;124§auto Orgrimmar;124§auto Orgrimmar;124 | x=1669.900024414063 y=-4301.5 | size=1 | links=#23105(auto Orgrimmar;382):23 #24902(auto Orgrimmar;408):19
+#7774 | auto Orgrimmar;125§auto Orgrimmar;125§auto Orgrimmar;125 | x=1678 y=-4332.89990234375 | size=1 | links=#20860(auto Orgrimmar;341):3 #25419(auto Orgrimmar;415):3
+#8137 | auto Orgrimmar;126§auto Orgrimmar;126§auto Orgrimmar;126 | x=1709.599975585938 y=-3935.5 | size=1 | links=#617(auto Orgrimmar;7):40 #18746(auto Orgrimmar;310):48 c14376.1:14
+#8139 | auto Orgrimmar;127§auto Orgrimmar;127§auto Orgrimmar;127 | x=1697 y=-4226.2001953125 | size=1 | links=#17382(auto Orgrimmar;280):13 #22363(auto Orgrimmar;368):9
+#8251 | auto Orgrimmar;128§auto Orgrimmar;128§auto Orgrimmar;128 | x=1569.800048828125 y=-4371.2001953125 | size=1 | links=#21227(auto Orgrimmar;347):17 #25487(auto Orgrimmar;416):12
+#8270 | auto Orgrimmar;129§auto Orgrimmar;129§auto Orgrimmar;129 | x=1907.400024414063 y=-4405.5 | size=1 | links=#6780(auto Orgrimmar;109):15 #18312(auto Orgrimmar;303):16
+#8302 | auto Orgrimmar;130§auto Orgrimmar;130§auto Orgrimmar;130 | x=1965.200073242188 y=-4469.2001953125 | size=1 | links=#18286(auto Orgrimmar;302):4 #28374(auto Orgrimmar;468):3
+#8315 | auto Orgrimmar;131§auto Orgrimmar;131§auto Orgrimmar;131 | x=1816.5 y=-4309.89990234375 | size=1 | links=#5852(central location;Cleft of Shadow;Orgrimmar):26 c3330.1:10 c5816.1:10
+#8331 | central location;Valley of Honor;Orgrimmar§zentralpunkt;Tal der Ehre;Orgrimmar§emplacement central;Valley of Honor;Orgrimmar | x=2000.599975585938 y=-4701.80029296875 | size=1 | links=#1938(auto Orgrimmar;38):31 #5683(auto Orgrimmar;89):22 #7014(auto Orgrimmar;113):21 #18052(auto Orgrimmar;296):13
+#8391 | auto Orgrimmar;132§auto Orgrimmar;132§auto Orgrimmar;132 | x=1960.099975585938 y=-4474 | size=1 | links=#14524(auto Orgrimmar;228):1 #16364(auto Orgrimmar;262):2
+#8402 | Thrall;Grommash Hold;Orgrimmar§Thrall;Feste Grommash;Orgrimmar§Thrall;Grommash Hold;Orgrimmar | x=1920 y=-4124.60009765625 | size=1 | links=#5866(auto Orgrimmar;92):20
+#8522 | auto Orgrimmar;133§auto Orgrimmar;133§auto Orgrimmar;133 | x=1797.900024414063 y=-4499.60009765625 | size=1 | links=#14450(auto Orgrimmar;227):15 #24073(auto Orgrimmar;399):17
+#8588 | auto Orgrimmar;134§auto Orgrimmar;134§auto Orgrimmar;134 | x=2108.800048828125 y=-4821.80029296875 | size=1 | links=#20455(auto Orgrimmar;332):6 #28007(auto Orgrimmar;462):8
+#8602 | auto Orgrimmar;135§auto Orgrimmar;135§auto Orgrimmar;135 | x=1663.800048828125 y=-4257.60009765625 | size=1 | links=#5949(auto Orgrimmar;94):15 #16575(auto Orgrimmar;265):10
+#8626 | auto Orgrimmar;136§auto Orgrimmar;136§auto Orgrimmar;136 | x=1957 y=-4471.89990234375 | size=1 | links=#14359(auto Orgrimmar;226):2 #14524(auto Orgrimmar;228):2
+#8627 | auto Orgrimmar;137§auto Orgrimmar;137§auto Orgrimmar;137 | x=1672.200073242188 y=-4340.2001953125 | size=1 | links=#12706(auto Orgrimmar;198):3 #19725(auto Orgrimmar;323):2
+#8782 | auto Orgrimmar;138§auto Orgrimmar;138§auto Orgrimmar;138 | x=1954.599975585938 y=-4465.2001953125 | size=1 | links=#1804(auto Orgrimmar;34):3 #26678(auto Orgrimmar;432):6
+#8841 | auto Orgrimmar;139§auto Orgrimmar;139§auto Orgrimmar;139 | x=1678.800048828125 y=-4332.39990234375 | size=1 | links=#9030(auto Orgrimmar;141):3 #15372(auto Orgrimmar;241):3
+#8898 | auto Orgrimmar;140§auto Orgrimmar;140§auto Orgrimmar;140 | x=1624.300048828125 y=-4309.10009765625 | size=1 | links=#5154(auto Orgrimmar;77):5 c3312.1:5
+#9030 | auto Orgrimmar;141§auto Orgrimmar;141§auto Orgrimmar;141 | x=1679.599975585938 y=-4336.30029296875 | size=1 | links=#8841(auto Orgrimmar;139):3 #13513(auto Orgrimmar;213):3
+#9085 | auto Orgrimmar;142§auto Orgrimmar;142§auto Orgrimmar;142 | x=1950.300048828125 y=-4472.89990234375 | size=1 | links=#6611(auto Orgrimmar;105):9 #26048(auto Orgrimmar;424):9 c3347.1:15 c3348.1:7
+#9105 | auto Orgrimmar;143§auto Orgrimmar;143§auto Orgrimmar;143 | x=1677.099975585938 y=-4333.7001953125 | size=1 | links=#1008(auto Orgrimmar;15):2 #4321(auto Orgrimmar;67):2
+#9122 | auto Orgrimmar;144§auto Orgrimmar;144§auto Orgrimmar;144 | x=1451.200073242188 y=-4165 | size=1 | links=#15469(auto Orgrimmar;242):5 #27842(auto Orgrimmar;456):8
+#9126 | auto Orgrimmar;145§auto Orgrimmar;145§auto Orgrimmar;145 | x=1685.200073242188 y=-4248.10009765625 | size=1 | links=#16575(auto Orgrimmar;265):13 #22363(auto Orgrimmar;368):16 #28297(auto Orgrimmar;467):6
+#9148 | auto Orgrimmar;146§auto Orgrimmar;146§auto Orgrimmar;146 | x=1706.400024414063 y=-4269.60009765625 | size=1 | links=#10329(auto Orgrimmar;168):2 #24069(auto Orgrimmar;398):3
+#9205 | auto Orgrimmar;147§auto Orgrimmar;147§auto Orgrimmar;147 | x=1915.800048828125 y=-4440.7001953125 | size=1 | links=#6791(auto Orgrimmar;111):3 #7222(auto Orgrimmar;118):3
+#9206 | auto Orgrimmar;148§auto Orgrimmar;148§auto Orgrimmar;148 | x=1900.200073242188 y=-4360.30029296875 | size=1 | links=#17767(auto Orgrimmar;290):5 #27876(auto Orgrimmar;459):12
+#9246 | auto Orgrimmar;149§auto Orgrimmar;149§auto Orgrimmar;149 | x=1443.5 y=-4203.2001953125 | size=1 | links=#18641(auto Orgrimmar;307):8 #26900(auto Orgrimmar;441):7
+#9248 | auto Orgrimmar;150§auto Orgrimmar;150§auto Orgrimmar;150 | x=1575.700073242188 y=-4315.39990234375 | size=1 | links=#17509(auto Orgrimmar;283):9 #23634(auto Orgrimmar;388):50
+#9425 | auto Orgrimmar;151§auto Orgrimmar;151§auto Orgrimmar;151 | x=1600.400024414063 y=-4340.89990234375 | size=1 | links=#13987(auto Orgrimmar;220):12 #22926(auto Orgrimmar;378):11
+#9479 | auto Orgrimmar;152§auto Orgrimmar;152§auto Orgrimmar;152 | x=2086.5 y=-4707.5 | size=1 | links=#2185(auto Orgrimmar;42):49 #15089(auto Orgrimmar;237):29
+#9533 | auto Orgrimmar;153§auto Orgrimmar;153§auto Orgrimmar;153 | x=1598.599975585938 y=-4397.80029296875 | size=1 | links=#12933(auto Orgrimmar;205):9 #22908(auto Orgrimmar;377):28
+#9541 | auto Orgrimmar;154§auto Orgrimmar;154§auto Orgrimmar;154 | x=1505.900024414063 y=-4190.60009765625 | size=1 | links=#1861(auto Orgrimmar;36):43 #6423(auto Orgrimmar;102):28
+#9580 | auto Orgrimmar;155§auto Orgrimmar;155§auto Orgrimmar;155 | x=1732.700073242188 y=-4070.699951171875 | size=1 | links=#18517(auto Orgrimmar;306):56 #20512(auto Orgrimmar;334):47
+#9595 | auto Orgrimmar;156§auto Orgrimmar;156§auto Orgrimmar;156 | x=1786.599975585938 y=-4330.7001953125 | size=1 | links=#5852(central location;Cleft of Shadow;Orgrimmar):13 c3189.1:18
+#9611 | auto Orgrimmar;157§auto Orgrimmar;157§auto Orgrimmar;157 | x=1927.900024414063 y=-4431 | size=1 | links=#18133(auto Orgrimmar;300):5 #25599(auto Orgrimmar;418):8
+#9846 | auto Orgrimmar;158§auto Orgrimmar;158§auto Orgrimmar;158 | x=1602.099975585938 y=-4242.80029296875 | size=1 | links=#14783(auto Orgrimmar;229):42 #27907(auto Orgrimmar;461):27
+#9871 | auto Orgrimmar;159§auto Orgrimmar;159§auto Orgrimmar;159 | x=1636.099975585938 y=-4321.39990234375 | size=1 | links=#1989(auto Orgrimmar;39):7 #5217(auto Orgrimmar;79):14 #24902(auto Orgrimmar;408):20
+#9929 | auto Orgrimmar;160§auto Orgrimmar;160§auto Orgrimmar;160 | x=1702.599975585938 y=-4264.10009765625 | size=1 | links=#6431(auto Orgrimmar;103):3 #24069(auto Orgrimmar;398):3
+#9953 | auto Orgrimmar;161§auto Orgrimmar;161§auto Orgrimmar;161 | x=1847 y=-4484.5 | size=1 | links=#5985(auto Orgrimmar;95):10 #20578(auto Orgrimmar;335):2 #23826(auto Orgrimmar;392):4
+#10124 | auto Orgrimmar;162§auto Orgrimmar;162§auto Orgrimmar;162 | x=1746.099975585938 y=-4215.2001953125 | size=1 | links=#11184(auto Orgrimmar;180):14 #27893(auto Orgrimmar;460):14
+#10142 | auto Orgrimmar;163§auto Orgrimmar;163§auto Orgrimmar;163 | x=1739.800048828125 y=-4419.5 | size=1 | links=#5304(auto Orgrimmar;83):20 #6370(auto Orgrimmar;100):20
+#10293 | auto Orgrimmar;164§auto Orgrimmar;164§auto Orgrimmar;164 | x=1672.599975585938 y=-4331.39990234375 | size=1 | links=#4321(auto Orgrimmar;67):2 #6106(auto Orgrimmar;97):2
+#10303 | auto Orgrimmar;165§auto Orgrimmar;165§auto Orgrimmar;165 | x=1719.599975585938 y=-4338.7001953125 | size=1 | links=#12764(auto Orgrimmar;202):15 #25975(auto Orgrimmar;423):16
+#10305 | auto Orgrimmar;166§auto Orgrimmar;166§auto Orgrimmar;166 | x=1729.599975585938 y=-4475.7001953125 | size=1 | links=#332(auto Orgrimmar;4):11 #20809(auto Orgrimmar;340):13
+#10316 | auto Orgrimmar;167§auto Orgrimmar;167§auto Orgrimmar;167 | x=1923.599975585938 y=-4443.10009765625 | size=1 | links=#11203(auto Orgrimmar;181):4 #15990(auto Orgrimmar;254):4
+#10329 | auto Orgrimmar;168§auto Orgrimmar;168§auto Orgrimmar;168 | x=1706 y=-4272 | size=1 | links=#4477(auto Orgrimmar;70):3 #9148(auto Orgrimmar;146):2
+#10350 | auto Orgrimmar;169§auto Orgrimmar;169§auto Orgrimmar;169 | x=2058.300048828125 y=-4829.10009765625 | size=1 | links=#28024(auto Orgrimmar;463):6 c3355.1:6 c3356.1:13 c5812.1:10
+#10385 | auto Orgrimmar;170§auto Orgrimmar;170§auto Orgrimmar;170 | x=1806.800048828125 y=-4398.10009765625 | size=1 | links=#18280(auto Orgrimmar;301):10 #29060(meeting stone ragefire orgrimmar):9
+#10447 | auto Orgrimmar;171§auto Orgrimmar;171§auto Orgrimmar;171 | x=1678.099975585938 y=-4449.39990234375 | size=1 | links=#2751(auto Orgrimmar;48):14 c8673.1:17 c8724.1:17 c9856.1:18
+#10491 | s;h;Mailbox;1;Orgrimmar§s;h;Briefkasten;1;Orgrimmar§s;h;Boîte aux lettres;1;Orgrimmar | x=1615.530859286318 y=-4392.138036618331 | size=1 | links=#12933(auto Orgrimmar;205):10
+#10509 | auto Orgrimmar;172§auto Orgrimmar;172§auto Orgrimmar;172 | x=1599 y=-4121.60009765625 | size=1 | links=#7131(auto Orgrimmar;116):13 #19949(auto Orgrimmar;327):41 #26729(auto Orgrimmar;435):39
+#10523 | auto Orgrimmar;173§auto Orgrimmar;173§auto Orgrimmar;173 | x=2123.300048828125 y=-4612.80029296875 | size=1 | links=#17850(auto Orgrimmar;293):6 #27177(auto Orgrimmar;446):6
+#10602 | auto Orgrimmar;174§auto Orgrimmar;174§auto Orgrimmar;174 | x=1698.700073242188 y=-4375.89990234375 | size=1 | links=#7078(auto Orgrimmar;115):16 #11506(auto Orgrimmar;186):21 #17777(auto Orgrimmar;291):20
+#10621 | auto Orgrimmar;175§auto Orgrimmar;175§auto Orgrimmar;175 | x=2041.200073242188 y=-4740.2001953125 | size=1 | links=#19860(auto Orgrimmar;325):6 c2857.1:8 c3412.1:8 c3413.1:4 c9317.1:14 c11017.1:9
+#10722 | auto Orgrimmar;176§auto Orgrimmar;176§auto Orgrimmar;176 | x=1930.700073242188 y=-4283.10009765625 | size=1 | links=#3178(auto Orgrimmar;53):32 #5061(auto Orgrimmar;75):17 #17569(auto Orgrimmar;285):20
+#10749 | auto Orgrimmar;177§auto Orgrimmar;177§auto Orgrimmar;177 | x=1670.200073242188 y=-4315.30029296875 | size=1 | links=#1557(auto Orgrimmar;27):7 #20292(auto Orgrimmar;331):5
+#10928 | auto Orgrimmar;178§auto Orgrimmar;178§auto Orgrimmar;178 | x=1922.200073242188 y=-4432.60009765625 | size=1 | links=#18471(auto Orgrimmar;305):2 #21810(auto Orgrimmar;360):3 c3345.1:10 c3346.1:5 c11066.1:9
+#10997 | auto Orgrimmar;179§auto Orgrimmar;179§auto Orgrimmar;179 | x=1859.700073242188 y=-4533.10009765625 | size=1 | links=#3471(auto Orgrimmar;55):18 #11523(auto Orgrimmar;187):20
+#11184 | auto Orgrimmar;180§auto Orgrimmar;180§auto Orgrimmar;180 | x=1760.5 y=-4216.7001953125 | size=1 | links=#4826(auto Orgrimmar;73):20 #10124(auto Orgrimmar;162):14
+#11203 | auto Orgrimmar;181§auto Orgrimmar;181§auto Orgrimmar;181 | x=1920.5 y=-4439.80029296875 | size=1 | links=#10316(auto Orgrimmar;167):4 #16643(auto Orgrimmar;268):2
+#11270 | auto Orgrimmar;182§auto Orgrimmar;182§auto Orgrimmar;182 | x=1803.099975585938 y=-4552.5 | size=1 | links=#16120(auto Orgrimmar;257):12 c2855.1:14 c3315.1:9 c3363.1:21 c3364.1:16 c14726.1:21
+#11277 | auto Orgrimmar;183§auto Orgrimmar;183§auto Orgrimmar;183 | x=1731.099975585938 y=-4349.10009765625 | size=1 | links=#11506(auto Orgrimmar;186):21 #12563(auto Orgrimmar;196):22
+#11460 | auto Orgrimmar;184§auto Orgrimmar;184§auto Orgrimmar;184 | x=1865.400024414063 y=-4484 | size=1 | links=#1191(auto Orgrimmar;18):22 #20717(auto Orgrimmar;337):33
+#11502 | auto Orgrimmar;185§auto Orgrimmar;185§auto Orgrimmar;185 | x=1895.800048828125 y=-4439.2001953125 | size=1 | links=#1191(auto Orgrimmar;18):39 #21181(auto Orgrimmar;346):13
+#11506 | auto Orgrimmar;186§auto Orgrimmar;186§auto Orgrimmar;186 | x=1716.700073242188 y=-4364.89990234375 | size=1 | links=#10602(auto Orgrimmar;174):21 #11277(auto Orgrimmar;183):21 #17777(auto Orgrimmar;291):21 #25975(auto Orgrimmar;423):10
+#11523 | auto Orgrimmar;187§auto Orgrimmar;187§auto Orgrimmar;187 | x=1840.700073242188 y=-4542 | size=1 | links=#1327(auto Orgrimmar;20):45 #10997(auto Orgrimmar;179):20 #19528(auto Orgrimmar;321):10
+#11581 | auto Orgrimmar;188§auto Orgrimmar;188§auto Orgrimmar;188 | x=1675.5 y=-4317.80029296875 | size=1 | links=#12839(auto Orgrimmar;204):3 c3310.1:4
+#11619 | auto Orgrimmar;189§auto Orgrimmar;189§auto Orgrimmar;189 | x=1862.400024414063 y=-4473.2001953125 | size=1 | links=#819(auto Orgrimmar;10):9 #27862(auto Orgrimmar;458):15
+#11786 | auto Orgrimmar;190§auto Orgrimmar;190§auto Orgrimmar;190 | x=1713.200073242188 y=-4230.5 | size=1 | links=#22363(auto Orgrimmar;368):18 #27893(auto Orgrimmar;460):22
+#11982 | auto Orgrimmar;191§auto Orgrimmar;191§auto Orgrimmar;191 | x=1920.400024414063 y=-4422.60009765625 | size=1 | links=#6780(auto Orgrimmar;109):14 #18133(auto Orgrimmar;300):6
+#12095 | auto Orgrimmar;192§auto Orgrimmar;192§auto Orgrimmar;192 | x=1960.599975585938 y=-4462.2001953125 | size=1 | links=#839(auto Orgrimmar;11):4 #28374(auto Orgrimmar;468):4
+#12333 | auto Orgrimmar;193§auto Orgrimmar;193§auto Orgrimmar;193 | x=1912.800048828125 y=-4432.30029296875 | size=1 | links=#5358(auto Orgrimmar;84):3 #24783(auto Orgrimmar;407):3
+#12378 | auto Orgrimmar;194§auto Orgrimmar;194§auto Orgrimmar;194 | x=1901.300048828125 y=-4428.30029296875 | size=1 | links=#6780(auto Orgrimmar;109):8 #22535(auto Orgrimmar;370):9
+#12463 | auto Orgrimmar;195§auto Orgrimmar;195§auto Orgrimmar;195 | x=1760.900024414063 y=-3993.300048828125 | size=1 | links=#17656(auto Orgrimmar;288):10 #18517(auto Orgrimmar;306):27
+#12563 | auto Orgrimmar;196§auto Orgrimmar;196§auto Orgrimmar;196 | x=1729.200073242188 y=-4326.5 | size=1 | links=#11277(auto Orgrimmar;183):22 #24592(auto Orgrimmar;404):8 #27844(auto Orgrimmar;457):28
+#12649 | auto Orgrimmar;197§auto Orgrimmar;197§auto Orgrimmar;197 | x=1903.599975585938 y=-4510.5 | size=1 | links=#14919(auto Orgrimmar;233):14 #15083(auto Orgrimmar;236):20
+#12706 | auto Orgrimmar;198§auto Orgrimmar;198§auto Orgrimmar;198 | x=1669.900024414063 y=-4338.2001953125 | size=1 | links=#8627(auto Orgrimmar;137):3 #16252(auto Orgrimmar;260):2
+#12745 | auto Orgrimmar;199§auto Orgrimmar;199§auto Orgrimmar;199 | x=1685.300048828125 y=-4415.39990234375 | size=1 | links=#16590(auto Orgrimmar;266):4 c3322.1:8
+#12748 | auto Orgrimmar;200§auto Orgrimmar;200§auto Orgrimmar;200 | x=1924.700073242188 y=-4583.10009765625 | size=1 | links=#17931(auto Orgrimmar;295):38 #25749(auto Orgrimmar;422):29
+#12760 | auto Orgrimmar;201§auto Orgrimmar;201§auto Orgrimmar;201 | x=1947.599975585938 y=-4707.80029296875 | size=1 | links=#1685(auto Orgrimmar;29):14 #5724(auto Orgrimmar;90):21 #26443(auto Orgrimmar;430):29
+#12764 | auto Orgrimmar;202§auto Orgrimmar;202§auto Orgrimmar;202 | x=1713.700073242188 y=-4324.80029296875 | size=1 | links=#10303(auto Orgrimmar;165):15 #23105(auto Orgrimmar;382):30
+#12783 | auto Orgrimmar;203§auto Orgrimmar;203§auto Orgrimmar;203 | x=1560.300048828125 y=-4401 | size=1 | links=#17149(auto Orgrimmar;275):9 #25487(auto Orgrimmar;416):19
+#12839 | auto Orgrimmar;204§auto Orgrimmar;204§auto Orgrimmar;204 | x=1674.5 y=-4320.80029296875 | size=1 | links=#11581(auto Orgrimmar;188):3 #27267(auto Orgrimmar;447):3
+#12933 | auto Orgrimmar;205§auto Orgrimmar;205§auto Orgrimmar;205 | x=1605.599975585938 y=-4390.80029296875 | size=1 | links=#9533(auto Orgrimmar;153):9 #10491(s;h;Mailbox;1;Orgrimmar):10 #22427(auto Orgrimmar;369):19 #28384(auto Orgrimmar;469):8 c14375.1:3
+#13021 | auto Orgrimmar;206§auto Orgrimmar;206§auto Orgrimmar;206 | x=2047.200073242188 y=-4725.30029296875 | size=1 | links=#1938(auto Orgrimmar;38):27 #19860(auto Orgrimmar;325):9 #24658(auto Orgrimmar;405):18
+#13136 | auto Orgrimmar;207§auto Orgrimmar;207§auto Orgrimmar;207 | x=1957 y=-4463.89990234375 | size=1 | links=#1556(auto Orgrimmar;26):3 #20964(auto Orgrimmar;344):3
+#13210 | auto Orgrimmar;208§auto Orgrimmar;208§auto Orgrimmar;208 | x=1636.599975585938 y=-4272 | size=1 | links=#5949(auto Orgrimmar;94):15 #27907(auto Orgrimmar;461):18
+#13383 | auto Orgrimmar;209§auto Orgrimmar;209§auto Orgrimmar;209 | x=1656.900024414063 y=-4369.5 | size=1 | links=#287(auto Orgrimmar;2):10 #23118(auto Orgrimmar;383):34
+#13397 | auto Orgrimmar;210§auto Orgrimmar;210§auto Orgrimmar;210 | x=1699.5 y=-4274.5 | size=1 | links=#4477(auto Orgrimmar;70):3 #26081(auto Orgrimmar;426):3
+#13417 | auto Orgrimmar;211§auto Orgrimmar;211§auto Orgrimmar;211 | x=1921.400024414063 y=-4431.7001953125 | size=1 | links=#4130(auto Orgrimmar;63):3 #25690(auto Orgrimmar;420):2
+#13459 | auto Orgrimmar;212§auto Orgrimmar;212§auto Orgrimmar;212 | x=1972.200073242188 y=-4793.30029296875 | size=1 | links=#26929(auto Orgrimmar;442):8 c3353.1:10
+#13513 | auto Orgrimmar;213§auto Orgrimmar;213§auto Orgrimmar;213 | x=1678.300048828125 y=-4339.39990234375 | size=1 | links=#9030(auto Orgrimmar;141):3 #15304(auto Orgrimmar;240):3
+#13560 | auto Orgrimmar;214§auto Orgrimmar;214§auto Orgrimmar;214 | x=1539.300048828125 y=-4336.89990234375 | size=1 | links=#5193(auto Orgrimmar;78):17 #14306(auto Orgrimmar;225):22
+#13562 | auto Orgrimmar;215§auto Orgrimmar;215§auto Orgrimmar;215 | x=2153.10009765625 y=-4652 | size=1 | links=#27071(auto Orgrimmar;444):7 c3362.1:6 c4752.1:2
+#13569 | auto Orgrimmar;216§auto Orgrimmar;216§auto Orgrimmar;216 | x=1669.700073242188 y=-4332.7001953125 | size=1 | links=#816(auto Orgrimmar;9):3 #22794(auto Orgrimmar;375):3
+#13799 | auto Orgrimmar;217§auto Orgrimmar;217§auto Orgrimmar;217 | x=1670 y=-4338.10009765625 | size=1 | links=#167(auto Orgrimmar;1):2 #21240(auto Orgrimmar;348):2
+#13832 | auto Orgrimmar;218§auto Orgrimmar;218§auto Orgrimmar;218 | x=1635.700073242188 y=-4277 | size=1 | links=#7292(auto Orgrimmar;122):26 #23634(auto Orgrimmar;388):20
+#13956 | auto Orgrimmar;219§auto Orgrimmar;219§auto Orgrimmar;219 | x=1586.400024414063 y=-4353.7001953125 | size=1 | links=#21227(auto Orgrimmar;347):6 #22926(auto Orgrimmar;378):7
+#13987 | auto Orgrimmar;220§auto Orgrimmar;220§auto Orgrimmar;220 | x=1611.300048828125 y=-4335.2001953125 | size=1 | links=#5217(auto Orgrimmar;79):13 #9425(auto Orgrimmar;151):12 #25621(auto Orgrimmar;419):7
+#14045 | auto Orgrimmar;221§auto Orgrimmar;221§auto Orgrimmar;221 | x=1680.900024414063 y=-3890.800048828125 | size=1 | links=#617(auto Orgrimmar;7):12 #26777(auto Orgrimmar;439):14
+#14059 | auto Orgrimmar;222§auto Orgrimmar;222§auto Orgrimmar;222 | x=1765.900024414063 y=-4500.30029296875 | size=1 | links=#22032(auto Orgrimmar;363):4 #27829(auto Orgrimmar;455):4
+#14132 | auto Orgrimmar;223§auto Orgrimmar;223§auto Orgrimmar;223 | x=1966.099975585938 y=-4690.39990234375 | size=1 | links=#5683(auto Orgrimmar;89):13 #5724(auto Orgrimmar;90):12
+#14144 | auto Orgrimmar;224§auto Orgrimmar;224§auto Orgrimmar;224 | x=1869.200073242188 y=-4259.60009765625 | size=1 | links=#5267(auto Orgrimmar;80):17 #15220(auto Orgrimmar;238):16
+#14306 | auto Orgrimmar;225§auto Orgrimmar;225§auto Orgrimmar;225 | x=1534.099975585938 y=-4358.5 | size=1 | links=#1547(auto Orgrimmar;25):9 #13560(auto Orgrimmar;214):22 #17056(auto Orgrimmar;274):25
+#14359 | auto Orgrimmar;226§auto Orgrimmar;226§auto Orgrimmar;226 | x=1956.099975585938 y=-4469.89990234375 | size=1 | links=#8626(auto Orgrimmar;136):2 #18998(auto Orgrimmar;314):3
+#14450 | auto Orgrimmar;227§auto Orgrimmar;227§auto Orgrimmar;227 | x=1812.300048828125 y=-4495.2001953125 | size=1 | links=#8522(auto Orgrimmar;133):15 #15538(auto Orgrimmar;243):11
+#14524 | auto Orgrimmar;228§auto Orgrimmar;228§auto Orgrimmar;228 | x=1958.400024414063 y=-4473.5 | size=1 | links=#8391(auto Orgrimmar;132):1 #8626(auto Orgrimmar;136):2
+#14783 | auto Orgrimmar;229§auto Orgrimmar;229§auto Orgrimmar;229 | x=1580 y=-4206.30029296875 | size=1 | links=#9846(auto Orgrimmar;158):42 #23646(central location;Valley of Spirits;Orgrimmar):34 #26729(auto Orgrimmar;435):48
+#14805 | auto Orgrimmar;230§auto Orgrimmar;230§auto Orgrimmar;230 | x=1961.900024414063 y=-4464.5 | size=1 | links=#1804(auto Orgrimmar;34):3 #21886(auto Orgrimmar;361):4
+#14846 | auto Orgrimmar;231§auto Orgrimmar;231§auto Orgrimmar;231 | x=1959.300048828125 y=-4474.89990234375 | size=1 | links=#24123(auto Orgrimmar;400):2 #25243(auto Orgrimmar;413):3
+#14889 | auto Orgrimmar;232§auto Orgrimmar;232§auto Orgrimmar;232 | x=2015 y=-4655 | size=1 | links=#7018(auto Orgrimmar;114):10 #20996(auto Orgrimmar;345):22
+#14919 | auto Orgrimmar;233§auto Orgrimmar;233§auto Orgrimmar;233 | x=1913.700073242188 y=-4500.30029296875 | size=1 | links=#12649(auto Orgrimmar;197):14 #15872(auto Orgrimmar;253):12 #18772(auto Orgrimmar;311):31 #23104(auto Orgrimmar;381):20
+#15020 | auto Orgrimmar;234§auto Orgrimmar;234§auto Orgrimmar;234 | x=1671 y=-4289 | size=1 | links=#18102(auto Orgrimmar;298):8 #19167(auto Orgrimmar;317):9
+#15062 | auto Orgrimmar;235§auto Orgrimmar;235§auto Orgrimmar;235 | x=1429 y=-4362.30029296875 | size=1 | links=#1262(auto Orgrimmar;19):59 #2739(auto Orgrimmar;47):35
+#15083 | auto Orgrimmar;236§auto Orgrimmar;236§auto Orgrimmar;236 | x=1891.5 y=-4527.5 | size=1 | links=#3471(auto Orgrimmar;55):14 #12649(auto Orgrimmar;197):20 #17430(auto Orgrimmar;281):26
+#15089 | auto Orgrimmar;237§auto Orgrimmar;237§auto Orgrimmar;237 | x=2056.800048828125 y=-4705.89990234375 | size=1 | links=#4215(auto Orgrimmar;66):40 #9479(auto Orgrimmar;152):29
+#15220 | auto Orgrimmar;238§auto Orgrimmar;238§auto Orgrimmar;238 | x=1881 y=-4271.30029296875 | size=1 | links=#5271(auto Orgrimmar;81):14 #14144(auto Orgrimmar;224):16
+#15263 | auto Orgrimmar;239§auto Orgrimmar;239§auto Orgrimmar;239 | x=1839 y=-4473 | size=1 | links=#21243(auto Orgrimmar;349):5 c3371.1:6 c3372.1:11 c7010.1:3
+#15304 | auto Orgrimmar;240§auto Orgrimmar;240§auto Orgrimmar;240 | x=1674.599975585938 y=-4340.7001953125 | size=1 | links=#4709(auto Orgrimmar;72):2 #13513(auto Orgrimmar;213):3
+#15372 | auto Orgrimmar;241§auto Orgrimmar;241§auto Orgrimmar;241 | x=1675.900024414063 y=-4330.39990234375 | size=1 | links=#8841(auto Orgrimmar;139):3 #27423(auto Orgrimmar;450):3
+#15469 | auto Orgrimmar;242§auto Orgrimmar;242§auto Orgrimmar;242 | x=1451 y=-4170.7001953125 | size=1 | links=#9122(auto Orgrimmar;144):5 c6014.1:15
+#15538 | auto Orgrimmar;243§auto Orgrimmar;243§auto Orgrimmar;243 | x=1823.599975585938 y=-4491.89990234375 | size=1 | links=#5985(auto Orgrimmar;95):14 #14450(auto Orgrimmar;227):11
+#15572 | auto Orgrimmar;244§auto Orgrimmar;244§auto Orgrimmar;244 | x=1484.800048828125 y=-4160.80029296875 | size=1 | links=#6387(auto Orgrimmar;101):9 c3373.1:2
+#15687 | auto Orgrimmar;245§auto Orgrimmar;245§auto Orgrimmar;245 | x=1885.5 y=-4419.89990234375 | size=1 | links=#4454(auto Orgrimmar;69):36 #21181(auto Orgrimmar;346):10
+#15692 | auto Orgrimmar;246§auto Orgrimmar;246§auto Orgrimmar;246 | x=1828.300048828125 y=-4333 | size=1 | links=#16647(auto Orgrimmar;269):24 c3335.1:19
+#15700 | auto Orgrimmar;247§auto Orgrimmar;247§auto Orgrimmar;247 | x=1621.599975585938 y=-4341.60009765625 | size=1 | links=#25621(auto Orgrimmar;419):5 c3314.1:14
+#15731 | auto Orgrimmar;248§auto Orgrimmar;248§auto Orgrimmar;248 | x=1953.099975585938 y=-4462.2001953125 | size=1 | links=#839(auto Orgrimmar;11):3 #6611(auto Orgrimmar;105):3
+#15740 | auto Orgrimmar;249§auto Orgrimmar;249§auto Orgrimmar;249 | x=1960.800048828125 y=-4475.80029296875 | size=1 | links=#18286(auto Orgrimmar;302):3 #21600(auto Orgrimmar;355):4
+#15748 | auto Orgrimmar;250§auto Orgrimmar;250§auto Orgrimmar;250 | x=2064.699951171875 y=-4632.80029296875 | size=1 | links=#2731(auto Orgrimmar;46):23 #6244(auto Orgrimmar;98):18
+#15829 | auto Orgrimmar;251§auto Orgrimmar;251§auto Orgrimmar;251 | x=1586.400024414063 y=-4464.39990234375 | size=1 | links=#19242(auto Orgrimmar;319):8 c3317.1:9 c3319.1:7 c3321.1:5
+#15832 | auto Orgrimmar;252§auto Orgrimmar;252§auto Orgrimmar;252 | x=1454.700073242188 y=-4201.60009765625 | size=1 | links=#22112(auto Orgrimmar;365):3 #26900(auto Orgrimmar;441):5
+#15872 | auto Orgrimmar;253§auto Orgrimmar;253§auto Orgrimmar;253 | x=1923.200073242188 y=-4508.5 | size=1 | links=#14919(auto Orgrimmar;233):12 c6986.1:10 c6987.1:10
+#15990 | auto Orgrimmar;254§auto Orgrimmar;254§auto Orgrimmar;254 | x=1927.800048828125 y=-4443.80029296875 | size=1 | links=#10316(auto Orgrimmar;167):4 #25599(auto Orgrimmar;418):4
+#16021 | auto Orgrimmar;255§auto Orgrimmar;255§auto Orgrimmar;255 | x=1732.599975585938 y=-4273 | size=1 | links=#16630(auto Orgrimmar;267):8 #26571(auto Orgrimmar;431):14
+#16032 | auto Orgrimmar;256§auto Orgrimmar;256§auto Orgrimmar;256 | x=1849.400024414063 y=-4556.89990234375 | size=1 | links=#19528(auto Orgrimmar;321):6 c3316.1:8 c3365.1:12 c3366.1:8 c5811.1:12 c7088.1:12
+#16120 | auto Orgrimmar;257§auto Orgrimmar;257§auto Orgrimmar;257 | x=1802.200073242188 y=-4540.30029296875 | size=1 | links=#1327(auto Orgrimmar;20):12 #11270(auto Orgrimmar;182):12
+#16161 | auto Orgrimmar;258§auto Orgrimmar;258§auto Orgrimmar;258 | x=1975.800048828125 y=-4775.89990234375 | size=1 | links=#1572(auto Orgrimmar;28):16 #17766(auto Orgrimmar;289):17 #24063(auto Orgrimmar;397):14
+#16226 | auto Orgrimmar;259§auto Orgrimmar;259§auto Orgrimmar;259 | x=1768.200073242188 y=-4247.30029296875 | size=1 | links=#7272(auto Orgrimmar;121):15 #16550(auto Orgrimmar;264):10
+#16252 | auto Orgrimmar;260§auto Orgrimmar;260§auto Orgrimmar;260 | x=1669.300048828125 y=-4335.39990234375 | size=1 | links=#12706(auto Orgrimmar;198):2 #23020(auto Orgrimmar;380):2
+#16334 | auto Orgrimmar;261§auto Orgrimmar;261§auto Orgrimmar;261 | x=1486.300048828125 y=-4416.10009765625 | size=1 | links=#1262(auto Orgrimmar;19):50 #25720(auto Orgrimmar;421):40
+#16364 | auto Orgrimmar;262§auto Orgrimmar;262§auto Orgrimmar;262 | x=1962.700073242188 y=-4473.7001953125 | size=1 | links=#8391(auto Orgrimmar;132):2 #25004(auto Orgrimmar;412):2
+#16384 | auto Orgrimmar;263§auto Orgrimmar;263§auto Orgrimmar;263 | x=1651.700073242188 y=-3848.699951171875 | size=1 | links=#6674(auto Orgrimmar;106):16 #22313(passage;from;Orgrimmar;to;The Barrens):6
+#16550 | auto Orgrimmar;264§auto Orgrimmar;264§auto Orgrimmar;264 | x=1776.599975585938 y=-4240.7001953125 | size=1 | links=#3875(auto Orgrimmar;61):17 #16226(auto Orgrimmar;259):10
+#16575 | auto Orgrimmar;265§auto Orgrimmar;265§auto Orgrimmar;265 | x=1673 y=-4253.60009765625 | size=1 | links=#8602(auto Orgrimmar;135):10 #9126(auto Orgrimmar;145):13 #21423(auto Orgrimmar;353):6
+#16590 | auto Orgrimmar;266§auto Orgrimmar;266§auto Orgrimmar;266 | x=1680.599975585938 y=-4416.5 | size=1 | links=#12745(auto Orgrimmar;199):4 #21285(auto Orgrimmar;351):8
+#16630 | auto Orgrimmar;267§auto Orgrimmar;267§auto Orgrimmar;267 | x=1734.900024414063 y=-4265.30029296875 | size=1 | links=#16021(auto Orgrimmar;255):8 #16995(auto Orgrimmar;273):13
+#16643 | auto Orgrimmar;268§auto Orgrimmar;268§auto Orgrimmar;268 | x=1921.900024414063 y=-4437.89990234375 | size=1 | links=#11203(auto Orgrimmar;181):2 #25690(auto Orgrimmar;420):3
+#16647 | auto Orgrimmar;269§auto Orgrimmar;269§auto Orgrimmar;269 | x=1807.5 y=-4346.60009765625 | size=1 | links=#5852(central location;Cleft of Shadow;Orgrimmar):17 #15692(auto Orgrimmar;246):24 #17495(auto Orgrimmar;282):27 #22744(auto Orgrimmar;372):14 #24977(auto Orgrimmar;411):10
+#16689 | auto Orgrimmar;270§auto Orgrimmar;270§auto Orgrimmar;270 | x=1582.5 y=-4101.5 | size=1 | links=#7131(auto Orgrimmar;116):12 c3349.1:4
+#16819 | auto Orgrimmar;271§auto Orgrimmar;271§auto Orgrimmar;271 | x=1463.599975585938 y=-4182.30029296875 | size=1 | links=#21264(auto Orgrimmar;350):5 #21625(auto Orgrimmar;357):6 c6018.1:11
+#16876 | auto Orgrimmar;272§auto Orgrimmar;272§auto Orgrimmar;272 | x=1471 y=-4221.2001953125 | size=1 | links=#22147(auto Orgrimmar;366):13 #22866(auto Orgrimmar;376):17 c5882.1:3 c5883.1:3 c5885.1:3 c7311.1:9 c14727.1:22 c27489.1:12
+#16995 | auto Orgrimmar;273§auto Orgrimmar;273§auto Orgrimmar;273 | x=1745.200073242188 y=-4256.39990234375 | size=1 | links=#7272(auto Orgrimmar;121):9 #16630(auto Orgrimmar;267):13
+#17056 | auto Orgrimmar;274§auto Orgrimmar;274§auto Orgrimmar;274 | x=1529.300048828125 y=-4383.5 | size=1 | links=#14306(auto Orgrimmar;225):25 #25720(auto Orgrimmar;421):25
+#17149 | auto Orgrimmar;275§auto Orgrimmar;275§auto Orgrimmar;275 | x=1552.300048828125 y=-4406 | size=1 | links=#12783(auto Orgrimmar;203):9 #27584(auto Orgrimmar;452):11
+#17151 | auto Orgrimmar;276§auto Orgrimmar;276§auto Orgrimmar;276 | x=1573.200073242188 y=-4296 | size=1 | links=#26710(auto Orgrimmar;434):5 c3370.1:4 c5188.1:6
+#17251 | auto Orgrimmar;277§auto Orgrimmar;277§auto Orgrimmar;277 | x=1694.900024414063 y=-4270.10009765625 | size=1 | links=#20490(auto Orgrimmar;333):2 #26081(auto Orgrimmar;426):2
+#17266 | auto Orgrimmar;278§auto Orgrimmar;278§auto Orgrimmar;278 | x=1776.300048828125 y=-4507.30029296875 | size=1 | links=#24972(auto Orgrimmar;410):10 c3369.1:4
+#17351 | auto Orgrimmar;279§auto Orgrimmar;279§auto Orgrimmar;279 | x=1671.900024414063 y=-4272.2001953125 | size=1 | links=#18423(auto Orgrimmar;304):7 #19167(auto Orgrimmar;317):7
+#17382 | auto Orgrimmar;280§auto Orgrimmar;280§auto Orgrimmar;280 | x=1705.300048828125 y=-4216 | size=1 | links=#8139(auto Orgrimmar;127):13 c5910.1:20
+#17430 | auto Orgrimmar;281§auto Orgrimmar;281§auto Orgrimmar;281 | x=1903.400024414063 y=-4551.60009765625 | size=1 | links=#15083(auto Orgrimmar;236):26 #25749(auto Orgrimmar;422):8 #28596(s;h;Mailbox;2;Orgrimmar):8
+#17495 | auto Orgrimmar;282§auto Orgrimmar;282§auto Orgrimmar;282 | x=1834.099975585938 y=-4353.89990234375 | size=1 | links=#16647(auto Orgrimmar;269):27 c3324.1:10 c3325.1:8 c3326.1:16 c5815.1:7 c5875.1:16
+#17509 | auto Orgrimmar;283§auto Orgrimmar;283§auto Orgrimmar;283 | x=1566.099975585938 y=-4317.5 | size=1 | links=#595(auto Orgrimmar;6):9 #5193(auto Orgrimmar;78):17 #9248(auto Orgrimmar;150):9
+#17546 | auto Orgrimmar;284§auto Orgrimmar;284§auto Orgrimmar;284 | x=1453.700073242188 y=-4218.80029296875 | size=1 | links=#18641(auto Orgrimmar;307):11 #20736(auto Orgrimmar;338):7
+#17569 | auto Orgrimmar;285§auto Orgrimmar;285§auto Orgrimmar;285 | x=1932.900024414063 y=-4303.10009765625 | size=1 | links=#10722(auto Orgrimmar;176):20 #20126(auto Orgrimmar;329):27
+#17570 | auto Orgrimmar;286§auto Orgrimmar;286§auto Orgrimmar;286 | x=2133.900146484375 y=-4646.2001953125 | size=1 | links=#2185(auto Orgrimmar;42):40 #5905(auto Orgrimmar;93):9 #23992(auto Orgrimmar;396):7
+#17625 | auto Orgrimmar;287§auto Orgrimmar;287§auto Orgrimmar;287 | x=1620.099975585938 y=-4377.60009765625 | size=1 | links=#28384(auto Orgrimmar;469):12 c3309.1:7 c3318.1:13 c3320.1:9
+#17656 | auto Orgrimmar;288§auto Orgrimmar;288§auto Orgrimmar;288 | x=1771.300048828125 y=-3993.199951171875 | size=1 | links=#12463(auto Orgrimmar;195):10 c5640.1:10
+#17766 | auto Orgrimmar;289§auto Orgrimmar;289§auto Orgrimmar;289 | x=1992.700073242188 y=-4772.80029296875 | size=1 | links=#1842(auto Orgrimmar;35):9 #16161(auto Orgrimmar;258):17
+#17767 | auto Orgrimmar;290§auto Orgrimmar;290§auto Orgrimmar;290 | x=1902.099975585938 y=-4365.39990234375 | size=1 | links=#9206(auto Orgrimmar;148):5 #25344(auto Orgrimmar;414):9
+#17777 | auto Orgrimmar;291§auto Orgrimmar;291§auto Orgrimmar;291 | x=1716.5 y=-4385.89990234375 | size=1 | links=#6370(auto Orgrimmar;100):20 #10602(auto Orgrimmar;174):20 #11506(auto Orgrimmar;186):21
+#17832 | auto Orgrimmar;292§auto Orgrimmar;292§auto Orgrimmar;292 | x=1740.200073242188 y=-4297.10009765625 | size=1 | links=#5300(auto Orgrimmar;82):8 #26571(auto Orgrimmar;431):11
+#17850 | auto Orgrimmar;293§auto Orgrimmar;293§auto Orgrimmar;293 | x=2116.699951171875 y=-4615 | size=1 | links=#10523(auto Orgrimmar;173):6 #21734(auto Orgrimmar;359):16
+#17860 | auto Orgrimmar;294§auto Orgrimmar;294§auto Orgrimmar;294 | x=1910.5 y=-4755.89990234375 | size=1 | links=#6541(auto Orgrimmar;104):9 #22091(auto Orgrimmar;364):14
+#17931 | auto Orgrimmar;295§auto Orgrimmar;295§auto Orgrimmar;295 | x=1892.400024414063 y=-4604.39990234375 | size=1 | links=#12748(auto Orgrimmar;200):38 #20254(auto Orgrimmar;330):36
+#18052 | auto Orgrimmar;296§auto Orgrimmar;296§auto Orgrimmar;296 | x=2014 y=-4703.60009765625 | size=1 | links=#1926(auto Orgrimmar;37):8 #8331(central location;Valley of Honor;Orgrimmar):13
+#18097 | auto Orgrimmar;297§auto Orgrimmar;297§auto Orgrimmar;297 | x=1510 y=-4156.30029296875 | size=1 | links=#987(auto Orgrimmar;13):28 #6387(auto Orgrimmar;101):27
+#18102 | auto Orgrimmar;298§auto Orgrimmar;298§auto Orgrimmar;298 | x=1670.5 y=-4297.2001953125 | size=1 | links=#1557(auto Orgrimmar;27):10 #15020(auto Orgrimmar;234):8
+#18103 | auto Orgrimmar;299§auto Orgrimmar;299§auto Orgrimmar;299 | x=1925.599975585938 y=-4208.30029296875 | size=1 | links=#18968(auto Orgrimmar;312):22 #26776(auto Orgrimmar;438):15 c3403.1:7 c5892.1:6
+#18133 | auto Orgrimmar;300§auto Orgrimmar;300§auto Orgrimmar;300 | x=1925.200073242188 y=-4426.39990234375 | size=1 | links=#9611(auto Orgrimmar;157):5 #11982(auto Orgrimmar;191):6
+#18280 | auto Orgrimmar;301§auto Orgrimmar;301§auto Orgrimmar;301 | x=1799.5 y=-4390 | size=1 | links=#7253(auto Orgrimmar;120):21 #10385(auto Orgrimmar;170):10 #18688(auto Orgrimmar;309):11
+#18286 | auto Orgrimmar;302§auto Orgrimmar;302§auto Orgrimmar;302 | x=1964.200073242188 y=-4473.89990234375 | size=1 | links=#8302(auto Orgrimmar;130):4 #15740(auto Orgrimmar;249):3
+#18312 | auto Orgrimmar;303§auto Orgrimmar;303§auto Orgrimmar;303 | x=1906.800048828125 y=-4389.5 | size=1 | links=#8270(auto Orgrimmar;129):16 #23821(auto Orgrimmar;391):6
+#18423 | auto Orgrimmar;304§auto Orgrimmar;304§auto Orgrimmar;304 | x=1672.200073242188 y=-4264.7001953125 | size=1 | links=#17351(auto Orgrimmar;279):7 #21423(auto Orgrimmar;353):4
+#18471 | auto Orgrimmar;305§auto Orgrimmar;305§auto Orgrimmar;305 | x=1924.5 y=-4431.39990234375 | size=1 | links=#10928(auto Orgrimmar;178):2 #23785(auto Orgrimmar;390):7
+#18517 | auto Orgrimmar;306§auto Orgrimmar;306§auto Orgrimmar;306 | x=1745.599975585938 y=-4015.900146484375 | size=1 | links=#9580(auto Orgrimmar;155):56 #12463(auto Orgrimmar;195):27 #18746(auto Orgrimmar;310):39
+#18641 | auto Orgrimmar;307§auto Orgrimmar;307§auto Orgrimmar;307 | x=1445.5 y=-4211.39990234375 | size=1 | links=#9246(auto Orgrimmar;149):8 #17546(auto Orgrimmar;284):11
+#18645 | auto Orgrimmar;308§auto Orgrimmar;308§auto Orgrimmar;308 | x=1955.900024414063 y=-4462.60009765625 | size=1 | links=#18998(auto Orgrimmar;314):4 c8659.1:3
+#18688 | auto Orgrimmar;309§auto Orgrimmar;309§auto Orgrimmar;309 | x=1804.300048828125 y=-4379.7001953125 | size=1 | links=#18280(auto Orgrimmar;301):11 c3216.1:6
+#18746 | auto Orgrimmar;310§auto Orgrimmar;310§auto Orgrimmar;310 | x=1734.200073242188 y=-3977.699951171875 | size=1 | links=#8137(auto Orgrimmar;126):48 #18517(auto Orgrimmar;306):39
+#18772 | auto Orgrimmar;311§auto Orgrimmar;311§auto Orgrimmar;311 | x=1932.200073242188 y=-4474.5 | size=1 | links=#6005(auto Orgrimmar;96):20 #14919(auto Orgrimmar;233):31 #26048(auto Orgrimmar;424):8
+#18968 | auto Orgrimmar;312§auto Orgrimmar;312§auto Orgrimmar;312 | x=1927.099975585938 y=-4230.39990234375 | size=1 | links=#3178(auto Orgrimmar;53):20 #18103(auto Orgrimmar;299):22 c3344.1:8 c4047.1:12
+#18983 | auto Orgrimmar;313§auto Orgrimmar;313§auto Orgrimmar;313 | x=2100.300048828125 y=-4813.80029296875 | size=1 | links=#20455(auto Orgrimmar;332):5 #25563(auto Orgrimmar;417):10
+#18998 | auto Orgrimmar;314§auto Orgrimmar;314§auto Orgrimmar;314 | x=1957.700073242188 y=-4467.2001953125 | size=1 | links=#14359(auto Orgrimmar;226):3 #18645(auto Orgrimmar;308):4
+#19034 | auto Orgrimmar;315§auto Orgrimmar;315§auto Orgrimmar;315 | x=1880.900024414063 y=-4347.5 | size=1 | links=#21918(auto Orgrimmar;362):7 #27876(auto Orgrimmar;459):10
+#19040 | auto Orgrimmar;316§auto Orgrimmar;316§auto Orgrimmar;316 | x=1626.099975585938 y=-4437.10009765625 | size=1 | links=#3515(auto Orgrimmar;56):9 #26771(auto Orgrimmar;437):10
+#19167 | auto Orgrimmar;317§auto Orgrimmar;317§auto Orgrimmar;317 | x=1671.700073242188 y=-4280 | size=1 | links=#15020(auto Orgrimmar;234):9 #17351(auto Orgrimmar;279):7
+#19238 | auto Orgrimmar;318§auto Orgrimmar;318§auto Orgrimmar;318 | x=1513.300048828125 y=-4217.7001953125 | size=1 | links=#6305(auto Orgrimmar;99):5 #23646(central location;Valley of Spirits;Orgrimmar):33
+#19242 | auto Orgrimmar;319§auto Orgrimmar;319§auto Orgrimmar;319 | x=1581.300048828125 y=-4457.10009765625 | size=1 | links=#15829(auto Orgrimmar;251):8 #24930(auto Orgrimmar;409):10
+#19296 | auto Orgrimmar;320§auto Orgrimmar;320§auto Orgrimmar;320 | x=1798.599975585938 y=-4285.89990234375 | size=1 | links=#26056(auto Orgrimmar;425):12 c3327.1:9 c3334.1:19
+#19528 | auto Orgrimmar;321§auto Orgrimmar;321§auto Orgrimmar;321 | x=1845.800048828125 y=-4551.7001953125 | size=1 | links=#11523(auto Orgrimmar;187):10 #16032(auto Orgrimmar;256):6
+#19562 | auto Orgrimmar;322§auto Orgrimmar;322§auto Orgrimmar;322 | x=1923.099975585938 y=-4168.30029296875 | size=1 | links=#5866(auto Orgrimmar;92):23 #26776(auto Orgrimmar;438):25 c10540.1:12 c16012.1:7
+#19586 | central location;Valley of Strength;Orgrimmar§zentralpunkt;Tal der Stärke;Orgrimmar§emplacement central;Valley of Strength;Orgrimmar | x=1647.5 y=-4412.89990234375 | size=1 | links=#3515(auto Orgrimmar;56):35 #5473(auto Orgrimmar;86):17 #26232(auto Orgrimmar;427):13
+#19725 | auto Orgrimmar;323§auto Orgrimmar;323§auto Orgrimmar;323 | x=1675 y=-4340 | size=1 | links=#8627(auto Orgrimmar;137):2 #28129(auto Orgrimmar;464):2
+#19731 | auto Orgrimmar;324§auto Orgrimmar;324§auto Orgrimmar;324 | x=1466.5 y=-4159.60009765625 | size=1 | links=#866(auto Orgrimmar;12):3 #28205(auto Orgrimmar;466):4
+#19860 | auto Orgrimmar;325§auto Orgrimmar;325§auto Orgrimmar;325 | x=2044.200073242188 y=-4734.5 | size=1 | links=#10621(auto Orgrimmar;175):6 #13021(auto Orgrimmar;206):9
+#19907 | auto Orgrimmar;326§auto Orgrimmar;326§auto Orgrimmar;326 | x=1910.300048828125 y=-4327.7001953125 | size=1 | links=#20126(auto Orgrimmar;329):19 #22781(auto Orgrimmar;374):10
+#19949 | auto Orgrimmar;327§auto Orgrimmar;327§auto Orgrimmar;327 | x=1637.900024414063 y=-4105.80029296875 | size=1 | links=#10509(auto Orgrimmar;172):41 #20512(auto Orgrimmar;334):53
+#20018 | auto Orgrimmar;328§auto Orgrimmar;328§auto Orgrimmar;328 | x=1936 y=-4377.89990234375 | size=1 | links=#20126(auto Orgrimmar;329):47 #26280(auto Orgrimmar;428):47
+#20126 | auto Orgrimmar;329§auto Orgrimmar;329§auto Orgrimmar;329 | x=1929.900024414063 y=-4330.7001953125 | size=1 | links=#17569(auto Orgrimmar;285):27 #19907(auto Orgrimmar;326):19 #20018(auto Orgrimmar;328):47 c15761.1:15 c17066.1:13
+#20254 | auto Orgrimmar;330§auto Orgrimmar;330§auto Orgrimmar;330 | x=1912.5 y=-4635.10009765625 | size=1 | links=#1491(auto Orgrimmar;23):33 #17931(auto Orgrimmar;295):36 c23635.1:10
+#20292 | auto Orgrimmar;331§auto Orgrimmar;331§auto Orgrimmar;331 | x=1670.099975585938 y=-4320.7001953125 | size=1 | links=#422(auto Orgrimmar;5):2 #10749(auto Orgrimmar;177):5
+#20349 | Craven Drok;Questgiver;Orgrimmar;1;51.3;45.9§Craven Drok;Questgeber;Orgrimmar;1;51.3;45.9§Drok le Pleutre;Questgiver;Orgrimmar;1;51.3;45.9 | x=1835.710555604435 y=-4394.610564208086 | size=1
+#20455 | auto Orgrimmar;332§auto Orgrimmar;332§auto Orgrimmar;332 | x=2104.900146484375 y=-4816.30029296875 | size=1 | links=#8588(auto Orgrimmar;134):6 #18983(auto Orgrimmar;313):5
+#20490 | auto Orgrimmar;333§auto Orgrimmar;333§auto Orgrimmar;333 | x=1694.599975585938 y=-4267.7001953125 | size=1 | links=#4195(auto Orgrimmar;64):4 #17251(auto Orgrimmar;277):2
+#20512 | auto Orgrimmar;334§auto Orgrimmar;334§auto Orgrimmar;334 | x=1689.599975585938 y=-4090.400146484375 | size=1 | links=#9580(auto Orgrimmar;155):47 #19949(auto Orgrimmar;327):53
+#20578 | auto Orgrimmar;335§auto Orgrimmar;335§auto Orgrimmar;335 | x=1845.700073242188 y=-4482.7001953125 | size=1 | links=#9953(auto Orgrimmar;161):2 #21243(auto Orgrimmar;349):6
+#20688 | auto Orgrimmar;336§auto Orgrimmar;336§auto Orgrimmar;336 | x=1819.700073242188 y=-4521.7001953125 | size=1 | links=#1327(auto Orgrimmar;20):23 #20717(auto Orgrimmar;337):26
+#20717 | auto Orgrimmar;337§auto Orgrimmar;337§auto Orgrimmar;337 | x=1840.800048828125 y=-4506.30029296875 | size=1 | links=#11460(auto Orgrimmar;184):33 #20688(auto Orgrimmar;336):26
+#20736 | auto Orgrimmar;338§auto Orgrimmar;338§auto Orgrimmar;338 | x=1460.300048828125 y=-4221.80029296875 | size=1 | links=#17546(auto Orgrimmar;284):7 #21903(spawn location;portal;Valley of Spirits;Orgrimmar):9
+#20761 | auto Orgrimmar;339§auto Orgrimmar;339§auto Orgrimmar;339 | x=2094.400146484375 y=-4825.2001953125 | size=1 | links=#2899(auto Orgrimmar;50):7 c3360.1:4
+#20809 | auto Orgrimmar;340§auto Orgrimmar;340§auto Orgrimmar;340 | x=1731.700073242188 y=-4462.60009765625 | size=1 | links=#5304(auto Orgrimmar;83):24 #10305(auto Orgrimmar;166):13 #27543(auto Orgrimmar;451):11
+#20860 | auto Orgrimmar;341§auto Orgrimmar;341§auto Orgrimmar;341 | x=1675.599975585938 y=-4331 | size=1 | links=#7774(auto Orgrimmar;125):3 #22794(auto Orgrimmar;375):2
+#20887 | auto Orgrimmar;342§auto Orgrimmar;342§auto Orgrimmar;342 | x=1820.5 y=-4238 | size=1 | links=#2894(auto Orgrimmar;49):16 #26441(auto Orgrimmar;429):14
+#20917 | auto Orgrimmar;343§auto Orgrimmar;343§auto Orgrimmar;343 | x=1953.400024414063 y=-4471.80029296875 | size=1 | links=#20964(auto Orgrimmar;344):5 #21600(auto Orgrimmar;355):4
+#20964 | auto Orgrimmar;344§auto Orgrimmar;344§auto Orgrimmar;344 | x=1954.5 y=-4466 | size=1 | links=#13136(auto Orgrimmar;207):3 #20917(auto Orgrimmar;343):5
+#20996 | auto Orgrimmar;345§auto Orgrimmar;345§auto Orgrimmar;345 | x=2022 y=-4676.2001953125 | size=1 | links=#4215(auto Orgrimmar;66):5 #7014(auto Orgrimmar;113):11 #14889(auto Orgrimmar;232):22 c14451.1:16
+#21181 | auto Orgrimmar;346§auto Orgrimmar;346§auto Orgrimmar;346 | x=1893.300048828125 y=-4426.39990234375 | size=1 | links=#11502(auto Orgrimmar;185):13 #15687(auto Orgrimmar;245):10
+#21227 | auto Orgrimmar;347§auto Orgrimmar;347§auto Orgrimmar;347 | x=1582 y=-4358.5 | size=1 | links=#8251(auto Orgrimmar;128):17 #13956(auto Orgrimmar;219):6
+#21240 | auto Orgrimmar;348§auto Orgrimmar;348§auto Orgrimmar;348 | x=1672 y=-4339.80029296875 | size=1 | links=#13799(auto Orgrimmar;217):2 #23921(auto Orgrimmar;395):2
+#21243 | auto Orgrimmar;349§auto Orgrimmar;349§auto Orgrimmar;349 | x=1842.700073242188 y=-4477.5 | size=1 | links=#15263(auto Orgrimmar;239):5 #20578(auto Orgrimmar;335):6
+#21264 | auto Orgrimmar;350§auto Orgrimmar;350§auto Orgrimmar;350 | x=1468.700073242188 y=-4184 | size=1 | links=#6423(auto Orgrimmar;102):9 #16819(auto Orgrimmar;271):5
+#21285 | auto Orgrimmar;351§auto Orgrimmar;351§auto Orgrimmar;351 | x=1672.300048828125 y=-4418.7001953125 | size=1 | links=#5473(auto Orgrimmar;86):9 #16590(auto Orgrimmar;266):8
+#21353 | auto Orgrimmar;352§auto Orgrimmar;352§auto Orgrimmar;352 | x=1685.400024414063 y=-4263.5 | size=5 | links=#4195(auto Orgrimmar;64):5 #28297(auto Orgrimmar;467):8
+#21423 | auto Orgrimmar;353§auto Orgrimmar;353§auto Orgrimmar;353 | x=1673.200073242188 y=-4260.30029296875 | size=1 | links=#16575(auto Orgrimmar;265):6 #18423(auto Orgrimmar;304):4
+#21587 | auto Orgrimmar;354§auto Orgrimmar;354§auto Orgrimmar;354 | x=1695.099975585938 y=-4269.10009765625 | size=1 | links=#3966(auto Orgrimmar;62):6 #6832(auto Orgrimmar;112):3
+#21600 | auto Orgrimmar;355§auto Orgrimmar;355§auto Orgrimmar;355 | x=1956.200073242188 y=-4474.80029296875 | size=1 | links=#15740(auto Orgrimmar;249):4 #20917(auto Orgrimmar;343):4
+#21615 | auto Orgrimmar;356§auto Orgrimmar;356§auto Orgrimmar;356 | x=1760.400024414063 y=-4522.30029296875 | size=1 | links=#1327(auto Orgrimmar;20):37 #23713(auto Orgrimmar;389):28 #24972(auto Orgrimmar;410):11
+#21625 | auto Orgrimmar;357§auto Orgrimmar;357§auto Orgrimmar;357 | x=1465.200073242188 y=-4176.2001953125 | size=1 | links=#2076(auto Orgrimmar;41):4 #16819(auto Orgrimmar;271):6
+#21635 | auto Orgrimmar;358§auto Orgrimmar;358§auto Orgrimmar;358 | x=1776.700073242188 y=-4502.10009765625 | size=1 | links=#22032(auto Orgrimmar;363):6 #24073(auto Orgrimmar;399):4
+#21642 | guild vault;Valley of Strength;Orgrimmar§gildenbank;Tal der Stärke;Orgrimmar§guild vault;Valley of Strength;Orgrimmar | x=1623.800048828125 y=-4365.89990234375 | size=1 | links=c3320.1:3
+#21734 | auto Orgrimmar;359§auto Orgrimmar;359§auto Orgrimmar;359 | x=2101 y=-4621.30029296875 | size=1 | links=#5107(auto Orgrimmar;76):19 #17850(auto Orgrimmar;293):16 c3352.1:14 c3406.1:16 c3407.1:14
+#21810 | auto Orgrimmar;360§auto Orgrimmar;360§auto Orgrimmar;360 | x=1923.300048828125 y=-4436.10009765625 | size=1 | links=#10928(auto Orgrimmar;178):3 #23227(auto Orgrimmar;385):3
+#21886 | auto Orgrimmar;361§auto Orgrimmar;361§auto Orgrimmar;361 | x=1964.200073242188 y=-4467.89990234375 | size=1 | links=#14805(auto Orgrimmar;230):4 #25004(auto Orgrimmar;412):3
+#21903 | spawn location;portal;Valley of Spirits;Orgrimmar§spawnpunkt;portal;Tal der Geister;Orgrimmar§spawn location;portal;Valley of Spirits;Orgrimmar | x=1470 y=-4222.5 | size=1 | links=#20736(auto Orgrimmar;338):9 c5958.1:4
+#21918 | auto Orgrimmar;362§auto Orgrimmar;362§auto Orgrimmar;362 | x=1876 y=-4342.10009765625 | size=1 | links=#1781(auto Orgrimmar;33):6 #19034(auto Orgrimmar;315):7
+#22032 | auto Orgrimmar;363§auto Orgrimmar;363§auto Orgrimmar;363 | x=1770.700073242188 y=-4500.60009765625 | size=1 | links=#5861(auto Orgrimmar;91):4 #14059(auto Orgrimmar;222):4 #21635(auto Orgrimmar;358):6
+#22091 | auto Orgrimmar;364§auto Orgrimmar;364§auto Orgrimmar;364 | x=1910.099975585938 y=-4741.39990234375 | size=1 | links=#2713(auto Orgrimmar;45):23 #17860(auto Orgrimmar;294):14
+#22112 | auto Orgrimmar;365§auto Orgrimmar;365§auto Orgrimmar;365 | x=1456.800048828125 y=-4204 | size=1 | links=#15832(auto Orgrimmar;252):3 #22147(auto Orgrimmar;366):8
+#22147 | auto Orgrimmar;366§auto Orgrimmar;366§auto Orgrimmar;366 | x=1463.599975585938 y=-4209.60009765625 | size=1 | links=#16876(auto Orgrimmar;272):13 #22112(auto Orgrimmar;365):8
+#22175 | auto Orgrimmar;367§auto Orgrimmar;367§auto Orgrimmar;367 | x=1779.700073242188 y=-4293.30029296875 | size=1 | links=#1736(auto Orgrimmar;31):11 #23173(auto Orgrimmar;384):22 #26056(auto Orgrimmar;425):7 c3401.1:12 c3402.1:13 c6446.1:14
+#22313 | passage;from;Orgrimmar;to;The Barrens§passage;von;Orgrimmar;nach;das brachland§passage;de;Orgrimmar;vers;Les Tarides | x=1647.700073242188 y=-3843.199951171875 | size=1 | links=#4512(passage;from;Southfury River;The Barrens;to;Southfury River;Orgrimmar):3 #16384(auto Orgrimmar;263):6
+#22363 | auto Orgrimmar;368§auto Orgrimmar;368§auto Orgrimmar;368 | x=1695.700073242188 y=-4235.80029296875 | size=1 | links=#8139(auto Orgrimmar;127):9 #9126(auto Orgrimmar;145):16 #11786(auto Orgrimmar;190):18
+#22427 | auto Orgrimmar;369§auto Orgrimmar;369§auto Orgrimmar;369 | x=1624.099975585938 y=-4397.80029296875 | size=1 | links=#12933(auto Orgrimmar;205):19 #26232(auto Orgrimmar;427):16
+#22535 | auto Orgrimmar;370§auto Orgrimmar;370§auto Orgrimmar;370 | x=1896.700073242188 y=-4436.80029296875 | size=1 | links=#1743(auto Orgrimmar;32):10 #12378(auto Orgrimmar;194):9
+#22647 | auto Orgrimmar;371§auto Orgrimmar;371§auto Orgrimmar;371 | x=1759.099975585938 y=-4492.39990234375 | size=1 | links=#4210(auto Orgrimmar;65):10 #27330(auto Orgrimmar;448):3
+#22744 | auto Orgrimmar;372§auto Orgrimmar;372§auto Orgrimmar;372 | x=1813.099975585938 y=-4359.80029296875 | size=1 | links=#3599(auto Orgrimmar;57):13 #16647(auto Orgrimmar;269):14
+#22768 | auto Orgrimmar;373§auto Orgrimmar;373§auto Orgrimmar;373 | x=1810.5 y=-4410 | size=1 | links=#27149(instance entrance;Orgrimmar):12 #29060(meeting stone ragefire orgrimmar):10
+#22781 | auto Orgrimmar;374§auto Orgrimmar;374§auto Orgrimmar;374 | x=1899.599975585938 y=-4325.60009765625 | size=1 | links=#19907(auto Orgrimmar;326):10 c3350.1:8 c3351.1:9
+#22794 | auto Orgrimmar;375§auto Orgrimmar;375§auto Orgrimmar;375 | x=1673.099975585938 y=-4330.7001953125 | size=1 | links=#13569(auto Orgrimmar;216):3 #20860(auto Orgrimmar;341):2
+#22866 | auto Orgrimmar;376§auto Orgrimmar;376§auto Orgrimmar;376 | x=1487.900024414063 y=-4224.39990234375 | size=1 | links=#7433(auto Orgrimmar;123):4 #16876(auto Orgrimmar;272):17
+#22908 | auto Orgrimmar;377§auto Orgrimmar;377§auto Orgrimmar;377 | x=1574.599975585938 y=-4412.60009765625 | size=1 | links=#2430(auto Orgrimmar;43):11 #9533(auto Orgrimmar;153):28
+#22926 | auto Orgrimmar;378§auto Orgrimmar;378§auto Orgrimmar;378 | x=1592.700073242188 y=-4349.60009765625 | size=1 | links=#1533(auto Orgrimmar;24):18 #9425(auto Orgrimmar;151):11 #13956(auto Orgrimmar;219):7
+#23014 | auto Orgrimmar;379§auto Orgrimmar;379§auto Orgrimmar;379 | x=1920.200073242188 y=-4677.60009765625 | size=1 | links=#1445(auto Orgrimmar;22):20 #1491(auto Orgrimmar;23):18
+#23020 | auto Orgrimmar;380§auto Orgrimmar;380§auto Orgrimmar;380 | x=1670.599975585938 y=-4332.7001953125 | size=1 | links=#16252(auto Orgrimmar;260):2 #27423(auto Orgrimmar;450):3
+#23104 | auto Orgrimmar;381§auto Orgrimmar;381§auto Orgrimmar;381 | x=1900 y=-4485.7001953125 | size=1 | links=#1191(auto Orgrimmar;18):15 #14919(auto Orgrimmar;233):20
+#23105 | auto Orgrimmar;382§auto Orgrimmar;382§auto Orgrimmar;382 | x=1692.900024414063 y=-4301.89990234375 | size=1 | links=#7540(auto Orgrimmar;124):23 #12764(auto Orgrimmar;202):30
+#23118 | auto Orgrimmar;383§auto Orgrimmar;383§auto Orgrimmar;383 | x=1677.200073242188 y=-4397.10009765625 | size=1 | links=#5473(auto Orgrimmar;86):19 #7078(auto Orgrimmar;115):13 #13383(auto Orgrimmar;209):34
+#23173 | auto Orgrimmar;384§auto Orgrimmar;384§auto Orgrimmar;384 | x=1762.099975585938 y=-4308.10009765625 | size=1 | links=#5300(auto Orgrimmar;82):16 #22175(auto Orgrimmar;367):22 c3328.1:11 c3331.1:17
+#23227 | auto Orgrimmar;385§auto Orgrimmar;385§auto Orgrimmar;385 | x=1921.700073242188 y=-4439 | size=1 | links=#7222(auto Orgrimmar;118):2 #21810(auto Orgrimmar;360):3
+#23478 | auto Orgrimmar;386§auto Orgrimmar;386§auto Orgrimmar;386 | x=1960.599975585938 y=-4740.60009765625 | size=1 | links=#312(auto Orgrimmar;3):10 #26443(auto Orgrimmar;430):5
+#23580 | auto Orgrimmar;387§auto Orgrimmar;387§auto Orgrimmar;387 | x=1669.800048828125 y=-4341.30029296875 | size=1 | links=#816(auto Orgrimmar;9):5 #23887(auto Orgrimmar;394):9
+#23634 | auto Orgrimmar;388§auto Orgrimmar;388§auto Orgrimmar;388 | x=1619 y=-4289.7001953125 | size=1 | links=#9248(auto Orgrimmar;150):50 #13832(auto Orgrimmar;218):20
+#23646 | central location;Valley of Spirits;Orgrimmar§zentralpunkt;Tal der Geister;Orgrimmar§emplacement central;Valley of Spirits;Orgrimmar | x=1545.300048828125 y=-4207.80029296875 | size=1 | links=#1861(auto Orgrimmar;36):22 #14783(auto Orgrimmar;229):34 #19238(auto Orgrimmar;318):33
+#23713 | auto Orgrimmar;389§auto Orgrimmar;389§auto Orgrimmar;389 | x=1739.400024414063 y=-4503.39990234375 | size=1 | links=#332(auto Orgrimmar;4):18 #21615(auto Orgrimmar;356):28
+#23785 | auto Orgrimmar;390§auto Orgrimmar;390§auto Orgrimmar;390 | x=1930.800048828125 y=-4428.30029296875 | size=1 | links=#18471(auto Orgrimmar;305):7 #26280(auto Orgrimmar;428):9
+#23821 | auto Orgrimmar;391§auto Orgrimmar;391§auto Orgrimmar;391 | x=1905.900024414063 y=-4383.10009765625 | size=1 | links=#18312(auto Orgrimmar;303):6 #25344(auto Orgrimmar;414):8
+#23826 | auto Orgrimmar;392§auto Orgrimmar;392§auto Orgrimmar;392 | x=1849.400024414063 y=-4480.89990234375 | size=1 | links=#819(auto Orgrimmar;10):6 #9953(auto Orgrimmar;161):4
+#23871 | auto Orgrimmar;393§auto Orgrimmar;393§auto Orgrimmar;393 | x=1565.800048828125 y=-4153 | size=1 | links=#987(auto Orgrimmar;13):27 #26729(auto Orgrimmar;435):17
+#23887 | auto Orgrimmar;394§auto Orgrimmar;394§auto Orgrimmar;394 | x=1663.5 y=-4347.89990234375 | size=1 | links=#287(auto Orgrimmar;2):16 #23580(auto Orgrimmar;387):9
+#23921 | auto Orgrimmar;395§auto Orgrimmar;395§auto Orgrimmar;395 | x=1674.800048828125 y=-4339.89990234375 | size=1 | links=#3009(auto Orgrimmar;51):2 #21240(auto Orgrimmar;348):2
+#23992 | auto Orgrimmar;396§auto Orgrimmar;396§auto Orgrimmar;396 | x=2133.5 y=-4653.80029296875 | size=1 | links=#17570(auto Orgrimmar;286):7 #26831(auto Orgrimmar;440):5
+#24063 | auto Orgrimmar;397§auto Orgrimmar;397§auto Orgrimmar;397 | x=1969.400024414063 y=-4762.5 | size=1 | links=#312(auto Orgrimmar;3):13 #16161(auto Orgrimmar;258):14
+#24069 | auto Orgrimmar;398§auto Orgrimmar;398§auto Orgrimmar;398 | x=1705.300048828125 y=-4266 | size=1 | links=#9148(auto Orgrimmar;146):3 #9929(auto Orgrimmar;160):3
+#24073 | auto Orgrimmar;399§auto Orgrimmar;399§auto Orgrimmar;399 | x=1781 y=-4501.80029296875 | size=1 | links=#8522(auto Orgrimmar;133):17 #21635(auto Orgrimmar;358):4
+#24123 | auto Orgrimmar;400§auto Orgrimmar;400§auto Orgrimmar;400 | x=1956.599975585938 y=-4474.7001953125 | size=1 | links=#14846(auto Orgrimmar;231):2 #26678(auto Orgrimmar;432):4
+#24140 | auto Orgrimmar;401§auto Orgrimmar;401§auto Orgrimmar;401 | x=2104 y=-4824 | size=1 | links=c3409.1:7 c7231.1:6
+#24308 | auto Orgrimmar;402§auto Orgrimmar;402§auto Orgrimmar;402 | x=2134.800048828125 y=-4622.2001953125 | size=1 | links=#24508(auto Orgrimmar;403):9 #27177(auto Orgrimmar;446):12
+#24508 | auto Orgrimmar;403§auto Orgrimmar;403§auto Orgrimmar;403 | x=2138.5 y=-4630.80029296875 | size=1 | links=#5905(auto Orgrimmar;93):9 #24308(auto Orgrimmar;402):9
+#24592 | auto Orgrimmar;404§auto Orgrimmar;404§auto Orgrimmar;404 | x=1736.300048828125 y=-4322.5 | size=1 | links=#12563(auto Orgrimmar;196):8 c3323.1:9
+#24658 | auto Orgrimmar;405§auto Orgrimmar;405§auto Orgrimmar;405 | x=2061.10009765625 y=-4737.80029296875 | size=1 | links=#1121(auto Orgrimmar;17):20 #13021(auto Orgrimmar;206):18
+#24780 | auto Orgrimmar;406§auto Orgrimmar;406§auto Orgrimmar;406 | x=1826.200073242188 y=-4380.89990234375 | size=1 | links=#1407(auto Orgrimmar;21):9 #3599(auto Orgrimmar;57):11
+#24783 | auto Orgrimmar;407§auto Orgrimmar;407§auto Orgrimmar;407 | x=1911.900024414063 y=-4435.80029296875 | size=1 | links=#6791(auto Orgrimmar;111):3 #12333(auto Orgrimmar;193):3
+#24902 | auto Orgrimmar;408§auto Orgrimmar;408§auto Orgrimmar;408 | x=1651 y=-4307.5 | size=1 | links=#7540(auto Orgrimmar;124):19 #9871(auto Orgrimmar;159):20
+#24930 | auto Orgrimmar;409§auto Orgrimmar;409§auto Orgrimmar;409 | x=1576.300048828125 y=-4447.80029296875 | size=1 | links=#3515(auto Orgrimmar;56):44 #19242(auto Orgrimmar;319):10 #27584(auto Orgrimmar;452):38
+#24972 | auto Orgrimmar;410§auto Orgrimmar;410§auto Orgrimmar;410 | x=1768.900024414063 y=-4515.10009765625 | size=1 | links=#17266(auto Orgrimmar;278):10 #21615(auto Orgrimmar;356):11
+#24977 | auto Orgrimmar;411§auto Orgrimmar;411§auto Orgrimmar;411 | x=1798.900024414063 y=-4352.7001953125 | size=1 | links=#16647(auto Orgrimmar;269):10 #26735(auto Orgrimmar;436):20
+#25004 | auto Orgrimmar;412§auto Orgrimmar;412§auto Orgrimmar;412 | x=1964.300048828125 y=-4471.30029296875 | size=1 | links=#16364(auto Orgrimmar;262):2 #21886(auto Orgrimmar;361):3
+#25243 | auto Orgrimmar;413§auto Orgrimmar;413§auto Orgrimmar;413 | x=1961.599975585938 y=-4472.5 | size=1 | links=#14846(auto Orgrimmar;231):3 #27414(auto Orgrimmar;449):4
+#25344 | auto Orgrimmar;414§auto Orgrimmar;414§auto Orgrimmar;414 | x=1904.800048828125 y=-4374.80029296875 | size=5 | links=#17767(auto Orgrimmar;290):9 #23821(auto Orgrimmar;391):8
+#25419 | auto Orgrimmar;415§auto Orgrimmar;415§auto Orgrimmar;415 | x=1678.700073242188 y=-4335.89990234375 | size=1 | links=#3009(auto Orgrimmar;51):3 #7774(auto Orgrimmar;125):3
+#25487 | auto Orgrimmar;416§auto Orgrimmar;416§auto Orgrimmar;416 | x=1563 y=-4382 | size=1 | links=#8251(auto Orgrimmar;128):12 #12783(auto Orgrimmar;203):19
+#25563 | auto Orgrimmar;417§auto Orgrimmar;417§auto Orgrimmar;417 | x=2090.900146484375 y=-4819.30029296875 | size=1 | links=#3739(auto Orgrimmar;59):6 #18983(auto Orgrimmar;313):10 c2704.1:4 c3361.1:8 c3409.1:8
+#25599 | auto Orgrimmar;418§auto Orgrimmar;418§auto Orgrimmar;418 | x=1929.700073242188 y=-4439.2001953125 | size=1 | links=#9611(auto Orgrimmar;157):8 #15990(auto Orgrimmar;254):4
+#25621 | auto Orgrimmar;419§auto Orgrimmar;419§auto Orgrimmar;419 | x=1616.700073242188 y=-4339.80029296875 | size=1 | links=#13987(auto Orgrimmar;220):7 #15700(auto Orgrimmar;247):5
+#25690 | auto Orgrimmar;420§auto Orgrimmar;420§auto Orgrimmar;420 | x=1922.200073242188 y=-4434.5 | size=1 | links=#13417(auto Orgrimmar;211):2 #16643(auto Orgrimmar;268):3
+#25720 | auto Orgrimmar;421§auto Orgrimmar;421§auto Orgrimmar;421 | x=1526.400024414063 y=-4408.89990234375 | size=1 | links=#16334(auto Orgrimmar;261):40 #17056(auto Orgrimmar;274):25 #27584(auto Orgrimmar;452):26
+#25749 | auto Orgrimmar;422§auto Orgrimmar;422§auto Orgrimmar;422 | x=1907.5 y=-4558.80029296875 | size=1 | links=#12748(auto Orgrimmar;200):29 #17430(auto Orgrimmar;281):8
+#25975 | auto Orgrimmar;423§auto Orgrimmar;423§auto Orgrimmar;423 | x=1719 y=-4354.7001953125 | size=1 | links=#10303(auto Orgrimmar;165):16 #11506(auto Orgrimmar;186):10
+#26048 | auto Orgrimmar;424§auto Orgrimmar;424§auto Orgrimmar;424 | x=1940.900024414063 y=-4473.7001953125 | size=1 | links=#9085(auto Orgrimmar;142):9 #18772(auto Orgrimmar;311):8
+#26056 | auto Orgrimmar;425§auto Orgrimmar;425§auto Orgrimmar;425 | x=1786.599975585938 y=-4289.5 | size=1 | links=#19296(auto Orgrimmar;320):12 #22175(auto Orgrimmar;367):7
+#26081 | auto Orgrimmar;426§auto Orgrimmar;426§auto Orgrimmar;426 | x=1696.200073242188 y=-4272.60009765625 | size=1 | links=#13397(auto Orgrimmar;210):3 #17251(auto Orgrimmar;277):2
+#26232 | auto Orgrimmar;427§auto Orgrimmar;427§auto Orgrimmar;427 | x=1640.300048828125 y=-4400.89990234375 | size=1 | links=#19586(central location;Valley of Strength;Orgrimmar):13 #22427(auto Orgrimmar;369):16
+#26280 | auto Orgrimmar;428§auto Orgrimmar;428§auto Orgrimmar;428 | x=1939.300048828125 y=-4424.80029296875 | size=1 | links=#3761(auto Orgrimmar;60):17 #20018(auto Orgrimmar;328):47 #23785(auto Orgrimmar;390):9
+#26441 | auto Orgrimmar;429§auto Orgrimmar;429§auto Orgrimmar;429 | x=1806.599975585938 y=-4232.89990234375 | size=1 | links=#3875(auto Orgrimmar;61):19 #20887(auto Orgrimmar;342):14
+#26443 | auto Orgrimmar;430§auto Orgrimmar;430§auto Orgrimmar;430 | x=1958.300048828125 y=-4735.10009765625 | size=1 | links=#12760(auto Orgrimmar;201):29 #23478(auto Orgrimmar;386):5 c4485.1:4
+#26571 | auto Orgrimmar;431§auto Orgrimmar;431§auto Orgrimmar;431 | x=1736.599975585938 y=-4286.5 | size=1 | links=#16021(auto Orgrimmar;255):14 #17832(auto Orgrimmar;292):11
+#26678 | auto Orgrimmar;432§auto Orgrimmar;432§auto Orgrimmar;432 | x=1954 y=-4471.39990234375 | size=1 | links=#8782(auto Orgrimmar;138):6 #24123(auto Orgrimmar;400):4
+#26692 | auto Orgrimmar;433§auto Orgrimmar;433§auto Orgrimmar;433 | x=1670 y=-4335.30029296875 | size=1 | links=#726(auto Orgrimmar;8):3 #27267(auto Orgrimmar;447):11
+#26710 | auto Orgrimmar;434§auto Orgrimmar;434§auto Orgrimmar;434 | x=1570.599975585938 y=-4300.5 | size=1 | links=#595(auto Orgrimmar;6):8 #17151(auto Orgrimmar;276):5
+#26729 | auto Orgrimmar;435§auto Orgrimmar;435§auto Orgrimmar;435 | x=1582.200073242188 y=-4157.80029296875 | size=1 | links=#10509(auto Orgrimmar;172):39 #14783(auto Orgrimmar;229):48 #23871(auto Orgrimmar;393):17
+#26735 | auto Orgrimmar;436§auto Orgrimmar;436§auto Orgrimmar;436 | x=1785.599975585938 y=-4368.2001953125 | size=1 | links=#7253(auto Orgrimmar;120):12 #24977(auto Orgrimmar;411):20
+#26771 | auto Orgrimmar;437§auto Orgrimmar;437§auto Orgrimmar;437 | x=1634.400024414063 y=-4443.5 | size=1 | links=#19040(auto Orgrimmar;316):10 c5611.1:7 c6466.1:6 c6929.1:4
+#26776 | auto Orgrimmar;438§auto Orgrimmar;438§auto Orgrimmar;438 | x=1924.800048828125 y=-4193.30029296875 | size=1 | links=#18103(auto Orgrimmar;299):15 #19562(auto Orgrimmar;322):25
+#26777 | auto Orgrimmar;439§auto Orgrimmar;439§auto Orgrimmar;439 | x=1672.800048828125 y=-3878.900146484375 | size=1 | links=#6674(auto Orgrimmar;106):20 #14045(auto Orgrimmar;221):14
+#26831 | auto Orgrimmar;440§auto Orgrimmar;440§auto Orgrimmar;440 | x=2133.10009765625 y=-4659.7001953125 | size=1 | links=#23992(auto Orgrimmar;396):5 c9988.1:7
+#26900 | auto Orgrimmar;441§auto Orgrimmar;441§auto Orgrimmar;441 | x=1449.5 y=-4199.39990234375 | size=1 | links=#9246(auto Orgrimmar;149):7 #15832(auto Orgrimmar;252):5
+#26929 | auto Orgrimmar;442§auto Orgrimmar;442§auto Orgrimmar;442 | x=1963.300048828125 y=-4793.2001953125 | size=1 | links=#1572(auto Orgrimmar;28):5 #13459(auto Orgrimmar;212):8 c3354.1:16
+#26996 | auto Orgrimmar;443§auto Orgrimmar;443§auto Orgrimmar;443 | x=1895.599975585938 y=-4686.5 | size=1 | links=#1445(auto Orgrimmar;22):13 #6790(auto Orgrimmar;110):11
+#27071 | auto Orgrimmar;444§auto Orgrimmar;444§auto Orgrimmar;444 | x=2146.60009765625 y=-4648.39990234375 | size=1 | links=#5905(auto Orgrimmar;93):9 #13562(auto Orgrimmar;215):7
+#27139 | auto Orgrimmar;445§auto Orgrimmar;445§auto Orgrimmar;445 | x=2064.400146484375 y=-4610 | size=1 | links=#1061(auto Orgrimmar;16):8 #6244(auto Orgrimmar;98):14
+#27149 | instance entrance;Orgrimmar§instanzeingang;Orgrimmar§instance entrance;Orgrimmar | x=1815.900024414063 y=-4421.30029296875 | size=1 | links=#22768(auto Orgrimmar;373):12
+#27177 | auto Orgrimmar;446§auto Orgrimmar;446§auto Orgrimmar;446 | x=2129.199951171875 y=-4611.39990234375 | size=1 | links=#10523(auto Orgrimmar;173):6 #24308(auto Orgrimmar;402):12 c10088.1:6
+#27267 | auto Orgrimmar;447§auto Orgrimmar;447§auto Orgrimmar;447 | x=1673.300048828125 y=-4324.60009765625 | size=1 | links=#422(auto Orgrimmar;5):3 #12839(auto Orgrimmar;204):3 #26692(auto Orgrimmar;433):11
+#27330 | auto Orgrimmar;448§auto Orgrimmar;448§auto Orgrimmar;448 | x=1760.700073242188 y=-4495.39990234375 | size=1 | links=#22647(auto Orgrimmar;371):3 #27829(auto Orgrimmar;455):4
+#27414 | auto Orgrimmar;449§auto Orgrimmar;449§auto Orgrimmar;449 | x=1962.300048828125 y=-4467.60009765625 | size=1 | links=#1556(auto Orgrimmar;26):3 #25243(auto Orgrimmar;413):4
+#27423 | auto Orgrimmar;450§auto Orgrimmar;450§auto Orgrimmar;450 | x=1672.800048828125 y=-4330.60009765625 | size=1 | links=#15372(auto Orgrimmar;241):3 #23020(auto Orgrimmar;380):3
+#27543 | auto Orgrimmar;451§auto Orgrimmar;451§auto Orgrimmar;451 | x=1739.900024414063 y=-4470.39990234375 | size=1 | links=#5622(auto Orgrimmar;88):9 #20809(auto Orgrimmar;340):11
+#27584 | auto Orgrimmar;452§auto Orgrimmar;452§auto Orgrimmar;452 | x=1551.5 y=-4417.89990234375 | size=1 | links=#2430(auto Orgrimmar;43):12 #17149(auto Orgrimmar;275):11 #24930(auto Orgrimmar;409):38 #25720(auto Orgrimmar;421):26
+#27724 | auto Orgrimmar;453§auto Orgrimmar;453§auto Orgrimmar;453 | x=1458.5 y=-4155.39990234375 | size=1 | links=#27842(auto Orgrimmar;456):4 #28205(auto Orgrimmar;466):5
+#27749 | auto Orgrimmar;454§auto Orgrimmar;454§auto Orgrimmar;454 | x=1791.300048828125 y=-4313.89990234375 | size=1 | links=#1736(auto Orgrimmar;31):11 #5852(central location;Cleft of Shadow;Orgrimmar):18
+#27829 | auto Orgrimmar;455§auto Orgrimmar;455§auto Orgrimmar;455 | x=1761.800048828125 y=-4499.60009765625 | size=1 | links=#14059(auto Orgrimmar;222):4 #27330(auto Orgrimmar;448):4
+#27842 | auto Orgrimmar;456§auto Orgrimmar;456§auto Orgrimmar;456 | x=1454.700073242188 y=-4157.10009765625 | size=1 | links=#9122(auto Orgrimmar;144):8 #27724(auto Orgrimmar;453):4
+#27844 | auto Orgrimmar;457§auto Orgrimmar;457§auto Orgrimmar;457 | x=1718.800048828125 y=-4300 | size=1 | links=#6742(auto Orgrimmar;108):30 #12563(auto Orgrimmar;196):28
+#27862 | auto Orgrimmar;458§auto Orgrimmar;458§auto Orgrimmar;458 | x=1873.800048828125 y=-4463.39990234375 | size=1 | links=#1743(auto Orgrimmar;32):24 #11619(auto Orgrimmar;189):15
+#27876 | auto Orgrimmar;459§auto Orgrimmar;459§auto Orgrimmar;459 | x=1889.700073242188 y=-4353.39990234375 | size=1 | links=#9206(auto Orgrimmar;148):12 #19034(auto Orgrimmar;315):10
+#27893 | auto Orgrimmar;460§auto Orgrimmar;460§auto Orgrimmar;460 | x=1733.099975585938 y=-4220.80029296875 | size=1 | links=#10124(auto Orgrimmar;162):14 #11786(auto Orgrimmar;190):22
+#27907 | auto Orgrimmar;461§auto Orgrimmar;461§auto Orgrimmar;461 | x=1621.900024414063 y=-4261.60009765625 | size=1 | links=#9846(auto Orgrimmar;158):27 #13210(auto Orgrimmar;208):18 #29046(auto Orgrimmar;472):9
+#28007 | auto Orgrimmar;462§auto Orgrimmar;462§auto Orgrimmar;462 | x=2106.60009765625 y=-4829.5 | size=1 | links=#5510(auto Orgrimmar;87):5 #8588(auto Orgrimmar;134):8
+#28024 | auto Orgrimmar;463§auto Orgrimmar;463§auto Orgrimmar;463 | x=2061.300048828125 y=-4823.89990234375 | size=1 | links=#4697(auto Orgrimmar;71):7 #10350(auto Orgrimmar;169):6
+#28129 | auto Orgrimmar;464§auto Orgrimmar;464§auto Orgrimmar;464 | x=1676.700073242188 y=-4338.89990234375 | size=1 | links=#1008(auto Orgrimmar;15):2 #19725(auto Orgrimmar;323):2
+#28153 | auto Orgrimmar;465§auto Orgrimmar;465§auto Orgrimmar;465 | x=2075.10009765625 y=-4599.10009765625 | size=1 | links=#1061(auto Orgrimmar;16):7 #5107(auto Orgrimmar;76):15
+#28205 | auto Orgrimmar;466§auto Orgrimmar;466§auto Orgrimmar;466 | x=1464 y=-4155.80029296875 | size=1 | links=#19731(auto Orgrimmar;324):4 #27724(auto Orgrimmar;453):5
+#28297 | auto Orgrimmar;467§auto Orgrimmar;467§auto Orgrimmar;467 | x=1685.700073242188 y=-4254.89990234375 | size=1 | links=#9126(auto Orgrimmar;145):6 #21353(auto Orgrimmar;352):8
+#28374 | auto Orgrimmar;468§auto Orgrimmar;468§auto Orgrimmar;468 | x=1964 y=-4465.5 | size=1 | links=#8302(auto Orgrimmar;130):3 #12095(auto Orgrimmar;192):4
+#28384 | auto Orgrimmar;469§auto Orgrimmar;469§auto Orgrimmar;469 | x=1608.800048828125 y=-4383.10009765625 | size=1 | links=#2071(auto Orgrimmar;40):5 #12933(auto Orgrimmar;205):8 #17625(auto Orgrimmar;287):12
+#28435 | auto Orgrimmar;470§auto Orgrimmar;470§auto Orgrimmar;470 | x=1679.5 y=-4275.80029296875 | size=5 | links=#6742(auto Orgrimmar;108):15 #7292(auto Orgrimmar;122):20
+#28492 | auto Orgrimmar;471§auto Orgrimmar;471§auto Orgrimmar;471 | x=2080.400146484375 y=-4811 | size=1 | links=#1121(auto Orgrimmar;17):56 #3739(auto Orgrimmar;59):6 #4697(auto Orgrimmar;71):16 c7790.1:24
+#28569 | passage;from;Orgrimmar;to;Durotar§passage;von;Orgrimmar;nach;durotar§passage;de;Orgrimmar;vers;Durotar | x=1386.099975585938 y=-4367.7001953125 | size=1 | links=#15863(passage;from;Durotar;to;Orgrimmar):5 #2739(auto Orgrimmar;47):7
+#28596 | s;h;Mailbox;2;Orgrimmar§s;h;Briefkasten;2;Orgrimmar§s;h;Boîte aux lettres;2;Orgrimmar | x=1895.033569335938 y=-4551.61865234375 | size=1 | links=#17430(auto Orgrimmar;281):8
+#28674 | s;Kalimdor;capital;Orgrimmar§s;Kalimdor;Hauptstadt;Orgrimmar§s;Kalimdor;capital;Orgrimmar | x=1381.77 y=-4371.16 | size=1
+#28745 | s;Kalimdor;capital;Orgrimmar§s;Kalimdor;Hauptstadt;Orgrimmar§s;Kalimdor;capital;Orgrimmar | x=1381.77 y=-4371.16 | size=1
+#29042 | Lady Palanseer;Jewelcrafting Quartermaster;Orgrimmar;1;37.91;64.05§Lady Palanseer;Rüstmeisterin für Juwelenschleifen;Orgrimmar;1;37.91;64.05§Dame Palanseer;Jewelcrafting Quartermaster;Orgrimmar;1;37.91;64.05 | x=1668.796231768788 y=-4198.55432778992 | size=1
+#29043 | Sergeant Thunderhorn;Apprentice Armor Quartermaster;Orgrimmar;1;36.82;64.78§Unteroffizier Donnerhorn;Rüstmeisterlehrling für Rüstungen;Orgrimmar;1;36.82;64.78§Sergent Corne-tonnerre;Apprentice Armor Quartermaster;Orgrimmar;1;36.82;64.78 | x=1673.996305010975 y=-4211.881770438185 | size=1
+#29044 | Doris Volanthius;Veteran Armor Quartermaster;Orgrimmar;1;37.2;64.25§Doris Volanthius;Rüstmeisterveteran für Rüstungen;Orgrimmar;1;37.2;64.25§Doris Volanthius;Veteran Armor Quartermaster;Orgrimmar;1;37.2;64.25 | x=1673.539326182654 y=-4215.795735902941 | size=1
+#29045 | Blood Guard Zar'shi;Northrend Armor Quartermaster;Orgrimmar;1;37;64.46§Blutwache Zar'shi;Nordend-Rüstmeister für Rüstungen;Orgrimmar;1;37;64.46§Garde de sang Zar'shi;Northrend Armor Quartermaster;Orgrimmar;1;37;64.46 | x=1671.053143211008 y=-4202.067887013448 | size=1
+#29046 | auto Orgrimmar;472§auto Orgrimmar;472§auto Orgrimmar;472 | x=1629.400024414063 y=-4255.2001953125 | size=1 | links=#27907(auto Orgrimmar;461):9 #29047(auto Orgrimmar;473):7
+#29047 | auto Orgrimmar;473§auto Orgrimmar;473§auto Orgrimmar;473 | x=1634.400024414063 y=-4250.2001953125 | size=1 | links=#29046(auto Orgrimmar;472):7 #29048(auto Orgrimmar;474):10
+#29048 | auto Orgrimmar;474§auto Orgrimmar;474§auto Orgrimmar;474 | x=1638.599975585938 y=-4240.7001953125 | size=1 | links=#29047(auto Orgrimmar;473):10 #29049(auto Orgrimmar;475):10
+#29049 | auto Orgrimmar;475§auto Orgrimmar;475§auto Orgrimmar;475 | x=1642.700073242188 y=-4231.30029296875 | size=1 | links=#29048(auto Orgrimmar;474):10 #29050(auto Orgrimmar;476):7 #29059(auto Orgrimmar;485):12
+#29050 | auto Orgrimmar;476§auto Orgrimmar;476§auto Orgrimmar;476 | x=1639.800048828125 y=-4224.30029296875 | size=1 | links=#29049(auto Orgrimmar;475):7 #29051(auto Orgrimmar;477):10
+#29051 | auto Orgrimmar;477§auto Orgrimmar;477§auto Orgrimmar;477 | x=1633.700073242188 y=-4215.2001953125 | size=1 | links=#29050(auto Orgrimmar;476):10 #29052(auto Orgrimmar;478):7
+#29052 | auto Orgrimmar;478§auto Orgrimmar;478§auto Orgrimmar;478 | x=1636.099975585938 y=-4208.39990234375 | size=1 | links=#29051(auto Orgrimmar;477):7 #29053(auto Orgrimmar;479):3
+#29053 | auto Orgrimmar;479§auto Orgrimmar;479§auto Orgrimmar;479 | x=1638.800048828125 y=-4206.60009765625 | size=1 | links=#29052(auto Orgrimmar;478):3 #29054(auto Orgrimmar;480):8 c12797.1:11
+#29054 | auto Orgrimmar;480§auto Orgrimmar;480§auto Orgrimmar;480 | x=1643.5 y=-4199.30029296875 | size=1 | links=#29053(auto Orgrimmar;479):8 #29055(auto Orgrimmar;481):12
+#29055 | auto Orgrimmar;481§auto Orgrimmar;481§auto Orgrimmar;481 | x=1655.700073242188 y=-4194.89990234375 | size=1 | links=#29054(auto Orgrimmar;480):12 #29056(auto Orgrimmar;482):4
+#29056 | auto Orgrimmar;482§auto Orgrimmar;482§auto Orgrimmar;482 | x=1660.200073242188 y=-4196.80029296875 | size=1 | links=#29055(auto Orgrimmar;481):4
+#29057 | auto Orgrimmar;483§auto Orgrimmar;483§auto Orgrimmar;483 | x=1668.300048828125 y=-4219.2001953125 | size=1 | links=#29058(auto Orgrimmar;484):10 c12798.1:12
+#29058 | auto Orgrimmar;484§auto Orgrimmar;484§auto Orgrimmar;484 | x=1664.900024414063 y=-4229.10009765625 | size=1 | links=#29057(auto Orgrimmar;483):10 #29059(auto Orgrimmar;485):10
+#29059 | auto Orgrimmar;485§auto Orgrimmar;485§auto Orgrimmar;485 | x=1654.800048828125 y=-4231.30029296875 | size=1 | links=#29049(auto Orgrimmar;475):12 #29058(auto Orgrimmar;484):10
+#29060 | meeting stone ragefire orgrimmar§Versammlungsstein Flammenschlund orgrimmar§meeting stone ragefire orgrimmar | x=1815.900024414063 y=-4401 | size=1 | links=#10385(auto Orgrimmar;170):9 #22768(auto Orgrimmar;373):10
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c1383.1 | links=c7790.1:9 c11176.1:5 c11178.1:4
+c2704.1 | links=#25563(auto Orgrimmar;417):4 c11868.1:2
+c2855.1 | links=#11270(auto Orgrimmar;182):14 c3363.1:11
+c2857.1 | links=#10621(auto Orgrimmar;175):8 c9317.1:8
+c3144.1 | links=c16012.1:13
+c3189.1 | links=#9595(auto Orgrimmar;156):18
+c3216.1 | links=#18688(auto Orgrimmar;309):6
+c3309.1 | links=#17625(auto Orgrimmar;287):7
+c3310.1 | links=#11581(auto Orgrimmar;188):4
+c3312.1 | links=#8898(auto Orgrimmar;140):5
+c3313.1 | links=#1547(auto Orgrimmar;25):4
+c3314.1 | links=#15700(auto Orgrimmar;247):14
+c3315.1 | links=#11270(auto Orgrimmar;182):9
+c3316.1 | links=#16032(auto Orgrimmar;256):8 c3365.1:5 c5811.1:5
+c3317.1 | links=#15829(auto Orgrimmar;251):9
+c3318.1 | links=#17625(auto Orgrimmar;287):13
+c3319.1 | links=#15829(auto Orgrimmar;251):7
+c3320.1 | links=#17625(auto Orgrimmar;287):9 #21642(guild vault;Valley of Strength;Orgrimmar):3
+c3321.1 | links=#15829(auto Orgrimmar;251):5
+c3322.1 | links=#12745(auto Orgrimmar;199):8
+c3323.1 | links=#24592(auto Orgrimmar;404):9
+c3324.1 | links=#17495(auto Orgrimmar;282):10 c5875.1:7
+c3325.1 | links=#17495(auto Orgrimmar;282):8
+c3326.1 | links=#17495(auto Orgrimmar;282):16 c5875.1:3
+c3327.1 | links=#19296(auto Orgrimmar;320):9
+c3328.1 | links=#23173(auto Orgrimmar;384):11
+c3329.1 | links=#7253(auto Orgrimmar;120):18
+c3330.1 | links=#8315(auto Orgrimmar;131):10 c5816.1:3
+c3331.1 | links=#23173(auto Orgrimmar;384):17
+c3332.1 | links=#7179(auto Orgrimmar;117):6
+c3333.1 | links=#7179(auto Orgrimmar;117):10
+c3334.1 | links=#19296(auto Orgrimmar;320):19
+c3335.1 | links=#15692(auto Orgrimmar;246):19
+c3342.1 | links=#7233(auto Orgrimmar;119):10
+c3344.1 | links=#18968(auto Orgrimmar;312):8 c13417.1:4
+c3345.1 | links=#10928(auto Orgrimmar;178):10
+c3346.1 | links=#10928(auto Orgrimmar;178):5
+c3347.1 | links=#9085(auto Orgrimmar;142):15 c11046.1:14
+c3348.1 | links=#6611(auto Orgrimmar;105):5 #9085(auto Orgrimmar;142):7 c11046.1:11
+c3349.1 | links=#16689(auto Orgrimmar;270):4
+c3350.1 | links=#22781(auto Orgrimmar;374):8
+c3351.1 | links=#22781(auto Orgrimmar;374):9
+c3352.1 | links=#21734(auto Orgrimmar;359):14
+c3353.1 | links=#13459(auto Orgrimmar;212):10 c14942.1:11
+c3354.1 | links=#1572(auto Orgrimmar;28):22 #26929(auto Orgrimmar;442):16 c19912.1:17
+c3355.1 | links=#10350(auto Orgrimmar;169):6
+c3356.1 | links=#10350(auto Orgrimmar;169):13
+c3357.1 | links=#1926(auto Orgrimmar;37):7
+c3358.1 | links=#1926(auto Orgrimmar;37):4
+c3359.1 | links=#1724(auto Orgrimmar;30):8
+c3360.1 | links=#20761(auto Orgrimmar;339):4
+c3361.1 | links=#25563(auto Orgrimmar;417):8
+c3362.1 | links=#13562(auto Orgrimmar;215):6
+c3363.1 | links=#11270(auto Orgrimmar;182):21 c2855.1:11 c14726.1:12
+c3364.1 | links=#11270(auto Orgrimmar;182):16 c14726.1:7
+c3365.1 | links=#16032(auto Orgrimmar;256):12 c3316.1:5
+c3366.1 | links=#16032(auto Orgrimmar;256):8 c7088.1:4
+c3368.1 | links=#3088(auto Orgrimmar;52):5
+c3369.1 | links=#17266(auto Orgrimmar;278):4
+c3370.1 | links=#17151(auto Orgrimmar;276):4
+c3371.1 | links=#15263(auto Orgrimmar;239):6
+c3372.1 | links=#15263(auto Orgrimmar;239):11
+c3373.1 | links=#15572(auto Orgrimmar;244):2
+c3399.1 | links=#3088(auto Orgrimmar;52):5
+c3400.1 | links=#3088(auto Orgrimmar;52):4
+c3401.1 | links=#22175(auto Orgrimmar;367):12 c6446.1:4
+c3402.1 | links=#22175(auto Orgrimmar;367):13 c6446.1:5
+c3403.1 | links=#18103(auto Orgrimmar;299):7
+c3404.1 | links=#6734(auto Orgrimmar;107):11
+c3405.1 | links=#6734(auto Orgrimmar;107):7
+c3406.1 | links=#21734(auto Orgrimmar;359):16
+c3407.1 | links=#21734(auto Orgrimmar;359):14
+c3408.1 | links=c15006.1:12 c19912.1:11
+c3409.1 | links=#24140(auto Orgrimmar;401):7 #25563(auto Orgrimmar;417):8
+c3410.1 | links=#6541(auto Orgrimmar;104):11
+c3412.1 | links=#10621(auto Orgrimmar;175):8 c3413.1:7 c11017.1:3
+c3413.1 | links=#10621(auto Orgrimmar;175):4 c3412.1:7
+c3890.1 | links=c14942.1:11
+c4043.1 | links=c7231.1:9 c11871.1:8
+c4047.1 | links=#18968(auto Orgrimmar;312):12
+c4485.1 | links=#1685(auto Orgrimmar;29):13 #26443(auto Orgrimmar;430):4
+c4752.1 | links=#13562(auto Orgrimmar;215):2
+c5188.1 | links=#17151(auto Orgrimmar;276):6
+c5611.1 | links=#26771(auto Orgrimmar;437):7
+c5640.1 | links=#17656(auto Orgrimmar;288):10
+c5811.1 | links=#16032(auto Orgrimmar;256):12 c3316.1:5 c7088.1:6
+c5812.1 | links=#10350(auto Orgrimmar;169):10
+c5815.1 | links=#17495(auto Orgrimmar;282):7 c5909.1:6
+c5816.1 | links=#8315(auto Orgrimmar;131):10 c3330.1:3
+c5817.1 | links=#1547(auto Orgrimmar;25):4
+c5875.1 | links=#17495(auto Orgrimmar;282):16 c3324.1:7 c3326.1:3
+c5882.1 | links=#16876(auto Orgrimmar;272):3
+c5883.1 | links=#16876(auto Orgrimmar;272):3
+c5885.1 | links=#16876(auto Orgrimmar;272):3
+c5892.1 | links=#18103(auto Orgrimmar;299):6
+c5909.1 | links=c5815.1:6
+c5910.1 | links=#17382(auto Orgrimmar;280):20
+c5958.1 | links=#21903(spawn location;portal;Valley of Spirits;Orgrimmar):4
+c5994.1 | links=c6014.1:8
+c6014.1 | links=#15469(auto Orgrimmar;242):15 c5994.1:8
+c6018.1 | links=#16819(auto Orgrimmar;271):11
+c6446.1 | links=#22175(auto Orgrimmar;367):14 c3401.1:4 c3402.1:5
+c6466.1 | links=#26771(auto Orgrimmar;437):6
+c6929.1 | links=#26771(auto Orgrimmar;437):4
+c6986.1 | links=#15872(auto Orgrimmar;253):10 c6987.1:4
+c6987.1 | links=#15872(auto Orgrimmar;253):10 c6986.1:4
+c7010.1 | links=#15263(auto Orgrimmar;239):3
+c7088.1 | links=#16032(auto Orgrimmar;256):12 c3366.1:4 c5811.1:6
+c7230.1 | links=c7793.1:3 c11176.1:4
+c7231.1 | links=#24140(auto Orgrimmar;401):6 c4043.1:9
+c7294.1 | links=#1061(auto Orgrimmar;16):5
+c7311.1 | links=#16876(auto Orgrimmar;272):9
+c7790.1 | links=#28492(auto Orgrimmar;471):24 c1383.1:9
+c7792.1 | links=#4697(auto Orgrimmar;71):9
+c7793.1 | links=c7230.1:3 c10266.1:4
+c7951.1 | links=#7179(auto Orgrimmar;117):8
+c8659.1 | links=#18645(auto Orgrimmar;308):3
+c8673.1 | links=#10447(auto Orgrimmar;171):17
+c8724.1 | links=#10447(auto Orgrimmar;171):17
+c9317.1 | links=#10621(auto Orgrimmar;175):14 c2857.1:8 c11017.1:8
+c9856.1 | links=#10447(auto Orgrimmar;171):18
+c9988.1 | links=#26831(auto Orgrimmar;440):7
+c10088.1 | links=#27177(auto Orgrimmar;446):6
+c10266.1 | links=#4697(auto Orgrimmar;71):13 c7793.1:4
+c10540.1 | links=#19562(auto Orgrimmar;322):12
+c11017.1 | links=#10621(auto Orgrimmar;175):9 c3412.1:3 c9317.1:8
+c11046.1 | links=c3347.1:14 c3348.1:11
+c11066.1 | links=#10928(auto Orgrimmar;178):9
+c11176.1 | links=c1383.1:5 c7230.1:4 c11177.1:7 c11178.1:8
+c11177.1 | links=c11176.1:7 c11178.1:6
+c11178.1 | links=c1383.1:4 c11176.1:8 c11177.1:6
+c11868.1 | links=c2704.1:2 c11871.1:2
+c11871.1 | links=c4043.1:8 c11868.1:2
+c12797.1 | links=#29053(auto Orgrimmar;479):11
+c12798.1 | links=#29057(auto Orgrimmar;483):12
+c13417.1 | links=c3344.1:4
+c14375.1 | links=#12933(auto Orgrimmar;205):3
+c14376.1 | links=#8137(auto Orgrimmar;126):14
+c14377.1 | links=#5304(auto Orgrimmar;83):13
+c14451.1 | links=#20996(auto Orgrimmar;345):16
+c14726.1 | links=#11270(auto Orgrimmar;182):21 c3363.1:12 c3364.1:7
+c14727.1 | links=#16876(auto Orgrimmar;272):22
+c14942.1 | links=#1842(auto Orgrimmar;35):16 c3353.1:11 c3890.1:11
+c15006.1 | links=c3408.1:12 c20385.1:5
+c15186.1 | links=#7179(auto Orgrimmar;117):7
+c15761.1 | links=#20126(auto Orgrimmar;329):15
+c16012.1 | links=#19562(auto Orgrimmar;322):7 c3144.1:13
+c16069.1 | links=c16076.1:0
+c16076.1 | links=#7179(auto Orgrimmar;117):10 c16069.1:0
+c17066.1 | links=#20126(auto Orgrimmar;329):13
+c19912.1 | links=c3354.1:17 c3408.1:11
+c20385.1 | links=#1842(auto Orgrimmar;35):11 c15006.1:5
+c23635.1 | links=#20254(auto Orgrimmar;330):10
+c27489.1 | links=#16876(auto Orgrimmar;272):12

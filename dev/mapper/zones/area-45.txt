@@ -1,0 +1,1046 @@
+Zone areaId 45 — eine Zeile pro Wegpunkt; Links inline.
+
+#228 | auto Arathi Highlands;1§auto Arathihochland;1§auto Hautes-terres d'Arathi;1 | x=-1769.900024414063 y=-1507.200073242188 | size=1 | links=#17600(auto Arathi Highlands;270):3 #18187(auto Arathi Highlands;280):3
+#383 | auto Arathi Highlands;2§auto Arathihochland;2§auto Hautes-terres d'Arathi;2 | x=-842.5 y=-3518.10009765625 | size=1 | links=c15022.1:8 c19905.1:21
+#390 | auto Arathi Highlands;3§auto Arathihochland;3§auto Hautes-terres d'Arathi;3 | x=-1589.5 y=-1846.400024414063 | size=1 | links=#17104(auto Arathi Highlands;260):12 #24721(auto Arathi Highlands;389):13
+#498 | auto Arathi Highlands;4§auto Arathihochland;4§auto Hautes-terres d'Arathi;4 | x=-1111.099975585938 y=-3276.300048828125 | size=1 | links=#24836(auto Arathi Highlands;392):65
+#539 | auto Arathi Highlands;5§auto Arathihochland;5§auto Hautes-terres d'Arathi;5 | x=-2146.5 y=-1987 | size=1 | links=#6994(auto Arathi Highlands;112):21 #8071(auto Arathi Highlands;125):23
+#546 | auto Arathi Highlands;6§auto Arathihochland;6§auto Hautes-terres d'Arathi;6 | x=-2254.199951171875 y=-1909.300048828125 | size=1 | links=#5410(auto Arathi Highlands;89):21 #11529(auto Arathi Highlands;180):24
+#609 | auto Arathi Highlands;7§auto Arathihochland;7§auto Hautes-terres d'Arathi;7 | x=-902.4000244140625 y=-3513.10009765625 | size=1 | links=#23050(auto Arathi Highlands;351):18 #23782(auto Arathi Highlands;367):15
+#674 | auto Arathi Highlands;8§auto Arathihochland;8§auto Hautes-terres d'Arathi;8 | x=-1050.599975585938 y=-2834.800048828125 | size=1 | links=#18954(auto Arathi Highlands;293):12 c2582.2:13 c2582.22:9
+#854 | auto Arathi Highlands;9§auto Arathihochland;9§auto Hautes-terres d'Arathi;9 | x=-1510 y=-2968.10009765625 | size=1 | links=#4661(auto Arathi Highlands;77):59 #18151(auto Arathi Highlands;279):47
+#868 | auto Arathi Highlands;10§auto Arathihochland;10§auto Hautes-terres d'Arathi;10 | x=-1103.700073242188 y=-3750.300048828125 | size=1 | links=#13809(auto Arathi Highlands;208):21 #21048(auto Arathi Highlands;319):13 c2572.10:11
+#875 | auto Arathi Highlands;11§auto Arathihochland;11§auto Hautes-terres d'Arathi;11 | x=-2206.300048828125 y=-1869.800048828125 | size=1 | links=#12193(focus point;Faldir's Cove;Arathi Highlands):17 #13310(auto Arathi Highlands;197):28
+#996 | auto Arathi Highlands;12§auto Arathihochland;12§auto Hautes-terres d'Arathi;12 | x=-1762.800048828125 y=-1505.700073242188 | size=1 | links=#24839(auto Arathi Highlands;393):8 o2718.1:10
+#1066 | auto Arathi Highlands;13§auto Arathihochland;13§auto Hautes-terres d'Arathi;13 | x=-1989.5 y=-2464.199951171875 | size=1 | links=#2552(auto Arathi Highlands;39):155 #23706(auto Arathi Highlands;366):100
+#1108 | auto Arathi Highlands;14§auto Arathihochland;14§auto Hautes-terres d'Arathi;14 | x=-1772.400024414063 y=-1509.5 | size=1 | links=#1531(auto Arathi Highlands;21):6 #3661(auto Arathi Highlands;60):5
+#1187 | entry and exit;cave;ocean;Arathi Highlands§ein- und ausgang;höhle;meer;Arathihochland§entrée et sortie;cave;ocean;Hautes-terres d'Arathi | x=-1949.200073242188 y=-1644.400024414063 | size=1 | links=#3690(auto Arathi Highlands;61):25 #12488(auto Arathi Highlands;190):4
+#1280 | auto Arathi Highlands;15§auto Arathihochland;15§auto Hautes-terres d'Arathi;15 | x=-1068.400024414063 y=-3832.699951171875 | size=1 | links=#17223(auto Arathi Highlands;261):11 #23293(auto Arathi Highlands;357):22 c2572.11:4
+#1346 | auto Arathi Highlands;16§auto Arathihochland;16§auto Hautes-terres d'Arathi;16 | x=-1668.200073242188 y=-1901.800048828125 | size=1 | links=#2507(auto Arathi Highlands;38):14 #13308(auto Arathi Highlands;196):23 c24477.15:15
+#1368 | auto Arathi Highlands;17§auto Arathihochland;17§auto Hautes-terres d'Arathi;17 | x=-1697.300048828125 y=-1581.800048828125 | size=1 | links=c2571.6:13 c2570.7:18
+#1416 | auto Arathi Highlands;18§auto Arathihochland;18§auto Hautes-terres d'Arathi;18 | x=-1115.800048828125 y=-3589.300048828125 | size=1 | links=#5254(auto Arathi Highlands;86):30 #24410(auto Arathi Highlands;381):33
+#1439 | auto Arathi Highlands;19§auto Arathihochland;19§auto Hautes-terres d'Arathi;19 | x=-1529 y=-1825.300048828125 | size=1 | links=#22551(auto Arathi Highlands;346):43 #24599(auto Arathi Highlands;386):10
+#1527 | auto Arathi Highlands;20§auto Arathihochland;20§auto Hautes-terres d'Arathi;20 | x=-1713.700073242188 y=-1561.300048828125 | size=1 | links=#19336(auto Arathi Highlands;296):6 c2571.5:12
+#1531 | auto Arathi Highlands;21§auto Arathihochland;21§auto Hautes-terres d'Arathi;21 | x=-1778.300048828125 y=-1513.200073242188 | size=1 | links=#1108(auto Arathi Highlands;14):6 #25209(auto Arathi Highlands;401):5
+#1541 | auto Arathi Highlands;22§auto Arathihochland;22§auto Hautes-terres d'Arathi;22 | x=-961.6000366210938 y=-3490.60009765625 | size=1 | links=#4404(auto Arathi Highlands;72):7 #25514(central location;Hammerfall;Arathi Highlands):17
+#1600 | auto Arathi Highlands;23§auto Arathihochland;23§auto Hautes-terres d'Arathi;23 | x=-1202.5 y=-2074.5 | size=1 | links=#14624(auto Arathi Highlands;217):6 #24078(auto Arathi Highlands;373):9 c2564.12:1
+#1607 | auto Arathi Highlands;24§auto Arathihochland;24§auto Hautes-terres d'Arathi;24 | x=-1831.300048828125 y=-3374.800048828125 | size=1 | links=#9980(auto Arathi Highlands;162):14 c2556.15:27
+#1615 | auto Arathi Highlands;25§auto Arathihochland;25§auto Hautes-terres d'Arathi;25 | x=-1770.700073242188 y=-1508.599975585938 | size=1 | links=#20245(auto Arathi Highlands;306):3 o2718.1:11
+#1617 | auto Arathi Highlands;26§auto Arathihochland;26§auto Hautes-terres d'Arathi;26 | x=-1550.099975585938 y=-1939.700073242188 | size=1 | links=#3832(auto Arathi Highlands;64):20 #9725(auto Arathi Highlands;158):14
+#1749 | auto Arathi Highlands;27§auto Arathihochland;27§auto Hautes-terres d'Arathi;27 | x=-2020.800048828125 y=-2834.800048828125 | size=1 | links=#4312(auto Arathi Highlands;67):5 c2566.19:7
+#1768 | auto Arathi Highlands;28§auto Arathihochland;28§auto Hautes-terres d'Arathi;28 | x=-1249.900024414063 y=-3016.400146484375 | size=5 | links=#11167(auto Arathi Highlands;176):73 #21786(auto Arathi Highlands;330):82
+#1960 | auto Arathi Highlands;29§auto Arathihochland;29§auto Hautes-terres d'Arathi;29 | x=-1280.200073242188 y=-3048.699951171875 | size=1 | links=#9370(auto Arathi Highlands;150):41 #21786(auto Arathi Highlands;330):96
+#2040 | auto Arathi Highlands;30§auto Arathihochland;30§auto Hautes-terres d'Arathi;30 | x=-1750.900024414063 y=-1550.200073242188 | size=1 | links=#16187(auto Arathi Highlands;242):7 c2571.1:10 o2715.1:9
+#2091 | auto Arathi Highlands;31§auto Arathihochland;31§auto Hautes-terres d'Arathi;31 | x=-1607 y=-1923.300048828125 | size=1 | links=#20221(auto Arathi Highlands;305):12 #23945(auto Arathi Highlands;369):8 c2588.2:4
+#2163 | passage;ocean;Faldir's Cove;Arathi Highlands§übergang;meer;Die Faldirbucht;Arathihochland§passage;ocean;Faldir's Cove;Hautes-terres d'Arathi | x=-2085.60009765625 y=-1734.099975585938 | size=1 | links=#8121(auto Arathi Highlands;127):46 #26515(auto Arathi Highlands;417):81
+#2178 | auto Arathi Highlands;32§auto Arathihochland;32§auto Hautes-terres d'Arathi;32 | x=-1713.900024414063 y=-1807.800048828125 | size=1 | links=#22526(auto Arathi Highlands;345):17 #22954(auto Arathi Highlands;350):10
+#2239 | auto Arathi Highlands;33§auto Arathihochland;33§auto Hautes-terres d'Arathi;33 | x=-1739.200073242188 y=-3201.199951171875 | size=1 | links=#22383(entry and exit;Witherbark Village;Arathi Highlands):10 c2554.16:21
+#2312 | auto Arathi Highlands;34§auto Arathihochland;34§auto Hautes-terres d'Arathi;34 | x=-2008 y=-3303.300048828125 | size=1 | links=#25802(auto Arathi Highlands;410):18 c2557.2:17 c2605.3:11
+#2381 | auto Arathi Highlands;35§auto Arathihochland;35§auto Hautes-terres d'Arathi;35 | x=-1639.700073242188 y=-2930.5 | size=1 | links=#19248(auto Arathi Highlands;295):39 #22067(auto Arathi Highlands;335):61 c2565.6:23
+#2477 | auto Arathi Highlands;36§auto Arathihochland;36§auto Hautes-terres d'Arathi;36 | x=-1552.700073242188 y=-3034.10009765625 | size=1 | links=#9703(auto Arathi Highlands;157):4 c2733.1:6
+#2487 | central location;building;Stromgarde Keep;top;Arathi Highlands§zentralpunkt;gebäude;Burg Stromgarde;oben;Arathihochland§emplacement central;building;Stromgarde Keep;top;Hautes-terres d'Arathi | x=-1678.599975585938 y=-1802.900024414063 | size=1 | links=#12850(auto Arathi Highlands;194):18 c2597.1:31
+#2492 | auto Arathi Highlands;37§auto Arathihochland;37§auto Hautes-terres d'Arathi;37 | x=-1625 y=-2832.699951171875 | size=1 | links=#15616(auto Arathi Highlands;234):60 #22067(auto Arathi Highlands;335):37
+#2507 | auto Arathi Highlands;38§auto Arathihochland;38§auto Hautes-terres d'Arathi;38 | x=-1673.900024414063 y=-1888.5 | size=1 | links=#1346(auto Arathi Highlands;16):14 #24008(auto Arathi Highlands;371):10
+#2552 | auto Arathi Highlands;39§auto Arathihochland;39§auto Hautes-terres d'Arathi;39 | x=-1847.200073242188 y=-2402.699951171875 | size=1 | links=#1066(auto Arathi Highlands;13):155 #27964(auto Arathi Highlands;434):47
+#2568 | auto Arathi Highlands;40§auto Arathihochland;40§auto Hautes-terres d'Arathi;40 | x=-870.4000244140625 y=-3898.10009765625 | size=1 | links=#21140(auto Arathi Highlands;320):21 o2701.1:6 c2609.5:6 c2573.7:5
+#2573 | auto Arathi Highlands;41§auto Arathihochland;41§auto Hautes-terres d'Arathi;41 | x=-1553.5 y=-3062.900146484375 | size=1 | links=c2618.2:12 c2619.3:23
+#2594 | auto Arathi Highlands;42§auto Arathihochland;42§auto Hautes-terres d'Arathi;42 | x=-1775.200073242188 y=-1517.599975585938 | size=1 | links=#17712(auto Arathi Highlands;273):5 #20283(auto Arathi Highlands;307):6 #21767(auto Arathi Highlands;328):3
+#2679 | auto Arathi Highlands;43§auto Arathihochland;43§auto Hautes-terres d'Arathi;43 | x=-835.9000244140625 y=-3904 | size=1 | links=#3534(auto Arathi Highlands;58):14 #21140(auto Arathi Highlands;320):14 c2574.3:9
+#2717 | auto Arathi Highlands;44§auto Arathihochland;44§auto Hautes-terres d'Arathi;44 | x=-1485.5 y=-2257.900146484375 | size=1 | links=#18436(auto Arathi Highlands;285):49 #22250(auto Arathi Highlands;339):59 c2592.6:34
+#2745 | auto Arathi Highlands;45§auto Arathihochland;45§auto Hautes-terres d'Arathi;45 | x=-1768.599975585938 y=-1839.599975585938 | size=1 | links=#17099(auto Arathi Highlands;259):36 c2580.4:14
+#2748 | auto Arathi Highlands;46§auto Arathihochland;46§auto Hautes-terres d'Arathi;46 | x=-1873 y=-3171.5 | size=1 | links=#11047(auto Arathi Highlands;174):33 c2555.11:21
+#2823 | auto Arathi Highlands;47§auto Arathihochland;47§auto Hautes-terres d'Arathi;47 | x=-2307.199951171875 y=-2112.10009765625 | size=5 | links=#15761(auto Arathi Highlands;236):56 #24796(auto Arathi Highlands;391):65
+#2878 | crossing;two;Arathi Highlands§kreuzung;zwei;Arathihochland§traversée;deux;Hautes-terres d'Arathi | x=-1325.900024414063 y=-1844.200073242188 | size=1 | links=#4546(auto Arathi Highlands;75):143 #15604(auto Arathi Highlands;232):25 #24740(auto Arathi Highlands;390):43
+#2951 | auto Arathi Highlands;48§auto Arathihochland;48§auto Hautes-terres d'Arathi;48 | x=-1193 y=-2682.199951171875 | size=1 | links=#25622(entry and exit;north;Refuge Pointe;Arathi Highlands):48 c2559.43:61
+#2960 | auto Arathi Highlands;49§auto Arathihochland;49§auto Hautes-terres d'Arathi;49 | x=-1189.5 y=-2073.300048828125 | size=1 | links=#24078(auto Arathi Highlands;373):8 c2564.10:8
+#3013 | auto Arathi Highlands;50§auto Arathihochland;50§auto Hautes-terres d'Arathi;50 | x=-946.2999877929688 y=-1678.800048828125 | size=1 | links=#3135(Arathi Highlands;here):76 #5715(auto Arathi Highlands;94):91 c2559.2:53 c2559.86:110
+#3040 | auto Arathi Highlands;51§auto Arathihochland;51§auto Hautes-terres d'Arathi;51 | x=-891 y=-3885.800048828125 | size=1 | links=#15791(auto Arathi Highlands;237):10 c2609.3:5 o2653.27:9 o2653.31:7
+#3081 | auto Arathi Highlands;52§auto Arathihochland;52§auto Hautes-terres d'Arathi;52 | x=-1574 y=-2699.800048828125 | size=1 | links=#11060(auto Arathi Highlands;175):177 #23799(auto Arathi Highlands;368):122 #24597(auto Arathi Highlands;385):92 c2714.1:66
+#3087 | auto Arathi Highlands;53§auto Arathihochland;53§auto Hautes-terres d'Arathi;53 | x=-854.7000122070312 y=-3968.800048828125 | size=1 | links=#5970(auto Arathi Highlands;98):17 #25863(auto Arathi Highlands;413):17 c2574.6:6
+#3135 | Arathi Highlands;here§Arathihochland;hier§Hautes-terres d'Arathi;here | x=-883 y=-1635.800048828125 | size=1 | links=#3013(auto Arathi Highlands;50):76 #8479(auto Arathi Highlands;134):59 #21852(sku):45
+#3163 | auto Arathi Highlands;54§auto Arathihochland;54§auto Hautes-terres d'Arathi;54 | x=-1447.200073242188 y=-1797.5 | size=1 | links=#10028(entry and exit;Stromgarde Keep):24 #14757(auto Arathi Highlands;222):33
+#3211 | auto Arathi Highlands;55§auto Arathihochland;55§auto Hautes-terres d'Arathi;55 | x=-891.4000244140625 y=-3988.5 | size=1 | links=c2573.3:12 c2574.4:11
+#3262 | auto Arathi Highlands;56§auto Arathihochland;56§auto Hautes-terres d'Arathi;56 | x=-1794.900024414063 y=-1505.599975585938 | size=1 | links=#18568(auto Arathi Highlands;289):7 #23653(auto Arathi Highlands;364):4
+#3477 | auto Arathi Highlands;57§auto Arathihochland;57§auto Hautes-terres d'Arathi;57 | x=-1577.400024414063 y=-1746.800048828125 | size=1 | links=#14074(auto Arathi Highlands;211):37 #14186(entry and exit;camp;the;Alliance;Stromgarde Keep;Arathi Highlands):20 c2569.1:49
+#3534 | auto Arathi Highlands;58§auto Arathihochland;58§auto Hautes-terres d'Arathi;58 | x=-821.9000244140625 y=-3907.400146484375 | size=1 | links=#2679(auto Arathi Highlands;43):14 #9549(auto Arathi Highlands;153):8
+#3560 | auto Arathi Highlands;59§auto Arathihochland;59§auto Hautes-terres d'Arathi;59 | x=-2165.199951171875 y=-1925.200073242188 | size=1 | links=#4214(auto Arathi Highlands;66):30 #8071(auto Arathi Highlands;125):44
+#3661 | auto Arathi Highlands;60§auto Arathihochland;60§auto Hautes-terres d'Arathi;60 | x=-1767.5 y=-1507.599975585938 | size=1 | links=#1108(auto Arathi Highlands;14):5 #22367(auto Arathi Highlands;342):2
+#3690 | auto Arathi Highlands;61§auto Arathihochland;61§auto Hautes-terres d'Arathi;61 | x=-1972.300048828125 y=-1655.099975585938 | size=1 | links=#1187(entry and exit;cave;ocean;Arathi Highlands):25 #17381(auto Arathi Highlands;265):29
+#3756 | auto Arathi Highlands;62§auto Arathihochland;62§auto Hautes-terres d'Arathi;62 | x=-952.2000122070312 y=-3512.60009765625 | size=1 | links=#15579(auto Arathi Highlands;231):6 #19243(auto Arathi Highlands;294):12
+#3801 | auto Arathi Highlands;63§auto Arathihochland;63§auto Hautes-terres d'Arathi;63 | x=-2314.300048828125 y=-2289.699951171875 | size=1 | links=#17349(auto Arathi Highlands;264):41 #23547(auto Arathi Highlands;361):35
+#3832 | auto Arathi Highlands;64§auto Arathihochland;64§auto Hautes-terres d'Arathi;64 | x=-1549.700073242188 y=-1919.599975585938 | size=1 | links=#1617(auto Arathi Highlands;26):20 c2585.9:12
+#3888 | central location;Dabyrie's Farmstead;Arathi Highlands§zentralpunkt;Bauernhof der Dabyries;Arathihochland§emplacement central;Dabyrie's Farmstead;Hautes-terres d'Arathi | x=-1044.900024414063 y=-2859.5 | size=1 | links=#18954(auto Arathi Highlands;293):13 c2581.5:15 c2581.8:8
+#3921 | auto Arathi Highlands;65§auto Arathihochland;65§auto Hautes-terres d'Arathi;65 | x=-1511.599975585938 y=-1805 | size=5 | links=#15494(auto Arathi Highlands;230):18 #18500(auto Arathi Highlands;286):30
+#4193 | well;Stromgarde Keep;Arathi Highlands§brunnen;Burg Stromgarde;Arathihochland§well;Stromgarde Keep;Hautes-terres d'Arathi | x=-1644.099975585938 y=-1803.900024414063 | size=1 | links=c2590.3:19 c24477.8:9 c24477.18:18 c24477.19:10
+#4214 | auto Arathi Highlands;66§auto Arathihochland;66§auto Hautes-terres d'Arathi;66 | x=-2186.699951171875 y=-1904 | size=1 | links=#3560(auto Arathi Highlands;59):30 #12193(focus point;Faldir's Cove;Arathi Highlands):27
+#4241 | focus point;two;Arathi Highlands§bündelpunkt;zwei;Arathihochland§focus point;deux;Hautes-terres d'Arathi | x=-1112.800048828125 y=-1858 | size=1 | links=#12389(auto Arathi Highlands;188):84 #22198(auto Arathi Highlands;337):44 #25178(auto Arathi Highlands;400):75
+#4312 | auto Arathi Highlands;67§auto Arathihochland;67§auto Hautes-terres d'Arathi;67 | x=-2026.5 y=-2834.900146484375 | size=1 | links=#1749(auto Arathi Highlands;27):5 #20415(auto Arathi Highlands;308):10
+#4313 | auto Arathi Highlands;68§auto Arathihochland;68§auto Hautes-terres d'Arathi;68 | x=-1501.099975585938 y=-2458.199951171875 | size=1 | links=#7480(crossing;one;Arathi Highlands):36 #18604(auto Arathi Highlands;290):62
+#4327 | auto Arathi Highlands;69§auto Arathihochland;69§auto Hautes-terres d'Arathi;69 | x=-1188.5 y=-1731.5 | size=1 | links=#6123(auto Arathi Highlands;102):77 #13518(auto Arathi Highlands;201):28
+#4356 | auto Arathi Highlands;70§auto Arathihochland;70§auto Hautes-terres d'Arathi;70 | x=-2180.5 y=-2451 | size=1 | links=#4359(auto Arathi Highlands;71):53 #17432(auto Arathi Highlands;266):56
+#4359 | auto Arathi Highlands;71§auto Arathihochland;71§auto Hautes-terres d'Arathi;71 | x=-2127.5 y=-2450.800048828125 | size=1 | links=#4356(auto Arathi Highlands;70):53 #23706(auto Arathi Highlands;366):38
+#4404 | auto Arathi Highlands;72§auto Arathihochland;72§auto Hautes-terres d'Arathi;72 | x=-955 y=-3486.400146484375 | size=1 | links=#1541(auto Arathi Highlands;22):7 c2792.1:8
+#4416 | auto Arathi Highlands;73§auto Arathihochland;73§auto Hautes-terres d'Arathi;73 | x=-1766.5 y=-1496.800048828125 | size=1 | links=#17908(auto Arathi Highlands;275):12 #18187(auto Arathi Highlands;280):8
+#4475 | auto Arathi Highlands;74§auto Arathihochland;74§auto Hautes-terres d'Arathi;74 | x=-1405.099975585938 y=-2821.10009765625 | size=1 | links=#16095(auto Arathi Highlands;239):79 #24610(auto Arathi Highlands;387):42
+#4546 | auto Arathi Highlands;75§auto Arathihochland;75§auto Hautes-terres d'Arathi;75 | x=-1376.200073242188 y=-1978.900024414063 | size=1 | links=#2878(crossing;two;Arathi Highlands):143 #16858(auto Arathi Highlands;253):125 #19607(auto Arathi Highlands;298):60 #24278(auto Arathi Highlands;377):61
+#4644 | auto Arathi Highlands;76§auto Arathihochland;76§auto Hautes-terres d'Arathi;76 | x=-1916.599975585938 y=-3326.400146484375 | size=1 | links=#5766(auto Arathi Highlands;95):20 #12266(auto Arathi Highlands;187):8
+#4661 | auto Arathi Highlands;77§auto Arathihochland;77§auto Hautes-terres d'Arathi;77 | x=-1568.599975585938 y=-2976.800048828125 | size=1 | links=#854(auto Arathi Highlands;9):59 #26079(auto Arathi Highlands;415):48
+#4667 | auto Arathi Highlands;78§auto Arathihochland;78§auto Hautes-terres d'Arathi;78 | x=-886.1000366210938 y=-3921.699951171875 | size=1 | links=#8351(auto Arathi Highlands;130):37 c2574.1:10 c2574.7:13 o2653.14:10
+#4714 | auto Arathi Highlands;79§auto Arathihochland;79§auto Hautes-terres d'Arathi;79 | x=-1514.700073242188 y=-1999.400024414063 | size=1 | links=#26951(auto Arathi Highlands;423):48 c2560.2:13 c2560.18:41
+#4900 | auto Arathi Highlands;80§auto Arathihochland;80§auto Hautes-terres d'Arathi;80 | x=-1711.400024414063 y=-2440.5 | size=1 | links=#6136(auto Arathi Highlands;103):71 #26828(auto Arathi Highlands;422):92
+#4945 | auto Arathi Highlands;81§auto Arathihochland;81§auto Hautes-terres d'Arathi;81 | x=-2057.699951171875 y=-2836 | size=1 | links=#17434(auto Arathi Highlands;267):24 #23164(auto Arathi Highlands;356):15 c2566.21:5
+#4963 | bridge;two;Arathi Highlands§brücke;zwei;Arathihochland§bridge;deux;Hautes-terres d'Arathi | x=-2247.699951171875 y=-2604.900146484375 | size=1 | links=#5244(auto Arathi Highlands;85):33 c2575.1:15 c4062.1:18 o2704.1:18 c2577.2:21
+#4991 | auto Arathi Highlands;82§auto Arathihochland;82§auto Hautes-terres d'Arathi;82 | x=-2114.199951171875 y=-3263.60009765625 | size=1 | links=#25857(auto Arathi Highlands;412):17 c2556.24:12
+#5027 | auto Arathi Highlands;83§auto Arathihochland;83§auto Hautes-terres d'Arathi;83 | x=-1784.400024414063 y=-3238.300048828125 | size=1 | links=#12125(auto Arathi Highlands;186):17 #16836(auto Arathi Highlands;252):21 c2555.19:22
+#5082 | auto Arathi Highlands;84§auto Arathihochland;84§auto Hautes-terres d'Arathi;84 | x=-2038.5 y=-2809.199951171875 | size=1 | links=#7742(auto Arathi Highlands;119):24 c2567.5:18
+#5244 | auto Arathi Highlands;85§auto Arathihochland;85§auto Hautes-terres d'Arathi;85 | x=-2249.699951171875 y=-2571.800048828125 | size=1 | links=#4963(bridge;two;Arathi Highlands):33 #20687(bridge;Thandol Span;Arathi Highlands):54
+#5254 | auto Arathi Highlands;86§auto Arathihochland;86§auto Hautes-terres d'Arathi;86 | x=-1107.300048828125 y=-3619.10009765625 | size=1 | links=#1416(auto Arathi Highlands;18):30 #16052(auto Arathi Highlands;238):28
+#5288 | auto Arathi Highlands;87§auto Arathihochland;87§auto Hautes-terres d'Arathi;87 | x=-1894.200073242188 y=-2724.400146484375 | size=1 | links=#9695(auto Arathi Highlands;156):45 c2566.5:16 c2566.6:18 c2566.7:51
+#5408 | auto Arathi Highlands;88§auto Arathihochland;88§auto Hautes-terres d'Arathi;88 | x=-2341 y=-2458.900146484375 | size=1 | links=#23447(auto Arathi Highlands;358):50 o2656.1:21
+#5410 | auto Arathi Highlands;89§auto Arathihochland;89§auto Hautes-terres d'Arathi;89 | x=-2274.60009765625 y=-1901.200073242188 | size=5 | links=#546(auto Arathi Highlands;6):21 #16315(auto Arathi Highlands;243):26
+#5487 | auto Arathi Highlands;90§auto Arathihochland;90§auto Hautes-terres d'Arathi;90 | x=-1789.599975585938 y=-1765.900024414063 | size=1 | links=#18071(auto Arathi Highlands;277):13 #24134(auto Arathi Highlands;375):13
+#5503 | auto Arathi Highlands;91§auto Arathihochland;91§auto Hautes-terres d'Arathi;91 | x=-1777 y=-1508.400024414063 | size=1 | links=#6660(auto Arathi Highlands;108):2 #19778(auto Arathi Highlands;302):3
+#5588 | auto Arathi Highlands;92§auto Arathihochland;92§auto Hautes-terres d'Arathi;92 | x=-1055.200073242188 y=-3551.900146484375 | size=1 | links=#13512(door/gate;one;Hammerfall;Arathi Highlands):11 #15235(auto Arathi Highlands;226):13
+#5617 | auto Arathi Highlands;93§auto Arathihochland;93§auto Hautes-terres d'Arathi;93 | x=-2086.300048828125 y=-2085.5 | size=1 | links=#22710(auto Arathi Highlands;348):45 c2769.1:14
+#5715 | auto Arathi Highlands;94§auto Arathihochland;94§auto Hautes-terres d'Arathi;94 | x=-1037.599975585938 y=-1684.200073242188 | size=1 | links=#3013(auto Arathi Highlands;50):91 #13518(auto Arathi Highlands;201):131 c2559.3:82 c2563.70:34 c2559.76:46 c2559.77:54
+#5766 | auto Arathi Highlands;95§auto Arathihochland;95§auto Hautes-terres d'Arathi;95 | x=-1904.700073242188 y=-3309.800048828125 | size=1 | links=#4644(auto Arathi Highlands;76):20 #26698(auto Arathi Highlands;420):21
+#5862 | auto Arathi Highlands;96§auto Arathihochland;96§auto Hautes-terres d'Arathi;96 | x=-1906.300048828125 y=-1633.300048828125 | size=1 | links=#19413(auto Arathi Highlands;297):42 #25176(auto Arathi Highlands;399):20
+#5945 | auto Arathi Highlands;97§auto Arathihochland;97§auto Hautes-terres d'Arathi;97 | x=-1786.599975585938 y=-1513 | size=1 | links=#17965(auto Arathi Highlands;276):5 #25209(auto Arathi Highlands;401):3
+#5970 | auto Arathi Highlands;98§auto Arathihochland;98§auto Hautes-terres d'Arathi;98 | x=-853.7000122070312 y=-3951.199951171875 | size=1 | links=#3087(auto Arathi Highlands;53):17 #9630(auto Arathi Highlands;155):16 c2574.5:7
+#6039 | auto Arathi Highlands;99§auto Arathihochland;99§auto Hautes-terres d'Arathi;99 | x=-1672.300048828125 y=-1743.300048828125 | size=1 | links=#13657(auto Arathi Highlands;206):25 c2569.1:45
+#6089 | auto Arathi Highlands;100§auto Arathihochland;100§auto Hautes-terres d'Arathi;100 | x=-1811.5 y=-3181.199951171875 | size=5 | links=c2556.1:49 c2555.19:41
+#6102 | auto Arathi Highlands;101§auto Arathihochland;101§auto Hautes-terres d'Arathi;101 | x=-1033.5 y=-3102.699951171875 | size=5 | links=#8454(auto Arathi Highlands;133):76 #16671(auto Arathi Highlands;248):83 o138492.1:91
+#6123 | auto Arathi Highlands;102§auto Arathihochland;102§auto Hautes-terres d'Arathi;102 | x=-1248.700073242188 y=-1781 | size=1 | links=#4327(auto Arathi Highlands;69):77 #24740(auto Arathi Highlands;390):58
+#6136 | auto Arathi Highlands;103§auto Arathihochland;103§auto Hautes-terres d'Arathi;103 | x=-1778.200073242188 y=-2415.900146484375 | size=1 | links=#4900(auto Arathi Highlands;80):71 #27964(auto Arathi Highlands;434):23
+#6191 | auto Arathi Highlands;104§auto Arathihochland;104§auto Hautes-terres d'Arathi;104 | x=-1010.900024414063 y=-2875.400146484375 | size=1 | links=#9067(auto Arathi Highlands;147):14 #27494(auto Arathi Highlands;427):13
+#6201 | auto Arathi Highlands;105§auto Arathihochland;105§auto Hautes-terres d'Arathi;105 | x=-804.6000366210938 y=-2110 | size=1 | links=#14724(auto Arathi Highlands;221):15 #18504(auto Arathi Highlands;287):38 c2586.14:26
+#6225 | auto Arathi Highlands;106§auto Arathihochland;106§auto Hautes-terres d'Arathi;106 | x=-1009.100036621094 y=-3511.199951171875 | size=1 | links=#9906(auto Arathi Highlands;160):5 #23123(auto Arathi Highlands;354):9
+#6447 | auto Arathi Highlands;107§auto Arathihochland;107§auto Hautes-terres d'Arathi;107 | x=-2046.900024414063 y=-2790.900146484375 | size=1 | links=#9041(auto Arathi Highlands;146):6 c2604.2:13
+#6511 | central location;Stromgarde Keep;Arathi Highlands§zentralpunkt;Burg Stromgarde;Arathihochland§emplacement central;Stromgarde Keep;Hautes-terres d'Arathi | x=-1568.300048828125 y=-1804.099975585938 | size=1 | links=#14074(auto Arathi Highlands;211):21 #17671(auto Arathi Highlands;272):32 #18500(auto Arathi Highlands;286):26 #26123(auto Arathi Highlands;416):15
+#6660 | auto Arathi Highlands;108§auto Arathihochland;108§auto Hautes-terres d'Arathi;108 | x=-1776 y=-1506.5 | size=1 | links=#5503(auto Arathi Highlands;91):2 #20245(auto Arathi Highlands;306):2
+#6698 | auto Arathi Highlands;109§auto Arathihochland;109§auto Hautes-terres d'Arathi;109 | x=-902.7000122070312 y=-1971.099975585938 | size=1 | links=#9989(auto Arathi Highlands;163):59 c2586.9:45
+#6773 | auto Arathi Highlands;110§auto Arathihochland;110§auto Hautes-terres d'Arathi;110 | x=-923.5 y=-3522.800048828125 | size=1 | links=#14401(auto Arathi Highlands;214):3 c2821.1:12 c9501.1:11
+#6835 | auto Arathi Highlands;111§auto Arathihochland;111§auto Hautes-terres d'Arathi;111 | x=-2075.800048828125 y=-2125.5 | size=1 | links=#22529(entry and exit;cave;Faldir's Cove;Arathi Highlands):14 c2769.1:34
+#6994 | auto Arathi Highlands;112§auto Arathihochland;112§auto Hautes-terres d'Arathi;112 | x=-2126 y=-1979.5 | size=1 | links=#539(auto Arathi Highlands;5):21 #24087(auto Arathi Highlands;374):19
+#7137 | auto Arathi Highlands;113§auto Arathihochland;113§auto Hautes-terres d'Arathi;113 | x=-1652.400024414063 y=-1931.200073242188 | size=1 | links=#22014(auto Arathi Highlands;334):5 c2783.1:7
+#7139 | auto Arathi Highlands;114§auto Arathihochland;114§auto Hautes-terres d'Arathi;114 | x=-961.2999877929688 y=-3549 | size=1 | links=#16441(auto Arathi Highlands;244):5 #28303(auto Arathi Highlands;436):24
+#7226 | auto Arathi Highlands;115§auto Arathihochland;115§auto Hautes-terres d'Arathi;115 | x=-998 y=-3831.10009765625 | size=1 | links=#25855(auto Arathi Highlands;411):6 c2574.13:9
+#7480 | crossing;one;Arathi Highlands§kreuzung;eins;Arathihochland§traversée;un;Hautes-terres d'Arathi | x=-1473.099975585938 y=-2434.199951171875 | size=1 | links=#4313(auto Arathi Highlands;68):36 #18368(auto Arathi Highlands;283):73 #21733(auto Arathi Highlands;327):73
+#7516 | auto Arathi Highlands;116§auto Arathihochland;116§auto Hautes-terres d'Arathi;116 | x=-1736 y=-3416 | size=1 | links=#13603(auto Arathi Highlands;204):40 c2555.7:27 c2556.11:25 c2556.13:14
+#7660 | auto Arathi Highlands;117§auto Arathihochland;117§auto Hautes-terres d'Arathi;117 | x=-2042.599975585938 y=-3383.400146484375 | size=1 | links=#20002(auto Arathi Highlands;303):17 #23065(auto Arathi Highlands;352):8 c2557.14:8
+#7678 | auto Arathi Highlands;118§auto Arathihochland;118§auto Hautes-terres d'Arathi;118 | x=-1298.900024414063 y=-3175.199951171875 | size=1 | links=#9370(auto Arathi Highlands;150):85 #24515(auto Arathi Highlands;384):75
+#7742 | auto Arathi Highlands;119§auto Arathihochland;119§auto Hautes-terres d'Arathi;119 | x=-2020.599975585938 y=-2826 | size=1 | links=#5082(auto Arathi Highlands;84):24 c2566.11:3 c2566.19:11
+#7744 | auto Arathi Highlands;120§auto Arathihochland;120§auto Hautes-terres d'Arathi;120 | x=-1697.099975585938 y=-1782 | size=1 | links=#13634(auto Arathi Highlands;205):11 #22526(auto Arathi Highlands;345):27
+#7806 | passage;from;Thandol Span;Arathi Highlands;to;Thandol Span;Wetlands§passage;von;Thandolübergang;Arathihochland;nach;Thandolübergang;Sumpfland§passage;de;Viaduc de Thandol;Hautes-terres d'Arathi;vers;Viaduc de Thandol;Les Paluns | x=-2359 y=-2501.800048828125 | size=1 | links=#24625(auto Arathi Highlands;388):101 #6386(passage;from;Thandol Span;Wetlands;to;Thandol Span;Arathi Highlands):11
+#7861 | auto Arathi Highlands;121§auto Arathihochland;121§auto Hautes-terres d'Arathi;121 | x=-1771 y=-1506.099975585938 | size=1 | links=#11456(auto Arathi Highlands;179):4 #13332(auto Arathi Highlands;198):5
+#7912 | auto Arathi Highlands;122§auto Arathihochland;122§auto Hautes-terres d'Arathi;122 | x=-1697.599975585938 y=-1824.200073242188 | size=1 | links=#13500(auto Arathi Highlands;200):27 #19688(auto Arathi Highlands;300):12
+#7946 | auto Arathi Highlands;123§auto Arathihochland;123§auto Hautes-terres d'Arathi;123 | x=-1814.5 y=-1715.800048828125 | size=1 | links=#14633(auto Arathi Highlands;218):35 #22289(auto Arathi Highlands;341):21
+#8054 | auto Arathi Highlands;124§auto Arathihochland;124§auto Hautes-terres d'Arathi;124 | x=-1652.200073242188 y=-1911.300048828125 | size=1 | links=#22014(auto Arathi Highlands;334):14 #26576(auto Arathi Highlands;418):30
+#8071 | auto Arathi Highlands;125§auto Arathihochland;125§auto Hautes-terres d'Arathi;125 | x=-2161.5 y=-1969.099975585938 | size=1 | links=#539(auto Arathi Highlands;5):23 #3560(auto Arathi Highlands;59):44
+#8077 | auto Arathi Highlands;126§auto Arathihochland;126§auto Hautes-terres d'Arathi;126 | x=-1672.300048828125 y=-3476.60009765625 | size=1 | links=c2555.15:28 c2556.18:9
+#8121 | auto Arathi Highlands;127§auto Arathihochland;127§auto Hautes-terres d'Arathi;127 | x=-2067.300048828125 y=-1691.099975585938 | size=1 | links=#2163(passage;ocean;Faldir's Cove;Arathi Highlands):46 #25488(auto Arathi Highlands;409):33
+#8170 | auto Arathi Highlands;128§auto Arathihochland;128§auto Hautes-terres d'Arathi;128 | x=-1796.300048828125 y=-3378.800048828125 | size=1 | links=#9980(auto Arathi Highlands;162):25 c2556.10:16
+#8323 | auto Arathi Highlands;129§auto Arathihochland;129§auto Hautes-terres d'Arathi;129 | x=-1240.099975585938 y=-2070.400146484375 | size=1 | links=c2564.2:12 c2564.3:7
+#8351 | auto Arathi Highlands;130§auto Arathihochland;130§auto Hautes-terres d'Arathi;130 | x=-886.1000366210938 y=-3959.5 | size=1 | links=#4667(auto Arathi Highlands;78):37 c2573.3:16 c2574.8:8
+#8421 | auto Arathi Highlands;131§auto Arathihochland;131§auto Hautes-terres d'Arathi;131 | x=-1012.200012207031 y=-3835.5 | size=1 | links=#9233(auto Arathi Highlands;149):12 #17032(auto Arathi Highlands;257):16
+#8427 | auto Arathi Highlands;132§auto Arathihochland;132§auto Hautes-terres d'Arathi;132 | x=-931.9000244140625 y=-3523.400146484375 | size=1 | links=#8948(auto Arathi Highlands;144):6 #14401(auto Arathi Highlands;214):5 #23557(s;u;Mailbox;Arathi Highlands):4 c2818.1:16 c9976.1:5
+#8454 | auto Arathi Highlands;133§auto Arathihochland;133§auto Hautes-terres d'Arathi;133 | x=-1107.099975585938 y=-3081.199951171875 | size=5 | links=#6102(auto Arathi Highlands;101):76 #11167(auto Arathi Highlands;176):83
+#8479 | auto Arathi Highlands;134§auto Arathihochland;134§auto Hautes-terres d'Arathi;134 | x=-870.9000244140625 y=-1694.400024414063 | size=1 | links=#3135(Arathi Highlands;here):59 #25042(auto Arathi Highlands;396):53
+#8561 | auto Arathi Highlands;135§auto Arathihochland;135§auto Hautes-terres d'Arathi;135 | x=-1270.800048828125 y=-2901.5 | size=5 | links=#20663(auto Arathi Highlands;313):77 #21786(auto Arathi Highlands;330):63
+#8595 | auto Arathi Highlands;136§auto Arathihochland;136§auto Hautes-terres d'Arathi;136 | x=-936.7000122070312 y=-3513.300048828125 | size=1 | links=#11024(auto Arathi Highlands;173):5 #27917(auto Arathi Highlands;433):4
+#8643 | auto Arathi Highlands;137§auto Arathihochland;137§auto Hautes-terres d'Arathi;137 | x=-1722.5 y=-1644.800048828125 | size=1 | links=#21678(auto Arathi Highlands;325):15 #27126(auto Arathi Highlands;424):13
+#8725 | auto Arathi Highlands;138§auto Arathihochland;138§auto Hautes-terres d'Arathi;138 | x=-1094 y=-3673.60009765625 | size=1 | links=#16052(auto Arathi Highlands;238):28 c2572.8:3
+#8778 | auto Arathi Highlands;139§auto Arathihochland;139§auto Hautes-terres d'Arathi;139 | x=-2068.5 y=-2027.300048828125 | size=1 | links=c2778.1:19 o113531.1:6
+#8802 | auto Arathi Highlands;140§auto Arathihochland;140§auto Hautes-terres d'Arathi;140 | x=-1711.599975585938 y=-3443.400146484375 | size=1 | links=c2556.11:13 c2555.15:29
+#8861 | auto Arathi Highlands;141§auto Arathihochland;141§auto Hautes-terres d'Arathi;141 | x=-1772.900024414063 y=-1511.5 | size=1 | links=#17600(auto Arathi Highlands;270):2 #19778(auto Arathi Highlands;302):2
+#8871 | auto Arathi Highlands;142§auto Arathihochland;142§auto Hautes-terres d'Arathi;142 | x=-1249.800048828125 y=-2689.5 | size=1 | links=#25622(entry and exit;north;Refuge Pointe;Arathi Highlands):83 c2559.42:26
+#8879 | auto Arathi Highlands;143§auto Arathihochland;143§auto Hautes-terres d'Arathi;143 | x=-1177 y=-3472.800048828125 | size=1 | links=#12683(auto Arathi Highlands;193):71 #15412(auto Arathi Highlands;229):66
+#8948 | auto Arathi Highlands;144§auto Arathihochland;144§auto Hautes-terres d'Arathi;144 | x=-927.2000122070312 y=-3519.400146484375 | size=1 | links=#8427(auto Arathi Highlands;132):6 #24290(auto Arathi Highlands;379):5
+#8999 | auto Arathi Highlands;145§auto Arathihochland;145§auto Hautes-terres d'Arathi;145 | x=-2020.800048828125 y=-3332.699951171875 | size=1 | links=c2555.5:16 c2556.34:17
+#9041 | auto Arathi Highlands;146§auto Arathihochland;146§auto Hautes-terres d'Arathi;146 | x=-2044.5 y=-2796.60009765625 | size=1 | links=#6447(auto Arathi Highlands;107):6 c2567.5:9
+#9067 | auto Arathi Highlands;147§auto Arathihochland;147§auto Hautes-terres d'Arathi;147 | x=-1022.900024414063 y=-2867.800048828125 | size=1 | links=#6191(auto Arathi Highlands;104):14 c2581.8:15
+#9227 | auto Arathi Highlands;148§auto Arathihochland;148§auto Hautes-terres d'Arathi;148 | x=-1755.599975585938 y=-1961.099975585938 | size=1 | links=#16794(auto Arathi Highlands;251):61 #16969(auto Arathi Highlands;255):44
+#9233 | auto Arathi Highlands;149§auto Arathihochland;149§auto Hautes-terres d'Arathi;149 | x=-1003.799987792969 y=-3844.300048828125 | size=1 | links=#8421(auto Arathi Highlands;131):12 #23462(entry and exit;cave;Drywhisker Gorge;Arathi Highlands):5
+#9370 | auto Arathi Highlands;150§auto Arathihochland;150§auto Hautes-terres d'Arathi;150 | x=-1287.200073242188 y=-3090 | size=1 | links=#1960(auto Arathi Highlands;29):41 #7678(auto Arathi Highlands;118):85
+#9404 | auto Arathi Highlands;151§auto Arathihochland;151§auto Hautes-terres d'Arathi;151 | x=-1094.800048828125 y=-3693.900146484375 | size=1 | links=#13809(auto Arathi Highlands;208):35 c2572.8:18
+#9487 | auto Arathi Highlands;152§auto Arathihochland;152§auto Hautes-terres d'Arathi;152 | x=-1407.400024414063 y=-3001.60009765625 | size=1 | links=#17014(auto Arathi Highlands;256):19 c2712.1:36 c2563.29:61
+#9549 | auto Arathi Highlands;153§auto Arathihochland;153§auto Hautes-terres d'Arathi;153 | x=-825.1000366210938 y=-3914.800048828125 | size=1 | links=#3534(auto Arathi Highlands;58):8 #23985(auto Arathi Highlands;370):9
+#9565 | path;to;Northfold Manor;Arathi Highlands§weg;nach;Nordhof;Arathihochland§path;vers;Le manoir de Nordclos;Hautes-terres d'Arathi | x=-957.2000122070312 y=-1977.599975585938 | size=1 | links=#15323(auto Arathi Highlands;227):63 #16914(auto Arathi Highlands;254):50
+#9620 | auto Arathi Highlands;154§auto Arathihochland;154§auto Hautes-terres d'Arathi;154 | x=-1632.800048828125 y=-1815 | size=1 | links=c2598.5:11 c24477.18:13
+#9630 | auto Arathi Highlands;155§auto Arathihochland;155§auto Hautes-terres d'Arathi;155 | x=-847.2000122070312 y=-3935.5 | size=1 | links=#5970(auto Arathi Highlands;98):16 #23985(auto Arathi Highlands;370):21 o2653.26:6
+#9695 | auto Arathi Highlands;156§auto Arathihochland;156§auto Hautes-terres d'Arathi;156 | x=-1931.700073242188 y=-2751 | size=1 | links=#5288(auto Arathi Highlands;87):45 #20948(auto Arathi Highlands;317):31 c2567.3:16
+#9703 | auto Arathi Highlands;157§auto Arathihochland;157§auto Hautes-terres d'Arathi;157 | x=-1549.800048828125 y=-3038 | size=1 | links=#2477(auto Arathi Highlands;36):4 c2618.1:72 c2618.2:12
+#9725 | auto Arathi Highlands;158§auto Arathihochland;158§auto Hautes-terres d'Arathi;158 | x=-1564.800048828125 y=-1939.300048828125 | size=1 | links=#1617(auto Arathi Highlands;26):14 #21265(auto Arathi Highlands;322):14
+#9880 | auto Arathi Highlands;159§auto Arathihochland;159§auto Hautes-terres d'Arathi;159 | x=-997.4000244140625 y=-3510.800048828125 | size=1 | links=#18430(auto Arathi Highlands;284):10 #23123(auto Arathi Highlands;354):3
+#9906 | auto Arathi Highlands;160§auto Arathihochland;160§auto Hautes-terres d'Arathi;160 | x=-1014.100036621094 y=-3509.199951171875 | size=1 | links=#6225(auto Arathi Highlands;106):5 c12920.1:4
+#9907 | auto Arathi Highlands;161§auto Arathihochland;161§auto Hautes-terres d'Arathi;161 | x=-2104.300048828125 y=-3296.699951171875 | size=1 | links=#24437(auto Arathi Highlands;382):20 #25857(auto Arathi Highlands;412):18
+#9980 | auto Arathi Highlands;162§auto Arathihochland;162§auto Hautes-terres d'Arathi;162 | x=-1821.300048828125 y=-3385.900146484375 | size=1 | links=#1607(auto Arathi Highlands;24):14 #8170(auto Arathi Highlands;128):25 c2606.14:11
+#9989 | auto Arathi Highlands;163§auto Arathihochland;163§auto Hautes-terres d'Arathi;163 | x=-856.7999877929688 y=-1932.800048828125 | size=1 | links=#6698(auto Arathi Highlands;109):59 c2586.17:46
+#10028 | entry and exit;Stromgarde Keep§ein- und ausgang;Burg Stromgarde§entrée et sortie;Stromgarde Keep | x=-1470.5 y=-1804.099975585938 | size=1 | links=#3163(auto Arathi Highlands;54):24 #15494(auto Arathi Highlands;230):22
+#10278 | auto Arathi Highlands;164§auto Arathihochland;164§auto Hautes-terres d'Arathi;164 | x=-1112.200073242188 y=-2906 | size=1 | links=#17839(Fardel Dabyrie;Dabyrie's Farmstead;Arathi Highlands;one):13 #21007(auto Arathi Highlands;318):35 c2582.6:18
+#10472 | auto Arathi Highlands;165§auto Arathihochland;165§auto Hautes-terres d'Arathi;165 | x=-1208.599975585938 y=-3278.10009765625 | size=1 | links=#24515(auto Arathi Highlands;384):61 #24836(auto Arathi Highlands;392):55
+#10622 | auto Arathi Highlands;166§auto Arathihochland;166§auto Hautes-terres d'Arathi;166 | x=-1615.599975585938 y=-2022 | size=1 | links=#14697(auto Arathi Highlands;220):50 c2560.16:36
+#10631 | auto Arathi Highlands;167§auto Arathihochland;167§auto Hautes-terres d'Arathi;167 | x=-1721.800048828125 y=-3177.300048828125 | size=1 | links=#18217(auto Arathi Highlands;282):65 #22383(entry and exit;Witherbark Village;Arathi Highlands):19 c2554.14:33
+#10793 | auto Arathi Highlands;168§auto Arathihochland;168§auto Hautes-terres d'Arathi;168 | x=-1184.400024414063 y=-2166.300048828125 | size=1 | links=#15587(entry and exit;cave;Boulderfist Outpost;Arathi Highlands):39 c2562.1:79 c2562.2:38 c2562.14:15
+#10798 | auto Arathi Highlands;169§auto Arathihochland;169§auto Hautes-terres d'Arathi;169 | x=-1608.400024414063 y=-3044 | size=1 | links=#13254(auto Arathi Highlands;195):49 #16619(auto Arathi Highlands;247):87 #21985(auto Arathi Highlands;333):23
+#10939 | auto Arathi Highlands;170§auto Arathihochland;170§auto Hautes-terres d'Arathi;170 | x=-1764.900024414063 y=-1877.400024414063 | size=1 | links=#22397(auto Arathi Highlands;343):23 c2580.4:24
+#10952 | auto Arathi Highlands;171§auto Arathihochland;171§auto Hautes-terres d'Arathi;171 | x=-1445.800048828125 y=-2290.10009765625 | size=1 | links=#18368(auto Arathi Highlands;283):74 #24190(auto Arathi Highlands;376):27
+#10977 | auto Arathi Highlands;172§auto Arathihochland;172§auto Hautes-terres d'Arathi;172 | x=-1526.599975585938 y=-1720.599975585938 | size=1 | links=#22551(auto Arathi Highlands;346):61 #25311(auto Arathi Highlands;403):63 c2584.12:13
+#11024 | auto Arathi Highlands;173§auto Arathihochland;173§auto Hautes-terres d'Arathi;173 | x=-931.2999877929688 y=-3513.60009765625 | size=1 | links=#8595(auto Arathi Highlands;136):5 #24290(auto Arathi Highlands;379):4
+#11047 | auto Arathi Highlands;174§auto Arathihochland;174§auto Hautes-terres d'Arathi;174 | x=-1857.099975585938 y=-3142 | size=1 | links=#2748(auto Arathi Highlands;46):33 c2554.1:26 c2556.1:11 c2554.5:55
+#11060 | auto Arathi Highlands;175§auto Arathihochland;175§auto Hautes-terres d'Arathi;175 | x=-1742.700073242188 y=-2754.400146484375 | size=5 | links=#3081(auto Arathi Highlands;52):177 #11682(auto Arathi Highlands;182):73
+#11167 | auto Arathi Highlands;176§auto Arathihochland;176§auto Hautes-terres d'Arathi;176 | x=-1184.800048828125 y=-3050.10009765625 | size=5 | links=#1768(auto Arathi Highlands;28):73 #8454(auto Arathi Highlands;133):83 #15363(auto Arathi Highlands;228):64
+#11234 | central location;Northfold Manor;Arathi Highlands§zentralpunkt;Nordhof;Arathihochland§emplacement central;Le manoir de Nordclos;Hautes-terres d'Arathi | x=-815.1000366210938 y=-2031.800048828125 | size=1 | links=#24844(auto Arathi Highlands;394):22 c2587.1:39 c2589.2:39 c2587.3:32 c2589.3:48 c2589.4:48 c2589.6:57
+#11384 | auto Arathi Highlands;177§auto Arathihochland;177§auto Hautes-terres d'Arathi;177 | x=-1325.099975585938 y=-2723.199951171875 | size=1 | links=#23150(auto Arathi Highlands;355):13 o2690.1:30 c2762.4:17 c2762.12:20
+#11425 | auto Arathi Highlands;178§auto Arathihochland;178§auto Hautes-terres d'Arathi;178 | x=-1210.099975585938 y=-2601.900146484375 | size=1 | links=#22266(auto Arathi Highlands;340):41 #25622(entry and exit;north;Refuge Pointe;Arathi Highlands):39
+#11456 | auto Arathi Highlands;179§auto Arathihochland;179§auto Hautes-terres d'Arathi;179 | x=-1770.300048828125 y=-1510.400024414063 | size=1 | links=#7861(auto Arathi Highlands;121):4 #17712(auto Arathi Highlands;273):3
+#11529 | auto Arathi Highlands;180§auto Arathihochland;180§auto Hautes-terres d'Arathi;180 | x=-2229.5 y=-1907.099975585938 | size=1 | links=#546(auto Arathi Highlands;6):24 #12193(focus point;Faldir's Cove;Arathi Highlands):28
+#11583 | auto Arathi Highlands;181§auto Arathihochland;181§auto Hautes-terres d'Arathi;181 | x=-2081.199951171875 y=-2825.699951171875 | size=1 | links=#17434(auto Arathi Highlands;267):4 c2566.20:5
+#11682 | auto Arathi Highlands;182§auto Arathihochland;182§auto Hautes-terres d'Arathi;182 | x=-1816 y=-2764.300048828125 | size=1 | links=#11060(auto Arathi Highlands;175):73 c2566.7:36
+#11739 | auto Arathi Highlands;183§auto Arathihochland;183§auto Hautes-terres d'Arathi;183 | x=-2118.199951171875 y=-1880.900024414063 | size=5 | links=#20627(auto Arathi Highlands;311):59 #26515(auto Arathi Highlands;417):69
+#11802 | auto Arathi Highlands;184§auto Arathihochland;184§auto Hautes-terres d'Arathi;184 | x=-1728.700073242188 y=-1695.5 | size=1 | links=c2558.2:45 c2569.4:8
+#11958 | auto Arathi Highlands;185§auto Arathihochland;185§auto Hautes-terres d'Arathi;185 | x=-968.2000122070312 y=-3882 | size=1 | links=c2574.2:19 c2574.11:16 o2653.12:7
+#12125 | auto Arathi Highlands;186§auto Arathihochland;186§auto Hautes-terres d'Arathi;186 | x=-1797.800048828125 y=-3250.199951171875 | size=1 | links=#5027(auto Arathi Highlands;83):17 c2556.2:36
+#12193 | focus point;Faldir's Cove;Arathi Highlands§bündelpunkt;Die Faldirbucht;Arathihochland§focus point;Faldir's Cove;Hautes-terres d'Arathi | x=-2208.900146484375 y=-1887.400024414063 | size=1 | links=#875(auto Arathi Highlands;11):17 #4214(auto Arathi Highlands;66):27 #11529(auto Arathi Highlands;180):28
+#12266 | auto Arathi Highlands;187§auto Arathihochland;187§auto Hautes-terres d'Arathi;187 | x=-1925.300048828125 y=-3327.300048828125 | size=1 | links=#4644(auto Arathi Highlands;76):8 #24245(entry and exit;cave;Witherbark Village;Arathi Highlands):16
+#12389 | auto Arathi Highlands;188§auto Arathihochland;188§auto Hautes-terres d'Arathi;188 | x=-1143.700073242188 y=-1779.099975585938 | size=5 | links=#4241(focus point;two;Arathi Highlands):84 #13518(auto Arathi Highlands;201):66
+#12465 | auto Arathi Highlands;189§auto Arathihochland;189§auto Hautes-terres d'Arathi;189 | x=-1791.099975585938 y=-1502.700073242188 | size=1 | links=#17965(auto Arathi Highlands;276):5 #22645(auto Arathi Highlands;347):9
+#12467 | central location;The Tower of Arathor;down;Arathi Highlands§zentralpunkt;Der Turm von Arathor;unten;Arathihochland§emplacement central;The Tower of Arathor;bas;Hautes-terres d'Arathi | x=-1775.099975585938 y=-1514.900024414063 | size=1 | links=#13934(auto Arathi Highlands;209):6
+#12488 | auto Arathi Highlands;190§auto Arathihochland;190§auto Hautes-terres d'Arathi;190 | x=-1946 y=-1641.900024414063 | size=1 | links=#1187(entry and exit;cave;ocean;Arathi Highlands):4 #25176(auto Arathi Highlands;399):20
+#12507 | auto Arathi Highlands;191§auto Arathihochland;191§auto Hautes-terres d'Arathi;191 | x=-1331.300048828125 y=-2445 | size=1 | links=#18547(auto Arathi Highlands;288):53 #21733(auto Arathi Highlands;327):77
+#12654 | auto Arathi Highlands;192§auto Arathihochland;192§auto Hautes-terres d'Arathi;192 | x=-985.5 y=-3857.300048828125 | size=1 | links=c2574.2:11 c2574.12:15
+#12683 | auto Arathi Highlands;193§auto Arathihochland;193§auto Hautes-terres d'Arathi;193 | x=-1148.800048828125 y=-3538.199951171875 | size=1 | links=#8879(auto Arathi Highlands;143):71 #24410(auto Arathi Highlands;381):45
+#12850 | auto Arathi Highlands;194§auto Arathihochland;194§auto Hautes-terres d'Arathi;194 | x=-1677.900024414063 y=-1821.599975585938 | size=1 | links=#2487(central location;building;Stromgarde Keep;top;Arathi Highlands):18 #19688(auto Arathi Highlands;300):7
+#13254 | auto Arathi Highlands;195§auto Arathihochland;195§auto Hautes-terres d'Arathi;195 | x=-1641.099975585938 y=-3007 | size=1 | links=#10798(auto Arathi Highlands;169):49 #19248(auto Arathi Highlands;295):39 #26079(auto Arathi Highlands;415):29
+#13308 | auto Arathi Highlands;196§auto Arathihochland;196§auto Hautes-terres d'Arathi;196 | x=-1671.099975585938 y=-1925.5 | size=1 | links=#1346(auto Arathi Highlands;16):23 c2588.3:8
+#13310 | auto Arathi Highlands;197§auto Arathihochland;197§auto Hautes-terres d'Arathi;197 | x=-2206.800048828125 y=-1841.300048828125 | size=1 | links=#875(auto Arathi Highlands;11):28 o2712.4:105 o2712.5:91 c2595.28:61
+#13332 | auto Arathi Highlands;198§auto Arathihochland;198§auto Hautes-terres d'Arathi;198 | x=-1768.900024414063 y=-1500.700073242188 | size=1 | links=#7861(auto Arathi Highlands;121):5 #14773(auto Arathi Highlands;223):17
+#13384 | auto Arathi Highlands;199§auto Arathihochland;199§auto Hautes-terres d'Arathi;199 | x=-907.7000122070312 y=-3281.60009765625 | size=1 | links=#24490(auto Arathi Highlands;383):81 o2691.1:62 c2761.7:27 c2761.8:47 c2761.10:40
+#13500 | auto Arathi Highlands;200§auto Arathihochland;200§auto Hautes-terres d'Arathi;200 | x=-1698.400024414063 y=-1796.400024414063 | size=1 | links=#7912(auto Arathi Highlands;122):27 #22954(auto Arathi Highlands;350):15
+#13512 | door/gate;one;Hammerfall;Arathi Highlands§tür/tor;eins;Hammerfall;Arathihochland§door/gate;un;Trépas-d'Orgrim;Hautes-terres d'Arathi | x=-1044.099975585938 y=-3551.5 | size=1 | links=#5588(auto Arathi Highlands;92):11 #21938(auto Arathi Highlands;332):27
+#13518 | auto Arathi Highlands;201§auto Arathihochland;201§auto Hautes-terres d'Arathi;201 | x=-1164.800048828125 y=-1715.700073242188 | size=1 | links=#4327(auto Arathi Highlands;69):28 #5715(auto Arathi Highlands;94):131 #12389(auto Arathi Highlands;188):66
+#13531 | auto Arathi Highlands;202§auto Arathihochland;202§auto Hautes-terres d'Arathi;202 | x=-1087.400024414063 y=-3810.300048828125 | size=1 | links=#17223(auto Arathi Highlands;261):17 #23534(auto Arathi Highlands;360):23
+#13568 | auto Arathi Highlands;203§auto Arathihochland;203§auto Hautes-terres d'Arathi;203 | x=-1843.300048828125 y=-3313.699951171875 | size=1 | links=#21782(auto Arathi Highlands;329):21 #25315(auto Arathi Highlands;404):23
+#13603 | auto Arathi Highlands;204§auto Arathihochland;204§auto Hautes-terres d'Arathi;204 | x=-1774.400024414063 y=-3402.60009765625 | size=1 | links=#7516(auto Arathi Highlands;116):40 c2556.10:18
+#13634 | auto Arathi Highlands;205§auto Arathihochland;205§auto Hautes-terres d'Arathi;205 | x=-1686 y=-1782 | size=1 | links=#7744(auto Arathi Highlands;120):11 #22464(auto Arathi Highlands;344):21
+#13657 | auto Arathi Highlands;206§auto Arathihochland;206§auto Hautes-terres d'Arathi;206 | x=-1697.900024414063 y=-1740.800048828125 | size=1 | links=#6039(auto Arathi Highlands;99):25 c2558.1:8 c2558.2:25
+#13697 | auto Arathi Highlands;207§auto Arathihochland;207§auto Hautes-terres d'Arathi;207 | x=-1299.300048828125 y=-2100.699951171875 | size=1 | links=#20442(auto Arathi Highlands;309):45 #26616(auto Arathi Highlands;419):22 c2562.12:24
+#13809 | auto Arathi Highlands;208§auto Arathihochland;208§auto Hautes-terres d'Arathi;208 | x=-1099 y=-3729.400146484375 | size=1 | links=#868(auto Arathi Highlands;10):21 #9404(auto Arathi Highlands;151):35
+#13934 | auto Arathi Highlands;209§auto Arathihochland;209§auto Hautes-terres d'Arathi;209 | x=-1772.099975585938 y=-1520.700073242188 | size=1 | links=#12467(central location;The Tower of Arathor;down;Arathi Highlands):6 #14773(auto Arathi Highlands;223):7 #15640(entry and exit;The Tower of Arathor;Arathi Highlands):16
+#14036 | auto Arathi Highlands;210§auto Arathihochland;210§auto Hautes-terres d'Arathi;210 | x=-2013.599975585938 y=-3367.199951171875 | size=1 | links=c2556.34:18 c2556.36:13
+#14074 | auto Arathi Highlands;211§auto Arathihochland;211§auto Hautes-terres d'Arathi;211 | x=-1575.800048828125 y=-1783.800048828125 | size=1 | links=#3477(auto Arathi Highlands;57):37 #6511(central location;Stromgarde Keep;Arathi Highlands):21
+#14186 | entry and exit;camp;the;Alliance;Stromgarde Keep;Arathi Highlands§ein- und ausgang;lager;der;allianz;Burg Stromgarde;Arathihochland§entrée et sortie;camp;the;Alliance;Stromgarde Keep;Hautes-terres d'Arathi | x=-1586.400024414063 y=-1728.300048828125 | size=1 | links=#3477(auto Arathi Highlands;57):20 #25311(auto Arathi Highlands;403):39 c2584.9:9 c2583.11:1
+#14209 | auto Arathi Highlands;212§auto Arathihochland;212§auto Hautes-terres d'Arathi;212 | x=-2057.300048828125 y=-3247.199951171875 | size=1 | links=#19631(auto Arathi Highlands;299):26 #27789(auto Arathi Highlands;432):12 c2557.8:9
+#14255 | auto Arathi Highlands;213§auto Arathihochland;213§auto Hautes-terres d'Arathi;213 | x=-1528.400024414063 y=-1855.5 | size=1 | links=#24599(auto Arathi Highlands;386):19 #27131(entry and exit;The Sanctum;Arathi Highlands):8 c2585.1:16
+#14368 | central location;Refuge Pointe;Arathi Highlands§zentralpunkt;Die Zuflucht;Arathihochland§emplacement central;Refuge Pointe;Hautes-terres d'Arathi | x=-1253.400024414063 y=-2526 | size=1 | links=#18547(auto Arathi Highlands;288):62 #22266(auto Arathi Highlands;340):46 #48711(auto Refuge Pointe;Arathi Highlands;437):27 c1471.1:25 c2608.1:4 c2700.1:23 c2788.1:26 c2789.1:21 c2808.1:25 c2810.1:22 c2812.1:12 c2814.1:30 c2816.1:36 c2835.1:17
+#14401 | auto Arathi Highlands;214§auto Arathihochland;214§auto Hautes-terres d'Arathi;214 | x=-926.6000366210938 y=-3523 | size=1 | links=#6773(auto Arathi Highlands;110):3 #8427(auto Arathi Highlands;132):5
+#14557 | auto Arathi Highlands;215§auto Arathihochland;215§auto Hautes-terres d'Arathi;215 | x=-2315.199951171875 y=-2213 | size=5 | links=#15761(auto Arathi Highlands;236):44 #17349(auto Arathi Highlands;264):35
+#14615 | auto Arathi Highlands;216§auto Arathihochland;216§auto Hautes-terres d'Arathi;216 | x=-1996 y=-3392.699951171875 | size=1 | links=#19750(auto Arathi Highlands;301):26 c2556.36:17
+#14624 | auto Arathi Highlands;217§auto Arathihochland;217§auto Hautes-terres d'Arathi;217 | x=-1208.800048828125 y=-2074.60009765625 | size=1 | links=#1600(auto Arathi Highlands;23):6 #25423(auto Arathi Highlands;408):5
+#14633 | auto Arathi Highlands;218§auto Arathihochland;218§auto Hautes-terres d'Arathi;218 | x=-1846.5 y=-1699.900024414063 | size=1 | links=#7946(auto Arathi Highlands;123):35 #19413(auto Arathi Highlands;297):59 c2580.7:24
+#14654 | auto Arathi Highlands;219§auto Arathihochland;219§auto Hautes-terres d'Arathi;219 | x=-1694.700073242188 y=-3235.300048828125 | size=1 | links=c2554.18:20 c2554.31:16
+#14697 | auto Arathi Highlands;220§auto Arathihochland;220§auto Hautes-terres d'Arathi;220 | x=-1661.800048828125 y=-2001 | size=1 | links=#10622(auto Arathi Highlands;166):50 #20750(traverse;Circle of Inner Binding;Arathi Highlands):31 c2560.17:31
+#14724 | auto Arathi Highlands;221§auto Arathihochland;221§auto Hautes-terres d'Arathi;221 | x=-811.7999877929688 y=-2123.900146484375 | size=1 | links=#6201(auto Arathi Highlands;105):15 #25342(auto Arathi Highlands;405):43 c2586.2:31 c2586.8:9
+#14757 | auto Arathi Highlands;222§auto Arathihochland;222§auto Hautes-terres d'Arathi;222 | x=-1414.800048828125 y=-1807 | size=1 | links=#3163(auto Arathi Highlands;54):33 #16732(auto Arathi Highlands;250):35
+#14773 | auto Arathi Highlands;223§auto Arathihochland;223§auto Hautes-terres d'Arathi;223 | x=-1765 y=-1517.400024414063 | size=1 | links=#13332(auto Arathi Highlands;198):17 #13934(auto Arathi Highlands;209):7
+#14953 | auto Arathi Highlands;224§auto Arathihochland;224§auto Hautes-terres d'Arathi;224 | x=-1453.700073242188 y=-1966.5 | size=1 | links=#19607(auto Arathi Highlands;298):24 #26951(auto Arathi Highlands;423):24 c2560.1:31 c2560.19:32
+#15110 | auto Arathi Highlands;225§auto Arathihochland;225§auto Hautes-terres d'Arathi;225 | x=-866.5 y=-4004.400146484375 | size=1 | links=#17557(auto Arathi Highlands;269):14 #25863(auto Arathi Highlands;413):20 o2653.5:10
+#15235 | auto Arathi Highlands;226§auto Arathihochland;226§auto Hautes-terres d'Arathi;226 | x=-1069 y=-3551.900146484375 | size=1 | links=#5588(auto Arathi Highlands;92):13 #24410(auto Arathi Highlands;381):38
+#15323 | auto Arathi Highlands;227§auto Arathihochland;227§auto Hautes-terres d'Arathi;227 | x=-938.6000366210938 y=-2038 | size=1 | links=#9565(path;to;Northfold Manor;Arathi Highlands):63 c2586.4:51 c2586.9:30
+#15363 | auto Arathi Highlands;228§auto Arathihochland;228§auto Hautes-terres d'Arathi;228 | x=-1163.599975585938 y=-2988.800048828125 | size=1 | links=#11167(auto Arathi Highlands;176):64 #21007(auto Arathi Highlands;318):61
+#15412 | auto Arathi Highlands;229§auto Arathihochland;229§auto Hautes-terres d'Arathi;229 | x=-1153.5 y=-3410.199951171875 | size=1 | links=#8879(auto Arathi Highlands;143):66 #25143(auto Arathi Highlands;397):71
+#15494 | auto Arathi Highlands;230§auto Arathihochland;230§auto Hautes-terres d'Arathi;230 | x=-1492.800048828125 y=-1805.400024414063 | size=1 | links=#3921(auto Arathi Highlands;65):18 #10028(entry and exit;Stromgarde Keep):22
+#15579 | auto Arathi Highlands;231§auto Arathihochland;231§auto Hautes-terres d'Arathi;231 | x=-945.7999877929688 y=-3512.699951171875 | size=1 | links=#3756(auto Arathi Highlands;62):6 #27917(auto Arathi Highlands;433):4
+#15587 | entry and exit;cave;Boulderfist Outpost;Arathi Highlands§ein- und ausgang;höhle;Außenposten der Felsfäuste;Arathihochland§entrée et sortie;cave;Boulderfist Outpost;Hautes-terres d'Arathi | x=-1196.599975585938 y=-2128.60009765625 | size=1 | links=#10793(auto Arathi Highlands;168):39 c2564.8:19 c2562.13:32
+#15604 | auto Arathi Highlands;232§auto Arathihochland;232§auto Hautes-terres d'Arathi;232 | x=-1350.099975585938 y=-1835.700073242188 | size=5 | links=#2878(crossing;two;Arathi Highlands):25 #16732(auto Arathi Highlands;250):35
+#15606 | auto Arathi Highlands;233§auto Arathihochland;233§auto Hautes-terres d'Arathi;233 | x=-1598.800048828125 y=-1913.200073242188 | size=1 | links=#17310(auto Arathi Highlands;262):27 #23945(auto Arathi Highlands;369):9 c24477.4:15
+#15616 | auto Arathi Highlands;234§auto Arathihochland;234§auto Hautes-terres d'Arathi;234 | x=-1612.300048828125 y=-2773.5 | size=1 | links=#2492(auto Arathi Highlands;37):60 c2714.1:18
+#15640 | entry and exit;The Tower of Arathor;Arathi Highlands§ein- und ausgang;Der Turm von Arathor;Arathihochland§entrée et sortie;The Tower of Arathor;Hautes-terres d'Arathi | x=-1762.5 y=-1534.700073242188 | size=1 | links=#13934(auto Arathi Highlands;209):16 #16187(auto Arathi Highlands;242):12
+#15646 | auto Arathi Highlands;235§auto Arathihochland;235§auto Hautes-terres d'Arathi;235 | x=-1560.700073242188 y=-3267.800048828125 | size=1 | links=#18217(auto Arathi Highlands;282):129 c2554.17:53 c2554.20:61
+#15761 | auto Arathi Highlands;236§auto Arathihochland;236§auto Hautes-terres d'Arathi;236 | x=-2315.400146484375 y=-2168.10009765625 | size=5 | links=#2823(auto Arathi Highlands;47):56 #14557(auto Arathi Highlands;215):44
+#15791 | auto Arathi Highlands;237§auto Arathihochland;237§auto Hautes-terres d'Arathi;237 | x=-888.4000244140625 y=-3896.300048828125 | size=1 | links=#3040(auto Arathi Highlands;51):10 c2574.1:15
+#16052 | auto Arathi Highlands;238§auto Arathihochland;238§auto Hautes-terres d'Arathi;238 | x=-1097.099975585938 y=-3645.60009765625 | size=1 | links=#5254(auto Arathi Highlands;86):28 #8725(auto Arathi Highlands;138):28
+#16095 | auto Arathi Highlands;239§auto Arathihochland;239§auto Hautes-terres d'Arathi;239 | x=-1367.5 y=-2890.800048828125 | size=1 | links=#4475(auto Arathi Highlands;74):79 #21786(auto Arathi Highlands;330):89
+#16097 | auto Arathi Highlands;240§auto Arathihochland;240§auto Hautes-terres d'Arathi;240 | x=-2038.800048828125 y=-1656.700073242188 | size=1 | links=#17381(auto Arathi Highlands;265):37 #25488(auto Arathi Highlands;409):15
+#16146 | quest target;Faldir's Cove;Arathi Highlands§questziel;Die Faldirbucht;Arathihochland§objectif de quête;Faldir's Cove;Hautes-terres d'Arathi | x=-2042.200073242188 y=-2154.10009765625 | size=1 | links=#22529(entry and exit;cave;Faldir's Cove;Arathi Highlands):29
+#16173 | auto Arathi Highlands;241§auto Arathihochland;241§auto Hautes-terres d'Arathi;241 | x=-1785 y=-1521.5 | size=1 | links=#18101(auto Arathi Highlands;278):9 #21767(auto Arathi Highlands;328):10
+#16187 | auto Arathi Highlands;242§auto Arathihochland;242§auto Hautes-terres d'Arathi;242 | x=-1755.800048828125 y=-1545.200073242188 | size=1 | links=#2040(auto Arathi Highlands;30):7 #15640(entry and exit;The Tower of Arathor;Arathi Highlands):12
+#16315 | auto Arathi Highlands;243§auto Arathihochland;243§auto Hautes-terres d'Arathi;243 | x=-2293.60009765625 y=-1919.200073242188 | size=5 | links=#5410(auto Arathi Highlands;89):26 #25350(auto Arathi Highlands;406):31
+#16441 | auto Arathi Highlands;244§auto Arathihochland;244§auto Hautes-terres d'Arathi;244 | x=-960.7000122070312 y=-3554.60009765625 | size=1 | links=#7139(auto Arathi Highlands;114):5 c2819.1:7
+#16442 | auto Arathi Highlands;245§auto Arathihochland;245§auto Hautes-terres d'Arathi;245 | x=-1651.700073242188 y=-1846.200073242188 | size=1 | links=#18207(auto Arathi Highlands;281):14 #27717(auto Arathi Highlands;431):21 c4075.13:12
+#16459 | auto Arathi Highlands;246§auto Arathihochland;246§auto Hautes-terres d'Arathi;246 | x=-1410.700073242188 y=-2232.699951171875 | size=1 | links=#16858(auto Arathi Highlands;253):132 #24190(auto Arathi Highlands;376):39 c2559.58:41
+#16619 | auto Arathi Highlands;247§auto Arathihochland;247§auto Hautes-terres d'Arathi;247 | x=-1637.5 y=-3126.60009765625 | size=5 | links=#10798(auto Arathi Highlands;169):87 #18217(auto Arathi Highlands;282):57
+#16671 | auto Arathi Highlands;248§auto Arathihochland;248§auto Hautes-terres d'Arathi;248 | x=-1021.400024414063 y=-3185.10009765625 | size=5 | links=#6102(auto Arathi Highlands;101):83 #24490(auto Arathi Highlands;383):70 c2559.51:5
+#16709 | auto Arathi Highlands;249§auto Arathihochland;249§auto Hautes-terres d'Arathi;249 | x=-1420.099975585938 y=-2968.5 | size=1 | links=#17014(auto Arathi Highlands;256):29 #18151(auto Arathi Highlands;279):42 c2619.7:14
+#16732 | auto Arathi Highlands;250§auto Arathihochland;250§auto Hautes-terres d'Arathi;250 | x=-1381.400024414063 y=-1820 | size=1 | links=#14757(auto Arathi Highlands;222):35 #15604(auto Arathi Highlands;232):35
+#16794 | auto Arathi Highlands;251§auto Arathihochland;251§auto Hautes-terres d'Arathi;251 | x=-1700.300048828125 y=-1989.099975585938 | size=1 | links=#9227(auto Arathi Highlands;148):61 #20750(traverse;Circle of Inner Binding;Arathi Highlands):9 c2560.63:4
+#16836 | auto Arathi Highlands;252§auto Arathihochland;252§auto Hautes-terres d'Arathi;252 | x=-1767 y=-3225.5 | size=1 | links=#5027(auto Arathi Highlands;83):21 c2554.16:15
+#16858 | auto Arathi Highlands;253§auto Arathihochland;253§auto Hautes-terres d'Arathi;253 | x=-1377.5 y=-2104.800048828125 | size=1 | links=#4546(auto Arathi Highlands;75):125 #16459(auto Arathi Highlands;246):132 c2738.1:35
+#16914 | auto Arathi Highlands;254§auto Arathihochland;254§auto Hautes-terres d'Arathi;254 | x=-1006.5 y=-1965 | size=5 | links=#9565(path;to;Northfold Manor;Arathi Highlands):50 #25178(auto Arathi Highlands;400):75
+#16915 | entry and exit;cave;Boulderfist Hall;Arathi Highlands§ein- und ausgang;höhle;Halle der Felsfäuste;Arathihochland§entrée et sortie;cave;Boulderfist Hall;Hautes-terres d'Arathi | x=-1988.800048828125 y=-2799.60009765625 | size=1 | links=#20948(auto Arathi Highlands;317):43 #24041(auto Arathi Highlands;372):7
+#16969 | auto Arathi Highlands;255§auto Arathihochland;255§auto Hautes-terres d'Arathi;255 | x=-1759.200073242188 y=-1916.400024414063 | size=1 | links=#9227(auto Arathi Highlands;148):44 #22397(auto Arathi Highlands;343):17
+#17014 | auto Arathi Highlands;256§auto Arathihochland;256§auto Hautes-terres d'Arathi;256 | x=-1395.599975585938 y=-2985.60009765625 | size=1 | links=#9487(auto Arathi Highlands;152):19 #16709(auto Arathi Highlands;249):29
+#17032 | auto Arathi Highlands;257§auto Arathihochland;257§auto Hautes-terres d'Arathi;257 | x=-1024.800048828125 y=-3825.300048828125 | size=1 | links=#8421(auto Arathi Highlands;131):16 #23293(auto Arathi Highlands;357):21 c2572.21:9
+#17040 | auto Arathi Highlands;258§auto Arathihochland;258§auto Hautes-terres d'Arathi;258 | x=-2297.60009765625 y=-1990.5 | size=5 | links=#24796(auto Arathi Highlands;391):56 #25350(auto Arathi Highlands;406):42
+#17099 | auto Arathi Highlands;259§auto Arathihochland;259§auto Hautes-terres d'Arathi;259 | x=-1776.5 y=-1804.099975585938 | size=1 | links=#2745(auto Arathi Highlands;45):36 #24134(auto Arathi Highlands;375):27
+#17104 | auto Arathi Highlands;260§auto Arathihochland;260§auto Hautes-terres d'Arathi;260 | x=-1579.5 y=-1839 | size=1 | links=#390(auto Arathi Highlands;3):12 #26123(auto Arathi Highlands;416):23 c2590.1:16 c2598.1:21 c24477.6:3
+#17223 | auto Arathi Highlands;261§auto Arathihochland;261§auto Hautes-terres d'Arathi;261 | x=-1076.900024414063 y=-3824.400146484375 | size=1 | links=#1280(auto Arathi Highlands;15):11 #13531(auto Arathi Highlands;202):17
+#17310 | auto Arathi Highlands;262§auto Arathihochland;262§auto Hautes-terres d'Arathi;262 | x=-1597.700073242188 y=-1885.400024414063 | size=1 | links=#15606(auto Arathi Highlands;233):27 #24721(auto Arathi Highlands;389):29 c2591.2:11
+#17315 | auto Arathi Highlands;263§auto Arathihochland;263§auto Hautes-terres d'Arathi;263 | x=-2082 y=-2000.099975585938 | size=1 | links=#21185(auto Arathi Highlands;321):12 #22818(auto Arathi Highlands;349):11 c2636.3:11
+#17349 | auto Arathi Highlands;264§auto Arathihochland;264§auto Hautes-terres d'Arathi;264 | x=-2312.900146484375 y=-2248.10009765625 | size=1 | links=#3801(auto Arathi Highlands;63):41 #14557(auto Arathi Highlands;215):35
+#17381 | auto Arathi Highlands;265§auto Arathihochland;265§auto Hautes-terres d'Arathi;265 | x=-2002 y=-1651.800048828125 | size=1 | links=#3690(auto Arathi Highlands;61):29 #16097(auto Arathi Highlands;240):37
+#17432 | auto Arathi Highlands;266§auto Arathihochland;266§auto Hautes-terres d'Arathi;266 | x=-2237.10009765625 y=-2452.900146484375 | size=1 | links=#4356(auto Arathi Highlands;70):56 #24625(auto Arathi Highlands;388):52
+#17434 | auto Arathi Highlands;267§auto Arathihochland;267§auto Hautes-terres d'Arathi;267 | x=-2081.199951171875 y=-2830.300048828125 | size=1 | links=#4945(auto Arathi Highlands;81):24 #11583(auto Arathi Highlands;181):4 c2793.1:18 c2567.9:4
+#17438 | auto Arathi Highlands;268§auto Arathihochland;268§auto Hautes-terres d'Arathi;268 | x=-1566.900024414063 y=-2553.900146484375 | size=1 | links=#18604(auto Arathi Highlands;290):60 #24597(auto Arathi Highlands;385):54
+#17557 | auto Arathi Highlands;269§auto Arathihochland;269§auto Hautes-terres d'Arathi;269 | x=-880.1000366210938 y=-4009.199951171875 | size=1 | links=#15110(auto Arathi Highlands;225):14 c2574.4:15
+#17600 | auto Arathi Highlands;270§auto Arathihochland;270§auto Hautes-terres d'Arathi;270 | x=-1770.5 y=-1510.300048828125 | size=1 | links=#228(auto Arathi Highlands;1):3 #8861(auto Arathi Highlands;141):2
+#17668 | auto Arathi Highlands;271§auto Arathihochland;271§auto Hautes-terres d'Arathi;271 | x=-1226.900024414063 y=-2083 | size=1 | links=c2564.3:11 c2564.9:24
+#17671 | auto Arathi Highlands;272§auto Arathihochland;272§auto Hautes-terres d'Arathi;272 | x=-1600.599975585938 y=-1804.099975585938 | size=1 | links=#6511(central location;Stromgarde Keep;Arathi Highlands):32 c2598.5:27
+#17712 | auto Arathi Highlands;273§auto Arathihochland;273§auto Hautes-terres d'Arathi;273 | x=-1771 y=-1513.400024414063 | size=1 | links=#2594(auto Arathi Highlands;42):5 #11456(auto Arathi Highlands;179):3
+#17791 | auto Arathi Highlands;274§auto Arathihochland;274§auto Hautes-terres d'Arathi;274 | x=-2323.5 y=-2375 | size=1 | links=#23447(auto Arathi Highlands;358):36 #23547(auto Arathi Highlands;361):50
+#17839 | Fardel Dabyrie;Dabyrie's Farmstead;Arathi Highlands;one§Fardel Dabyrie;Bauernhof der Dabyries;Arathihochland;eins§Fardel Dabyrie;Dabyrie's Farmstead;Hautes-terres d'Arathi;un | x=-1101.400024414063 y=-2913.699951171875 | size=1 | links=#10278(auto Arathi Highlands;164):13
+#17908 | auto Arathi Highlands;275§auto Arathihochland;275§auto Hautes-terres d'Arathi;275 | x=-1778.400024414063 y=-1491.900024414063 | size=1 | links=#4416(auto Arathi Highlands;73):12 #24393(auto Arathi Highlands;380):8
+#17965 | auto Arathi Highlands;276§auto Arathihochland;276§auto Hautes-terres d'Arathi;276 | x=-1789.599975585938 y=-1508.5 | size=1 | links=#5945(auto Arathi Highlands;97):5 #12465(auto Arathi Highlands;189):5
+#18071 | auto Arathi Highlands;277§auto Arathihochland;277§auto Hautes-terres d'Arathi;277 | x=-1785.599975585938 y=-1753.200073242188 | size=1 | links=#5487(auto Arathi Highlands;90):13 c2580.8:11
+#18101 | auto Arathi Highlands;278§auto Arathihochland;278§auto Hautes-terres d'Arathi;278 | x=-1775.900024414063 y=-1525.599975585938 | size=1 | links=#16173(auto Arathi Highlands;241):9 #27639(auto Arathi Highlands;429):10
+#18151 | auto Arathi Highlands;279§auto Arathihochland;279§auto Hautes-terres d'Arathi;279 | x=-1462.800048828125 y=-2964.699951171875 | size=1 | links=#854(auto Arathi Highlands;9):47 #16709(auto Arathi Highlands;249):42 c2619.2:10
+#18187 | auto Arathi Highlands;280§auto Arathihochland;280§auto Hautes-terres d'Arathi;280 | x=-1768.300048828125 y=-1504.599975585938 | size=1 | links=#228(auto Arathi Highlands;1):3 #4416(auto Arathi Highlands;73):8
+#18207 | auto Arathi Highlands;281§auto Arathihochland;281§auto Hautes-terres d'Arathi;281 | x=-1643.900024414063 y=-1834.5 | size=1 | links=#16442(auto Arathi Highlands;245):14 c24477.18:11
+#18217 | auto Arathi Highlands;282§auto Arathihochland;282§auto Hautes-terres d'Arathi;282 | x=-1656 y=-3180.800048828125 | size=5 | links=#10631(auto Arathi Highlands;167):65 #15646(auto Arathi Highlands;235):129 #16619(auto Arathi Highlands;247):57 c2554.31:52
+#18368 | auto Arathi Highlands;283§auto Arathihochland;283§auto Hautes-terres d'Arathi;283 | x=-1453.700073242188 y=-2363.800048828125 | size=1 | links=#7480(crossing;one;Arathi Highlands):73 #10952(auto Arathi Highlands;171):74 #18436(auto Arathi Highlands;285):68 c2559.48:39
+#18430 | auto Arathi Highlands;284§auto Arathihochland;284§auto Hautes-terres d'Arathi;284 | x=-988.5 y=-3516.300048828125 | size=1 | links=#9880(auto Arathi Highlands;159):10 #20032(auto Arathi Highlands;304):22 #22193(auto Arathi Highlands;336):25 #25514(central location;Hammerfall;Arathi Highlands):19
+#18436 | auto Arathi Highlands;285§auto Arathihochland;285§auto Hautes-terres d'Arathi;285 | x=-1492.200073242188 y=-2307.199951171875 | size=1 | links=#2717(auto Arathi Highlands;44):49 #18368(auto Arathi Highlands;283):68 c2559.72:55
+#18500 | auto Arathi Highlands;286§auto Arathihochland;286§auto Hautes-terres d'Arathi;286 | x=-1542.200073242188 y=-1806.099975585938 | size=5 | links=#3921(auto Arathi Highlands;65):30 #6511(central location;Stromgarde Keep;Arathi Highlands):26
+#18504 | auto Arathi Highlands;287§auto Arathihochland;287§auto Hautes-terres d'Arathi;287 | x=-806.7999877929688 y=-2071.800048828125 | size=1 | links=#6201(auto Arathi Highlands;105):38 #24844(auto Arathi Highlands;394):18 c2587.2:10
+#18547 | auto Arathi Highlands;288§auto Arathihochland;288§auto Hautes-terres d'Arathi;288 | x=-1285.700073242188 y=-2473 | size=1 | links=#12507(auto Arathi Highlands;191):53 #14368(central location;Refuge Pointe;Arathi Highlands):62
+#18568 | auto Arathi Highlands;289§auto Arathihochland;289§auto Hautes-terres d'Arathi;289 | x=-1794.800048828125 y=-1513.200073242188 | size=1 | links=#3262(auto Arathi Highlands;56):7 o2716.1:7
+#18604 | auto Arathi Highlands;290§auto Arathihochland;290§auto Hautes-terres d'Arathi;290 | x=-1551.099975585938 y=-2496 | size=1 | links=#4313(auto Arathi Highlands;68):62 #17438(auto Arathi Highlands;268):60 #26828(auto Arathi Highlands;422):79
+#18670 | auto Arathi Highlands;291§auto Arathihochland;291§auto Hautes-terres d'Arathi;291 | x=-1601.800048828125 y=-3428.900146484375 | size=1 | links=c2554.21:21 c2555.21:21 c2554.22:21 c2554.29:15
+#18741 | auto Arathi Highlands;292§auto Arathihochland;292§auto Hautes-terres d'Arathi;292 | x=-1997.300048828125 y=-2810 | size=1 | links=#24041(auto Arathi Highlands;372):6 c2567.8:9
+#18954 | auto Arathi Highlands;293§auto Arathihochland;293§auto Hautes-terres d'Arathi;293 | x=-1048.900024414063 y=-2847 | size=1 | links=#674(auto Arathi Highlands;8):12 #3888(central location;Dabyrie's Farmstead;Arathi Highlands):13
+#19243 | auto Arathi Highlands;294§auto Arathihochland;294§auto Hautes-terres d'Arathi;294 | x=-964.7999877929688 y=-3512.5 | size=1 | links=#3756(auto Arathi Highlands;62):12 #25514(central location;Hammerfall;Arathi Highlands):15
+#19248 | auto Arathi Highlands;295§auto Arathihochland;295§auto Hautes-terres d'Arathi;295 | x=-1649 y=-2968.699951171875 | size=1 | links=#2381(auto Arathi Highlands;35):39 #13254(auto Arathi Highlands;195):39
+#19336 | auto Arathi Highlands;296§auto Arathihochland;296§auto Hautes-terres d'Arathi;296 | x=-1713.300048828125 y=-1567.700073242188 | size=1 | links=#1527(auto Arathi Highlands;20):6 c2571.6:16
+#19413 | auto Arathi Highlands;297§auto Arathihochland;297§auto Hautes-terres d'Arathi;297 | x=-1864.599975585938 y=-1643.300048828125 | size=1 | links=#5862(auto Arathi Highlands;96):42 #14633(auto Arathi Highlands;218):59
+#19494 | door/gate;two;Hammerfall;Arathi Highlands§tür/tor;zwei;Hammerfall;Arathihochland§door/gate;deux;Trépas-d'Orgrim;Hautes-terres d'Arathi | x=-864.5 y=-3511.5 | size=1 | links=#23782(auto Arathi Highlands;367):22 c15022.1:16
+#19607 | auto Arathi Highlands;298§auto Arathihochland;298§auto Hautes-terres d'Arathi;298 | x=-1431.800048828125 y=-1955.800048828125 | size=1 | links=#4546(auto Arathi Highlands;75):60 #14953(auto Arathi Highlands;224):24
+#19631 | auto Arathi Highlands;299§auto Arathihochland;299§auto Hautes-terres d'Arathi;299 | x=-2083.400146484375 y=-3247.60009765625 | size=1 | links=#14209(auto Arathi Highlands;212):26 #25382(auto Arathi Highlands;407):14
+#19688 | auto Arathi Highlands;300§auto Arathihochland;300§auto Hautes-terres d'Arathi;300 | x=-1685.400024414063 y=-1822.300048828125 | size=1 | links=#7912(auto Arathi Highlands;122):12 #12850(auto Arathi Highlands;194):7
+#19750 | auto Arathi Highlands;301§auto Arathihochland;301§auto Hautes-terres d'Arathi;301 | x=-2014.300048828125 y=-3412 | size=1 | links=#14615(auto Arathi Highlands;216):26 #20002(auto Arathi Highlands;303):25
+#19778 | auto Arathi Highlands;302§auto Arathihochland;302§auto Hautes-terres d'Arathi;302 | x=-1775.5 y=-1511.400024414063 | size=1 | links=#5503(auto Arathi Highlands;91):3 #8861(auto Arathi Highlands;141):2
+#20002 | auto Arathi Highlands;303§auto Arathihochland;303§auto Hautes-terres d'Arathi;303 | x=-2036.5 y=-3400.300048828125 | size=1 | links=#7660(auto Arathi Highlands;117):17 #19750(auto Arathi Highlands;301):25 c2557.13:8
+#20032 | auto Arathi Highlands;304§auto Arathihochland;304§auto Hautes-terres d'Arathi;304 | x=-985.7000122070312 y=-3538.199951171875 | size=1 | links=#18430(auto Arathi Highlands;284):22 #28303(auto Arathi Highlands;436):5
+#20221 | auto Arathi Highlands;305§auto Arathihochland;305§auto Hautes-terres d'Arathi;305 | x=-1619.599975585938 y=-1920.400024414063 | size=1 | links=#2091(auto Arathi Highlands;31):12 #26576(auto Arathi Highlands;418):10
+#20245 | auto Arathi Highlands;306§auto Arathihochland;306§auto Hautes-terres d'Arathi;306 | x=-1773.200073242188 y=-1506.099975585938 | size=1 | links=#1615(auto Arathi Highlands;25):3 #6660(auto Arathi Highlands;108):2
+#20283 | auto Arathi Highlands;307§auto Arathihochland;307§auto Hautes-terres d'Arathi;307 | x=-1771.800048828125 y=-1522.700073242188 | size=1 | links=#2594(auto Arathi Highlands;42):6 o2717.1:3
+#20415 | auto Arathi Highlands;308§auto Arathihochland;308§auto Hautes-terres d'Arathi;308 | x=-2036.400024414063 y=-2833 | size=1 | links=#4312(auto Arathi Highlands;67):10 #23164(auto Arathi Highlands;356):6
+#20442 | auto Arathi Highlands;309§auto Arathihochland;309§auto Hautes-terres d'Arathi;309 | x=-1298.5 y=-2145.699951171875 | size=1 | links=#13697(auto Arathi Highlands;207):45 c2562.15:33
+#20504 | auto Arathi Highlands;310§auto Arathihochland;310§auto Hautes-terres d'Arathi;310 | x=-1754.5 y=-1585.099975585938 | size=1 | links=#27136(auto Arathi Highlands;425):26 c2570.4:1
+#20627 | auto Arathi Highlands;311§auto Arathihochland;311§auto Hautes-terres d'Arathi;311 | x=-2113.699951171875 y=-1940.599975585938 | size=5 | links=#11739(auto Arathi Highlands;183):59 #24087(auto Arathi Highlands;374):21
+#20649 | auto Arathi Highlands;312§auto Arathihochland;312§auto Hautes-terres d'Arathi;312 | x=-1971.099975585938 y=-3329.800048828125 | size=1 | links=#21276(auto Arathi Highlands;323):23 #24245(entry and exit;cave;Witherbark Village;Arathi Highlands):29
+#20663 | auto Arathi Highlands;313§auto Arathihochland;313§auto Hautes-terres d'Arathi;313 | x=-1241.800048828125 y=-2829.10009765625 | size=5 | links=#8561(auto Arathi Highlands;135):77 c2559.43:93
+#20687 | bridge;Thandol Span;Arathi Highlands§brücke;Thandolübergang;Arathihochland§bridge;Viaduc de Thandol;Hautes-terres d'Arathi | x=-2249.10009765625 y=-2517 | size=1 | links=#5244(auto Arathi Highlands;85):54 #24625(auto Arathi Highlands;388):17
+#20735 | auto Arathi Highlands;314§auto Arathihochland;314§auto Hautes-terres d'Arathi;314 | x=-2040.200073242188 y=-3259.300048828125 | size=1 | links=#27789(auto Arathi Highlands;432):8 c2557.1:19
+#20750 | traverse;Circle of Inner Binding;Arathi Highlands§überquerung;Kreis der inneren Bindung;Arathihochland§traverse;Circle of Inner Binding;Hautes-terres d'Arathi | x=-1691.300048828125 y=-1988.700073242188 | size=1 | links=#14697(auto Arathi Highlands;220):31 #16794(auto Arathi Highlands;251):9
+#20767 | auto Arathi Highlands;315§auto Arathihochland;315§auto Hautes-terres d'Arathi;315 | x=-1764.300048828125 y=-1515.099975585938 | size=1 | links=#22367(auto Arathi Highlands;342):6 #27639(auto Arathi Highlands;429):6
+#20866 | auto Arathi Highlands;316§auto Arathihochland;316§auto Hautes-terres d'Arathi;316 | x=-921.6000366210938 y=-3858.800048828125 | size=1 | links=#23080(auto Arathi Highlands;353):22 #26055(auto Arathi Highlands;414):32 c2609.1:18 c2573.6:4
+#20948 | auto Arathi Highlands;317§auto Arathihochland;317§auto Hautes-terres d'Arathi;317 | x=-1958.599975585938 y=-2768.300048828125 | size=1 | links=#9695(auto Arathi Highlands;156):31 #16915(entry and exit;cave;Boulderfist Hall;Arathi Highlands):43 c2567.3:18
+#21007 | auto Arathi Highlands;318§auto Arathihochland;318§auto Hautes-terres d'Arathi;318 | x=-1129.099975585938 y=-2937.5 | size=5 | links=#10278(auto Arathi Highlands;164):35 #15363(auto Arathi Highlands;228):61
+#21048 | auto Arathi Highlands;319§auto Arathihochland;319§auto Hautes-terres d'Arathi;319 | x=-1098.900024414063 y=-3763.10009765625 | size=1 | links=#868(auto Arathi Highlands;10):13 #23534(auto Arathi Highlands;360):25
+#21140 | auto Arathi Highlands;320§auto Arathihochland;320§auto Hautes-terres d'Arathi;320 | x=-849.1000366210938 y=-3898.400146484375 | size=1 | links=#2568(auto Arathi Highlands;40):21 #2679(auto Arathi Highlands;43):14 c2573.1:4
+#21185 | auto Arathi Highlands;321§auto Arathihochland;321§auto Hautes-terres d'Arathi;321 | x=-2072.60009765625 y=-2007.800048828125 | size=1 | links=#17315(auto Arathi Highlands;263):12 o113531.1:13
+#21265 | auto Arathi Highlands;322§auto Arathihochland;322§auto Hautes-terres d'Arathi;322 | x=-1565 y=-1925.200073242188 | size=1 | links=#9725(auto Arathi Highlands;158):14 c2782.1:15
+#21276 | auto Arathi Highlands;323§auto Arathihochland;323§auto Hautes-terres d'Arathi;323 | x=-1975.599975585938 y=-3307 | size=1 | links=#20649(auto Arathi Highlands;312):23 #25802(auto Arathi Highlands;410):18 c2556.8:8
+#21565 | auto Arathi Highlands;324§auto Arathihochland;324§auto Hautes-terres d'Arathi;324 | x=-1762.800048828125 y=-1627.900024414063 | size=1 | links=#27136(auto Arathi Highlands;425):18 c2570.5:27
+#21678 | auto Arathi Highlands;325§auto Arathihochland;325§auto Hautes-terres d'Arathi;325 | x=-1707.599975585938 y=-1639.599975585938 | size=1 | links=#8643(auto Arathi Highlands;137):15 c2601.2:26 c2773.3:27 c2773.7:26 c2569.8:16 c2570.9:21
+#21695 | auto Arathi Highlands;326§auto Arathihochland;326§auto Hautes-terres d'Arathi;326 | x=-1862.099975585938 y=-3316.60009765625 | size=1 | links=#25315(auto Arathi Highlands;404):19 #26698(auto Arathi Highlands;420):22
+#21733 | auto Arathi Highlands;327§auto Arathihochland;327§auto Hautes-terres d'Arathi;327 | x=-1406 y=-2463.900146484375 | size=1 | links=#7480(crossing;one;Arathi Highlands):73 #12507(auto Arathi Highlands;191):77
+#21767 | auto Arathi Highlands;328§auto Arathihochland;328§auto Hautes-terres d'Arathi;328 | x=-1776.900024414063 y=-1514.099975585938 | size=1 | links=#2594(auto Arathi Highlands;42):3 #16173(auto Arathi Highlands;241):10
+#21782 | auto Arathi Highlands;329§auto Arathihochland;329§auto Hautes-terres d'Arathi;329 | x=-1827.200073242188 y=-3299.800048828125 | size=1 | links=#13568(auto Arathi Highlands;203):21 c2556.2:20
+#21786 | auto Arathi Highlands;330§auto Arathihochland;330§auto Hautes-terres d'Arathi;330 | x=-1304.800048828125 y=-2954.900146484375 | size=5 | links=#1768(auto Arathi Highlands;28):82 #1960(auto Arathi Highlands;29):96 #8561(auto Arathi Highlands;135):63 #16095(auto Arathi Highlands;239):89 c2563.29:51
+#21852 | sku§Sku§sku | x=-850.4000244140625 y=-1604.5 | size=1 | links=#3135(Arathi Highlands;here):45 #26795(passage;from;Arathi Highlands;to;Thoradin's Wall):26 #28322(passage;from;Thoradin's Wall;Arathi Highlands;to;Thoradin's Wall;Hillsbrad Foothills):26
+#21871 | auto Arathi Highlands;331§auto Arathihochland;331§auto Hautes-terres d'Arathi;331 | x=-1178.800048828125 y=-2059.900146484375 | size=5 | links=#25174(auto Arathi Highlands;398):8 c2564.10:9
+#21938 | auto Arathi Highlands;332§auto Arathihochland;332§auto Hautes-terres d'Arathi;332 | x=-1016.5 y=-3551.60009765625 | size=1 | links=#13512(door/gate;one;Hammerfall;Arathi Highlands):27 #22193(auto Arathi Highlands;336):20 c2706.1:13
+#21985 | auto Arathi Highlands;333§auto Arathihochland;333§auto Hautes-terres d'Arathi;333 | x=-1590.300048828125 y=-3059.300048828125 | size=1 | links=#10798(auto Arathi Highlands;169):23 c2619.3:14
+#22014 | auto Arathi Highlands;334§auto Arathihochland;334§auto Hautes-terres d'Arathi;334 | x=-1652.800048828125 y=-1925.700073242188 | size=1 | links=#7137(auto Arathi Highlands;113):5 #8054(auto Arathi Highlands;124):14
+#22067 | auto Arathi Highlands;335§auto Arathihochland;335§auto Hautes-terres d'Arathi;335 | x=-1632.5 y=-2869.800048828125 | size=1 | links=#2381(auto Arathi Highlands;35):61 #2492(auto Arathi Highlands;37):37
+#22193 | auto Arathi Highlands;336§auto Arathihochland;336§auto Hautes-terres d'Arathi;336 | x=-1006.299987792969 y=-3534.199951171875 | size=1 | links=#18430(auto Arathi Highlands;284):25 #21938(auto Arathi Highlands;332):20
+#22198 | auto Arathi Highlands;337§auto Arathihochland;337§auto Hautes-terres d'Arathi;337 | x=-1149.800048828125 y=-1883.300048828125 | size=1 | links=#4241(focus point;two;Arathi Highlands):44 c7869.1:65
+#22203 | auto Arathi Highlands;338§auto Arathihochland;338§auto Hautes-terres d'Arathi;338 | x=-919.2000122070312 y=-3506.400146484375 | size=1 | links=#23050(auto Arathi Highlands;351):7 c2851.1:9
+#22250 | auto Arathi Highlands;339§auto Arathihochland;339§auto Hautes-terres d'Arathi;339 | x=-1470.099975585938 y=-2200.5 | size=1 | links=#2717(auto Arathi Highlands;44):59 o2702.1:50 c2592.5:23
+#22266 | auto Arathi Highlands;340§auto Arathihochland;340§auto Hautes-terres d'Arathi;340 | x=-1232.800048828125 y=-2567.199951171875 | size=1 | links=#11425(auto Arathi Highlands;178):41 #14368(central location;Refuge Pointe;Arathi Highlands):46
+#22289 | auto Arathi Highlands;341§auto Arathihochland;341§auto Hautes-terres d'Arathi;341 | x=-1794.300048828125 y=-1722.200073242188 | size=1 | links=#7946(auto Arathi Highlands;123):21 #23607(auto Arathi Highlands;362):10
+#22367 | auto Arathi Highlands;342§auto Arathihochland;342§auto Hautes-terres d'Arathi;342 | x=-1764.599975585938 y=-1508.200073242188 | size=1 | links=#3661(auto Arathi Highlands;60):2 #20767(auto Arathi Highlands;315):6
+#22383 | entry and exit;Witherbark Village;Arathi Highlands§ein- und ausgang;Lager der Bleichborken;Arathihochland§entrée et sortie;Witherbark Village;Hautes-terres d'Arathi | x=-1732.599975585938 y=-3193.199951171875 | size=1 | links=#2239(auto Arathi Highlands;33):10 #10631(auto Arathi Highlands;167):19
+#22397 | auto Arathi Highlands;343§auto Arathihochland;343§auto Hautes-terres d'Arathi;343 | x=-1766.800048828125 y=-1900.5 | size=1 | links=#10939(auto Arathi Highlands;170):23 #16969(auto Arathi Highlands;255):17
+#22464 | auto Arathi Highlands;344§auto Arathihochland;344§auto Hautes-terres d'Arathi;344 | x=-1684.099975585938 y=-1803.900024414063 | size=1 | links=#13634(auto Arathi Highlands;205):21 #25910(entry and exit;building;Stromgarde Keep;Arathi Highlands):13
+#22501 | Fozruk;Arathi Highlands;1;67.73;37.65§Fozruk;Arathihochland;1;67.73;37.65§Fozruk;Hautes-terres d'Arathi;1;67.73;37.65 | x=-1036.772683169515 y=-3305.371923722586 | size=1
+#22526 | auto Arathi Highlands;345§auto Arathihochland;345§auto Hautes-terres d'Arathi;345 | x=-1696.300048828125 y=-1809.599975585938 | size=1 | links=#2178(auto Arathi Highlands;32):17 #7744(auto Arathi Highlands;120):27
+#22529 | entry and exit;cave;Faldir's Cove;Arathi Highlands§ein- und ausgang;höhle;Die Faldirbucht;Arathihochland§entrée et sortie;cave;Faldir's Cove;Hautes-terres d'Arathi | x=-2063.60009765625 y=-2134.10009765625 | size=1 | links=#6835(auto Arathi Highlands;111):14 #16146(quest target;Faldir's Cove;Arathi Highlands):29
+#22551 | auto Arathi Highlands;346§auto Arathihochland;346§auto Hautes-terres d'Arathi;346 | x=-1528.599975585938 y=-1782.200073242188 | size=1 | links=#1439(auto Arathi Highlands;19):43 #10977(auto Arathi Highlands;172):61 c2584.5:4 c2584.6:8
+#22645 | auto Arathi Highlands;347§auto Arathihochland;347§auto Hautes-terres d'Arathi;347 | x=-1783.200073242188 y=-1496.900024414063 | size=1 | links=#12465(auto Arathi Highlands;189):9 #24839(auto Arathi Highlands;393):15
+#22710 | auto Arathi Highlands;348§auto Arathihochland;348§auto Hautes-terres d'Arathi;348 | x=-2105.60009765625 y=-2043.900024414063 | size=1 | links=#5617(auto Arathi Highlands;93):45 #26804(auto Arathi Highlands;421):14 c2766.1:35
+#22818 | auto Arathi Highlands;349§auto Arathihochland;349§auto Hautes-terres d'Arathi;349 | x=-2093.60009765625 y=-2001.900024414063 | size=1 | links=#17315(auto Arathi Highlands;263):11 #23630(auto Arathi Highlands;363):9
+#22954 | auto Arathi Highlands;350§auto Arathihochland;350§auto Hautes-terres d'Arathi;350 | x=-1714 y=-1797.300048828125 | size=1 | links=#2178(auto Arathi Highlands;32):10 #13500(auto Arathi Highlands;200):15
+#23050 | auto Arathi Highlands;351§auto Arathihochland;351§auto Hautes-terres d'Arathi;351 | x=-920.7999877929688 y=-3514.199951171875 | size=1 | links=#609(auto Arathi Highlands;7):18 #22203(auto Arathi Highlands;338):7 #24290(auto Arathi Highlands;379):5
+#23065 | auto Arathi Highlands;352§auto Arathihochland;352§auto Hautes-terres d'Arathi;352 | x=-2048.60009765625 y=-3376.800048828125 | size=1 | links=#7660(auto Arathi Highlands;117):8 c2605.5:16
+#23080 | auto Arathi Highlands;353§auto Arathihochland;353§auto Hautes-terres d'Arathi;353 | x=-936.6000366210938 y=-3875.5 | size=1 | links=#20866(auto Arathi Highlands;316):22 c2573.5:6 o2653.13:6
+#23123 | auto Arathi Highlands;354§auto Arathihochland;354§auto Hautes-terres d'Arathi;354 | x=-1000.200012207031 y=-3509.60009765625 | size=1 | links=#6225(auto Arathi Highlands;106):9 #9880(auto Arathi Highlands;159):3
+#23150 | auto Arathi Highlands;355§auto Arathihochland;355§auto Hautes-terres d'Arathi;355 | x=-1311.800048828125 y=-2723 | size=1 | links=#11384(auto Arathi Highlands;177):13 c2559.42:44
+#23164 | auto Arathi Highlands;356§auto Arathihochland;356§auto Hautes-terres d'Arathi;356 | x=-2042.900024414063 y=-2832.60009765625 | size=1 | links=#4945(auto Arathi Highlands;81):15 #20415(auto Arathi Highlands;308):6
+#23293 | auto Arathi Highlands;357§auto Arathihochland;357§auto Hautes-terres d'Arathi;357 | x=-1045.800048828125 y=-3830.300048828125 | size=1 | links=#1280(auto Arathi Highlands;15):22 #17032(auto Arathi Highlands;257):21 c2572.9:10
+#23447 | auto Arathi Highlands;358§auto Arathihochland;358§auto Hautes-terres d'Arathi;358 | x=-2339.400146484375 y=-2408.10009765625 | size=1 | links=#5408(auto Arathi Highlands;88):50 #17791(auto Arathi Highlands;274):36
+#23462 | entry and exit;cave;Drywhisker Gorge;Arathi Highlands§ein- und ausgang;höhle;Schlucht der Trockenstoppel;Arathihochland§entrée et sortie;cave;Drywhisker Gorge;Hautes-terres d'Arathi | x=-998.4000244140625 y=-3843.60009765625 | size=1 | links=#9233(auto Arathi Highlands;149):5 #25855(auto Arathi Highlands;411):6 c2574.12:3
+#23513 | auto Arathi Highlands;359§auto Arathihochland;359§auto Hautes-terres d'Arathi;359 | x=-1863.400024414063 y=-3363.300048828125 | size=1 | links=c2556.15:25 c2556.16:11
+#23534 | auto Arathi Highlands;360§auto Arathihochland;360§auto Hautes-terres d'Arathi;360 | x=-1091.900024414063 y=-3787.300048828125 | size=1 | links=#13531(auto Arathi Highlands;202):23 #21048(auto Arathi Highlands;319):25
+#23547 | auto Arathi Highlands;361§auto Arathihochland;361§auto Hautes-terres d'Arathi;361 | x=-2314.199951171875 y=-2325.60009765625 | size=1 | links=#3801(auto Arathi Highlands;63):35 #17791(auto Arathi Highlands;274):50
+#23557 | s;u;Mailbox;Arathi Highlands§s;u;Briefkasten;Arathihochland§s;u;Boîte aux lettres;Hautes-terres d'Arathi | x=-927.6495630373378 y=-3525.55365593936 | size=1 | links=#8427(auto Arathi Highlands;132):4
+#23607 | auto Arathi Highlands;362§auto Arathihochland;362§auto Hautes-terres d'Arathi;362 | x=-1789.099975585938 y=-1731.700073242188 | size=1 | links=#22289(auto Arathi Highlands;341):10 c2580.8:10
+#23630 | auto Arathi Highlands;363§auto Arathihochland;363§auto Hautes-terres d'Arathi;363 | x=-2103 y=-2003.099975585938 | size=1 | links=#22818(auto Arathi Highlands;349):9 c2766.1:16
+#23653 | auto Arathi Highlands;364§auto Arathihochland;364§auto Hautes-terres d'Arathi;364 | x=-1792.200073242188 y=-1502 | size=1 | links=#3262(auto Arathi Highlands;56):4 #24393(auto Arathi Highlands;380):8
+#23685 | auto Arathi Highlands;365§auto Arathihochland;365§auto Hautes-terres d'Arathi;365 | x=-998.7999877929688 y=-2890.800048828125 | size=1 | links=#27494(auto Arathi Highlands;427):6 c4480.1:5
+#23706 | auto Arathi Highlands;366§auto Arathihochland;366§auto Hautes-terres d'Arathi;366 | x=-2089.5 y=-2452.10009765625 | size=1 | links=#1066(auto Arathi Highlands;13):100 #4359(auto Arathi Highlands;71):38
+#23782 | auto Arathi Highlands;367§auto Arathihochland;367§auto Hautes-terres d'Arathi;367 | x=-886.7000122070312 y=-3512.60009765625 | size=1 | links=#609(auto Arathi Highlands;7):15 #19494(door/gate;two;Hammerfall;Arathi Highlands):22
+#23799 | auto Arathi Highlands;368§auto Arathihochland;368§auto Hautes-terres d'Arathi;368 | x=-1453.099975585938 y=-2719.199951171875 | size=1 | links=#3081(auto Arathi Highlands;52):122 #24610(auto Arathi Highlands;387):72
+#23945 | auto Arathi Highlands;369§auto Arathihochland;369§auto Hautes-terres d'Arathi;369 | x=-1598.200073242188 y=-1922.200073242188 | size=1 | links=#2091(auto Arathi Highlands;31):8 #15606(auto Arathi Highlands;233):9 c4075.4:4
+#23985 | auto Arathi Highlands;370§auto Arathihochland;370§auto Hautes-terres d'Arathi;370 | x=-829.2000122070312 y=-3923.199951171875 | size=1 | links=#9549(auto Arathi Highlands;153):9 #9630(auto Arathi Highlands;155):21
+#24008 | auto Arathi Highlands;371§auto Arathihochland;371§auto Hautes-terres d'Arathi;371 | x=-1672.099975585938 y=-1877.900024414063 | size=1 | links=#2507(auto Arathi Highlands;38):10 #27565(auto Arathi Highlands;428):36 #27717(auto Arathi Highlands;431):17 c2588.13:20
+#24041 | auto Arathi Highlands;372§auto Arathihochland;372§auto Hautes-terres d'Arathi;372 | x=-1994.099975585938 y=-2804.400146484375 | size=1 | links=#16915(entry and exit;cave;Boulderfist Hall;Arathi Highlands):7 #18741(auto Arathi Highlands;292):6
+#24078 | auto Arathi Highlands;373§auto Arathihochland;373§auto Hautes-terres d'Arathi;373 | x=-1194.800048828125 y=-2080.400146484375 | size=1 | links=#1600(auto Arathi Highlands;23):9 #2960(auto Arathi Highlands;49):8
+#24087 | auto Arathi Highlands;374§auto Arathihochland;374§auto Hautes-terres d'Arathi;374 | x=-2117.300048828125 y=-1961.800048828125 | size=1 | links=#6994(auto Arathi Highlands;112):19 #20627(auto Arathi Highlands;311):21 c2766.1:48
+#24134 | auto Arathi Highlands;375§auto Arathihochland;375§auto Hautes-terres d'Arathi;375 | x=-1785.5 y=-1778.300048828125 | size=1 | links=#5487(auto Arathi Highlands;90):13 #17099(auto Arathi Highlands;259):27
+#24190 | auto Arathi Highlands;376§auto Arathihochland;376§auto Hautes-terres d'Arathi;376 | x=-1433.099975585938 y=-2265.300048828125 | size=1 | links=#10952(auto Arathi Highlands;171):27 #16459(auto Arathi Highlands;246):39
+#24245 | entry and exit;cave;Witherbark Village;Arathi Highlands§ein- und ausgang;höhle;Lager der Bleichborken;Arathihochland§entrée et sortie;cave;Witherbark Village;Hautes-terres d'Arathi | x=-1941.599975585938 y=-3326.60009765625 | size=1 | links=#12266(auto Arathi Highlands;187):16 #20649(auto Arathi Highlands;312):29
+#24278 | auto Arathi Highlands;377§auto Arathihochland;377§auto Hautes-terres d'Arathi;377 | x=-1328.400024414063 y=-2017.599975585938 | size=1 | links=#4546(auto Arathi Highlands;75):61 #26616(auto Arathi Highlands;419):66 c2562.11:57 c2562.17:34
+#24288 | auto Arathi Highlands;378§auto Arathihochland;378§auto Hautes-terres d'Arathi;378 | x=-1624.300048828125 y=-1781.700073242188 | size=1 | links=c2598.6:6 c2590.12:12 c24477.17:8
+#24290 | auto Arathi Highlands;379§auto Arathihochland;379§auto Hautes-terres d'Arathi;379 | x=-926.5 y=-3513.800048828125 | size=1 | links=#8948(auto Arathi Highlands;144):5 #11024(auto Arathi Highlands;173):4 #23050(auto Arathi Highlands;351):5
+#24393 | auto Arathi Highlands;380§auto Arathihochland;380§auto Hautes-terres d'Arathi;380 | x=-1786 y=-1496 | size=1 | links=#17908(auto Arathi Highlands;275):8 #23653(auto Arathi Highlands;364):8
+#24410 | auto Arathi Highlands;381§auto Arathihochland;381§auto Hautes-terres d'Arathi;381 | x=-1107.599975585938 y=-3556.800048828125 | size=1 | links=#1416(auto Arathi Highlands;18):33 #12683(auto Arathi Highlands;193):45 #15235(auto Arathi Highlands;226):38
+#24437 | auto Arathi Highlands;382§auto Arathihochland;382§auto Hautes-terres d'Arathi;382 | x=-2084.699951171875 y=-3303.800048828125 | size=1 | links=#9907(auto Arathi Highlands;161):20 c2557.6:7
+#24490 | auto Arathi Highlands;383§auto Arathihochland;383§auto Hautes-terres d'Arathi;383 | x=-977.7999877929688 y=-3239.900146484375 | size=5 | links=#13384(auto Arathi Highlands;199):81 #16671(auto Arathi Highlands;248):70
+#24515 | auto Arathi Highlands;384§auto Arathihochland;384§auto Hautes-terres d'Arathi;384 | x=-1250.5 y=-3232.900146484375 | size=1 | links=#7678(auto Arathi Highlands;118):75 #10472(auto Arathi Highlands;165):61
+#24597 | auto Arathi Highlands;385§auto Arathihochland;385§auto Hautes-terres d'Arathi;385 | x=-1562.900024414063 y=-2608.400146484375 | size=1 | links=#3081(auto Arathi Highlands;52):92 #17438(auto Arathi Highlands;268):54 c2563.4:27 c2563.12:50
+#24599 | auto Arathi Highlands;386§auto Arathihochland;386§auto Hautes-terres d'Arathi;386 | x=-1528.599975585938 y=-1836.200073242188 | size=1 | links=#1439(auto Arathi Highlands;19):10 #14255(auto Arathi Highlands;213):19 c2805.1:16
+#24610 | auto Arathi Highlands;387§auto Arathihochland;387§auto Hautes-terres d'Arathi;387 | x=-1413 y=-2779.5 | size=1 | links=#4475(auto Arathi Highlands;74):42 #23799(auto Arathi Highlands;368):72
+#24625 | auto Arathi Highlands;388§auto Arathihochland;388§auto Hautes-terres d'Arathi;388 | x=-2257.10009765625 y=-2501.800048828125 | size=1 | links=#7806(passage;from;Thandol Span;Arathi Highlands;to;Thandol Span;Wetlands):101 #17432(auto Arathi Highlands;266):52 #20687(bridge;Thandol Span;Arathi Highlands):17
+#24721 | auto Arathi Highlands;389§auto Arathihochland;389§auto Hautes-terres d'Arathi;389 | x=-1598.099975585938 y=-1856.400024414063 | size=1 | links=#390(auto Arathi Highlands;3):13 #17310(auto Arathi Highlands;262):29 c2590.2:17 c24477.5:6
+#24740 | auto Arathi Highlands;390§auto Arathihochland;390§auto Hautes-terres d'Arathi;390 | x=-1300.599975585938 y=-1808.900024414063 | size=1 | links=#2878(crossing;two;Arathi Highlands):43 #6123(auto Arathi Highlands;102):58
+#24796 | auto Arathi Highlands;391§auto Arathihochland;391§auto Hautes-terres d'Arathi;391 | x=-2299.900146484375 y=-2046.599975585938 | size=5 | links=#2823(auto Arathi Highlands;47):65 #17040(auto Arathi Highlands;258):56
+#24836 | auto Arathi Highlands;392§auto Arathihochland;392§auto Hautes-terres d'Arathi;392 | x=-1165.200073242188 y=-3313 | size=1 | links=#498(auto Arathi Highlands;4):65 #10472(auto Arathi Highlands;165):55 #25143(auto Arathi Highlands;397):27
+#24839 | auto Arathi Highlands;393§auto Arathihochland;393§auto Hautes-terres d'Arathi;393 | x=-1768.300048828125 y=-1499.200073242188 | size=1 | links=#996(auto Arathi Highlands;12):8 #22645(auto Arathi Highlands;347):15
+#24844 | auto Arathi Highlands;394§auto Arathihochland;394§auto Hautes-terres d'Arathi;394 | x=-808.6000366210938 y=-2053.699951171875 | size=1 | links=#11234(central location;Northfold Manor;Arathi Highlands):22 #18504(auto Arathi Highlands;287):18
+#25036 | auto Arathi Highlands;395§auto Arathihochland;395§auto Hautes-terres d'Arathi;395 | x=-1574.800048828125 y=-3377.699951171875 | size=1 | links=#27660(auto Arathi Highlands;430):31 c2606.9:30 c2555.16:37 c2554.26:45
+#25042 | auto Arathi Highlands;396§auto Arathihochland;396§auto Hautes-terres d'Arathi;396 | x=-871.5 y=-1747.700073242188 | size=1 | links=#8479(auto Arathi Highlands;134):53 o2689.1:38 c2760.2:32 c2760.11:30
+#25143 | auto Arathi Highlands;397§auto Arathihochland;397§auto Hautes-terres d'Arathi;397 | x=-1166 y=-3340 | size=1 | links=#15412(auto Arathi Highlands;229):71 #24836(auto Arathi Highlands;392):27
+#25174 | auto Arathi Highlands;398§auto Arathihochland;398§auto Hautes-terres d'Arathi;398 | x=-1175.700073242188 y=-2051.900146484375 | size=1 | links=#21871(auto Arathi Highlands;331):8 #28264(auto Arathi Highlands;435):5
+#25176 | auto Arathi Highlands;399§auto Arathihochland;399§auto Hautes-terres d'Arathi;399 | x=-1926.599975585938 y=-1635.5 | size=1 | links=#5862(auto Arathi Highlands;96):20 #12488(auto Arathi Highlands;190):20
+#25178 | auto Arathi Highlands;400§auto Arathihochland;400§auto Hautes-terres d'Arathi;400 | x=-1056.200073242188 y=-1907.599975585938 | size=5 | links=#4241(focus point;two;Arathi Highlands):75 #16914(auto Arathi Highlands;254):75
+#25209 | auto Arathi Highlands;401§auto Arathihochland;401§auto Hautes-terres d'Arathi;401 | x=-1783.700073242188 y=-1514.5 | size=1 | links=#1531(auto Arathi Highlands;21):5 #5945(auto Arathi Highlands;97):3
+#25236 | auto Arathi Highlands;402§auto Arathihochland;402§auto Hautes-terres d'Arathi;402 | x=-2002.5 y=-2833.699951171875 | size=1 | links=c2567.8:14 c2566.19:10
+#25311 | auto Arathi Highlands;403§auto Arathihochland;403§auto Hautes-terres d'Arathi;403 | x=-1582.200073242188 y=-1689.099975585938 | size=1 | links=#10977(auto Arathi Highlands;172):63 #14186(entry and exit;camp;the;Alliance;Stromgarde Keep;Arathi Highlands):39 c2583.1:4 c2584.1:33 c2583.8:46
+#25315 | auto Arathi Highlands;404§auto Arathihochland;404§auto Hautes-terres d'Arathi;404 | x=-1854.5 y=-3334.5 | size=1 | links=#13568(auto Arathi Highlands;203):23 #21695(auto Arathi Highlands;326):19 c2556.16:18
+#25342 | auto Arathi Highlands;405§auto Arathihochland;405§auto Hautes-terres d'Arathi;405 | x=-855 y=-2129.800048828125 | size=1 | links=#14724(auto Arathi Highlands;221):43 c2586.3:41 c2586.6:14
+#25350 | auto Arathi Highlands;406§auto Arathihochland;406§auto Hautes-terres d'Arathi;406 | x=-2305.900146484375 y=-1948.700073242188 | size=5 | links=#16315(auto Arathi Highlands;243):31 #17040(auto Arathi Highlands;258):42
+#25382 | auto Arathi Highlands;407§auto Arathihochland;407§auto Hautes-terres d'Arathi;407 | x=-2098.199951171875 y=-3249.699951171875 | size=1 | links=#19631(auto Arathi Highlands;299):14 c2556.22:5 c2556.24:9
+#25423 | auto Arathi Highlands;408§auto Arathihochland;408§auto Hautes-terres d'Arathi;408 | x=-1211.700073242188 y=-2079.699951171875 | size=1 | links=#14624(auto Arathi Highlands;217):5 c2564.9:12
+#25488 | auto Arathi Highlands;409§auto Arathihochland;409§auto Hautes-terres d'Arathi;409 | x=-2053.300048828125 y=-1660.900024414063 | size=1 | links=#8121(auto Arathi Highlands;127):33 #16097(auto Arathi Highlands;240):15
+#25514 | central location;Hammerfall;Arathi Highlands§zentralpunkt;Hammerfall;Arathihochland§emplacement central;Trépas-d'Orgrim;Hautes-terres d'Arathi | x=-975.4000244140625 y=-3501.400146484375 | size=1 | links=#1541(auto Arathi Highlands;22):17 #18430(auto Arathi Highlands;284):19 #19243(auto Arathi Highlands;294):15
+#25622 | entry and exit;north;Refuge Pointe;Arathi Highlands§ein- und ausgang;nördlich;Die Zuflucht;Arathihochland§entrée et sortie;north;Refuge Pointe;Hautes-terres d'Arathi | x=-1187.850462687619 y=-2634.107911735107 | size=1 | links=#2951(auto Arathi Highlands;48):48 #8871(auto Arathi Highlands;142):83 #11425(auto Arathi Highlands;178):39
+#25802 | auto Arathi Highlands;410§auto Arathihochland;410§auto Hautes-terres d'Arathi;410 | x=-1991.099975585938 y=-3296.900146484375 | size=1 | links=#2312(auto Arathi Highlands;34):18 #21276(auto Arathi Highlands;323):18
+#25855 | auto Arathi Highlands;411§auto Arathihochland;411§auto Hautes-terres d'Arathi;411 | x=-996.1000366210938 y=-3837.800048828125 | size=1 | links=#7226(auto Arathi Highlands;115):6 #23462(entry and exit;cave;Drywhisker Gorge;Arathi Highlands):6
+#25857 | auto Arathi Highlands;412§auto Arathihochland;412§auto Hautes-terres d'Arathi;412 | x=-2114.400146484375 y=-3281.400146484375 | size=1 | links=#4991(auto Arathi Highlands;82):17 #9907(auto Arathi Highlands;161):18
+#25863 | auto Arathi Highlands;413§auto Arathihochland;413§auto Hautes-terres d'Arathi;413 | x=-856.4000244140625 y=-3986.10009765625 | size=1 | links=#3087(auto Arathi Highlands;53):17 #15110(auto Arathi Highlands;225):20
+#25910 | entry and exit;building;Stromgarde Keep;Arathi Highlands§ein- und ausgang;gebäude;Burg Stromgarde;Arathihochland§entrée et sortie;building;Stromgarde Keep;Hautes-terres d'Arathi | x=-1670.300048828125 y=-1804 | size=1 | links=#22464(auto Arathi Highlands;344):13 c2590.3:6
+#26055 | auto Arathi Highlands;414§auto Arathihochland;414§auto Hautes-terres d'Arathi;414 | x=-892.9000244140625 y=-3874.199951171875 | size=1 | links=#20866(auto Arathi Highlands;316):32 c2609.3:6 c2574.14:10
+#26079 | auto Arathi Highlands;415§auto Arathihochland;415§auto Hautes-terres d'Arathi;415 | x=-1614.599975585938 y=-2993.400146484375 | size=1 | links=#4661(auto Arathi Highlands;77):48 #13254(auto Arathi Highlands;195):29
+#26123 | auto Arathi Highlands;416§auto Arathihochland;416§auto Hautes-terres d'Arathi;416 | x=-1567.300048828125 y=-1819.5 | size=1 | links=#6511(central location;Stromgarde Keep;Arathi Highlands):15 #17104(auto Arathi Highlands;260):23
+#26515 | auto Arathi Highlands;417§auto Arathihochland;417§auto Hautes-terres d'Arathi;417 | x=-2111.699951171875 y=-1811.400024414063 | size=5 | links=#2163(passage;ocean;Faldir's Cove;Arathi Highlands):81 #11739(auto Arathi Highlands;183):69
+#26576 | auto Arathi Highlands;418§auto Arathihochland;418§auto Hautes-terres d'Arathi;418 | x=-1622.200073242188 y=-1910.599975585938 | size=1 | links=#8054(auto Arathi Highlands;124):30 #20221(auto Arathi Highlands;305):10
+#26616 | auto Arathi Highlands;419§auto Arathihochland;419§auto Hautes-terres d'Arathi;419 | x=-1299.300048828125 y=-2077.800048828125 | size=1 | links=#13697(auto Arathi Highlands;207):22 #24278(auto Arathi Highlands;377):66
+#26698 | auto Arathi Highlands;420§auto Arathihochland;420§auto Hautes-terres d'Arathi;420 | x=-1884.5 y=-3316.400146484375 | size=1 | links=#5766(auto Arathi Highlands;95):21 #21695(auto Arathi Highlands;326):22
+#26795 | passage;from;Arathi Highlands;to;Thoradin's Wall§passage;von;Arathihochland;nach;Thoradinswall§passage;de;Hautes-terres d'Arathi;vers;Mur de Thoradin | x=-834.6000366210938 y=-1582.900024414063 | size=1 | links=#21852(sku):26 #25057(passage;from;Thoradin's Wall;Hillsbrad Foothills;to;Thoradin's Wall;Arathi Highlands):6
+#26804 | auto Arathi Highlands;421§auto Arathihochland;421§auto Hautes-terres d'Arathi;421 | x=-2091.900146484375 y=-2040.900024414063 | size=1 | links=#22710(auto Arathi Highlands;348):14 c2610.1:13 c2767.1:7
+#26828 | auto Arathi Highlands;422§auto Arathihochland;422§auto Hautes-terres d'Arathi;422 | x=-1629.099975585938 y=-2482.699951171875 | size=1 | links=#4900(auto Arathi Highlands;80):92 #18604(auto Arathi Highlands;290):79
+#26951 | auto Arathi Highlands;423§auto Arathihochland;423§auto Hautes-terres d'Arathi;423 | x=-1468.300048828125 y=-1986.200073242188 | size=1 | links=#4714(auto Arathi Highlands;79):48 #14953(auto Arathi Highlands;224):24 c2560.30:11
+#27126 | auto Arathi Highlands;424§auto Arathihochland;424§auto Hautes-terres d'Arathi;424 | x=-1734.5 y=-1650.700073242188 | size=1 | links=#8643(auto Arathi Highlands;137):13 c2569.3:6 c2569.4:44 c2570.5:9
+#27131 | entry and exit;The Sanctum;Arathi Highlands§ein- und ausgang;Das Sanktum;Arathihochland§entrée et sortie;The Sanctum;Hautes-terres d'Arathi | x=-1528.599975585938 y=-1863.800048828125 | size=1 | links=#14255(auto Arathi Highlands;213):8 c2607.1:23
+#27136 | auto Arathi Highlands;425§auto Arathihochland;425§auto Hautes-terres d'Arathi;425 | x=-1764.099975585938 y=-1609.599975585938 | size=1 | links=#20504(auto Arathi Highlands;310):26 #21565(auto Arathi Highlands;324):18 c2571.4:7
+#27237 | auto Arathi Highlands;426§auto Arathihochland;426§auto Hautes-terres d'Arathi;426 | x=-734.6000366210938 y=-1936.800048828125 | size=1 | links=c2586.16:26 c2586.22:45
+#27494 | auto Arathi Highlands;427§auto Arathihochland;427§auto Hautes-terres d'Arathi;427 | x=-1002.100036621094 y=-2885.5 | size=1 | links=#6191(auto Arathi Highlands;104):13 #23685(auto Arathi Highlands;365):6 c2582.4:5
+#27565 | auto Arathi Highlands;428§auto Arathihochland;428§auto Hautes-terres d'Arathi;428 | x=-1707.300048828125 y=-1887.599975585938 | size=1 | links=#24008(auto Arathi Highlands;371):36 c2588.8:9
+#27639 | auto Arathi Highlands;429§auto Arathihochland;429§auto Hautes-terres d'Arathi;429 | x=-1767 y=-1520.800048828125 | size=1 | links=#18101(auto Arathi Highlands;278):10 #20767(auto Arathi Highlands;315):6
+#27660 | auto Arathi Highlands;430§auto Arathihochland;430§auto Hautes-terres d'Arathi;430 | x=-1580.800048828125 y=-3346.60009765625 | size=1 | links=#25036(auto Arathi Highlands;395):31 c2554.20:26
+#27717 | auto Arathi Highlands;431§auto Arathihochland;431§auto Hautes-terres d'Arathi;431 | x=-1658.099975585938 y=-1866.599975585938 | size=1 | links=#16442(auto Arathi Highlands;245):21 #24008(auto Arathi Highlands;371):17 c24477.13:10
+#27789 | auto Arathi Highlands;432§auto Arathihochland;432§auto Hautes-terres d'Arathi;432 | x=-2046.900024414063 y=-3254.699951171875 | size=1 | links=#14209(auto Arathi Highlands;212):12 #20735(auto Arathi Highlands;314):8
+#27917 | auto Arathi Highlands;433§auto Arathihochland;433§auto Hautes-terres d'Arathi;433 | x=-941.4000244140625 y=-3513 | size=1 | links=#8595(auto Arathi Highlands;136):4 #15579(auto Arathi Highlands;231):4
+#27964 | auto Arathi Highlands;434§auto Arathihochland;434§auto Hautes-terres d'Arathi;434 | x=-1800.300048828125 y=-2409.10009765625 | size=1 | links=#2552(auto Arathi Highlands;39):47 #6136(auto Arathi Highlands;103):23
+#28264 | auto Arathi Highlands;435§auto Arathihochland;435§auto Hautes-terres d'Arathi;435 | x=-1180.700073242188 y=-2049.5 | size=1 | links=#25174(auto Arathi Highlands;398):5 c2603.2:10
+#28303 | auto Arathi Highlands;436§auto Arathihochland;436§auto Hautes-terres d'Arathi;436 | x=-985.5 y=-3543.699951171875 | size=1 | links=#7139(auto Arathi Highlands;114):24 #20032(auto Arathi Highlands;304):5 c2787.1:7
+#28322 | passage;from;Thoradin's Wall;Arathi Highlands;to;Thoradin's Wall;Hillsbrad Foothills§passage;von;Thoradinswall;Arathihochland;nach;Thoradinswall;Vorgebirge von Hillsbrad§passage;de;Mur de Thoradin;Hautes-terres d'Arathi;vers;Mur de Thoradin;Contreforts de Hautebrande | x=-834.6000366210938 y=-1582.900024414063 | size=1 | links=#21852(sku):26
+#48711 | auto Refuge Pointe;Arathi Highlands;437§auto Die Zuflucht;Arathihochland;437§auto Refuge Pointe;Hautes-terres d'Arathi;437 | x=-1226.400024414063 y=-2527.699951171875 | size=1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):27 c14984.1:11
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c1471.1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):25 c2700.1:6 o2713.1:2
+c2554.1 | links=#11047(auto Arathi Highlands;174):26
+c2556.1 | links=#6089(auto Arathi Highlands;100):49 #11047(auto Arathi Highlands;174):11
+c2557.1 | links=#20735(auto Arathi Highlands;314):19 c2557.2:18
+c2558.1 | links=#13657(auto Arathi Highlands;206):8
+c2560.1 | links=#14953(auto Arathi Highlands;224):31
+c2562.1 | links=#10793(auto Arathi Highlands;168):79 c2562.15:61
+c2569.1 | links=#3477(auto Arathi Highlands;57):49 #6039(auto Arathi Highlands;99):45
+c2571.1 | links=#2040(auto Arathi Highlands;30):10 c2570.4:27
+c2572.1 | links=c2620.3:50
+c2573.1 | links=#21140(auto Arathi Highlands;320):4
+c2574.1 | links=#4667(auto Arathi Highlands;78):10 #15791(auto Arathi Highlands;237):15
+c2575.1 | links=#4963(bridge;two;Arathi Highlands):15
+c2578.1 | links=c2559.29:40 c2559.46:69
+c2581.1 | links=c2581.7:6 c2582.11:20
+c2583.1 | links=#25311(auto Arathi Highlands;403):4
+c2584.1 | links=#25311(auto Arathi Highlands;403):33
+c2585.1 | links=#14255(auto Arathi Highlands;213):16 c2584.10:10
+c2586.1 | links=c2586.14:15
+c2587.1 | links=#11234(central location;Northfold Manor;Arathi Highlands):39 c2586.13:44
+c2589.1 | links=c2589.2:20 c2600.5:6
+c2590.1 | links=#17104(auto Arathi Highlands;260):16
+c2592.1 | links=o2702.1:13 c2592.8:31
+c2595.1 | links=o2712.9:14 c2595.37:4
+c2596.1 | links=o2712.4:42
+c2597.1 | links=#2487(central location;building;Stromgarde Keep;top;Arathi Highlands):31 c2599.1:7
+c2598.1 | links=#17104(auto Arathi Highlands;260):21
+c2599.1 | links=c2597.1:7
+c2605.1 | links=c2606.1:8
+c2606.1 | links=c2605.1:8 c2555.11:7
+c2607.1 | links=#27131(entry and exit;The Sanctum;Arathi Highlands):23 c2585.5:6 c2585.8:11
+c2608.1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):4
+c2609.1 | links=#20866(auto Arathi Highlands;316):18
+c2610.1 | links=#26804(auto Arathi Highlands;421):13
+c2612.1 | links=c2738.1:4
+c2618.1 | links=#9703(auto Arathi Highlands;157):72 c2619.1:22
+c2619.1 | links=c2618.1:22 c2619.15:1
+c2700.1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):23 c1471.1:6
+c2703.1 | links=c2818.1:10
+c2706.1 | links=#21938(auto Arathi Highlands;332):13
+c2712.1 | links=#9487(auto Arathi Highlands;152):36 c2713.1:2
+c2713.1 | links=c2712.1:2
+c2714.1 | links=#3081(auto Arathi Highlands;52):66 #15616(auto Arathi Highlands;234):18
+c2733.1 | links=#2477(auto Arathi Highlands;36):6
+c2738.1 | links=#16858(auto Arathi Highlands;253):35 c2612.1:4 c2738.2:4
+c2761.1 | links=c2761.14:24
+c2762.1 | links=c2762.8:45
+c2764.1 | links=
+c2765.1 | links=c4063.1:2
+c2766.1 | links=#22710(auto Arathi Highlands;348):35 #23630(auto Arathi Highlands;363):16 #24087(auto Arathi Highlands;374):48
+c2767.1 | links=#26804(auto Arathi Highlands;421):7
+c2768.1 | links=c2769.1:7 c2774.1:2
+c2769.1 | links=#5617(auto Arathi Highlands;93):14 #6835(auto Arathi Highlands;111):34 c2768.1:7
+c2771.1 | links=c4954.1:2
+c2772.1 | links=c9976.1:4
+c2773.1 | links=c2773.2:4 c2773.5:7
+c2774.1 | links=c2768.1:2
+c2778.1 | links=#8778(auto Arathi Highlands;139):19
+c2780.1 | links=c2782.1:9
+c2781.1 | links=c2782.1:13
+c2782.1 | links=#21265(auto Arathi Highlands;322):15 c2780.1:9 c2781.1:13 o2703.1:4
+c2783.1 | links=#7137(auto Arathi Highlands;113):7
+c2787.1 | links=#28303(auto Arathi Highlands;436):7
+c2788.1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):26
+c2789.1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):21
+c2792.1 | links=#4404(auto Arathi Highlands;72):8 c9555.1:14
+c2793.1 | links=#17434(auto Arathi Highlands;267):18 c2604.3:9
+c2805.1 | links=#24599(auto Arathi Highlands;386):16
+c2808.1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):25
+c2810.1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):22
+c2812.1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):12
+c2814.1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):30
+c2816.1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):36 c2835.1:29
+c2818.1 | links=#8427(auto Arathi Highlands;132):16 c2703.1:10 c4954.1:4
+c2819.1 | links=#16441(auto Arathi Highlands;244):7
+c2820.1 | links=c2821.1:8
+c2821.1 | links=#6773(auto Arathi Highlands;110):12 c2820.1:8
+c2835.1 | links=#14368(central location;Refuge Pointe;Arathi Highlands):17 c2816.1:29
+c2851.1 | links=#22203(auto Arathi Highlands;338):9
+c4062.1 | links=#4963(bridge;two;Arathi Highlands):18
+c4063.1 | links=c2765.1:2
+c4479.1 | links=c2582.5:16
+c4480.1 | links=#23685(auto Arathi Highlands;365):5
+c4481.1 | links=c2582.2:12 c2582.7:6
+c4954.1 | links=c2771.1:2 c2818.1:4
+c6574.1 | links=c12920.1:27
+c7869.1 | links=#22198(auto Arathi Highlands;337):65
+c9501.1 | links=#6773(auto Arathi Highlands;110):11 o180523.1:5
+c9555.1 | links=c2792.1:14
+c9976.1 | links=#8427(auto Arathi Highlands;132):5 c2772.1:4
+c12920.1 | links=#9906(auto Arathi Highlands;160):4 c6574.1:27
+c14984.1 | links=#48711(auto Refuge Pointe;Arathi Highlands;437):11
+c15021.1 | links=c15126.1:4
+c15022.1 | links=#383(auto Arathi Highlands;2):8 #19494(door/gate;two;Hammerfall;Arathi Highlands):16 c15125.1:29 c15126.1:3
+c15125.1 | links=c15022.1:29
+c15126.1 | links=c15021.1:4 c15022.1:3
+c19905.1 | links=#383(auto Arathi Highlands;2):21 c15128.2:5 c15128.3:5
+o2653.1 | links=c2574.11:8
+o2656.1 | links=#5408(auto Arathi Highlands;88):21
+o2688.1 | links=o2702.1:17 c2592.9:22
+o2689.1 | links=#25042(auto Arathi Highlands;396):38
+o2690.1 | links=#11384(auto Arathi Highlands;177):30
+o2691.1 | links=#13384(auto Arathi Highlands;199):62 c2761.3:6 c2761.4:11 c2761.5:13
+o2701.1 | links=#2568(auto Arathi Highlands;40):6
+o2702.1 | links=#22250(auto Arathi Highlands;339):50 c2592.1:13 o2688.1:17 c2592.3:20
+o2703.1 | links=c2782.1:4
+o2704.1 | links=#4963(bridge;two;Arathi Highlands):18
+o2712.1 | links=o2712.3:209
+o2713.1 | links=c1471.1:2
+o2715.1 | links=#2040(auto Arathi Highlands;30):9
+o2716.1 | links=#18568(auto Arathi Highlands;289):7
+o2717.1 | links=#20283(auto Arathi Highlands;307):3
+o2718.1 | links=#996(auto Arathi Highlands;12):10 #1615(auto Arathi Highlands;25):11
+o113531.1 | links=#8778(auto Arathi Highlands;139):6 #21185(auto Arathi Highlands;321):13
+o138492.1 | links=#6102(auto Arathi Highlands;101):91
+o180523.1 | links=c9501.1:5
+c2555.2 | links=c2605.2:5
+c2556.2 | links=#12125(auto Arathi Highlands;186):36 #21782(auto Arathi Highlands;329):20
+c2557.2 | links=#2312(auto Arathi Highlands;34):17 c2557.1:18
+c2558.2 | links=#11802(auto Arathi Highlands;184):45 #13657(auto Arathi Highlands;206):25
+c2559.2 | links=#3013(auto Arathi Highlands;50):53 c2760.3:71 c2578.7:59
+c2560.2 | links=#4714(auto Arathi Highlands;79):13
+c2562.2 | links=#10793(auto Arathi Highlands;168):38 c2552.3:46
+c2564.2 | links=#8323(auto Arathi Highlands;129):12
+c2572.2 | links=c2572.4:37
+c2574.2 | links=#11958(auto Arathi Highlands;185):19 #12654(auto Arathi Highlands;192):11 o2653.19:5
+c2577.2 | links=#4963(bridge;two;Arathi Highlands):21
+c2582.2 | links=#674(auto Arathi Highlands;8):13 c4481.1:12
+c2585.2 | links=c2583.4:17
+c2586.2 | links=#14724(auto Arathi Highlands;221):31
+c2587.2 | links=#18504(auto Arathi Highlands;287):10
+c2588.2 | links=#2091(auto Arathi Highlands;31):4
+c2589.2 | links=#11234(central location;Northfold Manor;Arathi Highlands):39 c2589.1:20
+c2590.2 | links=#24721(auto Arathi Highlands;389):17
+c2591.2 | links=#17310(auto Arathi Highlands;262):11 c2598.2:6
+c2592.2 | links=c2592.6:30 c2592.10:38
+c2595.2 | links=o2712.4:8
+c2598.2 | links=c2591.2:6
+c2601.2 | links=#21678(auto Arathi Highlands;325):26
+c2603.2 | links=#28264(auto Arathi Highlands;435):10
+c2604.2 | links=#6447(auto Arathi Highlands;107):13
+c2605.2 | links=c2555.2:5 c2606.3:9 c2554.5:29
+c2609.2 | links=o2653.3:8 c2573.6:9
+c2618.2 | links=#2573(auto Arathi Highlands;41):12 #9703(auto Arathi Highlands;157):12
+c2619.2 | links=#18151(auto Arathi Highlands;279):10
+c2620.2 | links=c2560.38:40 c2563.74:25
+c2738.2 | links=c2738.1:4
+c2760.2 | links=#25042(auto Arathi Highlands;396):32 c2760.3:25 c2760.8:57
+c2761.2 | links=c2761.3:55 c2761.11:25 c2761.13:31
+c2762.2 | links=c2762.6:36 c2762.7:38
+c2773.2 | links=c2773.1:4 c2570.12:4
+c2779.2 | links=o2712.4:60
+c15128.2 | links=c19905.1:5
+o3706.2 | links=c2562.14:9
+c2552.3 | links=c2562.2:46 c2553.3:110
+c2553.3 | links=c2552.3:110
+c2559.3 | links=#5715(auto Arathi Highlands;94):82 c2578.7:42 c2563.45:58
+c2564.3 | links=#8323(auto Arathi Highlands;129):7 #17668(auto Arathi Highlands;271):11
+c2567.3 | links=#9695(auto Arathi Highlands;156):16 #20948(auto Arathi Highlands;317):18
+c2569.3 | links=#27126(auto Arathi Highlands;424):6
+c2572.3 | links=c2620.3:11
+c2573.3 | links=#3211(auto Arathi Highlands;55):12 #8351(auto Arathi Highlands;130):16 o2653.15:7
+c2574.3 | links=#2679(auto Arathi Highlands;43):9 c2609.6:10
+c2578.3 | links=c2559.26:34 c2559.34:38 c2559.36:18 c2563.80:20
+c2579.3 | links=c2560.11:21 c2560.20:56
+c2586.3 | links=#25342(auto Arathi Highlands;405):41 c2586.4:40
+c2587.3 | links=#11234(central location;Northfold Manor;Arathi Highlands):32 c2589.5:20 c2589.11:20
+c2588.3 | links=#13308(auto Arathi Highlands;196):8 c2598.10:8
+c2589.3 | links=#11234(central location;Northfold Manor;Arathi Highlands):48 c2586.12:21 c2586.21:28
+c2590.3 | links=#4193(well;Stromgarde Keep;Arathi Highlands):19 #25910(entry and exit;building;Stromgarde Keep;Arathi Highlands):6
+c2592.3 | links=o2702.1:20 c2592.4:27
+c2604.3 | links=c2793.1:9
+c2605.3 | links=#2312(auto Arathi Highlands;34):11 c2555.5:6
+c2606.3 | links=c2605.2:9
+c2609.3 | links=#3040(auto Arathi Highlands;51):5 #26055(auto Arathi Highlands;414):6
+c2619.3 | links=#2573(auto Arathi Highlands;41):23 #21985(auto Arathi Highlands;333):14
+c2620.3 | links=c2572.1:50 c2572.3:11 c2572.6:37 c2572.15:17
+c2636.3 | links=#17315(auto Arathi Highlands;263):11
+c2760.3 | links=c2559.2:71 c2760.2:25 c2578.7:62
+c2761.3 | links=o2691.1:6 c2761.2:55
+c2773.3 | links=#21678(auto Arathi Highlands;325):27
+c15128.3 | links=c19905.1:5
+o2653.3 | links=c2609.2:8
+o2712.3 | links=o2712.1:209 o2712.4:101
+c2563.4 | links=#24597(auto Arathi Highlands;385):27 c2563.11:14
+c2569.4 | links=#11802(auto Arathi Highlands;184):8 #27126(auto Arathi Highlands;424):44
+c2570.4 | links=#20504(auto Arathi Highlands;310):1 c2571.1:27 c2569.5:18
+c2571.4 | links=#27136(auto Arathi Highlands;425):7
+c2572.4 | links=c2572.2:37 c2572.12:16 c2572.13:14
+c2574.4 | links=#3211(auto Arathi Highlands;55):11 #17557(auto Arathi Highlands;269):15 o2653.6:3
+c2578.4 | links=c2563.37:22 c2559.73:19
+c2580.4 | links=#2745(auto Arathi Highlands;45):14 #10939(auto Arathi Highlands;170):24
+c2581.4 | links=c2582.17:17
+c2582.4 | links=#27494(auto Arathi Highlands;427):5 c2582.11:10
+c2583.4 | links=c2585.2:17 c2584.6:14
+c2586.4 | links=#15323(auto Arathi Highlands;227):51 c2586.3:40
+c2588.4 | links=c24477.18:14
+c2589.4 | links=#11234(central location;Northfold Manor;Arathi Highlands):48
+c2592.4 | links=c2592.3:27
+c2609.4 | links=c2574.7:9 c2574.8:8
+c2761.4 | links=o2691.1:11
+c2762.4 | links=#11384(auto Arathi Highlands;177):17 c2762.5:34
+c4075.4 | links=#23945(auto Arathi Highlands;369):4
+c24477.4 | links=#15606(auto Arathi Highlands;233):15
+o2712.4 | links=#13310(auto Arathi Highlands;197):105 c2596.1:42 c2595.2:8 c2779.2:60 o2712.3:101 o2712.7:88 c2595.9:35 o2712.9:35 c2595.34:7
+c2554.5 | links=#11047(auto Arathi Highlands;174):55 c2605.2:29
+c2555.5 | links=#8999(auto Arathi Highlands;145):16 c2605.3:6 c2556.5:3
+c2556.5 | links=c2555.5:3
+c2566.5 | links=#5288(auto Arathi Highlands;87):16 c2566.6:34
+c2567.5 | links=#5082(auto Arathi Highlands;84):18 #9041(auto Arathi Highlands;146):9
+c2569.5 | links=c2570.4:18 c2571.6:24
+c2570.5 | links=#21565(auto Arathi Highlands;324):27 #27126(auto Arathi Highlands;424):9
+c2571.5 | links=#1527(auto Arathi Highlands;20):12 c2773.5:11
+c2572.5 | links=c2572.6:23 c2572.8:54
+c2573.5 | links=#23080(auto Arathi Highlands;353):6 c2574.11:12
+c2574.5 | links=#5970(auto Arathi Highlands;98):7
+c2578.5 | links=c2563.75:43 c2559.85:14 c2559.88:38 c2563.113:41
+c2581.5 | links=#3888(central location;Dabyrie's Farmstead;Arathi Highlands):15 c2582.5:35 c2582.6:49
+c2582.5 | links=c4479.1:16 c2581.5:35 c2582.6:17
+c2584.5 | links=#22551(auto Arathi Highlands;346):4
+c2585.5 | links=c2607.1:6
+c2589.5 | links=c2587.3:20
+c2592.5 | links=#22250(auto Arathi Highlands;339):23 c2592.7:26
+c2598.5 | links=#9620(auto Arathi Highlands;154):11 #17671(auto Arathi Highlands;272):27 c24477.17:14
+c2600.5 | links=c2589.1:6
+c2605.5 | links=#23065(auto Arathi Highlands;352):16 c2555.14:5 c2556.17:6
+c2609.5 | links=#2568(auto Arathi Highlands;40):6
+c2761.5 | links=o2691.1:13 c2761.6:24
+c2762.5 | links=c2762.4:34 c2762.8:44 c2563.38:61 c2559.74:43 c2559.113:52
+c2773.5 | links=c2773.1:7 c2571.5:11
+c2779.5 | links=o2712.5:55 c2595.16:42 c2595.18:46 c2595.19:12 c2595.25:16 c2595.39:40 c2595.42:13
+c24477.5 | links=#24721(auto Arathi Highlands;389):6
+o2653.5 | links=#15110(auto Arathi Highlands;225):10
+o2712.5 | links=#13310(auto Arathi Highlands;197):91 c2779.5:55 c2595.8:4 c2595.27:44 c2595.30:29
+c2557.6 | links=#24437(auto Arathi Highlands;382):7 c2605.7:11
+c2565.6 | links=#2381(auto Arathi Highlands;35):23
+c2566.6 | links=#5288(auto Arathi Highlands;87):18 c2566.5:34
+c2571.6 | links=#1368(auto Arathi Highlands;17):13 #19336(auto Arathi Highlands;296):16 c2569.5:24
+c2572.6 | links=c2620.3:37 c2572.5:23
+c2573.6 | links=#20866(auto Arathi Highlands;316):4 c2609.2:9
+c2574.6 | links=#3087(auto Arathi Highlands;53):6
+c2578.6 | links=c2563.45:27 c2559.109:25
+c2581.6 | links=c2582.18:30
+c2582.6 | links=#10278(auto Arathi Highlands;164):18 c2581.5:49 c2582.5:17
+c2584.6 | links=#22551(auto Arathi Highlands;346):8 c2583.4:14
+c2586.6 | links=#25342(auto Arathi Highlands;405):14
+c2589.6 | links=#11234(central location;Northfold Manor;Arathi Highlands):57
+c2592.6 | links=#2717(auto Arathi Highlands;44):34 c2592.2:30
+c2598.6 | links=#24288(auto Arathi Highlands;378):6
+c2606.6 | links=c2554.14:16 c2555.17:4
+c2609.6 | links=c2574.3:10
+c2620.6 | links=c2563.44:35 c2559.71:37
+c2761.6 | links=c2761.5:24 c2761.10:34 c2761.14:32
+c2762.6 | links=c2762.2:36 c2762.12:42
+c4075.6 | links=c2584.12:17
+c10696.6 | links=c2559.54:39
+c24477.6 | links=#17104(auto Arathi Highlands;260):3
+o2653.6 | links=c2574.4:3
+c2555.7 | links=#7516(auto Arathi Highlands;116):27
+c2566.7 | links=#5288(auto Arathi Highlands;87):51 #11682(auto Arathi Highlands;182):36
+c2570.7 | links=#1368(auto Arathi Highlands;17):18
+c2573.7 | links=#2568(auto Arathi Highlands;40):5 c2573.8:1
+c2574.7 | links=#4667(auto Arathi Highlands;78):13 c2609.4:9
+c2578.7 | links=c2559.2:59 c2559.3:42 c2760.3:62 c2559.78:40
+c2579.7 | links=c2560.45:10
+c2580.7 | links=#14633(auto Arathi Highlands;218):24
+c2581.7 | links=c2581.1:6
+c2582.7 | links=c4481.1:6
+c2584.7 | links=c2583.8:26
+c2592.7 | links=c2592.5:26 c2592.12:32
+c2605.7 | links=c2557.6:11 c2557.12:5 c2555.30:5 c2556.32:9
+c2606.7 | links=c2554.18:19 c2555.20:3
+c2619.7 | links=#16709(auto Arathi Highlands;249):14
+c2760.7 | links=c2760.9:31 c2760.13:32
+c2761.7 | links=#13384(auto Arathi Highlands;199):27
+c2762.7 | links=c2762.2:38 c2762.8:41
+c2773.7 | links=#21678(auto Arathi Highlands;325):26
+c4075.7 | links=c2583.8:19
+o2712.7 | links=o2712.4:88
+c2554.8 | links=c2555.12:9
+c2556.8 | links=#21276(auto Arathi Highlands;323):8
+c2557.8 | links=#14209(auto Arathi Highlands;212):9
+c2563.8 | links=c2563.44:39 c2559.53:56
+c2564.8 | links=#15587(entry and exit;cave;Boulderfist Outpost;Arathi Highlands):19 c2564.9:23
+c2567.8 | links=#18741(auto Arathi Highlands;292):9 #25236(auto Arathi Highlands;402):14
+c2569.8 | links=#21678(auto Arathi Highlands;325):16
+c2572.8 | links=#8725(auto Arathi Highlands;138):3 #9404(auto Arathi Highlands;151):18 c2572.5:54
+c2573.8 | links=c2573.7:1
+c2574.8 | links=#8351(auto Arathi Highlands;130):8 c2609.4:8
+c2580.8 | links=#18071(auto Arathi Highlands;277):11 #23607(auto Arathi Highlands;362):10
+c2581.8 | links=#3888(central location;Dabyrie's Farmstead;Arathi Highlands):8 #9067(auto Arathi Highlands;147):15
+c2582.8 | links=c2582.10:28 c2582.16:18 c2582.21:12 c2582.22:22
+c2583.8 | links=#25311(auto Arathi Highlands;403):46 c2584.7:26 c4075.7:19
+c2584.8 | links=c2583.11:7
+c2585.8 | links=c2607.1:11
+c2586.8 | links=#14724(auto Arathi Highlands;221):9
+c2588.8 | links=#27565(auto Arathi Highlands;428):9 c2598.11:3
+c2592.8 | links=c2592.1:31 c2592.9:31 c2592.10:34
+c2595.8 | links=o2712.5:4
+c2606.8 | links=c2554.31:24 c2554.32:20
+c2760.8 | links=c2760.2:57 c2760.9:38
+c2761.8 | links=#13384(auto Arathi Highlands;199):47 c2761.13:23
+c2762.8 | links=c2762.1:45 c2762.5:44 c2762.7:41
+c24477.8 | links=#4193(well;Stromgarde Keep;Arathi Highlands):9
+c2564.9 | links=#17668(auto Arathi Highlands;271):24 #25423(auto Arathi Highlands;408):12 c2564.8:23
+c2567.9 | links=#17434(auto Arathi Highlands;267):4
+c2570.9 | links=#21678(auto Arathi Highlands;325):21
+c2572.9 | links=#23293(auto Arathi Highlands;357):10
+c2582.9 | links=c2582.16:15
+c2584.9 | links=#14186(entry and exit;camp;the;Alliance;Stromgarde Keep;Arathi Highlands):9
+c2585.9 | links=#3832(auto Arathi Highlands;64):12 c2584.10:35
+c2586.9 | links=#6698(auto Arathi Highlands;109):45 #15323(auto Arathi Highlands;227):30
+c2592.9 | links=o2688.1:22 c2592.8:31 c2592.11:39
+c2595.9 | links=o2712.4:35
+c2606.9 | links=#25036(auto Arathi Highlands;395):30
+c2620.9 | links=c2563.23:41 c2559.38:34 c2559.105:39
+c2760.9 | links=c2760.7:31 c2760.8:38
+o2712.9 | links=c2595.1:14 o2712.4:35
+c2554.10 | links=c2555.11:4
+c2556.10 | links=#8170(auto Arathi Highlands;128):16 #13603(auto Arathi Highlands;204):18
+c2564.10 | links=#2960(auto Arathi Highlands;49):8 #21871(auto Arathi Highlands;331):9
+c2572.10 | links=#868(auto Arathi Highlands;10):11
+c2582.10 | links=c2582.8:28 c2559.46:93
+c2584.10 | links=c2585.1:10 c2585.9:35
+c2588.10 | links=c24477.17:10
+c2592.10 | links=c2592.2:38 c2592.8:34 c2592.15:30
+c2598.10 | links=c2588.3:8
+c2760.10 | links=c2760.11:27 c2760.14:30
+c2761.10 | links=#13384(auto Arathi Highlands;199):40 c2761.6:34
+c2555.11 | links=#2748(auto Arathi Highlands;46):21 c2606.1:7 c2554.10:4 c2555.12:20
+c2556.11 | links=#7516(auto Arathi Highlands;116):25 #8802(auto Arathi Highlands;140):13
+c2560.11 | links=c2579.3:21 c2620.16:72
+c2562.11 | links=#24278(auto Arathi Highlands;377):57
+c2563.11 | links=c2563.4:14
+c2566.11 | links=#7742(auto Arathi Highlands;119):3
+c2572.11 | links=#1280(auto Arathi Highlands;15):4
+c2574.11 | links=#11958(auto Arathi Highlands;185):16 o2653.1:8 c2573.5:12
+c2582.11 | links=c2581.1:20 c2582.4:10
+c2583.11 | links=#14186(entry and exit;camp;the;Alliance;Stromgarde Keep;Arathi Highlands):1 c2584.8:7
+c2589.11 | links=c2587.3:20 c2586.19:23
+c2592.11 | links=c2592.9:39
+c2598.11 | links=c2588.8:3
+c2760.11 | links=#25042(auto Arathi Highlands;396):30 c2760.10:27
+c2761.11 | links=c2761.2:25 c2761.12:35
+c2555.12 | links=c2554.8:9 c2555.11:20
+c2557.12 | links=c2605.7:5
+c2562.12 | links=#13697(auto Arathi Highlands;207):24
+c2563.12 | links=#24597(auto Arathi Highlands;385):50 c2559.27:33
+c2564.12 | links=#1600(auto Arathi Highlands;23):1
+c2570.12 | links=c2773.2:4
+c2572.12 | links=c2572.4:16
+c2574.12 | links=#12654(auto Arathi Highlands;192):15 #23462(entry and exit;cave;Drywhisker Gorge;Arathi Highlands):3
+c2584.12 | links=#10977(auto Arathi Highlands;172):13 c4075.6:17
+c2586.12 | links=c2589.3:21
+c2590.12 | links=#24288(auto Arathi Highlands;378):12
+c2592.12 | links=c2592.7:32
+c2761.12 | links=c2761.11:35 c2761.14:43
+c2762.12 | links=#11384(auto Arathi Highlands;177):20 c2762.6:42 c2559.42:60
+o2653.12 | links=#11958(auto Arathi Highlands;185):7
+c2556.13 | links=#7516(auto Arathi Highlands;116):14
+c2557.13 | links=#20002(auto Arathi Highlands;303):8
+c2562.13 | links=#15587(entry and exit;cave;Boulderfist Outpost;Arathi Highlands):32
+c2572.13 | links=c2572.4:14 c2572.15:37
+c2574.13 | links=#7226(auto Arathi Highlands;115):9 c2572.20:11
+c2582.13 | links=c2582.14:10
+c2586.13 | links=c2587.1:44
+c2588.13 | links=#24008(auto Arathi Highlands;371):20
+c2592.13 | links=c2592.14:28
+c2760.13 | links=c2760.7:32 c2760.14:25 c2563.37:62
+c2761.13 | links=c2761.2:31 c2761.8:23
+c4075.13 | links=#16442(auto Arathi Highlands;245):12
+c24477.13 | links=#27717(auto Arathi Highlands;431):10
+o2653.13 | links=#23080(auto Arathi Highlands;353):6
+c2554.14 | links=#10631(auto Arathi Highlands;167):33 c2606.6:16
+c2555.14 | links=c2605.5:5
+c2557.14 | links=#7660(auto Arathi Highlands;117):8
+c2562.14 | links=#10793(auto Arathi Highlands;168):15 o3706.2:9
+c2574.14 | links=#26055(auto Arathi Highlands;414):10 o2653.21:11
+c2582.14 | links=c2582.13:10 c2582.16:14
+c2586.14 | links=#6201(auto Arathi Highlands;105):26 c2586.1:15
+c2592.14 | links=c2592.13:28 c2592.16:36
+c2598.14 | links=c2588.15:7
+c2606.14 | links=#9980(auto Arathi Highlands;162):11
+c2760.14 | links=c2760.10:30 c2760.13:25
+c2761.14 | links=c2761.1:24 c2761.6:32 c2761.12:43
+o2653.14 | links=#4667(auto Arathi Highlands;78):10
+c2555.15 | links=#8077(auto Arathi Highlands;126):28 #8802(auto Arathi Highlands;140):29 c2556.19:37
+c2556.15 | links=#1607(auto Arathi Highlands;24):27 #23513(auto Arathi Highlands;359):25
+c2562.15 | links=#20442(auto Arathi Highlands;309):33 c2562.1:61 c2562.16:22
+c2572.15 | links=c2620.3:17 c2572.13:37
+c2578.15 | links=c2563.54:26 c2559.118:33
+c2582.15 | links=c2582.16:19 c2582.17:12 c2582.18:13 c2582.19:14
+c2588.15 | links=c2598.14:7 c24477.19:14
+c2592.15 | links=c2592.10:30 c2592.16:38 c2563.106:65
+c2619.15 | links=c2619.1:1
+c24477.15 | links=#1346(auto Arathi Highlands;16):15
+o2653.15 | links=c2573.3:7
+c2554.16 | links=#2239(auto Arathi Highlands;33):21 #16836(auto Arathi Highlands;252):15
+c2555.16 | links=#25036(auto Arathi Highlands;395):37 c2554.29:33
+c2556.16 | links=#23513(auto Arathi Highlands;359):11 #25315(auto Arathi Highlands;404):18
+c2560.16 | links=#10622(auto Arathi Highlands;166):36 c2560.18:31 c2563.105:28
+c2562.16 | links=c2562.15:22
+c2582.16 | links=c2582.8:18 c2582.9:15 c2582.14:14 c2582.15:19
+c2586.16 | links=#27237(auto Arathi Highlands;426):26
+c2592.16 | links=c2592.14:36 c2592.15:38
+c2595.16 | links=c2779.5:42
+c2620.16 | links=c2560.11:72 c2559.79:64
+c10696.16 | links=c2559.113:45
+c2554.17 | links=#15646(auto Arathi Highlands;235):53
+c2555.17 | links=c2606.6:4
+c2556.17 | links=c2605.5:6
+c2560.17 | links=#14697(auto Arathi Highlands;220):31
+c2562.17 | links=#24278(auto Arathi Highlands;377):34
+c2582.17 | links=c2581.4:17 c2582.15:12
+c2586.17 | links=#9989(auto Arathi Highlands;163):46 c2586.22:37
+c2595.17 | links=c2595.28:82
+c24477.17 | links=#24288(auto Arathi Highlands;378):8 c2598.5:14 c2588.10:10
+c2554.18 | links=#14654(auto Arathi Highlands;219):20 c2606.7:19
+c2556.18 | links=#8077(auto Arathi Highlands;126):9 c2554.23:14
+c2560.18 | links=#4714(auto Arathi Highlands;79):41 c2560.16:31
+c2563.18 | links=c2563.94:40 c2559.118:25
+c2578.18 | links=c2563.36:37 c2559.78:60
+c2582.18 | links=c2581.6:30 c2582.15:13
+c2595.18 | links=c2779.5:46
+c2620.18 | links=c2560.45:32
+c24477.18 | links=#4193(well;Stromgarde Keep;Arathi Highlands):18 #9620(auto Arathi Highlands;154):13 #18207(auto Arathi Highlands;281):11 c2588.4:14
+c2554.19 | links=c2555.20:14
+c2555.19 | links=#5027(auto Arathi Highlands;83):22 #6089(auto Arathi Highlands;100):41
+c2556.19 | links=c2555.15:37 c2555.21:30
+c2560.19 | links=#14953(auto Arathi Highlands;224):32
+c2563.19 | links=c2559.87:5 c2559.118:9
+c2566.19 | links=#1749(auto Arathi Highlands;27):7 #7742(auto Arathi Highlands;119):11 #25236(auto Arathi Highlands;402):10
+c2582.19 | links=c2582.15:14 c2582.20:14
+c2586.19 | links=c2589.11:23
+c2595.19 | links=c2779.5:12
+c10696.19 | links=c2563.23:64
+c24477.19 | links=#4193(well;Stromgarde Keep;Arathi Highlands):10 c2588.15:14
+o2653.19 | links=c2574.2:5
+c2554.20 | links=#15646(auto Arathi Highlands;235):61 #27660(auto Arathi Highlands;430):26
+c2555.20 | links=c2606.7:3 c2554.19:14
+c2559.20 | links=c2563.70:34 c2559.97:37
+c2560.20 | links=c2579.3:56
+c2566.20 | links=#11583(auto Arathi Highlands;181):5
+c2572.20 | links=c2574.13:11
+c2582.20 | links=c2582.19:14
+c2554.21 | links=#18670(auto Arathi Highlands;291):21
+c2555.21 | links=#18670(auto Arathi Highlands;291):21 c2556.19:30
+c2566.21 | links=#4945(auto Arathi Highlands;81):5
+c2572.21 | links=#17032(auto Arathi Highlands;257):9
+c2582.21 | links=c2582.8:12 c2582.26:8
+c2586.21 | links=c2589.3:28
+o2653.21 | links=c2574.14:11
+c2554.22 | links=#18670(auto Arathi Highlands;291):21
+c2555.22 | links=c2554.23:16 c2554.24:12
+c2556.22 | links=#25382(auto Arathi Highlands;407):5
+c2582.22 | links=#674(auto Arathi Highlands;8):9 c2582.8:22
+c2586.22 | links=#27237(auto Arathi Highlands;426):45 c2586.17:37
+c2554.23 | links=c2556.18:14 c2555.22:16
+c2563.23 | links=c2620.9:41 c10696.19:64 c2559.37:36 c2559.55:27 c2559.56:21 c2559.106:48
+c2554.24 | links=c2555.22:12
+c2556.24 | links=#4991(auto Arathi Highlands;82):12 #25382(auto Arathi Highlands;407):9
+c2563.24 | links=c2559.48:60 c2559.57:34
+c2554.25 | links=c2554.28:50
+c2595.25 | links=c2779.5:16 c2595.31:3
+c2554.26 | links=#25036(auto Arathi Highlands;395):45 c2554.28:48
+c2559.26 | links=c2578.3:34
+c2582.26 | links=c2582.21:8
+o2653.26 | links=#9630(auto Arathi Highlands;155):6
+c2559.27 | links=c2563.12:33
+c2595.27 | links=o2712.5:44
+o2653.27 | links=#3040(auto Arathi Highlands;51):9
+c2554.28 | links=c2554.25:50 c2554.26:48
+c2560.28 | links=c2560.30:47
+c2595.28 | links=#13310(auto Arathi Highlands;197):61 c2595.17:82
+c2554.29 | links=#18670(auto Arathi Highlands;291):15 c2555.16:33
+c2559.29 | links=c2578.1:40 c2563.91:79
+c2563.29 | links=#9487(auto Arathi Highlands;152):61 #21786(auto Arathi Highlands;330):51
+c2555.30 | links=c2605.7:5
+c2560.30 | links=#26951(auto Arathi Highlands;423):11 c2560.28:47 c2560.31:47 c2563.56:62
+c2595.30 | links=o2712.5:29
+c2554.31 | links=#14654(auto Arathi Highlands;219):16 #18217(auto Arathi Highlands;282):52 c2606.8:24
+c2560.31 | links=c2560.30:47
+c2595.31 | links=c2595.25:3
+o2653.31 | links=#3040(auto Arathi Highlands;51):7
+c2554.32 | links=c2606.8:20
+c2556.32 | links=c2605.7:9
+c2563.33 | links=c2563.35:62
+c2556.34 | links=#8999(auto Arathi Highlands;145):17 #14036(auto Arathi Highlands;210):18
+c2559.34 | links=c2578.3:38
+c2595.34 | links=o2712.4:7
+c2559.35 | links=c2559.62:15
+c2563.35 | links=c2563.33:62 c2559.72:41
+c2556.36 | links=#14036(auto Arathi Highlands;210):13 #14615(auto Arathi Highlands;216):17
+c2559.36 | links=c2578.3:18 c2563.44:29
+c2563.36 | links=c2578.18:37
+c2559.37 | links=c2563.23:36
+c2563.37 | links=c2578.4:22 c2760.13:62
+c2595.37 | links=c2595.1:4
+c2559.38 | links=c2620.9:34 c2563.46:57 c2559.57:68
+c2560.38 | links=c2620.2:40 c2560.53:27
+c2563.38 | links=c2762.5:61 c2559.40:70
+c2595.39 | links=c2779.5:40
+c2559.40 | links=c2563.38:70
+c2559.42 | links=#8871(auto Arathi Highlands;142):26 #23150(auto Arathi Highlands;355):44 c2762.12:60
+c2595.42 | links=c2779.5:13
+c2559.43 | links=#2951(auto Arathi Highlands;48):61 #20663(auto Arathi Highlands;313):93
+c2563.43 | links=c2559.90:44
+c2563.44 | links=c2620.6:35 c2563.8:39 c2559.36:29
+c2560.45 | links=c2579.7:10 c2620.18:32 c2560.47:35
+c2563.45 | links=c2559.3:58 c2578.6:27
+c2559.46 | links=c2578.1:69 c2582.10:93
+c2563.46 | links=c2559.38:57
+c2560.47 | links=c2560.45:35 c2560.51:50 c2560.60:24 c2560.61:60
+c2559.48 | links=#18368(auto Arathi Highlands;283):39 c2563.24:60
+c2563.49 | links=c2563.113:43
+c2559.51 | links=#16671(auto Arathi Highlands;248):5
+c2560.51 | links=c2560.47:50
+c2563.51 | links=c2559.91:33
+c2559.53 | links=c2563.8:56
+c2560.53 | links=c2560.38:27 c2563.94:52
+c2559.54 | links=c10696.6:39 c2559.56:34
+c2563.54 | links=c2578.15:26
+c2559.55 | links=c2563.23:27
+c2559.56 | links=c2563.23:21 c2559.54:34
+c2563.56 | links=c2560.30:62
+c2559.57 | links=c2563.24:34 c2559.38:68 c2559.58:50 c2559.59:65
+c2559.58 | links=#16459(auto Arathi Highlands;246):41 c2559.57:50
+c2559.59 | links=c2559.57:65
+c2560.60 | links=c2560.47:24 c2563.106:54
+c2560.61 | links=c2560.47:60
+c2559.62 | links=c2559.35:15
+c2560.63 | links=#16794(auto Arathi Highlands;251):4
+c2563.70 | links=#5715(auto Arathi Highlands;94):34 c2559.20:34
+c2559.71 | links=c2620.6:37
+c2559.72 | links=#18436(auto Arathi Highlands;285):55 c2563.35:41
+c2559.73 | links=c2578.4:19
+c2559.74 | links=c2762.5:43
+c2563.74 | links=c2620.2:25
+c2563.75 | links=c2578.5:43 c2559.77:25
+c2559.76 | links=#5715(auto Arathi Highlands;94):46
+c2559.77 | links=#5715(auto Arathi Highlands;94):54 c2563.75:25
+c2559.78 | links=c2578.7:40 c2578.18:60
+c2559.79 | links=c2620.16:64 c2563.91:66
+c2563.80 | links=c2578.3:20
+c2559.85 | links=c2578.5:14 c2559.99:19
+c2559.86 | links=#3013(auto Arathi Highlands;50):110 c2563.113:40
+c2559.87 | links=c2563.19:5 c2559.89:56
+c2559.88 | links=c2578.5:38 c2559.89:57
+c2559.89 | links=c2559.87:56 c2559.88:57 c2559.91:40
+c2559.90 | links=c2563.43:44 c2559.91:35
+c2559.91 | links=c2563.51:33 c2559.89:40 c2559.90:35
+c2563.91 | links=c2559.29:79 c2559.79:66
+c2563.94 | links=c2563.18:40 c2560.53:52
+c2559.97 | links=c2559.20:37 c2559.108:28
+c2559.99 | links=c2559.85:19
+c2559.105 | links=c2620.9:39
+c2563.105 | links=c2560.16:28
+c2559.106 | links=c2563.23:48
+c2563.106 | links=c2592.15:65 c2560.60:54
+c2559.108 | links=c2559.97:28
+c2559.109 | links=c2578.6:25
+c2559.113 | links=c2762.5:52 c10696.16:45
+c2563.113 | links=c2578.5:41 c2563.49:43 c2559.86:40
+c2559.118 | links=c2578.15:33 c2563.18:25 c2563.19:9

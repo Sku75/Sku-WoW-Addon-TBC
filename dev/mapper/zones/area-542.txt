@@ -1,0 +1,3 @@
+Zone areaId 542 — eine Zeile pro Wegpunkt; Links inline.
+
+#28737 | s;Kalimdor;Un'Goro Crater;Lakkari Tar Pits;Fungal Rock§s;Kalimdor;Un'Goro-Krater;Teergruben von Lakkari;Fungal Rock§s;Kalimdor;Cratère d'Un'Goro;Fosses de goudron de Lakkari;Rocher fongique | x=-6370.15 y=-1836.52 | size=1 | links=#14802(auto Un'Goro Crater;339):7 c6516.4:3

@@ -1,0 +1,3 @@
+Zone areaId 3097 — eine Zeile pro Wegpunkt; Links inline.
+
+#28699 | s;Kalimdor;Silithus;Cenarion Hold;The Swarming Pillar§s;Kalimdor;Silithus;Burg Cenarius;Die Schwarmsäule§s;Kalimdor;Silithus;Fort cénarien;Le pilier grouillant | x=-7066.79 y=-731.852 | size=1

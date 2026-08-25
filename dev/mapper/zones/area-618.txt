@@ -1,0 +1,1361 @@
+Zone areaId 618 — eine Zeile pro Wegpunkt; Links inline.
+
+#15 | auto Winterspring;1§auto Winterquell;1§auto Berceau-de-l'Hiver;1 | x=5346.600905769096 y=-4546.7423082021 | size=1 | links=#5305(auto Winterspring;107):31 #24312(auto Winterspring;501):38
+#56 | auto Winterspring;2§auto Winterquell;2§auto Berceau-de-l'Hiver;2 | x=6780.30029296875 y=-5107.7001953125 | size=1 | links=#22875(auto Winterspring;479):39 #26243(auto Winterspring;530):26
+#219 | auto Winterspring;3§auto Winterquell;3§auto Berceau-de-l'Hiver;3 | x=6028.10009765625 y=-4216.80029296875 | size=1 | links=#9104(auto Winterspring;189):84 c7437.10:21
+#258 | auto Winterspring;4§auto Winterquell;4§auto Berceau-de-l'Hiver;4 | x=6774.5 y=-2327.400146484375 | size=1 | links=#7922(auto Winterspring;167):41 #24189(auto Winterspring;497):60
+#345 | auto Winterspring;6§auto Winterquell;6§auto Berceau-de-l'Hiver;6 | x=6586.789399116449 y=-2761.226373286642 | size=1 | links=#13505(auto Winterspring;273):39 #19480(auto Winterspring;412):45
+#387 | auto Winterspring;7§auto Winterquell;7§auto Berceau-de-l'Hiver;7 | x=5394.515491413899 y=-4818.062453256297 | size=1 | links=#4290(auto Winterspring;87):69 #19300(auto Winterspring;409):46
+#458 | auto Winterspring;8§auto Winterquell;8§auto Berceau-de-l'Hiver;8 | x=6548.7001953125 y=-3032.5 | size=1 | links=#11540(auto Winterspring;234):38 #13205(auto Winterspring;266):51
+#459 | auto Winterspring;9§auto Winterquell;9§auto Berceau-de-l'Hiver;9 | x=4577.60009765625 y=-4509.7001953125 | size=1 | links=#3055(auto Winterspring;67):32 #27941(auto Winterspring;562):18
+#490 | auto Winterspring;10§auto Winterquell;10§auto Berceau-de-l'Hiver;10 | x=5898.30029296875 y=-4048.300048828125 | size=1 | links=c7436.7:30
+#526 | auto Winterspring;11§auto Winterquell;11§auto Berceau-de-l'Hiver;11 | x=6451 y=-3059.10009765625 | size=1 | links=#23520(auto Winterspring;487):58 #28395(auto Winterspring;580):61 o175407.50:51 o175407.58:24
+#529 | auto Winterspring;12§auto Winterquell;12§auto Berceau-de-l'Hiver;12 | x=6090.872111692862 y=-4571.975685071069 | size=1 | links=#14650(auto Winterspring;306):44 c7437.5:30
+#542 | auto Winterspring;13§auto Winterquell;13§auto Berceau-de-l'Hiver;13 | x=4635.39990234375 y=-4270.89990234375 | size=1 | links=#8687(auto Winterspring;183):35 #18843(auto Winterspring;399):43
+#659 | auto Winterspring;14§auto Winterquell;14§auto Berceau-de-l'Hiver;14 | x=7145.80029296875 y=-3862 | size=1 | links=#8804(auto Winterspring;186):6 #12971(auto Winterspring;261):6
+#691 | auto Winterspring;15§auto Winterquell;15§auto Berceau-de-l'Hiver;15 | x=6573.39990234375 y=-5201.60009765625 | size=1 | links=#2961(auto Winterspring;65):31 #11468(auto Winterspring;231):47
+#708 | auto Winterspring;16§auto Winterquell;16§auto Berceau-de-l'Hiver;16 | x=5246.5 y=-5056.89990234375 | size=1 | links=#7862(auto Winterspring;165):14 c7446.10:9
+#720 | auto Winterspring;17§auto Winterquell;17§auto Berceau-de-l'Hiver;17 | x=6588.040439299594 y=-4744.100000795929 | size=1 | links=#5579(auto Winterspring;114):16 #18119(auto Winterspring;378):19
+#771 | auto Winterspring;18§auto Winterquell;18§auto Berceau-de-l'Hiver;18 | x=5553.007497810339 y=-4493.424002404536 | size=1 | links=#6011(auto Winterspring;123):56 #8823(auto Winterspring;188):42 #13193(auto Winterspring;265):79
+#1018 | auto Winterspring;19§auto Winterquell;19§auto Berceau-de-l'Hiver;19 | x=7144.2001953125 y=-3843.10009765625 | size=1 | links=#8587(auto Winterspring;179):7 #18183(auto Winterspring;381):8
+#1058 | auto Winterspring;20§auto Winterquell;20§auto Berceau-de-l'Hiver;20 | x=6951.39990234375 y=-4571.39990234375 | size=1 | links=#14034(auto Winterspring;290):38 #19587(auto Winterspring;417):37
+#1094 | auto Winterspring;21§auto Winterquell;21§auto Berceau-de-l'Hiver;21 | x=7368.5 y=-4825.39990234375 | size=1 | links=#27682(auto Winterspring;556):28 c10806.1:42
+#1107 | auto Winterspring;22§auto Winterquell;22§auto Berceau-de-l'Hiver;22 | x=7728.317202122993 y=-3968.868481443697 | size=1 | links=#5603(auto Winterspring;116):170 #12345(auto Winterspring;248):111 #22013(auto Winterspring;460):21 c7430.4:79
+#1109 | auto Winterspring;23§auto Winterquell;23§auto Berceau-de-l'Hiver;23 | x=6705.5 y=-4670.80029296875 | size=1 | links=#2366(auto Winterspring;50):5 #9343(central location;Everlook;Winterspring):15 #28627(s;u;Mailbox;Winterspring):1
+#1139 | auto Winterspring;24§auto Winterquell;24§auto Berceau-de-l'Hiver;24 | x=7592.89990234375 y=-4570.2001953125 | size=1 | links=c7456.29:48 c7445.38:23
+#1312 | auto Winterspring;25§auto Winterquell;25§auto Berceau-de-l'Hiver;25 | x=6352.205568980823 y=-4907.749653313646 | size=1 | links=#6782(auto Winterspring;134):22 #20324(auto Winterspring;434):13
+#1316 | auto Winterspring;26§auto Winterquell;26§auto Berceau-de-l'Hiver;26 | x=7111.2001953125 y=-3985.5 | size=1 | links=#14233(auto Winterspring;297):4 #23155(auto Winterspring;485):11 c2084.1:40 c2303.1:41
+#1350 | auto Winterspring;27§auto Winterquell;27§auto Berceau-de-l'Hiver;27 | x=5267.329917774647 y=-4726.608643689068 | size=1 | links=#17279(auto Winterspring;361):52 #28441(auto Winterspring;581):13
+#1415 | auto Winterspring;28§auto Winterquell;28§auto Berceau-de-l'Hiver;28 | x=6015.30029296875 y=-5087 | size=1 | links=#6687(auto Winterspring;131):17 c7443.16:15
+#1447 | auto Winterspring;29§auto Winterquell;29§auto Berceau-de-l'Hiver;29 | x=6775.2001953125 y=-3865.5 | size=1 | links=#3254(auto Winterspring;68):43 #20047(auto Winterspring;429):51 #27909(auto Winterspring;561):54
+#1461 | auto Winterspring;30§auto Winterquell;30§auto Berceau-de-l'Hiver;30 | x=5179.30029296875 y=-5019.30029296875 | size=1 | links=#2547(auto Winterspring;58):48 #19201(auto Winterspring;408):38 #22448(auto Winterspring;469):30
+#1466 | auto Winterspring;31§auto Winterquell;31§auto Berceau-de-l'Hiver;31 | x=7989.60009765625 y=-4157.5 | size=1 | links=#20843(auto Winterspring;442):22 c7432.29:36 c7432.31:38
+#1564 | auto Winterspring;32§auto Winterquell;32§auto Berceau-de-l'Hiver;32 | x=4398.2001953125 y=-4478.89990234375 | size=1 | links=#2352(auto Winterspring;49):34 c7461.2:25
+#1584 | auto Winterspring;33§auto Winterquell;33§auto Berceau-de-l'Hiver;33 | x=6805.39990234375 y=-4430.89990234375 | size=1 | links=#5284(auto Winterspring;105):28 #19103(auto Winterspring;407):42
+#1588 | auto Winterspring;34§auto Winterquell;34§auto Berceau-de-l'Hiver;34 | x=7635.89990234375 y=-3989.5 | size=1 | links=#8275(auto Winterspring;173):27 c7432.19:36
+#1650 | auto Winterspring;35§auto Winterquell;35§auto Berceau-de-l'Hiver;35 | x=7720.30029296875 y=-4224.10009765625 | size=1 | links=#1859(auto Winterspring;40):58 c7432.10:31
+#1668 | auto Winterspring;36§auto Winterquell;36§auto Berceau-de-l'Hiver;36 | x=4763.7001953125 y=-4305 | size=1 | links=#16327(auto Winterspring;344):39 #19813(auto Winterspring;423):63 c7462.2:36 c7461.4:36 c7461.5:29
+#1678 | auto Winterspring;37§auto Winterquell;37§auto Berceau-de-l'Hiver;37 | x=5549.843973558495 y=-4701.787037943866 | size=1 | links=#11626(auto Winterspring;235):50 #13581(auto Winterspring;276):44
+#1790 | auto Winterspring;38§auto Winterquell;38§auto Berceau-de-l'Hiver;38 | x=6482.89990234375 y=-4271.89990234375 | size=1 | links=#16083(auto Winterspring;337):29 #18705(auto Winterspring;396):11
+#1792 | auto Winterspring;39§auto Winterquell;39§auto Berceau-de-l'Hiver;39 | x=7237.89990234375 y=-5129.10009765625 | size=1 | links=#24400(auto Winterspring;506):11 c8588.1:3
+#1859 | auto Winterspring;40§auto Winterquell;40§auto Berceau-de-l'Hiver;40 | x=7670.10009765625 y=-4253.2001953125 | size=1 | links=#1650(auto Winterspring;35):58 c7445.43:69
+#1953 | auto Winterspring;41§auto Winterquell;41§auto Berceau-de-l'Hiver;41 | x=5403.39990234375 y=-4934.30029296875 | size=1 | links=#3814(auto Winterspring;81):38 o175324.3:39
+#2098 | auto Winterspring;42§auto Winterquell;42§auto Berceau-de-l'Hiver;42 | x=4534.7001953125 y=-4206.60009765625 | size=1 | links=#2435(auto Winterspring;53):35 #20508(auto Winterspring;437):31
+#2124 | auto Winterspring;43§auto Winterquell;43§auto Berceau-de-l'Hiver;43 | x=6616.89990234375 y=-5284 | size=1 | links=#10774(auto Winterspring;220):15 c7458.26:16
+#2144 | auto Winterspring;44§auto Winterquell;44§auto Berceau-de-l'Hiver;44 | x=5525.80029296875 y=-4943.2001953125 | size=1 | links=#7525(auto Winterspring;157):40 #16260(auto Winterspring;342):28 #19939(auto Winterspring;427):25
+#2152 | auto Winterspring;45§auto Winterquell;45§auto Berceau-de-l'Hiver;45 | x=6505.7001953125 y=-4266.7001953125 | size=1 | links=#15874(auto Winterspring;332):53 #28046(auto Winterspring;571):38 o175888.1:35 c7524.12:52 c7524.15:32 c7523.21:27
+#2242 | auto Winterspring;46§auto Winterquell;46§auto Berceau-de-l'Hiver;46 | x=4425.89990234375 y=-4337.80029296875 | size=1 | links=#5559(auto Winterspring;112):86 c7462.1:64 c7462.18:22
+#2264 | auto Winterspring;47§auto Winterquell;47§auto Berceau-de-l'Hiver;47 | x=6732.39990234375 y=-4670.2001953125 | size=1 | links=#9343(central location;Everlook;Winterspring):11 #18629(auto Winterspring;395):12
+#2314 | auto Winterspring;48§auto Winterquell;48§auto Berceau-de-l'Hiver;48 | x=6862.60009765625 y=-4678.7001953125 | size=1 | links=#9364(auto Winterspring;194):67 #18950(auto Winterspring;404):24 c6491.1:5
+#2352 | auto Winterspring;49§auto Winterquell;49§auto Berceau-de-l'Hiver;49 | x=4432.80029296875 y=-4475.30029296875 | size=1 | links=#1564(auto Winterspring;32):34 #13807(auto Winterspring;285):48 c7462.5:37 c7462.20:53
+#2366 | auto Winterspring;50§auto Winterquell;50§auto Berceau-de-l'Hiver;50 | x=6700 y=-4670.60009765625 | size=1 | links=#1109(auto Winterspring;23):5 #27946(auto Winterspring;564):4
+#2393 | auto Winterspring;51§auto Winterquell;51§auto Berceau-de-l'Hiver;51 | x=6310.7001953125 y=-4276 | size=1 | links=c7448.15:28 c7455.23:30
+#2402 | auto Winterspring;52§auto Winterquell;52§auto Berceau-de-l'Hiver;52 | x=5027.30029296875 y=-4814 | size=1 | links=#5770(auto Winterspring;119):20 #21858(auto Winterspring;458):16
+#2435 | auto Winterspring;53§auto Winterquell;53§auto Berceau-de-l'Hiver;53 | x=4541 y=-4171.39990234375 | size=1 | links=#2098(auto Winterspring;42):35 #19509(auto Winterspring;414):26
+#2466 | auto Winterspring;54§auto Winterquell;54§auto Berceau-de-l'Hiver;54 | x=6786.10009765625 y=-4600.89990234375 | size=1 | links=#6871(auto Winterspring;136):10 #12167(auto Winterspring;245):43
+#2503 | auto Winterspring;55§auto Winterquell;55§auto Berceau-de-l'Hiver;55 | x=7252.89990234375 y=-5055.10009765625 | size=1 | links=#7671(auto Winterspring;160):55 c7448.26:44 c7448.27:52
+#2509 | auto Winterspring;56§auto Winterquell;56§auto Berceau-de-l'Hiver;56 | x=5744.937743774934 y=-4786.061651431532 | size=1 | links=#24569(auto Winterspring;507):28 c10300.1:28 c7452.18:54
+#2534 | auto Winterspring;57§auto Winterquell;57§auto Berceau-de-l'Hiver;57 | x=6080.5 y=-5146.30029296875 | size=1 | links=#14071(auto Winterspring;291):30 c7448.2:10
+#2547 | auto Winterspring;58§auto Winterquell;58§auto Berceau-de-l'Hiver;58 | x=5140.7001953125 y=-4990.60009765625 | size=1 | links=#1461(auto Winterspring;30):48 #27265(auto Winterspring;549):27
+#2579 | auto Winterspring;59§auto Winterquell;59§auto Berceau-de-l'Hiver;59 | x=6712.60009765625 y=-4693.5 | size=1 | links=#9343(central location;Everlook;Winterspring):23 #18454(auto Winterspring;391):5 #22634(auto Winterspring;472):14 c10468.1:6 c11546.1:9
+#2651 | auto Winterspring;60§auto Winterquell;60§auto Berceau-de-l'Hiver;60 | x=6640.89990234375 y=-3335.400146484375 | size=1 | links=#3423(auto Winterspring;72):45 #27207(auto Winterspring;547):30
+#2771 | auto Winterspring;61§auto Winterquell;61§auto Berceau-de-l'Hiver;61 | x=6654.2001953125 y=-3613 | size=1 | links=#13444(auto Winterspring;270):36 #26927(auto Winterspring;540):29
+#2795 | auto Winterspring;62§auto Winterquell;62§auto Berceau-de-l'Hiver;62 | x=5242.89990234375 y=-5025.2001953125 | size=1 | links=#3273(auto Winterspring;70):24 #13309(auto Winterspring;268):24 #22448(auto Winterspring;469):33
+#2890 | auto Winterspring;63§auto Winterquell;63§auto Berceau-de-l'Hiver;63 | x=7654.30029296875 y=-4923.89990234375 | size=1 | links=#16620(auto Winterspring;349):23 #25617(auto Winterspring;522):26
+#2903 | auto Winterspring;64§auto Winterquell;64§auto Berceau-de-l'Hiver;64 | x=6168.62296504809 y=-4669.719389962444 | size=1 | links=#26388(auto Winterspring;533):56
+#2961 | auto Winterspring;65§auto Winterquell;65§auto Berceau-de-l'Hiver;65 | x=6579.30029296875 y=-5170.30029296875 | size=1 | links=#691(auto Winterspring;15):31 #10582(auto Winterspring;217):28
+#2965 | auto Winterspring;66§auto Winterquell;66§auto Berceau-de-l'Hiver;66 | x=6667.2001953125 y=-3866.699951171875 | size=1 | links=#7740(auto Winterspring;164):29 #20047(auto Winterspring;429):56
+#3055 | auto Winterspring;67§auto Winterquell;67§auto Berceau-de-l'Hiver;67 | x=4545.5 y=-4510 | size=1 | links=#459(auto Winterspring;9):32 #17941(auto Winterspring;374):20
+#3254 | auto Winterspring;68§auto Winterquell;68§auto Berceau-de-l'Hiver;68 | x=6797.5 y=-3903.400146484375 | size=1 | links=#1447(auto Winterspring;29):43 #27044(auto Winterspring;542):50
+#3257 | auto Winterspring;69§auto Winterquell;69§auto Berceau-de-l'Hiver;69 | x=4651.10009765625 y=-4662.30029296875 | size=1 | links=#21516(auto Winterspring;451):32 #27007(auto Winterspring;541):26
+#3273 | auto Winterspring;70§auto Winterquell;70§auto Berceau-de-l'Hiver;70 | x=5221.39990234375 y=-5036.89990234375 | size=1 | links=#2795(auto Winterspring;62):24 #7862(auto Winterspring;165):19
+#3419 | auto Winterspring;71§auto Winterquell;71§auto Berceau-de-l'Hiver;71 | x=4724.89990234375 y=-4430.89990234375 | size=1 | links=#13676(auto Winterspring;282):23 #17997(auto Winterspring;376):26
+#3423 | auto Winterspring;72§auto Winterquell;72§auto Berceau-de-l'Hiver;72 | x=6632.89990234375 y=-3290.199951171875 | size=1 | links=#2651(auto Winterspring;60):45 #16997(auto Winterspring;359):62
+#3448 | auto Winterspring;73§auto Winterquell;73§auto Berceau-de-l'Hiver;73 | x=6118.896222952903 y=-4921.552841797729 | size=1 | links=#22994(auto Winterspring;481):15 #23600(auto Winterspring;489):17
+#3456 | auto Winterspring;74§auto Winterquell;74§auto Berceau-de-l'Hiver;74 | x=5973.119367432833 y=-4909.657850792795 | size=1 | links=#9849(auto Winterspring;203):25 #19534(auto Winterspring;415):27 o175407.6:48
+#3463 | auto Winterspring;75§auto Winterquell;75§auto Berceau-de-l'Hiver;75 | x=5292.2001953125 y=-4893.39990234375 | size=1 | links=#22439(auto Winterspring;468):14 o175324.18:27
+#3508 | auto Winterspring;76§auto Winterquell;76§auto Berceau-de-l'Hiver;76 | x=7433.60009765625 y=-4989.7001953125 | size=1 | links=#22697(auto Winterspring;477):38 c7454.11:34 c7453.29:15
+#3532 | auto Winterspring;77§auto Winterquell;77§auto Berceau-de-l'Hiver;77 | x=8042.89990234375 y=-3762.400146484375 | size=1 | links=#9553(auto Winterspring;197):72 c7434.1:45
+#3538 | auto Winterspring;78§auto Winterquell;78§auto Berceau-de-l'Hiver;78 | x=6427.10009765625 y=-2564.60009765625 | size=1 | links=#9460(auto Winterspring;195):59 c9298.1:41
+#3610 | auto Winterspring;79§auto Winterquell;79§auto Berceau-de-l'Hiver;79 | x=6392.5 y=-3893.199951171875 | size=1 | links=#10802(auto Winterspring;221):82 #17701(auto Winterspring;369):60 #21910(auto Winterspring;459):43 c7444.3:141 c7524.11:21
+#3672 | auto Winterspring;80§auto Winterquell;80§auto Berceau-de-l'Hiver;80 | x=7111.10009765625 y=-4964.30029296875 | size=1 | links=c7455.17:86 c7448.25:32 c7448.28:27 c7443.44:41
+#3814 | auto Winterspring;81§auto Winterquell;81§auto Berceau-de-l'Hiver;81 | x=5398.7001953125 y=-4972.30029296875 | size=1 | links=#1953(auto Winterspring;41):38 #5615(auto Winterspring;117):25
+#3879 | auto Winterspring;82§auto Winterquell;82§auto Berceau-de-l'Hiver;82 | x=6470.10009765625 y=-4537.5 | size=1 | links=#11726(auto Winterspring;236):102 c7448.18:43 c7443.25:61 c7455.35:12 c7443.36:87
+#3890 | auto Winterspring;83§auto Winterquell;83§auto Berceau-de-l'Hiver;83 | x=6559.60009765625 y=-5277 | size=1 | links=c7460.2:13 c7460.4:22 c7458.23:22
+#3903 | auto Winterspring;84§auto Winterquell;84§auto Berceau-de-l'Hiver;84 | x=5898.459317810801 y=-4870.68281684604 | size=1 | links=#10762(auto Winterspring;219):15 #17517(auto Winterspring;365):15
+#4148 | auto Winterspring;85§auto Winterquell;85§auto Berceau-de-l'Hiver;85 | x=6504.80029296875 y=-2608.199951171875 | size=1 | links=#9460(auto Winterspring;195):38 #26078(auto Winterspring;527):29
+#4220 | auto Winterspring;86§auto Winterquell;86§auto Berceau-de-l'Hiver;86 | x=7248.39990234375 y=-5133.60009765625 | size=1 | links=#7671(auto Winterspring;160):29 #24400(auto Winterspring;506):12 c11696.1:5
+#4290 | auto Winterspring;87§auto Winterquell;87§auto Berceau-de-l'Hiver;87 | x=5404.299577804904 y=-4749.173596897791 | size=1 | links=#387(auto Winterspring;7):69 #19859(auto Winterspring;425):59 #27257(auto Winterspring;548):61
+#4317 | auto Winterspring;88§auto Winterquell;88§auto Berceau-de-l'Hiver;88 | x=6715.10009765625 y=-5234.7001953125 | size=1 | links=#8621(auto Winterspring;181):23 c7439.5:17
+#4444 | auto Winterspring;89§auto Winterquell;89§auto Berceau-de-l'Hiver;89 | x=6519.89990234375 y=-2453.400146484375 | size=1 | links=#14575(auto Winterspring;304):37 #16330(auto Winterspring;345):26 #22295(auto Winterspring;465):65
+#4466 | auto Winterspring;90§auto Winterquell;90§auto Berceau-de-l'Hiver;90 | x=4607.7001953125 y=-4481.2001953125 | size=1 | links=#15636(auto Winterspring;325):35 #27941(auto Winterspring;562):31 c7462.21:28
+#4554 | auto Winterspring;91§auto Winterquell;91§auto Berceau-de-l'Hiver;91 | x=6671.60009765625 y=-2338.5 | size=1 | links=#13641(auto Winterspring;279):42 #24189(auto Winterspring;497):42
+#4558 | auto Winterspring;92§auto Winterquell;92§auto Berceau-de-l'Hiver;92 | x=6519.7001953125 y=-3797.60009765625 | size=1 | links=#7266(auto Winterspring;149):113 #14177(auto Winterspring;294):46 #17701(auto Winterspring;369):100
+#4575 | auto Winterspring;93§auto Winterquell;93§auto Berceau-de-l'Hiver;93 | x=6546.5 y=-2709.5 | size=1 | links=#8409(auto Winterspring;175):37 #13505(auto Winterspring;273):37
+#4580 | auto Winterspring;94§auto Winterquell;94§auto Berceau-de-l'Hiver;94 | x=7712.409167212898 y=-4826.677301070067 | size=1 | links=c7452.16:40 c7453.18:29
+#4687 | auto Winterspring;95§auto Winterquell;95§auto Berceau-de-l'Hiver;95 | x=6792.30029296875 y=-4742.30029296875 | size=1 | links=#22167(auto Winterspring;463):13 c11138.1:8 c20102.1:4
+#4713 | entry and exit;Starfall Village;Winterspring§ein- und ausgang;Sternfall;Winterquell§entrée et sortie;Pluie-d'Étoiles;Berceau-de-l'Hiver | x=7126.10009765625 y=-3953.60009765625 | size=1 | links=#16019(auto Winterspring;336):8 #17953(auto Winterspring;375):10
+#4735 | auto Winterspring;96§auto Winterquell;96§auto Berceau-de-l'Hiver;96 | x=6837.60009765625 y=-2306.400146484375 | size=1 | links=#7377(auto Winterspring;152):36 #7922(auto Winterspring;167):27
+#4780 | auto Winterspring;97§auto Winterquell;97§auto Berceau-de-l'Hiver;97 | x=6328.80029296875 y=-5084 | size=1 | links=#18569(auto Winterspring;393):12 c7460.1:38
+#4832 | auto Winterspring;98§auto Winterquell;98§auto Berceau-de-l'Hiver;98 | x=6305.10009765625 y=-4384 | size=1 | links=#13628(auto Winterspring;278):54 #14733(auto Winterspring;307):44
+#4919 | auto Winterspring;99§auto Winterquell;99§auto Berceau-de-l'Hiver;99 | x=6910.10009765625 y=-4532.30029296875 | size=1 | links=#13563(auto Winterspring;274):38 o187953.1:63 o175407.41:9
+#4941 | auto Winterspring;100§auto Winterquell;100§auto Berceau-de-l'Hiver;100 | x=6487.2001953125 y=-3416.800048828125 | size=1 | links=c7447.4:27 c7444.20:38
+#5106 | auto Winterspring;101§auto Winterquell;101§auto Berceau-de-l'Hiver;101 | x=6760.80029296875 y=-4671.10009765625 | size=1 | links=#9125(auto Winterspring;190):9 #11092(auto Winterspring;226):6
+#5172 | auto Winterspring;102§auto Winterquell;102§auto Berceau-de-l'Hiver;102 | x=5493.5 y=-4669.39990234375 | size=1 | links=#13581(auto Winterspring;276):26 c7445.24:36
+#5208 | auto Winterspring;103§auto Winterquell;103§auto Berceau-de-l'Hiver;103 | x=6564.725987650268 y=-4775.484896720818 | size=1 | links=#17361(auto Winterspring;362):24 #18119(auto Winterspring;378):20
+#5277 | auto Winterspring;104§auto Winterquell;104§auto Berceau-de-l'Hiver;104 | x=6936.10009765625 y=-5037.5 | size=1 | links=#15875(auto Winterspring;333):38 #24224(auto Winterspring;500):63 c7440.7:32
+#5284 | auto Winterspring;105§auto Winterquell;105§auto Berceau-de-l'Hiver;105 | x=6809.5 y=-4403.10009765625 | size=1 | links=#1584(auto Winterspring;33):28 #7070(auto Winterspring;142):58
+#5285 | auto Winterspring;106§auto Winterquell;106§auto Berceau-de-l'Hiver;106 | x=6578.39990234375 y=-2406.699951171875 | size=1 | links=#16330(auto Winterspring;345):48 #17650(auto Winterspring;368):31
+#5305 | auto Winterspring;107§auto Winterquell;107§auto Berceau-de-l'Hiver;107 | x=5368.009021996738 y=-4524.122374127443 | size=1 | links=#15(auto Winterspring;1):31 #28089(auto Winterspring;572):54
+#5340 | auto Winterspring;108§auto Winterquell;108§auto Berceau-de-l'Hiver;108 | x=6641.60009765625 y=-3922.699951171875 | size=1 | links=#7740(auto Winterspring;164):35 #18127(auto Winterspring;379):38
+#5493 | auto Winterspring;109§auto Winterquell;109§auto Berceau-de-l'Hiver;109 | x=6712.89990234375 y=-4639.30029296875 | size=1 | links=#10449(auto Winterspring;216):3 #24199(auto Winterspring;498):14
+#5516 | auto Winterspring;110§auto Winterquell;110§auto Berceau-de-l'Hiver;110 | x=7168 y=-4141.80029296875 | size=1 | links=#6009(auto Winterspring;122):40 #9946(auto Winterspring;206):78 #27357(auto Winterspring;552):32
+#5548 | auto Winterspring;111§auto Winterquell;111§auto Berceau-de-l'Hiver;111 | x=6378.39990234375 y=-2529.699951171875 | size=1 | links=c9298.1:18 o175407.52:12
+#5559 | auto Winterspring;112§auto Winterquell;112§auto Berceau-de-l'Hiver;112 | x=4507.80029296875 y=-4309.39990234375 | size=1 | links=#2242(auto Winterspring;46):86 #12703(auto Winterspring;254):51 c7462.6:21 c7462.18:71
+#5568 | auto Winterspring;113§auto Winterquell;113§auto Berceau-de-l'Hiver;113 | x=5258.140960446977 y=-4795.157284394689 | size=1 | links=#22629(auto Winterspring;471):32 #27296(auto Winterspring;550):51 c10198.1:51 c7428.9:39 c7429.10:23 c7428.12:26
+#5579 | auto Winterspring;114§auto Winterquell;114§auto Berceau-de-l'Hiver;114 | x=6601.491137772404 y=-4735.13290206989 | size=1 | links=#720(auto Winterspring;17):16 #21714(auto Winterspring;454):25
+#5595 | auto Winterspring;115§auto Winterquell;115§auto Berceau-de-l'Hiver;115 | x=6645 y=-3458.10009765625 | size=1 | links=#10311(auto Winterspring;213):24 #16163(auto Winterspring;340):19
+#5603 | auto Winterspring;116§auto Winterquell;116§auto Berceau-de-l'Hiver;116 | x=7573.609992002442 y=-4039.750478180013 | size=1 | links=#1107(auto Winterspring;22):170 #8275(auto Winterspring;173):73 #19801(auto Winterspring;422):145
+#5615 | auto Winterspring;117§auto Winterquell;117§auto Berceau-de-l'Hiver;117 | x=5384.60009765625 y=-4993.10009765625 | size=1 | links=#3814(auto Winterspring;81):25 #25467(auto Winterspring;520):32
+#5677 | auto Winterspring;118§auto Winterquell;118§auto Berceau-de-l'Hiver;118 | x=6161.760307037581 y=-4842.340821511079 | size=1 | links=#11514(auto Winterspring;232):65 #12144(auto Winterspring;243):56 o175407.16:22
+#5770 | auto Winterspring;119§auto Winterquell;119§auto Berceau-de-l'Hiver;119 | x=5046.7001953125 y=-4821.60009765625 | size=1 | links=#2402(auto Winterspring;52):20 c10918.1:24
+#5881 | auto Winterspring;120§auto Winterquell;120§auto Berceau-de-l'Hiver;120 | x=6698.10009765625 y=-4794.60009765625 | size=1 | links=#20402(auto Winterspring;435):20 #25704(auto Winterspring;525):13
+#5913 | auto Winterspring;121§auto Winterquell;121§auto Berceau-de-l'Hiver;121 | x=6505.991455726086 y=-4836.909492763934 | size=1 | links=#21323(auto Winterspring;447):24 #25266(auto Winterspring;515):28
+#6009 | auto Winterspring;122§auto Winterquell;122§auto Berceau-de-l'Hiver;122 | x=7171.2001953125 y=-4101.89990234375 | size=1 | links=#5516(auto Winterspring;110):40 #11522(auto Winterspring;233):38
+#6011 | auto Winterspring;123§auto Winterquell;123§auto Berceau-de-l'Hiver;123 | x=5599.862949089747 y=-4524.526309627189 | size=1 | links=#771(auto Winterspring;18):56 #18855(auto Winterspring;400):72
+#6043 | auto Winterspring;124§auto Winterquell;124§auto Berceau-de-l'Hiver;124 | x=6652.80029296875 y=-4604.30029296875 | size=1 | links=#7227(auto Winterspring;148):42 #8559(auto Winterspring;178):45
+#6131 | auto Winterspring;125§auto Winterquell;125§auto Berceau-de-l'Hiver;125 | x=7193.60009765625 y=-4993.5 | size=1 | links=c7455.18:61 c7448.27:36
+#6188 | auto Winterspring;126§auto Winterquell;126§auto Berceau-de-l'Hiver;126 | x=6313.647034382105 y=-4886.228636524654 | size=1 | links=#8178(auto Winterspring;170):17 #21758(auto Winterspring;456):24
+#6320 | auto Winterspring;127§auto Winterquell;127§auto Berceau-de-l'Hiver;127 | x=7131 y=-3858.900146484375 | size=1 | links=#17120(auto Winterspring;360):5 #26202(auto Winterspring;529):7
+#6499 | auto Winterspring;128§auto Winterquell;128§auto Berceau-de-l'Hiver;128 | x=6806.60009765625 y=-4595.89990234375 | size=1 | links=#8747(auto Winterspring;185):32 c11139.1:16
+#6584 | auto Winterspring;129§auto Winterquell;129§auto Berceau-de-l'Hiver;129 | x=5894.30029296875 y=-4401.89990234375 | size=1 | links=#8671(auto Winterspring;182):84 #17508(auto Winterspring;364):56
+#6646 | auto Winterspring;130§auto Winterquell;130§auto Berceau-de-l'Hiver;130 | x=6522.30029296875 y=-2833.699951171875 | size=1 | links=#7550(auto Winterspring;158):41 #22231(auto Winterspring;464):42 #23989(auto Winterspring;495):24
+#6687 | auto Winterspring;131§auto Winterquell;131§auto Berceau-de-l'Hiver;131 | x=6012.60009765625 y=-5104.7001953125 | size=1 | links=#1415(auto Winterspring;28):17 #27968(auto Winterspring;566):11
+#6699 | auto Winterspring;132§auto Winterquell;132§auto Berceau-de-l'Hiver;132 | x=7111.30029296875 y=-3806.5 | size=1 | links=#7359(auto Winterspring;151):8 #26879(auto Winterspring;538):8
+#6710 | auto Winterspring;133§auto Winterquell;133§auto Berceau-de-l'Hiver;133 | x=6735.7001953125 y=-4693 | size=1 | links=#23731(auto Winterspring;491):9 c11182.1:5 c11183.1:7 c11184.1:6
+#6782 | auto Winterspring;134§auto Winterquell;134§auto Berceau-de-l'Hiver;134 | x=6375.071680808973 y=-4909.094798736556 | size=1 | links=#1312(auto Winterspring;25):22 #12791(auto Winterspring;258):21
+#6810 | auto Winterspring;135§auto Winterquell;135§auto Berceau-de-l'Hiver;135 | x=6627.2001953125 y=-4499.5 | size=1 | links=#15066(auto Winterspring;317):48 c7443.24:66
+#6871 | auto Winterspring;136§auto Winterquell;136§auto Berceau-de-l'Hiver;136 | x=6796.10009765625 y=-4603.10009765625 | size=1 | links=#2466(auto Winterspring;54):10 c11139.1:20
+#6927 | auto Winterspring;137§auto Winterquell;137§auto Berceau-de-l'Hiver;137 | x=6742.2001953125 y=-4635.2001953125 | size=1 | links=#12752(auto Winterspring;256):3 c11188.1:6
+#6988 | auto Winterspring;138§auto Winterquell;138§auto Berceau-de-l'Hiver;138 | x=6592.5 y=-4930.80029296875 | size=1 | links=c7459.12:30 c7458.33:59 c7458.38:67 c7458.39:86
+#7015 | auto Winterspring;139§auto Winterquell;139§auto Berceau-de-l'Hiver;139 | x=6956.39990234375 y=-4182.5 | size=1 | links=#11131(auto Winterspring;227):49 #13663(auto Winterspring;281):46
+#7038 | auto Winterspring;140§auto Winterquell;140§auto Berceau-de-l'Hiver;140 | x=6566.80029296875 y=-4650.89990234375 | size=1 | links=#11726(auto Winterspring;236):71 #21714(auto Winterspring;454):77 c7448.30:12 c7455.37:30
+#7061 | auto Winterspring;141§auto Winterquell;141§auto Berceau-de-l'Hiver;141 | x=6207.835196358403 y=-4909.991478378908 | size=1 | links=#17621(auto Winterspring;367):11 #20924(auto Winterspring;444):9
+#7070 | auto Winterspring;142§auto Winterquell;142§auto Berceau-de-l'Hiver;142 | x=6811.10009765625 y=-4344.80029296875 | size=1 | links=#5284(auto Winterspring;105):58 #22140(auto Winterspring;462):50
+#7071 | auto Winterspring;143§auto Winterquell;143§auto Berceau-de-l'Hiver;143 | x=6957.5 y=-4879.5 | size=1 | links=#28146(auto Winterspring;573):59 c7455.16:45
+#7154 | auto Winterspring;144§auto Winterquell;144§auto Berceau-de-l'Hiver;144 | x=5926.10009765625 y=-4191 | size=1 | links=#9104(auto Winterspring;189):24 c7435.14:15
+#7186 | auto Winterspring;145§auto Winterquell;145§auto Berceau-de-l'Hiver;145 | x=6082.70511187654 y=-4923.071355523513 | size=1 | links=#12857(auto Winterspring;260):20 #23600(auto Winterspring;489):19
+#7205 | auto Winterspring;146§auto Winterquell;146§auto Berceau-de-l'Hiver;146 | x=6760.2001953125 y=-4749.39990234375 | size=1 | links=#22167(auto Winterspring;463):19 #24946(auto Winterspring;511):15
+#7214 | auto Winterspring;147§auto Winterquell;147§auto Berceau-de-l'Hiver;147 | x=7149.80029296875 y=-3894.5 | size=1 | links=#15995(auto Winterspring;335):8 #21665(auto Winterspring;453):12
+#7227 | auto Winterspring;148§auto Winterquell;148§auto Berceau-de-l'Hiver;148 | x=6644.80029296875 y=-4646.10009765625 | size=1 | links=#6043(auto Winterspring;124):42 #23667(auto Winterspring;490):37
+#7266 | auto Winterspring;149§auto Winterquell;149§auto Berceau-de-l'Hiver;149 | x=6602.75772770333 y=-3720.552425605546 | size=1 | links=#4558(auto Winterspring;92):113 #13444(auto Winterspring;270):91
+#7354 | auto Winterspring;150§auto Winterquell;150§auto Berceau-de-l'Hiver;150 | x=6473.10009765625 y=-4315.89990234375 | size=1 | links=#27970(auto Winterspring;567):11 #28046(auto Winterspring;571):23 c7523.14:20 c7523.15:20
+#7359 | auto Winterspring;151§auto Winterquell;151§auto Berceau-de-l'Hiver;151 | x=7118.30029296875 y=-3801.699951171875 | size=1 | links=#6699(auto Winterspring;132):8 #28040(auto Winterspring;570):13
+#7377 | auto Winterspring;152§auto Winterquell;152§auto Berceau-de-l'Hiver;152 | x=6874.2001953125 y=-2309.699951171875 | size=1 | links=#4735(auto Winterspring;96):36 c10916.1:26
+#7417 | auto Winterspring;153§auto Winterquell;153§auto Berceau-de-l'Hiver;153 | x=6883.60009765625 y=-4783.5 | size=1 | links=#28146(auto Winterspring;573):61 c26401.1:40
+#7461 | auto Winterspring;154§auto Winterquell;154§auto Berceau-de-l'Hiver;154 | x=7697.60009765625 y=-4898.39990234375 | size=1 | links=#16620(auto Winterspring;349):28 #27610(auto Winterspring;555):28
+#7489 | auto Winterspring;155§auto Winterquell;155§auto Berceau-de-l'Hiver;155 | x=6175.553595599286 y=-4918.061947846348 | size=1 | links=#25313(auto Winterspring;516):12 #26873(auto Winterspring;537):13
+#7524 | auto Winterspring;156§auto Winterquell;156§auto Berceau-de-l'Hiver;156 | x=6620.89990234375 y=-4717.80029296875 | size=1 | links=#8615(auto Winterspring;180):6 #21714(auto Winterspring;454):9
+#7525 | auto Winterspring;157§auto Winterquell;157§auto Berceau-de-l'Hiver;157 | x=5563.30029296875 y=-4929.10009765625 | size=1 | links=#2144(auto Winterspring;44):40 #12092(auto Winterspring;242):68 #28508(auto Winterspring;583):25 c7453.10:42
+#7550 | auto Winterspring;158§auto Winterquell;158§auto Berceau-de-l'Hiver;158 | x=6546.89990234375 y=-2799.800048828125 | size=1 | links=#6646(auto Winterspring;130):41 #13505(auto Winterspring;273):53 #23989(auto Winterspring;495):52
+#7635 | auto Winterspring;159§auto Winterquell;159§auto Berceau-de-l'Hiver;159 | x=6645.5 y=-3416 | size=1 | links=#8136(auto Winterspring;169):17 #16163(auto Winterspring;340):22
+#7671 | auto Winterspring;160§auto Winterquell;160§auto Berceau-de-l'Hiver;160 | x=7235.5 y=-5107.5 | size=1 | links=#2503(auto Winterspring;55):55 #4220(auto Winterspring;86):29
+#7675 | auto Winterspring;161§auto Winterquell;161§auto Berceau-de-l'Hiver;161 | x=6504.7001953125 y=-2788 | size=1 | links=#13505(auto Winterspring;273):61 #14753(auto Winterspring;308):13
+#7711 | auto Winterspring;162§auto Winterquell;162§auto Berceau-de-l'Hiver;162 | x=7732 y=-4856.80029296875 | size=1 | links=#27610(auto Winterspring;555):26 c7453.17:21 c7453.18:12
+#7738 | auto Winterspring;163§auto Winterquell;163§auto Berceau-de-l'Hiver;163 | x=6675.5 y=-4745 | size=1 | links=#16278(auto Winterspring;343):28 #16345(auto Winterspring;346):30
+#7740 | auto Winterspring;164§auto Winterquell;164§auto Berceau-de-l'Hiver;164 | x=6646.30029296875 y=-3887.10009765625 | size=1 | links=#2965(auto Winterspring;66):29 #5340(auto Winterspring;108):35 #10299(auto Winterspring;212):25
+#7751 | Fledgling Chillwind;Winterspring;2;48.54;45.16§Eiswindjunges;Winterquell;2;48.54;45.16§Petite Noroît;Berceau-de-l'Hiver;2;48.54;45.16 | x=6399.911252309132 y=-3774.606032242582 | size=1
+#7862 | auto Winterspring;165§auto Winterquell;165§auto Berceau-de-l'Hiver;165 | x=5232.89990234375 y=-5052.80029296875 | size=1 | links=#708(auto Winterspring;16):14 #3273(auto Winterspring;70):19
+#7889 | auto Winterspring;166§auto Winterquell;166§auto Berceau-de-l'Hiver;166 | x=7162.30029296875 y=-3916.300048828125 | size=1 | links=#21665(auto Winterspring;453):12 #26080(auto Winterspring;528):10
+#7922 | auto Winterspring;167§auto Winterquell;167§auto Berceau-de-l'Hiver;167 | x=6810.2001953125 y=-2305.800048828125 | size=1 | links=#258(auto Winterspring;4):41 #4735(auto Winterspring;96):27
+#7962 | passage;from;Winterspring;to;Felwood§passage;von;Winterquell;nach;Teufelswald§passage;de;Berceau-de-l'Hiver;vers;Gangrebois | x=6902.80029296875 y=-2298 | size=1 | links=#25751(passage;from;Timbermaw Hold ;Felwood;to;Winterspring):3 c10916.1:5
+#8014 | auto Winterspring;168§auto Winterquell;168§auto Berceau-de-l'Hiver;168 | x=5110.60009765625 y=-4841.2001953125 | size=1 | links=#10056(auto Winterspring;207):22 #13880(auto Winterspring;287):36 c7429.3:22 c7428.4:33
+#8136 | auto Winterspring;169§auto Winterquell;169§auto Berceau-de-l'Hiver;169 | x=6645.30029296875 y=-3398.60009765625 | size=1 | links=#7635(auto Winterspring;159):17 #27207(auto Winterspring;547):33
+#8178 | auto Winterspring;170§auto Winterquell;170§auto Berceau-de-l'Hiver;170 | x=6327.994387305393 y=-4896.98914491915 | size=1 | links=#6188(auto Winterspring;126):17 #20324(auto Winterspring;434):15
+#8181 | auto Winterspring;171§auto Winterquell;171§auto Berceau-de-l'Hiver;171 | x=5336.90663533964 y=-4623.488419073812 | size=1 | links=#18799(auto Winterspring;398):48 #20869(auto Winterspring;443):26 #24312(auto Winterspring;501):38 c7428.10:29
+#8239 | auto Winterspring;172§auto Winterquell;172§auto Berceau-de-l'Hiver;172 | x=6159.7001953125 y=-4193.30029296875 | size=1 | links=c10659.13:32 c10660.19:20
+#8275 | auto Winterspring;173§auto Winterquell;173§auto Berceau-de-l'Hiver;173 | x=7643.2001953125 y=-4016.300048828125 | size=1 | links=#1588(auto Winterspring;34):27 #5603(auto Winterspring;116):73
+#8332 | auto Winterspring;174§auto Winterquell;174§auto Berceau-de-l'Hiver;174 | x=6518.60009765625 y=-3740 | size=1 | links=#14177(auto Winterspring;294):27 #15163(auto Winterspring;319):22
+#8409 | auto Winterspring;175§auto Winterquell;175§auto Berceau-de-l'Hiver;175 | x=6540.80029296875 y=-2672.60009765625 | size=1 | links=#4575(auto Winterspring;93):37 #17757(auto Winterspring;370):37
+#8438 | auto Winterspring;176§auto Winterquell;176§auto Berceau-de-l'Hiver;176 | x=6996.10009765625 y=-4141.5 | size=1 | links=#11131(auto Winterspring;227):39 #24352(auto Winterspring;503):38
+#8460 | auto Winterspring;177§auto Winterquell;177§auto Berceau-de-l'Hiver;177 | x=8064.10009765625 y=-3890.300048828125 | size=1 | links=#14555(auto Winterspring;303):37 c10618.1:28
+#8559 | auto Winterspring;178§auto Winterquell;178§auto Berceau-de-l'Hiver;178 | x=6660.30029296875 y=-4559.30029296875 | size=1 | links=#6043(auto Winterspring;124):45 #15066(auto Winterspring;317):41 #27944(auto Winterspring;563):49 c16416.1:7
+#8587 | auto Winterspring;179§auto Winterquell;179§auto Berceau-de-l'Hiver;179 | x=7145.5 y=-3835.300048828125 | size=1 | links=#1018(auto Winterspring;19):7 #14643(auto Winterspring;305):7
+#8615 | auto Winterspring;180§auto Winterquell;180§auto Berceau-de-l'Hiver;180 | x=6626.30029296875 y=-4721.39990234375 | size=1 | links=#7524(auto Winterspring;156):6 #16345(auto Winterspring;346):24
+#8621 | auto Winterspring;181§auto Winterquell;181§auto Berceau-de-l'Hiver;181 | x=6732.5 y=-5218.39990234375 | size=1 | links=#4317(auto Winterspring;88):23 c7438.11:20
+#8671 | auto Winterspring;182§auto Winterquell;182§auto Berceau-de-l'Hiver;182 | x=5812.2001953125 y=-4420.60009765625 | size=1 | links=#6584(auto Winterspring;129):84 c7454.4:96
+#8687 | auto Winterspring;183§auto Winterquell;183§auto Berceau-de-l'Hiver;183 | x=4669.5 y=-4282.10009765625 | size=1 | links=#542(auto Winterspring;13):35 #27986(auto Winterspring;568):20
+#8735 | auto Winterspring;184§auto Winterquell;184§auto Berceau-de-l'Hiver;184 | x=5712.441926768341 y=-4744.14039504841 | size=1 | links=#12643(auto Winterspring;252):22 #18193(auto Winterspring;382):26
+#8747 | auto Winterspring;185§auto Winterquell;185§auto Berceau-de-l'Hiver;185 | x=6831 y=-4574.5 | size=1 | links=#6499(auto Winterspring;128):32 #9364(auto Winterspring;194):43 o181605.1:8
+#8804 | auto Winterspring;186§auto Winterquell;186§auto Berceau-de-l'Hiver;186 | x=7141.89990234375 y=-3856.699951171875 | size=1 | links=#659(auto Winterspring;14):6 #17120(auto Winterspring;360):5
+#8817 | auto Winterspring;187§auto Winterquell;187§auto Berceau-de-l'Hiver;187 | x=6725 y=-4609.5 | size=1 | links=#14766(auto Winterspring;309):7 #26957(entry and exit;Everlook;Winterspring):7 c11119.1:14
+#8823 | auto Winterspring;188§auto Winterquell;188§auto Berceau-de-l'Hiver;188 | x=5558.10009765625 y=-4535.7001953125 | size=1 | links=#771(auto Winterspring;18):42 #9202(auto Winterspring;192):38
+#9104 | auto Winterspring;189§auto Winterquell;189§auto Berceau-de-l'Hiver;189 | x=5944.60009765625 y=-4207.10009765625 | size=1 | links=#219(auto Winterspring;3):84 #7154(auto Winterspring;144):24
+#9125 | auto Winterspring;190§auto Winterquell;190§auto Berceau-de-l'Hiver;190 | x=6769.80029296875 y=-4671 | size=1 | links=#5106(auto Winterspring;101):9 #11020(auto Winterspring;223):5
+#9155 | auto Winterspring;191§auto Winterquell;191§auto Berceau-de-l'Hiver;191 | x=6505.10009765625 y=-3687.699951171875 | size=1 | links=#15163(auto Winterspring;319):32 c7450.5:7
+#9202 | auto Winterspring;192§auto Winterquell;192§auto Berceau-de-l'Hiver;192 | x=5526.80029296875 y=-4557.5 | size=1 | links=#8823(auto Winterspring;188):38 #27141(auto Winterspring;546):20
+#9291 | auto Winterspring;193§auto Winterquell;193§auto Berceau-de-l'Hiver;193 | x=4476.60009765625 y=-4085 | size=1 | links=#13791(auto Winterspring;284):34 #20192(auto Winterspring;431):55 c7463.8:10 c7463.16:58
+#9343 | central location;Everlook;Winterspring§zentralpunkt;Ewige Warte;Winterquell§emplacement central;Long-guet;Berceau-de-l'Hiver | x=6721 y=-4672 | size=1 | links=#1109(auto Winterspring;23):15 #2264(auto Winterspring;47):11 #2579(auto Winterspring;59):23 #12574(auto Winterspring;250):10 #14925(auto Winterspring;312):6 c10978.1:20 c11546.1:16 c11753.1:18 c11755.1:17
+#9364 | auto Winterspring;194§auto Winterquell;194§auto Berceau-de-l'Hiver;194 | x=6853.5 y=-4612.10009765625 | size=1 | links=#2314(auto Winterspring;48):67 #8747(auto Winterspring;185):43
+#9460 | auto Winterspring;195§auto Winterquell;195§auto Berceau-de-l'Hiver;195 | x=6465.89990234375 y=-2609.60009765625 | size=1 | links=#3538(auto Winterspring;78):59 #4148(auto Winterspring;85):38 o175407.53:47 o175407.54:33
+#9488 | auto Winterspring;196§auto Winterquell;196§auto Berceau-de-l'Hiver;196 | x=7145 y=-3879.400146484375 | size=1 | links=#15995(auto Winterspring;335):7 #21748(auto Winterspring;455):4
+#9553 | auto Winterspring;197§auto Winterquell;197§auto Berceau-de-l'Hiver;197 | x=7999.39990234375 y=-3820.300048828125 | size=1 | links=#3532(auto Winterspring;77):72 #14555(auto Winterspring;303):83
+#9578 | auto Winterspring;198§auto Winterquell;198§auto Berceau-de-l'Hiver;198 | x=6902.7001953125 y=-4101.7001953125 | size=1 | links=#15733(auto Winterspring;329):63 #25338(auto Winterspring;517):34 #27859(auto Winterspring;560):35
+#9591 | auto Winterspring;199§auto Winterquell;199§auto Berceau-de-l'Hiver;199 | x=7433.39990234375 y=-4717.10009765625 | size=1 | links=#22691(auto Winterspring;476):36 c7456.8:57
+#9613 | auto Winterspring;200§auto Winterquell;200§auto Berceau-de-l'Hiver;200 | x=4659.10009765625 y=-4449 | size=1 | links=#15636(auto Winterspring;325):25 #28448(auto Winterspring;582):30
+#9660 | auto Winterspring;201§auto Winterquell;201§auto Berceau-de-l'Hiver;201 | x=6485.5 y=-3381.60009765625 | size=1 | links=c7442.3:45 o175407.48:41
+#9706 | auto Winterspring;202§auto Winterquell;202§auto Berceau-de-l'Hiver;202 | x=6688.80029296875 y=-4670.39990234375 | size=1 | links=#27946(auto Winterspring;564):6 c10431.1:2 c11187.1:9 c11629.1:2 o180523.1:9
+#9849 | auto Winterspring;203§auto Winterquell;203§auto Berceau-de-l'Hiver;203 | x=5947.810885917338 y=-4905.86160913881 | size=1 | links=#3456(auto Winterspring;74):25 #18275(auto Winterspring;385):25
+#9868 | auto Winterspring;204§auto Winterquell;204§auto Berceau-de-l'Hiver;204 | x=6689.123517848296 y=-2679.492057337193 | size=1 | links=#23491(auto Winterspring;486):45 c7450.14:25 c7442.16:59 c7444.31:30
+#9895 | auto Winterspring;205§auto Winterquell;205§auto Berceau-de-l'Hiver;205 | x=6830.89990234375 y=-4259.89990234375 | size=1 | links=#20458(auto Winterspring;436):33 #22140(auto Winterspring;462):37
+#9946 | auto Winterspring;206§auto Winterquell;206§auto Berceau-de-l'Hiver;206 | x=7246.937510894742 y=-4143.299120433917 | size=1 | links=#5516(auto Winterspring;110):78 #12152(auto Winterspring;244):78
+#10056 | auto Winterspring;207§auto Winterquell;207§auto Berceau-de-l'Hiver;207 | x=5108.7001953125 y=-4863.30029296875 | size=1 | links=#8014(auto Winterspring;168):22 c7429.1:15
+#10090 | auto Winterspring;208§auto Winterquell;208§auto Berceau-de-l'Hiver;208 | x=6649.89990234375 y=-5262.10009765625 | size=1 | links=#12856(auto Winterspring;259):40 c7460.7:21 c7458.24:29 c7458.26:25
+#10190 | auto Winterspring;209§auto Winterquell;209§auto Berceau-de-l'Hiver;209 | x=6202.10009765625 y=-4303.7001953125 | size=1 | links=#12997(auto Winterspring;263):30 #18448(auto Winterspring;389):20 c7435.5:29
+#10195 | auto Winterspring;210§auto Winterquell;210§auto Berceau-de-l'Hiver;210 | x=6439.7001953125 y=-2912.10009765625 | size=1 | links=#13656(auto Winterspring;280):22 #19825(auto Winterspring;424):50 c7447.9:45
+#10215 | auto Winterspring;211§auto Winterquell;211§auto Berceau-de-l'Hiver;211 | x=6600.2001953125 y=-4125.60009765625 | size=1 | links=#16800(auto Winterspring;355):46 c14458.3:109 c7523.4:54 c7523.11:18
+#10299 | auto Winterspring;212§auto Winterquell;212§auto Berceau-de-l'Hiver;212 | x=6624.60009765625 y=-3873.300048828125 | size=1 | links=#7740(auto Winterspring;164):25 c7523.19:46
+#10300 | Winterfall Runner;Winterspring;1;27.96;34.52§Läufer der Winterfelle;Winterquell;1;27.96;34.52§Messager tombe-hiver;Berceau-de-l'Hiver;1;27.96;34.52 | x=6899.341771297717 y=-2301.735322854025 | size=1
+#10311 | auto Winterspring;213§auto Winterquell;213§auto Berceau-de-l'Hiver;213 | x=6644.10009765625 y=-3482.400146484375 | size=1 | links=#5595(auto Winterspring;115):24 #19475(auto Winterspring;411):24 #19547(auto Winterspring;416):37 c7450.15:77
+#10357 | auto Winterspring;214§auto Winterquell;214§auto Berceau-de-l'Hiver;214 | x=6737.5 y=-4478 | size=1 | links=#19103(auto Winterspring;407):40 #22453(auto Winterspring;470):48
+#10395 | auto Winterspring;215§auto Winterquell;215§auto Berceau-de-l'Hiver;215 | x=5018 y=-4793.80029296875 | size=1 | links=#21061(auto Winterspring;445):25 #21858(auto Winterspring;458):24
+#10449 | auto Winterspring;216§auto Winterquell;216§auto Berceau-de-l'Hiver;216 | x=6710.10009765625 y=-4637.10009765625 | size=1 | links=#5493(auto Winterspring;109):3 c11185.1:5
+#10582 | auto Winterspring;217§auto Winterquell;217§auto Berceau-de-l'Hiver;217 | x=6576.10009765625 y=-5141.60009765625 | size=1 | links=#2961(auto Winterspring;65):28 #16134(auto Winterspring;338):22 c7458.19:8
+#10665 | auto Winterspring;218§auto Winterquell;218§auto Berceau-de-l'Hiver;218 | x=5668.80029296875 y=-4924.5 | size=1 | links=c7453.12:40 c7453.20:11
+#10762 | auto Winterspring;219§auto Winterquell;219§auto Berceau-de-l'Hiver;219 | x=5883.274237433599 y=-4866.633456390723 | size=1 | links=#3903(auto Winterspring;84):15 #15715(auto Winterspring;328):31
+#10774 | auto Winterspring;220§auto Winterquell;220§auto Berceau-de-l'Hiver;220 | x=6610.39990234375 y=-5297.89990234375 | size=1 | links=#2124(auto Winterspring;43):15 c7460.8:11
+#10802 | auto Winterspring;221§auto Winterquell;221§auto Berceau-de-l'Hiver;221 | x=6369.30029296875 y=-3813.699951171875 | size=1 | links=#3610(auto Winterspring;79):82
+#10979 | auto Winterspring;222§auto Winterquell;222§auto Berceau-de-l'Hiver;222 | x=6818.39990234375 y=-3985.60009765625 | size=1 | links=#21349(auto Winterspring;448):45 #27044(auto Winterspring;542):34
+#11020 | auto Winterspring;223§auto Winterquell;223§auto Berceau-de-l'Hiver;223 | x=6775.2001953125 y=-4670.89990234375 | size=1 | links=#9125(auto Winterspring;190):5 c9857.1:9 c11189.1:9 c11191.1:0 c11192.1:3 c13917.1:11
+#11026 | auto Winterspring;224§auto Winterquell;224§auto Berceau-de-l'Hiver;224 | x=6707.308613902589 y=-5364.50222955506 | size=1 | links=#13404(auto Winterspring;269):25
+#11049 | auto Winterspring;225§auto Winterquell;225§auto Berceau-de-l'Hiver;225 | x=6856.89990234375 y=-5078.2001953125 | size=1 | links=#18266(auto Winterspring;384):15 #24224(auto Winterspring;500):25 c7439.2:24 c7439.6:39 c7440.14:39 c7440.15:44
+#11092 | auto Winterspring;226§auto Winterquell;226§auto Berceau-de-l'Hiver;226 | x=6754.5 y=-4671.10009765625 | size=1 | links=#5106(auto Winterspring;101):6 #18629(auto Winterspring;395):9 c14742.1:10
+#11131 | auto Winterspring;227§auto Winterquell;227§auto Berceau-de-l'Hiver;227 | x=6957.30029296875 y=-4132.60009765625 | size=1 | links=#7015(auto Winterspring;139):49 #8438(auto Winterspring;176):39 #27859(auto Winterspring;560):27
+#11283 | auto Winterspring;228§auto Winterquell;228§auto Berceau-de-l'Hiver;228 | x=4803.39990234375 y=-4669.2001953125 | size=1 | links=#15376(auto Winterspring;323):33 c7463.11:59
+#11347 | auto Winterspring;229§auto Winterquell;229§auto Berceau-de-l'Hiver;229 | x=6447.5 y=-3977.199951171875 | size=1 | links=c7523.7:26 c7523.13:37
+#11443 | auto Winterspring;230§auto Winterquell;230§auto Berceau-de-l'Hiver;230 | x=7145.30029296875 y=-3859.400146484375 | size=1 | links=#15197(auto Winterspring;320):4 #18183(auto Winterspring;381):9
+#11468 | auto Winterspring;231§auto Winterquell;231§auto Berceau-de-l'Hiver;231 | x=6619.30029296875 y=-5212.80029296875 | size=1 | links=#691(auto Winterspring;15):47 c7458.24:31
+#11514 | auto Winterspring;232§auto Winterquell;232§auto Berceau-de-l'Hiver;232 | x=6179.180875351132 y=-4779.521502877054 | size=1 | links=#5677(auto Winterspring;118):65 #26388(auto Winterspring;533):54
+#11522 | auto Winterspring;233§auto Winterquell;233§auto Berceau-de-l'Hiver;233 | x=7165.7001953125 y=-4063.5 | size=1 | links=#6009(auto Winterspring;122):38 #14844(auto Winterspring;310):20
+#11540 | auto Winterspring;234§auto Winterquell;234§auto Berceau-de-l'Hiver;234 | x=6542.89990234375 y=-2994.300048828125 | size=1 | links=#458(auto Winterspring;8):38 #12626(auto Winterspring;251):45 #28395(auto Winterspring;580):51
+#11626 | auto Winterspring;235§auto Winterquell;235§auto Berceau-de-l'Hiver;235 | x=5596.327937426952 y=-4721.644358040327 | size=1 | links=#1678(auto Winterspring;37):50 #18855(auto Winterspring;400):125 #18866(auto Winterspring;402):39 c7449.8:92 c7456.24:38
+#11726 | auto Winterspring;236§auto Winterquell;236§auto Berceau-de-l'Hiver;236 | x=6563.80029296875 y=-4579.2001953125 | size=1 | links=#3879(auto Winterspring;82):102 #7038(auto Winterspring;140):71 c7448.21:30 c7443.28:25 c7443.39:41 c7443.45:50 c7443.47:34
+#11831 | auto Winterspring;237§auto Winterquell;237§auto Berceau-de-l'Hiver;237 | x=5030.330539293001 y=-4567.74860675962 | size=1 | links=#11979(auto Winterspring;238):39 #25578(auto Winterspring;521):110
+#11979 | auto Winterspring;238§auto Winterquell;238§auto Berceau-de-l'Hiver;238 | x=4994.885123586722 y=-4550.172378992757 | size=1 | links=#11831(auto Winterspring;237):39 #19611(auto Winterspring;418):41 c7463.9:24 c7463.10:21
+#12031 | auto Winterspring;239§auto Winterquell;239§auto Berceau-de-l'Hiver;239 | x=6592.2001953125 y=-5306 | size=1 | links=#20534(auto Winterspring;438):10 c7460.8:21
+#12053 | auto Winterspring;240§auto Winterquell;240§auto Berceau-de-l'Hiver;240 | x=5296.200755309619 y=-4639.873129257615 | size=1 | links=#13228(auto Winterspring;267):15 #18799(auto Winterspring;398):30
+#12084 | auto Winterspring;241§auto Winterquell;241§auto Berceau-de-l'Hiver;241 | x=5090.7001953125 y=-4919.5 | size=1 | links=#27265(auto Winterspring;549):63 o175324.2:37
+#12092 | auto Winterspring;242§auto Winterquell;242§auto Berceau-de-l'Hiver;242 | x=5627.89990234375 y=-4950.5 | size=1 | links=#7525(auto Winterspring;157):68 c7453.8:29 c7452.9:23 c7452.13:23
+#12144 | auto Winterspring;243§auto Winterquell;243§auto Berceau-de-l'Hiver;243 | x=6178.652939793674 y=-4896.186155158304 | size=1 | links=#5677(auto Winterspring;118):56 #26873(auto Winterspring;537):16
+#12152 | auto Winterspring;244§auto Winterquell;244§auto Berceau-de-l'Hiver;244 | x=7325.215680903857 y=-4138.368245900603 | size=1 | links=#9946(auto Winterspring;206):78 #19801(auto Winterspring;422):123
+#12167 | auto Winterspring;245§auto Winterquell;245§auto Berceau-de-l'Hiver;245 | x=6745.2001953125 y=-4587.39990234375 | size=1 | links=#2466(auto Winterspring;54):43 #18171(auto Winterspring;380):30
+#12187 | auto Winterspring;246§auto Winterquell;246§auto Berceau-de-l'Hiver;246 | x=4594.80029296875 y=-4656.60009765625 | size=1 | links=#27007(auto Winterspring;541):32 c7461.3:27 c7461.11:48 c7462.14:43 c7461.15:55
+#12271 | auto Winterspring;247§auto Winterquell;247§auto Berceau-de-l'Hiver;247 | x=6770.80029296875 y=-2464.300048828125 | size=1 | links=c7440.6:23 c7441.13:39
+#12345 | auto Winterspring;248§auto Winterquell;248§auto Berceau-de-l'Hiver;248 | x=7827.551692794065 y=-3918.32663652753 | size=1 | links=#1107(auto Winterspring;22):111 c7433.2:50 c7433.23:23 c7432.24:47 c7432.39:61 c7432.40:31
+#12376 | auto Winterspring;249§auto Winterquell;249§auto Berceau-de-l'Hiver;249 | x=6455.30029296875 y=-3466.800048828125 | size=1 | links=#14153(auto Winterspring;293):45 c7447.4:46 c7457.14:28
+#12574 | auto Winterspring;250§auto Winterquell;250§auto Berceau-de-l'Hiver;250 | x=6728.10009765625 y=-4679.80029296875 | size=1 | links=#9343(central location;Everlook;Winterspring):10 #23731(auto Winterspring;491):6
+#12626 | auto Winterspring;251§auto Winterquell;251§auto Berceau-de-l'Hiver;251 | x=6538.7001953125 y=-2949.10009765625 | size=1 | links=#11540(auto Winterspring;234):45 #12750(auto Winterspring;255):32
+#12643 | auto Winterspring;252§auto Winterquell;252§auto Berceau-de-l'Hiver;252 | x=5691.182777267848 y=-4737.560159423246 | size=1 | links=#8735(auto Winterspring;184):22 #24687(auto Winterspring;508):18
+#12670 | auto Winterspring;253§auto Winterquell;253§auto Berceau-de-l'Hiver;253 | x=4854.10009765625 y=-4506.80029296875 | size=1 | links=c16015.1:32 c7462.13:21
+#12703 | auto Winterspring;254§auto Winterquell;254§auto Berceau-de-l'Hiver;254 | x=4544.80029296875 y=-4274.2001953125 | size=1 | links=#5559(auto Winterspring;112):51 #18843(auto Winterspring;399):47 c7461.1:19
+#12750 | auto Winterspring;255§auto Winterquell;255§auto Berceau-de-l'Hiver;255 | x=6537.39990234375 y=-2916.60009765625 | size=1 | links=#12626(auto Winterspring;251):32 #23989(auto Winterspring;495):64
+#12752 | auto Winterspring;256§auto Winterquell;256§auto Berceau-de-l'Hiver;256 | x=6740.80029296875 y=-4637.89990234375 | size=1 | links=#6927(auto Winterspring;137):3 #27953(auto Winterspring;565):9
+#12767 | auto Winterspring;257§auto Winterquell;257§auto Berceau-de-l'Hiver;257 | x=7167 y=-3935.5 | size=1 | links=#14362(auto Winterspring;300):9 #26080(auto Winterspring;528):9
+#12791 | auto Winterspring;258§auto Winterquell;258§auto Berceau-de-l'Hiver;258 | x=6396.592773173594 y=-4909.991427995156 | size=1 | links=#6782(auto Winterspring;134):21 #24761(auto Winterspring;509):25
+#12856 | auto Winterspring;259§auto Winterquell;259§auto Berceau-de-l'Hiver;259 | x=6634.10009765625 y=-5299.7001953125 | size=1 | links=#10090(auto Winterspring;208):40 c7460.8:22
+#12857 | auto Winterspring;260§auto Winterquell;260§auto Berceau-de-l'Hiver;260 | x=6061.952157318237 y=-4920.287446873278 | size=1 | links=#7186(auto Winterspring;145):20 #22999(auto Winterspring;482):15
+#12971 | auto Winterspring;261§auto Winterquell;261§auto Berceau-de-l'Hiver;261 | x=7145.60009765625 y=-3868.199951171875 | size=1 | links=#659(auto Winterspring;14):6 #21748(auto Winterspring;455):6
+#12981 | auto Winterspring;262§auto Winterquell;262§auto Berceau-de-l'Hiver;262 | x=6951.2001953125 y=-4947.2001953125 | size=1 | links=#15875(auto Winterspring;333):52 c7455.16:33
+#12997 | auto Winterspring;263§auto Winterquell;263§auto Berceau-de-l'Hiver;263 | x=6205.7001953125 y=-4273.2001953125 | size=1 | links=#10190(auto Winterspring;209):30 #25421(auto Winterspring;518):24
+#13175 | auto Winterspring;264§auto Winterquell;264§auto Berceau-de-l'Hiver;264 | x=4504.30029296875 y=-4496.7001953125 | size=1 | links=#13807(auto Winterspring;285):32 #17941(auto Winterspring;374):23
+#13193 | auto Winterspring;265§auto Winterquell;265§auto Berceau-de-l'Hiver;265 | x=5473.433906527072 y=-4499.48285333628 | size=1 | links=#771(auto Winterspring;18):79 #28089(auto Winterspring;572):53
+#13205 | auto Winterspring;266§auto Winterquell;266§auto Berceau-de-l'Hiver;266 | x=6567.5 y=-3080.10009765625 | size=1 | links=#458(auto Winterspring;8):51 #25427(auto Winterspring;519):48 c7457.22:34
+#13228 | auto Winterspring;267§auto Winterquell;267§auto Berceau-de-l'Hiver;267 | x=5285.192643172912 y=-4629.598893095994 | size=1 | links=#12053(auto Winterspring;240):15 o175324.12:9
+#13309 | auto Winterspring;268§auto Winterquell;268§auto Berceau-de-l'Hiver;268 | x=5252.80029296875 y=-5002.5 | size=1 | links=#2795(auto Winterspring;62):24 o175324.1:17
+#13404 | auto Winterspring;269§auto Winterquell;269§auto Berceau-de-l'Hiver;269 | x=6732.89990234375 y=-5368 | size=1 | links=#11026(auto Winterspring;224):25 #26382(auto Winterspring;532):16
+#13444 | auto Winterspring;270§auto Winterquell;270§auto Berceau-de-l'Hiver;270 | x=6659.89990234375 y=-3648.60009765625 | size=1 | links=#2771(auto Winterspring;61):36 #7266(auto Winterspring;149):91 #18422(auto Winterspring;388):58
+#13451 | auto Winterspring;271§auto Winterquell;271§auto Berceau-de-l'Hiver;271 | x=7356.7001953125 y=-4962.39990234375 | size=1 | links=#22697(auto Winterspring;477):48 #26524(auto Winterspring;536):43 c7443.43:66
+#13485 | auto Winterspring;272§auto Winterquell;272§auto Berceau-de-l'Hiver;272 | x=4412.7001953125 y=-4079.300048828125 | size=1 | links=#13791(auto Winterspring;284):29 #24357(auto Winterspring;504):29
+#13505 | auto Winterspring;273§auto Winterquell;273§auto Berceau-de-l'Hiver;273 | x=6549.89990234375 y=-2746.5 | size=1 | links=#345(auto Winterspring;6):39 #4575(auto Winterspring;93):37 #7550(auto Winterspring;158):53 #7675(auto Winterspring;161):61 #27080(auto Winterspring;544):81
+#13563 | auto Winterspring;274§auto Winterquell;274§auto Berceau-de-l'Hiver;274 | x=6937.60009765625 y=-4505.10009765625 | size=1 | links=#4919(auto Winterspring;99):38 c7455.29:26
+#13573 | auto Winterspring;275§auto Winterquell;275§auto Berceau-de-l'Hiver;275 | x=5319.60009765625 y=-5071.39990234375 | size=1 | links=#25467(auto Winterspring;520):80 c7446.9:54
+#13581 | auto Winterspring;276§auto Winterquell;276§auto Berceau-de-l'Hiver;276 | x=5506.293488093175 y=-4692.986691485197 | size=1 | links=#1678(auto Winterspring;37):44 #5172(auto Winterspring;102):26 #18797(auto Winterspring;397):67 #27257(auto Winterspring;548):55
+#13621 | auto Winterspring;277§auto Winterquell;277§auto Berceau-de-l'Hiver;277 | x=6959.10009765625 y=-4638.80029296875 | size=1 | links=#19587(auto Winterspring;417):31 c7458.13:25 o175407.24:27
+#13628 | auto Winterspring;278§auto Winterquell;278§auto Berceau-de-l'Hiver;278 | x=6359.10009765625 y=-4386.89990234375 | size=1 | links=#4832(auto Winterspring;98):54 #14196(auto Winterspring;296):35 c7443.9:20
+#13641 | auto Winterspring;279§auto Winterquell;279§auto Berceau-de-l'Hiver;279 | x=6638.2001953125 y=-2365.199951171875 | size=1 | links=#4554(auto Winterspring;91):42 #17650(auto Winterspring;368):41
+#13656 | auto Winterspring;280§auto Winterquell;280§auto Berceau-de-l'Hiver;280 | x=6450.10009765625 y=-2891.900146484375 | size=1 | links=#10195(auto Winterspring;210):22 #22231(auto Winterspring;464):51 c7450.22:13
+#13663 | auto Winterspring;281§auto Winterquell;281§auto Berceau-de-l'Hiver;281 | x=6989.60009765625 y=-4214.39990234375 | size=1 | links=#7015(auto Winterspring;139):46 c7458.3:35 c7451.19:19
+#13676 | auto Winterspring;282§auto Winterquell;282§auto Berceau-de-l'Hiver;282 | x=4704.10009765625 y=-4442.2001953125 | size=1 | links=#3419(auto Winterspring;71):23 #28448(auto Winterspring;582):17
+#13693 | auto Winterspring;283§auto Winterquell;283§auto Berceau-de-l'Hiver;283 | x=6405 y=-5043.89990234375 | size=1 | links=c7458.7:42 c7460.11:19 c7458.30:29 c7458.32:48 c7458.36:57 c7458.37:54
+#13791 | auto Winterspring;284§auto Winterquell;284§auto Berceau-de-l'Hiver;284 | x=4442 y=-4082.5 | size=1 | links=#9291(auto Winterspring;193):34 #13485(auto Winterspring;272):29
+#13807 | auto Winterspring;285§auto Winterquell;285§auto Berceau-de-l'Hiver;285 | x=4472.80029296875 y=-4502.39990234375 | size=1 | links=#2352(auto Winterspring;49):48 #13175(auto Winterspring;264):32
+#13841 | auto Winterspring;286§auto Winterquell;286§auto Berceau-de-l'Hiver;286 | x=6646.60009765625 y=-3539.800048828125 | size=1 | links=#19475(auto Winterspring;411):33 #28257(auto Winterspring;575):23
+#13880 | auto Winterspring;287§auto Winterquell;287§auto Berceau-de-l'Hiver;287 | x=5089.89990234375 y=-4811.7001953125 | size=1 | links=#8014(auto Winterspring;168):36 #20230(auto Winterspring;432):36
+#13953 | auto Winterspring;288§auto Winterquell;288§auto Berceau-de-l'Hiver;288 | x=7123.60009765625 y=-4603.30029296875 | size=1 | links=#26911(auto Winterspring;539):66 #28740(s;Kalimdor;Winterspring;Everlook;Moon Horror Den):28 c7451.8:19
+#14016 | auto Winterspring;289§auto Winterquell;289§auto Berceau-de-l'Hiver;289 | x=6695.39990234375 y=-3093 | size=1 | links=#14410(auto Winterspring;301):30 c7447.10:43 c7444.17:26 c7444.18:45 c7450.24:18 o175407.43:32
+#14034 | auto Winterspring;290§auto Winterquell;290§auto Berceau-de-l'Hiver;290 | x=6929.89990234375 y=-4539 | size=1 | links=#1058(auto Winterspring;20):38 c7455.29:10
+#14071 | auto Winterspring;291§auto Winterquell;291§auto Berceau-de-l'Hiver;291 | x=6049.80029296875 y=-5148.30029296875 | size=1 | links=#2534(auto Winterspring;57):30 c7448.1:34 c7448.3:37
+#14111 | auto Winterspring;292§auto Winterquell;292§auto Berceau-de-l'Hiver;292 | x=5707.5 y=-4891.5 | size=1 | links=#20056(auto Winterspring;430):38 c7452.18:59 c7453.21:38
+#14153 | auto Winterspring;293§auto Winterquell;293§auto Berceau-de-l'Hiver;293 | x=6456.10009765625 y=-3512.199951171875 | size=1 | links=#12376(auto Winterspring;249):45 #22372(auto Winterspring;467):31
+#14177 | auto Winterspring;294§auto Winterquell;294§auto Berceau-de-l'Hiver;294 | x=6541.2001953125 y=-3756.199951171875 | size=1 | links=#4558(auto Winterspring;92):46 #8332(auto Winterspring;174):27
+#14180 | auto Winterspring;295§auto Winterquell;295§auto Berceau-de-l'Hiver;295 | x=6577.80029296875 y=-4354.30029296875 | size=1 | links=#15874(auto Winterspring;332):105 c7448.22:58
+#14196 | auto Winterspring;296§auto Winterquell;296§auto Berceau-de-l'Hiver;296 | x=6348.30029296875 y=-4353.30029296875 | size=1 | links=#13628(auto Winterspring;278):35 c7448.15:61
+#14233 | auto Winterspring;297§auto Winterquell;297§auto Berceau-de-l'Hiver;297 | x=7106.5 y=-3985.300048828125 | size=1 | links=#1316(auto Winterspring;26):4 c11079.1:24
+#14315 | auto Winterspring;298§auto Winterquell;298§auto Berceau-de-l'Hiver;298 | x=5987.89990234375 y=-5127.2001953125 | size=1 | links=#27968(auto Winterspring;566):28 c7448.3:30
+#14331 | auto Winterspring;299§auto Winterquell;299§auto Berceau-de-l'Hiver;299 | x=6482.80029296875 y=-3186.900146484375 | size=1 | links=#23520(auto Winterspring;487):72 c7441.3:31 c7442.9:28
+#14362 | auto Winterspring;300§auto Winterquell;300§auto Berceau-de-l'Hiver;300 | x=7166 y=-3945.199951171875 | size=1 | links=#12767(auto Winterspring;257):9 #15658(auto Winterspring;326):9
+#14410 | auto Winterspring;301§auto Winterquell;301§auto Berceau-de-l'Hiver;301 | x=6665.39990234375 y=-3087.60009765625 | size=1 | links=#14016(auto Winterspring;289):30 #25624(auto Winterspring;523):62
+#14554 | auto Winterspring;302§auto Winterquell;302§auto Berceau-de-l'Hiver;302 | x=6468.10009765625 y=-3314.60009765625 | size=1 | links=c7440.2:64 c7442.2:24 c7442.7:66 c7442.11:50
+#14555 | auto Winterspring;303§auto Winterquell;303§auto Berceau-de-l'Hiver;303 | x=8027.30029296875 y=-3898.60009765625 | size=1 | links=#8460(auto Winterspring;177):37 #9553(auto Winterspring;197):83 #14986(auto Winterspring;315):103 c10200.1:48
+#14575 | auto Winterspring;304§auto Winterquell;304§auto Berceau-de-l'Hiver;304 | x=6520.5 y=-2490.800048828125 | size=1 | links=#4444(auto Winterspring;89):37 #23148(auto Winterspring;484):84 #24064(auto Winterspring;496):61
+#14643 | auto Winterspring;305§auto Winterquell;305§auto Berceau-de-l'Hiver;305 | x=7146 y=-3828.300048828125 | size=1 | links=#8587(auto Winterspring;179):7 #20592(auto Winterspring;440):7
+#14650 | auto Winterspring;306§auto Winterquell;306§auto Berceau-de-l'Hiver;306 | x=6106.605605514161 y=-4613.276018870627 | size=1 | links=#529(auto Winterspring;12):44
+#14733 | auto Winterspring;307§auto Winterquell;307§auto Berceau-de-l'Hiver;307 | x=6295 y=-4340.60009765625 | size=1 | links=#4832(auto Winterspring;98):44 #16766(auto Winterspring;354):49
+#14753 | auto Winterspring;308§auto Winterquell;308§auto Berceau-de-l'Hiver;308 | x=6500.30029296875 y=-2801.10009765625 | size=1 | links=#7675(auto Winterspring;161):13 o175407.56:15
+#14766 | auto Winterspring;309§auto Winterquell;309§auto Berceau-de-l'Hiver;309 | x=6719.60009765625 y=-4604.10009765625 | size=1 | links=#8817(auto Winterspring;187):7 #18171(auto Winterspring;380):6
+#14844 | auto Winterspring;310§auto Winterquell;310§auto Berceau-de-l'Hiver;310 | x=7168.30029296875 y=-4042.800048828125 | size=1 | links=#11522(auto Winterspring;233):20 #26481(auto Winterspring;535):20
+#14869 | auto Winterspring;311§auto Winterquell;311§auto Berceau-de-l'Hiver;311 | x=4608.10009765625 y=-4554.7001953125 | size=1 | links=#27941(auto Winterspring;562):46 c7461.15:47
+#14925 | auto Winterspring;312§auto Winterquell;312§auto Berceau-de-l'Hiver;312 | x=6718.5 y=-4665.89990234375 | size=1 | links=#9343(central location;Everlook;Winterspring):6 #24199(auto Winterspring;498):16
+#14950 | auto Winterspring;313§auto Winterquell;313§auto Berceau-de-l'Hiver;313 | x=5636.7001953125 y=-4479.2001953125 | size=1 | links=c7445.1:39 c7453.13:61
+#14973 | auto Winterspring;314§auto Winterquell;314§auto Berceau-de-l'Hiver;314 | x=7173.2001953125 y=-4887.39990234375 | size=1 | links=#24219(auto Winterspring;499):50 c7455.17:14 c7455.18:48 c7443.55:28
+#14986 | auto Winterspring;315§auto Winterquell;315§auto Berceau-de-l'Hiver;315 | x=7924.10009765625 y=-3895.199951171875 | size=1 | links=#14555(auto Winterspring;303):103 c7434.5:84 c7432.39:44
+#15048 | auto Winterspring;316§auto Winterquell;316§auto Berceau-de-l'Hiver;316 | x=7130.5 y=-3870.699951171875 | size=1 | links=#18581(auto Winterspring;394):6 #26202(auto Winterspring;529):5
+#15066 | auto Winterspring;317§auto Winterquell;317§auto Berceau-de-l'Hiver;317 | x=6671.2001953125 y=-4519.10009765625 | size=1 | links=#6810(auto Winterspring;135):48 #8559(auto Winterspring;178):41 #22453(auto Winterspring;470):29
+#15117 | auto Winterspring;318§auto Winterquell;318§auto Berceau-de-l'Hiver;318 | x=5647.80029296875 y=-5003.39990234375 | size=1 | links=#15690(auto Winterspring;327):62 c7453.6:28 c7453.11:44
+#15163 | auto Winterspring;319§auto Winterquell;319§auto Berceau-de-l'Hiver;319 | x=6516.5 y=-3717.800048828125 | size=1 | links=#8332(auto Winterspring;174):22 #9155(auto Winterspring;191):32 c7447.5:14
+#15197 | auto Winterspring;320§auto Winterquell;320§auto Berceau-de-l'Hiver;320 | x=7146.80029296875 y=-3863.199951171875 | size=1 | links=#11443(auto Winterspring;230):4 #18501(auto Winterspring;392):4
+#15326 | auto Winterspring;321§auto Winterquell;321§auto Berceau-de-l'Hiver;321 | x=5845.311536490593 y=-4825.633756436465 | size=1 | links=#15715(auto Winterspring;328):24 #21831(auto Winterspring;457):38
+#15341 | auto Winterspring;322§auto Winterquell;322§auto Berceau-de-l'Hiver;322 | x=6029.7001953125 y=-5064.30029296875 | size=1 | links=c7448.14:25 c7443.16:20
+#15376 | auto Winterspring;323§auto Winterquell;323§auto Berceau-de-l'Hiver;323 | x=4814.39990234375 y=-4701.10009765625 | size=1 | links=#11283(auto Winterspring;228):33 #27366(auto Winterspring;553):37
+#15457 | auto Winterspring;324§auto Winterquell;324§auto Berceau-de-l'Hiver;324 | x=4369.80029296875 y=-4059.10009765625 | size=1 | links=#18355(auto Winterspring;387):32 #24357(auto Winterspring;504):21
+#15636 | auto Winterspring;325§auto Winterquell;325§auto Berceau-de-l'Hiver;325 | x=4635.80029296875 y=-4459.89990234375 | size=1 | links=#4466(auto Winterspring;90):35 #9613(auto Winterspring;200):25
+#15658 | auto Winterspring;326§auto Winterquell;326§auto Berceau-de-l'Hiver;326 | x=7164.7001953125 y=-3955.10009765625 | size=1 | links=#14362(auto Winterspring;300):9 #21445(auto Winterspring;450):20
+#15690 | auto Winterspring;327§auto Winterquell;327§auto Berceau-de-l'Hiver;327 | x=5701.30029296875 y=-4971.2001953125 | size=1 | links=#15117(auto Winterspring;318):62 #17845(auto Winterspring;373):44 #20056(auto Winterspring;430):42 c7454.2:21 c7453.6:38 c7453.8:59 c7452.10:23
+#15715 | auto Winterspring;328§auto Winterquell;328§auto Berceau-de-l'Hiver;328 | x=5863.533630099203 y=-4841.578079456402 | size=1 | links=#10762(auto Winterspring;219):31 #15326(auto Winterspring;321):24 c7456.35:92
+#15733 | auto Winterspring;329§auto Winterquell;329§auto Berceau-de-l'Hiver;329 | x=6859.39990234375 y=-4054.60009765625 | size=1 | links=#9578(auto Winterspring;198):63 #21349(auto Winterspring;448):34
+#15769 | auto Winterspring;330§auto Winterquell;330§auto Berceau-de-l'Hiver;330 | x=6090.5 y=-4452.2001953125 | size=1 | links=c10661.1:27 c7435.8:38
+#15777 | auto Winterspring;331§auto Winterquell;331§auto Berceau-de-l'Hiver;331 | x=6865.89990234375 y=-4202.89990234375 | size=1 | links=#20458(auto Winterspring;436):33 #26414(auto Winterspring;534):40 c7457.18:55
+#15874 | auto Winterspring;332§auto Winterquell;332§auto Berceau-de-l'Hiver;332 | x=6557.10009765625 y=-4251.30029296875 | size=1 | links=#2152(auto Winterspring;45):53 #14180(auto Winterspring;295):105 c14458.3:23
+#15875 | auto Winterspring;333§auto Winterquell;333§auto Berceau-de-l'Hiver;333 | x=6940.89990234375 y=-4999.10009765625 | size=1 | links=#5277(auto Winterspring;104):38 #12981(auto Winterspring;262):52
+#15885 | auto Winterspring;334§auto Winterquell;334§auto Berceau-de-l'Hiver;334 | x=7528.39990234375 y=-4383.89990234375 | size=1 | links=c7449.5:101 c7449.7:34 c7456.10:40
+#15995 | auto Winterspring;335§auto Winterquell;335§auto Berceau-de-l'Hiver;335 | x=7147 y=-3886.800048828125 | size=1 | links=#7214(auto Winterspring;147):8 #9488(auto Winterspring;196):7
+#16019 | auto Winterspring;336§auto Winterquell;336§auto Berceau-de-l'Hiver;336 | x=7133.80029296875 y=-3949 | size=1 | links=#4713(entry and exit;Starfall Village;Winterspring):8 #16987(auto Winterspring;358):21
+#16083 | auto Winterspring;337§auto Winterquell;337§auto Berceau-de-l'Hiver;337 | x=6475 y=-4300.2001953125 | size=1 | links=#1790(auto Winterspring;38):29 #28046(auto Winterspring;571):18
+#16134 | auto Winterspring;338§auto Winterquell;338§auto Berceau-de-l'Hiver;338 | x=6561.10009765625 y=-5124.5 | size=1 | links=#10582(auto Winterspring;217):22 c7458.17:18
+#16153 | auto Winterspring;339§auto Winterquell;339§auto Berceau-de-l'Hiver;339 | x=6725.7001953125 y=-4637.30029296875 | size=1 | links=#24199(auto Winterspring;498):13 #26013(auto Winterspring;526):8
+#16163 | auto Winterspring;340§auto Winterquell;340§auto Berceau-de-l'Hiver;340 | x=6645.10009765625 y=-3438.5 | size=1 | links=#5595(auto Winterspring;115):19 #7635(auto Winterspring;159):22
+#16220 | auto Winterspring;341§auto Winterquell;341§auto Berceau-de-l'Hiver;341 | x=5671.189079572437 y=-4714.529448496426 | size=1 | links=#23938(auto Winterspring;494):17 #24687(auto Winterspring;508):13
+#16260 | auto Winterspring;342§auto Winterquell;342§auto Berceau-de-l'Hiver;342 | x=5498.5 y=-4950.80029296875 | size=1 | links=#2144(auto Winterspring;44):28 c7454.3:16
+#16278 | auto Winterspring;343§auto Winterquell;343§auto Berceau-de-l'Hiver;343 | x=6702.89990234375 y=-4754.30029296875 | size=1 | links=#7738(auto Winterspring;163):28 #19627(auto Winterspring;419):27 #25704(auto Winterspring;525):30
+#16327 | auto Winterspring;344§auto Winterquell;344§auto Berceau-de-l'Hiver;344 | x=4777.2001953125 y=-4342.10009765625 | size=1 | links=#1668(auto Winterspring;36):39 #17997(auto Winterspring;376):76 c7463.3:36 c7462.4:16
+#16330 | auto Winterspring;345§auto Winterquell;345§auto Berceau-de-l'Hiver;345 | x=6539.60009765625 y=-2435.900146484375 | size=1 | links=#4444(auto Winterspring;89):26 #5285(auto Winterspring;106):48
+#16345 | auto Winterspring;346§auto Winterquell;346§auto Berceau-de-l'Hiver;346 | x=6648.39990234375 y=-4730.89990234375 | size=1 | links=#7738(auto Winterspring;163):30 #8615(auto Winterspring;180):24
+#16554 | auto Winterspring;347§auto Winterquell;347§auto Berceau-de-l'Hiver;347 | x=6355.795005751087 y=-5034.464282986383 | size=1 | links=#18569(auto Winterspring;393):44 #23733(auto Winterspring;492):49 c7458.6:24 c7458.30:21
+#16577 | auto Winterspring;348§auto Winterquell;348§auto Berceau-de-l'Hiver;348 | x=7146.60009765625 y=-3809.900146484375 | size=1 | links=#20572(auto Winterspring;439):8 #20592(auto Winterspring;440):11
+#16620 | auto Winterspring;349§auto Winterquell;349§auto Berceau-de-l'Hiver;349 | x=7669.80029296875 y=-4906.30029296875 | size=1 | links=#2890(auto Winterspring;63):23 #7461(auto Winterspring;154):28
+#16628 | auto Winterspring;350§auto Winterquell;350§auto Berceau-de-l'Hiver;350 | x=6750.5 y=-5151.5 | size=1 | links=#19383(auto Winterspring;410):45 #24392(auto Winterspring;505):24 #26243(auto Winterspring;530):26 c7438.10:38 c7438.12:19
+#16666 | auto Winterspring;351§auto Winterquell;351§auto Berceau-de-l'Hiver;351 | x=6720 y=-5194.2001953125 | size=1 | links=#24392(auto Winterspring;505):29 c7438.11:23
+#16728 | auto Winterspring;352§auto Winterquell;352§auto Berceau-de-l'Hiver;352 | x=6271.501630062719 y=-4888.022046193111 | size=1 | links=#21758(auto Winterspring;456):17 #23141(auto Winterspring;483):22
+#16758 | auto Winterspring;353§auto Winterquell;353§auto Berceau-de-l'Hiver;353 | x=6537.376326459098 y=-4810.008196585816 | size=1 | links=#17361(auto Winterspring;362):20 #21323(auto Winterspring;447):16
+#16766 | auto Winterspring;354§auto Winterquell;354§auto Berceau-de-l'Hiver;354 | x=6258.80029296875 y=-4307 | size=1 | links=#14733(auto Winterspring;307):49 #18448(auto Winterspring;389):37
+#16800 | auto Winterspring;355§auto Winterquell;355§auto Berceau-de-l'Hiver;355 | x=6570.60009765625 y=-4089.800048828125 | size=1 | links=#10215(auto Winterspring;211):46 o175893.1:51 c7523.12:19 c7523.17:42
+#16941 | auto Winterspring;356§auto Winterquell;356§auto Berceau-de-l'Hiver;356 | x=7509.89990234375 y=-4949.5 | size=1 | links=c7454.14:50 c7454.17:42 c7454.18:43 c7453.26:32 c7453.35:53
+#16975 | auto Winterspring;357§auto Winterquell;357§auto Berceau-de-l'Hiver;357 | x=7462.80029296875 y=-4138.30029296875 | size=1 | links=#19801(auto Winterspring;422):38 c7456.9:80
+#16987 | auto Winterspring;358§auto Winterquell;358§auto Berceau-de-l'Hiver;358 | x=7149.7001953125 y=-3963.699951171875 | size=1 | links=#16019(auto Winterspring;336):21 #21445(auto Winterspring;450):17
+#16997 | auto Winterspring;359§auto Winterquell;359§auto Berceau-de-l'Hiver;359 | x=6618 y=-3229.199951171875 | size=1 | links=#3423(auto Winterspring;72):62 #20745(auto Winterspring;441):58
+#17120 | auto Winterspring;360§auto Winterquell;360§auto Berceau-de-l'Hiver;360 | x=7136.10009765625 y=-3856.10009765625 | size=1 | links=#6320(auto Winterspring;127):5 #8804(auto Winterspring;186):5
+#17279 | auto Winterspring;361§auto Winterquell;361§auto Berceau-de-l'Hiver;361 | x=5214.753430739953 y=-4723.223842385842 | size=1 | links=#1350(auto Winterspring;27):52 #28330(auto Winterspring;578):21
+#17361 | auto Winterspring;362§auto Winterquell;362§auto Berceau-de-l'Hiver;362 | x=6553.517114242719 y=-4797.005863126058 | size=1 | links=#5208(auto Winterspring;103):24 #16758(auto Winterspring;353):20
+#17453 | auto Winterspring;363§auto Winterquell;363§auto Berceau-de-l'Hiver;363 | x=7088.39990234375 y=-4142.5 | size=1 | links=#24352(auto Winterspring;503):53 #27357(auto Winterspring;552):47
+#17508 | auto Winterspring;364§auto Winterquell;364§auto Berceau-de-l'Hiver;364 | x=5937.39990234375 y=-4438.10009765625 | size=1 | links=#6584(auto Winterspring;129):56 c10659.11:19
+#17517 | auto Winterspring;365§auto Winterquell;365§auto Berceau-de-l'Hiver;365 | x=5909.341975811984 y=-4882.071627128942 | size=1 | links=#3903(auto Winterspring;84):15 #18275(auto Winterspring;385):20
+#17525 | auto Winterspring;366§auto Winterquell;366§auto Berceau-de-l'Hiver;366 | x=6683.80029296875 y=-4837 | size=1 | links=c7458.10:44 o175407.28:40
+#17621 | auto Winterspring;367§auto Winterquell;367§auto Berceau-de-l'Hiver;367 | x=6196.177957937801 y=-4910.88815802126 | size=1 | links=#7061(auto Winterspring;141):11 #26873(auto Winterspring;537):9
+#17650 | auto Winterspring;368§auto Winterquell;368§auto Berceau-de-l'Hiver;368 | x=6606.5 y=-2392.400146484375 | size=1 | links=#5285(auto Winterspring;106):31 #13641(auto Winterspring;279):41
+#17701 | auto Winterspring;369§auto Winterquell;369§auto Berceau-de-l'Hiver;369 | x=6431.80029296875 y=-3847.199951171875 | size=1 | links=#3610(auto Winterspring;79):60 #4558(auto Winterspring;92):100
+#17757 | auto Winterspring;370§auto Winterquell;370§auto Berceau-de-l'Hiver;370 | x=6536.80029296875 y=-2635.5 | size=1 | links=#8409(auto Winterspring;175):37 #26078(auto Winterspring;527):42
+#17778 | auto Winterspring;371§auto Winterquell;371§auto Berceau-de-l'Hiver;371 | x=7489.39990234375 y=-4516.30029296875 | size=1 | links=#27065(auto Winterspring;543):29 c7449.11:54
+#17785 | auto Winterspring;372§auto Winterquell;372§auto Berceau-de-l'Hiver;372 | x=7056.7001953125 y=-4857.10009765625 | size=1 | links=#24337(auto Winterspring;502):66 c7443.26:47
+#17845 | auto Winterspring;373§auto Winterquell;373§auto Berceau-de-l'Hiver;373 | x=5686.2001953125 y=-5012.89990234375 | size=1 | links=#15690(auto Winterspring;327):44 c7453.6:16 c7453.7:34
+#17941 | auto Winterspring;374§auto Winterquell;374§auto Berceau-de-l'Hiver;374 | x=4527.2001953125 y=-4501.7001953125 | size=1 | links=#3055(auto Winterspring;67):20 #13175(auto Winterspring;264):23
+#17953 | auto Winterspring;375§auto Winterquell;375§auto Berceau-de-l'Hiver;375 | x=7122.60009765625 y=-3963.199951171875 | size=1 | links=#4713(entry and exit;Starfall Village;Winterspring):10 #23155(auto Winterspring;485):13
+#17997 | auto Winterspring;376§auto Winterquell;376§auto Berceau-de-l'Hiver;376 | x=4742.89990234375 y=-4410.89990234375 | size=1 | links=#3419(auto Winterspring;71):26 #16327(auto Winterspring;344):76 c7463.1:14
+#18088 | auto Winterspring;377§auto Winterquell;377§auto Berceau-de-l'Hiver;377 | x=6321.5 y=-4794.2001953125 | size=1 | links=c7448.5:31 c7455.6:62 c7455.8:81 c7443.11:49
+#18119 | auto Winterspring;378§auto Winterquell;378§auto Berceau-de-l'Hiver;378 | x=6579.073365765431 y=-4761.137518605655 | size=1 | links=#720(auto Winterspring;17):19 #5208(auto Winterspring;103):20
+#18127 | auto Winterspring;379§auto Winterquell;379§auto Berceau-de-l'Hiver;379 | x=6652.80029296875 y=-3959.900146484375 | size=1 | links=#5340(auto Winterspring;108):38 c7450.7:24
+#18171 | auto Winterspring;380§auto Winterquell;380§auto Berceau-de-l'Hiver;380 | x=6716.39990234375 y=-4598.7001953125 | size=1 | links=#12167(auto Winterspring;245):30 #14766(auto Winterspring;309):6 #27944(auto Winterspring;563):19
+#18183 | auto Winterspring;381§auto Winterquell;381§auto Berceau-de-l'Hiver;381 | x=7141.7001953125 y=-3850.900146484375 | size=1 | links=#1018(auto Winterspring;19):8 #11443(auto Winterspring;230):9
+#18193 | auto Winterspring;382§auto Winterquell;382§auto Berceau-de-l'Hiver;382 | x=5737.497346363134 y=-4752.745296681077 | size=1 | links=#8735(auto Winterspring;184):26 #24569(auto Winterspring;507):28
+#18259 | auto Winterspring;383§auto Winterquell;383§auto Berceau-de-l'Hiver;383 | x=6718.30029296875 y=-3788.800048828125 | size=1 | links=#19000(auto Winterspring;406):39 #27909(auto Winterspring;561):41
+#18266 | auto Winterspring;384§auto Winterquell;384§auto Berceau-de-l'Hiver;384 | x=6841.80029296875 y=-5074.7001953125 | size=1 | links=#11049(auto Winterspring;225):15 #22875(auto Winterspring;479):31
+#18275 | auto Winterspring;385§auto Winterquell;385§auto Berceau-de-l'Hiver;385 | x=5925.792493774111 y=-4893.713499332544 | size=1 | links=#9849(auto Winterspring;203):25 #17517(auto Winterspring;365):20
+#18282 | auto Winterspring;386§auto Winterquell;386§auto Berceau-de-l'Hiver;386 | x=6237.874997244135 y=-4896.989144919149 | size=1 | links=#20924(auto Winterspring;444):24 #23141(auto Winterspring;483):14
+#18355 | auto Winterspring;387§auto Winterquell;387§auto Berceau-de-l'Hiver;387 | x=4337.7001953125 y=-4056.60009765625 | size=1 | links=#15457(auto Winterspring;324):32 #28338(auto Winterspring;579):41 c7462.16:23
+#18422 | auto Winterspring;388§auto Winterquell;388§auto Berceau-de-l'Hiver;388 | x=6678.39990234375 y=-3703.800048828125 | size=1 | links=#13444(auto Winterspring;270):58 #19000(auto Winterspring;406):54
+#18448 | auto Winterspring;389§auto Winterquell;389§auto Berceau-de-l'Hiver;389 | x=6221.2001953125 y=-4310.5 | size=1 | links=#10190(auto Winterspring;209):20 #16766(auto Winterspring;354):37
+#18450 | auto Winterspring;390§auto Winterquell;390§auto Berceau-de-l'Hiver;390 | x=6604.39990234375 y=-5343.2001953125 | size=1 | links=c7459.7:26 c7460.8:35
+#18454 | auto Winterspring;391§auto Winterquell;391§auto Berceau-de-l'Hiver;391 | x=6710 y=-4698.2001953125 | size=1 | links=#2579(auto Winterspring;59):5 c11186.1:6
+#18501 | auto Winterspring;392§auto Winterquell;392§auto Berceau-de-l'Hiver;392 | x=7146 y=-3868.10009765625 | size=1 | links=#15197(auto Winterspring;320):4 #19659(auto Winterspring;420):6
+#18569 | auto Winterspring;393§auto Winterquell;393§auto Berceau-de-l'Hiver;393 | x=6332.30029296875 y=-5071.7001953125 | size=1 | links=#4780(auto Winterspring;97):12 #16554(auto Winterspring;347):44
+#18581 | auto Winterspring;394§auto Winterquell;394§auto Berceau-de-l'Hiver;394 | x=7136 y=-3874.10009765625 | size=1 | links=#15048(auto Winterspring;316):6 #19659(auto Winterspring;420):6
+#18629 | auto Winterspring;395§auto Winterquell;395§auto Berceau-de-l'Hiver;395 | x=6745.2001953125 y=-4670.89990234375 | size=1 | links=#2264(auto Winterspring;47):12 #11092(auto Winterspring;226):9 c15574.1:8
+#18705 | auto Winterspring;396§auto Winterquell;396§auto Berceau-de-l'Hiver;396 | x=6477.30029296875 y=-4261.5 | size=1 | links=#1790(auto Winterspring;38):11 c15606.1:10
+#18797 | auto Winterspring;397§auto Winterquell;397§auto Berceau-de-l'Hiver;397 | x=5502.60009765625 y=-4760.5 | size=1 | links=#13581(auto Winterspring;276):67 c7456.16:34
+#18799 | auto Winterspring;398§auto Winterquell;398§auto Berceau-de-l'Hiver;398 | x=5313.074985547969 y=-4665.496757834048 | size=1 | links=#8181(auto Winterspring;171):48 #12053(auto Winterspring;240):30 #27820(auto Winterspring;559):41 c7429.9:8 c7428.10:35 o175324.11:34
+#18843 | auto Winterspring;399§auto Winterquell;399§auto Berceau-de-l'Hiver;399 | x=4592.10009765625 y=-4275.89990234375 | size=1 | links=#542(auto Winterspring;13):43 #12703(auto Winterspring;254):47
+#18855 | auto Winterspring;400§auto Winterquell;400§auto Berceau-de-l'Hiver;400 | x=5609.153238628346 y=-4596.829175392808 | size=1 | links=#6011(auto Winterspring;123):72 #11626(auto Winterspring;235):125
+#18860 | auto Winterspring;401§auto Winterquell;401§auto Berceau-de-l'Hiver;401 | x=6447.705251027142 y=-4889.367141232268 | size=1 | links=#24761(auto Winterspring;509):30 #27536(auto Winterspring;554):22
+#18866 | auto Winterspring;402§auto Winterquell;402§auto Berceau-de-l'Hiver;402 | x=5635.591077218291 y=-4721.193047818914 | size=1 | links=#11626(auto Winterspring;235):39 #24687(auto Winterspring;508):40 c6491.3:44
+#18878 | auto Winterspring;403§auto Winterquell;403§auto Berceau-de-l'Hiver;403 | x=7745.80029296875 y=-4003.400146484375 | size=1 | links=#22013(auto Winterspring;460):27 c7432.11:66
+#18950 | auto Winterspring;404§auto Winterquell;404§auto Berceau-de-l'Hiver;404 | x=6855.60009765625 y=-4701.89990234375 | size=1 | links=#2314(auto Winterspring;48):24 c25917.1:55
+#18972 | auto Winterspring;405§auto Winterquell;405§auto Berceau-de-l'Hiver;405 | x=5500.89990234375 y=-4890.89990234375 | size=1 | links=#19939(auto Winterspring;427):33 c7452.6:31
+#19000 | auto Winterspring;406§auto Winterquell;406§auto Berceau-de-l'Hiver;406 | x=6697.89990234375 y=-3754.800048828125 | size=1 | links=#18259(auto Winterspring;383):39 #18422(auto Winterspring;388):54
+#19103 | auto Winterspring;407§auto Winterquell;407§auto Berceau-de-l'Hiver;407 | x=6773.5 y=-4459.2001953125 | size=1 | links=#1584(auto Winterspring;33):42 #10357(auto Winterspring;214):40
+#19201 | auto Winterspring;408§auto Winterquell;408§auto Berceau-de-l'Hiver;408 | x=5179.60009765625 y=-5057.39990234375 | size=1 | links=#1461(auto Winterspring;30):38 c7446.7:14
+#19300 | auto Winterspring;409§auto Winterquell;409§auto Berceau-de-l'Hiver;409 | x=5375.824756410261 y=-4860.243641560045 | size=1 | links=#387(auto Winterspring;7):46 c7429.2:22 o175324.3:39
+#19383 | auto Winterspring;410§auto Winterquell;410§auto Berceau-de-l'Hiver;410 | x=6747.80029296875 y=-5105.60009765625 | size=1 | links=#16628(auto Winterspring;350):45 #21359(auto Winterspring;449):30
+#19475 | auto Winterspring;411§auto Winterquell;411§auto Berceau-de-l'Hiver;411 | x=6644.80029296875 y=-3506.699951171875 | size=1 | links=#10311(auto Winterspring;213):24 #13841(auto Winterspring;286):33
+#19480 | auto Winterspring;412§auto Winterquell;412§auto Berceau-de-l'Hiver;412 | x=6628.65337714505 y=-2744.613701372221 | size=1 | links=#345(auto Winterspring;6):45 #23491(auto Winterspring;486):44 c7457.23:26
+#19490 | auto Winterspring;413§auto Winterquell;413§auto Berceau-de-l'Hiver;413 | x=4698.60009765625 y=-4664.7001953125 | size=1 | links=#21516(auto Winterspring;451):17 #28581(auto Winterspring;584):19
+#19509 | auto Winterspring;414§auto Winterquell;414§auto Berceau-de-l'Hiver;414 | x=4524.39990234375 y=-4150.89990234375 | size=1 | links=#2435(auto Winterspring;53):26 #20192(auto Winterspring;431):27
+#19534 | auto Winterspring;415§auto Winterquell;415§auto Berceau-de-l'Hiver;415 | x=6000.452536286065 y=-4913.707211248112 | size=1 | links=#3456(auto Winterspring;74):27 #19910(auto Winterspring;426):15
+#19547 | auto Winterspring;416§auto Winterquell;416§auto Berceau-de-l'Hiver;416 | x=6608.10009765625 y=-3470.699951171875 | size=1 | links=#10311(auto Winterspring;213):37 c7457.13:31
+#19587 | auto Winterspring;417§auto Winterquell;417§auto Berceau-de-l'Hiver;417 | x=6951.60009765625 y=-4608.5 | size=1 | links=#1058(auto Winterspring;20):37 #13621(auto Winterspring;277):31 c7451.20:8
+#19611 | auto Winterspring;418§auto Winterquell;418§auto Berceau-de-l'Hiver;418 | x=4955.924465618944 y=-4537.28311896208 | size=1 | links=#11979(auto Winterspring;238):41 #27718(auto Winterspring;558):47 c7461.9:51
+#19627 | auto Winterspring;419§auto Winterquell;419§auto Berceau-de-l'Hiver;419 | x=6730.2001953125 y=-4757.39990234375 | size=1 | links=#16278(auto Winterspring;343):27 #24946(auto Winterspring;511):18
+#19659 | auto Winterspring;420§auto Winterquell;420§auto Berceau-de-l'Hiver;420 | x=7141.89990234375 y=-3872.699951171875 | size=1 | links=#18501(auto Winterspring;392):6 #18581(auto Winterspring;394):6
+#19754 | auto Winterspring;421§auto Winterquell;421§auto Berceau-de-l'Hiver;421 | x=7171.60009765625 y=-3995.5 | size=1 | links=#20259(auto Winterspring;433):19 #21445(auto Winterspring;450):21
+#19801 | auto Winterspring;422§auto Winterquell;422§auto Berceau-de-l'Hiver;422 | x=7443.557431602789 y=-4104.468293009223 | size=1 | links=#5603(auto Winterspring;116):145 #12152(auto Winterspring;244):123 #16975(auto Winterspring;357):38
+#19813 | auto Winterspring;423§auto Winterquell;423§auto Berceau-de-l'Hiver;423 | x=4709.30029296875 y=-4272.7001953125 | size=1 | links=#1668(auto Winterspring;36):63 #27986(auto Winterspring;568):20
+#19825 | auto Winterspring;424§auto Winterquell;424§auto Berceau-de-l'Hiver;424 | x=6453.2001953125 y=-2960.400146484375 | size=1 | links=#10195(auto Winterspring;210):50 #27696(auto Winterspring;557):29 o175407.59:15
+#19859 | auto Winterspring;425§auto Winterquell;425§auto Berceau-de-l'Hiver;425 | x=5344.727947161151 y=-4749.173596897792 | size=1 | links=#4290(auto Winterspring;87):59 #28300(auto Winterspring;577):35
+#19910 | auto Winterspring;426§auto Winterquell;426§auto Berceau-de-l'Hiver;426 | x=6015.38452630225 y=-4919.022023508511 | size=1 | links=#19534(auto Winterspring;415):15 #22999(auto Winterspring;482):31 c7448.9:43
+#19939 | auto Winterspring;427§auto Winterquell;427§auto Berceau-de-l'Hiver;427 | x=5508.89990234375 y=-4923.89990234375 | size=1 | links=#2144(auto Winterspring;44):25 #18972(auto Winterspring;405):33
+#19970 | auto Winterspring;428§auto Winterquell;428§auto Berceau-de-l'Hiver;428 | x=5814.941318855559 y=-4788.430269695879 | size=1 | links=#21831(auto Winterspring;457):9 #23536(auto Winterspring;488):28
+#20047 | auto Winterspring;429§auto Winterquell;429§auto Berceau-de-l'Hiver;429 | x=6723.60009765625 y=-3864.300048828125 | size=1 | links=#1447(auto Winterspring;29):51 #2965(auto Winterspring;66):56
+#20056 | auto Winterspring;430§auto Winterquell;430§auto Berceau-de-l'Hiver;430 | x=5699.10009765625 y=-4928.7001953125 | size=1 | links=#14111(auto Winterspring;292):38 #15690(auto Winterspring;327):42 c7453.20:19 c7453.22:23
+#20192 | auto Winterspring;431§auto Winterquell;431§auto Berceau-de-l'Hiver;431 | x=4515.10009765625 y=-4124.80029296875 | size=1 | links=#9291(auto Winterspring;193):55 #19509(auto Winterspring;414):27 c7462.8:16
+#20230 | auto Winterspring;432§auto Winterquell;432§auto Berceau-de-l'Hiver;432 | x=5081.39990234375 y=-4776.30029296875 | size=1 | links=#13880(auto Winterspring;287):36 #21061(auto Winterspring;445):63 c7429.6:64
+#20259 | auto Winterspring;433§auto Winterquell;433§auto Berceau-de-l'Hiver;433 | x=7179.10009765625 y=-4013.900146484375 | size=1 | links=#19754(auto Winterspring;421):19 #26481(auto Winterspring;535):12
+#20324 | auto Winterspring;434§auto Winterquell;434§auto Berceau-de-l'Hiver;434 | x=6343.238470254784 y=-4898.334189574555 | size=1 | links=#1312(auto Winterspring;25):13 #8178(auto Winterspring;170):15
+#20402 | auto Winterspring;435§auto Winterquell;435§auto Berceau-de-l'Hiver;435 | x=6714.60009765625 y=-4807.39990234375 | size=1 | links=#5881(auto Winterspring;120):20 o175407.28:7
+#20458 | auto Winterspring;436§auto Winterquell;436§auto Berceau-de-l'Hiver;436 | x=6847.80029296875 y=-4230.7001953125 | size=1 | links=#9895(auto Winterspring;205):33 #15777(auto Winterspring;331):33
+#20508 | auto Winterspring;437§auto Winterquell;437§auto Berceau-de-l'Hiver;437 | x=4550.2001953125 y=-4233.7001953125 | size=1 | links=#2098(auto Winterspring;42):31 c7461.1:20
+#20534 | auto Winterspring;438§auto Winterquell;438§auto Berceau-de-l'Hiver;438 | x=6581.89990234375 y=-5302.60009765625 | size=1 | links=#12031(auto Winterspring;239):10 c7459.3:15
+#20572 | auto Winterspring;439§auto Winterquell;439§auto Berceau-de-l'Hiver;439 | x=7142.5 y=-3802.900146484375 | size=1 | links=#16577(auto Winterspring;348):8 #28040(auto Winterspring;570):11
+#20592 | auto Winterspring;440§auto Winterquell;440§auto Berceau-de-l'Hiver;440 | x=7145.39990234375 y=-3821 | size=1 | links=#14643(auto Winterspring;305):7 #16577(auto Winterspring;348):11
+#20745 | auto Winterspring;441§auto Winterquell;441§auto Berceau-de-l'Hiver;441 | x=6602.5 y=-3173 | size=1 | links=#16997(auto Winterspring;359):58 #25427(auto Winterspring;519):50
+#20843 | auto Winterspring;442§auto Winterquell;442§auto Berceau-de-l'Hiver;442 | x=8012.10009765625 y=-4161.2001953125 | size=1 | links=#1466(auto Winterspring;31):22 c7430.6:37
+#20869 | auto Winterspring;443§auto Winterquell;443§auto Berceau-de-l'Hiver;443 | x=5352.709054198534 y=-4601.956318418108 | size=1 | links=#8181(auto Winterspring;171):26 o175324.15:15
+#20924 | auto Winterspring;444§auto Winterquell;444§auto Berceau-de-l'Hiver;444 | x=6217.25068528937 y=-4909.543113365856 | size=1 | links=#7061(auto Winterspring;141):9 #18282(auto Winterspring;386):24
+#21061 | auto Winterspring;445§auto Winterquell;445§auto Berceau-de-l'Hiver;445 | x=5018.39990234375 y=-4768.30029296875 | size=1 | links=#10395(auto Winterspring;215):25 #20230(auto Winterspring;432):63
+#21103 | auto Winterspring;446§auto Winterquell;446§auto Berceau-de-l'Hiver;446 | x=6495.60009765625 y=-3970.199951171875 | size=1 | links=#21910(auto Winterspring;459):98 o175891.1:75 c7523.8:63 c7523.13:64
+#21323 | auto Winterspring;447§auto Winterquell;447§auto Berceau-de-l'Hiver;447 | x=6524.822358012392 y=-4820.768755364066 | size=1 | links=#5913(auto Winterspring;121):24 #16758(auto Winterspring;353):16
+#21349 | auto Winterspring;448§auto Winterquell;448§auto Berceau-de-l'Hiver;448 | x=6841.10009765625 y=-4025.199951171875 | size=1 | links=#10979(auto Winterspring;222):45 #15733(auto Winterspring;329):34
+#21359 | auto Winterspring;449§auto Winterquell;449§auto Berceau-de-l'Hiver;449 | x=6759.5 y=-5077.30029296875 | size=1 | links=#19383(auto Winterspring;410):30 c7438.9:25
+#21445 | auto Winterspring;450§auto Winterquell;450§auto Berceau-de-l'Hiver;450 | x=7163 y=-3975.400146484375 | size=1 | links=#15658(auto Winterspring;326):20 #16987(auto Winterspring;358):17 #19754(auto Winterspring;421):21
+#21516 | auto Winterspring;451§auto Winterquell;451§auto Berceau-de-l'Hiver;451 | x=4683.30029296875 y=-4656.89990234375 | size=1 | links=#3257(auto Winterspring;69):32 #19490(auto Winterspring;413):17
+#21661 | auto Winterspring;452§auto Winterquell;452§auto Berceau-de-l'Hiver;452 | x=6175.10009765625 y=-4277 | size=1 | links=c10196.2:31 c7436.3:23 c7435.11:35 c7435.15:53
+#21665 | auto Winterspring;453§auto Winterquell;453§auto Berceau-de-l'Hiver;453 | x=7155.7001953125 y=-3905.199951171875 | size=1 | links=#7214(auto Winterspring;147):12 #7889(auto Winterspring;166):12
+#21714 | auto Winterspring;454§auto Winterquell;454§auto Berceau-de-l'Hiver;454 | x=6613.30029296875 y=-4712.80029296875 | size=1 | links=#5579(auto Winterspring;114):25 #7038(auto Winterspring;140):77 #7524(auto Winterspring;156):9 #23667(auto Winterspring;490):36
+#21748 | auto Winterspring;455§auto Winterquell;455§auto Berceau-de-l'Hiver;455 | x=7143.7001953125 y=-3874.800048828125 | size=1 | links=#9488(auto Winterspring;196):4 #12971(auto Winterspring;261):6
+#21758 | auto Winterspring;456§auto Winterquell;456§auto Berceau-de-l'Hiver;456 | x=6288.98750028956 y=-4890.263871258374 | size=1 | links=#6188(auto Winterspring;126):24 #16728(auto Winterspring;352):17
+#21831 | auto Winterspring;457§auto Winterquell;457§auto Berceau-de-l'Hiver;457 | x=5823.040039766193 y=-4793.744996635333 | size=1 | links=#15326(auto Winterspring;321):38 #19970(auto Winterspring;428):9
+#21858 | auto Winterspring;458§auto Winterquell;458§auto Berceau-de-l'Hiver;458 | x=5011.39990234375 y=-4817 | size=1 | links=#2402(auto Winterspring;52):16 #10395(auto Winterspring;215):24 c7446.21:3
+#21910 | auto Winterspring;459§auto Winterquell;459§auto Berceau-de-l'Hiver;459 | x=6435.5 y=-3892.400146484375 | size=1 | links=#3610(auto Winterspring;79):43 #21103(auto Winterspring;446):98
+#22013 | auto Winterspring;460§auto Winterquell;460§auto Berceau-de-l'Hiver;460 | x=7748.5 y=-3975.60009765625 | size=1 | links=#1107(auto Winterspring;22):21 #18878(auto Winterspring;403):27
+#22018 | auto Winterspring;461§auto Winterquell;461§auto Berceau-de-l'Hiver;461 | x=6172.10009765625 y=-4399.2001953125 | size=1 | links=c7437.8:46 c10660.17:37 c10660.18:17
+#22140 | auto Winterspring;462§auto Winterquell;462§auto Berceau-de-l'Hiver;462 | x=6817.89990234375 y=-4294.80029296875 | size=1 | links=#7070(auto Winterspring;142):50 #9895(auto Winterspring;205):37
+#22167 | auto Winterspring;463§auto Winterquell;463§auto Berceau-de-l'Hiver;463 | x=6779.2001953125 y=-4743.2001953125 | size=1 | links=#4687(auto Winterspring;95):13 #7205(auto Winterspring;146):19
+#22231 | auto Winterspring;464§auto Winterquell;464§auto Berceau-de-l'Hiver;464 | x=6485.10009765625 y=-2853.5 | size=1 | links=#6646(auto Winterspring;130):42 #13656(auto Winterspring;280):51 o175407.55:29
+#22295 | auto Winterspring;465§auto Winterquell;465§auto Berceau-de-l'Hiver;465 | x=6489.80029296875 y=-2394.800048828125 | size=1 | links=#4444(auto Winterspring;89):65 c6491.2:18
+#22368 | auto Winterspring;466§auto Winterquell;466§auto Berceau-de-l'Hiver;466 | x=7544.60009765625 y=-4520.89990234375 | size=1 | links=c7445.10:23 c7445.38:49
+#22372 | auto Winterspring;467§auto Winterquell;467§auto Berceau-de-l'Hiver;467 | x=6482 y=-3529.900146484375 | size=1 | links=#14153(auto Winterspring;293):31 c7450.6:26 o175407.10:43 o175407.26:39
+#22439 | auto Winterspring;468§auto Winterquell;468§auto Berceau-de-l'Hiver;468 | x=5286.7001953125 y=-4879.60009765625 | size=1 | links=#3463(auto Winterspring;75):14 c7428.13:16 o175324.19:18
+#22448 | auto Winterspring;469§auto Winterquell;469§auto Berceau-de-l'Hiver;469 | x=5209.7001953125 y=-5020.5 | size=1 | links=#1461(auto Winterspring;30):30 #2795(auto Winterspring;62):33
+#22453 | auto Winterspring;470§auto Winterquell;470§auto Berceau-de-l'Hiver;470 | x=6694.10009765625 y=-4500.7001953125 | size=1 | links=#10357(auto Winterspring;214):48 #15066(auto Winterspring;317):29
+#22629 | auto Winterspring;471§auto Winterquell;471§auto Berceau-de-l'Hiver;471 | x=5269.450882093193 y=-4764.458821889561 | size=1 | links=#5568(auto Winterspring;113):32 #27820(auto Winterspring;559):66 c7428.11:28 o175324.14:33
+#22634 | auto Winterspring;472§auto Winterquell;472§auto Berceau-de-l'Hiver;472 | x=6722.2001953125 y=-4704.10009765625 | size=1 | links=#2579(auto Winterspring;59):14 c10307.1:9
+#22638 | auto Winterspring;473§auto Winterquell;473§auto Berceau-de-l'Hiver;473 | x=5237.540681175493 y=-4872.307194592813 | size=1 | links=#27296(auto Winterspring;550):31 o175324.20:29
+#22652 | auto Winterspring;474§auto Winterquell;474§auto Berceau-de-l'Hiver;474 | x=6435.5 y=-4044.900146484375 | size=1 | links=o175892.1:70 c7524.10:30
+#22677 | auto Winterspring;475§auto Winterquell;475§auto Berceau-de-l'Hiver;475 | x=6457.30029296875 y=-4304.2001953125 | size=1 | links=#22783(auto Winterspring;478):19 #27970(auto Winterspring;567):17
+#22691 | auto Winterspring;476§auto Winterquell;476§auto Berceau-de-l'Hiver;476 | x=7448.80029296875 y=-4749.89990234375 | size=1 | links=#9591(auto Winterspring;199):36 c7454.9:62 c7445.34:90
+#22697 | auto Winterspring;477§auto Winterquell;477§auto Berceau-de-l'Hiver;477 | x=7405.10009765625 y=-4963.89990234375 | size=1 | links=#3508(auto Winterspring;76):38 #13451(auto Winterspring;271):48
+#22783 | auto Winterspring;478§auto Winterquell;478§auto Berceau-de-l'Hiver;478 | x=6447 y=-4288.10009765625 | size=1 | links=#22677(auto Winterspring;475):19 c10684.1:19 c7524.3:5
+#22875 | auto Winterspring;479§auto Winterquell;479§auto Berceau-de-l'Hiver;479 | x=6816.80029296875 y=-5093.5 | size=1 | links=#56(auto Winterspring;2):39 #18266(auto Winterspring;384):31
+#22948 | Ice Thistle Patriarch;Winterspring;10;71.14;38.69§Eisdistelpatriarch;Winterquell;10;71.14;38.69§Patriarche Chardon de glace;Berceau-de-l'Hiver;10;71.14;38.69 | x=6699.775236655301 y=-5384.089082355898 | size=1
+#22962 | auto Winterspring;480§auto Winterquell;480§auto Berceau-de-l'Hiver;480 | x=6294.80029296875 y=-4217.2001953125 | size=1 | links=#28271(auto Winterspring;576):32 c7443.42:47
+#22994 | auto Winterspring;481§auto Winterquell;481§auto Berceau-de-l'Hiver;481 | x=6134.081331770421 y=-4921.552841797729 | size=1 | links=#3448(auto Winterspring;73):15 #25160(auto Winterspring;513):16
+#22999 | auto Winterspring;482§auto Winterquell;482§auto Berceau-de-l'Hiver;482 | x=6046.26091043916 y=-4921.805932158746 | size=1 | links=#12857(auto Winterspring;260):15 #19910(auto Winterspring;426):31
+#23141 | auto Winterspring;483§auto Winterquell;483§auto Berceau-de-l'Hiver;483 | x=6252.222375359298 y=-4899.230919600659 | size=1 | links=#16728(auto Winterspring;352):22 #18282(auto Winterspring;386):14
+#23148 | auto Winterspring;484§auto Winterquell;484§auto Berceau-de-l'Hiver;484 | x=6605 y=-2483.5 | size=1 | links=#14575(auto Winterspring;304):84 c7444.15:64
+#23155 | auto Winterspring;485§auto Winterquell;485§auto Berceau-de-l'Hiver;485 | x=7116.39990234375 y=-3974.900146484375 | size=1 | links=#1316(auto Winterspring;26):11 #17953(auto Winterspring;375):13 c3779.1:6
+#23491 | auto Winterspring;486§auto Winterquell;486§auto Berceau-de-l'Hiver;486 | x=6661.878720973892 y=-2715.375339063828 | size=1 | links=#9868(auto Winterspring;204):45 #19480(auto Winterspring;412):44 c7450.28:28
+#23520 | auto Winterspring;487§auto Winterquell;487§auto Berceau-de-l'Hiver;487 | x=6466.7001953125 y=-3115.800048828125 | size=1 | links=#526(auto Winterspring;11):58 #14331(auto Winterspring;299):72 c7441.7:21
+#23536 | auto Winterspring;488§auto Winterquell;488§auto Berceau-de-l'Hiver;488 | x=5790.645184563972 y=-4774.257550762743 | size=1 | links=#19970(auto Winterspring;428):28 #24569(auto Winterspring;507):28 c10807.1:17
+#23600 | auto Winterspring;489§auto Winterquell;489§auto Berceau-de-l'Hiver;489 | x=6101.939552709059 y=-4923.57750780523 | size=1 | links=#3448(auto Winterspring;73):17 #7186(auto Winterspring;145):19
+#23667 | auto Winterspring;490§auto Winterquell;490§auto Berceau-de-l'Hiver;490 | x=6633.60009765625 y=-4682.10009765625 | size=1 | links=#7227(auto Winterspring;148):37 #21714(auto Winterspring;454):36
+#23731 | auto Winterspring;491§auto Winterquell;491§auto Berceau-de-l'Hiver;491 | x=6731.10009765625 y=-4685 | size=1 | links=#6710(auto Winterspring;133):9 #12574(auto Winterspring;250):6
+#23733 | auto Winterspring;492§auto Winterquell;492§auto Berceau-de-l'Hiver;492 | x=6306.337276872029 y=-5031.861363170077 | size=1 | links=#16554(auto Winterspring;347):49 c7443.18:57
+#23894 | auto Winterspring;493§auto Winterquell;493§auto Berceau-de-l'Hiver;493 | x=7287.60009765625 y=-4965.60009765625 | size=1 | links=#26524(auto Winterspring;536):41 c7455.22:30 c7448.26:51
+#23938 | auto Winterspring;494§auto Winterquell;494§auto Berceau-de-l'Hiver;494 | x=5670.176746568686 y=-4696.813492949376 | size=1 | links=#16220(auto Winterspring;341):17 o175586.1:20
+#23989 | auto Winterspring;495§auto Winterquell;495§auto Berceau-de-l'Hiver;495 | x=6539.30029296875 y=-2851.800048828125 | size=1 | links=#6646(auto Winterspring;130):24 #7550(auto Winterspring;158):52 #12750(auto Winterspring;255):64
+#24064 | auto Winterspring;496§auto Winterquell;496§auto Berceau-de-l'Hiver;496 | x=6524.39990234375 y=-2552 | size=1 | links=#14575(auto Winterspring;304):61 #26078(auto Winterspring;527):42
+#24189 | auto Winterspring;497§auto Winterquell;497§auto Berceau-de-l'Hiver;497 | x=6714.39990234375 y=-2336.800048828125 | size=1 | links=#258(auto Winterspring;4):60 #4554(auto Winterspring;91):42
+#24199 | auto Winterspring;498§auto Winterquell;498§auto Berceau-de-l'Hiver;498 | x=6722.2001953125 y=-4650.10009765625 | size=1 | links=#5493(auto Winterspring;109):14 #14925(auto Winterspring;312):16 #16153(auto Winterspring;339):13 #27953(auto Winterspring;565):14 c10637.1:24
+#24219 | auto Winterspring;499§auto Winterquell;499§auto Berceau-de-l'Hiver;499 | x=7200.80029296875 y=-4845.7001953125 | size=1 | links=#14973(auto Winterspring;314):50 c7455.5:44
+#24224 | auto Winterspring;500§auto Winterquell;500§auto Berceau-de-l'Hiver;500 | x=6878.10009765625 y=-5064 | size=1 | links=#5277(auto Winterspring;104):63 #11049(auto Winterspring;225):25 c10199.1:29 c7440.3:64 c7440.10:23
+#24312 | auto Winterspring;501§auto Winterquell;501§auto Berceau-de-l'Hiver;501 | x=5344.177338161732 y=-4585.519299137702 | size=1 | links=#15(auto Winterspring;1):38 #8181(auto Winterspring;171):38 c7429.12:6 o175324.21:25
+#24337 | auto Winterspring;502§auto Winterquell;502§auto Berceau-de-l'Hiver;502 | x=7123.10009765625 y=-4863.2001953125 | size=1 | links=#17785(auto Winterspring;372):66 c7455.17:46
+#24352 | auto Winterspring;503§auto Winterquell;503§auto Berceau-de-l'Hiver;503 | x=7034.89990234375 y=-4142 | size=1 | links=#8438(auto Winterspring;176):38 #17453(auto Winterspring;363):53
+#24357 | auto Winterspring;504§auto Winterquell;504§auto Berceau-de-l'Hiver;504 | x=4391 y=-4059.699951171875 | size=1 | links=#13485(auto Winterspring;272):29 #15457(auto Winterspring;324):21
+#24392 | auto Winterspring;505§auto Winterquell;505§auto Berceau-de-l'Hiver;505 | x=6731.39990234375 y=-5166.7001953125 | size=1 | links=#16628(auto Winterspring;350):24 #16666(auto Winterspring;351):29
+#24400 | auto Winterspring;506§auto Winterquell;506§auto Berceau-de-l'Hiver;506 | x=7246 y=-5121.60009765625 | size=1 | links=#1792(auto Winterspring;39):11 #4220(auto Winterspring;86):12
+#24569 | auto Winterspring;507§auto Winterquell;507§auto Berceau-de-l'Hiver;507 | x=5763.81816088238 y=-4764.134106963979 | size=1 | links=#2509(auto Winterspring;56):28 #18193(auto Winterspring;382):28 #23536(auto Winterspring;488):28
+#24687 | auto Winterspring;508§auto Winterquell;508§auto Berceau-de-l'Hiver;508 | x=5675.491544608928 y=-4726.930620223394 | size=1 | links=#12643(auto Winterspring;252):18 #16220(auto Winterspring;341):13 #18866(auto Winterspring;402):40
+#24761 | auto Winterspring;509§auto Winterquell;509§auto Berceau-de-l'Hiver;509 | x=6419.458885001744 y=-4899.679234229961 | size=1 | links=#12791(auto Winterspring;258):25 #18860(auto Winterspring;401):30 c7448.6:97
+#24936 | auto Winterspring;510§auto Winterquell;510§auto Berceau-de-l'Hiver;510 | x=5473.5 y=-4555.5 | size=1 | links=#27141(auto Winterspring;546):33 c7429.8:30
+#24946 | auto Winterspring;511§auto Winterquell;511§auto Berceau-de-l'Hiver;511 | x=6748.7001953125 y=-4759.60009765625 | size=1 | links=#7205(auto Winterspring;146):15 #19627(auto Winterspring;419):18
+#25060 | auto Winterspring;512§auto Winterquell;512§auto Berceau-de-l'Hiver;512 | x=5943.2001953125 y=-4543.2001953125 | size=1 | links=c7437.3:56 c7456.32:51
+#25160 | auto Winterspring;513§auto Winterquell;513§auto Berceau-de-l'Hiver;513 | x=6149.997318884697 y=-4918.061947846348 | size=1 | links=#22994(auto Winterspring;481):16 #25313(auto Winterspring;516):14
+#25248 | auto Winterspring;514§auto Winterquell;514§auto Berceau-de-l'Hiver;514 | x=6691.60009765625 y=-5364.30029296875 | size=1 | links=#26354(auto Winterspring;531):19 c7459.4:23
+#25266 | auto Winterspring;515§auto Winterquell;515§auto Berceau-de-l'Hiver;515 | x=6485.815433208745 y=-4857.533880294326 | size=1 | links=#5913(auto Winterspring;121):28 #27536(auto Winterspring;554):26 c7455.13:64
+#25313 | auto Winterspring;516§auto Winterquell;516§auto Berceau-de-l'Hiver;516 | x=6163.447966973756 y=-4922.097031428809 | size=1 | links=#7489(auto Winterspring;155):12 #25160(auto Winterspring;513):14
+#25338 | auto Winterspring;517§auto Winterquell;517§auto Berceau-de-l'Hiver;517 | x=6900 y=-4135.7001953125 | size=1 | links=#9578(auto Winterspring;198):34 #26414(auto Winterspring;534):36
+#25421 | auto Winterspring;518§auto Winterquell;518§auto Berceau-de-l'Hiver;518 | x=6228 y=-4262 | size=1 | links=#12997(auto Winterspring;263):24 c7448.16:12
+#25427 | auto Winterspring;519§auto Winterquell;519§auto Berceau-de-l'Hiver;519 | x=6584.30029296875 y=-3125.900146484375 | size=1 | links=#13205(auto Winterspring;266):48 #20745(auto Winterspring;441):50 #25624(auto Winterspring;523):32
+#25467 | auto Winterspring;520§auto Winterquell;520§auto Berceau-de-l'Hiver;520 | x=5385.89990234375 y=-5026 | size=1 | links=#5615(auto Winterspring;117):32 #13573(auto Winterspring;275):80
+#25578 | auto Winterspring;521§auto Winterquell;521§auto Berceau-de-l'Hiver;521 | x=5125.810963046909 y=-4622.782519790168 | size=1 | links=#11831(auto Winterspring;237):110 #28330(auto Winterspring;578):115 c7446.16:55 c7446.18:48
+#25617 | auto Winterspring;522§auto Winterquell;522§auto Berceau-de-l'Hiver;522 | x=7635.60009765625 y=-4942.2001953125 | size=1 | links=#2890(auto Winterspring;63):26 c7454.13:18
+#25624 | auto Winterspring;523§auto Winterquell;523§auto Berceau-de-l'Hiver;523 | x=6617.2001953125 y=-3127.800048828125 | size=1 | links=#14410(auto Winterspring;301):62 #25427(auto Winterspring;519):32
+#25657 | auto Winterspring;524§auto Winterquell;524§auto Berceau-de-l'Hiver;524 | x=5448 y=-4583.2001953125 | size=1 | links=#28195(auto Winterspring;574):19 c7429.8:19
+#25704 | auto Winterspring;525§auto Winterquell;525§auto Berceau-de-l'Hiver;525 | x=6706.10009765625 y=-4784.30029296875 | size=1 | links=#5881(auto Winterspring;120):13 #16278(auto Winterspring;343):30
+#26013 | auto Winterspring;526§auto Winterquell;526§auto Berceau-de-l'Hiver;526 | x=6725.39990234375 y=-4629.10009765625 | size=1 | links=#16153(auto Winterspring;339):8 #26957(entry and exit;Everlook;Winterspring):12
+#26078 | auto Winterspring;527§auto Winterquell;527§auto Berceau-de-l'Hiver;527 | x=6530.5 y=-2593.800048828125 | size=1 | links=#4148(auto Winterspring;85):29 #17757(auto Winterspring;370):42 #24064(auto Winterspring;496):42
+#26080 | auto Winterspring;528§auto Winterquell;528§auto Berceau-de-l'Hiver;528 | x=7165.5 y=-3926.199951171875 | size=1 | links=#7889(auto Winterspring;166):10 #12767(auto Winterspring;257):9
+#26202 | auto Winterspring;529§auto Winterquell;529§auto Berceau-de-l'Hiver;529 | x=7128.2001953125 y=-3865.5 | size=1 | links=#6320(auto Winterspring;127):7 #15048(auto Winterspring;316):5
+#26243 | auto Winterspring;530§auto Winterquell;530§auto Berceau-de-l'Hiver;530 | x=6766.60009765625 y=-5130.7001953125 | size=1 | links=#56(auto Winterspring;2):26 #16628(auto Winterspring;350):26
+#26354 | auto Winterspring;531§auto Winterquell;531§auto Berceau-de-l'Hiver;531 | x=6680.2001953125 y=-5380.7001953125 | size=1 | links=#25248(auto Winterspring;514):19 c7459.9:29
+#26382 | auto Winterspring;532§auto Winterquell;532§auto Berceau-de-l'Hiver;532 | x=6748.2001953125 y=-5361.10009765625 | size=1 | links=#13404(auto Winterspring;269):16 c7459.5:12
+#26388 | auto Winterspring;533§auto Winterquell;533§auto Berceau-de-l'Hiver;533 | x=6167.039306680553 y=-4726.204253092124 | size=1 | links=#2903(auto Winterspring;64):56 #11514(auto Winterspring;232):54 c10661.6:44
+#26414 | auto Winterspring;534§auto Winterquell;534§auto Berceau-de-l'Hiver;534 | x=6890.89990234375 y=-4171.10009765625 | size=1 | links=#15777(auto Winterspring;331):40 #25338(auto Winterspring;517):36
+#26481 | auto Winterspring;535§auto Winterquell;535§auto Berceau-de-l'Hiver;535 | x=7180.2001953125 y=-4025.900146484375 | size=1 | links=#14844(auto Winterspring;310):20 #20259(auto Winterspring;433):12
+#26524 | auto Winterspring;536§auto Winterquell;536§auto Berceau-de-l'Hiver;536 | x=7319.7001953125 y=-4939.10009765625 | size=1 | links=#13451(auto Winterspring;271):43 #23894(auto Winterspring;493):41
+#26873 | auto Winterspring;537§auto Winterquell;537§auto Berceau-de-l'Hiver;537 | x=6186.762519390587 y=-4910.88815802126 | size=1 | links=#7489(auto Winterspring;155):13 #12144(auto Winterspring;243):16 #17621(auto Winterspring;367):9
+#26879 | auto Winterspring;538§auto Winterquell;538§auto Berceau-de-l'Hiver;538 | x=7105.30029296875 y=-3812.199951171875 | size=1 | links=#6699(auto Winterspring;132):8 c11808.1:9
+#26911 | auto Winterspring;539§auto Winterquell;539§auto Berceau-de-l'Hiver;539 | x=7174.2001953125 y=-4560.30029296875 | size=1 | links=#13953(auto Winterspring;288):66 c7451.5:40
+#26927 | auto Winterspring;540§auto Winterquell;540§auto Berceau-de-l'Hiver;540 | x=6651.39990234375 y=-3584 | size=1 | links=#2771(auto Winterspring;61):29 #28257(auto Winterspring;575):20
+#26957 | entry and exit;Everlook;Winterspring§ein- und ausgang;Ewige Warte;Winterquell§entrée et sortie;Long-guet;Berceau-de-l'Hiver | x=6725.39990234375 y=-4616.7001953125 | size=1 | links=#8817(auto Winterspring;187):7 #26013(auto Winterspring;526):12
+#27007 | auto Winterspring;541§auto Winterquell;541§auto Berceau-de-l'Hiver;541 | x=4625.5 y=-4666.89990234375 | size=1 | links=#3257(auto Winterspring;69):26 #12187(auto Winterspring;246):32
+#27044 | auto Winterspring;542§auto Winterquell;542§auto Berceau-de-l'Hiver;542 | x=6810 y=-3952.5 | size=1 | links=#3254(auto Winterspring;68):50 #10979(auto Winterspring;222):34
+#27065 | auto Winterspring;543§auto Winterquell;543§auto Berceau-de-l'Hiver;543 | x=7489.2001953125 y=-4486.5 | size=1 | links=#17778(auto Winterspring;371):29 c7456.11:28 c7449.32:67
+#27080 | auto Winterspring;544§auto Winterquell;544§auto Berceau-de-l'Hiver;544 | x=6469.10009765625 y=-2734 | size=1 | links=#13505(auto Winterspring;273):81 c7457.9:26 c7444.29:26
+#27101 | auto Winterspring;545§auto Winterquell;545§auto Berceau-de-l'Hiver;545 | x=6762.60009765625 y=-3482 | size=1 | links=c7450.11:41 c7450.15:43 c7444.24:25
+#27141 | auto Winterspring;546§auto Winterquell;546§auto Berceau-de-l'Hiver;546 | x=5506.89990234375 y=-4551.80029296875 | size=1 | links=#9202(auto Winterspring;192):20 #24936(auto Winterspring;510):33
+#27207 | auto Winterspring;547§auto Winterquell;547§auto Berceau-de-l'Hiver;547 | x=6643.89990234375 y=-3365.5 | size=1 | links=#2651(auto Winterspring;60):30 #8136(auto Winterspring;169):33
+#27257 | auto Winterspring;548§auto Winterquell;548§auto Berceau-de-l'Hiver;548 | x=5454.393922015226 y=-4713.295220373645 | size=1 | links=#4290(auto Winterspring;87):61 #13581(auto Winterspring;276):55
+#27265 | auto Winterspring;549§auto Winterquell;549§auto Berceau-de-l'Hiver;549 | x=5136.10009765625 y=-4963.80029296875 | size=1 | links=#2547(auto Winterspring;58):27 #12084(auto Winterspring;241):63 c7429.7:47
+#27296 | auto Winterspring;550§auto Winterquell;550§auto Berceau-de-l'Hiver;550 | x=5255.717370144057 y=-4846.455958084634 | size=1 | links=#5568(auto Winterspring;113):51 #22638(auto Winterspring;473):31 c7428.13:36 o175324.16:31
+#27311 | auto Winterspring;551§auto Winterquell;551§auto Berceau-de-l'Hiver;551 | x=4809.89990234375 y=-4780 | size=1 | links=#27366(auto Winterspring;553):43 c7461.7:59
+#27357 | auto Winterspring;552§auto Winterquell;552§auto Berceau-de-l'Hiver;552 | x=7135.39990234375 y=-4141.7001953125 | size=1 | links=#5516(auto Winterspring;110):32 #17453(auto Winterspring;363):47
+#27366 | auto Winterspring;553§auto Winterquell;553§auto Berceau-de-l'Hiver;553 | x=4804.30029296875 y=-4736.7001953125 | size=1 | links=#15376(auto Winterspring;323):37 #27311(auto Winterspring;551):43
+#27536 | auto Winterspring;554§auto Winterquell;554§auto Berceau-de-l'Hiver;554 | x=6466.087788300396 y=-4875.916493143211 | size=1 | links=#18860(auto Winterspring;401):22 #25266(auto Winterspring;515):26
+#27610 | auto Winterspring;555§auto Winterquell;555§auto Berceau-de-l'Hiver;555 | x=7711.10009765625 y=-4873.7001953125 | size=1 | links=#7461(auto Winterspring;154):28 #7711(auto Winterspring;162):26
+#27682 | auto Winterspring;556§auto Winterquell;556§auto Berceau-de-l'Hiver;556 | x=7372.10009765625 y=-4797 | size=1 | links=#1094(auto Winterspring;21):28 c7454.16:51
+#27696 | auto Winterspring;557§auto Winterquell;557§auto Berceau-de-l'Hiver;557 | x=6457.39990234375 y=-2990.10009765625 | size=1 | links=#19825(auto Winterspring;424):29 o175407.58:45
+#27718 | auto Winterspring;558§auto Winterquell;558§auto Berceau-de-l'Hiver;558 | x=4911.80029296875 y=-4520.10009765625 | size=1 | links=#19611(auto Winterspring;418):47 c7462.13:46
+#27820 | auto Winterspring;559§auto Winterquell;559§auto Berceau-de-l'Hiver;559 | x=5292.878641776231 y=-4702.254071270921 | size=1 | links=#18799(auto Winterspring;398):41 #22629(auto Winterspring;471):66
+#27859 | auto Winterspring;560§auto Winterquell;560§auto Berceau-de-l'Hiver;560 | x=6931.60009765625 y=-4121.7001953125 | size=1 | links=#9578(auto Winterspring;198):35 #11131(auto Winterspring;227):27
+#27909 | auto Winterspring;561§auto Winterquell;561§auto Berceau-de-l'Hiver;561 | x=6744.80029296875 y=-3820.60009765625 | size=1 | links=#1447(auto Winterspring;29):54 #18259(auto Winterspring;383):41
+#27941 | auto Winterspring;562§auto Winterquell;562§auto Berceau-de-l'Hiver;562 | x=4595.89990234375 y=-4510.10009765625 | size=1 | links=#459(auto Winterspring;9):18 #4466(auto Winterspring;90):31 #14869(auto Winterspring;311):46
+#27944 | auto Winterspring;563§auto Winterquell;563§auto Berceau-de-l'Hiver;563 | x=6700.89990234375 y=-4587 | size=1 | links=#8559(auto Winterspring;178):49 #18171(auto Winterspring;380):19
+#27946 | auto Winterspring;564§auto Winterquell;564§auto Berceau-de-l'Hiver;564 | x=6695.30029296875 y=-4670.60009765625 | size=1 | links=#2366(auto Winterspring;50):4 #9706(auto Winterspring;202):6 c11118.1:2
+#27953 | auto Winterspring;565§auto Winterquell;565§auto Berceau-de-l'Hiver;565 | x=6736 y=-4646.39990234375 | size=1 | links=#12752(auto Winterspring;256):9 #24199(auto Winterspring;498):14 c10305.1:18
+#27968 | auto Winterspring;566§auto Winterquell;566§auto Berceau-de-l'Hiver;566 | x=6013.89990234375 y=-5116.30029296875 | size=1 | links=#6687(auto Winterspring;131):11 #14315(auto Winterspring;298):28
+#27970 | auto Winterspring;567§auto Winterquell;567§auto Berceau-de-l'Hiver;567 | x=6462.30029296875 y=-4320.5 | size=1 | links=#7354(auto Winterspring;150):11 #22677(auto Winterspring;475):17
+#27986 | auto Winterspring;568§auto Winterquell;568§auto Berceau-de-l'Hiver;568 | x=4688.7001953125 y=-4275.7001953125 | size=1 | links=#8687(auto Winterspring;183):20 #19813(auto Winterspring;423):20
+#28014 | auto Winterspring;569§auto Winterquell;569§auto Berceau-de-l'Hiver;569 | x=7267.39990234375 y=-4799 | size=1 | links=c7455.12:24 c7445.28:39
+#28040 | auto Winterspring;570§auto Winterquell;570§auto Berceau-de-l'Hiver;570 | x=7131.60009765625 y=-3801.300048828125 | size=1 | links=#7359(auto Winterspring;151):13 #20572(auto Winterspring;439):11
+#28046 | auto Winterspring;571§auto Winterquell;571§auto Berceau-de-l'Hiver;571 | x=6493.10009765625 y=-4303.39990234375 | size=1 | links=#2152(auto Winterspring;45):38 #7354(auto Winterspring;150):23 #16083(auto Winterspring;337):18
+#28089 | auto Winterspring;572§auto Winterquell;572§auto Berceau-de-l'Hiver;572 | x=5420.115578033953 y=-4506.753556158372 | size=1 | links=#5305(auto Winterspring;107):54 #13193(auto Winterspring;265):53
+#28146 | auto Winterspring;573§auto Winterquell;573§auto Berceau-de-l'Hiver;573 | x=6919.80029296875 y=-4833.60009765625 | size=1 | links=#7071(auto Winterspring;143):59 #7417(auto Winterspring;153):61 c7455.27:28
+#28195 | auto Winterspring;574§auto Winterquell;574§auto Berceau-de-l'Hiver;574 | x=5455.30029296875 y=-4601.5 | size=1 | links=#25657(auto Winterspring;524):19 c7456.1:26 o175324.6:15 c7428.8:18
+#28257 | auto Winterspring;575§auto Winterquell;575§auto Berceau-de-l'Hiver;575 | x=6648 y=-3563.400146484375 | size=1 | links=#13841(auto Winterspring;286):23 #26927(auto Winterspring;540):20
+#28271 | auto Winterspring;576§auto Winterquell;576§auto Berceau-de-l'Hiver;576 | x=6327.282151375622 y=-4218.45131460926 | size=1 | links=#22962(auto Winterspring;480):32 c7443.2:60 c7448.19:17 c7455.23:40
+#28300 | auto Winterspring;577§auto Winterquell;577§auto Berceau-de-l'Hiver;577 | x=5310.429105697232 y=-4739.470655353657 | size=1 | links=#19859(auto Winterspring;425):35 #28441(auto Winterspring;581):31
+#28330 | auto Winterspring;578§auto Winterquell;578§auto Berceau-de-l'Hiver;578 | x=5195.121886201639 y=-4714.874806148586 | size=1 | links=#17279(auto Winterspring;361):21 #25578(auto Winterspring;521):115
+#28338 | auto Winterspring;579§auto Winterquell;579§auto Berceau-de-l'Hiver;579 | x=4304.10009765625 y=-4080.699951171875 | size=1 | links=#18355(auto Winterspring;387):41 c14348.1:84
+#28395 | auto Winterspring;580§auto Winterquell;580§auto Berceau-de-l'Hiver;580 | x=6497.7001953125 y=-3018.699951171875 | size=1 | links=#526(auto Winterspring;11):61 #11540(auto Winterspring;234):51 o175407.60:41
+#28441 | auto Winterspring;581§auto Winterquell;581§auto Berceau-de-l'Hiver;581 | x=5279.966325043241 y=-4730.89598936305 | size=1 | links=#1350(auto Winterspring;27):13 #28300(auto Winterspring;577):31
+#28448 | auto Winterspring;582§auto Winterquell;582§auto Berceau-de-l'Hiver;582 | x=4689.60009765625 y=-4451.80029296875 | size=1 | links=#9613(auto Winterspring;200):30 #13676(auto Winterspring;282):17
+#28481 | Cobalt Broodling;Winterspring;6;60.85;50.76§Kobaltblauer Brutling;Winterquell;6;60.85;50.76§Rejeton de cobalt;Berceau-de-l'Hiver;6;60.85;50.76 | x=6128.239154914166 y=-4639.170720545092 | size=1
+#28508 | auto Winterspring;583§auto Winterquell;583§auto Berceau-de-l'Hiver;583 | x=5579.60009765625 y=-4909.80029296875 | size=1 | links=#7525(auto Winterspring;157):25 c7453.4:19 c7453.9:15
+#28581 | auto Winterspring;584§auto Winterquell;584§auto Berceau-de-l'Hiver;584 | x=4718.5 y=-4665.60009765625 | size=1 | links=#19490(auto Winterspring;413):19 c7463.17:42
+#28627 | s;u;Mailbox;Winterspring§s;u;Briefkasten;Winterspring§s;u;Boîte aux lettres;Berceau-de-l'Hiver | x=6706.26611328125 y=-4668.96630859375 | size=1 | links=#1109(auto Winterspring;23):1 c11753.1:6
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c2084.1 | links=#1316(auto Winterspring;26):40
+c2303.1 | links=#1316(auto Winterspring;26):41
+c3779.1 | links=#23155(auto Winterspring;485):6
+c6491.1 | links=#2314(auto Winterspring;48):5
+c7428.1 | links=c7429.5:44 c7428.7:58
+c7429.1 | links=#10056(auto Winterspring;207):15 o175324.2:14
+c7430.1 | links=c7430.2:7 c7431.16:59
+c7433.1 | links=c7434.5:50
+c7434.1 | links=#3532(auto Winterspring;77):45
+c7435.1 | links=
+c7437.1 | links=c10196.3:14 c10659.5:36
+c7441.1 | links=c7441.7:27
+c7442.1 | links=c7442.2:48
+c7445.1 | links=#14950(auto Winterspring;313):39
+c7448.1 | links=#14071(auto Winterspring;291):34
+c7449.1 | links=c7449.27:32
+c7456.1 | links=#28195(auto Winterspring;574):26
+c7459.1 | links=c7459.4:37
+c7460.1 | links=#4780(auto Winterspring;97):38
+c7461.1 | links=#12703(auto Winterspring;254):19 #20508(auto Winterspring;437):20
+c7462.1 | links=#2242(auto Winterspring;46):64 c7462.15:32
+c7463.1 | links=#17997(auto Winterspring;376):14
+c7523.1 | links=
+c8588.1 | links=#1792(auto Winterspring;39):3
+c9298.1 | links=#3538(auto Winterspring;78):41 #5548(auto Winterspring;111):18
+c9857.1 | links=#11020(auto Winterspring;223):9
+c10197.1 | links=c7447.13:50 c7450.15:47 c7457.31:54
+c10198.1 | links=#5568(auto Winterspring;113):51
+c10199.1 | links=#24224(auto Winterspring;500):29
+c10200.1 | links=#14555(auto Winterspring;303):48 c7430.10:43 c7433.16:48
+c10201.1 | links=c7463.7:29
+c10202.1 | links=c7448.14:24
+c10300.1 | links=#2509(auto Winterspring;56):28
+c10301.1 | links=c11079.1:12
+c10303.1 | links=c10307.1:3
+c10305.1 | links=#27953(auto Winterspring;565):18
+c10307.1 | links=#22634(auto Winterspring;472):9 c10303.1:3 c11757.1:4
+c10431.1 | links=#9706(auto Winterspring;202):2
+c10468.1 | links=#2579(auto Winterspring;59):6 c10978.1:6
+c10618.1 | links=#8460(auto Winterspring;177):28
+c10637.1 | links=#24199(auto Winterspring;498):24
+c10659.1 | links=c10660.1:5
+c10660.1 | links=c10659.1:5 c10661.1:3
+c10661.1 | links=#15769(auto Winterspring;330):27 c10660.1:3
+c10663.1 | links=c7436.7:52 c7437.12:55
+c10664.1 | links=c7436.7:37
+c10684.1 | links=#22783(auto Winterspring;478):19
+c10738.1 | links=c7439.5:3
+c10806.1 | links=#1094(auto Winterspring;21):42
+c10807.1 | links=#23536(auto Winterspring;488):17
+c10916.1 | links=#7377(auto Winterspring;152):26 #7962(passage;from;Winterspring;to;Felwood):5 c11556.1:16
+c10918.1 | links=#5770(auto Winterspring;119):24
+c10978.1 | links=#9343(central location;Everlook;Winterspring):20 c10468.1:6
+c11079.1 | links=#14233(auto Winterspring;297):24 c10301.1:12
+c11118.1 | links=#27946(auto Winterspring;564):2
+c11119.1 | links=#8817(auto Winterspring;187):14
+c11138.1 | links=#4687(auto Winterspring;95):8
+c11139.1 | links=#6499(auto Winterspring;128):16 #6871(auto Winterspring;136):20
+c11182.1 | links=#6710(auto Winterspring;133):5 c11183.1:4
+c11183.1 | links=#6710(auto Winterspring;133):7 c11182.1:4
+c11184.1 | links=#6710(auto Winterspring;133):6
+c11185.1 | links=#10449(auto Winterspring;216):5
+c11186.1 | links=#18454(auto Winterspring;391):6
+c11187.1 | links=#9706(auto Winterspring;202):9
+c11188.1 | links=#6927(auto Winterspring;137):6
+c11189.1 | links=#11020(auto Winterspring;223):9
+c11191.1 | links=#11020(auto Winterspring;223):0
+c11192.1 | links=#11020(auto Winterspring;223):3
+c11546.1 | links=#2579(auto Winterspring;59):9 #9343(central location;Everlook;Winterspring):16
+c11556.1 | links=c10916.1:16
+c11629.1 | links=#9706(auto Winterspring;202):2
+c11696.1 | links=#4220(auto Winterspring;86):5
+c11718.1 | links=c11751.1:4
+c11751.1 | links=c11718.1:4 c7449.17:42
+c11753.1 | links=#9343(central location;Everlook;Winterspring):18 #28627(s;u;Mailbox;Winterspring):6
+c11755.1 | links=#9343(central location;Everlook;Winterspring):17
+c11757.1 | links=c10307.1:4
+c11808.1 | links=#26879(auto Winterspring;538):9
+c13917.1 | links=#11020(auto Winterspring;223):11 o179125.1:2
+c14348.1 | links=#28338(auto Winterspring;579):84 c7462.11:102
+c14457.1 | links=c14458.3:12
+c14458.1 | links=c14458.3:8
+c14531.1 | links=c7445.5:24 c7445.18:28 c7445.21:53
+c14742.1 | links=#11092(auto Winterspring;226):10
+c15574.1 | links=#18629(auto Winterspring;395):8
+c15606.1 | links=#18705(auto Winterspring;396):10
+c16015.1 | links=#12670(auto Winterspring;253):32
+c16416.1 | links=#8559(auto Winterspring;178):7
+c20102.1 | links=#4687(auto Winterspring;95):4
+c25917.1 | links=#18950(auto Winterspring;404):55 c25962.1:17
+c25962.1 | links=c25917.1:17
+c26401.1 | links=#7417(auto Winterspring;153):40
+o175324.1 | links=#13309(auto Winterspring;268):17 c7428.3:23
+o175586.1 | links=#23938(auto Winterspring;494):20 o175628.1:3 o175629.1:4 c7456.33:23
+o175587.1 | links=c7452.17:29
+o175628.1 | links=o175586.1:3
+o175629.1 | links=o175586.1:4
+o175888.1 | links=#2152(auto Winterspring;45):35
+o175891.1 | links=#21103(auto Winterspring;446):75 c7524.16:83 c7523.18:20 c7523.19:54
+o175892.1 | links=#22652(auto Winterspring;474):70 c7523.13:91 c7523.24:37 c7523.25:35 c7523.26:19
+o175893.1 | links=#16800(auto Winterspring;355):51 c7523.5:81 c7524.16:30
+o179125.1 | links=c13917.1:2
+o180523.1 | links=#9706(auto Winterspring;202):9
+o181605.1 | links=#8747(auto Winterspring;185):8 o187953.1:23
+o187953.1 | links=#4919(auto Winterspring;99):63 o181605.1:23 c7443.53:52
+c6491.2 | links=#22295(auto Winterspring;465):18
+c7428.2 | links=c7428.7:55
+c7429.2 | links=#19300(auto Winterspring;409):22
+c7430.2 | links=c7430.1:7 c7432.14:77
+c7433.2 | links=#12345(auto Winterspring;248):50
+c7434.2 | links=c7434.3:73 c7433.15:49
+c7435.2 | links=c10660.7:4
+c7436.2 | links=c7435.8:45 c10660.17:44
+c7437.2 | links=c7435.4:29 c10661.5:48
+c7439.2 | links=#11049(auto Winterspring;225):24
+c7440.2 | links=#14554(auto Winterspring;302):64 c7441.8:10
+c7441.2 | links=c7441.3:15
+c7442.2 | links=#14554(auto Winterspring;302):24 c7442.1:48 o175407.40:47
+c7443.2 | links=#28271(auto Winterspring;576):60
+c7446.2 | links=c7446.11:65
+c7448.2 | links=#2534(auto Winterspring;57):10 c7455.7:13
+c7449.2 | links=c7449.3:40
+c7451.2 | links=c7451.9:24
+c7454.2 | links=#15690(auto Winterspring;327):21
+c7455.2 | links=c7443.36:41
+c7456.2 | links=c7449.24:20 c7445.34:33
+c7460.2 | links=#3890(auto Winterspring;83):13
+c7461.2 | links=#1564(auto Winterspring;32):25 c7462.3:44 c7461.8:68 c7462.12:22 c7463.12:55
+c7462.2 | links=#1668(auto Winterspring;36):36 c7462.19:25
+c7463.2 | links=c7463.16:25
+c7523.2 | links=c7523.5:22 c7523.26:45
+c7524.2 | links=c7523.8:25
+c10196.2 | links=#21661(auto Winterspring;452):31
+c14458.2 | links=c14458.3:16
+o175324.2 | links=#12084(auto Winterspring;241):37 c7429.1:14
+c6491.3 | links=#18866(auto Winterspring;402):44
+c7428.3 | links=o175324.1:23
+c7429.3 | links=#8014(auto Winterspring;168):22 o175324.8:6
+c7430.3 | links=c7430.4:7 c7432.21:35
+c7432.3 | links=c7433.8:65
+c7434.3 | links=c7434.2:73 c7433.16:61
+c7435.3 | links=c7435.4:46 c7435.6:7
+c7436.3 | links=#21661(auto Winterspring;452):23 c7435.15:33
+c7437.3 | links=#25060(auto Winterspring;512):56 c10659.11:37
+c7439.3 | links=c7438.12:9
+c7440.3 | links=#24224(auto Winterspring;500):64
+c7441.3 | links=#14331(auto Winterspring;299):31 c7441.2:15
+c7442.3 | links=#9660(auto Winterspring;201):45
+c7444.3 | links=#3610(auto Winterspring;79):141
+c7445.3 | links=c7449.14:20 c7445.18:38
+c7448.3 | links=#14071(auto Winterspring;291):37 #14315(auto Winterspring;298):30
+c7449.3 | links=c7449.2:40 c7445.8:48 c7445.9:45 c7456.10:56 c7456.29:82
+c7450.3 | links=c7447.11:38 c7444.20:24 o175407.48:67
+c7454.3 | links=#16260(auto Winterspring;342):16
+c7456.3 | links=c7449.22:37
+c7458.3 | links=#13663(auto Winterspring;281):35
+c7459.3 | links=#20534(auto Winterspring;438):15 c7458.23:7
+c7460.3 | links=c7460.8:71
+c7461.3 | links=#12187(auto Winterspring;246):27 c7462.7:39 c7463.13:65
+c7462.3 | links=c7461.2:44
+c7463.3 | links=#16327(auto Winterspring;344):36 c7462.19:61
+c7524.3 | links=#22783(auto Winterspring;478):5
+c10196.3 | links=c7437.1:14 c10659.5:35 c10660.5:35
+c10661.3 | links=c7435.5:48
+c14458.3 | links=#10215(auto Winterspring;211):109 #15874(auto Winterspring;332):23 c14457.1:12 c14458.1:8 c14458.2:16
+o175324.3 | links=#1953(auto Winterspring;41):39 #19300(auto Winterspring;409):39 c7428.5:17
+o175407.3 | links=c7450.6:19 c7457.13:97
+c7428.4 | links=#8014(auto Winterspring;168):33 o175324.9:6
+c7430.4 | links=#1107(auto Winterspring;22):79 c7430.3:7
+c7432.4 | links=c7432.10:61
+c7435.4 | links=c7437.2:29 c7435.3:46
+c7436.4 | links=c7435.15:13 c10660.18:42
+c7437.4 | links=c7435.8:27 c10660.10:24
+c7439.4 | links=c7438.10:11
+c7440.4 | links=c7440.6:30
+c7441.4 | links=c7441.5:17
+c7445.4 | links=c7445.13:32 c7445.21:67
+c7447.4 | links=#4941(auto Winterspring;100):27 #12376(auto Winterspring;249):46
+c7453.4 | links=#28508(auto Winterspring;583):19
+c7454.4 | links=#8671(auto Winterspring;182):96 c7452.11:50 c7456.12:34
+c7455.4 | links=c7443.8:36 c7448.10:34 c7448.11:29
+c7459.4 | links=#25248(auto Winterspring;514):23 c7459.1:37 c7460.5:29
+c7460.4 | links=#3890(auto Winterspring;83):22
+c7461.4 | links=#1668(auto Winterspring;36):36 c7461.16:11
+c7462.4 | links=#16327(auto Winterspring;344):16
+c7523.4 | links=#10215(auto Winterspring;211):54
+c10659.4 | links=c10659.6:13 c10660.7:29
+c10660.4 | links=c10660.5:5 c10660.9:29
+c10661.4 | links=c10660.11:19 c10660.12:14
+c7428.5 | links=o175324.3:17
+c7429.5 | links=c7428.1:44 c7446.18:61
+c7430.5 | links=c7430.6:2
+c7433.5 | links=c7432.7:75 c7431.21:49 c7433.25:28
+c7434.5 | links=#14986(auto Winterspring;315):84 c7433.1:50
+c7435.5 | links=#10190(auto Winterspring;209):29 c10661.3:48 c10660.12:56
+c7437.5 | links=#529(auto Winterspring;12):30 c7435.8:55
+c7439.5 | links=#4317(auto Winterspring;88):17 c10738.1:3
+c7440.5 | links=c7441.9:11
+c7441.5 | links=c7441.4:17 c7442.9:51
+c7445.5 | links=c14531.1:24 c7449.26:55
+c7447.5 | links=#15163(auto Winterspring;319):14
+c7448.5 | links=#18088(auto Winterspring;377):31 o175407.29:4
+c7449.5 | links=#15885(auto Winterspring;334):101 c7456.17:99 c7445.42:33
+c7450.5 | links=#9155(auto Winterspring;191):7
+c7451.5 | links=#26911(auto Winterspring;539):40 c7451.13:53
+c7455.5 | links=#24219(auto Winterspring;499):44 c7455.12:16
+c7456.5 | links=c7456.19:84 o175407.32:40
+c7459.5 | links=#26382(auto Winterspring;532):12
+c7460.5 | links=c7459.4:29 c7460.6:32
+c7461.5 | links=#1668(auto Winterspring;36):29
+c7462.5 | links=#2352(auto Winterspring;49):37 c7463.5:50
+c7463.5 | links=c7462.5:50 c7462.18:47
+c7523.5 | links=o175893.1:81 c7523.2:22
+c10659.5 | links=c7437.1:36 c10196.3:35 c10660.7:38
+c10660.5 | links=c10196.3:35 c10660.4:5 c10660.8:37
+c10661.5 | links=c7437.2:48 c10660.13:12
+o175407.5 | links=c7448.7:37 c7448.10:36
+c7429.6 | links=#20230(auto Winterspring;432):64 c7446.16:56
+c7430.6 | links=#20843(auto Winterspring;442):37 c7430.5:2 c7433.6:25
+c7433.6 | links=c7430.6:25
+c7435.6 | links=c7435.3:7 c10660.11:34
+c7439.6 | links=#11049(auto Winterspring;225):39
+c7440.6 | links=#12271(auto Winterspring;247):23 c7440.4:30 c7442.12:28
+c7441.6 | links=c7442.9:42
+c7442.6 | links=c7442.7:48
+c7448.6 | links=#24761(auto Winterspring;509):97
+c7449.6 | links=c7456.11:2
+c7450.6 | links=#22372(auto Winterspring;467):26 o175407.3:19
+c7452.6 | links=#18972(auto Winterspring;405):31
+c7453.6 | links=#15117(auto Winterspring;318):28 #15690(auto Winterspring;327):38 #17845(auto Winterspring;373):16
+c7454.6 | links=c7453.17:45
+c7455.6 | links=#18088(auto Winterspring;377):62 c7455.13:73
+c7457.6 | links=c7457.7:16 c7444.18:24
+c7458.6 | links=#16554(auto Winterspring;347):24
+c7460.6 | links=c7460.5:32
+c7461.6 | links=c7461.7:66 c7463.7:51
+c7462.6 | links=#5559(auto Winterspring;112):21
+c7463.6 | links=c7462.9:32 c7462.16:55
+c7523.6 | links=c7524.10:19
+c10659.6 | links=c10659.4:13 c10660.8:17
+c10661.6 | links=#26388(auto Winterspring;533):44 c10660.14:28 c10660.15:18
+o175324.6 | links=#28195(auto Winterspring;574):15
+o175407.6 | links=#3456(auto Winterspring;74):48
+c7428.7 | links=c7428.1:58 c7428.2:55 o175324.13:5
+c7429.7 | links=#27265(auto Winterspring;549):47
+c7432.7 | links=c7433.5:75 c7431.11:64 c7431.19:66 c7432.30:48
+c7435.7 | links=c10659.11:73
+c7436.7 | links=#490(auto Winterspring;10):30 c10663.1:52 c10664.1:37
+c7437.7 | links=c7437.8:65
+c7440.7 | links=#5277(auto Winterspring;104):32
+c7441.7 | links=#23520(auto Winterspring;487):21 c7441.1:27
+c7442.7 | links=#14554(auto Winterspring;302):66 c7442.6:48 c7442.9:68 c7442.10:49
+c7443.7 | links=c7443.23:53
+c7446.7 | links=#19201(auto Winterspring;408):14
+c7447.7 | links=c7444.22:37 c7450.23:51
+c7448.7 | links=o175407.5:37 c7448.12:12 c7455.21:40 c7443.22:44
+c7449.7 | links=#15885(auto Winterspring;334):34 c7445.43:91
+c7450.7 | links=#18127(auto Winterspring;379):24 c7447.8:31 c7444.28:46
+c7453.7 | links=#17845(auto Winterspring;373):34
+c7455.7 | links=c7448.2:13
+c7457.7 | links=c7457.6:16 o175407.44:44
+c7458.7 | links=#13693(auto Winterspring;283):42
+c7459.7 | links=#18450(auto Winterspring;390):26 c7460.9:15
+c7460.7 | links=#10090(auto Winterspring;208):21
+c7461.7 | links=#27311(auto Winterspring;551):59 c7461.6:66 c7462.10:58
+c7462.7 | links=c7461.3:39
+c7463.7 | links=c10201.1:29 c7461.6:51
+c7523.7 | links=#11347(auto Winterspring;229):26
+c10660.7 | links=c7435.2:4 c10659.4:29 c10659.5:38
+c10661.7 | links=c10660.10:30
+c7428.8 | links=#28195(auto Winterspring;574):18
+c7429.8 | links=#24936(auto Winterspring;510):30 #25657(auto Winterspring;524):19
+c7433.8 | links=c7432.3:65 c7432.24:59
+c7435.8 | links=#15769(auto Winterspring;330):38 c7436.2:45 c7437.4:27 c7437.5:55
+c7437.8 | links=#22018(auto Winterspring;461):46 c7437.7:65
+c7438.8 | links=c7438.9:12
+c7441.8 | links=c7440.2:10
+c7443.8 | links=c7455.4:36
+c7445.8 | links=c7449.3:48 c7456.11:31
+c7447.8 | links=c7450.7:31 c7457.19:38
+c7449.8 | links=#11626(auto Winterspring;235):92
+c7451.8 | links=#13953(auto Winterspring;288):19
+c7453.8 | links=#12092(auto Winterspring;242):29 #15690(auto Winterspring;327):59
+c7455.8 | links=#18088(auto Winterspring;377):81
+c7456.8 | links=#9591(auto Winterspring;199):57 c7445.11:25
+c7459.8 | links=c7459.9:24
+c7460.8 | links=#10774(auto Winterspring;220):11 #12031(auto Winterspring;239):21 #12856(auto Winterspring;259):22 #18450(auto Winterspring;390):35 c7460.3:71
+c7461.8 | links=c7461.2:68 c7462.15:43
+c7462.8 | links=#20192(auto Winterspring;431):16 c7461.13:48
+c7463.8 | links=#9291(auto Winterspring;193):10
+c7523.8 | links=#21103(auto Winterspring;446):63 c7524.2:25
+c10660.8 | links=c10660.5:37 c10659.6:17
+c10661.8 | links=c10660.17:2
+o175324.8 | links=c7429.3:6
+c7428.9 | links=#5568(auto Winterspring;113):39
+c7429.9 | links=#18799(auto Winterspring;398):8
+c7438.9 | links=#21359(auto Winterspring;449):25 c7438.8:12
+c7440.9 | links=c7440.10:21 c7455.19:100 c7443.31:83
+c7441.9 | links=c7440.5:11 c7442.12:44
+c7442.9 | links=#14331(auto Winterspring;299):28 c7441.5:51 c7441.6:42 c7442.7:68
+c7443.9 | links=#13628(auto Winterspring;278):20
+c7445.9 | links=c7449.3:45
+c7446.9 | links=#13573(auto Winterspring;275):54 c7446.10:20
+c7447.9 | links=#10195(auto Winterspring;210):45
+c7448.9 | links=#19910(auto Winterspring;426):43 c7448.11:64
+c7451.9 | links=#28740(s;Kalimdor;Winterspring;Everlook;Moon Horror Den):6 c7451.2:24
+c7452.9 | links=#12092(auto Winterspring;242):23
+c7453.9 | links=#28508(auto Winterspring;583):15
+c7454.9 | links=#22691(auto Winterspring;476):62 c7454.16:12
+c7456.9 | links=#16975(auto Winterspring;357):80 c7449.35:38
+c7457.9 | links=#27080(auto Winterspring;544):26 c7447.12:28
+c7459.9 | links=#26354(auto Winterspring;531):29 c7459.8:24 c7458.22:31
+c7460.9 | links=c7459.7:15 c7458.22:34
+c7461.9 | links=#19611(auto Winterspring;418):51 c7461.10:76
+c7462.9 | links=c7463.6:32 c7462.11:23
+c7463.9 | links=#11979(auto Winterspring;238):24
+c10660.9 | links=c10660.4:29 c10660.10:19
+o175324.9 | links=c7428.4:6
+c7428.10 | links=#8181(auto Winterspring;171):29 #18799(auto Winterspring;398):35
+c7429.10 | links=#5568(auto Winterspring;113):23
+c7430.10 | links=c10200.1:43 c7430.11:2
+c7432.10 | links=#1650(auto Winterspring;35):31 c7432.4:61 c7431.20:49
+c7437.10 | links=#219(auto Winterspring;3):21 c7437.11:13
+c7438.10 | links=#16628(auto Winterspring;350):38 c7439.4:11
+c7440.10 | links=#24224(auto Winterspring;500):23 c7440.9:21
+c7441.10 | links=c7441.12:10
+c7442.10 | links=c7442.7:49
+c7443.10 | links=c7443.21:13
+c7445.10 | links=#22368(auto Winterspring;466):23 c7456.11:32 c7449.28:74
+c7446.10 | links=#708(auto Winterspring;16):9 c7446.9:20
+c7447.10 | links=#14016(auto Winterspring;289):43 c7450.27:43
+c7448.10 | links=c7455.4:34 o175407.5:36
+c7450.10 | links=c7457.22:59
+c7451.10 | links=c7458.13:98 c7458.14:24
+c7452.10 | links=#15690(auto Winterspring;327):23
+c7453.10 | links=#7525(auto Winterspring;157):42
+c7454.10 | links=c7453.26:34
+c7456.10 | links=#15885(auto Winterspring;334):40 c7449.3:56 o175407.18:13
+c7458.10 | links=#17525(auto Winterspring;366):44 c7459.12:64
+c7461.10 | links=c7461.9:76 c7463.11:31
+c7462.10 | links=c7461.7:58
+c7463.10 | links=#11979(auto Winterspring;238):21
+c7524.10 | links=#22652(auto Winterspring;474):30 c7523.6:19
+c10660.10 | links=c7437.4:24 c10661.7:30 c10660.9:19
+o175407.10 | links=#22372(auto Winterspring;467):43
+c7428.11 | links=#22629(auto Winterspring;471):28
+c7430.11 | links=c7430.10:2
+c7431.11 | links=c7432.7:64 c7431.12:28
+c7432.11 | links=#18878(auto Winterspring;403):66 c7431.21:38
+c7435.11 | links=#21661(auto Winterspring;452):35 c10660.19:33
+c7437.11 | links=c7437.10:13 c7435.13:22
+c7438.11 | links=#8621(auto Winterspring;181):20 #16666(auto Winterspring;351):23
+c7441.11 | links=c7441.12:29 c7442.15:32
+c7442.11 | links=#14554(auto Winterspring;302):50
+c7443.11 | links=#18088(auto Winterspring;377):49 c7443.23:30
+c7445.11 | links=c7456.8:25 o175407.38:26
+c7446.11 | links=c7446.2:65 c7446.15:60 c7446.18:60
+c7447.11 | links=c7450.3:38 c7457.13:51
+c7448.11 | links=c7455.4:29 c7448.9:64 c7448.14:47 o175407.21:61
+c7449.11 | links=#17778(auto Winterspring;371):54 c7449.38:23
+c7450.11 | links=#27101(auto Winterspring;545):41
+c7452.11 | links=c7454.4:50 c7453.13:40
+c7453.11 | links=#15117(auto Winterspring;318):44
+c7454.11 | links=#3508(auto Winterspring;76):34 c7452.23:49
+c7456.11 | links=#27065(auto Winterspring;543):28 c7449.6:2 c7445.8:31 c7445.10:32
+c7459.11 | links=o175407.34:37 c7458.36:30
+c7460.11 | links=#13693(auto Winterspring;283):19
+c7461.11 | links=#12187(auto Winterspring;246):48
+c7462.11 | links=c14348.1:102 c7462.9:23 c7462.17:30
+c7463.11 | links=#11283(auto Winterspring;228):59 c7461.10:31 c7463.15:6 c7463.17:71
+c7523.11 | links=#10215(auto Winterspring;211):18 c7524.14:34
+c7524.11 | links=#3610(auto Winterspring;79):21
+c10659.11 | links=#17508(auto Winterspring;364):19 c7437.3:37 c7435.7:73 c10660.13:31
+c10660.11 | links=c10661.4:19 c7435.6:34
+o175324.11 | links=#18799(auto Winterspring;398):34
+c7428.12 | links=#5568(auto Winterspring;113):26
+c7429.12 | links=#24312(auto Winterspring;501):6
+c7430.12 | links=c7430.13:5
+c7431.12 | links=c7431.11:28 c7431.15:51
+c7437.12 | links=c10663.1:55 c7435.14:36
+c7438.12 | links=#16628(auto Winterspring;350):19 c7439.3:9
+c7441.12 | links=c7441.10:10 c7441.11:29 c7441.15:58 c7442.16:48 c7442.18:48
+c7442.12 | links=c7440.6:28 c7441.9:44 c7442.19:44 c7444.32:111
+c7445.12 | links=c7445.13:67 c7449.13:45
+c7447.12 | links=c7457.9:28
+c7448.12 | links=c7448.7:12
+c7452.12 | links=c7453.14:19
+c7453.12 | links=#10665(auto Winterspring;218):40
+c7454.12 | links=c7453.30:49
+c7455.12 | links=#28014(auto Winterspring;569):24 c7455.5:16
+c7456.12 | links=c7454.4:34
+c7459.12 | links=#6988(auto Winterspring;138):30 c7458.10:64
+c7461.12 | links=c7461.13:55 c7463.16:16
+c7462.12 | links=c7461.2:22
+c7463.12 | links=c7461.2:55
+c7523.12 | links=#16800(auto Winterspring;355):19
+c7524.12 | links=#2152(auto Winterspring;45):52
+c10660.12 | links=c10661.4:14 c7435.5:56
+o175324.12 | links=#13228(auto Winterspring;267):9
+c7428.13 | links=#22439(auto Winterspring;468):16 #27296(auto Winterspring;550):36
+c7430.13 | links=c7430.12:5 c7433.15:55
+c7431.13 | links=c7432.15:57 c7431.19:61
+c7435.13 | links=c7437.11:22 c10659.13:44
+c7441.13 | links=#12271(auto Winterspring;247):39 c7441.14:42
+c7442.13 | links=c7442.14:66
+c7444.13 | links=o175407.44:8
+c7445.13 | links=c7445.4:32 c7445.12:67 c7449.17:34
+c7447.13 | links=c10197.1:50
+c7448.13 | links=c7443.18:54
+c7449.13 | links=c7445.12:45 c7449.19:70
+c7451.13 | links=c7451.5:53 c7458.29:82 o175407.32:45
+c7452.13 | links=#12092(auto Winterspring;242):23
+c7453.13 | links=#14950(auto Winterspring;313):61 c7452.11:40 c7452.17:26
+c7454.13 | links=#25617(auto Winterspring;522):18 c7454.14:81 c7453.31:50
+c7455.13 | links=#25266(auto Winterspring;515):64 c7455.6:73 c7443.21:69
+c7456.13 | links=c7452.17:52 c7456.20:53 c7456.31:38
+c7457.13 | links=#19547(auto Winterspring;416):31 o175407.3:97 c7447.11:51 o175407.49:55
+c7458.13 | links=#13621(auto Winterspring;277):25 c7451.10:98
+c7459.13 | links=c7458.34:58 c7458.35:44 c7458.40:54
+c7461.13 | links=c7462.8:48 c7461.12:55
+c7462.13 | links=#12670(auto Winterspring;253):21 #27718(auto Winterspring;558):46
+c7463.13 | links=c7461.3:65
+c7523.13 | links=#11347(auto Winterspring;229):37 #21103(auto Winterspring;446):64 o175892.1:91
+c10659.13 | links=#8239(auto Winterspring;172):32 c7435.13:44 c10659.14:9 c10660.21:6
+c10660.13 | links=c10661.5:12 c10659.11:31
+o175324.13 | links=c7428.7:5
+o175407.13 | links=c7445.20:27 c7445.33:18
+c7430.14 | links=c7430.15:2
+c7431.14 | links=c7431.15:55 c7432.15:68
+c7432.14 | links=c7430.2:77 c7432.28:40
+c7435.14 | links=#7154(auto Winterspring;144):15 c7437.12:36
+c7440.14 | links=#11049(auto Winterspring;225):39
+c7441.14 | links=c7441.13:42
+c7442.14 | links=c7442.13:66 c7442.16:46
+c7448.14 | links=#15341(auto Winterspring;322):25 c10202.1:24 c7448.11:47 o175407.37:16
+c7449.14 | links=c7445.3:20 c7445.32:24
+c7450.14 | links=#9868(auto Winterspring;204):25 c7457.16:54
+c7453.14 | links=c7452.12:19 c7453.19:31
+c7454.14 | links=#16941(auto Winterspring;356):50 c7454.13:81 c7452.25:28 c7453.25:68
+c7456.14 | links=c7456.32:42
+c7457.14 | links=#12376(auto Winterspring;249):28
+c7458.14 | links=c7451.10:24 c7449.21:69
+c7461.14 | links=c7462.19:38
+c7462.14 | links=#12187(auto Winterspring;246):43
+c7523.14 | links=#7354(auto Winterspring;150):20
+c7524.14 | links=c7523.11:34
+c10659.14 | links=c10659.13:9
+c10660.14 | links=c10661.6:28
+o175324.14 | links=#22629(auto Winterspring;471):33
+o175407.14 | links=c7456.35:16
+c7430.15 | links=c7430.14:2 c7433.16:44
+c7431.15 | links=c7431.12:51 c7431.14:55
+c7432.15 | links=c7431.13:57 c7431.14:68 o175407.15:39 c7430.18:20
+c7433.15 | links=c7434.2:49 c7430.13:55 c7433.18:35
+c7435.15 | links=#21661(auto Winterspring;452):53 c7436.3:33 c7436.4:13
+c7440.15 | links=#11049(auto Winterspring;225):44
+c7441.15 | links=c7441.12:58
+c7442.15 | links=c7441.11:32
+c7444.15 | links=#23148(auto Winterspring;484):64 c7444.32:18
+c7446.15 | links=c7446.11:60
+c7448.15 | links=#2393(auto Winterspring;51):28 #14196(auto Winterspring;296):61 c7443.40:49
+c7449.15 | links=c7445.20:25
+c7450.15 | links=#10311(auto Winterspring;213):77 #27101(auto Winterspring;545):43 c10197.1:47
+c7454.15 | links=c7453.34:43
+c7455.15 | links=c7455.30:51 c7443.49:114
+c7461.15 | links=#12187(auto Winterspring;246):55 #14869(auto Winterspring;311):47
+c7462.15 | links=c7462.1:32 c7461.8:43
+c7463.15 | links=c7463.11:6
+c7523.15 | links=#7354(auto Winterspring;150):20
+c7524.15 | links=#2152(auto Winterspring;45):32 c7523.22:66
+c10660.15 | links=c10661.6:18
+o175324.15 | links=#20869(auto Winterspring;443):15
+o175407.15 | links=c7432.15:39 c7432.37:26
+c7430.16 | links=c7430.17:4 c7433.18:25
+c7431.16 | links=c7430.1:59 c7432.27:44
+c7433.16 | links=c10200.1:48 c7434.3:61 c7430.15:44
+c7442.16 | links=#9868(auto Winterspring;204):59 c7441.12:48 c7442.14:46
+c7443.16 | links=#1415(auto Winterspring;28):15 #15341(auto Winterspring;322):20
+c7446.16 | links=#25578(auto Winterspring;521):55 c7429.6:56
+c7448.16 | links=#25421(auto Winterspring;518):12 c7443.42:40
+c7452.16 | links=#4580(auto Winterspring;94):40
+c7454.16 | links=#27682(auto Winterspring;556):51 c7454.9:12 c7453.34:66
+c7455.16 | links=#7071(auto Winterspring;143):45 #12981(auto Winterspring;262):33 c7443.26:58
+c7456.16 | links=#18797(auto Winterspring;397):34
+c7457.16 | links=c7450.14:54
+c7461.16 | links=c7461.4:11
+c7462.16 | links=#18355(auto Winterspring;387):23 c7463.6:55 c7462.17:34
+c7463.16 | links=#9291(auto Winterspring;193):58 c7463.2:25 c7461.12:16
+c7524.16 | links=o175891.1:83 o175893.1:30
+c10660.16 | links=c10660.17:11
+o175324.16 | links=#27296(auto Winterspring;550):31
+o175407.16 | links=#5677(auto Winterspring;118):22
+c7430.17 | links=c7430.16:4
+c7443.17 | links=c7443.20:11 c7443.41:43
+c7444.17 | links=#14016(auto Winterspring;289):26
+c7446.17 | links=c7446.18:39
+c7449.17 | links=c11751.1:42 c7445.13:34
+c7452.17 | links=o175587.1:29 c7453.13:26 c7456.13:52 c7453.19:22
+c7453.17 | links=#7711(auto Winterspring;162):21 c7454.6:45
+c7454.17 | links=#16941(auto Winterspring;356):42 c7452.20:15 c7452.24:36
+c7455.17 | links=#3672(auto Winterspring;80):86 #14973(auto Winterspring;314):14 #24337(auto Winterspring;502):46
+c7456.17 | links=c7449.5:99 c7445.22:21
+c7458.17 | links=#16134(auto Winterspring;338):18 c7458.27:50
+c7462.17 | links=c7462.11:30 c7462.16:34
+c7463.17 | links=#28581(auto Winterspring;584):42 c7463.11:71
+c7523.17 | links=#16800(auto Winterspring;355):42
+c10660.17 | links=#22018(auto Winterspring;461):37 c7436.2:44 c10661.8:2 c10660.16:11
+c7430.18 | links=c7432.15:20 c7430.19:4
+c7433.18 | links=c7433.15:35 c7430.16:25
+c7442.18 | links=c7441.12:48
+c7443.18 | links=#23733(auto Winterspring;492):57 c7448.13:54 c7443.22:32 o175407.35:48
+c7444.18 | links=#14016(auto Winterspring;289):45 c7457.6:24
+c7445.18 | links=c14531.1:28 c7445.3:38 c7456.37:32
+c7446.18 | links=#25578(auto Winterspring;521):48 c7429.5:61 c7446.11:60 c7446.17:39
+c7448.18 | links=#3879(auto Winterspring;82):43
+c7452.18 | links=#2509(auto Winterspring;56):54 #14111(auto Winterspring;292):59 c7453.21:26
+c7453.18 | links=#4580(auto Winterspring;94):29 #7711(auto Winterspring;162):12
+c7454.18 | links=#16941(auto Winterspring;356):43 c7453.28:3 c7453.29:32
+c7455.18 | links=#6131(auto Winterspring;125):61 #14973(auto Winterspring;314):48 c7443.46:53
+c7456.18 | links=c7456.20:27 c7456.25:13
+c7457.18 | links=#15777(auto Winterspring;331):55 c7450.19:51
+c7462.18 | links=#2242(auto Winterspring;46):22 #5559(auto Winterspring;112):71 c7463.5:47
+c7523.18 | links=o175891.1:20
+c10660.18 | links=#22018(auto Winterspring;461):17 c7436.4:42
+o175324.18 | links=#3463(auto Winterspring;75):27
+o175407.18 | links=c7456.10:13
+c7430.19 | links=c7430.18:4
+c7431.19 | links=c7432.7:66 c7431.13:61 c7431.20:47
+c7432.19 | links=#1588(auto Winterspring;34):36 c7432.28:75
+c7442.19 | links=c7442.12:44
+c7445.19 | links=c7449.19:59 c7456.34:67
+c7448.19 | links=#28271(auto Winterspring;576):17
+c7449.19 | links=c7449.13:70 c7445.19:59 o175407.19:28 c7456.30:83
+c7450.19 | links=c7457.18:51 c7444.22:47
+c7451.19 | links=#13663(auto Winterspring;281):19 c7451.21:48
+c7453.19 | links=#28743(s;Kalimdor;Winterspring;Mazthoril;Dun Mandarr):10 c7453.14:31 c7452.17:22
+c7455.19 | links=c7440.9:100 c7443.38:26
+c7456.19 | links=c7456.5:84 c7449.32:101 c7449.34:59 c7449.39:51 c7445.45:62
+c7457.19 | links=c7447.8:38
+c7458.19 | links=#10582(auto Winterspring;217):8
+c7462.19 | links=c7462.2:25 c7463.3:61 c7461.14:38
+c7523.19 | links=#10299(auto Winterspring;212):46 o175891.1:54
+c10660.19 | links=#8239(auto Winterspring;172):20 c7435.11:33
+o175324.19 | links=#22439(auto Winterspring;468):18
+o175407.19 | links=c7449.19:28
+c7431.20 | links=c7432.10:49 c7431.19:47
+c7443.20 | links=c7443.17:11 c7443.30:43
+c7444.20 | links=#4941(auto Winterspring;100):38 c7450.3:24
+c7445.20 | links=o175407.13:27 c7449.15:25 c7456.30:66
+c7448.20 | links=c7443.36:39
+c7449.20 | links=c7445.22:18
+c7451.20 | links=#19587(auto Winterspring;417):8
+c7452.20 | links=c7454.17:15
+c7453.20 | links=#10665(auto Winterspring;218):11 #20056(auto Winterspring;430):19
+c7456.20 | links=c7456.13:53 c7456.18:27
+c7458.20 | links=c7451.21:68 c7455.30:35
+c7462.20 | links=#2352(auto Winterspring;49):53
+o175324.20 | links=#22638(auto Winterspring;473):29
+c7430.21 | links=c7430.22:6 c7433.25:40
+c7431.21 | links=c7433.5:49 c7432.11:38
+c7432.21 | links=c7430.3:35 c7432.27:37
+c7443.21 | links=c7443.10:13 c7455.13:69
+c7444.21 | links=c7457.31:99
+c7445.21 | links=c14531.1:53 c7445.4:67
+c7446.21 | links=#21858(auto Winterspring;458):3
+c7448.21 | links=#11726(auto Winterspring;236):30
+c7449.21 | links=c7458.14:69 c7445.30:29
+c7451.21 | links=c7451.19:48 c7458.20:68
+c7453.21 | links=#14111(auto Winterspring;292):38 c7452.18:26
+c7455.21 | links=c7448.7:40
+c7462.21 | links=#4466(auto Winterspring;90):28
+c7523.21 | links=#2152(auto Winterspring;45):27
+c10660.21 | links=c10659.13:6
+o175324.21 | links=#24312(auto Winterspring;501):25
+o175407.21 | links=c7448.11:61
+c7430.22 | links=c7430.21:6
+c7443.22 | links=c7448.7:44 c7443.18:32
+c7444.22 | links=c7447.7:37 c7450.19:47
+c7445.22 | links=c7456.17:21 c7449.20:18
+c7448.22 | links=#14180(auto Winterspring;295):58 c7443.24:47
+c7449.22 | links=c7456.3:37 c7456.27:26
+c7450.22 | links=#13656(auto Winterspring;280):13
+c7453.22 | links=#20056(auto Winterspring;430):23
+c7455.22 | links=#23894(auto Winterspring;493):30 c7443.46:58
+c7456.22 | links=c7456.36:16
+c7457.22 | links=#13205(auto Winterspring;266):34 c7450.10:59
+c7458.22 | links=c7459.9:31 c7460.9:34
+c7523.22 | links=c7524.15:66 c7523.26:66
+c7433.23 | links=#12345(auto Winterspring;248):23
+c7443.23 | links=c7443.7:53 c7443.11:30
+c7445.23 | links=c7456.35:30
+c7450.23 | links=c7447.7:51 c7444.28:44
+c7452.23 | links=c7454.11:49 c7453.30:63
+c7455.23 | links=#2393(auto Winterspring;51):30 #28271(auto Winterspring;576):40
+c7456.23 | links=c7456.31:28
+c7457.23 | links=#19480(auto Winterspring;412):26
+c7458.23 | links=#3890(auto Winterspring;83):22 c7459.3:7
+c7523.23 | links=c7523.24:14
+c7432.24 | links=#12345(auto Winterspring;248):47 c7433.8:59
+c7443.24 | links=#6810(auto Winterspring;135):66 c7448.22:47 c7443.33:56
+c7444.24 | links=#27101(auto Winterspring;545):25
+c7445.24 | links=#5172(auto Winterspring;102):36
+c7448.24 | links=c7443.30:48 c7443.34:41
+c7449.24 | links=c7456.2:20 c7445.35:21
+c7450.24 | links=#14016(auto Winterspring;289):18
+c7452.24 | links=c7454.17:36 c7453.30:44
+c7456.24 | links=#11626(auto Winterspring;235):38
+c7458.24 | links=#10090(auto Winterspring;208):29 #11468(auto Winterspring;231):31
+c7523.24 | links=o175892.1:37 c7523.23:14
+o175407.24 | links=#13621(auto Winterspring;277):27
+c7433.25 | links=c7433.5:28 c7430.21:40 c7432.36:12
+c7443.25 | links=#3879(auto Winterspring;82):61
+c7445.25 | links=o175407.33:15
+c7448.25 | links=#3672(auto Winterspring;80):32
+c7450.25 | links=c7457.27:68 c7457.31:73
+c7452.25 | links=c7454.14:28
+c7453.25 | links=c7454.14:68 c7453.33:21 c7453.34:48
+c7456.25 | links=c7456.18:13
+c7523.25 | links=o175892.1:35
+o175407.25 | links=o175407.26:15
+c7443.26 | links=#17785(auto Winterspring;372):47 c7455.16:58
+c7445.26 | links=c7445.36:43 o175407.38:20
+c7448.26 | links=#2503(auto Winterspring;55):44 #23894(auto Winterspring;493):51
+c7449.26 | links=c7445.5:55
+c7453.26 | links=#16941(auto Winterspring;356):32 c7454.10:34
+c7456.26 | links=o175407.32:33 c7445.40:70
+c7457.26 | links=c7457.31:32
+c7458.26 | links=#2124(auto Winterspring;43):16 #10090(auto Winterspring;208):25
+c7523.26 | links=o175892.1:19 c7523.2:45 c7523.22:66
+o175407.26 | links=#22372(auto Winterspring;467):39 o175407.25:15
+c7432.27 | links=c7431.16:44 c7432.21:37
+c7443.27 | links=c7443.31:50
+c7448.27 | links=#2503(auto Winterspring;55):52 #6131(auto Winterspring;125):36
+c7449.27 | links=c7449.1:32 c7445.35:48 c7445.38:52
+c7450.27 | links=c7447.10:43
+c7455.27 | links=#28146(auto Winterspring;573):28
+c7456.27 | links=c7449.22:26 c7456.35:40
+c7457.27 | links=c7450.25:68
+c7458.27 | links=c7458.17:50 c7458.28:48
+c7432.28 | links=c7432.14:40 c7432.19:75
+c7443.28 | links=#11726(auto Winterspring;236):25
+c7444.28 | links=c7450.7:46 c7450.23:44
+c7445.28 | links=#28014(auto Winterspring;569):39
+c7448.28 | links=#3672(auto Winterspring;80):27
+c7449.28 | links=c7445.10:74
+c7450.28 | links=#23491(auto Winterspring;486):28
+c7453.28 | links=c7454.18:3
+c7455.28 | links=c7455.44:47
+c7456.28 | links=c7456.31:39 c7456.36:24
+c7458.28 | links=c7458.27:48 c7458.31:31 c7458.32:38
+o175407.28 | links=#17525(auto Winterspring;366):40 #20402(auto Winterspring;435):7
+c7432.29 | links=#1466(auto Winterspring;31):36 c7432.30:53
+c7444.29 | links=#27080(auto Winterspring;544):26
+c7453.29 | links=#3508(auto Winterspring;76):15 c7454.18:32
+c7455.29 | links=#13563(auto Winterspring;274):26 #14034(auto Winterspring;290):10
+c7456.29 | links=#1139(auto Winterspring;24):48 c7449.3:82 c7456.30:20 c7449.31:3
+c7458.29 | links=c7451.13:82 c7455.39:54 c7455.44:88 c7443.49:40
+o175407.29 | links=c7448.5:4
+c7432.30 | links=c7432.7:48 c7432.29:53
+c7443.30 | links=c7443.20:43 c7448.24:48
+c7445.30 | links=c7449.21:29
+c7448.30 | links=#7038(auto Winterspring;140):12
+c7449.30 | links=c7449.38:40
+c7453.30 | links=c7454.12:49 c7452.23:63 c7452.24:44
+c7455.30 | links=c7455.15:51 c7458.20:35
+c7456.30 | links=c7449.19:83 c7445.20:66 c7456.29:20
+c7457.30 | links=c7444.32:15
+c7458.30 | links=#13693(auto Winterspring;283):29 #16554(auto Winterspring;347):21
+c7432.31 | links=#1466(auto Winterspring;31):38
+c7443.31 | links=c7440.9:83 c7443.27:50
+c7444.31 | links=#9868(auto Winterspring;204):30
+c7449.31 | links=c7456.29:3
+c7453.31 | links=c7454.13:50
+c7456.31 | links=c7456.13:38 c7456.23:28 c7456.28:39 c7456.33:38
+c7457.31 | links=c10197.1:54 c7444.21:99 c7450.25:73 c7457.26:32
+c7458.31 | links=c7458.28:31 c7458.40:48
+c7443.32 | links=c7443.42:54
+c7444.32 | links=c7442.12:111 c7444.15:18 c7457.30:15
+c7445.32 | links=c7449.14:24 c7456.34:50
+c7449.32 | links=#27065(auto Winterspring;543):67 c7456.19:101
+c7456.32 | links=#25060(auto Winterspring;512):51 c7456.14:42
+c7458.32 | links=#13693(auto Winterspring;283):48 c7458.28:38 o175407.36:32
+o175407.32 | links=c7456.5:40 c7451.13:45 c7456.26:33
+c7443.33 | links=c7443.24:56 c7455.33:35 c7443.34:9
+c7445.33 | links=o175407.13:18
+c7453.33 | links=c7453.25:21
+c7455.33 | links=c7443.33:35
+c7456.33 | links=o175586.1:23 c7456.31:38
+c7458.33 | links=#6988(auto Winterspring;138):59
+o175407.33 | links=c7445.25:15 c7456.35:74
+c7443.34 | links=c7448.24:41 c7443.33:9
+c7445.34 | links=#22691(auto Winterspring;476):90 c7456.2:33
+c7449.34 | links=c7456.19:59
+c7453.34 | links=c7454.15:43 c7454.16:66 c7453.25:48
+c7456.34 | links=c7445.19:67 c7445.32:50
+c7458.34 | links=c7459.13:58 c7458.38:52
+o175407.34 | links=c7459.11:37 c7458.38:44
+c7432.35 | links=c7432.39:49
+c7445.35 | links=c7449.24:21 c7449.27:48
+c7449.35 | links=c7456.9:38 c7445.42:45 c7445.44:46
+c7453.35 | links=#16941(auto Winterspring;356):53
+c7455.35 | links=#3879(auto Winterspring;82):12
+c7456.35 | links=#15715(auto Winterspring;328):92 o175407.14:16 c7445.23:30 c7456.27:40 o175407.33:74
+c7458.35 | links=c7459.13:44 c7458.39:5
+o175407.35 | links=c7443.18:48
+c7432.36 | links=c7433.25:12 c7432.41:40
+c7443.36 | links=#3879(auto Winterspring;82):87 c7455.2:41 c7448.20:39
+c7445.36 | links=c7445.26:43 c7449.38:40
+c7449.36 | links=c7445.44:42
+c7456.36 | links=c7456.22:16 c7456.28:24
+c7458.36 | links=#13693(auto Winterspring;283):57 c7459.11:30
+o175407.36 | links=c7458.32:32
+c7432.37 | links=o175407.15:26
+c7445.37 | links=c7449.38:18
+c7449.37 | links=c7445.44:106 c7445.45:102
+c7455.37 | links=#7038(auto Winterspring;140):30
+c7456.37 | links=c7445.18:32
+c7458.37 | links=#13693(auto Winterspring;283):54
+o175407.37 | links=c7448.14:16
+c7443.38 | links=c7455.19:26
+c7445.38 | links=#1139(auto Winterspring;24):23 #22368(auto Winterspring;466):49 c7449.27:52
+c7449.38 | links=c7449.11:23 c7449.30:40 c7445.36:40 c7445.37:18
+c7458.38 | links=#6988(auto Winterspring;138):67 c7458.34:52 o175407.34:44
+o175407.38 | links=c7445.11:26 c7445.26:20
+c7432.39 | links=#12345(auto Winterspring;248):61 #14986(auto Winterspring;315):44 c7432.35:49
+c7443.39 | links=#11726(auto Winterspring;236):41
+c7449.39 | links=c7456.19:51
+c7455.39 | links=c7458.29:54
+c7458.39 | links=#6988(auto Winterspring;138):86 c7458.35:5
+c7432.40 | links=#12345(auto Winterspring;248):31
+c7443.40 | links=c7448.15:49
+c7445.40 | links=c7456.26:70
+c7458.40 | links=c7459.13:54 c7458.31:48
+o175407.40 | links=c7442.2:47 o175407.48:77
+c7432.41 | links=c7432.36:40
+c7443.41 | links=c7443.17:43
+o175407.41 | links=#4919(auto Winterspring;99):9
+c7443.42 | links=#22962(auto Winterspring;480):47 c7448.16:40 c7443.32:54
+c7445.42 | links=c7449.5:33 c7449.35:45
+c7443.43 | links=#13451(auto Winterspring;271):66
+c7445.43 | links=#1859(auto Winterspring;40):69 c7449.7:91
+o175407.43 | links=#14016(auto Winterspring;289):32
+c7443.44 | links=#3672(auto Winterspring;80):41
+c7445.44 | links=c7449.35:46 c7449.36:42 c7449.37:106
+c7455.44 | links=c7455.28:47 c7458.29:88
+o175407.44 | links=c7457.7:44 c7444.13:8
+c7443.45 | links=#11726(auto Winterspring;236):50
+c7445.45 | links=c7456.19:62 c7449.37:102
+c7443.46 | links=c7455.18:53 c7455.22:58
+c7443.47 | links=#11726(auto Winterspring;236):34
+o175407.48 | links=#9660(auto Winterspring;201):41 c7450.3:67 o175407.40:77
+c7443.49 | links=c7455.15:114 c7458.29:40
+o175407.49 | links=c7457.13:55
+o175407.50 | links=#526(auto Winterspring;11):51
+o175407.52 | links=#5548(auto Winterspring;111):12
+c7443.53 | links=o187953.1:52
+o175407.53 | links=#9460(auto Winterspring;195):47 o175407.57:26
+o175407.54 | links=#9460(auto Winterspring;195):33
+c7443.55 | links=#14973(auto Winterspring;314):28
+o175407.55 | links=#22231(auto Winterspring;464):29
+o175407.56 | links=#14753(auto Winterspring;308):15
+o175407.57 | links=o175407.53:26
+o175407.58 | links=#526(auto Winterspring;11):24 #27696(auto Winterspring;557):45
+o175407.59 | links=#19825(auto Winterspring;424):15
+o175407.60 | links=#28395(auto Winterspring;580):41

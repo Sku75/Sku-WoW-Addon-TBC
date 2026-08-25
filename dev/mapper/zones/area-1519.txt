@@ -1,0 +1,658 @@
+Zone areaId 1519 — eine Zeile pro Wegpunkt; Links inline.
+
+#25 | auto Stormwind City;1§auto Sturmwind;1§auto Hurlevent;1 | x=-8700.7001953125 y=305.5 | size=1 | links=#3170(auto Stormwind City;49):13 #16235(auto Stormwind City;208):10
+#49 | auto Stormwind City;2§auto Sturmwind;2§auto Hurlevent;2 | x=-8616.1005859375 y=654.7000122070312 | size=1 | links=#3127(auto Stormwind City;48):15 #8736(auto Stormwind City;119):27
+#267 | auto The Slaugthered Lamb;Stormwind City;3§auto Zum geschlachteten Lamm;Sturmwind;3§auto The Slaugthered Lamb;Hurlevent;3 | x=-8988.7001953125 y=1043.400024414063 | size=1 | links=#562(auto The Slaugthered Lamb;Stormwind City;7):21 #9194(auto The Slaugthered Lamb;Stormwind City;126):9
+#379 | auto Stormwind City;4§auto Sturmwind;4§auto Hurlevent;4 | x=-8733.5 y=364.8000183105469 | size=1 | links=#7887(auto Stormwind City;108):34 #12453(auto Stormwind City;169):7
+#426 | auto Valley of Heroes;Stormwind City;5§auto Das Tal der Helden;Sturmwind;5§auto Vallée des Héros;Hurlevent;5 | x=-8984.5 y=592.5 | size=1 | links=#4364(waters;down;rescue;Valley of Heroes;Stormwind City;three):33
+#548 | auto Stormwind City;6§auto Sturmwind;6§auto Hurlevent;6 | x=-8790.400390625 y=1089.099975585938 | size=1 | links=#21543(auto Stormwind City;269):23 #28588(s;A;Mailbox;1;Stormwind):5
+#562 | auto The Slaugthered Lamb;Stormwind City;7§auto Zum geschlachteten Lamm;Sturmwind;7§auto The Slaugthered Lamb;Hurlevent;7 | x=-9001.900390625 y=1060.800048828125 | size=1 | links=#267(auto The Slaugthered Lamb;Stormwind City;3):21 #26324(auto The Slaugthered Lamb;Stormwind City;326):14
+#762 | auto Stormwind City;8§auto Sturmwind;8§auto Hurlevent;8 | x=-8578 y=543.9000244140625 | size=1 | links=#15025(auto Stormwind City;192):44 #23410(auto Stormwind City;290):54 #27837(auto Stormwind City;338):45
+#781 | auto Stormwind City;9§auto Sturmwind;9§auto Hurlevent;9 | x=-8918.1005859375 y=944.5 | size=1 | links=#4978(auto Stormwind City;78):40 #28874(auto Stormwind City;354):24 #16827(auto Mage Quarter;Stormwind City;16):34
+#794 | auto Stormwind City;10§auto Sturmwind;10§auto Hurlevent;10 | x=-8662.2998046875 y=763.2999877929688 | size=1 | links=#799(auto Stormwind City;11):39 #6630(auto Stormwind City;100):14 #19853(auto Stormwind City;240):8
+#799 | auto Stormwind City;11§auto Sturmwind;11§auto Hurlevent;11 | x=-8631.1005859375 y=788.1000366210938 | size=1 | links=#794(auto Stormwind City;10):39 #15050(auto Stormwind City;194):15 #25434(auto Stormwind City;315):29
+#815 | auto Stormwind City;12§auto Sturmwind;12§auto Hurlevent;12 | x=-8782.1005859375 y=1142 | size=1 | links=#20364(auto Stormwind City;252):20 #21543(auto Stormwind City;269):33
+#853 | auto Stormwind City;13§auto Sturmwind;13§auto Hurlevent;13 | x=-8613.2998046875 y=370.6000061035156 | size=1 | links=#12121(auto Stormwind City;162):8 c5482.1:6
+#923 | auto The Slaugthered Lamb;Stormwind City;14§auto Zum geschlachteten Lamm;Sturmwind;14§auto The Slaugthered Lamb;Hurlevent;14 | x=-8990.900390625 y=1027.300048828125 | size=1 | links=#20952(auto The Slaugthered Lamb;Stormwind City;258):17 #22196(auto The Slaugthered Lamb;Stormwind City;277):15
+#925 | auto ramp to wizard's sanctum;Stormwind City;15§auto rampe zu magiersanktum;Sturmwind;15§auto ramp to wizard's sanctum;Hurlevent;15 | x=-8981.900390625 y=878.7000122070312 | size=1 | links=#1027(auto ramp to wizard's sanctum;Stormwind City;18):11 #2237(auto ramp to wizard's sanctum;Stormwind City;33):9
+#955 | auto Stormwind City;16§auto Sturmwind;16§auto Hurlevent;16 | x=-8769.400390625 y=368.8999938964844 | size=1 | links=#12368(auto Stormwind City;166):6 #20093(auto Stormwind City;245):38
+#1006 | auto Stormwind City;17§auto Sturmwind;17§auto Hurlevent;17 | x=-8730.7998046875 y=1165 | size=1 | links=#15958(auto Stormwind City;206):18 c5502.1:14
+#1027 | auto ramp to wizard's sanctum;Stormwind City;18§auto rampe zu magiersanktum;Sturmwind;18§auto ramp to wizard's sanctum;Hurlevent;18 | x=-8989.6005859375 y=887.7999877929688 | size=1 | links=#925(auto ramp to wizard's sanctum;Stormwind City;15):11 #21107(auto ramp to wizard's sanctum;Stormwind City;259):11
+#1048 | auto Stormwind City;19§auto Sturmwind;19§auto Hurlevent;19 | x=-8394 y=687.2000122070312 | size=1 | links=#21144(auto Stormwind City;261):7 c7232.1:1
+#1230 | auto Stormwind City;20§auto Sturmwind;20§auto Hurlevent;20 | x=-8410.400390625 y=652.2999877929688 | size=1 | links=#9948(auto Stormwind City;131):10 c5510.1:9
+#1250 | auto Stormwind City;21§auto Sturmwind;21§auto Hurlevent;21 | x=-8715.2998046875 y=734.5 | size=1 | links=#1412(auto Stormwind City;23):34 #2317(auto Stormwind City;34):21 #15810(auto Stormwind City;204):25
+#1296 | auto water canals;Stormwind City;22§auto wasserkanäle;Sturmwind;22§auto water canals;Hurlevent;22 | x=-8738.6005859375 y=832.9000244140625 | size=1 | links=#18867(auto water canals;Stormwind City;232):46 #24712(auto water canals;Stormwind City;303):29
+#1412 | auto Stormwind City;23§auto Sturmwind;23§auto Hurlevent;23 | x=-8741.7998046875 y=712.4000244140625 | size=1 | links=#1250(auto Stormwind City;21):34 #2955(auto Stormwind City;46):20 #21484(auto Stormwind City;267):13
+#1562 | auto Stormwind City;24§auto Sturmwind;24§auto Hurlevent;24 | x=-8973.900390625 y=821.4000244140625 | size=1 | links=#6024(auto Stormwind City;93):10 #6468(auto inside;Stormwind City;99):8
+#1575 | auto ramp to wizard's sanctum;Stormwind City;25§auto rampe zu magiersanktum;Sturmwind;25§auto ramp to wizard's sanctum;Hurlevent;25 | x=-9017.1005859375 y=861.7999877929688 | size=1 | links=#15441(auto ramp to wizard's sanctum;Stormwind City;198):14 #17452(auto Stormwind City;220):14
+#1654 | auto Stormwind City;26§auto Sturmwind;26§auto Hurlevent;26 | x=-8865.1005859375 y=827.2000122070312 | size=1 | links=#15659(auto Stormwind City;201):13 c1316.1:4
+#1662 | auto Stormwind City;27§auto Sturmwind;27§auto Hurlevent;27 | x=-8738.7998046875 y=370.8999938964844 | size=1 | links=#11250(auto Stormwind City;155):8 #12158(auto Stormwind City;164):7
+#1806 | waters;down;four§gewässer;unten;vier§eaux;bas;quatre | x=-8592 y=616.2000122070312 | size=1 | links=#14520(auto water canals;Stormwind City;184):30 #20601(auto water canals;Stormwind City;255):39
+#1851 | auto Stormwind City;28§auto Sturmwind;28§auto Hurlevent;28 | x=-8717 y=441 | size=1 | links=#8025(auto Stormwind City;109):31 #10869(auto Stormwind City;147):16 #10870(auto Stormwind City;148):16
+#1913 | auto Stormwind City;29§auto Sturmwind;29§auto Hurlevent;29 | x=-8869.2998046875 y=589.1000366210938 | size=1 | links=#3693(auto Stormwind City;60):23 #21637(auto Stormwind City;271):9 c4981.1:29
+#2141 | auto inside;inside;Blue Recluse;Stormwind City;30§auto drinnen;drinnen;Zum Blauen Eremiten;Sturmwind;30§auto intérieur;intérieur;Blue Recluse;Hurlevent;30 | x=-9090 y=838.1000366210938 | size=1 | links=#11334(auto inside;inside;Blue Recluse;Stormwind City;156):5 c6492.1:14
+#2145 | auto Stormwind City;31§auto Sturmwind;31§auto Hurlevent;31 | x=-8765.7001953125 y=1074.700073242188 | size=1 | links=#19869(auto Stormwind City;241):13 c5504.1:27
+#2220 | auto water canals;Stormwind City;32§auto wasserkanäle;Sturmwind;32§auto water canals;Hurlevent;32 | x=-8822.2998046875 y=925.2000122070312 | size=1 | links=#23683(auto water canals;Stormwind City;293):21 #24377(auto water canals;Stormwind City;301):35
+#2237 | auto ramp to wizard's sanctum;Stormwind City;33§auto rampe zu magiersanktum;Sturmwind;33§auto ramp to wizard's sanctum;Hurlevent;33 | x=-8981.1005859375 y=869.4000244140625 | size=1 | links=#925(auto ramp to wizard's sanctum;Stormwind City;15):9 #23082(auto ramp to wizard's sanctum;Stormwind City;285):9
+#2267 | waters;down;one§gewässer;unten;eins§eaux;bas;un | x=-8605.900390625 y=537.2999877929688 | size=1 | links=#10452(auto water canals;Stormwind City;141):54 #20601(auto water canals;Stormwind City;255):43
+#2317 | auto Stormwind City;34§auto Sturmwind;34§auto Hurlevent;34 | x=-8724 y=753.9000244140625 | size=1 | links=#1250(auto Stormwind City;21):21 #16570(auto Stormwind City;212):10
+#2367 | auto Stormwind City;35§auto Sturmwind;35§auto Hurlevent;35 | x=-8436.900390625 y=704.5 | size=1 | links=#4664(auto Stormwind City;75):6 #26431(auto Stormwind City;329):10
+#2416 | auto Valley of Heroes;Stormwind City;36§auto Das Tal der Helden;Sturmwind;36§auto Vallée des Héros;Hurlevent;36 | x=-8984.900390625 y=406.3999938964844 | size=1 | links=#5955(auto Valley of Heroes;Stormwind City;91):11 #11039(auto Valley of Heroes;Stormwind City;150):9
+#2464 | auto Stormwind City;37§auto Sturmwind;37§auto Hurlevent;37 | x=-8714 y=519.7999877929688 | size=1 | links=#8953(auto Stormwind City;123):54 #10497(auto Stormwind City;143):52 #18115(auto Stormwind City;226):12
+#2546 | auto inside;inside;Blue Recluse;Stormwind City;38§auto drinnen;drinnen;Zum Blauen Eremiten;Sturmwind;38§auto intérieur;intérieur;Blue Recluse;Hurlevent;38 | x=-9062.7998046875 y=845 | size=1 | links=#11105(auto inside;inside;Blue Recluse;Stormwind City;152):6 #25331(auto inside;inside;Blue Recluse;Stormwind City;313):14
+#2570 | auto Stormwind City;39§auto Sturmwind;39§auto Hurlevent;39 | x=-8904.400390625 y=852.4000244140625 | size=1 | links=#21126(auto Stormwind City;260):27 #21514(auto Stormwind City;268):10
+#2622 | auto ramp to wizard's sanctum;Stormwind City;40§auto rampe zu magiersanktum;Sturmwind;40§auto ramp to wizard's sanctum;Hurlevent;40 | x=-9000.2001953125 y=863.2000122070312 | size=1 | links=#21478(auto ramp to wizard's sanctum;Stormwind City;266):6 #23409(auto inside wizard's sanctum;Stormwind City;289):5
+#2709 | auto Stormwind City;41§auto Sturmwind;41§auto Hurlevent;41 | x=-8626.400390625 y=722.1000366210938 | size=1 | links=#19532(auto Stormwind City;238):20 #28035(auto Stormwind City;341):20
+#2734 | auto water canals;Stormwind City;42§auto wasserkanäle;Sturmwind;42§auto water canals;Hurlevent;42 | x=-8749.2998046875 y=747.2000122070312 | size=1 | links=#8482(auto water canals;Stormwind City;116):12 #16740(auto water canals;Stormwind City;215):46
+#2800 | auto Cathedral of Light;Stormwind City;43§auto Kathedrale des Lichts;Sturmwind;43§auto Cathedral of Light;Hurlevent;43 | x=-8571.900390625 y=826.6000366210938 | size=1 | links=#8706(auto Cathedral of Light;Stormwind City;118):9 #25501(auto Cathedral of Light;Stormwind City;316):17
+#2867 | auto Stormwind City;44§auto Sturmwind;44§auto Hurlevent;44 | x=-8656.7998046875 y=551.4000244140625 | size=1 | links=#10497(auto Stormwind City;143):15 #17491(auto Stormwind City;221):30
+#2942 | auto Stormwind City;45§auto Sturmwind;45§auto Hurlevent;45 | x=-8620.7001953125 y=410.7000122070313 | size=1 | links=#12133(auto Stormwind City;163):10 #25994(auto Stormwind City;323):12
+#2955 | auto Stormwind City;46§auto Sturmwind;46§auto Hurlevent;46 | x=-8756.400390625 y=726.6000366210938 | size=1 | links=#1412(auto Stormwind City;23):20 #3371(auto Stormwind City;55):14 #21484(auto Stormwind City;267):33 c1299.1:23
+#3022 | auto stormwind keep;Stormwind City;47§auto burg sturmwind;Sturmwind;47§auto stormwind keep;Hurlevent;47 | x=-8547.2001953125 y=464.8000183105469 | size=1 | links=#5492(auto Stormwind City;87):18 #8084(auto Stormwind City;112):18 #9801(auto stormwind keep;Stormwind City;130):70
+#3126 | guild vault;Trade District;Stormwind City§gildenbank;Der Handelsdistrikt;Sturmwind§guild vault;Trade District;Hurlevent | x=-8934.1005859375 y=618.9000244140625 | size=1 | links=#21814(auto Stormwind City;273):6
+#3127 | auto Stormwind City;48§auto Sturmwind;48§auto Hurlevent;48 | x=-8631.900390625 y=655.2000122070312 | size=1 | links=#49(auto Stormwind City;2):15 #20430(auto Stormwind City;254):20
+#3170 | auto Stormwind City;49§auto Sturmwind;49§auto Hurlevent;49 | x=-8687.7998046875 y=300.3000183105469 | size=1 | links=#25(auto Stormwind City;1):13 #7334(auto Stormwind City;105):20
+#3220 | auto Stormwind City;50§auto Sturmwind;50§auto Hurlevent;50 | x=-8812.5 y=343.3000183105469 | size=1 | links=#18459(auto Stormwind City;227):6 c332.1:19
+#3307 | auto Stormwind City;51§auto Sturmwind;51§auto Hurlevent;51 | x=-8851.5 y=646 | size=1 | links=c15766.1:10 #14115(central location;Stormwind City):22
+#3336 | auto Stormwind City;52§auto Sturmwind;52§auto Hurlevent;52 | x=-8996.400390625 y=805.4000244140625 | size=1 | links=#3996(auto Stormwind City;68):9 c4078.1:4
+#3346 | auto Stormwind City;53§auto Sturmwind;53§auto Hurlevent;53 | x=-8682 y=878.6000366210938 | size=1 | links=#6065(auto Stormwind City;94):31 #11130(auto Stormwind City;153):50 #15314(auto Stormwind City;196):33
+#3352 | auto Stormwind City;54§auto Sturmwind;54§auto Hurlevent;54 | x=-8851.900390625 y=560.9000244140625 | size=1 | links=#15563(auto Stormwind City;200):12 c483.1:8
+#3371 | auto Stormwind City;55§auto Sturmwind;55§auto Hurlevent;55 | x=-8767.2998046875 y=736.1000366210938 | size=1 | links=#2955(auto Stormwind City;46):14 #22098(auto Stormwind City;276):30
+#3470 | auto The Slaugthered Lamb;Stormwind City;56§auto Zum geschlachteten Lamm;Sturmwind;56§auto The Slaugthered Lamb;Hurlevent;56 | x=-8978.5 y=1057.900024414063 | size=1 | links=#3740(auto The Slaugthered Lamb;Stormwind City;61):28 #26324(auto The Slaugthered Lamb;Stormwind City;326):16
+#3521 | instance entrance;Stormwind City§instanzeingang;Sturmwind§instance entrance;Hurlevent | x=-8768.6005859375 y=842.9000244140625 | size=1 | links=#6330(auto Stormwind City;97):20
+#3573 | auto Stormwind City;57§auto Sturmwind;57§auto Hurlevent;57 | x=-8777 y=669.1000366210938 | size=1 | links=#12540(auto Stormwind City;171):29 #16451(auto Stormwind City;210):14 #21484(auto Stormwind City;267):50
+#3634 | auto Stormwind City;58§auto Sturmwind;58§auto Hurlevent;58 | x=-8800.7998046875 y=332.1000061035156 | size=1 | links=#12102(auto Stormwind City;161):9 #18459(auto Stormwind City;227):9
+#3641 | auto stormwind keep;Stormwind City;59§auto burg sturmwind;Sturmwind;59§auto stormwind keep;Hurlevent;59 | x=-8432.1005859375 y=397.3000183105469 | size=1 | links=#10079(auto stormwind keep;Stormwind City;135):16 c2439.1:13
+#3693 | auto Stormwind City;60§auto Sturmwind;60§auto Hurlevent;60 | x=-8851.7998046875 y=604.7000122070312 | size=1 | links=#1913(auto Stormwind City;29):23 #19372(auto Stormwind City;236):15 c1275.1:24
+#3740 | auto The Slaugthered Lamb;Stormwind City;61§auto Zum geschlachteten Lamm;Sturmwind;61§auto The Slaugthered Lamb;Hurlevent;61 | x=-9000.2001953125 y=1040 | size=1 | links=#3470(auto The Slaugthered Lamb;Stormwind City;56):28 #4109(auto The Slaugthered Lamb;Stormwind City;70):0
+#3787 | auto Stormwind City;62§auto Sturmwind;62§auto Hurlevent;62 | x=-8794.900390625 y=765 | size=5 | links=#22098(auto Stormwind City;276):17 c5494.1:9
+#3823 | auto Cathedral of Light;Stormwind City;63§auto Kathedrale des Lichts;Sturmwind;63§auto Cathedral of Light;Hurlevent;63 | x=-8514 y=831.2999877929688 | size=1 | links=#4764(auto Cathedral of Light;Stormwind City;76):6 #24717(auto Cathedral of Light;Stormwind City;304):13
+#3830 | auto Stormwind City;64§auto Sturmwind;64§auto Hurlevent;64 | x=-9036 y=847.7000122070312 | size=1 | links=#5370(auto inside;inside;Blue Recluse;Stormwind City;85):11 #28589(s;A;Mailbox;2;Stormwind):1
+#3846 | auto Valley of Heroes;Stormwind City;65§auto Das Tal der Helden;Sturmwind;65§auto Vallée des Héros;Hurlevent;65 | x=-9038.6005859375 y=454.3999938964844 | size=1 | links=#5955(auto Valley of Heroes;Stormwind City;91):65 #7647(auto Valley of Heroes;Stormwind City;107):13 #14761(auto Valley of Heroes;Stormwind City;187):104 #21775(auto Valley of Heroes;Stormwind City;272):57
+#3871 | auto Stormwind City;66§auto Sturmwind;66§auto Hurlevent;66 | x=-8738.2998046875 y=946.7000122070312 | size=1 | links=#21552(auto Stormwind City;270):36 #24257(auto Stormwind City;299):44
+#3881 | auto Stormwind City;67§auto Sturmwind;67§auto Hurlevent;67 | x=-8798 y=820 | size=1 | links=#14026(auto Stormwind City;182):14 #16466(auto Stormwind City;211):7 c1719.1:7
+#3996 | auto Stormwind City;68§auto Sturmwind;68§auto Hurlevent;68 | x=-8997.400390625 y=815.2999877929688 | size=1 | links=#3336(auto Stormwind City;52):9 #4486(auto Mage Quarter;Stormwind City;2):15
+#4094 | auto Stormwind City;69§auto Sturmwind;69§auto Hurlevent;69 | x=-8664.6005859375 y=668.6000366210938 | size=1 | links=#10069(auto Stormwind City;134):11 #10284(auto Stormwind City;138):23 #16990(auto Stormwind City;218):30
+#4109 | auto The Slaugthered Lamb;Stormwind City;70§auto Zum geschlachteten Lamm;Sturmwind;70§auto The Slaugthered Lamb;Hurlevent;70 | x=-9000.2001953125 y=1040 | size=1 | links=#3740(auto The Slaugthered Lamb;Stormwind City;61):0 #22196(auto The Slaugthered Lamb;Stormwind City;277):0
+#4341 | auto water canals;Stormwind City;71§auto wasserkanäle;Sturmwind;71§auto water canals;Hurlevent;71 | x=-8597.7001953125 y=644.1000366210938 | size=1 | links=#14520(auto water canals;Stormwind City;184):13 #22065(entry and exit;waters;one):10
+#4364 | waters;down;rescue;Valley of Heroes;Stormwind City;three§gewässer;unten;rettung;Das Tal der Helden;Sturmwind;drei§eaux;bas;sauvetage;Vallée des Héros;Hurlevent;trois | x=-9003.400390625 y=564.2999877929688 | size=1 | links=#426(auto Valley of Heroes;Stormwind City;5):33 #22970(auto Valley of Heroes;Stormwind City;284):21
+#4425 | auto stormwind keep;Stormwind City;72§auto burg sturmwind;Sturmwind;72§auto stormwind keep;Hurlevent;72 | x=-8446 y=338.8000183105469 | size=1 | links=#4630(auto stormwind keep;Stormwind City;74):74 #13635(auto stormwind keep;Stormwind City;178):12 #17836(auto stormwind keep;Stormwind City;224):13
+#4436 | auto Stormwind City;73§auto Sturmwind;73§auto Hurlevent;73 | x=-8635 y=460.7000122070313 | size=1 | links=#8961(auto Stormwind City;124):20 #11182(auto Stormwind City;154):12
+#4630 | auto stormwind keep;Stormwind City;74§auto burg sturmwind;Sturmwind;74§auto stormwind keep;Hurlevent;74 | x=-8492 y=397 | size=1 | links=#4425(auto stormwind keep;Stormwind City;72):74 #9801(auto stormwind keep;Stormwind City;130):17 #15253(auto stormwind keep;Stormwind City;195):79
+#4664 | auto Stormwind City;75§auto Sturmwind;75§auto Hurlevent;75 | x=-8442 y=700.4000244140625 | size=1 | links=#2367(auto Stormwind City;35):6 #16234(auto Stormwind City;207):10
+#4764 | auto Cathedral of Light;Stormwind City;76§auto Kathedrale des Lichts;Sturmwind;76§auto Cathedral of Light;Hurlevent;76 | x=-8509.1005859375 y=835.2000122070312 | size=1 | links=#3823(auto Cathedral of Light;Stormwind City;63):6 #25676(auto Cathedral of Light;Stormwind City;319):4
+#4854 | auto Stormwind City;77§auto Sturmwind;77§auto Hurlevent;77 | x=-8476.400390625 y=563.7000122070312 | size=1 | links=#16739(auto Stormwind City;214):29 c1472.1:20
+#4978 | auto Stormwind City;78§auto Sturmwind;78§auto Hurlevent;78 | x=-8893.2001953125 y=912 | size=1 | links=#781(auto Stormwind City;9):40 #21126(auto Stormwind City;260):35 #26584(auto Stormwind City;331):25
+#5037 | auto Stormwind City;79§auto Sturmwind;79§auto Hurlevent;79 | x=-8897.6005859375 y=802.9000244140625 | size=1 | links=#5755(auto Stormwind City;89):12 #22505(auto Mage Quarter;Stormwind City;20):15
+#5057 | auto Stormwind City;80§auto Sturmwind;80§auto Hurlevent;80 | x=-8800.400390625 y=321.3000183105469 | size=1 | links=#10328(auto Stormwind City;139):4 #27511(auto Stormwind City;335):16
+#5130 | auto Stormwind City;81§auto Sturmwind;81§auto Hurlevent;81 | x=-8676.2001953125 y=400.8999938964844 | size=1 | links=#7025(auto Stormwind City;103):37 #8161(auto Stormwind City;114):11 #12269(auto Stormwind City;165):23
+#5139 | auto Stormwind City;82§auto Sturmwind;82§auto Hurlevent;82 | x=-8542 y=715 | size=1 | links=#12770(auto Stormwind City;174):8 #19421(auto Stormwind City;237):5
+#5162 | waters;down;rescue;Valley of Heroes;Stormwind City;two§gewässer;unten;rettung;Das Tal der Helden;Sturmwind;zwei§eaux;bas;sauvetage;Vallée des Héros;Hurlevent;deux | x=-8882 y=488.3000183105469 | size=1 | links=#10471(auto Valley of Heroes;Stormwind City;142):27
+#5234 | auto Stormwind City;83§auto Sturmwind;83§auto Hurlevent;83 | x=-8451.2001953125 y=589.2000122070312 | size=1 | links=#9029(auto Stormwind City;125):42 #14767(auto Stormwind City;188):33 #26972(auto Stormwind City;333):47 c1472.1:18 c5413.1:26 c5511.1:38 c11069.1:39
+#5315 | auto water canals;Stormwind City;84§auto wasserkanäle;Sturmwind;84§auto water canals;Hurlevent;84 | x=-8700.2001953125 y=678.4000244140625 | size=1 | links=#16740(auto water canals;Stormwind City;215):38 #27006(waters;down;three):24
+#5370 | auto inside;inside;Blue Recluse;Stormwind City;85§auto drinnen;drinnen;Zum Blauen Eremiten;Sturmwind;85§auto intérieur;intérieur;Blue Recluse;Hurlevent;85 | x=-9046.900390625 y=843.6000366210938 | size=1 | links=#3830(auto Stormwind City;64):11 #22382(Mailbox;Mage Quarter;Stormwind City):12 #25331(auto inside;inside;Blue Recluse;Stormwind City;313):7
+#5485 | auto Valley of Heroes;Stormwind City;86§auto Das Tal der Helden;Sturmwind;86§auto Vallée des Héros;Hurlevent;86 | x=-8982.6005859375 y=457.3000183105469 | size=5 | links=#6628(waters;down;rescue;Valley of Heroes;Stormwind City;one):25 #11039(auto Valley of Heroes;Stormwind City;150):45
+#5492 | auto Stormwind City;87§auto Sturmwind;87§auto Hurlevent;87 | x=-8566.1005859375 y=465.6000061035156 | size=1 | links=#3022(auto stormwind keep;Stormwind City;47):18 #15516(auto Stormwind City;199):32
+#5754 | auto stormwind keep;Stormwind City;88§auto burg sturmwind;Sturmwind;88§auto stormwind keep;Hurlevent;88 | x=-8384.2998046875 y=443.3999938964844 | size=1 | links=#24091(auto stormwind keep;Stormwind City;296):30 #26409(auto stormwind keep;Stormwind City;328):42
+#5755 | auto Stormwind City;89§auto Sturmwind;89§auto Hurlevent;89 | x=-8897.5 y=815 | size=1 | links=#5037(auto Stormwind City;79):12 #21514(auto Stormwind City;268):29
+#5803 | auto stormwind keep;Stormwind City;90§auto burg sturmwind;Sturmwind;90§auto stormwind keep;Hurlevent;90 | x=-8436.6005859375 y=355.7000122070313 | size=1 | links=#10079(auto stormwind keep;Stormwind City;135):25 #13635(auto stormwind keep;Stormwind City;178):8
+#5955 | auto Valley of Heroes;Stormwind City;91§auto Das Tal der Helden;Sturmwind;91§auto Vallée des Héros;Hurlevent;91 | x=-8995.900390625 y=404.2000122070313 | size=1 | links=#2416(auto Valley of Heroes;Stormwind City;36):11 #3846(auto Valley of Heroes;Stormwind City;65):65 c4959.1:15
+#5966 | auto inside wizard's sanctum;Stormwind City;92§auto drinnen magiersanktum;Sturmwind;92§auto inside wizard's sanctum;Hurlevent;92 | x=-9014 y=867.5 | size=1 | links=#8900(auto inside wizard's sanctum;Stormwind City;122):9 #23409(auto inside wizard's sanctum;Stormwind City;289):9
+#6024 | auto Stormwind City;93§auto Sturmwind;93§auto Hurlevent;93 | x=-8979.7998046875 y=829.9000244140625 | size=1 | links=#1562(auto Stormwind City;24):10 #4486(auto Mage Quarter;Stormwind City;2):14
+#6065 | auto Stormwind City;94§auto Sturmwind;94§auto Hurlevent;94 | x=-8706.7998046875 y=859.2999877929688 | size=1 | links=#3346(auto Stormwind City;53):31 #20905(auto Stormwind City;257):16 #25155(auto Stormwind City;310):24
+#6173 | auto water canals;Stormwind City;95§auto wasserkanäle;Sturmwind;95§auto water canals;Hurlevent;95 | x=-8672.5 y=899.4000244140625 | size=1 | links=#23132(auto water canals;Stormwind City;286):31 #23549(entry and exit;waters;five):13
+#6276 | auto Stormwind City;96§auto Sturmwind;96§auto Hurlevent;96 | x=-8944.5 y=557 | size=1 | links=#14621(auto Stormwind City;185):9 #20793(auto Stormwind City;256):21
+#6330 | auto Stormwind City;97§auto Sturmwind;97§auto Hurlevent;97 | x=-8783.1005859375 y=828.7000122070312 | size=1 | links=#3521(instance entrance;Stormwind City):20 #16466(auto Stormwind City;211):14
+#6391 | auto Cathedral of Light;Stormwind City;98§auto Kathedrale des Lichts;Sturmwind;98§auto Cathedral of Light;Hurlevent;98 | x=-8501.2998046875 y=827.6000366210938 | size=1 | links=#25676(auto Cathedral of Light;Stormwind City;319):8 #27901(auto Cathedral of Light;Stormwind City;339):7
+#6468 | auto inside;Stormwind City;99§auto drinnen;Sturmwind;99§auto intérieur;Hurlevent;99 | x=-8968.5 y=814.7999877929688 | size=1 | links=#1562(auto Stormwind City;24):8 c1309.1:9 c1310.1:7
+#6628 | waters;down;rescue;Valley of Heroes;Stormwind City;one§gewässer;unten;rettung;Das Tal der Helden;Sturmwind;eins§eaux;bas;sauvetage;Vallée des Héros;Hurlevent;un | x=-8958.1005859375 y=448.8999938964844 | size=1 | links=#5485(auto Valley of Heroes;Stormwind City;86):25 #11039(auto Valley of Heroes;Stormwind City;150):41 #13975(auto Valley of Heroes;Stormwind City;180):34 #28335(auto Valley of Heroes;Stormwind City;344):29
+#6630 | auto Stormwind City;100§auto Sturmwind;100§auto Hurlevent;100 | x=-8652.900390625 y=752 | size=1 | links=#794(auto Stormwind City;10):14 #12607(auto Stormwind City;172):13 #19532(auto Stormwind City;238):19
+#6632 | auto Stormwind City;101§auto Sturmwind;101§auto Hurlevent;101 | x=-8767 y=900.4000244140625 | size=1 | links=#10901(auto Stormwind City;149):29 #28561(auto Stormwind City;345):55
+#6634 | auto Stormwind City;102§auto Sturmwind;102§auto Hurlevent;102 | x=-8783.7001953125 y=636.7000122070312 | size=1 | links=#22332(auto Stormwind City;281):5 #13933(auto Trade District;Stormwind City;12):23
+#7025 | auto Stormwind City;103§auto Sturmwind;103§auto Hurlevent;103 | x=-8648.7001953125 y=426.2000122070313 | size=1 | links=#5130(auto Stormwind City;81):37 #9766(auto Stormwind City;129):13 #21220(auto Stormwind City;262):29 #25843(auto Stormwind City;320):8
+#7303 | auto Stormwind City;104§auto Sturmwind;104§auto Hurlevent;104 | x=-8669.7001953125 y=786.9000244140625 | size=1 | links=#10059(auto Stormwind City;133):7 c1349.1:9
+#7334 | auto Stormwind City;105§auto Sturmwind;105§auto Hurlevent;105 | x=-8681 y=319.8000183105469 | size=1 | links=#3170(auto Stormwind City;49):20 c5479.1:8
+#7440 | auto Stormwind City;106§auto Sturmwind;106§auto Hurlevent;106 | x=-8810.7998046875 y=332.6000061035156 | size=1 | links=#20093(auto Stormwind City;245):16 #21894(auto Stormwind City;274):8 c1325.1:5
+#7647 | auto Valley of Heroes;Stormwind City;107§auto Das Tal der Helden;Sturmwind;107§auto Vallée des Héros;Hurlevent;107 | x=-9049.1005859375 y=445.3000183105469 | size=1 | links=#3846(auto Valley of Heroes;Stormwind City;65):13 #20864(passage;Valley of Heroes;Stormwind City;to;Elwynn Forest):33 c17804.1:13
+#7887 | auto Stormwind City;108§auto Sturmwind;108§auto Hurlevent;108 | x=-8716 y=335.1000061035156 | size=1 | links=#379(auto Stormwind City;4):34 #26267(auto Stormwind City;325):19
+#8025 | auto Stormwind City;109§auto Sturmwind;109§auto Hurlevent;109 | x=-8722.900390625 y=410.3000183105469 | size=1 | links=#1851(auto Stormwind City;28):31 #12269(auto Stormwind City;165):24 #22292(auto Stormwind City;280):35
+#8041 | auto Stormwind City;110§auto Sturmwind;110§auto Hurlevent;110 | x=-8559.900390625 y=739.9000244140625 | size=1 | links=#18468(auto Stormwind City;228):5 #24744(auto Stormwind City;305):19
+#8080 | auto Stormwind City;111§auto Sturmwind;111§auto Hurlevent;111 | x=-8596.7001953125 y=758.2999877929688 | size=1 | links=#14787(auto Stormwind City;189):14 #24744(auto Stormwind City;305):35
+#8084 | auto Stormwind City;112§auto Sturmwind;112§auto Hurlevent;112 | x=-8536.7001953125 y=480.2000122070313 | size=1 | links=#3022(auto stormwind keep;Stormwind City;47):18 #23410(auto Stormwind City;290):22
+#8150 | auto inside wizard's sanctum;Stormwind City;113§auto drinnen magiersanktum;Sturmwind;113§auto inside wizard's sanctum;Hurlevent;113 | x=-9006.2998046875 y=879.2999877929688 | size=1 | links=#8900(auto inside wizard's sanctum;Stormwind City;122):7 #11487(auto inside wizard's sanctum;Stormwind City;158):8
+#8161 | auto Stormwind City;114§auto Sturmwind;114§auto Hurlevent;114 | x=-8669.6005859375 y=392 | size=1 | links=#5130(auto Stormwind City;81):11 c1324.1:14
+#8213 | auto Stormwind City;115§auto Sturmwind;115§auto Hurlevent;115 | x=-8895.400390625 y=697.6000366210938 | size=1 | links=#26554(auto Stormwind City;330):13 #22623(auto The Canals;Stormwind City;3):56
+#8482 | auto water canals;Stormwind City;116§auto wasserkanäle;Sturmwind;116§auto water canals;Hurlevent;116 | x=-8747.400390625 y=759.4000244140625 | size=1 | links=#2734(auto water canals;Stormwind City;42):12 #18867(auto water canals;Stormwind City;232):28
+#8603 | auto Stormwind City;117§auto Sturmwind;117§auto Hurlevent;117 | x=-8419.2998046875 y=669.5 | size=1 | links=#10558(auto Stormwind City;144):32 #16234(auto Stormwind City;207):27 #22210(auto Stormwind City;278):12 #25847(auto Stormwind City;321):15
+#8706 | auto Cathedral of Light;Stormwind City;118§auto Kathedrale des Lichts;Sturmwind;118§auto Cathedral of Light;Hurlevent;118 | x=-8565.1005859375 y=820.7000122070312 | size=1 | links=#2800(auto Cathedral of Light;Stormwind City;43):9 #23605(auto Cathedral of Light;Stormwind City;291):28
+#8736 | auto Stormwind City;119§auto Sturmwind;119§auto Hurlevent;119 | x=-8589.1005859375 y=657.7000122070312 | size=1 | links=#49(auto Stormwind City;2):27 #17954(auto Stormwind City;225):30 #22065(entry and exit;waters;one):11
+#8737 | auto Stormwind City;120§auto Sturmwind;120§auto Hurlevent;120 | x=-8598.5 y=387 | size=1 | links=#26164(auto Stormwind City;324):23 c340.1:12
+#8836 | auto Stormwind City;121§auto Sturmwind;121§auto Hurlevent;121 | x=-8471.900390625 y=511 | size=1 | links=#13988(auto Stormwind City;181):7 c656.1:10 c5384.1:9
+#8900 | auto inside wizard's sanctum;Stormwind City;122§auto drinnen magiersanktum;Sturmwind;122§auto inside wizard's sanctum;Hurlevent;122 | x=-9013.6005859375 y=876.9000244140625 | size=1 | links=#5966(auto inside wizard's sanctum;Stormwind City;92):9 #8150(auto inside wizard's sanctum;Stormwind City;113):7
+#8953 | auto Stormwind City;123§auto Sturmwind;123§auto Hurlevent;123 | x=-8748.5 y=562.4000244140625 | size=1 | links=#2464(auto Stormwind City;37):54 #19961(auto Stormwind City;243):27 #24799(auto Stormwind City;307):16
+#8961 | auto Stormwind City;124§auto Sturmwind;124§auto Hurlevent;124 | x=-8646.400390625 y=478.3000183105469 | size=1 | links=#4436(auto Stormwind City;73):20 #16940(auto Stormwind City;217):29 #25362(auto Stormwind City;314):47
+#9029 | auto Stormwind City;125§auto Sturmwind;125§auto Hurlevent;125 | x=-8475.400390625 y=624.5 | size=1 | links=#5234(auto Stormwind City;83):42 #10281(auto Stormwind City;137):44
+#9095 | meeting stone;The Canals;Stormwind City§versammlungsstein;Die Kanäle;Sturmwind§meeting stone;The Canals;Hurlevent | x=-8816.2998046875 y=797.7000122070312 | size=1 | links=#14685(auto Stormwind City;186):9 #24790(auto Stormwind City;306):31 #26395(auto Stormwind City;327):44
+#9194 | auto The Slaugthered Lamb;Stormwind City;126§auto Zum geschlachteten Lamm;Sturmwind;126§auto The Slaugthered Lamb;Hurlevent;126 | x=-8995.1005859375 y=1036.200073242188 | size=1 | links=#267(auto The Slaugthered Lamb;Stormwind City;3):9 #24109(auto The Slaugthered Lamb;Stormwind City;297):9
+#9342 | auto Stormwind City;127§auto Sturmwind;127§auto Hurlevent;127 | x=-8510 y=653.4000244140625 | size=1 | links=#10656(auto Stormwind City;145):31 #11588(auto Stormwind City;160):44 #18826(auto Stormwind City;231):31
+#9669 | auto Stormwind City;128§auto Sturmwind;128§auto Hurlevent;128 | x=-8482.1005859375 y=523.4000244140625 | size=1 | links=#10380(auto Stormwind City;140):7 #16739(auto Stormwind City;214):19
+#9766 | auto Stormwind City;129§auto Sturmwind;129§auto Hurlevent;129 | x=-8637.1005859375 y=419.2000122070313 | size=1 | links=#7025(auto Stormwind City;103):13 #23652(auto Stormwind City;292):6
+#9801 | auto stormwind keep;Stormwind City;130§auto burg sturmwind;Sturmwind;130§auto stormwind keep;Hurlevent;130 | x=-8503.2998046875 y=409.8999938964844 | size=1 | links=#3022(auto stormwind keep;Stormwind City;47):70 #4630(auto stormwind keep;Stormwind City;74):17 #18664(auto stormwind keep;Stormwind City;230):28
+#9948 | auto Stormwind City;131§auto Sturmwind;131§auto Hurlevent;131 | x=-8402.5 y=659 | size=1 | links=#1230(auto Stormwind City;20):10 #10558(auto Stormwind City;144):13
+#10049 | auto Stormwind City;132§auto Sturmwind;132§auto Hurlevent;132 | x=-8695.2001953125 y=439.8999938964844 | size=1 | links=#10870(auto Stormwind City;148):5 #21467(auto Stormwind City;265):11
+#10059 | auto Stormwind City;133§auto Sturmwind;133§auto Hurlevent;133 | x=-8665.1005859375 y=780.7000122070312 | size=1 | links=#7303(auto Stormwind City;104):7 #20159(auto Stormwind City;247):14
+#10069 | auto Stormwind City;134§auto Sturmwind;134§auto Hurlevent;134 | x=-8655.6005859375 y=660.9000244140625 | size=1 | links=#4094(auto Stormwind City;69):11 #20430(auto Stormwind City;254):4
+#10079 | auto stormwind keep;Stormwind City;135§auto burg sturmwind;Sturmwind;135§auto stormwind keep;Hurlevent;135 | x=-8434.2001953125 y=380.7000122070313 | size=1 | links=#3641(auto stormwind keep;Stormwind City;59):16 #5803(auto stormwind keep;Stormwind City;90):25
+#10207 | auto Stormwind City;136§auto Sturmwind;136§auto Hurlevent;136 | x=-8710.5 y=647.9000244140625 | size=1 | links=#21484(auto Stormwind City;267):58 #23221(auto Stormwind City;287):36
+#10281 | auto Stormwind City;137§auto Sturmwind;137§auto Hurlevent;137 | x=-8443.400390625 y=654.7999877929688 | size=1 | links=#9029(auto Stormwind City;125):44 #16422(auto Stormwind City;209):46 #22210(auto Stormwind City;278):15
+#10284 | auto Stormwind City;138§auto Sturmwind;138§auto Hurlevent;138 | x=-8645.2998046875 y=682.4000244140625 | size=1 | links=#4094(auto Stormwind City;69):23 #23728(auto Stormwind City;294):7
+#10328 | auto Stormwind City;139§auto Sturmwind;139§auto Hurlevent;139 | x=-8796.2998046875 y=321.2000122070313 | size=1 | links=#5057(auto Stormwind City;80):4 c1325.1:13
+#10380 | auto Stormwind City;140§auto Sturmwind;140§auto Hurlevent;140 | x=-8487.2998046875 y=518.5 | size=1 | links=#9669(auto Stormwind City;128):7 #13988(auto Stormwind City;181):15
+#10452 | auto water canals;Stormwind City;141§auto wasserkanäle;Sturmwind;141§auto water canals;Hurlevent;141 | x=-8651 y=567.1000366210938 | size=1 | links=#2267(waters;down;one):54 #25033(waters;down;two):46
+#10471 | auto Valley of Heroes;Stormwind City;142§auto Das Tal der Helden;Sturmwind;142§auto Vallée des Héros;Hurlevent;142 | x=-8901.7001953125 y=468.7000122070313 | size=1 | links=#5162(waters;down;rescue;Valley of Heroes;Stormwind City;two):27 #28335(auto Valley of Heroes;Stormwind City;344):31
+#10497 | auto Stormwind City;143§auto Sturmwind;143§auto Hurlevent;143 | x=-8672.5 y=551.4000244140625 | size=1 | links=#2464(auto Stormwind City;37):52 #2867(auto Stormwind City;44):15
+#10558 | auto Stormwind City;144§auto Sturmwind;144§auto Hurlevent;144 | x=-8388.7001953125 y=658.1000366210938 | size=1 | links=#8603(auto Stormwind City;117):32 #9948(auto Stormwind City;131):13 #25847(auto Stormwind City;321):26 c6579.1:23
+#10656 | auto Stormwind City;145§auto Sturmwind;145§auto Hurlevent;145 | x=-8487.7998046875 y=675.7999877929688 | size=1 | links=#9342(auto Stormwind City;127):31 #16422(auto Stormwind City;209):21
+#10729 | auto Stormwind City;146§auto Sturmwind;146§auto Hurlevent;146 | x=-8968.2998046875 y=774 | size=1 | links=c5566.1:5 #8568(auto Mage Quarter;Stormwind City;7):14 #10930(auto Mage Quarter;Stormwind City;10):4
+#10869 | auto Stormwind City;147§auto Sturmwind;147§auto Hurlevent;147 | x=-8711.6005859375 y=456.7000122070313 | size=1 | links=#1851(auto Stormwind City;28):16 #12644(auto Stormwind City;173):26 c11096.1:17
+#10870 | auto Stormwind City;148§auto Sturmwind;148§auto Hurlevent;148 | x=-8700.400390625 y=437.7000122070313 | size=1 | links=#1851(auto Stormwind City;28):16 #10049(auto Stormwind City;132):5
+#10901 | auto Stormwind City;149§auto Sturmwind;149§auto Hurlevent;149 | x=-8738.1005859375 y=893.6000366210938 | size=1 | links=#6632(auto Stormwind City;101):29 #24257(auto Stormwind City;299):33 #25155(auto Stormwind City;310):21
+#11039 | auto Valley of Heroes;Stormwind City;150§auto Das Tal der Helden;Sturmwind;150§auto Vallée des Héros;Hurlevent;150 | x=-8976.7998046875 y=412 | size=1 | links=#2416(auto Valley of Heroes;Stormwind City;36):9 #5485(auto Valley of Heroes;Stormwind City;86):45 #6628(waters;down;rescue;Valley of Heroes;Stormwind City;one):41
+#11070 | Wizard's Sanctum;portal;inside§Magiersanktum;portal;drinnen§Wizard's Sanctum;portal;intérieur | x=-9019.1005859375 y=888.2999877929688 | size=1 | links=c5498.1:12
+#11074 | auto Stormwind City;151§auto Sturmwind;151§auto Hurlevent;151 | x=-8596.5 y=716.9000244140625 | size=1 | links=#17954(auto Stormwind City;225):55 #24744(auto Stormwind City;305):23 #28035(auto Stormwind City;341):21
+#11105 | auto inside;inside;Blue Recluse;Stormwind City;152§auto drinnen;drinnen;Zum Blauen Eremiten;Sturmwind;152§auto intérieur;intérieur;Blue Recluse;Hurlevent;152 | x=-9061.1005859375 y=838.6000366210938 | size=1 | links=#2546(auto inside;inside;Blue Recluse;Stormwind City;38):6 c6492.1:17
+#11130 | auto Stormwind City;153§auto Sturmwind;153§auto Hurlevent;153 | x=-8650.900390625 y=838.6000366210938 | size=1 | links=#3346(auto Stormwind City;53):50 #25434(auto Stormwind City;315):27
+#11182 | auto Stormwind City;154§auto Sturmwind;154§auto Hurlevent;154 | x=-8634.2998046875 y=447.8999938964844 | size=1 | links=#4436(auto Stormwind City;73):12 #25843(auto Stormwind City;320):17 c1721.1:8
+#11250 | auto Stormwind City;155§auto Sturmwind;155§auto Hurlevent;155 | x=-8743.7998046875 y=378 | size=1 | links=#1662(auto Stormwind City;27):8 #22292(auto Stormwind City;280):14
+#11334 | auto inside;inside;Blue Recluse;Stormwind City;156§auto drinnen;drinnen;Zum Blauen Eremiten;Sturmwind;156§auto intérieur;intérieur;Blue Recluse;Hurlevent;156 | x=-9095.400390625 y=836.2999877929688 | size=1 | links=#2141(auto inside;inside;Blue Recluse;Stormwind City;30):5 c5081.1:6
+#11371 | auto Stormwind City;157§auto Sturmwind;157§auto Hurlevent;157 | x=-8565.2998046875 y=611.2000122070312 | size=1 | links=#15025(auto Stormwind City;192):27 #18826(auto Stormwind City;231):38
+#11487 | auto inside wizard's sanctum;Stormwind City;158§auto drinnen magiersanktum;Sturmwind;158§auto inside wizard's sanctum;Hurlevent;158 | x=-9000.400390625 y=872.9000244140625 | size=1 | links=#8150(auto inside wizard's sanctum;Stormwind City;113):8 #19096(auto inside wizard's sanctum;Stormwind City;234):6
+#11551 | auto Cathedral of Light;Stormwind City;159§auto Kathedrale des Lichts;Sturmwind;159§auto Cathedral of Light;Hurlevent;159 | x=-8515.7998046875 y=832.7000122070312 | size=1 | links=#23605(auto Cathedral of Light;Stormwind City;291):27 #27901(auto Cathedral of Light;Stormwind City;339):12
+#11588 | auto Stormwind City;160§auto Sturmwind;160§auto Hurlevent;160 | x=-8535.1005859375 y=689.9000244140625 | size=1 | links=#9342(auto Stormwind City;127):44 #17954(auto Stormwind City;225):32
+#12102 | auto Stormwind City;161§auto Sturmwind;161§auto Hurlevent;161 | x=-8800.400390625 y=322.8000183105469 | size=1 | links=#3634(auto Stormwind City;58):9 #25528(auto Stormwind City;318):19
+#12121 | auto Stormwind City;162§auto Sturmwind;162§auto Hurlevent;162 | x=-8619.1005859375 y=377.1000061035156 | size=1 | links=#853(auto Stormwind City;13):8 #22752(auto Stormwind City;282):9
+#12133 | auto Stormwind City;163§auto Sturmwind;163§auto Hurlevent;163 | x=-8621.900390625 y=400.5 | size=1 | links=#2942(auto Stormwind City;45):10 #22752(auto Stormwind City;282):14 #26164(auto Stormwind City;324):9
+#12158 | auto Stormwind City;164§auto Sturmwind;164§auto Hurlevent;164 | x=-8733.1005859375 y=375.2000122070313 | size=1 | links=#1662(auto Stormwind City;27):7 #12453(auto Stormwind City;169):5
+#12269 | auto Stormwind City;165§auto Sturmwind;165§auto Hurlevent;165 | x=-8700 y=401.1000061035156 | size=1 | links=#5130(auto Stormwind City;81):23 #8025(auto Stormwind City;109):24 #15030(auto Stormwind City;193):6
+#12368 | auto Stormwind City;166§auto Sturmwind;166§auto Hurlevent;166 | x=-8764.900390625 y=364.7000122070313 | size=1 | links=#955(auto Stormwind City;16):6 #12481(auto Stormwind City;170):6
+#12371 | auto Stormwind City;167§auto Sturmwind;167§auto Hurlevent;167 | x=-9013.2001953125 y=823.4000244140625 | size=1 | links=#22382(Mailbox;Mage Quarter;Stormwind City):29 #28589(s;A;Mailbox;2;Stormwind):32 #4486(auto Mage Quarter;Stormwind City;2):19
+#12436 | auto Stormwind City;168§auto Sturmwind;168§auto Hurlevent;168 | x=-8716.900390625 y=790.5 | size=1 | links=#16570(auto Stormwind City;212):29 #26789(auto Stormwind City;332):10
+#12453 | auto Stormwind City;169§auto Sturmwind;169§auto Hurlevent;169 | x=-8729.7001953125 y=370.7000122070313 | size=1 | links=#379(auto Stormwind City;4):7 #12158(auto Stormwind City;164):5
+#12481 | auto Stormwind City;170§auto Sturmwind;170§auto Hurlevent;170 | x=-8759.6005859375 y=368.5 | size=1 | links=#12368(auto Stormwind City;166):6 #21432(auto Stormwind City;264):6
+#12540 | auto Stormwind City;171§auto Sturmwind;171§auto Hurlevent;171 | x=-8760.2998046875 y=645.2000122070312 | size=1 | links=#3573(auto Stormwind City;57):29 #20353(auto Stormwind City;251):17 #48679(auto Trade District;Stormwind City;460):10
+#12607 | auto Stormwind City;172§auto Sturmwind;172§auto Hurlevent;172 | x=-8663.400390625 y=742.7999877929688 | size=1 | links=#6630(auto Stormwind City;100):13 #15810(auto Stormwind City;204):45
+#12644 | auto Stormwind City;173§auto Sturmwind;173§auto Hurlevent;173 | x=-8693.2998046875 y=475.5 | size=1 | links=#10869(auto Stormwind City;147):26 #16940(auto Stormwind City;217):33 #18115(auto Stormwind City;226):46
+#12770 | auto Stormwind City;174§auto Sturmwind;174§auto Hurlevent;174 | x=-8548.1005859375 y=721.6000366210938 | size=1 | links=#5139(auto Stormwind City;82):8 #18468(auto Stormwind City;228):16 c1646.1:2
+#13045 | auto Stormwind City;175§auto Sturmwind;175§auto Hurlevent;175 | x=-8668.900390625 y=490.8999938964844 | size=1 | links=#16940(auto Stormwind City;217):6 #20308(auto Stormwind City;250):8
+#13491 | auto inside wizard's sanctum;Stormwind City;176§auto drinnen magiersanktum;Sturmwind;176§auto inside wizard's sanctum;Hurlevent;176 | x=-9010 y=865.1000366210938 | size=1 | links=#19096(auto inside wizard's sanctum;Stormwind City;234):7 #19689(Wizard's Sanctum;portal;outside):11
+#13556 | auto Stormwind City;177§auto Sturmwind;177§auto Hurlevent;177 | x=-8816.7001953125 y=955 | size=1 | links=#15763(auto Stormwind City;202):43 #28561(auto Stormwind City;345):18 c297.1:33
+#13635 | auto stormwind keep;Stormwind City;178§auto burg sturmwind;Sturmwind;178§auto stormwind keep;Hurlevent;178 | x=-8437.400390625 y=347.3999938964844 | size=1 | links=#4425(auto stormwind keep;Stormwind City;72):12 #5803(auto stormwind keep;Stormwind City;90):8 c16075.1:18
+#13709 | auto stormwind keep;Stormwind City;179§auto burg sturmwind;Sturmwind;179§auto stormwind keep;Hurlevent;179 | x=-8417.5 y=456.1000061035156 | size=1 | links=#15253(auto stormwind keep;Stormwind City;195):15 c7766.1:10 c24729.1:32
+#13975 | auto Valley of Heroes;Stormwind City;180§auto Das Tal der Helden;Sturmwind;180§auto Vallée des Héros;Hurlevent;180 | x=-8957.7998046875 y=483.1000061035156 | size=5 | links=#6628(waters;down;rescue;Valley of Heroes;Stormwind City;one):34
+#13988 | auto Stormwind City;181§auto Sturmwind;181§auto Hurlevent;181 | x=-8477.7001953125 y=506.6000061035156 | size=1 | links=#8836(auto Stormwind City;121):7 #10380(auto Stormwind City;140):15
+#14026 | auto Stormwind City;182§auto Sturmwind;182§auto Hurlevent;182 | x=-8809.5 y=811 | size=1 | links=#3881(auto Stormwind City;67):14 #14685(auto Stormwind City;186):7
+#14328 | auto ramp to wizard's sanctum;Stormwind City;183§auto rampe zu magiersanktum;Sturmwind;183§auto ramp to wizard's sanctum;Hurlevent;183 | x=-9012 y=886.7999877929688 | size=1 | links=#15441(auto ramp to wizard's sanctum;Stormwind City;198):12 #21107(auto ramp to wizard's sanctum;Stormwind City;259):12
+#14520 | auto water canals;Stormwind City;184§auto wasserkanäle;Sturmwind;184§auto water canals;Hurlevent;184 | x=-8610.5 y=640.4000244140625 | size=1 | links=#1806(waters;down;four):30 #4341(auto water canals;Stormwind City;71):13 #28094(auto water canals;Stormwind City;343):27
+#14621 | auto Stormwind City;185§auto Sturmwind;185§auto Hurlevent;185 | x=-8952 y=562.6000366210938 | size=1 | links=#6276(auto Stormwind City;96):9 c14394.1:34
+#14685 | auto Stormwind City;186§auto Sturmwind;186§auto Hurlevent;186 | x=-8815.900390625 y=807.5 | size=1 | links=#9095(meeting stone;The Canals;Stormwind City):9 #14026(auto Stormwind City;182):7
+#14761 | auto Valley of Heroes;Stormwind City;187§auto Das Tal der Helden;Sturmwind;187§auto Vallée des Héros;Hurlevent;187 | x=-8957.2998046875 y=519.7000122070312 | size=1 | links=#3846(auto Valley of Heroes;Stormwind City;65):104 c466.1:3 c14394.1:46 c14721.1:48
+#14767 | auto Stormwind City;188§auto Sturmwind;188§auto Hurlevent;188 | x=-8425.5 y=567.2999877929688 | size=1 | links=#5234(auto Stormwind City;83):33 #15422(auto Stormwind City;197):30
+#14787 | auto Stormwind City;189§auto Sturmwind;189§auto Hurlevent;189 | x=-8610.7998046875 y=760.6000366210938 | size=1 | links=#8080(auto Stormwind City;111):14 #15050(auto Stormwind City;194):19 #19532(auto Stormwind City;238):37
+#14842 | auto Stormwind City;190§auto Sturmwind;190§auto Hurlevent;190 | x=-8832.7001953125 y=891.4000244140625 | size=1 | links=#15763(auto Stormwind City;202):43 #26395(auto Stormwind City;327):55
+#15000 | auto stormwind keep;Stormwind City;191§auto burg sturmwind;Sturmwind;191§auto stormwind keep;Hurlevent;191 | x=-8364.2001953125 y=396.3999938964844 | size=1 | links=#26409(auto stormwind keep;Stormwind City;328):14 #27043(auto stormwind keep;Stormwind City;334):16
+#15025 | auto Stormwind City;192§auto Sturmwind;192§auto Hurlevent;192 | x=-8580.900390625 y=588.2000122070312 | size=1 | links=#762(auto Stormwind City;8):44 #11371(auto Stormwind City;157):27
+#15027 | passage;Dwarven District;Stormwind City;to;deep tram§passage;Zwergendistrikt;Sturmwind;zur;tiefenbahn§passage;Dwarven District;Hurlevent;vers;deep tram | x=-8354.2001953125 y=524.1000366210938 | size=1 | links=#15422(auto Stormwind City;197):65
+#15030 | auto Stormwind City;193§auto Sturmwind;193§auto Hurlevent;193 | x=-8703.5 y=395.3000183105469 | size=1 | links=#12269(auto Stormwind City;165):6 #24344(auto Stormwind City;300):6
+#15050 | auto Stormwind City;194§auto Sturmwind;194§auto Hurlevent;194 | x=-8621.400390625 y=776.6000366210938 | size=5 | links=#799(auto Stormwind City;11):15 #14787(auto Stormwind City;189):19 #19775(auto Cathedral of Light;Stormwind City;239):46 c1444.1:10
+#15253 | auto stormwind keep;Stormwind City;195§auto burg sturmwind;Sturmwind;195§auto stormwind keep;Hurlevent;195 | x=-8429.400390625 y=446.6000061035156 | size=1 | links=#4630(auto stormwind keep;Stormwind City;74):79 #13709(auto stormwind keep;Stormwind City;179):15 #24091(auto stormwind keep;Stormwind City;296):30
+#15314 | auto Stormwind City;196§auto Sturmwind;196§auto Hurlevent;196 | x=-8657.7998046875 y=901.6000366210938 | size=1 | links=#3346(auto Stormwind City;53):33 #23549(entry and exit;waters;five):8 c8666.1:29
+#15422 | auto Stormwind City;197§auto Sturmwind;197§auto Hurlevent;197 | x=-8396.1005859375 y=574.4000244140625 | size=1 | links=#14767(auto Stormwind City;188):30 #15027(passage;Dwarven District;Stormwind City;to;deep tram):65 #24914(auto Stormwind City;308):26
+#15441 | auto ramp to wizard's sanctum;Stormwind City;198§auto rampe zu magiersanktum;Sturmwind;198§auto ramp to wizard's sanctum;Hurlevent;198 | x=-9018.2998046875 y=876.2000122070312 | size=1 | links=#1575(auto ramp to wizard's sanctum;Stormwind City;25):14 #14328(auto ramp to wizard's sanctum;Stormwind City;183):12
+#15516 | auto Stormwind City;199§auto Sturmwind;199§auto Hurlevent;199 | x=-8589.400390625 y=488.7000122070313 | size=1 | links=#5492(auto Stormwind City;87):32 #25362(auto Stormwind City;314):25
+#15563 | auto Stormwind City;200§auto Sturmwind;200§auto Hurlevent;200 | x=-8861 y=569.1000366210938 | size=1 | links=#3352(auto Stormwind City;54):12 c482.1:9
+#15659 | auto Stormwind City;201§auto Sturmwind;201§auto Hurlevent;201 | x=-8854.7998046875 y=835.4000244140625 | size=1 | links=#1654(auto Stormwind City;26):13 c5386.1:6
+#15763 | auto Stormwind City;202§auto Sturmwind;202§auto Hurlevent;202 | x=-8852.2001953125 y=930.4000244140625 | size=1 | links=#13556(auto Stormwind City;177):43 #14842(auto Stormwind City;190):43 #26584(auto Stormwind City;331):19
+#15792 | auto water canals;Stormwind City;203§auto wasserkanäle;Sturmwind;203§auto water canals;Hurlevent;203 | x=-8689.1005859375 y=612.2999877929688 | size=1 | links=#25033(waters;down;two):44 #27006(waters;down;three):46
+#15810 | auto Stormwind City;204§auto Sturmwind;204§auto Hurlevent;204 | x=-8699.1005859375 y=715.2999877929688 | size=1 | links=#1250(auto Stormwind City;21):25 #12607(auto Stormwind City;172):45 #16990(auto Stormwind City;218):27
+#15827 | auto Stormwind City;205§auto Sturmwind;205§auto Hurlevent;205 | x=-8998.6005859375 y=861.9000244140625 | size=1 | links=c2485.1:18 c5498.1:24
+#15958 | auto Stormwind City;206§auto Sturmwind;206§auto Hurlevent;206 | x=-8739.2998046875 y=1148.700073242188 | size=1 | links=#1006(auto Stormwind City;17):18 #20364(auto Stormwind City;252):24
+#16234 | auto Stormwind City;207§auto Sturmwind;207§auto Hurlevent;207 | x=-8435.400390625 y=691.7000122070312 | size=1 | links=#4664(auto Stormwind City;75):10 #8603(auto Stormwind City;117):27 c5514.1:6
+#16235 | auto Stormwind City;208§auto Sturmwind;208§auto Hurlevent;208 | x=-8696.1005859375 y=314.5 | size=1 | links=#25(auto Stormwind City;1):10 #26267(auto Stormwind City;325):12 c8383.1:10
+#16422 | auto Stormwind City;209§auto Sturmwind;209§auto Hurlevent;209 | x=-8472.1005859375 y=690.7999877929688 | size=1 | links=#10281(auto Stormwind City;137):46 #10656(auto Stormwind City;145):21
+#16451 | auto Stormwind City;210§auto Sturmwind;210§auto Hurlevent;210 | x=-8786 y=680.7000122070312 | size=1 | links=#3573(auto Stormwind City;57):14 #20011(auto Stormwind City;244):14
+#16466 | auto Stormwind City;211§auto Sturmwind;211§auto Hurlevent;211 | x=-8790.900390625 y=816.7000122070312 | size=1 | links=#3881(auto Stormwind City;67):7 #6330(auto Stormwind City;97):14
+#16570 | auto Stormwind City;212§auto Sturmwind;212§auto Hurlevent;212 | x=-8728.5 y=762.9000244140625 | size=1 | links=#2317(auto Stormwind City;34):10 #12436(auto Stormwind City;168):29
+#16714 | auto Stormwind City;213§auto Sturmwind;213§auto Hurlevent;213 | x=-8797.400390625 y=695.9000244140625 | size=1 | links=#20011(auto Stormwind City;244):8 c1298.1:13
+#16739 | auto Stormwind City;214§auto Sturmwind;214§auto Hurlevent;214 | x=-8493.2001953125 y=539.2000122070312 | size=1 | links=#4854(auto Stormwind City;77):29 #9669(auto Stormwind City;128):19 #27597(auto Stormwind City;337):17
+#16740 | auto water canals;Stormwind City;215§auto wasserkanäle;Sturmwind;215§auto water canals;Hurlevent;215 | x=-8724 y=708.2999877929688 | size=1 | links=#2734(auto water canals;Stormwind City;42):46 #5315(auto water canals;Stormwind City;84):38
+#16939 | auto Stormwind City;216§auto Sturmwind;216§auto Hurlevent;216 | x=-8930.7001953125 y=625.2999877929688 | size=1 | links=#21814(auto Stormwind City;273):4 #27919(auto Stormwind City;340):12
+#16940 | auto Stormwind City;217§auto Sturmwind;217§auto Hurlevent;217 | x=-8668.2001953125 y=497.8000183105469 | size=1 | links=#8961(auto Stormwind City;124):29 #12644(auto Stormwind City;173):33 #13045(auto Stormwind City;175):6 c1319.1:23
+#16990 | auto Stormwind City;218§auto Sturmwind;218§auto Hurlevent;218 | x=-8681.6005859375 y=693.7999877929688 | size=1 | links=#4094(auto Stormwind City;69):30 #15810(auto Stormwind City;204):27
+#17294 | auto Stormwind City;219§auto Sturmwind;219§auto Hurlevent;219 | x=-8650.1005859375 y=668.7999877929688 | size=1 | links=#23728(auto Stormwind City;294):12 c3520.1:10
+#17452 | auto Stormwind City;220§auto Sturmwind;220§auto Hurlevent;220 | x=-9007.5 y=850.7999877929688 | size=1 | links=#1575(auto ramp to wizard's sanctum;Stormwind City;25):14 c2708.1:4
+#17491 | auto Stormwind City;221§auto Sturmwind;221§auto Hurlevent;221 | x=-8632.5 y=532.9000244140625 | size=1 | links=#2867(auto Stormwind City;44):30 #27837(auto Stormwind City;338):27
+#17572 | auto Stormwind City;222§auto Sturmwind;222§auto Hurlevent;222 | x=-8390.7001953125 y=619.2000122070312 | size=1 | links=#24914(auto Stormwind City;308):23 c5518.1:50 c6579.1:15
+#17721 | auto Stormwind City;223§auto Sturmwind;223§auto Hurlevent;223 | x=-8736.900390625 y=1044.400024414063 | size=1 | links=#19189(auto Stormwind City;235):55 #23819(auto Stormwind City;295):20
+#17836 | auto stormwind keep;Stormwind City;224§auto burg sturmwind;Sturmwind;224§auto stormwind keep;Hurlevent;224 | x=-8457.5 y=332.5 | size=1 | links=#4425(auto stormwind keep;Stormwind City;72):13 #25050(auto stormwind keep;Stormwind City;309):45
+#17954 | auto Stormwind City;225§auto Sturmwind;225§auto Hurlevent;225 | x=-8562.5 y=673.2000122070312 | size=1 | links=#8736(auto Stormwind City;119):30 #11074(auto Stormwind City;151):55 #11588(auto Stormwind City;160):32
+#18115 | auto Stormwind City;226§auto Sturmwind;226§auto Hurlevent;226 | x=-8723.2001953125 y=511.5 | size=1 | links=#2464(auto Stormwind City;37):12 #12644(auto Stormwind City;173):46
+#18459 | auto Stormwind City;227§auto Sturmwind;227§auto Hurlevent;227 | x=-8808 y=338.2000122070313 | size=1 | links=#3220(auto Stormwind City;50):6 #3634(auto Stormwind City;58):9
+#18468 | auto Stormwind City;228§auto Sturmwind;228§auto Hurlevent;228 | x=-8556.6005859375 y=735.7000122070312 | size=1 | links=#8041(auto Stormwind City;110):5 #12770(auto Stormwind City;174):16
+#18659 | auto The Slaugthered Lamb;Stormwind City;229§auto Zum geschlachteten Lamm;Sturmwind;229§auto The Slaugthered Lamb;Hurlevent;229 | x=-8995.7001953125 y=1049.200073242188 | size=1 | links=#22260(auto The Slaugthered Lamb;Stormwind City;279):13 #24109(auto The Slaugthered Lamb;Stormwind City;297):9
+#18664 | auto stormwind keep;Stormwind City;230§auto burg sturmwind;Sturmwind;230§auto stormwind keep;Hurlevent;230 | x=-8525.5 y=392 | size=1 | links=#9801(auto stormwind keep;Stormwind City;130):28 #21375(auto stormwind keep;Stormwind City;263):23
+#18826 | auto Stormwind City;231§auto Sturmwind;231§auto Hurlevent;231 | x=-8532.900390625 y=632.2999877929688 | size=1 | links=#9342(auto Stormwind City;127):31 #11371(auto Stormwind City;157):38
+#18867 | auto water canals;Stormwind City;232§auto wasserkanäle;Sturmwind;232§auto water canals;Hurlevent;232 | x=-8742.6005859375 y=787 | size=1 | links=#1296(auto water canals;Stormwind City;22):46 #8482(auto water canals;Stormwind City;116):28
+#19080 | auto Stormwind City;233§auto Sturmwind;233§auto Hurlevent;233 | x=-8725.900390625 y=818.7999877929688 | size=1 | links=#20905(auto Stormwind City;257):29 #26789(auto Stormwind City;332):19
+#19096 | auto inside wizard's sanctum;Stormwind City;234§auto drinnen magiersanktum;Sturmwind;234§auto inside wizard's sanctum;Hurlevent;234 | x=-9002.7998046875 y=866.7999877929688 | size=1 | links=#11487(auto inside wizard's sanctum;Stormwind City;158):6 #13491(auto inside wizard's sanctum;Stormwind City;176):7
+#19189 | auto Stormwind City;235§auto Sturmwind;235§auto Hurlevent;235 | x=-8742.7998046875 y=989.2000122070312 | size=1 | links=#17721(auto Stormwind City;223):55 #21552(auto Stormwind City;270):22 c7295.1:21 c9977.1:7 c14438.1:10
+#19372 | auto Stormwind City;236§auto Sturmwind;236§auto Hurlevent;236 | x=-8840.2001953125 y=615.1000366210938 | size=1 | links=#3693(auto Stormwind City;60):15 c1286.1:25 c1432.1:8 c6174.1:8 #14115(central location;Stormwind City):20
+#19419 | entry and exit;waters;two§ein- und ausgang;gewässer;zwei§entrée et sortie;eaux;deux | x=-8758.7001953125 y=531.5 | size=1 | links=#19961(auto Stormwind City;243):11 #20158(auto water canals;Stormwind City;246):12
+#19421 | auto Stormwind City;237§auto Sturmwind;237§auto Hurlevent;237 | x=-8545.400390625 y=711.2999877929688 | size=1 | links=#5139(auto Stormwind City;82):5 #22801(auto Stormwind City;283):9
+#19532 | auto Stormwind City;238§auto Sturmwind;238§auto Hurlevent;238 | x=-8640.2001953125 y=737.6000366210938 | size=1 | links=#2709(auto Stormwind City;41):20 #6630(auto Stormwind City;100):19 #14787(auto Stormwind City;189):37
+#19689 | Wizard's Sanctum;portal;outside§Magiersanktum;portal;draußen§Wizard's Sanctum;portal;extérieur | x=-9015.5 y=875.2999877929688 | size=1 | links=#13491(auto inside wizard's sanctum;Stormwind City;176):11
+#19775 | auto Cathedral of Light;Stormwind City;239§auto Kathedrale des Lichts;Sturmwind;239§auto Cathedral of Light;Hurlevent;239 | x=-8585.1005859375 y=805 | size=1 | links=#15050(auto Stormwind City;194):46 #24453(auto Cathedral of Light;Stormwind City;302):5
+#19853 | auto Stormwind City;240§auto Sturmwind;240§auto Hurlevent;240 | x=-8670.7001953125 y=764.9000244140625 | size=1 | links=#794(auto Stormwind City;10):8 #20159(auto Stormwind City;247):7
+#19869 | auto Stormwind City;241§auto Sturmwind;241§auto Hurlevent;241 | x=-8764.2998046875 y=1060.800048828125 | size=1 | links=#2145(auto Stormwind City;31):13 #23819(auto Stormwind City;295):22 #28588(s;A;Mailbox;1;Stormwind):37
+#19946 | auto water canals;Stormwind City;242§auto wasserkanäle;Sturmwind;242§auto water canals;Hurlevent;242 | x=-8777.2998046875 y=879.2999877929688 | size=1 | links=#23683(auto water canals;Stormwind City;293):42 #27550(auto water canals;Stormwind City;336):28
+#19961 | auto Stormwind City;243§auto Sturmwind;243§auto Hurlevent;243 | x=-8765.400390625 y=540.7000122070312 | size=1 | links=#8953(auto Stormwind City;123):27 #19419(entry and exit;waters;two):11 #25506(auto Stormwind City;317):63
+#20011 | auto Stormwind City;244§auto Sturmwind;244§auto Hurlevent;244 | x=-8799 y=687.7000122070312 | size=1 | links=#16451(auto Stormwind City;210):14 #16714(auto Stormwind City;213):8 c1402.1:13 #4824(auto Trade District;Stormwind City;4):28
+#20093 | auto Stormwind City;245§auto Sturmwind;245§auto Hurlevent;245 | x=-8798.7001953125 y=344.3999938964844 | size=1 | links=#955(auto Stormwind City;16):38 #7440(auto Stormwind City;106):16
+#20158 | auto water canals;Stormwind City;246§auto wasserkanäle;Sturmwind;246§auto water canals;Hurlevent;246 | x=-8751.7001953125 y=542.1000366210938 | size=1 | links=#19419(entry and exit;waters;two):12 #25956(auto water canals;Stormwind City;322):37
+#20159 | auto Stormwind City;247§auto Sturmwind;247§auto Hurlevent;247 | x=-8676.1005859375 y=770.7999877929688 | size=1 | links=#10059(auto Stormwind City;133):14 #19853(auto Stormwind City;240):7
+#20179 | auto Stormwind City;248§auto Sturmwind;248§auto Hurlevent;248 | x=-8771.5 y=608.7999877929688 | size=1 | links=#20353(auto Stormwind City;251):23 #24799(auto Stormwind City;307):48 #21333(auto Trade District;Stormwind City;19):33
+#20184 | auto Stormwind City;249§auto Sturmwind;249§auto Hurlevent;249 | x=-8756.7998046875 y=379.5 | size=1 | links=#21432(auto Stormwind City;264):8 #22292(auto Stormwind City;280):11
+#20308 | auto Stormwind City;250§auto Sturmwind;250§auto Hurlevent;250 | x=-8662.5 y=484.6000061035156 | size=1 | links=#13045(auto Stormwind City;175):8 c1339.1:10
+#20353 | auto Stormwind City;251§auto Sturmwind;251§auto Hurlevent;251 | x=-8758.400390625 y=628 | size=1 | links=#12540(auto Stormwind City;171):17 #20179(auto Stormwind City;248):23
+#20364 | auto Stormwind City;252§auto Sturmwind;252§auto Hurlevent;252 | x=-8763.400390625 y=1149.900024414063 | size=1 | links=#815(auto Stormwind City;12):20 #15958(auto Stormwind City;206):24
+#20417 | auto Stormwind City;253§auto Sturmwind;253§auto Hurlevent;253 | x=-8815.1005859375 y=328.3999938964844 | size=1 | links=#27511(auto Stormwind City;335):5 c7207.1:10
+#20430 | auto Stormwind City;254§auto Sturmwind;254§auto Hurlevent;254 | x=-8651.5 y=660.6000366210938 | size=1 | links=#3127(auto Stormwind City;48):20 #10069(auto Stormwind City;134):4
+#20601 | auto water canals;Stormwind City;255§auto wasserkanäle;Sturmwind;255§auto water canals;Hurlevent;255 | x=-8607.6005859375 y=580.4000244140625 | size=1 | links=#1806(waters;down;four):39 #2267(waters;down;one):43
+#20793 | auto Stormwind City;256§auto Sturmwind;256§auto Hurlevent;256 | x=-8930.2001953125 y=541.2000122070312 | size=1 | links=#6276(auto Stormwind City;96):21 #21637(auto Stormwind City;271):67
+#20864 | passage;Valley of Heroes;Stormwind City;to;Elwynn Forest§passage;Das Tal der Helden;Sturmwind;zum;Wald von Elwynn§passage;Vallée des Héros;Hurlevent;vers;Forêt d'Elwynn | x=-9076.7998046875 y=425.8999938964844 | size=1 | links=#14218(passage;Elwynn Forest;to;Stormwind City):7 #7647(auto Valley of Heroes;Stormwind City;107):33
+#20905 | auto Stormwind City;257§auto Sturmwind;257§auto Hurlevent;257 | x=-8718.7001953125 y=847.6000366210938 | size=1 | links=#6065(auto Stormwind City;94):16 #19080(auto Stormwind City;233):29
+#20952 | auto The Slaugthered Lamb;Stormwind City;258§auto Zum geschlachteten Lamm;Sturmwind;258§auto The Slaugthered Lamb;Hurlevent;258 | x=-8977.5 y=1039.300048828125 | size=1 | links=#923(auto The Slaugthered Lamb;Stormwind City;14):17 c6267.1:15
+#21107 | auto ramp to wizard's sanctum;Stormwind City;259§auto rampe zu magiersanktum;Sturmwind;259§auto ramp to wizard's sanctum;Hurlevent;259 | x=-9000.5 y=890.6000366210938 | size=1 | links=#1027(auto ramp to wizard's sanctum;Stormwind City;18):11 #14328(auto ramp to wizard's sanctum;Stormwind City;183):12
+#21126 | auto Stormwind City;260§auto Sturmwind;260§auto Hurlevent;260 | x=-8892 y=877 | size=1 | links=#2570(auto Stormwind City;39):27 #4978(auto Stormwind City;78):35
+#21144 | auto Stormwind City;261§auto Sturmwind;261§auto Hurlevent;261 | x=-8399.7001953125 y=682.7999877929688 | size=1 | links=#1048(auto Stormwind City;19):7 #25847(auto Stormwind City;321):8
+#21220 | auto Stormwind City;262§auto Sturmwind;262§auto Hurlevent;262 | x=-8667.900390625 y=448.7000122070313 | size=1 | links=#7025(auto Stormwind City;103):29 #21913(auto Stormwind City;275):11
+#21375 | auto stormwind keep;Stormwind City;263§auto burg sturmwind;Sturmwind;263§auto stormwind keep;Hurlevent;263 | x=-8543.7998046875 y=377.5 | size=1 | links=#18664(auto stormwind keep;Stormwind City;230):23 c1439.1:20 c1752.1:14 c2285.1:10
+#21432 | auto Stormwind City;264§auto Sturmwind;264§auto Hurlevent;264 | x=-8763.6005859375 y=374.1000061035156 | size=1 | links=#12481(auto Stormwind City;170):6 #20184(auto Stormwind City;249):8
+#21467 | auto Stormwind City;265§auto Sturmwind;265§auto Hurlevent;265 | x=-8684.2998046875 y=442.8999938964844 | size=1 | links=#10049(auto Stormwind City;132):11 #21913(auto Stormwind City;275):7 c2795.1:16 c4961.1:10
+#21478 | auto ramp to wizard's sanctum;Stormwind City;266§auto rampe zu magiersanktum;Sturmwind;266§auto ramp to wizard's sanctum;Hurlevent;266 | x=-8994.5 y=860 | size=1 | links=#2622(auto ramp to wizard's sanctum;Stormwind City;40):6 #23082(auto ramp to wizard's sanctum;Stormwind City;285):8
+#21484 | auto Stormwind City;267§auto Sturmwind;267§auto Hurlevent;267 | x=-8736.7998046875 y=699.6000366210938 | size=1 | links=#1412(auto Stormwind City;23):13 #2955(auto Stormwind City;46):33 #3573(auto Stormwind City;57):50 #10207(auto Stormwind City;136):58
+#21514 | auto Stormwind City;268§auto Sturmwind;268§auto Hurlevent;268 | x=-8908.1005859375 y=842.2999877929688 | size=1 | links=#2570(auto Stormwind City;39):10 #5755(auto Stormwind City;89):29
+#21543 | auto Stormwind City;269§auto Sturmwind;269§auto Hurlevent;269 | x=-8796.900390625 y=1111.900024414063 | size=1 | links=#548(auto Stormwind City;6):23 #815(auto Stormwind City;12):33
+#21552 | auto Stormwind City;270§auto Sturmwind;270§auto Hurlevent;270 | x=-8761 y=975.2000122070312 | size=1 | links=#3871(auto Stormwind City;66):36 #19189(auto Stormwind City;235):22 #28561(auto Stormwind City;345):56
+#21637 | auto Stormwind City;271§auto Sturmwind;271§auto Hurlevent;271 | x=-8876.7001953125 y=582.4000244140625 | size=1 | links=#1913(auto Stormwind City;29):9 #20793(auto Stormwind City;256):67 c5193.1:33
+#21775 | auto Valley of Heroes;Stormwind City;272§auto Das Tal der Helden;Sturmwind;272§auto Vallée des Héros;Hurlevent;272 | x=-9072.900390625 y=500.3000183105469 | size=1 | links=#3846(auto Valley of Heroes;Stormwind City;65):57 #28999(auto Valley of Heroes;Stormwind City;446):13
+#21814 | auto Stormwind City;273§auto Sturmwind;273§auto Hurlevent;273 | x=-8928.5 y=621.7999877929688 | size=1 | links=#3126(guild vault;Trade District;Stormwind City):6 #16939(auto Stormwind City;216):4 c2456.1:10
+#21894 | auto Stormwind City;274§auto Sturmwind;274§auto Hurlevent;274 | x=-8819.2998046875 y=331.7000122070313 | size=1 | links=#7440(auto Stormwind City;106):8 #25528(auto Stormwind City;318):6
+#21913 | auto Stormwind City;275§auto Sturmwind;275§auto Hurlevent;275 | x=-8676.900390625 y=441.6000061035156 | size=1 | links=#21220(auto Stormwind City;262):11 #21467(auto Stormwind City;265):7 c4961.1:9
+#22065 | entry and exit;waters;one§ein- und ausgang;gewässer;eins§entrée et sortie;eaux;un | x=-8587.400390625 y=645.9000244140625 | size=1 | links=#4341(auto water canals;Stormwind City;71):10 #8736(auto Stormwind City;119):11
+#22098 | auto Stormwind City;276§auto Sturmwind;276§auto Hurlevent;276 | x=-8795.2001953125 y=747.6000366210938 | size=1 | links=#3371(auto Stormwind City;55):30 #3787(auto Stormwind City;62):17 #25285(auto Stormwind City;312):17 #22623(auto The Canals;Stormwind City;3):55
+#22196 | auto The Slaugthered Lamb;Stormwind City;277§auto Zum geschlachteten Lamm;Sturmwind;277§auto The Slaugthered Lamb;Hurlevent;277 | x=-9000.2001953125 y=1040 | size=1 | links=#923(auto The Slaugthered Lamb;Stormwind City;14):15 #4109(auto The Slaugthered Lamb;Stormwind City;70):0
+#22210 | auto Stormwind City;278§auto Sturmwind;278§auto Hurlevent;278 | x=-8429.2998046875 y=661.9000244140625 | size=1 | links=#8603(auto Stormwind City;117):12 #10281(auto Stormwind City;137):15
+#22260 | auto The Slaugthered Lamb;Stormwind City;279§auto Zum geschlachteten Lamm;Sturmwind;279§auto The Slaugthered Lamb;Hurlevent;279 | x=-8985.7001953125 y=1040.099975585938 | size=1 | links=#18659(auto The Slaugthered Lamb;Stormwind City;229):13 c6122.1:3
+#22292 | auto Stormwind City;280§auto Sturmwind;280§auto Hurlevent;280 | x=-8751.900390625 y=389.8000183105469 | size=1 | links=#8025(auto Stormwind City;109):35 #11250(auto Stormwind City;155):14 #20184(auto Stormwind City;249):11 #30429(auto Stormwind City;450):10 c918.1:12
+#22332 | auto Stormwind City;281§auto Sturmwind;281§auto Hurlevent;281 | x=-8778.6005859375 y=638.1000366210938 | size=1 | links=#6634(auto Stormwind City;102):5 c1295.1:8 c1427.1:4
+#22382 | Mailbox;Mage Quarter;Stormwind City§briefkasten;Das Magierviertel;Sturmwind§Boîte aux lettres;Mage Quarter;Hurlevent | x=-9034.900390625 y=843.2999877929688 | size=1 | links=#5370(auto inside;inside;Blue Recluse;Stormwind City;85):12 #12371(auto Stormwind City;167):29
+#22752 | auto Stormwind City;282§auto Sturmwind;282§auto Hurlevent;282 | x=-8619.2001953125 y=386.5 | size=1 | links=#12121(auto Stormwind City;162):9 #12133(auto Stormwind City;163):14 c6089.1:7
+#22801 | auto Stormwind City;283§auto Sturmwind;283§auto Hurlevent;283 | x=-8551.900390625 y=718.1000366210938 | size=1 | links=#19421(auto Stormwind City;237):9 c10782.1:11
+#22970 | auto Valley of Heroes;Stormwind City;284§auto Das Tal der Helden;Sturmwind;284§auto Vallée des Héros;Hurlevent;284 | x=-9018.900390625 y=550.1000366210938 | size=1 | links=#4364(waters;down;rescue;Valley of Heroes;Stormwind City;three):21 #28996(rescue point 2 water down valley of heroes):34 c20407.1:12
+#23082 | auto ramp to wizard's sanctum;Stormwind City;285§auto rampe zu magiersanktum;Sturmwind;285§auto ramp to wizard's sanctum;Hurlevent;285 | x=-8986.6005859375 y=861.6000366210938 | size=1 | links=#2237(auto ramp to wizard's sanctum;Stormwind City;33):9 #21478(auto ramp to wizard's sanctum;Stormwind City;266):8
+#23132 | auto water canals;Stormwind City;286§auto wasserkanäle;Sturmwind;286§auto water canals;Hurlevent;286 | x=-8702 y=887.1000366210938 | size=1 | links=#6173(auto water canals;Stormwind City;95):31 #24712(auto water canals;Stormwind City;303):40
+#23221 | auto Stormwind City;287§auto Sturmwind;287§auto Hurlevent;287 | x=-8705.7001953125 y=611.6000366210938 | size=1 | links=#10207(auto Stormwind City;136):36 #24205(auto Stormwind City;298):21
+#23379 | auto Stormwind City;288§auto Sturmwind;288§auto Hurlevent;288 | x=-8709.7001953125 y=384.3000183105469 | size=1 | links=#24344(auto Stormwind City;300):6 c1323.1:7 c1341.1:9
+#23409 | auto inside wizard's sanctum;Stormwind City;289§auto drinnen magiersanktum;Sturmwind;289§auto inside wizard's sanctum;Hurlevent;289 | x=-9004.2998046875 y=866.6000366210938 | size=1 | links=#2622(auto ramp to wizard's sanctum;Stormwind City;40):5 #5966(auto inside wizard's sanctum;Stormwind City;92):9 #48838(Inside;portal to blasted lands;wizard's sanctum;Stormwind;462):6
+#23410 | auto Stormwind City;290§auto Sturmwind;290§auto Hurlevent;290 | x=-8544.2001953125 y=501 | size=1 | links=#762(auto Stormwind City;8):54 #8084(auto Stormwind City;112):22 #27597(auto Stormwind City;337):46
+#23549 | entry and exit;waters;five§ein- und ausgang;gewässer;fünf§entrée et sortie;eaux;cinq | x=-8662.7001953125 y=908.5 | size=1 | links=#6173(auto water canals;Stormwind City;95):13 #15314(auto Stormwind City;196):8
+#23605 | auto Cathedral of Light;Stormwind City;291§auto Kathedrale des Lichts;Sturmwind;291§auto Cathedral of Light;Hurlevent;291 | x=-8542.7001953125 y=838.6000366210938 | size=1 | links=#8706(auto Cathedral of Light;Stormwind City;118):28 #11551(auto Cathedral of Light;Stormwind City;159):27 #25257(auto Cathedral of Light;Stormwind City;311):33 c928.1:55 c1212.1:21 c1284.1:22 c2327.1:47 c6171.1:7 c7917.1:13
+#23652 | auto Stormwind City;292§auto Sturmwind;292§auto Hurlevent;292 | x=-8633.1005859375 y=414 | size=1 | links=#9766(auto Stormwind City;129):6 #25994(auto Stormwind City;323):7
+#23683 | auto water canals;Stormwind City;293§auto wasserkanäle;Sturmwind;293§auto water canals;Hurlevent;293 | x=-8808.7998046875 y=908.2999877929688 | size=1 | links=#2220(auto water canals;Stormwind City;32):21 #19946(auto water canals;Stormwind City;242):42
+#23728 | auto Stormwind City;294§auto Sturmwind;294§auto Hurlevent;294 | x=-8640.1005859375 y=676.6000366210938 | size=1 | links=#10284(auto Stormwind City;138):7 #17294(auto Stormwind City;219):12
+#23819 | auto Stormwind City;295§auto Sturmwind;295§auto Hurlevent;295 | x=-8742.400390625 y=1064 | size=1 | links=#17721(auto Stormwind City;223):20 #19869(auto Stormwind City;241):22 c15898.1:11
+#24091 | auto stormwind keep;Stormwind City;296§auto burg sturmwind;Sturmwind;296§auto stormwind keep;Hurlevent;296 | x=-8408.7998046875 y=424.7000122070313 | size=1 | links=#5754(auto stormwind keep;Stormwind City;88):30 #15253(auto stormwind keep;Stormwind City;195):30
+#24109 | auto The Slaugthered Lamb;Stormwind City;297§auto Zum geschlachteten Lamm;Sturmwind;297§auto The Slaugthered Lamb;Hurlevent;297 | x=-9002.2001953125 y=1042.599975585938 | size=1 | links=#9194(auto The Slaugthered Lamb;Stormwind City;126):9 #18659(auto The Slaugthered Lamb;Stormwind City;229):9
+#24205 | auto Stormwind City;298§auto Sturmwind;298§auto Hurlevent;298 | x=-8716.2998046875 y=593 | size=1 | links=#23221(auto Stormwind City;287):21 #24799(auto Stormwind City;307):27
+#24257 | auto Stormwind City;299§auto Sturmwind;299§auto Hurlevent;299 | x=-8710.2998046875 y=911.7000122070312 | size=1 | links=#3871(auto Stormwind City;66):44 #10901(auto Stormwind City;149):33 #28879(auto Stormwind City;355):36
+#24344 | auto Stormwind City;300§auto Sturmwind;300§auto Hurlevent;300 | x=-8706.400390625 y=389.7000122070313 | size=1 | links=#15030(auto Stormwind City;193):6 #23379(auto Stormwind City;288):6
+#24377 | auto water canals;Stormwind City;301§auto wasserkanäle;Sturmwind;301§auto water canals;Hurlevent;301 | x=-8833.2001953125 y=959 | size=1 | links=#2220(auto water canals;Stormwind City;32):35 #25865(entry and exit;waters;four):14
+#24453 | auto Cathedral of Light;Stormwind City;302§auto Kathedrale des Lichts;Sturmwind;302§auto Cathedral of Light;Hurlevent;302 | x=-8580.7001953125 y=808.5 | size=1 | links=#19775(auto Cathedral of Light;Stormwind City;239):5 #25501(auto Cathedral of Light;Stormwind City;316):8
+#24712 | auto water canals;Stormwind City;303§auto wasserkanäle;Sturmwind;303§auto water canals;Hurlevent;303 | x=-8734 y=861.9000244140625 | size=1 | links=#1296(auto water canals;Stormwind City;22):29 #23132(auto water canals;Stormwind City;286):40 #27550(auto water canals;Stormwind City;336):18
+#24717 | auto Cathedral of Light;Stormwind City;304§auto Kathedrale des Lichts;Sturmwind;304§auto Cathedral of Light;Hurlevent;304 | x=-8505.6005859375 y=821 | size=1 | links=#3823(auto Cathedral of Light;Stormwind City;63):13 c12336.1:13
+#24744 | auto Stormwind City;305§auto Sturmwind;305§auto Hurlevent;305 | x=-8576.2998046875 y=729.6000366210938 | size=1 | links=#8041(auto Stormwind City;110):19 #8080(auto Stormwind City;111):35 #11074(auto Stormwind City;151):23
+#24790 | auto Stormwind City;306§auto Sturmwind;306§auto Hurlevent;306 | x=-8841.6005859375 y=778.9000244140625 | size=1 | links=#9095(meeting stone;The Canals;Stormwind City):31 c1317.1:29 #20868(auto The Canals;Stormwind City;2):33
+#24799 | auto Stormwind City;307§auto Sturmwind;307§auto Hurlevent;307 | x=-8737.1005859375 y=575 | size=1 | links=#8953(auto Stormwind City;123):16 #20179(auto Stormwind City;248):48 #24205(auto Stormwind City;298):27
+#24914 | auto Stormwind City;308§auto Sturmwind;308§auto Hurlevent;308 | x=-8382.7001953125 y=596.9000244140625 | size=1 | links=#15422(auto Stormwind City;197):26 #17572(auto Stormwind City;222):23
+#25033 | waters;down;two§gewässer;unten;zwei§eaux;bas;deux | x=-8697.400390625 y=569 | size=1 | links=#10452(auto water canals;Stormwind City;141):46 #15792(auto water canals;Stormwind City;203):44 #25956(auto water canals;Stormwind City;322):23
+#25050 | auto stormwind keep;Stormwind City;309§auto burg sturmwind;Sturmwind;309§auto stormwind keep;Hurlevent;309 | x=-8503.1005859375 y=337.1000061035156 | size=1 | links=#17836(auto stormwind keep;Stormwind City;224):45 c4960.1:9
+#25155 | auto Stormwind City;310§auto Sturmwind;310§auto Hurlevent;310 | x=-8724.7001953125 y=876.6000366210938 | size=1 | links=#6065(auto Stormwind City;94):24 #10901(auto Stormwind City;149):21
+#25257 | auto Cathedral of Light;Stormwind City;311§auto Kathedrale des Lichts;Sturmwind;311§auto Cathedral of Light;Hurlevent;311 | x=-8516.6005859375 y=859.2999877929688 | size=1 | links=#23605(auto Cathedral of Light;Stormwind City;291):33 c376.1:5 c4982.1:5 c5489.1:4 c6173.1:3
+#25285 | auto Stormwind City;312§auto Sturmwind;312§auto Hurlevent;312 | x=-8794.5 y=765.4000244140625 | size=1 | links=#22098(auto Stormwind City;276):17 c5494.1:9
+#25331 | auto inside;inside;Blue Recluse;Stormwind City;313§auto drinnen;drinnen;Zum Blauen Eremiten;Sturmwind;313§auto intérieur;intérieur;Blue Recluse;Hurlevent;313 | x=-9049.7998046875 y=850.7999877929688 | size=1 | links=#2546(auto inside;inside;Blue Recluse;Stormwind City;38):14 #5370(auto inside;inside;Blue Recluse;Stormwind City;85):7
+#25362 | auto Stormwind City;314§auto Sturmwind;314§auto Hurlevent;314 | x=-8608.1005859375 y=506.3999938964844 | size=1 | links=#8961(auto Stormwind City;124):47 #15516(auto Stormwind City;199):25 #27837(auto Stormwind City;338):9
+#25434 | auto Stormwind City;315§auto Sturmwind;315§auto Hurlevent;315 | x=-8634.400390625 y=817.2000122070312 | size=1 | links=#799(auto Stormwind City;11):29 #11130(auto Stormwind City;153):27
+#25501 | auto Cathedral of Light;Stormwind City;316§auto Kathedrale des Lichts;Sturmwind;316§auto Cathedral of Light;Hurlevent;316 | x=-8585.6005859375 y=815.4000244140625 | size=1 | links=#2800(auto Cathedral of Light;Stormwind City;43):17 #24453(auto Cathedral of Light;Stormwind City;302):8
+#25506 | auto Stormwind City;317§auto Sturmwind;317§auto Hurlevent;317 | x=-8807.2998046875 y=493.3000183105469 | size=1 | links=#19961(auto Stormwind City;243):63 c1302.1:33
+#25528 | auto Stormwind City;318§auto Sturmwind;318§auto Hurlevent;318 | x=-8820.2998046875 y=324.8000183105469 | size=1 | links=#12102(auto Stormwind City;161):19 #21894(auto Stormwind City;274):6
+#25676 | auto Cathedral of Light;Stormwind City;319§auto Kathedrale des Lichts;Sturmwind;319§auto Cathedral of Light;Hurlevent;319 | x=-8504.7001953125 y=835.2000122070312 | size=1 | links=#4764(auto Cathedral of Light;Stormwind City;76):4 #6391(auto Cathedral of Light;Stormwind City;98):8
+#25843 | auto Stormwind City;320§auto Sturmwind;320§auto Hurlevent;320 | x=-8643 y=432.6000061035156 | size=1 | links=#7025(auto Stormwind City;103):8 #11182(auto Stormwind City;154):17 #28062(auto Stormwind City;342):15 #28591(s;A;Mailbox;4;Stormwind):5
+#25847 | auto Stormwind City;321§auto Sturmwind;321§auto Hurlevent;321 | x=-8406.6005859375 y=677.6000366210938 | size=1 | links=#8603(auto Stormwind City;117):15 #10558(auto Stormwind City;144):26 #21144(auto Stormwind City;261):8
+#25865 | entry and exit;waters;four§ein- und ausgang;gewässer;vier§entrée et sortie;eaux;quatre | x=-8841.6005859375 y=970.7000122070312 | size=1 | links=#24377(auto water canals;Stormwind City;301):14 c297.1:14
+#25956 | auto water canals;Stormwind City;322§auto wasserkanäle;Sturmwind;322§auto water canals;Hurlevent;322 | x=-8717.1005859375 y=556.9000244140625 | size=1 | links=#20158(auto water canals;Stormwind City;246):37 #25033(waters;down;two):23
+#25994 | auto Stormwind City;323§auto Sturmwind;323§auto Hurlevent;323 | x=-8628.7001953125 y=420.6000061035156 | size=1 | links=#2942(auto Stormwind City;45):12 #23652(auto Stormwind City;292):7
+#26164 | auto Stormwind City;324§auto Sturmwind;324§auto Hurlevent;324 | x=-8613.400390625 y=405.3000183105469 | size=1 | links=#8737(auto Stormwind City;120):23 #12133(auto Stormwind City;163):9
+#26267 | auto Stormwind City;325§auto Sturmwind;325§auto Hurlevent;325 | x=-8697.900390625 y=327 | size=1 | links=#7887(auto Stormwind City;108):19 #16235(auto Stormwind City;208):12
+#26324 | auto The Slaugthered Lamb;Stormwind City;326§auto Zum geschlachteten Lamm;Sturmwind;326§auto The Slaugthered Lamb;Hurlevent;326 | x=-8990.6005859375 y=1069.700073242188 | size=1 | links=#562(auto The Slaugthered Lamb;Stormwind City;7):14 #3470(auto The Slaugthered Lamb;Stormwind City;56):16
+#26395 | auto Stormwind City;327§auto Sturmwind;327§auto Hurlevent;327 | x=-8839 y=836.2999877929688 | size=1 | links=#9095(meeting stone;The Canals;Stormwind City):44 #14842(auto Stormwind City;190):55 #45233(auto Stormwind City;453):14 c338.1:21
+#26409 | auto stormwind keep;Stormwind City;328§auto burg sturmwind;Sturmwind;328§auto stormwind keep;Hurlevent;328 | x=-8358.6005859375 y=409.8000183105469 | size=1 | links=#5754(auto stormwind keep;Stormwind City;88):42 #15000(auto stormwind keep;Stormwind City;191):14 c2504.1:14
+#26431 | auto Stormwind City;329§auto Sturmwind;329§auto Hurlevent;329 | x=-8431 y=695.6000366210938 | size=1 | links=#2367(auto Stormwind City;35):10 c5513.1:4
+#26554 | auto Stormwind City;330§auto Sturmwind;330§auto Hurlevent;330 | x=-8887.7998046875 y=686.9000244140625 | size=1 | links=#8213(auto Stormwind City;115):13 c277.1:7
+#26584 | auto Stormwind City;331§auto Sturmwind;331§auto Hurlevent;331 | x=-8871.2998046875 y=924.9000244140625 | size=1 | links=#4978(auto Stormwind City;78):25 #15763(auto Stormwind City;202):19
+#26789 | auto Stormwind City;332§auto Sturmwind;332§auto Hurlevent;332 | x=-8718.7001953125 y=800.7000122070312 | size=1 | links=#12436(auto Stormwind City;168):10 #19080(auto Stormwind City;233):19 c1405.1:5
+#26972 | auto Stormwind City;333§auto Sturmwind;333§auto Hurlevent;333 | x=-8423.5 y=550.4000244140625 | size=1 | links=#5234(auto Stormwind City;83):47 c2879.1:3 c5516.1:13
+#27006 | waters;down;three§gewässer;unten;drei§eaux;bas;trois | x=-8685.6005859375 y=658.5 | size=1 | links=#5315(auto water canals;Stormwind City;84):24 #15792(auto water canals;Stormwind City;203):46 #28094(auto water canals;Stormwind City;343):50
+#27043 | auto stormwind keep;Stormwind City;334§auto burg sturmwind;Sturmwind;334§auto stormwind keep;Hurlevent;334 | x=-8353.7998046875 y=383.3999938964844 | size=1 | links=#15000(auto stormwind keep;Stormwind City;191):16 c1440.1:7
+#27511 | auto Stormwind City;335§auto Sturmwind;335§auto Hurlevent;335 | x=-8816.5 y=323.5 | size=1 | links=#5057(auto Stormwind City;80):16 #20417(auto Stormwind City;253):5
+#27550 | auto water canals;Stormwind City;336§auto wasserkanäle;Sturmwind;336§auto water canals;Hurlevent;336 | x=-8749.2001953125 y=872.7000122070312 | size=1 | links=#19946(auto water canals;Stormwind City;242):28 #24712(auto water canals;Stormwind City;303):18
+#27597 | auto Stormwind City;337§auto Sturmwind;337§auto Hurlevent;337 | x=-8508.2001953125 y=530.1000366210938 | size=1 | links=#16739(auto Stormwind City;214):17 #23410(auto Stormwind City;290):46
+#27837 | auto Stormwind City;338§auto Sturmwind;338§auto Hurlevent;338 | x=-8613 y=514.1000366210938 | size=1 | links=#762(auto Stormwind City;8):45 #17491(auto Stormwind City;221):27 #25362(auto Stormwind City;314):9
+#27901 | auto Cathedral of Light;Stormwind City;339§auto Kathedrale des Lichts;Sturmwind;339§auto Cathedral of Light;Hurlevent;339 | x=-8507.5 y=823.1000366210938 | size=1 | links=#6391(auto Cathedral of Light;Stormwind City;98):7 #11551(auto Cathedral of Light;Stormwind City;159):12
+#27919 | auto Stormwind City;340§auto Sturmwind;340§auto Hurlevent;340 | x=-8919.400390625 y=631.6000366210938 | size=1 | links=#16939(auto Stormwind City;216):12 #5176(auto Trade District;Stormwind City;5):10
+#28035 | auto Stormwind City;341§auto Sturmwind;341§auto Hurlevent;341 | x=-8614.7001953125 y=705.7999877929688 | size=1 | links=#2709(auto Stormwind City;41):20 #11074(auto Stormwind City;151):21
+#28062 | auto Stormwind City;342§auto Sturmwind;342§auto Hurlevent;342 | x=-8654.2001953125 y=443.3999938964844 | size=1 | links=#25843(auto Stormwind City;320):15 c1333.1:13
+#28094 | auto water canals;Stormwind City;343§auto wasserkanäle;Sturmwind;343§auto water canals;Hurlevent;343 | x=-8637.900390625 y=642.1000366210938 | size=1 | links=#14520(auto water canals;Stormwind City;184):27 #27006(waters;down;three):50
+#28335 | auto Valley of Heroes;Stormwind City;344§auto Das Tal der Helden;Sturmwind;344§auto Vallée des Héros;Hurlevent;344 | x=-8928.7001953125 y=453.1000061035156 | size=1 | links=#6628(waters;down;rescue;Valley of Heroes;Stormwind City;one):29 #10471(auto Valley of Heroes;Stormwind City;142):31
+#28561 | auto Stormwind City;345§auto Sturmwind;345§auto Hurlevent;345 | x=-8805.400390625 y=940.7000122070312 | size=1 | links=#6632(auto Stormwind City;101):55 #13556(auto Stormwind City;177):18 #21552(auto Stormwind City;270):56
+#28588 | s;A;Mailbox;1;Stormwind§s;a;Briefkasten;1;Stormwind§s;A;Boîte aux lettres;1;Hurlevent | x=-8793.3583984375 y=1083.887573242188 | size=1 | links=#548(auto Stormwind City;6):5 #19869(auto Stormwind City;241):37
+#28589 | s;A;Mailbox;2;Stormwind§s;a;Briefkasten;2;Stormwind§s;A;Boîte aux lettres;2;Hurlevent | x=-9036.26953125 y=845.95166015625 | size=1 | links=#3830(auto Stormwind City;64):1 #12371(auto Stormwind City;167):32
+#28590 | s;A;Mailbox;3;Stormwind§s;a;Briefkasten;3;Stormwind§s;A;Boîte aux lettres;3;Hurlevent | x=-8875.822265625 y=648.3438110351562 | size=1 | links=#12170(auto Trade District;Stormwind City;10):2
+#28591 | s;A;Mailbox;4;Stormwind§s;a;Briefkasten;4;Stormwind§s;A;Boîte aux lettres;4;Hurlevent | x=-8640.0810546875 y=427.8834533691406 | size=1 | links=#25843(auto Stormwind City;320):5
+#28766 | s;Eastern Kingdoms;capital;Stormwind§s;Östliche Königreiche;Hauptstadt;Stormwind§s;Royaumes de l'est;capital;Hurlevent | x=-9153.77 y=-364.057 | size=1
+#28822 | s;Eastern Kingdoms;capital;Stormwind§s;Östliche Königreiche;Hauptstadt;Stormwind§s;Royaumes de l'est;capital;Hurlevent | x=-9153.77 y=-364.057 | size=1
+#28828 | Summoned Voidwalker;Stormwind;1;25.16;77.49§Beschworener Leerwandler;Sturmwind;1;25.16;77.49§Marcheur du Vide invoqué;Hurlevent;1;25.16;77.49 | x=-8968.49469997764 y=1046.324902584009 | size=1
+#28829 | Aristan Mottar;Questgiver;Stormwind;1;54.6;65.3§Aristan Mottar;Questgeber;Sturmwind;1;54.6;65.3§Aristan Mottar;Questgiver;Hurlevent;1;54.6;65.3 | x=-8865.586578579418 y=640.2858301719768 | size=1
+#28830 | Colara Dean;Questgiver;Stormwind;1;54.32;65.97§Colara Dean;Questgeber;Sturmwind;1;54.32;65.97§Colara Dean;Questgiver;Hurlevent;1;54.32;65.97 | x=-8868.481622038651 y=644.6850814679298 | size=1
+#28847 | Highlord Bolvar Fordragon;Questgiver;Stormwind City;1;78.22;17.98§Hochlord Bolvar Fordragon;Questgeber;Sturmwind;1;78.22;17.98§Généralissime Bolvar Fordragon;Questgiver;Hurlevent;1;78.22;17.98 | x=-8450.938450058939 y=320.3127531556627 | size=1
+#28848 | Lady Katrana Prestor;Questgiver;Stormwind City;1;78.1;17.75§Lady Katrana Prestor;Questgeber;Sturmwind;1;78.1;17.75§Dame Katrana Prestor;Questgiver;Hurlevent;1;78.1;17.75 | x=-8431.484071855568 y=318.1716634639679 | size=1
+#28849 | Lieutenant Jocryn Heldric;Questgiver;Stormwind City;1;57.07;59.6§Leutnant Jocryn Heldric;Questgeber;Sturmwind;1;57.07;59.6§Lieutenant Jocryn Heldric;Questgiver;Hurlevent;1;57.07;59.6 | x=-8825.306701244195 y=635.4948355436924 | size=1
+#28850 | auto stormwind keep;Stormwind City;346§auto burg sturmwind;Sturmwind;346§auto stormwind keep;Hurlevent;346 | x=-8421.900390625 y=307.3999938964844 | size=1 | links=#28851(auto stormwind keep;Stormwind City;347):18 c16075.1:24
+#28851 | auto stormwind keep;Stormwind City;347§auto burg sturmwind;Sturmwind;347§auto stormwind keep;Hurlevent;347 | x=-8409.7998046875 y=293.3000183105469 | size=1 | links=#28850(auto stormwind keep;Stormwind City;346):18 #28852(auto stormwind keep;Stormwind City;348):21
+#28852 | auto stormwind keep;Stormwind City;348§auto burg sturmwind;Sturmwind;348§auto stormwind keep;Hurlevent;348 | x=-8396 y=276.2000122070313 | size=1 | links=#28851(auto stormwind keep;Stormwind City;347):21 c1751.1:5 c7410.1:20
+#28869 | auto Stormwind City;349§auto Sturmwind;349§auto Hurlevent;349 | x=-8886.400390625 y=977 | size=1 | links=#28870(auto Stormwind City;350):8 c1304.1:8
+#28870 | auto Stormwind City;350§auto Sturmwind;350§auto Hurlevent;350 | x=-8894.5 y=975.9000244140625 | size=1 | links=#28869(auto Stormwind City;349):8 #28871(auto Stormwind City;351):10
+#28871 | auto Stormwind City;351§auto Sturmwind;351§auto Hurlevent;351 | x=-8904.7001953125 y=976 | size=1 | links=#28870(auto Stormwind City;350):10 #28872(auto Stormwind City;352):10
+#28872 | auto Stormwind City;352§auto Sturmwind;352§auto Hurlevent;352 | x=-8914.1005859375 y=980.5 | size=1 | links=#28871(auto Stormwind City;351):10 #28873(auto Stormwind City;353):11
+#28873 | auto Stormwind City;353§auto Sturmwind;353§auto Hurlevent;353 | x=-8922.400390625 y=971.9000244140625 | size=1 | links=#28872(auto Stormwind City;352):11 #28874(auto Stormwind City;354):7
+#28874 | auto Stormwind City;354§auto Sturmwind;354§auto Hurlevent;354 | x=-8927.6005859375 y=966.7000122070312 | size=1 | links=#781(auto Stormwind City;9):24 #28873(auto Stormwind City;353):7
+#28879 | auto Stormwind City;355§auto Sturmwind;355§auto Hurlevent;355 | x=-8678.786176499196 y=930.9991740262641 | size=1 | links=#24257(auto Stormwind City;299):36 #28880(auto Stormwind City;356):23
+#28880 | auto Stormwind City;356§auto Sturmwind;356§auto Hurlevent;356 | x=-8657.91056704031 y=942.5968130505921 | size=1 | links=#28879(auto Stormwind City;355):23
+#28903 | auto Stormwind City;378§auto Sturmwind;378§auto Hurlevent;378 | x=-8465.2001953125 y=1026.700073242188 | size=1
+#28907 | auto Stormwind City;382§auto Sturmwind;382§auto Hurlevent;382 | x=-8394.5 y=1145.200073242188 | size=1 | links=#28908(auto Stormwind City;383):30
+#28908 | auto Stormwind City;383§auto Sturmwind;383§auto Hurlevent;383 | x=-8423.7001953125 y=1138.099975585938 | size=1 | links=#28907(auto Stormwind City;382):30 #28909(auto Stormwind City;384):75
+#28909 | auto Stormwind City;384§auto Sturmwind;384§auto Hurlevent;384 | x=-8499.5 y=1132.900024414063 | size=1 | links=#28908(auto Stormwind City;383):75 #28910(auto Stormwind City;385):72 #28949(auto Stormwind City;408):18
+#28910 | auto Stormwind City;385§auto Sturmwind;385§auto Hurlevent;385 | x=-8572.2998046875 y=1135.800048828125 | size=1 | links=#28909(auto Stormwind City;384):72 #28911(auto Stormwind City;386):31 #28986(auto Stormwind City;439):34
+#28911 | auto Stormwind City;386§auto Sturmwind;386§auto Hurlevent;386 | x=-8573.400390625 y=1167.700073242188 | size=1 | links=#28910(auto Stormwind City;385):31 #28912(auto Stormwind City;387):12
+#28912 | auto Stormwind City;387§auto Sturmwind;387§auto Hurlevent;387 | x=-8574.400390625 y=1180.599975585938 | size=1 | links=#28911(auto Stormwind City;386):12 #28913(auto Stormwind City;388):16
+#28913 | auto Stormwind City;388§auto Sturmwind;388§auto Hurlevent;388 | x=-8575.7998046875 y=1196.900024414063 | size=1 | links=#28912(auto Stormwind City;387):16 #28914(auto Stormwind City;389):29
+#28914 | auto Stormwind City;389§auto Sturmwind;389§auto Hurlevent;389 | x=-8589.400390625 y=1222.599975585938 | size=1 | links=#28913(auto Stormwind City;388):29 #28915(auto Stormwind City;390):53 #28985(auto Stormwind City;438):45
+#28915 | auto Stormwind City;390§auto Sturmwind;390§auto Hurlevent;390 | x=-8614.1005859375 y=1270.599975585938 | size=1 | links=#28914(auto Stormwind City;389):53
+#28945 | auto Stormwind City;404§auto Sturmwind;404§auto Hurlevent;404 | x=-8475.6005859375 y=1232 | size=1 | links=#28946(auto Stormwind City;405):31
+#28946 | auto Stormwind City;405§auto Sturmwind;405§auto Hurlevent;405 | x=-8479.6005859375 y=1201.200073242188 | size=1 | links=#28945(auto Stormwind City;404):31 #28947(auto Stormwind City;406):14 #28950(auto Stormwind City;409):14 #28984(auto Stormwind City;437):36
+#28947 | auto Stormwind City;406§auto Sturmwind;406§auto Hurlevent;406 | x=-8480.400390625 y=1186.599975585938 | size=1 | links=#28946(auto Stormwind City;405):14 #28948(auto Stormwind City;407):16
+#28948 | auto Stormwind City;407§auto Sturmwind;407§auto Hurlevent;407 | x=-8480 y=1170.300048828125 | size=1 | links=#28947(auto Stormwind City;406):16 #28949(auto Stormwind City;408):26
+#28949 | auto Stormwind City;408§auto Sturmwind;408§auto Hurlevent;408 | x=-8485.5 y=1144.300048828125 | size=1 | links=#28909(auto Stormwind City;384):18 #28948(auto Stormwind City;407):26
+#28950 | auto Stormwind City;409§auto Sturmwind;409§auto Hurlevent;409 | x=-8468 y=1210.700073242188 | size=1 | links=#28946(auto Stormwind City;405):14 #28951(auto Stormwind City;410):37
+#28951 | auto Stormwind City;410§auto Sturmwind;410§auto Hurlevent;410 | x=-8431.1005859375 y=1203.599975585938 | size=1 | links=#28950(auto Stormwind City;409):37 #28952(auto Stormwind City;411):47
+#28952 | auto Stormwind City;411§auto Sturmwind;411§auto Hurlevent;411 | x=-8383.5 y=1205 | size=1 | links=#28951(auto Stormwind City;410):47 #28953(auto Stormwind City;412):39 #28983(auto Stormwind City;436):62
+#28953 | auto Stormwind City;412§auto Sturmwind;412§auto Hurlevent;412 | x=-8381.1005859375 y=1244.099975585938 | size=1 | links=#28952(auto Stormwind City;411):39 #28954(auto Stormwind City;413):52
+#28954 | auto Stormwind City;413§auto Sturmwind;413§auto Hurlevent;413 | x=-8384.5 y=1296.800048828125 | size=1 | links=#28953(auto Stormwind City;412):52
+#28961 | auto Stormwind City;420§auto Sturmwind;420§auto Hurlevent;420 | x=-8309.2998046875 y=1134.599975585938 | size=1 | links=#28962(auto Stormwind City;421):35
+#28962 | auto Stormwind City;421§auto Sturmwind;421§auto Hurlevent;421 | x=-8300.900390625 y=1169.099975585938 | size=1 | links=#28961(auto Stormwind City;420):35 #28963(auto Stormwind City;422):12
+#28963 | auto Stormwind City;422§auto Sturmwind;422§auto Hurlevent;422 | x=-8300.400390625 y=1181.200073242188 | size=1 | links=#28962(auto Stormwind City;421):12 #28964(auto Stormwind City;423):16
+#28964 | auto Stormwind City;423§auto Sturmwind;423§auto Hurlevent;423 | x=-8299.7998046875 y=1197.200073242188 | size=1 | links=#28963(auto Stormwind City;422):16 #28965(auto Stormwind City;424):55 #28983(auto Stormwind City;436):23
+#28965 | auto Stormwind City;424§auto Sturmwind;424§auto Hurlevent;424 | x=-8289.2998046875 y=1251.200073242188 | size=1 | links=#28964(auto Stormwind City;423):55 #28966(auto Stormwind City;425):72
+#28966 | auto Stormwind City;425§auto Sturmwind;425§auto Hurlevent;425 | x=-8290.7998046875 y=1324.099975585938 | size=1 | links=#28965(auto Stormwind City;424):72
+#28983 | auto Stormwind City;436§auto Sturmwind;436§auto Hurlevent;436 | x=-8321.2998046875 y=1206.5 | size=1 | links=#28952(auto Stormwind City;411):62 #28964(auto Stormwind City;423):23
+#28984 | auto Stormwind City;437§auto Sturmwind;437§auto Hurlevent;437 | x=-8509.571414364189 y=1221.931813595761 | size=1 | links=#28946(auto Stormwind City;405):36 #28985(auto Stormwind City;438):34
+#28985 | auto Stormwind City;438§auto Sturmwind;438§auto Hurlevent;438 | x=-8543.930331655833 y=1221.015579467121 | size=1 | links=#28914(auto Stormwind City;389):45 #28984(auto Stormwind City;437):34
+#28986 | auto Stormwind City;439§auto Sturmwind;439§auto Hurlevent;439 | x=-8588.6005859375 y=1105.099975585938 | size=1 | links=#28910(auto Stormwind City;385):34 #28987(auto Stormwind City;440):23
+#28987 | auto Stormwind City;440§auto Sturmwind;440§auto Hurlevent;440 | x=-8593.2998046875 y=1082 | size=1 | links=#28986(auto Stormwind City;439):23 #28988(auto Stormwind City;441):25
+#28988 | auto Stormwind City;441§auto Sturmwind;441§auto Hurlevent;441 | x=-8579.2001953125 y=1061 | size=1 | links=#28987(auto Stormwind City;440):25
+#28995 | Stormwind City Patroller;Stormwind City;3;69.28;83.47§Stadtpatrolleur von Sturmwind;Sturmwind;3;69.28;83.47§Patrouilleur de Hurlevent;Hurlevent;3;69.28;83.47 | x=-8906.939240945432 y=509.5170208601264 | size=1
+#28996 | rescue point 2 water down valley of heroes§Rettungspunkt 2 Wasser unten im Tal der Helden§rescue point 2 water down valley of heroes | x=-9018.050171785126 y=515.5444499375559 | size=5 | links=#22970(auto Valley of Heroes;Stormwind City;284):34
+#28997 | auto Valley of Heroes;Stormwind City;444§auto Das Tal der Helden;Sturmwind;444§auto Vallée des Héros;Hurlevent;444 | x=-9054.6005859375 y=516.4000244140625 | size=1 | links=#28998(auto Valley of Heroes;Stormwind City;445):11 c20407.1:40
+#28998 | auto Valley of Heroes;Stormwind City;445§auto Das Tal der Helden;Sturmwind;445§auto Vallée des Héros;Hurlevent;445 | x=-9066 y=515 | size=1 | links=#28997(auto Valley of Heroes;Stormwind City;444):11 #28999(auto Valley of Heroes;Stormwind City;446):8
+#28999 | auto Valley of Heroes;Stormwind City;446§auto Das Tal der Helden;Sturmwind;446§auto Vallée des Héros;Hurlevent;446 | x=-9074.7998046875 y=513.5 | size=1 | links=#21775(auto Valley of Heroes;Stormwind City;272):13 #28998(auto Valley of Heroes;Stormwind City;445):8
+#30428 | auto Stormwind City;449§auto Sturmwind;449§auto Hurlevent;449 | x=-8762.6005859375 y=402.7000122070313 | size=1 | links=#30429(auto Stormwind City;450):6
+#30429 | auto Stormwind City;450§auto Sturmwind;450§auto Hurlevent;450 | x=-8758.2001953125 y=397.6000061035156 | size=1 | links=#22292(auto Stormwind City;280):10 #30428(auto Stormwind City;449):6
+#30430 | auto Stormwind City;451§auto Sturmwind;451§auto Hurlevent;451 | x=-8816.2998046875 y=347 | size=1 | links=#30431(auto Stormwind City;452):7 c1326.1:9
+#30431 | auto Stormwind City;452§auto Sturmwind;452§auto Hurlevent;452 | x=-8815.900390625 y=339.8999938964844 | size=1 | links=#30430(auto Stormwind City;451):7 c1325.1:14
+#45233 | auto Stormwind City;453§auto Sturmwind;453§auto Hurlevent;453 | x=-8844.7001953125 y=849.2000122070312 | size=1 | links=#26395(auto Stormwind City;327):14 #45234(auto Stormwind City;454):10
+#45234 | auto Stormwind City;454§auto Sturmwind;454§auto Hurlevent;454 | x=-8851.2998046875 y=857.4000244140625 | size=1 | links=#45233(auto Stormwind City;453):10
+#48673 | auto The Park;Stormwind City;456§auto Der Park;Sturmwind;456§auto The Park;Hurlevent;456 | x=-8715.2001953125 y=1107.599975585938 | size=1 | links=#48674(auto The Park;Stormwind City;457):21 c11916.1:30
+#48674 | auto The Park;Stormwind City;457§auto Der Park;Sturmwind;457§auto The Park;Hurlevent;457 | x=-8722.7998046875 y=1088 | size=1 | links=#48673(auto The Park;Stormwind City;456):21 o180872.1:9
+#48675 | auto The Park;Stormwind City;458§auto Der Park;Sturmwind;458§auto The Park;Hurlevent;458 | x=-8733.2001953125 y=1084 | size=1 | links=c5505.1:14 o180872.1:6
+#48676 | auto The Park;Stormwind City;459§auto Der Park;Sturmwind;459§auto The Park;Hurlevent;459 | x=-8737.7001953125 y=1121.400024414063 | size=1 | links=c5506.1:13 c11397.1:20
+#48679 | auto Trade District;Stormwind City;460§auto Handelsdistrikt;Sturmwind;460§auto Trade District;Hurlevent;460 | x=-8764.7001953125 y=654.9000244140625 | size=1 | links=#12540(auto Stormwind City;171):10 #48680(auto Inside;Trade District;Stormwind City;461):10
+#48680 | auto Inside;Trade District;Stormwind City;461§auto Drinnen;Handelsdistrikt;Sturmwind;461§auto Intérieur;Trade District;Hurlevent;461 | x=-8754.7998046875 y=657.5 | size=1 | links=#48679(auto Trade District;Stormwind City;460):10
+#48838 | Inside;portal to blasted lands;wizard's sanctum;Stormwind;462§Drinnen;portal nach verwüstete lande;Magiersanktum;Sturmwind;462§Intérieur;portal to blasted lands;wizard's sanctum;Hurlevent;462 | x=-9007.7998046875 y=872.2999877929688 | size=1 | links=#23409(auto inside wizard's sanctum;Stormwind City;289):6
+#52262 | auto Inside;Mage Quarter;Stormwind;464§auto Drinnen;Das Magierviertel;Stormwind;464§auto Intérieur;Mage Quarter;Hurlevent;464 | x=-8935.400390625 y=795.5 | size=1 | links=#52263(auto Inside;Mage Quarter;Stormwind;465):6 c1346.1:5
+#52263 | auto Inside;Mage Quarter;Stormwind;465§auto Drinnen;Das Magierviertel;Stormwind;465§auto Intérieur;Mage Quarter;Hurlevent;465 | x=-8933.2998046875 y=789.2999877929688 | size=1 | links=#52262(auto Inside;Mage Quarter;Stormwind;464):6 #52264(auto Inside;Mage Quarter;Stormwind;466):4
+#52264 | auto Inside;Mage Quarter;Stormwind;466§auto Drinnen;Das Magierviertel;Stormwind;466§auto Intérieur;Mage Quarter;Hurlevent;466 | x=-8936.7001953125 y=786.4000244140625 | size=1 | links=#52263(auto Inside;Mage Quarter;Stormwind;465):4 c14722.1:5
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c277.1 | links=#26554(auto Stormwind City;330):7 c1301.1:9 c1431.1:4
+c279.1 | links=c1275.1:6
+c297.1 | links=#13556(auto Stormwind City;177):33 #25865(entry and exit;waters;four):14 o1561.1:3
+c332.1 | links=#3220(auto Stormwind City;50):19 c6946.1:4
+c338.1 | links=#26395(auto Stormwind City;327):21 c1316.1:9
+c340.1 | links=#8737(auto Stormwind City;120):12
+c352.1 | links=#20857(auto Trade District;Stormwind City;18):9
+c376.1 | links=#25257(auto Cathedral of Light;Stormwind City;311):5
+c466.1 | links=#14761(auto Valley of Heroes;Stormwind City;187):3
+c482.1 | links=#15563(auto Stormwind City;200):9
+c483.1 | links=#3352(auto Stormwind City;54):8 c4981.1:3
+c656.1 | links=#8836(auto Stormwind City;121):10
+c918.1 | links=#22292(auto Stormwind City;280):12
+c928.1 | links=#23605(auto Cathedral of Light;Stormwind City;291):55 c5491.1:21 c5492.1:12
+c957.1 | links=c5511.1:8
+c1141.1 | links=c6492.1:8
+c1212.1 | links=#23605(auto Cathedral of Light;Stormwind City;291):21
+c1257.1 | links=c1275.1:5
+c1275.1 | links=#3693(auto Stormwind City;60):24 c279.1:6 c1257.1:5
+c1284.1 | links=#23605(auto Cathedral of Light;Stormwind City;291):22
+c1285.1 | links=c1286.1:10
+c1286.1 | links=#19372(auto Stormwind City;236):25 c1285.1:10
+c1287.1 | links=c1289.1:3 #17607(auto Trade District;Stormwind City;16):6
+c1289.1 | links=c1287.1:3
+c1291.1 | links=c1295.1:3
+c1292.1 | links=c1320.1:5 c11096.1:7
+c1294.1 | links=c1295.1:3
+c1295.1 | links=#22332(auto Stormwind City;281):8 c1291.1:3 c1294.1:3
+c1297.1 | links=c1298.1:7
+c1298.1 | links=#16714(auto Stormwind City;213):13 c1297.1:7
+c1299.1 | links=#2955(auto Stormwind City;46):23 c1428.1:5
+c1300.1 | links=c1347.1:6
+c1301.1 | links=c277.1:9
+c1302.1 | links=#25506(auto Stormwind City;317):33 c1303.1:6
+c1303.1 | links=c1302.1:6
+c1304.1 | links=#28869(auto Stormwind City;349):8
+c1309.1 | links=#6468(auto inside;Stormwind City;99):9 c5567.1:8
+c1310.1 | links=#6468(auto inside;Stormwind City;99):7 c1429.1:3
+c1312.1 | links=c1317.1:4
+c1313.1 | links=c5499.1:6 c5500.1:7 c5503.1:4 c5566.1:33
+c1314.1 | links=c1347.1:3
+c1315.1 | links=c1317.1:5
+c1316.1 | links=#1654(auto Stormwind City;26):4 c338.1:9
+c1317.1 | links=#24790(auto Stormwind City;306):29 c1312.1:4 c1315.1:5 c1318.1:2
+c1318.1 | links=c1317.1:2 c11068.1:7
+c1319.1 | links=#16940(auto Stormwind City;217):23
+c1320.1 | links=c1292.1:5 c1321.1:3
+c1321.1 | links=c1320.1:3
+c1323.1 | links=#23379(auto Stormwind City;288):7
+c1324.1 | links=#8161(auto Stormwind City;114):14
+c1325.1 | links=#7440(auto Stormwind City;106):5 #10328(auto Stormwind City;139):13 #30431(auto Stormwind City;452):14 c13283.1:17
+c1326.1 | links=#30430(auto Stormwind City;451):9
+c1327.1 | links=c1477.1:3
+c1333.1 | links=#28062(auto Stormwind City;342):13
+c1339.1 | links=#20308(auto Stormwind City;250):10
+c1341.1 | links=#23379(auto Stormwind City;288):9
+c1346.1 | links=#52262(auto Inside;Mage Quarter;Stormwind;464):5 c1347.1:4
+c1347.1 | links=c1300.1:6 c1314.1:3 c1346.1:4 #27759(auto Mage Quarter;Stormwind City;21):8
+c1349.1 | links=#7303(auto Stormwind City;104):9 c1350.1:6
+c1350.1 | links=c1349.1:6
+c1351.1 | links=c2327.1:7
+c1402.1 | links=#20011(auto Stormwind City;244):13
+c1405.1 | links=#26789(auto Stormwind City;332):5
+c1416.1 | links=c5509.1:7
+c1427.1 | links=#22332(auto Stormwind City;281):4
+c1428.1 | links=c1299.1:5
+c1429.1 | links=c1310.1:3
+c1431.1 | links=c277.1:4
+c1432.1 | links=#19372(auto Stormwind City;236):8
+c1435.1 | links=c1733.1:1 c5495.1:13 c5496.1:9
+c1439.1 | links=#21375(auto stormwind keep;Stormwind City;263):20
+c1440.1 | links=#27043(auto stormwind keep;Stormwind City;334):7 c1754.1:16
+c1444.1 | links=#15050(auto Stormwind City;194):10
+c1472.1 | links=#4854(auto Stormwind City;77):20 #5234(auto Stormwind City;83):18
+c1477.1 | links=c1327.1:3 c1478.1:1 c6089.1:6
+c1478.1 | links=c1477.1:1 c6090.1:1
+c1646.1 | links=#12770(auto Stormwind City;174):2
+c1719.1 | links=#3881(auto Stormwind City;67):7
+c1721.1 | links=#11182(auto Stormwind City;154):8
+c1733.1 | links=c1435.1:1
+c1747.1 | links=
+c1751.1 | links=#28852(auto stormwind keep;Stormwind City;348):5 c20381.1:11
+c1752.1 | links=#21375(auto stormwind keep;Stormwind City;263):14
+c1754.1 | links=c1440.1:16 o2657.1:8
+c2198.1 | links=c2330.1:2 c2331.1:3 c3504.1:2 #20868(auto The Canals;Stormwind City;2):24 #22623(auto The Canals;Stormwind City;3):23
+c2285.1 | links=#21375(auto stormwind keep;Stormwind City;263):10
+c2327.1 | links=#23605(auto Cathedral of Light;Stormwind City;291):47 c1351.1:7
+c2330.1 | links=c2198.1:2
+c2331.1 | links=c2198.1:3
+c2439.1 | links=#3641(auto stormwind keep;Stormwind City;59):13
+c2455.1 | links=#25851(auto Trade District;Stormwind City;24):20
+c2456.1 | links=#21814(auto Stormwind City;273):10
+c2485.1 | links=#15827(auto Stormwind City;205):18
+c2504.1 | links=#26409(auto stormwind keep;Stormwind City;328):14 o180665.1:8
+c2708.1 | links=#17452(auto Stormwind City;220):4 #4486(auto Mage Quarter;Stormwind City;2):21
+c2795.1 | links=#21467(auto Stormwind City;265):16
+c2879.1 | links=#26972(auto Stormwind City;333):3 c5515.1:6
+c3504.1 | links=c2198.1:2
+c3505.1 | links=c3509.1:1
+c3507.1 | links=c3509.1:0 c3510.1:1
+c3508.1 | links=c3511.1:1 c3512.1:1
+c3509.1 | links=c3505.1:1 c3507.1:0
+c3510.1 | links=c3507.1:1 c3511.1:1 c3513.1:3 #22095(auto Trade District;Stormwind City;22):13
+c3511.1 | links=c3508.1:1 c3510.1:1
+c3512.1 | links=c3508.1:1
+c3513.1 | links=c3510.1:3
+c3520.1 | links=#17294(auto Stormwind City;219):10
+c3629.1 | links=c6089.1:3
+c4078.1 | links=#3336(auto Stormwind City;52):4
+c4959.1 | links=#5955(auto Valley of Heroes;Stormwind City;91):15
+c4960.1 | links=#25050(auto stormwind keep;Stormwind City;309):9
+c4961.1 | links=#21467(auto Stormwind City;265):10 #21913(auto Stormwind City;275):9
+c4974.1 | links=c5193.1:8
+c4981.1 | links=#1913(auto Stormwind City;29):29 c483.1:3
+c4982.1 | links=#25257(auto Cathedral of Light;Stormwind City;311):5
+c4984.1 | links=c5504.1:7
+c5081.1 | links=#11334(auto inside;inside;Blue Recluse;Stormwind City;156):6
+c5193.1 | links=#21637(auto Stormwind City;271):33 c4974.1:8
+c5384.1 | links=#8836(auto Stormwind City;121):9
+c5386.1 | links=#15659(auto Stormwind City;201):6
+c5413.1 | links=#5234(auto Stormwind City;83):26
+c5479.1 | links=#7334(auto Stormwind City;105):8 c5480.1:2
+c5480.1 | links=c5479.1:2
+c5482.1 | links=#853(auto Stormwind City;13):6 c5483.1:6
+c5483.1 | links=c5482.1:6
+c5489.1 | links=#25257(auto Cathedral of Light;Stormwind City;311):4
+c5491.1 | links=c928.1:21
+c5492.1 | links=c928.1:12
+c5493.1 | links=c5494.1:2
+c5494.1 | links=#3787(auto Stormwind City;62):9 #25285(auto Stormwind City;312):9 c5493.1:2
+c5495.1 | links=c1435.1:13 c5520.1:7 c6122.1:16 c9584.1:9 #220(auto The Slaugthered Lamb;The Slaughtered Lamb;Stormwind City;1):6
+c5496.1 | links=c1435.1:9
+c5498.1 | links=#11070(Wizard's Sanctum;portal;inside):12 #15827(auto Stormwind City;205):24
+c5499.1 | links=c1313.1:6
+c5500.1 | links=c1313.1:7
+c5502.1 | links=#1006(auto Stormwind City;17):14
+c5503.1 | links=c1313.1:4
+c5504.1 | links=#2145(auto Stormwind City;31):27 c4984.1:7
+c5505.1 | links=#48675(auto The Park;Stormwind City;458):14 c11397.1:15
+c5506.1 | links=#48676(auto The Park;Stormwind City;459):13
+c5509.1 | links=c1416.1:7 c7232.1:7
+c5510.1 | links=#1230(auto Stormwind City;20):9
+c5511.1 | links=#5234(auto Stormwind City;83):38 c957.1:8 c5512.1:9 c6579.1:37 c7798.1:13
+c5512.1 | links=c5511.1:9
+c5513.1 | links=#26431(auto Stormwind City;329):4
+c5514.1 | links=#16234(auto Stormwind City;207):6
+c5515.1 | links=c2879.1:6
+c5516.1 | links=#26972(auto Stormwind City;333):13
+c5518.1 | links=#17572(auto Stormwind City;222):50 c5519.1:7 c11026.1:4
+c5519.1 | links=c5518.1:7
+c5520.1 | links=c5495.1:7
+c5564.1 | links=c5565.1:3 c11096.1:8
+c5565.1 | links=c5564.1:3
+c5566.1 | links=#10729(auto Stormwind City;146):5 c1313.1:33 #10930(auto Mage Quarter;Stormwind City;10):5
+c5567.1 | links=c1309.1:8
+c6089.1 | links=#22752(auto Stormwind City;282):7 c1477.1:6 c3629.1:3
+c6090.1 | links=c1478.1:1
+c6122.1 | links=#22260(auto The Slaugthered Lamb;Stormwind City;279):3 c5495.1:16
+c6171.1 | links=#23605(auto Cathedral of Light;Stormwind City;291):7
+c6173.1 | links=#25257(auto Cathedral of Light;Stormwind City;311):3
+c6174.1 | links=#19372(auto Stormwind City;236):8
+c6267.1 | links=#20952(auto The Slaugthered Lamb;Stormwind City;258):15
+c6492.1 | links=#2141(auto inside;inside;Blue Recluse;Stormwind City;30):14 #11105(auto inside;inside;Blue Recluse;Stormwind City;152):17 c1141.1:8
+c6579.1 | links=#10558(auto Stormwind City;144):23 #17572(auto Stormwind City;222):15 c5511.1:37
+c6740.1 | links=#17567(auto Trade District;Stormwind City;15):9
+c6946.1 | links=c332.1:4
+c7207.1 | links=#20417(auto Stormwind City;253):10
+c7232.1 | links=#1048(auto Stormwind City;19):1 c5509.1:7
+c7295.1 | links=#19189(auto Stormwind City;235):21
+c7410.1 | links=#28852(auto stormwind keep;Stormwind City;348):20
+c7766.1 | links=#13709(auto stormwind keep;Stormwind City;179):10
+c7798.1 | links=c5511.1:13
+c7917.1 | links=#23605(auto Cathedral of Light;Stormwind City;291):13
+c8383.1 | links=#16235(auto Stormwind City;208):10
+c8666.1 | links=#15314(auto Stormwind City;196):29
+c8670.1 | links=#27720(auto Trade District;Stormwind City;26):19
+c9584.1 | links=c5495.1:9
+c9977.1 | links=#19189(auto Stormwind City;235):7
+c10782.1 | links=#22801(auto Stormwind City;283):11
+c11026.1 | links=c5518.1:4
+c11068.1 | links=c1318.1:7
+c11069.1 | links=#5234(auto Stormwind City;83):39
+c11096.1 | links=#10869(auto Stormwind City;147):17 c1292.1:7 c5564.1:8
+c11397.1 | links=#48676(auto The Park;Stormwind City;459):20 c5505.1:15
+c11867.1 | links=#17607(auto Trade District;Stormwind City;16):4
+c11916.1 | links=#48673(auto The Park;Stormwind City;456):30
+c12336.1 | links=#24717(auto Cathedral of Light;Stormwind City;304):13
+c12480.1 | links=c12481.1:1
+c12481.1 | links=c12480.1:1 #14115(central location;Stormwind City):8
+c13283.1 | links=c1325.1:17
+c13435.1 | links=c29093.1:4
+c13436.1 | links=c29093.1:3 #13933(auto Trade District;Stormwind City;12):3
+c14394.1 | links=#14621(auto Stormwind City;185):34 #14761(auto Valley of Heroes;Stormwind City;187):46
+c14438.1 | links=#19189(auto Stormwind City;235):10
+c14721.1 | links=#14761(auto Valley of Heroes;Stormwind City;187):48
+c14722.1 | links=#52264(auto Inside;Mage Quarter;Stormwind;466):5
+c15766.1 | links=#3307(auto Stormwind City;51):10
+c15898.1 | links=#23819(auto Stormwind City;295):11 o180871.1:3
+c16075.1 | links=#13635(auto stormwind keep;Stormwind City;178):18 #28850(auto stormwind keep;Stormwind City;346):24
+c16106.1 | links=
+c17103.1 | links=
+c17804.1 | links=#7647(auto Valley of Heroes;Stormwind City;107):13
+c18927.1 | links=c18927.2:2
+c20381.1 | links=c1751.1:11
+c20407.1 | links=#22970(auto Valley of Heroes;Stormwind City;284):12 #28997(auto Valley of Heroes;Stormwind City;444):40
+c24729.1 | links=#13709(auto stormwind keep;Stormwind City;179):32
+c29093.1 | links=c13435.1:4 c13436.1:3
+o1561.1 | links=c297.1:3
+o2657.1 | links=c1754.1:8 o180665.1:14
+o180665.1 | links=c2504.1:8 o2657.1:14
+o180871.1 | links=c15898.1:3 o180872.1:8
+o180872.1 | links=#48674(auto The Park;Stormwind City;457):9 #48675(auto The Park;Stormwind City;458):6 o180871.1:8
+c15892.2 | links=
+c18927.2 | links=c18927.1:2 #22095(auto Trade District;Stormwind City;22):10

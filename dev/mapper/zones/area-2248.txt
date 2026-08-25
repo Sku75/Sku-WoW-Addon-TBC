@@ -1,0 +1,3 @@
+Zone areaId 2248 — eine Zeile pro Wegpunkt; Links inline.
+
+#28743 | s;Kalimdor;Winterspring;Mazthoril;Dun Mandarr§s;Kalimdor;Winterspring;Mazthoril;Dun Mandarr§s;Kalimdor;Berceau-de-l'Hiver;Mazthoril;Dun Mandarr | x=5718.83 y=-4507.31 | size=1 | links=c7453.19:10

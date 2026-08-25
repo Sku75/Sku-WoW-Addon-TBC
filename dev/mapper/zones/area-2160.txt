@@ -1,0 +1,3 @@
+Zone areaId 2160 — eine Zeile pro Wegpunkt; Links inline.
+
+#28711 | s;Kalimdor;Stonetalon Mountains;Windshear Crag;Windshear Mine§s;Kalimdor;Steinkrallengebirge;Die Scherwindklippe;Scherwindmine§s;Kalimdor;Les Serres-Rocheuses;Windshear Crag;Mine des Cisailles | x=981.949 y=-358.9 | size=1

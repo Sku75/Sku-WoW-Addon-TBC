@@ -1,0 +1,3 @@
+Zone areaId 367 — eine Zeile pro Wegpunkt; Links inline.
+
+#28671 | s;Kalimdor;Durotar;Sen'jin Village;Sen'jin Village§s;Kalimdor;Durotar;Sen'jin;Sen'jin§s;Kalimdor;Durotar;Sen'jin Village;Sen'jin Village | x=-819.492 y=-4918.24 | size=1

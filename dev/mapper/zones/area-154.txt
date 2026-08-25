@@ -1,0 +1,3 @@
+Zone areaId 154 — eine Zeile pro Wegpunkt; Links inline.
+
+#28803 | s;Eastern Kingdoms;Tirisfal Glades;Deathknell§s;Östliche Königreiche;Tirisfal;Deathknell§s;Royaumes de l'est;Clairières de Tirisfal;Deathknell | x=1879.8323 y=-1588.2028 | size=1

@@ -26,7 +26,7 @@ function SkuNav:ImportWpAndLinkData()
 		local tIgnoredCounterWps = 0
 
 		if tSerializedData ~= "" then
-			local tSuccess, tVersion, tLinks, tWaypoints, tSequenceNumbers, tWaypointLevels = SkuOptions:Deserialize(tSerializedData)
+			local tSuccess, tVersion, tLinks, tWaypoints, tSequenceNumbers, tWaypointLevels, tMapMeta = SkuOptions:Deserialize(tSerializedData)
 
 			--if tVersion ~= 22 then
 				--SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Falsche Version."], false, true, 0.2, nil, nil, nil, 2)										
@@ -61,6 +61,11 @@ function SkuNav:ImportWpAndLinkData()
 
 			--done
 			print("Version:", tVersion)
+			-- 6th blob field since SkuMapper 5.0: the hand-in header. Purely
+			-- informational here; the real consumer is dev/mapper/skumap.py.
+			if type(tMapMeta) == "table" then
+				print("Map data based on map "..tostring(tMapMeta.basedOn or "?")..", mapper "..tostring(tMapMeta.mapper or "?")..", saved "..tostring(tMapMeta.savedAt or "?")..(tMapMeta.comment and (", comment: "..tMapMeta.comment) or ""))
+			end
 			print(L["Links importiert:"], tImportCounterLinks)
 			print(L["Wegpunkte importiert:"], tImportCounterWps)
 			print(L["Wegpunkte ignoriert:"], tIgnoredCounterWps)

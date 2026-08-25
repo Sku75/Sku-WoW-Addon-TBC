@@ -36,6 +36,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 
 	input = input:gsub( ", ", ",")
 	input = input:gsub( " ,", ",")
+	local tRawInput = input -- keep case for free-text arguments (save comment)
 	input = string.lower(input)
 	
 	local sep, fields = ",", {}
@@ -70,6 +71,12 @@ function SkuOptions:SlashFunc(input, aSilent)
 
 		elseif fields[1] == "import" then
 			SkuOptions:ImportWpAndLinkData()
+
+		elseif fields[1] == "save" or string.sub(fields[1] or "", 1, 5) == "save " then
+			-- /sku save [free-text comment] — stamp the hand-in header; the
+			-- comment survives with original casing via tRawInput
+			local tComment = string.match(tRawInput, "^%s*[Ss][Aa][Vv][Ee]%s*(.*)$") or ""
+			SkuOptions:SaveMapData(tComment)
 
 		elseif fields[1] == "poly" then
 			if not SkuOptions.db.profile["SkuNav"].showPolyControls then
@@ -484,6 +491,57 @@ function SkuOptions:ImportWpAndLinkData(aForce)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Hand-in metadata header ("changeset header"). Written by /sku save into
+-- SavedVariables and carried as the 6th field of the export blob; the merge
+-- tool (dev/mapper/skumap.py) reads it to know which numbered map dataset a
+-- contribution is based on, who made it, and why.
+function SkuOptions:BuildMapMeta(aComment)
+	local tOld = SkuOptions.db.global["SkuNav"].MapMeta
+	local tMeta = {
+		basedOn = SkuOptions.db.global["SkuNav"].seedMapId or 0,
+		tool = ((C_AddOns and C_AddOns.GetAddOnMetadata and C_AddOns.GetAddOnMetadata("SkuMapper", "Version")) or (GetAddOnMetadata and GetAddOnMetadata("SkuMapper", "Version")) or "unknown"),
+		mapper = UnitName("player") or "unknown",
+		realm = GetRealmName() or "unknown",
+		phase = SkuNav:GetRealmPhase(),
+		savedAt = date("%Y-%m-%d %H:%M:%S"),
+		saveCount = ((tOld and tOld.saveCount) or 0) + 1,
+	}
+	if aComment and aComment ~= "" then
+		tMeta.comment = aComment
+	elseif tOld and tOld.comment then
+		tMeta.comment = tOld.comment -- keep the last comment on a plain re-save
+	end
+	return tMeta
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- /sku save [comment] — stamp the header and tell the mapper how to hand the
+-- work in. The map data itself already lives in SavedVariables continuously;
+-- what "save" adds is the header plus the reminder that only /reload (or
+-- logout) actually writes the file to disk.
+function SkuOptions:SaveMapData(aComment)
+	local tMeta = SkuOptions:BuildMapMeta(aComment)
+	SkuOptions.db.global["SkuNav"].MapMeta = tMeta
+
+	local tWpCount = 0
+	for _, tWpData in ipairs(SkuOptions.db.global["SkuNav"].Waypoints or {}) do
+		if tWpData and tWpData[1] ~= false then
+			tWpCount = tWpCount + 1
+		end
+	end
+
+	PlaySound(88)
+	print("Map data marked for hand-in.")
+	print("  based on map: "..tostring(tMeta.basedOn)..(tMeta.basedOn == 0 and " (unknown seed - old package)" or ""))
+	print("  mapper: "..tMeta.mapper.." ("..tMeta.realm..", "..tMeta.phase..")")
+	print("  waypoints in working set: "..tWpCount)
+	if tMeta.comment then
+		print("  comment: "..tMeta.comment)
+	end
+	print("NOW: /reload (writes the file), then run HandInMapData.bat in the SkuMapper addon folder and send the zip.")
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ExportWpAndLinkData()
 	SkuNav:SaveLinkDataToProfile()
 
@@ -538,7 +596,10 @@ function SkuOptions:ExportWpAndLinkData()
 	end
 	print("Waypoint layers exported", tCount)
 	
-	SkuOptions:EditBoxShow(SkuOptions:Serialize(tExportDataTable.version, tExportDataTable.links, tExportDataTable.waypoints, tExportDataTable.SequenceNumbers, tExportDataTable.WaypointLevels), function(self) PlaySound(89) end)
+	-- 6th field: the hand-in header (see BuildMapMeta). Older receivers read
+	-- only the first 5 positional fields and are unaffected.
+	local tMeta = SkuOptions.db.global["SkuNav"].MapMeta or SkuOptions:BuildMapMeta()
+	SkuOptions:EditBoxShow(SkuOptions:Serialize(tExportDataTable.version, tExportDataTable.links, tExportDataTable.waypoints, tExportDataTable.SequenceNumbers, tExportDataTable.WaypointLevels, tMeta), function(self) PlaySound(89) end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

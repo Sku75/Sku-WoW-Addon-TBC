@@ -1,0 +1,3 @@
+Zone areaId 3140 — eine Zeile pro Wegpunkt; Links inline.
+
+#28646 | s;Kalimdor;Azshara;Bay of Storms;Scalebeard's Cave§s;Kalimdor;Azshara;Die Bucht der Stürme;Schuppenbarts Höhle§s;Kalimdor;Azshara;Baie des Tempêtes;Caverne de Barbe-d'écailles | x=3705.1 y=-6043.45 | size=1

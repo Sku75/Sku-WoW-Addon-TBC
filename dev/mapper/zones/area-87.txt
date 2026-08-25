@@ -1,0 +1,3 @@
+Zone areaId 87 — eine Zeile pro Wegpunkt; Links inline.
+
+#28810 | s;Eastern Kingdoms;Elwynn Forest;Goldshire§s;Östliche Königreiche;Wald von Elwynn;Goldhain§s;Royaumes de l'est;Forêt d'Elwynn;Goldshire | x=-9480.089 y=-63.521755 | size=1

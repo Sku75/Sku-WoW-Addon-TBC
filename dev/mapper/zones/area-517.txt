@@ -1,0 +1,3 @@
+Zone areaId 517 — eine Zeile pro Wegpunkt; Links inline.
+
+#28682 | s;Kalimdor;Dustwallow Marsh;Wyrmbog;Tidefury Cove§s;Kalimdor;Marschen von Dustwallow;Der Drachensumpf;Tidefury-Bucht§s;Kalimdor;Marécage d'Âprefange;Tourbière du Ver;Crique du Mascaret | x=-4300.98 y=-4062.71 | size=1

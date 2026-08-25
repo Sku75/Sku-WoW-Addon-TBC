@@ -1,0 +1,3 @@
+Zone areaId 189 — eine Zeile pro Wegpunkt; Links inline.
+
+#28759 | s;Eastern Kingdoms;Dun Morogh;Kharanos;Steelgrill's Depot§s;Östliche Königreiche;Dun Morogh;Kharanos;Steelgrills Depot§s;Royaumes de l'est;Dun Morogh;Kharanos;Steelgrill's Depot | x=-5488.04 y=-658.67 | size=1

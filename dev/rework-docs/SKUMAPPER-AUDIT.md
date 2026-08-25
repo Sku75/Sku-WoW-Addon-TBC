@@ -231,7 +231,16 @@ Still wants one in-game confirmation (section 6).
 
 ---
 
-## 5. Better exchange + change history (proposal)
+## 5. Better exchange + change history (proposal) — IMPLEMENTED 2026-08-25
+
+> Superseded: the redesign shipped as SkuMapper 5.0 + `dev/mapper/skumap.py`
+> (numbered map datasets, SavedVariables-file hand-in via HandInMapData.bat,
+> per-waypoint/per-link three-way merge, git-diffable zone dumps, German merge
+> reports). See `dev/mapper/MAPPER-WORKFLOW.md`. The sketch below is kept as
+> the original rationale; points 1-4 are realised (differently in detail:
+> exchange is the SavedVariables file, not per-zone blobs; history lives in
+> the merge commits + zone dumps, not an in-addon journal), point 5 (tile
+> detach) remains open.
 
 The copy/paste + manual-file model is the real pain: one monolithic
 all-or-nothing blob, no diff, no attribution, no history, session-only import.

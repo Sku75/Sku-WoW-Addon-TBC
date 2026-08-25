@@ -1,0 +1,3 @@
+Zone areaId 976 — eine Zeile pro Wegpunkt; Links inline.
+
+#28714 | s;Kalimdor;Tanaris;Gadgetzan§s;Kalimdor;Tanaris;Gadgetzan§s;Kalimdor;Tanaris;Gadgetzan | x=-7139.15 y=-3752.11 | size=1

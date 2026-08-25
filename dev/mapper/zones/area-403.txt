@@ -1,0 +1,3 @@
+Zone areaId 403 — eine Zeile pro Wegpunkt; Links inline.
+
+#28685 | s;Kalimdor;Dustwallow Marsh;The Quagmire;Shady Rest Inn§s;Kalimdor;Marschen von Dustwallow;Der Morast;Gasthaus Zur süßen Ruh§s;Kalimdor;Marécage d'Âprefange;Le Bourbier;Shady Rest Inn | x=-3723.63 y=-2535.18 | size=1 | links=c23567.1:22 c23583.1:11 c23583.2:6

@@ -1,0 +1,1413 @@
+Zone areaId 148 — eine Zeile pro Wegpunkt; Links inline.
+
+#84 | auto Darkshore;2§auto Dunkelküste;2§auto Sombrivage;2 | x=4787.7001953125 y=405.8000183105469 | size=1 | links=#27421(auto Darkshore;486):60 c2323.1:38
+#90 | auto Darkshore;3§auto Dunkelküste;3§auto Sombrivage;3 | x=4982.89990234375 y=141.1000061035156 | size=1 | links=#4267(auto Darkshore;72):37 #23252(auto Darkshore;399):38
+#105 | auto Darkshore;4§auto Dunkelküste;4§auto Sombrivage;4 | x=7253.2001953125 y=-403.8999938964844 | size=1 | links=#954(auto Darkshore;14):38 #17530(auto Darkshore;304):41 #25955(auto Darkshore;454):31 o17184.1:15
+#217 | auto inside cliffspring falls;Darkshore;5§auto drinnen klippenquellfälle;Dunkelküste;5§auto inside cliffspring falls;Sombrivage;5 | x=6826.5 y=-749.9000244140625 | size=1 | links=c2179.1:8 c2180.8:16 o11714.9:5
+#236 | auto Darkshore;6§auto Dunkelküste;6§auto Sombrivage;6 | x=7194.80029296875 y=-177.1999969482422 | size=1 | links=#18195(auto Darkshore;323):74 #24703(auto Darkshore;429):37
+#282 | auto Darkshore;7§auto Dunkelküste;7§auto Sombrivage;7 | x=6633.10009765625 y=-126.5 | size=1 | links=c2212.2:17 c2190.7:14
+#307 | auto Darkshore;8§auto Dunkelküste;8§auto Sombrivage;8 | x=4981.60009765625 y=212.6999969482422 | size=1 | links=#4267(auto Darkshore;72):37 #19371(auto Darkshore;337):30 #23780(auto Darkshore;412):53
+#317 | auto Darkshore;9§auto Dunkelküste;9§auto Sombrivage;9 | x=7012.10009765625 y=-82.0999984741211 | size=1 | links=#15758(auto Darkshore;273):66 #20214(auto Darkshore;352):87
+#506 | waters;top;quest target;druid;Mist's Edge;Darkshore§gewässer;oben;questziel;druide;Nebelrand;Dunkelküste§eaux;top;objectif de quête;druid;Mist's Edge;Sombrivage | x=7841.2001953125 y=-254 | size=1 | links=o177792.1:5 c2187.22:40
+#657 | auto Darkshore;10§auto Dunkelküste;10§auto Sombrivage;10 | x=7426.7001953125 y=-829.1000366210938 | size=1 | links=#23852(auto Darkshore;415):14 o13873.15:23
+#694 | auto Darkshore;11§auto Dunkelküste;11§auto Sombrivage;11 | x=4453.532361194756 y=844.7098831435711 | size=1 | links=c2236.3:49 c2236.24:58
+#793 | auto Darkshore;12§auto Dunkelküste;12§auto Sombrivage;12 | x=7356.30029296875 y=-6.900000095367432 | size=1 | links=c2235.3:30 c2321.27:33
+#936 | auto Darkshore;13§auto Dunkelküste;13§auto Sombrivage;13 | x=4425.7001953125 y=701.6000366210938 | size=1 | links=#11740(auto Darkshore;203):20 #24898(auto Darkshore;434):6
+#954 | auto Darkshore;14§auto Dunkelküste;14§auto Sombrivage;14 | x=7246.39990234375 y=-441.3999938964844 | size=1 | links=#105(auto Darkshore;4):38 #28337(auto Darkshore;505):59
+#980 | auto Darkshore;15§auto Dunkelküste;15§auto Sombrivage;15 | x=7326.7001953125 y=-940.7999877929688 | size=1 | links=#11549(rescue;waters;Die Ruinen von Mathystra;Darkshore):14 #14257(auto Darkshore;242):8
+#1064 | auto Darkshore;16§auto Dunkelküste;16§auto Sombrivage;16 | x=4979.43018272258 y=568.6784083001023 | size=1 | links=o3705.2:36 c2205.11:29 c2323.18:143
+#1104 | auto Darkshore;17§auto Dunkelküste;17§auto Sombrivage;17 | x=6775.89990234375 y=-487.1000061035156 | size=1 | links=#11934(auto Darkshore;208):25 c2322.20:55
+#1165 | Cliffspring Falls;Darkshore;druid;class quest§Klippenquellfälle;Dunkelküste;druide;klassenquest§Cliffspring Falls;Sombrivage;druid;class quest | x=6878.89990234375 y=-655.6000366210938 | size=1 | links=#13299(auto Darkshore;230):12 c2179.15:9
+#1197 | auto inside cliffspring falls;Darkshore;18§auto drinnen klippenquellfälle;Dunkelküste;18§auto inside cliffspring falls;Sombrivage;18 | x=6735.39990234375 y=-695.9000244140625 | size=1 | links=#7483(auto inside cliffspring falls;Darkshore;128):17 c2180.2:40 o11714.11:6 c2179.13:7
+#1206 | auto Darkshore;19§auto Dunkelküste;19§auto Sombrivage;19 | x=6951.30029296875 y=-454.5 | size=1 | links=#7659(auto Darkshore;132):53 #16799(auto Darkshore;290):45
+#1278 | auto inside tower of althalaxx;Darkshore;20§auto drinnen turm von althalaxx;Dunkelküste;20§auto inside tower of althalaxx;Sombrivage;20 | x=7211.39990234375 y=-736 | size=1 | links=#1573(auto inside tower of althalaxx;Darkshore;28):7 #23262(auto inside tower of althalaxx;Darkshore;400):10
+#1319 | auto Darkshore;21§auto Dunkelküste;21§auto Sombrivage;21 | x=4627.000207605368 y=857.9274449498932 | size=1 | links=#7620(auto Darkshore;130):44 #25123(auto Darkshore;438):33 c6145.15:25
+#1326 | auto Darkshore;22§auto Dunkelküste;22§auto Sombrivage;22 | x=7365.2001953125 y=-942.7000122070312 | size=1 | links=#12539(auto Darkshore;215):5 #24982(auto Darkshore;436):7
+#1341 | auto Darkshore;23§auto Dunkelküste;23§auto Sombrivage;23 | x=6924.7001953125 y=-221.4000091552734 | size=1 | links=#11359(auto Darkshore;199):43 #23239(auto Darkshore;398):65
+#1349 | auto Darkshore;24§auto Dunkelküste;24§auto Sombrivage;24 | x=7327.89990234375 y=-977.2999877929688 | size=1 | links=c2182.2:22 c2182.7:22
+#1452 | auto inside cliffspring falls;Darkshore;25§auto drinnen klippenquellfälle;Dunkelküste;25§auto inside cliffspring falls;Sombrivage;25 | x=6852.39990234375 y=-679.7999877929688 | size=1 | links=#24920(auto inside cliffspring falls;Darkshore;435):14 o11714.3:3 c2180.18:6
+#1471 | auto Darkshore;26§auto Dunkelküste;26§auto Sombrivage;26 | x=6706.30029296875 y=-442.8000183105469 | size=1 | links=#17457(auto Darkshore;302):25 #20844(auto Darkshore;368):14
+#1479 | auto inside tower of althalaxx;Darkshore;27§auto drinnen turm von althalaxx;Dunkelküste;27§auto inside tower of althalaxx;Sombrivage;27 | x=7190.5 y=-750.6000366210938 | size=1 | links=#3086(auto inside tower of althalaxx;Darkshore;54):9 #17402(auto inside tower of althalaxx;Darkshore;300):8
+#1573 | auto inside tower of althalaxx;Darkshore;28§auto drinnen turm von althalaxx;Dunkelküste;28§auto inside tower of althalaxx;Sombrivage;28 | x=7208.2001953125 y=-743 | size=1 | links=#1278(auto inside tower of althalaxx;Darkshore;20):7 #5282(auto inside tower of althalaxx;Darkshore;94):7
+#1666 | auto Darkshore;29§auto Dunkelküste;29§auto Sombrivage;29 | x=6171.2001953125 y=209 | size=1 | links=#12700(auto Darkshore;220):54 c10159.7:31 c10158.24:44
+#1669 | auto Darkshore;30§auto Dunkelküste;30§auto Sombrivage;30 | x=4370.5 y=-30.5 | size=1 | links=#15701(auto Darkshore;271):19 #20485(auto Darkshore;359):14
+#1702 | auto Darkshore;31§auto Dunkelküste;31§auto Sombrivage;31 | x=5609.5 y=152.4000091552734 | size=1 | links=#18180(auto Darkshore;322):22 c2177.10:22
+#1857 | auto Darkshore;32§auto Dunkelküste;32§auto Sombrivage;32 | x=4642.80029296875 y=689.9000244140625 | size=1 | links=#8594(auto Darkshore;144):17 #9441(auto Darkshore;161):51
+#1875 | auto Darkshore;33§auto Dunkelküste;33§auto Sombrivage;33 | x=6917.30029296875 y=-123.8000030517578 | size=1 | links=#4011(auto Darkshore;66):39 #20214(auto Darkshore;352):35
+#1905 | auto Darkshore;34§auto Dunkelküste;34§auto Sombrivage;34 | x=7252.5 y=-648 | size=1 | links=#12623(auto Darkshore;217):10 c3661.1:12
+#1918 | auto Darkshore;35§auto Dunkelküste;35§auto Sombrivage;35 | x=7397.60009765625 y=-800.1000366210938 | size=1 | links=#5986(auto Darkshore;109):33 #23852(auto Darkshore;415):26 o13873.5:17 c2182.22:12 c2181.26:18
+#1925 | auto Darkshore;36§auto Dunkelküste;36§auto Sombrivage;36 | x=7066.80029296875 y=-506.6000061035156 | size=1 | links=#15935(auto Darkshore;276):23 #22915(auto Darkshore;392):18
+#2009 | auto Darkshore;37§auto Dunkelküste;37§auto Sombrivage;37 | x=4783.2001953125 y=77.80000305175781 | size=1 | links=#2888(auto Darkshore;50):32 #6095(auto Darkshore;113):31 c2237.1:24
+#2060 | auto Darkshore;38§auto Dunkelküste;38§auto Sombrivage;38 | x=6076.89990234375 y=125.8000030517578 | size=1 | links=#6056(auto Darkshore;111):9 #20328(auto Darkshore;355):6
+#2111 | auto inside cliffspring falls;Darkshore;39§auto drinnen klippenquellfälle;Dunkelküste;39§auto inside cliffspring falls;Sombrivage;39 | x=6774.10009765625 y=-673 | size=1 | links=#26743(auto inside cliffspring falls;Darkshore;475):7 #27754(auto inside cliffspring falls;Darkshore;492):19 c2180.4:3
+#2207 | auto Darkshore;40§auto Dunkelküste;40§auto Sombrivage;40 | x=7168.39990234375 y=-780.2000122070312 | size=1 | links=#7373(auto Darkshore;126):12 #20669(auto Darkshore;363):15
+#2253 | auto Darkshore;41§auto Dunkelküste;41§auto Sombrivage;41 | x=4273.209495366045 y=381.3967594376957 | size=1 | links=#2810(auto Darkshore;48):55 #21500(auto Darkshore;377):44 c2237.3:68
+#2362 | auto Darkshore;42§auto Dunkelküste;42§auto Sombrivage;42 | x=6061.10009765625 y=218.9000091552734 | size=1 | links=#18135(auto Darkshore;321):51 #26904(auto Darkshore;479):65
+#2453 | auto Darkshore;43§auto Dunkelküste;43§auto Sombrivage;43 | x=4718.5 y=548.4000244140625 | size=1 | links=#20161(auto Darkshore;349):28 #20756(auto Darkshore;366):34 #24165(auto Darkshore;420):28 c2323.36:46
+#2456 | auto Darkshore;44§auto Dunkelküste;44§auto Sombrivage;44 | x=7170.80029296875 y=-696.9000244140625 | size=1 | links=#12801(auto Darkshore;222):31 c2336.16:13
+#2605 | auto Darkshore;45§auto Dunkelküste;45§auto Sombrivage;45 | x=7303.10009765625 y=-376.8000183105469 | size=1 | links=#5571(rescue;waters;Cliffspring River;Darkshore):31 #10823(auto Darkshore;186):39
+#2638 | auto Darkshore;46§auto Dunkelküste;46§auto Sombrivage;46 | x=6937.5 y=-388.6000061035156 | size=1 | links=#8347(auto Darkshore;142):30 c2322.38:29
+#2650 | auto Darkshore;47§auto Dunkelküste;47§auto Sombrivage;47 | x=7290.30029296875 y=-976.4000244140625 | size=1 | links=o12654.2:10 c2182.11:28
+#2810 | auto Darkshore;48§auto Dunkelküste;48§auto Sombrivage;48 | x=4235.417731763448 y=422.1279369050761 | size=1 | links=#2253(auto Darkshore;41):55 #19346(auto Darkshore;336):59
+#2826 | auto Darkshore;49§auto Dunkelküste;49§auto Sombrivage;49 | x=4661.5 y=80.0999984741211 | size=1 | links=#26514(auto Darkshore;468):14 c2170.4:31 c2170.5:40 c2171.5:36 c2171.6:39 c2170.9:19 c2170.11:49
+#2888 | auto Darkshore;50§auto Dunkelküste;50§auto Sombrivage;50 | x=4774.39990234375 y=109.5999984741211 | size=1 | links=#2009(auto Darkshore;37):32 #26497(auto Darkshore;467):11
+#2917 | auto Darkshore;51§auto Dunkelküste;51§auto Sombrivage;51 | x=6396.10009765625 y=359.2000122070313 | size=1 | links=#19003(auto Darkshore;333):42 #20195(auto Darkshore;350):52
+#2932 | auto Darkshore;52§auto Dunkelküste;52§auto Sombrivage;52 | x=6120.2001953125 y=28.20000076293945 | size=1 | links=#15214(auto Darkshore;264):15 c10160.5:19
+#2937 | auto Darkshore;53§auto Dunkelküste;53§auto Sombrivage;53 | x=6696.2001953125 y=-17.30000114440918 | size=1 | links=#27898(auto Darkshore;496):21 c2189.6:17
+#3086 | auto inside tower of althalaxx;Darkshore;54§auto drinnen turm von althalaxx;Dunkelküste;54§auto inside tower of althalaxx;Sombrivage;54 | x=7200.10009765625 y=-750.5 | size=1 | links=#1479(auto inside tower of althalaxx;Darkshore;27):9 #11898(auto inside tower of althalaxx;Darkshore;207):8
+#3114 | auto Darkshore;55§auto Dunkelküste;55§auto Sombrivage;55 | x=4667.5 y=359.3000183105469 | size=1 | links=#14851(auto Darkshore;254):40 #26064(auto Darkshore;458):25
+#3147 | auto Darkshore;56§auto Dunkelküste;56§auto Sombrivage;56 | x=4545 y=23.20000076293945 | size=1 | links=#24338(auto Darkshore;423):10 c2170.7:10
+#3168 | auto Darkshore;57§auto Dunkelküste;57§auto Sombrivage;57 | x=6503.2001953125 y=456.1000061035156 | size=1 | links=#10699(auto Darkshore;184):25 #14461(auto Darkshore;245):18 #20483(auto Darkshore;358):38
+#3341 | auto Darkshore;58§auto Dunkelküste;58§auto Sombrivage;58 | x=7251.10009765625 y=-871.2000122070312 | size=1 | links=o13873.6:8 c2182.24:16
+#3386 | auto Darkshore;59§auto Dunkelküste;59§auto Sombrivage;59 | x=4828.912110809421 y=679.7201478948093 | size=1 | links=#4688(auto Darkshore;81):72 c2323.18:85
+#3447 | auto Darkshore;60§auto Dunkelküste;60§auto Sombrivage;60 | x=7483.89990234375 y=-1001 | size=1 | links=#24501(auto Darkshore;424):24 o13872.3:31 c2183.5:30 c2183.7:28 c2182.8:26
+#3450 | auto Darkshore;61§auto Dunkelküste;61§auto Sombrivage;61 | x=6345.2001953125 y=496.1000061035156 | size=1 | links=#16779(auto Darkshore;289):29 c6887.1:16
+#3459 | auto Darkshore;62§auto Dunkelküste;62§auto Sombrivage;62 | x=7232.60009765625 y=-876.7000122070312 | size=1 | links=#20496(auto Darkshore;360):21 o13360.1:12
+#3759 | auto Darkshore;63§auto Dunkelküste;63§auto Sombrivage;63 | x=6473.2001953125 y=500.1000061035156 | size=1 | links=#6654(auto Darkshore;120):29 #23021(auto Darkshore;394):36
+#3927 | auto Darkshore;64§auto Dunkelküste;64§auto Sombrivage;64 | x=4421.375432220461 y=84.16342781529777 | size=1 | links=#14655(auto Darkshore;251):32 #23802(auto Darkshore;413):42 #28366(auto Darkshore;506):54
+#3945 | auto Darkshore;65§auto Dunkelküste;65§auto Sombrivage;65 | x=6452.2001953125 y=368.6000061035156 | size=1 | links=#25150(auto Darkshore;440):11 #26985(auto Darkshore;480):11
+#4011 | auto Darkshore;66§auto Dunkelküste;66§auto Sombrivage;66 | x=6907.89990234375 y=-162.4000091552734 | size=1 | links=#1875(auto Darkshore;33):39 #11359(auto Darkshore;199):20
+#4041 | auto inside tower of althalaxx;Darkshore;67§auto drinnen turm von althalaxx;Dunkelküste;67§auto inside tower of althalaxx;Sombrivage;67 | x=7188.60009765625 y=-746.6000366210938 | size=1 | links=#13462(auto inside tower of althalaxx;Darkshore;232):7 #16239(auto inside tower of althalaxx;Darkshore;282):15 #24158(auto inside tower of althalaxx;Darkshore;419):9
+#4076 | Tower of Althalaxx;down;Darkshore§Turm von Althalaxx;unten;Dunkelküste§Tower of Althalaxx;bas;Sombrivage | x=7204 y=-735.7000122070312 | size=1 | links=#16239(auto inside tower of althalaxx;Darkshore;282):7
+#4142 | auto Darkshore;68§auto Dunkelküste;68§auto Sombrivage;68 | x=4630.89990234375 y=621.6000366210938 | size=1 | links=c2157.3:11 c2156.5:13
+#4167 | auto Darkshore;69§auto Dunkelküste;69§auto Sombrivage;69 | x=7317.80029296875 y=-757.7000122070312 | size=1 | links=#9434(auto Darkshore;160):30 #17867(entry and exit;Die Ruinen von Mathystra;Darkshore):20
+#4201 | auto Darkshore;70§auto Dunkelküste;70§auto Sombrivage;70 | x=7302 y=-306.3999938964844 | size=1 | links=#8259(auto Darkshore;138):11 #14439(auto Darkshore;244):101 #27804(auto Darkshore;494):21
+#4212 | auto Darkshore;71§auto Dunkelküste;71§auto Sombrivage;71 | x=6675.39990234375 y=182.8000030517578 | size=1 | links=#17098(auto Darkshore;296):33 #25469(auto Darkshore;444):179 c12298.17:19
+#4267 | auto Darkshore;72§auto Dunkelküste;72§auto Sombrivage;72 | x=4971.10009765625 y=176.4000091552734 | size=1 | links=#90(auto Darkshore;3):37 #307(auto Darkshore;8):37
+#4289 | auto Darkshore;73§auto Dunkelküste;73§auto Sombrivage;73 | x=6352 y=542.2000122070312 | size=1 | links=#17728(auto Darkshore;313):17 c10219.1:9
+#4301 | auto Darkshore;74§auto Dunkelküste;74§auto Sombrivage;74 | x=6715.2001953125 y=-110.3000030517578 | size=1 | links=#12123(auto Darkshore;212):33 #14940(auto Darkshore;256):33 c2190.16:9
+#4335 | auto Darkshore;75§auto Dunkelküste;75§auto Sombrivage;75 | x=6329 y=264.5 | size=1 | links=#11094(crossing;Darkshore):57 #12691(auto Darkshore;219):92 c721.10:34 c12298.47:41
+#4379 | auto Darkshore;76§auto Dunkelküste;76§auto Sombrivage;76 | x=5217.216262330718 y=578.3165963427518 | size=1 | links=#7094(auto Darkshore;124):15 c2203.7:19 c2203.23:25
+#4393 | auto Darkshore;77§auto Dunkelküste;77§auto Sombrivage;77 | x=5395.39990234375 y=285.5 | size=1 | links=#17707(auto Darkshore;311):133 #18665(auto Darkshore;330):215
+#4439 | auto inside tower of althalaxx;Darkshore;78§auto drinnen turm von althalaxx;Dunkelküste;78§auto inside tower of althalaxx;Sombrivage;78 | x=7183.10009765625 y=-737 | size=1 | links=#7284(auto inside tower of althalaxx;Darkshore;125):4 #25767(auto inside tower of althalaxx;Darkshore;451):8
+#4463 | auto Darkshore;79§auto Dunkelküste;79§auto Sombrivage;79 | x=5987.5 y=323.8000183105469 | size=1 | links=c721.1:26 c2167.9:17 c2167.12:12 c2324.13:11
+#4638 | auto Inside Inn;Darkshore;80§auto Drinnen Gasthaus;Dunkelküste;80§auto Inside Inn;Sombrivage;80 | x=6424.39990234375 y=518.2000122070312 | size=1 | links=#5495(auto Inside Inn;Darkshore;100):12 #9609(auto Darkshore;164):26 #12811(central location;inn;Auberdine;Darkshore):19 c4191.1:8 c4192.1:13
+#4688 | auto Darkshore;81§auto Dunkelküste;81§auto Sombrivage;81 | x=4770.920649598321 y=723.7428724147338 | size=1 | links=#3386(auto Darkshore;59):72 c2205.7:43
+#4725 | auto Darkshore;82§auto Dunkelküste;82§auto Sombrivage;82 | x=4612.80029296875 y=15 | size=1 | links=#9538(auto Darkshore;162):19 #23295(auto Darkshore;401):21
+#4756 | auto inside cliffspring falls;Darkshore;83§auto drinnen klippenquellfälle;Dunkelküste;83§auto inside cliffspring falls;Sombrivage;83 | x=6854.89990234375 y=-779.4000244140625 | size=1 | links=#20239(auto inside cliffspring falls;Darkshore;353):12 c2180.8:25
+#4801 | auto Darkshore;84§auto Dunkelküste;84§auto Sombrivage;84 | x=4093.900146484375 y=496.5 | size=1 | links=#17718(auto Darkshore;312):65 #4398(auto Ashenvale;85):29
+#4839 | on boat to Menethil Harbor, Wetlands§auf schiff;nach;Menethil Hafen, Sumpfland§on boat to Menethil Harbor, Wetlands | x=6413.39990234375 y=823.5 | size=1 | links=#45236(pier;from;The Long Wash; Darkshore;to;Menethil Harbor, Wetlands):13
+#4934 | auto Darkshore;85§auto Dunkelküste;85§auto Sombrivage;85 | x=6985.5 y=-554.7999877929688 | size=1 | links=#7749(auto Darkshore;133):28 #16548(auto Darkshore;284):23
+#4967 | auto Darkshore;86§auto Dunkelküste;86§auto Sombrivage;86 | x=4554.7001953125 y=429.8000183105469 | size=1 | links=c2338.2:11 c2339.14:20
+#4976 | auto Darkshore;87§auto Dunkelküste;87§auto Sombrivage;87 | x=7480.80029296875 y=-878.7999877929688 | size=1 | links=#16958(auto Darkshore;293):18 #22660(auto Darkshore;388):15 o12654.5:13
+#4993 | auto Darkshore;88§auto Dunkelküste;88§auto Sombrivage;88 | x=7282.30029296875 y=-996.6000366210938 | size=1 | links=#10168(auto Darkshore;176):29 o13873.7:9
+#5046 | auto Darkshore;89§auto Dunkelküste;89§auto Sombrivage;89 | x=6820 y=-35.29999923706055 | size=1 | links=#9332(auto Darkshore;154):54 #10141(auto Darkshore;173):82
+#5140 | auto Darkshore;90§auto Dunkelküste;90§auto Sombrivage;90 | x=4801.10009765625 y=223.6000061035156 | size=1 | links=#23047(auto Darkshore;396):65 #24866(auto Darkshore;431):30 #28479(auto Darkshore;508):49 c3695.1:32 o17185.1:16
+#5175 | auto Darkshore;91§auto Dunkelküste;91§auto Sombrivage;91 | x=7352.89990234375 y=-921.9000244140625 | size=1 | links=#21674(auto Darkshore;379):7 #24627(auto Darkshore;428):11
+#5214 | auto Darkshore;92§auto Dunkelküste;92§auto Sombrivage;92 | x=5300.712791008373 y=256.5214927206829 | size=1 | links=#10893(auto Darkshore;188):64 #23500(auto Darkshore;406):55 c2069.11:63
+#5262 | auto Darkshore;93§auto Dunkelküste;93§auto Sombrivage;93 | x=7327.2001953125 y=-961.5 | size=1 | links=#6240(auto Darkshore;115):11 #27960(auto Darkshore;498):13
+#5282 | auto inside tower of althalaxx;Darkshore;94§auto drinnen turm von althalaxx;Dunkelküste;94§auto inside tower of althalaxx;Sombrivage;94 | x=7201 y=-743.9000244140625 | size=1 | links=#1573(auto inside tower of althalaxx;Darkshore;28):7 #17923(auto inside tower of althalaxx;Darkshore;317):2
+#5327 | auto Darkshore;95§auto Dunkelküste;95§auto Sombrivage;95 | x=6446.30029296875 y=538.5 | size=1 | links=#8291(auto Darkshore;140):8 #21346(auto Darkshore;375):16
+#5375 | auto Darkshore;96§auto Dunkelküste;96§auto Sombrivage;96 | x=4570.2001953125 y=399.3999938964844 | size=1 | links=o12666.1:18 c2339.11:15
+#5381 | auto Darkshore;97§auto Dunkelküste;97§auto Sombrivage;97 | x=7383.60009765625 y=-958.6000366210938 | size=1 | links=o13873.11:26 c2181.17:12
+#5382 | auto Darkshore;98§auto Dunkelküste;98§auto Sombrivage;98 | x=7059.30029296875 y=-576 | size=1 | links=#7749(auto Darkshore;133):85 #9338(auto Darkshore;155):40
+#5394 | auto Darkshore;99§auto Dunkelküste;99§auto Sombrivage;99 | x=6446.60009765625 y=510.7000122070313 | size=1 | links=#5495(auto Inside Inn;Darkshore;100):11 #22450(auto Darkshore;386):12 #26591(auto Darkshore;471):13
+#5495 | auto Inside Inn;Darkshore;100§auto Drinnen Gasthaus;Dunkelküste;100§auto Inside Inn;Sombrivage;100 | x=6436.5 y=516.4000244140625 | size=1 | links=#4638(auto Inside Inn;Darkshore;80):12 #5394(auto Darkshore;99):11 c4191.1:9
+#5505 | auto Darkshore;101§auto Dunkelküste;101§auto Sombrivage;101 | x=7362.89990234375 y=-923.7999877929688 | size=1 | links=#24982(auto Darkshore;436):11 #25705(auto Darkshore;450):9
+#5524 | auto Darkshore;102§auto Dunkelküste;102§auto Sombrivage;102 | x=6509.89990234375 y=287.1000061035156 | size=1 | links=#10312(auto Darkshore;178):66 c2070.16:23 c2321.31:24 c2163.41:39
+#5526 | auto Darkshore;103§auto Dunkelküste;103§auto Sombrivage;103 | x=6768.5 y=130.5 | size=1 | links=#21098(auto Darkshore;373):9 #22301(auto Darkshore;384):11
+#5552 | auto Darkshore;104§auto Dunkelküste;104§auto Sombrivage;104 | x=4347.953140946868 y=264.6623086828593 | size=1 | links=#26881(auto Darkshore;478):43 #28539(auto Darkshore;510):35
+#5571 | rescue;waters;Cliffspring River;Darkshore§rettung;gewässer;Klippenquell;Dunkelküste§sauvetage;eaux;Cliffspring River;Sombrivage | x=7272.2001953125 y=-381.2000122070313 | size=1 | links=#2605(auto Darkshore;45):31
+#5597 | auto Darkshore;105§auto Dunkelküste;105§auto Sombrivage;105 | x=7324.89990234375 y=-941.2000122070312 | size=1 | links=#24577(auto Darkshore;427):6 #27960(auto Darkshore;498):6
+#5638 | auto Darkshore;106§auto Dunkelküste;106§auto Sombrivage;106 | x=7324.2001953125 y=-795 | size=1 | links=#17867(entry and exit;Die Ruinen von Mathystra;Darkshore):17 #19965(auto Darkshore;344):22 c2181.35:24
+#5645 | auto Darkshore;107§auto Dunkelküste;107§auto Sombrivage;107 | x=5754 y=278.2000122070313 | size=1 | links=#10575(auto Darkshore;183):28 #25486(auto Darkshore;446):15 #26005(auto Darkshore;456):16
+#5962 | auto Darkshore;108§auto Dunkelküste;108§auto Sombrivage;108 | x=7367.30029296875 y=-997.5 | size=5 | links=#11314(auto Darkshore;197):9 o13872.2:20
+#5986 | auto Darkshore;109§auto Dunkelküste;109§auto Sombrivage;109 | x=7364.39990234375 y=-794.1000366210938 | size=1 | links=#1918(auto Darkshore;35):33 o13360.2:24 o13873.9:12 o13873.10:12 c2181.33:16
+#6033 | auto Darkshore;110§auto Dunkelküste;110§auto Sombrivage;110 | x=7123.2001953125 y=300.8999938964844 | size=1 | links=#12398(auto Darkshore;214):16 c2203.3:24 c2185.50:99
+#6056 | auto Darkshore;111§auto Dunkelküste;111§auto Sombrivage;111 | x=6067.60009765625 y=126 | size=1 | links=#2060(auto Darkshore;38):9 c10159.3:20
+#6069 | auto Darkshore;112§auto Dunkelküste;112§auto Sombrivage;112 | x=6817.10009765625 y=-389.7000122070313 | size=1 | links=o175331.1:16 c2168.4:10 c2168.5:26 c2169.6:20 c2168.8:18 c2168.9:14 c2169.14:19 c2168.27:23
+#6095 | auto Darkshore;113§auto Dunkelküste;113§auto Sombrivage;113 | x=4806.80029296875 y=56.20000076293945 | size=1 | links=#2009(auto Darkshore;37):31 #13682(auto Darkshore;234):16 c2237.11:24
+#6110 | auto Darkshore;114§auto Dunkelküste;114§auto Sombrivage;114 | x=4426.80029296875 y=713.5 | size=1 | links=#6446(auto Darkshore;118):4 #24898(auto Darkshore;434):5
+#6240 | auto Darkshore;115§auto Dunkelküste;115§auto Sombrivage;115 | x=7339.10009765625 y=-961 | size=1 | links=#5262(auto Darkshore;93):11 #15378(auto Darkshore;267):6
+#6259 | auto Darkshore;117§auto Dunkelküste;117§auto Sombrivage;117 | x=7339.10009765625 y=-921.9000244140625 | size=1 | links=#21674(auto Darkshore;379):6 #24250(auto Darkshore;422):13
+#6446 | auto Darkshore;118§auto Dunkelküste;118§auto Sombrivage;118 | x=4429.5 y=717.7000122070312 | size=1 | links=#6110(auto Darkshore;114):4 #18222(auto Darkshore;324):6
+#6557 | auto On pier;Darkshore;119§auto Auf Steg;Dunkelküste;119§auto On pier;Sombrivage;119 | x=6477.60009765625 y=730.2999877929688 | size=1 | links=#20070(auto On pier;Darkshore;348):139 #24002(crossing;ship;Mist's Edge;Darkshore):66 c4456.1:5
+#6654 | auto Darkshore;120§auto Dunkelküste;120§auto Sombrivage;120 | x=6485.7001953125 y=526.7000122070312 | size=1 | links=#3759(auto Darkshore;63):29 #21346(auto Darkshore;375):34 c2231.3:22 c2231.14:75
+#6665 | auto Darkshore;121§auto Dunkelküste;121§auto Sombrivage;121 | x=7197.89990234375 y=-800.9000244140625 | size=1 | links=#15811(auto Darkshore;274):16 c2336.11:11
+#6781 | cave;druid;class quest;entry and exit§höhle;druide;klassenquest;ein- und ausgang§cave;druid;class quest;entrée et sortie | x=6347.2001953125 y=125.7000045776367 | size=1 | links=#12691(auto Darkshore;219):124 #27306(Lunaclaw Spirit;class quest;druid):32 c10159.12:0
+#6866 | auto inside tower of althalaxx;Darkshore;122§auto drinnen turm von althalaxx;Dunkelküste;122§auto inside tower of althalaxx;Sombrivage;122 | x=7198.89990234375 y=-750.6000366210938 | size=1 | links=#9634(auto inside tower of althalaxx;Darkshore;165):8 #23008(auto inside tower of althalaxx;Darkshore;393):6
+#7027 | auto Darkshore;123§auto Dunkelküste;123§auto Sombrivage;123 | x=6928.60009765625 y=213.3000030517578 | size=5 | links=#10423(auto Darkshore;179):39 #12065(auto Darkshore;209):54 c2203.16:26
+#7094 | auto Darkshore;124§auto Dunkelküste;124§auto Sombrivage;124 | x=5222.938856723289 y=563.489867089157 | size=1 | links=#4379(auto Darkshore;76):15 c2204.3:9
+#7284 | auto inside tower of althalaxx;Darkshore;125§auto drinnen turm von althalaxx;Dunkelküste;125§auto inside tower of althalaxx;Sombrivage;125 | x=7184 y=-732.7000122070312 | size=1 | links=#4439(auto inside tower of althalaxx;Darkshore;78):4 #20023(auto inside tower of althalaxx;Darkshore;346):6
+#7373 | auto Darkshore;126§auto Dunkelküste;126§auto Sombrivage;126 | x=7170.60009765625 y=-768.2999877929688 | size=1 | links=#2207(auto Darkshore;40):12 c2336.18:13 c2336.21:7
+#7387 | auto Darkshore;127§auto Dunkelküste;127§auto Sombrivage;127 | x=5024 y=252.5 | size=1 | links=#19371(auto Darkshore;337):35 #25217(auto Darkshore;441):26
+#7483 | auto inside cliffspring falls;Darkshore;128§auto drinnen klippenquellfälle;Dunkelküste;128§auto inside cliffspring falls;Sombrivage;128 | x=6752.60009765625 y=-693.2000122070312 | size=1 | links=#1197(auto inside cliffspring falls;Darkshore;18):17 o11713.2:8 c7017.3:3 c2339.4:10 o11713.5:16
+#7488 | auto Darkshore;129§auto Dunkelküste;129§auto Sombrivage;129 | x=6937.2001953125 y=-659.5 | size=1 | links=#10480(auto Darkshore;180):40 c2179.17:42
+#7620 | auto Darkshore;130§auto Dunkelküste;130§auto Sombrivage;130 | x=4647.741688910533 y=897.7172329538276 | size=1 | links=#1319(auto Darkshore;21):44 c2207.11:26
+#7652 | auto Darkshore;131§auto Dunkelküste;131§auto Sombrivage;131 | x=7414.39990234375 y=-900.5 | size=1 | links=#13466(auto Darkshore;233):19 c2181.19:18
+#7659 | auto Darkshore;132§auto Dunkelküste;132§auto Sombrivage;132 | x=6944.80029296875 y=-507.3999938964844 | size=1 | links=#1206(auto Darkshore;19):53 #11782(auto Darkshore;204):34
+#7749 | auto Darkshore;133§auto Dunkelküste;133§auto Sombrivage;133 | x=6973.5 y=-581 | size=1 | links=#4934(auto Darkshore;85):28 #5382(auto Darkshore;98):85 #10480(auto Darkshore;180):47 #11782(auto Darkshore;204):58
+#7833 | auto Darkshore;135§auto Dunkelküste;135§auto Sombrivage;135 | x=6381.80029296875 y=486.5 | size=1 | links=#28194(auto Darkshore;503):18 c6887.1:21 c10085.1:18
+#8073 | auto Darkshore;136§auto Dunkelküste;136§auto Sombrivage;136 | x=4352.60009765625 y=417 | size=1 | links=c2323.33:38 c2323.46:36
+#8179 | auto Darkshore;137§auto Dunkelküste;137§auto Sombrivage;137 | x=4439.529482314861 y=253.0005240023462 | size=1 | links=#19397(auto Darkshore;338):79 c2323.19:38
+#8259 | auto Darkshore;138§auto Dunkelküste;138§auto Sombrivage;138 | x=7304.80029296875 y=-317.6000061035156 | size=1 | links=#4201(auto Darkshore;70):11 #10823(auto Darkshore;186):19
+#8268 | auto Darkshore;139§auto Dunkelküste;139§auto Sombrivage;139 | x=4803.89990234375 y=566.1000366210938 | size=1 | links=#12908(auto Darkshore;223):20 #21317(auto Darkshore;374):39
+#8291 | auto Darkshore;140§auto Dunkelküste;140§auto Sombrivage;140 | x=6440.60009765625 y=532.2999877929688 | size=1 | links=#5327(auto Darkshore;95):8 #26591(auto Darkshore;471):11
+#8305 | auto Darkshore;141§auto Dunkelküste;141§auto Sombrivage;141 | x=5124.10009765625 y=453.1000061035156 | size=1 | links=#18327(auto Darkshore;325):48 c2322.46:48
+#8347 | auto Darkshore;142§auto Dunkelküste;142§auto Sombrivage;142 | x=6960.2001953125 y=-368.1000061035156 | size=1 | links=#2638(auto Darkshore;46):30 #16799(auto Darkshore;290):41 #18578(auto Darkshore;329):29
+#8436 | auto Darkshore;143§auto Dunkelküste;143§auto Sombrivage;143 | x=4930.30029296875 y=434.3999938964844 | size=1 | links=#12089(auto Darkshore;211):50 #18040(auto Darkshore;320):45
+#8594 | auto Darkshore;144§auto Dunkelküste;144§auto Sombrivage;144 | x=4626.5 y=697.1000366210938 | size=1 | links=#1857(auto Darkshore;32):17 #19972(auto Darkshore;345):13
+#8598 | auto Darkshore;145§auto Dunkelküste;145§auto Sombrivage;145 | x=7332.30029296875 y=-928.2999877929688 | size=1 | links=#11224(auto Darkshore;195):5
+#8699 | auto Darkshore;146§auto Dunkelküste;146§auto Sombrivage;146 | x=6842.10009765625 y=-425.6000061035156 | size=1 | links=c2168.15:42 c2322.20:35 c2322.21:24 c2164.28:19
+#8876 | auto Darkshore;147§auto Dunkelküste;147§auto Sombrivage;147 | x=4358.971911857589 y=21.24315812914225 | size=1 | links=#20485(auto Darkshore;359):38 #28366(auto Darkshore;506):39
+#8938 | auto Darkshore;148§auto Dunkelküste;148§auto Sombrivage;148 | x=6713.60009765625 y=-490.6000061035156 | size=1 | links=#17457(auto Darkshore;302):23 #23025(auto Darkshore;395):27
+#8967 | quest target;class quest;druid;Darkshore§questziel;klassenquest;druide;Dunkelküste§objectif de quête;class quest;druid;Sombrivage | x=6325.2001953125 y=92.4000015258789 | size=1 | links=#27306(Lunaclaw Spirit;class quest;druid):7
+#8992 | auto Darkshore;149§auto Dunkelküste;149§auto Sombrivage;149 | x=5403.663224072834 y=287.3104759648016 | size=1 | links=#9992(auto Darkshore;169):79 #23500(auto Darkshore;406):52
+#9046 | auto Darkshore;150§auto Dunkelküste;150§auto Sombrivage;150 | x=4310.30029296875 y=58.20000076293945 | size=1 | links=#28366(auto Darkshore;506):62 c6491.1:32 c2237.4:41
+#9108 | auto Darkshore;151§auto Dunkelküste;151§auto Sombrivage;151 | x=4589.30029296875 y=696.7000122070312 | size=1 | links=#12635(auto Darkshore;218):17 #26487(auto Darkshore;466):18
+#9140 | auto Darkshore;152§auto Dunkelküste;152§auto Sombrivage;152 | x=5140.10009765625 y=247.6000061035156 | size=5 | links=#18665(auto Darkshore;330):42 #22863(auto Darkshore;390):103
+#9268 | auto Darkshore;153§auto Dunkelküste;153§auto Sombrivage;153 | x=6794 y=89.4000015258789 | size=1 | links=#10141(auto Darkshore;173):46 #21098(auto Darkshore;373):51 c2163.26:27
+#9332 | auto Darkshore;154§auto Dunkelküste;154§auto Sombrivage;154 | x=6854.7001953125 y=-77 | size=1 | links=#5046(auto Darkshore;89):54 #20214(auto Darkshore;352):70
+#9338 | auto Darkshore;155§auto Dunkelküste;155§auto Sombrivage;155 | x=7019.2001953125 y=-572.7999877929688 | size=1 | links=#5382(auto Darkshore;98):40
+#9351 | auto Darkshore;156§auto Dunkelküste;156§auto Sombrivage;156 | x=5992.7001953125 y=-9 | size=1 | links=#16656(auto Darkshore;286):12 c10158.5:71
+#9365 | auto Darkshore;157§auto Dunkelküste;157§auto Sombrivage;157 | x=6140.80029296875 y=-40.10000228881836 | size=1 | links=#20575(auto Darkshore;362):21 o177750.8:11
+#9372 | auto Darkshore;158§auto Dunkelküste;158§auto Sombrivage;158 | x=4384.30029296875 y=-60.5 | size=1 | links=#15701(auto Darkshore;271):13 c11711.1:9
+#9409 | auto water;Darkshore;159§auto wasser;Dunkelküste;159§auto water;Sombrivage;159 | x=7668.7001953125 y=-288.1000061035156 | size=1 | links=#9888(auto water;Darkshore;168):58 #10724(auto water;Darkshore;185):96
+#9434 | auto Darkshore;160§auto Dunkelküste;160§auto Sombrivage;160 | x=7312.30029296875 y=-727.5 | size=1 | links=#4167(auto Darkshore;69):30 #27588(auto Darkshore;489):34
+#9441 | auto Darkshore;161§auto Dunkelküste;161§auto Sombrivage;161 | x=4690.60009765625 y=671.6000366210938 | size=1 | links=#1857(auto Darkshore;32):51 c2323.43:53
+#9538 | auto Darkshore;162§auto Dunkelküste;162§auto Sombrivage;162 | x=4602.89990234375 y=-2.299999952316284 | size=1 | links=#4725(auto Darkshore;82):19 c3692.1:7
+#9582 | auto Darkshore;163§auto Dunkelküste;163§auto Sombrivage;163 | x=7457.2001953125 y=-842.4000244140625 | size=1 | links=#25658(auto Darkshore;448):15 o13359.16:7
+#9609 | auto Darkshore;164§auto Dunkelküste;164§auto Sombrivage;164 | x=6417.80029296875 y=492.1000061035156 | size=1 | links=#4638(auto Inside Inn;Darkshore;80):26 #20212(auto Darkshore;351):17 #28606(s;u;Mailbox;Darkshore):7 c3583.1:11 c10085.1:18
+#9634 | auto inside tower of althalaxx;Darkshore;165§auto drinnen turm von althalaxx;Dunkelküste;165§auto inside tower of althalaxx;Sombrivage;165 | x=7190.89990234375 y=-750 | size=1 | links=#6866(auto inside tower of althalaxx;Darkshore;122):8 #25767(auto inside tower of althalaxx;Darkshore;451):7
+#9648 | auto Darkshore;166§auto Dunkelküste;166§auto Sombrivage;166 | x=4795.7001953125 y=131.3000030517578 | size=1 | links=#13445(auto Darkshore;231):33 #25348(auto Darkshore;442):54 #26497(auto Darkshore;467):26
+#9741 | auto inside tower of althalaxx;Darkshore;167§auto drinnen turm von althalaxx;Dunkelküste;167§auto inside tower of althalaxx;Sombrivage;167 | x=7192.7001953125 y=-735.7999877929688 | size=1 | links=#14539(auto inside tower of althalaxx;Darkshore;248):3 #25388(auto inside tower of althalaxx;Darkshore;443):3
+#9888 | auto water;Darkshore;168§auto wasser;Dunkelküste;168§auto water;Sombrivage;168 | x=7727.60009765625 y=-289 | size=1 | links=#9409(auto water;Darkshore;159):58 c2187.26:76
+#9992 | auto Darkshore;169§auto Dunkelküste;169§auto Sombrivage;169 | x=5483.521919704208 y=283.4616693328384 | size=1 | links=#8992(auto Darkshore;149):79 #17707(auto Darkshore;311):49
+#10047 | auto Darkshore;170§auto Dunkelküste;170§auto Sombrivage;170 | x=7345 y=-922.6000366210938 | size=1 | links=#11224(auto Darkshore;195):16 #25705(auto Darkshore;450):8
+#10067 | auto Darkshore;171§auto Dunkelküste;171§auto Sombrivage;171 | x=7264.60009765625 y=-88 | size=5 | links=#15189(auto Darkshore;263):34 c2321.79:66
+#10120 | auto inside cliffspring falls;Darkshore;172§auto drinnen klippenquellfälle;Dunkelküste;172§auto inside cliffspring falls;Sombrivage;172 | x=6816.80029296875 y=-720.7000122070312 | size=1 | links=#16064(auto inside cliffspring falls;Darkshore;278):14 #17368(auto inside cliffspring falls;Darkshore;299):12 c2179.14:3
+#10141 | auto Darkshore;173§auto Dunkelküste;173§auto Sombrivage;173 | x=6813.30029296875 y=46.79999923706055 | size=1 | links=#5046(auto Darkshore;89):82 #9268(auto Darkshore;153):46 #17516(auto Darkshore;303):28 c2321.86:64
+#10144 | auto Darkshore;174§auto Dunkelküste;174§auto Sombrivage;174 | x=7246.30029296875 y=-572.2000122070312 | size=1 | links=#11309(auto Darkshore;196):44 #28337(auto Darkshore;505):71
+#10154 | auto Darkshore;175§auto Dunkelküste;175§auto Sombrivage;175 | x=7363.7001953125 y=-960.6000366210938 | size=1 | links=#12539(auto Darkshore;215):12 #15627(auto Darkshore;270):10
+#10168 | auto Darkshore;176§auto Dunkelküste;176§auto Sombrivage;176 | x=7290.39990234375 y=-1024.599975585938 | size=1 | links=#4993(auto Darkshore;88):29 o12654.1:33
+#10264 | auto Darkshore;177§auto Dunkelküste;177§auto Sombrivage;177 | x=7124.39990234375 y=-768.6000366210938 | size=1 | links=c2336.7:13 c2336.12:18
+#10312 | auto Darkshore;178§auto Dunkelküste;178§auto Sombrivage;178 | x=6460.60009765625 y=243 | size=1 | links=#5524(auto Darkshore;102):66 #12691(auto Darkshore;219):47
+#10423 | auto Darkshore;179§auto Dunkelküste;179§auto Sombrivage;179 | x=6943 y=249.9000091552734 | size=1 | links=#7027(auto Darkshore;123):39 c2234.17:64
+#10480 | auto Darkshore;180§auto Dunkelküste;180§auto Sombrivage;180 | x=6947.10009765625 y=-620.7000122070312 | size=1 | links=#7488(auto Darkshore;129):40 #7749(auto Darkshore;133):47
+#10489 | auto Darkshore;181§auto Dunkelküste;181§auto Sombrivage;181 | x=5602.10009765625 y=310.8000183105469 | size=1 | links=#12719(auto Darkshore;221):119 #14190(auto Darkshore;239):61 #17707(auto Darkshore;311):75
+#10496 | auto Darkshore;182§auto Dunkelküste;182§auto Sombrivage;182 | x=7389.39990234375 y=-875.2000122070312 | size=1 | links=#13466(auto Darkshore;233):19 o13360.3:11
+#10575 | auto Darkshore;183§auto Dunkelküste;183§auto Sombrivage;183 | x=5731.2001953125 y=260.7000122070313 | size=1 | links=#5645(auto Darkshore;107):28 #19149(auto Darkshore;335):36
+#10699 | auto Darkshore;184§auto Dunkelküste;184§auto Sombrivage;184 | x=6498.89990234375 y=481.5 | size=1 | links=#3168(auto Darkshore;57):25 #20212(auto Darkshore;351):64 c2913.1:10
+#10724 | auto water;Darkshore;185§auto wasser;Dunkelküste;185§auto water;Sombrivage;185 | x=7572.60009765625 y=-285.3999938964844 | size=1 | links=#9409(auto water;Darkshore;159):96 #27763(auto Darkshore;493):113
+#10823 | auto Darkshore;186§auto Dunkelküste;186§auto Sombrivage;186 | x=7305.2001953125 y=-337.3000183105469 | size=1 | links=#2605(auto Darkshore;45):39 #8259(auto Darkshore;138):19
+#10877 | auto Darkshore;187§auto Dunkelküste;187§auto Sombrivage;187 | x=6433.60009765625 y=472.5 | size=1 | links=#14085(auto Darkshore;237):20 #19404(auto Darkshore;339):12 #20212(auto Darkshore;351):15 #28427(well;Auberdine;Darkshore):21 c2930.1:5
+#10893 | auto Darkshore;188§auto Dunkelküste;188§auto Sombrivage;188 | x=5237.210683670508 y=247.8622027314753 | size=1 | links=#5214(auto Darkshore;92):64 #18665(auto Darkshore;330):55
+#10956 | auto Darkshore;189§auto Dunkelküste;189§auto Sombrivage;189 | x=7251.39990234375 y=-290.6000061035156 | size=1 | links=#17530(auto Darkshore;304):71 #18195(auto Darkshore;323):62 #23364(auto Darkshore;403):16
+#10959 | auto Darkshore;190§auto Dunkelküste;190§auto Sombrivage;190 | x=4547.224510790798 y=95.60423978822013 | size=1 | links=#15732(auto Darkshore;272):37 #21014(auto Darkshore;370):53 #24527(auto Darkshore;425):37 c721.2:29
+#10998 | auto Darkshore;191§auto Dunkelküste;191§auto Sombrivage;191 | x=4848.7001953125 y=100 | size=1 | links=#13682(auto Darkshore;234):45 #27684(auto Darkshore;491):59
+#11053 | auto Darkshore;192§auto Dunkelküste;192§auto Sombrivage;192 | x=7310.80029296875 y=-866.7000122070312 | size=1 | links=#26099(auto Darkshore;459):15 o13872.4:12 c2181.37:24
+#11094 | crossing;Darkshore§kreuzung;Dunkelküste§traversée;Sombrivage | x=6303.7001953125 y=315.8000183105469 | size=1 | links=#4335(auto Darkshore;75):57 #19003(auto Darkshore;333):65 #23559(auto Darkshore;407):96 #27259(auto Darkshore;484):91
+#11187 | auto Darkshore;193§auto Dunkelküste;193§auto Sombrivage;193 | x=4605.774580931972 y=98.29626034134576 | size=1 | links=#15732(auto Darkshore;272):21 #26514(auto Darkshore;468):53
+#11211 | auto Darkshore;194§auto Dunkelküste;194§auto Sombrivage;194 | x=5042 y=385.7000122070313 | size=1 | links=#21391(auto Darkshore;376):33 c2322.30:15
+#11224 | auto Darkshore;195§auto Dunkelküste;195§auto Sombrivage;195 | x=7328.39990234375 y=-925.1000366210938 | size=1 | links=#8598(auto Darkshore;145):5 #10047(auto Darkshore;170):16 #14257(auto Darkshore;242):7
+#11309 | auto Darkshore;196§auto Dunkelküste;196§auto Sombrivage;196 | x=7248.60009765625 y=-616.2999877929688 | size=1 | links=#10144(auto Darkshore;174):44 #12623(auto Darkshore;217):29
+#11314 | auto Darkshore;197§auto Dunkelküste;197§auto Sombrivage;197 | x=7366.60009765625 y=-987.7999877929688 | size=1 | links=#5962(auto Darkshore;108):9 c2182.7:17 o13873.11:14
+#11318 | auto water;Darkshore;198§auto wasser;Dunkelküste;198§auto water;Sombrivage;198 | x=7055.30029296875 y=382.1000061035156 | size=1 | links=#14227(auto Darkshore;241):12 c2203.3:81 c2185.50:43
+#11359 | auto Darkshore;199§auto Dunkelküste;199§auto Sombrivage;199 | x=6921.30029296875 y=-177.9000091552734 | size=1 | links=#1341(auto Darkshore;23):43 #4011(auto Darkshore;66):20
+#11368 | auto Darkshore;200§auto Dunkelküste;200§auto Sombrivage;200 | x=6704.80029296875 y=31.10000038146973 | size=1 | links=c2189.1:10 c2189.11:17
+#11415 | auto Darkshore;201§auto Dunkelküste;201§auto Sombrivage;201 | x=4448.7001953125 y=151.6999969482422 | size=1 | links=c12298.31:45 c2323.55:25
+#11549 | rescue;waters;Die Ruinen von Mathystra;Darkshore§rettung;gewässer;Die Ruinen von Mathystra;Dunkelküste§sauvetage;eaux;Die Ruinen von Mathystra;Sombrivage | x=7341.30029296875 y=-941 | size=1 | links=#980(auto Darkshore;15):14
+#11740 | auto Darkshore;203§auto Dunkelküste;203§auto Sombrivage;203 | x=4434.10009765625 y=682.7999877929688 | size=1 | links=#936(auto Darkshore;13):20 c12298.2:44 c2071.4:38
+#11782 | auto Darkshore;204§auto Dunkelküste;204§auto Sombrivage;204 | x=6932.89990234375 y=-539.4000244140625 | size=1 | links=#7659(auto Darkshore;132):34 #7749(auto Darkshore;133):58
+#11838 | auto Darkshore;205§auto Dunkelküste;205§auto Sombrivage;205 | x=7443.7001953125 y=-870 | size=1 | links=#12172(auto Darkshore;213):17 #25658(auto Darkshore;448):16 o13360.4:13 o13872.5:14
+#11843 | auto Darkshore;206§auto Dunkelküste;206§auto Sombrivage;206 | x=7117.5 y=-489 | size=1 | links=#15935(auto Darkshore;276):30 #23562(auto Darkshore;408):56
+#11898 | auto inside tower of althalaxx;Darkshore;207§auto drinnen turm von althalaxx;Dunkelküste;207§auto inside tower of althalaxx;Sombrivage;207 | x=7202.60009765625 y=-742.2999877929688 | size=1 | links=#3086(auto inside tower of althalaxx;Darkshore;54):8 #16581(auto inside tower of althalaxx;Darkshore;285):4
+#11934 | auto Darkshore;208§auto Dunkelküste;208§auto Sombrivage;208 | x=6753.10009765625 y=-497.6000061035156 | size=1 | links=#1104(auto Darkshore;17):25 #23025(auto Darkshore;395):24
+#12065 | auto Darkshore;209§auto Dunkelküste;209§auto Sombrivage;209 | x=6875 y=203 | size=5 | links=#7027(auto Darkshore;123):54 #43551(auto Darkshore;511):41 c2321.38:16
+#12069 | auto Darkshore;210§auto Dunkelküste;210§auto Sombrivage;210 | x=5002.80029296875 y=443.5 | size=1 | links=#18040(auto Darkshore;320):28 #28310(auto Darkshore;504):60 c2205.10:91
+#12089 | auto Darkshore;211§auto Dunkelküste;211§auto Sombrivage;211 | x=4910.5 y=481.3000183105469 | size=1 | links=#8436(auto Darkshore;143):50 #15229(auto Darkshore;265):47 #28310(auto Darkshore;504):39 c2322.29:20
+#12123 | auto Darkshore;212§auto Dunkelküste;212§auto Sombrivage;212 | x=6728.5 y=-79.20000457763672 | size=1 | links=#4301(auto Darkshore;74):33 #23638(auto Darkshore;409):26 c2189.16:10
+#12172 | auto Darkshore;213§auto Dunkelküste;213§auto Sombrivage;213 | x=7444.39990234375 y=-887.5 | size=1 | links=#11838(auto Darkshore;205):17 c2182.15:17
+#12398 | auto Darkshore;214§auto Dunkelküste;214§auto Sombrivage;214 | x=7138.80029296875 y=307.1000061035156 | size=1 | links=#6033(auto Darkshore;110):16 #27619(auto Darkshore;490):15
+#12539 | auto Darkshore;215§auto Dunkelküste;215§auto Sombrivage;215 | x=7365.39990234375 y=-948.1000366210938 | size=1 | links=#1326(auto Darkshore;22):5 #10154(auto Darkshore;175):12
+#12548 | auto Darkshore;216§auto Dunkelküste;216§auto Sombrivage;216 | x=7131.39990234375 y=-796.2999877929688 | size=1 | links=#24882(auto Darkshore;433):38 c2336.4:9 c2336.7:15
+#12623 | auto Darkshore;217§auto Dunkelküste;217§auto Sombrivage;217 | x=7261.7001953125 y=-643 | size=1 | links=#1905(auto Darkshore;34):10 #11309(auto Darkshore;196):29 #18923(auto Darkshore;331):31 #43557(auto Darkshore;517):24
+#12635 | auto Darkshore;218§auto Dunkelküste;218§auto Sombrivage;218 | x=4606.30029296875 y=701.4000244140625 | size=1 | links=#9108(auto Darkshore;151):17 #19972(auto Darkshore;345):8
+#12691 | auto Darkshore;219§auto Dunkelküste;219§auto Sombrivage;219 | x=6415.30029296875 y=230.3000030517578 | size=1 | links=#4335(auto Darkshore;75):92 #6781(cave;druid;class quest;entry and exit):124 #10312(auto Darkshore;178):47 #25469(auto Darkshore;444):99 c721.15:29 c2321.58:38
+#12700 | auto Darkshore;220§auto Dunkelküste;220§auto Sombrivage;220 | x=6168.5 y=263.7000122070313 | size=1 | links=#1666(auto Darkshore;29):54 #23559(auto Darkshore;407):70
+#12719 | auto Darkshore;221§auto Dunkelküste;221§auto Sombrivage;221 | x=5721.89990234375 y=310.3000183105469 | size=1 | links=#10489(auto Darkshore;181):119 #26005(auto Darkshore;456):45 c3639.1:8
+#12801 | auto Darkshore;222§auto Dunkelküste;222§auto Sombrivage;222 | x=7196.60009765625 y=-679.2000122070312 | size=1 | links=#2456(auto Darkshore;44):31 c3661.1:53
+#12811 | central location;inn;Auberdine;Darkshore§zentralpunkt;gasthaus;Auberdine;Dunkelküste§emplacement central;inn;Auberdine;Sombrivage | x=6406.10009765625 y=526 | size=1 | links=#4638(auto Inside Inn;Darkshore;80):19 #17419(auto Inside Inn;Darkshore;301):15 #22762(auto Inside Inn;Darkshore;389):18 #47449(auto On pier;Auberdine;Darkshore;549):17 c6737.1:10
+#12908 | auto Darkshore;223§auto Dunkelküste;223§auto Sombrivage;223 | x=4809.10009765625 y=586.1000366210938 | size=1 | links=#8268(auto Darkshore;139):20 #28020(auto Darkshore;500):37 c2323.18:30
+#12925 | auto Darkshore;224§auto Dunkelküste;224§auto Sombrivage;224 | x=4611.667825029 y=413.8395976992331 | size=1 | links=#26253(auto Darkshore;463):17 c2338.6:10
+#13059 | auto Darkshore;225§auto Dunkelküste;225§auto Sombrivage;225 | x=4278 y=116.4000015258789 | size=1 | links=#20794(passage;from;Twilight Vale;Darkshore;to;Ashenvale):148 #26563(auto Darkshore;470):151 c6491.1:34
+#13119 | auto Darkshore;226§auto Dunkelküste;226§auto Sombrivage;226 | x=4558 y=343.3000183105469 | size=1 | links=#15577(auto Darkshore;269):25 c2339.9:21
+#13202 | auto Darkshore;227§auto Dunkelküste;227§auto Sombrivage;227 | x=6314.80029296875 y=458.2000122070313 | size=1 | links=#16779(auto Darkshore;289):19 #27259(auto Darkshore;484):51
+#13212 | auto Darkshore;228§auto Dunkelküste;228§auto Sombrivage;228 | x=6467.89990234375 y=413.8999938964844 | size=1 | links=#14461(auto Darkshore;245):45 #23224(central location;Auberdine;Darkshore):26
+#13235 | auto Darkshore;229§auto Dunkelküste;229§auto Sombrivage;229 | x=4660.60009765625 y=277.7000122070313 | size=1 | links=#16900(auto Darkshore;292):98 #19397(auto Darkshore;338):147 #21547(auto Darkshore;378):29 #28479(auto Darkshore;508):102
+#13299 | auto Darkshore;230§auto Dunkelküste;230§auto Sombrivage;230 | x=6890.2001953125 y=-659.7999877929688 | size=1 | links=#1165(Cliffspring Falls;Darkshore;druid;class quest):12 c2179.17:4
+#13445 | auto Darkshore;231§auto Dunkelküste;231§auto Sombrivage;231 | x=4803.80029296875 y=164.3000030517578 | size=1 | links=#9648(auto Darkshore;166):33 c3695.1:53 c2323.52:18
+#13462 | auto inside tower of althalaxx;Darkshore;232§auto drinnen turm von althalaxx;Dunkelküste;232§auto inside tower of althalaxx;Sombrivage;232 | x=7183.7001953125 y=-752.2999877929688 | size=1 | links=#4041(auto inside tower of althalaxx;Darkshore;67):7 #20720(auto inside tower of althalaxx;Darkshore;364):6
+#13466 | auto Darkshore;233§auto Dunkelküste;233§auto Sombrivage;233 | x=7406.89990234375 y=-882.9000244140625 | size=1 | links=#7652(auto Darkshore;131):19 #10496(auto Darkshore;182):19 #28521(auto Darkshore;509):29 c2181.20:7
+#13682 | auto Darkshore;234§auto Dunkelküste;234§auto Sombrivage;234 | x=4821.80029296875 y=62.79999923706055 | size=1 | links=#6095(auto Darkshore;113):16 #10998(auto Darkshore;191):45
+#13738 | auto Darkshore;235§auto Dunkelküste;235§auto Sombrivage;235 | x=7160.30029296875 y=-727.7000122070312 | size=1 | links=#26434(auto Darkshore;465):16 c2336.16:19
+#13899 | auto Darkshore;236§auto Dunkelküste;236§auto Sombrivage;236 | x=6673.10009765625 y=320.1000061035156 | size=1 | links=c2070.42:31 c2163.71:29
+#14085 | auto Darkshore;237§auto Dunkelküste;237§auto Sombrivage;237 | x=6432.30029296875 y=452 | size=1 | links=#10877(auto Darkshore;187):20 #19404(auto Darkshore;339):15 #19563(auto Darkshore;341):33
+#14110 | auto Darkshore;238§auto Dunkelküste;238§auto Sombrivage;238 | x=5022.89990234375 y=299.2000122070313 | size=1 | links=#25217(auto Darkshore;441):22 c2165.2:4
+#14190 | auto Darkshore;239§auto Dunkelküste;239§auto Sombrivage;239 | x=5575.60009765625 y=255.1999969482422 | size=1 | links=#10489(auto Darkshore;181):61 c2177.20:14 c2164.96:26
+#14199 | Delmanis the Hated;one;Tower of Althalaxx;Darkshore§Delmanis der Verhasste;eins;Turm von Althalaxx;Dunkelküste§Delmanis le Haï;un;Tower of Althalaxx;Sombrivage | x=7149.80029296875 y=-759.2000122070312 | size=1 | links=c2336.12:8 c2336.18:10
+#14217 | auto inside cliffspring falls;Darkshore;240§auto drinnen klippenquellfälle;Dunkelküste;240§auto inside cliffspring falls;Sombrivage;240 | x=6793.2001953125 y=-670 | size=1 | links=#20412(auto inside cliffspring falls;Darkshore;356):19 #21688(auto inside cliffspring falls;Darkshore;380):27 c2179.11:12
+#14227 | auto Darkshore;241§auto Dunkelküste;241§auto Sombrivage;241 | x=7051.2001953125 y=394.2000122070313 | size=1 | links=#11318(auto water;Darkshore;198):12 #19056(auto Darkshore;334):24
+#14257 | auto Darkshore;242§auto Dunkelküste;242§auto Sombrivage;242 | x=7327.60009765625 y=-932.7000122070312 | size=1 | links=#980(auto Darkshore;15):8 #11224(auto Darkshore;195):7
+#14422 | auto inside tower of althalaxx;Darkshore;243§auto drinnen turm von althalaxx;Dunkelküste;243§auto inside tower of althalaxx;Sombrivage;243 | x=7190.7001953125 y=-725.5 | size=1 | links=#17683(auto inside tower of althalaxx;Darkshore;309):4 #22126(auto inside tower of althalaxx;Darkshore;383):5
+#14439 | auto Darkshore;244§auto Dunkelküste;244§auto Sombrivage;244 | x=7402 y=-325.2000122070313 | size=1 | links=#4201(auto Darkshore;70):101 #27763(auto Darkshore;493):64 c2235.8:84
+#14461 | auto Darkshore;245§auto Dunkelküste;245§auto Sombrivage;245 | x=6506.39990234375 y=437.5 | size=1 | links=#3168(auto Darkshore;57):18 #13212(auto Darkshore;228):45 c6298.1:27
+#14470 | auto inside cliffspring falls;Darkshore;246§auto drinnen klippenquellfälle;Dunkelküste;246§auto inside cliffspring falls;Sombrivage;246 | x=6838.2001953125 y=-710.7000122070312 | size=1 | links=#16064(auto inside cliffspring falls;Darkshore;278):9 c2179.8:13 c2180.14:4
+#14488 | auto inside tower of althalaxx;Darkshore;247§auto drinnen turm von althalaxx;Dunkelküste;247§auto inside tower of althalaxx;Sombrivage;247 | x=7181.39990234375 y=-735.6000366210938 | size=1 | links=#17402(auto inside tower of althalaxx;Darkshore;300):9 #19505(auto inside tower of althalaxx;Darkshore;340):8
+#14539 | auto inside tower of althalaxx;Darkshore;248§auto drinnen turm von althalaxx;Dunkelküste;248§auto inside tower of althalaxx;Sombrivage;248 | x=7191.30029296875 y=-732.7000122070312 | size=1 | links=#9741(auto inside tower of althalaxx;Darkshore;167):3 #20781(auto inside tower of althalaxx;Darkshore;367):3
+#14570 | auto Darkshore;249§auto Dunkelküste;249§auto Sombrivage;249 | x=4468.438824943093 y=870.5371139213262 | size=1 | links=#17689(auto Darkshore;310):61 c2236.3:47 c2208.15:26
+#14579 | auto Darkshore;250§auto Dunkelküste;250§auto Sombrivage;250 | x=6449.60009765625 y=459.6000061035156 | size=1 | links=#16986(rescue;waters;bridge;Auberdine;Darkshore):11 #19404(auto Darkshore;339):8 #23021(auto Darkshore;394):16
+#14617 | rescue;waters;The Long Wash;Darkshore§rettung;gewässer;Der lange Strand;Dunkelküste§sauvetage;eaux;The Long Wash;Sombrivage | x=6464.2001953125 y=770.6000366210938 | size=1 | links=c2231.18:139
+#14655 | auto Darkshore;251§auto Dunkelküste;251§auto Sombrivage;251 | x=4419.814047271856 y=51.72649160483071 | size=1 | links=#3927(auto Darkshore;64):32 c2169.4:37
+#14772 | auto Darkshore;252§auto Dunkelküste;252§auto Sombrivage;252 | x=7460.89990234375 y=-908.1000366210938 | size=1 | links=#16958(auto Darkshore;293):16 c2182.15:18
+#14851 | auto Darkshore;254§auto Dunkelküste;254§auto Sombrivage;254 | x=4652 y=396.8999938964844 | size=1 | links=#3114(auto Darkshore;55):40 #26790(auto Darkshore;476):34
+#14852 | auto Darkshore;255§auto Dunkelküste;255§auto Sombrivage;255 | x=4822.30029296875 y=506.5 | size=1 | links=#15229(auto Darkshore;265):45 #21317(auto Darkshore;374):30 c2323.21:9
+#14940 | auto Darkshore;256§auto Dunkelküste;256§auto Sombrivage;256 | x=6703.5 y=-141.5 | size=1 | links=#4301(auto Darkshore;74):33 #20300(auto Darkshore;354):25 c2189.14:11 c2190.22:12
+#14983 | auto Darkshore;257§auto Dunkelküste;257§auto Sombrivage;257 | x=4921.7001953125 y=251.4000091552734 | size=1 | links=#23780(auto Darkshore;412):33 c2169.12:28 c12298.34:14
+#15035 | auto Darkshore;258§auto Dunkelküste;258§auto Sombrivage;258 | x=5817.7001953125 y=279.2000122070313 | size=1 | links=#17088(auto Darkshore;295):63 #26005(auto Darkshore;456):55
+#15121 | auto Darkshore;259§auto Dunkelküste;259§auto Sombrivage;259 | x=6687.60009765625 y=506 | size=1 | links=#26699(auto Darkshore;472):25 c2231.47:27
+#15122 | auto inside cliffspring falls;Darkshore;260§auto drinnen klippenquellfälle;Dunkelküste;260§auto inside cliffspring falls;Sombrivage;260 | x=6757.39990234375 y=-644.5 | size=1 | links=c2180.1:5 c2179.12:19
+#15131 | auto Darkshore;261§auto Dunkelküste;261§auto Sombrivage;261 | x=4685.10009765625 y=569.5 | size=1 | links=#24165(auto Darkshore;420):13 #26113(auto Darkshore;460):17
+#15189 | auto Darkshore;263§auto Dunkelküste;263§auto Sombrivage;263 | x=7289.89990234375 y=-64.9000015258789 | size=5 | links=#10067(auto Darkshore;171):34 c2070.38:19 c2070.51:23 c2163.59:17 c2164.62:22 c2321.85:27
+#15204 | Shadowclaw;one;Darkshore§Schattenklaue;eins;Dunkelküste§Ombregriffe;un;Sombrivage | x=6698.10009765625 y=369.8999938964844 | size=1 | links=c2070.42:24 c2163.69:14
+#15214 | auto Darkshore;264§auto Dunkelküste;264§auto Sombrivage;264 | x=6124.60009765625 y=12.90000057220459 | size=1 | links=#2932(auto Darkshore;52):15 #20575(auto Darkshore;362):34
+#15229 | auto Darkshore;265§auto Dunkelküste;265§auto Sombrivage;265 | x=4868.10009765625 y=502.3999938964844 | size=1 | links=#12089(auto Darkshore;211):47 #14852(auto Darkshore;255):45 c2069.21:21
+#15303 | auto Darkshore;266§auto Dunkelküste;266§auto Sombrivage;266 | x=6644.5 y=459 | size=1 | links=#26699(auto Darkshore;472):54 c2163.40:29
+#15378 | auto Darkshore;267§auto Dunkelküste;267§auto Sombrivage;267 | x=7345.10009765625 y=-961.2000122070312 | size=1 | links=#6240(auto Darkshore;115):6 #15627(auto Darkshore;270):7
+#15515 | auto Darkshore;268§auto Dunkelküste;268§auto Sombrivage;268 | x=4538.361342460317 y=457.9730120386495 | size=1 | links=c2338.1:23 c2339.1:10 c2339.2:30
+#15577 | auto Darkshore;269§auto Dunkelküste;269§auto Sombrivage;269 | x=4563.39990234375 y=318.3999938964844 | size=1 | links=#13119(auto Darkshore;226):25 #16900(auto Darkshore;292):23
+#15627 | auto Darkshore;270§auto Dunkelküste;270§auto Sombrivage;270 | x=7353 y=-961.2000122070312 | size=1 | links=#10154(auto Darkshore;175):10 #15378(auto Darkshore;267):7
+#15701 | auto Darkshore;271§auto Dunkelküste;271§auto Sombrivage;271 | x=4376.7001953125 y=-48.90000152587891 | size=1 | links=#1669(auto Darkshore;30):19 #9372(auto Darkshore;158):13
+#15732 | auto Darkshore;272§auto Dunkelküste;272§auto Sombrivage;272 | x=4584.911898966875 y=94.25826622870544 | size=1 | links=#10959(auto Darkshore;190):37 #11187(auto Darkshore;193):21 c2168.3:54
+#15758 | auto Darkshore;273§auto Dunkelküste;273§auto Sombrivage;273 | x=7078.2001953125 y=-84.80000305175781 | size=1 | links=#317(auto Darkshore;9):66 #24703(auto Darkshore;429):112
+#15811 | auto Darkshore;274§auto Dunkelküste;274§auto Sombrivage;274 | x=7196.5 y=-817.5 | size=1 | links=#6665(auto Darkshore;121):16 #25651(auto Darkshore;447):17 c2336.6:14
+#15888 | auto Darkshore;275§auto Dunkelküste;275§auto Sombrivage;275 | x=4319.10009765625 y=1102.300048828125 | size=1 | links=#43761(auto Darkshore;546):42 c2236.9:60
+#15935 | auto Darkshore;276§auto Dunkelküste;276§auto Sombrivage;276 | x=7090.30029296875 y=-502.3999938964844 | size=1 | links=#1925(auto Darkshore;36):23 #11843(auto Darkshore;206):30
+#15956 | auto inside tower of althalaxx;Darkshore;277§auto drinnen turm von althalaxx;Dunkelküste;277§auto inside tower of althalaxx;Sombrivage;277 | x=7204.10009765625 y=-728.1000366210938 | size=1 | links=#22126(auto inside tower of althalaxx;Darkshore;383):8 #23704(auto inside tower of althalaxx;Darkshore;411):6
+#16064 | auto inside cliffspring falls;Darkshore;278§auto drinnen klippenquellfälle;Dunkelküste;278§auto inside cliffspring falls;Sombrivage;278 | x=6830.60009765625 y=-715.9000244140625 | size=1 | links=#10120(auto inside cliffspring falls;Darkshore;172):14 #14470(auto inside cliffspring falls;Darkshore;246):9 o11714.6:7
+#16117 | auto Darkshore;279§auto Dunkelküste;279§auto Sombrivage;279 | x=6768.7001953125 y=18.10000038146973 | size=1 | links=#17516(auto Darkshore;303):24 c2189.10:20
+#16118 | auto Darkshore;280§auto Dunkelküste;280§auto Sombrivage;280 | x=7325.2001953125 y=-899.5 | size=1 | links=#26540(auto Darkshore;469):13 c2181.37:23
+#16196 | auto Darkshore;281§auto Dunkelküste;281§auto Sombrivage;281 | x=6734.60009765625 y=-186.1000061035156 | size=1 | links=#20064(auto Darkshore;347):26 c2212.3:17 c2189.13:26 c2190.20:10
+#16239 | auto inside tower of althalaxx;Darkshore;282§auto drinnen turm von althalaxx;Dunkelküste;282§auto inside tower of althalaxx;Sombrivage;282 | x=7196.80029296875 y=-733.7000122070312 | size=1 | links=#4041(auto inside tower of althalaxx;Darkshore;67):15 #4076(Tower of Althalaxx;down;Darkshore):7
+#16426 | auto Darkshore;283§auto Dunkelküste;283§auto Sombrivage;283 | x=6373.30029296875 y=540.5 | size=1 | links=#17728(auto Darkshore;313):5 #26987(auto Darkshore;481):2
+#16548 | auto Darkshore;284§auto Dunkelküste;284§auto Sombrivage;284 | x=6999.7001953125 y=-536.1000366210938 | size=1 | links=#4934(auto Darkshore;85):23 #27548(auto Darkshore;487):25
+#16581 | auto inside tower of althalaxx;Darkshore;285§auto drinnen turm von althalaxx;Dunkelküste;285§auto inside tower of althalaxx;Sombrivage;285 | x=7201.60009765625 y=-738 | size=1 | links=#11898(auto inside tower of althalaxx;Darkshore;207):4 #24188(auto inside tower of althalaxx;Darkshore;421):2
+#16656 | auto Darkshore;286§auto Dunkelküste;286§auto Sombrivage;286 | x=5999.89990234375 y=-18.70000076293945 | size=1 | links=#9351(auto Darkshore;156):12 o177750.9:12
+#16713 | auto Darkshore;287§auto Dunkelküste;287§auto Sombrivage;287 | x=4958.80029296875 y=102.0999984741211 | size=1 | links=#21096(auto Darkshore;372):41 #23252(auto Darkshore;399):16
+#16762 | auto Darkshore;288§auto Dunkelküste;288§auto Sombrivage;288 | x=5765.39990234375 y=200.3000030517578 | size=1 | links=c2177.2:31 c2176.4:25
+#16779 | auto Darkshore;289§auto Dunkelküste;289§auto Sombrivage;289 | x=6326.60009765625 y=473.8000183105469 | size=1 | links=#3450(auto Darkshore;61):29 #13202(auto Darkshore;227):19
+#16799 | auto Darkshore;290§auto Dunkelküste;290§auto Sombrivage;290 | x=6955.60009765625 y=-409.1000061035156 | size=1 | links=#1206(auto Darkshore;19):45 #8347(auto Darkshore;142):41
+#16808 | auto Darkshore;291§auto Dunkelküste;291§auto Sombrivage;291 | x=6385.30029296875 y=503 | size=1 | links=c6887.1:27 c10085.1:18
+#16900 | auto Darkshore;292§auto Dunkelküste;292§auto Sombrivage;292 | x=4563.420188230484 y=294.9035039570272 | size=1 | links=#13235(auto Darkshore;229):98 #15577(auto Darkshore;269):23 #19397(auto Darkshore;338):51
+#16958 | auto Darkshore;293§auto Dunkelküste;293§auto Sombrivage;293 | x=7469.30029296875 y=-893.9000244140625 | size=1 | links=#4976(auto Darkshore;87):18 #14772(auto Darkshore;252):16 c2181.21:9
+#16986 | rescue;waters;bridge;Auberdine;Darkshore§rettung;gewässer;brücke;Auberdine;Dunkelküste§sauvetage;eaux;bridge;Auberdine;Sombrivage | x=6458.10009765625 y=451.8000183105469 | size=1 | links=#14579(auto Darkshore;250):11
+#17012 | auto Darkshore;294§auto Dunkelküste;294§auto Sombrivage;294 | x=4699.383733800545 y=814.3279909873643 | size=1 | links=c2233.1:34 c2233.2:23
+#17088 | auto Darkshore;295§auto Dunkelküste;295§auto Sombrivage;295 | x=5878.30029296875 y=258.8999938964844 | size=1 | links=#15035(auto Darkshore;258):63 #17989(auto Darkshore;318):18 #24747(auto Darkshore;430):40
+#17098 | auto Darkshore;296§auto Dunkelküste;296§auto Sombrivage;296 | x=6708.80029296875 y=177.8000030517578 | size=1 | links=#4212(auto Darkshore;71):33 #21098(auto Darkshore;373):70 c6491.2:37
+#17137 | auto Darkshore;297§auto Dunkelküste;297§auto Sombrivage;297 | x=6558.2001953125 y=315.6000061035156 | size=1 | links=c2175.1:14 c2070.19:21
+#17183 | auto Darkshore;298§auto Dunkelküste;298§auto Sombrivage;298 | x=4745.223876102898 y=506.646276786585 | size=1 | links=#20161(auto Darkshore;349):21 c2165.4:24
+#17236 | entry and exit;Bashal'Aran;Darkshore§ein- und ausgang;Bashal'Aran;Dunkelküste§entrée et sortie;Bashal'Aran;Sombrivage | x=6743.5 y=5.700000286102295 | size=1 | links=c2189.10:8 c2189.15:19 c2189.17:26
+#17368 | auto inside cliffspring falls;Darkshore;299§auto drinnen klippenquellfälle;Dunkelküste;299§auto inside cliffspring falls;Sombrivage;299 | x=6804.80029296875 y=-717.7999877929688 | size=1 | links=#10120(auto inside cliffspring falls;Darkshore;172):12 c2180.15:13
+#17402 | auto inside tower of althalaxx;Darkshore;300§auto drinnen turm von althalaxx;Dunkelküste;300§auto inside tower of althalaxx;Sombrivage;300 | x=7183.5 y=-745.2000122070312 | size=1 | links=#1479(auto inside tower of althalaxx;Darkshore;27):8 #14488(auto inside tower of althalaxx;Darkshore;247):9
+#17419 | auto Inside Inn;Darkshore;301§auto Drinnen Gasthaus;Dunkelküste;301§auto Inside Inn;Sombrivage;301 | x=6391.5 y=521.5 | size=1 | links=#12811(central location;inn;Auberdine;Darkshore):15 #22762(auto Inside Inn;Darkshore;389):10 #23404(auto Darkshore;404):8
+#17457 | auto Darkshore;302§auto Dunkelküste;302§auto Sombrivage;302 | x=6713.10009765625 y=-466.8999938964844 | size=1 | links=#1471(auto Darkshore;26):25 #8938(auto Darkshore;148):23
+#17516 | auto Darkshore;303§auto Dunkelküste;303§auto Sombrivage;303 | x=6790.39990234375 y=30.39999961853027 | size=5 | links=#10141(auto Darkshore;173):28 #16117(auto Darkshore;279):24
+#17530 | auto Darkshore;304§auto Dunkelküste;304§auto Sombrivage;304 | x=7255.10009765625 y=-362.3000183105469 | size=1 | links=#105(auto Darkshore;4):41 #10956(auto Darkshore;189):71
+#17646 | auto Darkshore;306§auto Dunkelküste;306§auto Sombrivage;306 | x=6628.60009765625 y=-36.5 | size=1 | links=c2190.5:14 c2190.10:19 c2190.12:34
+#17649 | auto Darkshore;307§auto Dunkelküste;307§auto Sombrivage;307 | x=5770.89990234375 y=95.30000305175781 | size=1 | links=#20506(auto Darkshore;361):34 o17188.1:10
+#17655 | auto Darkshore;308§auto Dunkelküste;308§auto Sombrivage;308 | x=5246.089293841776 y=601.4670476527543 | size=1 | links=c2204.4:18 c2203.7:18
+#17683 | auto inside tower of althalaxx;Darkshore;309§auto drinnen turm von althalaxx;Dunkelküste;309§auto inside tower of althalaxx;Sombrivage;309 | x=7187.2001953125 y=-728.2000122070312 | size=1 | links=#14422(auto inside tower of althalaxx;Darkshore;243):4 #18381(auto inside tower of althalaxx;Darkshore;326):3
+#17689 | auto Darkshore;310§auto Dunkelküste;310§auto Sombrivage;310 | x=4528.676730014541 y=856.635955351884 | size=1 | links=#14570(auto Darkshore;249):61 o175230.1:39 c2208.15:43 c6145.15:73
+#17707 | auto Darkshore;311§auto Dunkelküste;311§auto Sombrivage;311 | x=5526.7001953125 y=308.3999938964844 | size=1 | links=#4393(auto Darkshore;77):133 #9992(auto Darkshore;169):49 #10489(auto Darkshore;181):75
+#17718 | auto Darkshore;312§auto Dunkelküste;312§auto Sombrivage;312 | x=4156.894905240485 y=480.0751641968001 | size=1 | links=#4801(auto Darkshore;84):65 #19346(auto Darkshore;336):50
+#17728 | auto Darkshore;313§auto Dunkelküste;313§auto Sombrivage;313 | x=6368.60009765625 y=537.2999877929688 | size=1 | links=#4289(auto Darkshore;73):17 #16426(auto Darkshore;283):5 #22762(auto Inside Inn;Darkshore;389):21
+#17735 | auto Darkshore;314§auto Dunkelküste;314§auto Sombrivage;314 | x=6437.7001953125 y=375.1000061035156 | size=1 | links=#25150(auto Darkshore;440):11 c3657.1:10
+#17812 | auto inside cliffspring falls;Darkshore;315§auto drinnen klippenquellfälle;Dunkelküste;315§auto inside cliffspring falls;Sombrivage;315 | x=6729.2001953125 y=-648.9000244140625 | size=1 | links=c2180.1:23 c2179.2:9 c2180.2:15 o11714.13:12
+#17867 | entry and exit;Die Ruinen von Mathystra;Darkshore§ein- und ausgang;Die Ruinen von Mathystra;Dunkelküste§entrée et sortie;Die Ruinen von Mathystra;Sombrivage | x=7322.30029296875 y=-777.6000366210938 | size=1 | links=#4167(auto Darkshore;69):20 #5638(auto Darkshore;106):17
+#17872 | auto Darkshore;316§auto Dunkelküste;316§auto Sombrivage;316 | x=4726.239746905727 y=103.0072045166951 | size=1 | links=#20998(auto Darkshore;369):25 c2323.2:17 c2237.21:14
+#17923 | auto inside tower of althalaxx;Darkshore;317§auto drinnen turm von althalaxx;Dunkelküste;317§auto inside tower of althalaxx;Sombrivage;317 | x=7198.39990234375 y=-743.6000366210938 | size=1 | links=#5282(auto inside tower of althalaxx;Darkshore;94):2 #23302(auto inside tower of althalaxx;Darkshore;402):3
+#17989 | auto Darkshore;318§auto Dunkelküste;318§auto Sombrivage;318 | x=5879.39990234375 y=277.5 | size=1 | links=#17088(auto Darkshore;295):18 #23119(auto Darkshore;397):15
+#18034 | auto Darkshore;319§auto Dunkelküste;319§auto Sombrivage;319 | x=6030.80029296875 y=286.3000183105469 | size=1 | links=#18135(auto Darkshore;321):29 c2324.6:27 c12298.54:22
+#18040 | auto Darkshore;320§auto Dunkelküste;320§auto Sombrivage;320 | x=4975.30029296875 y=437 | size=1 | links=#8436(auto Darkshore;143):45 #12069(auto Darkshore;210):28 #21391(auto Darkshore;376):53 c2237.22:12 c2069.32:27
+#18135 | auto Darkshore;321§auto Dunkelküste;321§auto Sombrivage;321 | x=6026.80029296875 y=256.7000122070313 | size=1 | links=#2362(auto Darkshore;42):51 #18034(auto Darkshore;319):29 #23559(auto Darkshore;407):192 #24747(auto Darkshore;430):111 c721.1:51
+#18180 | auto Darkshore;322§auto Dunkelküste;322§auto Sombrivage;322 | x=5627.80029296875 y=166.1000061035156 | size=1 | links=#1702(auto Darkshore;31):22 o16393.1:6
+#18195 | auto Darkshore;323§auto Dunkelküste;323§auto Sombrivage;323 | x=7249.39990234375 y=-228.1999969482422 | size=1 | links=#236(auto Darkshore;6):74 #10956(auto Darkshore;189):62 c2070.15:30
+#18222 | auto Darkshore;324§auto Dunkelküste;324§auto Sombrivage;324 | x=4433 y=722.6000366210938 | size=1 | links=#6446(auto Darkshore;118):6 c2236.24:65
+#18327 | auto Darkshore;325§auto Dunkelküste;325§auto Sombrivage;325 | x=5090.80029296875 y=417.8000183105469 | size=1 | links=#8305(auto Darkshore;141):48 c2322.30:48
+#18381 | auto inside tower of althalaxx;Darkshore;326§auto drinnen turm von althalaxx;Dunkelküste;326§auto inside tower of althalaxx;Sombrivage;326 | x=7184.89990234375 y=-731.2000122070312 | size=1 | links=#17683(auto inside tower of althalaxx;Darkshore;309):3 #24158(auto inside tower of althalaxx;Darkshore;419):7
+#18533 | auto Darkshore;327§auto Dunkelküste;327§auto Sombrivage;327 | x=5569.2001953125 y=198.9000091552734 | size=5 | links=c2177.4:38 c2164.96:30
+#18558 | auto inside cliffspring falls;Darkshore;328§auto drinnen klippenquellfälle;Dunkelküste;328§auto inside cliffspring falls;Sombrivage;328 | x=6786.7001953125 y=-695.7999877929688 | size=1 | links=o11714.8:6 c2179.11:14 c2180.15:14
+#18578 | auto Darkshore;329§auto Dunkelküste;329§auto Sombrivage;329 | x=6961 y=-338.3000183105469 | size=1 | links=#8347(auto Darkshore;142):29 #23239(auto Darkshore;398):57
+#18665 | auto Darkshore;330§auto Dunkelküste;330§auto Sombrivage;330 | x=5182.2001953125 y=251.6000061035156 | size=1 | links=#4393(auto Darkshore;77):215 #9140(auto Darkshore;152):42 #10893(auto Darkshore;188):55
+#18923 | auto Darkshore;331§auto Dunkelküste;331§auto Sombrivage;331 | x=7279.5 y=-668.5 | size=1 | links=#12623(auto Darkshore;217):31 #27588(auto Darkshore;489):34
+#18948 | auto Darkshore;332§auto Dunkelküste;332§auto Sombrivage;332 | x=4650 y=450.6000061035156 | size=1 | links=#26790(auto Darkshore;476):26 c2237.8:34
+#19003 | auto Darkshore;333§auto Dunkelküste;333§auto Sombrivage;333 | x=6353.39990234375 y=358.1000061035156 | size=1 | links=#2917(auto Darkshore;51):42 #11094(crossing;Darkshore):65 c6086.1:19 c6086.2:21
+#19056 | auto Darkshore;334§auto Dunkelküste;334§auto Sombrivage;334 | x=7063.5 y=415.8999938964844 | size=1 | links=#14227(auto Darkshore;241):24 c2202.14:18
+#19149 | auto Darkshore;335§auto Dunkelküste;335§auto Sombrivage;335 | x=5703.39990234375 y=237.8000030517578 | size=1 | links=#10575(auto Darkshore;183):36 c2177.3:32
+#19346 | auto Darkshore;336§auto Dunkelküste;336§auto Sombrivage;336 | x=4206.5 y=473.6000061035156 | size=1 | links=#2810(auto Darkshore;48):59 #17718(auto Darkshore;312):50 c2071.3:57 c2323.16:44
+#19356 | pier;from;Mist's Edge;Darkshore;to;Darnassus§anleger;von;Nebelrand;Dunkelküste;zum;Darnassus§pier;de;Mist's Edge;Sombrivage;vers;Darnassus | x=6576.80029296875 y=769.4000244140625 | size=1 | links=#21458(ship;Mist's Edge;Darkshore):16 #24002(crossing;ship;Mist's Edge;Darkshore):81
+#19371 | auto Darkshore;337§auto Dunkelküste;337§auto Sombrivage;337 | x=5011.60009765625 y=219.1999969482422 | size=1 | links=#307(auto Darkshore;8):30 #7387(auto Darkshore;127):35 #22863(auto Darkshore;390):28
+#19397 | auto Darkshore;338§auto Dunkelküste;338§auto Sombrivage;338 | x=4512.89990234375 y=282.8000183105469 | size=1 | links=#8179(auto Darkshore;137):79 #13235(auto Darkshore;229):147 #16900(auto Darkshore;292):51 #26563(auto Darkshore;470):136
+#19404 | auto Darkshore;339§auto Dunkelküste;339§auto Sombrivage;339 | x=6442.5 y=463.6000061035156 | size=1 | links=#10877(auto Darkshore;187):12 #14085(auto Darkshore;237):15 #14579(auto Darkshore;250):8
+#19505 | auto inside tower of althalaxx;Darkshore;340§auto drinnen turm von althalaxx;Dunkelküste;340§auto inside tower of althalaxx;Sombrivage;340 | x=7184.2001953125 y=-727.7999877929688 | size=1 | links=#14488(auto inside tower of althalaxx;Darkshore;247):8 #25666(auto inside tower of althalaxx;Darkshore;449):11
+#19563 | auto Darkshore;341§auto Dunkelküste;341§auto Sombrivage;341 | x=6440.2001953125 y=419.8999938964844 | size=1 | links=#14085(auto Darkshore;237):33 #23224(central location;Auberdine;Darkshore):11
+#19646 | auto Darkshore;342§auto Dunkelküste;342§auto Sombrivage;342 | x=6598.60009765625 y=-51.79999923706055 | size=1 | links=c2212.1:19 c2190.2:19 c2190.4:16
+#19709 | auto Darkshore;343§auto Dunkelküste;343§auto Sombrivage;343 | x=4801.397919531568 y=781.3110399742338 | size=1 | links=c2206.5:9 c2206.6:12
+#19965 | auto Darkshore;344§auto Dunkelküste;344§auto Sombrivage;344 | x=7319.7001953125 y=-817.4000244140625 | size=1 | links=#5638(auto Darkshore;106):22 #26099(auto Darkshore;459):34
+#19972 | auto Darkshore;345§auto Dunkelküste;345§auto Sombrivage;345 | x=4614.5 y=702.9000244140625 | size=1 | links=#8594(auto Darkshore;144):13 #12635(auto Darkshore;218):8
+#20023 | auto inside tower of althalaxx;Darkshore;346§auto drinnen turm von althalaxx;Dunkelküste;346§auto inside tower of althalaxx;Sombrivage;346 | x=7190.2001953125 y=-735.9000244140625 | size=1 | links=#7284(auto inside tower of althalaxx;Darkshore;125):6 #26024(auto inside tower of althalaxx;Darkshore;457):4
+#20064 | auto Darkshore;347§auto Dunkelküste;347§auto Sombrivage;347 | x=6708.10009765625 y=-182.8000030517578 | size=1 | links=#16196(auto Darkshore;281):26 #20300(auto Darkshore;354):19 c2190.18:17 c2190.21:12
+#20070 | auto On pier;Darkshore;348§auto Auf Steg;Dunkelküste;348§auto On pier;Sombrivage;348 | x=6432.60009765625 y=598.2000122070312 | size=1 | links=#6557(auto On pier;Darkshore;119):139 #47450(auto On pier;Auberdine;Darkshore;550):43 c3644.1:8
+#20161 | auto Darkshore;349§auto Dunkelküste;349§auto Sombrivage;349 | x=4736.857393610732 y=526.865268217988 | size=1 | links=#2453(auto Darkshore;43):28 #17183(auto Darkshore;298):21
+#20195 | auto Darkshore;350§auto Dunkelküste;350§auto Sombrivage;350 | x=6425.30029296875 y=402.5 | size=1 | links=#2917(auto Darkshore;51):52 #23224(central location;Auberdine;Darkshore):17 #26985(auto Darkshore;480):40
+#20212 | auto Darkshore;351§auto Dunkelküste;351§auto Sombrivage;351 | x=6434.60009765625 y=488.1000061035156 | size=1 | links=#9609(auto Darkshore;164):17 #10699(auto Darkshore;184):64 #10877(auto Darkshore;187):15 #22450(auto Darkshore;386):13
+#20214 | auto Darkshore;352§auto Dunkelküste;352§auto Sombrivage;352 | x=6924.60009765625 y=-89.20000457763672 | size=1 | links=#317(auto Darkshore;9):87 #1875(auto Darkshore;33):35 #9332(auto Darkshore;154):70
+#20239 | auto inside cliffspring falls;Darkshore;353§auto drinnen klippenquellfälle;Dunkelküste;353§auto inside cliffspring falls;Sombrivage;353 | x=6850.2001953125 y=-790.5 | size=1 | links=#4756(auto inside cliffspring falls;Darkshore;83):12 #25146(auto inside cliffspring falls;Darkshore;439):12 c2180.13:3 o11714.15:8
+#20300 | auto Darkshore;354§auto Dunkelküste;354§auto Sombrivage;354 | x=6697.5 y=-166.1999969482422 | size=1 | links=#14940(auto Darkshore;256):25 #20064(auto Darkshore;347):19 c2212.5:14 c2190.19:12
+#20328 | auto Darkshore;355§auto Dunkelküste;355§auto Sombrivage;355 | x=6083.5 y=125.0999984741211 | size=1 | links=#2060(auto Darkshore;38):6 c10158.10:10
+#20412 | auto inside cliffspring falls;Darkshore;356§auto drinnen klippenquellfälle;Dunkelküste;356§auto inside cliffspring falls;Sombrivage;356 | x=6780.60009765625 y=-655.2000122070312 | size=1 | links=#14217(auto inside cliffspring falls;Darkshore;240):19 o11714.10:5 c2179.12:6
+#20451 | auto inside cliffspring falls;Darkshore;357§auto drinnen klippenquellfälle;Dunkelküste;357§auto inside cliffspring falls;Sombrivage;357 | x=6864.60009765625 y=-668.2000122070312 | size=1 | links=c2179.15:9 c2180.18:10
+#20483 | auto Darkshore;358§auto Dunkelküste;358§auto Sombrivage;358 | x=6537.80029296875 y=472.2000122070313 | size=1 | links=#3168(auto Darkshore;57):38 c3702.1:20
+#20485 | auto Darkshore;359§auto Dunkelküste;359§auto Sombrivage;359 | x=4365.80029296875 y=-16.70000076293945 | size=1 | links=#1669(auto Darkshore;30):14 #8876(auto Darkshore;147):38
+#20496 | auto Darkshore;360§auto Dunkelküste;360§auto Sombrivage;360 | x=7217.39990234375 y=-861.6000366210938 | size=1 | links=#3459(auto Darkshore;62):21 o13872.1:13 c2336.8:19 c2336.9:12
+#20506 | auto Darkshore;361§auto Dunkelküste;361§auto Sombrivage;361 | x=5737.39990234375 y=102.5999984741211 | size=1 | links=#17649(auto Darkshore;307):34 #24552(auto Darkshore;426):39 c2177.2:74 c2177.17:10
+#20575 | auto Darkshore;362§auto Dunkelküste;362§auto Sombrivage;362 | x=6138.2001953125 y=-18.39999961853027 | size=1 | links=#9365(auto Darkshore;157):21 #15214(auto Darkshore;264):34 c10160.11:14
+#20669 | auto Darkshore;363§auto Dunkelküste;363§auto Sombrivage;363 | x=7176.7001953125 y=-793.2000122070312 | size=1 | links=#2207(auto Darkshore;40):15 c2336.10:7 c2336.11:12 c2336.19:5
+#20720 | auto inside tower of althalaxx;Darkshore;364§auto drinnen turm von althalaxx;Dunkelküste;364§auto inside tower of althalaxx;Sombrivage;364 | x=7180.2001953125 y=-757.2999877929688 | size=1 | links=#13462(auto inside tower of althalaxx;Darkshore;232):6 #24698(entry and exit;Tower of Althalaxx;Darkshore):3
+#20733 | auto Darkshore;365§auto Dunkelküste;365§auto Sombrivage;365 | x=7351.5 y=-824.1000366210938 | size=1 | links=c2182.17:30 c2181.35:15
+#20756 | auto Darkshore;366§auto Dunkelküste;366§auto Sombrivage;366 | x=4726.30029296875 y=581.5 | size=1 | links=#2453(auto Darkshore;43):34 c2323.41:9
+#20781 | auto inside tower of althalaxx;Darkshore;367§auto drinnen turm von althalaxx;Dunkelküste;367§auto inside tower of althalaxx;Sombrivage;367 | x=7192.10009765625 y=-729.6000366210938 | size=1 | links=#14539(auto inside tower of althalaxx;Darkshore;248):3 #22394(auto inside tower of althalaxx;Darkshore;385):2
+#20794 | passage;from;Twilight Vale;Darkshore;to;Ashenvale§passage;von;Zwielichttal;Dunkelküste;zum;Eschental§passage;de;Vallée du crépuscule;Sombrivage;vers;Orneval | x=4147.30029296875 y=45.40000152587891 | size=1 | links=#13059(auto Darkshore;225):148 #26563(auto Darkshore;470):299 #16338(passage;from;Ashenvale;to;Darkshore):20
+#20844 | auto Darkshore;368§auto Dunkelküste;368§auto Sombrivage;368 | x=6693.60009765625 y=-436.1000061035156 | size=1 | links=#1471(auto Darkshore;26):14 c6789.2:12
+#20998 | auto Darkshore;369§auto Dunkelküste;369§auto Sombrivage;369 | x=4701.339125903563 y=98.29626034134576 | size=1 | links=#17872(auto Darkshore;316):25 #26514(auto Darkshore;468):41
+#21014 | auto Darkshore;370§auto Dunkelküste;370§auto Sombrivage;370 | x=4505.499183577653 y=129.2537990783743 | size=1 | links=#10959(auto Darkshore;190):53 #24527(auto Darkshore;425):26 c12298.31:36
+#21046 | auto Darkshore;371§auto Dunkelküste;371§auto Sombrivage;371 | x=7438.60009765625 y=-920.7000122070312 | size=1 | links=#22103(auto Darkshore;382):52 c2182.15:16
+#21096 | auto Darkshore;372§auto Dunkelküste;372§auto Sombrivage;372 | x=4971.30029296875 y=62.40000152587891 | size=1 | links=#16713(auto Darkshore;287):41 c11218.1:37
+#21098 | auto Darkshore;373§auto Dunkelküste;373§auto Sombrivage;373 | x=6759.5 y=128.3000030517578 | size=1 | links=#5526(auto Darkshore;103):9 #9268(auto Darkshore;153):51 #17098(auto Darkshore;296):70
+#21317 | auto Darkshore;374§auto Dunkelküste;374§auto Sombrivage;374 | x=4799 y=526.6000366210938 | size=1 | links=#8268(auto Darkshore;139):39 #14852(auto Darkshore;255):30 #25976(auto Darkshore;455):46
+#21346 | auto Darkshore;375§auto Dunkelküste;375§auto Sombrivage;375 | x=6458.89990234375 y=548.7999877929688 | size=5 | links=#5327(auto Darkshore;95):16 #6654(auto Darkshore;120):34 c2231.14:80
+#21391 | auto Darkshore;376§auto Dunkelküste;376§auto Sombrivage;376 | x=5010.30029296875 y=395.8999938964844 | size=1 | links=#11211(auto Darkshore;194):33 #18040(auto Darkshore;320):53 c2165.14:20
+#21458 | ship;Mist's Edge;Darkshore§schiff;Nebelrand;Dunkelküste§ship;Mist's Edge;Sombrivage | x=6593.30029296875 y=766.2000122070312 | size=1 | links=#734(ship;Rut'theran Village;Teldrassil):1958 #19356(pier;from;Mist's Edge;Darkshore;to;Darnassus):16
+#21500 | auto Darkshore;377§auto Dunkelküste;377§auto Sombrivage;377 | x=4300.503529038387 y=346.5444096998807 | size=1 | links=#2253(auto Darkshore;41):44 #26881(auto Darkshore;478):52
+#21547 | auto Darkshore;378§auto Dunkelküste;378§auto Sombrivage;378 | x=4670.60009765625 y=305 | size=1 | links=#13235(auto Darkshore;229):29 #26064(auto Darkshore;458):30
+#21674 | auto Darkshore;379§auto Dunkelküste;379§auto Sombrivage;379 | x=7345.80029296875 y=-921.6000366210938 | size=1 | links=#5175(auto Darkshore;91):7 #6259(auto Darkshore;117):6
+#21688 | auto inside cliffspring falls;Darkshore;380§auto drinnen klippenquellfälle;Dunkelküste;380§auto inside cliffspring falls;Sombrivage;380 | x=6818 y=-681.2999877929688 | size=1 | links=#14217(auto inside cliffspring falls;Darkshore;240):27 o11714.1:12 o11714.2:19 c2179.5:12
+#21825 | auto Darkshore;381§auto Dunkelküste;381§auto Sombrivage;381 | x=7137.60009765625 y=331 | size=1 | links=#27619(auto Darkshore;490):8 #28167(auto Darkshore;502):5
+#22103 | auto Darkshore;382§auto Dunkelküste;382§auto Sombrivage;382 | x=7453.80029296875 y=-971.2999877929688 | size=1 | links=#21046(auto Darkshore;371):52 #24501(auto Darkshore;424):25 c2182.10:17
+#22126 | auto inside tower of althalaxx;Darkshore;383§auto drinnen turm von althalaxx;Dunkelküste;383§auto inside tower of althalaxx;Sombrivage;383 | x=7196.30029296875 y=-724.7999877929688 | size=1 | links=#14422(auto inside tower of althalaxx;Darkshore;243):5 #15956(auto inside tower of althalaxx;Darkshore;277):8
+#22301 | auto Darkshore;384§auto Dunkelküste;384§auto Sombrivage;384 | x=6777.89990234375 y=137.4000091552734 | size=1 | links=#5526(auto Darkshore;103):11 c2321.41:37
+#22394 | auto inside tower of althalaxx;Darkshore;385§auto drinnen turm von althalaxx;Dunkelküste;385§auto inside tower of althalaxx;Sombrivage;385 | x=7193.80029296875 y=-727.5 | size=1 | links=#20781(auto inside tower of althalaxx;Darkshore;367):2 #25666(auto inside tower of althalaxx;Darkshore;449):5
+#22450 | auto Darkshore;386§auto Dunkelküste;386§auto Sombrivage;386 | x=6443.89990234375 y=498.5 | size=1 | links=#5394(auto Darkshore;99):12 #20212(auto Darkshore;351):13
+#22602 | auto Darkshore;387§auto Dunkelküste;387§auto Sombrivage;387 | x=7412.60009765625 y=-926.9000244140625 | size=1 | links=o13873.13:9 c2181.19:11
+#22660 | auto Darkshore;388§auto Dunkelküste;388§auto Sombrivage;388 | x=7487.7001953125 y=-865.1000366210938 | size=1 | links=#4976(auto Darkshore;87):15 c2181.22:14
+#22762 | auto Inside Inn;Darkshore;389§auto Drinnen Gasthaus;Dunkelküste;389§auto Inside Inn;Sombrivage;389 | x=6389 y=532 | size=1 | links=#12811(central location;inn;Auberdine;Darkshore):18 #17419(auto Inside Inn;Darkshore;301):10 #17728(auto Darkshore;313):21 c4190.1:7 c4200.1:10
+#22863 | auto Darkshore;390§auto Dunkelküste;390§auto Sombrivage;390 | x=5038.60009765625 y=229.5 | size=1 | links=#9140(auto Darkshore;152):103 #19371(auto Darkshore;337):28
+#22871 | auto Darkshore;391§auto Dunkelküste;391§auto Sombrivage;391 | x=6664.39990234375 y=-138.6999969482422 | size=1 | links=#26169(auto Darkshore;461):13 c2190.7:18 c2190.9:8
+#22915 | auto Darkshore;392§auto Dunkelküste;392§auto Sombrivage;392 | x=7049.30029296875 y=-513.5 | size=1 | links=#1925(auto Darkshore;36):18 #27562(auto Darkshore;488):22
+#23008 | auto inside tower of althalaxx;Darkshore;393§auto drinnen turm von althalaxx;Dunkelküste;393§auto inside tower of althalaxx;Sombrivage;393 | x=7204.30029296875 y=-747.1000366210938 | size=1 | links=#6866(auto inside tower of althalaxx;Darkshore;122):6 #25388(auto inside tower of althalaxx;Darkshore;443):12
+#23021 | auto Darkshore;394§auto Dunkelküste;394§auto Sombrivage;394 | x=6465.30029296875 y=464 | size=1 | links=#3759(auto Darkshore;63):36 #14579(auto Darkshore;250):16
+#23025 | auto Darkshore;395§auto Dunkelküste;395§auto Sombrivage;395 | x=6732.10009765625 y=-510.6000061035156 | size=1 | links=#8938(auto Darkshore;148):27 #11934(auto Darkshore;208):24
+#23047 | auto Darkshore;396§auto Dunkelküste;396§auto Sombrivage;396 | x=4866.574784752696 y=218.0447793965428 | size=1 | links=#5140(auto Darkshore;90):65 #23780(auto Darkshore;412):61
+#23119 | auto Darkshore;397§auto Dunkelküste;397§auto Sombrivage;397 | x=5870.89990234375 y=291 | size=1 | links=#17989(auto Darkshore;318):15 c2167.2:16
+#23224 | central location;Auberdine;Darkshore§zentralpunkt;Auberdine;Dunkelküste§emplacement central;Auberdine;Sombrivage | x=6442.10009765625 y=408.1000061035156 | size=1 | links=#13212(auto Darkshore;228):26 #19563(auto Darkshore;341):11 #20195(auto Darkshore;350):17 c3701.1:11 c8997.1:25
+#23239 | auto Darkshore;398§auto Dunkelküste;398§auto Sombrivage;398 | x=6938 y=-286 | size=1 | links=#1341(auto Darkshore;23):65 #18578(auto Darkshore;329):57
+#23252 | auto Darkshore;399§auto Dunkelküste;399§auto Sombrivage;399 | x=4975.60009765625 y=102.9000015258789 | size=1 | links=#90(auto Darkshore;3):38 #16713(auto Darkshore;287):16 #26185(auto Darkshore;462):27
+#23262 | auto inside tower of althalaxx;Darkshore;400§auto drinnen turm von althalaxx;Dunkelküste;400§auto inside tower of althalaxx;Sombrivage;400 | x=7207.2001953125 y=-726.9000244140625 | size=1 | links=#1278(auto inside tower of althalaxx;Darkshore;20):10 #27118(auto inside tower of althalaxx;Darkshore;483):5
+#23295 | auto Darkshore;401§auto Dunkelküste;401§auto Sombrivage;401 | x=4622.10009765625 y=34.70000076293945 | size=1 | links=#4725(auto Darkshore;82):21 c2170.11:10
+#23302 | auto inside tower of althalaxx;Darkshore;402§auto drinnen turm von althalaxx;Dunkelküste;402§auto inside tower of althalaxx;Sombrivage;402 | x=7196.7001953125 y=-740.2999877929688 | size=1 | links=#17923(auto inside tower of althalaxx;Darkshore;317):3 #24188(auto inside tower of althalaxx;Darkshore;421):3
+#23364 | auto Darkshore;403§auto Dunkelküste;403§auto Sombrivage;403 | x=7266.10009765625 y=-283.8999938964844 | size=1 | links=#10956(auto Darkshore;189):16 #27804(auto Darkshore;494):22
+#23404 | auto Darkshore;404§auto Dunkelküste;404§auto Sombrivage;404 | x=6389 y=513.7000122070312 | size=1 | links=#17419(auto Inside Inn;Darkshore;301):8 #28194(auto Darkshore;503):9
+#23486 | auto Darkshore;405§auto Dunkelküste;405§auto Sombrivage;405 | x=4454.329506868417 y=-5.441699209097139 | size=1 | links=#27845(auto Darkshore;495):15 c2169.3:11 c2169.5:19
+#23500 | auto Darkshore;406§auto Dunkelküste;406§auto Sombrivage;406 | x=5351.706959204879 y=277.6888793310615 | size=1 | links=#5214(auto Darkshore;92):55 #8992(auto Darkshore;149):52
+#23559 | auto Darkshore;407§auto Dunkelküste;407§auto Sombrivage;407 | x=6207.80029296875 y=322.8000183105469 | size=1 | links=#11094(crossing;Darkshore):96 #12700(auto Darkshore;220):70 #18135(auto Darkshore;321):192 c2163.80:68
+#23562 | auto Darkshore;408§auto Dunkelküste;408§auto Sombrivage;408 | x=7158.2001953125 y=-449.7000122070313 | size=1 | links=#11843(auto Darkshore;206):56 #28425(auto Darkshore;507):49
+#23638 | auto Darkshore;409§auto Dunkelküste;409§auto Sombrivage;409 | x=6730.5 y=-53 | size=1 | links=#12123(auto Darkshore;212):26 c2212.6:19
+#23700 | auto Darkshore;410§auto Dunkelküste;410§auto Sombrivage;410 | x=4535.743276024482 y=368.9580390305681 | size=1 | links=c2339.6:30 c2339.12:19
+#23704 | auto inside tower of althalaxx;Darkshore;411§auto drinnen turm von althalaxx;Dunkelküste;411§auto inside tower of althalaxx;Sombrivage;411 | x=7199.7001953125 y=-733 | size=1 | links=#15956(auto inside tower of althalaxx;Darkshore;277):6 #26024(auto inside tower of althalaxx;Darkshore;457):8
+#23780 | auto Darkshore;412§auto Dunkelküste;412§auto Sombrivage;412 | x=4928.105976352988 y=218.0447793965428 | size=1 | links=#307(auto Darkshore;8):53 #14983(auto Darkshore;257):33 #23047(auto Darkshore;396):61
+#23802 | auto Darkshore;413§auto Dunkelküste;413§auto Sombrivage;413 | x=4451.659984177732 y=113.7750664269085 | size=1 | links=#3927(auto Darkshore;64):42 c12298.31:21
+#23824 | auto Darkshore;414§auto Dunkelküste;414§auto Sombrivage;414 | x=6378.10009765625 y=561.1000366210938 | size=1 | links=#26987(auto Darkshore;481):18 c10216.1:17
+#23852 | auto Darkshore;415§auto Dunkelküste;415§auto Sombrivage;415 | x=7415.60009765625 y=-820.2000122070312 | size=1 | links=#657(auto Darkshore;10):14 #1918(auto Darkshore;35):26 c2181.23:20 c2181.25:9
+#23877 | auto Darkshore;416§auto Dunkelküste;416§auto Sombrivage;416 | x=5638.7001953125 y=128 | size=1 | links=c2184.1:26 c2177.10:48 c2178.13:12 c2178.14:16
+#24002 | crossing;ship;Mist's Edge;Darkshore§kreuzungspunkt;schiff;Nebelrand;Dunkelküste§traversée;ship;Mist's Edge;Sombrivage | x=6498.60009765625 y=793.4000244140625 | size=1 | links=#6557(auto On pier;Darkshore;119):66 #19356(pier;from;Mist's Edge;Darkshore;to;Darnassus):81 #45236(pier;from;The Long Wash; Darkshore;to;Menethil Harbor, Wetlands):77 c12656.1:9
+#24045 | auto inside cliffspring falls;Darkshore;417§auto drinnen klippenquellfälle;Dunkelküste;417§auto inside cliffspring falls;Sombrivage;417 | x=6802.7001953125 y=-658.1000366210938 | size=1 | links=c2179.4:7 c2180.17:18
+#24145 | auto inside cliffspring falls;Darkshore;418§auto drinnen klippenquellfälle;Dunkelküste;418§auto inside cliffspring falls;Sombrivage;418 | x=6847 y=-669.7999877929688 | size=1 | links=#26307(auto inside cliffspring falls;Darkshore;464):10 c2180.18:11
+#24158 | auto inside tower of althalaxx;Darkshore;419§auto drinnen turm von althalaxx;Dunkelküste;419§auto inside tower of althalaxx;Sombrivage;419 | x=7183.30029296875 y=-738.5 | size=1 | links=#4041(auto inside tower of althalaxx;Darkshore;67):9 #18381(auto inside tower of althalaxx;Darkshore;326):7
+#24165 | auto Darkshore;420§auto Dunkelküste;420§auto Sombrivage;420 | x=4691 y=557.2000122070312 | size=1 | links=#2453(auto Darkshore;43):28 #15131(auto Darkshore;261):13
+#24188 | auto inside tower of althalaxx;Darkshore;421§auto drinnen turm von althalaxx;Dunkelküste;421§auto inside tower of althalaxx;Sombrivage;421 | x=7198.89990234375 y=-737.7000122070312 | size=1 | links=#16581(auto inside tower of althalaxx;Darkshore;285):2 #23302(auto inside tower of althalaxx;Darkshore;402):3
+#24250 | auto Darkshore;422§auto Dunkelküste;422§auto Sombrivage;422 | x=7325.7001953125 y=-922.5 | size=1 | links=#6259(auto Darkshore;117):13 #24577(auto Darkshore;427):12
+#24338 | auto Darkshore;423§auto Dunkelküste;423§auto Sombrivage;423 | x=4542.5 y=33.90000152587891 | size=1 | links=#3147(auto Darkshore;56):10 c721.2:35
+#24501 | auto Darkshore;424§auto Dunkelküste;424§auto Sombrivage;424 | x=7460.10009765625 y=-996 | size=1 | links=#3447(auto Darkshore;60):24 #22103(auto Darkshore;382):25 o13873.1:17 c2183.6:29 c2183.8:14
+#24527 | auto Darkshore;425§auto Dunkelküste;425§auto Sombrivage;425 | x=4532.10009765625 y=129.5 | size=1 | links=#10959(auto Darkshore;190):37 #21014(auto Darkshore;370):26 c2170.2:22 c2171.4:23
+#24552 | auto Darkshore;426§auto Dunkelküste;426§auto Sombrivage;426 | x=5704.30029296875 y=123.4000015258789 | size=1 | links=#20506(auto Darkshore;361):39 c2178.1:14 c2184.1:39
+#24577 | auto Darkshore;427§auto Dunkelküste;427§auto Sombrivage;427 | x=7325.2001953125 y=-934.7000122070312 | size=1 | links=#5597(auto Darkshore;105):6 #24250(auto Darkshore;422):12
+#24627 | auto Darkshore;428§auto Dunkelküste;428§auto Sombrivage;428 | x=7353.60009765625 y=-910.6000366210938 | size=1 | links=#5175(auto Darkshore;91):11 #26540(auto Darkshore;469):17 c2182.13:17
+#24698 | entry and exit;Tower of Althalaxx;Darkshore§ein- und ausgang;Turm von Althalaxx;Dunkelküste§entrée et sortie;Tower of Althalaxx;Sombrivage | x=7177.7001953125 y=-760.4000244140625 | size=1 | links=#20720(auto inside tower of althalaxx;Darkshore;364):3 c2336.21:3
+#24703 | auto Darkshore;429§auto Dunkelküste;429§auto Sombrivage;429 | x=7169.30029296875 y=-150 | size=1 | links=#236(auto Darkshore;6):37 #15758(auto Darkshore;273):112 c2321.79:47
+#24747 | auto Darkshore;430§auto Dunkelküste;430§auto Sombrivage;430 | x=5916 y=243.3000030517578 | size=1 | links=#17088(auto Darkshore;295):40 #18135(auto Darkshore;321):111
+#24866 | auto Darkshore;431§auto Dunkelküste;431§auto Sombrivage;431 | x=4805.89990234375 y=254.1000061035156 | size=1 | links=#5140(auto Darkshore;90):30 #25893(auto Darkshore;452):38
+#24868 | auto inside tower of althalaxx;Darkshore;432§auto drinnen turm von althalaxx;Dunkelküste;432§auto inside tower of althalaxx;Sombrivage;432 | x=7195.7001953125 y=-724.1000366210938 | size=1 | links=#27118(auto inside tower of althalaxx;Darkshore;483):7 c3660.1:12
+#24882 | auto Darkshore;433§auto Dunkelküste;433§auto Sombrivage;433 | x=7146.30029296875 y=-831.7000122070312 | size=1 | links=#12548(auto Darkshore;216):38 #25484(auto Darkshore;445):24
+#24898 | auto Darkshore;434§auto Dunkelküste;434§auto Sombrivage;434 | x=4426.10009765625 y=707.7999877929688 | size=1 | links=#936(auto Darkshore;13):6 #6110(auto Darkshore;114):5
+#24920 | auto inside cliffspring falls;Darkshore;435§auto drinnen klippenquellfälle;Dunkelküste;435§auto inside cliffspring falls;Sombrivage;435 | x=6848.10009765625 y=-694 | size=1 | links=#1452(auto inside cliffspring falls;Darkshore;25):14 c2179.8:6
+#24982 | auto Darkshore;436§auto Dunkelküste;436§auto Sombrivage;436 | x=7364.7001953125 y=-935.2999877929688 | size=1 | links=#1326(auto Darkshore;22):7 #5505(auto Darkshore;101):11
+#25035 | auto Darkshore;437§auto Dunkelküste;437§auto Sombrivage;437 | x=6610.80029296875 y=-89.9000015258789 | size=1 | links=c2212.2:25 c2190.3:7 c2190.4:23 c2190.12:25
+#25123 | auto Darkshore;438§auto Dunkelküste;438§auto Sombrivage;438 | x=4645.625209105438 y=829.5666548217422 | size=1 | links=#1319(auto Darkshore;21):33 c2233.2:32
+#25146 | auto inside cliffspring falls;Darkshore;439§auto drinnen klippenquellfälle;Dunkelküste;439§auto inside cliffspring falls;Sombrivage;439 | x=6838.2001953125 y=-792.9000244140625 | size=1 | links=#20239(auto inside cliffspring falls;Darkshore;353):12 c2179.6:8
+#25150 | auto Darkshore;440§auto Dunkelküste;440§auto Sombrivage;440 | x=6448.60009765625 y=379.3000183105469 | size=1 | links=#3945(auto Darkshore;65):11 #17735(auto Darkshore;314):11
+#25217 | auto Darkshore;441§auto Dunkelküste;441§auto Sombrivage;441 | x=5030.10009765625 y=278.2000122070313 | size=1 | links=#7387(auto Darkshore;127):26 #14110(auto Darkshore;238):22
+#25348 | auto Darkshore;442§auto Dunkelküste;442§auto Sombrivage;442 | x=4845.358920961443 y=153.4815434519266 | size=1 | links=#9648(auto Darkshore;166):54 #27684(auto Darkshore;491):22
+#25388 | auto inside tower of althalaxx;Darkshore;443§auto drinnen turm von althalaxx;Dunkelküste;443§auto inside tower of althalaxx;Sombrivage;443 | x=7194.7001953125 y=-738.5 | size=1 | links=#9741(auto inside tower of althalaxx;Darkshore;167):3 #23008(auto inside tower of althalaxx;Darkshore;393):12
+#25469 | auto Darkshore;444§auto Dunkelküste;444§auto Sombrivage;444 | x=6496 y=171.6999969482422 | size=1 | links=#4212(auto Darkshore;71):179 #12691(auto Darkshore;219):99
+#25484 | auto Darkshore;445§auto Dunkelküste;445§auto Sombrivage;445 | x=7168 y=-820.9000244140625 | size=1 | links=#24882(auto Darkshore;433):24 #25651(auto Darkshore;447):21
+#25486 | auto Darkshore;446§auto Dunkelküste;446§auto Sombrivage;446 | x=5764.10009765625 y=266.8999938964844 | size=1 | links=#5645(auto Darkshore;107):15 #25936(auto Darkshore;453):22
+#25651 | auto Darkshore;447§auto Dunkelküste;447§auto Sombrivage;447 | x=7186.60009765625 y=-831.7999877929688 | size=1 | links=#15811(auto Darkshore;274):17 #25484(auto Darkshore;445):21
+#25658 | auto Darkshore;448§auto Dunkelküste;448§auto Sombrivage;448 | x=7447.89990234375 y=-854.4000244140625 | size=1 | links=#9582(auto Darkshore;163):15 #11838(auto Darkshore;205):16
+#25666 | auto inside tower of althalaxx;Darkshore;449§auto drinnen turm von althalaxx;Dunkelküste;449§auto inside tower of althalaxx;Sombrivage;449 | x=7194.10009765625 y=-721.7999877929688 | size=1 | links=#19505(auto inside tower of althalaxx;Darkshore;340):11 #22394(auto inside tower of althalaxx;Darkshore;385):5
+#25705 | auto Darkshore;450§auto Dunkelküste;450§auto Sombrivage;450 | x=7353 y=-923.5 | size=1 | links=#5505(auto Darkshore;101):9 #10047(auto Darkshore;170):8
+#25767 | auto inside tower of althalaxx;Darkshore;451§auto drinnen turm von althalaxx;Dunkelküste;451§auto inside tower of althalaxx;Sombrivage;451 | x=7184.89990234375 y=-745 | size=1 | links=#4439(auto inside tower of althalaxx;Darkshore;78):8 #9634(auto inside tower of althalaxx;Darkshore;165):7
+#25893 | auto Darkshore;452§auto Dunkelküste;452§auto Sombrivage;452 | x=4804.30029296875 y=292.8999938964844 | size=1 | links=#24866(auto Darkshore;431):38 #27421(auto Darkshore;486):54 c2165.7:13 c2323.39:12
+#25936 | auto Darkshore;453§auto Dunkelküste;453§auto Sombrivage;453 | x=5765 y=244.5 | size=1 | links=#25486(auto Darkshore;446):22 c2176.4:21
+#25955 | auto Darkshore;454§auto Dunkelküste;454§auto Sombrivage;454 | x=7230.5 y=-425.1000061035156 | size=1 | links=#105(auto Darkshore;4):31 #28425(auto Darkshore;507):27
+#25976 | auto Darkshore;455§auto Dunkelküste;455§auto Sombrivage;455 | x=4778.30029296875 y=485 | size=1 | links=#21317(auto Darkshore;374):46 c2165.4:27
+#26005 | auto Darkshore;456§auto Dunkelküste;456§auto Sombrivage;456 | x=5763.7001953125 y=291.6000061035156 | size=1 | links=#5645(auto Darkshore;107):16 #12719(auto Darkshore;221):45 #15035(auto Darkshore;258):55
+#26024 | auto inside tower of althalaxx;Darkshore;457§auto drinnen turm von althalaxx;Dunkelküste;457§auto inside tower of althalaxx;Sombrivage;457 | x=7193.7001953125 y=-738.2999877929688 | size=1 | links=#20023(auto inside tower of althalaxx;Darkshore;346):4 #23704(auto inside tower of althalaxx;Darkshore;411):8
+#26064 | auto Darkshore;458§auto Dunkelküste;458§auto Sombrivage;458 | x=4674.89990234375 y=335.1000061035156 | size=1 | links=#3114(auto Darkshore;55):25 #21547(auto Darkshore;378):30
+#26099 | auto Darkshore;459§auto Dunkelküste;459§auto Sombrivage;459 | x=7313.89990234375 y=-851.6000366210938 | size=1 | links=#11053(auto Darkshore;192):15 #19965(auto Darkshore;344):34
+#26113 | auto Darkshore;460§auto Dunkelküste;460§auto Sombrivage;460 | x=4679.60009765625 y=585.7000122070312 | size=1 | links=#15131(auto Darkshore;261):17 c2917.1:15
+#26169 | auto Darkshore;461§auto Dunkelküste;461§auto Sombrivage;461 | x=6674.30029296875 y=-148.1999969482422 | size=1 | links=#22871(auto Darkshore;391):13 c2212.5:15
+#26185 | auto Darkshore;462§auto Dunkelküste;462§auto Sombrivage;462 | x=4994.5 y=83.0999984741211 | size=1 | links=#23252(auto Darkshore;399):27 c3616.1:9 c4194.1:11 c4195.1:7
+#26253 | auto Darkshore;463§auto Dunkelküste;463§auto Sombrivage;463 | x=4606.43163094107 y=430.6701515918521 | size=1 | links=#12925(auto Darkshore;224):17 c2338.3:18
+#26307 | auto inside cliffspring falls;Darkshore;464§auto drinnen klippenquellfälle;Dunkelküste;464§auto inside cliffspring falls;Sombrivage;464 | x=6838.60009765625 y=-663.9000244140625 | size=1 | links=#24145(auto inside cliffspring falls;Darkshore;418):10 c2179.10:4 c2180.17:18
+#26434 | auto Darkshore;465§auto Dunkelküste;465§auto Sombrivage;465 | x=7159.80029296875 y=-743.7000122070312 | size=1 | links=#13738(auto Darkshore;235):16 c2336.18:16
+#26487 | auto Darkshore;466§auto Dunkelküste;466§auto Sombrivage;466 | x=4571.80029296875 y=691.7000122070312 | size=1 | links=#9108(auto Darkshore;151):18 c2323.9:28
+#26497 | auto Darkshore;467§auto Dunkelküste;467§auto Sombrivage;467 | x=4771.611272045346 y=120.6176326089001 | size=1 | links=#2888(auto Darkshore;50):11 #9648(auto Darkshore;166):26 c2237.20:21
+#26514 | auto Darkshore;468§auto Dunkelküste;468§auto Sombrivage;468 | x=4659.61376197337 y=94.93121629141424 | size=1 | links=#2826(auto Darkshore;49):14 #11187(auto Darkshore;193):53 #20998(auto Darkshore;369):41 c2168.1:43 c2170.9:21
+#26540 | auto Darkshore;469§auto Dunkelküste;469§auto Sombrivage;469 | x=7338.7001953125 y=-901.2000122070312 | size=1 | links=#16118(auto Darkshore;280):13 #24627(auto Darkshore;428):17
+#26563 | auto Darkshore;470§auto Dunkelküste;470§auto Sombrivage;470 | x=4396.10009765625 y=211.6999969482422 | size=1 | links=#13059(auto Darkshore;225):151 #19397(auto Darkshore;338):136 #20794(passage;from;Twilight Vale;Darkshore;to;Ashenvale):299 #28539(auto Darkshore;510):39 c2323.55:54
+#26591 | auto Darkshore;471§auto Dunkelküste;471§auto Sombrivage;471 | x=6448.7001953125 y=523.9000244140625 | size=1 | links=#5394(auto Darkshore;99):13 #8291(auto Darkshore;140):11
+#26699 | auto Darkshore;472§auto Dunkelküste;472§auto Sombrivage;472 | x=6662.30029296875 y=511 | size=1 | links=#15121(auto Darkshore;259):25 #15303(auto Darkshore;266):54 c2231.46:17
+#26702 | auto Darkshore;473§auto Dunkelküste;473§auto Sombrivage;473 | x=6647.80029296875 y=-67 | size=1 | links=c2190.12:20 c2190.15:12
+#26738 | auto inside cliffspring falls;Darkshore;474§auto drinnen klippenquellfälle;Dunkelküste;474§auto inside cliffspring falls;Sombrivage;474 | x=6803.39990234375 y=-766.9000244140625 | size=1 | links=c7017.2:4 c2180.7:16 o11714.14:7 c2339.16:6
+#26743 | auto inside cliffspring falls;Darkshore;475§auto drinnen klippenquellfälle;Dunkelküste;475§auto inside cliffspring falls;Sombrivage;475 | x=6779.89990234375 y=-668.5 | size=1 | links=#2111(auto inside cliffspring falls;Darkshore;39):7 c2179.4:17
+#26790 | auto Darkshore;476§auto Dunkelküste;476§auto Sombrivage;476 | x=4636.7001953125 y=428.2000122070313 | size=1 | links=#14851(auto Darkshore;254):34 #18948(auto Darkshore;332):26
+#26821 | auto Darkshore;477§auto Dunkelküste;477§auto Sombrivage;477 | x=5631.80029296875 y=175.4000091552734 | size=1 | links=o16393.1:9 c2178.12:6
+#26881 | auto Darkshore;478§auto Dunkelküste;478§auto Sombrivage;478 | x=4319.399365020879 y=297.8349868095407 | size=1 | links=#5552(auto Darkshore;104):43 #21500(auto Darkshore;377):52
+#26904 | auto Darkshore;479§auto Dunkelküste;479§auto Sombrivage;479 | x=6096.30029296875 y=163.1999969482422 | size=5 | links=#2362(auto Darkshore;42):65 c10158.17:45
+#26985 | auto Darkshore;480§auto Dunkelküste;480§auto Sombrivage;480 | x=6440.89990234375 y=364.8000183105469 | size=1 | links=#3945(auto Darkshore;65):11 #20195(auto Darkshore;350):40 c3693.1:6
+#26987 | auto Darkshore;481§auto Dunkelküste;481§auto Sombrivage;481 | x=6374.7001953125 y=543 | size=1 | links=#16426(auto Darkshore;283):2 #23824(auto Darkshore;414):18
+#27118 | auto inside tower of althalaxx;Darkshore;483§auto drinnen turm von althalaxx;Dunkelküste;483§auto inside tower of althalaxx;Sombrivage;483 | x=7203 y=-723.6000366210938 | size=1 | links=#23262(auto inside tower of althalaxx;Darkshore;400):5 #24868(auto inside tower of althalaxx;Darkshore;432):7
+#27259 | auto Darkshore;484§auto Dunkelküste;484§auto Sombrivage;484 | x=6304.60009765625 y=407.5 | size=5 | links=#11094(crossing;Darkshore):91 #13202(auto Darkshore;227):51
+#27306 | Lunaclaw Spirit;class quest;druid§Geist von Mondklaue;klassenquest;druide§Esprit de Lunegriffe;class quest;druid | x=6328.7001953125 y=98.5 | size=1 | links=#6781(cave;druid;class quest;entry and exit):32 #8967(quest target;class quest;druid;Darkshore):7
+#27373 | auto Darkshore;485§auto Dunkelküste;485§auto Sombrivage;485 | x=6863.5 y=-491.1000061035156 | size=1 | links=o3705.5:29 c2169.7:25 c2169.8:19 c2169.10:12 c2169.11:31 c2168.14:24 c2168.15:26 c2168.17:9
+#27421 | auto Darkshore;486§auto Dunkelküste;486§auto Sombrivage;486 | x=4789 y=345 | size=1 | links=#84(auto Darkshore;2):60 #25893(auto Darkshore;452):54 c2237.9:18 c2165.11:20 c2165.13:24
+#27548 | auto Darkshore;487§auto Dunkelküste;487§auto Sombrivage;487 | x=7019.60009765625 y=-520.6000366210938 | size=1 | links=#16548(auto Darkshore;284):25 #27562(auto Darkshore;488):7
+#27562 | auto Darkshore;488§auto Dunkelküste;488§auto Sombrivage;488 | x=7026.80029296875 y=-518 | size=1 | links=#22915(auto Darkshore;392):22 #27548(auto Darkshore;487):7
+#27588 | auto Darkshore;489§auto Dunkelküste;489§auto Sombrivage;489 | x=7288.5 y=-702 | size=1 | links=#9434(auto Darkshore;160):34 #18923(auto Darkshore;331):34
+#27619 | auto Darkshore;490§auto Dunkelküste;490§auto Sombrivage;490 | x=7140.30029296875 y=322.7000122070313 | size=1 | links=#12398(auto Darkshore;214):15 #21825(auto Darkshore;381):8
+#27684 | auto Darkshore;491§auto Dunkelküste;491§auto Sombrivage;491 | x=4867.39990234375 y=157 | size=1 | links=#10998(auto Darkshore;191):59 #25348(auto Darkshore;442):22
+#27754 | auto inside cliffspring falls;Darkshore;492§auto drinnen klippenquellfälle;Dunkelküste;492§auto inside cliffspring falls;Sombrivage;492 | x=6767.10009765625 y=-690.7999877929688 | size=1 | links=#2111(auto inside cliffspring falls;Darkshore;39):19 c2179.3:7
+#27763 | auto Darkshore;493§auto Dunkelküste;493§auto Sombrivage;493 | x=7459.80029296875 y=-295.5 | size=1 | links=#10724(auto water;Darkshore;185):113 #14439(auto Darkshore;244):64
+#27804 | auto Darkshore;494§auto Dunkelküste;494§auto Sombrivage;494 | x=7287.7001953125 y=-290.6000061035156 | size=1 | links=#4201(auto Darkshore;70):21 #23364(auto Darkshore;403):22
+#27845 | auto Darkshore;495§auto Dunkelküste;495§auto Sombrivage;495 | x=4447.356354604777 y=8.615826383132354 | size=1 | links=#23486(auto Darkshore;405):15 c2169.4:17
+#27898 | auto Darkshore;496§auto Dunkelküste;496§auto Sombrivage;496 | x=6717.80029296875 y=-14.5 | size=1 | links=#2937(auto Darkshore;53):21 c2189.17:30
+#27931 | auto Darkshore;497§auto Dunkelküste;497§auto Sombrivage;497 | x=6074.7001953125 y=71.5 | size=1 | links=c10158.5:43 c10160.5:43 c10158.10:44
+#27960 | auto Darkshore;498§auto Dunkelküste;498§auto Sombrivage;498 | x=7325.2001953125 y=-947.7999877929688 | size=1 | links=#5262(auto Darkshore;93):13 #5597(auto Darkshore;105):6
+#27990 | auto Darkshore;499§auto Dunkelküste;499§auto Sombrivage;499 | x=4297.741163477298 y=540.600238896562 | size=1 | links=c2323.5:36 c2323.32:21
+#28020 | auto Darkshore;500§auto Dunkelküste;500§auto Sombrivage;500 | x=4780.5 y=610.6000366210938 | size=1 | links=#12908(auto Darkshore;223):37 c2323.43:57
+#28029 | auto Darkshore;501§auto Dunkelküste;501§auto Sombrivage;501 | x=6660.7001953125 y=-4.5 | size=1 | links=c2189.6:20 c2190.10:25
+#28167 | auto Darkshore;502§auto Dunkelküste;502§auto Sombrivage;502 | x=7136.80029296875 y=336.7000122070313 | size=1 | links=#21825(auto Darkshore;381):5 o175166.1:9 c2203.4:4
+#28194 | auto Darkshore;503§auto Dunkelküste;503§auto Sombrivage;503 | x=6385.89990234375 y=504.7000122070313 | size=1 | links=#7833(auto Darkshore;135):18 #23404(auto Darkshore;404):9
+#28310 | auto Darkshore;504§auto Dunkelküste;504§auto Sombrivage;504 | x=4947.7001953125 y=467.8999938964844 | size=1 | links=#12069(auto Darkshore;210):60 #12089(auto Darkshore;211):39
+#28337 | auto Darkshore;505§auto Dunkelküste;505§auto Sombrivage;505 | x=7252.2001953125 y=-500.7000122070313 | size=1 | links=#954(auto Darkshore;14):59 #10144(auto Darkshore;174):71
+#28366 | auto Darkshore;506§auto Dunkelküste;506§auto Sombrivage;506 | x=4372.92018213417 y=58.58985675042448 | size=1 | links=#3927(auto Darkshore;64):54 #8876(auto Darkshore;147):39 #9046(auto Darkshore;150):62
+#28425 | auto Darkshore;507§auto Dunkelküste;507§auto Sombrivage;507 | x=7204 y=-431.2000122070313 | size=1 | links=#23562(auto Darkshore;408):49 #25955(auto Darkshore;454):27
+#28427 | well;Auberdine;Darkshore§brunnen;Auberdine;Dunkelküste§well;Auberdine;Sombrivage | x=6412.89990234375 y=467.6000061035156 | size=1 | links=#10877(auto Darkshore;187):21
+#28479 | auto Darkshore;508§auto Dunkelküste;508§auto Sombrivage;508 | x=4753.10009765625 y=234.1999969482422 | size=1 | links=#5140(auto Darkshore;90):49 #13235(auto Darkshore;229):102
+#28521 | auto Darkshore;509§auto Dunkelküste;509§auto Sombrivage;509 | x=7398.80029296875 y=-854.2999877929688 | size=1 | links=#13466(auto Darkshore;233):29 c7016.1:9 c2182.17:25 c2181.23:18
+#28539 | auto Darkshore;510§auto Dunkelküste;510§auto Sombrivage;510 | x=4379.02635556135 y=247.4461214020973 | size=1 | links=#5552(auto Darkshore;104):35 #26563(auto Darkshore;470):39
+#28606 | s;u;Mailbox;Darkshore§s;u;Briefkasten;Dunkelküste§s;u;Boîte aux lettres;Sombrivage | x=6420.7333984375 y=498.5164794921875 | size=1 | links=#9609(auto Darkshore;164):7
+#43551 | auto Darkshore;511§auto Dunkelküste;511§auto Sombrivage;511 | x=6905.5 y=175.4000091552734 | size=1 | links=#12065(auto Darkshore;209):41 #43552(auto Darkshore;512):47
+#43552 | auto Darkshore;512§auto Dunkelküste;512§auto Sombrivage;512 | x=6948.60009765625 y=155.6000061035156 | size=1 | links=#43551(auto Darkshore;511):47 #43553(auto Darkshore;513):43
+#43553 | auto Darkshore;513§auto Dunkelküste;513§auto Sombrivage;513 | x=6991.7001953125 y=156.4000091552734 | size=1 | links=#43552(auto Darkshore;512):43 #43554(auto Darkshore;514):50
+#43554 | auto Darkshore;514§auto Dunkelküste;514§auto Sombrivage;514 | x=7039.30029296875 y=172.6000061035156 | size=1 | links=#43553(auto Darkshore;513):50 #43555(auto Darkshore;515):29 c2232.18:13
+#43555 | auto Darkshore;515§auto Dunkelküste;515§auto Sombrivage;515 | x=7065.60009765625 y=185.5 | size=1 | links=#43554(auto Darkshore;514):29 o17183.1:19
+#43556 | auto Darkshore;516§auto Dunkelküste;516§auto Sombrivage;516 | x=7138.89990234375 y=185.5 | size=1 | links=c2232.10:29 c2232.15:44
+#43557 | auto Darkshore;517§auto Dunkelküste;517§auto Sombrivage;517 | x=7285.60009765625 y=-650.2000122070312 | size=1 | links=#12623(auto Darkshore;217):24 #43558(auto Darkshore;518):30
+#43558 | auto Darkshore;518§auto Dunkelküste;518§auto Sombrivage;518 | x=7310.2001953125 y=-632.4000244140625 | size=1 | links=#43557(auto Darkshore;517):30 #43559(auto Darkshore;519):31
+#43559 | auto Darkshore;519§auto Dunkelküste;519§auto Sombrivage;519 | x=7322 y=-603.7000122070312 | size=1 | links=#43558(auto Darkshore;518):31 #43560(auto Darkshore;520):30
+#43560 | auto Darkshore;520§auto Dunkelküste;520§auto Sombrivage;520 | x=7337.10009765625 y=-576.7999877929688 | size=1 | links=#43559(auto Darkshore;519):30 #43561(auto Darkshore;521):15
+#43561 | auto Darkshore;521§auto Dunkelküste;521§auto Sombrivage;521 | x=7347.60009765625 y=-566 | size=1 | links=#43560(auto Darkshore;520):15 #43562(auto Darkshore;522):29
+#43562 | auto Darkshore;522§auto Dunkelküste;522§auto Sombrivage;522 | x=7348.2001953125 y=-536.2000122070312 | size=1 | links=#43561(auto Darkshore;521):29 #43563(auto Darkshore;523):43
+#43563 | auto Darkshore;523§auto Dunkelküste;523§auto Sombrivage;523 | x=7382.80029296875 y=-509.5 | size=1 | links=#43562(auto Darkshore;522):43 #43564(auto Darkshore;524):38
+#43564 | auto Darkshore;524§auto Dunkelküste;524§auto Sombrivage;524 | x=7421.39990234375 y=-510.8999938964844 | size=1 | links=#43563(auto Darkshore;523):38 #43565(auto Darkshore;525):53 c2233.7:30
+#43565 | auto Darkshore;525§auto Dunkelküste;525§auto Sombrivage;525 | x=7473.89990234375 y=-518.9000244140625 | size=1 | links=#43564(auto Darkshore;524):53 #43566(auto Darkshore;526):46 #43567(auto Darkshore;527):47 c2233.11:7
+#43566 | auto Darkshore;526§auto Dunkelküste;526§auto Sombrivage;526 | x=7517.30029296875 y=-534.7000122070312 | size=1 | links=#43565(auto Darkshore;525):46 o176196.1:26 c2233.6:17
+#43567 | auto Darkshore;527§auto Dunkelküste;527§auto Sombrivage;527 | x=7493.89990234375 y=-561.7000122070312 | size=1 | links=#43565(auto Darkshore;525):47 #43568(auto Darkshore;528):57
+#43568 | auto Darkshore;528§auto Dunkelküste;528§auto Sombrivage;528 | x=7503.2001953125 y=-618.2000122070312 | size=1 | links=#43567(auto Darkshore;527):57 #43569(auto Darkshore;529):60
+#43569 | auto Darkshore;529§auto Dunkelküste;529§auto Sombrivage;529 | x=7504.30029296875 y=-678.2999877929688 | size=1 | links=#43568(auto Darkshore;528):60 #43570(auto Darkshore;530):29
+#43570 | auto Darkshore;530§auto Dunkelküste;530§auto Sombrivage;530 | x=7522.5 y=-701.5 | size=1 | links=#43569(auto Darkshore;529):29 c6669.1:17
+#43571 | auto Darkshore;531§auto Dunkelküste;531§auto Sombrivage;531 | x=7553.80029296875 y=-725.7000122070312 | size=1 | links=#43572(auto Darkshore;532):32 c6669.1:22
+#43572 | auto Darkshore;532§auto Dunkelküste;532§auto Sombrivage;532 | x=7585.89990234375 y=-732.2000122070312 | size=1 | links=#43571(auto Darkshore;531):32 #43573(auto Darkshore;533):36 c2236.16:28 c2236.19:21
+#43573 | auto Darkshore;533§auto Dunkelküste;533§auto Sombrivage;533 | x=7622.7001953125 y=-734.9000244140625 | size=1 | links=#43572(auto Darkshore;532):36 #43574(auto Darkshore;534):38 c2236.14:15
+#43574 | auto Darkshore;534§auto Dunkelküste;534§auto Sombrivage;534 | x=7660.30029296875 y=-741.2000122070312 | size=1 | links=#43573(auto Darkshore;533):38 #43575(auto Darkshore;535):36
+#43575 | auto Darkshore;535§auto Dunkelküste;535§auto Sombrivage;535 | x=7692.10009765625 y=-759.9000244140625 | size=1 | links=#43574(auto Darkshore;534):36 #43576(auto Darkshore;536):28
+#43576 | auto Darkshore;536§auto Dunkelküste;536§auto Sombrivage;536 | x=7716 y=-775.7000122070312 | size=1 | links=#43575(auto Darkshore;535):28 #43578(auto Darkshore;538):34
+#43577 | auto Darkshore;537§auto Dunkelküste;537§auto Sombrivage;537 | x=7742.30029296875 y=-775.4000244140625 | size=1 | links=#43578(auto Darkshore;538):15 c6667.1:6
+#43578 | auto Darkshore;538§auto Dunkelküste;538§auto Sombrivage;538 | x=7747 y=-790.5 | size=1 | links=#43576(auto Darkshore;536):34 #43577(auto Darkshore;537):15 c2236.15:17
+#43591 | auto water;Darkshore;539§auto wasser;Dunkelküste;539§auto water;Sombrivage;539 | x=7766.60009765625 y=-745.4000244140625 | size=1 | links=#43592(auto water;Darkshore;540):37 c2236.15:40
+#43592 | auto water;Darkshore;540§auto wasser;Dunkelküste;540§auto water;Sombrivage;540 | x=7766.10009765625 y=-708.2000122070312 | size=1 | links=#43591(auto water;Darkshore;539):37 c2208.7:34 c2207.8:23 c2208.8:34
+#43593 | auto Darkshore;541§auto Dunkelküste;541§auto Sombrivage;541 | x=6254.7001953125 y=20.60000038146973 | size=1 | links=#43594(auto Darkshore;542):51 c10159.2:66
+#43594 | auto Darkshore;542§auto Dunkelküste;542§auto Sombrivage;542 | x=6227.5 y=-23 | size=1 | links=#43593(auto Darkshore;541):51 #43595(auto Darkshore;543):56
+#43595 | auto Darkshore;543§auto Dunkelküste;543§auto Sombrivage;543 | x=6196 y=-69.80000305175781 | size=1 | links=#43594(auto Darkshore;542):56 #43596(auto Darkshore;544):60
+#43596 | auto Darkshore;544§auto Dunkelküste;544§auto Sombrivage;544 | x=6196.80029296875 y=-130.6999969482422 | size=1 | links=#43595(auto Darkshore;543):60 #43597(auto Darkshore;545):17
+#43597 | auto Darkshore;545§auto Dunkelküste;545§auto Sombrivage;545 | x=6196.2001953125 y=-148.1999969482422 | size=1 | links=#43596(auto Darkshore;544):17 o175524.1:14
+#43761 | auto Darkshore;546§auto Dunkelküste;546§auto Sombrivage;546 | x=4282.39990234375 y=1123.400024414063 | size=1 | links=#15888(auto Darkshore;275):42 c3814.12:68
+#45236 | pier;from;The Long Wash; Darkshore;to;Menethil Harbor, Wetlands§Steg;von;Der Lange Strand;Dunkelküste;nach;Menethil Hafen, Sumpfland§pier;de;The Long Wash;Sombrivage;vers;Menethil Harbor, Wetlands | x=6425 y=817 | size=1 | links=#4839(on boat to Menethil Harbor, Wetlands):13 #24002(crossing;ship;Mist's Edge;Darkshore):77
+#47449 | auto On pier;Auberdine;Darkshore;549§auto Auf Steg;Auberdine;Dunkelküste;549§auto On pier;Auberdine;Sombrivage;549 | x=6412.7001953125 y=542.5 | size=1 | links=#12811(central location;inn;Auberdine;Darkshore):17 #47450(auto On pier;Auberdine;Darkshore;550):15 #47451(auto water;Auberdine;Darkshore;551):6
+#47450 | auto On pier;Auberdine;Darkshore;550§auto Auf Steg;Auberdine;Dunkelküste;550§auto On pier;Auberdine;Sombrivage;550 | x=6418.80029296875 y=556.9000244140625 | size=1 | links=#20070(auto On pier;Darkshore;348):43 #47449(auto On pier;Auberdine;Darkshore;549):15 c6086.11:5 c6086.12:3 c6086.13:8
+#47451 | auto water;Auberdine;Darkshore;551§auto wasser;Auberdine;Dunkelküste;551§auto water;Auberdine;Sombrivage;551 | x=6418.7001953125 y=539.6000366210938 | size=1 | links=#47449(auto On pier;Auberdine;Darkshore;549):6 #47452(auto water;Auberdine;Darkshore;552):8
+#47452 | auto water;Auberdine;Darkshore;552§auto wasser;Auberdine;Dunkelküste;552§auto water;Auberdine;Sombrivage;552 | x=6416.39990234375 y=531.6000366210938 | size=1 | links=#47451(auto water;Auberdine;Darkshore;551):8 #47453(auto water;Auberdine;Darkshore;553):6
+#47453 | auto water;Auberdine;Darkshore;553§auto wasser;Auberdine;Dunkelküste;553§auto water;Auberdine;Sombrivage;553 | x=6414.5 y=525 | size=1 | links=#47452(auto water;Auberdine;Darkshore;552):6 #47454(auto water;Auberdine;Darkshore;554):6
+#47454 | auto water;Auberdine;Darkshore;554§auto wasser;Auberdine;Dunkelküste;554§auto water;Auberdine;Sombrivage;554 | x=6412.10009765625 y=518.5 | size=1 | links=#47453(auto water;Auberdine;Darkshore;553):6 c3666.1:6
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c721.1 | links=#4463(auto Darkshore;79):26 #18135(auto Darkshore;321):51
+c2156.1 | links=c2157.1:22 c2157.2:16 c2156.6:24
+c2157.1 | links=c2156.1:22
+c2165.1 | links=c2237.11:63
+c2167.1 | links=c2324.1:21 c2167.3:27 c2324.7:13
+c2168.1 | links=#26514(auto Darkshore;468):43
+c2169.1 | links=c2170.1:38 c2168.3:9
+c2170.1 | links=c2169.1:38 c2168.2:8 c2171.4:22
+c2171.1 | links=c2171.2:13 c2170.3:13 c2170.7:15
+c2172.1 | links=c2323.4:32 c12298.4:16
+c2174.1 | links=c2174.28:76
+c2175.1 | links=#17137(auto Darkshore;297):14 c2163.27:9
+c2176.1 | links=c2176.2:19 c2177.2:35
+c2177.1 | links=c2177.2:31
+c2178.1 | links=#24552(auto Darkshore;426):14
+c2179.1 | links=#217(auto inside cliffspring falls;Darkshore;5):8 c2180.12:27
+c2180.1 | links=#15122(auto inside cliffspring falls;Darkshore;260):5 #17812(auto inside cliffspring falls;Darkshore;315):23
+c2183.1 | links=c2182.3:23
+c2184.1 | links=#23877(auto Darkshore;416):26 #24552(auto Darkshore;426):39 c2178.6:19
+c2185.1 | links=c2185.28:91
+c2186.1 | links=c2167.2:12
+c2187.1 | links=c2208.3:36
+c2189.1 | links=#11368(auto Darkshore;200):10 c2189.8:25
+c2190.1 | links=c2190.2:24
+c2191.1 | links=c2190.23:11
+c2192.1 | links=c2339.5:11 c2339.7:12
+c2201.1 | links=c2202.8:12 c2202.20:20
+c2204.1 | links=o176197.1:10
+c2205.1 | links=c2206.2:11 c2174.21:76
+c2206.1 | links=c2233.12:23 c6145.17:44
+c2212.1 | links=#19646(auto Darkshore;342):19 c2190.6:16
+c2231.1 | links=c3649.1:8 c4183.1:9
+c2232.1 | links=c2232.27:63 c2174.44:64
+c2233.1 | links=#17012(auto Darkshore;294):34 c2233.12:66
+c2234.1 | links=o3662.2:32 c2202.24:29 c2202.25:35
+c2235.1 | links=c2235.14:19
+c2236.1 | links=c2236.3:68 c2236.4:67
+c2237.1 | links=#2009(auto Darkshore;37):24
+c2323.1 | links=#84(auto Darkshore;2):38 c2165.4:52
+c2324.1 | links=c2167.1:21
+c2338.1 | links=#15515(auto Darkshore;268):23 c2339.7:24
+c2339.1 | links=#15515(auto Darkshore;268):10
+c2913.1 | links=#10699(auto Darkshore;184):10
+c2917.1 | links=#26113(auto Darkshore;460):15 c2156.4:19
+c2930.1 | links=#10877(auto Darkshore;187):5
+c3583.1 | links=#9609(auto Darkshore;164):11
+c3584.1 | links=c2339.7:10
+c3616.1 | links=#26185(auto Darkshore;462):9
+c3639.1 | links=#12719(auto Darkshore;221):8
+c3644.1 | links=#20070(auto On pier;Darkshore;348):8
+c3649.1 | links=c2231.1:8
+c3650.1 | links=c2189.15:28
+c3657.1 | links=#17735(auto Darkshore;314):10
+c3660.1 | links=#24868(auto inside tower of althalaxx;Darkshore;432):12
+c3661.1 | links=#1905(auto Darkshore;34):12 #12801(auto Darkshore;222):53
+c3662.1 | links=c2336.7:2
+c3666.1 | links=#47454(auto water;Auberdine;Darkshore;554):6
+c3667.1 | links=c2177.3:21 c2177.14:8
+c3692.1 | links=#9538(auto Darkshore;162):7
+c3693.1 | links=#26985(auto Darkshore;480):6
+c3695.1 | links=#5140(auto Darkshore;90):32 #13445(auto Darkshore;231):53
+c3701.1 | links=#23224(central location;Auberdine;Darkshore):11
+c3702.1 | links=#20483(auto Darkshore;358):20 c4182.1:17 c4186.1:50 c4189.1:30
+c3841.1 | links=c10219.1:18
+c4182.1 | links=c3702.1:17 c4183.1:10
+c4183.1 | links=c2231.1:9 c4182.1:10
+c4185.1 | links=c4193.1:5
+c4186.1 | links=c3702.1:50 c4187.1:6
+c4187.1 | links=c4186.1:6
+c4189.1 | links=c3702.1:30 c4193.1:6
+c4190.1 | links=#22762(auto Inside Inn;Darkshore;389):7
+c4191.1 | links=#4638(auto Inside Inn;Darkshore;80):8 #5495(auto Inside Inn;Darkshore;100):9
+c4192.1 | links=#4638(auto Inside Inn;Darkshore;80):13
+c4193.1 | links=c4185.1:5 c4189.1:6
+c4194.1 | links=#26185(auto Darkshore;462):11
+c4195.1 | links=#26185(auto Darkshore;462):7
+c4200.1 | links=#22762(auto Inside Inn;Darkshore;389):10
+c4307.1 | links=c2234.7:33 c2234.8:39
+c4456.1 | links=#6557(auto On pier;Darkshore;119):5
+c4788.1 | links=#43834(auto Ashenvale;711):9 c4802.2:9 c4788.2:17
+c4789.1 | links=#43887(auto Ashenvale;758):6 #43888(auto Ashenvale;759):6
+c4802.1 | links=#43891(auto Ashenvale;762):5 #43892(auto Ashenvale;763):19
+c4803.1 | links=#43888(auto Ashenvale;759):10 c4803.5:14
+c6086.1 | links=#19003(auto Darkshore;333):19
+c6133.1 | links=o86492.8:33
+c6297.1 | links=c6298.1:8 c6299.1:5 c11037.1:5
+c6298.1 | links=#14461(auto Darkshore;245):27 c6297.1:8 c6300.1:6 c6301.1:7
+c6299.1 | links=c6297.1:5
+c6300.1 | links=c6298.1:6
+c6301.1 | links=c6298.1:7
+c6491.1 | links=#9046(auto Darkshore;150):32 #13059(auto Darkshore;225):34
+c6667.1 | links=#43577(auto Darkshore;537):6
+c6669.1 | links=#43570(auto Darkshore;530):17 #43571(auto Darkshore;531):22
+c6737.1 | links=#12811(central location;inn;Auberdine;Darkshore):10
+c6788.1 | links=c6789.1:3 c6789.3:4 c6789.4:5
+c6789.1 | links=c6788.1:3 c6789.2:15
+c6887.1 | links=#3450(auto Darkshore;61):16 #7833(auto Darkshore;135):21 #16808(auto Darkshore;291):27 c10085.1:39
+c7015.1 | links=c2232.23:24 c2232.27:79
+c7016.1 | links=#28521(auto Darkshore;509):9
+c7017.1 | links=c2179.3:10
+c8997.1 | links=#23224(central location;Auberdine;Darkshore):25
+c10085.1 | links=#7833(auto Darkshore;135):18 #9609(auto Darkshore;164):18 #16808(auto Darkshore;291):18 c6887.1:39 o175320.1:12
+c10157.1 | links=o177750.9:17
+c10158.1 | links=
+c10160.1 | links=
+c10216.1 | links=#23824(auto Darkshore;414):17 c2231.19:45
+c10219.1 | links=#4289(auto Darkshore;73):9 c3841.1:18
+c11037.1 | links=c6297.1:5
+c11218.1 | links=#21096(auto Darkshore;372):37 o176634.1:5
+c11711.1 | links=#9372(auto Darkshore;158):9
+c12656.1 | links=#24002(crossing;ship;Mist's Edge;Darkshore):9
+o3662.1 | links=o176198.1:12 c2208.11:13 c2208.12:3
+o11713.1 | links=c2339.15:10
+o11714.1 | links=#21688(auto inside cliffspring falls;Darkshore;380):12
+o12654.1 | links=#10168(auto Darkshore;176):33 c2182.3:39
+o12666.1 | links=#5375(auto Darkshore;96):18 c2339.14:4
+o13360.1 | links=#3459(auto Darkshore;62):12 c2182.24:14 c2181.38:7
+o13872.1 | links=#20496(auto Darkshore;360):13
+o13873.1 | links=#24501(auto Darkshore;424):17
+o16393.1 | links=#18180(auto Darkshore;322):6 #26821(auto Darkshore;477):9 c2178.15:9
+o17183.1 | links=#43555(auto Darkshore;515):19 c2232.15:27
+o17184.1 | links=#105(auto Darkshore;4):15
+o17185.1 | links=#5140(auto Darkshore;90):16
+o17188.1 | links=#17649(auto Darkshore;307):10 c2178.7:7
+o17189.1 | links=c2177.4:18 c2177.10:17
+o86492.1 | links=o86492.2:19 o86492.4:116 c2231.19:105
+o175165.1 | links=c2203.11:2 c2202.14:6
+o175166.1 | links=#28167(auto Darkshore;502):9
+o175207.1 | links=c2202.21:16
+o175226.1 | links=c2203.21:11
+o175227.1 | links=c2206.5:11
+o175230.1 | links=#17689(auto Darkshore;310):39
+o175233.1 | links=c2202.6:14 c2203.16:10
+o175320.1 | links=c10085.1:12
+o175329.1 | links=c2169.11:7 c2168.20:11
+o175330.1 | links=c2168.19:20
+o175331.1 | links=#6069(auto Darkshore;112):16
+o175524.1 | links=#43597(auto Darkshore;545):14
+o176189.1 | links=o86492.10:16
+o176191.1 | links=c2208.14:7
+o176196.1 | links=#43566(auto Darkshore;526):26
+o176197.1 | links=c2204.1:10 c2205.2:7
+o176198.1 | links=o3662.1:12
+o176634.1 | links=c11218.1:5
+o177792.1 | links=#506(waters;top;quest target;druid;Mist's Edge;Darkshore):5
+c721.2 | links=#10959(auto Darkshore;190):29 #24338(auto Darkshore;423):35
+c2156.2 | links=c2157.2:23
+c2157.2 | links=c2156.1:16 c2156.2:23
+c2165.2 | links=#14110(auto Darkshore;238):4 c2164.3:32
+c2167.2 | links=#23119(auto Darkshore;397):16 c2186.1:12 c2324.2:13 c2167.6:22
+c2168.2 | links=c2170.1:8 c2169.2:13 c2171.3:13
+c2169.2 | links=c2168.2:13 c2170.2:7
+c2170.2 | links=#24527(auto Darkshore;425):22 c2169.2:7
+c2171.2 | links=c2171.1:13
+c2174.2 | links=c2174.5:59 c2174.18:62
+c2176.2 | links=c2176.1:19 c2177.3:29
+c2177.2 | links=#16762(auto Darkshore;288):31 #20506(auto Darkshore;361):74 c2176.1:35 c2177.1:31 c2177.19:33
+c2179.2 | links=#17812(auto inside cliffspring falls;Darkshore;315):9
+c2180.2 | links=#1197(auto inside cliffspring falls;Darkshore;18):40 #17812(auto inside cliffspring falls;Darkshore;315):15
+c2182.2 | links=#1349(auto Darkshore;24):22 c2182.11:38
+c2185.2 | links=c6145.2:86 c2185.3:151 c6145.7:32 c2185.18:59 c2185.25:30 c2231.44:150
+c2186.2 | links=c2168.23:33
+c2187.2 | links=c2236.6:58 c2236.8:44
+c2190.2 | links=#19646(auto Darkshore;342):19 c2190.1:24
+c2204.2 | links=c2205.3:12 c2205.5:16
+c2205.2 | links=o176197.1:7 c2235.3:56 c2205.8:16
+c2206.2 | links=c2205.1:11 c2206.5:22
+c2212.2 | links=#282(auto Darkshore;7):17 #25035(auto Darkshore;437):25
+c2231.2 | links=c2202.23:62
+c2233.2 | links=#17012(auto Darkshore;294):23 #25123(auto Darkshore;438):32
+c2234.2 | links=c2234.3:70 c2174.33:129
+c2235.2 | links=c7015.2:52
+c2236.2 | links=c2236.4:32
+c2237.2 | links=c12298.6:7 c2323.41:19
+c2323.2 | links=#17872(auto Darkshore;316):17 c2237.20:11
+c2324.2 | links=c2167.2:13 c2324.5:26
+c2338.2 | links=#4967(auto Darkshore;86):11 c2339.2:14 c2339.14:18
+c2339.2 | links=#15515(auto Darkshore;268):30 c2338.2:14 c2338.3:24
+c4788.2 | links=#43892(auto Ashenvale;763):7
+c4789.2 | links=#43891(auto Ashenvale;762):9
+c4802.2 | links=c4788.1:9
+c4803.2 | links=#43890(auto Ashenvale;761):5 #43891(auto Ashenvale;762):20 c4803.3:6
+c6086.2 | links=#19003(auto Darkshore;333):21
+c6145.2 | links=c2185.2:86 o19017.5:34 c2185.15:60 c2185.36:45
+c6491.2 | links=#17098(auto Darkshore;296):37
+c6789.2 | links=#20844(auto Darkshore;368):12 c6789.1:15
+c7015.2 | links=c2235.2:52 c2235.3:35 c2235.13:36
+c7017.2 | links=#26738(auto inside cliffspring falls;Darkshore;474):4
+c10157.2 | links=o177750.4:26
+c10158.2 | links=c10159.2:43 c10160.3:37
+c10159.2 | links=#43593(auto Darkshore;541):66 c10158.2:43 c10159.5:56
+c12298.2 | links=#11740(auto Darkshore;203):44 c2323.24:50 c2070.28:18
+o3662.2 | links=c2234.1:32 c2234.3:12
+o3705.2 | links=#1064(auto Darkshore;16):36 c2174.3:121 c2205.6:43 c2235.18:47
+o11713.2 | links=#7483(auto inside cliffspring falls;Darkshore;128):8
+o11714.2 | links=#21688(auto inside cliffspring falls;Darkshore;380):19
+o12654.2 | links=#2650(auto Darkshore;47):10 o13873.7:3
+o13360.2 | links=#5986(auto Darkshore;109):24
+o13872.2 | links=#5962(auto Darkshore;108):20
+o13873.2 | links=c2183.9:11
+o86492.2 | links=o86492.1:19 o86492.11:90
+c883.3 | links=c10158.5:5
+c2071.3 | links=#19346(auto Darkshore;336):57 c2323.32:34
+c2156.3 | links=c2156.5:24
+c2157.3 | links=#4142(auto Darkshore;68):11 c2156.6:30
+c2164.3 | links=c2165.2:32 c2165.14:48 c2322.30:58
+c2165.3 | links=c2165.4:32
+c2167.3 | links=c2167.1:27
+c2168.3 | links=#15732(auto Darkshore;272):54 c2169.1:9 c2171.3:29
+c2169.3 | links=#23486(auto Darkshore;405):11
+c2170.3 | links=c2171.1:13 c2170.6:22
+c2171.3 | links=c2168.2:13 c2168.3:29
+c2174.3 | links=o3705.2:121 c2174.40:133
+c2177.3 | links=#19149(auto Darkshore;335):32 c3667.1:21 c2176.2:29 c2178.4:43
+c2179.3 | links=#27754(auto inside cliffspring falls;Darkshore;492):7 c7017.1:10 c2180.5:16
+c2182.3 | links=c2183.1:23 o12654.1:39 c2183.9:36
+c2185.3 | links=c2185.2:151 c2231.10:47 c2185.11:80 c2231.33:48
+c2190.3 | links=#25035(auto Darkshore;437):7
+c2203.3 | links=#6033(auto Darkshore;110):24 #11318(auto water;Darkshore;198):81
+c2204.3 | links=#7094(auto Darkshore;124):9 c2203.21:14 c2232.21:58
+c2205.3 | links=c2204.2:12
+c2206.3 | links=c2205.11:11
+c2207.3 | links=c2207.13:11
+c2208.3 | links=c2187.1:36 c2208.6:15
+c2212.3 | links=#16196(auto Darkshore;281):17
+c2231.3 | links=#6654(auto Darkshore;120):22
+c2234.3 | links=c2234.2:70 o3662.2:12 c2234.6:99
+c2235.3 | links=#793(auto Darkshore;12):30 c2205.2:56 c7015.2:35
+c2236.3 | links=#694(auto Darkshore;11):49 #14570(auto Darkshore;249):47 c2236.1:68 o3705.9:10
+c2237.3 | links=#2253(auto Darkshore;41):68
+c2323.3 | links=c2323.5:13
+c2324.3 | links=c2167.12:19 c2324.14:10
+c2338.3 | links=#26253(auto Darkshore;463):18 c2339.2:24
+c2339.3 | links=o11713.5:2
+c4788.3 | links=#43892(auto Ashenvale;763):14
+c4789.3 | links=#43885(auto Ashenvale;756):14
+c4802.3 | links=#43884(auto Ashenvale;755):11 #43885(auto Ashenvale;756):18
+c4803.3 | links=c4803.2:6
+c6145.3 | links=o86492.5:18 o86492.8:17
+c6789.3 | links=c6788.1:4
+c7017.3 | links=#7483(auto inside cliffspring falls;Darkshore;128):3
+c10157.3 | links=o177750.8:17
+c10159.3 | links=#6056(auto Darkshore;111):20 o177750.13:13
+c10160.3 | links=c10158.2:37 c10160.9:58
+o11713.3 | links=c2339.16:12
+o11714.3 | links=#1452(auto inside cliffspring falls;Darkshore;25):3
+o12654.3 | links=c2183.7:7
+o13360.3 | links=#10496(auto Darkshore;182):11
+o13872.3 | links=#3447(auto Darkshore;60):31
+o13873.3 | links=o13359.8:3
+o19017.3 | links=c2185.28:166
+c2069.4 | links=
+c2071.4 | links=#11740(auto Darkshore;203):38 c2323.4:37
+c2156.4 | links=c2917.1:19 c2156.5:23
+c2163.4 | links=c10158.4:9
+c2164.4 | links=c2168.7:14
+c2165.4 | links=#17183(auto Darkshore;298):24 #25976(auto Darkshore;455):27 c2323.1:52 c2165.3:32 c2237.8:81
+c2167.4 | links=c2167.7:34
+c2168.4 | links=#6069(auto Darkshore;112):10
+c2169.4 | links=#14655(auto Darkshore;251):37 #27845(auto Darkshore;495):17
+c2170.4 | links=#2826(auto Darkshore;49):31 c2170.5:25
+c2171.4 | links=#24527(auto Darkshore;425):23 c2170.1:22
+c2176.4 | links=#16762(auto Darkshore;288):25 #25936(auto Darkshore;453):21
+c2177.4 | links=#18533(auto Darkshore;327):38 o17189.1:18
+c2178.4 | links=c2177.3:43 c2178.6:24
+c2179.4 | links=#24045(auto inside cliffspring falls;Darkshore;417):7 #26743(auto inside cliffspring falls;Darkshore;475):17
+c2180.4 | links=#2111(auto inside cliffspring falls;Darkshore;39):3 o11714.7:6
+c2190.4 | links=#19646(auto Darkshore;342):16 #25035(auto Darkshore;437):23
+c2203.4 | links=#28167(auto Darkshore;502):4
+c2204.4 | links=#17655(auto Darkshore;308):18 c2203.21:15
+c2236.4 | links=c2236.1:67 c2236.2:32
+c2237.4 | links=#9046(auto Darkshore;150):41 c2323.14:20
+c2323.4 | links=c2172.1:32 c2071.4:37
+c2324.4 | links=c2167.12:31
+c2336.4 | links=#12548(auto Darkshore;216):9
+c2339.4 | links=#7483(auto inside cliffspring falls;Darkshore;128):10
+c4789.4 | links=#43886(auto Ashenvale;757):11 #43887(auto Ashenvale;758):9
+c6789.4 | links=c6788.1:5
+c10158.4 | links=c2163.4:9 c2321.16:14 c10158.21:30
+c12298.4 | links=c2172.1:16 c2323.9:22
+o11714.4 | links=c2179.15:5
+o12654.4 | links=c2181.16:19 c2182.23:13 c2182.24:20 c2181.37:29
+o13360.4 | links=#11838(auto Darkshore;205):13 c2182.9:9
+o13872.4 | links=#11053(auto Darkshore;192):12
+o86492.4 | links=o86492.1:116 o86492.10:64
+o177750.4 | links=c10157.2:26 o177750.5:26 o177750.6:24 c10160.16:47
+c1412.5 | links=c12298.17:55 c2163.71:34
+c2156.5 | links=#4142(auto Darkshore;68):13 c2156.3:24 c2156.4:23
+c2167.5 | links=c2324.6:34
+c2168.5 | links=#6069(auto Darkshore;112):26 c2168.6:17
+c2169.5 | links=#23486(auto Darkshore;405):19 c2170.6:25
+c2170.5 | links=#2826(auto Darkshore;49):40 c2170.4:25 c2171.6:14
+c2171.5 | links=#2826(auto Darkshore;49):36 c2171.6:24 c2170.9:24 c2170.11:17
+c2174.5 | links=c2174.2:59 c2174.34:90
+c2179.5 | links=#21688(auto inside cliffspring falls;Darkshore;380):12 c2180.12:22
+c2180.5 | links=c2179.3:16
+c2183.5 | links=#3447(auto Darkshore;60):30
+c2189.5 | links=c2190.6:30
+c2190.5 | links=#17646(auto Darkshore;306):14
+c2202.5 | links=c2203.8:13
+c2205.5 | links=c2204.2:16 c2205.8:20
+c2206.5 | links=#19709(auto Darkshore;343):9 o175227.1:11 c2206.2:22
+c2212.5 | links=#20300(auto Darkshore;354):14 #26169(auto Darkshore;461):15
+c2234.5 | links=c2234.6:52 c2185.22:85
+c2323.5 | links=#27990(auto Darkshore;499):36 c2323.3:13 c2237.6:5
+c2324.5 | links=c2324.2:26
+c2338.5 | links=c2339.5:18 c2339.6:22
+c2339.5 | links=c2192.1:11 c2338.5:18
+c4789.5 | links=#43882(auto Ashenvale;753):14 #43883(auto Ashenvale;754):9
+c4803.5 | links=c4803.1:14 #43889(auto Ashenvale;760):12
+c10158.5 | links=#9351(auto Darkshore;156):71 #27931(auto Darkshore;497):43 c883.3:5
+c10159.5 | links=c10159.2:56 c2163.53:29 c2321.68:45
+c10160.5 | links=#2932(auto Darkshore;52):19 #27931(auto Darkshore;497):43
+c12298.5 | links=c2237.22:15 c2069.47:12
+o3705.5 | links=#27373(auto Darkshore;485):29
+o11713.5 | links=#7483(auto inside cliffspring falls;Darkshore;128):16 c2339.3:2
+o11714.5 | links=c2180.17:4
+o12654.5 | links=#4976(auto Darkshore;87):13
+o13360.5 | links=c2182.16:18 c2181.22:14
+o13872.5 | links=#11838(auto Darkshore;205):14
+o13873.5 | links=#1918(auto Darkshore;35):17
+o19017.5 | links=c6145.2:34
+o86492.5 | links=c6145.3:18 c6145.9:145
+o177750.5 | links=o177750.4:26
+c2071.6 | links=c2323.11:58 c12298.56:67
+c2156.6 | links=c2156.1:24 c2157.3:30
+c2167.6 | links=c2167.2:22 c2324.7:13
+c2168.6 | links=c2168.5:17
+c2169.6 | links=#6069(auto Darkshore;112):20 c2168.7:14
+c2170.6 | links=c2170.3:22 c2169.5:25
+c2171.6 | links=#2826(auto Darkshore;49):39 c2170.5:14 c2171.5:24 c2170.11:19
+c2177.6 | links=c2178.13:17
+c2178.6 | links=c2184.1:19 c2178.4:24
+c2179.6 | links=#25146(auto inside cliffspring falls;Darkshore;439):8 c2180.7:19
+c2180.6 | links=c2339.16:5
+c2183.6 | links=#24501(auto Darkshore;424):29
+c2189.6 | links=#2937(auto Darkshore;53):17 #28029(auto Darkshore;501):20 c2189.7:27
+c2190.6 | links=c2212.1:16 c2189.5:30
+c2202.6 | links=o175233.1:14
+c2205.6 | links=o3705.2:43 c2206.7:11 c2205.10:17
+c2206.6 | links=#19709(auto Darkshore;343):12 c2205.7:19 c2233.12:19
+c2208.6 | links=c2208.3:15 c2208.11:10
+c2212.6 | links=#23638(auto Darkshore;409):19 c2189.17:17
+c2231.6 | links=c2231.34:18 c2231.38:59 c2231.44:18
+c2232.6 | links=o3705.10:53 c2174.18:128
+c2233.6 | links=#43566(auto Darkshore;526):17
+c2234.6 | links=c2234.3:99 c2234.5:52 c2234.7:43
+c2236.6 | links=c2187.2:58 c2236.8:61 o3705.9:45
+c2237.6 | links=c2323.5:5 c12298.56:33
+c2324.6 | links=#18034(auto Darkshore;319):27 c2167.5:34
+c2336.6 | links=#15811(auto Darkshore;274):14
+c2338.6 | links=#12925(auto Darkshore;224):10 c2339.10:35 c2339.11:41
+c2339.6 | links=#23700(auto Darkshore;410):30 c2338.5:22
+c6145.6 | links=c2185.28:23 c2185.29:19
+c10159.6 | links=c10159.7:37 c10158.17:43 c10158.19:29
+c12298.6 | links=c2237.2:7
+o11714.6 | links=#16064(auto inside cliffspring falls;Darkshore;278):7
+o13873.6 | links=#3341(auto Darkshore;58):8
+o86492.6 | links=o86492.8:53
+o177750.6 | links=o177750.4:24
+c2165.7 | links=#25893(auto Darkshore;452):13
+c2167.7 | links=c2167.4:34 c2324.9:19 c2324.10:15
+c2168.7 | links=c2164.4:14 c2169.6:14
+c2169.7 | links=#27373(auto Darkshore;485):25 c2168.19:17
+c2170.7 | links=#3147(auto Darkshore;56):10 c2171.1:15
+c2178.7 | links=o17188.1:7
+c2179.7 | links=c2180.8:23
+c2180.7 | links=#26738(auto inside cliffspring falls;Darkshore;474):16 c2179.6:19 o11714.12:18
+c2182.7 | links=#1349(auto Darkshore;24):22 #11314(auto Darkshore;197):17
+c2183.7 | links=#3447(auto Darkshore;60):28 o12654.3:7
+c2187.7 | links=c6145.17:69
+c2189.7 | links=c2189.6:27
+c2190.7 | links=#282(auto Darkshore;7):14 #22871(auto Darkshore;391):18
+c2202.7 | links=
+c2203.7 | links=#4379(auto Darkshore;76):19 #17655(auto Darkshore;308):18
+c2205.7 | links=#4688(auto Darkshore;81):43 c2206.6:19
+c2206.7 | links=c2205.6:11
+c2208.7 | links=#43592(auto water;Darkshore;540):34
+c2233.7 | links=#43564(auto Darkshore;524):30
+c2234.7 | links=c4307.1:33 c2234.6:43
+c2323.7 | links=c2237.8:51
+c2324.7 | links=c2167.1:13 c2167.6:13
+c2336.7 | links=#10264(auto Darkshore;177):13 #12548(auto Darkshore;216):15 c3662.1:2
+c2339.7 | links=c2192.1:12 c2338.1:24 c3584.1:10
+c6145.7 | links=c2185.2:32
+c10159.7 | links=#1666(auto Darkshore;29):31 c10159.6:37
+o3705.7 | links=c2234.28:32 c2234.29:34
+o11714.7 | links=c2180.4:6
+o13873.7 | links=#4993(auto Darkshore;88):9 o12654.2:3
+o86492.7 | links=o86492.10:23
+o177750.7 | links=o177750.8:17
+c2071.8 | links=c12298.33:58 c2070.46:21
+c2167.8 | links=c2324.10:17 c2324.11:13 c2324.12:22
+c2168.8 | links=#6069(auto Darkshore;112):18 c2164.28:6
+c2169.8 | links=#27373(auto Darkshore;485):19
+c2179.8 | links=#14470(auto inside cliffspring falls;Darkshore;246):13 #24920(auto inside cliffspring falls;Darkshore;435):6
+c2180.8 | links=#217(auto inside cliffspring falls;Darkshore;5):16 #4756(auto inside cliffspring falls;Darkshore;83):25 c2179.7:23
+c2182.8 | links=#3447(auto Darkshore;60):26
+c2183.8 | links=#24501(auto Darkshore;424):14
+c2185.8 | links=c6145.20:133 c2185.23:116 c2185.31:24 c2185.33:41
+c2187.8 | links=c2187.15:27
+c2189.8 | links=c2189.1:25
+c2202.8 | links=c2201.1:12 c2231.20:26
+c2203.8 | links=c2202.5:13 c2202.17:16
+c2205.8 | links=c2205.2:16 c2205.5:20
+c2207.8 | links=#43592(auto water;Darkshore;540):23
+c2208.8 | links=#43592(auto water;Darkshore;540):34
+c2231.8 | links=c2231.13:46
+c2234.8 | links=c4307.1:39 c2234.10:81 c2234.12:66
+c2235.8 | links=#14439(auto Darkshore;244):84
+c2236.8 | links=c2187.2:44 c2236.6:61
+c2237.8 | links=#18948(auto Darkshore;332):34 c2165.4:81 c2323.7:51 c2323.36:40
+c2324.8 | links=c2167.12:15
+c2336.8 | links=#20496(auto Darkshore;360):19
+c2339.8 | links=c2339.9:19 c2339.10:21
+o11714.8 | links=#18558(auto inside cliffspring falls;Darkshore;328):6
+o13359.8 | links=o13873.3:3 c2181.15:10
+o86492.8 | links=c6133.1:33 c6145.3:17 o86492.6:53 o86492.11:28
+o177750.8 | links=#9365(auto Darkshore;157):11 c10157.3:17 o177750.7:17
+c2070.9 | links=c2321.17:42 c2321.34:27
+c2167.9 | links=#4463(auto Darkshore;79):17
+c2168.9 | links=#6069(auto Darkshore;112):14
+c2169.9 | links=c2168.17:19
+c2170.9 | links=#2826(auto Darkshore;49):19 #26514(auto Darkshore;468):21 c2171.5:24
+c2182.9 | links=o13360.4:9
+c2183.9 | links=o13873.2:11 c2182.3:36 o13873.14:23
+c2190.9 | links=#22871(auto Darkshore;391):8
+c2205.9 | links=c2205.10:12 c2205.11:10
+c2231.9 | links=c2231.14:27
+c2236.9 | links=#15888(auto Darkshore;275):60 c2236.10:76
+c2237.9 | links=#27421(auto Darkshore;486):18
+c2323.9 | links=#26487(auto Darkshore;466):28 c12298.4:22
+c2324.9 | links=c2167.7:19
+c2336.9 | links=#20496(auto Darkshore;360):12
+c2339.9 | links=#13119(auto Darkshore;226):21 c2339.8:19
+c6145.9 | links=o86492.5:145
+c10160.9 | links=c10160.3:58 c10160.16:37
+o3705.9 | links=c2236.3:10 c2236.6:45
+o11714.9 | links=#217(auto inside cliffspring falls;Darkshore;5):5
+o13873.9 | links=#5986(auto Darkshore;109):12
+o177750.9 | links=#16656(auto Darkshore;286):12 c10157.1:17 o177750.10:17 o177750.11:14
+c721.10 | links=#4335(auto Darkshore;75):34 c10158.13:43
+c2070.10 | links=c2321.58:7
+c2165.10 | links=c2069.19:32 c2322.48:35
+c2168.10 | links=c2168.12:23 c2168.22:43
+c2169.10 | links=#27373(auto Darkshore;485):12
+c2174.10 | links=c2174.30:71
+c2177.10 | links=#1702(auto Darkshore;31):22 #23877(auto Darkshore;416):48 o17189.1:17
+c2179.10 | links=#26307(auto inside cliffspring falls;Darkshore;464):4
+c2182.10 | links=#22103(auto Darkshore;382):17
+c2189.10 | links=#16117(auto Darkshore;279):20 #17236(entry and exit;Bashal'Aran;Darkshore):8
+c2190.10 | links=#17646(auto Darkshore;306):19 #28029(auto Darkshore;501):25
+c2205.10 | links=#12069(auto Darkshore;210):91 c2205.6:17 c2205.9:12
+c2207.10 | links=c2207.11:13 c2208.12:14
+c2231.10 | links=c2185.3:47 c2231.11:6
+c2232.10 | links=#43556(auto Darkshore;516):29
+c2234.10 | links=c2234.8:81 c2234.23:58
+c2236.10 | links=c2236.9:76
+c2324.10 | links=c2167.7:15 c2167.8:17
+c2336.10 | links=#20669(auto Darkshore;363):7
+c2339.10 | links=c2338.6:35 c2339.8:21
+c10158.10 | links=#20328(auto Darkshore;355):10 #27931(auto Darkshore;497):44 c10158.17:36
+c10159.10 | links=c10159.11:43 c10159.12:18
+c10160.10 | links=
+o3705.10 | links=c2232.6:53 c2232.21:37 c2232.23:49
+o11714.10 | links=#20412(auto inside cliffspring falls;Darkshore;356):5
+o13873.10 | links=#5986(auto Darkshore;109):12
+o86492.10 | links=o176189.1:16 o86492.4:64 o86492.7:23 o86492.11:73
+o177750.10 | links=o177750.9:17
+c2069.11 | links=#5214(auto Darkshore;92):63 c2069.13:21
+c2165.11 | links=#27421(auto Darkshore;486):20
+c2167.11 | links=c2167.12:21
+c2168.11 | links=c2168.21:27 c2168.23:24
+c2169.11 | links=#27373(auto Darkshore;485):31 o175329.1:7
+c2170.11 | links=#2826(auto Darkshore;49):49 #23295(auto Darkshore;401):10 c2171.5:17 c2171.6:19
+c2179.11 | links=#14217(auto inside cliffspring falls;Darkshore;240):12 #18558(auto inside cliffspring falls;Darkshore;328):14
+c2182.11 | links=#2650(auto Darkshore;47):28 c2182.2:38 c2181.15:26 c2181.16:39
+c2185.11 | links=c2185.3:80 c2185.24:29
+c2187.11 | links=c6145.23:61 c2174.34:23
+c2189.11 | links=#11368(auto Darkshore;200):17 c2189.15:26
+c2190.11 | links=c2190.15:34
+c2203.11 | links=o175165.1:2
+c2205.11 | links=#1064(auto Darkshore;16):29 c2206.3:11 c2205.9:10
+c2207.11 | links=#7620(auto Darkshore;130):26 c2207.10:13
+c2208.11 | links=o3662.1:13 c2208.6:10
+c2231.11 | links=c2231.10:6 c2231.32:52
+c2233.11 | links=#43565(auto Darkshore;525):7
+c2237.11 | links=#6095(auto Darkshore;113):24 c2165.1:63
+c2323.11 | links=c2071.6:58 c2323.24:24
+c2324.11 | links=c2167.8:13 c2167.12:25
+c2336.11 | links=#6665(auto Darkshore;121):11 #20669(auto Darkshore;363):12
+c2339.11 | links=#5375(auto Darkshore;96):15 c2338.6:41 c2339.12:17
+c6086.11 | links=#47450(auto On pier;Auberdine;Darkshore;550):5
+c10159.11 | links=c10159.10:43 c12298.47:46
+c10160.11 | links=#20575(auto Darkshore;362):14
+o11714.11 | links=#1197(auto inside cliffspring falls;Darkshore;18):6
+o13873.11 | links=#5381(auto Darkshore;97):26 #11314(auto Darkshore;197):14 c2181.18:4
+o86492.11 | links=o86492.2:90 o86492.8:28 o86492.10:73
+o177750.11 | links=o177750.9:14
+c2167.12 | links=#4463(auto Darkshore;79):12 c2324.3:19 c2324.4:31 c2324.8:15 c2167.11:21 c2324.11:25
+c2168.12 | links=c2168.10:23 c2169.12:46
+c2169.12 | links=#14983(auto Darkshore;257):28 c2168.12:46 c2168.23:29 c2168.25:10
+c2178.12 | links=#26821(auto Darkshore;477):6
+c2179.12 | links=#15122(auto inside cliffspring falls;Darkshore;260):19 #20412(auto inside cliffspring falls;Darkshore;356):6
+c2180.12 | links=c2179.1:27 c2179.5:22
+c2182.12 | links=c2181.37:26
+c2190.12 | links=#17646(auto Darkshore;306):34 #25035(auto Darkshore;437):25 #26702(auto Darkshore;473):20
+c2208.12 | links=o3662.1:3 c2207.10:14
+c2233.12 | links=c2206.1:23 c2233.1:66 c2206.6:19
+c2234.12 | links=c2234.8:66 c2234.24:73 c2234.30:83
+c2324.12 | links=c2167.8:22
+c2336.12 | links=#10264(auto Darkshore;177):18 #14199(Delmanis the Hated;one;Tower of Althalaxx;Darkshore):8
+c2339.12 | links=#23700(auto Darkshore;410):19 c2339.11:17
+c6086.12 | links=#47450(auto On pier;Auberdine;Darkshore;550):3
+c10158.12 | links=c2163.53:17
+c10159.12 | links=#6781(cave;druid;class quest;entry and exit):0 c10159.10:18
+c10160.12 | links=
+o11714.12 | links=c2180.7:18
+o177750.12 | links=o177750.16:9
+c2069.13 | links=c2069.11:21 c2069.19:33
+c2163.13 | links=c2163.20:32
+c2165.13 | links=#27421(auto Darkshore;486):24
+c2178.13 | links=#23877(auto Darkshore;416):12 c2177.6:17
+c2179.13 | links=#1197(auto inside cliffspring falls;Darkshore;18):7
+c2180.13 | links=#20239(auto inside cliffspring falls;Darkshore;353):3
+c2182.13 | links=#24627(auto Darkshore;428):17
+c2185.13 | links=c2185.14:122 c2185.29:68
+c2189.13 | links=#16196(auto Darkshore;281):26
+c2190.13 | links=c2190.14:23
+c2207.13 | links=c2207.3:11 c2208.16:8
+c2231.13 | links=c2231.8:46 c2231.14:49 c2231.15:29
+c2235.13 | links=c7015.2:36
+c2324.13 | links=#4463(auto Darkshore;79):11
+c2336.13 | links=c2336.16:13
+c6086.13 | links=#47450(auto On pier;Auberdine;Darkshore;550):8
+c10158.13 | links=c721.10:43 c2163.50:18
+o11714.13 | links=#17812(auto inside cliffspring falls;Darkshore;315):12
+o13873.13 | links=#22602(auto Darkshore;387):9
+o177750.13 | links=c10159.3:13 o177750.14:15
+c2165.14 | links=#21391(auto Darkshore;376):20 c2164.3:48
+c2168.14 | links=#27373(auto Darkshore;485):24
+c2169.14 | links=#6069(auto Darkshore;112):19
+c2177.14 | links=c3667.1:8
+c2178.14 | links=#23877(auto Darkshore;416):16 c2178.15:12
+c2179.14 | links=#10120(auto inside cliffspring falls;Darkshore;172):3
+c2180.14 | links=#14470(auto inside cliffspring falls;Darkshore;246):4
+c2185.14 | links=c2185.13:122
+c2189.14 | links=#14940(auto Darkshore;256):11
+c2190.14 | links=c2190.13:23 c2190.15:22
+c2202.14 | links=#19056(auto Darkshore;334):18 o175165.1:6
+c2208.14 | links=o176191.1:7 c6145.15:37
+c2231.14 | links=#6654(auto Darkshore;120):75 #21346(auto Darkshore;375):80 c2231.9:27 c2231.13:49
+c2235.14 | links=c2235.1:19 c2203.23:48
+c2236.14 | links=#43573(auto Darkshore;533):15
+c2323.14 | links=c2237.4:20
+c2324.14 | links=c2324.3:10
+c2339.14 | links=#4967(auto Darkshore;86):20 o12666.1:4 c2338.2:18
+c10158.14 | links=o177750.19:19
+o11714.14 | links=#26738(auto inside cliffspring falls;Darkshore;474):7
+o13873.14 | links=c2183.9:23
+o177750.14 | links=o177750.13:15
+c721.15 | links=#12691(auto Darkshore;219):29 c10158.16:22 c10158.21:57
+c2070.15 | links=#18195(auto Darkshore;323):30
+c2168.15 | links=#8699(auto Darkshore;146):42 #27373(auto Darkshore;485):26
+c2178.15 | links=o16393.1:9 c2178.14:12
+c2179.15 | links=#1165(Cliffspring Falls;Darkshore;druid;class quest):9 #20451(auto inside cliffspring falls;Darkshore;357):9 #28664(s;Kalimdor;Darkshore;Cliffspring;Cliffspring Falls):1 o11714.4:5
+c2180.15 | links=#17368(auto inside cliffspring falls;Darkshore;299):13 #18558(auto inside cliffspring falls;Darkshore;328):14
+c2181.15 | links=o13359.8:10 c2182.11:26
+c2182.15 | links=#12172(auto Darkshore;213):17 #14772(auto Darkshore;252):18 #21046(auto Darkshore;371):16 c2181.19:25
+c2185.15 | links=c6145.2:60
+c2187.15 | links=c2187.8:27 c2174.21:40
+c2189.15 | links=#17236(entry and exit;Bashal'Aran;Darkshore):19 c3650.1:28 c2189.11:26
+c2190.15 | links=#26702(auto Darkshore;473):12 c2190.11:34 c2190.14:22
+c2208.15 | links=#14570(auto Darkshore;249):26 #17689(auto Darkshore;310):43 c2208.16:13
+c2231.15 | links=c2231.13:29
+c2232.15 | links=#43556(auto Darkshore;516):44 o17183.1:27
+c2234.15 | links=c2234.27:57
+c2235.15 | links=c2235.18:103 c2203.23:54
+c2236.15 | links=#43578(auto Darkshore;538):17 #43591(auto water;Darkshore;539):40
+c2339.15 | links=o11713.1:10 c2339.16:9
+c6145.15 | links=#1319(auto Darkshore;21):25 #17689(auto Darkshore;310):73 c2208.14:37
+o11714.15 | links=#20239(auto inside cliffspring falls;Darkshore;353):8
+o13873.15 | links=#657(auto Darkshore;10):23
+o177750.15 | links=o177750.16:19 o177750.17:17 c10158.18:19 c10158.26:21
+c2070.16 | links=#5524(auto Darkshore;102):23
+c2174.16 | links=c2174.28:77 c2174.42:60
+c2181.16 | links=o12654.4:19 c2182.11:39
+c2182.16 | links=o13360.5:18 c2181.24:19
+c2187.16 | links=c6145.23:25
+c2189.16 | links=#12123(auto Darkshore;212):10
+c2190.16 | links=#4301(auto Darkshore;74):9
+c2203.16 | links=#7027(auto Darkshore;123):26 o175233.1:10 c2202.17:18 c2203.17:17
+c2208.16 | links=c2207.13:8 c2208.15:13
+c2231.16 | links=c2231.28:68
+c2234.16 | links=c2234.27:48
+c2236.16 | links=#43572(auto Darkshore;532):28
+c2321.16 | links=c10158.4:14
+c2323.16 | links=#19346(auto Darkshore;336):44
+c2336.16 | links=#2456(auto Darkshore;44):13 #13738(auto Darkshore;235):19 c2336.13:13
+c2339.16 | links=#26738(auto inside cliffspring falls;Darkshore;474):6 o11713.3:12 c2180.6:5 c2339.15:9
+c10158.16 | links=c721.15:22
+c10160.16 | links=o177750.4:47 c10160.9:37
+o13359.16 | links=#9582(auto Darkshore;163):7
+o177750.16 | links=o177750.12:9 o177750.15:19
+c2168.17 | links=#27373(auto Darkshore;485):9 c2169.9:19
+c2177.17 | links=#20506(auto Darkshore;361):10
+c2179.17 | links=#7488(auto Darkshore;129):42 #13299(auto Darkshore;230):4
+c2180.17 | links=#24045(auto inside cliffspring falls;Darkshore;417):18 #26307(auto inside cliffspring falls;Darkshore;464):18 o11714.5:4
+c2181.17 | links=#5381(auto Darkshore;97):12
+c2182.17 | links=#20733(auto Darkshore;365):30 #28521(auto Darkshore;509):25
+c2185.17 | links=c2185.18:64 c2185.23:10
+c2189.17 | links=#17236(entry and exit;Bashal'Aran;Darkshore):26 #27898(auto Darkshore;496):30 c2212.6:17 c2190.23:24
+c2202.17 | links=c2203.8:16 c2203.16:18
+c2203.17 | links=c2203.16:17
+c2232.17 | links=c2232.19:27 c2202.25:68 c2174.28:204
+c2234.17 | links=#10423(auto Darkshore;179):64 c2234.20:41 c2185.50:79
+c2321.17 | links=c2070.9:42 c2163.21:12 c2163.27:39 c2070.32:29 c2070.33:30
+c2336.17 | links=c2336.18:17
+c6145.17 | links=c2206.1:44 c2187.7:69
+c10158.17 | links=#26904(auto Darkshore;479):45 c10159.6:43 c10158.10:36 c10158.18:19 c10158.20:56
+c12298.17 | links=#4212(auto Darkshore;71):19 c1412.5:55
+o177750.17 | links=o177750.15:17
+c2163.18 | links=c2163.19:15 c2321.24:25 c2321.32:32 c2163.75:66
+c2174.18 | links=c2174.2:62 c2232.6:128
+c2180.18 | links=#1452(auto inside cliffspring falls;Darkshore;25):6 #20451(auto inside cliffspring falls;Darkshore;357):10 #24145(auto inside cliffspring falls;Darkshore;418):11
+c2181.18 | links=o13873.11:4
+c2185.18 | links=c2185.2:59 c2185.17:64
+c2190.18 | links=#20064(auto Darkshore;347):17
+c2231.18 | links=#14617(rescue;waters;The Long Wash;Darkshore):139 c2231.19:31
+c2232.18 | links=#43554(auto Darkshore;514):13
+c2235.18 | links=o3705.2:47 c2235.15:103
+c2323.18 | links=#1064(auto Darkshore;16):143 #3386(auto Darkshore;59):85 #12908(auto Darkshore;223):30
+c2336.18 | links=#7373(auto Darkshore;126):13 #14199(Delmanis the Hated;one;Tower of Althalaxx;Darkshore):10 #26434(auto Darkshore;465):16 c2336.17:17
+c10158.18 | links=o177750.15:19 c10158.17:19
+o177750.18 | links=o177750.19:18
+c2069.19 | links=c2165.10:32 c2069.13:33
+c2070.19 | links=#17137(auto Darkshore;297):21 c2321.31:10
+c2163.19 | links=c2163.18:15
+c2168.19 | links=o175330.1:20 c2169.7:17
+c2174.19 | links=c6145.22:80
+c2177.19 | links=c2177.2:33
+c2181.19 | links=#7652(auto Darkshore;131):18 #22602(auto Darkshore;387):11 c2182.15:25
+c2190.19 | links=#20300(auto Darkshore;354):12
+c2203.19 | links=c2202.24:14 c2202.27:22
+c2231.19 | links=c10216.1:45 o86492.1:105 c2231.18:31 c2231.43:64
+c2232.19 | links=c2232.17:27 c2232.27:116
+c2236.19 | links=#43572(auto Darkshore;532):21
+c2323.19 | links=#8179(auto Darkshore;137):38 c12298.33:18
+c2336.19 | links=#20669(auto Darkshore;363):5
+c10158.19 | links=c10159.6:29 o177750.19:19
+o177750.19 | links=c10158.14:19 o177750.18:18 c10158.19:19 o177750.20:15
+c2163.20 | links=c2163.13:32 c2321.35:34 c2321.38:21
+c2168.20 | links=o175329.1:11
+c2177.20 | links=#14190(auto Darkshore;239):14
+c2181.20 | links=#13466(auto Darkshore;233):7
+c2190.20 | links=#16196(auto Darkshore;281):10
+c2202.20 | links=c2201.1:20 c2202.21:17
+c2203.20 | links=c2202.25:13 c2202.26:14
+c2231.20 | links=c2202.8:26
+c2234.20 | links=c2234.17:41 c2234.29:65
+c2237.20 | links=#26497(auto Darkshore;467):21 c2323.2:11
+c2322.20 | links=#1104(auto Darkshore;17):55 #8699(auto Darkshore;146):35
+c6145.20 | links=c2185.8:133
+c10158.20 | links=c10158.17:56
+o177750.20 | links=o177750.19:15
+c2069.21 | links=#15229(auto Darkshore;265):21 c2322.29:11
+c2163.21 | links=c2321.17:12
+c2168.21 | links=c2168.11:27 c2168.22:26
+c2174.21 | links=c2205.1:76 c2187.15:40
+c2181.21 | links=#16958(auto Darkshore;293):9
+c2190.21 | links=#20064(auto Darkshore;347):12
+c2202.21 | links=o175207.1:16 c2202.20:17 c2202.23:14 c2234.30:52 c2231.39:52
+c2203.21 | links=o175226.1:11 c2204.3:14 c2204.4:15
+c2232.21 | links=c2204.3:58 o3705.10:37
+c2234.21 | links=c2234.24:60
+c2237.21 | links=#17872(auto Darkshore;316):14
+c2322.21 | links=#8699(auto Darkshore;146):24 c12298.39:10
+c2323.21 | links=#14852(auto Darkshore;255):9
+c2336.21 | links=#7373(auto Darkshore;126):7 #24698(entry and exit;Tower of Althalaxx;Darkshore):3
+c10158.21 | links=c10158.4:30 c721.15:57
+c2070.22 | links=c2321.76:21
+c2163.22 | links=c2163.24:21 c2163.40:8
+c2168.22 | links=c2168.10:43 c2168.21:26
+c2181.22 | links=#22660(auto Darkshore;388):14 o13360.5:14
+c2182.22 | links=#1918(auto Darkshore;35):12
+c2185.22 | links=c2234.5:85 c2185.30:42
+c2187.22 | links=#506(waters;top;quest target;druid;Mist's Edge;Darkshore):40 c2187.26:38
+c2190.22 | links=#14940(auto Darkshore;256):12
+c2237.22 | links=#18040(auto Darkshore;320):12 c12298.5:15
+c6145.22 | links=c2174.19:80 c2174.44:71
+c2070.23 | links=c10158.24:29 c2163.53:43
+c2168.23 | links=c2186.2:33 c2168.11:24 c2169.12:29
+c2181.23 | links=#23852(auto Darkshore;415):20 #28521(auto Darkshore;509):18
+c2182.23 | links=o12654.4:13
+c2185.23 | links=c2185.8:116 c2185.17:10
+c2190.23 | links=c2191.1:11 c2189.17:24
+c2202.23 | links=c2231.2:62 c2202.21:14
+c2203.23 | links=#4379(auto Darkshore;76):25 c2235.14:48 c2235.15:54
+c2231.23 | links=c2231.26:41
+c2232.23 | links=c7015.1:24 o3705.10:49
+c2234.23 | links=c2234.10:58
+c6145.23 | links=c2187.11:61 c2187.16:25
+c2163.24 | links=c2163.22:21 c2321.34:40
+c2164.24 | links=c2163.74:25
+c2181.24 | links=c2182.16:19
+c2182.24 | links=#3341(auto Darkshore;58):16 o13360.1:14 o12654.4:20
+c2185.24 | links=c2185.11:29
+c2202.24 | links=c2234.1:29 c2203.19:14 c2202.25:11
+c2234.24 | links=c2234.12:73 c2234.21:60 c2185.35:86
+c2236.24 | links=#694(auto Darkshore;11):58 #18222(auto Darkshore;324):65
+c2321.24 | links=c2163.18:25
+c2323.24 | links=c12298.2:50 c2323.11:24
+c10158.24 | links=#1666(auto Darkshore;29):44 c2070.23:29 c12298.41:26
+c2168.25 | links=c2169.12:10
+c2181.25 | links=#23852(auto Darkshore;415):9
+c2185.25 | links=c2185.2:30
+c2202.25 | links=c2234.1:35 c2232.17:68 c2203.20:13 c2202.24:11
+c2231.25 | links=c2231.27:29
+c2163.26 | links=#9268(auto Darkshore;153):27
+c2181.26 | links=#1918(auto Darkshore;35):18
+c2187.26 | links=#9888(auto water;Darkshore;168):76 c2187.22:38
+c2202.26 | links=c2203.20:14 c2202.27:22
+c2231.26 | links=c2231.23:41 c2231.28:17
+c10158.26 | links=o177750.15:21
+c12298.26 | links=c2231.38:55 c2321.90:22
+c2163.27 | links=c2175.1:9 c2321.17:39
+c2168.27 | links=#6069(auto Darkshore;112):23
+c2202.27 | links=c2203.19:22 c2202.26:22
+c2231.27 | links=c2231.25:29 c2231.43:43
+c2232.27 | links=c2232.1:63 c7015.1:79 c2232.19:116
+c2234.27 | links=c2234.15:57 c2234.16:48 c2234.28:68 c2231.34:88
+c2321.27 | links=#793(auto Darkshore;12):33 c2321.85:26
+c2070.28 | links=c12298.2:18
+c2164.28 | links=#8699(auto Darkshore;146):19 c2168.8:6
+c2174.28 | links=c2174.1:76 c2174.16:77 c2232.17:204
+c2185.28 | links=c2185.1:91 o19017.3:166 c6145.6:23
+c2231.28 | links=c2231.16:68 c2231.26:17 c2231.39:79 c2231.42:59
+c2234.28 | links=o3705.7:32 c2234.27:68
+c2185.29 | links=c6145.6:19 c2185.13:68 c2185.30:87
+c2234.29 | links=o3705.7:34 c2234.20:65
+c2322.29 | links=#12089(auto Darkshore;211):20 c2069.21:11
+c2174.30 | links=c2174.10:71 c2174.33:49
+c2185.30 | links=c2185.22:42 c2185.29:87
+c2234.30 | links=c2234.12:83 c2202.21:52
+c2321.30 | links=c12298.38:42 c2163.75:1
+c2322.30 | links=#11211(auto Darkshore;194):15 #18327(auto Darkshore;325):48 c2164.3:58
+c2163.31 | links=c2321.35:7
+c2185.31 | links=c2185.8:24
+c2321.31 | links=#5524(auto Darkshore;102):24 c2070.19:10
+c12298.31 | links=#11415(auto Darkshore;201):45 #21014(auto Darkshore;370):36 #23802(auto Darkshore;413):21
+c2069.32 | links=#18040(auto Darkshore;320):27
+c2070.32 | links=c2321.17:29
+c2231.32 | links=c2231.11:52 c2231.38:60 c2231.44:23 c2231.47:20
+c2321.32 | links=c2163.18:32 c2163.69:41 c2163.70:15
+c2323.32 | links=#27990(auto Darkshore;499):21 c2071.3:34
+c12298.32 | links=c2070.46:40
+c2070.33 | links=c2321.17:30
+c2174.33 | links=c2234.2:129 c2174.30:49
+c2181.33 | links=#5986(auto Darkshore;109):16
+c2185.33 | links=c2185.8:41
+c2231.33 | links=c2185.3:48 c2231.46:49
+c2321.33 | links=c2163.41:22
+c2323.33 | links=#8073(auto Darkshore;136):38 c12298.56:60
+c12298.33 | links=c2071.8:58 c2323.19:18
+c2174.34 | links=c2174.5:90 c2187.11:23
+c2231.34 | links=c2231.6:18 c2234.27:88 c2231.38:49
+c2321.34 | links=c2070.9:27 c2163.24:40 c2070.42:38
+c12298.34 | links=#14983(auto Darkshore;257):14
+c2181.35 | links=#5638(auto Darkshore;106):24 #20733(auto Darkshore;365):15
+c2185.35 | links=c2234.24:86
+c2321.35 | links=c2163.20:34 c2163.31:7
+c2185.36 | links=c6145.2:45
+c2323.36 | links=#2453(auto Darkshore;43):46 c2237.8:40
+c2181.37 | links=#11053(auto Darkshore;192):24 #16118(auto Darkshore;280):23 o12654.4:29 c2182.12:26
+c2070.38 | links=#15189(auto Darkshore;263):19
+c2181.38 | links=o13360.1:7
+c2231.38 | links=c2231.6:59 c12298.26:55 c2231.32:60 c2231.34:49
+c2321.38 | links=#12065(auto Darkshore;209):16 c2163.20:21 c2321.41:66 c2321.67:61
+c2322.38 | links=#2638(auto Darkshore;46):29 c12298.39:44
+c12298.38 | links=c2321.30:42
+c2231.39 | links=c2202.21:52 c2231.28:79
+c2323.39 | links=#25893(auto Darkshore;452):12
+c12298.39 | links=c2322.21:10 c2322.38:44
+c2070.40 | links=c2321.76:29
+c2163.40 | links=#15303(auto Darkshore;266):29 c2163.22:8
+c2174.40 | links=c2174.3:133
+c2163.41 | links=#5524(auto Darkshore;102):39 c2321.33:22
+c2231.41 | links=c2231.46:46
+c2321.41 | links=#22301(auto Darkshore;384):37 c2321.38:66
+c2323.41 | links=#20756(auto Darkshore;366):9 c2237.2:19
+c12298.41 | links=c10158.24:26 c2163.62:26 c2163.80:15
+c2070.42 | links=#13899(auto Darkshore;236):31 #15204(Shadowclaw;one;Darkshore):24 c2321.34:38
+c2174.42 | links=c2174.16:60
+c2231.42 | links=c2231.28:59 c2231.43:45
+c2231.43 | links=c2231.19:64 c2231.27:43 c2231.42:45
+c2323.43 | links=#9441(auto Darkshore;161):53 #28020(auto Darkshore;500):57
+c2174.44 | links=c2232.1:64 c6145.22:71
+c2231.44 | links=c2185.2:150 c2231.6:18 c2231.32:23 c2185.49:50
+c2069.45 | links=
+c2070.46 | links=c2071.8:21 c12298.32:40 c2323.46:44
+c2231.46 | links=#26699(auto Darkshore;472):17 c2231.33:49 c2231.41:46
+c2322.46 | links=#8305(auto Darkshore;141):48 c2164.90:38
+c2323.46 | links=#8073(auto Darkshore;136):36 c2070.46:44
+c2069.47 | links=c12298.5:12
+c2163.47 | links=c2321.67:37
+c2231.47 | links=#15121(auto Darkshore;259):27 c2231.32:20
+c12298.47 | links=#4335(auto Darkshore;75):41 c10159.11:46 c2321.60:28
+c2322.48 | links=c2165.10:35 c2164.90:59
+c2185.49 | links=c2231.44:50
+c2163.50 | links=c10158.13:18 c2321.68:33
+c2185.50 | links=#6033(auto Darkshore;110):99 #11318(auto water;Darkshore;198):43 c2234.17:79
+c2070.51 | links=#15189(auto Darkshore;263):23
+c2323.52 | links=#13445(auto Darkshore;231):18
+c2163.53 | links=c10159.5:29 c10158.12:17 c2070.23:43
+c2070.54 | links=c2321.90:53
+c12298.54 | links=#18034(auto Darkshore;319):22
+c2323.55 | links=#11415(auto Darkshore;201):25 #26563(auto Darkshore;470):54
+c12298.56 | links=c2071.6:67 c2237.6:33 c2323.33:60
+c2321.58 | links=#12691(auto Darkshore;219):38 c2070.10:7
+c2163.59 | links=#15189(auto Darkshore;263):17
+c2321.60 | links=c12298.47:28
+c2163.62 | links=c12298.41:26
+c2164.62 | links=#15189(auto Darkshore;263):22
+c2321.67 | links=c2321.38:61 c2163.47:37
+c2321.68 | links=c10159.5:45 c2163.50:33
+c2163.69 | links=#15204(Shadowclaw;one;Darkshore):14 c2321.32:41 c2321.90:39
+c2163.70 | links=c2321.32:15
+c2163.71 | links=#13899(auto Darkshore;236):29 c1412.5:34
+c2163.74 | links=c2164.24:25 c2321.79:14
+c2163.75 | links=c2163.18:66 c2321.30:1 c2321.76:70
+c2321.76 | links=c2070.22:21 c2070.40:29 c2163.75:70
+c2163.78 | links=
+c2321.79 | links=#10067(auto Darkshore;171):66 #24703(auto Darkshore;429):47 c2163.74:14
+c2163.80 | links=#23559(auto Darkshore;407):68 c12298.41:15
+c2321.85 | links=#15189(auto Darkshore;263):27 c2321.27:26
+c2321.86 | links=#10141(auto Darkshore;173):64
+c2164.90 | links=c2322.46:38 c2322.48:59
+c2321.90 | links=c12298.26:22 c2070.54:53 c2163.69:39
+c2164.96 | links=#14190(auto Darkshore;239):26 #18533(auto Darkshore;327):30

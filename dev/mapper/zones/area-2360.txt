@@ -1,0 +1,3 @@
+Zone areaId 2360 — eine Zeile pro Wegpunkt; Links inline.
+
+#28630 | s;Kalimdor;Ashenvale;Fallen Sky Lake;Silverwing Outpost§s;Kalimdor;Eschental;Fallenskysee;Außenposten der Silverwing§s;Kalimdor;Orneval;Le lac Tombeciel;Avant-poste d'Aile-argent | x=1776.64 y=-2065.15 | size=1 | links=#44740(auto Ashenvale;1000):9 #44745(auto Ashenvale;1005):11 c12896.5:8 c12896.8:6

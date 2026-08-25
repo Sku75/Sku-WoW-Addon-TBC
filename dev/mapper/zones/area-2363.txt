@@ -1,0 +1,3 @@
+Zone areaId 2363 — eine Zeile pro Wegpunkt; Links inline.
+
+#28689 | s;Kalimdor;Moonglade;Lake Elune'ara;Stormrage Barrow Dens§s;Kalimdor;Moonglade;Der Elune'ara See;Die Stormrage Grabhügel§s;Kalimdor;Reflet-de-Lune;Lac Elune'ara;Refuge des saisons de Malfurion | x=7564.51 y=-2951.72 | size=1 | links=#3575(auto Moonglade;17):20

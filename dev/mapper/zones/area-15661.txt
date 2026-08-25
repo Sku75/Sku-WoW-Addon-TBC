@@ -1,0 +1,7 @@
+Zone areaId 15661 — eine Zeile pro Wegpunkt; Links inline.
+
+#1060 | auto Tinker Town;Ironforge;1§auto Tüftlerstadt;Eisenschmiede;1§auto Tinker Town;Forgefer;1 | x=-4772.10009765625 y=-1275.900024414063 | size=1 | links=#11973(auto Hall of Explorers;Ironforge;1):25 #7707(Tinker Town;Ironforge):60
+#7707 | Tinker Town;Ironforge§Tüftlerstadt;Eisenschmiede§Tinker Town;Forgefer | x=-4832.30029296875 y=-1276.800048828125 | size=1 | links=#19009(s;A;Mailbox;4;Ironforge):9 #20928(passage;from;Tinker Town;Ironforge;to;deep tram):40 c4081.1:12 c7937.1:20 c7944.1:13 c7950.1:14 #1060(auto Tinker Town;Ironforge;1):60 #11511(auto Tinker Town;Ironforge;2):36 #19529(auto Tinker Town;Ironforge;4):34
+#11511 | auto Tinker Town;Ironforge;2§auto Tüftlerstadt;Eisenschmiede;2§auto Tinker Town;Forgefer;2 | x=-4867.2001953125 y=-1265.700073242188 | size=1 | links=#15192(auto The Military Ward;Ironforge;5):50 #7707(Tinker Town;Ironforge):36
+#18426 | auto Tinker Town;Ironforge;3§auto Tüftlerstadt;Eisenschmiede;3§auto Tinker Town;Forgefer;3 | x=-4851.80029296875 y=-1247.400024414063 | size=1 | links=c5178.1:11 c7944.1:23
+#19529 | auto Tinker Town;Ironforge;4§auto Tüftlerstadt;Eisenschmiede;4§auto Tinker Town;Forgefer;4 | x=-4805.7001953125 y=-1255.300048828125 | size=1 | links=c5174.1:6 #7707(Tinker Town;Ironforge):34

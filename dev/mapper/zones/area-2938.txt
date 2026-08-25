@@ -1,0 +1,3 @@
+Zone areaId 2938 — eine Zeile pro Wegpunkt; Links inline.
+
+#28762 | s;Eastern Kingdoms;Deadwind Pass;Sleeping Gorge;Sleeping Gorge§s;Östliche Königreiche;Gebirgspass der Totenwinde;Die schlummernde Schlucht;Die schlummernde Schlucht§s;Royaumes de l'est;Défilé de Deuillevent;Gorge endormie;Gorge endormie | x=-10740.8 y=-1973.68 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 283 — eine Zeile pro Wegpunkt; Links inline.
+
+#28746 | s;Eastern Kingdoms;Alterac Mountains;Crushridge Hold;Slaughter Hollow§s;Östliche Königreiche;Alteracgebirge;Crushridgehöhle;Slaughter Hollow§s;Royaumes de l'est;Montagnes d'Alterac;Crushridge Hold;Slaughter Hollow | x=861.216 y=-558.217 | size=1 | links=c2684.1:24 c2253.11:15

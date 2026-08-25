@@ -1,0 +1,3 @@
+Zone areaId 3257 — eine Zeile pro Wegpunkt; Links inline.
+
+#28700 | s;Kalimdor;Silithus;Cenarion Hold;Bones of Grakkarond§s;Kalimdor;Silithus;Burg Cenarius;Knochen von Grakkarond§s;Kalimdor;Silithus;Fort cénarien;Restes de Grakkarond | x=-7234.61 y=-874.224 | size=1

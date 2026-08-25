@@ -1,0 +1,3 @@
+Zone areaId 454 — eine Zeile pro Wegpunkt; Links inline.
+
+#28665 | s;Kalimdor;Darkshore;Grove of the Ancients;Wildbend River§s;Kalimdor;Dunkelküste;Der Hain der Uralten;Der Wildbend§s;Kalimdor;Sombrivage;Bosquet des Anciens;Wildbend River | x=5056.04 y=-220.755 | size=1

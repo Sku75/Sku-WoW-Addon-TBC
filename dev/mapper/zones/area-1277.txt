@@ -1,0 +1,3 @@
+Zone areaId 1277 — eine Zeile pro Wegpunkt; Links inline.
+
+#28709 | s;Kalimdor;Stonetalon Mountains;Windshear Crag;Talondeep Path B§s;Kalimdor;Steinkrallengebirge;Die Scherwindklippe;Der Steinkrallenpfad B§s;Kalimdor;Les Serres-Rocheuses;Windshear Crag;Talondeep Path B | x=1531.94 y=-576.57 | size=1

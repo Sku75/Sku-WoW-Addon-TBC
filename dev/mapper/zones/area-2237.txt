@@ -1,0 +1,3 @@
+Zone areaId 2237 — eine Zeile pro Wegpunkt; Links inline.
+
+#28717 | s;Kalimdor;Thousand Needles;Camp E'thok;Whitereach Post§s;Kalimdor;Tausend Nadeln;Camp E'thok;Weißgipfelposten§s;Kalimdor;Mille pointes;Camp E'thok;Poste de Blanc-relais | x=-4917.35 y=-1375.5 | size=1

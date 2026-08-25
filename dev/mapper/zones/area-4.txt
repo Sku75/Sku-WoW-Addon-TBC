@@ -1,0 +1,687 @@
+Zone areaId 4 — eine Zeile pro Wegpunkt; Links inline.
+
+#20 | auto Blasted Lands;1§auto Verwüstete Lande;1§auto Terres foudroyées;1 | x=-11831.1005859375 y=-3205.699951171875 | size=1 | links=#13570(auto Blasted Lands;101):5 #16701(auto Blasted Lands;118):6
+#125 | auto Blasted Lands;2§auto Verwüstete Lande;2§auto Terres foudroyées;2 | x=-11008.7001953125 y=-3291.10009765625 | size=1 | links=#17949(auto Blasted Lands;131):27 #19493(auto Blasted Lands;143):16 c5999.9:8 c5999.35:13 c5999.38:12
+#346 | down;ramp;to;flight master;Nethergarde Keep;Blasted Lands§unten;rampe;zum;flugpunkt;Burg Nethergarde;Verwüstete Lande§bas;ramp;vers;flight master;Rempart-du-Néant;Terres foudroyées | x=-11114.2001953125 y=-3445.199951171875 | size=1 | links=#1237(auto Blasted Lands;10):7 #26779(auto Blasted Lands;196):2 c6001.5:1
+#353 | auto Blasted Lands;3§auto Verwüstete Lande;3§auto Terres foudroyées;3 | x=-11050.7998046875 y=-2743.699951171875 | size=1 | links=#2939(auto Blasted Lands;24):9 #18536(auto Blasted Lands;135):30
+#409 | auto Blasted Lands;4§auto Verwüstete Lande;4§auto Terres foudroyées;4 | x=-11056 y=-2933.300048828125 | size=1 | links=#783(auto Blasted Lands;8):44 #8426(auto Blasted Lands;61):25 c5988.3:24
+#448 | auto Blasted Lands;5§auto Verwüstete Lande;5§auto Terres foudroyées;5 | x=-10891.400390625 y=-2800.199951171875 | size=1 | links=c5988.17:5
+#602 | auto Blasted Lands;6§auto Verwüstete Lande;6§auto Terres foudroyées;6 | x=-11791.2001953125 y=-3203.800048828125 | size=1 | links=#8060(auto Blasted Lands;58):16 #13270(central location;The Dark Portal;Blasted Lands):13
+#640 | auto Blasted Lands;7§auto Verwüstete Lande;7§auto Terres foudroyées;7 | x=-11004.5 y=-3363.60009765625 | size=1 | links=#13520(central location;Nethergarde Keep;Blasted Lands):19 #25461(auto Blasted Lands;183):9
+#783 | auto Blasted Lands;8§auto Verwüstete Lande;8§auto Terres foudroyées;8 | x=-11099.7001953125 y=-2940.10009765625 | size=1 | links=#409(auto Blasted Lands;4):44 #23760(auto Blasted Lands;165):42
+#985 | auto Blasted Lands;9§auto Verwüstete Lande;9§auto Terres foudroyées;9 | x=-10724.7998046875 y=-2977.400146484375 | size=1 | links=#3046(auto Blasted Lands;26):22 #7175(auto Blasted Lands;51):16
+#1237 | auto Blasted Lands;10§auto Verwüstete Lande;10§auto Terres foudroyées;10 | x=-11116.1005859375 y=-3452.199951171875 | size=1 | links=#346(down;ramp;to;flight master;Nethergarde Keep;Blasted Lands):7 #22462(auto Blasted Lands;157):6
+#1274 | auto Blasted Lands;11§auto Verwüstete Lande;11§auto Terres foudroyées;11 | x=-10942.1005859375 y=-2979 | size=1 | links=#3606(auto Blasted Lands;33):29 #16967(auto Blasted Lands;123):28
+#1514 | passage;from;Blasted Lands;to;Swamp of Sorrows§passage;von;Verwüstete Lande;nach;Sümpfe des Elends§passage;de;Terres foudroyées;vers;Marais des Chagrins | x=-10667.7998046875 y=-2980.699951171875 | size=1 | links=#17157(auto Blasted Lands;126):16 #2904(passage;from;Swamp of Sorrows;to;Blasted Lands):2
+#1523 | auto Blasted Lands;12§auto Verwüstete Lande;12§auto Terres foudroyées;12 | x=-11116.900390625 y=-3432.10009765625 | size=1 | links=#3144(auto Blasted Lands;28):1 #15804(auto Blasted Lands;114):2
+#1729 | auto Blasted Lands;13§auto Verwüstete Lande;13§auto Terres foudroyées;13 | x=-11758.1005859375 y=-3203 | size=1 | links=#8060(auto Blasted Lands;58):16 #9818(auto Blasted Lands;73):19
+#1770 | auto Blasted Lands;14§auto Verwüstete Lande;14§auto Terres foudroyées;14 | x=-11184.2001953125 y=-3054 | size=1 | links=#12523(crossing;Blasted Lands):35 #23878(auto Blasted Lands;166):27
+#1815 | auto Blasted Lands;15§auto Verwüstete Lande;15§auto Terres foudroyées;15 | x=-10937 y=-3393.900146484375 | size=1 | links=#6377(auto Blasted Lands;47):9 #27802(auto Blasted Lands;203):13
+#1827 | auto Blasted Lands;16§auto Verwüstete Lande;16§auto Terres foudroyées;16 | x=-11032.1005859375 y=-3214.900146484375 | size=1 | links=#3545(auto Blasted Lands;32):24 #24901(auto Blasted Lands;178):20
+#2244 | auto Blasted Lands;17§auto Verwüstete Lande;17§auto Terres foudroyées;17 | x=-10976.5 y=-3483.900146484375 | size=1 | links=#10609(auto Blasted Lands;78):4 #24328(auto Blasted Lands;171):3
+#2255 | auto Blasted Lands;18§auto Verwüstete Lande;18§auto Terres foudroyées;18 | x=-11105.6005859375 y=-3434.199951171875 | size=1 | links=#3183(auto Blasted Lands;29):2 #21130(auto Blasted Lands;150):2
+#2415 | auto Blasted Lands;19§auto Verwüstete Lande;19§auto Terres foudroyées;19 | x=-11106.6005859375 y=-3441.400146484375 | size=1 | links=#2891(auto Blasted Lands;23):2 #8297(auto Blasted Lands;60):1
+#2701 | auto Blasted Lands;20§auto Verwüstete Lande;20§auto Terres foudroyées;20 | x=-10980.5 y=-3492.699951171875 | size=1 | links=#12878(auto Blasted Lands;97):2 #26105(auto Blasted Lands;192):2
+#2737 | auto Blasted Lands;21§auto Verwüstete Lande;21§auto Terres foudroyées;21 | x=-11108.7001953125 y=-3430.5 | size=1 | links=#11441(auto Blasted Lands;85):1 #21130(auto Blasted Lands;150):2
+#2815 | auto Blasted Lands;22§auto Verwüstete Lande;22§auto Terres foudroyées;22 | x=-11093.6005859375 y=-3461 | size=1 | links=#7098(auto Blasted Lands;49):14 #23232(auto Blasted Lands;162):15 #46032(auto Blasted Lands;318):14
+#2891 | auto Blasted Lands;23§auto Verwüstete Lande;23§auto Terres foudroyées;23 | x=-11108.2001953125 y=-3442.800048828125 | size=1 | links=#2415(auto Blasted Lands;19):2 #26779(auto Blasted Lands;196):3
+#2939 | auto Blasted Lands;24§auto Verwüstete Lande;24§auto Terres foudroyées;24 | x=-11059.900390625 y=-2740.199951171875 | size=1 | links=#353(auto Blasted Lands;3):9 #8218(auto Blasted Lands;59):33
+#2966 | auto Blasted Lands;25§auto Verwüstete Lande;25§auto Terres foudroyées;25 | x=-10997.7001953125 y=-3485.5 | size=1 | links=#17379(auto Blasted Lands;129):4 #26511(auto Blasted Lands;194):2
+#3046 | auto Blasted Lands;26§auto Verwüstete Lande;26§auto Terres foudroyées;26 | x=-10702 y=-2976.800048828125 | size=1 | links=#985(auto Blasted Lands;9):22 #17157(auto Blasted Lands;126):19
+#3094 | auto Blasted Lands;27§auto Verwüstete Lande;27§auto Terres foudroyées;27 | x=-11229.400390625 y=-3021.60009765625 | size=1 | links=#18366(auto Blasted Lands;134):30 #27564(auto Blasted Lands;200):26
+#3144 | auto Blasted Lands;28§auto Verwüstete Lande;28§auto Terres foudroyées;28 | x=-11117.2001953125 y=-3433.5 | size=1 | links=#1523(auto Blasted Lands;12):1 #4178(auto Blasted Lands;38):1
+#3183 | auto Blasted Lands;29§auto Verwüstete Lande;29§auto Terres foudroyées;29 | x=-11105.1005859375 y=-3436.400146484375 | size=1 | links=#2255(auto Blasted Lands;18):2 #17213(auto Blasted Lands;127):1
+#3322 | auto Blasted Lands;30§auto Verwüstete Lande;30§auto Terres foudroyées;30 | x=-11439.1005859375 y=-3083.300048828125 | size=1 | links=#16387(auto Blasted Lands;117):43 #27302(auto Blasted Lands;198):53 #45995(auto Blasted Lands;282):61
+#3535 | auto Blasted Lands;31§auto Verwüstete Lande;31§auto Terres foudroyées;31 | x=-10975.2998046875 y=-3385.699951171875 | size=1 | links=#13520(central location;Nethergarde Keep;Blasted Lands):23 #27802(auto Blasted Lands;203):25
+#3545 | auto Blasted Lands;32§auto Verwüstete Lande;32§auto Terres foudroyées;32 | x=-11007.6005859375 y=-3219.5 | size=1 | links=#1827(auto Blasted Lands;16):24 #10322(auto Blasted Lands;77):21
+#3606 | auto Blasted Lands;33§auto Verwüstete Lande;33§auto Terres foudroyées;33 | x=-10967.1005859375 y=-2963.60009765625 | size=1 | links=#1274(auto Blasted Lands;11):29 #21207(entry and exit;farming area;Scorpok Stinger;Blasted Lands):24
+#3633 | auto Blasted Lands;34§auto Verwüstete Lande;34§auto Terres foudroyées;34 | x=-10994.1005859375 y=-3495.10009765625 | size=1 | links=#11931(auto Blasted Lands;92):3 #20423(auto Blasted Lands;147):1
+#3662 | auto Blasted Lands;35§auto Verwüstete Lande;35§auto Terres foudroyées;35 | x=-10993.5 y=-3492.10009765625 | size=1 | links=#5475(auto Blasted Lands;43):1 #27997(auto Blasted Lands;204):1
+#3698 | auto Blasted Lands;36§auto Verwüstete Lande;36§auto Terres foudroyées;36 | x=-11654.900390625 y=-3164.800048828125 | size=1 | links=#11567(auto Blasted Lands;86):18 #16902(auto Blasted Lands;122):21
+#4071 | auto Blasted Lands;37§auto Verwüstete Lande;37§auto Terres foudroyées;37 | x=-10995.2998046875 y=-3429.199951171875 | size=1 | links=#22814(centralpoint;Nethergarde Keep;Blasted Lands):20 #25805(auto Blasted Lands;189):23 c6003.1:25 c5999.8:2
+#4178 | auto Blasted Lands;38§auto Verwüstete Lande;38§auto Terres foudroyées;38 | x=-11117.6005859375 y=-3434.5 | size=1 | links=#3144(auto Blasted Lands;28):1 #7679(auto Blasted Lands;55):1
+#4365 | auto Blasted Lands;39§auto Verwüstete Lande;39§auto Terres foudroyées;39 | x=-10999.2998046875 y=-3490.300048828125 | size=1 | links=#6861(auto Blasted Lands;48):2 #26511(auto Blasted Lands;194):2
+#4367 | auto Blasted Lands;40§auto Verwüstete Lande;40§auto Terres foudroyées;40 | x=-10987.7998046875 y=-3493.5 | size=1 | links=#15173(auto Blasted Lands;110):2 #22706(auto Blasted Lands;159):1
+#4610 | entry and exit;Nethergarde Keep;Blasted Lands§ein- und ausgang;Burg Nethergarde;Verwüstete Lande§entrée et sortie;Rempart-du-Néant;Terres foudroyées | x=-11008.7001953125 y=-3341.900146484375 | size=1 | links=#21157(auto Blasted Lands;152):8 #25461(auto Blasted Lands;183):12
+#4662 | entry and exit;tunnel;to;portal;The Dark Portal;Blasted Lands§ein- und ausgang;tunnel;zum;portal;Das Dunkle Portal;Verwüstete Lande§entrée et sortie;tunnel;vers;portal;La Porte des ténèbres;Terres foudroyées | x=-11619.1005859375 y=-3160.699951171875 | size=1 | links=#16902(auto Blasted Lands;122):14 #24579(auto Blasted Lands;174):18
+#5048 | auto Blasted Lands;41§auto Verwüstete Lande;41§auto Terres foudroyées;41 | x=-10925 y=-2802.10009765625 | size=1 | links=#10815(auto Blasted Lands;80):19 c5988.17:36
+#5368 | auto Blasted Lands;42§auto Verwüstete Lande;42§auto Terres foudroyées;42 | x=-10980.900390625 y=-3506.400146484375 | size=1 | links=#13484(auto Blasted Lands;100):3 #19508(auto Blasted Lands;144):4
+#5475 | auto Blasted Lands;43§auto Verwüstete Lande;43§auto Terres foudroyées;43 | x=-10992.7001953125 y=-3491.400146484375 | size=1 | links=#3662(auto Blasted Lands;35):1 #28555(auto Blasted Lands;206):2
+#5816 | auto Blasted Lands;44§auto Verwüstete Lande;44§auto Terres foudroyées;44 | x=-11698.1005859375 y=-3169.60009765625 | size=1 | links=#11567(auto Blasted Lands;86):25 #24083(auto Blasted Lands;168):16
+#6048 | auto Blasted Lands;45§auto Verwüstete Lande;45§auto Terres foudroyées;45 | x=-10985.2998046875 y=-3496.60009765625 | size=1 | links=#8790(auto Blasted Lands;64):3 #20213(auto Blasted Lands;146):3
+#6302 | auto Blasted Lands;46§auto Verwüstete Lande;46§auto Terres foudroyées;46 | x=-10931.400390625 y=-3372 | size=1 | links=#6377(auto Blasted Lands;47):13 #26003(auto Blasted Lands;191):7 c7851.1:13 c7851.6:2 c7851.14:4
+#6377 | auto Blasted Lands;47§auto Verwüstete Lande;47§auto Terres foudroyées;47 | x=-10934.400390625 y=-3384.699951171875 | size=1 | links=#1815(auto Blasted Lands;15):9 #6302(auto Blasted Lands;46):13
+#6861 | auto Blasted Lands;48§auto Verwüstete Lande;48§auto Terres foudroyées;48 | x=-10999.900390625 y=-3492.300048828125 | size=1 | links=#4365(auto Blasted Lands;39):2 #12625(auto Blasted Lands;95):3
+#7098 | auto Blasted Lands;49§auto Verwüstete Lande;49§auto Terres foudroyées;49 | x=-11103.1005859375 y=-3449.400146484375 | size=1 | links=#2815(auto Blasted Lands;22):14 #22462(auto Blasted Lands;157):6
+#7156 | auto Blasted Lands;50§auto Verwüstete Lande;50§auto Terres foudroyées;50 | x=-11019.1005859375 y=-3318 | size=1 | links=#19493(auto Blasted Lands;143):16 #22698(auto Blasted Lands;158):10
+#7175 | auto Blasted Lands;51§auto Verwüstete Lande;51§auto Terres foudroyées;51 | x=-10739.5 y=-2984.699951171875 | size=1 | links=#985(auto Blasted Lands;9):16 #25433(auto Blasted Lands;182):14
+#7178 | auto Blasted Lands;52§auto Verwüstete Lande;52§auto Terres foudroyées;52 | x=-10905.900390625 y=-2860.300048828125 | size=1 | links=#25073(auto Blasted Lands;180):13 c5988.10:49
+#7406 | auto Blasted Lands;53§auto Verwüstete Lande;53§auto Terres foudroyées;53 | x=-10959.1005859375 y=-3451.60009765625 | size=1 | links=#24441(auto Blasted Lands;173):7 c5508.1:9
+#7630 | auto Blasted Lands;54§auto Verwüstete Lande;54§auto Terres foudroyées;54 | x=-11156.6005859375 y=-2996.199951171875 | size=1 | links=#12523(crossing;Blasted Lands):36 #23760(auto Blasted Lands;165):37
+#7679 | auto Blasted Lands;55§auto Verwüstete Lande;55§auto Terres foudroyées;55 | x=-11117.6005859375 y=-3435.900146484375 | size=1 | links=#4178(auto Blasted Lands;38):1 #27790(auto Blasted Lands;202):1
+#7944 | auto Blasted Lands;56§auto Verwüstete Lande;56§auto Terres foudroyées;56 | x=-10985.2001953125 y=-3492.199951171875 | size=1 | links=#8980(auto Blasted Lands;70):2 #12878(auto Blasted Lands;97):2
+#8023 | auto Blasted Lands;57§auto Verwüstete Lande;57§auto Terres foudroyées;57 | x=-10990.7998046875 y=-3497.5 | size=1 | links=#11650(auto Blasted Lands;87):1 #20423(auto Blasted Lands;147):2
+#8060 | auto Blasted Lands;58§auto Verwüstete Lande;58§auto Terres foudroyées;58 | x=-11774.6005859375 y=-3202.60009765625 | size=1 | links=#602(auto Blasted Lands;6):16 #1729(auto Blasted Lands;13):16
+#8218 | auto Blasted Lands;59§auto Verwüstete Lande;59§auto Terres foudroyées;59 | x=-11076.1005859375 y=-2769.10009765625 | size=1 | links=#2939(auto Blasted Lands;24):33 #16470(farming area;Scorpok Stinger;to;here;Dreadmaul Hold;Blasted Lands):26 c5979.2:20
+#8297 | auto Blasted Lands;60§auto Verwüstete Lande;60§auto Terres foudroyées;60 | x=-11105.5 y=-3440.10009765625 | size=1 | links=#2415(auto Blasted Lands;19):1 #17213(auto Blasted Lands;127):2
+#8426 | auto Blasted Lands;61§auto Verwüstete Lande;61§auto Terres foudroyées;61 | x=-11030.6005859375 y=-2937.5 | size=1 | links=#409(auto Blasted Lands;4):25 #21207(entry and exit;farming area;Scorpok Stinger;Blasted Lands):45 c8302.5:15
+#8576 | auto Blasted Lands;62§auto Verwüstete Lande;62§auto Terres foudroyées;62 | x=-10843.1005859375 y=-2992.10009765625 | size=1 | links=#11789(auto Blasted Lands;90):35 #14560(auto Blasted Lands;105):30 #46042(auto Blasted Lands;320):28
+#8686 | auto Blasted Lands;63§auto Verwüstete Lande;63§auto Terres foudroyées;63 | x=-11107.6005859375 y=-2699.10009765625 | size=1 | links=#25694(auto Blasted Lands;187):54 c5988.5:29
+#8790 | auto Blasted Lands;64§auto Verwüstete Lande;64§auto Terres foudroyées;64 | x=-10985.6005859375 y=-3493.5 | size=1 | links=#6048(auto Blasted Lands;45):3 #16856(auto Blasted Lands;121):2
+#8801 | auto Blasted Lands;65§auto Verwüstete Lande;65§auto Terres foudroyées;65 | x=-10979.2998046875 y=-3481.699951171875 | size=1 | links=#21539(down;tower;Nethergarde Keep;Blasted Lands):8 #27681(auto Blasted Lands;201):9
+#8838 | auto Blasted Lands;66§auto Verwüstete Lande;66§auto Terres foudroyées;66 | x=-10990.7001953125 y=-3480.699951171875 | size=1 | links=#9704(auto Blasted Lands;72):6 #17379(auto Blasted Lands;129):4
+#8842 | auto Blasted Lands;67§auto Verwüstete Lande;67§auto Terres foudroyées;67 | x=-11865.7001953125 y=-3203.699951171875 | size=1 | links=#15270(auto Blasted Lands;112):6 #26811(auto Blasted Lands;197):10
+#8888 | auto Blasted Lands;68§auto Verwüstete Lande;68§auto Terres foudroyées;68 | x=-10905.7998046875 y=-2815.400146484375 | size=1 | links=#25073(auto Blasted Lands;180):32 c5988.17:19
+#8921 | auto Blasted Lands;69§auto Verwüstete Lande;69§auto Terres foudroyées;69 | x=-10972 y=-3495.5 | size=1 | links=#21137(auto Blasted Lands;151):5 #27681(auto Blasted Lands;201):6
+#8980 | auto Blasted Lands;70§auto Verwüstete Lande;70§auto Terres foudroyées;70 | x=-10988 y=-3492.699951171875 | size=1 | links=#7944(auto Blasted Lands;56):2 #17647(auto Blasted Lands;130):2
+#9174 | auto Blasted Lands;71§auto Verwüstete Lande;71§auto Terres foudroyées;71 | x=-10976.900390625 y=-3501.699951171875 | size=1 | links=#11048(auto Blasted Lands;83):3 #20973(auto Blasted Lands;149):2
+#9704 | auto Blasted Lands;72§auto Verwüstete Lande;72§auto Terres foudroyées;72 | x=-10984.2998046875 y=-3479.300048828125 | size=1 | links=#8838(auto Blasted Lands;66):6 #24328(auto Blasted Lands;171):5
+#9818 | auto Blasted Lands;73§auto Verwüstete Lande;73§auto Terres foudroyées;73 | x=-11752.7998046875 y=-3184.60009765625 | size=1 | links=#1729(auto Blasted Lands;13):19 #11043(auto Blasted Lands;82):9
+#9873 | auto Blasted Lands;74§auto Verwüstete Lande;74§auto Terres foudroyées;74 | x=-11846.1005859375 y=-3201 | size=1 | links=#24584(auto Blasted Lands;175):5 #26811(auto Blasted Lands;197):9
+#9949 | auto Blasted Lands;75§auto Verwüstete Lande;75§auto Terres foudroyées;75 | x=-10985.400390625 y=-2829.900146484375 | size=1 | links=#27393(auto Blasted Lands;199):29 c5988.6:10
+#9968 | auto Blasted Lands;76§auto Verwüstete Lande;76§auto Terres foudroyées;76 | x=-11126.400390625 y=-3184.10009765625 | size=1 | links=#14777(auto Blasted Lands;107):15 #21566(auto Blasted Lands;153):16 c8303.8:57 c8303.17:45
+#10322 | auto Blasted Lands;77§auto Verwüstete Lande;77§auto Terres foudroyées;77 | x=-10989.7001953125 y=-3230.5 | size=1 | links=#3545(auto Blasted Lands;32):21 #19729(auto Blasted Lands;145):19
+#10609 | auto Blasted Lands;78§auto Verwüstete Lande;78§auto Terres foudroyées;78 | x=-10975.1005859375 y=-3488.199951171875 | size=1 | links=#2244(auto Blasted Lands;17):4 #19002(auto Blasted Lands;138):2
+#10660 | auto Blasted Lands;79§auto Verwüstete Lande;79§auto Terres foudroyées;79 | x=-11112.7998046875 y=-3436.60009765625 | size=1 | links=#24013(auto Blasted Lands;167):2 c8609.1:2
+#10815 | auto Blasted Lands;80§auto Verwüstete Lande;80§auto Terres foudroyées;80 | x=-10944.400390625 y=-2803.199951171875 | size=1 | links=#5048(auto Blasted Lands;41):19 c5984.8:30
+#10936 | auto Blasted Lands;81§auto Verwüstete Lande;81§auto Terres foudroyées;81 | x=-10991.1005859375 y=-3464 | size=1 | links=#18352(auto Blasted Lands;133):8 #28155(auto Blasted Lands;205):5
+#11043 | auto Blasted Lands;82§auto Verwüstete Lande;82§auto Terres foudroyées;82 | x=-11749.900390625 y=-3175.699951171875 | size=1 | links=#9818(auto Blasted Lands;73):9 #25095(auto Blasted Lands;181):16
+#11048 | auto Blasted Lands;83§auto Verwüstete Lande;83§auto Terres foudroyées;83 | x=-10979.2998046875 y=-3503.800048828125 | size=1 | links=#9174(auto Blasted Lands;71):3 #26170(auto Blasted Lands;193):4
+#11193 | auto Blasted Lands;84§auto Verwüstete Lande;84§auto Terres foudroyées;84 | x=-11321.7998046875 y=-3062.900146484375 | size=1 | links=#13154(auto Blasted Lands;99):23 #26610(auto Blasted Lands;195):26
+#11441 | auto Blasted Lands;85§auto Verwüstete Lande;85§auto Terres foudroyées;85 | x=-11110.2001953125 y=-3429.5 | size=1 | links=#2737(auto Blasted Lands;21):1 #22345(auto Blasted Lands;155):2
+#11567 | auto Blasted Lands;86§auto Verwüstete Lande;86§auto Terres foudroyées;86 | x=-11673.1005859375 y=-3166.400146484375 | size=1 | links=#3698(auto Blasted Lands;36):18 #5816(auto Blasted Lands;44):25
+#11650 | auto Blasted Lands;87§auto Verwüstete Lande;87§auto Terres foudroyées;87 | x=-10989.2998046875 y=-3497 | size=1 | links=#8023(auto Blasted Lands;57):1 #15173(auto Blasted Lands;110):1
+#11680 | auto Blasted Lands;88§auto Verwüstete Lande;88§auto Terres foudroyées;88 | x=-11084.7001953125 y=-3213.400146484375 | size=1 | links=#19173(auto Blasted Lands;140):27 #21650(auto Blasted Lands;154):19
+#11756 | auto Blasted Lands;89§auto Verwüstete Lande;89§auto Terres foudroyées;89 | x=-11164.1005859375 y=-3124.199951171875 | size=1 | links=#23023(auto Blasted Lands;160):20 #24785(auto Blasted Lands;177):15
+#11789 | auto Blasted Lands;90§auto Verwüstete Lande;90§auto Terres foudroyées;90 | x=-10878.2998046875 y=-2988.900146484375 | size=1 | links=#8576(auto Blasted Lands;62):35 #16967(auto Blasted Lands;123):35 #45193(auto Blasted Lands;208):29
+#11929 | auto Blasted Lands;91§auto Verwüstete Lande;91§auto Terres foudroyées;91 | x=-10971.6005859375 y=-3280.5 | size=1 | links=#17949(auto Blasted Lands;131):15 #18979(auto Blasted Lands;137):21 c5999.15:17
+#11931 | auto Blasted Lands;92§auto Verwüstete Lande;92§auto Terres foudroyées;92 | x=-10996.2998046875 y=-3492.60009765625 | size=1 | links=#3633(auto Blasted Lands;34):3 #24350(auto Blasted Lands;172):3
+#12413 | auto Blasted Lands;93§auto Verwüstete Lande;93§auto Terres foudroyées;93 | x=-10997.6005859375 y=-3500.10009765625 | size=1 | links=#15182(auto Blasted Lands;111):6 #16842(auto Blasted Lands;120):5
+#12427 | auto Blasted Lands;94§auto Verwüstete Lande;94§auto Terres foudroyées;94 | x=-11044.900390625 y=-3454.400146484375 | size=1 | links=#13711(auto Blasted Lands;102):12 #25610(auto Blasted Lands;185):14
+#12523 | crossing;Blasted Lands§kreuzung;Verwüstete Lande§traversée;Terres foudroyées | x=-11184.6005859375 y=-3019 | size=1 | links=#1770(auto Blasted Lands;14):35 #7630(auto Blasted Lands;54):36 #27564(auto Blasted Lands;200):18
+#12625 | auto Blasted Lands;95§auto Verwüstete Lande;95§auto Terres foudroyées;95 | x=-10996.7998046875 y=-3493.300048828125 | size=1 | links=#6861(auto Blasted Lands;48):3 #24931(auto Blasted Lands;179):3
+#12738 | auto Blasted Lands;96§auto Verwüstete Lande;96§auto Terres foudroyées;96 | x=-10987.7998046875 y=-3481.60009765625 | size=1 | links=#18352(auto Blasted Lands;133):9 #21539(down;tower;Nethergarde Keep;Blasted Lands):2
+#12878 | auto Blasted Lands;97§auto Verwüstete Lande;97§auto Terres foudroyées;97 | x=-10983 y=-3491.60009765625 | size=1 | links=#2701(auto Blasted Lands;20):2 #7944(auto Blasted Lands;56):2
+#12920 | auto Blasted Lands;98§auto Verwüstete Lande;98§auto Terres foudroyées;98 | x=-11581.2001953125 y=-3154.699951171875 | size=1 | links=#19342(auto Blasted Lands;141):23 #24579(auto Blasted Lands;174):20 c8298.3:77
+#13154 | auto Blasted Lands;99§auto Verwüstete Lande;99§auto Terres foudroyées;99 | x=-11316 y=-3040.10009765625 | size=1 | links=#11193(auto Blasted Lands;84):23 #24651(auto Blasted Lands;176):31
+#13270 | central location;The Dark Portal;Blasted Lands§zentralpunkt;Das Dunkle Portal;Verwüstete Lande§emplacement central;La Porte des ténèbres;Terres foudroyées | x=-11804.7001953125 y=-3202.400146484375 | size=1 | links=#602(auto Blasted Lands;6):13 #16701(auto Blasted Lands;118):22 #18711(auto Blasted Lands;136):14 c16840.1:12
+#13484 | auto Blasted Lands;100§auto Verwüstete Lande;100§auto Terres foudroyées;100 | x=-10983.6005859375 y=-3503.800048828125 | size=1 | links=#5368(auto Blasted Lands;42):3 #20213(auto Blasted Lands;146):3
+#13520 | central location;Nethergarde Keep;Blasted Lands§zentralpunkt;Burg Nethergarde;Verwüstete Lande§emplacement central;Rempart-du-Néant;Terres foudroyées | x=-10998.7001953125 y=-3382.199951171875 | size=1 | links=#640(auto Blasted Lands;7):19 #3535(auto Blasted Lands;31):23 #23690(auto Blasted Lands;163):10 #28625(s;u;Mailbox;Blasted Lands):6 c9540.1:30 c6000.2:2
+#13570 | auto Blasted Lands;101§auto Verwüstete Lande;101§auto Terres foudroyées;101 | x=-11836 y=-3202.800048828125 | size=1 | links=#20(auto Blasted Lands;1):5 #24584(auto Blasted Lands;175):4
+#13711 | auto Blasted Lands;102§auto Verwüstete Lande;102§auto Terres foudroyées;102 | x=-11057.2998046875 y=-3456.800048828125 | size=1 | links=#12427(auto Blasted Lands;94):12 #25849(auto Blasted Lands;190):14
+#14372 | auto Blasted Lands;103§auto Verwüstete Lande;103§auto Terres foudroyées;103 | x=-11031.2998046875 y=-2798.800048828125 | size=1 | links=#18536(auto Blasted Lands;135):45 #27393(auto Blasted Lands;199):37 c5984.3:6 c8302.8:19
+#14475 | auto Blasted Lands;104§auto Verwüstete Lande;104§auto Terres foudroyées;104 | x=-11878.5 y=-3205.199951171875 | size=1 | links=#15270(auto Blasted Lands;112):6 #15450(auto Blasted Lands;113):4
+#14560 | auto Blasted Lands;105§auto Verwüstete Lande;105§auto Terres foudroyées;105 | x=-10812.7998046875 y=-2993 | size=1 | links=#8576(auto Blasted Lands;62):30 #25648(auto Blasted Lands;186):37 #46042(auto Blasted Lands;320):26
+#14738 | auto Blasted Lands;106§auto Verwüstete Lande;106§auto Terres foudroyées;106 | x=-11518.6005859375 y=-3137.900146484375 | size=1 | links=#19342(auto Blasted Lands;141):43 #27302(auto Blasted Lands;198):47
+#14777 | auto Blasted Lands;107§auto Verwüstete Lande;107§auto Terres foudroyées;107 | x=-11118.7998046875 y=-3197.300048828125 | size=1 | links=#9968(auto Blasted Lands;76):15 #19173(auto Blasted Lands;140):13
+#14821 | auto Blasted Lands;108§auto Verwüstete Lande;108§auto Terres foudroyées;108 | x=-11011.2998046875 y=-3449.199951171875 | size=1 | links=#22814(centralpoint;Nethergarde Keep;Blasted Lands):17 #25610(auto Blasted Lands;185):20 c5999.27:7
+#15058 | auto Blasted Lands;109§auto Verwüstete Lande;109§auto Terres foudroyées;109 | x=-11000.6005859375 y=-3482.800048828125 | size=1 | links=#24173(auto Blasted Lands;169):14 c8022.1:0
+#15173 | auto Blasted Lands;110§auto Verwüstete Lande;110§auto Terres foudroyées;110 | x=-10988 y=-3495.60009765625 | size=1 | links=#4367(auto Blasted Lands;40):2 #11650(auto Blasted Lands;87):1
+#15182 | auto Blasted Lands;111§auto Verwüstete Lande;111§auto Terres foudroyées;111 | x=-11000.400390625 y=-3494.5 | size=1 | links=#12413(auto Blasted Lands;93):6 #24350(auto Blasted Lands;172):5
+#15270 | auto Blasted Lands;112§auto Verwüstete Lande;112§auto Terres foudroyées;112 | x=-11872.2998046875 y=-3204.300048828125 | size=1 | links=#8842(auto Blasted Lands;67):6 #14475(auto Blasted Lands;104):6
+#15450 | auto Blasted Lands;113§auto Verwüstete Lande;113§auto Terres foudroyées;113 | x=-11883 y=-3205.900146484375 | size=1 | links=#14475(auto Blasted Lands;104):4 #19088(auto Blasted Lands;139):4
+#15804 | auto Blasted Lands;114§auto Verwüstete Lande;114§auto Terres foudroyées;114 | x=-11115.2001953125 y=-3430.699951171875 | size=1 | links=#1523(auto Blasted Lands;12):2 #15983(auto Blasted Lands;115):1
+#15983 | auto Blasted Lands;115§auto Verwüstete Lande;115§auto Terres foudroyées;115 | x=-11113.7998046875 y=-3430.10009765625 | size=1 | links=#15804(auto Blasted Lands;114):1 #22345(auto Blasted Lands;155):1
+#15998 | auto Blasted Lands;116§auto Verwüstete Lande;116§auto Terres foudroyées;116 | x=-11022.5 y=-2725.400146484375 | size=1 | links=#17229(auto Blasted Lands;128):32 c5988.11:15
+#16189 | passage;portal;from;The Dark Portal;Blasted Lands;to;Hellfire Peninsula§passage;portal;von;Das Dunkle Portal;Verwüstete Lande;nach;höllenfeuerhalbinsel§passage;portal;de;La Porte des ténèbres;Terres foudroyées;vers;Péninsule des Flammes infernales | x=-11904.1005859375 y=-3208.699951171875 | size=1 | links=#23137(auto Blasted Lands;161):8
+#16387 | auto Blasted Lands;117§auto Verwüstete Lande;117§auto Terres foudroyées;117 | x=-11395.2998046875 y=-3086.10009765625 | size=1 | links=#3322(auto Blasted Lands;30):43 #26610(auto Blasted Lands;195):57 #45994(auto Blasted Lands;281):30 c5983.4:27
+#16470 | farming area;Scorpok Stinger;to;here;Dreadmaul Hold;Blasted Lands§farmgebiet;Skorpokstecher;bis;hier;Feste Schreckensfels;Verwüstete Lande§farming area;Aiguillonneur scorpok;vers;here;Bastion Cognepeur;Terres foudroyées | x=-11100.7998046875 y=-2758.199951171875 | size=1 | links=#8218(auto Blasted Lands;59):26
+#16701 | auto Blasted Lands;118§auto Verwüstete Lande;118§auto Terres foudroyées;118 | x=-11825.7998046875 y=-3208.699951171875 | size=1 | links=#20(auto Blasted Lands;1):6 #13270(central location;The Dark Portal;Blasted Lands):22
+#16757 | auto Blasted Lands;119§auto Verwüstete Lande;119§auto Terres foudroyées;119 | x=-11890.7998046875 y=-3207.199951171875 | size=1 | links=#19088(auto Blasted Lands;139):3 #20938(auto Blasted Lands;148):2
+#16842 | auto Blasted Lands;120§auto Verwüstete Lande;120§auto Terres foudroyées;120 | x=-10994.400390625 y=-3504.10009765625 | size=1 | links=#12413(auto Blasted Lands;93):5 #22459(auto Blasted Lands;156):5
+#16856 | auto Blasted Lands;121§auto Verwüstete Lande;121§auto Terres foudroyées;121 | x=-10984.1005859375 y=-3491.199951171875 | size=1 | links=#8790(auto Blasted Lands;64):2 #17078(auto Blasted Lands;125):3
+#16902 | auto Blasted Lands;122§auto Verwüstete Lande;122§auto Terres foudroyées;122 | x=-11633.2001953125 y=-3161.699951171875 | size=1 | links=#3698(auto Blasted Lands;36):21 #4662(entry and exit;tunnel;to;portal;The Dark Portal;Blasted Lands):14
+#16967 | auto Blasted Lands;123§auto Verwüstete Lande;123§auto Terres foudroyées;123 | x=-10913.7001953125 y=-2982.800048828125 | size=1 | links=#1274(auto Blasted Lands;11):28 #11789(auto Blasted Lands;90):35 c7506.1:52
+#16981 | auto Blasted Lands;124§auto Verwüstete Lande;124§auto Terres foudroyées;124 | x=-11135.6005859375 y=-3153.900146484375 | size=1 | links=#21566(auto Blasted Lands;153):15 #24785(auto Blasted Lands;177):25
+#17078 | auto Blasted Lands;125§auto Verwüstete Lande;125§auto Terres foudroyées;125 | x=-10980.400390625 y=-3490 | size=1 | links=#16856(auto Blasted Lands;121):3 #19002(auto Blasted Lands;138):3
+#17157 | auto Blasted Lands;126§auto Verwüstete Lande;126§auto Terres foudroyées;126 | x=-10683.1005859375 y=-2974 | size=1 | links=#1514(passage;from;Blasted Lands;to;Swamp of Sorrows):16 #3046(auto Blasted Lands;26):19
+#17213 | auto Blasted Lands;127§auto Verwüstete Lande;127§auto Terres foudroyées;127 | x=-11105.1005859375 y=-3438.10009765625 | size=1 | links=#3183(auto Blasted Lands;29):1 #8297(auto Blasted Lands;60):2
+#17224 | Deatheye;Blasted Lands;3;45.19;18.27§Todesauge;Verwüstete Lande;3;45.19;18.27§Oeil-de-mort;Terres foudroyées;3;45.19;18.27 | x=-10974.66861713999 y=-2753.22912082715 | size=1
+#17229 | auto Blasted Lands;128§auto Verwüstete Lande;128§auto Terres foudroyées;128 | x=-11053.6005859375 y=-2716.699951171875 | size=1 | links=#15998(auto Blasted Lands;116):32 c5988.5:28
+#17379 | auto Blasted Lands;129§auto Verwüstete Lande;129§auto Terres foudroyées;129 | x=-10994.7001953125 y=-3482.60009765625 | size=1 | links=#2966(auto Blasted Lands;25):4 #8838(auto Blasted Lands;66):4
+#17647 | auto Blasted Lands;130§auto Verwüstete Lande;130§auto Terres foudroyées;130 | x=-10990 y=-3492.800048828125 | size=1 | links=#8980(auto Blasted Lands;70):2 #24931(auto Blasted Lands;179):3
+#17949 | auto Blasted Lands;131§auto Verwüstete Lande;131§auto Terres foudroyées;131 | x=-10981.5 y=-3292.300048828125 | size=1 | links=#125(auto Blasted Lands;2):27 #11929(auto Blasted Lands;91):15
+#18128 | auto Blasted Lands;132§auto Verwüstete Lande;132§auto Terres foudroyées;132 | x=-10994.7001953125 y=-3494.60009765625 | size=1 | links=#25703(auto Blasted Lands;188):1 #27997(auto Blasted Lands;204):1
+#18352 | auto Blasted Lands;133§auto Verwüstete Lande;133§auto Terres foudroyées;133 | x=-10989.5 y=-3472.5 | size=1 | links=#10936(auto Blasted Lands;81):8 #12738(auto Blasted Lands;96):9
+#18366 | auto Blasted Lands;134§auto Verwüstete Lande;134§auto Terres foudroyées;134 | x=-11259.7001953125 y=-3019.800048828125 | size=1 | links=#3094(auto Blasted Lands;27):30 #24651(auto Blasted Lands;176):32
+#18536 | auto Blasted Lands;135§auto Verwüstete Lande;135§auto Terres foudroyées;135 | x=-11022 y=-2753.900146484375 | size=1 | links=#353(auto Blasted Lands;3):30 #14372(auto Blasted Lands;103):45 c5984.2:24
+#18711 | auto Blasted Lands;136§auto Verwüstete Lande;136§auto Terres foudroyées;136 | x=-11812.1005859375 y=-3190.300048828125 | size=1 | links=#13270(central location;The Dark Portal;Blasted Lands):14 c19254.1:5
+#18979 | auto Blasted Lands;137§auto Verwüstete Lande;137§auto Terres foudroyées;137 | x=-10972 y=-3259.10009765625 | size=1 | links=#11929(auto Blasted Lands;91):21 #19729(auto Blasted Lands;145):13 c5999.28:12
+#19002 | auto Blasted Lands;138§auto Verwüstete Lande;138§auto Terres foudroyées;138 | x=-10977.2001953125 y=-3488.900146484375 | size=1 | links=#10609(auto Blasted Lands;78):2 #17078(auto Blasted Lands;125):3
+#19088 | auto Blasted Lands;139§auto Verwüstete Lande;139§auto Terres foudroyées;139 | x=-11887 y=-3206.60009765625 | size=1 | links=#15450(auto Blasted Lands;113):4 #16757(auto Blasted Lands;119):3
+#19173 | auto Blasted Lands;140§auto Verwüstete Lande;140§auto Terres foudroyées;140 | x=-11111.900390625 y=-3209.300048828125 | size=1 | links=#11680(auto Blasted Lands;88):27 #14777(auto Blasted Lands;107):13
+#19342 | auto Blasted Lands;141§auto Verwüstete Lande;141§auto Terres foudroyées;141 | x=-11561.5 y=-3141.60009765625 | size=1 | links=#12920(auto Blasted Lands;98):23 #14738(auto Blasted Lands;106):43 #45952(auto Blasted Lands;242):28
+#19385 | auto Blasted Lands;142§auto Verwüstete Lande;142§auto Terres foudroyées;142 | x=-10977.7998046875 y=-3495.199951171875 | size=1 | links=#24259(auto Blasted Lands;170):2 #26105(auto Blasted Lands;192):1
+#19493 | auto Blasted Lands;143§auto Verwüstete Lande;143§auto Terres foudroyées;143 | x=-11021 y=-3301.400146484375 | size=1 | links=#125(auto Blasted Lands;2):16 #7156(auto Blasted Lands;50):16 c5999.41:35
+#19508 | auto Blasted Lands;144§auto Verwüstete Lande;144§auto Terres foudroyées;144 | x=-10976.6005859375 y=-3504.10009765625 | size=1 | links=#5368(auto Blasted Lands;42):4 #21137(auto Blasted Lands;151):4
+#19729 | auto Blasted Lands;145§auto Verwüstete Lande;145§auto Terres foudroyées;145 | x=-10977.900390625 y=-3246.60009765625 | size=1 | links=#10322(auto Blasted Lands;77):19 #18979(auto Blasted Lands;137):13
+#20213 | auto Blasted Lands;146§auto Verwüstete Lande;146§auto Terres foudroyées;146 | x=-10984.6005859375 y=-3500.199951171875 | size=1 | links=#6048(auto Blasted Lands;45):3 #13484(auto Blasted Lands;100):3
+#20423 | auto Blasted Lands;147§auto Verwüstete Lande;147§auto Terres foudroyées;147 | x=-10992.7998046875 y=-3496.10009765625 | size=1 | links=#3633(auto Blasted Lands;34):1 #8023(auto Blasted Lands;57):2
+#20938 | auto Blasted Lands;148§auto Verwüstete Lande;148§auto Terres foudroyées;148 | x=-11893.2001953125 y=-3207.400146484375 | size=1 | links=#16757(auto Blasted Lands;119):2 #23137(auto Blasted Lands;161):2
+#20973 | auto Blasted Lands;149§auto Verwüstete Lande;149§auto Terres foudroyées;149 | x=-10976.6005859375 y=-3499.60009765625 | size=1 | links=#9174(auto Blasted Lands;71):2 #24259(auto Blasted Lands;170):2
+#21130 | auto Blasted Lands;150§auto Verwüstete Lande;150§auto Terres foudroyées;150 | x=-11106.5 y=-3432.10009765625 | size=1 | links=#2255(auto Blasted Lands;18):2 #2737(auto Blasted Lands;21):2
+#21137 | auto Blasted Lands;151§auto Verwüstete Lande;151§auto Terres foudroyées;151 | x=-10973.5 y=-3500.5 | size=1 | links=#8921(auto Blasted Lands;69):5 #19508(auto Blasted Lands;144):4
+#21157 | auto Blasted Lands;152§auto Verwüstete Lande;152§auto Terres foudroyées;152 | x=-11011.1005859375 y=-3333.400146484375 | size=1 | links=#4610(entry and exit;Nethergarde Keep;Blasted Lands):8 #22698(auto Blasted Lands;158):6
+#21207 | entry and exit;farming area;Scorpok Stinger;Blasted Lands§ein- und ausgang;farmgebiet;Skorpokstecher;Verwüstete Lande§entrée et sortie;farming area;Aiguillonneur scorpok;Terres foudroyées | x=-10987.2998046875 y=-2950 | size=1 | links=#3606(auto Blasted Lands;33):24 #8426(auto Blasted Lands;61):45 c5988.8:42
+#21539 | down;tower;Nethergarde Keep;Blasted Lands§unten;turm;Burg Nethergarde;Verwüstete Lande§bas;tower;Rempart-du-Néant;Terres foudroyées | x=-10987.400390625 y=-3484.300048828125 | size=1 | links=#8801(auto Blasted Lands;65):8 #12738(auto Blasted Lands;96):2
+#21566 | auto Blasted Lands;153§auto Verwüstete Lande;153§auto Terres foudroyées;153 | x=-11130.6005859375 y=-3168.10009765625 | size=1 | links=#9968(auto Blasted Lands;76):16 #16981(auto Blasted Lands;124):15
+#21650 | auto Blasted Lands;154§auto Verwüstete Lande;154§auto Terres foudroyées;154 | x=-11065.400390625 y=-3218.10009765625 | size=1 | links=#11680(auto Blasted Lands;88):19 #24901(auto Blasted Lands;178):14
+#22345 | auto Blasted Lands;155§auto Verwüstete Lande;155§auto Terres foudroyées;155 | x=-11112.2001953125 y=-3429.60009765625 | size=1 | links=#11441(auto Blasted Lands;85):2 #15983(auto Blasted Lands;115):1
+#22459 | auto Blasted Lands;156§auto Verwüstete Lande;156§auto Terres foudroyées;156 | x=-10990.1005859375 y=-3506.699951171875 | size=1 | links=#16842(auto Blasted Lands;120):5 #26170(auto Blasted Lands;193):6
+#22462 | auto Blasted Lands;157§auto Verwüstete Lande;157§auto Terres foudroyées;157 | x=-11109.5 y=-3450.699951171875 | size=1 | links=#1237(auto Blasted Lands;10):6 #7098(auto Blasted Lands;49):6
+#22698 | auto Blasted Lands;158§auto Verwüstete Lande;158§auto Terres foudroyées;158 | x=-11014.900390625 y=-3327.699951171875 | size=1 | links=#7156(auto Blasted Lands;50):10 #21157(auto Blasted Lands;152):6
+#22706 | auto Blasted Lands;159§auto Verwüstete Lande;159§auto Terres foudroyées;159 | x=-10989.2998046875 y=-3492.400146484375 | size=1 | links=#4367(auto Blasted Lands;40):1 #28555(auto Blasted Lands;206):1
+#22814 | centralpoint;Nethergarde Keep;Blasted Lands§zentralerpunkt;Burg Nethergarde;Verwüstete Lande§point central;Rempart-du-Néant;Terres foudroyées | x=-10993.5 y=-3449.5 | size=1 | links=#4071(auto Blasted Lands;37):20 #14821(auto Blasted Lands;108):17 #24441(auto Blasted Lands;173):27 #28155(auto Blasted Lands;205):9
+#23023 | auto Blasted Lands;160§auto Verwüstete Lande;160§auto Terres foudroyées;160 | x=-11170.7001953125 y=-3104.400146484375 | size=1 | links=#11756(auto Blasted Lands;89):20 #23878(auto Blasted Lands;166):26
+#23137 | auto Blasted Lands;161§auto Verwüstete Lande;161§auto Terres foudroyées;161 | x=-11895.900390625 y=-3207.60009765625 | size=1 | links=#16189(passage;portal;from;The Dark Portal;Blasted Lands;to;Hellfire Peninsula):8 #20938(auto Blasted Lands;148):2
+#23232 | auto Blasted Lands;162§auto Verwüstete Lande;162§auto Terres foudroyées;162 | x=-11081.7998046875 y=-3471.300048828125 | size=1 | links=#2815(auto Blasted Lands;22):15 #25849(auto Blasted Lands;190):15
+#23690 | auto Blasted Lands;163§auto Verwüstete Lande;163§auto Terres foudroyées;163 | x=-10999.400390625 y=-3392.400146484375 | size=1 | links=#13520(central location;Nethergarde Keep;Blasted Lands):10 #25805(auto Blasted Lands;189):13
+#23709 | auto Blasted Lands;164§auto Verwüstete Lande;164§auto Terres foudroyées;164 | x=-10980.2998046875 y=-3475.10009765625 | size=1 | links=#24173(auto Blasted Lands;169):8 c8178.1:9
+#23760 | auto Blasted Lands;165§auto Verwüstete Lande;165§auto Terres foudroyées;165 | x=-11130.2001953125 y=-2969 | size=1 | links=#783(auto Blasted Lands;8):42 #7630(auto Blasted Lands;54):37
+#23878 | auto Blasted Lands;166§auto Verwüstete Lande;166§auto Terres foudroyées;166 | x=-11183 y=-3081.400146484375 | size=1 | links=#1770(auto Blasted Lands;14):27 #23023(auto Blasted Lands;160):26 c5990.4:32
+#24013 | auto Blasted Lands;167§auto Verwüstete Lande;167§auto Terres foudroyées;167 | x=-11115.6005859375 y=-3437 | size=1 | links=#10660(auto Blasted Lands;79):2 #27790(auto Blasted Lands;202):2
+#24083 | auto Blasted Lands;168§auto Verwüstete Lande;168§auto Terres foudroyées;168 | x=-11714.6005859375 y=-3169.199951171875 | size=1 | links=#5816(auto Blasted Lands;44):16 #25095(auto Blasted Lands;181):19
+#24173 | auto Blasted Lands;169§auto Verwüstete Lande;169§auto Terres foudroyées;169 | x=-10988.400390625 y=-3474.60009765625 | size=1 | links=#15058(auto Blasted Lands;109):14 #23709(auto Blasted Lands;164):8
+#24259 | auto Blasted Lands;170§auto Verwüstete Lande;170§auto Terres foudroyées;170 | x=-10976.900390625 y=-3497.5 | size=1 | links=#19385(auto Blasted Lands;142):2 #20973(auto Blasted Lands;149):2
+#24328 | auto Blasted Lands;171§auto Verwüstete Lande;171§auto Terres foudroyées;171 | x=-10979.1005859375 y=-3480.900146484375 | size=1 | links=#2244(auto Blasted Lands;17):3 #9704(auto Blasted Lands;72):5
+#24350 | auto Blasted Lands;172§auto Verwüstete Lande;172§auto Terres foudroyées;172 | x=-10998.7998046875 y=-3489.5 | size=1 | links=#11931(auto Blasted Lands;92):3 #15182(auto Blasted Lands;111):5
+#24441 | auto Blasted Lands;173§auto Verwüstete Lande;173§auto Terres foudroyées;173 | x=-10965.7001953125 y=-3447.199951171875 | size=1 | links=#7406(auto Blasted Lands;53):7 #22814(centralpoint;Nethergarde Keep;Blasted Lands):27
+#24579 | auto Blasted Lands;174§auto Verwüstete Lande;174§auto Terres foudroyées;174 | x=-11601.2001953125 y=-3157.60009765625 | size=1 | links=#4662(entry and exit;tunnel;to;portal;The Dark Portal;Blasted Lands):18 #12920(auto Blasted Lands;98):20
+#24584 | auto Blasted Lands;175§auto Verwüstete Lande;175§auto Terres foudroyées;175 | x=-11840.6005859375 y=-3202.60009765625 | size=1 | links=#9873(auto Blasted Lands;74):5 #13570(auto Blasted Lands;101):4
+#24651 | auto Blasted Lands;176§auto Verwüstete Lande;176§auto Terres foudroyées;176 | x=-11291.7001953125 y=-3019.400146484375 | size=1 | links=#13154(auto Blasted Lands;99):31 #18366(auto Blasted Lands;134):32
+#24785 | auto Blasted Lands;177§auto Verwüstete Lande;177§auto Terres foudroyées;177 | x=-11154 y=-3136.300048828125 | size=1 | links=#11756(auto Blasted Lands;89):15 #16981(auto Blasted Lands;124):25
+#24901 | auto Blasted Lands;178§auto Verwüstete Lande;178§auto Terres foudroyées;178 | x=-11051.5 y=-3221.800048828125 | size=1 | links=#1827(auto Blasted Lands;16):20 #21650(auto Blasted Lands;154):14
+#24931 | auto Blasted Lands;179§auto Verwüstete Lande;179§auto Terres foudroyées;179 | x=-10993.2998046875 y=-3493.400146484375 | size=1 | links=#12625(auto Blasted Lands;95):3 #17647(auto Blasted Lands;130):3
+#25073 | auto Blasted Lands;180§auto Verwüstete Lande;180§auto Terres foudroyées;180 | x=-10899.900390625 y=-2847.699951171875 | size=1 | links=#7178(auto Blasted Lands;52):13 #8888(auto Blasted Lands;68):32
+#25095 | auto Blasted Lands;181§auto Verwüstete Lande;181§auto Terres foudroyées;181 | x=-11733.5 y=-3171.60009765625 | size=1 | links=#11043(auto Blasted Lands;82):16 #24083(auto Blasted Lands;168):19
+#25433 | auto Blasted Lands;182§auto Verwüstete Lande;182§auto Terres foudroyées;182 | x=-10753.7001953125 y=-2987.199951171875 | size=1 | links=#7175(auto Blasted Lands;51):14 #25648(auto Blasted Lands;186):24
+#25461 | auto Blasted Lands;183§auto Verwüstete Lande;183§auto Terres foudroyées;183 | x=-11006.900390625 y=-3354.5 | size=1 | links=#640(auto Blasted Lands;7):9 #4610(entry and exit;Nethergarde Keep;Blasted Lands):12
+#25606 | auto Blasted Lands;184§auto Verwüstete Lande;184§auto Terres foudroyées;184 | x=-11141.2998046875 y=-2730.5 | size=1 | links=c5984.1:17 c5988.2:47 c5988.4:41 c8302.10:14
+#25610 | auto Blasted Lands;185§auto Verwüstete Lande;185§auto Terres foudroyées;185 | x=-11031.7001953125 y=-3447.60009765625 | size=1 | links=#12427(auto Blasted Lands;94):14 #14821(auto Blasted Lands;108):20 c6003.5:8
+#25648 | auto Blasted Lands;186§auto Verwüstete Lande;186§auto Terres foudroyées;186 | x=-10775.7001953125 y=-2997 | size=1 | links=#14560(auto Blasted Lands;105):37 #25433(auto Blasted Lands;182):24
+#25694 | auto Blasted Lands;187§auto Verwüstete Lande;187§auto Terres foudroyées;187 | x=-11136.6005859375 y=-2745.300048828125 | size=1 | links=#8686(auto Blasted Lands;63):54 c5988.2:49
+#25703 | auto Blasted Lands;188§auto Verwüstete Lande;188§auto Terres foudroyées;188 | x=-10995.1005859375 y=-3496.10009765625 | size=1 | links=#18128(auto Blasted Lands;132):1 c7826.1:9
+#25805 | auto Blasted Lands;189§auto Verwüstete Lande;189§auto Terres foudroyées;189 | x=-10998.400390625 y=-3405.800048828125 | size=1 | links=#4071(auto Blasted Lands;37):23 #23690(auto Blasted Lands;163):13 c5999.22:5
+#25849 | auto Blasted Lands;190§auto Verwüstete Lande;190§auto Terres foudroyées;190 | x=-11066.2001953125 y=-3468.199951171875 | size=1 | links=#13711(auto Blasted Lands;102):14 #23232(auto Blasted Lands;162):15
+#26003 | auto Blasted Lands;191§auto Verwüstete Lande;191§auto Terres foudroyées;191 | x=-10938.7001953125 y=-3370.699951171875 | size=1 | links=#6302(auto Blasted Lands;46):7 c3546.1:7
+#26105 | auto Blasted Lands;192§auto Verwüstete Lande;192§auto Terres foudroyées;192 | x=-10978.6005859375 y=-3494.10009765625 | size=1 | links=#2701(auto Blasted Lands;20):2 #19385(auto Blasted Lands;142):1
+#26170 | auto Blasted Lands;193§auto Verwüstete Lande;193§auto Terres foudroyées;193 | x=-10984 y=-3505.10009765625 | size=1 | links=#11048(auto Blasted Lands;83):4 #22459(auto Blasted Lands;156):6
+#26511 | auto Blasted Lands;194§auto Verwüstete Lande;194§auto Terres foudroyées;194 | x=-10998.2998046875 y=-3487.5 | size=1 | links=#2966(auto Blasted Lands;25):2 #4365(auto Blasted Lands;39):2
+#26610 | auto Blasted Lands;195§auto Verwüstete Lande;195§auto Terres foudroyées;195 | x=-11337.7001953125 y=-3083.800048828125 | size=1 | links=#11193(auto Blasted Lands;84):26 #16387(auto Blasted Lands;117):57 c8303.9:35
+#26779 | auto Blasted Lands;196§auto Verwüstete Lande;196§auto Terres foudroyées;196 | x=-11111.7001953125 y=-3443.800048828125 | size=1 | links=#346(down;ramp;to;flight master;Nethergarde Keep;Blasted Lands):2 #2891(auto Blasted Lands;23):3
+#26811 | auto Blasted Lands;197§auto Verwüstete Lande;197§auto Terres foudroyées;197 | x=-11855.7001953125 y=-3202.400146484375 | size=1 | links=#8842(auto Blasted Lands;67):10 #9873(auto Blasted Lands;74):9
+#27302 | auto Blasted Lands;198§auto Verwüstete Lande;198§auto Terres foudroyées;198 | x=-11472.7998046875 y=-3125.400146484375 | size=1 | links=#3322(auto Blasted Lands;30):53 #14738(auto Blasted Lands;106):47
+#27393 | auto Blasted Lands;199§auto Verwüstete Lande;199§auto Terres foudroyées;199 | x=-10994.2998046875 y=-2801.5 | size=1 | links=#9949(auto Blasted Lands;75):29 #14372(auto Blasted Lands;103):37
+#27564 | auto Blasted Lands;200§auto Verwüstete Lande;200§auto Terres foudroyées;200 | x=-11202.900390625 y=-3022.60009765625 | size=1 | links=#3094(auto Blasted Lands;27):26 #12523(crossing;Blasted Lands):18
+#27681 | auto Blasted Lands;201§auto Verwüstete Lande;201§auto Terres foudroyées;201 | x=-10972.7998046875 y=-3488.900146484375 | size=1 | links=#8801(auto Blasted Lands;65):9 #8921(auto Blasted Lands;69):6
+#27790 | auto Blasted Lands;202§auto Verwüstete Lande;202§auto Terres foudroyées;202 | x=-11118.1005859375 y=-3437.300048828125 | size=1 | links=#7679(auto Blasted Lands;55):1 #24013(auto Blasted Lands;167):2
+#27802 | auto Blasted Lands;203§auto Verwüstete Lande;203§auto Terres foudroyées;203 | x=-10950.7001953125 y=-3391.10009765625 | size=1 | links=#1815(auto Blasted Lands;15):13 #3535(auto Blasted Lands;31):25
+#27997 | auto Blasted Lands;204§auto Verwüstete Lande;204§auto Terres foudroyées;204 | x=-10994.5 y=-3493.400146484375 | size=1 | links=#3662(auto Blasted Lands;35):1 #18128(auto Blasted Lands;132):1
+#28155 | auto Blasted Lands;205§auto Verwüstete Lande;205§auto Terres foudroyées;205 | x=-10991.6005859375 y=-3458.60009765625 | size=1 | links=#10936(auto Blasted Lands;81):5 #22814(centralpoint;Nethergarde Keep;Blasted Lands):9
+#28555 | auto Blasted Lands;206§auto Verwüstete Lande;206§auto Terres foudroyées;206 | x=-10990.6005859375 y=-3491.300048828125 | size=1 | links=#5475(auto Blasted Lands;43):2 #22706(auto Blasted Lands;159):1
+#28625 | s;u;Mailbox;Blasted Lands§s;u;Briefkasten;Verwüstete Lande§s;u;Boîte aux lettres;Terres foudroyées | x=-10997.69921875 y=-3389.016357421875 | size=1 | links=#13520(central location;Nethergarde Keep;Blasted Lands):6
+#45192 | auto Blasted Lands;207§auto Verwüstete Lande;207§auto Terres foudroyées;207 | x=-10845.400390625 y=-2964.900146484375 | size=1 | links=#45193(auto Blasted Lands;208):25 c6491.1:15
+#45193 | auto Blasted Lands;208§auto Verwüstete Lande;208§auto Terres foudroyées;208 | x=-10870.2001953125 y=-2961 | size=1 | links=#11789(auto Blasted Lands;90):29 #45192(auto Blasted Lands;207):25
+#45194 | auto Blasted Lands;209§auto Verwüstete Lande;209§auto Terres foudroyées;209 | x=-10954.7998046875 y=-2746.199951171875 | size=1 | links=#45195(auto Blasted Lands;210):34 #45215(auto Blasted Lands;228):14 c8302.3:21
+#45195 | auto Blasted Lands;210§auto Verwüstete Lande;210§auto Terres foudroyées;210 | x=-10927.2001953125 y=-2725.10009765625 | size=1 | links=#45194(auto Blasted Lands;209):34 #45196(auto Blasted Lands;211):17
+#45196 | auto Blasted Lands;211§auto Verwüstete Lande;211§auto Terres foudroyées;211 | x=-10914.2001953125 y=-2712.699951171875 | size=1 | links=#45195(auto Blasted Lands;210):17 #45197(auto Blasted Lands;212):24 c5974.1:17 c5974.2:22
+#45197 | auto Blasted Lands;212§auto Verwüstete Lande;212§auto Terres foudroyées;212 | x=-10896 y=-2695.800048828125 | size=1 | links=#45196(auto Blasted Lands;211):24 #45198(auto Blasted Lands;213):11
+#45198 | auto Blasted Lands;213§auto Verwüstete Lande;213§auto Terres foudroyées;213 | x=-10886.900390625 y=-2688.60009765625 | size=1 | links=#45197(auto Blasted Lands;212):11 #45199(auto Blasted Lands;214):17
+#45199 | auto Blasted Lands;214§auto Verwüstete Lande;214§auto Terres foudroyées;214 | x=-10871.7998046875 y=-2679.5 | size=1 | links=#45198(auto Blasted Lands;213):17 #45200(auto Blasted Lands;215):13 c5974.3:2
+#45200 | auto Blasted Lands;215§auto Verwüstete Lande;215§auto Terres foudroyées;215 | x=-10860.7001953125 y=-2687.60009765625 | size=1 | links=#45199(auto Blasted Lands;214):13 #45201(auto Blasted Lands;216):10
+#45201 | auto Blasted Lands;216§auto Verwüstete Lande;216§auto Terres foudroyées;216 | x=-10849.900390625 y=-2685.900146484375 | size=1 | links=#45200(auto Blasted Lands;215):10 #45202(auto Blasted Lands;217):20
+#45202 | auto Blasted Lands;217§auto Verwüstete Lande;217§auto Terres foudroyées;217 | x=-10851.400390625 y=-2665.900146484375 | size=1 | links=#45201(auto Blasted Lands;216):20 c5976.1:8 c7665.1:6 c5975.2:17 c5975.3:8 c5974.4:16 c5975.5:11
+#45203 | auto Blasted Lands;218§auto Verwüstete Lande;218§auto Terres foudroyées;218 | x=-10884.400390625 y=-2718.800048828125 | size=1 | links=#45204(auto Blasted Lands;219):31 c5974.1:14
+#45204 | auto Blasted Lands;219§auto Verwüstete Lande;219§auto Terres foudroyées;219 | x=-10852.5 y=-2716.400146484375 | size=1 | links=#45203(auto Blasted Lands;218):31 #45205(auto Blasted Lands;220):19 c5976.4:7
+#45205 | auto Blasted Lands;220§auto Verwüstete Lande;220§auto Terres foudroyées;220 | x=-10834.900390625 y=-2708.60009765625 | size=1 | links=#45204(auto Blasted Lands;219):19 c5975.1:11 o141857.1:8 c5976.3:10
+#45206 | auto Blasted Lands;221§auto Verwüstete Lande;221§auto Terres foudroyées;221 | x=-10815 y=-2691.300048828125 | size=1 | links=c5976.3:17 c5975.4:8
+#45207 | auto Blasted Lands;222§auto Verwüstete Lande;222§auto Terres foudroyées;222 | x=-10809.7001953125 y=-2671.699951171875 | size=1 | links=#45208(auto Blasted Lands;223):23 c5975.4:12
+#45208 | auto Blasted Lands;223§auto Verwüstete Lande;223§auto Terres foudroyées;223 | x=-10818.7001953125 y=-2649.900146484375 | size=1 | links=#45207(auto Blasted Lands;222):23 #45209(auto Blasted Lands;224):29
+#45209 | auto Blasted Lands;224§auto Verwüstete Lande;224§auto Terres foudroyées;224 | x=-10836.900390625 y=-2626.300048828125 | size=1 | links=#45208(auto Blasted Lands;223):29 c5976.2:9 c8296.4:15 c5974.6:10
+#45210 | auto Blasted Lands;225§auto Verwüstete Lande;225§auto Terres foudroyées;225 | x=-10860.1005859375 y=-2626.10009765625 | size=1 | links=o141857.2:4 c5976.5:9 c5974.6:16
+#45213 | auto Blasted Lands;226§auto Verwüstete Lande;226§auto Terres foudroyées;226 | x=-10881 y=-2632.699951171875 | size=1 | links=c5974.5:13 c5976.5:14
+#45214 | auto Blasted Lands;227§auto Verwüstete Lande;227§auto Terres foudroyées;227 | x=-10915.1005859375 y=-2681.199951171875 | size=1 | links=c5974.2:10 c5974.7:27
+#45215 | auto Blasted Lands;228§auto Verwüstete Lande;228§auto Terres foudroyées;228 | x=-10940.1005859375 y=-2748 | size=1 | links=#45194(auto Blasted Lands;209):14 #45216(auto Blasted Lands;229):7
+#45216 | auto Blasted Lands;229§auto Verwüstete Lande;229§auto Terres foudroyées;229 | x=-10937.2998046875 y=-2755.400146484375 | size=1 | links=#45215(auto Blasted Lands;228):7 #45217(auto Blasted Lands;230):5
+#45217 | auto Blasted Lands;230§auto Verwüstete Lande;230§auto Terres foudroyées;230 | x=-10939.6005859375 y=-2760.800048828125 | size=1 | links=#45216(auto Blasted Lands;229):5 #45218(auto Blasted Lands;231):7
+#45218 | auto Blasted Lands;231§auto Verwüstete Lande;231§auto Terres foudroyées;231 | x=-10933.7001953125 y=-2765.900146484375 | size=1 | links=#45217(auto Blasted Lands;230):7 #45219(auto Blasted Lands;232):9
+#45219 | auto Blasted Lands;232§auto Verwüstete Lande;232§auto Terres foudroyées;232 | x=-10926.6005859375 y=-2760.199951171875 | size=1 | links=#45218(auto Blasted Lands;231):9 #45220(auto Blasted Lands;233):8
+#45220 | auto Blasted Lands;233§auto Verwüstete Lande;233§auto Terres foudroyées;233 | x=-10933.400390625 y=-2755.199951171875 | size=1 | links=#45219(auto Blasted Lands;232):8 #45221(auto Blasted Lands;234):6
+#45221 | auto Blasted Lands;234§auto Verwüstete Lande;234§auto Terres foudroyées;234 | x=-10936.7998046875 y=-2761.300048828125 | size=1 | links=#45220(auto Blasted Lands;233):6 #45222(auto Blasted Lands;235):8
+#45222 | auto Blasted Lands;235§auto Verwüstete Lande;235§auto Terres foudroyées;235 | x=-10929.1005859375 y=-2765.900146484375 | size=1 | links=#45221(auto Blasted Lands;234):8 #45223(auto Blasted Lands;236):10
+#45223 | auto Blasted Lands;236§auto Verwüstete Lande;236§auto Terres foudroyées;236 | x=-10921.400390625 y=-2759.400146484375 | size=1 | links=#45222(auto Blasted Lands;235):10 #45224(auto Blasted Lands;237):10 c8296.1:5
+#45224 | auto Blasted Lands;237§auto Verwüstete Lande;237§auto Terres foudroyées;237 | x=-10925.2998046875 y=-2749.199951171875 | size=1 | links=#45223(auto Blasted Lands;236):10 #45225(auto Blasted Lands;238):10
+#45225 | auto Blasted Lands;238§auto Verwüstete Lande;238§auto Terres foudroyées;238 | x=-10935.7998046875 y=-2749 | size=1 | links=#45224(auto Blasted Lands;237):10 #45226(auto Blasted Lands;239):11
+#45226 | auto Blasted Lands;239§auto Verwüstete Lande;239§auto Terres foudroyées;239 | x=-10941.2998046875 y=-2759 | size=1 | links=#45225(auto Blasted Lands;238):11 #45227(auto Blasted Lands;240):9
+#45227 | auto Blasted Lands;240§auto Verwüstete Lande;240§auto Terres foudroyées;240 | x=-10938.2001953125 y=-2767.5 | size=1 | links=#45226(auto Blasted Lands;239):9 #45228(auto Blasted Lands;241):9
+#45228 | auto Blasted Lands;241§auto Verwüstete Lande;241§auto Terres foudroyées;241 | x=-10929.2001953125 y=-2768.199951171875 | size=1 | links=#45227(auto Blasted Lands;240):9 c8296.2:9
+#45952 | auto Blasted Lands;242§auto Verwüstete Lande;242§auto Terres foudroyées;242 | x=-11586.2998046875 y=-3126.900146484375 | size=1 | links=#19342(auto Blasted Lands;141):28 #45953(auto Blasted Lands;243):33
+#45953 | auto Blasted Lands;243§auto Verwüstete Lande;243§auto Terres foudroyées;243 | x=-11605.7998046875 y=-3099.5 | size=1 | links=#45952(auto Blasted Lands;242):33 #45954(auto Blasted Lands;244):11
+#45954 | auto Blasted Lands;244§auto Verwüstete Lande;244§auto Terres foudroyées;244 | x=-11612.7998046875 y=-3090.60009765625 | size=1 | links=#45953(auto Blasted Lands;243):11 #45955(auto Blasted Lands;245):33
+#45955 | auto Blasted Lands;245§auto Verwüstete Lande;245§auto Terres foudroyées;245 | x=-11635.400390625 y=-3065.800048828125 | size=1 | links=#45954(auto Blasted Lands;244):33 #45956(auto Blasted Lands;246):31
+#45956 | auto Blasted Lands;246§auto Verwüstete Lande;246§auto Terres foudroyées;246 | x=-11652.7998046875 y=-3039.900146484375 | size=1 | links=#45955(auto Blasted Lands;245):31 #45957(auto Blasted Lands;247):36 #46068(auto Blasted Lands;346):22
+#45957 | auto Blasted Lands;247§auto Verwüstete Lande;247§auto Terres foudroyées;247 | x=-11675.1005859375 y=-3011.10009765625 | size=1 | links=#45956(auto Blasted Lands;246):36 #45958(auto Blasted Lands;248):20 c5993.3:31
+#45958 | auto Blasted Lands;248§auto Verwüstete Lande;248§auto Terres foudroyées;248 | x=-11679.1005859375 y=-2991.400146484375 | size=1 | links=#45957(auto Blasted Lands;247):20 #45959(auto Blasted Lands;249):30
+#45959 | auto Blasted Lands;249§auto Verwüstete Lande;249§auto Terres foudroyées;249 | x=-11683.7998046875 y=-2961.199951171875 | size=1 | links=#45958(auto Blasted Lands;248):30 #45990(auto Blasted Lands;277):25 c7846.1:6
+#45960 | auto Blasted Lands;250§auto Verwüstete Lande;250§auto Terres foudroyées;250 | x=-11688.2998046875 y=-2942.699951171875 | size=1 | links=#45961(auto Blasted Lands;251):20 c7846.1:13
+#45961 | auto Blasted Lands;251§auto Verwüstete Lande;251§auto Terres foudroyées;251 | x=-11699.900390625 y=-2926.400146484375 | size=1 | links=#45960(auto Blasted Lands;250):20 #45962(auto Blasted Lands;252):22
+#45962 | auto Blasted Lands;252§auto Verwüstete Lande;252§auto Terres foudroyées;252 | x=-11712.400390625 y=-2907.900146484375 | size=1 | links=#45961(auto Blasted Lands;251):22 #45963(auto Blasted Lands;253):15
+#45963 | auto Blasted Lands;253§auto Verwüstete Lande;253§auto Terres foudroyées;253 | x=-11717.400390625 y=-2893 | size=1 | links=#45962(auto Blasted Lands;252):15 #45964(auto Blasted Lands;254):22
+#45964 | auto Blasted Lands;254§auto Verwüstete Lande;254§auto Terres foudroyées;254 | x=-11724 y=-2871.300048828125 | size=1 | links=#45963(auto Blasted Lands;253):22 #45965(auto Blasted Lands;255):37
+#45965 | auto Blasted Lands;255§auto Verwüstete Lande;255§auto Terres foudroyées;255 | x=-11731.900390625 y=-2834.699951171875 | size=1 | links=#45964(auto Blasted Lands;254):37 c5991.8:42
+#45966 | auto Blasted Lands;256§auto Verwüstete Lande;256§auto Terres foudroyées;256 | x=-11748 y=-2765.199951171875 | size=1 | links=#45967(auto Blasted Lands;257):23 c5991.8:53
+#45967 | auto Blasted Lands;257§auto Verwüstete Lande;257§auto Terres foudroyées;257 | x=-11770.6005859375 y=-2758.199951171875 | size=1 | links=#45966(auto Blasted Lands;256):23 #45968(auto Blasted Lands;258):53
+#45968 | auto Blasted Lands;258§auto Verwüstete Lande;258§auto Terres foudroyées;258 | x=-11819.400390625 y=-2735.400146484375 | size=1 | links=#45967(auto Blasted Lands;257):53 #45969(auto Blasted Lands;259):19
+#45969 | auto Blasted Lands;259§auto Verwüstete Lande;259§auto Terres foudroyées;259 | x=-11830.400390625 y=-2719.800048828125 | size=1 | links=#45968(auto Blasted Lands;258):19 #45970(auto Blasted Lands;260):41
+#45970 | auto Blasted Lands;260§auto Verwüstete Lande;260§auto Terres foudroyées;260 | x=-11842.5 y=-2679.60009765625 | size=1 | links=#45969(auto Blasted Lands;259):41 #45971(auto Blasted Lands;261):29 c8718.10:42
+#45971 | auto Blasted Lands;261§auto Verwüstete Lande;261§auto Terres foudroyées;261 | x=-11834.400390625 y=-2651.300048828125 | size=1 | links=#45970(auto Blasted Lands;260):29 c8717.27:35
+#45972 | auto Blasted Lands;262§auto Verwüstete Lande;262§auto Terres foudroyées;262 | x=-11818.400390625 y=-2589.60009765625 | size=1 | links=#45973(auto Blasted Lands;263):50 c8717.27:35 c8717.38:43
+#45973 | auto Blasted Lands;263§auto Verwüstete Lande;263§auto Terres foudroyées;263 | x=-11778.400390625 y=-2558.900146484375 | size=1 | links=#45972(auto Blasted Lands;262):50 c8717.25:21
+#45974 | auto Blasted Lands;264§auto Verwüstete Lande;264§auto Terres foudroyées;264 | x=-11733.7001953125 y=-2518.800048828125 | size=1 | links=#45975(auto Blasted Lands;265):59 c8717.25:43
+#45975 | auto Blasted Lands;265§auto Verwüstete Lande;265§auto Terres foudroyées;265 | x=-11700.900390625 y=-2469.10009765625 | size=1 | links=#45974(auto Blasted Lands;264):59 #45976(auto Blasted Lands;266):36
+#45976 | auto Blasted Lands;266§auto Verwüstete Lande;266§auto Terres foudroyées;266 | x=-11683.1005859375 y=-2437.5 | size=1 | links=#45975(auto Blasted Lands;265):36 #45977(auto Blasted Lands;267):30
+#45977 | auto Blasted Lands;267§auto Verwüstete Lande;267§auto Terres foudroyées;267 | x=-11681.2001953125 y=-2407 | size=1 | links=#45976(auto Blasted Lands;266):30 c14463.1:22
+#45978 | auto Blasted Lands;268§auto Verwüstete Lande;268§auto Terres foudroyées;268 | x=-12171 y=-2524.60009765625 | size=1 | links=#45979(auto Blasted Lands;269):37 c8716.2:41
+#45979 | auto Blasted Lands;269§auto Verwüstete Lande;269§auto Terres foudroyées;269 | x=-12195.1005859375 y=-2553.800048828125 | size=1 | links=#45978(auto Blasted Lands;268):37 c8716.3:17 c8718.12:36
+#45981 | auto Blasted Lands;270§auto Verwüstete Lande;270§auto Terres foudroyées;270 | x=-11902.7001953125 y=-2505.699951171875 | size=1 | links=#45982(auto Blasted Lands;271):6 c8717.31:22
+#45982 | auto Blasted Lands;271§auto Verwüstete Lande;271§auto Terres foudroyées;271 | x=-11897.7998046875 y=-2501.5 | size=1 | links=#45981(auto Blasted Lands;270):6 #45983(auto Blasted Lands;272):44
+#45983 | auto Blasted Lands;272§auto Verwüstete Lande;272§auto Terres foudroyées;272 | x=-11853.7001953125 y=-2494.699951171875 | size=1 | links=#45982(auto Blasted Lands;271):44 c8718.2:44
+#45984 | auto Blasted Lands;273§auto Verwüstete Lande;273§auto Terres foudroyées;273 | x=-11820.5 y=-2536.5 | size=1 | links=c8718.2:26 c8717.38:9
+#45986 | auto Blasted Lands;274§auto Verwüstete Lande;274§auto Terres foudroyées;274 | x=-11824.6005859375 y=-2965.10009765625 | size=1 | links=#45987(auto Blasted Lands;275):22 #45989(Spirit Healer; The Dark Portal; Blasted Lands):13 c7668.4:19
+#45987 | auto Blasted Lands;275§auto Verwüstete Lande;275§auto Terres foudroyées;275 | x=-11803.6005859375 y=-2974.400146484375 | size=1 | links=#45986(auto Blasted Lands;274):22 #45988(auto Blasted Lands;276):30
+#45988 | auto Blasted Lands;276§auto Verwüstete Lande;276§auto Terres foudroyées;276 | x=-11773 y=-2976.10009765625 | size=1 | links=#45987(auto Blasted Lands;275):30 c5993.7:20
+#45989 | Spirit Healer; The Dark Portal; Blasted Lands§Geisterheiler; Das Dunkle Portal; Verwüstete Lande§Gardien des âmes;La Porte des ténèbres;Terres foudroyées | x=-11815.1005859375 y=-2955.5 | size=1 | links=#45986(auto Blasted Lands;274):13
+#45990 | auto Blasted Lands;277§auto Verwüstete Lande;277§auto Terres foudroyées;277 | x=-11708.900390625 y=-2962 | size=1 | links=#45959(auto Blasted Lands;249):25 c5993.7:46
+#45991 | auto Blasted Lands;278§auto Verwüstete Lande;278§auto Terres foudroyées;278 | x=-11274.2998046875 y=-2736.300048828125 | size=1 | links=c5985.5:48 c8302.12:33
+#45992 | auto Blasted Lands;279§auto Verwüstete Lande;279§auto Terres foudroyées;279 | x=-11033.400390625 y=-2881.5 | size=1 | links=c8302.5:41 c8302.13:20
+#45993 | auto Blasted Lands;280§auto Verwüstete Lande;280§auto Terres foudroyées;280 | x=-11361.2001953125 y=-2967.5 | size=1 | links=c7363.1:15 c5985.2:25
+#45994 | auto Blasted Lands;281§auto Verwüstete Lande;281§auto Terres foudroyées;281 | x=-11390.900390625 y=-3115.800048828125 | size=1 | links=#16387(auto Blasted Lands;117):30 c5982.3:10
+#45995 | auto Blasted Lands;282§auto Verwüstete Lande;282§auto Terres foudroyées;282 | x=-11429.7998046875 y=-3143.60009765625 | size=1 | links=#3322(auto Blasted Lands;30):61 c5982.2:25
+#45996 | auto Blasted Lands;283§auto Verwüstete Lande;283§auto Terres foudroyées;283 | x=-11363.6005859375 y=-3337.300048828125 | size=1 | links=#45997(auto Blasted Lands;284):26 c8300.3:41
+#45997 | auto Blasted Lands;284§auto Verwüstete Lande;284§auto Terres foudroyées;284 | x=-11345.900390625 y=-3357.10009765625 | size=1 | links=#45996(auto Blasted Lands;283):26 c7670.3:43
+#45998 | auto Blasted Lands;285§auto Verwüstete Lande;285§auto Terres foudroyées;285 | x=-11301.5 y=-3421 | size=1 | links=#45999(auto Blasted Lands;286):8 c6004.9:20
+#45999 | auto Blasted Lands;286§auto Verwüstete Lande;286§auto Terres foudroyées;286 | x=-11297.1005859375 y=-3427.699951171875 | size=1 | links=#45998(auto Blasted Lands;285):8 c6005.7:16
+#46000 | auto Blasted Lands;287§auto Verwüstete Lande;287§auto Terres foudroyées;287 | x=-11262.2001953125 y=-3449.900146484375 | size=1 | links=c6006.9:6 c6004.18:12
+#46001 | auto Blasted Lands;288§auto Verwüstete Lande;288§auto Terres foudroyées;288 | x=-11250.2001953125 y=-3452.800048828125 | size=1 | links=#46002(auto Blasted Lands;289):11 c6006.9:8
+#46002 | auto Blasted Lands;289§auto Verwüstete Lande;289§auto Terres foudroyées;289 | x=-11247.2001953125 y=-3463.699951171875 | size=1 | links=#46001(auto Blasted Lands;288):11 c6005.13:4
+#46003 | auto Blasted Lands;290§auto Verwüstete Lande;290§auto Terres foudroyées;290 | x=-11265.2998046875 y=-3477.60009765625 | size=1 | links=#46004(auto Blasted Lands;291):9 c6004.17:6
+#46004 | auto Blasted Lands;291§auto Verwüstete Lande;291§auto Terres foudroyées;291 | x=-11264.400390625 y=-3487.199951171875 | size=1 | links=#46003(auto Blasted Lands;290):9 #46005(auto Blasted Lands;292):17
+#46005 | auto Blasted Lands;292§auto Verwüstete Lande;292§auto Terres foudroyées;292 | x=-11276.2001953125 y=-3499.60009765625 | size=1 | links=#46004(auto Blasted Lands;291):17 c6005.16:12
+#46007 | auto Blasted Lands;293§auto Verwüstete Lande;293§auto Terres foudroyées;293 | x=-11261.2998046875 y=-3541.199951171875 | size=1 | links=c6006.15:6 c6006.18:3 c6004.19:14
+#46008 | auto Blasted Lands;294§auto Verwüstete Lande;294§auto Terres foudroyées;294 | x=-11257.6005859375 y=-3556.699951171875 | size=1 | links=c7728.1:6 c6006.15:9
+#46009 | auto Blasted Lands;295§auto Verwüstete Lande;295§auto Terres foudroyées;295 | x=-11234.400390625 y=-3513.900146484375 | size=1 | links=c6004.10:8 c6005.18:12
+#46010 | auto Blasted Lands;296§auto Verwüstete Lande;296§auto Terres foudroyées;296 | x=-11225.7998046875 y=-3493.800048828125 | size=1 | links=c6006.3:6 c6005.9:5 c6004.10:13
+#46011 | auto Blasted Lands;297§auto Verwüstete Lande;297§auto Terres foudroyées;297 | x=-11225.7001953125 y=-3478.900146484375 | size=1 | links=c7666.1:6 c6005.9:8
+#46012 | auto Blasted Lands;298§auto Verwüstete Lande;298§auto Terres foudroyées;298 | x=-11526.5 y=-2849.400146484375 | size=1 | links=#46013(auto Blasted Lands;299):6 c5977.3:12
+#46013 | auto Blasted Lands;299§auto Verwüstete Lande;299§auto Terres foudroyées;299 | x=-11528.1005859375 y=-2855.400146484375 | size=1 | links=#46012(auto Blasted Lands;298):6 c7669.1:5 c5978.2:5
+#46014 | auto Blasted Lands;300§auto Verwüstete Lande;300§auto Terres foudroyées;300 | x=-11529.900390625 y=-2871.199951171875 | size=1 | links=c5977.2:7 c5978.2:10
+#46015 | auto Blasted Lands;301§auto Verwüstete Lande;301§auto Terres foudroyées;301 | x=-11538 y=-2885.900146484375 | size=1 | links=#46016(auto Blasted Lands;302):14 c5977.2:9
+#46016 | auto Blasted Lands;302§auto Verwüstete Lande;302§auto Terres foudroyées;302 | x=-11541.7998046875 y=-2899.60009765625 | size=1 | links=#46015(auto Blasted Lands;301):14 o141857.3:13
+#46017 | auto Blasted Lands;303§auto Verwüstete Lande;303§auto Terres foudroyées;303 | x=-11411.7998046875 y=-2605.300048828125 | size=1 | links=#46018(auto Blasted Lands;304):54 c6007.4:30
+#46018 | auto Blasted Lands;304§auto Verwüstete Lande;304§auto Terres foudroyées;304 | x=-11372.7001953125 y=-2567.60009765625 | size=1 | links=#46017(auto Blasted Lands;303):54 c6008.6:35
+#46019 | auto Blasted Lands;305§auto Verwüstete Lande;305§auto Terres foudroyées;305 | x=-11335.900390625 y=-2544 | size=1 | links=c7671.2:24 c6008.6:12
+#46020 | auto Blasted Lands;306§auto Verwüstete Lande;306§auto Terres foudroyées;306 | x=-11320.6005859375 y=-2566.800048828125 | size=1 | links=c6008.3:14 c6008.6:21
+#46021 | auto Blasted Lands;307§auto Verwüstete Lande;307§auto Terres foudroyées;307 | x=-11299.6005859375 y=-2592.10009765625 | size=1 | links=c6008.3:18 c6008.4:12
+#46022 | auto Blasted Lands;308§auto Verwüstete Lande;308§auto Terres foudroyées;308 | x=-11331.6005859375 y=-2553.699951171875 | size=1 | links=#46023(auto Blasted Lands;309):17 c6008.6:7
+#46023 | auto Blasted Lands;309§auto Verwüstete Lande;309§auto Terres foudroyées;309 | x=-11314.1005859375 y=-2551.5 | size=1 | links=#46022(auto Blasted Lands;308):17 c6009.6:7
+#46024 | auto Blasted Lands;310§auto Verwüstete Lande;310§auto Terres foudroyées;310 | x=-11272.2001953125 y=-2591.699951171875 | size=1 | links=#46025(auto Blasted Lands;311):15 c6007.1:24
+#46025 | auto Blasted Lands;311§auto Verwüstete Lande;311§auto Terres foudroyées;311 | x=-11287.2998046875 y=-2595.60009765625 | size=1 | links=#46024(auto Blasted Lands;310):15 c6008.4:13
+#46026 | auto Blasted Lands;312§auto Verwüstete Lande;312§auto Terres foudroyées;312 | x=-11712.2001953125 y=-3343.800048828125 | size=1 | links=#46027(auto Blasted Lands;313):47 c6005.4:63 o141812.7:20
+#46027 | auto Blasted Lands;313§auto Verwüstete Lande;313§auto Terres foudroyées;313 | x=-11752.2998046875 y=-3369.400146484375 | size=1 | links=#46026(auto Blasted Lands;312):47 #46028(auto Blasted Lands;314):37
+#46028 | auto Blasted Lands;314§auto Verwüstete Lande;314§auto Terres foudroyées;314 | x=-11789.5 y=-3365.699951171875 | size=1 | links=#46027(auto Blasted Lands;313):37 c7668.2:24
+#46029 | auto Blasted Lands;315§auto Verwüstete Lande;315§auto Terres foudroyées;315 | x=-11851 y=-3330.300048828125 | size=1 | links=c7668.1:22 c6011.6:18
+#46030 | auto Blasted Lands;316§auto Verwüstete Lande;316§auto Terres foudroyées;316 | x=-11609.1005859375 y=-3393.199951171875 | size=1 | links=c7670.2:3 c6004.7:5 c6005.8:3 c6006.19:21
+#46031 | auto Blasted Lands;317§auto Verwüstete Lande;317§auto Terres foudroyées;317 | x=-11409.5 y=-3329.10009765625 | size=1 | links=c8300.3:38 c6005.14:43
+#46032 | auto Blasted Lands;318§auto Verwüstete Lande;318§auto Terres foudroyées;318 | x=-11092.6005859375 y=-3446.800048828125 | size=1 | links=#2815(auto Blasted Lands;22):14 c6001.3:5
+#46041 | auto Blasted Lands;319§auto Verwüstete Lande;319§auto Terres foudroyées;319 | x=-10841.900390625 y=-3031.199951171875 | size=1 | links=#46042(auto Blasted Lands;320):21 c5998.2:21
+#46042 | auto Blasted Lands;320§auto Verwüstete Lande;320§auto Terres foudroyées;320 | x=-10827.1005859375 y=-3015.199951171875 | size=1 | links=#8576(auto Blasted Lands;62):28 #14560(auto Blasted Lands;105):26 #46041(auto Blasted Lands;319):21
+#46043 | auto Blasted Lands;321§auto Verwüstete Lande;321§auto Terres foudroyées;321 | x=-10803.6005859375 y=-3086.60009765625 | size=1 | links=c5998.2:45 c5997.3:29 c5996.15:13
+#46044 | auto Blasted Lands;322§auto Verwüstete Lande;322§auto Terres foudroyées;322 | x=-10770.2001953125 y=-3121.60009765625 | size=1 | links=c5997.2:28 c5997.3:19
+#46045 | auto Blasted Lands;323§auto Verwüstete Lande;323§auto Terres foudroyées;323 | x=-10708.900390625 y=-3151.60009765625 | size=1 | links=#46046(auto Blasted Lands;324):25 c5997.2:43
+#46046 | auto Blasted Lands;324§auto Verwüstete Lande;324§auto Terres foudroyées;324 | x=-10695.7998046875 y=-3173.699951171875 | size=1 | links=#46045(auto Blasted Lands;323):25 c5996.6:14
+#46047 | auto Blasted Lands;325§auto Verwüstete Lande;325§auto Terres foudroyées;325 | x=-10670.7001953125 y=-3207.300048828125 | size=1 | links=#46048(auto Blasted Lands;326):13 c5996.6:27
+#46048 | auto Blasted Lands;326§auto Verwüstete Lande;326§auto Terres foudroyées;326 | x=-10663.7998046875 y=-3218.5 | size=1 | links=#46047(auto Blasted Lands;325):13 #46049(auto Blasted Lands;327):12
+#46049 | auto Blasted Lands;327§auto Verwüstete Lande;327§auto Terres foudroyées;327 | x=-10656.900390625 y=-3229.199951171875 | size=1 | links=#46048(auto Blasted Lands;326):12 #46050(auto Blasted Lands;328):20
+#46050 | auto Blasted Lands;328§auto Verwüstete Lande;328§auto Terres foudroyées;328 | x=-10652 y=-3248.900146484375 | size=1 | links=#46049(auto Blasted Lands;327):20 #46051(auto Blasted Lands;329):38
+#46051 | auto Blasted Lands;329§auto Verwüstete Lande;329§auto Terres foudroyées;329 | x=-10649 y=-3287.199951171875 | size=1 | links=#46050(auto Blasted Lands;328):38 #46062(auto Blasted Lands;340):16
+#46052 | auto Blasted Lands;330§auto Verwüstete Lande;330§auto Terres foudroyées;330 | x=-10703 y=-3321.5 | size=1 | links=#46053(auto Blasted Lands;331):13 c5998.3:35 c5997.8:36 c5998.16:21
+#46053 | auto Blasted Lands;331§auto Verwüstete Lande;331§auto Terres foudroyées;331 | x=-10707.5 y=-3333.699951171875 | size=1 | links=#46052(auto Blasted Lands;330):13 #46054(auto Blasted Lands;332):10
+#46054 | auto Blasted Lands;332§auto Verwüstete Lande;332§auto Terres foudroyées;332 | x=-10708.2998046875 y=-3343.699951171875 | size=1 | links=#46053(auto Blasted Lands;331):10 #46055(auto Blasted Lands;333):14
+#46055 | auto Blasted Lands;333§auto Verwüstete Lande;333§auto Terres foudroyées;333 | x=-10704.7001953125 y=-3358.10009765625 | size=1 | links=#46054(auto Blasted Lands;332):14 #46056(auto Blasted Lands;334):14
+#46056 | auto Blasted Lands;334§auto Verwüstete Lande;334§auto Terres foudroyées;334 | x=-10694.5 y=-3368.199951171875 | size=1 | links=#46055(auto Blasted Lands;333):14 #46057(auto Blasted Lands;335):18
+#46057 | auto Blasted Lands;335§auto Verwüstete Lande;335§auto Terres foudroyées;335 | x=-10677.2998046875 y=-3373.800048828125 | size=1 | links=#46056(auto Blasted Lands;334):18 #46058(auto Blasted Lands;336):16
+#46058 | auto Blasted Lands;336§auto Verwüstete Lande;336§auto Terres foudroyées;336 | x=-10661.6005859375 y=-3370.5 | size=1 | links=#46057(auto Blasted Lands;335):16 #46059(auto Blasted Lands;337):10
+#46059 | auto Blasted Lands;337§auto Verwüstete Lande;337§auto Terres foudroyées;337 | x=-10655.400390625 y=-3362.199951171875 | size=1 | links=#46058(auto Blasted Lands;336):10 #46060(auto Blasted Lands;338):19
+#46060 | auto Blasted Lands;338§auto Verwüstete Lande;338§auto Terres foudroyées;338 | x=-10646 y=-3345.300048828125 | size=1 | links=#46059(auto Blasted Lands;337):19 #46061(auto Blasted Lands;339):22
+#46061 | auto Blasted Lands;339§auto Verwüstete Lande;339§auto Terres foudroyées;339 | x=-10644.2998046875 y=-3323.199951171875 | size=1 | links=#46060(auto Blasted Lands;338):22 #46062(auto Blasted Lands;340):19
+#46062 | auto Blasted Lands;340§auto Verwüstete Lande;340§auto Terres foudroyées;340 | x=-10644 y=-3303.400146484375 | size=1 | links=#46051(auto Blasted Lands;329):16 #46061(auto Blasted Lands;339):19
+#46063 | auto Blasted Lands;341§auto Verwüstete Lande;341§auto Terres foudroyées;341 | x=-10919.2001953125 y=-3479.199951171875 | size=1 | links=c6001.4:9 c5999.50:27
+#46064 | auto Blasted Lands;342§auto Verwüstete Lande;342§auto Terres foudroyées;342 | x=-10951.2998046875 y=-3435.699951171875 | size=1 | links=#46065(auto Blasted Lands;343):34 c5999.50:35
+#46065 | auto Blasted Lands;343§auto Verwüstete Lande;343§auto Terres foudroyées;343 | x=-10984.1005859375 y=-3424.199951171875 | size=1 | links=#46064(auto Blasted Lands;342):34 c5999.8:11
+#46066 | auto Blasted Lands;344§auto Verwüstete Lande;344§auto Terres foudroyées;344 | x=-11040.900390625 y=-3463.900146484375 | size=1 | links=c5393.1:7 c5999.27:26
+#46067 | auto Blasted Lands;345§auto Verwüstete Lande;345§auto Terres foudroyées;345 | x=-11665.7001953125 y=-3100.5 | size=1 | links=o141812.4:23 c7668.7:20
+#46068 | auto Blasted Lands;346§auto Verwüstete Lande;346§auto Terres foudroyées;346 | x=-11671.5 y=-3052.900146484375 | size=1 | links=#45956(auto Blasted Lands;246):22 c7668.7:38
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c3546.1 | links=#26003(auto Blasted Lands;191):7
+c5385.1 | links=c7826.1:3
+c5393.1 | links=#46066(auto Blasted Lands;344):7
+c5508.1 | links=#7406(auto Blasted Lands;53):9
+c5974.1 | links=#45196(auto Blasted Lands;211):17 #45203(auto Blasted Lands;218):14
+c5975.1 | links=#45205(auto Blasted Lands;220):11
+c5976.1 | links=#45202(auto Blasted Lands;217):8
+c5977.1 | links=c5977.5:20 c5977.6:34
+c5978.1 | links=c5977.3:26 c5977.7:16 c8297.8:29
+c5979.1 | links=c5988.4:10
+c5981.1 | links=c5985.5:31 c8300.6:23
+c5982.1 | links=c5992.2:26 c8303.4:22
+c5984.1 | links=#25606(auto Blasted Lands;184):17 c8302.2:12
+c5991.1 | links=c8299.13:9
+c5992.1 | links=c8303.2:15 c5992.3:45 c8303.10:30
+c6000.1 | links=c5999.37:21
+c6001.1 | links=c9540.1:18 c6003.3:11
+c6002.1 | links=c5999.22:20
+c6003.1 | links=#4071(auto Blasted Lands;37):25
+c6005.1 | links=c6004.15:30 c6004.16:28
+c6007.1 | links=#46024(auto Blasted Lands;310):24 c7667.1:15
+c6008.1 | links=c6009.2:16
+c6009.1 | links=c6008.7:29
+c6491.1 | links=#45192(auto Blasted Lands;207):15
+c7363.1 | links=#45993(auto Blasted Lands;280):15
+c7505.1 | links=c7506.1:3
+c7506.1 | links=#16967(auto Blasted Lands;123):52 c7505.1:3 c5988.9:64
+c7665.1 | links=#45202(auto Blasted Lands;217):6
+c7666.1 | links=#46011(auto Blasted Lands;297):6
+c7667.1 | links=c6007.1:15
+c7668.1 | links=#46029(auto Blasted Lands;315):22 o141812.1:13 c7668.2:25
+c7669.1 | links=#46013(auto Blasted Lands;299):5
+c7670.1 | links=o141858.1:21 c6004.12:19 c6005.14:36 c6005.17:37
+c7671.1 | links=c6007.6:31 c6008.7:25 c6007.9:10
+c7728.1 | links=#46008(auto Blasted Lands;294):6
+c7826.1 | links=#25703(auto Blasted Lands;188):9 c5385.1:3 c8022.1:22
+c7846.1 | links=#45959(auto Blasted Lands;249):6 #45960(auto Blasted Lands;250):13
+c7851.1 | links=#6302(auto Blasted Lands;46):13
+c8022.1 | links=#15058(auto Blasted Lands;109):0 c7826.1:22
+c8178.1 | links=#23709(auto Blasted Lands;164):9
+c8296.1 | links=#45223(auto Blasted Lands;236):5
+c8298.1 | links=c5993.4:58 c5993.7:6
+c8300.1 | links=c5992.4:25 c8299.7:10
+c8302.1 | links=c5988.4:14
+c8304.1 | links=c6007.4:1
+c8609.1 | links=#10660(auto Blasted Lands;79):2
+c8716.1 | links=c8716.2:39
+c8717.1 | links=c8717.8:43 c8718.12:44
+c8816.1 | links=c5984.7:15 c8302.7:44
+c9540.1 | links=#13520(central location;Nethergarde Keep;Blasted Lands):30 c6001.1:18
+c14463.1 | links=#45977(auto Blasted Lands;267):22
+c16840.1 | links=#13270(central location;The Dark Portal;Blasted Lands):12 c16841.1:2
+c16841.1 | links=c16840.1:2
+c19254.1 | links=#18711(auto Blasted Lands;136):5
+o141812.1 | links=c7668.1:13
+o141857.1 | links=#45205(auto Blasted Lands;220):8
+o141858.1 | links=c7670.1:21
+o141859.1 | links=c6007.9:12
+c5974.2 | links=#45196(auto Blasted Lands;211):22 #45214(auto Blasted Lands;227):10
+c5975.2 | links=#45202(auto Blasted Lands;217):17
+c5976.2 | links=#45209(auto Blasted Lands;224):9
+c5977.2 | links=#46014(auto Blasted Lands;300):7 #46015(auto Blasted Lands;301):9
+c5978.2 | links=#46013(auto Blasted Lands;299):5 #46014(auto Blasted Lands;300):10
+c5979.2 | links=#8218(auto Blasted Lands;59):20 c5988.4:22 c8302.7:59
+c5982.2 | links=#45995(auto Blasted Lands;282):25
+c5984.2 | links=#18536(auto Blasted Lands;135):24
+c5985.2 | links=#45993(auto Blasted Lands;280):25 c8675.9:49 c8301.13:20
+c5988.2 | links=#25606(auto Blasted Lands;184):47 #25694(auto Blasted Lands;187):49 c8302.12:56
+c5990.2 | links=c8303.11:16
+c5991.2 | links=c8299.12:23
+c5992.2 | links=c5982.1:26 c8303.8:19
+c5997.2 | links=#46044(auto Blasted Lands;322):28 #46045(auto Blasted Lands;323):43
+c5998.2 | links=#46041(auto Blasted Lands;319):21 #46043(auto Blasted Lands;321):45 c5996.13:35 c5996.14:18
+c6000.2 | links=#13520(central location;Nethergarde Keep;Blasted Lands):2
+c6002.2 | links=c6001.4:11
+c6005.2 | links=c6006.2:37 c8303.2:48
+c6006.2 | links=c6005.2:37 c6004.3:47
+c6007.2 | links=c6008.2:14 c6009.2:15
+c6008.2 | links=c6007.2:14 c6009.4:17 c6008.8:17
+c6009.2 | links=c6008.1:16 c6007.2:15 c6007.3:16 c6009.3:11
+c6010.2 | links=c6011.3:25
+c7668.2 | links=#46028(auto Blasted Lands;314):24 c7668.1:25 c6010.5:32 o141812.6:22
+c7669.2 | links=c5975.4:11
+c7670.2 | links=#46030(auto Blasted Lands;316):3 o141858.3:7
+c7671.2 | links=#46019(auto Blasted Lands;305):24 o141859.3:10
+c8296.2 | links=#45228(auto Blasted Lands;241):9
+c8297.2 | links=c8297.8:48
+c8298.2 | links=c8298.8:31
+c8300.2 | links=c8301.2:21
+c8301.2 | links=c8300.2:21 c8300.11:20 c8299.13:20
+c8302.2 | links=c5984.1:12
+c8303.2 | links=c5992.1:15 c6005.2:48
+c8716.2 | links=#45978(auto Blasted Lands;268):41 c8716.1:39 c12396.13:50
+c8718.2 | links=#45983(auto Blasted Lands;272):44 #45984(auto Blasted Lands;273):26
+o141812.2 | links=c7668.3:19
+o141857.2 | links=#45210(auto Blasted Lands;225):4
+o141858.2 | links=c7670.3:20
+o141859.2 | links=c7671.3:13 c6007.4:21
+c5974.3 | links=#45199(auto Blasted Lands;214):2
+c5975.3 | links=#45202(auto Blasted Lands;217):8
+c5976.3 | links=#45205(auto Blasted Lands;220):10 #45206(auto Blasted Lands;221):17
+c5977.3 | links=#46012(auto Blasted Lands;298):12 c5978.1:26 c5978.6:33
+c5978.3 | links=c5978.6:17
+c5979.3 | links=c8302.3:30 c8302.6:24 c8302.8:25
+c5982.3 | links=#45994(auto Blasted Lands;281):10
+c5984.3 | links=#14372(auto Blasted Lands;103):6
+c5985.3 | links=c8300.13:32
+c5988.3 | links=#409(auto Blasted Lands;4):24
+c5990.3 | links=c8303.10:19 c8303.11:47 c8303.12:43
+c5992.3 | links=c5992.1:45 c8303.11:22
+c5993.3 | links=#45957(auto Blasted Lands;247):31 c7668.5:48
+c5997.3 | links=#46043(auto Blasted Lands;321):29 #46044(auto Blasted Lands;322):19
+c5998.3 | links=#46052(auto Blasted Lands;330):35
+c6000.3 | links=c5999.10:29
+c6001.3 | links=#46032(auto Blasted Lands;318):5
+c6003.3 | links=c6001.1:11
+c6004.3 | links=c6006.2:47 c7670.3:11
+c6006.3 | links=#46010(auto Blasted Lands;296):6
+c6007.3 | links=c6009.2:16
+c6008.3 | links=#46020(auto Blasted Lands;306):14 #46021(auto Blasted Lands;307):18
+c6009.3 | links=c6009.2:11 c6007.5:16
+c6011.3 | links=c6010.2:25 o141812.5:24
+c7668.3 | links=o141812.2:19 c5985.9:46
+c7669.3 | links=c5976.5:19
+c7670.3 | links=#45997(auto Blasted Lands;284):43 o141858.2:20 c6004.3:11 c6004.9:17
+c7671.3 | links=o141859.2:13
+c8296.3 | links=c5974.7:8
+c8297.3 | links=c6007.6:57 c8300.7:86 c8297.8:56
+c8298.3 | links=#12920(auto Blasted Lands;98):77 c8298.5:54 c5991.6:36
+c8299.3 | links=c8303.7:18 c8301.9:42
+c8300.3 | links=#45996(auto Blasted Lands;283):41 #46031(auto Blasted Lands;317):38 c8299.13:14
+c8302.3 | links=#45194(auto Blasted Lands;209):21 c5979.3:30 c8302.4:29
+c8675.3 | links=c8300.6:26
+c8716.3 | links=#45979(auto Blasted Lands;269):17
+c8718.3 | links=c8718.10:55
+o141812.3 | links=c7668.4:19
+o141857.3 | links=#46016(auto Blasted Lands;302):13
+o141858.3 | links=c7670.2:7 c6005.8:7 c6006.17:3
+o141859.3 | links=c7671.2:10
+c5974.4 | links=#45202(auto Blasted Lands;217):16
+c5975.4 | links=#45206(auto Blasted Lands;221):8 #45207(auto Blasted Lands;222):12 c7669.2:11
+c5976.4 | links=#45204(auto Blasted Lands;219):7
+c5982.4 | links=c8303.10:15
+c5983.4 | links=#16387(auto Blasted Lands;117):27 c8301.5:40 c8301.12:19
+c5984.4 | links=c5988.6:20
+c5988.4 | links=#25606(auto Blasted Lands;184):41 c5979.1:10 c8302.1:14 c5979.2:22
+c5990.4 | links=#23878(auto Blasted Lands;166):32
+c5992.4 | links=c8300.1:25 c8301.8:18
+c5993.4 | links=c8298.1:58 c5993.6:17
+c6001.4 | links=#46063(auto Blasted Lands;341):9 c6002.2:11
+c6005.4 | links=#46026(auto Blasted Lands;312):63 c6004.15:31
+c6007.4 | links=#46017(auto Blasted Lands;303):30 c8304.1:1 o141859.2:21 c6008.9:39
+c6008.4 | links=#46021(auto Blasted Lands;307):12 #46025(auto Blasted Lands;311):13
+c6009.4 | links=c6008.2:17 c6007.7:11
+c7668.4 | links=#45986(auto Blasted Lands;274):19 o141812.3:19 c5985.9:22
+c8296.4 | links=#45209(auto Blasted Lands;224):15
+c8299.4 | links=c8298.5:20 c6004.16:67
+c8302.4 | links=c8302.3:29 c5984.8:9
+c8303.4 | links=c5982.1:22
+c8675.4 | links=c8675.8:32
+c12396.4 | links=c8717.8:45 c8718.14:42
+o141812.4 | links=#46067(auto Blasted Lands;345):23
+c5974.5 | links=#45213(auto Blasted Lands;226):13 c5974.7:21
+c5975.5 | links=#45202(auto Blasted Lands;217):11
+c5976.5 | links=#45210(auto Blasted Lands;225):9 #45213(auto Blasted Lands;226):14 c7669.3:19
+c5977.5 | links=c5977.1:20 c8297.7:21
+c5978.5 | links=c5978.6:21
+c5985.5 | links=#45991(auto Blasted Lands;278):48 c5981.1:31
+c5988.5 | links=#8686(auto Blasted Lands;63):29 #17229(auto Blasted Lands;128):28
+c5990.5 | links=c8300.11:8
+c5992.5 | links=c8303.18:19
+c5993.5 | links=c5993.7:17 c8298.7:31
+c6000.5 | links=c5999.28:9
+c6001.5 | links=#346(down;ramp;to;flight master;Nethergarde Keep;Blasted Lands):1
+c6003.5 | links=#25610(auto Blasted Lands;185):8
+c6007.5 | links=c6009.3:16 c6009.6:15
+c6008.5 | links=c6009.5:14 c6007.9:15
+c6009.5 | links=c6008.5:14
+c6010.5 | links=c7668.2:32 c6011.5:4
+c6011.5 | links=c6010.5:4
+c7668.5 | links=c5993.3:48 o141812.5:25
+c8298.5 | links=c8298.3:54 c8299.4:20
+c8301.5 | links=c5983.4:40 c8675.8:23
+c8302.5 | links=#8426(auto Blasted Lands;61):15 #45992(auto Blasted Lands;279):41
+c8303.5 | links=c8303.8:36 c8303.18:44
+c8675.5 | links=c8300.7:44 c8300.13:48
+o141812.5 | links=c6011.3:24 c7668.5:25
+c5974.6 | links=#45209(auto Blasted Lands;224):10 #45210(auto Blasted Lands;225):16
+c5977.6 | links=c5977.1:34
+c5978.6 | links=c5977.3:33 c5978.3:17 c5978.5:21
+c5984.6 | links=c5988.10:41
+c5988.6 | links=#9949(auto Blasted Lands;75):10 c5984.4:20 c5988.7:36
+c5991.6 | links=c8298.3:36
+c5993.6 | links=c5993.4:17
+c5996.6 | links=#46046(auto Blasted Lands;324):14 #46047(auto Blasted Lands;325):27
+c6006.6 | links=c6005.17:29
+c6007.6 | links=c7671.1:31 c8297.3:57 c6007.8:22
+c6008.6 | links=#46018(auto Blasted Lands;304):35 #46019(auto Blasted Lands;305):12 #46020(auto Blasted Lands;306):21 #46022(auto Blasted Lands;308):7
+c6009.6 | links=#46023(auto Blasted Lands;309):7 c6007.5:15 c6008.8:17
+c6010.6 | links=c6011.6:2
+c6011.6 | links=#46029(auto Blasted Lands;315):18 c6010.6:2
+c7668.6 | links=o141812.7:16
+c7851.6 | links=#6302(auto Blasted Lands;46):2
+c8300.6 | links=c5981.1:23 c8675.3:26 c8300.7:29
+c8302.6 | links=c5979.3:24 c5988.11:14
+c8675.6 | links=c5977.8:11
+o141812.6 | links=c7668.2:22
+c5974.7 | links=#45214(auto Blasted Lands;227):27 c8296.3:8 c5974.5:21
+c5977.7 | links=c5978.1:16 c8297.7:25
+c5984.7 | links=c8816.1:15
+c5988.7 | links=c5988.6:36 c8302.13:22
+c5991.7 | links=c8300.14:8
+c5993.7 | links=#45988(auto Blasted Lands;276):20 #45990(auto Blasted Lands;277):46 c8298.1:6 c5993.5:17
+c6004.7 | links=#46030(auto Blasted Lands;316):5
+c6005.7 | links=#45999(auto Blasted Lands;286):16 c6004.18:18
+c6006.7 | links=c6005.10:8
+c6007.7 | links=c6009.4:11
+c6008.7 | links=c6009.1:29 c7671.1:25 c6008.9:28
+c7668.7 | links=#46067(auto Blasted Lands;345):20 #46068(auto Blasted Lands;346):38
+c8297.7 | links=c5977.5:21 c5977.7:25 c5977.8:20
+c8298.7 | links=c5993.5:31
+c8299.7 | links=c8300.1:10
+c8300.7 | links=c8297.3:86 c8675.5:44 c8300.6:29
+c8302.7 | links=c8816.1:44 c5979.2:59 c8302.13:61
+c8303.7 | links=c8299.3:18 c8303.9:41
+o141812.7 | links=#46026(auto Blasted Lands;312):20 c7668.6:16
+c5977.8 | links=c8675.6:11 c8297.7:20
+c5984.8 | links=#10815(auto Blasted Lands;80):30 c8302.4:9
+c5985.8 | links=c8675.8:5
+c5988.8 | links=#21207(entry and exit;farming area;Scorpok Stinger;Blasted Lands):42 c5988.9:11
+c5991.8 | links=#45965(auto Blasted Lands;255):42 #45966(auto Blasted Lands;256):53 c8298.8:69 c5991.9:41
+c5993.8 | links=c5985.9:17
+c5997.8 | links=#46052(auto Blasted Lands;330):36
+c5999.8 | links=#4071(auto Blasted Lands;37):2 #46065(auto Blasted Lands;343):11
+c6005.8 | links=#46030(auto Blasted Lands;316):3 o141858.3:7
+c6007.8 | links=c6007.6:22
+c6008.8 | links=c6008.2:17 c6009.6:17
+c8297.8 | links=c5978.1:29 c8297.2:48 c8297.3:56 c8297.9:56
+c8298.8 | links=c8298.2:31 c5991.8:69 c8297.9:39
+c8301.8 | links=c5992.4:18 c8299.9:6 c8301.9:38 c8300.11:21
+c8302.8 | links=#14372(auto Blasted Lands;103):19 c5979.3:25
+c8303.8 | links=#9968(auto Blasted Lands;76):57 c5992.2:19 c8303.5:36
+c8675.8 | links=c8675.4:32 c8301.5:23 c5985.8:5 c8301.13:54
+c8717.8 | links=c8717.1:43 c12396.4:45
+c5985.9 | links=c7668.3:46 c7668.4:22 c5993.8:17
+c5988.9 | links=c7506.1:64 c5988.8:11 c5988.10:21
+c5991.9 | links=c5991.8:41
+c5999.9 | links=#125(auto Blasted Lands;2):8
+c6004.9 | links=#45998(auto Blasted Lands;285):20 c7670.3:17
+c6005.9 | links=#46010(auto Blasted Lands;296):5 #46011(auto Blasted Lands;297):8
+c6006.9 | links=#46000(auto Blasted Lands;287):6 #46001(auto Blasted Lands;288):8
+c6007.9 | links=c7671.1:10 o141859.1:12 c6008.5:15
+c6008.9 | links=c6007.4:39 c6008.7:28
+c8297.9 | links=c8297.8:56 c8298.8:39
+c8299.9 | links=c8301.8:6
+c8301.9 | links=c8299.3:42 c8301.8:38
+c8303.9 | links=#26610(auto Blasted Lands;195):35 c8303.7:41
+c8675.9 | links=c5985.2:49 c8300.13:50
+c8717.9 | links=c12396.9:57
+c12396.9 | links=c8717.9:57 c8718.14:29 c8717.24:50
+c5988.10 | links=#7178(auto Blasted Lands;52):49 c5984.6:41 c5988.9:21
+c5999.10 | links=c6000.3:29 c5999.15:45 c5999.21:25
+c6004.10 | links=#46009(auto Blasted Lands;295):8 #46010(auto Blasted Lands;296):13
+c6005.10 | links=c6006.7:8 c6006.15:14
+c8302.10 | links=#25606(auto Blasted Lands;184):14
+c8303.10 | links=c5992.1:30 c5990.3:19 c5982.4:15
+c8718.10 | links=#45970(auto Blasted Lands;260):42 c8718.3:55
+c5988.11 | links=#15998(auto Blasted Lands;116):15 c8302.6:14
+c8299.11 | links=c8300.12:19
+c8300.11 | links=c8301.2:20 c5990.5:8 c8301.8:21 c8299.12:49
+c8303.11 | links=c5990.2:16 c5990.3:47 c5992.3:22
+c6004.12 | links=c7670.1:19
+c8299.12 | links=c5991.2:23 c8300.11:49 c8300.14:9
+c8300.12 | links=c8299.11:19 c8300.14:29
+c8301.12 | links=c5983.4:19
+c8302.12 | links=#45991(auto Blasted Lands;278):33 c5988.2:56
+c8303.12 | links=c5990.3:43 c8303.17:46
+c8718.12 | links=#45979(auto Blasted Lands;269):36 c8717.1:44
+c5996.13 | links=c5998.2:35
+c6005.13 | links=#46002(auto Blasted Lands;289):4 c6004.17:12
+c8299.13 | links=c5991.1:9 c8301.2:20 c8300.3:14
+c8300.13 | links=c5985.3:32 c8675.5:48 c8675.9:50
+c8301.13 | links=c5985.2:20 c8675.8:54
+c8302.13 | links=#45992(auto Blasted Lands;279):20 c5988.7:22 c8302.7:61
+c12396.13 | links=c8716.2:50
+c5996.14 | links=c5998.2:18
+c6005.14 | links=#46031(auto Blasted Lands;317):43 c7670.1:36
+c7851.14 | links=#6302(auto Blasted Lands;46):4
+c8300.14 | links=c5991.7:8 c8299.12:9 c8300.12:29
+c8718.14 | links=c12396.4:42 c12396.9:29
+c5996.15 | links=#46043(auto Blasted Lands;321):13
+c5999.15 | links=#11929(auto Blasted Lands;91):17 c5999.10:45
+c6004.15 | links=c6005.1:30 c6005.4:31
+c6006.15 | links=#46007(auto Blasted Lands;293):6 #46008(auto Blasted Lands;294):9 c6005.10:14
+c5998.16 | links=#46052(auto Blasted Lands;330):21
+c6004.16 | links=c6005.1:28 c8299.4:67 c6005.17:52 c6006.19:39
+c6005.16 | links=#46005(auto Blasted Lands;292):12 c6004.19:19
+c5988.17 | links=#448(auto Blasted Lands;5):5 #5048(auto Blasted Lands;41):36 #8888(auto Blasted Lands;68):19
+c6004.17 | links=#46003(auto Blasted Lands;290):6 c6005.13:12
+c6005.17 | links=c7670.1:37 c6006.6:29 c6004.16:52
+c6006.17 | links=o141858.3:3
+c8303.17 | links=#9968(auto Blasted Lands;76):45 c8303.12:46
+c6004.18 | links=#46000(auto Blasted Lands;287):12 c6005.7:18
+c6005.18 | links=#46009(auto Blasted Lands;295):12 c6004.19:18
+c6006.18 | links=#46007(auto Blasted Lands;293):3
+c8303.18 | links=c5992.5:19 c8303.5:44
+c6004.19 | links=#46007(auto Blasted Lands;293):14 c6005.16:19 c6005.18:18
+c6006.19 | links=#46030(auto Blasted Lands;316):21 c6004.16:39
+c5999.21 | links=c5999.10:25
+c5999.22 | links=#25805(auto Blasted Lands;189):5 c6002.1:20
+c8717.24 | links=c12396.9:50 c8717.31:38
+c8717.25 | links=#45973(auto Blasted Lands;263):21 #45974(auto Blasted Lands;264):43
+c5999.27 | links=#14821(auto Blasted Lands;108):7 #46066(auto Blasted Lands;344):26
+c8717.27 | links=#45971(auto Blasted Lands;261):35 #45972(auto Blasted Lands;262):35
+c5999.28 | links=#18979(auto Blasted Lands;137):12 c6000.5:9
+c8717.31 | links=#45981(auto Blasted Lands;270):22 c8717.24:38
+c5999.35 | links=#125(auto Blasted Lands;2):13
+c5999.37 | links=c6000.1:21 c5999.41:12
+c5999.38 | links=#125(auto Blasted Lands;2):12
+c8717.38 | links=#45972(auto Blasted Lands;262):43 #45984(auto Blasted Lands;273):9
+c5999.41 | links=#19493(auto Blasted Lands;143):35 c5999.37:12
+c5999.50 | links=#46063(auto Blasted Lands;341):27 #46064(auto Blasted Lands;342):35

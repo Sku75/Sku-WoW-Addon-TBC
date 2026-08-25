@@ -1,0 +1,917 @@
+Zone areaId 141 — eine Zeile pro Wegpunkt; Links inline.
+
+#11 | auto Teldrassil;1§auto Teldrassil;1§auto Teldrassil;1 | x=9865.7998046875 y=484.8000183105469 | size=1 | links=#1560(central location;Starbreeze Village;Teldrassil):52 #6587(auto Teldrassil;125):39 #16507(auto Teldrassil;325):29 #21382(Gnarlpine Warrior;quest area;Starbreeze Village;Teldrassil):9
+#65 | spawn location;Shadowglen;Teldrassil§spawnpunkt;Laubschattental;Teldrassil§spawn location;Shadowglen;Teldrassil | x=10311.2998046875 y=831.5 | size=1 | links=c2079.1:18
+#67 | auto Teldrassil;2§auto Teldrassil;2§auto Teldrassil;2 | x=10628.5 y=2007.599975585938 | size=5 | links=#1884(auto Teldrassil;40):49 c14431.1:62 c2018.2:63
+#69 | auto Teldrassil;3§auto Teldrassil;3§auto Teldrassil;3 | x=9907.6005859375 y=977 | size=1 | links=#8285(auto Teldrassil;157):9 #11428(auto Teldrassil;233):10
+#77 | auto Teldrassil;4§auto Teldrassil;4§auto Teldrassil;4 | x=9852.1005859375 y=970.1000366210938 | size=1 | links=#12023(central location;Dolanaar;Teldrassil):12 #16959(auto Teldrassil;332):28 #17884(auto Teldrassil;348):31
+#170 | auto Teldrassil;5§auto Teldrassil;5§auto Teldrassil;5 | x=9477 y=1009.299987792969 | size=1 | links=#4363(auto Teldrassil;83):40 #6031(auto Teldrassil;118):35 c2025.1:35
+#176 | auto Teldrassil;6§auto Teldrassil;6§auto Teldrassil;6 | x=9372 y=1628.400024414063 | size=1 | links=#13143(auto Teldrassil;267):47 #18081(auto Teldrassil;350):47
+#231 | auto Teldrassil;7§auto Teldrassil;7§auto Teldrassil;7 | x=10004.2998046875 y=1783.900024414063 | size=1 | links=#5142(auto Teldrassil;98):49 #18932(auto Teldrassil;373):48
+#240 | auto Teldrassil;8§auto Teldrassil;8§auto Teldrassil;8 | x=9662.7998046875 y=1307.400024414063 | size=1 | links=#6624(auto Teldrassil;128):12 #18763(auto Teldrassil;364):19
+#331 | auto Teldrassil;9§auto Teldrassil;9§auto Teldrassil;9 | x=10401.2998046875 y=706.6000366210938 | size=1 | links=#715(auto Teldrassil;18):50 #10376(auto Teldrassil;213):21 c8583.1:9
+#462 | auto Teldrassil;10§auto Teldrassil;10§auto Teldrassil;10 | x=9814.7998046875 y=463.1000061035156 | size=1 | links=#16507(auto Teldrassil;325):26 #27948(auto Teldrassil;575):26
+#469 | auto Teldrassil;11§auto Teldrassil;11§auto Teldrassil;11 | x=10217.7998046875 y=695.6000366210938 | size=1 | links=#19615(auto Teldrassil;388):21 #23490(auto Teldrassil;473):10 c6780.1:5
+#471 | auto Teldrassil;12§auto Teldrassil;12§auto Teldrassil;12 | x=10138.5 y=1856.599975585938 | size=1 | links=#25944(auto Teldrassil;528):31 #26737(auto Teldrassil;545):46
+#472 | OBJECT;2742;Chest of Nesting;Teldrassil;1;44.4;60.66§OBJEKT;2742;Truhe des Nistens;Teldrassil;1;44.4;60.66§OBJET;2742;Coffre du nichoir;Teldrassil;1;44.4;60.66 | x=9772.982504910246 y=1554.084361832471 | size=1
+#489 | quest target;druid§questziel;druide§objectif de quête;druid | x=9780.6005859375 y=1547.5 | size=1 | links=#2003(auto Inside Ban'ethil Barrow Den;Teldrassil;44):9
+#570 | auto Teldrassil;13§auto Teldrassil;13§auto Teldrassil;13 | x=10298.900390625 y=1589.5 | size=1 | links=#9281(auto Teldrassil;188):20 #18643(auto Teldrassil;361):39
+#608 | auto Teldrassil;14§auto Teldrassil;14§auto Teldrassil;14 | x=10080.7998046875 y=1618.300048828125 | size=1 | links=#19470(auto Teldrassil;382):47 #23531(auto Teldrassil;475):50 c2155.1:47
+#675 | auto Teldrassil;15§auto Teldrassil;15§auto Teldrassil;15 | x=10840 y=2056 | size=1 | links=#8970(auto Teldrassil;177):12 #24506(auto Teldrassil;497):24
+#685 | auto outside;ramp up;Teldrassil;16§auto außerhalb;rampe nach oben;Teldrassil;16§auto extérieur;ramp up;Teldrassil;16 | x=10478.86126074964 y=788.48166843957 | size=1 | links=#1047(auto outside;ramp up;Teldrassil;23):8 #8190(auto outside;ramp up;Teldrassil;155):8
+#692 | auto Teldrassil;17§auto Teldrassil;17§auto Teldrassil;17 | x=9996.2001953125 y=1249.5 | size=1 | links=#7167(auto Teldrassil;140):66 #18899(auto Teldrassil;368):38
+#715 | auto Teldrassil;18§auto Teldrassil;18§auto Teldrassil;18 | x=10371.2001953125 y=747.7000122070312 | size=1 | links=#331(auto Teldrassil;9):50 #1965(auto Teldrassil;42):12 #5153(auto Teldrassil;100):67 #23253(central location;Aldrassil;Teldrassil):17
+#718 | auto Teldrassil;19§auto Teldrassil;19§auto Teldrassil;19 | x=10399.1005859375 y=883 | size=1 | links=#4460(auto Teldrassil;84):32 #14067(auto ramp up;Teldrassil;284):17 #22878(auto Teldrassil;456):97 c1984.1:43 c1984.3:12 c26309.3:5
+#734 | ship;Rut'theran Village;Teldrassil§schiff;Rut'theran;Teldrassil§ship;Rut'theran;Teldrassil | x=8535.1005859375 y=1021.700012207031 | size=1 | links=#13822(pier;from;Rut'theran Village;Teldrassil;to;Darkshore):14 #21458(ship;Mist's Edge;Darkshore):1958
+#746 | auto Inside Ban'ethil Barrow Den;Teldrassil;20§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;20§auto Inside Ban'ethil Barrow Den;Teldrassil;20 | x=9849.6005859375 y=1578.400024414063 | size=1 | links=#4023(auto Inside Ban'ethil Barrow Den;Teldrassil;79):9 #26070(auto Inside Ban'ethil Barrow Den;Teldrassil;532):11
+#791 | auto Teldrassil;21§auto Teldrassil;21§auto Teldrassil;21 | x=9922.2998046875 y=1538.599975585938 | size=1 | links=#8333(auto Teldrassil;159):26 #23608(auto Teldrassil;476):23
+#886 | auto Teldrassil;22§auto Teldrassil;22§auto Teldrassil;22 | x=9831.1005859375 y=390.3999938964844 | size=1 | links=#3752(auto Teldrassil;76):26 #23294(auto Teldrassil;470):33
+#1007 | Mailbox;Dolanaar;Teldrassil§briefkasten;Dolanaar;Teldrassil§Boîte aux lettres;Dolanaar;Teldrassil | x=9850.7001953125 y=957.4000244140625 | size=1
+#1047 | auto outside;ramp up;Teldrassil;23§auto außerhalb;rampe nach oben;Teldrassil;23§auto extérieur;ramp up;Teldrassil;23 | x=10471.2001953125 y=792.7000122070312 | size=1 | links=#685(auto outside;ramp up;Teldrassil;16):8 #14502(auto outside;ramp up;Teldrassil;293):10
+#1050 | auto outside;ramp up;Teldrassil;24§auto außerhalb;rampe nach oben;Teldrassil;24§auto extérieur;ramp up;Teldrassil;24 | x=10500.29300273726 y=785.8642949310014 | size=1 | links=#4790(top;at;Tenaron Stormgrip):10 #5819(auto outside;ramp up;Teldrassil;113):5
+#1082 | auto outside;ramp up;Teldrassil;25§auto außerhalb;rampe nach oben;Teldrassil;25§auto extérieur;ramp up;Teldrassil;25 | x=10472.614067887 y=857.4261599273641 | size=1 | links=#17006(auto outside;ramp up;Teldrassil;335):11 #25912(auto outside;ramp up;Teldrassil;527):7
+#1221 | auto Teldrassil;26§auto Teldrassil;26§auto Teldrassil;26 | x=9870.7001953125 y=946.4000244140625 | size=1 | links=#12023(central location;Dolanaar;Teldrassil):17 #25440(auto Teldrassil;519):32 #27962(auto Teldrassil;576):12 c2083.1:12
+#1235 | auto Teldrassil;27§auto Teldrassil;27§auto Teldrassil;27 | x=9111.1005859375 y=1817.200073242188 | size=1 | links=#1970(auto Teldrassil;43):29 #16953(auto Teldrassil;331):19 #24804(auto Teldrassil;506):20
+#1264 | auto Teldrassil;28§auto Teldrassil;28§auto Teldrassil;28 | x=9896.2001953125 y=1481 | size=1 | links=#2333(auto Teldrassil;50):7 #9035(quest target;euest;Ban'ethil Barrow Den):11
+#1310 | auto Teldrassil;29§auto Teldrassil;29§auto Teldrassil;29 | x=10437.6005859375 y=665.1000366210938 | size=1 | links=#6155(auto Teldrassil;120):43 #10376(auto Teldrassil;213):33 c2031.1:84
+#1397 | auto Teldrassil;30§auto Teldrassil;30§auto Teldrassil;30 | x=10014.6005859375 y=1620.900024414063 | size=1 | links=#18589(auto Teldrassil;359):10 #23531(auto Teldrassil;475):16
+#1438 | auto Teldrassil;31§auto Teldrassil;31§auto Teldrassil;31 | x=10917.7001953125 y=1529.900024414063 | size=1 | links=#10085(Blackmoss the Fetid;Wellspring River;Teldrassil):50 c2030.1:14
+#1443 | auto Teldrassil;32§auto Teldrassil;32§auto Teldrassil;32 | x=9607 y=755.1000366210938 | size=1 | links=#14822(auto Teldrassil;296):36 #18189(auto Teldrassil;351):36
+#1458 | auto Teldrassil;33§auto Teldrassil;33§auto Teldrassil;33 | x=8711.400390625 y=998.2000122070312 | size=1 | links=#6852(auto Teldrassil;132):8 c7907.1:11
+#1473 | auto inside shadowthread cave;Teldrassil;34§auto drinnen schattenweberhöhle;Teldrassil;34§auto inside shadowthread cave;Teldrassil;34 | x=10840.2001953125 y=903.6000366210938 | size=1 | links=#6907(auto inside shadowthread cave;Teldrassil;134):17 #24414(auto inside shadowthread cave;Teldrassil;494):9
+#1481 | auto Teldrassil;35§auto Teldrassil;35§auto Teldrassil;35 | x=10865.7998046875 y=1558.800048828125 | size=1 | links=#10085(Blackmoss the Fetid;Wellspring River;Teldrassil):17 #19791(auto Teldrassil;396):15
+#1560 | central location;Starbreeze Village;Teldrassil§zentralpunkt;Sternenhauch;Teldrassil§emplacement central;Starbreeze Village;Teldrassil | x=9893.2001953125 y=529.5 | size=1 | links=#11(auto Teldrassil;1):52 #6587(auto Teldrassil;125):80 #22517(auto Teldrassil;451):56
+#1727 | auto Teldrassil;36§auto Teldrassil;36§auto Teldrassil;36 | x=9995.400390625 y=602.1000366210938 | size=1 | links=#5922(auto Teldrassil;114):30 #24801(auto Teldrassil;505):40 o1673.67:63
+#1772 | auto Teldrassil;37§auto Teldrassil;37§auto Teldrassil;37 | x=9810.1005859375 y=1039.200073242188 | size=1 | links=#4744(auto Teldrassil;89):40 c2151.1:37
+#1814 | auto outside;ramp up;Teldrassil;38§auto außerhalb;rampe nach oben;Teldrassil;38§auto extérieur;ramp up;Teldrassil;38 | x=10494.2001953125 y=844.7999877929688 | size=1 | links=#4867(auto outside;ramp up;Teldrassil;92):10 #23470(auto outside;ramp up;Teldrassil;472):11
+#1862 | auto Teldrassil;39§auto Teldrassil;39§auto Teldrassil;39 | x=9907.5 y=1000.200012207031 | size=1 | links=#17494(auto Teldrassil;343):1 #22883(auto Teldrassil;458):1
+#1884 | auto Teldrassil;40§auto Teldrassil;40§auto Teldrassil;40 | x=10633.5 y=1958.099975585938 | size=1 | links=#67(auto Teldrassil;2):49 #28404(auto Teldrassil;583):37
+#1936 | auto outside;ramp up;Teldrassil;41§auto außerhalb;rampe nach oben;Teldrassil;41§auto extérieur;ramp up;Teldrassil;41 | x=10450.34201827692 y=842.8841193051976 | size=1 | links=#10859(auto outside;ramp up;Teldrassil;224):8 #19522(auto outside;ramp up;Teldrassil;386):6
+#1965 | auto Teldrassil;42§auto Teldrassil;42§auto Teldrassil;42 | x=10363.900390625 y=758.2000122070312 | size=1 | links=#715(auto Teldrassil;18):12 #11421(auto Teldrassil;232):22
+#1970 | auto Teldrassil;43§auto Teldrassil;43§auto Teldrassil;43 | x=9108.7998046875 y=1787.700073242188 | size=1 | links=#1235(auto Teldrassil;27):29 c14429.1:18
+#2003 | auto Inside Ban'ethil Barrow Den;Teldrassil;44§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;44§auto Inside Ban'ethil Barrow Den;Teldrassil;44 | x=9783.2001953125 y=1556.800048828125 | size=1 | links=#489(quest target;druid):9 #28579(auto Inside Ban'ethil Barrow Den;Teldrassil;585):9
+#2035 | auto Teldrassil;45§auto Teldrassil;45§auto Teldrassil;45 | x=9352.6005859375 y=802.2999877929688 | size=5 | links=#11924(auto Teldrassil;246):40 #22873(auto Teldrassil;455):41
+#2161 | auto outside;ramp up;Teldrassil;46§auto außerhalb;rampe nach oben;Teldrassil;46§auto extérieur;ramp up;Teldrassil;46 | x=10450.5 y=810.4000244140625 | size=1 | links=#18924(auto outside;ramp up;Teldrassil;372):8 #19767(auto outside;ramp up;Teldrassil;395):7
+#2172 | auto Inside Fel Rock;Teldrassil;47§auto Drinnen Teufelsfels;Teldrassil;47§auto Inside Fel Rock;Teldrassil;47 | x=10103.6005859375 y=1075.700073242188 | size=1 | links=#3968(auto Inside Fel Rock;Teldrassil;78):17 #10594(auto Inside Fel Rock;Teldrassil;218):16 #17101(central location;Fel Rock;Teldrassil):11
+#2204 | auto Inside Fel Rock;Teldrassil;48§auto Drinnen Teufelsfels;Teldrassil;48§auto Inside Fel Rock;Teldrassil;48 | x=10114.5 y=1192.599975585938 | size=1 | links=#23027(auto Inside Fel Rock;Teldrassil;463):7 c2005.1:15
+#2215 | auto Teldrassil;49§auto Teldrassil;49§auto Teldrassil;49 | x=9902.6005859375 y=996.9000244140625 | size=1 | links=#25741(auto Teldrassil;521):2 #25895(auto Teldrassil;526):1
+#2333 | auto Teldrassil;50§auto Teldrassil;50§auto Teldrassil;50 | x=9890.900390625 y=1475.900024414063 | size=1 | links=#1264(auto Teldrassil;28):7 #20518(auto Teldrassil;409):11
+#2354 | auto Teldrassil;51§auto Teldrassil;51§auto Teldrassil;51 | x=9920.2001953125 y=1746.300048828125 | size=1 | links=#5142(auto Teldrassil;98):45 #23496(auto Teldrassil;474):51
+#2409 | portal;Rut'theran Village;Teldrassil;to;Darnassus§portal;Rut'theran;Teldrassil;zum;Darnassus§portal;Rut'theran;Teldrassil;vers;Darnassus | x=8784.400390625 y=966.2999877929688 | size=1 | links=#23920(auto Teldrassil;481):14 #28125(portal;Darnassus;to;flight master):2010
+#2449 | auto Inside Ban'ethil Barrow Den;Teldrassil;52§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;52§auto Inside Ban'ethil Barrow Den;Teldrassil;52 | x=9784 y=1591.700073242188 | size=1 | links=#13065(auto Inside Ban'ethil Barrow Den;Teldrassil;265):11 #25996(auto Inside Ban'ethil Barrow Den;Teldrassil;530):6
+#2475 | auto Teldrassil;53§auto Teldrassil;53§auto Teldrassil;53 | x=9770.7001953125 y=1827.200073242188 | size=1 | links=#12230(auto Teldrassil;252):46 #13316(auto Teldrassil;272):42 c1999.2:33
+#2565 | auto Teldrassil;54§auto Teldrassil;54§auto Teldrassil;54 | x=10397.2998046875 y=1506.400024414063 | size=1 | links=#27170(auto Teldrassil;555):20 c2033.1:15
+#2641 | auto Teldrassil;55§auto Teldrassil;55§auto Teldrassil;55 | x=10252 y=1606.200073242188 | size=1 | links=#10344(auto Teldrassil;212):34 c2000.1:30
+#2676 | auto Teldrassil;56§auto Teldrassil;56§auto Teldrassil;56 | x=9178.1005859375 y=1713.099975585938 | size=1 | links=#3316(central location;Gnarlpine Hold;Teldrassil):13 #23773(auto Teldrassil;478):73
+#2696 | auto Teldrassil;57§auto Teldrassil;57§auto Teldrassil;57 | x=9891.7998046875 y=983 | size=1 | links=#7213(auto Teldrassil;143):5 c3608.1:5
+#2765 | auto outside;ramp up;Teldrassil;58§auto außerhalb;rampe nach oben;Teldrassil;58§auto extérieur;ramp up;Teldrassil;58 | x=10518.18251758201 y=834.1838460989759 | size=1 | links=#21605(auto outside;ramp up;Teldrassil;436):12 #24164(auto outside;ramp up;Teldrassil;487):13
+#2861 | auto Teldrassil;59§auto Teldrassil;59§auto Teldrassil;59 | x=9558.2001953125 y=1673.200073242188 | size=1 | links=#13134(auto Teldrassil;266):27 #20914(auto Teldrassil;421):41
+#3092 | auto Teldrassil;60§auto Teldrassil;60§auto Teldrassil;60 | x=9273.5 y=888.2999877929688 | size=1 | links=#10163(auto Teldrassil;208):29 #13582(Gnarlpine Shaman;quest target;Teldrassil):7 c1996.1:41
+#3115 | auto Teldrassil;61§auto Teldrassil;61§auto Teldrassil;61 | x=10148.7998046875 y=1515 | size=1 | links=#3342(auto Teldrassil;64):39 #11454(auto Teldrassil;235):53
+#3282 | auto outside;ramp up;Teldrassil;62§auto außerhalb;rampe nach oben;Teldrassil;62§auto extérieur;ramp up;Teldrassil;62 | x=10444.2001953125 y=823 | size=1 | links=#7669(auto outside;ramp up;Teldrassil;149):7 #18924(auto outside;ramp up;Teldrassil;372):5
+#3316 | central location;Gnarlpine Hold;Teldrassil§zentralpunkt;Höhle der Knarzklauen;Teldrassil§emplacement central;Gnarlpine Hold;Teldrassil | x=9164.900390625 y=1717 | size=1 | links=#2676(auto Teldrassil;56):13 #4920(auto Teldrassil;94):11 #9079(auto Teldrassil;180):13
+#3320 | Timberling;Lake Al'Ameth;Teldrassil;Spot§Bäumling;Al'Amethsee;Teldrassil;spot§Sylvain;Lake Al'Ameth;Teldrassil;Spot | x=9353.7001953125 y=872.5 | size=1 | links=#13465(auto Teldrassil;275):18
+#3325 | auto Teldrassil;63§auto Teldrassil;63§auto Teldrassil;63 | x=10743.2001953125 y=2192.60009765625 | size=1 | links=#17200(auto Teldrassil;338):31 c3568.1:22
+#3342 | auto Teldrassil;64§auto Teldrassil;64§auto Teldrassil;64 | x=10123.2001953125 y=1544.900024414063 | size=1 | links=#3115(auto Teldrassil;61):39 #19470(auto Teldrassil;382):40
+#3349 | auto Teldrassil;65§auto Teldrassil;65§auto Teldrassil;65 | x=9911.6005859375 y=1278.200073242188 | size=5 | links=#6007(auto Teldrassil;117):39 #10171(auto Teldrassil;209):31
+#3355 | auto Inside Ban'ethil Barrow Den;Teldrassil;66§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;66§auto Inside Ban'ethil Barrow Den;Teldrassil;66 | x=9794.2998046875 y=1568.800048828125 | size=1 | links=#18220(auto Inside Ban'ethil Barrow Den;Teldrassil;352):20 #26454(auto Inside Ban'ethil Barrow Den;Teldrassil;541):13
+#3394 | auto Teldrassil;67§auto Teldrassil;67§auto Teldrassil;67 | x=9677.400390625 y=1198 | size=5 | links=#16288(auto Teldrassil;320):69 #23185(auto Teldrassil;467):89 c2042.9:40 o1673.58:48
+#3420 | auto Inside Fel Rock;Teldrassil;68§auto Drinnen Teufelsfels;Teldrassil;68§auto Inside Fel Rock;Teldrassil;68 | x=10072.6005859375 y=1039.300048828125 | size=1 | links=#11296(auto Inside Fel Rock;Teldrassil;230):9 #15753(auto Inside Fel Rock;Teldrassil;311):18
+#3427 | auto Inside Fel Rock;Teldrassil;69§auto Drinnen Teufelsfels;Teldrassil;69§auto Inside Fel Rock;Teldrassil;69 | x=10141 y=1136.5 | size=1 | links=#19665(auto Inside Fel Rock;Teldrassil;389):23 #21839(auto Inside Fel Rock;Teldrassil;441):10 c2038.1:17
+#3483 | auto Teldrassil;70§auto Teldrassil;70§auto Teldrassil;70 | x=9918.400390625 y=994.1000366210938 | size=1 | links=#8285(auto Teldrassil;157):12 #22740(top;house;Dolanaar):7
+#3565 | auto Inside Fel Rock;Teldrassil;71§auto Drinnen Teufelsfels;Teldrassil;71§auto Inside Fel Rock;Teldrassil;71 | x=10116.6005859375 y=1157.400024414063 | size=1 | links=c2004.1:14 c14432.1:10 c2005.3:18
+#3653 | auto Teldrassil;72§auto Teldrassil;72§auto Teldrassil;72 | x=9838.2998046875 y=425.2000122070313 | size=1 | links=#8600(auto Teldrassil;163):12 #9785(auto Teldrassil;202):13
+#3656 | auto Teldrassil;73§auto Teldrassil;73§auto Teldrassil;73 | x=9851.7998046875 y=902.9000244140625 | size=1 | links=#8869(auto Teldrassil;172):42 #25440(auto Teldrassil;519):37
+#3694 | auto Teldrassil;74§auto Teldrassil;74§auto Teldrassil;74 | x=9985.7001953125 y=1964.300048828125 | size=1 | links=#17658(passage;Teldrassil;to;Darnassus):33 #27847(auto Teldrassil;572):72 c2041.2:39
+#3699 | attention;pooly accessible;Sethir the Ancient;The Oracle Glade;Teldrassil§achtung;schlecht zugänglich;Sethir der Uralte;Die Lichtung des Orakels;Teldrassil§attention;pooly accessible;Sethir l'Ancien;The Oracle Glade;Teldrassil | x=11007.400390625 y=1903 | size=1 | links=#11874(auto Teldrassil;243):9 #15154(auto Teldrassil;301):9
+#3714 | auto Inside Ban'ethil Barrow Den;Teldrassil;75§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;75§auto Inside Ban'ethil Barrow Den;Teldrassil;75 | x=9751 y=1534.400024414063 | size=1 | links=#9347(auto Inside Ban'ethil Barrow Den;Teldrassil;191):8 #11615(auto Inside Ban'ethil Barrow Den;Teldrassil;237):10
+#3752 | auto Teldrassil;76§auto Teldrassil;76§auto Teldrassil;76 | x=9806.2001953125 y=380.8000183105469 | size=1 | links=#886(auto Teldrassil;22):26 #15452(auto Teldrassil;306):17 #23935(auto Teldrassil;482):22
+#3849 | central location;Rut'theran Village;Teldrassil§zentralpunkt;Rut'theran;Teldrassil§emplacement central;Rut'theran;Teldrassil | x=8697.900390625 y=944.1000366210938 | size=1 | links=#18793(centralpoint;Rut'theran Village;Teldrassil):0 #25084(auto Teldrassil;510):15
+#3898 | auto Teldrassil;77§auto Teldrassil;77§auto Teldrassil;77 | x=10469.7998046875 y=807.2000122070312 | size=1 | links=#11449(auto Teldrassil;234):7 #22428(auto Teldrassil;450):24 c3591.1:16
+#3968 | auto Inside Fel Rock;Teldrassil;78§auto Drinnen Teufelsfels;Teldrassil;78§auto Inside Fel Rock;Teldrassil;78 | x=10096.900390625 y=1059.200073242188 | size=1 | links=#2172(auto Inside Fel Rock;Teldrassil;47):17 #5806(auto Inside Fel Rock;Teldrassil;112):12 #20989(auto Inside Fel Rock;Teldrassil;424):11
+#3980 | Grell;quest target;Shadowglen;Teldrassil§Grell;questgegner;Laubschattental;Teldrassil§Grell;objectif de quête;Shadowglen;Teldrassil | x=10303.2998046875 y=946.5 | size=1 | links=c1988.2:21
+#4023 | auto Inside Ban'ethil Barrow Den;Teldrassil;79§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;79§auto Inside Ban'ethil Barrow Den;Teldrassil;79 | x=9857.2998046875 y=1572.400024414063 | size=1 | links=#746(auto Inside Ban'ethil Barrow Den;Teldrassil;20):9 #24955(auto Inside Ban'ethil Barrow Den;Teldrassil;508):8
+#4189 | auto Teldrassil;80§auto Teldrassil;80§auto Teldrassil;80 | x=9924.2001953125 y=623.5 | size=1 | links=#8320(auto Teldrassil;158):39 #22517(auto Teldrassil;451):50
+#4265 | auto Teldrassil;81§auto Teldrassil;81§auto Teldrassil;81 | x=9822.6005859375 y=609.2999877929688 | size=5 | links=#6893(auto Teldrassil;133):57 #16974(auto Teldrassil;333):27
+#4266 | crossing;Ban'ethil Barrow Den§kreuzungspunkt;Grabhügel von Ban'ethil§traversée;Ban'ethil Barrow Den | x=9862.2998046875 y=1506.599975585938 | size=1 | links=#23915(auto Inside Ban'ethil Barrow Den;Teldrassil;480):8 #27284(auto Inside Ban'ethil Barrow Den;Teldrassil;557):16
+#4337 | auto Teldrassil;82§auto Teldrassil;82§auto Teldrassil;82 | x=9917.1005859375 y=1150.800048828125 | size=1 | links=#21490(auto Teldrassil;432):49 #26289(auto Teldrassil;536):58 c1995.1:13
+#4363 | auto Teldrassil;83§auto Teldrassil;83§auto Teldrassil;83 | x=9441.400390625 y=990.5 | size=1 | links=#170(auto Teldrassil;5):40 #9943(auto Teldrassil;204):35
+#4392 | central location;Pools of Arlithrien;Teldrassil§zentralpunkt;Teiche von Arlithrien;Teldrassil§emplacement central;Pools of Arlithrien;Teldrassil | x=9571.7998046875 y=1740.900024414063 | size=1 | links=#14293(auto Teldrassil;287):50 #22936(auto Teldrassil;462):15
+#4460 | auto Teldrassil;84§auto Teldrassil;84§auto Teldrassil;84 | x=10386.1005859375 y=853.5 | size=1 | links=#718(auto Teldrassil;19):32 #24757(auto Teldrassil;503):27 c2082.1:36
+#4474 | auto Teldrassil;85§auto Teldrassil;85§auto Teldrassil;85 | x=9846.900390625 y=1031 | size=1 | links=#17884(auto Teldrassil;348):29 c2151.1:2
+#4585 | auto Teldrassil;86§auto Teldrassil;86§auto Teldrassil;86 | x=10437 y=791.6000366210938 | size=1 | links=#11723(auto Teldrassil;242):9 #18951(auto Teldrassil;374):8
+#4604 | auto Teldrassil;87§auto Teldrassil;87§auto Teldrassil;87 | x=9558.7001953125 y=1237.800048828125 | size=1 | links=#5601(auto Teldrassil;108):55 #16288(auto Teldrassil;320):55
+#4693 | auto on pier;Teldrassil;88§auto auf steg;Teldrassil;88§auto on pier;Teldrassil;88 | x=8591.7001953125 y=1016 | size=1 | links=#8715(auto on pier;Teldrassil;166):49 #13822(pier;from;Rut'theran Village;Teldrassil;to;Darkshore):42
+#4744 | auto Teldrassil;89§auto Teldrassil;89§auto Teldrassil;89 | x=9779.900390625 y=1066.200073242188 | size=1 | links=#1772(auto Teldrassil;37):40 #23185(auto Teldrassil;467):77 o1673.30:59
+#4772 | auto Inside Fel Rock;Teldrassil;90§auto Drinnen Teufelsfels;Teldrassil;90§auto Inside Fel Rock;Teldrassil;90 | x=10160.900390625 y=1082.400024414063 | size=1 | links=#5560(auto Inside Fel Rock;Teldrassil;105):12 #5599(auto Inside Fel Rock;Teldrassil;107):14
+#4789 | auto Teldrassil;91§auto Teldrassil;91§auto Teldrassil;91 | x=10958.1005859375 y=1798.400024414063 | size=1 | links=#5028(auto Teldrassil;96):25 c2001.3:30
+#4790 | top;at;Tenaron Stormgrip§oben;bei;Tenaron Sturmgewalt§top;at;Tenaron Poignorage | x=10508.16419099936 y=792.8568237452954 | size=1 | links=#1050(auto outside;ramp up;Teldrassil;24):10 #16803(auto outside;ramp up;Teldrassil;327):3
+#4867 | auto outside;ramp up;Teldrassil;92§auto außerhalb;rampe nach oben;Teldrassil;92§auto extérieur;ramp up;Teldrassil;92 | x=10483.75377765437 y=847.6009468531953 | size=1 | links=#1814(auto outside;ramp up;Teldrassil;38):10 #25761(auto outside;ramp up;Teldrassil;522):9
+#4876 | Grellkin;quest area;Shadowglen;Teldrassil§Grellkin;questgebiet;Laubschattental;Teldrassil§Grellide;quest area;Shadowglen;Teldrassil | x=10339.7998046875 y=1023.900024414063 | size=1 | links=#8020(auto Teldrassil;153):37 #12061(auto Teldrassil;250):32
+#4886 | auto Teldrassil;93§auto Teldrassil;93§auto Teldrassil;93 | x=10360.900390625 y=1555.099975585938 | size=1 | links=#13016(auto Teldrassil;263):26 #18643(auto Teldrassil;361):31 c2033.1:46
+#4920 | auto Teldrassil;94§auto Teldrassil;94§auto Teldrassil;94 | x=9154.400390625 y=1711.300048828125 | size=1 | links=#3316(central location;Gnarlpine Hold;Teldrassil):11 #9079(auto Teldrassil;180):12 #17879(auto Teldrassil;347):17
+#4998 | auto Teldrassil;95§auto Teldrassil;95§auto Teldrassil;95 | x=9899.5 y=734.2999877929688 | size=1 | links=#7561(auto Teldrassil;148):43 #15511(auto Teldrassil;309):39 c2150.1:21
+#5028 | auto Teldrassil;96§auto Teldrassil;96§auto Teldrassil;96 | x=10966.2001953125 y=1823.099975585938 | size=1 | links=#4789(auto Teldrassil;91):25 #21934(auto Teldrassil;445):32
+#5030 | auto Teldrassil;97§auto Teldrassil;97§auto Teldrassil;97 | x=10200.7998046875 y=1843.800048828125 | size=1 | links=#25944(auto Teldrassil;528):32 c2033.2:132
+#5142 | auto Teldrassil;98§auto Teldrassil;98§auto Teldrassil;98 | x=9955.6005859375 y=1775.5 | size=1 | links=#231(auto Teldrassil;7):49 #2354(auto Teldrassil;51):45
+#5146 | auto Teldrassil;99§auto Teldrassil;99§auto Teldrassil;99 | x=10691.1005859375 y=1954.200073242188 | size=1 | links=#20626(auto Teldrassil;414):22 c3606.1:21
+#5153 | auto Teldrassil;100§auto Teldrassil;100§auto Teldrassil;100 | x=10322.2998046875 y=701.5 | size=1 | links=#715(auto Teldrassil;18):67 c1988.1:24
+#5237 | auto Teldrassil;101§auto Teldrassil;101§auto Teldrassil;101 | x=10424.2998046875 y=777.4000244140625 | size=1 | links=#9983(auto Teldrassil;206):26 #22428(auto Teldrassil;450):30 c3589.1:21 c6091.1:26
+#5273 | auto Teldrassil;102§auto Teldrassil;102§auto Teldrassil;102 | x=10799.7998046875 y=1594.599975585938 | size=1 | links=#14814(auto Teldrassil;295):17 #18452(auto Teldrassil;357):32 c3535.1:19
+#5290 | auto Teldrassil;103§auto Teldrassil;103§auto Teldrassil;103 | x=9482.900390625 y=726.4000244140625 | size=1 | links=#6594(auto Teldrassil;126):26 #12826(auto Teldrassil;257):33 c2022.3:39
+#5499 | auto Inside Ban'ethil Barrow Den;Teldrassil;104§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;104§auto Inside Ban'ethil Barrow Den;Teldrassil;104 | x=9834.2001953125 y=1497.200073242188 | size=1 | links=#9099(auto Inside Ban'ethil Barrow Den;Teldrassil;181):6 #12979(auto Inside Ban'ethil Barrow Den;Teldrassil;260):11 c7318.1:9 c2011.25:17
+#5560 | auto Inside Fel Rock;Teldrassil;105§auto Drinnen Teufelsfels;Teldrassil;105§auto Inside Fel Rock;Teldrassil;105 | x=10172 y=1088.099975585938 | size=1 | links=#4772(auto Inside Fel Rock;Teldrassil;90):12 c2004.3:29
+#5562 | auto inside shadowthread cave;Teldrassil;106§auto drinnen schattenweberhöhle;Teldrassil;106§auto inside shadowthread cave;Teldrassil;106 | x=10971.2998046875 y=934.5 | size=1 | links=#10564(auto inside shadowthread cave;Teldrassil;216):16 #13579(auto inside shadowthread cave;Teldrassil;278):16 c1994.1:33
+#5599 | auto Inside Fel Rock;Teldrassil;107§auto Drinnen Teufelsfels;Teldrassil;107§auto Inside Fel Rock;Teldrassil;107 | x=10146.7998046875 y=1080.099975585938 | size=1 | links=#4772(auto Inside Fel Rock;Teldrassil;90):14 #22897(auto Inside Fel Rock;Teldrassil;459):14
+#5601 | auto Teldrassil;108§auto Teldrassil;108§auto Teldrassil;108 | x=9518.900390625 y=1277 | size=1 | links=#4604(auto Teldrassil;87):55 #20347(auto Teldrassil;407):79
+#5633 | auto Teldrassil;109§auto Teldrassil;109§auto Teldrassil;109 | x=10006.900390625 y=1372.900024414063 | size=1 | links=#17794(auto Teldrassil;346):57 #24254(auto Teldrassil;488):36
+#5665 | auto inside shadowthread cave;Teldrassil;110§auto drinnen schattenweberhöhle;Teldrassil;110§auto inside shadowthread cave;Teldrassil;110 | x=10879.7001953125 y=987.2999877929688 | size=1 | links=#17617(auto inside shadowthread cave;Teldrassil;345):27 #25134(auto inside shadowthread cave;Teldrassil;512):20
+#5676 | auto Teldrassil;111§auto Teldrassil;111§auto Teldrassil;111 | x=10052.900390625 y=597.9000244140625 | size=1 | links=#6321(auto Teldrassil;122):49 #24801(auto Teldrassil;505):23 #26176(auto Teldrassil;533):98
+#5806 | auto Inside Fel Rock;Teldrassil;112§auto Drinnen Teufelsfels;Teldrassil;112§auto Inside Fel Rock;Teldrassil;112 | x=10089.900390625 y=1069.800048828125 | size=1 | links=#3968(auto Inside Fel Rock;Teldrassil;78):12 c2002.1:12
+#5819 | auto outside;ramp up;Teldrassil;113§auto außerhalb;rampe nach oben;Teldrassil;113§auto extérieur;ramp up;Teldrassil;113 | x=10495.1226567456 y=786.0050094104556 | size=1 | links=#1050(auto outside;ramp up;Teldrassil;24):5 #8190(auto outside;ramp up;Teldrassil;155):7
+#5922 | auto Teldrassil;114§auto Teldrassil;114§auto Teldrassil;114 | x=9979.2001953125 y=628 | size=1 | links=#1727(auto Teldrassil;36):30 #8320(auto Teldrassil;158):37
+#5928 | auto Teldrassil;115§auto Teldrassil;115§auto Teldrassil;115 | x=9612.900390625 y=1723.599975585938 | size=1 | links=#20914(auto Teldrassil;421):36 #22936(auto Teldrassil;462):32
+#5982 | auto ramp up;Teldrassil;116§auto rampe nach oben;Teldrassil;116§auto ramp up;Teldrassil;116 | x=10430.7998046875 y=878 | size=1 | links=#14067(auto ramp up;Teldrassil;284):15 #17227(auto ramp up;Teldrassil;340):8
+#6007 | auto Teldrassil;117§auto Teldrassil;117§auto Teldrassil;117 | x=9872.7001953125 y=1285.5 | size=5 | links=#3349(auto Teldrassil;65):39 #28232(auto Teldrassil;581):68
+#6031 | auto Teldrassil;118§auto Teldrassil;118§auto Teldrassil;118 | x=9512.1005859375 y=1002.200012207031 | size=1 | links=#170(auto Teldrassil;5):35 #15997(central location;Lake Al'Ameth;Teldrassil):80
+#6099 | auto Teldrassil;119§auto Teldrassil;119§auto Teldrassil;119 | x=9502.400390625 y=637.2000122070312 | size=1 | links=#18902(auto Teldrassil;370):9 #21601(auto Teldrassil;435):8
+#6155 | auto Teldrassil;120§auto Teldrassil;120§auto Teldrassil;120 | x=10480.900390625 y=666.7999877929688 | size=1 | links=#1310(auto Teldrassil;29):43 c2031.3:24 c2032.3:37
+#6254 | Narret Shadowgrove;Trade Supplies;Teldrassil;1;55.27;57.15§Narret Schattenhain;Handwerkswaren;Teldrassil;1;55.27;57.15§Narret Bosquombre;Trade Supplies;Teldrassil;1;55.27;57.15 | x=9891.394625723417 y=1000.172696129566 | size=1
+#6261 | auto Teldrassil;121§auto Teldrassil;121§auto Teldrassil;121 | x=9574.7001953125 y=519 | size=1 | links=#10794(auto Teldrassil;222):30 c2007.1:41
+#6321 | auto Teldrassil;122§auto Teldrassil;122§auto Teldrassil;122 | x=10073.7001953125 y=552.7999877929688 | size=1 | links=#5676(auto Teldrassil;111):49 c1995.2:36
+#6467 | auto Teldrassil;123§auto Teldrassil;123§auto Teldrassil;123 | x=9548.5 y=723.9000244140625 | size=1 | links=#18189(auto Teldrassil;351):31 c2080.1:42
+#6481 | auto Teldrassil;124§auto Teldrassil;124§auto Teldrassil;124 | x=10796.5 y=1733.599975585938 | size=1 | links=#14107(auto Teldrassil;286):50 c2001.2:55
+#6587 | auto Teldrassil;125§auto Teldrassil;125§auto Teldrassil;125 | x=9883.2998046875 y=449.7000122070313 | size=1 | links=#11(auto Teldrassil;1):39 #1560(central location;Starbreeze Village;Teldrassil):80 #8422(auto Teldrassil;160):20 #20595(auto Teldrassil;412):23
+#6594 | auto Teldrassil;126§auto Teldrassil;126§auto Teldrassil;126 | x=9509 y=726.1000366210938 | size=1 | links=#5290(auto Teldrassil;103):26 c2080.1:12
+#6595 | auto Teldrassil;127§auto Teldrassil;127§auto Teldrassil;127 | x=9869.1005859375 y=1459.400024414063 | size=1 | links=#25435(auto Teldrassil;518):7 #28245(auto Teldrassil;582):7
+#6624 | auto Teldrassil;128§auto Teldrassil;128§auto Teldrassil;128 | x=9674.7001953125 y=1312.5 | size=1 | links=#240(auto Teldrassil;8):12 #10238(auto Teldrassil;211):18
+#6669 | central location;Shadowthread Cave;Teldrassil§zentralpunkt;Schattenweberhöhle;Teldrassil§emplacement central;Shadowthread Cave;Teldrassil | x=10901.400390625 y=916.2000122070312 | size=1 | links=#6907(auto inside shadowthread cave;Teldrassil;134):59 #7781(auto inside shadowthread cave;Teldrassil;152):24 #12048(auto inside shadowthread cave;Teldrassil;249):24
+#6768 | auto Teldrassil;129§auto Teldrassil;129§auto Teldrassil;129 | x=9632.900390625 y=1324.300048828125 | size=1 | links=#18763(auto Teldrassil;364):19 #24672(auto Teldrassil;501):12
+#6771 | auto Teldrassil;130§auto Teldrassil;130§auto Teldrassil;130 | x=8665.900390625 y=877.1000366210938 | size=1 | links=#16818(auto Teldrassil;329):14 #24020(auto Teldrassil;484):10
+#6787 | auto Teldrassil;131§auto Teldrassil;131§auto Teldrassil;131 | x=10636.7001953125 y=1537.200073242188 | size=1 | links=#23099(auto Teldrassil;465):33 c2029.2:44
+#6852 | auto Teldrassil;132§auto Teldrassil;132§auto Teldrassil;132 | x=8709.400390625 y=1006.600036621094 | size=1 | links=#1458(auto Teldrassil;33):8 #19426(auto Teldrassil;379):3
+#6893 | auto Teldrassil;133§auto Teldrassil;133§auto Teldrassil;133 | x=9773.900390625 y=577.7999877929688 | size=5 | links=#4265(auto Teldrassil;81):57 #25886(auto Teldrassil;524):59
+#6907 | auto inside shadowthread cave;Teldrassil;134§auto drinnen schattenweberhöhle;Teldrassil;134§auto inside shadowthread cave;Teldrassil;134 | x=10842 y=921.5 | size=1 | links=#1473(auto inside shadowthread cave;Teldrassil;34):17 #6669(central location;Shadowthread Cave;Teldrassil):59 #28008(auto inside shadowthread cave;Teldrassil;578):24
+#6982 | auto Teldrassil;135§auto Teldrassil;135§auto Teldrassil;135 | x=9598 y=916.9000244140625 | size=1 | links=#15997(central location;Lake Al'Ameth;Teldrassil):44 #20974(auto Teldrassil;423):57
+#7037 | auto Inside Ban'ethil Barrow Den;Teldrassil;136§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;136§auto Inside Ban'ethil Barrow Den;Teldrassil;136 | x=9739.1005859375 y=1572.400024414063 | size=1 | links=#18270(auto Inside Ban'ethil Barrow Den;Teldrassil;354):11 #19458(auto Inside Ban'ethil Barrow Den;Teldrassil;381):19
+#7104 | auto Inside Fel Rock;Teldrassil;137§auto Drinnen Teufelsfels;Teldrassil;137§auto Inside Fel Rock;Teldrassil;137 | x=10068.1005859375 y=1117.200073242188 | size=1 | links=#17485(auto Inside Fel Rock;Teldrassil;342):19 #21829(auto Inside Fel Rock;Teldrassil;440):18 c2002.2:22
+#7120 | auto Teldrassil;138§auto Teldrassil;138§auto Teldrassil;138 | x=9979 y=391.7000122070313 | size=1 | links=#8157(auto Teldrassil;154):37 c2042.1:112
+#7129 | auto Teldrassil;139§auto Teldrassil;139§auto Teldrassil;139 | x=9895.1005859375 y=1003.600036621094 | size=1 | links=#9971(auto Teldrassil;205):2 c3614.1:5
+#7167 | auto Teldrassil;140§auto Teldrassil;140§auto Teldrassil;140 | x=10033.7998046875 y=1304.599975585938 | size=1 | links=#692(auto Teldrassil;17):66 #13941(auto Teldrassil;282):77
+#7192 | auto Teldrassil;141§auto Teldrassil;141§auto Teldrassil;141 | x=10684.400390625 y=769.6000366210938 | size=1 | links=#7628(well;quest target;Shadowglen;Teldrassil):24 #25396(auto Teldrassil;517):36 #26560(auto Teldrassil;543):48
+#7198 | auto Inside Ban'ethil Barrow Den;Teldrassil;142§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;142§auto Inside Ban'ethil Barrow Den;Teldrassil;142 | x=9846 y=1592.099975585938 | size=1 | links=#20330(auto Inside Ban'ethil Barrow Den;Teldrassil;406):19 #27869(auto Inside Ban'ethil Barrow Den;Teldrassil;573):10
+#7213 | auto Teldrassil;143§auto Teldrassil;143§auto Teldrassil;143 | x=9896.400390625 y=980.5 | size=1 | links=#2696(auto Teldrassil;57):5 #8667(auto Teldrassil;165):12
+#7218 | auto Inside Ban'ethil Barrow Den;Teldrassil;144§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;144§auto Inside Ban'ethil Barrow Den;Teldrassil;144 | x=9767.5 y=1585.300048828125 | size=1 | links=#13065(auto Inside Ban'ethil Barrow Den;Teldrassil;265):6 #20788(auto Inside Ban'ethil Barrow Den;Teldrassil;418):6
+#7350 | auto Inside Ban'ethil Barrow Den;Teldrassil;145§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;145§auto Inside Ban'ethil Barrow Den;Teldrassil;145 | x=9850.400390625 y=1579.300048828125 | size=1 | links=#22930(auto Inside Ban'ethil Barrow Den;Teldrassil;461):12 #27869(auto Inside Ban'ethil Barrow Den;Teldrassil;573):4
+#7500 | auto Teldrassil;146§auto Teldrassil;146§auto Teldrassil;146 | x=9295.7998046875 y=1700.099975585938 | size=1 | links=#23773(auto Teldrassil;478):45 c2011.2:29
+#7543 | auto Teldrassil;147§auto Teldrassil;147§auto Teldrassil;147 | x=9719.7001953125 y=1727.400024414063 | size=1 | links=#12392(auto Teldrassil;254):71 #19766(auto Teldrassil;394):65
+#7561 | auto Teldrassil;148§auto Teldrassil;148§auto Teldrassil;148 | x=9920 y=695.5 | size=1 | links=#4998(auto Teldrassil;95):43 #8320(auto Teldrassil;158):52
+#7564 | central location;Ban'ethil Barrow Den;Teldrassil§zentralpunkt;Grabhügel von Ban'ethil;Teldrassil§emplacement central;Ban'ethil Barrow Den;Teldrassil | x=9794.994431464043 y=1594.487182940193 | size=1 | links=#10626(auto Inside Ban'ethil Barrow Den;Teldrassil;220):5 #10935(auto Inside Ban'ethil Barrow Den;Teldrassil;225):6 #25374(auto Inside Ban'ethil Barrow Den;Teldrassil;516):16 #25996(auto Inside Ban'ethil Barrow Den;Teldrassil;530):5
+#7628 | well;quest target;Shadowglen;Teldrassil§brunnen;questziel;Laubschattental;Teldrassil§well;objectif de quête;Shadowglen;Teldrassil | x=10707.5 y=762.9000244140625 | size=1 | links=#7192(auto Teldrassil;141):24
+#7669 | auto outside;ramp up;Teldrassil;149§auto außerhalb;rampe nach oben;Teldrassil;149§auto extérieur;ramp up;Teldrassil;149 | x=10443.11377683713 y=830.3766249353192 | size=1 | links=#3282(auto outside;ramp up;Teldrassil;62):7 #19522(auto outside;ramp up;Teldrassil;386):7
+#7764 | auto Teldrassil;150§auto Teldrassil;150§auto Teldrassil;150 | x=9702 y=1847.5 | size=1 | links=#9311(auto Teldrassil;190):42 c1999.2:38
+#7770 | auto Teldrassil;151§auto Teldrassil;151§auto Teldrassil;151 | x=9908.7001953125 y=996.1000366210938 | size=1 | links=#8906(auto Teldrassil;173):1 #21887(auto Teldrassil;444):2
+#7781 | auto inside shadowthread cave;Teldrassil;152§auto drinnen schattenweberhöhle;Teldrassil;152§auto inside shadowthread cave;Teldrassil;152 | x=10894.6005859375 y=893 | size=1 | links=#6669(central location;Shadowthread Cave;Teldrassil):24 #19753(auto inside shadowthread cave;Teldrassil;392):20
+#7945 | well;four;The Oracle Glade;Teldrassil§brunnen;vier;Die Lichtung des Orakels;Teldrassil§well;quatre;The Oracle Glade;Teldrassil | x=10674.400390625 y=1858.300048828125 | size=1 | links=c3519.1:10
+#8020 | auto Teldrassil;153§auto Teldrassil;153§auto Teldrassil;153 | x=10310.6005859375 y=1001.100036621094 | size=1 | links=#4876(Grellkin;quest area;Shadowglen;Teldrassil):37 c1988.2:35
+#8157 | auto Teldrassil;154§auto Teldrassil;154§auto Teldrassil;154 | x=9987.6005859375 y=427.8000183105469 | size=1 | links=#7120(auto Teldrassil;138):37 c2042.3:55
+#8190 | auto outside;ramp up;Teldrassil;155§auto außerhalb;rampe nach oben;Teldrassil;155§auto extérieur;ramp up;Teldrassil;155 | x=10487.2001953125 y=787 | size=1 | links=#685(auto outside;ramp up;Teldrassil;16):8 #5819(auto outside;ramp up;Teldrassil;113):7
+#8285 | auto Teldrassil;157§auto Teldrassil;157§auto Teldrassil;157 | x=9915.2998046875 y=981.7999877929688 | size=1 | links=#69(auto Teldrassil;3):9 #3483(auto Teldrassil;70):12
+#8320 | auto Teldrassil;158§auto Teldrassil;158§auto Teldrassil;158 | x=9951.2001953125 y=652.7999877929688 | size=1 | links=#4189(auto Teldrassil;80):39 #5922(auto Teldrassil;114):37 #7561(auto Teldrassil;148):52
+#8333 | auto Teldrassil;159§auto Teldrassil;159§auto Teldrassil;159 | x=9948.7001953125 y=1539.099975585938 | size=1 | links=#791(auto Teldrassil;21):26 #11260(auto Teldrassil;228):31
+#8422 | auto Teldrassil;160§auto Teldrassil;160§auto Teldrassil;160 | x=9889.7001953125 y=429.8999938964844 | size=1 | links=#6587(auto Teldrassil;125):20 #18329(Uruson;Starbreeze Village;Teldrassil):24
+#8461 | auto Teldrassil;161§auto Teldrassil;161§auto Teldrassil;161 | x=9876.2998046875 y=856.2999877929688 | size=1 | links=#21853(auto Teldrassil;442):40 #27841(auto Teldrassil;571):24
+#8507 | auto Teldrassil;162§auto Teldrassil;162§auto Teldrassil;162 | x=9997.400390625 y=1095.200073242188 | size=1 | links=#26289(auto Teldrassil;536):61 #26854(auto Teldrassil;548):69
+#8600 | auto Teldrassil;163§auto Teldrassil;163§auto Teldrassil;163 | x=9826.5 y=421.8999938964844 | size=1 | links=#3653(auto Teldrassil;72):12 #24340(auto Teldrassil;491):12
+#8613 | auto Teldrassil;164§auto Teldrassil;164§auto Teldrassil;164 | x=9536.1005859375 y=1630.599975585938 | size=1 | links=#9378(auto Teldrassil;192):43 #13134(auto Teldrassil;266):30
+#8667 | auto Teldrassil;165§auto Teldrassil;165§auto Teldrassil;165 | x=9907.6005859375 y=985 | size=1 | links=#7213(auto Teldrassil;143):12 #18868(auto Teldrassil;366):7
+#8715 | auto on pier;Teldrassil;166§auto auf steg;Teldrassil;166§auto on pier;Teldrassil;166 | x=8638.2998046875 y=999.2999877929688 | size=1 | links=#4693(auto on pier;Teldrassil;88):49 #15496(auto Teldrassil;308):41
+#8728 | auto inside;Teldrassil;167§auto drinnen;Teldrassil;167§auto intérieur;Teldrassil;167 | x=8707.7998046875 y=992.2000122070312 | size=1 | links=#26447(auto inside;Teldrassil;540):16 c7916.1:3
+#8743 | auto Inside Fel Rock;Teldrassil;168§auto Drinnen Teufelsfels;Teldrassil;168§auto Inside Fel Rock;Teldrassil;168 | x=10148.900390625 y=1188 | size=1 | links=#15258(auto Inside Fel Rock;Teldrassil;303):10 c2038.3:25
+#8811 | auto Teldrassil;169§auto Teldrassil;169§auto Teldrassil;169 | x=9897 y=1002.100036621094 | size=1 | links=#21218(auto Teldrassil;427):10 #27745(auto Teldrassil;569):7
+#8813 | auto Teldrassil;170§auto Teldrassil;170§auto Teldrassil;170 | x=10416.400390625 y=763.9000244140625 | size=1 | links=#15391(auto Teldrassil;304):14 #24949(auto Teldrassil;507):12
+#8840 | auto ramp up;Teldrassil;171§auto rampe nach oben;Teldrassil;171§auto ramp up;Teldrassil;171 | x=10456.45121728061 y=861.7194065624342 | size=1 | links=#25912(auto outside;ramp up;Teldrassil;527):9 #27354(auto ramp up;Teldrassil;559):8
+#8869 | auto Teldrassil;172§auto Teldrassil;172§auto Teldrassil;172 | x=9810.2998046875 y=911.5 | size=1 | links=#3656(auto Teldrassil;73):42 #25319(auto Teldrassil;515):6 #26849(auto Teldrassil;547):33
+#8906 | auto Teldrassil;173§auto Teldrassil;173§auto Teldrassil;173 | x=9908 y=994.2999877929688 | size=1 | links=#7770(auto Teldrassil;151):1 #15797(auto Teldrassil;312):4
+#8925 | auto Teldrassil;174§auto Teldrassil;174§auto Teldrassil;174 | x=9647 y=826 | size=1 | links=#14822(auto Teldrassil;296):46 #20974(auto Teldrassil;423):50
+#8950 | auto Teldrassil;175§auto Teldrassil;175§auto Teldrassil;175 | x=9633.7998046875 y=562.7000122070312 | size=1 | links=#12265(auto Teldrassil;253):36 #28511(auto Teldrassil;584):24
+#8957 | auto Inside Ban'ethil Barrow Den;Teldrassil;176§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;176§auto Inside Ban'ethil Barrow Den;Teldrassil;176 | x=9854 y=1561.599975585938 | size=1 | links=#18326(auto Inside Ban'ethil Barrow Den;Teldrassil;355):7 #22930(auto Inside Ban'ethil Barrow Den;Teldrassil;461):9
+#8970 | auto Teldrassil;177§auto Teldrassil;177§auto Teldrassil;177 | x=10827.7998046875 y=2059.199951171875 | size=1 | links=#675(auto Teldrassil;15):12 #9285(auto Teldrassil;189):16
+#9035 | quest target;euest;Ban'ethil Barrow Den§questziel;quest;Grabhügel von Ban'ethil§objectif de quête;euest;Ban'ethil Barrow Den | x=9886.507037603129 y=1487.529549904143 | size=1 | links=#1264(auto Teldrassil;28):11 o2740.1:5
+#9056 | auto Inside Fel Rock;Teldrassil;179§auto Drinnen Teufelsfels;Teldrassil;179§auto Inside Fel Rock;Teldrassil;179 | x=10068.7998046875 y=1170.800048828125 | size=1 | links=#14927(auto Inside Fel Rock;Teldrassil;298):20 c2005.2:17
+#9079 | auto Teldrassil;180§auto Teldrassil;180§auto Teldrassil;180 | x=9153.7998046875 y=1724.099975585938 | size=1 | links=#3316(central location;Gnarlpine Hold;Teldrassil):13 #4920(auto Teldrassil;94):12 #14392(auto Teldrassil;291):37 #20874(Grimmaw):21
+#9099 | auto Inside Ban'ethil Barrow Den;Teldrassil;181§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;181§auto Inside Ban'ethil Barrow Den;Teldrassil;181 | x=9830.1005859375 y=1492.800048828125 | size=1 | links=#5499(auto Inside Ban'ethil Barrow Den;Teldrassil;104):6 #27279(auto Inside Ban'ethil Barrow Den;Teldrassil;556):17
+#9185 | auto Teldrassil;182§auto Teldrassil;182§auto Teldrassil;182 | x=9426 y=1549.099975585938 | size=1 | links=#15440(auto Teldrassil;305):58 #20024(auto Teldrassil;402):43
+#9196 | auto Teldrassil;183§auto Teldrassil;183§auto Teldrassil;183 | x=9997.7001953125 y=1607.700073242188 | size=1 | links=#15176(auto Teldrassil;302):38 #18589(auto Teldrassil;359):11
+#9208 | auto inside shadowthread cave;Teldrassil;184§auto drinnen schattenweberhöhle;Teldrassil;184§auto inside shadowthread cave;Teldrassil;184 | x=10945.400390625 y=971.2000122070312 | size=1 | links=#10545(auto inside shadowthread cave;Teldrassil;215):23 #19434(auto inside shadowthread cave;Teldrassil;380):25
+#9244 | auto Teldrassil;185§auto Teldrassil;185§auto Teldrassil;185 | x=9341.7998046875 y=1508.5 | size=5 | links=#10613(auto Teldrassil;219):95 #27568(auto Teldrassil;565):67
+#9271 | auto Teldrassil;186§auto Teldrassil;186§auto Teldrassil;186 | x=8728.6005859375 y=997.2000122070312 | size=1 | links=#13487(auto Teldrassil;276):14 o142958.1:5
+#9277 | auto Teldrassil;187§auto Teldrassil;187§auto Teldrassil;187 | x=9631.900390625 y=1354.300048828125 | size=1 | links=#14373(auto Teldrassil;290):21 #24672(auto Teldrassil;501):19
+#9281 | auto Teldrassil;188§auto Teldrassil;188§auto Teldrassil;188 | x=10279.400390625 y=1596.5 | size=1 | links=#570(auto Teldrassil;13):20 #10344(auto Teldrassil;212):35
+#9285 | auto Teldrassil;189§auto Teldrassil;189§auto Teldrassil;189 | x=10812.5 y=2064.900146484375 | size=1 | links=#8970(auto Teldrassil;177):16 c2020.1:43
+#9311 | auto Teldrassil;190§auto Teldrassil;190§auto Teldrassil;190 | x=9660.2998046875 y=1839.200073242188 | size=1 | links=#7764(auto Teldrassil;150):42 #17336(auto Teldrassil;341):30
+#9347 | auto Inside Ban'ethil Barrow Den;Teldrassil;191§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;191§auto Inside Ban'ethil Barrow Den;Teldrassil;191 | x=9749.900390625 y=1543.300048828125 | size=1 | links=#3714(auto Inside Ban'ethil Barrow Den;Teldrassil;75):8 #19458(auto Inside Ban'ethil Barrow Den;Teldrassil;381):11
+#9378 | auto Teldrassil;192§auto Teldrassil;192§auto Teldrassil;192 | x=9500.2001953125 y=1605.300048828125 | size=1 | links=#8613(auto Teldrassil;164):43 #15440(auto Teldrassil;305):49
+#9391 | auto Teldrassil;193§auto Teldrassil;193§auto Teldrassil;193 | x=9627 y=1699.599975585938 | size=1 | links=#19766(auto Teldrassil;394):31 #20914(auto Teldrassil;421):32
+#9392 | auto Teldrassil;194§auto Teldrassil;194§auto Teldrassil;194 | x=10055.1005859375 y=1455.200073242188 | size=1 | links=#13278(auto Teldrassil;270):11 #14350(central location;Ban'ethil Hollow;Teldrassil):14
+#9462 | auto Teldrassil;195§auto Teldrassil;195§auto Teldrassil;195 | x=9793.7998046875 y=1344.599975585938 | size=1 | links=#15835(auto Teldrassil;314):26 #28232(auto Teldrassil;581):29
+#9506 | auto Teldrassil;196§auto Teldrassil;196§auto Teldrassil;196 | x=10641 y=1629.400024414063 | size=1 | links=#13149(auto Teldrassil;268):43 c2029.2:48
+#9573 | auto Teldrassil;197§auto Teldrassil;197§auto Teldrassil;197 | x=9133.5 y=1633.5 | size=1 | links=c2013.1:29 c2012.2:26
+#9601 | auto Inside Ban'ethil Barrow Den;Teldrassil;198§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;198§auto Inside Ban'ethil Barrow Den;Teldrassil;198 | x=9799.6005859375 y=1611.599975585938 | size=1 | links=#10626(auto Inside Ban'ethil Barrow Den;Teldrassil;220):12 #19868(auto Inside Ban'ethil Barrow Den;Teldrassil;400):11
+#9606 | auto Teldrassil;199§auto Teldrassil;199§auto Teldrassil;199 | x=10336.1005859375 y=1791.400024414063 | size=1 | links=#16911(auto Teldrassil;330):49 c2033.2:14
+#9623 | auto Teldrassil;200§auto Teldrassil;200§auto Teldrassil;200 | x=9744.7001953125 y=1345.700073242188 | size=1 | links=#10568(auto Teldrassil;217):22 #15835(auto Teldrassil;314):26
+#9736 | auto Inside Fel Rock;Teldrassil;201§auto Drinnen Teufelsfels;Teldrassil;201§auto Inside Fel Rock;Teldrassil;201 | x=10163.2001953125 y=1145.099975585938 | size=1 | links=#19473(auto Inside Fel Rock;Teldrassil;383):21 #21839(auto Inside Fel Rock;Teldrassil;441):13
+#9785 | auto Teldrassil;202§auto Teldrassil;202§auto Teldrassil;202 | x=9835.1005859375 y=438 | size=1 | links=#3653(auto Teldrassil;72):13 c2107.1:10
+#9787 | auto Inside Ban'ethil Barrow Den;Teldrassil;203§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;203§auto Inside Ban'ethil Barrow Den;Teldrassil;203 | x=9772 y=1552.800048828125 | size=1 | links=#12640(auto Inside Ban'ethil Barrow Den;Teldrassil;256):15 #26240(auto Inside Ban'ethil Barrow Den;Teldrassil;535):13
+#9943 | auto Teldrassil;204§auto Teldrassil;204§auto Teldrassil;204 | x=9411.2998046875 y=972.2000122070312 | size=1 | links=#4363(auto Teldrassil;83):35 #12159(auto Teldrassil;251):49
+#9971 | auto Teldrassil;205§auto Teldrassil;205§auto Teldrassil;205 | x=9897.2998046875 y=1003.900024414063 | size=1 | links=#7129(auto Teldrassil;139):2 #19747(auto Teldrassil;391):3
+#9983 | auto Teldrassil;206§auto Teldrassil;206§auto Teldrassil;206 | x=10398.7001953125 y=769.2000122070312 | size=1 | links=#5237(auto Teldrassil;101):26 #23253(central location;Aldrassil;Teldrassil):18
+#10039 | auto Teldrassil;207§auto Teldrassil;207§auto Teldrassil;207 | x=9439.7998046875 y=1342.900024414063 | size=1 | links=#14707(auto Teldrassil;294):53 #20347(auto Teldrassil;407):23
+#10085 | Blackmoss the Fetid;Wellspring River;Teldrassil§Schwarzmoos der Stinker;Quellfluss;Teldrassil§Noiremousse le Fétide;Wellspring River;Teldrassil | x=10881.7001953125 y=1565 | size=1 | links=#1438(auto Teldrassil;31):50 #1481(auto Teldrassil;35):17 #25261(auto Teldrassil;514):26 c2030.2:37
+#10163 | auto Teldrassil;208§auto Teldrassil;208§auto Teldrassil;208 | x=9298.400390625 y=903.7999877929688 | size=1 | links=#3092(auto Teldrassil;60):29 #11634(auto Teldrassil;238):45 #28110(Gnarlpine Defender;quest target;Teldrassil):22
+#10171 | auto Teldrassil;209§auto Teldrassil;209§auto Teldrassil;209 | x=9942.5 y=1272.200073242188 | size=5 | links=#3349(auto Teldrassil;65):31 #18899(auto Teldrassil;368):29 #21296(auto Teldrassil;428):14
+#10224 | auto Teldrassil;210§auto Teldrassil;210§auto Teldrassil;210 | x=9848.7998046875 y=441.7000122070313 | size=1 | links=#20595(auto Teldrassil;412):12 #24340(auto Teldrassil;491):27
+#10238 | auto Teldrassil;211§auto Teldrassil;211§auto Teldrassil;211 | x=9686.2001953125 y=1327.099975585938 | size=1 | links=#6624(auto Teldrassil;128):18 #15839(auto Teldrassil;315):13
+#10344 | auto Teldrassil;212§auto Teldrassil;212§auto Teldrassil;212 | x=10275 y=1631.300048828125 | size=1 | links=#2641(auto Teldrassil;55):34 #9281(auto Teldrassil;188):35 #16208(auto Teldrassil;319):52 c2000.2:22
+#10376 | auto Teldrassil;213§auto Teldrassil;213§auto Teldrassil;213 | x=10414.7998046875 y=690 | size=1 | links=#331(auto Teldrassil;9):21 #1310(auto Teldrassil;29):33
+#10407 | auto Inside Ban'ethil Barrow Den;Teldrassil;214§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;214§auto Inside Ban'ethil Barrow Den;Teldrassil;214 | x=9804.5 y=1493.700073242188 | size=1 | links=#26956(auto Inside Ban'ethil Barrow Den;Teldrassil;551):15 #27279(auto Inside Ban'ethil Barrow Den;Teldrassil;556):9
+#10545 | auto inside shadowthread cave;Teldrassil;215§auto drinnen schattenweberhöhle;Teldrassil;215§auto inside shadowthread cave;Teldrassil;215 | x=10968.2001953125 y=977.7999877929688 | size=1 | links=#9208(auto inside shadowthread cave;Teldrassil;184):23 #19190(auto inside shadowthread cave;Teldrassil;376):14
+#10564 | auto inside shadowthread cave;Teldrassil;216§auto drinnen schattenweberhöhle;Teldrassil;216§auto inside shadowthread cave;Teldrassil;216 | x=10987.2001953125 y=939.5 | size=1 | links=#5562(auto inside shadowthread cave;Teldrassil;106):16 #26766(auto inside shadowthread cave;Teldrassil;546):20
+#10568 | auto Teldrassil;217§auto Teldrassil;217§auto Teldrassil;217 | x=9723 y=1339.599975585938 | size=1 | links=#9623(auto Teldrassil;200):22 #25010(auto Teldrassil;509):16
+#10594 | auto Inside Fel Rock;Teldrassil;218§auto Drinnen Teufelsfels;Teldrassil;218§auto Inside Fel Rock;Teldrassil;218 | x=10120 y=1079.900024414063 | size=1 | links=#2172(auto Inside Fel Rock;Teldrassil;47):16 #22897(auto Inside Fel Rock;Teldrassil;459):12
+#10613 | auto Teldrassil;219§auto Teldrassil;219§auto Teldrassil;219 | x=9246.2001953125 y=1508.300048828125 | size=5 | links=#9244(auto Teldrassil;185):95 c1999.1:50
+#10626 | auto Inside Ban'ethil Barrow Den;Teldrassil;220§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;220§auto Inside Ban'ethil Barrow Den;Teldrassil;220 | x=9796.5 y=1599.900024414063 | size=1 | links=#7564(central location;Ban'ethil Barrow Den;Teldrassil):5 #9601(auto Inside Ban'ethil Barrow Den;Teldrassil;198):12
+#10735 | auto Teldrassil;221§auto Teldrassil;221§auto Teldrassil;221 | x=10727 y=2084 | size=1 | links=#17582(auto Teldrassil;344):50 #23245(auto Teldrassil;468):54 #24585(auto Teldrassil;498):60
+#10794 | auto Teldrassil;222§auto Teldrassil;222§auto Teldrassil;222 | x=9581.7998046875 y=548.5 | size=1 | links=#6261(auto Teldrassil;121):30 #12265(auto Teldrassil;253):20
+#10812 | auto Teldrassil;223§auto Teldrassil;223§auto Teldrassil;223 | x=10033.5 y=1469.400024414063 | size=1 | links=#14350(central location;Ban'ethil Hollow;Teldrassil):17 #19495(auto Teldrassil;384):12
+#10859 | auto outside;ramp up;Teldrassil;224§auto außerhalb;rampe nach oben;Teldrassil;224§auto extérieur;ramp up;Teldrassil;224 | x=10456.6005859375 y=847.9000244140625 | size=1 | links=#1936(auto outside;ramp up;Teldrassil;41):8 #14106(auto outside;ramp up;Teldrassil;285):8
+#10935 | auto Inside Ban'ethil Barrow Den;Teldrassil;225§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;225§auto Inside Ban'ethil Barrow Den;Teldrassil;225 | x=9792.5 y=1588.200073242188 | size=1 | links=#7564(central location;Ban'ethil Barrow Den;Teldrassil):6 #27596(auto Inside Ban'ethil Barrow Den;Teldrassil;567):10
+#11122 | auto Teldrassil;226§auto Teldrassil;226§auto Teldrassil;226 | x=10420.5 y=1714.300048828125 | size=1 | links=#13033(auto Teldrassil;264):54 #18663(auto Teldrassil;362):57
+#11255 | auto Teldrassil;227§auto Teldrassil;227§auto Teldrassil;227 | x=9904.2998046875 y=1002 | size=1 | links=#19747(auto Teldrassil;391):3 #22906(auto Teldrassil;460):3
+#11260 | auto Teldrassil;228§auto Teldrassil;228§auto Teldrassil;228 | x=9980.400390625 y=1540 | size=1 | links=#8333(auto Teldrassil;159):31 #15176(auto Teldrassil;302):32 #17064(auto Teldrassil;336):57
+#11273 | auto outside;ramp up;Teldrassil;229§auto außerhalb;rampe nach oben;Teldrassil;229§auto extérieur;ramp up;Teldrassil;229 | x=10502.7001953125 y=853.4000244140625 | size=1 | links=#20697(auto outside;ramp up;Teldrassil;417):12 #24164(auto outside;ramp up;Teldrassil;487):11
+#11296 | auto Inside Fel Rock;Teldrassil;230§auto Drinnen Teufelsfels;Teldrassil;230§auto Inside Fel Rock;Teldrassil;230 | x=10064.6005859375 y=1033.800048828125 | size=1 | links=#3420(auto Inside Fel Rock;Teldrassil;68):9 #26716(entry and exit;Fel Rock;Teldrassil):20
+#11323 | auto Teldrassil;231§auto Teldrassil;231§auto Teldrassil;231 | x=9903 y=1000 | size=1 | links=#19756(auto Teldrassil;393):1 #25895(auto Teldrassil;526):1
+#11421 | auto Teldrassil;232§auto Teldrassil;232§auto Teldrassil;232 | x=10351.6005859375 y=776.5 | size=1 | links=#1965(auto Teldrassil;42):22 #18446(auto Teldrassil;356):38 c2079.1:54
+#11428 | auto Teldrassil;233§auto Teldrassil;233§auto Teldrassil;233 | x=9896.7998046875 y=976.7000122070312 | size=1 | links=#69(auto Teldrassil;3):10 #26490(auto Teldrassil;542):6
+#11449 | auto Teldrassil;234§auto Teldrassil;234§auto Teldrassil;234 | x=10472.2001953125 y=799.7000122070312 | size=1 | links=#3898(auto Teldrassil;77):7 #27358(auto Teldrassil;560):13
+#11454 | auto Teldrassil;235§auto Teldrassil;235§auto Teldrassil;235 | x=10153.5 y=1462 | size=1 | links=#3115(auto Teldrassil;61):53 #25892(auto Teldrassil;525):63
+#11611 | auto Teldrassil;236§auto Teldrassil;236§auto Teldrassil;236 | x=10712.400390625 y=1017.700012207031 | size=1 | links=#19850(auto Teldrassil;399):43 c8584.1:17
+#11615 | auto Inside Ban'ethil Barrow Den;Teldrassil;237§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;237§auto Inside Ban'ethil Barrow Den;Teldrassil;237 | x=9750.7001953125 y=1524.200073242188 | size=1 | links=#3714(auto Inside Ban'ethil Barrow Den;Teldrassil;75):10 #21640(auto Inside Ban'ethil Barrow Den;Teldrassil;437):2
+#11634 | auto Teldrassil;238§auto Teldrassil;238§auto Teldrassil;238 | x=9325.2001953125 y=940.7000122070312 | size=1 | links=#10163(auto Teldrassil;208):45 #12159(auto Teldrassil;251):42
+#11661 | auto Teldrassil;239§auto Teldrassil;239§auto Teldrassil;239 | x=9907.7001953125 y=994.9000244140625 | size=1 | links=#19306(auto Teldrassil;378):3 #27105(auto Teldrassil;552):2
+#11675 | auto inside shadowthread cave;Teldrassil;240§auto drinnen schattenweberhöhle;Teldrassil;240§auto inside shadowthread cave;Teldrassil;240 | x=10939.400390625 y=867.6000366210938 | size=1 | links=c1986.1:39 c1986.3:7
+#11678 | auto Inside Fel Rock;Teldrassil;241§auto Drinnen Teufelsfels;Teldrassil;241§auto Inside Fel Rock;Teldrassil;241 | x=10168.7001953125 y=1176.5 | size=1 | links=#15258(auto Inside Fel Rock;Teldrassil;303):15 #19473(auto Inside Fel Rock;Teldrassil;383):17
+#11723 | auto Teldrassil;242§auto Teldrassil;242§auto Teldrassil;242 | x=10429.5 y=785.2000122070312 | size=1 | links=#4585(auto Teldrassil;86):9 #21659(auto Teldrassil;438):9
+#11874 | auto Teldrassil;243§auto Teldrassil;243§auto Teldrassil;243 | x=11000.1005859375 y=1897 | size=1 | links=#3699(attention;pooly accessible;Sethir the Ancient;The Oracle Glade;Teldrassil):9 #26889(auto Teldrassil;550):20
+#11876 | auto Inside Ban'ethil Barrow Den;Teldrassil;244§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;244§auto Inside Ban'ethil Barrow Den;Teldrassil;244 | x=9719.2001953125 y=1551.200073242188 | size=1 | links=#23069(auto Inside Ban'ethil Barrow Den;Teldrassil;464):17 c1993.1:11
+#11924 | auto Teldrassil;246§auto Teldrassil;246§auto Teldrassil;246 | x=9342.5 y=841.7999877929688 | size=5 | links=#2035(auto Teldrassil;45):40 #13465(auto Teldrassil;275):41
+#11933 | auto Teldrassil;247§auto Teldrassil;247§auto Teldrassil;247 | x=9846.1005859375 y=1736.5 | size=1 | links=#12392(auto Teldrassil;254):56 #23496(auto Teldrassil;474):29
+#12017 | auto Teldrassil;248§auto Teldrassil;248§auto Teldrassil;248 | x=10930.1005859375 y=1754.400024414063 | size=1 | links=c2034.1:29 c2001.3:42
+#12023 | central location;Dolanaar;Teldrassil§zentralpunkt;Dolanaar;Teldrassil§emplacement central;Dolanaar;Teldrassil | x=9858.5 y=959.2000122070312 | size=1 | links=#77(auto Teldrassil;4):12 #1221(auto Teldrassil;26):17 #13894(Orenthil Whisperwind;Dolanaar;Teldrassil):22 #28623(s;u;Mailbox;Teldrassil):9
+#12048 | auto inside shadowthread cave;Teldrassil;249§auto drinnen schattenweberhöhle;Teldrassil;249§auto inside shadowthread cave;Teldrassil;249 | x=10921.2998046875 y=930.7000122070312 | size=1 | links=#6669(central location;Shadowthread Cave;Teldrassil):24 #19434(auto inside shadowthread cave;Teldrassil;380):22
+#12061 | auto Teldrassil;250§auto Teldrassil;250§auto Teldrassil;250 | x=10368.2998046875 y=1007.299987792969 | size=1 | links=#4876(Grellkin;quest area;Shadowglen;Teldrassil):32 c1984.2:46
+#12159 | auto Teldrassil;251§auto Teldrassil;251§auto Teldrassil;251 | x=9365.2001953125 y=955.2999877929688 | size=1 | links=#9943(auto Teldrassil;204):49 #11634(auto Teldrassil;238):42
+#12230 | auto Teldrassil;252§auto Teldrassil;252§auto Teldrassil;252 | x=9816.5 y=1837.099975585938 | size=1 | links=#2475(auto Teldrassil;53):46 c2043.1:41
+#12265 | auto Teldrassil;253§auto Teldrassil;253§auto Teldrassil;253 | x=9597.7998046875 y=561.7999877929688 | size=1 | links=#8950(auto Teldrassil;175):36 #10794(auto Teldrassil;222):20
+#12392 | auto Teldrassil;254§auto Teldrassil;254§auto Teldrassil;254 | x=9790.2001953125 y=1741.099975585938 | size=1 | links=#7543(auto Teldrassil;147):71 #11933(auto Teldrassil;247):56 #13316(auto Teldrassil;272):45
+#12500 | auto Inside Ban'ethil Barrow Den;Teldrassil;255§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;255§auto Inside Ban'ethil Barrow Den;Teldrassil;255 | x=9841.6005859375 y=1563.800048828125 | size=1 | links=#18326(auto Inside Ban'ethil Barrow Den;Teldrassil;355):6 #26070(auto Inside Ban'ethil Barrow Den;Teldrassil;532):8
+#12556 | Timberling;Lake Al'Ameth;quest area;Teldrassil§Bäumling;Al'Amethsee;questgebiet;Teldrassil§Sylvain;Lake Al'Ameth;quest area;Teldrassil | x=9589.6005859375 y=700 | size=1 | links=#18189(auto Teldrassil;351):33
+#12640 | auto Inside Ban'ethil Barrow Den;Teldrassil;256§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;256§auto Inside Ban'ethil Barrow Den;Teldrassil;256 | x=9756.900390625 y=1551.800048828125 | size=1 | links=#9787(auto Inside Ban'ethil Barrow Den;Teldrassil;203):15 #23069(auto Inside Ban'ethil Barrow Den;Teldrassil;464):22
+#12826 | auto Teldrassil;257§auto Teldrassil;257§auto Teldrassil;257 | x=9479.7998046875 y=692.9000244140625 | size=1 | links=#5290(auto Teldrassil;103):33 #21601(auto Teldrassil;435):67
+#12965 | auto Inside Ban'ethil Barrow Den;Teldrassil;258§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;258§auto Inside Ban'ethil Barrow Den;Teldrassil;258 | x=9824.2998046875 y=1626.200073242188 | size=1 | links=#19868(auto Inside Ban'ethil Barrow Den;Teldrassil;400):18 #24283(auto Inside Ban'ethil Barrow Den;Teldrassil;489):10
+#12970 | auto Inside Ban'ethil Barrow Den;Teldrassil;259§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;259§auto Inside Ban'ethil Barrow Den;Teldrassil;259 | x=9791.2998046875 y=1516.900024414063 | size=1 | links=#13827(auto Inside Ban'ethil Barrow Den;Teldrassil;281):10 #26956(auto Inside Ban'ethil Barrow Den;Teldrassil;551):14
+#12979 | auto Inside Ban'ethil Barrow Den;Teldrassil;260§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;260§auto Inside Ban'ethil Barrow Den;Teldrassil;260 | x=9835.2001953125 y=1508.400024414063 | size=1 | links=#5499(auto Inside Ban'ethil Barrow Den;Teldrassil;104):11 #28123(auto Inside Ban'ethil Barrow Den;Teldrassil;579):5
+#12982 | auto Inside Ban'ethil Barrow Den;Teldrassil;261§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;261§auto Inside Ban'ethil Barrow Den;Teldrassil;261 | x=9745.400390625 y=1629.200073242188 | size=1 | links=#22157(auto Inside Ban'ethil Barrow Den;Teldrassil;447):11 #23686(auto Inside Ban'ethil Barrow Den;Teldrassil;477):11
+#13005 | auto Teldrassil;262§auto Teldrassil;262§auto Teldrassil;262 | x=9538.6005859375 y=1116.900024414063 | size=1 | links=#24776(auto Teldrassil;504):79 c2025.3:62
+#13016 | auto Teldrassil;263§auto Teldrassil;263§auto Teldrassil;263 | x=10362.7998046875 y=1581.400024414063 | size=1 | links=#4886(auto Teldrassil;93):26 #18643(auto Teldrassil;361):29 #22630(auto Teldrassil;452):39
+#13033 | auto Teldrassil;264§auto Teldrassil;264§auto Teldrassil;264 | x=10386.400390625 y=1671.300048828125 | size=1 | links=#11122(auto Teldrassil;226):54 c2027.3:19
+#13065 | auto Inside Ban'ethil Barrow Den;Teldrassil;265§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;265§auto Inside Ban'ethil Barrow Den;Teldrassil;265 | x=9773.6005859375 y=1587.700073242188 | size=1 | links=#2449(auto Inside Ban'ethil Barrow Den;Teldrassil;52):11 #7218(auto Inside Ban'ethil Barrow Den;Teldrassil;144):6
+#13134 | auto Teldrassil;266§auto Teldrassil;266§auto Teldrassil;266 | x=9533.400390625 y=1661 | size=1 | links=#2861(auto Teldrassil;59):27 #8613(auto Teldrassil;164):30 #21556(well;three;Pools of Arlithrien;Teldrassil):20
+#13143 | auto Teldrassil;267§auto Teldrassil;267§auto Teldrassil;267 | x=9324.7001953125 y=1635.400024414063 | size=1 | links=#176(auto Teldrassil;6):47 #21867(auto Teldrassil;443):55
+#13149 | auto Teldrassil;268§auto Teldrassil;268§auto Teldrassil;268 | x=10658.2998046875 y=1669.300048828125 | size=1 | links=#9506(auto Teldrassil;196):43 c2029.1:25
+#13184 | auto Teldrassil;269§auto Teldrassil;269§auto Teldrassil;269 | x=9126.5 y=1697.400024414063 | size=1 | links=#17879(auto Teldrassil;347):15 c2012.1:29
+#13278 | auto Teldrassil;270§auto Teldrassil;270§auto Teldrassil;270 | x=10066.7998046875 y=1456.800048828125 | size=1 | links=#9392(auto Teldrassil;194):11 #18882(auto Teldrassil;367):12
+#13285 | auto Teldrassil;271§auto Teldrassil;271§auto Teldrassil;271 | x=10259.7998046875 y=701.7999877929688 | size=1 | links=#14929(auto Teldrassil;299):32 #19615(auto Teldrassil;388):21
+#13316 | auto Teldrassil;272§auto Teldrassil;272§auto Teldrassil;272 | x=9779.6005859375 y=1785.800048828125 | size=1 | links=#2475(auto Teldrassil;53):42 #12392(auto Teldrassil;254):45
+#13346 | auto Teldrassil;273§auto Teldrassil;273§auto Teldrassil;273 | x=10414.400390625 y=1844.300048828125 | size=1 | links=#16911(auto Teldrassil;330):45 #26857(auto Teldrassil;549):71 c2018.1:59
+#13366 | auto Teldrassil;274§auto Teldrassil;274§auto Teldrassil;274 | x=9915.7998046875 y=1182.5 | size=1 | links=#21122(auto Teldrassil;425):23 c1995.1:18
+#13465 | auto Teldrassil;275§auto Teldrassil;275§auto Teldrassil;275 | x=9339 y=883 | size=1 | links=#3320(Timberling;Lake Al'Ameth;Teldrassil;Spot):18 #11924(auto Teldrassil;246):41
+#13487 | auto Teldrassil;276§auto Teldrassil;276§auto Teldrassil;276 | x=8714.7001953125 y=994.1000366210938 | size=1 | links=#9271(auto Teldrassil;186):14 c7907.1:13
+#13527 | auto Teldrassil;277§auto Teldrassil;277§auto Teldrassil;277 | x=9285.6005859375 y=1091 | size=1 | links=#18666(auto Teldrassil;363):30 c2166.1:14
+#13579 | auto inside shadowthread cave;Teldrassil;278§auto drinnen schattenweberhöhle;Teldrassil;278§auto inside shadowthread cave;Teldrassil;278 | x=10966.1005859375 y=918.4000244140625 | size=1 | links=#5562(auto inside shadowthread cave;Teldrassil;106):16 #19820(auto inside shadowthread cave;Teldrassil;398):25
+#13582 | Gnarlpine Shaman;quest target;Teldrassil§Schamane der Knarzklauen;questgegner;Teldrassil§Chaman Pin-tordu;objectif de quête;Teldrassil | x=9266.1005859375 y=888.6000366210938 | size=1 | links=#3092(auto Teldrassil;60):7
+#13644 | auto Teldrassil;279§auto Teldrassil;279§auto Teldrassil;279 | x=9361.400390625 y=1697.5 | size=1 | links=c2011.1:12 c2011.2:38
+#13820 | auto Teldrassil;280§auto Teldrassil;280§auto Teldrassil;280 | x=9662.900390625 y=1400.200073242188 | size=1 | links=#14373(auto Teldrassil;290):35 c6128.1:13
+#13822 | pier;from;Rut'theran Village;Teldrassil;to;Darkshore§anleger;von;Rut'theran;Teldrassil;zur;Dunkelküste§pier;de;Rut'theran;Teldrassil;vers;Sombrivage | x=8549.7998046875 y=1021.200012207031 | size=1 | links=#734(ship;Rut'theran Village;Teldrassil):14 #4693(auto on pier;Teldrassil;88):42
+#13827 | auto Inside Ban'ethil Barrow Den;Teldrassil;281§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;281§auto Inside Ban'ethil Barrow Den;Teldrassil;281 | x=9792.6005859375 y=1527.200073242188 | size=1 | links=#12970(auto Inside Ban'ethil Barrow Den;Teldrassil;259):10 #27785(auto Inside Ban'ethil Barrow Den;Teldrassil;570):10
+#13894 | Orenthil Whisperwind;Dolanaar;Teldrassil§Orenthil Wisperwind;Dolanaar;Teldrassil§Orenthil Murmevent;Dolanaar;Teldrassil | x=9839.6005859375 y=947.2000122070312 | size=1 | links=#12023(central location;Dolanaar;Teldrassil):22
+#13941 | auto Teldrassil;282§auto Teldrassil;282§auto Teldrassil;282 | x=10092.7001953125 y=1354.200073242188 | size=1 | links=#7167(auto Teldrassil;140):77 #25892(auto Teldrassil;525):67
+#14023 | auto Teldrassil;283§auto Teldrassil;283§auto Teldrassil;283 | x=8684.7998046875 y=988 | size=1 | links=#15460(auto inside;Teldrassil;307):8 #15496(auto Teldrassil;308):9 #47506(auto Teldrassil;637):14
+#14067 | auto ramp up;Teldrassil;284§auto rampe nach oben;Teldrassil;284§auto ramp up;Teldrassil;284 | x=10416.2001953125 y=883.6000366210938 | size=1 | links=#718(auto Teldrassil;19):17 #5982(auto ramp up;Teldrassil;116):15
+#14106 | auto outside;ramp up;Teldrassil;285§auto außerhalb;rampe nach oben;Teldrassil;285§auto extérieur;ramp up;Teldrassil;285 | x=10465.01843416028 y=849.1352847003541 | size=1 | links=#10859(auto outside;ramp up;Teldrassil;224):8 #25761(auto outside;ramp up;Teldrassil;522):9
+#14107 | auto Teldrassil;286§auto Teldrassil;286§auto Teldrassil;286 | x=10753 y=1758.700073242188 | size=1 | links=#6481(auto Teldrassil;124):50 #18918(auto Teldrassil;371):43
+#14293 | auto Teldrassil;287§auto Teldrassil;287§auto Teldrassil;287 | x=9590.6005859375 y=1787.400024414063 | size=1 | links=#4392(central location;Pools of Arlithrien;Teldrassil):50 #17336(auto Teldrassil;341):56 c2010.2:27
+#14305 | auto Teldrassil;288§auto Teldrassil;288§auto Teldrassil;288 | x=10920.6005859375 y=1502 | size=1 | links=#22880(auto Teldrassil;457):31 c2030.1:22
+#14350 | central location;Ban'ethil Hollow;Teldrassil§zentralpunkt;Lichtung von Ban'ethil;Teldrassil§emplacement central;Creux de Ban'ethil;Teldrassil | x=10041 y=1453.700073242188 | size=1 | links=#9392(auto Teldrassil;194):14 #10812(auto Teldrassil;223):17 #21563(auto Teldrassil;433):13 c2152.3:25
+#14373 | auto Teldrassil;290§auto Teldrassil;290§auto Teldrassil;290 | x=9637.7998046875 y=1374.700073242188 | size=1 | links=#9277(auto Teldrassil;187):21 #13820(auto Teldrassil;280):35
+#14392 | auto Teldrassil;291§auto Teldrassil;291§auto Teldrassil;291 | x=9130.1005859375 y=1752.900024414063 | size=1 | links=#9079(auto Teldrassil;180):37 #20874(Grimmaw):17 c14429.1:22
+#14413 | auto Teldrassil;292§auto Teldrassil;292§auto Teldrassil;292 | x=10110.2001953125 y=1767.5 | size=1 | links=#23269(auto Teldrassil;469):51 #24494(auto Teldrassil;496):43
+#14502 | auto outside;ramp up;Teldrassil;293§auto außerhalb;rampe nach oben;Teldrassil;293§auto extérieur;ramp up;Teldrassil;293 | x=10461.89779801524 y=797.8241115555667 | size=1 | links=#1047(auto outside;ramp up;Teldrassil;23):10 #28224(auto outside;ramp up;Teldrassil;580):4
+#14568 | down;house;Dolanaar§unten;haus;Dolanaar§bas;house;Dolanaar | x=9895.2998046875 y=986.6000366210938 | size=1 | links=#23816(auto Teldrassil;479):10 c3600.1:10 c4266.1:9
+#14707 | auto Teldrassil;294§auto Teldrassil;294§auto Teldrassil;294 | x=9427.400390625 y=1395.400024414063 | size=1 | links=#10039(auto Teldrassil;207):53 c2043.3:50
+#14814 | auto Teldrassil;295§auto Teldrassil;295§auto Teldrassil;295 | x=10815.6005859375 y=1602.200073242188 | size=1 | links=#5273(auto Teldrassil;102):17 #22769(auto Teldrassil;453):25
+#14822 | auto Teldrassil;296§auto Teldrassil;296§auto Teldrassil;296 | x=9630 y=783.1000366210938 | size=1 | links=#1443(auto Teldrassil;32):36 #8925(auto Teldrassil;174):46
+#14876 | auto Teldrassil;297§auto Teldrassil;297§auto Teldrassil;297 | x=10847 y=1811.5 | size=1 | links=#16497(auto Teldrassil;324):48 #24590(auto Teldrassil;499):37
+#14927 | auto Inside Fel Rock;Teldrassil;298§auto Drinnen Teufelsfels;Teldrassil;298§auto Inside Fel Rock;Teldrassil;298 | x=10055.7001953125 y=1154.599975585938 | size=1 | links=#9056(auto Inside Fel Rock;Teldrassil;179):20 #17485(auto Inside Fel Rock;Teldrassil;342):23
+#14929 | auto Teldrassil;299§auto Teldrassil;299§auto Teldrassil;299 | x=10289.7001953125 y=689.7000122070312 | size=1 | links=#13285(auto Teldrassil;271):32 c1988.1:12
+#14969 | auto Teldrassil;300§auto Teldrassil;300§auto Teldrassil;300 | x=10798.5 y=2119.400146484375 | size=1 | links=#17582(auto Teldrassil;344):31 c2020.2:17
+#15154 | auto Teldrassil;301§auto Teldrassil;301§auto Teldrassil;301 | x=11016.2001953125 y=1907.300048828125 | size=1 | links=#3699(attention;pooly accessible;Sethir the Ancient;The Oracle Glade;Teldrassil):9 c6909.1:44
+#15176 | auto Teldrassil;302§auto Teldrassil;302§auto Teldrassil;302 | x=9984.2998046875 y=1572.099975585938 | size=1 | links=#9196(auto Teldrassil;183):38 #11260(auto Teldrassil;228):32
+#15258 | auto Inside Fel Rock;Teldrassil;303§auto Drinnen Teufelsfels;Teldrassil;303§auto Inside Fel Rock;Teldrassil;303 | x=10159.5 y=1189.300048828125 | size=1 | links=#8743(auto Inside Fel Rock;Teldrassil;168):10 #11678(auto Inside Fel Rock;Teldrassil;241):15 #17966(auto Inside Fel Rock;Teldrassil;349):15
+#15391 | auto Teldrassil;304§auto Teldrassil;304§auto Teldrassil;304 | x=10402.400390625 y=760 | size=1 | links=#8813(auto Teldrassil;170):14 #23253(central location;Aldrassil;Teldrassil):16
+#15440 | auto Teldrassil;305§auto Teldrassil;305§auto Teldrassil;305 | x=9451.1005859375 y=1602.200073242188 | size=1 | links=#9185(auto Teldrassil;182):58 #9378(auto Teldrassil;192):49 #26403(auto Teldrassil;539):10
+#15452 | auto Teldrassil;306§auto Teldrassil;306§auto Teldrassil;306 | x=9811.900390625 y=364 | size=1 | links=#3752(auto Teldrassil;76):17 c14428.1:9
+#15460 | auto inside;Teldrassil;307§auto drinnen;Teldrassil;307§auto intérieur;Teldrassil;307 | x=8692.7998046875 y=990 | size=1 | links=#14023(auto Teldrassil;283):8 c7916.1:14
+#15496 | auto Teldrassil;308§auto Teldrassil;308§auto Teldrassil;308 | x=8676.6005859375 y=983.9000244140625 | size=1 | links=#8715(auto on pier;Teldrassil;166):41 #14023(auto Teldrassil;283):9 #26029(auto Teldrassil;531):11
+#15511 | auto Teldrassil;309§auto Teldrassil;309§auto Teldrassil;309 | x=9882.2998046875 y=769.7000122070312 | size=1 | links=#4998(auto Teldrassil;95):39 #27841(auto Teldrassil;571):62
+#15541 | auto Teldrassil;310§auto Teldrassil;310§auto Teldrassil;310 | x=8683.6005859375 y=884.2999877929688 | size=1 | links=#24020(auto Teldrassil;484):8 #27686(auto Teldrassil;568):21
+#15543 | well;two;Starbreeze Village;Teldrassil§brunnen;zwei;Sternenhauch;Teldrassil§well;deux;Starbreeze Village;Teldrassil | x=9860.900390625 y=588.7000122070312 | size=1 | links=#21588(auto Teldrassil;434):24
+#15753 | auto Inside Fel Rock;Teldrassil;311§auto Drinnen Teufelsfels;Teldrassil;311§auto Inside Fel Rock;Teldrassil;311 | x=10089.900390625 y=1031.5 | size=1 | links=#3420(auto Inside Fel Rock;Teldrassil;68):18 #20989(auto Inside Fel Rock;Teldrassil;424):17
+#15797 | auto Teldrassil;312§auto Teldrassil;312§auto Teldrassil;312 | x=9906.5 y=990.5 | size=1 | links=#8906(auto Teldrassil;173):4 c3600.1:4
+#15815 | auto Teldrassil;313§auto Teldrassil;313§auto Teldrassil;313 | x=9884.7998046875 y=989.1000366210938 | size=1 | links=#21218(auto Teldrassil;427):8 #26490(auto Teldrassil;542):11
+#15835 | auto Teldrassil;314§auto Teldrassil;314§auto Teldrassil;314 | x=9769.400390625 y=1355.400024414063 | size=1 | links=#9462(auto Teldrassil;195):26 #9623(auto Teldrassil;200):26
+#15839 | auto Teldrassil;315§auto Teldrassil;315§auto Teldrassil;315 | x=9698.6005859375 y=1332.599975585938 | size=1 | links=#10238(auto Teldrassil;211):13 #25010(auto Teldrassil;509):16
+#15882 | auto Teldrassil;316§auto Teldrassil;316§auto Teldrassil;316 | x=8648.1005859375 y=859.7000122070312 | size=1 | links=#16818(auto Teldrassil;329):10 #20419(auto Teldrassil;408):8
+#15997 | central location;Lake Al'Ameth;Teldrassil§zentralpunkt;Al'Amethsee;Teldrassil§emplacement central;Lake Al'Ameth;Teldrassil | x=9579.1005859375 y=956.7000122070312 | size=1 | links=#6031(auto Teldrassil;118):80 #6982(auto Teldrassil;135):44
+#16010 | entry and exit;Shadowthread Cave;Teldrassil§ein- und ausgang;Schattenweberhöhle;Teldrassil§entrée et sortie;Shadowthread Cave;Teldrassil | x=10746.900390625 y=926.2999877929688 | size=1 | links=#25803(auto Teldrassil;523):27 #28008(auto inside shadowthread cave;Teldrassil;578):86
+#16040 | auto Teldrassil;317§auto Teldrassil;317§auto Teldrassil;317 | x=10502.2998046875 y=1741 | size=1 | links=#18663(auto Teldrassil;362):31 #20677(auto Teldrassil;416):32
+#16165 | auto Inside Ban'ethil Barrow Den;Teldrassil;318§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;318§auto Inside Ban'ethil Barrow Den;Teldrassil;318 | x=9775 y=1602.300048828125 | size=1 | links=#18220(auto Inside Ban'ethil Barrow Den;Teldrassil;352):21 #22157(auto Inside Ban'ethil Barrow Den;Teldrassil;447):33
+#16208 | auto Teldrassil;319§auto Teldrassil;319§auto Teldrassil;319 | x=10299 y=1677.800048828125 | size=1 | links=#10344(auto Teldrassil;212):52 c1997.1:58
+#16288 | auto Teldrassil;320§auto Teldrassil;320§auto Teldrassil;320 | x=9612.2001953125 y=1222.700073242188 | size=5 | links=#3394(auto Teldrassil;67):69 #4604(auto Teldrassil;87):55 #24776(auto Teldrassil;504):49 c2009.3:83
+#16416 | auto Teldrassil;321§auto Teldrassil;321§auto Teldrassil;321 | x=9887.562967275657 y=995.2394299292291 | size=1 | links=#20521(auto Teldrassil;410):4 c3614.1:6
+#16471 | auto Teldrassil;322§auto Teldrassil;322§auto Teldrassil;322 | x=10533.1005859375 y=1875.5 | size=1 | links=#19157(central location;The Oracle Glade;Teldrassil):69 #26857(auto Teldrassil;549):60
+#16497 | auto Teldrassil;324§auto Teldrassil;324§auto Teldrassil;324 | x=10857.7001953125 y=1764.700073242188 | size=1 | links=#14876(auto Teldrassil;297):48 c2001.2:48
+#16507 | auto Teldrassil;325§auto Teldrassil;325§auto Teldrassil;325 | x=9838.1005859375 y=474.7000122070313 | size=1 | links=#11(auto Teldrassil;1):29 #462(auto Teldrassil;10):26
+#16635 | auto Inside Ban'ethil Barrow Den;Teldrassil;326§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;326§auto Inside Ban'ethil Barrow Den;Teldrassil;326 | x=9762.1005859375 y=1574.900024414063 | size=1 | links=#18270(auto Inside Ban'ethil Barrow Den;Teldrassil;354):26 #26240(auto Inside Ban'ethil Barrow Den;Teldrassil;535):19
+#16803 | auto outside;ramp up;Teldrassil;327§auto außerhalb;rampe nach oben;Teldrassil;327§auto extérieur;ramp up;Teldrassil;327 | x=10505.7998046875 y=795.1000366210938 | size=1 | links=#4790(top;at;Tenaron Stormgrip):3 c3514.1:18
+#16809 | auto Teldrassil;328§auto Teldrassil;328§auto Teldrassil;328 | x=9980.7998046875 y=1863.700073242188 | size=1 | links=#18932(auto Teldrassil;373):57 #27847(auto Teldrassil;572):28
+#16818 | auto Teldrassil;329§auto Teldrassil;329§auto Teldrassil;329 | x=8654.6005859375 y=868.1000366210938 | size=1 | links=#6771(auto Teldrassil;130):14 #15882(auto Teldrassil;316):10
+#16911 | auto Teldrassil;330§auto Teldrassil;330§auto Teldrassil;330 | x=10378.400390625 y=1816.700073242188 | size=1 | links=#9606(auto Teldrassil;199):49 #13346(auto Teldrassil;273):45
+#16953 | auto Teldrassil;331§auto Teldrassil;331§auto Teldrassil;331 | x=9128 y=1827.400024414063 | size=1 | links=#1235(auto Teldrassil;27):19 #27111(auto Teldrassil;553):11
+#16959 | auto Teldrassil;332§auto Teldrassil;332§auto Teldrassil;332 | x=9825.5 y=960.2000122070312 | size=1 | links=#77(auto Teldrassil;4):28 #20922(auto Teldrassil;422):19 c2081.1:14 c3598.1:8 c3610.1:9
+#16974 | auto Teldrassil;333§auto Teldrassil;333§auto Teldrassil;333 | x=9847.7998046875 y=620.1000366210938 | size=1 | links=#4265(auto Teldrassil;81):27 #21588(auto Teldrassil;434):22
+#17005 | auto Inside Ban'ethil Barrow Den;Teldrassil;334§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;334§auto Inside Ban'ethil Barrow Den;Teldrassil;334 | x=9797.7001953125 y=1547.300048828125 | size=1 | links=#20055(auto Inside Ban'ethil Barrow Den;Teldrassil;403):12 #27785(auto Inside Ban'ethil Barrow Den;Teldrassil;570):10
+#17006 | auto outside;ramp up;Teldrassil;335§auto außerhalb;rampe nach oben;Teldrassil;335§auto extérieur;ramp up;Teldrassil;335 | x=10483.7998046875 y=857.1000366210938 | size=1 | links=#1082(auto outside;ramp up;Teldrassil;25):11 #20697(auto outside;ramp up;Teldrassil;417):6
+#17064 | auto Teldrassil;336§auto Teldrassil;336§auto Teldrassil;336 | x=10002.5 y=1487.400024414063 | size=1 | links=#11260(auto Teldrassil;228):57 #19495(auto Teldrassil;384):23
+#17080 | auto outside;ramp up;Teldrassil;337§auto außerhalb;rampe nach oben;Teldrassil;337§auto extérieur;ramp up;Teldrassil;337 | x=10511.40182333537 y=820.8813270142133 | size=1 | links=#20636(auto outside;ramp up;Teldrassil;415):11 #21605(auto outside;ramp up;Teldrassil;436):10
+#17101 | central location;Fel Rock;Teldrassil§zentralpunkt;Teufelsfels;Teldrassil§emplacement central;Fel Rock;Teldrassil | x=10094.1005859375 y=1081.900024414063 | size=1 | links=#2172(auto Inside Fel Rock;Teldrassil;47):11 c2002.1:9
+#17200 | auto Teldrassil;338§auto Teldrassil;338§auto Teldrassil;338 | x=10723.5 y=2167.400146484375 | size=1 | links=#3325(auto Teldrassil;63):31 #24585(auto Teldrassil;498):29 c2021.2:12
+#17211 | auto Teldrassil;339§auto Teldrassil;339§auto Teldrassil;339 | x=9396.7001953125 y=1637.599975585938 | size=1 | links=#18081(auto Teldrassil;350):27 c883.1:16
+#17227 | auto ramp up;Teldrassil;340§auto rampe nach oben;Teldrassil;340§auto ramp up;Teldrassil;340 | x=10437.95454627321 y=873.7327556221486 | size=1 | links=#5982(auto ramp up;Teldrassil;116):8 #27354(auto ramp up;Teldrassil;559):13
+#17336 | auto Teldrassil;341§auto Teldrassil;341§auto Teldrassil;341 | x=9634.7001953125 y=1823.300048828125 | size=1 | links=#9311(auto Teldrassil;190):30 #14293(auto Teldrassil;287):56
+#17421 | Webwood Spider;quest target;Shadowthread Cave;Teldrassil§Waldweberspinne;questgegner;Schattenweberhöhle;Teldrassil§Araignée Tissebois;objectif de quête;Shadowthread Cave;Teldrassil | x=10909.2001953125 y=965 | size=1 | links=#25134(auto inside shadowthread cave;Teldrassil;512):17
+#17485 | auto Inside Fel Rock;Teldrassil;342§auto Drinnen Teufelsfels;Teldrassil;342§auto Inside Fel Rock;Teldrassil;342 | x=10054.2001953125 y=1131.400024414063 | size=1 | links=#7104(auto Inside Fel Rock;Teldrassil;137):19 #14927(auto Inside Fel Rock;Teldrassil;298):23
+#17494 | auto Teldrassil;343§auto Teldrassil;343§auto Teldrassil;343 | x=9908.7998046875 y=999.5 | size=1 | links=#1862(auto Teldrassil;39):1 #21887(auto Teldrassil;444):1
+#17582 | auto Teldrassil;344§auto Teldrassil;344§auto Teldrassil;344 | x=10767.7001953125 y=2113.10009765625 | size=1 | links=#10735(auto Teldrassil;221):50 #14969(auto Teldrassil;300):31
+#17617 | auto inside shadowthread cave;Teldrassil;345§auto drinnen schattenweberhöhle;Teldrassil;345§auto inside shadowthread cave;Teldrassil;345 | x=10856.7001953125 y=971.4000244140625 | size=1 | links=#5665(auto inside shadowthread cave;Teldrassil;110):27 #28008(auto inside shadowthread cave;Teldrassil;578):37
+#17658 | passage;Teldrassil;to;Darnassus§passage;Teldrassil;zum;Darnassus§passage;Teldrassil;vers;Darnassus | x=9986.5 y=1997.700073242188 | size=1 | links=#3694(auto Teldrassil;74):33 #18758(passage;Darnassus;to;Teldrassil):15
+#17794 | auto Teldrassil;346§auto Teldrassil;346§auto Teldrassil;346 | x=9976.900390625 y=1323.800048828125 | size=1 | links=#5633(auto Teldrassil;109):57 #24612(auto Teldrassil;500):31
+#17879 | auto Teldrassil;347§auto Teldrassil;347§auto Teldrassil;347 | x=9137.7001953125 y=1707.599975585938 | size=1 | links=#4920(auto Teldrassil;94):17 #13184(auto Teldrassil;269):15
+#17884 | auto Teldrassil;348§auto Teldrassil;348§auto Teldrassil;348 | x=9846.2998046875 y=1001.400024414063 | size=1 | links=#77(auto Teldrassil;4):31 #4474(auto Teldrassil;85):29
+#17966 | auto Inside Fel Rock;Teldrassil;349§auto Drinnen Teufelsfels;Teldrassil;349§auto Inside Fel Rock;Teldrassil;349 | x=10166.400390625 y=1203.400024414063 | size=1 | links=#15258(auto Inside Fel Rock;Teldrassil;303):15 #19496(auto Inside Fel Rock;Teldrassil;385):23
+#18081 | auto Teldrassil;350§auto Teldrassil;350§auto Teldrassil;350 | x=9418.6005859375 y=1621.700073242188 | size=1 | links=#176(auto Teldrassil;6):47 #17211(auto Teldrassil;339):27 #26403(auto Teldrassil;539):32
+#18189 | auto Teldrassil;351§auto Teldrassil;351§auto Teldrassil;351 | x=9579 y=731.4000244140625 | size=1 | links=#1443(auto Teldrassil;32):36 #6467(auto Teldrassil;123):31 #12556(Timberling;Lake Al'Ameth;quest area;Teldrassil):33
+#18220 | auto Inside Ban'ethil Barrow Den;Teldrassil;352§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;352§auto Inside Ban'ethil Barrow Den;Teldrassil;352 | x=9778.400390625 y=1581.5 | size=1 | links=#3355(auto Inside Ban'ethil Barrow Den;Teldrassil;66):20 #16165(auto Inside Ban'ethil Barrow Den;Teldrassil;318):21
+#18234 | auto Teldrassil;353§auto Teldrassil;353§auto Teldrassil;353 | x=9338.5 y=1119.700073242188 | size=1 | links=#18666(auto Teldrassil;363):36 #25115(auto Teldrassil;511):40
+#18270 | auto Inside Ban'ethil Barrow Den;Teldrassil;354§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;354§auto Inside Ban'ethil Barrow Den;Teldrassil;354 | x=9737.5 y=1583.900024414063 | size=1 | links=#7037(auto Inside Ban'ethil Barrow Den;Teldrassil;136):11 #16635(auto Inside Ban'ethil Barrow Den;Teldrassil;326):26 #27577(auto Inside Ban'ethil Barrow Den;Teldrassil;566):5
+#18274 | Tarindrella;Questgiver;Teldrassil;1;57.83;45.21§Tarindrella;Questgeber;Teldrassil;1;57.83;45.21§Tarindrella;Questgiver;Teldrassil;1;57.83;45.21 | x=10301.77016083357 y=874.9911027365584 | size=1
+#18326 | auto Inside Ban'ethil Barrow Den;Teldrassil;355§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;355§auto Inside Ban'ethil Barrow Den;Teldrassil;355 | x=9847.1005859375 y=1560.400024414063 | size=1 | links=#8957(auto Inside Ban'ethil Barrow Den;Teldrassil;176):7 #12500(auto Inside Ban'ethil Barrow Den;Teldrassil;255):6
+#18329 | Uruson;Starbreeze Village;Teldrassil§Uruson;Sternenhauch;Teldrassil§Uruson;Starbreeze Village;Teldrassil | x=9887.900390625 y=405.2000122070313 | size=1 | links=#8422(auto Teldrassil;160):24 #23294(auto Teldrassil;470):26
+#18446 | auto Teldrassil;356§auto Teldrassil;356§auto Teldrassil;356 | x=10367.1005859375 y=811.9000244140625 | size=1 | links=#11421(auto Teldrassil;232):38 #24757(auto Teldrassil;503):18
+#18452 | auto Teldrassil;357§auto Teldrassil;357§auto Teldrassil;357 | x=10767.400390625 y=1599.900024414063 | size=1 | links=#5273(auto Teldrassil;102):32 #18764(auto Teldrassil;365):56
+#18520 | entry and exit;Ban'ethil Barrow Den;Teldrassil§ein- und ausgang;Grabhügel von Ban'ethil;Teldrassil§entrée et sortie;Ban'ethil Barrow Den;Teldrassil | x=9868.1005859375 y=1553.700073242188 | size=1 | links=#23608(auto Teldrassil;476):33 #24955(auto Inside Ban'ethil Barrow Den;Teldrassil;508):15
+#18589 | auto Teldrassil;359§auto Teldrassil;359§auto Teldrassil;359 | x=10006 y=1615.700073242188 | size=1 | links=#1397(auto Teldrassil;30):10 #9196(auto Teldrassil;183):11
+#18594 | auto Teldrassil;360§auto Teldrassil;360§auto Teldrassil;360 | x=10504.5 y=796.7999877929688 | size=1 | links=#27358(auto Teldrassil;560):18 c3594.1:23
+#18643 | auto Teldrassil;361§auto Teldrassil;361§auto Teldrassil;361 | x=10334.400390625 y=1572.400024414063 | size=1 | links=#570(auto Teldrassil;13):39 #4886(auto Teldrassil;93):31 #13016(auto Teldrassil;263):29
+#18663 | auto Teldrassil;362§auto Teldrassil;362§auto Teldrassil;362 | x=10470.7001953125 y=1741.700073242188 | size=1 | links=#11122(auto Teldrassil;226):57 #16040(auto Teldrassil;317):31
+#18666 | auto Teldrassil;363§auto Teldrassil;363§auto Teldrassil;363 | x=9302.400390625 y=1117 | size=1 | links=#13527(auto Teldrassil;277):30 #18234(auto Teldrassil;353):36 c2025.2:30
+#18763 | auto Teldrassil;364§auto Teldrassil;364§auto Teldrassil;364 | x=9643 y=1308 | size=1 | links=#240(auto Teldrassil;8):19 #6768(auto Teldrassil;129):19
+#18764 | auto Teldrassil;365§auto Teldrassil;365§auto Teldrassil;365 | x=10712.7998046875 y=1613.099975585938 | size=1 | links=#18452(auto Teldrassil;357):56 c2029.2:73
+#18793 | centralpoint;Rut'theran Village;Teldrassil§zentralerpunkt;Rut'theran;Teldrassil§point central;Rut'theran;Teldrassil | x=8697 y=944 | size=1 | links=#3849(central location;Rut'theran Village;Teldrassil):0 #20878(auto Teldrassil;419):10 c10118.1:6
+#18868 | auto Teldrassil;366§auto Teldrassil;366§auto Teldrassil;366 | x=9909.335677880774 y=991.8147854767375 | size=1 | links=#8667(auto Teldrassil;165):7 #22740(top;house;Dolanaar):2
+#18874 | Webwood Spider;euest;farming;Shadowglen;Teldrassil§Waldweberspinne;quest;farmen;Laubschattental;Teldrassil§Araignée Tissebois;euest;farming;Shadowglen;Teldrassil | x=10687.1005859375 y=863.2000122070312 | size=1 | links=#25396(auto Teldrassil;517):59 #27559(auto Teldrassil;564):69
+#18882 | auto Teldrassil;367§auto Teldrassil;367§auto Teldrassil;367 | x=10079.2998046875 y=1459.099975585938 | size=1 | links=#13278(auto Teldrassil;270):12 c2152.1:17 c2162.1:19
+#18899 | auto Teldrassil;368§auto Teldrassil;368§auto Teldrassil;368 | x=9958.1005859375 y=1246.700073242188 | size=1 | links=#692(auto Teldrassil;17):38 #10171(auto Teldrassil;209):29 #21296(auto Teldrassil;428):24 #27313(auto Teldrassil;558):31
+#18901 | auto Teldrassil;369§auto Teldrassil;369§auto Teldrassil;369 | x=10192.400390625 y=695.1000366210938 | size=1 | links=#23490(auto Teldrassil;473):15 #24679(auto Teldrassil;502):60
+#18902 | auto Teldrassil;370§auto Teldrassil;370§auto Teldrassil;370 | x=9508.2998046875 y=629.2999877929688 | size=1 | links=#6099(auto Teldrassil;119):9 #21601(auto Teldrassil;435):6
+#18918 | auto Teldrassil;371§auto Teldrassil;371§auto Teldrassil;371 | x=10710.5 y=1750.700073242188 | size=1 | links=#14107(auto Teldrassil;286):43 #25485(auto Teldrassil;520):35
+#18924 | auto outside;ramp up;Teldrassil;372§auto außerhalb;rampe nach oben;Teldrassil;372§auto extérieur;ramp up;Teldrassil;372 | x=10445.63077984821 y=817.6325579918598 | size=1 | links=#2161(auto outside;ramp up;Teldrassil;46):8 #3282(auto outside;ramp up;Teldrassil;62):5
+#18932 | auto Teldrassil;373§auto Teldrassil;373§auto Teldrassil;373 | x=10025.7998046875 y=1827.300048828125 | size=1 | links=#231(auto Teldrassil;7):48 #16809(auto Teldrassil;328):57 #20203(auto Teldrassil;404):20 #23269(auto Teldrassil;469):54 c1996.3:52
+#18951 | auto Teldrassil;374§auto Teldrassil;374§auto Teldrassil;374 | x=10444.1005859375 y=796.9000244140625 | size=1 | links=#4585(auto Teldrassil;86):8 c3595.1:15
+#19061 | auto Teldrassil;375§auto Teldrassil;375§auto Teldrassil;375 | x=8688.400390625 y=926.1000366210938 | size=1 | links=#20878(auto Teldrassil;419):9 #27686(auto Teldrassil;568):20
+#19157 | central location;The Oracle Glade;Teldrassil§zentralpunkt;Die Lichtung des Orakels;Teldrassil§emplacement central;The Oracle Glade;Teldrassil | x=10594.400390625 y=1909 | size=1 | links=#16471(auto Teldrassil;322):69 #28404(auto Teldrassil;583):65 c3519.1:84
+#19190 | auto inside shadowthread cave;Teldrassil;376§auto drinnen schattenweberhöhle;Teldrassil;376§auto inside shadowthread cave;Teldrassil;376 | x=10982.900390625 y=976.6000366210938 | size=1 | links=#10545(auto inside shadowthread cave;Teldrassil;215):14 #26766(auto inside shadowthread cave;Teldrassil;546):20
+#19301 | auto Inside Fel Rock;Teldrassil;377§auto Drinnen Teufelsfels;Teldrassil;377§auto Inside Fel Rock;Teldrassil;377 | x=10084.7001953125 y=1195.700073242188 | size=1 | links=c2004.2:18 c2005.2:12
+#19306 | auto Teldrassil;378§auto Teldrassil;378§auto Teldrassil;378 | x=9909.1005859375 y=998.2000122070312 | size=1 | links=#11661(auto Teldrassil;239):3 #22906(auto Teldrassil;460):3
+#19426 | auto Teldrassil;379§auto Teldrassil;379§auto Teldrassil;379 | x=8712.7998046875 y=1007.5 | size=1 | links=#6852(auto Teldrassil;132):3 #20522(auto Teldrassil;411):6
+#19434 | auto inside shadowthread cave;Teldrassil;380§auto drinnen schattenweberhöhle;Teldrassil;380§auto inside shadowthread cave;Teldrassil;380 | x=10932.7998046875 y=949.6000366210938 | size=1 | links=#9208(auto inside shadowthread cave;Teldrassil;184):25 #12048(auto inside shadowthread cave;Teldrassil;249):22
+#19458 | auto Inside Ban'ethil Barrow Den;Teldrassil;381§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;381§auto Inside Ban'ethil Barrow Den;Teldrassil;381 | x=9745.5 y=1554.400024414063 | size=1 | links=#7037(auto Inside Ban'ethil Barrow Den;Teldrassil;136):19 #9347(auto Inside Ban'ethil Barrow Den;Teldrassil;191):11
+#19470 | auto Teldrassil;382§auto Teldrassil;382§auto Teldrassil;382 | x=10093.900390625 y=1572.5 | size=1 | links=#608(auto Teldrassil;14):47 #3342(auto Teldrassil;64):40
+#19473 | auto Inside Fel Rock;Teldrassil;383§auto Drinnen Teufelsfels;Teldrassil;383§auto Inside Fel Rock;Teldrassil;383 | x=10177.2998046875 y=1160.700073242188 | size=1 | links=#9736(auto Inside Fel Rock;Teldrassil;201):21 #11678(auto Inside Fel Rock;Teldrassil;241):17
+#19495 | auto Teldrassil;384§auto Teldrassil;384§auto Teldrassil;384 | x=10022.5 y=1475.400024414063 | size=1 | links=#10812(auto Teldrassil;223):12 #17064(auto Teldrassil;336):23
+#19496 | auto Inside Fel Rock;Teldrassil;385§auto Drinnen Teufelsfels;Teldrassil;385§auto Inside Fel Rock;Teldrassil;385 | x=10183.5 y=1187.300048828125 | size=1 | links=#17966(auto Inside Fel Rock;Teldrassil;349):23 #23436(auto Inside Fel Rock;Teldrassil;471):9
+#19522 | auto outside;ramp up;Teldrassil;386§auto außerhalb;rampe nach oben;Teldrassil;386§auto extérieur;ramp up;Teldrassil;386 | x=10446.98565094428 y=837.1574173963759 | size=1 | links=#1936(auto outside;ramp up;Teldrassil;41):6 #7669(auto outside;ramp up;Teldrassil;149):7 c3596.1:14
+#19596 | auto Teldrassil;387§auto Teldrassil;387§auto Teldrassil;387 | x=10132.1005859375 y=1688.599975585938 | size=1 | links=#21960(auto Teldrassil;446):18 c6287.1:17
+#19615 | auto Teldrassil;388§auto Teldrassil;388§auto Teldrassil;388 | x=10238.5 y=699.6000366210938 | size=1 | links=#469(auto Teldrassil;11):21 #13285(auto Teldrassil;271):21
+#19665 | auto Inside Fel Rock;Teldrassil;389§auto Drinnen Teufelsfels;Teldrassil;389§auto Inside Fel Rock;Teldrassil;389 | x=10155.2001953125 y=1117.599975585938 | size=1 | links=#3427(auto Inside Fel Rock;Teldrassil;69):23 c2004.3:4
+#19701 | auto Inside Fel Rock;Teldrassil;390§auto Drinnen Teufelsfels;Teldrassil;390§auto Inside Fel Rock;Teldrassil;390 | x=10076.400390625 y=1095.400024414063 | size=1 | links=#21829(auto Inside Fel Rock;Teldrassil;440):4 c2002.1:16
+#19747 | auto Teldrassil;391§auto Teldrassil;391§auto Teldrassil;391 | x=9901.1005859375 y=1004.400024414063 | size=1 | links=#9971(auto Teldrassil;205):3 #11255(auto Teldrassil;227):3
+#19753 | auto inside shadowthread cave;Teldrassil;392§auto drinnen schattenweberhöhle;Teldrassil;392§auto inside shadowthread cave;Teldrassil;392 | x=10880.1005859375 y=878.7999877929688 | size=1 | links=#7781(auto inside shadowthread cave;Teldrassil;152):20 #21337(auto inside shadowthread cave;Teldrassil;429):23
+#19756 | auto Teldrassil;393§auto Teldrassil;393§auto Teldrassil;393 | x=9904.7001953125 y=1000.799987792969 | size=1 | links=#11323(auto Teldrassil;231):1 #22883(auto Teldrassil;458):1
+#19766 | auto Teldrassil;394§auto Teldrassil;394§auto Teldrassil;394 | x=9657.7998046875 y=1705.5 | size=1 | links=#7543(auto Teldrassil;147):65 #9391(auto Teldrassil;193):31
+#19767 | auto outside;ramp up;Teldrassil;395§auto außerhalb;rampe nach oben;Teldrassil;395§auto extérieur;ramp up;Teldrassil;395 | x=10454.7851545393 y=804.3798703728967 | size=1 | links=#2161(auto outside;ramp up;Teldrassil;46):7 #28224(auto outside;ramp up;Teldrassil;580):5
+#19791 | auto Teldrassil;396§auto Teldrassil;396§auto Teldrassil;396 | x=10850.5 y=1561.599975585938 | size=1 | links=#1481(auto Teldrassil;35):15 c3535.1:47
+#19794 | auto Teldrassil;397§auto Teldrassil;397§auto Teldrassil;397 | x=9698.900390625 y=920.7000122070312 | size=1 | links=c6491.1:34 c12429.1:30
+#19820 | auto inside shadowthread cave;Teldrassil;398§auto drinnen schattenweberhöhle;Teldrassil;398§auto inside shadowthread cave;Teldrassil;398 | x=10949.900390625 y=899.1000366210938 | size=1 | links=#13579(auto inside shadowthread cave;Teldrassil;278):25 #20906(auto inside shadowthread cave;Teldrassil;420):19 c1986.2:4
+#19850 | auto Teldrassil;399§auto Teldrassil;399§auto Teldrassil;399 | x=10716.6005859375 y=974.2000122070312 | size=1 | links=#11611(auto Teldrassil;236):43 #25803(auto Teldrassil;523):40
+#19868 | auto Inside Ban'ethil Barrow Den;Teldrassil;400§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;400§auto Inside Ban'ethil Barrow Den;Teldrassil;400 | x=9807.400390625 y=1619.700073242188 | size=1 | links=#9601(auto Inside Ban'ethil Barrow Den;Teldrassil;198):11 #12965(auto Inside Ban'ethil Barrow Den;Teldrassil;258):18
+#19912 | auto Teldrassil;401§auto Teldrassil;401§auto Teldrassil;401 | x=9756.900390625 y=915 | size=1 | links=#20217(auto Teldrassil;405):25 #26849(auto Teldrassil;547):20 #28001(auto Teldrassil;577):19 c6286.1:10
+#20024 | auto Teldrassil;402§auto Teldrassil;402§auto Teldrassil;402 | x=9413.2001953125 y=1507.800048828125 | size=1 | links=#9185(auto Teldrassil;182):43 #27568(auto Teldrassil;565):26
+#20055 | auto Inside Ban'ethil Barrow Den;Teldrassil;403§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;403§auto Inside Ban'ethil Barrow Den;Teldrassil;403 | x=9787.7998046875 y=1555.700073242188 | size=1 | links=#17005(auto Inside Ban'ethil Barrow Den;Teldrassil;334):12 #26240(auto Inside Ban'ethil Barrow Den;Teldrassil;535):13
+#20203 | auto Teldrassil;404§auto Teldrassil;404§auto Teldrassil;404 | x=10043.900390625 y=1837.800048828125 | size=1 | links=#18932(auto Teldrassil;373):20 #26737(auto Teldrassil;545):51
+#20217 | auto Teldrassil;405§auto Teldrassil;405§auto Teldrassil;405 | x=9735.2001953125 y=929.1000366210938 | size=1 | links=#19912(auto Teldrassil;401):25 c3515.1:27 c3602.1:37 c6491.1:56
+#20330 | auto Inside Ban'ethil Barrow Den;Teldrassil;406§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;406§auto Inside Ban'ethil Barrow Den;Teldrassil;406 | x=9836.400390625 y=1609.099975585938 | size=1 | links=#7198(auto Inside Ban'ethil Barrow Den;Teldrassil;142):19 #24283(auto Inside Ban'ethil Barrow Den;Teldrassil;489):10
+#20347 | auto Teldrassil;407§auto Teldrassil;407§auto Teldrassil;407 | x=9459.2001953125 y=1329.900024414063 | size=1 | links=#5601(auto Teldrassil;108):79 #10039(auto Teldrassil;207):23
+#20419 | auto Teldrassil;408§auto Teldrassil;408§auto Teldrassil;408 | x=8647.5 y=851.5 | size=1 | links=#15882(auto Teldrassil;316):8 c3838.1:12
+#20518 | auto Teldrassil;409§auto Teldrassil;409§auto Teldrassil;409 | x=9884.2998046875 y=1466.5 | size=1 | links=#2333(auto Teldrassil;50):11 #25435(auto Teldrassil;518):9
+#20521 | auto Teldrassil;410§auto Teldrassil;410§auto Teldrassil;410 | x=9886.7001953125 y=990.5 | size=1 | links=#16416(auto Teldrassil;321):4 c3608.1:5
+#20522 | auto Teldrassil;411§auto Teldrassil;411§auto Teldrassil;411 | x=8719.7001953125 y=1007 | size=1 | links=#19426(auto Teldrassil;379):6 #20605(auto Teldrassil;413):3
+#20549 | euest;Ban'ethil Barrow Den;Teldrassil§quest;Grabhügel von Ban'ethil;Teldrassil§euest;Ban'ethil Barrow Den;Teldrassil | x=9847.900390625 y=1462.599975585938 | size=1 | links=#28245(auto Teldrassil;582):13 c2011.21:7
+#20595 | auto Teldrassil;412§auto Teldrassil;412§auto Teldrassil;412 | x=9860.2998046875 y=445.2000122070313 | size=1 | links=#6587(auto Teldrassil;125):23 #10224(auto Teldrassil;210):12
+#20605 | auto Teldrassil;413§auto Teldrassil;413§auto Teldrassil;413 | x=8722.1005859375 y=1009.299987792969 | size=1 | links=#20522(auto Teldrassil;411):3 #26447(auto inside;Teldrassil;540):13
+#20626 | auto Teldrassil;414§auto Teldrassil;414§auto Teldrassil;414 | x=10705.400390625 y=1971.200073242188 | size=1 | links=#5146(auto Teldrassil;99):22 #23178(auto Teldrassil;466):26
+#20636 | auto outside;ramp up;Teldrassil;415§auto außerhalb;rampe nach oben;Teldrassil;415§auto extérieur;ramp up;Teldrassil;415 | x=10508.900390625 y=832.4000244140625 | size=1 | links=#17080(auto outside;ramp up;Teldrassil;337):11 #23470(auto outside;ramp up;Teldrassil;472):7
+#20677 | auto Teldrassil;416§auto Teldrassil;416§auto Teldrassil;416 | x=10520.1005859375 y=1714 | size=1 | links=#16040(auto Teldrassil;317):32 c2027.1:37
+#20697 | auto outside;ramp up;Teldrassil;417§auto außerhalb;rampe nach oben;Teldrassil;417§auto extérieur;ramp up;Teldrassil;417 | x=10490.54682088827 y=857.1694913655907 | size=1 | links=#11273(auto outside;ramp up;Teldrassil;229):12 #17006(auto outside;ramp up;Teldrassil;335):6
+#20788 | auto Inside Ban'ethil Barrow Den;Teldrassil;418§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;418§auto Inside Ban'ethil Barrow Den;Teldrassil;418 | x=9761.6005859375 y=1581.800048828125 | size=1 | links=#7218(auto Inside Ban'ethil Barrow Den;Teldrassil;144):6 #26195(class quest;druid;Ban'ethil Barrow Den;Teldrassil):13
+#20874 | Grimmaw§Grimmtatze§Mornegueule | x=9145.2001953125 y=1743.700073242188 | size=1 | links=#9079(auto Teldrassil;180):21 #14392(auto Teldrassil;291):17
+#20878 | auto Teldrassil;419§auto Teldrassil;419§auto Teldrassil;419 | x=8692.2001953125 y=935.2000122070312 | size=1 | links=#18793(centralpoint;Rut'theran Village;Teldrassil):10 #19061(auto Teldrassil;375):9
+#20906 | auto inside shadowthread cave;Teldrassil;420§auto drinnen schattenweberhöhle;Teldrassil;420§auto inside shadowthread cave;Teldrassil;420 | x=10955 y=879.9000244140625 | size=1 | links=#19820(auto inside shadowthread cave;Teldrassil;398):19 c1986.3:13
+#20914 | auto Teldrassil;421§auto Teldrassil;421§auto Teldrassil;421 | x=9596 y=1690.700073242188 | size=1 | links=#2861(auto Teldrassil;59):41 #5928(auto Teldrassil;115):36 #9391(auto Teldrassil;193):32
+#20922 | auto Teldrassil;422§auto Teldrassil;422§auto Teldrassil;422 | x=9807.5 y=952.9000244140625 | size=1 | links=#16959(auto Teldrassil;332):19 #24470(auto Teldrassil;495):17 c3599.1:19 c3609.1:7 c3611.1:21
+#20974 | auto Teldrassil;423§auto Teldrassil;423§auto Teldrassil;423 | x=9639.1005859375 y=876.2999877929688 | size=1 | links=#6982(auto Teldrassil;135):57 #8925(auto Teldrassil;174):50 c12429.1:43
+#20989 | auto Inside Fel Rock;Teldrassil;424§auto Drinnen Teufelsfels;Teldrassil;424§auto Inside Fel Rock;Teldrassil;424 | x=10093.7998046875 y=1048.400024414063 | size=1 | links=#3968(auto Inside Fel Rock;Teldrassil;78):11 #15753(auto Inside Fel Rock;Teldrassil;311):17
+#21122 | auto Teldrassil;425§auto Teldrassil;425§auto Teldrassil;425 | x=9909.2001953125 y=1205.099975585938 | size=1 | links=#13366(auto Teldrassil;274):23 #27129(auto Teldrassil;554):26
+#21218 | auto Teldrassil;427§auto Teldrassil;427§auto Teldrassil;427 | x=9888.2998046875 y=997.1000366210938 | size=1 | links=#8811(auto Teldrassil;169):10 #15815(auto Teldrassil;313):8
+#21296 | auto Teldrassil;428§auto Teldrassil;428§auto Teldrassil;428 | x=9957.2998046875 y=1271.300048828125 | size=1 | links=#10171(auto Teldrassil;209):14 #18899(auto Teldrassil;368):24 #24612(auto Teldrassil;500):26
+#21337 | auto inside shadowthread cave;Teldrassil;429§auto drinnen schattenweberhöhle;Teldrassil;429§auto inside shadowthread cave;Teldrassil;429 | x=10857.400390625 y=874.2000122070312 | size=1 | links=#19753(auto inside shadowthread cave;Teldrassil;392):23 #24414(auto inside shadowthread cave;Teldrassil;494):25
+#21382 | Gnarlpine Warrior;quest area;Starbreeze Village;Teldrassil§Krieger der Knarzklauen;questgebiet;Sternenhauch;Teldrassil§Guerrier Pin-tordu;quest area;Starbreeze Village;Teldrassil | x=9874.1005859375 y=480 | size=1 | links=#11(auto Teldrassil;1):9
+#21384 | auto Teldrassil;430§auto Teldrassil;430§auto Teldrassil;430 | x=9432.2998046875 y=1074.200073242188 | size=1 | links=#21750(auto Teldrassil;439):39 #26577(auto Teldrassil;544):24
+#21490 | auto Teldrassil;432§auto Teldrassil;432§auto Teldrassil;432 | x=9885.400390625 y=1112.200073242188 | size=1 | links=#4337(auto Teldrassil;82):49 #24029(auto Teldrassil;485):55 #26289(auto Teldrassil;536):53
+#21556 | well;three;Pools of Arlithrien;Teldrassil§brunnen;drei;Teiche von Arlithrien;Teldrassil§well;trois;Pools of Arlithrien;Teldrassil | x=9553.1005859375 y=1657.099975585938 | size=1 | links=#13134(auto Teldrassil;266):20
+#21563 | auto Teldrassil;433§auto Teldrassil;433§auto Teldrassil;433 | x=10042.2001953125 y=1440 | size=1 | links=#14350(central location;Ban'ethil Hollow;Teldrassil):13 #24254(auto Teldrassil;488):41
+#21588 | auto Teldrassil;434§auto Teldrassil;434§auto Teldrassil;434 | x=9868.7998046875 y=611.7999877929688 | size=1 | links=#15543(well;two;Starbreeze Village;Teldrassil):24 #16974(auto Teldrassil;333):22 #22517(auto Teldrassil;451):34
+#21601 | auto Teldrassil;435§auto Teldrassil;435§auto Teldrassil;435 | x=9501.7998046875 y=628.9000244140625 | size=1 | links=#6099(auto Teldrassil;119):8 #12826(auto Teldrassil;257):67 #18902(auto Teldrassil;370):6
+#21605 | auto outside;ramp up;Teldrassil;436§auto außerhalb;rampe nach oben;Teldrassil;436§auto extérieur;ramp up;Teldrassil;436 | x=10522.18251758201 y=822.8008280800732 | size=1 | links=#2765(auto outside;ramp up;Teldrassil;58):12 #17080(auto outside;ramp up;Teldrassil;337):10
+#21619 | entry and exit§ein- und ausgang§entrée et sortie | x=9866.6005859375 y=1555.300048828125 | size=1
+#21640 | auto Inside Ban'ethil Barrow Den;Teldrassil;437§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;437§auto Inside Ban'ethil Barrow Den;Teldrassil;437 | x=9748.1005859375 y=1524.700073242188 | size=1 | links=#11615(auto Inside Ban'ethil Barrow Den;Teldrassil;237):2 c7317.1:7
+#21659 | auto Teldrassil;438§auto Teldrassil;438§auto Teldrassil;438 | x=10432.900390625 y=776 | size=1 | links=#11723(auto Teldrassil;242):9 #24949(auto Teldrassil;507):8 c3587.1:12
+#21750 | auto Teldrassil;439§auto Teldrassil;439§auto Teldrassil;439 | x=9410.900390625 y=1107.800048828125 | size=1 | links=#21384(auto Teldrassil;430):39 #25115(auto Teldrassil;511):33
+#21829 | auto Inside Fel Rock;Teldrassil;440§auto Drinnen Teufelsfels;Teldrassil;440§auto Inside Fel Rock;Teldrassil;440 | x=10074.1005859375 y=1099.5 | size=1 | links=#7104(auto Inside Fel Rock;Teldrassil;137):18 #19701(auto Inside Fel Rock;Teldrassil;390):4
+#21839 | auto Inside Fel Rock;Teldrassil;441§auto Drinnen Teufelsfels;Teldrassil;441§auto Inside Fel Rock;Teldrassil;441 | x=10151.5 y=1137.900024414063 | size=1 | links=#3427(auto Inside Fel Rock;Teldrassil;69):10 #9736(auto Inside Fel Rock;Teldrassil;201):13
+#21853 | auto Teldrassil;442§auto Teldrassil;442§auto Teldrassil;442 | x=9890.400390625 y=894.2000122070312 | size=1 | links=#8461(auto Teldrassil;161):40 #25440(auto Teldrassil;519):24 c2041.1:9
+#21867 | auto Teldrassil;443§auto Teldrassil;443§auto Teldrassil;443 | x=9271.2001953125 y=1651.200073242188 | size=1 | links=#13143(auto Teldrassil;267):55 #23773(auto Teldrassil;478):58
+#21887 | auto Teldrassil;444§auto Teldrassil;444§auto Teldrassil;444 | x=9909 y=998.2000122070312 | size=1 | links=#7770(auto Teldrassil;151):2 #17494(auto Teldrassil;343):1
+#21934 | auto Teldrassil;445§auto Teldrassil;445§auto Teldrassil;445 | x=10975.6005859375 y=1854.5 | size=1 | links=#5028(auto Teldrassil;96):32 #26889(auto Teldrassil;550):28
+#21960 | auto Teldrassil;446§auto Teldrassil;446§auto Teldrassil;446 | x=10150.6005859375 y=1686.900024414063 | size=1 | links=#19596(auto Teldrassil;387):18 c3605.1:5
+#22144 | outside;house;Dolanaar§draußen;haus;Dolanaar§extérieur;house;Dolanaar | x=9884.400390625 y=968.1000366210938 | size=1 | links=#23816(auto Teldrassil;479):11 #24011(auto Teldrassil;483):6 c2078.1:4
+#22157 | auto Inside Ban'ethil Barrow Den;Teldrassil;447§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;447§auto Inside Ban'ethil Barrow Den;Teldrassil;447 | x=9756.7998046875 y=1630.700073242188 | size=1 | links=#12982(auto Inside Ban'ethil Barrow Den;Teldrassil;261):11 #16165(auto Inside Ban'ethil Barrow Den;Teldrassil;318):33
+#22237 | auto Teldrassil;448§auto Teldrassil;448§auto Teldrassil;448 | x=8742.7001953125 y=947.2999877929688 | size=1 | links=#23920(auto Teldrassil;481):32 #25084(auto Teldrassil;510):30
+#22275 | auto Inside Ban'ethil Barrow Den;Teldrassil;449§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;449§auto Inside Ban'ethil Barrow Den;Teldrassil;449 | x=9727.7998046875 y=1601 | size=1 | links=#26210(auto Inside Ban'ethil Barrow Den;Teldrassil;534):11 #27577(auto Inside Ban'ethil Barrow Den;Teldrassil;566):14
+#22428 | auto Teldrassil;450§auto Teldrassil;450§auto Teldrassil;450 | x=10449.1005859375 y=795 | size=1 | links=#3898(auto Teldrassil;77):24 #5237(auto Teldrassil;101):30
+#22517 | auto Teldrassil;451§auto Teldrassil;451§auto Teldrassil;451 | x=9891.2998046875 y=585.5 | size=1 | links=#1560(central location;Starbreeze Village;Teldrassil):56 #4189(auto Teldrassil;80):50 #21588(auto Teldrassil;434):34
+#22630 | auto Teldrassil;452§auto Teldrassil;452§auto Teldrassil;452 | x=10369.7001953125 y=1620 | size=1 | links=#13016(auto Teldrassil;263):39 c2027.3:34
+#22740 | top;house;Dolanaar§oben;haus;Dolanaar§top;house;Dolanaar | x=9910.900390625 y=993.9000244140625 | size=1 | links=#3483(auto Teldrassil;70):7 #18868(auto Teldrassil;366):2
+#22769 | auto Teldrassil;453§auto Teldrassil;453§auto Teldrassil;453 | x=10839.7998046875 y=1594.099975585938 | size=1 | links=#14814(auto Teldrassil;295):25 #25261(auto Teldrassil;514):25
+#22797 | auto Teldrassil;454§auto Teldrassil;454§auto Teldrassil;454 | x=10662.7998046875 y=1474.900024414063 | size=5 | links=#23099(auto Teldrassil;465):53 c883.3:51
+#22873 | auto Teldrassil;455§auto Teldrassil;455§auto Teldrassil;455 | x=9368.2998046875 y=764 | size=5 | links=#2035(auto Teldrassil;45):41 c2022.1:15
+#22878 | auto Teldrassil;456§auto Teldrassil;456§auto Teldrassil;456 | x=10459.7998046875 y=959.5 | size=1 | links=#718(auto Teldrassil;19):97 c1984.2:56 c1985.3:44
+#22880 | auto Teldrassil;457§auto Teldrassil;457§auto Teldrassil;457 | x=10909.2001953125 y=1472.700073242188 | size=1 | links=#14305(auto Teldrassil;288):31 #24121(auto Teldrassil;486):26 c2001.1:17
+#22883 | auto Teldrassil;458§auto Teldrassil;458§auto Teldrassil;458 | x=9905.900390625 y=1001.100036621094 | size=1 | links=#1862(auto Teldrassil;39):1 #19756(auto Teldrassil;393):1
+#22897 | auto Inside Fel Rock;Teldrassil;459§auto Drinnen Teufelsfels;Teldrassil;459§auto Inside Fel Rock;Teldrassil;459 | x=10131.900390625 y=1081.599975585938 | size=1 | links=#5599(auto Inside Fel Rock;Teldrassil;107):14 #10594(auto Inside Fel Rock;Teldrassil;218):12
+#22906 | auto Teldrassil;460§auto Teldrassil;460§auto Teldrassil;460 | x=9907.2998046875 y=1001.100036621094 | size=1 | links=#11255(auto Teldrassil;227):3 #19306(auto Teldrassil;378):3
+#22930 | auto Inside Ban'ethil Barrow Den;Teldrassil;461§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;461§auto Inside Ban'ethil Barrow Den;Teldrassil;461 | x=9858.2998046875 y=1570.200073242188 | size=1 | links=#7350(auto Inside Ban'ethil Barrow Den;Teldrassil;145):12 #8957(auto Inside Ban'ethil Barrow Den;Teldrassil;176):9
+#22936 | auto Teldrassil;462§auto Teldrassil;462§auto Teldrassil;462 | x=9580.400390625 y=1727.5 | size=1 | links=#4392(central location;Pools of Arlithrien;Teldrassil):15 #5928(auto Teldrassil;115):32
+#23027 | auto Inside Fel Rock;Teldrassil;463§auto Drinnen Teufelsfels;Teldrassil;463§auto Inside Fel Rock;Teldrassil;463 | x=10112.7998046875 y=1199.900024414063 | size=1 | links=#2204(auto Inside Fel Rock;Teldrassil;48):7 c2038.2:8
+#23069 | auto Inside Ban'ethil Barrow Den;Teldrassil;464§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;464§auto Inside Ban'ethil Barrow Den;Teldrassil;464 | x=9735.1005859375 y=1558.5 | size=1 | links=#11876(auto Inside Ban'ethil Barrow Den;Teldrassil;244):17 #12640(auto Inside Ban'ethil Barrow Den;Teldrassil;256):22
+#23099 | auto Teldrassil;465§auto Teldrassil;465§auto Teldrassil;465 | x=10620.2001953125 y=1507.900024414063 | size=1 | links=#6787(auto Teldrassil;131):33 #22797(auto Teldrassil;454):53
+#23178 | auto Teldrassil;466§auto Teldrassil;466§auto Teldrassil;466 | x=10724.7998046875 y=1989.099975585938 | size=1 | links=#20626(auto Teldrassil;414):26 #23245(auto Teldrassil;468):41
+#23185 | auto Teldrassil;467§auto Teldrassil;467§auto Teldrassil;467 | x=9726.2998046875 y=1122.700073242188 | size=1 | links=#3394(auto Teldrassil;67):89 #4744(auto Teldrassil;89):77 o1673.4:38
+#23245 | auto Teldrassil;468§auto Teldrassil;468§auto Teldrassil;468 | x=10733 y=2029.400024414063 | size=5 | links=#10735(auto Teldrassil;221):54 #23178(auto Teldrassil;466):41
+#23253 | central location;Aldrassil;Teldrassil§zentralpunkt;Aldrassil;Teldrassil§emplacement central;Aldrassil;Teldrassil | x=10386.7998046875 y=755.5 | size=1 | links=#715(auto Teldrassil;18):17 #9983(auto Teldrassil;206):18 #15391(auto Teldrassil;304):16 c2077.1:8
+#23269 | auto Teldrassil;469§auto Teldrassil;469§auto Teldrassil;469 | x=10075.7001953125 y=1806.200073242188 | size=1 | links=#14413(auto Teldrassil;292):51 #18932(auto Teldrassil;373):54
+#23294 | auto Teldrassil;470§auto Teldrassil;470§auto Teldrassil;470 | x=9861.5 y=403.7000122070313 | size=1 | links=#886(auto Teldrassil;22):33 #18329(Uruson;Starbreeze Village;Teldrassil):26
+#23436 | auto Inside Fel Rock;Teldrassil;471§auto Drinnen Teufelsfels;Teldrassil;471§auto Inside Fel Rock;Teldrassil;471 | x=10186.2001953125 y=1178.300048828125 | size=1 | links=#19496(auto Inside Fel Rock;Teldrassil;385):9 #24385(auto Inside Fel Rock;Teldrassil;492):6
+#23470 | auto outside;ramp up;Teldrassil;472§auto außerhalb;rampe nach oben;Teldrassil;472§auto extérieur;ramp up;Teldrassil;472 | x=10502.92191033872 y=837.3203775255624 | size=1 | links=#1814(auto outside;ramp up;Teldrassil;38):11 #20636(auto outside;ramp up;Teldrassil;415):7
+#23490 | auto Teldrassil;473§auto Teldrassil;473§auto Teldrassil;473 | x=10207.5 y=695.2999877929688 | size=1 | links=#469(auto Teldrassil;11):10 #18901(auto Teldrassil;369):15
+#23496 | auto Teldrassil;474§auto Teldrassil;474§auto Teldrassil;474 | x=9873.2998046875 y=1726 | size=1 | links=#2354(auto Teldrassil;51):51 #11933(auto Teldrassil;247):29
+#23531 | auto Teldrassil;475§auto Teldrassil;475§auto Teldrassil;475 | x=10030.6005859375 y=1622.300048828125 | size=1 | links=#608(auto Teldrassil;14):50 #1397(auto Teldrassil;30):16
+#23608 | auto Teldrassil;476§auto Teldrassil;476§auto Teldrassil;476 | x=9899.400390625 y=1541.400024414063 | size=1 | links=#791(auto Teldrassil;21):23 #18520(entry and exit;Ban'ethil Barrow Den;Teldrassil):33
+#23686 | auto Inside Ban'ethil Barrow Den;Teldrassil;477§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;477§auto Inside Ban'ethil Barrow Den;Teldrassil;477 | x=9735.1005859375 y=1623.900024414063 | size=1 | links=#12982(auto Inside Ban'ethil Barrow Den;Teldrassil;261):11 #26210(auto Inside Ban'ethil Barrow Den;Teldrassil;534):13
+#23773 | auto Teldrassil;478§auto Teldrassil;478§auto Teldrassil;478 | x=9251 y=1706.300048828125 | size=1 | links=#2676(auto Teldrassil;56):73 #7500(auto Teldrassil;146):45 #21867(auto Teldrassil;443):58
+#23816 | auto Teldrassil;479§auto Teldrassil;479§auto Teldrassil;479 | x=9889.900390625 y=977.9000244140625 | size=1 | links=#14568(down;house;Dolanaar):10 #22144(outside;house;Dolanaar):11
+#23915 | auto Inside Ban'ethil Barrow Den;Teldrassil;480§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;480§auto Inside Ban'ethil Barrow Den;Teldrassil;480 | x=9854.2001953125 y=1507.700073242188 | size=1 | links=#4266(crossing;Ban'ethil Barrow Den):8 #28123(auto Inside Ban'ethil Barrow Den;Teldrassil;579):16
+#23920 | auto Teldrassil;481§auto Teldrassil;481§auto Teldrassil;481 | x=8770.7001953125 y=963 | size=1 | links=#2409(portal;Rut'theran Village;Teldrassil;to;Darnassus):14 #22237(auto Teldrassil;448):32
+#23935 | auto Teldrassil;482§auto Teldrassil;482§auto Teldrassil;482 | x=9794.2001953125 y=400.3999938964844 | size=1 | links=#3752(auto Teldrassil;76):22 #27948(auto Teldrassil;575):59
+#24011 | auto Teldrassil;483§auto Teldrassil;483§auto Teldrassil;483 | x=9880.5 y=962.4000244140625 | size=1 | links=#22144(outside;house;Dolanaar):6 #27962(auto Teldrassil;576):5
+#24020 | auto Teldrassil;484§auto Teldrassil;484§auto Teldrassil;484 | x=8676.5 y=879 | size=1 | links=#6771(auto Teldrassil;130):10 #15541(auto Teldrassil;310):8
+#24029 | auto Teldrassil;485§auto Teldrassil;485§auto Teldrassil;485 | x=9856.2998046875 y=1064.900024414063 | size=1 | links=#21490(auto Teldrassil;432):55 c2151.1:33
+#24121 | auto Teldrassil;486§auto Teldrassil;486§auto Teldrassil;486 | x=10925.5 y=1451.700073242188 | size=1 | links=#22880(auto Teldrassil;457):26 c7319.1:59
+#24164 | auto outside;ramp up;Teldrassil;487§auto außerhalb;rampe nach oben;Teldrassil;487§auto extérieur;ramp up;Teldrassil;487 | x=10511.92392696759 y=845.9584966826249 | size=1 | links=#2765(auto outside;ramp up;Teldrassil;58):13 #11273(auto outside;ramp up;Teldrassil;229):11
+#24215 | Gnarlpine Gardener;quest target;Teldrassil§Gärtner der Knarzklauen;questgegner;Teldrassil§Jardinier Pin-tordu;objectif de quête;Teldrassil | x=9651 y=467.3000183105469 | size=1 | links=c2006.3:19
+#24254 | auto Teldrassil;488§auto Teldrassil;488§auto Teldrassil;488 | x=10032.2998046875 y=1399.800048828125 | size=1 | links=#5633(auto Teldrassil;109):36 #21563(auto Teldrassil;433):41 o1673.22:19
+#24283 | auto Inside Ban'ethil Barrow Den;Teldrassil;489§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;489§auto Inside Ban'ethil Barrow Den;Teldrassil;489 | x=9831.400390625 y=1617.800048828125 | size=1 | links=#12965(auto Inside Ban'ethil Barrow Den;Teldrassil;258):10 #20330(auto Inside Ban'ethil Barrow Den;Teldrassil;406):10
+#24340 | auto Teldrassil;491§auto Teldrassil;491§auto Teldrassil;491 | x=9822.5 y=433.5 | size=1 | links=#8600(auto Teldrassil;163):12 #10224(auto Teldrassil;210):27
+#24385 | auto Inside Fel Rock;Teldrassil;492§auto Drinnen Teufelsfels;Teldrassil;492§auto Inside Fel Rock;Teldrassil;492 | x=10185.1005859375 y=1172.200073242188 | size=1 | links=#23436(auto Inside Fel Rock;Teldrassil;471):6
+#24413 | auto Teldrassil;493§auto Teldrassil;493§auto Teldrassil;493 | x=10929.2998046875 y=2044.800048828125 | size=1 | links=#27529(auto Teldrassil;563):62 c2020.3:51
+#24414 | auto inside shadowthread cave;Teldrassil;494§auto drinnen schattenweberhöhle;Teldrassil;494§auto inside shadowthread cave;Teldrassil;494 | x=10841.1005859375 y=894.2000122070312 | size=1 | links=#1473(auto inside shadowthread cave;Teldrassil;34):9 #21337(auto inside shadowthread cave;Teldrassil;429):25
+#24470 | auto Teldrassil;495§auto Teldrassil;495§auto Teldrassil;495 | x=9802 y=969.5 | size=1 | links=#20922(auto Teldrassil;422):17 c6736.1:13 c6781.1:12
+#24494 | auto Teldrassil;496§auto Teldrassil;496§auto Teldrassil;496 | x=10107.400390625 y=1724.200073242188 | size=1 | links=#14413(auto Teldrassil;292):43 c2155.1:61
+#24506 | auto Teldrassil;497§auto Teldrassil;497§auto Teldrassil;497 | x=10862.7001953125 y=2064.60009765625 | size=1 | links=#675(auto Teldrassil;15):24 c2020.3:33
+#24585 | auto Teldrassil;498§auto Teldrassil;498§auto Teldrassil;498 | x=10740.2998046875 y=2143.199951171875 | size=5 | links=#10735(auto Teldrassil;221):60 #17200(auto Teldrassil;338):29
+#24590 | auto Teldrassil;499§auto Teldrassil;499§auto Teldrassil;499 | x=10850.2998046875 y=1849.200073242188 | size=1 | links=#14876(auto Teldrassil;297):37 c2034.2:32
+#24612 | auto Teldrassil;500§auto Teldrassil;500§auto Teldrassil;500 | x=9958.400390625 y=1298.200073242188 | size=1 | links=#17794(auto Teldrassil;346):31 #21296(auto Teldrassil;428):26
+#24672 | auto Teldrassil;501§auto Teldrassil;501§auto Teldrassil;501 | x=9627.2998046875 y=1335.099975585938 | size=1 | links=#6768(auto Teldrassil;129):12 #9277(auto Teldrassil;187):19
+#24679 | auto Teldrassil;502§auto Teldrassil;502§auto Teldrassil;502 | x=10131.900390625 y=691 | size=1 | links=#18901(auto Teldrassil;369):60 #26176(auto Teldrassil;533):25
+#24757 | auto Teldrassil;503§auto Teldrassil;503§auto Teldrassil;503 | x=10377.6005859375 y=827.5 | size=1 | links=#4460(auto Teldrassil;84):27 #18446(auto Teldrassil;356):18 c6491.2:17
+#24776 | auto Teldrassil;504§auto Teldrassil;504§auto Teldrassil;504 | x=9584.2998046875 y=1182.099975585938 | size=1 | links=#13005(auto Teldrassil;262):79 #16288(auto Teldrassil;320):49
+#24801 | auto Teldrassil;505§auto Teldrassil;505§auto Teldrassil;505 | x=10032.2998046875 y=586.5 | size=1 | links=#1727(auto Teldrassil;36):40 #5676(auto Teldrassil;111):23
+#24804 | auto Teldrassil;506§auto Teldrassil;506§auto Teldrassil;506 | x=9109.2001953125 y=1837.300048828125 | size=1 | links=#1235(auto Teldrassil;27):20 c2852.3:14
+#24949 | auto Teldrassil;507§auto Teldrassil;507§auto Teldrassil;507 | x=10426.900390625 y=770.7000122070312 | size=1 | links=#8813(auto Teldrassil;170):12 #21659(auto Teldrassil;438):8
+#24955 | auto Inside Ban'ethil Barrow Den;Teldrassil;508§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;508§auto Inside Ban'ethil Barrow Den;Teldrassil;508 | x=9856.400390625 y=1564.300048828125 | size=1 | links=#4023(auto Inside Ban'ethil Barrow Den;Teldrassil;79):8 #18520(entry and exit;Ban'ethil Barrow Den;Teldrassil):15
+#25010 | auto Teldrassil;509§auto Teldrassil;509§auto Teldrassil;509 | x=9708 y=1346.400024414063 | size=1 | links=#10568(auto Teldrassil;217):16 #15839(auto Teldrassil;315):16
+#25084 | auto Teldrassil;510§auto Teldrassil;510§auto Teldrassil;510 | x=8712.900390625 y=941.1000366210938 | size=1 | links=#3849(central location;Rut'theran Village;Teldrassil):15 #22237(auto Teldrassil;448):30
+#25115 | auto Teldrassil;511§auto Teldrassil;511§auto Teldrassil;511 | x=9378.2001953125 y=1113.400024414063 | size=1 | links=#18234(auto Teldrassil;353):40 #21750(auto Teldrassil;439):33
+#25134 | auto inside shadowthread cave;Teldrassil;512§auto drinnen schattenweberhöhle;Teldrassil;512§auto inside shadowthread cave;Teldrassil;512 | x=10896.7998046875 y=976.7000122070312 | size=1 | links=#5665(auto inside shadowthread cave;Teldrassil;110):20 #17421(Webwood Spider;quest target;Shadowthread Cave;Teldrassil):17
+#25152 | auto Teldrassil;513§auto Teldrassil;513§auto Teldrassil;513 | x=10552.2998046875 y=633.7000122070312 | size=1 | links=c1989.3:69 c2032.3:45
+#25261 | auto Teldrassil;514§auto Teldrassil;514§auto Teldrassil;514 | x=10864 y=1585.200073242188 | size=1 | links=#10085(Blackmoss the Fetid;Wellspring River;Teldrassil):26 #22769(auto Teldrassil;453):25
+#25319 | auto Teldrassil;515§auto Teldrassil;515§auto Teldrassil;515 | x=9808.1005859375 y=917.7000122070312 | size=1 | links=#8869(auto Teldrassil;172):6 c3306.1:7
+#25374 | auto Inside Ban'ethil Barrow Den;Teldrassil;516§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;516§auto Inside Ban'ethil Barrow Den;Teldrassil;516 | x=9809.2001953125 y=1586.099975585938 | size=1 | links=#7564(central location;Ban'ethil Barrow Den;Teldrassil):16 #26454(auto Inside Ban'ethil Barrow Den;Teldrassil;541):17
+#25396 | auto Teldrassil;517§auto Teldrassil;517§auto Teldrassil;517 | x=10696.6005859375 y=804 | size=1 | links=#7192(auto Teldrassil;141):36 #18874(Webwood Spider;euest;farming;Shadowglen;Teldrassil):59
+#25435 | auto Teldrassil;518§auto Teldrassil;518§auto Teldrassil;518 | x=9876.7001953125 y=1460.700073242188 | size=1 | links=#6595(auto Teldrassil;127):7 #20518(auto Teldrassil;409):9
+#25440 | auto Teldrassil;519§auto Teldrassil;519§auto Teldrassil;519 | x=9885.7001953125 y=918.1000366210938 | size=1 | links=#1221(auto Teldrassil;26):32 #3656(auto Teldrassil;73):37 #21853(auto Teldrassil;442):24
+#25485 | auto Teldrassil;520§auto Teldrassil;520§auto Teldrassil;520 | x=10690.2001953125 y=1721.700073242188 | size=1 | links=#18918(auto Teldrassil;371):35 c2029.1:40
+#25536 | Grimmaw;Gnarlpine Hold;Teldrassil§Grimmtatze;Höhle der Knarzklauen;Teldrassil§Mornegueule;Gnarlpine Hold;Teldrassil | x=9145.2001953125 y=1743.700073242188 | size=1
+#25741 | auto Teldrassil;521§auto Teldrassil;521§auto Teldrassil;521 | x=9903.89541166787 y=995.095747134413 | size=1 | links=#2215(auto Teldrassil;49):2 #27105(auto Teldrassil;552):1
+#25761 | auto outside;ramp up;Teldrassil;522§auto außerhalb;rampe nach oben;Teldrassil;522§auto extérieur;ramp up;Teldrassil;522 | x=10474.2998046875 y=849.2999877929688 | size=1 | links=#4867(auto outside;ramp up;Teldrassil;92):9 #14106(auto outside;ramp up;Teldrassil;285):9
+#25803 | auto Teldrassil;523§auto Teldrassil;523§auto Teldrassil;523 | x=10720.1005859375 y=934.1000366210938 | size=5 | links=#16010(entry and exit;Shadowthread Cave;Teldrassil):27 #19850(auto Teldrassil;399):40 #27559(auto Teldrassil;564):70
+#25886 | auto Teldrassil;524§auto Teldrassil;524§auto Teldrassil;524 | x=9742.900390625 y=527.6000366210938 | size=5 | links=#6893(auto Teldrassil;133):59 #26327(auto Teldrassil;537):58
+#25892 | auto Teldrassil;525§auto Teldrassil;525§auto Teldrassil;525 | x=10142.900390625 y=1399.200073242188 | size=1 | links=#11454(auto Teldrassil;235):63 #13941(auto Teldrassil;282):67
+#25895 | auto Teldrassil;526§auto Teldrassil;526§auto Teldrassil;526 | x=9902.5 y=998.7000122070312 | size=1 | links=#2215(auto Teldrassil;49):1 #11323(auto Teldrassil;231):1
+#25912 | auto outside;ramp up;Teldrassil;527§auto außerhalb;rampe nach oben;Teldrassil;527§auto extérieur;ramp up;Teldrassil;527 | x=10464.7001953125 y=857.9000244140625 | size=1 | links=#1082(auto outside;ramp up;Teldrassil;25):7 #8840(auto ramp up;Teldrassil;171):9
+#25944 | auto Teldrassil;528§auto Teldrassil;528§auto Teldrassil;528 | x=10169.400390625 y=1850.200073242188 | size=1 | links=#471(auto Teldrassil;12):31 #5030(auto Teldrassil;97):32
+#25984 | auto Teldrassil;529§auto Teldrassil;529§auto Teldrassil;529 | x=9803.400390625 y=928.7999877929688 | size=1 | links=#27482(auto Teldrassil;562):15 c3306.1:5
+#25996 | auto Inside Ban'ethil Barrow Den;Teldrassil;530§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;530§auto Inside Ban'ethil Barrow Den;Teldrassil;530 | x=9789.7998046875 y=1594.5 | size=1 | links=#2449(auto Inside Ban'ethil Barrow Den;Teldrassil;52):6 #7564(central location;Ban'ethil Barrow Den;Teldrassil):5
+#26029 | auto Teldrassil;531§auto Teldrassil;531§auto Teldrassil;531 | x=8684.6005859375 y=975.7000122070312 | size=1 | links=#15496(auto Teldrassil;308):11 #27439(auto Teldrassil;561):12 c3607.1:27
+#26070 | auto Inside Ban'ethil Barrow Den;Teldrassil;532§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;532§auto Inside Ban'ethil Barrow Den;Teldrassil;532 | x=9839.6005859375 y=1572.400024414063 | size=1 | links=#746(auto Inside Ban'ethil Barrow Den;Teldrassil;20):11 #12500(auto Inside Ban'ethil Barrow Den;Teldrassil;255):8
+#26176 | auto Teldrassil;533§auto Teldrassil;533§auto Teldrassil;533 | x=10110.1005859375 y=677.9000244140625 | size=1 | links=#5676(auto Teldrassil;111):98 #24679(auto Teldrassil;502):25
+#26195 | class quest;druid;Ban'ethil Barrow Den;Teldrassil§klassenquest;druide;Grabhügel von Ban'ethil;Teldrassil§class quest;druid;Ban'ethil Barrow Den;Teldrassil | x=9749.2001953125 y=1577.5 | size=1 | links=#20788(auto Inside Ban'ethil Barrow Den;Teldrassil;418):13 o2739.1:12
+#26210 | auto Inside Ban'ethil Barrow Den;Teldrassil;534§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;534§auto Inside Ban'ethil Barrow Den;Teldrassil;534 | x=9729.1005859375 y=1612 | size=1 | links=#22275(auto Inside Ban'ethil Barrow Den;Teldrassil;449):11 #23686(auto Inside Ban'ethil Barrow Den;Teldrassil;477):13
+#26240 | auto Inside Ban'ethil Barrow Den;Teldrassil;535§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;535§auto Inside Ban'ethil Barrow Den;Teldrassil;535 | x=9778.2998046875 y=1564.900024414063 | size=1 | links=#9787(auto Inside Ban'ethil Barrow Den;Teldrassil;203):13 #16635(auto Inside Ban'ethil Barrow Den;Teldrassil;326):19 #20055(auto Inside Ban'ethil Barrow Den;Teldrassil;403):13
+#26289 | auto Teldrassil;536§auto Teldrassil;536§auto Teldrassil;536 | x=9935.7998046875 y=1095.099975585938 | size=1 | links=#4337(auto Teldrassil;82):58 #8507(auto Teldrassil;162):61 #21490(auto Teldrassil;432):53
+#26327 | auto Teldrassil;537§auto Teldrassil;537§auto Teldrassil;537 | x=9693 y=496.8000183105469 | size=1 | links=#25886(auto Teldrassil;524):58 c2006.3:38
+#26403 | auto Teldrassil;539§auto Teldrassil;539§auto Teldrassil;539 | x=9449.5 y=1612.900024414063 | size=1 | links=#15440(auto Teldrassil;305):10 #18081(auto Teldrassil;350):32
+#26447 | auto inside;Teldrassil;540§auto drinnen;Teldrassil;540§auto intérieur;Teldrassil;540 | x=8724.400390625 y=995.7000122070312 | size=1 | links=#8728(auto inside;Teldrassil;167):16 #20605(auto Teldrassil;413):13
+#26454 | auto Inside Ban'ethil Barrow Den;Teldrassil;541§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;541§auto Inside Ban'ethil Barrow Den;Teldrassil;541 | x=9807.7001953125 y=1568.700073242188 | size=1 | links=#3355(auto Inside Ban'ethil Barrow Den;Teldrassil;66):13 #25374(auto Inside Ban'ethil Barrow Den;Teldrassil;516):17
+#26490 | auto Teldrassil;542§auto Teldrassil;542§auto Teldrassil;542 | x=9890.7001953125 y=978.7000122070312 | size=1 | links=#11428(auto Teldrassil;233):6 #15815(auto Teldrassil;313):11
+#26560 | auto Teldrassil;543§auto Teldrassil;543§auto Teldrassil;543 | x=10656.7001953125 y=730.2000122070312 | size=1 | links=#7192(auto Teldrassil;141):48 c2032.1:56 c1989.2:44
+#26577 | auto Teldrassil;544§auto Teldrassil;544§auto Teldrassil;544 | x=9447.1005859375 y=1054.099975585938 | size=1 | links=#21384(auto Teldrassil;430):24 c2025.1:19
+#26716 | entry and exit;Fel Rock;Teldrassil§ein- und ausgang;Teufelsfels;Teldrassil§entrée et sortie;Fel Rock;Teldrassil | x=10044.6005859375 y=1031.200073242188 | size=1 | links=#11296(auto Inside Fel Rock;Teldrassil;230):20 #26854(auto Teldrassil;548):11
+#26737 | auto Teldrassil;545§auto Teldrassil;545§auto Teldrassil;545 | x=10091.7001953125 y=1858.200073242188 | size=1 | links=#471(auto Teldrassil;12):46 #20203(auto Teldrassil;404):51
+#26766 | auto inside shadowthread cave;Teldrassil;546§auto drinnen schattenweberhöhle;Teldrassil;546§auto inside shadowthread cave;Teldrassil;546 | x=10993.7998046875 y=959.2999877929688 | size=1 | links=#10564(auto inside shadowthread cave;Teldrassil;216):20 #19190(auto inside shadowthread cave;Teldrassil;376):20
+#26849 | auto Teldrassil;547§auto Teldrassil;547§auto Teldrassil;547 | x=9776.900390625 y=909.6000366210938 | size=1 | links=#8869(auto Teldrassil;172):33 #19912(auto Teldrassil;401):20 c3604.1:34
+#26854 | auto Teldrassil;548§auto Teldrassil;548§auto Teldrassil;548 | x=10034.5 y=1036.300048828125 | size=1 | links=#8507(auto Teldrassil;162):69 #26716(entry and exit;Fel Rock;Teldrassil):11
+#26857 | auto Teldrassil;549§auto Teldrassil;549§auto Teldrassil;549 | x=10473.2001953125 y=1884.300048828125 | size=1 | links=#13346(auto Teldrassil;273):71 #16471(auto Teldrassil;322):60 c2015.2:36 c2017.3:38
+#26889 | auto Teldrassil;550§auto Teldrassil;550§auto Teldrassil;550 | x=10988 y=1880.5 | size=1 | links=#11874(auto Teldrassil;243):20 #21934(auto Teldrassil;445):28
+#26956 | auto Inside Ban'ethil Barrow Den;Teldrassil;551§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;551§auto Inside Ban'ethil Barrow Den;Teldrassil;551 | x=9792.2998046875 y=1502.800048828125 | size=1 | links=#10407(auto Inside Ban'ethil Barrow Den;Teldrassil;214):15 #12970(auto Inside Ban'ethil Barrow Den;Teldrassil;259):14
+#27105 | auto Teldrassil;552§auto Teldrassil;552§auto Teldrassil;552 | x=9905.7001953125 y=994.5 | size=1 | links=#11661(auto Teldrassil;239):2 #25741(auto Teldrassil;521):1
+#27111 | auto Teldrassil;553§auto Teldrassil;553§auto Teldrassil;553 | x=9138.400390625 y=1832.099975585938 | size=1 | links=#16953(auto Teldrassil;331):11 c2039.1:16 c2013.2:13 c2013.3:12
+#27129 | auto Teldrassil;554§auto Teldrassil;554§auto Teldrassil;554 | x=9920.2001953125 y=1229.300048828125 | size=1 | links=#21122(auto Teldrassil;425):26 #27313(auto Teldrassil;558):12
+#27170 | auto Teldrassil;555§auto Teldrassil;555§auto Teldrassil;555 | x=10411 y=1491.599975585938 | size=1 | links=#2565(auto Teldrassil;54):20 c2033.3:30
+#27279 | auto Inside Ban'ethil Barrow Den;Teldrassil;556§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;556§auto Inside Ban'ethil Barrow Den;Teldrassil;556 | x=9813.400390625 y=1489.400024414063 | size=1 | links=#9099(auto Inside Ban'ethil Barrow Den;Teldrassil;181):17 #10407(auto Inside Ban'ethil Barrow Den;Teldrassil;214):9
+#27284 | auto Inside Ban'ethil Barrow Den;Teldrassil;557§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;557§auto Inside Ban'ethil Barrow Den;Teldrassil;557 | x=9857.699748901998 y=1490.827725058016 | size=1 | links=#4266(crossing;Ban'ethil Barrow Den):16 c2011.21:22
+#27313 | auto Teldrassil;558§auto Teldrassil;558§auto Teldrassil;558 | x=9927.2998046875 y=1239.700073242188 | size=1 | links=#18899(auto Teldrassil;368):31 #27129(auto Teldrassil;554):12
+#27354 | auto ramp up;Teldrassil;559§auto rampe nach oben;Teldrassil;559§auto ramp up;Teldrassil;559 | x=10449.400390625 y=866.7999877929688 | size=1 | links=#8840(auto ramp up;Teldrassil;171):8 #17227(auto ramp up;Teldrassil;340):13
+#27358 | auto Teldrassil;560§auto Teldrassil;560§auto Teldrassil;560 | x=10485.7998046875 y=799.4000244140625 | size=1 | links=#11449(auto Teldrassil;234):13 #18594(auto Teldrassil;360):18
+#27439 | auto Teldrassil;561§auto Teldrassil;561§auto Teldrassil;561 | x=8693.5 y=966.9000244140625 | size=1 | links=#26029(auto Teldrassil;531):12 c10118.1:16
+#27482 | auto Teldrassil;562§auto Teldrassil;562§auto Teldrassil;562 | x=9796.7001953125 y=943.2999877929688 | size=1 | links=#25984(auto Teldrassil;529):15 c3599.1:6
+#27529 | auto Teldrassil;563§auto Teldrassil;563§auto Teldrassil;563 | x=10955.6005859375 y=1988 | size=1 | links=#24413(auto Teldrassil;493):62 c2019.2:26
+#27559 | auto Teldrassil;564§auto Teldrassil;564§auto Teldrassil;564 | x=10650.1005859375 y=922.2999877929688 | size=5 | links=#18874(Webwood Spider;euest;farming;Shadowglen;Teldrassil):69 #25803(auto Teldrassil;523):70 c1985.2:106
+#27568 | auto Teldrassil;565§auto Teldrassil;565§auto Teldrassil;565 | x=9404.5 y=1482.300048828125 | size=5 | links=#9244(auto Teldrassil;185):67 #20024(auto Teldrassil;402):26 c2043.3:40
+#27577 | auto Inside Ban'ethil Barrow Den;Teldrassil;566§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;566§auto Inside Ban'ethil Barrow Den;Teldrassil;566 | x=9733.900390625 y=1588.200073242188 | size=1 | links=#18270(auto Inside Ban'ethil Barrow Den;Teldrassil;354):5 #22275(auto Inside Ban'ethil Barrow Den;Teldrassil;449):14
+#27596 | auto Inside Ban'ethil Barrow Den;Teldrassil;567§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;567§auto Inside Ban'ethil Barrow Den;Teldrassil;567 | x=9790.2998046875 y=1578 | size=1 | links=#10935(auto Inside Ban'ethil Barrow Den;Teldrassil;225):10 #28579(auto Inside Ban'ethil Barrow Den;Teldrassil;585):12
+#27686 | auto Teldrassil;568§auto Teldrassil;568§auto Teldrassil;568 | x=8689.7001953125 y=905.4000244140625 | size=1 | links=#15541(auto Teldrassil;310):21 #19061(auto Teldrassil;375):20
+#27745 | auto Teldrassil;569§auto Teldrassil;569§auto Teldrassil;569 | x=9904 y=1000.400024414063 | size=1 | links=#8811(auto Teldrassil;169):7 c3567.1:16
+#27785 | auto Inside Ban'ethil Barrow Den;Teldrassil;570§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;570§auto Inside Ban'ethil Barrow Den;Teldrassil;570 | x=9796 y=1536.800048828125 | size=1 | links=#13827(auto Inside Ban'ethil Barrow Den;Teldrassil;281):10 #17005(auto Inside Ban'ethil Barrow Den;Teldrassil;334):10
+#27841 | auto Teldrassil;571§auto Teldrassil;571§auto Teldrassil;571 | x=9876.900390625 y=831.5 | size=1 | links=#8461(auto Teldrassil;161):24 #15511(auto Teldrassil;309):62
+#27847 | auto Teldrassil;572§auto Teldrassil;572§auto Teldrassil;572 | x=9980.2998046875 y=1892.400024414063 | size=1 | links=#3694(auto Teldrassil;74):72 #16809(auto Teldrassil;328):28 c2043.1:135
+#27869 | auto Inside Ban'ethil Barrow Den;Teldrassil;573§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;573§auto Inside Ban'ethil Barrow Den;Teldrassil;573 | x=9847 y=1581.800048828125 | size=1 | links=#7198(auto Inside Ban'ethil Barrow Den;Teldrassil;142):10 #7350(auto Inside Ban'ethil Barrow Den;Teldrassil;145):4
+#27938 | auto Teldrassil;574§auto Teldrassil;574§auto Teldrassil;574 | x=9566.2001953125 y=1835.400024414063 | size=1 | links=c2009.2:51 c2010.2:27 c2010.3:54
+#27948 | auto Teldrassil;575§auto Teldrassil;575§auto Teldrassil;575 | x=9788.7001953125 y=460 | size=1 | links=#462(auto Teldrassil;10):26 #23935(auto Teldrassil;482):59
+#27962 | auto Teldrassil;576§auto Teldrassil;576§auto Teldrassil;576 | x=9877.6005859375 y=957.2000122070312 | size=1 | links=#1221(auto Teldrassil;26):12 #24011(auto Teldrassil;483):5
+#28001 | auto Teldrassil;577§auto Teldrassil;577§auto Teldrassil;577 | x=9765.6005859375 y=932.2999877929688 | size=1 | links=#19912(auto Teldrassil;401):19 c3602.1:40 c3611.1:32
+#28008 | auto inside shadowthread cave;Teldrassil;578§auto drinnen schattenweberhöhle;Teldrassil;578§auto inside shadowthread cave;Teldrassil;578 | x=10831.900390625 y=943.7999877929688 | size=1 | links=#6907(auto inside shadowthread cave;Teldrassil;134):24 #16010(entry and exit;Shadowthread Cave;Teldrassil):86 #17617(auto inside shadowthread cave;Teldrassil;345):37
+#28110 | Gnarlpine Defender;quest target;Teldrassil§Verteidiger der Knarzklauen;questgegner;Teldrassil§Défenseur Pin-tordu;objectif de quête;Teldrassil | x=9287 y=923.7000122070312 | size=1 | links=#10163(auto Teldrassil;208):22 #28193(Gnarlpine Augur;quest target;Teldrassil):6
+#28123 | auto Inside Ban'ethil Barrow Den;Teldrassil;579§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;579§auto Inside Ban'ethil Barrow Den;Teldrassil;579 | x=9838.5 y=1513.200073242188 | size=1 | links=#12979(auto Inside Ban'ethil Barrow Den;Teldrassil;260):5 #23915(auto Inside Ban'ethil Barrow Den;Teldrassil;480):16
+#28193 | Gnarlpine Augur;quest target;Teldrassil§Augur der Knarzklauen;questgegner;Teldrassil§Augure Pin-tordu;objectif de quête;Teldrassil | x=9290 y=929.7999877929688 | size=1 | links=#28110(Gnarlpine Defender;quest target;Teldrassil):6
+#28224 | auto outside;ramp up;Teldrassil;580§auto außerhalb;rampe nach oben;Teldrassil;580§auto extérieur;ramp up;Teldrassil;580 | x=10458.2998046875 y=799.7000122070312 | size=1 | links=#14502(auto outside;ramp up;Teldrassil;293):4 #19767(auto outside;ramp up;Teldrassil;395):5
+#28232 | auto Teldrassil;581§auto Teldrassil;581§auto Teldrassil;581 | x=9815.2001953125 y=1323.599975585938 | size=5 | links=#6007(auto Teldrassil;117):68 #9462(auto Teldrassil;195):29
+#28245 | auto Teldrassil;582§auto Teldrassil;582§auto Teldrassil;582 | x=9861.400390625 y=1459.5 | size=1 | links=#6595(auto Teldrassil;127):7 #20549(euest;Ban'ethil Barrow Den;Teldrassil):13
+#28404 | auto Teldrassil;583§auto Teldrassil;583§auto Teldrassil;583 | x=10656.900390625 y=1929.300048828125 | size=1 | links=#1884(auto Teldrassil;40):37 #19157(central location;The Oracle Glade;Teldrassil):65 c3606.1:22
+#28511 | auto Teldrassil;584§auto Teldrassil;584§auto Teldrassil;584 | x=9650.1005859375 y=544.4000244140625 | size=1 | links=#8950(auto Teldrassil;175):24 c2007.3:24
+#28579 | auto Inside Ban'ethil Barrow Den;Teldrassil;585§auto Drinnen Grabhügel von Ban'ethil;Teldrassil;585§auto Inside Ban'ethil Barrow Den;Teldrassil;585 | x=9786 y=1566.200073242188 | size=1 | links=#2003(auto Inside Ban'ethil Barrow Den;Teldrassil;44):9 #27596(auto Inside Ban'ethil Barrow Den;Teldrassil;567):12
+#28623 | s;u;Mailbox;Teldrassil§s;u;Briefkasten;Teldrassil§s;u;Boîte aux lettres;Teldrassil | x=9849.30078125 y=958.1583862304688 | size=1 | links=#12023(central location;Dolanaar;Teldrassil):9
+#47455 | auto in water resque route;Teldrassil;586§auto im wasser rettung route;Teldrassil;586§auto in water resque route;Teldrassil;586 | x=8625.433936728592 y=822.3571323211657 | size=1 | links=#47456(auto in water resque route;Teldrassil;587):18
+#47456 | auto in water resque route;Teldrassil;587§auto im wasser rettung route;Teldrassil;587§auto in water resque route;Teldrassil;587 | x=8622.27587494202 y=840.9546051810827 | size=1 | links=#47455(auto in water resque route;Teldrassil;586):18 #47457(auto in water resque route;Teldrassil;588):14
+#47457 | auto in water resque route;Teldrassil;588§auto im wasser rettung route;Teldrassil;588§auto in water resque route;Teldrassil;588 | x=8624.030335816045 y=855.341303726885 | size=1 | links=#47456(auto in water resque route;Teldrassil;587):14 #47458(auto in water resque route;Teldrassil;589):14
+#47458 | auto in water resque route;Teldrassil;589§auto im wasser rettung route;Teldrassil;589§auto in water resque route;Teldrassil;589 | x=8626.486630307121 y=869.3772939033277 | size=1 | links=#47457(auto in water resque route;Teldrassil;588):14 #47459(auto in water resque route;Teldrassil;590):14
+#47459 | auto in water resque route;Teldrassil;590§auto im wasser rettung route;Teldrassil;590§auto in water resque route;Teldrassil;590 | x=8631.750060301732 y=882.7112609725712 | size=1 | links=#47458(auto in water resque route;Teldrassil;589):14 #47460(auto in water resque route;Teldrassil;591):19
+#47460 | auto in water resque route;Teldrassil;591§auto im wasser rettung route;Teldrassil;591§auto in water resque route;Teldrassil;591 | x=8645.435001026546 y=897.0980353144334 | size=1 | links=#47459(auto in water resque route;Teldrassil;590):19 #47461(auto in water resque route;Teldrassil;592):11
+#47461 | auto in water resque route;Teldrassil;592§auto im wasser rettung route;Teldrassil;592§auto in water resque route;Teldrassil;592 | x=8657.014573543318 y=898.5016267524716 | size=1 | links=#47460(auto in water resque route;Teldrassil;591):11 #47462(auto in water resque route;Teldrassil;593):9
+#47462 | auto in water resque route;Teldrassil;593§auto im wasser rettung route;Teldrassil;593§auto in water resque route;Teldrassil;593 | x=8666.488758903031 y=898.8524867139512 | size=1 | links=#47461(auto in water resque route;Teldrassil;592):9 #47463(auto in water resque route;Teldrassil;594):8
+#47463 | auto in water resque route;Teldrassil;594§auto im wasser rettung route;Teldrassil;594§auto in water resque route;Teldrassil;594 | x=8661.225309959404 y=905.8704439041426 | size=1 | links=#47462(auto in water resque route;Teldrassil;593):8 #47464(auto in water resque route;Teldrassil;595):9
+#47464 | auto in water resque route;Teldrassil;595§auto im wasser rettung route;Teldrassil;595§auto in water resque route;Teldrassil;595 | x=8654.207409616256 y=912.5374653367943 | size=1 | links=#47463(auto in water resque route;Teldrassil;594):9 #47465(auto in water resque route;Teldrassil;596):10
+#47465 | auto in water resque route;Teldrassil;596§auto im wasser rettung route;Teldrassil;596§auto in water resque route;Teldrassil;596 | x=8649.996654251156 y=922.3625296070021 | size=1 | links=#47464(auto in water resque route;Teldrassil;595):10 #47466(auto in water resque route;Teldrassil;597):9
+#47466 | auto in water resque route;Teldrassil;597§auto im wasser rettung route;Teldrassil;597§auto in water resque route;Teldrassil;597 | x=8648.943941723612 y=932.18766967327 | size=1 | links=#47465(auto in water resque route;Teldrassil;596):9 #47467(auto in water resque route;Rut'theran Village;Teldrassil;598):5
+#47467 | auto in water resque route;Rut'theran Village;Teldrassil;598§auto im wasser rettung route;Rut'theran;Teldrassil;598§auto in water resque route;Rut'theran;Teldrassil;598 | x=8651.2001953125 y=936.9000244140625 | size=1 | links=#47466(auto in water resque route;Teldrassil;597):5 #47472(auto in water resque route;Teldrassil;603):6 c3607.1:33
+#47472 | auto in water resque route;Teldrassil;603§auto im wasser rettung route;Teldrassil;603§auto in water resque route;Teldrassil;603 | x=8645.172875723118 y=938.3995281911712 | size=1 | links=#47467(auto in water resque route;Rut'theran Village;Teldrassil;598):6 #47508(auto in water resque route;Teldrassil;639):15
+#47479 | auto in water resque route;Teldrassil;610§auto im wasser rettung route;Teldrassil;610§auto in water resque route;Teldrassil;610 | x=8653.100080062912 y=980.9107499152996 | size=1 | links=#47480(auto in water resque route;Teldrassil;611):7 c3607.1:12
+#47480 | auto in water resque route;Teldrassil;611§auto im wasser rettung route;Teldrassil;611§auto in water resque route;Teldrassil;611 | x=8646.167567868419 y=983.4856949347623 | size=1 | links=#47479(auto in water resque route;Teldrassil;610):7 #47481(auto in water resque route;Teldrassil;612):10
+#47481 | auto in water resque route;Teldrassil;612§auto im wasser rettung route;Teldrassil;612§auto in water resque route;Teldrassil;612 | x=8636.065930009834 y=987.6451787197636 | size=1 | links=#47480(auto in water resque route;Teldrassil;611):10 #47482(auto in water resque route;Teldrassil;613):10
+#47482 | auto in water resque route;Teldrassil;613§auto im wasser rettung route;Teldrassil;613§auto in water resque route;Teldrassil;613 | x=8625.56812537119 y=990.2201237392264 | size=1 | links=#47481(auto in water resque route;Teldrassil;612):10 #47483(auto in water resque route;Teldrassil;614):9
+#47483 | auto in water resque route;Teldrassil;614§auto im wasser rettung route;Teldrassil;614§auto in water resque route;Teldrassil;614 | x=8616.852974976791 y=993.1911713613989 | size=1 | links=#47482(auto in water resque route;Teldrassil;613):9 #47484(auto in water resque route;Teldrassil;615):10
+#47484 | auto in water resque route;Teldrassil;615§auto im wasser rettung route;Teldrassil;615§auto in water resque route;Teldrassil;615 | x=8606.35517568626 y=995.5680009021569 | size=1 | links=#47483(auto in water resque route;Teldrassil;614):10 #47485(auto in water resque route;Teldrassil;616):8
+#47485 | auto in water resque route;Teldrassil;616§auto im wasser rettung route;Teldrassil;616§auto in water resque route;Teldrassil;616 | x=8598.630394108995 y=997.9448732278147 | size=1 | links=#47484(auto in water resque route;Teldrassil;615):8 #47486(auto in water resque route;Teldrassil;617):8
+#47486 | auto in water resque route;Teldrassil;617§auto im wasser rettung route;Teldrassil;617§auto in water resque route;Teldrassil;617 | x=8590.113300364063 y=999.7275274720581 | size=1 | links=#47485(auto in water resque route;Teldrassil;616):8 #47487(auto in water resque route;Teldrassil;618):9
+#47487 | auto in water resque route;Teldrassil;618§auto im wasser rettung route;Teldrassil;618§auto in water resque route;Teldrassil;618 | x=8581.002009930166 y=1000.519818247277 | size=1 | links=#47486(auto in water resque route;Teldrassil;617):9 #47488(auto in water resque route;Teldrassil;619):11
+#47488 | auto in water resque route;Teldrassil;619§auto im wasser rettung route;Teldrassil;619§auto in water resque route;Teldrassil;619 | x=8569.513852518725 y=1003.292814568095 | size=1 | links=#47487(auto in water resque route;Teldrassil;618):11 #47489(auto in water resque route;Teldrassil;620):9
+#47489 | auto in water resque route;Teldrassil;620§auto im wasser rettung route;Teldrassil;620§auto in water resque route;Teldrassil;620 | x=8560.204489391022 y=1004.877374726084 | size=1 | links=#47488(auto in water resque route;Teldrassil;619):9 #47490(auto in water resque route;Teldrassil;621):11
+#47490 | auto in water resque route;Teldrassil;621§auto im wasser rettung route;Teldrassil;621§auto in water resque route;Teldrassil;621 | x=8548.914399325273 y=1005.867738195108 | size=1 | links=#47489(auto in water resque route;Teldrassil;620):11 #47491(auto in water resque route;Teldrassil;622):9
+#47491 | auto in water resque route;Teldrassil;622§auto im wasser rettung route;Teldrassil;622§auto in water resque route;Teldrassil;622 | x=8540.199248930872 y=1009.829192071204 | size=1 | links=#47490(auto in water resque route;Teldrassil;621):9 #47492(auto in water resque route;Teldrassil;623):10
+#47492 | auto in water resque route;Teldrassil;623§auto im wasser rettung route;Teldrassil;623§auto in water resque route;Teldrassil;623 | x=8530.097605724175 y=1012.998333779632 | size=1 | links=#47491(auto in water resque route;Teldrassil;622):10 #47493(auto in water resque route;Teldrassil;624):11
+#47493 | auto in water resque route;Teldrassil;624§auto im wasser rettung route;Teldrassil;624§auto in water resque route;Teldrassil;624 | x=8525.343890487478 y=1023.099998378778 | size=1 | links=#47492(auto in water resque route;Teldrassil;623):11 #47494(auto in water resque route;Teldrassil;625):14
+#47494 | auto in water resque route;Teldrassil;625§auto im wasser rettung route;Teldrassil;625§auto in water resque route;Teldrassil;625 | x=8530.69182380559 y=1036.568834595256 | size=1 | links=#47493(auto in water resque route;Teldrassil;624):14 #47495(auto in water resque route;Teldrassil;626):12
+#47495 | auto in water resque route;Teldrassil;626§auto im wasser rettung route;Teldrassil;626§auto in water resque route;Teldrassil;626 | x=8542.378043214612 y=1040.728339772707 | size=1 | links=#47494(auto in water resque route;Teldrassil;625):12 #47496(auto in water resque route;Teldrassil;627):16
+#47496 | auto in water resque route;Teldrassil;627§auto im wasser rettung route;Teldrassil;627§auto in water resque route;Teldrassil;627 | x=8558.817975186275 y=1042.312921323146 | size=1 | links=#47495(auto in water resque route;Teldrassil;626):16 #47497(auto in water resque route;Teldrassil;628):19
+#47497 | auto in water resque route;Teldrassil;628§auto im wasser rettung route;Teldrassil;628§auto in water resque route;Teldrassil;628 | x=8578.228992216898 y=1041.322579246572 | size=1 | links=#47496(auto in water resque route;Teldrassil;627):19 #47498(auto in water resque route;Teldrassil;629):12
+#47498 | auto in water resque route;Teldrassil;629§auto im wasser rettung route;Teldrassil;629§auto in water resque route;Teldrassil;629 | x=8590.707518445479 y=1038.351510231949 | size=1 | links=#47497(auto in water resque route;Teldrassil;628):12 #47499(auto in water resque route;Teldrassil;630):12
+#47499 | auto in water resque route;Teldrassil;630§auto im wasser rettung route;Teldrassil;630§auto in water resque route;Teldrassil;630 | x=8602.393743202612 y=1034.191983662048 | size=1 | links=#47498(auto in water resque route;Teldrassil;629):12 #47500(auto in water resque route;Teldrassil;631):13
+#47500 | auto in water resque route;Teldrassil;631§auto im wasser rettung route;Teldrassil;631§auto in water resque route;Teldrassil;631 | x=8615.268393426351 y=1030.626696566011 | size=1 | links=#47499(auto in water resque route;Teldrassil;630):13 #47501(auto in water resque route;Teldrassil;632):11
+#47501 | auto in water resque route;Teldrassil;632§auto im wasser rettung route;Teldrassil;632§auto in water resque route;Teldrassil;632 | x=8626.558472795878 y=1027.061409469974 | size=1 | links=#47500(auto in water resque route;Teldrassil;631):11 #47502(auto in water resque route;Teldrassil;633):9
+#47502 | auto in water resque route;Teldrassil;633§auto im wasser rettung route;Teldrassil;633§auto in water resque route;Teldrassil;633 | x=8634.877483150778 y=1021.515395435889 | size=1 | links=#47501(auto in water resque route;Teldrassil;632):9 #47503(auto in water resque route;Teldrassil;634):14
+#47503 | auto in water resque route;Teldrassil;634§auto im wasser rettung route;Teldrassil;634§auto in water resque route;Teldrassil;634 | x=8648.148289458351 y=1015.969402794254 | size=1 | links=#47502(auto in water resque route;Teldrassil;633):14 #47504(auto in water resque route;Teldrassil;635):11
+#47504 | auto in water resque route;Teldrassil;635§auto im wasser rettung route;Teldrassil;635§auto in water resque route;Teldrassil;635 | x=8657.853797973665 y=1010.225316066364 | size=1 | links=#47503(auto in water resque route;Teldrassil;634):11 #47505(auto in water resque route;Teldrassil;636):13
+#47505 | auto in water resque route;Teldrassil;636§auto im wasser rettung route;Teldrassil;636§auto in water resque route;Teldrassil;636 | x=8671.322655582591 y=1007.452319745546 | size=1 | links=#47504(auto in water resque route;Teldrassil;635):13 #47506(auto Teldrassil;637):10
+#47506 | auto Teldrassil;637§auto Teldrassil;637§auto Teldrassil;637 | x=8680.235862626458 y=1001.312087630047 | size=1 | links=#14023(auto Teldrassil;283):14 #47505(auto in water resque route;Teldrassil;636):10
+#47507 | auto in water resque route;Teldrassil;638§auto im wasser rettung route;Teldrassil;638§auto in water resque route;Teldrassil;638 | x=8648.544402757285 y=966.2534133586424 | size=1 | links=#47508(auto in water resque route;Teldrassil;639):12 c3607.1:9
+#47508 | auto in water resque route;Teldrassil;639§auto im wasser rettung route;Teldrassil;639§auto in water resque route;Teldrassil;639 | x=8645.771406436468 y=954.1710432138981 | size=1 | links=#47472(auto in water resque route;Teldrassil;603):15 #47507(auto in water resque route;Teldrassil;638):12
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c883.1 | links=#17211(auto Teldrassil;339):16 c2011.1:41
+c1984.1 | links=#718(auto Teldrassil;19):43
+c1985.1 | links=c1985.2:58 c1985.3:80
+c1986.1 | links=#11675(auto inside shadowthread cave;Teldrassil;240):39
+c1988.1 | links=#5153(auto Teldrassil;100):24 #14929(auto Teldrassil;299):12
+c1989.1 | links=c1985.3:77
+c1993.1 | links=#11876(auto Inside Ban'ethil Barrow Den;Teldrassil;244):11 o2741.1:7
+c1994.1 | links=#5562(auto inside shadowthread cave;Teldrassil;106):33 o4406.4:9 o4406.5:5 o4406.6:7
+c1995.1 | links=#4337(auto Teldrassil;82):13 #13366(auto Teldrassil;274):18
+c1996.1 | links=#3092(auto Teldrassil;60):41 c14430.1:15
+c1997.1 | links=#16208(auto Teldrassil;319):58 c2033.2:54
+c1999.1 | links=#10613(auto Teldrassil;219):50
+c2000.1 | links=#2641(auto Teldrassil;55):30
+c2001.1 | links=#22880(auto Teldrassil;457):17
+c2002.1 | links=#5806(auto Inside Fel Rock;Teldrassil;112):12 #17101(central location;Fel Rock;Teldrassil):9 #19701(auto Inside Fel Rock;Teldrassil;390):16 c2003.1:12
+c2003.1 | links=c2002.1:12
+c2004.1 | links=#3565(auto Inside Fel Rock;Teldrassil;71):14
+c2005.1 | links=#2204(auto Inside Fel Rock;Teldrassil;48):15 c14432.1:10
+c2006.1 | links=c2007.2:42
+c2007.1 | links=#6261(auto Teldrassil;121):41
+c2009.1 | links=c2009.2:37
+c2010.1 | links=c2011.3:14
+c2011.1 | links=#13644(auto Teldrassil;279):12 c883.1:41 c2011.3:23
+c2012.1 | links=#13184(auto Teldrassil;269):29 c2012.2:14
+c2013.1 | links=#9573(auto Teldrassil;197):29
+c2014.1 | links=c2014.2:30
+c2015.1 | links=c2018.1:22 c2017.2:34
+c2017.1 | links=c2018.1:30
+c2018.1 | links=#13346(auto Teldrassil;273):59 c2015.1:22 c2017.1:30 c2015.3:34
+c2019.1 | links=c2021.3:16
+c2020.1 | links=#9285(auto Teldrassil;189):43 c2020.2:20 c2019.3:19
+c2021.1 | links=c2021.3:17
+c2022.1 | links=#22873(auto Teldrassil;455):15 c2022.2:45
+c2025.1 | links=#170(auto Teldrassil;5):35 #26577(auto Teldrassil;544):19 c2025.3:101
+c2027.1 | links=#20677(auto Teldrassil;416):37 c2027.2:45 c2029.3:51
+c2029.1 | links=#13149(auto Teldrassil;268):25 #25485(auto Teldrassil;520):40
+c2030.1 | links=#1438(auto Teldrassil;31):14 #14305(auto Teldrassil;288):22 c2030.3:32
+c2031.1 | links=#1310(auto Teldrassil;29):84 c2031.2:76
+c2032.1 | links=#26560(auto Teldrassil;543):56 c1989.2:78
+c2033.1 | links=#2565(auto Teldrassil;54):15 #4886(auto Teldrassil;93):46
+c2034.1 | links=#12017(auto Teldrassil;248):29 c2001.2:59
+c2038.1 | links=#3427(auto Inside Fel Rock;Teldrassil;69):17
+c2039.1 | links=#27111(auto Teldrassil;553):16
+c2041.1 | links=#21853(auto Teldrassil;442):9
+c2042.1 | links=#7120(auto Teldrassil;138):112 c2042.2:53
+c2043.1 | links=#12230(auto Teldrassil;252):41 #27847(auto Teldrassil;572):135
+c2077.1 | links=#23253(central location;Aldrassil;Teldrassil):8
+c2078.1 | links=#22144(outside;house;Dolanaar):4
+c2079.1 | links=#65(spawn location;Shadowglen;Teldrassil):18 #11421(auto Teldrassil;232):54
+c2080.1 | links=#6467(auto Teldrassil;123):42 #6594(auto Teldrassil;126):12
+c2081.1 | links=#16959(auto Teldrassil;332):14
+c2082.1 | links=#4460(auto Teldrassil;84):36
+c2083.1 | links=#1221(auto Teldrassil;26):12
+c2107.1 | links=#9785(auto Teldrassil;202):10
+c2150.1 | links=#4998(auto Teldrassil;95):21
+c2151.1 | links=#1772(auto Teldrassil;37):37 #4474(auto Teldrassil;85):2 #24029(auto Teldrassil;485):33 c10604.1:3 c10606.1:2
+c2152.1 | links=#18882(auto Teldrassil;367):17 c2162.1:6
+c2155.1 | links=#608(auto Teldrassil;14):47 #24494(auto Teldrassil;496):61 c6287.1:44
+c2162.1 | links=#18882(auto Teldrassil;367):19 c2152.1:6
+c2166.1 | links=#13527(auto Teldrassil;277):14
+c2852.1 | links=c2014.2:15 c2852.2:2 c2852.3:5
+c3306.1 | links=#25319(auto Teldrassil;515):7 #25984(auto Teldrassil;529):5 c3601.1:11
+c3514.1 | links=#16803(auto outside;ramp up;Teldrassil;327):18
+c3515.1 | links=#20217(auto Teldrassil;405):27 c3602.1:10
+c3519.1 | links=#7945(well;four;The Oracle Glade;Teldrassil):10 #19157(central location;The Oracle Glade;Teldrassil):84
+c3535.1 | links=#5273(auto Teldrassil;102):19 #19791(auto Teldrassil;396):47
+c3567.1 | links=#27745(auto Teldrassil;569):16 c3571.2:7
+c3568.1 | links=#3325(auto Teldrassil;63):22
+c3587.1 | links=#21659(auto Teldrassil;438):12 c3590.1:5
+c3588.1 | links=c3591.1:13
+c3589.1 | links=#5237(auto Teldrassil;101):21
+c3590.1 | links=c3587.1:5
+c3591.1 | links=#3898(auto Teldrassil;77):16 c3588.1:13 c3592.1:17
+c3592.1 | links=c3591.1:17
+c3593.1 | links=c3594.1:7
+c3594.1 | links=#18594(auto Teldrassil;360):23 c3593.1:7
+c3595.1 | links=#18951(auto Teldrassil;374):15
+c3596.1 | links=#19522(auto outside;ramp up;Teldrassil;386):14 c3597.1:5
+c3597.1 | links=c3596.1:5
+c3598.1 | links=#16959(auto Teldrassil;332):8
+c3599.1 | links=#20922(auto Teldrassil;422):19 #27482(auto Teldrassil;562):6
+c3600.1 | links=#14568(down;house;Dolanaar):10 #15797(auto Teldrassil;312):4
+c3601.1 | links=c3306.1:11 c10051.1:5
+c3602.1 | links=#20217(auto Teldrassil;405):37 #28001(auto Teldrassil;577):40 c3515.1:10
+c3603.1 | links=c3604.1:6
+c3604.1 | links=#26849(auto Teldrassil;547):34 c3603.1:6
+c3605.1 | links=#21960(auto Teldrassil;446):5
+c3606.1 | links=#5146(auto Teldrassil;99):21 #28404(auto Teldrassil;583):22
+c3607.1 | links=#26029(auto Teldrassil;531):27 #47467(auto in water resque route;Rut'theran Village;Teldrassil;598):33 #47479(auto in water resque route;Teldrassil;610):12 #47507(auto in water resque route;Teldrassil;638):9
+c3608.1 | links=#2696(auto Teldrassil;57):5 #20521(auto Teldrassil;410):5
+c3609.1 | links=#20922(auto Teldrassil;422):7
+c3610.1 | links=#16959(auto Teldrassil;332):9
+c3611.1 | links=#20922(auto Teldrassil;422):21 #28001(auto Teldrassil;577):32
+c3612.1 | links=c3613.1:7
+c3613.1 | links=c3612.1:7
+c3614.1 | links=#7129(auto Teldrassil;139):5 #16416(auto Teldrassil;321):6
+c3838.1 | links=#20419(auto Teldrassil;408):12
+c4265.1 | links=c6286.1:3
+c4266.1 | links=#14568(down;house;Dolanaar):9 c6094.1:13
+c6091.1 | links=#5237(auto Teldrassil;101):26
+c6094.1 | links=c4266.1:13
+c6128.1 | links=#13820(auto Teldrassil;280):13
+c6286.1 | links=#19912(auto Teldrassil;401):10 c4265.1:3
+c6287.1 | links=#19596(auto Teldrassil;387):17 c2155.1:44
+c6491.1 | links=#19794(auto Teldrassil;397):34 #20217(auto Teldrassil;405):56
+c6736.1 | links=#24470(auto Teldrassil;495):13
+c6780.1 | links=#469(auto Teldrassil;11):5
+c6781.1 | links=#24470(auto Teldrassil;495):12
+c6909.1 | links=#15154(auto Teldrassil;301):44
+c7317.1 | links=#21640(auto Inside Ban'ethil Barrow Den;Teldrassil;437):7
+c7318.1 | links=#5499(auto Inside Ban'ethil Barrow Den;Teldrassil;104):9 c2009.35:27
+c7319.1 | links=#24121(auto Teldrassil;486):59
+c7907.1 | links=#1458(auto Teldrassil;33):11 #13487(auto Teldrassil;276):13
+c7916.1 | links=#8728(auto inside;Teldrassil;167):3 #15460(auto inside;Teldrassil;307):14
+c8583.1 | links=#331(auto Teldrassil;9):9
+c8584.1 | links=#11611(auto Teldrassil;236):17
+c10051.1 | links=c3601.1:5
+c10118.1 | links=#18793(centralpoint;Rut'theran Village;Teldrassil):6 #27439(auto Teldrassil;561):16
+c10604.1 | links=c2151.1:3
+c10606.1 | links=c2151.1:2
+c12429.1 | links=#19794(auto Teldrassil;397):30 #20974(auto Teldrassil;423):43
+c14428.1 | links=#15452(auto Teldrassil;306):9
+c14429.1 | links=#1970(auto Teldrassil;43):18 #14392(auto Teldrassil;291):22
+c14430.1 | links=c1996.1:15
+c14431.1 | links=#67(auto Teldrassil;2):62 c2018.3:10
+c14432.1 | links=#3565(auto Inside Fel Rock;Teldrassil;71):10 c2005.1:10
+o2739.1 | links=#26195(class quest;druid;Ban'ethil Barrow Den;Teldrassil):12
+o2740.1 | links=#9035(quest target;euest;Ban'ethil Barrow Den):5
+o2741.1 | links=c1993.1:7
+o4406.1 | links=o4406.3:6
+o142958.1 | links=#9271(auto Teldrassil;186):5
+c1984.2 | links=#12061(auto Teldrassil;250):46 #22878(auto Teldrassil;456):56
+c1985.2 | links=#27559(auto Teldrassil;564):106 c1985.1:58 c1985.3:68
+c1986.2 | links=#19820(auto inside shadowthread cave;Teldrassil;398):4
+c1988.2 | links=#3980(Grell;quest target;Shadowglen;Teldrassil):21 #8020(auto Teldrassil;153):35 c1988.3:25
+c1989.2 | links=#26560(auto Teldrassil;543):44 c2032.1:78 c1989.3:49
+c1995.2 | links=#6321(auto Teldrassil;122):36 c2042.2:74 c2042.3:80
+c1997.2 | links=c883.3:66
+c1999.2 | links=#2475(auto Teldrassil;53):33 #7764(auto Teldrassil;150):38
+c2000.2 | links=#10344(auto Teldrassil;212):22
+c2001.2 | links=#6481(auto Teldrassil;124):55 #16497(auto Teldrassil;324):48 c2034.1:59
+c2002.2 | links=#7104(auto Inside Fel Rock;Teldrassil;137):22 c2003.2:13
+c2003.2 | links=c2002.2:13 c2003.3:19
+c2004.2 | links=#19301(auto Inside Fel Rock;Teldrassil;377):18 c2038.2:8
+c2005.2 | links=#9056(auto Inside Fel Rock;Teldrassil;179):17 #19301(auto Inside Fel Rock;Teldrassil;377):12
+c2006.2 | links=c2007.2:6 c2006.3:23
+c2007.2 | links=c2006.1:42 c2006.2:6
+c2009.2 | links=#27938(auto Teldrassil;574):51 c2009.1:37
+c2010.2 | links=#14293(auto Teldrassil;287):27 #27938(auto Teldrassil;574):27
+c2011.2 | links=#7500(auto Teldrassil;146):29 #13644(auto Teldrassil;279):38
+c2012.2 | links=#9573(auto Teldrassil;197):26 c2012.1:14 c2012.3:25
+c2013.2 | links=#27111(auto Teldrassil;553):13
+c2014.2 | links=c2014.1:30 c2852.1:15
+c2015.2 | links=#26857(auto Teldrassil;549):36
+c2017.2 | links=c2015.1:34
+c2018.2 | links=#67(auto Teldrassil;2):63
+c2019.2 | links=#27529(auto Teldrassil;563):26
+c2020.2 | links=#14969(auto Teldrassil;300):17 c2020.1:20 c2021.3:12
+c2021.2 | links=#17200(auto Teldrassil;338):12
+c2022.2 | links=c2022.1:45 c2022.3:54
+c2025.2 | links=#18666(auto Teldrassil;363):30
+c2027.2 | links=c2027.1:45
+c2029.2 | links=#6787(auto Teldrassil;131):44 #9506(auto Teldrassil;196):48 #18764(auto Teldrassil;365):73 c2029.3:95
+c2030.2 | links=#10085(Blackmoss the Fetid;Wellspring River;Teldrassil):37
+c2031.2 | links=c2031.1:76
+c2032.2 | links=c2032.3:55
+c2033.2 | links=#5030(auto Teldrassil;97):132 #9606(auto Teldrassil;199):14 c1997.1:54
+c2034.2 | links=#24590(auto Teldrassil;499):32
+c2038.2 | links=#23027(auto Inside Fel Rock;Teldrassil;463):8 c2004.2:8
+c2041.2 | links=#3694(auto Teldrassil;74):39
+c2042.2 | links=c2042.1:53 c1995.2:74
+c2852.2 | links=c2852.1:2
+c3571.2 | links=c3567.1:7
+c6491.2 | links=#24757(auto Teldrassil;503):17
+c7319.2 | links=c2001.3:40 c2034.3:21
+o4406.2 | links=o4406.6:4
+c883.3 | links=#22797(auto Teldrassil;454):51 c1997.2:66 c2000.3:78
+c1420.3 | links=c2027.3:19
+c1984.3 | links=#718(auto Teldrassil;19):12
+c1985.3 | links=#22878(auto Teldrassil;456):44 c1985.1:80 c1989.1:77 c1985.2:68
+c1986.3 | links=#11675(auto inside shadowthread cave;Teldrassil;240):7 #20906(auto inside shadowthread cave;Teldrassil;420):13
+c1988.3 | links=c1988.2:25
+c1989.3 | links=#25152(auto Teldrassil;513):69 c1989.2:49
+c1996.3 | links=#18932(auto Teldrassil;373):52
+c1997.3 | links=c2033.3:16
+c2000.3 | links=c883.3:78
+c2001.3 | links=#4789(auto Teldrassil;91):30 #12017(auto Teldrassil;248):42 c7319.2:40
+c2003.3 | links=c2003.2:19
+c2004.3 | links=#5560(auto Inside Fel Rock;Teldrassil;105):29 #19665(auto Inside Fel Rock;Teldrassil;389):4
+c2005.3 | links=#3565(auto Inside Fel Rock;Teldrassil;71):18
+c2006.3 | links=#24215(Gnarlpine Gardener;quest target;Teldrassil):19 #26327(auto Teldrassil;537):38 c2006.2:23 c2007.3:35
+c2007.3 | links=#28511(auto Teldrassil;584):24 c2006.3:35
+c2009.3 | links=#16288(auto Teldrassil;320):83
+c2010.3 | links=#27938(auto Teldrassil;574):54
+c2011.3 | links=c2010.1:14 c2011.1:23
+c2012.3 | links=c2012.2:25
+c2013.3 | links=#27111(auto Teldrassil;553):12 c2014.3:4
+c2014.3 | links=c2013.3:4
+c2015.3 | links=c2018.1:34
+c2017.3 | links=#26857(auto Teldrassil;549):38
+c2018.3 | links=c14431.1:10
+c2019.3 | links=c2020.1:19
+c2020.3 | links=#24413(auto Teldrassil;493):51 #24506(auto Teldrassil;497):33
+c2021.3 | links=c2019.1:16 c2021.1:17 c2020.2:12
+c2022.3 | links=#5290(auto Teldrassil;103):39 c2022.2:54
+c2025.3 | links=#13005(auto Teldrassil;262):62 c2025.1:101
+c2027.3 | links=#13033(auto Teldrassil;264):19 #22630(auto Teldrassil;452):34 c1420.3:19
+c2029.3 | links=c2027.1:51 c2029.2:95
+c2030.3 | links=c2030.1:32
+c2031.3 | links=#6155(auto Teldrassil;120):24 c2032.3:45
+c2032.3 | links=#6155(auto Teldrassil;120):37 #25152(auto Teldrassil;513):45 c2032.2:55 c2031.3:45
+c2033.3 | links=#27170(auto Teldrassil;555):30 c1997.3:16
+c2034.3 | links=c7319.2:21
+c2038.3 | links=#8743(auto Inside Fel Rock;Teldrassil;168):25
+c2042.3 | links=#8157(auto Teldrassil;154):55 c1995.2:80
+c2043.3 | links=#14707(auto Teldrassil;294):50 #27568(auto Teldrassil;565):40
+c2152.3 | links=#14350(central location;Ban'ethil Hollow;Teldrassil):25
+c2852.3 | links=#24804(auto Teldrassil;506):14 c2852.1:5
+c26309.3 | links=#718(auto Teldrassil;19):5
+o4406.3 | links=o4406.1:6 o4406.4:4
+o1673.4 | links=#23185(auto Teldrassil;467):38
+o4406.4 | links=c1994.1:9 o4406.3:4
+o4406.5 | links=c1994.1:5
+o4406.6 | links=c1994.1:7 o4406.2:4
+c2042.9 | links=#3394(auto Teldrassil;67):40
+c2010.12 | links=c2009.35:27 c2010.51:27
+c2011.18 | links=c2011.24:15 c2009.35:12
+c2011.21 | links=#20549(euest;Ban'ethil Barrow Den;Teldrassil):7 #27284(auto Inside Ban'ethil Barrow Den;Teldrassil;557):22
+o1673.22 | links=#24254(auto Teldrassil;488):19
+c2011.24 | links=c2011.18:15
+c2011.25 | links=#5499(auto Inside Ban'ethil Barrow Den;Teldrassil;104):17 c2010.51:21
+o1673.30 | links=#4744(auto Teldrassil;89):59 o1673.31:57
+o1673.31 | links=o1673.30:57
+c2009.35 | links=c7318.1:27 c2010.12:27 c2011.18:12
+c2010.51 | links=c2010.12:27 c2011.25:21
+o1673.58 | links=#3394(auto Teldrassil;67):48
+o1673.67 | links=#1727(auto Teldrassil;36):63

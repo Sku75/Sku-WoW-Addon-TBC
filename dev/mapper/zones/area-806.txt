@@ -1,0 +1,6 @@
+Zone areaId 806 — eine Zeile pro Wegpunkt; Links inline.
+
+#4284 | auto South Gate Outpost;1§auto Südtoraußenposten;1§auto Avant-poste de la porte Sud;1 | x=-5559.2001953125 y=-2349.5 | size=1 | links=#10266(auto South Gate Pass;1):126 #11097(auto South Gate Outpost;3):42
+#8707 | auto South Gate Outpost;2§auto Südtoraußenposten;2§auto Avant-poste de la porte Sud;2 | x=-5539.5 y=-2396.800048828125 | size=1 | links=#11097(auto South Gate Outpost;3):10 #12526(passage;South Gate Outpost;Dun Morogh;to;Loch Modan):46
+#11097 | auto South Gate Outpost;3§auto Südtoraußenposten;3§auto Avant-poste de la porte Sud;3 | x=-5537.5 y=-2386.400146484375 | size=1 | links=#3997(auto Dun Morogh;39):10 #4284(auto South Gate Outpost;1):42 #8707(auto South Gate Outpost;2):10
+#12526 | passage;South Gate Outpost;Dun Morogh;to;Loch Modan§passage;Südtoraußenposten;Dun Morogh;zum;Loch Modan§passage;Avant-poste de la porte Sud;Dun Morogh;vers;Loch Modan | x=-5556.80029296875 y=-2439.60009765625 | size=1 | links=#8596(passage;from;South Gate Pass;Loch Modan;to;South Gate Pass;Dun Morogh):10 #8707(auto South Gate Outpost;2):46

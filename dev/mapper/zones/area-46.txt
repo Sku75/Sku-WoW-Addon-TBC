@@ -1,0 +1,743 @@
+Zone areaId 46 — eine Zeile pro Wegpunkt; Links inline.
+
+#123 | auto Burning Steppes;1§auto Brennende Steppe;1§auto Steppes ardentes;1 | x=-7999.7001953125 y=-2078 | size=1 | links=#23487(auto Burning Steppes;287):43 #25923(auto Burning Steppes;315):47
+#139 | auto Burning Steppes;2§auto Brennende Steppe;2§auto Steppes ardentes;2 | x=-7516.7001953125 y=-2181.199951171875 | size=1 | links=#20187(auto Burning Steppes;247):8 #27274(auto Burning Steppes;331):9
+#145 | auto Burning Steppes;3§auto Brennende Steppe;3§auto Steppes ardentes;3 | x=-7911.7001953125 y=-2112 | size=1 | links=#4039(auto Burning Steppes;53):28 #15298(auto Burning Steppes;180):60 #25291(auto Burning Steppes;307):39
+#146 | auto Burning Steppes;4§auto Brennende Steppe;4§auto Steppes ardentes;4 | x=-7998.89990234375 y=-952.4000244140625 | size=1 | links=#13598(auto Burning Steppes;155):64 #21840(auto Burning Steppes;268):47
+#405 | auto Burning Steppes;5§auto Brennende Steppe;5§auto Steppes ardentes;5 | x=-7775 y=-2514.60009765625 | size=1 | links=#6455(auto Burning Steppes;82):8 #13885(auto Burning Steppes;159):6
+#477 | auto Burning Steppes;6§auto Brennende Steppe;6§auto Steppes ardentes;6 | x=-7642.10009765625 y=-656.7999877929688 | size=1 | links=#4198(auto Burning Steppes;55):6 #24840(auto Burning Steppes;301):5
+#488 | auto Burning Steppes;7§auto Brennende Steppe;7§auto Steppes ardentes;7 | x=-7715.7001953125 y=-1436 | size=1 | links=#17571(auto Burning Steppes;202):5 #17609(auto Burning Steppes;204):4
+#493 | auto Burning Steppes;8§auto Brennende Steppe;8§auto Steppes ardentes;8 | x=-7654.10009765625 y=-712.1000366210938 | size=1 | links=#5531(auto Burning Steppes;74):10 #6002(auto Burning Steppes;78):9
+#631 | auto Burning Steppes;9§auto Brennende Steppe;9§auto Steppes ardentes;9 | x=-7681.7001953125 y=-2964.199951171875 | size=5 | links=#4712(auto Burning Steppes;61):35 #24269(auto Burning Steppes;294):73 c7047.6:14
+#658 | auto Burning Steppes;10§auto Brennende Steppe;10§auto Steppes ardentes;10 | x=-7811.7001953125 y=-1850.599975585938 | size=1 | links=#12756(auto Burning Steppes;143):8 c7037.6:4
+#710 | auto Burning Steppes;11§auto Brennende Steppe;11§auto Steppes ardentes;11 | x=-7544.30029296875 y=-2175.900146484375 | size=1 | links=#15346(auto Burning Steppes;181):8 #20817(auto Burning Steppes;252):9
+#852 | auto Burning Steppes;12§auto Brennende Steppe;12§auto Steppes ardentes;12 | x=-8489.7998046875 y=-2552.5 | size=1 | links=#13919(auto Burning Steppes;160):3 #18214(auto Burning Steppes;215):4
+#1035 | auto Burning Steppes;13§auto Brennende Steppe;13§auto Steppes ardentes;13 | x=-7823.39990234375 y=-2569.10009765625 | size=1 | links=#4895(auto Burning Steppes;65):5 #26153(auto Burning Steppes;320):4
+#1075 | auto Burning Steppes;14§auto Brennende Steppe;14§auto Steppes ardentes;14 | x=-7787.30029296875 y=-719.5 | size=1 | links=#15975(auto Burning Steppes;190):36 #26478(auto Burning Steppes;322):41
+#1218 | auto Burning Steppes;15§auto Brennende Steppe;15§auto Steppes ardentes;15 | x=-7860.30029296875 y=-2606.60009765625 | size=1 | links=#8124(auto Burning Steppes;99):20 #24540(auto Burning Steppes;296):10
+#1270 | auto Burning Steppes;16§auto Brennende Steppe;16§auto Steppes ardentes;16 | x=-7607.80029296875 y=-1106.900024414063 | size=1 | links=#7005(auto Burning Steppes;88):9 #24889(auto Burning Steppes;302):5
+#1276 | auto Burning Steppes;17§auto Brennende Steppe;17§auto Steppes ardentes;17 | x=-7996.2001953125 y=-2168.5 | size=1 | links=#1352(auto Burning Steppes;23):28 #4840(auto Burning Steppes;64):39
+#1291 | auto Burning Steppes;18§auto Brennende Steppe;18§auto Steppes ardentes;18 | x=-7551.39990234375 y=-1082.800048828125 | size=1 | links=#9259(auto Burning Steppes;108):3 #13813(auto Burning Steppes;157):3
+#1293 | auto Burning Steppes;19§auto Brennende Steppe;19§auto Steppes ardentes;19 | x=-7644.5 y=-635.6000366210938 | size=1 | links=#2535(auto Burning Steppes;31):10 c14436.1:5 c14437.1:6
+#1303 | auto Burning Steppes;20§auto Brennende Steppe;20§auto Steppes ardentes;20 | x=-7569.80029296875 y=-1096.599975585938 | size=1 | links=#24819(auto Burning Steppes;300):3 #25058(auto Burning Steppes;304):4
+#1337 | auto Burning Steppes;21§auto Brennende Steppe;21§auto Steppes ardentes;21 | x=-8661.2998046875 y=-2579.300048828125 | size=1 | links=#4541(passage;from;Redridge Mountains;to;Searing Gorge):7 #11539(auto Burning Steppes;133):58
+#1345 | auto Burning Steppes;22§auto Brennende Steppe;22§auto Steppes ardentes;22 | x=-7273.80029296875 y=-911.7000122070312 | size=1 | links=#3578(auto Burning Steppes;47):24 #6807(auto Burning Steppes;84):19
+#1352 | auto Burning Steppes;23§auto Brennende Steppe;23§auto Steppes ardentes;23 | x=-7973.60009765625 y=-2150.60009765625 | size=1 | links=#1276(auto Burning Steppes;17):28 #25923(auto Burning Steppes;315):33
+#1565 | auto Burning Steppes;24§auto Brennende Steppe;24§auto Steppes ardentes;24 | x=-8440.7998046875 y=-2552.60009765625 | size=1 | links=#2725(auto Burning Steppes;33):3 #21898(auto Burning Steppes;269):4
+#1909 | auto Burning Steppes;25§auto Brennende Steppe;25§auto Steppes ardentes;25 | x=-8080.89990234375 y=-2874.60009765625 | size=5 | links=#20249(auto Burning Steppes;249):79 #25452(auto Burning Steppes;310):70 c9691.1:39 c7040.2:51 c7040.4:44 o181098.52:46
+#1948 | auto Burning Steppes;26§auto Brennende Steppe;26§auto Steppes ardentes;26 | x=-7780 y=-2546.900146484375 | size=1 | links=#7753(auto Burning Steppes;95):11 #20044(auto Burning Steppes;246):8 c7034.16:7
+#1994 | auto Burning Steppes;27§auto Brennende Steppe;27§auto Steppes ardentes;27 | x=-8323.2001953125 y=-2736.60009765625 | size=1 | links=#6668(auto Burning Steppes;83):29 #16031(auto Burning Steppes;192):30
+#2002 | auto Burning Steppes;28§auto Brennende Steppe;28§auto Steppes ardentes;28 | x=-7586.30029296875 y=-1103.599975585938 | size=1 | links=#17967(auto Burning Steppes;209):8 #28057(auto Burning Steppes;342):6
+#2243 | auto Burning Steppes;29§auto Brennende Steppe;29§auto Steppes ardentes;29 | x=-7605.39990234375 y=-1124.599975585938 | size=1 | links=#5378(auto Burning Steppes;69):7 #7005(auto Burning Steppes;88):9
+#2455 | auto Burning Steppes;30§auto Brennende Steppe;30§auto Steppes ardentes;30 | x=-7753.80029296875 y=-1492.5 | size=1 | links=#12924(auto Burning Steppes;145):27 c7027.9:29
+#2535 | auto Burning Steppes;31§auto Brennende Steppe;31§auto Steppes ardentes;31 | x=-7646.39990234375 y=-645.9000244140625 | size=1 | links=#1293(auto Burning Steppes;19):10 #24840(auto Burning Steppes;301):6
+#2710 | auto Burning Steppes;32§auto Brennende Steppe;32§auto Steppes ardentes;32 | x=-7796.5 y=-2698.699951171875 | size=1 | links=#8943(auto Burning Steppes;105):3 #20035(auto Burning Steppes;245):3
+#2725 | auto Burning Steppes;33§auto Brennende Steppe;33§auto Steppes ardentes;33 | x=-8444 y=-2551.300048828125 | size=1 | links=#1565(auto Burning Steppes;24):3 #7343(auto Burning Steppes;91):5
+#2733 | auto Burning Steppes;34§auto Brennende Steppe;34§auto Steppes ardentes;34 | x=-7553.39990234375 y=-2128 | size=1 | links=#12948(auto Burning Steppes;146):39 #25562(auto Burning Steppes;311):33
+#2746 | auto Burning Steppes;35§auto Brennende Steppe;35§auto Steppes ardentes;35 | x=-7520.60009765625 y=-1081.800048828125 | size=1 | links=#5088(auto Burning Steppes;66):4 #18332(auto Burning Steppes;218):4
+#2877 | auto Burning Steppes;36§auto Brennende Steppe;36§auto Steppes ardentes;36 | x=-8034.89990234375 y=-1059.599975585938 | size=1 | links=#9276(auto Burning Steppes;109):44 #13931(auto Burning Steppes;161):38
+#2985 | auto Burning Steppes;37§auto Brennende Steppe;37§auto Steppes ardentes;37 | x=-7414 y=-995.6000366210938 | size=1 | links=#7153(auto Burning Steppes;90):33 #27061(auto Burning Steppes;329):15
+#3031 | auto Burning Steppes;38§auto Brennende Steppe;38§auto Steppes ardentes;38 | x=-7589.7001953125 y=-2835.800048828125 | size=5 | links=#4723(auto Burning Steppes;62):94 #16982(auto Burning Steppes;198):63 #19294(auto Burning Steppes;231):37 c7040.1:52 c7047.8:29 c7040.10:22
+#3060 | auto Burning Steppes;39§auto Brennende Steppe;39§auto Steppes ardentes;39 | x=-7512 y=-1086.5 | size=1 | links=#9758(auto Burning Steppes;115):2 #24797(rescue;waters;down;The Molten Span;Blackrock Mountain):4
+#3169 | auto Burning Steppes;40§auto Brennende Steppe;40§auto Steppes ardentes;40 | x=-7525 y=-1054.700073242188 | size=1 | links=#14291(auto Burning Steppes;168):6 #14641(auto Burning Steppes;171):7
+#3202 | auto Burning Steppes;41§auto Brennende Steppe;41§auto Steppes ardentes;41 | x=-7591.5 y=-2389.699951171875 | size=5 | links=#3317(auto Burning Steppes;44):72 #18981(auto Burning Steppes;224):52
+#3207 | auto Burning Steppes;42§auto Brennende Steppe;42§auto Steppes ardentes;42 | x=-7188.5 y=-907.7999877929688 | size=1 | links=#6965(auto Burning Steppes;87):13 #11914(auto Burning Steppes;136):14
+#3225 | auto Burning Steppes;43§auto Brennende Steppe;43§auto Steppes ardentes;43 | x=-7718.39990234375 y=-1466.200073242188 | size=1 | links=#23304(auto Burning Steppes;285):5 c7029.8:7
+#3317 | auto Burning Steppes;44§auto Brennende Steppe;44§auto Steppes ardentes;44 | x=-7577.7001953125 y=-2460.400146484375 | size=5 | links=#3202(auto Burning Steppes;41):72 #18602(auto Burning Steppes;219):57
+#3356 | auto Burning Steppes;45§auto Brennende Steppe;45§auto Steppes ardentes;45 | x=-7524 y=-1072.700073242188 | size=1 | links=#7467(auto Burning Steppes;93):4 #24487(auto Burning Steppes;295):4
+#3556 | auto Burning Steppes;46§auto Brennende Steppe;46§auto Steppes ardentes;46 | x=-7732.7001953125 y=-1440.5 | size=1 | links=c8979.1:11 c7028.5:12
+#3578 | auto Burning Steppes;47§auto Brennende Steppe;47§auto Steppes ardentes;47 | x=-7298.10009765625 y=-912.9000244140625 | size=1 | links=#1345(auto Burning Steppes;22):24 #17129(auto Burning Steppes;200):21
+#3623 | auto Burning Steppes;48§auto Brennende Steppe;48§auto Steppes ardentes;48 | x=-8578.2998046875 y=-2565 | size=1 | links=#11539(auto Burning Steppes;133):25 #18708(auto Burning Steppes;221):25
+#3742 | auto Burning Steppes;49§auto Brennende Steppe;49§auto Steppes ardentes;49 | x=-8292.2998046875 y=-1017 | size=1 | links=#17826(auto Burning Steppes;208):14 #27652(auto Burning Steppes;336):16
+#3864 | auto Burning Steppes;50§auto Brennende Steppe;50§auto Steppes ardentes;50 | x=-7689 y=-1449.599975585938 | size=1 | links=#10232(auto Burning Steppes;120):3 c9520.1:11 c7029.3:8 c7029.4:10
+#4024 | auto Burning Steppes;51§auto Brennende Steppe;51§auto Steppes ardentes;51 | x=-8502.2001953125 y=-2556.699951171875 | size=1 | links=#16071(auto Burning Steppes;193):4 #27981(auto Burning Steppes;341):4 c9777.1:14 c9777.3:7
+#4030 | auto Burning Steppes;52§auto Brennende Steppe;52§auto Steppes ardentes;52 | x=-8189.80029296875 y=-2445.699951171875 | size=1 | links=#9555(auto Burning Steppes;112):65 #10332(auto Burning Steppes;121):40
+#4039 | auto Burning Steppes;53§auto Brennende Steppe;53§auto Steppes ardentes;53 | x=-7883.39990234375 y=-2118.300048828125 | size=1 | links=#145(auto Burning Steppes;3):28 #5416(auto Burning Steppes;71):29 o153556.2:28
+#4156 | auto Burning Steppes;54§auto Brennende Steppe;54§auto Steppes ardentes;54 | x=-7411.30029296875 y=-1103.599975585938 | size=1 | links=#15993(auto Burning Steppes;191):36 #21555(auto Burning Steppes;264):18
+#4158 | central location;Morgan's Vigil;Burning Steppes§zentralpunkt;Morgans Wacht;Brennende Steppe§emplacement central;Veille de Morgan;Steppes ardentes | x=-8378.900390625 y=-2757.5 | size=1 | links=#6668(auto Burning Steppes;83):30 c1296.1:13 c2299.1:24 c9177.1:15 c9560.1:8 c9561.1:22 c9562.1:23 c9565.1:5
+#4198 | auto Burning Steppes;55§auto Brennende Steppe;55§auto Steppes ardentes;55 | x=-7641.7001953125 y=-663.1000366210938 | size=1 | links=#477(auto Burning Steppes;6):6 #11052(auto Burning Steppes;128):13
+#4252 | auto Burning Steppes;56§auto Brennende Steppe;56§auto Steppes ardentes;56 | x=-7586.10009765625 y=-2570.60009765625 | size=5 | links=#4399(auto Burning Steppes;58):118 #18602(auto Burning Steppes;219):58 c9699.2:26
+#4279 | auto Burning Steppes;57§auto Brennende Steppe;57§auto Steppes ardentes;57 | x=-7809.10009765625 y=-2671.400146484375 | size=1 | links=#14700(auto Burning Steppes;174):14 #26841(auto Burning Steppes;325):14
+#4399 | auto Burning Steppes;58§auto Brennende Steppe;58§auto Steppes ardentes;58 | x=-7605.5 y=-2687.5 | size=5 | links=#4252(auto Burning Steppes;56):118 #4723(auto Burning Steppes;62):74 c10077.4:18 c7047.9:68 c7047.11:53 c7040.15:55 c7040.19:31
+#4407 | auto Burning Steppes;59§auto Brennende Steppe;59§auto Steppes ardentes;59 | x=-7954.5 y=-2607.199951171875 | size=1 | links=#14136(auto Burning Steppes;163):12 #22817(auto Burning Steppes;277):12
+#4563 | auto Burning Steppes;60§auto Brennende Steppe;60§auto Steppes ardentes;60 | x=-7890 y=-1509.300048828125 | size=5 | links=#12131(auto Burning Steppes;139):22 #27761(auto Burning Steppes;338):10
+#4712 | auto Burning Steppes;61§auto Brennende Steppe;61§auto Steppes ardentes;61 | x=-7646.2001953125 y=-2969.400146484375 | size=5 | links=#631(auto Burning Steppes;9):35 #12553(auto Burning Steppes;142):58 #22134(auto Burning Steppes;271):22
+#4723 | auto Burning Steppes;62§auto Brennende Steppe;62§auto Steppes ardentes;62 | x=-7637.7001953125 y=-2754.400146484375 | size=5 | links=#3031(auto Burning Steppes;38):94 #4399(auto Burning Steppes;58):74 c7047.13:15 c9699.22:7
+#4742 | auto Burning Steppes;63§auto Brennende Steppe;63§auto Steppes ardentes;63 | x=-7677.10009765625 y=-1467.400024414063 | size=1 | links=#13400(auto Burning Steppes;153):10 c7027.3:10
+#4840 | auto Burning Steppes;64§auto Brennende Steppe;64§auto Steppes ardentes;64 | x=-7998 y=-2208.199951171875 | size=1 | links=#1276(auto Burning Steppes;17):39 #22822(auto Burning Steppes;278):65
+#4895 | auto Burning Steppes;65§auto Brennende Steppe;65§auto Steppes ardentes;65 | x=-7824.39990234375 y=-2574.900146484375 | size=1 | links=#1035(auto Burning Steppes;13):5 #12008(auto Burning Steppes;138):7
+#5088 | auto Burning Steppes;66§auto Brennende Steppe;66§auto Steppes ardentes;66 | x=-7524.89990234375 y=-1079.5 | size=1 | links=#2746(auto Burning Steppes;35):4 #9384(auto Burning Steppes;111):1
+#5114 | auto Burning Steppes;67§auto Brennende Steppe;67§auto Steppes ardentes;67 | x=-8201.2998046875 y=-2523.5 | size=1 | links=#10332(auto Burning Steppes;121):38 #25636(auto Burning Steppes;313):58
+#5152 | auto Burning Steppes;68§auto Brennende Steppe;68§auto Steppes ardentes;68 | x=-8052.89990234375 y=-2001.5 | size=1 | links=#10727(auto Burning Steppes;125):55 #23487(auto Burning Steppes;287):52
+#5378 | auto Burning Steppes;69§auto Brennende Steppe;69§auto Steppes ardentes;69 | x=-7602.39990234375 y=-1131.900024414063 | size=1 | links=#2243(auto Burning Steppes;29):7 #19191(auto Burning Steppes;228):4
+#5412 | auto Burning Steppes;70§auto Brennende Steppe;70§auto Steppes ardentes;70 | x=-7223.60009765625 y=-903.7000122070312 | size=1 | links=#6807(auto Burning Steppes;84):31 #6965(auto Burning Steppes;87):23 #10923(Overmaster Pyron;The Masonary;Blackrock Mountain):12
+#5416 | auto Burning Steppes;71§auto Brennende Steppe;71§auto Steppes ardentes;71 | x=-7853.5 y=-2115.900146484375 | size=1 | links=#4039(auto Burning Steppes;53):29 #27490(auto Burning Steppes;332):12
+#5433 | auto Burning Steppes;72§auto Brennende Steppe;72§auto Steppes ardentes;72 | x=-7911.30029296875 y=-1513.800048828125 | size=1 | links=#6345(auto Burning Steppes;80):7 #23568(auto Burning Steppes;288):9
+#5463 | auto Burning Steppes;73§auto Brennende Steppe;73§auto Steppes ardentes;73 | x=-7573.30029296875 y=-1127.300048828125 | size=1 | links=#9718(auto Burning Steppes;114):7 #28272(auto Burning Steppes;347):5
+#5531 | auto Burning Steppes;74§auto Brennende Steppe;74§auto Steppes ardentes;74 | x=-7643.7001953125 y=-711.9000244140625 | size=1 | links=#493(auto Burning Steppes;8):10 #28145(auto Burning Steppes;344):1
+#5685 | auto Burning Steppes;75§auto Brennende Steppe;75§auto Steppes ardentes;75 | x=-7602.7001953125 y=-1108.800048828125 | size=1 | links=#14204(auto Burning Steppes;167):7 #20372(auto Burning Steppes;251):15
+#5833 | auto Burning Steppes;76§auto Brennende Steppe;76§auto Steppes ardentes;76 | x=-7827.89990234375 y=-2654.699951171875 | size=1 | links=#11115(auto Burning Steppes;130):20 #28369(auto Burning Steppes;348):19
+#5965 | auto Burning Steppes;77§auto Brennende Steppe;77§auto Steppes ardentes;77 | x=-7605.7001953125 y=-2251.800048828125 | size=5 | links=#18981(auto Burning Steppes;224):86
+#6002 | auto Burning Steppes;78§auto Brennende Steppe;78§auto Steppes ardentes;78 | x=-7663.2001953125 y=-712.2000122070312 | size=1 | links=#493(auto Burning Steppes;8):9 #24916(auto Burning Steppes;303):9
+#6192 | auto Burning Steppes;79§auto Brennende Steppe;79§auto Steppes ardentes;79 | x=-7361 y=-1105.900024414063 | size=1 | links=#9682(auto Burning Steppes;113):15 #6077(auto Searing Gorge;85):74 #48684(auto Blackrock;Searing Gorge;332):49
+#6345 | auto Burning Steppes;80§auto Brennende Steppe;80§auto Steppes ardentes;80 | x=-7905.30029296875 y=-1508.800048828125 | size=1 | links=#5433(auto Burning Steppes;72):7 #27761(auto Burning Steppes;338):13
+#6367 | auto Burning Steppes;81§auto Brennende Steppe;81§auto Steppes ardentes;81 | x=-7585.60009765625 y=-1104.400024414063 | size=1 | links=#13234(auto Burning Steppes;151):9 #28461(auto Burning Steppes;350):7
+#6455 | auto Burning Steppes;82§auto Brennende Steppe;82§auto Steppes ardentes;82 | x=-7774.60009765625 y=-2505.900146484375 | size=1 | links=#405(auto Burning Steppes;5):8 #22876(auto Burning Steppes;281):8
+#6668 | auto Burning Steppes;83§auto Brennende Steppe;83§auto Steppes ardentes;83 | x=-8350.5 y=-2747.400146484375 | size=1 | links=#1994(auto Burning Steppes;27):29 #4158(central location;Morgan's Vigil;Burning Steppes):30 c3298.1:13
+#6807 | auto Burning Steppes;84§auto Brennende Steppe;84§auto Steppes ardentes;84 | x=-7254.2001953125 y=-909.7999877929688 | size=1 | links=#1345(auto Burning Steppes;22):19 #5412(auto Burning Steppes;70):31
+#6815 | auto Burning Steppes;85§auto Brennende Steppe;85§auto Steppes ardentes;85 | x=-7487.80029296875 y=-2174.5 | size=1 | links=#12966(auto Burning Steppes;147):7 #20459(central location;Flame Crest;Burning Steppes):8
+#6918 | auto Burning Steppes;86§auto Brennende Steppe;86§auto Steppes ardentes;86 | x=-7853.7001953125 y=-2939 | size=5 | links=#13166(auto Burning Steppes;150):49 #15130(auto Burning Steppes;177):43
+#6965 | auto Burning Steppes;87§auto Brennende Steppe;87§auto Steppes ardentes;87 | x=-7200.30029296875 y=-901.5 | size=1 | links=#3207(auto Burning Steppes;42):13 #5412(auto Burning Steppes;70):23
+#7005 | auto Burning Steppes;88§auto Brennende Steppe;88§auto Steppes ardentes;88 | x=-7609.7001953125 y=-1116 | size=1 | links=#1270(auto Burning Steppes;16):9 #2243(auto Burning Steppes;29):9
+#7055 | auto Burning Steppes;89§auto Brennende Steppe;89§auto Steppes ardentes;89 | x=-7502.2001953125 y=-2184.199951171875 | size=5 | links=#20187(auto Burning Steppes;247):6 #20459(central location;Flame Crest;Burning Steppes):9
+#7153 | auto Burning Steppes;90§auto Brennende Steppe;90§auto Steppes ardentes;90 | x=-7400.60009765625 y=-965.1000366210938 | size=1 | links=#2985(auto Burning Steppes;37):33 #15375(auto Burning Steppes;182):25
+#7343 | auto Burning Steppes;91§auto Brennende Steppe;91§auto Steppes ardentes;91 | x=-8449.1005859375 y=-2549.800048828125 | size=1 | links=#2725(auto Burning Steppes;33):5 #27651(auto Burning Steppes;335):4
+#7397 | auto Burning Steppes;92§auto Brennende Steppe;92§auto Steppes ardentes;92 | x=-7474.10009765625 y=-2191.400146484375 | size=1 | links=#20459(central location;Flame Crest;Burning Steppes):21 c9544.1:17 c10260.1:15 c10262.1:18
+#7467 | auto Burning Steppes;93§auto Brennende Steppe;93§auto Steppes ardentes;93 | x=-7528.39990234375 y=-1071.599975585938 | size=1 | links=#3356(auto Burning Steppes;45):4 #11625(auto Burning Steppes;134):5
+#7618 | auto Burning Steppes;94§auto Brennende Steppe;94§auto Steppes ardentes;94 | x=-7854.5 y=-1477.800048828125 | size=1 | links=#7851(auto Burning Steppes;97):8 #12131(auto Burning Steppes;139):26
+#7753 | auto Burning Steppes;95§auto Brennende Steppe;95§auto Steppes ardentes;95 | x=-7787.60009765625 y=-2554.900146484375 | size=1 | links=#1948(auto Burning Steppes;26):11 #17797(auto Burning Steppes;207):4
+#7827 | auto Burning Steppes;96§auto Brennende Steppe;96§auto Steppes ardentes;96 | x=-7597.7001953125 y=-1116.099975585938 | size=1
+#7851 | auto Burning Steppes;97§auto Brennende Steppe;97§auto Steppes ardentes;97 | x=-7848.89990234375 y=-1470.800048828125 | size=1 | links=#7618(auto Burning Steppes;94):8 #23772(auto Burning Steppes;292):4
+#7972 | auto Burning Steppes;98§auto Brennende Steppe;98§auto Steppes ardentes;98 | x=-7791.39990234375 y=-2694 | size=1 | links=#8943(auto Burning Steppes;105):3 #15638(entry and exit;cave;Dreadmaul Rock;Burning Steppes):5
+#8124 | auto Burning Steppes;99§auto Brennende Steppe;99§auto Steppes ardentes;99 | x=-7840.7001953125 y=-2601.60009765625 | size=1 | links=#1218(auto Burning Steppes;15):20 #14680(auto Burning Steppes;172):6
+#8133 | auto Burning Steppes;100§auto Brennende Steppe;100§auto Steppes ardentes;100 | x=-8260 y=-2684.699951171875 | size=1 | links=#8584(auto Burning Steppes;102):26 #17075(auto Burning Steppes;199):25 #28144(auto Burning Steppes;343):78
+#8416 | auto Burning Steppes;101§auto Brennende Steppe;101§auto Steppes ardentes;101 | x=-7966.10009765625 y=-1761 | size=1 | links=#12366(auto Burning Steppes;140):59 #17720(auto Burning Steppes;205):65 #28269(auto Burning Steppes;346):96
+#8584 | auto Burning Steppes;102§auto Brennende Steppe;102§auto Steppes ardentes;102 | x=-8272.7001953125 y=-2707.400146484375 | size=1 | links=#8133(auto Burning Steppes;100):26 #16031(auto Burning Steppes;192):27
+#8788 | auto Burning Steppes;103§auto Brennende Steppe;103§auto Steppes ardentes;103 | x=-8049.80029296875 y=-1915 | size=1 | links=#10727(auto Burning Steppes;125):37 #15824(auto Burning Steppes;188):42 c7027.17:19
+#8868 | auto Burning Steppes;104§auto Brennende Steppe;104§auto Steppes ardentes;104 | x=-8401.2001953125 y=-2537.199951171875 | size=1 | links=#25361(auto Burning Steppes;308):6 #25428(auto Burning Steppes;309):6
+#8943 | auto Burning Steppes;105§auto Brennende Steppe;105§auto Steppes ardentes;105 | x=-7793.80029296875 y=-2696 | size=1 | links=#2710(auto Burning Steppes;32):3 #7972(auto Burning Steppes;98):3
+#9042 | auto Burning Steppes;106§auto Brennende Steppe;106§auto Steppes ardentes;106 | x=-7829.89990234375 y=-2597.699951171875 | size=1 | links=#14680(auto Burning Steppes;172):5 #21413(auto Burning Steppes;262):3
+#9197 | auto Burning Steppes;107§auto Brennende Steppe;107§auto Steppes ardentes;107 | x=-7910.7001953125 y=-2619.199951171875 | size=1 | links=#19110(auto Burning Steppes;226):21 #23651(auto Burning Steppes;289):16
+#9259 | auto Burning Steppes;108§auto Brennende Steppe;108§auto Steppes ardentes;108 | x=-7548.39990234375 y=-1080.5 | size=1 | links=#1291(auto Burning Steppes;18):3 #17588(auto Burning Steppes;203):3
+#9276 | auto Burning Steppes;109§auto Brennende Steppe;109§auto Steppes ardentes;109 | x=-8042.10009765625 y=-1103.400024414063 | size=1 | links=#2877(auto Burning Steppes;36):44 #9937(auto Burning Steppes;117):44 #4021(auto Searing Gorge;55):30
+#9363 | auto Burning Steppes;110§auto Brennende Steppe;110§auto Steppes ardentes;110 | x=-7881.2001953125 y=-788.5 | size=1 | links=#19530(auto Burning Steppes;237):70 #26478(auto Burning Steppes;322):86
+#9384 | auto Burning Steppes;111§auto Brennende Steppe;111§auto Steppes ardentes;111 | x=-7526.60009765625 y=-1079.900024414063 | size=1 | links=#5088(auto Burning Steppes;66):1 #24487(auto Burning Steppes;295):3
+#9555 | auto Burning Steppes;112§auto Brennende Steppe;112§auto Steppes ardentes;112 | x=-8148 y=-2395.60009765625 | size=1 | links=#4030(auto Burning Steppes;52):65 #28577(auto Burning Steppes;352):64 c9699.20:37
+#9682 | auto Burning Steppes;113§auto Brennende Steppe;113§auto Steppes ardentes;113 | x=-7372.10009765625 y=-1094.5 | size=1 | links=#6192(auto Burning Steppes;79):15 #21555(auto Burning Steppes;264):21
+#9718 | auto Burning Steppes;114§auto Brennende Steppe;114§auto Steppes ardentes;114 | x=-7566 y=-1127.800048828125 | size=1 | links=#5463(auto Burning Steppes;73):7 #11190(auto Burning Steppes;131):3
+#9758 | auto Burning Steppes;115§auto Brennende Steppe;115§auto Steppes ardentes;115 | x=-7513.7001953125 y=-1084.800048828125 | size=1 | links=#3060(auto Burning Steppes;39):2 #18332(auto Burning Steppes;218):3
+#9893 | auto Burning Steppes;116§auto Brennende Steppe;116§auto Steppes ardentes;116 | x=-7591.10009765625 y=-1138.099975585938 | size=1 | links=#19191(auto Burning Steppes;228):9 #27955(auto Burning Steppes;340):8
+#9937 | auto Burning Steppes;117§auto Brennende Steppe;117§auto Steppes ardentes;117 | x=-8054.10009765625 y=-1146.700073242188 | size=1 | links=#9276(auto Burning Steppes;109):44 #27180(auto Burning Steppes;330):57
+#9967 | auto Burning Steppes;118§auto Brennende Steppe;118§auto Steppes ardentes;118 | x=-7918.80029296875 y=-2632.199951171875 | size=1 | links=#23651(auto Burning Steppes;289):13
+#10160 | auto Burning Steppes;119§auto Brennende Steppe;119§auto Steppes ardentes;119 | x=-7807.2001953125 y=-1966.200073242188 | size=5 | links=#21802(auto Burning Steppes;267):68 #26058(auto Burning Steppes;319):36 c7039.11:54 o153556.12:42 c7039.13:29 o153556.21:14
+#10232 | auto Burning Steppes;120§auto Brennende Steppe;120§auto Steppes ardentes;120 | x=-7685.60009765625 y=-1451.300048828125 | size=1 | links=#3864(auto Burning Steppes;50):3 #26507(auto Burning Steppes;323):4
+#10332 | auto Burning Steppes;121§auto Brennende Steppe;121§auto Steppes ardentes;121 | x=-8200.7998046875 y=-2484.900146484375 | size=1 | links=#4030(auto Burning Steppes;52):40 #5114(auto Burning Steppes;67):38
+#10339 | auto Burning Steppes;122§auto Brennende Steppe;122§auto Steppes ardentes;122 | x=-7924.5 y=-2626.10009765625 | size=1 | links=#20882(auto Burning Steppes;255):21 c7035.3:21
+#10466 | auto Burning Steppes;123§auto Brennende Steppe;123§auto Steppes ardentes;123 | x=-7880.80029296875 y=-2599.800048828125 | size=1 | links=#19110(auto Burning Steppes;226):15 #22410(auto Burning Steppes;275):11
+#10681 | auto Burning Steppes;124§auto Brennende Steppe;124§auto Steppes ardentes;124 | x=-7928.30029296875 y=-1945.200073242188 | size=5 | links=#15297(auto Burning Steppes;179):53 #28269(auto Burning Steppes;346):91
+#10727 | auto Burning Steppes;125§auto Brennende Steppe;125§auto Steppes ardentes;125 | x=-8068.39990234375 y=-1947.800048828125 | size=1 | links=#5152(auto Burning Steppes;68):55 #8788(auto Burning Steppes;103):37 c7041.16:153 o181098.51:91
+#10817 | auto Burning Steppes;126§auto Brennende Steppe;126§auto Steppes ardentes;126 | x=-8072.39990234375 y=-1421.700073242188 | size=1 | links=#19217(auto Burning Steppes;230):41 #22687(auto Burning Steppes;276):30 c9176.1:38
+#10904 | auto Burning Steppes;127§auto Brennende Steppe;127§auto Steppes ardentes;127 | x=-7576.10009765625 y=-1101.400024414063 | size=1 | links=#24819(auto Burning Steppes;300):4 #28057(auto Burning Steppes;342):4
+#10923 | Overmaster Pyron;The Masonary;Blackrock Mountain§Übermeister Pyron;Die Freimaurerei;Der Schwarzfels§Grand seigneur Pyron;The Masonary;Blackrock Mountain | x=-7219.7001953125 y=-891.9000244140625 | size=1 | links=#5412(auto Burning Steppes;70):12
+#11052 | auto Burning Steppes;128§auto Brennende Steppe;128§auto Steppes ardentes;128 | x=-7647.89990234375 y=-674.9000244140625 | size=1 | links=#4198(auto Burning Steppes;55):13 #24916(auto Burning Steppes;303):44
+#11068 | auto Burning Steppes;129§auto Brennende Steppe;129§auto Steppes ardentes;129 | x=-7633.39990234375 y=-711.7000122070312 | size=1 | links=#28145(auto Burning Steppes;344):8 c8979.6:8
+#11115 | auto Burning Steppes;130§auto Brennende Steppe;130§auto Steppes ardentes;130 | x=-7848 y=-2650.699951171875 | size=1 | links=#5833(auto Burning Steppes;76):20 #13122(auto Burning Steppes;149):17
+#11190 | auto Burning Steppes;131§auto Brennende Steppe;131§auto Steppes ardentes;131 | x=-7567.60009765625 y=-1131.200073242188 | size=1 | links=#9718(auto Burning Steppes;114):3 #13495(auto Burning Steppes;154):8
+#11477 | auto Burning Steppes;132§auto Brennende Steppe;132§auto Steppes ardentes;132 | x=-8385 y=-2533.800048828125 | size=1 | links=#18617(auto Burning Steppes;220):5 #24564(auto Burning Steppes;297):72
+#11539 | auto Burning Steppes;133§auto Brennende Steppe;133§auto Steppes ardentes;133 | x=-8602.7001953125 y=-2573.800048828125 | size=1 | links=#1337(auto Burning Steppes;21):58 #3623(auto Burning Steppes;48):25
+#11625 | auto Burning Steppes;134§auto Brennende Steppe;134§auto Steppes ardentes;134 | x=-7532.60009765625 y=-1068.700073242188 | size=1 | links=#7467(auto Burning Steppes;93):5 #14154(auto Burning Steppes;165):2 #21110(auto Burning Steppes;257):4
+#11778 | auto Burning Steppes;135§auto Brennende Steppe;135§auto Steppes ardentes;135 | x=-8188.89990234375 y=-2769.60009765625 | size=5 | links=#25452(auto Burning Steppes;310):80 #28144(auto Burning Steppes;343):32 c9691.3:41 c8981.4:44
+#11914 | auto Burning Steppes;136§auto Brennende Steppe;136§auto Steppes ardentes;136 | x=-7182.2001953125 y=-920.9000244140625 | size=1 | links=#3207(auto Burning Steppes;42):14 #24526(instance entrance;The Masonary;Blackrock Mountain):4
+#11989 | auto Burning Steppes;137§auto Brennende Steppe;137§auto Steppes ardentes;137 | x=-8011.60009765625 y=-1335.800048828125 | size=1 | links=#16080(auto Burning Steppes;194):46 #25628(auto Burning Steppes;312):36 c7043.14:29
+#12008 | auto Burning Steppes;138§auto Brennende Steppe;138§auto Steppes ardentes;138 | x=-7824.60009765625 y=-2582.199951171875 | size=1 | links=#4895(auto Burning Steppes;65):7 #27799(auto Burning Steppes;339):6
+#12131 | auto Burning Steppes;139§auto Brennende Steppe;139§auto Steppes ardentes;139 | x=-7876.80029296875 y=-1491.400024414063 | size=1 | links=#4563(auto Burning Steppes;60):22 #7618(auto Burning Steppes;94):26 c7032.3:21
+#12366 | auto Burning Steppes;140§auto Brennende Steppe;140§auto Steppes ardentes;140 | x=-7966.30029296875 y=-1701.400024414063 | size=1 | links=#8416(auto Burning Steppes;101):59 #13294(auto Burning Steppes;152):56
+#12495 | auto Burning Steppes;141§auto Brennende Steppe;141§auto Steppes ardentes;141 | x=-7602.2001953125 y=-1122.300048828125 | size=1 | links=#14204(auto Burning Steppes;167):5 #26874(auto Burning Steppes;326):11
+#12553 | auto Burning Steppes;142§auto Brennende Steppe;142§auto Steppes ardentes;142 | x=-7615.7001953125 y=-2919.300048828125 | size=5 | links=#4712(auto Burning Steppes;61):58 #19294(auto Burning Steppes;231):50 c9691.9:51
+#12756 | auto Burning Steppes;143§auto Brennende Steppe;143§auto Steppes ardentes;143 | x=-7803.60009765625 y=-1853.300048828125 | size=1 | links=#658(auto Burning Steppes;10):8 c8978.2:8
+#12812 | auto Burning Steppes;144§auto Brennende Steppe;144§auto Steppes ardentes;144 | x=-7513.7001953125 y=-1048 | size=1 | links=#15662(auto Burning Steppes;185):5 #24762(auto Burning Steppes;299):2
+#12924 | auto Burning Steppes;145§auto Brennende Steppe;145§auto Steppes ardentes;145 | x=-7781.39990234375 y=-1489.800048828125 | size=5 | links=#2455(auto Burning Steppes;30):27 #22922(auto Burning Steppes;282):20 c7028.7:27
+#12948 | auto Burning Steppes;146§auto Brennende Steppe;146§auto Steppes ardentes;146 | x=-7514.80029296875 y=-2118.800048828125 | size=1 | links=#2733(auto Burning Steppes;34):39 c6491.1:29 c9700.9:15
+#12966 | auto Burning Steppes;147§auto Brennende Steppe;147§auto Steppes ardentes;147 | x=-7482.89990234375 y=-2168.800048828125 | size=1 | links=#6815(auto Burning Steppes;85):7 #20273(auto Burning Steppes;250):6
+#13053 | auto Burning Steppes;148§auto Brennende Steppe;148§auto Steppes ardentes;148 | x=-7605.60009765625 y=-1113.099975585938 | size=1 | links=#26274(auto Burning Steppes;321):7 #28461(auto Burning Steppes;350):25
+#13122 | auto Burning Steppes;149§auto Brennende Steppe;149§auto Steppes ardentes;149 | x=-7855.89990234375 y=-2635.5 | size=1 | links=#11115(auto Burning Steppes;130):17 #19770(auto Burning Steppes;239):18
+#13166 | auto Burning Steppes;150§auto Brennende Steppe;150§auto Steppes ardentes;150 | x=-7807.89990234375 y=-2957 | size=5 | links=#6918(auto Burning Steppes;86):49 #24269(auto Burning Steppes;294):53 c9690.7:36 c7040.12:48
+#13234 | auto Burning Steppes;151§auto Brennende Steppe;151§auto Steppes ardentes;151 | x=-7584.60009765625 y=-1113.5 | size=1 | links=#6367(auto Burning Steppes;81):9 #21451(auto The Molten Span;Blackrock Mountain;Burning Steppes;46):2
+#13294 | auto Burning Steppes;152§auto Brennende Steppe;152§auto Steppes ardentes;152 | x=-7967.60009765625 y=-1645.300048828125 | size=1 | links=#12366(auto Burning Steppes;140):56 #18159(auto Burning Steppes;213):58 o181098.5:50
+#13400 | auto Burning Steppes;153§auto Brennende Steppe;153§auto Steppes ardentes;153 | x=-7669.30029296875 y=-1459.700073242188 | size=1 | links=#4742(auto Burning Steppes;63):10 c7029.5:7
+#13495 | auto Burning Steppes;154§auto Brennende Steppe;154§auto Steppes ardentes;154 | x=-7574.10009765625 y=-1137.400024414063 | size=1 | links=#11190(auto Burning Steppes;131):8 #27955(auto Burning Steppes;340):8
+#13598 | auto Burning Steppes;155§auto Brennende Steppe;155§auto Steppes ardentes;155 | x=-7980.5 y=-890.2000122070312 | size=1 | links=#146(auto Burning Steppes;4):64 #19530(auto Burning Steppes;237):71 c7043.3:26 c7042.9:32
+#13611 | auto Burning Steppes;156§auto Brennende Steppe;156§auto Steppes ardentes;156 | x=-7973.7001953125 y=-2631.699951171875 | size=1 | links=#18108(auto Burning Steppes;212):9 #18832(auto Burning Steppes;222):10
+#13813 | auto Burning Steppes;157§auto Brennende Steppe;157§auto Steppes ardentes;157 | x=-7554.2001953125 y=-1084.900024414063 | size=1 | links=#1291(auto Burning Steppes;18):3 #19722(auto Burning Steppes;238):3
+#13819 | auto Burning Steppes;158§auto Brennende Steppe;158§auto Steppes ardentes;158 | x=-7483.39990234375 y=-1035.800048828125 | size=1 | links=#25801(auto Burning Steppes;314):16 #28456(auto Burning Steppes;349):16
+#13885 | auto Burning Steppes;159§auto Brennende Steppe;159§auto Steppes ardentes;159 | x=-7775.39990234375 y=-2521.5 | size=1 | links=#405(auto Burning Steppes;5):6 #16508(auto Burning Steppes;195):6
+#13919 | auto Burning Steppes;160§auto Brennende Steppe;160§auto Steppes ardentes;160 | x=-8486.2001953125 y=-2551.699951171875 | size=1 | links=#852(auto Burning Steppes;12):3 #21924(auto Burning Steppes;270):24
+#13931 | auto Burning Steppes;161§auto Brennende Steppe;161§auto Steppes ardentes;161 | x=-8016.39990234375 y=-1025.800048828125 | size=1 | links=#2877(auto Burning Steppes;36):38 #21840(auto Burning Steppes;268):30
+#13977 | auto Burning Steppes;162§auto Brennende Steppe;162§auto Steppes ardentes;162 | x=-7795.5 y=-2707.699951171875 | size=1 | links=#20035(auto Burning Steppes;245):5 c7034.12:11
+#14136 | auto Burning Steppes;163§auto Brennende Steppe;163§auto Steppes ardentes;163 | x=-7963.80029296875 y=-2615.800048828125 | size=1 | links=#4407(auto Burning Steppes;59):12 #18108(auto Burning Steppes;212):9
+#14146 | auto Burning Steppes;164§auto Brennende Steppe;164§auto Steppes ardentes;164 | x=-7450.39990234375 y=-1000.600036621094 | size=1 | links=#14980(auto Burning Steppes;176):19 #27061(auto Burning Steppes;329):21
+#14154 | auto Burning Steppes;165§auto Brennende Steppe;165§auto Steppes ardentes;165 | x=-7534.80029296875 y=-1069.599975585938 | size=1 | links=#11625(auto Burning Steppes;134):2 #17256(auto Burning Steppes;201):3
+#14162 | auto Burning Steppes;166§auto Brennende Steppe;166§auto Steppes ardentes;166 | x=-8262.7998046875 y=-2564.5 | size=1 | links=#19095(auto Burning Steppes;225):36 c7041.17:23
+#14204 | auto Burning Steppes;167§auto Brennende Steppe;167§auto Steppes ardentes;167 | x=-7602.10009765625 y=-1116.400024414063 | size=1 | links=#5685(auto Burning Steppes;75):7 #12495(auto Burning Steppes;141):5
+#14291 | auto Burning Steppes;168§auto Brennende Steppe;168§auto Steppes ardentes;168 | x=-7529.30029296875 y=-1059 | size=1 | links=#3169(auto Burning Steppes;40):6 #21110(auto Burning Steppes;257):7
+#14371 | auto Burning Steppes;169§auto Brennende Steppe;169§auto Steppes ardentes;169 | x=-7762.39990234375 y=-1937.900024414063 | size=5 | links=#21802(auto Burning Steppes;267):47 o153556.15:53
+#14403 | auto Burning Steppes;170§auto Brennende Steppe;170§auto Steppes ardentes;170 | x=-8017.80029296875 y=-1212.599975585938 | size=1 | links=#19213(auto Burning Steppes;229):61 #48697(auto Blackrock Mountain;368):37
+#14641 | auto Burning Steppes;171§auto Brennende Steppe;171§auto Steppes ardentes;171 | x=-7519.10009765625 y=-1049.700073242188 | size=1 | links=#3169(auto Burning Steppes;40):7 #24762(auto Burning Steppes;299):5
+#14680 | auto Burning Steppes;172§auto Brennende Steppe;172§auto Steppes ardentes;172 | x=-7834.10009765625 y=-2600.699951171875 | size=1 | links=#8124(auto Burning Steppes;99):6 #9042(auto Burning Steppes;106):5
+#14689 | auto Burning Steppes;173§auto Brennende Steppe;173§auto Steppes ardentes;173 | x=-7701.2001953125 y=-1473.5 | size=1 | links=c7028.1:11 c7029.8:11
+#14700 | auto Burning Steppes;174§auto Brennende Steppe;174§auto Steppes ardentes;174 | x=-7799.10009765625 y=-2660.699951171875 | size=1 | links=#4279(auto Burning Steppes;57):14 #28369(auto Burning Steppes;348):12
+#14779 | auto Burning Steppes;175§auto Brennende Steppe;175§auto Steppes ardentes;175 | x=-7626.39990234375 y=-1114.800048828125 | size=1 | links=#22186(auto Burning Steppes;273):5 #28556(auto Burning Steppes;351):10
+#14980 | auto Burning Steppes;176§auto Brennende Steppe;176§auto Steppes ardentes;176 | x=-7464.7001953125 y=-1013.200012207031 | size=1 | links=#14146(auto Burning Steppes;164):19 #28456(auto Burning Steppes;349):12
+#15130 | auto Burning Steppes;177§auto Brennende Steppe;177§auto Steppes ardentes;177 | x=-7896.5 y=-2931.300048828125 | size=5 | links=#6918(auto Burning Steppes;86):43 #21003(auto Burning Steppes;256):49 c7044.2:31 c7047.4:21 c9691.8:27
+#15164 | auto Burning Steppes;178§auto Brennende Steppe;178§auto Steppes ardentes;178 | x=-7782.30029296875 y=-2469.10009765625 | size=1 | links=#21671(auto Burning Steppes;266):10 c7033.4:21
+#15297 | auto Burning Steppes;179§auto Brennende Steppe;179§auto Steppes ardentes;179 | x=-7901.30029296875 y=-1991.5 | size=5 | links=#10681(auto Burning Steppes;124):53 #15298(auto Burning Steppes;180):60 #20031(auto Burning Steppes;244):33 o153556.17:17
+#15298 | auto Burning Steppes;180§auto Brennende Steppe;180§auto Steppes ardentes;180 | x=-7906.7001953125 y=-2051.5 | size=5 | links=#145(auto Burning Steppes;3):60 #15297(auto Burning Steppes;179):60
+#15346 | auto Burning Steppes;181§auto Brennende Steppe;181§auto Steppes ardentes;181 | x=-7552.80029296875 y=-2173.199951171875 | size=1 | links=#710(auto Burning Steppes;11):8 #25287(auto Burning Steppes;306):15
+#15375 | auto Burning Steppes;182§auto Brennende Steppe;182§auto Steppes ardentes;182 | x=-7394.89990234375 y=-940.4000244140625 | size=1 | links=#7153(auto Burning Steppes;90):25 #26044(auto Burning Steppes;318):17
+#15553 | auto Burning Steppes;183§auto Brennende Steppe;183§auto Steppes ardentes;183 | x=-7437.675360706555 y=-1055.991762964614 | size=1 | links=#15993(auto Burning Steppes;191):20 #27600(auto Burning Steppes;334):24
+#15638 | entry and exit;cave;Dreadmaul Rock;Burning Steppes§ein- und ausgang;höhle;Schreckensfels;Brennende Steppe§entrée et sortie;cave;Le Rocher des Cognepeurs;Steppes ardentes | x=-7790 y=-2689.199951171875 | size=1 | links=#7972(auto Burning Steppes;98):5 #26841(auto Burning Steppes;325):11
+#15645 | auto Burning Steppes;184§auto Brennende Steppe;184§auto Steppes ardentes;184 | x=-8521.5 y=-2558.300048828125 | size=1 | links=#17741(auto Burning Steppes;206):5 #18264(auto Burning Steppes;217):5
+#15662 | auto Burning Steppes;185§auto Brennende Steppe;185§auto Steppes ardentes;185 | x=-7510.2001953125 y=-1052.200073242188 | size=1 | links=#12812(auto Burning Steppes;144):5 #25275(auto Burning Steppes;305):4
+#15730 | auto Burning Steppes;186§auto Brennende Steppe;186§auto Steppes ardentes;186 | x=-7687.30029296875 y=-713.1000366210938 | size=1 | links=#15975(auto Burning Steppes;190):63 #24916(auto Burning Steppes;303):14
+#15793 | auto Burning Steppes;187§auto Brennende Steppe;187§auto Steppes ardentes;187 | x=-7776 y=-2531.400146484375 | size=1 | links=#16508(auto Burning Steppes;195):3 #23665(auto Burning Steppes;291):3
+#15824 | auto Burning Steppes;188§auto Brennende Steppe;188§auto Steppes ardentes;188 | x=-8027.7001953125 y=-1878.700073242188 | size=1 | links=#8788(auto Burning Steppes;103):42 #17720(auto Burning Steppes;205):67 c7026.9:55 o181098.48:37
+#15868 | auto Burning Steppes;189§auto Brennende Steppe;189§auto Steppes ardentes;189 | x=-8533.7001953125 y=-2558.60009765625 | size=1 | links=#18264(auto Burning Steppes;217):6 #21465(auto Burning Steppes;263):8
+#15975 | auto Burning Steppes;190§auto Brennende Steppe;190§auto Steppes ardentes;190 | x=-7750.7001953125 y=-719.6000366210938 | size=1 | links=#1075(auto Burning Steppes;14):36 #15730(auto Burning Steppes;186):63
+#15993 | auto Burning Steppes;191§auto Brennende Steppe;191§auto Steppes ardentes;191 | x=-7422.412014509523 y=-1068.942456480166 | size=1 | links=#4156(auto Burning Steppes;54):36 #15553(auto Burning Steppes;183):20
+#16031 | auto Burning Steppes;192§auto Brennende Steppe;192§auto Steppes ardentes;192 | x=-8298 y=-2719.199951171875 | size=1 | links=#1994(auto Burning Steppes;27):30 #8584(auto Burning Steppes;102):27
+#16071 | auto Burning Steppes;193§auto Brennende Steppe;193§auto Steppes ardentes;193 | x=-8506.400390625 y=-2557 | size=1 | links=#4024(auto Burning Steppes;51):4 #22935(auto Burning Steppes;283):5
+#16080 | auto Burning Steppes;194§auto Brennende Steppe;194§auto Steppes ardentes;194 | x=-8043.80029296875 y=-1369.300048828125 | size=1 | links=#11989(auto Burning Steppes;137):46 #22687(auto Burning Steppes;276):33
+#16508 | auto Burning Steppes;195§auto Brennende Steppe;195§auto Steppes ardentes;195 | x=-7775.80029296875 y=-2527.5 | size=1 | links=#13885(auto Burning Steppes;159):6 #15793(auto Burning Steppes;187):3
+#16557 | auto Burning Steppes;196§auto Brennende Steppe;196§auto Steppes ardentes;196 | x=-7620.89990234375 y=-1124.400024414063 | size=1 | links=#26874(auto Burning Steppes;326):7 #28556(auto Burning Steppes;351):5
+#16645 | auto Burning Steppes;197§auto Brennende Steppe;197§auto Steppes ardentes;197 | x=-7964.5 y=-1521.400024414063 | size=5 | links=#19338(auto Burning Steppes;232):28 #19355(auto Burning Steppes;233):61
+#16982 | auto Burning Steppes;198§auto Brennende Steppe;198§auto Steppes ardentes;198 | x=-7584 y=-2772.400146484375 | size=5 | links=#3031(auto Burning Steppes;38):63 c7044.1:19 c7040.20:22
+#17075 | auto Burning Steppes;199§auto Brennende Steppe;199§auto Steppes ardentes;199 | x=-8256.2001953125 y=-2659.400146484375 | size=1 | links=#8133(auto Burning Steppes;100):25 #19095(auto Burning Steppes;225):63
+#17129 | auto Burning Steppes;200§auto Brennende Steppe;200§auto Steppes ardentes;200 | x=-7319.2001953125 y=-916.9000244140625 | size=1 | links=#3578(auto Burning Steppes;47):21 #21259(auto Burning Steppes;260):24
+#17256 | auto Burning Steppes;201§auto Brennende Steppe;201§auto Steppes ardentes;201 | x=-7537.30029296875 y=-1071.599975585938 | size=1 | links=#14154(auto Burning Steppes;165):3 #19488(auto Burning Steppes;235):4
+#17571 | auto Burning Steppes;202§auto Brennende Steppe;202§auto Steppes ardentes;202 | x=-7710.39990234375 y=-1438.800048828125 | size=1 | links=#488(auto Burning Steppes;7):5 c7029.1:6 c9520.1:12 c7029.2:6
+#17588 | auto Burning Steppes;203§auto Brennende Steppe;203§auto Steppes ardentes;203 | x=-7545.60009765625 y=-1078.400024414063 | size=1 | links=#9259(auto Burning Steppes;108):3 #23010(auto Burning Steppes;284):3
+#17609 | auto Burning Steppes;204§auto Brennende Steppe;204§auto Steppes ardentes;204 | x=-7719.5 y=-1434 | size=1 | links=#488(auto Burning Steppes;7):4 #21252(auto Burning Steppes;259):7
+#17720 | auto Burning Steppes;205§auto Brennende Steppe;205§auto Steppes ardentes;205 | x=-7996.7001953125 y=-1819.099975585938 | size=1 | links=#8416(auto Burning Steppes;101):65 #15824(auto Burning Steppes;188):67 #28269(auto Burning Steppes;346):57 o181098.24:30
+#17741 | auto Burning Steppes;206§auto Brennende Steppe;206§auto Steppes ardentes;206 | x=-8515.7998046875 y=-2557.400146484375 | size=1 | links=#15645(auto Burning Steppes;184):5 #22935(auto Burning Steppes;283):4
+#17797 | auto Burning Steppes;207§auto Brennende Steppe;207§auto Steppes ardentes;207 | x=-7792.2001953125 y=-2556.300048828125 | size=1 | links=#7753(auto Burning Steppes;95):4 #28152(auto Burning Steppes;345):7
+#17826 | auto Burning Steppes;208§auto Brennende Steppe;208§auto Steppes ardentes;208 | x=-8278.2998046875 y=-1020.400024414063 | size=1 | links=#3742(auto Burning Steppes;49):14 c9697.3:31
+#17967 | auto Burning Steppes;209§auto Brennende Steppe;209§auto Steppes ardentes;209 | x=-7593.80029296875 y=-1099.700073242188 | size=1 | links=#2002(auto Burning Steppes;28):8 #20237(auto Burning Steppes;248):7
+#18002 | auto Burning Steppes;210§auto Brennende Steppe;210§auto Steppes ardentes;210 | x=-7563.10009765625 y=-1091.599975585938 | size=1 | links=#19924(auto Burning Steppes;242):4 #25058(auto Burning Steppes;304):4
+#18064 | auto Burning Steppes;211§auto Brennende Steppe;211§auto Steppes ardentes;211 | x=-7916.30029296875 y=-2611.699951171875 | size=1 | links=#20882(auto Burning Steppes;255):11 o160445.1:8
+#18108 | auto Burning Steppes;212§auto Brennende Steppe;212§auto Steppes ardentes;212 | x=-7968.80029296875 y=-2623.900146484375 | size=1 | links=#13611(auto Burning Steppes;156):9 #14136(auto Burning Steppes;163):9
+#18159 | auto Burning Steppes;213§auto Brennende Steppe;213§auto Steppes ardentes;213 | x=-7982.7001953125 y=-1589 | size=1 | links=#13294(auto Burning Steppes;152):58 #19355(auto Burning Steppes;233):81 o181098.46:31
+#18201 | auto Burning Steppes;214§auto Brennende Steppe;214§auto Steppes ardentes;214 | x=-7614.7001953125 y=-2047.800048828125 | size=5 | links=#21173(auto Burning Steppes;258):14 #22868(auto Burning Steppes;280):67 #27707(auto Burning Steppes;337):34
+#18214 | auto Burning Steppes;215§auto Brennende Steppe;215§auto Steppes ardentes;215 | x=-8494.2001953125 y=-2553.800048828125 | size=1 | links=#852(auto Burning Steppes;12):4 #27981(auto Burning Steppes;341):4
+#18261 | auto Burning Steppes;216§auto Brennende Steppe;216§auto Steppes ardentes;216 | x=-7773.5 y=-2492.5 | size=1 | links=#19908(auto Burning Steppes;241):5 #22876(auto Burning Steppes;281):5
+#18264 | auto Burning Steppes;217§auto Brennende Steppe;217§auto Steppes ardentes;217 | x=-8527.400390625 y=-2558.300048828125 | size=1 | links=#15645(auto Burning Steppes;184):5 #15868(auto Burning Steppes;189):6
+#18332 | auto Burning Steppes;218§auto Brennende Steppe;218§auto Steppes ardentes;218 | x=-7516.7001953125 y=-1083.599975585938 | size=1 | links=#2746(auto Burning Steppes;35):4 #9758(auto Burning Steppes;115):3
+#18602 | auto Burning Steppes;219§auto Brennende Steppe;219§auto Steppes ardentes;219 | x=-7563.5 y=-2516.60009765625 | size=5 | links=#3317(auto Burning Steppes;44):57 #4252(auto Burning Steppes;56):58
+#18617 | auto Burning Steppes;220§auto Brennende Steppe;220§auto Steppes ardentes;220 | x=-8390.1005859375 y=-2534.900146484375 | size=1 | links=#11477(auto Burning Steppes;132):5 #25428(auto Burning Steppes;309):4
+#18708 | auto Burning Steppes;221§auto Brennende Steppe;221§auto Steppes ardentes;221 | x=-8553.1005859375 y=-2560.60009765625 | size=1 | links=#3623(auto Burning Steppes;48):25 #21465(auto Burning Steppes;263):10
+#18832 | auto Burning Steppes;222§auto Brennende Steppe;222§auto Steppes ardentes;222 | x=-7972.89990234375 y=-2641.699951171875 | size=1 | links=#13611(auto Burning Steppes;156):10 c7034.23:16
+#18834 | auto Burning Steppes;223§auto Brennende Steppe;223§auto Steppes ardentes;223 | x=-7484.89990234375 y=-2156.400146484375 | size=1 | links=#20273(auto Burning Steppes;250):9 #23900(auto Burning Steppes;293):10
+#18981 | auto Burning Steppes;224§auto Brennende Steppe;224§auto Steppes ardentes;224 | x=-7599.5 y=-2337.800048828125 | size=5 | links=#3202(auto Burning Steppes;41):52 #5965(auto Burning Steppes;77):86
+#19095 | auto Burning Steppes;225§auto Brennende Steppe;225§auto Steppes ardentes;225 | x=-8246.7001953125 y=-2596.699951171875 | size=1 | links=#14162(auto Burning Steppes;166):36 #17075(auto Burning Steppes;199):63 #24564(auto Burning Steppes;297):91 #25636(auto Burning Steppes;313):47
+#19110 | auto Burning Steppes;226§auto Brennende Steppe;226§auto Steppes ardentes;226 | x=-7895.30029296875 y=-2604.5 | size=1 | links=#9197(auto Burning Steppes;107):21 #10466(auto Burning Steppes;123):15
+#19179 | auto Burning Steppes;227§auto Brennende Steppe;227§auto Steppes ardentes;227 | x=-7807 y=-2557 | size=1 | links=#19836(auto Burning Steppes;240):8 #28152(auto Burning Steppes;345):7
+#19191 | auto Burning Steppes;228§auto Brennende Steppe;228§auto Steppes ardentes;228 | x=-7600.60009765625 y=-1136.099975585938 | size=1 | links=#5378(auto Burning Steppes;69):4 #9893(auto Burning Steppes;116):9
+#19213 | auto Burning Steppes;229§auto Brennende Steppe;229§auto Steppes ardentes;229 | x=-8011.7001953125 y=-1273.700073242188 | size=1 | links=#14403(auto Burning Steppes;170):61 #25628(auto Burning Steppes;312):27 #27180(auto Burning Steppes;330):92
+#19217 | auto Burning Steppes;230§auto Brennende Steppe;230§auto Steppes ardentes;230 | x=-8071.60009765625 y=-1463 | size=1 | links=#10817(auto Burning Steppes;126):41 #19355(auto Burning Steppes;233):72 c8979.7:21
+#19294 | auto Burning Steppes;231§auto Brennende Steppe;231§auto Steppes ardentes;231 | x=-7602.60009765625 y=-2870.699951171875 | size=5 | links=#3031(auto Burning Steppes;38):37 #12553(auto Burning Steppes;142):50 c7047.8:19
+#19338 | auto Burning Steppes;232§auto Brennende Steppe;232§auto Steppes ardentes;232 | x=-7936 y=-1518.300048828125 | size=5 | links=#16645(auto Burning Steppes;197):28 #23568(auto Burning Steppes;288):17
+#19355 | auto Burning Steppes;233§auto Brennende Steppe;233§auto Steppes ardentes;233 | x=-8026.10009765625 y=-1519.900024414063 | size=1 | links=#16645(auto Burning Steppes;197):61 #18159(auto Burning Steppes;213):81 #19217(auto Burning Steppes;230):72 c9699.16:81
+#19361 | auto Burning Steppes;234§auto Brennende Steppe;234§auto Steppes ardentes;234 | x=-7618.89990234375 y=-741.2000122070312 | size=1 | links=#25986(auto Burning Steppes;316):7 #27560(auto Burning Steppes;333):6
+#19488 | auto Burning Steppes;235§auto Brennende Steppe;235§auto Steppes ardentes;235 | x=-7540.39990234375 y=-1074.200073242188 | size=1 | links=#17256(auto Burning Steppes;201):4 #23010(auto Burning Steppes;284):3
+#19514 | auto Burning Steppes;236§auto Brennende Steppe;236§auto Steppes ardentes;236 | x=-7512.2001953125 y=-1042.900024414063 | size=1 | links=#19893(Lothos Riftwaker;The Molten Span;Blackrock Mountain):4 #24762(auto Burning Steppes;299):4
+#19530 | auto Burning Steppes;237§auto Brennende Steppe;237§auto Steppes ardentes;237 | x=-7929.5 y=-839.4000244140625 | size=1 | links=#9363(auto Burning Steppes;110):70 #13598(auto Burning Steppes;155):71 c7043.9:16
+#19722 | auto Burning Steppes;238§auto Brennende Steppe;238§auto Steppes ardentes;238 | x=-7557.10009765625 y=-1087.099975585938 | size=1 | links=#13813(auto Burning Steppes;157):3 #19924(auto Burning Steppes;242):3
+#19770 | auto Burning Steppes;239§auto Brennende Steppe;239§auto Steppes ardentes;239 | x=-7863.80029296875 y=-2618.60009765625 | size=1 | links=#13122(auto Burning Steppes;149):18 #22410(auto Burning Steppes;275):17
+#19836 | auto Burning Steppes;240§auto Brennende Steppe;240§auto Steppes ardentes;240 | x=-7815.2001953125 y=-2559.900146484375 | size=1 | links=#19179(auto Burning Steppes;227):8 #26153(auto Burning Steppes;320):7
+#19893 | Lothos Riftwaker;The Molten Span;Blackrock Mountain§Lothos Felsspalter;Der geschmolzene Übergang;Der Schwarzfels§Lothos Ouvrefaille;The Molten Span;Blackrock Mountain | x=-7508.5 y=-1039.800048828125 | size=1 | links=#19514(auto Burning Steppes;236):4
+#19908 | auto Burning Steppes;241§auto Brennende Steppe;241§auto Steppes ardentes;241 | x=-7773.89990234375 y=-2487.10009765625 | size=1 | links=#18261(auto Burning Steppes;216):5 #21671(auto Burning Steppes;266):9
+#19924 | auto Burning Steppes;242§auto Brennende Steppe;242§auto Steppes ardentes;242 | x=-7559.89990234375 y=-1089.200073242188 | size=1 | links=#18002(auto Burning Steppes;210):4 #19722(auto Burning Steppes;238):3
+#19982 | auto Burning Steppes;243§auto Brennende Steppe;243§auto Steppes ardentes;243 | x=-7651.39990234375 y=-3029.699951171875 | size=5 | links=#26938(auto Burning Steppes;328):17 c9459.1:22
+#20031 | auto Burning Steppes;244§auto Brennende Steppe;244§auto Steppes ardentes;244 | x=-7869.30029296875 y=-1981.5 | size=5 | links=#15297(auto Burning Steppes;179):33 #26058(auto Burning Steppes;319):27
+#20035 | auto Burning Steppes;245§auto Brennende Steppe;245§auto Steppes ardentes;245 | x=-7796.10009765625 y=-2701.800048828125 | size=1 | links=#2710(auto Burning Steppes;32):3 #13977(auto Burning Steppes;162):5
+#20044 | auto Burning Steppes;246§auto Brennende Steppe;246§auto Steppes ardentes;246 | x=-7776.10009765625 y=-2539.10009765625 | size=1 | links=#1948(auto Burning Steppes;26):8 #23665(auto Burning Steppes;291):4
+#20187 | auto Burning Steppes;247§auto Brennende Steppe;247§auto Steppes ardentes;247 | x=-7508 y=-2182.400146484375 | size=1 | links=#139(auto Burning Steppes;2):8 #7055(auto Burning Steppes;89):6
+#20237 | auto Burning Steppes;248§auto Brennende Steppe;248§auto Steppes ardentes;248 | x=-7601.30029296875 y=-1098.200073242188 | size=1 | links=#17967(auto Burning Steppes;209):7 #24889(auto Burning Steppes;302):5
+#20249 | auto Burning Steppes;249§auto Brennende Steppe;249§auto Steppes ardentes;249 | x=-8008.10009765625 y=-2905.900146484375 | size=5 | links=#1909(auto Burning Steppes;25):79 #21003(auto Burning Steppes;256):64 c9690.1:33 c10077.1:80 c7047.3:20 c9690.3:25 c9699.3:41 c7041.4:44
+#20273 | auto Burning Steppes;250§auto Brennende Steppe;250§auto Steppes ardentes;250 | x=-7478.89990234375 y=-2164.10009765625 | size=1 | links=#12966(auto Burning Steppes;147):6 #18834(auto Burning Steppes;223):9
+#20372 | auto Burning Steppes;251§auto Brennende Steppe;251§auto Steppes ardentes;251 | x=-7587.5 y=-1106.800048828125 | size=1 | links=#5685(auto Burning Steppes;75):15 #21648(auto Burning Steppes;265):9
+#20459 | central location;Flame Crest;Burning Steppes§zentralpunkt;Flammenkamm;Brennende Steppe§emplacement central;Flame Crest;Steppes ardentes | x=-7493 y=-2181.699951171875 | size=1 | links=#6815(auto Burning Steppes;85):8 #7055(auto Burning Steppes;89):9 #7397(auto Burning Steppes;92):21 c3708.1:10 c9536.1:8 c9563.1:10 c9836.1:11 c10267.1:7 c13177.1:14
+#20817 | auto Burning Steppes;252§auto Brennende Steppe;252§auto Steppes ardentes;252 | x=-7534.89990234375 y=-2178.699951171875 | size=1 | links=#710(auto Burning Steppes;11):9 #27274(auto Burning Steppes;331):9
+#20862 | auto Burning Steppes;253§auto Brennende Steppe;253§auto Steppes ardentes;253 | x=-8026.30029296875 y=-2334.400146484375 | size=1 | links=#22822(auto Burning Steppes;278):83 #28577(auto Burning Steppes;352):74 c7033.25:122
+#20870 | auto Burning Steppes;254§auto Brennende Steppe;254§auto Steppes ardentes;254 | x=-7576.80029296875 y=-1115.700073242188 | size=1 | links=#21648(auto Burning Steppes;265):10 #28272(auto Burning Steppes;347):7
+#20882 | auto Burning Steppes;255§auto Brennende Steppe;255§auto Steppes ardentes;255 | x=-7905.5 y=-2615.400146484375 | size=1 | links=#10339(auto Burning Steppes;122):21 #18064(auto Burning Steppes;211):11 #21306(auto Burning Steppes;261):21
+#21003 | auto Burning Steppes;256§auto Brennende Steppe;256§auto Steppes ardentes;256 | x=-7945.10009765625 y=-2921.10009765625 | size=5 | links=#15130(auto Burning Steppes;177):49 #20249(auto Burning Steppes;249):64 c7047.2:11
+#21110 | auto Burning Steppes;257§auto Brennende Steppe;257§auto Steppes ardentes;257 | x=-7534.39990234375 y=-1065 | size=1 | links=#11625(auto Burning Steppes;134):4 #14291(auto Burning Steppes;168):7
+#21173 | auto Burning Steppes;258§auto Brennende Steppe;258§auto Steppes ardentes;258 | x=-7615.10009765625 y=-2062.60009765625 | size=1 | links=#18201(auto Burning Steppes;214):14 #22290(auto Burning Steppes;274):30
+#21252 | auto Burning Steppes;259§auto Brennende Steppe;259§auto Steppes ardentes;259 | x=-7726.5 y=-1430.700073242188 | size=1 | links=#17609(auto Burning Steppes;204):7 c8979.1:5
+#21259 | auto Burning Steppes;260§auto Brennende Steppe;260§auto Steppes ardentes;260 | x=-7343.7001953125 y=-920.9000244140625 | size=1 | links=#17129(auto Burning Steppes;200):24 #26044(auto Burning Steppes;318):36
+#21306 | auto Burning Steppes;261§auto Brennende Steppe;261§auto Steppes ardentes;261 | x=-7885 y=-2608.5 | size=1 | links=#20882(auto Burning Steppes;255):21 #24540(auto Burning Steppes;296):14
+#21413 | auto Burning Steppes;262§auto Brennende Steppe;262§auto Steppes ardentes;262 | x=-7828.5 y=-2594 | size=1 | links=#9042(auto Burning Steppes;106):3 #27799(auto Burning Steppes;339):5
+#21465 | auto Burning Steppes;263§auto Brennende Steppe;263§auto Steppes ardentes;263 | x=-8542.2001953125 y=-2559.5 | size=1 | links=#15868(auto Burning Steppes;189):8 #18708(auto Burning Steppes;221):10
+#21555 | auto Burning Steppes;264§auto Brennende Steppe;264§auto Steppes ardentes;264 | x=-7393.2001953125 y=-1100.599975585938 | size=1 | links=#4156(auto Burning Steppes;54):18 #9682(auto Burning Steppes;113):21
+#21648 | auto Burning Steppes;265§auto Brennende Steppe;265§auto Steppes ardentes;265 | x=-7578 y=-1105.599975585938 | size=1 | links=#20372(auto Burning Steppes;251):9 #20870(auto Burning Steppes;254):10
+#21671 | auto Burning Steppes;266§auto Brennende Steppe;266§auto Steppes ardentes;266 | x=-7779.5 y=-2479.10009765625 | size=1 | links=#15164(auto Burning Steppes;178):10 #19908(auto Burning Steppes;241):9
+#21802 | auto Burning Steppes;267§auto Brennende Steppe;267§auto Steppes ardentes;267 | x=-7739.80029296875 y=-1979.800048828125 | size=5 | links=#10160(auto Burning Steppes;119):68 #14371(auto Burning Steppes;169):47 #22868(auto Burning Steppes;280):74 o153556.8:31 c7039.11:40
+#21840 | auto Burning Steppes;268§auto Brennende Steppe;268§auto Steppes ardentes;268 | x=-8000.7001953125 y=-999.7999877929688 | size=1 | links=#20851(auto;164226753242751801392):57 #146(auto Burning Steppes;4):47 #13931(auto Burning Steppes;161):30 c7049.8:48
+#21845 | entry and exit;Blackrock Stronghold;Burning Steppes§ein- und ausgang;Schwarzfelsfestung;Brennende Steppe§entrée et sortie;Blackrock Stronghold;Steppes ardentes | x=-7718.39990234375 y=-1483.5 | size=1 | links=c7028.8:5 c7029.8:12
+#21898 | auto Burning Steppes;269§auto Brennende Steppe;269§auto Steppes ardentes;269 | x=-8436.2001953125 y=-2554.400146484375 | size=1 | links=#1565(auto Burning Steppes;24):4 #26906(auto Burning Steppes;327):26
+#21924 | auto Burning Steppes;270§auto Brennende Steppe;270§auto Steppes ardentes;270 | x=-8462.2001953125 y=-2545.5 | size=1 | links=#13919(auto Burning Steppes;160):24 #22174(auto Burning Steppes;272):4 c9777.2:21
+#22134 | auto Burning Steppes;271§auto Brennende Steppe;271§auto Steppes ardentes;271 | x=-7650.5 y=-2991.699951171875 | size=5 | links=#4712(auto Burning Steppes;61):22 #26938(auto Burning Steppes;328):22
+#22174 | auto Burning Steppes;272§auto Brennende Steppe;272§auto Steppes ardentes;272 | x=-8457.900390625 y=-2546.900146484375 | size=1 | links=#21924(auto Burning Steppes;270):4 #27651(auto Burning Steppes;335):4
+#22186 | auto Burning Steppes;273§auto Brennende Steppe;273§auto Steppes ardentes;273 | x=-7620.89990234375 y=-1115 | size=1 | links=#14779(auto Burning Steppes;175):5 #26274(auto Burning Steppes;321):7
+#22290 | auto Burning Steppes;274§auto Brennende Steppe;274§auto Steppes ardentes;274 | x=-7613.7001953125 y=-2092.699951171875 | size=1 | links=#21173(auto Burning Steppes;258):30 #26604(auto Burning Steppes;324):34 o181098.23:23
+#22410 | auto Burning Steppes;275§auto Brennende Steppe;275§auto Steppes ardentes;275 | x=-7869.30029296875 y=-2602.400146484375 | size=1 | links=#10466(auto Burning Steppes;123):11 #19770(auto Burning Steppes;239):17
+#22687 | auto Burning Steppes;276§auto Brennende Steppe;276§auto Steppes ardentes;276 | x=-8069.39990234375 y=-1391 | size=1 | links=#10817(auto Burning Steppes;126):30 #16080(auto Burning Steppes;194):33
+#22817 | auto Burning Steppes;277§auto Brennende Steppe;277§auto Steppes ardentes;277 | x=-7941.89990234375 y=-2608.900146484375 | size=1 | links=#4407(auto Burning Steppes;59):12 #23651(auto Burning Steppes;289):19
+#22822 | auto Burning Steppes;278§auto Brennende Steppe;278§auto Steppes ardentes;278 | x=-7973.80029296875 y=-2269.60009765625 | size=1 | links=#4840(auto Burning Steppes;64):65 #20862(auto Burning Steppes;253):83
+#22840 | auto Burning Steppes;279§auto Brennende Steppe;279§auto Steppes ardentes;279 | x=-7623.60009765625 y=-725.6000366210938 | size=1 | links=#27560(auto Burning Steppes;333):9 c8979.6:13
+#22868 | auto Burning Steppes;280§auto Brennende Steppe;280§auto Steppes ardentes;280 | x=-7674.7001953125 y=-2016.700073242188 | size=5 | links=#18201(auto Burning Steppes;214):67 #21802(auto Burning Steppes;267):74 c7048.2:20 o153556.26:45
+#22876 | auto Burning Steppes;281§auto Brennende Steppe;281§auto Steppes ardentes;281 | x=-7773.60009765625 y=-2497.5 | size=1 | links=#6455(auto Burning Steppes;82):8 #18261(auto Burning Steppes;216):5
+#22922 | auto Burning Steppes;282§auto Brennende Steppe;282§auto Steppes ardentes;282 | x=-7801.10009765625 y=-1485.900024414063 | size=5 | links=#12924(auto Burning Steppes;145):20 #24725(auto Burning Steppes;298):31
+#22935 | auto Burning Steppes;283§auto Brennende Steppe;283§auto Steppes ardentes;283 | x=-8511.400390625 y=-2556.900146484375 | size=1 | links=#16071(auto Burning Steppes;193):5 #17741(auto Burning Steppes;206):4
+#23010 | auto Burning Steppes;284§auto Brennende Steppe;284§auto Steppes ardentes;284 | x=-7542.80029296875 y=-1076.300048828125 | size=1 | links=#17588(auto Burning Steppes;203):3 #19488(auto Burning Steppes;235):3
+#23304 | auto Burning Steppes;285§auto Brennende Steppe;285§auto Steppes ardentes;285 | x=-7721.89990234375 y=-1462.200073242188 | size=1 | links=#3225(auto Burning Steppes;43):5 c7028.5:11
+#23429 | auto Burning Steppes;286§auto Brennende Steppe;286§auto Steppes ardentes;286 | x=-7582 y=-2157.699951171875 | size=1 | links=#23659(auto Burning Steppes;290):20 #25287(auto Burning Steppes;306):17
+#23487 | auto Burning Steppes;287§auto Brennende Steppe;287§auto Steppes ardentes;287 | x=-8034.39990234375 y=-2051.10009765625 | size=1 | links=#123(auto Burning Steppes;1):43 #5152(auto Burning Steppes;68):52 c9694.2:84
+#23568 | auto Burning Steppes;288§auto Brennende Steppe;288§auto Steppes ardentes;288 | x=-7918.80029296875 y=-1519.5 | size=1 | links=#5433(auto Burning Steppes;72):9 #19338(auto Burning Steppes;232):17
+#23651 | auto Burning Steppes;289§auto Brennende Steppe;289§auto Steppes ardentes;289 | x=-7926.80029296875 y=-2621.400146484375 | size=1 | links=#9197(auto Burning Steppes;107):16 #9967(auto Burning Steppes;118):13 #22817(auto Burning Steppes;277):19
+#23659 | auto Burning Steppes;290§auto Brennende Steppe;290§auto Steppes ardentes;290 | x=-7599.60009765625 y=-2147.900146484375 | size=1 | links=#23429(auto Burning Steppes;286):20 #26604(auto Burning Steppes;324):36
+#23665 | auto Burning Steppes;291§auto Brennende Steppe;291§auto Steppes ardentes;291 | x=-7776 y=-2534.5 | size=1 | links=#15793(auto Burning Steppes;187):3 #20044(auto Burning Steppes;246):4
+#23772 | auto Burning Steppes;292§auto Brennende Steppe;292§auto Steppes ardentes;292 | x=-7845 y=-1469.599975585938 | size=1 | links=#7851(auto Burning Steppes;97):4 #24725(auto Burning Steppes;298):15
+#23900 | auto Burning Steppes;293§auto Brennende Steppe;293§auto Steppes ardentes;293 | x=-7493.89990234375 y=-2150.199951171875 | size=1 | links=#18834(auto Burning Steppes;223):10 c6491.1:8
+#24269 | auto Burning Steppes;294§auto Brennende Steppe;294§auto Steppes ardentes;294 | x=-7754.60009765625 y=-2959.10009765625 | size=5 | links=#631(auto Burning Steppes;9):73 #13166(auto Burning Steppes;150):53 c9691.2:18 c7047.10:30 c7040.16:42
+#24487 | auto Burning Steppes;295§auto Brennende Steppe;295§auto Steppes ardentes;295 | x=-7525 y=-1076.900024414063 | size=1 | links=#3356(auto Burning Steppes;45):4 #9384(auto Burning Steppes;111):3
+#24526 | instance entrance;The Masonary;Blackrock Mountain§instanzeingang;Die Freimaurerei;Der Schwarzfels§instance entrance;The Masonary;Blackrock Mountain | x=-7180.5 y=-924.9000244140625 | size=1 | links=#11914(auto Burning Steppes;136):4
+#24540 | auto Burning Steppes;296§auto Brennende Steppe;296§auto Steppes ardentes;296 | x=-7870.60009765625 y=-2608.900146484375 | size=1 | links=#1218(auto Burning Steppes;15):10 #21306(auto Burning Steppes;261):14
+#24564 | auto Burning Steppes;297§auto Brennende Steppe;297§auto Steppes ardentes;297 | x=-8312.1005859375 y=-2533.400146484375 | size=1 | links=#11477(auto Burning Steppes;132):72 #19095(auto Burning Steppes;225):91
+#24725 | auto Burning Steppes;298§auto Brennende Steppe;298§auto Steppes ardentes;298 | x=-7831 y=-1475.900024414063 | size=5 | links=#22922(auto Burning Steppes;282):31 #23772(auto Burning Steppes;292):15
+#24762 | auto Burning Steppes;299§auto Brennende Steppe;299§auto Steppes ardentes;299 | x=-7515.39990234375 y=-1046 | size=1 | links=#12812(auto Burning Steppes;144):2 #14641(auto Burning Steppes;171):5 #19514(auto Burning Steppes;236):4
+#24797 | rescue;waters;down;The Molten Span;Blackrock Mountain§rettung;gewässer;unten;Der geschmolzene Übergang;Der Schwarzfels§sauvetage;eaux;bas;The Molten Span;Blackrock Mountain | x=-7509.35603379297 y=-1089.840555356122 | size=1 | links=#3060(auto Burning Steppes;39):4
+#24819 | auto Burning Steppes;300§auto Brennende Steppe;300§auto Steppes ardentes;300 | x=-7572.30029296875 y=-1098.599975585938 | size=1 | links=#1303(auto Burning Steppes;20):3 #10904(auto Burning Steppes;127):4
+#24840 | auto Burning Steppes;301§auto Brennende Steppe;301§auto Steppes ardentes;301 | x=-7646.10009765625 y=-652.6000366210938 | size=1 | links=#477(auto Burning Steppes;6):5 #2535(auto Burning Steppes;31):6
+#24889 | auto Burning Steppes;302§auto Brennende Steppe;302§auto Steppes ardentes;302 | x=-7605.7001953125 y=-1101.599975585938 | size=1 | links=#1270(auto Burning Steppes;16):5 #20237(auto Burning Steppes;248):5
+#24916 | auto Burning Steppes;303§auto Brennende Steppe;303§auto Steppes ardentes;303 | x=-7672.60009765625 y=-712 | size=1 | links=#6002(auto Burning Steppes;78):9 #11052(auto Burning Steppes;128):44 #15730(auto Burning Steppes;186):14
+#25058 | auto Burning Steppes;304§auto Brennende Steppe;304§auto Steppes ardentes;304 | x=-7566.39990234375 y=-1094.099975585938 | size=1 | links=#1303(auto Burning Steppes;20):4 #18002(auto Burning Steppes;210):4
+#25275 | auto Burning Steppes;305§auto Brennende Steppe;305§auto Steppes ardentes;305 | x=-7506.30029296875 y=-1054.800048828125 | size=1 | links=#15662(auto Burning Steppes;185):4 #25801(auto Burning Steppes;314):12
+#25287 | auto Burning Steppes;306§auto Brennende Steppe;306§auto Steppes ardentes;306 | x=-7566.5 y=-2166.400146484375 | size=1 | links=#15346(auto Burning Steppes;181):15 #23429(auto Burning Steppes;286):17
+#25291 | auto Burning Steppes;307§auto Brennende Steppe;307§auto Steppes ardentes;307 | x=-7951 y=-2114.60009765625 | size=1 | links=#145(auto Burning Steppes;3):39 #25923(auto Burning Steppes;315):22
+#25361 | auto Burning Steppes;308§auto Brennende Steppe;308§auto Steppes ardentes;308 | x=-8407.7001953125 y=-2539.199951171875 | size=1 | links=#8868(auto Burning Steppes;104):6 #26906(auto Burning Steppes;327):5
+#25428 | auto Burning Steppes;309§auto Brennende Steppe;309§auto Steppes ardentes;309 | x=-8394.400390625 y=-2535.800048828125 | size=1 | links=#8868(auto Burning Steppes;104):6 #18617(auto Burning Steppes;220):4
+#25452 | auto Burning Steppes;310§auto Brennende Steppe;310§auto Steppes ardentes;310 | x=-8135.7001953125 y=-2830.300048828125 | size=5 | links=#1909(auto Burning Steppes;25):70 #11778(auto Burning Steppes;135):80 c7044.3:58 c8981.5:35 c9690.6:31 c9691.7:36 o181098.52:49
+#25562 | auto Burning Steppes;311§auto Brennende Steppe;311§auto Steppes ardentes;311 | x=-7570.10009765625 y=-2098.699951171875 | size=1 | links=#2733(auto Burning Steppes;34):33 #27707(auto Burning Steppes;337):33
+#25628 | auto Burning Steppes;312§auto Brennende Steppe;312§auto Steppes ardentes;312 | x=-8005.39990234375 y=-1300.200073242188 | size=1 | links=#6457(auto;164226748742305833212):59 #11989(auto Burning Steppes;137):36 #19213(auto Burning Steppes;229):27 c7043.1:35 c7043.2:21 c7042.6:30 o181098.9:45 o181098.10:58 o181098.53:57
+#25636 | auto Burning Steppes;313§auto Brennende Steppe;313§auto Steppes ardentes;313 | x=-8202 y=-2581.5 | size=1 | links=#5114(auto Burning Steppes;67):58 #19095(auto Burning Steppes;225):47 c7033.1:111 c9699.6:78
+#25801 | auto Burning Steppes;314§auto Brennende Steppe;314§auto Steppes ardentes;314 | x=-7495.89990234375 y=-1047.099975585938 | size=1 | links=#13819(auto Burning Steppes;158):16 #25275(auto Burning Steppes;305):12
+#25923 | auto Burning Steppes;315§auto Brennende Steppe;315§auto Steppes ardentes;315 | x=-7973.30029296875 y=-2117.400146484375 | size=1 | links=#123(auto Burning Steppes;1):47 #1352(auto Burning Steppes;23):33 #25291(auto Burning Steppes;307):22
+#25986 | auto Burning Steppes;316§auto Brennende Steppe;316§auto Steppes ardentes;316 | x=-7616.5 y=-748.2000122070312 | size=1 | links=#19361(auto Burning Steppes;234):7 c7028.13:20 c7028.14:20
+#26022 | auto Burning Steppes;317§auto Brennende Steppe;317§auto Steppes ardentes;317 | x=-7479.10009765625 y=-1070.300048828125 | size=1 | links=#27600(auto Burning Steppes;334):19 #23774(auto The Molten Span;Blackrock Mountain;Burning Steppes;54):18
+#26044 | auto Burning Steppes;318§auto Brennende Steppe;318§auto Steppes ardentes;318 | x=-7378.30029296875 y=-933.7000122070312 | size=1 | links=#15375(auto Burning Steppes;182):17 #21259(auto Burning Steppes;260):36
+#26058 | auto Burning Steppes;319§auto Brennende Steppe;319§auto Steppes ardentes;319 | x=-7843.5 y=-1970.900024414063 | size=5 | links=#10160(auto Burning Steppes;119):36 #20031(auto Burning Steppes;244):27 o153556.13:21
+#26153 | auto Burning Steppes;320§auto Brennende Steppe;320§auto Steppes ardentes;320 | x=-7819.80029296875 y=-2565.699951171875 | size=1 | links=#1035(auto Burning Steppes;13):4 #19836(auto Burning Steppes;240):7
+#26274 | auto Burning Steppes;321§auto Brennende Steppe;321§auto Steppes ardentes;321 | x=-7613.10009765625 y=-1114.200073242188 | size=1 | links=#13053(auto Burning Steppes;148):7 #22186(auto Burning Steppes;273):7
+#26478 | auto Burning Steppes;322§auto Brennende Steppe;322§auto Steppes ardentes;322 | x=-7829.10009765625 y=-719.2999877929688 | size=1 | links=#1075(auto Burning Steppes;14):41 #9363(auto Burning Steppes;110):86
+#26507 | auto Burning Steppes;323§auto Brennende Steppe;323§auto Steppes ardentes;323 | x=-7681.60009765625 y=-1452.700073242188 | size=1 | links=#10232(auto Burning Steppes;120):4 c7029.5:6
+#26604 | auto Burning Steppes;324§auto Brennende Steppe;324§auto Steppes ardentes;324 | x=-7628 y=-2124.300048828125 | size=1 | links=#22290(auto Burning Steppes;274):34 #23659(auto Burning Steppes;290):36 o181098.4:50
+#26841 | auto Burning Steppes;325§auto Brennende Steppe;325§auto Steppes ardentes;325 | x=-7797.89990234375 y=-2680.300048828125 | size=1 | links=#4279(auto Burning Steppes;57):14 #15638(entry and exit;cave;Dreadmaul Rock;Burning Steppes):11
+#26874 | auto Burning Steppes;326§auto Brennende Steppe;326§auto Steppes ardentes;326 | x=-7613.30029296875 y=-1123.5 | size=1 | links=#12495(auto Burning Steppes;141):11 #16557(auto Burning Steppes;196):7
+#26906 | auto Burning Steppes;327§auto Brennende Steppe;327§auto Steppes ardentes;327 | x=-8413.2998046875 y=-2540.699951171875 | size=1 | links=#21898(auto Burning Steppes;269):26 #25361(auto Burning Steppes;308):5
+#26938 | auto Burning Steppes;328§auto Brennende Steppe;328§auto Steppes ardentes;328 | x=-7656.7001953125 y=-3013.10009765625 | size=5 | links=#19982(auto Burning Steppes;243):17 #22134(auto Burning Steppes;271):22
+#27061 | auto Burning Steppes;329§auto Brennende Steppe;329§auto Steppes ardentes;329 | x=-7428.89990234375 y=-998.9000244140625 | size=1 | links=#2985(auto Burning Steppes;37):15 #14146(auto Burning Steppes;164):21
+#27180 | auto Burning Steppes;330§auto Brennende Steppe;330§auto Steppes ardentes;330 | x=-8070.39990234375 y=-1202.300048828125 | size=1 | links=#6457(auto;164226748742305833212):60 #9937(auto Burning Steppes;117):57 #19213(auto Burning Steppes;229):92 c9698.3:46 c9698.5:91
+#27274 | auto Burning Steppes;331§auto Brennende Steppe;331§auto Steppes ardentes;331 | x=-7525.80029296875 y=-2180 | size=1 | links=#139(auto Burning Steppes;2):9 #20817(auto Burning Steppes;252):9
+#27490 | auto Burning Steppes;332§auto Brennende Steppe;332§auto Steppes ardentes;332 | x=-7841.5 y=-2113.900146484375 | size=1 | links=#5416(auto Burning Steppes;71):12 o153556.4:38 o153556.16:46
+#27560 | auto Burning Steppes;333§auto Brennende Steppe;333§auto Steppes ardentes;333 | x=-7621 y=-734.9000244140625 | size=1 | links=#19361(auto Burning Steppes;234):6 #22840(auto Burning Steppes;279):9
+#27600 | auto Burning Steppes;334§auto Brennende Steppe;334§auto Steppes ardentes;334 | x=-7460.7001953125 y=-1064.599975585938 | size=1 | links=#15553(auto Burning Steppes;183):24 #26022(auto Burning Steppes;317):19
+#27651 | auto Burning Steppes;335§auto Brennende Steppe;335§auto Steppes ardentes;335 | x=-8453.6005859375 y=-2548.400146484375 | size=1 | links=#7343(auto Burning Steppes;91):4 #22174(auto Burning Steppes;272):4
+#27652 | auto Burning Steppes;336§auto Brennende Steppe;336§auto Steppes ardentes;336 | x=-8305.900390625 y=-1007.299987792969 | size=1 | links=#3742(auto Burning Steppes;49):16 c14529.1:18
+#27707 | auto Burning Steppes;337§auto Brennende Steppe;337§auto Steppes ardentes;337 | x=-7592.80029296875 y=-2073.900146484375 | size=1 | links=#18201(auto Burning Steppes;214):34 #25562(auto Burning Steppes;311):33
+#27761 | auto Burning Steppes;338§auto Brennende Steppe;338§auto Steppes ardentes;338 | x=-7896.10009765625 y=-1518.400024414063 | size=5 | links=#4563(auto Burning Steppes;60):10 #6345(auto Burning Steppes;80):13
+#27799 | auto Burning Steppes;339§auto Brennende Steppe;339§auto Steppes ardentes;339 | x=-7827.60009765625 y=-2588.300048828125 | size=1 | links=#12008(auto Burning Steppes;138):6 #21413(auto Burning Steppes;262):5
+#27955 | auto Burning Steppes;340§auto Brennende Steppe;340§auto Steppes ardentes;340 | x=-7582.7001953125 y=-1137.800048828125 | size=1 | links=#9893(auto Burning Steppes;116):8 #13495(auto Burning Steppes;154):8
+#27981 | auto Burning Steppes;341§auto Brennende Steppe;341§auto Steppes ardentes;341 | x=-8498.2998046875 y=-2555.300048828125 | size=1 | links=#4024(auto Burning Steppes;51):4 #18214(auto Burning Steppes;215):4
+#28057 | auto Burning Steppes;342§auto Brennende Steppe;342§auto Steppes ardentes;342 | x=-7579.89990234375 y=-1104.300048828125 | size=1 | links=#2002(auto Burning Steppes;28):6 #10904(auto Burning Steppes;127):4
+#28144 | auto Burning Steppes;343§auto Brennende Steppe;343§auto Steppes ardentes;343 | x=-8207.5 y=-2742.400146484375 | size=5 | links=#8133(auto Burning Steppes;100):78 #11778(auto Burning Steppes;135):32 c7047.1:36 c9690.4:15
+#28145 | auto Burning Steppes;344§auto Brennende Steppe;344§auto Steppes ardentes;344 | x=-7642.2001953125 y=-711.9000244140625 | size=1 | links=#5531(auto Burning Steppes;74):1 #11068(auto Burning Steppes;129):8
+#28152 | auto Burning Steppes;345§auto Brennende Steppe;345§auto Steppes ardentes;345 | x=-7799.60009765625 y=-2556.60009765625 | size=1 | links=#17797(auto Burning Steppes;207):7 #19179(auto Burning Steppes;227):7
+#28248 | Krom'Grul;Dreadmaul Rock;Burning Steppes§Krom'Grul;Schreckensfels;Brennende Steppe§Krom'Grul;Le Rocher des Cognepeurs;Steppes ardentes | x=-7960.80029296875 y=-2656.300048828125 | size=1 | links=c9602.2:15 c7034.23:11
+#28269 | auto Burning Steppes;346§auto Brennende Steppe;346§auto Steppes ardentes;346 | x=-7952.60009765625 y=-1856.5 | size=5 | links=#8416(auto Burning Steppes;101):96 #10681(auto Burning Steppes;124):91 #17720(auto Burning Steppes;205):57 o181098.1:31
+#28272 | auto Burning Steppes;347§auto Brennende Steppe;347§auto Steppes ardentes;347 | x=-7575.80029296875 y=-1122.800048828125 | size=1 | links=#5463(auto Burning Steppes;73):5 #20870(auto Burning Steppes;254):7
+#28369 | auto Burning Steppes;348§auto Brennende Steppe;348§auto Steppes ardentes;348 | x=-7808.7001953125 y=-2652.300048828125 | size=1 | links=#5833(auto Burning Steppes;76):19 #14700(auto Burning Steppes;174):12
+#28456 | auto Burning Steppes;349§auto Brennende Steppe;349§auto Steppes ardentes;349 | x=-7473.80029296875 y=-1022 | size=1 | links=#13819(auto Burning Steppes;158):16 #14980(auto Burning Steppes;176):12
+#28461 | auto Burning Steppes;350§auto Brennende Steppe;350§auto Steppes ardentes;350 | x=-7585.80029296875 y=-1096.700073242188 | size=1 | links=#6367(auto Burning Steppes;81):7 #13053(auto Burning Steppes;148):25
+#28556 | auto Burning Steppes;351§auto Brennende Steppe;351§auto Steppes ardentes;351 | x=-7626.10009765625 y=-1125.200073242188 | size=1 | links=#14779(auto Burning Steppes;175):10 #16557(auto Burning Steppes;196):5
+#28577 | auto Burning Steppes;352§auto Brennende Steppe;352§auto Steppes ardentes;352 | x=-8098.10009765625 y=-2354.5 | size=1 | links=#9555(auto Burning Steppes;112):64 #20862(auto Burning Steppes;253):74
+#48681 | auto Burning Steppes;353§auto Brennende Steppe;353§auto Steppes ardentes;353 | x=-7702.612463064675 y=-2481.802678969929 | size=1 | links=#48682(auto Burning Steppes;354):46 c7034.21:59
+#48682 | auto Burning Steppes;354§auto Brennende Steppe;354§auto Steppes ardentes;354 | x=-7662.344744740231 y=-2505.459823087996 | size=1 | links=#48681(auto Burning Steppes;353):46 #48683(auto Burning Steppes;355):47
+#48683 | auto Burning Steppes;355§auto Brennende Steppe;355§auto Steppes ardentes;355 | x=-7622.580425415197 y=-2530.627136742664 | size=1 | links=#48682(auto Burning Steppes;354):47 c9699.2:34
+#48685 | auto Blackrock Mountain;356§auto Der Schwarzfels;356§auto Blackrock Mountain;356 | x=-7732.30029296875 y=-1085.300048828125 | size=1 | links=#48686(auto Blackrock Mountain;357):17 #26087(auto The Molten Span;Blackrock Mountain;Burning Steppes;60):17
+#48686 | auto Blackrock Mountain;357§auto Der Schwarzfels;357§auto Blackrock Mountain;357 | x=-7744.7001953125 y=-1097.700073242188 | size=1 | links=#48685(auto Blackrock Mountain;356):17 #48687(auto Blackrock Mountain;358):19
+#48687 | auto Blackrock Mountain;358§auto Der Schwarzfels;358§auto Blackrock Mountain;358 | x=-7748.30029296875 y=-1117.099975585938 | size=1 | links=#48686(auto Blackrock Mountain;357):19 #48688(auto Blackrock Mountain;359):14
+#48688 | auto Blackrock Mountain;359§auto Der Schwarzfels;359§auto Blackrock Mountain;359 | x=-7756.80029296875 y=-1129.200073242188 | size=1 | links=#48687(auto Blackrock Mountain;358):14 #48689(auto Blackrock Mountain;360):25
+#48689 | auto Blackrock Mountain;360§auto Der Schwarzfels;360§auto Blackrock Mountain;360 | x=-7782 y=-1126.400024414063 | size=1 | links=#48688(auto Blackrock Mountain;359):25 #48690(auto Blackrock Mountain;361):23
+#48690 | auto Blackrock Mountain;361§auto Der Schwarzfels;361§auto Blackrock Mountain;361 | x=-7805 y=-1130.200073242188 | size=1 | links=#48689(auto Blackrock Mountain;360):23 #48691(auto Blackrock Mountain;362):32
+#48691 | auto Blackrock Mountain;362§auto Der Schwarzfels;362§auto Blackrock Mountain;362 | x=-7837.39990234375 y=-1131.200073242188 | size=1 | links=#48690(auto Blackrock Mountain;361):32 #48692(auto Blackrock Mountain;363):32
+#48692 | auto Blackrock Mountain;363§auto Der Schwarzfels;363§auto Blackrock Mountain;363 | x=-7869.60009765625 y=-1130.200073242188 | size=1 | links=#48691(auto Blackrock Mountain;362):32 #48693(auto Blackrock Mountain;364):30
+#48693 | auto Blackrock Mountain;364§auto Der Schwarzfels;364§auto Blackrock Mountain;364 | x=-7900.30029296875 y=-1127.200073242188 | size=1 | links=#48692(auto Blackrock Mountain;363):30 #48694(auto Blackrock Mountain;365):29
+#48694 | auto Blackrock Mountain;365§auto Der Schwarzfels;365§auto Blackrock Mountain;365 | x=-7929.30029296875 y=-1126.099975585938 | size=1 | links=#48693(auto Blackrock Mountain;364):29 #48695(auto Blackrock Mountain;366):37
+#48695 | auto Blackrock Mountain;366§auto Der Schwarzfels;366§auto Blackrock Mountain;366 | x=-7965.39990234375 y=-1136.900024414063 | size=1 | links=#48694(auto Blackrock Mountain;365):37 #48696(auto Blackrock Mountain;367):29
+#48696 | auto Blackrock Mountain;367§auto Der Schwarzfels;367§auto Blackrock Mountain;367 | x=-7988.80029296875 y=-1154.5 | size=1 | links=#48695(auto Blackrock Mountain;366):29 #48697(auto Blackrock Mountain;368):27
+#48697 | auto Blackrock Mountain;368§auto Der Schwarzfels;368§auto Blackrock Mountain;368 | x=-8003.60009765625 y=-1177.700073242188 | size=1 | links=#14403(auto Burning Steppes;170):37 #48696(auto Blackrock Mountain;367):27
+#48698 | auto Burning Steppes;369§auto Brennende Steppe;369§auto Steppes ardentes;369 | x=-8141.424033746973 y=-1659.316702324458 | size=1 | links=c7025.3:42 c9699.18:25
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c1296.1 | links=#4158(central location;Morgan's Vigil;Burning Steppes):13
+c2299.1 | links=#4158(central location;Morgan's Vigil;Burning Steppes):24
+c3298.1 | links=#6668(auto Burning Steppes;83):13
+c3708.1 | links=#20459(central location;Flame Crest;Burning Steppes):10
+c6491.1 | links=#12948(auto Burning Steppes;146):29 #23900(auto Burning Steppes;293):8 c15585.1:9
+c7026.1 | links=c7025.2:12
+c7027.1 | links=c7026.4:7
+c7028.1 | links=#14689(auto Burning Steppes;173):11 c7027.3:5
+c7029.1 | links=#17571(auto Burning Steppes;202):6 c7029.4:14
+c7033.1 | links=#25636(auto Burning Steppes;313):111 c7033.2:11
+c7034.1 | links=c7035.2:107 c7033.8:28 c7033.26:43
+c7036.1 | links=c7036.2:12 o153556.20:27
+c7038.1 | links=c7037.3:30 o153556.6:57
+c7039.1 | links=o153556.6:11 o153556.18:56
+c7040.1 | links=#3031(auto Burning Steppes;38):52
+c7041.1 | links=c7041.14:8
+c7042.1 | links=c7043.8:28
+c7043.1 | links=#25628(auto Burning Steppes;312):35 c7043.4:35
+c7044.1 | links=#16982(auto Burning Steppes;198):19 c7041.9:31 c7041.10:7
+c7045.1 | links=c7048.12:22 c9699.14:45
+c7046.1 | links=c14529.1:25 c7049.7:7
+c7047.1 | links=#28144(auto Burning Steppes;343):36
+c7048.1 | links=c9699.14:12
+c7049.1 | links=c7046.3:58 c9699.19:81
+c8976.1 | links=c9697.1:38 c7049.3:22 c9699.19:154
+c8979.1 | links=#3556(auto Burning Steppes;46):11 #21252(auto Burning Steppes;259):5 c7028.3:6
+c8981.1 | links=c7047.7:33 c9691.9:30
+c9176.1 | links=#10817(auto Burning Steppes;126):38 c7027.13:5
+c9177.1 | links=#4158(central location;Morgan's Vigil;Burning Steppes):15
+c9459.1 | links=#19982(auto Burning Steppes;243):22
+c9520.1 | links=#3864(auto Burning Steppes;50):11 #17571(auto Burning Steppes;202):12
+c9536.1 | links=#20459(central location;Flame Crest;Burning Steppes):8
+c9544.1 | links=#7397(auto Burning Steppes;92):17
+c9560.1 | links=#4158(central location;Morgan's Vigil;Burning Steppes):8
+c9561.1 | links=#4158(central location;Morgan's Vigil;Burning Steppes):22
+c9562.1 | links=#4158(central location;Morgan's Vigil;Burning Steppes):23
+c9563.1 | links=#20459(central location;Flame Crest;Burning Steppes):10
+c9565.1 | links=#4158(central location;Morgan's Vigil;Burning Steppes):5
+c9690.1 | links=#20249(auto Burning Steppes;249):33
+c9691.1 | links=#1909(auto Burning Steppes;25):39
+c9694.1 | links=c9699.1:32 c7048.9:42 c7040.14:11
+c9697.1 | links=c8976.1:38 c9698.6:63
+c9698.1 | links=c9698.6:33 o181098.26:71
+c9699.1 | links=c9694.1:32 c7040.8:65 c7041.11:13
+c9776.1 | links=c9776.2:10
+c9777.1 | links=#4024(auto Burning Steppes;51):14 c9700.4:3
+c9836.1 | links=#20459(central location;Flame Crest;Burning Steppes):11
+c10077.1 | links=#20249(auto Burning Steppes;249):80
+c10119.1 | links=c7033.4:12 o153556.11:129 c7034.21:18
+c10260.1 | links=#7397(auto Burning Steppes;92):15
+c10262.1 | links=#7397(auto Burning Steppes;92):18
+c10267.1 | links=#20459(central location;Flame Crest;Burning Steppes):7
+c13177.1 | links=#20459(central location;Flame Crest;Burning Steppes):14
+c14436.1 | links=#1293(auto Burning Steppes;19):5
+c14437.1 | links=#1293(auto Burning Steppes;19):6 o179782.1:1
+c14529.1 | links=#27652(auto Burning Steppes;336):18 c7046.1:25
+c15585.1 | links=c6491.1:9
+c16043.1 | links=c9700.6:13
+o160445.1 | links=#18064(auto Burning Steppes;211):8
+o160840.1 | links=c7035.3:3
+o169294.1 | links=c7037.6:12 o153556.27:2
+o178125.1 | links=o181098.5:43
+o179782.1 | links=c14437.1:1
+o181098.1 | links=#28269(auto Burning Steppes;346):31
+c7025.2 | links=c7026.1:12 c8979.2:27 c9699.18:68
+c7027.2 | links=c7027.19:19
+c7029.2 | links=#17571(auto Burning Steppes;202):6 c8979.4:10
+c7033.2 | links=c7033.1:11
+c7035.2 | links=c7034.1:107 c7035.12:33
+c7036.2 | links=c7036.1:12 c7037.3:17
+c7038.2 | links=c7036.4:13 o153556.4:6
+c7040.2 | links=#1909(auto Burning Steppes;25):51 c7041.6:42
+c7041.2 | links=c7040.3:36 c7041.16:25 c7040.18:25
+c7042.2 | links=c7043.15:44
+c7043.2 | links=#25628(auto Burning Steppes;312):21
+c7044.2 | links=#15130(auto Burning Steppes;177):31 c7047.5:13
+c7046.2 | links=c7043.5:21 c7043.13:17
+c7047.2 | links=#21003(auto Burning Steppes;256):11
+c7048.2 | links=#22868(auto Burning Steppes;280):20
+c7049.2 | links=c7049.8:32
+c8978.2 | links=#12756(auto Burning Steppes;143):8 o153556.9:50 o153556.15:46 o153556.19:15
+c8979.2 | links=c7025.2:27 c7026.10:14 c9699.16:55
+c9602.2 | links=#28248(Krom'Grul;Dreadmaul Rock;Burning Steppes):15
+c9690.2 | links=c7044.3:82
+c9691.2 | links=#24269(auto Burning Steppes;294):18
+c9694.2 | links=#23487(auto Burning Steppes;287):84 c7048.12:61 c9695.12:28
+c9695.2 | links=c9695.8:36 c7048.13:31
+c9697.2 | links=c9699.21:31
+c9698.2 | links=#4021(auto Searing Gorge;55):48 c9697.4:52
+c9699.2 | links=#4252(auto Burning Steppes;56):26 #48683(auto Burning Steppes;355):34
+c9776.2 | links=c9776.1:10 c9777.3:10
+c9777.2 | links=#21924(auto Burning Steppes;270):21
+c10077.2 | links=c9699.6:24 c7033.18:87 c7033.26:67
+o153556.2 | links=#4039(auto Burning Steppes;53):28 o153556.20:43
+c7025.3 | links=#48698(auto Burning Steppes;369):42 c7027.16:51
+c7026.3 | links=c9699.5:13 c7028.6:5
+c7027.3 | links=#4742(auto Burning Steppes;63):10 c7028.1:5
+c7028.3 | links=c8979.1:6
+c7029.3 | links=#3864(auto Burning Steppes;50):8 c8979.4:11
+c7032.3 | links=#12131(auto Burning Steppes;139):21 o181098.33:13
+c7033.3 | links=o181098.64:48
+c7035.3 | links=#10339(auto Burning Steppes;122):21 o160840.1:3
+c7037.3 | links=c7038.1:30 c7036.2:17
+c7040.3 | links=c7041.2:36
+c7041.3 | links=c7040.9:20 c7041.15:19
+c7042.3 | links=c7049.8:41
+c7043.3 | links=#13598(auto Burning Steppes;155):26 c7043.10:20
+c7044.3 | links=#25452(auto Burning Steppes;310):58 c9690.2:82 o181098.14:60
+c7046.3 | links=c7049.1:58 c9699.4:69
+c7047.3 | links=#20249(auto Burning Steppes;249):20
+c7049.3 | links=c8976.1:22
+c8978.3 | links=o153556.28:23
+c8979.3 | links=c7025.6:8 c8979.7:25 c7027.19:20
+c8981.3 | links=c7047.4:21 c9691.5:35
+c9690.3 | links=#20249(auto Burning Steppes;249):25
+c9691.3 | links=#11778(auto Burning Steppes;135):41
+c9697.3 | links=#17826(auto Burning Steppes;208):31 c9698.6:45
+c9698.3 | links=#27180(auto Burning Steppes;330):46 c9779.4:74
+c9699.3 | links=#20249(auto Burning Steppes;249):41
+c9777.3 | links=#4024(auto Burning Steppes;51):7 c9776.2:10
+c9779.3 | links=c9778.5:15
+o181098.3 | links=o153556.13:43
+c7026.4 | links=c7027.1:7
+c7028.4 | links=c7028.5:6
+c7029.4 | links=#3864(auto Burning Steppes;50):10 c7029.1:14
+c7033.4 | links=#15164(auto Burning Steppes;178):21 c10119.1:12 c7033.17:32
+c7036.4 | links=c7038.2:13 o181098.42:15
+c7039.4 | links=o181098.15:22 o153556.16:15
+c7040.4 | links=#1909(auto Burning Steppes;25):44
+c7041.4 | links=#20249(auto Burning Steppes;249):44
+c7042.4 | links=c7043.7:32 c7042.8:35
+c7043.4 | links=c7043.1:35 c7048.15:58
+c7047.4 | links=#15130(auto Burning Steppes;177):21 c8981.3:21
+c7049.4 | links=c9699.21:24
+c8978.4 | links=o153556.14:27 o153556.26:31
+c8979.4 | links=c7029.2:10 c7029.3:11
+c8981.4 | links=#11778(auto Burning Steppes;135):44
+c9690.4 | links=#28144(auto Burning Steppes;343):15
+c9691.4 | links=c7047.14:22
+c9697.4 | links=c9698.2:52 c9698.6:67 c9698.7:38
+c9699.4 | links=c7046.3:69 c7042.9:42
+c9700.4 | links=c9777.1:3
+c9778.4 | links=c9778.5:15
+c9779.4 | links=c9698.3:74 c9700.6:14
+c10077.4 | links=#4399(auto Burning Steppes;58):18
+o153556.4 | links=#27490(auto Burning Steppes;332):38 c7038.2:6
+o181098.4 | links=#26604(auto Burning Steppes;324):50
+c7025.5 | links=c7025.7:5
+c7028.5 | links=#3556(auto Burning Steppes;46):12 #23304(auto Burning Steppes;285):11 c7028.4:6
+c7029.5 | links=#13400(auto Burning Steppes;153):7 #26507(auto Burning Steppes;323):6
+c7032.5 | links=c9700.13:2 c9779.15:37 o181098.31:22
+c7033.5 | links=c7033.13:21
+c7038.5 | links=o153556.8:20
+c7040.5 | links=o181098.14:37
+c7041.5 | links=c7040.6:44 c7041.6:30 c7040.7:23
+c7042.5 | links=c7043.6:84 c7042.7:36 c7043.7:60
+c7043.5 | links=c7046.2:21 c7043.6:24 c7042.11:22 c7043.12:30
+c7047.5 | links=c7044.2:13
+c7049.5 | links=c9699.21:28
+c8978.5 | links=o153556.14:17 c9700.23:14
+c8981.5 | links=#25452(auto Burning Steppes;310):35
+c9604.5 | links=
+c9691.5 | links=c8981.3:35 c7033.15:50
+c9695.5 | links=c9699.14:14
+c9698.5 | links=#27180(auto Burning Steppes;330):91 c7049.6:47
+c9699.5 | links=c7026.3:13 c7027.7:10 c7028.7:36
+c9700.5 | links=c8979.6:15
+c9778.5 | links=c9779.3:15 c9778.4:15 c9700.6:8
+c9779.5 | links=c9700.6:6
+o181098.5 | links=#13294(auto Burning Steppes;152):50 o178125.1:43 o181098.46:27
+c7025.6 | links=c8979.3:8
+c7028.6 | links=c7026.3:5 c7027.9:27
+c7033.6 | links=c7033.10:26
+c7037.6 | links=#658(auto Burning Steppes;10):4 o169294.1:12
+c7040.6 | links=c7041.5:44
+c7041.6 | links=c7040.2:42 c7041.5:30
+c7042.6 | links=#25628(auto Burning Steppes;312):30
+c7043.6 | links=c7042.5:84 c7043.5:24
+c7047.6 | links=#631(auto Burning Steppes;9):14 c9691.11:23
+c7049.6 | links=c9698.5:47 c9698.7:24
+c8979.6 | links=#11068(auto Burning Steppes;129):8 #22840(auto Burning Steppes;279):13 c9700.5:15
+c9690.6 | links=#25452(auto Burning Steppes;310):31
+c9698.6 | links=c9697.1:63 c9698.1:33 c9697.3:45 c9697.4:67
+c9699.6 | links=#25636(auto Burning Steppes;313):78 c10077.2:24
+c9700.6 | links=c16043.1:13 c9779.4:14 c9778.5:8 c9779.5:6
+o153556.6 | links=c7038.1:57 c7039.1:11
+c7025.7 | links=c7025.5:5 c7027.19:17
+c7026.7 | links=c7027.15:1
+c7027.7 | links=c9699.5:10
+c7028.7 | links=#12924(auto Burning Steppes;145):27 c9699.5:36
+c7031.7 | links=
+c7040.7 | links=c7041.5:23
+c7041.7 | links=o181098.14:21
+c7042.7 | links=c7042.5:36
+c7043.7 | links=c7042.4:32 c7042.5:60
+c7047.7 | links=c8981.1:33
+c7049.7 | links=c7046.1:7 c9699.21:47
+c8979.7 | links=#19217(auto Burning Steppes;230):21 c8979.3:25
+c9690.7 | links=#13166(auto Burning Steppes;150):36
+c9691.7 | links=#25452(auto Burning Steppes;310):36
+c9695.7 | links=c9695.12:41
+c9698.7 | links=c9697.4:38 c7049.6:24
+o153556.7 | links=o153556.10:54 o181098.30:27
+o181098.7 | links=o181098.34:29
+c7026.8 | links=c7026.9:6
+c7027.8 | links=c7027.9:34 c7027.10:25
+c7028.8 | links=#21845(entry and exit;Blackrock Stronghold;Burning Steppes):5 c7027.9:21
+c7029.8 | links=#3225(auto Burning Steppes;43):7 #14689(auto Burning Steppes;173):11 #21845(entry and exit;Blackrock Stronghold;Burning Steppes):12
+c7032.8 | links=c9700.10:6
+c7033.8 | links=c7034.1:28
+c7040.8 | links=c9699.1:65 c7048.13:10
+c7041.8 | links=c7040.15:48 c7040.19:35
+c7042.8 | links=c7042.4:35 c7043.8:26
+c7043.8 | links=c7042.1:28 c7042.8:26
+c7047.8 | links=#3031(auto Burning Steppes;38):29 #19294(auto Burning Steppes;231):19
+c7049.8 | links=#21840(auto Burning Steppes;268):48 c7049.2:32 c7042.3:41
+c9691.8 | links=#15130(auto Burning Steppes;177):27
+c9695.8 | links=c9695.2:36
+c9699.8 | links=c7041.12:24
+o153556.8 | links=#21802(auto Burning Steppes;267):31 c7038.5:20
+c7025.9 | links=o181098.12:55 c9699.18:52
+c7026.9 | links=#15824(auto Burning Steppes;188):55 c7026.8:6
+c7027.9 | links=#2455(auto Burning Steppes;30):29 c7028.6:27 c7027.8:34 c7028.8:21
+c7028.9 | links=c7027.10:8
+c7040.9 | links=c7041.3:20 c7041.12:27
+c7041.9 | links=c7044.1:31 c7040.20:21
+c7042.9 | links=#13598(auto Burning Steppes;155):32 c9699.4:42
+c7043.9 | links=#19530(auto Burning Steppes;237):16 c7042.12:27
+c7047.9 | links=#4399(auto Burning Steppes;58):68 c7040.15:28
+c7048.9 | links=c9694.1:42
+c9691.9 | links=#12553(auto Burning Steppes;142):51 c8981.1:30
+c9699.9 | links=c7027.19:48
+c9700.9 | links=#12948(auto Burning Steppes;146):15 o181098.27:11
+o153556.9 | links=c8978.2:50 o181098.47:98
+o181098.9 | links=#25628(auto Burning Steppes;312):45
+c7026.10 | links=c8979.2:14
+c7027.10 | links=c7027.8:25 c7028.9:8
+c7033.10 | links=c7033.6:26 c7033.15:38
+c7040.10 | links=#3031(auto Burning Steppes;38):22
+c7041.10 | links=c7044.1:7
+c7042.10 | links=c7042.12:42
+c7043.10 | links=c7043.3:20
+c7047.10 | links=#24269(auto Burning Steppes;294):30
+c9700.10 | links=c7032.8:6 o181098.26:7
+o153556.10 | links=o153556.7:54 o153556.14:52
+o181098.10 | links=#25628(auto Burning Steppes;312):58
+c7034.11 | links=c7033.20:32 o181098.64:41
+c7039.11 | links=#10160(auto Burning Steppes;119):54 #21802(auto Burning Steppes;267):40 c7039.13:33 o153556.25:7
+c7040.11 | links=c7041.13:33
+c7041.11 | links=c9699.1:13 c7040.18:21
+c7042.11 | links=c7043.5:22 c7043.11:32 c7043.15:27 o181098.26:50
+c7043.11 | links=c7042.11:32
+c7047.11 | links=#4399(auto Burning Steppes;58):53
+c9691.11 | links=c7047.6:23
+o153556.11 | links=c10119.1:129 o153556.18:39
+c7033.12 | links=c7034.14:42 c7034.25:39
+c7034.12 | links=#13977(auto Burning Steppes;162):11
+c7035.12 | links=c7035.2:33 o181098.60:37
+c7040.12 | links=#13166(auto Burning Steppes;150):48
+c7041.12 | links=c9699.8:24 c7040.9:27 c7040.16:52
+c7042.12 | links=c7043.9:27 c7042.10:42 o181098.34:36
+c7043.12 | links=c7043.5:30
+c7048.12 | links=c7045.1:22 c9694.2:61
+c9695.12 | links=c9694.2:28 c9695.7:41
+o153556.12 | links=#10160(auto Burning Steppes;119):42
+o181098.12 | links=c7025.9:55 c9700.15:19
+c7027.13 | links=c9176.1:5
+c7028.13 | links=#25986(auto Burning Steppes;316):20 c7028.16:17
+c7033.13 | links=c7033.5:21 c7033.21:41
+c7039.13 | links=#10160(auto Burning Steppes;119):29 c7039.11:33
+c7041.13 | links=c7040.11:33 c7041.14:21
+c7043.13 | links=c7046.2:17 o181098.31:75
+c7047.13 | links=#4723(auto Burning Steppes;62):15
+c7048.13 | links=c9695.2:31 c7040.8:10
+c9700.13 | links=c7032.5:2
+c9779.13 | links=c9779.15:5
+o153556.13 | links=#26058(auto Burning Steppes;319):21 o181098.3:43
+c7028.14 | links=#25986(auto Burning Steppes;316):20 c7028.15:17
+c7034.14 | links=c7033.12:42 c7033.17:62
+c7040.14 | links=c9694.1:11
+c7041.14 | links=c7041.1:8 c7041.13:21 c7041.17:17
+c7043.14 | links=#11989(auto Burning Steppes;137):29
+c7047.14 | links=c9691.4:22
+c9699.14 | links=c7045.1:45 c7048.1:12 c9695.5:14
+c9778.14 | links=c9779.14:8
+c9779.14 | links=c9778.14:8 c9779.15:9
+o153556.14 | links=c8978.4:27 c8978.5:17 o153556.10:52
+o181098.14 | links=c7044.3:60 c7040.5:37 c7041.7:21
+c7027.15 | links=c7026.7:1
+c7028.15 | links=c7028.14:17 c7028.17:18
+c7033.15 | links=c9691.5:50 c7033.10:38
+c7040.15 | links=#4399(auto Burning Steppes;58):55 c7041.8:48 c7047.9:28
+c7041.15 | links=c7041.3:19 c7040.16:45 c7041.18:48
+c7043.15 | links=c7042.2:44 c7042.11:27
+c7048.15 | links=c7043.4:58 c9699.17:26
+c9700.15 | links=o181098.12:19
+c9779.15 | links=c7032.5:37 c9779.13:5 c9779.14:9
+o153556.15 | links=#14371(auto Burning Steppes;169):53 c8978.2:46
+o181098.15 | links=c7039.4:22
+c7027.16 | links=c7025.3:51
+c7028.16 | links=c7028.13:17 c7028.17:18
+c7034.16 | links=#1948(auto Burning Steppes;26):7
+c7040.16 | links=#24269(auto Burning Steppes;294):42 c7041.12:52 c7041.15:45
+c7041.16 | links=#10727(auto Burning Steppes;125):153 c7041.2:25
+c9699.16 | links=#19355(auto Burning Steppes;233):81 c8979.2:55
+o153556.16 | links=#27490(auto Burning Steppes;332):46 c7039.4:15
+c7027.17 | links=#8788(auto Burning Steppes;103):19 c7027.18:7
+c7028.17 | links=c7028.15:18 c7028.16:18
+c7033.17 | links=c7033.4:32 c7034.14:62
+c7040.17 | links=c7041.18:34
+c7041.17 | links=#14162(auto Burning Steppes;166):23 c7041.14:17
+c9699.17 | links=c7048.15:26
+o153556.17 | links=#15297(auto Burning Steppes;179):17
+c7027.18 | links=c7027.17:7
+c7033.18 | links=c10077.2:87 o181098.64:59
+c7040.18 | links=c7041.2:25 c7041.11:21
+c7041.18 | links=c7041.15:48 c7040.17:34
+c9699.18 | links=#48698(auto Burning Steppes;369):25 c7025.2:68 c7025.9:52
+o153556.18 | links=c7039.1:56 o153556.11:39 o181098.32:57
+c7027.19 | links=c7027.2:19 c8979.3:20 c7025.7:17 c9699.9:48
+c7040.19 | links=#4399(auto Burning Steppes;58):31 c7041.8:35
+c9699.19 | links=c7049.1:81 c8976.1:154
+o153556.19 | links=c8978.2:15 o153556.23:64 o153556.28:39
+c7033.20 | links=c7034.11:32 c7033.25:54
+c7040.20 | links=#16982(auto Burning Steppes;198):22 c7041.9:21
+c9699.20 | links=#9555(auto Burning Steppes;112):37
+o153556.20 | links=c7036.1:27 o153556.2:43
+c7033.21 | links=c7033.13:41 c7033.25:28
+c7034.21 | links=#48681(auto Burning Steppes;353):59 c10119.1:18
+c9699.21 | links=c9697.2:31 c7049.4:24 c7049.5:28 c7049.7:47
+o153556.21 | links=#10160(auto Burning Steppes;119):14
+c9699.22 | links=#4723(auto Burning Steppes;62):7
+o181098.22 | links=o181098.30:42
+c7034.23 | links=#18832(auto Burning Steppes;222):16 #28248(Krom'Grul;Dreadmaul Rock;Burning Steppes):11
+c9700.23 | links=c8978.5:14
+o153556.23 | links=o153556.19:64
+o181098.23 | links=#22290(auto Burning Steppes;274):23
+o181098.24 | links=#17720(auto Burning Steppes;205):30
+c7033.25 | links=#20862(auto Burning Steppes;253):122 c7033.20:54 c7033.21:28 c7034.25:32
+c7034.25 | links=c7033.12:39 c7033.25:32
+o153556.25 | links=c7039.11:7
+c7033.26 | links=c7034.1:43 c10077.2:67
+o153556.26 | links=#22868(auto Burning Steppes;280):45 c8978.4:31
+o181098.26 | links=c9698.1:71 c9700.10:7 c7042.11:50
+o153556.27 | links=o169294.1:2
+o181098.27 | links=c9700.9:11
+o153556.28 | links=c8978.3:23 o153556.19:39
+o181098.30 | links=o153556.7:27 o181098.22:42
+o181098.31 | links=c7032.5:22 c7043.13:75
+o181098.32 | links=o153556.18:57
+o181098.33 | links=c7032.3:13
+o181098.34 | links=o181098.7:29 c7042.12:36
+o181098.42 | links=c7036.4:15
+o181098.46 | links=#18159(auto Burning Steppes;213):31 o181098.5:27
+o181098.47 | links=o153556.9:98
+o181098.48 | links=#15824(auto Burning Steppes;188):37
+o181098.51 | links=#10727(auto Burning Steppes;125):91
+o181098.52 | links=#1909(auto Burning Steppes;25):46 #25452(auto Burning Steppes;310):49
+o181098.53 | links=#25628(auto Burning Steppes;312):57
+o181098.60 | links=c7035.12:37
+o181098.64 | links=c7033.3:48 c7034.11:41 c7033.18:59

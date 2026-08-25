@@ -1,0 +1,5 @@
+Zone areaId 15630 — eine Zeile pro Wegpunkt; Links inline.
+
+#6356 | auto inside;Hall of Mysteries;Ironforge;1§auto drinnen;Halle der Mysterien;Eisenschmiede;1§auto intérieur;Hall of Mysteries;Forgefer;1 | x=-4603.7001953125 y=-906.7999877929688 | size=1 | links=#47052(auto Inside;Hall of Mysteries;Ironforge;75):7 c5148.1:10 c5149.1:10 #24619(auto inside;Hall of Mysteries;Ironforge;3):23
+#9897 | auto inside;Hall of Mysteries;Ironforge;2§auto drinnen;Halle der Mysterien;Eisenschmiede;2§auto intérieur;Hall of Mysteries;Forgefer;2 | x=-4634.39990234375 y=-928.7000122070312 | size=1 | links=#10667(The Mystic Ward;Ironforge):17 #24619(auto inside;Hall of Mysteries;Ironforge;3):14
+#24619 | auto inside;Hall of Mysteries;Ironforge;3§auto drinnen;Halle der Mysterien;Eisenschmiede;3§auto intérieur;Hall of Mysteries;Forgefer;3 | x=-4621.5 y=-921.4000244140625 | size=1 | links=c2489.1:16 c5142.1:15 c7312.1:9 c11406.1:15 #6356(auto inside;Hall of Mysteries;Ironforge;1):23 #9897(auto inside;Hall of Mysteries;Ironforge;2):14

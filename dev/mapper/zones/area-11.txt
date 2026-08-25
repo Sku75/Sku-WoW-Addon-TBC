@@ -1,0 +1,590 @@
+Zone areaId 11 — eine Zeile pro Wegpunkt; Links inline.
+
+#45 | central location;Dun Modr;Wetlands§zentralpunkt;Dun Modr;Sumpfland§emplacement central;Dun Modr;Les Paluns | x=-2600.699951171875 y=-2355.5 | size=1 | links=#6862(auto Wetlands;65):35 #19364(auto Wetlands;186):26 #22311(auto Wetlands;215):16
+#180 | crossing;Wetlands;Loch Modan§kreuzungspunkt;Sumpfland;Loch Modan§traversée;Les Paluns;Loch Modan | x=-4085.699951171875 y=-2668.699951171875 | size=1 | links=#557(auto Wetlands;9):46 #1478(auto Wetlands;19):126
+#183 | auto Wetlands;1§auto Sumpfland;1§auto Les Paluns;1 | x=-3717.900146484375 y=-784.4000244140625 | size=1 | links=#6733(auto Wetlands;63):13 #18411(auto Wetlands;176):18
+#196 | auto Wetlands;2§auto Sumpfland;2§auto Les Paluns;2 | x=-4157.39990234375 y=-3623.900146484375 | size=5 | links=#14179(auto Wetlands;134):201 #23322(auto Wetlands;221):106 #27125(auto Wetlands;253):57
+#248 | auto Wetlands;3§auto Sumpfland;3§auto Les Paluns;3 | x=-3190.800048828125 y=-1910 | size=1 | links=#18044(auto Wetlands;171):20 #25587(auto Wetlands;236):9
+#310 | auto Wetlands;4§auto Sumpfland;4§auto Les Paluns;4 | x=-2628.5 y=-2338.10009765625 | size=1 | links=#3850(auto Wetlands;37):7 c1053.3:13
+#333 | auto Wetlands;5§auto Sumpfland;5§auto Les Paluns;5 | x=-3428 y=-1770.599975585938 | size=1 | links=#13740(auto Wetlands;129):44 c1023.3:54
+#419 | auto Wetlands;6§auto Sumpfland;6§auto Les Paluns;6 | x=-3218.699951171875 y=-1805.599975585938 | size=1 | links=#3353(auto Wetlands;32):30 #20836(auto Wetlands;198):26
+#431 | auto Wetlands;7§auto Sumpfland;7§auto Les Paluns;7 | x=-4202.39990234375 y=-2376.60009765625 | size=1 | links=#17575(auto Wetlands;166):21 #22758(auto Wetlands;218):17
+#441 | inn;Dun Modr;Wetlands§gasthaus;Dun Modr;Sumpfland§inn;Dun Modr;Les Paluns | x=-2644.10009765625 y=-2316.300048828125 | size=1 | links=#8324(auto Wetlands;78):8 c3180.1:10 c1053.3:21
+#481 | auto Wetlands;8§auto Sumpfland;8§auto Les Paluns;8 | x=-3576.199951171875 y=-2503.5 | size=1 | links=#24135(auto Wetlands;228):38 #27890(auto Wetlands;260):21
+#557 | auto Wetlands;9§auto Sumpfland;9§auto Les Paluns;9 | x=-4086.199951171875 y=-2622.5 | size=1 | links=#180(crossing;Wetlands;Loch Modan):46 #9406(auto Wetlands;84):12
+#638 | auto Wetlands;10§auto Sumpfland;10§auto Les Paluns;10 | x=-2640.400146484375 y=-2459.199951171875 | size=1 | links=#20076(auto Wetlands;191):32 c1072.1:10 c1073.1:8
+#661 | auto Wetlands;11§auto Sumpfland;11§auto Les Paluns;11 | x=-3829.699951171875 y=-824.4000244140625 | size=1 | links=#8548(auto Wetlands;80):3 #14184(top;Deepwater Tavern;Wetlands):10
+#695 | auto Wetlands;12§auto Sumpfland;12§auto Les Paluns;12 | x=-4039.5 y=-2799.800048828125 | size=1 | links=#1478(auto Wetlands;19):13 #6962(auto Wetlands;68):37
+#729 | auto Wetlands;13§auto Sumpfland;13§auto Les Paluns;13 | x=-3363.699951171875 y=-1937.5 | size=1 | links=#9517(auto Wetlands;87):35 #26550(auto Wetlands;244):33
+#743 | auto Wetlands;14§auto Sumpfland;14§auto Les Paluns;14 | x=-3870.919433909123 y=-2810.904747824611 | size=1 | links=#11787(auto Wetlands;112):43 #23931(auto Wetlands;226):46
+#855 | tomb;cave;Thelgen Rock;Wetlands§gruft;höhle;Thelgenfelsen;Sumpfland§tomb;cave;Rocher de Thelgen;Les Paluns | x=-3944.300048828125 y=-2346.300048828125 | size=1 | links=#16741(auto Wetlands;157):30
+#869 | auto Wetlands;15§auto Sumpfland;15§auto Les Paluns;15 | x=-4396.39990234375 y=-2451.900146484375 | size=1 | links=#4510(auto Wetlands;44):41 #26030(central location;Dun Algaz):37
+#943 | central location;Direforge Hill;Wetlands§zentralpunkt;Hügel der Düsterschmiede;Sumpfland§emplacement central;Colline de Morneforge;Les Paluns | x=-2876.800048828125 y=-2823.900146484375 | size=1 | links=#9096(auto Wetlands;83):98 #15123(auto Wetlands;145):83 c1051.3:49
+#1015 | auto Wetlands;16§auto Sumpfland;16§auto Les Paluns;16 | x=-3565.60009765625 y=-1840 | size=1 | links=c1022.2:25 c1022.3:29
+#1129 | auto Wetlands;17§auto Sumpfland;17§auto Les Paluns;17 | x=-3188.5 y=-2453.300048828125 | size=1 | links=#11065(auto Wetlands;101):34 c8305.1:12
+#1143 | auto Wetlands;18§auto Sumpfland;18§auto Les Paluns;18 | x=-3249.300048828125 y=-2379 | size=1 | links=#3339(crossing;Wetlands):82 #12199(auto Wetlands;119):66
+#1478 | auto Wetlands;19§auto Sumpfland;19§auto Les Paluns;19 | x=-4040.400146484375 y=-2786.800048828125 | size=5 | links=#180(crossing;Wetlands;Loch Modan):126 #695(auto Wetlands;12):13 #1871(central location;Thelgen Rock;Wetlands):197 #18822(auto Wetlands;181):72
+#1580 | auto Wetlands;20§auto Sumpfland;20§auto Les Paluns;20 | x=-4032.60009765625 y=-954.7000122070312 | size=1 | links=#21984(auto Wetlands;212):34 c14433.2:56
+#1709 | auto Wetlands;21§auto Sumpfland;21§auto Les Paluns;21 | x=-3852.300048828125 y=-2518.10009765625 | size=1 | links=#15280(entry and exit;cave;Thelgen Rock;Wetlands):75 #18331(auto Wetlands;174):18
+#1871 | central location;Thelgen Rock;Wetlands§zentralpunkt;Thelgenfelsen;Sumpfland§emplacement central;Rocher de Thelgen;Les Paluns | x=-3926.199951171875 y=-2625.400146484375 | size=1 | links=#1478(auto Wetlands;19):197 #15280(entry and exit;cave;Thelgen Rock;Wetlands):58 c1030.3:66
+#2147 | auto Wetlands;22§auto Sumpfland;22§auto Les Paluns;22 | x=-3517.10009765625 y=-1958.599975585938 | size=1 | links=#7825(auto Wetlands;74):38 #25970(auto Wetlands;241):21 #26644(auto Wetlands;245):48
+#2632 | auto Wetlands;23§auto Sumpfland;23§auto Les Paluns;23 | x=-3725.300048828125 y=-828.2000122070312 | size=1 | links=#12724(auto Wetlands;121):12 c1448.1:14 c2086.1:22
+#2671 | auto Wetlands;24§auto Sumpfland;24§auto Les Paluns;24 | x=-3855.10009765625 y=-2307.199951171875 | size=1 | links=#2901(auto Wetlands;28):25 c1111.3:34
+#2761 | auto Wetlands;25§auto Sumpfland;25§auto Les Paluns;25 | x=-2861.699951171875 y=-1454.700073242188 | size=1 | links=#5092(auto Wetlands;50):23 c2679.1:6
+#2777 | auto Wetlands;26§auto Sumpfland;26§auto Les Paluns;26 | x=-3861.699951171875 y=-800 | size=5 | links=#20309(auto Wetlands;194):34 #13411(auto Menethil Harbor;Wetlands;8):51
+#2827 | auto Wetlands;27§auto Sumpfland;27§auto Les Paluns;27 | x=-3043 y=-2422.900146484375 | size=5 | links=#11065(auto Wetlands;101):114 #15033(auto Wetlands;143):88
+#2901 | auto Wetlands;28§auto Sumpfland;28§auto Les Paluns;28 | x=-3832.800048828125 y=-2294.60009765625 | size=1 | links=#2671(auto Wetlands;24):25 #28333(auto Wetlands;265):27
+#2936 | auto Wetlands;29§auto Sumpfland;29§auto Les Paluns;29 | x=-2583.10009765625 y=-1957.400024414063 | size=1 | links=#26294(auto Wetlands;242):11 c1019.3:11
+#2954 | auto Wetlands;30§auto Sumpfland;30§auto Les Paluns;30 | x=-3423.5 y=-3533.800048828125 | size=5 | links=#19128(auto Wetlands;184):108 c1046.2:78
+#3197 | auto Wetlands;31§auto Sumpfland;31§auto Les Paluns;31 | x=-3468.699951171875 y=-3725.5 | size=1 | links=c12899.1:48 c1045.2:48
+#3293 | central location;Grim Batol;Wetlands§zentralpunkt;Grim Batol;Sumpfland§emplacement central;Grim Batol;Les Paluns | x=-4067.300048828125 y=-3453.10009765625 | size=1 | links=#11493(auto Wetlands;105):37
+#3339 | crossing;Wetlands§kreuzung;Sumpfland§traversée;Les Paluns | x=-3240.400146484375 y=-2460.60009765625 | size=1 | links=#1143(auto Wetlands;18):82 #3764(auto Wetlands;36):163 #19954(auto Wetlands;187):23 c2093.1:9 c8305.1:52 c6491.2:66
+#3353 | auto Wetlands;32§auto Sumpfland;32§auto Les Paluns;32 | x=-3225.800048828125 y=-1776.200073242188 | size=1 | links=#419(auto Wetlands;6):30 #9642(auto Wetlands;90):60
+#3466 | auto Wetlands;33§auto Sumpfland;33§auto Les Paluns;33 | x=-3423.900146484375 y=-2509.10009765625 | size=1 | links=#14999(auto Wetlands;142):36 #17035(auto Wetlands;159):25
+#3511 | auto Wetlands;34§auto Sumpfland;34§auto Les Paluns;34 | x=-2566.699951171875 y=-2348.5 | size=1 | links=#16030(auto Wetlands;154):7 #24498(auto Wetlands;229):8
+#3588 | auto Wetlands;35§auto Sumpfland;35§auto Les Paluns;35 | x=-3196.400146484375 y=-1868.200073242188 | size=1 | links=#13051(auto Wetlands;123):20 #18044(auto Wetlands;171):22
+#3764 | auto Wetlands;36§auto Sumpfland;36§auto Les Paluns;36 | x=-3219.199951171875 y=-2298.800048828125 | size=5 | links=#3339(crossing;Wetlands):163 #12199(auto Wetlands;119):36 c1009.2:124
+#3850 | auto Wetlands;37§auto Sumpfland;37§auto Les Paluns;37 | x=-2628.800048828125 y=-2330.300048828125 | size=1 | links=#310(auto Wetlands;4):7 #11496(auto Wetlands;106):16
+#3857 | auto Wetlands;38§auto Sumpfland;38§auto Les Paluns;38 | x=-3196.900146484375 y=-2042 | size=1 | links=#20065(auto Wetlands;190):24 #27403(auto Wetlands;256):48
+#3913 | auto Wetlands;39§auto Sumpfland;39§auto Les Paluns;39 | x=-3504.900146484375 y=-1669.300048828125 | size=1 | links=#8378(auto Wetlands;79):18 #24870(auto Wetlands;232):16
+#4009 | auto Wetlands;40§auto Sumpfland;40§auto Les Paluns;40 | x=-3333.10009765625 y=-1829.599975585938 | size=1 | links=#6638(auto Wetlands;62):29 #7997(central location;Whelgar's Excavation Site;Wetlands):21
+#4017 | auto Wetlands;41§auto Sumpfland;41§auto Les Paluns;41 | x=-3310 y=-2500.900146484375 | size=1 | links=#17783(auto Wetlands;169):33 #22717(auto Wetlands;217):44
+#4319 | auto Wetlands;42§auto Sumpfland;42§auto Les Paluns;42 | x=-2629.10009765625 y=-2313.699951171875 | size=1 | links=#11496(auto Wetlands;106):0 #15828(auto Wetlands;150):15
+#4424 | auto Wetlands;43§auto Sumpfland;43§auto Les Paluns;43 | x=-2375.699951171875 y=-2511.60009765625 | size=1 | links=#4582(auto Wetlands;46):8 #26759(auto Wetlands;250):14
+#4510 | auto Wetlands;44§auto Sumpfland;44§auto Les Paluns;44 | x=-4423.80029296875 y=-2482.900146484375 | size=1 | links=#869(auto Wetlands;15):41 c2466.1:84
+#4544 | auto Wetlands;45§auto Sumpfland;45§auto Les Paluns;45 | x=-3188.5 y=-1965.099975585938 | size=1 | links=#11592(auto Wetlands;109):22 #20668(auto Wetlands;197):23 #27403(auto Wetlands;256):28
+#4582 | auto Wetlands;46§auto Sumpfland;46§auto Les Paluns;46 | x=-2366.900146484375 y=-2511.800048828125 | size=1 | links=#4424(auto Wetlands;43):8 #25738(auto Wetlands;240):17
+#4908 | auto Wetlands;47§auto Sumpfland;47§auto Les Paluns;47 | x=-3892.5 y=-2447 | size=1 | links=#10861(auto Wetlands;99):37 #13155(auto Wetlands;124):37
+#4935 | auto Wetlands;48§auto Sumpfland;48§auto Les Paluns;48 | x=-3729.199951171875 y=-807.4000244140625 | size=1 | links=#12724(auto Wetlands;121):15 c1483.1:17
+#5044 | auto Wetlands;49§auto Sumpfland;49§auto Les Paluns;49 | x=-2896.699951171875 y=-1510.900024414063 | size=5 | links=#5092(auto Wetlands;50):46 #13672(resting location;Sundown Marsh;Wetlands):29 c1012.1:169 c14424.1:156 c1041.3:107
+#5092 | auto Wetlands;50§auto Sumpfland;50§auto Les Paluns;50 | x=-2863.199951171875 y=-1478.300048828125 | size=1 | links=#2761(auto Wetlands;25):23 #5044(auto Wetlands;49):46 #13672(resting location;Sundown Marsh;Wetlands):18 c2682.1:6
+#5242 | auto Wetlands;51§auto Sumpfland;51§auto Les Paluns;51 | x=-3388.60009765625 y=-1859.5 | size=5 | links=#7128(auto Wetlands;69):48 #21495(auto Wetlands;209):64
+#5289 | auto Wetlands;52§auto Sumpfland;52§auto Les Paluns;52 | x=-3396.900146484375 y=-1021.200012207031 | size=1 | links=#9483(auto Wetlands;86):80 #21419(auto Wetlands;207):33
+#5295 | auto Wetlands;53§auto Sumpfland;53§auto Les Paluns;53 | x=-4273.10009765625 y=-2999.60009765625 | size=1 | links=#13211(auto Wetlands;125):68 c1169.3:31
+#5582 | central location;top;Angerfang Encampment;Wetlands§zentralpunkt;oben;Lager der Grollhauer;Sumpfland§emplacement central;top;Campement de Hargnecroc;Les Paluns | x=-3421.699951171875 y=-2069 | size=1 | links=#11932(auto Wetlands;115):55 #14838(auto Wetlands;141):35
+#5708 | auto Wetlands;54§auto Sumpfland;54§auto Les Paluns;54 | x=-3211.60009765625 y=-2208.199951171875 | size=1 | links=#7405(auto Wetlands;71):55 #26542(auto Wetlands;243):30
+#5948 | auto Wetlands;55§auto Sumpfland;55§auto Les Paluns;55 | x=-2577.900146484375 y=-2489.60009765625 | size=1 | links=#6878(auto Wetlands;66):87 #20420(auto Wetlands;195):71
+#5950 | auto Wetlands;56§auto Sumpfland;56§auto Les Paluns;56 | x=-2962 y=-960.7000122070312 | size=1 | links=#13870(auto Wetlands;130):28 #25368(auto Wetlands;234):0
+#6279 | auto Wetlands;57§auto Sumpfland;57§auto Les Paluns;57 | x=-3292 y=-2165.699951171875 | size=5 | links=#15384(auto Wetlands;148):51 #27751(focus point;Angerfang Encampment;Wetlands):74
+#6393 | auto Wetlands;58§auto Sumpfland;58§auto Les Paluns;58 | x=-4135.60009765625 y=-3485 | size=1 | links=#11493(auto Wetlands;105):38 #27125(auto Wetlands;253):84
+#6399 | auto Wetlands;59§auto Sumpfland;59§auto Les Paluns;59 | x=-3478.699951171875 y=-1741.599975585938 | size=1 | links=c1023.1:22 c1023.3:7
+#6451 | auto Wetlands;60§auto Sumpfland;60§auto Les Paluns;60 | x=-4291 y=-2464 | size=1 | links=#17637(auto Wetlands;168):13 #27277(auto Wetlands;254):8
+#6453 | auto Wetlands;61§auto Sumpfland;61§auto Les Paluns;61 | x=-3460.300048828125 y=-944.2000122070312 | size=1 | links=#11777(auto Wetlands;111):25 #16077(entry and exit;Menethil Harbor):76 #21419(auto Wetlands;207):66
+#6638 | auto Wetlands;62§auto Sumpfland;62§auto Les Paluns;62 | x=-3353.900146484375 y=-1808.5 | size=1 | links=#4009(auto Wetlands;40):29 #13740(auto Wetlands;129):39
+#6733 | auto Wetlands;63§auto Sumpfland;63§auto Les Paluns;63 | x=-3723.699951171875 y=-796.1000366210938 | size=1 | links=#183(auto Wetlands;1):13 #9603(auto Wetlands;88):16
+#6756 | auto Wetlands;64§auto Sumpfland;64§auto Les Paluns;64 | x=-2598.800048828125 y=-2294.800048828125 | size=1 | links=#10421(auto Wetlands;95):5 c1053.2:16
+#6862 | auto Wetlands;65§auto Sumpfland;65§auto Les Paluns;65 | x=-2595.60009765625 y=-2320.400146484375 | size=1 | links=#45(central location;Dun Modr;Wetlands):35 #9451(auto Wetlands;85):12 c1052.3:7
+#6878 | auto Wetlands;66§auto Sumpfland;66§auto Les Paluns;66 | x=-2664.800048828125 y=-2482.60009765625 | size=1 | links=#5948(auto Wetlands;55):87 #11699(auto Wetlands;110):62 c1073.1:28
+#6892 | auto Wetlands;67§auto Sumpfland;67§auto Les Paluns;67 | x=-3614.400146484375 y=-2548.300048828125 | size=1 | links=#9352(central location;Angerfang Encampment;Wetlands):13 #24135(auto Wetlands;228):23
+#6962 | auto Wetlands;68§auto Sumpfland;68§auto Les Paluns;68 | x=-4009.300048828125 y=-2822.800048828125 | size=1 | links=#695(auto Wetlands;12):37 #23745(auto Wetlands;223):34
+#7128 | auto Wetlands;69§auto Sumpfland;69§auto Les Paluns;69 | x=-3340.800048828125 y=-1869.300048828125 | size=5 | links=#5242(auto Wetlands;51):48 #7997(central location;Whelgar's Excavation Site;Wetlands):37 #25523(auto Wetlands;235):23
+#7225 | auto Wetlands;70§auto Sumpfland;70§auto Les Paluns;70 | x=-3334.300048828125 y=-2582.900146484375 | size=5 | links=#26687(auto Wetlands;247):23 c1417.1:36
+#7405 | auto Wetlands;71§auto Sumpfland;71§auto Les Paluns;71 | x=-3199.10009765625 y=-2153.900146484375 | size=1 | links=#5708(auto Wetlands;54):55 #14380(auto Wetlands;135):35 #15384(auto Wetlands;148):42
+#7604 | auto Wetlands;72§auto Sumpfland;72§auto Les Paluns;72 | x=-4229.7001953125 y=-2365.60009765625 | size=1 | links=#17575(auto Wetlands;166):13 c2102.2:27
+#7691 | auto Wetlands;73§auto Sumpfland;73§auto Les Paluns;73 | x=-3432.10009765625 y=-2603.699951171875 | size=1 | links=#23891(auto Wetlands;225):54 #26728(auto Wetlands;249):45
+#7825 | auto Wetlands;74§auto Sumpfland;74§auto Les Paluns;74 | x=-3546.10009765625 y=-1983.5 | size=1 | links=#2147(auto Wetlands;22):38 #22192(auto Wetlands;213):18
+#7908 | auto Wetlands;75§auto Sumpfland;75§auto Les Paluns;75 | x=-3757.300048828125 y=-2792.800048828125 | size=1 | links=#20893(auto Wetlands;200):25 #26646(auto Wetlands;246):63
+#7997 | central location;Whelgar's Excavation Site;Wetlands§zentralpunkt;Whelgars Ausgrabungsstätte;Sumpfland§emplacement central;Whelgar's Excavation Site;Les Paluns | x=-3315.699951171875 y=-1842 | size=1 | links=#4009(auto Wetlands;40):21 #7128(auto Wetlands;69):37 #14007(auto Wetlands;132):41 #25523(auto Wetlands;235):52
+#8117 | passage;from;Dun Algaz;Wetlands;to;Dun Algaz;Loch Modan§passage;von;Dun Algaz;Sumpfland;zum;Dun Algaz;Loch Modan§passage;de;Dun Algaz;Les Paluns;vers;Dun Algaz;Loch Modan | x=-4481.89990234375 y=-2690.60009765625 | size=1 | links=#22521(auto Wetlands;216):17 c2468.1:3 #24580(passage;from;Dun Algaz;Loch Modan;to;Dun Algaz;Wetlands):8
+#8228 | auto Wetlands;76§auto Sumpfland;76§auto Les Paluns;76 | x=-2969.300048828125 y=-958.6000366210938 | size=1 | links=#9875(auto Wetlands;92):1 #25368(auto Wetlands;234):8
+#8247 | auto Wetlands;77§auto Sumpfland;77§auto Les Paluns;77 | x=-2552.300048828125 y=-2349.199951171875 | size=1 | links=c1054.1:7 c1054.2:8
+#8324 | auto Wetlands;78§auto Sumpfland;78§auto Les Paluns;78 | x=-2649.400146484375 y=-2322.5 | size=1 | links=#441(inn;Dun Modr;Wetlands):8 #22812(auto Wetlands;219):9
+#8378 | auto Wetlands;79§auto Sumpfland;79§auto Les Paluns;79 | x=-3510.300048828125 y=-1687.099975585938 | size=1 | links=#3913(auto Wetlands;39):18 #21051(auto Wetlands;203):14
+#8548 | auto Wetlands;80§auto Sumpfland;80§auto Les Paluns;80 | x=-3828.699951171875 y=-821.1000366210938 | size=1 | links=#661(auto Wetlands;11):3 c1456.1:10
+#8681 | auto Wetlands;81§auto Sumpfland;81§auto Les Paluns;81 | x=-3823.5 y=-2384.699951171875 | size=1 | links=#12063(auto Wetlands;118):14 #20219(auto Wetlands;193):21
+#8808 | auto Wetlands;82§auto Sumpfland;82§auto Les Paluns;82 | x=-3974.800048828125 y=-3998 | size=1 | links=#14497(auto Wetlands;137):16 #20986(auto Wetlands;201):27
+#9096 | auto Wetlands;83§auto Sumpfland;83§auto Les Paluns;83 | x=-2938.10009765625 y=-2901.10009765625 | size=5 | links=#943(central location;Direforge Hill;Wetlands):98 c1364.1:73
+#9352 | central location;Angerfang Encampment;Wetlands§zentralpunkt;Lager der Grollhauer;Sumpfland§emplacement central;Campement de Hargnecroc;Les Paluns | x=-3617.300048828125 y=-2561 | size=1 | links=#6892(auto Wetlands;67):13 c1036.1:37 c1036.2:8 c1038.3:24
+#9406 | auto Wetlands;84§auto Sumpfland;84§auto Les Paluns;84 | x=-4086.699951171875 y=-2610 | size=1 | links=#557(auto Wetlands;9):12 #20891(auto Wetlands;199):183
+#9451 | auto Wetlands;85§auto Sumpfland;85§auto Les Paluns;85 | x=-2603.400146484375 y=-2310.60009765625 | size=1 | links=#6862(auto Wetlands;65):12 #10421(auto Wetlands;95):15
+#9483 | auto Wetlands;86§auto Sumpfland;86§auto Les Paluns;86 | x=-3354.5 y=-1089.400024414063 | size=5 | links=#5289(auto Wetlands;52):80 #10538(auto Wetlands;97):55 c1039.3:67
+#9517 | auto Wetlands;87§auto Sumpfland;87§auto Les Paluns;87 | x=-3398.60009765625 y=-1933.300048828125 | size=1 | links=#729(auto Wetlands;13):35 #15752(auto Wetlands;149):50
+#9603 | auto Wetlands;88§auto Sumpfland;88§auto Les Paluns;88 | x=-3737.800048828125 y=-787.7999877929688 | size=1 | links=#6733(auto Wetlands;63):16 c1483.1:11
+#9640 | auto Wetlands;89§auto Sumpfland;89§auto Les Paluns;89 | x=-4016.199951171875 y=-2373.60009765625 | size=1 | links=#13970(auto Wetlands;131):79 #24826(auto Wetlands;230):26
+#9642 | auto Wetlands;90§auto Sumpfland;90§auto Les Paluns;90 | x=-3230.699951171875 y=-1716.400024414063 | size=1 | links=#3353(auto Wetlands;32):60 #18462(auto Wetlands;177):116 #28419(auto Wetlands;266):83 c1011.1:106
+#9693 | auto Wetlands;91§auto Sumpfland;91§auto Les Paluns;91 | x=-3788.5 y=-2313.300048828125 | size=1 | links=#28333(auto Wetlands;265):29 c1112.1:32
+#9774 | entry and exit;Dun Modr;Wetlands§ein- und ausgang;Dun Modr;Sumpfland§entrée et sortie;Dun Modr;Les Paluns | x=-2609.400146484375 y=-2403 | size=1 | links=#20076(auto Wetlands;191):33
+#9875 | auto Wetlands;92§auto Sumpfland;92§auto Les Paluns;92 | x=-2968.5 y=-957.7000122070312 | size=1 | links=#8228(auto Wetlands;76):1 #13483(auto Wetlands;128):8
+#10001 | auto Wetlands;93§auto Sumpfland;93§auto Les Paluns;93 | x=-4163 y=-2911.400146484375 | size=5 | links=#13211(auto Wetlands;125):79 #18822(auto Wetlands;181):102
+#10347 | auto Wetlands;94§auto Sumpfland;94§auto Les Paluns;94 | x=-3409.60009765625 y=-934.7999877929688 | size=5 | links=#11777(auto Wetlands;111):27 #12020(auto Wetlands;116):77
+#10421 | auto Wetlands;95§auto Sumpfland;95§auto Les Paluns;95 | x=-2603.900146484375 y=-2295.5 | size=1 | links=#6756(auto Wetlands;64):5 #9451(auto Wetlands;85):15
+#10431 | auto Wetlands;96§auto Sumpfland;96§auto Les Paluns;96 | x=-3523 y=-1769.5 | size=1 | links=#12204(auto Wetlands;120):20 c1023.2:14
+#10538 | auto Wetlands;97§auto Sumpfland;97§auto Les Paluns;97 | x=-3344.900146484375 y=-1143.800048828125 | size=1 | links=#9483(auto Wetlands;86):55 #17232(auto Wetlands;163):40
+#10773 | auto Wetlands;98§auto Sumpfland;98§auto Les Paluns;98 | x=-3342 y=-1284.200073242188 | size=1 | links=#15101(auto Wetlands;144):35 #26717(auto Wetlands;248):28 c1024.3:71 c1026.3:68
+#10861 | auto Wetlands;99§auto Sumpfland;99§auto Les Paluns;99 | x=-3873.400146484375 y=-2478.900146484375 | size=1 | links=#4908(auto Wetlands;47):37 #18331(auto Wetlands;174):26
+#11042 | auto Wetlands;100§auto Sumpfland;100§auto Les Paluns;100 | x=-3395.900146484375 y=-2133.800048828125 | size=1 | links=#14838(auto Wetlands;141):36 #27312(auto Wetlands;255):36
+#11065 | auto Wetlands;101§auto Sumpfland;101§auto Les Paluns;101 | x=-3156 y=-2443.199951171875 | size=1 | links=#1129(auto Wetlands;17):34 #2827(auto Wetlands;27):114
+#11225 | auto Wetlands;102§auto Sumpfland;102§auto Les Paluns;102 | x=-3764.10009765625 y=-877 | size=1 | links=c1480.1:6 #5697(auto Menethil Harbor;Wetlands;5):14
+#11324 | auto Wetlands;103§auto Sumpfland;103§auto Les Paluns;103 | x=-2371.60009765625 y=-2492.60009765625 | size=1 | links=#27489(auto Wetlands;257):7 #6386(passage;from;Thandol Span;Wetlands;to;Thandol Span;Arathi Highlands):11
+#11336 | auto Wetlands;104§auto Sumpfland;104§auto Les Paluns;104 | x=-4450.5 y=-2672 | size=1 | links=#22521(auto Wetlands;216):22 c2466.1:106 c2469.1:6
+#11493 | auto Wetlands;105§auto Sumpfland;105§auto Les Paluns;105 | x=-4101.30029296875 y=-3467.699951171875 | size=1 | links=#3293(central location;Grim Batol;Wetlands):37 #6393(auto Wetlands;58):38
+#11496 | auto Wetlands;106§auto Sumpfland;106§auto Les Paluns;106 | x=-2629.10009765625 y=-2313.699951171875 | size=1 | links=#3850(auto Wetlands;37):16 #4319(auto Wetlands;42):0
+#11533 | auto Wetlands;107§auto Sumpfland;107§auto Les Paluns;107 | x=-2570.699951171875 y=-1904.200073242188 | size=1 | links=#11930(auto Wetlands;114):51 #18846(auto Wetlands;182):24
+#11550 | auto Wetlands;108§auto Sumpfland;108§auto Les Paluns;108 | x=-3539.10009765625 y=-1710.5 | size=1 | links=#16328(quest target;Whelgar's Excavation Site;Wetlands):17 #18779(auto Wetlands;180):13
+#11592 | auto Wetlands;109§auto Sumpfland;109§auto Les Paluns;109 | x=-3183 y=-1943 | size=1 | links=#4544(auto Wetlands;45):22 #20078(auto Wetlands;192):5
+#11699 | auto Wetlands;110§auto Sumpfland;110§auto Les Paluns;110 | x=-2724.300048828125 y=-2501.900146484375 | size=1 | links=#6878(auto Wetlands;66):62 #27991(auto Wetlands;263):80
+#11777 | auto Wetlands;111§auto Sumpfland;111§auto Les Paluns;111 | x=-3435 y=-945 | size=5 | links=#6453(auto Wetlands;61):25 #10347(auto Wetlands;94):27
+#11787 | auto Wetlands;112§auto Sumpfland;112§auto Les Paluns;112 | x=-3828.222000387321 y=-2802.732925948737 | size=1 | links=#743(auto Wetlands;14):43 #20893(auto Wetlands;200):46
+#11788 | auto Wetlands;113§auto Sumpfland;113§auto Les Paluns;113 | x=-3527.60009765625 y=-1857.900024414063 | size=5 | links=#17115(auto Wetlands;161):25 c1022.2:49
+#11807 | down;Deepwater Tavern;Wetlands§unten;Tiefenwassertaverne;Sumpfland§bas;Taverne de l'Eau-profonde;Les Paluns | x=-3818.10009765625 y=-831.6000366210938 | size=1 | links=c1476.1:2
+#11930 | auto Wetlands;114§auto Sumpfland;114§auto Les Paluns;114 | x=-2607.400146484375 y=-1868.200073242188 | size=1 | links=#11533(auto Wetlands;107):51 c1018.2:59 c1018.3:88
+#11932 | auto Wetlands;115§auto Sumpfland;115§auto Les Paluns;115 | x=-3439 y=-2016.300048828125 | size=1 | links=#5582(central location;top;Angerfang Encampment;Wetlands):55 c2108.1:43
+#12020 | auto Wetlands;116§auto Sumpfland;116§auto Les Paluns;116 | x=-3337.900146484375 y=-904.2999877929688 | size=1 | links=#10347(auto Wetlands;94):77 #15856(auto Wetlands;152):3
+#12030 | auto Wetlands;117§auto Sumpfland;117§auto Les Paluns;117 | x=-2997.60009765625 y=-982.2000122070312 | size=1 | links=#13870(auto Wetlands;130):14 c1027.1:55 c1029.1:72 c1158.2:51 c1157.3:42 c1158.3:49
+#12063 | auto Wetlands;118§auto Sumpfland;118§auto Les Paluns;118 | x=-3837.800048828125 y=-2386.699951171875 | size=1 | links=#8681(auto Wetlands;81):14 #14533(auto Wetlands;139):28
+#12199 | auto Wetlands;119§auto Sumpfland;119§auto Les Paluns;119 | x=-3253 y=-2313.10009765625 | size=1 | links=#1143(auto Wetlands;18):66 #3764(auto Wetlands;36):36 #18060(auto Wetlands;172):43
+#12204 | auto Wetlands;120§auto Sumpfland;120§auto Les Paluns;120 | x=-3513.800048828125 y=-1750.700073242188 | size=1 | links=#10431(auto Wetlands;96):20 c1023.3:35
+#12724 | auto Wetlands;121§auto Sumpfland;121§auto Les Paluns;121 | x=-3735.800048828125 y=-821.1000366210938 | size=1 | links=#2632(auto Wetlands;23):12 #4935(auto Wetlands;48):15
+#12744 | auto Wetlands;122§auto Sumpfland;122§auto Les Paluns;122 | x=-4119.89990234375 y=-2465 | size=1 | links=#14807(auto Wetlands;140):16 #21319(auto Wetlands;205):11
+#13051 | auto Wetlands;123§auto Sumpfland;123§auto Les Paluns;123 | x=-3198.5 y=-1847.700073242188 | size=1 | links=#3588(auto Wetlands;35):20 #20836(auto Wetlands;198):19
+#13155 | auto Wetlands;124§auto Sumpfland;124§auto Les Paluns;124 | x=-3880.300048828125 y=-2411.5 | size=1 | links=#4908(auto Wetlands;47):37 #14533(auto Wetlands;139):26
+#13211 | auto Wetlands;125§auto Sumpfland;125§auto Les Paluns;125 | x=-4235.60009765625 y=-2942.699951171875 | size=5 | links=#5295(auto Wetlands;53):68 #10001(auto Wetlands;93):79
+#13395 | auto Wetlands;126§auto Sumpfland;126§auto Les Paluns;126 | x=-4310.39990234375 y=-2464.5 | size=1 | links=#21319(auto Wetlands;205):179
+#13406 | auto Wetlands;127§auto Sumpfland;127§auto Les Paluns;127 | x=-2793.60009765625 y=-2713.5 | size=5 | links=#15123(auto Wetlands;145):69 #22310(auto Wetlands;214):103
+#13483 | auto Wetlands;128§auto Sumpfland;128§auto Les Paluns;128 | x=-2972.60009765625 y=-965.5 | size=1 | links=#9875(auto Wetlands;92):8 c1158.1:1
+#13672 | resting location;Sundown Marsh;Wetlands§ruhepunkt;Sonnenwendmarschen;Sumpfland§resting location;Marais du couchant;Les Paluns | x=-2872.300048828125 y=-1494.700073242188 | size=1 | links=#5044(auto Wetlands;49):29 #5092(auto Wetlands;50):18 c1400.2:128
+#13740 | auto Wetlands;129§auto Sumpfland;129§auto Les Paluns;129 | x=-3386.900146484375 y=-1787.400024414063 | size=1 | links=#333(auto Wetlands;5):44 #6638(auto Wetlands;62):39
+#13870 | auto Wetlands;130§auto Sumpfland;130§auto Les Paluns;130 | x=-2988.5 y=-971.2999877929688 | size=1 | links=#5950(auto Wetlands;56):28 #12030(auto Wetlands;117):14
+#13970 | auto Wetlands;131§auto Sumpfland;131§auto Les Paluns;131 | x=-4088.800048828125 y=-2406.10009765625 | size=1 | links=#9640(auto Wetlands;89):79 #20891(auto Wetlands;199):21
+#14007 | auto Wetlands;132§auto Sumpfland;132§auto Les Paluns;132 | x=-3289.5 y=-1809.400024414063 | size=1 | links=#7997(central location;Whelgar's Excavation Site;Wetlands):41 #28419(auto Wetlands;266):29
+#14173 | auto Wetlands;133§auto Sumpfland;133§auto Les Paluns;133 | x=-3341.699951171875 y=-873.2000122070312 | size=1 | links=#15856(auto Wetlands;152):27 c6491.1:31
+#14179 | auto Wetlands;134§auto Sumpfland;134§auto Les Paluns;134 | x=-4230.7001953125 y=-3436.300048828125 | size=5 | links=#196(auto Wetlands;2):201
+#14184 | top;Deepwater Tavern;Wetlands§oben;Tiefenwassertaverne;Sumpfland§top;Taverne de l'Eau-profonde;Les Paluns | x=-3819.800048828125 y=-825.9000244140625 | size=1 | links=#661(auto Wetlands;11):10 #15206(auto Wetlands;146):7 #15243(auto Wetlands;147):12
+#14380 | auto Wetlands;135§auto Sumpfland;135§auto Les Paluns;135 | x=-3199.800048828125 y=-2118.10009765625 | size=1 | links=#7405(auto Wetlands;71):35 #20065(auto Wetlands;190):52
+#14423 | auto Wetlands;136§auto Sumpfland;136§auto Les Paluns;136 | x=-4309.10009765625 y=-2465 | size=1 | links=#17165(auto Wetlands;162):25 #27277(auto Wetlands;254):9
+#14497 | auto Wetlands;137§auto Sumpfland;137§auto Les Paluns;137 | x=-3969.699951171875 y=-3982.199951171875 | size=1 | links=#8808(auto Wetlands;82):16 #21823(auto Wetlands;210):14
+#14527 | auto Wetlands;138§auto Sumpfland;138§auto Les Paluns;138 | x=-3786.60009765625 y=-860.6000366210938 | size=1 | links=#19955(auto Wetlands;188):7 c1441.1:6 c1450.1:12 c1461.1:4
+#14533 | auto Wetlands;139§auto Sumpfland;139§auto Les Paluns;139 | x=-3866.400146484375 y=-2389.10009765625 | size=1 | links=#12063(auto Wetlands;118):28 #13155(auto Wetlands;124):26
+#14774 | top;Menethil Keep§oben;Burg Menethil§top;Donjon de Menethil | x=-3710.60009765625 y=-810.4000244140625 | size=1 | links=#18411(auto Wetlands;176):19 c1479.1:3 c2104.1:25
+#14807 | auto Wetlands;140§auto Sumpfland;140§auto Les Paluns;140 | x=-4105.10009765625 y=-2471.199951171875 | size=1 | links=#12744(auto Wetlands;122):16 #20062(auto Wetlands;189):19
+#14838 | auto Wetlands;141§auto Sumpfland;141§auto Les Paluns;141 | x=-3416.300048828125 y=-2103.800048828125 | size=1 | links=#5582(central location;top;Angerfang Encampment;Wetlands):35 #11042(auto Wetlands;100):36
+#14999 | auto Wetlands;142§auto Sumpfland;142§auto Les Paluns;142 | x=-3458.60009765625 y=-2497.60009765625 | size=1 | links=#3466(auto Wetlands;33):36 #25604(auto Wetlands;237):51
+#15033 | auto Wetlands;143§auto Sumpfland;143§auto Les Paluns;143 | x=-2954.5 y=-2415.199951171875 | size=5 | links=#2827(auto Wetlands;27):88 #17476(auto Wetlands;165):81
+#15101 | auto Wetlands;144§auto Sumpfland;144§auto Les Paluns;144 | x=-3350.900146484375 y=-1318.599975585938 | size=1 | links=#10773(auto Wetlands;98):35 #18407(auto Wetlands;175):91 c1020.2:122
+#15123 | auto Wetlands;145§auto Sumpfland;145§auto Les Paluns;145 | x=-2803.800048828125 y=-2782.400146484375 | size=1 | links=#943(central location;Direforge Hill;Wetlands):83 #13406(auto Wetlands;127):69
+#15206 | auto Wetlands;146§auto Sumpfland;146§auto Les Paluns;146 | x=-3813.10009765625 y=-822.6000366210938 | size=1 | links=#14184(top;Deepwater Tavern;Wetlands):7 c1457.1:6
+#15243 | auto Wetlands;147§auto Sumpfland;147§auto Les Paluns;147 | x=-3810.699951171875 y=-834.2000122070312 | size=1 | links=#14184(top;Deepwater Tavern;Wetlands):12 c2911.1:4
+#15280 | entry and exit;cave;Thelgen Rock;Wetlands§ein- und ausgang;höhle;Thelgenfelsen;Sumpfland§entrée et sortie;cave;Rocher de Thelgen;Les Paluns | x=-3906.800048828125 y=-2570.300048828125 | size=1 | links=#1709(auto Wetlands;21):75 #1871(central location;Thelgen Rock;Wetlands):58
+#15384 | auto Wetlands;148§auto Sumpfland;148§auto Les Paluns;148 | x=-3240.199951171875 y=-2163.10009765625 | size=5 | links=#6279(auto Wetlands;57):51 #7405(auto Wetlands;71):42
+#15752 | auto Wetlands;149§auto Sumpfland;149§auto Les Paluns;149 | x=-3448.400146484375 y=-1925.700073242188 | size=1 | links=#9517(auto Wetlands;87):50 #21270(auto Wetlands;204):17
+#15828 | auto Wetlands;150§auto Sumpfland;150§auto Les Paluns;150 | x=-2617.400146484375 y=-2324.400146484375 | size=1 | links=#4319(auto Wetlands;42):15 #22311(auto Wetlands;215):35
+#15849 | auto Wetlands;151§auto Sumpfland;151§auto Les Paluns;151 | x=-4198.80029296875 y=-2364.800048828125 | size=1 | links=#17611(auto Wetlands;167):7 #22902(auto Wetlands;220):22
+#15856 | auto Wetlands;152§auto Sumpfland;152§auto Les Paluns;152 | x=-3339 y=-900.6000366210938 | size=1 | links=#12020(auto Wetlands;116):3 #14173(auto Wetlands;133):27
+#16024 | auto Wetlands;153§auto Sumpfland;153§auto Les Paluns;153 | x=-4244.39990234375 y=-2463.60009765625 | size=1 | links=#17637(auto Wetlands;168):32 #25631(auto Wetlands;238):39
+#16030 | auto Wetlands;154§auto Sumpfland;154§auto Les Paluns;154 | x=-2573.800048828125 y=-2347.900146484375 | size=1 | links=#3511(auto Wetlands;34):7 #19364(auto Wetlands;186):6
+#16077 | entry and exit;Menethil Harbor§ein- und ausgang;Hafen von Menethil§entrée et sortie;Menethil Harbor | x=-3527.400146484375 y=-907.2999877929688 | size=1 | links=#6453(auto Wetlands;61):76 #13677(auto Menethil Harbor;Wetlands;9):166
+#16328 | quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sumpfland§objectif de quête;Whelgar's Excavation Site;Les Paluns | x=-3552.699951171875 y=-1721.200073242188 | size=1 | links=#11550(auto Wetlands;108):17 c1353.1:46
+#16417 | auto Wetlands;155§auto Sumpfland;155§auto Les Paluns;155 | x=-3932 y=-2304.900146484375 | size=5 | links=#16741(auto Wetlands;157):19 c1112.2:18
+#16673 | auto Wetlands;156§auto Sumpfland;156§auto Les Paluns;156 | x=-3913.60009765625 y=-886.2999877929688 | size=5 | links=#20993(auto Wetlands;202):48 #26819(auto Wetlands;251):57 o89634.2:28 o89634.5:28
+#16741 | auto Wetlands;157§auto Sumpfland;157§auto Les Paluns;157 | x=-3948.400146484375 y=-2315.900146484375 | size=5 | links=#855(tomb;cave;Thelgen Rock;Wetlands):30 #16417(auto Wetlands;155):19
+#16830 | auto Wetlands;158§auto Sumpfland;158§auto Les Paluns;158 | x=-4061.5 y=-2456.800048828125 | size=1 | links=#20062(auto Wetlands;189):27 #24826(auto Wetlands;230):83 c2102.1:6
+#17035 | auto Wetlands;159§auto Sumpfland;159§auto Les Paluns;159 | x=-3408.300048828125 y=-2528.800048828125 | size=5 | links=#3466(auto Wetlands;33):25 c1034.40:30
+#17041 | auto Wetlands;160§auto Sumpfland;160§auto Les Paluns;160 | x=-3995.199951171875 y=-823.1000366210938 | size=5 | links=#20993(auto Wetlands;202):82 c1418.2:93
+#17115 | auto Wetlands;161§auto Sumpfland;161§auto Les Paluns;161 | x=-3505.900146484375 y=-1871.900024414063 | size=5 | links=#11788(auto Wetlands;113):25 c1022.1:26
+#17165 | auto Wetlands;162§auto Sumpfland;162§auto Les Paluns;162 | x=-4334.23979091007 y=-2467.226367803388 | size=1 | links=#14423(auto Wetlands;136):25 #21842(auto Wetlands;211):16
+#17232 | auto Wetlands;163§auto Sumpfland;163§auto Les Paluns;163 | x=-3331.199951171875 y=-1181.599975585938 | size=1 | links=#10538(auto Wetlands;97):40 #23858(auto Wetlands;224):43
+#17408 | auto Wetlands;164§auto Sumpfland;164§auto Les Paluns;164 | x=-3570.10009765625 y=-1974.599975585938 | size=1 | links=#22192(auto Wetlands;213):7 c1077.1:29
+#17476 | auto Wetlands;165§auto Sumpfland;165§auto Les Paluns;165 | x=-2875.10009765625 y=-2435.10009765625 | size=5 | links=#15033(auto Wetlands;143):81 #27991(auto Wetlands;263):101 c1032.2:115
+#17575 | auto Wetlands;166§auto Sumpfland;166§auto Les Paluns;166 | x=-4224.30029296875 y=-2377.5 | size=1 | links=#431(auto Wetlands;7):21 #7604(auto Wetlands;72):13
+#17611 | auto Wetlands;167§auto Sumpfland;167§auto Les Paluns;167 | x=-4205.10009765625 y=-2368.300048828125 | size=1 | links=#15849(auto Wetlands;151):7 c2090.1:8
+#17637 | auto Wetlands;168§auto Sumpfland;168§auto Les Paluns;168 | x=-4277.30029296875 y=-2463.900146484375 | size=1 | links=#6451(auto Wetlands;60):13 #16024(auto Wetlands;153):32
+#17783 | auto Wetlands;169§auto Sumpfland;169§auto Les Paluns;169 | x=-3280.800048828125 y=-2485 | size=1 | links=#4017(auto Wetlands;41):33 #19954(auto Wetlands;187):24
+#17792 | auto Wetlands;170§auto Sumpfland;170§auto Les Paluns;170 | x=-3274.900146484375 y=-1558.400024414063 | size=1 | links=#18462(auto Wetlands;177):49 #21482(auto Wetlands;208):38
+#18044 | auto Wetlands;171§auto Sumpfland;171§auto Les Paluns;171 | x=-3192.199951171875 y=-1889.900024414063 | size=1 | links=#248(auto Wetlands;3):20 #3588(auto Wetlands;35):22
+#18060 | auto Wetlands;172§auto Sumpfland;172§auto Les Paluns;172 | x=-3237.400146484375 y=-2272.400146484375 | size=1 | links=#12199(auto Wetlands;119):43 #26542(auto Wetlands;243):39
+#18213 | auto Wetlands;173§auto Sumpfland;173§auto Les Paluns;173 | x=-2813.10009765625 y=-1001.400024414063 | size=1 | links=#18877(auto Wetlands;183):17 c1160.1:30
+#18331 | auto Wetlands;174§auto Sumpfland;174§auto Les Paluns;174 | x=-3859 y=-2500.900146484375 | size=1 | links=#1709(auto Wetlands;21):18 #10861(auto Wetlands;99):26
+#18407 | auto Wetlands;175§auto Sumpfland;175§auto Les Paluns;175 | x=-3323.199951171875 y=-1405.5 | size=5 | links=#15101(auto Wetlands;144):91 #25321(auto Wetlands;233):95 c2153.1:124
+#18411 | auto Wetlands;176§auto Sumpfland;176§auto Les Paluns;176 | x=-3701.400146484375 y=-793.2999877929688 | size=1 | links=#183(auto Wetlands;1):18 #14774(top;Menethil Keep):19
+#18462 | auto Wetlands;177§auto Sumpfland;177§auto Les Paluns;177 | x=-3270.400146484375 y=-1607.300048828125 | size=5 | links=#9642(auto Wetlands;90):116 #17792(auto Wetlands;170):49 c1020.1:81
+#18658 | auto Wetlands;178§auto Sumpfland;178§auto Les Paluns;178 | x=-2555.400146484375 y=-1937.5 | size=1 | links=#18747(auto Wetlands;179):16 #18846(auto Wetlands;182):15
+#18747 | auto Wetlands;179§auto Sumpfland;179§auto Les Paluns;179 | x=-2556.199951171875 y=-1954.400024414063 | size=1 | links=#18658(auto Wetlands;178):16 #26294(auto Wetlands;242):15
+#18779 | auto Wetlands;180§auto Sumpfland;180§auto Les Paluns;180 | x=-3526.5 y=-1705.900024414063 | size=1 | links=#11550(auto Wetlands;108):13 #21051(auto Wetlands;203):10
+#18822 | auto Wetlands;181§auto Sumpfland;181§auto Les Paluns;181 | x=-4091.800048828125 y=-2837.60009765625 | size=5 | links=#1478(auto Wetlands;19):72 #10001(auto Wetlands;93):102
+#18846 | auto Wetlands;182§auto Sumpfland;182§auto Les Paluns;182 | x=-2554.10009765625 y=-1921.900024414063 | size=1 | links=#11533(auto Wetlands;107):24 #18658(auto Wetlands;178):15
+#18877 | auto Wetlands;183§auto Sumpfland;183§auto Les Paluns;183 | x=-2829.800048828125 y=-1005.799987792969 | size=1 | links=#18213(auto Wetlands;173):17 c1158.3:119
+#19128 | auto Wetlands;184§auto Sumpfland;184§auto Les Paluns;184 | x=-3453.900146484375 y=-3430.10009765625 | size=1 | links=#2954(auto Wetlands;30):108 c1069.1:185
+#19195 | auto Wetlands;185§auto Sumpfland;185§auto Les Paluns;185 | x=-2367.800048828125 y=-2489.60009765625 | size=1 | links=#25738(auto Wetlands;240):5 #27760(auto Wetlands;259):7
+#19364 | auto Wetlands;186§auto Sumpfland;186§auto Les Paluns;186 | x=-2574.400146484375 y=-2354.300048828125 | size=1 | links=#45(central location;Dun Modr;Wetlands):26 #16030(auto Wetlands;154):6
+#19954 | auto Wetlands;187§auto Sumpfland;187§auto Les Paluns;187 | x=-3258.900146484375 y=-2474.699951171875 | size=1 | links=#3339(crossing;Wetlands):23 #17783(auto Wetlands;169):24
+#19955 | auto Wetlands;188§auto Sumpfland;188§auto Les Paluns;188 | x=-3781.199951171875 y=-855.7000122070312 | size=1 | links=#14527(auto Wetlands;138):7 #24383(central location;Menethil Harbor):18
+#20062 | auto Wetlands;189§auto Sumpfland;189§auto Les Paluns;189 | x=-4085.900146484375 y=-2469.60009765625 | size=1 | links=#14807(auto Wetlands;140):19 #16830(auto Wetlands;158):27
+#20065 | auto Wetlands;190§auto Sumpfland;190§auto Les Paluns;190 | x=-3201 y=-2066 | size=1 | links=#3857(auto Wetlands;38):24 #14380(auto Wetlands;135):52
+#20076 | auto Wetlands;191§auto Sumpfland;191§auto Les Paluns;191 | x=-2619.300048828125 y=-2434.699951171875 | size=1 | links=#638(auto Wetlands;10):32 #9774(entry and exit;Dun Modr;Wetlands):33 c6523.2:37 c6523.3:38
+#20078 | auto Wetlands;192§auto Sumpfland;192§auto Les Paluns;192 | x=-3184.800048828125 y=-1938 | size=1 | links=#11592(auto Wetlands;109):5 #25587(auto Wetlands;236):19
+#20219 | auto Wetlands;193§auto Sumpfland;193§auto Les Paluns;193 | x=-3804.900146484375 y=-2374.300048828125 | size=1 | links=#8681(auto Wetlands;81):21 c1112.1:38
+#20309 | auto Wetlands;194§auto Sumpfland;194§auto Les Paluns;194 | x=-3875.900146484375 y=-831.9000244140625 | size=5 | links=#2777(auto Wetlands;26):34 #26819(auto Wetlands;251):35
+#20420 | auto Wetlands;195§auto Sumpfland;195§auto Les Paluns;195 | x=-2508 y=-2476.900146484375 | size=1 | links=#5948(auto Wetlands;55):71 #27099(auto Wetlands;252):45 c5683.1:27
+#20431 | auto Wetlands;196§auto Sumpfland;196§auto Les Paluns;196 | x=-4163.2001953125 y=-2463.10009765625 | size=1 | links=#21319(auto Wetlands;205):32 #25631(auto Wetlands;238):41
+#20668 | auto Wetlands;197§auto Sumpfland;197§auto Les Paluns;197 | x=-3165.900146484375 y=-1957.900024414063 | size=1 | links=#4544(auto Wetlands;45):23 c14425.2:86 c1040.3:99 c1400.3:159
+#20836 | auto Wetlands;198§auto Sumpfland;198§auto Les Paluns;198 | x=-3206.400146484375 y=-1829.599975585938 | size=1 | links=#419(auto Wetlands;6):26 #13051(auto Wetlands;123):19
+#20891 | auto Wetlands;199§auto Sumpfland;199§auto Les Paluns;199 | x=-4093 y=-2427 | size=1 | links=#9406(auto Wetlands;84):183 #13970(auto Wetlands;131):21
+#20893 | auto Wetlands;200§auto Sumpfland;200§auto Les Paluns;200 | x=-3782.875106696789 y=-2790.773296074387 | size=1 | links=#7908(auto Wetlands;75):25 #11787(auto Wetlands;112):46
+#20986 | auto Wetlands;201§auto Sumpfland;201§auto Les Paluns;201 | x=-3961.60009765625 y=-4022.400146484375 | size=1 | links=#8808(auto Wetlands;82):27 c1048.1:49
+#20993 | auto Wetlands;202§auto Sumpfland;202§auto Les Paluns;202 | x=-3960.300048828125 y=-897.7000122070312 | size=5 | links=#16673(auto Wetlands;156):48 #17041(auto Wetlands;160):82 c1418.3:25
+#21051 | auto Wetlands;203§auto Sumpfland;203§auto Les Paluns;203 | x=-3518.400146484375 y=-1699.400024414063 | size=1 | links=#8378(auto Wetlands;79):14 #18779(auto Wetlands;180):10
+#21270 | auto Wetlands;204§auto Sumpfland;204§auto Les Paluns;204 | x=-3466.300048828125 y=-1927.5 | size=1 | links=#15752(auto Wetlands;149):17 #26644(auto Wetlands;245):11
+#21319 | auto Wetlands;205§auto Sumpfland;205§auto Les Paluns;205 | x=-4130.89990234375 y=-2462.900146484375 | size=1 | links=#12744(auto Wetlands;122):11 #13395(auto Wetlands;126):179 #20431(auto Wetlands;196):32
+#21336 | auto Wetlands;206§auto Sumpfland;206§auto Les Paluns;206 | x=-3530.800048828125 y=-1804.300048828125 | size=1 | links=c1023.2:22 c1022.3:22
+#21419 | auto Wetlands;207§auto Sumpfland;207§auto Les Paluns;207 | x=-3416.400146484375 y=-994.2000122070312 | size=1 | links=#5289(auto Wetlands;52):33 #6453(auto Wetlands;61):66 c1417.3:51
+#21482 | auto Wetlands;208§auto Sumpfland;208§auto Les Paluns;208 | x=-3295.199951171875 y=-1525.599975585938 | size=1 | links=#17792(auto Wetlands;170):38 #25321(auto Wetlands;233):28
+#21495 | auto Wetlands;209§auto Sumpfland;209§auto Les Paluns;209 | x=-3452.300048828125 y=-1850 | size=5 | links=#5242(auto Wetlands;51):64 c1022.1:41
+#21823 | auto Wetlands;210§auto Sumpfland;210§auto Les Paluns;210 | x=-3982.400146484375 y=-3974.5 | size=1 | links=#14497(auto Wetlands;137):14 c1050.2:98
+#21842 | auto Wetlands;211§auto Sumpfland;211§auto Les Paluns;211 | x=-4351.029938980227 y=-2466.342729087197 | size=1 | links=#17165(auto Wetlands;162):16 #26030(central location;Dun Algaz):10
+#21984 | auto Wetlands;212§auto Sumpfland;212§auto Les Paluns;212 | x=-4020.800048828125 y=-922.2000122070312 | size=1 | links=#1580(auto Wetlands;20):34 c14433.1:16
+#22192 | auto Wetlands;213§auto Sumpfland;213§auto Les Paluns;213 | x=-3562.199951171875 y=-1974.700073242188 | size=1 | links=#7825(auto Wetlands;74):18 #17408(auto Wetlands;164):7
+#22310 | auto Wetlands;214§auto Sumpfland;214§auto Les Paluns;214 | x=-2808.699951171875 y=-2610.800048828125 | size=5 | links=#13406(auto Wetlands;127):103 #27991(auto Wetlands;263):103
+#22311 | auto Wetlands;215§auto Sumpfland;215§auto Les Paluns;215 | x=-2617 y=-2359.400146484375 | size=1 | links=#45(central location;Dun Modr;Wetlands):16 #15828(auto Wetlands;150):35 c6523.2:43
+#22521 | auto Wetlands;216§auto Sumpfland;216§auto Les Paluns;216 | x=-4464 y=-2690 | size=1 | links=#8117(passage;from;Dun Algaz;Wetlands;to;Dun Algaz;Loch Modan):17 #11336(auto Wetlands;104):22
+#22717 | auto Wetlands;217§auto Sumpfland;217§auto Les Paluns;217 | x=-3342 y=-2532 | size=1 | links=#4017(auto Wetlands;41):44 #26687(auto Wetlands;247):36
+#22758 | auto Wetlands;218§auto Sumpfland;218§auto Les Paluns;218 | x=-4184.80029296875 y=-2375.199951171875 | size=1 | links=#431(auto Wetlands;7):17 #22902(auto Wetlands;220):15
+#22812 | auto Wetlands;219§auto Sumpfland;219§auto Les Paluns;219 | x=-2659.300048828125 y=-2322.300048828125 | size=1 | links=#8324(auto Wetlands;78):9 c1054.3:11
+#22902 | auto Wetlands;220§auto Sumpfland;220§auto Les Paluns;220 | x=-4194.80029296875 y=-2387.10009765625 | size=1 | links=#15849(auto Wetlands;151):22 #22758(auto Wetlands;218):15
+#23322 | auto Wetlands;221§auto Sumpfland;221§auto Les Paluns;221 | x=-4118.39990234375 y=-3722.699951171875 | size=1 | links=#196(auto Wetlands;2):106 #24128(auto Wetlands;227):34
+#23431 | auto Wetlands;222§auto Sumpfland;222§auto Les Paluns;222 | x=-3678.5 y=-744.4000244140625 | size=1 | links=c1482.1:11 c2094.1:5 #1361(auto Menethil Harbor;Wetlands;1):14
+#23745 | auto Wetlands;223§auto Sumpfland;223§auto Les Paluns;223 | x=-3974.800048828125 y=-2821.300048828125 | size=1 | links=#6962(auto Wetlands;68):34 #27947(auto Wetlands;261):27
+#23858 | auto Wetlands;224§auto Sumpfland;224§auto Les Paluns;224 | x=-3330.300048828125 y=-1224.599975585938 | size=1 | links=#17232(auto Wetlands;163):43 #26717(auto Wetlands;248):32
+#23891 | auto Wetlands;225§auto Sumpfland;225§auto Les Paluns;225 | x=-3481.5 y=-2626.900146484375 | size=1 | links=#7691(auto Wetlands;73):54 #28255(auto Wetlands;264):59
+#23931 | auto Wetlands;226§auto Sumpfland;226§auto Les Paluns;226 | x=-3914.119780046783 y=-2828.760757649482 | size=1 | links=#743(auto Wetlands;14):46 #27947(auto Wetlands;261):33 c1007.1:203 c1030.3:152
+#24128 | auto Wetlands;227§auto Sumpfland;227§auto Les Paluns;227 | x=-4096.7001953125 y=-3750.10009765625 | size=1 | links=#23322(auto Wetlands;221):34 c1050.1:36
+#24135 | auto Wetlands;228§auto Sumpfland;228§auto Les Paluns;228 | x=-3607 y=-2526 | size=1 | links=#481(auto Wetlands;8):38 #6892(auto Wetlands;67):23
+#24498 | auto Wetlands;229§auto Sumpfland;229§auto Les Paluns;229 | x=-2566.900146484375 y=-2357.199951171875 | size=1 | links=#3511(auto Wetlands;34):8 c1054.1:12
+#24826 | auto Wetlands;230§auto Sumpfland;230§auto Les Paluns;230 | x=-4003.300048828125 y=-2396.699951171875 | size=1 | links=#9640(auto Wetlands;89):26 #16830(auto Wetlands;158):83
+#24838 | auto Wetlands;231§auto Sumpfland;231§auto Les Paluns;231 | x=-2367.199951171875 y=-2500 | size=1 | links=#26759(auto Wetlands;250):9 o2652.1:10
+#24870 | auto Wetlands;232§auto Sumpfland;232§auto Les Paluns;232 | x=-3490.699951171875 y=-1678 | size=1 | links=#3913(auto Wetlands;39):16 #27950(auto Wetlands;262):14
+#25321 | auto Wetlands;233§auto Sumpfland;233§auto Les Paluns;233 | x=-3308.10009765625 y=-1500 | size=1 | links=#18407(auto Wetlands;175):95 #21482(auto Wetlands;208):28
+#25368 | auto Wetlands;234§auto Sumpfland;234§auto Les Paluns;234 | x=-2961.300048828125 y=-961 | size=1 | links=#5950(auto Wetlands;56):0 #8228(auto Wetlands;76):8
+#25523 | auto Wetlands;235§auto Sumpfland;235§auto Les Paluns;235 | x=-3332.800048828125 y=-1891.5 | size=1 | links=#7128(auto Wetlands;69):23 #7997(central location;Whelgar's Excavation Site;Wetlands):52 c1020.3:37
+#25587 | auto Wetlands;236§auto Sumpfland;236§auto Les Paluns;236 | x=-3191.10009765625 y=-1919.800048828125 | size=1 | links=#248(auto Wetlands;3):9 #20078(auto Wetlands;192):19
+#25604 | auto Wetlands;237§auto Sumpfland;237§auto Les Paluns;237 | x=-3491.300048828125 y=-2458.300048828125 | size=1 | links=#14999(auto Wetlands;142):51 c1035.1:36 c1057.2:46
+#25631 | auto Wetlands;238§auto Sumpfland;238§auto Les Paluns;238 | x=-4204.80029296875 y=-2463.300048828125 | size=1 | links=#16024(auto Wetlands;153):39 #20431(auto Wetlands;196):41
+#25719 | auto Wetlands;239§auto Sumpfland;239§auto Les Paluns;239 | x=-3617.699951171875 y=-852.7000122070312 | size=1 | links=c2096.1:35 #13677(auto Menethil Harbor;Wetlands;9):61
+#25738 | auto Wetlands;240§auto Sumpfland;240§auto Les Paluns;240 | x=-2367.400146484375 y=-2494.800048828125 | size=1 | links=#4582(auto Wetlands;46):17 #19195(auto Wetlands;185):5 c1052.1:1
+#25970 | auto Wetlands;241§auto Sumpfland;241§auto Les Paluns;241 | x=-3536.400146484375 y=-1968.200073242188 | size=1 | links=#2147(auto Wetlands;22):21 c1078.1:14
+#26030 | central location;Dun Algaz§zentralpunkt;Dun Algaz§emplacement central;Dun Algaz | x=-4359.10009765625 y=-2459.10009765625 | size=1 | links=#869(auto Wetlands;15):37 #21842(auto Wetlands;211):10 c2103.3:122
+#26294 | auto Wetlands;242§auto Sumpfland;242§auto Les Paluns;242 | x=-2571.199951171875 y=-1956.200073242188 | size=1 | links=#2936(auto Wetlands;29):11 #18747(auto Wetlands;179):15
+#26542 | auto Wetlands;243§auto Sumpfland;243§auto Les Paluns;243 | x=-3227.937215119475 y=-2234.428905428183 | size=1 | links=#5708(auto Wetlands;54):30 #18060(auto Wetlands;172):39
+#26550 | auto Wetlands;244§auto Sumpfland;244§auto Les Paluns;244 | x=-3329.800048828125 y=-1937.5 | size=1 | links=#729(auto Wetlands;13):33 c1020.3:23
+#26644 | auto Wetlands;245§auto Sumpfland;245§auto Les Paluns;245 | x=-3477.199951171875 y=-1930.700073242188 | size=1 | links=#2147(auto Wetlands;22):48 #21270(auto Wetlands;204):11
+#26646 | auto Wetlands;246§auto Sumpfland;246§auto Les Paluns;246 | x=-3701.573645259105 y=-2761.368144766894 | size=5 | links=#7908(auto Wetlands;75):63 #28255(auto Wetlands;264):198 c1010.2:96
+#26687 | auto Wetlands;247§auto Sumpfland;247§auto Les Paluns;247 | x=-3351.900146484375 y=-2566.800048828125 | size=1 | links=#7225(auto Wetlands;70):23 #22717(auto Wetlands;217):36 #26728(auto Wetlands;249):45 c1034.40:37
+#26717 | auto Wetlands;248§auto Sumpfland;248§auto Les Paluns;248 | x=-3333.900146484375 y=-1257.300048828125 | size=1 | links=#10773(auto Wetlands;98):28 #23858(auto Wetlands;224):32
+#26728 | auto Wetlands;249§auto Sumpfland;249§auto Les Paluns;249 | x=-3387.699951171875 y=-2595.5 | size=1 | links=#7691(auto Wetlands;73):45 #26687(auto Wetlands;247):45
+#26759 | auto Wetlands;250§auto Sumpfland;250§auto Les Paluns;250 | x=-2375.800048828125 y=-2497.199951171875 | size=1 | links=#4424(auto Wetlands;43):14 #24838(auto Wetlands;231):9
+#26819 | auto Wetlands;251§auto Sumpfland;251§auto Les Paluns;251 | x=-3860.5 y=-864.4000244140625 | size=5 | links=#16673(auto Wetlands;156):57 #20309(auto Wetlands;194):35
+#27099 | auto Wetlands;252§auto Sumpfland;252§auto Les Paluns;252 | x=-2470 y=-2502.699951171875 | size=1 | links=#20420(auto Wetlands;195):45 #6386(passage;from;Thandol Span;Wetlands;to;Thandol Span;Arathi Highlands):99
+#27125 | auto Wetlands;253§auto Sumpfland;253§auto Les Paluns;253 | x=-4140 y=-3569.60009765625 | size=1 | links=#196(auto Wetlands;2):57 #6393(auto Wetlands;58):84
+#27277 | auto Wetlands;254§auto Sumpfland;254§auto Les Paluns;254 | x=-4299.652851944561 y=-2464.227991242286 | size=1 | links=#6451(auto Wetlands;60):8 #14423(auto Wetlands;136):9
+#27312 | auto Wetlands;255§auto Sumpfland;255§auto Les Paluns;255 | x=-3362.199951171875 y=-2146.800048828125 | size=1 | links=#11042(auto Wetlands;100):36 #27751(focus point;Angerfang Encampment;Wetlands):31
+#27403 | auto Wetlands;256§auto Sumpfland;256§auto Les Paluns;256 | x=-3190.10009765625 y=-1993.700073242188 | size=1 | links=#3857(auto Wetlands;38):48 #4544(auto Wetlands;45):28
+#27489 | auto Wetlands;257§auto Sumpfland;257§auto Les Paluns;257 | x=-2376.60009765625 y=-2487.300048828125 | size=1 | links=#11324(auto Wetlands;103):7 #27760(auto Wetlands;259):9
+#27633 | auto Wetlands;258§auto Sumpfland;258§auto Les Paluns;258 | x=-3488.400146484375 y=-1702.900024414063 | size=1 | links=#27950(auto Wetlands;262):11 c1023.1:18
+#27751 | focus point;Angerfang Encampment;Wetlands§bündelpunkt;Lager der Grollhauer;Sumpfland§focus point;Campement de Hargnecroc;Les Paluns | x=-3365.699951171875 y=-2178.60009765625 | size=1 | links=#6279(auto Wetlands;57):74 #27312(auto Wetlands;255):31 c1037.1:86
+#27760 | auto Wetlands;259§auto Sumpfland;259§auto Les Paluns;259 | x=-2368.300048828125 y=-2482.199951171875 | size=1 | links=#19195(auto Wetlands;185):7 #27489(auto Wetlands;257):9
+#27890 | auto Wetlands;260§auto Sumpfland;260§auto Les Paluns;260 | x=-3554.5 y=-2503.10009765625 | size=1 | links=#481(auto Wetlands;8):21 c1035.1:44
+#27947 | auto Wetlands;261§auto Sumpfland;261§auto Les Paluns;261 | x=-3947.900146484375 y=-2827 | size=1 | links=#23745(auto Wetlands;223):27 #23931(auto Wetlands;226):33
+#27950 | auto Wetlands;262§auto Sumpfland;262§auto Les Paluns;262 | x=-3486.300048828125 y=-1692 | size=1 | links=#24870(auto Wetlands;232):14 #27633(auto Wetlands;258):11
+#27991 | auto Wetlands;263§auto Sumpfland;263§auto Les Paluns;263 | x=-2804.199951171875 y=-2507.10009765625 | size=1 | links=#11699(auto Wetlands;110):80 #17476(auto Wetlands;165):101 #22310(auto Wetlands;214):103
+#28255 | auto Wetlands;264§auto Sumpfland;264§auto Les Paluns;264 | x=-3533.699951171875 y=-2655.300048828125 | size=5 | links=#23891(auto Wetlands;225):59 #26646(auto Wetlands;246):198
+#28333 | auto Wetlands;265§auto Sumpfland;265§auto Les Paluns;265 | x=-3805.900146484375 y=-2288.900146484375 | size=1 | links=#2901(auto Wetlands;28):27 #9693(auto Wetlands;91):29 c4040.2:31
+#28419 | auto Wetlands;266§auto Sumpfland;266§auto Les Paluns;266 | x=-3264.900146484375 y=-1792.900024414063 | size=1 | links=#9642(auto Wetlands;90):83 #14007(auto Wetlands;132):29
+#28620 | s;u;Mailbox;Wetlands§s;u;Briefkasten;Sumpfland§s;u;Boîte aux lettres;Les Paluns | x=-3793.397705078125 y=-836.2083740234375 | size=1 | links=c1239.1:3 c10046.1:11 #21202(auto Deepwater Tavern;Wetlands;3):2
+#29016 | auto Wetlands;267§auto Sumpfland;267§auto Les Paluns;267 | x=-3717 y=-579.2999877929688 | size=1 | links=#29019(on ship to Darkshore):7 #29020(pier to Darkshore):7
+#29019 | on ship to Darkshore§auf dem Schiff nach dunkelküste§on ship to Darkshore | x=-3710.699951171875 y=-575.7000122070312 | size=1 | links=#29016(auto Wetlands;267):7
+#29026 | rescue point water 1 pier menethil§rettungspunkt wasser 1 steg menethil§rescue point water 1 pier menethil | x=-3699.868931703551 y=-569.3474393228167 | size=1 | links=#29027(auto Wetlands;268):64
+#29027 | auto Wetlands;268§auto Sumpfland;268§auto Les Paluns;268 | x=-3693.172935156744 y=-632.9971383888831 | size=1 | links=#29026(rescue point water 1 pier menethil):64 #29028(auto Wetlands;269):37
+#29028 | auto Wetlands;269§auto Sumpfland;269§auto Les Paluns;269 | x=-3700.5 y=-669.5 | size=1 | links=#29027(auto Wetlands;268):37 #29029(auto Wetlands;270):31
+#29029 | auto Wetlands;270§auto Sumpfland;270§auto Les Paluns;270 | x=-3702.199951171875 y=-701.1000366210938 | size=1 | links=#29028(auto Wetlands;269):31 #29030(auto Wetlands;271):7
+#29030 | auto Wetlands;271§auto Sumpfland;271§auto Les Paluns;271 | x=-3706 y=-707.5 | size=1 | links=#29029(auto Wetlands;270):7 #29031(auto Wetlands;272):7
+#29031 | auto Wetlands;272§auto Sumpfland;272§auto Les Paluns;272 | x=-3709.900146484375 y=-714.2000122070312 | size=1 | links=#29030(auto Wetlands;271):7 #29032(auto Wetlands;273):10
+#29032 | auto Wetlands;273§auto Sumpfland;273§auto Les Paluns;273 | x=-3714.800048828125 y=-723.5 | size=1 | links=#29031(auto Wetlands;272):10 #29033(auto Wetlands;274):17
+#29033 | auto Wetlands;274§auto Sumpfland;274§auto Les Paluns;274 | x=-3722.900146484375 y=-739 | size=1 | links=#29032(auto Wetlands;273):17 #2735(auto Menethil Harbor;Wetlands;2):25
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c1007.1 | links=#23931(auto Wetlands;226):203 c1007.3:14
+c1008.1 | links=c1007.3:61
+c1009.1 | links=c14425.2:4
+c1010.1 | links=c1008.3:75
+c1011.1 | links=#9642(auto Wetlands;90):106 c1011.2:59
+c1012.1 | links=#5044(auto Wetlands;49):169 c14425.1:54 c1011.2:77
+c1013.1 | links=c1014.1:4 c14425.1:60
+c1014.1 | links=c1013.1:4 c1041.2:84
+c1015.1 | links=c1016.1:213 c1244.1:97 c1042.2:119 c1043.2:133
+c1016.1 | links=c1015.1:213
+c1017.1 | links=c1018.1:50 c1041.1:143
+c1018.1 | links=c1017.1:50 c1017.2:64 c1018.2:22
+c1019.1 | links=c1019.2:41
+c1020.1 | links=#18462(auto Wetlands;177):81 c1021.1:89
+c1021.1 | links=c1020.1:89
+c1022.1 | links=#17115(auto Wetlands;161):26 #21495(auto Wetlands;209):41
+c1023.1 | links=#6399(auto Wetlands;59):22 #27633(auto Wetlands;258):18
+c1024.1 | links=c1028.1:73 c1259.1:72 c1024.3:47
+c1025.1 | links=c1025.2:57 c1026.2:50
+c1026.1 | links=c1025.3:7 c1028.3:65
+c1027.1 | links=#12030(auto Wetlands;117):55 c1029.1:107 c1027.2:63
+c1028.1 | links=c1024.1:73 c1026.3:106 c1027.3:154
+c1029.1 | links=#12030(auto Wetlands;117):72 c1027.1:107 c1029.2:21
+c1030.1 | links=c1007.3:57
+c1031.1 | links=c1033.1:7
+c1032.1 | links=c1033.1:36 c1032.3:31
+c1033.1 | links=c1031.1:7 c1032.1:36 c1031.2:31 c1033.3:15
+c1034.1 | links=c1034.2:65 c1057.2:95 c1034.3:39
+c1035.1 | links=#25604(auto Wetlands;237):36 #27890(auto Wetlands;260):44
+c1036.1 | links=#9352(central location;Angerfang Encampment;Wetlands):37 c1038.1:36 c2091.1:18
+c1037.1 | links=#27751(focus point;Angerfang Encampment;Wetlands):86 c1034.2:35
+c1038.1 | links=c1036.1:36
+c1039.1 | links=c1417.2:124 c1417.3:38
+c1040.1 | links=c2089.1:82 c2682.1:178 c1016.3:52
+c1041.1 | links=c1017.1:143 c2682.1:221 c1400.2:120 c1016.3:61
+c1042.1 | links=c1042.3:47 c1043.3:106
+c1043.1 | links=c1042.2:104 c1069.2:165 c1042.3:52 c1043.3:69
+c1044.1 | links=c1069.2:70
+c1045.1 | links=c1045.2:43 c1046.2:44
+c1046.1 | links=c12899.1:36
+c1047.1 | links=c12899.1:47 c1047.2:41
+c1048.1 | links=#20986(auto Wetlands;201):49 c1049.2:145
+c1049.1 | links=c1048.2:145
+c1050.1 | links=#24128(auto Wetlands;227):36 c1050.3:106
+c1051.1 | links=c1051.2:32
+c1052.1 | links=#25738(auto Wetlands;240):1
+c1053.1 | links=c1053.3:10
+c1054.1 | links=#8247(auto Wetlands;77):7 #24498(auto Wetlands;229):12
+c1057.1 | links=c1035.3:32 c1057.3:30
+c1069.1 | links=#19128(auto Wetlands;184):185 c1043.3:293
+c1071.1 | links=c1074.1:5 c1075.1:5
+c1072.1 | links=#638(auto Wetlands;10):10
+c1073.1 | links=#638(auto Wetlands;10):8 #6878(auto Wetlands;66):28 c1075.1:5
+c1074.1 | links=c1071.1:5
+c1075.1 | links=c1071.1:5 c1073.1:5
+c1076.1 | links=c1077.1:4
+c1077.1 | links=#17408(auto Wetlands;164):29 c1076.1:4
+c1078.1 | links=#25970(auto Wetlands;241):14
+c1111.1 | links=c1111.3:25
+c1112.1 | links=#9693(auto Wetlands;91):32 #20219(auto Wetlands;193):38
+c1157.1 | links=c1158.1:9
+c1158.1 | links=#13483(auto Wetlands;128):1 c1157.1:9 c1159.1:8
+c1159.1 | links=c1158.1:8
+c1160.1 | links=#18213(auto Wetlands;173):30
+c1169.1 | links=c1169.2:5
+c1217.1 | links=c1456.1:8 #13011(auto Deepwater Tavern;Wetlands;1):8
+c1239.1 | links=#28620(s;u;Mailbox;Wetlands):3
+c1242.1 | links=#28207(auto Menethil Harbor;Wetlands;22):7
+c1244.1 | links=c1015.1:97 c1417.1:119 c1042.2:140
+c1259.1 | links=c1024.1:72 c1024.2:50 c1028.2:120 c1027.3:198
+c1353.1 | links=#16328(quest target;Whelgar's Excavation Site;Wetlands):46
+c1364.1 | links=#9096(auto Wetlands;83):73
+c1400.1 | links=c1040.2:41 c2089.2:85 c1027.3:159
+c1417.1 | links=#7225(auto Wetlands;70):36 c1244.1:119
+c1418.1 | links=c1418.2:74
+c1437.1 | links=#25279(auto Menethil Harbor;Wetlands;19):8
+c1441.1 | links=#14527(auto Wetlands;138):6
+c1447.1 | links=c1484.1:2
+c1448.1 | links=#2632(auto Wetlands;23):14
+c1450.1 | links=#14527(auto Wetlands;138):12
+c1451.1 | links=#20651(auto Menethil Harbor;Wetlands;14):9
+c1452.1 | links=c1484.1:2
+c1453.1 | links=#9697(auto Menethil Harbor;Wetlands;6):10 #26368(auto Menethil Harbor;Wetlands;21):7
+c1454.1 | links=#19284(auto Menethil Harbor;Wetlands;13):10
+c1456.1 | links=#8548(auto Wetlands;80):10 c1217.1:8
+c1457.1 | links=#15206(auto Wetlands;146):6
+c1458.1 | links=#9697(auto Menethil Harbor;Wetlands;6):5
+c1459.1 | links=c1462.1:6
+c1460.1 | links=c5405.1:15 #25279(auto Menethil Harbor;Wetlands;19):16
+c1461.1 | links=#14527(auto Wetlands;138):4
+c1462.1 | links=c1459.1:6 #23888(auto Menethil Harbor;Wetlands;17):10
+c1463.1 | links=#2735(auto Menethil Harbor;Wetlands;2):44 #4668(auto Menethil Harbor;Wetlands;3):10 #25798(auto Menethil Harbor;Wetlands;20):14
+c1464.1 | links=#23265(auto Deepwater Tavern;Wetlands;5):6
+c1476.1 | links=#11807(down;Deepwater Tavern;Wetlands):2 #13011(auto Deepwater Tavern;Wetlands;1):6
+c1479.1 | links=#14774(top;Menethil Keep):3
+c1480.1 | links=#11225(auto Wetlands;102):6
+c1481.1 | links=#21923(auto Menethil Harbor;Wetlands;16):8
+c1482.1 | links=#23431(auto Wetlands;222):11
+c1483.1 | links=#4935(auto Wetlands;48):17 #9603(auto Wetlands;88):11 c4455.1:4
+c1484.1 | links=c1447.1:2 c1452.1:2 #5331(auto Menethil Harbor;Wetlands;4):18
+c1571.1 | links=#21923(auto Menethil Harbor;Wetlands;16):26
+c2086.1 | links=#2632(auto Wetlands;23):22 #13677(auto Menethil Harbor;Wetlands;9):47
+c2089.1 | links=c1040.1:82 o19018.2:168 c2089.3:95 o3659.6:106
+c2090.1 | links=#17611(auto Wetlands;167):8
+c2091.1 | links=c1036.1:18 c1036.3:10
+c2093.1 | links=#3339(crossing;Wetlands):9 c1009.2:224
+c2094.1 | links=#23431(auto Wetlands;222):5
+c2096.1 | links=#25719(auto Wetlands;239):35
+c2097.1 | links=#13677(auto Menethil Harbor;Wetlands;9):17
+c2099.1 | links=#19209(auto Menethil Harbor;Wetlands;12):14
+c2102.1 | links=#16830(auto Wetlands;158):6
+c2103.1 | links=c2103.2:9
+c2104.1 | links=#14774(top;Menethil Keep):25
+c2108.1 | links=#11932(auto Wetlands;115):43
+c2111.1 | links=#5331(auto Menethil Harbor;Wetlands;4):9
+c2153.1 | links=#18407(auto Wetlands;175):124
+c2466.1 | links=#4510(auto Wetlands;44):84 #11336(auto Wetlands;104):106
+c2468.1 | links=#8117(passage;from;Dun Algaz;Wetlands;to;Dun Algaz;Loch Modan):3
+c2469.1 | links=#11336(auto Wetlands;104):6
+c2679.1 | links=#2761(auto Wetlands;25):6
+c2682.1 | links=#5092(auto Wetlands;50):6 c1040.1:178 c1041.1:221 c2089.3:88
+c2911.1 | links=#15243(auto Wetlands;147):4
+c3178.1 | links=c3179.1:7
+c3179.1 | links=c3178.1:7 #28207(auto Menethil Harbor;Wetlands;22):12
+c3180.1 | links=#441(inn;Dun Modr;Wetlands):10
+c4040.1 | links=c1112.2:11 c1111.3:27
+c4455.1 | links=c1483.1:4
+c4962.1 | links=#13011(auto Deepwater Tavern;Wetlands;1):4
+c4963.1 | links=#23265(auto Deepwater Tavern;Wetlands;5):1
+c5082.1 | links=#13411(auto Menethil Harbor;Wetlands;8):40 c2099.7:8 c2099.10:6
+c5405.1 | links=c1460.1:15
+c5683.1 | links=#20420(auto Wetlands;195):27
+c6491.1 | links=#14173(auto Wetlands;133):31
+c6523.1 | links=c6523.3:12
+c8305.1 | links=#1129(auto Wetlands;17):12 #3339(crossing;Wetlands):52
+c10046.1 | links=#28620(s;u;Mailbox;Wetlands):11
+c12657.1 | links=#14386(auto Menethil Harbor;Wetlands;10):16
+c12658.1 | links=#23051(pier;direction;Dustwallow Marsh):12
+c12899.1 | links=#3197(auto Wetlands;31):48 c1046.1:36 c1047.1:47
+c14424.1 | links=#5044(auto Wetlands;49):156 c1040.2:122
+c14425.1 | links=c1012.1:54 c1013.1:60 c1014.2:73 c1041.3:72
+c14433.1 | links=#21984(auto Wetlands;212):16 c1418.3:42
+o2652.1 | links=#24838(auto Wetlands;231):10
+o89634.1 | links=c1418.2:33 o89634.11:40
+c1007.2 | links=c1008.2:63 c1007.3:26
+c1008.2 | links=c1007.2:63
+c1009.2 | links=#3764(auto Wetlands;36):124 c2093.1:224 c1009.3:72
+c1010.2 | links=#26646(auto Wetlands;246):96 c1008.3:65
+c1011.2 | links=c1011.1:59 c1012.1:77 c1013.2:94
+c1012.2 | links=c1011.3:18 c1012.3:18 c1400.3:128 c14425.3:205
+c1013.2 | links=c1011.2:94 c1014.2:8 c1013.3:7
+c1014.2 | links=c14425.1:73 c1013.2:8 c1013.3:3
+c1015.2 | links=c1017.2:233 c1033.2:120 c1015.3:47
+c1016.2 | links=c1016.3:92 c1017.3:51
+c1017.2 | links=c1018.1:64 c1015.2:233 c1041.2:185
+c1018.2 | links=#11930(auto Wetlands;114):59 c1018.1:22 c1018.3:87
+c1019.2 | links=c1019.1:41 c1018.3:113
+c1020.2 | links=#15101(auto Wetlands;144):122 c1021.3:81
+c1021.2 | links=c1021.3:247
+c1022.2 | links=#1015(auto Wetlands;16):25 #11788(auto Wetlands;113):49
+c1023.2 | links=#10431(auto Wetlands;96):14 #21336(auto Wetlands;206):22
+c1024.2 | links=c1259.1:50 c1024.3:71 c1039.3:97
+c1025.2 | links=c1025.1:57 c1027.2:43
+c1026.2 | links=c1025.1:50
+c1027.2 | links=c1027.1:63 c1025.2:43 c1025.3:20
+c1028.2 | links=c1259.1:120 c1028.3:10
+c1029.2 | links=c1029.1:21 c14424.3:34
+c1031.2 | links=c1033.1:31
+c1032.2 | links=#17476(auto Wetlands;165):115 c1032.3:70
+c1033.2 | links=c1015.2:120 c1031.3:8
+c1034.2 | links=c1034.1:65 c1037.1:35
+c1035.2 | links=c1035.3:23
+c1036.2 | links=#9352(central location;Angerfang Encampment;Wetlands):8 c1038.2:7
+c1038.2 | links=c1036.2:7
+c1039.2 | links=c1008.3:59
+c1040.2 | links=c1400.1:41 c14424.1:122
+c1041.2 | links=c1014.1:84 c1017.2:185 c1400.2:101 c14425.3:245
+c1042.2 | links=c1015.1:119 c1043.1:104 c1244.1:140 c1042.3:88
+c1043.2 | links=c1015.1:133
+c1045.2 | links=#3197(auto Wetlands;31):48 c1045.1:43
+c1046.2 | links=#2954(auto Wetlands;30):78 c1045.1:44 c1046.3:65
+c1047.2 | links=c1047.1:41 c1047.3:61
+c1048.2 | links=c1049.1:145 c1047.3:96 c1048.3:59 c1049.3:144
+c1049.2 | links=c1048.1:145 c1049.3:101
+c1050.2 | links=#21823(auto Wetlands;210):98 c1050.3:58
+c1051.2 | links=c1051.1:32 c1051.3:44
+c1053.2 | links=#6756(auto Wetlands;64):16
+c1054.2 | links=#8247(auto Wetlands;77):8
+c1057.2 | links=#25604(auto Wetlands;237):46 c1034.1:95 c1057.3:47
+c1069.2 | links=c1043.1:165 c1044.1:70 c1044.3:83 c1069.3:28
+c1111.2 | links=c4040.2:32
+c1112.2 | links=#16417(auto Wetlands;155):18 c4040.1:11
+c1158.2 | links=#12030(auto Wetlands;117):51
+c1169.2 | links=c1169.1:5 c1169.3:11
+c1400.2 | links=#13672(resting location;Sundown Marsh;Wetlands):128 c1041.1:120 c1041.2:101 c1041.3:58
+c1417.2 | links=c1039.1:124
+c1418.2 | links=#17041(auto Wetlands;160):93 c1418.1:74 o89634.1:33 o89634.6:34
+c2089.2 | links=c1400.1:85 c14424.2:69
+c2099.2 | links=#19513(auto Baradin Bay;Wetlands;1):40
+c2102.2 | links=#7604(auto Wetlands;72):27 c2103.2:29 c2102.3:28
+c2103.2 | links=c2103.1:9 c2102.2:29 c2103.3:27
+c4040.2 | links=#28333(auto Wetlands;265):31 c1111.2:32
+c6491.2 | links=#3339(crossing;Wetlands):66
+c6523.2 | links=#20076(auto Wetlands;191):37 #22311(auto Wetlands;215):43
+c14424.2 | links=c2089.2:69 c1418.29:89
+c14425.2 | links=#20668(auto Wetlands;197):86 c1009.1:4
+c14433.2 | links=#1580(auto Wetlands;20):56
+o19018.2 | links=c2089.1:168 o19018.3:99
+o89634.2 | links=#16673(auto Wetlands;156):28 c1418.21:23
+c1007.3 | links=c1007.1:14 c1008.1:61 c1030.1:57 c1007.2:26
+c1008.3 | links=c1010.1:75 c1010.2:65 c1039.2:59 c1010.3:41
+c1009.3 | links=c1009.2:72 c1011.3:89
+c1010.3 | links=c1008.3:41
+c1011.3 | links=c1012.2:18 c1009.3:89
+c1012.3 | links=c1012.2:18
+c1013.3 | links=c1013.2:7 c1014.2:3
+c1014.3 | links=c14425.3:113
+c1015.3 | links=c1015.2:47
+c1016.3 | links=c1040.1:52 c1041.1:61 c1016.2:92
+c1017.3 | links=c1016.2:51 c1018.3:40
+c1018.3 | links=#11930(auto Wetlands;114):88 c1018.2:87 c1019.2:113 c1017.3:40
+c1019.3 | links=#2936(auto Wetlands;29):11
+c1020.3 | links=#25523(auto Wetlands;235):37 #26550(auto Wetlands;244):23
+c1021.3 | links=c1020.2:81 c1021.2:247
+c1022.3 | links=#1015(auto Wetlands;16):29 #21336(auto Wetlands;206):22
+c1023.3 | links=#333(auto Wetlands;5):54 #6399(auto Wetlands;59):7 #12204(auto Wetlands;120):35
+c1024.3 | links=#10773(auto Wetlands;98):71 c1024.1:47 c1024.2:71 c1026.3:66
+c1025.3 | links=c1026.1:7 c1027.2:20
+c1026.3 | links=#10773(auto Wetlands;98):68 c1028.1:106 c1024.3:66
+c1027.3 | links=c1028.1:154 c1259.1:198 c1400.1:159 c14424.3:97
+c1028.3 | links=c1026.1:65 c1028.2:10
+c1030.3 | links=#1871(central location;Thelgen Rock;Wetlands):66 #23931(auto Wetlands;226):152
+c1031.3 | links=c1033.2:8 c1033.3:13
+c1032.3 | links=c1032.1:31 c1032.2:70
+c1033.3 | links=c1033.1:15 c1031.3:13
+c1034.3 | links=c1034.1:39
+c1035.3 | links=c1057.1:32 c1035.2:23
+c1036.3 | links=c2091.1:10
+c1038.3 | links=#9352(central location;Angerfang Encampment;Wetlands):24
+c1039.3 | links=#9483(auto Wetlands;86):67 c1024.2:97
+c1040.3 | links=#20668(auto Wetlands;197):99 c14425.3:102
+c1041.3 | links=#5044(auto Wetlands;49):107 c14425.1:72 c1400.2:58
+c1042.3 | links=c1042.1:47 c1043.1:52 c1042.2:88
+c1043.3 | links=c1042.1:106 c1043.1:69 c1069.1:293
+c1044.3 | links=c1069.2:83
+c1046.3 | links=c1046.2:65
+c1047.3 | links=c1047.2:61 c1048.2:96
+c1048.3 | links=c1048.2:59
+c1049.3 | links=c1048.2:144 c1049.2:101
+c1050.3 | links=c1050.1:106 c1050.2:58
+c1051.3 | links=#943(central location;Direforge Hill;Wetlands):49 c1051.2:44
+c1052.3 | links=#6862(auto Wetlands;65):7
+c1053.3 | links=#310(auto Wetlands;4):13 #441(inn;Dun Modr;Wetlands):21 c1053.1:10
+c1054.3 | links=#22812(auto Wetlands;219):11
+c1057.3 | links=c1057.1:30 c1057.2:47
+c1069.3 | links=c1069.2:28
+c1111.3 | links=#2671(auto Wetlands;24):34 c1111.1:25 c4040.1:27 c1112.3:16
+c1112.3 | links=c1111.3:16 c4040.3:8
+c1157.3 | links=#12030(auto Wetlands;117):42
+c1158.3 | links=#12030(auto Wetlands;117):49 #18877(auto Wetlands;183):119
+c1169.3 | links=#5295(auto Wetlands;53):31 c1169.2:11
+c1400.3 | links=#20668(auto Wetlands;197):159 c1012.2:128
+c1417.3 | links=#21419(auto Wetlands;207):51 c1039.1:38
+c1418.3 | links=#20993(auto Wetlands;202):25 c14433.1:42
+c2089.3 | links=c2089.1:95 c2682.1:88
+c2099.3 | links=#11718(auto Menethil Harbor;Wetlands;7):11
+c2102.3 | links=c2102.2:28
+c2103.3 | links=#26030(central location;Dun Algaz):122 c2103.2:27
+c4040.3 | links=c1112.3:8
+c6523.3 | links=#20076(auto Wetlands;191):38 c6523.1:12
+c14424.3 | links=c1029.2:34 c1027.3:97
+c14425.3 | links=c1012.2:205 c1041.2:245 c1014.3:113 c1040.3:102
+o19018.3 | links=o19018.2:99 c1418.29:75
+o89634.4 | links=o89634.11:51 c1418.21:23
+o3659.5 | links=#14386(auto Menethil Harbor;Wetlands;10):13
+o89634.5 | links=#16673(auto Wetlands;156):28
+o3659.6 | links=c2089.1:106
+o89634.6 | links=c1418.2:34 o89634.7:27
+c2099.7 | links=c5082.1:8
+o89634.7 | links=o89634.6:27 o89634.8:23
+o89634.8 | links=o89634.7:23
+c2099.10 | links=c5082.1:6
+c2099.11 | links=#13411(auto Menethil Harbor;Wetlands;8):31
+o89634.11 | links=o89634.1:40 o89634.4:51
+c1418.21 | links=o89634.2:23 o89634.4:23
+c1418.29 | links=c14424.2:89 o19018.3:75
+c1034.40 | links=#17035(auto Wetlands;159):30 #26687(auto Wetlands;247):37

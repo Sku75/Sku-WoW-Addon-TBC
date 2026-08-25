@@ -1,0 +1,3 @@
+Zone areaId 2560 — eine Zeile pro Wegpunkt; Links inline.
+
+#28763 | s;Eastern Kingdoms;Deadwind Pass;Deadman's Crossing;Ariden's Camp§s;Östliche Königreiche;Gebirgspass der Totenwinde;Totmannsfurt;Aridens Lager§s;Royaumes de l'est;Défilé de Deuillevent;Croisée de l'homme mort;Camp d'Ariden | x=-10443.3 y=-2141.1 | size=1 | links=#20388(auto Deadwind Pass;92):11

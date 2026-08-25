@@ -1,0 +1,6 @@
+Zone areaId 298 — eine Zeile pro Wegpunkt; Links inline.
+
+#8055 | ship;direction;Dustwallow Marsh§schiff;richtung;Düstermarschen§ship;direction;Marécage d'Âprefange | x=-3898.800048828125 y=-583.4000244140625 | size=1 | links=#23051(pier;direction;Dustwallow Marsh):18
+#19513 | auto Baradin Bay;Wetlands;1§auto Baradinbucht;Sumpfland;1§auto Baradin Bay;Les Paluns;1 | x=-3907.900146484375 y=-623.9000244140625 | size=1 | links=#13411(auto Menethil Harbor;Wetlands;8):165 #23051(pier;direction;Dustwallow Marsh):24 c2099.2:40
+#23051 | pier;direction;Dustwallow Marsh§anleger;richtung;Düstermarschen§pier;direction;Marécage d'Âprefange | x=-3896.800048828125 y=-601.9000244140625 | size=1 | links=c12658.1:12 #8055(ship;direction;Dustwallow Marsh):18 #19513(auto Baradin Bay;Wetlands;1):24
+#29020 | pier to Darkshore§Steg nach Dunkelküste§pier to Darkshore | x=-3723.800048828125 y=-583.5 | size=1 | links=#29016(auto Wetlands;267):7 #14386(auto Menethil Harbor;Wetlands;10):26

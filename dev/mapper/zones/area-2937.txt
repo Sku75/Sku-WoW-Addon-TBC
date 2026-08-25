@@ -1,0 +1,3 @@
+Zone areaId 2937 — eine Zeile pro Wegpunkt; Links inline.
+
+#28761 | s;Eastern Kingdoms;Deadwind Pass;The vice;Grosh'gok Compound§s;Östliche Königreiche;Gebirgspass der Totenwinde;Das Laster;Das Grosh'gok Lager§s;Royaumes de l'est;Défilé de Deuillevent;The vice;Base des Grosh'gok | x=-11112.2 y=-2335.63 | size=1 | links=#17133(entry and exit;cave;Grosh'gok Compound;Deadwind Pass):7 #28548(auto Deadwind Pass;127):10

@@ -1,0 +1,3 @@
+Zone areaId 3098 — eine Zeile pro Wegpunkt; Links inline.
+
+#28706 | s;Kalimdor;Silithus;Twilight Post;Twilight Post§s;Kalimdor;Silithus;Twilight-Posten;Twilight-Posten§s;Kalimdor;Silithus;Poste du Crépuscule;Poste du Crépuscule | x=-6740.04 y=-1636.32 | size=1

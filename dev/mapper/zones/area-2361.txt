@@ -1,0 +1,3 @@
+Zone areaId 2361 — eine Zeile pro Wegpunkt; Links inline.
+
+#28690 | s;Kalimdor;Moonglade;Lake Elune'ara;Nighthaven§s;Kalimdor;Moonglade;Der Elune'ara See;Nighthaven§s;Kalimdor;Reflet-de-Lune;Lac Elune'ara;Havrenuit | x=7961.75 y=-2491.77 | size=1

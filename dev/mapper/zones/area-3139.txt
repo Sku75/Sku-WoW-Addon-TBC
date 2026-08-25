@@ -1,0 +1,3 @@
+Zone areaId 3139 — eine Zeile pro Wegpunkt; Links inline.
+
+#28740 | s;Kalimdor;Winterspring;Everlook;Moon Horror Den§s;Kalimdor;Winterspring;Everlook;Mondschreckensbau§s;Kalimdor;Berceau-de-l'Hiver;Long-guet;Antre de l'Horreur lunaire | x=7123.02 y=-4631.57 | size=1 | links=#13953(auto Winterspring;288):28 c7451.9:6

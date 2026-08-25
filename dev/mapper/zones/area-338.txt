@@ -1,0 +1,3 @@
+Zone areaId 338 — eine Zeile pro Wegpunkt; Links inline.
+
+#28774 | s;Eastern Kingdoms;Badlands;Angor Fortress§s;Östliche Königreiche;Ödland;Festung Angor§s;Royaumes de l'est;Terres ingrates;Angor Fortress | x=-6392.65 y=-3158 | size=1

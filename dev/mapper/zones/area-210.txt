@@ -1,0 +1,488 @@
+Zone areaId 210 — eine Zeile pro Wegpunkt; Links inline.
+
+#32155 | auto Icecrown;1§auto Eiskrone;1§auto Icecrown;1 | x=6659.80029296875 y=4054.699951171875 | size=1 | links=#32156(auto Icecrown;2):118 #32154(auto Sholazar Basin;368):65
+#32156 | auto Icecrown;2§auto Eiskrone;2§auto Icecrown;2 | x=6716.5 y=4159 | size=1 | links=#32155(auto Icecrown;1):118 #32157(auto Sholazar Basin;369):50
+#32814 | auto Icecrown;3§auto Eiskrone;3§auto Icecrown;3 | x=6289.80029296875 y=3612.300048828125 | size=1 | links=#32815(auto Icecrown;4):23 #32813(auto Sholazar Basin;1010):39
+#32815 | auto Icecrown;4§auto Eiskrone;4§auto Icecrown;4 | x=6305 y=3595 | size=1 | links=#32814(auto Icecrown;3):23 #32816(auto Icecrown;5):123
+#32816 | auto Icecrown;5§auto Eiskrone;5§auto Icecrown;5 | x=6423 y=3560.10009765625 | size=1 | links=#32815(auto Icecrown;4):123 #32817(auto Icecrown;6):77
+#32817 | auto Icecrown;6§auto Eiskrone;6§auto Icecrown;6 | x=6497.80029296875 y=3538.300048828125 | size=1 | links=#32816(auto Icecrown;5):77 #32818(auto Icecrown;7):62
+#32818 | auto Icecrown;7§auto Eiskrone;7§auto Icecrown;7 | x=6560.10009765625 y=3534 | size=1 | links=#32817(auto Icecrown;6):62 #32819(auto Icecrown;8):54
+#32819 | auto Icecrown;8§auto Eiskrone;8§auto Icecrown;8 | x=6601.60009765625 y=3498.10009765625 | size=1 | links=#32818(auto Icecrown;7):54 #32820(auto Icecrown;9):37
+#32820 | auto Icecrown;9§auto Eiskrone;9§auto Icecrown;9 | x=6633.60009765625 y=3477.900146484375 | size=1 | links=#32819(auto Icecrown;8):37 #32821(auto Icecrown;10):19
+#32821 | auto Icecrown;10§auto Eiskrone;10§auto Icecrown;10 | x=6651.10009765625 y=3469.10009765625 | size=1 | links=#32820(auto Icecrown;9):19 #32822(auto Icecrown;11):28
+#32822 | auto Icecrown;11§auto Eiskrone;11§auto Icecrown;11 | x=6678.2001953125 y=3477.900146484375 | size=1 | links=#32821(auto Icecrown;10):28 #32823(auto Icecrown;12):23
+#32823 | auto Icecrown;12§auto Eiskrone;12§auto Icecrown;12 | x=6700.7001953125 y=3483.699951171875 | size=1 | links=#32822(auto Icecrown;11):23
+#41176 | auto Icecrown;13§auto Eiskrone;13§auto Icecrown;13 | x=5906.89990234375 y=-160.1999969482422 | size=1 | links=#41177(auto Icecrown;14):24 #41175(auto Crystalsong Forest;243):13
+#41177 | auto Icecrown;14§auto Eiskrone;14§auto Icecrown;14 | x=5931.5 y=-164 | size=1 | links=#41176(auto Icecrown;13):24 #41178(auto Icecrown;15):12
+#41178 | auto Icecrown;15§auto Eiskrone;15§auto Icecrown;15 | x=5944 y=-164.8000030517578 | size=1 | links=#41177(auto Icecrown;14):12 #41179(auto Icecrown;16):47
+#41179 | auto Icecrown;16§auto Eiskrone;16§auto Icecrown;16 | x=5991 y=-158.5 | size=1 | links=#41178(auto Icecrown;15):47 #41180(auto Icecrown;17):37
+#41180 | auto Icecrown;17§auto Eiskrone;17§auto Icecrown;17 | x=6027.39990234375 y=-150.6999969482422 | size=1 | links=#41179(auto Icecrown;16):37 #41181(auto Icecrown;18):26
+#41181 | auto Icecrown;18§auto Eiskrone;18§auto Icecrown;18 | x=6053.60009765625 y=-154.1999969482422 | size=1 | links=#41180(auto Icecrown;17):26 #41182(auto Icecrown;19):8
+#41182 | auto Icecrown;19§auto Eiskrone;19§auto Icecrown;19 | x=6061.30029296875 y=-149.9000091552734 | size=1 | links=#41181(auto Icecrown;18):8 #41183(auto Icecrown;20):23
+#41183 | auto Icecrown;20§auto Eiskrone;20§auto Icecrown;20 | x=6064.10009765625 y=-126.4000015258789 | size=1 | links=#41182(auto Icecrown;19):23 #41184(auto Icecrown;21):22
+#41184 | auto Icecrown;21§auto Eiskrone;21§auto Icecrown;21 | x=6077.10009765625 y=-107.8000030517578 | size=1 | links=#41183(auto Icecrown;20):22 #41185(auto Icecrown;22):25
+#41185 | auto Icecrown;22§auto Eiskrone;22§auto Icecrown;22 | x=6098 y=-93.0999984741211 | size=1 | links=#41184(auto Icecrown;21):25
+#41186 | auto Icecrown;23§auto Eiskrone;23§auto Icecrown;23 | x=6134.39990234375 y=-78.20000457763672 | size=1 | links=#41187(auto Icecrown;24):18
+#41187 | auto Icecrown;24§auto Eiskrone;24§auto Icecrown;24 | x=6142.5 y=-61.79999923706055 | size=1 | links=#41186(auto Icecrown;23):18 #41188(auto Icecrown;25):7
+#41188 | auto Icecrown;25§auto Eiskrone;25§auto Icecrown;25 | x=6143.39990234375 y=-54 | size=1 | links=#41187(auto Icecrown;24):7 #41189(auto Icecrown;26):16
+#41189 | auto Icecrown;26§auto Eiskrone;26§auto Icecrown;26 | x=6149.2001953125 y=-38.40000152587891 | size=1 | links=#41188(auto Icecrown;25):16 #41190(auto Icecrown;27):22 #41191(auto Icecrown;28):13
+#41190 | auto Icecrown;27§auto Eiskrone;27§auto Icecrown;27 | x=6167 y=-51.40000152587891 | size=1 | links=#41189(auto Icecrown;26):22
+#41191 | auto Icecrown;28§auto Eiskrone;28§auto Icecrown;28 | x=6162.7001953125 y=-40.20000076293945 | size=1 | links=#41189(auto Icecrown;26):13 #41192(auto Icecrown;29):17
+#41192 | auto Icecrown;29§auto Eiskrone;29§auto Icecrown;29 | x=6179.60009765625 y=-34.90000152587891 | size=1 | links=#41191(auto Icecrown;28):17 #41193(auto Icecrown;30):14
+#41193 | auto Icecrown;30§auto Eiskrone;30§auto Icecrown;30 | x=6193.7001953125 y=-35 | size=1 | links=#41192(auto Icecrown;29):14 #41194(auto Icecrown;31):9
+#41194 | auto Icecrown;31§auto Eiskrone;31§auto Icecrown;31 | x=6202.60009765625 y=-38.79999923706055 | size=1 | links=#41193(auto Icecrown;30):9 #41195(auto Icecrown;32):11
+#41195 | auto Icecrown;32§auto Eiskrone;32§auto Icecrown;32 | x=6213.89990234375 y=-40.90000152587891 | size=1 | links=#41194(auto Icecrown;31):11 #41196(auto Icecrown;33):21 #41219(auto Icecrown;56):8
+#41196 | auto Icecrown;33§auto Eiskrone;33§auto Icecrown;33 | x=6229 y=-26.30000114440918 | size=1 | links=#41195(auto Icecrown;32):21 #41197(auto Icecrown;34):9
+#41197 | auto Icecrown;34§auto Eiskrone;34§auto Icecrown;34 | x=6235.89990234375 y=-20.10000038146973 | size=1 | links=#41196(auto Icecrown;33):9 #41198(auto Icecrown;35):10 #41223(auto Icecrown;60):10 #41226(auto Icecrown;63):10
+#41198 | auto Icecrown;35§auto Eiskrone;35§auto Icecrown;35 | x=6244.80029296875 y=-14.69999980926514 | size=1 | links=#41197(auto Icecrown;34):10 #41199(auto Icecrown;36):22 #41225(auto Icecrown;62):14
+#41199 | auto Icecrown;36§auto Eiskrone;36§auto Icecrown;36 | x=6266 y=-5.800000190734863 | size=1 | links=#41198(auto Icecrown;35):22 #41200(auto Icecrown;37):18
+#41200 | auto Icecrown;37§auto Eiskrone;37§auto Icecrown;37 | x=6268.30029296875 y=12.80000019073486 | size=1 | links=#41199(auto Icecrown;36):18 #41201(auto Icecrown;38):14
+#41201 | auto Icecrown;38§auto Eiskrone;38§auto Icecrown;38 | x=6266.39990234375 y=26.80000114440918 | size=1 | links=#41200(auto Icecrown;37):14 #41202(auto Icecrown;39):25
+#41202 | auto Icecrown;39§auto Eiskrone;39§auto Icecrown;39 | x=6250.60009765625 y=47.40000152587891 | size=1 | links=#41201(auto Icecrown;38):25 #41203(auto Icecrown;40):28 #41208(auto Icecrown;45):19 #41229(auto Icecrown;66):18
+#41203 | auto Icecrown;40§auto Eiskrone;40§auto Icecrown;40 | x=6271.30029296875 y=67.5 | size=1 | links=#41202(auto Icecrown;39):28 #41204(auto Icecrown;41):11
+#41204 | auto Icecrown;41§auto Eiskrone;41§auto Icecrown;41 | x=6279.39990234375 y=75.5 | size=1 | links=#41203(auto Icecrown;40):11 #41205(auto Icecrown;42):18
+#41205 | auto Icecrown;42§auto Eiskrone;42§auto Icecrown;42 | x=6292.5 y=89.0999984741211 | size=1 | links=#41204(auto Icecrown;41):18 #41206(auto Icecrown;43):12
+#41206 | auto Icecrown;43§auto Eiskrone;43§auto Icecrown;43 | x=6301.30029296875 y=97.5999984741211 | size=1 | links=#41205(auto Icecrown;42):12 #41231(auto Icecrown;68):20
+#41207 | auto Icecrown;44§auto Eiskrone;44§auto Icecrown;44 | x=6271.39990234375 y=115.8000030517578 | size=1
+#41208 | auto Icecrown;45§auto Eiskrone;45§auto Icecrown;45 | x=6231.5 y=48.29999923706055 | size=1 | links=#41202(auto Icecrown;39):19 #41209(auto Icecrown;46):30
+#41209 | auto Icecrown;46§auto Eiskrone;46§auto Icecrown;46 | x=6202.2001953125 y=40.5 | size=1 | links=#41208(auto Icecrown;45):30 #41210(auto Icecrown;47):18 #41213(auto Icecrown;50):31
+#41210 | auto Icecrown;47§auto Eiskrone;47§auto Icecrown;47 | x=6191.019134397557 y=55.1558423164697 | size=1 | links=#41209(auto Icecrown;46):18 #41211(auto Icecrown;48):12
+#41211 | auto Icecrown;48§auto Eiskrone;48§auto Icecrown;48 | x=6191.30029296875 y=67.5999984741211 | size=1 | links=#41210(auto Icecrown;47):12 #41212(auto Icecrown;49):21
+#41212 | auto Icecrown;49§auto Eiskrone;49§auto Icecrown;49 | x=6191.2001953125 y=88.9000015258789 | size=1 | links=#41211(auto Icecrown;48):21
+#41213 | auto Icecrown;50§auto Eiskrone;50§auto Icecrown;50 | x=6173.60009765625 y=26.80000114440918 | size=1 | links=#41209(auto Icecrown;46):31 #41214(auto Icecrown;51):26
+#41214 | auto Icecrown;51§auto Eiskrone;51§auto Icecrown;51 | x=6155.39990234375 y=6.900000095367432 | size=1 | links=#41213(auto Icecrown;50):26
+#41215 | auto Icecrown;52§auto Eiskrone;52§auto Icecrown;52 | x=6134.80029296875 y=-12.69999980926514 | size=1 | links=#41216(auto Icecrown;53):20
+#41216 | auto Icecrown;53§auto Eiskrone;53§auto Icecrown;53 | x=6117.60009765625 y=-23.20000076293945 | size=1 | links=#41215(auto Icecrown;52):20 #41217(auto Icecrown;54):6
+#41217 | auto Icecrown;54§auto Eiskrone;54§auto Icecrown;54 | x=6114.2001953125 y=-29.20000076293945 | size=1 | links=#41216(auto Icecrown;53):6 #41218(auto Icecrown;55):6
+#41218 | auto Icecrown;55§auto Eiskrone;55§auto Icecrown;55 | x=6110 y=-33.60000228881836 | size=1 | links=#41217(auto Icecrown;54):6
+#41219 | auto Icecrown;56§auto Eiskrone;56§auto Icecrown;56 | x=6218.80029296875 y=-47.40000152587891 | size=1 | links=#41195(auto Icecrown;32):8 #41220(auto Icecrown;57):14
+#41220 | auto Icecrown;57§auto Eiskrone;57§auto Icecrown;57 | x=6229.10009765625 y=-57.79999923706055 | size=1 | links=#41219(auto Icecrown;56):14 #41221(auto Icecrown;58):10
+#41221 | auto Icecrown;58§auto Eiskrone;58§auto Icecrown;58 | x=6239.7001953125 y=-57.5 | size=1 | links=#41220(auto Icecrown;57):10 #41222(auto Icecrown;59):15
+#41222 | auto Icecrown;59§auto Eiskrone;59§auto Icecrown;59 | x=6254.7001953125 y=-52.20000076293945 | size=1 | links=#41221(auto Icecrown;58):15
+#41223 | auto Icecrown;60§auto Eiskrone;60§auto Icecrown;60 | x=6230.5 y=-10.90000057220459 | size=1 | links=#41197(auto Icecrown;34):10 #41224(auto Icecrown;61):10
+#41224 | auto Icecrown;61§auto Eiskrone;61§auto Icecrown;61 | x=6224.30029296875 y=-2.799999952316284 | size=1 | links=#41223(auto Icecrown;60):10 #41227(auto Icecrown;64):6
+#41225 | auto Icecrown;62§auto Eiskrone;62§auto Icecrown;62 | x=6249.507158356903 y=-0.52117403298854 | size=1 | links=#41198(auto Icecrown;35):14
+#41226 | auto Icecrown;63§auto Eiskrone;63§auto Icecrown;63 | x=6225.952498384255 y=-21.28500167590805 | size=1 | links=#41197(auto Icecrown;34):10
+#41227 | auto Icecrown;64§auto Eiskrone;64§auto Icecrown;64 | x=6227.850265075378 y=3.05108852143457 | size=1 | links=#41224(auto Icecrown;61):6 #41228(auto Icecrown;65):10
+#41228 | auto Icecrown;65§auto Eiskrone;65§auto Icecrown;65 | x=6235.776241027053 y=9.525830601288952 | size=1 | links=#41227(auto Icecrown;64):10
+#41229 | auto Icecrown;66§auto Eiskrone;66§auto Icecrown;66 | x=6249.30029296875 y=65.80000305175781 | size=1 | links=#41202(auto Icecrown;39):18
+#41230 | auto Icecrown;67§auto Eiskrone;67§auto Icecrown;67 | x=6272.492115170927 y=105.1088305458796 | size=1
+#41231 | auto Icecrown;68§auto Eiskrone;68§auto Icecrown;68 | x=6315.30029296875 y=112.5999984741211 | size=1 | links=#41206(auto Icecrown;43):20 #41232(auto Icecrown;69):43
+#41232 | auto Icecrown;69§auto Eiskrone;69§auto Icecrown;69 | x=6345.39990234375 y=144.1999969482422 | size=1 | links=#41231(auto Icecrown;68):43 #41233(auto Icecrown;70):31 #41341(auto Icecrown;178):20
+#41233 | auto Icecrown;70§auto Eiskrone;70§auto Icecrown;70 | x=6369 y=165.1999969482422 | size=1 | links=#41232(auto Icecrown;69):31 #41234(auto Icecrown;71):52 #41344(auto Icecrown;181):23
+#41234 | auto Icecrown;71§auto Eiskrone;71§auto Icecrown;71 | x=6401.60009765625 y=206.1000061035156 | size=1 | links=#41233(auto Icecrown;70):52 #41235(auto Icecrown;72):39 #41342(auto Icecrown;179):18
+#41235 | auto Icecrown;72§auto Eiskrone;72§auto Icecrown;72 | x=6424.60009765625 y=238.4000091552734 | size=1 | links=#41234(auto Icecrown;71):39 #41236(auto Icecrown;73):23
+#41236 | auto Icecrown;73§auto Eiskrone;73§auto Icecrown;73 | x=6442.89990234375 y=252.5 | size=1 | links=#41235(auto Icecrown;72):23 #41237(auto Icecrown;74):13
+#41237 | auto Icecrown;74§auto Eiskrone;74§auto Icecrown;74 | x=6454.89990234375 y=258.8999938964844 | size=1 | links=#41236(auto Icecrown;73):13 #41238(auto Icecrown;75):26
+#41238 | auto Icecrown;75§auto Eiskrone;75§auto Icecrown;75 | x=6475.5 y=275.6000061035156 | size=1 | links=#41237(auto Icecrown;74):26 #41239(auto Icecrown;76):23
+#41239 | auto Icecrown;76§auto Eiskrone;76§auto Icecrown;76 | x=6494.89990234375 y=288.3999938964844 | size=1 | links=#41238(auto Icecrown;75):23 #41240(auto Icecrown;77):24
+#41240 | auto Icecrown;77§auto Eiskrone;77§auto Icecrown;77 | x=6518.89990234375 y=287 | size=1 | links=#41239(auto Icecrown;76):24 #41241(auto Icecrown;78):26
+#41241 | auto Icecrown;78§auto Eiskrone;78§auto Icecrown;78 | x=6545 y=293.5 | size=1 | links=#41240(auto Icecrown;77):26 #41242(auto Icecrown;79):11
+#41242 | auto Icecrown;79§auto Eiskrone;79§auto Icecrown;79 | x=6544.60009765625 y=305.3999938964844 | size=1 | links=#41241(auto Icecrown;78):11 #41243(auto Icecrown;80):11
+#41243 | auto Icecrown;80§auto Eiskrone;80§auto Icecrown;80 | x=6541.2001953125 y=316 | size=1 | links=#41242(auto Icecrown;79):11 #41244(auto Icecrown;81):11
+#41244 | auto Icecrown;81§auto Eiskrone;81§auto Icecrown;81 | x=6541 y=327.3999938964844 | size=1 | links=#41243(auto Icecrown;80):11 #41245(auto Icecrown;82):13
+#41245 | auto Icecrown;82§auto Eiskrone;82§auto Icecrown;82 | x=6546.5 y=339.8000183105469 | size=1 | links=#41244(auto Icecrown;81):13 #41246(auto Icecrown;83):9
+#41246 | auto Icecrown;83§auto Eiskrone;83§auto Icecrown;83 | x=6546 y=348.8999938964844 | size=1 | links=#41245(auto Icecrown;82):9 #41247(auto Icecrown;84):11
+#41247 | auto Icecrown;84§auto Eiskrone;84§auto Icecrown;84 | x=6546.5 y=360.3999938964844 | size=1 | links=#41246(auto Icecrown;83):11 #41248(auto Icecrown;85):11
+#41248 | auto Icecrown;85§auto Eiskrone;85§auto Icecrown;85 | x=6553.39990234375 y=369.5 | size=1 | links=#41247(auto Icecrown;84):11 #41249(auto Icecrown;86):12
+#41249 | auto Icecrown;86§auto Eiskrone;86§auto Icecrown;86 | x=6558.30029296875 y=381.2000122070313 | size=1 | links=#41248(auto Icecrown;85):12 #41250(auto Icecrown;87):31
+#41250 | auto Icecrown;87§auto Eiskrone;87§auto Icecrown;87 | x=6552.39990234375 y=411.7000122070313 | size=1 | links=#41249(auto Icecrown;86):31 #41251(auto Icecrown;88):20
+#41251 | auto Icecrown;88§auto Eiskrone;88§auto Icecrown;88 | x=6551.5 y=432.5 | size=1 | links=#41250(auto Icecrown;87):20 #41252(auto Icecrown;89):20
+#41252 | auto Icecrown;89§auto Eiskrone;89§auto Icecrown;89 | x=6549.7001953125 y=452.8999938964844 | size=1 | links=#41251(auto Icecrown;88):20
+#41253 | auto Icecrown;90§auto Eiskrone;90§auto Icecrown;90 | x=7163.2001953125 y=586.7999877929688 | size=1 | links=#41254(auto Icecrown;91):33 #41268(auto Icecrown;105):71
+#41254 | auto Icecrown;91§auto Eiskrone;91§auto Icecrown;91 | x=7169.10009765625 y=554.1000366210938 | size=1 | links=#41253(auto Icecrown;90):33 #41255(auto Icecrown;92):25
+#41255 | auto Icecrown;92§auto Eiskrone;92§auto Icecrown;92 | x=7157.7001953125 y=531.6000366210938 | size=1 | links=#41254(auto Icecrown;91):25 #41256(auto Icecrown;93):24
+#41256 | auto Icecrown;93§auto Eiskrone;93§auto Icecrown;93 | x=7135.5 y=520.2000122070312 | size=1 | links=#41255(auto Icecrown;92):24 #41257(auto Icecrown;94):43
+#41257 | auto Icecrown;94§auto Eiskrone;94§auto Icecrown;94 | x=7092.80029296875 y=511.5 | size=1 | links=#41256(auto Icecrown;93):43 #41258(auto Icecrown;95):25
+#41258 | auto Icecrown;95§auto Eiskrone;95§auto Icecrown;95 | x=7068 y=506.8999938964844 | size=1 | links=#41257(auto Icecrown;94):25 #41259(auto Icecrown;96):18
+#41259 | auto Icecrown;96§auto Eiskrone;96§auto Icecrown;96 | x=7050 y=503.3999938964844 | size=1 | links=#41258(auto Icecrown;95):18 #41260(auto Icecrown;97):6
+#41260 | auto Icecrown;97§auto Eiskrone;97§auto Icecrown;97 | x=7044.2001953125 y=501.7000122070313 | size=1 | links=#41259(auto Icecrown;96):6 #41261(auto Icecrown;98):6
+#41261 | auto Icecrown;98§auto Eiskrone;98§auto Icecrown;98 | x=7042.5 y=507.5 | size=1 | links=#41260(auto Icecrown;97):6 #41262(auto Icecrown;99):5
+#41262 | auto Icecrown;99§auto Eiskrone;99§auto Icecrown;99 | x=7037.30029296875 y=509.5 | size=1 | links=#41261(auto Icecrown;98):5 #41263(auto Icecrown;100):4
+#41263 | auto Icecrown;100§auto Eiskrone;100§auto Icecrown;100 | x=7035.30029296875 y=505 | size=1 | links=#41262(auto Icecrown;99):4 #41264(auto Icecrown;101):4
+#41264 | auto Icecrown;101§auto Eiskrone;101§auto Icecrown;101 | x=7036 y=500.5 | size=1 | links=#41263(auto Icecrown;100):4 #41265(auto Icecrown;102):5
+#41265 | auto Icecrown;102§auto Eiskrone;102§auto Icecrown;102 | x=7030.60009765625 y=499.2000122070313 | size=1 | links=#41264(auto Icecrown;101):5 #41266(auto Icecrown;103):5
+#41266 | auto Icecrown;103§auto Eiskrone;103§auto Icecrown;103 | x=7024.80029296875 y=498 | size=1 | links=#41265(auto Icecrown;102):5 #41267(auto Icecrown;104):6
+#41267 | auto Icecrown;104§auto Eiskrone;104§auto Icecrown;104 | x=7018.80029296875 y=495.6000061035156 | size=1 | links=#41266(auto Icecrown;103):6
+#41268 | auto Icecrown;105§auto Eiskrone;105§auto Icecrown;105 | x=7092 y=589.9000244140625 | size=1 | links=#41253(auto Icecrown;90):71 #41269(auto Icecrown;106):33
+#41269 | auto Icecrown;106§auto Eiskrone;106§auto Icecrown;106 | x=7058.5 y=591.7000122070312 | size=1 | links=#41268(auto Icecrown;105):33
+#41270 | auto Icecrown;107§auto Eiskrone;107§auto Icecrown;107 | x=6966.80029296875 y=630.2000122070312 | size=1 | links=#41271(auto Icecrown;108):29 #41276(auto Icecrown;113):190 #41279(auto Icecrown;116):51
+#41271 | auto Icecrown;108§auto Eiskrone;108§auto Icecrown;108 | x=6953.89990234375 y=603.4000244140625 | size=1 | links=#41270(auto Icecrown;107):29 #41272(auto Icecrown;109):30
+#41272 | auto Icecrown;109§auto Eiskrone;109§auto Icecrown;109 | x=6939.60009765625 y=576.2999877929688 | size=1 | links=#41271(auto Icecrown;108):30 #41273(auto Icecrown;110):43
+#41273 | auto Icecrown;110§auto Eiskrone;110§auto Icecrown;110 | x=6923.60009765625 y=535.7000122070312 | size=1 | links=#41272(auto Icecrown;109):43 #41274(auto Icecrown;111):38
+#41274 | auto Icecrown;111§auto Eiskrone;111§auto Icecrown;111 | x=6907.7001953125 y=500.3999938964844 | size=1 | links=#41273(auto Icecrown;110):38 #41275(auto Icecrown;112):31
+#41275 | auto Icecrown;112§auto Eiskrone;112§auto Icecrown;112 | x=6894.30029296875 y=471.5 | size=1 | links=#41274(auto Icecrown;111):31 #41276(auto Icecrown;113):16
+#41276 | auto Icecrown;113§auto Eiskrone;113§auto Icecrown;113 | x=6887.2001953125 y=456.8000183105469 | size=1 | links=#41270(auto Icecrown;107):190 #41275(auto Icecrown;112):16 #41277(auto Icecrown;114):18
+#41277 | auto Icecrown;114§auto Eiskrone;114§auto Icecrown;114 | x=6878.89990234375 y=440.1000061035156 | size=1 | links=#41276(auto Icecrown;113):18 #41278(auto Icecrown;115):20
+#41278 | auto Icecrown;115§auto Eiskrone;115§auto Icecrown;115 | x=6869.5 y=422.3000183105469 | size=1 | links=#41277(auto Icecrown;114):20
+#41279 | auto Icecrown;116§auto Eiskrone;116§auto Icecrown;116 | x=6935.89990234375 y=671.9000244140625 | size=1 | links=#41270(auto Icecrown;107):51 #41280(auto Icecrown;117):34
+#41280 | auto Icecrown;117§auto Eiskrone;117§auto Icecrown;117 | x=6907.60009765625 y=692.4000244140625 | size=1 | links=#41279(auto Icecrown;116):34 #41281(auto Icecrown;118):41 #41338(auto Icecrown;175):32
+#41281 | auto Icecrown;118§auto Eiskrone;118§auto Icecrown;118 | x=6875.39990234375 y=666.6000366210938 | size=1 | links=#41280(auto Icecrown;117):41
+#41282 | auto Icecrown;119§auto Eiskrone;119§auto Icecrown;119 | x=6795.7001953125 y=651.6000366210938 | size=1 | links=#41283(auto Icecrown;120):36
+#41283 | auto Icecrown;120§auto Eiskrone;120§auto Icecrown;120 | x=6769.5 y=626.7000122070312 | size=1 | links=#41282(auto Icecrown;119):36
+#41284 | auto Icecrown;121§auto Eiskrone;121§auto Icecrown;121 | x=6727.5 y=612.4000244140625 | size=1 | links=#41285(auto Icecrown;122):19
+#41285 | auto Icecrown;122§auto Eiskrone;122§auto Icecrown;122 | x=6711.60009765625 y=600.2999877929688 | size=1 | links=#41284(auto Icecrown;121):19 #41286(auto Icecrown;123):10
+#41286 | auto Icecrown;123§auto Eiskrone;123§auto Icecrown;123 | x=6704.39990234375 y=592.2000122070312 | size=1 | links=#41285(auto Icecrown;122):10 #41287(auto Icecrown;124):10
+#41287 | auto Icecrown;124§auto Eiskrone;124§auto Icecrown;124 | x=6698.2001953125 y=584.2999877929688 | size=1 | links=#41286(auto Icecrown;123):10
+#41288 | auto Icecrown;125§auto Eiskrone;125§auto Icecrown;125 | x=6779.89990234375 y=562.7000122070312 | size=1 | links=#41289(auto Icecrown;126):26
+#41289 | auto Icecrown;126§auto Eiskrone;126§auto Icecrown;126 | x=6802.30029296875 y=547.7000122070312 | size=1 | links=#41288(auto Icecrown;125):26 #41290(auto Icecrown;127):13 #41291(auto Icecrown;128):21
+#41290 | auto Icecrown;127§auto Eiskrone;127§auto Icecrown;127 | x=6810.80029296875 y=557.7999877929688 | size=1 | links=#41289(auto Icecrown;126):13
+#41291 | auto Icecrown;128§auto Eiskrone;128§auto Icecrown;128 | x=6782.60009765625 y=538.2999877929688 | size=1 | links=#41289(auto Icecrown;126):21 #41292(auto Icecrown;129):12
+#41292 | auto Icecrown;129§auto Eiskrone;129§auto Icecrown;129 | x=6772.5 y=531.1000366210938 | size=1 | links=#41291(auto Icecrown;128):12 #41293(auto Icecrown;130):16
+#41293 | auto Icecrown;130§auto Eiskrone;130§auto Icecrown;130 | x=6757.89990234375 y=523.6000366210938 | size=1 | links=#41292(auto Icecrown;129):16 #41294(auto Icecrown;131):26
+#41294 | auto Icecrown;131§auto Eiskrone;131§auto Icecrown;131 | x=6754.80029296875 y=496.8999938964844 | size=1 | links=#41293(auto Icecrown;130):26
+#41295 | auto Icecrown;132§auto Eiskrone;132§auto Icecrown;132 | x=6751.2001953125 y=477.8000183105469 | size=1 | links=#41296(auto Icecrown;133):7
+#41296 | auto Icecrown;133§auto Eiskrone;133§auto Icecrown;133 | x=6750 y=470.6000061035156 | size=1 | links=#41295(auto Icecrown;132):7 #41297(auto Icecrown;134):7
+#41297 | auto Icecrown;134§auto Eiskrone;134§auto Icecrown;134 | x=6748.7001953125 y=463.5 | size=1 | links=#41296(auto Icecrown;133):7 #41298(auto Icecrown;135):6
+#41298 | auto Icecrown;135§auto Eiskrone;135§auto Icecrown;135 | x=6747.39990234375 y=457.3000183105469 | size=1 | links=#41297(auto Icecrown;134):6 #41299(auto Icecrown;136):3
+#41299 | auto Icecrown;136§auto Eiskrone;136§auto Icecrown;136 | x=6744.10009765625 y=456.8999938964844 | size=1 | links=#41298(auto Icecrown;135):3 #41300(auto Icecrown;137):5
+#41300 | auto Icecrown;137§auto Eiskrone;137§auto Icecrown;137 | x=6738.60009765625 y=456.8000183105469 | size=1 | links=#41299(auto Icecrown;136):5 #41301(auto Icecrown;138):6
+#41301 | auto Icecrown;138§auto Eiskrone;138§auto Icecrown;138 | x=6735.2001953125 y=451.6000061035156 | size=1 | links=#41300(auto Icecrown;137):6 #41302(auto Icecrown;139):6
+#41302 | auto Icecrown;139§auto Eiskrone;139§auto Icecrown;139 | x=6734.80029296875 y=445.5 | size=1 | links=#41301(auto Icecrown;138):6 #41303(auto Icecrown;140):6
+#41303 | auto Icecrown;140§auto Eiskrone;140§auto Icecrown;140 | x=6737.89990234375 y=439.3000183105469 | size=1 | links=#41302(auto Icecrown;139):6 #41304(auto Icecrown;141):4
+#41304 | auto Icecrown;141§auto Eiskrone;141§auto Icecrown;141 | x=6742.39990234375 y=437.2000122070313 | size=1 | links=#41303(auto Icecrown;140):4 #41305(auto Icecrown;142):3
+#41305 | auto Icecrown;142§auto Eiskrone;142§auto Icecrown;142 | x=6744.2001953125 y=440.1000061035156 | size=1 | links=#41304(auto Icecrown;141):3 #41306(auto Icecrown;143):4
+#41306 | auto Icecrown;143§auto Eiskrone;143§auto Icecrown;143 | x=6745.2001953125 y=444.8999938964844 | size=1 | links=#41305(auto Icecrown;142):4
+#41307 | auto Icecrown;144§auto Eiskrone;144§auto Icecrown;144 | x=6410.2001953125 y=445.6000061035156 | size=1 | links=#41308(auto Icecrown;145):17
+#41308 | auto Icecrown;145§auto Eiskrone;145§auto Icecrown;145 | x=6418.2001953125 y=429.6000061035156 | size=1 | links=#41307(auto Icecrown;144):17 #41309(auto Icecrown;146):14
+#41309 | auto Icecrown;146§auto Eiskrone;146§auto Icecrown;146 | x=6426.89990234375 y=418.2000122070313 | size=1 | links=#41308(auto Icecrown;145):14 #41310(auto Icecrown;147):19
+#41310 | auto Icecrown;147§auto Eiskrone;147§auto Icecrown;147 | x=6441.30029296875 y=405.7000122070313 | size=1 | links=#41309(auto Icecrown;146):19 #41311(auto Icecrown;148):20
+#41311 | auto Icecrown;148§auto Eiskrone;148§auto Icecrown;148 | x=6462.2001953125 y=405.3000183105469 | size=1 | links=#41310(auto Icecrown;147):20 #41312(auto Icecrown;149):25
+#41312 | auto Icecrown;149§auto Eiskrone;149§auto Icecrown;149 | x=6486.7001953125 y=410.3999938964844 | size=1 | links=#41311(auto Icecrown;148):25 #41313(auto Icecrown;150):12
+#41313 | auto Icecrown;150§auto Eiskrone;150§auto Icecrown;150 | x=6498.80029296875 y=414.8999938964844 | size=1 | links=#41312(auto Icecrown;149):12 #41314(auto Icecrown;151):14
+#41314 | auto Icecrown;151§auto Eiskrone;151§auto Icecrown;151 | x=6509.89990234375 y=424 | size=1 | links=#41313(auto Icecrown;150):14 #41315(auto Icecrown;152):12
+#41315 | auto Icecrown;152§auto Eiskrone;152§auto Icecrown;152 | x=6515.89990234375 y=434.5 | size=1 | links=#41314(auto Icecrown;151):12 #41316(auto Icecrown;153):11
+#41316 | auto Icecrown;153§auto Eiskrone;153§auto Icecrown;153 | x=6513.10009765625 y=445.8999938964844 | size=1 | links=#41315(auto Icecrown;152):11 #41317(auto Icecrown;154):14
+#41317 | auto Icecrown;154§auto Eiskrone;154§auto Icecrown;154 | x=6506.10009765625 y=458.6000061035156 | size=1 | links=#41316(auto Icecrown;153):14 #41318(auto Icecrown;155):17
+#41318 | auto Icecrown;155§auto Eiskrone;155§auto Icecrown;155 | x=6500.89990234375 y=475.6000061035156 | size=1 | links=#41317(auto Icecrown;154):17 #41319(auto Icecrown;156):18
+#41319 | auto Icecrown;156§auto Eiskrone;156§auto Icecrown;156 | x=6496.7001953125 y=493.2000122070313 | size=1 | links=#41318(auto Icecrown;155):18
+#41320 | auto Icecrown;157§auto Eiskrone;157§auto Icecrown;157 | x=6623.60009765625 y=577.6000366210938 | size=1 | links=#41321(auto Icecrown;158):38
+#41321 | auto Icecrown;158§auto Eiskrone;158§auto Icecrown;158 | x=6609.2001953125 y=612.7999877929688 | size=1 | links=#41320(auto Icecrown;157):38 #41322(auto Icecrown;159):12 #41334(auto Icecrown;171):32
+#41322 | auto Icecrown;159§auto Eiskrone;159§auto Icecrown;159 | x=6596.7001953125 y=610.2999877929688 | size=1 | links=#41321(auto Icecrown;158):12 #41323(auto Icecrown;160):10
+#41323 | auto Icecrown;160§auto Eiskrone;160§auto Icecrown;160 | x=6587.39990234375 y=604.7000122070312 | size=1 | links=#41322(auto Icecrown;159):10
+#41324 | auto Icecrown;161§auto Eiskrone;161§auto Icecrown;161 | x=6573 y=593.7999877929688 | size=1 | links=#41325(auto Icecrown;162):11
+#41325 | auto Icecrown;162§auto Eiskrone;162§auto Icecrown;162 | x=6563.60009765625 y=586.9000244140625 | size=1 | links=#41324(auto Icecrown;161):11 #41326(auto Icecrown;163):8
+#41326 | auto Icecrown;163§auto Eiskrone;163§auto Icecrown;163 | x=6557 y=582.2000122070312 | size=1 | links=#41325(auto Icecrown;162):8 #41327(auto Icecrown;164):6
+#41327 | auto Icecrown;164§auto Eiskrone;164§auto Icecrown;164 | x=6563.10009765625 y=579.7999877929688 | size=1 | links=#41326(auto Icecrown;163):6 #41328(auto Icecrown;165):2
+#41328 | auto Icecrown;165§auto Eiskrone;165§auto Icecrown;165 | x=6563.60009765625 y=577.2000122070312 | size=1 | links=#41327(auto Icecrown;164):2 #41329(auto Icecrown;166):6
+#41329 | auto Icecrown;166§auto Eiskrone;166§auto Icecrown;166 | x=6560.89990234375 y=570.7999877929688 | size=1 | links=#41328(auto Icecrown;165):6 #41330(auto Icecrown;167):7
+#41330 | auto Icecrown;167§auto Eiskrone;167§auto Icecrown;167 | x=6554.5 y=567.4000244140625 | size=1 | links=#41329(auto Icecrown;166):7 #41331(auto Icecrown;168):6
+#41331 | auto Icecrown;168§auto Eiskrone;168§auto Icecrown;168 | x=6547.7001953125 y=567.7000122070312 | size=1 | links=#41330(auto Icecrown;167):6 #41332(auto Icecrown;169):5
+#41332 | auto Icecrown;169§auto Eiskrone;169§auto Icecrown;169 | x=6543.5 y=571.5 | size=1 | links=#41331(auto Icecrown;168):5 #41333(auto Icecrown;170):6
+#41333 | auto Icecrown;170§auto Eiskrone;170§auto Icecrown;170 | x=6548.89990234375 y=575.6000366210938 | size=1 | links=#41332(auto Icecrown;169):6
+#41334 | auto Icecrown;171§auto Eiskrone;171§auto Icecrown;171 | x=6631 y=637.5 | size=1 | links=#41321(auto Icecrown;158):32
+#41335 | auto Icecrown;172§auto Eiskrone;172§auto Icecrown;172 | x=6681.39990234375 y=666.7999877929688 | size=1
+#41336 | auto Icecrown;173§auto Eiskrone;173§auto Icecrown;173 | x=6743.30029296875 y=689.1000366210938 | size=1
+#41337 | auto Icecrown;174§auto Eiskrone;174§auto Icecrown;174 | x=6807.30029296875 y=706.6000366210938 | size=1
+#41338 | auto Icecrown;175§auto Eiskrone;175§auto Icecrown;175 | x=6889.80029296875 y=720 | size=1 | links=#41280(auto Icecrown;117):32 #41339(auto Icecrown;176):14
+#41339 | auto Icecrown;176§auto Eiskrone;176§auto Icecrown;176 | x=6901.39990234375 y=728.4000244140625 | size=1 | links=#41338(auto Icecrown;175):14 #41340(auto Icecrown;177):37
+#41340 | auto Icecrown;177§auto Eiskrone;177§auto Icecrown;177 | x=6916.7001953125 y=763.1000366210938 | size=1 | links=#41339(auto Icecrown;176):37 #42437(auto Icecrown;367):64
+#41341 | auto Icecrown;178§auto Eiskrone;178§auto Icecrown;178 | x=6348.244019375999 y=124.0707937924372 | size=1 | links=#41232(auto Icecrown;69):20
+#41342 | auto Icecrown;179§auto Eiskrone;179§auto Icecrown;179 | x=6383.89990234375 y=212.4000091552734 | size=1 | links=#41234(auto Icecrown;71):18 #41343(auto Icecrown;180):19 #41344(auto Icecrown;181):27
+#41343 | auto Icecrown;180§auto Eiskrone;180§auto Icecrown;180 | x=6366.861935318553 y=222.8697328895695 | size=1 | links=#41342(auto Icecrown;179):19
+#41344 | auto Icecrown;181§auto Eiskrone;181§auto Icecrown;181 | x=6369.344345506821 y=188.8610532435581 | size=1 | links=#41233(auto Icecrown;70):23 #41342(auto Icecrown;179):27
+#41345 | auto Icecrown;182§auto Eiskrone;182§auto Icecrown;182 | x=6212.38846561111 y=184.6047721937716 | size=1
+#42096 | auto Icecrown;183§auto Eiskrone;183§auto Icecrown;183 | x=9153.1005859375 y=919 | size=1 | links=#42097(auto Icecrown;184):97 #42095(auto Hrothgar's Landing;1):77
+#42097 | auto Icecrown;184§auto Eiskrone;184§auto Icecrown;184 | x=9076.5 y=858.9000244140625 | size=1 | links=#42096(auto Icecrown;183):97
+#42098 | auto Icecrown;185§auto Eiskrone;185§auto Icecrown;185 | x=8527.5 y=446.7000122070313 | size=1 | links=#42099(auto Icecrown;186):116
+#42099 | auto Icecrown;186§auto Eiskrone;186§auto Icecrown;186 | x=8483.400390625 y=338.6000061035156 | size=1 | links=#42100(auto The Storm Peaks;733):13 #42098(auto Icecrown;185):116
+#42241 | auto Icecrown;187§auto Eiskrone;187§auto Icecrown;187 | x=6318.716411912562 y=991.8143022781707 | size=1
+#42242 | auto Icecrown;188§auto Eiskrone;188§auto Icecrown;188 | x=6493.5 y=967.9000244140625 | size=1
+#42243 | auto Icecrown;189§auto Eiskrone;189§auto Icecrown;189 | x=6576.80029296875 y=972.1000366210938 | size=1
+#42244 | auto Icecrown;190§auto Eiskrone;190§auto Icecrown;190 | x=6549.5 y=935.1000366210938 | size=1
+#42245 | auto Icecrown;191§auto Eiskrone;191§auto Icecrown;191 | x=6632.431644640483 y=1043.875203244523 | size=1
+#42246 | auto Icecrown;192§auto Eiskrone;192§auto Icecrown;192 | x=6663.410961771709 y=1053.262870598948 | size=1
+#42247 | auto Icecrown;193§auto Eiskrone;193§auto Icecrown;193 | x=6654.30029296875 y=1083.599975585938 | size=1 | links=#42248(auto Icecrown;194):9
+#42248 | auto Icecrown;194§auto Eiskrone;194§auto Icecrown;194 | x=6663.2001953125 y=1081 | size=1 | links=#42247(auto Icecrown;193):9
+#42249 | auto Icecrown;195§auto Eiskrone;195§auto Icecrown;195 | x=6495.933104161225 y=1152.402999913888 | size=1 | links=#42255(auto Icecrown;199):53
+#42251 | auto Icecrown;196§auto Eiskrone;196§auto Icecrown;196 | x=6958.80029296875 y=1200.300048828125 | size=1
+#42253 | auto Icecrown;197§auto Eiskrone;197§auto Icecrown;197 | x=6668.472521750326 y=1216.661246827592 | size=1
+#42254 | auto Icecrown;198§auto Eiskrone;198§auto Icecrown;198 | x=6616.265576274087 y=1186.470613817884 | size=1
+#42255 | auto Icecrown;199§auto Eiskrone;199§auto Icecrown;199 | x=6442.30029296875 y=1148.900024414063 | size=1 | links=#42249(auto Icecrown;195):53
+#42257 | graveyard rise of suffering icecrown§friedhof Anhöhe des Leidens eiskrone§graveyard rise of suffering icecrown | x=6447.5 y=2060.900146484375 | size=1 | links=#42258(auto Icecrown;200):9
+#42258 | auto Icecrown;200§auto Eiskrone;200§auto Icecrown;200 | x=6454.30029296875 y=2053.60009765625 | size=1 | links=#42257(graveyard rise of suffering icecrown):9
+#42266 | auto Icecrown;201§auto Eiskrone;201§auto Icecrown;201 | x=6589.30029296875 y=2423.5 | size=1
+#42267 | auto Icecrown;202§auto Eiskrone;202§auto Icecrown;202 | x=6536.5 y=2557.60009765625 | size=1 | links=#42268(auto Icecrown;203):94
+#42268 | auto Icecrown;203§auto Eiskrone;203§auto Icecrown;203 | x=6542.89990234375 y=2652 | size=1 | links=#42267(auto Icecrown;202):94
+#42269 | auto Icecrown;204§auto Eiskrone;204§auto Icecrown;204 | x=6523.5 y=2994.400146484375 | size=1 | links=#42270(auto Icecrown;205):46
+#42270 | auto Icecrown;205§auto Eiskrone;205§auto Icecrown;205 | x=6516.89990234375 y=3040.10009765625 | size=1 | links=#42269(auto Icecrown;204):46 #42271(auto Icecrown;206):25
+#42271 | auto Icecrown;206§auto Eiskrone;206§auto Icecrown;206 | x=6508 y=3064 | size=1 | links=#42270(auto Icecrown;205):25 #42272(auto Icecrown;207):49
+#42272 | auto Icecrown;207§auto Eiskrone;207§auto Icecrown;207 | x=6467.60009765625 y=3092.5 | size=1 | links=#42271(auto Icecrown;206):49
+#42273 | auto Icecrown;208§auto Eiskrone;208§auto Icecrown;208 | x=6452.60009765625 y=3176.199951171875 | size=1 | links=#42274(auto Icecrown;209):30
+#42274 | auto Icecrown;209§auto Eiskrone;209§auto Icecrown;209 | x=6453.89990234375 y=3206.699951171875 | size=1 | links=#42273(auto Icecrown;208):30 #42275(auto Icecrown;210):40
+#42275 | auto Icecrown;210§auto Eiskrone;210§auto Icecrown;210 | x=6454.10009765625 y=3246.900146484375 | size=1 | links=#42274(auto Icecrown;209):40 #42278(auto Icecrown;213):16
+#42276 | auto Icecrown;211§auto Eiskrone;211§auto Icecrown;211 | x=6464.60009765625 y=3292.400146484375 | size=1
+#42277 | auto Icecrown;212§auto Eiskrone;212§auto Icecrown;212 | x=6494.39990234375 y=3419.60009765625 | size=1
+#42278 | auto Icecrown;213§auto Eiskrone;213§auto Icecrown;213 | x=6469.2001953125 y=3241.400146484375 | size=1 | links=#42275(auto Icecrown;210):16 #42279(auto Icecrown;214):30
+#42279 | auto Icecrown;214§auto Eiskrone;214§auto Icecrown;214 | x=6490.2001953125 y=3219 | size=1 | links=#42278(auto Icecrown;213):30 #42280(auto Icecrown;215):27
+#42280 | auto Icecrown;215§auto Eiskrone;215§auto Icecrown;215 | x=6517.2001953125 y=3223.5 | size=1 | links=#42279(auto Icecrown;214):27 #42281(auto Icecrown;216):15
+#42281 | auto Icecrown;216§auto Eiskrone;216§auto Icecrown;216 | x=6528.5 y=3234.400146484375 | size=1 | links=#42280(auto Icecrown;215):15 #42282(auto Icecrown;217):15
+#42282 | auto Icecrown;217§auto Eiskrone;217§auto Icecrown;217 | x=6532 y=3249.400146484375 | size=1 | links=#42281(auto Icecrown;216):15 #42283(auto Icecrown;218):32
+#42283 | auto Icecrown;218§auto Eiskrone;218§auto Icecrown;218 | x=6529.89990234375 y=3282.10009765625 | size=1 | links=#42282(auto Icecrown;217):32 #42284(auto Icecrown;219):27
+#42284 | auto Icecrown;219§auto Eiskrone;219§auto Icecrown;219 | x=6541.7001953125 y=3306.60009765625 | size=1 | links=#42283(auto Icecrown;218):27 #48798(auto Sanctum of Reanimation;Icecrown;465):19
+#42285 | auto Icecrown;220§auto Eiskrone;220§auto Icecrown;220 | x=6592 y=3334.900146484375 | size=1 | links=#42286(auto Icecrown;221):29
+#42286 | auto Icecrown;221§auto Eiskrone;221§auto Icecrown;221 | x=6610.60009765625 y=3357.60009765625 | size=1 | links=#42285(auto Icecrown;220):29 #42287(auto Icecrown;222):35
+#42287 | auto Icecrown;222§auto Eiskrone;222§auto Icecrown;222 | x=6635.80029296875 y=3382.199951171875 | size=1 | links=#42286(auto Icecrown;221):35 #42288(auto Icecrown;223):26
+#42288 | auto Icecrown;223§auto Eiskrone;223§auto Icecrown;223 | x=6658.60009765625 y=3396.5 | size=1 | links=#42287(auto Icecrown;222):26 #42289(auto Icecrown;224):34
+#42289 | auto Icecrown;224§auto Eiskrone;224§auto Icecrown;224 | x=6688.5 y=3413.199951171875 | size=1 | links=#42288(auto Icecrown;223):34 #42290(auto Icecrown;225):26
+#42290 | auto Icecrown;225§auto Eiskrone;225§auto Icecrown;225 | x=6710.89990234375 y=3428.10009765625 | size=1 | links=#42289(auto Icecrown;224):26 #42291(auto Icecrown;226):7
+#42291 | auto Icecrown;226§auto Eiskrone;226§auto Icecrown;226 | x=6716.60009765625 y=3433.300048828125 | size=1 | links=#42290(auto Icecrown;225):7
+#42292 | auto Icecrown;227§auto Eiskrone;227§auto Icecrown;227 | x=6737.10009765625 y=3432.400146484375 | size=1 | links=#42293(auto Icecrown;228):29
+#42293 | auto Icecrown;228§auto Eiskrone;228§auto Icecrown;228 | x=6757.30029296875 y=3453.400146484375 | size=1 | links=#42292(auto Icecrown;227):29 #42294(auto Icecrown;229):29
+#42294 | auto Icecrown;229§auto Eiskrone;229§auto Icecrown;229 | x=6779.60009765625 y=3472.800048828125 | size=1 | links=#42293(auto Icecrown;228):29 #42295(auto Icecrown;230):10
+#42295 | auto Icecrown;230§auto Eiskrone;230§auto Icecrown;230 | x=6786.80029296875 y=3481 | size=1 | links=#42294(auto Icecrown;229):10 #42296(auto Icecrown;231):37
+#42296 | auto Icecrown;231§auto Eiskrone;231§auto Icecrown;231 | x=6749.89990234375 y=3486.900146484375 | size=1 | links=#42295(auto Icecrown;230):37
+#42298 | graveyard jotunheim icecrown§friedhof jotunheim eiskrone§graveyard jotunheim icecrown | x=7146.5 y=3693.699951171875 | size=1 | links=#42299(auto Icecrown;232):16 #42318(auto Icecrown;249):251
+#42299 | auto Icecrown;232§auto Eiskrone;232§auto Icecrown;232 | x=7156.89990234375 y=3681.300048828125 | size=1 | links=#42298(graveyard jotunheim icecrown):16 #42300(auto Icecrown;233):33
+#42300 | auto Icecrown;233§auto Eiskrone;233§auto Icecrown;233 | x=7184.80029296875 y=3662.10009765625 | size=1 | links=#42299(auto Icecrown;232):33 #42301(auto Icecrown;234):39
+#42301 | auto Icecrown;234§auto Eiskrone;234§auto Icecrown;234 | x=7221.10009765625 y=3647.699951171875 | size=1 | links=#42300(auto Icecrown;233):39
+#42304 | auto Icecrown;235§auto Eiskrone;235§auto Icecrown;235 | x=7176.80029296875 y=3921.400146484375 | size=1 | links=#42305(auto Icecrown;236):43 #42408(auto Icecrown;338):37
+#42305 | auto Icecrown;236§auto Eiskrone;236§auto Icecrown;236 | x=7145.5 y=3951.10009765625 | size=1 | links=#42304(auto Icecrown;235):43 #42306(auto Icecrown;237):28 #42317(auto Icecrown;248):27
+#42306 | auto Icecrown;237§auto Eiskrone;237§auto Icecrown;237 | x=7145.5 y=3979.699951171875 | size=1 | links=#42305(auto Icecrown;236):28 #42307(auto Icecrown;238):36
+#42307 | auto Icecrown;238§auto Eiskrone;238§auto Icecrown;238 | x=7155.89990234375 y=4014.5 | size=1 | links=#42306(auto Icecrown;237):36 #42308(auto Icecrown;239):35
+#42308 | auto Icecrown;239§auto Eiskrone;239§auto Icecrown;239 | x=7165.89990234375 y=4048.300048828125 | size=1 | links=#42307(auto Icecrown;238):35 #42309(auto Icecrown;240):31
+#42309 | auto Icecrown;240§auto Eiskrone;240§auto Icecrown;240 | x=7166.80029296875 y=4079.300048828125 | size=1 | links=#42308(auto Icecrown;239):31 #42310(auto Icecrown;241):32
+#42310 | auto Icecrown;241§auto Eiskrone;241§auto Icecrown;241 | x=7161.7001953125 y=4111.7001953125 | size=1 | links=#42309(auto Icecrown;240):32 #42311(auto Icecrown;242):45
+#42311 | auto Icecrown;242§auto Eiskrone;242§auto Icecrown;242 | x=7145.89990234375 y=4154.10009765625 | size=1 | links=#42310(auto Icecrown;241):45 #42312(auto Icecrown;243):51
+#42312 | auto Icecrown;243§auto Eiskrone;243§auto Icecrown;243 | x=7110.10009765625 y=4190.60009765625 | size=1 | links=#42311(auto Icecrown;242):51 #42313(auto Icecrown;244):45
+#42313 | auto Icecrown;244§auto Eiskrone;244§auto Icecrown;244 | x=7069.2001953125 y=4211.39990234375 | size=1 | links=#42312(auto Icecrown;243):45 #42314(auto Icecrown;245):23
+#42314 | auto Icecrown;245§auto Eiskrone;245§auto Icecrown;245 | x=7046.2001953125 y=4213.89990234375 | size=1 | links=#42313(auto Icecrown;244):23 #42315(auto Icecrown;246):31
+#42315 | auto Icecrown;246§auto Eiskrone;246§auto Icecrown;246 | x=7055.10009765625 y=4244.30029296875 | size=1 | links=#42314(auto Icecrown;245):31 #42316(auto Icecrown;247):18
+#42316 | auto Icecrown;247§auto Eiskrone;247§auto Icecrown;247 | x=7058.80029296875 y=4262.30029296875 | size=1 | links=#42315(auto Icecrown;246):18
+#42317 | auto Icecrown;248§auto Eiskrone;248§auto Icecrown;248 | x=7119.2001953125 y=3959.400146484375 | size=1 | links=#42305(auto Icecrown;236):27 #42318(auto Icecrown;249):58
+#42318 | auto Icecrown;249§auto Eiskrone;249§auto Icecrown;249 | x=7067.5 y=3932 | size=1 | links=#42298(graveyard jotunheim icecrown):251 #42317(auto Icecrown;248):58 #42319(auto Icecrown;250):40 #42370(auto Icecrown;301):26
+#42319 | auto Icecrown;250§auto Eiskrone;250§auto Icecrown;250 | x=7036 y=3906.699951171875 | size=1 | links=#42318(auto Icecrown;249):40 #42320(auto Icecrown;251):25
+#42320 | auto Icecrown;251§auto Eiskrone;251§auto Icecrown;251 | x=7012.39990234375 y=3896.800048828125 | size=1 | links=#42319(auto Icecrown;250):25 #42321(auto Icecrown;252):36 #42367(auto Icecrown;298):106
+#42321 | auto Icecrown;252§auto Eiskrone;252§auto Icecrown;252 | x=6976.5 y=3892.199951171875 | size=1 | links=#42320(auto Icecrown;251):36 #42322(auto Icecrown;253):46
+#42322 | auto Icecrown;253§auto Eiskrone;253§auto Icecrown;253 | x=6932.10009765625 y=3907.199951171875 | size=1 | links=#42321(auto Icecrown;252):46 #42323(auto Icecrown;254):29
+#42323 | auto Icecrown;254§auto Eiskrone;254§auto Icecrown;254 | x=6911.7001953125 y=3928.699951171875 | size=1 | links=#42322(auto Icecrown;253):29 #42324(auto Icecrown;255):43
+#42324 | auto Icecrown;255§auto Eiskrone;255§auto Icecrown;255 | x=6883.60009765625 y=3896.10009765625 | size=1 | links=#42323(auto Icecrown;254):43 #42325(auto Icecrown;256):29
+#42325 | auto Icecrown;256§auto Eiskrone;256§auto Icecrown;256 | x=6866.7001953125 y=3872 | size=1 | links=#42324(auto Icecrown;255):29 #42326(auto Icecrown;257):30
+#42326 | auto Icecrown;257§auto Eiskrone;257§auto Icecrown;257 | x=6850 y=3846.699951171875 | size=1 | links=#42325(auto Icecrown;256):30
+#42327 | auto Icecrown;258§auto Eiskrone;258§auto Icecrown;258 | x=6826.7001953125 y=3836.5 | size=1
+#42328 | auto Icecrown;259§auto Eiskrone;259§auto Icecrown;259 | x=6799 y=3800.60009765625 | size=1 | links=#42329(auto Icecrown;260):12
+#42329 | auto Icecrown;260§auto Eiskrone;260§auto Icecrown;260 | x=6792.30029296875 y=3790.400146484375 | size=1 | links=#42328(auto Icecrown;259):12
+#42330 | auto Icecrown;261§auto Eiskrone;261§auto Icecrown;261 | x=6804.2001953125 y=3774.900146484375 | size=1 | links=#42331(auto Icecrown;262):12
+#42331 | auto Icecrown;262§auto Eiskrone;262§auto Icecrown;262 | x=6811.89990234375 y=3784.699951171875 | size=1 | links=#42330(auto Icecrown;261):12
+#42332 | auto Icecrown;263§auto Eiskrone;263§auto Icecrown;263 | x=6825.2001953125 y=3769.699951171875 | size=1 | links=#42333(auto Icecrown;264):20
+#42333 | auto Icecrown;264§auto Eiskrone;264§auto Icecrown;264 | x=6835.5 y=3787.10009765625 | size=1 | links=#42332(auto Icecrown;263):20
+#42334 | auto Icecrown;265§auto Eiskrone;265§auto Icecrown;265 | x=6845.80029296875 y=3822.699951171875 | size=1
+#42335 | auto Icecrown;266§auto Eiskrone;266§auto Icecrown;266 | x=6194.80029296875 y=1905.800048828125 | size=1 | links=#42336(auto Icecrown;267):30
+#42336 | auto Icecrown;267§auto Eiskrone;267§auto Icecrown;267 | x=6164.10009765625 y=1903.5 | size=1 | links=#42335(auto Icecrown;266):30
+#42337 | auto Icecrown;268§auto Eiskrone;268§auto Icecrown;268 | x=5904.30029296875 y=2123 | size=1 | links=#42338(auto Icecrown;269):44
+#42338 | auto Icecrown;269§auto Eiskrone;269§auto Icecrown;269 | x=5882.274085294574 y=2161.580709893198 | size=1 | links=#42337(auto Icecrown;268):44
+#42339 | auto Icecrown;270§auto Eiskrone;270§auto Icecrown;270 | x=5990.7001953125 y=2002.900024414063 | size=1 | links=#42340(auto Icecrown;271):26
+#42340 | auto Icecrown;271§auto Eiskrone;271§auto Icecrown;271 | x=5968.5 y=2017.5 | size=1 | links=#42339(auto Icecrown;270):26 #42341(auto Icecrown;272):95
+#42341 | auto Icecrown;272§auto Eiskrone;272§auto Icecrown;272 | x=5882.30029296875 y=2059.300048828125 | size=1 | links=#42340(auto Icecrown;271):95 #42342(auto Icecrown;273):96
+#42342 | auto Icecrown;273§auto Eiskrone;273§auto Icecrown;273 | x=5806 y=2118.699951171875 | size=1 | links=#42341(auto Icecrown;272):96
+#42343 | auto Icecrown;274§auto Eiskrone;274§auto Icecrown;274 | x=6357.30029296875 y=1888.099975585938 | size=1 | links=#42344(auto Icecrown;275):85
+#42344 | auto Icecrown;275§auto Eiskrone;275§auto Icecrown;275 | x=6385.7001953125 y=1807.700073242188 | size=1 | links=#42343(auto Icecrown;274):85
+#42345 | auto Icecrown;276§auto Eiskrone;276§auto Icecrown;276 | x=7094.950123639079 y=1756.450723042796 | size=1 | links=#42346(auto Icecrown;277):46
+#42346 | auto Icecrown;277§auto Eiskrone;277§auto Icecrown;277 | x=7130.613746035378 y=1726.453338875192 | size=1 | links=#42345(auto Icecrown;276):46
+#42347 | auto Icecrown;278§auto Eiskrone;278§auto Icecrown;278 | x=7144.612549937482 y=1880.440164209845 | size=1
+#42348 | auto Icecrown;279§auto Eiskrone;279§auto Icecrown;279 | x=7224.272386786228 y=1985.431219858363 | size=1
+#42349 | auto Icecrown;280§auto Eiskrone;280§auto Icecrown;280 | x=7100.94955826022 y=2149.083871325487 | size=1 | links=#42350(auto Icecrown;281):33
+#42350 | auto Icecrown;281§auto Eiskrone;281§auto Icecrown;281 | x=7067.952386428079 y=2151.750321889644 | size=1 | links=#42349(auto Icecrown;280):33 #42351(auto Icecrown;282):2
+#42351 | auto Icecrown;282§auto Eiskrone;282§auto Icecrown;282 | x=7065.80029296875 y=2151.300048828125 | size=1 | links=#42350(auto Icecrown;281):2 #42352(auto Icecrown;283):14
+#42352 | auto Icecrown;283§auto Eiskrone;283§auto Icecrown;283 | x=7051.2001953125 y=2151.199951171875 | size=1 | links=#42351(auto Icecrown;282):14
+#42353 | auto Icecrown;284§auto Eiskrone;284§auto Icecrown;284 | x=7027.30029296875 y=2134.699951171875 | size=1
+#42354 | auto Icecrown;285§auto Eiskrone;285§auto Icecrown;285 | x=6835.2001953125 y=1429.800048828125 | size=1 | links=#42355(auto Icecrown;286):31
+#42355 | auto Icecrown;286§auto Eiskrone;286§auto Icecrown;286 | x=6833 y=1461.400024414063 | size=1 | links=#42354(auto Icecrown;285):31 #42356(auto Icecrown;287):49
+#42356 | auto Icecrown;287§auto Eiskrone;287§auto Icecrown;287 | x=6829.89990234375 y=1510.800048828125 | size=1 | links=#42355(auto Icecrown;286):49 #42357(auto Icecrown;288):57
+#42357 | auto Icecrown;288§auto Eiskrone;288§auto Icecrown;288 | x=6829.39990234375 y=1568.099975585938 | size=1 | links=#42356(auto Icecrown;287):57 #42358(auto Icecrown;289):31
+#42358 | auto Icecrown;289§auto Eiskrone;289§auto Icecrown;289 | x=6827.7001953125 y=1599.800048828125 | size=1 | links=#42357(auto Icecrown;288):31
+#42359 | auto Icecrown;290§auto Eiskrone;290§auto Icecrown;290 | x=7986.2001953125 y=2091.400146484375 | size=1 | links=#42360(auto Icecrown;291):90
+#42360 | auto Icecrown;291§auto Eiskrone;291§auto Icecrown;291 | x=7976.10009765625 y=2181.199951171875 | size=1 | links=#42359(auto Icecrown;290):90 #42361(auto Icecrown;292):59 #42426(auto Icecrown;356):48
+#42361 | auto Icecrown;292§auto Eiskrone;292§auto Icecrown;292 | x=7998.60009765625 y=2236 | size=1 | links=#42360(auto Icecrown;291):59 #42362(auto Icecrown;293):57
+#42362 | auto Icecrown;293§auto Eiskrone;293§auto Icecrown;293 | x=8020.89990234375 y=2288.699951171875 | size=1 | links=#42361(auto Icecrown;292):57 #42363(auto Icecrown;294):41
+#42363 | auto Icecrown;294§auto Eiskrone;294§auto Icecrown;294 | x=8029.5 y=2329.199951171875 | size=1 | links=#42362(auto Icecrown;293):41 #42364(auto Icecrown;295):30
+#42364 | auto Icecrown;295§auto Eiskrone;295§auto Icecrown;295 | x=8006.7001953125 y=2349.699951171875 | size=1 | links=#42363(auto Icecrown;294):30
+#42365 | auto Icecrown;296§auto Eiskrone;296§auto Icecrown;296 | x=7795.2001953125 y=2795.699951171875 | size=1 | links=#42366(auto Icecrown;297):96
+#42366 | auto Icecrown;297§auto Eiskrone;297§auto Icecrown;297 | x=7850 y=2875.300048828125 | size=1 | links=#42365(auto Icecrown;296):96
+#42367 | auto Icecrown;298§auto Eiskrone;298§auto Icecrown;298 | x=6944.80029296875 y=3815.10009765625 | size=1 | links=#42320(auto Icecrown;251):106 #42368(auto Icecrown;299):96
+#42368 | auto Icecrown;299§auto Eiskrone;299§auto Icecrown;299 | x=6888 y=3736.60009765625 | size=1 | links=#42367(auto Icecrown;298):96 #42369(auto Icecrown;300):115
+#42369 | auto Icecrown;300§auto Eiskrone;300§auto Icecrown;300 | x=6838.10009765625 y=3632 | size=1 | links=#42368(auto Icecrown;299):115
+#42370 | auto Icecrown;301§auto Eiskrone;301§auto Icecrown;301 | x=7045.39990234375 y=3946.300048828125 | size=1 | links=#42318(auto Icecrown;249):26 #42371(auto Icecrown;302):42
+#42371 | auto Icecrown;302§auto Eiskrone;302§auto Icecrown;302 | x=7003.80029296875 y=3952.400146484375 | size=1 | links=#42370(auto Icecrown;301):42
+#42372 | auto Icecrown;303§auto Eiskrone;303§auto Icecrown;303 | x=6960.2001953125 y=3986.699951171875 | size=1 | links=#42373(auto Icecrown;304):72
+#42373 | auto Icecrown;304§auto Eiskrone;304§auto Icecrown;304 | x=6943.39990234375 y=4056.800048828125 | size=1 | links=#42372(auto Icecrown;303):72 #42374(auto Icecrown;305):42
+#42374 | auto Icecrown;305§auto Eiskrone;305§auto Icecrown;305 | x=6982.7001953125 y=4072.699951171875 | size=1 | links=#42373(auto Icecrown;304):42
+#42375 | auto Icecrown;306§auto Eiskrone;306§auto Icecrown;306 | x=7347.2001953125 y=4181.80029296875 | size=1
+#42376 | auto Icecrown;307§auto Eiskrone;307§auto Icecrown;307 | x=7525.7001953125 y=4038.199951171875 | size=1 | links=#42377(auto Icecrown;308):180
+#42377 | auto Icecrown;308§auto Eiskrone;308§auto Icecrown;308 | x=7595.39990234375 y=3871.400146484375 | size=1 | links=#42376(auto Icecrown;307):180 #42378(auto Icecrown;309):141
+#42378 | auto Icecrown;309§auto Eiskrone;309§auto Icecrown;309 | x=7627.80029296875 y=3734 | size=1 | links=#42377(auto Icecrown;308):141 #42379(auto Icecrown;310):47
+#42379 | auto Icecrown;310§auto Eiskrone;310§auto Icecrown;310 | x=7642.39990234375 y=3688.300048828125 | size=1 | links=#42378(auto Icecrown;309):47 #42380(auto Icecrown;311):24
+#42380 | auto Icecrown;311§auto Eiskrone;311§auto Icecrown;311 | x=7655.89990234375 y=3667.300048828125 | size=1 | links=#42379(auto Icecrown;310):24 #42381(auto Icecrown;312):88 #42389(auto Icecrown;319):109
+#42381 | auto Icecrown;312§auto Eiskrone;312§auto Icecrown;312 | x=7567.797599329474 y=3673.498889240507 | size=1 | links=#42380(auto Icecrown;311):88 #42382(auto Icecrown;313):72
+#42382 | auto Icecrown;313§auto Eiskrone;313§auto Icecrown;313 | x=7498.30353233038 y=3653.168199005582 | size=1 | links=#42381(auto Icecrown;312):72 #42383(auto Icecrown;314):76 #42384(auto Icecrown;315):81 #42396(auto Icecrown;326):55
+#42383 | auto Icecrown;314§auto Eiskrone;314§auto Icecrown;314 | x=7464.295781229776 y=3585.152735817153 | size=1 | links=#42382(auto Icecrown;313):76
+#42384 | auto Icecrown;315§auto Eiskrone;315§auto Icecrown;315 | x=7559.00039288858 y=3598.218987774138 | size=1 | links=#42382(auto Icecrown;313):81 #42385(auto Icecrown;316):81
+#42385 | auto Icecrown;316§auto Eiskrone;316§auto Icecrown;316 | x=7603.723413954517 y=3529.765432757178 | size=1 | links=#42384(auto Icecrown;315):81
+#42386 | auto Icecrown;317§auto Eiskrone;317§auto Icecrown;317 | x=7755.233982291828 y=3446.252030133549 | size=1 | links=#42387(auto Icecrown;318):61
+#42387 | auto Icecrown;318§auto Eiskrone;318§auto Icecrown;318 | x=7789.917161144566 y=3496.907666625771 | size=1 | links=#42386(auto Icecrown;317):61 #42393(auto Icecrown;323):37 #42412(auto Icecrown;342):72
+#42389 | auto Icecrown;319§auto Eiskrone;319§auto Icecrown;319 | x=7763.904837209921 y=3687.665078069935 | size=1 | links=#42380(auto Icecrown;311):109 #42390(auto Icecrown;320):55
+#42390 | auto Icecrown;320§auto Eiskrone;320§auto Icecrown;320 | x=7818.667676407095 y=3681.732438561688 | size=1 | links=#42389(auto Icecrown;319):55 #42391(auto Icecrown;321):51
+#42391 | auto Icecrown;321§auto Eiskrone;321§auto Icecrown;321 | x=7840.116468538419 y=3634.727627512127 | size=1 | links=#42390(auto Icecrown;320):51
+#42392 | auto Icecrown;322§auto Eiskrone;322§auto Icecrown;322 | x=7836.029639853179 y=3584.740040263294 | size=1 | links=#42393(auto Icecrown;323):62
+#42393 | auto Icecrown;323§auto Eiskrone;323§auto Icecrown;323 | x=7813.023186215276 y=3526.658208939151 | size=1 | links=#42387(auto Icecrown;318):37 #42392(auto Icecrown;322):62
+#42394 | auto Icecrown;324§auto Eiskrone;324§auto Icecrown;324 | x=7662.7001953125 y=3438.900146484375 | size=1 | links=#42395(auto Icecrown;325):22
+#42395 | auto Icecrown;325§auto Eiskrone;325§auto Icecrown;325 | x=7648.2001953125 y=3421.400146484375 | size=1 | links=#42394(auto Icecrown;324):22
+#42396 | auto Icecrown;326§auto Eiskrone;326§auto Icecrown;326 | x=7456.7001953125 y=3690 | size=1 | links=#42382(auto Icecrown;313):55 #42397(auto Icecrown;327):38
+#42397 | auto Icecrown;327§auto Eiskrone;327§auto Icecrown;327 | x=7430.5 y=3718 | size=1 | links=#42396(auto Icecrown;326):38 #42398(auto Icecrown;328):20
+#42398 | auto Icecrown;328§auto Eiskrone;328§auto Icecrown;328 | x=7416.89990234375 y=3733.900146484375 | size=1 | links=#42397(auto Icecrown;327):20 #42399(auto Icecrown;329):26
+#42399 | auto Icecrown;329§auto Eiskrone;329§auto Icecrown;329 | x=7393.30029296875 y=3746.60009765625 | size=1 | links=#42398(auto Icecrown;328):26 #42400(auto Icecrown;330):31
+#42400 | auto Icecrown;330§auto Eiskrone;330§auto Icecrown;330 | x=7367.30029296875 y=3765.10009765625 | size=1 | links=#42399(auto Icecrown;329):31 #42401(auto Icecrown;331):32
+#42401 | auto Icecrown;331§auto Eiskrone;331§auto Icecrown;331 | x=7341.89990234375 y=3785.800048828125 | size=1 | links=#42400(auto Icecrown;330):32
+#42402 | auto Icecrown;332§auto Eiskrone;332§auto Icecrown;332 | x=7308.89990234375 y=3771.699951171875 | size=1 | links=#42403(auto Icecrown;333):28
+#42403 | auto Icecrown;333§auto Eiskrone;333§auto Icecrown;333 | x=7288.10009765625 y=3791.300048828125 | size=1 | links=#42402(auto Icecrown;332):28 #42404(auto Icecrown;334):21 #42405(auto Icecrown;335):39
+#42404 | auto Icecrown;334§auto Eiskrone;334§auto Icecrown;334 | x=7279 y=3811.300048828125 | size=1 | links=#42403(auto Icecrown;333):21
+#42405 | auto Icecrown;335§auto Eiskrone;335§auto Icecrown;335 | x=7295.10009765625 y=3830.400146484375 | size=1 | links=#42403(auto Icecrown;333):39 #42406(auto Icecrown;336):53
+#42406 | auto Icecrown;336§auto Eiskrone;336§auto Icecrown;336 | x=7253.7001953125 y=3864.199951171875 | size=1 | links=#42405(auto Icecrown;335):53 #42407(auto Icecrown;337):28
+#42407 | auto Icecrown;337§auto Eiskrone;337§auto Icecrown;337 | x=7229.30029296875 y=3879.300048828125 | size=1 | links=#42406(auto Icecrown;336):28 #42408(auto Icecrown;338):30
+#42408 | auto Icecrown;338§auto Eiskrone;338§auto Icecrown;338 | x=7205 y=3897.10009765625 | size=1 | links=#42304(auto Icecrown;235):37 #42407(auto Icecrown;337):30
+#42409 | auto Icecrown;339§auto Eiskrone;339§auto Icecrown;339 | x=7908.7001953125 y=3579.5 | size=1 | links=#42410(auto Icecrown;340):42 #42413(auto Icecrown;343):127
+#42410 | auto Icecrown;340§auto Eiskrone;340§auto Icecrown;340 | x=7933.89990234375 y=3613.400146484375 | size=1 | links=#42409(auto Icecrown;339):42 #42411(auto Icecrown;341):95
+#42411 | auto Icecrown;341§auto Eiskrone;341§auto Icecrown;341 | x=7997 y=3684.5 | size=1 | links=#42410(auto Icecrown;340):95
+#42412 | auto Icecrown;342§auto Eiskrone;342§auto Icecrown;342 | x=7858.30029296875 y=3472.900146484375 | size=1 | links=#42387(auto Icecrown;318):72
+#42413 | auto Icecrown;343§auto Eiskrone;343§auto Icecrown;343 | x=8023.175543664869 y=3522.513040604694 | size=1 | links=#42409(auto Icecrown;339):127 #42414(auto Icecrown;344):72
+#42414 | auto Icecrown;344§auto Eiskrone;344§auto Icecrown;344 | x=8090.949928642381 y=3548.804835322535 | size=1 | links=#42413(auto Icecrown;343):72
+#42415 | auto Icecrown;345§auto Eiskrone;345§auto Icecrown;345 | x=8250.900390625 y=3350.800048828125 | size=1 | links=#42416(auto Icecrown;346):42 #42417(auto Icecrown;347):46
+#42416 | auto Icecrown;346§auto Eiskrone;346§auto Icecrown;346 | x=8293.2001953125 y=3354.199951171875 | size=1 | links=#42415(auto Icecrown;345):42
+#42417 | auto Icecrown;347§auto Eiskrone;347§auto Icecrown;347 | x=8285.6005859375 y=3319.60009765625 | size=1 | links=#42415(auto Icecrown;345):46 #42418(auto Icecrown;348):114
+#42418 | auto Icecrown;348§auto Eiskrone;348§auto Icecrown;348 | x=8301.025163895894 y=3206.280614432194 | size=1 | links=#42417(auto Icecrown;347):114 #42419(auto Icecrown;349):50
+#42419 | auto Icecrown;349§auto Eiskrone;349§auto Icecrown;349 | x=8315.153907286285 y=3158.242727848892 | size=1 | links=#42418(auto Icecrown;348):50
+#42420 | auto Icecrown;350§auto Eiskrone;350§auto Icecrown;350 | x=8421.900390625 y=3043.199951171875 | size=1
+#42421 | auto Icecrown;351§auto Eiskrone;351§auto Icecrown;351 | x=8425.1005859375 y=2973.199951171875 | size=1 | links=#42422(auto Icecrown;352):37
+#42422 | auto Icecrown;352§auto Eiskrone;352§auto Icecrown;352 | x=8425.7998046875 y=2935.800048828125 | size=1 | links=#42421(auto Icecrown;351):37
+#42423 | auto Icecrown;353§auto Eiskrone;353§auto Icecrown;353 | x=8446.1005859375 y=2923.5 | size=1
+#42424 | auto Icecrown;354§auto Eiskrone;354§auto Icecrown;354 | x=8448 y=2894.199951171875 | size=1
+#42425 | auto Icecrown;355§auto Eiskrone;355§auto Icecrown;355 | x=8132.652601962989 y=2825.3632415255 | size=1
+#42426 | auto Icecrown;356§auto Eiskrone;356§auto Icecrown;356 | x=8024.80029296875 y=2180.60009765625 | size=1 | links=#42360(auto Icecrown;291):48 #42427(auto Icecrown;357):36
+#42427 | auto Icecrown;357§auto Eiskrone;357§auto Icecrown;357 | x=8061.2001953125 y=2185.699951171875 | size=1 | links=#42426(auto Icecrown;356):36 #42428(auto Icecrown;358):33
+#42428 | auto Icecrown;358§auto Eiskrone;358§auto Icecrown;358 | x=8094.39990234375 y=2187.10009765625 | size=1 | links=#42427(auto Icecrown;357):33 #42429(auto Icecrown;359):41
+#42429 | auto Icecrown;359§auto Eiskrone;359§auto Icecrown;359 | x=8136.30029296875 y=2187.300048828125 | size=1 | links=#42428(auto Icecrown;358):41 #42430(auto Icecrown;360):34
+#42430 | auto Icecrown;360§auto Eiskrone;360§auto Icecrown;360 | x=8164.5 y=2207 | size=1 | links=#42429(auto Icecrown;359):34
+#42431 | auto Icecrown;361§auto Eiskrone;361§auto Icecrown;361 | x=8280.6005859375 y=1763.200073242188 | size=1 | links=#42432(auto Icecrown;362):167
+#42432 | auto Icecrown;362§auto Eiskrone;362§auto Icecrown;362 | x=8407.900390625 y=1653.700073242188 | size=1 | links=#42431(auto Icecrown;361):167
+#42433 | auto Icecrown;363§auto Eiskrone;363§auto Icecrown;363 | x=8306.236479894622 y=804.5129879632315 | size=1 | links=#42434(auto Icecrown;364):88 #44486(auto Icecrown;437):68
+#42434 | auto Icecrown;364§auto Eiskrone;364§auto Icecrown;364 | x=8217.6005859375 y=803.7000122070312 | size=1 | links=#42433(auto Icecrown;363):88
+#42435 | auto Icecrown;365§auto Eiskrone;365§auto Icecrown;365 | x=8026 y=821.2999877929688 | size=1
+#42436 | auto Icecrown;366§auto Eiskrone;366§auto Icecrown;366 | x=7730.088795600376 y=839.2320761873832 | size=1
+#42437 | auto Icecrown;367§auto Eiskrone;367§auto Icecrown;367 | x=6937.7001953125 y=823.6000366210938 | size=1 | links=#41340(auto Icecrown;177):64
+#42438 | auto Icecrown;368§auto Eiskrone;368§auto Icecrown;368 | x=7010.10009765625 y=1037.200073242188 | size=1 | links=#42439(auto Icecrown;369):49
+#42439 | auto Icecrown;369§auto Eiskrone;369§auto Icecrown;369 | x=7023.7001953125 y=1084.700073242188 | size=1 | links=#42438(auto Icecrown;368):49
+#44417 | auto Icecrown;370§auto Eiskrone;370§auto Icecrown;370 | x=8583.7998046875 y=691 | size=1 | links=#44419(mailbox alliance argent tournament grounds):8 #44420(auto Icecrown;371):9 #44428(auto Icecrown;379):19
+#44419 | mailbox alliance argent tournament grounds§briefkasten allianz Argentumturnierplatz§mailbox alliance argent tournament grounds | x=8591.7998046875 y=694.5 | size=1 | links=#44417(auto Icecrown;370):8
+#44420 | auto Icecrown;371§auto Eiskrone;371§auto Icecrown;371 | x=8590.5 y=683.7999877929688 | size=1 | links=#44417(auto Icecrown;370):9 #44421(auto Icecrown;372):9
+#44421 | auto Icecrown;372§auto Eiskrone;372§auto Icecrown;372 | x=8597.2998046875 y=676.6000366210938 | size=1 | links=#44420(auto Icecrown;371):9 #44422(auto Icecrown;373):10 #44427(auto Icecrown;378):10
+#44422 | auto Icecrown;373§auto Eiskrone;373§auto Icecrown;373 | x=8607.2001953125 y=679 | size=1 | links=#44421(auto Icecrown;372):10 #44423(auto Icecrown;374):7
+#44423 | auto Icecrown;374§auto Eiskrone;374§auto Icecrown;374 | x=8614.2001953125 y=679.1000366210938 | size=1 | links=#44422(auto Icecrown;373):7 #44424(auto Icecrown;375):19
+#44424 | auto Icecrown;375§auto Eiskrone;375§auto Icecrown;375 | x=8613.2998046875 y=659.5 | size=1 | links=#44423(auto Icecrown;374):19 #44425(auto Icecrown;376):15
+#44425 | auto Icecrown;376§auto Eiskrone;376§auto Icecrown;376 | x=8597.900390625 y=656.2999877929688 | size=1 | links=#44424(auto Icecrown;375):15 #44426(auto Icecrown;377):8
+#44426 | auto Icecrown;377§auto Eiskrone;377§auto Icecrown;377 | x=8589.7001953125 y=659.5 | size=1 | links=#44425(auto Icecrown;376):8 #44427(auto Icecrown;378):7
+#44427 | auto Icecrown;378§auto Eiskrone;378§auto Icecrown;378 | x=8592.5 y=666.9000244140625 | size=1 | links=#44421(auto Icecrown;372):10 #44426(auto Icecrown;377):7
+#44428 | auto Icecrown;379§auto Eiskrone;379§auto Icecrown;379 | x=8574.2998046875 y=708.2000122070312 | size=1 | links=#44417(auto Icecrown;370):19 #44430(auto Icecrown;381):43 #44511(auto Icecrown;458):46
+#44429 | auto Icecrown;380§auto Eiskrone;380§auto Icecrown;380 | x=8552.361285293784 y=729.5175581467179 | size=1
+#44430 | auto Icecrown;381§auto Eiskrone;381§auto Icecrown;381 | x=8597.7998046875 y=745 | size=1 | links=#44428(auto Icecrown;379):43 #44431(auto Icecrown;382):16
+#44431 | auto Icecrown;382§auto Eiskrone;382§auto Icecrown;382 | x=8614.2001953125 y=743 | size=1 | links=#44430(auto Icecrown;381):16 #44432(auto Icecrown;383):18 #44434(auto Icecrown;385):23
+#44432 | auto Icecrown;383§auto Eiskrone;383§auto Icecrown;383 | x=8632.2998046875 y=738.2000122070312 | size=1 | links=#44431(auto Icecrown;382):18 #44433(auto Icecrown;384):31
+#44433 | auto Icecrown;384§auto Eiskrone;384§auto Icecrown;384 | x=8660.2001953125 y=723.4000244140625 | size=1 | links=#44432(auto Icecrown;383):31
+#44434 | auto Icecrown;385§auto Eiskrone;385§auto Icecrown;385 | x=8624.1005859375 y=764.6000366210938 | size=1 | links=#44431(auto Icecrown;382):23
+#44435 | auto Icecrown;386§auto Eiskrone;386§auto Icecrown;386 | x=8611 y=832.5 | size=1 | links=#44436(auto Icecrown;387):12 #44437(auto Icecrown;388):58
+#44436 | auto Icecrown;387§auto Eiskrone;387§auto Icecrown;387 | x=8603.5 y=822.2999877929688 | size=1 | links=#44435(auto Icecrown;386):12
+#44437 | auto Icecrown;388§auto Eiskrone;388§auto Icecrown;388 | x=8576.5 y=879.6000366210938 | size=1 | links=#44435(auto Icecrown;386):58 #44438(auto Icecrown;389):11
+#44438 | auto Icecrown;389§auto Eiskrone;389§auto Icecrown;389 | x=8573.6005859375 y=891.2000122070312 | size=1 | links=#44437(auto Icecrown;388):11 #44439(auto Icecrown;390):21 #44449(auto Icecrown;400):30
+#44439 | auto Icecrown;390§auto Eiskrone;390§auto Icecrown;390 | x=8594.400390625 y=895.7999877929688 | size=1 | links=#44438(auto Icecrown;389):21 #44440(auto Icecrown;391):18
+#44440 | auto Icecrown;391§auto Eiskrone;391§auto Icecrown;391 | x=8612.2998046875 y=899.1000366210938 | size=1 | links=#44439(auto Icecrown;390):18 #44441(auto Icecrown;392):10 #44443(auto Icecrown;394):16
+#44441 | auto Icecrown;392§auto Eiskrone;392§auto Icecrown;392 | x=8616.7998046875 y=890 | size=1 | links=#44440(auto Icecrown;391):10 #44442(auto Icecrown;393):19
+#44442 | auto Icecrown;393§auto Eiskrone;393§auto Icecrown;393 | x=8625.7001953125 y=872.4000244140625 | size=1 | links=#44441(auto Icecrown;392):19
+#44443 | auto Icecrown;394§auto Eiskrone;394§auto Icecrown;394 | x=8604.400390625 y=913.1000366210938 | size=1 | links=#44440(auto Icecrown;391):16 #44444(auto Icecrown;395):18
+#44444 | auto Icecrown;395§auto Eiskrone;395§auto Icecrown;395 | x=8596 y=929.7999877929688 | size=1 | links=#44443(auto Icecrown;394):18 #44445(auto Icecrown;396):11
+#44445 | auto Icecrown;396§auto Eiskrone;396§auto Icecrown;396 | x=8605.7001953125 y=935.6000366210938 | size=1 | links=#44444(auto Icecrown;395):11 #44446(auto Icecrown;397):16
+#44446 | auto Icecrown;397§auto Eiskrone;397§auto Icecrown;397 | x=8603 y=951.5 | size=1 | links=#44445(auto Icecrown;396):16 #44447(auto Icecrown;398):18
+#44447 | auto Icecrown;398§auto Eiskrone;398§auto Icecrown;398 | x=8585.900390625 y=958 | size=1 | links=#44446(auto Icecrown;397):18 #44448(auto Icecrown;399):17
+#44448 | auto Icecrown;399§auto Eiskrone;399§auto Icecrown;399 | x=8568.1005859375 y=956.4000244140625 | size=1 | links=#44447(auto Icecrown;398):17 #44449(auto Icecrown;400):35 #44450(auto Icecrown;401):10 #44451(auto Icecrown;402):33
+#44449 | auto Icecrown;400§auto Eiskrone;400§auto Icecrown;400 | x=8567.1005859375 y=921 | size=1 | links=#44438(auto Icecrown;389):30 #44448(auto Icecrown;399):35
+#44450 | auto Icecrown;401§auto Eiskrone;401§auto Icecrown;401 | x=8557.45455439067 y=957.3316198356328 | size=1 | links=#44448(auto Icecrown;399):10
+#44451 | auto Icecrown;402§auto Eiskrone;402§auto Icecrown;402 | x=8576.2001953125 y=988.7999877929688 | size=1 | links=#44448(auto Icecrown;399):33 #44452(auto Icecrown;403):30
+#44452 | auto Icecrown;403§auto Eiskrone;403§auto Icecrown;403 | x=8599.1005859375 y=1008.5 | size=1 | links=#44451(auto Icecrown;402):30 #44453(auto Icecrown;404):20
+#44453 | auto Icecrown;404§auto Eiskrone;404§auto Icecrown;404 | x=8605.6005859375 y=1028.200073242188 | size=1 | links=#44452(auto Icecrown;403):20 #44454(auto Icecrown;405):33
+#44454 | auto Icecrown;405§auto Eiskrone;405§auto Icecrown;405 | x=8606.5 y=1061.700073242188 | size=1 | links=#44453(auto Icecrown;404):33 #44455(auto Icecrown;406):30
+#44455 | auto Icecrown;406§auto Eiskrone;406§auto Icecrown;406 | x=8585.900390625 y=1084.200073242188 | size=1 | links=#44454(auto Icecrown;405):30 #44456(auto Icecrown;407):33
+#44456 | auto Icecrown;407§auto Eiskrone;407§auto Icecrown;407 | x=8564.400390625 y=1109.5 | size=1 | links=#44455(auto Icecrown;406):33 #44457(auto Icecrown;408):24
+#44457 | auto Icecrown;408§auto Eiskrone;408§auto Icecrown;408 | x=8548.7001953125 y=1091.099975585938 | size=1 | links=#44456(auto Icecrown;407):24 #44458(auto Icecrown;409):21
+#44458 | auto Icecrown;409§auto Eiskrone;409§auto Icecrown;409 | x=8537.1005859375 y=1073.099975585938 | size=1 | links=#44457(auto Icecrown;408):21 #44459(auto Icecrown;410):38
+#44459 | auto Icecrown;410§auto Eiskrone;410§auto Icecrown;410 | x=8529.7998046875 y=1035 | size=1 | links=#44458(auto Icecrown;409):38 #44460(auto Icecrown;411):27
+#44460 | auto Icecrown;411§auto Eiskrone;411§auto Icecrown;411 | x=8503.400390625 y=1028.400024414063 | size=1 | links=#44459(auto Icecrown;410):27 #44461(auto Icecrown;412):32 #44465(auto Icecrown;416):27
+#44461 | auto Icecrown;412§auto Eiskrone;412§auto Icecrown;412 | x=8484.900390625 y=1055 | size=1 | links=#44460(auto Icecrown;411):32
+#44462 | auto Icecrown;413§auto Eiskrone;413§auto Icecrown;413 | x=8455 y=1064.700073242188 | size=1 | links=#44463(auto Icecrown;414):14
+#44463 | auto Icecrown;414§auto Eiskrone;414§auto Icecrown;414 | x=8446.2001953125 y=1076.800048828125 | size=1 | links=#44462(auto Icecrown;413):14
+#44464 | auto Icecrown;415§auto Eiskrone;415§auto Icecrown;415 | x=8486.2998046875 y=1086.300048828125 | size=1
+#44465 | auto Icecrown;416§auto Eiskrone;416§auto Icecrown;416 | x=8477.7001953125 y=1018.200012207031 | size=1 | links=#44460(auto Icecrown;411):27 #44466(auto Icecrown;417):29 #44468(auto Icecrown;419):14 #44481(auto Icecrown;432):22
+#44466 | auto Icecrown;417§auto Eiskrone;417§auto Icecrown;417 | x=8450.7001953125 y=1029.099975585938 | size=1 | links=#44465(auto Icecrown;416):29 #44467(auto Icecrown;418):17
+#44467 | auto Icecrown;418§auto Eiskrone;418§auto Icecrown;418 | x=8435.7998046875 y=1038.300048828125 | size=1 | links=#44466(auto Icecrown;417):17
+#44468 | auto Icecrown;419§auto Eiskrone;419§auto Icecrown;419 | x=8463.400390625 y=1013.799987792969 | size=1 | links=#44465(auto Icecrown;416):14 #44469(auto Icecrown;420):40
+#44469 | auto Icecrown;420§auto Eiskrone;420§auto Icecrown;420 | x=8435 y=985 | size=1 | links=#44468(auto Icecrown;419):40 #44470(auto Icecrown;421):38
+#44470 | auto Icecrown;421§auto Eiskrone;421§auto Icecrown;421 | x=8431.7998046875 y=946.9000244140625 | size=1 | links=#44469(auto Icecrown;420):38 #44471(auto Icecrown;422):34
+#44471 | auto Icecrown;422§auto Eiskrone;422§auto Icecrown;422 | x=8428.2998046875 y=912.2000122070312 | size=1 | links=#44470(auto Icecrown;421):34 #44472(auto Icecrown;423):28
+#44472 | auto Icecrown;423§auto Eiskrone;423§auto Icecrown;423 | x=8404.7001953125 y=896.6000366210938 | size=1 | links=#44471(auto Icecrown;422):28 #44473(auto Icecrown;424):30
+#44473 | auto Icecrown;424§auto Eiskrone;424§auto Icecrown;424 | x=8389.2001953125 y=869.9000244140625 | size=1 | links=#44472(auto Icecrown;423):30 #44474(auto Icecrown;425):30
+#44474 | auto Icecrown;425§auto Eiskrone;425§auto Icecrown;425 | x=8420 y=869 | size=1 | links=#44473(auto Icecrown;424):30 #44475(auto Icecrown;426):28
+#44475 | auto Icecrown;426§auto Eiskrone;426§auto Icecrown;426 | x=8448.6005859375 y=870.7999877929688 | size=1 | links=#44474(auto Icecrown;425):28 #44476(auto Icecrown;427):18 #44482(auto Icecrown;433):27
+#44476 | auto Icecrown;427§auto Eiskrone;427§auto Icecrown;427 | x=8466.900390625 y=875.9000244140625 | size=1 | links=#44475(auto Icecrown;426):18 #44477(auto Icecrown;428):15
+#44477 | auto Icecrown;428§auto Eiskrone;428§auto Icecrown;428 | x=8467.900390625 y=891.7999877929688 | size=1 | links=#44476(auto Icecrown;427):15 #44478(auto Icecrown;429):25
+#44478 | auto Icecrown;429§auto Eiskrone;429§auto Icecrown;429 | x=8470.7001953125 y=916.7999877929688 | size=1 | links=#44477(auto Icecrown;428):25 #44479(auto Icecrown;430):29
+#44479 | auto Icecrown;430§auto Eiskrone;430§auto Icecrown;430 | x=8476.6005859375 y=945.5 | size=1 | links=#44478(auto Icecrown;429):29 #44480(auto Icecrown;431):27
+#44480 | auto Icecrown;431§auto Eiskrone;431§auto Icecrown;431 | x=8477.6005859375 y=973 | size=1 | links=#44479(auto Icecrown;430):27 #44481(auto Icecrown;432):22
+#44481 | auto Icecrown;432§auto Eiskrone;432§auto Icecrown;432 | x=8477.1005859375 y=995.5 | size=1 | links=#44465(auto Icecrown;416):22 #44480(auto Icecrown;431):22
+#44482 | auto Icecrown;433§auto Eiskrone;433§auto Icecrown;433 | x=8436.400390625 y=845.7999877929688 | size=1 | links=#44475(auto Icecrown;426):27 #44483(auto Icecrown;434):24 #44484(auto Icecrown;435):22
+#44483 | auto Icecrown;434§auto Eiskrone;434§auto Icecrown;434 | x=8413.588317848793 y=837.122630335791 | size=1 | links=#44482(auto Icecrown;433):24 #44485(auto Icecrown;436):35
+#44484 | auto Icecrown;435§auto Eiskrone;435§auto Icecrown;435 | x=8439.903426182422 y=823.2258915197397 | size=1 | links=#44482(auto Icecrown;433):22
+#44485 | auto Icecrown;436§auto Eiskrone;436§auto Icecrown;436 | x=8379.1005859375 y=831 | size=1 | links=#44483(auto Icecrown;434):35 #44486(auto Icecrown;437):35
+#44486 | auto Icecrown;437§auto Eiskrone;437§auto Icecrown;437 | x=8374.6005859375 y=795.9000244140625 | size=1 | links=#42433(auto Icecrown;363):68 #44485(auto Icecrown;436):35 #44487(auto Icecrown;438):13
+#44487 | auto Icecrown;438§auto Eiskrone;438§auto Icecrown;438 | x=8377.900390625 y=783.2999877929688 | size=1 | links=#44486(auto Icecrown;437):13 #44488(auto Icecrown;439):26
+#44488 | auto Icecrown;439§auto Eiskrone;439§auto Icecrown;439 | x=8390.900390625 y=759.7000122070312 | size=1 | links=#44487(auto Icecrown;438):26 #44489(auto Icecrown;440):20
+#44489 | auto Icecrown;440§auto Eiskrone;440§auto Icecrown;440 | x=8399.400390625 y=741.5 | size=1 | links=#44488(auto Icecrown;439):20 #44490(auto Icecrown;441):29 #44492(auto Icecrown;443):29
+#44490 | auto Icecrown;441§auto Eiskrone;441§auto Icecrown;441 | x=8373.6005859375 y=727.5 | size=1 | links=#44489(auto Icecrown;440):29 #44491(auto Icecrown;442):27
+#44491 | auto Icecrown;442§auto Eiskrone;442§auto Icecrown;442 | x=8347.5 y=718.6000366210938 | size=1 | links=#44490(auto Icecrown;441):27
+#44492 | auto Icecrown;443§auto Eiskrone;443§auto Icecrown;443 | x=8424.5 y=726.1000366210938 | size=1 | links=#44489(auto Icecrown;440):29 #44493(auto Icecrown;444):28 #44494(auto Icecrown;445):20
+#44493 | auto Icecrown;444§auto Eiskrone;444§auto Icecrown;444 | x=8437.2001953125 y=752 | size=1 | links=#44492(auto Icecrown;443):28
+#44494 | auto Icecrown;445§auto Eiskrone;445§auto Icecrown;445 | x=8441.2998046875 y=714.9000244140625 | size=1 | links=#44492(auto Icecrown;443):20 #44495(auto Icecrown;446):20
+#44495 | auto Icecrown;446§auto Eiskrone;446§auto Icecrown;446 | x=8451.7998046875 y=697.2999877929688 | size=1 | links=#44494(auto Icecrown;445):20 #44497(mailbox horde argent tournament grounds):11 #44498(auto Icecrown;447):15 #44504(auto Icecrown;452):19 #44506(auto Icecrown;454):47
+#44497 | mailbox horde argent tournament grounds§briefkasten horde Argentumturnierplatz§mailbox horde argent tournament grounds | x=8453.1005859375 y=686.2000122070312 | size=1 | links=#44495(auto Icecrown;446):11
+#44498 | auto Icecrown;447§auto Eiskrone;447§auto Icecrown;447 | x=8442.6005859375 y=685.2000122070312 | size=1 | links=#44495(auto Icecrown;446):15 #44500(auto Icecrown;448):11
+#44500 | auto Icecrown;448§auto Eiskrone;448§auto Icecrown;448 | x=8433.9586407173 y=678.3000717691533 | size=1 | links=#44498(auto Icecrown;447):11 #44501(auto Icecrown;449):12 #44503(auto Icecrown;451):15
+#44501 | auto Icecrown;449§auto Eiskrone;449§auto Icecrown;449 | x=8435.250102296539 y=665.9594867974663 | size=1 | links=#44500(auto Icecrown;448):12
+#44502 | auto Icecrown;450§auto Eiskrone;450§auto Icecrown;450 | x=8416.021763289813 y=662.802594399625 | size=1
+#44503 | auto Icecrown;451§auto Eiskrone;451§auto Icecrown;451 | x=8419.896132632195 y=684.4703565573245 | size=1 | links=#44500(auto Icecrown;448):15
+#44504 | auto Icecrown;452§auto Eiskrone;452§auto Icecrown;452 | x=8469.7998046875 y=705.6000366210938 | size=1 | links=#44495(auto Icecrown;446):19 #44505(auto Icecrown;453):5
+#44505 | auto Icecrown;453§auto Eiskrone;453§auto Icecrown;453 | x=8474.900390625 y=707.7000122070312 | size=1 | links=#44504(auto Icecrown;452):5
+#44506 | auto Icecrown;454§auto Eiskrone;454§auto Icecrown;454 | x=8476.7998046875 y=657.2999877929688 | size=1 | links=#44495(auto Icecrown;446):47 #44507(auto Icecrown;455):21
+#44507 | auto Icecrown;455§auto Eiskrone;455§auto Icecrown;455 | x=8490.2998046875 y=641 | size=1 | links=#44506(auto Icecrown;454):21 #44508(auto Icecrown;456):13
+#44508 | auto Icecrown;456§auto Eiskrone;456§auto Icecrown;456 | x=8501.1005859375 y=633.7000122070312 | size=1 | links=#44507(auto Icecrown;455):13 #44522(center argent tournament grounds):15
+#44510 | auto Icecrown;457§auto Eiskrone;457§auto Icecrown;457 | x=8547.900390625 y=646.1000366210938 | size=1 | links=#44511(auto Icecrown;458):21 #44512(auto Icecrown;459):13
+#44511 | auto Icecrown;458§auto Eiskrone;458§auto Icecrown;458 | x=8554.7001953125 y=666.5 | size=1 | links=#44428(auto Icecrown;379):46 #44510(auto Icecrown;457):21
+#44512 | auto Icecrown;459§auto Eiskrone;459§auto Icecrown;459 | x=8556.2001953125 y=635.7000122070312 | size=1 | links=#44510(auto Icecrown;457):13 #44513(auto Icecrown;460):25
+#44513 | auto Icecrown;460§auto Eiskrone;460§auto Icecrown;460 | x=8578.5 y=622.5 | size=1 | links=#44512(auto Icecrown;459):25 #44514(auto Icecrown;461):28
+#44514 | auto Icecrown;461§auto Eiskrone;461§auto Icecrown;461 | x=8596.2998046875 y=599.7000122070312 | size=1 | links=#44513(auto Icecrown;460):28
+#44515 | auto Icecrown;462§auto Eiskrone;462§auto Icecrown;462 | x=8528 y=578.9000244140625 | size=1 | links=#44516(auto Icecrown;463):28
+#44516 | auto Icecrown;463§auto Eiskrone;463§auto Icecrown;463 | x=8515.6005859375 y=604.1000366210938 | size=1 | links=#44515(auto Icecrown;462):28 #44522(center argent tournament grounds):25
+#44518 | auto Icecrown;464§auto Eiskrone;464§auto Icecrown;464 | x=8468.6005859375 y=524.2999877929688 | size=1 | links=#44521(graveyard argent tournament grounds):66
+#44521 | graveyard argent tournament grounds§friedhof Argentumturnierplatz§graveyard argent tournament grounds | x=8466.1005859375 y=458.3000183105469 | size=1 | links=#44518(auto Icecrown;464):66
+#44522 | center argent tournament grounds§mitte Argentumturnierplatz§center argent tournament grounds | x=8515.6005859375 y=629.4000244140625 | size=1 | links=#44508(auto Icecrown;456):15 #44516(auto Icecrown;463):25
+#48798 | auto Sanctum of Reanimation;Icecrown;465§auto Sanktum der Reanimation;Eiskrone;465§auto Sanctum of Reanimation;Icecrown;465 | x=6556.2001953125 y=3293 | size=1 | links=#42284(auto Icecrown;219):19 #48799(auto Inside;Sanctum of Reanimation;Icecrown;466):26
+#48799 | auto Inside;Sanctum of Reanimation;Icecrown;466§auto Drinnen;Sanktum der Reanimation;Eiskrone;466§auto Intérieur;Sanctum of Reanimation;Icecrown;466 | x=6576.60009765625 y=3276.5 | size=1 | links=#48798(auto Sanctum of Reanimation;Icecrown;465):26 #48800(auto Inside;Sanctum of Reanimation;Icecrown;467):18
+#48800 | auto Inside;Sanctum of Reanimation;Icecrown;467§auto Drinnen;Sanktum der Reanimation;Eiskrone;467§auto Intérieur;Sanctum of Reanimation;Icecrown;467 | x=6591.80029296875 y=3266 | size=1 | links=#48799(auto Inside;Sanctum of Reanimation;Icecrown;466):18
+#48801 | auto Inside;Sanctum of Reanimation;Icecrown;468§auto Drinnen;Sanktum der Reanimation;Eiskrone;468§auto Intérieur;Sanctum of Reanimation;Icecrown;468 | x=6610.30029296875 y=3232.699951171875 | size=1 | links=#48802(auto Inside;Sanctum of Reanimation;Icecrown;469):21
+#48802 | auto Inside;Sanctum of Reanimation;Icecrown;469§auto Drinnen;Sanktum der Reanimation;Eiskrone;469§auto Intérieur;Sanctum of Reanimation;Icecrown;469 | x=6630.80029296875 y=3228 | size=1 | links=#48801(auto Inside;Sanctum of Reanimation;Icecrown;468):21 #48803(auto Inside;Sanctum of Reanimation;Icecrown;470):37
+#48803 | auto Inside;Sanctum of Reanimation;Icecrown;470§auto Drinnen;Sanktum der Reanimation;Eiskrone;470§auto Intérieur;Sanctum of Reanimation;Icecrown;470 | x=6664.30029296875 y=3211.10009765625 | size=1 | links=#48802(auto Inside;Sanctum of Reanimation;Icecrown;469):37 #48804(auto Inside;Sanctum of Reanimation;Icecrown;471):14
+#48804 | auto Inside;Sanctum of Reanimation;Icecrown;471§auto Drinnen;Sanktum der Reanimation;Eiskrone;471§auto Intérieur;Sanctum of Reanimation;Icecrown;471 | x=6668.2001953125 y=3197.300048828125 | size=1 | links=#48803(auto Inside;Sanctum of Reanimation;Icecrown;470):14 #48805(auto Inside;Sanctum of Reanimation;Icecrown;472):19
+#48805 | auto Inside;Sanctum of Reanimation;Icecrown;472§auto Drinnen;Sanktum der Reanimation;Eiskrone;472§auto Intérieur;Sanctum of Reanimation;Icecrown;472 | x=6663.5 y=3178.699951171875 | size=1 | links=#48804(auto Inside;Sanctum of Reanimation;Icecrown;471):19 #48806(auto Inside;Sanctum of Reanimation;Icecrown;473):17
+#48806 | auto Inside;Sanctum of Reanimation;Icecrown;473§auto Drinnen;Sanktum der Reanimation;Eiskrone;473§auto Intérieur;Sanctum of Reanimation;Icecrown;473 | x=6661.89990234375 y=3161.400146484375 | size=1 | links=#48805(auto Inside;Sanctum of Reanimation;Icecrown;472):17 #48807(auto Inside;Sanctum of Reanimation;Icecrown;474):15
+#48807 | auto Inside;Sanctum of Reanimation;Icecrown;474§auto Drinnen;Sanktum der Reanimation;Eiskrone;474§auto Intérieur;Sanctum of Reanimation;Icecrown;474 | x=6671 y=3148.699951171875 | size=1 | links=#48806(auto Inside;Sanctum of Reanimation;Icecrown;473):15 #48808(auto Inside;Sanctum of Reanimation;Icecrown;475):10
+#48808 | auto Inside;Sanctum of Reanimation;Icecrown;475§auto Drinnen;Sanktum der Reanimation;Eiskrone;475§auto Intérieur;Sanctum of Reanimation;Icecrown;475 | x=6681.2001953125 y=3146 | size=1 | links=#48807(auto Inside;Sanctum of Reanimation;Icecrown;474):10 #48809(auto Inside;Sanctum of Reanimation;Icecrown;476):21
+#48809 | auto Inside;Sanctum of Reanimation;Icecrown;476§auto Drinnen;Sanktum der Reanimation;Eiskrone;476§auto Intérieur;Sanctum of Reanimation;Icecrown;476 | x=6699.39990234375 y=3158.199951171875 | size=1 | links=#48808(auto Inside;Sanctum of Reanimation;Icecrown;475):21 #48810(auto Inside;Sanctum of Reanimation;Icecrown;477):11
+#48810 | auto Inside;Sanctum of Reanimation;Icecrown;477§auto Drinnen;Sanktum der Reanimation;Eiskrone;477§auto Intérieur;Sanctum of Reanimation;Icecrown;477 | x=6702.5 y=3168.800048828125 | size=1 | links=#48809(auto Inside;Sanctum of Reanimation;Icecrown;476):11 #48811(auto Inside;Sanctum of Reanimation;Icecrown;478):18
+#48811 | auto Inside;Sanctum of Reanimation;Icecrown;478§auto Drinnen;Sanktum der Reanimation;Eiskrone;478§auto Intérieur;Sanctum of Reanimation;Icecrown;478 | x=6685.30029296875 y=3175.199951171875 | size=1 | links=#48810(auto Inside;Sanctum of Reanimation;Icecrown;477):18 #48812(auto Inside;Sanctum of Reanimation;Icecrown;479):17
+#48812 | auto Inside;Sanctum of Reanimation;Icecrown;479§auto Drinnen;Sanktum der Reanimation;Eiskrone;479§auto Intérieur;Sanctum of Reanimation;Icecrown;479 | x=6668.2001953125 y=3179.300048828125 | size=1 | links=#48811(auto Inside;Sanctum of Reanimation;Icecrown;478):17 #48813(auto Inside;Sanctum of Reanimation;Icecrown;480):24
+#48813 | auto Inside;Sanctum of Reanimation;Icecrown;480§auto Drinnen;Sanktum der Reanimation;Eiskrone;480§auto Intérieur;Sanctum of Reanimation;Icecrown;480 | x=6644.5 y=3185.400146484375 | size=1 | links=#48812(auto Inside;Sanctum of Reanimation;Icecrown;479):24

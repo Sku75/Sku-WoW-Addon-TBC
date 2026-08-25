@@ -1,0 +1,3 @@
+Zone areaId 1446 — eine Zeile pro Wegpunkt; Links inline.
+
+#28790 | s;Eastern Kingdoms;Searing Gorge;Firewatch Ridge;Thorium Point§s;Östliche Königreiche;Sengende Schlucht;Firewatchgrat;Thoriumspitze§s;Royaumes de l'est;Gorge des Vents brûlants;Crête de Guet-du-feu;Halte du Thorium | x=-6513.68 y=-1142.76 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 3427 — eine Zeile pro Wegpunkt; Links inline.
+
+#28698 | s;Kalimdor;Silithus;Bronzebeard Encampment;Bronzebeard Encampment§s;Kalimdor;Silithus;Bronzebeards Lager;Bronzebeards Lager§s;Kalimdor;Silithus;Campement de Barbe-de-bronze;Campement de Barbe-de-bronze | x=-8021.76 y=-1105.84 | size=1

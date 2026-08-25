@@ -1,0 +1,3 @@
+Zone areaId 340 — eine Zeile pro Wegpunkt; Links inline.
+
+#28775 | s;Eastern Kingdoms;Badlands;Kargath§s;Östliche Königreiche;Ödland;Kargath§s;Royaumes de l'est;Terres ingrates;Kargath | x=-6676.42 y=-2186.68 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 497 — eine Zeile pro Wegpunkt; Links inline.
+
+#28688 | s;Kalimdor;Dustwallow Marsh;Witch Hill;Swamplight Manor§s;Kalimdor;Marschen von Dustwallow;Hexenhügel;Swamplight-Anwesen§s;Kalimdor;Marécage d'Âprefange;Colline des sorcières;Manoir des Flammeroles | x=-2949.47 y=-3893.5 | size=1

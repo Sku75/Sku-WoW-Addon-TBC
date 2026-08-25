@@ -2261,6 +2261,67 @@ function SkuNav:PLAYER_LEAVING_WORLD(...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Packed-name helpers. Route data stores one "§"-separated string per waypoint,
+-- fields positional against Sku.Locs (enUS§deDE§frFR since Sku v42.09). The old
+-- code here used string.match("(.+)§(.+)"), which is greedy and parses a
+-- three-field name as en="a§b", de="c" — actively wrong since French names
+-- shipped. These two helpers are the single split/pack used everywhere in the
+-- mapper; they mirror Sku/SkuNav/Core.lua LoadDefaultMapData.
+function SkuNav:SplitPackedNames(aPacked)
+	local tFields = {}
+	if type(aPacked) == "string" then
+		local tPos = 1
+		while true do
+			local tS, tE = string.find(aPacked, "§", tPos, true)
+			if not tS then
+				tFields[#tFields + 1] = string.sub(aPacked, tPos)
+				break
+			end
+			tFields[#tFields + 1] = string.sub(aPacked, tPos, tS - 1)
+			tPos = tE + 1
+		end
+	end
+	local tNames = {}
+	for i = 1, #Sku.Locs do
+		-- missing trailing fields become "" (NOT a copy of enUS: packing a copy
+		-- back would make every untouched waypoint look edited to the merge tool)
+		tNames[Sku.Locs[i]] = tFields[i] or ""
+	end
+	return tNames
+end
+
+function SkuNav:PackNames(aNames)
+	-- trailing empty fields are trimmed so a waypoint that came in as "en§de"
+	-- and was never renamed packs back to the byte-identical "en§de"
+	local tFields = {}
+	for i = 1, #Sku.Locs do
+		tFields[i] = aNames and aNames[Sku.Locs[i]] or ""
+	end
+	local tLast = #tFields
+	while tLast > 1 and tFields[tLast] == "" do
+		tFields[tLast] = nil
+		tLast = tLast - 1
+	end
+	return table.concat(tFields, "§")
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Which game-world phase this client is on ("era" / "tbc" / "wotlk"). The
+-- Anniversary timeline is cyclical and maps genuinely differ between phases, so
+-- every waypoint created by the mapper is stamped with the phase it was
+-- observed in (SetWaypoint). Derived from the client build — on Anniversary the
+-- phase and the client always match.
+function SkuNav:GetRealmPhase()
+	local tToc = Sku.toc or select(4, GetBuildInfo())
+	if tToc >= 30000 then
+		return "wotlk"
+	elseif tToc >= 20000 then
+		return "tbc"
+	end
+	return "era"
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_LOGIN(...)
 	SkuNav.MinimapFull = false
 	SkuOptions.db.global["SkuNav"] = SkuOptions.db.global["SkuNav"] or {}
@@ -2277,13 +2338,7 @@ function SkuNav:PLAYER_LOGIN(...)
 			local tData = SkuOptions.db.global["SkuNav"].WaypointsNew[x]
 			SkuOptions.db.global["SkuNav"].Waypoints[x] = tData
 			if SkuOptions.db.global["SkuNav"].Waypoints[x][1] ~= false then
-				local en, de = string.match(SkuOptions.db.global["SkuNav"].Waypoints[x].names, "(.+)§(.+)")
-				if not en or not de then
-					en, de = "", ""
-				end
-				SkuOptions.db.global["SkuNav"].Waypoints[x].names = {}
-				SkuOptions.db.global["SkuNav"].Waypoints[x].names["enUS"] = en
-				SkuOptions.db.global["SkuNav"].Waypoints[x].names["deDE"] = de
+				SkuOptions.db.global["SkuNav"].Waypoints[x].names = SkuNav:SplitPackedNames(SkuOptions.db.global["SkuNav"].Waypoints[x].names)
 			end
 		end
 	end
@@ -2303,7 +2358,9 @@ function SkuNav:PLAYER_LOGOUT()
 		local tdata = SkuOptions.db.global["SkuNav"].Waypoints[x]
 		SkuOptions.db.global["SkuNav"].WaypointsNew[x] = tdata
 		if SkuOptions.db.global["SkuNav"].Waypoints[x][1] ~= false then
-			SkuOptions.db.global["SkuNav"].WaypointsNew[x].names = (SkuOptions.db.global["SkuNav"].Waypoints[x].names.enUS).."§"..(SkuOptions.db.global["SkuNav"].Waypoints[x].names.deDE)
+			-- pack ALL locales positionally (the old enUS§deDE concat silently
+			-- dropped every French name on each mapper session)
+			SkuOptions.db.global["SkuNav"].WaypointsNew[x].names = SkuNav:PackNames(SkuOptions.db.global["SkuNav"].Waypoints[x].names)
 		end
 		SkuOptions.db.global["SkuNav"].Waypoints[x] = nil
 	end
@@ -2318,13 +2375,24 @@ function SkuNav:LoadDefaultMapData(aForce)
 	-- is no in-progress custom work (or on an explicit reset via aForce).
 	--
 	-- SkuDB/assets/routedata_global.lua is a byte-for-byte copy of
-	-- Sku/SkuDB/assets/routedata_global.lua and only DEFINES a builder function
-	-- at file load; we build the tables on demand here, then split the packed
-	-- "en§de" names into the names table (mirrors Sku's own LoadDefaultMapData
-	-- and this file's PLAYER_LOGIN migration). Calling the builder each time is
-	-- fine: it rebuilds SkuDB.routedata fresh, so a reset yields a clean copy.
+	-- Sku/SkuDB/assets/routedata_global.lua and only DEFINES builder functions
+	-- at file load. Since the "sections" wrapping (dev/rework-docs/
+	-- _wrap_deferred.py) that is ONE BUILDER PER TOP-LEVEL SECTION
+	-- (SkuDBBuildRouteGlobalWaypointsNew etc.), not a single
+	-- SkuDBBuildRouteGlobal any more; we call every section builder that
+	-- exists, plus the legacy single builder as fallback for an old package.
+	-- Calling the builders each time is fine: they rebuild SkuDB.routedata
+	-- fresh, so a reset yields a clean copy.
 	if SkuOptions.db.global["SkuNav"].hasCustomMapData ~= true or aForce then
-		if type(SkuDBBuildRouteGlobal) == "function" then
+		local tBuiltAny = false
+		for _, tSection in ipairs({"WaypointsNew", "Waypoints", "SequenceNumbers", "WaypointLevels", "Links"}) do
+			local tBuilder = _G["SkuDBBuildRouteGlobal"..tSection]
+			if type(tBuilder) == "function" then
+				tBuilder()
+				tBuiltAny = true
+			end
+		end
+		if not tBuiltAny and type(SkuDBBuildRouteGlobal) == "function" then
 			SkuDBBuildRouteGlobal()
 		end
 
@@ -2336,13 +2404,7 @@ function SkuNav:LoadDefaultMapData(aForce)
 					local tData = tGlobal.WaypointsNew[x]
 					tGlobal.Waypoints[x] = tData
 					if tGlobal.Waypoints[x][1] ~= false then
-						local en, de = string.match(tGlobal.Waypoints[x].names, "(.+)§(.+)")
-						if not en or not de then
-							en, de = "", ""
-						end
-						tGlobal.Waypoints[x].names = {}
-						tGlobal.Waypoints[x].names["enUS"] = en
-						tGlobal.Waypoints[x].names["deDE"] = de
+						tGlobal.Waypoints[x].names = SkuNav:SplitPackedNames(tGlobal.Waypoints[x].names)
 					end
 				end
 				tGlobal.WaypointsNew = nil
@@ -2352,11 +2414,20 @@ function SkuNav:LoadDefaultMapData(aForce)
 			SkuOptions.db.global["SkuNav"].Links = tGlobal.Links or {}
 			SkuOptions.db.global["SkuNav"].WaypointLevels = tGlobal.WaypointLevels or {}
 			SkuOptions.db.global["SkuNav"].SequenceNumbers = tGlobal.SequenceNumbers or {}
+
+			-- Record which numbered map dataset this working copy is based on.
+			-- SKUMAPPER_SEED_MAPID comes from SkuDB/assets/mapid.lua, stamped by
+			-- the maintainer tooling (dev/mapper/skumap.py) at package time.
+			-- Recorded ONLY when we actually (re)seed — in-progress work keeps
+			-- the id of the seed it started from, which is exactly what the
+			-- merge tool needs as the three-way base ("basedOn").
+			SkuOptions.db.global["SkuNav"].seedMapId = SKUMAPPER_SEED_MAPID or 0
 		else
 			-- Route file absent (e.g. not copied in at package time) — start empty
 			-- rather than erroring; the tool still runs, just without a baseline.
 			SkuOptions.db.global["SkuNav"].Waypoints = {}
 			SkuOptions.db.global["SkuNav"].Links = {}
+			SkuOptions.db.global["SkuNav"].seedMapId = 0
 		end
 	end
 end
@@ -2592,6 +2663,9 @@ function SkuNav:SetWaypoint(aName, aData, aIsTempWaypoint)
 			["createdAt"] = GetTime(),--WaypointCache[tWpIndex].createdAt,
 			["createdBy"] = WaypointCache[tWpIndex].createdBy,
 			["size"] = WaypointCache[tWpIndex].size,
+			-- game-world phase this waypoint was observed in (era/tbc/wotlk);
+			-- creation-only — edits never restamp it (see GetRealmPhase)
+			["phase"] = SkuNav:GetRealmPhase(),
 			["lComments"] = {
 				["deDE"] = {},
 				["enUS"] = {},

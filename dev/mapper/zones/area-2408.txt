@@ -1,0 +1,3 @@
+Zone areaId 2408 — eine Zeile pro Wegpunkt; Links inline.
+
+#28662 | s;Kalimdor;Desolace;Shadowprey§s;Kalimdor;Desolace;Shadowprey§s;Kalimdor;Désolace;Shadowprey | x=-1657.85 y=-3097.92 | size=1

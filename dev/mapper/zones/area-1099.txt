@@ -1,0 +1,3 @@
+Zone areaId 1099 — eine Zeile pro Wegpunkt; Links inline.
+
+#28653 | s;Kalimdor;The Barrens;Camp Mojache§s;Kalimdor;Das Brachland;Camp Mojache§s;Kalimdor;Les Tarides;Camp Mojache | x=-4394.98 y=-215.611 | size=1

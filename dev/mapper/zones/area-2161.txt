@@ -1,0 +1,3 @@
+Zone areaId 2161 — eine Zeile pro Wegpunkt; Links inline.
+
+#28753 | s;Eastern Kingdoms;Duskwood;The Rotting Orchard;Roland's Doom§s;Östliche Königreiche;Dämmerwald;Der verlassene Obstgarten;Rolands Verdammnis§s;Royaumes de l'est;Bois de la Pénombre;The Rotting Orchard;Destin de Roland | x=-11076 y=-1139.98 | size=1

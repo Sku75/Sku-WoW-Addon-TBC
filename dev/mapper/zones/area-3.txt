@@ -1,0 +1,636 @@
+Zone areaId 3 — eine Zeile pro Wegpunkt; Links inline.
+
+#51 | auto Badlands;1§auto Ödland;1§auto Terres ingrates;1 | x=-6390.60009765625 y=-3397 | size=1 | links=#18061(auto Badlands;207):44 #18519(auto Badlands;213):36 #20837(auto Badlands;238):24 c2739.1:20 c2740.4:20
+#102 | auto Badlands;2§auto Ödland;2§auto Terres ingrates;2 | x=-6440.5 y=-3926 | size=1 | links=#10416(auto Badlands;127):39 #27594(auto Badlands;294):28
+#197 | auto Badlands;3§auto Ödland;3§auto Terres ingrates;3 | x=-6660.39990234375 y=-2511.199951171875 | size=1 | links=#5159(auto Badlands;58):47 #13559(auto Badlands;157):32
+#301 | auto Badlands;4§auto Ödland;4§auto Terres ingrates;4 | x=-7087.5 y=-2751.900146484375 | size=1 | links=c2734.10:36 c2729.37:120
+#306 | auto Badlands;5§auto Ödland;5§auto Terres ingrates;5 | x=-7140.10009765625 y=-2240.60009765625 | size=1 | links=#6502(auto Badlands;78):26 c2736.28:35
+#401 | auto Badlands;6§auto Ödland;6§auto Terres ingrates;6 | x=-6839.89990234375 y=-3603 | size=1 | links=#5302(auto Badlands;63):47 #20413(auto Badlands;234):51
+#524 | auto Badlands;7§auto Ödland;7§auto Terres ingrates;7 | x=-6077.89990234375 y=-3074.5 | size=1 | links=#4006(auto Badlands;44):8 #4873(auto Badlands;55):10
+#625 | auto Badlands;8§auto Ödland;8§auto Terres ingrates;8 | x=-6545.39990234375 y=-3138.300048828125 | size=1 | links=#15178(auto Badlands;176):73 #17274(auto Badlands;199):42
+#663 | auto Badlands;9§auto Ödland;9§auto Terres ingrates;9 | x=-6619.80029296875 y=-2233.60009765625 | size=1 | links=#2851(auto Badlands;34):70 #23934(auto Badlands;260):47
+#706 | auto Badlands;10§auto Ödland;10§auto Terres ingrates;10 | x=-6621.2001953125 y=-2726.199951171875 | size=1 | links=c2921.1:12
+#731 | auto Badlands;11§auto Ödland;11§auto Terres ingrates;11 | x=-6727 y=-2535.300048828125 | size=5 | links=#17221(auto Badlands;198):98 c2735.2:126
+#732 | auto Badlands;12§auto Ödland;12§auto Terres ingrates;12 | x=-6622.30029296875 y=-3489.5 | size=1 | links=#10089(auto Badlands;124):12 #18023(auto Badlands;205):22
+#777 | OBJECT;2867;Excavation Supply Crate;Badlands;1;66.92;23.45§OBJEKT;2867;Ausgrabungsgrundbedarfskiste;Ödland;1;66.92;23.45§OBJET;2867;Caisse de ravitaillement pour l'excavation;Terres ingrates;1;66.92;23.45 | x=-6255.854000933093 y=-3736.729030523587 | size=1
+#830 | auto Badlands;13§auto Ödland;13§auto Terres ingrates;13 | x=-6198.2001953125 y=-2971.300048828125 | size=1 | links=#8002(auto Badlands;99):5 #16665(auto Badlands;191):11
+#1470 | auto Badlands;14§auto Ödland;14§auto Terres ingrates;14 | x=-6285.80029296875 y=-3655.199951171875 | size=1 | links=#11313(auto Badlands;135):62 c2906.4:25
+#1512 | auto Badlands;15§auto Ödland;15§auto Terres ingrates;15 | x=-6860.80029296875 y=-4112.10009765625 | size=1 | links=#9475(auto Badlands;114):36 c2726.1:41 o2933.1:143 c2726.4:47 c2726.7:88
+#1521 | auto Badlands;16§auto Ödland;16§auto Terres ingrates;16 | x=-6677.10009765625 y=-2227.900146484375 | size=1 | links=#2762(auto Badlands;33):9 #5264(auto Badlands;61):4
+#1633 | auto Badlands;17§auto Ödland;17§auto Terres ingrates;17 | x=-6049.39990234375 y=-3319.10009765625 | size=1 | links=#9207(auto Badlands;111):38 c2751.3:41 c4846.4:46
+#1813 | auto Badlands;18§auto Ödland;18§auto Terres ingrates;18 | x=-6206.10009765625 y=-3049.199951171875 | size=1 | links=#8989(auto Badlands;109):4 #17376(auto Badlands;200):4
+#1834 | auto Badlands;19§auto Ödland;19§auto Terres ingrates;19 | x=-6079.5 y=-3259 | size=1 | links=#19833(auto Badlands;229):14 c4846.3:23 c4846.5:13 c4844.7:29 c4844.9:19
+#1852 | auto Badlands;20§auto Ödland;20§auto Terres ingrates;20 | x=-6057 y=-3171.10009765625 | size=1 | links=c4846.9:12 c4844.13:10
+#1995 | entry and exit;tomb;Badlands§ein- und ausgang;Gruft;Ödland§entrée et sortie;tomb;Terres ingrates | x=-6569.7001953125 y=-3485.800048828125 | size=1 | links=#13779(auto Badlands;159):20 #18228(auto Badlands;209):18
+#2012 | auto Badlands;21§auto Ödland;21§auto Terres ingrates;21 | x=-7096.89990234375 y=-2999.900146484375 | size=1 | links=c2753.2:92 c92.11:37 c2729.34:33
+#2017 | auto Badlands;22§auto Ödland;22§auto Terres ingrates;22 | x=-6077.30029296875 y=-3012.400146484375 | size=1 | links=#5733(auto Badlands;69):4 #23472(auto Badlands;258):3 #27526(auto Badlands;292):2
+#2049 | auto Badlands;23§auto Ödland;23§auto Terres ingrates;23 | x=-6135.39990234375 y=-2910.60009765625 | size=1 | links=#13860(auto Badlands;160):10 #15853(auto Badlands;178):6
+#2133 | passage;from;Badlands;to;Searing Gorge§passage;von;Ödland;nach;Sengende Schlucht§passage;de;Terres ingrates;vers;Gorge des Vents brûlants | x=-6942.10009765625 y=-2079.300048828125 | size=1 | links=#14037(auto Badlands;161):20 #25836(passage;from;Searing Gorge;to;Badlands):13
+#2206 | auto Badlands;24§auto Ödland;24§auto Terres ingrates;24 | x=-6151.30029296875 y=-2974.199951171875 | size=1 | links=#5334(auto Badlands;64):19 #16519(auto Badlands;189):20
+#2291 | auto Badlands;25§auto Ödland;25§auto Terres ingrates;25 | x=-6182.60009765625 y=-2923 | size=1 | links=#14268(auto Badlands;163):11 #16964(auto Badlands;194):8
+#2304 | auto Badlands;26§auto Ödland;26§auto Terres ingrates;26 | x=-6554.5 y=-3479.900146484375 | size=1 | links=#9792(auto Badlands;120):13 #18371(auto Badlands;210):14
+#2439 | auto Badlands;27§auto Ödland;27§auto Terres ingrates;27 | x=-6967.60009765625 y=-3909.60009765625 | size=1 | links=#11840(auto Badlands;138):28 #19815(auto Badlands;227):60 c2725.3:46
+#2478 | auto Badlands;28§auto Ödland;28§auto Terres ingrates;28 | x=-6810.5 y=-3835.60009765625 | size=1 | links=c2725.7:36 c2725.8:52
+#2562 | auto Badlands;29§auto Ödland;29§auto Terres ingrates;29 | x=-7093.7001953125 y=-3639.400146484375 | size=1 | links=#16828(auto Badlands;192):34 #18129(auto Badlands;208):53
+#2575 | auto Badlands;30§auto Ödland;30§auto Terres ingrates;30 | x=-6730.30029296875 y=-3238.900146484375 | size=5 | links=#9264(auto Badlands;112):86 #18530(auto Badlands;214):73 #18710(auto Badlands;217):112 c2732.14:15 c2732.23:30
+#2603 | auto Badlands;31§auto Ödland;31§auto Terres ingrates;31 | x=-6028.39990234375 y=-3212.10009765625 | size=1 | links=#7085(auto Badlands;86):12 c4846.7:6 c4844.12:4
+#2703 | auto Badlands;32§auto Ödland;32§auto Terres ingrates;32 | x=-6153.30029296875 y=-3048.900146484375 | size=1 | links=#7416(auto Badlands;91):7 #20812(auto Badlands;237):8
+#2762 | auto Badlands;33§auto Ödland;33§auto Terres ingrates;33 | x=-6668 y=-2225.400146484375 | size=1 | links=#1521(auto Badlands;16):9 #13449(auto Badlands;155):5
+#2851 | auto Badlands;34§auto Ödland;34§auto Terres ingrates;34 | x=-6605.7001953125 y=-2302.199951171875 | size=1 | links=#663(auto Badlands;9):70 #22034(auto Badlands;248):43
+#2919 | auto Badlands;35§auto Ödland;35§auto Terres ingrates;35 | x=-6438.39990234375 y=-3355.400146484375 | size=1 | links=#10918(auto Badlands;132):9 #18061(auto Badlands;207):50 c2740.5:21
+#2963 | auto Badlands;36§auto Ödland;36§auto Terres ingrates;36 | x=-6640.39990234375 y=-2731.199951171875 | size=1 | links=c2921.1:9 c2735.2:87 c2732.13:95
+#2977 | auto Badlands;37§auto Ödland;37§auto Terres ingrates;37 | x=-6931.7001953125 y=-4083.60009765625 | size=1 | links=#8006(auto Badlands;100):6 #9529(auto Badlands;117):6
+#3014 | auto Badlands;38§auto Ödland;38§auto Terres ingrates;38 | x=-6131 y=-2938 | size=1 | links=#11153(auto Badlands;133):10 #17037(auto Badlands;196):9
+#3105 | auto Badlands;39§auto Ödland;39§auto Terres ingrates;39 | x=-7218.2001953125 y=-3411.300048828125 | size=1 | links=#26207(auto Badlands;275):25 c2791.11:28
+#3238 | auto Badlands;40§auto Ödland;40§auto Terres ingrates;40 | x=-6460.7001953125 y=-3995.5 | size=1 | links=#5184(auto Badlands;59):30 #25352(auto Badlands;270):29
+#3299 | auto Badlands;41§auto Ödland;41§auto Terres ingrates;41 | x=-6738.2001953125 y=-2186 | size=1 | links=#5652(auto Badlands;68):41 #15032(auto Badlands;173):45
+#3666 | Lucien Tosselwrench;Questgiver;Badlands;1;25.82;44.24§Lucien Knobelzang;Questgeber;Ödland;1;25.82;44.24§Lucien Torsaclef;Questgiver;Terres ingrates;1;25.82;44.24 | x=-6616.362954917577 y=-2727.14645173827 | size=1
+#3687 | auto Badlands;42§auto Ödland;42§auto Terres ingrates;42 | x=-6079.89990234375 y=-3003.60009765625 | size=1 | links=#13681(auto Badlands;158):9 #27526(auto Badlands;292):6
+#3700 | Magregan Deepshadow;Uldaman§Magregan Grubenschatten;Uldaman§Magregan Fondombre;Uldaman | x=-6153.80029296875 y=-3086.400146484375 | size=1 | links=#22284(auto Badlands;250):4
+#3708 | auto Badlands;43§auto Ödland;43§auto Terres ingrates;43 | x=-6548.89990234375 y=-2988.5 | size=1 | links=#13231(auto Badlands;149):35 #20114(auto Badlands;232):45
+#4006 | auto Badlands;44§auto Ödland;44§auto Terres ingrates;44 | x=-6070.39990234375 y=-3071.400146484375 | size=1 | links=#524(auto Badlands;7):8 #7490(auto Badlands;94):10
+#4008 | auto Badlands;45§auto Ödland;45§auto Terres ingrates;45 | x=-6091.80029296875 y=-3179.10009765625 | size=1 | links=#11830(passage;The Maker's Terrace;Badlands;instance entrance):8 #16216(auto Badlands;181):8
+#4084 | auto Badlands;46§auto Ödland;46§auto Terres ingrates;46 | x=-7003 y=-2311.300048828125 | size=1 | links=#16640(auto Badlands;190):23 #24843(auto Badlands;265):24 c2729.22:25
+#4113 | auto Badlands;47§auto Ödland;47§auto Terres ingrates;47 | x=-6153.60009765625 y=-2891.60009765625 | size=1 | links=#4479(auto Badlands;52):12 #7372(auto Badlands;89):10
+#4128 | auto Badlands;48§auto Ödland;48§auto Terres ingrates;48 | x=-6767.89990234375 y=-3787.699951171875 | size=1 | links=#22116(auto Badlands;249):59 c2725.5:63 c2725.7:28
+#4233 | auto Badlands;49§auto Ödland;49§auto Terres ingrates;49 | x=-7035.30029296875 y=-3702.10009765625 | size=1 | links=#12238(auto Badlands;141):70 #16828(auto Badlands;192):51
+#4333 | auto Badlands;50§auto Ödland;50§auto Terres ingrates;50 | x=-6681.89990234375 y=-2222.900146484375 | size=1 | links=#26303(auto Badlands;277):16 c17097.1:7
+#4351 | auto Badlands;51§auto Ödland;51§auto Terres ingrates;51 | x=-6662.89990234375 y=-2165.900146484375 | size=1 | links=#18433(auto Badlands;211):7 #19395(auto Badlands;225):9
+#4479 | auto Badlands;52§auto Ödland;52§auto Terres ingrates;52 | x=-6144.30029296875 y=-2882.699951171875 | size=1 | links=#4113(auto Badlands;47):12 #4788(auto Badlands;54):4
+#4502 | auto Badlands;53§auto Ödland;53§auto Terres ingrates;53 | x=-6821 y=-2211.10009765625 | size=1 | links=#5652(auto Badlands;68):45 #20033(auto Badlands;231):37
+#4788 | auto Badlands;54§auto Ödland;54§auto Terres ingrates;54 | x=-6140.89990234375 y=-2886.199951171875 | size=1 | links=#4479(auto Badlands;52):4 #20908(auto Badlands;239):6
+#4873 | auto Badlands;55§auto Ödland;55§auto Terres ingrates;55 | x=-6086.39990234375 y=-3080.800048828125 | size=1 | links=#524(auto Badlands;7):10 #15097(auto Badlands;174):14
+#4924 | auto Badlands;56§auto Ödland;56§auto Terres ingrates;56 | x=-6829.2001953125 y=-3340.5 | size=5 | links=#18530(auto Badlands;214):86 #24255(auto Badlands;262):80
+#4990 | auto Badlands;57§auto Ödland;57§auto Terres ingrates;57 | x=-6181.2001953125 y=-3060.900146484375 | size=1 | links=#9608(auto Badlands;118):9 #19168(auto Badlands;223):10
+#5159 | auto Badlands;58§auto Ödland;58§auto Terres ingrates;58 | x=-6643.39990234375 y=-2467.300048828125 | size=1 | links=#197(auto Badlands;3):47 #23102(auto Badlands;254):47
+#5184 | auto Badlands;59§auto Ödland;59§auto Terres ingrates;59 | x=-6430 y=-3994.60009765625 | size=1 | links=#3238(auto Badlands;40):30 #18053(auto Badlands;206):40 c2725.15:17
+#5257 | auto Badlands;60§auto Ödland;60§auto Terres ingrates;60 | x=-6412.80029296875 y=-3268.5 | size=1 | links=#19904(auto Badlands;230):31 #20247(auto Badlands;233):75 c2727.26:51
+#5264 | auto Badlands;61§auto Ödland;61§auto Terres ingrates;61 | x=-6679.30029296875 y=-2231.900146484375 | size=1 | links=#1521(auto Badlands;16):4 #23817(auto Badlands;259):8
+#5287 | auto Badlands;62§auto Ödland;62§auto Terres ingrates;62 | x=-6694.2001953125 y=-3513 | size=1 | links=#9495(auto Badlands;115):129 c2727.6:65
+#5302 | auto Badlands;63§auto Ödland;63§auto Terres ingrates;63 | x=-6793.30029296875 y=-3595.699951171875 | size=1 | links=#401(auto Badlands;6):47 #12721(auto Badlands;145):26
+#5334 | auto Badlands;64§auto Ödland;64§auto Terres ingrates;64 | x=-6139.80029296875 y=-2958.400146484375 | size=1 | links=#2206(auto Badlands;24):19 #11153(auto Badlands;133):13 #13407(auto Badlands;153):24
+#5343 | auto Badlands;65§auto Ödland;65§auto Terres ingrates;65 | x=-6672.60009765625 y=-2236 | size=1 | links=#23817(auto Badlands;259):2 #25637(auto Badlands;272):4
+#5580 | auto Badlands;66§auto Ödland;66§auto Terres ingrates;66 | x=-7125.60009765625 y=-3123.5 | size=1 | links=#10694(auto Badlands;131):64 #25347(auto Badlands;269):48
+#5592 | auto Badlands;67§auto Ödland;67§auto Terres ingrates;67 | x=-6878.39990234375 y=-2223.10009765625 | size=1 | links=#6185(auto Badlands;72):26 #20033(auto Badlands;231):23
+#5652 | auto Badlands;68§auto Ödland;68§auto Terres ingrates;68 | x=-6777.89990234375 y=-2197.800048828125 | size=1 | links=#3299(auto Badlands;41):41 #4502(auto Badlands;53):45
+#5733 | auto Badlands;69§auto Ödland;69§auto Terres ingrates;69 | x=-6074 y=-3015.300048828125 | size=1 | links=#2017(auto Badlands;22):4 #25390(auto Badlands;271):5
+#5771 | auto Badlands;70§auto Ödland;70§auto Terres ingrates;70 | x=-6206.5 y=-3065.60009765625 | size=1 | links=#7491(auto Badlands;95):10 #14683(auto Badlands;170):9
+#6066 | auto Badlands;71§auto Ödland;71§auto Terres ingrates;71 | x=-6890.7001953125 y=-2330.300048828125 | size=5 | links=#6764(auto Badlands;80):70 #17980(auto Badlands;203):54 #26439(auto Badlands;280):49
+#6185 | auto Badlands;72§auto Ödland;72§auto Terres ingrates;72 | x=-6904.39990234375 y=-2223.699951171875 | size=1 | links=#5592(auto Badlands;67):26 #12620(auto Badlands;143):32 #20547(auto Badlands;235):21
+#6232 | auto Badlands;73§auto Ödland;73§auto Terres ingrates;73 | x=-6760.2001953125 y=-3672.400146484375 | size=1 | links=#12721(auto Badlands;145):58 #22116(auto Badlands;249):58
+#6280 | auto Badlands;74§auto Ödland;74§auto Terres ingrates;74 | x=-6650.10009765625 y=-2870 | size=1 | links=#9862(auto Badlands;121):61 c2732.13:43
+#6407 | auto Badlands;75§auto Ödland;75§auto Terres ingrates;75 | x=-6368.5 y=-3702.699951171875 | size=1 | links=#16246(auto Badlands;183):11 #16273(auto Badlands;184):17
+#6434 | auto Badlands;76§auto Ödland;76§auto Terres ingrates;76 | x=-6088 y=-3059.400146484375 | size=1 | links=#15097(auto Badlands;174):13 #28529(auto Badlands;300):14
+#6486 | auto Badlands;77§auto Ödland;77§auto Terres ingrates;77 | x=-6155.2001953125 y=-3370.60009765625 | size=1 | links=#9964(auto Badlands;122):57 #21545(auto Badlands;244):49 c2727.8:33
+#6502 | auto Badlands;78§auto Ödland;78§auto Terres ingrates;78 | x=-7116.5 y=-2253.699951171875 | size=1 | links=#306(auto Badlands;5):26 #23334(auto Badlands;256):22 c2736.13:9
+#6525 | auto Badlands;79§auto Ödland;79§auto Terres ingrates;79 | x=-6299 y=-3368.10009765625 | size=1 | links=#18969(auto Badlands;219):21 #23392(auto Badlands;257):35 c2727.7:14
+#6764 | auto Badlands;80§auto Ödland;80§auto Terres ingrates;80 | x=-6848.80029296875 y=-2386.699951171875 | size=5 | links=#6066(auto Badlands;71):70 #14346(auto Badlands;167):69
+#6779 | auto Badlands;81§auto Ödland;81§auto Terres ingrates;81 | x=-6162.2001953125 y=-3047.199951171875 | size=1 | links=#14301(auto Badlands;164):4 #26433(auto Badlands;279):3
+#6881 | auto Badlands;82§auto Ödland;82§auto Terres ingrates;82 | x=-6238.89990234375 y=-2965 | size=1 | links=#9074(auto Badlands;110):12 #26528(auto Badlands;283):5
+#6967 | auto Badlands;83§auto Ödland;83§auto Terres ingrates;83 | x=-6677.60009765625 y=-2231 | size=1 | links=#14356(auto Badlands;168):4 #28278(auto Badlands;297):6
+#6968 | auto Badlands;84§auto Ödland;84§auto Terres ingrates;84 | x=-6927.30029296875 y=-4071.900146484375 | size=1 | links=#8006(auto Badlands;100):6 #26792(auto Badlands;285):4
+#7041 | auto Badlands;85§auto Ödland;85§auto Terres ingrates;85 | x=-6408.2001953125 y=-3749.699951171875 | size=1 | links=#9377(auto Badlands;113):26 #16961(auto Badlands;193):21
+#7085 | auto Badlands;86§auto Ödland;86§auto Terres ingrates;86 | x=-6027 y=-3224.10009765625 | size=1 | links=#2603(auto Badlands;31):12 c4844.11:9
+#7317 | auto Badlands;87§auto Ödland;87§auto Terres ingrates;87 | x=-6670.30029296875 y=-2176.900146484375 | size=1 | links=#18433(auto Badlands;211):6 #23234(central location;Kargath;Badlands):8
+#7332 | auto Badlands;88§auto Ödland;88§auto Terres ingrates;88 | x=-6662.7001953125 y=-2232.400146484375 | size=1 | links=#13344(auto Badlands;151):5 #26495(auto Badlands;281):3
+#7372 | auto Badlands;89§auto Ödland;89§auto Terres ingrates;89 | x=-6160.89990234375 y=-2899.10009765625 | size=1 | links=#4113(auto Badlands;47):10 #27053(auto Badlands;289):10
+#7415 | auto Badlands;90§auto Ödland;90§auto Terres ingrates;90 | x=-6925.10009765625 y=-4048.900146484375 | size=1 | links=#9475(auto Badlands;114):59 #19815(auto Badlands;227):85 #26792(auto Badlands;285):18
+#7416 | auto Badlands;91§auto Ödland;91§auto Terres ingrates;91 | x=-6153.10009765625 y=-3056.800048828125 | size=1 | links=#2703(auto Badlands;32):7 #13041(auto Badlands;147):8
+#7439 | auto Badlands;92§auto Ödland;92§auto Terres ingrates;92 | x=-6378.10009765625 y=-3333.300048828125 | size=1 | links=#8397(auto Badlands;103):23 #18061(auto Badlands;207):21 #19904(auto Badlands;230):44
+#7478 | auto Badlands;93§auto Ödland;93§auto Terres ingrates;93 | x=-6254.89990234375 y=-3480.699951171875 | size=1 | links=#16371(auto Badlands;187):28 #25954(auto Badlands;274):18
+#7490 | auto Badlands;94§auto Ödland;94§auto Terres ingrates;94 | x=-6066.89990234375 y=-3081.300048828125 | size=1 | links=#4006(auto Badlands;44):10 #8582(auto Badlands;105):8
+#7491 | auto Badlands;95§auto Ödland;95§auto Terres ingrates;95 | x=-6197.30029296875 y=-3071.199951171875 | size=1 | links=#5771(auto Badlands;70):10 #19168(auto Badlands;223):9
+#7544 | auto Badlands;96§auto Ödland;96§auto Terres ingrates;96 | x=-6448.89990234375 y=-3863 | size=1 | links=#10416(auto Badlands;127):23 c2730.6:35
+#7558 | auto Badlands;97§auto Ödland;97§auto Terres ingrates;97 | x=-6215 y=-3053.699951171875 | size=1 | links=#14683(auto Badlands;170):5 #17376(auto Badlands;200):5
+#7919 | auto Badlands;98§auto Ödland;98§auto Terres ingrates;98 | x=-6657.5 y=-2146.900146484375 | size=1 | links=#13013(auto Badlands;146):4 #17091(auto Badlands;197):6
+#8002 | auto Badlands;99§auto Ödland;99§auto Terres ingrates;99 | x=-6197.2001953125 y=-2977.10009765625 | size=1 | links=#830(auto Badlands;13):5 #21530(auto Badlands;243):9
+#8006 | auto Badlands;100§auto Ödland;100§auto Terres ingrates;100 | x=-6928.89990234375 y=-4077.900146484375 | size=1 | links=#2977(auto Badlands;37):6 #6968(auto Badlands;84):6
+#8113 | auto Badlands;101§auto Ödland;101§auto Terres ingrates;101 | x=-6255.30029296875 y=-2935.800048828125 | size=1 | links=#10006(auto Badlands;123):8 c7057.1:17
+#8253 | auto Badlands;102§auto Ödland;102§auto Terres ingrates;102 | x=-6188.7001953125 y=-3003.400146484375 | size=1 | links=#21530(auto Badlands;243):18 #24710(auto Badlands;263):11
+#8397 | auto Badlands;103§auto Ödland;103§auto Terres ingrates;103 | x=-6356.80029296875 y=-3342.5 | size=1 | links=#7439(auto Badlands;92):23 #18969(auto Badlands;219):42
+#8447 | auto Badlands;104§auto Ödland;104§auto Terres ingrates;104 | x=-6482.80029296875 y=-4047.60009765625 | size=1 | links=#25352(auto Badlands;270):46 c2725.13:6
+#8582 | auto Badlands;105§auto Ödland;105§auto Terres ingrates;105 | x=-6068.7001953125 y=-3089.400146484375 | size=1 | links=#7490(auto Badlands;94):8 #18574(auto Badlands;216):10
+#8616 | auto Badlands;106§auto Ödland;106§auto Terres ingrates;106 | x=-7182.39990234375 y=-2422 | size=5 | links=c2944.1:50 c2718.3:78 c2717.4:116 c14224.5:145
+#8764 | auto Badlands;107§auto Ödland;107§auto Terres ingrates;107 | x=-6130.80029296875 y=-3025.199951171875 | size=1 | links=#13271(auto Badlands;150):7 #14318(auto Badlands;166):10
+#8827 | auto Badlands;108§auto Ödland;108§auto Terres ingrates;108 | x=-6126.2001953125 y=-3001.199951171875 | size=1 | links=#16519(auto Badlands;189):24 #18515(auto Badlands;212):6
+#8989 | auto Badlands;109§auto Ödland;109§auto Terres ingrates;109 | x=-6202.89990234375 y=-3052.699951171875 | size=1 | links=#1813(auto Badlands;18):4 #12104(quest target;the sealed hall;Uldaman):4
+#9074 | auto Badlands;110§auto Ödland;110§auto Terres ingrates;110 | x=-6243.60009765625 y=-2953 | size=1 | links=#6881(auto Badlands;82):12 #10006(auto Badlands;123):18 #19071(auto Badlands;221):26
+#9207 | auto Badlands;111§auto Ödland;111§auto Terres ingrates;111 | x=-6011.60009765625 y=-3314 | size=1 | links=#1633(auto Badlands;17):38 #26798(auto Badlands;286):26 c4844.8:64
+#9264 | auto Badlands;112§auto Ödland;112§auto Terres ingrates;112 | x=-6770.7001953125 y=-3162.300048828125 | size=1 | links=#2575(auto Badlands;30):86 #27922(central location;Valley of Fangs;Badlands):22
+#9377 | auto Badlands;113§auto Ödland;113§auto Terres ingrates;113 | x=-6412 y=-3775.5 | size=1 | links=#7041(auto Badlands;85):26 #10671(auto Badlands;130):48 c2730.5:24
+#9475 | auto Badlands;114§auto Ödland;114§auto Terres ingrates;114 | x=-6872.39990234375 y=-4077.300048828125 | size=1 | links=#1512(auto Badlands;15):36 #7415(auto Badlands;90):59
+#9495 | auto Badlands;115§auto Ödland;115§auto Terres ingrates;115 | x=-6685.39990234375 y=-3642.5 | size=1 | links=#5287(auto Badlands;62):129 #12721(auto Badlands;145):94 c2829.4:29 c2731.15:27
+#9514 | auto Badlands;116§auto Ödland;116§auto Terres ingrates;116 | x=-6091.10009765625 y=-3322.5 | size=1 | links=#21545(auto Badlands;244):30 c2751.3:15
+#9529 | auto Badlands;117§auto Ödland;117§auto Terres ingrates;117 | x=-6934.5 y=-4089.10009765625 | size=1 | links=#2977(auto Badlands;37):6 #15350(auto Badlands;177):9
+#9608 | auto Badlands;118§auto Ödland;118§auto Terres ingrates;118 | x=-6172.80029296875 y=-3056.60009765625 | size=1 | links=#4990(auto Badlands;57):9 #12554(auto Badlands;142):13
+#9771 | auto Badlands;119§auto Ödland;119§auto Terres ingrates;119 | x=-6146.5 y=-3021.300048828125 | size=1 | links=#13540(auto Badlands;156):8 #22288(auto Badlands;251):9
+#9792 | auto Badlands;120§auto Ödland;120§auto Terres ingrates;120 | x=-6554.5 y=-3466.60009765625 | size=1 | links=#2304(auto Badlands;26):13 #18228(auto Badlands;209):15
+#9862 | auto Badlands;121§auto Ödland;121§auto Terres ingrates;121 | x=-6644.10009765625 y=-2931.199951171875 | size=5 | links=#6280(auto Badlands;74):61 #13231(auto Badlands;149):75 c2731.20:41
+#9964 | auto Badlands;122§auto Ödland;122§auto Terres ingrates;122 | x=-6213.10009765625 y=-3370.800048828125 | size=1 | links=#6486(auto Badlands;77):57 #16371(auto Badlands;187):92 #23392(auto Badlands;257):50 c2751.1:12 c2727.3:19
+#10006 | auto Badlands;123§auto Ödland;123§auto Terres ingrates;123 | x=-6246.7001953125 y=-2934.300048828125 | size=1 | links=#8113(auto Badlands;101):8 #9074(auto Badlands;110):18
+#10089 | auto Badlands;124§auto Ödland;124§auto Terres ingrates;124 | x=-6630.39990234375 y=-3479.400146484375 | size=1 | links=#732(auto Badlands;12):12 #16285(auto Badlands;185):16
+#10155 | auto Badlands;125§auto Ödland;125§auto Terres ingrates;125 | x=-6595.2001953125 y=-3338.10009765625 | size=5 | links=#18710(auto Badlands;217):99 c2910.1:71 c2727.10:21 c2727.24:63
+#10384 | auto Badlands;126§auto Ödland;126§auto Terres ingrates;126 | x=-7174.80029296875 y=-3376.199951171875 | size=1 | links=#12677(auto Badlands;144):12 #21298(auto Badlands;241):18
+#10416 | auto Badlands;127§auto Ödland;127§auto Terres ingrates;127 | x=-6447.2001953125 y=-3886.800048828125 | size=1 | links=#102(auto Badlands;2):39 #7544(auto Badlands;96):23 c2730.1:3 c2730.3:35
+#10494 | auto Badlands;128§auto Ödland;128§auto Terres ingrates;128 | x=-6601.60009765625 y=-3507.199951171875 | size=1 | links=#18023(auto Badlands;205):11 #18733(auto Badlands;218):16
+#10616 | auto Badlands;129§auto Ödland;129§auto Terres ingrates;129 | x=-7055.60009765625 y=-2275.800048828125 | size=1 | links=#24843(auto Badlands;265):39 #24938(auto Badlands;266):26
+#10671 | auto Badlands;130§auto Ödland;130§auto Terres ingrates;130 | x=-6437 y=-3816.900146484375 | size=1 | links=#9377(auto Badlands;113):48 c2730.2:11 c2730.4:54 c2730.6:15
+#10694 | auto Badlands;131§auto Ödland;131§auto Terres ingrates;131 | x=-7115.10009765625 y=-3060.10009765625 | size=1 | links=#5580(auto Badlands;66):64 c92.11:25
+#10918 | auto Badlands;132§auto Ödland;132§auto Terres ingrates;132 | x=-6436.89990234375 y=-3364.300048828125 | size=1 | links=#2919(auto Badlands;35):9 #22575(auto Badlands;252):11
+#11067 | instance entrance;dig site one;Uldaman§instanzeingang;Grabung eins;Uldaman§instance entrance;dig site one;Uldaman | x=-6068.5 y=-2955.300048828125 | size=1 | links=#14381(auto Badlands;169):10
+#11153 | auto Badlands;133§auto Ödland;133§auto Terres ingrates;133 | x=-6131.10009765625 y=-2948.5 | size=1 | links=#3014(auto Badlands;38):10 #5334(auto Badlands;64):13 #13407(auto Badlands;153):17
+#11256 | auto Badlands;134§auto Ödland;134§auto Terres ingrates;134 | x=-6666.89990234375 y=-2242.800048828125 | size=1 | links=#13083(auto Badlands;148):3 #13344(auto Badlands;151):5
+#11313 | auto Badlands;135§auto Ödland;135§auto Terres ingrates;135 | x=-6305.80029296875 y=-3595.800048828125 | size=1 | links=#1470(auto Badlands;14):62 c2850.3:44
+#11450 | auto Badlands;136§auto Ödland;136§auto Terres ingrates;136 | x=-6226.7001953125 y=-2961.10009765625 | size=1 | links=#19822(auto Badlands;228):24 #26528(auto Badlands;283):7
+#11752 | auto Badlands;137§auto Ödland;137§auto Terres ingrates;137 | x=-6125.5 y=-2902.300048828125 | size=1 | links=#15853(auto Badlands;178):6 #21664(auto Badlands;245):8
+#11830 | passage;The Maker's Terrace;Badlands;instance entrance§passage;Terrasse des Schöpfers;Ödland;instanzeingang§passage;La Terrasse du Faiseur;Terres ingrates;instance entrance | x=-6091.39990234375 y=-3187.699951171875 | size=1 | links=#4008(auto Badlands;45):8 #28444(auto Badlands;299):4
+#11840 | auto Badlands;138§auto Ödland;138§auto Terres ingrates;138 | x=-6976.89990234375 y=-3882.199951171875 | size=1 | links=#2439(auto Badlands;27):28 o2848.1:23 c2725.9:17
+#11860 | auto Badlands;139§auto Ödland;139§auto Terres ingrates;139 | x=-7141.60009765625 y=-3425.900146484375 | size=1 | links=#16322(auto Badlands;186):65 #20779(auto Badlands;236):33 c2728.5:13
+#12045 | central location;Apocryphan's Rest;Badlands§zentralpunkt;Apocryphans Ruheplatz;Ödland§emplacement central;Apocryphan's Rest;Terres ingrates | x=-6873.10009765625 y=-2489.900146484375 | size=1 | links=c2831.8:21 c2749.9:15 c2831.9:20 c2831.11:16
+#12104 | quest target;the sealed hall;Uldaman§questziel;Die versiegelte Halle;Uldaman§objectif de quête;the sealed hall;Uldaman | x=-6201.39990234375 y=-3057.300048828125 | size=1 | links=#8989(auto Badlands;109):4
+#12229 | auto Badlands;140§auto Ödland;140§auto Terres ingrates;140 | x=-6949.30029296875 y=-4106.5 | size=1 | links=#15350(auto Badlands;177):13 o2858.1:7
+#12238 | auto Badlands;141§auto Ödland;141§auto Terres ingrates;141 | x=-6982.30029296875 y=-3656.199951171875 | size=1 | links=#4233(auto Badlands;49):70 #20413(auto Badlands;234):101
+#12554 | auto Badlands;142§auto Ödland;142§auto Terres ingrates;142 | x=-6176 y=-3043.900146484375 | size=1 | links=#9608(auto Badlands;118):13 #26433(auto Badlands;279):10
+#12620 | auto Badlands;143§auto Ödland;143§auto Terres ingrates;143 | x=-6909 y=-2191.699951171875 | size=1 | links=#6185(auto Badlands;72):32 #26299(auto Badlands;276):22
+#12677 | auto Badlands;144§auto Ödland;144§auto Terres ingrates;144 | x=-7168.7001953125 y=-3365.199951171875 | size=1 | links=#10384(auto Badlands;126):12 c2785.1:8
+#12721 | auto Badlands;145§auto Ödland;145§auto Terres ingrates;145 | x=-6776.5 y=-3616.5 | size=1 | links=#5302(auto Badlands;63):26 #6232(auto Badlands;73):58 #9495(auto Badlands;115):94 c2888.1:13
+#13013 | auto Badlands;146§auto Ödland;146§auto Terres ingrates;146 | x=-6653.39990234375 y=-2144.400146484375 | size=1 | links=#7919(auto Badlands;98):4 c6868.1:5
+#13041 | auto Badlands;147§auto Ödland;147§auto Terres ingrates;147 | x=-6153.39990234375 y=-3065 | size=1 | links=#7416(auto Badlands;91):8 #21497(auto Badlands;242):8 #22707(auto Badlands;253):5
+#13083 | auto Badlands;148§auto Ödland;148§auto Terres ingrates;148 | x=-6670.80029296875 y=-2242.900146484375 | size=1 | links=#11256(auto Badlands;134):3 #26924(auto Badlands;287):6
+#13231 | auto Badlands;149§auto Ödland;149§auto Terres ingrates;149 | x=-6579.10009765625 y=-2969.5 | size=1 | links=#3708(auto Badlands;43):35 #9862(auto Badlands;121):75 c2731.2:25 c2749.8:11 c2731.9:26 c2731.14:29
+#13271 | auto Badlands;150§auto Ödland;150§auto Terres ingrates;150 | x=-6125.2001953125 y=-3020.199951171875 | size=1 | links=#8764(auto Badlands;107):7 #18515(auto Badlands;212):21 #22288(auto Badlands;251):11
+#13344 | auto Badlands;151§auto Ödland;151§auto Terres ingrates;151 | x=-6664.30029296875 y=-2237.5 | size=1 | links=#7332(auto Badlands;88):5 #11256(auto Badlands;134):5
+#13393 | auto Badlands;152§auto Ödland;152§auto Terres ingrates;152 | x=-6928.89990234375 y=-2112.800048828125 | size=1 | links=#14037(auto Badlands;161):17 #27220(auto Badlands;290):16
+#13407 | auto Badlands;153§auto Ödland;153§auto Terres ingrates;153 | x=-6115.30029296875 y=-2955.199951171875 | size=1 | links=#5334(auto Badlands;64):24 #11153(auto Badlands;133):17 #14381(auto Badlands;169):35
+#13440 | auto Badlands;154§auto Ödland;154§auto Terres ingrates;154 | x=-6631.2001953125 y=-3445.699951171875 | size=1 | links=#16285(auto Badlands;185):17 #19180(auto Badlands;224):15 c2732.5:34 c2727.6:56 c2727.18:62
+#13449 | auto Badlands;155§auto Ödland;155§auto Terres ingrates;155 | x=-6665.10009765625 y=-2220.300048828125 | size=1 | links=#2762(auto Badlands;33):5 #23934(auto Badlands;260):31 #26303(auto Badlands;277):16
+#13540 | auto Badlands;156§auto Ödland;156§auto Terres ingrates;156 | x=-6155.2001953125 y=-3021.400146484375 | size=1 | links=#9771(auto Badlands;119):8 #25641(auto Badlands;273):15
+#13559 | auto Badlands;157§auto Ödland;157§auto Terres ingrates;157 | x=-6672.39990234375 y=-2541.10009765625 | size=1 | links=#197(auto Badlands;3):32 #50162(auto Badlands;301):83 c2735.4:41
+#13681 | auto Badlands;158§auto Ödland;158§auto Terres ingrates;158 | x=-6086.30029296875 y=-2996.10009765625 | size=1 | links=#3687(auto Badlands;42):9 #23211(auto Badlands;255):8
+#13779 | auto Badlands;159§auto Ödland;159§auto Terres ingrates;159 | x=-6582.10009765625 y=-3502.300048828125 | size=1 | links=#1995(entry and exit;tomb;Badlands):20 #18733(auto Badlands;218):5
+#13860 | auto Badlands;160§auto Ödland;160§auto Terres ingrates;160 | x=-6139.80029296875 y=-2920 | size=1 | links=#2049(auto Badlands;23):10 #17037(auto Badlands;196):10
+#14037 | auto Badlands;161§auto Ödland;161§auto Terres ingrates;161 | x=-6940.30029296875 y=-2099.400146484375 | size=1 | links=#2133(passage;from;Badlands;to;Searing Gorge):20 #13393(auto Badlands;152):17
+#14049 | auto Badlands;162§auto Ödland;162§auto Terres ingrates;162 | x=-6383 y=-3726.5 | size=1 | links=#16273(auto Badlands;184):11 #16961(auto Badlands;193):14
+#14169 | quest target;South Common Hall;Uldaman§questziel;Südliche Bankenhalle;Uldaman§objectif de quête;South Common Hall;Uldaman | x=-6198.5 y=-2929.800048828125 | size=1 | links=#14268(auto Badlands;163):7
+#14268 | auto Badlands;163§auto Ödland;163§auto Terres ingrates;163 | x=-6191.30029296875 y=-2930.10009765625 | size=1 | links=#2291(auto Badlands;25):11 #14169(quest target;South Common Hall;Uldaman):7
+#14301 | auto Badlands;164§auto Ödland;164§auto Terres ingrates;164 | x=-6162 y=-3051.699951171875 | size=1 | links=#6779(auto Badlands;81):4 #26651(auto Badlands;284):4
+#14317 | auto Badlands;165§auto Ödland;165§auto Terres ingrates;165 | x=-6066.80029296875 y=-3155.10009765625 | size=1 | links=c4846.12:16 c4846.14:8
+#14318 | auto Badlands;166§auto Ödland;166§auto Terres ingrates;166 | x=-6138.30029296875 y=-3032.5 | size=1 | links=#8764(auto Badlands;107):10 #20812(auto Badlands;237):14
+#14346 | auto Badlands;167§auto Ödland;167§auto Terres ingrates;167 | x=-6824.10009765625 y=-2451.60009765625 | size=5 | links=#6764(auto Badlands;80):69 #17221(auto Badlands;198):31
+#14356 | auto Badlands;168§auto Ödland;168§auto Terres ingrates;168 | x=-6677.5 y=-2235 | size=1 | links=#6967(auto Badlands;83):4 #26924(auto Badlands;287):5
+#14381 | auto Badlands;169§auto Ödland;169§auto Terres ingrates;169 | x=-6079.39990234375 y=-2955.900146484375 | size=1 | links=#11067(instance entrance;dig site one;Uldaman):10 #13407(auto Badlands;153):35
+#14683 | auto Badlands;170§auto Ödland;170§auto Terres ingrates;170 | x=-6213 y=-3059.10009765625 | size=1 | links=#5771(auto Badlands;70):9 #7558(auto Badlands;97):5 o2743.2:10
+#14965 | auto Badlands;171§auto Ödland;171§auto Terres ingrates;171 | x=-7186.60009765625 y=-3219.400146484375 | size=1 | links=#18010(auto Badlands;204):11 c92.20:11
+#14996 | auto Badlands;172§auto Ödland;172§auto Terres ingrates;172 | x=-6994.80029296875 y=-3335.10009765625 | size=1 | links=c2893.4:11 c2893.7:15
+#15032 | auto Badlands;173§auto Ödland;173§auto Terres ingrates;173 | x=-6693.30029296875 y=-2178.10009765625 | size=1 | links=#3299(auto Badlands;41):45 #23234(central location;Kargath;Badlands):19
+#15097 | auto Badlands;174§auto Ödland;174§auto Terres ingrates;174 | x=-6096.89990234375 y=-3070.10009765625 | size=1 | links=#4873(auto Badlands;55):14 #6434(auto Badlands;76):13
+#15133 | auto Badlands;175§auto Ödland;175§auto Terres ingrates;175 | x=-6089.10009765625 y=-3112.800048828125 | size=1 | links=c4846.15:16 c4846.16:16
+#15178 | auto Badlands;176§auto Ödland;176§auto Terres ingrates;176 | x=-6552.39990234375 y=-3211.300048828125 | size=1 | links=#625(auto Badlands;8):73 #18710(auto Badlands;217):71 c2850.2:57 c2727.16:57 c2731.19:11
+#15350 | auto Badlands;177§auto Ödland;177§auto Terres ingrates;177 | x=-6940.10009765625 y=-4096.5 | size=1 | links=#9529(auto Badlands;117):9 #12229(auto Badlands;140):13
+#15853 | auto Badlands;178§auto Ödland;178§auto Terres ingrates;178 | x=-6131.60009765625 y=-2905.199951171875 | size=1 | links=#2049(auto Badlands;23):6 #11752(auto Badlands;137):6
+#16042 | auto Badlands;179§auto Ödland;179§auto Terres ingrates;179 | x=-7175.2001953125 y=-2191.300048828125 | size=1 | links=#17526(auto Badlands;201):21 c2736.28:25
+#16084 | auto Badlands;180§auto Ödland;180§auto Terres ingrates;180 | x=-6667.7001953125 y=-2236.300048828125 | size=1 | links=#26495(auto Badlands;281):7 #26948(auto Badlands;288):4
+#16216 | auto Badlands;181§auto Ödland;181§auto Terres ingrates;181 | x=-6092.10009765625 y=-3170.800048828125 | size=1 | links=#4008(auto Badlands;45):8 c4846.13:9
+#16245 | auto Badlands;182§auto Ödland;182§auto Terres ingrates;182 | x=-6616.60009765625 y=-2389.400146484375 | size=1 | links=#22034(auto Badlands;248):45 #24052(auto Badlands;261):21
+#16246 | auto Badlands;183§auto Ödland;183§auto Terres ingrates;183 | x=-6358.89990234375 y=-3696 | size=1 | links=#6407(auto Badlands;75):11 c2731.12:52
+#16273 | auto Badlands;184§auto Ödland;184§auto Terres ingrates;184 | x=-6381.5 y=-3714.900146484375 | size=1 | links=#6407(auto Badlands;75):17 #14049(auto Badlands;162):11
+#16285 | auto Badlands;185§auto Ödland;185§auto Terres ingrates;185 | x=-6630.30029296875 y=-3463.10009765625 | size=1 | links=#10089(auto Badlands;124):16 #13440(auto Badlands;154):17
+#16322 | auto Badlands;186§auto Ödland;186§auto Terres ingrates;186 | x=-7151.30029296875 y=-3361.5 | size=1 | links=#11860(auto Badlands;139):65 c2785.1:13
+#16371 | auto Badlands;187§auto Ödland;187§auto Terres ingrates;187 | x=-6235.89990234375 y=-3460 | size=1 | links=#7478(auto Badlands;93):28 #9964(auto Badlands;122):92
+#16380 | auto Badlands;188§auto Ödland;188§auto Terres ingrates;188 | x=-6103.7001953125 y=-3209.900146484375 | size=1 | links=c4844.1:14 c4844.5:23
+#16519 | auto Badlands;189§auto Ödland;189§auto Terres ingrates;189 | x=-6149.60009765625 y=-2995.10009765625 | size=1 | links=#2206(auto Badlands;24):20 #8827(auto Badlands;108):24
+#16640 | auto Badlands;190§auto Ödland;190§auto Terres ingrates;190 | x=-6983.7001953125 y=-2324.699951171875 | size=1 | links=#4084(auto Badlands;46):23 #26439(auto Badlands;280):46
+#16665 | auto Badlands;191§auto Ödland;191§auto Terres ingrates;191 | x=-6202.2001953125 y=-2960.699951171875 | size=1 | links=#830(auto Badlands;13):11 #19822(auto Badlands;228):6
+#16828 | auto Badlands;192§auto Ödland;192§auto Terres ingrates;192 | x=-7069.30029296875 y=-3664 | size=1 | links=#2562(auto Badlands;29):34 #4233(auto Badlands;49):51
+#16961 | auto Badlands;193§auto Ödland;193§auto Terres ingrates;193 | x=-6389.80029296875 y=-3738.800048828125 | size=1 | links=#7041(auto Badlands;85):21 #14049(auto Badlands;162):14
+#16964 | auto Badlands;194§auto Ödland;194§auto Terres ingrates;194 | x=-6176.39990234375 y=-2916.5 | size=1 | links=#2291(auto Badlands;25):8 #27586(auto Badlands;293):4
+#16966 | auto Badlands;195§auto Ödland;195§auto Terres ingrates;195 | x=-6451.80029296875 y=-3394 | size=1 | links=c2740.1:9 o2868.1:4 c2740.2:12 c2740.3:7
+#17037 | auto Badlands;196§auto Ödland;196§auto Terres ingrates;196 | x=-6135.30029296875 y=-2929.199951171875 | size=1 | links=#3014(auto Badlands;38):9 #13860(auto Badlands;160):10
+#17091 | auto Badlands;197§auto Ödland;197§auto Terres ingrates;197 | x=-6658.7001953125 y=-2153.5 | size=1 | links=#7919(auto Badlands;98):6 #19395(auto Badlands;225):4
+#17221 | auto Badlands;198§auto Ödland;198§auto Terres ingrates;198 | x=-6806.89990234375 y=-2478.300048828125 | size=5 | links=#731(auto Badlands;11):98 #14346(auto Badlands;167):31 c2831.8:56
+#17274 | auto Badlands;199§auto Ödland;199§auto Terres ingrates;199 | x=-6544.7001953125 y=-3095.800048828125 | size=1 | links=#625(auto Badlands;8):42 #20114(auto Badlands;232):61
+#17376 | auto Badlands;200§auto Ödland;200§auto Terres ingrates;200 | x=-6210.2001953125 y=-3050.900146484375 | size=1 | links=#1813(auto Badlands;18):4 #7558(auto Badlands;97):5
+#17526 | auto Badlands;201§auto Ödland;201§auto Terres ingrates;201 | x=-7194.30029296875 y=-2181.699951171875 | size=1 | links=#16042(auto Badlands;179):21 c2736.21:20
+#17743 | auto Badlands;202§auto Ödland;202§auto Terres ingrates;202 | x=-7188.60009765625 y=-2587.199951171875 | size=1 | links=c2831.3:104 c14224.5:19
+#17980 | auto Badlands;203§auto Ödland;203§auto Terres ingrates;203 | x=-6911.7001953125 y=-2280.5 | size=5 | links=#6066(auto Badlands;71):54 #20547(auto Badlands;235):37 c2749.11:12
+#18010 | auto Badlands;204§auto Ödland;204§auto Terres ingrates;204 | x=-7197.7001953125 y=-3219.5 | size=1 | links=#14965(auto Badlands;171):11 #21254(auto Badlands;240):13
+#18023 | auto Badlands;205§auto Ödland;205§auto Terres ingrates;205 | x=-6613.10009765625 y=-3509.900146484375 | size=1 | links=#732(auto Badlands;12):22 #10494(auto Badlands;128):11
+#18053 | auto Badlands;206§auto Ödland;206§auto Terres ingrates;206 | x=-6389.2001953125 y=-3993.10009765625 | size=1 | links=#5184(auto Badlands;59):40 #27594(auto Badlands;294):68
+#18061 | auto Badlands;207§auto Ödland;207§auto Terres ingrates;207 | x=-6388.10009765625 y=-3352.300048828125 | size=1 | links=#51(auto Badlands;1):44 #2919(auto Badlands;35):50 #7439(auto Badlands;92):21
+#18129 | auto Badlands;208§auto Ödland;208§auto Terres ingrates;208 | x=-7096.5 y=-3585.60009765625 | size=1 | links=#2562(auto Badlands;29):53 c6491.3:97
+#18228 | auto Badlands;209§auto Ödland;209§auto Terres ingrates;209 | x=-6570.39990234375 y=-3467.60009765625 | size=1 | links=#1995(entry and exit;tomb;Badlands):18 #9792(auto Badlands;120):15
+#18314 | Thal'trak Proudtusk;Kargath Expeditionary Force;Badlands;1;3.36;48.06§Thal'trak Ehrenhauer;Expeditionskorps von Kargath;Ödland;1;3.36;48.06§Thal'trak Fière-défense;Kargath Expeditionary Force;Terres ingrates;1;3.36;48.06 | x=-6686.656115632708 y=-2162.767132143948 | size=1
+#18371 | auto Badlands;210§auto Ödland;210§auto Terres ingrates;210 | x=-6555.5 y=-3494.60009765625 | size=1 | links=#2304(auto Badlands;26):14 o144181.1:8
+#18433 | auto Badlands;211§auto Ödland;211§auto Terres ingrates;211 | x=-6666.80029296875 y=-2171.900146484375 | size=1 | links=#4351(auto Badlands;51):7 #7317(auto Badlands;87):6
+#18515 | auto Badlands;212§auto Ödland;212§auto Terres ingrates;212 | x=-6119.80029296875 y=-2999.199951171875 | size=1 | links=#8827(auto Badlands;108):6 #13271(auto Badlands;150):21 #25124(auto Badlands;267):8
+#18519 | auto Badlands;213§auto Ödland;213§auto Terres ingrates;213 | x=-6388.10009765625 y=-3433.400146484375 | size=1 | links=#51(auto Badlands;1):36 c2739.2:22
+#18530 | auto Badlands;214§auto Ödland;214§auto Terres ingrates;214 | x=-6748.7001953125 y=-3310.199951171875 | size=5 | links=#2575(auto Badlands;30):73 #4924(auto Badlands;56):86 c2727.23:45
+#18541 | auto Badlands;215§auto Ödland;215§auto Terres ingrates;215 | x=-6926.60009765625 y=-2147.400146484375 | size=1 | links=#26299(auto Badlands;276):25 #27220(auto Badlands;290):19
+#18574 | auto Badlands;216§auto Ödland;216§auto Terres ingrates;216 | x=-6077.2001953125 y=-3095.60009765625 | size=5 | links=#8582(auto Badlands;105):10 c4846.16:5
+#18710 | auto Badlands;217§auto Ödland;217§auto Terres ingrates;217 | x=-6618 y=-3240.800048828125 | size=5 | links=#2575(auto Badlands;30):112 #10155(auto Badlands;125):99 #15178(auto Badlands;176):71 c2727.15:3 c2732.34:49
+#18733 | auto Badlands;218§auto Ödland;218§auto Terres ingrates;218 | x=-6585.60009765625 y=-3507.10009765625 | size=1 | links=#10494(auto Badlands;128):16 #13779(auto Badlands;159):5
+#18969 | auto Badlands;219§auto Ödland;219§auto Terres ingrates;219 | x=-6320.7001953125 y=-3365.199951171875 | size=1 | links=#6525(auto Badlands;79):21 #8397(auto Badlands;103):42
+#19015 | auto Badlands;220§auto Ödland;220§auto Terres ingrates;220 | x=-6086.5 y=-3036.5 | size=1 | links=#28311(auto Badlands;298):12 #28529(auto Badlands;300):11
+#19071 | auto Badlands;221§auto Ödland;221§auto Terres ingrates;221 | x=-6269.5 y=-2960.400146484375 | size=1 | links=#9074(auto Badlands;110):26 o124389.1:10 o2743.4:3
+#19090 | auto Badlands;222§auto Ödland;222§auto Terres ingrates;222 | x=-6083.80029296875 y=-3158.400146484375 | size=1 | links=c4846.12:6 c4846.13:8
+#19115 | ramp;one;The Maker's Terrace;Badlands§rampe;eins;Terrasse des Schöpfers;Ödland§ramp;un;La Terrasse du Faiseur;Terres ingrates | x=-6020.80029296875 y=-3257.300048828125 | size=1 | links=#26798(auto Badlands;286):33 c4844.11:25
+#19168 | auto Badlands;223§auto Ödland;223§auto Terres ingrates;223 | x=-6187.60009765625 y=-3069.800048828125 | size=1 | links=#4990(auto Badlands;57):10 #7491(auto Badlands;95):9
+#19180 | auto Badlands;224§auto Ödland;224§auto Terres ingrates;224 | x=-6619.10009765625 y=-3436.5 | size=1 | links=#13440(auto Badlands;154):15 c2860.1:22
+#19395 | auto Badlands;225§auto Ödland;225§auto Terres ingrates;225 | x=-6657.5 y=-2157.800048828125 | size=1 | links=#4351(auto Badlands;51):9 #17091(auto Badlands;197):4 c2908.1:6 c9356.1:11
+#19763 | auto Badlands;226§auto Ödland;226§auto Terres ingrates;226 | x=-6671.7001953125 y=-2224.400146484375 | size=1 | links=#26495(auto Badlands;281):9 c9077.1:5
+#19815 | auto Badlands;227§auto Ödland;227§auto Terres ingrates;227 | x=-6942.80029296875 y=-3965.199951171875 | size=1 | links=#2439(auto Badlands;27):60 #7415(auto Badlands;90):85 #24800(auto Badlands;264):99 c2725.1:43 c2725.2:34
+#19822 | auto Badlands;228§auto Ödland;228§auto Terres ingrates;228 | x=-6203.80029296875 y=-2953.900146484375 | size=1 | links=#11450(auto Badlands;136):24 #16665(auto Badlands;191):6
+#19833 | auto Badlands;229§auto Ödland;229§auto Terres ingrates;229 | x=-6065.2001953125 y=-3257.900146484375 | size=1 | links=#1834(auto Badlands;19):14 #27449(auto Badlands;291):13 c4844.8:17
+#19904 | auto Badlands;230§auto Ödland;230§auto Terres ingrates;230 | x=-6407.7001953125 y=-3299.900146484375 | size=1 | links=#5257(auto Badlands;60):31 #7439(auto Badlands;92):44
+#20033 | auto Badlands;231§auto Ödland;231§auto Terres ingrates;231 | x=-6855.30029296875 y=-2226.60009765625 | size=1 | links=#4502(auto Badlands;53):37 #5592(auto Badlands;67):23
+#20114 | auto Badlands;232§auto Ödland;232§auto Terres ingrates;232 | x=-6542.7001953125 y=-3034 | size=1 | links=#3708(auto Badlands;43):45 #17274(auto Badlands;199):61
+#20247 | auto Badlands;233§auto Ödland;233§auto Terres ingrates;233 | x=-6475 y=-3225.800048828125 | size=5 | links=#5257(auto Badlands;60):75 c2850.2:21 c2743.10:27 c2727.12:21
+#20413 | auto Badlands;234§auto Ödland;234§auto Terres ingrates;234 | x=-6886.5 y=-3624.10009765625 | size=1 | links=#401(auto Badlands;6):51 #12238(auto Badlands;141):101
+#20547 | auto Badlands;235§auto Ödland;235§auto Terres ingrates;235 | x=-6913.80029296875 y=-2243 | size=1 | links=#6185(auto Badlands;72):21 #17980(auto Badlands;203):37
+#20647 | passage;from;The Maker's Terrace;Badlands;to;Loch Modan§passage;von;Terrasse des Schöpfers;Ödland;nach;Loch Modan§passage;de;La Terrasse du Faiseur;Terres ingrates;vers;Loch Modan | x=-6000.80029296875 y=-3293.5 | size=1 | links=#26798(auto Badlands;286):8 #17478(passage;Loch Modan;to;Badlands):19
+#20779 | auto Badlands;236§auto Ödland;236§auto Terres ingrates;236 | x=-7112.89990234375 y=-3444 | size=1 | links=#11860(auto Badlands;139):33 c6491.3:45
+#20812 | auto Badlands;237§auto Ödland;237§auto Terres ingrates;237 | x=-6150.2001953125 y=-3041.5 | size=1 | links=#2703(auto Badlands;32):8 #14318(auto Badlands;166):14
+#20837 | auto Badlands;238§auto Ödland;238§auto Terres ingrates;238 | x=-6415.10009765625 y=-3401 | size=1 | links=#51(auto Badlands;1):24 #23362(down;Hammertoe's Digsite;Badlands):20
+#20908 | auto Badlands;239§auto Ödland;239§auto Terres ingrates;239 | x=-6136.30029296875 y=-2890.5 | size=1 | links=#4788(auto Badlands;54):6 #21664(auto Badlands;245):7
+#21254 | auto Badlands;240§auto Ödland;240§auto Terres ingrates;240 | x=-7206.30029296875 y=-3208.60009765625 | size=1 | links=#18010(auto Badlands;204):13 c92.19:31
+#21298 | auto Badlands;241§auto Ödland;241§auto Terres ingrates;241 | x=-7191.89990234375 y=-3382.300048828125 | size=1 | links=#10384(auto Badlands;126):18 #26207(auto Badlands;275):14
+#21369 | Hammertoe Grez;Uldaman§Hammerzeh Grez;Uldaman§Martèlorteil Grez;Uldaman | x=-6069.30029296875 y=-3017.60009765625 | size=1 | links=#25390(auto Badlands;271):0
+#21497 | auto Badlands;242§auto Ödland;242§auto Terres ingrates;242 | x=-6149.10009765625 y=-3072.400146484375 | size=1 | links=#13041(auto Badlands;147):8 #22133(Obsidian Golem;Uldaman):5
+#21530 | auto Badlands;243§auto Ödland;243§auto Terres ingrates;243 | x=-6194 y=-2986.10009765625 | size=1 | links=#8002(auto Badlands;99):9 #8253(auto Badlands;102):18
+#21545 | auto Badlands;244§auto Ödland;244§auto Terres ingrates;244 | x=-6115.2001953125 y=-3341.300048828125 | size=1 | links=#6486(auto Badlands;77):49 #9514(auto Badlands;116):30
+#21664 | auto Badlands;245§auto Ödland;245§auto Terres ingrates;245 | x=-6131.30029296875 y=-2896.400146484375 | size=1 | links=#11752(auto Badlands;137):8 #20908(auto Badlands;239):7
+#21727 | auto Badlands;246§auto Ödland;246§auto Terres ingrates;246 | x=-6062.5 y=-3141.800048828125 | size=1 | links=o2743.1:8 c4845.2:7 c4846.14:6
+#21857 | auto Badlands;247§auto Ödland;247§auto Terres ingrates;247 | x=-7003.10009765625 y=-3316.400146484375 | size=1 | links=c2893.4:10 c2894.5:11
+#22034 | auto Badlands;248§auto Ödland;248§auto Terres ingrates;248 | x=-6605 y=-2345.400146484375 | size=1 | links=#2851(auto Badlands;34):43 #16245(auto Badlands;182):45
+#22116 | auto Badlands;249§auto Ödland;249§auto Terres ingrates;249 | x=-6753 y=-3730 | size=1 | links=#4128(auto Badlands;48):59 #6232(auto Badlands;73):58
+#22133 | Obsidian Golem;Uldaman§Obsidiangolem;Uldaman§Golem d'obsidienne;Uldaman | x=-6149.7001953125 y=-3077.800048828125 | size=1 | links=#21497(auto Badlands;242):5 #22284(auto Badlands;250):5
+#22284 | auto Badlands;250§auto Ödland;250§auto Terres ingrates;250 | x=-6151 y=-3083.199951171875 | size=1 | links=#3700(Magregan Deepshadow;Uldaman):4 #22133(Obsidian Golem;Uldaman):5
+#22288 | auto Badlands;251§auto Ödland;251§auto Terres ingrates;251 | x=-6136.7001953125 y=-3021.199951171875 | size=1 | links=#9771(auto Badlands;119):9 #13271(auto Badlands;150):11
+#22575 | auto Badlands;252§auto Ödland;252§auto Terres ingrates;252 | x=-6444 y=-3373.300048828125 | size=1 | links=#10918(auto Badlands;132):11 c2740.3:14
+#22707 | auto Badlands;253§auto Ödland;253§auto Terres ingrates;253 | x=-6156.7001953125 y=-3060.300048828125 | size=1 | links=#13041(auto Badlands;147):5 #26651(auto Badlands;284):6
+#23102 | auto Badlands;254§auto Ödland;254§auto Terres ingrates;254 | x=-6623.30029296875 y=-2424.800048828125 | size=1 | links=#5159(auto Badlands;58):47 #24052(auto Badlands;261):14
+#23211 | auto Badlands;255§auto Ödland;255§auto Terres ingrates;255 | x=-6093.60009765625 y=-2991.400146484375 | size=1 | links=#13681(auto Badlands;158):8 #26499(auto Badlands;282):10
+#23234 | central location;Kargath;Badlands§zentralpunkt;Kargath;Ödland§emplacement central;Kargath;Terres ingrates | x=-6674.60009765625 y=-2183.699951171875 | size=1 | links=#7317(auto Badlands;87):8 #15032(auto Badlands;173):19 #23934(auto Badlands;260):30 #26303(auto Badlands;277):23 #28595(s;h;Mailbox;Badlands):7 o164867.1:11 c8155.4:9
+#23330 | meeting stone;The Maker's Terrace;Badlands§versammlungsstein;Terrasse des Schöpfers;Ödland§meeting stone;La Terrasse du Faiseur;Terres ingrates | x=-6111.7001953125 y=-3299.60009765625 | size=1 | links=c2751.3:23 c4844.7:49
+#23334 | auto Badlands;256§auto Ödland;256§auto Terres ingrates;256 | x=-7095.2001953125 y=-2261 | size=1 | links=#6502(auto Badlands;78):22 #24938(auto Badlands;266):15
+#23362 | down;Hammertoe's Digsite;Badlands§unten;Hammerzehs Grabungsstätte;Ödland§bas;Hammertoe's Digsite;Terres ingrates | x=-6435.80029296875 y=-3404.300048828125 | size=1 | links=#20837(auto Badlands;238):20 c2739.5:9 c2739.7:5 c2739.8:24
+#23392 | auto Badlands;257§auto Ödland;257§auto Terres ingrates;257 | x=-6263.5 y=-3373.5 | size=1 | links=#6525(auto Badlands;79):35 #9964(auto Badlands;122):50
+#23472 | auto Badlands;258§auto Ödland;258§auto Terres ingrates;258 | x=-6079 y=-3015.60009765625 | size=1 | links=#2017(auto Badlands;22):3 #28311(auto Badlands;298):16
+#23817 | auto Badlands;259§auto Ödland;259§auto Terres ingrates;259 | x=-6673.89990234375 y=-2238.400146484375 | size=1 | links=#5264(auto Badlands;61):8 #5343(auto Badlands;65):2
+#23934 | auto Badlands;260§auto Ödland;260§auto Terres ingrates;260 | x=-6646.30029296875 y=-2194.5 | size=1 | links=#663(auto Badlands;9):47 #13449(auto Badlands;155):31 #23234(central location;Kargath;Badlands):30 c2861.1:21
+#24052 | auto Badlands;261§auto Ödland;261§auto Terres ingrates;261 | x=-6620.2001953125 y=-2410.5 | size=1 | links=#16245(auto Badlands;182):21 #23102(auto Badlands;254):14
+#24255 | auto Badlands;262§auto Ödland;262§auto Terres ingrates;262 | x=-6908.30029296875 y=-3357.800048828125 | size=1 | links=#4924(auto Badlands;56):80 o2875.1:20
+#24710 | auto Badlands;263§auto Ödland;263§auto Terres ingrates;263 | x=-6180.39990234375 y=-3011.5 | size=1 | links=#8253(auto Badlands;102):11 #25641(auto Badlands;273):12
+#24800 | auto Badlands;264§auto Ödland;264§auto Terres ingrates;264 | x=-6863.5 y=-3905.300048828125 | size=1 | links=#19815(auto Badlands;227):99 c2725.8:34
+#24843 | auto Badlands;265§auto Ödland;265§auto Terres ingrates;265 | x=-7020.7001953125 y=-2293.800048828125 | size=1 | links=#4084(auto Badlands;46):24 #10616(auto Badlands;129):39
+#24938 | auto Badlands;266§auto Ödland;266§auto Terres ingrates;266 | x=-7080.5 y=-2266.699951171875 | size=1 | links=#10616(auto Badlands;129):26 #23334(auto Badlands;256):15 c2716.4:14
+#25124 | auto Badlands;267§auto Ödland;267§auto Terres ingrates;267 | x=-6113.60009765625 y=-2994 | size=1 | links=#18515(auto Badlands;212):8 #26499(auto Badlands;282):11
+#25172 | auto Badlands;268§auto Ödland;268§auto Terres ingrates;268 | x=-6940.60009765625 y=-3316.60009765625 | size=1 | links=o2875.1:32 c2893.14:15
+#25347 | auto Badlands;269§auto Ödland;269§auto Terres ingrates;269 | x=-7142.80029296875 y=-3169.300048828125 | size=1 | links=#5580(auto Badlands;66):48 c2732.7:78 c2732.32:23
+#25352 | auto Badlands;270§auto Ödland;270§auto Terres ingrates;270 | x=-6489.2001953125 y=-4001.5 | size=1 | links=#3238(auto Badlands;40):29 #8447(auto Badlands;104):46
+#25390 | auto Badlands;271§auto Ödland;271§auto Terres ingrates;271 | x=-6069.30029296875 y=-3017.60009765625 | size=1 | links=#5733(auto Badlands;69):5 #21369(Hammertoe Grez;Uldaman):0
+#25637 | auto Badlands;272§auto Ödland;272§auto Terres ingrates;272 | x=-6668.5 y=-2233.900146484375 | size=1 | links=#5343(auto Badlands;65):4 #28278(auto Badlands;297):6
+#25641 | auto Badlands;273§auto Ödland;273§auto Terres ingrates;273 | x=-6171 y=-3020 | size=1 | links=#13540(auto Badlands;156):15 #24710(auto Badlands;263):12
+#25954 | auto Badlands;274§auto Ödland;274§auto Terres ingrates;274 | x=-6273.10009765625 y=-3485.60009765625 | size=1 | links=#7478(auto Badlands;93):18 c6491.2:9
+#26207 | auto Badlands;275§auto Ödland;275§auto Terres ingrates;275 | x=-7204.60009765625 y=-3389.900146484375 | size=1 | links=#3105(auto Badlands;39):25 #21298(auto Badlands;241):14
+#26299 | auto Badlands;276§auto Ödland;276§auto Terres ingrates;276 | x=-6916.60009765625 y=-2170.5 | size=1 | links=#12620(auto Badlands;143):22 #18541(auto Badlands;215):25
+#26303 | auto Badlands;277§auto Ödland;277§auto Terres ingrates;277 | x=-6675.5 y=-2207.5 | size=1 | links=#4333(auto Badlands;50):16 #13449(auto Badlands;155):16 #23234(central location;Kargath;Badlands):23
+#26407 | auto Badlands;278§auto Ödland;278§auto Terres ingrates;278 | x=-6459.89990234375 y=-4133.7001953125 | size=1 | links=c2725.10:20 c2725.13:82 c2725.16:5 c2725.20:40
+#26433 | auto Badlands;279§auto Ödland;279§auto Terres ingrates;279 | x=-6165.60009765625 y=-3046.60009765625 | size=1 | links=#6779(auto Badlands;81):3 #12554(auto Badlands;142):10
+#26439 | auto Badlands;280§auto Ödland;280§auto Terres ingrates;280 | x=-6937.89990234375 y=-2317.10009765625 | size=1 | links=#6066(auto Badlands;71):49 #16640(auto Badlands;190):46 c2729.8:93 c2749.11:33
+#26495 | auto Badlands;281§auto Ödland;281§auto Terres ingrates;281 | x=-6664.10009765625 y=-2229.60009765625 | size=1 | links=#7332(auto Badlands;88):3 #16084(auto Badlands;180):7 #19763(auto Badlands;226):9
+#26499 | auto Badlands;282§auto Ödland;282§auto Terres ingrates;282 | x=-6103.5 y=-2988.900146484375 | size=1 | links=#23211(auto Badlands;255):10 #25124(auto Badlands;267):11
+#26528 | auto Badlands;283§auto Ödland;283§auto Terres ingrates;283 | x=-6233.89990234375 y=-2963.699951171875 | size=1 | links=#6881(auto Badlands;82):5 #11450(auto Badlands;136):7
+#26651 | auto Badlands;284§auto Ödland;284§auto Terres ingrates;284 | x=-6161.7001953125 y=-3056.5 | size=1 | links=#14301(auto Badlands;164):4 #22707(auto Badlands;253):6
+#26792 | auto Badlands;285§auto Ödland;285§auto Terres ingrates;285 | x=-6928.2001953125 y=-4067.300048828125 | size=1 | links=#6968(auto Badlands;84):4 #7415(auto Badlands;90):18
+#26798 | auto Badlands;286§auto Ödland;286§auto Terres ingrates;286 | x=-6007.89990234375 y=-3288 | size=1 | links=#9207(auto Badlands;111):26 #19115(ramp;one;The Maker's Terrace;Badlands):33 #20647(passage;from;The Maker's Terrace;Badlands;to;Loch Modan):8
+#26924 | auto Badlands;287§auto Ödland;287§auto Terres ingrates;287 | x=-6672.10009765625 y=-2236.300048828125 | size=1 | links=#13083(auto Badlands;148):6 #14356(auto Badlands;168):5
+#26948 | auto Badlands;288§auto Ödland;288§auto Terres ingrates;288 | x=-6670.2001953125 y=-2240 | size=1 | links=#16084(auto Badlands;180):4 c5394.1:1
+#27053 | auto Badlands;289§auto Ödland;289§auto Terres ingrates;289 | x=-6168.10009765625 y=-2906.800048828125 | size=1 | links=#7372(auto Badlands;89):10 #27586(auto Badlands;293):8
+#27220 | auto Badlands;290§auto Ödland;290§auto Terres ingrates;290 | x=-6924.60009765625 y=-2128.5 | size=1 | links=#13393(auto Badlands;152):16 #18541(auto Badlands;215):19
+#27449 | auto Badlands;291§auto Ödland;291§auto Terres ingrates;291 | x=-6052.7001953125 y=-3252.300048828125 | size=1 | links=#19833(auto Badlands;229):13 c4846.1:13 c4844.8:10
+#27526 | auto Badlands;292§auto Ödland;292§auto Terres ingrates;292 | x=-6077.5 y=-3009.60009765625 | size=1 | links=#2017(auto Badlands;22):2 #3687(auto Badlands;42):6
+#27586 | auto Badlands;293§auto Ödland;293§auto Terres ingrates;293 | x=-6173.5 y=-2913.400146484375 | size=1 | links=#16964(auto Badlands;194):4 #27053(auto Badlands;289):8
+#27594 | auto Badlands;294§auto Ödland;294§auto Terres ingrates;294 | x=-6412.5 y=-3928.800048828125 | size=1 | links=#102(auto Badlands;2):28 #18053(auto Badlands;206):68
+#27922 | central location;Valley of Fangs;Badlands§zentralpunkt;Fangzahntal;Ödland§emplacement central;Vallée des crocs;Terres ingrates | x=-6757.30029296875 y=-3143.699951171875 | size=1 | links=#9264(auto Badlands;112):22 c9179.1:8
+#27943 | auto Badlands;295§auto Ödland;295§auto Terres ingrates;295 | x=-6326.7001953125 y=-3513.900146484375 | size=1 | links=c6491.2:50 c2850.3:50
+#28021 | auto Badlands;296§auto Ödland;296§auto Terres ingrates;296 | x=-7112.10009765625 y=-2896.400146484375 | size=5 | links=c2729.34:71 c2729.37:25
+#28278 | auto Badlands;297§auto Ödland;297§auto Terres ingrates;297 | x=-6672 y=-2228.400146484375 | size=1 | links=#6967(auto Badlands;83):6 #25637(auto Badlands;272):6
+#28311 | auto Badlands;298§auto Ödland;298§auto Terres ingrates;298 | x=-6091.60009765625 y=-3025.5 | size=1 | links=#19015(auto Badlands;220):12 #23472(auto Badlands;258):16
+#28444 | auto Badlands;299§auto Ödland;299§auto Terres ingrates;299 | x=-6091.7001953125 y=-3192.300048828125 | size=1 | links=#11830(passage;The Maker's Terrace;Badlands;instance entrance):4 c4844.1:6
+#28529 | auto Badlands;300§auto Ödland;300§auto Terres ingrates;300 | x=-6081.30029296875 y=-3046.900146484375 | size=1 | links=#6434(auto Badlands;76):14 #19015(auto Badlands;220):11
+#28595 | s;h;Mailbox;Badlands§s;h;Briefkasten;Ödland§s;h;Boîte aux lettres;Terres ingrates | x=-6673.974609375 y=-2176.17919921875 | size=1 | links=#23234(central location;Kargath;Badlands):7
+#50158 |  | x=-6664 y=-2167.900146484375 | size=1
+#50159 |  | x=-6664 y=-2167.900146484375 | size=1
+#50160 |  | x=-6664 y=-2167.900146484375 | size=1
+#50161 |  | x=-6664 y=-2167.900146484375 | size=1
+#50162 | auto Badlands;301§auto Ödland;301§auto Terres ingrates;301 | x=-6716.694602201846 y=-2612.200949916272 | size=1 | links=#13559(auto Badlands;157):83 #50163(auto Badlands;302):124
+#50163 | auto Badlands;302§auto Ödland;302§auto Terres ingrates;302 | x=-6733.044635017967 y=-2735.607315427958 | size=1 | links=#50162(auto Badlands;301):124 #50164(auto Badlands;303):118
+#50164 | auto Badlands;303§auto Ödland;303§auto Terres ingrates;303 | x=-6825.13555076508 y=-2810.95439562569 | size=1 | links=#50163(auto Badlands;302):118 #50165(auto Badlands;304):127
+#50165 | auto Badlands;304§auto Ödland;304§auto Terres ingrates;304 | x=-6951.551122647771 y=-2795.884979586144 | size=1 | links=#50164(auto Badlands;303):127 #50166(auto Badlands;305):206
+#50166 | auto Badlands;305§auto Ödland;305§auto Terres ingrates;305 | x=-6798.345467818414 y=-2656.911575985037 | size=1 | links=#50165(auto Badlands;304):206
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c1068.1 | links=c2908.1:7
+c1407.1 | links=c9079.1:9
+c2718.1 | links=c2717.5:37
+c2725.1 | links=#19815(auto Badlands;227):43
+c2726.1 | links=#1512(auto Badlands;15):41
+c2730.1 | links=#10416(auto Badlands;127):3
+c2731.1 | links=c2731.4:34
+c2734.1 | links=c2718.6:87 c2729.8:88
+c2735.1 | links=c2735.4:44 c2735.13:46
+c2739.1 | links=#51(auto Badlands;1):20
+c2740.1 | links=#16966(auto Badlands;195):9
+c2749.1 | links=c2831.8:74 c2729.12:26
+c2751.1 | links=#9964(auto Badlands;122):12
+c2754.1 | links=c2831.1:40 c2831.3:37
+c2785.1 | links=#12677(auto Badlands;144):8 #16322(auto Badlands;186):13 c2728.3:68
+c2817.1 | links=c9179.1:7
+c2829.1 | links=c2727.2:22 c2727.5:30
+c2830.1 | links=c2727.6:52 c2732.38:2
+c2831.1 | links=c2754.1:40 c2734.10:41
+c2860.1 | links=#19180(auto Badlands;224):22 c2910.1:9
+c2861.1 | links=#23934(auto Badlands;260):21
+c2888.1 | links=#12721(auto Badlands;145):13
+c2893.1 | links=o2875.1:32 c2893.7:28
+c2894.1 | links=c2893.7:19
+c2906.1 | links=c2907.4:22
+c2907.1 | links=c2907.4:22
+c2908.1 | links=#19395(auto Badlands;225):6 c1068.1:7 o180523.1:3
+c2910.1 | links=#10155(auto Badlands;125):71 c2860.1:9
+c2921.1 | links=#706(auto Badlands;10):12 #2963(auto Badlands;36):9 c2922.1:3
+c2922.1 | links=c2921.1:3
+c2944.1 | links=#8616(auto Badlands;106):50 c2716.5:13 c2717.6:21 c2718.6:13 c2716.7:18
+c2945.1 | links=c2894.5:3
+c4618.1 | links=c9179.1:6
+c4844.1 | links=#16380(auto Badlands;188):14 #28444(auto Badlands;299):6 c4844.3:16
+c4845.1 | links=c4845.2:13 c4846.15:13
+c4846.1 | links=#27449(auto Badlands;291):13
+c5394.1 | links=#26948(auto Badlands;288):1
+c6868.1 | links=#13013(auto Badlands;146):5
+c7057.1 | links=#8113(auto Badlands;101):17 o2743.3:14
+c9077.1 | links=#19763(auto Badlands;226):5 c9080.1:2
+c9078.1 | links=c9079.1:3
+c9079.1 | links=c1407.1:9 c9078.1:3
+c9080.1 | links=c9077.1:2 c9081.1:2
+c9081.1 | links=c9080.1:2
+c9083.1 | links=c9085.1:3
+c9084.1 | links=c9086.1:3
+c9085.1 | links=c9083.1:3
+c9086.1 | links=c9084.1:3
+c9179.1 | links=#27922(central location;Valley of Fangs;Badlands):8 c2817.1:7 c4618.1:6
+c9356.1 | links=#19395(auto Badlands;225):11
+c10058.1 | links=o164867.1:3
+c17097.1 | links=#4333(auto Badlands;50):7
+o2743.1 | links=#21727(auto Badlands;246):8
+o2842.1 | links=c2725.10:15
+o2848.1 | links=#11840(auto Badlands;138):23
+o2858.1 | links=#12229(auto Badlands;140):7
+o2868.1 | links=#16966(auto Badlands;195):4
+o2875.1 | links=#24255(auto Badlands;262):20 #25172(auto Badlands;268):32 c2893.1:32
+o2933.1 | links=#1512(auto Badlands;15):143 c2726.3:29 c2726.8:57 c2726.10:33 c2726.11:34
+o124389.1 | links=#19071(auto Badlands;221):10
+o144181.1 | links=#18371(auto Badlands;210):8
+o164867.1 | links=#23234(central location;Kargath;Badlands):11 c10058.1:3
+o164868.1 | links=c8155.4:3
+o180523.1 | links=c2908.1:3
+c2725.2 | links=#19815(auto Badlands;227):34
+c2727.2 | links=c2829.1:22 c2727.3:44
+c2730.2 | links=#10671(auto Badlands;130):11
+c2731.2 | links=#13231(auto Badlands;149):25
+c2735.2 | links=#731(auto Badlands;11):126 #2963(auto Badlands;36):87 c2735.4:73 c2735.10:37
+c2739.2 | links=#18519(auto Badlands;213):22
+c2740.2 | links=#16966(auto Badlands;195):12
+c2751.2 | links=c2850.2:50
+c2753.2 | links=#2012(auto Badlands;21):92 c2729.39:31
+c2829.2 | links=c2850.3:34 c2731.17:41
+c2850.2 | links=#15178(auto Badlands;176):57 #20247(auto Badlands;233):21 c2751.2:50
+c2893.2 | links=c2893.3:36 c2893.13:24
+c2894.2 | links=c2893.11:42
+c2906.2 | links=c2906.4:32 c2907.4:25
+c2907.2 | links=c2716.6:5
+c4844.2 | links=c4844.3:15 c4846.6:12
+c4845.2 | links=#21727(auto Badlands;246):7 c4845.1:13
+c4846.2 | links=c4844.8:13
+c6491.2 | links=#25954(auto Badlands;274):9 #27943(auto Badlands;295):50
+o2743.2 | links=#14683(auto Badlands;170):10
+c2718.3 | links=#8616(auto Badlands;106):78 c2717.4:39
+c2725.3 | links=#2439(auto Badlands;27):46
+c2726.3 | links=o2933.1:29 c2726.6:46
+c2727.3 | links=#9964(auto Badlands;122):19 c2727.2:44
+c2728.3 | links=c2785.1:68 c2732.7:44
+c2729.3 | links=c2729.12:15
+c2730.3 | links=#10416(auto Badlands;127):35
+c2739.3 | links=c2739.10:17
+c2740.3 | links=#16966(auto Badlands;195):7 #22575(auto Badlands;252):14
+c2751.3 | links=#1633(auto Badlands;17):41 #9514(auto Badlands;116):15 #23330(meeting stone;The Maker's Terrace;Badlands):23
+c2752.3 | links=c2736.14:32 c2736.16:19 c2736.21:35
+c2791.3 | links=c2791.6:64 c2791.11:74
+c2829.3 | links=c2727.7:24
+c2831.3 | links=#17743(auto Badlands;202):104 c2754.1:37
+c2850.3 | links=#11313(auto Badlands;135):44 #27943(auto Badlands;295):50 c2829.2:34
+c2893.3 | links=c2893.2:36 c2893.11:32
+c2894.3 | links=c2893.11:45 c2893.12:31
+c2906.3 | links=c2907.4:35
+c2907.3 | links=c2907.4:61
+c4844.3 | links=c4844.1:16 c4844.2:15
+c4846.3 | links=#1834(auto Badlands;19):23
+c6491.3 | links=#18129(auto Badlands;208):97 #20779(auto Badlands;236):45 c2732.39:26
+o2743.3 | links=c7057.1:14
+c2716.4 | links=#24938(auto Badlands;266):14
+c2717.4 | links=#8616(auto Badlands;106):116 c2718.3:39 c2717.5:32
+c2718.4 | links=c2717.5:40
+c2726.4 | links=#1512(auto Badlands;15):47
+c2727.4 | links=c2850.4:32
+c2730.4 | links=#10671(auto Badlands;130):54
+c2731.4 | links=c2731.1:34 c2850.4:4 c2727.8:27
+c2735.4 | links=#13559(auto Badlands;157):41 c2735.1:44 c2735.2:73 c2735.10:36
+c2739.4 | links=c2739.6:11
+c2740.4 | links=#51(auto Badlands;1):20
+c2752.4 | links=c14224.4:19 c2736.19:35 c2736.20:14
+c2791.4 | links=c2791.10:58
+c2829.4 | links=#9495(auto Badlands;115):29
+c2850.4 | links=c2727.4:32 c2731.4:4 c2727.8:24
+c2893.4 | links=#14996(auto Badlands;172):11 #21857(auto Badlands;247):10
+c2894.4 | links=c2893.12:27
+c2906.4 | links=#1470(auto Badlands;14):25 c2906.2:32
+c2907.4 | links=c2906.1:22 c2907.1:22 c2906.2:25 c2906.3:35 c2907.3:61 c2906.5:45
+c4844.4 | links=c4844.6:28 c4844.8:39
+c4846.4 | links=#1633(auto Badlands;17):46
+c8155.4 | links=#23234(central location;Kargath;Badlands):9 o164868.1:3
+c14224.4 | links=c2752.4:19 c2736.17:39 c2736.24:10
+o2743.4 | links=#19071(auto Badlands;221):3
+c2716.5 | links=c2944.1:13
+c2717.5 | links=c2718.1:37 c2717.4:32 c2718.4:40
+c2718.5 | links=c2717.6:9 c2717.8:14
+c2725.5 | links=#4128(auto Badlands;48):63 c2725.6:44
+c2727.5 | links=c2829.1:30
+c2728.5 | links=#11860(auto Badlands;139):13
+c2729.5 | links=c2729.37:30
+c2730.5 | links=#9377(auto Badlands;113):24
+c2732.5 | links=#13440(auto Badlands;154):34
+c2735.5 | links=c2735.14:28
+c2739.5 | links=#23362(down;Hammertoe's Digsite;Badlands):9 c2739.9:15
+c2740.5 | links=#2919(auto Badlands;35):21
+c2893.5 | links=c2893.6:35 c2893.8:26 c2893.11:36
+c2894.5 | links=#21857(auto Badlands;247):11 c2945.1:3
+c2906.5 | links=c2907.4:45
+c4844.5 | links=#16380(auto Badlands;188):23 c4844.6:21 c4844.7:18
+c4846.5 | links=#1834(auto Badlands;19):13
+c14224.5 | links=#8616(auto Badlands;106):145 #17743(auto Badlands;202):19
+c2716.6 | links=c2907.2:5 c2716.7:13 c2717.10:4
+c2717.6 | links=c2944.1:21 c2718.5:9 c2717.7:13
+c2718.6 | links=c2734.1:87 c2944.1:13
+c2725.6 | links=c2725.5:44
+c2726.6 | links=c2726.3:46
+c2727.6 | links=#5287(auto Badlands;62):65 #13440(auto Badlands;154):56 c2830.1:52 c2727.9:30 c2727.21:80
+c2730.6 | links=#7544(auto Badlands;96):35 #10671(auto Badlands;130):15
+c2739.6 | links=c2739.4:11 c2739.9:11
+c2791.6 | links=c2791.3:64
+c2830.6 | links=c2727.23:37
+c2893.6 | links=c2893.5:35 c2893.7:36
+c4844.6 | links=c4844.4:28 c4844.5:21
+c4846.6 | links=c4844.2:12
+c92.7 | links=c92.8:27
+c2716.7 | links=c2944.1:18 c2716.6:13
+c2717.7 | links=c2717.6:13
+c2725.7 | links=#2478(auto Badlands;28):36 #4128(auto Badlands;48):28
+c2726.7 | links=#1512(auto Badlands;15):88
+c2727.7 | links=#6525(auto Badlands;79):14 c2829.3:24
+c2732.7 | links=#25347(auto Badlands;269):78 c2728.3:44 c92.20:24
+c2735.7 | links=c2735.8:53 c2735.13:50
+c2739.7 | links=#23362(down;Hammertoe's Digsite;Badlands):5
+c2893.7 | links=#14996(auto Badlands;172):15 c2893.1:28 c2894.1:19 c2893.6:36
+c4844.7 | links=#1834(auto Badlands;19):29 #23330(meeting stone;The Maker's Terrace;Badlands):49 c4844.5:18
+c4846.7 | links=#2603(auto Badlands;31):6 c4846.10:14
+c92.8 | links=c92.7:27 c92.22:38
+c2717.8 | links=c2718.5:14
+c2725.8 | links=#2478(auto Badlands;28):52 #24800(auto Badlands;264):34
+c2726.8 | links=o2933.1:57
+c2727.8 | links=#6486(auto Badlands;77):33 c2731.4:27 c2850.4:24
+c2729.8 | links=#26439(auto Badlands;280):93 c2734.1:88
+c2735.8 | links=c2735.7:53
+c2739.8 | links=#23362(down;Hammertoe's Digsite;Badlands):24 c2739.10:13
+c2749.8 | links=#13231(auto Badlands;149):11
+c2831.8 | links=#12045(central location;Apocryphan's Rest;Badlands):21 #17221(auto Badlands;198):56 c2749.1:74
+c2893.8 | links=c2893.5:26
+c4844.8 | links=#9207(auto Badlands;111):64 #19833(auto Badlands;229):17 #27449(auto Badlands;291):10 c4846.2:13 c4844.4:39
+c4846.8 | links=c4846.9:13 c4846.10:3
+c2725.9 | links=#11840(auto Badlands;138):17
+c2727.9 | links=c2727.6:30
+c2731.9 | links=#13231(auto Badlands;149):26 c2731.18:31
+c2735.9 | links=c2735.13:30
+c2739.9 | links=c2739.5:15 c2739.6:11
+c2749.9 | links=#12045(central location;Apocryphan's Rest;Badlands):15 c2831.16:26
+c2831.9 | links=#12045(central location;Apocryphan's Rest;Badlands):20 c2831.15:21
+c4844.9 | links=#1834(auto Badlands;19):19
+c4846.9 | links=#1852(auto Badlands;20):12 c4846.8:13 c4844.14:6
+c2717.10 | links=c2716.6:4
+c2725.10 | links=#26407(auto Badlands;278):20 o2842.1:15
+c2726.10 | links=o2933.1:33
+c2727.10 | links=#10155(auto Badlands;125):21 c2727.19:26 c2727.25:7
+c2734.10 | links=#301(auto Badlands;4):36 c2831.1:41
+c2735.10 | links=c2735.2:37 c2735.4:36
+c2739.10 | links=c2739.3:17 c2739.8:13 c2739.11:14
+c2743.10 | links=#20247(auto Badlands;233):27
+c2791.10 | links=c2791.4:58 c2791.11:12 c2791.12:4
+c2893.10 | links=c2893.12:24
+c4844.10 | links=c4844.11:6 c4844.15:0
+c4846.10 | links=c4846.7:14 c4846.8:3
+c92.11 | links=#2012(auto Badlands;21):37 #10694(auto Badlands;131):25
+c2726.11 | links=o2933.1:34
+c2727.11 | links=c2727.26:43
+c2739.11 | links=c2739.10:14
+c2749.11 | links=#17980(auto Badlands;203):12 #26439(auto Badlands;280):33
+c2791.11 | links=#3105(auto Badlands;39):28 c2791.3:74 c2791.10:12
+c2831.11 | links=#12045(central location;Apocryphan's Rest;Badlands):16 c2831.12:13
+c2893.11 | links=c2894.2:42 c2893.3:32 c2894.3:45 c2893.5:36
+c4844.11 | links=#7085(auto Badlands;86):9 #19115(ramp;one;The Maker's Terrace;Badlands):25 c4844.10:6 c4844.15:6
+c2727.12 | links=#20247(auto Badlands;233):21
+c2729.12 | links=c2749.1:26 c2729.3:15
+c2731.12 | links=#16246(auto Badlands;183):52 c2731.17:27
+c2735.12 | links=c2735.13:32 c2735.14:33
+c2736.12 | links=c2736.28:29
+c2791.12 | links=c2791.10:4
+c2831.12 | links=c2831.11:13
+c2893.12 | links=c2894.3:31 c2894.4:27 c2893.10:24
+c4844.12 | links=#2603(auto Badlands;31):4
+c4846.12 | links=#14317(auto Badlands;165):16 #19090(auto Badlands;222):6
+c2725.13 | links=#8447(auto Badlands;104):6 #26407(auto Badlands;278):82 c2725.21:44
+c2727.13 | links=c2727.14:36 c2727.22:48
+c2732.13 | links=#2963(auto Badlands;36):95 #6280(auto Badlands;74):43
+c2735.13 | links=c2735.1:46 c2735.7:50 c2735.9:30 c2735.12:32
+c2736.13 | links=#6502(auto Badlands;78):9
+c2831.13 | links=c2831.14:28 c2831.15:25
+c2893.13 | links=c2893.2:24
+c4844.13 | links=#1852(auto Badlands;20):10
+c4846.13 | links=#16216(auto Badlands;181):9 #19090(auto Badlands;222):8
+c2727.14 | links=c2727.13:36 c2727.25:27
+c2731.14 | links=#13231(auto Badlands;149):29
+c2732.14 | links=#2575(auto Badlands;30):15 c2727.20:23 c2727.27:42
+c2735.14 | links=c2735.5:28 c2735.12:33
+c2736.14 | links=c2752.3:32
+c2831.14 | links=c2831.13:28
+c2893.14 | links=#25172(auto Badlands;268):15
+c4844.14 | links=c4846.9:6
+c4846.14 | links=#14317(auto Badlands;165):8 #21727(auto Badlands;246):6
+c2725.15 | links=#5184(auto Badlands;59):17
+c2727.15 | links=#18710(auto Badlands;217):3
+c2731.15 | links=#9495(auto Badlands;115):27
+c2736.15 | links=c2736.20:28
+c2831.15 | links=c2831.9:21 c2831.13:25
+c4844.15 | links=c4844.10:0 c4844.11:6
+c4846.15 | links=#15133(auto Badlands;175):16 c4845.1:13
+c2725.16 | links=#26407(auto Badlands;278):5
+c2727.16 | links=#15178(auto Badlands;176):57 c2727.17:31
+c2736.16 | links=c2752.3:19
+c2831.16 | links=c2749.9:26
+c4846.16 | links=#15133(auto Badlands;175):16 #18574(auto Badlands;216):5
+c2727.17 | links=c2727.16:31
+c2731.17 | links=c2829.2:41 c2731.12:27
+c2736.17 | links=c14224.4:39
+c2727.18 | links=#13440(auto Badlands;154):62
+c2731.18 | links=c2731.9:31
+c92.19 | links=#21254(auto Badlands;240):31 c92.23:27
+c2725.19 | links=c2725.21:45
+c2727.19 | links=c2727.10:26
+c2731.19 | links=#15178(auto Badlands;176):11
+c2736.19 | links=c2752.4:35
+c92.20 | links=#14965(auto Badlands;171):11 c2732.7:24
+c2725.20 | links=#26407(auto Badlands;278):40
+c2727.20 | links=c2732.14:23
+c2731.20 | links=#9862(auto Badlands;121):41
+c2736.20 | links=c2752.4:14 c2736.15:28 c2736.22:31
+c2725.21 | links=c2725.13:44 c2725.19:45
+c2727.21 | links=c2727.6:80 c2732.35:29
+c2736.21 | links=#17526(auto Badlands;201):20 c2752.3:35 c2736.24:27
+c92.22 | links=c92.8:38 c92.24:35 c92.27:25
+c2727.22 | links=c2727.13:48 c2732.25:21
+c2729.22 | links=#4084(auto Badlands;46):25
+c2736.22 | links=c2736.20:31
+c92.23 | links=c92.19:27 c92.27:28
+c2727.23 | links=#18530(auto Badlands;214):45 c2830.6:37
+c2732.23 | links=#2575(auto Badlands;30):30 c2732.36:20
+c92.24 | links=c92.22:35 c92.26:32
+c2727.24 | links=#10155(auto Badlands;125):63 c2727.28:3
+c2732.24 | links=c2732.34:38
+c2736.24 | links=c14224.4:10 c2736.21:27 c2736.25:26
+c2727.25 | links=c2727.10:7 c2727.14:27
+c2732.25 | links=c2727.22:21
+c2736.25 | links=c2736.24:26
+c92.26 | links=c92.24:32
+c2727.26 | links=#5257(auto Badlands;60):51 c2727.11:43
+c92.27 | links=c92.22:25 c92.23:28
+c2727.27 | links=c2732.14:42
+c2727.28 | links=c2727.24:3
+c2736.28 | links=#306(auto Badlands;5):35 #16042(auto Badlands;179):25 c2736.12:29
+c2732.32 | links=#25347(auto Badlands;269):23
+c2729.34 | links=#2012(auto Badlands;21):33 #28021(auto Badlands;296):71
+c2732.34 | links=#18710(auto Badlands;217):49 c2732.24:38
+c2732.35 | links=c2727.21:29
+c2732.36 | links=c2732.23:20
+c2729.37 | links=#301(auto Badlands;4):120 #28021(auto Badlands;296):25 c2729.5:30
+c2732.38 | links=c2830.1:2
+c2729.39 | links=c2753.2:31
+c2732.39 | links=c6491.3:26

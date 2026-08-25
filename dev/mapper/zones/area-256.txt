@@ -1,0 +1,3 @@
+Zone areaId 256 — eine Zeile pro Wegpunkt; Links inline.
+
+#28731 | s;Kalimdor;Teldrassil;Shadowglen;Aldrassil A§s;Kalimdor;Teldrassil;Shadowglen;Aldrassil A§s;Kalimdor;Teldrassil;Shadowglen;Aldrassil A | x=10462.7 y=-805.993 | size=1

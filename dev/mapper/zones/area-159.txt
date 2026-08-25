@@ -1,0 +1,3 @@
+Zone areaId 159 — eine Zeile pro Wegpunkt; Links inline.
+
+#28801 | s;Eastern Kingdoms;Tirisfal Glades;Brill§s;Östliche Königreiche;Tirisfal;Brill§s;Royaumes de l'est;Clairières de Tirisfal;Brill | x=2249.85 y=-278.41385 | size=1

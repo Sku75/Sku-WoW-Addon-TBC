@@ -1,0 +1,3 @@
+Zone areaId 96 — eine Zeile pro Wegpunkt; Links inline.
+
+#28781 | s;Eastern Kingdoms;Redridge Mountains;Galardell Valley;Tower of Ilgalar§s;Östliche Königreiche;Rotkammgebirge;Galardelltal;Der Turm von Ilgalar§s;Royaumes de l'est;Les Carmines;Vallée de Galardell;Tower of Ilgalar | x=-9281.33 y=-3318.81 | size=1

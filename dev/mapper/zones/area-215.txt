@@ -1,0 +1,1683 @@
+Zone areaId 215 — eine Zeile pro Wegpunkt; Links inline.
+
+#17 | auto Mulgore;1§auto Mulgore;1§auto Mulgore;1 | x=-1962.200073242188 y=414.3999938964844 | size=5 | links=#11905(auto Mulgore;254):16 #13101(auto Mulgore;277):22
+#40 | auto Mulgore;2§auto Mulgore;2§auto Mulgore;2 | x=-2174.300048828125 y=-500.3999938964844 | size=1 | links=#4944(auto Mulgore;103):40 #28076(auto Mulgore;580):54 o2912.8:28
+#208 | auto Mulgore;3§auto Mulgore;3§auto Mulgore;3 | x=-1570.900024414063 y=-1169.400024414063 | size=1 | links=#4760(auto Mulgore;97):6 #13007(auto Mulgore;272):14
+#257 | auto Mulgore;4§auto Mulgore;4§auto Mulgore;4 | x=-3040.60009765625 y=-500.8999938964844 | size=5 | links=#6636(auto Mulgore;141):38 c2991.1:24 c2955.28:21
+#298 | auto Mulgore;5§auto Mulgore;5§auto Mulgore;5 | x=-1960.599975585938 y=-178.6999969482422 | size=1 | links=#12457(auto Mulgore;262):49 #13341(auto Mulgore;285):51 #15057(auto Mulgore;325):69 c2970.1:2 c2959.34:46
+#304 | auto Mulgore;6§auto Mulgore;6§auto Mulgore;6 | x=-2796.400146484375 y=-723.2999877929688 | size=1 | links=#14602(auto Mulgore;313):31 #18229(auto Mulgore;382):19 c2949.5:19
+#322 | auto Mulgore;7§auto Mulgore;7§auto Mulgore;7 | x=-1501.900024414063 y=-883 | size=5 | links=#4226(auto Mulgore;84):26 #16530(auto Mulgore;356):27
+#340 | auto Mulgore;8§auto Mulgore;8§auto Mulgore;8 | x=-1478.099975585938 y=38.90000152587891 | size=1 | links=#4615(auto Mulgore;93):39 #12331(auto Mulgore;259):70 c2620.24:15
+#468 | auto Mulgore;9§auto Mulgore;9§auto Mulgore;9 | x=-984.1000366210938 y=-620.7999877929688 | size=5 | links=#11082(auto Mulgore;237):60 #16691(auto Mulgore;360):59
+#507 | auto Mulgore;10§auto Mulgore;10§auto Mulgore;10 | x=-2030.900024414063 y=-312.6000061035156 | size=1 | links=#6444(auto Mulgore;133):46 #6912(auto Mulgore;145):33
+#561 | auto Mulgore;11§auto Mulgore;11§auto Mulgore;11 | x=-2320.699951171875 y=-301.6000061035156 | size=1 | links=#8505(auto Mulgore;175):20 #10262(auto Mulgore;214):41
+#587 | auto Mulgore;12§auto Mulgore;12§auto Mulgore;12 | x=-3184.60009765625 y=-939.9000244140625 | size=1 | links=#5997(auto Mulgore;118):21 #17906(auto Mulgore;380):20
+#593 | centralpoint;Red Rocks;Mulgore§zentralerpunkt;Teufelsfelsen;Mulgore§point central;Red Rocks;Mulgore | x=-1003.200012207031 y=-1108.5 | size=1 | links=#1214(auto Mulgore;24):13 c2994.1:10 c3232.2:13 c3232.24:21
+#611 | auto Mulgore;13§auto Mulgore;13§auto Mulgore;13 | x=-2497.5 y=-1368.900024414063 | size=5 | links=#5874(auto Mulgore;116):96 #6202(auto Mulgore;122):108 c2960.5:53 c2960.24:20 c2960.25:24 c2960.76:36 c2960.87:55
+#651 | auto Mulgore;14§auto Mulgore;14§auto Mulgore;14 | x=-2343.400146484375 y=49.90000152587891 | size=1 | links=#27485(auto Mulgore;566):74 o2912.13:24
+#662 | auto Mulgore;15§auto Mulgore;15§auto Mulgore;15 | x=-2053 y=-217.1999969482422 | size=1 | links=#13844(auto Mulgore;295):61 c2974.2:29 c2972.6:23 c2972.7:30 o2912.10:19 c3035.40:12
+#684 | auto Mulgore;16§auto Mulgore;16§auto Mulgore;16 | x=-2077.60009765625 y=-780 | size=1 | links=#7926(auto Mulgore;163):32 #18782(auto Mulgore;392):22 o2912.28:56
+#835 | centralpoint;The Venture Co. Mine;Mulgore§zentralerpunkt;Die Mine der Venture Co.;Mulgore§point central;The Venture Co. Mine;Mulgore | x=-1791 y=-1205.900024414063 | size=1 | links=#9913(auto Mulgore;207):33 #14751(auto Mulgore;317):22 #22811(auto Mulgore;475):10
+#838 | auto Mulgore;17§auto Mulgore;17§auto Mulgore;17 | x=-981.1000366210938 y=-752.9000244140625 | size=5 | links=#16691(auto Mulgore;360):73 #24615(auto Mulgore;509):29 c3566.25:66
+#871 | auto Mulgore;18§auto Mulgore;18§auto Mulgore;18 | x=-2130.900146484375 y=-872.7000122070312 | size=1 | links=#17348(auto Mulgore;374):81 #18615(auto Mulgore;386):95 c2959.25:60 c2957.35:45
+#874 | auto Mulgore;19§auto Mulgore;19§auto Mulgore;19 | x=-1969.599975585938 y=-282.3000183105469 | size=1 | links=#8468(auto Mulgore;173):40 #13844(auto Mulgore;295):44 c2970.13:40 c2959.49:24
+#885 | auto Mulgore;20§auto Mulgore;20§auto Mulgore;20 | x=-2312.900146484375 y=-422.3999938964844 | size=1 | links=#15246(auto Mulgore;329):21 #27147(auto Mulgore;556):12
+#887 | well;Wasserbrunnen der Donnerhörner;Mulgore§brunnen;Wasserbrunnen der Donnerhörner;Mulgore§well;Wasserbrunnen der Donnerhörner;Mulgore | x=-1830.68417986974 y=-240.5461366912055 | size=1 | links=o2910.7:16 o2910.17:14
+#995 | auto Mulgore;21§auto Mulgore;21§auto Mulgore;21 | x=-3343.300048828125 y=-158.6999969482422 | size=1 | links=#13509(auto Mulgore;291):78 #15150(auto Mulgore;326):22 c2961.9:24
+#1059 | auto Mulgore;22§auto Mulgore;22§auto Mulgore;22 | x=-2400.400146484375 y=-1340.200073242188 | size=1 | links=#6202(auto Mulgore;122):30 #24583(auto Mulgore;507):36
+#1158 | entry and exit;The Venture Co. Mine;Mulgore§ein- und ausgang;Die Mine der Venture Co.;Mulgore§entrée et sortie;The Venture Co. Mine;Mulgore | x=-1890.400024414063 y=-1109.300048828125 | size=1 | links=c2979.28:11 c2979.29:8
+#1177 | auto Mulgore;23§auto Mulgore;23§auto Mulgore;23 | x=-1726.400024414063 y=230.6999969482422 | size=5 | links=#2212(Mazzranache;Mulgore):37 #4286(auto Mulgore;87):17
+#1214 | auto Mulgore;24§auto Mulgore;24§auto Mulgore;24 | x=-997.7000122070312 y=-1095.900024414063 | size=1 | links=#593(centralpoint;Red Rocks;Mulgore):13 #19700(auto Mulgore;408):20 c3232.3:13
+#1239 | auto Mulgore;25§auto Mulgore;25§auto Mulgore;25 | x=-1695 y=-1097 | size=1 | links=#3988(auto Mulgore;80):10 #6415(auto Mulgore;131):9 #13295(auto Mulgore;283):6 #14248(auto Mulgore;305):28
+#1242 | auto Mulgore;26§auto Mulgore;26§auto Mulgore;26 | x=-1067.800048828125 y=-949.4000244140625 | size=1 | links=#26427(auto Mulgore;541):89 c3233.1:113
+#1247 | auto Mulgore;27§auto Mulgore;27§auto Mulgore;27 | x=-827.9000244140625 y=-81.9000015258789 | size=1 | links=#1835(auto Mulgore;39):33 c2978.66:36
+#1258 | auto Mulgore;28§auto Mulgore;28§auto Mulgore;28 | x=-2022.5 y=-430.8999938964844 | size=1 | links=#15991(auto Mulgore;341):51 #24531(auto Mulgore;506):58 c2959.8:59
+#1287 | auto Mulgore;29§auto Mulgore;29§auto Mulgore;29 | x=-1825.300048828125 y=-24.80000114440918 | size=1 | links=#2911(auto Mulgore;60):31 #21373(auto Mulgore;442):27 c3035.16:44
+#1395 | auto Mulgore;30§auto Mulgore;30§auto Mulgore;30 | x=-2431.300048828125 y=-541.2000122070312 | size=1 | links=#11858(auto Mulgore;253):55 #26518(auto Mulgore;542):64 c3221.1:13
+#1464 | auto Mulgore;31§auto Mulgore;31§auto Mulgore;31 | x=-920.9000244140625 y=-130 | size=1 | links=#14894(auto Mulgore;319):53 #27057(auto Mulgore;554):35
+#1475 | auto Mulgore;32§auto Mulgore;32§auto Mulgore;32 | x=-2354.699951171875 y=-353.3999938964844 | size=1 | links=#25531(auto Mulgore;522):14 c5939.1:3 c6747.1:12 c6776.1:5
+#1558 | auto Mulgore;33§auto Mulgore;33§auto Mulgore;33 | x=-3048.199951171875 y=-1117.5 | size=1 | links=#5478(auto Mulgore;110):38 #6252(auto Mulgore;125):33 c2952.7:16 c2952.27:4
+#1629 | auto Mulgore;34§auto Mulgore;34§auto Mulgore;34 | x=-1749 y=-1121.099975585938 | size=1 | links=#3066(auto Mulgore;61):27 #12559(auto Mulgore;265):14 c2978.33:6
+#1639 | auto Mulgore;35§auto Mulgore;35§auto Mulgore;35 | x=-1908.900024414063 y=-1002.700012207031 | size=1 | links=#2373(auto Mulgore;49):33 #26075(auto Mulgore;531):29 c2978.59:10
+#1651 | auto Mulgore;36§auto Mulgore;36§auto Mulgore;36 | x=-764.5 y=118.5999984741211 | size=5 | links=#18996(auto Mulgore;396):118 #20154(auto Mulgore;419):73
+#1737 | auto Mulgore;37§auto Mulgore;37§auto Mulgore;37 | x=-1641 y=-1176.800048828125 | size=1 | links=#25085(auto Mulgore;515):7 #27226(auto Mulgore;559):11
+#1759 | auto Mulgore;38§auto Mulgore;38§auto Mulgore;38 | x=-1444.700073242188 y=-206.6000061035156 | size=1 | links=#3219(auto Mulgore;63):20 #9557(auto Mulgore;195):24
+#1835 | auto Mulgore;39§auto Mulgore;39§auto Mulgore;39 | x=-826.2999877929688 y=-115.4000015258789 | size=1 | links=#1247(auto Mulgore;27):33 #14295(auto Mulgore;306):18
+#1855 | auto Mulgore;40§auto Mulgore;40§auto Mulgore;40 | x=-1462.599975585938 y=-1025.900024414063 | size=1 | links=#6555(centralpoint;top;Venture Co. Supervisor;Mulgore):25 #14349(auto Mulgore;307):29 #28312(auto Mulgore;585):25
+#1865 | auto Mulgore;41§auto Mulgore;41§auto Mulgore;41 | x=-2669.300048828125 y=-177.6999969482422 | size=1 | links=#9734(auto Mulgore;202):42 #23995(auto Mulgore;497):39 o2912.39:30 c2958.88:21 c2958.105:48
+#1930 | auto Mulgore;42§auto Mulgore;42§auto Mulgore;42 | x=-1365.400024414063 y=-203.5 | size=5 | links=#16211(auto Mulgore;349):49 #22789(auto Mulgore;473):24
+#1937 | auto Mulgore;43§auto Mulgore;43§auto Mulgore;43 | x=-3034.10009765625 y=148.6999969482422 | size=1 | links=#11810(auto Mulgore;252):40 #24161(auto Mulgore;498):58
+#1952 | auto Mulgore;44§auto Mulgore;44§auto Mulgore;44 | x=-1172.5 y=-351.7000122070313 | size=1 | links=#4256(auto Mulgore;86):33 #7841(auto Mulgore;161):39
+#2024 | auto Mulgore;45§auto Mulgore;45§auto Mulgore;45 | x=-1091 y=-403.3999938964844 | size=1 | links=#4567(auto Mulgore;91):15 #13247(auto Mulgore;281):26
+#2029 | auto Mulgore;46§auto Mulgore;46§auto Mulgore;46 | x=-1497.099975585938 y=-1004.5 | size=1 | links=#6555(centralpoint;top;Venture Co. Supervisor;Mulgore):16 c2979.57:35 c2979.62:17
+#2108 | auto Mulgore;47§auto Mulgore;47§auto Mulgore;47 | x=-935.6000366210938 y=-1103.300048828125 | size=1 | links=#8889(auto Mulgore;184):8 #27810(auto Mulgore;574):10
+#2212 | Mazzranache;Mulgore§Mazzranache;Mulgore§Mazzranache;Mulgore | x=-1706.700073242188 y=262.2000122070313 | size=1 | links=#1177(auto Mulgore;23):37 c2963.17:32 c2970.24:30 c2962.27:26
+#2355 | Kyle the Frenzied;Mulgore;1;49.28;63.83§Kyle der Wilde;Mulgore;1;49.28;63.83§Kyle le frénétique;Mulgore;1;49.28;63.83 | x=-2366.49195944162 y=-420.1123262308888 | size=1
+#2364 | auto Mulgore;48§auto Mulgore;48§auto Mulgore;48 | x=-3061.300048828125 y=-1150 | size=1 | links=#4223(auto Mulgore;83):6 #6252(auto Mulgore;125):6
+#2373 | auto Mulgore;49§auto Mulgore;49§auto Mulgore;49 | x=-1940.800048828125 y=-991.2999877929688 | size=1 | links=#1639(auto Mulgore;35):33 #24823(auto Mulgore;513):29 #26674(auto Mulgore;547):32
+#2383 | auto Mulgore;50§auto Mulgore;50§auto Mulgore;50 | x=-1851.400024414063 y=202.4000091552734 | size=1 | links=#22115(auto Mulgore;460):107 #23479(auto Mulgore;489):46
+#2426 | auto Mulgore;51§auto Mulgore;51§auto Mulgore;51 | x=-3152.800048828125 y=-997.9000244140625 | size=1 | links=#6247(auto Mulgore;124):16 #8913(auto Mulgore;185):17
+#2493 | auto Mulgore;52§auto Mulgore;52§auto Mulgore;52 | x=-1937.700073242188 y=-733.9000244140625 | size=1 | links=#11492(auto Mulgore;249):11 #28256(auto Mulgore;584):66 c2976.4:23 c2976.5:13 c2976.6:22
+#2555 | auto Mulgore;53§auto Mulgore;53§auto Mulgore;53 | x=-3117.900146484375 y=-1035.200073242188 | size=1 | links=#16625(auto Mulgore;359):30 #18648(auto Mulgore;388):10 c2952.11:16
+#2558 | auto Mulgore;54§auto Mulgore;54§auto Mulgore;54 | x=-954.4000244140625 y=-384.2000122070313 | size=1 | links=#9160(auto Mulgore;188):22 #23266(auto Mulgore;481):28
+#2610 | Zarlman Two-Moons;Questgiver;Mulgore;1;47.76;57.53§Zarlman Zwillingsmond;Questgeber;Mulgore;1;47.76;57.53§Zarlman Deux-Lunes;Questgiver;Mulgore;1;47.76;57.53 | x=-2243.789175513972 y=-406.1314032307691 | size=1
+#2620 | auto Mulgore;55§auto Mulgore;55§auto Mulgore;55 | x=-2989.10009765625 y=-404.8999938964844 | size=5 | links=#6636(auto Mulgore;141):70 #23279(auto Mulgore;482):57 c2955.8:79 c2955.54:13
+#2623 | auto Mulgore;56§auto Mulgore;56§auto Mulgore;56 | x=-2538.10009765625 y=-510.5 | size=5 | links=#22178(auto Mulgore;461):57 o2912.7:13
+#2659 | auto Mulgore;57§auto Mulgore;57§auto Mulgore;57 | x=-617.9000244140625 y=-604.5 | size=1 | links=#10066(auto Mulgore;211):54 #20265(auto Mulgore;422):87 #20445(auto Mulgore;425):67
+#2704 | auto Mulgore;58§auto Mulgore;58§auto Mulgore;58 | x=-2265.199951171875 y=-921.2999877929688 | size=1 | links=#18615(auto Mulgore;386):52 o2912.29:17
+#2839 | auto Mulgore;59§auto Mulgore;59§auto Mulgore;59 | x=-1758.700073242188 y=-991 | size=1 | links=#6976(auto Mulgore;148):28 #15153(auto Mulgore;327):55 #17325(auto Mulgore;372):56 #19021(auto Mulgore;397):28
+#2911 | auto Mulgore;60§auto Mulgore;60§auto Mulgore;60 | x=-1796.200073242188 y=-13.30000019073486 | size=1 | links=#1287(auto Mulgore;29):31 #10358(auto Mulgore;219):26 #19297(auto Mulgore;401):46 c2959.82:52
+#2998 | focus point;The Venture Co. Mine;Mulgore§bündelpunkt;Die Mine der Venture Co.;Mulgore§focus point;The Venture Co. Mine;Mulgore | x=-1964.400024414063 y=-1111.900024414063 | size=1 | links=#4899(auto Mulgore;102):24 #21806(auto Mulgore;453):43
+#3066 | auto Mulgore;61§auto Mulgore;61§auto Mulgore;61 | x=-1730.5 y=-1100.099975585938 | size=1 | links=#1629(auto Mulgore;34):27 #6172(auto Mulgore;121):15 #14248(auto Mulgore;305):19 c2978.30:8
+#3175 | auto Mulgore;62§auto Mulgore;62§auto Mulgore;62 | x=-2334.400146484375 y=221.9000091552734 | size=1 | links=#3887(auto Mulgore;74):36
+#3219 | auto Mulgore;63§auto Mulgore;63§auto Mulgore;63 | x=-1459.5 y=-220.9000091552734 | size=1 | links=#1759(auto Mulgore;38):20 #7232(auto Mulgore;152):24
+#3237 | auto Mulgore;64§auto Mulgore;64§auto Mulgore;64 | x=-1736.700073242188 y=-1185.700073242188 | size=1 | links=#8928(auto Mulgore;187):18 c2978.80:7
+#3434 | auto Mulgore;65§auto Mulgore;65§auto Mulgore;65 | x=-932.7999877929688 y=-245.3000030517578 | size=1 | links=#13707(auto Mulgore;294):17 #23133(auto Mulgore;480):41 c3566.21:22
+#3476 | auto Mulgore;66§auto Mulgore;66§auto Mulgore;66 | x=-3034.900146484375 y=-1046.200073242188 | size=1 | links=#5478(auto Mulgore;110):35 #14032(auto Mulgore;297):25
+#3498 | auto Mulgore;67§auto Mulgore;67§auto Mulgore;67 | x=-1403.800048828125 y=280.6000061035156 | size=5 | links=#10411(auto Mulgore;221):83 #10806(auto Mulgore;230):54 c3035.58:10
+#3500 | auto Mulgore;68§auto Mulgore;68§auto Mulgore;68 | x=-1685.900024414063 y=-1110 | size=1 | links=#3988(auto Mulgore;80):5 #18250(auto Mulgore;383):6
+#3519 | auto Mulgore;69§auto Mulgore;69§auto Mulgore;69 | x=-1024.400024414063 y=-1166.900024414063 | size=1 | links=#6605(auto Mulgore;139):19 #12268(auto Mulgore;258):25
+#3680 | auto Mulgore;70§auto Mulgore;70§auto Mulgore;70 | x=-1542.200073242188 y=-1117.099975585938 | size=1 | links=#7289(auto Mulgore;154):12 #17085(auto Mulgore;368):24
+#3771 | auto Mulgore;71§auto Mulgore;71§auto Mulgore;71 | x=-1984.5 y=-857.1000366210938 | size=1 | links=#17348(auto Mulgore;374):73 #26719(auto Mulgore;548):72 #28256(auto Mulgore;584):66 c2957.17:50
+#3802 | auto Mulgore;72§auto Mulgore;72§auto Mulgore;72 | x=-1170.099975585938 y=379.8999938964844 | size=5 | links=#11272(auto Mulgore;244):76 c2965.2:26 c2957.4:42 c2965.14:46
+#3880 | auto Mulgore;73§auto Mulgore;73§auto Mulgore;73 | x=-2710.5 y=-787.7000122070312 | size=1 | links=#10478(auto Mulgore;224):110 #23443(auto Mulgore;487):52 #26186(auto Mulgore;533):43 c2949.9:31
+#3887 | auto Mulgore;74§auto Mulgore;74§auto Mulgore;74 | x=-2361.10009765625 y=196.9000091552734 | size=1 | links=#3175(auto Mulgore;62):36 #27650(auto Mulgore;569):53 c2949.13:26 c2958.85:18
+#3896 | auto Mulgore;75§auto Mulgore;75§auto Mulgore;75 | x=-2173.900146484375 y=-305.3999938964844 | size=1 | links=#9972(down;waters;Stonebull Lake;Mulgore):31 #11197(auto Mulgore;241):41
+#3940 | auto Mulgore;76§auto Mulgore;76§auto Mulgore;76 | x=-1559.900024414063 y=-1148.099975585938 | size=1 | links=#13007(auto Mulgore;272):9 #17085(auto Mulgore;368):11
+#3951 | auto Mulgore;77§auto Mulgore;77§auto Mulgore;77 | x=-2911.10009765625 y=-245.4000091552734 | size=1 | links=#6600(auto Mulgore;138):7 #22851(central location;Camp Narache;Mulgore):17 c2980.1:12 #28693(s;Kalimdor;Mulgore;Camp Narache):9
+#3959 | auto Mulgore;78§auto Mulgore;78§auto Mulgore;78 | x=-1443.300048828125 y=68.70000457763672 | size=1 | links=#4615(auto Mulgore;93):6 #21780(auto Mulgore;451):8
+#3976 | auto Mulgore;79§auto Mulgore;79§auto Mulgore;79 | x=-3033.900146484375 y=-1228.099975585938 | size=1 | links=#14152(auto Mulgore;299):35 #27115(auto Mulgore;555):44 c2953.4:17
+#3988 | auto Mulgore;80§auto Mulgore;80§auto Mulgore;80 | x=-1689.099975585938 y=-1105.599975585938 | size=1 | links=#1239(auto Mulgore;25):10 #3500(auto Mulgore;68):5 c2979.14:2
+#4044 | auto Mulgore;81§auto Mulgore;81§auto Mulgore;81 | x=-998.9000244140625 y=-426.2000122070313 | size=1 | links=#4766(auto Mulgore;98):52 #13993(auto Mulgore;296):13 #23363(auto Mulgore;485):9
+#4205 | auto Mulgore;82§auto Mulgore;82§auto Mulgore;82 | x=-1838.400024414063 y=-1038.300048828125 | size=1 | links=#8321(auto Mulgore;169):31 #11015(auto Mulgore;234):34 c2959.111:38
+#4223 | auto Mulgore;83§auto Mulgore;83§auto Mulgore;83 | x=-3059.800048828125 y=-1156.599975585938 | size=1 | links=#2364(auto Mulgore;48):6 #11101(auto Mulgore;238):21 c2952.14:5
+#4226 | auto Mulgore;84§auto Mulgore;84§auto Mulgore;84 | x=-1521.099975585938 y=-901.4000244140625 | size=1 | links=#322(auto Mulgore;7):26 #16086(auto Mulgore;342):19
+#4244 | auto Mulgore;85§auto Mulgore;85§auto Mulgore;85 | x=-2339.199951171875 y=-404.6000061035156 | size=1 | links=#5969(auto Mulgore;117):7 #27676(auto Mulgore;571):19
+#4256 | auto Mulgore;86§auto Mulgore;86§auto Mulgore;86 | x=-1169.599975585938 y=-318.5 | size=1 | links=#1952(auto Mulgore;44):33 #11019(auto Mulgore;235):40
+#4286 | auto Mulgore;87§auto Mulgore;87§auto Mulgore;87 | x=-1728.599975585938 y=213.1999969482422 | size=5 | links=#1177(auto Mulgore;23):17 #7448(auto Mulgore;156):44
+#4437 | auto Mulgore;88§auto Mulgore;88§auto Mulgore;88 | x=-947.2999877929688 y=-1128.400024414063 | size=1 | links=#6488(auto Mulgore;135):15 #19854(auto Mulgore;411):7
+#4442 | auto Mulgore;89§auto Mulgore;89§auto Mulgore;89 | x=-1408.700073242188 y=-1081.900024414063 | size=1 | links=#6273(auto Mulgore;126):17 #22982(auto Mulgore;478):12
+#4495 | quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§objectif de quête;Forge;Bael'dun Digsite;Mulgore | x=-1983.400024414063 y=441.6000061035156 | size=1 | links=c2990.2:5 c2989.14:12
+#4540 | auto Mulgore;90§auto Mulgore;90§auto Mulgore;90 | x=-2623 y=-231.5 | size=1 | links=#10071(auto Mulgore;212):45 #22601(auto Mulgore;467):67 #23995(auto Mulgore;497):63 c2956.23:59
+#4567 | auto Mulgore;91§auto Mulgore;91§auto Mulgore;91 | x=-1106.5 y=-401.5 | size=1 | links=#2024(auto Mulgore;45):15 #6958(auto Mulgore;147):26
+#4612 | auto Mulgore;92§auto Mulgore;92§auto Mulgore;92 | x=-3103.400146484375 y=-2.799999952316284 | size=1 | links=#21357(auto Mulgore;441):40 #21977(auto Mulgore;458):39
+#4615 | auto Mulgore;93§auto Mulgore;93§auto Mulgore;93 | x=-1447.700073242188 y=64.5999984741211 | size=1 | links=#340(auto Mulgore;8):39 #3959(auto Mulgore;78):6
+#4626 | auto Mulgore;94§auto Mulgore;94§auto Mulgore;94 | x=-930.2999877929688 y=-365.6000061035156 | size=1 | links=#9160(auto Mulgore;188):10 #10275(auto Mulgore;215):13
+#4639 | auto Mulgore;95§auto Mulgore;95§auto Mulgore;95 | x=-1429.099975585938 y=80.5 | size=1 | links=#14501(auto Mulgore;311):12 #21780(auto Mulgore;451):10
+#4649 | focus point;Wasserbrunnen der Winterhufe;Mulgore§bündelpunkt;Wasserbrunnen der Winterhufe;Mulgore§focus point;Wasserbrunnen der Winterhufe;Mulgore | x=-2493.699951171875 y=-695.1000366210938 | size=1 | links=#24696(auto Mulgore;511):0 o2910.1:31
+#4722 | auto Mulgore;96§auto Mulgore;96§auto Mulgore;96 | x=-1664.599975585938 y=-1218.700073242188 | size=1 | links=#12815(auto Mulgore;269):15 #25453(auto Mulgore;519):13
+#4760 | auto Mulgore;97§auto Mulgore;97§auto Mulgore;97 | x=-1572.099975585938 y=-1175.5 | size=1 | links=#208(auto Mulgore;3):6 #21507(auto Mulgore;448):24
+#4766 | auto Mulgore;98§auto Mulgore;98§auto Mulgore;98 | x=-985 y=-477 | size=5 | links=#4044(auto Mulgore;81):52 #11082(auto Mulgore;237):84
+#4768 | auto Mulgore;99§auto Mulgore;99§auto Mulgore;99 | x=-948.4000244140625 y=-1070.700073242188 | size=1 | links=#21905(auto Mulgore;456):24 c3232.12:13 c3232.15:11 c3232.20:15
+#4803 | auto Mulgore;100§auto Mulgore;100§auto Mulgore;100 | x=-2731.199951171875 y=-77 | size=1 | links=#5774(auto Mulgore;112):37 #28071(auto Mulgore;578):108 c2958.26:30 c2956.77:49
+#4848 | auto Mulgore;101§auto Mulgore;101§auto Mulgore;101 | x=-1956.200073242188 y=393.8999938964844 | size=1 | links=#11905(auto Mulgore;254):11 #13110(centralpoint;Bael'dun Digsite;Mulgore):18 c2989.16:5
+#4899 | auto Mulgore;102§auto Mulgore;102§auto Mulgore;102 | x=-1980.700073242188 y=-1093.099975585938 | size=1 | links=#2998(focus point;The Venture Co. Mine;Mulgore):24 #9711(auto Mulgore;201):57
+#4944 | auto Mulgore;103§auto Mulgore;103§auto Mulgore;103 | x=-2145.900146484375 y=-471.3999938964844 | size=1 | links=#40(auto Mulgore;2):40 #27037(auto Mulgore;553):56 c3220.1:52
+#5058 | auto Mulgore;104§auto Mulgore;104§auto Mulgore;104 | x=-1619.200073242188 y=-1298 | size=1 | links=#20471(auto Mulgore;426):44 #28090(auto Mulgore;581):11
+#5157 | Morin Cloudstalker;Questgiver;Mulgore;1;57.2;61.22§Morin Wolkenpirscher;Questgeber;Mulgore;1;57.2;61.22§Morin Traqueur-de-nuage;Questgiver;Mulgore;1;57.2;61.22 | x=-2370.02335851861 y=-898.2140175803687 | size=1
+#5179 | auto Mulgore;105§auto Mulgore;105§auto Mulgore;105 | x=-2930.400146484375 y=-258.3000183105469 | size=1 | links=#13048(auto Mulgore;274):9 #23327(spawn location;Camp Narache;Mulgore):12
+#5252 | auto Mulgore;106§auto Mulgore;106§auto Mulgore;106 | x=-2963.400146484375 y=-1325 | size=1 | links=#27291(auto Mulgore;561):31 c2952.39:22
+#5326 | auto Mulgore;107§auto Mulgore;107§auto Mulgore;107 | x=-991.1000366210938 y=-1118.300048828125 | size=1 | links=#25284(auto Mulgore;518):7 c2994.1:9
+#5361 | auto Mulgore;108§auto Mulgore;108§auto Mulgore;108 | x=-1938.599975585938 y=379.8999938964844 | size=1 | links=#13110(centralpoint;Bael'dun Digsite;Mulgore):19 #26290(auto Mulgore;535):7
+#5372 | auto Mulgore;109§auto Mulgore;109§auto Mulgore;109 | x=-1631.900024414063 y=-1202 | size=1 | links=#15377(auto Mulgore;332):23 #25085(auto Mulgore;515):19 c2979.6:12 c2978.12:15
+#5478 | auto Mulgore;110§auto Mulgore;110§auto Mulgore;110 | x=-3035.10009765625 y=-1081.300048828125 | size=1 | links=#1558(auto Mulgore;33):38 #3476(auto Mulgore;66):35 c2954.6:9
+#5687 | auto Mulgore;111§auto Mulgore;111§auto Mulgore;111 | x=-2189.400146484375 y=-384.7000122070313 | size=1 | links=#9561(auto Mulgore;196):24 #25572(auto Mulgore;524):19
+#5774 | auto Mulgore;112§auto Mulgore;112§auto Mulgore;112 | x=-2707.10009765625 y=-106.3000030517578 | size=1 | links=#4803(auto Mulgore;100):37 #7621(auto Mulgore;158):55 c2958.74:32
+#5781 | passage;from;Mulgore;to;Thunder Bluff;south§passage;von;Mulgore;nach;donnerfels;südlich§passage;de;Mulgore;vers;Les Pitons du Tonnerre;south | x=-1402.700073242188 y=115.0999984741211 | size=1 | links=#9242(auto Mulgore;190):15 #19997(passage;from;Thunder Bluff;south;to;Mulgore):7
+#5837 | auto Mulgore;113§auto Mulgore;113§auto Mulgore;113 | x=-2244.5 y=-136.5 | size=1 | links=#8750(auto Mulgore;181):62 #8914(auto Mulgore;186):58 o2912.18:45 c2958.42:117
+#5843 | auto Mulgore;114§auto Mulgore;114§auto Mulgore;114 | x=-616.4000244140625 y=-497.7000122070313 | size=5 | links=#10066(auto Mulgore;211):52 #21881(auto Mulgore;455):48
+#5869 | auto Mulgore;115§auto Mulgore;115§auto Mulgore;115 | x=-2009.900024414063 y=-961.2999877929688 | size=5 | links=#9711(auto Mulgore;201):77 #17348(auto Mulgore;374):83 c2959.115:20
+#5874 | auto Mulgore;116§auto Mulgore;116§auto Mulgore;116 | x=-2586.10009765625 y=-1329.900024414063 | size=1 | links=#611(auto Mulgore;13):96 #24263(auto Mulgore;503):52 c2962.5:32 c2963.15:33 c2962.23:58
+#5969 | auto Mulgore;117§auto Mulgore;117§auto Mulgore;117 | x=-2345.60009765625 y=-401.7000122070313 | size=1 | links=#4244(auto Mulgore;85):7 #15161(auto Mulgore;328):16 #20359(auto Mulgore;423):40 c2948.1:43 c2993.1:15
+#5997 | auto Mulgore;118§auto Mulgore;118§auto Mulgore;118 | x=-3169.800048828125 y=-955.6000366210938 | size=1 | links=#587(auto Mulgore;12):21 #15556(auto Mulgore;334):12
+#6143 | auto Mulgore;119§auto Mulgore;119§auto Mulgore;119 | x=-2461.900146484375 y=-484.3000183105469 | size=1 | links=#22178(auto Mulgore;461):23 #26725(auto Mulgore;549):39
+#6144 | auto Mulgore;120§auto Mulgore;120§auto Mulgore;120 | x=-1887.400024414063 y=-83 | size=1 | links=#12457(auto Mulgore;262):71 #21373(auto Mulgore;442):57
+#6172 | auto Mulgore;121§auto Mulgore;121§auto Mulgore;121 | x=-1720.400024414063 y=-1088.800048828125 | size=1 | links=#3066(auto Mulgore;61):15 #6415(auto Mulgore;131):17 #19654(auto Mulgore;407):17
+#6202 | auto Mulgore;122§auto Mulgore;122§auto Mulgore;122 | x=-2388.60009765625 y=-1368.599975585938 | size=1 | links=#611(auto Mulgore;13):108 #1059(auto Mulgore;22):30 #17714(auto Mulgore;378):48 c2960.3:63 c2957.6:39
+#6216 | auto Mulgore;123§auto Mulgore;123§auto Mulgore;123 | x=-1516 y=-1056.5 | size=1 | links=#19328(auto Mulgore;402):6 c2979.36:16
+#6247 | auto Mulgore;124§auto Mulgore;124§auto Mulgore;124 | x=-3139.10009765625 y=-1006.700012207031 | size=5 | links=#2426(auto Mulgore;51):16 #17066(auto Mulgore;367):13
+#6252 | auto Mulgore;125§auto Mulgore;125§auto Mulgore;125 | x=-3066.60009765625 y=-1145.700073242188 | size=1 | links=#1558(auto Mulgore;33):33 #2364(auto Mulgore;48):6
+#6273 | auto Mulgore;126§auto Mulgore;126§auto Mulgore;126 | x=-1424.099975585938 y=-1073.099975585938 | size=1 | links=#4442(auto Mulgore;89):17 #25260(auto Mulgore;517):13
+#6299 | auto Mulgore;127§auto Mulgore;127§auto Mulgore;127 | x=-1654.5 y=-1100.099975585938 | size=1 | links=#12793(auto Mulgore;268):15
+#6336 | auto Mulgore;128§auto Mulgore;128§auto Mulgore;128 | x=-1704.400024414063 y=-1170 | size=1 | links=#19152(auto Mulgore;399):14 #20432(auto Mulgore;424):17 #27693(auto Mulgore;572):27
+#6337 | auto Mulgore;129§auto Mulgore;129§auto Mulgore;129 | x=-3163 y=-191.8000030517578 | size=1 | links=#13080(auto Mulgore;276):61 #14234(auto Mulgore;304):62 c2955.3:33 c2955.69:34 c2955.73:23
+#6351 | auto Mulgore;130§auto Mulgore;130§auto Mulgore;130 | x=-1996.599975585938 y=-755.2999877929688 | size=1 | links=#8012(auto Mulgore;165):23 #16093(auto Mulgore;343):16 c2959.36:31
+#6415 | auto Mulgore;131§auto Mulgore;131§auto Mulgore;131 | x=-1702.700073242188 y=-1091.300048828125 | size=1 | links=#1239(auto Mulgore;25):9 #6172(auto Mulgore;121):17
+#6428 | auto Mulgore;132§auto Mulgore;132§auto Mulgore;132 | x=-2840 y=-1056.900024414063 | size=1 | links=c2953.7:26 c2952.41:12
+#6444 | auto Mulgore;133§auto Mulgore;133§auto Mulgore;133 | x=-2051.300048828125 y=-354.3999938964844 | size=1 | links=#507(auto Mulgore;10):46 #9869(auto Mulgore;205):14 #12853(auto Mulgore;270):20 #16107(auto Mulgore;344):19
+#6449 | auto Mulgore;134§auto Mulgore;134§auto Mulgore;134 | x=-1452.700073242188 y=-1059.599975585938 | size=1 | links=#25260(auto Mulgore;517):18 #28312(auto Mulgore;585):20 c2979.56:15 c2979.61:18
+#6480 | waters;two;Stonebull Lake;Mulgore§gewässer;zwei;Steinbullensee;Mulgore§eaux;deux;Stonebull Lake;Mulgore | x=-2383.60009765625 y=-215.3000030517578 | size=1 | links=#8837(auto Mulgore;182):37 c5938.1:40
+#6488 | auto Mulgore;135§auto Mulgore;135§auto Mulgore;135 | x=-959.6000366210938 y=-1137.5 | size=1 | links=#4437(auto Mulgore;88):15 #13349(auto Mulgore;286):14 c3232.18:8
+#6500 | well;Wasserbrunnen der Winterhufe;Mulgore§brunnen;Wasserbrunnen der Winterhufe;Mulgore§well;Wasserbrunnen der Winterhufe;Mulgore | x=-2536.800048828125 y=-712 | size=1 | links=o2910.8:8
+#6510 | auto Mulgore;136§auto Mulgore;136§auto Mulgore;136 | x=-775 y=-687.9000244140625 | size=1 | links=c3566.71:44 c2957.85:20
+#6526 | auto Mulgore;137§auto Mulgore;137§auto Mulgore;137 | x=-2259.400146484375 y=-393.7000122070313 | size=1 | links=#9935(auto Mulgore;208):30 c3055.1:42 c3685.1:20 c3690.1:17 c11407.1:40
+#6555 | centralpoint;top;Venture Co. Supervisor;Mulgore§zentralerpunkt;oben;Vorsteher der Venture Co.;Mulgore§point central;top;Superviseur de la KapitalRisk;Mulgore | x=-1486.400024414063 y=-1016.799987792969 | size=1 | links=#1855(auto Mulgore;40):25 #2029(auto Mulgore;46):16 #13572(auto Mulgore;292):17 #14349(auto Mulgore;307):21
+#6600 | auto Mulgore;138§auto Mulgore;138§auto Mulgore;138 | x=-2915.60009765625 y=-238.8000030517578 | size=1 | links=#3951(auto Mulgore;77):7 #26416(auto Mulgore;540):7
+#6605 | auto Mulgore;139§auto Mulgore;139§auto Mulgore;139 | x=-1007.799987792969 y=-1177.099975585938 | size=1 | links=#3519(auto Mulgore;69):19 #19580(auto Mulgore;405):15
+#6612 | auto Mulgore;140§auto Mulgore;140§auto Mulgore;140 | x=-2345 y=-481.2000122070313 | size=1 | links=#8301(auto Mulgore;167):22 #12429(auto Mulgore;261):34 #20359(auto Mulgore;423):62 c3063.1:15
+#6636 | auto Mulgore;141§auto Mulgore;141§auto Mulgore;141 | x=-3022.300048828125 y=-466.8000183105469 | size=5 | links=#257(auto Mulgore;4):38 #2620(auto Mulgore;55):70 c2955.4:66 c2955.20:29 c2955.26:89 c2955.44:33
+#6657 | auto Mulgore;142§auto Mulgore;142§auto Mulgore;142 | x=-2970.60009765625 y=-258.3999938964844 | size=1 | links=#14850(auto Mulgore;318):23 #17152(auto Mulgore;370):88 c3214.1:36 c2955.2:31 c2955.61:54
+#6672 | auto Mulgore;143§auto Mulgore;143§auto Mulgore;143 | x=-1762.700073242188 y=86.80000305175781 | size=5 | links=#12529(auto Mulgore;264):29 #27994(auto Mulgore;577):40
+#6818 | auto Mulgore;144§auto Mulgore;144§auto Mulgore;144 | x=-1584.700073242188 y=-1136.5 | size=1 | links=#7024(auto Mulgore;149):29 #16184(auto Mulgore;348):25
+#6895 | Brave Windfeather;Questgiver;Mulgore;1;44.53;76.5§Kriegerheldin Windfeder;Questgeber;Mulgore;1;44.53;76.5§Brave Plume-des-vents;Questgiver;Mulgore;1;44.53;76.5 | x=-2898.645543088455 y=-246.413465831571 | size=1
+#6912 | auto Mulgore;145§auto Mulgore;145§auto Mulgore;145 | x=-2017.5 y=-281.7000122070313 | size=1 | links=#507(auto Mulgore;10):33 #13844(auto Mulgore;295):26 #28342(auto Mulgore;587):40 c2620.16:7
+#6954 | auto Mulgore;146§auto Mulgore;146§auto Mulgore;146 | x=-3183.400146484375 y=-807.7999877929688 | size=5 | links=#11023(auto Mulgore;236):70 #12372(auto Mulgore;260):59 c2966.17:34 c2966.22:38
+#6958 | auto Mulgore;147§auto Mulgore;147§auto Mulgore;147 | x=-1132.300048828125 y=-405 | size=1 | links=#4567(auto Mulgore;91):26 #7841(auto Mulgore;161):28
+#6976 | auto Mulgore;148§auto Mulgore;148§auto Mulgore;148 | x=-1779.5 y=-1010 | size=1 | links=#2839(auto Mulgore;59):28 #8321(auto Mulgore;169):35 #19021(auto Mulgore;397):16
+#7024 | auto Mulgore;149§auto Mulgore;149§auto Mulgore;149 | x=-1614.5 y=-1135 | size=1 | links=#6818(auto Mulgore;144):29 #20242(auto Mulgore;421):13
+#7108 | auto Mulgore;150§auto Mulgore;150§auto Mulgore;150 | x=-2663.60009765625 y=-1208.599975585938 | size=1 | links=#9885(auto Mulgore;206):41 c2962.7:43 c2962.9:33 c2962.11:22
+#7166 | auto Mulgore;151§auto Mulgore;151§auto Mulgore;151 | x=-2943.199951171875 y=-1257.700073242188 | size=1 | links=#24182(auto Mulgore;500):9 c8554.1:21
+#7232 | auto Mulgore;152§auto Mulgore;152§auto Mulgore;152 | x=-1482.900024414063 y=-213.1000061035156 | size=5 | links=#3219(auto Mulgore;63):24 #15953(auto Mulgore;338):46
+#7237 | auto Mulgore;153§auto Mulgore;153§auto Mulgore;153 | x=-2789.60009765625 y=-801.7999877929688 | size=1 | links=#8502(auto Mulgore;174):38 #26199(auto Mulgore;534):33 c2951.7:18
+#7289 | auto Mulgore;154§auto Mulgore;154§auto Mulgore;154 | x=-1536.700073242188 y=-1105.800048828125 | size=1 | links=#3680(auto Mulgore;70):12 #22766(auto Mulgore;472):8
+#7357 | auto Mulgore;155§auto Mulgore;155§auto Mulgore;155 | x=-1185.900024414063 y=-1013.100036621094 | size=5 | links=#25534(auto Mulgore;523):52 c3233.1:38 c2957.40:34
+#7448 | auto Mulgore;156§auto Mulgore;156§auto Mulgore;156 | x=-1737.700073242188 y=169.9000091552734 | size=5 | links=#4286(auto Mulgore;87):44 #27994(auto Mulgore;577):46
+#7506 | auto Mulgore;157§auto Mulgore;157§auto Mulgore;157 | x=-1957 y=-525.4000244140625 | size=1 | links=#23972(auto Mulgore;495):50 #24531(auto Mulgore;506):56 c2959.77:40
+#7621 | auto Mulgore;158§auto Mulgore;158§auto Mulgore;158 | x=-2658.10009765625 y=-132.4000091552734 | size=1 | links=#5774(auto Mulgore;112):55 #23995(auto Mulgore;497):45 c2973.3:173
+#7640 | auto Mulgore;159§auto Mulgore;159§auto Mulgore;159 | x=-913.7000122070312 y=19.39999961853027 | size=5 | links=#8574(auto Mulgore;176):61 #12486(auto Mulgore;263):26
+#7766 | auto Mulgore;160§auto Mulgore;160§auto Mulgore;160 | x=-2131.10009765625 y=-249.6000061035156 | size=1 | links=#13217(auto Mulgore;280):27 #26940(auto Mulgore;552):43
+#7841 | auto Mulgore;161§auto Mulgore;161§auto Mulgore;161 | x=-1154.300048828125 y=-387 | size=1 | links=#1952(auto Mulgore;44):39 #6958(auto Mulgore;147):28
+#7899 | auto Mulgore;162§auto Mulgore;162§auto Mulgore;162 | x=-1538.800048828125 y=-22.39999961853027 | size=5 | links=#9498(auto Mulgore;193):27 #12331(auto Mulgore;259):19
+#7926 | auto Mulgore;163§auto Mulgore;163§auto Mulgore;163 | x=-2110.400146484375 y=-782.7999877929688 | size=1 | links=#684(auto Mulgore;16):32 #14222(auto Mulgore;302):32
+#7979 | auto Mulgore;164§auto Mulgore;164§auto Mulgore;164 | x=-933.9000244140625 y=-156.3000030517578 | size=1 | links=#20830(auto Mulgore;431):20 #22702(auto Mulgore;471):17 c3566.10:12 c2957.13:26
+#8012 | auto Mulgore;165§auto Mulgore;165§auto Mulgore;165 | x=-2019.300048828125 y=-761.7999877929688 | size=1 | links=#6351(auto Mulgore;130):23 #18782(auto Mulgore;392):38
+#8234 | auto Mulgore;166§auto Mulgore;166§auto Mulgore;166 | x=-1529.400024414063 y=322.1000061035156 | size=1 | links=#12072(auto Mulgore;257):13 #14923(auto Mulgore;323):38
+#8301 | auto Mulgore;167§auto Mulgore;167§auto Mulgore;167 | x=-2329.5 y=-464.6000061035156 | size=1 | links=#6612(auto Mulgore;140):22 #19986(auto Mulgore;414):18
+#8303 | auto Mulgore;168§auto Mulgore;168§auto Mulgore;168 | x=-612.6000366210938 y=-38.10000228881836 | size=5 | links=#13185(auto Mulgore;279):90 #24678(auto Mulgore;510):84 c2957.81:59
+#8321 | auto Mulgore;169§auto Mulgore;169§auto Mulgore;169 | x=-1807.599975585938 y=-1031.900024414063 | size=1 | links=#4205(auto Mulgore;82):31 #6976(auto Mulgore;148):35
+#8330 | auto Mulgore;170§auto Mulgore;170§auto Mulgore;170 | x=-2854.400146484375 y=-1098.900024414063 | size=1 | links=#16846(auto Mulgore;362):10 c2954.13:16
+#8334 | auto Mulgore;171§auto Mulgore;171§auto Mulgore;171 | x=-1516 y=351.8999938964844 | size=1 | links=#12072(auto Mulgore;257):19 c2984.1:17
+#8408 | auto Mulgore;172§auto Mulgore;172§auto Mulgore;172 | x=-930.4000244140625 y=-314.7000122070313 | size=1 | links=#18729(auto Mulgore;390):22 #18740(auto Mulgore;391):34 c2957.29:24
+#8468 | auto Mulgore;173§auto Mulgore;173§auto Mulgore;173 | x=-1929.700073242188 y=-275.2000122070313 | size=5 | links=#874(auto Mulgore;19):40 #10800(focus point;Wasserbrunnen der Donnerhörner;Mulgore):65 c3035.12:34
+#8502 | auto Mulgore;174§auto Mulgore;174§auto Mulgore;174 | x=-2762.300048828125 y=-828.6000366210938 | size=1 | links=#7237(auto Mulgore;153):38 #26186(auto Mulgore;533):41
+#8505 | auto Mulgore;175§auto Mulgore;175§auto Mulgore;175 | x=-2330.400146484375 y=-319.2000122070313 | size=1 | links=#561(auto Mulgore;11):20 #15987(central location;Bloodhoof Village;Mulgore):58
+#8574 | auto Mulgore;176§auto Mulgore;176§auto Mulgore;176 | x=-927.2000122070312 y=79.70000457763672 | size=5 | links=#7640(auto Mulgore;159):61 #18996(auto Mulgore;396):49
+#8631 | auto Mulgore;177§auto Mulgore;177§auto Mulgore;177 | x=-2621.699951171875 y=114.2000045776367 | size=1 | links=#21939(auto Mulgore;457):75 o2912.37:15
+#8641 | auto Mulgore;178§auto Mulgore;178§auto Mulgore;178 | x=-811.5 y=-31.10000038146973 | size=1 | links=c5787.1:2 c2979.40:21 c2978.66:17
+#8661 | auto Mulgore;179§auto Mulgore;179§auto Mulgore;179 | x=-1306.200073242188 y=-910.7999877929688 | size=1 | links=#20123(auto Mulgore;418):51 #25503(auto Mulgore;521):50 c2972.2:21 c2957.45:11 c3566.79:28
+#8722 | auto Mulgore;180§auto Mulgore;180§auto Mulgore;180 | x=-2903.5 y=-260.3000183105469 | size=1 | links=#22851(central location;Camp Narache;Mulgore):9 c2980.1:9
+#8750 | auto Mulgore;181§auto Mulgore;181§auto Mulgore;181 | x=-2307 y=-137.5 | size=1 | links=#5837(auto Mulgore;113):62 #18363(auto Mulgore;385):71 c2956.1:25
+#8837 | auto Mulgore;182§auto Mulgore;182§auto Mulgore;182 | x=-2415.800048828125 y=-196.1000061035156 | size=1 | links=#6480(waters;two;Stonebull Lake;Mulgore):37 #21668(auto Mulgore;449):52
+#8864 | auto Mulgore;183§auto Mulgore;183§auto Mulgore;183 | x=-974.1000366210938 y=-856.7999877929688 | size=5 | links=#24615(auto Mulgore;509):74 #26427(auto Mulgore;541):42 #28074(auto Mulgore;579):86 c3566.67:53
+#8881 | well;Wasserbrunnen der Wildmähnen;Mulgore§brunnen;Wasserbrunnen der Wildmähnen;Mulgore§well;Wasserbrunnen der Wildmähnen;Mulgore | x=-759.9000244140625 y=-152.4000091552734 | size=1 | links=o2910.16:7
+#8889 | auto Mulgore;184§auto Mulgore;184§auto Mulgore;184 | x=-932.2000122070312 y=-1111.5 | size=1 | links=#2108(auto Mulgore;47):8 #27972(auto Mulgore;576):10
+#8913 | auto Mulgore;185§auto Mulgore;185§auto Mulgore;185 | x=-3160.400146484375 y=-982.6000366210938 | size=1 | links=#2426(auto Mulgore;51):17 #15556(auto Mulgore;334):17
+#8914 | auto Mulgore;186§auto Mulgore;186§auto Mulgore;186 | x=-2198 y=-172.8000030517578 | size=1 | links=#5837(auto Mulgore;113):58 #26940(auto Mulgore;552):58
+#8928 | auto Mulgore;187§auto Mulgore;187§auto Mulgore;187 | x=-1754.5 y=-1190.200073242188 | size=1 | links=#3237(auto Mulgore;64):18 #14751(auto Mulgore;317):17 c2978.84:10
+#9160 | auto Mulgore;188§auto Mulgore;188§auto Mulgore;188 | x=-933.4000244140625 y=-376 | size=1 | links=#2558(auto Mulgore;54):22 #4626(auto Mulgore;94):10 c2957.71:23
+#9183 | auto Mulgore;189§auto Mulgore;189§auto Mulgore;189 | x=-3044.60009765625 y=-600.7000122070312 | size=5 | links=#10098(auto Mulgore;213):51 #10882(auto Mulgore;233):59 c2955.23:41
+#9242 | auto Mulgore;190§auto Mulgore;190§auto Mulgore;190 | x=-1412.300048828125 y=103 | size=1 | links=#5781(passage;from;Mulgore;to;Thunder Bluff;south):15 #14501(auto Mulgore;311):15
+#9371 | auto Mulgore;191§auto Mulgore;191§auto Mulgore;191 | x=-2161.10009765625 y=-752.4000244140625 | size=1 | links=#14222(auto Mulgore;302):26 #26404(auto Mulgore;539):45
+#9453 | auto Mulgore;192§auto Mulgore;192§auto Mulgore;192 | x=-2591.10009765625 y=-417.6000061035156 | size=1 | links=#10875(auto Mulgore;232):39 #14399(auto Mulgore;308):26 o2912.16:21
+#9498 | auto Mulgore;193§auto Mulgore;193§auto Mulgore;193 | x=-1535.200073242188 y=-49.79999923706055 | size=5 | links=#7899(auto Mulgore;162):27 #24251(auto Mulgore;502):35
+#9522 | auto Mulgore;194§auto Mulgore;194§auto Mulgore;194 | x=-2096.699951171875 y=-415.2000122070313 | size=1 | links=#14544(auto Mulgore;312):9 #25466(auto Mulgore;520):26
+#9557 | auto Mulgore;195§auto Mulgore;195§auto Mulgore;195 | x=-1421.099975585938 y=-200.1000061035156 | size=5 | links=#1759(auto Mulgore;38):24 #18847(auto Mulgore;393):22
+#9561 | auto Mulgore;196§auto Mulgore;196§auto Mulgore;196 | x=-2170.900146484375 y=-400.7000122070313 | size=1 | links=#5687(auto Mulgore;111):24 c3065.1:12 c3220.1:27 c3688.1:11 c5940.1:14
+#9563 | auto Mulgore;197§auto Mulgore;197§auto Mulgore;197 | x=-2286.300048828125 y=-336.7000122070313 | size=1 | links=#15987(central location;Bloodhoof Village;Mulgore):53 #21479(auto Mulgore;447):21
+#9619 | auto Mulgore;198§auto Mulgore;198§auto Mulgore;198 | x=-2872 y=198.5 | size=1 | links=#11218(auto Mulgore;243):78 #14451(auto Mulgore;310):38 c2958.21:54
+#9645 | auto Mulgore;199§auto Mulgore;199§auto Mulgore;199 | x=-3068.400146484375 y=-511.3999938964844 | size=1 | links=#10477(auto Mulgore;223):27 c2991.1:19 c2955.29:11
+#9659 | auto Mulgore;200§auto Mulgore;200§auto Mulgore;200 | x=-1676.300048828125 y=-1128.5 | size=1 | links=#18250(auto Mulgore;383):14 c2979.8:8
+#9711 | auto Mulgore;201§auto Mulgore;201§auto Mulgore;201 | x=-1999 y=-1038.5 | size=5 | links=#4899(auto Mulgore;102):57 #5869(auto Mulgore;115):77 #17065(auto Mulgore;366):30
+#9734 | auto Mulgore;202§auto Mulgore;202§auto Mulgore;202 | x=-2708.900146484375 y=-191.9000091552734 | size=1 | links=#1865(auto Mulgore;41):42 #22938(auto Mulgore;477):40
+#9748 | auto Mulgore;203§auto Mulgore;203§auto Mulgore;203 | x=-2408.900146484375 y=132.6999969482422 | size=5 | links=#18702(auto Mulgore;389):44 #27650(auto Mulgore;569):56 c2958.46:3
+#9833 | auto Mulgore;204§auto Mulgore;204§auto Mulgore;204 | x=-2351.400146484375 y=-789.5 | size=1 | links=#16139(auto Mulgore;347):24 #16887(auto Mulgore;364):41
+#9869 | auto Mulgore;205§auto Mulgore;205§auto Mulgore;205 | x=-2037.200073242188 y=-354.8999938964844 | size=1 | links=#6444(auto Mulgore;133):14 #15991(auto Mulgore;341):25
+#9885 | auto Mulgore;206§auto Mulgore;206§auto Mulgore;206 | x=-2624.300048828125 y=-1221 | size=5 | links=#7108(auto Mulgore;150):41 #16414(auto Mulgore;352):112 #24263(auto Mulgore;503):63 c2960.80:43
+#9913 | auto Mulgore;207§auto Mulgore;207§auto Mulgore;207 | x=-1782.800048828125 y=-1238.800048828125 | size=1 | links=#835(centralpoint;The Venture Co. Mine;Mulgore):33 #16855(auto Mulgore;363):23
+#9935 | auto Mulgore;208§auto Mulgore;208§auto Mulgore;208 | x=-2230.10009765625 y=-385.2000122070313 | size=1 | links=#6526(auto Mulgore;137):30 #25572(auto Mulgore;524):21
+#9972 | down;waters;Stonebull Lake;Mulgore§unten;gewässer;Steinbullensee;Mulgore§bas;eaux;Stonebull Lake;Mulgore | x=-2143.400146484375 y=-298.3000183105469 | size=1 | links=#3896(auto Mulgore;75):31 #13217(auto Mulgore;280):38
+#10035 | auto Mulgore;209§auto Mulgore;209§auto Mulgore;209 | x=-1980.5 y=-663.7000122070312 | size=1 | links=#19980(auto Mulgore;413):42 #27793(auto Mulgore;573):50
+#10061 | auto Mulgore;210§auto Mulgore;210§auto Mulgore;210 | x=-2897.10009765625 y=-219.4000091552734 | size=1 | links=#16845(auto Mulgore;361):16 #28315(auto Mulgore;586):10 c11944.1:17
+#10066 | auto Mulgore;211§auto Mulgore;211§auto Mulgore;211 | x=-611.2000122070312 y=-550.1000366210938 | size=1 | links=#2659(auto Mulgore;57):54 #5843(auto Mulgore;114):52
+#10071 | auto Mulgore;212§auto Mulgore;212§auto Mulgore;212 | x=-2665.199951171875 y=-248.4000091552734 | size=1 | links=#4540(auto Mulgore;90):45 o2912.33:14
+#10098 | auto Mulgore;213§auto Mulgore;213§auto Mulgore;213 | x=-3039.10009765625 y=-652.2999877929688 | size=5 | links=#9183(auto Mulgore;189):51 #27338(auto Mulgore;562):29 c2966.15:20 c2955.23:46
+#10262 | auto Mulgore;214§auto Mulgore;214§auto Mulgore;214 | x=-2346.800048828125 y=-269.2000122070313 | size=1 | links=#561(auto Mulgore;11):41 c5938.1:30
+#10275 | auto Mulgore;215§auto Mulgore;215§auto Mulgore;215 | x=-927.9000244140625 y=-352 | size=1 | links=#4626(auto Mulgore;94):13 #18729(auto Mulgore;390):14
+#10291 | auto Mulgore;216§auto Mulgore;216§auto Mulgore;216 | x=-2903.10009765625 y=-1150.700073242188 | size=1 | links=c2952.38:39 c2952.42:39
+#10301 | auto Mulgore;217§auto Mulgore;217§auto Mulgore;217 | x=-3026.10009765625 y=-1171.400024414063 | size=1 | links=#10816(auto Mulgore;231):35 #11101(auto Mulgore;238):17
+#10318 | auto Mulgore;218§auto Mulgore;218§auto Mulgore;218 | x=-2934.5 y=-1329.800048828125 | size=1 | links=#19382(auto Mulgore;403):10 #20879(auto Mulgore;434):9 c2952.39:7
+#10358 | auto Mulgore;219§auto Mulgore;219§auto Mulgore;219 | x=-1795.300048828125 y=13.19999980926514 | size=1 | links=#2911(auto Mulgore;60):26 #26372(auto Mulgore;537):29
+#10383 | auto Mulgore;220§auto Mulgore;220§auto Mulgore;220 | x=-1259.700073242188 y=-217.9000091552734 | size=1 | links=#18153(auto Mulgore;381):33 #25915(auto Mulgore;528):15
+#10411 | auto Mulgore;221§auto Mulgore;221§auto Mulgore;221 | x=-1322.200073242188 y=296.3000183105469 | size=5 | links=#3498(auto Mulgore;67):83 #11272(auto Mulgore;244):97 c2620.1:27 c2956.59:21 c2959.97:15
+#10424 | auto Mulgore;222§auto Mulgore;222§auto Mulgore;222 | x=-2893.199951171875 y=-272.1000061035156 | size=1 | links=#22851(central location;Camp Narache;Mulgore):18 c3072.1:7
+#10477 | auto Mulgore;223§auto Mulgore;223§auto Mulgore;223 | x=-3089.900146484375 y=-528.6000366210938 | size=5 | links=#9645(auto Mulgore;199):27 #16506(auto Mulgore;355):103 o2907.4:25 c2955.30:42 c2955.45:78
+#10478 | auto Mulgore;224§auto Mulgore;224§auto Mulgore;224 | x=-2668.60009765625 y=-685.2999877929688 | size=1 | links=#3880(auto Mulgore;73):110 #15002(auto Mulgore;324):85 #17123(auto Mulgore;369):49 #23443(auto Mulgore;487):62 #26186(auto Mulgore;533):153 c2958.36:54 c2958.37:12
+#10581 | auto Mulgore;225§auto Mulgore;225§auto Mulgore;225 | x=-937.4000244140625 y=-1086.599975585938 | size=1 | links=#27810(auto Mulgore;574):6 c3232.12:6
+#10607 | auto Mulgore;226§auto Mulgore;226§auto Mulgore;226 | x=-1774.400024414063 y=-865.6000366210938 | size=5 | links=#13280(auto Mulgore;282):32 #23292(auto Mulgore;483):60 c2959.101:46
+#10648 | auto Mulgore;227§auto Mulgore;227§auto Mulgore;227 | x=-2921.300048828125 y=-227.1999969482422 | size=1 | links=#26416(auto Mulgore;540):5 c3073.1:12 c3074.1:7 c3075.1:7
+#10673 | auto Mulgore;228§auto Mulgore;228§auto Mulgore;228 | x=-2421 y=-1259.099975585938 | size=1 | links=#16582(auto Mulgore;357):54 #24583(auto Mulgore;507):47 c2957.7:29 c2957.18:36
+#10771 | auto Mulgore;229§auto Mulgore;229§auto Mulgore;229 | x=-1586.700073242188 y=-1096.599975585938 | size=1 | links=#16184(auto Mulgore;348):34 #23352(auto Mulgore;484):40
+#10800 | focus point;Wasserbrunnen der Donnerhörner;Mulgore§bündelpunkt;Wasserbrunnen der Donnerhörner;Mulgore§focus point;Wasserbrunnen der Donnerhörner;Mulgore | x=-1867.599975585938 y=-254.1999969482422 | size=1 | links=#8468(auto Mulgore;173):65 o2910.7:30 o2910.17:30
+#10806 | auto Mulgore;230§auto Mulgore;230§auto Mulgore;230 | x=-1457.900024414063 y=274.6000061035156 | size=1 | links=#3498(auto Mulgore;67):54 #19993(auto Mulgore;415):87 c2956.45:20 c3035.61:46
+#10816 | auto Mulgore;231§auto Mulgore;231§auto Mulgore;231 | x=-2991.699951171875 y=-1163.5 | size=1 | links=#10301(auto Mulgore;217):35 #20818(auto Mulgore;430):19 c2954.9:14 c2952.26:13
+#10875 | auto Mulgore;232§auto Mulgore;232§auto Mulgore;232 | x=-2557.199951171875 y=-397 | size=1 | links=#9453(auto Mulgore;192):39 #12942(auto Mulgore;271):59 #13034(auto Mulgore;273):66 c2958.12:43
+#10882 | auto Mulgore;233§auto Mulgore;233§auto Mulgore;233 | x=-3050.400146484375 y=-541 | size=5 | links=#9183(auto Mulgore;189):59 c2991.1:18 o2907.3:9 c2955.19:14
+#11015 | auto Mulgore;234§auto Mulgore;234§auto Mulgore;234 | x=-1872.599975585938 y=-1035.5 | size=1 | links=#4205(auto Mulgore;82):34 #26075(auto Mulgore;531):19
+#11019 | auto Mulgore;235§auto Mulgore;235§auto Mulgore;235 | x=-1168.700073242188 y=-278.2000122070313 | size=5 | links=#4256(auto Mulgore;86):40 #25667(auto Mulgore;525):43 c2960.65:16
+#11023 | auto Mulgore;236§auto Mulgore;236§auto Mulgore;236 | x=-3195.800048828125 y=-877.6000366210938 | size=5 | links=#6954(auto Mulgore;146):70 #15966(auto Mulgore;339):38 c2966.1:31 c2966.20:14 c2966.21:35
+#11082 | auto Mulgore;237§auto Mulgore;237§auto Mulgore;237 | x=-973.6000366210938 y=-561.2000122070312 | size=5 | links=#468(auto Mulgore;9):60 #4766(auto Mulgore;98):84
+#11101 | auto Mulgore;238§auto Mulgore;238§auto Mulgore;238 | x=-3043.400146484375 y=-1170.700073242188 | size=1 | links=#4223(auto Mulgore;83):21 #10301(auto Mulgore;217):17
+#11124 | auto Mulgore;239§auto Mulgore;239§auto Mulgore;239 | x=-2940.400146484375 y=-1214.099975585938 | size=1 | links=#22249(auto Mulgore;463):35 #24163(auto Mulgore;499):19 c2952.34:33 c2952.38:34
+#11173 | auto Mulgore;240§auto Mulgore;240§auto Mulgore;240 | x=-2925.699951171875 y=-192.1000061035156 | size=1 | links=#14903(auto Mulgore;322):15 #28315(auto Mulgore;586):29
+#11197 | auto Mulgore;241§auto Mulgore;241§auto Mulgore;241 | x=-2207.800048828125 y=-330.1000061035156 | size=1 | links=#3896(auto Mulgore;75):41 c3055.1:40
+#11215 | auto Mulgore;242§auto Mulgore;242§auto Mulgore;242 | x=-3090.800048828125 y=-193.5 | size=1 | links=#14234(auto Mulgore;304):30 #17152(auto Mulgore;370):53 c2955.66:25
+#11218 | auto Mulgore;243§auto Mulgore;243§auto Mulgore;243 | x=-2950.400146484375 y=197.9000091552734 | size=1 | links=#9619(auto Mulgore;198):78 #24161(auto Mulgore;498):39 c2958.25:50 c2956.35:34
+#11272 | auto Mulgore;244§auto Mulgore;244§auto Mulgore;244 | x=-1234.5 y=338.3000183105469 | size=5 | links=#3802(auto Mulgore;72):76 #10411(auto Mulgore;221):97 c2965.14:47 c2959.30:56 c2959.86:32
+#11305 | auto Mulgore;245§auto Mulgore;245§auto Mulgore;245 | x=-1971.700073242188 y=-734.7999877929688 | size=1 | links=#16093(auto Mulgore;343):16 #19980(auto Mulgore;413):29 c2620.27:20
+#11317 | auto Mulgore;246§auto Mulgore;246§auto Mulgore;246 | x=-2892.60009765625 y=-238.5 | size=1 | links=#16845(auto Mulgore;361):10 #22851(central location;Camp Narache;Mulgore):15
+#11333 | auto Mulgore;247§auto Mulgore;247§auto Mulgore;247 | x=-1087 y=-1082.200073242188 | size=5 | links=#14433(auto Mulgore;309):35 #21308(auto Mulgore;440):23 c3232.5:34
+#11419 | auto Mulgore;248§auto Mulgore;248§auto Mulgore;248 | x=-1541 y=-166.5 | size=5 | links=#15953(auto Mulgore;338):29 #23853(auto Mulgore;494):39
+#11492 | auto Mulgore;249§auto Mulgore;249§auto Mulgore;249 | x=-1932.099975585938 y=-723.5 | size=1 | links=#2493(auto Mulgore;52):11 c2977.6:7
+#11538 | auto Mulgore;250§auto Mulgore;250§auto Mulgore;250 | x=-1885.200073242188 y=-962 | size=1 | links=#15971(auto Mulgore;340):42 #26674(auto Mulgore;547):32
+#11546 | auto Mulgore;251§auto Mulgore;251§auto Mulgore;251 | x=-1689.400024414063 y=-839.5 | size=5 | links=#13280(auto Mulgore;282):56 #20079(auto Mulgore;417):59 c2956.61:20 c3035.67:21
+#11810 | auto Mulgore;252§auto Mulgore;252§auto Mulgore;252 | x=-3054.10009765625 y=113.7000045776367 | size=1 | links=#1937(auto Mulgore;43):40 #14229(auto Mulgore;303):18
+#11858 | auto Mulgore;253§auto Mulgore;253§auto Mulgore;253 | x=-2471.10009765625 y=-502.8999938964844 | size=5 | links=#1395(auto Mulgore;30):55 #22178(auto Mulgore;461):19
+#11905 | auto Mulgore;254§auto Mulgore;254§auto Mulgore;254 | x=-1966.599975585938 y=398.3000183105469 | size=1 | links=#17(auto Mulgore;1):16 #4848(auto Mulgore;101):11 c2989.15:6
+#11963 | auto Mulgore;255§auto Mulgore;255§auto Mulgore;255 | x=-1365.099975585938 y=-1151 | size=1 | links=#18624(auto Mulgore;387):15 #20163(auto Mulgore;420):14
+#12071 | auto Mulgore;256§auto Mulgore;256§auto Mulgore;256 | x=-1506.700073242188 y=-863.2000122070312 | size=5 | links=#16530(auto Mulgore;356):31 #20863(auto Mulgore;433):34 c3035.82:11
+#12072 | auto Mulgore;257§auto Mulgore;257§auto Mulgore;257 | x=-1523 y=333.8000183105469 | size=1 | links=#8234(auto Mulgore;166):13 #8334(auto Mulgore;171):19
+#12268 | auto Mulgore;258§auto Mulgore;258§auto Mulgore;258 | x=-1049.800048828125 y=-1165 | size=1 | links=#3519(auto Mulgore;69):25 #27362(auto Mulgore;563):43 c3232.16:25
+#12331 | auto Mulgore;259§auto Mulgore;259§auto Mulgore;259 | x=-1533.800048828125 y=-3.799999952316284 | size=1 | links=#340(auto Mulgore;8):70 #7899(auto Mulgore;162):19 #21768(auto Mulgore;450):40
+#12372 | auto Mulgore;260§auto Mulgore;260§auto Mulgore;260 | x=-3171.699951171875 y=-749.6000366210938 | size=5 | links=#6954(auto Mulgore;146):59 #14662(auto Mulgore;314):43 #15966(auto Mulgore;339):169 c2966.16:21 c2955.35:31
+#12429 | auto Mulgore;261§auto Mulgore;261§auto Mulgore;261 | x=-2347.60009765625 y=-516.1000366210938 | size=5 | links=#6612(auto Mulgore;140):34 #13241(crossing;Mulgore):90
+#12457 | auto Mulgore;262§auto Mulgore;262§auto Mulgore;262 | x=-1934.599975585938 y=-136.4000091552734 | size=1 | links=#298(auto Mulgore;5):49 #6144(auto Mulgore;120):71 c2970.2:52 c2959.13:59 c3035.18:56
+#12486 | auto Mulgore;263§auto Mulgore;263§auto Mulgore;263 | x=-921.7000122070312 y=-5.900000095367432 | size=5 | links=#7640(auto Mulgore;159):26 #27206(auto Mulgore;558):32
+#12529 | auto Mulgore;264§auto Mulgore;264§auto Mulgore;264 | x=-1770.800048828125 y=58.60000228881836 | size=5 | links=#6672(auto Mulgore;143):29 #26372(auto Mulgore;537):31
+#12559 | auto Mulgore;265§auto Mulgore;265§auto Mulgore;265 | x=-1757.5 y=-1132.599975585938 | size=1 | links=#1629(auto Mulgore;34):14 #22667(auto Mulgore;470):28 c2978.28:5
+#12568 | auto Mulgore;266§auto Mulgore;266§auto Mulgore;266 | x=-1543.800048828125 y=-891 | size=5 | links=#16086(auto Mulgore;342):25 #18910(auto Mulgore;394):37
+#12608 | auto Mulgore;267§auto Mulgore;267§auto Mulgore;267 | x=-2611.699951171875 y=-433.8000183105469 | size=1 | links=#14399(auto Mulgore;308):0 c2958.79:44
+#12793 | auto Mulgore;268§auto Mulgore;268§auto Mulgore;268 | x=-1669.700073242188 y=-1096.599975585938 | size=1 | links=#6299(auto Mulgore;127):15 #17793(auto Mulgore;379):12
+#12815 | auto Mulgore;269§auto Mulgore;269§auto Mulgore;269 | x=-1654.099975585938 y=-1230.400024414063 | size=1 | links=#4722(auto Mulgore;96):15 #28177(auto Mulgore;583):23
+#12853 | auto Mulgore;270§auto Mulgore;270§auto Mulgore;270 | x=-2058.199951171875 y=-335.1000061035156 | size=1 | links=#6444(auto Mulgore;133):20 #25887(auto Mulgore;527):32
+#12942 | auto Mulgore;271§auto Mulgore;271§auto Mulgore;271 | x=-2521.5 y=-444.3000183105469 | size=1 | links=#10875(auto Mulgore;232):59 #22178(auto Mulgore;461):58 c2956.12:40 c2958.29:61
+#13007 | auto Mulgore;272§auto Mulgore;272§auto Mulgore;272 | x=-1564.400024414063 y=-1156.400024414063 | size=1 | links=#208(auto Mulgore;3):14 #3940(auto Mulgore;76):9
+#13034 | auto Mulgore;273§auto Mulgore;273§auto Mulgore;273 | x=-2593.60009765625 y=-341.5 | size=1 | links=#10875(auto Mulgore;232):66 #22601(auto Mulgore;467):46
+#13048 | auto Mulgore;274§auto Mulgore;274§auto Mulgore;274 | x=-2939.400146484375 y=-259.1000061035156 | size=1 | links=#5179(auto Mulgore;105):9 #14850(auto Mulgore;318):7 c3883.1:13
+#13078 | auto Mulgore;275§auto Mulgore;275§auto Mulgore;275 | x=-1603.900024414063 y=-1206.200073242188 | size=1 | links=#14124(auto Mulgore;298):28 #21507(auto Mulgore;448):20
+#13080 | auto Mulgore;276§auto Mulgore;276§auto Mulgore;276 | x=-3223 y=-206.6000061035156 | size=1 | links=#6337(auto Mulgore;129):61 #27250(auto Mulgore;560):56 c2955.43:75 c2955.83:9
+#13101 | auto Mulgore;277§auto Mulgore;277§auto Mulgore;277 | x=-1979.400024414063 y=428.3999938964844 | size=1 | links=#17(auto Mulgore;1):22 c2990.2:7
+#13110 | centralpoint;Bael'dun Digsite;Mulgore§zentralerpunkt;Grabungsstätte von Bael'dun;Mulgore§point central;Bael'dun Digsite;Mulgore | x=-1938 y=399.1000061035156 | size=1 | links=#4848(auto Mulgore;101):18 #5361(auto Mulgore;108):19 c2989.1:24 c2990.12:27
+#13174 | auto Mulgore;278§auto Mulgore;278§auto Mulgore;278 | x=-1789.599975585938 y=-1165.5 | size=1 | links=#22666(auto Mulgore;469):20 #22667(auto Mulgore;470):19 c2978.36:5
+#13185 | auto Mulgore;279§auto Mulgore;279§auto Mulgore;279 | x=-650.2000122070312 y=43.90000152587891 | size=5 | links=#8303(auto Mulgore;168):90 #16115(auto Mulgore;345):55 c3566.49:61
+#13217 | auto Mulgore;280§auto Mulgore;280§auto Mulgore;280 | x=-2115.10009765625 y=-272.3999938964844 | size=1 | links=#7766(auto Mulgore;160):27 #9972(down;waters;Stonebull Lake;Mulgore):38 #25887(auto Mulgore;527):52
+#13241 | crossing;Mulgore§kreuzung;Mulgore§traversée;Mulgore | x=-2303.300048828125 y=-594.7999877929688 | size=1 | links=#12429(auto Mulgore;261):90 #26060(auto Mulgore;530):56 #26295(auto Mulgore;536):32 #26518(auto Mulgore;542):80 c2620.18:17
+#13247 | auto Mulgore;281§auto Mulgore;281§auto Mulgore;281 | x=-1069.400024414063 y=-418.5 | size=1 | links=#2024(auto Mulgore;45):26 #18927(auto Mulgore;395):18
+#13280 | auto Mulgore;282§auto Mulgore;282§auto Mulgore;282 | x=-1742.900024414063 y=-856.9000244140625 | size=5 | links=#10607(auto Mulgore;226):32 #11546(auto Mulgore;251):56 c2970.25:65 c2956.64:41 c3035.70:53
+#13295 | auto Mulgore;283§auto Mulgore;283§auto Mulgore;283 | x=-1689 y=-1097.099975585938 | size=1 | links=#1239(auto Mulgore;25):6 #17793(auto Mulgore;379):6
+#13336 | auto Mulgore;284§auto Mulgore;284§auto Mulgore;284 | x=-2399.800048828125 y=-74.5 | size=5 | links=#18363(auto Mulgore;385):80 #27485(auto Mulgore;566):77
+#13341 | auto Mulgore;285§auto Mulgore;285§auto Mulgore;285 | x=-1986.900024414063 y=-222.6000061035156 | size=1 | links=#298(auto Mulgore;5):51 #13844(auto Mulgore;295):40
+#13349 | auto Mulgore;286§auto Mulgore;286§auto Mulgore;286 | x=-965.4000244140625 y=-1150.400024414063 | size=1 | links=#6488(auto Mulgore;135):14 c3232.23:25 c3232.27:13
+#13415 | auto Mulgore;287§auto Mulgore;287§auto Mulgore;287 | x=-662.1000366210938 y=-726.9000244140625 | size=1 | links=#20265(auto Mulgore;422):58 c2965.29:57 c2964.30:28 c2964.31:37 c3566.103:17
+#13422 | auto Mulgore;288§auto Mulgore;288§auto Mulgore;288 | x=-2203.199951171875 y=-689.1000366210938 | size=1 | links=#21841(auto Mulgore;454):63 #26404(auto Mulgore;539):31
+#13426 | auto Mulgore;289§auto Mulgore;289§auto Mulgore;289 | x=-1644.400024414063 y=-1148.900024414063 | size=1 | links=#13610(auto Mulgore;293):20 #23352(auto Mulgore;484):43
+#13432 | auto Mulgore;290§auto Mulgore;290§auto Mulgore;290 | x=-1832.5 y=-1165.200073242188 | size=1 | links=#26566(auto Mulgore;545):22 c2979.25:10
+#13509 | auto Mulgore;291§auto Mulgore;291§auto Mulgore;291 | x=-3347.199951171875 y=-237.3000030517578 | size=1 | links=#995(auto Mulgore;21):78 #27250(auto Mulgore;560):71 c2961.3:45 c2961.5:62 c2961.6:43 c2961.14:65
+#13572 | auto Mulgore;292§auto Mulgore;292§auto Mulgore;292 | x=-1497.400024414063 y=-1030.200073242188 | size=1 | links=#6555(centralpoint;top;Venture Co. Supervisor;Mulgore):17 #23397(auto Mulgore;486):5
+#13610 | auto Mulgore;293§auto Mulgore;293§auto Mulgore;293 | x=-1658.700073242188 y=-1163.900024414063 | size=1 | links=#13426(auto Mulgore;289):20 #27693(auto Mulgore;572):19
+#13707 | auto Mulgore;294§auto Mulgore;294§auto Mulgore;294 | x=-923.9000244140625 y=-259.8000183105469 | size=1 | links=#3434(auto Mulgore;65):17 #18740(auto Mulgore;391):20
+#13844 | auto Mulgore;295§auto Mulgore;295§auto Mulgore;295 | x=-2006.800048828125 y=-257.5 | size=1 | links=#662(auto Mulgore;15):61 #874(auto Mulgore;19):44 #6912(auto Mulgore;145):26 #13341(auto Mulgore;285):40 #24774(auto Mulgore;512):30 c2956.30:66
+#13993 | auto Mulgore;296§auto Mulgore;296§auto Mulgore;296 | x=-1012.799987792969 y=-426.5 | size=1 | links=#4044(auto Mulgore;81):13 #17346(auto Mulgore;373):17
+#14032 | auto Mulgore;297§auto Mulgore;297§auto Mulgore;297 | x=-3059.699951171875 y=-1041.599975585938 | size=1 | links=#3476(auto Mulgore;66):25 #16625(auto Mulgore;359):27
+#14124 | auto Mulgore;298§auto Mulgore;298§auto Mulgore;298 | x=-1621.599975585938 y=-1229.099975585938 | size=1 | links=#13078(auto Mulgore;275):28 #15377(auto Mulgore;332):7 #20471(auto Mulgore;426):24
+#14152 | auto Mulgore;299§auto Mulgore;299§auto Mulgore;299 | x=-2999.699951171875 y=-1236.300048828125 | size=1 | links=#3976(auto Mulgore;79):35 #22379(auto Mulgore;464):23 c2952.3:4
+#14155 | auto Mulgore;300§auto Mulgore;300§auto Mulgore;300 | x=-2382.800048828125 y=-941.7999877929688 | size=1 | links=#17667(auto Mulgore;377):50 #28477(auto Mulgore;591):46 c2959.38:37
+#14157 | auto Mulgore;301§auto Mulgore;301§auto Mulgore;301 | x=-2401.800048828125 y=-446.5 | size=1 | links=#20359(auto Mulgore;423):31 #26725(auto Mulgore;549):31
+#14222 | auto Mulgore;302§auto Mulgore;302§auto Mulgore;302 | x=-2138.800048828125 y=-766.2999877929688 | size=1 | links=#7926(auto Mulgore;163):32 #9371(auto Mulgore;191):26
+#14229 | auto Mulgore;303§auto Mulgore;303§auto Mulgore;303 | x=-3062.60009765625 y=97.20000457763672 | size=1 | links=#11810(auto Mulgore;252):18 #19632(auto Mulgore;406):27
+#14234 | auto Mulgore;304§auto Mulgore;304§auto Mulgore;304 | x=-3105.199951171875 y=-167.1000061035156 | size=1 | links=#6337(auto Mulgore;129):62 #11215(auto Mulgore;242):30 #22804(auto Mulgore;474):69 c2955.16:44 c2961.64:35
+#14248 | auto Mulgore;305§auto Mulgore;305§auto Mulgore;305 | x=-1717.400024414063 y=-1114.5 | size=1 | links=#1239(auto Mulgore;25):28 #3066(auto Mulgore;61):19 #21034(auto Mulgore;437):32
+#14295 | auto Mulgore;306§auto Mulgore;306§auto Mulgore;306 | x=-824.7000122070312 y=-133.8000030517578 | size=5 | links=#1835(auto Mulgore;39):18 #14894(auto Mulgore;319):42 #16905(focus point;Wasserbrunnen der Wildmähnen;Mulgore):37
+#14349 | auto Mulgore;307§auto Mulgore;307§auto Mulgore;307 | x=-1473.800048828125 y=-998.7999877929688 | size=1 | links=#1855(auto Mulgore;40):29 #6555(centralpoint;top;Venture Co. Supervisor;Mulgore):21 c2979.34:14 c2979.60:14 c2979.65:12
+#14399 | auto Mulgore;308§auto Mulgore;308§auto Mulgore;308 | x=-2611.699951171875 y=-433.8000183105469 | size=1 | links=#9453(auto Mulgore;192):26 #12608(auto Mulgore;267):0 o113768.5:33 c2958.80:51
+#14433 | auto Mulgore;309§auto Mulgore;309§auto Mulgore;309 | x=-1064.900024414063 y=-1054.900024414063 | size=5 | links=#11333(auto Mulgore;247):35 #16122(auto Mulgore;346):45 c3232.26:33
+#14451 | auto Mulgore;310§auto Mulgore;310§auto Mulgore;310 | x=-2838.900146484375 y=178.1000061035156 | size=1 | links=#9619(auto Mulgore;198):38 #14899(auto Mulgore;321):73 c2958.3:37 c2958.18:26 c2956.84:75
+#14501 | auto Mulgore;311§auto Mulgore;311§auto Mulgore;311 | x=-1419.900024414063 y=89.30000305175781 | size=1 | links=#4639(auto Mulgore;95):12 #9242(auto Mulgore;190):15
+#14544 | auto Mulgore;312§auto Mulgore;312§auto Mulgore;312 | x=-2101.900146484375 y=-422.8999938964844 | size=1 | links=#9522(auto Mulgore;194):9 #27037(auto Mulgore;553):8
+#14602 | auto Mulgore;313§auto Mulgore;313§auto Mulgore;313 | x=-2799 y=-691.7000122070312 | size=1 | links=#304(auto Mulgore;6):31 c2950.1:25 c2951.2:24 c5786.2:21 c2950.3:13 c2949.4:9
+#14662 | auto Mulgore;314§auto Mulgore;314§auto Mulgore;314 | x=-3163.800048828125 y=-706.5 | size=5 | links=#12372(auto Mulgore;260):43 #15966(auto Mulgore;339):212 #16506(auto Mulgore;355):97 c2955.34:15 c2955.94:16
+#14678 | auto Mulgore;315§auto Mulgore;315§auto Mulgore;315 | x=-1925.599975585938 y=336.3000183105469 | size=1 | links=#22473(auto Mulgore;465):22 c2989.8:23 c2989.10:33 c2990.10:28 c2990.11:26
+#14679 | auto Mulgore;316§auto Mulgore;316§auto Mulgore;316 | x=-592.4000244140625 y=-172.4000091552734 | size=5 | links=#16493(auto Mulgore;354):63 #24678(auto Mulgore;510):51
+#14751 | auto Mulgore;317§auto Mulgore;317§auto Mulgore;317 | x=-1770 y=-1198.800048828125 | size=1 | links=#835(centralpoint;The Venture Co. Mine;Mulgore):22 #8928(auto Mulgore;187):17 c2978.83:11
+#14850 | auto Mulgore;318§auto Mulgore;318§auto Mulgore;318 | x=-2946.800048828125 y=-259.6000061035156 | size=1 | links=#6657(auto Mulgore;142):23 #13048(auto Mulgore;274):7
+#14894 | auto Mulgore;319§auto Mulgore;319§auto Mulgore;319 | x=-867.2999877929688 y=-133.1999969482422 | size=5 | links=#1464(auto Mulgore;31):53 #14295(auto Mulgore;306):42 c3566.39:22 c3566.77:50
+#14897 | auto Mulgore;320§auto Mulgore;320§auto Mulgore;320 | x=-2683 y=-527.1000366210938 | size=5 | links=#19072(auto Mulgore;398):73 c2949.3:58
+#14899 | auto Mulgore;321§auto Mulgore;321§auto Mulgore;321 | x=-2802.5 y=113.7000045776367 | size=1 | links=#14451(auto Mulgore;310):73 #28071(auto Mulgore;578):95 c2956.10:44 c2958.15:106
+#14903 | auto Mulgore;322§auto Mulgore;322§auto Mulgore;322 | x=-2930.300048828125 y=-177.1000061035156 | size=1 | links=#11173(auto Mulgore;240):15 c6491.1:39
+#14923 | auto Mulgore;323§auto Mulgore;323§auto Mulgore;323 | x=-1542.800048828125 y=285.7000122070313 | size=1 | links=#8234(auto Mulgore;166):38 #19993(auto Mulgore;415):15
+#15002 | auto Mulgore;324§auto Mulgore;324§auto Mulgore;324 | x=-2608.10009765625 y=-625.2000122070312 | size=5 | links=#10478(auto Mulgore;224):85 #18295(auto Mulgore;384):49
+#15057 | auto Mulgore;325§auto Mulgore;325§auto Mulgore;325 | x=-1891.099975585938 y=-176.3000030517578 | size=5 | links=#298(auto Mulgore;5):69 o2912.24:40
+#15150 | auto Mulgore;326§auto Mulgore;326§auto Mulgore;326 | x=-3358 y=-142.1999969482422 | size=1 | links=#995(auto Mulgore;21):22 #16952(auto Mulgore;365):51
+#15153 | auto Mulgore;327§auto Mulgore;327§auto Mulgore;327 | x=-1756.700073242188 y=-935.7999877929688 | size=1 | links=#2839(auto Mulgore;59):55 c2959.125:16
+#15161 | auto Mulgore;328§auto Mulgore;328§auto Mulgore;328 | x=-2345.5 y=-385.7000122070313 | size=1 | links=#5969(auto Mulgore;117):16 #15987(central location;Bloodhoof Village;Mulgore):25 #21059(auto Mulgore;438):33 #28594(s;h;Mailbox;Mulgore):20 c2993.1:14
+#15246 | auto Mulgore;329§auto Mulgore;329§auto Mulgore;329 | x=-2306.800048828125 y=-442.7000122070313 | size=1 | links=#885(auto Mulgore;20):21 #19986(auto Mulgore;414):12 c2947.1:12 c3064.1:8 c3066.1:9
+#15336 | auto Mulgore;330§auto Mulgore;330§auto Mulgore;330 | x=-2456.900146484375 y=40.29999923706055 | size=1 | links=#15820(auto Mulgore;336):28 o2912.21:11
+#15364 | auto Mulgore;331§auto Mulgore;331§auto Mulgore;331 | x=-2345.300048828125 y=-1499.200073242188 | size=1 | links=#17081(passage;from;Mulgore;to;The Barrens):31 #27519(auto Mulgore;567):37
+#15377 | auto Mulgore;332§auto Mulgore;332§auto Mulgore;332 | x=-1628.400024414063 y=-1225.5 | size=1 | links=#5372(auto Mulgore;109):23 #14124(auto Mulgore;298):7
+#15520 | auto Mulgore;333§auto Mulgore;333§auto Mulgore;333 | x=-2699.60009765625 y=-433.2000122070313 | size=1 | links=c2949.2:23 c2950.21:19 c2958.80:36
+#15556 | auto Mulgore;334§auto Mulgore;334§auto Mulgore;334 | x=-3161.60009765625 y=-965.2999877929688 | size=1 | links=#5997(auto Mulgore;118):12 #8913(auto Mulgore;185):17
+#15564 | auto Mulgore;335§auto Mulgore;335§auto Mulgore;335 | x=-1686.5 y=-2.100000143051148 | size=1 | links=#19297(auto Mulgore;401):63 #19713(auto Mulgore;409):55 #21417(auto Mulgore;444):71 c3035.13:45 c2959.16:38 c2959.81:42
+#15820 | auto Mulgore;336§auto Mulgore;336§auto Mulgore;336 | x=-2429 y=37.79999923706055 | size=1 | links=#15336(auto Mulgore;330):28 #27485(auto Mulgore;566):44
+#15834 | auto Mulgore;337§auto Mulgore;337§auto Mulgore;337 | x=-2430.400146484375 y=-1064 | size=1 | links=#17289(auto Mulgore;371):50 #20014(auto Mulgore;416):54 c2960.52:69 c2959.113:12
+#15953 | auto Mulgore;338§auto Mulgore;338§auto Mulgore;338 | x=-1523.300048828125 y=-190.3000030517578 | size=5 | links=#7232(auto Mulgore;152):46 #11419(auto Mulgore;248):29
+#15966 | auto Mulgore;339§auto Mulgore;339§auto Mulgore;339 | x=-3204.5 y=-915.4000244140625 | size=5 | links=#11023(auto Mulgore;236):38 #12372(auto Mulgore;260):169 #14662(auto Mulgore;314):212 #17906(auto Mulgore;380):10 c2966.23:88 c2966.27:38
+#15971 | auto Mulgore;340§auto Mulgore;340§auto Mulgore;340 | x=-1844.599975585938 y=-948.9000244140625 | size=5 | links=#11538(auto Mulgore;250):42 #17325(auto Mulgore;372):40 #23292(auto Mulgore;483):50 #26719(auto Mulgore;548):96
+#15987 | central location;Bloodhoof Village;Mulgore§zentralpunkt;Dorf der Bluthufe;Mulgore§emplacement central;Bloodhoof Village;Mulgore | x=-2322 y=-376.6000061035156 | size=1 | links=#8505(auto Mulgore;175):58 #9563(auto Mulgore;197):53 #15161(auto Mulgore;328):25 #25531(auto Mulgore;522):26 #27676(auto Mulgore;571):25 #28594(s;h;Mailbox;Mulgore):18 c3052.1:26 c10050.1:28 c11407.1:36
+#15991 | auto Mulgore;341§auto Mulgore;341§auto Mulgore;341 | x=-2033.5 y=-380.3999938964844 | size=1 | links=#1258(auto Mulgore;28):51 #9869(auto Mulgore;205):25
+#16086 | auto Mulgore;342§auto Mulgore;342§auto Mulgore;342 | x=-1534.700073242188 y=-915.2999877929688 | size=5 | links=#4226(auto Mulgore;84):19 #12568(auto Mulgore;266):25
+#16093 | auto Mulgore;343§auto Mulgore;343§auto Mulgore;343 | x=-1982.599975585938 y=-747.4000244140625 | size=1 | links=#6351(auto Mulgore;130):16 #11305(auto Mulgore;245):16
+#16107 | auto Mulgore;344§auto Mulgore;344§auto Mulgore;344 | x=-2062.60009765625 y=-370 | size=1 | links=#6444(auto Mulgore;133):19 #25466(auto Mulgore;520):29
+#16115 | auto Mulgore;345§auto Mulgore;345§auto Mulgore;345 | x=-648.4000244140625 y=99.4000015258789 | size=1 | links=#13185(auto Mulgore;279):55 #20154(auto Mulgore;419):45 c2965.35:34
+#16122 | auto Mulgore;346§auto Mulgore;346§auto Mulgore;346 | x=-1033.700073242188 y=-1021.100036621094 | size=5 | links=#14433(auto Mulgore;309):45 #20694(auto Mulgore;429):47 c3232.21:30 c3232.28:35
+#16139 | auto Mulgore;347§auto Mulgore;347§auto Mulgore;347 | x=-2358.60009765625 y=-812.5 | size=1 | links=#9833(auto Mulgore;204):24 #22009(auto Mulgore;459):46 #23044(auto Mulgore;479):48
+#16184 | auto Mulgore;348§auto Mulgore;348§auto Mulgore;348 | x=-1563.900024414063 y=-1122.300048828125 | size=1 | links=#6818(auto Mulgore;144):25 #10771(auto Mulgore;229):34
+#16211 | auto Mulgore;349§auto Mulgore;349§auto Mulgore;349 | x=-1328 y=-170.9000091552734 | size=5 | links=#1930(auto Mulgore;42):49 #25915(auto Mulgore;528):68 c2960.90:49
+#16346 | auto Mulgore;350§auto Mulgore;350§auto Mulgore;350 | x=-2883 y=-267.2000122070313 | size=1 | links=#22851(central location;Camp Narache;Mulgore):18 c3060.1:9 c3062.1:9
+#16412 | auto Mulgore;351§auto Mulgore;351§auto Mulgore;351 | x=-1736.400024414063 y=-1046.900024414063 | size=1 | links=#25733(auto Mulgore;526):17 #26558(auto Mulgore;544):9
+#16414 | auto Mulgore;352§auto Mulgore;352§auto Mulgore;352 | x=-2511.800048828125 y=-1213.900024414063 | size=5 | links=#9885(auto Mulgore;206):112 #16582(auto Mulgore;357):73 c2960.4:37 c2960.22:30
+#16438 | auto Mulgore;353§auto Mulgore;353§auto Mulgore;353 | x=-1395.099975585938 y=-1140.400024414063 | size=1 | links=#20163(auto Mulgore;420):18 #26103(auto Mulgore;532):16
+#16493 | auto Mulgore;354§auto Mulgore;354§auto Mulgore;354 | x=-585.9000244140625 y=-235.3000030517578 | size=5 | links=#14679(auto Mulgore;316):63 #23986(auto Mulgore;496):60
+#16506 | auto Mulgore;355§auto Mulgore;355§auto Mulgore;355 | x=-3155.400146484375 y=-608.9000244140625 | size=5 | links=#10477(auto Mulgore;223):103 #14662(auto Mulgore;314):97 c2955.31:44 c2955.33:38 c2955.88:74 c2955.93:53 c2955.95:56
+#16530 | auto Mulgore;356§auto Mulgore;356§auto Mulgore;356 | x=-1476.300048828125 y=-873.1000366210938 | size=5 | links=#322(auto Mulgore;7):27 #12071(auto Mulgore;256):31 #23476(auto Mulgore;488):49
+#16582 | auto Mulgore;357§auto Mulgore;357§auto Mulgore;357 | x=-2438.199951171875 y=-1207 | size=1 | links=#10673(auto Mulgore;228):54 #16414(auto Mulgore;352):73 #22183(auto Mulgore;462):29 c2960.7:58 c2960.21:89
+#16613 | auto Mulgore;358§auto Mulgore;358§auto Mulgore;358 | x=-1631.099975585938 y=168.3000030517578 | size=5 | links=#27939(auto Mulgore;575):29 #28459(auto Mulgore;589):45
+#16625 | auto Mulgore;359§auto Mulgore;359§auto Mulgore;359 | x=-3087.300048828125 y=-1038 | size=1 | links=#2555(auto Mulgore;53):30 #14032(auto Mulgore;297):27 c2952.1:18 c2952.10:5
+#16691 | auto Mulgore;360§auto Mulgore;360§auto Mulgore;360 | x=-990.7999877929688 y=-679.7999877929688 | size=5 | links=#468(auto Mulgore;9):59 #838(auto Mulgore;17):73
+#16845 | auto Mulgore;361§auto Mulgore;361§auto Mulgore;361 | x=-2885.300048828125 y=-231.5 | size=1 | links=#10061(auto Mulgore;210):16 #11317(auto Mulgore;246):10 #19386(auto Mulgore;404):9
+#16846 | auto Mulgore;362§auto Mulgore;362§auto Mulgore;362 | x=-2844.699951171875 y=-1093.900024414063 | size=1 | links=#8330(auto Mulgore;170):10 #25000(auto Mulgore;514):4
+#16855 | auto Mulgore;363§auto Mulgore;363§auto Mulgore;363 | x=-1773.599975585938 y=-1260.900024414063 | size=1 | links=#9913(auto Mulgore;207):23 c3051.1:30 c2979.33:24 c2979.44:21 c2979.45:22 c2979.48:26
+#16887 | auto Mulgore;364§auto Mulgore;364§auto Mulgore;364 | x=-2344.300048828125 y=-748.2000122070312 | size=1 | links=#9833(auto Mulgore;204):41 #21459(auto Mulgore;445):33
+#16905 | focus point;Wasserbrunnen der Wildmähnen;Mulgore§bündelpunkt;Wasserbrunnen der Wildmähnen;Mulgore§focus point;Wasserbrunnen der Wildmähnen;Mulgore | x=-788.4000244140625 y=-141 | size=1 | links=#14295(auto Mulgore;306):37 o2910.16:23
+#16952 | auto Mulgore;365§auto Mulgore;365§auto Mulgore;365 | x=-3407.800048828125 y=-130.8000030517578 | size=1 | links=#15150(auto Mulgore;326):51 c2982.1:24
+#17065 | auto Mulgore;366§auto Mulgore;366§auto Mulgore;366 | x=-1968.900024414063 y=-1034.300048828125 | size=1 | links=#9711(auto Mulgore;201):30 #24823(auto Mulgore;513):22 c2978.50:25 c2978.52:14
+#17066 | auto Mulgore;367§auto Mulgore;367§auto Mulgore;367 | x=-3128.400146484375 y=-1015.400024414063 | size=1 | links=#6247(auto Mulgore;124):13 #18648(auto Mulgore;388):13
+#17081 | passage;from;Mulgore;to;The Barrens§passage;von;Mulgore;nach;das brachland§passage;de;Mulgore;vers;Les Tarides | x=-2344.199951171875 y=-1530.200073242188 | size=1 | links=#9255(passage;from;Southern Barrens;to;Mulgore):8 #15364(auto Mulgore;331):31
+#17085 | auto Mulgore;368§auto Mulgore;368§auto Mulgore;368 | x=-1554.599975585938 y=-1138 | size=1 | links=#3680(auto Mulgore;70):24 #3940(auto Mulgore;76):11
+#17123 | auto Mulgore;369§auto Mulgore;369§auto Mulgore;369 | x=-2717.800048828125 y=-677.4000244140625 | size=1 | links=#10478(auto Mulgore;224):49 #19072(auto Mulgore;398):81 #23443(auto Mulgore;487):59 c2951.1:39 c2951.3:45 c2949.6:52 c2949.7:34
+#17152 | auto Mulgore;370§auto Mulgore;370§auto Mulgore;370 | x=-3055 y=-232.9000091552734 | size=1 | links=#6657(auto Mulgore;142):88 #11215(auto Mulgore;242):53 c2955.9:53
+#17289 | auto Mulgore;371§auto Mulgore;371§auto Mulgore;371 | x=-2409.900146484375 y=-1018.299987792969 | size=1 | links=#15834(auto Mulgore;337):50 #17667(auto Mulgore;377):30 c2959.51:41
+#17325 | auto Mulgore;372§auto Mulgore;372§auto Mulgore;372 | x=-1804.599975585938 y=-957.4000244140625 | size=5 | links=#2839(auto Mulgore;59):56 #15971(auto Mulgore;340):40 c2959.129:24
+#17346 | auto Mulgore;373§auto Mulgore;373§auto Mulgore;373 | x=-1030.400024414063 y=-428.3000183105469 | size=1 | links=#13993(auto Mulgore;296):17 #18927(auto Mulgore;395):24
+#17348 | auto Mulgore;374§auto Mulgore;374§auto Mulgore;374 | x=-2050.900146484375 y=-888 | size=1 | links=#871(auto Mulgore;18):81 #3771(auto Mulgore;71):73 #5869(auto Mulgore;115):83 c3035.19:49 o2912.28:57
+#17441 | auto Mulgore;375§auto Mulgore;375§auto Mulgore;375 | x=-1984.900024414063 y=405.7000122070313 | size=1 | links=#21241(auto Mulgore;439):9 #25103(auto Mulgore;516):9 c2989.12:4
+#17542 | auto Mulgore;376§auto Mulgore;376§auto Mulgore;376 | x=-1016.900024414063 y=-1131.200073242188 | size=1 | links=c3232.1:11 c3232.2:15 c3232.4:13
+#17667 | auto Mulgore;377§auto Mulgore;377§auto Mulgore;377 | x=-2400.60009765625 y=-989.2000122070312 | size=1 | links=#14155(auto Mulgore;300):50 #17289(auto Mulgore;371):30 c2959.38:30
+#17714 | auto Mulgore;378§auto Mulgore;378§auto Mulgore;378 | x=-2368.199951171875 y=-1413.099975585938 | size=1 | links=#6202(auto Mulgore;122):48 #27519(auto Mulgore;567):52 c2960.27:37
+#17793 | auto Mulgore;379§auto Mulgore;379§auto Mulgore;379 | x=-1682.300048828125 y=-1097.700073242188 | size=1 | links=#12793(auto Mulgore;268):12 #13295(auto Mulgore;283):6
+#17906 | auto Mulgore;380§auto Mulgore;380§auto Mulgore;380 | x=-3198.10009765625 y=-924 | size=1 | links=#587(auto Mulgore;12):20 #15966(auto Mulgore;339):10
+#18153 | auto Mulgore;381§auto Mulgore;381§auto Mulgore;381 | x=-1234.800048828125 y=-240.9000091552734 | size=5 | links=#10383(auto Mulgore;220):33 #28533(auto Mulgore;593):22
+#18229 | auto Mulgore;382§auto Mulgore;382§auto Mulgore;382 | x=-2794.5 y=-743.1000366210938 | size=1 | links=#304(auto Mulgore;6):19 #26199(auto Mulgore;534):24 o113769.4:8 c2949.8:11
+#18250 | auto Mulgore;383§auto Mulgore;383§auto Mulgore;383 | x=-1684.400024414063 y=-1116.5 | size=1 | links=#3500(auto Mulgore;68):6 #9659(auto Mulgore;200):14
+#18295 | auto Mulgore;384§auto Mulgore;384§auto Mulgore;384 | x=-2564.699951171875 y=-601.7999877929688 | size=5 | links=#15002(auto Mulgore;324):49 #28497(auto Mulgore;592):53 c2958.11:24 c2958.31:17
+#18363 | auto Mulgore;385§auto Mulgore;385§auto Mulgore;385 | x=-2377.10009765625 y=-151.8000030517578 | size=1 | links=#8750(auto Mulgore;181):71 #13336(auto Mulgore;284):80 #21668(auto Mulgore;449):80 c2958.16:33
+#18615 | auto Mulgore;386§auto Mulgore;386§auto Mulgore;386 | x=-2225.699951171875 y=-886.2000122070312 | size=5 | links=#871(auto Mulgore;18):95 #2704(auto Mulgore;58):52 #27673(auto Mulgore;570):105 c2957.1:65 c2956.14:36 c2959.24:70
+#18624 | auto Mulgore;387§auto Mulgore;387§auto Mulgore;387 | x=-1352.900024414063 y=-1140.700073242188 | size=1 | links=#11963(auto Mulgore;255):15 c10993.1:11
+#18648 | auto Mulgore;388§auto Mulgore;388§auto Mulgore;388 | x=-3119.10009765625 y=-1024.599975585938 | size=1 | links=#2555(auto Mulgore;53):10 #17066(auto Mulgore;367):13
+#18702 | auto Mulgore;389§auto Mulgore;389§auto Mulgore;389 | x=-2406.60009765625 y=88.5999984741211 | size=5 | links=#9748(auto Mulgore;203):44 #27485(auto Mulgore;566):85 c2956.32:39 c2958.66:34 c2958.67:16
+#18729 | auto Mulgore;390§auto Mulgore;390§auto Mulgore;390 | x=-931.1000366210938 y=-337.6000061035156 | size=1 | links=#8408(auto Mulgore;172):22 #10275(auto Mulgore;215):14
+#18740 | auto Mulgore;391§auto Mulgore;391§auto Mulgore;391 | x=-923 y=-280.7000122070313 | size=1 | links=#8408(auto Mulgore;172):34 #13707(auto Mulgore;294):20 c2960.56:6
+#18782 | auto Mulgore;392§auto Mulgore;392§auto Mulgore;392 | x=-2056.699951171875 y=-771 | size=1 | links=#684(auto Mulgore;16):22 #8012(auto Mulgore;165):38
+#18847 | auto Mulgore;393§auto Mulgore;393§auto Mulgore;393 | x=-1404.800048828125 y=-214.9000091552734 | size=5 | links=#9557(auto Mulgore;195):22 #22789(auto Mulgore;473):18
+#18910 | auto Mulgore;394§auto Mulgore;394§auto Mulgore;394 | x=-1562.5 y=-858.7000122070312 | size=5 | links=#12568(auto Mulgore;266):37 #20863(auto Mulgore;433):21 #26672(auto Mulgore;546):33 c3035.77:24
+#18927 | auto Mulgore;395§auto Mulgore;395§auto Mulgore;395 | x=-1055.099975585938 y=-430.5 | size=1 | links=#13247(auto Mulgore;281):18 #17346(auto Mulgore;373):24
+#18996 | auto Mulgore;396§auto Mulgore;396§auto Mulgore;396 | x=-879.1000366210938 y=90.30000305175781 | size=5 | links=#1651(auto Mulgore;36):118 #8574(auto Mulgore;176):49 c2971.4:29 c3566.22:45 c3566.51:24
+#19021 | auto Mulgore;397§auto Mulgore;397§auto Mulgore;397 | x=-1765.800048828125 y=-1018.600036621094 | size=1 | links=#2839(auto Mulgore;59):28 #6976(auto Mulgore;148):16
+#19072 | auto Mulgore;398§auto Mulgore;398§auto Mulgore;398 | x=-2695.800048828125 y=-599 | size=5 | links=#14897(auto Mulgore;320):73 #17123(auto Mulgore;369):81
+#19152 | auto Mulgore;399§auto Mulgore;399§auto Mulgore;399 | x=-1705.099975585938 y=-1184.400024414063 | size=1 | links=#6336(auto Mulgore;128):14 c2978.81:22
+#19254 | auto Mulgore;400§auto Mulgore;400§auto Mulgore;400 | x=-3094 y=-1206.400024414063 | size=1 | links=#27115(auto Mulgore;555):20 c3229.1:7
+#19297 | auto Mulgore;401§auto Mulgore;401§auto Mulgore;401 | x=-1750.099975585938 y=-4.5 | size=1 | links=#2911(auto Mulgore;60):46 #15564(auto Mulgore;335):63
+#19328 | auto Mulgore;402§auto Mulgore;402§auto Mulgore;402 | x=-1512.200073242188 y=-1050.700073242188 | size=1 | links=#6216(auto Mulgore;123):6 #23397(auto Mulgore;486):19 c2978.60:6
+#19382 | auto Mulgore;403§auto Mulgore;403§auto Mulgore;403 | x=-2924.400146484375 y=-1332.099975585938 | size=1 | links=#10318(auto Mulgore;218):10 c2953.13:13
+#19386 | auto Mulgore;404§auto Mulgore;404§auto Mulgore;404 | x=-2878.400146484375 y=-224.5 | size=1 | links=#16845(auto Mulgore;361):9 c2981.1:2 c3059.1:11 c3061.1:13
+#19447 | passage;from;Mulgore;to;Thunder Bluff;north§passage;von;Mulgore;nach;donnerfels;nördlich§passage;de;Mulgore;vers;Les Pitons du Tonnerre;north | x=-966.2999877929688 y=-117.3000030517578 | size=1 | links=#27057(auto Mulgore;554):11 #11957(passage;from;Thunder Bluff;north;to;Mulgore):3
+#19580 | auto Mulgore;405§auto Mulgore;405§auto Mulgore;405 | x=-1001.5 y=-1162.400024414063 | size=1 | links=#6605(auto Mulgore;139):15 c3232.22:16 c3232.23:12
+#19632 | auto Mulgore;406§auto Mulgore;406§auto Mulgore;406 | x=-3072.900146484375 y=72.0999984741211 | size=1 | links=#14229(auto Mulgore;303):27 #21977(auto Mulgore;458):41 c6775.1:7
+#19654 | auto Mulgore;407§auto Mulgore;407§auto Mulgore;407 | x=-1720.099975585938 y=-1071.400024414063 | size=1 | links=#6172(auto Mulgore;121):17 #26558(auto Mulgore;544):20
+#19700 | auto Mulgore;408§auto Mulgore;408§auto Mulgore;408 | x=-977.9000244140625 y=-1092.200073242188 | size=1 | links=#1214(auto Mulgore;24):20 c3232.9:11 c3232.10:10 c3232.15:25
+#19713 | auto Mulgore;409§auto Mulgore;409§auto Mulgore;409 | x=-1631 y=-3.5 | size=1 | links=#15564(auto Mulgore;335):55 #21768(auto Mulgore;450):57
+#19832 | auto Mulgore;410§auto Mulgore;410§auto Mulgore;410 | x=-1907.400024414063 y=-1114.200073242188 | size=1 | links=#21806(auto Mulgore;453):21 c2979.29:11
+#19854 | auto Mulgore;411§auto Mulgore;411§auto Mulgore;411 | x=-940.1000366210938 y=-1127.099975585938 | size=1 | links=#4437(auto Mulgore;88):7 #27972(auto Mulgore;576):10 c3232.19:6
+#19925 | auto Mulgore;412§auto Mulgore;412§auto Mulgore;412 | x=-2973.699951171875 y=-1285.800048828125 | size=1 | links=c2953.12:11 c2952.24:29
+#19980 | auto Mulgore;413§auto Mulgore;413§auto Mulgore;413 | x=-1975.400024414063 y=-705.5 | size=1 | links=#10035(auto Mulgore;209):42 #11305(auto Mulgore;245):29
+#19986 | auto Mulgore;414§auto Mulgore;414§auto Mulgore;414 | x=-2315.400146484375 y=-452.2000122070313 | size=1 | links=#8301(auto Mulgore;167):18 #15246(auto Mulgore;329):12
+#19993 | auto Mulgore;415§auto Mulgore;415§auto Mulgore;415 | x=-1545.599975585938 y=270.3999938964844 | size=5 | links=#10806(auto Mulgore;230):87 #14923(auto Mulgore;323):15 #26839(auto Mulgore;551):43 c2959.114:46
+#20014 | auto Mulgore;416§auto Mulgore;416§auto Mulgore;416 | x=-2444.900146484375 y=-1116.800048828125 | size=1 | links=#15834(auto Mulgore;337):54 #22183(auto Mulgore;462):61 c2957.9:50
+#20079 | auto Mulgore;417§auto Mulgore;417§auto Mulgore;417 | x=-1630.300048828125 y=-832.5 | size=5 | links=#11546(auto Mulgore;251):59 #26672(auto Mulgore;546):40 c3035.72:11
+#20123 | auto Mulgore;418§auto Mulgore;418§auto Mulgore;418 | x=-1355.900024414063 y=-898 | size=1 | links=#8661(auto Mulgore;179):51 #20904(auto Mulgore;435):33 c2972.4:21 c2960.77:12
+#20154 | auto Mulgore;419§auto Mulgore;419§auto Mulgore;419 | x=-691.1000366210938 y=116.4000015258789 | size=1 | links=#1651(auto Mulgore;36):73 #16115(auto Mulgore;345):45 c2964.2:36 c3566.9:8
+#20163 | auto Mulgore;420§auto Mulgore;420§auto Mulgore;420 | x=-1379.200073242188 y=-1150.300048828125 | size=1 | links=#11963(auto Mulgore;255):14 #16438(auto Mulgore;353):18
+#20242 | auto Mulgore;421§auto Mulgore;421§auto Mulgore;421 | x=-1626.700073242188 y=-1130 | size=1 | links=#7024(auto Mulgore;149):13 #23352(auto Mulgore;484):20
+#20265 | auto Mulgore;422§auto Mulgore;422§auto Mulgore;422 | x=-675.7000122070312 y=-669.6000366210938 | size=1 | links=#2659(auto Mulgore;57):87 #13415(auto Mulgore;287):58 c2957.85:80
+#20359 | auto Mulgore;423§auto Mulgore;423§auto Mulgore;423 | x=-2376.400146484375 y=-427.7000122070313 | size=1 | links=#5969(auto Mulgore;117):40 #6612(auto Mulgore;140):62 #14157(auto Mulgore;301):31
+#20432 | auto Mulgore;424§auto Mulgore;424§auto Mulgore;424 | x=-1718.900024414063 y=-1159.599975585938 | size=1 | links=#6336(auto Mulgore;128):17 #21034(auto Mulgore;437):12
+#20445 | auto Mulgore;425§auto Mulgore;425§auto Mulgore;425 | x=-553 y=-624 | size=1 | links=#2659(auto Mulgore;57):67 c2964.1:57 c2964.33:36
+#20471 | auto Mulgore;426§auto Mulgore;426§auto Mulgore;426 | x=-1621.200073242188 y=-1253.300048828125 | size=1 | links=#5058(auto Mulgore;104):44 #14124(auto Mulgore;298):24 #28177(auto Mulgore;583):16
+#20577 | auto Mulgore;427§auto Mulgore;427§auto Mulgore;427 | x=-2243 y=-706.2999877929688 | size=1 | links=#21805(auto Mulgore;452):16 o2912.1:17
+#20594 | auto Mulgore;428§auto Mulgore;428§auto Mulgore;428 | x=-2472.800048828125 y=-957.2000122070312 | size=1 | links=#23570(auto Mulgore;492):40 c2970.14:21 c2959.38:59
+#20694 | auto Mulgore;429§auto Mulgore;429§auto Mulgore;429 | x=-986.2000122070312 y=-1018.200012207031 | size=5 | links=#16122(auto Mulgore;346):47 #21905(auto Mulgore;456):40 #28074(auto Mulgore;579):75 c3232.14:22
+#20818 | auto Mulgore;430§auto Mulgore;430§auto Mulgore;430 | x=-2972.10009765625 y=-1160 | size=1 | links=#10816(auto Mulgore;231):19 #22249(auto Mulgore;463):27
+#20830 | auto Mulgore;431§auto Mulgore;431§auto Mulgore;431 | x=-931.7999877929688 y=-176.6000061035156 | size=1 | links=#7979(auto Mulgore;164):20 #23133(auto Mulgore;480):28 c3566.43:22
+#20854 | auto Mulgore;432§auto Mulgore;432§auto Mulgore;432 | x=-2465.300048828125 y=227.5 | size=1 | links=#28451(auto Mulgore;588):26
+#20863 | auto Mulgore;433§auto Mulgore;433§auto Mulgore;433 | x=-1540.700073242188 y=-856.5 | size=5 | links=#12071(auto Mulgore;256):34 #18910(auto Mulgore;394):21 c3035.73:37 c3035.87:186
+#20879 | auto Mulgore;434§auto Mulgore;434§auto Mulgore;434 | x=-2936.199951171875 y=-1339 | size=1 | links=#10318(auto Mulgore;218):9 c2953.14:8
+#20904 | auto Mulgore;435§auto Mulgore;435§auto Mulgore;435 | x=-1387.200073242188 y=-886.9000244140625 | size=1 | links=#20123(auto Mulgore;418):33 #23476(auto Mulgore;488):42 c2957.89:17
+#20969 | auto Mulgore;436§auto Mulgore;436§auto Mulgore;436 | x=-1535.400024414063 y=-1093.099975585938 | size=1 | links=#22766(auto Mulgore;472):5 c2979.1:9
+#21034 | auto Mulgore;437§auto Mulgore;437§auto Mulgore;437 | x=-1719.900024414063 y=-1147.200073242188 | size=1 | links=#14248(auto Mulgore;305):32 #20432(auto Mulgore;424):12
+#21059 | auto Mulgore;438§auto Mulgore;438§auto Mulgore;438 | x=-2379.400146484375 y=-386.2000122070313 | size=1 | links=#15161(auto Mulgore;328):33 c2985.1:17 c3884.1:12
+#21241 | auto Mulgore;439§auto Mulgore;439§auto Mulgore;439 | x=-1976.099975585938 y=403.2000122070313 | size=1 | links=#17441(auto Mulgore;375):9 c2990.3:2 c2989.15:6
+#21308 | auto Mulgore;440§auto Mulgore;440§auto Mulgore;440 | x=-1106.400024414063 y=-1094.700073242188 | size=5 | links=#11333(auto Mulgore;247):23 #27362(auto Mulgore;563):48 c3233.1:80 c3566.26:25
+#21357 | auto Mulgore;441§auto Mulgore;441§auto Mulgore;441 | x=-3118.699951171875 y=-40.79999923706055 | size=1 | links=#4612(auto Mulgore;92):40 #26801(auto Mulgore;550):37 c2961.25:36 c2961.26:27
+#21373 | auto Mulgore;442§auto Mulgore;442§auto Mulgore;442 | x=-1846.700073242188 y=-42.5 | size=1 | links=#1287(auto Mulgore;29):27 #6144(auto Mulgore;120):57
+#21383 | auto Mulgore;443§auto Mulgore;443§auto Mulgore;443 | x=-807 y=-28.5 | size=1 | links=c5787.1:3 c2979.41:20 c2978.65:30
+#21417 | auto Mulgore;444§auto Mulgore;444§auto Mulgore;444 | x=-1666.800048828125 y=66.30000305175781 | size=5 | links=#15564(auto Mulgore;335):71 #23840(auto Mulgore;493):34
+#21459 | auto Mulgore;445§auto Mulgore;445§auto Mulgore;445 | x=-2340.199951171875 y=-714.7000122070312 | size=1 | links=#16887(auto Mulgore;364):33 #26060(auto Mulgore;530):69 #26378(auto Mulgore;538):107 c2958.9:45 c2969.9:58 c2956.18:43
+#21464 | auto Mulgore;446§auto Mulgore;446§auto Mulgore;446 | x=-2212 y=-570.9000244140625 | size=1 | links=#21841(auto Mulgore;454):54 #28076(auto Mulgore;580):39
+#21479 | auto Mulgore;447§auto Mulgore;447§auto Mulgore;447 | x=-2274.199951171875 y=-318.8999938964844 | size=1 | links=#9563(auto Mulgore;197):21 c3069.1:37 c3080.1:13 c3081.1:10
+#21507 | auto Mulgore;448§auto Mulgore;448§auto Mulgore;448 | x=-1591.099975585938 y=-1190.300048828125 | size=1 | links=#4760(auto Mulgore;97):24 #13078(auto Mulgore;275):20
+#21668 | auto Mulgore;449§auto Mulgore;449§auto Mulgore;449 | x=-2457.199951171875 y=-163.1999969482422 | size=1 | links=#8837(auto Mulgore;182):52 #18363(auto Mulgore;385):80 #26008(auto Mulgore;529):84 c2958.87:50
+#21768 | auto Mulgore;450§auto Mulgore;450§auto Mulgore;450 | x=-1574 y=-4.200000286102295 | size=1 | links=#12331(auto Mulgore;259):40 #19713(auto Mulgore;409):57
+#21780 | auto Mulgore;451§auto Mulgore;451§auto Mulgore;451 | x=-1436.700073242188 y=73.70000457763672 | size=1 | links=#3959(auto Mulgore;78):8 #4639(auto Mulgore;95):10
+#21805 | auto Mulgore;452§auto Mulgore;452§auto Mulgore;452 | x=-2250 y=-721.2000122070312 | size=1 | links=#20577(auto Mulgore;427):16 c2969.9:32
+#21806 | auto Mulgore;453§auto Mulgore;453§auto Mulgore;453 | x=-1923.900024414063 y=-1127.200073242188 | size=1 | links=#2998(focus point;The Venture Co. Mine;Mulgore):43 #19832(auto Mulgore;410):21 c2978.44:15 c2978.45:29 c2978.46:14 c2978.49:19
+#21841 | auto Mulgore;454§auto Mulgore;454§auto Mulgore;454 | x=-2207.5 y=-625.4000244140625 | size=1 | links=#13422(auto Mulgore;288):63 #21464(auto Mulgore;446):54
+#21881 | auto Mulgore;455§auto Mulgore;455§auto Mulgore;455 | x=-614.9000244140625 y=-448.8000183105469 | size=5 | links=#5843(auto Mulgore;114):48 #24242(auto Mulgore;501):71
+#21905 | auto Mulgore;456§auto Mulgore;456§auto Mulgore;456 | x=-962.9000244140625 y=-1051.099975585938 | size=5 | links=#4768(auto Mulgore;99):24 #20694(auto Mulgore;429):40 c3232.11:9 c3232.13:10
+#21939 | auto Mulgore;457§auto Mulgore;457§auto Mulgore;457 | x=-2658.699951171875 y=47.90000152587891 | size=5 | links=#8631(auto Mulgore;177):75 #22664(auto Mulgore;468):31
+#21977 | auto Mulgore;458§auto Mulgore;458§auto Mulgore;458 | x=-3088.900146484375 y=34.29999923706055 | size=1 | links=#4612(auto Mulgore;92):39 #19632(auto Mulgore;406):41
+#22009 | auto Mulgore;459§auto Mulgore;459§auto Mulgore;459 | x=-2404.800048828125 y=-816.6000366210938 | size=1 | links=#16139(auto Mulgore;347):46 o2912.15:12
+#22115 | auto Mulgore;460§auto Mulgore;460§auto Mulgore;460 | x=-1822.099975585938 y=98.70000457763672 | size=1 | links=#2383(auto Mulgore;50):107 #26372(auto Mulgore;537):60
+#22178 | auto Mulgore;461§auto Mulgore;461§auto Mulgore;461 | x=-2484.60009765625 y=-489.5 | size=1 | links=#2623(auto Mulgore;56):57 #6143(auto Mulgore;119):23 #11858(auto Mulgore;253):19 #12942(auto Mulgore;271):58 #28497(auto Mulgore;592):84 o2912.3:34 c2958.34:65 c2958.39:33
+#22183 | auto Mulgore;462§auto Mulgore;462§auto Mulgore;462 | x=-2444 y=-1177.800048828125 | size=1 | links=#16582(auto Mulgore;357):29 #20014(auto Mulgore;416):61 c2957.8:26
+#22249 | auto Mulgore;463§auto Mulgore;463§auto Mulgore;463 | x=-2954.5 y=-1181 | size=1 | links=#11124(auto Mulgore;239):35 #20818(auto Mulgore;430):27 c2952.25:14
+#22379 | auto Mulgore;464§auto Mulgore;464§auto Mulgore;464 | x=-2976.300048828125 y=-1233.400024414063 | size=1 | links=#14152(auto Mulgore;299):23 #27636(auto Mulgore;568):14 c2954.1:16
+#22473 | auto Mulgore;465§auto Mulgore;465§auto Mulgore;465 | x=-1927.599975585938 y=358.6000061035156 | size=1 | links=#14678(auto Mulgore;315):22 #26290(auto Mulgore;535):16 c2990.5:7
+#22483 | auto Mulgore;466§auto Mulgore;466§auto Mulgore;466 | x=-963.5 y=-34.79999923706055 | size=1 | links=#22892(auto Mulgore;476):22 #27206(auto Mulgore;558):25
+#22601 | auto Mulgore;467§auto Mulgore;467§auto Mulgore;467 | x=-2610.60009765625 y=-297.7000122070313 | size=1 | links=#4540(auto Mulgore;90):67 #13034(auto Mulgore;273):46 c2958.81:37 c2958.83:52
+#22664 | auto Mulgore;468§auto Mulgore;468§auto Mulgore;468 | x=-2681.60009765625 y=26.10000038146973 | size=5 | links=#21939(auto Mulgore;457):31 c2958.40:31
+#22666 | auto Mulgore;469§auto Mulgore;469§auto Mulgore;469 | x=-1798.5 y=-1184.200073242188 | size=1 | links=#13174(auto Mulgore;278):20 #22811(auto Mulgore;475):13 #26566(auto Mulgore;545):16
+#22667 | auto Mulgore;470§auto Mulgore;470§auto Mulgore;470 | x=-1773.200073242188 y=-1155.900024414063 | size=1 | links=#12559(auto Mulgore;265):28 #13174(auto Mulgore;278):19 c2978.32:9
+#22702 | auto Mulgore;471§auto Mulgore;471§auto Mulgore;471 | x=-950 y=-163.6999969482422 | size=1 | links=#7979(auto Mulgore;164):17 #27057(auto Mulgore;554):41
+#22766 | auto Mulgore;472§auto Mulgore;472§auto Mulgore;472 | x=-1533.099975585938 y=-1097.800048828125 | size=1 | links=#7289(auto Mulgore;154):8 #20969(auto Mulgore;436):5 c2978.5:2
+#22789 | auto Mulgore;473§auto Mulgore;473§auto Mulgore;473 | x=-1386.200073242188 y=-217.1000061035156 | size=5 | links=#1930(auto Mulgore;42):24 #18847(auto Mulgore;393):18
+#22804 | auto Mulgore;474§auto Mulgore;474§auto Mulgore;474 | x=-3131.5 y=-103.3000030517578 | size=1 | links=#14234(auto Mulgore;304):69 #26801(auto Mulgore;550):26 c2620.8:26
+#22811 | auto Mulgore;475§auto Mulgore;475§auto Mulgore;475 | x=-1792.800048828125 y=-1195.900024414063 | size=1 | links=#835(centralpoint;The Venture Co. Mine;Mulgore):10 #22666(auto Mulgore;469):13 #26566(auto Mulgore;545):27 c2979.23:18
+#22851 | central location;Camp Narache;Mulgore§zentralpunkt;Camp Narache;Mulgore§emplacement central;Camp Narache;Mulgore | x=-2895.900146484375 y=-253.9000091552734 | size=1 | links=#3951(auto Mulgore;77):17 #8722(auto Mulgore;180):9 #10424(auto Mulgore;222):18 #11317(auto Mulgore;246):15 #16346(auto Mulgore;350):18 c5888.1:14
+#22892 | auto Mulgore;476§auto Mulgore;476§auto Mulgore;476 | x=-961.9000244140625 y=-57.10000228881836 | size=1 | links=#22483(auto Mulgore;466):22 #24445(auto Mulgore;505):20
+#22938 | auto Mulgore;477§auto Mulgore;477§auto Mulgore;477 | x=-2748.800048828125 y=-186.5 | size=1 | links=#9734(auto Mulgore;202):40 o113771.3:9
+#22982 | auto Mulgore;478§auto Mulgore;478§auto Mulgore;478 | x=-1410 y=-1094.300048828125 | size=1 | links=#4442(auto Mulgore;89):12 #28133(auto Mulgore;582):9
+#23044 | auto Mulgore;479§auto Mulgore;479§auto Mulgore;479 | x=-2365.199951171875 y=-860.7000122070312 | size=1 | links=#16139(auto Mulgore;347):48 #28477(auto Mulgore;591):37 c2959.32:54
+#23133 | auto Mulgore;480§auto Mulgore;480§auto Mulgore;480 | x=-927.7000122070312 y=-204.6000061035156 | size=1 | links=#3434(auto Mulgore;65):41 #20830(auto Mulgore;431):28
+#23266 | auto Mulgore;481§auto Mulgore;481§auto Mulgore;481 | x=-970.2000122070312 y=-407.3999938964844 | size=1 | links=#2558(auto Mulgore;54):28 #23363(auto Mulgore;485):26
+#23279 | auto Mulgore;482§auto Mulgore;482§auto Mulgore;482 | x=-2963.699951171875 y=-353.7000122070313 | size=5 | links=#2620(auto Mulgore;55):57 #23569(auto Mulgore;491):58 c2955.1:12 c2955.27:71
+#23292 | auto Mulgore;483§auto Mulgore;483§auto Mulgore;483 | x=-1820.800048828125 y=-903.9000244140625 | size=5 | links=#10607(auto Mulgore;226):60 #15971(auto Mulgore;340):50 c2957.22:36 c2959.127:30
+#23327 | spawn location;Camp Narache;Mulgore§spawnpunkt;Camp Narache;Mulgore§spawn location;Camp Narache;Mulgore | x=-2917.699951171875 y=-258.1000061035156 | size=1 | links=#5179(auto Mulgore;105):12 #23569(auto Mulgore;491):49 c2980.1:5
+#23352 | auto Mulgore;484§auto Mulgore;484§auto Mulgore;484 | x=-1625 y=-1109.599975585938 | size=1 | links=#10771(auto Mulgore;229):40 #13426(auto Mulgore;289):43 #20242(auto Mulgore;421):20
+#23363 | auto Mulgore;485§auto Mulgore;485§auto Mulgore;485 | x=-989.2999877929688 y=-425.3000183105469 | size=1 | links=#4044(auto Mulgore;81):9 #23266(auto Mulgore;481):26
+#23397 | auto Mulgore;486§auto Mulgore;486§auto Mulgore;486 | x=-1500.099975585938 y=-1034.900024414063 | size=1 | links=#13572(auto Mulgore;292):5 #19328(auto Mulgore;402):19
+#23443 | auto Mulgore;487§auto Mulgore;487§auto Mulgore;487 | x=-2706.300048828125 y=-735.5 | size=1 | links=#3880(auto Mulgore;73):52 #10478(auto Mulgore;224):62 #17123(auto Mulgore;369):59 c2950.4:24 c2951.6:25
+#23476 | auto Mulgore;488§auto Mulgore;488§auto Mulgore;488 | x=-1426.700073242188 y=-871.5 | size=1 | links=#16530(auto Mulgore;356):49 #20904(auto Mulgore;435):42 c3566.78:33
+#23479 | auto Mulgore;489§auto Mulgore;489§auto Mulgore;489 | x=-1860.800048828125 y=247.8000030517578 | size=1 | links=#2383(auto Mulgore;50):46 c2989.9:43
+#23523 | auto Mulgore;490§auto Mulgore;490§auto Mulgore;490 | x=-1666.5 y=-1146.400024414063 | size=1 | links=#26545(auto Mulgore;543):8 c2979.8:11
+#23569 | auto Mulgore;491§auto Mulgore;491§auto Mulgore;491 | x=-2929.10009765625 y=-306 | size=5 | links=#23279(auto Mulgore;482):58 #23327(spawn location;Camp Narache;Mulgore):49 c3210.1:30 c3211.1:16
+#23570 | auto Mulgore;492§auto Mulgore;492§auto Mulgore;492 | x=-2505.5 y=-932.6000366210938 | size=1 | links=#20594(auto Mulgore;428):40 c2956.3:49 o2912.5:19
+#23840 | auto Mulgore;493§auto Mulgore;493§auto Mulgore;493 | x=-1666.300048828125 y=100.5999984741211 | size=1 | links=#21417(auto Mulgore;444):34 #27939(auto Mulgore;575):46
+#23853 | auto Mulgore;494§auto Mulgore;494§auto Mulgore;494 | x=-1537.099975585938 y=-126.8000030517578 | size=5 | links=#11419(auto Mulgore;248):39 #24251(auto Mulgore;502):41
+#23972 | auto Mulgore;495§auto Mulgore;495§auto Mulgore;495 | x=-1947.800048828125 y=-575 | size=1 | links=#7506(auto Mulgore;157):50 #27793(auto Mulgore;573):50 c2959.76:35
+#23986 | auto Mulgore;496§auto Mulgore;496§auto Mulgore;496 | x=-590.7999877929688 y=-295.3999938964844 | size=5 | links=#16493(auto Mulgore;354):60 #24242(auto Mulgore;501):91
+#23995 | auto Mulgore;497§auto Mulgore;497§auto Mulgore;497 | x=-2630.699951171875 y=-168.6000061035156 | size=1 | links=#1865(auto Mulgore;41):39 #4540(auto Mulgore;90):63 #7621(auto Mulgore;158):45
+#24161 | auto Mulgore;498§auto Mulgore;498§auto Mulgore;498 | x=-2988.5 y=186.1000061035156 | size=1 | links=#1937(auto Mulgore;43):58 #11218(auto Mulgore;243):39 c2956.35:28
+#24163 | auto Mulgore;499§auto Mulgore;499§auto Mulgore;499 | x=-2951.300048828125 y=-1230.700073242188 | size=1 | links=#11124(auto Mulgore;239):19 #24182(auto Mulgore;500):18 #27636(auto Mulgore;568):11 c2954.2:9 c2954.4:22 c2954.5:26 c2952.8:10 c2952.24:38
+#24182 | auto Mulgore;500§auto Mulgore;500§auto Mulgore;500 | x=-2946.800048828125 y=-1248.599975585938 | size=1 | links=#7166(auto Mulgore;151):9 #24163(auto Mulgore;499):18 c2952.22:9 c2952.23:10
+#24242 | auto Mulgore;501§auto Mulgore;501§auto Mulgore;501 | x=-627.9000244140625 y=-378.6000061035156 | size=5 | links=#21881(auto Mulgore;455):71 #23986(auto Mulgore;496):91
+#24251 | auto Mulgore;502§auto Mulgore;502§auto Mulgore;502 | x=-1538.900024414063 y=-85.20000457763672 | size=5 | links=#9498(auto Mulgore;193):35 #23853(auto Mulgore;494):41
+#24263 | auto Mulgore;503§auto Mulgore;503§auto Mulgore;503 | x=-2603.900146484375 y=-1280.800048828125 | size=1 | links=#5874(auto Mulgore;116):52 #9885(auto Mulgore;206):63 c2963.1:44 c2962.8:43 c2960.68:21 c2960.73:30 c2960.79:11
+#24409 | auto Mulgore;504§auto Mulgore;504§auto Mulgore;504 | x=-2254 y=-556.1000366210938 | size=1 | links=#26295(auto Mulgore;536):30 #28076(auto Mulgore;580):43
+#24445 | auto Mulgore;505§auto Mulgore;505§auto Mulgore;505 | x=-964.5 y=-77 | size=1 | links=#22892(auto Mulgore;476):20 #28468(auto Mulgore;590):15
+#24531 | auto Mulgore;506§auto Mulgore;506§auto Mulgore;506 | x=-1983.599975585938 y=-475 | size=1 | links=#1258(auto Mulgore;28):58 #7506(auto Mulgore;157):56 c2959.50:33
+#24583 | auto Mulgore;507§auto Mulgore;507§auto Mulgore;507 | x=-2409.199951171875 y=-1304.800048828125 | size=1 | links=#1059(auto Mulgore;22):36 #10673(auto Mulgore;228):47 c2960.6:27 c2960.26:57
+#24609 | auto Mulgore;508§auto Mulgore;508§auto Mulgore;508 | x=-1623.700073242188 y=-1332.300048828125 | size=1 | links=#28090(auto Mulgore;581):23
+#24615 | auto Mulgore;509§auto Mulgore;509§auto Mulgore;509 | x=-978.2999877929688 y=-782.1000366210938 | size=5 | links=#838(auto Mulgore;17):29 #8864(auto Mulgore;183):74 c2957.94:35
+#24678 | auto Mulgore;510§auto Mulgore;510§auto Mulgore;510 | x=-600.7000122070312 y=-121.9000015258789 | size=5 | links=#8303(auto Mulgore;168):84 #14679(auto Mulgore;316):51 c2960.1:63 c3566.38:78
+#24696 | auto Mulgore;511§auto Mulgore;511§auto Mulgore;511 | x=-2493.699951171875 y=-695.1000366210938 | size=1 | links=#4649(focus point;Wasserbrunnen der Winterhufe;Mulgore):0 #26378(auto Mulgore;538):55
+#24774 | auto Mulgore;512§auto Mulgore;512§auto Mulgore;512 | x=-1976.700073242188 y=-255.6000061035156 | size=1 | links=#13844(auto Mulgore;295):30 o2912.19:26
+#24823 | auto Mulgore;513§auto Mulgore;513§auto Mulgore;513 | x=-1960.800048828125 y=-1012.799987792969 | size=1 | links=#2373(auto Mulgore;49):29 #17065(auto Mulgore;366):22 c2978.56:20
+#25000 | auto Mulgore;514§auto Mulgore;514§auto Mulgore;514 | x=-2843.400146484375 y=-1089.400024414063 | size=1 | links=#16846(auto Mulgore;362):4 c2952.41:22
+#25085 | auto Mulgore;515§auto Mulgore;515§auto Mulgore;515 | x=-1637.599975585938 y=-1183.300048828125 | size=1 | links=#1737(auto Mulgore;37):7 #5372(auto Mulgore;109):19 c2978.13:5 c2978.14:5
+#25103 | auto Mulgore;516§auto Mulgore;516§auto Mulgore;516 | x=-1985.5 y=414.8999938964844 | size=1 | links=#17441(auto Mulgore;375):9 c2990.2:21 c2990.4:9
+#25260 | auto Mulgore;517§auto Mulgore;517§auto Mulgore;517 | x=-1434.599975585938 y=-1065 | size=1 | links=#6273(auto Mulgore;126):13 #6449(auto Mulgore;134):18
+#25284 | auto Mulgore;518§auto Mulgore;518§auto Mulgore;518 | x=-997.5 y=-1121.700073242188 | size=1 | links=#5326(auto Mulgore;107):7 c3232.2:6
+#25453 | auto Mulgore;519§auto Mulgore;519§auto Mulgore;519 | x=-1674.599975585938 y=-1210 | size=1 | links=#4722(auto Mulgore;96):13
+#25466 | auto Mulgore;520§auto Mulgore;520§auto Mulgore;520 | x=-2080.400146484375 y=-393.8000183105469 | size=1 | links=#9522(auto Mulgore;194):26 #16107(auto Mulgore;344):29
+#25503 | auto Mulgore;521§auto Mulgore;521§auto Mulgore;521 | x=-1260.800048828125 y=-933.1000366210938 | size=1 | links=#8661(auto Mulgore;179):50 #25534(auto Mulgore;523):57
+#25531 | auto Mulgore;522§auto Mulgore;522§auto Mulgore;522 | x=-2341.300048828125 y=-359 | size=1 | links=#1475(auto Mulgore;32):14 #15987(central location;Bloodhoof Village;Mulgore):26
+#25534 | auto Mulgore;523§auto Mulgore;523§auto Mulgore;523 | x=-1225.900024414063 y=-978.7000122070312 | size=5 | links=#7357(auto Mulgore;155):52 #25503(auto Mulgore;521):57
+#25572 | auto Mulgore;524§auto Mulgore;524§auto Mulgore;524 | x=-2208.800048828125 y=-384.8999938964844 | size=1 | links=#5687(auto Mulgore;111):19 #9935(auto Mulgore;208):21 c3055.1:26
+#25667 | auto Mulgore;525§auto Mulgore;525§auto Mulgore;525 | x=-1182 y=-237 | size=5 | links=#11019(auto Mulgore;235):43 #28533(auto Mulgore;593):30
+#25733 | auto Mulgore;526§auto Mulgore;526§auto Mulgore;526 | x=-1749.900024414063 y=-1035.800048828125 | size=1 | links=#16412(auto Mulgore;351):17
+#25887 | auto Mulgore;527§auto Mulgore;527§auto Mulgore;527 | x=-2082.199951171875 y=-312.8000183105469 | size=1 | links=#12853(auto Mulgore;270):32 #13217(auto Mulgore;280):52
+#25915 | auto Mulgore;528§auto Mulgore;528§auto Mulgore;528 | x=-1275.400024414063 y=-215.5 | size=1 | links=#10383(auto Mulgore;220):15 #16211(auto Mulgore;349):68 c2960.90:33
+#26008 | auto Mulgore;529§auto Mulgore;529§auto Mulgore;529 | x=-2534.699951171875 y=-197 | size=1 | links=#21668(auto Mulgore;449):84 c2956.43:89 c2958.51:43 o2912.52:47 c2958.54:113
+#26060 | auto Mulgore;530§auto Mulgore;530§auto Mulgore;530 | x=-2326.400146484375 y=-646.7000122070312 | size=1 | links=#13241(crossing;Mulgore):56 #21459(auto Mulgore;445):69 o2912.11:45 c2956.24:23
+#26075 | auto Mulgore;531§auto Mulgore;531§auto Mulgore;531 | x=-1886.400024414063 y=-1021.5 | size=1 | links=#1639(auto Mulgore;35):29 #11015(auto Mulgore;234):19
+#26103 | auto Mulgore;532§auto Mulgore;532§auto Mulgore;532 | x=-1398.200073242188 y=-1124.400024414063 | size=1 | links=#16438(auto Mulgore;353):16 #27365(auto Mulgore;564):14
+#26186 | auto Mulgore;533§auto Mulgore;533§auto Mulgore;533 | x=-2721.300048828125 y=-829.5 | size=1 | links=#3880(auto Mulgore;73):43 #8502(auto Mulgore;174):41 #10478(auto Mulgore;224):153 c2950.5:18
+#26199 | auto Mulgore;534§auto Mulgore;534§auto Mulgore;534 | x=-2793.199951171875 y=-768 | size=1 | links=#7237(auto Mulgore;153):33 #18229(auto Mulgore;382):24 c2951.5:22
+#26290 | auto Mulgore;535§auto Mulgore;535§auto Mulgore;535 | x=-1934.400024414063 y=373.7000122070313 | size=1 | links=#5361(auto Mulgore;108):7 #22473(auto Mulgore;465):16 c2990.5:10 c2989.18:22
+#26295 | auto Mulgore;536§auto Mulgore;536§auto Mulgore;536 | x=-2278.800048828125 y=-574 | size=1 | links=#13241(crossing;Mulgore):32 #24409(auto Mulgore;504):30 c3219.1:2
+#26372 | auto Mulgore;537§auto Mulgore;537§auto Mulgore;537 | x=-1798.300048828125 y=42.60000228881836 | size=1 | links=#10358(auto Mulgore;219):29 #12529(auto Mulgore;264):31 #22115(auto Mulgore;460):60
+#26378 | auto Mulgore;538§auto Mulgore;538§auto Mulgore;538 | x=-2440.900146484375 y=-678.1000366210938 | size=5 | links=#21459(auto Mulgore;445):107 #24696(auto Mulgore;511):55 #26518(auto Mulgore;542):109
+#26404 | auto Mulgore;539§auto Mulgore;539§auto Mulgore;539 | x=-2191.300048828125 y=-718.7000122070312 | size=1 | links=#9371(auto Mulgore;191):45 #13422(auto Mulgore;288):31
+#26416 | auto Mulgore;540§auto Mulgore;540§auto Mulgore;540 | x=-2918.800048828125 y=-232.3000030517578 | size=1 | links=#6600(auto Mulgore;138):7 #10648(auto Mulgore;227):5
+#26427 | auto Mulgore;541§auto Mulgore;541§auto Mulgore;541 | x=-1008.299987792969 y=-882.7999877929688 | size=5 | links=#1242(auto Mulgore;26):89 #8864(auto Mulgore;183):42
+#26518 | auto Mulgore;542§auto Mulgore;542§auto Mulgore;542 | x=-2383.60009765625 y=-584.5 | size=1 | links=#1395(auto Mulgore;30):64 #13241(crossing;Mulgore):80 #26378(auto Mulgore;538):109 c3217.1:34
+#26545 | auto Mulgore;543§auto Mulgore;543§auto Mulgore;543 | x=-1660.800048828125 y=-1153 | size=1 | links=#23523(auto Mulgore;490):8 #27226(auto Mulgore;559):19
+#26558 | auto Mulgore;544§auto Mulgore;544§auto Mulgore;544 | x=-1732.900024414063 y=-1055.200073242188 | size=1 | links=#16412(auto Mulgore;351):9 #19654(auto Mulgore;407):20
+#26566 | auto Mulgore;545§auto Mulgore;545§auto Mulgore;545 | x=-1813 y=-1177 | size=1 | links=#13432(auto Mulgore;290):22 #22666(auto Mulgore;469):16 #22811(auto Mulgore;475):27
+#26672 | auto Mulgore;546§auto Mulgore;546§auto Mulgore;546 | x=-1590.400024414063 y=-840.9000244140625 | size=5 | links=#18910(auto Mulgore;394):33 #20079(auto Mulgore;417):40
+#26674 | auto Mulgore;547§auto Mulgore;547§auto Mulgore;547 | x=-1917.200073242188 y=-969.2000122070312 | size=1 | links=#2373(auto Mulgore;49):32 #11538(auto Mulgore;250):32
+#26719 | auto Mulgore;548§auto Mulgore;548§auto Mulgore;548 | x=-1919.5 y=-888.6000366210938 | size=5 | links=#3771(auto Mulgore;71):72 #15971(auto Mulgore;340):96 c2970.9:23 c3035.20:35 c3035.50:52 c3035.65:32
+#26725 | auto Mulgore;549§auto Mulgore;549§auto Mulgore;549 | x=-2427.900146484375 y=-464.7000122070313 | size=1 | links=#6143(auto Mulgore;119):39 #14157(auto Mulgore;301):31 c2620.28:64
+#26801 | auto Mulgore;550§auto Mulgore;550§auto Mulgore;550 | x=-3131.199951171875 y=-76.4000015258789 | size=1 | links=#21357(auto Mulgore;441):37 #22804(auto Mulgore;474):26
+#26839 | auto Mulgore;551§auto Mulgore;551§auto Mulgore;551 | x=-1568.300048828125 y=232.9000091552734 | size=5 | links=#19993(auto Mulgore;415):43 #28459(auto Mulgore;589):44 c2956.31:14
+#26940 | auto Mulgore;552§auto Mulgore;552§auto Mulgore;552 | x=-2160.199951171875 y=-217.1999969482422 | size=1 | links=#7766(auto Mulgore;160):43 #8914(auto Mulgore;186):58 c2973.1:59
+#27037 | auto Mulgore;553§auto Mulgore;553§auto Mulgore;553 | x=-2107.10009765625 y=-429.8999938964844 | size=1 | links=#4944(auto Mulgore;103):56 #14544(auto Mulgore;312):8 c3220.1:45 c15575.1:16 c23618.1:9
+#27057 | auto Mulgore;554§auto Mulgore;554§auto Mulgore;554 | x=-955.6000366210938 y=-122.4000015258789 | size=1 | links=#1464(auto Mulgore;31):35 #19447(passage;from;Mulgore;to;Thunder Bluff;north):11 #22702(auto Mulgore;471):41 #28468(auto Mulgore;590):30
+#27115 | auto Mulgore;555§auto Mulgore;555§auto Mulgore;555 | x=-3076.300048828125 y=-1216.200073242188 | size=1 | links=#3976(auto Mulgore;79):44 #19254(auto Mulgore;400):20 c2954.10:11
+#27147 | auto Mulgore;556§auto Mulgore;556§auto Mulgore;556 | x=-2316 y=-410.3000183105469 | size=1 | links=#885(auto Mulgore;20):12 #27676(auto Mulgore;571):8
+#27175 | auto Mulgore;557§auto Mulgore;557§auto Mulgore;557 | x=-2735 y=46.79999923706055 | size=1 | links=#28071(auto Mulgore;578):45 o2912.38:16
+#27206 | auto Mulgore;558§auto Mulgore;558§auto Mulgore;558 | x=-938.2999877929688 y=-34.29999923706055 | size=1 | links=#12486(auto Mulgore;263):32 #22483(auto Mulgore;466):25
+#27226 | auto Mulgore;559§auto Mulgore;559§auto Mulgore;559 | x=-1647.900024414063 y=-1168 | size=1 | links=#1737(auto Mulgore;37):11 #26545(auto Mulgore;543):19
+#27250 | auto Mulgore;560§auto Mulgore;560§auto Mulgore;560 | x=-3277.5 y=-220.1000061035156 | size=1 | links=#13080(auto Mulgore;276):56 #13509(auto Mulgore;291):71 c2961.7:37 c2961.8:49 c2955.41:4 c2955.82:56
+#27291 | auto Mulgore;561§auto Mulgore;561§auto Mulgore;561 | x=-2987.10009765625 y=-1304.900024414063 | size=1 | links=#5252(auto Mulgore;106):31 c2952.37:27
+#27338 | auto Mulgore;562§auto Mulgore;562§auto Mulgore;562 | x=-3036.10009765625 y=-681.7000122070312 | size=1 | links=#10098(auto Mulgore;213):29 o100028.1:40
+#27362 | auto Mulgore;563§auto Mulgore;563§auto Mulgore;563 | x=-1083.700073242188 y=-1137.700073242188 | size=5 | links=#12268(auto Mulgore;258):43 #21308(auto Mulgore;440):48 c3232.6:38 c3232.8:39 c3232.17:39 c3566.62:16 c3566.69:24
+#27365 | auto Mulgore;564§auto Mulgore;564§auto Mulgore;564 | x=-1405.700073242188 y=-1111.599975585938 | size=1 | links=#26103(auto Mulgore;532):14 #28133(auto Mulgore;582):8
+#27436 | auto Mulgore;565§auto Mulgore;565§auto Mulgore;565 | x=-2421.300048828125 y=-900.6000366210938 | size=1 | links=c3035.22:38 c2958.30:61 c3035.52:15
+#27485 | auto Mulgore;566§auto Mulgore;566§auto Mulgore;566 | x=-2401.400146484375 y=3.200000047683716 | size=5 | links=#651(auto Mulgore;14):74 #13336(auto Mulgore;284):77 #15820(auto Mulgore;336):44 #18702(auto Mulgore;389):85
+#27519 | auto Mulgore;567§auto Mulgore;567§auto Mulgore;567 | x=-2352.800048828125 y=-1462.800048828125 | size=1 | links=#15364(auto Mulgore;331):37 #17714(auto Mulgore;378):52 c2957.5:37
+#27636 | auto Mulgore;568§auto Mulgore;568§auto Mulgore;568 | x=-2962.60009765625 y=-1230.099975585938 | size=1 | links=#22379(auto Mulgore;464):14 #24163(auto Mulgore;499):11
+#27650 | auto Mulgore;569§auto Mulgore;569§auto Mulgore;569 | x=-2414 y=189.1999969482422 | size=1 | links=#3887(auto Mulgore;74):53 #9748(auto Mulgore;203):56 #28451(auto Mulgore;588):47 c2949.11:31 c2949.13:40 c2956.67:32
+#27673 | auto Mulgore;570§auto Mulgore;570§auto Mulgore;570 | x=-2330 y=-899.2000122070312 | size=1 | links=#18615(auto Mulgore;386):105 #28477(auto Mulgore;591):36
+#27676 | auto Mulgore;571§auto Mulgore;571§auto Mulgore;571 | x=-2320.10009765625 y=-402.5 | size=1 | links=#4244(auto Mulgore;85):19 #15987(central location;Bloodhoof Village;Mulgore):25 #27147(auto Mulgore;556):8 c2993.1:16
+#27693 | auto Mulgore;572§auto Mulgore;572§auto Mulgore;572 | x=-1677.900024414063 y=-1164.5 | size=1 | links=#6336(auto Mulgore;128):27 #13610(auto Mulgore;293):19
+#27793 | auto Mulgore;573§auto Mulgore;573§auto Mulgore;573 | x=-1946.900024414063 y=-625.4000244140625 | size=1 | links=#10035(auto Mulgore;209):50 #23972(auto Mulgore;495):50
+#27810 | auto Mulgore;574§auto Mulgore;574§auto Mulgore;574 | x=-935 y=-1092.599975585938 | size=1 | links=#2108(auto Mulgore;47):10 #10581(auto Mulgore;225):6
+#27939 | auto Mulgore;575§auto Mulgore;575§auto Mulgore;575 | x=-1645.599975585938 y=142.1999969482422 | size=1 | links=#16613(auto Mulgore;358):29 #23840(auto Mulgore;493):46
+#27972 | auto Mulgore;576§auto Mulgore;576§auto Mulgore;576 | x=-931.4000244140625 y=-1121.599975585938 | size=1 | links=#8889(auto Mulgore;184):10 #19854(auto Mulgore;411):10
+#27994 | auto Mulgore;577§auto Mulgore;577§auto Mulgore;577 | x=-1751.5 y=125.7000045776367 | size=5 | links=#6672(auto Mulgore;143):40 #7448(auto Mulgore;156):46
+#28071 | auto Mulgore;578§auto Mulgore;578§auto Mulgore;578 | x=-2773.60009765625 y=22.80000114440918 | size=1 | links=#4803(auto Mulgore;100):108 #14899(auto Mulgore;321):95 #27175(auto Mulgore;557):45 c2958.22:30 c2958.40:61 c2958.41:40 c2958.84:42
+#28074 | auto Mulgore;579§auto Mulgore;579§auto Mulgore;579 | x=-977.6000366210938 y=-943 | size=5 | links=#8864(auto Mulgore;183):86 #20694(auto Mulgore;429):75
+#28076 | auto Mulgore;580§auto Mulgore;580§auto Mulgore;580 | x=-2218.199951171875 y=-531.9000244140625 | size=1 | links=#40(auto Mulgore;2):54 #21464(auto Mulgore;446):39 #24409(auto Mulgore;504):43 c3218.1:30
+#28090 | auto Mulgore;581§auto Mulgore;581§auto Mulgore;581 | x=-1623.700073242188 y=-1309 | size=1 | links=#5058(auto Mulgore;104):11 #24609(auto Mulgore;508):23
+#28133 | auto Mulgore;582§auto Mulgore;582§auto Mulgore;582 | x=-1409.5 y=-1104.099975585938 | size=1 | links=#22982(auto Mulgore;478):9 #27365(auto Mulgore;564):8
+#28177 | auto Mulgore;583§auto Mulgore;583§auto Mulgore;583 | x=-1636.800048828125 y=-1246.900024414063 | size=1 | links=#12815(auto Mulgore;269):23 #20471(auto Mulgore;426):16
+#28256 | auto Mulgore;584§auto Mulgore;584§auto Mulgore;584 | x=-1953 y=-798.5 | size=1 | links=#2493(auto Mulgore;52):66 #3771(auto Mulgore;71):66 c2959.109:30
+#28312 | auto Mulgore;585§auto Mulgore;585§auto Mulgore;585 | x=-1470.900024414063 y=-1050.099975585938 | size=1 | links=#1855(auto Mulgore;40):25 #6449(auto Mulgore;134):20
+#28315 | auto Mulgore;586§auto Mulgore;586§auto Mulgore;586 | x=-2904.199951171875 y=-211.6000061035156 | size=1 | links=#10061(auto Mulgore;210):10 #11173(auto Mulgore;240):29
+#28342 | auto Mulgore;587§auto Mulgore;587§auto Mulgore;587 | x=-2056.900146484375 y=-274 | size=1 | links=#6912(auto Mulgore;145):40 o2912.17:10
+#28451 | auto Mulgore;588§auto Mulgore;588§auto Mulgore;588 | x=-2459.900146484375 y=201.6999969482422 | size=1 | links=#20854(auto Mulgore;432):26 #27650(auto Mulgore;569):47 c2949.21:20
+#28459 | auto Mulgore;589§auto Mulgore;589§auto Mulgore;589 | x=-1601.800048828125 y=203.1999969482422 | size=5 | links=#16613(auto Mulgore;358):45 #26839(auto Mulgore;551):44 c2956.15:45
+#28468 | auto Mulgore;590§auto Mulgore;590§auto Mulgore;590 | x=-959.1000366210938 y=-92 | size=1 | links=#24445(auto Mulgore;505):15 #27057(auto Mulgore;554):30
+#28477 | auto Mulgore;591§auto Mulgore;591§auto Mulgore;591 | x=-2366.800048828125 y=-898.5 | size=1 | links=#14155(auto Mulgore;300):46 #23044(auto Mulgore;479):37 #27673(auto Mulgore;570):36 c2959.5:49
+#28497 | auto Mulgore;592§auto Mulgore;592§auto Mulgore;592 | x=-2534.699951171875 y=-557 | size=1 | links=#18295(auto Mulgore;384):53 #22178(auto Mulgore;461):84 o2912.2:23
+#28533 | auto Mulgore;593§auto Mulgore;593§auto Mulgore;593 | x=-1212.900024414063 y=-235.1000061035156 | size=5 | links=#18153(auto Mulgore;381):22 #25667(auto Mulgore;525):30
+#28594 | s;h;Mailbox;Mulgore§s;h;Briefkasten;Mulgore§s;h;Boîte aux lettres;Mulgore | x=-2338.19140625 y=-366.7083740234375 | size=1 | links=#15161(auto Mulgore;328):20 #15987(central location;Bloodhoof Village;Mulgore):18
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c2620.1 | links=#10411(auto Mulgore;221):27
+c2947.1 | links=#15246(auto Mulgore;329):12
+c2948.1 | links=#5969(auto Mulgore;117):43
+c2949.1 | links=c2949.3:27 c2950.19:50
+c2950.1 | links=#14602(auto Mulgore;313):25
+c2951.1 | links=#17123(auto Mulgore;369):39
+c2952.1 | links=#16625(auto Mulgore;359):18
+c2953.1 | links=c8554.1:7
+c2954.1 | links=#22379(auto Mulgore;464):16
+c2955.1 | links=#23279(auto Mulgore;482):12
+c2956.1 | links=#8750(auto Mulgore;181):25 c2969.3:69 c2956.5:65 c2958.6:43
+c2957.1 | links=#18615(auto Mulgore;386):65
+c2958.1 | links=c2973.1:90 o2912.9:94 c2958.77:25
+c2960.1 | links=#24678(auto Mulgore;510):63
+c2961.1 | links=c2961.5:11
+c2962.1 | links=c2962.2:29 c2963.13:22
+c2963.1 | links=#24263(auto Mulgore;503):44
+c2964.1 | links=#20445(auto Mulgore;425):57 c2965.24:39
+c2965.1 | links=c2964.3:31
+c2966.1 | links=#11023(auto Mulgore;236):31
+c2967.1 | links=c2968.1:3
+c2968.1 | links=c2967.1:3
+c2970.1 | links=#298(auto Mulgore;5):2
+c2972.1 | links=c2973.3:16 c2974.8:6 c2956.51:15
+c2973.1 | links=#26940(auto Mulgore;552):59 c2958.1:90
+c2974.1 | links=c2957.45:8
+c2975.1 | links=o2910.2:2
+c2976.1 | links=o2910.11:8
+c2977.1 | links=o2910.6:13
+c2978.1 | links=o2910.14:10
+c2979.1 | links=#20969(auto Mulgore;436):9 c2979.36:15 c2979.37:15 c2979.38:17
+c2980.1 | links=#3951(auto Mulgore;77):12 #8722(auto Mulgore;180):9 #23327(spawn location;Camp Narache;Mulgore):5
+c2981.1 | links=#19386(auto Mulgore;404):2
+c2982.1 | links=#16952(auto Mulgore;365):24
+c2984.1 | links=#8334(auto Mulgore;171):17
+c2985.1 | links=#21059(auto Mulgore;438):17
+c2989.1 | links=#13110(centralpoint;Bael'dun Digsite;Mulgore):24 c2990.6:10 c2990.7:20 c2990.9:16
+c2990.1 | links=c2990.6:8 c2990.8:2
+c2991.1 | links=#257(auto Mulgore;4):24 #9645(auto Mulgore;199):19 #10882(auto Mulgore;233):18 o2907.2:12 c2955.65:75
+c2993.1 | links=#5969(auto Mulgore;117):15 #15161(auto Mulgore;328):14 #27676(auto Mulgore;571):16
+c2994.1 | links=#593(centralpoint;Red Rocks;Mulgore):10 #5326(auto Mulgore;107):9
+c3051.1 | links=#16855(auto Mulgore;363):30 c2978.89:11 c2978.90:11
+c3052.1 | links=#15987(central location;Bloodhoof Village;Mulgore):26 c10050.1:4
+c3055.1 | links=#6526(auto Mulgore;137):42 #11197(auto Mulgore;241):40 #25572(auto Mulgore;524):26 c11407.1:59 c6491.2:59
+c3056.1 | links=c2965.2:35 c3035.10:27
+c3058.1 | links=c2971.18:21 c2957.85:10
+c3059.1 | links=#19386(auto Mulgore;404):11
+c3060.1 | links=#16346(auto Mulgore;350):9
+c3061.1 | links=#19386(auto Mulgore;404):13
+c3062.1 | links=#16346(auto Mulgore;350):9
+c3063.1 | links=#6612(auto Mulgore;140):15
+c3064.1 | links=#15246(auto Mulgore;329):8
+c3065.1 | links=#9561(auto Mulgore;196):12
+c3066.1 | links=#15246(auto Mulgore;329):9
+c3067.1 | links=c3069.1:8 c3078.1:12
+c3068.1 | links=c2620.14:69 c3035.15:22 c2970.16:67 c3035.21:68 c3035.25:58 c3035.27:98 c2959.31:67 c3035.33:75 c3035.35:24 c2959.40:76 c2957.43:44 c2959.67:73 c2959.78:32
+c3069.1 | links=#21479(auto Mulgore;447):37 c3067.1:8 c6290.1:3
+c3072.1 | links=#10424(auto Mulgore;222):7
+c3073.1 | links=#10648(auto Mulgore;227):12
+c3074.1 | links=#10648(auto Mulgore;227):7
+c3075.1 | links=#10648(auto Mulgore;227):7
+c3076.1 | links=c3081.1:24 c6290.1:19
+c3077.1 | links=c3078.1:9 c3079.1:8
+c3078.1 | links=c3067.1:12 c3077.1:9
+c3079.1 | links=c3077.1:8 c3080.1:4
+c3080.1 | links=#21479(auto Mulgore;447):13 c3079.1:4
+c3081.1 | links=#21479(auto Mulgore;447):10 c3076.1:24
+c3210.1 | links=#23569(auto Mulgore;491):30
+c3211.1 | links=#23569(auto Mulgore;491):16 c2955.57:74
+c3214.1 | links=#6657(auto Mulgore;142):36 c2955.18:30
+c3215.1 | links=o2912.8:45
+c3217.1 | links=#26518(auto Mulgore;542):34
+c3218.1 | links=#28076(auto Mulgore;580):30
+c3219.1 | links=#26295(auto Mulgore;536):2
+c3220.1 | links=#4944(auto Mulgore;103):52 #9561(auto Mulgore;196):27 #27037(auto Mulgore;553):45
+c3221.1 | links=#1395(auto Mulgore;30):13
+c3229.1 | links=#19254(auto Mulgore;400):7 o3076.1:4
+c3232.1 | links=#17542(auto Mulgore;376):11 c3232.6:18
+c3233.1 | links=#1242(auto Mulgore;26):113 #7357(auto Mulgore;155):38 #21308(auto Mulgore;440):80
+c3685.1 | links=#6526(auto Mulgore;137):20
+c3688.1 | links=#9561(auto Mulgore;196):11
+c3690.1 | links=#6526(auto Mulgore;137):17
+c3883.1 | links=#13048(auto Mulgore;274):13
+c3884.1 | links=#21059(auto Mulgore;438):12
+c5785.1 | links=c2965.45:22 c2965.46:13
+c5786.1 | links=c2949.24:9
+c5787.1 | links=#8641(auto Mulgore;178):2 #21383(auto Mulgore;443):3 c2978.64:12
+c5807.1 | links=c3566.25:72 c3566.44:52 c3566.71:37
+c5888.1 | links=#22851(central location;Camp Narache;Mulgore):14
+c5890.1 | links=o100028.1:28
+c5891.1 | links=o100028.1:11
+c5938.1 | links=#6480(waters;two;Stonebull Lake;Mulgore):40 #10262(auto Mulgore;214):30 o2912.4:35
+c5939.1 | links=#1475(auto Mulgore;32):3
+c5940.1 | links=#9561(auto Mulgore;196):14
+c6290.1 | links=c3069.1:3 c3076.1:19
+c6491.1 | links=#14903(auto Mulgore;322):39
+c6747.1 | links=#1475(auto Mulgore;32):12 o180523.1:6
+c6775.1 | links=#19632(auto Mulgore;406):7
+c6776.1 | links=#1475(auto Mulgore;32):5
+c8554.1 | links=#7166(auto Mulgore;151):21 c2953.1:7 c2952.4:11
+c10050.1 | links=#15987(central location;Bloodhoof Village;Mulgore):28 c3052.1:4
+c10993.1 | links=#18624(auto Mulgore;387):11
+c11407.1 | links=#6526(auto Mulgore;137):40 #15987(central location;Bloodhoof Village;Mulgore):36 c3055.1:59
+c11944.1 | links=#10061(auto Mulgore;210):17
+c15575.1 | links=#27037(auto Mulgore;553):16
+c23618.1 | links=#27037(auto Mulgore;553):9 o186264.1:1
+o2907.1 | links=o2907.2:3
+o2908.1 | links=o3719.3:5 c2977.6:7 c2976.7:14
+o2910.1 | links=#4649(focus point;Wasserbrunnen der Winterhufe;Mulgore):31 c2975.3:3 o2910.8:29 o2910.18:17
+o2912.1 | links=#20577(auto Mulgore;427):17
+o3076.1 | links=c3229.1:4 c2953.5:5
+o100028.1 | links=#27338(auto Mulgore;562):40 c5890.1:28 c5891.1:11 c5890.2:31 c5890.3:21
+o180056.1 | links=c2950.11:7 c2949.13:36
+o180523.1 | links=c6747.1:6
+o186264.1 | links=c23618.1:1
+c2949.2 | links=#15520(auto Mulgore;333):23 c2949.3:28
+c2950.2 | links=c2951.2:18 c2949.7:34
+c2951.2 | links=#14602(auto Mulgore;313):24 c2950.2:18
+c2954.2 | links=#24163(auto Mulgore;499):9
+c2955.2 | links=#6657(auto Mulgore;142):31
+c2956.2 | links=c2620.17:1
+c2961.2 | links=c2961.3:54
+c2962.2 | links=c2962.1:29 c2963.12:33 c2963.14:31
+c2963.2 | links=c2962.6:36 c2962.11:30
+c2964.2 | links=#20154(auto Mulgore;419):36 c2965.45:28 c2964.47:36
+c2965.2 | links=#3802(auto Mulgore;72):26 c3056.1:35 c2964.3:24
+c2967.2 | links=c2968.2:2 c2960.4:43
+c2968.2 | links=c2967.2:2
+c2969.2 | links=c2958.17:42 c2958.92:15
+c2970.2 | links=#12457(auto Mulgore;262):52
+c2972.2 | links=#8661(auto Mulgore;179):21
+c2974.2 | links=#662(auto Mulgore;15):29
+c2976.2 | links=o2910.10:14
+c2978.2 | links=o2910.16:12
+c2989.2 | links=c2989.4:22 c2989.14:13
+c2990.2 | links=#4495(quest target;Blacksmith;Bael'dun Digsite;Mulgore):5 #13101(auto Mulgore;277):7 #25103(auto Mulgore;516):21
+c3232.2 | links=#593(centralpoint;Red Rocks;Mulgore):13 #17542(auto Mulgore;376):15 #25284(auto Mulgore;518):6
+c5786.2 | links=#14602(auto Mulgore;313):21
+c5890.2 | links=o100028.1:31
+c6491.2 | links=c3055.1:59
+o2907.2 | links=c2991.1:12 o2907.1:3
+o2910.2 | links=c2975.1:2 o2910.4:18
+o2912.2 | links=#28497(auto Mulgore;592):23 c2956.21:17
+o113769.2 | links=c2964.41:20
+c2949.3 | links=#14897(auto Mulgore;320):58 c2949.1:27 c2949.2:28
+c2950.3 | links=#14602(auto Mulgore;313):13
+c2951.3 | links=#17123(auto Mulgore;369):45
+c2952.3 | links=#14152(auto Mulgore;299):4 c2953.3:5
+c2953.3 | links=c2952.3:5
+c2955.3 | links=#6337(auto Mulgore;129):33
+c2956.3 | links=#23570(auto Mulgore;492):49 c2959.61:50
+c2958.3 | links=#14451(auto Mulgore;310):37
+c2960.3 | links=#6202(auto Mulgore;122):63
+c2961.3 | links=#13509(auto Mulgore;291):45 c2961.2:54 c2961.4:36
+c2962.3 | links=c2962.4:24 c2963.10:28
+c2963.3 | links=c2963.17:40
+c2964.3 | links=c2965.1:31 c2965.2:24 c2965.13:33 c2965.22:37
+c2965.3 | links=c2964.4:25
+c2967.3 | links=c2968.3:2
+c2968.3 | links=c2967.3:2
+c2969.3 | links=c2956.1:69
+c2972.3 | links=c2972.5:5 c2960.77:3
+c2973.3 | links=#7621(auto Mulgore;158):173 c2972.1:16 c2972.11:10 c2956.46:11 c2958.63:50
+c2975.3 | links=o2910.1:3
+c2976.3 | links=o3719.3:11 c2976.14:18
+c2977.3 | links=o2910.17:10
+c2978.3 | links=o2910.13:1
+c2989.3 | links=c2990.13:19 c2989.20:21
+c2990.3 | links=#21241(auto Mulgore;439):2
+c3232.3 | links=#1214(auto Mulgore;24):13
+c5890.3 | links=o100028.1:21
+c26007.3 | links=c2958.74:33
+o2907.3 | links=#10882(auto Mulgore;233):9
+o2910.3 | links=c2975.5:25 o2910.5:30 c2976.8:9 o2910.8:13 c2975.9:12 c2975.11:21
+o2912.3 | links=#22178(auto Mulgore;461):34
+o3719.3 | links=o2908.1:5 c2976.3:11
+o113771.3 | links=#22938(auto Mulgore;477):9
+c2949.4 | links=#14602(auto Mulgore;313):9
+c2950.4 | links=#23443(auto Mulgore;487):24 c2951.4:9
+c2951.4 | links=c2950.4:9
+c2952.4 | links=c8554.1:11
+c2953.4 | links=#3976(auto Mulgore;79):17
+c2954.4 | links=#24163(auto Mulgore;499):22 c2952.21:10
+c2955.4 | links=#6636(auto Mulgore;141):66
+c2957.4 | links=#3802(auto Mulgore;72):42
+c2959.4 | links=c3035.61:43
+c2960.4 | links=#16414(auto Mulgore;352):37 c2967.2:43
+c2961.4 | links=c2961.3:36
+c2962.4 | links=c2962.3:24 c2963.13:34 c2963.15:40
+c2963.4 | links=c2962.19:39
+c2964.4 | links=c2965.3:25 c2965.4:39 c2964.17:28
+c2965.4 | links=c2964.4:39 c2964.5:36 c2964.6:30
+c2969.4 | links=c2958.7:35
+c2971.4 | links=#18996(auto Mulgore;396):29
+c2972.4 | links=#20123(auto Mulgore;418):21
+c2975.4 | links=o2910.8:4
+c2976.4 | links=#2493(auto Mulgore;52):23 c2977.5:21
+c2977.4 | links=o2910.10:21
+c2989.4 | links=c2989.2:22 c2989.5:13
+c2990.4 | links=#25103(auto Mulgore;516):9
+c3232.4 | links=#17542(auto Mulgore;376):13 c3232.7:17
+o2907.4 | links=#10477(auto Mulgore;223):25
+o2910.4 | links=o2910.2:18 o2910.5:29 c2975.7:5 o2910.18:14
+o2912.4 | links=c5938.1:35
+o3719.4 | links=c2949.23:3
+o113769.4 | links=#18229(auto Mulgore;382):8
+c2620.5 | links=c2963.6:8
+c2949.5 | links=#304(auto Mulgore;6):19
+c2950.5 | links=#26186(auto Mulgore;533):18
+c2951.5 | links=#26199(auto Mulgore;534):22
+c2953.5 | links=o3076.1:5
+c2954.5 | links=#24163(auto Mulgore;499):26
+c2955.5 | links=c2955.43:38 c2955.70:31
+c2956.5 | links=c2956.1:65
+c2957.5 | links=#27519(auto Mulgore;567):37
+c2959.5 | links=#28477(auto Mulgore;591):49
+c2960.5 | links=#611(auto Mulgore;13):53
+c2961.5 | links=#13509(auto Mulgore;291):62 c2961.1:11 c2961.15:21 c2961.19:71 c2961.20:45 c2961.28:103
+c2962.5 | links=#5874(auto Mulgore;116):32
+c2963.5 | links=c2963.6:28
+c2964.5 | links=c2965.4:36 c2965.21:37
+c2965.5 | links=c2964.7:37 c2965.7:40 c2964.8:26 c2964.12:32
+c2969.5 | links=c2958.82:35 c2958.98:41
+c2970.5 | links=c2959.26:56 c2959.50:35 o2912.51:43
+c2972.5 | links=c2972.3:5
+c2974.5 | links=c2974.6:15 c2959.29:21
+c2975.5 | links=o2910.3:25
+c2976.5 | links=#2493(auto Mulgore;52):13
+c2977.5 | links=c2976.4:21 c2976.14:24
+c2978.5 | links=#22766(auto Mulgore;472):2
+c2989.5 | links=c2989.4:13 c2989.7:11 c2990.8:20
+c2990.5 | links=#22473(auto Mulgore;465):7 #26290(auto Mulgore;535):10
+c3035.5 | links=c3035.10:38 c2959.30:45
+c3232.5 | links=#11333(auto Mulgore;247):34
+o2910.5 | links=o2910.3:30 o2910.4:29 c2975.8:11 c2975.10:11
+o2912.5 | links=#23570(auto Mulgore;492):19
+o3719.5 | links=c2990.9:9 c2990.12:15
+o113768.5 | links=#14399(auto Mulgore;308):33
+c2949.6 | links=#17123(auto Mulgore;369):52
+c2951.6 | links=#23443(auto Mulgore;487):25
+c2953.6 | links=c2953.7:22
+c2954.6 | links=#5478(auto Mulgore;110):9
+c2955.6 | links=c2955.7:48 c2955.8:43 c2955.9:66 c2955.11:57
+c2957.6 | links=#6202(auto Mulgore;122):39
+c2958.6 | links=c2956.1:43
+c2960.6 | links=#24583(auto Mulgore;507):27
+c2961.6 | links=#13509(auto Mulgore;291):43 c2961.9:12
+c2962.6 | links=c2963.2:36
+c2963.6 | links=c2620.5:8 c2963.5:28 c2963.9:29 c2962.19:39
+c2964.6 | links=c2965.4:30 c2960.74:37
+c2965.6 | links=c2965.7:23
+c2966.6 | links=c2955.88:58
+c2972.6 | links=#662(auto Mulgore;15):23
+c2974.6 | links=c2974.5:15 c2959.107:56
+c2975.6 | links=o2910.8:15
+c2976.6 | links=#2493(auto Mulgore;52):22 c2976.12:26
+c2977.6 | links=#11492(auto Mulgore;249):7 o2908.1:7
+c2979.6 | links=#5372(auto Mulgore;109):12
+c2989.6 | links=c2990.12:15 c2989.20:12
+c2990.6 | links=c2989.1:10 c2990.1:8
+c3232.6 | links=#27362(auto Mulgore;563):38 c3232.1:18
+o2910.6 | links=c2977.1:13 o2910.7:18 c2976.9:4 o2910.12:32
+c2949.7 | links=#17123(auto Mulgore;369):34 c2950.2:34
+c2951.7 | links=#7237(auto Mulgore;153):18
+c2952.7 | links=#1558(auto Mulgore;33):16
+c2953.7 | links=#6428(auto Mulgore;132):26 c2953.6:22 c2953.8:27
+c2955.7 | links=c2955.6:48
+c2956.7 | links=c2958.19:47 c2958.111:37
+c2957.7 | links=#10673(auto Mulgore;228):29
+c2958.7 | links=c2969.4:35 c2958.8:50 c2958.11:47
+c2960.7 | links=#16582(auto Mulgore;357):58
+c2961.7 | links=#27250(auto Mulgore;560):37 c2961.23:36
+c2962.7 | links=#7108(auto Mulgore;150):43
+c2963.7 | links=c2962.27:34
+c2964.7 | links=c2965.5:37
+c2965.7 | links=c2965.5:40 c2965.6:23 c2964.10:33
+c2969.7 | links=c2958.117:43
+c2972.7 | links=#662(auto Mulgore;15):30
+c2975.7 | links=o2910.4:5
+c2976.7 | links=o2908.1:14
+c2977.7 | links=c2976.12:34 c2976.13:27
+c2989.7 | links=c2989.5:11
+c2990.7 | links=c2989.1:20
+c3232.7 | links=c3232.4:17
+o2910.7 | links=#887(well;Wasserbrunnen der Donnerhörner;Mulgore):16 #10800(focus point;Wasserbrunnen der Donnerhörner;Mulgore):30 o2910.6:18 o2910.9:12 c2976.11:5 o2910.17:21
+o2912.7 | links=#2623(auto Mulgore;56):13
+c2620.8 | links=#22804(auto Mulgore;474):26
+c2949.8 | links=#18229(auto Mulgore;382):11
+c2952.8 | links=#24163(auto Mulgore;499):10
+c2953.8 | links=c2953.7:27 c2952.36:41
+c2955.8 | links=#2620(auto Mulgore;55):79 c2955.6:43 c2955.10:34
+c2957.8 | links=#22183(auto Mulgore;462):26
+c2958.8 | links=c2958.7:50
+c2959.8 | links=#1258(auto Mulgore;28):59 c2959.21:52
+c2960.8 | links=c3035.87:82
+c2961.8 | links=#27250(auto Mulgore;560):49 c2961.12:42
+c2962.8 | links=#24263(auto Mulgore;503):43
+c2963.8 | links=c2962.14:37 c2962.16:35 c2962.19:37
+c2964.8 | links=c2965.5:26 c2965.8:29 c2965.21:39
+c2965.8 | links=c2964.8:29 c2964.20:35
+c2974.8 | links=c2972.1:6
+c2975.8 | links=o2910.5:11
+c2976.8 | links=o2910.3:9
+c2979.8 | links=#9659(auto Mulgore;200):8 #23523(auto Mulgore;490):11
+c2989.8 | links=#14678(auto Mulgore;315):23 c2989.11:26
+c2990.8 | links=c2990.1:2 c2989.5:20
+c3232.8 | links=#27362(auto Mulgore;563):39
+o2910.8 | links=#6500(well;Wasserbrunnen der Winterhufe;Mulgore):8 o2910.1:29 o2910.3:13 c2975.4:4 c2975.6:15
+o2912.8 | links=#40(auto Mulgore;2):28 c3215.1:45
+c2949.9 | links=#3880(auto Mulgore;73):31
+c2953.9 | links=c2953.10:11
+c2954.9 | links=#10816(auto Mulgore;231):14 c2952.40:38
+c2955.9 | links=#17152(auto Mulgore;370):53 c2955.6:66
+c2956.9 | links=c2959.15:35
+c2957.9 | links=#20014(auto Mulgore;416):50 c2957.10:61 c3035.63:65 c2959.90:65
+c2958.9 | links=#21459(auto Mulgore;445):45
+c2961.9 | links=#995(auto Mulgore;21):24 c2961.6:12
+c2962.9 | links=#7108(auto Mulgore;150):33 c2962.12:40
+c2963.9 | links=c2963.6:29 c2962.26:39 c2962.27:32
+c2964.9 | links=c2964.10:27 c2965.10:32 c2965.16:37 c2964.23:50
+c2965.9 | links=c2964.10:32 c2964.11:28
+c2969.9 | links=#21459(auto Mulgore;445):58 #21805(auto Mulgore;452):32
+c2970.9 | links=#26719(auto Mulgore;548):23
+c2975.9 | links=o2910.3:12
+c2976.9 | links=o2910.6:4
+c2989.9 | links=#23479(auto Mulgore;489):43 c2989.11:26
+c2990.9 | links=c2989.1:16 o3719.5:9
+c3232.9 | links=#19700(auto Mulgore;408):11
+c3566.9 | links=#20154(auto Mulgore;419):8
+o2910.9 | links=o2910.7:12
+o2912.9 | links=c2958.1:94 c2958.57:21
+c2949.10 | links=c2949.11:9 c2949.22:24
+c2952.10 | links=#16625(auto Mulgore;359):5
+c2953.10 | links=c2953.9:11 c2954.13:12
+c2954.10 | links=#27115(auto Mulgore;555):11
+c2955.10 | links=c2955.8:34
+c2956.10 | links=#14899(auto Mulgore;321):44 c2958.19:41
+c2957.10 | links=c2957.9:61
+c2958.10 | links=c2958.15:44
+c2961.10 | links=c2961.11:42
+c2962.10 | links=c2962.12:11
+c2963.10 | links=c2962.3:28 c2962.22:37
+c2964.10 | links=c2965.7:33 c2964.9:27 c2965.9:32 c2964.13:36 c2964.14:52 c2964.16:41
+c2965.10 | links=c2964.9:32 c2965.11:23 c2965.12:39
+c2969.10 | links=c2958.48:22 c2958.57:15
+c2975.10 | links=o2910.5:11
+c2989.10 | links=#14678(auto Mulgore;315):33 c2989.19:23
+c2990.10 | links=#14678(auto Mulgore;315):28
+c3035.10 | links=c3056.1:27 c3035.5:38
+c3232.10 | links=#19700(auto Mulgore;408):10
+c3566.10 | links=#7979(auto Mulgore;164):12
+o2910.10 | links=c2976.2:14 c2977.4:21 o2910.11:46 c2620.17:17 o2910.17:18
+o2912.10 | links=#662(auto Mulgore;15):19
+c2949.11 | links=#27650(auto Mulgore;569):31 c2949.10:9
+c2950.11 | links=o180056.1:7
+c2952.11 | links=#2555(auto Mulgore;53):16
+c2953.11 | links=c2952.35:16
+c2955.11 | links=c2955.6:57
+c2958.11 | links=#18295(auto Mulgore;384):24 c2958.7:47
+c2961.11 | links=c2961.10:42 c2961.52:33
+c2962.11 | links=#7108(auto Mulgore;150):22 c2963.2:30
+c2963.11 | links=c2963.12:20
+c2964.11 | links=c2965.9:28
+c2965.11 | links=c2965.10:23
+c2966.11 | links=c2966.31:31
+c2972.11 | links=c2973.3:10
+c2975.11 | links=o2910.3:21
+c2976.11 | links=o2910.7:5
+c2989.11 | links=c2989.8:26 c2989.9:26
+c2990.11 | links=#14678(auto Mulgore;315):26
+c3232.11 | links=#21905(auto Mulgore;456):9
+o2910.11 | links=c2976.1:8 o2910.10:46 o2910.12:15
+o2912.11 | links=#26060(auto Mulgore;530):45
+c2620.12 | links=c2957.48:3
+c2953.12 | links=#19925(auto Mulgore;412):11
+c2955.12 | links=c2955.14:42 c2955.69:23
+c2956.12 | links=#12942(auto Mulgore;271):40
+c2958.12 | links=#10875(auto Mulgore;232):43
+c2961.12 | links=c2961.8:42 c2961.52:37 c2961.62:60
+c2962.12 | links=c2962.9:40 c2962.10:11 c2962.13:37
+c2963.12 | links=c2962.2:33 c2963.11:20 c2962.24:28
+c2964.12 | links=c2965.5:32
+c2965.12 | links=c2965.10:39 c2964.15:23
+c2971.12 | links=c3035.87:103
+c2976.12 | links=c2976.6:26 c2977.7:34
+c2978.12 | links=#5372(auto Mulgore;109):15
+c2989.12 | links=#17441(auto Mulgore;375):4 c2989.13:18
+c2990.12 | links=#13110(centralpoint;Bael'dun Digsite;Mulgore):27 o3719.5:15 c2989.6:15 c2989.21:18
+c3035.12 | links=#8468(auto Mulgore;173):34
+c3232.12 | links=#4768(auto Mulgore;99):13 #10581(auto Mulgore;225):6
+o2910.12 | links=o2910.6:32 o2910.11:15 c2956.28:31
+o2912.12 | links=c2956.41:28
+c2949.13 | links=#3887(auto Mulgore;74):26 #27650(auto Mulgore;569):40 o180056.1:36 c2949.19:20
+c2953.13 | links=#19382(auto Mulgore;403):13
+c2954.13 | links=#8330(auto Mulgore;170):16 c2953.10:12
+c2955.13 | links=c2955.70:8
+c2956.13 | links=c2958.81:49
+c2957.13 | links=#7979(auto Mulgore;164):26
+c2958.13 | links=c2958.117:39
+c2959.13 | links=#12457(auto Mulgore;262):59
+c2960.13 | links=c2960.90:15
+c2961.13 | links=c2961.52:30
+c2962.13 | links=c2962.12:37 c2963.16:34
+c2963.13 | links=c2962.1:22 c2962.4:34 c2962.25:32
+c2964.13 | links=c2964.10:36
+c2965.13 | links=c2964.3:33
+c2970.13 | links=#874(auto Mulgore;19):40
+c2976.13 | links=c2977.7:27 c2976.14:22
+c2978.13 | links=#25085(auto Mulgore;515):5
+c2989.13 | links=c2989.12:18
+c2990.13 | links=c2989.3:19 c2989.20:22
+c3035.13 | links=#15564(auto Mulgore;335):45
+c3232.13 | links=#21905(auto Mulgore;456):10
+o2910.13 | links=c2978.3:1 o2910.14:32 o2910.16:22
+o2912.13 | links=#651(auto Mulgore;14):24
+c2620.14 | links=c3068.1:69
+c2952.14 | links=#4223(auto Mulgore;83):5
+c2953.14 | links=#20879(auto Mulgore;434):8
+c2954.14 | links=c2952.39:5
+c2955.14 | links=c2955.12:42
+c2956.14 | links=#18615(auto Mulgore;386):36 c2959.15:39
+c2961.14 | links=#13509(auto Mulgore;291):65 c2961.18:16
+c2962.14 | links=c2963.8:37 c2962.17:38
+c2963.14 | links=c2962.2:31
+c2964.14 | links=c2964.10:52
+c2965.14 | links=#3802(auto Mulgore;72):46 #11272(auto Mulgore;244):47 c2965.15:46
+c2966.14 | links=c2620.20:64 c2966.34:48
+c2970.14 | links=#20594(auto Mulgore;428):21 c2959.87:3
+c2976.14 | links=c2976.3:18 c2977.5:24 c2976.13:22
+c2978.14 | links=#25085(auto Mulgore;515):5
+c2979.14 | links=#3988(auto Mulgore;80):2
+c2989.14 | links=#4495(quest target;Blacksmith;Bael'dun Digsite;Mulgore):12 c2989.2:13
+c3232.14 | links=#20694(auto Mulgore;429):22
+o2910.14 | links=c2978.1:10 o2910.13:32 o2910.15:19
+c2956.15 | links=#28459(auto Mulgore;589):45
+c2958.15 | links=#14899(auto Mulgore;321):106 c2958.10:44
+c2959.15 | links=c2956.9:35 c2956.14:39
+c2961.15 | links=c2961.5:21
+c2962.15 | links=c2962.19:30
+c2963.15 | links=#5874(auto Mulgore;116):33 c2962.4:40
+c2964.15 | links=c2965.12:23
+c2965.15 | links=c2965.14:46
+c2966.15 | links=#10098(auto Mulgore;213):20
+c2969.15 | links=c2958.63:15
+c2989.15 | links=#11905(auto Mulgore;254):6 #21241(auto Mulgore;439):6
+c3035.15 | links=c3068.1:22
+c3232.15 | links=#4768(auto Mulgore;99):11 #19700(auto Mulgore;408):25
+o2910.15 | links=o2910.14:19 o2910.16:24 c2979.42:11 c2978.67:9
+o2912.15 | links=#22009(auto Mulgore;459):12
+c2620.16 | links=#6912(auto Mulgore;145):7
+c2955.16 | links=#14234(auto Mulgore;304):44
+c2958.16 | links=#18363(auto Mulgore;385):33
+c2959.16 | links=#15564(auto Mulgore;335):38
+c2961.16 | links=c2961.35:87
+c2962.16 | links=c2963.8:35
+c2963.16 | links=c2962.13:34
+c2964.16 | links=c2964.10:41
+c2965.16 | links=c2964.9:37
+c2966.16 | links=#12372(auto Mulgore;260):21
+c2969.16 | links=o2912.33:11
+c2970.16 | links=c3068.1:67
+c2989.16 | links=#4848(auto Mulgore;101):5
+c3035.16 | links=#1287(auto Mulgore;29):44 c3035.23:45
+c3232.16 | links=#12268(auto Mulgore;258):25
+o2910.16 | links=#8881(well;Wasserbrunnen der Wildmähnen;Mulgore):7 #16905(focus point;Wasserbrunnen der Wildmähnen;Mulgore):23 c2978.2:12 o2910.13:22 o2910.15:24 c2960.42:11 c2979.43:12 c2978.68:17
+o2912.16 | links=#9453(auto Mulgore;192):21
+c2620.17 | links=c2956.2:1 o2910.10:17
+c2950.17 | links=c2949.21:29
+c2955.17 | links=c2955.66:52
+c2957.17 | links=#3771(auto Mulgore;71):50
+c2958.17 | links=c2969.2:42 c2958.98:23
+c2961.17 | links=c2961.31:36
+c2962.17 | links=c2962.14:38
+c2963.17 | links=#2212(Mazzranache;Mulgore):32 c2963.3:40 c2962.20:34
+c2964.17 | links=c2964.4:28 c2965.22:33
+c2965.17 | links=c2964.18:30 c2964.24:38
+c2966.17 | links=#6954(auto Mulgore;146):34
+c2969.17 | links=c2958.25:45 c2958.112:36
+c3232.17 | links=#27362(auto Mulgore;563):39
+o2910.17 | links=#887(well;Wasserbrunnen der Donnerhörner;Mulgore):14 #10800(focus point;Wasserbrunnen der Donnerhörner;Mulgore):30 c2977.3:10 o2910.7:21 o2910.10:18
+o2912.17 | links=#28342(auto Mulgore;587):10
+c2620.18 | links=#13241(crossing;Mulgore):17
+c2950.18 | links=c2949.24:10
+c2955.18 | links=c3214.1:30
+c2956.18 | links=#21459(auto Mulgore;445):43
+c2957.18 | links=#10673(auto Mulgore;228):36
+c2958.18 | links=#14451(auto Mulgore;310):26
+c2961.18 | links=c2961.14:16
+c2962.18 | links=c2962.19:32
+c2963.18 | links=c2962.25:27
+c2964.18 | links=c2965.17:30 c2965.19:36 c2965.21:34 c2964.22:47
+c2966.18 | links=c2966.21:44 c2966.23:60
+c2971.18 | links=c3058.1:21
+c2989.18 | links=#26290(auto Mulgore;535):22
+c3035.18 | links=#12457(auto Mulgore;262):56
+c3232.18 | links=#6488(auto Mulgore;135):8
+o2910.18 | links=o2910.1:17 o2910.4:14
+o2912.18 | links=#5837(auto Mulgore;113):45
+c2620.19 | links=c2978.71:31 c2978.72:48
+c2949.19 | links=c2949.13:20
+c2950.19 | links=c2949.1:50 c2950.22:34
+c2955.19 | links=#10882(auto Mulgore;233):14
+c2958.19 | links=c2956.7:47 c2956.10:41 c2958.117:31
+c2959.19 | links=c2959.77:44
+c2961.19 | links=c2961.5:71
+c2962.19 | links=c2963.4:39 c2963.6:39 c2963.8:37 c2962.15:30 c2962.18:32 c2962.21:34
+c2964.19 | links=c2965.20:39 c2965.21:30
+c2965.19 | links=c2964.18:36
+c2966.19 | links=c2966.22:16
+c2970.19 | links=c2959.89:25 c2959.118:7
+c2989.19 | links=c2989.10:23
+c3035.19 | links=#17348(auto Mulgore;374):49 o2912.30:18
+c3232.19 | links=#19854(auto Mulgore;411):6
+o2912.19 | links=#24774(auto Mulgore;512):26
+c2620.20 | links=c2966.14:64 c2955.23:31
+c2950.20 | links=c2949.24:12
+c2955.20 | links=#6636(auto Mulgore;141):29
+c2961.20 | links=c2961.5:45
+c2962.20 | links=c2963.17:34
+c2964.20 | links=c2965.8:35
+c2965.20 | links=c2964.19:39 c2964.40:32
+c2966.20 | links=#11023(auto Mulgore;236):14
+c2989.20 | links=c2989.3:21 c2989.6:12 c2990.13:22
+c3035.20 | links=#26719(auto Mulgore;548):35
+c3232.20 | links=#4768(auto Mulgore;99):15
+c3566.20 | links=c2964.26:53 c2957.94:41
+c2620.21 | links=c2961.36:10
+c2949.21 | links=#28451(auto Mulgore;588):20 c2950.17:29
+c2950.21 | links=#15520(auto Mulgore;333):19 c2949.24:26 c2949.25:33
+c2952.21 | links=c2954.4:10
+c2956.21 | links=o2912.2:17
+c2958.21 | links=#9619(auto Mulgore;198):54 c2956.83:28 c2958.108:30
+c2959.21 | links=c2959.8:52
+c2960.21 | links=#16582(auto Mulgore;357):89
+c2962.21 | links=c2962.19:34
+c2965.21 | links=c2964.5:37 c2964.8:39 c2964.18:34 c2964.19:30
+c2966.21 | links=#11023(auto Mulgore;236):35 c2966.18:44
+c2989.21 | links=c2990.12:18
+c3035.21 | links=c3068.1:68
+c3232.21 | links=#16122(auto Mulgore;346):30
+c3566.21 | links=#3434(auto Mulgore;65):22 c2957.70:37
+o2912.21 | links=#15336(auto Mulgore;330):11
+c2949.22 | links=c2949.10:24
+c2950.22 | links=c2950.19:34 c2949.23:34 c2950.23:48
+c2952.22 | links=#24182(auto Mulgore;500):9
+c2955.22 | links=c2955.80:21
+c2957.22 | links=#23292(auto Mulgore;483):36
+c2958.22 | links=#28071(auto Mulgore;578):30
+c2960.22 | links=#16414(auto Mulgore;352):30 c2960.58:29
+c2962.22 | links=c2963.10:37
+c2964.22 | links=c2964.18:47
+c2965.22 | links=c2964.3:37 c2964.17:33
+c2966.22 | links=#6954(auto Mulgore;146):38 c2966.19:16
+c2970.22 | links=c2959.34:51
+c3035.22 | links=#27436(auto Mulgore;565):38 c2959.65:59
+c3232.22 | links=#19580(auto Mulgore;405):16
+c3566.22 | links=#18996(auto Mulgore;396):45
+c2949.23 | links=o3719.4:3 c2950.22:34
+c2950.23 | links=c2950.22:48 c2949.25:31
+c2952.23 | links=#24182(auto Mulgore;500):10
+c2955.23 | links=#9183(auto Mulgore;189):41 #10098(auto Mulgore;213):46 c2620.20:31 c2955.24:36 c2966.25:41
+c2956.23 | links=#4540(auto Mulgore;90):59 c2956.40:34 c2958.51:39
+c2961.23 | links=c2961.7:36
+c2962.23 | links=#5874(auto Mulgore;116):58
+c2964.23 | links=c2964.9:50
+c2965.23 | links=c2965.31:28
+c2966.23 | links=#15966(auto Mulgore;339):88 c2966.18:60 c2966.28:25
+c2979.23 | links=#22811(auto Mulgore;475):18 c2979.24:5 c2978.34:12
+c3035.23 | links=c3035.16:45
+c3232.23 | links=#13349(auto Mulgore;286):25 #19580(auto Mulgore;405):12
+c2620.24 | links=#340(auto Mulgore;8):15
+c2949.24 | links=c5786.1:9 c2950.18:10 c2950.20:12 c2950.21:26
+c2952.24 | links=#19925(auto Mulgore;412):29 #24163(auto Mulgore;499):38 c2952.37:25
+c2955.24 | links=c2955.23:36 c2955.65:42
+c2956.24 | links=#26060(auto Mulgore;530):23
+c2957.24 | links=c2959.60:22
+c2959.24 | links=#18615(auto Mulgore;386):70
+c2960.24 | links=#611(auto Mulgore;13):20
+c2961.24 | links=c2961.43:3
+c2962.24 | links=c2963.12:28
+c2964.24 | links=c2965.17:38
+c2965.24 | links=c2964.1:39
+c2970.24 | links=#2212(Mazzranache;Mulgore):30
+c2979.24 | links=c2979.23:5
+c3232.24 | links=#593(centralpoint;Red Rocks;Mulgore):21 c3232.25:12
+o2912.24 | links=#15057(auto Mulgore;325):40
+c2949.25 | links=c2950.21:33 c2950.23:31
+c2952.25 | links=#22249(auto Mulgore;463):14
+c2955.25 | links=c2955.26:26 c2955.65:49
+c2958.25 | links=#11218(auto Mulgore;243):50 c2969.17:45 c2956.83:36 c2958.115:59
+c2959.25 | links=#871(auto Mulgore;18):60
+c2960.25 | links=#611(auto Mulgore;13):24
+c2961.25 | links=#21357(auto Mulgore;441):36
+c2962.25 | links=c2963.13:32 c2963.18:27
+c2964.25 | links=c2964.27:41 c2964.28:28
+c2965.25 | links=c2964.26:36 c2964.28:27
+c2966.25 | links=c2955.23:41
+c2970.25 | links=#13280(auto Mulgore;282):65
+c2979.25 | links=#13432(auto Mulgore;290):10 c2979.27:9
+c3035.25 | links=c3068.1:58
+c3232.25 | links=c3232.24:12
+c3566.25 | links=#838(auto Mulgore;17):66 c5807.1:72
+c2620.26 | links=c2956.35:21 c2956.86:29
+c2952.26 | links=#10816(auto Mulgore;231):13
+c2955.26 | links=#6636(auto Mulgore;141):89 c2955.25:26
+c2958.26 | links=#4803(auto Mulgore;100):30
+c2959.26 | links=c2970.5:56
+c2960.26 | links=#24583(auto Mulgore;507):57
+c2961.26 | links=#21357(auto Mulgore;441):27
+c2962.26 | links=c2963.9:39
+c2964.26 | links=c3566.20:53 c2965.25:36
+c2965.26 | links=c2964.27:29 c2965.30:40
+c2966.26 | links=c2966.28:29 c2966.42:40
+c2979.26 | links=c2978.40:10
+c3232.26 | links=#14433(auto Mulgore;309):33
+c3566.26 | links=#21308(auto Mulgore;440):25
+c2620.27 | links=#11305(auto Mulgore;245):20
+c2952.27 | links=#1558(auto Mulgore;33):4
+c2955.27 | links=#23279(auto Mulgore;482):71 c2955.50:54 c2955.52:11
+c2960.27 | links=#17714(auto Mulgore;378):37
+c2961.27 | links=c2961.28:39 c2961.50:39
+c2962.27 | links=#2212(Mazzranache;Mulgore):26 c2963.7:34 c2963.9:32 c3035.66:19
+c2964.27 | links=c2964.25:41 c2965.26:29
+c2965.27 | links=c2965.28:22
+c2966.27 | links=#15966(auto Mulgore;339):38
+c2979.27 | links=c2979.25:9 c2978.41:10
+c3035.27 | links=c3068.1:98
+c3232.27 | links=#13349(auto Mulgore;286):13
+o2912.27 | links=c2959.75:37 c2959.76:37
+c2620.28 | links=#26725(auto Mulgore;549):64
+c2955.28 | links=#257(auto Mulgore;4):21
+c2956.28 | links=o2910.12:31
+c2961.28 | links=c2961.5:103 c2961.27:39
+c2964.28 | links=c2964.25:28 c2965.25:27
+c2965.28 | links=c2965.27:22 c2965.29:40
+c2966.28 | links=c2966.23:25 c2966.26:29 c2620.29:36 c2966.29:67 c2966.39:50 c2966.40:82
+c2978.28 | links=#12559(auto Mulgore;265):5
+c2979.28 | links=#1158(entry and exit;The Venture Co. Mine;Mulgore):11 c2979.30:10
+c3232.28 | links=#16122(auto Mulgore;346):35
+o2912.28 | links=#684(auto Mulgore;16):56 #17348(auto Mulgore;374):57
+c2620.29 | links=c2966.28:36
+c2955.29 | links=#9645(auto Mulgore;199):11
+c2957.29 | links=#8408(auto Mulgore;172):24
+c2958.29 | links=#12942(auto Mulgore;271):61
+c2959.29 | links=c2974.5:21
+c2961.29 | links=c2961.35:30
+c2964.29 | links=c2965.29:23
+c2965.29 | links=#13415(auto Mulgore;287):57 c2965.28:40 c2964.29:23
+c2966.29 | links=c2966.28:67
+c2979.29 | links=#1158(entry and exit;The Venture Co. Mine;Mulgore):8 #19832(auto Mulgore;410):11 c2978.42:22 c2978.43:16
+o2912.29 | links=#2704(auto Mulgore;58):17
+c2955.30 | links=#10477(auto Mulgore;223):42 c2955.68:23
+c2956.30 | links=#13844(auto Mulgore;295):66
+c2958.30 | links=#27436(auto Mulgore;565):61
+c2959.30 | links=#11272(auto Mulgore;244):56 c3035.5:45
+c2961.30 | links=c2961.48:29 c2961.50:41
+c2964.30 | links=#13415(auto Mulgore;287):28
+c2965.30 | links=c2965.26:40
+c2966.30 | links=c2966.31:52
+c2978.30 | links=#3066(auto Mulgore;61):8
+c2979.30 | links=c2979.28:10 c2978.40:16
+o2912.30 | links=c3035.19:18
+c2955.31 | links=#16506(auto Mulgore;355):44
+c2956.31 | links=#26839(auto Mulgore;551):14
+c2958.31 | links=#18295(auto Mulgore;384):17
+c2959.31 | links=c3068.1:67
+c2961.31 | links=c2961.17:36 c2961.50:40
+c2964.31 | links=#13415(auto Mulgore;287):37
+c2965.31 | links=c2965.23:28 c2964.32:32
+c2966.31 | links=c2966.11:31 c2966.30:52 c2966.33:42
+c2979.31 | links=c2978.54:15
+c2956.32 | links=#18702(auto Mulgore;389):39
+c2958.32 | links=c2958.38:102
+c2959.32 | links=#23044(auto Mulgore;479):54
+c2964.32 | links=c2965.31:32 c2965.32:27
+c2965.32 | links=c2964.32:27 c2964.33:39
+c2966.32 | links=c2966.33:50
+c2978.32 | links=#22667(auto Mulgore;470):9
+c2979.32 | links=c2978.53:9
+c2955.33 | links=#16506(auto Mulgore;355):38 c2955.80:41
+c2961.33 | links=c2961.34:39
+c2964.33 | links=#20445(auto Mulgore;425):36 c2965.32:39
+c2966.33 | links=c2966.31:42 c2966.32:50 c2966.34:63 c2966.35:30
+c2970.33 | links=c3035.87:75
+c2978.33 | links=#1629(auto Mulgore;34):6
+c2979.33 | links=#16855(auto Mulgore;363):24 c2978.86:15 c2978.87:28 c2978.88:19
+c3035.33 | links=c3068.1:75
+o2912.33 | links=#10071(auto Mulgore;212):14 c2969.16:11
+c2952.34 | links=#11124(auto Mulgore;239):33 c2952.35:11
+c2955.34 | links=#14662(auto Mulgore;314):15
+c2958.34 | links=#22178(auto Mulgore;461):65
+c2959.34 | links=#298(auto Mulgore;5):46 c2970.22:51 c2959.35:54
+c2961.34 | links=c2961.33:39 c2961.36:35
+c2965.34 | links=c2964.36:13
+c2966.34 | links=c2966.14:48 c2966.33:63 c2966.37:58
+c2970.34 | links=c2959.110:16
+c2978.34 | links=c2979.23:12
+c2979.34 | links=#14349(auto Mulgore;307):14
+c2952.35 | links=c2953.11:16 c2952.34:11
+c2955.35 | links=#12372(auto Mulgore;260):31
+c2956.35 | links=#11218(auto Mulgore;243):34 #24161(auto Mulgore;498):28 c2620.26:21
+c2957.35 | links=#871(auto Mulgore;18):45
+c2958.35 | links=c2958.48:45 c2956.57:21
+c2959.35 | links=c2959.34:54
+c2961.35 | links=c2961.16:87 c2961.29:30 c2961.46:40 c2961.48:51
+c2964.35 | links=c2965.36:39 c2965.37:37
+c2965.35 | links=#16115(auto Mulgore;345):34
+c2966.35 | links=c2966.33:30
+c2979.35 | links=c2979.36:14
+c3035.35 | links=c3068.1:24 c2959.126:64
+o2912.35 | links=c2978.70:53
+c2952.36 | links=c2953.8:41 c2952.42:40
+c2955.36 | links=c2955.96:39
+c2958.36 | links=#10478(auto Mulgore;224):54
+c2959.36 | links=#6351(auto Mulgore;130):31
+c2961.36 | links=c2620.21:10 c2961.34:35 c2961.45:66 c2961.47:37
+c2964.36 | links=c2965.34:13 c2965.36:35 c2964.43:33
+c2965.36 | links=c2964.35:39 c2964.36:35
+c2978.36 | links=#13174(auto Mulgore;278):5
+c2979.36 | links=#6216(auto Mulgore;123):16 c2979.1:15 c2979.35:14
+c2952.37 | links=#27291(auto Mulgore;561):27 c2952.24:25
+c2958.37 | links=#10478(auto Mulgore;224):12
+c2964.37 | links=c2965.38:36
+c2965.37 | links=c2964.35:37
+c2966.37 | links=c2966.34:58 c2955.63:22 c2955.72:10
+c2979.37 | links=c2979.1:15
+o2912.37 | links=#8631(auto Mulgore;177):15
+c2952.38 | links=#10291(auto Mulgore;216):39 #11124(auto Mulgore;239):34
+c2955.38 | links=c2955.39:51 c2955.95:69
+c2958.38 | links=c2958.32:102 c2959.65:37
+c2959.38 | links=#14155(auto Mulgore;300):37 #17667(auto Mulgore;377):30 #20594(auto Mulgore;428):59
+c2961.38 | links=c2961.39:14
+c2964.38 | links=c2964.39:39 c2965.41:34 c2965.42:34
+c2965.38 | links=c2964.37:36 c2957.81:26
+c2978.38 | links=c2978.41:18
+c2979.38 | links=c2979.1:17
+c3566.38 | links=#24678(auto Mulgore;510):78
+o2912.38 | links=#27175(auto Mulgore;557):16
+c2952.39 | links=#5252(auto Mulgore;106):22 #10318(auto Mulgore;218):7 c2954.14:5
+c2955.39 | links=c2955.38:51 c2955.97:56
+c2958.39 | links=#22178(auto Mulgore;461):33
+c2961.39 | links=c2961.38:14 c2961.41:27
+c2964.39 | links=c2964.38:39 c2965.39:32 c2965.40:35
+c2965.39 | links=c2964.39:32
+c2966.39 | links=c2966.28:50
+c3566.39 | links=#14894(auto Mulgore;319):22
+o2912.39 | links=#1865(auto Mulgore;41):30
+c2952.40 | links=c2954.9:38 c2952.43:11
+c2955.40 | links=c2955.97:61
+c2956.40 | links=c2956.23:34
+c2957.40 | links=#7357(auto Mulgore;155):34
+c2958.40 | links=#22664(auto Mulgore;468):31 #28071(auto Mulgore;578):61
+c2959.40 | links=c3068.1:76
+c2961.40 | links=c2961.41:43 c2961.44:57
+c2964.40 | links=c2965.20:32
+c2965.40 | links=c2964.39:35
+c2966.40 | links=c2966.28:82
+c2978.40 | links=c2979.26:10 c2979.30:16 c2978.41:17
+c2979.40 | links=#8641(auto Mulgore;178):21
+c3035.40 | links=#662(auto Mulgore;15):12
+c2952.41 | links=#6428(auto Mulgore;132):12 #25000(auto Mulgore;514):22
+c2955.41 | links=#27250(auto Mulgore;560):4
+c2956.41 | links=o2912.12:28 c2958.87:27
+c2958.41 | links=#28071(auto Mulgore;578):40
+c2961.41 | links=c2961.39:27 c2961.40:43 c2961.59:77
+c2964.41 | links=o113769.2:20 c2964.43:32 c3566.49:8
+c2965.41 | links=c2964.38:34 c2964.42:33
+c2978.41 | links=c2979.27:10 c2978.38:18 c2978.40:17
+c2979.41 | links=#21383(auto Mulgore;443):20
+c2952.42 | links=#10291(auto Mulgore;216):39 c2952.36:40 c2952.43:45
+c2955.42 | links=c2955.86:34
+c2958.42 | links=#5837(auto Mulgore;113):117 c2958.82:36
+c2960.42 | links=o2910.16:11
+c2961.42 | links=c2961.45:57
+c2964.42 | links=c2965.41:33 c2957.81:28
+c2965.42 | links=c2964.38:34
+c2966.42 | links=c2966.26:40 c2961.56:39
+c2978.42 | links=c2979.29:22
+c2979.42 | links=o2910.15:11
+c3035.42 | links=c3035.87:82
+c2952.43 | links=c2952.40:11 c2952.42:45
+c2955.43 | links=#13080(auto Mulgore;276):75 c2955.5:38
+c2956.43 | links=#26008(auto Mulgore;529):89
+c2957.43 | links=c3068.1:44
+c2961.43 | links=c2961.24:3 c2961.45:55
+c2964.43 | links=c2964.36:33 c2964.41:32
+c2965.43 | links=c2964.44:32
+c2978.43 | links=c2979.29:16
+c2979.43 | links=o2910.16:12
+c3035.43 | links=c3035.72:51 c2959.110:51
+c3566.43 | links=#20830(auto Mulgore;431):22 c3566.65:6
+c2955.44 | links=#6636(auto Mulgore;141):33
+c2961.44 | links=c2961.40:57 c2961.45:60
+c2964.44 | links=c2965.43:32 c2965.46:37
+c2965.44 | links=c2964.45:41 c2964.46:30
+c2978.44 | links=#21806(auto Mulgore;453):15
+c2979.44 | links=#16855(auto Mulgore;363):21
+c3035.44 | links=c2959.88:27 c2959.89:19
+c3566.44 | links=c5807.1:52
+c2955.45 | links=#10477(auto Mulgore;223):78
+c2956.45 | links=#10806(auto Mulgore;230):20
+c2957.45 | links=#8661(auto Mulgore;179):11 c2974.1:8
+c2959.45 | links=c2959.51:37
+c2961.45 | links=c2961.36:66 c2961.42:57 c2961.43:55 c2961.44:60
+c2964.45 | links=c2965.44:41 c2965.45:29
+c2965.45 | links=c5785.1:22 c2964.2:28 c2964.45:29
+c2978.45 | links=#21806(auto Mulgore;453):29
+c2979.45 | links=#16855(auto Mulgore;363):22
+c2955.46 | links=c2955.48:60 c2955.67:13
+c2956.46 | links=c2973.3:11
+c2958.46 | links=#9748(auto Mulgore;203):3
+c2961.46 | links=c2961.35:40
+c2964.46 | links=c2965.44:30
+c2965.46 | links=c5785.1:13 c2964.44:37 c2964.47:32
+c2978.46 | links=#21806(auto Mulgore;453):14
+c2955.47 | links=c2955.48:38
+c2961.47 | links=c2961.36:37 c2961.48:19
+c2964.47 | links=c2964.2:36 c2965.46:32
+c2978.47 | links=c2978.50:18 c2978.51:11
+c2955.48 | links=c2955.46:60 c2955.47:38 c2955.49:40
+c2957.48 | links=c2620.12:3 c3035.87:35
+c2958.48 | links=c2969.10:22 c2958.35:45
+c2961.48 | links=c2961.30:29 c2961.35:51 c2961.47:19
+c2978.48 | links=c2978.50:15
+c2979.48 | links=#16855(auto Mulgore;363):26 c2978.91:14
+c2955.49 | links=c2955.48:40 c2955.55:40
+c2959.49 | links=#874(auto Mulgore;19):24
+c2961.49 | links=c2961.50:32
+c2978.49 | links=#21806(auto Mulgore;453):19
+c3566.49 | links=#13185(auto Mulgore;279):61 c2964.41:8
+c2955.50 | links=c2955.27:54
+c2958.50 | links=c2958.87:33
+c2959.50 | links=#24531(auto Mulgore;506):33 c2970.5:35
+c2961.50 | links=c2961.27:39 c2961.30:41 c2961.31:40 c2961.49:32
+c2978.50 | links=#17065(auto Mulgore;366):25 c2978.47:18 c2978.48:15 c2978.53:19
+c3035.50 | links=#26719(auto Mulgore;548):52
+c2955.51 | links=c2955.52:24 c2955.56:41
+c2956.51 | links=c2972.1:15
+c2958.51 | links=#26008(auto Mulgore;529):43 c2956.23:39
+c2959.51 | links=#17289(auto Mulgore;371):41 c2959.45:37
+c2978.51 | links=c2978.47:11
+c3566.51 | links=#18996(auto Mulgore;396):24
+o2912.51 | links=c2970.5:43
+c2955.52 | links=c2955.27:11 c2955.51:24 c2955.55:39
+c2960.52 | links=#15834(auto Mulgore;337):69
+c2961.52 | links=c2961.11:33 c2961.12:37 c2961.13:30 c2961.54:28
+c2978.52 | links=#17065(auto Mulgore;366):14
+c3035.52 | links=#27436(auto Mulgore;565):15
+o2912.52 | links=#26008(auto Mulgore;529):47 c2958.83:28
+c2955.53 | links=c2955.88:57
+c2978.53 | links=c2979.32:9 c2978.50:19
+c2955.54 | links=#2620(auto Mulgore;55):13
+c2958.54 | links=#26008(auto Mulgore;529):113
+c2961.54 | links=c2961.52:28
+c2978.54 | links=c2979.31:15 c2978.55:14
+c2955.55 | links=c2955.49:40 c2955.52:39
+c2956.55 | links=c2956.59:25
+c2978.55 | links=c2978.54:14 c2978.56:9
+c2955.56 | links=c2955.51:41 c2955.57:37
+c2960.56 | links=#18740(auto Mulgore;391):6 c2960.57:36
+c2961.56 | links=c2966.42:39
+c2978.56 | links=#24823(auto Mulgore;513):20 c2978.55:9
+c2979.56 | links=#6449(auto Mulgore;134):15
+c3566.56 | links=c2960.74:39
+c2955.57 | links=c3211.1:74 c2955.56:37 c2955.58:34
+c2956.57 | links=c2958.35:21
+c2958.57 | links=o2912.9:21 c2969.10:15
+c2960.57 | links=c2960.56:36
+c2978.57 | links=c2978.58:9
+c2979.57 | links=#2029(auto Mulgore;46):35
+c2955.58 | links=c2955.57:34 c2955.76:46
+c2960.58 | links=c2960.22:29 c2960.81:25
+c2978.58 | links=c2978.57:9 c2978.59:20
+c3035.58 | links=#3498(auto Mulgore;67):10
+c2955.59 | links=c2955.65:37
+c2956.59 | links=#10411(auto Mulgore;221):21 c2956.55:25
+c2961.59 | links=c2961.41:77
+c2978.59 | links=#1639(auto Mulgore;35):10 c2978.58:20
+c2959.60 | links=c2957.24:22 c2959.76:52
+c2978.60 | links=#19328(auto Mulgore;402):6
+c2979.60 | links=#14349(auto Mulgore;307):14 c2979.63:8
+c2955.61 | links=#6657(auto Mulgore;142):54
+c2956.61 | links=#11546(auto Mulgore;251):20
+c2959.61 | links=c2956.3:50
+c2979.61 | links=#6449(auto Mulgore;134):18
+c3035.61 | links=#10806(auto Mulgore;230):46 c2959.4:43
+c2955.62 | links=c2955.63:21 c2955.67:47
+c2961.62 | links=c2961.12:60 c2961.63:37
+c2979.62 | links=#2029(auto Mulgore;46):17
+c3566.62 | links=#27362(auto Mulgore;563):16
+c2955.63 | links=c2966.37:22 c2955.62:21
+c2958.63 | links=c2973.3:50 c2969.15:15 c2958.65:12
+c2961.63 | links=c2961.62:37 c2961.64:57
+c2978.63 | links=c2978.66:26 c2978.72:33
+c2979.63 | links=c2979.60:8
+c3035.63 | links=c2957.9:65
+c2955.64 | links=c2955.79:87 c2955.85:34
+c2956.64 | links=#13280(auto Mulgore;282):41
+c2961.64 | links=#14234(auto Mulgore;304):35 c2961.63:57
+c2978.64 | links=c5787.1:12
+c2955.65 | links=c2991.1:75 c2955.24:42 c2955.25:49 c2955.59:37
+c2957.65 | links=c3035.87:89
+c2958.65 | links=c2958.63:12
+c2959.65 | links=c3035.22:59 c2958.38:37
+c2960.65 | links=#11019(auto Mulgore;235):16 c2960.93:23
+c2978.65 | links=#21383(auto Mulgore;443):30 c2978.70:29
+c2979.65 | links=#14349(auto Mulgore;307):12
+c3035.65 | links=#26719(auto Mulgore;548):32
+c3566.65 | links=c3566.43:6
+c2955.66 | links=#11215(auto Mulgore;242):25 c2955.17:52
+c2958.66 | links=#18702(auto Mulgore;389):34
+c2978.66 | links=#1247(auto Mulgore;27):36 #8641(auto Mulgore;178):17 c2978.63:26
+c3035.66 | links=c2962.27:19
+c2955.67 | links=c2955.46:13 c2955.62:47
+c2956.67 | links=#27650(auto Mulgore;569):32
+c2958.67 | links=#18702(auto Mulgore;389):16
+c2959.67 | links=c3068.1:73
+c2978.67 | links=o2910.15:9
+c3035.67 | links=#11546(auto Mulgore;251):21
+c3566.67 | links=#8864(auto Mulgore;183):53 c3566.68:35 c2957.76:42
+c2955.68 | links=c2955.30:23
+c2960.68 | links=#24263(auto Mulgore;503):21
+c2978.68 | links=o2910.16:17
+c3566.68 | links=c3566.67:35
+c2955.69 | links=#6337(auto Mulgore;129):34 c2955.12:23
+c3566.69 | links=#27362(auto Mulgore;563):24
+c2955.70 | links=c2955.5:31 c2955.13:8 c2955.85:53
+c2957.70 | links=c3566.21:37
+c2978.70 | links=o2912.35:53 c2978.65:29 c2978.71:35
+c3035.70 | links=#13280(auto Mulgore;282):53 c2959.88:60
+c2957.71 | links=#9160(auto Mulgore;188):23
+c2978.71 | links=c2620.19:31 c2978.70:35
+c3566.71 | links=#6510(auto Mulgore;136):44 c5807.1:37
+c2955.72 | links=c2966.37:10
+c2978.72 | links=c2620.19:48 c2978.63:33
+c3035.72 | links=#20079(auto Mulgore;417):11 c3035.43:51
+c2955.73 | links=#6337(auto Mulgore;129):23
+c2960.73 | links=#24263(auto Mulgore;503):30
+c3035.73 | links=#20863(auto Mulgore;433):37
+c2955.74 | links=c2955.75:56 c2955.77:34
+c2958.74 | links=#5774(auto Mulgore;112):32 c26007.3:33
+c2960.74 | links=c2964.6:37 c3566.56:39
+c2955.75 | links=c2955.74:56 c2955.76:37
+c2959.75 | links=o2912.27:37
+c2955.76 | links=c2955.58:46 c2955.75:37
+c2956.76 | links=c2956.77:75
+c2957.76 | links=c3566.67:42
+c2958.76 | links=c2958.81:42
+c2959.76 | links=#23972(auto Mulgore;495):35 o2912.27:37 c2959.60:52 c2959.126:104
+c2960.76 | links=#611(auto Mulgore;13):36
+c3035.76 | links=c3035.87:60
+c2955.77 | links=c2955.74:34
+c2956.77 | links=#4803(auto Mulgore;100):49 c2956.76:75 c2958.106:48
+c2958.77 | links=c2958.1:25
+c2959.77 | links=#7506(auto Mulgore;157):40 c2959.19:44
+c2960.77 | links=#20123(auto Mulgore;418):12 c2972.3:3
+c3035.77 | links=#18910(auto Mulgore;394):24
+c3566.77 | links=#14894(auto Mulgore;319):50
+c2955.78 | links=c2955.84:41
+c2956.78 | links=c2959.110:34
+c2957.78 | links=c3035.87:37
+c2958.78 | links=c2958.81:40
+c2959.78 | links=c3068.1:32
+c3035.78 | links=c3035.87:51
+c3566.78 | links=#23476(auto Mulgore;488):33
+c2955.79 | links=c2955.64:87 c2955.87:52 c2955.92:43
+c2957.79 | links=c3035.87:40
+c2958.79 | links=#12608(auto Mulgore;267):44
+c2960.79 | links=#24263(auto Mulgore;503):11
+c3566.79 | links=#8661(auto Mulgore;179):28
+c2955.80 | links=c2955.22:21 c2955.33:41
+c2958.80 | links=#14399(auto Mulgore;308):51 #15520(auto Mulgore;333):36
+c2960.80 | links=#9885(auto Mulgore;206):43
+c2978.80 | links=#3237(auto Mulgore;64):7
+c2955.81 | links=c2955.88:31
+c2957.81 | links=#8303(auto Mulgore;168):59 c2965.38:26 c2964.42:28
+c2958.81 | links=#22601(auto Mulgore;467):37 c2956.13:49 c2958.76:42 c2958.78:40
+c2959.81 | links=#15564(auto Mulgore;335):42
+c2960.81 | links=c2960.58:25
+c2978.81 | links=#19152(auto Mulgore;399):22
+c3035.81 | links=c3035.87:82
+c2955.82 | links=#27250(auto Mulgore;560):56 c2955.86:76
+c2958.82 | links=c2969.5:35 c2958.42:36
+c2959.82 | links=#2911(auto Mulgore;60):52
+c3035.82 | links=#12071(auto Mulgore;256):11
+c2955.83 | links=#13080(auto Mulgore;276):9
+c2956.83 | links=c2958.21:28 c2958.25:36
+c2958.83 | links=#22601(auto Mulgore;467):52 o2912.52:28
+c2978.83 | links=#14751(auto Mulgore;317):11
+c2955.84 | links=c2955.78:41 c2955.86:61
+c2956.84 | links=#14451(auto Mulgore;310):75 c2958.118:47
+c2958.84 | links=#28071(auto Mulgore;578):42
+c2978.84 | links=#8928(auto Mulgore;187):10
+c3035.84 | links=c3035.87:69
+c2955.85 | links=c2955.64:34 c2955.70:53 c2955.86:46
+c2957.85 | links=#6510(auto Mulgore;136):20 #20265(auto Mulgore;422):80 c3058.1:10
+c2958.85 | links=#3887(auto Mulgore;74):18
+c2960.85 | links=c2960.86:20
+c2978.85 | links=c2978.87:13
+c2955.86 | links=c2955.42:34 c2955.82:76 c2955.84:61 c2955.85:46
+c2956.86 | links=c2620.26:29
+c2959.86 | links=#11272(auto Mulgore;244):32
+c2960.86 | links=c2960.85:20 c2959.107:21
+c2978.86 | links=c2979.33:15
+c2955.87 | links=c2955.79:52
+c2958.87 | links=#21668(auto Mulgore;449):50 c2956.41:27 c2958.50:33
+c2959.87 | links=c2970.14:3
+c2960.87 | links=#611(auto Mulgore;13):55
+c2978.87 | links=c2979.33:28 c2978.85:13
+c3035.87 | links=#20863(auto Mulgore;433):186 c2960.8:82 c2971.12:103 c2970.33:75 c3035.42:82 c2957.48:35 c2957.65:89 c3035.76:60 c2957.78:37 c3035.78:51 c2957.79:40 c3035.81:82 c3035.84:69 c2960.98:57
+c2955.88 | links=#16506(auto Mulgore;355):74 c2966.6:58 c2955.53:57 c2955.81:31
+c2958.88 | links=#1865(auto Mulgore;41):21
+c2959.88 | links=c3035.44:27 c3035.70:60
+c2978.88 | links=c2979.33:19
+c2957.89 | links=#20904(auto Mulgore;435):17
+c2959.89 | links=c2970.19:25 c3035.44:19
+c2978.89 | links=c3051.1:11
+c2959.90 | links=c2957.9:65 c2959.107:45 c2959.130:66
+c2960.90 | links=#16211(auto Mulgore;349):49 #25915(auto Mulgore;528):33 c2960.13:15
+c2978.90 | links=c3051.1:11
+c2978.91 | links=c2979.48:14
+c2955.92 | links=c2955.79:43 c2955.97:31
+c2958.92 | links=c2969.2:15
+c2955.93 | links=#16506(auto Mulgore;355):53
+c2960.93 | links=c2960.65:23 c2960.99:32
+c2955.94 | links=#14662(auto Mulgore;314):16
+c2957.94 | links=#24615(auto Mulgore;509):35 c3566.20:41
+c2955.95 | links=#16506(auto Mulgore;355):56 c2955.38:69 c2955.96:54
+c2955.96 | links=c2955.36:39 c2955.95:54
+c2955.97 | links=c2955.39:56 c2955.40:61 c2955.92:31
+c2959.97 | links=#10411(auto Mulgore;221):15
+c2958.98 | links=c2969.5:41 c2958.17:23
+c2960.98 | links=c3035.87:57
+c2960.99 | links=c2960.93:32
+c2959.101 | links=#10607(auto Mulgore;226):46
+c3566.103 | links=#13415(auto Mulgore;287):17
+c2958.105 | links=#1865(auto Mulgore;41):48
+c2958.106 | links=c2956.77:48
+c2959.107 | links=c2974.6:56 c2960.86:21 c2959.90:45
+c2958.108 | links=c2958.21:30 c2958.113:35
+c2959.109 | links=#28256(auto Mulgore;584):30
+c2959.110 | links=c2970.34:16 c3035.43:51 c2956.78:34
+c2958.111 | links=c2956.7:37
+c2959.111 | links=#4205(auto Mulgore;82):38
+c2958.112 | links=c2969.17:36
+c2958.113 | links=c2958.108:35
+c2959.113 | links=#15834(auto Mulgore;337):12
+c2959.114 | links=#19993(auto Mulgore;415):46
+c2958.115 | links=c2958.25:59
+c2959.115 | links=#5869(auto Mulgore;115):20
+c2958.117 | links=c2969.7:43 c2958.13:39 c2958.19:31
+c2958.118 | links=c2956.84:47
+c2959.118 | links=c2970.19:7
+c2959.125 | links=#15153(auto Mulgore;327):16
+c2959.126 | links=c3035.35:64 c2959.76:104
+c2959.127 | links=#23292(auto Mulgore;483):30
+c2959.129 | links=#17325(auto Mulgore;372):24
+c2959.130 | links=c2959.90:66

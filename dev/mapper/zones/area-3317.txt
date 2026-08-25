@@ -1,0 +1,3 @@
+Zone areaId 3317 — eine Zeile pro Wegpunkt; Links inline.
+
+#28770 | s;Eastern Kingdoms;The Hinterlands;The Overlook Cliffs;Revantusk§s;Östliche Königreiche;Hinterland;Die Aussichtsklippen;Revantusk§s;Royaumes de l'est;Les Hinterlands;The Overlook Cliffs;Revantusk | x=-573.459 y=-4590.51 | size=1

@@ -1,0 +1,34 @@
+Zone areaId 2257 — eine Zeile pro Wegpunkt; Links inline.
+
+#567 | auto Deeprun Tram;1§auto Die Tiefenbahn;1§auto Tram des profondeurs;1 | x=5 y=1414.200073242188 | size=1 | links=#909(auto Deeprun Tram;2):326 #26090(auto Deeprun Tram;14):133
+#909 | auto Deeprun Tram;2§auto Die Tiefenbahn;2§auto Tram des profondeurs;2 | x=5.200000286102295 y=1087.5 | size=1 | links=#567(auto Deeprun Tram;1):326 #8430(auto Deeprun Tram;4):135
+#2424 | auto Deeprun Tram;3§auto Die Tiefenbahn;3§auto Tram des profondeurs;3 | x=5.200000286102295 y=338 | size=1 | links=#22296(auto Deeprun Tram;10):133 #25351(auto Deeprun Tram;12):240
+#8430 | auto Deeprun Tram;4§auto Die Tiefenbahn;4§auto Tram des profondeurs;4 | x=4.700000286102295 y=952.2999877929688 | size=1 | links=#909(auto Deeprun Tram;2):135 #19203(auto Deeprun Tram;7):240
+#9007 | auto Deeprun Tram;5§auto Die Tiefenbahn;5§auto Tram des profondeurs;5 | x=4.900000095367432 y=1924.599975585938 | size=1 | links=#20257(auto Deeprun Tram;8):241 #25814(auto Deeprun Tram;13):136
+#12648 | passage;Deeprun Tram;to;Stormwind City§passage;Die Tiefenbahn;zum;Sturmwind§passage;Tram des profondeurs;vers;Hurlevent | x=67.80000305175781 y=2491 | size=1 | links=#42211(auto Deeprun Tram;15):33
+#17021 | auto Deeprun Tram;6§auto Die Tiefenbahn;6§auto Tram des profondeurs;6 | x=31.30000114440918 y=2461.699951171875 | size=1 | links=#42209(rescue deeprun tram stormwind):27 #42211(auto Deeprun Tram;15):28
+#19203 | auto Deeprun Tram;7§auto Die Tiefenbahn;7§auto Tram des profondeurs;7 | x=5.300000190734863 y=711.7000122070312 | size=1 | links=#8430(auto Deeprun Tram;4):240 #25351(auto Deeprun Tram;12):133
+#20257 | auto Deeprun Tram;8§auto Die Tiefenbahn;8§auto Tram des profondeurs;8 | x=4.900000095367432 y=2165.900146484375 | size=1 | links=#9007(auto Deeprun Tram;5):241 #21749(auto Deeprun Tram;9):130
+#21749 | auto Deeprun Tram;9§auto Die Tiefenbahn;9§auto Tram des profondeurs;9 | x=5.200000286102295 y=2296.10009765625 | size=1 | links=#20257(auto Deeprun Tram;8):130 #42209(rescue deeprun tram stormwind):166
+#22296 | auto Deeprun Tram;10§auto Die Tiefenbahn;10§auto Tram des profondeurs;10 | x=5.400000095367432 y=204.4000091552734 | size=1 | links=#2424(auto Deeprun Tram;3):133 #42219(rescue deeprun tram ironforge):164
+#23101 | auto Deeprun Tram;11§auto Die Tiefenbahn;11§auto Tram des profondeurs;11 | x=33.10000228881836 y=41.20000076293945 | size=1 | links=#42218(auto Deeprun Tram;19):32 #42219(rescue deeprun tram ironforge):28
+#25351 | auto Deeprun Tram;12§auto Die Tiefenbahn;12§auto Tram des profondeurs;12 | x=5 y=578.4000244140625 | size=1 | links=#2424(auto Deeprun Tram;3):240 #19203(auto Deeprun Tram;7):133
+#25814 | auto Deeprun Tram;13§auto Die Tiefenbahn;13§auto Tram des profondeurs;13 | x=5.099999904632568 y=1787.700073242188 | size=1 | links=#9007(auto Deeprun Tram;5):136 #26090(auto Deeprun Tram;14):239
+#25945 | passage;Deeprun Tram;to;Ironforge§passage;Die Tiefenbahn;zur;Eisenschmiede§passage;Tram des profondeurs;vers;Forgefer | x=69.20000457763672 y=10.40000057220459 | size=1 | links=#42218(auto Deeprun Tram;19):33
+#26090 | auto Deeprun Tram;14§auto Die Tiefenbahn;14§auto Tram des profondeurs;14 | x=5 y=1547.800048828125 | size=1 | links=#567(auto Deeprun Tram;1):133 #25814(auto Deeprun Tram;13):239
+#42209 | rescue deeprun tram stormwind§rettungspunkt tiefenbahn sturmwind§rescue deeprun tram stormwind | x=3.691774469244815 y=2462.252712780047 | size=1 | links=#17021(auto Deeprun Tram;6):27 #21749(auto Deeprun Tram;9):166 #42215(auto Deeprun Tram;18):16
+#42210 | pier deeprun tram stormwind§anleger tiefenbahn Sturmwind§pier deeprun tram stormwind | x=15.19999980926514 y=2490.699951171875 | size=1 | links=#42211(auto Deeprun Tram;15):19 #42212(on deeprun tram stormwind):10
+#42211 | auto Deeprun Tram;15§auto Die Tiefenbahn;15§auto Tram des profondeurs;15 | x=34.79999923706055 y=2490.300048828125 | size=1 | links=#12648(passage;Deeprun Tram;to;Stormwind City):33 #17021(auto Deeprun Tram;6):28 #42210(pier deeprun tram stormwind):19
+#42212 | on deeprun tram stormwind§auf tiefenbahn stormwind§on deeprun tram stormwind | x=4.963160672422277 y=2490.465546917957 | size=1 | links=#42210(pier deeprun tram stormwind):10
+#42213 | auto Deeprun Tram;16§auto Die Tiefenbahn;16§auto Tram des profondeurs;16 | x=4 y=2521.400146484375 | size=1 | links=#42214(auto Deeprun Tram;17):19
+#42214 | auto Deeprun Tram;17§auto Die Tiefenbahn;17§auto Tram des profondeurs;17 | x=3.799999952316284 y=2501.800048828125 | size=1 | links=#42213(auto Deeprun Tram;16):19 #42215(auto Deeprun Tram;18):23
+#42215 | auto Deeprun Tram;18§auto Die Tiefenbahn;18§auto Tram des profondeurs;18 | x=2.900000095367432 y=2478.699951171875 | size=1 | links=#42209(rescue deeprun tram stormwind):16 #42214(auto Deeprun Tram;17):23
+#42216 | on deeprun tram ironforge§auf tiefenbahn eisenschmiede§on deeprun tram ironforge | x=4.897775667725099 y=8.190925964540323 | size=1 | links=#42217(pier deeprun tram ironforge):10
+#42217 | pier deeprun tram ironforge§anleger tiefenbahn eisenschmiede§pier deeprun tram ironforge | x=15.10000038146973 y=8.199999809265137 | size=1 | links=#42216(on deeprun tram ironforge):10 #42218(auto Deeprun Tram;19):20
+#42218 | auto Deeprun Tram;19§auto Die Tiefenbahn;19§auto Tram des profondeurs;19 | x=35.70000076293945 y=9 | size=1 | links=#23101(auto Deeprun Tram;11):32 #25945(passage;Deeprun Tram;to;Ironforge):33 #42217(pier deeprun tram ironforge):20 #42224(auto Deeprun Tram;24):33
+#42219 | rescue deeprun tram ironforge§rettungspunkt tiefenbahn eisenschmiede§rescue deeprun tram ironforge | x=4.300000190734863 y=40.20000076293945 | size=1 | links=#22296(auto Deeprun Tram;10):164 #23101(auto Deeprun Tram;11):28 #42223(auto Deeprun Tram;23):8
+#42220 | auto Deeprun Tram;20§auto Die Tiefenbahn;20§auto Tram des profondeurs;20 | x=3.900000095367432 y=-26.20000076293945 | size=1 | links=#42221(auto Deeprun Tram;21):24
+#42221 | auto Deeprun Tram;21§auto Die Tiefenbahn;21§auto Tram des profondeurs;21 | x=5.200000286102295 y=-2 | size=1 | links=#42220(auto Deeprun Tram;20):24 #42222(auto Deeprun Tram;22):23
+#42222 | auto Deeprun Tram;22§auto Die Tiefenbahn;22§auto Tram des profondeurs;22 | x=4.900000095367432 y=21.10000038146973 | size=1 | links=#42221(auto Deeprun Tram;21):23 #42223(auto Deeprun Tram;23):10
+#42223 | auto Deeprun Tram;23§auto Die Tiefenbahn;23§auto Tram des profondeurs;23 | x=4.599999904632568 y=31.30000114440918 | size=1 | links=#42219(rescue deeprun tram ironforge):8 #42222(auto Deeprun Tram;22):10
+#42224 | auto Deeprun Tram;24§auto Die Tiefenbahn;24§auto Tram des profondeurs;24 | x=34.79999923706055 y=-24.80000114440918 | size=1 | links=#42218(auto Deeprun Tram;19):33

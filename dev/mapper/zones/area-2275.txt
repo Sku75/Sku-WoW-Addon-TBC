@@ -1,0 +1,3 @@
+Zone areaId 2275 — eine Zeile pro Wegpunkt; Links inline.
+
+#28777 | s;Eastern Kingdoms;Eastern Plaguelands;Northpass Tower§s;Östliche Königreiche;Östliche Pestländer;Nordpassturm§s;Royaumes de l'est;Maleterres de l'est;Tour du Col du nord | x=3170.26 y=-4376.45 | size=1 | links=c10821.3:4 c17795.3:10

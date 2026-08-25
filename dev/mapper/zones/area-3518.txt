@@ -1,0 +1,1003 @@
+Zone areaId 3518 — eine Zeile pro Wegpunkt; Links inline.
+
+#47 | auto Nagrand;1§auto Nagrand;1§auto Nagrand;1 | x=-2529 y=7208.5 | size=1 | links=#11235(auto Nagrand;395):9 #23228(auto Nagrand;827):7
+#57 | auto Nagrand;2§auto Nagrand;2§auto Nagrand;2 | x=-637.7999877929688 y=7734.5 | size=1 | links=#10922(auto Nagrand;383):12
+#87 | auto Nagrand;3§auto Nagrand;3§auto Nagrand;3 | x=-2207.10009765625 y=7501.80029296875 | size=5 | links=#3638(auto Nagrand;118):76 #8525(auto Nagrand;304):67 #19491(auto Nagrand;700):69
+#103 | auto Nagrand;4§auto Nagrand;4§auto Nagrand;4 | x=-2557.5 y=7296.10009765625 | size=1 | links=#13236(auto Nagrand;484):23 #21206(auto Nagrand;768):0 #21738(auto Nagrand;776):22 #21930(auto Nagrand;780):19
+#223 | auto Nagrand;5§auto Nagrand;5§auto Nagrand;5 | x=-2680.699951171875 y=7399.5 | size=1 | links=#9722(waters;rescue;top;Telaar;Nagrand;one):25
+#291 | auto Nagrand;6§auto Nagrand;6§auto Nagrand;6 | x=-2185 y=8756 | size=1 | links=#4357(auto Nagrand;153):19 #18237(auto Nagrand;661):23
+#330 | auto Nagrand;7§auto Nagrand;7§auto Nagrand;7 | x=-2153.400146484375 y=7825.30029296875 | size=1 | links=#5010(auto Nagrand;169):22 #5431(auto Nagrand;185):44 #13146(auto Nagrand;473):48
+#366 | auto Nagrand;8§auto Nagrand;8§auto Nagrand;8 | x=-2652.10009765625 y=7536.39990234375 | size=1 | links=#13996(auto Nagrand;517):16 #27503(auto Nagrand;958):8
+#370 | auto Nagrand;9§auto Nagrand;9§auto Nagrand;9 | x=-851.5 y=8716.5 | size=1 | links=#23957(auto Nagrand;853):14 #24315(auto Nagrand;864):11 #26708(auto Nagrand;925):6
+#377 | auto Nagrand;10§auto Nagrand;10§auto Nagrand;10 | x=-2262.800048828125 y=7158.39990234375 | size=1 | links=#15238(auto Nagrand;563):22 #24214(auto Nagrand;860):18 #25677(auto Nagrand;901):43
+#500 | auto Nagrand;11§auto Nagrand;11§auto Nagrand;11 | x=-2093.800048828125 y=7472.60009765625 | size=1 | links=#19491(auto Nagrand;700):53 #26350(auto Nagrand;917):17
+#510 | auto Nagrand;12§auto Nagrand;12§auto Nagrand;12 | x=-706.2999877929688 y=7751 | size=1 | links=#3504(auto Nagrand;112):15 #22980(auto Nagrand;819):11
+#531 | auto Nagrand;13§auto Nagrand;13§auto Nagrand;13 | x=-1942.300048828125 y=6513.10009765625 | size=1 | links=#1339(auto Nagrand;32):25 #16599(auto Nagrand;614):47
+#597 | auto Nagrand;14§auto Nagrand;14§auto Nagrand;14 | x=-1502.5 y=8511.2001953125 | size=1 | links=#10442(auto Nagrand;361):16 #13595(auto Nagrand;499):13 #17909(auto Nagrand;655):14
+#621 | auto Nagrand;15§auto Nagrand;15§auto Nagrand;15 | x=-2480.60009765625 y=7398.5 | size=1 | links=#5426(waters;rescue;Telaari Basin;Nagrand;down;two):18 #9562(auto Nagrand;340):17
+#645 | auto Nagrand;16§auto Nagrand;16§auto Nagrand;16 | x=-2104.10009765625 y=6265 | size=1 | links=#2892(auto Nagrand;92):14 #5403(auto Nagrand;183):23
+#650 | auto Nagrand;17§auto Nagrand;17§auto Nagrand;17 | x=-2265.10009765625 y=7982.2001953125 | size=5 | links=#10604(auto Nagrand;369):43 #15689(auto Nagrand;583):46
+#679 | auto Nagrand;18§auto Nagrand;18§auto Nagrand;18 | x=-1173 y=7786.2001953125 | size=1 | links=#2110(auto Nagrand;57):10 #8638(auto Nagrand;307):34
+#686 | auto Nagrand;19§auto Nagrand;19§auto Nagrand;19 | x=-1775 y=7694.7001953125 | size=1 | links=#20590(auto Nagrand;736):18 #22600(auto Nagrand;806):30
+#770 | auto Nagrand;20§auto Nagrand;20§auto Nagrand;20 | x=-2963.5 y=6373.30029296875 | size=1 | links=#5384(auto Nagrand;179):8 #6476(auto Nagrand;224):9 #23284(auto Nagrand;831):6
+#818 | auto Nagrand;21§auto Nagrand;21§auto Nagrand;21 | x=-2236.10009765625 y=6462.30029296875 | size=5 | links=#1758(auto Nagrand;47):38 #25586(auto Nagrand;897):60
+#836 | auto Nagrand;22§auto Nagrand;22§auto Nagrand;22 | x=-2062.400146484375 y=8559.7001953125 | size=1 | links=#8395(auto Nagrand;303):38 #24181(auto Nagrand;859):32
+#870 | auto Nagrand;23§auto Nagrand;23§auto Nagrand;23 | x=-1409.900024414063 y=8886.900390625 | size=5 | links=#13222(auto Nagrand;481):35 #13229(auto Nagrand;483):14
+#1003 | auto Nagrand;24§auto Nagrand;24§auto Nagrand;24 | x=-1331.700073242188 y=8508.7001953125 | size=5 | links=#26163(auto Nagrand;913):39 #27245(auto Nagrand;945):46
+#1034 | auto Nagrand;25§auto Nagrand;25§auto Nagrand;25 | x=-1000.299987792969 y=8069 | size=1 | links=#3786(auto Nagrand;128):5 #22128(auto Nagrand;789):11
+#1099 | auto Nagrand;26§auto Nagrand;26§auto Nagrand;26 | x=-2797 y=6378.30029296875 | size=1 | links=#2614(auto Nagrand;77):22 #12051(auto Nagrand;429):15
+#1111 | auto Nagrand;27§auto Nagrand;27§auto Nagrand;27 | x=-2365.5 y=7387.60009765625 | size=1 | links=#13054(auto Nagrand;470):41 #15180(auto Nagrand;561):33
+#1120 | auto Nagrand;28§auto Nagrand;28§auto Nagrand;28 | x=-2932.5 y=6497.10009765625 | size=1 | links=#7881(auto Nagrand;276):11 #15637(auto Nagrand;579):15
+#1133 | auto Nagrand;29§auto Nagrand;29§auto Nagrand;29 | x=-2774.800048828125 y=7347.80029296875 | size=1 | links=#9473(auto Nagrand;333):14 #15852(auto Nagrand;587):6
+#1135 | auto Nagrand;30§auto Nagrand;30§auto Nagrand;30 | x=-1518 y=8527.2001953125 | size=1 | links=#17909(auto Nagrand;655):8 #26246(auto Nagrand;915):12
+#1182 | auto Nagrand;31§auto Nagrand;31§auto Nagrand;31 | x=-1471.200073242188 y=8805 | size=5 | links=#17027(auto Nagrand;628):38 #26977(auto Nagrand;937):38
+#1339 | auto Nagrand;32§auto Nagrand;32§auto Nagrand;32 | x=-1966.700073242188 y=6519.60009765625 | size=1 | links=#531(auto Nagrand;13):25 #9220(auto Nagrand;321):88
+#1396 | auto Nagrand;33§auto Nagrand;33§auto Nagrand;33 | x=-1845.099975585938 y=6311.5 | size=1 | links=#18357(auto Nagrand;665):13 #26748(auto Nagrand;927):7
+#1422 | auto Nagrand;34§auto Nagrand;34§auto Nagrand;34 | x=-1912.5 y=6351.2001953125 | size=1 | links=#6523(auto Nagrand;226):9 #15175(auto Nagrand;560):3
+#1472 | auto Nagrand;35§auto Nagrand;35§auto Nagrand;35 | x=-2307.300048828125 y=7238.80029296875 | size=1 | links=#14369(auto Nagrand;536):5 #15682(auto Nagrand;581):8
+#1484 | auto Nagrand;36§auto Nagrand;36§auto Nagrand;36 | x=-1484.400024414063 y=8018.10009765625 | size=1 | links=#12929(auto Nagrand;465):109
+#1511 | auto Nagrand;37§auto Nagrand;37§auto Nagrand;37 | x=-523.4000244140625 y=8440.400390625 | size=1 | links=#25114(auto Nagrand;887):34 #26850(auto Nagrand;930):21
+#1528 | auto Nagrand;38§auto Nagrand;38§auto Nagrand;38 | x=-1801.599975585938 y=7703.30029296875 | size=1 | links=#20590(auto Nagrand;736):10 #27782(auto Nagrand;963):10
+#1563 | auto Nagrand;39§auto Nagrand;39§auto Nagrand;39 | x=-2271.800048828125 y=7206.5 | size=1 | links=#6424(auto Nagrand;223):17 #22577(auto Nagrand;805):26
+#1610 | auto Nagrand;40§auto Nagrand;40§auto Nagrand;40 | x=-2597.10009765625 y=7150.10009765625 | size=1 | links=#13173(auto Nagrand;479):22 #18967(auto Nagrand;688):22
+#1612 | auto Nagrand;41§auto Nagrand;41§auto Nagrand;41 | x=-1059.099975585938 y=8829.2001953125 | size=1 | links=#1987(auto Nagrand;53):18 #3649(auto Nagrand;120):17
+#1624 | waters;rescue;top;Nagrand;one§gewässer;rettung;oben;Nagrand;eins§eaux;sauvetage;top;Nagrand;un | x=-2655.60009765625 y=7440.10009765625 | size=1 | links=#5797(auto Nagrand;195):27 #25055(auto Nagrand;885):28
+#1634 | auto Nagrand;42§auto Nagrand;42§auto Nagrand;42 | x=-2607.900146484375 y=7249.39990234375 | size=1 | links=#2488(auto Nagrand;74):9 #15149(waters;rescue;Telaar;Nagrand;two):15
+#1677 | auto Nagrand;43§auto Nagrand;43§auto Nagrand;43 | x=-2582.60009765625 y=7223.60009765625 | size=1 | links=#8085(auto Nagrand;285):10 #10576(auto Nagrand;368):12 #18988(auto Nagrand;690):17
+#1719 | auto Nagrand;44§auto Nagrand;44§auto Nagrand;44 | x=-613.7000122070312 y=8444.7998046875 | size=1 | links=#8392(auto Nagrand;302):27 #27361(auto Nagrand;948):60
+#1723 | auto Nagrand;45§auto Nagrand;45§auto Nagrand;45 | x=-2577.300048828125 y=7313.10009765625 | size=1 | links=#19081(auto Nagrand;693):5 #27386(auto Nagrand;949):8
+#1753 | auto Nagrand;46§auto Nagrand;46§auto Nagrand;46 | x=-2567.900146484375 y=7032.39990234375 | size=5 | links=#12575(auto Nagrand;447):79 #13223(auto Nagrand;482):91
+#1758 | auto Nagrand;47§auto Nagrand;47§auto Nagrand;47 | x=-2204.60009765625 y=6484 | size=5 | links=#818(auto Nagrand;21):38 #23218(auto Nagrand;826):39
+#1773 | auto Nagrand;48§auto Nagrand;48§auto Nagrand;48 | x=-2440.5 y=6752.80029296875 | size=1 | links=#7873(auto Nagrand;275):56 #8340(auto Nagrand;299):61
+#1866 | auto Nagrand;49§auto Nagrand;49§auto Nagrand;49 | x=-2075.60009765625 y=8407.7998046875 | size=1 | links=#9429(auto Nagrand;331):53 #26885(auto Nagrand;933):37
+#1895 | auto Nagrand;50§auto Nagrand;50§auto Nagrand;50 | x=-2268.199951171875 y=7773.10009765625 | size=5 | links=#3049(auto Nagrand;99):37 #11624(auto Nagrand;412):31
+#1934 | auto Nagrand;51§auto Nagrand;51§auto Nagrand;51 | x=-2532.60009765625 y=7190.2001953125 | size=1 | links=#10872(auto Nagrand;379):5 #15683(auto Nagrand;582):4
+#1985 | auto Nagrand;52§auto Nagrand;52§auto Nagrand;52 | x=-1763.700073242188 y=7620 | size=1 | links=#22600(auto Nagrand;806):46 #23629(auto Nagrand;844):24
+#1987 | auto Nagrand;53§auto Nagrand;53§auto Nagrand;53 | x=-1048.900024414063 y=8844.2001953125 | size=1 | links=#1612(auto Nagrand;41):18 #10921(auto Nagrand;382):26
+#2014 | auto Nagrand;54§auto Nagrand;54§auto Nagrand;54 | x=-1515.800048828125 y=8552.7998046875 | size=1 | links=#12073(auto Nagrand;430):19 #12895(auto Nagrand;462):4
+#2016 | auto Nagrand;55§auto Nagrand;55§auto Nagrand;55 | x=-2288.60009765625 y=7665.30029296875 | size=5 | links=#13703(auto Nagrand;503):50 #25226(auto Nagrand;891):53
+#2028 | auto Nagrand;56§auto Nagrand;56§auto Nagrand;56 | x=-1127 y=8626.400390625 | size=1 | links=#2747(auto Nagrand;86):14 #24101(auto Nagrand;856):18
+#2110 | auto Nagrand;57§auto Nagrand;57§auto Nagrand;57 | x=-1167.700073242188 y=7795 | size=1 | links=#679(auto Nagrand;18):10 #9387(auto Nagrand;329):17
+#2115 | auto Nagrand;58§auto Nagrand;58§auto Nagrand;58 | x=-830.2000122070312 y=7700.60009765625 | size=1 | links=#13477(auto Nagrand;492):29
+#2157 | auto Nagrand;59§auto Nagrand;59§auto Nagrand;59 | x=-1393.900024414063 y=8906 | size=1 | links=#15426(auto Nagrand;569):8
+#2186 | auto Nagrand;60§auto Nagrand;60§auto Nagrand;60 | x=-1764.400024414063 y=7113.30029296875 | size=5 | links=#8061(auto Nagrand;284):24 #24793(auto Nagrand;877):59
+#2192 | auto Nagrand;61§auto Nagrand;61§auto Nagrand;61 | x=-2393.199951171875 y=7575.60009765625 | size=1 | links=#16195(auto Nagrand;594):26 #21076(auto Nagrand;757):35
+#2273 | auto Nagrand;62§auto Nagrand;62§auto Nagrand;62 | x=-2319.60009765625 y=7280.10009765625 | size=1 | links=#2390(auto Nagrand;70):13 #22973(auto Nagrand;818):13
+#2280 | auto Nagrand;63§auto Nagrand;63§auto Nagrand;63 | x=-2504.800048828125 y=7994.2001953125 | size=1 | links=#6158(auto Nagrand;213):31 #12957(auto Nagrand;466):7
+#2297 | auto Nagrand;64§auto Nagrand;64§auto Nagrand;64 | x=-2578.60009765625 y=6264.7001953125 | size=1 | links=#6731(auto Nagrand;233):15 #7586(auto Nagrand;259):21
+#2306 | auto Nagrand;65§auto Nagrand;65§auto Nagrand;65 | x=-2890.10009765625 y=6557.30029296875 | size=1 | links=#14651(auto Nagrand;544):18 #18751(auto Nagrand;682):50
+#2339 | auto Nagrand;66§auto Nagrand;66§auto Nagrand;66 | x=-2239.900146484375 y=8566 | size=5 | links=#12838(auto Nagrand;459):25
+#2343 | auto Nagrand;67§auto Nagrand;67§auto Nagrand;67 | x=-1861.5 y=6333.60009765625 | size=1 | links=#9927(auto Nagrand;348):13 #18357(auto Nagrand;665):13
+#2345 | auto Nagrand;68§auto Nagrand;68§auto Nagrand;68 | x=-2924.699951171875 y=6438.60009765625 | size=1 | links=#4208(auto Nagrand;145):22 #15909(auto Nagrand;589):27
+#2380 | auto Nagrand;69§auto Nagrand;69§auto Nagrand;69 | x=-2788.010258153655 y=7341.552228283122 | size=5 | links=#15852(auto Nagrand;587):7 #23382(auto Nagrand;834):10
+#2390 | auto Nagrand;70§auto Nagrand;70§auto Nagrand;70 | x=-2306.5 y=7275.30029296875 | size=1 | links=#2273(auto Nagrand;62):13 #17589(auto Nagrand;643):15
+#2445 | auto Nagrand;71§auto Nagrand;71§auto Nagrand;71 | x=-1917.900024414063 y=8841.2001953125 | size=1 | links=#18165(auto Nagrand;660):22
+#2457 | auto Nagrand;72§auto Nagrand;72§auto Nagrand;72 | x=-2334.800048828125 y=7242.10009765625 | size=1 | links=#15419(auto Nagrand;568):6 #18395(auto Nagrand;668):21
+#2467 | auto Nagrand;73§auto Nagrand;73§auto Nagrand;73 | x=-2738.10009765625 y=7349.5 | size=1 | links=#9473(auto Nagrand;333):22 #12662(auto Nagrand;454):22
+#2488 | auto Nagrand;74§auto Nagrand;74§auto Nagrand;74 | x=-2602.199951171875 y=7256.7001953125 | size=1 | links=#1634(auto Nagrand;42):9 #7648(auto Nagrand;260):21 #17930(auto Nagrand;656):10
+#2504 | auto Nagrand;75§auto Nagrand;75§auto Nagrand;75 | x=-999.7000122070312 y=8866.7998046875 | size=1 | links=#6997(auto Nagrand;239):9 #8924(auto Nagrand;315):15
+#2510 | auto Nagrand;76§auto Nagrand;76§auto Nagrand;76 | x=-2574.5 y=7466.60009765625 | size=1 | links=#2999(auto Nagrand;96):19 #8551(auto Nagrand;306):27
+#2614 | auto Nagrand;77§auto Nagrand;77§auto Nagrand;77 | x=-2799.400146484375 y=6355.5 | size=1 | links=#1099(auto Nagrand;26):22 #19035(auto Nagrand;691):34
+#2619 | auto Nagrand;78§auto Nagrand;78§auto Nagrand;78 | x=-1669.900024414063 y=6912.30029296875 | size=5 | links=#3327(auto Nagrand;107):30 #5025(auto Nagrand;170):66
+#2631 | auto Nagrand;79§auto Nagrand;79§auto Nagrand;79 | x=-806.1000366210938 y=8735.900390625 | size=1 | links=#7066(auto Nagrand;242):11 #11892(auto Nagrand;424):18
+#2633 | auto Nagrand;80§auto Nagrand;80§auto Nagrand;80 | x=-1845.900024414063 y=6378.60009765625 | size=1 | links=#8650(auto Nagrand;309):7 #25191(auto Nagrand;890):4
+#2687 | auto Nagrand;81§auto Nagrand;81§auto Nagrand;81 | x=-2280 y=7401.89990234375 | size=1 | links=#8155(auto Nagrand;289):51 #22520(auto Nagrand;803):11
+#2688 | auto Nagrand;82§auto Nagrand;82§auto Nagrand;82 | x=-2647.199951171875 y=6261.30029296875 | size=1 | links=#10752(auto Nagrand;375):53 #14202(auto Nagrand;524):38
+#2700 | auto Nagrand;83§auto Nagrand;83§auto Nagrand;83 | x=-2884.5 y=6391.10009765625 | size=1 | links=#26020(auto Nagrand;909):14
+#2727 | auto Nagrand;84§auto Nagrand;84§auto Nagrand;84 | x=-2068.800048828125 y=6128.60009765625 | size=1 | links=#3387(auto Nagrand;108):36 #5650(auto Nagrand;193):75
+#2729 | auto Nagrand;85§auto Nagrand;85§auto Nagrand;85 | x=-2515.699951171875 y=7532.80029296875 | size=5 | links=#21363(auto Nagrand;773):90 #28097(auto Nagrand;975):31
+#2747 | auto Nagrand;86§auto Nagrand;86§auto Nagrand;86 | x=-1122.599975585938 y=8612.7998046875 | size=5 | links=#2028(auto Nagrand;56):14 #13501(auto Nagrand;494):16
+#2793 | auto Nagrand;87§auto Nagrand;87§auto Nagrand;87 | x=-2738.900146484375 y=6419 | size=1 | links=#4956(auto Nagrand;166):24 #27993(auto Nagrand;971):48
+#2809 | auto Nagrand;88§auto Nagrand;88§auto Nagrand;88 | x=-1535 y=8635.2001953125 | size=1 | links=#11735(auto Nagrand;417):13 #20379(auto Nagrand;723):18
+#2831 | auto Nagrand;89§auto Nagrand;89§auto Nagrand;89 | x=-2386.300048828125 y=7359.89990234375 | size=1 | links=#17004(auto Nagrand;627):34
+#2859 | auto Nagrand;90§auto Nagrand;90§auto Nagrand;90 | x=-2125.300048828125 y=7329.39990234375 | size=1 | links=#6562(auto Nagrand;230):29 #13172(auto Nagrand;478):32
+#2869 | auto Nagrand;91§auto Nagrand;91§auto Nagrand;91 | x=-1539.099975585938 y=6616.39990234375 | size=1 | links=#9649(auto Nagrand;344):39 #26001(auto Nagrand;907):34
+#2892 | auto Nagrand;92§auto Nagrand;92§auto Nagrand;92 | x=-2105 y=6279.30029296875 | size=5 | links=#645(auto Nagrand;16):14 #28488(auto Nagrand;986):46
+#2929 | auto Nagrand;93§auto Nagrand;93§auto Nagrand;93 | x=-1564.800048828125 y=8533.7001953125 | size=1 | links=#20772(auto Nagrand;747):26
+#2957 | auto Nagrand;94§auto Nagrand;94§auto Nagrand;94 | x=-2653.400146484375 y=6150.30029296875 | size=1 | links=#4175(auto Nagrand;144):38 #10752(auto Nagrand;375):57
+#2979 | auto Nagrand;95§auto Nagrand;95§auto Nagrand;95 | x=-2647.800048828125 y=7352.39990234375 | size=1 | links=#4736(auto Nagrand;163):4 #7731(auto Nagrand;266):8
+#2999 | auto Nagrand;96§auto Nagrand;96§auto Nagrand;96 | x=-2575 y=7485.80029296875 | size=1 | links=#2510(auto Nagrand;76):19 #3404(auto Nagrand;109):16 #6341(auto Nagrand;219):14
+#3011 | auto Nagrand;97§auto Nagrand;97§auto Nagrand;97 | x=-1929.800048828125 y=8785.7998046875 | size=5 | links=#18165(auto Nagrand;660):34 #27965(auto Nagrand;969):32
+#3018 | auto Nagrand;98§auto Nagrand;98§auto Nagrand;98 | x=-2594.5 y=6929.30029296875 | size=1 | links=#6383(auto Nagrand;221):23 #13223(auto Nagrand;482):38
+#3049 | auto Nagrand;99§auto Nagrand;99§auto Nagrand;99 | x=-2245.400146484375 y=7743.7001953125 | size=5 | links=#1895(auto Nagrand;50):37 #10767(auto Nagrand;377):21
+#3117 | auto Nagrand;100§auto Nagrand;100§auto Nagrand;100 | x=-1066.900024414063 y=8739.1005859375 | size=1 | links=#13423(auto Nagrand;490):13 #28301(auto Nagrand;982):15
+#3179 | auto Nagrand;101§auto Nagrand;101§auto Nagrand;101 | x=-2619.5 y=7319.80029296875 | size=1 | links=#17739(auto Nagrand;650):14 #28078(auto Nagrand;974):25
+#3274 | auto Nagrand;102§auto Nagrand;102§auto Nagrand;102 | x=-2551.199951171875 y=7186.10009765625 | size=1 | links=#8144(auto Nagrand;288):4 #11091(auto Nagrand;389):4
+#3302 | auto Nagrand;103§auto Nagrand;103§auto Nagrand;103 | x=-2405.900146484375 y=6140.10009765625 | size=1 | links=#11461(auto Nagrand;404):30 #22373(auto Nagrand;796):46
+#3314 | auto Nagrand;104§auto Nagrand;104§auto Nagrand;104 | x=-856 y=8739.7001953125 | size=1 | links=#5547(auto Nagrand;189):12 #16347(auto Nagrand;603):9
+#3319 | auto Nagrand;105§auto Nagrand;105§auto Nagrand;105 | x=-1118.400024414063 y=8571.900390625 | size=5 | links=#12676(auto Nagrand;455):18 #13501(auto Nagrand;494):24
+#3323 | auto Nagrand;106§auto Nagrand;106§auto Nagrand;106 | x=-2426.699951171875 y=7302.60009765625 | size=1 | links=#5512(auto Nagrand;188):41 #12675(waters;rescue;Telaari Basin;Nagrand;down):42 #20171(auto Nagrand;716):12
+#3327 | auto Nagrand;107§auto Nagrand;107§auto Nagrand;107 | x=-1656.200073242188 y=6939 | size=1 | links=#2619(auto Nagrand;78):30 #22025(auto Nagrand;786):15
+#3387 | auto Nagrand;108§auto Nagrand;108§auto Nagrand;108 | x=-2048.10009765625 y=6098.30029296875 | size=1 | links=#2727(auto Nagrand;84):36 #22844(auto Nagrand;811):21
+#3404 | auto Nagrand;109§auto Nagrand;109§auto Nagrand;109 | x=-2563.400146484375 y=7497.89990234375 | size=1 | links=#2999(auto Nagrand;96):16 #25995(auto Nagrand;906):12
+#3451 | auto Nagrand;110§auto Nagrand;110§auto Nagrand;110 | x=-2661.10009765625 y=7341.89990234375 | size=1 | links=#3557(auto Nagrand;117):12 #6841(auto Nagrand;236):11
+#3473 | auto Nagrand;111§auto Nagrand;111§auto Nagrand;111 | x=-2605.5 y=7286.7001953125 | size=1 | links=#15418(auto Nagrand;567):16
+#3504 | auto Nagrand;112§auto Nagrand;112§auto Nagrand;112 | x=-720.2000122070312 y=7757.30029296875 | size=1 | links=#510(auto Nagrand;12):15 #17890(auto Nagrand;653):15
+#3510 | auto Nagrand;113§auto Nagrand;113§auto Nagrand;113 | x=-2189 y=8843 | size=1 | links=#7917(auto Nagrand;278):20
+#3514 | auto Nagrand;114§auto Nagrand;114§auto Nagrand;114 | x=-949.4000244140625 y=8132 | size=1 | links=#3724(auto Nagrand;124):9 #14289(auto Nagrand;532):8
+#3516 | auto Nagrand;115§auto Nagrand;115§auto Nagrand;115 | x=-2489.10009765625 y=6820.39990234375 | size=1 | links=#5619(auto Nagrand;190):22 #20712(auto Nagrand;742):16
+#3518 | auto Nagrand;116§auto Nagrand;116§auto Nagrand;116 | x=-2827.900146484375 y=6426.60009765625 | size=1 | links=#18487(auto Nagrand;673):20 #19716(auto Nagrand;706):17
+#3557 | auto Nagrand;117§auto Nagrand;117§auto Nagrand;117 | x=-2650 y=7337.30029296875 | size=1 | links=#3451(auto Nagrand;110):12
+#3638 | auto Nagrand;118§auto Nagrand;118§auto Nagrand;118 | x=-2210.800048828125 y=7577.80029296875 | size=1 | links=#87(auto Nagrand;3):76
+#3640 | auto Nagrand;119§auto Nagrand;119§auto Nagrand;119 | x=-2563.699951171875 y=6348.7001953125 | size=1 | links=#4468(auto Nagrand;158):41 #20546(auto Nagrand;733):46
+#3649 | auto Nagrand;120§auto Nagrand;120§auto Nagrand;120 | x=-1069.099975585938 y=8815.400390625 | size=1 | links=#1612(auto Nagrand;41):17 #23793(auto Nagrand;849):12
+#3676 | auto Nagrand;121§auto Nagrand;121§auto Nagrand;121 | x=-2266.60009765625 y=7229.2001953125 | size=1 | links=#28107(auto Nagrand;976):8
+#3689 | auto Nagrand;122§auto Nagrand;122§auto Nagrand;122 | x=-994.5 y=8325.1005859375 | size=5 | links=#5074(auto Nagrand;172):24 #21190(auto Nagrand;766):32
+#3716 | auto Nagrand;123§auto Nagrand;123§auto Nagrand;123 | x=-2795.699951171875 y=6536.10009765625 | size=1 | links=#15108(auto Nagrand;559):16 #23616(auto Nagrand;843):38
+#3724 | auto Nagrand;124§auto Nagrand;124§auto Nagrand;124 | x=-952.1000366210938 y=8141 | size=1 | links=#3514(auto Nagrand;114):9 #9559(auto Nagrand;339):11
+#3737 | auto Nagrand;125§auto Nagrand;125§auto Nagrand;125 | x=-2859.300048828125 y=6398 | size=1 | links=#18487(auto Nagrand;673):22 #26020(auto Nagrand;909):12
+#3749 | auto Nagrand;126§auto Nagrand;126§auto Nagrand;126 | x=-673.5 y=8817.5 | size=1 | links=#4375(auto Nagrand;155):9
+#3778 | auto Nagrand;127§auto Nagrand;127§auto Nagrand;127 | x=-835.6000366210938 y=8753.900390625 | size=1 | links=#25425(auto Nagrand;894):11 #27322(auto Nagrand;946):7
+#3786 | auto Nagrand;128§auto Nagrand;128§auto Nagrand;128 | x=-1006 y=8069.2001953125 | size=1 | links=#1034(auto Nagrand;25):5 #25494(auto Nagrand;896):3
+#3791 | auto Nagrand;129§auto Nagrand;129§auto Nagrand;129 | x=-2509.5 y=7223.89990234375 | size=1 | links=#25708(auto Nagrand;902):11 #28038(auto Nagrand;973):5
+#3856 | auto Nagrand;130§auto Nagrand;130§auto Nagrand;130 | x=-1814.599975585938 y=8723 | size=5 | links=#10377(auto Nagrand;358):104 #16597(auto Nagrand;613):110
+#3885 | auto Nagrand;131§auto Nagrand;131§auto Nagrand;131 | x=-2928.699951171875 y=6521 | size=1 | links=#7881(auto Nagrand;276):13 #20176(auto Nagrand;717):16
+#3891 | auto Nagrand;132§auto Nagrand;132§auto Nagrand;132 | x=-905 y=8070.10009765625 | size=5 | links=#4684(auto Nagrand;161):23 #14014(auto Nagrand;518):21
+#3893 | auto Nagrand;133§auto Nagrand;133§auto Nagrand;133 | x=-2540.800048828125 y=7122.80029296875 | size=1 | links=#4405(auto Nagrand;156):10 #5456(auto Nagrand;186):30
+#4002 | auto Nagrand;134§auto Nagrand;134§auto Nagrand;134 | x=-1823.5 y=7453.39990234375 | size=5 | links=#14507(auto Nagrand;539):69 #20746(auto Nagrand;745):58
+#4026 | auto Nagrand;135§auto Nagrand;135§auto Nagrand;135 | x=-2063.300048828125 y=7455.2001953125 | size=1 | links=#11517(auto Nagrand;407):4 #14739(auto Nagrand;549):4
+#4029 | auto Nagrand;136§auto Nagrand;136§auto Nagrand;136 | x=-1600.599975585938 y=8745.2001953125 | size=1 | links=#5801(auto Nagrand;196):18 #23442(auto Nagrand;837):17
+#4060 | auto Nagrand;137§auto Nagrand;137§auto Nagrand;137 | x=-2523.699951171875 y=7210.60009765625 | size=1
+#4068 | auto Nagrand;138§auto Nagrand;138§auto Nagrand;138 | x=-3002.800048828125 y=6395.80029296875 | size=1 | links=#4913(auto Nagrand;165):7 #18445(auto Nagrand;669):5
+#4072 | auto Nagrand;139§auto Nagrand;139§auto Nagrand;139 | x=-2821.800048828125 y=6465.2001953125 | size=1 | links=#7898(auto Nagrand;277):15 #8231(auto Nagrand;293):30 #11177(auto Nagrand;392):34 #21999(auto Nagrand;784):12
+#4102 | auto Nagrand;140§auto Nagrand;140§auto Nagrand;140 | x=-2009.300048828125 y=7675.30029296875 | size=1 | links=#16183(auto Nagrand;592):12 #20872(auto Nagrand;750):17
+#4115 | auto Nagrand;141§auto Nagrand;141§auto Nagrand;141 | x=-2659.900146484375 y=7280.60009765625 | size=1 | links=#12615(auto Nagrand;450):28 #18299(auto Nagrand;663):15 #19464(auto Nagrand;698):28
+#4120 | auto Nagrand;142§auto Nagrand;142§auto Nagrand;142 | x=-2214.5 y=7706.80029296875 | size=5 | links=#5827(auto Nagrand;199):38 #10767(auto Nagrand;377):26 #25226(auto Nagrand;891):32
+#4145 | auto Nagrand;143§auto Nagrand;143§auto Nagrand;143 | x=-2044.400024414063 y=7316.60009765625 | size=1 | links=#6562(auto Nagrand;230):52 #7735(auto Nagrand;267):62
+#4175 | auto Nagrand;144§auto Nagrand;144§auto Nagrand;144 | x=-2668.400146484375 y=6114.5 | size=1 | links=#2957(auto Nagrand;94):38 #23466(auto Nagrand;838):53
+#4208 | auto Nagrand;145§auto Nagrand;145§auto Nagrand;145 | x=-2928.300048828125 y=6460.5 | size=1 | links=#2345(auto Nagrand;68):22 #15637(auto Nagrand;579):21
+#4217 | auto Nagrand;146§auto Nagrand;146§auto Nagrand;146 | x=-2670.699951171875 y=7497.60009765625 | size=1 | links=#7708(auto Nagrand;264):8 #20819(auto Nagrand;749):11
+#4224 | auto Nagrand;147§auto Nagrand;147§auto Nagrand;147 | x=-2972.5 y=6339.5 | size=1 | links=#7413(auto Nagrand;253):7 #22882(auto Nagrand;813):7
+#4254 | auto Nagrand;148§auto Nagrand;148§auto Nagrand;148 | x=-2385.300048828125 y=7464.80029296875 | size=1 | links=#12722(auto Nagrand;456):11 #15630(auto Nagrand;578):22
+#4304 | auto Nagrand;149§auto Nagrand;149§auto Nagrand;149 | x=-1128.200073242188 y=8655.7001953125 | size=1 | links=#16402(auto Nagrand;605):22 #24101(auto Nagrand;856):11
+#4305 | auto Nagrand;150§auto Nagrand;150§auto Nagrand;150 | x=-1557.200073242188 y=8599.1005859375 | size=1 | links=#11821(auto Nagrand;422):13 #15434(auto Nagrand;571):12
+#4330 | auto Nagrand;151§auto Nagrand;151§auto Nagrand;151 | x=-2054.900146484375 y=7877.89990234375 | size=1 | links=#12260(auto Nagrand;438):28 #20582(auto Nagrand;735):24
+#4334 | auto Nagrand;152§auto Nagrand;152§auto Nagrand;152 | x=-1804.5 y=7217.60009765625 | size=1 | links=#16265(auto Nagrand;599):17 #27551(auto Nagrand;959):24
+#4357 | auto Nagrand;153§auto Nagrand;153§auto Nagrand;153 | x=-2186.60009765625 y=8775.400390625 | size=1 | links=#291(auto Nagrand;6):19 #4611(auto Nagrand;160):26
+#4373 | auto Nagrand;154§auto Nagrand;154§auto Nagrand;154 | x=-1502.300048828125 y=8432.900390625 | size=1 | links=#6792(auto Nagrand;234):30 #13950(auto Nagrand;515):21
+#4375 | auto Nagrand;155§auto Nagrand;155§auto Nagrand;155 | x=-673.2999877929688 y=8807.900390625 | size=1 | links=#3749(auto Nagrand;126):9 #27352(auto Nagrand;947):11
+#4405 | auto Nagrand;156§auto Nagrand;156§auto Nagrand;156 | x=-2541.60009765625 y=7133.2001953125 | size=1 | links=#3893(auto Nagrand;133):10 #16496(auto Nagrand;607):6
+#4413 | auto Nagrand;157§auto Nagrand;157§auto Nagrand;157 | x=-1568.900024414063 y=8496.2998046875 | size=1 | links=#20772(auto Nagrand;747):26 #21175(auto Nagrand;765):27
+#4468 | auto Nagrand;158§auto Nagrand;158§auto Nagrand;158 | x=-2523.300048828125 y=6358.39990234375 | size=1 | links=#3640(auto Nagrand;119):41 #8257(auto Nagrand;295):16 #24918(auto Nagrand;882):19
+#4481 | auto Nagrand;159§auto Nagrand;159§auto Nagrand;159 | x=-2104.800048828125 y=7885.10009765625 | size=1 | links=#5431(auto Nagrand;185):32 #26118(auto Nagrand;911):32
+#4611 | auto Nagrand;160§auto Nagrand;160§auto Nagrand;160 | x=-2188.800048828125 y=8801.5 | size=1 | links=#4357(auto Nagrand;153):26 #7917(auto Nagrand;278):21
+#4684 | auto Nagrand;161§auto Nagrand;161§auto Nagrand;161 | x=-925.2999877929688 y=8058.30029296875 | size=1 | links=#3891(auto Nagrand;132):23 #11417(auto Nagrand;400):37 #20907(auto Nagrand;752):26 #21092(auto Nagrand;759):29 #23942(auto Nagrand;852):19
+#4731 | auto Nagrand;162§auto Nagrand;162§auto Nagrand;162 | x=-1479.5 y=7359 | size=1 | links=#13865(auto Nagrand;512):16 #24934(auto Nagrand;883):47
+#4736 | auto Nagrand;163§auto Nagrand;163§auto Nagrand;163 | x=-2651.900146484375 y=7354.60009765625 | size=1 | links=#2979(auto Nagrand;95):4 #18523(auto Nagrand;674):5
+#4902 | auto Nagrand;164§auto Nagrand;164§auto Nagrand;164 | x=-1936.300048828125 y=7284 | size=1 | links=#16342(auto Nagrand;602):22 #26899(auto Nagrand;934):36
+#4913 | auto Nagrand;165§auto Nagrand;165§auto Nagrand;165 | x=-2995.300048828125 y=6396.5 | size=1 | links=#4068(auto Nagrand;138):7 #14854(auto Nagrand;553):6
+#4956 | auto Nagrand;166§auto Nagrand;166§auto Nagrand;166 | x=-2761.699951171875 y=6426.60009765625 | size=1 | links=#2793(auto Nagrand;87):24 #20164(auto Nagrand;715):11
+#4987 | auto Nagrand;167§auto Nagrand;167§auto Nagrand;167 | x=-2740.60009765625 y=7277 | size=1 | links=#6148(auto Nagrand;212):14 #16707(auto Nagrand;618):6
+#4999 | auto Nagrand;168§auto Nagrand;168§auto Nagrand;168 | x=-2551 y=7361.80029296875 | size=1 | links=#10302(auto Nagrand;355):7 #22452(auto Nagrand;800):14
+#5010 | auto Nagrand;169§auto Nagrand;169§auto Nagrand;169 | x=-2151.900146484375 y=7848 | size=1 | links=#330(auto Nagrand;7):22 #5431(auto Nagrand;185):29 #17128(auto Nagrand;631):38
+#5025 | auto Nagrand;170§auto Nagrand;170§auto Nagrand;170 | x=-1706 y=6856.10009765625 | size=5 | links=#2619(auto Nagrand;78):66 #11960(auto Nagrand;426):53 #17049(auto Nagrand;629):80
+#5066 | auto Nagrand;171§auto Nagrand;171§auto Nagrand;171 | x=-967.1000366210938 y=8075.5 | size=1 | links=#9554(auto Nagrand;338):11 #26360(auto Nagrand;919):7
+#5074 | auto Nagrand;172§auto Nagrand;172§auto Nagrand;172 | x=-1000.299987792969 y=8301.2998046875 | size=5 | links=#3689(auto Nagrand;122):24 #25439(auto Nagrand;895):51
+#5097 | auto Nagrand;173§auto Nagrand;173§auto Nagrand;173 | x=-1452.5 y=8602.7998046875 | size=1 | links=#9480(auto Nagrand;334):11 #22404(auto Nagrand;797):19
+#5108 | auto Nagrand;174§auto Nagrand;174§auto Nagrand;174 | x=-2457.900146484375 y=7700.60009765625 | size=5 | links=#12789(auto Nagrand;457):37
+#5111 | auto Nagrand;175§auto Nagrand;175§auto Nagrand;175 | x=-2568.800048828125 y=7402.7001953125 | size=1 | links=#5944(auto Nagrand;203):18 #17696(auto Nagrand;648):17
+#5124 | auto Nagrand;176§auto Nagrand;176§auto Nagrand;176 | x=-2467.800048828125 y=6353.10009765625 | size=1 | links=#10355(auto Nagrand;357):47 #11423(auto Nagrand;401):11
+#5231 | auto Nagrand;177§auto Nagrand;177§auto Nagrand;177 | x=-2085.699951171875 y=8600.2001953125 | size=1 | links=#14092(auto Nagrand;521):15
+#5258 | auto Nagrand;178§auto Nagrand;178§auto Nagrand;178 | x=-2342.60009765625 y=7287.2001953125 | size=1 | links=#5648(auto Nagrand;192):6 #14614(auto Nagrand;542):4
+#5384 | auto Nagrand;179§auto Nagrand;179§auto Nagrand;179 | x=-2962.699951171875 y=6364.7001953125 | size=1 | links=#770(auto Nagrand;20):8 #5400(auto Nagrand;182):10
+#5390 | auto Nagrand;180§auto Nagrand;180§auto Nagrand;180 | x=-1379.400024414063 y=7541.39990234375 | size=5 | links=#6578(auto Nagrand;231):55 #19964(auto Nagrand;712):71
+#5399 | auto Nagrand;181§auto Nagrand;181§auto Nagrand;181 | x=-1533 y=8554.2001953125 | size=1 | links=#12614(auto Nagrand;449):10 #12895(auto Nagrand;462):12
+#5400 | auto Nagrand;182§auto Nagrand;182§auto Nagrand;182 | x=-2964.60009765625 y=6354.30029296875 | size=1 | links=#5384(auto Nagrand;179):10 #22882(auto Nagrand;813):9
+#5403 | auto Nagrand;183§auto Nagrand;183§auto Nagrand;183 | x=-2090.199951171875 y=6245.60009765625 | size=1 | links=#645(auto Nagrand;16):23 #5650(auto Nagrand;193):45 #24842(auto Nagrand;879):8 #27161(auto Nagrand;943):23
+#5426 | waters;rescue;Telaari Basin;Nagrand;down;two§gewässer;rettung;Telaaribecken;Nagrand;unten;zwei§eaux;sauvetage;Bassin telaari;Nagrand;bas;deux | x=-2498.5 y=7403.7001953125 | size=1 | links=#621(auto Nagrand;15):18 #22782(auto Nagrand;809):15
+#5430 | auto Nagrand;184§auto Nagrand;184§auto Nagrand;184 | x=-2789.400146484375 y=6018 | size=1 | links=#11204(auto Nagrand;393):28 #20277(auto Nagrand;719):64
+#5431 | auto Nagrand;185§auto Nagrand;185§auto Nagrand;185 | x=-2125 y=7859.2001953125 | size=1 | links=#330(auto Nagrand;7):44 #4481(auto Nagrand;159):32 #5010(auto Nagrand;169):29
+#5456 | auto Nagrand;186§auto Nagrand;186§auto Nagrand;186 | x=-2518.699951171875 y=7102.30029296875 | size=1 | links=#3893(auto Nagrand;133):30 #12575(auto Nagrand;447):48
+#5500 | auto Nagrand;187§auto Nagrand;187§auto Nagrand;187 | x=-982.2999877929688 y=8073.89990234375 | size=1 | links=#9554(auto Nagrand;338):4 #22128(auto Nagrand;789):7
+#5512 | auto Nagrand;188§auto Nagrand;188§auto Nagrand;188 | x=-2458.800048828125 y=7276.89990234375 | size=1 | links=#3323(auto Nagrand;106):41 #8311(auto Nagrand;297):37
+#5547 | auto Nagrand;189§auto Nagrand;189§auto Nagrand;189 | x=-857.2999877929688 y=8752.2001953125 | size=1 | links=#3314(auto Nagrand;104):12 #15275(auto Nagrand;564):10 #26101(auto Nagrand;910):6
+#5619 | auto Nagrand;190§auto Nagrand;190§auto Nagrand;190 | x=-2476.300048828125 y=6839.10009765625 | size=1 | links=#3516(auto Nagrand;115):22 #20742(auto Nagrand;744):26
+#5639 | auto Nagrand;191§auto Nagrand;191§auto Nagrand;191 | x=-1885.599975585938 y=8859 | size=5 | links=#7998(auto Nagrand;283):36
+#5648 | auto Nagrand;192§auto Nagrand;192§auto Nagrand;192 | x=-2347.5 y=7291.80029296875 | size=1 | links=#5258(auto Nagrand;178):6 #25711(auto Nagrand;903):3
+#5650 | auto Nagrand;193§auto Nagrand;193§auto Nagrand;193 | x=-2092.199951171875 y=6200.5 | size=1 | links=#2727(auto Nagrand;84):75 #5403(auto Nagrand;183):45
+#5721 | auto Nagrand;194§auto Nagrand;194§auto Nagrand;194 | x=-1467 y=6370.5 | size=1 | links=#13732(auto Nagrand;504):66 #17605(auto Nagrand;645):23
+#5797 | auto Nagrand;195§auto Nagrand;195§auto Nagrand;195 | x=-2644.60009765625 y=7414.60009765625 | size=1 | links=#1624(waters;rescue;top;Nagrand;one):27 #19318(auto Nagrand;697):7
+#5801 | auto Nagrand;196§auto Nagrand;196§auto Nagrand;196 | x=-1582.099975585938 y=8741.7998046875 | size=1 | links=#4029(auto Nagrand;136):18 #20937(auto Nagrand;753):17
+#5813 | auto Nagrand;197§auto Nagrand;197§auto Nagrand;197 | x=-1441.200073242188 y=6349.80029296875 | size=1 | links=#17605(auto Nagrand;645):12
+#5818 | auto Nagrand;198§auto Nagrand;198§auto Nagrand;198 | x=-2036.900024414063 y=8330.7001953125 | size=1 | links=#9429(auto Nagrand;331):32 #15331(auto Nagrand;565):29
+#5827 | auto Nagrand;199§auto Nagrand;199§auto Nagrand;199 | x=-2189.700907933386 y=7735.709417781568 | size=5 | links=#4120(auto Nagrand;142):38 #13146(auto Nagrand;473):50
+#5901 | auto Nagrand;200§auto Nagrand;200§auto Nagrand;200 | x=-2829.699951171875 y=6911 | size=1 | links=#8114(auto Nagrand;287):68 #10542(auto Nagrand;367):32
+#5923 | auto Nagrand;201§auto Nagrand;201§auto Nagrand;201 | x=-969.9000244140625 y=8214 | size=5 | links=#10525(auto Nagrand;366):27 #18550(auto Nagrand;678):40
+#5940 | auto Nagrand;202§auto Nagrand;202§auto Nagrand;202 | x=-2375.199951171875 y=6365.10009765625 | size=1 | links=#10355(auto Nagrand;357):46 #16230(auto Nagrand;597):53
+#5944 | auto Nagrand;203§auto Nagrand;203§auto Nagrand;203 | x=-2567.199951171875 y=7384.30029296875 | size=1 | links=#5111(auto Nagrand;175):18 #22452(auto Nagrand;800):18
+#5989 | auto Nagrand;204§auto Nagrand;204§auto Nagrand;204 | x=-1635 y=6959.89990234375 | size=1 | links=#15913(auto Nagrand;590):40 #22025(auto Nagrand;786):14
+#6001 | auto Nagrand;205§auto Nagrand;205§auto Nagrand;205 | x=-1588.099975585938 y=6528.10009765625 | size=1 | links=#24433(auto Nagrand;867):54 #24620(auto Nagrand;871):47
+#6008 | auto Nagrand;206§auto Nagrand;206§auto Nagrand;206 | x=-2207.199951171875 y=7306.30029296875 | size=1 | links=#13815(auto Nagrand;510):48 #27743(auto Nagrand;962):32
+#6026 | auto Nagrand;207§auto Nagrand;207§auto Nagrand;207 | x=-947.4000244140625 y=8893.7001953125 | size=1 | links=#10106(auto Nagrand;349):12 #21907(auto Nagrand;778):12
+#6074 | auto Nagrand;208§auto Nagrand;208§auto Nagrand;208 | x=-2054.300048828125 y=7439.30029296875 | size=1 | links=#25186(auto Nagrand;889):7
+#6085 | auto Nagrand;209§auto Nagrand;209§auto Nagrand;209 | x=-1854.900024414063 y=6359.10009765625 | size=1 | links=#8650(auto Nagrand;309):13 #9927(auto Nagrand;348):14
+#6109 | auto Nagrand;210§auto Nagrand;210§auto Nagrand;210 | x=-1101.200073242188 y=8701.900390625 | size=1 | links=#19827(auto Nagrand;709):14 #20764(auto Nagrand;746):21
+#6129 | auto Nagrand;211§auto Nagrand;211§auto Nagrand;211 | x=-2429.300048828125 y=7362.10009765625 | size=1 | links=#14213(auto Nagrand;527):24 #21431(auto Nagrand;774):8
+#6148 | auto Nagrand;212§auto Nagrand;212§auto Nagrand;212 | x=-2752.199951171875 y=7267.7001953125 | size=1 | links=#4987(auto Nagrand;167):14 #10907(auto Nagrand;380):8
+#6158 | auto Nagrand;213§auto Nagrand;213§auto Nagrand;213 | x=-2472.900146484375 y=7994.10009765625 | size=5 | links=#2280(auto Nagrand;63):31 #7393(auto Nagrand;252):50
+#6176 | auto Nagrand;214§auto Nagrand;214§auto Nagrand;214 | x=-2456.800048828125 y=6265.10009765625 | size=1 | links=#13585(auto Nagrand;497):14 #20525(auto Nagrand;731):26
+#6236 | auto Nagrand;215§auto Nagrand;215§auto Nagrand;215 | x=-1024.599975585938 y=8069.5 | size=1 | links=#7241(auto Nagrand;246):24 #24090(auto Nagrand;855):11
+#6255 | auto Nagrand;216§auto Nagrand;216§auto Nagrand;216 | x=-2216.10009765625 y=7932 | size=5 | links=#10604(auto Nagrand;369):26 #24750(auto Nagrand;875):48
+#6288 | auto Nagrand;217§auto Nagrand;217§auto Nagrand;217 | x=-1270.800048828125 y=6764.5 | size=5 | links=#22063(auto Nagrand;787):36 #23124(auto Nagrand;821):63
+#6338 | auto Nagrand;218§auto Nagrand;218§auto Nagrand;218 | x=-2153.699951171875 y=8724.7998046875 | size=5 | links=#10115(auto Nagrand;350):24 #18237(auto Nagrand;661):23
+#6341 | auto Nagrand;219§auto Nagrand;219§auto Nagrand;219 | x=-2581.400146484375 y=7499 | size=5 | links=#2999(auto Nagrand;96):14 #24657(auto Nagrand;872):16
+#6369 | auto Nagrand;220§auto Nagrand;220§auto Nagrand;220 | x=-2097.400146484375 y=8770.5 | size=5 | links=#16652(auto Nagrand;616):46
+#6383 | auto Nagrand;221§auto Nagrand;221§auto Nagrand;221 | x=-2598.10009765625 y=6906.10009765625 | size=1 | links=#3018(auto Nagrand;98):23 #27579(auto Nagrand;960):23
+#6406 | auto Nagrand;222§auto Nagrand;222§auto Nagrand;222 | x=-2301.10009765625 y=8342.5 | size=5 | links=#14666(auto Nagrand;545):32 #22507(auto Nagrand;802):47
+#6424 | auto Nagrand;223§auto Nagrand;223§auto Nagrand;223 | x=-2253.900146484375 y=7207.10009765625 | size=1 | links=#1563(auto Nagrand;39):17 #16730(auto Nagrand;620):11
+#6476 | auto Nagrand;224§auto Nagrand;224§auto Nagrand;224 | x=-2953.900146484375 y=6376.10009765625 | size=1 | links=#770(auto Nagrand;20):9 #26399(auto Nagrand;921):10
+#6505 | auto Nagrand;225§auto Nagrand;225§auto Nagrand;225 | x=-2120.300048828125 y=7531.39990234375 | size=1 | links=#18908(auto Nagrand;686):20 #19491(auto Nagrand;700):33
+#6523 | auto Nagrand;226§auto Nagrand;226§auto Nagrand;226 | x=-1904.900024414063 y=6345.89990234375 | size=1 | links=#1422(auto Nagrand;34):9 #9927(auto Nagrand;348):42 #22233(auto Nagrand;793):29
+#6533 | auto Nagrand;227§auto Nagrand;227§auto Nagrand;227 | x=-2987 y=6345 | size=1 | links=#7322(auto Nagrand;248):11 #18384(auto Nagrand;667):9
+#6537 | auto Nagrand;228§auto Nagrand;228§auto Nagrand;228 | x=-1396.599975585938 y=8571.1005859375 | size=1 | links=#14256(auto Nagrand;530):26 #16370(auto Nagrand;604):24
+#6556 | auto Nagrand;229§auto Nagrand;229§auto Nagrand;229 | x=-2002.300048828125 y=5971 | size=1 | links=#9521(auto Nagrand;336):15 #11394(auto Nagrand;399):14
+#6562 | auto Nagrand;230§auto Nagrand;230§auto Nagrand;230 | x=-2096.60009765625 y=7324.10009765625 | size=1 | links=#2859(auto Nagrand;90):29 #4145(auto Nagrand;143):52
+#6578 | auto Nagrand;231§auto Nagrand;231§auto Nagrand;231 | x=-1348.099975585938 y=7587.30029296875 | size=5 | links=#5390(auto Nagrand;180):55 #17561(auto Nagrand;642):53
+#6684 | auto Nagrand;232§auto Nagrand;232§auto Nagrand;232 | x=-2390.699951171875 y=7444.39990234375 | size=1 | links=#24024(auto Nagrand;854):5 #27926(auto Nagrand;967):5
+#6731 | auto Nagrand;233§auto Nagrand;233§auto Nagrand;233 | x=-2590.60009765625 y=6274.60009765625 | size=1 | links=#2297(auto Nagrand;64):15 #7943(auto Nagrand;281):26
+#6792 | auto Nagrand;234§auto Nagrand;234§auto Nagrand;234 | x=-1486.599975585938 y=8458.7998046875 | size=1 | links=#4373(auto Nagrand;154):30 #9629(auto Nagrand;343):11
+#6827 | auto Nagrand;235§auto Nagrand;235§auto Nagrand;235 | x=-1291.599975585938 y=8386.5 | size=1 | links=#10676(auto Nagrand;370):79 #17355(auto Nagrand;637):78
+#6841 | auto Nagrand;236§auto Nagrand;236§auto Nagrand;236 | x=-2664.199951171875 y=7352.80029296875 | size=1 | links=#3451(auto Nagrand;110):11 #9722(waters;rescue;top;Telaar;Nagrand;one):24 #18523(auto Nagrand;674):7
+#6886 | auto Nagrand;237§auto Nagrand;237§auto Nagrand;237 | x=-802.2000122070312 y=8375.2001953125 | size=1 | links=#19567(auto Nagrand;704):73 #25950(auto Nagrand;904):48
+#6952 | auto Nagrand;238§auto Nagrand;238§auto Nagrand;238 | x=-2476.400146484375 y=6435.80029296875 | size=5 | links=#7850(auto Nagrand;273):66 #9439(auto Nagrand;332):95 #28550(auto Nagrand;987):48
+#6997 | auto Nagrand;239§auto Nagrand;239§auto Nagrand;239 | x=-1009.100036621094 y=8863.6005859375 | size=1 | links=#2504(auto Nagrand;75):9 #10921(auto Nagrand;382):17
+#7000 | auto Nagrand;240§auto Nagrand;240§auto Nagrand;240 | x=-1136.599975585938 y=8514.5 | size=5 | links=#9780(auto Nagrand;346):35 #20375(auto Nagrand;721):55
+#7051 | auto Nagrand;241§auto Nagrand;241§auto Nagrand;241 | x=-2106.5 y=8046.2001953125 | size=1 | links=#8344(auto Nagrand;300):34 #18476(auto Nagrand;672):32
+#7066 | auto Nagrand;242§auto Nagrand;242§auto Nagrand;242 | x=-810.6000366210938 y=8746.2001953125 | size=1 | links=#2631(auto Nagrand;79):11 #25425(auto Nagrand;894):18
+#7107 | auto Nagrand;243§auto Nagrand;243§auto Nagrand;243 | x=-1063.900024414063 y=6867.30029296875 | size=5 | links=#13753(auto Nagrand;505):31 #19736(auto Nagrand;707):40
+#7118 | auto Nagrand;244§auto Nagrand;244§auto Nagrand;244 | x=-2323.300048828125 y=7241.5 | size=1 | links=#14276(auto Nagrand;531):3 #15682(auto Nagrand;581):7
+#7133 | auto Nagrand;245§auto Nagrand;245§auto Nagrand;245 | x=-825.1000366210938 y=7766.5 | size=1 | links=#13477(auto Nagrand;492):37 #25119(auto Nagrand;888):18
+#7241 | auto Nagrand;246§auto Nagrand;246§auto Nagrand;246 | x=-1048.400024414063 y=8064.10009765625 | size=1 | links=#6236(auto Nagrand;215):24 #19484(graveyard;one;Northwind Cleft;Nagrand):18
+#7250 | auto Nagrand;247§auto Nagrand;247§auto Nagrand;247 | x=-2275.800048828125 y=6183.7001953125 | size=1
+#7322 | auto Nagrand;248§auto Nagrand;248§auto Nagrand;248 | x=-2983 y=6333.80029296875 | size=1 | links=#6533(auto Nagrand;227):11 #7413(auto Nagrand;253):4
+#7335 | auto Nagrand;249§auto Nagrand;249§auto Nagrand;249 | x=-833.9000244140625 y=8765.900390625 | size=1 | links=#14619(auto Nagrand;543):5 #25425(auto Nagrand;894):12
+#7379 | auto Nagrand;250§auto Nagrand;250§auto Nagrand;250 | x=-1630.099975585938 y=8747.2998046875 | size=1 | links=#23442(auto Nagrand;837):12
+#7380 | auto Nagrand;251§auto Nagrand;251§auto Nagrand;251 | x=-750.4000244140625 y=7767.60009765625 | size=1 | links=#8990(auto Nagrand;318):9 #14764(auto Nagrand;550):14
+#7393 | auto Nagrand;252§auto Nagrand;252§auto Nagrand;252 | x=-2422.800048828125 y=7994 | size=5 | links=#6158(auto Nagrand;213):50 #12196(auto Nagrand;434):62
+#7413 | auto Nagrand;253§auto Nagrand;253§auto Nagrand;253 | x=-2978.400146484375 y=6334.39990234375 | size=1 | links=#4224(auto Nagrand;147):7 #7322(auto Nagrand;248):4
+#7418 | auto Nagrand;254§auto Nagrand;254§auto Nagrand;254 | x=-1030.200073242188 y=8123 | size=1 | links=#13338(auto Nagrand;486):16 #24888(auto Nagrand;881):27
+#7457 | auto Nagrand;255§auto Nagrand;255§auto Nagrand;255 | x=-1207.700073242188 y=7722.89990234375 | size=1 | links=#8638(auto Nagrand;307):37 #10975(auto Nagrand;386):60
+#7458 | auto Nagrand;256§auto Nagrand;256§auto Nagrand;256 | x=-2017.5 y=8164.89990234375 | size=1 | links=#10712(auto Nagrand;373):46 #14053(auto Nagrand;519):38
+#7498 | auto Nagrand;257§auto Nagrand;257§auto Nagrand;257 | x=-1162.700073242188 y=6862.60009765625 | size=5 | links=#10913(auto Nagrand;381):28 #15738(auto Nagrand;585):24
+#7569 | auto Nagrand;258§auto Nagrand;258§auto Nagrand;258 | x=-962.2999877929688 y=8160.5 | size=1 | links=#9559(auto Nagrand;339):10 #13591(auto Nagrand;498):7
+#7586 | auto Nagrand;259§auto Nagrand;259§auto Nagrand;259 | x=-2556.699951171875 y=6263.5 | size=1 | links=#2297(auto Nagrand;64):21 #13915(auto Nagrand;514):37
+#7648 | auto Nagrand;260§auto Nagrand;260§auto Nagrand;260 | x=-2588.400146484375 y=7273 | size=1 | links=#2488(auto Nagrand;74):21 #20383(auto Nagrand;724):12 #24421(auto Nagrand;866):9
+#7684 | auto Nagrand;261§auto Nagrand;261§auto Nagrand;261 | x=-2420 y=6959.2001953125 | size=5 | links=#9805(auto Nagrand;347):71 #12862(auto Nagrand;460):103 #21233(auto Nagrand;769):57
+#7695 | auto Nagrand;262§auto Nagrand;262§auto Nagrand;262 | x=-2981.800048828125 y=6392.80029296875 | size=1 | links=#14854(auto Nagrand;553):7 #22622(auto Nagrand;807):12
+#7698 | auto Nagrand;263§auto Nagrand;263§auto Nagrand;263 | x=-2530.199951171875 y=7318.30029296875 | size=1 | links=#10470(auto Nagrand;363):16 #18537(auto Nagrand;677):15
+#7708 | auto Nagrand;264§auto Nagrand;264§auto Nagrand;264 | x=-2671.5 y=7488.89990234375 | size=1 | links=#4217(auto Nagrand;146):8 #25055(auto Nagrand;885):24
+#7727 | auto Nagrand;265§auto Nagrand;265§auto Nagrand;265 | x=-2398.800048828125 y=7257.60009765625 | size=1 | links=#12675(waters;rescue;Telaari Basin;Nagrand;down):28
+#7731 | auto Nagrand;266§auto Nagrand;266§auto Nagrand;266 | x=-2639.10009765625 y=7352.2001953125 | size=1 | links=#2979(auto Nagrand;95):8 #14778(auto Nagrand;551):6
+#7735 | auto Nagrand;267§auto Nagrand;267§auto Nagrand;267 | x=-1982.5 y=7306 | size=1 | links=#4145(auto Nagrand;143):62 #22919(auto Nagrand;814):19
+#7748 | auto Nagrand;268§auto Nagrand;268§auto Nagrand;268 | x=-2575.199951171875 y=7266.10009765625 | size=1 | links=#8101(auto Nagrand;286):9 #24421(auto Nagrand;866):6
+#7816 | auto Nagrand;269§auto Nagrand;269§auto Nagrand;269 | x=-2059.5 y=6284.5 | size=1 | links=#12254(auto Nagrand;437):24 #24842(auto Nagrand;879):42
+#7837 | auto Nagrand;270§auto Nagrand;270§auto Nagrand;270 | x=-2601.699951171875 y=7208 | size=1 | links=#10576(auto Nagrand;368):11 #10851(auto Nagrand;378):17
+#7844 | auto Nagrand;271§auto Nagrand;271§auto Nagrand;271 | x=-835.4000244140625 y=8800.2001953125 | size=1 | links=#27041(auto Nagrand;940):14 #27815(auto Nagrand;964):8
+#7845 | entry and exit;Nagrand;The Low Path;to;Terokkar Forest§ein- und ausgang;Nagrand;Der Niederpfad;zum;wälder von terokkar§entrée et sortie;Nagrand;Le Bas chemin;vers;Forêt de Terokkar | x=-2998.199951171875 y=5991.10009765625 | size=1 | links=#23758(auto Nagrand;848):46 #46688(auto Terokkar Forest;638):28
+#7848 | auto Nagrand;272§auto Nagrand;272§auto Nagrand;272 | x=-1983.700073242188 y=8258.1005859375 | size=1 | links=#10493(auto Nagrand;364):28 #15331(auto Nagrand;565):60
+#7850 | auto Nagrand;273§auto Nagrand;273§auto Nagrand;273 | x=-2416.60009765625 y=6464.39990234375 | size=1 | links=#6952(auto Nagrand;238):66 #21124(auto Nagrand;761):47
+#7865 | auto Nagrand;274§auto Nagrand;274§auto Nagrand;274 | x=-1846.900024414063 y=7675.39990234375 | size=1 | links=#17371(auto Nagrand;639):29 #27419(auto Nagrand;952):25
+#7873 | auto Nagrand;275§auto Nagrand;275§auto Nagrand;275 | x=-2418.60009765625 y=6805.30029296875 | size=1 | links=#1773(auto Nagrand;48):56 #18472(auto Nagrand;671):56
+#7881 | auto Nagrand;276§auto Nagrand;276§auto Nagrand;276 | x=-2931.800048828125 y=6508.2001953125 | size=1 | links=#1120(auto Nagrand;28):11 #3885(auto Nagrand;131):13
+#7898 | auto Nagrand;277§auto Nagrand;277§auto Nagrand;277 | x=-2812 y=6477.39990234375 | size=1 | links=#4072(auto Nagrand;139):15 #23616(auto Nagrand;843):23
+#7917 | auto Nagrand;278§auto Nagrand;278§auto Nagrand;278 | x=-2190.900146484375 y=8822.900390625 | size=1 | links=#3510(auto Nagrand;113):20 #4611(auto Nagrand;160):21
+#7927 | auto Nagrand;279§auto Nagrand;279§auto Nagrand;279 | x=-2638.199951171875 y=7325.2001953125 | size=1 | links=#9612(auto Nagrand;342):9
+#7929 | auto Nagrand;280§auto Nagrand;280§auto Nagrand;280 | x=-1771 y=6953.5 | size=5 | links=#11162(auto Nagrand;391):58 #11960(auto Nagrand;426):63
+#7943 | auto Nagrand;281§auto Nagrand;281§auto Nagrand;281 | x=-2612.199951171875 y=6290.2001953125 | size=1 | links=#6731(auto Nagrand;233):26 #14202(auto Nagrand;524):27
+#7976 | auto Nagrand;282§auto Nagrand;282§auto Nagrand;282 | x=-1353.099975585938 y=8184.2001953125 | size=1 | links=#17504(auto Nagrand;640):58 #23586(auto Nagrand;841):65
+#7998 | auto Nagrand;283§auto Nagrand;283§auto Nagrand;283 | x=-1851.400024414063 y=8845.6005859375 | size=5 | links=#5639(auto Nagrand;191):36 #20531(auto Nagrand;732):37
+#8061 | auto Nagrand;284§auto Nagrand;284§auto Nagrand;284 | x=-1765.300048828125 y=7137.89990234375 | size=1 | links=#2186(auto Nagrand;60):24 #11796(auto Nagrand;420):15 #24731(auto Nagrand;874):28
+#8085 | auto Nagrand;285§auto Nagrand;285§auto Nagrand;285 | x=-2578.300048828125 y=7214.30029296875 | size=1 | links=#1677(auto Nagrand;43):10 #22274(auto Nagrand;794):4
+#8101 | auto Nagrand;286§auto Nagrand;286§auto Nagrand;286 | x=-2566.300048828125 y=7262.7001953125 | size=1 | links=#7748(auto Nagrand;268):9 #13236(auto Nagrand;484):19 #18988(auto Nagrand;690):32
+#8114 | auto Nagrand;287§auto Nagrand;287§auto Nagrand;287 | x=-2772.199951171875 y=6947.60009765625 | size=1 | links=#5901(auto Nagrand;200):68
+#8144 | auto Nagrand;288§auto Nagrand;288§auto Nagrand;288 | x=-2554.900146484375 y=7183.2001953125 | size=1 | links=#3274(auto Nagrand;102):4 #16626(waters;rescue;Telaar;Nagrand;top;three):21
+#8155 | auto Nagrand;289§auto Nagrand;289§auto Nagrand;289 | x=-2235.300048828125 y=7376.80029296875 | size=1 | links=#2687(auto Nagrand;81):51 #8525(auto Nagrand;304):63 #25623(auto Nagrand;898):13
+#8176 | auto Nagrand;290§auto Nagrand;290§auto Nagrand;290 | x=-2935.400146484375 y=6382.2001953125 | size=1 | links=#16980(auto Nagrand;626):8 #26399(auto Nagrand;921):9
+#8177 | auto Nagrand;291§auto Nagrand;291§auto Nagrand;291 | x=-2686.699951171875 y=7332.10009765625 | size=1 | links=#12382(auto Nagrand;442):17 #20418(auto Nagrand;726):15
+#8201 | auto Nagrand;292§auto Nagrand;292§auto Nagrand;292 | x=-477.3000183105469 y=8419.400390625 | size=1 | links=#21929(auto Nagrand;779):24 #26850(auto Nagrand;930):29
+#8231 | auto Nagrand;293§auto Nagrand;293§auto Nagrand;293 | x=-2812.10009765625 y=6436.2001953125 | size=1 | links=#4072(auto Nagrand;139):30 #10121(auto Nagrand;351):15 #19716(auto Nagrand;706):1
+#8244 | auto Nagrand;294§auto Nagrand;294§auto Nagrand;294 | x=-1547.300048828125 y=8571.7001953125 | size=1 | links=#11821(auto Nagrand;422):16 #12614(auto Nagrand;449):12
+#8257 | auto Nagrand;295§auto Nagrand;295§auto Nagrand;295 | x=-2511.199951171875 y=6369.60009765625 | size=1 | links=#4468(auto Nagrand;158):16 #28550(auto Nagrand;987):29
+#8293 | auto Nagrand;296§auto Nagrand;296§auto Nagrand;296 | x=-2318.699951171875 y=7817.80029296875 | size=1 | links=#14871(auto Nagrand;554):20 #25629(auto Nagrand;899):22
+#8311 | auto Nagrand;297§auto Nagrand;297§auto Nagrand;297 | x=-2456.199951171875 y=7239.39990234375 | size=1 | links=#5512(auto Nagrand;188):37 #12675(waters;rescue;Telaari Basin;Nagrand;down):36 #18000(auto Nagrand;659):29
+#8314 | auto Nagrand;298§auto Nagrand;298§auto Nagrand;298 | x=-1474.300048828125 y=8620.6005859375 | size=1 | links=#11816(auto Nagrand;421):16 #25395(auto Nagrand;893):20
+#8340 | auto Nagrand;299§auto Nagrand;299§auto Nagrand;299 | x=-2432.800048828125 y=6691.39990234375 | size=1 | links=#1773(auto Nagrand;48):61 #15504(auto Nagrand;573):76
+#8344 | auto Nagrand;300§auto Nagrand;300§auto Nagrand;300 | x=-2125.699951171875 y=8017.30029296875 | size=1 | links=#7051(auto Nagrand;241):34 #14126(auto Nagrand;523):49
+#8385 | auto Nagrand;301§auto Nagrand;301§auto Nagrand;301 | x=-771.1000366210938 y=8037.10009765625 | size=1 | links=#11587(auto Nagrand;410):20 #26131(auto Nagrand;912):19
+#8392 | auto Nagrand;302§auto Nagrand;302§auto Nagrand;302 | x=-586.1000366210938 y=8442.900390625 | size=1 | links=#1719(auto Nagrand;44):27 #25114(auto Nagrand;887):28
+#8395 | auto Nagrand;303§auto Nagrand;303§auto Nagrand;303 | x=-2060.199951171875 y=8598.6005859375 | size=1 | links=#836(auto Nagrand;22):38 #14092(auto Nagrand;521):11
+#8525 | auto Nagrand;304§auto Nagrand;304§auto Nagrand;304 | x=-2209.900146484375 y=7434.80029296875 | size=5 | links=#87(auto Nagrand;3):67 #8155(auto Nagrand;289):63
+#8526 | auto Nagrand;305§auto Nagrand;305§auto Nagrand;305 | x=-1846.900024414063 y=7237.80029296875 | size=1 | links=#17597(auto Nagrand;644):21 #20045(auto Nagrand;713):21
+#8551 | auto Nagrand;306§auto Nagrand;306§auto Nagrand;306 | x=-2572.199951171875 y=7438.7001953125 | size=1 | links=#2510(auto Nagrand;76):27 #14675(auto Nagrand;546):7
+#8638 | auto Nagrand;307§auto Nagrand;307§auto Nagrand;307 | x=-1187 y=7754.39990234375 | size=1 | links=#679(auto Nagrand;18):34 #7457(auto Nagrand;255):37
+#8645 | auto Nagrand;308§auto Nagrand;308§auto Nagrand;308 | x=-910 y=8674.5 | size=1 | links=#22533(auto Nagrand;804):23
+#8650 | auto Nagrand;309§auto Nagrand;309§auto Nagrand;309 | x=-1850.599975585938 y=6372.2001953125 | size=1 | links=#2633(auto Nagrand;80):7 #6085(auto Nagrand;209):13
+#8709 | auto Nagrand;310§auto Nagrand;310§auto Nagrand;310 | x=-971.4000244140625 y=8007.2001953125 | size=5 | links=#14702(auto Nagrand;547):39 #20462(auto Nagrand;729):22
+#8784 | auto Nagrand;311§auto Nagrand;311§auto Nagrand;311 | x=-1512.200073242188 y=7258.60009765625 | size=1 | links=#18359(auto Nagrand;666):16 #24443(auto Nagrand;868):49
+#8882 | auto Nagrand;312§auto Nagrand;312§auto Nagrand;312 | x=-2506.300048828125 y=7243.30029296875 | size=1 | links=#16776(auto Nagrand;621):25
+#8894 | auto Nagrand;313§auto Nagrand;313§auto Nagrand;313 | x=-2485.900146484375 y=7334.80029296875 | size=1 | links=#19699(auto Nagrand;705):11 #21321(auto Nagrand;772):5
+#8910 | auto Nagrand;314§auto Nagrand;314§auto Nagrand;314 | x=-2021.200073242188 y=7629.80029296875 | size=1 | links=#20650(auto Nagrand;739):20 #22143(auto Nagrand;790):17 #25107(auto Nagrand;886):34
+#8924 | auto Nagrand;315§auto Nagrand;315§auto Nagrand;315 | x=-985.2999877929688 y=8872.900390625 | size=1 | links=#2504(auto Nagrand;75):15 #16445(auto Nagrand;606):14
+#8939 | auto Nagrand;316§auto Nagrand;316§auto Nagrand;316 | x=-762.6000366210938 y=7871.30029296875 | size=1 | links=#14831(auto Nagrand;552):28 #23005(auto Nagrand;820):11
+#8986 | auto Nagrand;317§auto Nagrand;317§auto Nagrand;317 | x=-2312.699951171875 y=7097.7001953125 | size=1 | links=#12862(auto Nagrand;460):71 #25677(auto Nagrand;901):35
+#8990 | auto Nagrand;318§auto Nagrand;318§auto Nagrand;318 | x=-741.7999877929688 y=7763 | size=1 | links=#7380(auto Nagrand;251):9 #17890(auto Nagrand;653):7
+#9044 | auto Nagrand;319§auto Nagrand;319§auto Nagrand;319 | x=-2289.400146484375 y=7231.10009765625 | size=1 | links=#17519(auto Nagrand;641):4 #22966(auto Nagrand;817):6
+#9120 | auto Nagrand;320§auto Nagrand;320§auto Nagrand;320 | x=-2660.900146484375 y=7515.60009765625 | size=1 | links=#20819(auto Nagrand;749):9 #27503(auto Nagrand;958):18
+#9220 | auto Nagrand;321§auto Nagrand;321§auto Nagrand;321 | x=-2055.60009765625 y=6521.60009765625 | size=1 | links=#1339(auto Nagrand;32):88 #26015(auto Nagrand;908):13
+#9234 | auto Nagrand;322§auto Nagrand;322§auto Nagrand;322 | x=-2057.10009765625 y=8690.6005859375 | size=1 | links=#9359(auto Nagrand;327):53 #14212(auto Nagrand;526):67 #19070(auto Nagrand;692):30
+#9265 | auto Nagrand;323§auto Nagrand;323§auto Nagrand;323 | x=-1066.300048828125 y=8390.7001953125 | size=5 | links=#11907(auto Nagrand;425):84 #21190(auto Nagrand;766):85
+#9293 | auto Nagrand;324§auto Nagrand;324§auto Nagrand;324 | x=-2492.900146484375 y=7201 | size=1 | links=#23177(auto Nagrand;824):9
+#9302 | auto Nagrand;325§auto Nagrand;325§auto Nagrand;325 | x=-2271.400146484375 y=7259.60009765625 | size=1 | links=#13169(auto Nagrand;477):37 #18731(auto Nagrand;681):18 #21850(auto Nagrand;777):11
+#9325 | auto Nagrand;326§auto Nagrand;326§auto Nagrand;326 | x=-1225.400024414063 y=6853.39990234375 | size=1 | links=#11667(auto Nagrand;415):11 #17764(auto Nagrand;651):3
+#9359 | auto Nagrand;327§auto Nagrand;327§auto Nagrand;327 | x=-2092.199951171875 y=8649.6005859375 | size=1 | links=#9234(auto Nagrand;322):53 #13608(auto Nagrand;500):45 #19070(auto Nagrand;692):47
+#9386 | auto Nagrand;328§auto Nagrand;328§auto Nagrand;328 | x=-879.7000122070312 y=8740.5 | size=1 | links=#16893(auto Nagrand;624):9 #21256(auto Nagrand;770):8
+#9387 | auto Nagrand;329§auto Nagrand;329§auto Nagrand;329 | x=-1158.800048828125 y=7809.7001953125 | size=1 | links=#2110(auto Nagrand;57):17 #22640(auto Nagrand;808):20
+#9423 | auto Nagrand;330§auto Nagrand;330§auto Nagrand;330 | x=-2380.400146484375 y=7435 | size=1 | links=#22405(auto Nagrand;798):16 #24024(auto Nagrand;854):8
+#9429 | auto Nagrand;331§auto Nagrand;331§auto Nagrand;331 | x=-2050.400146484375 y=8360.7998046875 | size=1 | links=#1866(auto Nagrand;49):53 #5818(auto Nagrand;198):32
+#9439 | auto Nagrand;332§auto Nagrand;332§auto Nagrand;332 | x=-2456.5 y=6529.39990234375 | size=5 | links=#6952(auto Nagrand;238):95 #15504(auto Nagrand;573):87
+#9473 | auto Nagrand;333§auto Nagrand;333§auto Nagrand;333 | x=-2760.60009765625 y=7350.7001953125 | size=1 | links=#1133(auto Nagrand;29):14 #2467(auto Nagrand;73):22
+#9480 | auto Nagrand;334§auto Nagrand;334§auto Nagrand;334 | x=-1448.5 y=8614.1005859375 | size=1 | links=#5097(auto Nagrand;173):11 #15607(auto Nagrand;576):18
+#9486 | auto Nagrand;335§auto Nagrand;335§auto Nagrand;335 | x=-2068.10009765625 y=7464.30029296875 | size=5 | links=#12119(auto Nagrand;431):0 #14739(auto Nagrand;549):5
+#9521 | auto Nagrand;336§auto Nagrand;336§auto Nagrand;336 | x=-2008.400024414063 y=5985.7001953125 | size=1 | links=#6556(auto Nagrand;229):15 #10521(auto Nagrand;365):55
+#9543 | auto Nagrand;337§auto Nagrand;337§auto Nagrand;337 | x=-935.5 y=8109.10009765625 | size=1 | links=#11417(auto Nagrand;400):14 #21160(auto Nagrand;764):6
+#9554 | auto Nagrand;338§auto Nagrand;338§auto Nagrand;338 | x=-978.2000122070312 y=8074 | size=1 | links=#5066(auto Nagrand;171):11 #5500(auto Nagrand;187):4
+#9559 | auto Nagrand;339§auto Nagrand;339§auto Nagrand;339 | x=-957.6000366210938 y=8150.80029296875 | size=1 | links=#3724(auto Nagrand;124):11 #7569(auto Nagrand;258):10
+#9562 | auto Nagrand;340§auto Nagrand;340§auto Nagrand;340 | x=-2464.400146484375 y=7393.10009765625 | size=1 | links=#621(auto Nagrand;15):17 #18527(auto Nagrand;675):13
+#9604 | auto Nagrand;341§auto Nagrand;341§auto Nagrand;341 | x=-2998.5 y=6382.10009765625 | size=1 | links=#18445(auto Nagrand;669):8 #23663(auto Nagrand;846):6
+#9612 | auto Nagrand;342§auto Nagrand;342§auto Nagrand;342 | x=-2630.800048828125 y=7319.10009765625 | size=1 | links=#7927(auto Nagrand;279):9 #12198(auto Nagrand;435):11
+#9629 | auto Nagrand;343§auto Nagrand;343§auto Nagrand;343 | x=-1479.700073242188 y=8468.400390625 | size=1 | links=#6792(auto Nagrand;234):11 #26867(auto Nagrand;931):16
+#9649 | auto Nagrand;344§auto Nagrand;344§auto Nagrand;344 | x=-1554.300048828125 y=6653 | size=5 | links=#2869(auto Nagrand;91):39 #14474(auto Nagrand;538):27
+#9722 | waters;rescue;top;Telaar;Nagrand;one§gewässer;rettung;oben;Telaar;Nagrand;eins§eaux;sauvetage;top;Telaar;Nagrand;un | x=-2673.10009765625 y=7375.5 | size=1 | links=#223(auto Nagrand;5):25 #6841(auto Nagrand;236):24
+#9777 | auto Nagrand;345§auto Nagrand;345§auto Nagrand;345 | x=-2255.699951171875 y=7226.10009765625 | size=1 | links=#24330(auto Nagrand;865):11
+#9780 | auto Nagrand;346§auto Nagrand;346§auto Nagrand;346 | x=-1118.900024414063 y=8545.5 | size=5 | links=#7000(auto Nagrand;240):35 #12676(auto Nagrand;455):8
+#9805 | auto Nagrand;347§auto Nagrand;347§auto Nagrand;347 | x=-2459.5 y=7018.5 | size=5 | links=#7684(auto Nagrand;261):71 #12575(auto Nagrand;447):54
+#9927 | auto Nagrand;348§auto Nagrand;348§auto Nagrand;348 | x=-1862.300048828125 y=6346.80029296875 | size=1 | links=#2343(auto Nagrand;67):13 #6085(auto Nagrand;209):14 #6523(auto Nagrand;226):42
+#10106 | auto Nagrand;349§auto Nagrand;349§auto Nagrand;349 | x=-936.7000122070312 y=8899.7001953125 | size=1 | links=#6026(auto Nagrand;207):12 #19481(auto Nagrand;699):18
+#10115 | auto Nagrand;350§auto Nagrand;350§auto Nagrand;350 | x=-2131.699951171875 y=8714.2001953125 | size=5 | links=#6338(auto Nagrand;218):24 #28287(auto Nagrand;980):29
+#10121 | auto Nagrand;351§auto Nagrand;351§auto Nagrand;351 | x=-2797 y=6431.30029296875 | size=1 | links=#8231(auto Nagrand;293):15 #11878(auto Nagrand;423):17 #16538(auto Nagrand;610):12 #20164(auto Nagrand;715):24
+#10134 | auto Nagrand;352§auto Nagrand;352§auto Nagrand;352 | x=-1521.099975585938 y=8547.2998046875 | size=1 | links=#12895(auto Nagrand;462):5 #26246(auto Nagrand;915):8
+#10186 | auto Nagrand;353§auto Nagrand;353§auto Nagrand;353 | x=-2230.5 y=7194.2001953125 | size=1 | links=#16730(auto Nagrand;620):18
+#10297 | auto Nagrand;354§auto Nagrand;354§auto Nagrand;354 | x=-2629 y=7219.2001953125 | size=1 | links=#10320(auto Nagrand;356):15 #28352(auto Nagrand;984):9
+#10302 | auto Nagrand;355§auto Nagrand;355§auto Nagrand;355 | x=-2548.10009765625 y=7354.5 | size=1 | links=#4999(auto Nagrand;168):7 #22788(auto Nagrand;810):22
+#10320 | auto Nagrand;356§auto Nagrand;356§auto Nagrand;356 | x=-2615.60009765625 y=7226 | size=1 | links=#10297(auto Nagrand;354):15 #16190(auto Nagrand;593):15
+#10355 | auto Nagrand;357§auto Nagrand;357§auto Nagrand;357 | x=-2420.5 y=6353.2001953125 | size=1 | links=#5124(auto Nagrand;176):47 #5940(auto Nagrand;202):46
+#10377 | auto Nagrand;358§auto Nagrand;358§auto Nagrand;358 | x=-1712.900024414063 y=8749.1005859375 | size=5 | links=#3856(auto Nagrand;130):104
+#10415 | auto Nagrand;359§auto Nagrand;359§auto Nagrand;359 | x=-2068.5 y=8103.7001953125 | size=1 | links=#14053(auto Nagrand;519):41 #18476(auto Nagrand;672):37
+#10439 | auto Nagrand;360§auto Nagrand;360§auto Nagrand;360 | x=-1423 y=8611.7001953125 | size=1 | links=#15607(auto Nagrand;576):24 #16370(auto Nagrand;604):23
+#10442 | auto Nagrand;361§auto Nagrand;361§auto Nagrand;361 | x=-1488.200073242188 y=8503.5 | size=1 | links=#597(auto Nagrand;14):16 #24149(auto Nagrand;857):19
+#10467 | auto Nagrand;362§auto Nagrand;362§auto Nagrand;362 | x=-2507.60009765625 y=7308.7001953125 | size=1 | links=#10470(auto Nagrand;363):13 #28170(auto Nagrand;978):10
+#10470 | auto Nagrand;363§auto Nagrand;363§auto Nagrand;363 | x=-2520.60009765625 y=7304.60009765625 | size=1 | links=#7698(auto Nagrand;263):16 #10467(auto Nagrand;362):13 #21738(auto Nagrand;776):15
+#10493 | auto Nagrand;364§auto Nagrand;364§auto Nagrand;364 | x=-1983.900024414063 y=8229.900390625 | size=1 | links=#7848(auto Nagrand;272):28 #10712(auto Nagrand;373):29
+#10521 | auto Nagrand;365§auto Nagrand;365§auto Nagrand;365 | x=-2019.800048828125 y=6040.39990234375 | size=1 | links=#9521(auto Nagrand;336):55 #22844(auto Nagrand;811):44
+#10525 | auto Nagrand;366§auto Nagrand;366§auto Nagrand;366 | x=-971.1000366210938 y=8186.5 | size=1 | links=#5923(auto Nagrand;201):27 #10741(auto Nagrand;374):18 #16228(auto Nagrand;596):13
+#10542 | auto Nagrand;367§auto Nagrand;367§auto Nagrand;367 | x=-2845.300048828125 y=6882.2001953125 | size=1 | links=#5901(auto Nagrand;200):32
+#10576 | auto Nagrand;368§auto Nagrand;368§auto Nagrand;368 | x=-2592.300048828125 y=7215.10009765625 | size=1 | links=#1677(auto Nagrand;43):12 #7837(auto Nagrand;270):11
+#10604 | auto Nagrand;369§auto Nagrand;369§auto Nagrand;369 | x=-2235.199951171875 y=7950.60009765625 | size=5 | links=#650(auto Nagrand;17):43 #6255(auto Nagrand;216):26
+#10676 | auto Nagrand;370§auto Nagrand;370§auto Nagrand;370 | x=-1288.200073242188 y=8466.1005859375 | size=5 | links=#6827(auto Nagrand;235):79 #25670(auto Nagrand;900):67 #26163(auto Nagrand;913):20
+#10709 | auto Nagrand;371§auto Nagrand;371§auto Nagrand;371 | x=-2885.300048828125 y=6339.7001953125 | size=1 | links=#16259(auto Nagrand;598):21 #20143(auto Nagrand;714):22
+#10711 | auto Nagrand;372§auto Nagrand;372§auto Nagrand;372 | x=-951.7999877929688 y=8076.89990234375 | size=1 | links=#20907(auto Nagrand;752):8 #26360(auto Nagrand;919):7
+#10712 | auto Nagrand;373§auto Nagrand;373§auto Nagrand;373 | x=-1988 y=8201.1005859375 | size=1 | links=#7458(auto Nagrand;256):46 #10493(auto Nagrand;364):29
+#10741 | auto Nagrand;374§auto Nagrand;374§auto Nagrand;374 | x=-989.2999877929688 y=8186 | size=1 | links=#10525(auto Nagrand;366):18 #21935(auto Nagrand;781):15
+#10752 | auto Nagrand;375§auto Nagrand;375§auto Nagrand;375 | x=-2649.199951171875 y=6207.60009765625 | size=1 | links=#2688(auto Nagrand;82):53 #2957(auto Nagrand;94):57
+#10765 | auto Nagrand;376§auto Nagrand;376§auto Nagrand;376 | x=-938 y=8022.7001953125 | size=1 | links=#12019(auto Nagrand;427):23 #20462(auto Nagrand;729):15
+#10767 | auto Nagrand;377§auto Nagrand;377§auto Nagrand;377 | x=-2232.400146484375 y=7727 | size=1 | links=#3049(auto Nagrand;99):21 #4120(auto Nagrand;142):26 #25226(auto Nagrand;891):42
+#10851 | auto Nagrand;378§auto Nagrand;378§auto Nagrand;378 | x=-2609.60009765625 y=7223.5 | size=1 | links=#7837(auto Nagrand;270):17 #15149(waters;rescue;Telaar;Nagrand;two):20
+#10872 | auto Nagrand;379§auto Nagrand;379§auto Nagrand;379 | x=-2537.699951171875 y=7188.39990234375 | size=1 | links=#1934(auto Nagrand;51):5 #11091(auto Nagrand;389):8
+#10907 | auto Nagrand;380§auto Nagrand;380§auto Nagrand;380 | x=-2758.699951171875 y=7272.39990234375 | size=1 | links=#6148(auto Nagrand;212):8 #24513(auto Nagrand;870):42
+#10913 | auto Nagrand;381§auto Nagrand;381§auto Nagrand;381 | x=-1134.200073242188 y=6860.89990234375 | size=5 | links=#7498(auto Nagrand;257):28 #19736(auto Nagrand;707):30
+#10921 | auto Nagrand;382§auto Nagrand;382§auto Nagrand;382 | x=-1025.700073242188 y=8856.900390625 | size=1 | links=#1987(auto Nagrand;53):26 #6997(auto Nagrand;239):17
+#10922 | auto Nagrand;383§auto Nagrand;383§auto Nagrand;383 | x=-648.7000122070312 y=7740.7001953125 | size=1 | links=#57(auto Nagrand;2):12 #20482(auto Nagrand;730):15
+#10933 | auto Nagrand;384§auto Nagrand;384§auto Nagrand;384 | x=-2418.10009765625 y=7333.10009765625 | size=1 | links=#20171(auto Nagrand;716):28 #27445(auto Nagrand;954):19
+#10950 | auto Nagrand;385§auto Nagrand;385§auto Nagrand;385 | x=-1507.5 y=6514.10009765625 | size=1 | links=#11360(auto Nagrand;398):41 #22171(auto Nagrand;791):52
+#10975 | auto Nagrand;386§auto Nagrand;386§auto Nagrand;386 | x=-1245.900024414063 y=7676.60009765625 | size=1 | links=#7457(auto Nagrand;255):60 #15484(auto Nagrand;572):26
+#11018 | auto Nagrand;387§auto Nagrand;387§auto Nagrand;387 | x=-1271 y=7643.39990234375 | size=1 | links=#15484(auto Nagrand;572):36 #17561(auto Nagrand;642):42
+#11041 | auto Nagrand;388§auto Nagrand;388§auto Nagrand;388 | x=-2585.300048828125 y=7304.30029296875 | size=1 | links=#19081(auto Nagrand;693):6 #20383(auto Nagrand;724):18 #27072(waters;rescue;Telaar;Nagrand;one):11
+#11091 | auto Nagrand;389§auto Nagrand;389§auto Nagrand;389 | x=-2546.300048828125 y=7186.89990234375 | size=1 | links=#3274(auto Nagrand;102):4 #10872(auto Nagrand;379):8
+#11143 | auto Nagrand;390§auto Nagrand;390§auto Nagrand;390 | x=-721.7000122070312 y=7937.5 | size=1 | links=#27853(auto Nagrand;965):22
+#11162 | auto Nagrand;391§auto Nagrand;391§auto Nagrand;391 | x=-1775.300048828125 y=7012.2001953125 | size=5 | links=#7929(auto Nagrand;280):58 #24793(auto Nagrand;877):42
+#11177 | auto Nagrand;392§auto Nagrand;392§auto Nagrand;392 | x=-2840.400146484375 y=6494 | size=1 | links=#4072(auto Nagrand;139):34 #18751(auto Nagrand;682):29
+#11204 | auto Nagrand;393§auto Nagrand;393§auto Nagrand;393 | x=-2815.10009765625 y=6005.2001953125 | size=1 | links=#5430(auto Nagrand;184):28 #18313(auto Nagrand;664):47
+#11228 | auto Nagrand;394§auto Nagrand;394§auto Nagrand;394 | x=-1808 y=7323.89990234375 | size=5 | links=#14507(auto Nagrand;539):61 #23267(auto Nagrand;829):42
+#11235 | auto Nagrand;395§auto Nagrand;395§auto Nagrand;395 | x=-2531 y=7199.39990234375 | size=1 | links=#47(auto Nagrand;1):9 #15683(auto Nagrand;582):4
+#11249 | auto Nagrand;396§auto Nagrand;396§auto Nagrand;396 | x=-2076 y=6430 | size=5 | links=#12564(auto Nagrand;446):69 #21152(auto Nagrand;763):54
+#11299 | auto Nagrand;397§auto Nagrand;397§auto Nagrand;397 | x=-2665.10009765625 y=7219.7001953125 | size=1 | links=#13805(auto Nagrand;508):7 #17214(auto Nagrand;633):14 #17660(auto Nagrand;646):6
+#11360 | auto Nagrand;398§auto Nagrand;398§auto Nagrand;398 | x=-1494.800048828125 y=6474.39990234375 | size=1 | links=#10950(auto Nagrand;385):41 #12617(auto Nagrand;451):46 #13732(auto Nagrand;504):47
+#11394 | auto Nagrand;399§auto Nagrand;399§auto Nagrand;399 | x=-1987.700073242188 y=5968.5 | size=1 | links=#6556(auto Nagrand;229):14 #22944(entry and exit;Nagrand;The High Path;to;Shattrath City):20
+#11417 | auto Nagrand;400§auto Nagrand;400§auto Nagrand;400 | x=-929.4000244140625 y=8095.89990234375 | size=1 | links=#4684(auto Nagrand;161):37 #9543(auto Nagrand;337):14 #20907(auto Nagrand;752):22
+#11423 | auto Nagrand;401§auto Nagrand;401§auto Nagrand;401 | x=-2479.5 y=6352.7001953125 | size=1 | links=#5124(auto Nagrand;176):11 #24918(auto Nagrand;882):24 #28550(auto Nagrand;987):37
+#11426 | auto Nagrand;402§auto Nagrand;402§auto Nagrand;402 | x=-1443.5 y=8644.900390625 | size=1 | links=#15607(auto Nagrand;576):15 #22931(auto Nagrand;815):45
+#11438 | auto Nagrand;403§auto Nagrand;403§auto Nagrand;403 | x=-841.7999877929688 y=8091 | size=5 | links=#14014(auto Nagrand;518):45 #25249(auto Nagrand;892):40
+#11461 | auto Nagrand;404§auto Nagrand;404§auto Nagrand;404 | x=-2432.300048828125 y=6123.89990234375 | size=1 | links=#3302(auto Nagrand;103):30 #14312(auto Nagrand;533):11
+#11480 | auto Nagrand;405§auto Nagrand;405§auto Nagrand;405 | x=-2597.60009765625 y=7526.10009765625 | size=1 | links=#24296(auto Nagrand;862):16 #24657(auto Nagrand;872):15
+#11486 | auto Nagrand;406§auto Nagrand;406§auto Nagrand;406 | x=-666.1000366210938 y=7751.2001953125 | size=1 | links=#20428(auto Nagrand;727):11 #20482(auto Nagrand;730):4
+#11517 | auto Nagrand;407§auto Nagrand;407§auto Nagrand;407 | x=-2061.400146484375 y=7451.60009765625 | size=1 | links=#4026(auto Nagrand;135):4 #25186(auto Nagrand;889):7
+#11565 | auto Nagrand;408§auto Nagrand;408§auto Nagrand;408 | x=-2619.800048828125 y=7540.2001953125 | size=1 | links=#13996(auto Nagrand;517):16 #24296(auto Nagrand;862):10
+#11571 | auto Nagrand;409§auto Nagrand;409§auto Nagrand;409 | x=-1798.900024414063 y=8813.2998046875 | size=5 | links=#20531(auto Nagrand;732):24
+#11587 | auto Nagrand;410§auto Nagrand;410§auto Nagrand;410 | x=-778.9000244140625 y=8055.60009765625 | size=5 | links=#8385(auto Nagrand;301):20 #25249(auto Nagrand;892):37
+#11606 | auto Nagrand;411§auto Nagrand;411§auto Nagrand;411 | x=-2200.5 y=7230.30029296875 | size=1 | links=#17733(auto Nagrand;649):29 #23086(waters;rescue;Telaari Basin;Nagrand;top):29
+#11624 | auto Nagrand;412§auto Nagrand;412§auto Nagrand;412 | x=-2293.699951171875 y=7790.80029296875 | size=1 | links=#1895(auto Nagrand;50):31 #25629(auto Nagrand;899):14
+#11630 | auto Nagrand;413§auto Nagrand;413§auto Nagrand;413 | x=-1548.900024414063 y=7122.10009765625 | size=5 | links=#19538(auto Nagrand;703):46 #27704(auto Nagrand;961):80
+#11632 | auto Nagrand;414§auto Nagrand;414§auto Nagrand;414 | x=-1523.700073242188 y=8517.2998046875 | size=1 | links=#17909(auto Nagrand;655):8
+#11667 | auto Nagrand;415§auto Nagrand;415§auto Nagrand;415 | x=-1213.5 y=6852.7001953125 | size=1 | links=#9325(auto Nagrand;326):11 #15738(auto Nagrand;585):30
+#11689 | auto Nagrand;416§auto Nagrand;416§auto Nagrand;416 | x=-2186.300048828125 y=8631.1005859375 | size=5 | links=#13152(auto Nagrand;475):38
+#11735 | auto Nagrand;417§auto Nagrand;417§auto Nagrand;417 | x=-1522 y=8639.400390625 | size=1 | links=#2809(auto Nagrand;88):13 #20963(auto Nagrand;754):16
+#11742 | auto Nagrand;418§auto Nagrand;418§auto Nagrand;418 | x=-2327 y=7207.60009765625 | size=1 | links=#22577(auto Nagrand;805):28
+#11743 | auto Nagrand;419§auto Nagrand;419§auto Nagrand;419 | x=-1372.800048828125 y=6618.80029296875 | size=5 | links=#18804(auto Nagrand;684):38 #24848(auto Nagrand;880):65
+#11796 | auto Nagrand;420§auto Nagrand;420§auto Nagrand;420 | x=-1774.5 y=7150.60009765625 | size=1 | links=#8061(auto Nagrand;284):15 #14100(auto Nagrand;522):14
+#11816 | auto Nagrand;421§auto Nagrand;421§auto Nagrand;421 | x=-1489.300048828125 y=8627.2998046875 | size=1 | links=#8314(auto Nagrand;298):16 #20963(auto Nagrand;754):19
+#11821 | auto Nagrand;422§auto Nagrand;422§auto Nagrand;422 | x=-1555.5 y=8585.7998046875 | size=1 | links=#4305(auto Nagrand;150):13 #8244(auto Nagrand;294):16
+#11878 | auto Nagrand;423§auto Nagrand;423§auto Nagrand;423 | x=-2798.699951171875 y=6413.80029296875 | size=1 | links=#10121(auto Nagrand;351):17 #12051(auto Nagrand;429):20
+#11892 | auto Nagrand;424§auto Nagrand;424§auto Nagrand;424 | x=-822.1000366210938 y=8727.1005859375 | size=1 | links=#2631(auto Nagrand;79):18 #23957(auto Nagrand;853):17
+#11907 | auto Nagrand;425§auto Nagrand;425§auto Nagrand;425 | x=-1145.599975585938 y=8418.5 | size=5 | links=#9265(auto Nagrand;323):84 #20375(auto Nagrand;721):53 #25670(auto Nagrand;900):83
+#11960 | auto Nagrand;426§auto Nagrand;426§auto Nagrand;426 | x=-1739 y=6898.30029296875 | size=5 | links=#5025(auto Nagrand;170):53 #7929(auto Nagrand;280):63
+#12019 | auto Nagrand;427§auto Nagrand;427§auto Nagrand;427 | x=-915.6000366210938 y=8015.60009765625 | size=1 | links=#10765(auto Nagrand;376):23 #14558(auto Nagrand;540):29 #23942(auto Nagrand;852):24
+#12041 | auto Nagrand;428§auto Nagrand;428§auto Nagrand;428 | x=-2915.900146484375 y=5959.10009765625 | size=1 | links=#18313(auto Nagrand;664):63 #23758(auto Nagrand;848):41
+#12051 | auto Nagrand;429§auto Nagrand;429§auto Nagrand;429 | x=-2801.10009765625 y=6393 | size=1 | links=#1099(auto Nagrand;26):15 #11878(auto Nagrand;423):20
+#12073 | auto Nagrand;430§auto Nagrand;430§auto Nagrand;430 | x=-1497 y=8559.5 | size=1 | links=#2014(auto Nagrand;54):19 #19863(auto Nagrand;710):22
+#12119 | auto Nagrand;431§auto Nagrand;431§auto Nagrand;431 | x=-2068.10009765625 y=7464.30029296875 | size=1 | links=#9486(auto Nagrand;335):0 #26350(auto Nagrand;917):10
+#12146 | auto Nagrand;432§auto Nagrand;432§auto Nagrand;432 | x=-2724.900146484375 y=7305.10009765625 | size=1 | links=#20609(auto Nagrand;738):27
+#12153 | auto Nagrand;433§auto Nagrand;433§auto Nagrand;433 | x=-2108.199951171875 y=6514.89990234375 | size=1 | links=#23389(auto Nagrand;835):26 #26015(auto Nagrand;908):39
+#12196 | auto Nagrand;434§auto Nagrand;434§auto Nagrand;434 | x=-2360.400146484375 y=7995 | size=5 | links=#7393(auto Nagrand;252):62 #13164(auto Nagrand;476):0
+#12198 | auto Nagrand;435§auto Nagrand;435§auto Nagrand;435 | x=-2619.400146484375 y=7318.5 | size=1 | links=#9612(auto Nagrand;342):11 #15015(auto Nagrand;557):12
+#12243 | auto Nagrand;436§auto Nagrand;436§auto Nagrand;436 | x=-1519.800048828125 y=7218.2001953125 | size=1 | links=#16514(auto Nagrand;608):23 #26909(auto Nagrand;935):4
+#12254 | auto Nagrand;437§auto Nagrand;437§auto Nagrand;437 | x=-2035.700073242188 y=6287.80029296875 | size=1 | links=#7816(auto Nagrand;269):24
+#12260 | auto Nagrand;438§auto Nagrand;438§auto Nagrand;438 | x=-2040.5 y=7853 | size=1 | links=#4330(auto Nagrand;151):28 #23643(auto Nagrand;845):30
+#12298 | auto Nagrand;439§auto Nagrand;439§auto Nagrand;439 | x=-2135.400146484375 y=7221.60009765625 | size=1 | links=#14211(auto Nagrand;525):22 #16543(auto Nagrand;611):9
+#12301 | auto Nagrand;440§auto Nagrand;440§auto Nagrand;440 | x=-1474.099975585938 y=8734.1005859375 | size=5 | links=#17027(auto Nagrand;628):32 #20355(auto Nagrand;720):46 #22931(auto Nagrand;815):52
+#12350 | auto Nagrand;441§auto Nagrand;441§auto Nagrand;441 | x=-853.7999877929688 y=7828.80029296875 | size=5 | links=#13966(auto Nagrand;516):55 #26366(auto Nagrand;920):16
+#12382 | auto Nagrand;442§auto Nagrand;442§auto Nagrand;442 | x=-2701.800048828125 y=7340.39990234375 | size=1 | links=#8177(auto Nagrand;291):17 #12662(auto Nagrand;454):15
+#12408 | auto Nagrand;443§auto Nagrand;443§auto Nagrand;443 | x=-2705.800048828125 y=7271.10009765625 | size=1 | links=#13420(auto Nagrand;489):10 #27486(auto Nagrand;957):17
+#12461 | auto Nagrand;444§auto Nagrand;444§auto Nagrand;444 | x=-2519.5 y=7217.60009765625 | size=1 | links=#23228(auto Nagrand;827):6 #28038(auto Nagrand;973):6
+#12512 | auto Nagrand;445§auto Nagrand;445§auto Nagrand;445 | x=-1436.800048828125 y=7405.5 | size=5 | links=#15545(auto Nagrand;574):2 #19964(auto Nagrand;712):79
+#12564 | auto Nagrand;446§auto Nagrand;446§auto Nagrand;446 | x=-2083.400146484375 y=6360.80029296875 | size=5 | links=#11249(auto Nagrand;396):69 #28488(auto Nagrand;986):37
+#12575 | auto Nagrand;447§auto Nagrand;447§auto Nagrand;447 | x=-2493.400146484375 y=7060.60009765625 | size=1 | links=#1753(auto Nagrand;46):79 #5456(auto Nagrand;186):48 #9805(auto Nagrand;347):54
+#12598 | auto Nagrand;448§auto Nagrand;448§auto Nagrand;448 | x=-1460.800048828125 y=8493.2998046875 | size=1 | links=#22002(auto Nagrand;785):16 #24149(auto Nagrand;857):10 #26867(auto Nagrand;931):15
+#12614 | auto Nagrand;449§auto Nagrand;449§auto Nagrand;449 | x=-1539 y=8562.2998046875 | size=1 | links=#5399(auto Nagrand;181):10 #8244(auto Nagrand;294):12
+#12615 | auto Nagrand;450§auto Nagrand;450§auto Nagrand;450 | x=-2631.10009765625 y=7282.60009765625 | size=1 | links=#4115(auto Nagrand;141):28
+#12617 | auto Nagrand;451§auto Nagrand;451§auto Nagrand;451 | x=-1461.599975585938 y=6507.60009765625 | size=1 | links=#11360(auto Nagrand;398):46 #17093(auto Nagrand;630):33
+#12639 | auto Nagrand;452§auto Nagrand;452§auto Nagrand;452 | x=-955.7000122070312 y=8307.900390625 | size=1 | links=#23555(auto Nagrand;839):38 #25439(auto Nagrand;895):24
+#12659 | auto Nagrand;453§auto Nagrand;453§auto Nagrand;453 | x=-2277.699951171875 y=8434.1005859375 | size=5 | links=#20983(auto Nagrand;755):64 #22507(auto Nagrand;802):47
+#12662 | auto Nagrand;454§auto Nagrand;454§auto Nagrand;454 | x=-2716.199951171875 y=7347.10009765625 | size=1 | links=#2467(auto Nagrand;73):22 #12382(auto Nagrand;442):15
+#12675 | waters;rescue;Telaari Basin;Nagrand;down§gewässer;rettung;Telaaribecken;Nagrand;unten§eaux;sauvetage;Bassin telaari;Nagrand;bas | x=-2427 y=7260.5 | size=1 | links=#3323(auto Nagrand;106):42 #7727(auto Nagrand;265):28 #8311(auto Nagrand;297):36 #15588(auto Nagrand;575):32 #20171(auto Nagrand;716):46
+#12676 | auto Nagrand;455§auto Nagrand;455§auto Nagrand;455 | x=-1117.200073242188 y=8553.900390625 | size=1 | links=#3319(auto Nagrand;105):18 #9780(auto Nagrand;346):8
+#12722 | auto Nagrand;456§auto Nagrand;456§auto Nagrand;456 | x=-2392.60009765625 y=7455.5 | size=1 | links=#4254(auto Nagrand;148):11 #27926(auto Nagrand;967):6
+#12789 | auto Nagrand;457§auto Nagrand;457§auto Nagrand;457 | x=-2432.199951171875 y=7673.89990234375 | size=5 | links=#5108(auto Nagrand;174):37 #21961(auto Nagrand;782):35
+#12805 | auto Nagrand;458§auto Nagrand;458§auto Nagrand;458 | x=-2591.800048828125 y=6853.89990234375 | size=1 | links=#20680(auto Nagrand;740):17
+#12838 | auto Nagrand;459§auto Nagrand;459§auto Nagrand;459 | x=-2234.199951171875 y=8591.2998046875 | size=5 | links=#2339(auto Nagrand;66):25
+#12862 | auto Nagrand;460§auto Nagrand;460§auto Nagrand;460 | x=-2355.800048828125 y=7040.2001953125 | size=5 | links=#7684(auto Nagrand;261):103 #8986(auto Nagrand;317):71
+#12885 | auto Nagrand;461§auto Nagrand;461§auto Nagrand;461 | x=-2374.300048828125 y=7508.7001953125 | size=1 | links=#13479(auto Nagrand;493):22 #15630(auto Nagrand;578):23
+#12895 | auto Nagrand;462§auto Nagrand;462§auto Nagrand;462 | x=-1520.200073242188 y=8552.2998046875 | size=1 | links=#2014(auto Nagrand;54):4 #5399(auto Nagrand;181):12 #10134(auto Nagrand;352):5 #24709(auto Nagrand;873):14
+#12906 | auto Nagrand;463§auto Nagrand;463§auto Nagrand;463 | x=-767.2999877929688 y=8859.2001953125 | size=1 | links=#16603(auto Nagrand;615):27 #24830(auto Nagrand;878):25
+#12927 | auto Nagrand;464§auto Nagrand;464§auto Nagrand;464 | x=-2172.900146484375 y=7184.10009765625 | size=1 | links=#23601(auto Nagrand;842):15 #24249(auto Nagrand;861):17
+#12929 | auto Nagrand;465§auto Nagrand;465§auto Nagrand;465 | x=-1579.5 y=8073.30029296875 | size=1 | links=#1484(auto Nagrand;36):109
+#12957 | auto Nagrand;466§auto Nagrand;466§auto Nagrand;466 | x=-2511.900146484375 y=7994.2001953125 | size=1 | links=#2280(auto Nagrand;63):7
+#12973 | auto Nagrand;467§auto Nagrand;467§auto Nagrand;467 | x=-1927.900024414063 y=7641.10009765625 | size=1 | links=#15642(auto Nagrand;580):51 #27417(auto Nagrand;951):29
+#13025 | auto Nagrand;468§auto Nagrand;468§auto Nagrand;468 | x=-1047.800048828125 y=8086.5 | size=1 | links=#13338(auto Nagrand;486):24 #19484(graveyard;one;Northwind Cleft;Nagrand):32
+#13032 | auto Nagrand;469§auto Nagrand;469§auto Nagrand;469 | x=-874.7000122070312 y=7958.89990234375 | size=1 | links=#14558(auto Nagrand;540):40 #16559(auto Nagrand;612):37
+#13054 | auto Nagrand;470§auto Nagrand;470§auto Nagrand;470 | x=-2327.699951171875 y=7403.5 | size=1 | links=#1111(auto Nagrand;27):41 #16198(auto Nagrand;595):30
+#13079 | auto Nagrand;471§auto Nagrand;471§auto Nagrand;471 | x=-1067.800048828125 y=8774.1005859375 | size=1 | links=#19880(auto Nagrand;711):15 #28301(auto Nagrand;982):19
+#13094 | auto Nagrand;472§auto Nagrand;472§auto Nagrand;472 | x=-1840.800048828125 y=6513.5 | size=1 | links=#16599(auto Nagrand;614):54 #28331(auto Nagrand;983):51
+#13146 | auto Nagrand;473§auto Nagrand;473§auto Nagrand;473 | x=-2181.300048828125 y=7785.10009765625 | size=5 | links=#330(auto Nagrand;7):48 #5827(auto Nagrand;199):50
+#13147 | auto Nagrand;474§auto Nagrand;474§auto Nagrand;474 | x=-2285.900146484375 y=7269.39990234375 | size=1 | links=#17589(auto Nagrand;643):6 #21850(auto Nagrand;777):9
+#13152 | auto Nagrand;475§auto Nagrand;475§auto Nagrand;475 | x=-2147.900146484375 y=8633.6005859375 | size=5 | links=#11689(auto Nagrand;416):38 #13608(auto Nagrand;500):36
+#13164 | auto Nagrand;476§auto Nagrand;476§auto Nagrand;476 | x=-2360.400146484375 y=7995 | size=1 | links=#12196(auto Nagrand;434):0 #15689(auto Nagrand;583):49
+#13169 | auto Nagrand;477§auto Nagrand;477§auto Nagrand;477 | x=-2237 y=7274.30029296875 | size=1 | links=#9302(auto Nagrand;325):37 #27743(auto Nagrand;962):12
+#13172 | auto Nagrand;478§auto Nagrand;478§auto Nagrand;478 | x=-2157 y=7335.30029296875 | size=1 | links=#2859(auto Nagrand;90):32 #13815(auto Nagrand;510):60
+#13173 | auto Nagrand;479§auto Nagrand;479§auto Nagrand;479 | x=-2575.800048828125 y=7157.10009765625 | size=1 | links=#1610(auto Nagrand;40):22 #16626(waters;rescue;Telaar;Nagrand;top;three):13
+#13218 | auto Nagrand;480§auto Nagrand;480§auto Nagrand;480 | x=-2476.60009765625 y=6171.39990234375 | size=1 | links=#17360(auto Nagrand;638):9 #18712(auto Nagrand;680):30
+#13222 | auto Nagrand;481§auto Nagrand;481§auto Nagrand;481 | x=-1432.5 y=8860.1005859375 | size=5 | links=#870(auto Nagrand;23):35 #26977(auto Nagrand;937):29
+#13223 | auto Nagrand;482§auto Nagrand;482§auto Nagrand;482 | x=-2620.900146484375 y=6957.60009765625 | size=5 | links=#1753(auto Nagrand;46):91 #3018(auto Nagrand;98):38
+#13229 | auto Nagrand;483§auto Nagrand;483§auto Nagrand;483 | x=-1400.700073242188 y=8897.900390625 | size=5 | links=#870(auto Nagrand;23):14 #15426(auto Nagrand;569):2
+#13236 | auto Nagrand;484§auto Nagrand;484§auto Nagrand;484 | x=-2550.400146484375 y=7274.10009765625 | size=1 | links=#103(auto Nagrand;4):23 #8101(auto Nagrand;286):19 #16776(auto Nagrand;621):27
+#13257 | auto Nagrand;485§auto Nagrand;485§auto Nagrand;485 | x=-1424.700073242188 y=8512.6005859375 | size=1 | links=#22002(auto Nagrand;785):24 #26309(auto Nagrand;916):17
+#13338 | auto Nagrand;486§auto Nagrand;486§auto Nagrand;486 | x=-1037.099975585938 y=8108.30029296875 | size=1 | links=#7418(auto Nagrand;254):16 #13025(auto Nagrand;468):24
+#13355 | auto Nagrand;487§auto Nagrand;487§auto Nagrand;487 | x=-2468.900146484375 y=6228.10009765625 | size=1 | links=#18712(auto Nagrand;680):63 #20525(auto Nagrand;731):36
+#13402 | auto Nagrand;488§auto Nagrand;488§auto Nagrand;488 | x=-1461.300048828125 y=7372.30029296875 | size=1 | links=#13865(auto Nagrand;512):6 #15545(auto Nagrand;574):38
+#13420 | auto Nagrand;489§auto Nagrand;489§auto Nagrand;489 | x=-2716.10009765625 y=7274.2001953125 | size=1 | links=#12408(auto Nagrand;443):10
+#13423 | auto Nagrand;490§auto Nagrand;490§auto Nagrand;490 | x=-1069.099975585938 y=8725.2998046875 | size=1 | links=#3117(auto Nagrand;100):13 #19827(auto Nagrand;709):24
+#13427 | auto Nagrand;491§auto Nagrand;491§auto Nagrand;491 | x=-1520.300048828125 y=8569.6005859375 | size=1 | links=#24709(auto Nagrand;873):2
+#13477 | auto Nagrand;492§auto Nagrand;492§auto Nagrand;492 | x=-834.7999877929688 y=7730.10009765625 | size=1 | links=#2115(auto Nagrand;58):29 #7133(auto Nagrand;245):37
+#13479 | auto Nagrand;493§auto Nagrand;493§auto Nagrand;493 | x=-2377.300048828125 y=7531 | size=1 | links=#12885(auto Nagrand;461):22 #16195(auto Nagrand;594):21
+#13501 | auto Nagrand;494§auto Nagrand;494§auto Nagrand;494 | x=-1121.800048828125 y=8595.900390625 | size=5 | links=#2747(auto Nagrand;86):16 #3319(auto Nagrand;105):24
+#13524 | auto Nagrand;495§auto Nagrand;495§auto Nagrand;495 | x=-2142.699951171875 y=7931.2001953125 | size=1 | links=#14126(auto Nagrand;523):38 #17128(auto Nagrand;631):45
+#13555 | auto Nagrand;496§auto Nagrand;496§auto Nagrand;496 | x=-2913.199951171875 y=6386.80029296875 | size=1 | links=#15909(auto Nagrand;589):25 #16980(auto Nagrand;626):14 #20193(auto Nagrand;718):19
+#13585 | auto Nagrand;497§auto Nagrand;497§auto Nagrand;497 | x=-2443.400146484375 y=6271.10009765625 | size=1 | links=#6176(auto Nagrand;214):14
+#13591 | auto Nagrand;498§auto Nagrand;498§auto Nagrand;498 | x=-965.5 y=8167 | size=1 | links=#7569(auto Nagrand;258):7 #16228(auto Nagrand;596):7
+#13595 | auto Nagrand;499§auto Nagrand;499§auto Nagrand;499 | x=-1514 y=8504.5 | size=1 | links=#597(auto Nagrand;14):13 #14355(auto Nagrand;535):18
+#13608 | auto Nagrand;500§auto Nagrand;500§auto Nagrand;500 | x=-2118.300048828125 y=8611.900390625 | size=1 | links=#9359(auto Nagrand;327):45 #13152(auto Nagrand;475):36 #13835(auto Nagrand;511):33
+#13609 | auto Nagrand;501§auto Nagrand;501§auto Nagrand;501 | x=-780.9000244140625 y=7806.80029296875 | size=1 | links=#27980(auto Nagrand;970):26
+#13649 | auto Nagrand;502§auto Nagrand;502§auto Nagrand;502 | x=-2450.60009765625 y=6139.60009765625 | size=1 | links=#17360(auto Nagrand;638):44 #22489(auto Nagrand;801):9
+#13703 | auto Nagrand;503§auto Nagrand;503§auto Nagrand;503 | x=-2337.199951171875 y=7652.10009765625 | size=5 | links=#2016(auto Nagrand;55):50 #17150(auto Nagrand;632):53
+#13732 | auto Nagrand;504§auto Nagrand;504§auto Nagrand;504 | x=-1464.900024414063 y=6437.10009765625 | size=1 | links=#5721(auto Nagrand;194):66 #11360(auto Nagrand;398):47
+#13753 | auto Nagrand;505§auto Nagrand;505§auto Nagrand;505 | x=-1032.700073242188 y=6869 | size=5 | links=#7107(auto Nagrand;243):31 #21593(auto Nagrand;775):33
+#13757 | auto Nagrand;506§auto Nagrand;506§auto Nagrand;506 | x=-1611.099975585938 y=8504.900390625 | size=1 | links=#19502(auto Nagrand;701):17
+#13803 | auto Nagrand;507§auto Nagrand;507§auto Nagrand;507 | x=-1221 y=7604.60009765625 | size=1 | links=#15484(auto Nagrand;572):50 #21081(auto Nagrand;758):62
+#13805 | auto Nagrand;508§auto Nagrand;508§auto Nagrand;508 | x=-2657.699951171875 y=7220.89990234375 | size=1 | links=#11299(auto Nagrand;397):7 #19464(auto Nagrand;698):31 #28352(auto Nagrand;984):19
+#13814 | auto Nagrand;509§auto Nagrand;509§auto Nagrand;509 | x=-871.7999877929688 y=8928.7998046875 | size=1 | links=#17286(auto Nagrand;636):13 #27880(auto Nagrand;966):19
+#13815 | auto Nagrand;510§auto Nagrand;510§auto Nagrand;510 | x=-2214.400146484375 y=7354.2001953125 | size=1 | links=#6008(auto Nagrand;206):48 #13172(auto Nagrand;478):60 #25623(auto Nagrand;898):18
+#13835 | auto Nagrand;511§auto Nagrand;511§auto Nagrand;511 | x=-2120.5 y=8578.7998046875 | size=1 | links=#13608(auto Nagrand;500):33 #16708(auto Nagrand;619):25
+#13865 | auto Nagrand;512§auto Nagrand;512§auto Nagrand;512 | x=-1464.900024414063 y=7367.39990234375 | size=1 | links=#4731(auto Nagrand;162):16 #13402(auto Nagrand;488):6
+#13867 | auto Nagrand;513§auto Nagrand;513§auto Nagrand;513 | x=-2227.800048828125 y=7158.10009765625 | size=1 | links=#18260(auto Nagrand;662):14 #24214(auto Nagrand;860):16
+#13915 | auto Nagrand;514§auto Nagrand;514§auto Nagrand;514 | x=-2519.199951171875 y=6258.80029296875 | size=1 | links=#7586(auto Nagrand;259):37 #20525(auto Nagrand;731):36
+#13950 | auto Nagrand;515§auto Nagrand;515§auto Nagrand;515 | x=-1519.300048828125 y=8445.5 | size=1 | links=#4373(auto Nagrand;154):21 #18836(auto Nagrand;685):13
+#13966 | auto Nagrand;516§auto Nagrand;516§auto Nagrand;516 | x=-857.7999877929688 y=7884.5 | size=1 | links=#12350(auto Nagrand;441):55 #16559(auto Nagrand;612):38
+#13996 | auto Nagrand;517§auto Nagrand;517§auto Nagrand;517 | x=-2636.300048828125 y=7540.80029296875 | size=1 | links=#366(auto Nagrand;8):16 #11565(auto Nagrand;408):16
+#14014 | auto Nagrand;518§auto Nagrand;518§auto Nagrand;518 | x=-885.6000366210938 y=8079.10009765625 | size=5 | links=#3891(auto Nagrand;132):21 #11438(auto Nagrand;403):45
+#14053 | auto Nagrand;519§auto Nagrand;519§auto Nagrand;519 | x=-2042.5 y=8135.89990234375 | size=1 | links=#7458(auto Nagrand;256):38 #10415(auto Nagrand;359):41
+#14057 | auto Nagrand;520§auto Nagrand;520§auto Nagrand;520 | x=-1574.400024414063 y=8543.7001953125 | size=1
+#14092 | auto Nagrand;521§auto Nagrand;521§auto Nagrand;521 | x=-2070.699951171875 y=8603.6005859375 | size=1 | links=#5231(auto Nagrand;177):15 #8395(auto Nagrand;303):11
+#14100 | auto Nagrand;522§auto Nagrand;522§auto Nagrand;522 | x=-1780.5 y=7164.30029296875 | size=1 | links=#11796(auto Nagrand;420):14 #27551(auto Nagrand;959):33
+#14126 | auto Nagrand;523§auto Nagrand;523§auto Nagrand;523 | x=-2135.60009765625 y=7968.7001953125 | size=1 | links=#8344(auto Nagrand;300):49 #13524(auto Nagrand;495):38
+#14202 | auto Nagrand;524§auto Nagrand;524§auto Nagrand;524 | x=-2638.300048828125 y=6298.39990234375 | size=1 | links=#2688(auto Nagrand;82):38 #7943(auto Nagrand;281):27 #18532(auto Nagrand;676):35 #20546(auto Nagrand;733):45
+#14211 | auto Nagrand;525§auto Nagrand;525§auto Nagrand;525 | x=-2117 y=7208.39990234375 | size=1 | links=#12298(auto Nagrand;439):22 #24495(auto Nagrand;869):19
+#14212 | auto Nagrand;526§auto Nagrand;526§auto Nagrand;526 | x=-1995.900024414063 y=8718.7001953125 | size=1 | links=#9234(auto Nagrand;322):67 #16597(auto Nagrand;613):71
+#14213 | auto Nagrand;527§auto Nagrand;527§auto Nagrand;527 | x=-2451 y=7351.60009765625 | size=1 | links=#6129(auto Nagrand;211):24 #21321(auto Nagrand;772):33
+#14232 | auto Nagrand;528§auto Nagrand;528§auto Nagrand;528 | x=-1133.700073242188 y=7851.2001953125 | size=1 | links=#20799(auto Nagrand;748):38 #22640(auto Nagrand;808):28
+#14253 | auto Nagrand;529§auto Nagrand;529§auto Nagrand;529 | x=-2694 y=7289.30029296875 | size=1 | links=#17955(auto Nagrand;658):21 #18299(auto Nagrand;663):20
+#14256 | auto Nagrand;530§auto Nagrand;530§auto Nagrand;530 | x=-1384.300048828125 y=8547.7001953125 | size=1 | links=#6537(auto Nagrand;228):26 #22861(auto Nagrand;812):19 #27245(auto Nagrand;945):20
+#14276 | auto Nagrand;531§auto Nagrand;531§auto Nagrand;531 | x=-2326 y=7239.60009765625 | size=1 | links=#7118(auto Nagrand;244):3 #15419(auto Nagrand;568):2
+#14289 | auto Nagrand;532§auto Nagrand;532§auto Nagrand;532 | x=-944.4000244140625 y=8125 | size=1 | links=#3514(auto Nagrand;114):8 #21160(auto Nagrand;764):11
+#14312 | auto Nagrand;533§auto Nagrand;533§auto Nagrand;533 | x=-2443.800048828125 y=6121.2001953125 | size=1 | links=#11461(auto Nagrand;404):11 #22489(auto Nagrand;801):10
+#14348 | auto Nagrand;534§auto Nagrand;534§auto Nagrand;534 | x=-2786.699951171875 y=6700.2001953125 | size=1
+#14355 | auto Nagrand;535§auto Nagrand;535§auto Nagrand;535 | x=-1509.900024414063 y=8486.1005859375 | size=1 | links=#13595(auto Nagrand;499):18 #22308(auto Nagrand;795):8
+#14369 | auto Nagrand;536§auto Nagrand;536§auto Nagrand;536 | x=-2301.900146484375 y=7238.5 | size=1 | links=#1472(auto Nagrand;35):5 #17519(auto Nagrand;641):10
+#14411 | auto Nagrand;537§auto Nagrand;537§auto Nagrand;537 | x=-2816.60009765625 y=6535.89990234375 | size=1 | links=#15108(auto Nagrand;559):4
+#14474 | auto Nagrand;538§auto Nagrand;538§auto Nagrand;538 | x=-1568.599975585938 y=6676.7001953125 | size=5 | links=#9649(auto Nagrand;344):27 #14567(auto Nagrand;541):77
+#14507 | auto Nagrand;539§auto Nagrand;539§auto Nagrand;539 | x=-1822.200073242188 y=7384 | size=5 | links=#4002(auto Nagrand;134):69 #11228(auto Nagrand;394):61
+#14558 | auto Nagrand;540§auto Nagrand;540§auto Nagrand;540 | x=-899.2000122070312 y=7991.30029296875 | size=1 | links=#12019(auto Nagrand;427):29 #13032(auto Nagrand;469):40
+#14567 | auto Nagrand;541§auto Nagrand;541§auto Nagrand;541 | x=-1608.400024414063 y=6743 | size=5 | links=#14474(auto Nagrand;538):77 #17049(auto Nagrand;629):69
+#14614 | auto Nagrand;542§auto Nagrand;542§auto Nagrand;542 | x=-2338 y=7286.10009765625 | size=1 | links=#5258(auto Nagrand;178):4 #22973(auto Nagrand;818):5
+#14619 | auto Nagrand;543§auto Nagrand;543§auto Nagrand;543 | x=-836.7000122070312 y=8770.1005859375 | size=1 | links=#7335(auto Nagrand;249):5 #17695(auto Nagrand;647):8
+#14651 | auto Nagrand;544§auto Nagrand;544§auto Nagrand;544 | x=-2907.10009765625 y=6550.2001953125 | size=1 | links=#2306(auto Nagrand;65):18 #20176(auto Nagrand;717):19
+#14666 | auto Nagrand;545§auto Nagrand;545§auto Nagrand;545 | x=-2299.900146484375 y=8310 | size=5 | links=#6406(auto Nagrand;222):32 #26882(auto Nagrand;932):29
+#14675 | auto Nagrand;546§auto Nagrand;546§auto Nagrand;546 | x=-2571.5 y=7431.7001953125 | size=1 | links=#8551(auto Nagrand;306):7 #17696(auto Nagrand;648):11
+#14702 | auto Nagrand;547§auto Nagrand;547§auto Nagrand;547 | x=-1003.400024414063 y=7983.89990234375 | size=5 | links=#8709(auto Nagrand;310):39 #23139(auto Nagrand;822):88
+#14737 | auto Nagrand;548§auto Nagrand;548§auto Nagrand;548 | x=-773.4000244140625 y=8808 | size=5 | links=#24830(auto Nagrand;878):25 #26181(auto Nagrand;914):38 #28138(auto Nagrand;977):41
+#14739 | auto Nagrand;549§auto Nagrand;549§auto Nagrand;549 | x=-2065.5 y=7459.39990234375 | size=1 | links=#4026(auto Nagrand;135):4 #9486(auto Nagrand;335):5
+#14764 | auto Nagrand;550§auto Nagrand;550§auto Nagrand;550 | x=-763.2999877929688 y=7774.2001953125 | size=1 | links=#7380(auto Nagrand;251):14
+#14778 | auto Nagrand;551§auto Nagrand;551§auto Nagrand;551 | x=-2632.699951171875 y=7354.80029296875 | size=1 | links=#7731(auto Nagrand;266):6 #17810(auto Nagrand;652):11
+#14831 | auto Nagrand;552§auto Nagrand;552§auto Nagrand;552 | x=-760 y=7899.39990234375 | size=1 | links=#8939(auto Nagrand;316):28 #25992(auto Nagrand;905):13
+#14854 | auto Nagrand;553§auto Nagrand;553§auto Nagrand;553 | x=-2989 y=6395.89990234375 | size=1 | links=#4913(auto Nagrand;165):6 #7695(auto Nagrand;262):7
+#14871 | auto Nagrand;554§auto Nagrand;554§auto Nagrand;554 | x=-2338.300048828125 y=7823.5 | size=1 | links=#8293(auto Nagrand;296):20
+#14887 | auto Nagrand;555§auto Nagrand;555§auto Nagrand;555 | x=-926.2999877929688 y=8312.7998046875 | size=1 | links=#22941(auto Nagrand;816):30 #25439(auto Nagrand;895):38
+#14902 | auto Nagrand;556§auto Nagrand;556§auto Nagrand;556 | x=-2567.400146484375 y=7189.10009765625 | size=1 | links=#22274(auto Nagrand;794):23 #27455(auto Nagrand;955):17
+#15015 | auto Nagrand;557§auto Nagrand;557§auto Nagrand;557 | x=-2607.699951171875 y=7314 | size=1 | links=#12198(auto Nagrand;435):12 #27072(waters;rescue;Telaar;Nagrand;one):13
+#15026 | auto Nagrand;558§auto Nagrand;558§auto Nagrand;558 | x=-2265.300048828125 y=7198.5 | size=1 | links=#15238(auto Nagrand;563):17 #23250(auto Nagrand;828):21
+#15108 | auto Nagrand;559§auto Nagrand;559§auto Nagrand;559 | x=-2811.900146484375 y=6535.10009765625 | size=1 | links=#3716(auto Nagrand;123):16 #14411(auto Nagrand;537):4
+#15149 | waters;rescue;Telaar;Nagrand;two§gewässer;rettung;Telaar;Nagrand;zwei§eaux;sauvetage;Telaar;Nagrand;deux | x=-2620.5 y=7240.7001953125 | size=1 | links=#1634(auto Nagrand;42):15 #10851(auto Nagrand;378):20 #27221(auto Nagrand;944):12
+#15175 | auto Nagrand;560§auto Nagrand;560§auto Nagrand;560 | x=-1914.300048828125 y=6354.5 | size=1 | links=#1422(auto Nagrand;34):3
+#15180 | auto Nagrand;561§auto Nagrand;561§auto Nagrand;561 | x=-2396.60009765625 y=7375.89990234375 | size=1 | links=#1111(auto Nagrand;27):33 #26918(auto Nagrand;936):13
+#15223 | auto Nagrand;562§auto Nagrand;562§auto Nagrand;562 | x=-2154.60009765625 y=7216.60009765625 | size=1 | links=#16543(auto Nagrand;611):10 #24159(auto Nagrand;858):9
+#15238 | auto Nagrand;563§auto Nagrand;563§auto Nagrand;563 | x=-2263.400146484375 y=7180.7001953125 | size=1 | links=#377(auto Nagrand;10):22 #15026(auto Nagrand;558):17
+#15275 | auto Nagrand;564§auto Nagrand;564§auto Nagrand;564 | x=-867.7999877929688 y=8752.7001953125 | size=1 | links=#5547(auto Nagrand;189):10 #21256(auto Nagrand;770):10
+#15331 | auto Nagrand;565§auto Nagrand;565§auto Nagrand;565 | x=-2019.599975585938 y=8307.400390625 | size=1 | links=#5818(auto Nagrand;198):29 #7848(auto Nagrand;272):60
+#15335 | auto Nagrand;566§auto Nagrand;566§auto Nagrand;566 | x=-3001.400146484375 y=6358.60009765625 | size=1 | links=#18384(auto Nagrand;667):12 #18623(auto Nagrand;679):12
+#15418 | auto Nagrand;567§auto Nagrand;567§auto Nagrand;567 | x=-2589.699951171875 y=7290.39990234375 | size=1 | links=#3473(auto Nagrand;111):16 #21930(auto Nagrand;780):12
+#15419 | auto Nagrand;568§auto Nagrand;568§auto Nagrand;568 | x=-2328.60009765625 y=7240 | size=1 | links=#2457(auto Nagrand;72):6 #14276(auto Nagrand;531):2
+#15426 | auto Nagrand;569§auto Nagrand;569§auto Nagrand;569 | x=-1399.300048828125 y=8899.5 | size=1 | links=#2157(auto Nagrand;59):8 #13229(auto Nagrand;483):2
+#15427 | auto Nagrand;570§auto Nagrand;570§auto Nagrand;570 | x=-835.2000122070312 y=7801.10009765625 | size=1 | links=#25119(auto Nagrand;888):23 #26366(auto Nagrand;920):18
+#15434 | auto Nagrand;571§auto Nagrand;571§auto Nagrand;571 | x=-1557.099975585938 y=8611.5 | size=1 | links=#4305(auto Nagrand;150):12 #20379(auto Nagrand;723):15
+#15484 | auto Nagrand;572§auto Nagrand;572§auto Nagrand;572 | x=-1235.5 y=7652.5 | size=1 | links=#10975(auto Nagrand;386):26 #11018(auto Nagrand;387):36 #13803(auto Nagrand;507):50
+#15504 | auto Nagrand;573§auto Nagrand;573§auto Nagrand;573 | x=-2437.10009765625 y=6614.89990234375 | size=5 | links=#8340(auto Nagrand;299):76 #9439(auto Nagrand;332):87
+#15545 | auto Nagrand;574§auto Nagrand;574§auto Nagrand;574 | x=-1438.200073242188 y=7403.5 | size=1 | links=#12512(auto Nagrand;445):2 #13402(auto Nagrand;488):38
+#15588 | auto Nagrand;575§auto Nagrand;575§auto Nagrand;575 | x=-2400.400146484375 y=7278.60009765625 | size=5 | links=#12675(waters;rescue;Telaari Basin;Nagrand;down):32 #20171(auto Nagrand;716):30 #26359(auto Nagrand;918):22
+#15607 | auto Nagrand;576§auto Nagrand;576§auto Nagrand;576 | x=-1439 y=8629.7001953125 | size=1 | links=#9480(auto Nagrand;334):18 #10439(auto Nagrand;360):24 #11426(auto Nagrand;402):15
+#15620 | auto Nagrand;577§auto Nagrand;577§auto Nagrand;577 | x=-2348.10009765625 y=7343.10009765625 | size=1 | links=#23585(auto Nagrand;840):22 #27444(auto Nagrand;953):18
+#15630 | auto Nagrand;578§auto Nagrand;578§auto Nagrand;578 | x=-2379 y=7486 | size=1 | links=#4254(auto Nagrand;148):22 #12885(auto Nagrand;461):23
+#15637 | auto Nagrand;579§auto Nagrand;579§auto Nagrand;579 | x=-2930.800048828125 y=6482.10009765625 | size=1 | links=#1120(auto Nagrand;28):15 #4208(auto Nagrand;145):21
+#15642 | auto Nagrand;580§auto Nagrand;580§auto Nagrand;580 | x=-1877.700073242188 y=7651.10009765625 | size=1 | links=#12973(auto Nagrand;467):51 #17371(auto Nagrand;639):11
+#15682 | auto Nagrand;581§auto Nagrand;581§auto Nagrand;581 | x=-2315.900146484375 y=7239.5 | size=1 | links=#1472(auto Nagrand;35):8 #7118(auto Nagrand;244):7
+#15683 | auto Nagrand;582§auto Nagrand;582§auto Nagrand;582 | x=-2531.699951171875 y=7194.89990234375 | size=1 | links=#1934(auto Nagrand;51):4 #11235(auto Nagrand;395):4
+#15689 | auto Nagrand;583§auto Nagrand;583§auto Nagrand;583 | x=-2310.800048828125 y=7992.30029296875 | size=5 | links=#650(auto Nagrand;17):46 #13164(auto Nagrand;476):49
+#15702 | entry and exit;Nagrand;to;Zangarmarsh§ein- und ausgang;Nagrand;zum;zangarmarschen§entrée et sortie;Nagrand;vers;Marécage de Zangar | x=-443.8999938964844 y=8415.400390625 | size=1 | links=#21929(auto Nagrand;779):9
+#15725 | auto Nagrand;584§auto Nagrand;584§auto Nagrand;584 | x=-1533.599975585938 y=7202.7001953125 | size=1 | links=#19538(auto Nagrand;703):35 #26909(auto Nagrand;935):15
+#15738 | auto Nagrand;585§auto Nagrand;585§auto Nagrand;585 | x=-1186.5 y=6866.5 | size=1 | links=#7498(auto Nagrand;257):24 #11667(auto Nagrand;415):30
+#15841 | auto Nagrand;586§auto Nagrand;586§auto Nagrand;586 | x=-2642.10009765625 y=7137 | size=1 | links=#18967(auto Nagrand;688):24
+#15852 | auto Nagrand;587§auto Nagrand;587§auto Nagrand;587 | x=-2781.300048828125 y=7345.89990234375 | size=1 | links=#1133(auto Nagrand;29):6 #2380(auto Nagrand;69):7
+#15869 | auto Nagrand;588§auto Nagrand;588§auto Nagrand;588 | x=-1527.300048828125 y=8460.1005859375 | size=1 | links=#18836(auto Nagrand;685):6 #26782(auto Nagrand;929):12
+#15909 | auto Nagrand;589§auto Nagrand;589§auto Nagrand;589 | x=-2917.10009765625 y=6412.30029296875 | size=1 | links=#2345(auto Nagrand;68):27 #13555(auto Nagrand;496):25
+#15913 | auto Nagrand;590§auto Nagrand;590§auto Nagrand;590 | x=-1632.400024414063 y=7000.10009765625 | size=1 | links=#5989(auto Nagrand;204):40 #27704(auto Nagrand;961):70
+#16180 | auto Nagrand;591§auto Nagrand;591§auto Nagrand;591 | x=-1005.900024414063 y=8164.39990234375 | size=1 | links=#21935(auto Nagrand;781):12 #24888(auto Nagrand;881):20
+#16183 | auto Nagrand;592§auto Nagrand;592§auto Nagrand;592 | x=-2002.5 y=7685.2001953125 | size=1 | links=#4102(auto Nagrand;140):12 #18449(auto Nagrand;670):18
+#16190 | auto Nagrand;593§auto Nagrand;593§auto Nagrand;593 | x=-2601.10009765625 y=7232.7001953125 | size=1 | links=#10320(auto Nagrand;356):15 #18988(auto Nagrand;690):13
+#16195 | auto Nagrand;594§auto Nagrand;594§auto Nagrand;594 | x=-2383.5 y=7551.39990234375 | size=1 | links=#2192(auto Nagrand;61):26 #13479(auto Nagrand;493):21
+#16198 | auto Nagrand;595§auto Nagrand;595§auto Nagrand;595 | x=-2299.699951171875 y=7415.60009765625 | size=1 | links=#13054(auto Nagrand;470):30 #27412(auto Nagrand;950):5
+#16228 | auto Nagrand;596§auto Nagrand;596§auto Nagrand;596 | x=-968.7999877929688 y=8173.7001953125 | size=1 | links=#10525(auto Nagrand;366):13 #13591(auto Nagrand;498):7
+#16230 | auto Nagrand;597§auto Nagrand;597§auto Nagrand;597 | x=-2326.5 y=6388.39990234375 | size=5 | links=#5940(auto Nagrand;202):53 #25586(auto Nagrand;897):55
+#16259 | auto Nagrand;598§auto Nagrand;598§auto Nagrand;598 | x=-2899.800048828125 y=6355 | size=1 | links=#10709(auto Nagrand;371):21 #20193(auto Nagrand;718):17
+#16265 | auto Nagrand;599§auto Nagrand;599§auto Nagrand;599 | x=-1816.900024414063 y=7229.80029296875 | size=1 | links=#4334(auto Nagrand;152):17 #20045(auto Nagrand;713):9
+#16303 | auto Nagrand;600§auto Nagrand;600§auto Nagrand;600 | x=-1999.900024414063 y=7730.2001953125 | size=1 | links=#18449(auto Nagrand;670):27 #24304(auto Nagrand;863):22
+#16311 | auto Nagrand;601§auto Nagrand;601§auto Nagrand;601 | x=-900.2999877929688 y=8920.1005859375 | size=1 | links=#17286(auto Nagrand;636):17 #19481(auto Nagrand;699):23
+#16342 | auto Nagrand;602§auto Nagrand;602§auto Nagrand;602 | x=-1952 y=7300.7001953125 | size=1 | links=#4902(auto Nagrand;164):22 #22919(auto Nagrand;814):11
+#16347 | auto Nagrand;603§auto Nagrand;603§auto Nagrand;603 | x=-859.5 y=8730.400390625 | size=1 | links=#3314(auto Nagrand;104):9 #16893(auto Nagrand;624):15 #26708(auto Nagrand;925):9
+#16370 | auto Nagrand;604§auto Nagrand;604§auto Nagrand;604 | x=-1408.700073242188 y=8592.7001953125 | size=1 | links=#6537(auto Nagrand;228):24 #10439(auto Nagrand;360):23
+#16402 | auto Nagrand;605§auto Nagrand;605§auto Nagrand;605 | x=-1122.700073242188 y=8677.400390625 | size=1 | links=#4304(auto Nagrand;149):22 #20764(auto Nagrand;746):11
+#16445 | auto Nagrand;606§auto Nagrand;606§auto Nagrand;606 | x=-972.5 y=8879.6005859375 | size=1 | links=#8924(auto Nagrand;315):14 #21907(auto Nagrand;778):16
+#16496 | auto Nagrand;607§auto Nagrand;607§auto Nagrand;607 | x=-2543.300048828125 y=7139 | size=1 | links=#4405(auto Nagrand;156):6 #28295(auto Nagrand;981):5
+#16514 | auto Nagrand;608§auto Nagrand;608§auto Nagrand;608 | x=-1511.400024414063 y=7239.7001953125 | size=1 | links=#12243(auto Nagrand;436):23 #18359(auto Nagrand;666):2
+#16532 | auto Nagrand;609§auto Nagrand;609§auto Nagrand;609 | x=-1745.300048828125 y=6539.5 | size=1 | links=#22221(auto Nagrand;792):42 #28331(auto Nagrand;983):47
+#16538 | auto Nagrand;610§auto Nagrand;610§auto Nagrand;610 | x=-2791.60009765625 y=6442.39990234375 | size=1 | links=#10121(auto Nagrand;351):12 #27024(auto Nagrand;939):13
+#16543 | auto Nagrand;611§auto Nagrand;611§auto Nagrand;611 | x=-2144.5 y=7218.60009765625 | size=1 | links=#12298(auto Nagrand;439):9 #15223(auto Nagrand;562):10
+#16559 | auto Nagrand;612§auto Nagrand;612§auto Nagrand;612 | x=-862.4000244140625 y=7923.10009765625 | size=1 | links=#13032(auto Nagrand;469):37 #13966(auto Nagrand;516):38
+#16597 | auto Nagrand;613§auto Nagrand;613§auto Nagrand;613 | x=-1925 y=8723.1005859375 | size=5 | links=#3856(auto Nagrand;130):110 #14212(auto Nagrand;526):71 #27965(auto Nagrand;969):30
+#16599 | auto Nagrand;614§auto Nagrand;614§auto Nagrand;614 | x=-1895 y=6508.89990234375 | size=1 | links=#531(auto Nagrand;13):47 #13094(auto Nagrand;472):54
+#16603 | auto Nagrand;615§auto Nagrand;615§auto Nagrand;615 | x=-785 y=8880.5 | size=1 | links=#12906(auto Nagrand;463):27 #28231(auto Nagrand;979):28
+#16626 | waters;rescue;Telaar;Nagrand;top;three§gewässer;rettung;Telaar;Nagrand;oben;drei§eaux;sauvetage;Telaar;Nagrand;top;trois | x=-2571.699951171875 y=7169.60009765625 | size=1 | links=#8144(auto Nagrand;288):21 #13173(auto Nagrand;479):13
+#16652 | auto Nagrand;616§auto Nagrand;616§auto Nagrand;616 | x=-2090.800048828125 y=8724.2001953125 | size=5 | links=#6369(auto Nagrand;220):46 #19070(auto Nagrand;692):27
+#16693 | auto Nagrand;617§auto Nagrand;617§auto Nagrand;617 | x=-2013.300048828125 y=7773.10009765625 | size=1 | links=#23861(auto Nagrand;850):27 #24304(auto Nagrand;863):22
+#16707 | auto Nagrand;618§auto Nagrand;618§auto Nagrand;618 | x=-2734.199951171875 y=7279.80029296875 | size=1 | links=#4987(auto Nagrand;167):6
+#16708 | auto Nagrand;619§auto Nagrand;619§auto Nagrand;619 | x=-2095.199951171875 y=8578.900390625 | size=1 | links=#13835(auto Nagrand;511):25 #24181(auto Nagrand;859):5
+#16730 | auto Nagrand;620§auto Nagrand;620§auto Nagrand;620 | x=-2242.900146484375 y=7208.2001953125 | size=1 | links=#6424(auto Nagrand;223):11 #10186(auto Nagrand;353):18 #23086(waters;rescue;Telaari Basin;Nagrand;top):28 #24330(auto Nagrand;865):11
+#16776 | auto Nagrand;621§auto Nagrand;621§auto Nagrand;621 | x=-2527.5 y=7258.2001953125 | size=1 | links=#8882(auto Nagrand;312):25 #13236(auto Nagrand;484):27
+#16814 | auto Nagrand;622§auto Nagrand;622§auto Nagrand;622 | x=-2638.5 y=7255.2001953125 | size=1 | links=#27221(auto Nagrand;944):10
+#16868 | auto Nagrand;623§auto Nagrand;623§auto Nagrand;623 | x=-1961.599975585938 y=6290.2001953125 | size=1 | links=#19743(auto Nagrand;708):10
+#16893 | auto Nagrand;624§auto Nagrand;624§auto Nagrand;624 | x=-874.9000244140625 y=8732.1005859375 | size=1 | links=#9386(auto Nagrand;328):9 #16347(auto Nagrand;603):15
+#16965 | auto Nagrand;625§auto Nagrand;625§auto Nagrand;625 | x=-2981.5 y=6364.10009765625 | size=1 | links=#18384(auto Nagrand;667):13 #21194(auto Nagrand;767):13
+#16980 | auto Nagrand;626§auto Nagrand;626§auto Nagrand;626 | x=-2927 y=6384.39990234375 | size=1 | links=#8176(auto Nagrand;290):8 #13555(auto Nagrand;496):14
+#17004 | auto Nagrand;627§auto Nagrand;627§auto Nagrand;627 | x=-2380.199951171875 y=7394.30029296875 | size=1 | links=#2831(auto Nagrand;89):34 #17218(auto Nagrand;634):17 #22405(auto Nagrand;798):26
+#17027 | auto Nagrand;628§auto Nagrand;628§auto Nagrand;628 | x=-1477.900024414063 y=8766.7998046875 | size=5 | links=#1182(auto Nagrand;31):38 #12301(auto Nagrand;440):32
+#17049 | auto Nagrand;629§auto Nagrand;629§auto Nagrand;629 | x=-1651 y=6797.80029296875 | size=5 | links=#5025(auto Nagrand;170):80 #14567(auto Nagrand;541):69
+#17093 | auto Nagrand;630§auto Nagrand;630§auto Nagrand;630 | x=-1433.5 y=6525.5 | size=5 | links=#12617(auto Nagrand;451):33 #18804(auto Nagrand;684):72
+#17128 | auto Nagrand;631§auto Nagrand;631§auto Nagrand;631 | x=-2147.5 y=7886.39990234375 | size=5 | links=#5010(auto Nagrand;169):38 #13524(auto Nagrand;495):45 #24750(auto Nagrand;875):36
+#17150 | auto Nagrand;632§auto Nagrand;632§auto Nagrand;632 | x=-2388.800048828125 y=7639.10009765625 | size=5 | links=#13703(auto Nagrand;503):53 #21961(auto Nagrand;782):35
+#17214 | auto Nagrand;633§auto Nagrand;633§auto Nagrand;633 | x=-2662.699951171875 y=7204.89990234375 | size=1 | links=#11299(auto Nagrand;397):14
+#17218 | auto Nagrand;634§auto Nagrand;634§auto Nagrand;634 | x=-2363.10009765625 y=7391.60009765625 | size=1 | links=#17004(auto Nagrand;627):17 #22405(auto Nagrand;798):30 #23585(auto Nagrand;840):28
+#17249 | auto Nagrand;635§auto Nagrand;635§auto Nagrand;635 | x=-2369.5 y=7252.30029296875 | size=1 | links=#18395(auto Nagrand;668):14
+#17286 | auto Nagrand;636§auto Nagrand;636§auto Nagrand;636 | x=-884.9000244140625 y=8927.7001953125 | size=1 | links=#13814(auto Nagrand;509):13 #16311(auto Nagrand;601):17
+#17355 | auto Nagrand;637§auto Nagrand;637§auto Nagrand;637 | x=-1327.200073242188 y=8317 | size=1 | links=#6827(auto Nagrand;235):78 #23586(auto Nagrand;841):71
+#17360 | auto Nagrand;638§auto Nagrand;638§auto Nagrand;638 | x=-2484.900146484375 y=6167.7001953125 | size=1 | links=#13218(auto Nagrand;480):9 #13649(auto Nagrand;502):44
+#17371 | auto Nagrand;639§auto Nagrand;639§auto Nagrand;639 | x=-1866.700073242188 y=7654 | size=1 | links=#7865(auto Nagrand;274):29 #15642(auto Nagrand;580):11
+#17504 | auto Nagrand;640§auto Nagrand;640§auto Nagrand;640 | x=-1368.5 y=8127.80029296875 | size=1 | links=#7976(auto Nagrand;282):58
+#17519 | auto Nagrand;641§auto Nagrand;641§auto Nagrand;641 | x=-2292.60009765625 y=7234.30029296875 | size=1 | links=#9044(auto Nagrand;319):4 #14369(auto Nagrand;536):10
+#17561 | auto Nagrand;642§auto Nagrand;642§auto Nagrand;642 | x=-1308.800048828125 y=7624.10009765625 | size=5 | links=#6578(auto Nagrand;231):53 #11018(auto Nagrand;387):42
+#17589 | auto Nagrand;643§auto Nagrand;643§auto Nagrand;643 | x=-2292.10009765625 y=7270.89990234375 | size=1 | links=#2390(auto Nagrand;70):15 #13147(auto Nagrand;474):6
+#17597 | auto Nagrand;644§auto Nagrand;644§auto Nagrand;644 | x=-1866.900024414063 y=7244.89990234375 | size=1 | links=#8526(auto Nagrand;305):21 #26899(auto Nagrand;934):43
+#17605 | auto Nagrand;645§auto Nagrand;645§auto Nagrand;645 | x=-1444.900024414063 y=6361.80029296875 | size=1 | links=#5721(auto Nagrand;194):23 #5813(auto Nagrand;197):12
+#17660 | auto Nagrand;646§auto Nagrand;646§auto Nagrand;646 | x=-2671.199951171875 y=7220.2001953125 | size=1 | links=#11299(auto Nagrand;397):6 #19533(auto Nagrand;702):22
+#17695 | auto Nagrand;647§auto Nagrand;647§auto Nagrand;647 | x=-836.4000244140625 y=8778.7998046875 | size=1 | links=#14619(auto Nagrand;543):8 #27815(auto Nagrand;964):12
+#17696 | auto Nagrand;648§auto Nagrand;648§auto Nagrand;648 | x=-2570.199951171875 y=7420.2001953125 | size=1 | links=#5111(auto Nagrand;175):17 #14675(auto Nagrand;546):11
+#17733 | auto Nagrand;649§auto Nagrand;649§auto Nagrand;649 | x=-2171.300048828125 y=7224.10009765625 | size=1 | links=#11606(auto Nagrand;411):29 #24159(auto Nagrand;858):10
+#17739 | auto Nagrand;650§auto Nagrand;650§auto Nagrand;650 | x=-2617.60009765625 y=7333.89990234375 | size=1 | links=#3179(auto Nagrand;101):14 #20378(auto Nagrand;722):10 #26517(auto Nagrand;922):8
+#17764 | auto Nagrand;651§auto Nagrand;651§auto Nagrand;651 | x=-1228.700073242188 y=6851.30029296875 | size=1 | links=#9325(auto Nagrand;326):3 #17942(auto Nagrand;657):55
+#17810 | auto Nagrand;652§auto Nagrand;652§auto Nagrand;652 | x=-2628.60009765625 y=7343.89990234375 | size=1 | links=#14778(auto Nagrand;551):11 #26517(auto Nagrand;922):6
+#17890 | auto Nagrand;653§auto Nagrand;653§auto Nagrand;653 | x=-735.1000366210938 y=7759.30029296875 | size=1 | links=#3504(auto Nagrand;112):15 #8990(auto Nagrand;318):7
+#17895 | auto Nagrand;654§auto Nagrand;654§auto Nagrand;654 | x=-2059.400146484375 y=7599.89990234375 | size=1 | links=#18769(auto Nagrand;683):28 #28004(auto Nagrand;972):15
+#17909 | auto Nagrand;655§auto Nagrand;655§auto Nagrand;655 | x=-1515.099975585938 y=8519.2001953125 | size=1 | links=#597(auto Nagrand;14):14 #1135(auto Nagrand;30):8 #11632(auto Nagrand;414):8
+#17930 | auto Nagrand;656§auto Nagrand;656§auto Nagrand;656 | x=-2594.10009765625 y=7249.30029296875 | size=1 | links=#2488(auto Nagrand;74):10 #18988(auto Nagrand;690):11
+#17942 | auto Nagrand;657§auto Nagrand;657§auto Nagrand;657 | x=-1241.599975585938 y=6797.39990234375 | size=1 | links=#17764(auto Nagrand;651):55 #22063(auto Nagrand;787):7
+#17955 | auto Nagrand;658§auto Nagrand;658§auto Nagrand;658 | x=-2714.699951171875 y=7292.89990234375 | size=1 | links=#14253(auto Nagrand;529):21 #20407(auto Nagrand;725):19
+#18000 | auto Nagrand;659§auto Nagrand;659§auto Nagrand;659 | x=-2476.199951171875 y=7217.30029296875 | size=1 | links=#8311(auto Nagrand;297):29 #23177(auto Nagrand;824):14
+#18165 | auto Nagrand;660§auto Nagrand;660§auto Nagrand;660 | x=-1921.800048828125 y=8819 | size=5 | links=#2445(auto Nagrand;71):22 #3011(auto Nagrand;97):34
+#18237 | auto Nagrand;661§auto Nagrand;661§auto Nagrand;661 | x=-2174.800048828125 y=8735 | size=5 | links=#291(auto Nagrand;6):23 #6338(auto Nagrand;218):23
+#18260 | auto Nagrand;662§auto Nagrand;662§auto Nagrand;662 | x=-2214 y=7162.89990234375 | size=1 | links=#13867(auto Nagrand;513):14 #25026(auto Nagrand;884):11
+#18299 | auto Nagrand;663§auto Nagrand;663§auto Nagrand;663 | x=-2675.199951171875 y=7281 | size=1 | links=#4115(auto Nagrand;141):15 #14253(auto Nagrand;529):20 #20474(Mailbox;Telaar;Nagrand):8 #27052(auto Nagrand;941):9
+#18313 | auto Nagrand;664§auto Nagrand;664§auto Nagrand;664 | x=-2858 y=5984.39990234375 | size=1 | links=#11204(auto Nagrand;393):47 #12041(auto Nagrand;428):63
+#18357 | auto Nagrand;665§auto Nagrand;665§auto Nagrand;665 | x=-1854.400024414063 y=6321.80029296875 | size=1 | links=#1396(auto Nagrand;33):13 #2343(auto Nagrand;67):13
+#18359 | auto Nagrand;666§auto Nagrand;666§auto Nagrand;666 | x=-1510.5 y=7241.89990234375 | size=1 | links=#8784(auto Nagrand;311):16 #16514(auto Nagrand;608):2
+#18384 | auto Nagrand;667§auto Nagrand;667§auto Nagrand;667 | x=-2989.400146484375 y=6353.7001953125 | size=1 | links=#6533(auto Nagrand;227):9 #15335(auto Nagrand;566):12 #16965(auto Nagrand;625):13
+#18395 | auto Nagrand;668§auto Nagrand;668§auto Nagrand;668 | x=-2355.199951171875 y=7248.2001953125 | size=1 | links=#2457(auto Nagrand;72):21 #17249(auto Nagrand;635):14
+#18445 | auto Nagrand;669§auto Nagrand;669§auto Nagrand;669 | x=-3000.5 y=6390.80029296875 | size=1 | links=#4068(auto Nagrand;138):5 #9604(auto Nagrand;341):8
+#18449 | auto Nagrand;670§auto Nagrand;670§auto Nagrand;670 | x=-1997.700073242188 y=7702.80029296875 | size=1 | links=#16183(auto Nagrand;592):18 #16303(auto Nagrand;600):27
+#18472 | auto Nagrand;671§auto Nagrand;671§auto Nagrand;671 | x=-2400.699951171875 y=6858.5 | size=1 | links=#7873(auto Nagrand;275):56 #20742(auto Nagrand;744):51 #21233(auto Nagrand;769):45
+#18476 | auto Nagrand;672§auto Nagrand;672§auto Nagrand;672 | x=-2091 y=8074.2001953125 | size=1 | links=#7051(auto Nagrand;241):32 #10415(auto Nagrand;359):37
+#18487 | auto Nagrand;673§auto Nagrand;673§auto Nagrand;673 | x=-2841.199951171875 y=6411.30029296875 | size=1 | links=#3518(auto Nagrand;116):20 #3737(auto Nagrand;125):22
+#18523 | auto Nagrand;674§auto Nagrand;674§auto Nagrand;674 | x=-2657.199951171875 y=7353.7001953125 | size=1 | links=#4736(auto Nagrand;163):5 #6841(auto Nagrand;236):7
+#18527 | auto Nagrand;675§auto Nagrand;675§auto Nagrand;675 | x=-2452.199951171875 y=7387.89990234375 | size=1 | links=#9562(auto Nagrand;340):13 #24769(auto Nagrand;876):24
+#18532 | auto Nagrand;676§auto Nagrand;676§auto Nagrand;676 | x=-2658.10009765625 y=6327.80029296875 | size=1 | links=#14202(auto Nagrand;524):35 #18984(auto Nagrand;689):42
+#18537 | auto Nagrand;677§auto Nagrand;677§auto Nagrand;677 | x=-2544.10009765625 y=7325.2001953125 | size=1 | links=#7698(auto Nagrand;263):15 #22788(auto Nagrand;810):9
+#18550 | auto Nagrand;678§auto Nagrand;678§auto Nagrand;678 | x=-961.6000366210938 y=8254.1005859375 | size=5 | links=#5923(auto Nagrand;201):40 #25439(auto Nagrand;895):31
+#18623 | auto Nagrand;679§auto Nagrand;679§auto Nagrand;679 | x=-3000.699951171875 y=6371 | size=1 | links=#15335(auto Nagrand;566):12 #23663(auto Nagrand;846):6
+#18712 | auto Nagrand;680§auto Nagrand;680§auto Nagrand;680 | x=-2446 y=6168.7001953125 | size=1 | links=#13218(auto Nagrand;480):30 #13355(auto Nagrand;487):63
+#18731 | auto Nagrand;681§auto Nagrand;681§auto Nagrand;681 | x=-2269.699951171875 y=7241.10009765625 | size=1 | links=#9302(auto Nagrand;325):18 #23250(auto Nagrand;828):20
+#18751 | auto Nagrand;682§auto Nagrand;682§auto Nagrand;682 | x=-2860 y=6516.60009765625 | size=1 | links=#2306(auto Nagrand;65):50 #11177(auto Nagrand;392):29
+#18769 | auto Nagrand;683§auto Nagrand;683§auto Nagrand;683 | x=-2079.900146484375 y=7580.30029296875 | size=1 | links=#17895(auto Nagrand;654):28 #18908(auto Nagrand;686):42
+#18804 | auto Nagrand;684§auto Nagrand;684§auto Nagrand;684 | x=-1393.200073242188 y=6586.10009765625 | size=5 | links=#11743(auto Nagrand;419):38 #17093(auto Nagrand;630):72
+#18836 | auto Nagrand;685§auto Nagrand;685§auto Nagrand;685 | x=-1529.599975585938 y=8454.400390625 | size=1 | links=#13950(auto Nagrand;515):13 #15869(auto Nagrand;588):6
+#18908 | auto Nagrand;686§auto Nagrand;686§auto Nagrand;686 | x=-2108.10009765625 y=7548 | size=1 | links=#6505(auto Nagrand;225):20 #18769(auto Nagrand;683):42
+#18963 | auto Nagrand;687§auto Nagrand;687§auto Nagrand;687 | x=-2867.900146484375 y=6307.30029296875 | size=1 | links=#20143(auto Nagrand;714):14 #27963(auto Nagrand;968):41
+#18967 | auto Nagrand;688§auto Nagrand;688§auto Nagrand;688 | x=-2618.300048828125 y=7143.60009765625 | size=1 | links=#1610(auto Nagrand;40):22 #15841(auto Nagrand;586):24
+#18984 | auto Nagrand;689§auto Nagrand;689§auto Nagrand;689 | x=-2678.699951171875 y=6365.2001953125 | size=1 | links=#18532(auto Nagrand;676):42 #27993(auto Nagrand;971):39
+#18988 | auto Nagrand;690§auto Nagrand;690§auto Nagrand;690 | x=-2589.10009765625 y=7239.5 | size=1 | links=#1677(auto Nagrand;43):17 #8101(auto Nagrand;286):32 #16190(auto Nagrand;593):13 #17930(auto Nagrand;656):11
+#19014 | flight master;Telaar;Nagrand§flugpunkt;Telaar;Nagrand§flight master;Telaar;Nagrand | x=-2729 y=7305.30029296875 | size=1
+#19035 | auto Nagrand;691§auto Nagrand;691§auto Nagrand;691 | x=-2814.199951171875 y=6324.2001953125 | size=1 | links=#2614(auto Nagrand;77):34 #27963(auto Nagrand;968):19
+#19070 | auto Nagrand;692§auto Nagrand;692§auto Nagrand;692 | x=-2086.699951171875 y=8696.7998046875 | size=5 | links=#9234(auto Nagrand;322):30 #9359(auto Nagrand;327):47 #16652(auto Nagrand;616):27 #28287(auto Nagrand;980):18
+#19081 | auto Nagrand;693§auto Nagrand;693§auto Nagrand;693 | x=-2580.199951171875 y=7309 | size=1 | links=#1723(auto Nagrand;45):5 #11041(auto Nagrand;388):6
+#19099 | auto Nagrand;694§auto Nagrand;694§auto Nagrand;694 | x=-798.7999877929688 y=7799 | size=1 | links=#25119(auto Nagrand;888):24
+#19123 | auto Nagrand;695§auto Nagrand;695§auto Nagrand;695 | x=-875.6000366210938 y=8704.1005859375 | size=1 | links=#24315(auto Nagrand;864):16 #27011(auto Nagrand;938):7
+#19298 | auto Nagrand;696§auto Nagrand;696§auto Nagrand;696 | x=-1799.400024414063 y=7553.10009765625 | size=5 | links=#20746(auto Nagrand;745):44 #23629(auto Nagrand;844):51
+#19318 | auto Nagrand;697§auto Nagrand;697§auto Nagrand;697 | x=-2640.400146484375 y=7407.80029296875 | size=1 | links=#5797(auto Nagrand;195):7
+#19464 | auto Nagrand;698§auto Nagrand;698§auto Nagrand;698 | x=-2657.800048828125 y=7252.2001953125 | size=1 | links=#4115(auto Nagrand;141):28 #13805(auto Nagrand;508):31
+#19481 | auto Nagrand;699§auto Nagrand;699§auto Nagrand;699 | x=-920.7999877929688 y=8908.6005859375 | size=1 | links=#10106(auto Nagrand;349):18 #16311(auto Nagrand;601):23
+#19484 | graveyard;one;Northwind Cleft;Nagrand§friedhof;eins;Nordwindkluft;Nagrand§graveyard;un;Faille de Norsevent;Nagrand | x=-1066 y=8059.7001953125 | size=1 | links=#7241(auto Nagrand;246):18 #13025(auto Nagrand;468):32
+#19491 | auto Nagrand;700§auto Nagrand;700§auto Nagrand;700 | x=-2137.400146484375 y=7502.80029296875 | size=1 | links=#87(auto Nagrand;3):69 #500(auto Nagrand;11):53 #6505(auto Nagrand;225):33
+#19502 | auto Nagrand;701§auto Nagrand;701§auto Nagrand;701 | x=-1602.400024414063 y=8490 | size=1 | links=#13757(auto Nagrand;506):17 #21175(auto Nagrand;765):14
+#19533 | auto Nagrand;702§auto Nagrand;702§auto Nagrand;702 | x=-2693.400146484375 y=7225.10009765625 | size=1 | links=#17660(auto Nagrand;646):22
+#19538 | auto Nagrand;703§auto Nagrand;703§auto Nagrand;703 | x=-1540.5 y=7168 | size=1 | links=#11630(auto Nagrand;413):46 #15725(auto Nagrand;584):35
+#19567 | auto Nagrand;704§auto Nagrand;704§auto Nagrand;704 | x=-737.2000122070312 y=8409.400390625 | size=1 | links=#6886(auto Nagrand;237):73 #27361(auto Nagrand;948):70
+#19699 | auto Nagrand;705§auto Nagrand;705§auto Nagrand;705 | x=-2492.60009765625 y=7324.89990234375 | size=1 | links=#8894(auto Nagrand;313):11 #28170(auto Nagrand;978):11
+#19716 | auto Nagrand;706§auto Nagrand;706§auto Nagrand;706 | x=-2811.900146484375 y=6434.5 | size=1 | links=#3518(auto Nagrand;116):17 #8231(auto Nagrand;293):1
+#19736 | auto Nagrand;707§auto Nagrand;707§auto Nagrand;707 | x=-1104.200073242188 y=6865.80029296875 | size=5 | links=#7107(auto Nagrand;243):40 #10913(auto Nagrand;381):30
+#19743 | auto Nagrand;708§auto Nagrand;708§auto Nagrand;708 | x=-1967 y=6299 | size=1 | links=#16868(auto Nagrand;623):10 #22233(auto Nagrand;793):48
+#19827 | auto Nagrand;709§auto Nagrand;709§auto Nagrand;709 | x=-1088.800048828125 y=8710.2998046875 | size=1 | links=#6109(auto Nagrand;210):14 #13423(auto Nagrand;490):24
+#19863 | auto Nagrand;710§auto Nagrand;710§auto Nagrand;710 | x=-1479.400024414063 y=8573 | size=1 | links=#12073(auto Nagrand;430):22 #22404(auto Nagrand;797):21
+#19880 | auto Nagrand;711§auto Nagrand;711§auto Nagrand;711 | x=-1069.800048828125 y=8789.400390625 | size=1 | links=#13079(auto Nagrand;471):15 #23793(auto Nagrand;849):14
+#19964 | auto Nagrand;712§auto Nagrand;712§auto Nagrand;712 | x=-1420.200073242188 y=7483.2001953125 | size=5 | links=#5390(auto Nagrand;180):71 #12512(auto Nagrand;445):79
+#20045 | auto Nagrand;713§auto Nagrand;713§auto Nagrand;713 | x=-1826.200073242188 y=7233.10009765625 | size=1 | links=#8526(auto Nagrand;305):21 #16265(auto Nagrand;599):9
+#20143 | auto Nagrand;714§auto Nagrand;714§auto Nagrand;714 | x=-2874.199951171875 y=6320.30029296875 | size=1 | links=#10709(auto Nagrand;371):22 #18963(auto Nagrand;687):14
+#20164 | auto Nagrand;715§auto Nagrand;715§auto Nagrand;715 | x=-2772.5 y=6430 | size=1 | links=#4956(auto Nagrand;166):11 #10121(auto Nagrand;351):24
+#20171 | auto Nagrand;716§auto Nagrand;716§auto Nagrand;716 | x=-2414.300048828125 y=7305.30029296875 | size=1 | links=#3323(auto Nagrand;106):12 #10933(auto Nagrand;384):28 #12675(waters;rescue;Telaari Basin;Nagrand;down):46 #15588(auto Nagrand;575):30
+#20176 | auto Nagrand;717§auto Nagrand;717§auto Nagrand;717 | x=-2921.400146484375 y=6536.30029296875 | size=1 | links=#3885(auto Nagrand;131):16 #14651(auto Nagrand;544):19
+#20193 | auto Nagrand;718§auto Nagrand;718§auto Nagrand;718 | x=-2911.5 y=6367.5 | size=1 | links=#13555(auto Nagrand;496):19 #16259(auto Nagrand;598):17
+#20277 | auto Nagrand;719§auto Nagrand;719§auto Nagrand;719 | x=-2731.699951171875 y=6047.60009765625 | size=1 | links=#5430(auto Nagrand;184):64 #23466(auto Nagrand;838):38
+#20355 | auto Nagrand;720§auto Nagrand;720§auto Nagrand;720 | x=-1518.099975585938 y=8718.1005859375 | size=5 | links=#12301(auto Nagrand;440):46 #22931(auto Nagrand;815):60 #28420(auto Nagrand;985):35
+#20375 | auto Nagrand;721§auto Nagrand;721§auto Nagrand;721 | x=-1166.599975585938 y=8467.6005859375 | size=5 | links=#7000(auto Nagrand;240):55 #11907(auto Nagrand;425):53 #25670(auto Nagrand;900):65
+#20378 | auto Nagrand;722§auto Nagrand;722§auto Nagrand;722 | x=-2607.5 y=7337.60009765625 | size=1 | links=#17739(auto Nagrand;650):10 #21142(auto Nagrand;762):13
+#20379 | auto Nagrand;723§auto Nagrand;723§auto Nagrand;723 | x=-1550.5 y=8625.7998046875 | size=1 | links=#2809(auto Nagrand;88):18 #15434(auto Nagrand;571):15
+#20383 | auto Nagrand;724§auto Nagrand;724§auto Nagrand;724 | x=-2587.10009765625 y=7285.39990234375 | size=1 | links=#7648(auto Nagrand;260):12 #11041(auto Nagrand;388):18
+#20407 | auto Nagrand;725§auto Nagrand;725§auto Nagrand;725 | x=-2732.800048828125 y=7301.10009765625 | size=1 | links=#17955(auto Nagrand;658):19 #27096(auto Nagrand;942):12
+#20418 | auto Nagrand;726§auto Nagrand;726§auto Nagrand;726 | x=-2673 y=7325.10009765625 | size=1 | links=#8177(auto Nagrand;291):15 #20739(auto Nagrand;743):24
+#20428 | auto Nagrand;727§auto Nagrand;727§auto Nagrand;727 | x=-677.2999877929688 y=7752.30029296875 | size=1 | links=#11486(auto Nagrand;406):11 #22980(auto Nagrand;819):18
+#20450 | auto Nagrand;728§auto Nagrand;728§auto Nagrand;728 | x=-830.1000366210938 y=8914.900390625 | size=1 | links=#27880(auto Nagrand;966):24 #28231(auto Nagrand;979):28
+#20462 | auto Nagrand;729§auto Nagrand;729§auto Nagrand;729 | x=-953.2000122070312 y=8020.7001953125 | size=1 | links=#8709(auto Nagrand;310):22 #10765(auto Nagrand;376):15 #21092(auto Nagrand;759):17
+#20474 | Mailbox;Telaar;Nagrand§briefkasten;Telaar;Nagrand§Boîte aux lettres;Telaar;Nagrand | x=-2672.699951171875 y=7288.89990234375 | size=1 | links=#18299(auto Nagrand;663):8
+#20482 | auto Nagrand;730§auto Nagrand;730§auto Nagrand;730 | x=-661.6000366210938 y=7749.30029296875 | size=1 | links=#10922(auto Nagrand;383):15 #11486(auto Nagrand;406):4
+#20525 | auto Nagrand;731§auto Nagrand;731§auto Nagrand;731 | x=-2482.60009765625 y=6261.5 | size=1 | links=#6176(auto Nagrand;214):26 #13355(auto Nagrand;487):36 #13915(auto Nagrand;514):36
+#20531 | auto Nagrand;732§auto Nagrand;732§auto Nagrand;732 | x=-1817.700073242188 y=8829.400390625 | size=5 | links=#7998(auto Nagrand;283):37 #11571(auto Nagrand;409):24
+#20546 | auto Nagrand;733§auto Nagrand;733§auto Nagrand;733 | x=-2606.5 y=6331.39990234375 | size=1 | links=#3640(auto Nagrand;119):46 #14202(auto Nagrand;524):45
+#20563 | auto Nagrand;734§auto Nagrand;734§auto Nagrand;734 | x=-2043.700073242188 y=8460.2001953125 | size=1 | links=#21973(auto Nagrand;783):65 #22069(auto Nagrand;788):52
+#20582 | auto Nagrand;735§auto Nagrand;735§auto Nagrand;735 | x=-2069.199951171875 y=7897.7001953125 | size=1 | links=#4330(auto Nagrand;151):24 #26118(auto Nagrand;911):16
+#20590 | auto Nagrand;736§auto Nagrand;736§auto Nagrand;736 | x=-1791.200073242188 y=7703.5 | size=1 | links=#686(auto Nagrand;19):18 #1528(auto Nagrand;38):10
+#20606 | auto Nagrand;737§auto Nagrand;737§auto Nagrand;737 | x=-2750.148810422028 y=7334.198993209577 | size=1 | links=#20609(auto Nagrand;738):12 #23382(auto Nagrand;834):46
+#20609 | auto Nagrand;738§auto Nagrand;738§auto Nagrand;738 | x=-2739.699951171875 y=7327.80029296875 | size=1 | links=#12146(auto Nagrand;432):27 #20606(auto Nagrand;737):12
+#20650 | auto Nagrand;739§auto Nagrand;739§auto Nagrand;739 | x=-2041.300048828125 y=7623.80029296875 | size=1 | links=#8910(auto Nagrand;314):20 #22143(auto Nagrand;790):23 #28004(auto Nagrand;972):14
+#20680 | auto Nagrand;740§auto Nagrand;740§auto Nagrand;740 | x=-2581.800048828125 y=6868.39990234375 | size=1 | links=#12805(auto Nagrand;458):17 #27579(auto Nagrand;960):17
+#20681 | auto Nagrand;741§auto Nagrand;741§auto Nagrand;741 | x=-2347.900146484375 y=7306.2001953125 | size=1 | links=#25711(auto Nagrand;903):11 #27444(auto Nagrand;953):18
+#20712 | auto Nagrand;742§auto Nagrand;742§auto Nagrand;742 | x=-2496.5 y=6805.39990234375 | size=1 | links=#3516(auto Nagrand;115):16
+#20739 | auto Nagrand;743§auto Nagrand;743§auto Nagrand;743 | x=-2652.300048828125 y=7311.7001953125 | size=1 | links=#20418(auto Nagrand;726):24 #26709(auto Nagrand;926):20
+#20742 | auto Nagrand;744§auto Nagrand;744§auto Nagrand;744 | x=-2450.900146484375 y=6846.60009765625 | size=1 | links=#5619(auto Nagrand;190):26 #18472(auto Nagrand;671):51
+#20746 | auto Nagrand;745§auto Nagrand;745§auto Nagrand;745 | x=-1814.300048828125 y=7510.80029296875 | size=5 | links=#4002(auto Nagrand;134):58 #19298(auto Nagrand;696):44
+#20764 | auto Nagrand;746§auto Nagrand;746§auto Nagrand;746 | x=-1117.300048828125 y=8688 | size=1 | links=#6109(auto Nagrand;210):21 #16402(auto Nagrand;605):11
+#20772 | auto Nagrand;747§auto Nagrand;747§auto Nagrand;747 | x=-1548.400024414063 y=8512.6005859375 | size=1 | links=#2929(auto Nagrand;93):26 #4413(auto Nagrand;157):26
+#20799 | auto Nagrand;748§auto Nagrand;748§auto Nagrand;748 | x=-1114.599975585938 y=7884.30029296875 | size=5 | links=#14232(auto Nagrand;528):38 #23139(auto Nagrand;822):61
+#20819 | auto Nagrand;749§auto Nagrand;749§auto Nagrand;749 | x=-2663.300048828125 y=7506.60009765625 | size=1 | links=#4217(auto Nagrand;146):11 #9120(auto Nagrand;320):9
+#20872 | auto Nagrand;750§auto Nagrand;750§auto Nagrand;750 | x=-2022.200073242188 y=7663 | size=1 | links=#4102(auto Nagrand;140):17 #22143(auto Nagrand;790):20
+#20888 | auto Nagrand;751§auto Nagrand;751§auto Nagrand;751 | x=-948.2999877929688 y=8343.7998046875 | size=1 | links=#22941(auto Nagrand;816):36 #23555(auto Nagrand;839):19
+#20907 | auto Nagrand;752§auto Nagrand;752§auto Nagrand;752 | x=-942.9000244140625 y=8077.5 | size=1 | links=#4684(auto Nagrand;161):26 #10711(auto Nagrand;372):8 #11417(auto Nagrand;400):22
+#20937 | auto Nagrand;753§auto Nagrand;753§auto Nagrand;753 | x=-1564.5 y=8738.6005859375 | size=1 | links=#5801(auto Nagrand;196):17 #28420(auto Nagrand;985):15
+#20963 | auto Nagrand;754§auto Nagrand;754§auto Nagrand;754 | x=-1505.400024414063 y=8638.400390625 | size=1 | links=#11735(auto Nagrand;417):16 #11816(auto Nagrand;421):19
+#20983 | auto Nagrand;755§auto Nagrand;755§auto Nagrand;755 | x=-2258.400146484375 y=8495.5 | size=5 | links=#12659(auto Nagrand;453):64
+#21044 | auto Nagrand;756§auto Nagrand;756§auto Nagrand;756 | x=-1647 y=6535.39990234375 | size=1 | links=#22221(auto Nagrand;792):56 #24620(auto Nagrand;871):13
+#21076 | auto Nagrand;757§auto Nagrand;757§auto Nagrand;757 | x=-2408.800048828125 y=7607.39990234375 | size=1 | links=#2192(auto Nagrand;61):35 #21961(auto Nagrand;782):35
+#21081 | auto Nagrand;758§auto Nagrand;758§auto Nagrand;758 | x=-1215.300048828125 y=7542.39990234375 | size=1 | links=#13803(auto Nagrand;507):62
+#21092 | auto Nagrand;759§auto Nagrand;759§auto Nagrand;759 | x=-944.4000244140625 y=8036 | size=1 | links=#4684(auto Nagrand;161):29 #20462(auto Nagrand;729):17
+#21104 | auto Nagrand;760§auto Nagrand;760§auto Nagrand;760 | x=-956 y=6871.80029296875 | size=5 | links=#21593(auto Nagrand;775):43 #22416(auto Nagrand;799):38
+#21124 | auto Nagrand;761§auto Nagrand;761§auto Nagrand;761 | x=-2375.199951171875 y=6488.30029296875 | size=1 | links=#7850(auto Nagrand;273):47
+#21142 | auto Nagrand;762§auto Nagrand;762§auto Nagrand;762 | x=-2595.900146484375 y=7330.39990234375 | size=1 | links=#20378(auto Nagrand;722):13 #27386(auto Nagrand;949):17
+#21152 | auto Nagrand;763§auto Nagrand;763§auto Nagrand;763 | x=-2067.400146484375 y=6484.2001953125 | size=5 | links=#11249(auto Nagrand;396):54 #26015(auto Nagrand;908):37
+#21160 | auto Nagrand;764§auto Nagrand;764§auto Nagrand;764 | x=-938.7999877929688 y=8115 | size=1 | links=#9543(auto Nagrand;337):6 #14289(auto Nagrand;532):11
+#21175 | auto Nagrand;765§auto Nagrand;765§auto Nagrand;765 | x=-1591 y=8480.400390625 | size=1 | links=#4413(auto Nagrand;157):27 #19502(auto Nagrand;701):14
+#21190 | auto Nagrand;766§auto Nagrand;766§auto Nagrand;766 | x=-988.1000366210938 y=8356.7001953125 | size=1 | links=#3689(auto Nagrand;122):32 #9265(auto Nagrand;323):85 #23555(auto Nagrand;839):23
+#21194 | auto Nagrand;767§auto Nagrand;767§auto Nagrand;767 | x=-2991 y=6374.2001953125 | size=1 | links=#16965(auto Nagrand;625):13 #23663(auto Nagrand;846):5
+#21206 | auto Nagrand;768§auto Nagrand;768§auto Nagrand;768 | x=-2557.5 y=7296.10009765625 | size=1 | links=#103(auto Nagrand;4):0 #27386(auto Nagrand;949):34
+#21233 | auto Nagrand;769§auto Nagrand;769§auto Nagrand;769 | x=-2404.60009765625 y=6904 | size=1 | links=#7684(auto Nagrand;261):57 #18472(auto Nagrand;671):45
+#21256 | auto Nagrand;770§auto Nagrand;770§auto Nagrand;770 | x=-877.2000122070312 y=8749.1005859375 | size=1 | links=#9386(auto Nagrand;328):8 #15275(auto Nagrand;564):10
+#21304 | auto Nagrand;771§auto Nagrand;771§auto Nagrand;771 | x=-684.1000366210938 y=8804.7998046875 | size=1 | links=#26596(auto Nagrand;923):0 #27352(auto Nagrand;947):0
+#21321 | auto Nagrand;772§auto Nagrand;772§auto Nagrand;772 | x=-2480.900146484375 y=7337.2001953125 | size=1 | links=#8894(auto Nagrand;313):5 #14213(auto Nagrand;527):33
+#21363 | auto Nagrand;773§auto Nagrand;773§auto Nagrand;773 | x=-2465.699951171875 y=7607.7001953125 | size=5 | links=#2729(auto Nagrand;85):90 #21961(auto Nagrand;782):51
+#21431 | auto Nagrand;774§auto Nagrand;774§auto Nagrand;774 | x=-2421.699951171875 y=7365.7001953125 | size=1 | links=#6129(auto Nagrand;211):8 #26918(auto Nagrand;936):13
+#21593 | auto Nagrand;775§auto Nagrand;775§auto Nagrand;775 | x=-999.2000122070312 y=6871 | size=5 | links=#13753(auto Nagrand;505):33 #21104(auto Nagrand;760):43
+#21738 | auto Nagrand;776§auto Nagrand;776§auto Nagrand;776 | x=-2534.800048828125 y=7298.89990234375 | size=1 | links=#103(auto Nagrand;4):22 #10470(auto Nagrand;363):15
+#21850 | auto Nagrand;777§auto Nagrand;777§auto Nagrand;777 | x=-2276.400146484375 y=7270.39990234375 | size=1 | links=#9302(auto Nagrand;325):11 #13147(auto Nagrand;474):9
+#21907 | auto Nagrand;778§auto Nagrand;778§auto Nagrand;778 | x=-958.1000366210938 y=8887.7001953125 | size=1 | links=#6026(auto Nagrand;207):12 #16445(auto Nagrand;606):16
+#21929 | auto Nagrand;779§auto Nagrand;779§auto Nagrand;779 | x=-453.3999938964844 y=8415.7001953125 | size=1 | links=#8201(auto Nagrand;292):24 #15702(entry and exit;Nagrand;to;Zangarmarsh):9
+#21930 | auto Nagrand;780§auto Nagrand;780§auto Nagrand;780 | x=-2577.199951171875 y=7293.80029296875 | size=1 | links=#103(auto Nagrand;4):19 #15418(auto Nagrand;567):12
+#21935 | auto Nagrand;781§auto Nagrand;781§auto Nagrand;781 | x=-999.2999877929688 y=8174.60009765625 | size=1 | links=#10741(auto Nagrand;374):15 #16180(auto Nagrand;591):12
+#21961 | auto Nagrand;782§auto Nagrand;782§auto Nagrand;782 | x=-2424.5 y=7638.89990234375 | size=5 | links=#12789(auto Nagrand;457):35 #17150(auto Nagrand;632):35 #21076(auto Nagrand;757):35 #21363(auto Nagrand;773):51
+#21973 | auto Nagrand;783§auto Nagrand;783§auto Nagrand;783 | x=-2106.300048828125 y=8477.900390625 | size=1 | links=#20563(auto Nagrand;734):65 #26885(auto Nagrand;933):39
+#21999 | auto Nagrand;784§auto Nagrand;784§auto Nagrand;784 | x=-2812.5 y=6457.2001953125 | size=1 | links=#4072(auto Nagrand;139):12 #27024(auto Nagrand;939):11
+#22002 | auto Nagrand;785§auto Nagrand;785§auto Nagrand;785 | x=-1445.400024414063 y=8499.400390625 | size=1 | links=#12598(auto Nagrand;448):16 #13257(auto Nagrand;485):24
+#22025 | auto Nagrand;786§auto Nagrand;786§auto Nagrand;786 | x=-1645.400024414063 y=6949.60009765625 | size=1 | links=#3327(auto Nagrand;107):15 #5989(auto Nagrand;204):14
+#22063 | auto Nagrand;787§auto Nagrand;787§auto Nagrand;787 | x=-1246.300048828125 y=6791.10009765625 | size=1 | links=#6288(auto Nagrand;217):36 #17942(auto Nagrand;657):7
+#22069 | auto Nagrand;788§auto Nagrand;788§auto Nagrand;788 | x=-1991.400024414063 y=8459.900390625 | size=1 | links=#20563(auto Nagrand;734):52
+#22128 | auto Nagrand;789§auto Nagrand;789§auto Nagrand;789 | x=-988.7999877929688 y=8071.30029296875 | size=1 | links=#1034(auto Nagrand;25):11 #5500(auto Nagrand;187):7
+#22143 | auto Nagrand;790§auto Nagrand;790§auto Nagrand;790 | x=-2030.700073242188 y=7644.7001953125 | size=1 | links=#8910(auto Nagrand;314):17 #20650(auto Nagrand;739):23 #20872(auto Nagrand;750):20
+#22171 | auto Nagrand;791§auto Nagrand;791§auto Nagrand;791 | x=-1521.300048828125 y=6564.89990234375 | size=1 | links=#10950(auto Nagrand;385):52 #24433(auto Nagrand;867):21 #26001(auto Nagrand;907):20
+#22221 | auto Nagrand;792§auto Nagrand;792§auto Nagrand;792 | x=-1703 y=6541.5 | size=1 | links=#16532(auto Nagrand;609):42 #21044(auto Nagrand;756):56
+#22233 | auto Nagrand;793§auto Nagrand;793§auto Nagrand;793 | x=-1927.400024414063 y=6327.60009765625 | size=1 | links=#6523(auto Nagrand;226):29 #19743(auto Nagrand;708):48
+#22274 | auto Nagrand;794§auto Nagrand;794§auto Nagrand;794 | x=-2576.800048828125 y=7210.30029296875 | size=1 | links=#8085(auto Nagrand;285):4 #14902(auto Nagrand;556):23
+#22308 | auto Nagrand;795§auto Nagrand;795§auto Nagrand;795 | x=-1513.400024414063 y=8478.7998046875 | size=1 | links=#14355(auto Nagrand;535):8 #26749(auto Nagrand;928):3
+#22373 | auto Nagrand;796§auto Nagrand;796§auto Nagrand;796 | x=-2360.199951171875 y=6148.89990234375 | size=1 | links=#3302(auto Nagrand;103):46
+#22404 | auto Nagrand;797§auto Nagrand;797§auto Nagrand;797 | x=-1469 y=8591.5 | size=1 | links=#5097(auto Nagrand;173):19 #19863(auto Nagrand;710):21 #25395(auto Nagrand;893):9
+#22405 | auto Nagrand;798§auto Nagrand;798§auto Nagrand;798 | x=-2373.5 y=7420 | size=1 | links=#9423(auto Nagrand;330):16 #17004(auto Nagrand;627):26 #17218(auto Nagrand;634):30
+#22416 | auto Nagrand;799§auto Nagrand;799§auto Nagrand;799 | x=-918.7999877929688 y=6880.30029296875 | size=5 | links=#21104(auto Nagrand;760):38
+#22452 | auto Nagrand;800§auto Nagrand;800§auto Nagrand;800 | x=-2565.199951171875 y=7366.10009765625 | size=1 | links=#4999(auto Nagrand;168):14 #5944(auto Nagrand;203):18
+#22489 | auto Nagrand;801§auto Nagrand;801§auto Nagrand;801 | x=-2447.800048828125 y=6130.89990234375 | size=1 | links=#13649(auto Nagrand;502):9 #14312(auto Nagrand;533):10
+#22507 | auto Nagrand;802§auto Nagrand;802§auto Nagrand;802 | x=-2295.60009765625 y=8389.7001953125 | size=5 | links=#6406(auto Nagrand;222):47 #12659(auto Nagrand;453):47
+#22520 | auto Nagrand;803§auto Nagrand;803§auto Nagrand;803 | x=-2286.800048828125 y=7411 | size=1 | links=#2687(auto Nagrand;81):11 #27412(auto Nagrand;950):11
+#22533 | auto Nagrand;804§auto Nagrand;804§auto Nagrand;804 | x=-890.9000244140625 y=8688.900390625 | size=1 | links=#8645(auto Nagrand;308):23 #27011(auto Nagrand;938):13
+#22577 | auto Nagrand;805§auto Nagrand;805§auto Nagrand;805 | x=-2298.400146484375 y=7208.60009765625 | size=1 | links=#1563(auto Nagrand;39):26 #11742(auto Nagrand;418):28
+#22600 | auto Nagrand;806§auto Nagrand;806§auto Nagrand;806 | x=-1776.300048828125 y=7664.39990234375 | size=1 | links=#686(auto Nagrand;19):30 #1985(auto Nagrand;52):46
+#22622 | auto Nagrand;807§auto Nagrand;807§auto Nagrand;807 | x=-2972 y=6385.60009765625 | size=1 | links=#7695(auto Nagrand;262):12 #23284(auto Nagrand;831):8
+#22640 | auto Nagrand;808§auto Nagrand;808§auto Nagrand;808 | x=-1148.300048828125 y=7827 | size=1 | links=#9387(auto Nagrand;329):20 #14232(auto Nagrand;528):28
+#22782 | auto Nagrand;809§auto Nagrand;809§auto Nagrand;809 | x=-2510.400146484375 y=7413.60009765625 | size=1 | links=#5426(waters;rescue;Telaari Basin;Nagrand;down;two):15
+#22788 | auto Nagrand;810§auto Nagrand;810§auto Nagrand;810 | x=-2551.10009765625 y=7331.89990234375 | size=1 | links=#10302(auto Nagrand;355):22 #18537(auto Nagrand;677):9
+#22844 | auto Nagrand;811§auto Nagrand;811§auto Nagrand;811 | x=-2033.099975585938 y=6082.5 | size=1 | links=#3387(auto Nagrand;108):21 #10521(auto Nagrand;365):44
+#22861 | auto Nagrand;812§auto Nagrand;812§auto Nagrand;812 | x=-1397.599975585938 y=8533.400390625 | size=1 | links=#14256(auto Nagrand;530):19 #26309(auto Nagrand;916):16
+#22882 | auto Nagrand;813§auto Nagrand;813§auto Nagrand;813 | x=-2967.60009765625 y=6345.30029296875 | size=1 | links=#4224(auto Nagrand;147):7 #5400(auto Nagrand;182):9
+#22919 | auto Nagrand;814§auto Nagrand;814§auto Nagrand;814 | x=-1963.400024414063 y=7302.7001953125 | size=1 | links=#7735(auto Nagrand;267):19 #16342(auto Nagrand;602):11
+#22931 | auto Nagrand;815§auto Nagrand;815§auto Nagrand;815 | x=-1469.599975585938 y=8681.6005859375 | size=5 | links=#11426(auto Nagrand;402):45 #12301(auto Nagrand;440):52 #20355(auto Nagrand;720):60
+#22941 | auto Nagrand;816§auto Nagrand;816§auto Nagrand;816 | x=-911.9000244140625 y=8339.5 | size=1 | links=#14887(auto Nagrand;555):30 #20888(auto Nagrand;751):36 #25950(auto Nagrand;904):67
+#22944 | entry and exit;Nagrand;The High Path;to;Shattrath City§ein- und ausgang;Nagrand;Der Hochpfad;zum;shattrath§entrée et sortie;Nagrand;Le Haut chemin;vers;Shattrath | x=-1967.800048828125 y=5971.39990234375 | size=1 | links=#11394(auto Nagrand;399):20
+#22966 | auto Nagrand;817§auto Nagrand;817§auto Nagrand;817 | x=-2283 y=7231.30029296875 | size=1 | links=#9044(auto Nagrand;319):6 #28107(auto Nagrand;976):8
+#22973 | auto Nagrand;818§auto Nagrand;818§auto Nagrand;818 | x=-2332.199951171875 y=7284.80029296875 | size=1 | links=#2273(auto Nagrand;62):13 #14614(auto Nagrand;542):5
+#22980 | auto Nagrand;819§auto Nagrand;819§auto Nagrand;819 | x=-694.9000244140625 y=7747.89990234375 | size=1 | links=#510(auto Nagrand;12):11 #20428(auto Nagrand;727):18
+#23005 | auto Nagrand;820§auto Nagrand;820§auto Nagrand;820 | x=-760.5 y=7859.5 | size=1 | links=#8939(auto Nagrand;316):11 #27980(auto Nagrand;970):32
+#23086 | waters;rescue;Telaari Basin;Nagrand;top§gewässer;rettung;Telaaribecken;Nagrand;oben§eaux;sauvetage;Bassin telaari;Nagrand;top | x=-2230.300048828125 y=7233.30029296875 | size=1 | links=#11606(auto Nagrand;411):29 #16730(auto Nagrand;620):28
+#23124 | auto Nagrand;821§auto Nagrand;821§auto Nagrand;821 | x=-1300.400024414063 y=6708 | size=5 | links=#6288(auto Nagrand;217):63 #24848(auto Nagrand;880):49
+#23139 | auto Nagrand;822§auto Nagrand;822§auto Nagrand;822 | x=-1073 y=7929.5 | size=5 | links=#14702(auto Nagrand;547):88 #20799(auto Nagrand;748):61
+#23170 | auto Nagrand;823§auto Nagrand;823§auto Nagrand;823 | x=-738.1000366210938 y=7961.39990234375 | size=1 | links=#23904(auto Nagrand;851):28 #27853(auto Nagrand;965):27
+#23177 | auto Nagrand;824§auto Nagrand;824§auto Nagrand;824 | x=-2484.400146484375 y=7205.39990234375 | size=1 | links=#9293(auto Nagrand;324):9 #18000(auto Nagrand;659):14 #25708(auto Nagrand;902):22
+#23189 | auto Nagrand;825§auto Nagrand;825§auto Nagrand;825 | x=-849.1000366210938 y=8763.2001953125 | size=1 | links=#26101(auto Nagrand;910):8 #27322(auto Nagrand;946):9
+#23218 | auto Nagrand;826§auto Nagrand;826§auto Nagrand;826 | x=-2169.199951171875 y=6501.60009765625 | size=5 | links=#1758(auto Nagrand;47):39 #23389(auto Nagrand;835):37
+#23228 | auto Nagrand;827§auto Nagrand;827§auto Nagrand;827 | x=-2523.699951171875 y=7213.2001953125 | size=1 | links=#47(auto Nagrand;1):7 #12461(auto Nagrand;444):6
+#23250 | auto Nagrand;828§auto Nagrand;828§auto Nagrand;828 | x=-2267.5 y=7220.30029296875 | size=1 | links=#15026(auto Nagrand;558):21 #18731(auto Nagrand;681):20
+#23267 | auto Nagrand;829§auto Nagrand;829§auto Nagrand;829 | x=-1793.200073242188 y=7284.30029296875 | size=1 | links=#11228(auto Nagrand;394):42 #27475(auto Nagrand;956):52
+#23272 | auto Nagrand;830§auto Nagrand;830§auto Nagrand;830 | x=-2138.300048828125 y=7186 | size=1 | links=#23601(auto Nagrand;842):20 #24495(auto Nagrand;869):25
+#23284 | auto Nagrand;831§auto Nagrand;831§auto Nagrand;831 | x=-2966.5 y=6379.39990234375 | size=1 | links=#770(auto Nagrand;20):6 #22622(auto Nagrand;807):8
+#23359 | auto Nagrand;832§auto Nagrand;832§auto Nagrand;832 | x=-769.1000366210938 y=7916.39990234375 | size=1 | links=#25992(auto Nagrand;905):14
+#23378 | auto Nagrand;833§auto Nagrand;833§auto Nagrand;833 | x=-2628.10009765625 y=7292.80029296875 | size=1 | links=#26709(auto Nagrand;926):10
+#23382 | auto Nagrand;834§auto Nagrand;834§auto Nagrand;834 | x=-2796.302228605211 y=7335.137685908875 | size=1 | links=#2380(auto Nagrand;69):10 #20606(auto Nagrand;737):46 #24513(auto Nagrand;870):34
+#23389 | auto Nagrand;835§auto Nagrand;835§auto Nagrand;835 | x=-2134.5 y=6514.60009765625 | size=1 | links=#12153(auto Nagrand;433):26 #23218(auto Nagrand;826):37
+#23425 | auto Nagrand;836§auto Nagrand;836§auto Nagrand;836 | x=-2753.900146484375 y=7297 | size=1 | links=#27096(auto Nagrand;942):10
+#23442 | auto Nagrand;837§auto Nagrand;837§auto Nagrand;837 | x=-1618.200073242188 y=8745.7001953125 | size=1 | links=#4029(auto Nagrand;136):17 #7379(auto Nagrand;250):12
+#23466 | auto Nagrand;838§auto Nagrand;838§auto Nagrand;838 | x=-2704 y=6074.5 | size=1 | links=#4175(auto Nagrand;144):53 #20277(auto Nagrand;719):38
+#23555 | auto Nagrand;839§auto Nagrand;839§auto Nagrand;839 | x=-968.2000122070312 y=8344.7998046875 | size=1 | links=#12639(auto Nagrand;452):38 #20888(auto Nagrand;751):19 #21190(auto Nagrand;766):23
+#23585 | auto Nagrand;840§auto Nagrand;840§auto Nagrand;840 | x=-2353 y=7365.2001953125 | size=1 | links=#15620(auto Nagrand;577):22 #17218(auto Nagrand;634):28
+#23586 | auto Nagrand;841§auto Nagrand;841§auto Nagrand;841 | x=-1351.099975585938 y=8250.1005859375 | size=1 | links=#7976(auto Nagrand;282):65 #17355(auto Nagrand;637):71
+#23601 | auto Nagrand;842§auto Nagrand;842§auto Nagrand;842 | x=-2158.199951171875 y=7189.10009765625 | size=1 | links=#12927(auto Nagrand;464):15 #23272(auto Nagrand;830):20
+#23616 | auto Nagrand;843§auto Nagrand;843§auto Nagrand;843 | x=-2801.699951171875 y=6498.39990234375 | size=1 | links=#3716(auto Nagrand;123):38 #7898(auto Nagrand;277):23
+#23629 | auto Nagrand;844§auto Nagrand;844§auto Nagrand;844 | x=-1777.700073242188 y=7599.89990234375 | size=1 | links=#1985(auto Nagrand;52):24 #19298(auto Nagrand;696):51
+#23643 | auto Nagrand;845§auto Nagrand;845§auto Nagrand;845 | x=-2029 y=7825.10009765625 | size=1 | links=#12260(auto Nagrand;438):30 #23861(auto Nagrand;850):26
+#23663 | auto Nagrand;846§auto Nagrand;846§auto Nagrand;846 | x=-2996.300048828125 y=6375.7001953125 | size=1 | links=#9604(auto Nagrand;341):6 #18623(auto Nagrand;679):6 #21194(auto Nagrand;767):5
+#23742 | auto Nagrand;847§auto Nagrand;847§auto Nagrand;847 | x=-761.7000122070312 y=7998.39990234375 | size=1 | links=#23904(auto Nagrand;851):15 #26131(auto Nagrand;912):21
+#23758 | auto Nagrand;848§auto Nagrand;848§auto Nagrand;848 | x=-2955.60009765625 y=5972.2001953125 | size=1 | links=#7845(entry and exit;Nagrand;The Low Path;to;Terokkar Forest):46 #12041(auto Nagrand;428):41
+#23793 | auto Nagrand;849§auto Nagrand;849§auto Nagrand;849 | x=-1069.800048828125 y=8803.400390625 | size=1 | links=#3649(auto Nagrand;120):12 #19880(auto Nagrand;711):14
+#23861 | auto Nagrand;850§auto Nagrand;850§auto Nagrand;850 | x=-2021.400024414063 y=7799.2001953125 | size=1 | links=#16693(auto Nagrand;617):27 #23643(auto Nagrand;845):26
+#23904 | auto Nagrand;851§auto Nagrand;851§auto Nagrand;851 | x=-753.7000122070312 y=7984.80029296875 | size=1 | links=#23170(auto Nagrand;823):28 #23742(auto Nagrand;847):15
+#23942 | auto Nagrand;852§auto Nagrand;852§auto Nagrand;852 | x=-922.2000122070312 y=8039.5 | size=1 | links=#4684(auto Nagrand;161):19 #12019(auto Nagrand;427):24
+#23957 | auto Nagrand;853§auto Nagrand;853§auto Nagrand;853 | x=-838.2000122070312 y=8721.2998046875 | size=1 | links=#370(auto Nagrand;9):14 #11892(auto Nagrand;424):17
+#24024 | auto Nagrand;854§auto Nagrand;854§auto Nagrand;854 | x=-2387.60009765625 y=7439.7001953125 | size=1 | links=#6684(auto Nagrand;232):5 #9423(auto Nagrand;330):8
+#24090 | auto Nagrand;855§auto Nagrand;855§auto Nagrand;855 | x=-1014.299987792969 y=8065.60009765625 | size=1 | links=#6236(auto Nagrand;215):11 #25494(auto Nagrand;896):5
+#24101 | auto Nagrand;856§auto Nagrand;856§auto Nagrand;856 | x=-1128.800048828125 y=8644.400390625 | size=1 | links=#2028(auto Nagrand;56):18 #4304(auto Nagrand;149):11
+#24149 | auto Nagrand;857§auto Nagrand;857§auto Nagrand;857 | x=-1471 y=8495 | size=1 | links=#10442(auto Nagrand;361):19 #12598(auto Nagrand;448):10 #26867(auto Nagrand;931):12
+#24159 | auto Nagrand;858§auto Nagrand;858§auto Nagrand;858 | x=-2163.699951171875 y=7216.89990234375 | size=1 | links=#15223(auto Nagrand;562):9 #17733(auto Nagrand;649):10
+#24181 | auto Nagrand;859§auto Nagrand;859§auto Nagrand;859 | x=-2091.10009765625 y=8575.1005859375 | size=1 | links=#836(auto Nagrand;22):32 #16708(auto Nagrand;619):5
+#24214 | auto Nagrand;860§auto Nagrand;860§auto Nagrand;860 | x=-2244.199951171875 y=7159 | size=1 | links=#377(auto Nagrand;10):18 #13867(auto Nagrand;513):16
+#24249 | auto Nagrand;861§auto Nagrand;861§auto Nagrand;861 | x=-2190.199951171875 y=7180.10009765625 | size=1 | links=#12927(auto Nagrand;464):17 #25026(auto Nagrand;884):17
+#24296 | auto Nagrand;862§auto Nagrand;862§auto Nagrand;862 | x=-2612.699951171875 y=7533.10009765625 | size=1 | links=#11480(auto Nagrand;405):16 #11565(auto Nagrand;408):10
+#24304 | auto Nagrand;863§auto Nagrand;863§auto Nagrand;863 | x=-2005.800048828125 y=7751.7001953125 | size=1 | links=#16303(auto Nagrand;600):22 #16693(auto Nagrand;617):22
+#24315 | auto Nagrand;864§auto Nagrand;864§auto Nagrand;864 | x=-861.2000122070312 y=8711.2998046875 | size=1 | links=#370(auto Nagrand;9):11 #19123(auto Nagrand;695):16
+#24330 | auto Nagrand;865§auto Nagrand;865§auto Nagrand;865 | x=-2247 y=7219.2001953125 | size=1 | links=#9777(auto Nagrand;345):11 #16730(auto Nagrand;620):11
+#24421 | auto Nagrand;866§auto Nagrand;866§auto Nagrand;866 | x=-2580 y=7269.7001953125 | size=1 | links=#7648(auto Nagrand;260):9 #7748(auto Nagrand;268):6
+#24433 | auto Nagrand;867§auto Nagrand;867§auto Nagrand;867 | x=-1539.599975585938 y=6553.10009765625 | size=1 | links=#6001(auto Nagrand;205):54 #22171(auto Nagrand;791):21
+#24443 | auto Nagrand;868§auto Nagrand;868§auto Nagrand;868 | x=-1519.099975585938 y=7307.89990234375 | size=1 | links=#8784(auto Nagrand;311):49 #24934(auto Nagrand;883):19
+#24495 | auto Nagrand;869§auto Nagrand;869§auto Nagrand;869 | x=-2113 y=7189.10009765625 | size=1 | links=#14211(auto Nagrand;525):19 #23272(auto Nagrand;830):25
+#24513 | auto Nagrand;870§auto Nagrand;870§auto Nagrand;870 | x=-2789.731232468564 y=7301.500440681515 | size=1 | links=#10907(auto Nagrand;380):42 #23382(auto Nagrand;834):34
+#24620 | auto Nagrand;871§auto Nagrand;871§auto Nagrand;871 | x=-1635.700073242188 y=6528 | size=1 | links=#6001(auto Nagrand;205):47 #21044(auto Nagrand;756):13
+#24657 | auto Nagrand;872§auto Nagrand;872§auto Nagrand;872 | x=-2587.400146484375 y=7514.5 | size=1 | links=#6341(auto Nagrand;219):16 #11480(auto Nagrand;405):15
+#24709 | auto Nagrand;873§auto Nagrand;873§auto Nagrand;873 | x=-1520.300048828125 y=8566.7001953125 | size=1 | links=#12895(auto Nagrand;462):14 #13427(auto Nagrand;491):2
+#24731 | auto Nagrand;874§auto Nagrand;874§auto Nagrand;874 | x=-1764.300048828125 y=7166.39990234375 | size=1 | links=#8061(auto Nagrand;284):28 #27475(auto Nagrand;956):68
+#24750 | auto Nagrand;875§auto Nagrand;875§auto Nagrand;875 | x=-2182.300048828125 y=7897.30029296875 | size=5 | links=#6255(auto Nagrand;216):48 #17128(auto Nagrand;631):36
+#24769 | auto Nagrand;876§auto Nagrand;876§auto Nagrand;876 | x=-2432.199951171875 y=7373.30029296875 | size=1 | links=#18527(auto Nagrand;675):24 #27445(auto Nagrand;954):23
+#24793 | auto Nagrand;877§auto Nagrand;877§auto Nagrand;877 | x=-1765.400024414063 y=7053.39990234375 | size=5 | links=#2186(auto Nagrand;60):59 #11162(auto Nagrand;391):42
+#24830 | auto Nagrand;878§auto Nagrand;878§auto Nagrand;878 | x=-769.4000244140625 y=8833.5 | size=5 | links=#12906(auto Nagrand;463):25 #14737(auto Nagrand;548):25
+#24842 | auto Nagrand;879§auto Nagrand;879§auto Nagrand;879 | x=-2088.900146484375 y=6254.2001953125 | size=1 | links=#5403(auto Nagrand;183):8 #7816(auto Nagrand;269):42
+#24848 | auto Nagrand;880§auto Nagrand;880§auto Nagrand;880 | x=-1331.400024414063 y=6669.89990234375 | size=5 | links=#11743(auto Nagrand;419):65 #23124(auto Nagrand;821):49
+#24888 | auto Nagrand;881§auto Nagrand;881§auto Nagrand;881 | x=-1016.600036621094 y=8146.60009765625 | size=1 | links=#7418(auto Nagrand;254):27 #16180(auto Nagrand;591):20
+#24918 | auto Nagrand;882§auto Nagrand;882§auto Nagrand;882 | x=-2503.400146484375 y=6356.7001953125 | size=1 | links=#4468(auto Nagrand;158):19 #11423(auto Nagrand;401):24
+#24934 | auto Nagrand;883§auto Nagrand;883§auto Nagrand;883 | x=-1514.900024414063 y=7326.60009765625 | size=1 | links=#4731(auto Nagrand;162):47 #24443(auto Nagrand;868):19
+#25026 | auto Nagrand;884§auto Nagrand;884§auto Nagrand;884 | x=-2204 y=7168.89990234375 | size=1 | links=#18260(auto Nagrand;662):11 #24249(auto Nagrand;861):17
+#25055 | auto Nagrand;885§auto Nagrand;885§auto Nagrand;885 | x=-2670.10009765625 y=7464.10009765625 | size=1 | links=#1624(waters;rescue;top;Nagrand;one):28 #7708(auto Nagrand;264):24
+#25107 | auto Nagrand;886§auto Nagrand;886§auto Nagrand;886 | x=-1986.599975585938 y=7633.2001953125 | size=1 | links=#8910(auto Nagrand;314):34 #27417(auto Nagrand;951):29
+#25114 | auto Nagrand;887§auto Nagrand;887§auto Nagrand;887 | x=-558 y=8443 | size=1 | links=#1511(auto Nagrand;37):34 #8392(auto Nagrand;302):28
+#25119 | auto Nagrand;888§auto Nagrand;888§auto Nagrand;888 | x=-818.9000244140625 y=7784.30029296875 | size=1 | links=#7133(auto Nagrand;245):18 #15427(auto Nagrand;570):23 #19099(auto Nagrand;694):24
+#25186 | auto Nagrand;889§auto Nagrand;889§auto Nagrand;889 | x=-2058.10009765625 y=7445.30029296875 | size=1 | links=#6074(auto Nagrand;208):7 #11517(auto Nagrand;407):7
+#25191 | auto Nagrand;890§auto Nagrand;890§auto Nagrand;890 | x=-1843.800048828125 y=6383 | size=1 | links=#2633(auto Nagrand;80):4
+#25226 | auto Nagrand;891§auto Nagrand;891§auto Nagrand;891 | x=-2238.60009765625 y=7685.30029296875 | size=5 | links=#2016(auto Nagrand;55):53 #4120(auto Nagrand;142):32 #10767(auto Nagrand;377):42
+#25249 | auto Nagrand;892§auto Nagrand;892§auto Nagrand;892 | x=-801.6000366210938 y=8085.89990234375 | size=5 | links=#11438(auto Nagrand;403):40 #11587(auto Nagrand;410):37
+#25395 | auto Nagrand;893§auto Nagrand;893§auto Nagrand;893 | x=-1468.099975585938 y=8601.2001953125 | size=1 | links=#8314(auto Nagrand;298):20 #22404(auto Nagrand;797):9
+#25425 | auto Nagrand;894§auto Nagrand;894§auto Nagrand;894 | x=-824.7000122070312 y=8757.5 | size=1 | links=#3778(auto Nagrand;127):11 #7066(auto Nagrand;242):18 #7335(auto Nagrand;249):12
+#25439 | auto Nagrand;895§auto Nagrand;895§auto Nagrand;895 | x=-952 y=8283.6005859375 | size=1 | links=#5074(auto Nagrand;172):51 #12639(auto Nagrand;452):24 #14887(auto Nagrand;555):38 #18550(auto Nagrand;678):31
+#25494 | auto Nagrand;896§auto Nagrand;896§auto Nagrand;896 | x=-1009.600036621094 y=8067.7001953125 | size=1 | links=#3786(auto Nagrand;128):3 #24090(auto Nagrand;855):5
+#25586 | auto Nagrand;897§auto Nagrand;897§auto Nagrand;897 | x=-2282.199951171875 y=6422.5 | size=5 | links=#818(auto Nagrand;21):60 #16230(auto Nagrand;597):55
+#25623 | auto Nagrand;898§auto Nagrand;898§auto Nagrand;898 | x=-2224.60009765625 y=7369.30029296875 | size=1 | links=#8155(auto Nagrand;289):13 #13815(auto Nagrand;510):18
+#25629 | auto Nagrand;899§auto Nagrand;899§auto Nagrand;899 | x=-2303.300048828125 y=7801.89990234375 | size=1 | links=#8293(auto Nagrand;296):22 #11624(auto Nagrand;412):14
+#25670 | auto Nagrand;900§auto Nagrand;900§auto Nagrand;900 | x=-1226.300048828125 y=8439.6005859375 | size=5 | links=#10676(auto Nagrand;370):67 #11907(auto Nagrand;425):83 #20375(auto Nagrand;721):65
+#25677 | auto Nagrand;901§auto Nagrand;901§auto Nagrand;901 | x=-2291.300048828125 y=7125.7001953125 | size=1 | links=#377(auto Nagrand;10):43 #8986(auto Nagrand;317):35
+#25708 | auto Nagrand;902§auto Nagrand;902§auto Nagrand;902 | x=-2498 y=7223.2001953125 | size=1 | links=#3791(auto Nagrand;129):11 #23177(auto Nagrand;824):22
+#25711 | auto Nagrand;903§auto Nagrand;903§auto Nagrand;903 | x=-2349.60009765625 y=7294.89990234375 | size=1 | links=#5648(auto Nagrand;192):3 #20681(auto Nagrand;741):11
+#25950 | auto Nagrand;904§auto Nagrand;904§auto Nagrand;904 | x=-847.2999877929688 y=8357.7998046875 | size=5 | links=#6886(auto Nagrand;237):48 #22941(auto Nagrand;816):67
+#25992 | auto Nagrand;905§auto Nagrand;905§auto Nagrand;905 | x=-754.7999877929688 y=7912.2001953125 | size=1 | links=#14831(auto Nagrand;552):13 #23359(auto Nagrand;832):14 #27853(auto Nagrand;965):25
+#25995 | auto Nagrand;906§auto Nagrand;906§auto Nagrand;906 | x=-2551.5 y=7500.5 | size=1 | links=#3404(auto Nagrand;109):12 #28097(auto Nagrand;975):17
+#26001 | auto Nagrand;907§auto Nagrand;907§auto Nagrand;907 | x=-1524.200073242188 y=6585.60009765625 | size=1 | links=#2869(auto Nagrand;91):34 #22171(auto Nagrand;791):20
+#26015 | auto Nagrand;908§auto Nagrand;908§auto Nagrand;908 | x=-2069.300048828125 y=6521.30029296875 | size=1 | links=#9220(auto Nagrand;321):13 #12153(auto Nagrand;433):39 #21152(auto Nagrand;763):37
+#26020 | auto Nagrand;909§auto Nagrand;909§auto Nagrand;909 | x=-2870 y=6392.2001953125 | size=1 | links=#2700(auto Nagrand;83):14 #3737(auto Nagrand;125):12
+#26101 | auto Nagrand;910§auto Nagrand;910§auto Nagrand;910 | x=-855.5 y=8758.2001953125 | size=1 | links=#5547(auto Nagrand;189):6 #23189(auto Nagrand;825):8
+#26118 | auto Nagrand;911§auto Nagrand;911§auto Nagrand;911 | x=-2082.5 y=7908.10009765625 | size=1 | links=#4481(auto Nagrand;159):32 #20582(auto Nagrand;735):16
+#26131 | auto Nagrand;912§auto Nagrand;912§auto Nagrand;912 | x=-770.7999877929688 y=8017.5 | size=1 | links=#8385(auto Nagrand;301):19 #23742(auto Nagrand;847):21
+#26163 | auto Nagrand;913§auto Nagrand;913§auto Nagrand;913 | x=-1302.099975585938 y=8481.7998046875 | size=5 | links=#1003(auto Nagrand;24):39 #10676(auto Nagrand;370):20
+#26181 | auto Nagrand;914§auto Nagrand;914§auto Nagrand;914 | x=-810.7000122070312 y=8817.400390625 | size=1 | links=#14737(auto Nagrand;548):38 #27041(auto Nagrand;940):15
+#26246 | auto Nagrand;915§auto Nagrand;915§auto Nagrand;915 | x=-1519.400024414063 y=8539.2998046875 | size=1 | links=#1135(auto Nagrand;30):12 #10134(auto Nagrand;352):8
+#26309 | auto Nagrand;916§auto Nagrand;916§auto Nagrand;916 | x=-1410.200073242188 y=8522.6005859375 | size=1 | links=#13257(auto Nagrand;485):17 #22861(auto Nagrand;812):16
+#26350 | auto Nagrand;917§auto Nagrand;917§auto Nagrand;917 | x=-2076.900146484375 y=7469.10009765625 | size=1 | links=#500(auto Nagrand;11):17 #12119(auto Nagrand;431):10
+#26359 | auto Nagrand;918§auto Nagrand;918§auto Nagrand;918 | x=-2386.800048828125 y=7296.39990234375 | size=5 | links=#15588(auto Nagrand;575):22
+#26360 | auto Nagrand;919§auto Nagrand;919§auto Nagrand;919 | x=-959.7000122070312 y=8076.39990234375 | size=1 | links=#5066(auto Nagrand;171):7 #10711(auto Nagrand;372):7
+#26366 | auto Nagrand;920§auto Nagrand;920§auto Nagrand;920 | x=-848 y=7813.80029296875 | size=1 | links=#12350(auto Nagrand;441):16 #15427(auto Nagrand;570):18
+#26399 | auto Nagrand;921§auto Nagrand;921§auto Nagrand;921 | x=-2944.10009765625 y=6378.80029296875 | size=1 | links=#6476(auto Nagrand;224):10 #8176(auto Nagrand;290):9
+#26517 | auto Nagrand;922§auto Nagrand;922§auto Nagrand;922 | x=-2624.199951171875 y=7339.80029296875 | size=1 | links=#17739(auto Nagrand;650):8 #17810(auto Nagrand;652):6
+#26596 | auto Nagrand;923§auto Nagrand;923§auto Nagrand;923 | x=-684.1000366210938 y=8804.7998046875 | size=5 | links=#21304(auto Nagrand;771):0 #28138(auto Nagrand;977):48
+#26611 | auto Nagrand;924§auto Nagrand;924§auto Nagrand;924 | x=-1823.800048828125 y=6299.80029296875 | size=1 | links=#26748(auto Nagrand;927):17
+#26708 | auto Nagrand;925§auto Nagrand;925§auto Nagrand;925 | x=-854.2999877929688 y=8722.2998046875 | size=1 | links=#370(auto Nagrand;9):6 #16347(auto Nagrand;603):9
+#26709 | auto Nagrand;926§auto Nagrand;926§auto Nagrand;926 | x=-2635.5 y=7300.10009765625 | size=1 | links=#20739(auto Nagrand;743):20 #23378(auto Nagrand;833):10
+#26748 | auto Nagrand;927§auto Nagrand;927§auto Nagrand;927 | x=-1839.800048828125 y=6306.39990234375 | size=1 | links=#1396(auto Nagrand;33):7 #26611(auto Nagrand;924):17
+#26749 | auto Nagrand;928§auto Nagrand;928§auto Nagrand;928 | x=-1515.400024414063 y=8476.2998046875 | size=1 | links=#22308(auto Nagrand;795):3 #26782(auto Nagrand;929):7
+#26782 | auto Nagrand;929§auto Nagrand;929§auto Nagrand;929 | x=-1519.200073242188 y=8469.900390625 | size=1 | links=#15869(auto Nagrand;588):12 #26749(auto Nagrand;928):7
+#26850 | auto Nagrand;930§auto Nagrand;930§auto Nagrand;930 | x=-504.2000122070313 y=8430.7998046875 | size=1 | links=#1511(auto Nagrand;37):21 #8201(auto Nagrand;292):29
+#26867 | auto Nagrand;931§auto Nagrand;931§auto Nagrand;931 | x=-1471 y=8482.1005859375 | size=1 | links=#9629(auto Nagrand;343):16 #12598(auto Nagrand;448):15 #24149(auto Nagrand;857):12
+#26882 | auto Nagrand;932§auto Nagrand;932§auto Nagrand;932 | x=-2294 y=8280.7998046875 | size=5 | links=#14666(auto Nagrand;545):29
+#26885 | auto Nagrand;933§auto Nagrand;933§auto Nagrand;933 | x=-2092.60009765625 y=8440.7001953125 | size=1 | links=#1866(auto Nagrand;49):37 #21973(auto Nagrand;783):39
+#26899 | auto Nagrand;934§auto Nagrand;934§auto Nagrand;934 | x=-1906.200073242188 y=7263.30029296875 | size=1 | links=#4902(auto Nagrand;164):36 #17597(auto Nagrand;644):43
+#26909 | auto Nagrand;935§auto Nagrand;935§auto Nagrand;935 | x=-1522.5 y=7214.2001953125 | size=1 | links=#12243(auto Nagrand;436):4 #15725(auto Nagrand;584):15
+#26918 | auto Nagrand;936§auto Nagrand;936§auto Nagrand;936 | x=-2408.60009765625 y=7370.60009765625 | size=1 | links=#15180(auto Nagrand;561):13 #21431(auto Nagrand;774):13
+#26977 | auto Nagrand;937§auto Nagrand;937§auto Nagrand;937 | x=-1451.099975585938 y=8837.7998046875 | size=5 | links=#1182(auto Nagrand;31):38 #13222(auto Nagrand;481):29
+#27011 | auto Nagrand;938§auto Nagrand;938§auto Nagrand;938 | x=-881 y=8698.400390625 | size=1 | links=#19123(auto Nagrand;695):7 #22533(auto Nagrand;804):13
+#27024 | auto Nagrand;939§auto Nagrand;939§auto Nagrand;939 | x=-2803 y=6450.5 | size=1 | links=#16538(auto Nagrand;610):13 #21999(auto Nagrand;784):11
+#27041 | auto Nagrand;940§auto Nagrand;940§auto Nagrand;940 | x=-823.2999877929688 y=8808.7998046875 | size=1 | links=#7844(auto Nagrand;271):14 #26181(auto Nagrand;914):15
+#27052 | auto Nagrand;941§auto Nagrand;941§auto Nagrand;941 | x=-2677.800048828125 y=7271.7001953125 | size=1 | links=#18299(auto Nagrand;663):9 #27486(auto Nagrand;957):10
+#27072 | waters;rescue;Telaar;Nagrand;one§gewässer;rettung;Telaar;Nagrand;eins§eaux;sauvetage;Telaar;Nagrand;un | x=-2596.300048828125 y=7307.30029296875 | size=1 | links=#11041(auto Nagrand;388):11 #15015(auto Nagrand;557):13
+#27096 | auto Nagrand;942§auto Nagrand;942§auto Nagrand;942 | x=-2745.10009765625 y=7302 | size=1 | links=#20407(auto Nagrand;725):12 #23425(auto Nagrand;836):10
+#27161 | auto Nagrand;943§auto Nagrand;943§auto Nagrand;943 | x=-2067.5 y=6238.10009765625 | size=1 | links=#5403(auto Nagrand;183):23
+#27221 | auto Nagrand;944§auto Nagrand;944§auto Nagrand;944 | x=-2629.400146484375 y=7250 | size=1 | links=#15149(waters;rescue;Telaar;Nagrand;two):12 #16814(auto Nagrand;622):10
+#27245 | auto Nagrand;945§auto Nagrand;945§auto Nagrand;945 | x=-1371.200073242188 y=8532.5 | size=1 | links=#1003(auto Nagrand;24):46 #14256(auto Nagrand;530):20
+#27322 | auto Nagrand;946§auto Nagrand;946§auto Nagrand;946 | x=-841.6000366210938 y=8758 | size=1 | links=#3778(auto Nagrand;127):7 #23189(auto Nagrand;825):9
+#27352 | auto Nagrand;947§auto Nagrand;947§auto Nagrand;947 | x=-684.1000366210938 y=8804.7998046875 | size=1 | links=#4375(auto Nagrand;155):11 #21304(auto Nagrand;771):0
+#27361 | auto Nagrand;948§auto Nagrand;948§auto Nagrand;948 | x=-673.7000122070312 y=8439.2998046875 | size=1 | links=#1719(auto Nagrand;44):60 #19567(auto Nagrand;704):70
+#27386 | auto Nagrand;949§auto Nagrand;949§auto Nagrand;949 | x=-2582.10009765625 y=7320.10009765625 | size=1 | links=#1723(auto Nagrand;45):8 #21142(auto Nagrand;762):17 #21206(auto Nagrand;768):34
+#27412 | auto Nagrand;950§auto Nagrand;950§auto Nagrand;950 | x=-2295 y=7418.39990234375 | size=1 | links=#16198(auto Nagrand;595):5 #22520(auto Nagrand;803):11
+#27417 | auto Nagrand;951§auto Nagrand;951§auto Nagrand;951 | x=-1957.099975585938 y=7637.39990234375 | size=1 | links=#12973(auto Nagrand;467):29 #25107(auto Nagrand;886):29
+#27419 | auto Nagrand;952§auto Nagrand;952§auto Nagrand;952 | x=-1826.599975585938 y=7691.5 | size=1 | links=#7865(auto Nagrand;274):25 #27782(auto Nagrand;963):17
+#27444 | auto Nagrand;953§auto Nagrand;953§auto Nagrand;953 | x=-2345.300048828125 y=7324.89990234375 | size=1 | links=#15620(auto Nagrand;577):18 #20681(auto Nagrand;741):18
+#27445 | auto Nagrand;954§auto Nagrand;954§auto Nagrand;954 | x=-2422.400146484375 y=7351.80029296875 | size=1 | links=#10933(auto Nagrand;384):19 #24769(auto Nagrand;876):23
+#27455 | auto Nagrand;955§auto Nagrand;955§auto Nagrand;955 | x=-2559.199951171875 y=7173.89990234375 | size=1 | links=#14902(auto Nagrand;556):17 #28295(auto Nagrand;981):32
+#27475 | auto Nagrand;956§auto Nagrand;956§auto Nagrand;956 | x=-1778.700073242188 y=7233.5 | size=1 | links=#23267(auto Nagrand;829):52 #24731(auto Nagrand;874):68
+#27486 | auto Nagrand;957§auto Nagrand;957§auto Nagrand;957 | x=-2688.5 y=7269.80029296875 | size=1 | links=#12408(auto Nagrand;443):17 #27052(auto Nagrand;941):10
+#27503 | auto Nagrand;958§auto Nagrand;958§auto Nagrand;958 | x=-2660.300048828125 y=7533.60009765625 | size=1 | links=#366(auto Nagrand;8):8 #9120(auto Nagrand;320):18
+#27551 | auto Nagrand;959§auto Nagrand;959§auto Nagrand;959 | x=-1793.800048828125 y=7195.30029296875 | size=1 | links=#4334(auto Nagrand;152):24 #14100(auto Nagrand;522):33
+#27579 | auto Nagrand;960§auto Nagrand;960§auto Nagrand;960 | x=-2588.10009765625 y=6885.10009765625 | size=1 | links=#6383(auto Nagrand;221):23 #20680(auto Nagrand;740):17
+#27704 | auto Nagrand;961§auto Nagrand;961§auto Nagrand;961 | x=-1606 y=7065 | size=5 | links=#11630(auto Nagrand;413):80 #15913(auto Nagrand;590):70
+#27743 | auto Nagrand;962§auto Nagrand;962§auto Nagrand;962 | x=-2225 y=7279 | size=1 | links=#6008(auto Nagrand;206):32 #13169(auto Nagrand;477):12
+#27782 | auto Nagrand;963§auto Nagrand;963§auto Nagrand;963 | x=-1811.099975585938 y=7699.2001953125 | size=1 | links=#1528(auto Nagrand;38):10 #27419(auto Nagrand;952):17
+#27815 | auto Nagrand;964§auto Nagrand;964§auto Nagrand;964 | x=-837.9000244140625 y=8791.6005859375 | size=1 | links=#7844(auto Nagrand;271):8 #17695(auto Nagrand;647):12
+#27853 | auto Nagrand;965§auto Nagrand;965§auto Nagrand;965 | x=-744.5 y=7935.10009765625 | size=1 | links=#11143(auto Nagrand;390):22 #23170(auto Nagrand;823):27 #25992(auto Nagrand;905):25
+#27880 | auto Nagrand;966§auto Nagrand;966§auto Nagrand;966 | x=-852.7999877929688 y=8924.7998046875 | size=1 | links=#13814(auto Nagrand;509):19 #20450(auto Nagrand;728):24
+#27926 | auto Nagrand;967§auto Nagrand;967§auto Nagrand;967 | x=-2393.699951171875 y=7449.5 | size=1 | links=#6684(auto Nagrand;232):5 #12722(auto Nagrand;456):6
+#27963 | auto Nagrand;968§auto Nagrand;968§auto Nagrand;968 | x=-2826.10009765625 y=6308.39990234375 | size=1 | links=#18963(auto Nagrand;687):41 #19035(auto Nagrand;691):19
+#27965 | auto Nagrand;969§auto Nagrand;969§auto Nagrand;969 | x=-1923.700073242188 y=8753.900390625 | size=1 | links=#3011(auto Nagrand;97):32 #16597(auto Nagrand;613):30
+#27980 | auto Nagrand;970§auto Nagrand;970§auto Nagrand;970 | x=-764.2000122070312 y=7827.60009765625 | size=1 | links=#13609(auto Nagrand;501):26 #23005(auto Nagrand;820):32
+#27993 | auto Nagrand;971§auto Nagrand;971§auto Nagrand;971 | x=-2693.60009765625 y=6401.60009765625 | size=1 | links=#2793(auto Nagrand;87):48 #18984(auto Nagrand;689):39
+#28004 | auto Nagrand;972§auto Nagrand;972§auto Nagrand;972 | x=-2048.60009765625 y=7611.5 | size=1 | links=#17895(auto Nagrand;654):15 #20650(auto Nagrand;739):14
+#28038 | auto Nagrand;973§auto Nagrand;973§auto Nagrand;973 | x=-2514.10009765625 y=7221.60009765625 | size=1 | links=#3791(auto Nagrand;129):5 #12461(auto Nagrand;444):6
+#28078 | auto Nagrand;974§auto Nagrand;974§auto Nagrand;974 | x=-2619.800048828125 y=7294.7001953125 | size=1 | links=#3179(auto Nagrand;101):25
+#28097 | auto Nagrand;975§auto Nagrand;975§auto Nagrand;975 | x=-2536.60009765625 y=7509.5 | size=1 | links=#2729(auto Nagrand;85):31 #25995(auto Nagrand;906):17
+#28107 | auto Nagrand;976§auto Nagrand;976§auto Nagrand;976 | x=-2274.900146484375 y=7229 | size=1 | links=#3676(auto Nagrand;121):8 #22966(auto Nagrand;817):8
+#28138 | auto Nagrand;977§auto Nagrand;977§auto Nagrand;977 | x=-732.1000366210938 y=8810.7001953125 | size=5 | links=#14737(auto Nagrand;548):41 #26596(auto Nagrand;923):48
+#28170 | auto Nagrand;978§auto Nagrand;978§auto Nagrand;978 | x=-2499.400146484375 y=7315.30029296875 | size=1 | links=#10467(auto Nagrand;362):10 #19699(auto Nagrand;705):11
+#28231 | auto Nagrand;979§auto Nagrand;979§auto Nagrand;979 | x=-805.7999877929688 y=8900.1005859375 | size=1 | links=#16603(auto Nagrand;615):28 #20450(auto Nagrand;728):28
+#28287 | auto Nagrand;980§auto Nagrand;980§auto Nagrand;980 | x=-2104.400146484375 y=8703 | size=5 | links=#10115(auto Nagrand;350):29 #19070(auto Nagrand;692):18
+#28295 | auto Nagrand;981§auto Nagrand;981§auto Nagrand;981 | x=-2545.400146484375 y=7144 | size=1 | links=#16496(auto Nagrand;607):5 #27455(auto Nagrand;955):32
+#28301 | auto Nagrand;982§auto Nagrand;982§auto Nagrand;982 | x=-1064.900024414063 y=8754.7001953125 | size=1 | links=#3117(auto Nagrand;100):15 #13079(auto Nagrand;471):19
+#28331 | auto Nagrand;983§auto Nagrand;983§auto Nagrand;983 | x=-1792 y=6530.30029296875 | size=1 | links=#13094(auto Nagrand;472):51 #16532(auto Nagrand;609):47
+#28352 | auto Nagrand;984§auto Nagrand;984§auto Nagrand;984 | x=-2638.5 y=7216.60009765625 | size=1 | links=#10297(auto Nagrand;354):9 #13805(auto Nagrand;508):19
+#28420 | auto Nagrand;985§auto Nagrand;985§auto Nagrand;985 | x=-1549.400024414063 y=8735.1005859375 | size=1 | links=#20355(auto Nagrand;720):35 #20937(auto Nagrand;753):15
+#28488 | auto Nagrand;986§auto Nagrand;986§auto Nagrand;986 | x=-2094.900146484375 y=6324.7001953125 | size=5 | links=#2892(auto Nagrand;92):46 #12564(auto Nagrand;446):37
+#28550 | auto Nagrand;987§auto Nagrand;987§auto Nagrand;987 | x=-2488.800048828125 y=6389.2001953125 | size=1 | links=#6952(auto Nagrand;238):48 #8257(auto Nagrand;295):29 #11423(auto Nagrand;401):37

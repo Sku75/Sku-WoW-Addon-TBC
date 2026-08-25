@@ -1,0 +1,3 @@
+Zone areaId 2357 — eine Zeile pro Wegpunkt; Links inline.
+
+#28637 | s;Kalimdor;Ashenvale;Mystral Lake;Bloodtooth Camp§s;Kalimdor;Eschental;Mystralsee;Blutreißers Lager§s;Kalimdor;Orneval;Mystral Lake;Camp de Dent-rouge | x=1612.52 y=-1465.1 | size=1 | links=c3696.1:7

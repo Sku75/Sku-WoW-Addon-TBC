@@ -1,0 +1,1388 @@
+Zone areaId 406 — eine Zeile pro Wegpunkt; Links inline.
+
+#37 | auto Stonetalon Mountains;1§auto Steinkrallengebirge;1§auto Les Serres-Rocheuses;1 | x=518.6000366210938 y=328 | size=1 | links=#1742(auto Stonetalon Mountains;21):63 #28120(auto Stonetalon Mountains;495):43 c4005.23:37
+#93 | auto Stonetalon Mountains;2§auto Steinkrallengebirge;2§auto Les Serres-Rocheuses;2 | x=1525.5 y=1329 | size=1 | links=#1211(auto Stonetalon Mountains;17):65 #3453(auto Stonetalon Mountains;49):91
+#221 | auto Stonetalon Mountains;3§auto Steinkrallengebirge;3§auto Les Serres-Rocheuses;3 | x=822.4000244140625 y=487.2000122070313 | size=1 | links=#10590(auto Stonetalon Mountains;167):39 #11563(auto Stonetalon Mountains;183):72 #12474(auto Stonetalon Mountains;193):37
+#250 | auto Stonetalon Mountains;4§auto Steinkrallengebirge;4§auto Les Serres-Rocheuses;4 | x=2551.5 y=1932.400024414063 | size=1 | links=#17060(auto Stonetalon Mountains;262):15 #18162(auto Stonetalon Mountains;287):16
+#274 | auto Stonetalon Mountains;5§auto Steinkrallengebirge;5§auto Les Serres-Rocheuses;5 | x=480.6000061035156 y=1633.5 | size=5 | links=#22713(auto Stonetalon Mountains;401):57 #24594(auto Stonetalon Mountains;428):51
+#382 | passage;from;The Talondeep Path;Stonetalon Mountains;to;Ashenvale§passage;von;Der Steinkrallenpfad;Steinkrallengebirge;nach;Eschental§passage;de;La Perce des Serres;Les Serres-Rocheuses;vers;Orneval | x=1938 y=-738.7000122070312 | size=1 | links=#13(passage;from;The Talondeep Path;Ashenvale;to;Stonetalon Mountains):1 #4025(auto Stonetalon Mountains;56):11
+#513 | auto Stonetalon Mountains;6§auto Steinkrallengebirge;6§auto Les Serres-Rocheuses;6 | x=1587.900024414063 y=167.1000061035156 | size=1 | links=#13715(auto Stonetalon Mountains;211):8 c3992.4:9
+#530 | auto Stonetalon Mountains;7§auto Steinkrallengebirge;7§auto Les Serres-Rocheuses;7 | x=1455.099975585938 y=-21.60000038146973 | size=1 | links=#8874(auto Stonetalon Mountains;138):26 #14351(auto Stonetalon Mountains;221):20 c3989.13:9
+#623 | auto Stonetalon Mountains;8§auto Steinkrallengebirge;8§auto Les Serres-Rocheuses;8 | x=2518.10009765625 y=1280.5 | size=1 | links=#1253(auto Stonetalon Mountains;19):11 #27583(auto Stonetalon Mountains;487):44 c4020.3:13
+#744 | auto Stonetalon Mountains;9§auto Steinkrallengebirge;9§auto Les Serres-Rocheuses;9 | x=1382.5 y=1429.599975585938 | size=1 | links=#8057(auto Stonetalon Mountains;130):80 #8597(auto Stonetalon Mountains;136):99
+#833 | auto Stonetalon Mountains;10§auto Steinkrallengebirge;10§auto Les Serres-Rocheuses;10 | x=1546.800048828125 y=1153.099975585938 | size=1 | links=#17063(auto Stonetalon Mountains;263):22 #22228(auto Stonetalon Mountains;383):38
+#849 | auto Stonetalon Mountains;11§auto Steinkrallengebirge;11§auto Les Serres-Rocheuses;11 | x=-209.5 y=-359.3000183105469 | size=1 | links=#21693(auto Stonetalon Mountains;372):24 #27124(auto Stonetalon Mountains;479):27
+#879 | auto Stonetalon Mountains;12§auto Steinkrallengebirge;12§auto Les Serres-Rocheuses;12 | x=1025.099975585938 y=-43.60000228881836 | size=5 | links=#18303(auto Stonetalon Mountains;293):43 #23884(auto Stonetalon Mountains;417):18
+#907 | auto Stonetalon Mountains;13§auto Steinkrallengebirge;13§auto Les Serres-Rocheuses;13 | x=2262.199951171875 y=1433.300048828125 | size=1 | links=#15322(auto Stonetalon Mountains;235):34 #22513(auto Stonetalon Mountains;395):24 c4020.18:7
+#1011 | auto Stonetalon Mountains;14§auto Steinkrallengebirge;14§auto Les Serres-Rocheuses;14 | x=-16.80000114440918 y=35.10000228881836 | size=1 | links=#12221(auto Stonetalon Mountains;191):26 #21024(auto Stonetalon Mountains;358):28
+#1085 | auto Stonetalon Mountains;15§auto Steinkrallengebirge;15§auto Les Serres-Rocheuses;15 | x=1471.700073242188 y=950 | size=1 | links=#14135(auto Stonetalon Mountains;220):23 #18291(auto Stonetalon Mountains;292):85 o177926.1:47 c721.6:36
+#1103 | auto Stonetalon Mountains;16§auto Steinkrallengebirge;16§auto Les Serres-Rocheuses;16 | x=1 y=-592.5 | size=1 | links=#3378(auto Stonetalon Mountains;47):65 #9295(auto Stonetalon Mountains;144):51
+#1211 | auto Stonetalon Mountains;17§auto Steinkrallengebirge;17§auto Les Serres-Rocheuses;17 | x=1516.900024414063 y=1394.300048828125 | size=1 | links=#93(auto Stonetalon Mountains;2):65 #8057(auto Stonetalon Mountains;130):61 c4022.8:37
+#1249 | auto Stonetalon Mountains;18§auto Steinkrallengebirge;18§auto Les Serres-Rocheuses;18 | x=1474.5 y=-556.1000366210938 | size=5 | links=#9872(auto Stonetalon Mountains;148):39 #15362(auto Stonetalon Mountains;236):67 c4489.1:64 c4011.3:23 o19542.3:30 c4006.13:32 c4006.44:37
+#1253 | auto Stonetalon Mountains;19§auto Steinkrallengebirge;19§auto Les Serres-Rocheuses;19 | x=2529.800048828125 y=1281.300048828125 | size=1 | links=#623(auto Stonetalon Mountains;8):11 #21367(auto Stonetalon Mountains;366):50 c4019.3:14
+#1371 | auto Stonetalon Mountains;20§auto Steinkrallengebirge;20§auto Les Serres-Rocheuses;20 | x=1038.400024414063 y=-168.9000091552734 | size=1 | links=#4028(auto Stonetalon Mountains;57):19 #19120(auto Stonetalon Mountains;315):10
+#1742 | auto Stonetalon Mountains;21§auto Steinkrallengebirge;21§auto Les Serres-Rocheuses;21 | x=457.8999938964844 y=348 | size=1 | links=#37(auto Stonetalon Mountains;1):63 #27233(auto Stonetalon Mountains;481):31 o177904.1:15 c4005.3:40
+#1775 | auto Stonetalon Mountains;22§auto Steinkrallengebirge;22§auto Les Serres-Rocheuses;22 | x=-59.90000152587891 y=327.6000061035156 | size=1 | links=#18726(auto Stonetalon Mountains;307):23 #23712(auto Stonetalon Mountains;415):32
+#1892 | auto Stonetalon Mountains;23§auto Steinkrallengebirge;23§auto Les Serres-Rocheuses;23 | x=465.3999938964844 y=656.4000244140625 | size=1 | links=#15821(auto Stonetalon Mountains;245):30 c4007.27:30 c4007.29:22 c4007.31:16
+#1894 | auto Stonetalon Mountains;24§auto Steinkrallengebirge;24§auto Les Serres-Rocheuses;24 | x=-14.19999980926514 y=373.5 | size=1 | links=#5166(auto Stonetalon Mountains;82):25 #14105(auto Stonetalon Mountains;217):26 o178105.2:22
+#1997 | auto Stonetalon Mountains;25§auto Steinkrallengebirge;25§auto Les Serres-Rocheuses;25 | x=96.9000015258789 y=-61.90000152587891 | size=1 | links=#5511(auto Stonetalon Mountains;88):73 #15385(auto Stonetalon Mountains;238):80 c4005.2:42
+#2036 | auto Stonetalon Mountains;26§auto Steinkrallengebirge;26§auto Les Serres-Rocheuses;26 | x=472.7000122070313 y=1441.700073242188 | size=5 | links=#25877(auto Stonetalon Mountains;454):37 c6491.3:25
+#2210 | auto Stonetalon Mountains;27§auto Steinkrallengebirge;27§auto Les Serres-Rocheuses;27 | x=2353.199951171875 y=1823.599975585938 | size=1 | links=#7730(auto Stonetalon Mountains;122):9 #12054(auto Stonetalon Mountains;189):11
+#2224 | auto Stonetalon Mountains;28§auto Steinkrallengebirge;28§auto Les Serres-Rocheuses;28 | x=1706.099975585938 y=-643.2000122070312 | size=1 | links=#10519(auto Stonetalon Mountains;165):19 #20201(auto Stonetalon Mountains;341):18
+#2259 | auto Stonetalon Mountains;29§auto Steinkrallengebirge;29§auto Les Serres-Rocheuses;29 | x=1618.700073242188 y=126 | size=1 | links=#24419(auto Stonetalon Mountains;423):0
+#2311 | auto Stonetalon Mountains;30§auto Steinkrallengebirge;30§auto Les Serres-Rocheuses;30 | x=892.7999877929688 y=-332.6000061035156 | size=1 | links=#3660(auto Stonetalon Mountains;51):16 #4711(auto Stonetalon Mountains;74):10 c3999.4:6
+#2353 | auto Stonetalon Mountains;31§auto Steinkrallengebirge;31§auto Les Serres-Rocheuses;31 | x=72.5999984741211 y=-843.2999877929688 | size=1 | links=#18494(auto Stonetalon Mountains;300):8 #26021(auto Stonetalon Mountains;457):17
+#2372 | auto Stonetalon Mountains;32§auto Steinkrallengebirge;32§auto Les Serres-Rocheuses;32 | x=682.4000244140625 y=1909.900024414063 | size=5 | links=#21135(auto Stonetalon Mountains;359):54 #21790(auto Stonetalon Mountains;374):42
+#2405 | auto Stonetalon Mountains;33§auto Steinkrallengebirge;33§auto Les Serres-Rocheuses;33 | x=1083 y=261.2000122070313 | size=5 | links=#9939(auto Stonetalon Mountains;151):73 #18703(auto Stonetalon Mountains;305):68 o179486.5:27
+#2408 | auto Stonetalon Mountains;34§auto Steinkrallengebirge;34§auto Les Serres-Rocheuses;34 | x=610.9000244140625 y=355.8999938964844 | size=1 | links=#13808(auto Stonetalon Mountains;215):29 #18290(crossing;Stonetalon Mountains;path;to;Windshear Crag):32 c1412.28:10
+#2448 | auto Stonetalon Mountains;35§auto Steinkrallengebirge;35§auto Les Serres-Rocheuses;35 | x=2417.60009765625 y=1790.300048828125 | size=1 | links=#2559(auto Stonetalon Mountains;37):7 #3120(auto Stonetalon Mountains;45):11
+#2499 | auto Stonetalon Mountains;36§auto Steinkrallengebirge;36§auto Les Serres-Rocheuses;36 | x=917.2999877929688 y=1065.200073242188 | size=1 | links=#8480(auto Stonetalon Mountains;133):16 #19124(auto Stonetalon Mountains;316):28
+#2559 | auto Stonetalon Mountains;37§auto Steinkrallengebirge;37§auto Les Serres-Rocheuses;37 | x=2420.800048828125 y=1784 | size=1 | links=#2448(auto Stonetalon Mountains;35):7 #5788(auto Stonetalon Mountains;96):23
+#2577 | auto Stonetalon Mountains;38§auto Steinkrallengebirge;38§auto Les Serres-Rocheuses;38 | x=969 y=1593 | size=1 | links=#22042(auto Stonetalon Mountains;378):30 c4076.1:50
+#2732 | auto Stonetalon Mountains;39§auto Steinkrallengebirge;39§auto Les Serres-Rocheuses;39 | x=903.2000122070312 y=926.9000244140625 | size=1 | links=#13690(auto Stonetalon Mountains;209):18 c4083.1:9
+#2781 | auto Stonetalon Mountains;40§auto Steinkrallengebirge;40§auto Les Serres-Rocheuses;40 | x=1004.700012207031 y=26.89999961853027 | size=5 | links=#7404(auto Stonetalon Mountains;115):42 #18845(auto Stonetalon Mountains;310):34 c3991.19:17 c3989.55:53
+#2887 | auto Stonetalon Mountains;41§auto Steinkrallengebirge;41§auto Les Serres-Rocheuses;41 | x=2372.5 y=1813.900024414063 | size=1 | links=#12054(auto Stonetalon Mountains;189):10 #20345(auto Stonetalon Mountains;343):7
+#2924 | auto Stonetalon Mountains;42§auto Steinkrallengebirge;42§auto Les Serres-Rocheuses;42 | x=2416.5 y=1825.300048828125 | size=1 | links=#20099(auto Stonetalon Mountains;339):10 #24184(auto Stonetalon Mountains;420):12 c4050.7:6
+#3001 | auto Stonetalon Mountains;43§auto Steinkrallengebirge;43§auto Les Serres-Rocheuses;43 | x=-165 y=-237.5 | size=1 | links=#22508(auto Stonetalon Mountains;394):24 #24765(auto Stonetalon Mountains;434):7
+#3043 | auto Stonetalon Mountains;44§auto Steinkrallengebirge;44§auto Les Serres-Rocheuses;44 | x=900.1000366210938 y=-271.3000183105469 | size=1 | links=#13796(auto Stonetalon Mountains;213):7 c3999.7:12
+#3120 | auto Stonetalon Mountains;45§auto Steinkrallengebirge;45§auto Les Serres-Rocheuses;45 | x=2413.900146484375 y=1801 | size=1 | links=#2448(auto Stonetalon Mountains;35):11 #22335(auto Stonetalon Mountains;387):10
+#3174 | auto Stonetalon Mountains;46§auto Steinkrallengebirge;46§auto Les Serres-Rocheuses;46 | x=2430.5 y=1353.099975585938 | size=1 | links=#5353(auto Stonetalon Mountains;85):54 #7813(auto Stonetalon Mountains;124):66 #26504(auto Stonetalon Mountains;470):70 c4020.1:30
+#3378 | auto Stonetalon Mountains;47§auto Steinkrallengebirge;47§auto Les Serres-Rocheuses;47 | x=-39.10000228881836 y=-540.2000122070312 | size=1 | links=#1103(auto Stonetalon Mountains;16):65 #21159(auto Stonetalon Mountains;360):57 c1412.1:23 c11910.2:31
+#3449 | auto Stonetalon Mountains;48§auto Steinkrallengebirge;48§auto Les Serres-Rocheuses;48 | x=915.4000244140625 y=249.6999969482422 | size=5 | links=#6287(auto Stonetalon Mountains;102):41 #9939(auto Stonetalon Mountains;151):94 #11293(auto Stonetalon Mountains;174):58 #21921(auto Stonetalon Mountains;376):69 c4007.40:26 c4007.41:35
+#3453 | auto Stonetalon Mountains;49§auto Steinkrallengebirge;49§auto Les Serres-Rocheuses;49 | x=1527.300048828125 y=1237.599975585938 | size=1 | links=#93(auto Stonetalon Mountains;2):91 #17063(auto Stonetalon Mountains;263):65
+#3583 | auto Stonetalon Mountains;50§auto Steinkrallengebirge;50§auto Les Serres-Rocheuses;50 | x=1732.599975585938 y=947 | size=1 | links=#4119(auto Stonetalon Mountains;59):41 #11372(auto Stonetalon Mountains;178):39 c721.4:62 c4009.4:25
+#3660 | auto Stonetalon Mountains;51§auto Steinkrallengebirge;51§auto Les Serres-Rocheuses;51 | x=883.1000366210938 y=-318.8000183105469 | size=1 | links=#2311(auto Stonetalon Mountains;30):16 #24359(auto Stonetalon Mountains;422):10 c4004.3:4 c3999.15:6
+#3684 | auto Stonetalon Mountains;52§auto Steinkrallengebirge;52§auto Les Serres-Rocheuses;52 | x=2523.60009765625 y=1427.700073242188 | size=1 | links=#19279(auto Stonetalon Mountains;324):31 #28289(auto Stonetalon Mountains;499):60 c4057.3:10
+#3715 | auto Stonetalon Mountains;53§auto Steinkrallengebirge;53§auto Les Serres-Rocheuses;53 | x=899.2999877929688 y=919 | size=1 | links=#19913(auto Stonetalon Mountains;333):3 #20054(auto Stonetalon Mountains;337):12 c7731.1:10
+#3807 | auto Stonetalon Mountains;54§auto Steinkrallengebirge;54§auto Les Serres-Rocheuses;54 | x=913 y=348.5 | size=1 | links=#14063(auto Stonetalon Mountains;216):17 #21921(auto Stonetalon Mountains;376):29
+#3949 | auto Stonetalon Mountains;55§auto Steinkrallengebirge;55§auto Les Serres-Rocheuses;55 | x=2498.400146484375 y=1863.200073242188 | size=1 | links=#14905(auto Stonetalon Mountains;227):14 #19657(auto Stonetalon Mountains;328):14 c4061.7:9
+#4025 | auto Stonetalon Mountains;56§auto Steinkrallengebirge;56§auto Les Serres-Rocheuses;56 | x=1928.900024414063 y=-731.7999877929688 | size=1 | links=#382(passage;from;The Talondeep Path;Stonetalon Mountains;to;Ashenvale):11 #10482(auto Stonetalon Mountains;162):35
+#4028 | auto Stonetalon Mountains;57§auto Steinkrallengebirge;57§auto Les Serres-Rocheuses;57 | x=1035.700073242188 y=-188.6000061035156 | size=5 | links=#1371(auto Stonetalon Mountains;20):19 #18157(auto Stonetalon Mountains;286):35 c3989.54:45
+#4052 | auto Stonetalon Mountains;58§auto Steinkrallengebirge;58§auto Les Serres-Rocheuses;58 | x=26.30000114440918 y=-24.70000076293945 | size=1 | links=#4654(auto Stonetalon Mountains;72):23 #8504(auto Stonetalon Mountains;134):24
+#4119 | auto Stonetalon Mountains;59§auto Steinkrallengebirge;59§auto Les Serres-Rocheuses;59 | x=1773.599975585938 y=938.2000122070312 | size=1 | links=#3583(auto Stonetalon Mountains;50):41 #21798(auto Stonetalon Mountains;375):46 c4009.11:24
+#4161 | auto Stonetalon Mountains;60§auto Steinkrallengebirge;60§auto Les Serres-Rocheuses;60 | x=1482 y=-307.8000183105469 | size=5 | links=#11031(auto Stonetalon Mountains;172):62 #17711(auto Stonetalon Mountains;277):28
+#4164 | auto Stonetalon Mountains;61§auto Steinkrallengebirge;61§auto Les Serres-Rocheuses;61 | x=-151.1999969482422 y=-269.8999938964844 | size=1 | links=#22508(auto Stonetalon Mountains;394):18 #24697(auto Stonetalon Mountains;433):17
+#4234 | auto Stonetalon Mountains;62§auto Steinkrallengebirge;62§auto Les Serres-Rocheuses;62 | x=1680.5 y=650.7000122070312 | size=1 | links=#25699(auto Stonetalon Mountains;450):31 c4013.3:28
+#4323 | auto Stonetalon Mountains;63§auto Steinkrallengebirge;63§auto Les Serres-Rocheuses;63 | x=990.5 y=982.9000244140625 | size=1 | links=#26871(auto Stonetalon Mountains;476):13 c4082.1:27 c5870.1:26
+#4358 | auto Stonetalon Mountains;64§auto Steinkrallengebirge;64§auto Les Serres-Rocheuses;64 | x=2324.5 y=1824 | size=1 | links=#9931(auto Stonetalon Mountains;150):9 #16352(auto Stonetalon Mountains;253):10
+#4374 | Gerenzo Wrenchwhistle;Cragpool Lake;Stonetalon Mountains§Gerenzo Pfeifzang;Felskesselsee;Steinkrallengebirge§Gerenzo Siffleclef;Cragpool Lake;Les Serres-Rocheuses | x=1623.200073242188 y=151.3000030517578 | size=1 | links=#16027(auto Stonetalon Mountains;248):11
+#4400 | auto Stonetalon Mountains;65§auto Steinkrallengebirge;65§auto Les Serres-Rocheuses;65 | x=-35.40000152587891 y=-364.6000061035156 | size=1 | links=#22038(auto Stonetalon Mountains;377):52 #27703(auto Stonetalon Mountains;490):94
+#4408 | auto Stonetalon Mountains;66§auto Steinkrallengebirge;66§auto Les Serres-Rocheuses;66 | x=920.5 y=692.6000366210938 | size=1 | links=#14425(auto Stonetalon Mountains;222):48 #26135(auto Stonetalon Mountains;461):38 c4007.2:11 c4007.36:34
+#4430 | auto Stonetalon Mountains;67§auto Steinkrallengebirge;67§auto Les Serres-Rocheuses;67 | x=1642.700073242188 y=100.5 | size=1 | links=#17394(auto Stonetalon Mountains;271):9 c3992.3:8
+#4509 | auto Stonetalon Mountains;68§auto Steinkrallengebirge;68§auto Les Serres-Rocheuses;68 | x=1251.400024414063 y=726.2999877929688 | size=1 | links=#11411(auto Stonetalon Mountains;180):31 #15036(auto Stonetalon Mountains;230):41
+#4518 | auto Stonetalon Mountains;69§auto Steinkrallengebirge;69§auto Les Serres-Rocheuses;69 | x=2400.5 y=1811.400024414063 | size=1 | links=#22335(auto Stonetalon Mountains;387):6 c4409.1:6
+#4537 | auto Stonetalon Mountains;70§auto Steinkrallengebirge;70§auto Les Serres-Rocheuses;70 | x=594.7000122070312 y=1423.200073242188 | size=5 | links=#25804(auto Stonetalon Mountains;453):41 o177929.6:31 o177929.23:81
+#4543 | auto Stonetalon Mountains;71§auto Steinkrallengebirge;71§auto Les Serres-Rocheuses;71 | x=46.70000076293945 y=-809 | size=1 | links=#14782(auto Stonetalon Mountains;225):39 c11910.9:21 c11910.10:30 c11911.13:20 c11911.14:9 c11911.15:33
+#4654 | auto Stonetalon Mountains;72§auto Steinkrallengebirge;72§auto Les Serres-Rocheuses;72 | x=45.79999923706055 y=-37.10000228881836 | size=1 | links=#4052(auto Stonetalon Mountains;58):23 c4005.2:14
+#4663 | auto Stonetalon Mountains;73§auto Steinkrallengebirge;73§auto Les Serres-Rocheuses;73 | x=1949.5 y=954 | size=1 | links=#5767(auto Stonetalon Mountains;93):84 #8442(auto Stonetalon Mountains;132):67
+#4711 | auto Stonetalon Mountains;74§auto Steinkrallengebirge;74§auto Les Serres-Rocheuses;74 | x=902.4000244140625 y=-336 | size=1 | links=#2311(auto Stonetalon Mountains;30):10 #14616(auto Stonetalon Mountains;224):10
+#4783 | auto Stonetalon Mountains;75§auto Steinkrallengebirge;75§auto Les Serres-Rocheuses;75 | x=2446.5 y=1705.800048828125 | size=1 | links=#13456(auto Stonetalon Mountains;205):22 #27882(auto Stonetalon Mountains;493):10 c4067.11:57
+#4939 | auto Stonetalon Mountains;76§auto Steinkrallengebirge;76§auto Les Serres-Rocheuses;76 | x=2280.10009765625 y=1526.599975585938 | size=1 | links=#26396(auto Stonetalon Mountains;465):25 #28196(auto Stonetalon Mountains;498):21
+#4962 | auto Stonetalon Mountains;77§auto Steinkrallengebirge;77§auto Les Serres-Rocheuses;77 | x=45.40000152587891 y=-705.6000366210938 | size=1 | links=#22748(auto Stonetalon Mountains;402):34 c11910.5:27
+#5023 | auto Stonetalon Mountains;78§auto Steinkrallengebirge;78§auto Les Serres-Rocheuses;78 | x=-233 y=-785.2000122070312 | size=1 | links=#17880(auto Stonetalon Mountains;283):81 #23335(auto Stonetalon Mountains;409):36
+#5101 | auto Stonetalon Mountains;79§auto Steinkrallengebirge;79§auto Les Serres-Rocheuses;79 | x=2584.400146484375 y=1408.800048828125 | size=1 | links=#24691(auto Stonetalon Mountains;431):27 c4020.4:13
+#5160 | auto Stonetalon Mountains;80§auto Steinkrallengebirge;80§auto Les Serres-Rocheuses;80 | x=1626 y=1016.200012207031 | size=1 | links=#11372(auto Stonetalon Mountains;178):96 #13069(auto Stonetalon Mountains;201):58 o177926.6:31
+#5161 | auto Stonetalon Mountains;81§auto Steinkrallengebirge;81§auto Les Serres-Rocheuses;81 | x=2433.800048828125 y=1805.5 | size=1 | links=#15073(auto Stonetalon Mountains;231):7 #23678(auto Stonetalon Mountains;413):16 c4052.13:3
+#5166 | auto Stonetalon Mountains;82§auto Steinkrallengebirge;82§auto Les Serres-Rocheuses;82 | x=-18.80000114440918 y=348 | size=1 | links=#1894(auto Stonetalon Mountains;24):25 #26456(auto Stonetalon Mountains;466):12 o178104.12:10
+#5194 | auto Stonetalon Mountains;83§auto Steinkrallengebirge;83§auto Les Serres-Rocheuses;83 | x=-76 y=274.7000122070313 | size=1 | links=#20365(auto Stonetalon Mountains;344):27 #28169(auto Stonetalon Mountains;496):29 c11917.4:8 c11915.6:13 o178104.8:12
+#5281 | auto Stonetalon Mountains;84§auto Steinkrallengebirge;84§auto Les Serres-Rocheuses;84 | x=107 y=-855.7000122070312 | size=1 | links=#24603(auto Stonetalon Mountains;430):25 #26021(auto Stonetalon Mountains;457):20 c11910.8:19 c11910.11:10 c11911.27:14
+#5353 | auto Stonetalon Mountains;85§auto Steinkrallengebirge;85§auto Les Serres-Rocheuses;85 | x=2426.800048828125 y=1299.200073242188 | size=1 | links=#3174(auto Stonetalon Mountains;46):54 #21326(auto Stonetalon Mountains;364):30 #26504(auto Stonetalon Mountains;470):38
+#5441 | auto Stonetalon Mountains;86§auto Steinkrallengebirge;86§auto Les Serres-Rocheuses;86 | x=491.5 y=1514.200073242188 | size=5 | links=#25020(auto Stonetalon Mountains;438):30 c6491.3:53
+#5443 | auto Stonetalon Mountains;87§auto Steinkrallengebirge;87§auto Les Serres-Rocheuses;87 | x=1057.800048828125 y=674.7999877929688 | size=1 | links=#10220(auto Stonetalon Mountains;158):42 #17601(auto Stonetalon Mountains;274):47 #26806(auto Stonetalon Mountains;474):25 c4007.46:43
+#5511 | auto Stonetalon Mountains;88§auto Steinkrallengebirge;88§auto Les Serres-Rocheuses;88 | x=137.6999969482422 y=-0.2000000029802322 | size=1 | links=#1997(auto Stonetalon Mountains;25):73 #27137(auto Stonetalon Mountains;480):52
+#5561 | auto Stonetalon Mountains;89§auto Steinkrallengebirge;89§auto Les Serres-Rocheuses;89 | x=1869.900024414063 y=-738.7999877929688 | size=1 | links=#10482(auto Stonetalon Mountains;162):36 #26578(auto Stonetalon Mountains;472):48
+#5695 | auto Stonetalon Mountains;90§auto Steinkrallengebirge;90§auto Les Serres-Rocheuses;90 | x=2481.5 y=1853.5 | size=1 | links=#11393(auto Stonetalon Mountains;179):13 #17322(auto Stonetalon Mountains;269):7
+#5746 | auto Stonetalon Mountains;91§auto Steinkrallengebirge;91§auto Les Serres-Rocheuses;91 | x=1014.400024414063 y=868.7000122070312 | size=1 | links=#21269(auto Stonetalon Mountains;363):13 #27103(auto Stonetalon Mountains;477):15
+#5765 | auto Stonetalon Mountains;92§auto Steinkrallengebirge;92§auto Les Serres-Rocheuses;92 | x=2394.400146484375 y=1665.700073242188 | size=1 | links=#17396(auto Stonetalon Mountains;272):43 #19054(auto Stonetalon Mountains;313):28 c4020.7:26
+#5767 | auto Stonetalon Mountains;93§auto Steinkrallengebirge;93§auto Les Serres-Rocheuses;93 | x=1865.700073242188 y=966.5 | size=5 | links=#4663(auto Stonetalon Mountains;73):84 #21798(auto Stonetalon Mountains;375):70 c4018.13:29
+#5769 | auto Stonetalon Mountains;94§auto Steinkrallengebirge;94§auto Les Serres-Rocheuses;94 | x=1371.5 y=-4.300000190734863 | size=5 | links=#9115(auto Stonetalon Mountains;140):91 #13640(auto Stonetalon Mountains;207):86 c3989.22:42 c3991.24:55
+#5780 | auto Stonetalon Mountains;95§auto Steinkrallengebirge;95§auto Les Serres-Rocheuses;95 | x=2619.800048828125 y=1406.400024414063 | size=1 | links=#16209(auto Stonetalon Mountains;250):19 #24691(auto Stonetalon Mountains;431):25
+#5788 | auto Stonetalon Mountains;96§auto Steinkrallengebirge;96§auto Les Serres-Rocheuses;96 | x=2439.400146484375 y=1769.800048828125 | size=1 | links=#2559(auto Stonetalon Mountains;37):23 #20448(auto Stonetalon Mountains;350):21
+#5983 | auto Stonetalon Mountains;97§auto Steinkrallengebirge;97§auto Les Serres-Rocheuses;97 | x=2385.400146484375 y=1808.099975585938 | size=1 | links=#9065(auto Stonetalon Mountains;139):7 #20345(auto Stonetalon Mountains;343):6
+#6055 | auto Stonetalon Mountains;98§auto Steinkrallengebirge;98§auto Les Serres-Rocheuses;98 | x=989.2000122070312 y=1047.599975585938 | size=1 | links=c4312.1:21 c9549.1:17 c12043.1:18
+#6114 | auto Stonetalon Mountains;99§auto Steinkrallengebirge;99§auto Les Serres-Rocheuses;99 | x=1619.200073242188 y=126.3000030517578 | size=1 | links=#17300(auto Stonetalon Mountains;268):8 #25700(auto Stonetalon Mountains;451):11
+#6196 | auto Stonetalon Mountains;100§auto Steinkrallengebirge;100§auto Les Serres-Rocheuses;100 | x=556.2999877929688 y=1816.300048828125 | size=5 | links=#20673(auto Stonetalon Mountains;354):89 #21135(auto Stonetalon Mountains;359):104 o177929.21:41
+#6227 | auto Stonetalon Mountains;101§auto Steinkrallengebirge;101§auto Les Serres-Rocheuses;101 | x=964.7000122070312 y=774.6000366210938 | size=1 | links=#16355(auto Stonetalon Mountains;255):34 #22401(auto Stonetalon Mountains;389):45
+#6287 | auto Stonetalon Mountains;102§auto Steinkrallengebirge;102§auto Les Serres-Rocheuses;102 | x=942 y=217.1999969482422 | size=1 | links=#3449(auto Stonetalon Mountains;48):41 #10172(auto Stonetalon Mountains;157):32 o19541.11:28 c1412.19:23
+#6331 | auto Stonetalon Mountains;103§auto Steinkrallengebirge;103§auto Les Serres-Rocheuses;103 | x=936.5 y=115.7000045776367 | size=1 | links=#22441(auto Stonetalon Mountains;391):39 #25163(auto Stonetalon Mountains;441):29
+#6361 | auto Stonetalon Mountains;104§auto Steinkrallengebirge;104§auto Les Serres-Rocheuses;104 | x=1742.599975585938 y=596.2999877929688 | size=1 | links=#19573(auto Stonetalon Mountains;326):42 #24425(auto Stonetalon Mountains;425):29 c4013.8:18
+#6430 | auto Stonetalon Mountains;105§auto Steinkrallengebirge;105§auto Les Serres-Rocheuses;105 | x=2467.10009765625 y=1843.300048828125 | size=1 | links=#24068(auto Stonetalon Mountains;419):19 c4052.11:12
+#6783 | auto Stonetalon Mountains;106§auto Steinkrallengebirge;106§auto Les Serres-Rocheuses;106 | x=2328.10009765625 y=1596.300048828125 | size=1 | links=#17396(auto Stonetalon Mountains;272):55 #20984(auto Stonetalon Mountains;357):52 c4021.1:16 c4020.9:12 c1412.22:30
+#6834 | auto Stonetalon Mountains;107§auto Steinkrallengebirge;107§auto Les Serres-Rocheuses;107 | x=9.5 y=-237.9000091552734 | size=1 | links=#17801(auto Stonetalon Mountains;279):26 #20961(auto Stonetalon Mountains;356):46 #27703(auto Stonetalon Mountains;490):51
+#6916 | auto Stonetalon Mountains;108§auto Steinkrallengebirge;108§auto Les Serres-Rocheuses;108 | x=1590.5 y=150.6999969482422 | size=1 | links=#13715(auto Stonetalon Mountains;211):8 c4070.3:2
+#7026 | auto Stonetalon Mountains;109§auto Steinkrallengebirge;109§auto Les Serres-Rocheuses;109 | x=-269.8000183105469 y=-395.5 | size=1 | links=#26261(auto Stonetalon Mountains;463):26 c3995.1:2 c4072.1:5 c4072.2:8 c4072.3:10
+#7190 | auto Stonetalon Mountains;110§auto Steinkrallengebirge;110§auto Les Serres-Rocheuses;110 | x=2519.900146484375 y=1866.200073242188 | size=1 | links=c5915.1:9 c4061.3:4 c4061.7:11 c4052.16:4
+#7228 | auto Stonetalon Mountains;111§auto Steinkrallengebirge;111§auto Les Serres-Rocheuses;111 | x=395.6000061035156 y=316.2000122070313 | size=1 | links=#11526(auto Stonetalon Mountains;182):113 #27233(auto Stonetalon Mountains;481):42 c4005.4:41 c4005.5:45
+#7236 | auto Stonetalon Mountains;112§auto Steinkrallengebirge;112§auto Les Serres-Rocheuses;112 | x=1606.300048828125 y=151.3000030517578 | size=1 | links=#20936(auto Stonetalon Mountains;355):1 c3993.2:10
+#7278 | auto Stonetalon Mountains;113§auto Steinkrallengebirge;113§auto Les Serres-Rocheuses;113 | x=1169.5 y=664.2000122070312 | size=1 | links=#15289(auto Stonetalon Mountains;234):16 #18677(auto Stonetalon Mountains;304):38
+#7391 | auto Stonetalon Mountains;114§auto Steinkrallengebirge;114§auto Les Serres-Rocheuses;114 | x=876.2999877929688 y=447 | size=1 | links=#12474(auto Stonetalon Mountains;193):32 c6491.1:44
+#7404 | auto Stonetalon Mountains;115§auto Steinkrallengebirge;115§auto Les Serres-Rocheuses;115 | x=1024 y=-10.80000019073486 | size=5 | links=#2781(auto Stonetalon Mountains;40):42 #23884(auto Stonetalon Mountains;417):14 c3991.28:18
+#7431 | auto Stonetalon Mountains;116§auto Steinkrallengebirge;116§auto Les Serres-Rocheuses;116 | x=2711.400146484375 y=1505.200073242188 | size=1 | links=#21591(auto Stonetalon Mountains;370):28 #26461(auto Stonetalon Mountains;467):15 c4084.1:8
+#7563 | auto Stonetalon Mountains;117§auto Steinkrallengebirge;117§auto Les Serres-Rocheuses;117 | x=2500.699951171875 y=1979.599975585938 | size=1 | links=#15486(auto Stonetalon Mountains;242):6 #24692(auto Stonetalon Mountains;432):11
+#7570 | auto Stonetalon Mountains;118§auto Steinkrallengebirge;118§auto Les Serres-Rocheuses;118 | x=2462.699951171875 y=1953.300048828125 | size=1 | links=#17679(auto Stonetalon Mountains;276):16 #28189(auto Stonetalon Mountains;497):12
+#7606 | auto Stonetalon Mountains;119§auto Steinkrallengebirge;119§auto Les Serres-Rocheuses;119 | x=2296.300048828125 y=1402.400024414063 | size=1 | links=#18199(auto Stonetalon Mountains;291):40 #22513(auto Stonetalon Mountains;395):22
+#7641 | auto Stonetalon Mountains;120§auto Steinkrallengebirge;120§auto Les Serres-Rocheuses;120 | x=1226.900024414063 y=314.3000183105469 | size=1 | links=#19848(auto Stonetalon Mountains;332):29 #28324(auto Stonetalon Mountains;501):90
+#7692 | auto Stonetalon Mountains;121§auto Steinkrallengebirge;121§auto Les Serres-Rocheuses;121 | x=1042.5 y=854.9000244140625 | size=1 | links=#19164(auto Stonetalon Mountains;318):12 c11074.1:16
+#7730 | auto Stonetalon Mountains;122§auto Steinkrallengebirge;122§auto Les Serres-Rocheuses;122 | x=2347.699951171875 y=1831.599975585938 | size=1 | links=#2210(auto Stonetalon Mountains;27):9 c4050.3:7
+#7779 | auto Stonetalon Mountains;123§auto Steinkrallengebirge;123§auto Les Serres-Rocheuses;123 | x=1637.400024414063 y=-599.4000244140625 | size=1 | links=#12785(auto Stonetalon Mountains;195):22 #24600(auto Stonetalon Mountains;429):24
+#7813 | auto Stonetalon Mountains;124§auto Steinkrallengebirge;124§auto Les Serres-Rocheuses;124 | x=2468.300048828125 y=1408.300048828125 | size=1 | links=#3174(auto Stonetalon Mountains;46):66 #19279(auto Stonetalon Mountains;324):32 c883.1:29
+#7860 | auto Stonetalon Mountains;125§auto Steinkrallengebirge;125§auto Les Serres-Rocheuses;125 | x=391 y=1788.5 | size=1 | links=#9239(passage;from;The Charred Vale;Stonetalon Mountains;to;Desolace):24 #20007(auto Stonetalon Mountains;336):16
+#7974 | auto Stonetalon Mountains;126§auto Steinkrallengebirge;126§auto Les Serres-Rocheuses;126 | x=2622.60009765625 y=1278.5 | size=1 | links=#18805(auto Stonetalon Mountains;309):33 #21367(auto Stonetalon Mountains;366):48
+#7991 | auto Stonetalon Mountains;127§auto Steinkrallengebirge;127§auto Les Serres-Rocheuses;127 | x=2533.199951171875 y=1997.800048828125 | size=1 | links=#25077(auto Stonetalon Mountains;440):9 c4066.1:9 o19596.1:13 c4056.3:9 c4056.5:8
+#8024 | auto Stonetalon Mountains;128§auto Steinkrallengebirge;128§auto Les Serres-Rocheuses;128 | x=965.9000244140625 y=1040.300048828125 | size=1 | links=#19124(auto Stonetalon Mountains;316):26 #27383(auto Stonetalon Mountains;484):14 c4312.1:3
+#8047 | auto Stonetalon Mountains;129§auto Steinkrallengebirge;129§auto Les Serres-Rocheuses;129 | x=1600.5 y=150.6000061035156 | size=1 | links=#20936(auto Stonetalon Mountains;355):4 c4070.3:7
+#8057 | auto Stonetalon Mountains;130§auto Steinkrallengebirge;130§auto Les Serres-Rocheuses;130 | x=1462.400024414063 y=1423.800048828125 | size=1 | links=#744(auto Stonetalon Mountains;9):80 #1211(auto Stonetalon Mountains;17):61
+#8063 | entry and exit;Boulderslide Cavern;Stonetalon Mountains§ein- und ausgang;Steinschlaghöhle;Steinkrallengebirge§entrée et sortie;Caverne des Eboulis;Les Serres-Rocheuses | x=-114.9000015258789 y=222.9000091552734 | size=1 | links=#27240(auto Stonetalon Mountains;482):20 c11915.9:10
+#8393 | auto Stonetalon Mountains;131§auto Steinkrallengebirge;131§auto Les Serres-Rocheuses;131 | x=852.2999877929688 y=1049.300048828125 | size=1 | links=#11655(auto Stonetalon Mountains;184):26 #27884(auto Stonetalon Mountains;494):24
+#8442 | auto Stonetalon Mountains;132§auto Steinkrallengebirge;132§auto Les Serres-Rocheuses;132 | x=2014.200073242188 y=973.7000122070312 | size=1 | links=#4663(auto Stonetalon Mountains;73):67 #22294(auto Stonetalon Mountains;385):96 c4018.10:12 c4018.11:19
+#8476 | centralpoint;Posten der Grimmtotem;Stonetalon Mountains§zentralerpunkt;Posten der Grimmtotem;Steinkrallengebirge§point central;Posten der Grimmtotem;Les Serres-Rocheuses | x=100 y=-351.2000122070313 | size=1 | links=c11858.1:12 c11912.2:22 c11913.2:35 c11912.6:24 c11912.7:20
+#8480 | auto Stonetalon Mountains;133§auto Steinkrallengebirge;133§auto Les Serres-Rocheuses;133 | x=901 y=1066.599975585938 | size=1 | links=#2499(auto Stonetalon Mountains;36):16 #22990(auto Stonetalon Mountains;404):19
+#8504 | auto Stonetalon Mountains;134§auto Steinkrallengebirge;134§auto Les Serres-Rocheuses;134 | x=10.10000038146973 y=-6.900000095367432 | size=1 | links=#4052(auto Stonetalon Mountains;58):24 #12221(auto Stonetalon Mountains;191):27
+#8541 | auto Stonetalon Mountains;135§auto Steinkrallengebirge;135§auto Les Serres-Rocheuses;135 | x=-74.9000015258789 y=309.7000122070313 | size=1 | links=#18965(auto Stonetalon Mountains;312):14 #25577(auto Stonetalon Mountains;448):13 c11917.3:3 o178105.4:7 c11915.13:5
+#8597 | auto Stonetalon Mountains;136§auto Steinkrallengebirge;136§auto Les Serres-Rocheuses;136 | x=1297.400024414063 y=1480.400024414063 | size=1 | links=#744(auto Stonetalon Mountains;9):99 #14995(auto Stonetalon Mountains;228):90 c4044.1:15
+#8856 | auto Stonetalon Mountains;137§auto Steinkrallengebirge;137§auto Les Serres-Rocheuses;137 | x=-25 y=-686.7999877929688 | size=1 | links=#18309(auto Stonetalon Mountains;294):19 c11911.7:12
+#8874 | auto Stonetalon Mountains;138§auto Steinkrallengebirge;138§auto Les Serres-Rocheuses;138 | x=1445.300048828125 y=-46.5 | size=1 | links=#530(auto Stonetalon Mountains;7):26 #13640(auto Stonetalon Mountains;207):30 c3989.13:18
+#9047 | passage;from;Greatwood Vale;Stonetalon Mountains;to;The Barrens§passage;von;Hochwipfeltal;Steinkrallengebirge;nach;Das Brachland§passage;de;Greatwood Vale;Les Serres-Rocheuses;vers;Les Tarides | x=-247.1999969482422 y=-831.2000122070312 | size=1 | links=#26818(passage;from;The Barrens;to;Stonetalon Mountains):6 #23335(auto Stonetalon Mountains;409):11
+#9065 | auto Stonetalon Mountains;139§auto Steinkrallengebirge;139§auto Les Serres-Rocheuses;139 | x=2393 y=1809.700073242188 | size=1 | links=#5983(auto Stonetalon Mountains;97):7 c4409.1:3
+#9115 | auto Stonetalon Mountains;140§auto Steinkrallengebirge;140§auto Les Serres-Rocheuses;140 | x=1306 y=60.20000076293945 | size=5 | links=#5769(auto Stonetalon Mountains;94):91 #10345(auto Stonetalon Mountains;161):58 c3989.1:47 c3991.1:58 c3989.51:18
+#9132 | auto Stonetalon Mountains;141§auto Steinkrallengebirge;141§auto Les Serres-Rocheuses;141 | x=2435.800048828125 y=1847.599975585938 | size=1 | links=#24184(auto Stonetalon Mountains;420):16 c4052.12:9
+#9154 | auto Stonetalon Mountains;142§auto Steinkrallengebirge;142§auto Les Serres-Rocheuses;142 | x=2549.699951171875 y=1308.400024414063 | size=1 | links=#21367(auto Stonetalon Mountains;366):30 c4067.14:43
+#9212 | auto Stonetalon Mountains;143§auto Steinkrallengebirge;143§auto Les Serres-Rocheuses;143 | x=167.4000091552734 y=-865 | size=1 | links=#24603(auto Stonetalon Mountains;430):36 c11910.15:27 c11911.21:27 c11911.32:21
+#9239 | passage;from;The Charred Vale;Stonetalon Mountains;to;Desolace§passage;von;Das verbrannte Tal;Steinkrallengebirge;nach;Desolace§passage;de;The Charred Vale;Les Serres-Rocheuses;vers;Désolace | x=369.3000183105469 y=1799.900024414063 | size=1 | links=#19592(passage;from;Desolace;to;Stonetalon Mountains):5 #7860(auto Stonetalon Mountains;125):24
+#9295 | auto Stonetalon Mountains;144§auto Steinkrallengebirge;144§auto Les Serres-Rocheuses;144 | x=-17.30000114440918 y=-640.7999877929688 | size=1 | links=#1103(auto Stonetalon Mountains;16):51 #17639(auto Stonetalon Mountains;275):50 #18309(auto Stonetalon Mountains;294):27 #22748(auto Stonetalon Mountains;402):60 c11911.1:49
+#9375 | auto Stonetalon Mountains;145§auto Steinkrallengebirge;145§auto Les Serres-Rocheuses;145 | x=1673.5 y=-84.5 | size=1 | links=#15005(auto Stonetalon Mountains;229):13 #21567(auto Stonetalon Mountains;369):16
+#9456 | auto Stonetalon Mountains;146§auto Steinkrallengebirge;146§auto Les Serres-Rocheuses;146 | x=2635.699951171875 y=1444.5 | size=1 | links=#16209(auto Stonetalon Mountains;250):26 #28289(auto Stonetalon Mountains;499):67 c3994.1:20
+#9572 | auto Stonetalon Mountains;147§auto Steinkrallengebirge;147§auto Les Serres-Rocheuses;147 | x=1428.5 y=675.6000366210938 | size=1 | links=#11837(auto Stonetalon Mountains;187):32 #21385(auto Stonetalon Mountains;367):56
+#9872 | auto Stonetalon Mountains;148§auto Steinkrallengebirge;148§auto Les Serres-Rocheuses;148 | x=1504 y=-581.9000244140625 | size=5 | links=#1249(auto Stonetalon Mountains;18):39 #25018(entry and exit;cave;The Talondeep Path;Stonetalon Mountains):25 o19541.8:16 c1412.13:20
+#9919 | auto Stonetalon Mountains;149§auto Steinkrallengebirge;149§auto Les Serres-Rocheuses;149 | x=2378 y=1799.300048828125 | size=1 | links=#27298(auto Stonetalon Mountains;483):15 c8518.1:12
+#9931 | auto Stonetalon Mountains;150§auto Steinkrallengebirge;150§auto Les Serres-Rocheuses;150 | x=2328.900146484375 y=1832 | size=1 | links=#4358(auto Stonetalon Mountains;64):9 c4050.3:15
+#9939 | auto Stonetalon Mountains;151§auto Steinkrallengebirge;151§auto Les Serres-Rocheuses;151 | x=1009.700012207031 y=251.8000030517578 | size=5 | links=#2405(auto Stonetalon Mountains;33):73 #3449(auto Stonetalon Mountains;48):94 c4007.19:22 c4007.42:28
+#9941 | auto Stonetalon Mountains;152§auto Steinkrallengebirge;152§auto Les Serres-Rocheuses;152 | x=921.9000244140625 y=-271 | size=1 | links=c3999.7:10 c3999.39:15
+#10081 | auto Stonetalon Mountains;153§auto Steinkrallengebirge;153§auto Les Serres-Rocheuses;153 | x=-37.90000152587891 y=349.8000183105469 | size=1 | links=#18726(auto Stonetalon Mountains;307):8 #26817(auto Stonetalon Mountains;475):16
+#10118 | auto Stonetalon Mountains;154§auto Steinkrallengebirge;154§auto Les Serres-Rocheuses;154 | x=882.6000366210938 y=927.7999877929688 | size=1 | links=#13690(auto Stonetalon Mountains;209):11 #16251(auto Stonetalon Mountains;252):7
+#10123 | auto Stonetalon Mountains;155§auto Steinkrallengebirge;155§auto Les Serres-Rocheuses;155 | x=114.0999984741211 y=-410 | size=1 | links=#25747(auto Stonetalon Mountains;452):14 c11913.10:16 c11913.14:26
+#10167 | auto Stonetalon Mountains;156§auto Steinkrallengebirge;156§auto Les Serres-Rocheuses;156 | x=2329.800048828125 y=1804.099975585938 | size=1 | links=#13783(auto Stonetalon Mountains;212):7 #16352(auto Stonetalon Mountains;253):9
+#10172 | auto Stonetalon Mountains;157§auto Steinkrallengebirge;157§auto Les Serres-Rocheuses;157 | x=944.2999877929688 y=184.6999969482422 | size=1 | links=#6287(auto Stonetalon Mountains;102):32 #22441(auto Stonetalon Mountains;391):53 c4007.3:7
+#10220 | auto Stonetalon Mountains;158§auto Steinkrallengebirge;158§auto Les Serres-Rocheuses;158 | x=1024.800048828125 y=647.7000122070312 | size=1 | links=#5443(auto Stonetalon Mountains;87):42 #15075(auto Stonetalon Mountains;232):51 c4007.39:45
+#10230 | auto Stonetalon Mountains;159§auto Steinkrallengebirge;159§auto Les Serres-Rocheuses;159 | x=1679.900024414063 y=91.0999984741211 | size=1 | links=#15831(auto Stonetalon Mountains;246):14 #19707(auto Stonetalon Mountains;329):4
+#10314 | auto Stonetalon Mountains;160§auto Steinkrallengebirge;160§auto Les Serres-Rocheuses;160 | x=1254.400024414063 y=124.9000015258789 | size=1 | links=#10345(auto Stonetalon Mountains;161):24 #28324(auto Stonetalon Mountains;501):110 o179486.9:84 o179486.11:30
+#10345 | auto Stonetalon Mountains;161§auto Steinkrallengebirge;161§auto Les Serres-Rocheuses;161 | x=1268 y=104.2000045776367 | size=1 | links=#9115(auto Stonetalon Mountains;140):58 #10314(auto Stonetalon Mountains;160):24 c3991.29:29
+#10482 | auto Stonetalon Mountains;162§auto Steinkrallengebirge;162§auto Les Serres-Rocheuses;162 | x=1897.099975585938 y=-715 | size=1 | links=#4025(auto Stonetalon Mountains;56):35 #5561(auto Stonetalon Mountains;89):36
+#10500 | auto Stonetalon Mountains;163§auto Steinkrallengebirge;163§auto Les Serres-Rocheuses;163 | x=959.2000122070312 y=1696.400024414063 | size=5 | links=#22042(auto Stonetalon Mountains;378):73 #25299(auto Stonetalon Mountains;443):76 c4025.1:19 c4076.2:7 c4026.23:46
+#10508 | auto Stonetalon Mountains;164§auto Steinkrallengebirge;164§auto Les Serres-Rocheuses;164 | x=1666.599975585938 y=107.5999984741211 | size=1 | links=#11300(auto Stonetalon Mountains;175):4 #21186(auto Stonetalon Mountains;361):6
+#10519 | auto Stonetalon Mountains;165§auto Steinkrallengebirge;165§auto Les Serres-Rocheuses;165 | x=1689.099975585938 y=-633.6000366210938 | size=1 | links=#2224(auto Stonetalon Mountains;28):19 #26799(auto Stonetalon Mountains;473):19
+#10588 | auto Stonetalon Mountains;166§auto Steinkrallengebirge;166§auto Les Serres-Rocheuses;166 | x=2475 y=1884.099975585938 | size=1 | links=#12818(auto Stonetalon Mountains;196):6 c4061.4:11
+#10590 | auto Stonetalon Mountains;167§auto Steinkrallengebirge;167§auto Les Serres-Rocheuses;167 | x=819.7999877929688 y=526.6000366210938 | size=1 | links=#221(auto Stonetalon Mountains;3):39 #27668(auto Stonetalon Mountains;488):43
+#10801 | auto Stonetalon Mountains;168§auto Steinkrallengebirge;168§auto Les Serres-Rocheuses;168 | x=1590.200073242188 y=1092.300048828125 | size=1 | links=#13069(auto Stonetalon Mountains;201):62 #22228(auto Stonetalon Mountains;383):38 c4044.2:44 c4036.7:10
+#10883 | auto Stonetalon Mountains;169§auto Steinkrallengebirge;169§auto Les Serres-Rocheuses;169 | x=879.7999877929688 y=-284.8999938964844 | size=1 | links=#24481(auto Stonetalon Mountains;426):11 c3999.11:7
+#10911 | auto Stonetalon Mountains;170§auto Steinkrallengebirge;170§auto Les Serres-Rocheuses;170 | x=975.2999877929688 y=73.0999984741211 | size=1 | links=#18845(auto Stonetalon Mountains;310):20 #25163(auto Stonetalon Mountains;441):28
+#11007 | auto Stonetalon Mountains;171§auto Steinkrallengebirge;171§auto Les Serres-Rocheuses;171 | x=186.3000030517578 y=189.4000091552734 | size=1 | links=#16354(auto Stonetalon Mountains;254):39 #22309(auto Stonetalon Mountains;386):46
+#11031 | auto Stonetalon Mountains;172§auto Steinkrallengebirge;172§auto Les Serres-Rocheuses;172 | x=1498 y=-368.7000122070313 | size=5 | links=#4161(auto Stonetalon Mountains;60):62 #15362(auto Stonetalon Mountains;236):128 o19541.9:33 c4006.23:29 c4006.29:36 c4006.42:55
+#11087 | auto Stonetalon Mountains;173§auto Steinkrallengebirge;173§auto Les Serres-Rocheuses;173 | x=973.5 y=970.1000366210938 | size=5 | links=#18198(auto Stonetalon Mountains;290):13 #26871(auto Stonetalon Mountains;476):8
+#11293 | auto Stonetalon Mountains;174§auto Steinkrallengebirge;174§auto Les Serres-Rocheuses;174 | x=857.1000366210938 y=247.3000030517578 | size=5 | links=#3449(auto Stonetalon Mountains;48):58 #23216(auto Stonetalon Mountains;407):102 c4011.2:44 o19542.4:34 c4007.6:50 c4007.8:17 c4007.9:39 o19541.15:37 c4007.37:30 c4007.38:46
+#11300 | auto Stonetalon Mountains;175§auto Steinkrallengebirge;175§auto Les Serres-Rocheuses;175 | x=1663.800048828125 y=111.2000045776367 | size=1 | links=#10508(auto Stonetalon Mountains;164):4 #19060(auto Stonetalon Mountains;314):4
+#11319 | central location;Posten der Grimmtotem;Stonetalon Mountains§zentralpunkt;Posten der Grimmtotem;Steinkrallengebirge§emplacement central;Posten der Grimmtotem;Les Serres-Rocheuses | x=125.3000030517578 y=-583.6000366210938 | size=1 | links=#16008(auto Stonetalon Mountains;247):28 c11913.6:27 c11912.9:15 c11913.9:13 c11912.10:10 c11912.11:7 c11912.15:10
+#11356 | auto Stonetalon Mountains;176§auto Steinkrallengebirge;176§auto Les Serres-Rocheuses;176 | x=1684.200073242188 y=44.10000228881836 | size=1 | links=#21358(auto Stonetalon Mountains;365):18 #22467(auto Stonetalon Mountains;392):28
+#11369 | auto Stonetalon Mountains;177§auto Steinkrallengebirge;177§auto Les Serres-Rocheuses;177 | x=126.5 y=-625.2999877929688 | size=1 | links=c721.9:9 c11913.11:22
+#11372 | auto Stonetalon Mountains;178§auto Steinkrallengebirge;178§auto Les Serres-Rocheuses;178 | x=1717.200073242188 y=983.7000122070312 | size=1 | links=#3583(auto Stonetalon Mountains;50):39 #5160(auto Stonetalon Mountains;80):96 c4018.3:48
+#11393 | auto Stonetalon Mountains;179§auto Steinkrallengebirge;179§auto Les Serres-Rocheuses;179 | x=2477 y=1866 | size=1 | links=#5695(auto Stonetalon Mountains;90):13 c4052.11:12
+#11411 | auto Stonetalon Mountains;180§auto Steinkrallengebirge;180§auto Les Serres-Rocheuses;180 | x=1219.800048828125 y=722.1000366210938 | size=1 | links=#4509(auto Stonetalon Mountains;68):31 #18677(auto Stonetalon Mountains;304):38
+#11489 | auto Stonetalon Mountains;181§auto Steinkrallengebirge;181§auto Les Serres-Rocheuses;181 | x=1056.200073242188 y=-284.6000061035156 | size=1 | links=#16056(auto Stonetalon Mountains;249):33 #25479(auto Stonetalon Mountains;446):13 c3989.10:58
+#11526 | auto Stonetalon Mountains;182§auto Steinkrallengebirge;182§auto Les Serres-Rocheuses;182 | x=282.3999938964844 y=317.3000183105469 | size=1 | links=#7228(auto Stonetalon Mountains;111):113 #14129(auto Stonetalon Mountains;219):87
+#11563 | auto Stonetalon Mountains;183§auto Steinkrallengebirge;183§auto Les Serres-Rocheuses;183 | x=770.6000366210938 y=435.8999938964844 | size=1 | links=#221(auto Stonetalon Mountains;3):72 #25462(auto Stonetalon Mountains;445):70 c721.7:19
+#11655 | auto Stonetalon Mountains;184§auto Steinkrallengebirge;184§auto Les Serres-Rocheuses;184 | x=836.9000244140625 y=1027.800048828125 | size=1 | links=#8393(auto Stonetalon Mountains;131):26 #28509(auto Stonetalon Mountains;504):25
+#11664 | auto Stonetalon Mountains;185§auto Steinkrallengebirge;185§auto Les Serres-Rocheuses;185 | x=2389.60009765625 y=1171 | size=1 | links=#19486(auto Stonetalon Mountains;325):48 #28371(auto Stonetalon Mountains;502):54
+#11741 | auto Stonetalon Mountains;186§auto Steinkrallengebirge;186§auto Les Serres-Rocheuses;186 | x=2352.699951171875 y=1795.700073242188 | size=1 | links=#19250(auto Stonetalon Mountains;323):7 #23347(auto Stonetalon Mountains;410):13
+#11837 | auto Stonetalon Mountains;187§auto Steinkrallengebirge;187§auto Les Serres-Rocheuses;187 | x=1406.400024414063 y=699.7000122070312 | size=1 | links=#9572(auto Stonetalon Mountains;147):32 c1412.25:21 c4007.45:34
+#11852 | auto Stonetalon Mountains;188§auto Steinkrallengebirge;188§auto Les Serres-Rocheuses;188 | x=-199.1000061035156 y=-322 | size=1 | links=#21693(auto Stonetalon Mountains;372):15 #22407(auto Stonetalon Mountains;390):19
+#12054 | auto Stonetalon Mountains;189§auto Steinkrallengebirge;189§auto Les Serres-Rocheuses;189 | x=2364.60009765625 y=1820.5 | size=1 | links=#2210(auto Stonetalon Mountains;27):11 #2887(auto Stonetalon Mountains;41):10
+#12169 | auto Stonetalon Mountains;190§auto Steinkrallengebirge;190§auto Les Serres-Rocheuses;190 | x=1608.900024414063 y=98.5 | size=1 | links=#15468(auto Stonetalon Mountains;240):8 c3993.1:6
+#12207 | centralpoint;Sishir Canyon;Stonetalon Mountains§zentralerpunkt;Sishircanyon;Steinkrallengebirge§point central;Canyon de Sishir;Les Serres-Rocheuses | x=495.2000122070313 y=636 | size=1 | links=c4007.25:14 c4007.29:18 c4007.30:24 c4007.47:56
+#12221 | auto Stonetalon Mountains;191§auto Steinkrallengebirge;191§auto Les Serres-Rocheuses;191 | x=4.900000095367432 y=20.10000038146973 | size=1 | links=#1011(auto Stonetalon Mountains;14):26 #8504(auto Stonetalon Mountains;134):27
+#12423 | auto Stonetalon Mountains;192§auto Steinkrallengebirge;192§auto Les Serres-Rocheuses;192 | x=1689.400024414063 y=-57.60000228881836 | size=1 | links=#13705(auto Stonetalon Mountains;210):19 #15005(auto Stonetalon Mountains;229):21
+#12474 | auto Stonetalon Mountains;193§auto Steinkrallengebirge;193§auto Les Serres-Rocheuses;193 | x=845.4000244140625 y=458 | size=1 | links=#221(auto Stonetalon Mountains;3):37 #7391(auto Stonetalon Mountains;114):32
+#12518 | central location;Sun Rock Retreat;Stonetalon Mountains§zentralpunkt;Sonnenfels;Steinkrallengebirge§emplacement central;Sun Rock Retreat;Les Serres-Rocheuses | x=935.7000122070312 y=908.7999877929688 | size=1 | links=#19234(auto Stonetalon Mountains;321):29 #19241(auto Stonetalon Mountains;322):15 #21680(auto Stonetalon Mountains;371):24 #26551(auto Stonetalon Mountains;471):33 #28619(s;u;Mailbox;2;Stonetalon Mountains):11
+#12716 | auto Stonetalon Mountains;194§auto Steinkrallengebirge;194§auto Les Serres-Rocheuses;194 | x=2260.300048828125 y=1064.300048828125 | size=1 | links=#18405(auto Stonetalon Mountains;298):99 #21210(auto Stonetalon Mountains;362):67 c4018.4:41 c4018.5:37
+#12785 | auto Stonetalon Mountains;195§auto Steinkrallengebirge;195§auto Les Serres-Rocheuses;195 | x=1658.599975585938 y=-605.5 | size=1 | links=#7779(auto Stonetalon Mountains;123):22 #26799(auto Stonetalon Mountains;473):26
+#12818 | auto Stonetalon Mountains;196§auto Steinkrallengebirge;196§auto Les Serres-Rocheuses;196 | x=2479.60009765625 y=1879.5 | size=1 | links=#10588(auto Stonetalon Mountains;166):6 #14905(auto Stonetalon Mountains;227):10 c4052.2:5
+#12827 | auto Stonetalon Mountains;197§auto Steinkrallengebirge;197§auto Les Serres-Rocheuses;197 | x=964.2999877929688 y=-355.1000061035156 | size=1 | links=c4004.1:6 c4004.5:10 c3999.37:7
+#12851 | auto Stonetalon Mountains;198§auto Steinkrallengebirge;198§auto Les Serres-Rocheuses;198 | x=-95 y=-671.2000122070312 | size=1 | links=#17076(auto Stonetalon Mountains;264):28 #17639(auto Stonetalon Mountains;275):38
+#12918 | auto Stonetalon Mountains;199§auto Steinkrallengebirge;199§auto Les Serres-Rocheuses;199 | x=1051.900024414063 y=-249.4000091552734 | size=1 | links=#18157(auto Stonetalon Mountains;286):30 #25479(auto Stonetalon Mountains;446):22 o179486.7:15
+#12950 | auto Stonetalon Mountains;200§auto Steinkrallengebirge;200§auto Les Serres-Rocheuses;200 | x=444.5 y=409.3999938964844 | size=1 | links=o177904.1:48 c4005.9:27
+#13069 | auto Stonetalon Mountains;201§auto Steinkrallengebirge;201§auto Les Serres-Rocheuses;201 | x=1569.900024414063 y=1033.300048828125 | size=1 | links=#5160(auto Stonetalon Mountains;80):58 #10801(auto Stonetalon Mountains;168):62 #18291(auto Stonetalon Mountains;292):44
+#13091 | auto Stonetalon Mountains;202§auto Steinkrallengebirge;202§auto Les Serres-Rocheuses;202 | x=1234.400024414063 y=383.8000183105469 | size=1 | links=#19777(auto Stonetalon Mountains;330):17 c4086.1:19
+#13373 | auto Stonetalon Mountains;203§auto Steinkrallengebirge;203§auto Les Serres-Rocheuses;203 | x=1690.099975585938 y=1.399999976158142 | size=1 | links=#16670(auto Stonetalon Mountains;257):7 #22467(auto Stonetalon Mountains;392):18
+#13394 | auto Stonetalon Mountains;204§auto Steinkrallengebirge;204§auto Les Serres-Rocheuses;204 | x=1589.800048828125 y=615.2000122070312 | size=1 | links=#27699(auto Stonetalon Mountains;489):41 c4013.6:19
+#13456 | auto Stonetalon Mountains;205§auto Steinkrallengebirge;205§auto Les Serres-Rocheuses;205 | x=2439.699951171875 y=1727 | size=1 | links=#4783(auto Stonetalon Mountains;75):22 #20448(auto Stonetalon Mountains;350):21
+#13517 | auto Stonetalon Mountains;206§auto Steinkrallengebirge;206§auto Les Serres-Rocheuses;206 | x=-32.20000076293945 y=-709.7000122070312 | size=1 | links=#26128(auto Stonetalon Mountains;460):34 c11911.6:7
+#13640 | auto Stonetalon Mountains;207§auto Steinkrallengebirge;207§auto Les Serres-Rocheuses;207 | x=1426.800048828125 y=-70.5 | size=5 | links=#5769(auto Stonetalon Mountains;94):86 #8874(auto Stonetalon Mountains;138):30 #18176(auto Stonetalon Mountains;288):62 o19541.19:13
+#13662 | auto Stonetalon Mountains;208§auto Steinkrallengebirge;208§auto Les Serres-Rocheuses;208 | x=1659.400024414063 y=117.0999984741211 | size=1 | links=#19060(auto Stonetalon Mountains;314):2 #22530(auto Stonetalon Mountains;396):1
+#13690 | auto Stonetalon Mountains;209§auto Steinkrallengebirge;209§auto Les Serres-Rocheuses;209 | x=888 y=937.6000366210938 | size=1 | links=#2732(auto Stonetalon Mountains;39):18 #10118(auto Stonetalon Mountains;154):11
+#13705 | auto Stonetalon Mountains;210§auto Steinkrallengebirge;210§auto Les Serres-Rocheuses;210 | x=1691.700073242188 y=-38.10000228881836 | size=1 | links=#12423(auto Stonetalon Mountains;192):19 #17829(auto Stonetalon Mountains;281):16
+#13715 | auto Stonetalon Mountains;211§auto Steinkrallengebirge;211§auto Les Serres-Rocheuses;211 | x=1589 y=159.1000061035156 | size=1 | links=#513(auto Stonetalon Mountains;6):8 #6916(auto Stonetalon Mountains;108):8
+#13783 | auto Stonetalon Mountains;212§auto Steinkrallengebirge;212§auto Les Serres-Rocheuses;212 | x=2331.800048828125 y=1796.800048828125 | size=1 | links=#10167(auto Stonetalon Mountains;156):7 #23347(auto Stonetalon Mountains;410):11
+#13796 | auto Stonetalon Mountains;213§auto Steinkrallengebirge;213§auto Les Serres-Rocheuses;213 | x=892.6000366210938 y=-269.1000061035156 | size=1 | links=#3043(auto Stonetalon Mountains;44):7 #23439(auto Stonetalon Mountains;411):12 c3999.21:9
+#13804 | auto Stonetalon Mountains;214§auto Steinkrallengebirge;214§auto Les Serres-Rocheuses;214 | x=505.6000061035156 y=1738.5 | size=5 | links=#20673(auto Stonetalon Mountains;354):26 #22713(auto Stonetalon Mountains;401):50 c4076.4:23 o177929.17:58 o177929.26:22
+#13808 | auto Stonetalon Mountains;215§auto Steinkrallengebirge;215§auto Les Serres-Rocheuses;215 | x=637.2000122070312 y=368.3000183105469 | size=1 | links=#2408(auto Stonetalon Mountains;34):29 #25963(auto Stonetalon Mountains;455):41
+#14063 | auto Stonetalon Mountains;216§auto Steinkrallengebirge;216§auto Les Serres-Rocheuses;216 | x=900.4000244140625 y=360.8999938964844 | size=1 | links=#3807(auto Stonetalon Mountains;54):17 #24818(auto Stonetalon Mountains;435):15 o19541.27:24
+#14105 | auto Stonetalon Mountains;217§auto Steinkrallengebirge;217§auto Les Serres-Rocheuses;217 | x=-6.5 y=399 | size=1 | links=#1894(auto Stonetalon Mountains;24):26 #18495(auto Stonetalon Mountains;301):45 #19466(Goggeroc;Boulderslide Cavern;Stonetalon Mountains):33 c11918.2:12 o178105.7:3 c11915.11:3
+#14109 | auto Stonetalon Mountains;218§auto Steinkrallengebirge;218§auto Les Serres-Rocheuses;218 | x=1564.900024414063 y=-206 | size=1 | links=#25188(auto Stonetalon Mountains;442):29 #25969(auto Stonetalon Mountains;456):34
+#14129 | auto Stonetalon Mountains;219§auto Steinkrallengebirge;219§auto Les Serres-Rocheuses;219 | x=223.3000030517578 y=252.4000091552734 | size=1 | links=#11526(auto Stonetalon Mountains;182):87 #22309(auto Stonetalon Mountains;386):28
+#14135 | auto Stonetalon Mountains;220§auto Steinkrallengebirge;220§auto Les Serres-Rocheuses;220 | x=1451.900024414063 y=937.7999877929688 | size=1 | links=#1085(auto Stonetalon Mountains;15):23 #19931(auto Stonetalon Mountains;334):71 c4012.13:52 c4007.53:43
+#14351 | auto Stonetalon Mountains;221§auto Steinkrallengebirge;221§auto Les Serres-Rocheuses;221 | x=1470.5 y=-8.699999809265137 | size=1 | links=#530(auto Stonetalon Mountains;7):20 c6145.4:104
+#14425 | auto Stonetalon Mountains;222§auto Steinkrallengebirge;222§auto Les Serres-Rocheuses;222 | x=931 y=739.7999877929688 | size=1 | links=#4408(auto Stonetalon Mountains;66):48 #16355(auto Stonetalon Mountains;255):56
+#14482 | auto Stonetalon Mountains;223§auto Steinkrallengebirge;223§auto Les Serres-Rocheuses;223 | x=1673.800048828125 y=98.70000457763672 | size=1 | links=#19707(auto Stonetalon Mountains;329):5 #21186(auto Stonetalon Mountains;361):5
+#14616 | auto Stonetalon Mountains;224§auto Steinkrallengebirge;224§auto Les Serres-Rocheuses;224 | x=912.4000244140625 y=-332.6000061035156 | size=1 | links=#4711(auto Stonetalon Mountains;74):10 #20297(centralpoint;Windshear Mine;Stonetalon Mountains):17 c3999.2:7 c3999.6:13
+#14782 | auto Stonetalon Mountains;225§auto Steinkrallengebirge;225§auto Les Serres-Rocheuses;225 | x=10.80000019073486 y=-793.4000244140625 | size=5 | links=#4543(auto Stonetalon Mountains;71):39 #28323(auto Stonetalon Mountains;500):31
+#14823 | auto Stonetalon Mountains;226§auto Steinkrallengebirge;226§auto Les Serres-Rocheuses;226 | x=2456.800048828125 y=1928 | size=1 | links=#28189(auto Stonetalon Mountains;497):14 c4056.4:1
+#14905 | auto Stonetalon Mountains;227§auto Steinkrallengebirge;227§auto Les Serres-Rocheuses;227 | x=2486.900146484375 y=1872.599975585938 | size=1 | links=#3949(auto Stonetalon Mountains;55):14 #12818(auto Stonetalon Mountains;196):10
+#14995 | auto Stonetalon Mountains;228§auto Steinkrallengebirge;228§auto Les Serres-Rocheuses;228 | x=1218.900024414063 y=1524.700073242188 | size=1 | links=#8597(auto Stonetalon Mountains;136):90 #22663(auto Stonetalon Mountains;398):63 c4036.4:30
+#15005 | auto Stonetalon Mountains;229§auto Steinkrallengebirge;229§auto Les Serres-Rocheuses;229 | x=1685.599975585938 y=-79.0999984741211 | size=1 | links=#9375(auto Stonetalon Mountains;145):13 #12423(auto Stonetalon Mountains;192):21
+#15036 | auto Stonetalon Mountains;230§auto Steinkrallengebirge;230§auto Les Serres-Rocheuses;230 | x=1293.099975585938 y=728.7999877929688 | size=1 | links=#4509(auto Stonetalon Mountains;68):41 #17259(auto Stonetalon Mountains;267):23
+#15073 | auto Stonetalon Mountains;231§auto Steinkrallengebirge;231§auto Les Serres-Rocheuses;231 | x=2426.900146484375 y=1809.400024414063 | size=1 | links=#5161(auto Stonetalon Mountains;81):7 #18911(auto Stonetalon Mountains;311):20 c4050.8:25
+#15075 | auto Stonetalon Mountains;232§auto Steinkrallengebirge;232§auto Les Serres-Rocheuses;232 | x=973.7000122070312 y=646.2999877929688 | size=1 | links=#10220(auto Stonetalon Mountains;158):51 #26135(auto Stonetalon Mountains;461):59 c1412.15:29
+#15268 | auto Stonetalon Mountains;233§auto Steinkrallengebirge;233§auto Les Serres-Rocheuses;233 | x=-105.5999984741211 y=-290.8999938964844 | size=1 | links=#15550(auto Stonetalon Mountains;243):21 #25605(auto Stonetalon Mountains;449):20
+#15289 | auto Stonetalon Mountains;234§auto Steinkrallengebirge;234§auto Les Serres-Rocheuses;234 | x=1153.400024414063 y=660.4000244140625 | size=1 | links=#7278(auto Stonetalon Mountains;113):16 #17601(auto Stonetalon Mountains;274):51 c4007.13:44
+#15322 | auto Stonetalon Mountains;235§auto Steinkrallengebirge;235§auto Les Serres-Rocheuses;235 | x=2239.800048828125 y=1460.099975585938 | size=1 | links=#907(auto Stonetalon Mountains;13):34 #15404(auto Stonetalon Mountains;239):34
+#15362 | auto Stonetalon Mountains;236§auto Steinkrallengebirge;236§auto Les Serres-Rocheuses;236 | x=1457.400024414063 y=-490.8999938964844 | size=5 | links=#1249(auto Stonetalon Mountains;18):67 #11031(auto Stonetalon Mountains;172):128 c4006.11:55 c4006.12:39 o19541.12:38 c4006.14:8 c4006.34:48 c4006.43:100
+#15365 | auto Stonetalon Mountains;237§auto Steinkrallengebirge;237§auto Les Serres-Rocheuses;237 | x=-103.8000030517578 y=206.6000061035156 | size=1 | links=c11915.1:10 c11915.17:19
+#15385 | auto Stonetalon Mountains;238§auto Steinkrallengebirge;238§auto Les Serres-Rocheuses;238 | x=77.80000305175781 y=-139.6999969482422 | size=1 | links=#1997(auto Stonetalon Mountains;25):80 #22073(auto Stonetalon Mountains;379):39
+#15404 | auto Stonetalon Mountains;239§auto Steinkrallengebirge;239§auto Les Serres-Rocheuses;239 | x=2269.60009765625 y=1478.200073242188 | size=1 | links=#15322(auto Stonetalon Mountains;235):34 #26396(auto Stonetalon Mountains;465):24
+#15468 | auto Stonetalon Mountains;240§auto Steinkrallengebirge;240§auto Les Serres-Rocheuses;240 | x=1612.599975585938 y=105.7000045776367 | size=1 | links=#12169(auto Stonetalon Mountains;190):8 #25700(auto Stonetalon Mountains;451):9
+#15470 | auto Stonetalon Mountains;241§auto Steinkrallengebirge;241§auto Les Serres-Rocheuses;241 | x=1773.599975585938 y=-668.7000122070312 | size=1 | links=#24953(auto Stonetalon Mountains;437):35 #26152(auto Stonetalon Mountains;462):27
+#15486 | auto Stonetalon Mountains;242§auto Steinkrallengebirge;242§auto Les Serres-Rocheuses;242 | x=2494.900146484375 y=1976.099975585938 | size=1 | links=#7563(auto Stonetalon Mountains;117):6 #20404(auto Stonetalon Mountains;345):8
+#15550 | auto Stonetalon Mountains;243§auto Steinkrallengebirge;243§auto Les Serres-Rocheuses;243 | x=-87.70000457763672 y=-278.5 | size=1 | links=#15268(auto Stonetalon Mountains;233):21 #23645(auto Stonetalon Mountains;412):38
+#15555 | auto Stonetalon Mountains;244§auto Steinkrallengebirge;244§auto Les Serres-Rocheuses;244 | x=-175.1999969482422 y=-689.4000244140625 | size=1 | links=#17076(auto Stonetalon Mountains;264):55 #17880(auto Stonetalon Mountains;283):33 c11911.5:25 c1412.30:29
+#15821 | auto Stonetalon Mountains;245§auto Steinkrallengebirge;245§auto Les Serres-Rocheuses;245 | x=490.1000061035156 y=674.9000244140625 | size=1 | links=#1892(auto Stonetalon Mountains;23):30 o19541.4:15
+#15831 | auto Stonetalon Mountains;246§auto Steinkrallengebirge;246§auto Les Serres-Rocheuses;246 | x=1686.200073242188 y=77.80000305175781 | size=1 | links=#10230(auto Stonetalon Mountains;159):14 #21358(auto Stonetalon Mountains;365):15
+#16008 | auto Stonetalon Mountains;247§auto Steinkrallengebirge;247§auto Les Serres-Rocheuses;247 | x=116.0999984741211 y=-556.7999877929688 | size=1 | links=#11319(central location;Posten der Grimmtotem;Stonetalon Mountains):28 c11913.5:16 c11912.16:11 c11913.17:25 c1412.18:6 c11912.18:8 c11912.21:24 c11912.24:9
+#16027 | auto Stonetalon Mountains;248§auto Steinkrallengebirge;248§auto Les Serres-Rocheuses;248 | x=1624.200073242188 y=139.9000091552734 | size=1 | links=#4374(Gerenzo Wrenchwhistle;Cragpool Lake;Stonetalon Mountains):11 #17300(auto Stonetalon Mountains;268):6 c3993.2:11
+#16056 | auto Stonetalon Mountains;249§auto Steinkrallengebirge;249§auto Les Serres-Rocheuses;249 | x=1066 y=-316.3000183105469 | size=1 | links=#11489(auto Stonetalon Mountains;181):33 #17220(auto Stonetalon Mountains;266):20 c3988.1:16
+#16209 | auto Stonetalon Mountains;250§auto Steinkrallengebirge;250§auto Les Serres-Rocheuses;250 | x=2617.5 y=1425.900024414063 | size=1 | links=#5780(auto Stonetalon Mountains;95):19 #9456(auto Stonetalon Mountains;146):26 #28289(auto Stonetalon Mountains;499):61
+#16222 | auto Stonetalon Mountains;251§auto Steinkrallengebirge;251§auto Les Serres-Rocheuses;251 | x=969 y=943.5 | size=1 | links=#19234(auto Stonetalon Mountains;321):26 #26871(auto Stonetalon Mountains;476):31 c11864.1:49
+#16251 | auto Stonetalon Mountains;252§auto Steinkrallengebirge;252§auto Les Serres-Rocheuses;252 | x=888.7000122070312 y=923.4000244140625 | size=1 | links=#10118(auto Stonetalon Mountains;154):7 #19913(auto Stonetalon Mountains;333):11
+#16352 | auto Stonetalon Mountains;253§auto Steinkrallengebirge;253§auto Les Serres-Rocheuses;253 | x=2326 y=1813.300048828125 | size=1 | links=#4358(auto Stonetalon Mountains;64):10 #10167(auto Stonetalon Mountains;156):9
+#16354 | auto Stonetalon Mountains;254§auto Steinkrallengebirge;254§auto Les Serres-Rocheuses;254 | x=188.1999969482422 y=150.4000091552734 | size=1 | links=#11007(auto Stonetalon Mountains;171):39 #26470(auto Stonetalon Mountains;468):37
+#16355 | auto Stonetalon Mountains;255§auto Steinkrallengebirge;255§auto Les Serres-Rocheuses;255 | x=937.7999877929688 y=796.1000366210938 | size=1 | links=#6227(auto Stonetalon Mountains;101):34 #14425(auto Stonetalon Mountains;222):56 #20443(auto Stonetalon Mountains;348):43
+#16503 | auto Stonetalon Mountains;256§auto Steinkrallengebirge;256§auto Les Serres-Rocheuses;256 | x=854.5 y=587.1000366210938 | size=1 | links=#22079(auto Stonetalon Mountains;380):46 #27668(auto Stonetalon Mountains;488):31
+#16670 | auto Stonetalon Mountains;257§auto Steinkrallengebirge;257§auto Les Serres-Rocheuses;257 | x=1693.5 y=-4.900000095367432 | size=1 | links=#13373(auto Stonetalon Mountains;203):7 #17829(auto Stonetalon Mountains;281):17
+#16840 | auto Stonetalon Mountains;258§auto Steinkrallengebirge;258§auto Les Serres-Rocheuses;258 | x=2624.800048828125 y=1349.800048828125 | size=1 | links=#24691(auto Stonetalon Mountains;431):43 #26482(auto Stonetalon Mountains;469):49 c4020.19:42 c4018.21:30
+#16910 | auto Stonetalon Mountains;259§auto Steinkrallengebirge;259§auto Les Serres-Rocheuses;259 | x=879.2999877929688 y=1836.200073242188 | size=5 | links=#17023(auto Stonetalon Mountains;261):97 #25299(auto Stonetalon Mountains;443):84 o177929.24:40
+#16937 | auto Stonetalon Mountains;260§auto Steinkrallengebirge;260§auto Les Serres-Rocheuses;260 | x=1468.800048828125 y=-187.6000061035156 | size=5 | links=#17711(auto Stonetalon Mountains;277):92 #18176(auto Stonetalon Mountains;288):61 #22760(auto Stonetalon Mountains;403):29 o19541.20:44
+#17023 | auto Stonetalon Mountains;261§auto Steinkrallengebirge;261§auto Les Serres-Rocheuses;261 | x=798.7000122070312 y=1890.800048828125 | size=5 | links=#16910(auto Stonetalon Mountains;259):97 #21790(auto Stonetalon Mountains;374):75 c4032.1:61 c4037.2:47 o177929.27:11
+#17060 | auto Stonetalon Mountains;262§auto Steinkrallengebirge;262§auto Les Serres-Rocheuses;262 | x=2539.60009765625 y=1922.800048828125 | size=1 | links=#250(auto Stonetalon Mountains;4):15 c4061.5:15 c4061.15:22 c4061.17:8
+#17063 | auto Stonetalon Mountains;263§auto Steinkrallengebirge;263§auto Les Serres-Rocheuses;263 | x=1534.800048828125 y=1172.300048828125 | size=1 | links=#833(auto Stonetalon Mountains;10):22 #3453(auto Stonetalon Mountains;49):65
+#17076 | auto Stonetalon Mountains;264§auto Steinkrallengebirge;264§auto Les Serres-Rocheuses;264 | x=-120.3000030517578 y=-685.1000366210938 | size=1 | links=#12851(auto Stonetalon Mountains;198):28 #15555(auto Stonetalon Mountains;244):55
+#17194 | auto Stonetalon Mountains;265§auto Steinkrallengebirge;265§auto Les Serres-Rocheuses;265 | x=2457 y=1904.400024414063 | size=1 | links=c4061.4:15 c4056.10:15
+#17220 | auto Stonetalon Mountains;266§auto Steinkrallengebirge;266§auto Les Serres-Rocheuses;266 | x=1045.400024414063 y=-318.8000183105469 | size=1 | links=#16056(auto Stonetalon Mountains;249):20 c3999.17:27
+#17259 | auto Stonetalon Mountains;267§auto Steinkrallengebirge;267§auto Les Serres-Rocheuses;267 | x=1316.700073242188 y=728.4000244140625 | size=1 | links=#15036(auto Stonetalon Mountains;230):23 #22400(auto Stonetalon Mountains;388):50
+#17300 | auto Stonetalon Mountains;268§auto Steinkrallengebirge;268§auto Les Serres-Rocheuses;268 | x=1623 y=133.4000091552734 | size=1 | links=#6114(auto Stonetalon Mountains;99):8 #16027(auto Stonetalon Mountains;248):6
+#17322 | auto Stonetalon Mountains;269§auto Steinkrallengebirge;269§auto Les Serres-Rocheuses;269 | x=2484 y=1846.5 | size=1 | links=#5695(auto Stonetalon Mountains;90):7
+#17337 | auto Stonetalon Mountains;270§auto Steinkrallengebirge;270§auto Les Serres-Rocheuses;270 | x=1596.200073242188 y=177.8000030517578 | size=1 | links=#18032(auto Stonetalon Mountains;285):6 #20620(auto Stonetalon Mountains;353):5
+#17394 | auto Stonetalon Mountains;271§auto Steinkrallengebirge;271§auto Les Serres-Rocheuses;271 | x=1634.599975585938 y=104.7000045776367 | size=1 | links=#4430(auto Stonetalon Mountains;67):9 #26111(auto Stonetalon Mountains;458):3
+#17396 | auto Stonetalon Mountains;272§auto Steinkrallengebirge;272§auto Les Serres-Rocheuses;272 | x=2357.300048828125 y=1643.099975585938 | size=1 | links=#5765(auto Stonetalon Mountains;92):43 #6783(auto Stonetalon Mountains;106):55 c4020.8:17
+#17458 | auto Stonetalon Mountains;273§auto Steinkrallengebirge;273§auto Les Serres-Rocheuses;273 | x=2416 y=1798.599975585938 | size=1 | links=#22261(auto Stonetalon Mountains;384):8 #23678(auto Stonetalon Mountains;413):8
+#17601 | auto Stonetalon Mountains;274§auto Steinkrallengebirge;274§auto Les Serres-Rocheuses;274 | x=1104.900024414063 y=677.7999877929688 | size=1 | links=#5443(auto Stonetalon Mountains;87):47 #15289(auto Stonetalon Mountains;234):51 c4007.16:32
+#17639 | auto Stonetalon Mountains;275§auto Steinkrallengebirge;275§auto Les Serres-Rocheuses;275 | x=-56.10000228881836 y=-673.2000122070312 | size=1 | links=#9295(auto Stonetalon Mountains;144):50 #12851(auto Stonetalon Mountains;198):38
+#17679 | auto Stonetalon Mountains;276§auto Steinkrallengebirge;276§auto Les Serres-Rocheuses;276 | x=2475.5 y=1963.099975585938 | size=1 | links=#7570(auto Stonetalon Mountains;118):16 #20404(auto Stonetalon Mountains;345):15
+#17711 | auto Stonetalon Mountains;277§auto Steinkrallengebirge;277§auto Les Serres-Rocheuses;277 | x=1481.599975585938 y=-279.3000183105469 | size=5 | links=#4161(auto Stonetalon Mountains;60):28 #16937(auto Stonetalon Mountains;260):92
+#17755 | auto Stonetalon Mountains;278§auto Steinkrallengebirge;278§auto Les Serres-Rocheuses;278 | x=67.20000457763672 y=-650.2999877929688 | size=1 | links=c11911.1:35 c11913.7:18
+#17781 | rescue;waters;down;Cragpool Lake;Stonetalon Mountains§rettung;gewässer;unten;Felskesselsee;Steinkrallengebirge§sauvetage;eaux;bas;Cragpool Lake;Les Serres-Rocheuses | x=1565.599975585938 y=130.3000030517578 | size=1 | links=c6145.2:39 c6145.3:126 c6145.4:64
+#17801 | auto Stonetalon Mountains;279§auto Steinkrallengebirge;279§auto Les Serres-Rocheuses;279 | x=34.70000076293945 y=-246.6999969482422 | size=1 | links=#6834(auto Stonetalon Mountains;107):26 #22679(auto Stonetalon Mountains;400):33
+#17807 | auto Stonetalon Mountains;280§auto Steinkrallengebirge;280§auto Les Serres-Rocheuses;280 | x=-112.8000030517578 y=107.3000030517578 | size=1 | links=#18636(auto Stonetalon Mountains;303):32 #21399(auto Stonetalon Mountains;368):24
+#17829 | auto Stonetalon Mountains;281§auto Steinkrallengebirge;281§auto Les Serres-Rocheuses;281 | x=1692.200073242188 y=-22 | size=1 | links=#13705(auto Stonetalon Mountains;210):16 #16670(auto Stonetalon Mountains;257):17
+#17853 | auto Stonetalon Mountains;282§auto Steinkrallengebirge;282§auto Les Serres-Rocheuses;282 | x=1092.300048828125 y=1539.099975585938 | size=1 | links=#18714(auto Stonetalon Mountains;306):70 #22663(auto Stonetalon Mountains;398):65
+#17880 | auto Stonetalon Mountains;283§auto Steinkrallengebirge;283§auto Les Serres-Rocheuses;283 | x=-201.5 y=-710.4000244140625 | size=1 | links=#5023(auto Stonetalon Mountains;78):81 #15555(auto Stonetalon Mountains;244):33 c11911.8:13
+#18025 | auto Stonetalon Mountains;284§auto Steinkrallengebirge;284§auto Les Serres-Rocheuses;284 | x=-163.3000030517578 y=-304.3999938964844 | size=1 | links=#22407(auto Stonetalon Mountains;390):21 #24697(auto Stonetalon Mountains;433):19 #25605(auto Stonetalon Mountains;449):39
+#18032 | auto Stonetalon Mountains;285§auto Steinkrallengebirge;285§auto Les Serres-Rocheuses;285 | x=1590.200073242188 y=177.1999969482422 | size=1 | links=#17337(auto Stonetalon Mountains;270):6 c3992.4:2
+#18157 | auto Stonetalon Mountains;286§auto Steinkrallengebirge;286§auto Les Serres-Rocheuses;286 | x=1035.700073242188 y=-223.9000091552734 | size=1 | links=#4028(auto Stonetalon Mountains;57):35 #12918(auto Stonetalon Mountains;199):30 c3991.18:21
+#18162 | auto Stonetalon Mountains;287§auto Steinkrallengebirge;287§auto Les Serres-Rocheuses;287 | x=2565.900146484375 y=1940.900024414063 | size=1 | links=#250(auto Stonetalon Mountains;4):16 o19599.1:6 c4061.6:5 c4061.14:5
+#18176 | auto Stonetalon Mountains;288§auto Steinkrallengebirge;288§auto Les Serres-Rocheuses;288 | x=1449.700073242188 y=-128.8000030517578 | size=5 | links=#13640(auto Stonetalon Mountains;207):62 #16937(auto Stonetalon Mountains;260):61
+#18191 | auto Stonetalon Mountains;289§auto Steinkrallengebirge;289§auto Les Serres-Rocheuses;289 | x=-97 y=349.6000061035156 | size=1 | links=o178104.2:22 c11917.23:11
+#18198 | auto Stonetalon Mountains;290§auto Steinkrallengebirge;290§auto Les Serres-Rocheuses;290 | x=961.5 y=976 | size=1 | links=#11087(auto Stonetalon Mountains;173):13 #19165(auto Stonetalon Mountains;319):26 #21680(auto Stonetalon Mountains;371):50
+#18199 | auto Stonetalon Mountains;291§auto Steinkrallengebirge;291§auto Les Serres-Rocheuses;291 | x=2323.60009765625 y=1372.200073242188 | size=1 | links=#7606(auto Stonetalon Mountains;119):40 #19839(auto Stonetalon Mountains;331):32 c4021.5:24 c4020.15:24
+#18290 | crossing;Stonetalon Mountains;path;to;Windshear Crag§kreuzung;Steinkrallengebirge;weg;nach;Die Scherwindklippe§traversée;Les Serres-Rocheuses;path;vers;Windshear Crag | x=596.7000122070312 y=326.7000122070313 | size=1 | links=#2408(auto Stonetalon Mountains;34):32 #23873(auto Stonetalon Mountains;416):59 #28120(auto Stonetalon Mountains;495):36 c4005.20:56
+#18291 | auto Stonetalon Mountains;292§auto Steinkrallengebirge;292§auto Les Serres-Rocheuses;292 | x=1531.700073242188 y=1011.400024414063 | size=1 | links=#1085(auto Stonetalon Mountains;15):85 #13069(auto Stonetalon Mountains;201):44 c4044.7:45 c4044.8:55 c4012.12:87 o19541.13:28
+#18303 | auto Stonetalon Mountains;293§auto Steinkrallengebirge;293§auto Les Serres-Rocheuses;293 | x=1034.300048828125 y=-86.30000305175781 | size=5 | links=#879(auto Stonetalon Mountains;12):43 #20410(auto Stonetalon Mountains;347):32 c3989.63:24
+#18309 | auto Stonetalon Mountains;294§auto Steinkrallengebirge;294§auto Les Serres-Rocheuses;294 | x=-18.30000114440918 y=-668.6000366210938 | size=1 | links=#8856(auto Stonetalon Mountains;137):19 #9295(auto Stonetalon Mountains;144):27
+#18333 | auto Stonetalon Mountains;295§auto Steinkrallengebirge;295§auto Les Serres-Rocheuses;295 | x=1621 y=-122 | size=1 | links=#20115(auto Stonetalon Mountains;340):25 c4006.5:40
+#18370 | auto Stonetalon Mountains;296§auto Steinkrallengebirge;296§auto Les Serres-Rocheuses;296 | x=1583.5 y=-570.6000366210938 | size=1 | links=#20446(auto Stonetalon Mountains;349):16 #23893(auto Stonetalon Mountains;418):21
+#18385 | auto Stonetalon Mountains;297§auto Steinkrallengebirge;297§auto Les Serres-Rocheuses;297 | x=-24.39999961853027 y=-762.6000366210938 | size=1 | links=#26128(auto Stonetalon Mountains;460):23 #28323(auto Stonetalon Mountains;500):16 c11911.16:16 c11911.17:13
+#18405 | auto Stonetalon Mountains;298§auto Steinkrallengebirge;298§auto Les Serres-Rocheuses;298 | x=2165 y=1091.700073242188 | size=1 | links=#12716(auto Stonetalon Mountains;194):99 c4018.14:77 c4018.15:15
+#18493 | auto Stonetalon Mountains;299§auto Steinkrallengebirge;299§auto Les Serres-Rocheuses;299 | x=2674.900146484375 y=1269.700073242188 | size=1 | links=#18805(auto Stonetalon Mountains;309):22 #22139(auto Stonetalon Mountains;381):33 #26482(auto Stonetalon Mountains;469):44
+#18494 | auto Stonetalon Mountains;300§auto Steinkrallengebirge;300§auto Les Serres-Rocheuses;300 | x=68.4000015258789 y=-836.2999877929688 | size=1 | links=#2353(auto Stonetalon Mountains;31):8 c11911.12:6
+#18495 | auto Stonetalon Mountains;301§auto Steinkrallengebirge;301§auto Les Serres-Rocheuses;301 | x=-50.79999923706055 y=409 | size=1 | links=#14105(auto Stonetalon Mountains;217):45 #26124(auto Stonetalon Mountains;459):34 o178104.3:10
+#18524 | auto Stonetalon Mountains;302§auto Steinkrallengebirge;302§auto Les Serres-Rocheuses;302 | x=1632.300048828125 y=112.3000030517578 | size=1 | links=#22581(auto Stonetalon Mountains;397):7 c4070.1:3
+#18636 | auto Stonetalon Mountains;303§auto Steinkrallengebirge;303§auto Les Serres-Rocheuses;303 | x=-84.80000305175781 y=90.80000305175781 | size=1 | links=#17807(auto Stonetalon Mountains;280):32 #21024(auto Stonetalon Mountains;358):61
+#18677 | auto Stonetalon Mountains;304§auto Steinkrallengebirge;304§auto Les Serres-Rocheuses;304 | x=1193 y=695.1000366210938 | size=1 | links=#7278(auto Stonetalon Mountains;113):38 #11411(auto Stonetalon Mountains;180):38
+#18703 | auto Stonetalon Mountains;305§auto Steinkrallengebirge;305§auto Les Serres-Rocheuses;305 | x=1137.700073242188 y=302.6000061035156 | size=5 | links=#2405(auto Stonetalon Mountains;33):68 #19848(auto Stonetalon Mountains;332):72 c3989.23:45 c3989.25:25 c3989.29:38 c3989.30:21
+#18714 | auto Stonetalon Mountains;306§auto Steinkrallengebirge;306§auto Les Serres-Rocheuses;306 | x=1022.100036621094 y=1545 | size=1 | links=#17853(auto Stonetalon Mountains;282):70 c4044.3:27
+#18726 | auto Stonetalon Mountains;307§auto Steinkrallengebirge;307§auto Les Serres-Rocheuses;307 | x=-42.10000228881836 y=342.3000183105469 | size=1 | links=#1775(auto Stonetalon Mountains;22):23 #10081(auto Stonetalon Mountains;153):8
+#18754 | auto Stonetalon Mountains;308§auto Steinkrallengebirge;308§auto Les Serres-Rocheuses;308 | x=2346.300048828125 y=1303 | size=1 | links=#19839(auto Stonetalon Mountains;331):40 #26504(auto Stonetalon Mountains;470):42
+#18805 | auto Stonetalon Mountains;309§auto Steinkrallengebirge;309§auto Les Serres-Rocheuses;309 | x=2653.199951171875 y=1263.800048828125 | size=1 | links=#7974(auto Stonetalon Mountains;126):33 #18493(auto Stonetalon Mountains;299):22
+#18845 | auto Stonetalon Mountains;310§auto Steinkrallengebirge;310§auto Les Serres-Rocheuses;310 | x=988.1000366210938 y=57.5 | size=1 | links=#2781(auto Stonetalon Mountains;40):34 #10911(auto Stonetalon Mountains;170):20
+#18911 | auto Stonetalon Mountains;311§auto Steinkrallengebirge;311§auto Les Serres-Rocheuses;311 | x=2412.900146484375 y=1823.800048828125 | size=1 | links=#15073(auto Stonetalon Mountains;231):20 #19612(auto Stonetalon Mountains;327):18
+#18965 | auto Stonetalon Mountains;312§auto Steinkrallengebirge;312§auto Les Serres-Rocheuses;312 | x=-88.4000015258789 y=315.6000061035156 | size=1 | links=#8541(auto Stonetalon Mountains;135):14 c11918.11:20
+#19054 | auto Stonetalon Mountains;313§auto Steinkrallengebirge;313§auto Les Serres-Rocheuses;313 | x=2420 y=1678.700073242188 | size=1 | links=#5765(auto Stonetalon Mountains;92):28 #27882(auto Stonetalon Mountains;493):27
+#19060 | auto Stonetalon Mountains;314§auto Steinkrallengebirge;314§auto Les Serres-Rocheuses;314 | x=1660.900024414063 y=114.7000045776367 | size=1 | links=#11300(auto Stonetalon Mountains;175):4 #13662(auto Stonetalon Mountains;208):2
+#19120 | auto Stonetalon Mountains;315§auto Steinkrallengebirge;315§auto Les Serres-Rocheuses;315 | x=1039.800048828125 y=-158.1999969482422 | size=1 | links=#1371(auto Stonetalon Mountains;20):10 #20410(auto Stonetalon Mountains;347):39
+#19124 | auto Stonetalon Mountains;316§auto Steinkrallengebirge;316§auto Les Serres-Rocheuses;316 | x=944.7000122070312 y=1056.900024414063 | size=1 | links=#2499(auto Stonetalon Mountains;36):28 #8024(auto Stonetalon Mountains;128):26
+#19156 | auto Stonetalon Mountains;317§auto Steinkrallengebirge;317§auto Les Serres-Rocheuses;317 | x=1239.200073242188 y=31.39999961853027 | size=1 | links=#20453(auto Stonetalon Mountains;351):29 o19602.1:14 c3989.44:4 c3989.45:11 c3989.46:19
+#19164 | auto Stonetalon Mountains;318§auto Steinkrallengebirge;318§auto Les Serres-Rocheuses;318 | x=1030.5 y=855.7000122070312 | size=1 | links=#7692(auto Stonetalon Mountains;121):12 #21269(auto Stonetalon Mountains;363):16
+#19165 | auto Stonetalon Mountains;319§auto Steinkrallengebirge;319§auto Les Serres-Rocheuses;319 | x=962.6000366210938 y=1002.799987792969 | size=1 | links=#18198(auto Stonetalon Mountains;290):26 #27383(auto Stonetalon Mountains;484):23 c4198.1:13
+#19171 | auto Stonetalon Mountains;320§auto Steinkrallengebirge;320§auto Les Serres-Rocheuses;320 | x=1536.300048828125 y=-578.7999877929688 | size=1 | links=#23893(auto Stonetalon Mountains;418):32 #25018(entry and exit;cave;The Talondeep Path;Stonetalon Mountains):7
+#19234 | auto Stonetalon Mountains;321§auto Steinkrallengebirge;321§auto Les Serres-Rocheuses;321 | x=964.5 y=917.1000366210938 | size=1 | links=#12518(central location;Sun Rock Retreat;Stonetalon Mountains):29 #16222(auto Stonetalon Mountains;251):26 #28467(auto Stonetalon Mountains;503):26
+#19241 | auto Stonetalon Mountains;322§auto Steinkrallengebirge;322§auto Les Serres-Rocheuses;322 | x=920.2999877929688 y=909 | size=1 | links=#12518(central location;Sun Rock Retreat;Stonetalon Mountains):15 #20054(auto Stonetalon Mountains;337):10
+#19250 | auto Stonetalon Mountains;323§auto Steinkrallengebirge;323§auto Les Serres-Rocheuses;323 | x=2359.800048828125 y=1797 | size=1 | links=#11741(auto Stonetalon Mountains;186):7 c8518.1:6
+#19279 | auto Stonetalon Mountains;324§auto Steinkrallengebirge;324§auto Les Serres-Rocheuses;324 | x=2492 y=1431.200073242188 | size=1 | links=#3684(auto Stonetalon Mountains;52):31 #7813(auto Stonetalon Mountains;124):32 c4057.1:14
+#19466 | Goggeroc;Boulderslide Cavern;Stonetalon Mountains§Goggeroc;Steinschlaghöhle;Steinkrallengebirge§Goggeroc;Caverne des Eboulis;Les Serres-Rocheuses | x=0.4000000059604645 y=431.3000183105469 | size=1 | links=#14105(auto Stonetalon Mountains;217):33 o178145.1:2
+#19486 | auto Stonetalon Mountains;325§auto Steinkrallengebirge;325§auto Les Serres-Rocheuses;325 | x=2395.300048828125 y=1218.700073242188 | size=1 | links=#11664(auto Stonetalon Mountains;185):48 #26504(auto Stonetalon Mountains;470):77 c883.2:31
+#19573 | auto Stonetalon Mountains;326§auto Steinkrallengebirge;326§auto Les Serres-Rocheuses;326 | x=1720 y=632.2000122070312 | size=1 | links=#6361(auto Stonetalon Mountains;104):42 c4013.2:22 c4015.2:19 c4013.5:22
+#19612 | auto Stonetalon Mountains;327§auto Steinkrallengebirge;327§auto Les Serres-Rocheuses;327 | x=2394.900146484375 y=1825.300048828125 | size=1 | links=#18911(auto Stonetalon Mountains;311):18 #23204(auto Stonetalon Mountains;406):15 c4050.5:5
+#19657 | auto Stonetalon Mountains;328§auto Steinkrallengebirge;328§auto Les Serres-Rocheuses;328 | x=2484.199951171875 y=1858.400024414063 | size=1 | links=#3949(auto Stonetalon Mountains;55):14 #27106(auto Stonetalon Mountains;478):6
+#19707 | auto Stonetalon Mountains;329§auto Steinkrallengebirge;329§auto Les Serres-Rocheuses;329 | x=1677 y=94.70000457763672 | size=1 | links=#10230(auto Stonetalon Mountains;159):4 #14482(auto Stonetalon Mountains;223):5
+#19777 | auto Stonetalon Mountains;330§auto Steinkrallengebirge;330§auto Les Serres-Rocheuses;330 | x=1226.900024414063 y=368.5 | size=1 | links=#13091(auto Stonetalon Mountains;202):17 #19848(auto Stonetalon Mountains;332):42
+#19839 | auto Stonetalon Mountains;331§auto Steinkrallengebirge;331§auto Les Serres-Rocheuses;331 | x=2337 y=1342.599975585938 | size=1 | links=#18199(auto Stonetalon Mountains;291):32 #18754(auto Stonetalon Mountains;308):40
+#19848 | auto Stonetalon Mountains;332§auto Steinkrallengebirge;332§auto Les Serres-Rocheuses;332 | x=1203.900024414063 y=332.2000122070313 | size=5 | links=#7641(auto Stonetalon Mountains;120):29 #18703(auto Stonetalon Mountains;305):72 #19777(auto Stonetalon Mountains;330):42
+#19913 | auto Stonetalon Mountains;333§auto Steinkrallengebirge;333§auto Les Serres-Rocheuses;333 | x=897.5 y=916.2000122070312 | size=1 | links=#3715(auto Stonetalon Mountains;53):3 #16251(auto Stonetalon Mountains;252):11
+#19931 | auto Stonetalon Mountains;334§auto Steinkrallengebirge;334§auto Les Serres-Rocheuses;334 | x=1428.5 y=870.2999877929688 | size=1 | links=#14135(auto Stonetalon Mountains;220):71 #20320(auto Stonetalon Mountains;342):68 o19541.16:31 c4007.55:14
+#19978 | auto Stonetalon Mountains;335§auto Steinkrallengebirge;335§auto Les Serres-Rocheuses;335 | x=1020.200012207031 y=715.5 | size=1 | links=#22401(auto Stonetalon Mountains;389):36 #26806(auto Stonetalon Mountains;474):31
+#20007 | auto Stonetalon Mountains;336§auto Steinkrallengebirge;336§auto Les Serres-Rocheuses;336 | x=400.6000061035156 y=1775 | size=1 | links=#7860(auto Stonetalon Mountains;125):16 #20406(auto Stonetalon Mountains;346):55
+#20054 | auto Stonetalon Mountains;337§auto Steinkrallengebirge;337§auto Les Serres-Rocheuses;337 | x=910.9000244140625 y=914.6000366210938 | size=1 | links=#3715(auto Stonetalon Mountains;53):12 #19241(auto Stonetalon Mountains;322):10 c7731.1:21
+#20083 | auto Stonetalon Mountains;338§auto Steinkrallengebirge;338§auto Les Serres-Rocheuses;338 | x=-100.3000030517578 y=339.8000183105469 | size=1 | links=#20473(auto Stonetalon Mountains;352):22 #23712(auto Stonetalon Mountains;415):30 c11915.15:4 c11917.20:5
+#20099 | auto Stonetalon Mountains;339§auto Steinkrallengebirge;339§auto Les Serres-Rocheuses;339 | x=2409.699951171875 y=1817.5 | size=1 | links=#2924(auto Stonetalon Mountains;42):10 #27521(auto Stonetalon Mountains;486):10
+#20115 | auto Stonetalon Mountains;340§auto Steinkrallengebirge;340§auto Les Serres-Rocheuses;340 | x=1640.800048828125 y=-106.5999984741211 | size=1 | links=#18333(auto Stonetalon Mountains;295):25 #21567(auto Stonetalon Mountains;369):22
+#20201 | auto Stonetalon Mountains;341§auto Steinkrallengebirge;341§auto Les Serres-Rocheuses;341 | x=1712.400024414063 y=-660.6000366210938 | size=1 | links=#2224(auto Stonetalon Mountains;28):18 #26152(auto Stonetalon Mountains;462):43
+#20297 | centralpoint;Windshear Mine;Stonetalon Mountains§zentralerpunkt;Scherwindmine;Steinkrallengebirge§point central;Mine des Cisailles;Les Serres-Rocheuses | x=929.2000122070312 y=-326.3000183105469 | size=1 | links=#14616(auto Stonetalon Mountains;224):17 c4003.4:1 c3999.14:20
+#20320 | auto Stonetalon Mountains;342§auto Steinkrallengebirge;342§auto Les Serres-Rocheuses;342 | x=1408.300048828125 y=804.9000244140625 | size=1 | links=#19931(auto Stonetalon Mountains;334):68 #22400(auto Stonetalon Mountains;388):77 c4012.2:36 c721.5:21 o177926.12:41
+#20345 | auto Stonetalon Mountains;343§auto Steinkrallengebirge;343§auto Les Serres-Rocheuses;343 | x=2378.900146484375 y=1809.5 | size=1 | links=#2887(auto Stonetalon Mountains;41):7 #5983(auto Stonetalon Mountains;97):6
+#20365 | auto Stonetalon Mountains;344§auto Steinkrallengebirge;344§auto Les Serres-Rocheuses;344 | x=-98.70000457763672 y=258.8000183105469 | size=1 | links=#5194(auto Stonetalon Mountains;83):27 #27240(auto Stonetalon Mountains;482):19 o178105.10:13 o178105.11:9
+#20404 | auto Stonetalon Mountains;345§auto Steinkrallengebirge;345§auto Les Serres-Rocheuses;345 | x=2488 y=1971.599975585938 | size=1 | links=#15486(auto Stonetalon Mountains;242):8 #17679(auto Stonetalon Mountains;276):15
+#20406 | auto Stonetalon Mountains;346§auto Steinkrallengebirge;346§auto Les Serres-Rocheuses;346 | x=456.3999938964844 y=1772.200073242188 | size=1 | links=#20007(auto Stonetalon Mountains;336):55 #20673(auto Stonetalon Mountains;354):35
+#20410 | auto Stonetalon Mountains;347§auto Steinkrallengebirge;347§auto Les Serres-Rocheuses;347 | x=1038.200073242188 y=-118.9000015258789 | size=5 | links=#18303(auto Stonetalon Mountains;293):32 #19120(auto Stonetalon Mountains;315):39 c3991.23:41
+#20443 | auto Stonetalon Mountains;348§auto Steinkrallengebirge;348§auto Les Serres-Rocheuses;348 | x=929.6000366210938 y=839.2999877929688 | size=1 | links=#16355(auto Stonetalon Mountains;255):43 #26551(auto Stonetalon Mountains;471):35
+#20446 | auto Stonetalon Mountains;349§auto Steinkrallengebirge;349§auto Les Serres-Rocheuses;349 | x=1598.599975585938 y=-576.5 | size=1 | links=#18370(auto Stonetalon Mountains;296):16 #24600(auto Stonetalon Mountains;429):32
+#20448 | auto Stonetalon Mountains;350§auto Steinkrallengebirge;350§auto Les Serres-Rocheuses;350 | x=2439.400146484375 y=1748.5 | size=1 | links=#5788(auto Stonetalon Mountains;96):21 #13456(auto Stonetalon Mountains;205):21
+#20453 | auto Stonetalon Mountains;351§auto Steinkrallengebirge;351§auto Les Serres-Rocheuses;351 | x=1248.800048828125 y=59.70000076293945 | size=1 | links=#19156(auto Stonetalon Mountains;317):29 c3991.29:18
+#20473 | auto Stonetalon Mountains;352§auto Steinkrallengebirge;352§auto Les Serres-Rocheuses;352 | x=-93.80000305175781 y=361 | size=1 | links=#20083(auto Stonetalon Mountains;338):22 #26124(auto Stonetalon Mountains;459):29 o178104.10:6
+#20620 | auto Stonetalon Mountains;353§auto Steinkrallengebirge;353§auto Les Serres-Rocheuses;353 | x=1601.599975585938 y=178.3000030517578 | size=1 | links=#17337(auto Stonetalon Mountains;270):5 c3993.3:3
+#20673 | auto Stonetalon Mountains;354§auto Steinkrallengebirge;354§auto Les Serres-Rocheuses;354 | x=488.6000061035156 y=1758.200073242188 | size=5 | links=#6196(auto Stonetalon Mountains;100):89 #13804(auto Stonetalon Mountains;214):26 #20406(auto Stonetalon Mountains;346):35
+#20936 | auto Stonetalon Mountains;355§auto Steinkrallengebirge;355§auto Les Serres-Rocheuses;355 | x=1604.700073242188 y=150.9000091552734 | size=1 | links=#7236(auto Stonetalon Mountains;112):1 #8047(auto Stonetalon Mountains;129):4
+#20961 | auto Stonetalon Mountains;356§auto Steinkrallengebirge;356§auto Les Serres-Rocheuses;356 | x=13.90000057220459 y=-192.1000061035156 | size=1 | links=#6834(auto Stonetalon Mountains;107):46 #22073(auto Stonetalon Mountains;379):44
+#20984 | auto Stonetalon Mountains;357§auto Steinkrallengebirge;357§auto Les Serres-Rocheuses;357 | x=2278.900146484375 y=1579 | size=1 | links=#6783(auto Stonetalon Mountains;106):52 #28196(auto Stonetalon Mountains;498):30 c4021.3:19
+#21024 | auto Stonetalon Mountains;358§auto Steinkrallengebirge;358§auto Les Serres-Rocheuses;358 | x=-43 y=45.20000076293945 | size=1 | links=#1011(auto Stonetalon Mountains;14):28 #18636(auto Stonetalon Mountains;303):61
+#21135 | auto Stonetalon Mountains;359§auto Steinkrallengebirge;359§auto Les Serres-Rocheuses;359 | x=633.7000122070312 y=1885.800048828125 | size=5 | links=#2372(auto Stonetalon Mountains;32):54 #6196(auto Stonetalon Mountains;100):104 c4027.4:12 c4027.7:22 c4024.10:26
+#21159 | auto Stonetalon Mountains;360§auto Steinkrallengebirge;360§auto Les Serres-Rocheuses;360 | x=-54.90000152587891 y=-484.8000183105469 | size=1 | links=#3378(auto Stonetalon Mountains;47):57 #22038(auto Stonetalon Mountains;377):73 c11910.1:20
+#21186 | auto Stonetalon Mountains;361§auto Steinkrallengebirge;361§auto Les Serres-Rocheuses;361 | x=1670.599975585938 y=102.7000045776367 | size=1 | links=#10508(auto Stonetalon Mountains;164):6 #14482(auto Stonetalon Mountains;223):5
+#21210 | auto Stonetalon Mountains;362§auto Steinkrallengebirge;362§auto Les Serres-Rocheuses;362 | x=2325.900146484375 y=1080.300048828125 | size=1 | links=#12716(auto Stonetalon Mountains;194):67 #28371(auto Stonetalon Mountains;502):73
+#21269 | auto Stonetalon Mountains;363§auto Steinkrallengebirge;363§auto Les Serres-Rocheuses;363 | x=1013.799987792969 y=855.2999877929688 | size=1 | links=#5746(auto Stonetalon Mountains;91):13 #19164(auto Stonetalon Mountains;318):16
+#21326 | auto Stonetalon Mountains;364§auto Steinkrallengebirge;364§auto Les Serres-Rocheuses;364 | x=2451.400146484375 y=1281.5 | size=1 | links=#5353(auto Stonetalon Mountains;85):30 #27583(auto Stonetalon Mountains;487):25 c4018.1:32
+#21358 | auto Stonetalon Mountains;365§auto Steinkrallengebirge;365§auto Les Serres-Rocheuses;365 | x=1684.5 y=62.10000228881836 | size=1 | links=#11356(auto Stonetalon Mountains;176):18 #15831(auto Stonetalon Mountains;246):15
+#21367 | auto Stonetalon Mountains;366§auto Steinkrallengebirge;366§auto Les Serres-Rocheuses;366 | x=2577.5 y=1296.400024414063 | size=1 | links=#1253(auto Stonetalon Mountains;19):50 #7974(auto Stonetalon Mountains;126):48 #9154(auto Stonetalon Mountains;142):30 c4019.1:16
+#21385 | auto Stonetalon Mountains;367§auto Steinkrallengebirge;367§auto Les Serres-Rocheuses;367 | x=1476.099975585938 y=645.2000122070312 | size=1 | links=#9572(auto Stonetalon Mountains;147):56 #22472(auto Stonetalon Mountains;393):37 c4012.6:45 c4007.18:23
+#21399 | auto Stonetalon Mountains;368§auto Steinkrallengebirge;368§auto Les Serres-Rocheuses;368 | x=-134.1999969482422 y=120.2000045776367 | size=1 | links=#17807(auto Stonetalon Mountains;280):24 #22668(auto Stonetalon Mountains;399):31
+#21567 | auto Stonetalon Mountains;369§auto Steinkrallengebirge;369§auto Les Serres-Rocheuses;369 | x=1659.700073242188 y=-93.5 | size=1 | links=#9375(auto Stonetalon Mountains;145):16 #20115(auto Stonetalon Mountains;340):22
+#21591 | auto Stonetalon Mountains;370§auto Steinkrallengebirge;370§auto Les Serres-Rocheuses;370 | x=2683 y=1500.099975585938 | size=1 | links=#7431(auto Stonetalon Mountains;116):28 #28618(s;u;Mailbox;1;Stonetalon Mountains):12
+#21680 | auto Stonetalon Mountains;371§auto Steinkrallengebirge;371§auto Les Serres-Rocheuses;371 | x=935.5 y=932.7999877929688 | size=1 | links=#12518(central location;Sun Rock Retreat;Stonetalon Mountains):24 #18198(auto Stonetalon Mountains;290):50 c11860.1:13
+#21693 | auto Stonetalon Mountains;372§auto Steinkrallengebirge;372§auto Les Serres-Rocheuses;372 | x=-199 y=-337.5 | size=1 | links=#849(auto Stonetalon Mountains;11):24 #11852(auto Stonetalon Mountains;188):15 c3411.1:14
+#21728 | auto Stonetalon Mountains;373§auto Steinkrallengebirge;373§auto Les Serres-Rocheuses;373 | x=1593.800048828125 y=-162.9000091552734 | size=1 | links=#25188(auto Stonetalon Mountains;442):29 c4006.5:32
+#21790 | auto Stonetalon Mountains;374§auto Steinkrallengebirge;374§auto Les Serres-Rocheuses;374 | x=724.5 y=1902.800048828125 | size=5 | links=#2372(auto Stonetalon Mountains;32):42 #17023(auto Stonetalon Mountains;261):75 c4027.13:11
+#21798 | auto Stonetalon Mountains;375§auto Steinkrallengebirge;375§auto Les Serres-Rocheuses;375 | x=1796.300048828125 y=978.6000366210938 | size=1 | links=#4119(auto Stonetalon Mountains;59):46 #5767(auto Stonetalon Mountains;93):70
+#21921 | auto Stonetalon Mountains;376§auto Steinkrallengebirge;376§auto Les Serres-Rocheuses;376 | x=909 y=318.8999938964844 | size=1 | links=#3449(auto Stonetalon Mountains;48):69 #3807(auto Stonetalon Mountains;54):29
+#22038 | auto Stonetalon Mountains;377§auto Steinkrallengebirge;377§auto Les Serres-Rocheuses;377 | x=-59.20000076293945 y=-411.2000122070313 | size=1 | links=#4400(auto Stonetalon Mountains;65):52 #21159(auto Stonetalon Mountains;360):73
+#22042 | auto Stonetalon Mountains;378§auto Steinkrallengebirge;378§auto Les Serres-Rocheuses;378 | x=972.1000366210938 y=1623.700073242188 | size=1 | links=#2577(auto Stonetalon Mountains;38):30 #10500(auto Stonetalon Mountains;163):73 c4026.16:13
+#22073 | auto Stonetalon Mountains;379§auto Steinkrallengebirge;379§auto Les Serres-Rocheuses;379 | x=43.40000152587891 y=-158.5 | size=1 | links=#15385(auto Stonetalon Mountains;238):39 #20961(auto Stonetalon Mountains;356):44
+#22079 | auto Stonetalon Mountains;380§auto Steinkrallengebirge;380§auto Les Serres-Rocheuses;380 | x=883.4000244140625 y=622.9000244140625 | size=1 | links=#16503(auto Stonetalon Mountains;256):46 #26135(auto Stonetalon Mountains;461):44 c4007.17:34
+#22139 | auto Stonetalon Mountains;381§auto Steinkrallengebirge;381§auto Les Serres-Rocheuses;381 | x=2700.10009765625 y=1247.400024414063 | size=1 | links=#18493(auto Stonetalon Mountains;299):33 c6491.2:47
+#22199 | auto Stonetalon Mountains;382§auto Steinkrallengebirge;382§auto Les Serres-Rocheuses;382 | x=2466 y=1854.5 | size=1 | links=#27106(auto Stonetalon Mountains;478):11 c4052.6:12
+#22228 | auto Stonetalon Mountains;383§auto Steinkrallengebirge;383§auto Les Serres-Rocheuses;383 | x=1574.900024414063 y=1127.400024414063 | size=1 | links=#833(auto Stonetalon Mountains;10):38 #10801(auto Stonetalon Mountains;168):38
+#22261 | auto Stonetalon Mountains;384§auto Steinkrallengebirge;384§auto Les Serres-Rocheuses;384 | x=2409.300048828125 y=1804.5 | size=1 | links=#17458(auto Stonetalon Mountains;273):8 #27521(auto Stonetalon Mountains;486):7
+#22294 | auto Stonetalon Mountains;385§auto Steinkrallengebirge;385§auto Les Serres-Rocheuses;385 | x=2066.60009765625 y=1055.099975585938 | size=1 | links=#8442(auto Stonetalon Mountains;132):96 c4018.14:33
+#22309 | auto Stonetalon Mountains;386§auto Steinkrallengebirge;386§auto Les Serres-Rocheuses;386 | x=217.3000030517578 y=224.1999969482422 | size=1 | links=#11007(auto Stonetalon Mountains;171):46 #14129(auto Stonetalon Mountains;219):28
+#22335 | auto Stonetalon Mountains;387§auto Steinkrallengebirge;387§auto Les Serres-Rocheuses;387 | x=2405.699951171875 y=1807.900024414063 | size=1 | links=#3120(auto Stonetalon Mountains;45):10 #4518(auto Stonetalon Mountains;69):6
+#22400 | auto Stonetalon Mountains;388§auto Steinkrallengebirge;388§auto Les Serres-Rocheuses;388 | x=1365.700073242188 y=740.2999877929688 | size=1 | links=#17259(auto Stonetalon Mountains;267):50 #20320(auto Stonetalon Mountains;342):77 c4007.45:25
+#22401 | auto Stonetalon Mountains;389§auto Steinkrallengebirge;389§auto Les Serres-Rocheuses;389 | x=995.7000122070312 y=741.9000244140625 | size=1 | links=#6227(auto Stonetalon Mountains;101):45 #19978(auto Stonetalon Mountains;335):36
+#22407 | auto Stonetalon Mountains;390§auto Steinkrallengebirge;390§auto Les Serres-Rocheuses;390 | x=-180.5 y=-317.8000183105469 | size=1 | links=#11852(auto Stonetalon Mountains;188):19 #18025(auto Stonetalon Mountains;284):21 c4197.1:13 c11821.1:15
+#22441 | auto Stonetalon Mountains;391§auto Steinkrallengebirge;391§auto Les Serres-Rocheuses;391 | x=908.9000244140625 y=144.6000061035156 | size=1 | links=#6331(auto Stonetalon Mountains;103):39 #10172(auto Stonetalon Mountains;157):53
+#22467 | auto Stonetalon Mountains;392§auto Steinkrallengebirge;392§auto Les Serres-Rocheuses;392 | x=1678.099975585938 y=16.10000038146973 | size=1 | links=#11356(auto Stonetalon Mountains;176):28 #13373(auto Stonetalon Mountains;203):18
+#22472 | auto Stonetalon Mountains;393§auto Steinkrallengebirge;393§auto Les Serres-Rocheuses;393 | x=1512.400024414063 y=655.9000244140625 | size=1 | links=#21385(auto Stonetalon Mountains;367):37 c4012.1:58 c4013.6:67 c4012.7:49 c4012.10:51 o177926.11:63 o19541.14:52 c4007.52:7
+#22508 | auto Stonetalon Mountains;394§auto Steinkrallengebirge;394§auto Les Serres-Rocheuses;394 | x=-145.4000091552734 y=-251.9000091552734 | size=1 | links=#3001(auto Stonetalon Mountains;43):24 #4164(auto Stonetalon Mountains;61):18
+#22513 | auto Stonetalon Mountains;395§auto Steinkrallengebirge;395§auto Les Serres-Rocheuses;395 | x=2277.10009765625 y=1414.200073242188 | size=1 | links=#907(auto Stonetalon Mountains;13):24 #7606(auto Stonetalon Mountains;119):22 c4020.17:24
+#22530 | auto Stonetalon Mountains;396§auto Steinkrallengebirge;396§auto Les Serres-Rocheuses;396 | x=1658.300048828125 y=118.3000030517578 | size=1 | links=#13662(auto Stonetalon Mountains;208):1 c3992.1:4
+#22581 | auto Stonetalon Mountains;397§auto Steinkrallengebirge;397§auto Les Serres-Rocheuses;397 | x=1638.900024414063 y=108.5999984741211 | size=1 | links=#18524(auto Stonetalon Mountains;302):7 c3992.3:12
+#22663 | auto Stonetalon Mountains;398§auto Steinkrallengebirge;398§auto Les Serres-Rocheuses;398 | x=1155 y=1521.400024414063 | size=1 | links=#14995(auto Stonetalon Mountains;228):63 #17853(auto Stonetalon Mountains;282):65
+#22668 | auto Stonetalon Mountains;399§auto Steinkrallengebirge;399§auto Les Serres-Rocheuses;399 | x=-143.9000091552734 y=149.6999969482422 | size=1 | links=#21399(auto Stonetalon Mountains;368):31 #24581(auto Stonetalon Mountains;427):42
+#22679 | auto Stonetalon Mountains;400§auto Steinkrallengebirge;400§auto Les Serres-Rocheuses;400 | x=68.4000015258789 y=-247.9000091552734 | size=1 | links=#17801(auto Stonetalon Mountains;279):33 c11912.1:25
+#22713 | auto Stonetalon Mountains;401§auto Steinkrallengebirge;401§auto Les Serres-Rocheuses;401 | x=497.8999938964844 y=1688.599975585938 | size=5 | links=#274(auto Stonetalon Mountains;5):57 #13804(auto Stonetalon Mountains;214):50 c4035.1:33
+#22748 | auto Stonetalon Mountains;402§auto Steinkrallengebirge;402§auto Les Serres-Rocheuses;402 | x=33 y=-673.9000244140625 | size=1 | links=#4962(auto Stonetalon Mountains;77):34 #9295(auto Stonetalon Mountains;144):60
+#22760 | auto Stonetalon Mountains;403§auto Steinkrallengebirge;403§auto Les Serres-Rocheuses;403 | x=1497.099975585938 y=-196.6000061035156 | size=1 | links=#16937(auto Stonetalon Mountains;260):29 #25969(auto Stonetalon Mountains;456):34
+#22990 | auto Stonetalon Mountains;404§auto Steinkrallengebirge;404§auto Les Serres-Rocheuses;404 | x=882 y=1067.900024414063 | size=1 | links=#8480(auto Stonetalon Mountains;133):19 #27884(auto Stonetalon Mountains;494):14
+#23012 | auto Stonetalon Mountains;405§auto Steinkrallengebirge;405§auto Les Serres-Rocheuses;405 | x=1570.900024414063 y=-96 | size=1 | links=#25504(auto Stonetalon Mountains;447):13 c6145.3:102
+#23204 | auto Stonetalon Mountains;406§auto Steinkrallengebirge;406§auto Les Serres-Rocheuses;406 | x=2389.800048828125 y=1810.700073242188 | size=1 | links=#19612(auto Stonetalon Mountains;327):15 c4050.5:11 c4052.14:5
+#23216 | auto Stonetalon Mountains;407§auto Steinkrallengebirge;407§auto Les Serres-Rocheuses;407 | x=755.1000366210938 y=249.9000091552734 | size=1 | links=#11293(auto Stonetalon Mountains;174):102 #23290(auto Stonetalon Mountains;408):58 c4007.10:14 c4007.11:47 c4007.12:17
+#23290 | auto Stonetalon Mountains;408§auto Steinkrallengebirge;408§auto Les Serres-Rocheuses;408 | x=696.7000122070312 y=255.8000030517578 | size=1 | links=#23216(auto Stonetalon Mountains;407):58 #23873(auto Stonetalon Mountains;416):70
+#23335 | auto Stonetalon Mountains;409§auto Steinkrallengebirge;409§auto Les Serres-Rocheuses;409 | x=-242.3000030517578 y=-820.4000244140625 | size=1 | links=#5023(auto Stonetalon Mountains;78):36 #9047(passage;from;Greatwood Vale;Stonetalon Mountains;to;The Barrens):11
+#23347 | auto Stonetalon Mountains;410§auto Steinkrallengebirge;410§auto Les Serres-Rocheuses;410 | x=2340.800048828125 y=1790 | size=1 | links=#11741(auto Stonetalon Mountains;186):13 #13783(auto Stonetalon Mountains;212):11
+#23439 | auto Stonetalon Mountains;411§auto Steinkrallengebirge;411§auto Les Serres-Rocheuses;411 | x=879.7000122070312 y=-270.7000122070313 | size=1 | links=#13796(auto Stonetalon Mountains;213):12 c3999.11:13 c3999.13:9
+#23645 | auto Stonetalon Mountains;412§auto Steinkrallengebirge;412§auto Les Serres-Rocheuses;412 | x=-58.10000228881836 y=-253.6000061035156 | size=1 | links=#15550(auto Stonetalon Mountains;243):38 #27703(auto Stonetalon Mountains;490):32
+#23678 | auto Stonetalon Mountains;413§auto Steinkrallengebirge;413§auto Les Serres-Rocheuses;413 | x=2422.699951171875 y=1792.700073242188 | size=1 | links=#5161(auto Stonetalon Mountains;81):16 #17458(auto Stonetalon Mountains;273):8
+#23691 | auto Stonetalon Mountains;414§auto Steinkrallengebirge;414§auto Les Serres-Rocheuses;414 | x=1621.400024414063 y=105.5999984741211 | size=1 | links=c3993.1:11 c4070.2:7
+#23712 | auto Stonetalon Mountains;415§auto Steinkrallengebirge;415§auto Les Serres-Rocheuses;415 | x=-88.4000015258789 y=312.1000061035156 | size=1 | links=#1775(auto Stonetalon Mountains;22):32 #20083(auto Stonetalon Mountains;338):30 c11917.12:11 o178104.13:13 o178104.16:6
+#23873 | auto Stonetalon Mountains;416§auto Steinkrallengebirge;416§auto Les Serres-Rocheuses;416 | x=629.9000244140625 y=276.8999938964844 | size=1 | links=#18290(crossing;Stonetalon Mountains;path;to;Windshear Crag):59 #23290(auto Stonetalon Mountains;408):70
+#23884 | auto Stonetalon Mountains;417§auto Steinkrallengebirge;417§auto Les Serres-Rocheuses;417 | x=1022.600036621094 y=-25 | size=5 | links=#879(auto Stonetalon Mountains;12):18 #7404(auto Stonetalon Mountains;115):14
+#23893 | auto Stonetalon Mountains;418§auto Steinkrallengebirge;418§auto Les Serres-Rocheuses;418 | x=1568.5 y=-586 | size=1 | links=#18370(auto Stonetalon Mountains;296):21 #19171(auto Stonetalon Mountains;320):32
+#24068 | auto Stonetalon Mountains;419§auto Steinkrallengebirge;419§auto Les Serres-Rocheuses;419 | x=2475.300048828125 y=1825.200073242188 | size=1 | links=#6430(auto Stonetalon Mountains;105):19 c4061.2:19
+#24184 | auto Stonetalon Mountains;420§auto Steinkrallengebirge;420§auto Les Serres-Rocheuses;420 | x=2425 y=1835.099975585938 | size=1 | links=#2924(auto Stonetalon Mountains;42):12 #9132(auto Stonetalon Mountains;141):16 c4052.7:4
+#24208 | auto Stonetalon Mountains;421§auto Steinkrallengebirge;421§auto Les Serres-Rocheuses;421 | x=425.5 y=471.8999938964844 | size=1 | links=c4005.9:38 c4005.10:27
+#24359 | auto Stonetalon Mountains;422§auto Steinkrallengebirge;422§auto Les Serres-Rocheuses;422 | x=885 y=-308.1000061035156 | size=1 | links=#3660(auto Stonetalon Mountains;51):10 #24481(auto Stonetalon Mountains;426):12
+#24419 | auto Stonetalon Mountains;423§auto Steinkrallengebirge;423§auto Les Serres-Rocheuses;423 | x=1618.700073242188 y=126 | size=5 | links=#2259(auto Stonetalon Mountains;29):0 #25700(auto Stonetalon Mountains;451):11
+#24420 | auto Stonetalon Mountains;424§auto Steinkrallengebirge;424§auto Les Serres-Rocheuses;424 | x=1663.200073242188 y=607 | size=1 | links=#25699(auto Stonetalon Mountains;450):15 #27699(auto Stonetalon Mountains;489):33 c4013.4:24 c4013.9:49 c4013.10:67
+#24425 | auto Stonetalon Mountains;425§auto Steinkrallengebirge;425§auto Les Serres-Rocheuses;425 | x=1770.599975585938 y=606 | size=1 | links=#6361(auto Stonetalon Mountains;104):29 c4014.5:11
+#24481 | auto Stonetalon Mountains;426§auto Steinkrallengebirge;426§auto Les Serres-Rocheuses;426 | x=884.2999877929688 y=-295.8999938964844 | size=1 | links=#10883(auto Stonetalon Mountains;169):11 #24359(auto Stonetalon Mountains;422):12 c4004.7:5
+#24581 | auto Stonetalon Mountains;427§auto Steinkrallengebirge;427§auto Les Serres-Rocheuses;427 | x=-122.7000045776367 y=186.4000091552734 | size=1 | links=#22668(auto Stonetalon Mountains;399):42 c11915.4:22
+#24594 | auto Stonetalon Mountains;428§auto Steinkrallengebirge;428§auto Les Serres-Rocheuses;428 | x=488.8999938964844 y=1582.900024414063 | size=5 | links=#274(auto Stonetalon Mountains;5):51 #25020(auto Stonetalon Mountains;438):42 c4041.2:24 o177929.20:55
+#24600 | auto Stonetalon Mountains;429§auto Steinkrallengebirge;429§auto Les Serres-Rocheuses;429 | x=1613.300048828125 y=-605.2999877929688 | size=1 | links=#7779(auto Stonetalon Mountains;123):24 #20446(auto Stonetalon Mountains;349):32
+#24603 | auto Stonetalon Mountains;430§auto Steinkrallengebirge;430§auto Les Serres-Rocheuses;430 | x=132.1000061035156 y=-855.2999877929688 | size=1 | links=#5281(auto Stonetalon Mountains;84):25 #9212(auto Stonetalon Mountains;143):36 c11910.14:22 c11910.16:27 c11910.17:18
+#24691 | auto Stonetalon Mountains;431§auto Steinkrallengebirge;431§auto Les Serres-Rocheuses;431 | x=2602.800048828125 y=1387.700073242188 | size=1 | links=#5101(auto Stonetalon Mountains;79):27 #5780(auto Stonetalon Mountains;95):25 #16840(auto Stonetalon Mountains;258):43 c4057.6:58
+#24692 | auto Stonetalon Mountains;432§auto Steinkrallengebirge;432§auto Les Serres-Rocheuses;432 | x=2510 y=1985.900024414063 | size=1 | links=#7563(auto Stonetalon Mountains;117):11 c4056.9:10
+#24697 | auto Stonetalon Mountains;433§auto Steinkrallengebirge;433§auto Les Serres-Rocheuses;433 | x=-156.6000061035156 y=-286.5 | size=1 | links=#4164(auto Stonetalon Mountains;61):17 #18025(auto Stonetalon Mountains;284):19 #25605(auto Stonetalon Mountains;449):30
+#24765 | auto Stonetalon Mountains;434§auto Steinkrallengebirge;434§auto Les Serres-Rocheuses;434 | x=-172.4000091552734 y=-235.4000091552734 | size=1 | links=#3001(auto Stonetalon Mountains;43):7 c12816.1:5
+#24818 | auto Stonetalon Mountains;435§auto Steinkrallengebirge;435§auto Les Serres-Rocheuses;435 | x=885.5 y=363.5 | size=1 | links=#14063(auto Stonetalon Mountains;216):15 c4201.1:7
+#24937 | auto Stonetalon Mountains;436§auto Steinkrallengebirge;436§auto Les Serres-Rocheuses;436 | x=1649.900024414063 y=111.0999984741211 | size=1 | links=#27827(auto Stonetalon Mountains;492):6 c3992.1:7
+#24953 | auto Stonetalon Mountains;437§auto Steinkrallengebirge;437§auto Les Serres-Rocheuses;437 | x=1808.900024414063 y=-672.7999877929688 | size=1 | links=#15470(auto Stonetalon Mountains;241):35 #27390(auto Stonetalon Mountains;485):28
+#25018 | entry and exit;cave;The Talondeep Path;Stonetalon Mountains§ein- und ausgang;höhle;Der Steinkrallenpfad;Steinkrallengebirge§entrée et sortie;cave;La Perce des Serres;Les Serres-Rocheuses | x=1528.900024414063 y=-576.1000366210938 | size=1 | links=#9872(auto Stonetalon Mountains;148):25 #19171(auto Stonetalon Mountains;320):7
+#25020 | auto Stonetalon Mountains;438§auto Steinkrallengebirge;438§auto Les Serres-Rocheuses;438 | x=503.2000122070313 y=1542.599975585938 | size=5 | links=#5441(auto Stonetalon Mountains;86):30 #24594(auto Stonetalon Mountains;428):42
+#25025 | auto Stonetalon Mountains;439§auto Steinkrallengebirge;439§auto Les Serres-Rocheuses;439 | x=2410.900146484375 y=1783.900024414063 | size=1 | links=#25355(auto Stonetalon Mountains;444):8 c4050.8:7
+#25077 | auto Stonetalon Mountains;440§auto Steinkrallengebirge;440§auto Les Serres-Rocheuses;440 | x=2523.699951171875 y=1996.5 | size=1 | links=#7991(auto Stonetalon Mountains;127):9 c4056.9:16
+#25163 | auto Stonetalon Mountains;441§auto Steinkrallengebirge;441§auto Les Serres-Rocheuses;441 | x=958.7999877929688 y=96.30000305175781 | size=1 | links=#6331(auto Stonetalon Mountains;103):29 #10911(auto Stonetalon Mountains;170):28 o19541.1:11
+#25188 | auto Stonetalon Mountains;442§auto Steinkrallengebirge;442§auto Les Serres-Rocheuses;442 | x=1591.599975585938 y=-192.4000091552734 | size=1 | links=#14109(auto Stonetalon Mountains;218):29 #21728(auto Stonetalon Mountains;373):29
+#25299 | auto Stonetalon Mountains;443§auto Steinkrallengebirge;443§auto Les Serres-Rocheuses;443 | x=923.9000244140625 y=1764.800048828125 | size=5 | links=#10500(auto Stonetalon Mountains;163):76 #16910(auto Stonetalon Mountains;259):84 c4025.3:23 c4025.5:27 o177929.8:44
+#25355 | auto Stonetalon Mountains;444§auto Steinkrallengebirge;444§auto Les Serres-Rocheuses;444 | x=2413.300048828125 y=1775.800048828125 | size=1 | links=#25025(auto Stonetalon Mountains;439):8 c4052.4:12
+#25462 | auto Stonetalon Mountains;445§auto Steinkrallengebirge;445§auto Les Serres-Rocheuses;445 | x=715.2999877929688 y=392.7000122070313 | size=1 | links=#11563(auto Stonetalon Mountains;183):70 #25963(auto Stonetalon Mountains;455):41 c4077.1:55
+#25479 | auto Stonetalon Mountains;446§auto Steinkrallengebirge;446§auto Les Serres-Rocheuses;446 | x=1051.599975585938 y=-271.6000061035156 | size=1 | links=#11489(auto Stonetalon Mountains;181):13 #12918(auto Stonetalon Mountains;199):22
+#25504 | auto Stonetalon Mountains;447§auto Steinkrallengebirge;447§auto Les Serres-Rocheuses;447 | x=1573.800048828125 y=-109.3000030517578 | size=1 | links=#23012(auto Stonetalon Mountains;405):13 c4006.5:24
+#25577 | auto Stonetalon Mountains;448§auto Steinkrallengebirge;448§auto Les Serres-Rocheuses;448 | x=-67.5 y=298.3000183105469 | size=1 | links=#8541(auto Stonetalon Mountains;135):13 #28169(auto Stonetalon Mountains;496):11
+#25605 | auto Stonetalon Mountains;449§auto Steinkrallengebirge;449§auto Les Serres-Rocheuses;449 | x=-126.4000015258789 y=-291.5 | size=1 | links=#15268(auto Stonetalon Mountains;233):20 #18025(auto Stonetalon Mountains;284):39 #24697(auto Stonetalon Mountains;433):30
+#25699 | auto Stonetalon Mountains;450§auto Steinkrallengebirge;450§auto Les Serres-Rocheuses;450 | x=1669.700073242188 y=621.5 | size=1 | links=#4234(auto Stonetalon Mountains;62):31 #24420(auto Stonetalon Mountains;424):15
+#25700 | auto Stonetalon Mountains;451§auto Steinkrallengebirge;451§auto Les Serres-Rocheuses;451 | x=1616.099975585938 y=115 | size=1 | links=#6114(auto Stonetalon Mountains;99):11 #15468(auto Stonetalon Mountains;240):9 #24419(auto Stonetalon Mountains;423):11
+#25713 | central location;Stonetalon Peak;Stonetalon Mountains§zentralpunkt;Der Steinkrallengipfel;Steinkrallengebirge§emplacement central;Stonetalon Peak;Les Serres-Rocheuses | x=2677.5 y=1446.200073242188 | size=1 | links=c3994.1:27 c4407.1:20 o3695.1:22
+#25747 | auto Stonetalon Mountains;452§auto Steinkrallengebirge;452§auto Les Serres-Rocheuses;452 | x=107.7000045776367 y=-396.8000183105469 | size=1 | links=#10123(auto Stonetalon Mountains;155):14 c11913.2:15
+#25804 | auto Stonetalon Mountains;453§auto Steinkrallengebirge;453§auto Les Serres-Rocheuses;453 | x=553.4000244140625 y=1418.300048828125 | size=5 | links=#4537(auto Stonetalon Mountains;70):41 #25877(auto Stonetalon Mountains;454):50
+#25877 | auto Stonetalon Mountains;454§auto Steinkrallengebirge;454§auto Les Serres-Rocheuses;454 | x=503.1000061035156 y=1420.200073242188 | size=5 | links=#2036(auto Stonetalon Mountains;26):37 #25804(auto Stonetalon Mountains;453):50 c4041.11:22
+#25963 | auto Stonetalon Mountains;455§auto Steinkrallengebirge;455§auto Les Serres-Rocheuses;455 | x=677.7999877929688 y=375.3999938964844 | size=1 | links=#13808(auto Stonetalon Mountains;215):41 #25462(auto Stonetalon Mountains;445):41
+#25969 | auto Stonetalon Mountains;456§auto Steinkrallengebirge;456§auto Les Serres-Rocheuses;456 | x=1530.400024414063 y=-205.8000030517578 | size=1 | links=#14109(auto Stonetalon Mountains;218):34 #22760(auto Stonetalon Mountains;403):34
+#26021 | auto Stonetalon Mountains;457§auto Steinkrallengebirge;457§auto Les Serres-Rocheuses;457 | x=87.0999984741211 y=-853.4000244140625 | size=1 | links=#2353(auto Stonetalon Mountains;31):17 #5281(auto Stonetalon Mountains;84):20
+#26111 | auto Stonetalon Mountains;458§auto Steinkrallengebirge;458§auto Les Serres-Rocheuses;458 | x=1631.300048828125 y=106.8000030517578 | size=1 | links=#17394(auto Stonetalon Mountains;271):3 c4070.2:8
+#26124 | auto Stonetalon Mountains;459§auto Steinkrallengebirge;459§auto Les Serres-Rocheuses;459 | x=-73.9000015258789 y=383.2000122070313 | size=1 | links=#18495(auto Stonetalon Mountains;301):34 #20473(auto Stonetalon Mountains;352):29 o178105.1:9
+#26128 | auto Stonetalon Mountains;460§auto Steinkrallengebirge;460§auto Les Serres-Rocheuses;460 | x=-37.90000152587891 y=-743.2999877929688 | size=1 | links=#13517(auto Stonetalon Mountains;206):34 #18385(auto Stonetalon Mountains;297):23 c1412.14:13
+#26135 | auto Stonetalon Mountains;461§auto Steinkrallengebirge;461§auto Les Serres-Rocheuses;461 | x=914.4000244140625 y=654.6000366210938 | size=1 | links=#4408(auto Stonetalon Mountains;66):38 #15075(auto Stonetalon Mountains;232):59 #22079(auto Stonetalon Mountains;380):44
+#26152 | auto Stonetalon Mountains;462§auto Steinkrallengebirge;462§auto Les Serres-Rocheuses;462 | x=1749.900024414063 y=-682 | size=1 | links=#15470(auto Stonetalon Mountains;241):27 #20201(auto Stonetalon Mountains;341):43
+#26261 | auto Stonetalon Mountains;463§auto Steinkrallengebirge;463§auto Les Serres-Rocheuses;463 | x=-248.1000061035156 y=-380.2000122070313 | size=1 | links=#7026(auto Stonetalon Mountains;109):26 #27124(auto Stonetalon Mountains;479):16
+#26292 | auto Stonetalon Mountains;464§auto Steinkrallengebirge;464§auto Les Serres-Rocheuses;464 | x=822.7000122070312 y=980.1000366210938 | size=1 | links=#28509(auto Stonetalon Mountains;504):27 c11861.1:41 c11862.1:41
+#26396 | auto Stonetalon Mountains;465§auto Steinkrallengebirge;465§auto Les Serres-Rocheuses;465 | x=2275.5 y=1501.900024414063 | size=1 | links=#4939(auto Stonetalon Mountains;76):25 #15404(auto Stonetalon Mountains;239):24 c4020.14:43 c4020.16:13
+#26456 | auto Stonetalon Mountains;466§auto Steinkrallengebirge;466§auto Les Serres-Rocheuses;466 | x=-18.70000076293945 y=335.7000122070313 | size=1 | links=#5166(auto Stonetalon Mountains;82):12 #27736(auto Stonetalon Mountains;491):34 c11917.1:4
+#26461 | auto Stonetalon Mountains;467§auto Steinkrallengebirge;467§auto Les Serres-Rocheuses;467 | x=2727.199951171875 y=1505.800048828125 | size=1 | links=#7431(auto Stonetalon Mountains;116):15 c16458.1:8
+#26470 | auto Stonetalon Mountains;468§auto Steinkrallengebirge;468§auto Les Serres-Rocheuses;468 | x=161.6000061035156 y=124.5 | size=1 | links=#16354(auto Stonetalon Mountains;254):37 #27137(auto Stonetalon Mountains;480):74
+#26482 | auto Stonetalon Mountains;469§auto Steinkrallengebirge;469§auto Les Serres-Rocheuses;469 | x=2652.800048828125 y=1308.599975585938 | size=1 | links=#16840(auto Stonetalon Mountains;258):49 #18493(auto Stonetalon Mountains;299):44 c4018.22:23 c1412.33:10
+#26504 | auto Stonetalon Mountains;470§auto Steinkrallengebirge;470§auto Les Serres-Rocheuses;470 | x=2388.60009765625 y=1295.900024414063 | size=1 | links=#3174(auto Stonetalon Mountains;46):70 #5353(auto Stonetalon Mountains;85):38 #18754(auto Stonetalon Mountains;308):42 #19486(auto Stonetalon Mountains;325):77
+#26551 | auto Stonetalon Mountains;471§auto Steinkrallengebirge;471§auto Les Serres-Rocheuses;471 | x=933 y=875.1000366210938 | size=1 | links=#12518(central location;Sun Rock Retreat;Stonetalon Mountains):33 #20443(auto Stonetalon Mountains;348):35
+#26578 | auto Stonetalon Mountains;472§auto Steinkrallengebirge;472§auto Les Serres-Rocheuses;472 | x=1827.200073242188 y=-715.9000244140625 | size=1 | links=#5561(auto Stonetalon Mountains;89):48 #27390(auto Stonetalon Mountains;485):25
+#26799 | auto Stonetalon Mountains;473§auto Steinkrallengebirge;473§auto Les Serres-Rocheuses;473 | x=1669.5 y=-630.1000366210938 | size=1 | links=#10519(auto Stonetalon Mountains;165):19 #12785(auto Stonetalon Mountains;195):26
+#26806 | auto Stonetalon Mountains;474§auto Steinkrallengebirge;474§auto Les Serres-Rocheuses;474 | x=1036.099975585938 y=688.4000244140625 | size=1 | links=#5443(auto Stonetalon Mountains;87):25 #19978(auto Stonetalon Mountains;335):31
+#26817 | auto Stonetalon Mountains;475§auto Steinkrallengebirge;475§auto Les Serres-Rocheuses;475 | x=-50.90000152587891 y=359.6000061035156 | size=1 | links=#10081(auto Stonetalon Mountains;153):16 o178106.8:13
+#26871 | auto Stonetalon Mountains;476§auto Steinkrallengebirge;476§auto Les Serres-Rocheuses;476 | x=982.1000366210938 y=972 | size=1 | links=#4323(auto Stonetalon Mountains;63):13 #11087(auto Stonetalon Mountains;173):8 #16222(auto Stonetalon Mountains;251):31
+#27103 | auto Stonetalon Mountains;477§auto Steinkrallengebirge;477§auto Les Serres-Rocheuses;477 | x=1014.400024414063 y=884.4000244140625 | size=1 | links=#5746(auto Stonetalon Mountains;91):15 #28467(auto Stonetalon Mountains;503):35
+#27106 | auto Stonetalon Mountains;478§auto Steinkrallengebirge;478§auto Les Serres-Rocheuses;478 | x=2477.400146484375 y=1857.700073242188 | size=1 | links=#19657(auto Stonetalon Mountains;328):6 #22199(auto Stonetalon Mountains;382):11
+#27124 | auto Stonetalon Mountains;479§auto Steinkrallengebirge;479§auto Les Serres-Rocheuses;479 | x=-234.8000030517578 y=-370.8000183105469 | size=1 | links=#849(auto Stonetalon Mountains;11):27 #26261(auto Stonetalon Mountains;463):16
+#27137 | auto Stonetalon Mountains;480§auto Steinkrallengebirge;480§auto Les Serres-Rocheuses;480 | x=151.5 y=50.90000152587891 | size=1 | links=#5511(auto Stonetalon Mountains;88):52 #26470(auto Stonetalon Mountains;468):74
+#27233 | auto Stonetalon Mountains;481§auto Steinkrallengebirge;481§auto Les Serres-Rocheuses;481 | x=426.7000122070313 y=344.8999938964844 | size=1 | links=#1742(auto Stonetalon Mountains;21):31 #7228(auto Stonetalon Mountains;111):42 c1412.5:16
+#27240 | auto Stonetalon Mountains;482§auto Steinkrallengebirge;482§auto Les Serres-Rocheuses;482 | x=-107.9000015258789 y=241.9000091552734 | size=1 | links=#8063(entry and exit;Boulderslide Cavern;Stonetalon Mountains):20 #20365(auto Stonetalon Mountains;344):19 c11917.7:5 c11917.8:4
+#27298 | auto Stonetalon Mountains;483§auto Steinkrallengebirge;483§auto Les Serres-Rocheuses;483 | x=2392.300048828125 y=1804.900024414063 | size=1 | links=#9919(auto Stonetalon Mountains;149):15 #27521(auto Stonetalon Mountains;486):11
+#27383 | auto Stonetalon Mountains;484§auto Steinkrallengebirge;484§auto Les Serres-Rocheuses;484 | x=965.7000122070312 y=1025.900024414063 | size=1 | links=#8024(auto Stonetalon Mountains;128):14 #19165(auto Stonetalon Mountains;319):23 c12043.1:19
+#27390 | auto Stonetalon Mountains;485§auto Steinkrallengebirge;485§auto Les Serres-Rocheuses;485 | x=1830.900024414063 y=-691 | size=1 | links=#24953(auto Stonetalon Mountains;437):28 #26578(auto Stonetalon Mountains;472):25
+#27521 | auto Stonetalon Mountains;486§auto Steinkrallengebirge;486§auto Les Serres-Rocheuses;486 | x=2403.300048828125 y=1809.300048828125 | size=1 | links=#20099(auto Stonetalon Mountains;339):10 #22261(auto Stonetalon Mountains;384):7 #27298(auto Stonetalon Mountains;483):11 o19597.1:6
+#27583 | auto Stonetalon Mountains;487§auto Steinkrallengebirge;487§auto Les Serres-Rocheuses;487 | x=2474.60009765625 y=1271.5 | size=1 | links=#623(auto Stonetalon Mountains;8):44 #21326(auto Stonetalon Mountains;364):25 c4018.1:57 c4016.2:32
+#27668 | auto Stonetalon Mountains;488§auto Steinkrallengebirge;488§auto Les Serres-Rocheuses;488 | x=852 y=555.2000122070312 | size=1 | links=#10590(auto Stonetalon Mountains;167):43 #16503(auto Stonetalon Mountains;256):31
+#27699 | auto Stonetalon Mountains;489§auto Steinkrallengebirge;489§auto Les Serres-Rocheuses;489 | x=1630.200073242188 y=604.7000122070312 | size=1 | links=#13394(auto Stonetalon Mountains;204):41 #24420(auto Stonetalon Mountains;424):33
+#27703 | auto Stonetalon Mountains;490§auto Steinkrallengebirge;490§auto Les Serres-Rocheuses;490 | x=-30 y=-270.5 | size=1 | links=#4400(auto Stonetalon Mountains;65):94 #6834(auto Stonetalon Mountains;107):51 #23645(auto Stonetalon Mountains;412):32
+#27736 | auto Stonetalon Mountains;491§auto Steinkrallengebirge;491§auto Les Serres-Rocheuses;491 | x=-40.60000228881836 y=309.1000061035156 | size=1 | links=#26456(auto Stonetalon Mountains;466):34 #28169(auto Stonetalon Mountains;496):20 c11917.2:9 c11915.5:7 o178106.6:11 o178106.7:12 c11915.10:10
+#27827 | auto Stonetalon Mountains;492§auto Steinkrallengebirge;492§auto Les Serres-Rocheuses;492 | x=1643.900024414063 y=113 | size=1 | links=#24937(auto Stonetalon Mountains;436):6 c4070.1:12
+#27882 | auto Stonetalon Mountains;493§auto Steinkrallengebirge;493§auto Les Serres-Rocheuses;493 | x=2438.60009765625 y=1699.200073242188 | size=1 | links=#4783(auto Stonetalon Mountains;75):10 #19054(auto Stonetalon Mountains;313):27 c4017.1:85
+#27884 | auto Stonetalon Mountains;494§auto Steinkrallengebirge;494§auto Les Serres-Rocheuses;494 | x=867.9000244140625 y=1068.300048828125 | size=1 | links=#8393(auto Stonetalon Mountains;131):24 #22990(auto Stonetalon Mountains;404):14 c7730.3:12
+#28120 | auto Stonetalon Mountains;495§auto Steinkrallengebirge;495§auto Les Serres-Rocheuses;495 | x=561.2000122070312 y=318 | size=1 | links=#37(auto Stonetalon Mountains;1):43 #18290(crossing;Stonetalon Mountains;path;to;Windshear Crag):36 c4005.21:44
+#28169 | auto Stonetalon Mountains;496§auto Steinkrallengebirge;496§auto Les Serres-Rocheuses;496 | x=-56.60000228881836 y=296.6000061035156 | size=1 | links=#5194(auto Stonetalon Mountains;83):29 #25577(auto Stonetalon Mountains;448):11 #27736(auto Stonetalon Mountains;491):20
+#28189 | auto Stonetalon Mountains;497§auto Steinkrallengebirge;497§auto Les Serres-Rocheuses;497 | x=2458.199951171875 y=1942.099975585938 | size=1 | links=#7570(auto Stonetalon Mountains;118):12 #14823(auto Stonetalon Mountains;226):14
+#28196 | auto Stonetalon Mountains;498§auto Steinkrallengebirge;498§auto Les Serres-Rocheuses;498 | x=2282.900146484375 y=1548.300048828125 | size=1 | links=#4939(auto Stonetalon Mountains;76):21 #20984(auto Stonetalon Mountains;357):30 c4020.12:15
+#28289 | auto Stonetalon Mountains;499§auto Steinkrallengebirge;499§auto Les Serres-Rocheuses;499 | x=2571 y=1465.400024414063 | size=1 | links=#3684(auto Stonetalon Mountains;52):60 #9456(auto Stonetalon Mountains;146):67 #16209(auto Stonetalon Mountains;250):61 c4057.5:27
+#28323 | auto Stonetalon Mountains;500§auto Steinkrallengebirge;500§auto Les Serres-Rocheuses;500 | x=-15.69999980926514 y=-776.7000122070312 | size=1 | links=#14782(auto Stonetalon Mountains;225):31 #18385(auto Stonetalon Mountains;297):16 c11912.13:8 c11911.18:12 c11911.19:12
+#28324 | auto Stonetalon Mountains;501§auto Steinkrallengebirge;501§auto Les Serres-Rocheuses;501 | x=1269.300048828125 y=234.1000061035156 | size=5 | links=#7641(auto Stonetalon Mountains;120):90 #10314(auto Stonetalon Mountains;160):110 c3988.11:26
+#28371 | auto Stonetalon Mountains;502§auto Steinkrallengebirge;502§auto Les Serres-Rocheuses;502 | x=2389.60009765625 y=1116.800048828125 | size=1 | links=#11664(auto Stonetalon Mountains;185):54 #21210(auto Stonetalon Mountains;362):73
+#28467 | auto Stonetalon Mountains;503§auto Steinkrallengebirge;503§auto Les Serres-Rocheuses;503 | x=990.5 y=911.2000122070312 | size=1 | links=#19234(auto Stonetalon Mountains;321):26 #27103(auto Stonetalon Mountains;477):35 c11864.1:30
+#28509 | auto Stonetalon Mountains;504§auto Steinkrallengebirge;504§auto Les Serres-Rocheuses;504 | x=820.7999877929688 y=1007.900024414063 | size=1 | links=#11655(auto Stonetalon Mountains;184):25 #26292(auto Stonetalon Mountains;464):27
+#28618 | s;u;Mailbox;1;Stonetalon Mountains§s;u;Briefkasten;1;Steinkrallengebirge§s;u;Boîte aux lettres;1;Les Serres-Rocheuses | x=2678.960205078125 y=1487.833251953125 | size=1 | links=#21591(auto Stonetalon Mountains;370):12 c4188.1:20 c4407.1:21
+#28619 | s;u;Mailbox;2;Stonetalon Mountains§s;u;Briefkasten;2;Steinkrallengebirge§s;u;Boîte aux lettres;2;Les Serres-Rocheuses | x=927.0978393554688 y=901.8333129882812 | size=1 | links=#12518(central location;Sun Rock Retreat;Stonetalon Mountains):11
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c883.1 | links=#7813(auto Stonetalon Mountains;124):29 c4051.1:40
+c1412.1 | links=#3378(auto Stonetalon Mountains;47):23
+c3411.1 | links=#21693(auto Stonetalon Mountains;372):14
+c3988.1 | links=#16056(auto Stonetalon Mountains;249):16 c3988.15:93
+c3989.1 | links=#9115(auto Stonetalon Mountains;140):47 c3989.16:26
+c3991.1 | links=#9115(auto Stonetalon Mountains;140):58
+c3992.1 | links=#22530(auto Stonetalon Mountains;396):4 #24937(auto Stonetalon Mountains;436):7
+c3993.1 | links=#12169(auto Stonetalon Mountains;190):6 #23691(auto Stonetalon Mountains;414):11
+c3994.1 | links=#9456(auto Stonetalon Mountains;146):20 #25713(central location;Stonetalon Peak;Stonetalon Mountains):27
+c3995.1 | links=#7026(auto Stonetalon Mountains;109):2
+c4004.1 | links=#12827(auto Stonetalon Mountains;197):6 c3999.16:17
+c4006.1 | links=o19542.5:18
+c4011.1 | links=o19541.10:21
+c4012.1 | links=#22472(auto Stonetalon Mountains;393):58
+c4013.1 | links=c4013.2:14
+c4015.1 | links=o19541.16:61
+c4016.1 | links=c4020.17:18
+c4017.1 | links=#27882(auto Stonetalon Mountains;493):85 c4021.2:48 c4067.3:31
+c4018.1 | links=#21326(auto Stonetalon Mountains;364):32 #27583(auto Stonetalon Mountains;487):57
+c4019.1 | links=#21367(auto Stonetalon Mountains;366):16 c4018.18:21
+c4020.1 | links=#3174(auto Stonetalon Mountains;46):30 c4018.7:56
+c4021.1 | links=#6783(auto Stonetalon Mountains;106):16
+c4024.1 | links=o177929.2:20
+c4025.1 | links=#10500(auto Stonetalon Mountains;163):19 c4022.11:25
+c4026.1 | links=c4028.3:21
+c4027.1 | links=o177929.2:23
+c4028.1 | links=o177929.19:30
+c4029.1 | links=c4028.3:9
+c4032.1 | links=#17023(auto Stonetalon Mountains;261):61 c4042.1:38 c4075.6:21
+c4034.1 | links=c4036.1:58 c4022.5:36 o177929.11:79 o177929.19:54
+c4035.1 | links=#22713(auto Stonetalon Mountains;401):33 c4028.2:37 c4038.6:30
+c4036.1 | links=c4034.1:58
+c4037.1 | links=c4025.2:39 c4022.4:37 c4075.6:30
+c4041.1 | links=o177929.32:9
+c4042.1 | links=c4032.1:38
+c4044.1 | links=#8597(auto Stonetalon Mountains;136):15
+c4051.1 | links=c883.1:40 c4053.2:23 c4051.3:51
+c4056.1 | links=c4056.7:33 c4056.9:18
+c4057.1 | links=#19279(auto Stonetalon Mountains;324):14
+c4061.1 | links=c4061.13:19
+c4066.1 | links=#7991(auto Stonetalon Mountains;127):9
+c4067.1 | links=c4067.2:32
+c4070.1 | links=#18524(auto Stonetalon Mountains;302):3 #27827(auto Stonetalon Mountains;492):12
+c4072.1 | links=#7026(auto Stonetalon Mountains;109):5
+c4073.1 | links=c3989.16:52 c3991.33:12 c3989.61:50
+c4074.1 | links=c3989.5:27 c3991.11:36 c3989.27:42
+c4075.1 | links=o177929.12:35
+c4076.1 | links=#2577(auto Stonetalon Mountains;38):50 c4044.3:27
+c4077.1 | links=#25462(auto Stonetalon Mountains;445):55 c4080.1:20
+c4080.1 | links=c4077.1:20
+c4082.1 | links=#4323(auto Stonetalon Mountains;63):27
+c4083.1 | links=#2732(auto Stonetalon Mountains;39):9
+c4084.1 | links=#7431(auto Stonetalon Mountains;116):8
+c4085.1 | links=c3993.3:5
+c4086.1 | links=#13091(auto Stonetalon Mountains;202):19
+c4188.1 | links=#28618(s;u;Mailbox;1;Stonetalon Mountains):20 c4067.5:65
+c4197.1 | links=#22407(auto Stonetalon Mountains;390):13 c11821.1:7
+c4198.1 | links=#19165(auto Stonetalon Mountains;319):13
+c4201.1 | links=#24818(auto Stonetalon Mountains;435):7
+c4276.1 | links=c3999.10:8
+c4312.1 | links=#6055(auto Stonetalon Mountains;98):21 #8024(auto Stonetalon Mountains;128):3
+c4407.1 | links=#25713(central location;Stonetalon Peak;Stonetalon Mountains):20 #28618(s;u;Mailbox;1;Stonetalon Mountains):21
+c4409.1 | links=#4518(auto Stonetalon Mountains;69):6 #9065(auto Stonetalon Mountains;139):3
+c4489.1 | links=#1249(auto Stonetalon Mountains;18):64
+c5870.1 | links=#4323(auto Stonetalon Mountains;63):26 c7730.7:15
+c5915.1 | links=#7190(auto Stonetalon Mountains;110):9
+c5916.1 | links=c4051.3:37 c4020.5:43
+c5928.1 | links=c721.4:45
+c5930.1 | links=c4023.10:4
+c5931.1 | links=c3991.22:12 c3988.23:19 c3991.32:37 c3989.43:15
+c5932.1 | links=c3989.2:44 c3991.15:41 c3989.32:52 c3989.33:44
+c6141.1 | links=c4007.51:6 c4007.53:38
+c6491.1 | links=#7391(auto Stonetalon Mountains;114):44
+c7731.1 | links=#3715(auto Stonetalon Mountains;53):10 #20054(auto Stonetalon Mountains;337):21 o180523.1:20
+c8518.1 | links=#9919(auto Stonetalon Mountains;149):12 #19250(auto Stonetalon Mountains;323):6 c4050.2:1
+c9549.1 | links=#6055(auto Stonetalon Mountains;98):17
+c11074.1 | links=#7692(auto Stonetalon Mountains;121):16
+c11821.1 | links=#22407(auto Stonetalon Mountains;390):15 c4197.1:7
+c11856.1 | links=c11858.1:19 o3705.4:8
+c11858.1 | links=#8476(centralpoint;Posten der Grimmtotem;Stonetalon Mountains):12 c11856.1:19
+c11860.1 | links=#21680(auto Stonetalon Mountains;371):13
+c11861.1 | links=#26292(auto Stonetalon Mountains;464):41 c11862.1:10
+c11862.1 | links=#26292(auto Stonetalon Mountains;464):41 c11861.1:10
+c11864.1 | links=#16222(auto Stonetalon Mountains;251):49 #28467(auto Stonetalon Mountains;503):30 o177927.1:3
+c11910.1 | links=#21159(auto Stonetalon Mountains;360):20
+c11911.1 | links=#9295(auto Stonetalon Mountains;144):49 #17755(auto Stonetalon Mountains;278):35
+c11912.1 | links=#22679(auto Stonetalon Mountains;400):25 c11912.3:17
+c11913.1 | links=c11912.6:11 c11913.15:48
+c11914.1 | links=c11913.17:6
+c11915.1 | links=#15365(auto Stonetalon Mountains;237):10 c11915.9:15
+c11917.1 | links=#26456(auto Stonetalon Mountains;466):4
+c11921.1 | links=c4006.9:34 c4006.10:11 o19541.25:19 c4007.47:52
+c12043.1 | links=#6055(auto Stonetalon Mountains;98):18 #27383(auto Stonetalon Mountains;484):19
+c12579.1 | links=c4025.3:19 c4026.20:21
+c12816.1 | links=#24765(auto Stonetalon Mountains;434):5
+c16458.1 | links=#26461(auto Stonetalon Mountains;467):8
+o3695.1 | links=#25713(central location;Stonetalon Peak;Stonetalon Mountains):22
+o19541.1 | links=#25163(auto Stonetalon Mountains;441):11
+o19542.1 | links=c4007.29:14
+o19596.1 | links=#7991(auto Stonetalon Mountains;127):13
+o19597.1 | links=#27521(auto Stonetalon Mountains;486):6
+o19598.1 | links=c4061.4:10
+o19599.1 | links=#18162(auto Stonetalon Mountains;287):6
+o19602.1 | links=#19156(auto Stonetalon Mountains;317):14 o179486.1:14
+o19603.1 | links=c3991.26:3 c3991.27:3 c3991.34:10
+o177904.1 | links=#1742(auto Stonetalon Mountains;21):15 #12950(auto Stonetalon Mountains;200):48 c4005.6:6
+o177926.1 | links=#1085(auto Stonetalon Mountains;15):47 c4007.34:17
+o177927.1 | links=c11864.1:3
+o177929.1 | links=c4037.4:50 o177929.7:63 o177929.15:44 o177929.25:64
+o178104.1 | links=o178104.2:11
+o178105.1 | links=#26124(auto Stonetalon Mountains;459):9
+o178145.1 | links=#19466(Goggeroc;Boulderslide Cavern;Stonetalon Mountains):2 o178105.3:18 o178104.6:11 o178106.10:26
+o179486.1 | links=o19602.1:14
+o180523.1 | links=c7731.1:20
+c883.2 | links=#19486(auto Stonetalon Mountains;325):31
+c3988.2 | links=o179486.4:46
+c3989.2 | links=c5932.1:44 c3989.3:27 c3989.4:36 c3989.27:60
+c3991.2 | links=o179486.3:19 c3989.42:37
+c3993.2 | links=#7236(auto Stonetalon Mountains;112):10 #16027(auto Stonetalon Mountains;248):11
+c3999.2 | links=#14616(auto Stonetalon Mountains;224):7
+c4003.2 | links=c4003.5:21 c4004.5:13
+c4004.2 | links=c4003.4:8
+c4005.2 | links=#1997(auto Stonetalon Mountains;25):42 #4654(auto Stonetalon Mountains;72):14
+c4006.2 | links=o19541.20:19
+c4007.2 | links=#4408(auto Stonetalon Mountains;66):11
+c4011.2 | links=#11293(auto Stonetalon Mountains;174):44
+c4012.2 | links=#20320(auto Stonetalon Mountains;342):36
+c4013.2 | links=#19573(auto Stonetalon Mountains;326):22 c4013.1:14
+c4015.2 | links=#19573(auto Stonetalon Mountains;326):19
+c4016.2 | links=#27583(auto Stonetalon Mountains;487):32 c4053.3:72
+c4018.2 | links=c4009.7:64 o177926.7:9 c4009.9:40 o177926.10:22
+c4019.2 | links=c4053.2:32 c4018.7:59
+c4021.2 | links=c4017.1:48 c4051.4:37
+c4022.2 | links=c4028.3:23 c4022.5:36 c4022.6:9
+c4023.2 | links=o177929.2:37
+c4025.2 | links=c4037.1:39 c4029.2:18 c4034.2:31
+c4026.2 | links=c4026.3:14
+c4027.2 | links=c4024.4:17 c4024.5:20 o177929.23:44
+c4028.2 | links=c4035.1:37
+c4029.2 | links=c4025.2:18
+c4031.2 | links=o177929.17:9
+c4032.2 | links=c4024.3:50 o177929.12:31
+c4034.2 | links=c4025.2:31
+c4037.2 | links=#17023(auto Stonetalon Mountains;261):47
+c4038.2 | links=o177929.6:24
+c4041.2 | links=#24594(auto Stonetalon Mountains;428):24
+c4044.2 | links=#10801(auto Stonetalon Mountains;168):44 c4014.11:67
+c4050.2 | links=c8518.1:1
+c4052.2 | links=#12818(auto Stonetalon Mountains;196):5
+c4053.2 | links=c4051.1:23 c4019.2:32
+c4056.2 | links=c4056.6:19 c4056.8:16
+c4057.2 | links=c4051.3:57 c4051.4:37
+c4061.2 | links=#24068(auto Stonetalon Mountains;419):19 c4061.8:19
+c4067.2 | links=c4067.1:32 c4067.3:47 c4067.8:47
+c4070.2 | links=#23691(auto Stonetalon Mountains;414):7 #26111(auto Stonetalon Mountains;458):8
+c4072.2 | links=#7026(auto Stonetalon Mountains;109):8
+c4076.2 | links=#10500(auto Stonetalon Mountains;163):7 c4022.13:48 c4026.15:33
+c6141.2 | links=c4014.12:29 c4007.34:65
+c6145.2 | links=#17781(rescue;waters;down;Cragpool Lake;Stonetalon Mountains):39
+c6491.2 | links=#22139(auto Stonetalon Mountains;381):47 c4019.4:52 c4018.20:25
+c11910.2 | links=#3378(auto Stonetalon Mountains;47):31
+c11911.2 | links=c11911.3:14
+c11912.2 | links=#8476(centralpoint;Posten der Grimmtotem;Stonetalon Mountains):22 c11912.4:57
+c11913.2 | links=#8476(centralpoint;Posten der Grimmtotem;Stonetalon Mountains):35 #25747(auto Stonetalon Mountains;452):15
+c11917.2 | links=#27736(auto Stonetalon Mountains;491):9
+c11918.2 | links=#14105(auto Stonetalon Mountains;217):12
+c11921.2 | links=o19541.4:24
+o19541.2 | links=c4006.6:32
+o19542.2 | links=c4005.13:14 c4005.14:12 c4005.17:9 c4007.29:27
+o177926.2 | links=o177926.3:41 c4007.34:30
+o177929.2 | links=c4024.1:20 c4027.1:23 c4023.2:37 c4023.6:35 o177929.12:61 o177929.23:66
+o178104.2 | links=#18191(auto Stonetalon Mountains;289):22 o178104.1:11
+o178105.2 | links=#1894(auto Stonetalon Mountains;24):22
+o179486.2 | links=c3989.23:13
+c3988.3 | links=c3988.5:7 c3989.14:12 c3989.22:27
+c3989.3 | links=c3989.2:27 c3989.28:36
+c3991.3 | links=c3989.42:42
+c3992.3 | links=#4430(auto Stonetalon Mountains;67):8 #22581(auto Stonetalon Mountains;397):12
+c3993.3 | links=#20620(auto Stonetalon Mountains;353):3 c4085.1:5
+c4003.3 | links=c4004.5:4
+c4004.3 | links=#3660(auto Stonetalon Mountains;51):4
+c4005.3 | links=#1742(auto Stonetalon Mountains;21):40
+c4007.3 | links=#10172(auto Stonetalon Mountains;157):7
+c4011.3 | links=#1249(auto Stonetalon Mountains;18):23
+c4013.3 | links=#4234(auto Stonetalon Mountains;62):28 c4013.5:23
+c4018.3 | links=#11372(auto Stonetalon Mountains;178):48
+c4019.3 | links=#1253(auto Stonetalon Mountains;19):14
+c4020.3 | links=#623(auto Stonetalon Mountains;8):13
+c4021.3 | links=#20984(auto Stonetalon Mountains;357):19
+c4023.3 | links=o177929.12:21
+c4024.3 | links=c4032.2:50 o177929.4:29
+c4025.3 | links=#25299(auto Stonetalon Mountains;443):23 c12579.1:19
+c4026.3 | links=c4026.2:14 c4022.6:15
+c4027.3 | links=c4023.5:28
+c4028.3 | links=c4026.1:21 c4029.1:9 c4022.2:23
+c4031.3 | links=c4041.8:21
+c4036.3 | links=c4022.10:29
+c4037.3 | links=o177929.12:17
+c4038.3 | links=o177929.31:16
+c4041.3 | links=c4041.4:31
+c4042.3 | links=o177929.12:11
+c4044.3 | links=#18714(auto Stonetalon Mountains;306):27 c4076.1:27
+c4050.3 | links=#7730(auto Stonetalon Mountains;122):7 #9931(auto Stonetalon Mountains;150):15
+c4051.3 | links=c4051.1:51 c5916.1:37 c4057.2:57 c4057.7:34
+c4052.3 | links=c4052.8:21 c4061.16:18
+c4053.3 | links=c4016.2:72
+c4056.3 | links=#7991(auto Stonetalon Mountains;127):9
+c4057.3 | links=#3684(auto Stonetalon Mountains;52):10
+c4061.3 | links=#7190(auto Stonetalon Mountains;110):4
+c4067.3 | links=c4017.1:31 c4067.2:47
+c4070.3 | links=#6916(auto Stonetalon Mountains;108):2 #8047(auto Stonetalon Mountains;129):7
+c4072.3 | links=#7026(auto Stonetalon Mountains;109):10
+c4076.3 | links=c4041.9:13 o177929.17:3
+c6145.3 | links=#17781(rescue;waters;down;Cragpool Lake;Stonetalon Mountains):126 #23012(auto Stonetalon Mountains;405):102
+c6491.3 | links=#2036(auto Stonetalon Mountains;26):25 #5441(auto Stonetalon Mountains;86):53 o177929.14:29
+c7730.3 | links=#27884(auto Stonetalon Mountains;494):12
+c11910.3 | links=c11911.3:13 c11911.7:12
+c11911.3 | links=c11911.2:14 c11910.3:13 c11910.6:8
+c11912.3 | links=c11912.1:17 c11912.4:19 c11912.5:14
+c11913.3 | links=c11913.15:5
+c11917.3 | links=#8541(auto Stonetalon Mountains;135):3
+c11918.3 | links=o178104.6:3
+o19541.3 | links=c4007.23:3 o19541.26:27
+o19542.3 | links=#1249(auto Stonetalon Mountains;18):30
+o177926.3 | links=o177926.2:41 o177926.12:59
+o177929.3 | links=o177929.9:27 c4022.10:20
+o178104.3 | links=#18495(auto Stonetalon Mountains;301):10
+o178105.3 | links=o178145.1:18 c11917.10:4
+o178106.3 | links=c11918.11:4
+o179486.3 | links=c3991.2:19 c3989.63:20
+c721.4 | links=#3583(auto Stonetalon Mountains;50):62 c5928.1:45 c4009.6:20
+c1412.4 | links=c4009.10:21
+c3989.4 | links=c3989.2:36
+c3991.4 | links=c3989.10:35
+c3992.4 | links=#513(auto Stonetalon Mountains;6):9 #18032(auto Stonetalon Mountains;285):2
+c3999.4 | links=#2311(auto Stonetalon Mountains;30):6
+c4003.4 | links=#20297(centralpoint;Windshear Mine;Stonetalon Mountains):1 c4004.2:8
+c4005.4 | links=#7228(auto Stonetalon Mountains;111):41
+c4006.4 | links=o19541.19:10
+c4009.4 | links=#3583(auto Stonetalon Mountains;50):25
+c4011.4 | links=o19541.17:40
+c4012.4 | links=c4012.5:44 c4014.6:37 c4014.7:29 c4012.9:52 c4012.10:45
+c4013.4 | links=#24420(auto Stonetalon Mountains;424):24
+c4018.4 | links=#12716(auto Stonetalon Mountains;194):41 c4018.6:40
+c4019.4 | links=c6491.2:52
+c4020.4 | links=#5101(auto Stonetalon Mountains;79):13
+c4022.4 | links=c4037.1:37 c4026.11:19
+c4023.4 | links=o177929.30:36
+c4024.4 | links=c4027.2:17
+c4025.4 | links=c4022.13:23
+c4027.4 | links=#21135(auto Stonetalon Mountains;359):12 c4075.4:36
+c4036.4 | links=#14995(auto Stonetalon Mountains;228):30
+c4037.4 | links=o177929.1:50
+c4041.4 | links=c4041.3:31 o177929.13:7
+c4042.4 | links=c4026.13:26
+c4051.4 | links=c4021.2:37 c4057.2:37
+c4052.4 | links=#25355(auto Stonetalon Mountains;444):12 c4052.9:4 c4052.10:6
+c4053.4 | links=c4053.5:34 c4057.5:34
+c4056.4 | links=#14823(auto Stonetalon Mountains;226):1 c4056.10:6 c4061.13:8
+c4061.4 | links=#10588(auto Stonetalon Mountains;166):11 #17194(auto Stonetalon Mountains;265):15 o19598.1:10
+c4067.4 | links=c4067.6:32
+c4075.4 | links=c4027.4:36
+c4076.4 | links=#13804(auto Stonetalon Mountains;214):23
+c6145.4 | links=#14351(auto Stonetalon Mountains;221):104 #17781(rescue;waters;down;Cragpool Lake;Stonetalon Mountains):64
+c11910.4 | links=c11910.5:15
+c11911.4 | links=c11911.7:18
+c11912.4 | links=c11912.2:57 c11912.3:19
+c11913.4 | links=c11910.6:4
+c11915.4 | links=#24581(auto Stonetalon Mountains;427):22 c11915.9:15
+c11917.4 | links=#5194(auto Stonetalon Mountains;83):8
+o3705.4 | links=c11856.1:8
+o19541.4 | links=#15821(auto Stonetalon Mountains;245):15 c11921.2:24 c4007.26:8
+o19542.4 | links=#11293(auto Stonetalon Mountains;174):34
+o177926.4 | links=o19541.21:22 c4007.50:75
+o177929.4 | links=c4024.3:29
+o178104.4 | links=
+o178105.4 | links=#8541(auto Stonetalon Mountains;135):7
+o178106.4 | links=c11918.11:14
+o179486.4 | links=c3988.2:46 c3991.7:61 c3991.8:55 c3989.12:20 c3988.18:16 c3988.22:16
+c721.5 | links=#20320(auto Stonetalon Mountains;342):21
+c1412.5 | links=#27233(auto Stonetalon Mountains;481):16
+c3988.5 | links=c3988.3:7
+c3989.5 | links=c4074.1:27
+c3991.5 | links=c3988.16:29
+c3999.5 | links=c3999.8:9 c3999.39:11
+c4003.5 | links=c4003.2:21 c3999.17:27
+c4004.5 | links=#12827(auto Stonetalon Mountains;197):10 c4003.2:13 c4003.3:4
+c4005.5 | links=#7228(auto Stonetalon Mountains;111):45
+c4006.5 | links=#18333(auto Stonetalon Mountains;295):40 #21728(auto Stonetalon Mountains;373):32 #25504(auto Stonetalon Mountains;447):24
+c4011.5 | links=o19541.23:16
+c4012.5 | links=c4012.4:44 o19541.14:7
+c4013.5 | links=#19573(auto Stonetalon Mountains;326):22 c4013.3:23
+c4014.5 | links=#24425(auto Stonetalon Mountains;425):11
+c4018.5 | links=#12716(auto Stonetalon Mountains;194):37 c4018.17:54
+c4020.5 | links=c5916.1:43
+c4021.5 | links=#18199(auto Stonetalon Mountains;291):24
+c4022.5 | links=c4034.1:36 c4022.2:36
+c4023.5 | links=c4027.3:28 o177929.30:18
+c4024.5 | links=c4027.2:20
+c4025.5 | links=#25299(auto Stonetalon Mountains;443):27
+c4041.5 | links=o177929.21:42
+c4042.5 | links=o177929.27:9
+c4050.5 | links=#19612(auto Stonetalon Mountains;327):5 #23204(auto Stonetalon Mountains;406):11
+c4052.5 | links=c4052.11:1
+c4053.5 | links=c4053.4:34
+c4056.5 | links=#7991(auto Stonetalon Mountains;127):8
+c4057.5 | links=#28289(auto Stonetalon Mountains;499):27 c4053.4:34
+c4061.5 | links=#17060(auto Stonetalon Mountains;262):15
+c4067.5 | links=c4188.1:65 c4067.6:39 c4067.10:62
+c11910.5 | links=#4962(auto Stonetalon Mountains;77):27 c11910.4:15 c11911.9:12 c11911.10:16 c11911.11:15
+c11911.5 | links=#15555(auto Stonetalon Mountains;244):25
+c11912.5 | links=c11912.3:14
+c11913.5 | links=#16008(auto Stonetalon Mountains;247):16
+c11915.5 | links=#27736(auto Stonetalon Mountains;491):7
+o19541.5 | links=c4007.28:21 c4007.31:7
+o19542.5 | links=c4006.1:18 c4006.17:31 o19541.17:108 c4009.27:62
+o177926.5 | links=c4007.14:36
+o177929.5 | links=o177929.18:61 o177929.19:63 o177929.30:42 o177929.33:75
+o179486.5 | links=#2405(auto Stonetalon Mountains;33):27 c3989.26:9
+c721.6 | links=#1085(auto Stonetalon Mountains;15):36
+c3989.6 | links=c3989.7:46
+c3991.6 | links=c3988.19:40
+c3999.6 | links=#14616(auto Stonetalon Mountains;224):13
+c4005.6 | links=o177904.1:6
+c4006.6 | links=o19541.2:32 c4006.7:22 c4006.8:18 c4007.24:34 c4007.47:35
+c4007.6 | links=#11293(auto Stonetalon Mountains;174):50
+c4009.6 | links=c721.4:20 c4009.7:29
+c4012.6 | links=#21385(auto Stonetalon Mountains;367):45
+c4013.6 | links=#13394(auto Stonetalon Mountains;204):19 #22472(auto Stonetalon Mountains;393):67 c4007.50:63
+c4014.6 | links=c4012.4:37
+c4018.6 | links=c4018.4:40 c4018.9:31
+c4020.6 | links=c4020.10:31
+c4021.6 | links=c1412.23:47
+c4022.6 | links=c4022.2:9 c4026.3:15
+c4023.6 | links=o177929.2:35
+c4024.6 | links=o177929.25:7
+c4025.6 | links=o177929.8:23
+c4027.6 | links=c4024.7:23 o177929.7:19 c4024.8:23 c4023.10:18
+c4038.6 | links=c4035.1:30
+c4052.6 | links=#22199(auto Stonetalon Mountains;382):12 c4052.12:10
+c4056.6 | links=c4056.2:19 c4061.18:20
+c4057.6 | links=#24691(auto Stonetalon Mountains;431):58
+c4061.6 | links=#18162(auto Stonetalon Mountains;287):5
+c4067.6 | links=c4067.4:32 c4067.5:39 c1412.23:28
+c4075.6 | links=c4032.1:21 c4037.1:30
+c7730.6 | links=c7730.7:3
+c11910.6 | links=c11911.3:8 c11913.4:4
+c11911.6 | links=#13517(auto Stonetalon Mountains;206):7 c11911.7:17
+c11912.6 | links=#8476(centralpoint;Posten der Grimmtotem;Stonetalon Mountains):24 c11913.1:11
+c11913.6 | links=#11319(central location;Posten der Grimmtotem;Stonetalon Mountains):27 c721.9:5
+c11915.6 | links=#5194(auto Stonetalon Mountains;83):13
+o19541.6 | links=c4007.33:11 c4007.35:23
+o19542.6 | links=o19541.22:66 c4006.30:30
+o177926.6 | links=#5160(auto Stonetalon Mountains;80):31 o177926.9:85
+o177929.6 | links=#4537(auto Stonetalon Mountains;70):31 c4038.2:24
+o178104.6 | links=o178145.1:11 c11918.3:3
+o178106.6 | links=#27736(auto Stonetalon Mountains;491):11
+o179486.6 | links=c3988.11:21
+c721.7 | links=#11563(auto Stonetalon Mountains;183):19
+c3988.7 | links=c3989.34:6 c3989.35:13
+c3989.7 | links=c3989.6:46 c3988.24:30
+c3991.7 | links=o179486.4:61 o19541.20:81
+c3999.7 | links=#3043(auto Stonetalon Mountains;44):12 #9941(auto Stonetalon Mountains;152):10
+c4004.7 | links=#24481(auto Stonetalon Mountains;426):5
+c4006.7 | links=c4006.6:22
+c4007.7 | links=o19541.15:9
+c4009.7 | links=c4018.2:64 c4009.6:29
+c4012.7 | links=#22472(auto Stonetalon Mountains;393):49
+c4014.7 | links=c4012.4:29
+c4018.7 | links=c4020.1:56 c4019.2:59
+c4020.7 | links=#5765(auto Stonetalon Mountains;92):26
+c4023.7 | links=o177929.23:17
+c4024.7 | links=c4027.6:23
+c4026.7 | links=c4022.9:1 c4026.12:6
+c4027.7 | links=#21135(auto Stonetalon Mountains;359):22
+c4036.7 | links=#10801(auto Stonetalon Mountains;168):10
+c4041.7 | links=o177929.15:19
+c4044.7 | links=#18291(auto Stonetalon Mountains;292):45
+c4050.7 | links=#2924(auto Stonetalon Mountains;42):6
+c4052.7 | links=#24184(auto Stonetalon Mountains;420):4
+c4056.7 | links=c4056.1:33 c4056.8:19
+c4057.7 | links=c4051.3:34
+c4061.7 | links=#3949(auto Stonetalon Mountains;55):9 #7190(auto Stonetalon Mountains;110):11
+c4067.7 | links=c4067.10:49 c4067.15:67
+c7730.7 | links=c5870.1:15 c7730.6:3
+c11910.7 | links=c11910.13:12 c11911.29:3
+c11911.7 | links=#8856(auto Stonetalon Mountains;137):12 c11910.3:12 c11911.4:18 c11911.6:17
+c11912.7 | links=#8476(centralpoint;Posten der Grimmtotem;Stonetalon Mountains):20
+c11913.7 | links=#17755(auto Stonetalon Mountains;278):18 c11912.8:14 c11912.12:18
+c11917.7 | links=#27240(auto Stonetalon Mountains;482):5
+o19541.7 | links=c4007.48:35
+o177926.7 | links=c4018.2:9 c4009.8:67 c1412.12:36
+o177929.7 | links=o177929.1:63 c4027.6:19 o177929.16:51
+o178105.7 | links=#14105(auto Stonetalon Mountains;217):3
+o178106.7 | links=#27736(auto Stonetalon Mountains;491):12
+o179486.7 | links=#12918(auto Stonetalon Mountains;199):15 c3989.38:6
+c721.8 | links=o19541.10:10
+c3988.8 | links=c3989.44:9
+c3989.8 | links=c3989.38:54
+c3991.8 | links=o179486.4:55
+c3999.8 | links=c3999.5:9 c3999.10:14
+c4006.8 | links=c4006.6:18
+c4007.8 | links=#11293(auto Stonetalon Mountains;174):17
+c4009.8 | links=o177926.7:67
+c4012.8 | links=c1412.25:8
+c4013.8 | links=#6361(auto Stonetalon Mountains;104):18
+c4018.8 | links=c1412.12:44
+c4020.8 | links=#17396(auto Stonetalon Mountains;272):17 c4020.10:11
+c4022.8 | links=#1211(auto Stonetalon Mountains;17):37
+c4024.8 | links=c4027.6:23
+c4026.8 | links=c4026.20:26
+c4027.8 | links=o177929.16:15
+c4041.8 | links=c4031.3:21 o177929.20:22
+c4044.8 | links=#18291(auto Stonetalon Mountains;292):55
+c4050.8 | links=#15073(auto Stonetalon Mountains;231):25 #25025(auto Stonetalon Mountains;439):7 c4052.15:16
+c4052.8 | links=c4052.3:21 c4052.11:12
+c4056.8 | links=c4056.2:16 c4056.7:19
+c4061.8 | links=c4061.2:19 c4052.13:20
+c4067.8 | links=c4067.2:47 c4067.12:55
+c11910.8 | links=#5281(auto Stonetalon Mountains;84):19
+c11911.8 | links=#17880(auto Stonetalon Mountains;283):13
+c11912.8 | links=c11913.7:14 c11913.11:24
+c11913.8 | links=c11911.28:3
+c11917.8 | links=#27240(auto Stonetalon Mountains;482):4
+o19541.8 | links=#9872(auto Stonetalon Mountains;148):16
+o177929.8 | links=#25299(auto Stonetalon Mountains;443):44 c4025.6:23 c4026.21:6
+o178104.8 | links=#5194(auto Stonetalon Mountains;83):12
+o178106.8 | links=#26817(auto Stonetalon Mountains;475):13
+c721.9 | links=#11369(auto Stonetalon Mountains;177):9 c11913.6:5
+c3989.9 | links=c3988.19:54
+c3991.9 | links=c3989.16:25
+c4005.9 | links=#12950(auto Stonetalon Mountains;200):27 #24208(auto Stonetalon Mountains;421):38
+c4006.9 | links=c11921.1:34
+c4007.9 | links=#11293(auto Stonetalon Mountains;174):39
+c4009.9 | links=c4018.2:40
+c4012.9 | links=c4012.4:52
+c4013.9 | links=#24420(auto Stonetalon Mountains;424):49
+c4018.9 | links=c4018.6:31 c4018.12:16
+c4020.9 | links=#6783(auto Stonetalon Mountains;106):12
+c4022.9 | links=c4026.7:1
+c4024.9 | links=c4023.11:27 o177929.21:21
+c4027.9 | links=c4024.10:19
+c4041.9 | links=c4076.3:13
+c4052.9 | links=c4052.4:4
+c4056.9 | links=#24692(auto Stonetalon Mountains;432):10 #25077(auto Stonetalon Mountains;440):16 c4056.1:18
+c4061.9 | links=c4061.14:8
+c4067.9 | links=c4067.11:48 c1412.27:8
+c11910.9 | links=#4543(auto Stonetalon Mountains;71):21
+c11911.9 | links=c11910.5:12
+c11912.9 | links=#11319(central location;Posten der Grimmtotem;Stonetalon Mountains):15
+c11913.9 | links=#11319(central location;Posten der Grimmtotem;Stonetalon Mountains):13
+c11915.9 | links=#8063(entry and exit;Boulderslide Cavern;Stonetalon Mountains):10 c11915.1:15 c11915.4:15
+o19541.9 | links=#11031(auto Stonetalon Mountains;172):33
+o177926.9 | links=o177926.6:85
+o177929.9 | links=o177929.3:27
+o179486.9 | links=#10314(auto Stonetalon Mountains;160):84 c3988.13:13
+c3988.10 | links=c3988.12:5 c3988.13:15
+c3989.10 | links=#11489(auto Stonetalon Mountains;181):58 c3991.4:35
+c3991.10 | links=c3989.15:27 c3989.18:27
+c3999.10 | links=c4276.1:8 c3999.8:14
+c4005.10 | links=#24208(auto Stonetalon Mountains;421):27 c4005.12:15
+c4006.10 | links=c11921.1:11
+c4007.10 | links=#23216(auto Stonetalon Mountains;407):14
+c4009.10 | links=c1412.4:21 c4009.11:44
+c4012.10 | links=#22472(auto Stonetalon Mountains;393):51 c4012.4:45
+c4013.10 | links=#24420(auto Stonetalon Mountains;424):67
+c4014.10 | links=c4012.14:30
+c4018.10 | links=#8442(auto Stonetalon Mountains;132):12
+c4020.10 | links=c4020.6:31 c4020.8:11
+c4022.10 | links=c4036.3:29 o177929.3:20 c4026.17:18
+c4023.10 | links=c5930.1:4 c4027.6:18
+c4024.10 | links=#21135(auto Stonetalon Mountains;359):26 c4027.9:19 c4027.14:40
+c4027.10 | links=c4027.13:28
+c4041.10 | links=
+c4052.10 | links=c4052.4:6
+c4056.10 | links=#17194(auto Stonetalon Mountains;265):15 c4056.4:6
+c4061.10 | links=c4061.11:4 c4061.12:12 c4061.18:24
+c4067.10 | links=c4067.5:62 c4067.7:49
+c11910.10 | links=#4543(auto Stonetalon Mountains;71):30
+c11911.10 | links=c11910.5:16 c11911.20:35
+c11912.10 | links=#11319(central location;Posten der Grimmtotem;Stonetalon Mountains):10
+c11913.10 | links=#10123(auto Stonetalon Mountains;155):16 c721.11:10
+c11915.10 | links=#27736(auto Stonetalon Mountains;491):10
+c11917.10 | links=o178105.3:4
+o19541.10 | links=c4011.1:21 c721.8:10 c4007.43:41
+o177926.10 | links=c4018.2:22
+o178104.10 | links=#20473(auto Stonetalon Mountains;352):6
+o178105.10 | links=#20365(auto Stonetalon Mountains;344):13
+o178106.10 | links=o178145.1:26 c11917.16:4
+c721.11 | links=c11913.10:10
+c3988.11 | links=#28324(auto Stonetalon Mountains;501):26 o179486.6:21
+c3991.11 | links=c4074.1:36
+c3999.11 | links=#10883(auto Stonetalon Mountains;169):7 #23439(auto Stonetalon Mountains;411):13
+c4005.11 | links=c4005.12:50 c4005.15:29 c4007.29:80
+c4006.11 | links=#15362(auto Stonetalon Mountains;236):55
+c4007.11 | links=#23216(auto Stonetalon Mountains;407):47
+c4008.11 | links=c11912.14:8
+c4009.11 | links=#4119(auto Stonetalon Mountains;59):24 c4009.10:44
+c4012.11 | links=c4012.14:18
+c4014.11 | links=c4044.2:67
+c4018.11 | links=#8442(auto Stonetalon Mountains;132):19
+c4022.11 | links=c4025.1:25 c4026.24:15
+c4023.11 | links=c4024.9:27
+c4024.11 | links=c4027.14:19 c4027.15:26
+c4026.11 | links=c4022.4:19 c4026.22:13
+c4041.11 | links=#25877(auto Stonetalon Mountains;454):22
+c4052.11 | links=#6430(auto Stonetalon Mountains;105):12 #11393(auto Stonetalon Mountains;179):12 c4052.5:1 c4052.8:12
+c4061.11 | links=c4061.10:4
+c4067.11 | links=#4783(auto Stonetalon Mountains;75):57 c4067.9:48
+c11910.11 | links=#5281(auto Stonetalon Mountains;84):10
+c11911.11 | links=c11910.5:15
+c11912.11 | links=#11319(central location;Posten der Grimmtotem;Stonetalon Mountains):7
+c11913.11 | links=#11369(auto Stonetalon Mountains;177):22 c11912.8:24
+c11915.11 | links=#14105(auto Stonetalon Mountains;217):3
+c11918.11 | links=#18965(auto Stonetalon Mountains;312):20 o178106.3:4 o178106.4:14
+o19541.11 | links=#6287(auto Stonetalon Mountains;102):28
+o177926.11 | links=#22472(auto Stonetalon Mountains;393):63 c1412.20:16 c4007.50:41
+o177929.11 | links=c4034.1:79 c4026.12:11 c4026.13:20
+o178105.11 | links=#20365(auto Stonetalon Mountains;344):9
+o179486.11 | links=#10314(auto Stonetalon Mountains;160):30
+c721.12 | links=c721.16:7
+c1412.12 | links=o177926.7:36 c4018.8:44 c4009.24:51
+c3988.12 | links=c3988.10:5
+c3989.12 | links=o179486.4:20
+c4005.12 | links=c4005.10:15 c4005.11:50
+c4006.12 | links=#15362(auto Stonetalon Mountains;236):39
+c4007.12 | links=#23216(auto Stonetalon Mountains;407):17
+c4009.12 | links=c4009.15:52 c4009.24:10
+c4012.12 | links=#18291(auto Stonetalon Mountains;292):87
+c4014.12 | links=c6141.2:29
+c4018.12 | links=c4018.9:16
+c4020.12 | links=#28196(auto Stonetalon Mountains;498):15
+c4022.12 | links=c4026.15:11
+c4026.12 | links=c4026.7:6 o177929.11:11
+c4027.12 | links=c4027.14:28
+c4052.12 | links=#9132(auto Stonetalon Mountains;141):9 c4052.6:10
+c4061.12 | links=c4061.10:12 c4061.16:10
+c4067.12 | links=c4067.8:55
+c11910.12 | links=c11911.30:9
+c11911.12 | links=#18494(auto Stonetalon Mountains;300):6 c721.15:16 c11911.30:51
+c11912.12 | links=c11913.7:18
+c11917.12 | links=#23712(auto Stonetalon Mountains;415):11
+c11918.12 | links=c11917.23:4
+o19541.12 | links=#15362(auto Stonetalon Mountains;236):38 c4006.15:17
+o177926.12 | links=#20320(auto Stonetalon Mountains;342):41 o177926.3:59
+o177929.12 | links=c4075.1:35 c4032.2:31 o177929.2:61 c4023.3:21 c4037.3:17 c4042.3:11 o177929.34:30
+o178104.12 | links=#5166(auto Stonetalon Mountains;82):10 o178104.15:11
+c721.13 | links=o19541.17:36
+c1412.13 | links=#9872(auto Stonetalon Mountains;148):20
+c3988.13 | links=o179486.9:13 c3988.10:15 c3988.14:3
+c3989.13 | links=#530(auto Stonetalon Mountains;7):9 #8874(auto Stonetalon Mountains;138):18
+c3991.13 | links=c3989.25:39
+c3999.13 | links=#23439(auto Stonetalon Mountains;411):9
+c4005.13 | links=o19542.2:14
+c4006.13 | links=#1249(auto Stonetalon Mountains;18):32
+c4007.13 | links=#15289(auto Stonetalon Mountains;234):44
+c4008.13 | links=c11912.14:12 c11913.16:11
+c4012.13 | links=#14135(auto Stonetalon Mountains;220):52
+c4018.13 | links=#5767(auto Stonetalon Mountains;93):29
+c4020.13 | links=c1412.22:25
+c4022.13 | links=c4076.2:48 c4025.4:23
+c4026.13 | links=c4042.4:26 o177929.11:20
+c4027.13 | links=#21790(auto Stonetalon Mountains;374):11 c4027.10:28
+c4052.13 | links=#5161(auto Stonetalon Mountains;81):3 c4061.8:20
+c4061.13 | links=c4061.1:19 c4056.4:8
+c11910.13 | links=c11910.7:12
+c11911.13 | links=#4543(auto Stonetalon Mountains;71):20
+c11912.13 | links=#28323(auto Stonetalon Mountains;500):8
+c11913.13 | links=c11913.14:28 c11912.17:18 c11912.20:13 c11912.22:20
+c11915.13 | links=#8541(auto Stonetalon Mountains;135):5
+o19541.13 | links=#18291(auto Stonetalon Mountains;292):28
+o177929.13 | links=c4041.4:7 o177929.23:10
+o178104.13 | links=#23712(auto Stonetalon Mountains;415):13
+c721.14 | links=c4006.39:4
+c1412.14 | links=#26128(auto Stonetalon Mountains;460):13
+c3988.14 | links=c3988.13:3
+c3989.14 | links=c3988.3:12
+c3991.14 | links=c3989.26:37
+c3999.14 | links=#20297(centralpoint;Windshear Mine;Stonetalon Mountains):20 c3999.16:18
+c4005.14 | links=o19542.2:12
+c4006.14 | links=#15362(auto Stonetalon Mountains;236):8
+c4007.14 | links=o177926.5:36 o19541.21:30
+c4009.14 | links=c4009.15:46
+c4012.14 | links=c4014.10:30 c4012.11:18 c4007.53:40
+c4018.14 | links=#18405(auto Stonetalon Mountains;298):77 #22294(auto Stonetalon Mountains;385):33
+c4020.14 | links=#26396(auto Stonetalon Mountains;465):43
+c4027.14 | links=c4024.10:40 c4024.11:19 c4027.12:28
+c4052.14 | links=#23204(auto Stonetalon Mountains;406):5 c4052.15:8
+c4061.14 | links=#18162(auto Stonetalon Mountains;287):5 c4061.9:8
+c4067.14 | links=#9154(auto Stonetalon Mountains;142):43
+c11910.14 | links=#24603(auto Stonetalon Mountains;430):22
+c11911.14 | links=#4543(auto Stonetalon Mountains;71):9 c721.15:12
+c11912.14 | links=c4008.11:8 c4008.13:12
+c11913.14 | links=#10123(auto Stonetalon Mountains;155):26 c11913.13:28
+o19541.14 | links=#22472(auto Stonetalon Mountains;393):52 c4012.5:7
+o177929.14 | links=c6491.3:29
+c721.15 | links=c11911.12:16 c11911.14:12
+c1412.15 | links=#15075(auto Stonetalon Mountains;232):29
+c3988.15 | links=c3988.1:93 c3988.16:60 o19541.23:132 c3989.36:33
+c3989.15 | links=c3991.10:27 c3989.22:34
+c3991.15 | links=c5932.1:41
+c3999.15 | links=#3660(auto Stonetalon Mountains;51):6
+c4005.15 | links=c4005.11:29 c4005.16:14
+c4006.15 | links=o19541.12:17 c4009.21:24
+c4007.15 | links=c1412.20:16
+c4009.15 | links=c4009.12:52 c4009.14:46
+c4018.15 | links=#18405(auto Stonetalon Mountains;298):15
+c4020.15 | links=#18199(auto Stonetalon Mountains;291):24
+c4026.15 | links=c4076.2:33 c4022.12:11
+c4027.15 | links=c4024.11:26
+c4052.15 | links=c4050.8:16 c4052.14:8
+c4061.15 | links=#17060(auto Stonetalon Mountains;262):22 c4061.16:24
+c4067.15 | links=c4067.7:67 c1412.27:56
+c11910.15 | links=#9212(auto Stonetalon Mountains;143):27
+c11911.15 | links=#4543(auto Stonetalon Mountains;71):33
+c11912.15 | links=#11319(central location;Posten der Grimmtotem;Stonetalon Mountains):10
+c11913.15 | links=c11913.1:48 c11913.3:5 c1412.26:15
+c11915.15 | links=#20083(auto Stonetalon Mountains;338):4
+o19541.15 | links=#11293(auto Stonetalon Mountains;174):37 c4007.7:9
+o177929.15 | links=o177929.1:44 c4041.7:19 o177929.19:78
+o178104.15 | links=o178104.12:11
+c721.16 | links=c721.12:7 c11911.26:23
+c1412.16 | links=c11911.26:72
+c3988.16 | links=c3991.5:29 c3988.15:60 c3988.19:24
+c3989.16 | links=c3989.1:26 c4073.1:52 c3991.9:25
+c3991.16 | links=c3989.19:19
+c3999.16 | links=c4004.1:17 c3999.14:18
+c4005.16 | links=c4005.15:14 c4007.33:37
+c4007.16 | links=#17601(auto Stonetalon Mountains;274):32
+c4020.16 | links=#26396(auto Stonetalon Mountains;465):13
+c4026.16 | links=#22042(auto Stonetalon Mountains;378):13
+c4052.16 | links=#7190(auto Stonetalon Mountains;110):4
+c4061.16 | links=c4052.3:18 c4061.12:10 c4061.15:24
+c11910.16 | links=#24603(auto Stonetalon Mountains;430):27
+c11911.16 | links=#18385(auto Stonetalon Mountains;297):16
+c11912.16 | links=#16008(auto Stonetalon Mountains;247):11
+c11913.16 | links=c4008.13:11 c11912.23:28
+c11915.16 | links=c11915.17:15
+c11917.16 | links=o178106.10:4
+o19541.16 | links=#19931(auto Stonetalon Mountains;334):31 c4015.1:61 c4007.54:26
+o177929.16 | links=o177929.7:51 c4027.8:15
+o178104.16 | links=#23712(auto Stonetalon Mountains;415):6
+c3989.17 | links=c3991.33:16
+c3999.17 | links=#17220(auto Stonetalon Mountains;266):27 c4003.5:27
+c4005.17 | links=o19542.2:9
+c4006.17 | links=o19542.5:31
+c4007.17 | links=#22079(auto Stonetalon Mountains;380):34
+c4018.17 | links=c4018.5:54
+c4020.17 | links=#22513(auto Stonetalon Mountains;395):24 c4016.1:18
+c4026.17 | links=c4022.10:18 c4026.18:6
+c4061.17 | links=#17060(auto Stonetalon Mountains;262):8
+c11910.17 | links=#24603(auto Stonetalon Mountains;430):18
+c11911.17 | links=#18385(auto Stonetalon Mountains;297):13
+c11912.17 | links=c11913.13:18
+c11913.17 | links=#16008(auto Stonetalon Mountains;247):25 c11914.1:6
+c11915.17 | links=#15365(auto Stonetalon Mountains;237):19 c11915.16:15
+c11917.17 | links=c11915.19:7
+o19541.17 | links=c4011.4:40 o19542.5:108 c721.13:36 c4009.22:76 c3991.25:61 c4006.25:48 c4006.27:14 c4006.28:32 c4006.33:41
+o177929.17 | links=#13804(auto Stonetalon Mountains;214):58 c4031.2:9 c4076.3:3
+c1412.18 | links=#16008(auto Stonetalon Mountains;247):6
+c3988.18 | links=o179486.4:16
+c3989.18 | links=c3991.10:27
+c3991.18 | links=#18157(auto Stonetalon Mountains;286):21
+c4007.18 | links=#21385(auto Stonetalon Mountains;367):23
+c4018.18 | links=c4019.1:21
+c4020.18 | links=#907(auto Stonetalon Mountains;13):7
+c4026.18 | links=c4026.17:6 c4026.19:19
+c4061.18 | links=c4056.6:20 c4061.10:24
+c11911.18 | links=#28323(auto Stonetalon Mountains;500):12
+c11912.18 | links=#16008(auto Stonetalon Mountains;247):8
+o19541.18 | links=o19541.22:94 c4006.45:22
+o177929.18 | links=o177929.5:61 o177929.20:68
+c1412.19 | links=#6287(auto Stonetalon Mountains;102):23 c4007.43:20
+c3988.19 | links=c3991.6:40 c3989.9:54 c3988.16:24
+c3989.19 | links=c3991.16:19 c3989.51:25
+c3991.19 | links=#2781(auto Stonetalon Mountains;40):17
+c4007.19 | links=#9939(auto Stonetalon Mountains;151):22
+c4020.19 | links=#16840(auto Stonetalon Mountains;258):42
+c4026.19 | links=c4026.18:19
+c11911.19 | links=#28323(auto Stonetalon Mountains;500):12
+c11912.19 | links=c11911.25:4
+c11915.19 | links=c11917.17:7
+o19541.19 | links=#13640(auto Stonetalon Mountains;207):13 c4006.4:10
+o177929.19 | links=c4028.1:30 c4034.1:54 o177929.5:63 o177929.15:78
+c1412.20 | links=o177926.11:16 c4007.15:16
+c3991.20 | links=c3988.24:44 c3989.52:35
+c4005.20 | links=#18290(crossing;Stonetalon Mountains;path;to;Windshear Crag):56
+c4007.20 | links=o19541.24:19
+c4009.20 | links=c4006.45:18
+c4018.20 | links=c6491.2:25
+c4026.20 | links=c12579.1:21 c4026.8:26 c4026.25:25
+c11911.20 | links=c11911.10:35 c11911.22:18 c11911.33:16
+c11912.20 | links=c11913.13:13
+c11917.20 | links=#20083(auto Stonetalon Mountains;338):5
+o19541.20 | links=#16937(auto Stonetalon Mountains;260):44 c4006.2:19 c3991.7:81 c1412.32:30
+o177929.20 | links=#24594(auto Stonetalon Mountains;428):55 c4041.8:22 o177929.18:68 o177929.32:53
+c3989.21 | links=c3989.22:47
+c3991.21 | links=c3989.31:45
+c3999.21 | links=#13796(auto Stonetalon Mountains;213):9
+c4005.21 | links=#28120(auto Stonetalon Mountains;495):44
+c4009.21 | links=c4006.15:24
+c4018.21 | links=#16840(auto Stonetalon Mountains;258):30
+c4026.21 | links=o177929.8:6
+c11911.21 | links=#9212(auto Stonetalon Mountains;143):27 c11911.31:21
+c11912.21 | links=#16008(auto Stonetalon Mountains;247):24
+o19541.21 | links=o177926.4:22 c4007.14:30
+o177929.21 | links=#6196(auto Stonetalon Mountains;100):41 c4041.5:42 c4024.9:21 o177929.28:46
+c1412.22 | links=#6783(auto Stonetalon Mountains;106):30 c4020.13:25
+c3988.22 | links=o179486.4:16
+c3989.22 | links=#5769(auto Stonetalon Mountains;94):42 c3988.3:27 c3989.15:34 c3989.21:47
+c3991.22 | links=c5931.1:12 c3989.46:23
+c4007.22 | links=o19541.26:16
+c4009.22 | links=o19541.17:76
+c4018.22 | links=#26482(auto Stonetalon Mountains;469):23
+c4026.22 | links=c4026.11:13 o177929.24:28
+c11911.22 | links=c11911.20:18 c11911.24:9
+c11912.22 | links=c11913.13:20
+o19541.22 | links=o19542.6:66 o19541.18:94 o19541.23:67 c4006.24:53 c4006.41:27
+c1412.23 | links=c4021.6:47 c4067.6:28
+c3988.23 | links=c5931.1:19
+c3989.23 | links=#18703(auto Stonetalon Mountains;305):45 o179486.2:13
+c3991.23 | links=#20410(auto Stonetalon Mountains;347):41
+c4005.23 | links=#37(auto Stonetalon Mountains;1):37
+c4006.23 | links=#11031(auto Stonetalon Mountains;172):29
+c4007.23 | links=o19541.3:3 c4007.32:21
+c4018.23 | links=c1412.33:18
+c4026.23 | links=#10500(auto Stonetalon Mountains;163):46
+c11911.23 | links=c11911.30:10
+c11912.23 | links=c11913.16:28 c1412.26:36
+c11917.23 | links=#18191(auto Stonetalon Mountains;289):11 c11918.12:4
+o19541.23 | links=c4011.5:16 c3988.15:132 o19541.22:67 c4006.39:42
+o177929.23 | links=#4537(auto Stonetalon Mountains;70):81 c4027.2:44 o177929.2:66 c4023.7:17 o177929.13:10 o177929.30:74
+c3988.24 | links=c3989.7:30 c3991.20:44 c3989.54:19
+c3991.24 | links=#5769(auto Stonetalon Mountains;94):55 c1412.31:25 c3989.49:58
+c4006.24 | links=o19541.22:53
+c4007.24 | links=c4006.6:34
+c4009.24 | links=c1412.12:51 c4009.12:10
+c4026.24 | links=c4022.11:15
+c11911.24 | links=c11911.22:9
+c11912.24 | links=#16008(auto Stonetalon Mountains;247):9
+o19541.24 | links=c4007.20:19
+o177929.24 | links=#16910(auto Stonetalon Mountains;259):40 c4026.22:28
+c1412.25 | links=#11837(auto Stonetalon Mountains;187):21 c4012.8:8
+c3989.25 | links=#18703(auto Stonetalon Mountains;305):25 c3991.13:39
+c3991.25 | links=o19541.17:61
+c4006.25 | links=o19541.17:48
+c4007.25 | links=#12207(centralpoint;Sishir Canyon;Stonetalon Mountains):14 c4007.48:18
+c4026.25 | links=c4026.20:25
+c11911.25 | links=c11912.19:4 c11911.32:11
+o19541.25 | links=c11921.1:19
+o177929.25 | links=o177929.1:64 c4024.6:7 o177929.29:45
+c1412.26 | links=c11913.15:15 c11912.23:36
+c3989.26 | links=o179486.5:9 c3991.14:37
+c3991.26 | links=o19603.1:3
+c4007.26 | links=o19541.4:8
+c11911.26 | links=c721.16:23 c1412.16:72 c11911.30:31
+o19541.26 | links=o19541.3:27 c4007.22:16 c4007.47:20
+o177929.26 | links=#13804(auto Stonetalon Mountains;214):22
+c1412.27 | links=c4067.9:8 c4067.15:56
+c3989.27 | links=c4074.1:42 c3989.2:60 c3989.55:32
+c3991.27 | links=o19603.1:3
+c4006.27 | links=o19541.17:14
+c4007.27 | links=#1892(auto Stonetalon Mountains;23):30
+c4009.27 | links=o19542.5:62
+c11911.27 | links=#5281(auto Stonetalon Mountains;84):14
+o19541.27 | links=#14063(auto Stonetalon Mountains;216):24
+o177929.27 | links=#17023(auto Stonetalon Mountains;261):11 c4042.5:9
+c1412.28 | links=#2408(auto Stonetalon Mountains;34):10
+c3989.28 | links=c3989.3:36
+c3991.28 | links=#7404(auto Stonetalon Mountains;115):18
+c4006.28 | links=o19541.17:32
+c4007.28 | links=o19541.5:21
+c11911.28 | links=c11913.8:3 c11911.33:20
+o177929.28 | links=o177929.21:46 o177929.31:70
+c3989.29 | links=#18703(auto Stonetalon Mountains;305):38
+c3991.29 | links=#10345(auto Stonetalon Mountains;161):29 #20453(auto Stonetalon Mountains;351):18
+c4006.29 | links=#11031(auto Stonetalon Mountains;172):36
+c4007.29 | links=#1892(auto Stonetalon Mountains;23):22 #12207(centralpoint;Sishir Canyon;Stonetalon Mountains):18 o19542.1:14 o19542.2:27 c4005.11:80
+c11911.29 | links=c11910.7:3 c11911.33:13
+o177929.29 | links=o177929.25:45
+c1412.30 | links=#15555(auto Stonetalon Mountains;244):29
+c3989.30 | links=#18703(auto Stonetalon Mountains;305):21
+c3991.30 | links=c3989.35:12 c3989.57:9
+c4006.30 | links=o19542.6:30
+c4007.30 | links=#12207(centralpoint;Sishir Canyon;Stonetalon Mountains):24
+c11911.30 | links=c11910.12:9 c11911.12:51 c11911.23:10 c11911.26:31
+o177929.30 | links=c4023.4:36 c4023.5:18 o177929.5:42 o177929.23:74
+c1412.31 | links=c3991.24:25 c3989.50:32
+c3989.31 | links=c3991.21:45 c3989.55:51
+c3991.31 | links=c3989.35:15
+c4007.31 | links=#1892(auto Stonetalon Mountains;23):16 o19541.5:7
+c11911.31 | links=c11911.21:21
+o177929.31 | links=c4038.3:16 o177929.28:70 o177929.33:23
+c1412.32 | links=o19541.20:30
+c3989.32 | links=c5932.1:52
+c3991.32 | links=c5931.1:37 c3989.47:61
+c4007.32 | links=c4007.23:21
+c11911.32 | links=#9212(auto Stonetalon Mountains;143):21 c11911.25:11
+o177929.32 | links=c4041.1:9 o177929.20:53
+c1412.33 | links=#26482(auto Stonetalon Mountains;469):10 c4018.23:18
+c3989.33 | links=c5932.1:44
+c3991.33 | links=c4073.1:12 c3989.17:16
+c4006.33 | links=o19541.17:41
+c4007.33 | links=o19541.6:11 c4005.16:37
+c11911.33 | links=c11911.20:16 c11911.28:20 c11911.29:13
+o177929.33 | links=o177929.5:75 o177929.31:23
+c3989.34 | links=c3988.7:6 c3989.46:17
+c3991.34 | links=o19603.1:10
+c4006.34 | links=#15362(auto Stonetalon Mountains;236):48
+c4007.34 | links=o177926.1:17 c6141.2:65 o177926.2:30
+o177929.34 | links=o177929.12:30
+c3989.35 | links=c3988.7:13 c3991.30:12 c3991.31:15 c3989.58:8
+c4006.35 | links=c4006.43:14
+c4007.35 | links=o19541.6:23
+c3989.36 | links=c3988.15:33
+c4007.36 | links=#4408(auto Stonetalon Mountains;66):34
+c3999.37 | links=#12827(auto Stonetalon Mountains;197):7
+c4007.37 | links=#11293(auto Stonetalon Mountains;174):30
+c3989.38 | links=o179486.7:6 c3989.8:54
+c4007.38 | links=#11293(auto Stonetalon Mountains;174):46
+c3999.39 | links=#9941(auto Stonetalon Mountains;152):15 c3999.5:11
+c4006.39 | links=c721.14:4 o19541.23:42
+c4007.39 | links=#10220(auto Stonetalon Mountains;158):45
+c3989.40 | links=c3989.52:38
+c4007.40 | links=#3449(auto Stonetalon Mountains;48):26
+c4006.41 | links=o19541.22:27
+c4007.41 | links=#3449(auto Stonetalon Mountains;48):35
+c3989.42 | links=c3991.2:37 c3991.3:42 c3989.67:25
+c4006.42 | links=#11031(auto Stonetalon Mountains;172):55
+c4007.42 | links=#9939(auto Stonetalon Mountains;151):28 c4007.44:29
+c3989.43 | links=c5931.1:15
+c4006.43 | links=#15362(auto Stonetalon Mountains;236):100 c4006.35:14
+c4007.43 | links=o19541.10:41 c1412.19:20
+c3989.44 | links=#19156(auto Stonetalon Mountains;317):4 c3988.8:9
+c4006.44 | links=#1249(auto Stonetalon Mountains;18):37
+c4007.44 | links=c4007.42:29
+c3989.45 | links=#19156(auto Stonetalon Mountains;317):11
+c4006.45 | links=o19541.18:22 c4009.20:18
+c4007.45 | links=#11837(auto Stonetalon Mountains;187):34 #22400(auto Stonetalon Mountains;388):25
+c3989.46 | links=#19156(auto Stonetalon Mountains;317):19 c3991.22:23 c3989.34:17
+c4007.46 | links=#5443(auto Stonetalon Mountains;87):43
+c3989.47 | links=c3991.32:61 c3989.48:21
+c4007.47 | links=#12207(centralpoint;Sishir Canyon;Stonetalon Mountains):56 c11921.1:52 c4006.6:35 o19541.26:20
+c3989.48 | links=c3989.47:21 c3989.50:48
+c4007.48 | links=o19541.7:35 c4007.25:18
+c3989.49 | links=c3991.24:58
+c4007.49 | links=c4007.54:47
+c3989.50 | links=c1412.31:32 c3989.48:48
+c4007.50 | links=o177926.4:75 c4013.6:63 o177926.11:41
+c3989.51 | links=#9115(auto Stonetalon Mountains;140):18 c3989.19:25
+c4007.51 | links=c6141.1:6
+c3989.52 | links=c3991.20:35 c3989.40:38
+c4007.52 | links=#22472(auto Stonetalon Mountains;393):7
+c4007.53 | links=#14135(auto Stonetalon Mountains;220):43 c6141.1:38 c4012.14:40
+c3989.54 | links=#4028(auto Stonetalon Mountains;57):45 c3988.24:19
+c4007.54 | links=o19541.16:26 c4007.49:47
+c3989.55 | links=#2781(auto Stonetalon Mountains;40):53 c3989.27:32 c3989.31:51
+c4007.55 | links=#19931(auto Stonetalon Mountains;334):14
+c3989.57 | links=c3991.30:9
+c3989.58 | links=c3989.35:8
+c3989.61 | links=c4073.1:50
+c3989.63 | links=#18303(auto Stonetalon Mountains;293):24 o179486.3:20
+c3989.67 | links=c3989.42:25

@@ -1,0 +1,196 @@
+Zone areaId 493 — eine Zeile pro Wegpunkt; Links inline.
+
+#16 | auto Moonglade;1§auto Mondlichtung;1§auto Reflet-de-Lune;1 | x=7616.39990234375 y=-2916.699951171875 | size=1 | links=#4629(auto Moonglade;28):25 #20568(auto Moonglade;109):31
+#71 | auto Moonglade;2§auto Mondlichtung;2§auto Reflet-de-Lune;2 | x=7956.10009765625 y=-2591.800048828125 | size=1 | links=#3751(auto Moonglade;19):17 #16000(auto Moonglade;93):20
+#630 | auto Moonglade;3§auto Mondlichtung;3§auto Reflet-de-Lune;3 | x=7484.80029296875 y=-2194.699951171875 | size=1 | links=#2418(auto Moonglade;8):24 #14637(auto Moonglade;82):35
+#760 | auto Moonglade;4§auto Mondlichtung;4§auto Reflet-de-Lune;4 | x=7879.39990234375 y=-2567.300048828125 | size=1 | links=#18092(auto Moonglade;101):17 #19576(auto Moonglade;106):12 #26173(auto Moonglade;139):30 c12042.1:29
+#899 | auto Moonglade;5§auto Mondlichtung;5§auto Reflet-de-Lune;5 | x=7963.60009765625 y=-2424.300048828125 | size=1 | links=#1680(auto Moonglade;7):22 #14277(auto Moonglade;80):9 c12021.1:6
+#1399 | auto Moonglade;6§auto Mondlichtung;6§auto Reflet-de-Lune;6 | x=7544.39990234375 y=-2528.199951171875 | size=1 | links=#6817(auto Moonglade;36):34 #13951(auto Moonglade;78):23
+#1680 | auto Moonglade;7§auto Mondlichtung;7§auto Reflet-de-Lune;7 | x=7965.60009765625 y=-2446.900146484375 | size=1 | links=#899(auto Moonglade;5):22 #25250(auto Moonglade;129):25
+#2418 | auto Moonglade;8§auto Mondlichtung;8§auto Reflet-de-Lune;8 | x=7508.89990234375 y=-2199.199951171875 | size=1 | links=#630(auto Moonglade;3):24 #8058(auto Moonglade;44):18 #10353(auto Moonglade;55):35
+#2489 | auto Moonglade;9§auto Mondlichtung;9§auto Reflet-de-Lune;9 | x=7550.7001953125 y=-2399.800048828125 | size=1 | links=#14856(auto Moonglade;85):17 #22847(auto Moonglade;118):21
+#2540 | auto Moonglade;10§auto Mondlichtung;10§auto Reflet-de-Lune;10 | x=7844 y=-2569.800048828125 | size=1 | links=#7643(auto Moonglade;40):16 #19576(auto Moonglade;106):22 c12024.1:8
+#2649 | auto Moonglade;11§auto Mondlichtung;11§auto Reflet-de-Lune;11 | x=8011.60009765625 y=-2614.900146484375 | size=1 | links=#9865(auto Moonglade;52):15 #10412(auto Moonglade;57):19
+#2855 | auto Moonglade;12§auto Mondlichtung;12§auto Reflet-de-Lune;12 | x=7584.10009765625 y=-2985.699951171875 | size=1 | links=#9150(auto Moonglade;47):25 c22835.3:24
+#3236 | auto Moonglade;13§auto Mondlichtung;13§auto Reflet-de-Lune;13 | x=7954.39990234375 y=-2575.60009765625 | size=1 | links=#3751(auto Moonglade;19):9 #19566(auto Moonglade;105):24
+#3266 | auto Moonglade;14§auto Mondlichtung;14§auto Reflet-de-Lune;14 | x=7857.7001953125 y=-2503.400146484375 | size=1 | links=#4461(auto Moonglade;27):14 #21249(auto Moonglade;114):17
+#3334 | auto Moonglade;15§auto Mondlichtung;15§auto Reflet-de-Lune;15 | x=8044.60009765625 y=-2676.199951171875 | size=1 | links=#11627(auto Moonglade;65):12 #17216(auto Moonglade;98):11
+#3390 | auto Moonglade;16§auto Mondlichtung;16§auto Reflet-de-Lune;16 | x=7950.80029296875 y=-2570.60009765625 | size=1 | links=#3751(auto Moonglade;19):9 #8295(auto Moonglade;45):14
+#3575 | auto Moonglade;17§auto Mondlichtung;17§auto Reflet-de-Lune;17 | x=7564.89990234375 y=-2930.900146484375 | size=1 | links=#13544(auto Moonglade;74):13 #28689(s;Kalimdor;Moonglade;Lake Elune'ara;Stormrage Barrow Dens):20
+#3722 | auto Moonglade;18§auto Mondlichtung;18§auto Reflet-de-Lune;18 | x=7580.5 y=-2185.699951171875 | size=1 | links=#10353(auto Moonglade;55):37 #11961(auto Moonglade;68):41 #25460(auto Moonglade;133):49
+#3751 | auto Moonglade;19§auto Mondlichtung;19§auto Reflet-de-Lune;19 | x=7944.7001953125 y=-2577.900146484375 | size=1 | links=#71(auto Moonglade;2):17 #3236(auto Moonglade;13):9 #3390(auto Moonglade;16):9 #26173(auto Moonglade;139):36
+#3766 | auto Moonglade;20§auto Mondlichtung;20§auto Reflet-de-Lune;20 | x=7444.39990234375 y=-2711 | size=1 | links=#15008(auto Moonglade;88):32 #18853(auto Moonglade;103):22
+#3827 | auto Moonglade;21§auto Mondlichtung;21§auto Reflet-de-Lune;21 | x=7975 y=-2556.900146484375 | size=1 | links=#6360(auto Moonglade;34):9 #8295(auto Moonglade;45):13
+#3926 | auto Moonglade;22§auto Mondlichtung;22§auto Reflet-de-Lune;22 | x=7443.7001953125 y=-2824.60009765625 | size=1 | links=#4655(auto Moonglade;30):25 #9821(auto Moonglade;51):31
+#3958 | central location;Nighthaven;Moonglade§zentralpunkt;Nachthafen;Mondlichtung§emplacement central;Havrenuit;Reflet-de-Lune | x=7969.10009765625 y=-2499.199951171875 | size=1 | links=#14883(auto Moonglade;86):11 #20685(auto Moonglade;111):15 #28159(auto Moonglade;145):9
+#4196 | auto Moonglade;23§auto Mondlichtung;23§auto Reflet-de-Lune;23 | x=7830.7001953125 y=-2447.10009765625 | size=1 | links=#5782(auto Moonglade;33):13 #7172(auto Moonglade;38):16
+#4225 | auto Moonglade;24§auto Mondlichtung;24§auto Reflet-de-Lune;24 | x=7385.60009765625 y=-2192.10009765625 | size=1 | links=#18684(auto Moonglade;102):5 #20987(auto Moonglade;113):18
+#4263 | auto Moonglade;25§auto Mondlichtung;25§auto Reflet-de-Lune;25 | x=7853.10009765625 y=-2238.10009765625 | size=1 | links=#15177(auto Moonglade;89):29 c11799.1:25
+#4380 | auto Moonglade;26§auto Mondlichtung;26§auto Reflet-de-Lune;26 | x=7415.39990234375 y=-2171.900146484375 | size=1 | links=#15908(auto Moonglade;92):20 #20987(auto Moonglade;113):17
+#4461 | auto Moonglade;27§auto Mondlichtung;27§auto Reflet-de-Lune;27 | x=7872.2001953125 y=-2503.300048828125 | size=1 | links=#3266(auto Moonglade;14):14 #22959(auto Moonglade;119):8 #24427(auto Moonglade;126):13 c12022.1:8
+#4629 | auto Moonglade;28§auto Mondlichtung;28§auto Reflet-de-Lune;28 | x=7605.30029296875 y=-2939.400146484375 | size=1 | links=#16(auto Moonglade;1):25 #9150(auto Moonglade;47):27
+#4631 | auto Moonglade;29§auto Mondlichtung;29§auto Reflet-de-Lune;29 | x=7562.7001953125 y=-2884.900146484375 | size=1 | links=#9519(auto Moonglade;49):19 #9821(auto Moonglade;51):112 #20568(auto Moonglade;109):30
+#4655 | auto Moonglade;30§auto Mondlichtung;30§auto Reflet-de-Lune;30 | x=7423.10009765625 y=-2809.5 | size=1 | links=#3926(auto Moonglade;22):25 c6491.1:12
+#5241 | auto Moonglade;31§auto Mondlichtung;31§auto Reflet-de-Lune;31 | x=7483.39990234375 y=-3084.300048828125 | size=1 | links=#20979(auto Moonglade;112):5 c22902.2:5
+#5365 | auto Moonglade;32§auto Mondlichtung;32§auto Reflet-de-Lune;32 | x=7543 y=-2229 | size=1 | links=#8058(auto Moonglade;44):27 #12037(auto Moonglade;69):42
+#5782 | auto Moonglade;33§auto Mondlichtung;33§auto Reflet-de-Lune;33 | x=7829.2001953125 y=-2433.199951171875 | size=1 | links=#4196(auto Moonglade;23):13 #17153(auto Moonglade;97):28
+#6360 | auto Moonglade;34§auto Mondlichtung;34§auto Reflet-de-Lune;34 | x=7976.60009765625 y=-2547.900146484375 | size=1 | links=#3827(auto Moonglade;21):9 #7661(auto Moonglade;41):12
+#6496 | auto Moonglade;35§auto Mondlichtung;35§auto Reflet-de-Lune;35 | x=7461 y=-3085.300048828125 | size=1 | links=#13786(auto Moonglade;77):10 c22889.6:12
+#6686 | spawn location;Nighthaven;Moonglade§spawnpunkt;Nachthafen;Mondlichtung§spawn location;Havrenuit;Reflet-de-Lune | x=7992.60009765625 y=-2680 | size=1 | links=#24162(auto Moonglade;124):11
+#6817 | auto Moonglade;36§auto Mondlichtung;36§auto Reflet-de-Lune;36 | x=7516.7001953125 y=-2506.900146484375 | size=1 | links=#1399(auto Moonglade;6):34 #6993(auto Moonglade;37):30 #25530(auto Moonglade;134):25
+#6993 | auto Moonglade;37§auto Mondlichtung;37§auto Reflet-de-Lune;37 | x=7501.10009765625 y=-2532.60009765625 | size=1 | links=#6817(auto Moonglade;36):30 #26066(auto Moonglade;137):52
+#7172 | auto Moonglade;38§auto Mondlichtung;38§auto Reflet-de-Lune;38 | x=7831.2001953125 y=-2463.400146484375 | size=1 | links=#4196(auto Moonglade;23):16 #23530(auto Moonglade;122):21
+#7610 | auto Moonglade;39§auto Mondlichtung;39§auto Reflet-de-Lune;39 | x=7828.80029296875 y=-2565.10009765625 | size=1 | links=#11806(auto Moonglade;67):9 c11797.1:34 c12024.1:11
+#7643 | auto Moonglade;40§auto Mondlichtung;40§auto Reflet-de-Lune;40 | x=7831.10009765625 y=-2580.300048828125 | size=1 | links=#2540(auto Moonglade;10):16 c12029.1:32
+#7661 | auto Moonglade;41§auto Mondlichtung;41§auto Reflet-de-Lune;41 | x=7974.89990234375 y=-2535.199951171875 | size=1 | links=#6360(auto Moonglade;34):12 #15846(auto Moonglade;91):14
+#7736 | auto Moonglade;42§auto Mondlichtung;42§auto Reflet-de-Lune;42 | x=7479.39990234375 y=-3097.199951171875 | size=1 | links=#10657(auto Moonglade;59):11 #10902(auto Moonglade;63):7
+#7818 | auto Moonglade;43§auto Mondlichtung;43§auto Reflet-de-Lune;43 | x=7523.30029296875 y=-3049.699951171875 | size=1 | links=#22318(auto Moonglade;116):6 #26167(auto Moonglade;138):9
+#8058 | auto Moonglade;44§auto Mondlichtung;44§auto Reflet-de-Lune;44 | x=7522 y=-2211.60009765625 | size=1 | links=#2418(auto Moonglade;8):18 #5365(auto Moonglade;32):27
+#8295 | auto Moonglade;45§auto Mondlichtung;45§auto Reflet-de-Lune;45 | x=7962.39990234375 y=-2562 | size=1 | links=#3390(auto Moonglade;16):14 #3827(auto Moonglade;21):13
+#8673 | auto Moonglade;46§auto Mondlichtung;46§auto Reflet-de-Lune;46 | x=7535.80029296875 y=-3064.400146484375 | size=1 | links=#12492(auto Moonglade;71):14 #26167(auto Moonglade;138):13
+#9150 | auto Moonglade;47§auto Mondlichtung;47§auto Reflet-de-Lune;47 | x=7602 y=-2967.199951171875 | size=1 | links=#2855(auto Moonglade;12):25 #4629(auto Moonglade;28):27
+#9280 | auto Moonglade;48§auto Mondlichtung;48§auto Reflet-de-Lune;48 | x=7974.2001953125 y=-2575.10009765625 | size=1 | links=#12660(auto Moonglade;72):12 c11795.1:15
+#9519 | auto Moonglade;49§auto Mondlichtung;49§auto Reflet-de-Lune;49 | x=7565.7001953125 y=-2903.900146484375 | size=1 | links=#4631(auto Moonglade;29):19 #13544(auto Moonglade;74):13
+#9530 | auto Moonglade;50§auto Mondlichtung;50§auto Reflet-de-Lune;50 | x=7508.10009765625 y=-2125.60009765625 | size=1 | links=#25460(auto Moonglade;133):51 c12740.1:42
+#9821 | auto Moonglade;51§auto Mondlichtung;51§auto Reflet-de-Lune;51 | x=7474.30029296875 y=-2815.400146484375 | size=1 | links=#3926(auto Moonglade;22):31 #4631(auto Moonglade;29):112 #24218(auto Moonglade;125):31
+#9865 | auto Moonglade;52§auto Mondlichtung;52§auto Reflet-de-Lune;52 | x=8004.2001953125 y=-2601.800048828125 | size=1 | links=#2649(auto Moonglade;11):15 #16000(auto Moonglade;93):29
+#10102 | auto Moonglade;53§auto Mondlichtung;53§auto Reflet-de-Lune;53 | x=7538.60009765625 y=-3038 | size=1 | links=#12782(auto Moonglade;73):9 c22902.5:11
+#10214 | auto Moonglade;54§auto Mondlichtung;54§auto Reflet-de-Lune;54 | x=7707.7001953125 y=-2232.699951171875 | size=1 | links=#21752(auto Moonglade;115):44 #27109(auto Moonglade;141):61
+#10353 | auto Moonglade;55§auto Mondlichtung;55§auto Reflet-de-Lune;55 | x=7543.60009765625 y=-2192.199951171875 | size=1 | links=#2418(auto Moonglade;8):35 #3722(auto Moonglade;18):37
+#10359 | auto Moonglade;56§auto Mondlichtung;56§auto Reflet-de-Lune;56 | x=7530.80029296875 y=-3043.199951171875 | size=1 | links=#12492(auto Moonglade;71):14 #14120(auto Moonglade;79):12
+#10412 | auto Moonglade;57§auto Mondlichtung;57§auto Reflet-de-Lune;57 | x=8013 y=-2634.199951171875 | size=1 | links=#2649(auto Moonglade;11):19 #26041(auto Moonglade;136):8
+#10585 | auto Moonglade;58§auto Mondlichtung;58§auto Reflet-de-Lune;58 | x=7475.7001953125 y=-2649.400146484375 | size=1 | links=#16073(auto Moonglade;94):21 #23034(auto Moonglade;120):11
+#10657 | auto Moonglade;59§auto Mondlichtung;59§auto Reflet-de-Lune;59 | x=7472.30029296875 y=-3106.300048828125 | size=1 | links=#7736(auto Moonglade;42):11 #17559(auto Moonglade;100):11
+#10680 | auto Moonglade;60§auto Mondlichtung;60§auto Reflet-de-Lune;60 | x=7623.2001953125 y=-2268.699951171875 | size=1 | links=#22336(auto Moonglade;117):22 #27109(auto Moonglade;141):46
+#10686 | auto Moonglade;61§auto Mondlichtung;61§auto Reflet-de-Lune;61 | x=7483.39990234375 y=-2485 | size=1 | links=#25530(auto Moonglade;134):38 c10897.1:29
+#10833 | auto Moonglade;62§auto Mondlichtung;62§auto Reflet-de-Lune;62 | x=7987.30029296875 y=-2576.800048828125 | size=1 | links=#11556(auto Moonglade;64):12 #19566(auto Moonglade;105):8
+#10902 | auto Moonglade;63§auto Mondlichtung;63§auto Reflet-de-Lune;63 | x=7484.5 y=-3091.199951171875 | size=1 | links=#7736(auto Moonglade;42):7 c22902.2:4
+#11556 | auto Moonglade;64§auto Mondlichtung;64§auto Reflet-de-Lune;64 | x=7987.39990234375 y=-2563.900146484375 | size=1 | links=#10833(auto Moonglade;62):12 #12660(auto Moonglade;72):12
+#11627 | auto Moonglade;65§auto Mondlichtung;65§auto Reflet-de-Lune;65 | x=8033.39990234375 y=-2670.199951171875 | size=1 | links=#3334(auto Moonglade;15):12 #17272(auto Moonglade;99):8
+#11629 | auto Moonglade;66§auto Mondlichtung;66§auto Reflet-de-Lune;66 | x=7783.30029296875 y=-2437 | size=1 | links=#17153(auto Moonglade;97):18 #24089(auto Moonglade;123):13
+#11806 | auto Moonglade;67§auto Mondlichtung;67§auto Reflet-de-Lune;67 | x=7820.80029296875 y=-2569.800048828125 | size=1 | links=#7610(auto Moonglade;39):9 c11801.1:23
+#11961 | auto Moonglade;68§auto Mondlichtung;68§auto Reflet-de-Lune;68 | x=7617 y=-2205.300048828125 | size=1 | links=#3722(auto Moonglade;18):41 #27109(auto Moonglade;141):37
+#12037 | auto Moonglade;69§auto Mondlichtung;69§auto Reflet-de-Lune;69 | x=7573.89990234375 y=-2257.699951171875 | size=1 | links=#5365(auto Moonglade;32):42 #22336(auto Moonglade;117):45
+#12127 | auto Moonglade;70§auto Mondlichtung;70§auto Reflet-de-Lune;70 | x=8032 y=-2683.5 | size=1 | links=#17216(auto Moonglade;98):9 #24162(auto Moonglade;124):32 c12023.1:4
+#12492 | auto Moonglade;71§auto Mondlichtung;71§auto Reflet-de-Lune;71 | x=7542.80029296875 y=-3051.699951171875 | size=1 | links=#8673(auto Moonglade;46):14 #10359(auto Moonglade;56):14
+#12660 | auto Moonglade;72§auto Mondlichtung;72§auto Reflet-de-Lune;72 | x=7974.7001953125 y=-2562.900146484375 | size=1 | links=#9280(auto Moonglade;48):12 #11556(auto Moonglade;64):12
+#12782 | auto Moonglade;73§auto Mondlichtung;73§auto Reflet-de-Lune;73 | x=7543.5 y=-3029.300048828125 | size=1 | links=#10102(auto Moonglade;53):9 #27541(auto Moonglade;142):36
+#13544 | auto Moonglade;74§auto Mondlichtung;74§auto Reflet-de-Lune;74 | x=7565.5 y=-2917.400146484375 | size=1 | links=#3575(auto Moonglade;17):13 #9519(auto Moonglade;49):13
+#13571 | auto Moonglade;75§auto Mondlichtung;75§auto Reflet-de-Lune;75 | x=7839.30029296875 y=-2229.300048828125 | size=1 | links=#15177(auto Moonglade;89):26 #25306(auto Moonglade;130):9
+#13701 | auto Moonglade;76§auto Mondlichtung;76§auto Reflet-de-Lune;76 | x=7858.39990234375 y=-2310.300048828125 | size=1 | links=#14721(auto Moonglade;83):73 #16468(auto Moonglade;95):42
+#13786 | auto Moonglade;77§auto Mondlichtung;77§auto Reflet-de-Lune;77 | x=7471.60009765625 y=-3085 | size=1 | links=#6496(auto Moonglade;35):10 #20979(auto Moonglade;112):6
+#13951 | auto Moonglade;78§auto Mondlichtung;78§auto Reflet-de-Lune;78 | x=7564.30029296875 y=-2540.800048828125 | size=1 | links=#1399(auto Moonglade;6):23 o177785.6:111
+#14120 | auto Moonglade;79§auto Mondlichtung;79§auto Reflet-de-Lune;79 | x=7522.10009765625 y=-3052.10009765625 | size=1 | links=#10359(auto Moonglade;56):12 c22837.1:4
+#14277 | auto Moonglade;80§auto Mondlichtung;80§auto Reflet-de-Lune;80 | x=7962.89990234375 y=-2414.400146484375 | size=1 | links=#899(auto Moonglade;5):9 #14731(auto Moonglade;84):8 #28241(auto Moonglade;146):29 c12026.1:9
+#14513 | auto Moonglade;81§auto Mondlichtung;81§auto Reflet-de-Lune;81 | x=7498.5 y=-3073.60009765625 | size=1 | links=c22902.2:18 c22902.4:4
+#14637 | auto Moonglade;82§auto Mondlichtung;82§auto Reflet-de-Lune;82 | x=7450.10009765625 y=-2186.5 | size=1 | links=#630(auto Moonglade;3):35 #15908(auto Moonglade;92):17
+#14721 | auto Moonglade;83§auto Mondlichtung;83§auto Reflet-de-Lune;83 | x=7932 y=-2316.10009765625 | size=1 | links=#13701(auto Moonglade;76):73 #25046(auto Moonglade;127):23
+#14731 | auto Moonglade;84§auto Mondlichtung;84§auto Reflet-de-Lune;84 | x=7954.10009765625 y=-2414.10009765625 | size=1 | links=#14277(auto Moonglade;80):8 c11939.1:10
+#14856 | auto Moonglade;85§auto Mondlichtung;85§auto Reflet-de-Lune;85 | x=7545.5 y=-2416.400146484375 | size=1 | links=#2489(auto Moonglade;9):17 #23126(auto Moonglade;121):36
+#14883 | auto Moonglade;86§auto Mondlichtung;86§auto Reflet-de-Lune;86 | x=7971.5 y=-2510.199951171875 | size=1 | links=#3958(central location;Nighthaven;Moonglade):11 #15846(auto Moonglade;91):10
+#14960 | auto Moonglade;87§auto Mondlichtung;87§auto Reflet-de-Lune;87 | x=8024.5 y=-2303.5 | size=1 | links=#25046(auto Moonglade;127):81 c11956.1:47
+#15008 | auto Moonglade;88§auto Mondlichtung;88§auto Reflet-de-Lune;88 | x=7472.10009765625 y=-2693.10009765625 | size=1 | links=#3766(auto Moonglade;20):32 #16073(auto Moonglade;94):22 #24218(auto Moonglade;125):91
+#15177 | auto Moonglade;89§auto Mondlichtung;89§auto Reflet-de-Lune;89 | x=7827.80029296875 y=-2252.900146484375 | size=1 | links=#4263(auto Moonglade;25):29 #13571(auto Moonglade;75):26 #16468(auto Moonglade;95):50
+#15755 | auto Moonglade;90§auto Mondlichtung;90§auto Reflet-de-Lune;90 | x=7381.30029296875 y=-2203.699951171875 | size=1 | links=#25601(auto Moonglade;135):2 #28400(auto Moonglade;147):1
+#15846 | auto Moonglade;91§auto Mondlichtung;91§auto Reflet-de-Lune;91 | x=7972.89990234375 y=-2520.699951171875 | size=1 | links=#7661(auto Moonglade;41):14 #14883(auto Moonglade;86):10
+#15908 | auto Moonglade;92§auto Mondlichtung;92§auto Reflet-de-Lune;92 | x=7434.30029296875 y=-2179.199951171875 | size=1 | links=#4380(auto Moonglade;26):20 #14637(auto Moonglade;82):17
+#16000 | auto Moonglade;93§auto Mondlichtung;93§auto Reflet-de-Lune;93 | x=7975.39990234375 y=-2598.300048828125 | size=1 | links=#71(auto Moonglade;2):20 #9865(auto Moonglade;52):29
+#16073 | auto Moonglade;94§auto Mondlichtung;94§auto Reflet-de-Lune;94 | x=7472.5 y=-2670.900146484375 | size=1 | links=#10585(auto Moonglade;58):21 #15008(auto Moonglade;88):22
+#16468 | auto Moonglade;95§auto Mondlichtung;95§auto Reflet-de-Lune;95 | x=7817.10009765625 y=-2301.900146484375 | size=1 | links=#13701(auto Moonglade;76):42 #15177(auto Moonglade;89):50 #21752(auto Moonglade;115):84
+#17050 | auto Moonglade;96§auto Mondlichtung;96§auto Reflet-de-Lune;96 | x=7397.39990234375 y=-2728.400146484375 | size=1 | links=#18853(auto Moonglade;103):28 c11957.1:37
+#17153 | auto Moonglade;97§auto Mondlichtung;97§auto Reflet-de-Lune;97 | x=7801 y=-2432.10009765625 | size=1 | links=#5782(auto Moonglade;33):28 #11629(auto Moonglade;66):18 #27066(auto Moonglade;140):11
+#17216 | auto Moonglade;98§auto Mondlichtung;98§auto Reflet-de-Lune;98 | x=8041.10009765625 y=-2687.300048828125 | size=1 | links=#3334(auto Moonglade;15):11 #12127(auto Moonglade;70):9
+#17272 | auto Moonglade;99§auto Mondlichtung;99§auto Reflet-de-Lune;99 | x=8030.30029296875 y=-2678.300048828125 | size=1 | links=#11627(auto Moonglade;65):8 c11802.1:10
+#17559 | auto Moonglade;100§auto Mondlichtung;100§auto Reflet-de-Lune;100 | x=7465.2001953125 y=-3115.699951171875 | size=1 | links=#10657(auto Moonglade;59):11 c22916.1:8
+#18092 | auto Moonglade;101§auto Mondlichtung;101§auto Reflet-de-Lune;101 | x=7876.39990234375 y=-2549.699951171875 | size=1 | links=#760(auto Moonglade;4):17 #19900(auto Moonglade;107):11
+#18684 | auto Moonglade;102§auto Mondlichtung;102§auto Reflet-de-Lune;102 | x=7383.80029296875 y=-2197.699951171875 | size=1 | links=#4225(auto Moonglade;24):5 #25601(auto Moonglade;135):4
+#18853 | auto Moonglade;103§auto Mondlichtung;103§auto Reflet-de-Lune;103 | x=7425.2001953125 y=-2723.60009765625 | size=1 | links=#3766(auto Moonglade;20):22 #17050(auto Moonglade;96):28
+#19023 | auto Moonglade;104§auto Mondlichtung;104§auto Reflet-de-Lune;104 | x=7795.89990234375 y=-2413.10009765625 | size=1 | links=#27066(auto Moonglade;140):8 c11800.1:12
+#19566 | auto Moonglade;105§auto Mondlichtung;105§auto Reflet-de-Lune;105 | x=7979.2001953125 y=-2576.400146484375 | size=1 | links=#3236(auto Moonglade;13):24 #10833(auto Moonglade;62):8 c4184.1:8 c7940.1:7
+#19576 | auto Moonglade;106§auto Mondlichtung;106§auto Reflet-de-Lune;106 | x=7866.7001953125 y=-2567.800048828125 | size=1 | links=#760(auto Moonglade;4):12 #2540(auto Moonglade;10):22
+#19900 | auto Moonglade;107§auto Mondlichtung;107§auto Reflet-de-Lune;107 | x=7874.89990234375 y=-2537.900146484375 | size=1 | links=#18092(auto Moonglade;101):11 #20678(auto Moonglade;110):15
+#19973 | auto Moonglade;108§auto Mondlichtung;108§auto Reflet-de-Lune;108 | x=7894.30029296875 y=-2501.400146484375 | size=1 | links=#24427(auto Moonglade;126):8 #28069(auto Moonglade;144):28 c12019.1:9
+#20568 | auto Moonglade;109§auto Mondlichtung;109§auto Reflet-de-Lune;109 | x=7588.89990234375 y=-2901.10009765625 | size=1 | links=#16(auto Moonglade;1):31 #4631(auto Moonglade;29):30
+#20678 | auto Moonglade;110§auto Mondlichtung;110§auto Reflet-de-Lune;110 | x=7873.7001953125 y=-2522.400146484375 | size=1 | links=#19900(auto Moonglade;107):15 #22959(auto Moonglade;119):10
+#20685 | auto Moonglade;111§auto Mondlichtung;111§auto Reflet-de-Lune;111 | x=7955.39990234375 y=-2493 | size=1 | links=#3958(central location;Nighthaven;Moonglade):15 #28069(auto Moonglade;144):32
+#20979 | auto Moonglade;112§auto Mondlichtung;112§auto Reflet-de-Lune;112 | x=7478.30029296875 y=-3084.60009765625 | size=1 | links=#5241(auto Moonglade;31):5 #13786(auto Moonglade;77):6
+#20987 | auto Moonglade;113§auto Mondlichtung;113§auto Reflet-de-Lune;113 | x=7399.60009765625 y=-2179.900146484375 | size=1 | links=#4225(auto Moonglade;24):18 #4380(auto Moonglade;26):17
+#21249 | auto Moonglade;114§auto Mondlichtung;114§auto Reflet-de-Lune;114 | x=7840.30029296875 y=-2501.400146484375 | size=1 | links=#3266(auto Moonglade;14):17 #23530(auto Moonglade;122):18
+#21752 | auto Moonglade;115§auto Mondlichtung;115§auto Reflet-de-Lune;115 | x=7745.30029296875 y=-2256.900146484375 | size=1 | links=#10214(auto Moonglade;54):44 #16468(auto Moonglade;95):84
+#22318 | auto Moonglade;116§auto Mondlichtung;116§auto Reflet-de-Lune;116 | x=7528.39990234375 y=-3046 | size=1 | links=#7818(auto Moonglade;43):6 c22902.5:8
+#22336 | auto Moonglade;117§auto Mondlichtung;117§auto Reflet-de-Lune;117 | x=7609.39990234375 y=-2286.900146484375 | size=1 | links=#10680(auto Moonglade;60):22 #12037(auto Moonglade;69):45 #25407(auto Moonglade;131):73
+#22847 | auto Moonglade;118§auto Mondlichtung;118§auto Reflet-de-Lune;118 | x=7558.10009765625 y=-2379.699951171875 | size=1 | links=#2489(auto Moonglade;9):21 #25407(auto Moonglade;131):32
+#22959 | auto Moonglade;119§auto Mondlichtung;119§auto Reflet-de-Lune;119 | x=7872.39990234375 y=-2511.5 | size=1 | links=#4461(auto Moonglade;27):8 #20678(auto Moonglade;110):10
+#23034 | auto Moonglade;120§auto Mondlichtung;120§auto Reflet-de-Lune;120 | x=7477.60009765625 y=-2638 | size=1 | links=#10585(auto Moonglade;58):11 #26066(auto Moonglade;137):56
+#23126 | auto Moonglade;121§auto Mondlichtung;121§auto Reflet-de-Lune;121 | x=7535.89990234375 y=-2451.400146484375 | size=1 | links=#14856(auto Moonglade;85):36 #25530(auto Moonglade;134):33
+#23530 | auto Moonglade;122§auto Mondlichtung;122§auto Reflet-de-Lune;122 | x=7832.7001953125 y=-2484.800048828125 | size=1 | links=#7172(auto Moonglade;38):21 #21249(auto Moonglade;114):18
+#24089 | auto Moonglade;123§auto Mondlichtung;123§auto Reflet-de-Lune;123 | x=7769.80029296875 y=-2434.60009765625 | size=1 | links=#11629(auto Moonglade;66):13 c12025.1:5
+#24162 | auto Moonglade;124§auto Mondlichtung;124§auto Reflet-de-Lune;124 | x=8001.30029296875 y=-2672.199951171875 | size=1 | links=#6686(spawn location;Nighthaven;Moonglade):11 #12127(auto Moonglade;70):32 #25122(auto Moonglade;128):17
+#24218 | auto Moonglade;125§auto Mondlichtung;125§auto Reflet-de-Lune;125 | x=7467.2001953125 y=-2784.900146484375 | size=1 | links=#9821(auto Moonglade;51):31 #15008(auto Moonglade;88):91
+#24427 | auto Moonglade;126§auto Mondlichtung;126§auto Reflet-de-Lune;126 | x=7885.5 y=-2502.300048828125 | size=1 | links=#4461(auto Moonglade;27):13 #19973(auto Moonglade;108):8
+#25046 | auto Moonglade;127§auto Mondlichtung;127§auto Reflet-de-Lune;127 | x=7948.39990234375 y=-2333.5 | size=1 | links=#14721(auto Moonglade;83):23 #14960(auto Moonglade;87):81 #25416(auto Moonglade;132):34
+#25122 | auto Moonglade;128§auto Mondlichtung;128§auto Reflet-de-Lune;128 | x=8006.60009765625 y=-2655.300048828125 | size=1 | links=#24162(auto Moonglade;124):17 #26041(auto Moonglade;136):14
+#25250 | auto Moonglade;129§auto Mondlichtung;129§auto Reflet-de-Lune;129 | x=7968.2001953125 y=-2472.5 | size=1 | links=#1680(auto Moonglade;7):25 #28159(auto Moonglade;145):16
+#25306 | auto Moonglade;130§auto Mondlichtung;130§auto Reflet-de-Lune;130 | x=7844.7001953125 y=-2221.300048828125 | size=1 | links=#13571(auto Moonglade;75):9 c11832.1:6
+#25407 | auto Moonglade;131§auto Mondlichtung;131§auto Reflet-de-Lune;131 | x=7574.10009765625 y=-2351.300048828125 | size=1 | links=#22336(auto Moonglade;117):73 #22847(auto Moonglade;118):32
+#25416 | auto Moonglade;132§auto Mondlichtung;132§auto Reflet-de-Lune;132 | x=7955.10009765625 y=-2367.800048828125 | size=1 | links=#25046(auto Moonglade;127):34 #28241(auto Moonglade;146):17
+#25460 | auto Moonglade;133§auto Mondlichtung;133§auto Reflet-de-Lune;133 | x=7556.80029296875 y=-2142.60009765625 | size=1 | links=#3722(auto Moonglade;18):49 #9530(auto Moonglade;50):51
+#25530 | auto Moonglade;134§auto Mondlichtung;134§auto Reflet-de-Lune;134 | x=7522.2001953125 y=-2482.5 | size=1 | links=#6817(auto Moonglade;36):25 #10686(auto Moonglade;61):38 #23126(auto Moonglade;121):33
+#25601 | auto Moonglade;135§auto Mondlichtung;135§auto Reflet-de-Lune;135 | x=7382.39990234375 y=-2201.800048828125 | size=1 | links=#15755(auto Moonglade;90):2 #18684(auto Moonglade;102):4
+#26041 | auto Moonglade;136§auto Mondlichtung;136§auto Reflet-de-Lune;136 | x=8014.39990234375 y=-2642.5 | size=1 | links=#10412(auto Moonglade;57):8 #25122(auto Moonglade;128):14
+#26066 | auto Moonglade;137§auto Mondlichtung;137§auto Reflet-de-Lune;137 | x=7484.5 y=-2582.300048828125 | size=1 | links=#6993(auto Moonglade;37):52 #23034(auto Moonglade;120):56
+#26167 | auto Moonglade;138§auto Mondlichtung;138§auto Reflet-de-Lune;138 | x=7522.89990234375 y=-3059.5 | size=1 | links=#7818(auto Moonglade;43):9 #8673(auto Moonglade;46):13
+#26173 | auto Moonglade;139§auto Mondlichtung;139§auto Reflet-de-Lune;139 | x=7909.60009765625 y=-2566.699951171875 | size=1 | links=#760(auto Moonglade;4):30 #3751(auto Moonglade;19):36
+#27066 | auto Moonglade;140§auto Mondlichtung;140§auto Reflet-de-Lune;140 | x=7798.5 y=-2420.900146484375 | size=1 | links=#17153(auto Moonglade;97):11 #19023(auto Moonglade;104):8
+#27109 | auto Moonglade;141§auto Mondlichtung;141§auto Reflet-de-Lune;141 | x=7646.5 y=-2228.10009765625 | size=1 | links=#10214(auto Moonglade;54):61 #10680(auto Moonglade;60):46 #11961(auto Moonglade;68):37
+#27541 | auto Moonglade;142§auto Mondlichtung;142§auto Reflet-de-Lune;142 | x=7560.2001953125 y=-2997.10009765625 | size=1 | links=#12782(auto Moonglade;73):36 c22835.3:9
+#27705 | passage;Moonglade;to;Felwood;with;Winterspring§passage;Mondlichtung;zum;Teufelswald;mit;Winterspring§passage;Reflet-de-Lune;vers;Gangrebois;with;Berceau-de-l'Hiver | x=7376 y=-2206.199951171875 | size=1 | links=#15492(passage;from;Timbermaw Hold ;Felwood;to;moonglade):2 #28400(auto Moonglade;147):5
+#27910 | auto Moonglade;143§auto Mondlichtung;143§auto Reflet-de-Lune;143 | x=7511.30029296875 y=-3061 | size=1 | links=c22837.1:9 c22902.4:13
+#28069 | auto Moonglade;144§auto Mondlichtung;144§auto Reflet-de-Lune;144 | x=7922.80029296875 y=-2496.5 | size=1 | links=#19973(auto Moonglade;108):28 #20685(auto Moonglade;111):32
+#28159 | auto Moonglade;145§auto Mondlichtung;145§auto Reflet-de-Lune;145 | x=7969 y=-2489.300048828125 | size=1 | links=#3958(central location;Nighthaven;Moonglade):9 #25250(auto Moonglade;129):16 c11796.1:33
+#28241 | auto Moonglade;146§auto Mondlichtung;146§auto Reflet-de-Lune;146 | x=7958.7001953125 y=-2385 | size=1 | links=#14277(auto Moonglade;80):29 #25416(auto Moonglade;132):17
+#28400 | auto Moonglade;147§auto Mondlichtung;147§auto Reflet-de-Lune;147 | x=7381 y=-2205.199951171875 | size=1 | links=#15755(auto Moonglade;90):1 #27705(passage;Moonglade;to;Felwood;with;Winterspring):5
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c4184.1 | links=#19566(auto Moonglade;105):8
+c6491.1 | links=#4655(auto Moonglade;30):12
+c7940.1 | links=#19566(auto Moonglade;105):7
+c10897.1 | links=#10686(auto Moonglade;61):29
+c11795.1 | links=#9280(auto Moonglade;48):15
+c11796.1 | links=#28159(auto Moonglade;145):33
+c11797.1 | links=#7610(auto Moonglade;39):34
+c11798.1 | links=c11800.1:10
+c11799.1 | links=#4263(auto Moonglade;25):25 c11832.1:27
+c11800.1 | links=#19023(auto Moonglade;104):12 c11798.1:10
+c11801.1 | links=#11806(auto Moonglade;67):23
+c11802.1 | links=#17272(auto Moonglade;99):10
+c11832.1 | links=#25306(auto Moonglade;130):6 c11799.1:27
+c11939.1 | links=#14731(auto Moonglade;84):10
+c11956.1 | links=#14960(auto Moonglade;87):47
+c11957.1 | links=#17050(auto Moonglade;96):37
+c12019.1 | links=#19973(auto Moonglade;108):9
+c12021.1 | links=#899(auto Moonglade;5):6
+c12022.1 | links=#4461(auto Moonglade;27):8
+c12023.1 | links=#12127(auto Moonglade;70):4
+c12024.1 | links=#2540(auto Moonglade;10):8 #7610(auto Moonglade;39):11
+c12025.1 | links=#24089(auto Moonglade;123):5
+c12026.1 | links=#14277(auto Moonglade;80):9
+c12029.1 | links=#7643(auto Moonglade;40):32
+c12042.1 | links=#760(auto Moonglade;4):29
+c12740.1 | links=#9530(auto Moonglade;50):42
+c22834.1 | links=c22916.1:1
+c22837.1 | links=#14120(auto Moonglade;79):4 #27910(auto Moonglade;143):9
+c22916.1 | links=#17559(auto Moonglade;100):8 c22834.1:1
+o177785.1 | links=o177785.4:84 o177785.6:59
+c22835.2 | links=c22902.4:3
+c22902.2 | links=#5241(auto Moonglade;31):5 #10902(auto Moonglade;63):4 #14513(auto Moonglade;81):18
+o177785.2 | links=o177785.3:47 o177785.4:38 o177785.5:77
+c22835.3 | links=#2855(auto Moonglade;12):24 #27541(auto Moonglade;142):9
+o177785.3 | links=o177785.2:47 o177785.4:57
+c22889.4 | links=c22889.6:6
+c22902.4 | links=#14513(auto Moonglade;81):4 #27910(auto Moonglade;143):13 c22835.2:3
+o177785.4 | links=o177785.1:84 o177785.2:38 o177785.3:57 o177785.6:70
+c22902.5 | links=#10102(auto Moonglade;53):11 #22318(auto Moonglade;116):8
+o177785.5 | links=o177785.2:77 o177785.6:68
+c22889.6 | links=#6496(auto Moonglade;35):12 c22889.4:6
+o177785.6 | links=#13951(auto Moonglade;78):111 o177785.1:59 o177785.4:70 o177785.5:68

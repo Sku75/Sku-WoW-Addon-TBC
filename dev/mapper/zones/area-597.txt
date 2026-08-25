@@ -1,0 +1,3 @@
+Zone areaId 597 — eine Zeile pro Wegpunkt; Links inline.
+
+#28658 | s;Kalimdor;Desolace;Kodo Graveyard;Ghost Walker Post§s;Kalimdor;Desolace;Der Kodofriedhof;Geistwandlerposten§s;Kalimdor;Désolace;Cimetière des kodos;Poste de Rôdeur-fantôme | x=-1224.06 y=-1736.67 | size=1

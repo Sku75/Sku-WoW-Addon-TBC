@@ -1,0 +1,1955 @@
+Zone areaId 85 — eine Zeile pro Wegpunkt; Links inline.
+
+#1 | Quick Waypoint;1§Schnellwegpunkt;1§Point de passage rapide;1 | x=0 y=0 | size=1
+#2 | Quick Waypoint;2§Schnellwegpunkt;2§Point de passage rapide;2 | x=0 y=0 | size=1
+#3 | Quick Waypoint;3§Schnellwegpunkt;3§Point de passage rapide;3 | x=0 y=0 | size=1
+#4 | Quick Waypoint;4§Schnellwegpunkt;4§Point de passage rapide;4 | x=0 y=0 | size=1
+#5 | auto Tirisfal Glades;1§auto Tirisfal;1§auto Clairières de Tirisfal;1 | x=2938.800048828125 y=838.2000122070312 | size=1 | links=#25400(auto Tirisfal Glades;471):26 c1522.2:42 c1530.12:64
+#19 | auto Tirisfal Glades;2§auto Tirisfal;2§auto Clairières de Tirisfal;2 | x=2528.10009765625 y=3.900000095367432 | size=5 | links=#21097(auto Tirisfal Glades;388):43 #25689(auto Tirisfal Glades;478):41 c1527.9:24
+#83 | auto Tirisfal Glades;3§auto Tirisfal;3§auto Clairières de Tirisfal;3 | x=2049.199951171875 y=284.3000183105469 | size=1 | links=#13046(auto Tirisfal Glades;237):25 #16879(auto Tirisfal Glades;318):12
+#89 | auto Tirisfal Glades;4§auto Tirisfal;4§auto Clairières de Tirisfal;4 | x=2133.900146484375 y=1305.400024414063 | size=1 | links=#9080(auto Tirisfal Glades;157):21 #15396(auto Tirisfal Glades;293):21 c6784.1:7
+#115 | auto Tirisfal Glades;5§auto Tirisfal;5§auto Clairières de Tirisfal;5 | x=1996.099975585938 y=-75.80000305175781 | size=1 | links=#15218(auto Tirisfal Glades;288):51 #17946(auto Tirisfal Glades;334):27
+#211 | auto Tirisfal Glades;6§auto Tirisfal;6§auto Clairières de Tirisfal;6 | x=2371.800048828125 y=1368.099975585938 | size=1 | links=#20815(auto Tirisfal Glades;381):13 o375.16:42
+#343 | auto Tirisfal Glades;7§auto Tirisfal;7§auto Clairières de Tirisfal;7 | x=2155.300048828125 y=665 | size=1 | links=#3216(auto Tirisfal Glades;58):8 #13781(auto Tirisfal Glades;250):7
+#361 | auto Tirisfal Glades;8§auto Tirisfal;8§auto Clairières de Tirisfal;8 | x=2396.900146484375 y=1520 | size=1 | links=#1950(auto Tirisfal Glades;38):41 #3167(auto Tirisfal Glades;57):50 c1535.19:13 c1535.27:18
+#373 | auto Tirisfal Glades;9§auto Tirisfal;9§auto Clairières de Tirisfal;9 | x=1839.599975585938 y=1310.400024414063 | size=1 | links=c1506.2:28 c1506.9:42
+#392 | auto Tirisfal Glades;10§auto Tirisfal;10§auto Clairières de Tirisfal;10 | x=2269.5 y=311.7000122070313 | size=1 | links=#20682(auto Tirisfal Glades;379):15 #24593(auto Tirisfal Glades;452):18 #25812(auto Tirisfal Glades;483):23 c1515.1:18 c1745.1:9 c10055.1:9
+#415 | auto Tirisfal Glades;11§auto Tirisfal;11§auto Clairières de Tirisfal;11 | x=1903.200073242188 y=1743.900024414063 | size=1 | links=c1512.12:13 c1508.15:20
+#439 | auto Tirisfal Glades;12§auto Tirisfal;12§auto Clairières de Tirisfal;12 | x=1917.300048828125 y=237.8000030517578 | size=1 | links=#1252(auto Tirisfal Glades;25):58 #20310(auto Tirisfal Glades;372):38 #25598(auto Tirisfal Glades;474):70
+#449 | auto Tirisfal Glades;13§auto Tirisfal;13§auto Clairières de Tirisfal;13 | x=3034.60009765625 y=672.5 | size=1 | links=#25568(entry and exit;Agamand Family Crypt;Tirisfal Glades):10 c1530.19:8
+#466 | auto Tirisfal Glades;14§auto Tirisfal;14§auto Clairières de Tirisfal;14 | x=1946.900024414063 y=1748.099975585938 | size=1 | links=#10053(auto Tirisfal Glades;177):13 c1512.5:6
+#528 | auto Tirisfal Glades;15§auto Tirisfal;15§auto Clairières de Tirisfal;15 | x=2820.60009765625 y=818.1000366210938 | size=1 | links=#4863(auto Tirisfal Glades;90):7 #11076(auto Tirisfal Glades;206):10 c1523.19:5
+#551 | auto Tirisfal Glades;16§auto Tirisfal;16§auto Clairières de Tirisfal;16 | x=2228 y=242.6999969482422 | size=1 | links=#5773(auto Tirisfal Glades;113):37 #19221(auto Tirisfal Glades;350):15
+#554 | meeting stone;Tirisfal Glades§versammlungsstein;Tirisfal§meeting stone;Clairières de Tirisfal | x=2656.900146484375 y=-674.9000244140625 | size=1 | links=#21463(auto Tirisfal Glades;395):35
+#755 | auto Tirisfal Glades;17§auto Tirisfal;17§auto Clairières de Tirisfal;17 | x=2753.800048828125 y=898.7999877929688 | size=1 | links=#4040(auto Tirisfal Glades;72):43 #5544(auto Tirisfal Glades;110):71 c1522.52:36 c1522.54:11
+#823 | auto Tirisfal Glades;18§auto Tirisfal;18§auto Clairières de Tirisfal;18 | x=1912.700073242188 y=1791 | size=1 | links=#10761(auto Tirisfal Glades;198):9 c1512.16:16
+#860 | auto Tirisfal Glades;19§auto Tirisfal;19§auto Clairières de Tirisfal;19 | x=1858.300048828125 y=1569.800048828125 | size=1 | links=#14038(auto Tirisfal Glades;257):5
+#937 | auto Tirisfal Glades;20§auto Tirisfal;20§auto Clairières de Tirisfal;20 | x=2086.199951171875 y=571.6000366210938 | size=1 | links=#14093(auto Tirisfal Glades;259):4 c4075.14:33
+#969 | auto Tirisfal Glades;21§auto Tirisfal;21§auto Clairières de Tirisfal;21 | x=1901.599975585938 y=1505.900024414063 | size=1 | links=#16859(auto Tirisfal Glades;317):6 #25474(auto Tirisfal Glades;472):7 o164662.5:8 c1502.8:2 c1501.9:14 c1502.22:3
+#978 | auto Tirisfal Glades;22§auto Tirisfal;22§auto Clairières de Tirisfal;22 | x=2569.699951171875 y=-650 | size=1 | links=#15079(auto Tirisfal Glades;285):68 #21463(auto Tirisfal Glades;395):80
+#1024 | auto Tirisfal Glades;23§auto Tirisfal;23§auto Clairières de Tirisfal;23 | x=2898.10009765625 y=1018.400024414063 | size=1 | links=#15277(auto Tirisfal Glades;290):38 #16963(auto Tirisfal Glades;319):44 c1523.10:58 c1523.12:14
+#1234 | auto Tirisfal Glades;24§auto Tirisfal;24§auto Clairières de Tirisfal;24 | x=1771.300048828125 y=1394.099975585938 | size=1 | links=c1667.1:13 c1506.23:15
+#1252 | auto Tirisfal Glades;25§auto Tirisfal;25§auto Clairières de Tirisfal;25 | x=1950.300048828125 y=286.7000122070313 | size=1 | links=#439(auto Tirisfal Glades;12):58 #1800(auto Tirisfal Glades;35):42 #5421(auto Tirisfal Glades;104):86 o113772.2:30 c1548.145:29
+#1275 | auto Tirisfal Glades;26§auto Tirisfal;26§auto Clairières de Tirisfal;26 | x=2272.10009765625 y=1071 | size=1 | links=#12470(auto Tirisfal Glades;229):79 #17201(auto Tirisfal Glades;324):70 o175566.25:39
+#1363 | auto Tirisfal Glades;27§auto Tirisfal;27§auto Clairières de Tirisfal;27 | x=1861 y=1581.599975585938 | size=1 | links=#7130(auto Tirisfal Glades;130):7 #7785(auto Tirisfal Glades;138):7
+#1509 | auto Tirisfal Glades;28§auto Tirisfal;28§auto Clairières de Tirisfal;28 | x=2236.400146484375 y=251.8000030517578 | size=1 | links=#4726(auto Tirisfal Glades;86):11 #19175(s;h;Mailbox;Tirisfal Glades):3 #19221(auto Tirisfal Glades;350):10
+#1549 | auto Tirisfal Glades;29§auto Tirisfal;29§auto Clairières de Tirisfal;29 | x=1731 y=-655 | size=1 | links=#19272(auto Tirisfal Glades;351):7 #26256(auto Tirisfal Glades;491):33
+#1551 | auto Tirisfal Glades;30§auto Tirisfal;30§auto Clairières de Tirisfal;30 | x=2515.5 y=326.8999938964844 | size=1 | links=#9892(auto Tirisfal Glades;172):62 #27641(auto Tirisfal Glades;514):69
+#1630 | auto Tirisfal Glades;31§auto Tirisfal;31§auto Clairières de Tirisfal;31 | x=2250 y=277.6000061035156 | size=1 | links=#19221(auto Tirisfal Glades;350):29 #25812(auto Tirisfal Glades;483):16 c2118.1:10 c2134.1:8
+#1653 | auto Tirisfal Glades;32§auto Tirisfal;32§auto Clairières de Tirisfal;32 | x=2401.699951171875 y=254.1000061035156 | size=1 | links=#9892(auto Tirisfal Glades;172):73 c3548.1:72 o113772.6:39
+#1659 | auto Tirisfal Glades;33§auto Tirisfal;33§auto Clairières de Tirisfal;33 | x=1933.599975585938 y=1540.599975585938 | size=1 | links=#26603(auto Tirisfal Glades;498):7 c1890.5:6
+#1800 | auto Tirisfal Glades;35§auto Tirisfal;35§auto Clairières de Tirisfal;35 | x=1973.300048828125 y=251.4000091552734 | size=1 | links=#1252(auto Tirisfal Glades;25):42 #1941(auto Tirisfal Glades;37):11 #25598(auto Tirisfal Glades;474):24
+#1935 | auto Tirisfal Glades;36§auto Tirisfal;36§auto Clairières de Tirisfal;36 | x=2184.699951171875 y=-519.5 | size=1 | links=#4471(auto Tirisfal Glades;78):22 #18306(auto Tirisfal Glades;336):48
+#1941 | auto Tirisfal Glades;37§auto Tirisfal;37§auto Clairières de Tirisfal;37 | x=1983.099975585938 y=257.3999938964844 | size=1 | links=#1800(auto Tirisfal Glades;35):11 #13046(auto Tirisfal Glades;237):46
+#1950 | auto Tirisfal Glades;38§auto Tirisfal;38§auto Clairières de Tirisfal;38 | x=2403.60009765625 y=1561.300048828125 | size=1 | links=#361(auto Tirisfal Glades;8):41 #12291(auto Tirisfal Glades;223):23 c1535.21:33 c1535.25:20 c1535.30:23
+#1959 | auto Tirisfal Glades;39§auto Tirisfal;39§auto Clairières de Tirisfal;39 | x=1886.800048828125 y=1642.700073242188 | size=1 | links=#15014(auto Tirisfal Glades;282):10 c6491.2:4
+#2006 | auto Tirisfal Glades;40§auto Tirisfal;40§auto Clairières de Tirisfal;40 | x=1959.599975585938 y=1594.599975585938 | size=1 | links=#15519(auto Tirisfal Glades;298):5 #26500(auto Tirisfal Glades;497):4
+#2117 | auto Tirisfal Glades;41§auto Tirisfal;41§auto Clairières de Tirisfal;41 | x=1885.700073242188 y=1540.800048828125 | size=1 | links=o164662.1:9 o164662.2:18 c1501.19:7 c1502.21:14
+#2150 | auto Tirisfal Glades;42§auto Tirisfal;42§auto Clairières de Tirisfal;42 | x=1686.700073242188 y=549.4000244140625 | size=1 | links=#3016(auto Tirisfal Glades;52):69 #6061(auto Tirisfal Glades;121):68 c6497.1:79 c1548.134:2
+#2219 | auto Tirisfal Glades;43§auto Tirisfal;43§auto Clairières de Tirisfal;43 | x=2030.700073242188 y=621.1000366210938 | size=1 | links=#19656(auto Tirisfal Glades;360):27 c1526.27:21 c1525.28:32 o175566.49:29
+#2351 | auto Tirisfal Glades;44§auto Tirisfal;44§auto Clairières de Tirisfal;44 | x=2252.5 y=-275.1000061035156 | size=1 | links=#15955(auto Tirisfal Glades;305):67 #27598(auto Tirisfal Glades;512):68
+#2377 | auto Tirisfal Glades;45§auto Tirisfal;45§auto Clairières de Tirisfal;45 | x=2804.400146484375 y=269.6000061035156 | size=1 | links=#19696(auto Tirisfal Glades;361):40 #21084(auto Tirisfal Glades;387):27
+#2429 | auto Tirisfal Glades;46§auto Tirisfal;46§auto Clairières de Tirisfal;46 | x=2125.60009765625 y=-587.2999877929688 | size=1 | links=#22056(auto Tirisfal Glades;407):6 #26141(auto Tirisfal Glades;490):4
+#2443 | auto Tirisfal Glades;47§auto Tirisfal;47§auto Clairières de Tirisfal;47 | x=1972.900024414063 y=-467.6000061035156 | size=1 | links=#19032(auto Tirisfal Glades;347):11 #26643(auto Tirisfal Glades;499):8 o102985.1:6 o102985.2:6 o102985.4:4 o102985.6:5
+#2582 | auto Tirisfal Glades;48§auto Tirisfal;48§auto Clairières de Tirisfal;48 | x=2280.400146484375 y=282.8000183105469 | size=1 | links=#8792(auto Tirisfal Glades;149):8 #15539(auto Tirisfal Glades;299):10
+#2756 | auto Tirisfal Glades;49§auto Tirisfal;49§auto Clairières de Tirisfal;49 | x=1692.599975585938 y=680.2000122070312 | size=1 | links=#3016(auto Tirisfal Glades;52):62 #3027(auto Tirisfal Glades;53):22 c4075.38:19 c1548.56:15 c1548.131:34
+#2956 | auto Tirisfal Glades;50§auto Tirisfal;50§auto Clairières de Tirisfal;50 | x=1918 y=1545.099975585938 | size=1 | links=#10024(auto Tirisfal Glades;175):9 #11759(auto Tirisfal Glades;214):21 #23882(auto Tirisfal Glades;438):18 #26603(auto Tirisfal Glades;498):9 c1502.19:5
+#2980 | auto Tirisfal Glades;51§auto Tirisfal;51§auto Clairières de Tirisfal;51 | x=2805.10009765625 y=1056.800048828125 | size=1 | links=#3364(auto Tirisfal Glades;60):18 #22037(auto Tirisfal Glades;406):19 c1523.16:43 c1522.20:22
+#3016 | auto Tirisfal Glades;52§auto Tirisfal;52§auto Clairières de Tirisfal;52 | x=1695.700073242188 y=618.2000122070312 | size=1 | links=#2150(auto Tirisfal Glades;42):69 #2756(auto Tirisfal Glades;49):62
+#3027 | auto Tirisfal Glades;53§auto Tirisfal;53§auto Clairières de Tirisfal;53 | x=1704.099975585938 y=700 | size=1 | links=#2756(auto Tirisfal Glades;49):22 #15778(auto Tirisfal Glades;301):12
+#3095 | auto Tirisfal Glades;54§auto Tirisfal;54§auto Clairières de Tirisfal;54 | x=2258.199951171875 y=233.9000091552734 | size=1 | links=#4137(auto Tirisfal Glades;74):11 #7180(central location;down;Taverne Zur Galgenschlinge;Tirisfal Glades):8
+#3110 | auto Tirisfal Glades;55§auto Tirisfal;55§auto Clairières de Tirisfal;55 | x=2349.699951171875 y=484.1000061035156 | size=1 | links=#20334(auto Tirisfal Glades;375):11 #22392(auto Tirisfal Glades;414):7
+#3140 | auto Tirisfal Glades;56§auto Tirisfal;56§auto Clairières de Tirisfal;56 | x=2283.400146484375 y=-630.2999877929688 | size=1 | links=#20147(auto Tirisfal Glades;370):20 #27324(auto Tirisfal Glades;508):34
+#3167 | auto Tirisfal Glades;57§auto Tirisfal;57§auto Clairières de Tirisfal;57 | x=2386.400146484375 y=1471.099975585938 | size=1 | links=#361(auto Tirisfal Glades;8):50 #10287(auto Tirisfal Glades;183):37 #14888(auto Tirisfal Glades;278):14 c1535.23:17
+#3216 | auto Tirisfal Glades;58§auto Tirisfal;58§auto Clairières de Tirisfal;58 | x=2149.60009765625 y=671 | size=1 | links=#343(auto Tirisfal Glades;7):8 #15570(auto Tirisfal Glades;300):27 c620.2:7
+#3363 | auto Tirisfal Glades;59§auto Tirisfal;59§auto Clairières de Tirisfal;59 | x=2443 y=1007.200012207031 | size=1 | links=#14922(auto Tirisfal Glades;280):69 #25774(auto Tirisfal Glades;480):33 c1548.81:35
+#3364 | auto Tirisfal Glades;60§auto Tirisfal;60§auto Clairières de Tirisfal;60 | x=2799.300048828125 y=1074.700073242188 | size=1 | links=#2980(auto Tirisfal Glades;51):18 c1656.1:9
+#3391 | auto Tirisfal Glades;61§auto Tirisfal;61§auto Clairières de Tirisfal;61 | x=1843 y=1630.700073242188 | size=1 | links=#10341(auto Tirisfal Glades;185):11 c1569.1:9 c1661.1:9 c2123.1:6 c2124.1:6 c2126.1:7 c5667.1:6
+#3580 | auto Tirisfal Glades;62§auto Tirisfal;62§auto Clairières de Tirisfal;62 | x=2073 y=639.6000366210938 | size=1 | links=c1525.27:28 c1525.28:25
+#3600 | auto Tirisfal Glades;63§auto Tirisfal;63§auto Clairières de Tirisfal;63 | x=1695 y=1657.5 | size=1 | links=#14068(auto Tirisfal Glades;258):29 #48753(auto Deathknell;Tirisfal Glades;570):12
+#3735 | auto Tirisfal Glades;64§auto Tirisfal;64§auto Clairières de Tirisfal;64 | x=2875.10009765625 y=895.2000122070312 | size=1 | links=#14243(auto Tirisfal Glades;264):49 #21234(auto Tirisfal Glades;391):45 c1522.12:14 c1522.48:26
+#3763 | auto Tirisfal Glades;65§auto Tirisfal;65§auto Clairières de Tirisfal;65 | x=2188.199951171875 y=671.1000366210938 | size=1 | links=#14661(auto Tirisfal Glades;274):25 #15570(auto Tirisfal Glades;300):25 c1526.4:33
+#3772 | auto Tirisfal Glades;66§auto Tirisfal;66§auto Clairières de Tirisfal;66 | x=1843.599975585938 y=1605.300048828125 | size=1 | links=#5462(auto Tirisfal Glades;107):6 #12367(auto Tirisfal Glades;227):16
+#3844 | auto Tirisfal Glades;67§auto Tirisfal;67§auto Clairières de Tirisfal;67 | x=2611.699951171875 y=-545 | size=1 | links=#11264(auto Tirisfal Glades;208):6 c6491.4:13
+#3848 | auto Tirisfal Glades;68§auto Tirisfal;68§auto Clairières de Tirisfal;68 | x=2559.300048828125 y=537.7999877929688 | size=1 | links=#24666(auto Tirisfal Glades;454):14 c1941.5:15 c1941.9:7 c1941.10:3 o176753.23:18 o176753.27:9
+#3924 | auto Tirisfal Glades;69§auto Tirisfal;69§auto Clairières de Tirisfal;69 | x=2599.400146484375 y=-587.7999877929688 | size=1 | links=#25669(auto Tirisfal Glades;476):21 #26356(auto Tirisfal Glades;494):13
+#4000 | auto Tirisfal Glades;70§auto Tirisfal;70§auto Clairières de Tirisfal;70 | x=2052.60009765625 y=130.3000030517578 | size=1 | links=#17187(auto Tirisfal Glades;323):16 #22236(auto Tirisfal Glades;411):60
+#4033 | auto Tirisfal Glades;71§auto Tirisfal;71§auto Clairières de Tirisfal;71 | x=2881.400146484375 y=-543.4000244140625 | size=1 | links=#12889(auto Tirisfal Glades;234):51 #26812(auto Tirisfal Glades;502):40 c1538.19:16
+#4040 | auto Tirisfal Glades;72§auto Tirisfal;72§auto Clairières de Tirisfal;72 | x=2783.800048828125 y=867 | size=1 | links=#755(auto Tirisfal Glades;17):43 #8705(centralpoint;Agamand Mills;Tirisfal Glades):26
+#4074 | auto Tirisfal Glades;73§auto Tirisfal;73§auto Clairières de Tirisfal;73 | x=2081.199951171875 y=278.2000122070313 | size=1 | links=#21951(auto Tirisfal Glades;403):11 #28293(auto Tirisfal Glades;526):54
+#4137 | auto Tirisfal Glades;74§auto Tirisfal;74§auto Clairières de Tirisfal;74 | x=2268.699951171875 y=230.1000061035156 | size=1 | links=#3095(auto Tirisfal Glades;54):11 #5339(auto Tirisfal Glades;101):6
+#4354 | auto Tirisfal Glades;75§auto Tirisfal;75§auto Clairières de Tirisfal;75 | x=2064 y=-402.3999938964844 | size=1 | links=#4577(auto Tirisfal Glades;83):7 c1532.5:21
+#4381 | auto Tirisfal Glades;76§auto Tirisfal;76§auto Clairières de Tirisfal;76 | x=2004.300048828125 y=-455 | size=1 | links=#11561(centralpoint;Balnir Farmstead;Tirisfal Glades):12 #26023(auto Tirisfal Glades;488):26 c1529.12:11
+#4414 | auto Tirisfal Glades;77§auto Tirisfal;77§auto Clairières de Tirisfal;77 | x=1876.900024414063 y=1720.200073242188 | size=1 | links=c1508.14:23 c1508.15:15
+#4471 | auto Tirisfal Glades;78§auto Tirisfal;78§auto Clairières de Tirisfal;78 | x=2185.800048828125 y=-541.5 | size=1 | links=#1935(auto Tirisfal Glades;36):22 c1537.27:23
+#4483 | auto Tirisfal Glades;79§auto Tirisfal;79§auto Clairières de Tirisfal;79 | x=1889.099975585938 y=457.7000122070313 | size=1 | links=#5421(auto Tirisfal Glades;104):96 #16469(auto Tirisfal Glades;310):45 c1548.117:19
+#4489 | auto Tirisfal Glades;80§auto Tirisfal;80§auto Clairières de Tirisfal;80 | x=2436.699951171875 y=1678 | size=1 | links=#27266(auto Tirisfal Glades;506):41 c1535.5:44 c1543.9:31
+#4516 | auto Tirisfal Glades;81§auto Tirisfal;81§auto Clairières de Tirisfal;81 | x=2987.800048828125 y=817.2999877929688 | size=1 | links=#25400(auto Tirisfal Glades;471):30 c1523.6:35 c1530.7:33 c1522.16:11
+#4547 | auto Tirisfal Glades;82§auto Tirisfal;82§auto Clairières de Tirisfal;82 | x=2265.10009765625 y=240.6999969482422 | size=1 | links=#7180(central location;down;Taverne Zur Galgenschlinge;Tirisfal Glades):8 #24010(auto Tirisfal Glades;439):3 c5688.1:6 c6785.1:1
+#4577 | auto Tirisfal Glades;83§auto Tirisfal;83§auto Clairières de Tirisfal;83 | x=2056.699951171875 y=-402.8999938964844 | size=1 | links=#4354(auto Tirisfal Glades;75):7 #21828(auto Tirisfal Glades;402):32 c1529.2:25
+#4594 | auto Tirisfal Glades;84§auto Tirisfal;84§auto Clairières de Tirisfal;84 | x=2903.900146484375 y=382.1000061035156 | size=1 | links=#20982(auto Tirisfal Glades;382):6 c1753.1:6 o153472.4:3 c1675.17:2
+#4646 | auto Tirisfal Glades;85§auto Tirisfal;85§auto Clairières de Tirisfal;85 | x=1820.800048828125 y=1765.800048828125 | size=1 | links=#19824(auto Tirisfal Glades;364):35 c1512.17:16
+#4726 | auto Tirisfal Glades;86§auto Tirisfal;86§auto Clairières de Tirisfal;86 | x=2248.10009765625 y=249.9000091552734 | size=1 | links=#1509(auto Tirisfal Glades;28):11 c5759.1:10
+#4747 | auto Tirisfal Glades;87§auto Tirisfal;87§auto Clairières de Tirisfal;87 | x=1807.700073242188 y=-367.7000122070313 | size=1 | links=#14634(auto Tirisfal Glades;273):41 #21578(auto Tirisfal Glades;398):78 #28239(auto Tirisfal Glades;522):95
+#4774 | auto Tirisfal Glades;88§auto Tirisfal;88§auto Clairières de Tirisfal;88 | x=1943.700073242188 y=-200.6000061035156 | size=1 | links=#23011(auto Tirisfal Glades;422):48 #24384(auto Tirisfal Glades;448):61
+#4819 | auto Tirisfal Glades;89§auto Tirisfal;89§auto Clairières de Tirisfal;89 | x=1910.800048828125 y=1568.700073242188 | size=1 | links=#11638(auto Tirisfal Glades;212):7 #19290(auto Tirisfal Glades;353):6 c1502.28:8
+#4863 | auto Tirisfal Glades;90§auto Tirisfal;90§auto Clairières de Tirisfal;90 | x=2814.60009765625 y=821.9000244140625 | size=1 | links=#528(auto Tirisfal Glades;15):7 #8705(centralpoint;Agamand Mills;Tirisfal Glades):29 c1522.47:6
+#4872 | auto Tirisfal Glades;91§auto Tirisfal;91§auto Clairières de Tirisfal;91 | x=2912.900146484375 y=705.9000244140625 | size=1 | links=#13586(auto Tirisfal Glades;242):34 #14027(auto Tirisfal Glades;256):28 c1530.15:25
+#4893 | auto Tirisfal Glades;92§auto Tirisfal;92§auto Clairières de Tirisfal;92 | x=2162 y=1271.900024414063 | size=1 | links=#23062(auto Tirisfal Glades;424):50 #26809(auto Tirisfal Glades;501):14 c7980.3:6 c7980.4:5
+#4988 | auto Tirisfal Glades;93§auto Tirisfal;93§auto Clairières de Tirisfal;93 | x=2310.900146484375 y=264.1000061035156 | size=1 | links=#24244(auto Tirisfal Glades;446):7 c1499.1:5
+#5004 | auto Tirisfal Glades;94§auto Tirisfal;94§auto Clairières de Tirisfal;94 | x=2274.800048828125 y=1314.200073242188 | size=1 | links=#25678(auto Tirisfal Glades;477):5 c620.4:5 c1934.4:3 c1936.8:22
+#5086 | auto Tirisfal Glades;95§auto Tirisfal;95§auto Clairières de Tirisfal;95 | x=2355.800048828125 y=449.3999938964844 | size=1 | links=#15865(auto Tirisfal Glades;303):8 #17332(auto Tirisfal Glades;325):9
+#5147 | auto Tirisfal Glades;96§auto Tirisfal;96§auto Clairières de Tirisfal;96 | x=2022.200073242188 y=-588.6000366210938 | size=5 | links=c1554.11:62 c1548.109:49
+#5164 | auto Tirisfal Glades;97§auto Tirisfal;97§auto Clairières de Tirisfal;97 | x=1810.300048828125 y=1591.200073242188 | size=1 | links=#8648(auto Tirisfal Glades;147):11 #9641(auto Tirisfal Glades;162):13
+#5170 | auto Tirisfal Glades;98§auto Tirisfal;98§auto Clairières de Tirisfal;98 | x=1681.5 y=-590.1000366210938 | size=1 | links=#22006(auto Tirisfal Glades;405):64 #26256(auto Tirisfal Glades;491):67
+#5177 | auto Tirisfal Glades;99§auto Tirisfal;99§auto Clairières de Tirisfal;99 | x=2643.699951171875 y=-302.3000183105469 | size=5 | links=#7082(auto Tirisfal Glades;129):44 #13920(auto Tirisfal Glades;255):42
+#5333 | auto Tirisfal Glades;100§auto Tirisfal;100§auto Clairières de Tirisfal;100 | x=2402.900146484375 y=1629.700073242188 | size=1 | links=c1535.2:32 c1535.5:19 c1535.13:26 c1535.30:46
+#5339 | auto Tirisfal Glades;101§auto Tirisfal;101§auto Clairières de Tirisfal;101 | x=2271.5 y=236.1999969482422 | size=1 | links=#4137(auto Tirisfal Glades;74):6 #10114(centralpoint;Taverne Zur Galgenschlinge;Tirisfal Glades;top):12
+#5345 | auto Tirisfal Glades;102§auto Tirisfal;102§auto Clairières de Tirisfal;102 | x=2253.60009765625 y=500.3999938964844 | size=1 | links=#11608(auto Tirisfal Glades;211):51 #24965(auto Tirisfal Glades;460):39
+#5386 | auto Tirisfal Glades;103§auto Tirisfal;103§auto Clairières de Tirisfal;103 | x=2180.400146484375 y=1168.099975585938 | size=1 | links=#9809(auto Tirisfal Glades;167):54 #21704(auto Tirisfal Glades;401):32
+#5421 | auto Tirisfal Glades;104§auto Tirisfal;104§auto Clairières de Tirisfal;104 | x=1912.099975585938 y=364.2000122070313 | size=1 | links=#1252(auto Tirisfal Glades;25):86 #4483(auto Tirisfal Glades;79):96 c1548.146:47
+#5424 | auto Tirisfal Glades;105§auto Tirisfal;105§auto Clairières de Tirisfal;105 | x=2384.60009765625 y=1329.400024414063 | size=1 | links=#19341(auto Tirisfal Glades;356):62 #20815(auto Tirisfal Glades;381):39 c620.1:25 c1535.17:20 c1547.21:44
+#5457 | auto Tirisfal Glades;106§auto Tirisfal;106§auto Clairières de Tirisfal;106 | x=2127.900146484375 y=-198.4000091552734 | size=1 | links=#9902(auto Tirisfal Glades;173):62 #15955(auto Tirisfal Glades;305):80
+#5462 | auto Tirisfal Glades;107§auto Tirisfal;107§auto Clairières de Tirisfal;107 | x=1843.300048828125 y=1611.800048828125 | size=1 | links=#3772(auto Tirisfal Glades;66):6 #10341(auto Tirisfal Glades;185):7
+#5496 | auto Tirisfal Glades;108§auto Tirisfal;108§auto Clairières de Tirisfal;108 | x=2076.800048828125 y=151.3000030517578 | size=1 | links=#18976(auto Tirisfal Glades;344):50 c1738.1:58
+#5508 | auto Tirisfal Glades;109§auto Tirisfal;109§auto Clairières de Tirisfal;109 | x=1840.5 y=1091.300048828125 | size=5 | links=c1536.1:35 c10357.1:38 c1554.9:24 c4075.23:29
+#5544 | auto Tirisfal Glades;110§auto Tirisfal;110§auto Clairières de Tirisfal;110 | x=2732.60009765625 y=967.4000244140625 | size=1 | links=#755(auto Tirisfal Glades;17):71 #26336(auto Tirisfal Glades;493):47 c1520.20:26 c1522.33:36
+#5546 | auto Tirisfal Glades;111§auto Tirisfal;111§auto Clairières de Tirisfal;111 | x=2911 y=188.1000061035156 | size=5 | links=#8196(auto Tirisfal Glades;143):62 #11956(auto Tirisfal Glades;216):45 #25770(auto Tirisfal Glades;479):67 c1911.3:27 c1543.27:15
+#5589 | auto Tirisfal Glades;112§auto Tirisfal;112§auto Clairières de Tirisfal;112 | x=2776.300048828125 y=1046.5 | size=1 | links=#26336(auto Tirisfal Glades;493):49 c1523.11:9 c1522.20:8
+#5773 | auto Tirisfal Glades;113§auto Tirisfal;113§auto Clairières de Tirisfal;113 | x=2238.300048828125 y=206.4000091552734 | size=1 | links=#551(auto Tirisfal Glades;16):37 #22254(auto Tirisfal Glades;413):49
+#5830 | auto Tirisfal Glades;114§auto Tirisfal;114§auto Clairières de Tirisfal;114 | x=1870.800048828125 y=1525.800048828125 | size=1 | links=#10832(auto Tirisfal Glades;201):3 #16533(auto Tirisfal Glades;312):5
+#5876 | auto Tirisfal Glades;115§auto Tirisfal;115§auto Clairières de Tirisfal;115 | x=1999 y=-479.5 | size=1 | links=#11561(centralpoint;Balnir Farmstead;Tirisfal Glades):12 #19516(auto Tirisfal Glades;359):26 c4075.24:31
+#5879 | auto Tirisfal Glades;116§auto Tirisfal;116§auto Clairières de Tirisfal;116 | x=2340.900146484375 y=542.7000122070312 | size=1 | links=#9732(auto Tirisfal Glades;164):11 #11410(auto Tirisfal Glades;209):22 c1526.9:31
+#5900 | auto Tirisfal Glades;117§auto Tirisfal;117§auto Clairières de Tirisfal;117 | x=2635.900146484375 y=324 | size=1 | links=#10182(auto Tirisfal Glades;179):68 #27641(auto Tirisfal Glades;514):64 o176753.13:51 c1674.14:38
+#5920 | auto Tirisfal Glades;118§auto Tirisfal;118§auto Clairières de Tirisfal;118 | x=2770.5 y=-501 | size=1 | links=#23796(auto Tirisfal Glades;436):39 #24668(auto Tirisfal Glades;455):22
+#5972 | auto Tirisfal Glades;119§auto Tirisfal;119§auto Clairières de Tirisfal;119 | x=2824.10009765625 y=814.5 | size=1 | links=#25277(auto Tirisfal Glades;468):8 c1523.20:11 c1522.50:5
+#5990 | auto Tirisfal Glades;120§auto Tirisfal;120§auto Clairières de Tirisfal;120 | x=2117.60009765625 y=-581.1000366210938 | size=1 | links=#13798(auto Tirisfal Glades;251):13 #26141(auto Tirisfal Glades;490):5
+#6061 | auto Tirisfal Glades;121§auto Tirisfal;121§auto Clairières de Tirisfal;121 | x=1753.099975585938 y=531.9000244140625 | size=1 | links=#2150(auto Tirisfal Glades;42):68 #16469(auto Tirisfal Glades;310):115 #23125(auto Tirisfal Glades;426):57 c15195.1:31 c1537.22:46 c1548.155:19
+#6122 | auto Tirisfal Glades;122§auto Tirisfal;122§auto Clairières de Tirisfal;122 | x=1685.400024414063 y=727.2000122070312 | size=1 | links=#3602(auto Undercity;54):33
+#6139 | auto Tirisfal Glades;123§auto Tirisfal;123§auto Clairières de Tirisfal;123 | x=1969.900024414063 y=1571 | size=1 | links=#9737(auto Tirisfal Glades;165):36 #21549(auto Tirisfal Glades;397):25 #22437(auto Tirisfal Glades;416):16 #26500(auto Tirisfal Glades;497):22 c1890.17:10 c1502.33:20 c1502.34:13
+#6140 | auto Tirisfal Glades;124§auto Tirisfal;124§auto Clairières de Tirisfal;124 | x=2367.60009765625 y=1432.900024414063 | size=1 | links=#10287(auto Tirisfal Glades;183):17 c1935.4:16
+#6151 | auto Tirisfal Glades;125§auto Tirisfal;125§auto Clairières de Tirisfal;125 | x=2040.5 y=1892.5 | size=1 | links=#13770(auto Tirisfal Glades;249):9 c1505.19:9 c1505.20:5
+#6375 | auto Tirisfal Glades;126§auto Tirisfal;126§auto Clairières de Tirisfal;126 | x=2535.400146484375 y=-290.3999938964844 | size=5 | links=#24055(auto Tirisfal Glades;440):37 #25966(auto Tirisfal Glades;487):47
+#6597 | Gneis;path;Tirisfal Glades;entry and exit;to;Undercity§Gneis;weg;Tirisfal;ein- und ausgang;zur;unterstadt§Gneis;path;Clairières de Tirisfal;entrée et sortie;vers;Fossoyeuse | x=1680.200073242188 y=727.2999877929688 | size=1 | links=#15778(auto Tirisfal Glades;301):30 #1414(auto Undercity;19):20 #3602(auto Undercity;54):28
+#6808 | auto Tirisfal Glades;127§auto Tirisfal;127§auto Clairières de Tirisfal;127 | x=1676.800048828125 y=-715.1000366210938 | size=1 | links=#24968(auto Tirisfal Glades;461):19 c11022.1:6 c11055.1:6
+#6956 | auto Tirisfal Glades;128§auto Tirisfal;128§auto Clairières de Tirisfal;128 | x=2358.900146484375 y=427.1000061035156 | size=1 | links=#10438(auto Tirisfal Glades;186):9 #18627(auto Tirisfal Glades;341):6
+#7082 | auto Tirisfal Glades;129§auto Tirisfal;129§auto Clairières de Tirisfal;129 | x=2688.300048828125 y=-299.2000122070313 | size=5 | links=#5177(auto Tirisfal Glades;99):44 c1548.20:72
+#7130 | auto Tirisfal Glades;130§auto Tirisfal;130§auto Clairières de Tirisfal;130 | x=1860.400024414063 y=1589.099975585938 | size=1 | links=#1363(auto Tirisfal Glades;27):7 #12367(auto Tirisfal Glades;227):19 #24847(auto Tirisfal Glades;458):33 c1736.1:22 c1740.1:15 c2315.1:0
+#7180 | central location;down;Taverne Zur Galgenschlinge;Tirisfal Glades§zentralpunkt;unten;Taverne Zur Galgenschlinge;Tirisfal§emplacement central;bas;Taverne Zur Galgenschlinge;Clairières de Tirisfal | x=2257 y=242.1000061035156 | size=1 | links=#3095(auto Tirisfal Glades;54):8 #4547(auto Tirisfal Glades;82):8 #27744(auto Tirisfal Glades;517):5 c1500.1:5 c2131.1:4
+#7208 | auto Tirisfal Glades;131§auto Tirisfal;131§auto Clairières de Tirisfal;131 | x=1871.700073242188 y=1534.700073242188 | size=1 | links=#10832(auto Tirisfal Glades;201):5 #13637(auto Tirisfal Glades;244):6
+#7257 | auto Tirisfal Glades;132§auto Tirisfal;132§auto Clairières de Tirisfal;132 | x=2283.400146484375 y=394.6000061035156 | size=1 | links=#19322(auto Tirisfal Glades;355):23 c1496.1:9 c1742.1:6 c1743.1:8 c3547.1:51 c5725.1:26 c4075.52:26
+#7425 | auto Tirisfal Glades;133§auto Tirisfal;133§auto Clairières de Tirisfal;133 | x=2304.400146484375 y=291.5 | size=1 | links=#8757(auto Tirisfal Glades;148):4 #22701(auto Tirisfal Glades;418):4
+#7479 | auto Tirisfal Glades;135§auto Tirisfal;135§auto Clairières de Tirisfal;135 | x=2694.900146484375 y=370.5 | size=1 | links=#13480(auto Tirisfal Glades;241):27 c1674.15:19
+#7514 | auto Tirisfal Glades;136§auto Tirisfal;136§auto Clairières de Tirisfal;136 | x=2326.60009765625 y=1115.900024414063 | size=1 | links=#9020(auto Tirisfal Glades;155):79 #12470(auto Tirisfal Glades;229):43 o175566.11:46 c1547.61:10
+#7520 | auto Tirisfal Glades;137§auto Tirisfal;137§auto Clairières de Tirisfal;137 | x=2143.60009765625 y=-548.6000366210938 | size=1 | links=#14178(auto Tirisfal Glades;263):7 #25928(auto Tirisfal Glades;486):13
+#7785 | auto Tirisfal Glades;138§auto Tirisfal;138§auto Clairières de Tirisfal;138 | x=1860.5 y=1574.5 | size=1 | links=#1363(auto Tirisfal Glades;27):7 c2113.1:5 c2115.1:5
+#7893 | auto Tirisfal Glades;139§auto Tirisfal;139§auto Clairières de Tirisfal;139 | x=2703.5 y=803.6000366210938 | size=1 | links=#8644(auto Tirisfal Glades;146):48 #15245(auto Tirisfal Glades;289):59 c1520.17:20 c1520.18:25
+#7987 | auto Tirisfal Glades;141§auto Tirisfal;141§auto Clairières de Tirisfal;141 | x=2437.900146484375 y=1762.400024414063 | size=1 | links=#23333(auto Tirisfal Glades;430):37 #27266(auto Tirisfal Glades;506):43
+#8152 | auto Tirisfal Glades;142§auto Tirisfal;142§auto Clairières de Tirisfal;142 | x=2368.400146484375 y=-346.3000183105469 | size=1 | links=#10760(auto Tirisfal Glades;197):84 #27598(auto Tirisfal Glades;512):71 c1554.98:46
+#8196 | auto Tirisfal Glades;143§auto Tirisfal;143§auto Clairières de Tirisfal;143 | x=2953.5 y=234.6000061035156 | size=5 | links=#5546(auto Tirisfal Glades;111):62 #18608(auto Tirisfal Glades;339):51 c1911.12:32 c1544.24:35 c1543.26:16
+#8289 | auto Tirisfal Glades;144§auto Tirisfal;144§auto Clairières de Tirisfal;144 | x=2437.400146484375 y=1821.700073242188 | size=1 | links=#23333(auto Tirisfal Glades;430):21 c1544.13:26
+#8578 | auto Tirisfal Glades;145§auto Tirisfal;145§auto Clairières de Tirisfal;145 | x=2201.5 y=-636.4000244140625 | size=5 | links=#25091(auto Tirisfal Glades;466):39 c1538.11:35 c1537.20:25
+#8644 | auto Tirisfal Glades;146§auto Tirisfal;146§auto Clairières de Tirisfal;146 | x=2745.699951171875 y=826.5 | size=1 | links=#7893(auto Tirisfal Glades;139):48 #10488(auto Tirisfal Glades;188):20 c1523.22:43 c1522.49:30
+#8648 | auto Tirisfal Glades;147§auto Tirisfal;147§auto Clairières de Tirisfal;147 | x=1821.5 y=1589 | size=1 | links=#5164(auto Tirisfal Glades;97):11 #12367(auto Tirisfal Glades;227):19 c1508.1:49 c1737.1:21
+#8705 | centralpoint;Agamand Mills;Tirisfal Glades§zentralerpunkt;Agamands Mühlen;Tirisfal§point central;Agamand Mills;Clairières de Tirisfal | x=2804 y=849.2000122070312 | size=1 | links=#4040(auto Tirisfal Glades;72):26 #4863(auto Tirisfal Glades;90):29 #14243(auto Tirisfal Glades;264):35 #17547(auto Tirisfal Glades;329):45 c1522.3:21 c1523.14:31 c1523.22:20
+#8757 | auto Tirisfal Glades;148§auto Tirisfal;148§auto Clairières de Tirisfal;148 | x=2299.60009765625 y=292.5 | size=1 | links=#7425(auto Tirisfal Glades;133):4 #21077(auto Tirisfal Glades;385):5
+#8792 | auto Tirisfal Glades;149§auto Tirisfal;149§auto Clairières de Tirisfal;149 | x=2272.60009765625 y=284.7000122070313 | size=1 | links=#2582(auto Tirisfal Glades;48):8 #25812(auto Tirisfal Glades;483):15
+#8793 | auto Tirisfal Glades;150§auto Tirisfal;150§auto Clairières de Tirisfal;150 | x=2320.60009765625 y=-572.6000366210938 | size=1 | links=#9292(auto Tirisfal Glades;159):25 #27324(auto Tirisfal Glades;508):35
+#8884 | auto Tirisfal Glades;151§auto Tirisfal;151§auto Clairières de Tirisfal;151 | x=2395.60009765625 y=404.8000183105469 | size=1 | links=#14491(auto Tirisfal Glades;270):27 #19129(auto Tirisfal Glades;349):56 #21201(auto Tirisfal Glades;390):39 c4075.6:19
+#8973 | auto Tirisfal Glades;153§auto Tirisfal;153§auto Clairières de Tirisfal;153 | x=3096.5 y=-562.1000366210938 | size=1 | links=#9881(auto Tirisfal Glades;171):10 c1539.2:7
+#8976 | auto Tirisfal Glades;154§auto Tirisfal;154§auto Clairières de Tirisfal;154 | x=2006.5 y=1447 | size=1 | links=#18857(auto Tirisfal Glades;343):47 c1513.8:19 c1513.10:37 c1502.31:31
+#9020 | auto Tirisfal Glades;155§auto Tirisfal;155§auto Clairières de Tirisfal;155 | x=2331 y=1195 | size=1 | links=#7514(auto Tirisfal Glades;136):79 #19341(auto Tirisfal Glades;356):83 o113772.14:17
+#9039 | auto Tirisfal Glades;156§auto Tirisfal;156§auto Clairières de Tirisfal;156 | x=1897.900024414063 y=-412.1000061035156 | size=1 | links=#14634(auto Tirisfal Glades;273):61 #15279(auto Tirisfal Glades;291):48 c1554.63:20
+#9080 | auto Tirisfal Glades;157§auto Tirisfal;157§auto Clairières de Tirisfal;157 | x=2122 y=1322.900024414063 | size=1 | links=#89(auto Tirisfal Glades;4):21 #23175(auto Tirisfal Glades;427):29
+#9237 | auto Tirisfal Glades;158§auto Tirisfal;158§auto Clairières de Tirisfal;158 | x=2103.5 y=554.9000244140625 | size=1 | links=c1525.18:10 c1526.24:50
+#9292 | auto Tirisfal Glades;159§auto Tirisfal;159§auto Clairières de Tirisfal;159 | x=2343.699951171875 y=-562.2000122070312 | size=1 | links=#8793(auto Tirisfal Glades;150):25 c1554.122:30
+#9346 | auto Tirisfal Glades;160§auto Tirisfal;160§auto Clairières de Tirisfal;160 | x=2998.5 y=673.1000366210938 | size=1 | links=#10505(auto Tirisfal Glades;189):50 c1530.1:42 c1534.12:12
+#9454 | auto Tirisfal Glades;161§auto Tirisfal;161§auto Clairières de Tirisfal;161 | x=3063.5 y=-544.2000122070312 | size=1 | links=#25132(auto Tirisfal Glades;467):21 c1539.4:6 c1538.14:16
+#9641 | auto Tirisfal Glades;162§auto Tirisfal;162§auto Clairières de Tirisfal;162 | x=1796.599975585938 y=1593.300048828125 | size=1 | links=#5164(auto Tirisfal Glades;97):13 #20322(auto Tirisfal Glades;374):36
+#9655 | auto Tirisfal Glades;163§auto Tirisfal;163§auto Clairières de Tirisfal;163 | x=2098.400146484375 y=856.1000366210938 | size=1 | links=#23551(auto Tirisfal Glades;434):57 #24719(auto Tirisfal Glades;456):78 o175566.65:11
+#9732 | auto Tirisfal Glades;164§auto Tirisfal;164§auto Clairières de Tirisfal;164 | x=2329.699951171875 y=545.5 | size=1 | links=#5879(auto Tirisfal Glades;116):11 #23079(auto Tirisfal Glades;425):25
+#9737 | auto Tirisfal Glades;165§auto Tirisfal;165§auto Clairières de Tirisfal;165 | x=1934.599975585938 y=1580.700073242188 | size=1 | links=#6139(auto Tirisfal Glades;123):36 #11759(auto Tirisfal Glades;214):18 #24847(auto Tirisfal Glades;458):41 #26500(auto Tirisfal Glades;497):25 c1501.16:17 c1502.17:15 c1502.26:23 c1501.27:10 c1501.28:15 c4075.56:11
+#9809 | auto Tirisfal Glades;167§auto Tirisfal;167§auto Clairières de Tirisfal;167 | x=2179.699951171875 y=1113.599975585938 | size=1 | links=#5386(auto Tirisfal Glades;103):54 #17201(auto Tirisfal Glades;324):55 o175566.39:83 c1553.53:48
+#9839 | auto Tirisfal Glades;168§auto Tirisfal;168§auto Clairières de Tirisfal;168 | x=2040.099975585938 y=1847 | size=1 | links=#10995(auto Tirisfal Glades;202):14 c1505.16:0
+#9841 | auto Tirisfal Glades;169§auto Tirisfal;169§auto Clairières de Tirisfal;169 | x=2170.10009765625 y=-530.4000244140625 | size=1 | links=#20037(auto Tirisfal Glades;369):16
+#9876 | auto Tirisfal Glades;170§auto Tirisfal;170§auto Clairières de Tirisfal;170 | x=2111.300048828125 y=-551.5 | size=1 | links=#19085(auto Tirisfal Glades;348):6 #27239(auto Tirisfal Glades;505):24
+#9881 | auto Tirisfal Glades;171§auto Tirisfal;171§auto Clairières de Tirisfal;171 | x=3094.800048828125 y=-551.4000244140625 | size=1 | links=#8973(auto Tirisfal Glades;153):10 #25132(auto Tirisfal Glades;467):16 c1540.2:7 c1538.8:2
+#9892 | auto Tirisfal Glades;172§auto Tirisfal;172§auto Clairières de Tirisfal;172 | x=2460.400146484375 y=298.3000183105469 | size=1 | links=#1551(auto Tirisfal Glades;30):62 #1653(auto Tirisfal Glades;32):73 #10046(auto Tirisfal Glades;176):37 #22005(auto Tirisfal Glades;404):57
+#9902 | auto Tirisfal Glades;173§auto Tirisfal;173§auto Clairières de Tirisfal;173 | x=2120.10009765625 y=-136.1999969482422 | size=1 | links=#5457(auto Tirisfal Glades;106):62 #14284(auto Tirisfal Glades;266):54
+#9928 | auto Tirisfal Glades;174§auto Tirisfal;174§auto Clairières de Tirisfal;174 | x=1729.700073242188 y=-733.2000122070312 | size=1 | links=#10198(auto Tirisfal Glades;181):14 #19838(auto Tirisfal Glades;365):17 c12943.1:7
+#10024 | auto Tirisfal Glades;175§auto Tirisfal;175§auto Clairières de Tirisfal;175 | x=1909.099975585938 y=1549.599975585938 | size=1 | links=#2956(auto Tirisfal Glades;50):9 #21016(auto Tirisfal Glades;383):4
+#10046 | auto Tirisfal Glades;176§auto Tirisfal;176§auto Clairières de Tirisfal;176 | x=2483.300048828125 y=269.1000061035156 | size=1 | links=#9892(auto Tirisfal Glades;172):37 #27187(auto Tirisfal Glades;504):29 c1547.23:17
+#10053 | auto Tirisfal Glades;177§auto Tirisfal;177§auto Clairières de Tirisfal;177 | x=1942.800048828125 y=1735.5 | size=1 | links=#466(auto Tirisfal Glades;14):13 c1512.31:52
+#10091 | auto Tirisfal Glades;178§auto Tirisfal;178§auto Clairières de Tirisfal;178 | x=1875.200073242188 y=1575.099975585938 | size=1 | links=#13861(auto Tirisfal Glades;253):6 #27349(auto Tirisfal Glades;509):3
+#10114 | centralpoint;Taverne Zur Galgenschlinge;Tirisfal Glades;top§zentralerpunkt;Taverne Zur Galgenschlinge;Tirisfal;oben§point central;Taverne Zur Galgenschlinge;Clairières de Tirisfal;top | x=2259.800048828125 y=240.1000061035156 | size=1 | links=#5339(auto Tirisfal Glades;101):12 #12339(auto Tirisfal Glades;225):5 #20348(auto Tirisfal Glades;376):4 #27904(auto Tirisfal Glades;519):5 c2128.1:7
+#10182 | auto Tirisfal Glades;179§auto Tirisfal;179§auto Clairières de Tirisfal;179 | x=2691.60009765625 y=283.7000122070313 | size=1 | links=#5900(auto Tirisfal Glades;117):68 c1675.12:21
+#10191 | auto Tirisfal Glades;180§auto Tirisfal;180§auto Clairières de Tirisfal;180 | x=2540.199951171875 y=869 | size=1 | links=#19293(auto Tirisfal Glades;354):56 c1522.42:46 c1522.43:15
+#10198 | auto Tirisfal Glades;181§auto Tirisfal;181§auto Clairières de Tirisfal;181 | x=1734 y=-719.7000122070312 | size=1 | links=#9928(auto Tirisfal Glades;174):14 #27695(auto Tirisfal Glades;515):15
+#10250 | auto Tirisfal Glades;182§auto Tirisfal;182§auto Clairières de Tirisfal;182 | x=2456.800048828125 y=-583.7000122070312 | size=1 | links=#15079(auto Tirisfal Glades;285):74 #25290(auto Tirisfal Glades;469):76 c1554.111:30 c1554.130:39
+#10287 | auto Tirisfal Glades;183§auto Tirisfal;183§auto Clairières de Tirisfal;183 | x=2385 y=1433.300048828125 | size=1 | links=#3167(auto Tirisfal Glades;57):37 #6140(auto Tirisfal Glades;124):17 #10637(auto Tirisfal Glades;191):32
+#10333 | auto Tirisfal Glades;184§auto Tirisfal;184§auto Clairières de Tirisfal;184 | x=1899.400024414063 y=1522.5 | size=1 | links=#23882(auto Tirisfal Glades;438):17 #25474(auto Tirisfal Glades;472):9 c1501.18:3 c1501.20:11
+#10341 | auto Tirisfal Glades;185§auto Tirisfal;185§auto Clairières de Tirisfal;185 | x=1843.099975585938 y=1619.200073242188 | size=1 | links=#3391(auto Tirisfal Glades;61):11 #5462(auto Tirisfal Glades;107):7
+#10438 | auto Tirisfal Glades;186§auto Tirisfal;186§auto Clairières de Tirisfal;186 | x=2367.60009765625 y=431.3999938964844 | size=1 | links=#6956(auto Tirisfal Glades;128):9 #14491(auto Tirisfal Glades;270):12 #15865(auto Tirisfal Glades;303):14
+#10487 | auto Tirisfal Glades;187§auto Tirisfal;187§auto Clairières de Tirisfal;187 | x=1867.700073242188 y=1567.900024414063 | size=1 | links=#13861(auto Tirisfal Glades;253):7 c2113.1:8
+#10488 | auto Tirisfal Glades;188§auto Tirisfal;188§auto Clairières de Tirisfal;188 | x=2752.400146484375 y=806.7000122070312 | size=1 | links=#8644(auto Tirisfal Glades;146):20 #14901(auto Tirisfal Glades;279):6 c1520.21:2 c1522.53:7
+#10505 | auto Tirisfal Glades;189§auto Tirisfal;189§auto Clairières de Tirisfal;189 | x=2977.300048828125 y=627.7000122070312 | size=1 | links=#9346(auto Tirisfal Glades;160):50 #16017(auto Tirisfal Glades;306):39 #19733(auto Tirisfal Glades;363):30 c1534.1:34 c1534.7:21
+#10603 | auto Tirisfal Glades;190§auto Tirisfal;190§auto Clairières de Tirisfal;190 | x=1903 y=1764.700073242188 | size=1 | links=#15067(auto Tirisfal Glades;283):9 c1512.12:14
+#10637 | auto Tirisfal Glades;191§auto Tirisfal;191§auto Clairières de Tirisfal;191 | x=2385.400146484375 y=1400.599975585938 | size=1 | links=#10287(auto Tirisfal Glades;183):32 #17806(auto Tirisfal Glades;331):14 #20815(auto Tirisfal Glades;381):31 c1535.20:23
+#10649 | auto Tirisfal Glades;192§auto Tirisfal;192§auto Clairières de Tirisfal;192 | x=1953.300048828125 y=-465.3000183105469 | size=1 | links=#15077(auto Tirisfal Glades;284):6 #17994(auto Tirisfal Glades;335):7
+#10654 | auto Tirisfal Glades;193§auto Tirisfal;193§auto Clairières de Tirisfal;193 | x=1685.400024414063 y=727.2000122070312 | size=1 | links=#19394(auto Tirisfal Glades;357):1 #3602(auto Undercity;54):33
+#10666 | auto Tirisfal Glades;194§auto Tirisfal;194§auto Clairières de Tirisfal;194 | x=2552.800048828125 y=505.3000183105469 | size=1 | links=#11597(auto Tirisfal Glades;210):71 #24666(auto Tirisfal Glades;454):21 c4075.32:16
+#10677 | auto Tirisfal Glades;195§auto Tirisfal;195§auto Clairières de Tirisfal;195 | x=3059 y=682.7000122070312 | size=1 | links=#20312(auto Tirisfal Glades;373):16 #21100(auto Tirisfal Glades;389):15 o105170.1:16 c1534.15:5 c1534.16:6 c1530.23:5
+#10692 | auto Tirisfal Glades;196§auto Tirisfal;196§auto Clairières de Tirisfal;196 | x=2097 y=-34.29999923706055 | size=1 | links=#13328(auto Tirisfal Glades;240):51 c1547.57:23
+#10760 | auto Tirisfal Glades;197§auto Tirisfal;197§auto Clairières de Tirisfal;197 | x=2343.199951171875 y=-426.5 | size=1 | links=#8152(auto Tirisfal Glades;142):84 #25290(auto Tirisfal Glades;469):117
+#10761 | auto Tirisfal Glades;198§auto Tirisfal;198§auto Clairières de Tirisfal;198 | x=1906.400024414063 y=1783.300048828125 | size=1 | links=#823(auto Tirisfal Glades;18):9 #15067(auto Tirisfal Glades;283):17
+#10776 | auto Tirisfal Glades;199§auto Tirisfal;199§auto Clairières de Tirisfal;199 | x=2023.300048828125 y=5.300000190734863 | size=1 | links=#15218(auto Tirisfal Glades;288):34 #16551(auto Tirisfal Glades;314):53
+#10787 | auto Tirisfal Glades;200§auto Tirisfal;200§auto Clairières de Tirisfal;200 | x=1731.5 y=1358.200073242188 | size=1 | links=c1507.7:9 c1507.8:18
+#10832 | auto Tirisfal Glades;201§auto Tirisfal;201§auto Clairières de Tirisfal;201 | x=1871.200073242188 y=1529.300048828125 | size=1 | links=#5830(auto Tirisfal Glades;114):3 #7208(auto Tirisfal Glades;131):5
+#10995 | auto Tirisfal Glades;202§auto Tirisfal;202§auto Clairières de Tirisfal;202 | x=2044.5 y=1832.900024414063 | size=1 | links=#9839(auto Tirisfal Glades;168):14 c1504.21:26
+#11044 | auto Tirisfal Glades;203§auto Tirisfal;203§auto Clairières de Tirisfal;203 | x=2424.199951171875 y=354.6000061035156 | size=1 | links=#21201(auto Tirisfal Glades;390):19 #22886(auto Tirisfal Glades;420):12
+#11045 | auto Tirisfal Glades;204§auto Tirisfal;204§auto Clairières de Tirisfal;204 | x=2984.199951171875 y=-553.7000122070312 | size=1 | links=#12889(auto Tirisfal Glades;234):53 #21606(auto Tirisfal Glades;399):49 c1539.3:17
+#11056 | auto Tirisfal Glades;205§auto Tirisfal;205§auto Clairières de Tirisfal;205 | x=2280 y=289.8000183105469 | size=1 | links=c1515.1:5 c1746.1:6 o711.1:6
+#11076 | auto Tirisfal Glades;206§auto Tirisfal;206§auto Clairières de Tirisfal;206 | x=2813.400146484375 y=811 | size=1 | links=#528(auto Tirisfal Glades;15):10 #25277(auto Tirisfal Glades;468):6
+#11125 | auto Tirisfal Glades;207§auto Tirisfal;207§auto Clairières de Tirisfal;207 | x=3027.800048828125 y=681.5 | size=1 | links=#19917(auto Tirisfal Glades;367):15 #20312(auto Tirisfal Glades;373):14 o105171.1:10 c1534.8:5 c1530.20:4 c1530.22:12
+#11264 | auto Tirisfal Glades;208§auto Tirisfal;208§auto Clairières de Tirisfal;208 | x=2612.800048828125 y=-551.5 | size=1 | links=#3844(auto Tirisfal Glades;67):6 #26089(auto Tirisfal Glades;489):17
+#11410 | auto Tirisfal Glades;209§auto Tirisfal;209§auto Clairières de Tirisfal;209 | x=2344.900146484375 y=520.2999877929688 | size=1 | links=#5879(auto Tirisfal Glades;116):22 #21702(auto Tirisfal Glades;400):17
+#11561 | centralpoint;Balnir Farmstead;Tirisfal Glades§zentralerpunkt;Balnirs Bauernhof;Tirisfal§point central;Balnir Farmstead;Clairières de Tirisfal | x=2000.300048828125 y=-466.8000183105469 | size=1 | links=#4381(auto Tirisfal Glades;76):12 #5876(auto Tirisfal Glades;115):12 #19032(auto Tirisfal Glades;347):16
+#11597 | auto Tirisfal Glades;210§auto Tirisfal;210§auto Clairières de Tirisfal;210 | x=2544.5 y=434.7000122070313 | size=1 | links=#10666(auto Tirisfal Glades;194):71 #16487(auto Tirisfal Glades;311):64 o176753.16:26
+#11608 | auto Tirisfal Glades;211§auto Tirisfal;211§auto Clairières de Tirisfal;211 | x=2270.699951171875 y=451.8000183105469 | size=1 | links=#5345(auto Tirisfal Glades;102):51 #19322(auto Tirisfal Glades;355):35
+#11638 | auto Tirisfal Glades;212§auto Tirisfal;212§auto Clairières de Tirisfal;212 | x=1918.5 y=1568.099975585938 | size=1 | links=#4819(auto Tirisfal Glades;89):7 #11759(auto Tirisfal Glades;214):5
+#11744 | auto Tirisfal Glades;213§auto Tirisfal;213§auto Clairières de Tirisfal;213 | x=2428.10009765625 y=1583.700073242188 | size=1 | links=#12291(auto Tirisfal Glades;223):9 #14713(auto Tirisfal Glades;277):14 o375.1:8 c1535.26:6
+#11759 | auto Tirisfal Glades;214§auto Tirisfal;214§auto Clairières de Tirisfal;214 | x=1924 y=1565.800048828125 | size=1 | links=#2956(auto Tirisfal Glades;50):21 #9737(auto Tirisfal Glades;165):18 #11638(auto Tirisfal Glades;212):5
+#11818 | auto Tirisfal Glades;215§auto Tirisfal;215§auto Clairières de Tirisfal;215 | x=2040.400024414063 y=1857.300048828125 | size=1 | links=c1505.16:10 c1505.26:6
+#11956 | auto Tirisfal Glades;216§auto Tirisfal;216§auto Clairières de Tirisfal;216 | x=2886.5 y=226.1000061035156 | size=5 | links=#5546(auto Tirisfal Glades;111):45 c721.2:56
+#11983 | auto Tirisfal Glades;217§auto Tirisfal;217§auto Clairières de Tirisfal;217 | x=1694.099975585938 y=1581.900024414063 | size=1 | links=#14068(auto Tirisfal Glades;258):58 c2307.1:26 c4075.3:16 c1512.18:14
+#11997 | auto Tirisfal Glades;218§auto Tirisfal;218§auto Clairières de Tirisfal;218 | x=2236.300048828125 y=308.8000183105469 | size=1 | links=#27356(auto Tirisfal Glades;510):5 c2135.1:3 c2136.1:10
+#12042 | auto Tirisfal Glades;219§auto Tirisfal;219§auto Clairières de Tirisfal;219 | x=2816.699951171875 y=1083.599975585938 | size=1 | links=#22037(auto Tirisfal Glades;406):29 c1522.14:17
+#12082 | auto Tirisfal Glades;220§auto Tirisfal;220§auto Clairières de Tirisfal;220 | x=2265.300048828125 y=342 | size=1 | links=#27301(auto Tirisfal Glades;507):6 c1518.1:8 c2132.1:5
+#12114 | auto Tirisfal Glades;221§auto Tirisfal;221§auto Clairières de Tirisfal;221 | x=2216.900146484375 y=251.9000091552734 | size=1 | links=#19221(auto Tirisfal Glades;350):12 #25794(auto Tirisfal Glades;482):50 c15568.1:13
+#12211 | auto Tirisfal Glades;222§auto Tirisfal;222§auto Clairières de Tirisfal;222 | x=2996.60009765625 y=370.8999938964844 | size=5 | links=#17043(auto Tirisfal Glades;321):24 c1543.31:24 c1543.32:17 c1544.49:23
+#12291 | auto Tirisfal Glades;223§auto Tirisfal;223§auto Clairières de Tirisfal;223 | x=2421.199951171875 y=1577.599975585938 | size=1 | links=#1950(auto Tirisfal Glades;38):23 #11744(auto Tirisfal Glades;213):9
+#12327 | auto Tirisfal Glades;224§auto Tirisfal;224§auto Clairières de Tirisfal;224 | x=1885.300048828125 y=1554.700073242188 | size=1 | links=#23489(auto Tirisfal Glades;432):10 o164662.1:9
+#12339 | auto Tirisfal Glades;225§auto Tirisfal;225§auto Clairières de Tirisfal;225 | x=2263.900146484375 y=243.8000030517578 | size=1 | links=#10114(centralpoint;Taverne Zur Galgenschlinge;Tirisfal Glades;top):5 #18699(auto Tirisfal Glades;342):9 c2129.1:7
+#12349 | auto Tirisfal Glades;226§auto Tirisfal;226§auto Clairières de Tirisfal;226 | x=3029.800048828125 y=-60.70000076293945 | size=5 | links=#17392(auto Tirisfal Glades;326):98 #24913(auto Tirisfal Glades;459):111 c1545.2:43 c1545.6:43 c1545.52:25
+#12367 | auto Tirisfal Glades;227§auto Tirisfal;227§auto Clairières de Tirisfal;227 | x=1841.099975585938 y=1588.900024414063 | size=1 | links=#3772(auto Tirisfal Glades;66):16 #7130(auto Tirisfal Glades;130):19 #8648(auto Tirisfal Glades;147):19 #15096(auto Tirisfal Glades;286):8 c1570.1:11 c11945.1:10
+#12459 | auto Tirisfal Glades;228§auto Tirisfal;228§auto Clairières de Tirisfal;228 | x=1883.800048828125 y=1620.5 | size=1 | links=#26986(auto Tirisfal Glades;503):11 o178090.1:8
+#12470 | auto Tirisfal Glades;229§auto Tirisfal;229§auto Clairières de Tirisfal;229 | x=2351.400146484375 y=1079.900024414063 | size=1 | links=#1275(auto Tirisfal Glades;26):79 #7514(auto Tirisfal Glades;136):43 #14922(auto Tirisfal Glades;280):74
+#12503 | auto Tirisfal Glades;230§auto Tirisfal;230§auto Clairières de Tirisfal;230 | x=1798.300048828125 y=714.6000366210938 | size=1 | links=#24187(auto Tirisfal Glades;445):12 c1662.1:8 o37098.1:12 c1537.25:6
+#12586 | auto Tirisfal Glades;231§auto Tirisfal;231§auto Clairières de Tirisfal;231 | x=2160.10009765625 y=-581.7999877929688 | size=1 | links=#22056(auto Tirisfal Glades;407):33 #25821(auto Tirisfal Glades;484):17 c1538.11:33
+#12725 | auto Tirisfal Glades;232§auto Tirisfal;232§auto Clairières de Tirisfal;232 | x=3054.800048828125 y=-559 | size=1 | links=#20615(auto Tirisfal Glades;378):4 #21606(auto Tirisfal Glades;399):21 c1540.6:6 c1538.9:8 c1538.14:0
+#12734 | auto Tirisfal Glades;233§auto Tirisfal;233§auto Clairières de Tirisfal;233 | x=1711.900024414063 y=-752.4000244140625 | size=1 | links=#19838(auto Tirisfal Glades;365):18 #20001(auto Tirisfal Glades;368):24
+#12889 | auto Tirisfal Glades;234§auto Tirisfal;234§auto Clairières de Tirisfal;234 | x=2930.900146484375 y=-558.7000122070312 | size=1 | links=#4033(auto Tirisfal Glades;71):51 #11045(auto Tirisfal Glades;204):53 c1540.4:13
+#12987 | auto Tirisfal Glades;235§auto Tirisfal;235§auto Clairières de Tirisfal;235 | x=2156 y=602 | size=1 | links=c1525.22:12 c1525.23:8
+#13026 | auto Tirisfal Glades;236§auto Tirisfal;236§auto Clairières de Tirisfal;236 | x=2491.60009765625 y=106.4000015258789 | size=5 | links=#14254(auto Tirisfal Glades;265):63 #21097(auto Tirisfal Glades;388):65 c1553.29:31
+#13046 | auto Tirisfal Glades;237§auto Tirisfal;237§auto Clairières de Tirisfal;237 | x=2024.700073242188 y=277.8000183105469 | size=1 | links=#83(auto Tirisfal Glades;3):25 #1941(auto Tirisfal Glades;37):46
+#13220 | auto Tirisfal Glades;238§auto Tirisfal;238§auto Clairières de Tirisfal;238 | x=2944.400146484375 y=758.6000366210938 | size=1 | links=#13586(auto Tirisfal Glades;242):27 #27959(auto Tirisfal Glades;520):32
+#13281 | auto Tirisfal Glades;239§auto Tirisfal;239§auto Clairières de Tirisfal;239 | x=2664.699951171875 y=-549.4000244140625 | size=1 | links=#27860(auto Tirisfal Glades;518):36 #28282(auto Tirisfal Glades;525):27
+#13328 | auto Tirisfal Glades;240§auto Tirisfal;240§auto Clairières de Tirisfal;240 | x=2094.900146484375 y=16.70000076293945 | size=1 | links=#10692(auto Tirisfal Glades;196):51 #15454(auto Tirisfal Glades;296):16
+#13480 | auto Tirisfal Glades;241§auto Tirisfal;241§auto Clairières de Tirisfal;241 | x=2722 y=367.8999938964844 | size=5 | links=#7479(auto Tirisfal Glades;135):27 c1675.2:50 c721.8:26 c1675.8:18 c1674.9:49
+#13586 | auto Tirisfal Glades;242§auto Tirisfal;242§auto Clairières de Tirisfal;242 | x=2928.699951171875 y=736.2000122070312 | size=1 | links=#4872(auto Tirisfal Glades;91):34 #13220(auto Tirisfal Glades;238):27 c1530.5:48 c1534.10:12 c1530.11:34
+#13594 | auto Tirisfal Glades;243§auto Tirisfal;243§auto Clairières de Tirisfal;243 | x=1790.700073242188 y=705.2999877929688 | size=1 | links=#23823(auto Tirisfal Glades;437):18 #24187(auto Tirisfal Glades;445):7
+#13637 | auto Tirisfal Glades;244§auto Tirisfal;244§auto Clairières de Tirisfal;244 | x=1865.599975585938 y=1535.300048828125 | size=1 | links=#7208(auto Tirisfal Glades;131):6 o164662.10:7 c1502.23:7
+#13655 | auto Tirisfal Glades;245§auto Tirisfal;245§auto Clairières de Tirisfal;245 | x=2092 y=767 | size=1 | links=#23551(auto Tirisfal Glades;434):32 #25792(auto Tirisfal Glades;481):50 c1553.10:53 o175566.57:47
+#13683 | auto Tirisfal Glades;246§auto Tirisfal;246§auto Clairières de Tirisfal;246 | x=1775.400024414063 y=-719.4000244140625 | size=1 | links=#19727(auto Tirisfal Glades;362):14 c10839.1:6 c11194.1:7 c11194.2:8 c11194.3:7
+#13731 | auto Tirisfal Glades;247§auto Tirisfal;247§auto Clairières de Tirisfal;247 | x=2236.300048828125 y=1210.599975585938 | size=1 | links=#21704(auto Tirisfal Glades;401):39 #28392(auto Tirisfal Glades;527):70 c1547.4:21 c1553.21:19
+#13735 | auto Tirisfal Glades;248§auto Tirisfal;248§auto Clairières de Tirisfal;248 | x=2438.699951171875 y=-286.5 | size=5 | links=#25966(auto Tirisfal Glades;487):49 c1554.98:54
+#13770 | auto Tirisfal Glades;249§auto Tirisfal;249§auto Clairières de Tirisfal;249 | x=2048.699951171875 y=1897.099975585938 | size=1 | links=#6151(auto Tirisfal Glades;125):9 c1505.22:9
+#13781 | auto Tirisfal Glades;250§auto Tirisfal;250§auto Clairières de Tirisfal;250 | x=2160.699951171875 y=659.6000366210938 | size=1 | links=#343(auto Tirisfal Glades;7):7 c3522.1:4 c3523.1:5
+#13798 | auto Tirisfal Glades;251§auto Tirisfal;251§auto Clairières de Tirisfal;251 | x=2106.10009765625 y=-589 | size=1 | links=#5990(auto Tirisfal Glades;120):13 c1548.109:34
+#13856 | auto Tirisfal Glades;252§auto Tirisfal;252§auto Clairières de Tirisfal;252 | x=1716.900024414063 y=-793.7000122070312 | size=1 | links=#20826(auto Western Plaguelands;132):8 #20001(auto Tirisfal Glades;368):17
+#13861 | auto Tirisfal Glades;253§auto Tirisfal;253§auto Clairières de Tirisfal;253 | x=1875.599975585938 y=1569.099975585938 | size=1 | links=#10091(auto Tirisfal Glades;178):6 #10487(auto Tirisfal Glades;187):7
+#13869 | auto Tirisfal Glades;254§auto Tirisfal;254§auto Clairières de Tirisfal;254 | x=2028.300048828125 y=1845 | size=1 | links=#25323(auto Tirisfal Glades;470):5 c1505.11:5
+#13920 | auto Tirisfal Glades;255§auto Tirisfal;255§auto Clairières de Tirisfal;255 | x=2600.900146484375 y=-301.3000183105469 | size=5 | links=#5177(auto Tirisfal Glades;99):42 #24055(auto Tirisfal Glades;440):28
+#14027 | auto Tirisfal Glades;256§auto Tirisfal;256§auto Clairières de Tirisfal;256 | x=2912.699951171875 y=677.7000122070312 | size=1 | links=#4872(auto Tirisfal Glades;91):28 #14932(auto Tirisfal Glades;281):53 c1534.6:26 c1534.11:53 c1530.18:6
+#14038 | auto Tirisfal Glades;257§auto Tirisfal;257§auto Clairières de Tirisfal;257 | x=1858.700073242188 y=1575.300048828125 | size=1 | links=#860(auto Tirisfal Glades;19):5 #21441(auto Tirisfal Glades;394):6
+#14068 | auto Tirisfal Glades;258§auto Tirisfal;258§auto Clairières de Tirisfal;258 | x=1715.700073242188 y=1636 | size=1 | links=#3600(auto Tirisfal Glades;63):29 #11983(auto Tirisfal Glades;217):58 #20322(auto Tirisfal Glades;374):56 c1512.40:36
+#14093 | auto Tirisfal Glades;259§auto Tirisfal;259§auto Clairières de Tirisfal;259 | x=2082.5 y=568.9000244140625 | size=1 | links=#937(auto Tirisfal Glades;20):4 c1526.1:30
+#14140 | auto Tirisfal Glades;260§auto Tirisfal;260§auto Clairières de Tirisfal;260 | x=2278.800048828125 y=249.3000030517578 | size=1 | links=#20699(auto Tirisfal Glades;380):9 c2210.1:17
+#14166 | auto Tirisfal Glades;261§auto Tirisfal;261§auto Clairières de Tirisfal;261 | x=1829.700073242188 y=-655.2000122070312 | size=5 | links=#20199(auto Tirisfal Glades;371):48 #24112(auto Tirisfal Glades;442):34 c1554.49:97
+#14168 | auto Tirisfal Glades;262§auto Tirisfal;262§auto Clairières de Tirisfal;262 | x=2168.10009765625 y=1296.300048828125 | size=1 | links=#15396(auto Tirisfal Glades;293):16 #26809(auto Tirisfal Glades;501):15
+#14178 | auto Tirisfal Glades;263§auto Tirisfal;263§auto Clairières de Tirisfal;263 | x=2150.900146484375 y=-549.4000244140625 | size=1 | links=#7520(auto Tirisfal Glades;137):7 #20037(auto Tirisfal Glades;369):13 #25821(auto Tirisfal Glades;484):17 #25872(auto Tirisfal Glades;485):8 c1538.21:9
+#14243 | auto Tirisfal Glades;264§auto Tirisfal;264§auto Clairières de Tirisfal;264 | x=2833.699951171875 y=868.1000366210938 | size=1 | links=#3735(auto Tirisfal Glades;64):49 #8705(centralpoint;Agamand Mills;Tirisfal Glades):35 c1523.18:18 c1522.51:47
+#14254 | auto Tirisfal Glades;265§auto Tirisfal;265§auto Clairières de Tirisfal;265 | x=2506.900146484375 y=167.6999969482422 | size=5 | links=#13026(auto Tirisfal Glades;236):63 #27187(auto Tirisfal Glades;504):75 c1553.33:57 c1547.46:24 c1553.50:25
+#14284 | auto Tirisfal Glades;266§auto Tirisfal;266§auto Clairières de Tirisfal;266 | x=2105.60009765625 y=-83.80000305175781 | size=1 | links=#9902(auto Tirisfal Glades;173):54 c1547.57:27
+#14322 | auto Tirisfal Glades;267§auto Tirisfal;267§auto Clairières de Tirisfal;267 | x=2151.10009765625 y=-536.9000244140625 | size=1 | links=#25872(auto Tirisfal Glades;485):3 c1664.1:9 c1538.17:10
+#14417 | auto Tirisfal Glades;268§auto Tirisfal;268§auto Clairières de Tirisfal;268 | x=2008 y=1524.900024414063 | size=1 | links=#21549(auto Tirisfal Glades;397):40 c1890.16:21 c1502.29:15
+#14436 | auto Tirisfal Glades;269§auto Tirisfal;269§auto Clairières de Tirisfal;269 | x=2042.099975585938 y=1880.300048828125 | size=1 | links=c1505.18:6 c1505.19:8
+#14491 | auto Tirisfal Glades;270§auto Tirisfal;270§auto Clairières de Tirisfal;270 | x=2379.5 y=427.5 | size=1 | links=#8884(auto Tirisfal Glades;151):27 #10438(auto Tirisfal Glades;186):12
+#14504 | auto Tirisfal Glades;271§auto Tirisfal;271§auto Clairières de Tirisfal;271 | x=2317.300048828125 y=226.5 | size=1 | links=#22254(auto Tirisfal Glades;413):34 c3548.1:20
+#14526 | auto Tirisfal Glades;272§auto Tirisfal;272§auto Clairières de Tirisfal;272 | x=2028.5 y=1890.099975585938 | size=1 | links=c1505.19:8 c1505.21:11
+#14634 | auto Tirisfal Glades;273§auto Tirisfal;273§auto Clairières de Tirisfal;273 | x=1838.400024414063 y=-395 | size=1 | links=#4747(auto Tirisfal Glades;87):41 #9039(auto Tirisfal Glades;156):61
+#14661 | auto Tirisfal Glades;274§auto Tirisfal;274§auto Clairières de Tirisfal;274 | x=2203.800048828125 y=651.4000244140625 | size=1 | links=#3763(auto Tirisfal Glades;65):25 #22211(auto Tirisfal Glades;410):30
+#14672 | auto Tirisfal Glades;275§auto Tirisfal;275§auto Clairières de Tirisfal;275 | x=2138.900146484375 y=994.4000244140625 | size=1 | links=#17201(auto Tirisfal Glades;324):93 #24719(auto Tirisfal Glades;456):65
+#14694 | auto Tirisfal Glades;276§auto Tirisfal;276§auto Clairières de Tirisfal;276 | x=2068.300048828125 y=-373.6000061035156 | size=1 | links=#21828(auto Tirisfal Glades;402):8 c1532.5:49 c1554.52:36
+#14713 | auto Tirisfal Glades;277§auto Tirisfal;277§auto Clairières de Tirisfal;277 | x=2440.699951171875 y=1591.200073242188 | size=1 | links=#11744(auto Tirisfal Glades;213):14 c1535.28:8 c1535.32:9
+#14888 | auto Tirisfal Glades;278§auto Tirisfal;278§auto Clairières de Tirisfal;278 | x=2371.699951171875 y=1473.300048828125 | size=1 | links=#3167(auto Tirisfal Glades;57):14 o375.29:9
+#14901 | auto Tirisfal Glades;279§auto Tirisfal;279§auto Clairières de Tirisfal;279 | x=2751.5 y=800 | size=1 | links=#10488(auto Tirisfal Glades;188):6 c1522.56:18
+#14922 | auto Tirisfal Glades;280§auto Tirisfal;280§auto Clairières de Tirisfal;280 | x=2425.800048828125 y=1074.200073242188 | size=1 | links=#3363(auto Tirisfal Glades;59):69 #12470(auto Tirisfal Glades;229):74 c1553.88:36 c1553.96:23
+#14932 | auto Tirisfal Glades;281§auto Tirisfal;281§auto Clairières de Tirisfal;281 | x=2914.300048828125 y=624.4000244140625 | size=1 | links=#14027(auto Tirisfal Glades;256):53 #16017(auto Tirisfal Glades;306):33 c1530.3:8 c1530.6:11
+#15014 | auto Tirisfal Glades;282§auto Tirisfal;282§auto Clairières de Tirisfal;282 | x=1889.5 y=1652.800048828125 | size=1 | links=#1959(auto Tirisfal Glades;39):10 c1508.5:27 c1501.12:16
+#15067 | auto Tirisfal Glades;283§auto Tirisfal;283§auto Clairières de Tirisfal;283 | x=1895.300048828125 y=1769.900024414063 | size=1 | links=#10603(auto Tirisfal Glades;190):9 #10761(auto Tirisfal Glades;198):17 c1512.15:10
+#15077 | auto Tirisfal Glades;284§auto Tirisfal;284§auto Clairières de Tirisfal;284 | x=1947.099975585938 y=-467.3999938964844 | size=1 | links=#10649(auto Tirisfal Glades;192):6 #15279(auto Tirisfal Glades;291):27 #21351(auto Tirisfal Glades;392):16
+#15079 | auto Tirisfal Glades;285§auto Tirisfal;285§auto Clairières de Tirisfal;285 | x=2501.900146484375 y=-642.7000122070312 | size=1 | links=#978(auto Tirisfal Glades;22):68 #10250(auto Tirisfal Glades;182):74 c1549.31:25 c1549.32:78 c1549.33:41 c1554.85:77
+#15096 | auto Tirisfal Glades;286§auto Tirisfal;286§auto Clairières de Tirisfal;286 | x=1840.200073242188 y=1580.900024414063 | size=1 | links=#12367(auto Tirisfal Glades;227):8 #17616(auto Tirisfal Glades;330):5
+#15159 | auto Tirisfal Glades;287§auto Tirisfal;287§auto Clairières de Tirisfal;287 | x=2326.5 y=1306.700073242188 | size=1 | links=#17835(auto Tirisfal Glades;332):7 #24178(auto Tirisfal Glades;444):9
+#15218 | auto Tirisfal Glades;288§auto Tirisfal;288§auto Clairières de Tirisfal;288 | x=2012.5 y=-27.39999961853027 | size=1 | links=#115(auto Tirisfal Glades;5):51 #10776(auto Tirisfal Glades;199):34
+#15245 | auto Tirisfal Glades;289§auto Tirisfal;289§auto Clairières de Tirisfal;289 | x=2649.300048828125 y=827.7999877929688 | size=1 | links=#7893(auto Tirisfal Glades;139):59 c1522.29:21 c1522.42:70
+#15277 | auto Tirisfal Glades;290§auto Tirisfal;290§auto Clairières de Tirisfal;290 | x=2899.400146484375 y=979.9000244140625 | size=1 | links=#1024(auto Tirisfal Glades;23):38 #21234(auto Tirisfal Glades;391):52 c1522.21:23 c1522.35:39
+#15279 | auto Tirisfal Glades;291§auto Tirisfal;291§auto Clairières de Tirisfal;291 | x=1923.599975585938 y=-453.6000061035156 | size=1 | links=#9039(auto Tirisfal Glades;156):48 #15077(auto Tirisfal Glades;284):27 #21351(auto Tirisfal Glades;392):40
+#15308 | auto Tirisfal Glades;292§auto Tirisfal;292§auto Clairières de Tirisfal;292 | x=1788.200073242188 y=-719.2000122070312 | size=1 | links=#25021(auto Tirisfal Glades;463):9 c11194.2:4
+#15396 | auto Tirisfal Glades;293§auto Tirisfal;293§auto Clairières de Tirisfal;293 | x=2155.5 y=1306.599975585938 | size=1 | links=#89(auto Tirisfal Glades;4):21 #14168(auto Tirisfal Glades;262):16 c7980.2:7 c7980.5:6
+#15448 | auto Tirisfal Glades;295§auto Tirisfal;295§auto Clairières de Tirisfal;295 | x=1782 y=734.1000366210938 | size=1 | links=#23823(auto Tirisfal Glades;437):15 c1537.19:15
+#15454 | auto Tirisfal Glades;296§auto Tirisfal;296§auto Clairières de Tirisfal;296 | x=2104.800048828125 y=30.39999961853027 | size=1 | links=#13328(auto Tirisfal Glades;240):16 #22236(auto Tirisfal Glades;411):59
+#15490 | auto Tirisfal Glades;297§auto Tirisfal;297§auto Clairières de Tirisfal;297 | x=1962.400024414063 y=1543.5 | size=1 | links=#24300(auto Tirisfal Glades;447):6 c1502.33:7
+#15519 | auto Tirisfal Glades;298§auto Tirisfal;298§auto Clairières de Tirisfal;298 | x=1961.300048828125 y=1600.099975585938 | size=1 | links=#2006(auto Tirisfal Glades;40):5 c1502.3:4 c1502.10:3
+#15539 | auto Tirisfal Glades;299§auto Tirisfal;299§auto Clairières de Tirisfal;299 | x=2290.10009765625 y=280.3000183105469 | size=1 | links=#2582(auto Tirisfal Glades;48):10 #21079(auto Tirisfal Glades;386):7
+#15570 | auto Tirisfal Glades;300§auto Tirisfal;300§auto Clairières de Tirisfal;300 | x=2169.699951171875 y=689.2999877929688 | size=1 | links=#3216(auto Tirisfal Glades;58):27 #3763(auto Tirisfal Glades;65):25 #25792(auto Tirisfal Glades;481):59 o175566.52:22
+#15778 | auto Tirisfal Glades;301§auto Tirisfal;301§auto Clairières de Tirisfal;301 | x=1706.400024414063 y=711.9000244140625 | size=1 | links=#3027(auto Tirisfal Glades;53):12 #6597(Gneis;path;Tirisfal Glades;entry and exit;to;Undercity):30 c1548.130:17
+#15785 | auto Tirisfal Glades;302§auto Tirisfal;302§auto Clairières de Tirisfal;302 | x=2018.900024414063 y=1901.900024414063 | size=1 | links=c1505.21:5 c1505.23:9
+#15865 | auto Tirisfal Glades;303§auto Tirisfal;303§auto Clairières de Tirisfal;303 | x=2357.5 y=441.1000061035156 | size=1 | links=#5086(auto Tirisfal Glades;95):8 #10438(auto Tirisfal Glades;186):14 #22247(auto Tirisfal Glades;412):6
+#15938 | auto Tirisfal Glades;304§auto Tirisfal;304§auto Clairières de Tirisfal;304 | x=2014.099975585938 y=1961.599975585938 | size=1 | links=c1505.1:11 c1505.6:13
+#15955 | auto Tirisfal Glades;305§auto Tirisfal;305§auto Clairières de Tirisfal;305 | x=2189.699951171875 y=-250.4000091552734 | size=1 | links=#2351(auto Tirisfal Glades;44):67 #5457(auto Tirisfal Glades;106):80
+#16017 | auto Tirisfal Glades;306§auto Tirisfal;306§auto Clairières de Tirisfal;306 | x=2943.400146484375 y=607.9000244140625 | size=1 | links=#10505(auto Tirisfal Glades;189):39 #14932(auto Tirisfal Glades;281):33 c1534.5:13 c1530.8:34
+#16061 | auto Tirisfal Glades;307§auto Tirisfal;307§auto Clairières de Tirisfal;307 | x=2897 y=343.8000183105469 | size=5 | links=#17092(auto Tirisfal Glades;322):31 #25535(auto Tirisfal Glades;473):47
+#16128 | auto Tirisfal Glades;308§auto Tirisfal;308§auto Clairières de Tirisfal;308 | x=1889.599975585938 y=1575.900024414063 | size=1 | links=#23489(auto Tirisfal Glades;432):11 #24847(auto Tirisfal Glades;458):10
+#16469 | auto Tirisfal Glades;310§auto Tirisfal;310§auto Clairières de Tirisfal;310 | x=1862.099975585938 y=494.2000122070313 | size=1 | links=#4483(auto Tirisfal Glades;79):45 #6061(auto Tirisfal Glades;121):115 c1548.154:22
+#16487 | auto Tirisfal Glades;311§auto Tirisfal;311§auto Clairières de Tirisfal;311 | x=2489.5 y=401.8999938964844 | size=1 | links=#11597(auto Tirisfal Glades;210):64 #22005(auto Tirisfal Glades;404):60
+#16533 | auto Tirisfal Glades;312§auto Tirisfal;312§auto Clairières de Tirisfal;312 | x=1876.200073242188 y=1525.099975585938 | size=1 | links=#5830(auto Tirisfal Glades;114):5 c1502.21:5
+#16541 | auto Tirisfal Glades;313§auto Tirisfal;313§auto Clairières de Tirisfal;313 | x=2246.699951171875 y=300.2000122070313 | size=1 | links=#25812(auto Tirisfal Glades;483):14 #27356(auto Tirisfal Glades;510):8 c2137.1:7
+#16551 | auto Tirisfal Glades;314§auto Tirisfal;314§auto Clairières de Tirisfal;314 | x=2034.900024414063 y=57.40000152587891 | size=1 | links=#10776(auto Tirisfal Glades;199):53 #19024(auto Tirisfal Glades;346):16 c3550.1:5
+#16622 | auto Tirisfal Glades;315§auto Tirisfal;315§auto Clairières de Tirisfal;315 | x=2237.10009765625 y=605.7999877929688 | size=1 | links=#18582(auto Tirisfal Glades;338):23 #22211(auto Tirisfal Glades;410):26 c1735.1:5 c10666.1:8
+#16826 | auto Tirisfal Glades;316§auto Tirisfal;316§auto Clairières de Tirisfal;316 | x=1978 y=1583.800048828125 | size=1 | links=#22590(auto Tirisfal Glades;417):5 c1890.17:5
+#16859 | auto Tirisfal Glades;317§auto Tirisfal;317§auto Clairières de Tirisfal;317 | x=1904.5 y=1499.599975585938 | size=1 | links=#969(auto Tirisfal Glades;21):6 c1502.7:8
+#16879 | auto Tirisfal Glades;318§auto Tirisfal;318§auto Clairières de Tirisfal;318 | x=2061.900146484375 y=281.8000183105469 | size=1 | links=#83(auto Tirisfal Glades;3):12 #19442(auto Tirisfal Glades;358):3
+#16963 | auto Tirisfal Glades;319§auto Tirisfal;319§auto Clairières de Tirisfal;319 | x=2891.5 y=1062.099975585938 | size=1 | links=#1024(auto Tirisfal Glades;23):44 c1533.1:26 c1523.23:13
+#17007 | auto Tirisfal Glades;320§auto Tirisfal;320§auto Clairières de Tirisfal;320 | x=2046.700073242188 y=1868.900024414063 | size=1 | links=c1505.18:6 c1505.26:6
+#17043 | auto Tirisfal Glades;321§auto Tirisfal;321§auto Clairières de Tirisfal;321 | x=2993.699951171875 y=346.7000122070313 | size=5 | links=#12211(auto Tirisfal Glades;222):24 #18608(auto Tirisfal Glades;339):67 c1544.51:38 c1544.54:10
+#17092 | auto Tirisfal Glades;322§auto Tirisfal;322§auto Clairières de Tirisfal;322 | x=2897.300048828125 y=375.1000061035156 | size=5 | links=#16061(auto Tirisfal Glades;307):31 #18401(auto Tirisfal Glades;337):10 #20982(auto Tirisfal Glades;382):7
+#17187 | auto Tirisfal Glades;323§auto Tirisfal;323§auto Clairières de Tirisfal;323 | x=2043.300048828125 y=143.5 | size=1 | links=#4000(auto Tirisfal Glades;70):16 #18976(auto Tirisfal Glades;344):26
+#17201 | auto Tirisfal Glades;324§auto Tirisfal;324§auto Clairières de Tirisfal;324 | x=2202.5 y=1063.200073242188 | size=1 | links=#1275(auto Tirisfal Glades;26):70 #9809(auto Tirisfal Glades;167):55 #14672(auto Tirisfal Glades;275):93
+#17332 | auto Tirisfal Glades;325§auto Tirisfal;325§auto Clairières de Tirisfal;325 | x=2353.900146484375 y=458.8999938964844 | size=1 | links=#5086(auto Tirisfal Glades;95):9 #20334(auto Tirisfal Glades;375):13 c4075.35:18
+#17392 | auto Tirisfal Glades;326§auto Tirisfal;326§auto Clairières de Tirisfal;326 | x=3029.199951171875 y=-159.3000030517578 | size=5 | links=#12349(auto Tirisfal Glades;226):98 #28267(auto Tirisfal Glades;524):71 c1544.28:33 c1545.42:42 c1545.48:13 c1545.49:32
+#17405 | auto Tirisfal Glades;327§auto Tirisfal;327§auto Clairières de Tirisfal;327 | x=2297.60009765625 y=281.7000122070313 | size=1 | links=#21077(auto Tirisfal Glades;385):5 #21079(auto Tirisfal Glades;386):3
+#17515 | auto Tirisfal Glades;328§auto Tirisfal;328§auto Clairières de Tirisfal;328 | x=3067.199951171875 y=-558.9000244140625 | size=1 | links=#20615(auto Tirisfal Glades;378):7 c1660.2:9
+#17547 | auto Tirisfal Glades;329§auto Tirisfal;329§auto Clairières de Tirisfal;329 | x=2847.60009765625 y=837.7999877929688 | size=1 | links=#8705(centralpoint;Agamand Mills;Tirisfal Glades):45 c1523.9:39 c1530.12:26 c1523.21:6
+#17616 | auto Tirisfal Glades;330§auto Tirisfal;330§auto Clairières de Tirisfal;330 | x=1840.300048828125 y=1575.200073242188 | size=1 | links=#15096(auto Tirisfal Glades;286):5 c2116.1:5 c2117.1:7
+#17806 | auto Tirisfal Glades;331§auto Tirisfal;331§auto Clairières de Tirisfal;331 | x=2371.300048828125 y=1401.800048828125 | size=1 | links=#10637(auto Tirisfal Glades;191):14 o375.13:11
+#17835 | auto Tirisfal Glades;332§auto Tirisfal;332§auto Clairières de Tirisfal;332 | x=2333.5 y=1307.900024414063 | size=1 | links=#15159(auto Tirisfal Glades;287):7 #24589(auto Tirisfal Glades;451):6 c1936.7:1
+#17885 | auto Tirisfal Glades;333§auto Tirisfal;333§auto Clairières de Tirisfal;333 | x=2133.5 y=-539.2000122070312 | size=1 | links=#22109(auto Tirisfal Glades;408):17 #25928(auto Tirisfal Glades;486):0
+#17946 | auto Tirisfal Glades;334§auto Tirisfal;334§auto Clairières de Tirisfal;334 | x=1988 y=-102.5 | size=1 | links=#115(auto Tirisfal Glades;5):27 #24384(auto Tirisfal Glades;448):45
+#17994 | auto Tirisfal Glades;335§auto Tirisfal;335§auto Clairières de Tirisfal;335 | x=1960.200073242188 y=-463 | size=1 | links=#10649(auto Tirisfal Glades;192):7 #26643(auto Tirisfal Glades;499):6
+#18306 | auto Tirisfal Glades;336§auto Tirisfal;336§auto Clairières de Tirisfal;336 | x=2177.60009765625 y=-471.7000122070313 | size=1 | links=#1935(auto Tirisfal Glades;36):48 c1538.13:22 c1537.28:19 c1537.31:45
+#18401 | auto Tirisfal Glades;337§auto Tirisfal;337§auto Clairières de Tirisfal;337 | x=2887 y=375.6000061035156 | size=1 | links=#17092(auto Tirisfal Glades;322):10
+#18582 | auto Tirisfal Glades;338§auto Tirisfal;338§auto Clairières de Tirisfal;338 | x=2246.400146484375 y=583.9000244140625 | size=1 | links=#16622(auto Tirisfal Glades;315):23 #24965(auto Tirisfal Glades;460):47
+#18608 | auto Tirisfal Glades;339§auto Tirisfal;339§auto Clairières de Tirisfal;339 | x=2966.5 y=284.7000122070313 | size=5 | links=#8196(auto Tirisfal Glades;143):51 #17043(auto Tirisfal Glades;321):67 c1543.33:16
+#18619 | auto Tirisfal Glades;340§auto Tirisfal;340§auto Clairières de Tirisfal;340 | x=2388.10009765625 y=-575.9000244140625 | size=5 | links=#19278(auto Tirisfal Glades;352):106 #25290(auto Tirisfal Glades;469):60 c4075.86:22 c1554.129:57
+#18627 | auto Tirisfal Glades;341§auto Tirisfal;341§auto Clairières de Tirisfal;341 | x=2353.10009765625 y=429.6000061035156 | size=1 | links=#6956(auto Tirisfal Glades;128):6 #22247(auto Tirisfal Glades;412):8 #26410(auto Tirisfal Glades;496):14
+#18699 | auto Tirisfal Glades;342§auto Tirisfal;342§auto Clairières de Tirisfal;342 | x=2272.400146484375 y=247.8000030517578 | size=1 | links=#12339(auto Tirisfal Glades;225):9 #27477(auto Tirisfal Glades;511):6 c2130.1:4
+#18857 | auto Tirisfal Glades;343§auto Tirisfal;343§auto Clairières de Tirisfal;343 | x=2023.300048828125 y=1402.5 | size=1 | links=#8976(auto Tirisfal Glades;154):47 #27710(auto Tirisfal Glades;516):48 c1509.5:29 c1509.10:29
+#18976 | auto Tirisfal Glades;344§auto Tirisfal;344§auto Clairières de Tirisfal;344 | x=2029 y=166.3000030517578 | size=1 | links=#5496(auto Tirisfal Glades;108):50 #17187(auto Tirisfal Glades;323):26 #23280(auto Tirisfal Glades;428):39 #25598(auto Tirisfal Glades;474):77
+#19008 | auto Tirisfal Glades;345§auto Tirisfal;345§auto Clairières de Tirisfal;345 | x=2320.400146484375 y=1316.900024414063 | size=1 | links=#24178(auto Tirisfal Glades;444):6 c1934.1:9 c1934.3:5
+#19024 | auto Tirisfal Glades;346§auto Tirisfal;346§auto Clairières de Tirisfal;346 | x=2034.700073242188 y=73.80000305175781 | size=1 | links=#16551(auto Tirisfal Glades;314):16 #23280(auto Tirisfal Glades;428):53 c1495.1:12 c3549.1:8 c6289.1:6
+#19032 | auto Tirisfal Glades;347§auto Tirisfal;347§auto Clairières de Tirisfal;347 | x=1984 y=-468.1000061035156 | size=1 | links=#2443(auto Tirisfal Glades;47):11 #11561(centralpoint;Balnir Farmstead;Tirisfal Glades):16
+#19085 | auto Tirisfal Glades;348§auto Tirisfal;348§auto Clairières de Tirisfal;348 | x=2117.60009765625 y=-552.4000244140625 | size=1 | links=#9876(auto Tirisfal Glades;170):6
+#19129 | auto Tirisfal Glades;349§auto Tirisfal;349§auto Clairières de Tirisfal;349 | x=2339.300048828125 y=398 | size=1 | links=#8884(auto Tirisfal Glades;151):56 #23058(auto Tirisfal Glades;423):35 #26410(auto Tirisfal Glades;496):21 c10665.1:12
+#19175 | s;h;Mailbox;Tirisfal Glades§s;h;Briefkasten;Tirisfal§s;h;Boîte aux lettres;Clairières de Tirisfal | x=2237.912738974756 y=254.9854074315196 | size=1 | links=#1509(auto Tirisfal Glades;28):3 #19221(auto Tirisfal Glades;350):10
+#19221 | auto Tirisfal Glades;350§auto Tirisfal;350§auto Clairières de Tirisfal;350 | x=2227.800048828125 y=258.3999938964844 | size=1 | links=#551(auto Tirisfal Glades;16):15 #1509(auto Tirisfal Glades;28):10 #1630(auto Tirisfal Glades;31):29 #12114(auto Tirisfal Glades;221):12 #19175(s;h;Mailbox;Tirisfal Glades):10 c4075.75:24
+#19272 | auto Tirisfal Glades;351§auto Tirisfal;351§auto Clairières de Tirisfal;351 | x=1737.5 y=-658.9000244140625 | size=1 | links=#1549(auto Tirisfal Glades;29):7 c6491.1:13
+#19278 | auto Tirisfal Glades;352§auto Tirisfal;352§auto Clairières de Tirisfal;352 | x=2321.699951171875 y=-659.4000244140625 | size=5 | links=#18619(auto Tirisfal Glades;340):106 #24741(auto Tirisfal Glades;457):44
+#19290 | auto Tirisfal Glades;353§auto Tirisfal;353§auto Clairières de Tirisfal;353 | x=1904.800048828125 y=1569.099975585938 | size=1 | links=#4819(auto Tirisfal Glades;89):6 c1501.26:4
+#19293 | auto Tirisfal Glades;354§auto Tirisfal;354§auto Clairières de Tirisfal;354 | x=2505.5 y=913.2000122070312 | size=1 | links=#10191(auto Tirisfal Glades;180):56 #25774(auto Tirisfal Glades;480):80 c1520.19:9
+#19322 | auto Tirisfal Glades;355§auto Tirisfal;355§auto Clairières de Tirisfal;355 | x=2276.900146484375 y=417.3000183105469 | size=1 | links=#7257(auto Tirisfal Glades;132):23 #11608(auto Tirisfal Glades;211):35
+#19341 | auto Tirisfal Glades;356§auto Tirisfal;356§auto Clairières de Tirisfal;356 | x=2368.900146484375 y=1269.400024414063 | size=1 | links=#5424(auto Tirisfal Glades;105):62 #9020(auto Tirisfal Glades;155):83 #23298(auto Tirisfal Glades;429):67 c1935.8:24 c1553.61:29
+#19394 | auto Tirisfal Glades;357§auto Tirisfal;357§auto Clairières de Tirisfal;357 | x=1683.900024414063 y=727.4000244140625 | size=1 | links=#10654(auto Tirisfal Glades;193):1 #3602(auto Undercity;54):31
+#19442 | auto Tirisfal Glades;358§auto Tirisfal;358§auto Clairières de Tirisfal;358 | x=2065.5 y=280.8000183105469 | size=1 | links=#16879(auto Tirisfal Glades;318):3 #21951(auto Tirisfal Glades;403):4 #22837(auto Tirisfal Glades;419):5
+#19516 | auto Tirisfal Glades;359§auto Tirisfal;359§auto Clairières de Tirisfal;359 | x=1975.200073242188 y=-491.8999938964844 | size=1 | links=#5876(auto Tirisfal Glades;115):26 #21351(auto Tirisfal Glades;392):26
+#19656 | auto Tirisfal Glades;360§auto Tirisfal;360§auto Clairières de Tirisfal;360 | x=2048.300048828125 y=600.5 | size=1 | links=#2219(auto Tirisfal Glades;43):27 c1525.26:25 c1526.27:37
+#19696 | auto Tirisfal Glades;361§auto Tirisfal;361§auto Clairières de Tirisfal;361 | x=2845 y=271 | size=1 | links=#2377(auto Tirisfal Glades;45):40 c721.2:13
+#19727 | auto Tirisfal Glades;362§auto Tirisfal;362§auto Clairières de Tirisfal;362 | x=1760.900024414063 y=-716.9000244140625 | size=1 | links=#13683(auto Tirisfal Glades;246):14 #27695(auto Tirisfal Glades;515):12 c10837.1:6
+#19733 | auto Tirisfal Glades;363§auto Tirisfal;363§auto Clairières de Tirisfal;363 | x=3007.699951171875 y=630 | size=1 | links=#10505(auto Tirisfal Glades;189):30 c1534.3:20
+#19824 | auto Tirisfal Glades;364§auto Tirisfal;364§auto Clairières de Tirisfal;364 | x=1810.5 y=1732.300048828125 | size=1 | links=#4646(auto Tirisfal Glades;85):35 c1512.37:19
+#19838 | auto Tirisfal Glades;365§auto Tirisfal;365§auto Clairières de Tirisfal;365 | x=1712.700073242188 y=-733.7000122070312 | size=1 | links=#9928(auto Tirisfal Glades;174):17 #12734(auto Tirisfal Glades;233):18 #22408(auto Tirisfal Glades;415):22
+#19857 | auto Tirisfal Glades;366§auto Tirisfal;366§auto Clairières de Tirisfal;366 | x=1944.099975585938 y=-415.6000061035156 | size=1 | links=c1529.5:23 c1529.6:8
+#19917 | auto Tirisfal Glades;367§auto Tirisfal;367§auto Clairières de Tirisfal;367 | x=3028 y=666.2999877929688 | size=1 | links=#11125(auto Tirisfal Glades;207):15 c1530.17:7
+#20001 | auto Tirisfal Glades;368§auto Tirisfal;368§auto Clairières de Tirisfal;368 | x=1715.700073242188 y=-776.5 | size=1 | links=#12734(auto Tirisfal Glades;233):24 #13856(auto Tirisfal Glades;252):17
+#20037 | auto Tirisfal Glades;369§auto Tirisfal;369§auto Clairières de Tirisfal;369 | x=2164.300048828125 y=-545.7000122070312 | size=1 | links=#9841(auto Tirisfal Glades;169):16 #14178(auto Tirisfal Glades;263):13
+#20147 | auto Tirisfal Glades;370§auto Tirisfal;370§auto Clairières de Tirisfal;370 | x=2263.400146484375 y=-634.7000122070312 | size=1 | links=#3140(auto Tirisfal Glades;56):20 #25091(auto Tirisfal Glades;466):23
+#20199 | auto Tirisfal Glades;371§auto Tirisfal;371§auto Clairières de Tirisfal;371 | x=1781.900024414063 y=-660.5 | size=1 | links=#14166(auto Tirisfal Glades;261):48 #24114(auto Tirisfal Glades;443):18
+#20310 | auto Tirisfal Glades;372§auto Tirisfal;372§auto Clairières de Tirisfal;372 | x=1879 y=238.1000061035156 | size=1 | links=#439(auto Tirisfal Glades;12):38 #21111(auto Undercity;348):15
+#20312 | auto Tirisfal Glades;373§auto Tirisfal;373§auto Clairières de Tirisfal;373 | x=3042.300048828125 y=683.4000244140625 | size=1 | links=#10677(auto Tirisfal Glades;195):16 #11125(auto Tirisfal Glades;207):14 #23539(auto Tirisfal Glades;433):17 c1534.9:2
+#20322 | auto Tirisfal Glades;374§auto Tirisfal;374§auto Clairières de Tirisfal;374 | x=1760.900024414063 y=1602.900024414063 | size=1 | links=#9641(auto Tirisfal Glades;162):36 #14068(auto Tirisfal Glades;258):56 c4075.65:6
+#20334 | auto Tirisfal Glades;375§auto Tirisfal;375§auto Clairières de Tirisfal;375 | x=2351.300048828125 y=472.6000061035156 | size=1 | links=#3110(auto Tirisfal Glades;55):11 #17332(auto Tirisfal Glades;325):13 c4075.4:8
+#20348 | auto Tirisfal Glades;376§auto Tirisfal;376§auto Clairières de Tirisfal;376 | x=2259.300048828125 y=235.8000030517578 | size=1 | links=#10114(centralpoint;Taverne Zur Galgenschlinge;Tirisfal Glades;top):4 c1521.1:10
+#20600 | auto Tirisfal Glades;377§auto Tirisfal;377§auto Clairières de Tirisfal;377 | x=3022 y=-318.8000183105469 | size=5 | links=#28267(auto Tirisfal Glades;524):88 c1544.1:45 o3658.4:45 c1545.8:26 c1545.13:27 c1545.21:27 c1545.31:39
+#20615 | auto Tirisfal Glades;378§auto Tirisfal;378§auto Clairières de Tirisfal;378 | x=3059.5 y=-559.2999877929688 | size=1 | links=#12725(auto Tirisfal Glades;232):4 #17515(auto Tirisfal Glades;328):7
+#20682 | auto Tirisfal Glades;379§auto Tirisfal;379§auto Clairières de Tirisfal;379 | x=2257.400146484375 y=322.1000061035156 | size=1 | links=#392(auto Tirisfal Glades;10):15 c2309.1:3 c4731.1:9 c4773.1:5
+#20699 | auto Tirisfal Glades;380§auto Tirisfal;380§auto Clairières de Tirisfal;380 | x=2278.300048828125 y=239.6000061035156 | size=1 | links=#14140(auto Tirisfal Glades;260):9 #24010(auto Tirisfal Glades;439):9
+#20815 | auto Tirisfal Glades;381§auto Tirisfal;381§auto Clairières de Tirisfal;381 | x=2385.5 y=1368.700073242188 | size=1 | links=#211(auto Tirisfal Glades;6):13 #5424(auto Tirisfal Glades;105):39 #10637(auto Tirisfal Glades;191):31 c1553.22:32
+#20982 | auto Tirisfal Glades;382§auto Tirisfal;382§auto Clairières de Tirisfal;382 | x=2897.5 y=382.8000183105469 | size=1 | links=#4594(auto Tirisfal Glades;84):6 #17092(auto Tirisfal Glades;322):7 c1675.19:6
+#21016 | auto Tirisfal Glades;383§auto Tirisfal;383§auto Clairières de Tirisfal;383 | x=1904.400024414063 y=1549.800048828125 | size=1 | links=#10024(auto Tirisfal Glades;175):4 c1501.1:4
+#21063 | auto Tirisfal Glades;384§auto Tirisfal;384§auto Clairières de Tirisfal;384 | x=2321.5 y=397.8000183105469 | size=1 | links=c5725.1:11 c10665.1:5
+#21077 | auto Tirisfal Glades;385§auto Tirisfal;385§auto Clairières de Tirisfal;385 | x=2298.60009765625 y=287.3999938964844 | size=1 | links=#8757(auto Tirisfal Glades;148):5 #17405(auto Tirisfal Glades;327):5
+#21079 | auto Tirisfal Glades;386§auto Tirisfal;386§auto Clairières de Tirisfal;386 | x=2296.800048828125 y=277.8000183105469 | size=1 | links=#15539(auto Tirisfal Glades;299):7 #17405(auto Tirisfal Glades;327):3
+#21084 | auto Tirisfal Glades;387§auto Tirisfal;387§auto Clairières de Tirisfal;387 | x=2777.400146484375 y=270.1000061035156 | size=1 | links=#2377(auto Tirisfal Glades;45):27 c1675.12:65
+#21097 | auto Tirisfal Glades;388§auto Tirisfal;388§auto Clairières de Tirisfal;388 | x=2510.800048828125 y=44.10000228881836 | size=5 | links=#19(auto Tirisfal Glades;2):43 #13026(auto Tirisfal Glades;236):65 #25689(auto Tirisfal Glades;478):24
+#21100 | auto Tirisfal Glades;389§auto Tirisfal;389§auto Clairières de Tirisfal;389 | x=3059.699951171875 y=666.7999877929688 | size=1 | links=#10677(auto Tirisfal Glades;195):15 c1534.14:10
+#21201 | auto Tirisfal Glades;390§auto Tirisfal;390§auto Clairières de Tirisfal;390 | x=2411.300048828125 y=368.7000122070313 | size=1 | links=#8884(auto Tirisfal Glades;151):39 #11044(auto Tirisfal Glades;203):19
+#21234 | auto Tirisfal Glades;391§auto Tirisfal;391§auto Clairières de Tirisfal;391 | x=2907.10009765625 y=928.2000122070312 | size=1 | links=#3735(auto Tirisfal Glades;64):45 #15277(auto Tirisfal Glades;290):52 c1654.1:47 c1523.3:32 c1522.7:32 c1523.17:27 c1522.36:29
+#21351 | auto Tirisfal Glades;392§auto Tirisfal;392§auto Clairières de Tirisfal;392 | x=1949.700073242188 y=-484 | size=1 | links=#15077(auto Tirisfal Glades;284):16 #15279(auto Tirisfal Glades;291):40 #19516(auto Tirisfal Glades;359):26
+#21405 | auto Tirisfal Glades;393§auto Tirisfal;393§auto Clairières de Tirisfal;393 | x=2424 y=1839.200073242188 | size=1 | links=c1544.36:19 c1545.44:17
+#21441 | auto Tirisfal Glades;394§auto Tirisfal;394§auto Clairières de Tirisfal;394 | x=1865.300048828125 y=1575.700073242188 | size=1 | links=#14038(auto Tirisfal Glades;257):6 #27349(auto Tirisfal Glades;509):6
+#21463 | auto Tirisfal Glades;395§auto Tirisfal;395§auto Clairières de Tirisfal;395 | x=2649.800048828125 y=-640.2000122070312 | size=1 | links=#554(meeting stone;Tirisfal Glades):35 #978(auto Tirisfal Glades;22):80 #25669(auto Tirisfal Glades;476):54 #27860(auto Tirisfal Glades;518):57
+#21472 | auto Tirisfal Glades;396§auto Tirisfal;396§auto Clairières de Tirisfal;396 | x=2097 y=662.1000366210938 | size=1 | links=c1525.25:23 c1525.34:26
+#21549 | auto Tirisfal Glades;397§auto Tirisfal;397§auto Clairières de Tirisfal;397 | x=1994.200073242188 y=1562.5 | size=1 | links=#6139(auto Tirisfal Glades;123):25 #14417(auto Tirisfal Glades;268):40 o164662.9:10 c1502.16:15
+#21578 | auto Tirisfal Glades;398§auto Tirisfal;398§auto Clairières de Tirisfal;398 | x=1753.5 y=-424.8000183105469 | size=1 | links=#4747(auto Tirisfal Glades;87):78 #24991(auto Tirisfal Glades;462):50
+#21606 | auto Tirisfal Glades;399§auto Tirisfal;399§auto Clairières de Tirisfal;399 | x=3033.300048828125 y=-557.9000244140625 | size=1 | links=#11045(auto Tirisfal Glades;204):49 #12725(auto Tirisfal Glades;232):21 c1539.1:19
+#21702 | auto Tirisfal Glades;400§auto Tirisfal;400§auto Clairières de Tirisfal;400 | x=2346.400146484375 y=502.3999938964844 | size=1 | links=#11410(auto Tirisfal Glades;209):17 c6491.3:9
+#21704 | auto Tirisfal Glades;401§auto Tirisfal;401§auto Clairières de Tirisfal;401 | x=2199.900146484375 y=1194.700073242188 | size=1 | links=#5386(auto Tirisfal Glades;103):32 #13731(auto Tirisfal Glades;247):39 #23062(auto Tirisfal Glades;424):35 c1519.1:11
+#21828 | auto Tirisfal Glades;402§auto Tirisfal;402§auto Clairières de Tirisfal;402 | x=2060.400146484375 y=-371.1000061035156 | size=1 | links=#4577(auto Tirisfal Glades;83):32 #14694(auto Tirisfal Glades;276):8 c1532.7:12
+#21951 | auto Tirisfal Glades;403§auto Tirisfal;403§auto Clairières de Tirisfal;403 | x=2069.5 y=280.2000122070313 | size=1 | links=#4074(auto Tirisfal Glades;73):11 #19442(auto Tirisfal Glades;358):4
+#22005 | auto Tirisfal Glades;404§auto Tirisfal;404§auto Clairières de Tirisfal;404 | x=2451.300048828125 y=354.7000122070313 | size=1 | links=#9892(auto Tirisfal Glades;172):57 #16487(auto Tirisfal Glades;311):60 #22886(auto Tirisfal Glades;420):14
+#22006 | auto Tirisfal Glades;405§auto Tirisfal;405§auto Clairières de Tirisfal;405 | x=1690.400024414063 y=-525.7999877929688 | size=1 | links=#5170(auto Tirisfal Glades;98):64 #24991(auto Tirisfal Glades;462):68
+#22037 | auto Tirisfal Glades;406§auto Tirisfal;406§auto Clairières de Tirisfal;406 | x=2824.10009765625 y=1055.5 | size=1 | links=#2980(auto Tirisfal Glades;51):19 #12042(auto Tirisfal Glades;219):29 c1523.13:30
+#22056 | auto Tirisfal Glades;407§auto Tirisfal;407§auto Clairières de Tirisfal;407 | x=2128.900146484375 y=-593.4000244140625 | size=1 | links=#2429(auto Tirisfal Glades;46):6 #12586(auto Tirisfal Glades;231):33
+#22109 | auto Tirisfal Glades;408§auto Tirisfal;408§auto Clairières de Tirisfal;408 | x=2133 y=-522 | size=1 | links=#17885(auto Tirisfal Glades;333):17 c1537.33:21
+#22162 | auto Tirisfal Glades;409§auto Tirisfal;409§auto Clairières de Tirisfal;409 | x=1970.400024414063 y=-334.1000061035156 | size=1 | links=c1529.8:29 c1532.9:20 c1529.10:18
+#22211 | auto Tirisfal Glades;410§auto Tirisfal;410§auto Clairières de Tirisfal;410 | x=2222 y=627.2999877929688 | size=1 | links=#14661(auto Tirisfal Glades;274):30 #16622(auto Tirisfal Glades;315):26
+#22236 | auto Tirisfal Glades;411§auto Tirisfal;411§auto Clairières de Tirisfal;411 | x=2098 y=89.70000457763672 | size=1 | links=#4000(auto Tirisfal Glades;70):60 #15454(auto Tirisfal Glades;296):59
+#22247 | auto Tirisfal Glades;412§auto Tirisfal;412§auto Clairières de Tirisfal;412 | x=2351.5 y=438.1000061035156 | size=1 | links=#15865(auto Tirisfal Glades;303):6 #18627(auto Tirisfal Glades;341):8
+#22254 | auto Tirisfal Glades;413§auto Tirisfal;413§auto Clairières de Tirisfal;413 | x=2287.300048828125 y=208.6999969482422 | size=1 | links=#5773(auto Tirisfal Glades;113):49 #14504(auto Tirisfal Glades;271):34
+#22392 | auto Tirisfal Glades;414§auto Tirisfal;414§auto Clairières de Tirisfal;414 | x=2348.199951171875 y=491 | size=1 | links=#3110(auto Tirisfal Glades;55):7 c6491.3:1
+#22408 | auto Tirisfal Glades;415§auto Tirisfal;415§auto Clairières de Tirisfal;415 | x=1706.400024414063 y=-711.7000122070312 | size=1 | links=#19838(auto Tirisfal Glades;365):22 #25067(auto Tirisfal Glades;464):17 #28266(auto Tirisfal Glades;523):7
+#22437 | auto Tirisfal Glades;416§auto Tirisfal;416§auto Clairières de Tirisfal;416 | x=1968.700073242188 y=1587 | size=1 | links=#6139(auto Tirisfal Glades;123):16 o164662.12:11
+#22590 | auto Tirisfal Glades;417§auto Tirisfal;417§auto Clairières de Tirisfal;417 | x=1980 y=1588.700073242188 | size=1 | links=#16826(auto Tirisfal Glades;316):5 c1890.8:2
+#22701 | auto Tirisfal Glades;418§auto Tirisfal;418§auto Clairières de Tirisfal;418 | x=2308.5 y=290.6000061035156 | size=1 | links=#7425(auto Tirisfal Glades;133):4 c2310.1:8
+#22837 | auto Tirisfal Glades;419§auto Tirisfal;419§auto Clairières de Tirisfal;419 | x=2064.5 y=274.8999938964844 | size=1 | links=#19442(auto Tirisfal Glades;358):5 #29125(auto Tirisfal Glades;529):9
+#22886 | auto Tirisfal Glades;420§auto Tirisfal;420§auto Clairières de Tirisfal;420 | x=2436.900146484375 y=355.2000122070313 | size=1 | links=#11044(auto Tirisfal Glades;203):12 #22005(auto Tirisfal Glades;404):14 c12428.1:3
+#23000 | auto Tirisfal Glades;421§auto Tirisfal;421§auto Clairières de Tirisfal;421 | x=2427.400146484375 y=1817 | size=1 | links=#23333(auto Tirisfal Glades;430):18 c1545.44:4
+#23011 | auto Tirisfal Glades;422§auto Tirisfal;422§auto Clairières de Tirisfal;422 | x=1917.099975585938 y=-241 | size=1 | links=#4774(auto Tirisfal Glades;88):48 #28239(auto Tirisfal Glades;522):71
+#23058 | auto Tirisfal Glades;423§auto Tirisfal;423§auto Clairières de Tirisfal;423 | x=2359.800048828125 y=368.8999938964844 | size=1 | links=#19129(auto Tirisfal Glades;349):35 o104593.1:18
+#23062 | auto Tirisfal Glades;424§auto Tirisfal;424§auto Clairières de Tirisfal;424 | x=2183.699951171875 y=1226 | size=1 | links=#4893(auto Tirisfal Glades;92):50 #21704(auto Tirisfal Glades;401):35 o175566.20:26
+#23079 | auto Tirisfal Glades;425§auto Tirisfal;425§auto Clairières de Tirisfal;425 | x=2305.300048828125 y=536.7000122070312 | size=1 | links=#9732(auto Tirisfal Glades;164):25 #24965(auto Tirisfal Glades;460):42
+#23125 | auto Tirisfal Glades;426§auto Tirisfal;426§auto Clairières de Tirisfal;426 | x=1783.400024414063 y=581.2000122070312 | size=5 | links=#6061(auto Tirisfal Glades;121):57 c1536.9:40
+#23175 | auto Tirisfal Glades;427§auto Tirisfal;427§auto Clairières de Tirisfal;427 | x=2110.5 y=1350.099975585938 | size=1 | links=#9080(auto Tirisfal Glades;157):29 #27710(auto Tirisfal Glades;516):54 c1513.3:28 c1509.9:21
+#23280 | auto Tirisfal Glades;428§auto Tirisfal;428§auto Clairières de Tirisfal;428 | x=2032.5 y=127.3000030517578 | size=1 | links=#18976(auto Tirisfal Glades;344):39 #19024(auto Tirisfal Glades;346):53
+#23298 | auto Tirisfal Glades;429§auto Tirisfal;429§auto Clairières de Tirisfal;429 | x=2302.900146484375 y=1283.700073242188 | size=1 | links=#19341(auto Tirisfal Glades;356):67 #28392(auto Tirisfal Glades;527):44 c1934.1:38
+#23333 | auto Tirisfal Glades;430§auto Tirisfal;430§auto Clairières de Tirisfal;430 | x=2435.60009765625 y=1800.099975585938 | size=1 | links=#7987(auto Tirisfal Glades;141):37 #8289(auto Tirisfal Glades;144):21 #23000(auto Tirisfal Glades;421):18
+#23411 | auto Tirisfal Glades;431§auto Tirisfal;431§auto Clairières de Tirisfal;431 | x=2315.400146484375 y=278.5 | size=1 | links=#24244(auto Tirisfal Glades;446):7 c2310.1:8
+#23489 | auto Tirisfal Glades;432§auto Tirisfal;432§auto Clairières de Tirisfal;432 | x=1884.599975585938 y=1565.300048828125 | size=1 | links=#12327(auto Tirisfal Glades;224):10 #16128(auto Tirisfal Glades;308):11
+#23539 | auto Tirisfal Glades;433§auto Tirisfal;433§auto Clairières de Tirisfal;433 | x=3043.699951171875 y=666.2999877929688 | size=1 | links=#20312(auto Tirisfal Glades;373):17 c1658.1:19 c1530.14:3
+#23551 | auto Tirisfal Glades;434§auto Tirisfal;434§auto Clairières de Tirisfal;434 | x=2089.5 y=799.4000244140625 | size=1 | links=#9655(auto Tirisfal Glades;163):57 #13655(auto Tirisfal Glades;245):32 o175566.67:45
+#23739 | auto Tirisfal Glades;435§auto Tirisfal;435§auto Clairières de Tirisfal;435 | x=1948.700073242188 y=-385.5 | size=1 | links=#26384(auto Tirisfal Glades;495):9 c1529.6:24 c1529.10:47
+#23796 | auto Tirisfal Glades;436§auto Tirisfal;436§auto Clairières de Tirisfal;436 | x=2810.10009765625 y=-500.3999938964844 | size=1 | links=#5920(auto Tirisfal Glades;118):39 #26812(auto Tirisfal Glades;502):42
+#23823 | auto Tirisfal Glades;437§auto Tirisfal;437§auto Clairières de Tirisfal;437 | x=1779.099975585938 y=719.2999877929688 | size=1 | links=#13594(auto Tirisfal Glades;243):18 #15448(auto Tirisfal Glades;295):15
+#23882 | auto Tirisfal Glades;438§auto Tirisfal;438§auto Clairières de Tirisfal;438 | x=1916.700073242188 y=1527 | size=1 | links=#2956(auto Tirisfal Glades;50):18 #10333(auto Tirisfal Glades;184):17 c1501.11:10 c1501.17:6 c1502.25:19
+#24010 | auto Tirisfal Glades;439§auto Tirisfal;439§auto Clairières de Tirisfal;439 | x=2269 y=241.5 | size=1 | links=#4547(auto Tirisfal Glades;82):3 #20699(auto Tirisfal Glades;380):9
+#24055 | auto Tirisfal Glades;440§auto Tirisfal;440§auto Clairières de Tirisfal;440 | x=2572.10009765625 y=-300.2000122070313 | size=5 | links=#6375(auto Tirisfal Glades;126):37 #13920(auto Tirisfal Glades;255):28
+#24100 | auto Tirisfal Glades;441§auto Tirisfal;441§auto Clairières de Tirisfal;441 | x=1542.599975585938 y=595.4000244140625 | size=1 | links=c6497.1:72 #3812(auto Silverpine Forest;60):43
+#24112 | auto Tirisfal Glades;442§auto Tirisfal;442§auto Clairières de Tirisfal;442 | x=1809.800048828125 y=-683.2000122070312 | size=5 | links=#14166(auto Tirisfal Glades;261):34 #25021(auto Tirisfal Glades;463):32
+#24114 | auto Tirisfal Glades;443§auto Tirisfal;443§auto Clairières de Tirisfal;443 | x=1767.099975585938 y=-672.4000244140625 | size=1 | links=#20199(auto Tirisfal Glades;371):18 c6491.1:27
+#24178 | auto Tirisfal Glades;444§auto Tirisfal;444§auto Clairières de Tirisfal;444 | x=2327 y=1316.099975585938 | size=1 | links=#15159(auto Tirisfal Glades;287):9 #19008(auto Tirisfal Glades;345):6
+#24187 | auto Tirisfal Glades;445§auto Tirisfal;445§auto Clairières de Tirisfal;445 | x=1797.900024414063 y=702.2999877929688 | size=1 | links=#12503(auto Tirisfal Glades;230):12 #13594(auto Tirisfal Glades;243):7 c1537.40:4 c1537.41:24
+#24244 | auto Tirisfal Glades;446§auto Tirisfal;446§auto Clairières de Tirisfal;446 | x=2313 y=271.2000122070313 | size=1 | links=#4988(auto Tirisfal Glades;93):7 #23411(auto Tirisfal Glades;431):7
+#24300 | auto Tirisfal Glades;447§auto Tirisfal;447§auto Clairières de Tirisfal;447 | x=1955.800048828125 y=1544.400024414063 | size=1 | links=#15490(auto Tirisfal Glades;297):6 #24631(auto Tirisfal Glades;453):5
+#24384 | auto Tirisfal Glades;448§auto Tirisfal;448§auto Clairières de Tirisfal;448 | x=1971.400024414063 y=-145.4000091552734 | size=1 | links=#4774(auto Tirisfal Glades;88):61 #17946(auto Tirisfal Glades;334):45
+#24488 | auto Tirisfal Glades;449§auto Tirisfal;449§auto Clairières de Tirisfal;449 | x=2021.5 y=1919 | size=1 | links=c1505.23:8 c1505.24:13 c1505.25:7
+#24589 | auto Tirisfal Glades;451§auto Tirisfal;451§auto Clairières de Tirisfal;451 | x=2332.5 y=1314.800048828125 | size=1 | links=#17835(auto Tirisfal Glades;332):6 c1934.2:2
+#24593 | auto Tirisfal Glades;452§auto Tirisfal;452§auto Clairières de Tirisfal;452 | x=2277.10009765625 y=328.5 | size=1 | links=#392(auto Tirisfal Glades;10):18 #27301(auto Tirisfal Glades;507):12 c2114.1:10 c2314.1:14
+#24631 | auto Tirisfal Glades;453§auto Tirisfal;453§auto Clairières de Tirisfal;453 | x=1949.900024414063 y=1544.300048828125 | size=1 | links=#24300(auto Tirisfal Glades;447):5 c1890.5:10
+#24666 | auto Tirisfal Glades;454§auto Tirisfal;454§auto Clairières de Tirisfal;454 | x=2563.300048828125 y=524.2999877929688 | size=1 | links=#3848(auto Tirisfal Glades;68):14 #10666(auto Tirisfal Glades;194):21 c1941.11:15 c1941.15:12 c1941.26:11
+#24668 | auto Tirisfal Glades;455§auto Tirisfal;455§auto Clairières de Tirisfal;455 | x=2748.300048828125 y=-503.8999938964844 | size=1 | links=#5920(auto Tirisfal Glades;118):22 #26757(auto Tirisfal Glades;500):35
+#24719 | auto Tirisfal Glades;456§auto Tirisfal;456§auto Clairières de Tirisfal;456 | x=2119.60009765625 y=931.9000244140625 | size=1 | links=#9655(auto Tirisfal Glades;163):78 #14672(auto Tirisfal Glades;275):65
+#24741 | auto Tirisfal Glades;457§auto Tirisfal;457§auto Clairières de Tirisfal;457 | x=2312.800048828125 y=-702.7000122070312 | size=5 | links=#19278(auto Tirisfal Glades;352):44 c1549.7:15 c1549.16:55 c1555.28:81 c4075.70:21
+#24847 | auto Tirisfal Glades;458§auto Tirisfal;458§auto Clairières de Tirisfal;458 | x=1893.5 y=1585.700073242188 | size=1 | links=#7130(auto Tirisfal Glades;130):33 #9737(auto Tirisfal Glades;165):41 #16128(auto Tirisfal Glades;308):10 c1736.1:11 c1501.21:19
+#24913 | auto Tirisfal Glades;459§auto Tirisfal;459§auto Clairières de Tirisfal;459 | x=2948.900146484375 y=16 | size=5 | links=#12349(auto Tirisfal Glades;226):111 #25770(auto Tirisfal Glades;479):130 c1911.5:16 c1545.17:34
+#24965 | auto Tirisfal Glades;460§auto Tirisfal;460§auto Clairières de Tirisfal;460 | x=2262.400146484375 y=539.2999877929688 | size=1 | links=#5345(auto Tirisfal Glades;102):39 #18582(auto Tirisfal Glades;338):47 #23079(auto Tirisfal Glades;425):42
+#24968 | auto Tirisfal Glades;461§auto Tirisfal;461§auto Clairières de Tirisfal;461 | x=1657.800048828125 y=-712.9000244140625 | size=1 | links=#6808(auto Tirisfal Glades;127):19 c11615.1:17 o176213.1:12
+#24991 | auto Tirisfal Glades;462§auto Tirisfal;462§auto Clairières de Tirisfal;462 | x=1722.5 y=-465.2000122070313 | size=1 | links=#21578(auto Tirisfal Glades;398):50 #22006(auto Tirisfal Glades;405):68
+#25021 | auto Tirisfal Glades;463§auto Tirisfal;463§auto Clairières de Tirisfal;463 | x=1794.900024414063 y=-712.2000122070312 | size=1 | links=#15308(auto Tirisfal Glades;292):9 #24112(auto Tirisfal Glades;442):32
+#25067 | auto Tirisfal Glades;464§auto Tirisfal;464§auto Clairières de Tirisfal;464 | x=1690.599975585938 y=-719.6000366210938 | size=1 | links=#22408(auto Tirisfal Glades;415):17 c11022.1:10 c17099.1:7
+#25089 | auto Tirisfal Glades;465§auto Tirisfal;465§auto Clairières de Tirisfal;465 | x=2040.400024414063 y=-346.6000061035156 | size=1 | links=c1529.7:10 c1532.7:20
+#25091 | auto Tirisfal Glades;466§auto Tirisfal;466§auto Clairières de Tirisfal;466 | x=2241 y=-641.7000122070312 | size=1 | links=#8578(auto Tirisfal Glades;145):39 #20147(auto Tirisfal Glades;370):23 c1538.5:12
+#25132 | auto Tirisfal Glades;467§auto Tirisfal;467§auto Clairières de Tirisfal;467 | x=3084.199951171875 y=-539.2999877929688 | size=1 | links=#9454(auto Tirisfal Glades;161):21 #9881(auto Tirisfal Glades;171):16
+#25277 | auto Tirisfal Glades;468§auto Tirisfal;468§auto Clairières de Tirisfal;468 | x=2819.300048828125 y=807.7000122070312 | size=1 | links=#5972(auto Tirisfal Glades;119):8 #11076(auto Tirisfal Glades;206):6
+#25290 | auto Tirisfal Glades;469§auto Tirisfal;469§auto Clairières de Tirisfal;469 | x=2412.800048828125 y=-520.6000366210938 | size=1 | links=#10250(auto Tirisfal Glades;182):76 #10760(auto Tirisfal Glades;197):117 #18619(auto Tirisfal Glades;340):60 c1554.122:50
+#25323 | auto Tirisfal Glades;470§auto Tirisfal;470§auto Clairières de Tirisfal;470 | x=2034.099975585938 y=1845.599975585938 | size=1 | links=#13869(auto Tirisfal Glades;254):5 c1505.16:6
+#25400 | auto Tirisfal Glades;471§auto Tirisfal;471§auto Clairières de Tirisfal;471 | x=2957.699951171875 y=819.2999877929688 | size=1 | links=#5(auto Tirisfal Glades;1):26 #4516(auto Tirisfal Glades;81):30 #26296(auto Tirisfal Glades;492):11 c1523.2:9
+#25474 | auto Tirisfal Glades;472§auto Tirisfal;472§auto Clairières de Tirisfal;472 | x=1901.099975585938 y=1512.900024414063 | size=1 | links=#969(auto Tirisfal Glades;21):7 #10333(auto Tirisfal Glades;184):9
+#25535 | auto Tirisfal Glades;473§auto Tirisfal;473§auto Clairières de Tirisfal;473 | x=2881.800048828125 y=298.7000122070313 | size=5 | links=#16061(auto Tirisfal Glades;307):47 c721.2:33
+#25568 | entry and exit;Agamand Family Crypt;Tirisfal Glades§ein- und ausgang;Gruft der Familie Agamand;Tirisfal§entrée et sortie;Agamand Family Crypt;Clairières de Tirisfal | x=3024.300048828125 y=672.4000244140625 | size=1 | links=#449(auto Tirisfal Glades;13):10 c1534.12:13
+#25598 | auto Tirisfal Glades;474§auto Tirisfal;474§auto Clairières de Tirisfal;474 | x=1987.300048828125 y=231.1000061035156 | size=1 | links=#439(auto Tirisfal Glades;12):70 #1800(auto Tirisfal Glades;35):24 #18976(auto Tirisfal Glades;344):77
+#25635 | auto Tirisfal Glades;475§auto Tirisfal;475§auto Clairières de Tirisfal;475 | x=2161.400146484375 y=181.6000061035156 | size=1 | links=#25794(auto Tirisfal Glades;482):47 c1738.1:31
+#25669 | auto Tirisfal Glades;476§auto Tirisfal;476§auto Clairières de Tirisfal;476 | x=2620.10009765625 y=-594 | size=1 | links=#3924(auto Tirisfal Glades;69):21 #21463(auto Tirisfal Glades;395):54 #27860(auto Tirisfal Glades;518):30
+#25678 | auto Tirisfal Glades;477§auto Tirisfal;477§auto Clairières de Tirisfal;477 | x=2269.300048828125 y=1314.400024414063 | size=1 | links=#5004(auto Tirisfal Glades;94):5 c1936.1:4
+#25689 | auto Tirisfal Glades;478§auto Tirisfal;478§auto Clairières de Tirisfal;478 | x=2493.10009765625 y=26.60000038146973 | size=1 | links=#19(auto Tirisfal Glades;2):41 #21097(auto Tirisfal Glades;388):24 o1557.1:8 c1528.2:9
+#25770 | auto Tirisfal Glades;479§auto Tirisfal;479§auto Clairières de Tirisfal;479 | x=2881.60009765625 y=127.5 | size=5 | links=#5546(auto Tirisfal Glades;111):67 #24913(auto Tirisfal Glades;459):130 c1545.15:56 c1544.45:35
+#25774 | auto Tirisfal Glades;480§auto Tirisfal;480§auto Clairières de Tirisfal;480 | x=2455.300048828125 y=975.7000122070312 | size=1 | links=#3363(auto Tirisfal Glades;59):33 #19293(auto Tirisfal Glades;354):80
+#25792 | auto Tirisfal Glades;481§auto Tirisfal;481§auto Clairières de Tirisfal;481 | x=2125.300048828125 y=729.6000366210938 | size=1 | links=#13655(auto Tirisfal Glades;245):50 #15570(auto Tirisfal Glades;300):59 c1526.34:38 c4075.34:30 o175566.61:23
+#25794 | auto Tirisfal Glades;482§auto Tirisfal;482§auto Clairières de Tirisfal;482 | x=2171.900146484375 y=228 | size=1 | links=#12114(auto Tirisfal Glades;221):50 #25635(auto Tirisfal Glades;475):47 #28293(auto Tirisfal Glades;526):49 c1547.76:25
+#25812 | auto Tirisfal Glades;483§auto Tirisfal;483§auto Clairières de Tirisfal;483 | x=2258.60009765625 y=291.1000061035156 | size=1 | links=#392(auto Tirisfal Glades;10):23 #1630(auto Tirisfal Glades;31):16 #8792(auto Tirisfal Glades;149):15 #16541(auto Tirisfal Glades;313):14 c1652.1:16 c2311.1:16 c23686.1:1 c25171.5:5
+#25821 | auto Tirisfal Glades;484§auto Tirisfal;484§auto Clairières de Tirisfal;484 | x=2150.400146484375 y=-567.2999877929688 | size=1 | links=#12586(auto Tirisfal Glades;231):17 #14178(auto Tirisfal Glades;263):17 o153473.2:17
+#25872 | auto Tirisfal Glades;485§auto Tirisfal;485§auto Clairières de Tirisfal;485 | x=2151.300048828125 y=-540.7999877929688 | size=1 | links=#14178(auto Tirisfal Glades;263):8 #14322(auto Tirisfal Glades;267):3
+#25928 | auto Tirisfal Glades;486§auto Tirisfal;486§auto Clairières de Tirisfal;486 | x=2133.5 y=-539.2000122070312 | size=5 | links=#7520(auto Tirisfal Glades;137):13 #17885(auto Tirisfal Glades;333):0
+#25966 | auto Tirisfal Glades;487§auto Tirisfal;487§auto Clairières de Tirisfal;487 | x=2488.300048828125 y=-288.1000061035156 | size=5 | links=#6375(auto Tirisfal Glades;126):47 #13735(auto Tirisfal Glades;248):49
+#26023 | auto Tirisfal Glades;488§auto Tirisfal;488§auto Clairières de Tirisfal;488 | x=2000.900024414063 y=-429.2000122070313 | size=1 | links=#4381(auto Tirisfal Glades;76):26 c1532.1:15 c1529.2:41 c1532.2:9 c1529.4:26 c1529.6:54 c1529.9:22 c1532.10:74 c4075.55:4
+#26089 | auto Tirisfal Glades;489§auto Tirisfal;489§auto Clairières de Tirisfal;489 | x=2599.699951171875 y=-563.2000122070312 | size=1 | links=#11264(auto Tirisfal Glades;208):17 #26356(auto Tirisfal Glades;494):11
+#26141 | auto Tirisfal Glades;490§auto Tirisfal;490§auto Clairières de Tirisfal;490 | x=2122.900146484375 y=-583.2999877929688 | size=1 | links=#2429(auto Tirisfal Glades;46):4 #5990(auto Tirisfal Glades;120):5
+#26256 | auto Tirisfal Glades;491§auto Tirisfal;491§auto Clairières de Tirisfal;491 | x=1697.599975585938 y=-655.6000366210938 | size=1 | links=#1549(auto Tirisfal Glades;29):33 #5170(auto Tirisfal Glades;98):67 #28266(auto Tirisfal Glades;523):50
+#26296 | auto Tirisfal Glades;492§auto Tirisfal;492§auto Clairières de Tirisfal;492 | x=2961.5 y=808.2999877929688 | size=1 | links=#25400(auto Tirisfal Glades;471):11 #27959(auto Tirisfal Glades;520):20 c1530.7:26
+#26336 | auto Tirisfal Glades;493§auto Tirisfal;493§auto Clairières de Tirisfal;493 | x=2769.300048828125 y=997.7000122070312 | size=1 | links=#5544(auto Tirisfal Glades;110):47 #5589(auto Tirisfal Glades;112):49 c1522.9:17 c1523.15:25 c1522.37:20
+#26356 | auto Tirisfal Glades;494§auto Tirisfal;494§auto Clairières de Tirisfal;494 | x=2597 y=-574.5 | size=1 | links=#3924(auto Tirisfal Glades;69):13 #26089(auto Tirisfal Glades;489):11
+#26384 | auto Tirisfal Glades;495§auto Tirisfal;495§auto Clairières de Tirisfal;495 | x=1941.800048828125 y=-379.2000122070313 | size=1 | links=#23739(auto Tirisfal Glades;435):9 c1529.8:61 c1554.63:36
+#26410 | auto Tirisfal Glades;496§auto Tirisfal;496§auto Clairières de Tirisfal;496 | x=2342.5 y=419.1000061035156 | size=1 | links=#18627(auto Tirisfal Glades;341):14 #19129(auto Tirisfal Glades;349):21
+#26500 | auto Tirisfal Glades;497§auto Tirisfal;497§auto Clairières de Tirisfal;497 | x=1958.099975585938 y=1590.200073242188 | size=1 | links=#2006(auto Tirisfal Glades;40):4 #6139(auto Tirisfal Glades;123):22 #9737(auto Tirisfal Glades;165):25
+#26603 | auto Tirisfal Glades;498§auto Tirisfal;498§auto Clairières de Tirisfal;498 | x=1925.900024414063 y=1540.700073242188 | size=1 | links=#1659(auto Tirisfal Glades;33):7 #2956(auto Tirisfal Glades;50):9
+#26643 | auto Tirisfal Glades;499§auto Tirisfal;499§auto Clairières de Tirisfal;499 | x=1964.5 y=-467.2000122070313 | size=1 | links=#2443(auto Tirisfal Glades;47):8 #17994(auto Tirisfal Glades;335):6
+#26757 | auto Tirisfal Glades;500§auto Tirisfal;500§auto Clairières de Tirisfal;500 | x=2714.60009765625 y=-513.7000122070312 | size=1 | links=#24668(auto Tirisfal Glades;455):35 #28282(auto Tirisfal Glades;525):34
+#26809 | auto Tirisfal Glades;501§auto Tirisfal;501§auto Clairières de Tirisfal;501 | x=2156.60009765625 y=1285.200073242188 | size=1 | links=#4893(auto Tirisfal Glades;92):14 #14168(auto Tirisfal Glades;262):15 c7980.1:9
+#26812 | auto Tirisfal Glades;502§auto Tirisfal;502§auto Clairières de Tirisfal;502 | x=2847.300048828125 y=-521.7000122070312 | size=1 | links=#4033(auto Tirisfal Glades;71):40 #23796(auto Tirisfal Glades;436):42 c1539.5:14 c1540.5:10
+#26986 | auto Tirisfal Glades;503§auto Tirisfal;503§auto Clairières de Tirisfal;503 | x=1883.5 y=1608.900024414063 | size=1 | links=#12459(auto Tirisfal Glades;228):11 c1736.1:17
+#27187 | auto Tirisfal Glades;504§auto Tirisfal;504§auto Clairières de Tirisfal;504 | x=2497 y=242.6000061035156 | size=5 | links=#10046(auto Tirisfal Glades;176):29 #14254(auto Tirisfal Glades;265):75 c1553.32:30 c1547.33:22
+#27239 | auto Tirisfal Glades;505§auto Tirisfal;505§auto Clairières de Tirisfal;505 | x=2091.900146484375 y=-565.9000244140625 | size=5 | links=#9876(auto Tirisfal Glades;170):24 c1548.109:33
+#27266 | auto Tirisfal Glades;506§auto Tirisfal;506§auto Clairières de Tirisfal;506 | x=2442.199951171875 y=1719 | size=1 | links=#4489(auto Tirisfal Glades;80):41 #7987(auto Tirisfal Glades;141):43 c1544.8:14
+#27301 | auto Tirisfal Glades;507§auto Tirisfal;507§auto Clairières de Tirisfal;507 | x=2271.300048828125 y=339.1000061035156 | size=1 | links=#12082(auto Tirisfal Glades;220):6 #24593(auto Tirisfal Glades;452):12
+#27324 | auto Tirisfal Glades;508§auto Tirisfal;508§auto Clairières de Tirisfal;508 | x=2306.800048828125 y=-605.2999877929688 | size=1 | links=#3140(auto Tirisfal Glades;56):34 #8793(auto Tirisfal Glades;150):35
+#27349 | auto Tirisfal Glades;509§auto Tirisfal;509§auto Clairières de Tirisfal;509 | x=1871.900024414063 y=1576.599975585938 | size=1 | links=#10091(auto Tirisfal Glades;178):3 #21441(auto Tirisfal Glades;394):6
+#27356 | auto Tirisfal Glades;510§auto Tirisfal;510§auto Clairières de Tirisfal;510 | x=2240.400146484375 y=305.5 | size=1 | links=#11997(auto Tirisfal Glades;218):5 #16541(auto Tirisfal Glades;313):8
+#27477 | auto Tirisfal Glades;511§auto Tirisfal;511§auto Clairières de Tirisfal;511 | x=2279.199951171875 y=246.1999969482422 | size=1 | links=#18699(auto Tirisfal Glades;342):6 #28469(Claire Willower;Taverne Zur Galgenschlinge;Tirisfal Glades):7 c5695.1:6
+#27598 | auto Tirisfal Glades;512§auto Tirisfal;512§auto Clairières de Tirisfal;512 | x=2317.400146484375 y=-296.8000183105469 | size=1 | links=#2351(auto Tirisfal Glades;44):68 #8152(auto Tirisfal Glades;142):71
+#27641 | auto Tirisfal Glades;514§auto Tirisfal;514§auto Clairières de Tirisfal;514 | x=2579 y=354.3999938964844 | size=1 | links=#1551(auto Tirisfal Glades;30):69 #5900(auto Tirisfal Glades;117):64 o176753.1:39 c1674.3:36 c1674.13:27 o176753.19:33
+#27695 | auto Tirisfal Glades;515§auto Tirisfal;515§auto Clairières de Tirisfal;515 | x=1748.900024414063 y=-716.6000366210938 | size=1 | links=#10198(auto Tirisfal Glades;181):15 #19727(auto Tirisfal Glades;362):12 c11057.1:13 o176092.1:11
+#27710 | auto Tirisfal Glades;516§auto Tirisfal;516§auto Clairières de Tirisfal;516 | x=2060 y=1370.599975585938 | size=1 | links=#18857(auto Tirisfal Glades;343):48 #23175(auto Tirisfal Glades;427):54 c1509.2:27 c1513.9:39 c1513.11:19
+#27744 | auto Tirisfal Glades;517§auto Tirisfal;517§auto Clairières de Tirisfal;517 | x=2251.699951171875 y=243.1000061035156 | size=1 | links=#7180(central location;down;Taverne Zur Galgenschlinge;Tirisfal Glades):5 c1560.1:7 c5759.1:6
+#27860 | auto Tirisfal Glades;518§auto Tirisfal;518§auto Clairières de Tirisfal;518 | x=2648.10009765625 y=-582.2999877929688 | size=1 | links=#13281(auto Tirisfal Glades;239):36 #21463(auto Tirisfal Glades;395):57 #25669(auto Tirisfal Glades;476):30
+#27881 | spawn location;Shadow Grave;Tirisfal Glades§spawnpunkt;Schattengrab;Tirisfal§spawn location;Tombeau des ombres;Clairières de Tirisfal | x=1676.800048828125 y=1677.300048828125 | size=1
+#27904 | auto Tirisfal Glades;519§auto Tirisfal;519§auto Clairières de Tirisfal;519 | x=2256.800048828125 y=245 | size=1 | links=#10114(centralpoint;Taverne Zur Galgenschlinge;Tirisfal Glades;top):5 c2127.1:5 c5750.1:8
+#27959 | auto Tirisfal Glades;520§auto Tirisfal;520§auto Clairières de Tirisfal;520 | x=2954.900146484375 y=788.9000244140625 | size=1 | links=#13220(auto Tirisfal Glades;238):32 #26296(auto Tirisfal Glades;492):20
+#28093 | auto Tirisfal Glades;521§auto Tirisfal;521§auto Clairières de Tirisfal;521 | x=2291.300048828125 y=239.5 | size=1 | links=c1931.1:6 c2209.1:4 c2210.1:8 c2211.1:5
+#28239 | auto Tirisfal Glades;522§auto Tirisfal;522§auto Clairières de Tirisfal;522 | x=1874.5 y=-298.8999938964844 | size=1 | links=#4747(auto Tirisfal Glades;87):95 #23011(auto Tirisfal Glades;422):71
+#28266 | auto Tirisfal Glades;523§auto Tirisfal;523§auto Clairières de Tirisfal;523 | x=1707.200073242188 y=-704.7000122070312 | size=1 | links=#22408(auto Tirisfal Glades;415):7 #26256(auto Tirisfal Glades;491):50
+#28267 | auto Tirisfal Glades;524§auto Tirisfal;524§auto Clairières de Tirisfal;524 | x=3029.800048828125 y=-230.4000091552734 | size=5 | links=#17392(auto Tirisfal Glades;326):71 #20600(auto Tirisfal Glades;377):88 c1545.9:24 c1545.12:16
+#28282 | auto Tirisfal Glades;525§auto Tirisfal;525§auto Clairières de Tirisfal;525 | x=2684.60009765625 y=-530.7999877929688 | size=1 | links=#13281(auto Tirisfal Glades;239):27 #26757(auto Tirisfal Glades;500):34
+#28293 | auto Tirisfal Glades;526§auto Tirisfal;526§auto Clairières de Tirisfal;526 | x=2127.5 y=249 | size=1 | links=#4074(auto Tirisfal Glades;73):54 #25794(auto Tirisfal Glades;482):49
+#28392 | auto Tirisfal Glades;527§auto Tirisfal;527§auto Clairières de Tirisfal;527 | x=2258.60009765625 y=1277.900024414063 | size=1 | links=#13731(auto Tirisfal Glades;247):70 #23298(auto Tirisfal Glades;429):44 c1547.34:26
+#28469 | Claire Willower;Taverne Zur Galgenschlinge;Tirisfal Glades§Claire Weidner;Taverne Zur Galgenschlinge;Tirisfal§Claire Willower;Taverne Zur Galgenschlinge;Clairières de Tirisfal | x=2286.5 y=247.8000030517578 | size=1 | links=#27477(auto Tirisfal Glades;511):7
+#28574 | auto Tirisfal Glades;528§auto Tirisfal;528§auto Clairières de Tirisfal;528 | x=2076.400146484375 y=1981.200073242188 | size=1 | links=c1505.3:15 c1505.4:13
+#29125 | auto Tirisfal Glades;529§auto Tirisfal;529§auto Clairières de Tirisfal;529 | x=2062.60009765625 y=266.1000061035156 | size=1 | links=#22837(auto Tirisfal Glades;419):9 #29126(auto Tirisfal Glades;530):11
+#29126 | auto Tirisfal Glades;530§auto Tirisfal;530§auto Clairières de Tirisfal;530 | x=2060 y=254.4000091552734 | size=1 | links=#29125(auto Tirisfal Glades;529):11 #29127(auto Tirisfal Glades;531):3
+#29127 | auto Tirisfal Glades;531§auto Tirisfal;531§auto Clairières de Tirisfal;531 | x=2056.900146484375 y=254.6000061035156 | size=1 | links=#29126(auto Tirisfal Glades;530):3 #29128(auto Tirisfal Glades;532):6
+#29128 | auto Tirisfal Glades;532§auto Tirisfal;532§auto Clairières de Tirisfal;532 | x=2053.300048828125 y=259.8999938964844 | size=1 | links=#29127(auto Tirisfal Glades;531):6 #29129(auto Tirisfal Glades;533):7
+#29129 | auto Tirisfal Glades;533§auto Tirisfal;533§auto Clairières de Tirisfal;533 | x=2053.199951171875 y=267.3000183105469 | size=1 | links=#29128(auto Tirisfal Glades;532):7 #29130(auto Tirisfal Glades;534):7
+#29130 | auto Tirisfal Glades;534§auto Tirisfal;534§auto Clairières de Tirisfal;534 | x=2058.800048828125 y=272.3000183105469 | size=1 | links=#29129(auto Tirisfal Glades;533):7 #29131(auto Tirisfal Glades;535):8
+#29131 | auto Tirisfal Glades;535§auto Tirisfal;535§auto Clairières de Tirisfal;535 | x=2067.400146484375 y=270.8000183105469 | size=1 | links=#29130(auto Tirisfal Glades;534):8 #29132(auto Tirisfal Glades;536):8
+#29132 | auto Tirisfal Glades;536§auto Tirisfal;536§auto Clairières de Tirisfal;536 | x=2071.400146484375 y=263.1000061035156 | size=1 | links=#29131(auto Tirisfal Glades;535):8 #29133(auto Tirisfal Glades;537):8
+#29133 | auto Tirisfal Glades;537§auto Tirisfal;537§auto Clairières de Tirisfal;537 | x=2066.900146484375 y=256 | size=1 | links=#29132(auto Tirisfal Glades;536):8 #29134(auto Tirisfal Glades;538):9
+#29134 | auto Tirisfal Glades;538§auto Tirisfal;538§auto Clairières de Tirisfal;538 | x=2057.60009765625 y=257 | size=1 | links=#29133(auto Tirisfal Glades;537):9 #29135(auto Tirisfal Glades;539):8
+#29135 | auto Tirisfal Glades;539§auto Tirisfal;539§auto Clairières de Tirisfal;539 | x=2054 y=265 | size=1 | links=#29134(auto Tirisfal Glades;538):8 #29136(auto Tirisfal Glades;540):6
+#29136 | auto Tirisfal Glades;540§auto Tirisfal;540§auto Clairières de Tirisfal;540 | x=2058 y=270.6000061035156 | size=1 | links=#29135(auto Tirisfal Glades;539):6 #29137(auto Tirisfal Glades;541):6
+#29137 | auto Tirisfal Glades;541§auto Tirisfal;541§auto Clairières de Tirisfal;541 | x=2064.60009765625 y=272.8999938964844 | size=1 | links=#29136(auto Tirisfal Glades;540):6 #29138(auto Tirisfal Glades;542):4 #29141(auto Tirisfal Glades;543):4
+#29138 | auto Tirisfal Glades;542§auto Tirisfal;542§auto Clairières de Tirisfal;542 | x=2065.800048828125 y=277.3000183105469 | size=1 | links=#29137(auto Tirisfal Glades;541):4 #29140(pier tirisfal zeppelin to orgrimmar):9
+#29140 | pier tirisfal zeppelin to orgrimmar§Steg Zeppelin von Tirisfal nach Orgrimmar§pier tirisfal zeppelin to orgrimmar | x=2067.10009765625 y=286.8999938964844 | size=1 | links=#29138(auto Tirisfal Glades;542):9 #29150(auto Tirisfal Glades;548):7 c9566.1:3
+#29141 | auto Tirisfal Glades;543§auto Tirisfal;543§auto Clairières de Tirisfal;543 | x=2063.300048828125 y=268.8000183105469 | size=1 | links=#29137(auto Tirisfal Glades;541):4 #29142(auto Tirisfal Glades;544):7
+#29142 | auto Tirisfal Glades;544§auto Tirisfal;544§auto Clairières de Tirisfal;544 | x=2061.5 y=262 | size=1 | links=#29141(auto Tirisfal Glades;543):7 #29143(auto Tirisfal Glades;545):5
+#29143 | auto Tirisfal Glades;545§auto Tirisfal;545§auto Clairières de Tirisfal;545 | x=2060.699951171875 y=256.1000061035156 | size=1 | links=#29142(auto Tirisfal Glades;544):5 #29144(auto Tirisfal Glades;546):5
+#29144 | auto Tirisfal Glades;546§auto Tirisfal;546§auto Clairières de Tirisfal;546 | x=2059.400146484375 y=250.4000091552734 | size=1 | links=#29143(auto Tirisfal Glades;545):5 #29146(pier tirisfal zeppelin to grom'gol):10
+#29146 | pier tirisfal zeppelin to grom'gol§Steg tirisfal zeppelin nach grom'gol§pier tirisfal zeppelin to grom'gol | x=2057.800048828125 y=240.4000091552734 | size=1 | links=#29144(auto Tirisfal Glades;546):10 #29147(auto Tirisfal Glades;547):6 c3150.1:3
+#29147 | auto Tirisfal Glades;547§auto Tirisfal;547§auto Clairières de Tirisfal;547 | x=2057.300048828125 y=234 | size=1 | links=#29146(pier tirisfal zeppelin to grom'gol):6 #29149(on zeppelin to grom'gol):11
+#29149 | on zeppelin to grom'gol§mit dem Zeppelin nach Grom'gol§on zeppelin to grom'gol | x=2046.099975585938 y=231.4000091552734 | size=1 | links=#29147(auto Tirisfal Glades;547):11
+#29150 | auto Tirisfal Glades;548§auto Tirisfal;548§auto Clairières de Tirisfal;548 | x=2068 y=294.1000061035156 | size=1 | links=#29140(pier tirisfal zeppelin to orgrimmar):7 #29152(on zeppelin to orgrimmar):9
+#29152 | on zeppelin to orgrimmar§auf dem Zeppelin nach Orgrimmar§on zeppelin to orgrimmar | x=2077.699951171875 y=296 | size=1 | links=#29150(auto Tirisfal Glades;548):9
+#48744 | Undertaker Mordo;Questgeber;Tirisfal;1;30.22;71.65§Totengräber Mordo;Questgeber;Tirisfal;1;30.22;71.65§Fossoyeur Mordo;Questgeber;Clairières de Tirisfal;1;30.22;71.65 | x=1672.430988906145 y=1677.69323474035 | size=1
+#48745 | auto Inside;Shadow Grave;Tirisfal Glades;562§auto Drinnen;Schattengrab;Tirisfal;562§auto Intérieur;Tombeau des ombres;Clairières de Tirisfal;562 | x=1657.900024414063 y=1677.700073242188 | size=1 | links=#48746(auto Inside;Shadow Grave;Tirisfal Glades;563):6
+#48746 | auto Inside;Shadow Grave;Tirisfal Glades;563§auto Drinnen;Schattengrab;Tirisfal;563§auto Intérieur;Tombeau des ombres;Clairières de Tirisfal;563 | x=1651 y=1677.800048828125 | size=1 | links=#48745(auto Inside;Shadow Grave;Tirisfal Glades;562):6 #48747(auto Inside;Shadow Grave;Tirisfal Glades;564):8
+#48747 | auto Inside;Shadow Grave;Tirisfal Glades;564§auto Drinnen;Schattengrab;Tirisfal;564§auto Intérieur;Tombeau des ombres;Clairières de Tirisfal;564 | x=1642.800048828125 y=1677.5 | size=1 | links=#48746(auto Inside;Shadow Grave;Tirisfal Glades;563):8 #48748(auto Inside;Shadow Grave;Tirisfal Glades;565):7
+#48748 | auto Inside;Shadow Grave;Tirisfal Glades;565§auto Drinnen;Schattengrab;Tirisfal;565§auto Intérieur;Tombeau des ombres;Clairières de Tirisfal;565 | x=1642.800048828125 y=1670.5 | size=1 | links=#48747(auto Inside;Shadow Grave;Tirisfal Glades;564):7 #48749(auto Inside;Shadow Grave;Tirisfal Glades;566):7
+#48749 | auto Inside;Shadow Grave;Tirisfal Glades;566§auto Drinnen;Schattengrab;Tirisfal;566§auto Intérieur;Tombeau des ombres;Clairières de Tirisfal;566 | x=1643.300048828125 y=1663.5 | size=1 | links=#48748(auto Inside;Shadow Grave;Tirisfal Glades;565):7 #48750(auto Inside;Shadow Grave;Tirisfal Glades;567):7
+#48750 | auto Inside;Shadow Grave;Tirisfal Glades;567§auto Drinnen;Schattengrab;Tirisfal;567§auto Intérieur;Tombeau des ombres;Clairières de Tirisfal;567 | x=1650.599975585938 y=1663.5 | size=1 | links=#48749(auto Inside;Shadow Grave;Tirisfal Glades;566):7 #48751(auto Shadow Grave;Tirisfal Glades;568):10
+#48751 | auto Shadow Grave;Tirisfal Glades;568§auto Schattengrab;Tirisfal;568§auto Tombeau des ombres;Clairières de Tirisfal;568 | x=1661.5 y=1663 | size=1 | links=#48750(auto Inside;Shadow Grave;Tirisfal Glades;567):10 #48752(auto Deathknell;Tirisfal Glades;569):13
+#48752 | auto Deathknell;Tirisfal Glades;569§auto Todesend;Tirisfal;569§auto Deathknell;Clairières de Tirisfal;569 | x=1674.900024414063 y=1662.800048828125 | size=1 | links=#48751(auto Shadow Grave;Tirisfal Glades;568):13 #48753(auto Deathknell;Tirisfal Glades;570):10
+#48753 | auto Deathknell;Tirisfal Glades;570§auto Todesend;Tirisfal;570§auto Deathknell;Clairières de Tirisfal;570 | x=1684.700073242188 y=1665.200073242188 | size=1 | links=#3600(auto Tirisfal Glades;63):12 #48752(auto Deathknell;Tirisfal Glades;569):10
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c620.1 | links=#5424(auto Tirisfal Glades;105):25 c1935.7:6
+c1495.1 | links=#19024(auto Tirisfal Glades;346):12
+c1496.1 | links=#7257(auto Tirisfal Glades;132):9
+c1497.1 | links=o1586.1:3 c1527.10:17
+c1499.1 | links=#4988(auto Tirisfal Glades;93):5
+c1500.1 | links=#7180(central location;down;Taverne Zur Galgenschlinge;Tirisfal Glades):5
+c1501.1 | links=#21016(auto Tirisfal Glades;383):4
+c1502.1 | links=c1502.14:19
+c1504.1 | links=c1504.5:20 c1504.12:33 c1504.16:33
+c1505.1 | links=#15938(auto Tirisfal Glades;304):11 c1505.15:10
+c1506.1 | links=c1506.2:26 c1507.3:18
+c1507.1 | links=c1506.12:29 c1506.19:34
+c1508.1 | links=#8648(auto Tirisfal Glades;147):49 c1508.2:45 c1512.22:25
+c1509.1 | links=c1506.17:13
+c1512.1 | links=c1508.2:58 c4075.43:13
+c1513.1 | links=c1509.7:42 c1509.9:12 c4075.68:18
+c1515.1 | links=#392(auto Tirisfal Glades;10):18 #11056(auto Tirisfal Glades;205):5
+c1518.1 | links=#12082(auto Tirisfal Glades;220):8
+c1519.1 | links=#21704(auto Tirisfal Glades;401):11
+c1520.1 | links=c1520.3:5 c1522.40:30
+c1521.1 | links=#20348(auto Tirisfal Glades;376):10
+c1522.1 | links=c1522.14:26
+c1523.1 | links=c1530.12:24
+c1525.1 | links=c1941.1:10 c1525.3:40
+c1526.1 | links=#14093(auto Tirisfal Glades;259):30 c1525.26:24
+c1527.1 | links=c1528.3:14 c1528.4:28
+c1528.1 | links=o1557.1:7
+c1529.1 | links=c1532.3:28 c1532.4:32 c4075.24:15
+c1530.1 | links=#9346(auto Tirisfal Glades;160):42 c1530.7:72
+c1532.1 | links=#26023(auto Tirisfal Glades;488):15
+c1533.1 | links=#16963(auto Tirisfal Glades;319):26 c1523.13:16 c1523.23:37
+c1534.1 | links=#10505(auto Tirisfal Glades;189):34
+c1535.1 | links=c1535.8:28
+c1536.1 | links=#5508(auto Tirisfal Glades;109):35 c1536.4:55
+c1537.1 | links=c1549.1:25 c1537.2:36
+c1538.1 | links=c1538.2:24 c1537.5:7 c1537.6:5 c1537.14:25
+c1539.1 | links=#21606(auto Tirisfal Glades;399):19
+c1540.1 | links=c1548.120:17
+c1543.1 | links=c1543.3:31 c1910.7:18 c1910.8:19 c1544.31:24 c1545.34:17
+c1544.1 | links=#20600(auto Tirisfal Glades;377):45 c1911.11:11
+c1545.1 | links=c1545.42:20
+c1547.1 | links=c1547.24:45 c1553.55:51
+c1549.1 | links=c1537.1:25
+c1555.1 | links=c10359.3:73 c1555.7:13 c1555.15:34 c1555.20:47 c1555.24:40
+c1560.1 | links=#27744(auto Tirisfal Glades;517):7
+c1568.1 | links=
+c1569.1 | links=#3391(auto Tirisfal Glades;61):9 c5749.1:6
+c1570.1 | links=#12367(auto Tirisfal Glades;227):11
+c1652.1 | links=#25812(auto Tirisfal Glades;483):16
+c1654.1 | links=#21234(auto Tirisfal Glades;391):47 c1522.6:25
+c1655.1 | links=c1522.56:5
+c1656.1 | links=#3364(auto Tirisfal Glades;60):9
+c1657.1 | links=c1522.30:4 c1522.31:37 c1522.42:50
+c1658.1 | links=#23539(auto Tirisfal Glades;433):19 c1530.16:7
+c1660.1 | links=c1660.2:4
+c1661.1 | links=#3391(auto Tirisfal Glades;61):9
+c1662.1 | links=#12503(auto Tirisfal Glades;230):8
+c1664.1 | links=#14322(auto Tirisfal Glades;267):9
+c1665.1 | links=c1660.2:4
+c1667.1 | links=#1234(auto Tirisfal Glades;24):13 c1507.9:6 c1506.21:4
+c1674.1 | links=c1675.9:24 c1675.10:26
+c1675.1 | links=o176753.8:28
+c1688.1 | links=c1505.8:12
+c1735.1 | links=#16622(auto Tirisfal Glades;315):5 o175566.59:9
+c1736.1 | links=#7130(auto Tirisfal Glades;130):22 #24847(auto Tirisfal Glades;458):11 #26986(auto Tirisfal Glades;503):17
+c1737.1 | links=#8648(auto Tirisfal Glades;147):21
+c1738.1 | links=#5496(auto Tirisfal Glades;108):58 #25635(auto Tirisfal Glades;475):31
+c1740.1 | links=#7130(auto Tirisfal Glades;130):15 c1512.23:64
+c1742.1 | links=#7257(auto Tirisfal Glades;132):6
+c1743.1 | links=#7257(auto Tirisfal Glades;132):8
+c1745.1 | links=#392(auto Tirisfal Glades;10):9
+c1746.1 | links=#11056(auto Tirisfal Glades;205):6
+c1753.1 | links=#4594(auto Tirisfal Glades;84):6
+c1890.1 | links=c1890.2:22 c1501.5:16 c1501.6:8 c1509.12:24 c1513.16:27
+c1910.1 | links=c1910.3:22 c1544.44:14 c1545.60:7
+c1911.1 | links=c1543.16:13
+c1916.1 | links=c1918.1:15
+c1917.1 | links=c1918.1:5
+c1918.1 | links=c1916.1:15 c1917.1:5 c1919.1:11 c1513.2:13 c1506.17:33
+c1919.1 | links=c1918.1:11 c1509.5:23
+c1931.1 | links=#28093(auto Tirisfal Glades;521):6
+c1934.1 | links=#19008(auto Tirisfal Glades;345):9 #23298(auto Tirisfal Glades;429):38 c1936.8:15 o375.18:26
+c1935.1 | links=c620.4:1 c1934.5:5
+c1936.1 | links=#25678(auto Tirisfal Glades;477):4
+c1941.1 | links=c1525.1:10 c1941.3:36 c1941.25:5
+c2113.1 | links=#7785(auto Tirisfal Glades;138):5 #10487(auto Tirisfal Glades;187):8 c2122.1:5
+c2114.1 | links=#24593(auto Tirisfal Glades;452):10
+c2115.1 | links=#7785(auto Tirisfal Glades;138):5
+c2116.1 | links=#17616(auto Tirisfal Glades;330):5
+c2117.1 | links=#17616(auto Tirisfal Glades;330):7
+c2118.1 | links=#1630(auto Tirisfal Glades;31):10
+c2119.1 | links=c2122.1:7
+c2122.1 | links=c2113.1:5 c2119.1:7
+c2123.1 | links=#3391(auto Tirisfal Glades;61):6
+c2124.1 | links=#3391(auto Tirisfal Glades;61):6
+c2126.1 | links=#3391(auto Tirisfal Glades;61):7
+c2127.1 | links=#27904(auto Tirisfal Glades;519):5
+c2128.1 | links=#10114(centralpoint;Taverne Zur Galgenschlinge;Tirisfal Glades;top):7
+c2129.1 | links=#12339(auto Tirisfal Glades;225):7
+c2130.1 | links=#18699(auto Tirisfal Glades;342):4
+c2131.1 | links=#7180(central location;down;Taverne Zur Galgenschlinge;Tirisfal Glades):4
+c2132.1 | links=#12082(auto Tirisfal Glades;220):5
+c2134.1 | links=#1630(auto Tirisfal Glades;31):8
+c2135.1 | links=#11997(auto Tirisfal Glades;218):3
+c2136.1 | links=#11997(auto Tirisfal Glades;218):10
+c2137.1 | links=#16541(auto Tirisfal Glades;313):7
+c2209.1 | links=#28093(auto Tirisfal Glades;521):4
+c2210.1 | links=#14140(auto Tirisfal Glades;260):17 #28093(auto Tirisfal Glades;521):8
+c2211.1 | links=#28093(auto Tirisfal Glades;521):5
+c2307.1 | links=#11983(auto Tirisfal Glades;217):26
+c2309.1 | links=#20682(auto Tirisfal Glades;379):3
+c2310.1 | links=#22701(auto Tirisfal Glades;418):8 #23411(auto Tirisfal Glades;431):8
+c2311.1 | links=#25812(auto Tirisfal Glades;483):16
+c2314.1 | links=#24593(auto Tirisfal Glades;452):14 c3547.1:1
+c2315.1 | links=#7130(auto Tirisfal Glades;130):0
+c3150.1 | links=#29146(pier tirisfal zeppelin to grom'gol):3
+c3522.1 | links=#13781(auto Tirisfal Glades;250):4
+c3523.1 | links=#13781(auto Tirisfal Glades;250):5
+c3547.1 | links=#7257(auto Tirisfal Glades;132):51 c2314.1:1
+c3548.1 | links=#1653(auto Tirisfal Glades;32):72 #14504(auto Tirisfal Glades;271):20
+c3549.1 | links=#19024(auto Tirisfal Glades;346):8
+c3550.1 | links=#16551(auto Tirisfal Glades;314):5
+c4731.1 | links=#20682(auto Tirisfal Glades;379):9
+c4773.1 | links=#20682(auto Tirisfal Glades;379):5
+c5667.1 | links=#3391(auto Tirisfal Glades;61):6
+c5688.1 | links=#4547(auto Tirisfal Glades;82):6
+c5690.1 | links=c1547.11:141
+c5695.1 | links=#27477(auto Tirisfal Glades;511):6
+c5724.1 | links=c5750.1:3
+c5725.1 | links=#7257(auto Tirisfal Glades;132):26 #21063(auto Tirisfal Glades;384):11
+c5749.1 | links=c1569.1:6
+c5750.1 | links=#27904(auto Tirisfal Glades;519):8 c5724.1:3
+c5759.1 | links=#4726(auto Tirisfal Glades;86):10 #27744(auto Tirisfal Glades;517):6
+c6289.1 | links=#19024(auto Tirisfal Glades;346):6
+c6491.1 | links=#19272(auto Tirisfal Glades;351):13 #24114(auto Tirisfal Glades;443):27
+c6497.1 | links=#2150(auto Tirisfal Glades;42):79 #24100(auto Tirisfal Glades;441):72 #3812(auto Silverpine Forest;60):115
+c6784.1 | links=#89(auto Tirisfal Glades;4):7
+c6785.1 | links=#4547(auto Tirisfal Glades;82):1
+c7980.1 | links=#26809(auto Tirisfal Glades;501):9
+c9566.1 | links=#29140(pier tirisfal zeppelin to orgrimmar):3
+c10055.1 | links=#392(auto Tirisfal Glades;10):9
+c10356.1 | links=c1548.107:19
+c10357.1 | links=#5508(auto Tirisfal Glades;109):38 c10357.2:71 c1548.4:39 o113772.9:26 c1548.79:21
+c10358.1 | links=c1529.10:33 c1532.10:2
+c10359.1 | links=c10359.2:92 c10359.3:155 c1555.17:69 c1555.35:31
+c10665.1 | links=#19129(auto Tirisfal Glades;349):12 #21063(auto Tirisfal Glades;384):5
+c10666.1 | links=#16622(auto Tirisfal Glades;315):8
+c10837.1 | links=#19727(auto Tirisfal Glades;362):6
+c10839.1 | links=#13683(auto Tirisfal Glades;246):6
+c10856.1 | links=c11194.2:9
+c11022.1 | links=#6808(auto Tirisfal Glades;127):6 #25067(auto Tirisfal Glades;464):10 c11608.1:14
+c11055.1 | links=#6808(auto Tirisfal Glades;127):6
+c11057.1 | links=#27695(auto Tirisfal Glades;515):13
+c11194.1 | links=#13683(auto Tirisfal Glades;246):7
+c11608.1 | links=c11022.1:14
+c11615.1 | links=#24968(auto Tirisfal Glades;461):17 o3658.1:5
+c11945.1 | links=#12367(auto Tirisfal Glades;227):10
+c12428.1 | links=#22886(auto Tirisfal Glades;420):3
+c12943.1 | links=#9928(auto Tirisfal Glades;174):7
+c13158.1 | links=c1538.3:10 c1537.13:27
+c15195.1 | links=#6061(auto Tirisfal Glades;121):31
+c15568.1 | links=#12114(auto Tirisfal Glades;221):13
+c17099.1 | links=#25067(auto Tirisfal Glades;464):7
+c23686.1 | links=#25812(auto Tirisfal Glades;483):1
+c26007.1 | links=
+o375.1 | links=#11744(auto Tirisfal Glades;213):8
+o711.1 | links=#11056(auto Tirisfal Glades;205):6
+o1165.1 | links=o1586.1:9 c1527.4:9
+o1557.1 | links=#25689(auto Tirisfal Glades;478):8 c1528.1:7
+o1586.1 | links=c1497.1:3 o1165.1:9 c1527.2:15
+o3658.1 | links=c11615.1:5
+o37098.1 | links=#12503(auto Tirisfal Glades;230):12
+o102985.1 | links=#2443(auto Tirisfal Glades;47):6
+o104593.1 | links=#23058(auto Tirisfal Glades;423):18
+o105169.1 | links=c1530.9:5 c1534.14:2
+o105170.1 | links=#10677(auto Tirisfal Glades;195):16
+o105171.1 | links=#11125(auto Tirisfal Glades;207):10
+o113772.1 | links=c10357.13:29
+o164662.1 | links=#2117(auto Tirisfal Glades;41):9 #12327(auto Tirisfal Glades;224):9
+o176092.1 | links=#27695(auto Tirisfal Glades;515):11
+o176213.1 | links=#24968(auto Tirisfal Glades;461):12
+o176753.1 | links=#27641(auto Tirisfal Glades;514):39
+o178090.1 | links=#12459(auto Tirisfal Glades;228):8 c6491.2:17
+o178464.1 | links=c1537.3:3
+c620.2 | links=#3216(auto Tirisfal Glades;58):7 c620.3:35 c1526.25:9
+c721.2 | links=#11956(auto Tirisfal Glades;216):56 #19696(auto Tirisfal Glades;361):13 #25535(auto Tirisfal Glades;473):33 c1675.11:7
+c1501.2 | links=c1501.4:14 c1890.7:14 c1509.14:6 c4075.72:15
+c1502.2 | links=c1513.14:14 c1890.19:14
+c1504.2 | links=c1504.8:36 c1512.20:44
+c1505.2 | links=c1505.6:13 c1505.9:10
+c1506.2 | links=#373(auto Tirisfal Glades;9):28 c1506.1:26 c1506.14:35 c1506.15:45
+c1507.2 | links=c1506.7:12
+c1508.2 | links=c1508.1:45 c1512.1:58 c1512.21:31
+c1509.2 | links=#27710(auto Tirisfal Glades;516):27
+c1513.2 | links=c1918.1:13
+c1520.2 | links=c1523.8:21 c1522.52:40
+c1522.2 | links=#5(auto Tirisfal Glades;1):42
+c1523.2 | links=#25400(auto Tirisfal Glades;471):9
+c1525.2 | links=c1526.2:30 c1526.4:28
+c1526.2 | links=c1525.2:30
+c1527.2 | links=o1586.1:15
+c1528.2 | links=#25689(auto Tirisfal Glades;478):9
+c1529.2 | links=#4577(auto Tirisfal Glades;83):25 #26023(auto Tirisfal Glades;488):41 c1529.3:41 c4075.5:44
+c1530.2 | links=c1534.2:46
+c1531.2 | links=c1525.8:23 c1526.15:29 c1941.18:54
+c1532.2 | links=#26023(auto Tirisfal Glades;488):9
+c1534.2 | links=c1530.2:46 c1534.4:22
+c1535.2 | links=#5333(auto Tirisfal Glades;100):32 c1535.22:12
+c1536.2 | links=c1536.4:75 c1537.16:126 c1554.36:51
+c1537.2 | links=c1537.1:36 c1537.3:17 c1537.4:15
+c1538.2 | links=c1538.1:24 c1537.9:10
+c1539.2 | links=#8973(auto Tirisfal Glades;153):7
+c1540.2 | links=#9881(auto Tirisfal Glades;171):7
+c1543.2 | links=c1543.4:39
+c1544.2 | links=c1543.17:4
+c1545.2 | links=#12349(auto Tirisfal Glades;226):43 c1911.8:15 c1545.41:16
+c1547.2 | links=c1547.32:40 c1547.37:49 c1553.38:26 c1548.102:52 c1548.107:21
+c1549.2 | links=c1549.4:43 c4075.58:20
+c1553.2 | links=c1553.38:64
+c1554.2 | links=c1548.35:14 c4075.57:22
+c1555.2 | links=c10359.3:65
+c1660.2 | links=#17515(auto Tirisfal Glades;328):9 c1660.1:4 c1665.1:4
+c1674.2 | links=o176753.10:23 c1675.16:44
+c1675.2 | links=#13480(auto Tirisfal Glades;241):50
+c1890.2 | links=c1890.1:22 c1890.3:14 o164662.8:17
+c1910.2 | links=c1543.20:35 c1545.59:24
+c1911.2 | links=c1543.16:12 c1544.25:10
+c1934.2 | links=#24589(auto Tirisfal Glades;451):2 c1936.6:8
+c1935.2 | links=o375.9:6
+c1936.2 | links=o375.20:26
+c6491.2 | links=#1959(auto Tirisfal Glades;39):4 o178090.1:17
+c7980.2 | links=#15396(auto Tirisfal Glades;293):7
+c10356.2 | links=o175566.19:20
+c10357.2 | links=c10357.1:71 c10357.3:68 c1554.36:48
+c10359.2 | links=c10359.1:92 c1555.3:24 c1555.11:51 c1555.27:20
+c11194.2 | links=#13683(auto Tirisfal Glades;246):8 #15308(auto Tirisfal Glades;292):4 c10856.1:9
+o375.2 | links=c1935.7:12
+o102985.2 | links=#2443(auto Tirisfal Glades;47):6
+o113772.2 | links=#1252(auto Tirisfal Glades;25):30
+o153473.2 | links=#25821(auto Tirisfal Glades;484):17 c1538.20:4 c1537.27:9
+o164662.2 | links=#2117(auto Tirisfal Glades;41):18
+o176753.2 | links=o176753.3:43 o176753.5:11 c1674.10:7
+c620.3 | links=c620.2:35 c1525.35:5 c1525.36:18
+c1501.3 | links=c1501.8:4
+c1502.3 | links=#15519(auto Tirisfal Glades;298):4
+c1504.3 | links=c1504.5:11 c1504.28:25
+c1505.3 | links=#28574(auto Tirisfal Glades;528):15 c1505.7:6 c1505.8:21
+c1506.3 | links=c1507.4:12 c1506.9:34
+c1507.3 | links=c1506.1:18
+c1508.3 | links=c1512.20:29
+c1509.3 | links=c1509.4:34 c1513.6:29
+c1513.3 | links=#23175(auto Tirisfal Glades;427):28
+c1520.3 | links=c1520.1:5
+c1522.3 | links=#8705(centralpoint;Agamand Mills;Tirisfal Glades):21
+c1523.3 | links=#21234(auto Tirisfal Glades;391):32
+c1525.3 | links=c1525.1:40 c1526.9:42
+c1526.3 | links=c1525.4:35 c1526.4:39
+c1527.3 | links=c1528.3:20 c1527.9:21
+c1528.3 | links=c1527.1:14 c1527.3:20
+c1529.3 | links=c1529.2:41
+c1530.3 | links=#14932(auto Tirisfal Glades;281):8
+c1532.3 | links=c1529.1:28 c1529.11:26 c1548.128:21
+c1534.3 | links=#19733(auto Tirisfal Glades;363):20
+c1535.3 | links=c1535.6:32 c1535.7:31 c1535.13:45
+c1536.3 | links=c1537.16:17
+c1537.3 | links=o178464.1:3 c1537.2:17 c1538.4:6 c1537.9:13
+c1538.3 | links=c13158.1:10 c1538.4:12 c4075.60:34
+c1539.3 | links=#11045(auto Tirisfal Glades;204):17
+c1540.3 | links=c1539.5:18
+c1543.3 | links=c1543.1:31 c1910.6:33
+c1544.3 | links=c1543.16:9
+c1545.3 | links=c1545.13:45
+c1547.3 | links=o175566.11:6 c1547.17:26
+c1548.3 | links=c10357.3:14
+c1549.3 | links=c1554.96:22 c1554.121:49
+c1555.3 | links=c10359.2:24 c1555.18:21
+c1674.3 | links=#27641(auto Tirisfal Glades;514):36
+c1675.3 | links=o176753.6:26
+c1890.3 | links=c1890.2:14
+c1910.3 | links=c1910.1:22 c1545.59:31
+c1911.3 | links=#5546(auto Tirisfal Glades;111):27 c1545.5:64 c1544.11:15
+c1934.3 | links=#19008(auto Tirisfal Glades;345):5
+c1935.3 | links=c620.7:10 o375.18:13
+c1936.3 | links=o375.6:10
+c1941.3 | links=c1941.1:36
+c4075.3 | links=#11983(auto Tirisfal Glades;217):16
+c6491.3 | links=#21702(auto Tirisfal Glades;400):9 #22392(auto Tirisfal Glades;414):1
+c7980.3 | links=#4893(auto Tirisfal Glades;92):6
+c10357.3 | links=c10357.2:68 c1548.3:14
+c10359.3 | links=c1555.1:73 c10359.1:155 c1555.2:65 c1555.10:27 c1555.26:16 c1555.28:12
+c11194.3 | links=#13683(auto Tirisfal Glades;246):7
+o375.3 | links=o375.10:23 o375.26:12
+o164662.3 | links=c1508.10:21
+o176753.3 | links=o176753.2:43 o176753.4:12 o176753.6:24 c1674.8:9
+c620.4 | links=#5004(auto Tirisfal Glades;94):5 c1935.1:1
+c1501.4 | links=c1501.2:14
+c1502.4 | links=c1501.7:11
+c1504.4 | links=c1504.11:19 c1504.14:31
+c1505.4 | links=#28574(auto Tirisfal Glades;528):13
+c1507.4 | links=c1506.3:12 c1506.5:5
+c1508.4 | links=c1513.18:30 c1512.22:40
+c1509.4 | links=c1509.3:34
+c1513.4 | links=c1513.9:21
+c1520.4 | links=c1520.19:43 c1522.23:33 c1548.73:47
+c1522.4 | links=c1523.5:27
+c1523.4 | links=c1523.10:35
+c1525.4 | links=c1526.3:35 c1553.14:62
+c1526.4 | links=#3763(auto Tirisfal Glades;65):33 c1525.2:28 c1526.3:39
+c1527.4 | links=o1165.1:9 c1527.5:11
+c1528.4 | links=c1527.1:28 c1527.6:65
+c1529.4 | links=#26023(auto Tirisfal Glades;488):26
+c1530.4 | links=c1523.5:37
+c1532.4 | links=c1529.1:32 c4075.10:30
+c1534.4 | links=c1534.2:22 c1530.8:19
+c1535.4 | links=c1535.10:66 c1535.21:50
+c1536.4 | links=c1536.1:55 c1536.2:75
+c1537.4 | links=c1537.2:15
+c1538.4 | links=c1537.3:6 c1538.3:12
+c1539.4 | links=#9454(auto Tirisfal Glades;161):6
+c1540.4 | links=#12889(auto Tirisfal Glades;234):13
+c1543.4 | links=c1543.2:39 c1543.9:33 c1544.9:11 c1543.15:25 c1543.18:12 c1544.19:46 c1544.21:29 c1544.27:39 c1544.32:38
+c1544.4 | links=c1543.14:11 c1910.15:9
+c1547.4 | links=#13731(auto Tirisfal Glades;247):21 o175566.19:37
+c1548.4 | links=c10357.1:39
+c1549.4 | links=c1549.2:43 c1549.15:49 c1554.71:46
+c1555.4 | links=c1555.34:33 c1555.35:44
+c1675.4 | links=c4075.12:19 c1675.19:32
+c1890.4 | links=c1890.11:26
+c1910.4 | links=c1544.7:11 c1545.60:23
+c1911.4 | links=c1545.38:10 c1544.45:25
+c1934.4 | links=#5004(auto Tirisfal Glades;94):3
+c1935.4 | links=#6140(auto Tirisfal Glades;124):16
+c4075.4 | links=#20334(auto Tirisfal Glades;375):8
+c6491.4 | links=#3844(auto Tirisfal Glades;67):13
+c7980.4 | links=#4893(auto Tirisfal Glades;92):5
+c10359.4 | links=c1549.12:37 c1549.13:98 c1549.19:21 c1549.22:27
+o375.4 | links=o375.17:25 o375.23:23
+o3658.4 | links=#20600(auto Tirisfal Glades;377):45
+o102985.4 | links=#2443(auto Tirisfal Glades;47):4
+o153472.4 | links=#4594(auto Tirisfal Glades;84):3
+o164662.4 | links=c1502.9:9
+o175566.4 | links=o175566.5:64 o175566.7:52
+o176753.4 | links=o176753.3:12 o176753.7:36
+c1501.5 | links=c1890.1:16
+c1502.5 | links=o164662.12:2
+c1504.5 | links=c1504.1:20 c1504.3:11 c1504.7:21
+c1505.5 | links=c1505.25:12
+c1506.5 | links=c1507.4:5 c1507.6:9
+c1507.5 | links=c1506.6:14
+c1508.5 | links=#15014(auto Tirisfal Glades;282):27 c1501.12:25 c1508.16:32 c1512.31:19 c1512.32:20 c4075.69:52
+c1509.5 | links=#18857(auto Tirisfal Glades;343):29 c1919.1:23
+c1512.5 | links=#466(auto Tirisfal Glades;14):6
+c1513.5 | links=c721.11:17 c1506.14:24
+c1520.5 | links=c1553.79:58
+c1522.5 | links=c1522.55:29
+c1523.5 | links=c1522.4:27 c1530.4:37 c1530.10:14 c1522.13:63
+c1525.5 | links=o175566.60:8
+c1527.5 | links=c1527.4:11 c1527.8:15 c1527.9:17
+c1529.5 | links=#19857(auto Tirisfal Glades;366):23 c1532.12:37 c1554.63:42
+c1530.5 | links=#13586(auto Tirisfal Glades;242):48
+c1532.5 | links=#4354(auto Tirisfal Glades;75):21 #14694(auto Tirisfal Glades;276):49 c1532.6:59 c4075.10:9
+c1534.5 | links=#16017(auto Tirisfal Glades;306):13
+c1535.5 | links=#4489(auto Tirisfal Glades;80):44 #5333(auto Tirisfal Glades;100):19
+c1537.5 | links=c1538.1:7
+c1538.5 | links=#25091(auto Tirisfal Glades;466):12
+c1539.5 | links=#26812(auto Tirisfal Glades;502):14 c1540.3:18
+c1540.5 | links=#26812(auto Tirisfal Glades;502):10 c1548.120:19
+c1543.5 | links=c1545.60:18
+c1544.5 | links=c1543.6:9 c1543.15:14
+c1545.5 | links=c1911.3:64 c1544.35:25 c1545.37:16
+c1549.5 | links=c1549.16:44 c1549.26:44
+c1555.5 | links=c1555.13:45 c1555.17:26
+c1675.5 | links=c4075.12:10 c1675.16:11
+c1890.5 | links=#1659(auto Tirisfal Glades;33):6 #24631(auto Tirisfal Glades;453):10
+c1910.5 | links=c1910.6:37 c1544.23:22 c1545.60:39
+c1911.5 | links=#24913(auto Tirisfal Glades;459):16 c1545.14:36 c1545.16:20 c1545.18:54
+c1934.5 | links=c1935.1:5
+c1935.5 | links=o375.16:17
+c1936.5 | links=o375.7:8
+c1941.5 | links=#3848(auto Tirisfal Glades;68):15
+c4075.5 | links=c1529.2:44 c1532.7:21
+c7980.5 | links=#15396(auto Tirisfal Glades;293):6
+c10359.5 | links=c1549.11:44
+c25171.5 | links=#25812(auto Tirisfal Glades;483):5
+o375.5 | links=o375.10:50 o375.22:28
+o3658.5 | links=c1936.7:6
+o164662.5 | links=#969(auto Tirisfal Glades;21):8
+o175566.5 | links=o175566.4:64 o175566.13:48
+o176753.5 | links=o176753.2:11 o176753.12:65
+c1501.6 | links=c1890.1:8
+c1504.6 | links=c1504.23:31 c1504.25:24
+c1505.6 | links=#15938(auto Tirisfal Glades;304):13 c1505.2:13
+c1506.6 | links=c1507.5:14 c1506.15:24
+c1507.6 | links=c1506.5:9
+c1508.6 | links=c1509.17:32 c1509.18:16
+c1509.6 | links=o113772.17:9
+c1513.6 | links=c1509.3:29 o113772.17:43
+c1520.6 | links=c1522.23:57
+c1522.6 | links=c1654.1:25
+c1523.6 | links=#4516(auto Tirisfal Glades;81):35 o113772.23:28
+c1526.6 | links=c1941.18:34
+c1527.6 | links=c1528.4:65 c1527.7:19
+c1529.6 | links=#19857(auto Tirisfal Glades;366):8 #23739(auto Tirisfal Glades;435):24 #26023(auto Tirisfal Glades;488):54 c1529.10:67
+c1530.6 | links=#14932(auto Tirisfal Glades;281):11
+c1532.6 | links=c1532.5:59 c1554.52:32
+c1534.6 | links=#14027(auto Tirisfal Glades;256):26
+c1535.6 | links=c1535.3:32
+c1537.6 | links=c1538.1:5
+c1538.6 | links=c1549.30:27 c4075.60:15
+c1540.6 | links=#12725(auto Tirisfal Glades;232):6
+c1543.6 | links=c1544.5:9 c1543.19:10
+c1544.6 | links=c1910.10:12
+c1545.6 | links=#12349(auto Tirisfal Glades;226):43 c1545.7:44 c1545.50:43
+c1549.6 | links=c1554.69:44
+c1555.6 | links=c1555.19:43 c4075.30:52
+c1675.6 | links=c1675.9:31 c1675.18:22
+c1890.6 | links=c1502.11:14
+c1910.6 | links=c1543.3:33 c1910.5:37 c1910.9:27 c1545.10:38 c1910.10:31 c1544.30:16
+c1911.6 | links=c1544.18:22 c1544.29:7 c1544.39:23
+c1934.6 | links=o375.17:20
+c1935.6 | links=o175566.38:35
+c1936.6 | links=c1934.2:8
+c1941.6 | links=c1941.23:4 o176753.26:17
+c4075.6 | links=#8884(auto Tirisfal Glades;151):19
+o375.6 | links=c1936.3:10 o375.9:27
+o3658.6 | links=c1910.8:16
+o102985.6 | links=#2443(auto Tirisfal Glades;47):5
+o113772.6 | links=#1653(auto Tirisfal Glades;32):39
+o175566.6 | links=o113772.10:43 o113772.11:54
+o176753.6 | links=c1675.3:26 o176753.3:24
+c620.7 | links=c1935.3:10 o375.12:13
+c721.7 | links=o176753.12:33
+c1501.7 | links=c1502.4:11 c1501.8:4 c1502.10:3
+c1502.7 | links=#16859(auto Tirisfal Glades;317):8
+c1504.7 | links=c1504.5:21
+c1505.7 | links=c1505.3:6 c1505.9:21
+c1506.7 | links=c1507.2:12 c1506.9:23 c1506.18:30
+c1507.7 | links=#10787(auto Tirisfal Glades;200):9 c1507.10:23
+c1508.7 | links=c1509.19:12 c1513.21:13
+c1509.7 | links=c1513.1:42 c1513.13:39
+c1512.7 | links=c1512.12:8
+c1513.7 | links=c1509.10:29
+c1520.7 | links=c1522.8:31
+c1522.7 | links=#21234(auto Tirisfal Glades;391):32
+c1523.7 | links=o113772.23:29
+c1525.7 | links=c1526.9:24
+c1526.7 | links=c1525.33:18 o175566.60:51
+c1527.7 | links=c1527.6:19
+c1529.7 | links=#25089(auto Tirisfal Glades;465):10 c1532.9:61 c4075.50:34 c1554.52:25 c1554.102:54
+c1530.7 | links=#4516(auto Tirisfal Glades;81):33 #26296(auto Tirisfal Glades;492):26 c1530.1:72
+c1532.7 | links=#21828(auto Tirisfal Glades;402):12 #25089(auto Tirisfal Glades;465):20 c4075.5:21 c1532.10:40
+c1534.7 | links=#10505(auto Tirisfal Glades;189):21
+c1535.7 | links=c1535.3:31
+c1536.7 | links=c1536.11:48 c1536.12:57
+c1543.7 | links=c1543.16:12
+c1544.7 | links=c1910.4:11
+c1545.7 | links=c1545.6:44
+c1547.7 | links=c1547.20:54 c1548.102:28
+c1549.7 | links=#24741(auto Tirisfal Glades;457):15
+c1555.7 | links=c1555.1:13 c1555.21:45
+c1675.7 | links=c721.8:16
+c1890.7 | links=c1501.2:14
+c1910.7 | links=c1543.1:18
+c1911.7 | links=c1544.17:4 c1544.18:7
+c1934.7 | links=o375.20:19
+c1935.7 | links=c620.1:6 o375.2:12
+c1936.7 | links=#17835(auto Tirisfal Glades;332):1 o3658.5:6
+o375.7 | links=c1936.5:8 o375.11:14 o375.14:7
+o3658.7 | links=c1520.10:3
+o113772.7 | links=c1525.16:17
+o164662.7 | links=c1502.14:10
+o175566.7 | links=o175566.4:52 o175566.18:43
+o176753.7 | links=o176753.4:36 o176753.8:11
+c721.8 | links=#13480(auto Tirisfal Glades;241):26 c1675.7:16 c1674.12:41
+c1501.8 | links=c1501.3:4 c1501.7:4
+c1502.8 | links=#969(auto Tirisfal Glades;21):2
+c1504.8 | links=c1504.2:36 c1504.9:14 c1504.20:32 c1504.27:36
+c1505.8 | links=c1688.1:12 c1505.3:21 c1505.10:10
+c1507.8 | links=#10787(auto Tirisfal Glades;200):18 c1506.18:21 c1506.19:20
+c1508.8 | links=c1512.27:38 c1512.28:42
+c1512.8 | links=c1512.36:31
+c1513.8 | links=#8976(auto Tirisfal Glades;154):19
+c1520.8 | links=c1522.22:70 c1522.28:32 c1522.32:19
+c1522.8 | links=c1520.7:31 c1520.17:38
+c1523.8 | links=c1520.2:21
+c1525.8 | links=c1531.2:23 c1525.16:31
+c1526.8 | links=o175566.60:4
+c1527.8 | links=c1527.5:15
+c1529.8 | links=#22162(auto Tirisfal Glades;409):29 #26384(auto Tirisfal Glades;495):61 c1532.9:39 c1554.63:93
+c1530.8 | links=#16017(auto Tirisfal Glades;306):34 c1534.4:19
+c1532.8 | links=c1529.9:26 c1529.10:32
+c1534.8 | links=#11125(auto Tirisfal Glades;207):5
+c1535.8 | links=c1535.1:28 c1535.9:49 c1535.12:71 c1535.13:59 c1535.14:60 c1535.15:45 o113772.16:51
+c1536.8 | links=c1537.19:6
+c1538.8 | links=#9881(auto Tirisfal Glades;171):2
+c1543.8 | links=c1544.23:15
+c1544.8 | links=#27266(auto Tirisfal Glades;506):14
+c1545.8 | links=#20600(auto Tirisfal Glades;377):26
+c1547.8 | links=c1547.19:29 o113772.22:23 c1553.23:35 c1547.35:37
+c1549.8 | links=c1549.13:42
+c1553.8 | links=c1553.32:14
+c1555.8 | links=c1555.16:17 c1555.36:50
+c1674.8 | links=o176753.3:9
+c1675.8 | links=#13480(auto Tirisfal Glades;241):18
+c1890.8 | links=#22590(auto Tirisfal Glades;417):2 o164662.13:5
+c1910.8 | links=c1543.1:19 o3658.6:16 c1910.16:22
+c1911.8 | links=c1545.2:15 c1544.39:21
+c1934.8 | links=o375.20:23
+c1935.8 | links=#19341(auto Tirisfal Glades;356):24
+c1936.8 | links=#5004(auto Tirisfal Glades;94):22 c1934.1:15
+o375.8 | links=o375.13:13
+o113772.8 | links=o175566.62:10
+o164662.8 | links=c1890.2:17 c1501.20:14
+o175566.8 | links=o175566.13:52 o175566.27:30
+o176753.8 | links=c1675.1:28 o176753.7:11 o176753.10:16
+c1501.9 | links=#969(auto Tirisfal Glades;21):14
+c1502.9 | links=o164662.4:9 c1502.18:15 c4075.72:15
+c1504.9 | links=c1504.8:14
+c1505.9 | links=c1505.2:10 c1505.7:21
+c1506.9 | links=#373(auto Tirisfal Glades;9):42 c1506.3:34 c1506.7:23 c1506.10:21
+c1507.9 | links=c1667.1:6
+c1508.9 | links=c1508.18:41 c1512.28:20
+c1509.9 | links=#23175(auto Tirisfal Glades;427):21 c1513.1:12
+c1513.9 | links=#27710(auto Tirisfal Glades;516):39 c1513.4:21 o113772.17:34
+c1520.9 | links=c1520.10:8 c1522.31:39
+c1522.9 | links=#26336(auto Tirisfal Glades;493):17
+c1523.9 | links=#17547(auto Tirisfal Glades;329):39
+c1526.9 | links=#5879(auto Tirisfal Glades;116):31 c1525.3:42 c1525.7:24
+c1527.9 | links=#19(auto Tirisfal Glades;2):24 c1527.3:21 c1527.5:17
+c1529.9 | links=#26023(auto Tirisfal Glades;488):22 c1532.8:26
+c1530.9 | links=o105169.1:5
+c1532.9 | links=#22162(auto Tirisfal Glades;409):20 c1529.7:61 c1529.8:39
+c1534.9 | links=#20312(auto Tirisfal Glades;373):2
+c1535.9 | links=c1535.8:49
+c1536.9 | links=#23125(auto Tirisfal Glades;426):40 c1536.10:33 c1537.23:43 c1537.41:59
+c1537.9 | links=c1538.2:10 c1537.3:13 c1537.12:46
+c1538.9 | links=#12725(auto Tirisfal Glades;232):8
+c1543.9 | links=#4489(auto Tirisfal Glades;80):31 c1543.4:33
+c1544.9 | links=c1543.4:11
+c1545.9 | links=#28267(auto Tirisfal Glades;524):24 c1545.30:11
+c1549.9 | links=c4075.84:53 c1554.124:46
+c1554.9 | links=#5508(auto Tirisfal Glades;109):24
+c1555.9 | links=c1555.23:59
+c1674.9 | links=#13480(auto Tirisfal Glades;241):49
+c1675.9 | links=c1674.1:24 c1675.6:31 c1674.11:31 c1674.12:40 c4075.22:29
+c1890.9 | links=c1890.10:26
+c1910.9 | links=c1910.6:27
+c1911.9 | links=c1544.28:7 c1544.40:7
+c1934.9 | links=o375.24:6
+c1941.9 | links=#3848(auto Tirisfal Glades;68):7
+c4075.9 | links=c1553.55:48
+o375.9 | links=c1935.2:6 o375.6:27 o375.23:32
+o113772.9 | links=c10357.1:26
+o164662.9 | links=#21549(auto Tirisfal Glades;397):10 c1502.27:2
+o175566.9 | links=o175566.26:85
+o176753.9 | links=o176753.11:38 o176753.12:12
+c1501.10 | links=c1502.22:10
+c1502.10 | links=#15519(auto Tirisfal Glades;298):3 c1501.7:3
+c1504.10 | links=c1504.17:27
+c1505.10 | links=c1505.8:10
+c1506.10 | links=c1506.9:21 c1506.11:30
+c1507.10 | links=c1507.7:23 c1506.23:34
+c1508.10 | links=o164662.3:21 c1501.24:1
+c1509.10 | links=#18857(auto Tirisfal Glades;343):29 c1513.7:29
+c1513.10 | links=#8976(auto Tirisfal Glades;154):37 c1509.15:17
+c1520.10 | links=o3658.7:3 c1520.9:8
+c1522.10 | links=c1522.11:25 c1522.48:14
+c1523.10 | links=#1024(auto Tirisfal Glades;23):58 c1523.4:35 c1522.17:60
+c1525.10 | links=c1525.11:16 c1526.17:39
+c1526.10 | links=c1525.29:20 o175566.58:21 o175566.59:29
+c1527.10 | links=c1497.1:17
+c1529.10 | links=#22162(auto Tirisfal Glades;409):18 #23739(auto Tirisfal Glades;435):47 c10358.1:33 c1529.6:67 c1532.8:32
+c1530.10 | links=c1523.5:14
+c1532.10 | links=#26023(auto Tirisfal Glades;488):74 c10358.1:2 c1532.7:40
+c1534.10 | links=#13586(auto Tirisfal Glades;242):12
+c1535.10 | links=c1535.4:66
+c1536.10 | links=c1536.9:33 c1537.24:5
+c1537.10 | links=c1537.14:17 c1554.94:29
+c1538.10 | links=c1537.17:11
+c1545.10 | links=c1910.6:38
+c1548.10 | links=c1548.20:50
+c1553.10 | links=#13655(auto Tirisfal Glades;245):53 o175566.26:49 o175566.28:73 o175566.47:88
+c1555.10 | links=c10359.3:27
+c1674.10 | links=o176753.2:7
+c1675.10 | links=c1674.1:26
+c1890.10 | links=c1890.9:26 c1502.13:33 c1502.15:29 c1508.17:35 c1512.29:30
+c1910.10 | links=c1544.6:12 c1910.6:31 c1544.33:22
+c1911.10 | links=c1545.30:10
+c1941.10 | links=#3848(auto Tirisfal Glades;68):3
+c4075.10 | links=c1532.4:30 c1532.5:9
+o375.10 | links=o375.3:23 o375.5:50 c1535.11:27
+o113772.10 | links=o175566.6:43
+o164662.10 | links=#13637(auto Tirisfal Glades;244):7
+o176753.10 | links=c1674.2:23 o176753.8:16
+c721.11 | links=c1513.5:17 c1506.17:23
+c1501.11 | links=#23882(auto Tirisfal Glades;438):10
+c1502.11 | links=c1890.6:14 c1502.18:16 c1502.25:15
+c1504.11 | links=c1504.4:19 c1504.18:43
+c1505.11 | links=#13869(auto Tirisfal Glades;254):5 c1505.12:8
+c1506.11 | links=c1506.10:30
+c1508.11 | links=c1512.34:25
+c1509.11 | links=c1513.12:30 c1513.13:26
+c1513.11 | links=#27710(auto Tirisfal Glades;516):19 c1513.12:39
+c1522.11 | links=c1522.10:25
+c1523.11 | links=#5589(auto Tirisfal Glades;112):9
+c1525.11 | links=c1525.10:16 c1525.30:11
+c1529.11 | links=c1532.3:26
+c1530.11 | links=#13586(auto Tirisfal Glades;242):34
+c1534.11 | links=#14027(auto Tirisfal Glades;256):53 c1534.13:25
+c1535.11 | links=o375.10:27
+c1536.11 | links=c1536.7:48 c1537.21:41
+c1538.11 | links=#8578(auto Tirisfal Glades;145):35 #12586(auto Tirisfal Glades;231):33 c1537.15:17 c1537.17:54
+c1543.11 | links=c1545.43:22
+c1544.11 | links=c1911.3:15
+c1547.11 | links=c5690.1:141 c1547.73:68
+c1549.11 | links=c10359.5:44 c1549.14:43 c1554.95:39
+c1554.11 | links=#5147(auto Tirisfal Glades;96):62 c1554.49:58
+c1555.11 | links=c10359.2:51 c1555.12:41
+c1674.11 | links=c1675.9:31
+c1675.11 | links=c721.2:7
+c1890.11 | links=c1890.4:26 c1502.15:13
+c1910.11 | links=c1547.12:35
+c1911.11 | links=c1544.1:11 c1544.16:10 c1545.26:11 c1545.46:5
+c1941.11 | links=#24666(auto Tirisfal Glades;454):15
+c10357.11 | links=c1548.110:19 c1548.135:55
+o375.11 | links=o375.7:14 o375.12:8
+o113772.11 | links=o175566.6:54 o175566.18:15
+o164662.11 | links=c1502.28:6
+o175566.11 | links=#7514(auto Tirisfal Glades;136):46 c1547.3:6
+o176753.11 | links=o176753.9:38 o176753.18:14
+c1501.12 | links=#15014(auto Tirisfal Glades;282):16 c1508.5:25 c1501.23:27
+c1502.12 | links=c1502.33:8
+c1504.12 | links=c1504.1:33
+c1505.12 | links=c1505.11:8
+c1506.12 | links=c1507.1:29
+c1508.12 | links=c1512.36:33 c1512.37:12
+c1509.12 | links=c1890.1:24
+c1512.12 | links=#415(auto Tirisfal Glades;11):13 #10603(auto Tirisfal Glades;190):14 c1512.7:8
+c1513.12 | links=c1509.11:30 c1513.11:39
+c1520.12 | links=c1520.14:14 c1522.39:22 c1522.42:48
+c1522.12 | links=#3735(auto Tirisfal Glades;64):14
+c1523.12 | links=#1024(auto Tirisfal Glades;23):14
+c1529.12 | links=#4381(auto Tirisfal Glades;76):11 c1532.12:16
+c1530.12 | links=#5(auto Tirisfal Glades;1):64 #17547(auto Tirisfal Glades;329):26 c1523.1:24
+c1532.12 | links=c1529.5:37 c1529.12:16
+c1534.12 | links=#9346(auto Tirisfal Glades;160):12 #25568(entry and exit;Agamand Family Crypt;Tirisfal Glades):13
+c1535.12 | links=c1535.8:71 c1535.16:44
+c1536.12 | links=c1536.7:57 c1537.39:55
+c1537.12 | links=c1537.9:46 c1549.28:34 c1554.121:76
+c1538.12 | links=c1537.17:5
+c1543.12 | links=c1544.12:9
+c1544.12 | links=c1543.12:9 c1544.55:11
+c1545.12 | links=#28267(auto Tirisfal Glades;524):16
+c1547.12 | links=c1910.11:35 c1553.23:42 c1544.33:29 c1553.44:38
+c1549.12 | links=c10359.4:37
+c1553.12 | links=o113772.15:34
+c1555.12 | links=c1555.11:41 c1555.14:40
+c1674.12 | links=c721.8:41 c1675.9:40
+c1675.12 | links=#10182(auto Tirisfal Glades;179):21 #21084(auto Tirisfal Glades;387):65 c1553.45:59
+c1890.12 | links=c1502.15:16 c4075.62:3
+c1910.12 | links=c1544.44:6
+c1911.12 | links=#8196(auto Tirisfal Glades;143):32 c1544.46:6
+c4075.12 | links=c1675.4:19 c1675.5:10
+c10357.12 | links=c1553.72:19 c1553.94:16 c1548.110:40
+o375.12 | links=c620.7:13 o375.11:8
+o164662.12 | links=#22437(auto Tirisfal Glades;416):11 c1502.5:2 c1502.32:3
+o176753.12 | links=o176753.5:65 c721.7:33 o176753.9:12
+c1501.13 | links=c1502.14:19 c1513.15:10 c1501.20:23
+c1502.13 | links=c1890.10:33 c1501.25:27
+c1504.13 | links=c1504.17:21
+c1505.13 | links=c1505.14:8 c1505.22:9
+c1506.13 | links=c1509.13:45 c1506.14:21
+c1508.13 | links=c1512.37:25 c1512.38:20 c1512.39:38
+c1509.13 | links=c1506.13:45 c1513.17:25
+c1513.13 | links=c1509.7:39 c1509.11:26 c1509.19:32
+c1520.13 | links=c1520.15:37 c1520.16:32
+c1522.13 | links=c1523.5:63 c1530.15:37
+c1523.13 | links=#22037(auto Tirisfal Glades;406):30 c1533.1:16
+c1530.13 | links=c1534.14:15 c1530.17:16 c1530.19:13
+c1534.13 | links=c1534.11:25
+c1535.13 | links=#5333(auto Tirisfal Glades;100):26 c1535.3:45 c1535.8:59
+c1536.13 | links=c1537.37:18 c1537.38:26
+c1537.13 | links=c13158.1:27 c1549.17:17
+c1538.13 | links=#18306(auto Tirisfal Glades;336):22 c1537.29:21
+c1543.13 | links=c1543.21:28
+c1544.13 | links=#8289(auto Tirisfal Glades;144):26
+c1545.13 | links=#20600(auto Tirisfal Glades;377):27 c1545.3:45
+c1549.13 | links=c10359.4:98 c1549.8:42 c1554.42:48 c1554.95:51
+c1555.13 | links=c1555.5:45
+c1674.13 | links=#27641(auto Tirisfal Glades;514):27
+c1675.13 | links=c1675.14:18
+c1890.13 | links=c1502.16:14
+c1910.13 | links=c1544.22:21 c1544.43:45
+c1911.13 | links=c1544.50:7
+c4075.13 | links=c1890.15:15 c1890.16:18
+c10357.13 | links=o113772.1:29 c1553.67:19 c1553.68:57 c1553.110:71
+o375.13 | links=#17806(auto Tirisfal Glades;331):11 o375.8:13
+o113772.13 | links=o175566.20:7
+o164662.13 | links=c1890.8:5
+o175566.13 | links=o175566.5:48 o175566.8:52
+o176753.13 | links=#5900(auto Tirisfal Glades;117):51 c1674.16:19
+c1501.14 | links=c1501.25:8
+c1502.14 | links=c1502.1:19 o164662.7:10 c1501.13:19 c1512.22:30
+c1504.14 | links=c1504.4:31 c1504.15:27
+c1505.14 | links=c1505.13:8
+c1506.14 | links=c1506.2:35 c1513.5:24 c1506.13:21
+c1508.14 | links=#4414(auto Tirisfal Glades;77):23 c4075.69:23
+c1509.14 | links=c1501.2:6 c4075.73:9
+c1513.14 | links=c1502.2:14 c1890.20:3
+c1520.14 | links=c1520.12:14 c1520.16:18
+c1522.14 | links=#12042(auto Tirisfal Glades;219):17 c1522.1:26 c1522.18:28
+c1523.14 | links=#8705(centralpoint;Agamand Mills;Tirisfal Glades):31
+c1525.14 | links=c1553.14:67
+c1530.14 | links=#23539(auto Tirisfal Glades;433):3
+c1534.14 | links=#21100(auto Tirisfal Glades;389):10 o105169.1:2 c1530.13:15
+c1535.14 | links=c1535.8:60
+c1537.14 | links=c1538.1:25 c1537.10:17
+c1538.14 | links=#9454(auto Tirisfal Glades;161):16 #12725(auto Tirisfal Glades;232):0
+c1543.14 | links=c1544.4:11 c1543.17:11
+c1544.14 | links=c1544.23:11
+c1545.14 | links=c1911.5:36 c1545.19:41
+c1549.14 | links=c1549.11:43
+c1553.14 | links=c1525.4:62 c1525.14:67
+c1555.14 | links=c1555.12:40
+c1674.14 | links=#5900(auto Tirisfal Glades;117):38 c1674.15:29
+c1675.14 | links=c1675.13:18
+c1890.14 | links=c1890.15:17 c1512.27:48
+c1910.14 | links=c1543.17:4
+c1911.14 | links=c1543.28:19 c1543.30:15 c1544.48:12 c1544.49:40
+c4075.14 | links=#937(auto Tirisfal Glades;20):33 c1526.24:9 c1525.27:14
+c10357.14 | links=c1526.20:5
+o375.14 | links=o375.7:7
+o113772.14 | links=#9020(auto Tirisfal Glades;155):17 c1553.56:27
+o164662.14 | links=c1501.26:3
+o176753.14 | links=o176753.16:30
+c1501.15 | links=c1501.27:8 c1502.35:6
+c1502.15 | links=c1890.10:29 c1890.11:13 c1890.12:16 c1502.16:15
+c1504.15 | links=c1504.14:27 c1504.16:17
+c1505.15 | links=c1505.1:10 c1505.24:13
+c1506.15 | links=c1506.2:45 c1506.6:24 c1506.16:26 c1506.22:37
+c1508.15 | links=#415(auto Tirisfal Glades;11):20 #4414(auto Tirisfal Glades;77):15
+c1509.15 | links=c1513.10:17 o113772.18:12 c1513.19:23
+c1512.15 | links=#15067(auto Tirisfal Glades;283):10
+c1513.15 | links=c1501.13:10
+c1520.15 | links=c1520.13:37
+c1522.15 | links=c1523.17:16
+c1523.15 | links=#26336(auto Tirisfal Glades;493):25
+c1526.15 | links=c1531.2:29
+c1530.15 | links=#4872(auto Tirisfal Glades;91):25 c1522.13:37
+c1534.15 | links=#10677(auto Tirisfal Glades;195):5
+c1535.15 | links=c1535.8:45 c1535.25:44
+c1537.15 | links=c1538.11:17
+c1538.15 | links=c1537.33:7
+c1543.15 | links=c1543.4:25 c1544.5:14
+c1544.15 | links=c1543.20:19
+c1545.15 | links=#25770(auto Tirisfal Glades;479):56
+c1549.15 | links=c1549.4:49
+c1554.15 | links=c1549.16:30
+c1555.15 | links=c1555.1:34
+c1674.15 | links=#7479(auto Tirisfal Glades;135):19 c1674.14:29
+c1890.15 | links=c4075.13:15 c1890.14:17
+c1910.15 | links=c1544.4:9 c1545.22:22
+c1941.15 | links=#24666(auto Tirisfal Glades;454):12
+o375.15 | links=o375.19:6
+o113772.15 | links=c1553.12:34 c1548.143:47
+o176753.15 | links=o176753.18:33 o176753.22:18
+c1501.16 | links=#9737(auto Tirisfal Glades;165):17
+c1502.16 | links=#21549(auto Tirisfal Glades;397):15 c1890.13:14 c1502.15:15
+c1504.16 | links=c1504.1:33 c1504.15:17
+c1505.16 | links=#9839(auto Tirisfal Glades;168):0 #11818(auto Tirisfal Glades;215):10 #25323(auto Tirisfal Glades;470):6 c1505.17:3
+c1506.16 | links=c1506.15:26
+c1508.16 | links=c1508.5:32 c1512.30:31 c1512.33:42
+c1509.16 | links=c1506.17:24
+c1512.16 | links=#823(auto Tirisfal Glades;18):16
+c1513.16 | links=c1890.1:27
+c1520.16 | links=c1520.13:32 c1520.14:18 c1522.40:8
+c1522.16 | links=#4516(auto Tirisfal Glades;81):11
+c1523.16 | links=#2980(auto Tirisfal Glades;51):43
+c1525.16 | links=o113772.7:17 c1525.8:31 c1526.17:44
+c1530.16 | links=c1658.1:7
+c1534.16 | links=#10677(auto Tirisfal Glades;195):6
+c1535.16 | links=c1535.12:44 c1535.27:25
+c1537.16 | links=c1536.2:126 c1536.3:17 c1548.23:41
+c1543.16 | links=c1911.1:13 c1911.2:12 c1544.3:9 c1543.7:12 c1544.35:43
+c1544.16 | links=c1911.11:10
+c1545.16 | links=c1911.5:20
+c1547.16 | links=c1547.24:34
+c1549.16 | links=#24741(auto Tirisfal Glades;457):55 c1549.5:44 c1554.15:30 c1549.24:36
+c1554.16 | links=c1548.21:41 c1554.56:47
+c1555.16 | links=c1555.8:17 c1555.21:87 c1555.22:75
+c1674.16 | links=o176753.13:19
+c1675.16 | links=c1674.2:44 c1675.5:11
+c1890.16 | links=#14417(auto Tirisfal Glades;268):21 c4075.13:18 c1502.31:25
+c1910.16 | links=c1910.8:22 c1545.22:43 c1544.26:13
+o375.16 | links=#211(auto Tirisfal Glades;6):42 c1935.5:17
+o113772.16 | links=c1535.8:51
+o176753.16 | links=#11597(auto Tirisfal Glades;210):26 o176753.14:30
+c1501.17 | links=#23882(auto Tirisfal Glades;438):6
+c1502.17 | links=#9737(auto Tirisfal Glades;165):15
+c1504.17 | links=c1504.10:27 c1504.13:21 c1504.21:30 c1504.22:23 c1504.30:22
+c1505.17 | links=c1505.16:3
+c1506.17 | links=c1509.1:13 c1918.1:33 c721.11:23 c1509.16:24
+c1508.17 | links=c1890.10:35
+c1509.17 | links=c1508.6:32 c1513.20:22 c1512.24:30
+c1512.17 | links=#4646(auto Tirisfal Glades;85):16
+c1513.17 | links=c1509.13:25 c1513.18:19
+c1520.17 | links=#7893(auto Tirisfal Glades;139):20 c1522.8:38
+c1522.17 | links=c1523.10:60
+c1523.17 | links=#21234(auto Tirisfal Glades;391):27 c1522.15:16
+c1526.17 | links=c1525.10:39 c1525.16:44
+c1530.17 | links=#19917(auto Tirisfal Glades;367):7 c1530.13:16 c1530.21:5
+c1535.17 | links=#5424(auto Tirisfal Glades;105):20 c1553.44:39
+c1537.17 | links=c1538.10:11 c1538.11:54 c1538.12:5
+c1538.17 | links=#14322(auto Tirisfal Glades;267):10
+c1543.17 | links=c1544.2:4 c1543.14:11 c1910.14:4
+c1544.17 | links=c1911.7:4
+c1545.17 | links=#24913(auto Tirisfal Glades;459):34
+c1547.17 | links=c1547.3:26
+c1549.17 | links=c1537.13:17
+c1555.17 | links=c10359.1:69 c1555.5:26 c1555.25:38
+c1675.17 | links=#4594(auto Tirisfal Glades;84):2
+c1890.17 | links=#6139(auto Tirisfal Glades;123):10 #16826(auto Tirisfal Glades;316):5
+o375.17 | links=o375.4:25 c1934.6:20 o375.30:51
+o113772.17 | links=c1509.6:9 c1513.6:43 c1513.9:34
+o176753.17 | links=o176753.25:43
+c1501.18 | links=#10333(auto Tirisfal Glades;184):3
+c1502.18 | links=c1502.9:15 c1502.11:16
+c1504.18 | links=c1504.11:43 c1504.19:19
+c1505.18 | links=#14436(auto Tirisfal Glades;269):6 #17007(auto Tirisfal Glades;320):6
+c1506.18 | links=c1506.7:30 c1507.8:21 c1506.20:19
+c1508.18 | links=c1508.9:41
+c1509.18 | links=c1508.6:16
+c1512.18 | links=#11983(auto Tirisfal Glades;217):14
+c1513.18 | links=c1508.4:30 c1513.17:19
+c1520.18 | links=#7893(auto Tirisfal Glades;139):25 c1522.41:16
+c1522.18 | links=c1522.14:28
+c1523.18 | links=#14243(auto Tirisfal Glades;264):18
+c1525.18 | links=#9237(auto Tirisfal Glades;158):10 c1526.20:38
+c1530.18 | links=#14027(auto Tirisfal Glades;256):6
+c1538.18 | links=c1537.33:23
+c1543.18 | links=c1543.4:12
+c1544.18 | links=c1911.6:22 c1911.7:7
+c1545.18 | links=c1911.5:54
+c1555.18 | links=c1555.3:21
+c1675.18 | links=c1675.6:22
+c1890.18 | links=c1890.19:17 c1502.27:10
+c1941.18 | links=c1531.2:54 c1526.6:34 c1941.21:41 o113772.24:37
+o375.18 | links=c1934.1:26 c1935.3:13 o375.19:6
+o113772.18 | links=c1509.15:12
+o175566.18 | links=o175566.7:43 o113772.11:15 o175566.39:32
+o176753.18 | links=o176753.11:14 o176753.15:33
+c1501.19 | links=#2117(auto Tirisfal Glades;41):7
+c1502.19 | links=#2956(auto Tirisfal Glades;50):5
+c1504.19 | links=c1504.18:19 c1504.20:21
+c1505.19 | links=#6151(auto Tirisfal Glades;125):9 #14436(auto Tirisfal Glades;269):8 #14526(auto Tirisfal Glades;272):8
+c1506.19 | links=c1507.1:34 c1507.8:20
+c1509.19 | links=c1508.7:12 c1513.13:32
+c1513.19 | links=c1509.15:23
+c1520.19 | links=#19293(auto Tirisfal Glades;354):9 c1520.4:43
+c1522.19 | links=c1523.23:34
+c1523.19 | links=#528(auto Tirisfal Glades;15):5
+c1530.19 | links=#449(auto Tirisfal Glades;13):8 c1530.13:13
+c1535.19 | links=#361(auto Tirisfal Glades;8):13
+c1537.19 | links=#15448(auto Tirisfal Glades;295):15 c1536.8:6
+c1538.19 | links=#4033(auto Tirisfal Glades;71):16
+c1543.19 | links=c1543.6:10
+c1544.19 | links=c1543.4:46 c1545.33:28
+c1545.19 | links=c1545.14:41
+c1547.19 | links=c1547.8:29 c1547.29:24
+c1549.19 | links=c10359.4:21 c1555.23:60
+c1555.19 | links=c1555.6:43 c1555.25:56
+c1675.19 | links=#20982(auto Tirisfal Glades;382):6 c1675.4:32
+c1890.19 | links=c1502.2:14 c1890.18:17
+o375.19 | links=o375.15:6 o375.18:6 o375.20:26
+o175566.19 | links=c10356.2:20 c1547.4:37
+o176753.19 | links=#27641(auto Tirisfal Glades;514):33
+c1501.20 | links=#10333(auto Tirisfal Glades;184):11 o164662.8:14 c1501.13:23 c1502.21:9
+c1504.20 | links=c1504.8:32 c1504.19:21
+c1505.20 | links=#6151(auto Tirisfal Glades;125):5
+c1506.20 | links=c1506.18:19
+c1512.20 | links=c1504.2:44 c1508.3:29 c1512.26:42
+c1513.20 | links=c1509.17:22 c1502.31:34
+c1520.20 | links=#5544(auto Tirisfal Glades;110):26
+c1522.20 | links=#2980(auto Tirisfal Glades;51):22 #5589(auto Tirisfal Glades;112):8
+c1523.20 | links=#5972(auto Tirisfal Glades;119):11
+c1525.20 | links=c1525.34:10 c1526.34:15
+c1526.20 | links=c10357.14:5 c1525.18:38
+c1530.20 | links=#11125(auto Tirisfal Glades;207):4
+c1535.20 | links=#10637(auto Tirisfal Glades;191):23
+c1537.20 | links=#8578(auto Tirisfal Glades;145):25
+c1538.20 | links=o153473.2:4
+c1543.20 | links=c1910.2:35 c1544.15:19 c1545.58:29
+c1544.20 | links=c1545.59:22
+c1545.20 | links=c1545.30:17 c1545.51:19
+c1547.20 | links=c1547.7:54
+c1548.20 | links=#7082(auto Tirisfal Glades;129):72 c1548.10:50 c1554.43:100 c1548.83:84 c1554.108:50
+c1555.20 | links=c1555.1:47
+c1890.20 | links=c1513.14:3 c1502.30:9
+o375.20 | links=c1936.2:26 c1934.7:19 c1934.8:23 o375.19:26 o375.21:13 o375.22:41
+o175566.20 | links=#23062(auto Tirisfal Glades;424):26 o113772.13:7 c4075.21:14
+o176753.20 | links=o176753.24:24 o176753.25:52
+c1501.21 | links=#24847(auto Tirisfal Glades;458):19 c1501.23:26
+c1502.21 | links=#2117(auto Tirisfal Glades;41):14 #16533(auto Tirisfal Glades;312):5 c1501.20:9
+c1504.21 | links=#10995(auto Tirisfal Glades;202):26 c1504.17:30 c1504.22:21
+c1505.21 | links=#14526(auto Tirisfal Glades;272):11 #15785(auto Tirisfal Glades;302):5
+c1506.21 | links=c1667.1:4
+c1512.21 | links=c1508.2:31 c4075.33:47
+c1513.21 | links=c1508.7:13 c1512.25:12
+c1520.21 | links=#10488(auto Tirisfal Glades;188):2
+c1522.21 | links=#15277(auto Tirisfal Glades;290):23
+c1523.21 | links=#17547(auto Tirisfal Glades;329):6
+c1530.21 | links=c1530.17:5
+c1535.21 | links=#1950(auto Tirisfal Glades;38):33 c1535.4:50
+c1537.21 | links=c1536.11:41 c1537.36:31
+c1538.21 | links=#14178(auto Tirisfal Glades;263):9
+c1543.21 | links=c1543.13:28 c1544.47:10
+c1544.21 | links=c1543.4:29
+c1545.21 | links=#20600(auto Tirisfal Glades;377):27 c1545.27:17 c1545.35:16 c1545.40:19
+c1547.21 | links=#5424(auto Tirisfal Glades;105):44
+c1548.21 | links=c1554.16:41 c1548.35:28
+c1549.21 | links=c4075.60:12
+c1553.21 | links=#13731(auto Tirisfal Glades;247):19 o175566.21:33
+c1555.21 | links=c1555.7:45 c1555.16:87
+c1941.21 | links=c1941.18:41
+c4075.21 | links=o175566.20:14
+o375.21 | links=o375.20:13
+o113772.21 | links=c1548.75:32
+o175566.21 | links=c1553.21:33
+c1501.22 | links=c1501.23:21 c1501.24:27
+c1502.22 | links=#969(auto Tirisfal Glades;21):3 c1501.10:10
+c1504.22 | links=c1504.17:23 c1504.21:21 c1504.28:41
+c1505.22 | links=#13770(auto Tirisfal Glades;249):9 c1505.13:9
+c1506.22 | links=c1506.15:37 c1506.23:45 c4075.33:55
+c1512.22 | links=c1508.1:25 c1508.4:40 c1502.14:30
+c1522.22 | links=c1520.8:70 c1522.43:36
+c1523.22 | links=#8644(auto Tirisfal Glades;146):43 #8705(centralpoint;Agamand Mills;Tirisfal Glades):20
+c1525.22 | links=#12987(auto Tirisfal Glades;235):12 c1525.32:10
+c1530.22 | links=#11125(auto Tirisfal Glades;207):12
+c1535.22 | links=c1535.2:12
+c1537.22 | links=#6061(auto Tirisfal Glades;121):46
+c1538.22 | links=c1537.33:4
+c1543.22 | links=c1543.23:2 c1543.32:20
+c1544.22 | links=c1910.13:21
+c1545.22 | links=c1910.15:22 c1910.16:43
+c1549.22 | links=c10359.4:27
+c1553.22 | links=#20815(auto Tirisfal Glades;381):32
+c1555.22 | links=c1555.16:75
+c4075.22 | links=c1675.9:29
+o375.22 | links=o375.5:28 o375.20:41
+o113772.22 | links=c1547.8:23 c4075.71:14
+o176753.22 | links=o176753.15:18 o176753.24:9
+c1501.23 | links=c1501.12:27 c1501.21:26 c1501.22:21 c1502.26:21
+c1502.23 | links=#13637(auto Tirisfal Glades;244):7 c1502.24:6
+c1504.23 | links=c1504.6:31 c1504.24:24
+c1505.23 | links=#15785(auto Tirisfal Glades;302):9 #24488(auto Tirisfal Glades;449):8
+c1506.23 | links=#1234(auto Tirisfal Glades;24):15 c1507.10:34 c1506.22:45 c4075.33:32
+c1512.23 | links=c1740.1:64 c4075.69:13
+c1522.23 | links=c1520.4:33 c1520.6:57
+c1523.23 | links=#16963(auto Tirisfal Glades;319):13 c1533.1:37 c1522.19:34 c1522.55:40
+c1525.23 | links=#12987(auto Tirisfal Glades;235):8 c4075.25:2 c1525.36:16
+c1526.23 | links=c1525.24:45 c1526.24:24 c1525.25:29 c1525.35:22
+c1530.23 | links=#10677(auto Tirisfal Glades;195):5
+c1535.23 | links=#3167(auto Tirisfal Glades;57):17
+c1537.23 | links=c1536.9:43 c1548.116:11 c1548.123:34
+c1543.23 | links=c1543.22:2
+c1544.23 | links=c1910.5:22 c1543.8:15 c1544.14:11
+c1545.23 | links=c1545.33:48
+c1547.23 | links=#10046(auto Tirisfal Glades;176):17
+c1548.23 | links=c1537.16:41 c1537.39:65
+c1553.23 | links=c1547.8:35 c1547.12:42 c1553.24:30
+c1554.23 | links=c1537.31:57
+c1555.23 | links=c1555.9:59 c1549.19:60 c1555.35:45
+c1941.23 | links=c1941.6:4
+c4075.23 | links=#5508(auto Tirisfal Glades;109):29
+o375.23 | links=o375.4:23 o375.9:32
+o113772.23 | links=c1523.6:28 c1523.7:29
+o176753.23 | links=#3848(auto Tirisfal Glades;68):18
+c1501.24 | links=c1508.10:1 c1501.22:27 c1501.25:17
+c1502.24 | links=c1502.23:6
+c1504.24 | links=c1504.23:24 c1504.29:19 c4075.74:24
+c1505.24 | links=#24488(auto Tirisfal Glades;449):13 c1505.15:13
+c1512.24 | links=c1509.17:30
+c1523.24 | links=c1522.49:28
+c1525.24 | links=c1526.23:45
+c1526.24 | links=#9237(auto Tirisfal Glades;158):50 c4075.14:9 c1526.23:24
+c1537.24 | links=c1536.10:5 c1537.37:56
+c1543.24 | links=c1544.44:13
+c1544.24 | links=#8196(auto Tirisfal Glades;143):35 c1544.47:24
+c1545.24 | links=c1544.36:34
+c1547.24 | links=c1547.1:45 c1547.16:34 c1547.28:30 c1547.35:33
+c1549.24 | links=c1549.16:36
+c1553.24 | links=c1553.23:30
+c1555.24 | links=c1555.1:40
+c4075.24 | links=#5876(auto Tirisfal Glades;115):31 c1529.1:15
+o375.24 | links=c1934.9:6 o375.25:6 o375.27:29
+o113772.24 | links=c1941.18:37
+o176753.24 | links=o176753.20:24 o176753.22:9
+c1501.25 | links=c1502.13:27 c1501.14:8 c1501.24:17
+c1502.25 | links=#23882(auto Tirisfal Glades;438):19 c1502.11:15
+c1504.25 | links=c1504.6:24 c1504.26:14 c1504.28:36
+c1505.25 | links=#24488(auto Tirisfal Glades;449):7 c1505.5:12
+c1512.25 | links=c1513.21:12 c1512.26:66
+c1522.25 | links=c1522.26:38 c1522.29:53
+c1525.25 | links=#21472(auto Tirisfal Glades;396):23 c1526.23:29
+c1526.25 | links=c620.2:9
+c1535.25 | links=#1950(auto Tirisfal Glades;38):20 c1535.15:44
+c1537.25 | links=#12503(auto Tirisfal Glades;230):6
+c1543.25 | links=c1544.41:29
+c1544.25 | links=c1911.2:10
+c1545.25 | links=c1544.36:32
+c1549.25 | links=c1554.85:37 c1554.125:30
+c1555.25 | links=c1555.17:38 c1555.19:56
+c1941.25 | links=c1941.1:5
+c4075.25 | links=c1525.23:2
+o375.25 | links=o375.24:6 o375.26:9
+o175566.25 | links=#1275(auto Tirisfal Glades;26):39
+o176753.25 | links=o176753.17:43 o176753.20:52
+c1501.26 | links=#19290(auto Tirisfal Glades;353):4 o164662.14:3
+c1502.26 | links=#9737(auto Tirisfal Glades;165):23 c1501.23:21
+c1504.26 | links=c1504.25:14 c1504.27:19
+c1505.26 | links=#11818(auto Tirisfal Glades;215):6 #17007(auto Tirisfal Glades;320):6
+c1512.26 | links=c1512.20:42 c1512.25:66 c4075.44:11
+c1522.26 | links=c1522.25:38
+c1525.26 | links=#19656(auto Tirisfal Glades;360):25 c1526.1:24
+c1535.26 | links=#11744(auto Tirisfal Glades;213):6
+c1537.26 | links=c1537.39:43
+c1543.26 | links=#8196(auto Tirisfal Glades;143):16
+c1544.26 | links=c1910.16:13
+c1545.26 | links=c1911.11:11 c1545.36:5
+c1549.26 | links=c1549.5:44 c1554.69:37
+c1555.26 | links=c10359.3:16
+c1941.26 | links=#24666(auto Tirisfal Glades;454):11
+c4075.26 | links=c1512.36:22 c1512.40:42
+o375.26 | links=o375.3:12 o375.25:9
+o175566.26 | links=o175566.9:85 c1553.10:49
+o176753.26 | links=c1941.6:17 c4075.32:21
+c1501.27 | links=#9737(auto Tirisfal Glades;165):10 c1501.15:8
+c1502.27 | links=o164662.9:2 c1890.18:10
+c1504.27 | links=c1504.8:36 c1504.26:19
+c1512.27 | links=c1508.8:38 c1890.14:48
+c1522.27 | links=c1522.33:40
+c1525.27 | links=#3580(auto Tirisfal Glades;62):28 c4075.14:14
+c1526.27 | links=#2219(auto Tirisfal Glades;43):21 #19656(auto Tirisfal Glades;360):37
+c1535.27 | links=#361(auto Tirisfal Glades;8):18 c1535.16:25
+c1537.27 | links=#4471(auto Tirisfal Glades;78):23 o153473.2:9
+c1543.27 | links=#5546(auto Tirisfal Glades;111):15
+c1544.27 | links=c1543.4:39
+c1545.27 | links=c1545.21:17
+c1549.27 | links=c4075.84:26
+c1555.27 | links=c10359.2:20
+o375.27 | links=o375.24:29 o375.28:9
+o175566.27 | links=o175566.8:30 o175566.47:43
+o176753.27 | links=#3848(auto Tirisfal Glades;68):9
+c1501.28 | links=#9737(auto Tirisfal Glades;165):15
+c1502.28 | links=#4819(auto Tirisfal Glades;89):8 o164662.11:6
+c1504.28 | links=c1504.3:25 c1504.22:41 c1504.25:36 c1504.29:24
+c1512.28 | links=c1508.8:42 c1508.9:20
+c1522.28 | links=c1520.8:32
+c1525.28 | links=#2219(auto Tirisfal Glades;43):32 #3580(auto Tirisfal Glades;62):25 c1525.34:48
+c1526.28 | links=c1525.30:71 o175566.58:13
+c1535.28 | links=#14713(auto Tirisfal Glades;277):8
+c1537.28 | links=#18306(auto Tirisfal Glades;336):19
+c1543.28 | links=c1911.14:19
+c1544.28 | links=#17392(auto Tirisfal Glades;326):33 c1911.9:7
+c1547.28 | links=c1547.24:30
+c1549.28 | links=c1537.12:34
+c1554.28 | links=c1555.28:37
+c1555.28 | links=#24741(auto Tirisfal Glades;457):81 c10359.3:12 c1554.28:37
+o375.28 | links=o375.27:9 o375.31:32
+o175566.28 | links=c1553.10:73 o175566.49:47
+c1502.29 | links=#14417(auto Tirisfal Glades;268):15
+c1504.29 | links=c1504.24:19 c1504.28:24 c1504.30:18
+c1512.29 | links=c1890.10:30
+c1522.29 | links=#15245(auto Tirisfal Glades;289):21 c1522.25:53
+c1525.29 | links=c1526.10:20 c1525.33:22
+c1526.29 | links=o175566.60:22
+c1537.29 | links=c1538.13:21
+c1543.29 | links=c1544.50:13
+c1544.29 | links=c1911.6:7
+c1545.29 | links=c1545.36:8
+c1547.29 | links=c1547.19:24
+c1549.29 | links=c1554.125:45
+c1553.29 | links=#13026(auto Tirisfal Glades;236):31
+c1555.29 | links=c1555.30:45 c1555.32:43
+o375.29 | links=#14888(auto Tirisfal Glades;278):9
+c1502.30 | links=c1890.20:9 c4075.73:15
+c1504.30 | links=c1504.17:22 c1504.29:18
+c1512.30 | links=c1508.16:31 c4075.59:10
+c1522.30 | links=c1657.1:4
+c1525.30 | links=c1525.11:11 c1526.28:71 c1526.31:13
+c1535.30 | links=#1950(auto Tirisfal Glades;38):23 #5333(auto Tirisfal Glades;100):46
+c1543.30 | links=c1911.14:15
+c1544.30 | links=c1910.6:16
+c1545.30 | links=c1545.9:11 c1911.10:10 c1545.20:17
+c1547.30 | links=c1548.52:18
+c1549.30 | links=c1538.6:27
+c1555.30 | links=c1555.29:45
+c4075.30 | links=c1555.6:52
+o375.30 | links=o375.17:51 o375.31:6
+c1502.31 | links=#8976(auto Tirisfal Glades;154):31 c1890.16:25 c1513.20:34
+c1512.31 | links=#10053(auto Tirisfal Glades;177):52 c1508.5:19
+c1522.31 | links=c1657.1:37 c1520.9:39
+c1525.31 | links=c1526.31:19
+c1526.31 | links=c1525.30:13 c1525.31:19
+c1537.31 | links=#18306(auto Tirisfal Glades;336):45 c1554.23:57 c1537.32:21
+c1543.31 | links=#12211(auto Tirisfal Glades;222):24 c1544.50:2
+c1544.31 | links=c1543.1:24
+c1545.31 | links=#20600(auto Tirisfal Glades;377):39
+c1549.31 | links=#15079(auto Tirisfal Glades;285):25
+c1555.31 | links=c1555.34:47
+o375.31 | links=o375.28:32 o375.30:6
+c1502.32 | links=o164662.12:3
+c1512.32 | links=c1508.5:20
+c1522.32 | links=c1520.8:19 c1522.38:37
+c1525.32 | links=c1525.22:10
+c1535.32 | links=#14713(auto Tirisfal Glades;277):9
+c1537.32 | links=c1537.31:21
+c1543.32 | links=#12211(auto Tirisfal Glades;222):17 c1543.22:20 c1544.41:9
+c1544.32 | links=c1543.4:38
+c1545.32 | links=c1545.42:27
+c1547.32 | links=c1547.2:40
+c1549.32 | links=#15079(auto Tirisfal Glades;285):78
+c1553.32 | links=#27187(auto Tirisfal Glades;504):30 c1553.8:14
+c1555.32 | links=c1555.29:43 c1555.34:53
+c4075.32 | links=#10666(auto Tirisfal Glades;194):16 o176753.26:21
+c1502.33 | links=#6139(auto Tirisfal Glades;123):20 #15490(auto Tirisfal Glades;297):7 c1502.12:8
+c1512.33 | links=c1508.16:42
+c1522.33 | links=#5544(auto Tirisfal Glades;110):36 c1522.27:40 c1522.34:33
+c1525.33 | links=c1526.7:18 c1525.29:22
+c1537.33 | links=#22109(auto Tirisfal Glades;408):21 c1538.15:7 c1538.18:23 c1538.22:4
+c1543.33 | links=#18608(auto Tirisfal Glades;339):16 c1544.55:23
+c1544.33 | links=c1910.10:22 c1547.12:29
+c1545.33 | links=c1544.19:28 c1545.23:48
+c1547.33 | links=#27187(auto Tirisfal Glades;504):22
+c1549.33 | links=#15079(auto Tirisfal Glades;285):41 c1554.124:30
+c1553.33 | links=#14254(auto Tirisfal Glades;265):57
+c1555.33 | links=c1555.34:64
+c4075.33 | links=c1512.21:47 c1506.22:55 c1506.23:32
+c1502.34 | links=#6139(auto Tirisfal Glades;123):13
+c1512.34 | links=c1508.11:25 c4075.74:31
+c1522.34 | links=c1522.33:33
+c1525.34 | links=#21472(auto Tirisfal Glades;396):26 c1525.20:10 c1525.28:48
+c1526.34 | links=#25792(auto Tirisfal Glades;481):38 c1525.20:15
+c1543.34 | links=c1544.53:2 c1544.54:20
+c1545.34 | links=c1543.1:17
+c1547.34 | links=#28392(auto Tirisfal Glades;527):26
+c1555.34 | links=c1555.4:33 c1555.31:47 c1555.32:53 c1555.33:64
+c4075.34 | links=#25792(auto Tirisfal Glades;481):30
+c1502.35 | links=c1501.15:6
+c1512.35 | links=
+c1522.35 | links=#15277(auto Tirisfal Glades;290):39
+c1525.35 | links=c620.3:5 c1526.23:22
+c1537.35 | links=c1537.36:37
+c1544.35 | links=c1545.5:25 c1543.16:43
+c1545.35 | links=c1545.21:16
+c1547.35 | links=c1547.8:37 c1547.24:33 c1553.63:14
+c1548.35 | links=c1554.2:14 c1548.21:28
+c1555.35 | links=c10359.1:31 c1555.4:44 c1555.23:45
+c4075.35 | links=#17332(auto Tirisfal Glades;325):18
+c1512.36 | links=c1512.8:31 c1508.12:33 c4075.26:22
+c1522.36 | links=#21234(auto Tirisfal Glades;391):29
+c1525.36 | links=c620.3:18 c1525.23:16
+c1537.36 | links=c1537.21:31 c1537.35:37 c1537.41:13
+c1544.36 | links=#21405(auto Tirisfal Glades;393):19 c1545.24:34 c1545.25:32 c1545.45:44
+c1545.36 | links=c1545.26:5 c1545.29:8
+c1554.36 | links=c1536.2:51 c10357.2:48
+c1555.36 | links=c1555.8:50 c1554.127:61
+c1512.37 | links=#19824(auto Tirisfal Glades;364):19 c1508.12:12 c1508.13:25
+c1522.37 | links=#26336(auto Tirisfal Glades;493):20
+c1537.37 | links=c1536.13:18 c1537.24:56 c1537.39:29
+c1544.37 | links=c1545.37:5
+c1545.37 | links=c1545.5:16 c1544.37:5 c1544.38:14 c1545.47:5
+c1547.37 | links=c1547.2:49 c1547.38:47
+c1512.38 | links=c1508.13:20
+c1522.38 | links=c1522.32:37 c1548.74:3
+c1537.38 | links=c1536.13:26
+c1544.38 | links=c1545.37:14
+c1545.38 | links=c1911.4:10 c1545.39:2
+c1547.38 | links=c1547.37:47
+c1553.38 | links=c1547.2:26 c1553.2:64
+c4075.38 | links=#2756(auto Tirisfal Glades;49):19
+o175566.38 | links=c1935.6:35
+c1512.39 | links=c1508.13:38 c4075.69:16
+c1522.39 | links=c1520.12:22
+c1537.39 | links=c1536.12:55 c1548.23:65 c1537.26:43 c1537.37:29
+c1544.39 | links=c1911.6:23 c1911.8:21
+c1545.39 | links=c1545.38:2
+c1553.39 | links=c1548.52:42
+o175566.39 | links=#9809(auto Tirisfal Glades;167):83 o175566.18:32
+c1512.40 | links=#14068(auto Tirisfal Glades;258):36 c4075.26:42
+c1522.40 | links=c1520.1:30 c1520.16:8
+c1537.40 | links=#24187(auto Tirisfal Glades;445):4
+c1544.40 | links=c1911.9:7
+c1545.40 | links=c1545.21:19
+c4075.40 | links=
+c1522.41 | links=c1520.18:16
+c1537.41 | links=#24187(auto Tirisfal Glades;445):24 c1536.9:59 c1537.36:13
+c1544.41 | links=c1543.25:29 c1543.32:9
+c1545.41 | links=c1545.2:16
+c4075.41 | links=c1554.43:84 c1554.72:41
+c1522.42 | links=#10191(auto Tirisfal Glades;180):46 #15245(auto Tirisfal Glades;289):70 c1657.1:50 c1520.12:48
+c1545.42 | links=#17392(auto Tirisfal Glades;326):42 c1545.1:20 c1545.32:27
+c1554.42 | links=c1549.13:48
+c4075.42 | links=c1553.61:18
+c1522.43 | links=#10191(auto Tirisfal Glades;180):15 c1522.22:36
+c1544.43 | links=c1910.13:45 c1545.59:4
+c1545.43 | links=c1543.11:22 c1545.59:42
+c1554.43 | links=c1548.20:100 c4075.41:84 c1554.134:45
+c4075.43 | links=c1512.1:13 c4075.65:18
+c1544.44 | links=c1910.1:14 c1910.12:6 c1543.24:13
+c1545.44 | links=#21405(auto Tirisfal Glades;393):17 #23000(auto Tirisfal Glades;421):4
+c1553.44 | links=c1547.12:38 c1535.17:39
+c4075.44 | links=c1512.26:11
+o175566.44 | links=o175566.60:65 c1547.75:20 c1553.113:45
+c1544.45 | links=#25770(auto Tirisfal Glades;479):35 c1911.4:25
+c1545.45 | links=c1544.36:44
+c1553.45 | links=c1675.12:59 c1553.47:96
+c1544.46 | links=c1911.12:6
+c1545.46 | links=c1911.11:5
+c1547.46 | links=#14254(auto Tirisfal Glades;265):24
+c1548.46 | links=c1554.57:63 c1548.119:68
+c1522.47 | links=#4863(auto Tirisfal Glades;90):6
+c1544.47 | links=c1543.21:10 c1544.24:24
+c1545.47 | links=c1545.37:5
+c1553.47 | links=c1553.45:96 c1554.59:7
+o175566.47 | links=c1553.10:88 o175566.27:43
+c1522.48 | links=#3735(auto Tirisfal Glades;64):26 c1522.10:14
+c1544.48 | links=c1911.14:12
+c1545.48 | links=#17392(auto Tirisfal Glades;326):13
+c1553.48 | links=c1553.55:44
+c1522.49 | links=#8644(auto Tirisfal Glades;146):30 c1523.24:28
+c1544.49 | links=#12211(auto Tirisfal Glades;222):23 c1911.14:40
+c1545.49 | links=#17392(auto Tirisfal Glades;326):32
+c1548.49 | links=c1554.108:62
+c1554.49 | links=#14166(auto Tirisfal Glades;261):97 c1554.11:58
+o175566.49 | links=#2219(auto Tirisfal Glades;43):29 o175566.28:47
+c1522.50 | links=#5972(auto Tirisfal Glades;119):5
+c1544.50 | links=c1911.13:7 c1543.29:13 c1543.31:2
+c1545.50 | links=c1545.6:43
+c1548.50 | links=c1548.52:69
+c1553.50 | links=#14254(auto Tirisfal Glades;265):25
+c4075.50 | links=c1529.7:34
+c1522.51 | links=#14243(auto Tirisfal Glades;264):47
+c1544.51 | links=#17043(auto Tirisfal Glades;321):38
+c1545.51 | links=c1545.20:19
+c1548.51 | links=c1553.96:43
+c1522.52 | links=#755(auto Tirisfal Glades;17):36 c1520.2:40
+c1544.52 | links=c1544.54:21
+c1545.52 | links=#12349(auto Tirisfal Glades;226):25 c1545.53:20
+c1547.52 | links=c1553.79:39
+c1548.52 | links=c1547.30:18 c1553.39:42 c1548.50:69 c1553.57:17 c1548.102:64
+c1554.52 | links=#14694(auto Tirisfal Glades;276):36 c1532.6:32 c1529.7:25
+c4075.52 | links=#7257(auto Tirisfal Glades;132):26 c1547.74:25 c4075.88:12
+o175566.52 | links=#15570(auto Tirisfal Glades;300):22 o175566.62:36
+c1522.53 | links=#10488(auto Tirisfal Glades;188):7
+c1544.53 | links=c1543.34:2
+c1545.53 | links=c1545.52:20
+c1553.53 | links=#9809(auto Tirisfal Glades;167):48
+c1522.54 | links=#755(auto Tirisfal Glades;17):11
+c1544.54 | links=#17043(auto Tirisfal Glades;321):10 c1543.34:20 c1544.52:21
+c1522.55 | links=c1522.5:29 c1523.23:40
+c1544.55 | links=c1544.12:11 c1543.33:23
+c1553.55 | links=c1547.1:51 c4075.9:48 c1553.48:44
+c4075.55 | links=#26023(auto Tirisfal Glades;488):4
+c1522.56 | links=#14901(auto Tirisfal Glades;279):18 c1655.1:5
+c1548.56 | links=#2756(auto Tirisfal Glades;49):15 c1548.136:39
+c1553.56 | links=o113772.14:27
+c1554.56 | links=c1554.16:47 c1554.57:68
+c4075.56 | links=#9737(auto Tirisfal Glades;165):11
+c1547.57 | links=#10692(auto Tirisfal Glades;196):23 #14284(auto Tirisfal Glades;266):27
+c1553.57 | links=c1548.52:17 c1553.79:44
+c1554.57 | links=c1548.46:63 c1554.56:68
+c4075.57 | links=c1554.2:22 c1554.59:56
+o175566.57 | links=#13655(auto Tirisfal Glades;245):47
+c1545.58 | links=c1543.20:29
+c4075.58 | links=c1549.2:20 c1554.70:9
+o175566.58 | links=c1526.10:21 c1526.28:13
+c1545.59 | links=c1910.2:24 c1910.3:31 c1544.20:22 c1544.43:4 c1545.43:42
+c1554.59 | links=c1553.47:7 c4075.57:56
+c4075.59 | links=c1512.30:10
+o175566.59 | links=c1735.1:9 c1526.10:29
+c1545.60 | links=c1910.1:7 c1910.4:23 c1543.5:18 c1910.5:39
+c4075.60 | links=c1538.3:34 c1538.6:15 c1549.21:12
+o175566.60 | links=c1525.5:8 c1526.7:51 c1526.8:4 c1526.29:22 o175566.44:65
+c1547.61 | links=#7514(auto Tirisfal Glades;136):10
+c1553.61 | links=#19341(auto Tirisfal Glades;356):29 c4075.42:18
+o175566.61 | links=#25792(auto Tirisfal Glades;481):23
+c4075.62 | links=c1890.12:3
+o175566.62 | links=o113772.8:10 o175566.52:36
+c1553.63 | links=c1547.35:14
+c1554.63 | links=#9039(auto Tirisfal Glades;156):20 #26384(auto Tirisfal Glades;495):36 c1529.5:42 c1529.8:93
+c1548.65 | links=c1554.72:38
+c4075.65 | links=#20322(auto Tirisfal Glades;374):6 c4075.43:18
+o175566.65 | links=#9655(auto Tirisfal Glades;163):11
+c1547.66 | links=c4075.82:58 c1553.118:31
+c1547.67 | links=c4075.82:25 c1553.97:20
+c1553.67 | links=c10357.13:19
+o175566.67 | links=#23551(auto Tirisfal Glades;434):45
+c1553.68 | links=c10357.13:57 c1548.129:39
+c4075.68 | links=c1513.1:18
+c1554.69 | links=c1549.6:44 c1549.26:37
+c4075.69 | links=c1508.5:52 c1508.14:23 c1512.23:13 c1512.39:16
+c1554.70 | links=c4075.58:9
+c4075.70 | links=#24741(auto Tirisfal Glades;457):21 c1554.127:51
+c1554.71 | links=c1549.4:46 c1554.96:51
+c4075.71 | links=o113772.22:14
+c1553.72 | links=c10357.12:19 c4075.80:33
+c1554.72 | links=c4075.41:41 c1548.65:38
+c4075.72 | links=c1501.2:15 c1502.9:15
+c1547.73 | links=c1547.11:68 c1547.76:34
+c1548.73 | links=c1520.4:47
+c4075.73 | links=c1509.14:9 c1502.30:15
+c1547.74 | links=c4075.52:25
+c1548.74 | links=c1522.38:3
+c4075.74 | links=c1504.24:24 c1512.34:31
+c1547.75 | links=o175566.44:20
+c1548.75 | links=o113772.21:32 c1553.96:31
+c4075.75 | links=#19221(auto Tirisfal Glades;350):24 c4075.82:21
+c1547.76 | links=#25794(auto Tirisfal Glades;482):25 c1547.73:34
+c1548.79 | links=c10357.1:21
+c1553.79 | links=c1520.5:58 c1547.52:39 c1553.57:44
+c4075.80 | links=c1553.72:33 c1548.117:27
+c1548.81 | links=#3363(auto Tirisfal Glades;59):35
+c4075.82 | links=c1547.66:58 c1547.67:25 c4075.75:21
+c1548.83 | links=c1548.20:84
+c4075.84 | links=c1549.9:53 c1549.27:26 c1554.96:15
+c1554.85 | links=#15079(auto Tirisfal Glades;285):77 c1549.25:37 c1554.121:61
+c4075.86 | links=#18619(auto Tirisfal Glades;340):22
+c1553.88 | links=#14922(auto Tirisfal Glades;280):36
+c4075.88 | links=c4075.52:12
+c1553.93 | links=c1553.94:48
+c1553.94 | links=c10357.12:16 c1553.93:48
+c1554.94 | links=c1537.10:29
+c1554.95 | links=c1549.11:39 c1549.13:51
+c1553.96 | links=#14922(auto Tirisfal Glades;280):23 c1548.51:43 c1548.75:31 c1548.143:65
+c1554.96 | links=c1549.3:22 c1554.71:51 c4075.84:15
+c1553.97 | links=c1547.67:20
+c1554.98 | links=#8152(auto Tirisfal Glades;142):46 #13735(auto Tirisfal Glades;248):54
+c1553.100 | links=c1553.118:32
+c1548.102 | links=c1547.2:52 c1547.7:28 c1548.52:64 c1548.143:34
+c1554.102 | links=c1529.7:54
+c1553.103 | links=c1553.110:73 c1553.118:73
+c1553.105 | links=c1548.145:40
+c1548.107 | links=c10356.1:19 c1547.2:21
+c1554.108 | links=c1548.20:50 c1548.49:62
+c1548.109 | links=#5147(auto Tirisfal Glades;96):49 #13798(auto Tirisfal Glades;251):34 #27239(auto Tirisfal Glades;505):33
+c1548.110 | links=c10357.11:19 c10357.12:40
+c1553.110 | links=c10357.13:71 c1553.103:73
+c1554.110 | links=c1548.128:16
+c1554.111 | links=#10250(auto Tirisfal Glades;182):30
+c1553.112 | links=c1548.140:69 c1548.145:43 c1548.152:26
+c1553.113 | links=o175566.44:45
+c1548.116 | links=c1537.23:11
+c1548.117 | links=#4483(auto Tirisfal Glades;79):19 c4075.80:27
+c1553.118 | links=c1547.66:31 c1553.100:32 c1553.103:73
+c1548.119 | links=c1548.46:68
+c1548.120 | links=c1540.1:17 c1540.5:19
+c1554.121 | links=c1549.3:49 c1537.12:76 c1554.85:61
+c1554.122 | links=#9292(auto Tirisfal Glades;159):30 #25290(auto Tirisfal Glades;469):50
+c1548.123 | links=c1537.23:34
+c1554.123 | links=c1554.124:17
+c1554.124 | links=c1549.9:46 c1549.33:30 c1554.123:17
+c1554.125 | links=c1549.25:30 c1549.29:45
+c1554.127 | links=c1555.36:61 c4075.70:51
+c1548.128 | links=c1532.3:21 c1554.110:16
+c1548.129 | links=c1553.68:39
+c1554.129 | links=#18619(auto Tirisfal Glades;340):57
+c1548.130 | links=#15778(auto Tirisfal Glades;301):17
+c1554.130 | links=#10250(auto Tirisfal Glades;182):39
+c1548.131 | links=#2756(auto Tirisfal Glades;49):34
+c1548.132 | links=c1548.154:13
+c1548.134 | links=#2150(auto Tirisfal Glades;42):2
+c1554.134 | links=c1554.43:45
+c1548.135 | links=c10357.11:55
+c1548.136 | links=c1548.56:39
+c1548.140 | links=c1553.112:69 c1548.144:59 c1548.147:29
+c1548.143 | links=o113772.15:47 c1553.96:65 c1548.102:34
+c1548.144 | links=c1548.140:59
+c1548.145 | links=#1252(auto Tirisfal Glades;25):29 c1553.105:40 c1553.112:43
+c1548.146 | links=#5421(auto Tirisfal Glades;104):47
+c1548.147 | links=c1548.140:29
+c1548.152 | links=c1553.112:26
+c1548.154 | links=#16469(auto Tirisfal Glades;310):22 c1548.132:13
+c1548.155 | links=#6061(auto Tirisfal Glades;121):19

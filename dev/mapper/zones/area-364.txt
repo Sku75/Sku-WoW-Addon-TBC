@@ -1,0 +1,3 @@
+Zone areaId 364 — eine Zeile pro Wegpunkt; Links inline.
+
+#28667 | s;Kalimdor;Durotar;The Den§s;Kalimdor;Durotar;Der Höhlenbau§s;Kalimdor;Durotar;L'Antre | x=-604.098 y=-4202.92 | size=1

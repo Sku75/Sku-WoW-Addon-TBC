@@ -1,0 +1,992 @@
+Zone areaId 16 — eine Zeile pro Wegpunkt; Links inline.
+
+#586 | auto Azshara;1§auto Azshara;1§auto Azshara;1 | x=3989.800048828125 y=-4770.5 | size=1 | links=#18067(auto Azshara;110):4 #20923(auto Azshara;125):2
+#749 | auto Azshara;2§auto Azshara;2§auto Azshara;2 | x=3977.60009765625 y=-4792.89990234375 | size=1 | links=#13519(auto Azshara;77):11
+#801 | auto Azshara;3§auto Azshara;3§auto Azshara;3 | x=3627.300048828125 y=-4605 | size=1 | links=#3526(auto Azshara;19):43 #8081(auto Azshara;43):40 c6190.2:27
+#822 | auto Azshara;4§auto Azshara;4§auto Azshara;4 | x=3647.10009765625 y=-4438.39990234375 | size=1 | links=#14056(auto Azshara;81):25 #20272(auto Azshara;122):44
+#994 | auto Azshara;5§auto Azshara;5§auto Azshara;5 | x=2753.60009765625 y=-3902.900146484375 | size=1 | links=#6379(auto Azshara;35):25 #13240(auto Azshara;76):22 c8759.18:44
+#1232 | auto Azshara;6§auto Azshara;6§auto Azshara;6 | x=2742.5 y=-3958.800048828125 | size=1 | links=#6379(auto Azshara;35):31 #7602(auto Azshara;40):20
+#1679 | auto Azshara;7§auto Azshara;7§auto Azshara;7 | x=3256.199951171875 y=-4337.30029296875 | size=1 | links=#3065(auto Azshara;16):9 #7472(auto Azshara;38):7 c6125.3:5
+#1916 | auto Azshara;8§auto Azshara;8§auto Azshara;8 | x=3971.400146484375 y=-4778.60009765625 | size=1 | links=#15906(auto Azshara;91):4 #19805(auto Azshara;119):3
+#2069 | auto Azshara;9§auto Azshara;9§auto Azshara;9 | x=3986.900146484375 y=-4781.89990234375 | size=1 | links=#4691(auto Azshara;23):5 #21236(auto Azshara;129):4
+#2246 | auto Azshara;10§auto Azshara;10§auto Azshara;10 | x=3281.800048828125 y=-4358.80029296875 | size=1 | links=#27369(auto Azshara;157):6 c6125.7:16
+#2290 | auto Azshara;11§auto Azshara;11§auto Azshara;11 | x=3977.5 y=-4768.7001953125 | size=1 | links=#22888(auto Azshara;135):3 #27674(auto Azshara;161):3
+#2655 | auto Azshara;12§auto Azshara;12§auto Azshara;12 | x=3881.5 y=-4652.60009765625 | size=1 | links=#13027(auto Azshara;74):18 #19790(auto Azshara;118):19
+#2674 | auto Azshara;13§auto Azshara;13§auto Azshara;13 | x=3246.400146484375 y=-4506.7001953125 | size=1 | links=#8887(auto Azshara;51):23 #19630(auto Azshara;115):24
+#2883 | auto Azshara;14§auto Azshara;14§auto Azshara;14 | x=3254.60009765625 y=-4322.30029296875 | size=1 | links=#7472(auto Azshara;38):7 #18946(auto Azshara;112):8 c6127.1:18
+#3008 | auto Azshara;15§auto Azshara;15§auto Azshara;15 | x=2712.199951171875 y=-4004.300048828125 | size=1 | links=#22806(auto Azshara;134):10 #23889(auto Azshara;140):31
+#3065 | auto Azshara;16§auto Azshara;16§auto Azshara;16 | x=3257 y=-4346.80029296875 | size=1 | links=#1679(auto Azshara;7):9 #15760(auto Azshara;90):12
+#3347 | auto Azshara;17§auto Azshara;17§auto Azshara;17 | x=3962.300048828125 y=-4755.7001953125 | size=5 | links=#4914(auto Azshara;25):4 #5880(auto Azshara;29):8
+#3402 | auto Azshara;18§auto Azshara;18§auto Azshara;18 | x=3607.699951171875 y=-4412.80029296875 | size=1 | links=#4703(auto Azshara;24):12 #28552(auto Azshara;165):18 c8576.1:9 c8586.1:9 c8587.1:9 c10361.1:11
+#3526 | auto Azshara;19§auto Azshara;19§auto Azshara;19 | x=3589.5 y=-4626.7001953125 | size=1 | links=#801(auto Azshara;3):43 #13718(auto Azshara;79):31 #23671(auto Azshara;137):58 #45173(auto Azshara;541):39
+#4276 | auto Azshara;20§auto Azshara;20§auto Azshara;20 | x=2775.199951171875 y=-3860.400146484375 | size=1 | links=#9403(auto Azshara;55):23 #13240(auto Azshara;76):25
+#4278 | auto Azshara;21§auto Azshara;21§auto Azshara;21 | x=2807.800048828125 y=-3805.199951171875 | size=1 | links=#7608(passage;from;Southfury River;Azshara;to;Ashenvale):5 #9261(auto Azshara;54):9
+#4627 | auto Azshara;22§auto Azshara;22§auto Azshara;22 | x=3856.699951171875 y=-4635.10009765625 | size=1 | links=#12321(auto Azshara;69):14 #16318(auto Azshara;96):37
+#4691 | auto Azshara;23§auto Azshara;23§auto Azshara;23 | x=3984.699951171875 y=-4777.2001953125 | size=1 | links=#2069(auto Azshara;9):5 #18067(auto Azshara;110):3
+#4703 | auto Azshara;24§auto Azshara;24§auto Azshara;24 | x=3620 y=-4413.5 | size=1 | links=#3402(auto Azshara;18):12 #22719(auto Azshara;132):19
+#4914 | auto Azshara;25§auto Azshara;25§auto Azshara;25 | x=3959.699951171875 y=-4752 | size=1 | links=#3347(auto Azshara;17):4 #8720(auto Azshara;49):6
+#5301 | auto Azshara;26§auto Azshara;26§auto Azshara;26 | x=3270.699951171875 y=-4369.2001953125 | size=1 | links=#8420(auto Azshara;47):7 #17917(auto Azshara;106):3 #27369(auto Azshara;157):9
+#5466 | auto Azshara;27§auto Azshara;27§auto Azshara;27 | x=3940.5 y=-4734.5 | size=1 | links=#8720(auto Azshara;49):19 #19691(auto Azshara;116):59
+#5820 | auto Azshara;28§auto Azshara;28§auto Azshara;28 | x=3290.699951171875 y=-4876.60009765625 | size=1 | links=#13755(auto Azshara;80):28 #14459(auto Azshara;85):64 c6193.3:24
+#5880 | auto Azshara;29§auto Azshara;29§auto Azshara;29 | x=3968.5 y=-4762.10009765625 | size=1 | links=#3347(auto Azshara;17):8 #25205(auto Azshara;144):8
+#5887 | auto Azshara;30§auto Azshara;30§auto Azshara;30 | x=3994.199951171875 y=-4772 | size=1 | links=#16841(auto Azshara;100):3 #20721(auto Azshara;124):3
+#6118 | auto Azshara;31§auto Azshara;31§auto Azshara;31 | x=3429.300048828125 y=-4722.2001953125 | size=1 | links=#24404(auto Azshara;141):29 #27663(auto Azshara;160):32
+#6146 | auto Azshara;32§auto Azshara;32§auto Azshara;32 | x=3972.60009765625 y=-4786.5 | size=1 | links=#7535(auto Azshara;39):5 #19805(auto Azshara;119):4
+#6335 | auto Azshara;33§auto Azshara;33§auto Azshara;33 | x=3639.60009765625 y=-4660.30029296875 | size=1 | links=#13718(auto Azshara;79):28 #25127(auto Azshara;143):12
+#6350 | auto Azshara;34§auto Azshara;34§auto Azshara;34 | x=3323.10009765625 y=-4710.80029296875 | size=1 | links=#15199(auto Azshara;87):40 c6193.18:30
+#6379 | auto Azshara;35§auto Azshara;35§auto Azshara;35 | x=2746.800048828125 y=-3927.300048828125 | size=1 | links=#994(auto Azshara;5):25 #1232(auto Azshara;6):31 #18601(auto Azshara;111):51
+#6785 | auto Azshara;36§auto Azshara;36§auto Azshara;36 | x=3984.199951171875 y=-4782.80029296875 | size=1 | links=#7814(auto Azshara;41):2 #22390(auto Azshara;130):2
+#7256 | auto Azshara;37§auto Azshara;37§auto Azshara;37 | x=3302.10009765625 y=-4375.5 | size=1 | links=#13221(auto Azshara;75):12 #26291(auto Azshara;150):14
+#7472 | auto Azshara;38§auto Azshara;38§auto Azshara;38 | x=3255.10009765625 y=-4329.60009765625 | size=1 | links=#1679(auto Azshara;7):7 #2883(auto Azshara;14):7
+#7535 | auto Azshara;39§auto Azshara;39§auto Azshara;39 | x=3977.60009765625 y=-4783.60009765625 | size=1 | links=#6146(auto Azshara;32):5 #8740(auto Azshara;50):8
+#7602 | auto Azshara;40§auto Azshara;40§auto Azshara;40 | x=2742.199951171875 y=-3979.300048828125 | size=1 | links=#1232(auto Azshara;6):20 #23889(auto Azshara;140):18
+#7608 | passage;from;Southfury River;Azshara;to;Ashenvale§passage;von;Der Südstrom;Azshara;nach;Eschental§passage;de;Fleuve Furie-du-Sud;Azshara;vers;Orneval | x=2811.10009765625 y=-3800.699951171875 | size=1 | links=#4278(auto Azshara;21):5 #26479(passage;above;bridge;from;Southfury River;Ashenvale;to;Azshara):1
+#7814 | auto Azshara;41§auto Azshara;41§auto Azshara;41 | x=3983.10009765625 y=-4785.2001953125 | size=1 | links=#6785(auto Azshara;36):2 #14161(auto Azshara;82):3
+#7932 | auto Azshara;42§auto Azshara;42§auto Azshara;42 | x=3312.5 y=-4322.2001953125 | size=1 | links=c6126.2:15 c6125.6:24
+#8081 | auto Azshara;43§auto Azshara;43§auto Azshara;43 | x=3648.10009765625 y=-4570.10009765625 | size=1 | links=#801(auto Azshara;3):40 #16722(auto Azshara;98):35 c6193.21:29
+#8266 | auto Azshara;44§auto Azshara;44§auto Azshara;44 | x=3259.10009765625 y=-4983 | size=5 | links=#11911(auto Azshara;66):28 #16137(auto Azshara;94):49
+#8269 | auto Azshara;45§auto Azshara;45§auto Azshara;45 | x=3321 y=-4643.2001953125 | size=1 | links=#22631(auto Azshara;131):49 c6193.18:37
+#8404 | auto Azshara;46§auto Azshara;46§auto Azshara;46 | x=2790.699951171875 y=-4093.5 | size=1 | links=#8449(auto Azshara;48):50 #20130(auto Azshara;120):59
+#8420 | auto Azshara;47§auto Azshara;47§auto Azshara;47 | x=3277.10009765625 y=-4372.60009765625 | size=1 | links=#5301(auto Azshara;26):7 #13221(auto Azshara;75):13
+#8449 | auto Azshara;48§auto Azshara;48§auto Azshara;48 | x=2762.60009765625 y=-4051.699951171875 | size=1 | links=#8404(auto Azshara;46):50 #23889(auto Azshara;140):57
+#8720 | auto Azshara;49§auto Azshara;49§auto Azshara;49 | x=3954.10009765625 y=-4748.7001953125 | size=1 | links=#4914(auto Azshara;25):6 #5466(auto Azshara;27):19 #28418(auto Azshara;164):10
+#8740 | auto Azshara;50§auto Azshara;50§auto Azshara;50 | x=3984.199951171875 y=-4778.30029296875 | size=1 | links=#7535(auto Azshara;39):8 #12109(auto Azshara;67):3
+#8887 | auto Azshara;51§auto Azshara;51§auto Azshara;51 | x=3265 y=-4520.39990234375 | size=1 | links=#2674(auto Azshara;13):23 #23711(auto Azshara;138):21
+#9011 | auto Azshara;52§auto Azshara;52§auto Azshara;52 | x=3141.800048828125 y=-5025.89990234375 | size=1 | links=#13020(auto Azshara;73):38 #44859(auto Azshara;255):50
+#9045 | auto Azshara;53§auto Azshara;53§auto Azshara;53 | x=2897.5 y=-4018.400146484375 | size=1 | links=#13638(auto Azshara;78):19 c6117.2:11 c6116.8:5
+#9261 | auto Azshara;54§auto Azshara;54§auto Azshara;54 | x=2802.800048828125 y=-3813.199951171875 | size=1 | links=#4278(auto Azshara;21):9 #16130(auto Azshara;93):14
+#9403 | auto Azshara;55§auto Azshara;55§auto Azshara;55 | x=2785.10009765625 y=-3839.199951171875 | size=1 | links=#4276(auto Azshara;20):23 #16130(auto Azshara;93):17
+#9466 | auto Azshara;56§auto Azshara;56§auto Azshara;56 | x=2866.400146484375 y=-4164.39990234375 | size=1 | links=#20130(auto Azshara;120):44 #24706(auto Azshara;142):37
+#9536 | auto Azshara;57§auto Azshara;57§auto Azshara;57 | x=3990.800048828125 y=-4775.7001953125 | size=1 | links=#12109(auto Azshara;67):3 #17481(auto Azshara;103):3
+#9647 | auto Azshara;58§auto Azshara;58§auto Azshara;58 | x=2938.10009765625 y=-4224.2001953125 | size=1 | links=#17963(auto Azshara;107):59 #24706(auto Azshara;142):55 c6117.7:56
+#10101 | auto Azshara;59§auto Azshara;59§auto Azshara;59 | x=3363.5 y=-4632.2001953125 | size=1 | links=#22631(auto Azshara;131):45 #28397(auto Azshara;163):39
+#10432 | auto Azshara;60§auto Azshara;60§auto Azshara;60 | x=3973.400146484375 y=-4783.7001953125 | size=1 | links=#19345(auto Azshara;114):3
+#10453 | auto Azshara;61§auto Azshara;61§auto Azshara;61 | x=3980.10009765625 y=-4764 | size=1 | links=#22823(Archmage Xylem;Bear's Head;Azshara):4 #28077(auto Azshara;162):7
+#10659 | auto Azshara;62§auto Azshara;62§auto Azshara;62 | x=3470.60009765625 y=-4739.7001953125 | size=1 | links=#14393(auto Azshara;83):40 #27058(auto Azshara;152):26
+#10984 | auto Azshara;63§auto Azshara;63§auto Azshara;63 | x=3988.900146484375 y=-4767.39990234375 | size=1 | links=#15652(auto Azshara;89):5 #16841(auto Azshara;100):3
+#11341 | auto Azshara;64§auto Azshara;64§auto Azshara;64 | x=2897.60009765625 y=-3967.699951171875 | size=1 | links=#19724(auto Azshara;117):16 c6117.1:31 c6116.10:23
+#11903 | auto Azshara;65§auto Azshara;65§auto Azshara;65 | x=3312.800048828125 y=-4568.7001953125 | size=1 | links=#22631(auto Azshara;131):36 #23711(auto Azshara;138):46 c6190.18:57
+#11911 | auto Azshara;66§auto Azshara;66§auto Azshara;66 | x=3233.10009765625 y=-4995.39990234375 | size=1 | links=#8266(auto Azshara;44):28 #26137(auto Azshara;148):33
+#12109 | auto Azshara;67§auto Azshara;67§auto Azshara;67 | x=3987 y=-4776 | size=1 | links=#8740(auto Azshara;50):3 #9536(auto Azshara;57):3
+#12278 | auto Azshara;68§auto Azshara;68§auto Azshara;68 | x=3967.900146484375 y=-4784.39990234375 | size=1 | links=#12496(auto Azshara;72):8 #27144(auto Azshara;154):8
+#12321 | auto Azshara;69§auto Azshara;69§auto Azshara;69 | x=3857.900146484375 y=-4620.2001953125 | size=1 | links=#4627(auto Azshara;22):14 #17581(auto Azshara;104):37
+#12471 | auto Azshara;70§auto Azshara;70§auto Azshara;70 | x=3997.300048828125 y=-4787.10009765625 | size=1 | links=#12472(auto Azshara;71):6 #13519(auto Azshara;77):10
+#12472 | auto Azshara;71§auto Azshara;71§auto Azshara;71 | x=3995.800048828125 y=-4780.89990234375 | size=1 | links=#12471(auto Azshara;70):6 #17481(auto Azshara;103):3
+#12496 | auto Azshara;72§auto Azshara;72§auto Azshara;72 | x=3972.199951171875 y=-4791.2001953125 | size=1 | links=#12278(auto Azshara;68):8 #16780(auto Azshara;99):3 c11705.1:13
+#13020 | auto Azshara;73§auto Azshara;73§auto Azshara;73 | x=3178.60009765625 y=-5014.2001953125 | size=1 | links=#9011(auto Azshara;52):38 #26137(auto Azshara;148):24
+#13027 | auto Azshara;74§auto Azshara;74§auto Azshara;74 | x=3866 y=-4662.39990234375 | size=1 | links=#2655(auto Azshara;12):18 #21214(auto Azshara;128):11
+#13190 | Sanath Lim-yo;Questgiver;Azshara;1;28.11;50.09§Sanath Lim-yo;Questgeber;Azshara;1;28.11;50.09§Sanath Lim-yo;Questgiver;Azshara;1;28.11;50.09 | x=3648.110445075295 y=-4702.989290760206 | size=1
+#13221 | auto Azshara;75§auto Azshara;75§auto Azshara;75 | x=3290.10009765625 y=-4372.5 | size=1 | links=#7256(auto Azshara;37):12 #8420(auto Azshara;47):13
+#13240 | auto Azshara;76§auto Azshara;76§auto Azshara;76 | x=2764.10009765625 y=-3883.5 | size=1 | links=#994(auto Azshara;5):22 #4276(auto Azshara;20):25 #20238(auto Azshara;121):35
+#13519 | auto Azshara;77§auto Azshara;77§auto Azshara;77 | x=3989.400146484375 y=-4793.30029296875 | size=1 | links=#749(auto Azshara;2):11 #12471(auto Azshara;70):10
+#13638 | auto Azshara;78§auto Azshara;78§auto Azshara;78 | x=2902.10009765625 y=-3999.699951171875 | size=1 | links=#9045(auto Azshara;53):19 #19724(auto Azshara;117):15
+#13718 | auto Azshara;79§auto Azshara;79§auto Azshara;79 | x=3615.300048828125 y=-4644.60009765625 | size=1 | links=#3526(auto Azshara;19):31 #6335(auto Azshara;33):28
+#13755 | auto Azshara;80§auto Azshara;80§auto Azshara;80 | x=3282.400146484375 y=-4904 | size=1 | links=#5820(auto Azshara;28):28 #16137(auto Azshara;94):33
+#14056 | auto Azshara;81§auto Azshara;81§auto Azshara;81 | x=3650.900146484375 y=-4413.5 | size=1 | links=#822(auto Azshara;4):25 #22719(auto Azshara;132):11 c8610.1:26
+#14161 | auto Azshara;82§auto Azshara;82§auto Azshara;82 | x=3980.10009765625 y=-4785.39990234375 | size=1 | links=#7814(auto Azshara;41):3 #19345(auto Azshara;114):4
+#14393 | auto Azshara;83§auto Azshara;83§auto Azshara;83 | x=3495 y=-4707.10009765625 | size=1 | links=#10659(auto Azshara;62):40 #23671(auto Azshara;137):65
+#14452 | auto Azshara;84§auto Azshara;84§auto Azshara;84 | x=3033.5 y=-4300 | size=1 | links=#17963(auto Azshara;107):62 #26201(auto Azshara;149):68 c8759.15:58
+#14459 | auto Azshara;85§auto Azshara;85§auto Azshara;85 | x=3303.699951171875 y=-4813.89990234375 | size=1 | links=#5820(auto Azshara;28):64 #19299(auto Azshara;113):27
+#14574 | auto Azshara;86§auto Azshara;86§auto Azshara;86 | x=2869.400146484375 y=-4023.60009765625 | size=1 | links=#16669(auto Azshara;97):9 c6117.2:18
+#14747 | tower;down;Bear's Head;Azshara§turm;unten;Bärenkopf;Azshara§tower;bas;Tête d'ours;Azshara | x=3978.199951171875 y=-4772.60009765625 | size=1 | links=#15652(auto Azshara;89):8 #25205(auto Azshara;144):6
+#15199 | auto Azshara;87§auto Azshara;87§auto Azshara;87 | x=3321.800048828125 y=-4750.80029296875 | size=1 | links=#6350(auto Azshara;34):40 #19299(auto Azshara;113):38 c6190.25:10
+#15599 | auto Azshara;88§auto Azshara;88§auto Azshara;88 | x=3308.699951171875 y=-4400.2001953125 | size=1 | links=#26291(auto Azshara;150):10 #27368(auto Azshara;156):42 #44837(auto Azshara;237):38
+#15652 | auto Azshara;89§auto Azshara;89§auto Azshara;89 | x=3984 y=-4766.39990234375 | size=1 | links=#10984(auto Azshara;63):5 #14747(tower;down;Bear's Head;Azshara):8
+#15713 | Archmage Xylem;Questgiver;Azshara;1;29.71;40.52§Erzmagier Xylem;Questgeber;Azshara;1;29.71;40.52§Archimage Xylem;Questgiver;Azshara;1;29.71;40.52 | x=3970.062002902127 y=-4784.017365580381 | size=1
+#15760 | auto Azshara;90§auto Azshara;90§auto Azshara;90 | x=3262.900146484375 y=-4357.5 | size=5 | links=#3065(auto Azshara;16):12 #17917(auto Azshara;106):10
+#15906 | auto Azshara;91§auto Azshara;91§auto Azshara;91 | x=3972.699951171875 y=-4774.7001953125 | size=1 | links=#1916(auto Azshara;8):4 #22888(auto Azshara;135):4
+#16018 | auto Azshara;92§auto Azshara;92§auto Azshara;92 | x=3995.699951171875 y=-4783.30029296875 | size=1 | links=#20702(auto Azshara;123):4 #21008(auto Azshara;127):3
+#16130 | auto Azshara;93§auto Azshara;93§auto Azshara;93 | x=2794.199951171875 y=-3824.5 | size=1 | links=#9261(auto Azshara;54):14 #9403(auto Azshara;55):17
+#16137 | auto Azshara;94§auto Azshara;94§auto Azshara;94 | x=3280 y=-4937.60009765625 | size=1 | links=#8266(auto Azshara;44):49 #13755(auto Azshara;80):33
+#16296 | auto Azshara;95§auto Azshara;95§auto Azshara;95 | x=3791.900146484375 y=-4621.7001953125 | size=1 | links=#17581(auto Azshara;104):28
+#16318 | auto Azshara;96§auto Azshara;96§auto Azshara;96 | x=3841.10009765625 y=-4669.7001953125 | size=1 | links=#4627(auto Azshara;22):37 #21214(auto Azshara;128):14
+#16669 | auto Azshara;97§auto Azshara;97§auto Azshara;97 | x=2859.699951171875 y=-4023.10009765625 | size=1 | links=#14574(auto Azshara;86):9 c6116.4:2
+#16722 | auto Azshara;98§auto Azshara;98§auto Azshara;98 | x=3652.900146484375 y=-4535.30029296875 | size=1 | links=#8081(auto Azshara;43):35 #20272(auto Azshara;122):52 c8762.16:22 c8762.24:30
+#16780 | auto Azshara;99§auto Azshara;99§auto Azshara;99 | x=3974.900146484375 y=-4789 | size=1 | links=#12496(auto Azshara;72):3 #27119(auto Azshara;153):3
+#16841 | auto Azshara;100§auto Azshara;100§auto Azshara;100 | x=3992.10009765625 y=-4769 | size=1 | links=#5887(auto Azshara;30):3 #10984(auto Azshara;63):3
+#17082 | auto Azshara;101§auto Azshara;101§auto Azshara;101 | x=2711.60009765625 y=-3869.10009765625 | size=1 | links=#17389(auto Azshara;102):16 #27574(auto Azshara;158):8
+#17389 | auto Azshara;102§auto Azshara;102§auto Azshara;102 | x=2700.900146484375 y=-3882.300048828125 | size=1 | links=#17082(auto Azshara;101):16 c14301.1:10
+#17481 | auto Azshara;103§auto Azshara;103§auto Azshara;103 | x=3993.800048828125 y=-4777.5 | size=1 | links=#9536(auto Azshara;57):3 #12472(auto Azshara;71):3
+#17581 | auto Azshara;104§auto Azshara;104§auto Azshara;104 | x=3820.5 y=-4621.30029296875 | size=1 | links=#12321(auto Azshara;69):37 #16296(auto Azshara;95):28
+#17747 | auto Azshara;105§auto Azshara;105§auto Azshara;105 | x=3197.199951171875 y=-4461 | size=1 | links=#19630(auto Azshara;115):43 #25698(auto Azshara;147):63
+#17917 | auto Azshara;106§auto Azshara;106§auto Azshara;106 | x=3268.60009765625 y=-4366.39990234375 | size=1 | links=#5301(auto Azshara;26):3 #15760(auto Azshara;90):10
+#17963 | auto Azshara;107§auto Azshara;107§auto Azshara;107 | x=2987.5 y=-4257 | size=1 | links=#9647(auto Azshara;58):59 #14452(auto Azshara;84):62
+#18035 | auto Azshara;108§auto Azshara;108§auto Azshara;108 | x=3979.400146484375 y=-4780.39990234375 | size=1 | links=#22390(auto Azshara;130):3 #27640(auto Azshara;159):3
+#18066 | auto Azshara;109§auto Azshara;109§auto Azshara;109 | x=3254.10009765625 y=-4454.2001953125 | size=1 | links=#19630(auto Azshara;115):42 #27368(auto Azshara;156):35
+#18067 | auto Azshara;110§auto Azshara;110§auto Azshara;110 | x=3986.60009765625 y=-4774.10009765625 | size=1 | links=#586(auto Azshara;1):4 #4691(auto Azshara;23):3
+#18601 | auto Azshara;111§auto Azshara;111§auto Azshara;111 | x=2789.199951171875 y=-3955.800048828125 | size=1 | links=#6379(auto Azshara;35):51 c6118.1:44
+#18946 | auto Azshara;112§auto Azshara;112§auto Azshara;112 | x=3246.60009765625 y=-4322.30029296875 | size=1 | links=#2883(auto Azshara;14):8 c8397.1:3
+#19299 | auto Azshara;113§auto Azshara;113§auto Azshara;113 | x=3310.900146484375 y=-4787.39990234375 | size=1 | links=#14459(auto Azshara;85):27 #15199(auto Azshara;87):38 c6193.1:19
+#19345 | auto Azshara;114§auto Azshara;114§auto Azshara;114 | x=3976.800048828125 y=-4783.10009765625 | size=1 | links=#10432(auto Azshara;60):3 #14161(auto Azshara;82):4
+#19630 | auto Azshara;115§auto Azshara;115§auto Azshara;115 | x=3230.10009765625 y=-4489 | size=1 | links=#2674(auto Azshara;13):24 #17747(auto Azshara;105):43 #18066(auto Azshara;109):42
+#19691 | auto Azshara;116§auto Azshara;116§auto Azshara;116 | x=3940.10009765625 y=-4674.80029296875 | size=1 | links=#5466(auto Azshara;27):59 #26523(auto Azshara;151):15
+#19724 | auto Azshara;117§auto Azshara;117§auto Azshara;117 | x=2897.60009765625 y=-3984.400146484375 | size=1 | links=#11341(auto Azshara;64):16 #13638(auto Azshara;78):15
+#19790 | auto Azshara;118§auto Azshara;118§auto Azshara;118 | x=3896.300048828125 y=-4640.2001953125 | size=1 | links=#2655(auto Azshara;12):19 #22898(auto Azshara;136):15
+#19805 | auto Azshara;119§auto Azshara;119§auto Azshara;119 | x=3971.900146484375 y=-4782.39990234375 | size=1 | links=#1916(auto Azshara;8):3 #6146(auto Azshara;32):4
+#20130 | auto Azshara;120§auto Azshara;120§auto Azshara;120 | x=2834.10009765625 y=-4134 | size=1 | links=#8404(auto Azshara;46):59 #9466(auto Azshara;56):44
+#20238 | auto Azshara;121§auto Azshara;121§auto Azshara;121 | x=2731.900146484375 y=-3867.900146484375 | size=1 | links=#13240(auto Azshara;76):35 #27574(auto Azshara;158):17 c12577.1:18
+#20272 | auto Azshara;122§auto Azshara;122§auto Azshara;122 | x=3644.400146484375 y=-4483.2001953125 | size=1 | links=#822(auto Azshara;4):44 #16722(auto Azshara;98):52 #28552(auto Azshara;165):62
+#20702 | auto Azshara;123§auto Azshara;123§auto Azshara;123 | x=3993.5 y=-4787.2001953125 | size=1 | links=#16018(auto Azshara;92):4 #21236(auto Azshara;129):4
+#20721 | auto Azshara;124§auto Azshara;124§auto Azshara;124 | x=3996.199951171875 y=-4775.2001953125 | size=1 | links=#5887(auto Azshara;30):3 #21008(auto Azshara;127):4
+#20923 | auto Azshara;125§auto Azshara;125§auto Azshara;125 | x=3991.300048828125 y=-4769 | size=1 | links=#586(auto Azshara;1):2 #23717(auto Azshara;139):6
+#20965 | auto Azshara;126§auto Azshara;126§auto Azshara;126 | x=3588.900146484375 y=-4400.89990234375 | size=1 | links=c3621.1:19 c8576.1:13
+#21008 | auto Azshara;127§auto Azshara;127§auto Azshara;127 | x=3996.400146484375 y=-4779.39990234375 | size=1 | links=#16018(auto Azshara;92):3 #20721(auto Azshara;124):4
+#21214 | auto Azshara;128§auto Azshara;128§auto Azshara;128 | x=3855 y=-4666.7001953125 | size=1 | links=#13027(auto Azshara;74):11 #16318(auto Azshara;96):14
+#21236 | auto Azshara;129§auto Azshara;129§auto Azshara;129 | x=3989.699951171875 y=-4784.89990234375 | size=1 | links=#2069(auto Azshara;9):4 #20702(auto Azshara;123):4
+#22390 | auto Azshara;130§auto Azshara;130§auto Azshara;130 | x=3982.60009765625 y=-4780.80029296875 | size=1 | links=#6785(auto Azshara;36):2 #18035(auto Azshara;108):3
+#22631 | auto Azshara;131§auto Azshara;131§auto Azshara;131 | x=3336 y=-4596.39990234375 | size=1 | links=#8269(auto Azshara;45):49 #10101(auto Azshara;59):45 #11903(auto Azshara;65):36
+#22719 | auto Azshara;132§auto Azshara;132§auto Azshara;132 | x=3639.699951171875 y=-4413.89990234375 | size=1 | links=#4703(auto Azshara;24):19 #14056(auto Azshara;81):11
+#22802 | auto Azshara;133§auto Azshara;133§auto Azshara;133 | x=3639 y=-4704.89990234375 | size=1 | links=#25127(auto Azshara;143):32
+#22806 | auto Azshara;134§auto Azshara;134§auto Azshara;134 | x=2701.699951171875 y=-4007.199951171875 | size=1 | links=#3008(auto Azshara;15):10 #27295(auto Azshara;155):9
+#22823 | Archmage Xylem;Bear's Head;Azshara§Erzmagier Xylem;Bärenkopf;Azshara§Archimage Xylem;Tête d'ours;Azshara | x=3982.400146484375 y=-4760.60009765625 | size=1 | links=#10453(auto Azshara;61):4
+#22888 | auto Azshara;135§auto Azshara;135§auto Azshara;135 | x=3975 y=-4771 | size=1 | links=#2290(auto Azshara;11):3 #15906(auto Azshara;91):4
+#22898 | auto Azshara;136§auto Azshara;136§auto Azshara;136 | x=3909.400146484375 y=-4649.10009765625 | size=1 | links=#19790(auto Azshara;118):15 #26523(auto Azshara;151):25
+#23671 | auto Azshara;137§auto Azshara;137§auto Azshara;137 | x=3543.800048828125 y=-4663.30029296875 | size=1 | links=#3526(auto Azshara;19):58 #14393(auto Azshara;83):65 #45178(auto Azshara;546):25
+#23711 | auto Azshara;138§auto Azshara;138§auto Azshara;138 | x=3280.10009765625 y=-4535.5 | size=1 | links=#8887(auto Azshara;51):21 #11903(auto Azshara;65):46
+#23717 | auto Azshara;139§auto Azshara;139§auto Azshara;139 | x=3985.10009765625 y=-4766.60009765625 | size=1 | links=#20923(auto Azshara;125):6 #27674(auto Azshara;161):4
+#23889 | auto Azshara;140§auto Azshara;140§auto Azshara;140 | x=2742.699951171875 y=-3997.699951171875 | size=1 | links=#3008(auto Azshara;15):31 #7602(auto Azshara;40):18 #8449(auto Azshara;48):57
+#24404 | auto Azshara;141§auto Azshara;141§auto Azshara;141 | x=3444.699951171875 y=-4747 | size=1 | links=#6118(auto Azshara;31):29 #27058(auto Azshara;152):15
+#24706 | auto Azshara;142§auto Azshara;142§auto Azshara;142 | x=2894.699951171875 y=-4189.5 | size=1 | links=#9466(auto Azshara;56):37 #9647(auto Azshara;58):55
+#25127 | auto Azshara;143§auto Azshara;143§auto Azshara;143 | x=3642.60009765625 y=-4672.89990234375 | size=1 | links=#6335(auto Azshara;33):12 #22802(auto Azshara;133):32
+#25205 | auto Azshara;144§auto Azshara;144§auto Azshara;144 | x=3974.400146484375 y=-4767.89990234375 | size=1 | links=#5880(auto Azshara;29):8 #14747(tower;down;Bear's Head;Azshara):6
+#25301 | auto Azshara;145§auto Azshara;145§auto Azshara;145 | x=3944.10009765625 y=-4771.39990234375 | size=1 | links=#28418(auto Azshara;164):14 c11708.1:9
+#25445 | auto Azshara;146§auto Azshara;146§auto Azshara;146 | x=3106.699951171875 y=-4376.30029296875 | size=1 | links=#25698(auto Azshara;147):61 #26201(auto Azshara;149):37
+#25698 | auto Azshara;147§auto Azshara;147§auto Azshara;147 | x=3146.5 y=-4423.60009765625 | size=1 | links=#17747(auto Azshara;105):63 #25445(auto Azshara;146):61
+#26137 | auto Azshara;148§auto Azshara;148§auto Azshara;148 | x=3202.5 y=-5008.80029296875 | size=1 | links=#11911(auto Azshara;66):33 #13020(auto Azshara;73):24
+#26201 | auto Azshara;149§auto Azshara;149§auto Azshara;149 | x=3081.800048828125 y=-4348.7001953125 | size=1 | links=#14452(auto Azshara;84):68 #25445(auto Azshara;146):37 c8759.12:68
+#26291 | auto Azshara;150§auto Azshara;150§auto Azshara;150 | x=3305.800048828125 y=-4389.60009765625 | size=1 | links=#7256(auto Azshara;37):14 #15599(auto Azshara;88):10
+#26523 | auto Azshara;151§auto Azshara;151§auto Azshara;151 | x=3928.400146484375 y=-4665.39990234375 | size=1 | links=#19691(auto Azshara;116):15 #22898(auto Azshara;136):25
+#27058 | auto Azshara;152§auto Azshara;152§auto Azshara;152 | x=3453.900146484375 y=-4759.89990234375 | size=1 | links=#10659(auto Azshara;62):26 #24404(auto Azshara;141):15 #44759(auto Azshara;166):16 #44778(auto Azshara;185):26
+#27119 | auto Azshara;153§auto Azshara;153§auto Azshara;153 | x=3978.199951171875 y=-4786.80029296875 | size=1 | links=#16780(auto Azshara;99):3 #27640(auto Azshara;159):4
+#27144 | auto Azshara;154§auto Azshara;154§auto Azshara;154 | x=3967 y=-4776 | size=1 | links=#12278(auto Azshara;68):8 #28077(auto Azshara;162):11
+#27295 | auto Azshara;155§auto Azshara;155§auto Azshara;155 | x=2692.300048828125 y=-4007.60009765625 | size=1 | links=#22806(auto Azshara;134):9 c6491.1:21
+#27368 | auto Azshara;156§auto Azshara;156§auto Azshara;156 | x=3282.300048828125 y=-4433.30029296875 | size=1 | links=#15599(auto Azshara;88):42 #18066(auto Azshara;109):35
+#27369 | auto Azshara;157§auto Azshara;157§auto Azshara;157 | x=3276.300048828125 y=-4361.5 | size=1 | links=#2246(auto Azshara;10):6 #5301(auto Azshara;26):9
+#27574 | auto Azshara;158§auto Azshara;158§auto Azshara;158 | x=2715.5 y=-3861.400146484375 | size=1 | links=#17082(auto Azshara;101):8 #20238(auto Azshara;121):17 c11548.1:18
+#27640 | auto Azshara;159§auto Azshara;159§auto Azshara;159 | x=3977.10009765625 y=-4782.39990234375 | size=1 | links=#18035(auto Azshara;108):3 #27119(auto Azshara;153):4
+#27663 | auto Azshara;160§auto Azshara;160§auto Azshara;160 | x=3409.400146484375 y=-4696 | size=1 | links=#6118(auto Azshara;31):32 #28397(auto Azshara;163):39 #45176(auto Azshara;544):25
+#27674 | auto Azshara;161§auto Azshara;161§auto Azshara;161 | x=3981 y=-4766.80029296875 | size=1 | links=#2290(auto Azshara;11):3 #23717(auto Azshara;139):4
+#27973 | Nyrill;Xylem's Apprentice;Azshara;1;26.47;46.27§Nyrill;Xylems Lehrling;Azshara;1;26.47;46.27§Nyrill;Xylem's Apprentice;Azshara;1;26.47;46.27 | x=3777.389012742925 y=-4619.360341469783 | size=1
+#28077 | auto Azshara;162§auto Azshara;162§auto Azshara;162 | x=3972.5 y=-4765.7001953125 | size=1 | links=#10453(auto Azshara;61):7 #27144(auto Azshara;154):11
+#28397 | auto Azshara;163§auto Azshara;163§auto Azshara;163 | x=3386.900146484375 y=-4663.5 | size=1 | links=#10101(auto Azshara;59):39 #27663(auto Azshara;160):39
+#28418 | auto Azshara;164§auto Azshara;164§auto Azshara;164 | x=3948.699951171875 y=-4757.89990234375 | size=1 | links=#8720(auto Azshara;49):10 #25301(auto Azshara;145):14
+#28552 | auto Azshara;165§auto Azshara;165§auto Azshara;165 | x=3609.900146484375 y=-4431.60009765625 | size=1 | links=#3402(auto Azshara;18):18 #20272(auto Azshara;122):62
+#44759 | auto Azshara;166§auto Azshara;166§auto Azshara;166 | x=3461 y=-4775.10009765625 | size=1 | links=#27058(auto Azshara;152):16 #44760(auto Azshara;167):45
+#44760 | auto Azshara;167§auto Azshara;167§auto Azshara;167 | x=3506.400146484375 y=-4770.10009765625 | size=1 | links=#44759(auto Azshara;166):45 #44761(auto Azshara;168):36 c6190.12:21
+#44761 | auto Azshara;168§auto Azshara;168§auto Azshara;168 | x=3541.5 y=-4780.7001953125 | size=1 | links=#44760(auto Azshara;167):36 #44762(auto Azshara;169):45 c6193.14:10
+#44762 | auto Azshara;169§auto Azshara;169§auto Azshara;169 | x=3585.800048828125 y=-4789.30029296875 | size=1 | links=#44761(auto Azshara;168):45 #44763(auto Azshara;170):36 c6193.2:17
+#44763 | auto Azshara;170§auto Azshara;170§auto Azshara;170 | x=3607.400146484375 y=-4818.30029296875 | size=1 | links=#44762(auto Azshara;169):36 #44764(auto Azshara;171):77
+#44764 | auto Azshara;171§auto Azshara;171§auto Azshara;171 | x=3654.5 y=-4880.10009765625 | size=1 | links=#44763(auto Azshara;170):77 #44765(auto Azshara;172):78
+#44765 | auto Azshara;172§auto Azshara;172§auto Azshara;172 | x=3707.400146484375 y=-4938.39990234375 | size=1 | links=#44764(auto Azshara;171):78 #44766(auto Azshara;173):87
+#44766 | auto Azshara;173§auto Azshara;173§auto Azshara;173 | x=3789.5 y=-4968.30029296875 | size=1 | links=#44765(auto Azshara;172):87 #44767(auto Azshara;174):50 c6185.16:17
+#44767 | auto Azshara;174§auto Azshara;174§auto Azshara;174 | x=3814.400146484375 y=-5012.10009765625 | size=1 | links=#44766(auto Azshara;173):50 #44768(auto Azshara;175):74
+#44768 | auto Azshara;175§auto Azshara;175§auto Azshara;175 | x=3852.10009765625 y=-5076.80029296875 | size=1 | links=#44767(auto Azshara;174):74 #44769(auto Azshara;176):63 c6185.10:73 c6377.23:18 c6377.32:22
+#44769 | auto Azshara;176§auto Azshara;176§auto Azshara;176 | x=3888.199951171875 y=-5129.2001953125 | size=1 | links=#44768(auto Azshara;175):63 #44770(auto Azshara;177):81 c6377.10:14 c8762.13:39
+#44770 | auto Azshara;177§auto Azshara;177§auto Azshara;177 | x=3940.199951171875 y=-5192.2001953125 | size=1 | links=#44769(auto Azshara;176):81 #44771(auto Azshara;178):61 c8762.1:38 c6377.30:19
+#44771 | auto Azshara;178§auto Azshara;178§auto Azshara;178 | x=3968.900146484375 y=-5246.60009765625 | size=1 | links=#44770(auto Azshara;177):61 #44772(auto Azshara;179):29 #44991(auto Azshara;365):37
+#44772 | auto Azshara;179§auto Azshara;179§auto Azshara;179 | x=3950.10009765625 y=-5269.7001953125 | size=1 | links=#44771(auto Azshara;178):29 #44773(auto Azshara;180):63
+#44773 | auto Azshara;180§auto Azshara;180§auto Azshara;180 | x=3922.699951171875 y=-5326.5 | size=1 | links=#44772(auto Azshara;179):63 #44774(auto Azshara;181):42
+#44774 | auto Azshara;181§auto Azshara;181§auto Azshara;181 | x=3903.10009765625 y=-5364.60009765625 | size=1 | links=#44773(auto Azshara;180):42 #44775(auto Azshara;182):39
+#44775 | auto Azshara;182§auto Azshara;182§auto Azshara;182 | x=3908.900146484375 y=-5404 | size=1 | links=#44774(auto Azshara;181):39 #44776(auto Azshara;183):11
+#44776 | auto Azshara;183§auto Azshara;183§auto Azshara;183 | x=3902.300048828125 y=-5413.2001953125 | size=1 | links=#44775(auto Azshara;182):11 #44777(auto Azshara;184):11
+#44777 | auto Azshara;184§auto Azshara;184§auto Azshara;184 | x=3896 y=-5422.60009765625 | size=1 | links=#44776(auto Azshara;183):11 c8405.1:6
+#44778 | auto Azshara;185§auto Azshara;185§auto Azshara;185 | x=3432.900146484375 y=-4776.10009765625 | size=1 | links=#27058(auto Azshara;152):26 #44779(auto Azshara;186):51
+#44779 | auto Azshara;186§auto Azshara;186§auto Azshara;186 | x=3403.60009765625 y=-4818.5 | size=1 | links=#44778(auto Azshara;185):51 #44780(auto Azshara;187):41
+#44780 | auto Azshara;187§auto Azshara;187§auto Azshara;187 | x=3394.800048828125 y=-4858.80029296875 | size=1 | links=#44779(auto Azshara;186):41 #44781(auto Azshara;188):24
+#44781 | auto Azshara;188§auto Azshara;188§auto Azshara;188 | x=3402.400146484375 y=-4881.89990234375 | size=1 | links=#44780(auto Azshara;187):24 #44782(auto Azshara;189):39
+#44782 | auto Azshara;189§auto Azshara;189§auto Azshara;189 | x=3422.199951171875 y=-4916.10009765625 | size=1 | links=#44781(auto Azshara;188):39 #44783(auto Azshara;190):17
+#44783 | auto Azshara;190§auto Azshara;190§auto Azshara;190 | x=3436.300048828125 y=-4926.80029296875 | size=1 | links=#44782(auto Azshara;189):17 #44784(auto Azshara;191):29
+#44784 | auto Azshara;191§auto Azshara;191§auto Azshara;191 | x=3464.800048828125 y=-4933.80029296875 | size=1 | links=#44783(auto Azshara;190):29 #44785(auto Azshara;192):16
+#44785 | auto Azshara;192§auto Azshara;192§auto Azshara;192 | x=3477.10009765625 y=-4945.30029296875 | size=1 | links=#44784(auto Azshara;191):16 #44786(auto Azshara;193):25
+#44786 | auto Azshara;193§auto Azshara;193§auto Azshara;193 | x=3488.199951171875 y=-4968.10009765625 | size=1 | links=#44785(auto Azshara;192):25 #44787(auto Azshara;194):35
+#44787 | auto Azshara;194§auto Azshara;194§auto Azshara;194 | x=3503.60009765625 y=-5000.10009765625 | size=1 | links=#44786(auto Azshara;193):35 #44825(auto Azshara;225):50 c6195.70:31
+#44789 | auto Azshara;195§auto Azshara;195§auto Azshara;195 | x=3511.60009765625 y=-5083.7001953125 | size=1 | links=#44790(auto Azshara;196):25 #44824(auto Azshara;224):13 #44825(auto Azshara;225):33 #44833(auto Azshara;233):34 o148515.7:30 c6194.15:18
+#44790 | auto Azshara;196§auto Azshara;196§auto Azshara;196 | x=3521.10009765625 y=-5107 | size=1 | links=#44789(auto Azshara;195):25 #44791(auto Azshara;197):24
+#44791 | auto Azshara;197§auto Azshara;197§auto Azshara;197 | x=3539.900146484375 y=-5123.2001953125 | size=1 | links=#44790(auto Azshara;196):24 #44792(auto Azshara;198):9 #44793(auto Azshara;199):24 o148513.1:25
+#44792 | auto Azshara;198§auto Azshara;198§auto Azshara;198 | x=3539.699951171875 y=-5133.10009765625 | size=1 | links=#44791(auto Azshara;197):9 o149481.1:16
+#44793 | auto Azshara;199§auto Azshara;199§auto Azshara;199 | x=3564.300048828125 y=-5128.10009765625 | size=1 | links=#44791(auto Azshara;197):24 #44797(auto Azshara;201):24
+#44796 | auto Azshara;200§auto Azshara;200§auto Azshara;200 | x=3548.300048828125 y=-5184 | size=1 | links=#44797(auto Azshara;201):50 #44853(auto Azshara;249):24 c6195.24:26
+#44797 | auto Azshara;201§auto Azshara;201§auto Azshara;201 | x=3581.400146484375 y=-5146 | size=1 | links=#44793(auto Azshara;199):24 #44796(auto Azshara;200):50 #44854(auto Azshara;250):41
+#44798 | auto Azshara;202§auto Azshara;202§auto Azshara;202 | x=3546.5 y=-5223 | size=1 | links=#44800(auto Azshara;203):29 c6195.24:13
+#44800 | auto Azshara;203§auto Azshara;203§auto Azshara;203 | x=3546.199951171875 y=-5252 | size=1 | links=#44798(auto Azshara;202):29 #44802(auto Azshara;204):28
+#44802 | auto Azshara;204§auto Azshara;204§auto Azshara;204 | x=3546.699951171875 y=-5280.89990234375 | size=1 | links=#44800(auto Azshara;203):28 #44803(auto Azshara;205):16
+#44803 | auto Azshara;205§auto Azshara;205§auto Azshara;205 | x=3546.900146484375 y=-5297.7001953125 | size=1 | links=#44802(auto Azshara;204):16 c6196.29:17
+#44804 | auto Azshara;206§auto Azshara;206§auto Azshara;206 | x=3546 y=-5330.39990234375 | size=1 | links=#44805(auto Azshara;207):12 c6196.29:14
+#44805 | auto Azshara;207§auto Azshara;207§auto Azshara;207 | x=3555.60009765625 y=-5337.60009765625 | size=1 | links=#44804(auto Azshara;206):12 #44806(auto Azshara;208):6
+#44806 | auto Azshara;208§auto Azshara;208§auto Azshara;208 | x=3552.800048828125 y=-5343.2001953125 | size=1 | links=#44805(auto Azshara;207):6 c8408.1:14
+#44807 | auto Azshara;209§auto Azshara;209§auto Azshara;209 | x=3567.800048828125 y=-5315 | size=1 | links=c6195.16:20 c6196.29:20
+#44810 | auto Azshara;210§auto Azshara;210§auto Azshara;210 | x=3593.699951171875 y=-5375.2001953125 | size=1 | links=#44811(auto Azshara;211):36 c6194.19:21
+#44811 | auto Azshara;211§auto Azshara;211§auto Azshara;211 | x=3592.5 y=-5339 | size=1 | links=#44810(auto Azshara;210):36 c6195.16:14
+#44812 | auto Azshara;212§auto Azshara;212§auto Azshara;212 | x=3542.800048828125 y=-5409.39990234375 | size=1 | links=#44813(auto Azshara;213):18 #44814(auto Azshara;214):31
+#44813 | auto Azshara;213§auto Azshara;213§auto Azshara;213 | x=3561.400146484375 y=-5407 | size=1 | links=#44812(auto Azshara;212):18 #44818(auto Azshara;218):20
+#44814 | auto Azshara;214§auto Azshara;214§auto Azshara;214 | x=3513.60009765625 y=-5396.39990234375 | size=1 | links=#44812(auto Azshara;212):31 #44815(auto Azshara;215):28
+#44815 | auto Azshara;215§auto Azshara;215§auto Azshara;215 | x=3498.900146484375 y=-5372.30029296875 | size=1 | links=#44814(auto Azshara;214):28 #44816(auto Azshara;216):30 c6194.32:12
+#44816 | auto Azshara;216§auto Azshara;216§auto Azshara;216 | x=3499.5 y=-5342.10009765625 | size=1 | links=#44815(auto Azshara;215):30 #44817(auto Azshara;217):39
+#44817 | auto Azshara;217§auto Azshara;217§auto Azshara;217 | x=3526.400146484375 y=-5313.5 | size=1 | links=#44816(auto Azshara;216):39
+#44818 | auto Azshara;218§auto Azshara;218§auto Azshara;218 | x=3554.400146484375 y=-5387.7001953125 | size=1 | links=#44813(auto Azshara;213):20 #44819(auto Azshara;219):14
+#44819 | auto Azshara;219§auto Azshara;219§auto Azshara;219 | x=3540.300048828125 y=-5390.89990234375 | size=1 | links=#44818(auto Azshara;218):14 #44820(auto Azshara;220):17
+#44820 | auto Azshara;220§auto Azshara;220§auto Azshara;220 | x=3545.800048828125 y=-5407.39990234375 | size=1 | links=#44819(auto Azshara;219):17 #44821(auto Azshara;221):18
+#44821 | auto Azshara;221§auto Azshara;221§auto Azshara;221 | x=3562.300048828125 y=-5399.80029296875 | size=1 | links=#44820(auto Azshara;220):18 c6194.19:18
+#44822 | auto Azshara;222§auto Azshara;222§auto Azshara;222 | x=3528.400146484375 y=-5313.39990234375 | size=1 | links=#44823(auto Azshara;223):40 c6196.29:18
+#44823 | auto Azshara;223§auto Azshara;223§auto Azshara;223 | x=3502.300048828125 y=-5344 | size=1 | links=#44822(auto Azshara;222):40 c6195.11:19
+#44824 | auto Azshara;224§auto Azshara;224§auto Azshara;224 | x=3518.800048828125 y=-5095.60009765625 | size=1 | links=#44789(auto Azshara;195):13 o148515.5:14
+#44825 | auto Azshara;225§auto Azshara;225§auto Azshara;225 | x=3504.699951171875 y=-5051 | size=1 | links=#44787(auto Azshara;194):50 #44789(auto Azshara;195):33 #44832(auto Azshara;232):10 c6195.7:17 o148514.8:10
+#44826 | auto Azshara;226§auto Azshara;226§auto Azshara;226 | x=3462.199951171875 y=-5047.60009765625 | size=1 | links=#44827(auto Azshara;227):11 #44831(auto Azshara;231):10 o148514.4:13
+#44827 | auto Azshara;227§auto Azshara;227§auto Azshara;227 | x=3473.60009765625 y=-5050.30029296875 | size=1 | links=#44826(auto Azshara;226):11 #44832(auto Azshara;232):23
+#44828 | auto Azshara;228§auto Azshara;228§auto Azshara;228 | x=3422.199951171875 y=-5095.39990234375 | size=1 | links=#44829(auto Azshara;229):45 #44836(auto Azshara;236):15 o148514.5:11
+#44829 | auto Azshara;229§auto Azshara;229§auto Azshara;229 | x=3418.60009765625 y=-5050.2001953125 | size=1 | links=#44828(auto Azshara;228):45 o148516.5:40 o148516.7:18 o148516.11:22
+#44830 | auto Azshara;230§auto Azshara;230§auto Azshara;230 | x=3444.60009765625 y=-5059.89990234375 | size=1 | links=#44831(auto Azshara;231):16 o148516.7:11
+#44831 | auto Azshara;231§auto Azshara;231§auto Azshara;231 | x=3461.400146484375 y=-5057.89990234375 | size=1 | links=#44826(auto Azshara;226):10 #44830(auto Azshara;230):16 c6649.1:14
+#44832 | auto Azshara;232§auto Azshara;232§auto Azshara;232 | x=3496.10009765625 y=-5057.80029296875 | size=1 | links=#44825(auto Azshara;225):10 #44827(auto Azshara;227):23
+#44833 | auto Azshara;233§auto Azshara;233§auto Azshara;233 | x=3483.199951171875 y=-5103.7001953125 | size=1 | links=#44789(auto Azshara;195):34 #44836(auto Azshara;236):46 o148514.11:16
+#44834 | auto Azshara;234§auto Azshara;234§auto Azshara;234 | x=3543.5 y=-5069.5 | size=1 | links=c6195.7:26 o148513.8:29 o148516.8:31 o148516.10:15
+#44835 | auto Azshara;235§auto Azshara;235§auto Azshara;235 | x=3536.400146484375 y=-5213.60009765625 | size=1 | links=o148513.5:6 c6195.24:12
+#44836 | auto Azshara;236§auto Azshara;236§auto Azshara;236 | x=3437.400146484375 y=-5097.2001953125 | size=1 | links=#44828(auto Azshara;228):15 #44833(auto Azshara;233):46
+#44837 | auto Azshara;237§auto Azshara;237§auto Azshara;237 | x=3343.300048828125 y=-4384.2001953125 | size=1 | links=#15599(auto Azshara;88):38 #44838(auto Azshara;238):49
+#44838 | auto Azshara;238§auto Azshara;238§auto Azshara;238 | x=3363.699951171875 y=-4339 | size=1 | links=#44837(auto Azshara;237):49 #44839(auto Azshara;239):51
+#44839 | auto Azshara;239§auto Azshara;239§auto Azshara;239 | x=3393.300048828125 y=-4296.80029296875 | size=1 | links=#44838(auto Azshara;238):51 #44840(auto Azshara;240):59
+#44840 | auto Azshara;240§auto Azshara;240§auto Azshara;240 | x=3446.60009765625 y=-4270.5 | size=1 | links=#44839(auto Azshara;239):59 #44841(auto Azshara;241):55 c6375.19:24
+#44841 | auto Azshara;241§auto Azshara;241§auto Azshara;241 | x=3490.699951171875 y=-4236.80029296875 | size=1 | links=#44840(auto Azshara;240):55 c6375.4:7 c6375.14:57
+#44843 | auto Azshara;242§auto Azshara;242§auto Azshara;242 | x=3575.5 y=-4146.30029296875 | size=1 | links=#44844(auto Azshara;243):49 c6375.14:66
+#44844 | auto Azshara;243§auto Azshara;243§auto Azshara;243 | x=3604.300048828125 y=-4106 | size=1 | links=#44843(auto Azshara;242):49 #44845(auto Azshara;244):45
+#44845 | auto Azshara;244§auto Azshara;244§auto Azshara;244 | x=3649.699951171875 y=-4113 | size=1 | links=#44844(auto Azshara;243):45 #44846(auto Azshara;245):37
+#44846 | auto Azshara;245§auto Azshara;245§auto Azshara;245 | x=3680.300048828125 y=-4091.400146484375 | size=1 | links=#44845(auto Azshara;244):37 #44847(auto Azshara;246):46
+#44847 | auto Azshara;246§auto Azshara;246§auto Azshara;246 | x=3687.10009765625 y=-4045 | size=1 | links=#44846(auto Azshara;245):46 #44850(auto Azshara;247):26
+#44850 | auto Azshara;247§auto Azshara;247§auto Azshara;247 | x=3699.199951171875 y=-4021.400146484375 | size=1 | links=#44847(auto Azshara;246):26 #45916(auto Azshara;607):15 #45918(Route down to Southfury Moonstone):19
+#44852 | auto Azshara;248§auto Azshara;248§auto Azshara;248 | x=3512.400146484375 y=-5215.89990234375 | size=1 | links=#44853(auto Azshara;249):25 o148515.4:24
+#44853 | auto Azshara;249§auto Azshara;249§auto Azshara;249 | x=3526.199951171875 y=-5194.39990234375 | size=1 | links=#44796(auto Azshara;200):24 #44852(auto Azshara;248):25
+#44854 | auto Azshara;250§auto Azshara;250§auto Azshara;250 | x=3622.300048828125 y=-5152.60009765625 | size=1 | links=#44797(auto Azshara;201):41 #44855(auto Azshara;251):48
+#44855 | auto Azshara;251§auto Azshara;251§auto Azshara;251 | x=3663.900146484375 y=-5177.10009765625 | size=1 | links=#44854(auto Azshara;250):48 #44856(auto Azshara;252):48
+#44856 | auto Azshara;252§auto Azshara;252§auto Azshara;252 | x=3692.699951171875 y=-5216.30029296875 | size=1 | links=#44855(auto Azshara;251):48 #44857(auto Azshara;253):28 #44908(auto Azshara;292):38
+#44857 | auto Azshara;253§auto Azshara;253§auto Azshara;253 | x=3716.699951171875 y=-5201.30029296875 | size=1 | links=#44856(auto Azshara;252):28 #44858(auto Azshara;254):10 o148514.2:10
+#44858 | auto Azshara;254§auto Azshara;254§auto Azshara;254 | x=3719.800048828125 y=-5191.7001953125 | size=1 | links=#44857(auto Azshara;253):10 o148515.1:24
+#44859 | auto Azshara;255§auto Azshara;255§auto Azshara;255 | x=3120.699951171875 y=-5071.60009765625 | size=1 | links=#9011(auto Azshara;52):50 c8761.14:14 c8761.22:37 c8761.116:41
+#44860 | auto Azshara;256§auto Azshara;256§auto Azshara;256 | x=3063.10009765625 y=-5096.89990234375 | size=1 | links=#44861(auto Azshara;257):29 c8761.116:22
+#44861 | auto Azshara;257§auto Azshara;257§auto Azshara;257 | x=3040.5 y=-5116.39990234375 | size=1 | links=#44860(auto Azshara;256):29 #44862(auto Azshara;258):38
+#44862 | auto Azshara;258§auto Azshara;258§auto Azshara;258 | x=3046.199951171875 y=-5154.80029296875 | size=1 | links=#44861(auto Azshara;257):38 #44863(auto Azshara;259):78 c8761.13:30
+#44863 | auto Azshara;259§auto Azshara;259§auto Azshara;259 | x=2977.10009765625 y=-5192.89990234375 | size=1 | links=#44862(auto Azshara;258):78 #44864(auto Azshara;260):69 #45160(auto Azshara;528):26 c8761.23:39
+#44864 | auto Azshara;260§auto Azshara;260§auto Azshara;260 | x=2917.5 y=-5229.39990234375 | size=1 | links=#44863(auto Azshara;259):69 #44870(auto Azshara;262):56 #45162(auto Azshara;530):36 c8766.14:18 c8761.55:42
+#44869 | auto Azshara;261§auto Azshara;261§auto Azshara;261 | x=2905.900146484375 y=-5349.39990234375 | size=1 | links=#44870(auto Azshara;262):64 #44871(auto Azshara;263):68
+#44870 | auto Azshara;262§auto Azshara;262§auto Azshara;262 | x=2914.900146484375 y=-5285.7001953125 | size=1 | links=#44864(auto Azshara;260):56 #44869(auto Azshara;261):64 c8761.48:33 c8761.101:6
+#44871 | auto Azshara;263§auto Azshara;263§auto Azshara;263 | x=2894.199951171875 y=-5416.89990234375 | size=1 | links=#44869(auto Azshara;261):68 #44872(auto Azshara;264):58
+#44872 | auto Azshara;264§auto Azshara;264§auto Azshara;264 | x=2854.800048828125 y=-5460.60009765625 | size=1 | links=#44871(auto Azshara;263):58 #44873(auto Azshara;265):48 c6130.13:19
+#44873 | auto Azshara;265§auto Azshara;265§auto Azshara;265 | x=2811.300048828125 y=-5483 | size=1 | links=#44872(auto Azshara;264):48 #44874(auto Azshara;266):69
+#44874 | auto Azshara;266§auto Azshara;266§auto Azshara;266 | x=2744.900146484375 y=-5505 | size=1 | links=#44873(auto Azshara;265):69 #44875(auto Azshara;267):44
+#44875 | auto Azshara;267§auto Azshara;267§auto Azshara;267 | x=2701.5 y=-5513.30029296875 | size=1 | links=#44874(auto Azshara;266):44 #44876(auto Azshara;268):71
+#44876 | auto Azshara;268§auto Azshara;268§auto Azshara;268 | x=2632.400146484375 y=-5529.89990234375 | size=1 | links=#44875(auto Azshara;267):71 #44877(auto Azshara;269):86
+#44877 | auto Azshara;269§auto Azshara;269§auto Azshara;269 | x=2548.199951171875 y=-5548.30029296875 | size=1 | links=#44876(auto Azshara;268):86 #44881(auto Azshara;273):60
+#44878 | auto Azshara;270§auto Azshara;270§auto Azshara;270 | x=2404.900146484375 y=-5540.39990234375 | size=1 | links=#44879(auto Azshara;271):23 #44882(auto Azshara;274):27
+#44879 | auto Azshara;271§auto Azshara;271§auto Azshara;271 | x=2427.400146484375 y=-5532.2001953125 | size=1 | links=#44878(auto Azshara;270):23 #44880(auto Azshara;272):31
+#44880 | auto Azshara;272§auto Azshara;272§auto Azshara;272 | x=2451.5 y=-5552 | size=1 | links=#44879(auto Azshara;271):31 #44881(auto Azshara;273):38
+#44881 | auto Azshara;273§auto Azshara;273§auto Azshara;273 | x=2488 y=-5539.60009765625 | size=1 | links=#44877(auto Azshara;269):60 #44880(auto Azshara;272):38
+#44882 | auto Azshara;274§auto Azshara;274§auto Azshara;274 | x=2380.699951171875 y=-5553.30029296875 | size=1 | links=#44878(auto Azshara;270):27 #44883(auto Azshara;275):29
+#44883 | auto Azshara;275§auto Azshara;275§auto Azshara;275 | x=2376.5 y=-5582.30029296875 | size=1 | links=#44882(auto Azshara;274):29 #44884(auto Azshara;276):16
+#44884 | auto Azshara;276§auto Azshara;276§auto Azshara;276 | x=2359.60009765625 y=-5582.30029296875 | size=1 | links=#44883(auto Azshara;275):16 #44885(auto Azshara;277):19
+#44885 | auto Azshara;277§auto Azshara;277§auto Azshara;277 | x=2345 y=-5569.30029296875 | size=1 | links=#44884(auto Azshara;276):19 #44886(auto Azshara;278):18
+#44886 | auto Azshara;278§auto Azshara;278§auto Azshara;278 | x=2327.10009765625 y=-5566.10009765625 | size=1 | links=#44885(auto Azshara;277):18 #44887(auto Azshara;279):21
+#44887 | auto Azshara;279§auto Azshara;279§auto Azshara;279 | x=2306.10009765625 y=-5569.80029296875 | size=1 | links=#44886(auto Azshara;278):21 #44889(auto Azshara;280):33
+#44889 | auto Azshara;280§auto Azshara;280§auto Azshara;280 | x=2275.199951171875 y=-5583.60009765625 | size=1 | links=#44887(auto Azshara;279):33 #44890(auto Azshara;281):12
+#44890 | auto Azshara;281§auto Azshara;281§auto Azshara;281 | x=2269.300048828125 y=-5573.10009765625 | size=1 | links=#44889(auto Azshara;280):12 c8678.1:2 c12957.1:3
+#44891 | auto Azshara;282§auto Azshara;282§auto Azshara;282 | x=2847.800048828125 y=-5513.80029296875 | size=1 | links=#44892(auto Azshara;283):44 c6131.16:50
+#44892 | auto Azshara;283§auto Azshara;283§auto Azshara;283 | x=2867.10009765625 y=-5553.60009765625 | size=1 | links=#44891(auto Azshara;282):44 #44893(auto Azshara;284):49 #44895(auto Azshara;286):78
+#44893 | auto Azshara;284§auto Azshara;284§auto Azshara;284 | x=2916.10009765625 y=-5553.5 | size=1 | links=#44892(auto Azshara;283):49 #44894(auto Azshara;285):47 c8766.6:30 c6147.9:30
+#44894 | auto Azshara;285§auto Azshara;285§auto Azshara;285 | x=2947.300048828125 y=-5589.7001953125 | size=1 | links=#44893(auto Azshara;284):47 o152620.3:45 o152622.5:36 o152622.17:25
+#44895 | auto Azshara;286§auto Azshara;286§auto Azshara;286 | x=2849.900146484375 y=-5630.39990234375 | size=1 | links=#44892(auto Azshara;283):78 c6147.21:43 c6380.28:9
+#44896 | auto Azshara;287§auto Azshara;287§auto Azshara;287 | x=2789 y=-5643.30029296875 | size=1 | links=o152622.18:35 c6147.21:65
+#44897 | auto Azshara;288§auto Azshara;288§auto Azshara;288 | x=2765.699951171875 y=-5757.39990234375 | size=1 | links=#44898(auto Azshara;289):68 o152631.7:77 o152622.19:6
+#44898 | auto Azshara;289§auto Azshara;289§auto Azshara;289 | x=2788.10009765625 y=-5821.89990234375 | size=1 | links=#44897(auto Azshara;288):68 #44900(auto Azshara;291):19 o152631.10:57
+#44899 | auto Azshara;290§auto Azshara;290§auto Azshara;290 | x=2759 y=-5869 | size=1 | links=#44900(auto Azshara;291):39 #44979(auto Azshara;353):21 o152622.13:38
+#44900 | auto Azshara;291§auto Azshara;291§auto Azshara;291 | x=2787.300048828125 y=-5841.30029296875 | size=1 | links=#44898(auto Azshara;289):19 #44899(auto Azshara;290):39 #44978(auto Azshara;352):55
+#44908 | auto Azshara;292§auto Azshara;292§auto Azshara;292 | x=3703.60009765625 y=-5252.80029296875 | size=1 | links=#44856(auto Azshara;252):38 #44909(auto Azshara;293):41
+#44909 | auto Azshara;293§auto Azshara;293§auto Azshara;293 | x=3707.800048828125 y=-5294.30029296875 | size=1 | links=#44908(auto Azshara;292):41 #44910(auto Azshara;294):24
+#44910 | auto Azshara;294§auto Azshara;294§auto Azshara;294 | x=3723.10009765625 y=-5313.39990234375 | size=1 | links=#44909(auto Azshara;293):24 #44911(auto Azshara;295):25
+#44911 | auto Azshara;295§auto Azshara;295§auto Azshara;295 | x=3722.5 y=-5338.80029296875 | size=1 | links=#44910(auto Azshara;294):25 #44912(auto Azshara;296):31
+#44912 | auto Azshara;296§auto Azshara;296§auto Azshara;296 | x=3716.300048828125 y=-5370 | size=1 | links=#44911(auto Azshara;295):31 #44913(auto Azshara;297):19
+#44913 | auto Azshara;297§auto Azshara;297§auto Azshara;297 | x=3712.199951171875 y=-5389.30029296875 | size=1 | links=#44912(auto Azshara;296):19 #44914(auto Azshara;298):19
+#44914 | auto Azshara;298§auto Azshara;298§auto Azshara;298 | x=3711.10009765625 y=-5409 | size=1 | links=#44913(auto Azshara;297):19 #44915(auto Azshara;299):31
+#44915 | auto Azshara;299§auto Azshara;299§auto Azshara;299 | x=3692.900146484375 y=-5434.89990234375 | size=1 | links=#44914(auto Azshara;298):31 #44916(auto Azshara;300):39
+#44916 | auto Azshara;300§auto Azshara;300§auto Azshara;300 | x=3665.10009765625 y=-5463.5 | size=1 | links=#44915(auto Azshara;299):39 #44917(auto Azshara;301):32
+#44917 | auto Azshara;301§auto Azshara;301§auto Azshara;301 | x=3663.699951171875 y=-5496.39990234375 | size=1 | links=#44916(auto Azshara;300):32 #44918(auto Azshara;302):27
+#44918 | auto Azshara;302§auto Azshara;302§auto Azshara;302 | x=3661.5 y=-5523.7001953125 | size=1 | links=#44917(auto Azshara;301):27 #44919(auto Azshara;303):43
+#44919 | auto Azshara;303§auto Azshara;303§auto Azshara;303 | x=3626.300048828125 y=-5549.30029296875 | size=1 | links=#44918(auto Azshara;302):43 c6196.2:42
+#44925 | auto Azshara;304§auto Azshara;304§auto Azshara;304 | x=3255.5 y=-5615.60009765625 | size=1 | links=#44926(auto Azshara;305):46 #44933(auto Azshara;312):62
+#44926 | auto Azshara;305§auto Azshara;305§auto Azshara;305 | x=3286.5 y=-5581.2001953125 | size=1 | links=#44925(auto Azshara;304):46 #44927(auto Azshara;306):70
+#44927 | auto Azshara;306§auto Azshara;306§auto Azshara;306 | x=3356.400146484375 y=-5574.60009765625 | size=1 | links=#44926(auto Azshara;305):70 #44928(auto Azshara;307):97 #44929(auto Azshara;308):84
+#44928 | auto Azshara;307§auto Azshara;307§auto Azshara;307 | x=3453.60009765625 y=-5565.5 | size=1 | links=#44927(auto Azshara;306):97 #44929(auto Azshara;308):35 #44931(auto Azshara;310):33
+#44929 | auto Azshara;308§auto Azshara;308§auto Azshara;308 | x=3432 y=-5537.30029296875 | size=1 | links=#44927(auto Azshara;306):84 #44928(auto Azshara;307):35 #44930(auto Azshara;309):18
+#44930 | auto Azshara;309§auto Azshara;309§auto Azshara;309 | x=3432.60009765625 y=-5519.2001953125 | size=1 | links=#44929(auto Azshara;308):18 c8409.1:21
+#44931 | auto Azshara;310§auto Azshara;310§auto Azshara;310 | x=3487.400146484375 y=-5566.39990234375 | size=1 | links=#44928(auto Azshara;307):33 #44932(auto Azshara;311):61
+#44932 | auto Azshara;311§auto Azshara;311§auto Azshara;311 | x=3548.199951171875 y=-5574.5 | size=1 | links=#44931(auto Azshara;310):61 #45136(auto Azshara;507):55 c6196.2:48
+#44933 | auto Azshara;312§auto Azshara;312§auto Azshara;312 | x=3225.400146484375 y=-5670.30029296875 | size=1 | links=#44925(auto Azshara;304):62 #44934(auto Azshara;313):28
+#44934 | auto Azshara;313§auto Azshara;313§auto Azshara;313 | x=3216.60009765625 y=-5697.89990234375 | size=1 | links=#44933(auto Azshara;312):28 #44935(auto Azshara;314):36
+#44935 | auto Azshara;314§auto Azshara;314§auto Azshara;314 | x=3187.800048828125 y=-5719.89990234375 | size=1 | links=#44934(auto Azshara;313):36 #44936(auto Azshara;315):56
+#44936 | auto Azshara;315§auto Azshara;315§auto Azshara;315 | x=3154.300048828125 y=-5765.89990234375 | size=1 | links=#44935(auto Azshara;314):56 #44937(auto Azshara;316):65
+#44937 | auto Azshara;316§auto Azshara;316§auto Azshara;316 | x=3111 y=-5815.10009765625 | size=1 | links=#44936(auto Azshara;315):65 #44938(auto Azshara;317):72
+#44938 | auto Azshara;317§auto Azshara;317§auto Azshara;317 | x=3060.10009765625 y=-5867.39990234375 | size=1 | links=#44937(auto Azshara;316):72 #44939(auto Azshara;318):66 #44985(auto Azshara;359):21
+#44939 | auto Azshara;318§auto Azshara;318§auto Azshara;318 | x=3074.800048828125 y=-5932.5 | size=1 | links=#44938(auto Azshara;317):66 #44940(auto Azshara;319):57
+#44940 | auto Azshara;319§auto Azshara;319§auto Azshara;319 | x=3075 y=-5989.7001953125 | size=1 | links=#44939(auto Azshara;318):57 #44941(auto Azshara;320):67
+#44941 | auto Azshara;320§auto Azshara;320§auto Azshara;320 | x=3077.60009765625 y=-6057.5 | size=1 | links=#44940(auto Azshara;319):67 #44942(auto Azshara;321):56 c6350.22:35
+#44942 | auto Azshara;321§auto Azshara;321§auto Azshara;321 | x=3084.5 y=-6113.60009765625 | size=1 | links=#44941(auto Azshara;320):56 #44943(auto Azshara;322):53 c6352.30:81
+#44943 | auto Azshara;322§auto Azshara;322§auto Azshara;322 | x=3092.800048828125 y=-6166.89990234375 | size=1 | links=#44942(auto Azshara;321):53 #44944(auto Azshara;323):59
+#44944 | auto Azshara;323§auto Azshara;323§auto Azshara;323 | x=3095.900146484375 y=-6226 | size=1 | links=#44943(auto Azshara;322):59 #44945(auto Azshara;324):56
+#44945 | auto Azshara;324§auto Azshara;324§auto Azshara;324 | x=3097.5 y=-6282.39990234375 | size=1 | links=#44944(auto Azshara;323):56 #44946(auto Azshara;325):47 c6144.7:58
+#44946 | auto Azshara;325§auto Azshara;325§auto Azshara;325 | x=3094.5 y=-6330.2001953125 | size=1 | links=#44945(auto Azshara;324):47 c7783.1:31 c8756.1:39 c8757.1:19 c8758.1:22
+#44947 | auto Azshara;326§auto Azshara;326§auto Azshara;326 | x=3068.900146484375 y=-6389.89990234375 | size=1 | links=#44951(auto Azshara;327):56 c8756.1:26
+#44951 | auto Azshara;327§auto Azshara;327§auto Azshara;327 | x=3075.300048828125 y=-6445.7001953125 | size=1 | links=#44947(auto Azshara;326):56 #44952(auto Azshara;328):40
+#44952 | auto Azshara;328§auto Azshara;328§auto Azshara;328 | x=3081.5 y=-6485.89990234375 | size=1 | links=#44951(auto Azshara;327):40 #44953(auto Azshara;329):56
+#44953 | auto Azshara;329§auto Azshara;329§auto Azshara;329 | x=3080.10009765625 y=-6542.7001953125 | size=1 | links=#44952(auto Azshara;328):56 #44954(auto Azshara;330):69 #45137(auto Azshara;508):63
+#44954 | auto Azshara;330§auto Azshara;330§auto Azshara;330 | x=3066.10009765625 y=-6610.30029296875 | size=1 | links=#44953(auto Azshara;329):69 #44955(auto Azshara;331):74
+#44955 | auto Azshara;331§auto Azshara;331§auto Azshara;331 | x=3047.199951171875 y=-6682.5 | size=1 | links=#44954(auto Azshara;330):74 #44956(auto Azshara;332):71
+#44956 | auto Azshara;332§auto Azshara;332§auto Azshara;332 | x=3027 y=-6751.5 | size=1 | links=#44955(auto Azshara;331):71 #44957(auto Azshara;333):81
+#44957 | auto Azshara;333§auto Azshara;333§auto Azshara;333 | x=3004.400146484375 y=-6829.60009765625 | size=1 | links=#44956(auto Azshara;332):81 #44958(auto Azshara;334):73 c6352.2:186
+#44958 | auto Azshara;334§auto Azshara;334§auto Azshara;334 | x=2984 y=-6900.30029296875 | size=1 | links=#44957(auto Azshara;333):73 #44959(auto Azshara;335):77
+#44959 | auto Azshara;335§auto Azshara;335§auto Azshara;335 | x=2962.400146484375 y=-6975 | size=1 | links=#44958(auto Azshara;334):77 #44960(auto Azshara;336):75
+#44960 | auto Azshara;336§auto Azshara;336§auto Azshara;336 | x=2941.400146484375 y=-7047.7001953125 | size=1 | links=#44959(auto Azshara;335):75 #44961(auto Azshara;337):61
+#44961 | auto Azshara;337§auto Azshara;337§auto Azshara;337 | x=2924.400146484375 y=-7106.39990234375 | size=1 | links=#44960(auto Azshara;336):61 #44962(auto Azshara;338):63 c12125.8:122
+#44962 | auto Azshara;338§auto Azshara;338§auto Azshara;338 | x=2906.699951171875 y=-7167.7001953125 | size=1 | links=#44961(auto Azshara;337):63 #44963(auto Azshara;339):67
+#44963 | auto Azshara;339§auto Azshara;339§auto Azshara;339 | x=2881.300048828125 y=-7230.2001953125 | size=1 | links=#44962(auto Azshara;338):67 #44964(auto Azshara;340):46 c13322.3:15
+#44964 | auto Azshara;340§auto Azshara;340§auto Azshara;340 | x=2862.10009765625 y=-7272.10009765625 | size=1 | links=#44963(auto Azshara;339):46 #44965(auto Azshara;341):6 #44968(auto Azshara;344):14
+#44965 | auto Azshara;341§auto Azshara;341§auto Azshara;341 | x=2858.300048828125 y=-7276.80029296875 | size=1 | links=#44964(auto Azshara;340):6 #44966(auto Azshara;342):8
+#44966 | auto Azshara;342§auto Azshara;342§auto Azshara;342 | x=2858.699951171875 y=-7285 | size=1 | links=#44965(auto Azshara;341):8 #44967(auto Azshara;343):5
+#44967 | auto Azshara;343§auto Azshara;343§auto Azshara;343 | x=2861.10009765625 y=-7290 | size=1 | links=#44966(auto Azshara;342):5 c13278.1:13
+#44968 | auto Azshara;344§auto Azshara;344§auto Azshara;344 | x=2860.800048828125 y=-7257.7001953125 | size=1 | links=#44964(auto Azshara;340):14 #44969(auto Azshara;345):21
+#44969 | auto Azshara;345§auto Azshara;345§auto Azshara;345 | x=2840.400146484375 y=-7252.2001953125 | size=1 | links=#44968(auto Azshara;344):21 #44971(Hydraxis' Coffer is under the surface, angle slightly downward ):32 c12125.1:63 c13322.4:14 c6143.10:11
+#44971 | Hydraxis' Coffer is under the surface, angle slightly downward §Hydraxis Truhe ist unter der Oberfläche, Winkel leicht nach unten§Hydraxis' Coffer is under the surface, angle slightly downward  | x=2816.800048828125 y=-7275 | size=1 | links=#44969(auto Azshara;345):32 o179551.1:21
+#44972 | auto Azshara;346§auto Azshara;346§auto Azshara;346 | x=2928.300048828125 y=-6027.60009765625 | size=1 | links=#44973(auto Azshara;347):14 c6491.2:5
+#44973 | auto Azshara;347§auto Azshara;347§auto Azshara;347 | x=2931.60009765625 y=-6013.60009765625 | size=1 | links=#44972(auto Azshara;346):14 #44974(auto Azshara;348):18
+#44974 | auto Azshara;348§auto Azshara;348§auto Azshara;348 | x=2931.10009765625 y=-5994.89990234375 | size=1 | links=#44973(auto Azshara;347):18 #44975(auto Azshara;349):39 #44982(auto Azshara;356):40 c6350.5:55
+#44975 | auto Azshara;349§auto Azshara;349§auto Azshara;349 | x=2899 y=-5972.60009765625 | size=1 | links=#44974(auto Azshara;348):39 #44976(auto Azshara;350):36
+#44976 | auto Azshara;350§auto Azshara;350§auto Azshara;350 | x=2871.900146484375 y=-5948.60009765625 | size=1 | links=#44975(auto Azshara;349):36 #44977(auto Azshara;351):37
+#44977 | auto Azshara;351§auto Azshara;351§auto Azshara;351 | x=2846.800048828125 y=-5920.30029296875 | size=1 | links=#44976(auto Azshara;350):37 #44978(auto Azshara;352):43
+#44978 | auto Azshara;352§auto Azshara;352§auto Azshara;352 | x=2817.5 y=-5887.5 | size=1 | links=#44900(auto Azshara;291):55 #44977(auto Azshara;351):43
+#44979 | auto Azshara;353§auto Azshara;353§auto Azshara;353 | x=2747.60009765625 y=-5886.7001953125 | size=1 | links=#44899(auto Azshara;290):21 #44980(auto Azshara;354):63
+#44980 | auto Azshara;354§auto Azshara;354§auto Azshara;354 | x=2689.400146484375 y=-5911.60009765625 | size=1 | links=#44979(auto Azshara;353):63 #44981(auto Azshara;355):69 c6148.11:45
+#44981 | auto Azshara;355§auto Azshara;355§auto Azshara;355 | x=2628.400146484375 y=-5944.7001953125 | size=1 | links=#44980(auto Azshara;354):69 c6109.1:33 c15481.1:53 c6379.24:25
+#44982 | auto Azshara;356§auto Azshara;356§auto Azshara;356 | x=2941.800048828125 y=-5955.5 | size=1 | links=#44974(auto Azshara;348):40 #44983(auto Azshara;357):64
+#44983 | auto Azshara;357§auto Azshara;357§auto Azshara;357 | x=2951.60009765625 y=-5892.10009765625 | size=1 | links=#44982(auto Azshara;356):64 #44984(auto Azshara;358):39 #44986(auto Azshara;360):34
+#44984 | auto Azshara;358§auto Azshara;358§auto Azshara;358 | x=2989.10009765625 y=-5879.80029296875 | size=1 | links=#44983(auto Azshara;357):39 #44985(auto Azshara;359):51
+#44985 | auto Azshara;359§auto Azshara;359§auto Azshara;359 | x=3038.300048828125 y=-5865 | size=1 | links=#44938(auto Azshara;317):21 #44984(auto Azshara;358):51
+#44986 | auto Azshara;360§auto Azshara;360§auto Azshara;360 | x=2921.300048828125 y=-5876.60009765625 | size=1 | links=#44983(auto Azshara;357):34 #44987(auto Azshara;361):40
+#44987 | auto Azshara;361§auto Azshara;361§auto Azshara;361 | x=2914.60009765625 y=-5836.30029296875 | size=1 | links=#44986(auto Azshara;360):40 #44988(auto Azshara;362):54
+#44988 | auto Azshara;362§auto Azshara;362§auto Azshara;362 | x=2905.10009765625 y=-5783.10009765625 | size=1 | links=#44987(auto Azshara;361):54 #44989(auto Azshara;363):52
+#44989 | auto Azshara;363§auto Azshara;363§auto Azshara;363 | x=2892.400146484375 y=-5732 | size=1 | links=#44988(auto Azshara;362):52 #44990(auto Azshara;364):38
+#44990 | auto Azshara;364§auto Azshara;364§auto Azshara;364 | x=2857.800048828125 y=-5715.39990234375 | size=1 | links=#44989(auto Azshara;363):38 c6147.21:43
+#44991 | auto Azshara;365§auto Azshara;365§auto Azshara;365 | x=4003.800048828125 y=-5259.2001953125 | size=1 | links=#44771(auto Azshara;178):37 #44992(auto Azshara;366):87 c6377.21:27 c6377.31:24
+#44992 | auto Azshara;366§auto Azshara;366§auto Azshara;366 | x=4047.5 y=-5335.10009765625 | size=1 | links=#44991(auto Azshara;365):87 #44993(auto Azshara;367):96 #45873(auto Azshara;571):45 c8762.19:37
+#44993 | auto Azshara;367§auto Azshara;367§auto Azshara;367 | x=4086.5 y=-5423.60009765625 | size=1 | links=#44992(auto Azshara;366):96 #44994(auto Azshara;368):117
+#44994 | auto Azshara;368§auto Azshara;368§auto Azshara;368 | x=4138.5 y=-5528.89990234375 | size=1 | links=#44993(auto Azshara;367):117 #44995(auto Azshara;369):86
+#44995 | auto Azshara;369§auto Azshara;369§auto Azshara;369 | x=4205.89990234375 y=-5582.5 | size=1 | links=#44994(auto Azshara;368):86 #44996(auto Azshara;370):60 #44998(auto Azshara;372):46
+#44996 | auto Azshara;370§auto Azshara;370§auto Azshara;370 | x=4262.2001953125 y=-5605.89990234375 | size=1 | links=#44995(auto Azshara;369):60 #44997(auto Azshara;371):67 #45869(auto Azshara;567):44
+#44997 | auto Azshara;371§auto Azshara;371§auto Azshara;371 | x=4310.89990234375 y=-5652.30029296875 | size=1 | links=#44996(auto Azshara;370):67 c6189.27:53
+#44998 | auto Azshara;372§auto Azshara;372§auto Azshara;372 | x=4187.89990234375 y=-5625 | size=1 | links=#44995(auto Azshara;369):46 #44999(auto Azshara;373):67
+#44999 | auto Azshara;373§auto Azshara;373§auto Azshara;373 | x=4155.80029296875 y=-5684.5 | size=1 | links=#44998(auto Azshara;372):67 #45000(auto Azshara;374):27
+#45000 | auto Azshara;374§auto Azshara;374§auto Azshara;374 | x=4168.89990234375 y=-5708.2001953125 | size=1 | links=#44999(auto Azshara;373):27 #45001(auto Azshara;375):37
+#45001 | auto Azshara;375§auto Azshara;375§auto Azshara;375 | x=4195.89990234375 y=-5734.60009765625 | size=1 | links=#45000(auto Azshara;374):37 #45002(auto Azshara;376):49
+#45002 | auto Azshara;376§auto Azshara;376§auto Azshara;376 | x=4232.80029296875 y=-5768.30029296875 | size=1 | links=#45001(auto Azshara;375):49 #45003(auto Azshara;377):74
+#45003 | auto Azshara;377§auto Azshara;377§auto Azshara;377 | x=4276.80029296875 y=-5828 | size=1 | links=#45002(auto Azshara;376):74 #45004(auto Azshara;378):82
+#45004 | auto Azshara;378§auto Azshara;378§auto Azshara;378 | x=4327.39990234375 y=-5893 | size=1 | links=#45003(auto Azshara;377):82 #45005(auto Azshara;379):70 c6378.7:44 c6378.18:23
+#45005 | auto Azshara;379§auto Azshara;379§auto Azshara;379 | x=4334.39990234375 y=-5963.5 | size=1 | links=#45004(auto Azshara;378):70 #45006(auto Azshara;380):57
+#45006 | auto Azshara;380§auto Azshara;380§auto Azshara;380 | x=4348.10009765625 y=-6019.80029296875 | size=1 | links=#45005(auto Azshara;379):57 #45010(auto Azshara;383):38
+#45008 | auto Azshara;381§auto Azshara;381§auto Azshara;381 | x=4443.5 y=-6064.89990234375 | size=1 | links=#45009(auto Azshara;382):44 c6198.7:19 c6199.18:38
+#45009 | auto Azshara;382§auto Azshara;382§auto Azshara;382 | x=4443.30029296875 y=-6020.10009765625 | size=1 | links=#45008(auto Azshara;381):44 #45010(auto Azshara;383):56 #45191(auto Azshara;559):36
+#45010 | auto Azshara;383§auto Azshara;383§auto Azshara;383 | x=4386.80029296875 y=-6018.39990234375 | size=1 | links=#45006(auto Azshara;380):38 #45009(auto Azshara;382):56
+#45011 | auto Azshara;384§auto Azshara;384§auto Azshara;384 | x=4349.60009765625 y=-6099.80029296875 | size=1 | links=#45012(auto Azshara;385):19 c6198.5:12 c6198.8:11 c6199.13:30
+#45012 | auto Azshara;385§auto Azshara;385§auto Azshara;385 | x=4331.30029296875 y=-6105.60009765625 | size=1 | links=#45011(auto Azshara;384):19 #45013(auto Azshara;386):23 o153123.1:19 c6198.3:30 c6199.8:12 c6198.9:19
+#45013 | auto Azshara;386§auto Azshara;386§auto Azshara;386 | x=4343.2001953125 y=-6126.30029296875 | size=1 | links=#45012(auto Azshara;385):23 #45014(auto Azshara;387):13 c6199.6:8
+#45014 | auto Azshara;387§auto Azshara;387§auto Azshara;387 | x=4341.5 y=-6139.89990234375 | size=1 | links=#45013(auto Azshara;386):13 #45015(auto Azshara;388):6 #45016(auto Azshara;389):8
+#45015 | auto Azshara;388§auto Azshara;388§auto Azshara;388 | x=4334.60009765625 y=-6140.89990234375 | size=1 | links=#45014(auto Azshara;387):6 o153123.10:9 c6199.16:11
+#45016 | auto Azshara;389§auto Azshara;389§auto Azshara;389 | x=4349.60009765625 y=-6138.7001953125 | size=1 | links=#45014(auto Azshara;387):8 c6199.7:16
+#45017 | auto Azshara;390§auto Azshara;390§auto Azshara;390 | x=4503.30029296875 y=-6230.89990234375 | size=1 | links=#45043(auto Azshara;416):35 c6199.4:67 o153123.6:14
+#45018 | auto Azshara;391§auto Azshara;391§auto Azshara;391 | x=4355.39990234375 y=-6232.30029296875 | size=1 | links=#45019(auto Azshara;392):20 #45028(auto Azshara;401):13 c6198.6:35
+#45019 | auto Azshara;392§auto Azshara;392§auto Azshara;392 | x=4340.2001953125 y=-6246.30029296875 | size=1 | links=#45018(auto Azshara;391):20 #45020(auto Azshara;393):25
+#45020 | auto Azshara;393§auto Azshara;393§auto Azshara;393 | x=4332.39990234375 y=-6271 | size=1 | links=#45019(auto Azshara;392):25 #45021(auto Azshara;394):33
+#45021 | auto Azshara;394§auto Azshara;394§auto Azshara;394 | x=4302.2001953125 y=-6286.30029296875 | size=1 | links=#45020(auto Azshara;393):33 #45022(auto Azshara;395):17 o153123.7:14
+#45022 | auto Azshara;395§auto Azshara;395§auto Azshara;395 | x=4286.5 y=-6293.30029296875 | size=1 | links=#45021(auto Azshara;394):17 #45023(auto Azshara;396):4 o151286.1:3
+#45023 | auto Azshara;396§auto Azshara;396§auto Azshara;396 | x=4282 y=-6292.80029296875 | size=1 | links=#45022(auto Azshara;395):4 #45024(auto Azshara;397):3
+#45024 | auto Azshara;397§auto Azshara;397§auto Azshara;397 | x=4279.5 y=-6295.30029296875 | size=1 | links=#45023(auto Azshara;396):3 o150140.1:4 o150140.2:3 o150140.3:4
+#45025 | auto Azshara;398§auto Azshara;398§auto Azshara;398 | x=4340.2001953125 y=-6208.60009765625 | size=1 | links=#45026(auto Azshara;399):20 #45028(auto Azshara;401):16
+#45026 | auto Azshara;399§auto Azshara;399§auto Azshara;399 | x=4320.10009765625 y=-6212.5 | size=1 | links=#45025(auto Azshara;398):20 c6199.12:7
+#45027 | auto Azshara;400§auto Azshara;400§auto Azshara;400 | x=4297.10009765625 y=-6228.89990234375 | size=1 | links=c6647.1:12 c6198.12:9 c6199.12:21
+#45028 | auto Azshara;401§auto Azshara;401§auto Azshara;401 | x=4353 y=-6218.89990234375 | size=1 | links=#45018(auto Azshara;391):13 #45025(auto Azshara;398):16 o153123.12:9
+#45029 | auto Azshara;402§auto Azshara;402§auto Azshara;402 | x=4792.39990234375 y=-6828 | size=1 | links=#45030(auto Azshara;403):17 c6491.3:18
+#45030 | auto Azshara;403§auto Azshara;403§auto Azshara;403 | x=4787.5 y=-6811.2001953125 | size=1 | links=#45029(auto Azshara;402):17 #45031(auto Azshara;404):13
+#45031 | auto Azshara;404§auto Azshara;404§auto Azshara;404 | x=4787.89990234375 y=-6797.60009765625 | size=1 | links=#45030(auto Azshara;403):13 #45032(auto Azshara;405):37
+#45032 | auto Azshara;405§auto Azshara;405§auto Azshara;405 | x=4796.10009765625 y=-6760.60009765625 | size=1 | links=#45031(auto Azshara;404):37 #45033(auto Azshara;406):62 #45101(auto Azshara;473):47
+#45033 | auto Azshara;406§auto Azshara;406§auto Azshara;406 | x=4816 y=-6701.30029296875 | size=1 | links=#45032(auto Azshara;405):62 #45034(auto Azshara;407):53
+#45034 | auto Azshara;407§auto Azshara;407§auto Azshara;407 | x=4837.60009765625 y=-6652.7001953125 | size=1 | links=#45033(auto Azshara;406):53 #45035(auto Azshara;408):42
+#45035 | auto Azshara;408§auto Azshara;408§auto Azshara;408 | x=4835.10009765625 y=-6610.7001953125 | size=1 | links=#45034(auto Azshara;407):42 #45036(auto Azshara;409):47
+#45036 | auto Azshara;409§auto Azshara;409§auto Azshara;409 | x=4805.2001953125 y=-6573.30029296875 | size=1 | links=#45035(auto Azshara;408):47 #45037(auto Azshara;410):81
+#45037 | auto Azshara;410§auto Azshara;410§auto Azshara;410 | x=4753.60009765625 y=-6510.60009765625 | size=1 | links=#45036(auto Azshara;409):81 #45038(auto Azshara;411):92
+#45038 | auto Azshara;411§auto Azshara;411§auto Azshara;411 | x=4713.39990234375 y=-6427 | size=1 | links=#45037(auto Azshara;410):92 #45039(auto Azshara;412):62
+#45039 | auto Azshara;412§auto Azshara;412§auto Azshara;412 | x=4706.5 y=-6364.39990234375 | size=1 | links=#45038(auto Azshara;411):62 #45040(auto Azshara;413):68
+#45040 | auto Azshara;413§auto Azshara;413§auto Azshara;413 | x=4668 y=-6307.2001953125 | size=1 | links=#45039(auto Azshara;412):68 #45041(auto Azshara;414):55
+#45041 | auto Azshara;414§auto Azshara;414§auto Azshara;414 | x=4613 y=-6300.7001953125 | size=1 | links=#45040(auto Azshara;413):55 #45042(auto Azshara;415):55 #45099(auto Azshara;472):72
+#45042 | auto Azshara;415§auto Azshara;415§auto Azshara;415 | x=4557.7001953125 y=-6296 | size=1 | links=#45041(auto Azshara;414):55 #45043(auto Azshara;416):51 c6200.3:46
+#45043 | auto Azshara;416§auto Azshara;416§auto Azshara;416 | x=4531.60009765625 y=-6252.10009765625 | size=1 | links=#45017(auto Azshara;390):35 #45042(auto Azshara;415):51
+#45044 | auto Azshara;417§auto Azshara;417§auto Azshara;417 | x=3891.699951171875 y=-7205.80029296875 | size=1 | links=#45045(auto Azshara;418):20 c6134.1:17
+#45045 | auto Azshara;418§auto Azshara;418§auto Azshara;418 | x=3874.300048828125 y=-7215.89990234375 | size=1 | links=#45044(auto Azshara;417):20 #45046(auto Azshara;419):21
+#45046 | auto Azshara;419§auto Azshara;419§auto Azshara;419 | x=3853.400146484375 y=-7221.5 | size=1 | links=#45045(auto Azshara;418):21 #45047(auto Azshara;420):21
+#45047 | auto Azshara;420§auto Azshara;420§auto Azshara;420 | x=3832.900146484375 y=-7215.7001953125 | size=1 | links=#45046(auto Azshara;419):21 #45048(auto Azshara;421):19
+#45048 | auto Azshara;421§auto Azshara;421§auto Azshara;421 | x=3818.699951171875 y=-7202.60009765625 | size=1 | links=#45047(auto Azshara;420):19 #45049(auto Azshara;422):14
+#45049 | auto Azshara;422§auto Azshara;422§auto Azshara;422 | x=3811 y=-7190.80029296875 | size=1 | links=#45048(auto Azshara;421):14 #45050(auto Azshara;423):13
+#45050 | auto Azshara;423§auto Azshara;423§auto Azshara;423 | x=3808 y=-7177.89990234375 | size=1 | links=#45049(auto Azshara;422):13 #45051(auto Azshara;424):11
+#45051 | auto Azshara;424§auto Azshara;424§auto Azshara;424 | x=3808.300048828125 y=-7166.2001953125 | size=1 | links=#45050(auto Azshara;423):11 #45052(auto Azshara;425):7
+#45052 | auto Azshara;425§auto Azshara;425§auto Azshara;425 | x=3815.60009765625 y=-7164.7001953125 | size=1 | links=#45051(auto Azshara;424):7 #45053(auto Azshara;426):12
+#45053 | auto Azshara;426§auto Azshara;426§auto Azshara;426 | x=3828.300048828125 y=-7165.10009765625 | size=1 | links=#45052(auto Azshara;425):12 #45054(auto Azshara;427):10
+#45054 | auto Azshara;427§auto Azshara;427§auto Azshara;427 | x=3834.10009765625 y=-7156.5 | size=1 | links=#45053(auto Azshara;426):10 #45055(auto Azshara;428):11
+#45055 | auto Azshara;428§auto Azshara;428§auto Azshara;428 | x=3824.699951171875 y=-7149.80029296875 | size=1 | links=#45054(auto Azshara;427):11 #45056(auto Azshara;429):10
+#45056 | auto Azshara;429§auto Azshara;429§auto Azshara;429 | x=3814.5 y=-7151.39990234375 | size=1 | links=#45055(auto Azshara;428):10 #45057(auto Azshara;430):9
+#45057 | auto Azshara;430§auto Azshara;430§auto Azshara;430 | x=3812.60009765625 y=-7160.7001953125 | size=1 | links=#45056(auto Azshara;429):9 #45058(auto Azshara;431):9
+#45058 | auto Azshara;431§auto Azshara;431§auto Azshara;431 | x=3814.300048828125 y=-7170.30029296875 | size=1 | links=#45057(auto Azshara;430):9 #45059(auto Azshara;432):20
+#45059 | auto Azshara;432§auto Azshara;432§auto Azshara;432 | x=3815.300048828125 y=-7190.60009765625 | size=1 | links=#45058(auto Azshara;431):20 #45060(auto Azshara;433):18
+#45060 | auto Azshara;433§auto Azshara;433§auto Azshara;433 | x=3823.60009765625 y=-7207.2001953125 | size=1 | links=#45059(auto Azshara;432):18 #45061(auto Azshara;434):28
+#45061 | auto Azshara;434§auto Azshara;434§auto Azshara;434 | x=3848.60009765625 y=-7221.30029296875 | size=1 | links=#45060(auto Azshara;433):28 #45062(auto Azshara;435):22
+#45062 | auto Azshara;435§auto Azshara;435§auto Azshara;435 | x=3871.10009765625 y=-7217.30029296875 | size=1 | links=#45061(auto Azshara;434):22 #45063(auto Azshara;436):21
+#45063 | auto Azshara;436§auto Azshara;436§auto Azshara;436 | x=3890.400146484375 y=-7207.30029296875 | size=1 | links=#45062(auto Azshara;435):21 #45064(auto Azshara;437):19
+#45064 | auto Azshara;437§auto Azshara;437§auto Azshara;437 | x=3903.400146484375 y=-7193.30029296875 | size=1 | links=#45063(auto Azshara;436):19 #45065(auto Azshara;438):16
+#45065 | auto Azshara;438§auto Azshara;438§auto Azshara;438 | x=3919 y=-7199 | size=1 | links=#45064(auto Azshara;437):16 #45066(auto Azshara;439):26
+#45066 | auto Azshara;439§auto Azshara;439§auto Azshara;439 | x=3943.10009765625 y=-7209.10009765625 | size=1 | links=#45065(auto Azshara;438):26 c6138.4:28 c6138.5:12 c6137.15:23
+#45067 | auto Azshara;440§auto Azshara;440§auto Azshara;440 | x=4000.199951171875 y=-7233.5 | size=1 | links=c6135.16:37 c6137.23:27
+#45068 | auto Azshara;441§auto Azshara;441§auto Azshara;441 | x=4050.400146484375 y=-7253.2001953125 | size=1 | links=#45069(auto Azshara;442):11 c6138.13:5 c6135.16:15
+#45069 | auto Azshara;442§auto Azshara;442§auto Azshara;442 | x=4061.800048828125 y=-7249.5 | size=1 | links=#45068(auto Azshara;441):11 #45070(auto Azshara;443):36
+#45070 | auto Azshara;443§auto Azshara;443§auto Azshara;443 | x=4094.199951171875 y=-7232 | size=1 | links=#45069(auto Azshara;442):36 #45071(auto Azshara;444):27 c6135.1:26
+#45071 | auto Azshara;444§auto Azshara;444§auto Azshara;444 | x=4104.30029296875 y=-7206.30029296875 | size=1 | links=#45070(auto Azshara;443):27 #45072(auto Azshara;445):30
+#45072 | auto Azshara;445§auto Azshara;445§auto Azshara;445 | x=4126.60009765625 y=-7185.5 | size=1 | links=#45071(auto Azshara;444):30 #45073(auto Azshara;446):29 c6136.12:14
+#45073 | auto Azshara;446§auto Azshara;446§auto Azshara;446 | x=4155.10009765625 y=-7192 | size=1 | links=#45072(auto Azshara;445):29 #45074(auto Azshara;447):34
+#45074 | auto Azshara;447§auto Azshara;447§auto Azshara;447 | x=4189.30029296875 y=-7198.10009765625 | size=1 | links=#45073(auto Azshara;446):34 #45075(auto Azshara;448):34
+#45075 | auto Azshara;448§auto Azshara;448§auto Azshara;448 | x=4221.80029296875 y=-7208.89990234375 | size=1 | links=#45074(auto Azshara;447):34 #45076(auto Azshara;449):48
+#45076 | auto Azshara;449§auto Azshara;449§auto Azshara;449 | x=4238.2001953125 y=-7254.7001953125 | size=1 | links=#45075(auto Azshara;448):48 c6137.3:47
+#45077 | auto Azshara;450§auto Azshara;450§auto Azshara;450 | x=4311.39990234375 y=-7418.89990234375 | size=1 | links=#45078(auto Azshara;451):33 c6135.7:80
+#45078 | auto Azshara;451§auto Azshara;451§auto Azshara;451 | x=4325.60009765625 y=-7449.2001953125 | size=1 | links=#45077(auto Azshara;450):33 #45079(auto Azshara;452):91
+#45079 | auto Azshara;452§auto Azshara;452§auto Azshara;452 | x=4371.10009765625 y=-7528.80029296875 | size=1 | links=#45078(auto Azshara;451):91 #45080(auto Azshara;453):60 c6348.10:21
+#45080 | auto Azshara;453§auto Azshara;453§auto Azshara;453 | x=4429.10009765625 y=-7546.5 | size=1 | links=#45079(auto Azshara;452):60 #45081(auto Azshara;454):58 c6370.8:32
+#45081 | auto Azshara;454§auto Azshara;454§auto Azshara;454 | x=4466.10009765625 y=-7501.60009765625 | size=1 | links=#45080(auto Azshara;453):58 #45082(auto Azshara;455):68 #45867(auto Azshara;565):93
+#45082 | auto Azshara;455§auto Azshara;455§auto Azshara;455 | x=4485.80029296875 y=-7435.60009765625 | size=1 | links=#45081(auto Azshara;454):68 #45083(auto Azshara;456):85
+#45083 | auto Azshara;456§auto Azshara;456§auto Azshara;456 | x=4501.30029296875 y=-7352 | size=1 | links=#45082(auto Azshara;455):85 #45084(auto Azshara;457):89 c14462.2:25
+#45084 | auto Azshara;457§auto Azshara;457§auto Azshara;457 | x=4517.60009765625 y=-7263.60009765625 | size=1 | links=#45083(auto Azshara;456):89 #45085(auto Azshara;458):64
+#45085 | auto Azshara;458§auto Azshara;458§auto Azshara;458 | x=4485.60009765625 y=-7207.2001953125 | size=1 | links=#45084(auto Azshara;457):64 #45086(auto Azshara;459):65 c8761.20:37
+#45086 | auto Azshara;459§auto Azshara;459§auto Azshara;459 | x=4514 y=-7148.7001953125 | size=1 | links=#45085(auto Azshara;458):65 #45087(auto Azshara;460):101
+#45087 | auto Azshara;460§auto Azshara;460§auto Azshara;460 | x=4560 y=-7058 | size=1 | links=#45086(auto Azshara;459):101 #45088(auto Azshara;461):76
+#45088 | auto Azshara;461§auto Azshara;461§auto Azshara;461 | x=4599.2001953125 y=-6992.60009765625 | size=1 | links=#45087(auto Azshara;460):76 #45089(auto Azshara;462):79 #45107(auto Azshara;479):87
+#45089 | auto Azshara;462§auto Azshara;462§auto Azshara;462 | x=4546.2001953125 y=-6933.89990234375 | size=1 | links=#45088(auto Azshara;461):79 #45090(auto Azshara;463):65 c8766.12:38
+#45090 | auto Azshara;463§auto Azshara;463§auto Azshara;463 | x=4514.80029296875 y=-6876.60009765625 | size=1 | links=#45089(auto Azshara;462):65 #45091(auto Azshara;464):28 c8766.12:30
+#45091 | auto Azshara;464§auto Azshara;464§auto Azshara;464 | x=4519.89990234375 y=-6848.5 | size=1 | links=#45090(auto Azshara;463):28 #45092(auto Azshara;465):55
+#45092 | auto Azshara;465§auto Azshara;465§auto Azshara;465 | x=4522.30029296875 y=-6792.89990234375 | size=1 | links=#45091(auto Azshara;464):55 #45093(auto Azshara;466):60
+#45093 | auto Azshara;466§auto Azshara;466§auto Azshara;466 | x=4521.39990234375 y=-6732 | size=1 | links=#45092(auto Azshara;465):60 #45094(auto Azshara;467):54
+#45094 | auto Azshara;467§auto Azshara;467§auto Azshara;467 | x=4538.7001953125 y=-6680.2001953125 | size=1 | links=#45093(auto Azshara;466):54 #45095(auto Azshara;468):102
+#45095 | auto Azshara;468§auto Azshara;468§auto Azshara;468 | x=4548.5 y=-6578.39990234375 | size=1 | links=#45094(auto Azshara;467):102 #45096(auto Azshara;469):75 c8764.8:47
+#45096 | auto Azshara;469§auto Azshara;469§auto Azshara;469 | x=4560.5 y=-6503.7001953125 | size=1 | links=#45095(auto Azshara;468):75 #45097(auto Azshara;470):55
+#45097 | auto Azshara;470§auto Azshara;470§auto Azshara;470 | x=4569.10009765625 y=-6449.2001953125 | size=1 | links=#45096(auto Azshara;469):55 #45098(auto Azshara;471):58
+#45098 | auto Azshara;471§auto Azshara;471§auto Azshara;471 | x=4609.80029296875 y=-6407.2001953125 | size=1 | links=#45097(auto Azshara;470):58 #45099(auto Azshara;472):53
+#45099 | auto Azshara;472§auto Azshara;472§auto Azshara;472 | x=4643.89990234375 y=-6366 | size=1 | links=#45041(auto Azshara;414):72 #45098(auto Azshara;471):53
+#45101 | auto Azshara;473§auto Azshara;473§auto Azshara;473 | x=4841.2001953125 y=-6774.5 | size=1 | links=#45032(auto Azshara;405):47 #45102(auto Azshara;474):36
+#45102 | auto Azshara;474§auto Azshara;474§auto Azshara;474 | x=4850 y=-6810 | size=1 | links=#45101(auto Azshara;473):36 #45103(auto Azshara;475):33
+#45103 | auto Azshara;475§auto Azshara;475§auto Azshara;475 | x=4837.2001953125 y=-6840.7001953125 | size=1 | links=#45102(auto Azshara;474):33 #45104(auto Azshara;476):32
+#45104 | auto Azshara;476§auto Azshara;476§auto Azshara;476 | x=4825.60009765625 y=-6871 | size=1 | links=#45103(auto Azshara;475):32 #45105(auto Azshara;477):43
+#45105 | auto Azshara;477§auto Azshara;477§auto Azshara;477 | x=4816.80029296875 y=-6913.89990234375 | size=1 | links=#45104(auto Azshara;476):43 #45106(auto Azshara;478):74
+#45106 | auto Azshara;478§auto Azshara;478§auto Azshara;478 | x=4749.5 y=-6946.39990234375 | size=1 | links=#45105(auto Azshara;477):74 #45107(auto Azshara;479):69
+#45107 | auto Azshara;479§auto Azshara;479§auto Azshara;479 | x=4682.39990234375 y=-6966 | size=1 | links=#45088(auto Azshara;461):87 #45106(auto Azshara;478):69
+#45108 | auto Azshara;480§auto Azshara;480§auto Azshara;480 | x=4104.30029296875 y=-7143.2001953125 | size=1 | links=c6136.12:33 c6135.19:24
+#45109 | auto Azshara;481§auto Azshara;481§auto Azshara;481 | x=4085.300048828125 y=-7034.7001953125 | size=1 | links=#45110(auto Azshara;482):33 c6135.17:52
+#45110 | auto Azshara;482§auto Azshara;482§auto Azshara;482 | x=4100.5 y=-7005.2001953125 | size=1 | links=#45109(auto Azshara;481):33 c6136.4:33
+#45111 | auto Azshara;483§auto Azshara;483§auto Azshara;483 | x=4133.60009765625 y=-6943.10009765625 | size=1 | links=#45112(auto Azshara;484):82 c6136.4:37
+#45112 | auto Azshara;484§auto Azshara;484§auto Azshara;484 | x=4128 y=-6860.89990234375 | size=1 | links=#45111(auto Azshara;483):82 #45113(auto Azshara;485):58 #45157(auto Azshara;526):103
+#45113 | auto Azshara;485§auto Azshara;485§auto Azshara;485 | x=4123.80029296875 y=-6802.5 | size=1 | links=#45112(auto Azshara;484):58 #45114(auto Azshara;486):58
+#45114 | auto Azshara;486§auto Azshara;486§auto Azshara;486 | x=4115 y=-6744.2001953125 | size=1 | links=#45113(auto Azshara;485):58 #45115(auto Azshara;487):71
+#45115 | auto Azshara;487§auto Azshara;487§auto Azshara;487 | x=4104.2001953125 y=-6673.30029296875 | size=1 | links=#45114(auto Azshara;486):71 #45116(auto Azshara;488):60
+#45116 | auto Azshara;488§auto Azshara;488§auto Azshara;488 | x=4100.7001953125 y=-6613.30029296875 | size=1 | links=#45115(auto Azshara;487):60 #45118(auto Azshara;489):65
+#45118 | auto Azshara;489§auto Azshara;489§auto Azshara;489 | x=4100.30029296875 y=-6547.89990234375 | size=1 | links=#45116(auto Azshara;488):65 #45119(auto Azshara;490):60
+#45119 | auto Azshara;490§auto Azshara;490§auto Azshara;490 | x=4088.900146484375 y=-6488 | size=1 | links=#45118(auto Azshara;489):60 #45120(auto Azshara;491):61
+#45120 | auto Azshara;491§auto Azshara;491§auto Azshara;491 | x=4077.300048828125 y=-6427.89990234375 | size=1 | links=#45119(auto Azshara;490):61 #45121(auto Azshara;492):76
+#45121 | auto Azshara;492§auto Azshara;492§auto Azshara;492 | x=4055.10009765625 y=-6354.80029296875 | size=1 | links=#45120(auto Azshara;491):76 #45122(auto Azshara;493):71
+#45122 | auto Azshara;493§auto Azshara;493§auto Azshara;493 | x=4026.5 y=-6289.80029296875 | size=1 | links=#45121(auto Azshara;492):71 #45123(auto Azshara;494):61
+#45123 | auto Azshara;494§auto Azshara;494§auto Azshara;494 | x=3999.800048828125 y=-6234.2001953125 | size=1 | links=#45122(auto Azshara;493):61 #45124(auto Azshara;495):64
+#45124 | auto Azshara;495§auto Azshara;495§auto Azshara;495 | x=3942.60009765625 y=-6204.5 | size=1 | links=#45123(auto Azshara;494):64 #45125(auto Azshara;496):80
+#45125 | auto Azshara;496§auto Azshara;496§auto Azshara;496 | x=3865.10009765625 y=-6182.7001953125 | size=1 | links=#45124(auto Azshara;495):80 #45126(auto Azshara;497):39
+#45126 | auto Azshara;497§auto Azshara;497§auto Azshara;497 | x=3825.800048828125 y=-6181.2001953125 | size=1 | links=#45125(auto Azshara;496):39 #45127(auto Azshara;498):70 #45150(auto Azshara;519):42
+#45127 | auto Azshara;498§auto Azshara;498§auto Azshara;498 | x=3776.5 y=-6130.39990234375 | size=1 | links=#45126(auto Azshara;497):70 #45128(auto Azshara;499):72 c6140.1:55 c6143.3:15
+#45128 | auto Azshara;499§auto Azshara;499§auto Azshara;499 | x=3788.800048828125 y=-6058.5 | size=1 | links=#45127(auto Azshara;498):72 #45129(auto Azshara;500):48
+#45129 | auto Azshara;500§auto Azshara;500§auto Azshara;500 | x=3797.900146484375 y=-6010.39990234375 | size=1 | links=#45128(auto Azshara;499):48 #45130(auto Azshara;501):57 c6143.2:18
+#45130 | auto Azshara;501§auto Azshara;501§auto Azshara;501 | x=3760.800048828125 y=-5966 | size=1 | links=#45129(auto Azshara;500):57 #45131(auto Azshara;502):81
+#45131 | auto Azshara;502§auto Azshara;502§auto Azshara;502 | x=3699.5 y=-5912.30029296875 | size=1 | links=#45130(auto Azshara;501):81 #45132(auto Azshara;503):71
+#45132 | auto Azshara;503§auto Azshara;503§auto Azshara;503 | x=3645.60009765625 y=-5864.89990234375 | size=1 | links=#45131(auto Azshara;502):71 #45133(auto Azshara;504):79
+#45133 | auto Azshara;504§auto Azshara;504§auto Azshara;504 | x=3586.10009765625 y=-5812.5 | size=1 | links=#45132(auto Azshara;503):79 #45134(auto Azshara;505):60
+#45134 | auto Azshara;505§auto Azshara;505§auto Azshara;505 | x=3556 y=-5759.89990234375 | size=1 | links=#45133(auto Azshara;504):60 #45135(auto Azshara;506):59
+#45135 | auto Azshara;506§auto Azshara;506§auto Azshara;506 | x=3546.199951171875 y=-5701.39990234375 | size=1 | links=#45134(auto Azshara;505):59 #45136(auto Azshara;507):74
+#45136 | auto Azshara;507§auto Azshara;507§auto Azshara;507 | x=3533.900146484375 y=-5628.30029296875 | size=1 | links=#44932(auto Azshara;311):55 #45135(auto Azshara;506):74
+#45137 | auto Azshara;508§auto Azshara;508§auto Azshara;508 | x=3142.900146484375 y=-6551 | size=1 | links=#44953(auto Azshara;329):63 #45138(auto Azshara;509):99
+#45138 | auto Azshara;509§auto Azshara;509§auto Azshara;509 | x=3241 y=-6565.60009765625 | size=1 | links=#45137(auto Azshara;508):99 #45139(auto Azshara;510):90
+#45139 | auto Azshara;510§auto Azshara;510§auto Azshara;510 | x=3330.300048828125 y=-6580.30029296875 | size=1 | links=#45138(auto Azshara;509):90 #45140(auto Azshara;511):101
+#45140 | auto Azshara;511§auto Azshara;511§auto Azshara;511 | x=3428.800048828125 y=-6603.5 | size=1 | links=#45139(auto Azshara;510):101 #45142(Swirling Maelstrom, Bay of Storms, Azshara):63
+#45142 | Swirling Maelstrom, Bay of Storms, Azshara§Wirbelnder Mahlstrom, Bucht der Stürme, Azshara§Swirling Maelstrom, Bay of Storms, Azshara | x=3491.199951171875 y=-6614.39990234375 | size=1 | links=#45140(auto Azshara;511):63 o183356.1:21
+#45143 | auto Azshara;512§auto Azshara;512§auto Azshara;512 | x=3563.5 y=-6575 | size=1 | links=#45144(auto Azshara;513):59 #45151(auto Azshara;520):65 o183356.1:66
+#45144 | auto Azshara;513§auto Azshara;513§auto Azshara;513 | x=3595.5 y=-6524.39990234375 | size=1 | links=#45143(auto Azshara;512):59 #45145(auto Azshara;514):54
+#45145 | auto Azshara;514§auto Azshara;514§auto Azshara;514 | x=3624.5 y=-6478.60009765625 | size=1 | links=#45144(auto Azshara;513):54 #45146(auto Azshara;515):71
+#45146 | auto Azshara;515§auto Azshara;515§auto Azshara;515 | x=3662.5 y=-6418.60009765625 | size=1 | links=#45145(auto Azshara;514):71 #45147(auto Azshara;516):68
+#45147 | auto Azshara;516§auto Azshara;516§auto Azshara;516 | x=3699.300048828125 y=-6360.30029296875 | size=1 | links=#45146(auto Azshara;515):68 #45148(auto Azshara;517):56
+#45148 | auto Azshara;517§auto Azshara;517§auto Azshara;517 | x=3729.800048828125 y=-6312.2001953125 | size=1 | links=#45147(auto Azshara;516):56 #45149(auto Azshara;518):66
+#45149 | auto Azshara;518§auto Azshara;518§auto Azshara;518 | x=3765.60009765625 y=-6255.60009765625 | size=1 | links=#45148(auto Azshara;517):66 #45150(auto Azshara;519):53
+#45150 | auto Azshara;519§auto Azshara;519§auto Azshara;519 | x=3796.10009765625 y=-6212.2001953125 | size=1 | links=#45126(auto Azshara;497):42 #45149(auto Azshara;518):53
+#45151 | auto Azshara;520§auto Azshara;520§auto Azshara;520 | x=3566.400146484375 y=-6640.60009765625 | size=1 | links=#45143(auto Azshara;512):65 #45152(auto Azshara;521):68 o183356.1:58
+#45152 | auto Azshara;521§auto Azshara;521§auto Azshara;521 | x=3629.699951171875 y=-6667.10009765625 | size=1 | links=#45151(auto Azshara;520):68 #45153(auto Azshara;522):85
+#45153 | auto Azshara;522§auto Azshara;522§auto Azshara;522 | x=3706.800048828125 y=-6704.89990234375 | size=1 | links=#45152(auto Azshara;521):85 #45154(auto Azshara;523):86
+#45154 | auto Azshara;523§auto Azshara;523§auto Azshara;523 | x=3778.400146484375 y=-6753.89990234375 | size=1 | links=#45153(auto Azshara;522):86 #45155(auto Azshara;524):77
+#45155 | auto Azshara;524§auto Azshara;524§auto Azshara;524 | x=3842.300048828125 y=-6797.5 | size=1 | links=#45154(auto Azshara;523):77 #45156(auto Azshara;525):98
+#45156 | auto Azshara;525§auto Azshara;525§auto Azshara;525 | x=3924 y=-6853.10009765625 | size=1 | links=#45155(auto Azshara;524):98 #45157(auto Azshara;526):101
+#45157 | auto Azshara;526§auto Azshara;526§auto Azshara;526 | x=4024.60009765625 y=-6867.39990234375 | size=1 | links=#45112(auto Azshara;484):103 #45156(auto Azshara;525):101
+#45159 | auto Azshara;527§auto Azshara;527§auto Azshara;527 | x=3109.10009765625 y=-5155.5 | size=1 | links=c7866.1:34 c8761.13:32 c8761.22:47
+#45160 | auto Azshara;528§auto Azshara;528§auto Azshara;528 | x=2982.10009765625 y=-5166.5 | size=1 | links=#44863(auto Azshara;259):26 c8761.9:30 c8761.52:37
+#45161 | auto Azshara;529§auto Azshara;529§auto Azshara;529 | x=2954 y=-5324.2001953125 | size=1 | links=c8761.37:25 c8761.48:37
+#45162 | auto Azshara;530§auto Azshara;530§auto Azshara;530 | x=2881.400146484375 y=-5225.89990234375 | size=1 | links=#44864(auto Azshara;260):36 c6131.20:30
+#45163 | auto Azshara;531§auto Azshara;531§auto Azshara;531 | x=2816.800048828125 y=-5249.2001953125 | size=1 | links=c193.1:65 c6131.19:27 c6131.20:46
+#45164 | auto Azshara;532§auto Azshara;532§auto Azshara;532 | x=2872.60009765625 y=-5142.2001953125 | size=1 | links=#45165(auto Azshara;533):14 c193.4:45 c193.5:21 c193.6:30
+#45165 | auto Azshara;533§auto Azshara;533§auto Azshara;533 | x=2857.800048828125 y=-5143.60009765625 | size=1 | links=#45164(auto Azshara;532):14 c6131.22:8
+#45166 | auto Azshara;534§auto Azshara;534§auto Azshara;534 | x=2793.400146484375 y=-5093 | size=1 | links=#45167(auto Azshara;535):38 c193.7:37
+#45167 | auto Azshara;535§auto Azshara;535§auto Azshara;535 | x=2758.800048828125 y=-5109.60009765625 | size=1 | links=#45166(auto Azshara;534):38 c193.3:42
+#45168 | auto Azshara;536§auto Azshara;536§auto Azshara;536 | x=2821.900146484375 y=-5444.89990234375 | size=1 | links=c6129.3:12 c6130.13:16
+#45169 | auto Azshara;537§auto Azshara;537§auto Azshara;537 | x=2819.10009765625 y=-5413.80029296875 | size=1 | links=#45170(auto Azshara;538):29 c6131.2:11 c6130.13:41
+#45170 | auto Azshara;538§auto Azshara;538§auto Azshara;538 | x=2790.800048828125 y=-5405.80029296875 | size=1 | links=#45169(auto Azshara;537):29 #45171(auto Azshara;539):16 c6130.6:16 c6130.14:28
+#45171 | auto Azshara;539§auto Azshara;539§auto Azshara;539 | x=2775.400146484375 y=-5401.2001953125 | size=1 | links=#45170(auto Azshara;538):16 #45172(auto Azshara;540):9
+#45172 | auto Azshara;540§auto Azshara;540§auto Azshara;540 | x=2765.699951171875 y=-5399 | size=1 | links=#45171(auto Azshara;539):9 c6129.1:9
+#45173 | auto Azshara;541§auto Azshara;541§auto Azshara;541 | x=3568.800048828125 y=-4592.89990234375 | size=1 | links=#3526(auto Azshara;19):39 #45174(auto Azshara;542):42 c6190.28:33
+#45174 | auto Azshara;542§auto Azshara;542§auto Azshara;542 | x=3533.699951171875 y=-4617.30029296875 | size=1 | links=#45173(auto Azshara;541):42 c6193.22:51 c6190.26:31
+#45175 | auto Azshara;543§auto Azshara;543§auto Azshara;543 | x=3484.60009765625 y=-4595.7001953125 | size=1 | links=c6190.9:20 c6190.26:23
+#45176 | auto Azshara;544§auto Azshara;544§auto Azshara;544 | x=3424.800048828125 y=-4675.5 | size=1 | links=#27663(auto Azshara;160):25 c6190.27:19
+#45177 | auto Azshara;545§auto Azshara;545§auto Azshara;545 | x=3541.699951171875 y=-4707.7001953125 | size=1 | links=#45178(auto Azshara;546):21 c6190.1:21
+#45178 | auto Azshara;546§auto Azshara;546§auto Azshara;546 | x=3534.800048828125 y=-4687 | size=1 | links=#23671(auto Azshara;137):25 #45177(auto Azshara;545):21
+#45179 | auto Azshara;547§auto Azshara;547§auto Azshara;547 | x=4603.7001953125 y=-5973.80029296875 | size=1 | links=#45180(auto Azshara;548):16 c8420.1:13
+#45180 | auto Azshara;548§auto Azshara;548§auto Azshara;548 | x=4619.80029296875 y=-5969.7001953125 | size=1 | links=#45179(auto Azshara;547):16 #45181(auto Azshara;549):21
+#45181 | auto Azshara;549§auto Azshara;549§auto Azshara;549 | x=4641.60009765625 y=-5971.60009765625 | size=1 | links=#45180(auto Azshara;548):21 #45182(auto Azshara;550):20
+#45182 | auto Azshara;550§auto Azshara;550§auto Azshara;550 | x=4660.7001953125 y=-5977.89990234375 | size=1 | links=#45181(auto Azshara;549):20 #45183(auto Azshara;551):24
+#45183 | auto Azshara;551§auto Azshara;551§auto Azshara;551 | x=4680.60009765625 y=-5963.7001953125 | size=1 | links=#45182(auto Azshara;550):24 #45184(auto Azshara;552):28
+#45184 | auto Azshara;552§auto Azshara;552§auto Azshara;552 | x=4698.10009765625 y=-5941.80029296875 | size=1 | links=#45183(auto Azshara;551):28 #45185(auto Azshara;553):26
+#45185 | auto Azshara;553§auto Azshara;553§auto Azshara;553 | x=4720.2001953125 y=-5956.5 | size=1 | links=#45184(auto Azshara;552):26 #45186(auto Azshara;554):39
+#45186 | auto Azshara;554§auto Azshara;554§auto Azshara;554 | x=4713.10009765625 y=-5995 | size=1 | links=#45185(auto Azshara;553):39 #45187(auto Azshara;555):62
+#45187 | auto Azshara;555§auto Azshara;555§auto Azshara;555 | x=4700.60009765625 y=-6056.7001953125 | size=1 | links=#45186(auto Azshara;554):62 #45188(auto Azshara;556):74
+#45188 | auto Azshara;556§auto Azshara;556§auto Azshara;556 | x=4638 y=-6096.30029296875 | size=1 | links=#45187(auto Azshara;555):74 #45189(auto Azshara;557):59
+#45189 | auto Azshara;557§auto Azshara;557§auto Azshara;557 | x=4581.80029296875 y=-6077.80029296875 | size=1 | links=#45188(auto Azshara;556):59 #45190(auto Azshara;558):44
+#45190 | auto Azshara;558§auto Azshara;558§auto Azshara;558 | x=4543.30029296875 y=-6055.5 | size=1 | links=#45189(auto Azshara;557):44 #45191(auto Azshara;559):74
+#45191 | auto Azshara;559§auto Azshara;559§auto Azshara;559 | x=4479.5 y=-6017.60009765625 | size=1 | links=#45009(auto Azshara;382):36 #45190(auto Azshara;558):74
+#45862 | auto Azshara;560§auto Azshara;560§auto Azshara;560 | x=4508.2001953125 y=-6371 | size=1 | links=#45863(auto Azshara;561):18 c6201.5:19
+#45863 | auto Azshara;561§auto Azshara;561§auto Azshara;561 | x=4497.39990234375 y=-6386.39990234375 | size=1 | links=#45862(auto Azshara;560):18 c6652.1:2 c6200.4:9 c6201.6:6
+#45864 | auto Azshara;562§auto Azshara;562§auto Azshara;562 | x=4411 y=-7220.30029296875 | size=1 | links=c8764.7:22 c8761.20:50
+#45865 | auto Azshara;563§auto Azshara;563§auto Azshara;563 | x=4453.39990234375 y=-6902.7001953125 | size=1 | links=c8764.10:25 c8766.12:66
+#45866 | auto Azshara;564§auto Azshara;564§auto Azshara;564 | x=4485.39990234375 y=-7729.5 | size=1 | links=c6370.3:11 c6371.13:40 c6352.21:32
+#45867 | auto Azshara;565§auto Azshara;565§auto Azshara;565 | x=4500.89990234375 y=-7588.10009765625 | size=1 | links=#45081(auto Azshara;454):93 c6348.8:68
+#45868 | auto Azshara;566§auto Azshara;566§auto Azshara;566 | x=4453.7001953125 y=-7639 | size=1 | links=c6348.8:27 c6352.13:16
+#45869 | auto Azshara;567§auto Azshara;567§auto Azshara;567 | x=4272.30029296875 y=-5649.30029296875 | size=1 | links=#44996(auto Azshara;370):44 c6188.30:37
+#45870 | auto Azshara;568§auto Azshara;568§auto Azshara;568 | x=4213.39990234375 y=-5250.39990234375 | size=1 | links=#45871(auto Azshara;569):24 c6187.11:39
+#45871 | auto Azshara;569§auto Azshara;569§auto Azshara;569 | x=4192.10009765625 y=-5261.7001953125 | size=1 | links=#45870(auto Azshara;568):24 #45872(auto Azshara;570):49
+#45872 | auto Azshara;570§auto Azshara;570§auto Azshara;570 | x=4145.80029296875 y=-5279.30029296875 | size=1 | links=#45871(auto Azshara;569):49 #45873(auto Azshara;571):67
+#45873 | auto Azshara;571§auto Azshara;571§auto Azshara;571 | x=4084 y=-5307.39990234375 | size=1 | links=#44992(auto Azshara;366):45 #45872(auto Azshara;570):67
+#45874 | auto Azshara;572§auto Azshara;572§auto Azshara;572 | x=2644.699951171875 y=-6126.5 | size=1 | links=c6146.24:26 c8761.38:79
+#45875 | auto Azshara;573§auto Azshara;573§auto Azshara;573 | x=2567.400146484375 y=-6274 | size=1 | links=#45876(auto Azshara;574):30 c8761.102:63
+#45876 | auto Azshara;574§auto Azshara;574§auto Azshara;574 | x=2563.400146484375 y=-6304.39990234375 | size=1 | links=#45875(auto Azshara;573):30 c6379.16:63
+#45877 | auto Azshara;575§auto Azshara;575§auto Azshara;575 | x=2568.60009765625 y=-6410.60009765625 | size=1 | links=#45878(auto Azshara;576):27 c6379.16:48
+#45878 | auto Azshara;576§auto Azshara;576§auto Azshara;576 | x=2569 y=-6437.80029296875 | size=1 | links=#45877(auto Azshara;575):27 #45879(auto Azshara;577):24
+#45879 | auto Azshara;577§auto Azshara;577§auto Azshara;577 | x=2575 y=-6461.60009765625 | size=1 | links=#45878(auto Azshara;576):24 #45881(auto Azshara;579):12
+#45880 | auto Azshara;578§auto Azshara;578§auto Azshara;578 | x=2584.400146484375 y=-6501.5 | size=1 | links=#45881(auto Azshara;579):28 #45882(auto Azshara;580):33
+#45881 | auto Azshara;579§auto Azshara;579§auto Azshara;579 | x=2577.10009765625 y=-6474.30029296875 | size=1 | links=#45879(auto Azshara;577):12 #45880(auto Azshara;578):28
+#45882 | auto Azshara;580§auto Azshara;580§auto Azshara;580 | x=2593 y=-6533.7001953125 | size=1 | links=#45880(auto Azshara;578):33 #45883(auto Azshara;581):29
+#45883 | auto Azshara;581§auto Azshara;581§auto Azshara;581 | x=2576.699951171875 y=-6558.10009765625 | size=1 | links=#45882(auto Azshara;580):29 #45884(auto Azshara;582):25
+#45884 | auto Azshara;582§auto Azshara;582§auto Azshara;582 | x=2559.400146484375 y=-6576.39990234375 | size=1 | links=#45883(auto Azshara;581):25 #45885(auto Azshara;583):13
+#45885 | auto Azshara;583§auto Azshara;583§auto Azshara;583 | x=2555.5 y=-6589.39990234375 | size=1 | links=#45884(auto Azshara;582):13 #45886(auto Azshara;584):28
+#45886 | auto Azshara;584§auto Azshara;584§auto Azshara;584 | x=2549 y=-6616.80029296875 | size=1 | links=#45885(auto Azshara;583):28 #45887(auto Azshara;585):27
+#45887 | auto Azshara;585§auto Azshara;585§auto Azshara;585 | x=2541.800048828125 y=-6643.80029296875 | size=1 | links=#45886(auto Azshara;584):27 c7886.4:34
+#45888 | auto Azshara;586§auto Azshara;586§auto Azshara;586 | x=2533.800048828125 y=-6723.80029296875 | size=1 | links=#45889(auto Azshara;587):48 c7886.4:47 c7885.12:14
+#45889 | auto Azshara;587§auto Azshara;587§auto Azshara;587 | x=2534.699951171875 y=-6772.10009765625 | size=1 | links=#45888(auto Azshara;586):48 c7885.2:19 c7885.5:16 c7885.11:47
+#45890 | auto Azshara;588§auto Azshara;588§auto Azshara;588 | x=2496.300048828125 y=-6865.7001953125 | size=1 | links=#45891(auto Azshara;589):48 c7886.3:48
+#45891 | auto Azshara;589§auto Azshara;589§auto Azshara;589 | x=2469.699951171875 y=-6906.10009765625 | size=1 | links=#45890(auto Azshara;588):48 #45892(auto Azshara;590):39
+#45892 | auto Azshara;590§auto Azshara;590§auto Azshara;590 | x=2471.900146484375 y=-6945.2001953125 | size=1 | links=#45891(auto Azshara;589):39 c15600.1:16
+#45893 | auto Azshara;591§auto Azshara;591§auto Azshara;591 | x=2580.800048828125 y=-6840.89990234375 | size=1 | links=c7886.2:13 c7885.11:37
+#45894 | auto Azshara;592§auto Azshara;592§auto Azshara;592 | x=4418.2001953125 y=-5891.39990234375 | size=1 | links=c6378.33:21 c6378.51:35
+#45896 | auto Azshara;593§auto Azshara;593§auto Azshara;593 | x=2248 y=-7201.30029296875 | size=1 | links=#45897(auto Azshara;594):16 #45901(Jump forward onto Island):4
+#45897 | auto Azshara;594§auto Azshara;594§auto Azshara;594 | x=2256.800048828125 y=-7215.2001953125 | size=1 | links=#45896(auto Azshara;593):16 #45898(auto Azshara;595):8
+#45898 | auto Azshara;595§auto Azshara;595§auto Azshara;595 | x=2248.300048828125 y=-7217.60009765625 | size=1 | links=#45897(auto Azshara;594):8 #45899(auto Azshara;596):5
+#45899 | auto Azshara;596§auto Azshara;596§auto Azshara;596 | x=2247.900146484375 y=-7222.7001953125 | size=1 | links=#45898(auto Azshara;595):5 #45907(Pilot Xiggs Fuselighter; The Ruined Reaches; Azshara):5
+#45901 | Jump forward onto Island§Vorwärts auf die Insel springen§Jump forward onto Island | x=2247.300048828125 y=-7196.80029296875 | size=1 | links=#45896(auto Azshara;593):4 #45902(auto Azshara;597):12
+#45902 | auto Azshara;597§auto Azshara;597§auto Azshara;597 | x=2256.699951171875 y=-7188.30029296875 | size=1 | links=#45901(Jump forward onto Island):12 #45903(auto Azshara;598):23
+#45903 | auto Azshara;598§auto Azshara;598§auto Azshara;598 | x=2279.300048828125 y=-7183.2001953125 | size=1 | links=#45902(auto Azshara;597):23 #45904(auto Azshara;599):54 c6349.15:45 c6349.26:48
+#45904 | auto Azshara;599§auto Azshara;599§auto Azshara;599 | x=2332.400146484375 y=-7193.7001953125 | size=1 | links=#45903(auto Azshara;598):54 #45905(auto Azshara;600):76
+#45905 | auto Azshara;600§auto Azshara;600§auto Azshara;600 | x=2408.300048828125 y=-7204.30029296875 | size=1 | links=#45904(auto Azshara;599):76 c6351.19:97
+#45907 | Pilot Xiggs Fuselighter; The Ruined Reaches; Azshara§Pilot Xiggs Luntenzünder; Die verfallenen Gegenden; Azshara§Pilote Xiggs Allumèche;Les Confins dévastés;Azshara | x=2253.199951171875 y=-7222.2001953125 | size=1 | links=#45899(auto Azshara;596):5
+#45908 | auto Azshara;601§auto Azshara;601§auto Azshara;601 | x=2651.10009765625 y=-7123.2001953125 | size=1 | links=#45909(auto Azshara;602):115 c6350.2:126
+#45909 | auto Azshara;602§auto Azshara;602§auto Azshara;602 | x=2748 y=-7060.39990234375 | size=1 | links=#45908(auto Azshara;601):115 c6352.2:160 c12125.8:103
+#45911 | auto Azshara;603§auto Azshara;603§auto Azshara;603 | x=2950.300048828125 y=-6068 | size=1 | links=#45913(auto Azshara;605):19 c6349.10:53 c6350.19:21
+#45912 | auto Azshara;604§auto Azshara;604§auto Azshara;604 | x=2924.10009765625 y=-6040.89990234375 | size=1 | links=#45913(auto Azshara;605):18 c6491.2:9
+#45913 | auto Azshara;605§auto Azshara;605§auto Azshara;605 | x=2935.5 y=-6055.60009765625 | size=1 | links=#45911(auto Azshara;603):19 #45912(auto Azshara;604):18
+#45915 | auto Azshara;606§auto Azshara;606§auto Azshara;606 | x=3697.5 y=-4004.300048828125 | size=1 | links=#45916(auto Azshara;607):11 #45919(Route back from Southfury Moonstone):12
+#45916 | auto Azshara;607§auto Azshara;607§auto Azshara;607 | x=3688.5 y=-4010.699951171875 | size=1 | links=#44850(auto Azshara;247):15 #45915(auto Azshara;606):11
+#45918 | Route down to Southfury Moonstone§Route runter zum Mondstein des Südstroms§Route down to Southfury Moonstone | x=3716.199951171875 y=-4012.5 | size=1 | links=#44850(auto Azshara;247):19 o185566.1:20
+#45919 | Route back from Southfury Moonstone§Route zurück von Mondstein des Südstroms§Route back from Southfury Moonstone | x=3707.5 y=-3996.699951171875 | size=1 | links=#45915(auto Azshara;606):12 o185566.1:18
+#45921 | Waters; Down; Rescue; Southfury River; Azshara§Gewässer; unten; Rettung; Südstrom; Azshara§Waters; Down; Rescue;Fleuve Furie-du-Sud;Azshara | x=3696.60009765625 y=-3961.400146484375 | size=1 | links=#45922(auto Azshara;608):33
+#45922 | auto Azshara;608§auto Azshara;608§auto Azshara;608 | x=3663.400146484375 y=-3958.699951171875 | size=1 | links=#45921(Waters; Down; Rescue; Southfury River; Azshara):33 #45923(auto Azshara;609):61
+#45923 | auto Azshara;609§auto Azshara;609§auto Azshara;609 | x=3602.5 y=-3963.400146484375 | size=1 | links=#45922(auto Azshara;608):61 #45924(auto Azshara;610):61
+#45924 | auto Azshara;610§auto Azshara;610§auto Azshara;610 | x=3542.699951171875 y=-3976.300048828125 | size=1 | links=#45923(auto Azshara;609):61 #45925(auto Azshara;611):58
+#45925 | auto Azshara;611§auto Azshara;611§auto Azshara;611 | x=3486.800048828125 y=-3994.10009765625 | size=1 | links=#45924(auto Azshara;610):58 #45926(auto Azshara;612):71
+#45926 | auto Azshara;612§auto Azshara;612§auto Azshara;612 | x=3418.900146484375 y=-4015.10009765625 | size=1 | links=#45925(auto Azshara;611):71 #45927(auto Azshara;613):81
+#45927 | auto Azshara;613§auto Azshara;613§auto Azshara;613 | x=3346.60009765625 y=-4052.10009765625 | size=1 | links=#45926(auto Azshara;612):81 #45928(auto Azshara;614):54
+#45928 | auto Azshara;614§auto Azshara;614§auto Azshara;614 | x=3297.300048828125 y=-4075.800048828125 | size=1 | links=#45927(auto Azshara;613):54 #45929(auto Azshara;615):42
+#45929 | auto Azshara;615§auto Azshara;615§auto Azshara;615 | x=3255.800048828125 y=-4086.60009765625 | size=1 | links=#45928(auto Azshara;614):42 #45930(auto Azshara;616):29
+#45930 | auto Azshara;616§auto Azshara;616§auto Azshara;616 | x=3226.900146484375 y=-4081 | size=1 | links=#45929(auto Azshara;615):29 #45931(auto Azshara;617):33
+#45931 | auto Azshara;617§auto Azshara;617§auto Azshara;617 | x=3193.800048828125 y=-4073.300048828125 | size=1 | links=#45930(auto Azshara;616):33 #45932(auto Azshara;618):32
+#45932 | auto Azshara;618§auto Azshara;618§auto Azshara;618 | x=3164.5 y=-4058.60009765625 | size=1 | links=#45931(auto Azshara;617):32 #45933(auto Azshara;619):16
+#45933 | auto Azshara;619§auto Azshara;619§auto Azshara;619 | x=3149.300048828125 y=-4052.300048828125 | size=1 | links=#45932(auto Azshara;618):16 #45934(auto Azshara;620):20
+#45934 | auto Azshara;620§auto Azshara;620§auto Azshara;620 | x=3129.400146484375 y=-4047.699951171875 | size=1 | links=#45933(auto Azshara;619):20 #45935(auto Azshara;621):9
+#45935 | auto Azshara;621§auto Azshara;621§auto Azshara;621 | x=3120.199951171875 y=-4045.199951171875 | size=1 | links=#45934(auto Azshara;620):9 #45936(auto Ashenvale;1019):21
+#45941 | auto Azshara;622§auto Azshara;622§auto Azshara;622 | x=3028.400146484375 y=-3973 | size=1 | links=#45940(auto Ashenvale;1022):25 #45942(auto Ashenvale;1023):35
+#45945 | auto Azshara;623§auto Azshara;623§auto Azshara;623 | x=2909.699951171875 y=-3902.800048828125 | size=1 | links=#45944(auto Ashenvale;1024):44 #45946(auto Ashenvale;1025):55
+#45951 | auto Azshara;624§auto Azshara;624§auto Azshara;624 | x=3104.400146484375 y=-4203.2001953125 | size=1 | links=c8660.1:27 c6117.10:34 c8759.15:62
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c193.1 | links=#45163(auto Azshara;531):65
+c3621.1 | links=#20965(auto Azshara;126):19
+c6109.1 | links=#44981(auto Azshara;355):33 c8761.38:74
+c6117.1 | links=#11341(auto Azshara;64):31 c6118.1:36
+c6118.1 | links=#18601(auto Azshara;111):44 c6117.1:36
+c6127.1 | links=#2883(auto Azshara;14):18 c6125.6:15
+c6129.1 | links=#45172(auto Azshara;540):9
+c6134.1 | links=#45044(auto Azshara;417):17
+c6135.1 | links=#45070(auto Azshara;443):26
+c6140.1 | links=#45127(auto Azshara;498):55
+c6186.1 | links=c6185.16:40
+c6188.1 | links=c6189.10:19 c6189.12:23
+c6189.1 | links=c6187.8:35 c6189.22:27
+c6190.1 | links=#45177(auto Azshara;545):21
+c6193.1 | links=#19299(auto Azshara;113):19
+c6199.1 | links=c6199.3:42 c6198.7:30
+c6202.1 | links=c6200.3:48 c6201.5:21 c6202.10:26
+c6491.1 | links=#27295(auto Azshara;155):21
+c6647.1 | links=#45027(auto Azshara;400):12
+c6648.1 | links=c6148.27:14
+c6649.1 | links=#44831(auto Azshara;231):14
+c6650.1 | links=c6195.11:12
+c6651.1 | links=c6187.7:14 c6187.11:14
+c6652.1 | links=#45863(auto Azshara;561):2
+c7783.1 | links=#44946(auto Azshara;325):31
+c7866.1 | links=#45159(auto Azshara;527):34
+c7886.1 | links=c7886.3:37
+c8397.1 | links=#18946(auto Azshara;112):3
+c8405.1 | links=#44777(auto Azshara;184):6
+c8408.1 | links=#44806(auto Azshara;208):14
+c8409.1 | links=#44930(auto Azshara;309):21
+c8420.1 | links=#45179(auto Azshara;547):13
+c8576.1 | links=#3402(auto Azshara;18):9 #20965(auto Azshara;126):13
+c8586.1 | links=#3402(auto Azshara;18):9
+c8587.1 | links=#3402(auto Azshara;18):9
+c8610.1 | links=#14056(auto Azshara;81):26
+c8660.1 | links=#45951(auto Azshara;624):27
+c8678.1 | links=#44890(auto Azshara;281):2
+c8756.1 | links=#44946(auto Azshara;325):39 #44947(auto Azshara;326):26
+c8757.1 | links=#44946(auto Azshara;325):19
+c8758.1 | links=#44946(auto Azshara;325):22
+c8762.1 | links=#44770(auto Azshara;177):38
+c10361.1 | links=#3402(auto Azshara;18):11
+c11548.1 | links=#27574(auto Azshara;158):18
+c11705.1 | links=#12496(auto Azshara;72):13 c11707.1:1
+c11707.1 | links=c11705.1:1
+c11708.1 | links=#25301(auto Azshara;145):9
+c12125.1 | links=#44969(auto Azshara;345):63
+c12577.1 | links=#20238(auto Azshara;121):18
+c12957.1 | links=#44890(auto Azshara;281):3
+c13278.1 | links=#44967(auto Azshara;343):13
+c13322.1 | links=c13322.4:41 c6352.18:73 c6349.30:15
+c14301.1 | links=#17389(auto Azshara;102):10
+c14462.1 | links=c14464.1:15 c14462.3:12
+c14464.1 | links=c14462.1:15 c14462.2:13
+c15481.1 | links=#44981(auto Azshara;355):53 c6146.2:29
+c15600.1 | links=#45892(auto Azshara;590):16
+o148513.1 | links=#44791(auto Azshara;197):25
+o148515.1 | links=#44858(auto Azshara;254):24
+o149481.1 | links=#44792(auto Azshara;198):16
+o150140.1 | links=#45024(auto Azshara;397):4
+o151286.1 | links=#45022(auto Azshara;395):3
+o153123.1 | links=#45012(auto Azshara;385):19
+o176356.1 | links=c6194.19:16
+o179551.1 | links=#44971(Hydraxis' Coffer is under the surface, angle slightly downward ):21
+o183356.1 | links=#45142(Swirling Maelstrom, Bay of Storms, Azshara):21 #45143(auto Azshara;512):66 #45151(auto Azshara;520):58
+o185566.1 | links=#45918(Route down to Southfury Moonstone):20 #45919(Route back from Southfury Moonstone):18
+c6116.2 | links=c6117.7:38
+c6117.2 | links=#9045(auto Azshara;53):11 #14574(auto Azshara;86):18
+c6126.2 | links=#7932(auto Azshara;42):15
+c6131.2 | links=#45169(auto Azshara;537):11
+c6136.2 | links=c6137.4:8
+c6143.2 | links=#45129(auto Azshara;500):18
+c6146.2 | links=c15481.1:29 c6379.23:55
+c6184.2 | links=c6184.3:32
+c6185.2 | links=c6184.8:18
+c6186.2 | links=c6184.3:23
+c6190.2 | links=#801(auto Azshara;3):27
+c6193.2 | links=#44762(auto Azshara;169):17
+c6196.2 | links=#44919(auto Azshara;303):42 #44932(auto Azshara;311):48
+c6198.2 | links=c6199.11:37
+c6350.2 | links=#45908(auto Azshara;601):126 c6351.19:82 c6350.21:71
+c6352.2 | links=#44957(auto Azshara;333):186 #45909(auto Azshara;602):160
+c6491.2 | links=#44972(auto Azshara;346):5 #45912(auto Azshara;604):9
+c7885.2 | links=#45889(auto Azshara;587):19 c7886.3:45
+c7886.2 | links=#45893(auto Azshara;591):13
+c14462.2 | links=#45083(auto Azshara;456):25 c14464.1:13 c14462.3:14
+o148514.2 | links=#44857(auto Azshara;253):10
+o150140.2 | links=#45024(auto Azshara;397):3
+c193.3 | links=#45167(auto Azshara;535):42
+c6125.3 | links=#1679(auto Azshara;7):5
+c6129.3 | links=#45168(auto Azshara;536):12
+c6137.3 | links=#45076(auto Azshara;449):47 c6135.7:52
+c6143.3 | links=#45127(auto Azshara;498):15
+c6184.3 | links=c6184.2:32 c6186.2:23 c6184.8:29
+c6188.3 | links=c6187.10:24 c6189.25:33 c6188.30:33
+c6193.3 | links=#5820(auto Azshara;28):24
+c6198.3 | links=#45012(auto Azshara;385):30
+c6199.3 | links=c6199.1:42 c6199.4:48
+c6200.3 | links=#45042(auto Azshara;415):46 c6202.1:48 c6201.5:30
+c6202.3 | links=c6200.10:32 c6200.12:43
+c6349.3 | links=c12125.11:85 c6350.21:70
+c6352.3 | links=c6371.19:43 c6371.23:44
+c6370.3 | links=#45866(auto Azshara;564):11 c6348.8:67
+c6491.3 | links=#45029(auto Azshara;402):18
+c6652.3 | links=c6200.12:25 c6200.13:17
+c7886.3 | links=#45890(auto Azshara;588):48 c7886.1:37 c7885.2:45
+c8762.3 | links=c8762.5:52 c8762.13:42
+c8764.3 | links=c8761.20:34
+c13322.3 | links=#44963(auto Azshara;339):15
+c14462.3 | links=c14462.1:12 c14462.2:14
+o150140.3 | links=#45024(auto Azshara;397):4
+o152620.3 | links=#44894(auto Azshara;285):45 c6148.9:14
+o152631.3 | links=c6147.21:63
+c193.4 | links=#45164(auto Azshara;532):45 c6131.20:38
+c6116.4 | links=#16669(auto Azshara;97):2
+c6136.4 | links=#45110(auto Azshara;482):33 #45111(auto Azshara;483):37
+c6137.4 | links=c6136.2:8 c6138.4:25 c6137.6:47
+c6138.4 | links=#45066(auto Azshara;439):28 c6137.4:25
+c6188.4 | links=c6187.14:28 c6188.28:34 c6188.29:23
+c6199.4 | links=#45017(auto Azshara;390):67 c6199.3:48 c6198.10:28
+c6200.4 | links=#45863(auto Azshara;561):9
+c6375.4 | links=#44841(auto Azshara;241):7
+c7886.4 | links=#45887(auto Azshara;585):34 #45888(auto Azshara;586):47
+c13322.4 | links=#44969(auto Azshara;345):14 c13322.1:41
+o148514.4 | links=#44826(auto Azshara;226):13
+o148515.4 | links=#44852(auto Azshara;248):24
+o152631.4 | links=c6148.11:58 c6379.19:15 c8761.32:28
+o153123.4 | links=c6199.7:5
+c193.5 | links=#45164(auto Azshara;532):21
+c6131.5 | links=c6130.6:25 c6130.7:45 c6131.8:37 c6131.14:34
+c6138.5 | links=#45066(auto Azshara;439):12 c6137.23:21
+c6146.5 | links=o152631.7:58
+c6184.5 | links=c6184.9:13
+c6198.5 | links=#45011(auto Azshara;384):12
+c6201.5 | links=#45862(auto Azshara;560):19 c6202.1:21 c6200.3:30
+c6350.5 | links=#44974(auto Azshara;348):55 c6349.11:29
+c7885.5 | links=#45889(auto Azshara;587):16
+c8762.5 | links=c8762.3:52
+o148513.5 | links=#44835(auto Azshara;235):6
+o148514.5 | links=#44828(auto Azshara;228):11
+o148515.5 | links=#44824(auto Azshara;224):14
+o148516.5 | links=#44829(auto Azshara;229):40
+o152622.5 | links=#44894(auto Azshara;285):36
+c193.6 | links=#45164(auto Azshara;532):30 c193.7:31
+c6125.6 | links=#7932(auto Azshara;42):24 c6127.1:15
+c6130.6 | links=#45170(auto Azshara;538):16 c6131.5:25
+c6137.6 | links=c6137.4:47
+c6187.6 | links=c6188.28:21
+c6198.6 | links=#45018(auto Azshara;391):35 c6199.11:22
+c6199.6 | links=#45013(auto Azshara;386):8
+c6201.6 | links=#45863(auto Azshara;561):6
+c6370.6 | links=c6348.18:50 c6371.19:40 c6352.21:58
+c8766.6 | links=#44893(auto Azshara;284):30
+o153123.6 | links=#45017(auto Azshara;390):14
+c193.7 | links=#45166(auto Azshara;534):37 c193.6:31
+c6117.7 | links=#9647(auto Azshara;58):56 c6116.2:38
+c6125.7 | links=#2246(auto Azshara;10):16
+c6130.7 | links=c6131.5:45 c6131.16:28
+c6135.7 | links=#45077(auto Azshara;450):80 c6137.3:52
+c6144.7 | links=#44945(auto Azshara;324):58 c6143.9:116
+c6187.7 | links=c6651.1:14 c6187.11:12
+c6195.7 | links=#44825(auto Azshara;225):17 #44834(auto Azshara;234):26
+c6198.7 | links=#45008(auto Azshara;381):19 c6199.1:30
+c6199.7 | links=#45016(auto Azshara;389):16 o153123.4:5
+c6348.7 | links=c6348.18:40
+c6378.7 | links=#45004(auto Azshara;378):44 c6378.33:33
+c6380.7 | links=c6146.24:55 c8761.102:46
+c8764.7 | links=#45864(auto Azshara;562):22
+o148515.7 | links=#44789(auto Azshara;195):30
+o148516.7 | links=#44829(auto Azshara;229):18 #44830(auto Azshara;230):11
+o152631.7 | links=#44897(auto Azshara;288):77 c6146.5:58 c6147.21:66
+o153123.7 | links=#45021(auto Azshara;394):14
+c6116.8 | links=#9045(auto Azshara;53):5
+c6131.8 | links=c6131.5:37
+c6184.8 | links=c6185.2:18 c6184.3:29 c6185.16:36
+c6187.8 | links=c6189.1:35
+c6198.8 | links=#45011(auto Azshara;384):11
+c6199.8 | links=#45012(auto Azshara;385):12
+c6348.8 | links=#45867(auto Azshara;565):68 #45868(auto Azshara;566):27 c6370.3:67 c6348.17:43
+c6370.8 | links=#45080(auto Azshara;453):32 c6371.23:47
+c6371.8 | links=c6371.13:32 c6352.26:40
+c8764.8 | links=#45095(auto Azshara;468):47
+c12125.8 | links=#44961(auto Azshara;337):122 #45909(auto Azshara;602):103 c6349.30:81
+o148513.8 | links=#44834(auto Azshara;234):29
+o148514.8 | links=#44825(auto Azshara;225):10
+o148516.8 | links=#44834(auto Azshara;234):31
+o153123.8 | links=c6198.10:38
+c6143.9 | links=c6144.7:116
+c6147.9 | links=#44893(auto Azshara;284):30
+c6148.9 | links=o152620.3:14
+c6184.9 | links=c6184.5:13 c6185.10:33
+c6190.9 | links=#45175(auto Azshara;543):20
+c6198.9 | links=#45012(auto Azshara;385):19
+c8761.9 | links=#45160(auto Azshara;528):30 c8761.55:27
+c8766.9 | links=c8761.37:59
+o148513.9 | links=c6195.24:31
+c6116.10 | links=#11341(auto Azshara;64):23
+c6117.10 | links=#45951(auto Azshara;624):34
+c6143.10 | links=#44969(auto Azshara;345):11
+c6185.10 | links=#44768(auto Azshara;175):73 c6184.9:33
+c6187.10 | links=c6188.3:24
+c6189.10 | links=c6188.1:19
+c6198.10 | links=c6199.4:28 o153123.8:38 c6199.11:36
+c6200.10 | links=c6202.3:32
+c6202.10 | links=c6202.1:26 c6201.12:26
+c6348.10 | links=#45079(auto Azshara;452):21
+c6349.10 | links=#45911(auto Azshara;603):53
+c6377.10 | links=#44769(auto Azshara;176):14
+c8764.10 | links=#45865(auto Azshara;563):25
+o148516.10 | links=#44834(auto Azshara;234):15 c6194.31:6
+o152631.10 | links=#44898(auto Azshara;289):57
+o153123.10 | links=#45015(auto Azshara;388):9
+c6138.11 | links=c6137.15:39
+c6148.11 | links=#44980(auto Azshara;354):45 o152631.4:58
+c6187.11 | links=#45870(auto Azshara;568):39 c6651.1:14 c6187.7:12 c6188.12:6
+c6195.11 | links=#44823(auto Azshara;223):19 c6650.1:12
+c6199.11 | links=c6198.2:37 c6198.6:22 c6198.10:36
+c6349.11 | links=c6350.5:29
+c7885.11 | links=#45889(auto Azshara;587):47 #45893(auto Azshara;591):37
+c8759.11 | links=c8759.15:30
+c12125.11 | links=c6349.3:85
+o148514.11 | links=#44833(auto Azshara;233):16
+o148516.11 | links=#44829(auto Azshara;229):22
+c6136.12 | links=#45072(auto Azshara;445):14 #45108(auto Azshara;480):33
+c6188.12 | links=c6187.11:6
+c6189.12 | links=c6188.1:23 c6188.30:27
+c6190.12 | links=#44760(auto Azshara;167):21
+c6198.12 | links=#45027(auto Azshara;400):9
+c6199.12 | links=#45026(auto Azshara;399):7 #45027(auto Azshara;400):21
+c6200.12 | links=c6202.3:43 c6652.3:25 c6201.12:28
+c6201.12 | links=c6202.10:26 c6200.12:28
+c7885.12 | links=#45888(auto Azshara;586):14
+c8759.12 | links=#26201(auto Azshara;149):68
+c8766.12 | links=#45089(auto Azshara;462):38 #45090(auto Azshara;463):30 #45865(auto Azshara;563):66
+o153123.12 | links=#45028(auto Azshara;401):9
+c6130.13 | links=#44872(auto Azshara;264):19 #45168(auto Azshara;536):16 #45169(auto Azshara;537):41
+c6138.13 | links=#45068(auto Azshara;441):5
+c6199.13 | links=#45011(auto Azshara;384):30 c6199.18:31
+c6200.13 | links=c6652.3:17
+c6352.13 | links=#45868(auto Azshara;566):16
+c6371.13 | links=#45866(auto Azshara;564):40 c6371.8:32
+c8761.13 | links=#44862(auto Azshara;258):30 #45159(auto Azshara;527):32
+c8762.13 | links=#44769(auto Azshara;176):39 c8762.3:42
+o152622.13 | links=#44899(auto Azshara;290):38
+c6130.14 | links=#45170(auto Azshara;538):28
+c6131.14 | links=c6131.5:34
+c6185.14 | links=c6185.15:29
+c6187.14 | links=c6188.4:28
+c6193.14 | links=#44761(auto Azshara;168):10
+c6199.14 | links=c6199.16:19
+c6375.14 | links=#44841(auto Azshara;241):57 #44843(auto Azshara;242):66 c6148.27:62
+c8761.14 | links=#44859(auto Azshara;255):14
+c8766.14 | links=#44864(auto Azshara;260):18
+c6137.15 | links=#45066(auto Azshara;439):23 c6138.11:39
+c6185.15 | links=c6185.14:29 c6185.16:38
+c6194.15 | links=#44789(auto Azshara;195):18
+c6349.15 | links=#45903(auto Azshara;598):45
+c8759.15 | links=#14452(auto Azshara;84):58 #45951(auto Azshara;624):62 c8759.11:30
+c6131.16 | links=#44891(auto Azshara;282):50 c6130.7:28
+c6135.16 | links=#45067(auto Azshara;440):37 #45068(auto Azshara;441):15
+c6185.16 | links=#44766(auto Azshara;173):17 c6186.1:40 c6184.8:36 c6185.15:38
+c6195.16 | links=#44807(auto Azshara;209):20 #44811(auto Azshara;211):14
+c6199.16 | links=#45015(auto Azshara;388):11 c6199.14:19
+c6379.16 | links=#45876(auto Azshara;574):63 #45877(auto Azshara;575):48
+c8762.16 | links=#16722(auto Azshara;98):22
+c6135.17 | links=#45109(auto Azshara;481):52 c6135.19:33
+c6189.17 | links=c6189.27:46 c6188.29:43
+c6348.17 | links=c6348.8:43
+o152622.17 | links=#44894(auto Azshara;285):25 c6148.22:19
+c6190.18 | links=#11903(auto Azshara;65):57
+c6193.18 | links=#6350(auto Azshara;34):30 #8269(auto Azshara;45):37
+c6199.18 | links=#45008(auto Azshara;381):38 c6199.13:31
+c6348.18 | links=c6370.6:50 c6348.7:40
+c6352.18 | links=c13322.1:73 c6350.21:68
+c6378.18 | links=#45004(auto Azshara;378):23
+c8759.18 | links=#994(auto Azshara;5):44
+o152622.18 | links=#44896(auto Azshara;287):35
+c6131.19 | links=#45163(auto Azshara;531):27
+c6135.19 | links=#45108(auto Azshara;480):24 c6135.17:33
+c6194.19 | links=#44810(auto Azshara;210):21 #44821(auto Azshara;221):18 o176356.1:16
+c6350.19 | links=#45911(auto Azshara;603):21 c6352.30:59
+c6351.19 | links=#45905(auto Azshara;600):97 c6350.2:82
+c6371.19 | links=c6352.3:43 c6370.6:40
+c6375.19 | links=#44840(auto Azshara;240):24
+c6379.19 | links=o152631.4:15
+c8762.19 | links=#44992(auto Azshara;366):37
+o152622.19 | links=#44897(auto Azshara;288):6
+c6131.20 | links=#45162(auto Azshara;530):30 #45163(auto Azshara;531):46 c193.4:38
+c8761.20 | links=#45085(auto Azshara;458):37 #45864(auto Azshara;562):50 c8764.3:34
+c6131.21 | links=c6131.22:29
+c6147.21 | links=#44895(auto Azshara;286):43 #44896(auto Azshara;287):65 #44990(auto Azshara;364):43 o152631.3:63 o152631.7:66
+c6193.21 | links=#8081(auto Azshara;43):29
+c6350.21 | links=c6350.2:71 c6349.3:70 c6352.18:68
+c6352.21 | links=#45866(auto Azshara;564):32 c6370.6:58
+c6377.21 | links=#44991(auto Azshara;365):27
+c6131.22 | links=#45165(auto Azshara;533):8 c6131.21:29
+c6148.22 | links=o152622.17:19
+c6189.22 | links=c6189.1:27 c6189.25:32
+c6193.22 | links=#45174(auto Azshara;542):51
+c6350.22 | links=#44941(auto Azshara;320):35
+c8761.22 | links=#44859(auto Azshara;255):37 #45159(auto Azshara;527):47
+c6137.23 | links=#45067(auto Azshara;440):27 c6138.5:21
+c6371.23 | links=c6352.3:44 c6370.8:47
+c6377.23 | links=#44768(auto Azshara;175):18
+c6379.23 | links=c6146.2:55 c8761.32:51
+c8761.23 | links=#44863(auto Azshara;259):39
+c6146.24 | links=#45874(auto Azshara;572):26 c6380.7:55
+c6195.24 | links=#44796(auto Azshara;200):26 #44798(auto Azshara;202):13 #44835(auto Azshara;235):12 o148513.9:31
+c6196.24 | links=
+c6379.24 | links=#44981(auto Azshara;355):25
+c8762.24 | links=#16722(auto Azshara;98):30
+c6189.25 | links=c6188.3:33 c6189.22:32
+c6190.25 | links=#15199(auto Azshara;87):10
+c6148.26 | links=
+c6190.26 | links=#45174(auto Azshara;542):31 #45175(auto Azshara;543):23
+c6349.26 | links=#45903(auto Azshara;598):48
+c6352.26 | links=c6371.8:40
+c6148.27 | links=c6648.1:14 c6375.14:62
+c6189.27 | links=#44997(auto Azshara;371):53 c6189.17:46
+c6190.27 | links=#45176(auto Azshara;544):19
+c6188.28 | links=c6188.4:34 c6187.6:21
+c6190.28 | links=#45173(auto Azshara;541):33
+c6380.28 | links=#44895(auto Azshara;286):9
+c6188.29 | links=c6188.4:23 c6189.17:43
+c6196.29 | links=#44803(auto Azshara;205):17 #44804(auto Azshara;206):14 #44807(auto Azshara;209):20 #44822(auto Azshara;222):18
+c6188.30 | links=#45869(auto Azshara;567):37 c6188.3:33 c6189.12:27
+c6349.30 | links=c13322.1:15 c12125.8:81
+c6352.30 | links=#44942(auto Azshara;321):81 c6350.19:59
+c6377.30 | links=#44770(auto Azshara;177):19
+c6194.31 | links=o148516.10:6
+c6377.31 | links=#44991(auto Azshara;365):24
+c6194.32 | links=#44815(auto Azshara;215):12
+c6377.32 | links=#44768(auto Azshara;175):22
+c8761.32 | links=o152631.4:28 c6379.23:51
+c6378.33 | links=#45894(auto Azshara;592):21 c6378.7:33
+c6196.36 | links=
+c8761.37 | links=#45161(auto Azshara;529):25 c8766.9:59 c8761.67:30
+c8761.38 | links=#45874(auto Azshara;572):79 c6109.1:74
+c6378.42 | links=
+c8761.48 | links=#44870(auto Azshara;262):33 #45161(auto Azshara;529):37
+c6378.51 | links=#45894(auto Azshara;592):35
+c8761.52 | links=#45160(auto Azshara;528):37
+c8761.55 | links=#44864(auto Azshara;260):42 c8761.9:27
+c8761.67 | links=c8761.37:30
+c6195.70 | links=#44787(auto Azshara;194):31
+c6195.74 | links=
+c8761.101 | links=#44870(auto Azshara;262):6
+c8761.102 | links=#45875(auto Azshara;573):63 c6380.7:46
+c8761.116 | links=#44859(auto Azshara;255):41 #44860(auto Azshara;256):22
+c8761.122 | links=

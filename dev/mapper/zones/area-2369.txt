@@ -1,0 +1,3 @@
+Zone areaId 2369 — eine Zeile pro Wegpunkt; Links inline.
+
+#28804 | s;Eastern Kingdoms;Hillsbrad Foothills;Southshore§s;Östliche Königreiche;Vorgebirge von Hillsbrad;Southshore§s;Royaumes de l'est;Contreforts de Hautebrande;Austrivage | x=-803.031 y=-531.727 | size=1

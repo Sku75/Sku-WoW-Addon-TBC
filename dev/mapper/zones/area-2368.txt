@@ -1,0 +1,3 @@
+Zone areaId 2368 — eine Zeile pro Wegpunkt; Links inline.
+
+#28805 | s;Eastern Kingdoms;Hillsbrad Foothills;Tarren Mill§s;Östliche Königreiche;Vorgebirge von Hillsbrad;Tarrens Mühle§s;Royaumes de l'est;Contreforts de Hautebrande;Tarren Mill | x=-27.0354 y=-900.562 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 205 — eine Zeile pro Wegpunkt; Links inline.
+
+#28799 | s;Eastern Kingdoms;Wetlands;Dun Modr§s;Östliche Königreiche;Sumpfland;Dun Modr§s;Royaumes de l'est;Les Paluns;Dun Modr | x=-2610.2583 y=-2350.5583 | size=1

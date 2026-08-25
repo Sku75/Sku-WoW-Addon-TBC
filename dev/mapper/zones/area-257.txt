@@ -1,0 +1,3 @@
+Zone areaId 257 — eine Zeile pro Wegpunkt; Links inline.
+
+#28732 | s;Kalimdor;Teldrassil;Shadowglen;Shadowthread Cave§s;Kalimdor;Teldrassil;Shadowglen;Schattenweberhöhle§s;Kalimdor;Teldrassil;Shadowglen;Shadowthread Cave | x=10756.2 y=-921.301 | size=1

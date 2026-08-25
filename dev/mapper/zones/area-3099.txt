@@ -1,0 +1,3 @@
+Zone areaId 3099 — eine Zeile pro Wegpunkt; Links inline.
+
+#28697 | s;Kalimdor;Silithus;Hive'Zora;Twilight Post§s;Kalimdor;Silithus;Bau des Zoraschwarms;Twilight-Außenposten§s;Kalimdor;Silithus;Ruche'Zora;Poste du Crépuscule | x=-7929.11 y=-1833.28 | size=1

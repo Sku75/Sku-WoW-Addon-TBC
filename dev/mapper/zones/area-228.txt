@@ -1,0 +1,3 @@
+Zone areaId 228 — eine Zeile pro Wegpunkt; Links inline.
+
+#28791 | s;Eastern Kingdoms;Silverpine Forest;The Sepulcher§s;Östliche Königreiche;Silberwald;Das Grabmal§s;Royaumes de l'est;Forêt des Pins argentés;The Sepulcher | x=508.073 y=-1619.02 | size=1

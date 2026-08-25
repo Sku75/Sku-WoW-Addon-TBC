@@ -1,0 +1,3 @@
+Zone areaId 484 — eine Zeile pro Wegpunkt; Links inline.
+
+#28724 | s;Kalimdor;Thousand Needles;Freewind Post§s;Kalimdor;Tausend Nadeln;Freiwindposten§s;Kalimdor;Mille pointes;Freewind Post | x=-5454.07 y=-2445.5 | size=1

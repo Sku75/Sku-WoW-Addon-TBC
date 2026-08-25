@@ -1,0 +1,3 @@
+Zone areaId 198 — eine Zeile pro Wegpunkt; Links inline.
+
+#28817 | s;Eastern Kingdoms;Western Plaguelands;The Weeping Cave;The Weeping Cave§s;Östliche Königreiche;Westliche Pestländer;Die weinende Höhle;Die weinende Höhle§s;Royaumes de l'est;Maleterres de l'ouest;The Weeping Cave;The Weeping Cave | x=2249.61 y=-2389.63 | size=1

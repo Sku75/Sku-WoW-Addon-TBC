@@ -1,0 +1,382 @@
+Zone areaId 1537 — eine Zeile pro Wegpunkt; Links inline.
+
+#512 | auto Ironforge;1§auto Eisenschmiede;1§auto Forgefer;1 | x=-4590 y=-997.5 | size=1 | links=#16829(auto Ironforge;43):1 c6826.1:4
+#516 | auto Ironforge;2§auto Eisenschmiede;2§auto Forgefer;2 | x=-4790.10009765625 y=-906.4000244140625 | size=1 | links=#15525(auto Ironforge;37):33 #22409(entry and exit;down;Ironforge):11
+#814 | auto Ironforge;3§auto Eisenschmiede;3§auto Forgefer;3 | x=-4923.89990234375 y=-1276.200073242188 | size=1 | links=#20374(auto Ironforge;53):11 #27022(auto Ironforge;67):8
+#990 | auto Ironforge;4§auto Eisenschmiede;4§auto Forgefer;4 | x=-4677.5 y=-1245.300048828125 | size=1 | links=#28100(auto Ironforge;68):11 c5387.1:23 c5637.1:21
+#1604 | auto Ironforge;5§auto Eisenschmiede;5§auto Forgefer;5 | x=-4678.89990234375 y=-1315.200073242188 | size=1 | links=#11316(auto Ironforge;22):12 c9616.1:13
+#1635 | central location;The Library;Ironforge§zentralpunkt;Die Bibliothek;Eisenschmiede§emplacement central;The Library;Forgefer | x=-4646.89990234375 y=-1288 | size=1 | links=#11316(auto Ironforge;22):29 #14607(auto Ironforge;33):32 c3979.1:21 c8256.1:10
+#2992 | auto Ironforge;6§auto Eisenschmiede;6§auto Forgefer;6 | x=-4911.5 y=-1290.400024414063 | size=1 | links=#19450(auto Ironforge;51):7 #28413(auto Ironforge;69):4
+#4169 | auto Ironforge;7§auto Eisenschmiede;7§auto Forgefer;7 | x=-4875.5 y=-959.2999877929688 | size=1 | links=#16401(auto Ironforge;40):7 #19086(auto Ironforge;50):10
+#4855 | auto Ironforge;8§auto Eisenschmiede;8§auto Forgefer;8 | x=-4998.10009765625 y=-1115.5 | size=1 | links=#12074(auto Ironforge;24):9 #47123(auto Eisenschmiede;Ironforge;146):12 #12905(auto The Military Ward;Ironforge;4):73
+#4926 | auto Ironforge;9§auto Eisenschmiede;9§auto Forgefer;9 | x=-4979.39990234375 y=-885.2000122070312 | size=1 | links=#14532(auto Ironforge;32):55 #21586(auto Ironforge;57):59 #47141(auto Eisenschmiede;Ironforge;164):58
+#5584 | auto Ironforge;10§auto Eisenschmiede;10§auto Forgefer;10 | x=-4802.5 y=-902 | size=1 | links=#12501(down;Ironforge):13 #18974(auto Ironforge;49):22
+#5825 | auto Ironforge;11§auto Eisenschmiede;11§auto Forgefer;11 | x=-4738.10009765625 y=-894.7000122070312 | size=1 | links=#26162(auto Ironforge;66):57 #17273(auto The Mystic Ward;Ironforge;3):64
+#6000 | central location;Ironforge§Zentralpunkt;Eisenschmiede§emplacement central;Forgefer | x=-4923.80029296875 y=-954 | size=1 | links=#13028(auto Ironforge;28):42 #16606(auto Ironforge;41):13 #19504(auto Ironforge;52):68 #21978(auto Ironforge;60):29 #22836(auto Ironforge;61):79 #25525(auto Ironforge;64):49 #47143(auto Eisenschmiede;Ironforge;166):45
+#6439 | auto Ironforge;12§auto Eisenschmiede;12§auto Forgefer;12 | x=-4889.7001953125 y=-993 | size=1 | links=#8936(auto Ironforge;19):11 c2461.1:5
+#7583 | auto Ironforge;13§auto Eisenschmiede;13§auto Forgefer;13 | x=-4597.5 y=-1239.800048828125 | size=1 | links=#14607(auto Ironforge;33):37 c7936.1:17
+#7859 | auto Ironforge;14§auto Eisenschmiede;14§auto Forgefer;14 | x=-4991.2001953125 y=-1042.200073242188 | size=1 | links=#9509(auto Ironforge;20):29 #19504(auto Ironforge;52):46
+#8474 | auto Ironforge;15§auto Eisenschmiede;15§auto Forgefer;15 | x=-4598.2001953125 y=-999.2000122070312 | size=1 | links=#16829(auto Ironforge;43):6 #20990(auto Ironforge;55):17
+#8609 | auto Ironforge;16§auto Eisenschmiede;16§auto Forgefer;16 | x=-4849.30029296875 y=-885.4000244140625 | size=1 | links=#14867(auto Ironforge;35):53 #17053(auto Ironforge;45):18 #17126(auto Ironforge;46):6 #26162(auto Ironforge;66):55 #28586(s;A;Mailbox;1;Ironforge):5
+#8658 | auto Ironforge;17§auto Eisenschmiede;17§auto Forgefer;17 | x=-4731.5 y=-1146.900024414063 | size=1 | links=c23127.1:10 #8800(auto The Great Forge;Ironforge;17):14
+#8685 | auto Ironforge;18§auto Eisenschmiede;18§auto Forgefer;18 | x=-5050.80029296875 y=-1276.599975585938 | size=1 | links=#24811(auto Ironforge;62):19 c2092.1:18
+#8936 | auto Ironforge;19§auto Eisenschmiede;19§auto Forgefer;19 | x=-4881.80029296875 y=-984.4000244140625 | size=1 | links=#6439(auto Ironforge;12):11 #21506(guild vault;Vault of Ironforge;Ironforge):7
+#9509 | auto Ironforge;20§auto Eisenschmiede;20§auto Forgefer;20 | x=-4992.80029296875 y=-1072.099975585938 | size=1 | links=#7859(auto Ironforge;14):29 #12074(auto Ironforge;24):34 #47194(auto Eisenschmiede;Ironforge;217):16
+#11036 | auto Ironforge;21§auto Eisenschmiede;21§auto Forgefer;21 | x=-4881 y=-966.5 | size=1 | links=#16401(auto Ironforge;40):6 c5108.1:10
+#11316 | auto Ironforge;22§auto Eisenschmiede;22§auto Forgefer;22 | x=-4668.89990234375 y=-1308.099975585938 | size=1 | links=#1604(auto Ironforge;5):12 #1635(central location;The Library;Ironforge):29
+#11389 | s;A;Mailbox;2;Ironforge§s;a;Briefkasten;2;Ironforge§s;A;Boîte aux lettres;2;Forgefer | x=-4909.872431896002 y=-975.5656984846747 | size=1 | links=#21978(auto Ironforge;60):5
+#12021 | auto Ironforge;23§auto Eisenschmiede;23§auto Forgefer;23 | x=-4595.7001953125 y=-965.5 | size=1 | links=#16612(auto Ironforge;42):3 #18055(auto Ironforge;47):5
+#12074 | auto Ironforge;24§auto Eisenschmiede;24§auto Forgefer;24 | x=-4994.7001953125 y=-1106.300048828125 | size=1 | links=#4855(auto Ironforge;8):9 #9509(auto Ironforge;20):34 #47194(auto Eisenschmiede;Ironforge;217):18
+#12381 | auto Ironforge;25§auto Eisenschmiede;25§auto Forgefer;25 | x=-4954.89990234375 y=-913.2000122070312 | size=1 | links=#15933(auto Ironforge;39):16 #21616(auto Ironforge;58):8
+#12501 | down;Ironforge§unten;Eisenschmiede§bas;Forgefer | x=-4800.10009765625 y=-888.6000366210938 | size=1 | links=#5584(auto Ironforge;10):13 #47150(auto moat Ironforge;173):8
+#12520 | auto Ironforge;26§auto Eisenschmiede;26§auto Forgefer;26 | x=-4850.39990234375 y=-872.2999877929688 | size=1 | links=#13743(auto Ironforge;29):13 #17126(auto Ironforge;46):6 c14183.1:8 c27478.1:10
+#12589 | auto Ironforge;27§auto Eisenschmiede;27§auto Forgefer;27 | x=-4617.2001953125 y=-967.7000122070312 | size=1 | links=#20990(auto Ironforge;55):28 #21058(auto Ironforge;56):15 #15390(auto The Mystic Ward;Ironforge;2):28
+#13028 | auto Ironforge;28§auto Eisenschmiede;28§auto Forgefer;28 | x=-4882.39990234375 y=-942.9000244140625 | size=1 | links=#6000(central location;Ironforge):42 #19086(auto Ironforge;50):7
+#13636 | Dinita Stonemantle;Vault Administrator;Ironforge;1;33.48;60.22§Dinita Zasterstein;Administratorin;Eisenschmiede;1;33.48;60.22§Dinita Mantepierre;Vault Administrator;Forgefer;1;33.48;60.22 | x=-4881.736588403082 y=-981.7975246752275 | size=1
+#13743 | auto Ironforge;29§auto Eisenschmiede;29§auto Forgefer;29 | x=-4840.5 y=-863.6000366210938 | size=1 | links=#12520(auto Ironforge;26):13 c5111.1:6
+#13794 | auto Ironforge;30§auto Eisenschmiede;30§auto Forgefer;30 | x=-4867 y=-873.6000366210938 | size=1 | links=#17053(auto Ironforge;45):4 c5110.1:8
+#13825 | auto Ironforge;31§auto Eisenschmiede;31§auto Forgefer;31 | x=-5037.80029296875 y=-1196.900024414063 | size=1 | links=#20467(auto Ironforge;54):5 c5119.1:9 c5120.1:9 c7976.1:4
+#14532 | auto Ironforge;32§auto Eisenschmiede;32§auto Forgefer;32 | x=-5014.5 y=-841.9000244140625 | size=1 | links=#25989(entry and exit;Gates of Ironforge):22 #4926(auto Ironforge;9):55 #17287(passage;from;Ironforge;to;Dun Morogh):3
+#14607 | auto Ironforge;33§auto Eisenschmiede;33§auto Forgefer;33 | x=-4621.7001953125 y=-1268 | size=1 | links=#1635(central location;The Library;Ironforge):32 #7583(auto Ironforge;13):37
+#14691 | auto Ironforge;34§auto Eisenschmiede;34§auto Forgefer;34 | x=-4942.30029296875 y=-1030.5 | size=1 | links=#15807(auto Ironforge;38):11 #18058(auto Ironforge;48):63
+#14867 | auto Ironforge;35§auto Eisenschmiede;35§auto Forgefer;35 | x=-4901.7001953125 y=-895 | size=1 | links=#8609(auto Ironforge;16):53 #21586(auto Ironforge;57):45 #21690(auto Ironforge;59):38 c5595.19:0
+#14893 | auto Ironforge;36§auto Eisenschmiede;36§auto Forgefer;36 | x=-4944.30029296875 y=-1014.700012207031 | size=1 | links=#15807(auto Ironforge;38):6 #25525(auto Ironforge;64):17
+#15525 | auto Ironforge;37§auto Eisenschmiede;37§auto Forgefer;37 | x=-4823.80029296875 y=-905.2000122070312 | size=1 | links=#516(auto Ironforge;2):33 #22836(auto Ironforge;61):35
+#15807 | auto Ironforge;38§auto Eisenschmiede;38§auto Forgefer;38 | x=-4947.2001953125 y=-1020.400024414063 | size=1 | links=#14691(auto Ironforge;34):11 #14893(auto Ironforge;36):6
+#15933 | auto Ironforge;39§auto Eisenschmiede;39§auto Forgefer;39 | x=-4944.89990234375 y=-926 | size=1 | links=#12381(auto Ironforge;25):16 #16606(auto Ironforge;41):21 #21690(auto Ironforge;59):15 c15119.1:22
+#16401 | auto Ironforge;40§auto Eisenschmiede;40§auto Forgefer;40 | x=-4882.5 y=-960.4000244140625 | size=1 | links=#4169(auto Ironforge;7):7 #11036(auto Ironforge;21):6
+#16606 | auto Ironforge;41§auto Eisenschmiede;41§auto Forgefer;41 | x=-4931.5 y=-942.5 | size=1 | links=#6000(central location;Ironforge):13 #15933(auto Ironforge;39):21
+#16612 | auto Ironforge;42§auto Eisenschmiede;42§auto Forgefer;42 | x=-4592.80029296875 y=-964.2000122070312 | size=1 | links=#12021(auto Ironforge;23):3 c8507.1:6
+#16829 | auto Ironforge;43§auto Eisenschmiede;43§auto Forgefer;43 | x=-4591.80029296875 y=-997.2999877929688 | size=1 | links=#512(auto Ironforge;1):1 #8474(auto Ironforge;15):6
+#16933 | auto Ironforge;44§auto Eisenschmiede;44§auto Forgefer;44 | x=-4895.10009765625 y=-986 | size=1 | links=#21978(auto Ironforge;60):13 c2461.1:14
+#17053 | auto Ironforge;45§auto Eisenschmiede;45§auto Forgefer;45 | x=-4865.89990234375 y=-878.4000244140625 | size=1 | links=#8609(auto Ironforge;16):18 #13794(auto Ironforge;30):4
+#17126 | auto Ironforge;46§auto Eisenschmiede;46§auto Forgefer;46 | x=-4849.89990234375 y=-878.5 | size=1 | links=#8609(auto Ironforge;16):6 #12520(auto Ironforge;26):6
+#17287 | passage;from;Ironforge;to;Dun Morogh§passage;von;Eisenschmiede;nach;Dun Morogh§passage;de;Forgefer;vers;Dun Morogh | x=-5016.7001953125 y=-839.7999877929688 | size=1 | links=#12342(passage;from;Gates of Ironforge;Dun Morogh;to;Ironforge):10 #14532(auto Ironforge;32):3
+#17456 | s;A;Mailbox;3;Ironforge§s;a;Briefkasten;3;Ironforge§s;A;Boîte aux lettres;3;Forgefer | x=-4950.299022421366 y=-1277.930238427387 | size=1 | links=#20374(auto Ironforge;53):17 #47097(auto The Military Ward;Ironforge;120):4 #4249(auto The Military Ward;Ironforge;2):64 c5595.2:42
+#18055 | auto Ironforge;47§auto Eisenschmiede;47§auto Forgefer;47 | x=-4600.2001953125 y=-968.1000366210938 | size=1 | links=#12021(auto Ironforge;23):5 #21058(auto Ironforge;56):8
+#18058 | auto Ironforge;48§auto Eisenschmiede;48§auto Forgefer;48 | x=-4884.80029296875 y=-1058.200073242188 | size=1 | links=#14691(auto Ironforge;34):63 #10349(auto The Great Forge;Ironforge;21):5
+#18974 | auto Ironforge;49§auto Eisenschmiede;49§auto Forgefer;49 | x=-4780.39990234375 y=-903.7000122070312 | size=1 | links=#5584(auto Ironforge;10):22 #22409(entry and exit;down;Ironforge):5
+#19009 | s;A;Mailbox;4;Ironforge§s;a;Briefkasten;4;Ironforge§s;A;Boîte aux lettres;4;Forgefer | x=-4828.251957246939 y=-1285.930238427387 | size=1 | links=#7707(Tinker Town;Ironforge):9
+#19086 | auto Ironforge;50§auto Eisenschmiede;50§auto Forgefer;50 | x=-4878.89990234375 y=-949.6000366210938 | size=1 | links=#4169(auto Ironforge;7):10 #13028(auto Ironforge;28):7
+#19450 | auto Ironforge;51§auto Eisenschmiede;51§auto Forgefer;51 | x=-4908.2001953125 y=-1284 | size=1 | links=#2992(auto Ironforge;6):7 #25640(auto Ironforge;65):9
+#19504 | auto Ironforge;52§auto Eisenschmiede;52§auto Forgefer;52 | x=-4975.60009765625 y=-998.9000244140625 | size=1 | links=#6000(central location;Ironforge):68 #7859(auto Ironforge;14):46 #47143(auto Eisenschmiede;Ironforge;166):24
+#20374 | auto Ironforge;53§auto Eisenschmiede;53§auto Forgefer;53 | x=-4933.89990234375 y=-1270.900024414063 | size=1 | links=#814(auto Ironforge;3):11 #17456(s;A;Mailbox;3;Ironforge):17
+#20467 | auto Ironforge;54§auto Eisenschmiede;54§auto Forgefer;54 | x=-5040.89990234375 y=-1192.300048828125 | size=1 | links=#13825(auto Ironforge;31):5 #25330(auto Ironforge;63):8
+#20928 | passage;from;Tinker Town;Ironforge;to;deep tram§passage;von;Tüftlerstadt;Eisenschmiede;zur;tiefenbahn§passage;de;Tinker Town;Forgefer;vers;deep tram | x=-4839.5 y=-1316.800048828125 | size=1 | links=#7707(Tinker Town;Ironforge):40
+#20990 | auto Ironforge;55§auto Eisenschmiede;55§auto Forgefer;55 | x=-4615.80029296875 y=-995.9000244140625 | size=1 | links=#8474(auto Ironforge;15):17 #12589(auto Ironforge;27):28 #5594(auto The Mystic Ward;Ironforge;1):33
+#21058 | auto Ironforge;56§auto Eisenschmiede;56§auto Forgefer;56 | x=-4603.7001953125 y=-960.4000244140625 | size=1 | links=#12589(auto Ironforge;27):15 #18055(auto Ironforge;47):8
+#21506 | guild vault;Vault of Ironforge;Ironforge§gildenbank;Tresor von Eisenschmiede;Eisenschmiede§guild vault;Vault of Ironforge;Forgefer | x=-4886.39990234375 y=-978.7000122070312 | size=1 | links=#8936(auto Ironforge;19):7
+#21586 | auto Ironforge;57§auto Eisenschmiede;57§auto Forgefer;57 | x=-4926.7001953125 y=-856.7000122070312 | size=1 | links=#4926(auto Ironforge;9):59 #14867(auto Ironforge;35):45
+#21616 | auto Ironforge;58§auto Eisenschmiede;58§auto Forgefer;58 | x=-4954.10009765625 y=-904.7999877929688 | size=1 | links=#12381(auto Ironforge;25):8 c8720.1:9
+#21690 | auto Ironforge;59§auto Eisenschmiede;59§auto Forgefer;59 | x=-4932 y=-918 | size=1 | links=#14867(auto Ironforge;35):38 #15933(auto Ironforge;39):15
+#21978 | auto Ironforge;60§auto Eisenschmiede;60§auto Forgefer;60 | x=-4904.337974138387 y=-975.9497184216846 | size=1 | links=#6000(central location;Ironforge):29 #11389(s;A;Mailbox;2;Ironforge):5 #16933(auto Ironforge;44):13 c16009.1:14
+#22409 | entry and exit;down;Ironforge§ein- und ausgang;unten;Eisenschmiede§entrée et sortie;bas;Forgefer | x=-4779.30029296875 y=-908.7000122070312 | size=1 | links=#516(auto Ironforge;2):11 #18974(auto Ironforge;49):5
+#22836 | auto Ironforge;61§auto Eisenschmiede;61§auto Forgefer;61 | x=-4859.30029296875 y=-907.6000366210938 | size=1 | links=#6000(central location;Ironforge):79 #15525(auto Ironforge;37):35 #47147(auto Eisenschmiede;Ironforge;170):18
+#24811 | auto Ironforge;62§auto Eisenschmiede;62§auto Forgefer;62 | x=-5035.80029296875 y=-1264.300048828125 | size=1 | links=#8685(auto Ironforge;18):19 #16898(auto Hall of Arms;Ironforge;1):16
+#25330 | auto Ironforge;63§auto Eisenschmiede;63§auto Forgefer;63 | x=-5048.60009765625 y=-1196.700073242188 | size=1 | links=#20467(auto Ironforge;54):8 c13084.1:11
+#25525 | auto Ironforge;64§auto Eisenschmiede;64§auto Forgefer;64 | x=-4946.5 y=-997.5 | size=1 | links=#6000(central location;Ironforge):49 #14893(auto Ironforge;36):17
+#25640 | auto Ironforge;65§auto Eisenschmiede;65§auto Forgefer;65 | x=-4916.7001953125 y=-1279.200073242188 | size=1 | links=#19450(auto Ironforge;51):9 c5122.1:4
+#26162 | auto Ironforge;66§auto Eisenschmiede;66§auto Forgefer;66 | x=-4793.80029296875 y=-881.4000244140625 | size=1 | links=#5825(auto Ironforge;11):57 #8609(auto Ironforge;16):55
+#27022 | auto Ironforge;67§auto Eisenschmiede;67§auto Forgefer;67 | x=-4928 y=-1283.700073242188 | size=1 | links=#814(auto Ironforge;3):8 #28413(auto Ironforge;69):13
+#28100 | auto Ironforge;68§auto Eisenschmiede;68§auto Forgefer;68 | x=-4683.10009765625 y=-1235.200073242188 | size=1 | links=#990(auto Ironforge;4):11 #10240(Hall of Explorers;Ironforge):9
+#28413 | auto Ironforge;69§auto Eisenschmiede;69§auto Forgefer;69 | x=-4916 y=-1288.700073242188 | size=1 | links=#2992(auto Ironforge;6):4 #27022(auto Ironforge;67):13 c5123.1:4
+#28586 | s;A;Mailbox;1;Ironforge§s;a;Briefkasten;1;Ironforge§s;A;Boîte aux lettres;1;Forgefer | x=-4848.34375 y=-880.4132690429688 | size=1 | links=#8609(auto Ironforge;16):5
+#28765 | s;Eastern Kingdoms;capital;Ironforge§s;Östliche Königreiche;Hauptstadt;Ironforge§s;Royaumes de l'est;capital;Forgefer | x=-5021 y=-834.059 | size=1
+#45229 | auto Ironforge;70§auto Eisenschmiede;70§auto Forgefer;70 | x=-4808.2001953125 y=-1182.800048828125 | size=1 | links=#6012(auto The Great Forge;Ironforge;11):11 #25318(auto The Great Forge;Ironforge;68):6
+#45231 | auto Ironforge;71§auto Eisenschmiede;71§auto Forgefer;71 | x=-4801.7001953125 y=-1190.599975585938 | size=1 | links=#45232(auto Ironforge;72):5 c5158.1:5 #25318(auto The Great Forge;Ironforge;68):7
+#45232 | auto Ironforge;72§auto Eisenschmiede;72§auto Forgefer;72 | x=-4807.30029296875 y=-1190.800048828125 | size=1 | links=#45231(auto Ironforge;71):5 c11065.1:1
+#47051 | auto Inside;portal to blasted lands;Hall of Mysteries;Ironforge;74§auto Drinnen;portal zu verwüsted lande;Halle der Mysterien;Eisenschmiede;74§auto Intérieur;portal to blasted lands;Hall of Mysteries;Forgefer;74 | x=-4607.30029296875 y=-928.2999877929688 | size=1 | links=c2489.1:13
+#47052 | auto Inside;Hall of Mysteries;Ironforge;75§auto Drinnen;Halle der Mysterien;Eisenschmiede;75§auto Intérieur;Hall of Mysteries;Forgefer;75 | x=-4597.5 y=-910.2000122070312 | size=1 | links=#47053(auto Inside;Hall of Mysteries;Ironforge;76):17 #6356(auto inside;Hall of Mysteries;Ironforge;1):7
+#47053 | auto Inside;Hall of Mysteries;Ironforge;76§auto Drinnen;Halle der Mysterien;Eisenschmiede;76§auto Intérieur;Hall of Mysteries;Forgefer;76 | x=-4584.60009765625 y=-922.2000122070312 | size=1 | links=#47052(auto Inside;Hall of Mysteries;Ironforge;75):17 #47054(auto Inside;Hall of Mysteries;Ironforge;77):10
+#47054 | auto Inside;Hall of Mysteries;Ironforge;77§auto Drinnen;Halle der Mysterien;Eisenschmiede;77§auto Intérieur;Hall of Mysteries;Forgefer;77 | x=-4579.39990234375 y=-913.2999877929688 | size=1 | links=#47053(auto Inside;Hall of Mysteries;Ironforge;76):10 #47055(auto Inside;Hall of Mysteries;Ironforge;78):5
+#47055 | auto Inside;Hall of Mysteries;Ironforge;78§auto Drinnen;Halle der Mysterien;Eisenschmiede;78§auto Intérieur;Hall of Mysteries;Forgefer;78 | x=-4578.5 y=-907.7999877929688 | size=1 | links=#47054(auto Inside;Hall of Mysteries;Ironforge;77):5 #47056(auto Inside;Hall of Mysteries;Ironforge;79):8
+#47056 | auto Inside;Hall of Mysteries;Ironforge;79§auto Drinnen;Halle der Mysterien;Eisenschmiede;79§auto Intérieur;Hall of Mysteries;Forgefer;79 | x=-4579.39990234375 y=-899.5 | size=1 | links=#47055(auto Inside;Hall of Mysteries;Ironforge;78):8 #47057(auto Inside;Hall of Mysteries;Ironforge;80):10
+#47057 | auto Inside;Hall of Mysteries;Ironforge;80§auto Drinnen;Halle der Mysterien;Eisenschmiede;80§auto Intérieur;Hall of Mysteries;Forgefer;80 | x=-4584.10009765625 y=-890.5 | size=1 | links=#47056(auto Inside;Hall of Mysteries;Ironforge;79):10 #47058(auto Inside;Hall of Mysteries;Ironforge;81):10
+#47058 | auto Inside;Hall of Mysteries;Ironforge;81§auto Drinnen;Halle der Mysterien;Eisenschmiede;81§auto Intérieur;Hall of Mysteries;Forgefer;81 | x=-4592.5 y=-884.2000122070312 | size=1 | links=#47057(auto Inside;Hall of Mysteries;Ironforge;80):10 #47059(auto Inside;Hall of Mysteries;Ironforge;82):10
+#47059 | auto Inside;Hall of Mysteries;Ironforge;82§auto Drinnen;Halle der Mysterien;Eisenschmiede;82§auto Intérieur;Hall of Mysteries;Forgefer;82 | x=-4603.10009765625 y=-881.7000122070312 | size=1 | links=#47058(auto Inside;Hall of Mysteries;Ironforge;81):10 #47060(auto Inside;Hall of Mysteries;Ironforge;83):9
+#47060 | auto Inside;Hall of Mysteries;Ironforge;83§auto Drinnen;Halle der Mysterien;Eisenschmiede;83§auto Intérieur;Hall of Mysteries;Forgefer;83 | x=-4612.7001953125 y=-883 | size=1 | links=#47059(auto Inside;Hall of Mysteries;Ironforge;82):9 #47061(auto Inside;Hall of Mysteries;Ironforge;84):10
+#47061 | auto Inside;Hall of Mysteries;Ironforge;84§auto Drinnen;Halle der Mysterien;Eisenschmiede;84§auto Intérieur;Hall of Mysteries;Forgefer;84 | x=-4621.80029296875 y=-888.2999877929688 | size=1 | links=#47060(auto Inside;Hall of Mysteries;Ironforge;83):10 #47062(auto Inside;Hall of Mysteries;Ironforge;85):10
+#47062 | auto Inside;Hall of Mysteries;Ironforge;85§auto Drinnen;Halle der Mysterien;Eisenschmiede;85§auto Intérieur;Hall of Mysteries;Forgefer;85 | x=-4629.89990234375 y=-894.6000366210938 | size=1 | links=#47061(auto Inside;Hall of Mysteries;Ironforge;84):10 #47063(auto Inside;Hall of Mysteries;Ironforge;86):9
+#47063 | auto Inside;Hall of Mysteries;Ironforge;86§auto Drinnen;Halle der Mysterien;Eisenschmiede;86§auto Intérieur;Hall of Mysteries;Forgefer;86 | x=-4636.10009765625 y=-902.2000122070312 | size=1 | links=#47062(auto Inside;Hall of Mysteries;Ironforge;85):9 #47064(auto Inside;Hall of Mysteries;Ironforge;87):7
+#47064 | auto Inside;Hall of Mysteries;Ironforge;87§auto Drinnen;Halle der Mysterien;Eisenschmiede;87§auto Intérieur;Hall of Mysteries;Forgefer;87 | x=-4631.10009765625 y=-907.2999877929688 | size=1 | links=#47063(auto Inside;Hall of Mysteries;Ironforge;86):7 #47065(auto Inside;Hall of Mysteries;Ironforge;88):12 #47066(auto Inside;Hall of Mysteries;Ironforge;89):3
+#47065 | auto Inside;Hall of Mysteries;Ironforge;88§auto Drinnen;Halle der Mysterien;Eisenschmiede;88§auto Intérieur;Hall of Mysteries;Forgefer;88 | x=-4634.89990234375 y=-918.7999877929688 | size=1 | links=#47064(auto Inside;Hall of Mysteries;Ironforge;87):12 c6179.1:13
+#47066 | auto Inside;Hall of Mysteries;Ironforge;89§auto Drinnen;Halle der Mysterien;Eisenschmiede;89§auto Intérieur;Hall of Mysteries;Forgefer;89 | x=-4627.2001953125 y=-906.6000366210938 | size=1 | links=#47064(auto Inside;Hall of Mysteries;Ironforge;87):3 #47067(auto Inside;Hall of Mysteries;Ironforge;90):9
+#47067 | auto Inside;Hall of Mysteries;Ironforge;90§auto Drinnen;Halle der Mysterien;Eisenschmiede;90§auto Intérieur;Hall of Mysteries;Forgefer;90 | x=-4620.2001953125 y=-900.7999877929688 | size=1 | links=#47066(auto Inside;Hall of Mysteries;Ironforge;89):9 #47068(auto Inside;Hall of Mysteries;Ironforge;91):6 c5141.1:7 c6178.1:7
+#47068 | auto Inside;Hall of Mysteries;Ironforge;91§auto Drinnen;Halle der Mysterien;Eisenschmiede;91§auto Intérieur;Hall of Mysteries;Forgefer;91 | x=-4617 y=-895.5 | size=1 | links=#47067(auto Inside;Hall of Mysteries;Ironforge;90):6 #47069(auto Inside;Hall of Mysteries;Ironforge;92):10
+#47069 | auto Inside;Hall of Mysteries;Ironforge;92§auto Drinnen;Halle der Mysterien;Eisenschmiede;92§auto Intérieur;Hall of Mysteries;Forgefer;92 | x=-4608.10009765625 y=-890.1000366210938 | size=1 | links=#47068(auto Inside;Hall of Mysteries;Ironforge;91):10 #47070(auto Inside;Hall of Mysteries;Ironforge;93):5
+#47070 | auto Inside;Hall of Mysteries;Ironforge;93§auto Drinnen;Halle der Mysterien;Eisenschmiede;93§auto Intérieur;Hall of Mysteries;Forgefer;93 | x=-4602.39990234375 y=-890.7999877929688 | size=1 | links=#47069(auto Inside;Hall of Mysteries;Ironforge;92):5 #47071(auto Inside;Hall of Mysteries;Ironforge;94):8
+#47071 | auto Inside;Hall of Mysteries;Ironforge;94§auto Drinnen;Halle der Mysterien;Eisenschmiede;94§auto Intérieur;Hall of Mysteries;Forgefer;94 | x=-4593.89990234375 y=-893.1000366210938 | size=1 | links=#47070(auto Inside;Hall of Mysteries;Ironforge;93):8 #47072(auto Inside;Hall of Mysteries;Ironforge;95):11 c5147.1:8
+#47072 | auto Inside;Hall of Mysteries;Ironforge;95§auto Drinnen;Halle der Mysterien;Eisenschmiede;95§auto Intérieur;Hall of Mysteries;Forgefer;95 | x=-4587.89990234375 y=-902.4000244140625 | size=1 | links=#47071(auto Inside;Hall of Mysteries;Ironforge;94):11 #47073(auto Inside;Hall of Mysteries;Ironforge;96):9
+#47073 | auto Inside;Hall of Mysteries;Ironforge;96§auto Drinnen;Halle der Mysterien;Eisenschmiede;96§auto Intérieur;Hall of Mysteries;Forgefer;96 | x=-4587.5 y=-911.6000366210938 | size=1 | links=#47072(auto Inside;Hall of Mysteries;Ironforge;95):9 #47074(auto Inside;Hall of Mysteries;Ironforge;97):9
+#47074 | auto Inside;Hall of Mysteries;Ironforge;97§auto Drinnen;Halle der Mysterien;Eisenschmiede;97§auto Intérieur;Hall of Mysteries;Forgefer;97 | x=-4592.2001953125 y=-920 | size=1 | links=#47073(auto Inside;Hall of Mysteries;Ironforge;96):9 #47075(auto Inside;Hall of Mysteries;Ironforge;98):5
+#47075 | auto Inside;Hall of Mysteries;Ironforge;98§auto Drinnen;Halle der Mysterien;Eisenschmiede;98§auto Intérieur;Hall of Mysteries;Forgefer;98 | x=-4596 y=-923.6000366210938 | size=1 | links=#47074(auto Inside;Hall of Mysteries;Ironforge;97):5 #47076(auto Inside;Hall of Mysteries;Ironforge;99):5 c5146.1:7
+#47076 | auto Inside;Hall of Mysteries;Ironforge;99§auto Drinnen;Halle der Mysterien;Eisenschmiede;99§auto Intérieur;Hall of Mysteries;Forgefer;99 | x=-4600.30029296875 y=-926.9000244140625 | size=1 | links=#47075(auto Inside;Hall of Mysteries;Ironforge;98):5 #47077(auto Inside;Hall of Mysteries;Ironforge;100):2
+#47077 | auto Inside;Hall of Mysteries;Ironforge;100§auto Drinnen;Halle der Mysterien;Eisenschmiede;100§auto Intérieur;Hall of Mysteries;Forgefer;100 | x=-4602 y=-928.1000366210938 | size=1 | links=#47076(auto Inside;Hall of Mysteries;Ironforge;99):2 #47078(auto Inside;Hall of Mysteries;Ironforge;101):8
+#47078 | auto Inside;Hall of Mysteries;Ironforge;101§auto Drinnen;Halle der Mysterien;Eisenschmiede;101§auto Intérieur;Hall of Mysteries;Forgefer;101 | x=-4609.30029296875 y=-933.2999877929688 | size=1 | links=#47077(auto Inside;Hall of Mysteries;Ironforge;100):8 #47079(auto Inside;Hall of Mysteries;Ironforge;102):12
+#47079 | auto Inside;Hall of Mysteries;Ironforge;102§auto Drinnen;Halle der Mysterien;Eisenschmiede;102§auto Intérieur;Hall of Mysteries;Forgefer;102 | x=-4621.60009765625 y=-937.2999877929688 | size=1 | links=#47078(auto Inside;Hall of Mysteries;Ironforge;101):12 c6179.1:13
+#47080 | auto inside;Inside;The Forlorn Cavern;Ironforge;103§auto drinnen;Drinnen;Das düstere Viertel;Eisenschmiede;103§auto intérieur;Intérieur;The Forlorn Cavern;Forgefer;103 | x=-4596.5 y=-1074.099975585938 | size=1 | links=#47081(auto inside;Inside;The Forlorn Cavern;Ironforge;104):6 c10455.1:11
+#47081 | auto inside;Inside;The Forlorn Cavern;Ironforge;104§auto drinnen;Drinnen;Das düstere Viertel;Eisenschmiede;104§auto intérieur;Intérieur;The Forlorn Cavern;Forgefer;104 | x=-4596.2001953125 y=-1080.900024414063 | size=1 | links=#47080(auto inside;Inside;The Forlorn Cavern;Ironforge;103):6 #47082(auto inside;Inside;The Forlorn Cavern;Ironforge;105):5
+#47082 | auto inside;Inside;The Forlorn Cavern;Ironforge;105§auto drinnen;Drinnen;Das düstere Viertel;Eisenschmiede;105§auto intérieur;Intérieur;The Forlorn Cavern;Forgefer;105 | x=-4596.89990234375 y=-1086.400024414063 | size=1 | links=#47081(auto inside;Inside;The Forlorn Cavern;Ironforge;104):5 #47083(auto inside;Inside;The Forlorn Cavern;Ironforge;106):3
+#47083 | auto inside;Inside;The Forlorn Cavern;Ironforge;106§auto drinnen;Drinnen;Das düstere Viertel;Eisenschmiede;106§auto intérieur;Intérieur;The Forlorn Cavern;Forgefer;106 | x=-4600.80029296875 y=-1085.800048828125 | size=1 | links=#47082(auto inside;Inside;The Forlorn Cavern;Ironforge;105):3 #47084(auto inside;Inside;The Forlorn Cavern;Ironforge;107):7
+#47084 | auto inside;Inside;The Forlorn Cavern;Ironforge;107§auto drinnen;Drinnen;Das düstere Viertel;Eisenschmiede;107§auto intérieur;Intérieur;The Forlorn Cavern;Forgefer;107 | x=-4608.2001953125 y=-1084.5 | size=1 | links=#47083(auto inside;Inside;The Forlorn Cavern;Ironforge;106):7 #47085(auto inside;Inside;The Forlorn Cavern;Ironforge;108):5
+#47085 | auto inside;Inside;The Forlorn Cavern;Ironforge;108§auto drinnen;Drinnen;Das düstere Viertel;Eisenschmiede;108§auto intérieur;Intérieur;The Forlorn Cavern;Forgefer;108 | x=-4608.80029296875 y=-1078.800048828125 | size=1 | links=#47084(auto inside;Inside;The Forlorn Cavern;Ironforge;107):5 #47086(auto Inside;The Forlorn Cavern;Ironforge;109):10
+#47086 | auto Inside;The Forlorn Cavern;Ironforge;109§auto Drinnen;Das düstere Viertel;Eisenschmiede;109§auto Intérieur;The Forlorn Cavern;Forgefer;109 | x=-4607.30029296875 y=-1068.400024414063 | size=1 | links=#47085(auto inside;Inside;The Forlorn Cavern;Ironforge;108):10 #47087(auto inside;Inside;The Forlorn Cavern;Ironforge;110):6
+#47087 | auto inside;Inside;The Forlorn Cavern;Ironforge;110§auto drinnen;Drinnen;Das düstere Viertel;Eisenschmiede;110§auto intérieur;Intérieur;The Forlorn Cavern;Forgefer;110 | x=-4613.39990234375 y=-1067.599975585938 | size=1 | links=#47086(auto Inside;The Forlorn Cavern;Ironforge;109):6 #47088(auto The Forlorn Cavern;Ironforge;111):3
+#47088 | auto The Forlorn Cavern;Ironforge;111§auto Das düstere Viertel;Eisenschmiede;111§auto The Forlorn Cavern;Forgefer;111 | x=-4616.39990234375 y=-1067.200073242188 | size=1 | links=#47087(auto inside;Inside;The Forlorn Cavern;Ironforge;110):3 #47089(auto The Forlorn Cavern;Ironforge;112):5
+#47089 | auto The Forlorn Cavern;Ironforge;112§auto Das düstere Viertel;Eisenschmiede;112§auto The Forlorn Cavern;Forgefer;112 | x=-4617.89990234375 y=-1072.400024414063 | size=1 | links=#47088(auto The Forlorn Cavern;Ironforge;111):5 #47090(auto The Forlorn Cavern;Ironforge;113):5
+#47090 | auto The Forlorn Cavern;Ironforge;113§auto Das düstere Viertel;Eisenschmiede;113§auto The Forlorn Cavern;Forgefer;113 | x=-4618.60009765625 y=-1077.800048828125 | size=1 | links=#47089(auto The Forlorn Cavern;Ironforge;112):5 #47091(auto The Forlorn Cavern;Ironforge;114):7
+#47091 | auto The Forlorn Cavern;Ironforge;114§auto Das düstere Viertel;Eisenschmiede;114§auto The Forlorn Cavern;Forgefer;114 | x=-4619.39990234375 y=-1085.300048828125 | size=1 | links=#47090(auto The Forlorn Cavern;Ironforge;113):7 c6120.1:5
+#47092 | auto Inside;The Forlorn Cavern;Ironforge;115§auto Drinnen;Das düstere Viertel;Eisenschmiede;115§auto Intérieur;The Forlorn Cavern;Forgefer;115 | x=-4606.30029296875 y=-1119.800048828125 | size=1 | links=#47093(auto Inside;The Forlorn Cavern;Ironforge;116):8 c5173.1:10
+#47093 | auto Inside;The Forlorn Cavern;Ironforge;116§auto Drinnen;Das düstere Viertel;Eisenschmiede;116§auto Intérieur;The Forlorn Cavern;Forgefer;116 | x=-4598.10009765625 y=-1118.700073242188 | size=1 | links=#47092(auto Inside;The Forlorn Cavern;Ironforge;115):8 #47094(auto Inside;The Forlorn Cavern;Ironforge;117):6
+#47094 | auto Inside;The Forlorn Cavern;Ironforge;117§auto Drinnen;Das düstere Viertel;Eisenschmiede;117§auto Intérieur;The Forlorn Cavern;Forgefer;117 | x=-4592 y=-1118.200073242188 | size=1 | links=#47093(auto Inside;The Forlorn Cavern;Ironforge;116):6 #47095(auto Inside;The Forlorn Cavern;Ironforge;118):3
+#47095 | auto Inside;The Forlorn Cavern;Ironforge;118§auto Drinnen;Das düstere Viertel;Eisenschmiede;118§auto Intérieur;The Forlorn Cavern;Forgefer;118 | x=-4592.7001953125 y=-1115.200073242188 | size=1 | links=#47094(auto Inside;The Forlorn Cavern;Ironforge;117):3 #47096(auto Inside;The Forlorn Cavern;Ironforge;119):7
+#47096 | auto Inside;The Forlorn Cavern;Ironforge;119§auto Drinnen;Das düstere Viertel;Eisenschmiede;119§auto Intérieur;The Forlorn Cavern;Forgefer;119 | x=-4593 y=-1108 | size=1 | links=#47095(auto Inside;The Forlorn Cavern;Ironforge;118):7 c5172.1:7
+#47097 | auto The Military Ward;Ironforge;120§auto Das Militärviertel;Eisenschmiede;120§auto The Military Ward;Forgefer;120 | x=-4953.2001953125 y=-1273.900024414063 | size=1 | links=#17456(s;A;Mailbox;3;Ironforge):4 #47098(auto Inside;The Military Ward;Ironforge;121):5
+#47098 | auto Inside;The Military Ward;Ironforge;121§auto Drinnen;Das Militärviertel;Eisenschmiede;121§auto Intérieur;The Military Ward;Forgefer;121 | x=-4956.30029296875 y=-1278.900024414063 | size=1 | links=#47097(auto The Military Ward;Ironforge;120):5 #47099(auto Inside;The Military Ward;Ironforge;122):5
+#47099 | auto Inside;The Military Ward;Ironforge;122§auto Drinnen;Das Militärviertel;Eisenschmiede;122§auto Intérieur;The Military Ward;Forgefer;122 | x=-4959.5 y=-1283.700073242188 | size=1 | links=#47098(auto Inside;The Military Ward;Ironforge;121):5 #47100(auto Inside;The Military Ward;Ironforge;123):6 #47101(auto Inside;The Military Ward;Ironforge;124):10
+#47100 | auto Inside;The Military Ward;Ironforge;123§auto Drinnen;Das Militärviertel;Eisenschmiede;123§auto Intérieur;The Military Ward;Forgefer;123 | x=-4965.89990234375 y=-1282.300048828125 | size=1 | links=#47099(auto Inside;The Military Ward;Ironforge;122):6 c5605.1:8
+#47101 | auto Inside;The Military Ward;Ironforge;124§auto Drinnen;Das Militärviertel;Eisenschmiede;124§auto Intérieur;The Military Ward;Forgefer;124 | x=-4963 y=-1294 | size=1 | links=#47099(auto Inside;The Military Ward;Ironforge;122):10 #47102(auto Inside;The Military Ward;Ironforge;125):4
+#47102 | auto Inside;The Military Ward;Ironforge;125§auto Drinnen;Das Militärviertel;Eisenschmiede;125§auto Intérieur;The Military Ward;Forgefer;125 | x=-4967.30029296875 y=-1291.700073242188 | size=1 | links=#47101(auto Inside;The Military Ward;Ironforge;124):4 #47103(auto Inside;The Military Ward;Ironforge;126):9
+#47103 | auto Inside;The Military Ward;Ironforge;126§auto Drinnen;Das Militärviertel;Eisenschmiede;126§auto Intérieur;The Military Ward;Forgefer;126 | x=-4975.10009765625 y=-1287.099975585938 | size=1 | links=#47102(auto Inside;The Military Ward;Ironforge;125):9 #47104(auto Inside;The Military Ward;Ironforge;127):8
+#47104 | auto Inside;The Military Ward;Ironforge;127§auto Drinnen;Das Militärviertel;Eisenschmiede;127§auto Intérieur;The Military Ward;Forgefer;127 | x=-4972.30029296875 y=-1279.5 | size=1 | links=#47103(auto Inside;The Military Ward;Ironforge;126):8 c5140.1:6
+#47105 | auto Inside;Eisenschmiede;Ironforge;128§auto Drinnen;Eisenschmiede;128§auto Intérieur;Forgefer;Forgefer;128 | x=-5024 y=-1014.799987792969 | size=1 | links=#47106(auto Inside;Eisenschmiede;Ironforge;129):6 o139852.1:6
+#47106 | auto Inside;Eisenschmiede;Ironforge;129§auto Drinnen;Eisenschmiede;129§auto Intérieur;Forgefer;Forgefer;129 | x=-5021.39990234375 y=-1008.600036621094 | size=1 | links=#47105(auto Inside;Eisenschmiede;Ironforge;128):6 #47107(auto Inside;Eisenschmiede;Ironforge;130):5
+#47107 | auto Inside;Eisenschmiede;Ironforge;130§auto Drinnen;Eisenschmiede;130§auto Intérieur;Forgefer;Forgefer;130 | x=-5026.5 y=-1006.799987792969 | size=1 | links=#47106(auto Inside;Eisenschmiede;Ironforge;129):5 #47108(auto Inside;Eisenschmiede;Ironforge;131):4
+#47108 | auto Inside;Eisenschmiede;Ironforge;131§auto Drinnen;Eisenschmiede;131§auto Intérieur;Forgefer;Forgefer;131 | x=-5030.5 y=-1006.299987792969 | size=1 | links=#47107(auto Inside;Eisenschmiede;Ironforge;130):4 #47109(auto Inside;Eisenschmiede;Ironforge;132):3
+#47109 | auto Inside;Eisenschmiede;Ironforge;132§auto Drinnen;Eisenschmiede;132§auto Intérieur;Forgefer;Forgefer;132 | x=-5031.30029296875 y=-1009.400024414063 | size=1 | links=#47108(auto Inside;Eisenschmiede;Ironforge;131):3 #47110(auto Inside;Eisenschmiede;Ironforge;133):9
+#47110 | auto Inside;Eisenschmiede;Ironforge;133§auto Drinnen;Eisenschmiede;133§auto Intérieur;Forgefer;Forgefer;133 | x=-5034.39990234375 y=-1018.700012207031 | size=1 | links=#47109(auto Inside;Eisenschmiede;Ironforge;132):9 #47111(auto Inside;Eisenschmiede;Ironforge;134):4
+#47111 | auto Inside;Eisenschmiede;Ironforge;134§auto Drinnen;Eisenschmiede;134§auto Intérieur;Forgefer;Forgefer;134 | x=-5032 y=-1022.600036621094 | size=1 | links=#47110(auto Inside;Eisenschmiede;Ironforge;133):4 #47112(auto Inside;Eisenschmiede;Ironforge;135):7 c2790.1:1
+#47112 | auto Inside;Eisenschmiede;Ironforge;135§auto Drinnen;Eisenschmiede;135§auto Intérieur;Forgefer;Forgefer;135 | x=-5026.60009765625 y=-1017.299987792969 | size=1 | links=#47111(auto Inside;Eisenschmiede;Ironforge;134):7 #47113(auto Inside;Eisenschmiede;Ironforge;136):3
+#47113 | auto Inside;Eisenschmiede;Ironforge;136§auto Drinnen;Eisenschmiede;136§auto Intérieur;Forgefer;Forgefer;136 | x=-5023 y=-1017.799987792969 | size=1 | links=#47112(auto Inside;Eisenschmiede;Ironforge;135):3 #47114(auto Eisenschmiede;Ironforge;137):2
+#47114 | auto Eisenschmiede;Ironforge;137§auto Eisenschmiede;137§auto Forgefer;Forgefer;137 | x=-5020.80029296875 y=-1018.400024414063 | size=1 | links=#47113(auto Inside;Eisenschmiede;Ironforge;136):2 #47115(auto Eisenschmiede;Ironforge;138):4
+#47115 | auto Eisenschmiede;Ironforge;138§auto Eisenschmiede;138§auto Forgefer;Forgefer;138 | x=-5020.89990234375 y=-1022.700012207031 | size=1 | links=#47114(auto Eisenschmiede;Ironforge;137):4 #47116(auto Eisenschmiede;Ironforge;139):4
+#47116 | auto Eisenschmiede;Ironforge;139§auto Eisenschmiede;139§auto Forgefer;Forgefer;139 | x=-5022 y=-1026.700073242188 | size=1 | links=#47115(auto Eisenschmiede;Ironforge;138):4 #47117(auto Eisenschmiede;Ironforge;140):3
+#47117 | auto Eisenschmiede;Ironforge;140§auto Eisenschmiede;140§auto Forgefer;Forgefer;140 | x=-5018.30029296875 y=-1027.800048828125 | size=1 | links=#47116(auto Eisenschmiede;Ironforge;139):3 #47118(auto Eisenschmiede;Ironforge;141):8
+#47118 | auto Eisenschmiede;Ironforge;141§auto Eisenschmiede;141§auto Forgefer;Forgefer;141 | x=-5009.80029296875 y=-1030 | size=1 | links=#47117(auto Eisenschmiede;Ironforge;140):8 #47119(auto Eisenschmiede;Ironforge;142):15 #47124(auto Eisenschmiede;Ironforge;147):15
+#47119 | auto Eisenschmiede;Ironforge;142§auto Eisenschmiede;142§auto Forgefer;Forgefer;142 | x=-5013.10009765625 y=-1044.900024414063 | size=1 | links=#47118(auto Eisenschmiede;Ironforge;141):15 #47120(auto Eisenschmiede;Ironforge;143):18
+#47120 | auto Eisenschmiede;Ironforge;143§auto Eisenschmiede;143§auto Forgefer;Forgefer;143 | x=-5016.7001953125 y=-1063.300048828125 | size=1 | links=#47119(auto Eisenschmiede;Ironforge;142):18 #47121(auto Eisenschmiede;Ironforge;144):18
+#47121 | auto Eisenschmiede;Ironforge;144§auto Eisenschmiede;144§auto Forgefer;Forgefer;144 | x=-5017.60009765625 y=-1081.800048828125 | size=1 | links=#47120(auto Eisenschmiede;Ironforge;143):18 #47122(auto Eisenschmiede;Ironforge;145):30
+#47122 | auto Eisenschmiede;Ironforge;145§auto Eisenschmiede;145§auto Forgefer;Forgefer;145 | x=-5018.30029296875 y=-1112.700073242188 | size=1 | links=#47121(auto Eisenschmiede;Ironforge;144):30 #47123(auto Eisenschmiede;Ironforge;146):7
+#47123 | auto Eisenschmiede;Ironforge;146§auto Eisenschmiede;146§auto Forgefer;Forgefer;146 | x=-5010.89990234375 y=-1114.599975585938 | size=1 | links=#4855(auto Ironforge;8):12 #47122(auto Eisenschmiede;Ironforge;145):7
+#47124 | auto Eisenschmiede;Ironforge;147§auto Eisenschmiede;147§auto Forgefer;Forgefer;147 | x=-5003.89990234375 y=-1016.100036621094 | size=1 | links=#47118(auto Eisenschmiede;Ironforge;141):15 #47125(auto Eisenschmiede;Ironforge;148):19
+#47125 | auto Eisenschmiede;Ironforge;148§auto Eisenschmiede;148§auto Forgefer;Forgefer;148 | x=-4996.2001953125 y=-997.7000122070312 | size=1 | links=#47124(auto Eisenschmiede;Ironforge;147):19 #47126(auto Eisenschmiede;Ironforge;149):12
+#47126 | auto Eisenschmiede;Ironforge;149§auto Eisenschmiede;149§auto Forgefer;Forgefer;149 | x=-4992.10009765625 y=-985.4000244140625 | size=1 | links=#47125(auto Eisenschmiede;Ironforge;148):12 #47127(auto Eisenschmiede;Ironforge;150):4 #47140(auto Eisenschmiede;Ironforge;163):17
+#47127 | auto Eisenschmiede;Ironforge;150§auto Eisenschmiede;150§auto Forgefer;Forgefer;150 | x=-4996.2001953125 y=-985.1000366210938 | size=1 | links=#47126(auto Eisenschmiede;Ironforge;149):4 #47128(auto Eisenschmiede;Ironforge;151):7
+#47128 | auto Eisenschmiede;Ironforge;151§auto Eisenschmiede;151§auto Forgefer;Forgefer;151 | x=-4999.5 y=-991.7000122070312 | size=1 | links=#47127(auto Eisenschmiede;Ironforge;150):7 #47129(auto Eisenschmiede;Ironforge;152):4
+#47129 | auto Eisenschmiede;Ironforge;152§auto Eisenschmiede;152§auto Forgefer;Forgefer;152 | x=-5001.30029296875 y=-995.5 | size=1 | links=#47128(auto Eisenschmiede;Ironforge;151):4 #47130(auto Eisenschmiede;Ironforge;153):5
+#47130 | auto Eisenschmiede;Ironforge;153§auto Eisenschmiede;153§auto Forgefer;Forgefer;153 | x=-5003.7001953125 y=-1000.200012207031 | size=1 | links=#47129(auto Eisenschmiede;Ironforge;152):5 #47131(auto Eisenschmiede;Ironforge;154):8
+#47131 | auto Eisenschmiede;Ironforge;154§auto Eisenschmiede;154§auto Forgefer;Forgefer;154 | x=-5006.89990234375 y=-1007.700012207031 | size=1 | links=#47130(auto Eisenschmiede;Ironforge;153):8 #47132(auto Eisenschmiede;Ironforge;155):3
+#47132 | auto Eisenschmiede;Ironforge;155§auto Eisenschmiede;155§auto Forgefer;Forgefer;155 | x=-5009.89990234375 y=-1006.600036621094 | size=1 | links=#47131(auto Eisenschmiede;Ironforge;154):3 #47133(auto Inside;Eisenschmiede;Ironforge;156):6
+#47133 | auto Inside;Eisenschmiede;Ironforge;156§auto Drinnen;Eisenschmiede;156§auto Intérieur;Forgefer;Forgefer;156 | x=-5016 y=-1003.799987792969 | size=1 | links=#47132(auto Eisenschmiede;Ironforge;155):6 #47134(auto Inside;Eisenschmiede;Ironforge;157):6
+#47134 | auto Inside;Eisenschmiede;Ironforge;157§auto Drinnen;Eisenschmiede;157§auto Intérieur;Forgefer;Forgefer;157 | x=-5013.7001953125 y=-997.9000244140625 | size=1 | links=#47133(auto Inside;Eisenschmiede;Ironforge;156):6 #47135(auto Inside;Eisenschmiede;Ironforge;158):10
+#47135 | auto Inside;Eisenschmiede;Ironforge;158§auto Drinnen;Eisenschmiede;158§auto Intérieur;Forgefer;Forgefer;158 | x=-5008 y=-989.4000244140625 | size=1 | links=#47134(auto Inside;Eisenschmiede;Ironforge;157):10 #47136(auto Inside;Eisenschmiede;Ironforge;159):5
+#47136 | auto Inside;Eisenschmiede;Ironforge;159§auto Drinnen;Eisenschmiede;159§auto Intérieur;Forgefer;Forgefer;159 | x=-5013 y=-987.7999877929688 | size=1 | links=#47135(auto Inside;Eisenschmiede;Ironforge;158):5 #47137(auto Inside;Eisenschmiede;Ironforge;160):8
+#47137 | auto Inside;Eisenschmiede;Ironforge;160§auto Drinnen;Eisenschmiede;160§auto Intérieur;Forgefer;Forgefer;160 | x=-5020.60009765625 y=-983 | size=1 | links=#47136(auto Inside;Eisenschmiede;Ironforge;159):8 #47138(auto Inside;Eisenschmiede;Ironforge;161):6
+#47138 | auto Inside;Eisenschmiede;Ironforge;161§auto Drinnen;Eisenschmiede;161§auto Intérieur;Forgefer;Forgefer;161 | x=-5023.30029296875 y=-988.7999877929688 | size=1 | links=#47137(auto Inside;Eisenschmiede;Ironforge;160):6 #47139(auto Inside;Eisenschmiede;Ironforge;162):5
+#47139 | auto Inside;Eisenschmiede;Ironforge;162§auto Drinnen;Eisenschmiede;162§auto Intérieur;Forgefer;Forgefer;162 | x=-5023.60009765625 y=-994.6000366210938 | size=1 | links=#47138(auto Inside;Eisenschmiede;Ironforge;161):5 c5049.1:6 c5130.1:7
+#47140 | auto Eisenschmiede;Ironforge;163§auto Eisenschmiede;163§auto Forgefer;Forgefer;163 | x=-4987.10009765625 y=-968.6000366210938 | size=1 | links=#47126(auto Eisenschmiede;Ironforge;149):17 #47141(auto Eisenschmiede;Ironforge;164):51 c14842.1:6
+#47141 | auto Eisenschmiede;Ironforge;164§auto Eisenschmiede;164§auto Forgefer;Forgefer;164 | x=-5018.5 y=-928.4000244140625 | size=1 | links=#4926(auto Ironforge;9):58 #47140(auto Eisenschmiede;Ironforge;163):51
+#47142 | auto Eisenschmiede;Ironforge;165§auto Eisenschmiede;165§auto Forgefer;Forgefer;165 | x=-4970.7001953125 y=-973.6000366210938 | size=1 | links=#47143(auto Eisenschmiede;Ironforge;166):10 c14842.1:15
+#47143 | auto Eisenschmiede;Ironforge;166§auto Eisenschmiede;166§auto Forgefer;Forgefer;166 | x=-4961.30029296875 y=-979.2000122070312 | size=1 | links=#6000(central location;Ironforge):45 #19504(auto Ironforge;52):24 #47142(auto Eisenschmiede;Ironforge;165):10
+#47147 | auto Eisenschmiede;Ironforge;170§auto Eisenschmiede;170§auto Forgefer;Forgefer;170 | x=-4840.5 y=-908.9000244140625 | size=1 | links=#22836(auto Ironforge;61):18 #47148(auto Eisenschmiede;Ironforge;171):6
+#47148 | auto Eisenschmiede;Ironforge;171§auto Eisenschmiede;171§auto Forgefer;Forgefer;171 | x=-4840 y=-915.1000366210938 | size=1 | links=#47147(auto Eisenschmiede;Ironforge;170):6 #47149(auto Inside;Eisenschmiede;Ironforge;172):6
+#47149 | auto Inside;Eisenschmiede;Ironforge;172§auto Drinnen;Eisenschmiede;172§auto Intérieur;Forgefer;Forgefer;172 | x=-4839.10009765625 y=-921.2999877929688 | size=1 | links=#47148(auto Eisenschmiede;Ironforge;171):6
+#47150 | auto moat Ironforge;173§auto graben;Eisenschmiede;173§auto moat Ironforge;173 | x=-4808.60009765625 y=-891 | size=1 | links=#12501(down;Ironforge):8 #47151(auto moat Ironforge;174):15
+#47151 | auto moat Ironforge;174§auto graben;Eisenschmiede;174§auto moat Ironforge;174 | x=-4823.89990234375 y=-891.9000244140625 | size=1 | links=#47150(auto moat Ironforge;173):15 #47152(auto moat Ironforge;175):16
+#47152 | auto moat Ironforge;175§auto graben;Eisenschmiede;175§auto moat Ironforge;175 | x=-4840.5 y=-894.2000122070312 | size=1 | links=#47151(auto moat Ironforge;174):16 #47153(auto moat Ironforge;176):13
+#47153 | auto moat Ironforge;176§auto graben;Eisenschmiede;176§auto moat Ironforge;176 | x=-4853.60009765625 y=-896.7999877929688 | size=1 | links=#47152(auto moat Ironforge;175):13 #47154(auto moat Ironforge;177):7
+#47154 | auto moat Ironforge;177§auto graben;Eisenschmiede;177§auto moat Ironforge;177 | x=-4861.2001953125 y=-898.5 | size=1 | links=#47153(auto moat Ironforge;176):7 #47155(auto moat Ironforge;178):8
+#47155 | auto moat Ironforge;178§auto graben;Eisenschmiede;178§auto moat Ironforge;178 | x=-4869.2001953125 y=-900.6000366210938 | size=1 | links=#47154(auto moat Ironforge;177):8 #47156(auto moat Ironforge;179):7
+#47156 | auto moat Ironforge;179§auto graben;Eisenschmiede;179§auto moat Ironforge;179 | x=-4876.2001953125 y=-903.6000366210938 | size=1 | links=#47155(auto moat Ironforge;178):7 #47157(auto moat Ironforge;180):8
+#47157 | auto moat Ironforge;180§auto graben;Eisenschmiede;180§auto moat Ironforge;180 | x=-4883.7001953125 y=-906.7999877929688 | size=1 | links=#47156(auto moat Ironforge;179):8 #47158(auto moat Ironforge;181):8
+#47158 | auto moat Ironforge;181§auto graben;Eisenschmiede;181§auto moat Ironforge;181 | x=-4891.80029296875 y=-909.2000122070312 | size=1 | links=#47157(auto moat Ironforge;180):8 #47159(auto moat Ironforge;182):8
+#47159 | auto moat Ironforge;182§auto graben;Eisenschmiede;182§auto moat Ironforge;182 | x=-4899.5 y=-912.2000122070312 | size=1 | links=#47158(auto moat Ironforge;181):8 #47160(auto moat Ironforge;183):8
+#47160 | auto moat Ironforge;183§auto graben;Eisenschmiede;183§auto moat Ironforge;183 | x=-4907 y=-915.6000366210938 | size=1 | links=#47159(auto moat Ironforge;182):8 #47161(auto moat Ironforge;184):6
+#47161 | auto moat Ironforge;184§auto graben;Eisenschmiede;184§auto moat Ironforge;184 | x=-4913.2001953125 y=-918.7999877929688 | size=1 | links=#47160(auto moat Ironforge;183):6 #47162(auto moat Ironforge;185):7
+#47162 | auto moat Ironforge;185§auto graben;Eisenschmiede;185§auto moat Ironforge;185 | x=-4919.7001953125 y=-922.7000122070312 | size=1 | links=#47161(auto moat Ironforge;184):7 #47163(auto moat Ironforge;186):8
+#47163 | auto moat Ironforge;186§auto graben;Eisenschmiede;186§auto moat Ironforge;186 | x=-4926.30029296875 y=-927.4000244140625 | size=1 | links=#47162(auto moat Ironforge;185):8 #47164(auto moat Ironforge;187):8
+#47164 | auto moat Ironforge;187§auto graben;Eisenschmiede;187§auto moat Ironforge;187 | x=-4933 y=-932.4000244140625 | size=1 | links=#47163(auto moat Ironforge;186):8 #47165(auto moat Ironforge;188):6
+#47165 | auto moat Ironforge;188§auto graben;Eisenschmiede;188§auto moat Ironforge;188 | x=-4938.30029296875 y=-936.4000244140625 | size=1 | links=#47164(auto moat Ironforge;187):6 #47166(auto moat Ironforge;189):6
+#47166 | auto moat Ironforge;189§auto graben;Eisenschmiede;189§auto moat Ironforge;189 | x=-4943.80029296875 y=-940.7000122070312 | size=1 | links=#47165(auto moat Ironforge;188):6 #47167(auto moat Ironforge;190):6
+#47167 | auto moat Ironforge;190§auto graben;Eisenschmiede;190§auto moat Ironforge;190 | x=-4949.10009765625 y=-945.2000122070312 | size=1 | links=#47166(auto moat Ironforge;189):6 #47168(auto moat Ironforge;191):7
+#47168 | auto moat Ironforge;191§auto graben;Eisenschmiede;191§auto moat Ironforge;191 | x=-4954.5 y=-950.5 | size=1 | links=#47167(auto moat Ironforge;190):7 #47169(auto moat Ironforge;192):9
+#47169 | auto moat Ironforge;192§auto graben;Eisenschmiede;192§auto moat Ironforge;192 | x=-4960.39990234375 y=-957.2999877929688 | size=1 | links=#47168(auto moat Ironforge;191):9 #47170(auto moat Ironforge;193):6
+#47170 | auto moat Ironforge;193§auto graben;Eisenschmiede;193§auto moat Ironforge;193 | x=-4964.7001953125 y=-962.7000122070312 | size=1 | links=#47169(auto moat Ironforge;192):6 #47171(auto moat Ironforge;194):7
+#47171 | auto moat Ironforge;194§auto graben;Eisenschmiede;194§auto moat Ironforge;194 | x=-4969.2001953125 y=-968.7999877929688 | size=1 | links=#47170(auto moat Ironforge;193):7 #47172(auto moat Ironforge;195):8
+#47172 | auto moat Ironforge;195§auto graben;Eisenschmiede;195§auto moat Ironforge;195 | x=-4974 y=-975.6000366210938 | size=1 | links=#47171(auto moat Ironforge;194):8 #47173(auto moat Ironforge;196):8
+#47173 | auto moat Ironforge;196§auto graben;Eisenschmiede;196§auto moat Ironforge;196 | x=-4978.7001953125 y=-982.5 | size=1 | links=#47172(auto moat Ironforge;195):8 #47174(auto moat Ironforge;197):9
+#47174 | auto moat Ironforge;197§auto graben;Eisenschmiede;197§auto moat Ironforge;197 | x=-4983.30029296875 y=-990.7999877929688 | size=1 | links=#47173(auto moat Ironforge;196):9 #47175(auto moat Ironforge;198):9
+#47175 | auto moat Ironforge;198§auto graben;Eisenschmiede;198§auto moat Ironforge;198 | x=-4987.2001953125 y=-999.1000366210938 | size=1 | links=#47174(auto moat Ironforge;197):9 #47176(auto moat Ironforge;199):9
+#47176 | auto moat Ironforge;199§auto graben;Eisenschmiede;199§auto moat Ironforge;199 | x=-4990.80029296875 y=-1007.400024414063 | size=1 | links=#47175(auto moat Ironforge;198):9 #47177(auto moat Ironforge;200):7
+#47177 | auto moat Ironforge;200§auto graben;Eisenschmiede;200§auto moat Ironforge;200 | x=-4993.60009765625 y=-1014.700012207031 | size=1 | links=#47176(auto moat Ironforge;199):7 #47178(auto moat Ironforge;201):8
+#47178 | auto moat Ironforge;201§auto graben;Eisenschmiede;201§auto moat Ironforge;201 | x=-4996.2001953125 y=-1023.299987792969 | size=1 | links=#47177(auto moat Ironforge;200):8 #47179(auto moat Ironforge;202):8
+#47179 | auto moat Ironforge;202§auto graben;Eisenschmiede;202§auto moat Ironforge;202 | x=-4998.7001953125 y=-1031.800048828125 | size=1 | links=#47178(auto moat Ironforge;201):8 #47180(auto moat Ironforge;203):7
+#47180 | auto moat Ironforge;203§auto graben;Eisenschmiede;203§auto moat Ironforge;203 | x=-5000.7001953125 y=-1039.400024414063 | size=1 | links=#47179(auto moat Ironforge;202):7 #47181(auto moat Ironforge;204):6
+#47181 | auto moat Ironforge;204§auto graben;Eisenschmiede;204§auto moat Ironforge;204 | x=-5002.30029296875 y=-1046 | size=1 | links=#47180(auto moat Ironforge;203):6 #47182(auto moat Ironforge;205):9
+#47182 | auto moat Ironforge;205§auto graben;Eisenschmiede;205§auto moat Ironforge;205 | x=-5004.39990234375 y=-1055.700073242188 | size=1 | links=#47181(auto moat Ironforge;204):9 #47183(auto moat Ironforge;206):6
+#47183 | auto moat Ironforge;206§auto graben;Eisenschmiede;206§auto moat Ironforge;206 | x=-5005.10009765625 y=-1062.400024414063 | size=1 | links=#47182(auto moat Ironforge;205):6 #47184(auto moat Ironforge;207):8 #47189(auto moat Ironforge;212):9
+#47184 | auto moat Ironforge;207§auto graben;Eisenschmiede;207§auto moat Ironforge;207 | x=-5005.80029296875 y=-1070.599975585938 | size=1 | links=#47183(auto moat Ironforge;206):8 #47185(auto moat Ironforge;208):7
+#47185 | auto moat Ironforge;208§auto graben;Eisenschmiede;208§auto moat Ironforge;208 | x=-5006.39990234375 y=-1078.300048828125 | size=1 | links=#47184(auto moat Ironforge;207):7 #47186(auto moat Ironforge;209):8
+#47186 | auto moat Ironforge;209§auto graben;Eisenschmiede;209§auto moat Ironforge;209 | x=-5006.80029296875 y=-1087.099975585938 | size=1 | links=#47185(auto moat Ironforge;208):8 #47187(auto moat Ironforge;210):8
+#47187 | auto moat Ironforge;210§auto graben;Eisenschmiede;210§auto moat Ironforge;210 | x=-5006.2001953125 y=-1095.599975585938 | size=1 | links=#47186(auto moat Ironforge;209):8 #47188(auto moat Ironforge;211):7
+#47188 | auto moat Ironforge;211§auto graben;Eisenschmiede;211§auto moat Ironforge;211 | x=-5005.7001953125 y=-1102.900024414063 | size=1 | links=#47187(auto moat Ironforge;210):7
+#47189 | auto moat Ironforge;212§auto graben;Eisenschmiede;212§auto moat Ironforge;212 | x=-4995.30029296875 y=-1061.300048828125 | size=1 | links=#47183(auto moat Ironforge;206):9 #47190(auto moat Ironforge;213):7
+#47190 | auto moat Ironforge;213§auto graben;Eisenschmiede;213§auto moat Ironforge;213 | x=-4996.30029296875 y=-1068.900024414063 | size=1 | links=#47189(auto moat Ironforge;212):7 #47191(auto moat Ironforge;214):4
+#47191 | auto moat Ironforge;214§auto graben;Eisenschmiede;214§auto moat Ironforge;214 | x=-4997 y=-1073.400024414063 | size=1 | links=#47190(auto moat Ironforge;213):4 #47192(auto moat Ironforge;215):5
+#47192 | auto moat Ironforge;215§auto graben;Eisenschmiede;215§auto moat Ironforge;215 | x=-4997.7001953125 y=-1078.700073242188 | size=1 | links=#47191(auto moat Ironforge;214):5 #47193(auto Eisenschmiede;Ironforge;216):4
+#47193 | auto Eisenschmiede;Ironforge;216§auto Eisenschmiede;216§auto Forgefer;Forgefer;216 | x=-4997.60009765625 y=-1083.300048828125 | size=1 | links=#47192(auto moat Ironforge;215):4 #47194(auto Eisenschmiede;Ironforge;217):5
+#47194 | auto Eisenschmiede;Ironforge;217§auto Eisenschmiede;217§auto Forgefer;Forgefer;217 | x=-4995.80029296875 y=-1088.200073242188 | size=1 | links=#9509(auto Ironforge;20):16 #12074(auto Ironforge;24):18 #47193(auto Eisenschmiede;Ironforge;216):5
+#47195 | auto The Military Ward;Ironforge;218§auto Das Militärviertel;Eisenschmiede;218§auto The Military Ward;Forgefer;218 | x=-4928.60009765625 y=-1220.800048828125 | size=1 | links=c2695.1:6 c5595.1:25 #20339(The Military Ward;Ironforge):34
+#47196 | auto The Great Forge;Ironforge;219§auto Die große Schmiede;Eisenschmiede;219§auto The Great Forge;Forgefer;219 | x=-4923.5 y=-1147.599975585938 | size=1 | links=#47197(auto The Great Forge;Ironforge;220):21 #20339(The Military Ward;Ironforge):57
+#47197 | auto The Great Forge;Ironforge;220§auto Die große Schmiede;Eisenschmiede;220§auto The Great Forge;Forgefer;220 | x=-4917.30029296875 y=-1127.200073242188 | size=1 | links=#47196(auto The Great Forge;Ironforge;219):21 #47198(auto The Great Forge;Ironforge;221):24
+#47198 | auto The Great Forge;Ironforge;221§auto Die große Schmiede;Eisenschmiede;221§auto The Great Forge;Forgefer;221 | x=-4895.30029296875 y=-1115.400024414063 | size=1 | links=#47197(auto The Great Forge;Ironforge;220):24 #7858(auto The Great Forge;Ironforge;14):22
+#52265 | auto Inside;The Forlorn Cavern;Ironforge;222§auto Drinnen;Das düstere Viertel;Ironforge;222§auto Intérieur;The Forlorn Cavern;Forgefer;222 | x=-4645.2001953125 y=-1116.099975585938 | size=1 | links=#52266(auto Inside;The Forlorn Cavern;Ironforge;223):9 c5165.1:8
+#52266 | auto Inside;The Forlorn Cavern;Ironforge;223§auto Drinnen;Das düstere Viertel;Ironforge;223§auto Intérieur;The Forlorn Cavern;Forgefer;223 | x=-4654.2001953125 y=-1115.5 | size=1 | links=#52265(auto Inside;The Forlorn Cavern;Ironforge;222):9 #52268(auto Inside;The Forlorn Cavern;Ironforge;225):11
+#52268 | auto Inside;The Forlorn Cavern;Ironforge;225§auto Drinnen;Das düstere Viertel;Ironforge;225§auto Intérieur;The Forlorn Cavern;Forgefer;225 | x=-4654.2001953125 y=-1126.5 | size=1 | links=#52266(auto Inside;The Forlorn Cavern;Ironforge;223):11 #23624(auto The Forlorn Cavern;Ironforge;15):8
+#52269 | auto Inside;Hall of Arms;Ironforge;226§auto Drinnen;Halle der Waffen;Ironforge;226§auto Intérieur;Hall of Arms;Forgefer;226 | x=-5039.80029296875 y=-1273.400024414063 | size=1 | links=#52270(auto Inside;Hall of Arms;Ironforge;227):11 c5115.1:3 c14982.1:1
+#52270 | auto Inside;Hall of Arms;Ironforge;227§auto Drinnen;Halle der Waffen;Ironforge;227§auto Intérieur;Hall of Arms;Forgefer;227 | x=-5033.7001953125 y=-1283.099975585938 | size=1 | links=#52269(auto Inside;Hall of Arms;Ironforge;226):11 #52271(auto Inside;Hall of Arms;Ironforge;228):4
+#52271 | auto Inside;Hall of Arms;Ironforge;228§auto Drinnen;Halle der Waffen;Ironforge;228§auto Intérieur;Hall of Arms;Forgefer;228 | x=-5029.39990234375 y=-1285.5 | size=1 | links=#52270(auto Inside;Hall of Arms;Ironforge;227):4 #52272(auto Inside;Hall of Arms;Ironforge;229):14
+#52272 | auto Inside;Hall of Arms;Ironforge;229§auto Drinnen;Halle der Waffen;Ironforge;229§auto Intérieur;Hall of Arms;Forgefer;229 | x=-5018.2001953125 y=-1276.099975585938 | size=1 | links=#52271(auto Inside;Hall of Arms;Ironforge;228):14 c9984.1:16
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c857.1 | links=c14982.1:6 c20374.1:4
+c1274.1 | links=c2784.1:7
+c1356.1 | links=c3979.1:4 c6294.1:12
+c1466.1 | links=c5128.1:10 #416(auto The Great Forge;Ironforge;1):2
+c1573.1 | links=#16227(auto The Great Forge;Ironforge;41):16
+c1703.1 | links=c5154.1:7 #24683(auto The Great Forge;Ironforge;67):6
+c1901.1 | links=c5114.1:12 c27398.1:8
+c2092.1 | links=#8685(auto Ironforge;18):18 c8517.1:14
+c2460.1 | links=c2461.1:11
+c2461.1 | links=#6439(auto Ironforge;12):5 #16933(auto Ironforge;44):14 c2460.1:11 c5099.1:11
+c2489.1 | links=#47051(auto Inside;portal to blasted lands;Hall of Mysteries;Ironforge;74):13 c5145.1:6 #24619(auto inside;Hall of Mysteries;Ironforge;3):16
+c2695.1 | links=#47195(auto The Military Ward;Ironforge;218):6
+c2737.1 | links=c5167.1:2
+c2784.1 | links=c1274.1:7 c8879.1:7 #2183(The High Seat;Ironforge):21
+c2786.1 | links=c5171.1:5 c5172.1:3
+c2790.1 | links=#47111(auto Inside;Eisenschmiede;Ironforge;134):1
+c2916.1 | links=c2918.1:11 c3979.1:20
+c2918.1 | links=c2916.1:11
+c3842.1 | links=#1289(The Great Forge;Ironforge):13
+c3979.1 | links=#1635(central location;The Library;Ironforge):21 c1356.1:4 c2916.1:20
+c4081.1 | links=#7707(Tinker Town;Ironforge):12
+c4254.1 | links=c4256.1:12 #14553(auto The Great Forge;Ironforge;33):9
+c4256.1 | links=c4254.1:12
+c4258.1 | links=#1289(The Great Forge;Ironforge):9
+c5049.1 | links=#47139(auto Inside;Eisenschmiede;Ironforge;162):6
+c5099.1 | links=c2461.1:11
+c5108.1 | links=#11036(auto Ironforge;21):10
+c5110.1 | links=#13794(auto Ironforge;30):8
+c5111.1 | links=#13743(auto Ironforge;29):6
+c5112.1 | links=c27820.1:3
+c5113.1 | links=c6114.1:3 c12197.1:4
+c5114.1 | links=c1901.1:12 #16898(auto Hall of Arms;Ironforge;1):23
+c5115.1 | links=#52269(auto Inside;Hall of Arms;Ironforge;226):3 c6114.1:2
+c5116.1 | links=c7298.1:7 c9984.1:12 c10090.1:11
+c5117.1 | links=c9984.1:5
+c5119.1 | links=#13825(auto Ironforge;31):9
+c5120.1 | links=#13825(auto Ironforge;31):9
+c5121.1 | links=#10668(auto The Military Ward;Ironforge;3):8
+c5122.1 | links=#25640(auto Ironforge;65):4
+c5123.1 | links=#28413(auto Ironforge;69):4
+c5127.1 | links=#416(auto The Great Forge;Ironforge;1):12
+c5128.1 | links=c1466.1:10 c6291.1:10
+c5130.1 | links=#47139(auto Inside;Eisenschmiede;Ironforge;162):7
+c5137.1 | links=c5138.1:6 #11745(auto The Great Forge;Ironforge;23):4 #21095(auto The Great Forge;Ironforge;56):7
+c5138.1 | links=c5137.1:6
+c5140.1 | links=#47104(auto Inside;The Military Ward;Ironforge;127):6
+c5141.1 | links=#47067(auto Inside;Hall of Mysteries;Ironforge;90):7
+c5142.1 | links=c5143.1:10 #24619(auto inside;Hall of Mysteries;Ironforge;3):15
+c5143.1 | links=c5142.1:10
+c5144.1 | links=c7312.1:1
+c5145.1 | links=c2489.1:6
+c5146.1 | links=#47075(auto Inside;Hall of Mysteries;Ironforge;98):7
+c5147.1 | links=#47071(auto Inside;Hall of Mysteries;Ironforge;94):8
+c5148.1 | links=#6356(auto inside;Hall of Mysteries;Ironforge;1):10
+c5149.1 | links=#6356(auto inside;Hall of Mysteries;Ironforge;1):10
+c5150.1 | links=#12876(auto The Great Forge;Ironforge;28):6
+c5153.1 | links=c5154.1:5
+c5154.1 | links=c1703.1:7 c5153.1:5 #15029(auto The Great Forge;Ironforge;37):12
+c5157.1 | links=#23339(auto The Great Forge;Ironforge;63):6
+c5158.1 | links=#45231(auto Ironforge;71):5 #16437(auto The Great Forge;Ironforge;42):5
+c5159.1 | links=#11918(auto The Great Forge;Ironforge;26):6 #17725(auto The Great Forge;Ironforge;45):4
+c5160.1 | links=#5518(auto The Great Forge;Ironforge;10):9
+c5161.1 | links=#21156(auto inside;The Forlorn Cavern;Ironforge;13):5
+c5162.1 | links=#20583(auto inside;The Forlorn Cavern;Ironforge;12):11
+c5163.1 | links=#8520(auto The Great Forge;Ironforge;16):19
+c5164.1 | links=#1289(The Great Forge;Ironforge):27 #20705(auto The Great Forge;Ironforge;52):13
+c5165.1 | links=#52265(auto Inside;The Forlorn Cavern;Ironforge;222):8
+c5166.1 | links=c5167.1:11
+c5167.1 | links=c2737.1:2 c5166.1:11 #23624(auto The Forlorn Cavern;Ironforge;15):4
+c5169.1 | links=#2395(auto The Forlorn Cavern;Ironforge;2):0
+c5170.1 | links=c10455.1:6
+c5171.1 | links=c2786.1:5
+c5172.1 | links=#47096(auto Inside;The Forlorn Cavern;Ironforge;119):7 c2786.1:3 #16390(auto The Forlorn Cavern;Ironforge;7):8
+c5173.1 | links=#47092(auto Inside;The Forlorn Cavern;Ironforge;115):10
+c5174.1 | links=c5175.1:7 #19529(auto Tinker Town;Ironforge;4):6
+c5175.1 | links=c5174.1:7
+c5177.1 | links=c5178.1:6
+c5178.1 | links=c5177.1:6 #18426(auto Tinker Town;Ironforge;3):11
+c5387.1 | links=#990(auto Ironforge;4):23 c8256.1:19
+c5570.1 | links=c5605.1:3
+c5595.1 | links=#47195(auto The Military Ward;Ironforge;218):25
+c5605.1 | links=#47100(auto Inside;The Military Ward;Ironforge;123):8 c5570.1:3
+c5637.1 | links=#990(auto Ironforge;4):21
+c6031.1 | links=#20705(auto The Great Forge;Ironforge;52):5
+c6114.1 | links=c5113.1:3 c5115.1:2
+c6120.1 | links=#47091(auto The Forlorn Cavern;Ironforge;114):5 #26896(The Forlorn Cavern;Ironforge):15
+c6169.1 | links=c7950.1:18
+c6175.1 | links=c5595.19:7
+c6178.1 | links=#47067(auto Inside;Hall of Mysteries;Ironforge;90):7
+c6179.1 | links=#47065(auto Inside;Hall of Mysteries;Ironforge;88):13 #47079(auto Inside;Hall of Mysteries;Ironforge;102):13
+c6291.1 | links=c5128.1:10 #7536(auto The Great Forge;Ironforge;13):8
+c6294.1 | links=c1356.1:12
+c6382.1 | links=#20488(auto The Forlorn Cavern;Ironforge;11):4
+c6569.1 | links=c7944.1:3
+c6826.1 | links=#512(auto Ironforge;1):4
+c7298.1 | links=c5116.1:7
+c7312.1 | links=c5144.1:1 #24619(auto inside;Hall of Mysteries;Ironforge;3):9
+c7936.1 | links=#7583(auto Ironforge;13):17
+c7937.1 | links=#7707(Tinker Town;Ironforge):20
+c7944.1 | links=c6569.1:3 #7707(Tinker Town;Ironforge):13 #18426(auto Tinker Town;Ironforge;3):23
+c7950.1 | links=c6169.1:18 #7707(Tinker Town;Ironforge):14
+c7976.1 | links=#13825(auto Ironforge;31):4
+c8256.1 | links=#1635(central location;The Library;Ironforge):10 c5387.1:19
+c8507.1 | links=#16612(auto Ironforge;42):6
+c8517.1 | links=c2092.1:14
+c8681.1 | links=#2201(auto The Great Forge;Ironforge;8):3
+c8720.1 | links=#21616(auto Ironforge;58):9
+c8879.1 | links=c2784.1:7
+c9616.1 | links=#1604(auto Ironforge;5):13
+c9984.1 | links=#52272(auto Inside;Hall of Arms;Ironforge;229):16 c5116.1:12 c5117.1:5 #27005(auto Hall of Arms;Ironforge;2):5
+c10090.1 | links=c5116.1:11
+c10455.1 | links=#47080(auto inside;Inside;The Forlorn Cavern;Ironforge;103):11 c5170.1:6 c10456.1:6
+c10456.1 | links=c10455.1:6
+c10877.1 | links=#12905(auto The Military Ward;Ironforge;4):33
+c11065.1 | links=#45232(auto Ironforge;72):1
+c11146.1 | links=#1289(The Great Forge;Ironforge):27
+c11406.1 | links=#24619(auto inside;Hall of Mysteries;Ironforge;3):15
+c11865.1 | links=#10668(auto The Military Ward;Ironforge;3):4
+c12197.1 | links=c5113.1:4 c20374.1:3
+c13084.1 | links=#25330(auto Ironforge;63):11 #10668(auto The Military Ward;Ironforge;3):7
+c14183.1 | links=#12520(auto Ironforge;26):8
+c14842.1 | links=#47140(auto Eisenschmiede;Ironforge;163):6 #47142(auto Eisenschmiede;Ironforge;165):15 c5595.11:13 c5595.12:14 c5595.15:3
+c14982.1 | links=#52269(auto Inside;Hall of Arms;Ironforge;226):1 c857.1:6
+c15119.1 | links=#15933(auto Ironforge;39):22
+c15187.1 | links=#16227(auto The Great Forge;Ironforge;41):11
+c16009.1 | links=#21978(auto Ironforge;60):14
+c16013.1 | links=#16585(auto The High Seat;Ironforge;1):10
+c20374.1 | links=c857.1:4 c12197.1:3
+c23127.1 | links=#8658(auto Ironforge;17):10
+c27398.1 | links=c1901.1:8
+c27478.1 | links=#12520(auto Ironforge;26):10 c27820.1:3
+c27820.1 | links=c5112.1:3 c27478.1:3
+o139852.1 | links=#47105(auto Inside;Eisenschmiede;Ironforge;128):6
+c5595.2 | links=#17456(s;A;Mailbox;3;Ironforge):42 #15192(auto The Military Ward;Ironforge;5):5
+c15892.4 | links=#10667(The Mystic Ward;Ironforge):27
+c5595.11 | links=c14842.1:13
+c5595.12 | links=c14842.1:14
+c5595.15 | links=c14842.1:3
+c5595.19 | links=#14867(auto Ironforge;35):0 c6175.1:7
+c5595.26 | links=#10667(The Mystic Ward;Ironforge):15
+c5595.29 | links=#10667(The Mystic Ward;Ironforge):15

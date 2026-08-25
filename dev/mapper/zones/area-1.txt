@@ -1,0 +1,804 @@
+Zone areaId 1 — eine Zeile pro Wegpunkt; Links inline.
+
+#61 | entry and exit;Anvilmar§ein- und ausgang;Ambossar§entrée et sortie;Anvilmar | x=-6171.7001953125 y=384.6000061035156 | size=1 | links=#15850(central location;Coldridge Valley;Dun Morogh):76 #23719(auto Dun Morogh;281):38 #26691(auto Anvilmar;Dun Morogh;315):26 c6491.3:60
+#62 | auto Dun Morogh;1§auto Dun Morogh;1§auto Dun Morogh;1 | x=-5491 y=-232.9000091552734 | size=1 | links=#13457(auto Dun Morogh;157):9
+#99 | auto Dun Morogh;2§auto Dun Morogh;2§auto Dun Morogh;2 | x=-5511.2001953125 y=-653.9000244140625 | size=1 | links=#5667(auto Dun Morogh;61):7 c1694.1:15
+#104 | auto Dun Morogh;3§auto Dun Morogh;3§auto Dun Morogh;3 | x=-4919.30029296875 y=-125.5 | size=1 | links=#5790(auto Dun Morogh;65):100 #18158(auto Dun Morogh;211):191
+#116 | auto Dun Morogh;4§auto Dun Morogh;4§auto Dun Morogh;4 | x=-5682.5 y=-504.5 | size=1 | links=#5871(auto Dun Morogh;67):20 c6491.1:26
+#184 | Rockjaw Trogg;Dun Morogh;31;31.56;76.17§Trogg der Felsenkiefer;Dun Morogh;31;31.56;76.17§Trogg Mâcheroc;Dun Morogh;31;31.56;76.17 | x=-6374.30029296875 y=239.8000030517578 | size=1
+#251 | auto Dun Morogh;5§auto Dun Morogh;5§auto Dun Morogh;5 | x=-5325 y=277.6000061035156 | size=1 | links=#14469(auto Dun Morogh;172):32 #28551(auto Dun Morogh;335):27
+#606 | Small Crag Boar;Dun Morogh;4;26.58;69.66§Kleiner Klippeneber;Dun Morogh;4;26.58;69.66§Petit sanglier des rochers;Dun Morogh;4;26.58;69.66 | x=-6173 y=498.8000183105469 | size=1
+#627 | auto Dun Morogh;6§auto Dun Morogh;6§auto Dun Morogh;6 | x=-4974 y=-378.8999938964844 | size=1 | links=#1356(auto Dun Morogh;12):134 #16302(auto Dun Morogh;191):64
+#632 | entry and exit;Frostmane Hold;Dun Morogh§ein- und ausgang;Höhle der Frostmähnen;Dun Morogh§entrée et sortie;Le repaire des Crins-de-givre;Dun Morogh | x=-5549 y=566.2000122070312 | size=1 | links=#24192(auto Dun Morogh;286):28 #48699(auto Frostmane Hold;Dun Morogh;336):25
+#707 | Small Crag Boar;Dun Morogh;5;27.43;71.62§Kleiner Klippeneber;Dun Morogh;5;27.43;71.62§Petit sanglier des rochers;Dun Morogh;5;27.43;71.62 | x=-6216.80029296875 y=445.1000061035156 | size=1
+#740 | Young Black Bear;Dun Morogh;21;43.74;51.9§Junger Schwarzbär;Dun Morogh;21;43.74;51.9§Jeune ours noir;Dun Morogh;21;43.74;51.9 | x=-5579.89990234375 y=-364.8999938964844 | size=1
+#811 | Frostmane Troll Whelp;Dun Morogh;22;25.86;78.26§Trollwelpe der Frostmähnen;Dun Morogh;22;25.86;78.26§Jeune troll Crins-de-givre;Dun Morogh;22;25.86;78.26 | x=-6419.89990234375 y=551.2000122070312 | size=1
+#918 | auto thunderbrew distillery;Dun Morogh;7§auto brauerei donnerbräu;Dun Morogh;7§auto thunderbrew distillery;Dun Morogh;7 | x=-5607.80029296875 y=-549.9000244140625 | size=1 | links=#5661(auto thunderbrew distillery;basement;Dun Morogh;60):10 c1234.1:10
+#960 | Ice Claw Bear;Dun Morogh;17;28.1;52.24§Eisklauenbär;Dun Morogh;17;28.1;52.24§Ours Griffeglace;Dun Morogh;17;28.1;52.24 | x=-5601.39990234375 y=397.1000061035156 | size=1
+#1057 | auto Dun Morogh;8§auto Dun Morogh;8§auto Dun Morogh;8 | x=-5683.10009765625 y=64.20000457763672 | size=1 | links=#17271(auto Dun Morogh;203):65 #28190(auto Dun Morogh;332):43
+#1072 | auto Dun Morogh;9§auto Dun Morogh;9§auto Dun Morogh;9 | x=-5338.89990234375 y=557.1000366210938 | size=1 | links=#16217(auto Dun Morogh;190):2 #26513(auto Dun Morogh;312):1
+#1080 | auto Dun Morogh;10§auto Dun Morogh;10§auto Dun Morogh;10 | x=-5573.60009765625 y=-1270.099975585938 | size=1 | links=#8820(auto Dun Morogh;108):46 c1263.1:44
+#1204 | Small Crag Boar;Dun Morogh;35;21.43;71.27§Kleiner Klippeneber;Dun Morogh;35;21.43;71.27§Petit sanglier des rochers;Dun Morogh;35;21.43;71.27 | x=-6209.80029296875 y=736.7000122070312 | size=1
+#1219 | Burly Rockjaw Trogg;Dun Morogh;13;26.59;71.91§Bulliger Trogg der Felsenkiefer;Dun Morogh;13;26.59;71.91§Trogg Mâcheroc mastoc;Dun Morogh;13;26.59;71.91 | x=-6248.5 y=481.3000183105469 | size=1
+#1300 | auto Dun Morogh;11§auto Dun Morogh;11§auto Dun Morogh;11 | x=-5545.2001953125 y=656.2000122070312 | size=1 | links=#4213(auto Dun Morogh;43):24 #19881(auto Dun Morogh;232):22
+#1356 | auto Dun Morogh;12§auto Dun Morogh;12§auto Dun Morogh;12 | x=-5107.80029296875 y=-387.8000183105469 | size=1 | links=#627(auto Dun Morogh;6):134 #27677(auto Dun Morogh;324):99
+#1374 | auto inside troll cave;Dun Morogh;13§auto drinnen troll höhle;Dun Morogh;13§auto inside troll cave;Dun Morogh;13 | x=-6517.5 y=430.8999938964844 | size=1 | links=#2068(auto inside troll cave;Dun Morogh;17):15 #2164(auto inside troll cave;Dun Morogh;19):21 #13596(auto inside troll cave;Dun Morogh;160):27
+#1384 | Small Crag Boar;Dun Morogh;34;21.81;71.44§Kleiner Klippeneber;Dun Morogh;34;21.81;71.44§Petit sanglier des rochers;Dun Morogh;34;21.81;71.44 | x=-6230 y=723.7999877929688 | size=1
+#1454 | Burly Rockjaw Trogg;Dun Morogh;15;25.65;72.46§Bulliger Trogg der Felsenkiefer;Dun Morogh;15;25.65;72.46§Trogg Mâcheroc mastoc;Dun Morogh;15;25.65;72.46 | x=-6249.30029296875 y=532.2000122070312 | size=1
+#1457 | Ice Claw Bear;Dun Morogh;27;32.27;49.9§Eisklauenbär;Dun Morogh;27;32.27;49.9§Ours Griffeglace;Dun Morogh;27;32.27;49.9 | x=-5503.60009765625 y=201.3000030517578 | size=1
+#1495 | auto Dun Morogh;14§auto Dun Morogh;14§auto Dun Morogh;14 | x=-5342.60009765625 y=560.6000366210938 | size=1 | links=#1614(auto Dun Morogh;16):1 #9088(auto Dun Morogh;110):2
+#1502 | auto Dun Morogh;15§auto Dun Morogh;15§auto Dun Morogh;15 | x=-5529.2001953125 y=-227.5 | size=1 | links=#13457(auto Dun Morogh;157):31 #18831(auto Dun Morogh;220):28
+#1614 | auto Dun Morogh;16§auto Dun Morogh;16§auto Dun Morogh;16 | x=-5341.89990234375 y=559.6000366210938 | size=1 | links=#1495(auto Dun Morogh;14):1 #16217(auto Dun Morogh;190):1
+#1661 | Frostmane Troll Whelp;Dun Morogh;57;30.53;81.29§Trollwelpe der Frostmähnen;Dun Morogh;57;30.53;81.29§Jeune troll Crins-de-givre;Dun Morogh;57;30.53;81.29 | x=-6554.39990234375 y=299.7000122070313 | size=1
+#1726 | Small Crag Boar;Dun Morogh;37;22.02;72.32§Kleiner Klippeneber;Dun Morogh;37;22.02;72.32§Petit sanglier des rochers;Dun Morogh;37;22.02;72.32 | x=-6248.89990234375 y=729.1000366210938 | size=1
+#1891 | Crag Boar;Dun Morogh;69;50.11;51.88§Klippeneber;Dun Morogh;69;50.11;51.88§Sanglier des rochers;Dun Morogh;69;50.11;51.88 | x=-5566.80029296875 y=-678.2000122070312 | size=1
+#2068 | auto inside troll cave;Dun Morogh;17§auto drinnen troll höhle;Dun Morogh;17§auto inside troll cave;Dun Morogh;17 | x=-6530.30029296875 y=438.8000183105469 | size=1 | links=#1374(auto inside troll cave;Dun Morogh;13):15 #12984(auto inside troll cave;Dun Morogh;152):30 #14597(auto inside troll cave;Dun Morogh;174):17
+#2143 | auto Dun Morogh;18§auto Dun Morogh;18§auto Dun Morogh;18 | x=-6117.39990234375 y=83.80000305175781 | size=1 | links=#11434(auto Dun Morogh;128):33 #19569(auto Dun Morogh;229):34
+#2164 | auto inside troll cave;Dun Morogh;19§auto drinnen troll höhle;Dun Morogh;19§auto inside troll cave;Dun Morogh;19 | x=-6525.80029296875 y=411 | size=5 | links=#1374(auto inside troll cave;Dun Morogh;13):21 #10417(centralpoint;cave;Coldridge Valley;Dun Morogh):26
+#2179 | auto Dun Morogh;20§auto Dun Morogh;20§auto Dun Morogh;20 | x=-5536.7001953125 y=-1345 | size=1 | links=#11688(auto Dun Morogh;135):16 c4772.1:14
+#2199 | auto Dun Morogh;21§auto Dun Morogh;21§auto Dun Morogh;21 | x=-5370.39990234375 y=408.1000061035156 | size=1 | links=#18038(auto Dun Morogh;210):66 #28054(auto Dun Morogh;329):71 c1201.28:18
+#2226 | auto Dun Morogh;22§auto Dun Morogh;22§auto Dun Morogh;22 | x=-5917 y=-2027.599975585938 | size=1 | links=#8389(auto Dun Morogh;100):8 #22779(auto Dun Morogh;267):7
+#2275 | auto Gol'Bolarmine;Dun Morogh;23§auto Gol'Bolarmine;Dun Morogh;23§auto Gol'Bolarmine;Dun Morogh;23 | x=-5560.80029296875 y=-1724.400024414063 | size=1 | links=#15795(auto Gol'Bolarmine;Dun Morogh;186):33 #25203(auto Gol'Bolarmine;Dun Morogh;299):24
+#2307 | auto Anvilmar;Dun Morogh;24§auto Ambossar;Dun Morogh;24§auto Anvilmar;Dun Morogh;24 | x=-6051.30029296875 y=378.3999938964844 | size=1 | links=#3326(auto Anvilmar;Dun Morogh;33):8 c460.1:12 c6376.1:5
+#2428 | auto Dun Morogh;25§auto Dun Morogh;25§auto Dun Morogh;25 | x=-6159 y=119.5 | size=1 | links=#9969(auto Dun Morogh;119):14 #22887(auto Dun Morogh;272):20
+#2502 | auto Dun Morogh;26§auto Dun Morogh;26§auto Dun Morogh;26 | x=-5460.30029296875 y=-645.4000244140625 | size=1 | links=#15407(auto Dun Morogh;180):26 c1377.1:13 c1378.1:14 c7954.1:27
+#2524 | auto Dun Morogh;27§auto Dun Morogh;27§auto Dun Morogh;27 | x=-5338.39990234375 y=569.5 | size=1 | links=#11491(auto Dun Morogh;130):1 #14387(auto Dun Morogh;169):1
+#2548 | auto Dun Morogh;28§auto Dun Morogh;28§auto Dun Morogh;28 | x=-5521.5 y=-1313.200073242188 | size=1 | links=#17474(central location;Amberstill Ranch;Dun Morogh):24 c1265.1:11
+#2563 | auto Anvilmar;Dun Morogh;29§auto Ambossar;Dun Morogh;29§auto Anvilmar;Dun Morogh;29 | x=-6061.60009765625 y=370.3999938964844 | size=1 | links=#3326(auto Anvilmar;Dun Morogh;33):9 #14298(auto Anvilmar;Dun Morogh;168):6 c836.1:15
+#2832 | Ice Claw Bear;Dun Morogh;16;28.05;54.51§Eisklauenbär;Dun Morogh;16;28.05;54.51§Ours Griffeglace;Dun Morogh;16;28.05;54.51 | x=-5644.30029296875 y=416.7000122070313 | size=1
+#2930 | auto Dun Morogh;30§auto Dun Morogh;30§auto Dun Morogh;30 | x=-5602.60009765625 y=-419.5 | size=1 | links=#20631(auto Dun Morogh;245):29 c1231.1:38
+#2978 | Ice Claw Bear;Dun Morogh;25;32.37;47.18§Eisklauenbär;Dun Morogh;25;32.37;47.18§Ours Griffeglace;Dun Morogh;25;32.37;47.18 | x=-5444.60009765625 y=223.6999969482422 | size=1
+#3037 | auto Dun Morogh;31§auto Dun Morogh;31§auto Dun Morogh;31 | x=-5380.7001953125 y=-1058.599975585938 | size=1 | links=#18790(auto Dun Morogh;219):83 c1253.1:34
+#3217 | auto thunderbrew distillery;Dun Morogh;32§auto brauerei donnerbräu;Dun Morogh;32§auto thunderbrew distillery;Dun Morogh;32 | x=-5581.10009765625 y=-524.1000366210938 | size=1 | links=#11503(auto thunderbrew distillery;Dun Morogh;131):10 #11594(auto thunderbrew distillery;Dun Morogh;133):13 c1226.1:10 c6806.1:9
+#3298 | Frostmane Hideskinner;Dun Morogh;10;23.22;54.81§Balgabzieher der Frostmähnen;Dun Morogh;10;23.22;54.81§Ecorcheur Crins-de-givre;Dun Morogh;10;23.22;54.81 | x=-5674.80029296875 y=658 | size=1
+#3326 | auto Anvilmar;Dun Morogh;33§auto Ambossar;Dun Morogh;33§auto Anvilmar;Dun Morogh;33 | x=-6052.30029296875 y=370 | size=1 | links=#2307(auto Anvilmar;Dun Morogh;24):8 #2563(auto Anvilmar;Dun Morogh;29):9
+#3354 | auto Dun Morogh;34§auto Dun Morogh;34§auto Dun Morogh;34 | x=-5759.5 y=109.9000015258789 | size=1 | links=#18883(auto Dun Morogh;221):86 #20140(auto Dun Morogh;236):87 #28190(auto Dun Morogh;332):45
+#3361 | auto Dun Morogh;35§auto Dun Morogh;35§auto Dun Morogh;35 | x=-5571.2001953125 y=284 | size=1 | links=#16490(auto Dun Morogh;195):84 #24297(auto Dun Morogh;288):85
+#3362 | crossing;two;Dun Morogh§kreuzung;zwei;Dun Morogh§traversée;deux;Dun Morogh | x=-5678.89990234375 y=-1280.400024414063 | size=1 | links=#8820(auto Dun Morogh;108):71 #20610(auto Dun Morogh;244):40 #28359(auto Dun Morogh;333):116 c1130.3:117
+#3383 | s;A;Mailbox;Dun Morogh§s;a;Briefkasten;Dun Morogh§s;A;Boîte aux lettres;Dun Morogh | x=-5604.001424506677 y=-512.9568127122016 | size=1 | links=#8513(central location;Kharanos;Dun Morogh):30 #20071(auto thunderbrew distillery;Dun Morogh;235):16 c1267.1:11 c9980.1:2
+#3435 | auto Gol'Bolarmine;Dun Morogh;36§auto Gol'Bolarmine;Dun Morogh;36§auto Gol'Bolarmine;Dun Morogh;36 | x=-5727.10009765625 y=-1679.200073242188 | size=1 | links=#19958(entry and exit;Gol'Bolar Quarry):20 #26134(auto Gol'Bolarmine;Dun Morogh;306):11
+#3507 | auto Dun Morogh;37§auto Dun Morogh;37§auto Dun Morogh;37 | x=-5385.80029296875 y=-869.7000122070312 | size=1 | links=#8036(auto Dun Morogh;94):118 #8591(auto Dun Morogh;104):69
+#3625 | Rockjaw Trogg;Dun Morogh;39;32.84;75.21§Trogg der Felsenkiefer;Dun Morogh;39;32.84;75.21§Trogg Mâcheroc;Dun Morogh;39;32.84;75.21 | x=-6355.10009765625 y=198.8000030517578 | size=1
+#3809 | auto Dun Morogh;38§auto Dun Morogh;38§auto Dun Morogh;38 | x=-6460.2001953125 y=480.6000061035156 | size=1 | links=#6928(auto Dun Morogh;76):26 #11062(auto Dun Morogh;124):19 o178085.1:31
+#3816 | Small Crag Boar;Dun Morogh;48;22.61;70.15§Kleiner Klippeneber;Dun Morogh;48;22.61;70.15§Petit sanglier des rochers;Dun Morogh;48;22.61;70.15 | x=-6176.7001953125 y=693.6000366210938 | size=1
+#3997 | auto Dun Morogh;39§auto Dun Morogh;39§auto Dun Morogh;39 | x=-5526.60009765625 y=-2386.5 | size=1 | links=#24480(auto Dun Morogh;292):18 #11097(auto South Gate Outpost;3):10
+#4001 | auto Dun Morogh;40§auto Dun Morogh;40§auto Dun Morogh;40 | x=-6216 y=117.5 | size=1 | links=#14084(entry and exit;cave;from;Coldridge Pass;to;Dun Morogh):11 #22278(auto Dun Morogh;262):12
+#4154 | auto Dun Morogh;41§auto Dun Morogh;41§auto Dun Morogh;41 | x=-6496.30029296875 y=562.7000122070312 | size=5 | links=#18311(auto Dun Morogh;213):88 o178085.1:59
+#4200 | auto Gol'Bolarmine;Dun Morogh;42§auto Gol'Bolarmine;Dun Morogh;42§auto Gol'Bolarmine;Dun Morogh;42 | x=-5610.7001953125 y=-1742.800048828125 | size=1 | links=#19923(auto Gol'Bolarmine;Dun Morogh;233):14 #27359(auto Gol'Bolarmine;Dun Morogh;320):18
+#4213 | auto Dun Morogh;43§auto Dun Morogh;43§auto Dun Morogh;43 | x=-5532.7001953125 y=677.5 | size=1 | links=#1300(auto Dun Morogh;11):24 #21488(auto Dun Morogh;255):26
+#4219 | auto thunderbrew distillery;Dun Morogh;44§auto brauerei donnerbräu;Dun Morogh;44§auto thunderbrew distillery;Dun Morogh;44 | x=-5597.30029296875 y=-536.7999877929688 | size=1 | links=#12753(auto thunderbrew distillery;Dun Morogh;149):7 #23128(auto thunderbrew distillery;Dun Morogh;276):4
+#4230 | auto Dun Morogh;45§auto Dun Morogh;45§auto Dun Morogh;45 | x=-5619.89990234375 y=-1097 | size=1 | links=#12393(auto Dun Morogh;145):31 #13719(auto Dun Morogh;161):71 #28359(auto Dun Morogh;333):89
+#4271 | auto Dun Morogh;46§auto Dun Morogh;46§auto Dun Morogh;46 | x=-5140.5 y=222.1000061035156 | size=1 | links=#7338(auto Dun Morogh;83):57 #19874(auto Dun Morogh;231):67
+#4485 | Snow Leopard;Dun Morogh;26;29.09;49.7§Schneeleopard;Dun Morogh;26;29.09;49.7§Léopard des neiges;Dun Morogh;26;29.09;49.7 | x=-5517.60009765625 y=353.8000183105469 | size=1
+#4487 | Rockjaw Bonesnapper;Dun Morogh;10;70.59;52.6§Knochenknacker der Felsenkiefer;Dun Morogh;10;70.59;52.6§Briseur d'os Mâcheroc;Dun Morogh;10;70.59;52.6 | x=-5611 y=-1679.300048828125 | size=1
+#4634 | auto thunderbrew distillery;basement;Dun Morogh;47§auto brauerei donnerbräu;basement;Dun Morogh;47§auto thunderbrew distillery;basement;Dun Morogh;47 | x=-5599.5 y=-540 | size=1 | links=#11214(auto thunderbrew distillery;basement;Dun Morogh;127):3 c1373.1:8
+#4763 | auto Dun Morogh;48§auto Dun Morogh;48§auto Dun Morogh;48 | x=-5593.39990234375 y=18.30000114440918 | size=1 | links=#14004(auto Dun Morogh;165):10 #20243(auto Dun Morogh;237):18
+#4877 | Wendigo;Dun Morogh;35;41.25;49.36§Wendigo;Dun Morogh;35;41.25;49.36§Wendigo;Dun Morogh;35;41.25;49.36 | x=-5492.2001953125 y=-231.5 | size=1
+#4915 | auto Dun Morogh;49§auto Dun Morogh;49§auto Dun Morogh;49 | x=-5669.5 y=-1526 | size=1 | links=#17002(auto Dun Morogh;199):48 #25297(crossing;three;Dun Morogh):58
+#5017 | auto inside troll cave;Dun Morogh;50§auto drinnen troll höhle;Dun Morogh;50§auto inside troll cave;Dun Morogh;50 | x=-6507.2001953125 y=351.5 | size=1 | links=#16111(auto inside troll cave;Dun Morogh;189):11 #20524(auto inside troll cave;Dun Morogh;242):12
+#5062 | auto Dun Morogh;51§auto Dun Morogh;51§auto Dun Morogh;51 | x=-5065.80029296875 y=-2283.10009765625 | size=1 | links=#7975(auto Dun Morogh;93):108 #14220(auto Dun Morogh;167):83
+#5076 | Elder Crag Boar;Dun Morogh;38;30.14;51.94§Alter Klippeneber;Dun Morogh;38;30.14;51.94§Ancien sanglier des rochers;Dun Morogh;38;30.14;51.94 | x=-5549 y=337.5 | size=1
+#5134 | Burly Rockjaw Trogg;Dun Morogh;59;30.89;76.23§Bulliger Trogg der Felsenkiefer;Dun Morogh;59;30.89;76.23§Trogg Mâcheroc mastoc;Dun Morogh;59;30.89;76.23 | x=-6364.2001953125 y=285.7000122070313 | size=1
+#5135 | auto Dun Morogh;52§auto Dun Morogh;52§auto Dun Morogh;52 | x=-5609.30029296875 y=-359.8999938964844 | size=1 | links=#20631(auto Dun Morogh;245):32 #21882(auto Dun Morogh;257):62
+#5191 | auto Dun Morogh;54§auto Dun Morogh;54§auto Dun Morogh;54 | x=-5084.30029296875 y=-172 | size=1 | links=#9169(auto Dun Morogh;111):39 #13242(auto Dun Morogh;155):41 #18320(auto Dun Morogh;214):33
+#5198 | auto Dun Morogh;55§auto Dun Morogh;55§auto Dun Morogh;55 | x=-5532.39990234375 y=-1132.800048828125 | size=1 | links=#12393(auto Dun Morogh;145):63 #22997(auto Dun Morogh;273):100
+#5581 | auto Dun Morogh;56§auto Dun Morogh;56§auto Dun Morogh;56 | x=-5934.39990234375 y=-449.3999938964844 | size=1 | links=#5776(auto Dun Morogh;64):55 #14793(auto Dun Morogh;176):115 #25121(auto Dun Morogh;298):72 c1196.1:38 c1201.2:80
+#5635 | auto Dun Morogh;57§auto Dun Morogh;57§auto Dun Morogh;57 | x=-6196.2001953125 y=120.0999984741211 | size=1 | links=#9969(auto Dun Morogh;119):26 #22278(auto Dun Morogh;262):9
+#5644 | auto Dun Morogh;58§auto Dun Morogh;58§auto Dun Morogh;58 | x=-5447.30029296875 y=-483.1000061035156 | size=1 | links=#27662(auto Dun Morogh;323):29 #27798(auto Dun Morogh;326):34
+#5649 | auto Dun Morogh;59§auto Dun Morogh;59§auto Dun Morogh;59 | x=-5607.2001953125 y=-1528 | size=1 | links=#24272(auto Dun Morogh;287):45 #25297(crossing;three;Dun Morogh):25
+#5661 | auto thunderbrew distillery;basement;Dun Morogh;60§auto brauerei donnerbräu;basement;Dun Morogh;60§auto thunderbrew distillery;basement;Dun Morogh;60 | x=-5597.10009765625 y=-551 | size=1 | links=#918(auto thunderbrew distillery;Dun Morogh;7):10 #11214(auto thunderbrew distillery;basement;Dun Morogh;127):7
+#5667 | auto Dun Morogh;61§auto Dun Morogh;61§auto Dun Morogh;61 | x=-5517.5 y=-657 | size=1 | links=#99(auto Dun Morogh;2):7 #11154(auto Dun Morogh;125):6
+#5713 | auto Dun Morogh;62§auto Dun Morogh;62§auto Dun Morogh;62 | x=-5924 y=-2036.599975585938 | size=1 | links=#22779(auto Dun Morogh;267):6 #23078(auto Dun Morogh;275):9
+#5725 | Crag Boar;Dun Morogh;58;44.24;59.37§Klippeneber;Dun Morogh;58;44.24;59.37§Sanglier des rochers;Dun Morogh;58;44.24;59.37 | x=-5794.7001953125 y=-378.7000122070313 | size=1
+#5745 | Small Crag Boar;Dun Morogh;46;21.98;69.3§Kleiner Klippeneber;Dun Morogh;46;21.98;69.3§Petit sanglier des rochers;Dun Morogh;46;21.98;69.3 | x=-6150.39990234375 y=713.2999877929688 | size=1
+#5764 | auto Gol'Bolarmine;Dun Morogh;63§auto Gol'Bolarmine;Dun Morogh;63§auto Gol'Bolarmine;Dun Morogh;63 | x=-5637 y=-1690.800048828125 | size=1 | links=#14994(auto Gol'Bolarmine;Dun Morogh;177):18 #25204(auto Gol'Bolarmine;Dun Morogh;300):12
+#5776 | auto Dun Morogh;64§auto Dun Morogh;64§auto Dun Morogh;64 | x=-5882.60009765625 y=-430.1000061035156 | size=1 | links=#5581(auto Dun Morogh;56):55 #8227(auto Dun Morogh;98):36 #25121(auto Dun Morogh;298):52
+#5790 | auto Dun Morogh;65§auto Dun Morogh;65§auto Dun Morogh;65 | x=-4952 y=-30 | size=1 | links=#104(auto Dun Morogh;3):100 #15783(auto Dun Morogh;185):31 #22145(auto Dun Morogh;258):75
+#5845 | auto Dun Morogh;66§auto Dun Morogh;66§auto Dun Morogh;66 | x=-5291.39990234375 y=-2153.199951171875 | size=1 | links=#8693(auto Dun Morogh;107):40 #23637(auto Dun Morogh;279):65
+#5871 | auto Dun Morogh;67§auto Dun Morogh;67§auto Dun Morogh;67 | x=-5697.80029296875 y=-490.3999938964844 | size=1 | links=#116(auto Dun Morogh;4):20 #8513(central location;Kharanos;Dun Morogh):81 #26705(auto Dun Morogh;316):73 c12427.1:46
+#5953 | Small Crag Boar;Dun Morogh;19;22.2;69.45§Kleiner Klippeneber;Dun Morogh;19;22.2;69.45§Petit sanglier des rochers;Dun Morogh;19;22.2;69.45 | x=-6164.39990234375 y=709.2999877929688 | size=1
+#5980 | entry and exit;Coldridge Pass;Dun Morogh;two§ein- und ausgang;Eisklamm;Dun Morogh;zwei§entrée et sortie;Passe des Frigères;Dun Morogh;deux | x=-6041.39990234375 y=45.20000076293945 | size=1 | links=#10282(auto Dun Morogh;120):25 #22648(Kotka;first aid;two;Coldridge Pass;Dun Morogh):42
+#6017 | Burly Rockjaw Trogg;Dun Morogh;50;29.25;75§Bulliger Trogg der Felsenkiefer;Dun Morogh;50;29.25;75§Trogg Mâcheroc mastoc;Dun Morogh;50;29.25;75 | x=-6357.39990234375 y=403.2000122070313 | size=1
+#6057 | Rockjaw Trogg;Dun Morogh;28;30.75;74.46§Trogg der Felsenkiefer;Dun Morogh;28;30.75;74.46§Trogg Mâcheroc;Dun Morogh;28;30.75;74.46 | x=-6316.80029296875 y=287.8999938964844 | size=1
+#6059 | auto Dun Morogh;68§auto Dun Morogh;68§auto Dun Morogh;68 | x=-5082.60009765625 y=276.3000183105469 | size=1 | links=#9798(auto Dun Morogh;115):24 #19874(auto Dun Morogh;231):29
+#6113 | auto Dun Morogh;69§auto Dun Morogh;69§auto Dun Morogh;69 | x=-5531.2001953125 y=-658.4000244140625 | size=1 | links=#20501(auto Dun Morogh;241):10 #24049(auto Dun Morogh;284):10
+#6166 | Snow Leopard;Dun Morogh;22;27.55;54.76§Schneeleopard;Dun Morogh;22;27.55;54.76§Léopard des neiges;Dun Morogh;22;27.55;54.76 | x=-5656.60009765625 y=438.7000122070313 | size=1
+#6200 | auto Dun Morogh;70§auto Dun Morogh;70§auto Dun Morogh;70 | x=-6171.5 y=316.7000122070313 | size=1 | links=c6491.3:14
+#6248 | auto Dun Morogh;71§auto Dun Morogh;71§auto Dun Morogh;71 | x=-6090.39990234375 y=49.70000076293945 | size=1 | links=#10282(auto Dun Morogh;120):24 #19569(auto Dun Morogh;229):12
+#6272 | auto Dun Morogh;72§auto Dun Morogh;72§auto Dun Morogh;72 | x=-6253.2001953125 y=277.3000183105469 | size=1 | links=#15850(central location;Coldridge Valley;Dun Morogh):60 #19734(auto Dun Morogh;230):27
+#6298 | central location;Frostmane Hold;Dun Morogh§zentralpunkt;Höhle der Frostmähnen;Dun Morogh§emplacement central;Le repaire des Crins-de-givre;Dun Morogh | x=-5564.89990234375 y=766.4000244140625 | size=1 | links=#25726(auto Dun Morogh;304):7 #48700(auto Inside;Frostmane Hold;Dun Morogh;337):27
+#6309 | auto Dun Morogh;73§auto Dun Morogh;73§auto Dun Morogh;73 | x=-5662.89990234375 y=-290.8000183105469 | size=1 | links=c1134.3:19 c1135.39:34
+#6566 | central location;Anvilmar§zentralpunkt;Ambossar§emplacement central;Anvilmar | x=-6109.2001953125 y=391.6000061035156 | size=1 | links=#11198(auto Anvilmar;Dun Morogh;126):22 #17984(auto Anvilmar;Dun Morogh;209):21 c916.1:20 c926.1:14 c945.1:8 c1104.1:8 c8416.1:12
+#6716 | auto Anvilmar;Dun Morogh;74§auto Ambossar;Dun Morogh;74§auto Anvilmar;Dun Morogh;74 | x=-6075.5 y=384.3000183105469 | size=1 | links=#17451(auto Anvilmar;Dun Morogh;205):6 c895.1:25 c916.1:27
+#6863 | auto Dun Morogh;75§auto Dun Morogh;75§auto Dun Morogh;75 | x=-5319.5 y=461.3999938964844 | size=1 | links=#14714(auto Dun Morogh;175):22 c1211.29:22
+#6900 | Rockjaw Trogg;Dun Morogh;26;30.04;76.63§Trogg der Felsenkiefer;Dun Morogh;26;30.04;76.63§Trogg Mâcheroc;Dun Morogh;26;30.04;76.63 | x=-6385.5 y=302.8999938964844 | size=1
+#6928 | auto Dun Morogh;76§auto Dun Morogh;76§auto Dun Morogh;76 | x=-6434.60009765625 y=485.8999938964844 | size=1 | links=#3809(auto Dun Morogh;38):26 #17626(Frostmane Troll Whelp;in;Coldridge Valley;Dun Morogh):78
+#6973 | auto Dun Morogh;77§auto Dun Morogh;77§auto Dun Morogh;77 | x=-5581.2001953125 y=70.4000015258789 | size=1 | links=#12547(auto Dun Morogh;147):16 #25264(auto Dun Morogh;302):15
+#7086 | auto Dun Morogh;78§auto Dun Morogh;78§auto Dun Morogh;78 | x=-5114.5 y=323.2000122070313 | size=1 | links=#9798(auto Dun Morogh;115):34 #18742(auto Dun Morogh;218):41
+#7111 | auto Gol'Bolarmine;Dun Morogh;79§auto Gol'Bolarmine;Dun Morogh;79§auto Gol'Bolarmine;Dun Morogh;79 | x=-5618.7001953125 y=-1695.800048828125 | size=1 | links=#10766(auto Gol'Bolarmine;Dun Morogh;123):14 #25204(auto Gol'Bolarmine;Dun Morogh;300):12
+#7189 | entry and exit;cave;Coldridge Valley;Dun Morogh§ein- und ausgang;höhle;Eisklammtal;Dun Morogh§entrée et sortie;cave;Coldridge Valley;Dun Morogh | x=-6493.89990234375 y=485.8000183105469 | size=1 | links=#11062(auto Dun Morogh;124):18 #22442(auto inside troll cave;Dun Morogh;265):19 o178085.1:23
+#7295 | auto inside troll cave;Dun Morogh;80§auto drinnen troll höhle;Dun Morogh;80§auto inside troll cave;Dun Morogh;80 | x=-6483.5 y=395.7000122070313 | size=1 | links=#7548(auto inside troll cave;Dun Morogh;89):23 #19094(auto inside troll cave;Dun Morogh;225):21 #28158(auto inside troll cave;Dun Morogh;331):13
+#7316 | auto Dun Morogh;81§auto Dun Morogh;81§auto Dun Morogh;81 | x=-5273.2001953125 y=-129.1000061035156 | size=1 | links=#17086(central location;Shimmer Ridge;Dun Morogh):34 #20208(entry and exit;Shimmer Ridge;Dun Morogh):21
+#7318 | auto Dun Morogh;82§auto Dun Morogh;82§auto Dun Morogh;82 | x=-5566.89990234375 y=-257.2000122070313 | size=1 | links=#11544(auto Dun Morogh;132):12 #18831(auto Dun Morogh;220):22
+#7338 | auto Dun Morogh;83§auto Dun Morogh;83§auto Dun Morogh;83 | x=-5194.5 y=202.8000030517578 | size=1 | links=#4271(auto Dun Morogh;46):57 #7890(auto Dun Morogh;91):97 #28551(auto Dun Morogh;335):124 c1132.3:129
+#7361 | auto Dun Morogh;84§auto Dun Morogh;84§auto Dun Morogh;84 | x=-5584.60009765625 y=-2050.60009765625 | size=1 | links=#10541(auto Dun Morogh;121):39 #16678(auto Dun Morogh;197):104
+#7364 | Ragged Young Wolf;Dun Morogh;26;28.84;73.81§Struppiger junger Wolf;Dun Morogh;26;28.84;73.81§Jeune loup décharné;Dun Morogh;26;28.84;73.81 | x=-6301.89990234375 y=377.3000183105469 | size=1
+#7374 | auto Dun Morogh;85§auto Dun Morogh;85§auto Dun Morogh;85 | x=-5590.39990234375 y=-436.8999938964844 | size=1 | links=#9516(auto Dun Morogh;113):14 c1273.1:8
+#7376 | auto Dun Morogh;86§auto Dun Morogh;86§auto Dun Morogh;86 | x=-6013.30029296875 y=-277.5 | size=1 | links=#8376(auto Dun Morogh;99):63 #14793(auto Dun Morogh;176):76
+#7382 | auto Dun Morogh;87§auto Dun Morogh;87§auto Dun Morogh;87 | x=-6477.39990234375 y=710.5 | size=1 | links=#11800(auto Dun Morogh;139):41 o178084.1:40
+#7460 | auto Dun Morogh;88§auto Dun Morogh;88§auto Dun Morogh;88 | x=-5939.2001953125 y=-2027 | size=1 | links=#13852(auto Dun Morogh;162):10 #23078(auto Dun Morogh;275):12
+#7470 | Small Crag Boar;Dun Morogh;43;21.92;70.12§Kleiner Klippeneber;Dun Morogh;43;21.92;70.12§Petit sanglier des rochers;Dun Morogh;43;21.92;70.12 | x=-6197.39990234375 y=727.1000366210938 | size=1
+#7548 | auto inside troll cave;Dun Morogh;89§auto drinnen troll höhle;Dun Morogh;89§auto inside troll cave;Dun Morogh;89 | x=-6468.2001953125 y=377.3000183105469 | size=1 | links=#7295(auto inside troll cave;Dun Morogh;80):23 #8619(auto inside troll cave;Dun Morogh;105):9
+#7662 | Frostmane Hideskinner;Dun Morogh;5;21.61;50.64§Balgabzieher der Frostmähnen;Dun Morogh;5;21.61;50.64§Ecorcheur Crins-de-givre;Dun Morogh;5;21.61;50.64 | x=-5530.7001953125 y=729.9000244140625 | size=1
+#7788 | Burly Rockjaw Trogg;Dun Morogh;8;26.16;72.22§Bulliger Trogg der Felsenkiefer;Dun Morogh;8;26.16;72.22§Trogg Mâcheroc mastoc;Dun Morogh;8;26.16;72.22 | x=-6251.10009765625 y=512.2999877929688 | size=1
+#7798 | Ragged Young Wolf;Dun Morogh;9;28.73;72.36§Struppiger junger Wolf;Dun Morogh;9;28.73;72.36§Jeune loup décharné;Dun Morogh;9;28.73;72.36 | x=-6255.5 y=389.5 | size=1
+#7856 | Burly Rockjaw Trogg;Dun Morogh;14;27.02;72.63§Bulliger Trogg der Felsenkiefer;Dun Morogh;14;27.02;72.63§Trogg Mâcheroc mastoc;Dun Morogh;14;27.02;72.63 | x=-6262.10009765625 y=466.8000183105469 | size=1
+#7890 | auto Dun Morogh;91§auto Dun Morogh;91§auto Dun Morogh;91 | x=-5181.39990234375 y=106.4000015258789 | size=1 | links=#7338(auto Dun Morogh;83):97 c1132.1:68 c1700.1:54
+#7936 | auto Dun Morogh;92§auto Dun Morogh;92§auto Dun Morogh;92 | x=-5563 y=630.1000366210938 | size=1 | links=#8410(auto Dun Morogh;101):18 #19881(auto Dun Morogh;232):17
+#7975 | auto Dun Morogh;93§auto Dun Morogh;93§auto Dun Morogh;93 | x=-5063 y=-2174.300048828125 | size=1 | links=#5062(auto Dun Morogh;51):108 o2059.1:52
+#8036 | auto Dun Morogh;94§auto Dun Morogh;94§auto Dun Morogh;94 | x=-5437.7001953125 y=-763.7000122070312 | size=1 | links=#3507(auto Dun Morogh;37):118 #14545(auto Dun Morogh;173):110
+#8122 | auto Dun Morogh;95§auto Dun Morogh;95§auto Dun Morogh;95 | x=-5755.30029296875 y=-352.3000183105469 | size=1 | links=#24329(auto Dun Morogh;289):66 o176785.1:20
+#8142 | auto Dun Morogh;96§auto Dun Morogh;96§auto Dun Morogh;96 | x=-5057 y=-94.80000305175781 | size=1 | links=#27012(auto Dun Morogh;317):41 #28377(auto Dun Morogh;334):16
+#8222 | auto Dun Morogh;97§auto Dun Morogh;97§auto Dun Morogh;97 | x=-5513.5 y=-1298.400024414063 | size=1 | links=#22151(auto Dun Morogh;259):5 c3177.1:3
+#8226 | Elder Crag Boar;Dun Morogh;40;40.46;47.22§Alter Klippeneber;Dun Morogh;40;40.46;47.22§Ancien sanglier des rochers;Dun Morogh;40;40.46;47.22 | x=-5418.10009765625 y=-210.1999969482422 | size=1
+#8227 | auto Dun Morogh;98§auto Dun Morogh;98§auto Dun Morogh;98 | x=-5855.2001953125 y=-406.1000061035156 | size=1 | links=#5776(auto Dun Morogh;64):36 #24329(auto Dun Morogh;289):48
+#8376 | auto Dun Morogh;99§auto Dun Morogh;99§auto Dun Morogh;99 | x=-5996.39990234375 y=-216.1000061035156 | size=1 | links=#7376(auto Dun Morogh;86):63 #16037(auto Dun Morogh;187):134 c1243.1:24
+#8389 | auto Dun Morogh;100§auto Dun Morogh;100§auto Dun Morogh;100 | x=-5908.5 y=-2029.099975585938 | size=1 | links=#2226(auto Dun Morogh;22):8 #19073(auto Dun Morogh;224):63
+#8400 | Wendigo;Dun Morogh;33;41.98;51.47§Wendigo;Dun Morogh;33;41.98;51.47§Wendigo;Dun Morogh;33;41.98;51.47 | x=-5571.60009765625 y=-268.6000061035156 | size=1
+#8410 | auto Dun Morogh;101§auto Dun Morogh;101§auto Dun Morogh;101 | x=-5581.39990234375 y=626.2000122070312 | size=1 | links=#7936(auto Dun Morogh;92):18 #11747(auto Dun Morogh;137):26
+#8513 | central location;Kharanos;Dun Morogh§zentralpunkt;Kharanos;Dun Morogh§emplacement central;Kharanos;Dun Morogh | x=-5616.7001953125 y=-484.8000183105469 | size=1 | links=#3383(s;A;Mailbox;Dun Morogh):30 #5871(auto Dun Morogh;67):81 #25958(centralpoint;Kharanos;Dun Morogh):39 c1252.1:31 c1267.1:28 c1692.1:20 c2878.1:35 c9980.1:30 c12427.1:60 c24364.1:26 c24519.1:13
+#8515 | Young Black Bear;Dun Morogh;8;35.54;60§Junger Schwarzbär;Dun Morogh;8;35.54;60§Jeune ours noir;Dun Morogh;8;35.54;60 | x=-5834.80029296875 y=47.29999923706055 | size=1
+#8560 | auto Dun Morogh;102§auto Dun Morogh;102§auto Dun Morogh;102 | x=-5604.89990234375 y=-276.8999938964844 | size=1 | links=#19048(auto Dun Morogh;223):24 #21710(auto Dun Morogh;256):10
+#8575 | auto Dun Morogh;103§auto Dun Morogh;103§auto Dun Morogh;103 | x=-6346.485067706951 y=581.9721490697627 | size=1 | links=#11825(auto Dun Morogh;140):16 #13890(auto Dun Morogh;163):93 #26599(focus point;Coldridge Valley;Dun Morogh):128
+#8579 | Wendigo;Dun Morogh;39;42.19;53.36§Wendigo;Dun Morogh;39;42.19;53.36§Wendigo;Dun Morogh;39;42.19;53.36 | x=-5629.2001953125 y=-284.3999938964844 | size=1
+#8591 | auto Dun Morogh;104§auto Dun Morogh;104§auto Dun Morogh;104 | x=-5413.7001953125 y=-933.6000366210938 | size=1 | links=#3507(auto Dun Morogh;37):69 #18790(auto Dun Morogh;219):68 #19443(auto Dun Morogh;228):89
+#8619 | auto inside troll cave;Dun Morogh;105§auto drinnen troll höhle;Dun Morogh;105§auto inside troll cave;Dun Morogh;105 | x=-6466.60009765625 y=368.3000183105469 | size=1 | links=#7548(auto inside troll cave;Dun Morogh;89):9 #13216(auto inside troll cave;Dun Morogh;154):16
+#8630 | auto Gol'Bolarmine;Dun Morogh;106§auto Gol'Bolarmine;Dun Morogh;106§auto Gol'Bolarmine;Dun Morogh;106 | x=-5611.89990234375 y=-1687.800048828125 | size=1 | links=#10766(auto Gol'Bolarmine;Dun Morogh;123):18 #26689(auto Gol'Bolarmine;Dun Morogh;314):11
+#8655 | Elder Crag Boar;Dun Morogh;34;32.23;47.09§Alter Klippeneber;Dun Morogh;34;32.23;47.09§Ancien sanglier des rochers;Dun Morogh;34;32.23;47.09 | x=-5412.80029296875 y=255.6000061035156 | size=1
+#8662 | Frostmane Hideskinner;Dun Morogh;11;23.46;53.86§Balgabzieher der Frostmähnen;Dun Morogh;11;23.46;53.86§Ecorcheur Crins-de-givre;Dun Morogh;11;23.46;53.86 | x=-5647.10009765625 y=640.2999877929688 | size=1
+#8683 | Frostmane Shadowcaster;Dun Morogh;6;21.09;53.57§Schattenzauberer der Frostmähnen;Dun Morogh;6;21.09;53.57§Exhalombre Crins-de-givre;Dun Morogh;6;21.09;53.57 | x=-5640.7001953125 y=761.2000122070312 | size=1
+#8693 | auto Dun Morogh;107§auto Dun Morogh;107§auto Dun Morogh;107 | x=-5283.80029296875 y=-2192.5 | size=1 | links=#5845(auto Dun Morogh;66):40 #26658(auto Dun Morogh;313):47
+#8694 | Rockjaw Trogg;Dun Morogh;17;30.07;74.49§Trogg der Felsenkiefer;Dun Morogh;17;30.07;74.49§Trogg Mâcheroc;Dun Morogh;17;30.07;74.49 | x=-6315 y=312.6000061035156 | size=1
+#8708 | Ragged Young Wolf;Dun Morogh;11;26.68;69.85§Struppiger junger Wolf;Dun Morogh;11;26.68;69.85§Jeune loup décharné;Dun Morogh;11;26.68;69.85 | x=-6172.89990234375 y=482.6000061035156 | size=1
+#8765 | Large Crag Boar;Dun Morogh;28;41.22;47.18§Großer Klippeneber;Dun Morogh;28;41.22;47.18§Grand sanglier des rochers;Dun Morogh;28;41.22;47.18 | x=-5424.30029296875 y=-234.1000061035156 | size=1
+#8812 | Snow Leopard;Dun Morogh;51;56.34;52.21§Schneeleopard;Dun Morogh;51;56.34;52.21§Léopard des neiges;Dun Morogh;51;56.34;52.21 | x=-5604.60009765625 y=-992.1000366210938 | size=1
+#8820 | auto Dun Morogh;108§auto Dun Morogh;108§auto Dun Morogh;108 | x=-5615 y=-1248.300048828125 | size=1 | links=#1080(auto Dun Morogh;10):46 #3362(crossing;two;Dun Morogh):71
+#9002 | auto Dun Morogh;109§auto Dun Morogh;109§auto Dun Morogh;109 | x=-6270 y=192.6999969482422 | size=1 | links=#19734(auto Dun Morogh;230):58 c1965.1:52
+#9088 | auto Dun Morogh;110§auto Dun Morogh;110§auto Dun Morogh;110 | x=-5342.80029296875 y=562.6000366210938 | size=1 | links=#1495(auto Dun Morogh;14):2 #19943(auto Dun Morogh;234):2
+#9169 | auto Dun Morogh;111§auto Dun Morogh;111§auto Dun Morogh;111 | x=-5053.2001953125 y=-147.1999969482422 | size=1 | links=#5191(auto Dun Morogh;54):39 #27012(auto Dun Morogh;317):26
+#9339 | auto Dun Morogh;112§auto Dun Morogh;112§auto Dun Morogh;112 | x=-5754.7001953125 y=-1659.900024414063 | size=1 | links=#13474(auto Dun Morogh;158):44 #19958(entry and exit;Gol'Bolar Quarry):13
+#9426 | central location;cave;Coldridge Valley;Dun Morogh§zentralpunkt;höhle;Eisklammtal;Dun Morogh§emplacement central;cave;Coldridge Valley;Dun Morogh | x=-6496.10009765625 y=322.8999938964844 | size=1 | links=#27961(auto inside troll cave;Dun Morogh;327):17 c808.1:25
+#9516 | auto Dun Morogh;113§auto Dun Morogh;113§auto Dun Morogh;113 | x=-5579.2001953125 y=-446.3999938964844 | size=1 | links=#7374(auto Dun Morogh;85):14 #9804(auto Dun Morogh;116):18 #26450(auto Dun Morogh;311):15
+#9558 | Rockjaw Trogg;Dun Morogh;30;31.81;75.75§Trogg der Felsenkiefer;Dun Morogh;30;31.81;75.75§Trogg Mâcheroc;Dun Morogh;30;31.81;75.75 | x=-6357 y=228.5 | size=1
+#9585 | Snow Leopard;Dun Morogh;31;34.39;47.66§Schneeleopard;Dun Morogh;31;34.39;47.66§Léopard des neiges;Dun Morogh;31;34.39;47.66 | x=-5443.39990234375 y=126.0999984741211 | size=1
+#9586 | auto Dun Morogh;114§auto Dun Morogh;114§auto Dun Morogh;114 | x=-5555.39990234375 y=-1581.300048828125 | size=1 | links=#16072(auto Dun Morogh;188):118 #24272(auto Dun Morogh;287):30
+#9658 | Ragged Young Wolf;Dun Morogh;7;30.76;74.59§Struppiger junger Wolf;Dun Morogh;7;30.76;74.59§Jeune loup décharné;Dun Morogh;7;30.76;74.59 | x=-6325.2001953125 y=300.8000183105469 | size=1
+#9677 | Elder Crag Boar;Dun Morogh;35;29.59;49.68§Alter Klippeneber;Dun Morogh;35;29.59;49.68§Ancien sanglier des rochers;Dun Morogh;35;29.59;49.68 | x=-5504.7001953125 y=324.5 | size=1
+#9745 | Ragged Young Wolf;Dun Morogh;5;30.31;74.18§Struppiger junger Wolf;Dun Morogh;5;30.31;74.18§Jeune loup décharné;Dun Morogh;5;30.31;74.18 | x=-6325.89990234375 y=313 | size=1
+#9779 | Frostmane Headhunter;Dun Morogh;4;25.5;50.86§Kopfjäger der Frostmähnen;Dun Morogh;4;25.5;50.86§Chasseur de têtes Crins-de-givre;Dun Morogh;4;25.5;50.86 | x=-5549.5 y=552.5 | size=1
+#9798 | auto Dun Morogh;115§auto Dun Morogh;115§auto Dun Morogh;115 | x=-5088.5 y=300.3999938964844 | size=1 | links=#6059(auto Dun Morogh;68):24 #7086(auto Dun Morogh;78):34
+#9804 | auto Dun Morogh;116§auto Dun Morogh;116§auto Dun Morogh;116 | x=-5578.80029296875 y=-464.6000061035156 | size=1 | links=#9516(auto Dun Morogh;113):18 c1872.1:4
+#9887 | auto Dun Morogh;117§auto Dun Morogh;117§auto Dun Morogh;117 | x=-4997.39990234375 y=180.3000030517578 | size=1 | links=#12873(auto Dun Morogh;151):80 #14400(auto Dun Morogh;170):58
+#9944 | spawn location;Coldridge Valley;Dun Morogh§spawnpunkt;Eisklammtal;Dun Morogh§spawn location;Coldridge Valley;Dun Morogh | x=-6239.702392055023 y=330.6540785261414 | size=1 | links=#15850(central location;Coldridge Valley;Dun Morogh):13
+#9960 | auto Dun Morogh;118§auto Dun Morogh;118§auto Dun Morogh;118 | x=-5421.60009765625 y=522.7999877929688 | size=1 | links=#12067(auto Dun Morogh;144):49 #18038(auto Dun Morogh;210):59 c1121.1:103 c1196.11:32 c1201.20:14 c1127.25:20
+#9969 | auto Dun Morogh;119§auto Dun Morogh;119§auto Dun Morogh;119 | x=-6171.2001953125 y=128.1999969482422 | size=1 | links=#2428(auto Dun Morogh;25):14 #5635(auto Dun Morogh;57):26
+#10097 | Ice Claw Bear;Dun Morogh;30;35.9;46.93§Eisklauenbär;Dun Morogh;30;35.9;46.93§Ours Griffeglace;Dun Morogh;30;35.9;46.93 | x=-5398.30029296875 y=42 | size=1
+#10282 | auto Dun Morogh;120§auto Dun Morogh;120§auto Dun Morogh;120 | x=-6066.5 y=43.5 | size=1 | links=#5980(entry and exit;Coldridge Pass;Dun Morogh;two):25 #6248(auto Dun Morogh;71):24
+#10417 | centralpoint;cave;Coldridge Valley;Dun Morogh§zentralerpunkt;höhle;Eisklammtal;Dun Morogh§point central;cave;Coldridge Valley;Dun Morogh | x=-6534.80029296875 y=386.3000183105469 | size=1 | links=#2164(auto inside troll cave;Dun Morogh;19):26 #19094(auto inside troll cave;Dun Morogh;225):31
+#10535 | Large Crag Boar;Dun Morogh;31;48.42;56.76§Großer Klippeneber;Dun Morogh;31;48.42;56.76§Grand sanglier des rochers;Dun Morogh;31;48.42;56.76 | x=-5706.80029296875 y=-581 | size=1
+#10541 | auto Dun Morogh;121§auto Dun Morogh;121§auto Dun Morogh;121 | x=-5558.80029296875 y=-2081.10009765625 | size=1 | links=#7361(auto Dun Morogh;84):39 #28565(crossing;four;Dun Morogh):66 #22168(auto South Gate Pass;2):90
+#10653 | Small Crag Boar;Dun Morogh;8;26.59;68.57§Kleiner Klippeneber;Dun Morogh;8;26.59;68.57§Petit sanglier des rochers;Dun Morogh;8;26.59;68.57 | x=-6136.30029296875 y=463.2000122070313 | size=1
+#10678 | Ragged Young Wolf;Dun Morogh;43;29.03;74.65§Struppiger junger Wolf;Dun Morogh;43;29.03;74.65§Jeune loup décharné;Dun Morogh;43;29.03;74.65 | x=-6327.80029296875 y=370.8000183105469 | size=1
+#10688 | auto Dun Morogh;122§auto Dun Morogh;122§auto Dun Morogh;122 | x=-5260.80029296875 y=-500.2000122070313 | size=1 | links=#13396(crossing;one;Dun Morogh):89 #13489(auto Dun Morogh;159):51 #26349(auto Dun Morogh;309):28
+#10754 | Ragged Young Wolf;Dun Morogh;15;25.97;70.9§Struppiger junger Wolf;Dun Morogh;15;25.97;70.9§Jeune loup décharné;Dun Morogh;15;25.97;70.9 | x=-6218 y=516.6000366210938 | size=1
+#10766 | auto Gol'Bolarmine;Dun Morogh;123§auto Gol'Bolarmine;Dun Morogh;123§auto Gol'Bolarmine;Dun Morogh;123 | x=-5608.30029296875 y=-1705.599975585938 | size=1 | links=#7111(auto Gol'Bolarmine;Dun Morogh;79):14 #8630(auto Gol'Bolarmine;Dun Morogh;106):18
+#10779 | Rockjaw Trogg;Dun Morogh;25;30.72;77.02§Trogg der Felsenkiefer;Dun Morogh;25;30.72;77.02§Trogg Mâcheroc;Dun Morogh;25;30.72;77.02 | x=-6396.89990234375 y=284.6000061035156 | size=1
+#10944 | Young Wendigo;Dun Morogh;4;42.12;54.81§Junger Wendigo;Dun Morogh;4;42.12;54.81§Jeune wendigo;Dun Morogh;4;42.12;54.81 | x=-5689.89990234375 y=-273.3000183105469 | size=1
+#11062 | auto Dun Morogh;124§auto Dun Morogh;124§auto Dun Morogh;124 | x=-6476.5 y=491.6000061035156 | size=1 | links=#3809(auto Dun Morogh;38):19 #7189(entry and exit;cave;Coldridge Valley;Dun Morogh):18
+#11150 | Burly Rockjaw Trogg;Dun Morogh;6;26.3;73.16§Bulliger Trogg der Felsenkiefer;Dun Morogh;6;26.3;73.16§Trogg Mâcheroc mastoc;Dun Morogh;6;26.3;73.16 | x=-6276.7001953125 y=502.3000183105469 | size=1
+#11154 | auto Dun Morogh;125§auto Dun Morogh;125§auto Dun Morogh;125 | x=-5517.60009765625 y=-663.5 | size=1 | links=#5667(auto Dun Morogh;61):6 #20501(auto Dun Morogh;241):6
+#11198 | auto Anvilmar;Dun Morogh;126§auto Ambossar;Dun Morogh;126§auto Anvilmar;Dun Morogh;126 | x=-6102.5 y=370.5 | size=1 | links=#6566(central location;Anvilmar):22 c895.1:12 c912.1:21
+#11214 | auto thunderbrew distillery;basement;Dun Morogh;127§auto brauerei donnerbräu;basement;Dun Morogh;127§auto thunderbrew distillery;basement;Dun Morogh;127 | x=-5597.10009765625 y=-543.2000122070312 | size=1 | links=#4634(auto thunderbrew distillery;basement;Dun Morogh;47):3 #5661(auto thunderbrew distillery;basement;Dun Morogh;60):7
+#11306 | Burly Rockjaw Trogg;Dun Morogh;55;30.29;76.27§Bulliger Trogg der Felsenkiefer;Dun Morogh;55;30.29;76.27§Trogg Mâcheroc mastoc;Dun Morogh;55;30.29;76.27 | x=-6375.80029296875 y=298.1000061035156 | size=1
+#11434 | auto Dun Morogh;128§auto Dun Morogh;128§auto Dun Morogh;128 | x=-6149 y=73.5 | size=1 | links=#2143(auto Dun Morogh;18):33 #22887(auto Dun Morogh;272):26
+#11442 | auto Gol'Bolarmine;Dun Morogh;129§auto Gol'Bolarmine;Dun Morogh;129§auto Gol'Bolarmine;Dun Morogh;129 | x=-5600 y=-1769.900024414063 | size=1 | links=#17520(auto Gol'Bolarmine;Dun Morogh;206):26 #27359(auto Gol'Bolarmine;Dun Morogh;320):14
+#11491 | auto Dun Morogh;130§auto Dun Morogh;130§auto Dun Morogh;130 | x=-5336.80029296875 y=570.1000366210938 | size=1 | links=#2524(auto Dun Morogh;27):1 #18989(auto Dun Morogh;222):2
+#11503 | auto thunderbrew distillery;Dun Morogh;131§auto brauerei donnerbräu;Dun Morogh;131§auto thunderbrew distillery;Dun Morogh;131 | x=-5581.5 y=-534.2999877929688 | size=1 | links=#3217(auto thunderbrew distillery;Dun Morogh;32):10 #16871(Yori Crackhelm;Thunderbrew Distillery;Dun Morogh):7 c1228.1:6 c1232.1:9 o180523.1:6
+#11541 | Rockjaw Bonesnapper;Dun Morogh;6;70.97;54.61§Knochenknacker der Felsenkiefer;Dun Morogh;6;70.97;54.61§Briseur d'os Mâcheroc;Dun Morogh;6;70.97;54.61 | x=-5676.39990234375 y=-1701.599975585938 | size=1
+#11544 | auto Dun Morogh;132§auto Dun Morogh;132§auto Dun Morogh;132 | x=-5571.60009765625 y=-268.6000061035156 | size=1 | links=#7318(auto Dun Morogh;82):12 #19048(auto Dun Morogh;223):25
+#11594 | auto thunderbrew distillery;Dun Morogh;133§auto brauerei donnerbräu;Dun Morogh;133§auto thunderbrew distillery;Dun Morogh;133 | x=-5580.30029296875 y=-510.3999938964844 | size=1 | links=#3217(auto thunderbrew distillery;Dun Morogh;32):13 #20071(auto thunderbrew distillery;Dun Morogh;235):7
+#11595 | auto Dun Morogh;134§auto Dun Morogh;134§auto Dun Morogh;134 | x=-5231.80029296875 y=-619.4000244140625 | size=1 | links=#20838(auto Dun Morogh;247):65 #26349(auto Dun Morogh;309):95
+#11688 | auto Dun Morogh;135§auto Dun Morogh;135§auto Dun Morogh;135 | x=-5541.7001953125 y=-1329 | size=1 | links=#2179(auto Dun Morogh;20):16 #17474(central location;Amberstill Ranch;Dun Morogh):8
+#11698 | auto Dun Morogh;136§auto Dun Morogh;136§auto Dun Morogh;136 | x=-5075.39990234375 y=442.3999938964844 | size=1 | links=#15561(auto Dun Morogh;182):9 c1211.5:3
+#11747 | auto Dun Morogh;137§auto Dun Morogh;137§auto Dun Morogh;137 | x=-5604.30029296875 y=612.2999877929688 | size=1 | links=#8410(auto Dun Morogh;101):26 c1122.2:36
+#11799 | auto Dun Morogh;138§auto Dun Morogh;138§auto Dun Morogh;138 | x=-5511.7001953125 y=-2429.199951171875 | size=1 | links=#17940(auto Dun Morogh;208):20 #24480(auto Dun Morogh;292):26
+#11800 | auto Dun Morogh;139§auto Dun Morogh;139§auto Dun Morogh;139 | x=-6437.39990234375 y=723.1000366210938 | size=1 | links=#7382(auto Dun Morogh;87):41 #11999(auto Dun Morogh;143):37
+#11813 | Elder Crag Boar;Dun Morogh;41;37.83;45.95§Alter Klippeneber;Dun Morogh;41;37.83;45.95§Ancien sanglier des rochers;Dun Morogh;41;37.83;45.95 | x=-5389.60009765625 y=-52.20000076293945 | size=1
+#11825 | auto Dun Morogh;140§auto Dun Morogh;140§auto Dun Morogh;140 | x=-6361.10009765625 y=575 | size=1 | links=#8575(auto Dun Morogh;103):16 c786.1:8 c12738.1:10
+#11927 | auto Dun Morogh;141§auto Dun Morogh;141§auto Dun Morogh;141 | x=-5394.39990234375 y=-2122.900146484375 | size=1 | links=#23637(auto Dun Morogh;279):48 #28565(crossing;four;Dun Morogh):136
+#11947 | auto Dun Morogh;142§auto Dun Morogh;142§auto Dun Morogh;142 | x=-5328.39990234375 y=582.4000244140625 | size=1 | links=#25417(auto Dun Morogh;303):11 #27303(down;ramp;class quest;rogue;Gnomeregan;Dun Morogh):12 c1211.33:12
+#11972 | Young Black Bear;Dun Morogh;30;49.17;51§Junger Schwarzbär;Dun Morogh;30;49.17;51§Jeune ours noir;Dun Morogh;30;49.17;51 | x=-5551.2001953125 y=-632.2999877929688 | size=1
+#11999 | auto Dun Morogh;143§auto Dun Morogh;143§auto Dun Morogh;143 | x=-6409.5 y=748.7999877929688 | size=1 | links=#11800(auto Dun Morogh;139):37 o148499.1:42
+#12067 | auto Dun Morogh;144§auto Dun Morogh;144§auto Dun Morogh;144 | x=-5378 y=547.1000366210938 | size=1 | links=#9960(auto Dun Morogh;118):49 #22182(auto Dun Morogh;260):25
+#12115 | Rockjaw Trogg;Dun Morogh;15;29.26;75.5§Trogg der Felsenkiefer;Dun Morogh;15;29.26;75.5§Trogg Mâcheroc;Dun Morogh;15;29.26;75.5 | x=-6317.60009765625 y=372 | size=1
+#12197 | Large Crag Boar;Dun Morogh;32;49.25;54.76§Großer Klippeneber;Dun Morogh;32;49.25;54.76§Grand sanglier des rochers;Dun Morogh;32;49.25;54.76 | x=-5683 y=-602 | size=1
+#12342 | passage;from;Gates of Ironforge;Dun Morogh;to;Ironforge§passage;von;Tore von Eisenschmiede;Dun Morogh;nach;Eisenschmiede§passage;de;Portes de Forgefer;Dun Morogh;vers;Forgefer | x=-5023.2001953125 y=-831.7999877929688 | size=1 | links=#17261(auto Dun Morogh;202):0 #17287(passage;from;Ironforge;to;Dun Morogh):10
+#12393 | auto Dun Morogh;145§auto Dun Morogh;145§auto Dun Morogh;145 | x=-5590.10009765625 y=-1106.400024414063 | size=1 | links=#4230(auto Dun Morogh;45):31 #5198(auto Dun Morogh;55):63
+#12396 | Crag Boar;Dun Morogh;61;46.58;59.35§Klippeneber;Dun Morogh;61;46.58;59.35§Sanglier des rochers;Dun Morogh;61;46.58;59.35 | x=-5831.60009765625 y=-482.6000061035156 | size=1
+#12416 | auto Gol'Bolarmine;Dun Morogh;146§auto Gol'Bolarmine;Dun Morogh;146§auto Gol'Bolarmine;Dun Morogh;146 | x=-5600.5 y=-1681 | size=1 | links=#15795(auto Gol'Bolarmine;Dun Morogh;186):25 #26689(auto Gol'Bolarmine;Dun Morogh;314):9
+#12547 | auto Dun Morogh;147§auto Dun Morogh;147§auto Dun Morogh;147 | x=-5570.30029296875 y=83.0999984741211 | size=1 | links=#6973(auto Dun Morogh;77):16 c1266.1:16
+#12658 | auto Gol'Bolarmine;Dun Morogh;148§auto Gol'Bolarmine;Dun Morogh;148§auto Gol'Bolarmine;Dun Morogh;148 | x=-5694 y=-1702.599975585938 | size=1 | links=#26134(auto Gol'Bolarmine;Dun Morogh;306):29 #27189(auto Gol'Bolarmine;Dun Morogh;319):18
+#12753 | auto thunderbrew distillery;Dun Morogh;149§auto brauerei donnerbräu;Dun Morogh;149§auto thunderbrew distillery;Dun Morogh;149 | x=-5597 y=-529.5 | size=1 | links=#4219(auto thunderbrew distillery;Dun Morogh;44):7 c1226.1:6 c1247.1:4
+#12778 | auto Dun Morogh;150§auto Dun Morogh;150§auto Dun Morogh;150 | x=-6363.7001953125 y=706.2999877929688 | size=5 | links=#22845(auto Dun Morogh;270):96 o148499.1:68
+#12873 | auto Dun Morogh;151§auto Dun Morogh;151§auto Dun Morogh;151 | x=-4958.5 y=109.7000045776367 | size=1 | links=#9887(auto Dun Morogh;117):80 #22145(auto Dun Morogh;258):65
+#12984 | auto inside troll cave;Dun Morogh;152§auto drinnen troll höhle;Dun Morogh;152§auto inside troll cave;Dun Morogh;152 | x=-6536.7001953125 y=468.8999938964844 | size=1 | links=#2068(auto inside troll cave;Dun Morogh;17):30 #21352(auto inside troll cave;Dun Morogh;254):17
+#13115 | auto Dun Morogh;153§auto Dun Morogh;153§auto Dun Morogh;153 | x=-6187.30029296875 y=652.2000122070312 | size=5 | links=#18300(auto Dun Morogh;212):124 c714.1:50
+#13216 | auto inside troll cave;Dun Morogh;154§auto drinnen troll höhle;Dun Morogh;154§auto inside troll cave;Dun Morogh;154 | x=-6469.80029296875 y=352.5 | size=1 | links=#8619(auto inside troll cave;Dun Morogh;105):16 #26228(auto inside troll cave;Dun Morogh;308):22
+#13242 | auto Dun Morogh;155§auto Dun Morogh;155§auto Dun Morogh;155 | x=-5072.89990234375 y=-211.5 | size=1 | links=#5191(auto Dun Morogh;54):41 #15582(auto Dun Morogh;183):25
+#13291 | Frostmane Troll Whelp;Dun Morogh;24;26.42;79.37§Trollwelpe der Frostmähnen;Dun Morogh;24;26.42;79.37§Jeune troll Crins-de-givre;Dun Morogh;24;26.42;79.37 | x=-6471.7001953125 y=509.8000183105469 | size=1
+#13386 | auto Dun Morogh;156§auto Dun Morogh;156§auto Dun Morogh;156 | x=-5188.80029296875 y=521 | size=1 | links=#28012(auto Dun Morogh;328):27 c1211.17:35 c1211.20:26
+#13396 | crossing;one;Dun Morogh§kreuzung;eins;Dun Morogh§traversée;un;Dun Morogh | x=-5347.89990234375 y=-520.1000366210938 | size=1 | links=#10688(auto Dun Morogh;122):89 #22333(auto Dun Morogh;264):33 #27798(auto Dun Morogh;326):89 c1138.1:78
+#13457 | auto Dun Morogh;157§auto Dun Morogh;157§auto Dun Morogh;157 | x=-5498 y=-225.8000030517578 | size=1 | links=#62(auto Dun Morogh;1):9 #1502(auto Dun Morogh;15):31
+#13474 | auto Dun Morogh;158§auto Dun Morogh;158§auto Dun Morogh;158 | x=-5764.10009765625 y=-1615.900024414063 | size=1 | links=#9339(auto Dun Morogh;112):44 #23222(auto Dun Morogh;277):82
+#13489 | auto Dun Morogh;159§auto Dun Morogh;159§auto Dun Morogh;159 | x=-5219.80029296875 y=-468.8000183105469 | size=1 | links=#10688(auto Dun Morogh;122):51 #27677(auto Dun Morogh;324):46
+#13596 | auto inside troll cave;Dun Morogh;160§auto drinnen troll höhle;Dun Morogh;160§auto inside troll cave;Dun Morogh;160 | x=-6498.7001953125 y=410.2000122070313 | size=1 | links=#1374(auto inside troll cave;Dun Morogh;13):27 #28158(auto inside troll cave;Dun Morogh;331):7
+#13719 | auto Dun Morogh;161§auto Dun Morogh;161§auto Dun Morogh;161 | x=-5604.2001953125 y=-1026.800048828125 | size=1 | links=#4230(auto Dun Morogh;45):71 #20784(auto Dun Morogh;246):46 c1130.1:213
+#13752 | Rockjaw Skullthumper;Dun Morogh;31;70.71;52.56§Schädelhauer der Felsenkiefer;Dun Morogh;31;70.71;52.56§Brise-crâne Mâcheroc;Dun Morogh;31;70.71;52.56 | x=-5595.5 y=-1680.5 | size=1
+#13787 | Elder Crag Boar;Dun Morogh;29;28.31;53.34§Alter Klippeneber;Dun Morogh;29;28.31;53.34§Ancien sanglier des rochers;Dun Morogh;29;28.31;53.34 | x=-5630.60009765625 y=406.3999938964844 | size=1
+#13852 | auto Dun Morogh;162§auto Dun Morogh;162§auto Dun Morogh;162 | x=-5938.89990234375 y=-2037.800048828125 | size=1 | links=#7460(auto Dun Morogh;88):10 c6124.1:18
+#13890 | auto Dun Morogh;163§auto Dun Morogh;163§auto Dun Morogh;163 | x=-6279.80029296875 y=647.4000244140625 | size=1 | links=#8575(auto Dun Morogh;103):93 c714.1:70
+#13932 | Frostmane Novice;Dun Morogh;6;30.41;80.87§Novize der Frostmähnen;Dun Morogh;6;30.41;80.87§Novice Crins-de-givre;Dun Morogh;6;30.41;80.87 | x=-6529.2001953125 y=302.3000183105469 | size=1
+#14004 | auto Dun Morogh;165§auto Dun Morogh;165§auto Dun Morogh;165 | x=-5599.39990234375 y=9.699999809265137 | size=1 | links=#4763(auto Dun Morogh;48):10 #24370(auto Dun Morogh;290):36
+#14084 | entry and exit;cave;from;Coldridge Pass;to;Dun Morogh§ein- und ausgang;höhle;von;Eisklamm;nach;Dun Morogh§entrée et sortie;cave;de;Passe des Frigères;vers;Dun Morogh | x=-6226.30029296875 y=122.9000015258789 | size=1 | links=#4001(auto Dun Morogh;40):11 c1965.1:31 c6782.1:25
+#14164 | auto Dun Morogh;166§auto Dun Morogh;166§auto Dun Morogh;166 | x=-5499.5 y=-519.1000366210938 | size=1 | links=#18420(auto Dun Morogh;215):38 #27798(auto Dun Morogh;326):62
+#14198 | Rockjaw Skullthumper;Dun Morogh;14;70.49;57.12§Schädelhauer der Felsenkiefer;Dun Morogh;14;70.49;57.12§Brise-crâne Mâcheroc;Dun Morogh;14;70.49;57.12 | x=-5739.10009765625 y=-1671.400024414063 | size=1
+#14220 | auto Dun Morogh;167§auto Dun Morogh;167§auto Dun Morogh;167 | x=-5136 y=-2328.400146484375 | size=1 | links=#5062(auto Dun Morogh;51):83 c1960.1:27
+#14298 | auto Anvilmar;Dun Morogh;168§auto Ambossar;Dun Morogh;168§auto Anvilmar;Dun Morogh;168 | x=-6067.60009765625 y=369.7000122070313 | size=1 | links=#2563(auto Anvilmar;Dun Morogh;29):6 #17451(auto Anvilmar;Dun Morogh;205):14
+#14361 | Small Crag Boar;Dun Morogh;45;22.11;72.2§Kleiner Klippeneber;Dun Morogh;45;22.11;72.2§Petit sanglier des rochers;Dun Morogh;45;22.11;72.2 | x=-6245.39990234375 y=705.2000122070312 | size=1
+#14387 | auto Dun Morogh;169§auto Dun Morogh;169§auto Dun Morogh;169 | x=-5340.10009765625 y=568.7999877929688 | size=1 | links=#2524(auto Dun Morogh;27):1 #22809(auto Dun Morogh;269):1
+#14400 | auto Dun Morogh;170§auto Dun Morogh;170§auto Dun Morogh;170 | x=-5048.60009765625 y=207.6000061035156 | size=1 | links=#9887(auto Dun Morogh;117):58 #19874(auto Dun Morogh;231):48
+#14402 | auto Dun Morogh;171§auto Dun Morogh;171§auto Dun Morogh;171 | x=-5623.80029296875 y=-1425.800048828125 | size=1 | links=#23015(auto Dun Morogh;274):66 #25297(crossing;three;Dun Morogh):78
+#14404 | Young Black Bear;Dun Morogh;31;50.55;51.77§Junger Schwarzbär;Dun Morogh;31;50.55;51.77§Jeune ours noir;Dun Morogh;31;50.55;51.77 | x=-5578.39990234375 y=-678.7000122070312 | size=1
+#14463 | Burly Rockjaw Trogg;Dun Morogh;51;29.22;77.74§Bulliger Trogg der Felsenkiefer;Dun Morogh;51;29.22;77.74§Trogg Mâcheroc mastoc;Dun Morogh;51;29.22;77.74 | x=-6420.2001953125 y=367.2000122070313 | size=1
+#14469 | auto Dun Morogh;172§auto Dun Morogh;172§auto Dun Morogh;172 | x=-5355.10009765625 y=266 | size=1 | links=#251(auto Dun Morogh;5):32 #20318(auto Dun Morogh;239):25 c8508.1:20
+#14545 | auto Dun Morogh;173§auto Dun Morogh;173§auto Dun Morogh;173 | x=-5404.60009765625 y=-658 | size=1 | links=#8036(auto Dun Morogh;94):110 #22333(auto Dun Morogh;264):116 #27146(auto Dun Morogh;318):23
+#14597 | auto inside troll cave;Dun Morogh;174§auto drinnen troll höhle;Dun Morogh;174§auto inside troll cave;Dun Morogh;174 | x=-6539.5 y=423.8999938964844 | size=1 | links=#2068(auto inside troll cave;Dun Morogh;17):17 #23679(auto inside troll cave;Dun Morogh;280):15
+#14714 | auto Dun Morogh;175§auto Dun Morogh;175§auto Dun Morogh;175 | x=-5325.39990234375 y=439.2000122070313 | size=1 | links=#6863(auto Dun Morogh;75):22 c1201.28:36
+#14716 | Frostmane Troll Whelp;Dun Morogh;42;29.16;81.96§Trollwelpe der Frostmähnen;Dun Morogh;42;29.16;81.96§Jeune troll Crins-de-givre;Dun Morogh;42;29.16;81.96 | x=-6569.10009765625 y=367 | size=1
+#14793 | auto Dun Morogh;176§auto Dun Morogh;176§auto Dun Morogh;176 | x=-5996.5 y=-351.8999938964844 | size=1 | links=#5581(auto Dun Morogh;56):115 #7376(auto Dun Morogh;86):76
+#14799 | Burly Rockjaw Trogg;Dun Morogh;54;29.96;77.42§Bulliger Trogg der Felsenkiefer;Dun Morogh;54;29.96;77.42§Trogg Mâcheroc mastoc;Dun Morogh;54;29.96;77.42 | x=-6420.30029296875 y=325.7000122070313 | size=1
+#14977 | Ragged Young Wolf;Dun Morogh;39;29.49;77.15§Struppiger junger Wolf;Dun Morogh;39;29.49;77.15§Jeune loup décharné;Dun Morogh;39;29.49;77.15 | x=-6417.89990234375 y=350.6000061035156 | size=1
+#14994 | auto Gol'Bolarmine;Dun Morogh;177§auto Gol'Bolarmine;Dun Morogh;177§auto Gol'Bolarmine;Dun Morogh;177 | x=-5653.80029296875 y=-1697.599975585938 | size=1 | links=#5764(auto Gol'Bolarmine;Dun Morogh;63):18 #27189(auto Gol'Bolarmine;Dun Morogh;319):25
+#15118 | top;Amberstill Ranch;Dun Morogh§oben;Gehöft Bernruh;Dun Morogh§top;Ferme des Distillambre;Dun Morogh | x=-5426.7001953125 y=-1252.800048828125 | size=1 | links=#16534(auto Dun Morogh;196):46 c1388.1:47
+#15190 | auto Dun Morogh;178§auto Dun Morogh;178§auto Dun Morogh;178 | x=-5904.7001953125 y=31.10000038146973 | size=1 | links=#16037(auto Dun Morogh;187):129 #20140(auto Dun Morogh;236):81 #22263(auto Dun Morogh;261):35
+#15242 | Ragged Young Wolf;Dun Morogh;37;29.32;74.7§Struppiger junger Wolf;Dun Morogh;37;29.32;74.7§Jeune loup décharné;Dun Morogh;37;29.32;74.7 | x=-6328.5 y=356.5 | size=1
+#15359 | auto inside troll cave;Dun Morogh;179§auto drinnen troll höhle;Dun Morogh;179§auto inside troll cave;Dun Morogh;179 | x=-6588.60009765625 y=390.5 | size=5 | links=#19231(auto inside troll cave;Dun Morogh;227):15 #22654(auto inside troll cave;Dun Morogh;266):23 c946.2:18
+#15407 | auto Dun Morogh;180§auto Dun Morogh;180§auto Dun Morogh;180 | x=-5478.5 y=-664.5 | size=1 | links=#2502(auto Dun Morogh;26):26 #27146(auto Dun Morogh;318):56 c1376.1:20 c1694.1:21
+#15414 | auto Dun Morogh;181§auto Dun Morogh;181§auto Dun Morogh;181 | x=-5513.89990234375 y=-1859.599975585938 | size=1 | links=#16072(auto Dun Morogh;188):164 #27570(auto Dun Morogh;322):95
+#15561 | auto Dun Morogh;182§auto Dun Morogh;182§auto Dun Morogh;182 | x=-5083.2001953125 y=447.8999938964844 | size=1 | links=#11698(auto Dun Morogh;136):9 #23841(auto Dun Morogh;282):21
+#15582 | auto Dun Morogh;183§auto Dun Morogh;183§auto Dun Morogh;183 | x=-5062 y=-234.6000061035156 | size=1 | links=#13242(auto Dun Morogh;155):25 o3719.7:15 o276.10:5
+#15679 | Rockjaw Skullthumper;Dun Morogh;6;70.81;53.95§Schädelhauer der Felsenkiefer;Dun Morogh;6;70.81;53.95§Brise-crâne Mâcheroc;Dun Morogh;6;70.81;53.95 | x=-5666.7001953125 y=-1690.900024414063 | size=1
+#15719 | Rockjaw Trogg;Dun Morogh;41;33.34;75.43§Trogg der Felsenkiefer;Dun Morogh;41;33.34;75.43§Trogg Mâcheroc;Dun Morogh;41;33.34;75.43 | x=-6351.80029296875 y=163.5 | size=1
+#15762 | auto Dun Morogh;184§auto Dun Morogh;184§auto Dun Morogh;184 | x=-5639.30029296875 y=-56.79999923706055 | size=1 | links=#19125(auto Dun Morogh;226):24 #24370(auto Dun Morogh;290):41
+#15783 | auto Dun Morogh;185§auto Dun Morogh;185§auto Dun Morogh;185 | x=-4980.39990234375 y=-43.10000228881836 | size=1 | links=#5790(auto Dun Morogh;65):31 #28377(auto Dun Morogh;334):83
+#15795 | auto Gol'Bolarmine;Dun Morogh;186§auto Gol'Bolarmine;Dun Morogh;186§auto Gol'Bolarmine;Dun Morogh;186 | x=-5584.60009765625 y=-1701.400024414063 | size=1 | links=#2275(auto Gol'Bolarmine;Dun Morogh;23):33 #12416(auto Gol'Bolarmine;Dun Morogh;146):25
+#15850 | central location;Coldridge Valley;Dun Morogh§zentralpunkt;Eisklammtal;Dun Morogh§emplacement central;Coldridge Valley;Dun Morogh | x=-6226.60009765625 y=331.5 | size=1 | links=#61(entry and exit;Anvilmar):76 #6272(auto Dun Morogh;72):60 #9944(spawn location;Coldridge Valley;Dun Morogh):13 #21004(auto Dun Morogh;251):27 #26599(focus point;Coldridge Valley;Dun Morogh):154 #28134(auto Dun Morogh;330):35 c658.1:12 c713.1:12 c829.1:11 c11941.1:11
+#16037 | auto Dun Morogh;187§auto Dun Morogh;187§auto Dun Morogh;187 | x=-5945.60009765625 y=-92.0999984741211 | size=1 | links=#8376(auto Dun Morogh;99):134 #15190(auto Dun Morogh;178):129
+#16072 | auto Dun Morogh;188§auto Dun Morogh;188§auto Dun Morogh;188 | x=-5522.30029296875 y=-1695.099975585938 | size=1 | links=#9586(auto Dun Morogh;114):118 #15414(auto Dun Morogh;181):164
+#16111 | auto inside troll cave;Dun Morogh;189§auto drinnen troll höhle;Dun Morogh;189§auto inside troll cave;Dun Morogh;189 | x=-6496 y=351.8000183105469 | size=1 | links=#5017(auto inside troll cave;Dun Morogh;50):11
+#16217 | auto Dun Morogh;190§auto Dun Morogh;190§auto Dun Morogh;190 | x=-5340.7001953125 y=558.2000122070312 | size=1 | links=#1072(auto Dun Morogh;9):2 #1614(auto Dun Morogh;16):1
+#16272 | Rockjaw Bonesnapper;Dun Morogh;5;70.73;53.3§Knochenknacker der Felsenkiefer;Dun Morogh;5;70.73;53.3§Briseur d'os Mâcheroc;Dun Morogh;5;70.73;53.3 | x=-5643.80029296875 y=-1678.599975585938 | size=1
+#16302 | auto Dun Morogh;191§auto Dun Morogh;191§auto Dun Morogh;191 | x=-4923.30029296875 y=-339 | size=1 | links=#627(auto Dun Morogh;6):64 #18158(auto Dun Morogh;211):25
+#16324 | auto Dun Morogh;192§auto Dun Morogh;192§auto Dun Morogh;192 | x=-5124.80029296875 y=448.7000122070313 | size=1 | links=#18539(auto Dun Morogh;217):42 #25903(auto Dun Morogh;305):36 c1211.7:25
+#16394 | auto Dun Morogh;193§auto Dun Morogh;193§auto Dun Morogh;193 | x=-5200.5 y=-2285.800048828125 | size=1 | links=#21305(auto Dun Morogh;253):37 #26658(auto Dun Morogh;313):77
+#16396 | auto Gol'Bolarmine;Dun Morogh;194§auto Gol'Bolarmine;Dun Morogh;194§auto Gol'Bolarmine;Dun Morogh;194 | x=-5553.89990234375 y=-1751.700073242188 | size=1 | links=#17520(auto Gol'Bolarmine;Dun Morogh;206):25 #25203(auto Gol'Bolarmine;Dun Morogh;299):16
+#16440 | Ice Claw Bear;Dun Morogh;14;25.98;55.19§Eisklauenbär;Dun Morogh;14;25.98;55.19§Ours Griffeglace;Dun Morogh;14;25.98;55.19 | x=-5694.7001953125 y=496.3000183105469 | size=1
+#16490 | auto Dun Morogh;195§auto Dun Morogh;195§auto Dun Morogh;195 | x=-5486.80029296875 y=287.7000122070313 | size=1 | links=#3361(auto Dun Morogh;35):84 #23994(auto Dun Morogh;283):75
+#16534 | auto Dun Morogh;196§auto Dun Morogh;196§auto Dun Morogh;196 | x=-5420.30029296875 y=-1206.300048828125 | size=1 | links=#15118(top;Amberstill Ranch;Dun Morogh):46 #22997(auto Dun Morogh;273):35
+#16592 | Winter Wolf;Dun Morogh;25;50.68;52.54§Winterwolf;Dun Morogh;25;50.68;52.54§Loup blanc;Dun Morogh;25;50.68;52.54 | x=-5591.7001953125 y=-673.2999877929688 | size=1
+#16678 | auto Dun Morogh;197§auto Dun Morogh;197§auto Dun Morogh;197 | x=-5688.89990234375 y=-2055 | size=5 | links=#7361(auto Dun Morogh;84):104 c6177.1:95
+#16690 | auto Dun Morogh;198§auto Dun Morogh;198§auto Dun Morogh;198 | x=-5704.2001953125 y=277.6000061035156 | size=1 | links=#18883(auto Dun Morogh;221):92 #24297(auto Dun Morogh;288):47
+#16797 | Elder Crag Boar;Dun Morogh;70;66.14;53.3§Alter Klippeneber;Dun Morogh;70;66.14;53.3§Ancien sanglier des rochers;Dun Morogh;70;66.14;53.3 | x=-5638.39990234375 y=-1432.599975585938 | size=1
+#16802 | Ice Claw Bear;Dun Morogh;32;38.12;42.91§Eisklauenbär;Dun Morogh;32;38.12;42.91§Ours Griffeglace;Dun Morogh;32;38.12;42.91 | x=-5264 y=-67.70000457763672 | size=1
+#16835 | Young Wendigo;Dun Morogh;5;41.8;54.59§Junger Wendigo;Dun Morogh;5;41.8;54.59§Jeune wendigo;Dun Morogh;5;41.8;54.59 | x=-5663.80029296875 y=-260.3999938964844 | size=1
+#16860 | Elder Crag Boar;Dun Morogh;27;26.62;55.08§Alter Klippeneber;Dun Morogh;27;26.62;55.08§Ancien sanglier des rochers;Dun Morogh;27;26.62;55.08 | x=-5681.80029296875 y=487.8000183105469 | size=1
+#16871 | Yori Crackhelm;Thunderbrew Distillery;Dun Morogh§Yori Bruchhelm;Brauerei Donnerbräu;Dun Morogh§Yori Craqueheaume;Distillerie Tonnebière;Dun Morogh | x=-5582.60009765625 y=-541.6000366210938 | size=1 | links=#11503(auto thunderbrew distillery;Dun Morogh;131):7
+#16926 | Small Crag Boar;Dun Morogh;17;22.7;70.19§Kleiner Klippeneber;Dun Morogh;17;22.7;70.19§Petit sanglier des rochers;Dun Morogh;17;22.7;70.19 | x=-6193.60009765625 y=691.4000244140625 | size=1
+#16992 | Ice Claw Bear;Dun Morogh;19;27.62;47.63§Eisklauenbär;Dun Morogh;19;27.62;47.63§Ours Griffeglace;Dun Morogh;19;27.62;47.63 | x=-5465.30029296875 y=429.8999938964844 | size=1
+#17002 | auto Dun Morogh;199§auto Dun Morogh;199§auto Dun Morogh;199 | x=-5708.7001953125 y=-1554.800048828125 | size=1 | links=#4915(auto Dun Morogh;49):48 #27262(central location;Gol'Bolar Quarry;Dun Morogh):44 c1679.1:11 c1977.1:25
+#17073 | auto Dun Morogh;200§auto Dun Morogh;200§auto Dun Morogh;200 | x=-5334.60009765625 y=557.4000244140625 | size=1 | links=#17669(auto Dun Morogh;207):1 #22787(auto Dun Morogh;268):3
+#17086 | central location;Shimmer Ridge;Dun Morogh§zentralpunkt;Schimmergrat;Dun Morogh§emplacement central;Crête scintillante;Dun Morogh | x=-5270.60009765625 y=-164 | size=1 | links=#7316(auto Dun Morogh;81):34 #24571(auto Dun Morogh;295):42 #24808(auto Dun Morogh;296):28 c1397.2:24
+#17114 | auto inside troll cave;Dun Morogh;201§auto drinnen troll höhle;Dun Morogh;201§auto inside troll cave;Dun Morogh;201 | x=-6479.89990234375 y=317.3000183105469 | size=1 | links=#26228(auto inside troll cave;Dun Morogh;308):14 c808.1:33
+#17178 | Burly Rockjaw Trogg;Dun Morogh;4;26.87;73.14§Bulliger Trogg der Felsenkiefer;Dun Morogh;4;26.87;73.14§Trogg Mâcheroc mastoc;Dun Morogh;4;26.87;73.14 | x=-6278.60009765625 y=480.8999938964844 | size=1
+#17241 | Large Crag Boar;Dun Morogh;25;38.56;46.73§Großer Klippeneber;Dun Morogh;25;38.56;46.73§Grand sanglier des rochers;Dun Morogh;25;38.56;46.73 | x=-5404.5 y=-90.70000457763672 | size=1
+#17261 | auto Dun Morogh;202§auto Dun Morogh;202§auto Dun Morogh;202 | x=-5023.80029296875 y=-831.1000366210938 | size=1 | links=#12342(passage;from;Gates of Ironforge;Dun Morogh;to;Ironforge):0 #24911(auto Dun Morogh;297):20
+#17271 | auto Dun Morogh;203§auto Dun Morogh;203§auto Dun Morogh;203 | x=-5644.5 y=10.69999980926514 | size=1 | links=#1057(auto Dun Morogh;8):65 #24370(auto Dun Morogh;290):37
+#17447 | auto Dun Morogh;204§auto Dun Morogh;204§auto Dun Morogh;204 | x=-5545 y=613.1000366210938 | size=1 | links=#19881(auto Dun Morogh;232):20 #24192(auto Dun Morogh;286):19
+#17451 | auto Anvilmar;Dun Morogh;205§auto Ambossar;Dun Morogh;205§auto Anvilmar;Dun Morogh;205 | x=-6068.7001953125 y=384.1000061035156 | size=1 | links=#6716(auto Anvilmar;Dun Morogh;74):6 #14298(auto Anvilmar;Dun Morogh;168):14
+#17474 | central location;Amberstill Ranch;Dun Morogh§zentralpunkt;Gehöft Bernruh;Dun Morogh§emplacement central;Ferme des Distillambre;Dun Morogh | x=-5544.5 y=-1321.200073242188 | size=1 | links=#2548(auto Dun Morogh;28):24 #11688(auto Dun Morogh;135):8 c1261.1:7 c1263.1:14
+#17520 | auto Gol'Bolarmine;Dun Morogh;206§auto Gol'Bolarmine;Dun Morogh;206§auto Gol'Bolarmine;Dun Morogh;206 | x=-5574 y=-1766.900024414063 | size=1 | links=#11442(auto Gol'Bolarmine;Dun Morogh;129):26 #16396(auto Gol'Bolarmine;Dun Morogh;194):25
+#17626 | Frostmane Troll Whelp;in;Coldridge Valley;Dun Morogh§Trollwelpe der Frostmähnen;in;Eisklammtal;Dun Morogh§Jeune troll Crins-de-givre;in;Coldridge Valley;Dun Morogh | x=-6426.597589718424 y=563.961574420468 | size=1 | links=#6928(auto Dun Morogh;76):78 #22845(auto Dun Morogh;270):78 c12738.1:56
+#17669 | auto Dun Morogh;207§auto Dun Morogh;207§auto Dun Morogh;207 | x=-5336.30029296875 y=556.7999877929688 | size=1 | links=#17073(auto Dun Morogh;200):1 #26513(auto Dun Morogh;312):1
+#17677 | Young Black Bear;Dun Morogh;20;44.23;50.95§Junger Schwarzbär;Dun Morogh;20;44.23;50.95§Jeune ours noir;Dun Morogh;20;44.23;50.95 | x=-5554.5 y=-382.6000061035156 | size=1
+#17737 | Snow Leopard;Dun Morogh;24;28.64;53.56§Schneeleopard;Dun Morogh;24;28.64;53.56§Léopard des neiges;Dun Morogh;24;28.64;53.56 | x=-5618.7001953125 y=380.1000061035156 | size=1
+#17813 | Young Black Bear;Dun Morogh;12;48.1;49.92§Junger Schwarzbär;Dun Morogh;12;48.1;49.92§Jeune ours noir;Dun Morogh;12;48.1;49.92 | x=-5522.10009765625 y=-567.1000366210938 | size=1
+#17940 | auto Dun Morogh;208§auto Dun Morogh;208§auto Dun Morogh;208 | x=-5500.10009765625 y=-2446.400146484375 | size=1 | links=#11799(auto Dun Morogh;138):20 c1959.1:20
+#17984 | auto Anvilmar;Dun Morogh;209§auto Ambossar;Dun Morogh;209§auto Anvilmar;Dun Morogh;209 | x=-6130.30029296875 y=393.8000183105469 | size=1 | links=#6566(central location;Anvilmar):21 #22305(auto Anvilmar;Dun Morogh;263):9
+#18038 | auto Dun Morogh;210§auto Dun Morogh;210§auto Dun Morogh;210 | x=-5403.5 y=465.8000183105469 | size=1 | links=#2199(auto Dun Morogh;21):66 #9960(auto Dun Morogh;118):59 c1196.12:18
+#18158 | auto Dun Morogh;211§auto Dun Morogh;211§auto Dun Morogh;211 | x=-4910.30029296875 y=-316.6000061035156 | size=1 | links=#104(auto Dun Morogh;3):191 #16302(auto Dun Morogh;191):25
+#18300 | auto Dun Morogh;212§auto Dun Morogh;212§auto Dun Morogh;212 | x=-6185 y=527.6000366210938 | size=5 | links=#13115(auto Dun Morogh;153):124 #23719(auto Dun Morogh;281):132
+#18311 | auto Dun Morogh;213§auto Dun Morogh;213§auto Dun Morogh;213 | x=-6512.7001953125 y=649.7999877929688 | size=5 | links=#4154(auto Dun Morogh;41):88 o178084.1:31
+#18318 | Crag Boar;Dun Morogh;4;45.77;57.02§Klippeneber;Dun Morogh;4;45.77;57.02§Sanglier des rochers;Dun Morogh;4;45.77;57.02 | x=-5737.10009765625 y=-481.8999938964844 | size=1
+#18320 | auto Dun Morogh;214§auto Dun Morogh;214§auto Dun Morogh;214 | x=-5117.2001953125 y=-163.5 | size=1 | links=#5191(auto Dun Morogh;54):33 #25208(auto Dun Morogh;301):37
+#18400 | Young Black Bear;Dun Morogh;11;45.28;58.12§Junger Schwarzbär;Dun Morogh;11;45.28;58.12§Jeune ours noir;Dun Morogh;11;45.28;58.12 | x=-5787.80029296875 y=-401 | size=1
+#18420 | auto Dun Morogh;215§auto Dun Morogh;215§auto Dun Morogh;215 | x=-5528.60009765625 y=-493.3000183105469 | size=1 | links=#14164(auto Dun Morogh;166):38 #25958(centralpoint;Kharanos;Dun Morogh):49 c1125.2:44
+#18457 | auto Dun Morogh;216§auto Dun Morogh;216§auto Dun Morogh;216 | x=-5491 y=-458.5 | size=1 | links=#27662(auto Dun Morogh;323):21 c1268.1:7 c1269.1:7 c5568.1:4 o26449.1:4
+#18539 | auto Dun Morogh;217§auto Dun Morogh;217§auto Dun Morogh;217 | x=-5160.2001953125 y=473.1000061035156 | size=1 | links=#16324(auto Dun Morogh;192):42 #28012(auto Dun Morogh;328):29 c1211.13:65 c1127.22:28
+#18588 | Crag Boar;Dun Morogh;10;45.91;61.73§Klippeneber;Dun Morogh;10;45.91;61.73§Sanglier des rochers;Dun Morogh;10;45.91;61.73 | x=-5889.5 y=-463.3999938964844 | size=1
+#18742 | auto Dun Morogh;218§auto Dun Morogh;218§auto Dun Morogh;218 | x=-5122.80029296875 y=363.5 | size=1 | links=#7086(auto Dun Morogh;78):41 #25903(auto Dun Morogh;305):49
+#18790 | auto Dun Morogh;219§auto Dun Morogh;219§auto Dun Morogh;219 | x=-5437.39990234375 y=-997.9000244140625 | size=1 | links=#3037(auto Dun Morogh;31):83 #8591(auto Dun Morogh;104):68 #19443(auto Dun Morogh;228):34
+#18808 | Crag Boar;Dun Morogh;44;43.39;55.89§Klippeneber;Dun Morogh;44;43.39;55.89§Sanglier des rochers;Dun Morogh;44;43.39;55.89 | x=-5709.7001953125 y=-345 | size=1
+#18831 | auto Dun Morogh;220§auto Dun Morogh;220§auto Dun Morogh;220 | x=-5555.89990234375 y=-237.3000030517578 | size=1 | links=#1502(auto Dun Morogh;15):28 #7318(auto Dun Morogh;82):22
+#18883 | auto Dun Morogh;221§auto Dun Morogh;221§auto Dun Morogh;221 | x=-5746.39990234375 y=195.1999969482422 | size=1 | links=#3354(auto Dun Morogh;34):86 #16690(auto Dun Morogh;198):92
+#18989 | auto Dun Morogh;222§auto Dun Morogh;222§auto Dun Morogh;222 | x=-5334.60009765625 y=570.5 | size=1 | links=#11491(auto Dun Morogh;130):2 #27303(down;ramp;class quest;rogue;Gnomeregan;Dun Morogh):2
+#19048 | auto Dun Morogh;223§auto Dun Morogh;223§auto Dun Morogh;223 | x=-5584.60009765625 y=-291 | size=1 | links=#8560(auto Dun Morogh;102):24 #11544(auto Dun Morogh;132):25
+#19073 | auto Dun Morogh;224§auto Dun Morogh;224§auto Dun Morogh;224 | x=-5846.60009765625 y=-2042.400024414063 | size=5 | links=#8389(auto Dun Morogh;100):63 c6177.1:63
+#19094 | auto inside troll cave;Dun Morogh;225§auto drinnen troll höhle;Dun Morogh;225§auto inside troll cave;Dun Morogh;225 | x=-6503.89990234375 y=389.8000183105469 | size=1 | links=#7295(auto inside troll cave;Dun Morogh;80):21 #10417(centralpoint;cave;Coldridge Valley;Dun Morogh):31
+#19125 | auto Dun Morogh;226§auto Dun Morogh;226§auto Dun Morogh;226 | x=-5648.39990234375 y=-79.5 | size=1 | links=#15762(auto Dun Morogh;184):24 c1271.1:18 o272.1:15
+#19131 | Frostmane Headhunter;Dun Morogh;6;23.57;50.93§Kopfjäger der Frostmähnen;Dun Morogh;6;23.57;50.93§Chasseur de têtes Crins-de-givre;Dun Morogh;6;23.57;50.93 | x=-5548.7001953125 y=625.7000122070312 | size=1
+#19231 | auto inside troll cave;Dun Morogh;227§auto drinnen troll höhle;Dun Morogh;227§auto inside troll cave;Dun Morogh;227 | x=-6581.7001953125 y=376.5 | size=5 | links=#15359(auto inside troll cave;Dun Morogh;179):15 c946.1:6
+#19240 | Burly Rockjaw Trogg;Dun Morogh;46;26.64;73.4§Bulliger Trogg der Felsenkiefer;Dun Morogh;46;26.64;73.4§Trogg Mâcheroc mastoc;Dun Morogh;46;26.64;73.4 | x=-6290.39990234375 y=487.8999938964844 | size=1
+#19348 | Rockjaw Trogg;Dun Morogh;16;28.84;76.47§Trogg der Felsenkiefer;Dun Morogh;16;28.84;76.47§Trogg Mâcheroc;Dun Morogh;16;28.84;76.47 | x=-6367.60009765625 y=379.1000061035156 | size=1
+#19424 | Small Crag Boar;Dun Morogh;49;22.74;72.42§Kleiner Klippeneber;Dun Morogh;49;22.74;72.42§Petit sanglier des rochers;Dun Morogh;49;22.74;72.42 | x=-6245.89990234375 y=680.2999877929688 | size=1
+#19429 | Snow Leopard;Dun Morogh;32;32.59;48.46§Schneeleopard;Dun Morogh;32;32.59;48.46§Léopard des neiges;Dun Morogh;32;32.59;48.46 | x=-5470 y=182.4000091552734 | size=1
+#19443 | auto Dun Morogh;228§auto Dun Morogh;228§auto Dun Morogh;228 | x=-5471.7001953125 y=-1002.100036621094 | size=1 | links=#8591(auto Dun Morogh;104):89 #18790(auto Dun Morogh;219):34 #20784(auto Dun Morogh;246):88
+#19497 | Ragged Young Wolf;Dun Morogh;36;29.66;74.27§Struppiger junger Wolf;Dun Morogh;36;29.66;74.27§Jeune loup décharné;Dun Morogh;36;29.66;74.27 | x=-6327.60009765625 y=341.2000122070313 | size=1
+#19569 | auto Dun Morogh;229§auto Dun Morogh;229§auto Dun Morogh;229 | x=-6102.39990234375 y=52.90000152587891 | size=1 | links=#2143(auto Dun Morogh;18):34 #6248(auto Dun Morogh;71):12
+#19588 | Frostmane Hideskinner;Dun Morogh;9;21.93;54.97§Balgabzieher der Frostmähnen;Dun Morogh;9;21.93;54.97§Ecorcheur Crins-de-givre;Dun Morogh;9;21.93;54.97 | x=-5681.80029296875 y=719.7999877929688 | size=1
+#19734 | auto Dun Morogh;230§auto Dun Morogh;230§auto Dun Morogh;230 | x=-6257.89990234375 y=249.6999969482422 | size=1 | links=#6272(auto Dun Morogh;72):27 #9002(auto Dun Morogh;109):58
+#19779 | Burly Rockjaw Trogg;Dun Morogh;48;27.69;76.51§Bulliger Trogg der Felsenkiefer;Dun Morogh;48;27.69;76.51§Trogg Mâcheroc mastoc;Dun Morogh;48;27.69;76.51 | x=-6390.10009765625 y=431.1000061035156 | size=1
+#19874 | auto Dun Morogh;231§auto Dun Morogh;231§auto Dun Morogh;231 | x=-5078 y=246.6999969482422 | size=1 | links=#4271(auto Dun Morogh;46):67 #6059(auto Dun Morogh;68):29 #14400(auto Dun Morogh;170):48
+#19881 | auto Dun Morogh;232§auto Dun Morogh;232§auto Dun Morogh;232 | x=-5545.7001953125 y=633.6000366210938 | size=1 | links=#1300(auto Dun Morogh;11):22 #7936(auto Dun Morogh;92):17 #17447(auto Dun Morogh;204):20 #48701(auto Inside;Frostmane Hold;Dun Morogh;338):16
+#19923 | auto Gol'Bolarmine;Dun Morogh;233§auto Gol'Bolarmine;Dun Morogh;233§auto Gol'Bolarmine;Dun Morogh;233 | x=-5604.2001953125 y=-1729.800048828125 | size=1 | links=#4200(auto Gol'Bolarmine;Dun Morogh;42):14 #20313(auto Gol'Bolarmine;Dun Morogh;238):22
+#19943 | auto Dun Morogh;234§auto Dun Morogh;234§auto Dun Morogh;234 | x=-5342.89990234375 y=565.2000122070312 | size=1 | links=#9088(auto Dun Morogh;110):2 #22809(auto Dun Morogh;269):2
+#19958 | entry and exit;Gol'Bolar Quarry§ein- und ausgang;Gol'Bolarmine§entrée et sortie;Gol'Bolar Quarry | x=-5743.30029296875 y=-1666.900024414063 | size=1 | links=#3435(auto Gol'Bolarmine;Dun Morogh;36):20 #9339(auto Dun Morogh;112):13
+#20071 | auto thunderbrew distillery;Dun Morogh;235§auto brauerei donnerbräu;Dun Morogh;235§auto thunderbrew distillery;Dun Morogh;235 | x=-5588 y=-510.3000183105469 | size=1 | links=#3383(s;A;Mailbox;Dun Morogh):16 #11594(auto thunderbrew distillery;Dun Morogh;133):7
+#20113 | Rockjaw Trogg;Dun Morogh;19;28.96;77.11§Trogg der Felsenkiefer;Dun Morogh;19;28.96;77.11§Trogg Mâcheroc;Dun Morogh;19;28.96;77.11 | x=-6412.7001953125 y=371.3000183105469 | size=1
+#20133 | Elder Crag Boar;Dun Morogh;36;32.11;48.83§Alter Klippeneber;Dun Morogh;36;32.11;48.83§Ancien sanglier des rochers;Dun Morogh;36;32.11;48.83 | x=-5495.60009765625 y=227.8000030517578 | size=1
+#20140 | auto Dun Morogh;236§auto Dun Morogh;236§auto Dun Morogh;236 | x=-5826.30029296875 y=53.60000228881836 | size=1 | links=#3354(auto Dun Morogh;34):87 #15190(auto Dun Morogh;178):81
+#20208 | entry and exit;Shimmer Ridge;Dun Morogh§ein- und ausgang;Schimmergrat;Dun Morogh§entrée et sortie;Crête scintillante;Dun Morogh | x=-5267.30029296875 y=-108.7000045776367 | size=1 | links=#7316(auto Dun Morogh;81):21
+#20243 | auto Dun Morogh;237§auto Dun Morogh;237§auto Dun Morogh;237 | x=-5578.80029296875 y=30 | size=1 | links=#4763(auto Dun Morogh;48):18 #25264(auto Dun Morogh;302):31
+#20313 | auto Gol'Bolarmine;Dun Morogh;238§auto Gol'Bolarmine;Dun Morogh;238§auto Gol'Bolarmine;Dun Morogh;238 | x=-5589.2001953125 y=-1713 | size=1 | links=#19923(auto Gol'Bolarmine;Dun Morogh;233):22 #26426(auto Gol'Bolarmine;Dun Morogh;310):12
+#20318 | auto Dun Morogh;239§auto Dun Morogh;239§auto Dun Morogh;239 | x=-5359.39990234375 y=291 | size=1 | links=#14469(auto Dun Morogh;172):25 #23426(centralpoint;Brewnall Village;Dun Morogh):13
+#20463 | auto Dun Morogh;240§auto Dun Morogh;240§auto Dun Morogh;240 | x=-5367.60009765625 y=311.7000122070313 | size=1 | links=#23426(centralpoint;Brewnall Village;Dun Morogh):12 #28054(auto Dun Morogh;329):24
+#20501 | auto Dun Morogh;241§auto Dun Morogh;241§auto Dun Morogh;241 | x=-5523.5 y=-666 | size=1 | links=#6113(auto Dun Morogh;69):10 #11154(auto Dun Morogh;125):6
+#20524 | auto inside troll cave;Dun Morogh;242§auto drinnen troll höhle;Dun Morogh;242§auto inside troll cave;Dun Morogh;242 | x=-6514.60009765625 y=341.8999938964844 | size=1 | links=#5017(auto inside troll cave;Dun Morogh;50):12 #27961(auto inside troll cave;Dun Morogh;327):22
+#20610 | auto Dun Morogh;244§auto Dun Morogh;244§auto Dun Morogh;244 | x=-5666.89990234375 y=-1318.599975585938 | size=1 | links=#3362(crossing;two;Dun Morogh):40 #23015(auto Dun Morogh;274):48
+#20631 | auto Dun Morogh;245§auto Dun Morogh;245§auto Dun Morogh;245 | x=-5613.7001953125 y=-391.8999938964844 | size=1 | links=#2930(auto Dun Morogh;30):29 #5135(auto Dun Morogh;52):32
+#20701 | Frostmane Shadowcaster;Dun Morogh;7;22.83;53.84§Schattenzauberer der Frostmähnen;Dun Morogh;7;22.83;53.84§Exhalombre Crins-de-givre;Dun Morogh;7;22.83;53.84 | x=-5648.2001953125 y=673.7000122070312 | size=1
+#20715 | Small Crag Boar;Dun Morogh;44;21.95;71.26§Kleiner Klippeneber;Dun Morogh;44;21.95;71.26§Petit sanglier des rochers;Dun Morogh;44;21.95;71.26 | x=-6214 y=719.7000122070312 | size=1
+#20725 | Burly Rockjaw Trogg;Dun Morogh;53;30.11;75.63§Bulliger Trogg der Felsenkiefer;Dun Morogh;53;30.11;75.63§Trogg Mâcheroc mastoc;Dun Morogh;53;30.11;75.63 | x=-6357.10009765625 y=318.8999938964844 | size=1
+#20784 | auto Dun Morogh;246§auto Dun Morogh;246§auto Dun Morogh;246 | x=-5558.7001953125 y=-1016.400024414063 | size=1 | links=#13719(auto Dun Morogh;161):46 #19443(auto Dun Morogh;228):88
+#20796 | Burly Rockjaw Trogg;Dun Morogh;57;31.67;75.98§Bulliger Trogg der Felsenkiefer;Dun Morogh;57;31.67;75.98§Trogg Mâcheroc mastoc;Dun Morogh;57;31.67;75.98 | x=-6369.39990234375 y=244.6999969482422 | size=1
+#20828 | Elder Crag Boar;Dun Morogh;42;33.52;48.02§Alter Klippeneber;Dun Morogh;42;33.52;48.02§Ancien sanglier des rochers;Dun Morogh;42;33.52;48.02 | x=-5470 y=182.4000091552734 | size=1
+#20838 | auto Dun Morogh;247§auto Dun Morogh;247§auto Dun Morogh;247 | x=-5210.60009765625 y=-681.7000122070312 | size=1 | links=#11595(auto Dun Morogh;134):65 #17090(auto Gates of Ironforge;3):38
+#20875 | auto Dun Morogh;248§auto Dun Morogh;248§auto Dun Morogh;248 | x=-5671.80029296875 y=739.7999877929688 | size=1 | links=c1122.8:4 c1123.15:14
+#20960 | auto Dun Morogh;249§auto Dun Morogh;249§auto Dun Morogh;249 | x=-5538.60009765625 y=754.9000244140625 | size=1 | links=#24482(auto Dun Morogh;293):25 #25726(auto Dun Morogh;304):22
+#20975 | auto Dun Morogh;250§auto Dun Morogh;250§auto Dun Morogh;250 | x=-5660.30029296875 y=664.6000366210938 | size=1 | links=#22870(auto Dun Morogh;271):32 c1260.3:20
+#21004 | auto Dun Morogh;251§auto Dun Morogh;251§auto Dun Morogh;251 | x=-6252.5 y=341.1000061035156 | size=1 | links=#15850(central location;Coldridge Valley;Dun Morogh):27 c721.17:29
+#21028 | Ice Claw Bear;Dun Morogh;26;29.72;51.71§Eisklauenbär;Dun Morogh;26;29.72;51.71§Ours Griffeglace;Dun Morogh;26;29.72;51.71 | x=-5577.60009765625 y=337.3000183105469 | size=1
+#21037 | Rockjaw Trogg;Dun Morogh;24;29.78;77.66§Trogg der Felsenkiefer;Dun Morogh;24;29.78;77.66§Trogg Mâcheroc;Dun Morogh;24;29.78;77.66 | x=-6420.30029296875 y=325.7000122070313 | size=1
+#21088 | Rockjaw Bonesnapper;Dun Morogh;18;71.73;52.16§Knochenknacker der Felsenkiefer;Dun Morogh;18;71.73;52.16§Briseur d'os Mâcheroc;Dun Morogh;18;71.73;52.16 | x=-5576.80029296875 y=-1710.400024414063 | size=1
+#21164 | auto Dun Morogh;252§auto Dun Morogh;252§auto Dun Morogh;252 | x=-5189.89990234375 y=-151.3000030517578 | size=1 | links=#24504(auto Dun Morogh;294):8 #25208(auto Dun Morogh;301):36
+#21166 | Frostmane Headhunter;Dun Morogh;15;21.25;54.48§Kopfjäger der Frostmähnen;Dun Morogh;15;21.25;54.48§Chasseur de têtes Crins-de-givre;Dun Morogh;15;21.25;54.48 | x=-5665.7001953125 y=752.5 | size=1
+#21305 | auto Dun Morogh;253§auto Dun Morogh;253§auto Dun Morogh;253 | x=-5174 y=-2312.699951171875 | size=1 | links=#16394(auto Dun Morogh;193):37 c1960.1:19
+#21352 | auto inside troll cave;Dun Morogh;254§auto drinnen troll höhle;Dun Morogh;254§auto inside troll cave;Dun Morogh;254 | x=-6519 y=468.3999938964844 | size=1 | links=#12984(auto inside troll cave;Dun Morogh;152):17 #22442(auto inside troll cave;Dun Morogh;265):11
+#21488 | auto Dun Morogh;255§auto Dun Morogh;255§auto Dun Morogh;255 | x=-5520.39990234375 y=701.4000244140625 | size=1 | links=#4213(auto Dun Morogh;43):26 #24482(auto Dun Morogh;293):31 c1124.3:6
+#21710 | auto Dun Morogh;256§auto Dun Morogh;256§auto Dun Morogh;256 | x=-5615.2001953125 y=-275.7000122070313 | size=1 | links=#8560(auto Dun Morogh;102):10 c1135.39:16
+#21771 | Small Crag Boar;Dun Morogh;36;21.34;72.22§Kleiner Klippeneber;Dun Morogh;36;21.34;72.22§Petit sanglier des rochers;Dun Morogh;36;21.34;72.22 | x=-6232.89990234375 y=751.5 | size=1
+#21783 | Burly Rockjaw Trogg;Dun Morogh;9;26.56;72.57§Bulliger Trogg der Felsenkiefer;Dun Morogh;9;26.56;72.57§Trogg Mâcheroc mastoc;Dun Morogh;9;26.56;72.57 | x=-6262.5 y=493.3000183105469 | size=1
+#21882 | auto Dun Morogh;257§auto Dun Morogh;257§auto Dun Morogh;257 | x=-5670.80029296875 y=-347.3000183105469 | size=1 | links=#5135(auto Dun Morogh;52):62 #24429(auto Dun Morogh;291):53 c1134.2:34
+#22145 | auto Dun Morogh;258§auto Dun Morogh;258§auto Dun Morogh;258 | x=-4948.89990234375 y=45.20000076293945 | size=1 | links=#5790(auto Dun Morogh;65):75 #12873(auto Dun Morogh;151):65
+#22151 | auto Dun Morogh;259§auto Dun Morogh;259§auto Dun Morogh;259 | x=-5516.10009765625 y=-1303.5 | size=1 | links=#8222(auto Dun Morogh;97):5 c1265.1:2
+#22182 | auto Dun Morogh;260§auto Dun Morogh;260§auto Dun Morogh;260 | x=-5355.7001953125 y=560.2000122070312 | size=1 | links=#12067(auto Dun Morogh;144):25 #25417(auto Dun Morogh;303):29 c1211.38:18 c1211.39:13
+#22263 | auto Dun Morogh;261§auto Dun Morogh;261§auto Dun Morogh;261 | x=-5922.2001953125 y=61.70000076293945 | size=1 | links=#15190(auto Dun Morogh;178):35 #22648(Kotka;first aid;two;Coldridge Pass;Dun Morogh):79
+#22278 | auto Dun Morogh;262§auto Dun Morogh;262§auto Dun Morogh;262 | x=-6203.89990234375 y=114.9000015258789 | size=1 | links=#4001(auto Dun Morogh;40):12 #5635(auto Dun Morogh;57):9
+#22305 | auto Anvilmar;Dun Morogh;263§auto Ambossar;Dun Morogh;263§auto Anvilmar;Dun Morogh;263 | x=-6130.80029296875 y=384 | size=1 | links=#17984(auto Anvilmar;Dun Morogh;209):9 #26691(auto Anvilmar;Dun Morogh;315):14
+#22333 | auto Dun Morogh;264§auto Dun Morogh;264§auto Dun Morogh;264 | x=-5354.7001953125 y=-552.9000244140625 | size=1 | links=#13396(crossing;one;Dun Morogh):33 #14545(auto Dun Morogh;173):116
+#22414 | Rockjaw Trogg;Dun Morogh;4;30.62;74.56§Trogg der Felsenkiefer;Dun Morogh;4;30.62;74.56§Trogg Mâcheroc;Dun Morogh;4;30.62;74.56 | x=-6315 y=295.7000122070313 | size=1
+#22442 | auto inside troll cave;Dun Morogh;265§auto drinnen troll höhle;Dun Morogh;265§auto inside troll cave;Dun Morogh;265 | x=-6511.2001953125 y=476.8000183105469 | size=1 | links=#7189(entry and exit;cave;Coldridge Valley;Dun Morogh):19 #21352(auto inside troll cave;Dun Morogh;254):11
+#22614 | Rockjaw Bonesnapper;Dun Morogh;8;71.18;55.62§Knochenknacker der Felsenkiefer;Dun Morogh;8;71.18;55.62§Briseur d'os Mâcheroc;Dun Morogh;8;71.18;55.62 | x=-5700.89990234375 y=-1690.400024414063 | size=1
+#22648 | Kotka;first aid;two;Coldridge Pass;Dun Morogh§Kotka;erste hilfe;zwei;Eisklamm;Dun Morogh§Kotka;first aid;deux;Passe des Frigères;Dun Morogh | x=-6002 y=60.29999923706055 | size=1 | links=#5980(entry and exit;Coldridge Pass;Dun Morogh;two):42 #22263(auto Dun Morogh;261):79
+#22654 | auto inside troll cave;Dun Morogh;266§auto drinnen troll höhle;Dun Morogh;266§auto inside troll cave;Dun Morogh;266 | x=-6571.30029296875 y=406.7000122070313 | size=1 | links=#15359(auto inside troll cave;Dun Morogh;179):23 #23679(auto inside troll cave;Dun Morogh;280):20
+#22683 | Burly Rockjaw Trogg;Dun Morogh;10;26.19;71.9§Bulliger Trogg der Felsenkiefer;Dun Morogh;10;26.19;71.9§Trogg Mâcheroc mastoc;Dun Morogh;10;26.19;71.9 | x=-6232 y=512 | size=1
+#22749 | Rockjaw Trogg;Dun Morogh;33;32.11;75.11§Trogg der Felsenkiefer;Dun Morogh;33;32.11;75.11§Trogg Mâcheroc;Dun Morogh;33;32.11;75.11 | x=-6345.89990234375 y=216.3000030517578 | size=1
+#22779 | auto Dun Morogh;267§auto Dun Morogh;267§auto Dun Morogh;267 | x=-5917.60009765625 y=-2035.5 | size=1 | links=#2226(auto Dun Morogh;22):7 #5713(auto Dun Morogh;62):6 o85562.1:1
+#22787 | auto Dun Morogh;268§auto Dun Morogh;268§auto Dun Morogh;268 | x=-5332.10009765625 y=559.2999877929688 | size=1 | links=#17073(auto Dun Morogh;200):3 #27435(auto Dun Morogh;321):2
+#22809 | auto Dun Morogh;269§auto Dun Morogh;269§auto Dun Morogh;269 | x=-5341.60009765625 y=567.5 | size=1 | links=#14387(auto Dun Morogh;169):1 #19943(auto Dun Morogh;234):2
+#22845 | auto Dun Morogh;270§auto Dun Morogh;270§auto Dun Morogh;270 | x=-6435.10009765625 y=642 | size=5 | links=#12778(auto Dun Morogh;150):96 #17626(Frostmane Troll Whelp;in;Coldridge Valley;Dun Morogh):78 o178084.1:78
+#22870 | auto Dun Morogh;271§auto Dun Morogh;271§auto Dun Morogh;271 | x=-5674.80029296875 y=693.7000122070312 | size=1 | links=#20975(auto Dun Morogh;250):32 c1122.9:27
+#22887 | auto Dun Morogh;272§auto Dun Morogh;272§auto Dun Morogh;272 | x=-6155.89990234375 y=98.80000305175781 | size=1 | links=#2428(auto Dun Morogh;25):20 #11434(auto Dun Morogh;128):26
+#22940 | Young Black Bear;Dun Morogh;22;45.04;55.2§Junger Schwarzbär;Dun Morogh;22;45.04;55.2§Jeune ours noir;Dun Morogh;22;45.04;55.2 | x=-5689.89990234375 y=-414.8999938964844 | size=1
+#22997 | auto Dun Morogh;273§auto Dun Morogh;273§auto Dun Morogh;273 | x=-5443.39990234375 y=-1179.099975585938 | size=1 | links=#5198(auto Dun Morogh;55):100 #16534(auto Dun Morogh;196):35
+#23015 | auto Dun Morogh;274§auto Dun Morogh;274§auto Dun Morogh;274 | x=-5651.5 y=-1365 | size=1 | links=#14402(auto Dun Morogh;171):66 #20610(auto Dun Morogh;244):48
+#23078 | auto Dun Morogh;275§auto Dun Morogh;275§auto Dun Morogh;275 | x=-5927 y=-2027.200073242188 | size=1 | links=#5713(auto Dun Morogh;62):9 #7460(auto Dun Morogh;88):12
+#23128 | auto thunderbrew distillery;Dun Morogh;276§auto brauerei donnerbräu;Dun Morogh;276§auto thunderbrew distillery;Dun Morogh;276 | x=-5597.39990234375 y=-541.7000122070312 | size=1 | links=#4219(auto thunderbrew distillery;Dun Morogh;44):4 c1234.1:7 c1699.1:4
+#23222 | auto Dun Morogh;277§auto Dun Morogh;277§auto Dun Morogh;277 | x=-5784 y=-1535.800048828125 | size=1 | links=#13474(auto Dun Morogh;158):82 #24103(auto Dun Morogh;285):36
+#23278 | Ice Claw Bear;Dun Morogh;39;50.34;53.8§Eisklauenbär;Dun Morogh;39;50.34;53.8§Ours Griffeglace;Dun Morogh;39;50.34;53.8 | x=-5621.80029296875 y=-671.5 | size=1
+#23420 | auto Dun Morogh;278§auto Dun Morogh;278§auto Dun Morogh;278 | x=-5316.7001953125 y=-206.9000091552734 | size=1 | links=#24808(auto Dun Morogh;296):34 o276.2:28 o276.3:30 o276.16:24
+#23426 | centralpoint;Brewnall Village;Dun Morogh§zentralerpunkt;Bräuhall;Dun Morogh§point central;Brewnall Village;Dun Morogh | x=-5370.2001953125 y=299.5 | size=1 | links=#20318(auto Dun Morogh;239):13 #20463(auto Dun Morogh;240):12 #23994(auto Dun Morogh;283):47 c1374.1:17 c1375.1:15 c1697.1:17 c3162.1:20
+#23637 | auto Dun Morogh;279§auto Dun Morogh;279§auto Dun Morogh;279 | x=-5356.39990234375 y=-2153.800048828125 | size=1 | links=#5845(auto Dun Morogh;66):65 #11927(auto Dun Morogh;141):48
+#23679 | auto inside troll cave;Dun Morogh;280§auto drinnen troll höhle;Dun Morogh;280§auto inside troll cave;Dun Morogh;280 | x=-6552.30029296875 y=415.5 | size=1 | links=#14597(auto inside troll cave;Dun Morogh;174):15 #22654(auto inside troll cave;Dun Morogh;266):20
+#23708 | Rockjaw Trogg;Dun Morogh;34;31.25;75.97§Trogg der Felsenkiefer;Dun Morogh;34;31.25;75.97§Trogg Mâcheroc;Dun Morogh;34;31.25;75.97 | x=-6381.10009765625 y=267.6000061035156 | size=1
+#23719 | auto Dun Morogh;281§auto Dun Morogh;281§auto Dun Morogh;281 | x=-6208.2001953125 y=397.2000122070313 | size=1 | links=#61(entry and exit;Anvilmar):38 #18300(auto Dun Morogh;212):132 c705.32:26
+#23841 | auto Dun Morogh;282§auto Dun Morogh;282§auto Dun Morogh;282 | x=-5099.80029296875 y=462.2000122070313 | size=1 | links=#15561(auto Dun Morogh;182):21 c1211.3:13 c1211.7:3
+#23994 | auto Dun Morogh;283§auto Dun Morogh;283§auto Dun Morogh;283 | x=-5415.89990234375 y=312.3999938964844 | size=1 | links=#16490(auto Dun Morogh;195):75 #23426(centralpoint;Brewnall Village;Dun Morogh):47
+#24049 | auto Dun Morogh;284§auto Dun Morogh;284§auto Dun Morogh;284 | x=-5540.80029296875 y=-662.4000244140625 | size=1 | links=#6113(auto Dun Morogh;69):10 #26212(auto Dun Morogh;307):9
+#24103 | auto Dun Morogh;285§auto Dun Morogh;285§auto Dun Morogh;285 | x=-5749.2001953125 y=-1547.5 | size=1 | links=#23222(auto Dun Morogh;277):36 c1679.1:30
+#24192 | auto Dun Morogh;286§auto Dun Morogh;286§auto Dun Morogh;286 | x=-5542.5 y=593.7999877929688 | size=1 | links=#632(entry and exit;Frostmane Hold;Dun Morogh):28 #17447(auto Dun Morogh;204):19
+#24272 | auto Dun Morogh;287§auto Dun Morogh;287§auto Dun Morogh;287 | x=-5571 y=-1555.5 | size=1 | links=#5649(auto Dun Morogh;59):45 #9586(auto Dun Morogh;114):30
+#24297 | auto Dun Morogh;288§auto Dun Morogh;288§auto Dun Morogh;288 | x=-5656.89990234375 y=279.3000183105469 | size=1 | links=#3361(auto Dun Morogh;35):85 #16690(auto Dun Morogh;198):47
+#24329 | auto Dun Morogh;289§auto Dun Morogh;289§auto Dun Morogh;289 | x=-5817.39990234375 y=-375.6000061035156 | size=1 | links=#8122(auto Dun Morogh;95):66 #8227(auto Dun Morogh;98):48
+#24370 | auto Dun Morogh;290§auto Dun Morogh;290§auto Dun Morogh;290 | x=-5621.89990234375 y=-18.80000114440918 | size=1 | links=#14004(auto Dun Morogh;165):36 #15762(auto Dun Morogh;184):41 #17271(auto Dun Morogh;203):37
+#24429 | auto Dun Morogh;291§auto Dun Morogh;291§auto Dun Morogh;291 | x=-5711.89990234375 y=-381.3999938964844 | size=1 | links=#21882(auto Dun Morogh;257):53 o176785.1:36 c1128.3:28
+#24480 | auto Dun Morogh;292§auto Dun Morogh;292§auto Dun Morogh;292 | x=-5519.10009765625 y=-2403.60009765625 | size=1 | links=#3997(auto Dun Morogh;39):18 #11799(auto Dun Morogh;138):26
+#24482 | auto Dun Morogh;293§auto Dun Morogh;293§auto Dun Morogh;293 | x=-5529 y=731.4000244140625 | size=1 | links=#20960(auto Dun Morogh;249):25 #21488(auto Dun Morogh;255):31 #48707(auto Inside;Frostmane Hold;Dun Morogh;344):14
+#24504 | auto Dun Morogh;294§auto Dun Morogh;294§auto Dun Morogh;294 | x=-5198.39990234375 y=-150.6000061035156 | size=1 | links=#21164(auto Dun Morogh;252):8 #24571(auto Dun Morogh;295):33
+#24571 | auto Dun Morogh;295§auto Dun Morogh;295§auto Dun Morogh;295 | x=-5228.60009765625 y=-165.5 | size=1 | links=#17086(central location;Shimmer Ridge;Dun Morogh):42 #24504(auto Dun Morogh;294):33
+#24808 | auto Dun Morogh;296§auto Dun Morogh;296§auto Dun Morogh;296 | x=-5292.60009765625 y=-182.5 | size=5 | links=#17086(central location;Shimmer Ridge;Dun Morogh):28 #23420(auto Dun Morogh;278):34
+#24903 | Frostmane Snowstrider;Dun Morogh;5;23.65;51.43§Schneeschreiter der Frostmähnen;Dun Morogh;5;23.65;51.43§Marche-neige Crins-de-givre;Dun Morogh;5;23.65;51.43 | x=-5555.5 y=629.9000244140625 | size=1
+#24911 | auto Dun Morogh;297§auto Dun Morogh;297§auto Dun Morogh;297 | x=-5036.60009765625 y=-815.6000366210938 | size=1 | links=#17261(auto Dun Morogh;202):20 #28002(Gates of Ironforge;Dun Morogh;one):15
+#24966 | Small Crag Boar;Dun Morogh;18;22.71;69.56§Kleiner Klippeneber;Dun Morogh;18;22.71;69.56§Petit sanglier des rochers;Dun Morogh;18;22.71;69.56 | x=-6170 y=671.2000122070312 | size=1
+#25037 | Rockjaw Skullthumper;Dun Morogh;28;71.18;55.29§Schädelhauer der Felsenkiefer;Dun Morogh;28;71.18;55.29§Brise-crâne Mâcheroc;Dun Morogh;28;71.18;55.29 | x=-5687.7001953125 y=-1706.099975585938 | size=1
+#25121 | auto Dun Morogh;298§auto Dun Morogh;298§auto Dun Morogh;298 | x=-5869.10009765625 y=-481.2000122070313 | size=1 | links=#5581(auto Dun Morogh;56):72 #5776(auto Dun Morogh;64):52 #26705(auto Dun Morogh;316):105
+#25148 | Wendigo;Dun Morogh;45;41.39;51.09§Wendigo;Dun Morogh;45;41.39;51.09§Wendigo;Dun Morogh;45;41.39;51.09 | x=-5555.89990234375 y=-237.3000030517578 | size=1
+#25203 | auto Gol'Bolarmine;Dun Morogh;299§auto Gol'Bolarmine;Dun Morogh;299§auto Gol'Bolarmine;Dun Morogh;299 | x=-5542.10009765625 y=-1739.599975585938 | size=1 | links=#2275(auto Gol'Bolarmine;Dun Morogh;23):24 #16396(auto Gol'Bolarmine;Dun Morogh;194):16
+#25204 | auto Gol'Bolarmine;Dun Morogh;300§auto Gol'Bolarmine;Dun Morogh;300§auto Gol'Bolarmine;Dun Morogh;300 | x=-5626.10009765625 y=-1685.200073242188 | size=1 | links=#5764(auto Gol'Bolarmine;Dun Morogh;63):12 #7111(auto Gol'Bolarmine;Dun Morogh;79):12 c1116.1:6 c1117.3:19
+#25208 | auto Dun Morogh;301§auto Dun Morogh;301§auto Dun Morogh;301 | x=-5154.10009765625 y=-157.1999969482422 | size=1 | links=#18320(auto Dun Morogh;214):37 #21164(auto Dun Morogh;252):36
+#25264 | auto Dun Morogh;302§auto Dun Morogh;302§auto Dun Morogh;302 | x=-5591.7001953125 y=58.60000228881836 | size=1 | links=#6973(auto Dun Morogh;77):15 #20243(auto Dun Morogh;237):31
+#25297 | crossing;three;Dun Morogh§kreuzung;drei;Dun Morogh§traversée;trois;Dun Morogh | x=-5615 y=-1503.599975585938 | size=1 | links=#4915(auto Dun Morogh;49):58 #5649(auto Dun Morogh;59):25 #14402(auto Dun Morogh;171):78
+#25417 | auto Dun Morogh;303§auto Dun Morogh;303§auto Dun Morogh;303 | x=-5339.2001953125 y=584.7999877929688 | size=1 | links=#11947(auto Dun Morogh;142):11 #22182(auto Dun Morogh;260):29
+#25457 | Crag Boar;Dun Morogh;47;44.76;57.58§Klippeneber;Dun Morogh;47;44.76;57.58§Sanglier des rochers;Dun Morogh;47;44.76;57.58 | x=-5773.60009765625 y=-401.8999938964844 | size=1
+#25591 | Ragged Young Wolf;Dun Morogh;30;27.85;73.22§Struppiger junger Wolf;Dun Morogh;30;27.85;73.22§Jeune loup décharné;Dun Morogh;30;27.85;73.22 | x=-6276.30029296875 y=437.3999938964844 | size=1
+#25600 | Ice Claw Bear;Dun Morogh;15;26.7;56.19§Eisklauenbär;Dun Morogh;15;26.7;56.19§Ours Griffeglace;Dun Morogh;15;26.7;56.19 | x=-5726.10009765625 y=477.8999938964844 | size=1
+#25726 | auto Dun Morogh;304§auto Dun Morogh;304§auto Dun Morogh;304 | x=-5557.80029296875 y=767 | size=1 | links=#6298(central location;Frostmane Hold;Dun Morogh):7 #20960(auto Dun Morogh;249):22
+#25825 | Crag Boar;Dun Morogh;31;49.05;54.75§Klippeneber;Dun Morogh;31;49.05;54.75§Sanglier des rochers;Dun Morogh;31;49.05;54.75 | x=-5691.60009765625 y=-572.4000244140625 | size=1
+#25903 | auto Dun Morogh;305§auto Dun Morogh;305§auto Dun Morogh;305 | x=-5123.89990234375 y=412.7000122070313 | size=1 | links=#16324(auto Dun Morogh;192):36 #18742(auto Dun Morogh;218):49
+#25958 | centralpoint;Kharanos;Dun Morogh§zentralerpunkt;Kharanos;Dun Morogh§point central;Kharanos;Dun Morogh | x=-5577.10009765625 y=-482.3000183105469 | size=1 | links=#8513(central location;Kharanos;Dun Morogh):39 #18420(auto Dun Morogh;215):49 c1872.1:18
+#25980 | Frostmane Troll Whelp;Dun Morogh;61;30.46;80.71§Trollwelpe der Frostmähnen;Dun Morogh;61;30.46;80.71§Jeune troll Crins-de-givre;Dun Morogh;61;30.46;80.71 | x=-6532.30029296875 y=301.3999938964844 | size=1
+#26134 | auto Gol'Bolarmine;Dun Morogh;306§auto Gol'Bolarmine;Dun Morogh;306§auto Gol'Bolarmine;Dun Morogh;306 | x=-5716.89990234375 y=-1684.700073242188 | size=1 | links=#3435(auto Gol'Bolarmine;Dun Morogh;36):11 #12658(auto Gol'Bolarmine;Dun Morogh;148):29
+#26212 | auto Dun Morogh;307§auto Dun Morogh;307§auto Dun Morogh;307 | x=-5536.10009765625 y=-671.2000122070312 | size=1 | links=#24049(auto Dun Morogh;284):9 c1702.1:5 c5392.1:12
+#26228 | auto inside troll cave;Dun Morogh;308§auto drinnen troll höhle;Dun Morogh;308§auto inside troll cave;Dun Morogh;308 | x=-6475.10009765625 y=330.8000183105469 | size=1 | links=#13216(auto inside troll cave;Dun Morogh;154):22 #17114(auto inside troll cave;Dun Morogh;201):14
+#26349 | auto Dun Morogh;309§auto Dun Morogh;309§auto Dun Morogh;309 | x=-5245.89990234375 y=-524.7000122070312 | size=1 | links=#10688(auto Dun Morogh;122):28 #11595(auto Dun Morogh;134):95
+#26415 | Rockjaw Trogg;Dun Morogh;23;30.35;77.57§Trogg der Felsenkiefer;Dun Morogh;23;30.35;77.57§Trogg Mâcheroc;Dun Morogh;23;30.35;77.57 | x=-6412.60009765625 y=306.3000183105469 | size=1
+#26426 | auto Gol'Bolarmine;Dun Morogh;310§auto Gol'Bolarmine;Dun Morogh;310§auto Gol'Bolarmine;Dun Morogh;310 | x=-5576.80029296875 y=-1712.200073242188 | size=1 | links=#20313(auto Gol'Bolarmine;Dun Morogh;238):12 c1119.1:16
+#26437 | Small Crag Boar;Dun Morogh;47;22.6;69.33§Kleiner Klippeneber;Dun Morogh;47;22.6;69.33§Petit sanglier des rochers;Dun Morogh;47;22.6;69.33 | x=-6154.30029296875 y=696.2000122070312 | size=1
+#26450 | auto Dun Morogh;311§auto Dun Morogh;311§auto Dun Morogh;311 | x=-5567.89990234375 y=-436.2000122070313 | size=1 | links=#9516(auto Dun Morogh;113):15 c1690.1:7
+#26513 | auto Dun Morogh;312§auto Dun Morogh;312§auto Dun Morogh;312 | x=-5337.39990234375 y=557.1000366210938 | size=1 | links=#1072(auto Dun Morogh;9):1 #17669(auto Dun Morogh;207):1
+#26581 | Rockjaw Bonesnapper;Dun Morogh;9;71.15;52.71§Knochenknacker der Felsenkiefer;Dun Morogh;9;71.15;52.71§Briseur d'os Mâcheroc;Dun Morogh;9;71.15;52.71 | x=-5614.2001953125 y=-1697.599975585938 | size=1
+#26599 | focus point;Coldridge Valley;Dun Morogh§bündelpunkt;Eisklammtal;Dun Morogh§focus point;Coldridge Valley;Dun Morogh | x=-6267.39990234375 y=480.6000061035156 | size=5 | links=#8575(auto Dun Morogh;103):128 #15850(central location;Coldridge Valley;Dun Morogh):154 c724.2:28 c708.3:68 c724.3:19
+#26632 | Snow Leopard;Dun Morogh;27;28.17;48.92§Schneeleopard;Dun Morogh;27;28.17;48.92§Léopard des neiges;Dun Morogh;27;28.17;48.92 | x=-5492.7001953125 y=423.8999938964844 | size=1
+#26654 | Wendigo;Dun Morogh;42;42.46;53.68§Wendigo;Dun Morogh;42;42.46;53.68§Wendigo;Dun Morogh;42;42.46;53.68 | x=-5647.30029296875 y=-285.2000122070313 | size=1
+#26658 | auto Dun Morogh;313§auto Dun Morogh;313§auto Dun Morogh;313 | x=-5251.80029296875 y=-2228 | size=1 | links=#8693(auto Dun Morogh;107):47 #16394(auto Dun Morogh;193):77
+#26689 | auto Gol'Bolarmine;Dun Morogh;314§auto Gol'Bolarmine;Dun Morogh;314§auto Gol'Bolarmine;Dun Morogh;314 | x=-5608.7001953125 y=-1676.5 | size=1 | links=#8630(auto Gol'Bolarmine;Dun Morogh;106):11 #12416(auto Gol'Bolarmine;Dun Morogh;146):9
+#26691 | auto Anvilmar;Dun Morogh;315§auto Ambossar;Dun Morogh;315§auto Anvilmar;Dun Morogh;315 | x=-6145.2001953125 y=384 | size=1 | links=#61(entry and exit;Anvilmar):26 #22305(auto Anvilmar;Dun Morogh;263):14
+#26705 | auto Dun Morogh;316§auto Dun Morogh;316§auto Dun Morogh;316 | x=-5768.39990234375 y=-512.2000122070312 | size=1 | links=#5871(auto Dun Morogh;67):73 #25121(auto Dun Morogh;298):105
+#26720 | Rockjaw Skullthumper;Dun Morogh;8;70.32;53.27§Schädelhauer der Felsenkiefer;Dun Morogh;8;70.32;53.27§Brise-crâne Mâcheroc;Dun Morogh;8;70.32;53.27 | x=-5624.5 y=-1673.400024414063 | size=1
+#26730 | Rockjaw Trogg;Dun Morogh;32;31.81;74.62§Trogg der Felsenkiefer;Dun Morogh;32;31.81;74.62§Trogg Mâcheroc;Dun Morogh;32;31.81;74.62 | x=-6319.80029296875 y=231 | size=1
+#27012 | auto Dun Morogh;317§auto Dun Morogh;317§auto Dun Morogh;317 | x=-5033.89990234375 y=-128.6999969482422 | size=1 | links=#8142(auto Dun Morogh;96):41 #9169(auto Dun Morogh;111):26
+#27029 | Burly Rockjaw Trogg;Dun Morogh;7;26.92;72.95§Bulliger Trogg der Felsenkiefer;Dun Morogh;7;26.92;72.95§Trogg Mâcheroc mastoc;Dun Morogh;7;26.92;72.95 | x=-6269.5 y=477.2000122070313 | size=1
+#27032 | Large Crag Boar;Dun Morogh;38;55.9;47.8§Großer Klippeneber;Dun Morogh;38;55.9;47.8§Grand sanglier des rochers;Dun Morogh;38;55.9;47.8 | x=-5428.30029296875 y=-919 | size=1
+#27146 | auto Dun Morogh;318§auto Dun Morogh;318§auto Dun Morogh;318 | x=-5424.89990234375 y=-645.5 | size=1 | links=#14545(auto Dun Morogh;173):23 #15407(auto Dun Morogh;180):56
+#27189 | auto Gol'Bolarmine;Dun Morogh;319§auto Gol'Bolarmine;Dun Morogh;319§auto Gol'Bolarmine;Dun Morogh;319 | x=-5676.39990234375 y=-1709.400024414063 | size=1 | links=#12658(auto Gol'Bolarmine;Dun Morogh;148):18 #14994(auto Gol'Bolarmine;Dun Morogh;177):25
+#27262 | central location;Gol'Bolar Quarry;Dun Morogh§zentralpunkt;Steinbruch von Gol'Bolar;Dun Morogh§emplacement central;Gol'Bolar Quarry;Dun Morogh | x=-5698.7001953125 y=-1598.300048828125 | size=1 | links=#17002(auto Dun Morogh;199):44 c1237.1:34 c1256.1:23 c1360.1:13 c1698.1:13 c1701.1:13
+#27303 | down;ramp;class quest;rogue;Gnomeregan;Dun Morogh§unten;rampe;klassenquest;schurke;Gnomeregan;Dun Morogh§bas;ramp;class quest;rogue;Gnomeregan;Dun Morogh | x=-5332.30029296875 y=571 | size=1 | links=#11947(auto Dun Morogh;142):12 #18989(auto Dun Morogh;222):2
+#27359 | auto Gol'Bolarmine;Dun Morogh;320§auto Gol'Bolarmine;Dun Morogh;320§auto Gol'Bolarmine;Dun Morogh;320 | x=-5612 y=-1761.300048828125 | size=1 | links=#4200(auto Gol'Bolarmine;Dun Morogh;42):18 #11442(auto Gol'Bolarmine;Dun Morogh;129):14
+#27435 | auto Dun Morogh;321§auto Dun Morogh;321§auto Dun Morogh;321 | x=-5334.10009765625 y=560.4000244140625 | size=1 | links=#22787(auto Dun Morogh;268):2 c6886.1:3 c1211.37:1
+#27469 | Ragged Young Wolf;Dun Morogh;8;31.14;69.04§Struppiger junger Wolf;Dun Morogh;8;31.14;69.04§Jeune loup décharné;Dun Morogh;8;31.14;69.04 | x=-6151.80029296875 y=283.3000183105469 | size=1
+#27570 | auto Dun Morogh;322§auto Dun Morogh;322§auto Dun Morogh;322 | x=-5508.5 y=-1954.5 | size=1 | links=#15414(auto Dun Morogh;181):95 #28565(crossing;four;Dun Morogh):87
+#27612 | Frostmane Novice;Dun Morogh;5;30.1;82.38§Novize der Frostmähnen;Dun Morogh;5;30.1;82.38§Novice Crins-de-givre;Dun Morogh;5;30.1;82.38 | x=-6580 y=323.6000061035156 | size=1
+#27662 | auto Dun Morogh;323§auto Dun Morogh;323§auto Dun Morogh;323 | x=-5470.10009765625 y=-464.8999938964844 | size=1 | links=#5644(auto Dun Morogh;58):29 #18457(auto Dun Morogh;216):21
+#27677 | auto Dun Morogh;324§auto Dun Morogh;324§auto Dun Morogh;324 | x=-5199.5 y=-426.8000183105469 | size=1 | links=#1356(auto Dun Morogh;12):99 #13489(auto Dun Morogh;159):46
+#27731 | auto Dun Morogh;325§auto Dun Morogh;325§auto Dun Morogh;325 | x=-5294.39990234375 y=492.6000061035156 | size=1 | links=c1211.24:27 c1211.26:44 c1211.29:22 c1211.30:13
+#27798 | auto Dun Morogh;326§auto Dun Morogh;326§auto Dun Morogh;326 | x=-5437.10009765625 y=-516.4000244140625 | size=1 | links=#5644(auto Dun Morogh;58):34 #13396(crossing;one;Dun Morogh):89 #14164(auto Dun Morogh;166):62
+#27961 | auto inside troll cave;Dun Morogh;327§auto drinnen troll höhle;Dun Morogh;327§auto inside troll cave;Dun Morogh;327 | x=-6513.5 y=319.5 | size=1 | links=#9426(central location;cave;Coldridge Valley;Dun Morogh):17 #20524(auto inside troll cave;Dun Morogh;242):22 c808.1:19
+#27998 | Ragged Young Wolf;Dun Morogh;45;29.87;74.49§Struppiger junger Wolf;Dun Morogh;45;29.87;74.49§Jeune loup décharné;Dun Morogh;45;29.87;74.49 | x=-6326.7001953125 y=326.1000061035156 | size=1
+#28012 | auto Dun Morogh;328§auto Dun Morogh;328§auto Dun Morogh;328 | x=-5181.2001953125 y=494.1000061035156 | size=1 | links=#13386(auto Dun Morogh;156):27 #18539(auto Dun Morogh;217):29
+#28054 | auto Dun Morogh;329§auto Dun Morogh;329§auto Dun Morogh;329 | x=-5369.39990234375 y=336.6000061035156 | size=1 | links=#2199(auto Dun Morogh;21):71 #20463(auto Dun Morogh;240):24
+#28134 | auto Dun Morogh;330§auto Dun Morogh;330§auto Dun Morogh;330 | x=-6258 y=315.2000122070313 | size=1 | links=#15850(central location;Coldridge Valley;Dun Morogh):35 c705.48:32
+#28158 | auto inside troll cave;Dun Morogh;331§auto drinnen troll höhle;Dun Morogh;331§auto inside troll cave;Dun Morogh;331 | x=-6494.5 y=403.8000183105469 | size=1 | links=#7295(auto inside troll cave;Dun Morogh;80):13 #13596(auto inside troll cave;Dun Morogh;160):7
+#28190 | auto Dun Morogh;332§auto Dun Morogh;332§auto Dun Morogh;332 | x=-5718.80029296875 y=88.9000015258789 | size=1 | links=#1057(auto Dun Morogh;8):43 #3354(auto Dun Morogh;34):45
+#28359 | auto Dun Morogh;333§auto Dun Morogh;333§auto Dun Morogh;333 | x=-5678.7001953125 y=-1164 | size=1 | links=#3362(crossing;two;Dun Morogh):116 #4230(auto Dun Morogh;45):89 c1130.2:122
+#28377 | auto Dun Morogh;334§auto Dun Morogh;334§auto Dun Morogh;334 | x=-5056.39990234375 y=-78.20000457763672 | size=1 | links=#8142(auto Dun Morogh;96):16 #15783(auto Dun Morogh;185):83
+#28454 | Burly Rockjaw Trogg;Dun Morogh;56;30.69;75.13§Bulliger Trogg der Felsenkiefer;Dun Morogh;56;30.69;75.13§Trogg Mâcheroc mastoc;Dun Morogh;56;30.69;75.13 | x=-6345 y=307.8999938964844 | size=1
+#28504 | Frostmane Troll Whelp;Dun Morogh;23;25.77;79.27§Trollwelpe der Frostmähnen;Dun Morogh;23;25.77;79.27§Jeune troll Crins-de-givre;Dun Morogh;23;25.77;79.27 | x=-6466.7001953125 y=530.2999877929688 | size=1
+#28551 | auto Dun Morogh;335§auto Dun Morogh;335§auto Dun Morogh;335 | x=-5306 y=257.3000183105469 | size=1 | links=#251(auto Dun Morogh;5):27 #7338(auto Dun Morogh;83):124
+#28565 | crossing;four;Dun Morogh§kreuzung;vier;Dun Morogh§traversée;quatre;Dun Morogh | x=-5504.80029296875 y=-2042.200073242188 | size=1 | links=#10541(auto Dun Morogh;121):66 #11927(auto Dun Morogh;141):136 #27570(auto Dun Morogh;322):87
+#48699 | auto Frostmane Hold;Dun Morogh;336§auto Höhle der Frostmähnen;Dun Morogh;336§auto Le repaire des Crins-de-givre;Dun Morogh;336 | x=-5539 y=542.6000366210938 | size=1 | links=#632(entry and exit;Frostmane Hold;Dun Morogh):25 c1121.1:20 c1124.1:27
+#48700 | auto Inside;Frostmane Hold;Dun Morogh;337§auto Drinnen;Höhle der Frostmähnen;Dun Morogh;337§auto Intérieur;Le repaire des Crins-de-givre;Dun Morogh;337 | x=-5591.5 y=758 | size=1 | links=#6298(central location;Frostmane Hold;Dun Morogh):27 c1122.6:29
+#48701 | auto Inside;Frostmane Hold;Dun Morogh;338§auto Drinnen;Höhle der Frostmähnen;Dun Morogh;338§auto Intérieur;Le repaire des Crins-de-givre;Dun Morogh;338 | x=-5559.39990234375 y=643.2999877929688 | size=1 | links=#19881(auto Dun Morogh;232):16 c1123.3:7
+#48702 | auto Inside;Frostmane Hold;Dun Morogh;339§auto Drinnen;Höhle der Frostmähnen;Dun Morogh;339§auto Intérieur;Le repaire des Crins-de-givre;Dun Morogh;339 | x=-5572.10009765625 y=653.2000122070312 | size=1 | links=c1123.3:8 c1121.6:15
+#48703 | auto Inside;Frostmane Hold;Dun Morogh;340§auto Drinnen;Höhle der Frostmähnen;Dun Morogh;340§auto Intérieur;Le repaire des Crins-de-givre;Dun Morogh;340 | x=-5590.5 y=643.9000244140625 | size=1 | links=c1124.2:17
+#48704 | auto Inside;Frostmane Hold;Dun Morogh;341§auto Drinnen;Höhle der Frostmähnen;Dun Morogh;341§auto Intérieur;Le repaire des Crins-de-givre;Dun Morogh;341 | x=-5601.5 y=673.2999877929688 | size=1 | links=c1260.1:16 c1124.2:16
+#48705 | auto Inside;Frostmane Hold;Dun Morogh;342§auto Drinnen;Höhle der Frostmähnen;Dun Morogh;342§auto Intérieur;Le repaire des Crins-de-givre;Dun Morogh;342 | x=-5576.5 y=688 | size=1 | links=#48706(auto Inside;Frostmane Hold;Dun Morogh;343):9 c1260.1:13
+#48706 | auto Inside;Frostmane Hold;Dun Morogh;343§auto Drinnen;Höhle der Frostmähnen;Dun Morogh;343§auto Intérieur;Le repaire des Crins-de-givre;Dun Morogh;343 | x=-5572.2001953125 y=696.6000366210938 | size=1 | links=#48705(auto Inside;Frostmane Hold;Dun Morogh;342):9 c1122.4:25
+#48707 | auto Inside;Frostmane Hold;Dun Morogh;344§auto Drinnen;Höhle der Frostmähnen;Dun Morogh;344§auto Intérieur;Le repaire des Crins-de-givre;Dun Morogh;344 | x=-5543.30029296875 y=729.4000244140625 | size=1 | links=#24482(auto Dun Morogh;293):14 c1122.4:20
+#48708 | auto Dun Morogh;345§auto Dun Morogh;345§auto Dun Morogh;345 | x=-5256.958757785163 y=544.8886129173641 | size=1 | links=c1211.20:48 c1211.36:44
+#48709 | Meeting stone;Gnomeregan;Dun Morogh;346§Versammlungsstein Gnomeregan;Dun Morogh;346§Meeting stone;Gnomeregan;Dun Morogh;346 | x=-5200.10009765625 y=603.7000122070312 | size=1 | links=#48710(auto Gnomeregan;Dun Morogh;347):15
+#48710 | auto Gnomeregan;Dun Morogh;347§auto Gnomeregan;Dun Morogh;347§auto Gnomeregan;Dun Morogh;347 | x=-5186.7001953125 y=596.4000244140625 | size=1 | links=#48709(Meeting stone;Gnomeregan;Dun Morogh;346):15 c1211.19:21
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c460.1 | links=#2307(auto Anvilmar;Dun Morogh;24):12 c6376.1:7
+c658.1 | links=#15850(central location;Coldridge Valley;Dun Morogh):12
+c713.1 | links=#15850(central location;Coldridge Valley;Dun Morogh):12
+c714.1 | links=#13115(auto Dun Morogh;153):50 #13890(auto Dun Morogh;163):70 c708.45:28
+c724.1 | links=c705.3:18
+c786.1 | links=#11825(auto Dun Morogh;140):8 c1354.1:7 c12738.1:9
+c808.1 | links=#9426(central location;cave;Coldridge Valley;Dun Morogh):25 #17114(auto inside troll cave;Dun Morogh;201):33 #27961(auto inside troll cave;Dun Morogh;327):19
+c829.1 | links=#15850(central location;Coldridge Valley;Dun Morogh):11
+c836.1 | links=#2563(auto Anvilmar;Dun Morogh;29):15 c944.1:2
+c837.1 | links=c944.1:5
+c895.1 | links=#6716(auto Anvilmar;Dun Morogh;74):25 #11198(auto Anvilmar;Dun Morogh;126):12
+c912.1 | links=#11198(auto Anvilmar;Dun Morogh;126):21
+c916.1 | links=#6566(central location;Anvilmar):20 #6716(auto Anvilmar;Dun Morogh;74):27
+c926.1 | links=#6566(central location;Anvilmar):14
+c944.1 | links=c836.1:2 c837.1:5
+c945.1 | links=#6566(central location;Anvilmar):8
+c946.1 | links=#19231(auto inside troll cave;Dun Morogh;227):6
+c1104.1 | links=#6566(central location;Anvilmar):8
+c1116.1 | links=#25204(auto Gol'Bolarmine;Dun Morogh;300):6
+c1117.1 | links=
+c1119.1 | links=#26426(auto Gol'Bolarmine;Dun Morogh;310):16
+c1121.1 | links=#9960(auto Dun Morogh;118):103 #48699(auto Frostmane Hold;Dun Morogh;336):20
+c1124.1 | links=#48699(auto Frostmane Hold;Dun Morogh;336):27
+c1128.1 | links=c1125.2:33
+c1130.1 | links=#13719(auto Dun Morogh;161):213
+c1132.1 | links=#7890(auto Dun Morogh;91):68 c1133.1:2 c1132.2:25 c1133.2:2
+c1133.1 | links=c1132.1:2
+c1138.1 | links=#13396(crossing;one;Dun Morogh):78 c1138.3:6
+c1196.1 | links=#5581(auto Dun Morogh;56):38 c1201.2:46
+c1199.1 | links=
+c1211.1 | links=c1211.5:1
+c1226.1 | links=#3217(auto thunderbrew distillery;Dun Morogh;32):10 #12753(auto thunderbrew distillery;Dun Morogh;149):6
+c1228.1 | links=#11503(auto thunderbrew distillery;Dun Morogh;131):6
+c1229.1 | links=c1247.1:4
+c1231.1 | links=#2930(auto Dun Morogh;30):38 c24364.1:10
+c1232.1 | links=#11503(auto thunderbrew distillery;Dun Morogh;131):9
+c1234.1 | links=#918(auto thunderbrew distillery;Dun Morogh;7):10 #23128(auto thunderbrew distillery;Dun Morogh;276):7
+c1237.1 | links=#27262(central location;Gol'Bolar Quarry;Dun Morogh):34 c1355.1:12
+c1238.1 | links=c1240.1:5 c1273.1:10
+c1240.1 | links=c1238.1:5 c1690.1:9
+c1241.1 | links=c1273.1:8 c1690.1:13
+c1243.1 | links=#8376(auto Dun Morogh;99):24 c10804.1:5
+c1245.1 | links=c1690.1:7
+c1247.1 | links=#12753(auto thunderbrew distillery;Dun Morogh;149):4 c1229.1:4
+c1252.1 | links=#8513(central location;Kharanos;Dun Morogh):31 c1692.1:11 c2878.1:6
+c1253.1 | links=#3037(auto Dun Morogh;31):34
+c1254.1 | links=c1977.1:23
+c1256.1 | links=#27262(central location;Gol'Bolar Quarry;Dun Morogh):23
+c1260.1 | links=#48704(auto Inside;Frostmane Hold;Dun Morogh;341):16 #48705(auto Inside;Frostmane Hold;Dun Morogh;342):13
+c1261.1 | links=#17474(central location;Amberstill Ranch;Dun Morogh):7
+c1263.1 | links=#1080(auto Dun Morogh;10):44 #17474(central location;Amberstill Ranch;Dun Morogh):14
+c1265.1 | links=#2548(auto Dun Morogh;28):11 #22151(auto Dun Morogh;259):2
+c1266.1 | links=#12547(auto Dun Morogh;147):16
+c1267.1 | links=#3383(s;A;Mailbox;Dun Morogh):11 #8513(central location;Kharanos;Dun Morogh):28
+c1268.1 | links=#18457(auto Dun Morogh;216):7 c1269.1:1
+c1269.1 | links=#18457(auto Dun Morogh;216):7 c1268.1:1
+c1271.1 | links=#19125(auto Dun Morogh;226):18
+c1273.1 | links=#7374(auto Dun Morogh;85):8 c1238.1:10 c1241.1:8
+c1354.1 | links=c786.1:7
+c1355.1 | links=c1237.1:12
+c1360.1 | links=#27262(central location;Gol'Bolar Quarry;Dun Morogh):13
+c1373.1 | links=#4634(auto thunderbrew distillery;basement;Dun Morogh;47):8 o269.1:3
+c1374.1 | links=#23426(centralpoint;Brewnall Village;Dun Morogh):17 c1375.1:6 c1697.1:15
+c1375.1 | links=#23426(centralpoint;Brewnall Village;Dun Morogh):15 c1374.1:6 c3162.1:9
+c1376.1 | links=#15407(auto Dun Morogh;180):20
+c1377.1 | links=#2502(auto Dun Morogh;26):13
+c1378.1 | links=#2502(auto Dun Morogh;26):14
+c1388.1 | links=#15118(top;Amberstill Ranch;Dun Morogh):47
+c1679.1 | links=#17002(auto Dun Morogh;199):11 #24103(auto Dun Morogh;285):30
+c1690.1 | links=#26450(auto Dun Morogh;311):7 c1240.1:9 c1241.1:13 c1245.1:7
+c1691.1 | links=c6806.1:7
+c1692.1 | links=#8513(central location;Kharanos;Dun Morogh):20 c1252.1:11
+c1694.1 | links=#99(auto Dun Morogh;2):15 #15407(auto Dun Morogh;180):21
+c1697.1 | links=#23426(centralpoint;Brewnall Village;Dun Morogh):17 c1374.1:15
+c1698.1 | links=#27262(central location;Gol'Bolar Quarry;Dun Morogh):13
+c1699.1 | links=#23128(auto thunderbrew distillery;Dun Morogh;276):4
+c1700.1 | links=#7890(auto Dun Morogh;91):54
+c1701.1 | links=#27262(central location;Gol'Bolar Quarry;Dun Morogh):13
+c1702.1 | links=#26212(auto Dun Morogh;307):5 c5392.1:8
+c1872.1 | links=#9804(auto Dun Morogh;116):4 #25958(centralpoint;Kharanos;Dun Morogh):18
+c1959.1 | links=#17940(auto Dun Morogh;208):20
+c1960.1 | links=#14220(auto Dun Morogh;167):27 #21305(auto Dun Morogh;253):19
+c1961.1 | links=o2059.1:84
+c1965.1 | links=#9002(auto Dun Morogh;109):52 #14084(entry and exit;cave;from;Coldridge Pass;to;Dun Morogh):31 c6782.1:22
+c1977.1 | links=#17002(auto Dun Morogh;199):25 c1254.1:23
+c2326.1 | links=c6806.1:13
+c2878.1 | links=#8513(central location;Kharanos;Dun Morogh):35 c1252.1:6
+c3162.1 | links=#23426(centralpoint;Brewnall Village;Dun Morogh):20 c1375.1:9
+c3177.1 | links=#8222(auto Dun Morogh;97):3
+c4772.1 | links=#2179(auto Dun Morogh;20):14
+c5392.1 | links=#26212(auto Dun Morogh;307):12 c1702.1:8
+c5568.1 | links=#18457(auto Dun Morogh;216):4
+c5612.1 | links=c6119.1:2 c6328.1:2
+c6119.1 | links=c5612.1:2
+c6124.1 | links=#13852(auto Dun Morogh;162):18
+c6177.1 | links=#16678(auto Dun Morogh;197):95 #19073(auto Dun Morogh;224):63
+c6181.1 | links=c15011.1:29 o102413.1:6
+c6328.1 | links=c5612.1:2 c9980.1:35
+c6376.1 | links=#2307(auto Anvilmar;Dun Morogh;24):5 c460.1:7
+c6491.1 | links=#116(auto Dun Morogh;4):26
+c6782.1 | links=#14084(entry and exit;cave;from;Coldridge Pass;to;Dun Morogh):25 c1965.1:22
+c6806.1 | links=#3217(auto thunderbrew distillery;Dun Morogh;32):9 c1691.1:7 c2326.1:13
+c6886.1 | links=#27435(auto Dun Morogh;321):3
+c7954.1 | links=#2502(auto Dun Morogh;26):27 c7955.1:5
+c7955.1 | links=c7954.1:5
+c8416.1 | links=#6566(central location;Anvilmar):12
+c8503.1 | links=c1211.25:9 c1211.27:8 c1211.32:18 c1211.33:21
+c8508.1 | links=#14469(auto Dun Morogh;172):20 c11807.1:9
+c9980.1 | links=#3383(s;A;Mailbox;Dun Morogh):2 #8513(central location;Kharanos;Dun Morogh):30 c6328.1:35
+c10610.1 | links=c10611.1:2
+c10611.1 | links=c10610.1:2 c10805.1:1
+c10803.1 | links=c10804.1:2 c10805.1:1
+c10804.1 | links=c1243.1:5 c10803.1:2
+c10805.1 | links=c10611.1:1 c10803.1:1
+c11807.1 | links=c8508.1:9
+c11941.1 | links=#15850(central location;Coldridge Valley;Dun Morogh):11
+c12427.1 | links=#5871(auto Dun Morogh;67):46 #8513(central location;Kharanos;Dun Morogh):60
+c12738.1 | links=#11825(auto Dun Morogh;140):10 #17626(Frostmane Troll Whelp;in;Coldridge Valley;Dun Morogh):56 c786.1:9
+c15011.1 | links=c6181.1:29 #28002(Gates of Ironforge;Dun Morogh;one):21
+c24364.1 | links=#8513(central location;Kharanos;Dun Morogh):26 c1231.1:10
+c24519.1 | links=#8513(central location;Kharanos;Dun Morogh):13
+o269.1 | links=c1373.1:3
+o272.1 | links=#19125(auto Dun Morogh;226):15
+o276.1 | links=o276.13:36 o276.17:30
+o2059.1 | links=#7975(auto Dun Morogh;93):52 c1961.1:84
+o26449.1 | links=#18457(auto Dun Morogh;216):4
+o85562.1 | links=#22779(auto Dun Morogh;267):1
+o102413.1 | links=c6181.1:6 c15113.2:21
+o102984.1 | links=c1211.5:3
+o148499.1 | links=#11999(auto Dun Morogh;143):42 #12778(auto Dun Morogh;150):68 c706.3:25
+o176785.1 | links=#8122(auto Dun Morogh;95):20 #24429(auto Dun Morogh;291):36
+o178084.1 | links=#7382(auto Dun Morogh;87):40 #18311(auto Dun Morogh;213):31 #22845(auto Dun Morogh;270):78
+o178085.1 | links=#3809(auto Dun Morogh;38):31 #4154(auto Dun Morogh;41):59 #7189(entry and exit;cave;Coldridge Valley;Dun Morogh):23
+o180523.1 | links=#11503(auto thunderbrew distillery;Dun Morogh;131):6
+c707.2 | links=c707.35:1
+c724.2 | links=#26599(focus point;Coldridge Valley;Dun Morogh):28
+c946.2 | links=#15359(auto inside troll cave;Dun Morogh;179):18
+c1117.2 | links=
+c1122.2 | links=#11747(auto Dun Morogh;137):36 c1122.11:15
+c1124.2 | links=#48703(auto Inside;Frostmane Hold;Dun Morogh;340):17 #48704(auto Inside;Frostmane Hold;Dun Morogh;341):16
+c1125.2 | links=#18420(auto Dun Morogh;215):44 c1128.1:33 c1128.2:40
+c1128.2 | links=c1125.2:40
+c1130.2 | links=#28359(auto Dun Morogh;333):122
+c1132.2 | links=c1132.1:25 c1132.3:49
+c1133.2 | links=c1132.1:2
+c1134.2 | links=#21882(auto Dun Morogh;257):34 c1134.3:24
+c1138.2 | links=c1138.3:6
+c1201.2 | links=#5581(auto Dun Morogh;56):80 c1196.1:46
+c1397.2 | links=#17086(central location;Shimmer Ridge;Dun Morogh):24
+c8503.2 | links=c1211.4:8
+c15113.2 | links=o102413.1:21
+o276.2 | links=#23420(auto Dun Morogh;278):28
+c705.3 | links=c724.1:18 c707.3:12 c705.6:32 c705.49:4 c724.60:93
+c706.3 | links=o148499.1:25 c708.24:64
+c707.3 | links=c705.3:12 c724.56:53
+c708.3 | links=#26599(focus point;Coldridge Valley;Dun Morogh):68 c721.17:47
+c724.3 | links=#26599(focus point;Coldridge Valley;Dun Morogh):19
+c946.3 | links=
+c1117.3 | links=#25204(auto Gol'Bolarmine;Dun Morogh;300):19
+c1123.3 | links=#48701(auto Inside;Frostmane Hold;Dun Morogh;338):7 #48702(auto Inside;Frostmane Hold;Dun Morogh;339):8
+c1124.3 | links=#21488(auto Dun Morogh;255):6
+c1125.3 | links=
+c1128.3 | links=#24429(auto Dun Morogh;291):28
+c1130.3 | links=#3362(crossing;two;Dun Morogh):117
+c1132.3 | links=#7338(auto Dun Morogh;83):129 c1132.2:49
+c1134.3 | links=#6309(auto Dun Morogh;73):19 c1134.2:24
+c1138.3 | links=c1138.1:6 c1138.2:6
+c1211.3 | links=#23841(auto Dun Morogh;282):13 c1211.4:15
+c1260.3 | links=#20975(auto Dun Morogh;250):20 c1122.11:24
+c6491.3 | links=#61(entry and exit;Anvilmar):60 #6200(auto Dun Morogh;70):14
+o276.3 | links=#23420(auto Dun Morogh;278):30 o276.4:11 o276.5:13 o276.18:13
+c705.4 | links=
+c1122.4 | links=#48706(auto Inside;Frostmane Hold;Dun Morogh;343):25 #48707(auto Inside;Frostmane Hold;Dun Morogh;344):20
+c1211.4 | links=c8503.2:8 c1211.3:15
+o276.4 | links=o276.3:11
+c1211.5 | links=#11698(auto Dun Morogh;136):3 c1211.1:1 o102984.1:3
+o276.5 | links=o276.3:13 o276.7:12
+c705.6 | links=c705.3:32 c705.48:9
+c1121.6 | links=#48702(auto Inside;Frostmane Hold;Dun Morogh;339):15
+c1122.6 | links=#48700(auto Inside;Frostmane Hold;Dun Morogh;337):29 c1124.6:24
+c1124.6 | links=c1122.6:24 c1123.15:26
+o276.6 | links=o276.16:6
+c1211.7 | links=#16324(auto Dun Morogh;192):25 #23841(auto Dun Morogh;282):3
+o276.7 | links=o276.5:12
+o3719.7 | links=#15582(auto Dun Morogh;183):15 o276.13:14
+c1122.8 | links=#20875(auto Dun Morogh;248):4 c1122.9:18
+c1122.9 | links=#22870(auto Dun Morogh;271):27 c1122.8:18
+o276.10 | links=#15582(auto Dun Morogh;183):5
+c1122.11 | links=c1122.2:15 c1260.3:24
+c1196.11 | links=#9960(auto Dun Morogh;118):32
+c1211.11 | links=c1211.13:29
+o276.11 | links=o276.17:42
+c704.12 | links=c721.30:15
+c705.12 | links=c705.32:40
+c1196.12 | links=#18038(auto Dun Morogh;210):18
+c705.13 | links=
+c721.13 | links=
+c1211.13 | links=#18539(auto Dun Morogh;217):65 c1211.11:29
+o276.13 | links=o276.1:36 o3719.7:14 o276.14:30 o276.15:28 o276.17:46
+c704.14 | links=
+c705.14 | links=
+o276.14 | links=o276.13:30
+c1123.15 | links=#20875(auto Dun Morogh;248):14 c1124.6:26
+o276.15 | links=o276.13:28
+c704.16 | links=
+c1211.16 | links=c1211.19:24
+o276.16 | links=#23420(auto Dun Morogh;278):24 o276.6:6
+c721.17 | links=#21004(auto Dun Morogh;251):29 c708.3:47 c705.41:18
+c1211.17 | links=#13386(auto Dun Morogh;156):35 c1211.19:22
+o276.17 | links=o276.1:30 o276.11:42 o276.13:46
+c707.18 | links=
+c1211.18 | links=c1211.20:48
+o276.18 | links=o276.3:13
+c1211.19 | links=#48710(auto Gnomeregan;Dun Morogh;347):21 c1211.16:24 c1211.17:22
+c1201.20 | links=#9960(auto Dun Morogh;118):14
+c1211.20 | links=#13386(auto Dun Morogh;156):26 #48708(auto Dun Morogh;345):48 c1211.18:48
+c1127.22 | links=#18539(auto Dun Morogh;217):28
+c705.23 | links=c705.27:21
+c705.24 | links=c705.27:19 c721.30:25
+c708.24 | links=c706.3:64 c724.30:58
+c1127.24 | links=c1211.31:36
+c1211.24 | links=#27731(auto Dun Morogh;325):27
+c705.25 | links=
+c1127.25 | links=#9960(auto Dun Morogh;118):20
+c1211.25 | links=c8503.1:9 c1211.36:2
+c1211.26 | links=#27731(auto Dun Morogh;325):44
+c705.27 | links=c705.23:21 c705.24:19 c705.51:33
+c707.27 | links=
+c1211.27 | links=c8503.1:8
+c705.28 | links=
+c1201.28 | links=#2199(auto Dun Morogh;21):18 #14714(auto Dun Morogh;175):36 c1127.32:24
+c705.29 | links=c705.51:20
+c707.29 | links=
+c1211.29 | links=#6863(auto Dun Morogh;75):22 #27731(auto Dun Morogh;325):22 c1211.31:37
+c721.30 | links=c704.12:15 c705.24:25
+c724.30 | links=c708.24:58 c708.45:27
+c1211.30 | links=#27731(auto Dun Morogh;325):13
+c721.31 | links=
+c1211.31 | links=c1127.24:36 c1211.29:37 c1211.35:25
+c705.32 | links=#23719(auto Dun Morogh;281):26 c705.12:40
+c1127.32 | links=c1201.28:24
+c1211.32 | links=c8503.1:18
+c705.33 | links=
+c1211.33 | links=#11947(auto Dun Morogh;142):12 c8503.1:21
+c705.34 | links=
+c721.34 | links=
+c705.35 | links=c705.40:26
+c707.35 | links=c707.2:1
+c1211.35 | links=c1211.31:25
+c707.36 | links=c724.60:19
+c721.36 | links=
+c1211.36 | links=#48708(auto Dun Morogh;345):44 c1211.25:2
+c707.37 | links=c724.60:17
+c1211.37 | links=#27435(auto Dun Morogh;321):1
+c1211.38 | links=#22182(auto Dun Morogh;260):18
+c1135.39 | links=#6309(auto Dun Morogh;73):34 #21710(auto Dun Morogh;256):16
+c1211.39 | links=#22182(auto Dun Morogh;260):13
+c705.40 | links=c705.35:26 c724.56:37
+c707.40 | links=
+c705.41 | links=c721.17:18 c705.44:16
+c705.42 | links=
+c705.44 | links=c705.41:16 c705.51:23
+c708.45 | links=c714.1:28 c724.30:27
+c705.46 | links=
+c705.47 | links=
+c705.48 | links=#28134(auto Dun Morogh;330):32 c705.6:9
+c705.49 | links=c705.3:4
+c724.49 | links=
+c705.50 | links=
+c705.51 | links=c705.27:33 c705.29:20 c705.44:23
+c724.56 | links=c707.3:53 c705.40:37
+c724.58 | links=
+c724.60 | links=c705.3:93 c707.36:19 c707.37:17
+c724.61 | links=

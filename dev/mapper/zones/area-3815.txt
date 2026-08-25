@@ -1,0 +1,4 @@
+Zone areaId 3815 — eine Zeile pro Wegpunkt; Links inline.
+
+#17197 | auto Expedition Point;Hellfire Peninsula;1§auto Expeditionsposten;Höllenfeuerhalbinsel;1§auto Halte de l'expédition;Péninsule des Flammes infernales;1 | x=-653 y=1880.700073242188 | size=5 | links=#9009(auto Valley of Bones;Desolace;1):323 #4985(auto Hellfire Peninsula;123):29 #18992(auto Expedition Point;Hellfire Peninsula;2):42
+#18992 | auto Expedition Point;Hellfire Peninsula;2§auto Expeditionsposten;Höllenfeuerhalbinsel;2§auto Halte de l'expédition;Péninsule des Flammes infernales;2 | x=-619.2000122070312 y=1855.200073242188 | size=1 | links=#1795(auto The Legion Front;Hellfire Peninsula;1):35 #17197(auto Expedition Point;Hellfire Peninsula;1):42

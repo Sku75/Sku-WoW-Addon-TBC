@@ -1,0 +1,3 @@
+Zone areaId 263 — eine Zeile pro Wegpunkt; Links inline.
+
+#28733 | s;Kalimdor;Teldrassil;Wellspring Lake;The Cleft§s;Kalimdor;Teldrassil;Wellspringsee;Die Kluft§s;Kalimdor;Teldrassil;Wellspring Lake;The Cleft | x=10316.4 y=-1200.62 | size=1

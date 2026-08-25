@@ -1,0 +1,1008 @@
+Zone areaId 440 — eine Zeile pro Wegpunkt; Links inline.
+
+#10 | auto Tanaris;1§auto Tanaris;1§auto Tanaris;1 | x=-8033.89990234375 y=-5214.30029296875 | size=1 | links=#6332(auto Tanaris;107):14 #19648(auto Tanaris;334):11
+#193 | auto Tanaris;2§auto Tanaris;2§auto Tanaris;2 | x=-7148.30029296875 y=-3772.10009765625 | size=1 | links=#19147(auto Tanaris;326):10 #24155(auto Tanaris;406):8
+#194 | auto Tanaris;3§auto Tanaris;3§auto Tanaris;3 | x=-8198.900390625 y=-4642.30029296875 | size=1 | links=#25702(auto Tanaris;432):76 #27478(meeting stone;Caverns of Time;Tanaris):63
+#281 | auto Tanaris;4§auto Tanaris;4§auto Tanaris;4 | x=-7118.5 y=-3793.60009765625 | size=1 | links=#21989(auto Tanaris;381):6 o150075.1:1
+#311 | auto Tanaris;5§auto Tanaris;5§auto Tanaris;5 | x=-6949.2001953125 y=-3709.199951171875 | size=1 | links=#9256(auto Tanaris;147):0 #10413(auto Tanaris;165):26
+#437 | auto Tanaris;6§auto Tanaris;6§auto Tanaris;6 | x=-9498.900390625 y=-2955.300048828125 | size=1 | links=#17684(auto Tanaris;302):45 c5421.12:53
+#444 | auto Tanaris;7§auto Tanaris;7§auto Tanaris;7 | x=-9036.2001953125 y=-4126.30029296875 | size=1 | links=#1437(auto Tanaris;24):50 #17010(auto Tanaris;288):25
+#693 | auto Tanaris;8§auto Tanaris;8§auto Tanaris;8 | x=-8621.7001953125 y=-3800.60009765625 | size=5 | links=#1499(auto Tanaris;25):87 #14282(auto Tanaris;235):95
+#709 | auto Tanaris;9§auto Tanaris;9§auto Tanaris;9 | x=-7133.10009765625 y=-3787.800048828125 | size=1 | links=#8128(rescue;focus point;Gadgetzan;Tanaris):5 #12954(auto Tanaris;212):5
+#727 | auto Tanaris;10§auto Tanaris;10§auto Tanaris;10 | x=-9182.7998046875 y=-3791.400146484375 | size=5 | links=#11145(auto Tanaris;179):72 #16320(auto Tanaris;273):40
+#748 | auto Tanaris;11§auto Tanaris;11§auto Tanaris;11 | x=-7765.7001953125 y=-2599.5 | size=1 | links=#4833(auto Tanaris;80):11 #28460(auto Tanaris;483):11
+#896 | auto Tanaris;12§auto Tanaris;12§auto Tanaris;12 | x=-7138.80029296875 y=-3743.400146484375 | size=1 | links=#12996(auto Tanaris;213):4 #15100(auto Tanaris;246):21 #17856(auto Tanaris;306):20 c6568.1:7 c19861.1:18
+#897 | auto Tanaris;13§auto Tanaris;13§auto Tanaris;13 | x=-7176.89990234375 y=-3785.300048828125 | size=1 | links=#2724(auto Tanaris;49):21 #12669(auto Tanaris;205):25 #15100(auto Tanaris;246):37 c7564.1:18 c14567.1:27
+#951 | auto Tanaris;14§auto Tanaris;14§auto Tanaris;14 | x=-8723.2998046875 y=-2364.800048828125 | size=1 | links=#24883(auto Tanaris;422):107 c5427.1:73
+#1001 | auto Tanaris;15§auto Tanaris;15§auto Tanaris;15 | x=-8096 y=-2514.699951171875 | size=1 | links=#2387(auto Tanaris;42):7 #19950(auto Tanaris;341):10
+#1123 | auto Tanaris;16§auto Tanaris;16§auto Tanaris;16 | x=-8139.30029296875 y=-4844.80029296875 | size=1 | links=#1647(auto Tanaris;26):29 #21172(auto Tanaris;363):20
+#1190 | auto Tanaris;17§auto Tanaris;17§auto Tanaris;17 | x=-8178.39990234375 y=-3052 | size=5 | links=#18169(auto Tanaris;313):65 #18348(auto Tanaris;315):67 c5474.12:34 c5420.93:15
+#1207 | auto Tanaris;18§auto Tanaris;18§auto Tanaris;18 | x=-6967 y=-4675.89990234375 | size=1 | links=#14285(auto Tanaris;236):95 #23135(central location;Steamwheedle Port;Tanaris):121
+#1282 | auto Tanaris;19§auto Tanaris;19§auto Tanaris;19 | x=-9169.6005859375 y=-3508.199951171875 | size=5 | links=#10916(auto Tanaris;174):67 #15281(auto Tanaris;250):115 #21362(auto Tanaris;369):83
+#1283 | auto Tanaris;20§auto Tanaris;20§auto Tanaris;20 | x=-7789.5 y=-5109.7001953125 | size=1 | links=#16003(auto Tanaris;268):29 #25789(auto Tanaris;434):43
+#1285 | auto Tanaris;21§auto Tanaris;21§auto Tanaris;21 | x=-7826.30029296875 y=-2543.800048828125 | size=1 | links=#5338(auto Tanaris;87):12 #13720(auto Tanaris;223):13
+#1330 | auto Tanaris;22§auto Tanaris;22§auto Tanaris;22 | x=-8931.2001953125 y=-3590.199951171875 | size=5 | links=#11126(auto Tanaris;177):124 #15281(auto Tanaris;250):136 c5471.1:66 c5475.1:91 c5472.2:42
+#1430 | auto Tanaris;23§auto Tanaris;23§auto Tanaris;23 | x=-8267.2001953125 y=-2069.199951171875 | size=1 | links=#1761(passage;from;Tanaris;to;Un'Goro Crater):35 #14792(auto Tanaris;242):50
+#1437 | auto Tanaris;24§auto Tanaris;24§auto Tanaris;24 | x=-9067.2001953125 y=-4166.10009765625 | size=1 | links=#444(auto Tanaris;7):50 #22700(auto Tanaris;390):32
+#1499 | auto Tanaris;25§auto Tanaris;25§auto Tanaris;25 | x=-8586.400390625 y=-3880.400146484375 | size=5 | links=#693(auto Tanaris;8):87 #6955(auto Tanaris;114):92
+#1647 | auto Tanaris;26§auto Tanaris;26§auto Tanaris;26 | x=-8112.7001953125 y=-4831.30029296875 | size=1 | links=#1123(auto Tanaris;16):29 #9680(auto Tanaris;155):32
+#1695 | auto Tanaris;27§auto Tanaris;27§auto Tanaris;27 | x=-8170.89990234375 y=-4608.7001953125 | size=1 | links=#13790(auto Tanaris;225):4 c6491.2:24
+#1714 | auto Tanaris;28§auto Tanaris;28§auto Tanaris;28 | x=-7030.39990234375 y=-3585.10009765625 | size=1 | links=#15106(auto Tanaris;247):44 #24333(auto Tanaris;408):46
+#1761 | passage;from;Tanaris;to;Un'Goro Crater§passage;von;Tanaris;nach;Un'Goro-Krater§passage;de;Tanaris;vers;Cratère d'Un'Goro | x=-8235.1005859375 y=-2084.10009765625 | size=1 | links=#1430(auto Tanaris;23):35 #15091(passage;from;Un'Goro Crater;to;Tanaris):2
+#1805 | auto Tanaris;29§auto Tanaris;29§auto Tanaris;29 | x=-8019.60009765625 y=-2494.199951171875 | size=1 | links=#6094(auto Tanaris;101):47 #8189(auto Tanaris;131):27
+#1830 | auto Tanaris;30§auto Tanaris;30§auto Tanaris;30 | x=-8350.2001953125 y=-2506.60009765625 | size=5 | links=#7239(auto Tanaris;115):64 #17854(auto Tanaris;305):45
+#1933 | auto Tanaris;31§auto Tanaris;31§auto Tanaris;31 | x=-8507.400390625 y=-4591.10009765625 | size=1 | links=#2250(auto Tanaris;37):66 #22846(auto Tanaris;392):25
+#1996 | auto Tanaris;32§auto Tanaris;32§auto Tanaris;32 | x=-6970.39990234375 y=-4837.2001953125 | size=1 | links=#8745(auto Tanaris;141):29 #10455(auto Tanaris;166):7
+#2043 | auto Tanaris;33§auto Tanaris;33§auto Tanaris;33 | x=-8033.39990234375 y=-5358.10009765625 | size=1 | links=#19816(auto Tanaris;339):16 c7855.19:23 c7857.30:10
+#2064 | auto Tanaris;34§auto Tanaris;34§auto Tanaris;34 | x=-7621.60009765625 y=-2628.5 | size=5 | links=#5823(auto Tanaris;95):70 #20856(auto Tanaris;358):51 c5456.30:52
+#2158 | auto Tanaris;35§auto Tanaris;35§auto Tanaris;35 | x=-8123 y=-4066.10009765625 | size=5 | links=#15523(auto Tanaris;258):196 #24160(auto Tanaris;407):200
+#2177 | auto Tanaris;36§auto Tanaris;36§auto Tanaris;36 | x=-7759.39990234375 y=-4947.89990234375 | size=1 | links=#2386(auto Tanaris;41):22 #5040(auto Tanaris;83):19 c6491.3:32
+#2250 | auto Tanaris;37§auto Tanaris;37§auto Tanaris;37 | x=-8497.1005859375 y=-4525.2001953125 | size=1 | links=#1933(auto Tanaris;31):66 #2564(auto Tanaris;47):93
+#2278 | auto Tanaris;38§auto Tanaris;38§auto Tanaris;38 | x=-7680.30029296875 y=-2756.60009765625 | size=5 | links=#13297(auto Tanaris;219):36 #19519(auto Tanaris;331):38
+#2319 | auto Tanaris;39§auto Tanaris;39§auto Tanaris;39 | x=-7144 y=-3727.900146484375 | size=1 | links=#12996(auto Tanaris;213):11 c8129.1:6 c8131.1:8
+#2322 | auto Tanaris;40§auto Tanaris;40§auto Tanaris;40 | x=-7912.2001953125 y=-5272.39990234375 | size=1 | links=#3983(auto Tanaris;66):30 #24720(auto Tanaris;418):36 c7856.5:31
+#2386 | auto Tanaris;41§auto Tanaris;41§auto Tanaris;41 | x=-7752.89990234375 y=-4925.89990234375 | size=1 | links=#2177(auto Tanaris;36):22 #26579(auto Tanaris;444):24
+#2387 | auto Tanaris;42§auto Tanaris;42§auto Tanaris;42 | x=-8098.2001953125 y=-2507.10009765625 | size=1 | links=#1001(auto Tanaris;15):7 #15257(auto Tanaris;249):14
+#2411 | auto Tanaris;43§auto Tanaris;43§auto Tanaris;43 | x=-7430.30029296875 y=-4802.89990234375 | size=1 | links=#16861(auto Tanaris;286):52 #20804(auto Tanaris;356):42
+#2500 | auto Tanaris;44§auto Tanaris;44§auto Tanaris;44 | x=-9157 y=-4072.10009765625 | size=5 | links=#17681(auto Tanaris;301):55 #19260(auto Tanaris;327):44
+#2536 | auto Tanaris;45§auto Tanaris;45§auto Tanaris;45 | x=-7651.5 y=-2522.300048828125 | size=5 | links=#5823(auto Tanaris;95):54 #26690(auto Tanaris;445):53
+#2542 | auto Tanaris;46§auto Tanaris;46§auto Tanaris;46 | x=-9602.2998046875 y=-2854.5 | size=1 | links=#5207(auto Tanaris;85):33 #27969(auto Tanaris;469):32
+#2564 | auto Tanaris;47§auto Tanaris;47§auto Tanaris;47 | x=-8485.5 y=-4432.5 | size=1 | links=#2250(auto Tanaris;37):93 #10896(auto Tanaris;173):58 #15612(auto Tanaris;261):47 c19936.1:29
+#2719 | auto Tanaris;48§auto Tanaris;48§auto Tanaris;48 | x=-9030.2998046875 y=-2450 | size=5 | links=#11985(auto Tanaris;191):69 #25211(auto Tanaris;426):103
+#2724 | auto Tanaris;49§auto Tanaris;49§auto Tanaris;49 | x=-7185.80029296875 y=-3804.699951171875 | size=1 | links=#897(auto Tanaris;13):21 #7849(auto Tanaris;126):13 #21888(auto Tanaris;378):8
+#2753 | auto Tanaris;50§auto Tanaris;50§auto Tanaris;50 | x=-8590.2998046875 y=-4298.7001953125 | size=1 | links=#6044(auto Tanaris;100):70 #19561(auto Tanaris;332):77 #26219(auto Tanaris;440):80
+#2768 | auto Tanaris;51§auto Tanaris;51§auto Tanaris;51 | x=-9573.2998046875 y=-2889.400146484375 | size=1 | links=#17440(auto Tanaris;296):33 #27969(auto Tanaris;469):31
+#2822 | auto Tanaris;52§auto Tanaris;52§auto Tanaris;52 | x=-9344.5 y=-2649.10009765625 | size=5 | links=#10283(auto Tanaris;163):91 #25717(auto Tanaris;433):149
+#3025 | auto Tanaris;53§auto Tanaris;53§auto Tanaris;53 | x=-6905.30029296875 y=-4785.89990234375 | size=1 | links=#10579(auto Tanaris;168):54 #23135(central location;Steamwheedle Port;Tanaris):44 c15165.1:26
+#3123 | auto Tanaris;54§auto Tanaris;54§auto Tanaris;54 | x=-7827.10009765625 y=-2587.5 | size=1 | links=#6153(auto Tanaris;102):19 #7268(auto Tanaris;116):10 #8419(auto Tanaris;136):10 #15595(auto Tanaris;260):16
+#3251 | rescue;two;The Noxious Lair;Tanaris§rettung;zwei;Der Giftige Unterschlupf;Tanaris§sauvetage;deux;Le Repaire nuisible;Tanaris | x=-7779.39990234375 y=-2563.400146484375 | size=1 | links=#21408(auto Tanaris;370):9
+#3291 | auto Tanaris;55§auto Tanaris;55§auto Tanaris;55 | x=-7274.39990234375 y=-4059.800048828125 | size=5 | links=#16795(auto Tanaris;285):55 #22905(auto Tanaris;393):65 c5422.16:77
+#3331 | auto Tanaris;56§auto Tanaris;56§auto Tanaris;56 | x=-7768.89990234375 y=-2569.10009765625 | size=1 | links=#3915(The Noxious Lair;Tanaris;rescue;one):13 #18770(auto Tanaris;322):10
+#3389 | auto Tanaris;57§auto Tanaris;57§auto Tanaris;57 | x=-8100.10009765625 y=-4699.7001953125 | size=1 | links=#4865(auto Tanaris;81):60 #26905(auto Tanaris;450):21
+#3418 | auto Tanaris;58§auto Tanaris;58§auto Tanaris;58 | x=-8509 y=-3049.300048828125 | size=1 | links=#4680(auto Tanaris;77):21 c5472.1:27 c5472.3:24
+#3472 | auto Tanaris;59§auto Tanaris;59§auto Tanaris;59 | x=-7180.39990234375 y=-4308.39990234375 | size=1 | links=#18892(auto Tanaris;323):54 #19684(auto Tanaris;336):117
+#3496 | auto Tanaris;60§auto Tanaris;60§auto Tanaris;60 | x=-8743.7001953125 y=-4216.7001953125 | size=1 | links=#17604(auto Tanaris;300):40 #28332(auto Tanaris;476):19
+#3553 | auto Tanaris;61§auto Tanaris;61§auto Tanaris;61 | x=-8244.1005859375 y=-4578.30029296875 | size=1 | links=#4513(auto Tanaris;75):37 #21083(auto Tanaris;362):39
+#3647 | auto Tanaris;62§auto Tanaris;62§auto Tanaris;62 | x=-8160.39990234375 y=-4903.7001953125 | size=1 | links=#12234(auto Tanaris;194):40 #18392(auto Tanaris;316):59
+#3707 | entry and exit;north;Gadgetzan;Tanaris§ein- und ausgang;nördlich;Gadgetzan;Tanaris§entrée et sortie;north;Gadgetzan;Tanaris | x=-7095.89990234375 y=-3797.800048828125 | size=1 | links=#4123(auto Tanaris;69):10 #12946(auto Tanaris;211):12
+#3815 | auto Tanaris;63§auto Tanaris;63§auto Tanaris;63 | x=-8037.2001953125 y=-2456 | size=1 | links=#8189(auto Tanaris;131):14 #13130(auto Tanaris;214):20
+#3826 | auto Tanaris;64§auto Tanaris;64§auto Tanaris;64 | x=-7220.7001953125 y=-3706.199951171875 | size=1 | links=c5428.1:99 c7823.1:32
+#3915 | The Noxious Lair;Tanaris;rescue;one§Der Giftige Unterschlupf;Tanaris;rettung;eins§Le Repaire nuisible;Tanaris;sauvetage;un | x=-7775.5 y=-2557.400146484375 | size=1 | links=#3331(auto Tanaris;56):13
+#3935 | auto Tanaris;65§auto Tanaris;65§auto Tanaris;65 | x=-7773.39990234375 y=-4790.89990234375 | size=1 | links=#18051(auto Tanaris;311):100 c5426.59:59
+#3983 | auto Tanaris;66§auto Tanaris;66§auto Tanaris;66 | x=-7905.89990234375 y=-5242.2001953125 | size=1 | links=#2322(auto Tanaris;40):30 #16009(auto Tanaris;269):29 c7856.13:37
+#4082 | auto Tanaris;67§auto Tanaris;67§auto Tanaris;67 | x=-8782.7998046875 y=-3670.400146484375 | size=5 | links=#11126(auto Tanaris;177):45 #14282(auto Tanaris;235):115
+#4083 | auto Tanaris;68§auto Tanaris;68§auto Tanaris;68 | x=-8515.900390625 y=-4218.60009765625 | size=1 | links=#6044(auto Tanaris;100):56 #15351(auto Tanaris;253):64
+#4123 | auto Tanaris;69§auto Tanaris;69§auto Tanaris;69 | x=-7085.39990234375 y=-3799.300048828125 | size=1 | links=#3707(entry and exit;north;Gadgetzan;Tanaris):10 #10797(auto Tanaris;171):39 #24694(auto Tanaris;417):21
+#4236 | auto Tanaris;70§auto Tanaris;70§auto Tanaris;70 | x=-7018.30029296875 y=-3690.400146484375 | size=1 | links=#15347(auto Tanaris;252):51 #24806(auto Tanaris;420):39
+#4355 | auto Tanaris;71§auto Tanaris;71§auto Tanaris;71 | x=-8398.1005859375 y=-2079.60009765625 | size=1 | links=#14792(auto Tanaris;242):80 #21424(auto Tanaris;371):80
+#4391 | auto Tanaris;72§auto Tanaris;72§auto Tanaris;72 | x=-7193.2001953125 y=-3823.300048828125 | size=1 | links=#9625(auto Tanaris;152):9 c8124.1:16
+#4429 | auto Tanaris;73§auto Tanaris;73§auto Tanaris;73 | x=-8083.60009765625 y=-5294.5 | size=1 | links=#12684(auto Tanaris;206):6 c7857.3:5
+#4452 | auto Tanaris;74§auto Tanaris;74§auto Tanaris;74 | x=-8478 y=-4666.60009765625 | size=1 | links=#23045(auto Tanaris;395):68 #27123(auto Tanaris;457):22
+#4513 | auto Tanaris;75§auto Tanaris;75§auto Tanaris;75 | x=-8207.6005859375 y=-4588.2001953125 | size=1 | links=#3553(auto Tanaris;61):37 #13790(auto Tanaris;225):37
+#4542 | auto Tanaris;76§auto Tanaris;76§auto Tanaris;76 | x=-7790.60009765625 y=-2611.199951171875 | size=1 | links=#11888(auto Tanaris;189):8 #13252(auto Tanaris;218):11
+#4680 | auto Tanaris;77§auto Tanaris;77§auto Tanaris;77 | x=-8523.2998046875 y=-3065.5 | size=1 | links=#3418(auto Tanaris;58):21 c12046.1:20
+#4698 | auto Tanaris;78§auto Tanaris;78§auto Tanaris;78 | x=-7769.30029296875 y=-2490.900146484375 | size=1 | links=#15501(auto Tanaris;257):32 #27347(auto Tanaris;461):24
+#4769 | auto Tanaris;79§auto Tanaris;79§auto Tanaris;79 | x=-7072.5 y=-4867.60009765625 | size=5 | links=#16567(auto Tanaris;280):33 #18111(auto Tanaris;312):43
+#4833 | auto Tanaris;80§auto Tanaris;80§auto Tanaris;80 | x=-7763.39990234375 y=-2588.199951171875 | size=1 | links=#748(auto Tanaris;11):11 #18770(auto Tanaris;322):9
+#4865 | auto Tanaris;81§auto Tanaris;81§auto Tanaris;81 | x=-8088.10009765625 y=-4759.5 | size=1 | links=#3389(auto Tanaris;57):60 #21005(auto Tanaris;360):62
+#5022 | auto Tanaris;82§auto Tanaris;82§auto Tanaris;82 | x=-8393.2001953125 y=-2275.199951171875 | size=5 | links=#9003(auto Tanaris;145):105 #9544(auto Tanaris;151):114
+#5040 | auto Tanaris;83§auto Tanaris;83§auto Tanaris;83 | x=-7775.30029296875 y=-4935.89990234375 | size=1 | links=#2177(auto Tanaris;36):19 #26993(entry and exit;cave;Lost Rigger Cove;Tanaris):19
+#5059 | auto Tanaris;84§auto Tanaris;84§auto Tanaris;84 | x=-8041.5 y=-5324.10009765625 | size=1 | links=#14775(auto Tanaris;241):14 c7855.9:24
+#5207 | auto Tanaris;85§auto Tanaris;85§auto Tanaris;85 | x=-9620.7001953125 y=-2826.400146484375 | size=1 | links=#2542(auto Tanaris;46):33 o142343.1:11
+#5313 | auto Tanaris;86§auto Tanaris;86§auto Tanaris;86 | x=-8389.6005859375 y=-4251.5 | size=1 | links=#11448(auto Tanaris;183):34 #27222(auto Tanaris;458):37 c20130.1:17
+#5338 | auto Tanaris;87§auto Tanaris;87§auto Tanaris;87 | x=-7829.10009765625 y=-2531.60009765625 | size=1 | links=#1285(auto Tanaris;21):12 #14992(ramp;top;The Noxious Lair;Tanaris):24 #26754(auto Tanaris;447):20
+#5385 | auto Tanaris;88§auto Tanaris;88§auto Tanaris;88 | x=-7847 y=-2587.900146484375 | size=1 | links=#18654(auto Tanaris;320):7 #21557(auto Tanaris;373):13
+#5459 | auto Tanaris;89§auto Tanaris;89§auto Tanaris;89 | x=-7308.80029296875 y=-4735.39990234375 | size=1 | links=#18621(auto Tanaris;319):42 #26072(auto Tanaris;439):38 c5618.10:44
+#5476 | auto Tanaris;90§auto Tanaris;90§auto Tanaris;90 | x=-8841.6005859375 y=-2486.199951171875 | size=5 | links=#24883(auto Tanaris;422):80 #25211(auto Tanaris;426):88
+#5651 | auto Tanaris;91§auto Tanaris;91§auto Tanaris;91 | x=-7815.2001953125 y=-2609 | size=1 | links=#13252(auto Tanaris;218):15 #13401(auto Tanaris;220):12 #18738(auto Tanaris;321):13
+#5792 | auto Tanaris;92§auto Tanaris;92§auto Tanaris;92 | x=-8595.6005859375 y=-4432.7001953125 | size=1 | links=#21655(auto Tanaris;375):151 #25576(auto Tanaris;430):242 c5426.20:96
+#5800 | auto Tanaris;93§auto Tanaris;93§auto Tanaris;93 | x=-7086.60009765625 y=-4493.5 | size=1 | links=#14285(auto Tanaris;236):131 #20800(auto Tanaris;355):95 c5618.6:171
+#5805 | auto Tanaris;94§auto Tanaris;94§auto Tanaris;94 | x=-7797.5 y=-2595.800048828125 | size=1 | links=#6153(auto Tanaris;102):19 #26787(auto Tanaris;449):10
+#5823 | auto Tanaris;95§auto Tanaris;95§auto Tanaris;95 | x=-7610.80029296875 y=-2559.199951171875 | size=5 | links=#2064(auto Tanaris;34):70 #2536(auto Tanaris;45):54
+#5907 | auto Tanaris;96§auto Tanaris;96§auto Tanaris;96 | x=-7211.5 y=-3802 | size=1 | links=#21888(auto Tanaris;378):17 #25885(auto Tanaris;436):11
+#5926 | auto Tanaris;97§auto Tanaris;97§auto Tanaris;97 | x=-8077.30029296875 y=-4874.39990234375 | size=1 | links=#9680(auto Tanaris;155):33 #18392(auto Tanaris;316):35
+#5934 | auto Tanaris;98§auto Tanaris;98§auto Tanaris;98 | x=-8231.2998046875 y=-2826.900146484375 | size=1 | links=#9878(auto Tanaris;157):88 #27398(auto Tanaris;463):63 c5474.19:57
+#5967 | auto Tanaris;99§auto Tanaris;99§auto Tanaris;99 | x=-8084.5 y=-2488.699951171875 | size=1 | links=#10842(auto Tanaris;172):11 #22369(auto Tanaris;386):7
+#6044 | auto Tanaris;100§auto Tanaris;100§auto Tanaris;100 | x=-8571.2998046875 y=-4230.89990234375 | size=1 | links=#2753(auto Tanaris;50):70 #4083(auto Tanaris;68):56
+#6094 | auto Tanaris;101§auto Tanaris;101§auto Tanaris;101 | x=-7986.10009765625 y=-2528.199951171875 | size=5 | links=#1805(auto Tanaris;29):47 #12583(auto Tanaris;203):43
+#6153 | auto Tanaris;102§auto Tanaris;102§auto Tanaris;102 | x=-7815.39990234375 y=-2602.699951171875 | size=1 | links=#3123(auto Tanaris;54):19 #5805(auto Tanaris;94):19
+#6167 | auto Tanaris;103§auto Tanaris;103§auto Tanaris;103 | x=-8090.39990234375 y=-5249.89990234375 | size=1 | links=#16388(auto Tanaris;276):7 c7858.3:5
+#6278 | auto Tanaris;104§auto Tanaris;104§auto Tanaris;104 | x=-7308.2001953125 y=-4350.7001953125 | size=5 | links=#16764(auto Tanaris;283):51 #24737(auto Tanaris;419):45
+#6291 | auto Tanaris;105§auto Tanaris;105§auto Tanaris;105 | x=-7333.7001953125 y=-4981.2001953125 | size=5 | links=#20333(auto Tanaris;350):54 #23365(auto Tanaris;399):53
+#6327 | auto Tanaris;106§auto Tanaris;106§auto Tanaris;106 | x=-7683.39990234375 y=-3078.199951171875 | size=5 | links=#9388(auto Tanaris;148):133 #21932(auto Tanaris;379):180
+#6332 | auto Tanaris;107§auto Tanaris;107§auto Tanaris;107 | x=-8040.10009765625 y=-5200.80029296875 | size=1 | links=#10(auto Tanaris;1):14 #10325(auto Tanaris;164):5
+#6380 | auto Tanaris;108§auto Tanaris;108§auto Tanaris;108 | x=-6993.60009765625 y=-4819.80029296875 | size=1 | links=#8745(auto Tanaris;141):22 #27940(auto Tanaris;468):32
+#6466 | auto Tanaris;109§auto Tanaris;109§auto Tanaris;109 | x=-8144.89990234375 y=-4627.60009765625 | size=1 | links=#24945(auto Tanaris;424):13 c6491.2:18
+#6540 | auto Tanaris;110§auto Tanaris;110§auto Tanaris;110 | x=-7881.89990234375 y=-3936.800048828125 | size=5 | links=#8916(auto Tanaris;143):163 #24160(auto Tanaris;407):101
+#6664 | auto Tanaris;111§auto Tanaris;111§auto Tanaris;111 | x=-8198.1005859375 y=-4508 | size=1 | links=#17034(entry and exit;Caverns of Time;Tanaris):53 #25702(auto Tanaris;432):59
+#6811 | auto Tanaris;112§auto Tanaris;112§auto Tanaris;112 | x=-8468.400390625 y=-3123.199951171875 | size=5 | links=#15847(auto Tanaris;266):44 c5473.1:20 c5474.2:37
+#6901 | auto Tanaris;113§auto Tanaris;113§auto Tanaris;113 | x=-7129.80029296875 y=-3803 | size=1 | links=#16012(auto Tanaris;270):8 #25490(auto Tanaris;429):9
+#6955 | auto Tanaris;114§auto Tanaris;114§auto Tanaris;114 | x=-8558.1005859375 y=-3968.5 | size=5 | links=#1499(auto Tanaris;25):92 #20356(auto Tanaris;351):105
+#7239 | auto Tanaris;115§auto Tanaris;115§auto Tanaris;115 | x=-8335.2001953125 y=-2569.199951171875 | size=5 | links=#1830(auto Tanaris;30):64 #12417(auto Tanaris;198):99
+#7268 | auto Tanaris;116§auto Tanaris;116§auto Tanaris;116 | x=-7818.10009765625 y=-2592.900146484375 | size=1 | links=#3123(auto Tanaris;54):10 #16618(rescue;point;down;The Noxious Lair;Tanaris):13
+#7270 | auto Tanaris;117§auto Tanaris;117§auto Tanaris;117 | x=-7685.2001953125 y=-4861.80029296875 | size=5 | links=#15639(auto Tanaris;263):58 #28715(s;Kalimdor;Tanaris;Lost Rigger Cove;Wavestrider Beach):19
+#7321 | auto Tanaris;118§auto Tanaris;118§auto Tanaris;118 | x=-6856.10009765625 y=-3754.699951171875 | size=1 | links=#14785(passage;from;Tanaris;to;Thousand Needles):21 #16340(auto Tanaris;274):35
+#7331 | auto Tanaris;119§auto Tanaris;119§auto Tanaris;119 | x=-9013.7001953125 y=-4086.60009765625 | size=1 | links=#8273(auto Tanaris;133):2 #17010(auto Tanaris;288):20 c5453.7:1
+#7351 | auto Tanaris;120§auto Tanaris;120§auto Tanaris;120 | x=-7158.39990234375 y=-3831.199951171875 | size=1 | links=#15219(auto Tanaris;248):4 #25981(auto Tanaris;438):8
+#7444 | auto Tanaris;121§auto Tanaris;121§auto Tanaris;121 | x=-7814.2001953125 y=-5002 | size=1 | links=#16579(auto Tanaris;281):10 #28349(auto Tanaris;477):14
+#7534 | auto Tanaris;122§auto Tanaris;122§auto Tanaris;122 | x=-7911.80029296875 y=-2610.10009765625 | size=5 | links=#12583(auto Tanaris;203):66 #18028(auto Tanaris;309):25
+#7542 | auto Tanaris;123§auto Tanaris;123§auto Tanaris;123 | x=-7335.2001953125 y=-3069.199951171875 | size=5 | links=#21293(auto Tanaris;366):77 #23184(auto Tanaris;397):53
+#7601 | auto Tanaris;124§auto Tanaris;124§auto Tanaris;124 | x=-9131.2998046875 y=-3790.60009765625 | size=5 | links=#11145(auto Tanaris;179):66 #17207(auto Tanaris;292):76
+#7639 | auto Tanaris;125§auto Tanaris;125§auto Tanaris;125 | x=-7417.39990234375 y=-4034.60009765625 | size=5 | links=#16795(auto Tanaris;285):89 #18041(auto Tanaris;310):75
+#7653 | instance entrance;two;Caverns of Time;Tanaris§instanzeingang;zwei;Höhlen der Zeit;Tanaris§instance entrance;deux;Grottes du temps;Tanaris | x=-8771.400390625 y=-4176.10009765625 | size=1 | links=#17604(auto Tanaris;300):8
+#7849 | auto Tanaris;126§auto Tanaris;126§auto Tanaris;126 | x=-7182.2001953125 y=-3818.10009765625 | size=1 | links=#2724(auto Tanaris;49):13 #9625(auto Tanaris;152):2 #15219(auto Tanaris;248):26 #27878(auto Tanaris;467):11
+#7866 | auto Tanaris;127§auto Tanaris;127§auto Tanaris;127 | x=-7316.80029296875 y=-4576.7001953125 | size=1 | links=#15046(auto Tanaris;244):22 c5616.3:41 c5616.8:33
+#7913 | auto Tanaris;128§auto Tanaris;128§auto Tanaris;128 | x=-8232.2001953125 y=-2709.400146484375 | size=5 | links=#12417(auto Tanaris;198):79 #14759(auto Tanaris;240):34
+#7983 | auto Tanaris;129§auto Tanaris;129§auto Tanaris;129 | x=-7874.5 y=-4642.7001953125 | size=1 | links=#20100(auto Tanaris;347):67 c5426.59:120
+#8128 | rescue;focus point;Gadgetzan;Tanaris§rettung;bündelpunkt;Gadgetzan;Tanaris§sauvetage;focus point;Gadgetzan;Tanaris | x=-7138.39990234375 y=-3787 | size=1 | links=#709(auto Tanaris;9):5
+#8185 | auto Tanaris;130§auto Tanaris;130§auto Tanaris;130 | x=-9141.1005859375 y=-4189.5 | size=1 | links=#12387(auto Tanaris;196):9 #18175(auto Tanaris;314):15
+#8189 | auto Tanaris;131§auto Tanaris;131§auto Tanaris;131 | x=-8029.39990234375 y=-2468.199951171875 | size=1 | links=#1805(auto Tanaris;29):27 #3815(auto Tanaris;63):14
+#8230 | auto Tanaris;132§auto Tanaris;132§auto Tanaris;132 | x=-7156.7001953125 y=-3787.300048828125 | size=1 | links=#12932(auto Tanaris;210):9 #24155(auto Tanaris;406):9
+#8273 | auto Tanaris;133§auto Tanaris;133§auto Tanaris;133 | x=-9015.6005859375 y=-4085.699951171875 | size=1 | links=#7331(auto Tanaris;119):2 #8279(auto Tanaris;134):14
+#8279 | auto Tanaris;134§auto Tanaris;134§auto Tanaris;134 | x=-9024.2001953125 y=-4074.60009765625 | size=1 | links=#8273(auto Tanaris;133):14 #28197(auto Tanaris;473):15
+#8418 | auto Tanaris;135§auto Tanaris;135§auto Tanaris;135 | x=-7159.89990234375 y=-4034.699951171875 | size=1 | links=#19606(auto Tanaris;333):81 #22905(auto Tanaris;393):80
+#8419 | auto Tanaris;136§auto Tanaris;136§auto Tanaris;136 | x=-7818.30029296875 y=-2582.400146484375 | size=1 | links=#3123(auto Tanaris;54):10 #19316(auto Tanaris;328):10
+#8566 | auto Tanaris;137§auto Tanaris;137§auto Tanaris;137 | x=-7350.80029296875 y=-3330.199951171875 | size=5 | links=#14261(auto Tanaris;234):43 #21460(auto Tanaris;372):72
+#8585 | auto Tanaris;138§auto Tanaris;138§auto Tanaris;138 | x=-7210.7001953125 y=-4886.30029296875 | size=5 | links=#11178(auto Tanaris;181):33 #18438(auto Tanaris;317):51 c14123.3:23
+#8612 | auto Tanaris;139§auto Tanaris;139§auto Tanaris;139 | x=-9063 y=-4064.10009765625 | size=1 | links=#15634(auto Tanaris;262):31 #28197(auto Tanaris;473):24
+#8670 | auto Tanaris;140§auto Tanaris;140§auto Tanaris;140 | x=-8151.60009765625 y=-4888 | size=1 | links=#21172(auto Tanaris;363):25 #22048(auto Tanaris;384):28
+#8745 | auto Tanaris;141§auto Tanaris;141§auto Tanaris;141 | x=-6974.60009765625 y=-4808.10009765625 | size=1 | links=#1996(auto Tanaris;32):29 #6380(auto Tanaris;108):22 #23135(central location;Steamwheedle Port;Tanaris):28 c10460.1:26
+#8860 | auto Tanaris;142§auto Tanaris;142§auto Tanaris;142 | x=-8289.6005859375 y=-4225.7001953125 | size=5 | links=#15523(auto Tanaris;258):71 #19808(auto Tanaris;338):75
+#8916 | auto Tanaris;143§auto Tanaris;143§auto Tanaris;143 | x=-7720.89990234375 y=-3966.900146484375 | size=5 | links=#6540(auto Tanaris;110):163 #22733(auto Tanaris;391):140
+#8934 | auto Tanaris;144§auto Tanaris;144§auto Tanaris;144 | x=-8013.60009765625 y=-5198.80029296875 | size=1 | links=#18006(auto Tanaris;308):6 c7858.25:14 c7858.28:7
+#9003 | auto Tanaris;145§auto Tanaris;145§auto Tanaris;145 | x=-8362.2998046875 y=-2376.10009765625 | size=5 | links=#5022(auto Tanaris;82):105 #17854(auto Tanaris;305):86
+#9103 | auto Tanaris;146§auto Tanaris;146§auto Tanaris;146 | x=-7131.30029296875 y=-3692.400146484375 | size=1 | links=#17513(auto Tanaris;298):19 c7724.1:12
+#9256 | auto Tanaris;147§auto Tanaris;147§auto Tanaris;147 | x=-6949.2001953125 y=-3709.199951171875 | size=1 | links=#311(auto Tanaris;5):0 #15347(auto Tanaris;252):32
+#9388 | auto Tanaris;148§auto Tanaris;148§auto Tanaris;148 | x=-7773.10009765625 y=-2979.900146484375 | size=5 | links=#6327(auto Tanaris;106):133 #12439(auto Tanaris;199):103 c5420.96:59
+#9396 | auto Tanaris;149§auto Tanaris;149§auto Tanaris;149 | x=-6907 y=-4828.5 | size=1 | links=#14145(auto Tanaris;232):8 c8579.1:13 o142122.1:6
+#9535 | auto Tanaris;150§auto Tanaris;150§auto Tanaris;150 | x=-7825 y=-5026.89990234375 | size=1 | links=#16579(auto Tanaris;281):16 #24125(through;Lost Rigger Cove;Tanaris):14
+#9544 | auto Tanaris;151§auto Tanaris;151§auto Tanaris;151 | x=-8455.7001953125 y=-2179.199951171875 | size=5 | links=#5022(auto Tanaris;82):114 #24884(auto Tanaris;423):92 c5427.98:47
+#9625 | auto Tanaris;152§auto Tanaris;152§auto Tanaris;152 | x=-7184.5 y=-3818.400146484375 | size=1 | links=#4391(auto Tanaris;72):9 #7849(auto Tanaris;126):2
+#9631 | auto Tanaris;153§auto Tanaris;153§auto Tanaris;153 | x=-8093.39990234375 y=-2508.900146484375 | size=1 | links=#17467(auto Tanaris;297):12 #22369(auto Tanaris;386):14
+#9676 | auto Tanaris;154§auto Tanaris;154§auto Tanaris;154 | x=-8048.2001953125 y=-5230 | size=1 | links=c7856.23:14 c7856.26:27
+#9680 | auto Tanaris;155§auto Tanaris;155§auto Tanaris;155 | x=-8082.10009765625 y=-4841.30029296875 | size=1 | links=#1647(auto Tanaris;26):32 #5926(auto Tanaris;97):33
+#9802 | auto Tanaris;156§auto Tanaris;156§auto Tanaris;156 | x=-7814 y=-2622 | size=1 | links=#20667(auto Tanaris;354):12 #22378(auto Tanaris;387):11
+#9878 | auto Tanaris;157§auto Tanaris;157§auto Tanaris;157 | x=-8167.30029296875 y=-2766.300048828125 | size=5 | links=#5934(auto Tanaris;98):88 #14759(auto Tanaris;240):51 #19914(auto Tanaris;340):85 c5424.52:22
+#9966 | auto Tanaris;158§auto Tanaris;158§auto Tanaris;158 | x=-8058.80029296875 y=-2519.400146484375 | size=1 | links=#22587(auto Tanaris;388):14 #28536(auto Tanaris;484):10
+#10092 | auto Tanaris;159§auto Tanaris;159§auto Tanaris;159 | x=-6842.89990234375 y=-2911.400146484375 | size=1 | links=#16596(auto Tanaris;282):10 c5647.7:8
+#10139 | auto Tanaris;160§auto Tanaris;160§auto Tanaris;160 | x=-6728.5 y=-4728.5 | size=1 | links=#14608(auto Tanaris;238):9 c11811.1:8
+#10149 | auto Tanaris;161§auto Tanaris;161§auto Tanaris;161 | x=-6902.80029296875 y=-3767.699951171875 | size=1 | links=#16340(auto Tanaris;274):20 #17995(auto Tanaris;307):25
+#10267 | auto Tanaris;162§auto Tanaris;162§auto Tanaris;162 | x=-7963.89990234375 y=-5272.5 | size=1 | links=#24720(auto Tanaris;418):39 #26786(entry and exit;building;Lost Rigger Cove;Tanaris):7
+#10283 | auto Tanaris;163§auto Tanaris;163§auto Tanaris;163 | x=-9345.6005859375 y=-2557.5 | size=5 | links=#2822(auto Tanaris;52):91 #13874(auto Tanaris;226):78
+#10325 | auto Tanaris;164§auto Tanaris;164§auto Tanaris;164 | x=-8035.60009765625 y=-5197.60009765625 | size=1 | links=#6332(auto Tanaris;107):5 #16229(auto Tanaris;272):11
+#10413 | auto Tanaris;165§auto Tanaris;165§auto Tanaris;165 | x=-6934.10009765625 y=-3730.800048828125 | size=1 | links=#311(auto Tanaris;5):26 #17995(auto Tanaris;307):25
+#10455 | auto Tanaris;166§auto Tanaris;166§auto Tanaris;166 | x=-6975.7001953125 y=-4842.7001953125 | size=1 | links=#1996(auto Tanaris;32):7 c7881.1:7 c7882.1:3 c9706.1:4
+#10460 | auto Tanaris;167§auto Tanaris;167§auto Tanaris;167 | x=-8068.80029296875 y=-2521 | size=1 | links=#20072(auto Tanaris;345):12 #25663(auto Tanaris;431):8
+#10579 | auto Tanaris;168§auto Tanaris;168§auto Tanaris;168 | x=-6851.5 y=-4775.30029296875 | size=5 | links=#3025(auto Tanaris;53):54 #27730(auto Tanaris;465):45
+#10620 | auto Tanaris;169§auto Tanaris;169§auto Tanaris;169 | x=-7835.5 y=-5048.80029296875 | size=1 | links=#24125(through;Lost Rigger Cove;Tanaris):10 #25789(auto Tanaris;434):32
+#10775 | auto Tanaris;170§auto Tanaris;170§auto Tanaris;170 | x=-7263.60009765625 y=-4920 | size=5 | links=#20333(auto Tanaris;350):38 c14123.3:40
+#10797 | auto Tanaris;171§auto Tanaris;171§auto Tanaris;171 | x=-7087.2001953125 y=-3839.10009765625 | size=1 | links=#4123(auto Tanaris;69):39 #22003(auto Tanaris;382):39
+#10842 | auto Tanaris;172§auto Tanaris;172§auto Tanaris;172 | x=-8073.10009765625 y=-2488.400146484375 | size=1 | links=#5967(auto Tanaris;99):11 #11941(auto Tanaris;190):10 #16350(auto Tanaris;275):13 #22169(rescue;down;The Noxious Lair;Tanaris):16
+#10896 | auto Tanaris;173§auto Tanaris;173§auto Tanaris;173 | x=-8428.400390625 y=-4418.80029296875 | size=1 | links=#2564(auto Tanaris;47):58 #11475(auto Tanaris;185):61
+#10916 | auto Tanaris;174§auto Tanaris;174§auto Tanaris;174 | x=-9163.2001953125 y=-3575.10009765625 | size=5 | links=#1282(auto Tanaris;19):67 #17109(auto Tanaris;290):77
+#10972 | auto Tanaris;175§auto Tanaris;175§auto Tanaris;175 | x=-7250.39990234375 y=-3905.5 | size=5 | links=#11490(auto Tanaris;186):94 c5422.16:81
+#11119 | auto Tanaris;176§auto Tanaris;176§auto Tanaris;176 | x=-7078.7001953125 y=-3731.400146484375 | size=1 | links=#17431(auto Tanaris;295):28 #24806(auto Tanaris;420):68 c16417.1:34
+#11126 | auto Tanaris;177§auto Tanaris;177§auto Tanaris;177 | x=-8819.400390625 y=-3644.10009765625 | size=5 | links=#1330(auto Tanaris;22):124 #4082(auto Tanaris;67):45 o140971.27:115
+#11135 | auto Tanaris;178§auto Tanaris;178§auto Tanaris;178 | x=-6940.30029296875 y=-4438.7001953125 | size=1 | links=c5618.2:54 c5616.15:32
+#11145 | auto Tanaris;179§auto Tanaris;179§auto Tanaris;179 | x=-9148.2001953125 y=-3854.699951171875 | size=5 | links=#727(auto Tanaris;10):72 #7601(auto Tanaris;124):66 #24536(auto Tanaris;411):56
+#11151 | auto Tanaris;180§auto Tanaris;180§auto Tanaris;180 | x=-8580.5 y=-3648.5 | size=1 | links=#14282(auto Tanaris;235):129 c6491.4:26
+#11178 | auto Tanaris;181§auto Tanaris;181§auto Tanaris;181 | x=-7201 y=-4853.80029296875 | size=1 | links=#8585(auto Tanaris;138):33 #15421(auto Tanaris;256):30
+#11422 | auto Tanaris;182§auto Tanaris;182§auto Tanaris;182 | x=-7130.30029296875 y=-3828.699951171875 | size=1 | links=#13968(auto Tanaris;229):14 #15219(auto Tanaris;248):27 c8126.1:11
+#11448 | auto Tanaris;183§auto Tanaris;183§auto Tanaris;183 | x=-8368.6005859375 y=-4278.80029296875 | size=1 | links=#5313(auto Tanaris;86):34 #20046(auto Tanaris;343):62
+#11467 | auto Tanaris;184§auto Tanaris;184§auto Tanaris;184 | x=-7799.2001953125 y=-2565.800048828125 | size=1 | links=#15566(auto Tanaris;259):15 #16565(auto Tanaris;279):10
+#11475 | auto Tanaris;185§auto Tanaris;185§auto Tanaris;185 | x=-8383.6005859375 y=-4376.80029296875 | size=1 | links=#10896(auto Tanaris;173):61 #20046(auto Tanaris;343):39
+#11490 | auto Tanaris;186§auto Tanaris;186§auto Tanaris;186 | x=-7245.2001953125 y=-3811.300048828125 | size=5 | links=#10972(auto Tanaris;175):94 #25809(auto Tanaris;435):47
+#11543 | auto Tanaris;187§auto Tanaris;187§auto Tanaris;187 | x=-9371.2001953125 y=-2944.5 | size=5 | links=#14055(auto Tanaris;230):140 #25717(auto Tanaris;433):147 c5471.5:53 c5421.12:74
+#11774 | auto Tanaris;188§auto Tanaris;188§auto Tanaris;188 | x=-7248.2001953125 y=-4781.2001953125 | size=1 | links=#24525(auto Tanaris;410):29 #26072(auto Tanaris;439):38
+#11888 | auto Tanaris;189§auto Tanaris;189§auto Tanaris;189 | x=-7783.2001953125 y=-2607 | size=1 | links=#4542(auto Tanaris;76):8 #22234(auto Tanaris;385):15
+#11941 | auto Tanaris;190§auto Tanaris;190§auto Tanaris;190 | x=-8068.39990234375 y=-2497.900146484375 | size=1 | links=#10842(auto Tanaris;172):10 #20072(auto Tanaris;345):11
+#11985 | auto Tanaris;191§auto Tanaris;191§auto Tanaris;191 | x=-9098.6005859375 y=-2437.5 | size=5 | links=#2719(auto Tanaris;48):69 #26234(auto Tanaris;441):93
+#12077 | O'Reily;Tanaris;1;65.39;19.02§O'Reily;Tanaris;1;65.39;19.02§O'Reily;Tanaris;1;65.39;19.02 | x=-6734.380265628134 y=-4739.718038389416 | size=1
+#12194 | auto Tanaris;192§auto Tanaris;192§auto Tanaris;192 | x=-7303.2001953125 y=-3510.10009765625 | size=5 | links=#22646(auto Tanaris;389):104 #26780(auto Tanaris;448):83
+#12209 | auto Tanaris;193§auto Tanaris;193§auto Tanaris;193 | x=-8005.89990234375 y=-5203 | size=1 | links=#18006(auto Tanaris;308):5 #28391(auto Tanaris;478):9
+#12234 | auto Tanaris;194§auto Tanaris;194§auto Tanaris;194 | x=-8182.89990234375 y=-4869.5 | size=1 | links=#3647(auto Tanaris;62):40 #28421(auto Tanaris;480):55
+#12251 | auto Tanaris;195§auto Tanaris;195§auto Tanaris;195 | x=-7804.60009765625 y=-2565.699951171875 | size=1 | links=#19316(auto Tanaris;328):11
+#12387 | auto Tanaris;196§auto Tanaris;196§auto Tanaris;196 | x=-9132.1005859375 y=-4193.30029296875 | size=1 | links=#8185(auto Tanaris;130):9 #26939(auto Tanaris;451):12
+#12412 | auto Tanaris;197§auto Tanaris;197§auto Tanaris;197 | x=-6894.80029296875 y=-4836.89990234375 | size=1 | links=#14145(auto Tanaris;232):6 c8139.1:9
+#12417 | auto Tanaris;198§auto Tanaris;198§auto Tanaris;198 | x=-8294.2001953125 y=-2659.900146484375 | size=5 | links=#7239(auto Tanaris;115):99 #7913(auto Tanaris;128):79
+#12439 | auto Tanaris;199§auto Tanaris;199§auto Tanaris;199 | x=-7859.2001953125 y=-2922.10009765625 | size=1 | links=#9388(auto Tanaris;148):103 #24539(auto Tanaris;412):68
+#12447 | auto Tanaris;200§auto Tanaris;200§auto Tanaris;200 | x=-7840.2001953125 y=-5176.39990234375 | size=1 | links=#16003(auto Tanaris;268):54 #26706(auto Tanaris;446):30
+#12513 | auto Tanaris;201§auto Tanaris;201§auto Tanaris;201 | x=-9308.2998046875 y=-3300.900146484375 | size=5 | links=#14055(auto Tanaris;230):221 #21362(auto Tanaris;369):178
+#12566 | auto Tanaris;202§auto Tanaris;202§auto Tanaris;202 | x=-7220.80029296875 y=-3756.10009765625 | size=1 | links=#25809(auto Tanaris;435):17 c7823.1:18
+#12583 | auto Tanaris;203§auto Tanaris;203§auto Tanaris;203 | x=-7956.39990234375 y=-2560.300048828125 | size=5 | links=#6094(auto Tanaris;101):43 #7534(auto Tanaris;122):66
+#12591 | auto Tanaris;204§auto Tanaris;204§auto Tanaris;204 | x=-6963.10009765625 y=-3045.699951171875 | size=5 | links=#15403(auto Tanaris;255):86 c5425.1:106
+#12669 | auto Tanaris;205§auto Tanaris;205§auto Tanaris;205 | x=-7200.89990234375 y=-3777.800048828125 | size=1 | links=#897(auto Tanaris;13):25 #17409(entry and exit;south;Gadgetzan;Tanaris):8 c5411.1:8
+#12684 | auto Tanaris;206§auto Tanaris;206§auto Tanaris;206 | x=-8090 y=-5296.39990234375 | size=1 | links=#4429(auto Tanaris;73):6 c7855.22:8
+#12695 | auto Tanaris;207§auto Tanaris;207§auto Tanaris;207 | x=-6901 y=-4819.7001953125 | size=1 | links=#13227(auto Tanaris;217):4 c15165.1:8 o142122.1:9
+#12766 | auto Tanaris;208§auto Tanaris;208§auto Tanaris;208 | x=-8018.60009765625 y=-2868.199951171875 | size=5 | links=#19914(auto Tanaris;340):94 #24539(auto Tanaris;412):99
+#12893 | auto Tanaris;209§auto Tanaris;209§auto Tanaris;209 | x=-7257 y=-2897 | size=1 | links=#16140(quest target;waters;Sandsorrow Watch;Tanaris):31 #27308(auto Tanaris;460):58
+#12932 | auto Tanaris;210§auto Tanaris;210§auto Tanaris;210 | x=-7155 y=-3796.60009765625 | size=1 | links=#8230(auto Tanaris;132):9 #20075(auto Tanaris;346):9
+#12946 | auto Tanaris;211§auto Tanaris;211§auto Tanaris;211 | x=-7108.39990234375 y=-3796.10009765625 | size=1 | links=#3707(entry and exit;north;Gadgetzan;Tanaris):12 #13410(auto Tanaris;221):20 #13968(auto Tanaris;229):27 o150075.1:10
+#12954 | auto Tanaris;212§auto Tanaris;212§auto Tanaris;212 | x=-7127.30029296875 y=-3788 | size=1 | links=#709(auto Tanaris;9):5 #21989(auto Tanaris;381):5
+#12996 | auto Tanaris;213§auto Tanaris;213§auto Tanaris;213 | x=-7140 y=-3738.60009765625 | size=1 | links=#896(auto Tanaris;12):4 #2319(auto Tanaris;39):11
+#13130 | auto Tanaris;214§auto Tanaris;214§auto Tanaris;214 | x=-8057.60009765625 y=-2460.199951171875 | size=1 | links=#3815(auto Tanaris;63):20 #25973(auto Tanaris;437):17
+#13165 | auto Tanaris;215§auto Tanaris;215§auto Tanaris;215 | x=-7563.89990234375 y=-4791 | size=1 | links=#15639(auto Tanaris;263):81 #23628(auto Tanaris;400):38
+#13199 | auto Tanaris;216§auto Tanaris;216§auto Tanaris;216 | x=-8398.900390625 y=-3212.199951171875 | size=5 | links=#15847(auto Tanaris;266):79 #23299(auto Tanaris;398):80 c5474.16:32
+#13227 | auto Tanaris;217§auto Tanaris;217§auto Tanaris;217 | x=-6897 y=-4818.60009765625 | size=1 | links=#12695(auto Tanaris;207):4 c8137.1:6
+#13252 | auto Tanaris;218§auto Tanaris;218§auto Tanaris;218 | x=-7801.10009765625 y=-2614.699951171875 | size=1 | links=#4542(auto Tanaris;76):11 #5651(auto Tanaris;91):15
+#13297 | auto Tanaris;219§auto Tanaris;219§auto Tanaris;219 | x=-7661.39990234375 y=-2725.5 | size=5 | links=#2278(auto Tanaris;38):36 #20856(auto Tanaris;358):54 c5458.2:33
+#13401 | auto Tanaris;220§auto Tanaris;220§auto Tanaris;220 | x=-7803 y=-2607.400146484375 | size=1 | links=#5651(auto Tanaris;91):12 #20527(auto Tanaris;353):9
+#13410 | auto Tanaris;221§auto Tanaris;221§auto Tanaris;221 | x=-7111.2001953125 y=-3776 | size=1 | links=#12946(auto Tanaris;211):20 #17856(auto Tanaris;306):30 c7876.1:5 c19860.1:8 c25177.1:9 c25178.1:12
+#13648 | auto Tanaris;222§auto Tanaris;222§auto Tanaris;222 | x=-7489.39990234375 y=-3323.800048828125 | size=1 | links=#21932(auto Tanaris;379):141 c5426.35:175
+#13720 | auto Tanaris;223§auto Tanaris;223§auto Tanaris;223 | x=-7834.30029296875 y=-2554.300048828125 | size=1 | links=#1285(auto Tanaris;21):13 #27062(auto Tanaris;455):15
+#13746 | auto Tanaris;224§auto Tanaris;224§auto Tanaris;224 | x=-9114.5 y=-4179.80029296875 | size=1 | links=#22700(auto Tanaris;390):22 #26939(auto Tanaris;451):14
+#13790 | auto Tanaris;225§auto Tanaris;225§auto Tanaris;225 | x=-8175.2001953125 y=-4606.30029296875 | size=1 | links=#1695(auto Tanaris;27):4 #4513(auto Tanaris;75):37
+#13874 | auto Tanaris;226§auto Tanaris;226§auto Tanaris;226 | x=-9338.900390625 y=-2479.10009765625 | size=5 | links=#10283(auto Tanaris;163):78 c5955.1:84 c5430.11:58
+#13875 | auto Tanaris;227§auto Tanaris;227§auto Tanaris;227 | x=-6970.89990234375 y=-4413.2001953125 | size=1 | links=c5618.2:17 c5618.7:16
+#13909 | auto Tanaris;228§auto Tanaris;228§auto Tanaris;228 | x=-8810.7001953125 y=-2285.699951171875 | size=1 | links=c5481.5:43 c5490.6:25
+#13968 | auto Tanaris;229§auto Tanaris;229§auto Tanaris;229 | x=-7118.39990234375 y=-3821.300048828125 | size=1 | links=#11422(auto Tanaris;182):14 #12946(auto Tanaris;211):27 c7763.1:11 c14743.1:8 c19859.1:17 o142071.1:12
+#14000 | instance entrance;one;Caverns of Time;Tanaris§instanzeingang;eins;Höhlen der Zeit;Tanaris§instance entrance;un;Grottes du temps;Tanaris | x=-8339.400390625 y=-4056.800048828125 | size=1 | links=#14142(auto Tanaris;231):62
+#14055 | auto Tanaris;230§auto Tanaris;230§auto Tanaris;230 | x=-9348.6005859375 y=-3082.900146484375 | size=1 | links=#11543(auto Tanaris;187):140 #12513(auto Tanaris;201):221 c5471.8:73
+#14142 | auto Tanaris;231§auto Tanaris;231§auto Tanaris;231 | x=-8401.6005859375 y=-4064.400146484375 | size=1 | links=#14000(instance entrance;one;Caverns of Time;Tanaris):62 #16461(auto Tanaris;277):27
+#14145 | auto Tanaris;232§auto Tanaris;232§auto Tanaris;232 | x=-6900.2001953125 y=-4833.30029296875 | size=1 | links=#9396(auto Tanaris;149):8 #12412(auto Tanaris;197):6
+#14147 | auto Tanaris;233§auto Tanaris;233§auto Tanaris;233 | x=-7060.89990234375 y=-3584.5 | size=5 | links=#14334(auto Tanaris;237):64 #15106(auto Tanaris;247):56
+#14261 | auto Tanaris;234§auto Tanaris;234§auto Tanaris;234 | x=-7351 y=-3374 | size=5 | links=#8566(auto Tanaris;137):43 #22646(auto Tanaris;389):43
+#14282 | auto Tanaris;235§auto Tanaris;235§auto Tanaris;235 | x=-8682.7001953125 y=-3727.699951171875 | size=5 | links=#693(auto Tanaris;8):95 #4082(auto Tanaris;67):115 #11151(auto Tanaris;180):129
+#14285 | auto Tanaris;236§auto Tanaris;236§auto Tanaris;236 | x=-7043 y=-4617.7001953125 | size=1 | links=#1207(auto Tanaris;18):95 #5800(auto Tanaris;93):131
+#14334 | auto Tanaris;237§auto Tanaris;237§auto Tanaris;237 | x=-7102.7001953125 y=-3634.199951171875 | size=5 | links=#14147(auto Tanaris;233):64 c16417.1:66
+#14608 | auto Tanaris;238§auto Tanaris;238§auto Tanaris;238 | x=-6728.89990234375 y=-4737.89990234375 | size=1 | links=#10139(auto Tanaris;160):9
+#14627 | auto Tanaris;239§auto Tanaris;239§auto Tanaris;239 | x=-8298.2001953125 y=-4584.7001953125 | size=1 | links=#21083(auto Tanaris;362):48 #27800(auto Tanaris;466):70
+#14759 | auto Tanaris;240§auto Tanaris;240§auto Tanaris;240 | x=-8205 y=-2730.60009765625 | size=5 | links=#7913(auto Tanaris;128):34 #9878(auto Tanaris;157):51
+#14775 | auto Tanaris;241§auto Tanaris;241§auto Tanaris;241 | x=-8032.39990234375 y=-5336 | size=1 | links=#5059(auto Tanaris;84):14 #26408(auto Tanaris;443):5
+#14785 | passage;from;Tanaris;to;Thousand Needles§passage;von;Tanaris;nach;Tausend Nadeln§passage;de;Tanaris;vers;Mille pointes | x=-6834.60009765625 y=-3753.199951171875 | size=1 | links=#1849(passage;from;The Shimmering Flats;Thousand Needles;to;Tanaris):4 #7321(auto Tanaris;118):21
+#14792 | auto Tanaris;242§auto Tanaris;242§auto Tanaris;242 | x=-8317.5 y=-2074.5 | size=1 | links=#1430(auto Tanaris;23):50 #4355(auto Tanaris;71):80
+#14947 | auto Tanaris;243§auto Tanaris;243§auto Tanaris;243 | x=-8642.2998046875 y=-2195.300048828125 | size=1 | links=#28034(auto Tanaris;470):99 c5424.59:40
+#14992 | ramp;top;The Noxious Lair;Tanaris§rampe;oben;Der Giftige Unterschlupf;Tanaris§ramp;top;Le Repaire nuisible;Tanaris | x=-7849 y=-2545.199951171875 | size=1 | links=#5338(auto Tanaris;87):24 #28234(auto Tanaris;474):11
+#15037 | meeting stone;Zul'Farrak;Tanaris§versammlungsstein;Zul'Farrak;Tanaris§meeting stone;Zul’Farrak;Tanaris | x=-6827.7001953125 y=-2876.5 | size=1 | links=#17823(auto Tanaris;304):26 #26975(auto Tanaris;454):28
+#15046 | auto Tanaris;244§auto Tanaris;244§auto Tanaris;244 | x=-7334.7001953125 y=-4563.7001953125 | size=1 | links=#7866(auto Tanaris;127):22 c5616.6:54 c5616.18:53
+#15080 | auto Tanaris;245§auto Tanaris;245§auto Tanaris;245 | x=-8450.2998046875 y=-4127.39990234375 | size=1 | links=#16461(auto Tanaris;277):52 #23647(auto Tanaris;401):41
+#15100 | auto Tanaris;246§auto Tanaris;246§auto Tanaris;246 | x=-7158.89990234375 y=-3752.300048828125 | size=1 | links=#896(auto Tanaris;12):21 #897(auto Tanaris;13):37 #24645(auto Tanaris;415):3 c11756.1:6
+#15106 | auto Tanaris;247§auto Tanaris;247§auto Tanaris;247 | x=-7026.10009765625 y=-3540.60009765625 | size=5 | links=#1714(auto Tanaris;28):44 #14147(auto Tanaris;233):56 #21949(auto Tanaris;380):81
+#15219 | auto Tanaris;248§auto Tanaris;248§auto Tanaris;248 | x=-7157.5 y=-3826.400146484375 | size=1 | links=#7351(auto Tanaris;120):4 #7849(auto Tanaris;126):26 #11422(auto Tanaris;182):27 #28621(s;u;Mailbox;Tanaris):3 c9985.1:6
+#15257 | auto Tanaris;249§auto Tanaris;249§auto Tanaris;249 | x=-8096.7001953125 y=-2492.699951171875 | size=1 | links=#2387(auto Tanaris;42):14 #26960(auto Tanaris;452):12
+#15281 | auto Tanaris;250§auto Tanaris;250§auto Tanaris;250 | x=-9059.7001953125 y=-3545.199951171875 | size=5 | links=#1282(auto Tanaris;19):115 #1330(auto Tanaris;22):136 c5475.4:195 c5473.6:144
+#15283 | auto Tanaris;251§auto Tanaris;251§auto Tanaris;251 | x=-8102 y=-5271.10009765625 | size=1 | links=#21313(auto Tanaris;367):22 c7855.15:2
+#15347 | auto Tanaris;252§auto Tanaris;252§auto Tanaris;252 | x=-6978.2001953125 y=-3723.199951171875 | size=1 | links=#4236(auto Tanaris;70):51 #9256(auto Tanaris;147):32
+#15351 | auto Tanaris;253§auto Tanaris;253§auto Tanaris;253 | x=-8452.2998046875 y=-4210.2001953125 | size=1 | links=#4083(auto Tanaris;68):64 #23647(auto Tanaris;401):41 #27222(auto Tanaris;458):37
+#15361 | auto Tanaris;254§auto Tanaris;254§auto Tanaris;254 | x=-9108.2998046875 y=-4068.800048828125 | size=1 | links=#17681(auto Tanaris;301):21 #20019(auto Tanaris;342):22
+#15403 | auto Tanaris;255§auto Tanaris;255§auto Tanaris;255 | x=-7015.30029296875 y=-3114.400146484375 | size=5 | links=#12591(auto Tanaris;204):86 #19375(auto Tanaris;329):75 c5646.1:70 c5419.28:41
+#15421 | auto Tanaris;256§auto Tanaris;256§auto Tanaris;256 | x=-7212.80029296875 y=-4825.89990234375 | size=1 | links=#11178(auto Tanaris;181):30 #24525(auto Tanaris;410):27 c5422.37:21
+#15501 | auto Tanaris;257§auto Tanaris;257§auto Tanaris;257 | x=-7737.89990234375 y=-2497.400146484375 | size=1 | links=#4698(auto Tanaris;78):32 #26690(auto Tanaris;445):37
+#15523 | auto Tanaris;258§auto Tanaris;258§auto Tanaris;258 | x=-8218.900390625 y=-4237.89990234375 | size=1 | links=#2158(auto Tanaris;35):196 #8860(auto Tanaris;142):71 #16954(auto Tanaris;287):169 c5420.4:54
+#15558 | Soridormi;The Scale of Sands;Tanaris;1;61.05;56.95§Soridormi;Die Wächter der Sande;Tanaris;1;61.05;56.95§Soridormi;The Scale of Sands;Tanaris;1;61.05;56.95 | x=-8494.054996134155 y=-4431.579995523128 | size=1
+#15566 | auto Tanaris;259§auto Tanaris;259§auto Tanaris;259 | x=-7787.7001953125 y=-2576.800048828125 | size=1 | links=#11467(auto Tanaris;184):15 #27377(auto Tanaris;462):9
+#15595 | auto Tanaris;260§auto Tanaris;260§auto Tanaris;260 | x=-7822.60009765625 y=-2571.5 | size=5 | links=#3123(auto Tanaris;54):16 #16565(auto Tanaris;279):14
+#15612 | auto Tanaris;261§auto Tanaris;261§auto Tanaris;261 | x=-8528.7001953125 y=-4413.5 | size=1 | links=#2564(auto Tanaris;47):47 #26219(auto Tanaris;440):56
+#15634 | auto Tanaris;262§auto Tanaris;262§auto Tanaris;262 | x=-9076.6005859375 y=-4036.199951171875 | size=1 | links=#8612(auto Tanaris;139):31 #21753(auto Tanaris;376):28
+#15639 | auto Tanaris;263§auto Tanaris;263§auto Tanaris;263 | x=-7636.60009765625 y=-4828.60009765625 | size=5 | links=#7270(auto Tanaris;117):58 #13165(auto Tanaris;215):81
+#15697 | auto Tanaris;264§auto Tanaris;264§auto Tanaris;264 | x=-8833.7998046875 y=-4372.10009765625 | size=1 | links=#21200(auto Tanaris;364):49 c7784.1:18
+#15711 | auto Tanaris;265§auto Tanaris;265§auto Tanaris;265 | x=-8861.2001953125 y=-2355.60009765625 | size=1 | links=c5485.6:18 c5481.13:20
+#15847 | auto Tanaris;266§auto Tanaris;266§auto Tanaris;266 | x=-8464.2998046875 y=-3167.60009765625 | size=5 | links=#6811(auto Tanaris;112):44 #13199(auto Tanaris;216):79 c5474.15:21
+#15866 | entry and exit;gorge;Tanaris;to;Un'Goro Crater§ein- und ausgang;schlucht;Tanaris;nach;Un'Goro-Krater§entrée et sortie;gorge;Tanaris;vers;Cratère d'Un'Goro | x=-8531.400390625 y=-2084.199951171875 | size=1 | links=#21424(auto Tanaris;371):52 #24884(auto Tanaris;423):69 c5421.1:68
+#15930 | auto Tanaris;267§auto Tanaris;267§auto Tanaris;267 | x=-8183.39990234375 y=-4666.2001953125 | size=1 | links=#19459(auto Tanaris;330):43 #27102(auto Tanaris;456):48
+#16003 | auto Tanaris;268§auto Tanaris;268§auto Tanaris;268 | x=-7808.30029296875 y=-5132.30029296875 | size=1 | links=#1283(auto Tanaris;20):29 #12447(auto Tanaris;200):54 c7855.21:29
+#16009 | auto Tanaris;269§auto Tanaris;269§auto Tanaris;269 | x=-7880.10009765625 y=-5228.30029296875 | size=1 | links=#3983(auto Tanaris;66):29 #26706(auto Tanaris;446):35 c7855.11:41
+#16012 | auto Tanaris;270§auto Tanaris;270§auto Tanaris;270 | x=-7123.7001953125 y=-3796.5 | size=1 | links=#6901(auto Tanaris;113):8 #21989(auto Tanaris;381):8
+#16140 | quest target;waters;Sandsorrow Watch;Tanaris§questziel;gewässer;Sandmarterwache;Tanaris§objectif de quête;eaux;Guet de Tristesable;Tanaris | x=-7225.80029296875 y=-2892.900146484375 | size=1 | links=#12893(auto Tanaris;209):31
+#16181 | auto Tanaris;271§auto Tanaris;271§auto Tanaris;271 | x=-7788 y=-2596 | size=1 | links=#20527(auto Tanaris;353):9 #27377(auto Tanaris;462):10
+#16229 | auto Tanaris;272§auto Tanaris;272§auto Tanaris;272 | x=-8031.5 y=-5208.7001953125 | size=1 | links=#10325(auto Tanaris;164):11 c7858.25:6
+#16320 | auto Tanaris;273§auto Tanaris;273§auto Tanaris;273 | x=-9203.7001953125 y=-3757 | size=5 | links=#727(auto Tanaris;10):40
+#16340 | auto Tanaris;274§auto Tanaris;274§auto Tanaris;274 | x=-6884.10009765625 y=-3776.900146484375 | size=1 | links=#7321(auto Tanaris;118):35 #10149(auto Tanaris;161):20
+#16350 | auto Tanaris;275§auto Tanaris;275§auto Tanaris;275 | x=-8060.7001953125 y=-2494.10009765625 | size=1 | links=#10842(auto Tanaris;172):13 #19012(auto Tanaris;324):8
+#16388 | auto Tanaris;276§auto Tanaris;276§auto Tanaris;276 | x=-8087.39990234375 y=-5256.80029296875 | size=1 | links=#6167(auto Tanaris;103):7 c7857.25:8
+#16461 | auto Tanaris;277§auto Tanaris;277§auto Tanaris;277 | x=-8418.2998046875 y=-4086.10009765625 | size=1 | links=#14142(auto Tanaris;231):27 #15080(auto Tanaris;245):52
+#16495 | auto Tanaris;278§auto Tanaris;278§auto Tanaris;278 | x=-7131.7001953125 y=-3914.400146484375 | size=1 | links=#19606(auto Tanaris;333):46 #22003(auto Tanaris;382):48
+#16565 | auto Tanaris;279§auto Tanaris;279§auto Tanaris;279 | x=-7809.80029296875 y=-2563.900146484375 | size=1 | links=#11467(auto Tanaris;184):10 #15595(auto Tanaris;260):14
+#16567 | auto Tanaris;280§auto Tanaris;280§auto Tanaris;280 | x=-7047.2001953125 y=-4845 | size=1 | links=#4769(auto Tanaris;79):33 #27940(auto Tanaris;468):33 c6015.1:33
+#16579 | auto Tanaris;281§auto Tanaris;281§auto Tanaris;281 | x=-7819.5 y=-5011.5 | size=1 | links=#7444(auto Tanaris;121):10 #9535(auto Tanaris;150):16
+#16596 | auto Tanaris;282§auto Tanaris;282§auto Tanaris;282 | x=-6832.30029296875 y=-2910.199951171875 | size=1 | links=#10092(auto Tanaris;159):10 #17823(auto Tanaris;304):14
+#16618 | rescue;point;down;The Noxious Lair;Tanaris§rettung;punkt;unten;Der Giftige Unterschlupf;Tanaris§sauvetage;point;bas;Le Repaire nuisible;Tanaris | x=-7806.89990234375 y=-2585.199951171875 | size=1 | links=#7268(auto Tanaris;116):13
+#16764 | auto Tanaris;283§auto Tanaris;283§auto Tanaris;283 | x=-7265.60009765625 y=-4321.10009765625 | size=5 | links=#6278(auto Tanaris;104):51 #18892(auto Tanaris;323):81
+#16787 | auto Tanaris;284§auto Tanaris;284§auto Tanaris;284 | x=-9148.400390625 y=-4122 | size=1 | links=#17339(auto Tanaris;294):41 c5452.11:20
+#16795 | auto Tanaris;285§auto Tanaris;285§auto Tanaris;285 | x=-7328.80029296875 y=-4046.60009765625 | size=5 | links=#3291(auto Tanaris;55):55 #7639(auto Tanaris;125):89
+#16861 | auto Tanaris;286§auto Tanaris;286§auto Tanaris;286 | x=-7387.60009765625 y=-4773 | size=1 | links=#2411(auto Tanaris;43):52 #18621(auto Tanaris;319):48
+#16954 | auto Tanaris;287§auto Tanaris;287§auto Tanaris;287 | x=-8206.1005859375 y=-4406.5 | size=1 | links=#15523(auto Tanaris;258):169 #17034(entry and exit;Caverns of Time;Tanaris):48 #24096(auto Tanaris;404):86
+#17010 | auto Tanaris;288§auto Tanaris;288§auto Tanaris;288 | x=-9022.7001953125 y=-4105 | size=1 | links=#444(auto Tanaris;7):25 #7331(auto Tanaris;119):20
+#17034 | entry and exit;Caverns of Time;Tanaris§ein- und ausgang;Höhlen der Zeit;Tanaris§entrée et sortie;Grottes du temps;Tanaris | x=-8201.1005859375 y=-4454.30029296875 | size=1 | links=#6664(auto Tanaris;111):53 #16954(auto Tanaris;287):48
+#17094 | auto Tanaris;289§auto Tanaris;289§auto Tanaris;289 | x=-8465.400390625 y=-4233.89990234375 | size=1 | links=#19808(auto Tanaris;338):105 #21655(auto Tanaris;375):86 #28260(auto Tanaris;475):33
+#17109 | auto Tanaris;290§auto Tanaris;290§auto Tanaris;290 | x=-9146.1005859375 y=-3650.900146484375 | size=5 | links=#10916(auto Tanaris;174):77 #17207(auto Tanaris;292):64
+#17176 | auto Tanaris;291§auto Tanaris;291§auto Tanaris;291 | x=-7788.89990234375 y=-2572.5 | size=1 | links=#26787(auto Tanaris;449):15
+#17207 | auto Tanaris;292§auto Tanaris;292§auto Tanaris;292 | x=-9132 y=-3713.699951171875 | size=5 | links=#7601(auto Tanaris;124):76 #17109(auto Tanaris;290):64
+#17208 | auto Tanaris;293§auto Tanaris;293§auto Tanaris;293 | x=-8170.80029296875 y=-4760.2001953125 | size=1 | links=#26367(auto Tanaris;442):21 c20142.1:16
+#17339 | auto Tanaris;294§auto Tanaris;294§auto Tanaris;294 | x=-9164.400390625 y=-4160.2001953125 | size=1 | links=#16787(auto Tanaris;284):41 #18175(auto Tanaris;314):22
+#17409 | entry and exit;south;Gadgetzan;Tanaris§ein- und ausgang;südlich;Gadgetzan;Tanaris§entrée et sortie;south;Gadgetzan;Tanaris | x=-7209.10009765625 y=-3775.900146484375 | size=1 | links=#12669(auto Tanaris;205):8 #25809(auto Tanaris;435):8
+#17431 | auto Tanaris;295§auto Tanaris;295§auto Tanaris;295 | x=-7078 y=-3759.400146484375 | size=1 | links=#11119(auto Tanaris;176):28 #24694(auto Tanaris;417):20
+#17440 | auto Tanaris;296§auto Tanaris;296§auto Tanaris;296 | x=-9573.7998046875 y=-2923.10009765625 | size=1 | links=#2768(auto Tanaris;51):33 #17684(auto Tanaris;302):37
+#17467 | auto Tanaris;297§auto Tanaris;297§auto Tanaris;297 | x=-8085.30029296875 y=-2518.5 | size=1 | links=#9631(auto Tanaris;153):12 #25663(auto Tanaris;431):10
+#17513 | auto Tanaris;298§auto Tanaris;298§auto Tanaris;298 | x=-7120 y=-3708.400146484375 | size=1 | links=#9103(auto Tanaris;146):19 c4708.1:27
+#17565 | auto Tanaris;299§auto Tanaris;299§auto Tanaris;299 | x=-7124.2001953125 y=-3778.5 | size=1 | links=#21609(auto Tanaris;374):9 #21989(auto Tanaris;381):9
+#17604 | auto Tanaris;300§auto Tanaris;300§auto Tanaris;300 | x=-8766.6005859375 y=-4183.2001953125 | size=1 | links=#3496(auto Tanaris;60):40 #7653(instance entrance;two;Caverns of Time;Tanaris):8
+#17681 | auto Tanaris;301§auto Tanaris;301§auto Tanaris;301 | x=-9104.400390625 y=-4089.800048828125 | size=1 | links=#2500(auto Tanaris;44):55 #15361(auto Tanaris;254):21
+#17684 | auto Tanaris;302§auto Tanaris;302§auto Tanaris;302 | x=-9537.2001953125 y=-2931.5 | size=1 | links=#437(auto Tanaris;6):45 #17440(auto Tanaris;296):37
+#17776 | auto Tanaris;303§auto Tanaris;303§auto Tanaris;303 | x=-7787.10009765625 y=-4968.30029296875 | size=1 | links=#26993(entry and exit;cave;Lost Rigger Cove;Tanaris):15 #28172(auto Tanaris;471):16
+#17823 | auto Tanaris;304§auto Tanaris;304§auto Tanaris;304 | x=-6819.7001953125 y=-2902.10009765625 | size=1 | links=#15037(meeting stone;Zul'Farrak;Tanaris):26 #16596(auto Tanaris;282):14 #26975(auto Tanaris;454):17
+#17854 | auto Tanaris;305§auto Tanaris;305§auto Tanaris;305 | x=-8358.7998046875 y=-2462.199951171875 | size=5 | links=#1830(auto Tanaris;30):45 #9003(auto Tanaris;145):86
+#17856 | auto Tanaris;306§auto Tanaris;306§auto Tanaris;306 | x=-7118.39990234375 y=-3746.400146484375 | size=1 | links=#896(auto Tanaris;12):20 #13410(auto Tanaris;221):30 #27270(auto Tanaris;459):8 c4708.1:14 c7583.1:8
+#17995 | auto Tanaris;307§auto Tanaris;307§auto Tanaris;307 | x=-6913.30029296875 y=-3745 | size=1 | links=#10149(auto Tanaris;161):25 #10413(auto Tanaris;165):25
+#18006 | auto Tanaris;308§auto Tanaris;308§auto Tanaris;308 | x=-8011.5 y=-5204.5 | size=1 | links=#8934(auto Tanaris;144):6 #12209(auto Tanaris;193):5
+#18028 | auto Tanaris;309§auto Tanaris;309§auto Tanaris;309 | x=-7894.7001953125 y=-2629.400146484375 | size=5 | links=#7534(auto Tanaris;122):25 c5455.21:29
+#18041 | auto Tanaris;310§auto Tanaris;310§auto Tanaris;310 | x=-7490.5 y=-4017.60009765625 | size=5 | links=#7639(auto Tanaris;125):75 #22733(auto Tanaris;391):95
+#18051 | auto Tanaris;311§auto Tanaris;311§auto Tanaris;311 | x=-7744.2001953125 y=-4887.10009765625 | size=1 | links=#3935(auto Tanaris;65):100 #26579(auto Tanaris;444):35
+#18111 | auto Tanaris;312§auto Tanaris;312§auto Tanaris;312 | x=-7115.39990234375 y=-4871.60009765625 | size=5 | links=#4769(auto Tanaris;79):43 #18438(auto Tanaris;317):45
+#18169 | auto Tanaris;313§auto Tanaris;313§auto Tanaris;313 | x=-8181.2001953125 y=-2986.60009765625 | size=5 | links=#1190(auto Tanaris;17):65 #27398(auto Tanaris;463):104 c5472.17:40
+#18175 | auto Tanaris;314§auto Tanaris;314§auto Tanaris;314 | x=-9153.6005859375 y=-4180 | size=1 | links=#8185(auto Tanaris;130):15 #17339(auto Tanaris;294):22
+#18348 | auto Tanaris;315§auto Tanaris;315§auto Tanaris;315 | x=-8224.900390625 y=-3101.199951171875 | size=5 | links=#1190(auto Tanaris;17):67 #20886(auto Tanaris;359):68 c5474.11:53
+#18392 | auto Tanaris;316§auto Tanaris;316§auto Tanaris;316 | x=-8100.5 y=-4901.80029296875 | size=1 | links=#3647(auto Tanaris;62):59 #5926(auto Tanaris;97):35
+#18438 | auto Tanaris;317§auto Tanaris;317§auto Tanaris;317 | x=-7159.30029296875 y=-4884 | size=5 | links=#8585(auto Tanaris;138):51 #18111(auto Tanaris;312):45
+#18482 | auto Tanaris;318§auto Tanaris;318§auto Tanaris;318 | x=-7778.30029296875 y=-2617.10009765625 | size=1 | links=#24680(auto Tanaris;416):14 #28460(auto Tanaris;483):10
+#18621 | auto Tanaris;319§auto Tanaris;319§auto Tanaris;319 | x=-7339.7001953125 y=-4764.2001953125 | size=1 | links=#5459(auto Tanaris;89):42 #16861(auto Tanaris;286):48
+#18654 | auto Tanaris;320§auto Tanaris;320§auto Tanaris;320 | x=-7850.39990234375 y=-2580.800048828125 | size=1 | links=#5385(auto Tanaris;88):7 #24588(auto Tanaris;413):11 #24614(auto Tanaris;414):6
+#18738 | auto Tanaris;321§auto Tanaris;321§auto Tanaris;321 | x=-7828.60009765625 y=-2605.900146484375 | size=5 | links=#5651(auto Tanaris;91):13 #20667(auto Tanaris;354):9 #21557(auto Tanaris;373):13
+#18770 | auto Tanaris;322§auto Tanaris;322§auto Tanaris;322 | x=-7764.39990234375 y=-2579.10009765625 | size=1 | links=#3331(auto Tanaris;56):10 #4833(auto Tanaris;80):9
+#18892 | auto Tanaris;323§auto Tanaris;323§auto Tanaris;323 | x=-7209.5 y=-4262.5 | size=1 | links=#3472(auto Tanaris;59):54 #16764(auto Tanaris;283):81 #22905(auto Tanaris;393):171
+#19012 | auto Tanaris;324§auto Tanaris;324§auto Tanaris;324 | x=-8054.80029296875 y=-2500.60009765625 | size=1 | links=#16350(auto Tanaris;275):8 #28536(auto Tanaris;484):9
+#19074 | auto Tanaris;325§auto Tanaris;325§auto Tanaris;325 | x=-6961.30029296875 y=-2772 | size=1 | links=#24348(auto Tanaris;409):32 c5646.7:117 c5647.20:49
+#19147 | auto Tanaris;326§auto Tanaris;326§auto Tanaris;326 | x=-7138.2001953125 y=-3769.699951171875 | size=1 | links=#193(auto Tanaris;2):10 #21609(auto Tanaris;374):7
+#19260 | auto Tanaris;327§auto Tanaris;327§auto Tanaris;327 | x=-9172.7001953125 y=-4030.5 | size=5 | links=#2500(auto Tanaris;44):44 #20384(auto Tanaris;352):33
+#19316 | auto Tanaris;328§auto Tanaris;328§auto Tanaris;328 | x=-7812.7001953125 y=-2573.400146484375 | size=1 | links=#8419(auto Tanaris;136):10 #12251(auto Tanaris;195):11
+#19375 | auto Tanaris;329§auto Tanaris;329§auto Tanaris;329 | x=-7016.80029296875 y=-3189.400146484375 | size=5 | links=#15403(auto Tanaris;255):75 #28185(auto Tanaris;472):111
+#19459 | auto Tanaris;330§auto Tanaris;330§auto Tanaris;330 | x=-8220.7001953125 y=-4644 | size=1 | links=#15930(auto Tanaris;267):43 #19668(auto Tanaris;335):22
+#19519 | auto Tanaris;331§auto Tanaris;331§auto Tanaris;331 | x=-7707.10009765625 y=-2783.699951171875 | size=5 | links=#2278(auto Tanaris;38):38 c5456.4:55 c5455.14:32 c5420.96:152
+#19561 | auto Tanaris;332§auto Tanaris;332§auto Tanaris;332 | x=-8656.1005859375 y=-4258.2001953125 | size=1 | links=#2753(auto Tanaris;50):77 #28332(auto Tanaris;476):81
+#19606 | auto Tanaris;333§auto Tanaris;333§auto Tanaris;333 | x=-7157 y=-3953.5 | size=1 | links=#8418(auto Tanaris;135):81 #16495(auto Tanaris;278):46 #20827(auto Tanaris;357):29
+#19648 | auto Tanaris;334§auto Tanaris;334§auto Tanaris;334 | x=-8023.30029296875 y=-5209.89990234375 | size=1 | links=#10(auto Tanaris;1):11 o142181.2:12 o142181.5:12
+#19668 | auto Tanaris;335§auto Tanaris;335§auto Tanaris;335 | x=-8239.7998046875 y=-4631.7001953125 | size=1 | links=#19459(auto Tanaris;330):22 #21083(auto Tanaris;362):26
+#19684 | auto Tanaris;336§auto Tanaris;336§auto Tanaris;336 | x=-7082.5 y=-4374.2001953125 | size=1 | links=#3472(auto Tanaris;59):117 #20800(auto Tanaris;355):26
+#19692 | auto Tanaris;337§auto Tanaris;337§auto Tanaris;337 | x=-7436.39990234375 y=-4324.80029296875 | size=1 | links=#24737(auto Tanaris;419):85 c5617.15:96 c5617.19:156
+#19808 | auto Tanaris;338§auto Tanaris;338§auto Tanaris;338 | x=-8363.2998046875 y=-4208.60009765625 | size=5 | links=#8860(auto Tanaris;142):75 #17094(auto Tanaris;289):105
+#19816 | auto Tanaris;339§auto Tanaris;339§auto Tanaris;339 | x=-8045.2001953125 y=-5369.5 | size=1 | links=#2043(auto Tanaris;33):16 c7857.6:5
+#19914 | auto Tanaris;340§auto Tanaris;340§auto Tanaris;340 | x=-8094.2001953125 y=-2811.400146484375 | size=5 | links=#9878(auto Tanaris;157):85 #12766(auto Tanaris;208):94
+#19950 | auto Tanaris;341§auto Tanaris;341§auto Tanaris;341 | x=-8089.5 y=-2522.60009765625 | size=1 | links=#1001(auto Tanaris;15):10 #28453(auto Tanaris;482):7
+#20019 | auto Tanaris;342§auto Tanaris;342§auto Tanaris;342 | x=-9113.900390625 y=-4046.5 | size=1 | links=#15361(auto Tanaris;254):22 #21753(auto Tanaris;376):19
+#20046 | auto Tanaris;343§auto Tanaris;343§auto Tanaris;343 | x=-8365.7001953125 y=-4341.30029296875 | size=1 | links=#11448(auto Tanaris;183):62 #11475(auto Tanaris;185):39
+#20050 | auto Tanaris;344§auto Tanaris;344§auto Tanaris;344 | x=-7773.60009765625 y=-2583.10009765625 | size=1 | links=#21408(auto Tanaris;370):10 #22234(auto Tanaris;385):10
+#20072 | auto Tanaris;345§auto Tanaris;345§auto Tanaris;345 | x=-8066.2001953125 y=-2508.699951171875 | size=1 | links=#10460(auto Tanaris;167):12 #11941(auto Tanaris;190):11
+#20075 | auto Tanaris;346§auto Tanaris;346§auto Tanaris;346 | x=-7148.10009765625 y=-3803.400146484375 | size=1 | links=#12932(auto Tanaris;210):9 #25490(auto Tanaris;429):9
+#20100 | auto Tanaris;347§auto Tanaris;347§auto Tanaris;347 | x=-7919.10009765625 y=-4591.60009765625 | size=1 | links=#7983(auto Tanaris;129):67 #23830(auto Tanaris;403):90
+#20157 | auto Tanaris;348§auto Tanaris;348§auto Tanaris;348 | x=-6999.30029296875 y=-3379.800048828125 | size=5 | links=#21949(auto Tanaris;380):82 #28185(auto Tanaris;472):79
+#20207 | auto Tanaris;349§auto Tanaris;349§auto Tanaris;349 | x=-8061 y=-4873.2001953125 | size=1 | links=#21005(auto Tanaris;360):54 #23668(auto Tanaris;402):63
+#20333 | auto Tanaris;350§auto Tanaris;350§auto Tanaris;350 | x=-7291.10009765625 y=-4946.89990234375 | size=5 | links=#6291(auto Tanaris;105):54 #10775(auto Tanaris;170):38
+#20356 | auto Tanaris;351§auto Tanaris;351§auto Tanaris;351 | x=-8513.7001953125 y=-4064.60009765625 | size=5 | links=#6955(auto Tanaris;114):105 #22011(auto Tanaris;383):81
+#20384 | auto Tanaris;352§auto Tanaris;352§auto Tanaris;352 | x=-9166.400390625 y=-3997.699951171875 | size=5 | links=#19260(auto Tanaris;327):33 #23043(auto Tanaris;394):39
+#20527 | auto Tanaris;353§auto Tanaris;353§auto Tanaris;353 | x=-7795 y=-2603 | size=1 | links=#13401(auto Tanaris;220):9 #16181(auto Tanaris;271):9
+#20667 | auto Tanaris;354§auto Tanaris;354§auto Tanaris;354 | x=-7822.30029296875 y=-2613.10009765625 | size=1 | links=#9802(auto Tanaris;156):12 #18738(auto Tanaris;321):9
+#20800 | auto Tanaris;355§auto Tanaris;355§auto Tanaris;355 | x=-7074.80029296875 y=-4399.2001953125 | size=1 | links=#5800(auto Tanaris;93):95 #19684(auto Tanaris;336):26 c5618.9:62
+#20804 | auto Tanaris;356§auto Tanaris;356§auto Tanaris;356 | x=-7473 y=-4797.89990234375 | size=1 | links=#2411(auto Tanaris;43):42 #23628(auto Tanaris;400):53
+#20827 | auto Tanaris;357§auto Tanaris;357§auto Tanaris;357 | x=-7186.7001953125 y=-3953.900146484375 | size=1 | links=#19606(auto Tanaris;333):29 c6491.1:20
+#20856 | auto Tanaris;358§auto Tanaris;358§auto Tanaris;358 | x=-7635.2001953125 y=-2677.800048828125 | size=5 | links=#2064(auto Tanaris;34):51 #13297(auto Tanaris;219):54 c5457.4:31
+#20886 | auto Tanaris;359§auto Tanaris;359§auto Tanaris;359 | x=-8278.2998046875 y=-3144.800048828125 | size=5 | links=#18348(auto Tanaris;315):68 #23299(auto Tanaris;398):60
+#21005 | auto Tanaris;360§auto Tanaris;360§auto Tanaris;360 | x=-8075.60009765625 y=-4821 | size=1 | links=#4865(auto Tanaris;81):62 #20207(auto Tanaris;349):54
+#21038 | auto Tanaris;361§auto Tanaris;361§auto Tanaris;361 | x=-8080.7001953125 y=-5333.30029296875 | size=1 | links=#25001(auto Tanaris;425):19 c7857.2:4
+#21083 | auto Tanaris;362§auto Tanaris;362§auto Tanaris;362 | x=-8260.2998046875 y=-4614.80029296875 | size=1 | links=#3553(auto Tanaris;61):39 #14627(auto Tanaris;239):48 #19668(auto Tanaris;335):26
+#21172 | auto Tanaris;363§auto Tanaris;363§auto Tanaris;363 | x=-8149.2001953125 y=-4862.39990234375 | size=1 | links=#1123(auto Tanaris;16):20 #8670(auto Tanaris;140):25 c18542.1:10
+#21200 | auto Tanaris;364§auto Tanaris;364§auto Tanaris;364 | x=-8784.900390625 y=-4365.39990234375 | size=1 | links=#15697(auto Tanaris;264):49 c19918.4:81 c5426.20:135
+#21226 | auto Tanaris;365§auto Tanaris;365§auto Tanaris;365 | x=-7708.10009765625 y=-4897.39990234375 | size=1 | links=#26579(auto Tanaris;444):30 #28715(s;Kalimdor;Tanaris;Lost Rigger Cove;Wavestrider Beach):23
+#21293 | auto Tanaris;366§auto Tanaris;366§auto Tanaris;366 | x=-7354.2001953125 y=-3144.699951171875 | size=5 | links=#7542(auto Tanaris;123):77 #25295(auto Tanaris;427):71
+#21313 | auto Tanaris;367§auto Tanaris;367§auto Tanaris;367 | x=-8096.2001953125 y=-5293.10009765625 | size=1 | links=#15283(auto Tanaris;251):22 c7855.22:8
+#21335 | auto Tanaris;368§auto Tanaris;368§auto Tanaris;368 | x=-8074.7001953125 y=-5195 | size=1 | links=c7855.1:29 c7855.6:41 c7855.20:18
+#21362 | auto Tanaris;369§auto Tanaris;369§auto Tanaris;369 | x=-9241 y=-3465.800048828125 | size=5 | links=#1282(auto Tanaris;19):83 #12513(auto Tanaris;201):178
+#21408 | auto Tanaris;370§auto Tanaris;370§auto Tanaris;370 | x=-7775 y=-2572.199951171875 | size=1 | links=#3251(rescue;two;The Noxious Lair;Tanaris):9 #20050(auto Tanaris;344):10
+#21424 | auto Tanaris;371§auto Tanaris;371§auto Tanaris;371 | x=-8478.5 y=-2082.800048828125 | size=1 | links=#4355(auto Tanaris;71):80 #15866(entry and exit;gorge;Tanaris;to;Un'Goro Crater):52
+#21460 | auto Tanaris;372§auto Tanaris;372§auto Tanaris;372 | x=-7350.5 y=-3258.199951171875 | size=5 | links=#8566(auto Tanaris;137):72 #25295(auto Tanaris;427):42
+#21557 | auto Tanaris;373§auto Tanaris;373§auto Tanaris;373 | x=-7840.60009765625 y=-2600.199951171875 | size=1 | links=#5385(auto Tanaris;88):13 #18738(auto Tanaris;321):13
+#21609 | auto Tanaris;374§auto Tanaris;374§auto Tanaris;374 | x=-7130.89990234375 y=-3772.199951171875 | size=1 | links=#17565(auto Tanaris;299):9 #19147(auto Tanaris;326):7
+#21655 | auto Tanaris;375§auto Tanaris;375§auto Tanaris;375 | x=-8509.2998046875 y=-4308.2001953125 | size=1 | links=#5792(auto Tanaris;92):151 #17094(auto Tanaris;289):86 #28430(auto Tanaris;481):75
+#21753 | auto Tanaris;376§auto Tanaris;376§auto Tanaris;376 | x=-9104.2998046875 y=-4030.10009765625 | size=1 | links=#15634(auto Tanaris;262):28 #20019(auto Tanaris;342):19
+#21757 | auto Tanaris;377§auto Tanaris;377§auto Tanaris;377 | x=-8125.7001953125 y=-4654.80029296875 | size=1 | links=#24945(auto Tanaris;424):19 #26905(auto Tanaris;450):30
+#21888 | auto Tanaris;378§auto Tanaris;378§auto Tanaris;378 | x=-7194.30029296875 y=-3803.800048828125 | size=1 | links=#2724(auto Tanaris;49):8 #5907(auto Tanaris;96):17
+#21932 | auto Tanaris;379§auto Tanaris;379§auto Tanaris;379 | x=-7544 y=-3192.800048828125 | size=1 | links=#6327(auto Tanaris;106):180 #13648(auto Tanaris;222):141
+#21949 | auto Tanaris;380§auto Tanaris;380§auto Tanaris;380 | x=-7015.10009765625 y=-3460.300048828125 | size=5 | links=#15106(auto Tanaris;247):81 #20157(auto Tanaris;348):82
+#21989 | auto Tanaris;381§auto Tanaris;381§auto Tanaris;381 | x=-7122 y=-3787.900146484375 | size=1 | links=#281(auto Tanaris;4):6 #12954(auto Tanaris;212):5 #16012(auto Tanaris;270):8 #17565(auto Tanaris;299):9
+#22003 | auto Tanaris;382§auto Tanaris;382§auto Tanaris;382 | x=-7110.10009765625 y=-3871.300048828125 | size=1 | links=#10797(auto Tanaris;171):39 #16495(auto Tanaris;278):48
+#22011 | auto Tanaris;383§auto Tanaris;383§auto Tanaris;383 | x=-8488.2998046875 y=-4142 | size=5 | links=#20356(auto Tanaris;351):81 #28260(auto Tanaris;475):62
+#22048 | auto Tanaris;384§auto Tanaris;384§auto Tanaris;384 | x=-8134.2001953125 y=-4910 | size=1 | links=#8670(auto Tanaris;140):28 #23668(auto Tanaris;402):37
+#22169 | rescue;down;The Noxious Lair;Tanaris§rettung;unten;Der Giftige Unterschlupf;Tanaris§sauvetage;bas;Le Repaire nuisible;Tanaris | x=-8079.2001953125 y=-2503.300048828125 | size=1 | links=#10842(auto Tanaris;172):16 c5459.6:5
+#22234 | auto Tanaris;385§auto Tanaris;385§auto Tanaris;385 | x=-7774.60009765625 y=-2593.800048828125 | size=1 | links=#11888(auto Tanaris;189):15 #20050(auto Tanaris;344):10
+#22369 | auto Tanaris;386§auto Tanaris;386§auto Tanaris;386 | x=-8090 y=-2494.400146484375 | size=1 | links=#5967(auto Tanaris;99):7 #9631(auto Tanaris;153):14
+#22378 | auto Tanaris;387§auto Tanaris;387§auto Tanaris;387 | x=-7804.30029296875 y=-2627.900146484375 | size=1 | links=#9802(auto Tanaris;156):11 #24680(auto Tanaris;416):14
+#22415 | instance entrance;Zul'Farrak;Tanaris§instanzeingang;Zul'Farrak;Tanaris§instance entrance;Zul’Farrak;Tanaris | x=-6793.60009765625 y=-2891.400146484375 | size=1 | links=#26975(auto Tanaris;454):11
+#22587 | auto Tanaris;388§auto Tanaris;388§auto Tanaris;388 | x=-8071.30029296875 y=-2526.300048828125 | size=1 | links=#9966(auto Tanaris;158):14 #28453(auto Tanaris;482):11
+#22646 | auto Tanaris;389§auto Tanaris;389§auto Tanaris;389 | x=-7351.2001953125 y=-3417.699951171875 | size=5 | links=#12194(auto Tanaris;192):104 #14261(auto Tanaris;234):43
+#22700 | auto Tanaris;390§auto Tanaris;390§auto Tanaris;390 | x=-9099.2998046875 y=-4162.80029296875 | size=1 | links=#1437(auto Tanaris;24):32 #13746(auto Tanaris;224):22
+#22733 | auto Tanaris;391§auto Tanaris;391§auto Tanaris;391 | x=-7583.10009765625 y=-3993.699951171875 | size=5 | links=#8916(auto Tanaris;143):140 #18041(auto Tanaris;310):95
+#22846 | auto Tanaris;392§auto Tanaris;392§auto Tanaris;392 | x=-8507.5 y=-4616.80029296875 | size=1 | links=#1933(auto Tanaris;31):25 #27123(auto Tanaris;457):35 c20080.1:33 c20081.1:13 c21643.1:21
+#22905 | auto Tanaris;393§auto Tanaris;393§auto Tanaris;393 | x=-7217.2001953125 y=-4091.400146484375 | size=1 | links=#3291(auto Tanaris;55):65 #8418(auto Tanaris;135):80 #18892(auto Tanaris;323):171
+#23043 | auto Tanaris;394§auto Tanaris;394§auto Tanaris;394 | x=-9160.5 y=-3958.699951171875 | size=5 | links=#20384(auto Tanaris;352):39 #24536(auto Tanaris;411):48
+#23045 | auto Tanaris;395§auto Tanaris;395§auto Tanaris;395 | x=-8414.2001953125 y=-4642.30029296875 | size=1 | links=#4452(auto Tanaris;74):68 #27800(auto Tanaris;466):58
+#23135 | central location;Steamwheedle Port;Tanaris§zentralpunkt;Dampfdruckpier;Tanaris§emplacement central;Port Gentepression;Tanaris | x=-6948.7001953125 y=-4795.60009765625 | size=1 | links=#1207(auto Tanaris;18):121 #3025(auto Tanaris;53):44 #8745(auto Tanaris;141):28
+#23176 | auto Tanaris;396§auto Tanaris;396§auto Tanaris;396 | x=-8026.60009765625 y=-5233.2001953125 | size=1 | links=#24876(auto Tanaris;421):8 c7855.13:23
+#23184 | auto Tanaris;397§auto Tanaris;397§auto Tanaris;397 | x=-7328.7001953125 y=-3016.10009765625 | size=1 | links=#7542(auto Tanaris;123):53 #27308(auto Tanaris;460):101
+#23299 | auto Tanaris;398§auto Tanaris;398§auto Tanaris;398 | x=-8323 y=-3185.900146484375 | size=5 | links=#13199(auto Tanaris;216):80 #20886(auto Tanaris;359):60 c5474.14:22
+#23318 | central location;Lost Rigger Cove;Tanaris§zentralpunkt;Mast- und Schotbucht;Tanaris§emplacement central;Crique des Gréements;Tanaris | x=-8005.2001953125 y=-5286.7001953125 | size=1 | links=#26786(entry and exit;building;Lost Rigger Cove;Tanaris):39 c7883.1:38 c7856.3:44 c7855.8:34 c7855.9:37 c7855.13:34 c7856.24:10
+#23365 | auto Tanaris;399§auto Tanaris;399§auto Tanaris;399 | x=-7362.80029296875 y=-4936.80029296875 | size=5 | links=#6291(auto Tanaris;105):53 c8617.1:45
+#23628 | auto Tanaris;400§auto Tanaris;400§auto Tanaris;400 | x=-7525.89990234375 y=-4790.5 | size=1 | links=#13165(auto Tanaris;215):38 #20804(auto Tanaris;356):53 c5617.16:35
+#23647 | auto Tanaris;401§auto Tanaris;401§auto Tanaris;401 | x=-8448.400390625 y=-4168.80029296875 | size=1 | links=#15080(auto Tanaris;245):41 #15351(auto Tanaris;253):41
+#23668 | auto Tanaris;402§auto Tanaris;402§auto Tanaris;402 | x=-8099.30029296875 y=-4923.60009765625 | size=1 | links=#20207(auto Tanaris;349):63 #22048(auto Tanaris;384):37
+#23830 | auto Tanaris;403§auto Tanaris;403§auto Tanaris;403 | x=-7968.30029296875 y=-4515.80029296875 | size=1 | links=#20100(auto Tanaris;347):90 #26967(auto Tanaris;453):88
+#24096 | auto Tanaris;404§auto Tanaris;404§auto Tanaris;404 | x=-8119.89990234375 y=-4397.5 | size=1 | links=#16954(auto Tanaris;287):86 #26967(auto Tanaris;453):106
+#24106 | auto Tanaris;405§auto Tanaris;405§auto Tanaris;405 | x=-8172.39990234375 y=-4720.10009765625 | size=1 | links=#26367(auto Tanaris;442):19 #27478(meeting stone;Caverns of Time;Tanaris):23
+#24125 | through;Lost Rigger Cove;Tanaris§durch;Mast- und Schotbucht;Tanaris§through;Crique des Gréements;Tanaris | x=-7829.2001953125 y=-5040.39990234375 | size=1 | links=#9535(auto Tanaris;150):14 #10620(auto Tanaris;169):10
+#24155 | auto Tanaris;406§auto Tanaris;406§auto Tanaris;406 | x=-7154.60009765625 y=-3778 | size=1 | links=#193(auto Tanaris;2):8 #8230(auto Tanaris;132):9
+#24160 | auto Tanaris;407§auto Tanaris;407§auto Tanaris;407 | x=-7982.30029296875 y=-3922.900146484375 | size=5 | links=#2158(auto Tanaris;35):200 #6540(auto Tanaris;110):101 c7771.1:67
+#24333 | auto Tanaris;408§auto Tanaris;408§auto Tanaris;408 | x=-7043.5 y=-3629.5 | size=1 | links=#1714(auto Tanaris;28):46 #24806(auto Tanaris;420):39
+#24348 | auto Tanaris;409§auto Tanaris;409§auto Tanaris;409 | x=-6970.89990234375 y=-2740.900146484375 | size=1 | links=#19074(auto Tanaris;325):32 c5645.6:42
+#24525 | auto Tanaris;410§auto Tanaris;410§auto Tanaris;410 | x=-7229.30029296875 y=-4804 | size=1 | links=#11774(auto Tanaris;188):29 #15421(auto Tanaris;256):27
+#24536 | auto Tanaris;411§auto Tanaris;411§auto Tanaris;411 | x=-9157.7001953125 y=-3910.300048828125 | size=5 | links=#11145(auto Tanaris;179):56 #23043(auto Tanaris;394):48
+#24539 | auto Tanaris;412§auto Tanaris;412§auto Tanaris;412 | x=-7923.60009765625 y=-2897.699951171875 | size=5 | links=#12439(auto Tanaris;199):68 #12766(auto Tanaris;208):99
+#24588 | auto Tanaris;413§auto Tanaris;413§auto Tanaris;413 | x=-7851.80029296875 y=-2569.800048828125 | size=1 | links=#18654(auto Tanaris;320):11 #28234(auto Tanaris;474):13
+#24614 | auto Tanaris;414§auto Tanaris;414§auto Tanaris;414 | x=-7846.2001953125 y=-2575.400146484375 | size=1 | links=#18654(auto Tanaris;320):6 #27062(auto Tanaris;455):9
+#24645 | auto Tanaris;415§auto Tanaris;415§auto Tanaris;415 | x=-7161.60009765625 y=-3750.900146484375 | size=1 | links=#15100(auto Tanaris;246):3 #28394(auto Tanaris;479):4
+#24680 | auto Tanaris;416§auto Tanaris;416§auto Tanaris;416 | x=-7790.10009765625 y=-2624.900146484375 | size=1 | links=#18482(auto Tanaris;318):14 #22378(auto Tanaris;387):14
+#24694 | auto Tanaris;417§auto Tanaris;417§auto Tanaris;417 | x=-7077.80029296875 y=-3779.699951171875 | size=1 | links=#4123(auto Tanaris;69):21 #17431(auto Tanaris;295):20 c7824.1:32
+#24720 | auto Tanaris;418§auto Tanaris;418§auto Tanaris;418 | x=-7935.89990234375 y=-5300.30029296875 | size=1 | links=#2322(auto Tanaris;40):36 #10267(auto Tanaris;162):39
+#24737 | auto Tanaris;419§auto Tanaris;419§auto Tanaris;419 | x=-7353.89990234375 y=-4349 | size=5 | links=#6278(auto Tanaris;104):45 #19692(auto Tanaris;337):85 c5617.9:45 c5617.12:66 c5615.14:71
+#24806 | auto Tanaris;420§auto Tanaris;420§auto Tanaris;420 | x=-7051 y=-3668.60009765625 | size=1 | links=#4236(auto Tanaris;70):39 #11119(auto Tanaris;176):68 #24333(auto Tanaris;408):39 c16417.1:42
+#24876 | auto Tanaris;421§auto Tanaris;421§auto Tanaris;421 | x=-8030 y=-5225.80029296875 | size=1 | links=#23176(auto Tanaris;396):8 c7858.5:18 c7858.6:9 c7858.26:11
+#24883 | auto Tanaris;422§auto Tanaris;422§auto Tanaris;422 | x=-8763.900390625 y=-2464.10009765625 | size=5 | links=#951(auto Tanaris;14):107 #5476(auto Tanaris;90):80
+#24884 | auto Tanaris;423§auto Tanaris;423§auto Tanaris;423 | x=-8544.2001953125 y=-2152.5 | size=5 | links=#9544(auto Tanaris;151):92 #15866(entry and exit;gorge;Tanaris;to;Un'Goro Crater):69 c5421.13:37 c5427.25:48
+#24945 | auto Tanaris;424§auto Tanaris;424§auto Tanaris;424 | x=-8136 y=-4638.10009765625 | size=1 | links=#6466(auto Tanaris;109):13 #21757(auto Tanaris;377):19
+#25001 | auto Tanaris;425§auto Tanaris;425§auto Tanaris;425 | x=-8091.7001953125 y=-5317.5 | size=1 | links=#21038(auto Tanaris;361):19 c7856.3:47
+#25211 | auto Tanaris;426§auto Tanaris;426§auto Tanaris;426 | x=-8929.6005859375 y=-2474.5 | size=5 | links=#2719(auto Tanaris;48):103 #5476(auto Tanaris;90):88
+#25295 | auto Tanaris;427§auto Tanaris;427§auto Tanaris;427 | x=-7357.39990234375 y=-3216.60009765625 | size=5 | links=#21293(auto Tanaris;366):71 #21460(auto Tanaris;372):42
+#25441 | auto Tanaris;428§auto Tanaris;428§auto Tanaris;428 | x=-6748.5 y=-4753.7001953125 | size=5 | links=#27730(auto Tanaris;465):60
+#25490 | auto Tanaris;429§auto Tanaris;429§auto Tanaris;429 | x=-7139.2001953125 y=-3804.900146484375 | size=1 | links=#6901(auto Tanaris;113):9 #20075(auto Tanaris;346):9
+#25576 | auto Tanaris;430§auto Tanaris;430§auto Tanaris;430 | x=-8744.7001953125 y=-4624.2001953125 | size=1 | links=#5792(auto Tanaris;92):242 c5431.96:54 c5431.115:41
+#25663 | auto Tanaris;431§auto Tanaris;431§auto Tanaris;431 | x=-8077 y=-2524.60009765625 | size=1 | links=#10460(auto Tanaris;167):8 #17467(auto Tanaris;297):10
+#25702 | auto Tanaris;432§auto Tanaris;432§auto Tanaris;432 | x=-8210.1005859375 y=-4566.39990234375 | size=1 | links=#194(auto Tanaris;3):76 #6664(auto Tanaris;111):59
+#25717 | auto Tanaris;433§auto Tanaris;433§auto Tanaris;433 | x=-9348.7001953125 y=-2798.900146484375 | size=5 | links=#2822(auto Tanaris;52):149 #11543(auto Tanaris;187):147 c5389.1:82
+#25789 | auto Tanaris;434§auto Tanaris;434§auto Tanaris;434 | x=-7813.39990234375 y=-5073 | size=1 | links=#1283(auto Tanaris;20):43 #10620(auto Tanaris;169):32
+#25809 | auto Tanaris;435§auto Tanaris;435§auto Tanaris;435 | x=-7217.10009765625 y=-3773.10009765625 | size=1 | links=#11490(auto Tanaris;186):47 #12566(auto Tanaris;202):17 #17409(entry and exit;south;Gadgetzan;Tanaris):8
+#25885 | auto Tanaris;436§auto Tanaris;436§auto Tanaris;436 | x=-7222.89990234375 y=-3801.400146484375 | size=1 | links=#5907(auto Tanaris;96):11 c8661.1:16
+#25973 | auto Tanaris;437§auto Tanaris;437§auto Tanaris;437 | x=-8073.2001953125 y=-2468.900146484375 | size=1 | links=#13130(auto Tanaris;214):17 #26960(auto Tanaris;452):20
+#25981 | auto Tanaris;438§auto Tanaris;438§auto Tanaris;438 | x=-7160.39990234375 y=-3839.300048828125 | size=1 | links=#7351(auto Tanaris;120):8 c7733.1:3 c8125.1:13
+#26072 | auto Tanaris;439§auto Tanaris;439§auto Tanaris;439 | x=-7276.5 y=-4755.7001953125 | size=1 | links=#5459(auto Tanaris;89):38 #11774(auto Tanaris;188):38
+#26219 | auto Tanaris;440§auto Tanaris;440§auto Tanaris;440 | x=-8571.7998046875 y=-4376.89990234375 | size=1 | links=#2753(auto Tanaris;50):80 #15612(auto Tanaris;261):56
+#26234 | auto Tanaris;441§auto Tanaris;441§auto Tanaris;441 | x=-9191.900390625 y=-2427.199951171875 | size=5 | links=#11985(auto Tanaris;191):93 c5955.1:95 c5421.6:75
+#26367 | auto Tanaris;442§auto Tanaris;442§auto Tanaris;442 | x=-8176.10009765625 y=-4739 | size=1 | links=#17208(auto Tanaris;293):21 #24106(auto Tanaris;405):19
+#26408 | auto Tanaris;443§auto Tanaris;443§auto Tanaris;443 | x=-8037.80029296875 y=-5338.5 | size=1 | links=#14775(auto Tanaris;241):5 c7857.19:6
+#26579 | auto Tanaris;444§auto Tanaris;444§auto Tanaris;444 | x=-7729.2001953125 y=-4919.30029296875 | size=1 | links=#2386(auto Tanaris;41):24 #18051(auto Tanaris;311):35 #21226(auto Tanaris;365):30
+#26690 | auto Tanaris;445§auto Tanaris;445§auto Tanaris;445 | x=-7701.39990234375 y=-2504 | size=1 | links=#2536(auto Tanaris;45):53 #15501(auto Tanaris;257):37
+#26706 | auto Tanaris;446§auto Tanaris;446§auto Tanaris;446 | x=-7856.30029296875 y=-5201.89990234375 | size=1 | links=#12447(auto Tanaris;200):30 #16009(auto Tanaris;269):35
+#26754 | auto Tanaris;447§auto Tanaris;447§auto Tanaris;447 | x=-7815.89990234375 y=-2516 | size=1 | links=#5338(auto Tanaris;87):20 #27347(auto Tanaris;461):36
+#26780 | auto Tanaris;448§auto Tanaris;448§auto Tanaris;448 | x=-7285.60009765625 y=-3592 | size=5 | links=#12194(auto Tanaris;192):83 c5428.1:75
+#26786 | entry and exit;building;Lost Rigger Cove;Tanaris§ein- und ausgang;gebäude;Mast- und Schotbucht;Tanaris§entrée et sortie;building;Crique des Gréements;Tanaris | x=-7970 y=-5267.89990234375 | size=1 | links=#10267(auto Tanaris;162):7 #23318(central location;Lost Rigger Cove;Tanaris):39 c7856.6:28 c7855.16:23 c7856.16:21
+#26787 | auto Tanaris;449§auto Tanaris;449§auto Tanaris;449 | x=-7791.39990234375 y=-2587.800048828125 | size=1 | links=#5805(auto Tanaris;94):10 #17176(auto Tanaris;291):15
+#26905 | auto Tanaris;450§auto Tanaris;450§auto Tanaris;450 | x=-8111.89990234375 y=-4681.7001953125 | size=1 | links=#3389(auto Tanaris;57):21 #21757(auto Tanaris;377):30 #27102(auto Tanaris;456):30
+#26939 | auto Tanaris;451§auto Tanaris;451§auto Tanaris;451 | x=-9119.900390625 y=-4193 | size=1 | links=#12387(auto Tanaris;196):12 #13746(auto Tanaris;224):14
+#26960 | auto Tanaris;452§auto Tanaris;452§auto Tanaris;452 | x=-8089.2001953125 y=-2482.10009765625 | size=1 | links=#15257(auto Tanaris;249):12 #25973(auto Tanaris;437):20
+#26967 | auto Tanaris;453§auto Tanaris;453§auto Tanaris;453 | x=-8027 y=-4449.89990234375 | size=1 | links=#23830(auto Tanaris;403):88 #24096(auto Tanaris;404):106
+#26975 | auto Tanaris;454§auto Tanaris;454§auto Tanaris;454 | x=-6804.60009765625 y=-2893.199951171875 | size=1 | links=#15037(meeting stone;Zul'Farrak;Tanaris):28 #17823(auto Tanaris;304):17 #22415(instance entrance;Zul'Farrak;Tanaris):11
+#26993 | entry and exit;cave;Lost Rigger Cove;Tanaris§ein- und ausgang;höhle;Mast- und Schotbucht;Tanaris§entrée et sortie;cave;Crique des Gréements;Tanaris | x=-7783 y=-4953.7001953125 | size=1 | links=#5040(auto Tanaris;83):19 #17776(auto Tanaris;303):15
+#27062 | auto Tanaris;455§auto Tanaris;455§auto Tanaris;455 | x=-7843.80029296875 y=-2566.199951171875 | size=1 | links=#13720(auto Tanaris;223):15 #24614(auto Tanaris;414):9
+#27102 | auto Tanaris;456§auto Tanaris;456§auto Tanaris;456 | x=-8141.2001953125 y=-4689.7001953125 | size=1 | links=#15930(auto Tanaris;267):48 #26905(auto Tanaris;450):30
+#27123 | auto Tanaris;457§auto Tanaris;457§auto Tanaris;457 | x=-8488.7998046875 y=-4647.39990234375 | size=1 | links=#4452(auto Tanaris;74):22 #22846(auto Tanaris;392):35 c20082.1:21
+#27222 | auto Tanaris;458§auto Tanaris;458§auto Tanaris;458 | x=-8419 y=-4228 | size=1 | links=#5313(auto Tanaris;86):37 #15351(auto Tanaris;253):37
+#27270 | auto Tanaris;459§auto Tanaris;459§auto Tanaris;459 | x=-7116.89990234375 y=-3738.199951171875 | size=1 | links=#17856(auto Tanaris;306):8 c5594.1:8
+#27308 | auto Tanaris;460§auto Tanaris;460§auto Tanaris;460 | x=-7312.39990234375 y=-2915.900146484375 | size=1 | links=#12893(auto Tanaris;209):58 #23184(auto Tanaris;397):101
+#27347 | auto Tanaris;461§auto Tanaris;461§auto Tanaris;461 | x=-7793.7001953125 y=-2487.5 | size=1 | links=#4698(auto Tanaris;78):24 #26754(auto Tanaris;447):36
+#27377 | auto Tanaris;462§auto Tanaris;462§auto Tanaris;462 | x=-7785.10009765625 y=-2586.10009765625 | size=1 | links=#15566(auto Tanaris;259):9 #16181(auto Tanaris;271):10
+#27398 | auto Tanaris;463§auto Tanaris;463§auto Tanaris;463 | x=-8207.5 y=-2885.699951171875 | size=5 | links=#5934(auto Tanaris;98):63 #18169(auto Tanaris;313):104 c5474.18:32
+#27456 | auto Tanaris;464§auto Tanaris;464§auto Tanaris;464 | x=-7122.39990234375 y=-3852.800048828125 | size=1 | links=c11758.1:16 o142071.1:20
+#27478 | meeting stone;Caverns of Time;Tanaris§versammlungsstein;Höhlen der Zeit;Tanaris§meeting stone;Grottes du temps;Tanaris | x=-8191.39990234375 y=-4705.7001953125 | size=1 | links=#194(auto Tanaris;3):63 #24106(auto Tanaris;405):23
+#27730 | auto Tanaris;465§auto Tanaris;465§auto Tanaris;465 | x=-6805.80029296875 y=-4774.60009765625 | size=5 | links=#10579(auto Tanaris;168):45 #25441(auto Tanaris;428):60
+#27800 | auto Tanaris;466§auto Tanaris;466§auto Tanaris;466 | x=-8360.2001953125 y=-4618.60009765625 | size=1 | links=#14627(auto Tanaris;239):70 #23045(auto Tanaris;395):58
+#27878 | auto Tanaris;467§auto Tanaris;467§auto Tanaris;467 | x=-7178.10009765625 y=-3829.10009765625 | size=1 | links=#7849(auto Tanaris;126):11 c7407.1:12 c7408.1:12
+#27940 | auto Tanaris;468§auto Tanaris;468§auto Tanaris;468 | x=-7014.2001953125 y=-4845.2001953125 | size=1 | links=#6380(auto Tanaris;108):32 #16567(auto Tanaris;280):33
+#27969 | auto Tanaris;469§auto Tanaris;469§auto Tanaris;469 | x=-9570.400390625 y=-2858.5 | size=1 | links=#2542(auto Tanaris;46):32 #2768(auto Tanaris;51):31
+#28034 | auto Tanaris;470§auto Tanaris;470§auto Tanaris;470 | x=-8722.7001953125 y=-2253.900146484375 | size=1 | links=#14947(auto Tanaris;243):99 c5427.1:70 c5490.7:26 c5485.9:43
+#28172 | auto Tanaris;471§auto Tanaris;471§auto Tanaris;471 | x=-7789.60009765625 y=-4984.39990234375 | size=1 | links=#17776(auto Tanaris;303):16 #28349(auto Tanaris;477):16
+#28185 | auto Tanaris;472§auto Tanaris;472§auto Tanaris;472 | x=-7001.2001953125 y=-3300.300048828125 | size=5 | links=#19375(auto Tanaris;329):111 #20157(auto Tanaris;348):79
+#28197 | auto Tanaris;473§auto Tanaris;473§auto Tanaris;473 | x=-9038.6005859375 y=-4068.5 | size=1 | links=#8279(auto Tanaris;134):15 #8612(auto Tanaris;139):24
+#28234 | auto Tanaris;474§auto Tanaris;474§auto Tanaris;474 | x=-7849.7001953125 y=-2556.199951171875 | size=1 | links=#14992(ramp;top;The Noxious Lair;Tanaris):11 #24588(auto Tanaris;413):13
+#28260 | auto Tanaris;475§auto Tanaris;475§auto Tanaris;475 | x=-8468.400390625 y=-4201 | size=5 | links=#17094(auto Tanaris;289):33 #22011(auto Tanaris;383):62
+#28332 | auto Tanaris;476§auto Tanaris;476§auto Tanaris;476 | x=-8732.900390625 y=-4232.39990234375 | size=1 | links=#3496(auto Tanaris;60):19 #19561(auto Tanaris;332):81
+#28349 | auto Tanaris;477§auto Tanaris;477§auto Tanaris;477 | x=-7800.30029296875 y=-4997.30029296875 | size=1 | links=#7444(auto Tanaris;121):14 #28172(auto Tanaris;471):16
+#28391 | auto Tanaris;478§auto Tanaris;478§auto Tanaris;478 | x=-8002.7001953125 y=-5211.7001953125 | size=1 | links=#12209(auto Tanaris;193):9 c7858.5:12
+#28394 | auto Tanaris;479§auto Tanaris;479§auto Tanaris;479 | x=-7164.30029296875 y=-3747.5 | size=1 | links=#24645(auto Tanaris;415):4 c8128.1:5
+#28421 | auto Tanaris;480§auto Tanaris;480§auto Tanaris;480 | x=-8164.89990234375 y=-4816.80029296875 | size=1 | links=#12234(auto Tanaris;194):55 c20142.1:42
+#28430 | auto Tanaris;481§auto Tanaris;481§auto Tanaris;481 | x=-8582.400390625 y=-4325.39990234375 | size=5 | links=#21655(auto Tanaris;375):75 c5426.20:73
+#28453 | auto Tanaris;482§auto Tanaris;482§auto Tanaris;482 | x=-8083.2001953125 y=-2525.900146484375 | size=1 | links=#19950(auto Tanaris;341):7 #22587(auto Tanaris;388):11
+#28460 | auto Tanaris;483§auto Tanaris;483§auto Tanaris;483 | x=-7770.60009765625 y=-2610.300048828125 | size=1 | links=#748(auto Tanaris;11):11 #18482(auto Tanaris;318):10
+#28536 | auto Tanaris;484§auto Tanaris;484§auto Tanaris;484 | x=-8054.2001953125 y=-2509.900146484375 | size=1 | links=#9966(auto Tanaris;158):10 #19012(auto Tanaris;324):9
+#28621 | s;u;Mailbox;Tanaris§s;u;Briefkasten;Tanaris§s;u;Boîte aux lettres;Tanaris | x=-7153.7998046875 y=-3827.44970703125 | size=1 | links=#15219(auto Tanaris;248):3 c8736.1:4
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c4708.1 | links=#17513(auto Tanaris;298):27 #17856(auto Tanaris;306):14 c6568.1:6
+c5389.1 | links=#25717(auto Tanaris;433):82
+c5411.1 | links=#12669(auto Tanaris;205):8 c7804.1:4
+c5419.1 | links=c5425.1:91
+c5421.1 | links=#15866(entry and exit;gorge;Tanaris;to;Un'Goro Crater):68 c5427.32:56
+c5425.1 | links=#12591(auto Tanaris;204):106 c5419.1:91 c8199.1:69 c5423.44:63 c5419.59:20
+c5426.1 | links=c5429.28:208 c5429.30:29 c5426.46:58 c5426.47:33 c5423.69:69
+c5427.1 | links=#951(auto Tanaris;14):73 #28034(auto Tanaris;470):70
+c5428.1 | links=#3826(auto Tanaris;64):99 #26780(auto Tanaris;448):75 c5426.35:266
+c5431.1 | links=c5467.1:1080 c5431.33:191
+c5457.1 | links=c8204.1:20
+c5458.1 | links=c5455.2:43
+c5467.1 | links=c5431.1:1080 c7770.1:90
+c5469.1 | links=c5469.4:47
+c5471.1 | links=#1330(auto Tanaris;22):66
+c5472.1 | links=#3418(auto Tanaris;58):27 c5474.1:23
+c5473.1 | links=#6811(auto Tanaris;112):20
+c5474.1 | links=c5472.1:23 c5474.4:41
+c5475.1 | links=#1330(auto Tanaris;22):91
+c5481.1 | links=c5485.3:22
+c5485.1 | links=c5485.3:95 c5485.7:74 c5481.8:47
+c5490.1 | links=c5481.6:66
+c5594.1 | links=#27270(auto Tanaris;459):8
+c5615.1 | links=c5615.2:24 c5623.13:28
+c5616.1 | links=c5618.1:40 c5618.4:35 c5616.22:8
+c5617.1 | links=c5617.21:18
+c5618.1 | links=c5616.1:40 c5616.5:34
+c5623.1 | links=c5617.3:34 c5623.5:51
+c5645.1 | links=c5647.7:38
+c5646.1 | links=#15403(auto Tanaris;255):70 c5647.4:31
+c5647.1 | links=c5646.5:37
+c5955.1 | links=#13874(auto Tanaris;226):84 #26234(auto Tanaris;441):95 c5421.27:65
+c6015.1 | links=#16567(auto Tanaris;280):33
+c6491.1 | links=#20827(auto Tanaris;357):20 o148504.1:13
+c6568.1 | links=#896(auto Tanaris;12):7 c4708.1:6
+c7407.1 | links=#27878(auto Tanaris;467):12 c7408.1:3
+c7408.1 | links=#27878(auto Tanaris;467):12 c7407.1:3
+c7564.1 | links=#897(auto Tanaris;13):18
+c7583.1 | links=#17856(auto Tanaris;306):8
+c7724.1 | links=#9103(auto Tanaris;146):12
+c7733.1 | links=#25981(auto Tanaris;438):3 o180523.1:4
+c7763.1 | links=#13968(auto Tanaris;229):11
+c7770.1 | links=c5467.1:90 c5431.96:100 c5431.106:83 c5431.119:51
+c7771.1 | links=#24160(auto Tanaris;407):67
+c7784.1 | links=#15697(auto Tanaris;264):18
+c7799.1 | links=c8124.1:5
+c7804.1 | links=c5411.1:4 c14567.1:4
+c7823.1 | links=#3826(auto Tanaris;64):32 #12566(auto Tanaris;202):18
+c7824.1 | links=#24694(auto Tanaris;417):32
+c7847.1 | links=c5615.20:4
+c7855.1 | links=#21335(auto Tanaris;368):29 c7856.23:24
+c7856.1 | links=c7856.14:37 c7856.25:32
+c7858.1 | links=c7858.10:21 c7858.23:13
+c7876.1 | links=#13410(auto Tanaris;221):5
+c7881.1 | links=#10455(auto Tanaris;166):7
+c7882.1 | links=#10455(auto Tanaris;166):3
+c7883.1 | links=#23318(central location;Lost Rigger Cove;Tanaris):38 c7857.4:6
+c8124.1 | links=#4391(auto Tanaris;72):16 c7799.1:5
+c8125.1 | links=#25981(auto Tanaris;438):13
+c8126.1 | links=#11422(auto Tanaris;182):11 c16014.1:4
+c8128.1 | links=#28394(auto Tanaris;479):5
+c8129.1 | links=#2319(auto Tanaris;39):6
+c8131.1 | links=#2319(auto Tanaris;39):8
+c8137.1 | links=#13227(auto Tanaris;217):6
+c8139.1 | links=#12412(auto Tanaris;197):9
+c8199.1 | links=c5425.1:69 c5647.7:30 c5646.10:23
+c8200.1 | links=c5645.6:21
+c8201.1 | links=c5474.5:55 c5475.10:32
+c8202.1 | links=c5471.3:21
+c8204.1 | links=c5457.1:20
+c8579.1 | links=#9396(auto Tanaris;149):13
+c8617.1 | links=#23365(auto Tanaris;399):45
+c8661.1 | links=#25885(auto Tanaris;436):16
+c8736.1 | links=#28621(s;u;Mailbox;Tanaris):4
+c9706.1 | links=#10455(auto Tanaris;166):4
+c9985.1 | links=#15219(auto Tanaris;248):6
+c10460.1 | links=#8745(auto Tanaris;141):26
+c11756.1 | links=#15100(auto Tanaris;246):6
+c11758.1 | links=#27456(auto Tanaris;464):16
+c11811.1 | links=#10139(auto Tanaris;160):8 o177226.1:5
+c12046.1 | links=#4680(auto Tanaris;77):20
+c14567.1 | links=#897(auto Tanaris;13):27 c7804.1:4 c9460.2:6
+c14743.1 | links=#13968(auto Tanaris;229):8
+c15165.1 | links=#3025(auto Tanaris;53):26 #12695(auto Tanaris;207):8
+c15526.1 | links=o142189.1:340
+c15664.1 | links=c7858.22:10
+c16014.1 | links=c8126.1:4
+c16417.1 | links=#11119(auto Tanaris;176):34 #14334(auto Tanaris;237):66 #24806(auto Tanaris;420):42
+c18542.1 | links=#21172(auto Tanaris;363):10
+c19859.1 | links=#13968(auto Tanaris;229):17
+c19860.1 | links=#13410(auto Tanaris;221):8
+c19861.1 | links=#896(auto Tanaris;12):18
+c19936.1 | links=#2564(auto Tanaris;47):29
+c20080.1 | links=#22846(auto Tanaris;392):33
+c20081.1 | links=#22846(auto Tanaris;392):13
+c20082.1 | links=#27123(auto Tanaris;457):21
+c20130.1 | links=#5313(auto Tanaris;86):17 c20131.1:7
+c20131.1 | links=c20130.1:7
+c20142.1 | links=#17208(auto Tanaris;293):16 #28421(auto Tanaris;480):42
+c21643.1 | links=#22846(auto Tanaris;392):21
+c25177.1 | links=#13410(auto Tanaris;221):9
+c25178.1 | links=#13410(auto Tanaris;221):12
+o50935.1 | links=c5617.13:3 c5615.16:18
+o142071.1 | links=#13968(auto Tanaris;229):12 #27456(auto Tanaris;464):20
+o142122.1 | links=#9396(auto Tanaris;149):6 #12695(auto Tanaris;207):9
+o142181.1 | links=o142181.2:3 o142181.4:2 o142181.5:3
+o142189.1 | links=c15526.1:340 o142189.2:147
+o142343.1 | links=#5207(auto Tanaris;85):11 c5469.2:32 c5469.3:36
+o144053.1 | links=c5453.19:7
+o148504.1 | links=c6491.1:13
+o150075.1 | links=#281(auto Tanaris;4):1 #12946(auto Tanaris;211):10
+o177226.1 | links=c11811.1:5
+o179496.1 | links=c7858.20:17
+o180523.1 | links=c7733.1:4
+c5455.2 | links=c5458.1:43 c5458.20:25
+c5457.2 | links=c5455.21:25
+c5458.2 | links=#13297(auto Tanaris;219):33 c5456.8:35
+c5469.2 | links=o142343.1:32 c5469.6:46
+c5471.2 | links=c5473.3:94 c5474.10:37 c5474.20:41
+c5472.2 | links=#1330(auto Tanaris;22):42
+c5474.2 | links=#6811(auto Tanaris;112):37 c5474.3:14 o140971.5:14
+c5481.2 | links=c5485.3:29
+c5485.2 | links=c5485.3:88 c5481.11:75
+c5490.2 | links=c5485.3:114
+c5615.2 | links=c5615.1:24
+c5616.2 | links=c5616.17:16
+c5617.2 | links=c5615.9:36
+c5618.2 | links=#11135(auto Tanaris;178):54 #13875(auto Tanaris;227):17 c5618.9:36
+c5623.2 | links=c5617.22:37
+c5645.2 | links=c5646.4:37
+c5646.2 | links=c5647.9:17
+c5647.2 | links=c5647.3:36 c5647.4:28
+c6491.2 | links=#1695(auto Tanaris;27):24 #6466(auto Tanaris;109):18
+c7855.2 | links=c7856.21:17
+c7856.2 | links=c7855.17:29
+c7857.2 | links=#21038(auto Tanaris;361):4 c7857.9:7
+c7858.2 | links=c7858.23:5 c7858.27:25
+c9397.2 | links=c5421.10:67 c5427.11:36
+c9460.2 | links=c14567.1:6
+o142181.2 | links=#19648(auto Tanaris;334):12 o142181.1:3 o142181.3:1
+o142189.2 | links=o142189.1:147 c5431.31:63
+c5455.3 | links=c5457.3:40 c5458.3:23 c5455.4:51
+c5456.3 | links=c5458.3:32
+c5457.3 | links=c5455.3:40 c5455.21:25
+c5458.3 | links=c5455.3:23 c5456.3:32
+c5469.3 | links=o142343.1:36 c5469.4:46
+c5471.3 | links=c8202.1:21 c5474.3:69
+c5472.3 | links=#3418(auto Tanaris;58):24 c5474.3:18
+c5473.3 | links=c5471.2:94 c5474.6:89 c5475.9:47 c5472.10:83 c5475.10:75
+c5474.3 | links=c5474.2:14 c5471.3:69 c5472.3:18
+c5481.3 | links=c5481.5:2 c5485.6:56
+c5485.3 | links=c5481.1:22 c5485.1:95 c5481.2:29 c5485.2:88 c5490.2:114 c5490.3:35 c5485.4:46 c5490.4:3 c5485.5:77
+c5490.3 | links=c5485.3:35 c5481.7:37
+c5615.3 | links=c5615.10:25
+c5616.3 | links=#7866(auto Tanaris;127):41 c5618.11:12
+c5617.3 | links=c5623.1:34 c5617.4:20
+c5618.3 | links=c5618.10:43 c5616.13:18 c5616.14:29
+c5623.3 | links=c5617.6:103 c5617.8:46
+c5645.3 | links=c5646.6:25
+c5647.3 | links=c5647.2:36
+c6491.3 | links=#2177(auto Tanaris;36):32
+c7855.3 | links=c7855.15:4
+c7856.3 | links=#23318(central location;Lost Rigger Cove;Tanaris):44 #25001(auto Tanaris;425):47 c7857.3:33
+c7857.3 | links=#4429(auto Tanaris;73):5 c7856.3:33 c7857.10:5
+c7858.3 | links=#6167(auto Tanaris;103):5 c7855.10:8
+c14123.3 | links=#8585(auto Tanaris;138):23 #10775(auto Tanaris;170):40
+o142181.3 | links=o142181.2:1
+c5420.4 | links=#15523(auto Tanaris;258):54
+c5429.4 | links=c5429.20:39 c5429.21:47
+c5455.4 | links=c5455.3:51 c5456.4:45 c5455.5:54
+c5456.4 | links=#19519(auto Tanaris;331):55 c5455.4:45
+c5457.4 | links=#20856(auto Tanaris;358):31
+c5469.4 | links=c5469.1:47 c5469.3:46 c5469.5:13
+c5472.4 | links=c5474.4:22 c5472.8:80
+c5474.4 | links=c5474.1:41 c5472.4:22
+c5475.4 | links=#15281(auto Tanaris;250):195
+c5481.4 | links=c5481.5:37
+c5485.4 | links=c5485.3:46
+c5490.4 | links=c5485.3:3
+c5615.4 | links=c5615.7:29 c5615.9:40
+c5616.4 | links=c5618.8:13
+c5617.4 | links=c5617.3:20 c5617.7:16
+c5618.4 | links=c5616.1:35 c5616.18:23
+c5623.4 | links=c5623.5:7 c5615.6:21
+c5645.4 | links=c5645.5:33 c5647.10:30
+c5646.4 | links=c5645.2:37 c5646.5:44 c5647.11:34
+c5647.4 | links=c5646.1:31 c5647.2:28
+c6491.4 | links=#11151(auto Tanaris;180):26
+c7855.4 | links=c7856.6:25 c7856.17:34
+c7857.4 | links=c7883.1:6 c7857.28:4
+c15685.4 | links=c7857.10:3 c7858.22:8
+c19918.4 | links=#21200(auto Tanaris;364):81
+o142181.4 | links=o142181.1:2
+c5429.5 | links=c5429.19:22 c5429.24:41
+c5455.5 | links=c5455.4:54
+c5459.5 | links=c5458.13:27
+c5460.5 | links=c5455.21:7
+c5469.5 | links=c5469.4:13
+c5471.5 | links=#11543(auto Tanaris;187):53 c5475.16:48 o140971.64:54
+c5474.5 | links=c8201.1:55 c5472.11:29
+c5475.5 | links=c5472.16:28 c5472.23:18
+c5481.5 | links=#13909(auto Tanaris;228):43 c5481.3:2 c5481.4:37
+c5485.5 | links=c5485.3:77 c5485.6:41
+c5490.5 | links=c5485.6:17
+c5615.5 | links=c5623.11:15
+c5616.5 | links=c5618.1:34 c5616.24:30
+c5617.5 | links=c5617.22:38
+c5618.5 | links=c5616.8:19 c5616.23:18
+c5623.5 | links=c5623.1:51 c5623.4:7 c5623.6:12
+c5645.5 | links=c5645.4:33 c5646.6:34
+c5646.5 | links=c5647.1:37 c5646.4:44
+c5647.5 | links=c5647.6:21 c5646.7:23
+c7855.5 | links=c7856.17:28
+c7856.5 | links=#2322(auto Tanaris;40):31
+c7858.5 | links=#24876(auto Tanaris;421):18 #28391(auto Tanaris;478):12
+c15685.5 | links=c7857.22:19 c7856.26:9
+o140971.5 | links=c5474.2:14
+o142181.5 | links=#19648(auto Tanaris;334):12 o142181.1:3
+c5421.6 | links=#26234(auto Tanaris;441):75 c5421.19:69
+c5456.6 | links=c5458.13:14 c5456.30:34
+c5459.6 | links=#22169(rescue;down;The Noxious Lair;Tanaris):5
+c5469.6 | links=c5469.2:46
+c5473.6 | links=#15281(auto Tanaris;250):144
+c5474.6 | links=c5473.3:89
+c5475.6 | links=c5474.16:32
+c5481.6 | links=c5490.1:66 c5481.7:67 c5481.12:42
+c5485.6 | links=#15711(auto Tanaris;265):18 c5481.3:56 c5485.5:41 c5490.5:17
+c5490.6 | links=#13909(auto Tanaris;228):25 c5490.7:58
+c5615.6 | links=c5623.4:21 c5615.8:34
+c5616.6 | links=#15046(auto Tanaris;244):54 c5616.22:24 c5616.24:17
+c5617.6 | links=c5623.3:103 c5615.7:31 c5615.10:20
+c5618.6 | links=#5800(auto Tanaris;93):171 c5618.8:32 c5618.12:25 c5616.23:59
+c5623.6 | links=c5623.5:12 c5615.9:25
+c5645.6 | links=#24348(auto Tanaris;409):42 c8200.1:21 c5647.19:54
+c5646.6 | links=c5645.3:25 c5645.5:34 c5647.9:12
+c5647.6 | links=c5647.5:21 c5647.7:35
+c7855.6 | links=#21335(auto Tanaris;368):41 o179496.8:22
+c7856.6 | links=#26786(entry and exit;building;Lost Rigger Cove;Tanaris):28 c7855.4:25
+c7857.6 | links=#19816(auto Tanaris;339):5
+c7858.6 | links=#24876(auto Tanaris;421):9
+o179496.6 | links=c7858.31:13
+c5427.7 | links=o140971.18:23
+c5429.7 | links=c5429.9:33 c5426.45:32 c5426.46:36
+c5453.7 | links=#7331(auto Tanaris;119):1
+c5472.7 | links=c5474.14:34
+c5481.7 | links=c5490.3:37 c5481.6:67
+c5485.7 | links=c5485.1:74
+c5490.7 | links=#28034(auto Tanaris;470):26 c5490.6:58
+c5615.7 | links=c5615.4:29 c5617.6:31
+c5616.7 | links=c5618.7:34
+c5617.7 | links=c5617.4:16
+c5618.7 | links=#13875(auto Tanaris;227):16 c5616.7:34
+c5623.7 | links=c5623.8:60 c5617.17:16
+c5646.7 | links=#19074(auto Tanaris;325):117 c5647.5:23 c5646.10:26
+c5647.7 | links=#10092(auto Tanaris;159):8 c5645.1:38 c8199.1:30 c5647.6:35
+c7855.7 | links=c7856.7:30 c7855.21:41
+c7856.7 | links=c7855.7:30
+o179496.7 | links=c7856.14:3
+c5456.8 | links=c5458.2:35
+c5471.8 | links=#14055(auto Tanaris;230):73 c5471.9:66
+c5472.8 | links=c5472.4:80 c5472.13:70 c5472.15:52
+c5481.8 | links=c5485.1:47 c5481.9:27
+c5490.8 | links=c5481.9:64 c5481.10:48
+c5615.8 | links=c5615.6:34
+c5616.8 | links=#7866(auto Tanaris;127):33 c5618.5:19 c5616.19:51
+c5617.8 | links=c5623.3:46 c5615.16:13
+c5618.8 | links=c5616.4:13 c5618.6:32
+c5623.8 | links=c5623.7:60 c5615.11:106 c5617.11:21 c5615.12:35
+c5646.8 | links=c5647.15:25 c5647.21:32
+c7855.8 | links=#23318(central location;Lost Rigger Cove;Tanaris):34
+o179496.8 | links=c7855.6:22
+c5419.9 | links=c5429.28:58
+c5429.9 | links=c5429.7:33
+c5456.9 | links=c5458.13:15
+c5471.9 | links=c5471.8:66 c5474.30:47
+c5472.9 | links=c5472.15:27 c5474.17:23
+c5475.9 | links=c5473.3:47
+c5481.9 | links=c5481.8:27 c5490.8:64
+c5485.9 | links=#28034(auto Tanaris;470):43
+c5615.9 | links=c5617.2:36 c5615.4:40 c5623.6:25
+c5616.9 | links=c5616.11:31
+c5617.9 | links=#24737(auto Tanaris;419):45 c5623.10:22
+c5618.9 | links=#20800(auto Tanaris;355):62 c5618.2:36 c5618.13:69
+c5623.9 | links=c5623.11:13 c5617.15:28
+c5647.9 | links=c5646.2:17 c5646.6:12
+c7855.9 | links=#5059(auto Tanaris;84):24 #23318(central location;Lost Rigger Cove;Tanaris):37 c7855.19:24
+c7856.9 | links=c7856.21:20 c7856.25:34
+c7857.9 | links=c7857.2:7
+c7858.9 | links=c7855.19:38 c7858.20:6
+c5421.10 | links=c9397.2:67 c5421.30:71 c5424.71:68
+c5472.10 | links=c5473.3:83
+c5474.10 | links=c5471.2:37 c5474.11:15
+c5475.10 | links=c8201.1:32 c5473.3:75
+c5481.10 | links=c5490.8:48
+c5615.10 | links=c5615.3:25 c5617.6:20
+c5616.10 | links=c5616.24:15
+c5617.10 | links=c5615.13:14
+c5618.10 | links=#5459(auto Tanaris;89):44 c5618.3:43
+c5623.10 | links=c5617.9:22 c5615.22:10
+c5646.10 | links=c8199.1:23 c5646.7:26
+c5647.10 | links=c5645.4:30 c5647.11:49
+c7855.10 | links=c7858.3:8 c7855.26:5 c7858.30:6
+c7857.10 | links=c7857.3:5 c15685.4:3
+c7858.10 | links=c7858.1:21 c7858.19:5
+c5427.11 | links=c9397.2:36
+c5430.11 | links=#13874(auto Tanaris;226):58
+c5452.11 | links=#16787(auto Tanaris;284):20 c5453.19:18
+c5472.11 | links=c5474.5:29 c5474.17:25
+c5474.11 | links=#18348(auto Tanaris;315):53 c5474.10:15
+c5481.11 | links=c5485.2:75
+c5615.11 | links=c5623.8:106 c5615.13:34 c5617.18:40 c5617.23:53
+c5616.11 | links=c5616.9:31 c5616.15:33
+c5617.11 | links=c5623.8:21 c5615.19:62 c5617.20:32
+c5618.11 | links=c5616.3:12 c5616.20:9
+c5623.11 | links=c5615.5:15 c5623.9:13
+c5647.11 | links=c5646.4:34 c5647.10:49 c5419.28:121
+c7855.11 | links=#16009(auto Tanaris;269):41
+c5421.12 | links=#437(auto Tanaris;6):53 #11543(auto Tanaris;187):74 o140971.18:56
+c5472.12 | links=c5472.17:25 c5474.20:14
+c5474.12 | links=#1190(auto Tanaris;17):34 c5474.22:15
+c5481.12 | links=c5481.6:42
+c5615.12 | links=c5623.8:35
+c5616.12 | links=c5618.13:65
+c5617.12 | links=#24737(auto Tanaris;419):66
+c5618.12 | links=c5618.6:25 c5616.17:12
+c5623.12 | links=c5615.13:34
+c7855.12 | links=c7855.22:4
+c7857.12 | links=c7857.30:8
+c5421.13 | links=#24884(auto Tanaris;423):37 c5421.53:33 c5424.59:65
+c5458.13 | links=c5459.5:27 c5456.6:14 c5456.9:15
+c5472.13 | links=c5472.8:70 c5474.26:12
+c5474.13 | links=c5474.14:42
+c5481.13 | links=#15711(auto Tanaris;265):20
+c5615.13 | links=c5617.10:14 c5615.11:34 c5623.12:34
+c5616.13 | links=c5618.3:18
+c5617.13 | links=o50935.1:3 c5623.13:18
+c5618.13 | links=c5618.9:69 c5616.12:65 c5616.16:38
+c5623.13 | links=c5615.1:28 c5617.13:18 c5617.16:22
+c7855.13 | links=#23176(auto Tanaris;396):23 #23318(central location;Lost Rigger Cove;Tanaris):34 c7855.18:15 c7856.26:33
+c7856.13 | links=#3983(auto Tanaris;66):37 c7855.17:6
+c5455.14 | links=#19519(auto Tanaris;331):32
+c5472.14 | links=c5474.28:25
+c5474.14 | links=#23299(auto Tanaris;398):22 c5472.7:34 c5474.13:42
+c5615.14 | links=#24737(auto Tanaris;419):71
+c5616.14 | links=c5618.3:29
+c5617.14 | links=c5615.22:27
+c5647.14 | links=c5647.15:39 c5647.19:39
+c7856.14 | links=c7856.1:37 o179496.7:3
+c5419.15 | links=c5429.20:27 c5426.105:70
+c5472.15 | links=c5472.8:52 c5472.9:27
+c5474.15 | links=#15847(auto Tanaris;266):21
+c5615.15 | links=c5615.22:9
+c5616.15 | links=#11135(auto Tanaris;178):32 c5616.11:33
+c5617.15 | links=#19692(auto Tanaris;337):96 c5623.9:28 c5617.17:90
+c5647.15 | links=c5646.8:25 c5647.14:39
+c7855.15 | links=#15283(auto Tanaris;251):2 c7855.3:4
+c5422.16 | links=#3291(auto Tanaris;55):77 #10972(auto Tanaris;175):81
+c5426.16 | links=c5426.105:31
+c5472.16 | links=c5475.5:28 c5472.19:26
+c5474.16 | links=#13199(auto Tanaris;216):32 c5475.6:32
+c5475.16 | links=c5471.5:48 c5472.22:47 o140971.48:53
+c5615.16 | links=o50935.1:18 c5617.8:13
+c5616.16 | links=c5618.13:38 c5616.21:33
+c5617.16 | links=#23628(auto Tanaris;400):35 c5623.13:22
+c7855.16 | links=#26786(entry and exit;building;Lost Rigger Cove;Tanaris):23
+c7856.16 | links=#26786(entry and exit;building;Lost Rigger Cove;Tanaris):21
+c5472.17 | links=#18169(auto Tanaris;313):40 c5472.12:25
+c5474.17 | links=c5472.9:23 c5472.11:25
+c5615.17 | links=c5617.19:29 c5617.21:10 c5617.24:22
+c5616.17 | links=c5616.2:16 c5618.12:12
+c5617.17 | links=c5623.7:16 c5617.15:90 c5615.21:14 c5617.22:61
+c7855.17 | links=c7856.2:29 c7856.13:6
+c7856.17 | links=c7855.4:34 c7855.5:28 c7856.21:39
+c7858.17 | links=c7858.28:8
+c5474.18 | links=#27398(auto Tanaris;463):32 c5474.28:25
+c5616.18 | links=#15046(auto Tanaris;244):53 c5618.4:23
+c5617.18 | links=c5615.11:40
+c5647.18 | links=c5647.20:21 c5647.21:35
+c7855.18 | links=c7855.13:15
+o140971.18 | links=c5427.7:23 c5421.12:56
+c5421.19 | links=c5421.6:69
+c5429.19 | links=c5429.5:22 c5426.108:29
+c5453.19 | links=o144053.1:7 c5452.11:18
+c5472.19 | links=c5472.16:26 c5474.19:39 c5474.27:24
+c5474.19 | links=#5934(auto Tanaris;98):57 c5472.19:39
+c5615.19 | links=c5617.11:62 c5615.20:3
+c5616.19 | links=c5616.8:51 c5616.25:6
+c5617.19 | links=#19692(auto Tanaris;337):156 c5615.17:29
+c5647.19 | links=c5645.6:54 c5647.14:39
+c7855.19 | links=#2043(auto Tanaris;33):23 c7855.9:24 c7858.9:38 c7858.27:47 c7858.31:44
+c7857.19 | links=#26408(auto Tanaris;443):6 c7857.26:4
+c7858.19 | links=c7858.10:5
+c5426.20 | links=#5792(auto Tanaris;92):96 #21200(auto Tanaris;364):135 #28430(auto Tanaris;481):73
+c5429.20 | links=c5429.4:39 c5419.15:27
+c5458.20 | links=c5455.2:25 c5455.21:24
+c5474.20 | links=c5471.2:41 c5472.12:14
+c5615.20 | links=c7847.1:4 c5615.19:3
+c5616.20 | links=c5618.11:9
+c5617.20 | links=c5617.11:32
+c5647.20 | links=#19074(auto Tanaris;325):49 c5647.18:21
+c7855.20 | links=#21335(auto Tanaris;368):18 c7856.27:23
+c7856.20 | links=c7856.27:21
+c7857.20 | links=c7857.28:4
+c7858.20 | links=o179496.1:17 c7858.9:6
+c5429.21 | links=c5429.4:47 o140971.50:13
+c5455.21 | links=#18028(auto Tanaris;309):29 c5457.2:25 c5457.3:25 c5460.5:7 c5458.20:24
+c5615.21 | links=c5617.17:14
+c5616.21 | links=c5616.16:33
+c5617.21 | links=c5617.1:18 c5615.17:10
+c5647.21 | links=c5646.8:32 c5647.18:35
+c7855.21 | links=#16003(auto Tanaris;268):29 c7855.7:41 c7855.23:34
+c7856.21 | links=c7855.2:17 c7856.9:20 c7856.17:39 c7855.24:40
+c5472.22 | links=c5475.16:47
+c5474.22 | links=c5474.12:15
+c5615.22 | links=c5623.10:10 c5617.14:27 c5615.15:9
+c5616.22 | links=c5616.1:8 c5616.6:24
+c5617.22 | links=c5623.2:37 c5617.5:38 c5617.17:61
+c7855.22 | links=#12684(auto Tanaris;206):8 #21313(auto Tanaris;367):8 c7855.12:4
+c7857.22 | links=c15685.5:19 c7857.25:5
+c7858.22 | links=c15664.1:10 c15685.4:8
+c5472.23 | links=c5475.5:18
+c5616.23 | links=c5618.5:18 c5618.6:59
+c5617.23 | links=c5615.11:53
+c7855.23 | links=c7855.21:34
+c7856.23 | links=#9676(auto Tanaris;154):14 c7855.1:24
+c7858.23 | links=c7858.1:13 c7858.2:5
+c5429.24 | links=c5429.5:41 c5429.25:34
+c5616.24 | links=c5616.5:30 c5616.6:17 c5616.10:15
+c5617.24 | links=c5615.17:22
+c7855.24 | links=c7856.21:40
+c7856.24 | links=#23318(central location;Lost Rigger Cove;Tanaris):10
+c5427.25 | links=#24884(auto Tanaris;423):48
+c5429.25 | links=c5429.24:34
+c5616.25 | links=c5616.19:6
+c7856.25 | links=c7856.1:32 c7856.9:34
+c7857.25 | links=#16388(auto Tanaris;276):8 c7857.22:5
+c7858.25 | links=#8934(auto Tanaris;144):14 #16229(auto Tanaris;272):6
+c5474.26 | links=c5472.13:12 c5420.43:61
+c7855.26 | links=c7855.10:5
+c7856.26 | links=#9676(auto Tanaris;154):27 c15685.5:9 c7855.13:33
+c7857.26 | links=c7857.19:4
+c7858.26 | links=#24876(auto Tanaris;421):11
+c5421.27 | links=c5955.1:65 c5421.30:71
+c5429.27 | links=c5426.46:30
+c5474.27 | links=c5472.19:24 o140971.40:17
+c7856.27 | links=c7855.20:23 c7856.20:21
+c7858.27 | links=c7858.2:25 c7855.19:47
+o140971.27 | links=#11126(auto Tanaris;177):115
+c5419.28 | links=#15403(auto Tanaris;255):41 c5647.11:121
+c5429.28 | links=c5426.1:208 c5419.9:58 c5426.35:10
+c5474.28 | links=c5472.14:25 c5474.18:25
+c7857.28 | links=c7857.4:4 c7857.20:4
+c7858.28 | links=#8934(auto Tanaris;144):7 c7858.17:8
+c5421.29 | links=c5427.32:24
+c7858.29 | links=c7858.31:5
+c5421.30 | links=c5421.10:71 c5421.27:71
+c5429.30 | links=c5426.1:29
+c5456.30 | links=#2064(auto Tanaris;34):52 c5456.6:34
+c5474.30 | links=c5471.9:47
+c7857.30 | links=#2043(auto Tanaris;33):10 c7857.12:8
+c7858.30 | links=c7855.10:6
+c5431.31 | links=o142189.2:63 c5431.33:205
+c7858.31 | links=o179496.6:13 c7855.19:44 c7858.29:5
+c5427.32 | links=c5421.1:56 c5421.29:24
+c5431.33 | links=c5431.1:191 c5431.31:205
+c5421.34 | links=c5421.53:65
+c5423.34 | links=c5423.69:75
+c5426.35 | links=#13648(auto Tanaris;222):175 c5428.1:266 c5429.28:10
+c5422.37 | links=#15421(auto Tanaris;256):21
+o140971.40 | links=c5474.27:17
+c5420.43 | links=c5474.26:61
+c5423.44 | links=c5425.1:63
+c5426.45 | links=c5429.7:32
+c5426.46 | links=c5426.1:58 c5429.7:36 c5429.27:30
+c5426.47 | links=c5426.1:33
+o140971.48 | links=c5475.16:53
+o140971.50 | links=c5429.21:13 c5426.108:33
+c5424.52 | links=#9878(auto Tanaris;157):22
+c5421.53 | links=c5421.13:33 c5421.34:65
+c5419.59 | links=c5425.1:20
+c5424.59 | links=#14947(auto Tanaris;243):40 c5421.13:65
+c5426.59 | links=#3935(auto Tanaris;65):59 #7983(auto Tanaris;129):120
+o140971.64 | links=c5471.5:54
+c5423.69 | links=c5426.1:69 c5423.34:75
+c5424.71 | links=c5421.10:68
+c5420.93 | links=#1190(auto Tanaris;17):15
+c5420.96 | links=#9388(auto Tanaris;148):59 #19519(auto Tanaris;331):152
+c5431.96 | links=#25576(auto Tanaris;430):54 c7770.1:100
+c5427.98 | links=#9544(auto Tanaris;151):47
+c5426.105 | links=c5419.15:70 c5426.16:31
+c5431.106 | links=c7770.1:83
+c5426.108 | links=c5429.19:29 o140971.50:33
+c5431.115 | links=#25576(auto Tanaris;430):41
+c5431.119 | links=c7770.1:51

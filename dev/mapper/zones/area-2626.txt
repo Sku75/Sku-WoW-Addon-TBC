@@ -1,0 +1,3 @@
+Zone areaId 2626 — eine Zeile pro Wegpunkt; Links inline.
+
+#28780 | s;Eastern Kingdoms;Eastern Plaguelands;Terrordale;Terrorweb Tunnel§s;Östliche Königreiche;Östliche Pestländer;Schreckenstal;Terrorweb-Tunnel§s;Royaumes de l'est;Maleterres de l'est;Val-Terreur;Tunnel de Tisse-terreur | x=3035.33 y=-2773.9 | size=1 | links=#51289(auto Terrorweb-Tunnel;Eastern Plaguelands;1254):2 #51290(auto Inside;Terrorweb-Tunnel;Eastern Plaguelands;1255):14

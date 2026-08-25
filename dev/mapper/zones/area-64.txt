@@ -1,0 +1,3 @@
+Zone areaId 64 — eine Zeile pro Wegpunkt; Links inline.
+
+#28813 | s;Eastern Kingdoms;Elwynn Forest;Fargodeep Mine;The Maclure Vineyards§s;Östliche Königreiche;Wald von Elwynn;Tiefenschachtmine;Weinberge der Maclures§s;Royaumes de l'est;Forêt d'Elwynn;Fargodeep Mine;The Maclure Vineyards | x=-9948.39 y=-69.1568 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 608 — eine Zeile pro Wegpunkt; Links inline.
+
+#28686 | s;Kalimdor;Dustwallow Marsh;Nijel's Point§s;Kalimdor;Marschen von Dustwallow;Die Nijelspitze§s;Kalimdor;Marécage d'Âprefange;Combe de Nijel | x=202.521 y=-1308.24 | size=1

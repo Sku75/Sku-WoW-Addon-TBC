@@ -1,0 +1,4 @@
+Zone areaId 330 — eine Zeile pro Wegpunkt; Links inline.
+
+#6386 | passage;from;Thandol Span;Wetlands;to;Thandol Span;Arathi Highlands§passage;von;Thandolübergang;Sumpfland;zum;Thandolübergang;Arathihochland§passage;de;Viaduc de Thandol;Les Paluns;vers;Viaduc de Thandol;Hautes-terres d'Arathi | x=-2370.699951171875 y=-2503.60009765625 | size=1 | links=#11324(auto Wetlands;103):11 #27099(auto Wetlands;252):99 #7806(passage;from;Thandol Span;Arathi Highlands;to;Thandol Span;Wetlands):11
+#20727 | quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;Viaduc de Thandol;Les Paluns | x=-2367.10009765625 y=-2509 | size=1

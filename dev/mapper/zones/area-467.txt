@@ -1,0 +1,3 @@
+Zone areaId 467 — eine Zeile pro Wegpunkt; Links inline.
+
+#28708 | s;Kalimdor;Stonetalon Mountains;Stonetalon Peak§s;Kalimdor;Steinkrallengebirge;Der Steinkrallengipfel§s;Kalimdor;Les Serres-Rocheuses;Stonetalon Peak | x=2658.78 y=-1449.71 | size=1

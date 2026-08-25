@@ -1,0 +1,7 @@
+Zone areaId 14684 — eine Zeile pro Wegpunkt; Links inline.
+
+#5594 | auto The Mystic Ward;Ironforge;1§auto Das Mystikerviertel;Eisenschmiede;1§auto The Mystic Ward;Forgefer;1 | x=-4634.80029296875 y=-1023.5 | size=1 | links=#20990(auto Ironforge;55):33 #12057(auto The Forlorn Cavern;Ironforge;5):13 #15390(auto The Mystic Ward;Ironforge;2):73
+#10667 | The Mystic Ward;Ironforge§Das Mystikerviertel;Eisenschmiede§The Mystic Ward;Forgefer | x=-4646.39990234375 y=-942.1000366210938 | size=1 | links=#15390(auto The Mystic Ward;Ironforge;2):10 #17273(auto The Mystic Ward;Ironforge;3):38 #9897(auto inside;Hall of Mysteries;Ironforge;2):17 c15892.4:27 c5595.26:15 c5595.29:15
+#15390 | auto The Mystic Ward;Ironforge;2§auto Das Mystikerviertel;Eisenschmiede;2§auto The Mystic Ward;Forgefer;2 | x=-4639.89990234375 y=-950.2999877929688 | size=1 | links=#12589(auto Ironforge;27):28 #5594(auto The Mystic Ward;Ironforge;1):73 #10667(The Mystic Ward;Ironforge):10
+#17273 | auto The Mystic Ward;Ironforge;3§auto Das Mystikerviertel;Eisenschmiede;3§auto The Mystic Ward;Forgefer;3 | x=-4680.89990234375 y=-924.9000244140625 | size=1 | links=#5825(auto Ironforge;11):64 #10667(The Mystic Ward;Ironforge):38 #24120(auto The Mystic Ward;Ironforge;4):31
+#24120 | auto The Mystic Ward;Ironforge;4§auto Das Mystikerviertel;Eisenschmiede;4§auto The Mystic Ward;Forgefer;4 | x=-4686.10009765625 y=-956.1000366210938 | size=1 | links=#17273(auto The Mystic Ward;Ironforge;3):31 #7960(auto The Great Forge;Ironforge;15):31

@@ -1,0 +1,3 @@
+Zone areaId 1222 — eine Zeile pro Wegpunkt; Links inline.
+
+#28645 | s;Kalimdor;Azshara;Bay of Storms;Hetaera's Clutch§s;Kalimdor;Azshara;Die Bucht der Stürme;Hetaeras Gelege§s;Kalimdor;Azshara;Baie des Tempêtes;Frai d'Hetaera | x=3556.64 y=-6232.79 | size=1

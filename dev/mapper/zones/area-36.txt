@@ -1,0 +1,669 @@
+Zone areaId 36 — eine Zeile pro Wegpunkt; Links inline.
+
+#178 | auto Alterac Mountains;1§auto Alteracgebirge;1§auto Montagnes d'Alterac;1 | x=24 y=-1586 | size=1 | links=#2440(auto Alterac Mountains;17):8 #27429(auto Alterac Mountains;275):6
+#181 | auto Alterac Mountains;2§auto Alteracgebirge;2§auto Montagnes d'Alterac;2 | x=646.9000244140625 y=-761.5 | size=1 | links=#6509(auto Alterac Mountains;53):57 c2252.27:48
+#452 | auto Alterac Mountains;3§auto Alteracgebirge;3§auto Montagnes d'Alterac;3 | x=675.7000122070312 y=-676.2999877929688 | size=1 | links=#15747(auto Alterac Mountains;163):42 #19772(auto Alterac Mountains;197):15 #22226(auto Alterac Mountains;226):20
+#1041 | auto Alterac Mountains;4§auto Alteracgebirge;4§auto Montagnes d'Alterac;4 | x=656.7000122070312 y=-555.9000244140625 | size=1 | links=#6076(in area;Ruins of Alterac;Alterac Mountains):53 #8240(auto Alterac Mountains;68):19 #16212(auto Alterac Mountains;167):62
+#1157 | auto Alterac Mountains;5§auto Alteracgebirge;5§auto Montagnes d'Alterac;5 | x=566.9000244140625 y=-1524.800048828125 | size=1 | links=#10361(auto Alterac Mountains;96):28 #13092(auto Alterac Mountains;128):44
+#1328 | crossing;Alterac Mountains§kreuzungspunkt;Alteracgebirge§traversée;Montagnes d'Alterac | x=273.6000061035156 y=-653.9000244140625 | size=1 | links=#2310(auto Alterac Mountains;15):39 #14515(auto Alterac Mountains;149):42 #28202(auto Alterac Mountains;290):44
+#1456 | auto Alterac Mountains;6§auto Alteracgebirge;6§auto Montagnes d'Alterac;6 | x=489.3999938964844 y=-686.6000366210938 | size=1 | links=#1721(auto Alterac Mountains;10):50 #26971(auto Alterac Mountains;273):24
+#1516 | auto Alterac Mountains;7§auto Alteracgebirge;7§auto Montagnes d'Alterac;7 | x=-40.60000228881836 y=239 | size=1 | links=#14281(auto Alterac Mountains;143):26 #27661(auto Alterac Mountains;278):38
+#1567 | auto Alterac Mountains;8§auto Alteracgebirge;8§auto Montagnes d'Alterac;8 | x=424.3000183105469 y=-283.3999938964844 | size=1 | links=#8944(auto Alterac Mountains;79):5 c2287.3:8
+#1581 | Syndicate Thief;Alterac Mountains;2;48.32;80.78§Dieb des Syndikats;Alteracgebirge;2;48.32;80.78§Larron du Syndicat;Montagnes d'Alterac;2;48.32;80.78 | x=-3.100000143051148 y=-584 | size=1
+#1710 | auto Alterac Mountains;9§auto Alteracgebirge;9§auto Montagnes d'Alterac;9 | x=687.7000122070312 y=-933.9000244140625 | size=1 | links=#11205(central location;inn;Strahnbrad;Alterac Mountains):6 #18844(auto Alterac Mountains;186):5
+#1721 | auto Alterac Mountains;10§auto Alteracgebirge;10§auto Montagnes d'Alterac;10 | x=518.5 y=-727.7000122070312 | size=1 | links=#1456(auto Alterac Mountains;6):50 #20097(auto Alterac Mountains;202):31
+#1904 | Cyclonian;Chillwind Point;Alterac Mountains§Cyclonian;Zugwindspitze;Alteracgebirge§Cyclonien;Pointe du Noroît;Montagnes d'Alterac | x=340.1000061035156 y=-1474.5 | size=1 | links=#25333(auto Alterac Mountains;259):32
+#1907 | auto Alterac Mountains;11§auto Alteracgebirge;11§auto Montagnes d'Alterac;11 | x=698.1000366210938 y=-923.5 | size=1 | links=#8163(auto Alterac Mountains;67):11 #11205(central location;inn;Strahnbrad;Alterac Mountains):11
+#2011 | auto Alterac Mountains;12§auto Alteracgebirge;12§auto Montagnes d'Alterac;12 | x=629.2999877929688 y=-1039 | size=1 | links=#18667(auto Alterac Mountains;185):40 #20136(auto Alterac Mountains;204):41
+#2175 | auto Alterac Mountains;13§auto Alteracgebirge;13§auto Montagnes d'Alterac;13 | x=628.9000244140625 y=-476.3999938964844 | size=1 | links=c2255.2:20 c2254.7:29
+#2272 | entry and exit;building;Ruins of Alterac;Alterac Mountains§ein- und ausgang;gebäude;Die Ruinen von Alterac;Alteracgebirge§entrée et sortie;building;Ruins of Alterac;Montagnes d'Alterac | x=500.3000183105469 y=-240.4000091552734 | size=1 | links=#27967(auto Alterac Mountains;285):9 c2287.6:15
+#2285 | auto Alterac Mountains;14§auto Alteracgebirge;14§auto Montagnes d'Alterac;14 | x=503 y=-291.1000061035156 | size=1 | links=#14446(auto Alterac Mountains;147):39 c2256.2:21 c2256.9:17
+#2310 | auto Alterac Mountains;15§auto Alteracgebirge;15§auto Montagnes d'Alterac;15 | x=234 y=-653.4000244140625 | size=1 | links=#1328(crossing;Alterac Mountains):39 #11353(auto Alterac Mountains;105):55 #14890(auto Alterac Mountains;152):10
+#2385 | auto Alterac Mountains;16§auto Alteracgebirge;16§auto Montagnes d'Alterac;16 | x=658.9000244140625 y=-710.1000366210938 | size=1 | links=#14444(auto Alterac Mountains;146):15 #22226(auto Alterac Mountains;226):16
+#2440 | auto Alterac Mountains;17§auto Alteracgebirge;17§auto Montagnes d'Alterac;17 | x=23.20000076293945 y=-1594.599975585938 | size=1 | links=#178(auto Alterac Mountains;1):8 #24473(auto Alterac Mountains;251):11
+#2626 | auto Alterac Mountains;18§auto Alteracgebirge;18§auto Montagnes d'Alterac;18 | x=619.7000122070312 y=-865.4000244140625 | size=1 | links=#6509(auto Alterac Mountains;53):70 #8698(auto Alterac Mountains;77):58 #23827(auto Alterac Mountains;243):27
+#2640 | auto Alterac Mountains;19§auto Alteracgebirge;19§auto Montagnes d'Alterac;19 | x=15.90000057220459 y=-1632.800048828125 | size=1 | links=#4964(auto Alterac Mountains;35):12 #26980(auto Alterac Mountains;274):6
+#2814 | auto Alterac Mountains;20§auto Alteracgebirge;20§auto Montagnes d'Alterac;20 | x=198 y=73.5 | size=1 | links=#21421(auto Alterac Mountains;216):91 c2349.16:86 c2349.18:70
+#2830 | auto Alterac Mountains;21§auto Alteracgebirge;21§auto Montagnes d'Alterac;21 | x=483.7000122070313 y=-204.6999969482422 | size=1 | links=#5479(auto Alterac Mountains;39):5 c2417.1:8
+#2915 | auto Alterac Mountains;22§auto Alteracgebirge;22§auto Montagnes d'Alterac;22 | x=1210.200073242188 y=-322.1000061035156 | size=1 | links=#17862(auto Alterac Mountains;178):10 c2246.6:6
+#2991 | auto Alterac Mountains;23§auto Alteracgebirge;23§auto Montagnes d'Alterac;23 | x=477.3000183105469 y=-209.3000030517578 | size=1 | links=#20693(auto Alterac Mountains;208):16 #27958(auto Alterac Mountains;284):13
+#3032 | auto Alterac Mountains;24§auto Alteracgebirge;24§auto Montagnes d'Alterac;24 | x=54.10000228881836 y=364.2000122070313 | size=1 | links=#23083(auto Alterac Mountains;234):27 c2358.11:20 c2359.13:6
+#3076 | auto Alterac Mountains;25§auto Alteracgebirge;25§auto Montagnes d'Alterac;25 | x=696.9000244140625 y=20.39999961853027 | size=5 | links=#14518(auto Alterac Mountains;150):116 #24372(auto Alterac Mountains;249):96
+#3119 | auto Alterac Mountains;26§auto Alteracgebirge;26§auto Montagnes d'Alterac;26 | x=4.099999904632568 y=-1620.200073242188 | size=1 | links=#18456(auto Alterac Mountains;183):13 #21571(auto Alterac Mountains;218):13 #23423(auto Alterac Mountains;239):4 c13085.1:25
+#3146 | auto Alterac Mountains;27§auto Alteracgebirge;27§auto Montagnes d'Alterac;27 | x=262.6000061035156 y=-791.1000366210938 | size=5 | links=#14339(auto Alterac Mountains;145):19 #18276(auto Alterac Mountains;180):50 c2240.11:8
+#3301 | auto Alterac Mountains;28§auto Alteracgebirge;28§auto Montagnes d'Alterac;28 | x=-47.5 y=275.6000061035156 | size=1 | links=#19230(auto Alterac Mountains;192):19 #28168(auto Alterac Mountains;289):4 c2272.4:8
+#3343 | central location;Corrahn's Dagger;Alterac Mountains§zentralpunkt;Corrahns Dolch;Alteracgebirge§emplacement central;Dague de Corrahn;Montagnes d'Alterac | x=-58.79999923706055 y=-569.5 | size=1 | links=#16520(auto Alterac Mountains;170):49 c2240.1:19 o186420.1:27 c2240.3:45 c2240.4:35 c2407.11:17
+#3603 | auto Alterac Mountains;29§auto Alteracgebirge;29§auto Montagnes d'Alterac;29 | x=3.600000143051148 y=-1627 | size=1 | links=#4964(auto Alterac Mountains;35):4 c6777.1:5 c6779.1:10
+#3635 | auto Alterac Mountains;30§auto Alteracgebirge;30§auto Montagnes d'Alterac;30 | x=391.2000122070313 y=-1479.300048828125 | size=1 | links=#9819(auto Alterac Mountains;90):42 #25333(auto Alterac Mountains;259):63
+#3721 | auto Alterac Mountains;31§auto Alteracgebirge;31§auto Montagnes d'Alterac;31 | x=2.900000095367432 y=-1731.5 | size=1 | links=#9489(auto Alterac Mountains;87):20 #12524(auto Hillsbrad Foothills;208):13
+#3986 | camp;Alliance;The Headland;Alterac Mountains§lager;allianz;Die Landzunge;Alteracgebirge§camp;Alliance;L'Avancée;Montagnes d'Alterac | x=-18.10000038146973 y=-340.2000122070313 | size=1 | links=#9059(auto Alterac Mountains;80):47 c2407.1:63 c13217.1:19 c13841.1:18 c14961.1:22
+#4378 | auto Alterac Mountains;32§auto Alteracgebirge;32§auto Montagnes d'Alterac;32 | x=1216.5 y=-304.5 | size=1 | links=#5248(auto Alterac Mountains;37):7 #9788(auto Alterac Mountains;89):7
+#4394 | auto Alterac Mountains;33§auto Alteracgebirge;33§auto Montagnes d'Alterac;33 | x=747.9000244140625 y=-578.1000366210938 | size=1 | links=#16212(auto Alterac Mountains;167):31 #25540(auto Alterac Mountains;261):26 c2252.12:49 c2253.17:33 c2252.38:27
+#4776 | auto Alterac Mountains;34§auto Alteracgebirge;34§auto Montagnes d'Alterac;34 | x=-106.5999984741211 y=210.1999969482422 | size=1 | links=#7119(auto Alterac Mountains;58):7 #22213(auto Alterac Mountains;224):3
+#4964 | auto Alterac Mountains;35§auto Alteracgebirge;35§auto Montagnes d'Alterac;35 | x=3.600000143051148 y=-1631.599975585938 | size=1 | links=#2640(auto Alterac Mountains;19):12 #3603(auto Alterac Mountains;29):4
+#5077 | auto Alterac Mountains;36§auto Alteracgebirge;36§auto Montagnes d'Alterac;36 | x=46.79999923706055 y=-455.6000061035156 | size=5 | links=#9059(auto Alterac Mountains;80):85 #27809(auto Alterac Mountains;282):89 c2406.5:43 c2407.6:40 c2407.7:22
+#5248 | auto Alterac Mountains;37§auto Alteracgebirge;37§auto Montagnes d'Alterac;37 | x=1219.900024414063 y=-311.5 | size=1 | links=#4378(auto Alterac Mountains;32):7 #17862(auto Alterac Mountains;178):6
+#5294 | auto Alterac Mountains;38§auto Alteracgebirge;38§auto Montagnes d'Alterac;38 | x=641.2000122070312 y=-834.1000366210938 | size=1 | links=#23827(auto Alterac Mountains;243):23 c2318.5:10
+#5479 | auto Alterac Mountains;39§auto Alteracgebirge;39§auto Montagnes d'Alterac;39 | x=487.8999938964844 y=-201.9000091552734 | size=1 | links=#2830(auto Alterac Mountains;21):5 #11500(auto Alterac Mountains;107):18
+#5634 | auto Alterac Mountains;40§auto Alteracgebirge;40§auto Montagnes d'Alterac;40 | x=892.9000244140625 y=-111.7000045776367 | size=1 | links=#6162(auto Alterac Mountains;47):5 #19894(auto Alterac Mountains;200):8
+#5642 | auto Alterac Mountains;41§auto Alteracgebirge;41§auto Montagnes d'Alterac;41 | x=14.10000038146973 y=-1620 | size=1 | links=#8562(auto Alterac Mountains;76):4 #20726(auto Alterac Mountains;209):6
+#5681 | auto Alterac Mountains;42§auto Alteracgebirge;42§auto Montagnes d'Alterac;42 | x=1036.599975585938 y=-225.3000030517578 | size=5 | links=#13124(auto Alterac Mountains;129):88 #22853(auto Alterac Mountains;230):69
+#5734 | auto Alterac Mountains;43§auto Alteracgebirge;43§auto Montagnes d'Alterac;43 | x=848.4000244140625 y=-929.4000244140625 | size=1 | links=#8342(auto Alterac Mountains;70):25 #19268(auto Alterac Mountains;193):31
+#5890 | auto Alterac Mountains;44§auto Alteracgebirge;44§auto Montagnes d'Alterac;44 | x=499.3999938964844 y=350 | size=5 | links=#10371(auto Alterac Mountains;97):36 c18165.1:18 c2408.41:48
+#6018 | auto Alterac Mountains;45§auto Alteracgebirge;45§auto Montagnes d'Alterac;45 | x=773.1000366210938 y=-289.1000061035156 | size=1 | links=#10881(auto Alterac Mountains;102):3 c2480.1:2
+#6076 | in area;Ruins of Alterac;Alterac Mountains§in umgebung;Die Ruinen von Alterac;Alteracgebirge§in area;Ruins of Alterac;Montagnes d'Alterac | x=605.7999877929688 y=-540.9000244140625 | size=1 | links=#1041(auto Alterac Mountains;4):53 #22963(auto Alterac Mountains;231):23 c2254.8:31
+#6150 | auto Alterac Mountains;46§auto Alteracgebirge;46§auto Montagnes d'Alterac;46 | x=485.3000183105469 y=155.4000091552734 | size=5 | links=#15338(auto Alterac Mountains;158):31 #28117(auto Alterac Mountains;288):38 c2359.6:30 c2349.17:54
+#6162 | auto Alterac Mountains;47§auto Alteracgebirge;47§auto Montagnes d'Alterac;47 | x=890.7999877929688 y=-117.2000045776367 | size=1 | links=#5634(auto Alterac Mountains;40):5 c3984.1:5
+#6210 | auto Alterac Mountains;48§auto Alteracgebirge;48§auto Montagnes d'Alterac;48 | x=1171.099975585938 y=-444.8999938964844 | size=5 | links=#6334(auto Alterac Mountains;52):83 #17292(auto Alterac Mountains;177):64 c2247.3:27
+#6250 | auto Alterac Mountains;49§auto Alteracgebirge;49§auto Montagnes d'Alterac;49 | x=774 y=-295.6000061035156 | size=1 | links=#9445(auto Alterac Mountains;85):17 #26544(auto Alterac Mountains;269):16
+#6271 | auto Alterac Mountains;50§auto Alteracgebirge;50§auto Montagnes d'Alterac;50 | x=-76.0999984741211 y=256.8000183105469 | size=1 | links=#13414(auto Alterac Mountains;136):4 c2271.1:5
+#6295 | auto Alterac Mountains;51§auto Alteracgebirge;51§auto Montagnes d'Alterac;51 | x=681.4000244140625 y=-587.9000244140625 | size=1 | links=#8240(auto Alterac Mountains;68):21 #17512(entry and exit;Crushridge Hold;Alterac Mountains):17 c2252.10:11
+#6334 | auto Alterac Mountains;52§auto Alteracgebirge;52§auto Montagnes d'Alterac;52 | x=1139.5 y=-522.2000122070312 | size=5 | links=#6210(auto Alterac Mountains;48):83 #16219(auto Alterac Mountains;168):135 c2243.9:24 c2243.12:36
+#6509 | auto Alterac Mountains;53§auto Alteracgebirge;53§auto Montagnes d'Alterac;53 | x=602 y=-796.7999877929688 | size=1 | links=#181(auto Alterac Mountains;2):57 #2626(auto Alterac Mountains;18):70 #20853(auto Alterac Mountains;211):48 c2242.13:21
+#6607 | auto Alterac Mountains;54§auto Alteracgebirge;54§auto Montagnes d'Alterac;54 | x=56.29999923706055 y=-392.7000122070313 | size=5 | links=#13949(auto Alterac Mountains;140):28 c2406.5:31
+#6670 | auto Alterac Mountains;55§auto Alteracgebirge;55§auto Montagnes d'Alterac;55 | x=629.2999877929688 y=-313.3000183105469 | size=1 | links=#10343(auto Alterac Mountains;95):19 #15211(auto Alterac Mountains;155):14
+#6693 | auto Alterac Mountains;56§auto Alteracgebirge;56§auto Montagnes d'Alterac;56 | x=460.1000061035156 y=-645.1000366210938 | size=1 | links=#11536(crossing;Gallows' Corner;Alterac Mountains):28 #26971(auto Alterac Mountains;273):28 c2252.2:12
+#6961 | auto Alterac Mountains;57§auto Alteracgebirge;57§auto Montagnes d'Alterac;57 | x=7.700000286102295 y=-1631.400024414063 | size=1 | links=#11466(auto Alterac Mountains;106):8 #13324(auto Alterac Mountains;133):8
+#6996 | entry and exit;inn;Strahnbrad;Alterac Mountains§ein- und ausgang;gasthaus;Strahnbrad;Alteracgebirge§entrée et sortie;inn;Strahnbrad;Montagnes d'Alterac | x=681.2000122070312 y=-946 | size=1 | links=#18844(auto Alterac Mountains;186):15 #24345(auto Alterac Mountains;248):4
+#7119 | auto Alterac Mountains;58§auto Alteracgebirge;58§auto Montagnes d'Alterac;58 | x=-112.2000045776367 y=214.5 | size=1 | links=#4776(auto Alterac Mountains;34):7 c2412.1:0 c2413.1:13
+#7145 | auto Alterac Mountains;59§auto Alteracgebirge;59§auto Montagnes d'Alterac;59 | x=518.7000122070312 y=-222.6000061035156 | size=1 | links=#9398(auto Alterac Mountains;84):13 #27967(auto Alterac Mountains;285):24
+#7196 | auto Alterac Mountains;60§auto Alteracgebirge;60§auto Montagnes d'Alterac;60 | x=114.5999984741211 y=-575.2000122070312 | size=1 | links=#14274(auto Alterac Mountains;142):57 #27809(auto Alterac Mountains;282):53 c2406.10:23
+#7260 | auto Alterac Mountains;61§auto Alteracgebirge;61§auto Montagnes d'Alterac;61 | x=229.6999969482422 y=-267.6000061035156 | size=1 | links=#19498(auto Alterac Mountains;196):29 c2251.21:14
+#7304 | auto Alterac Mountains;62§auto Alteracgebirge;62§auto Montagnes d'Alterac;62 | x=-44.29999923706055 y=263.3999938964844 | size=1 | links=#16046(auto Alterac Mountains;165):6 #25882(auto Alterac Mountains;264):6
+#7613 | auto Alterac Mountains;63§auto Alteracgebirge;63§auto Montagnes d'Alterac;63 | x=-16 y=-1579.5 | size=1 | links=#23855(auto Alterac Mountains;245):20 c7325.1:11 c8309.1:24
+#7729 | auto Alterac Mountains;64§auto Alteracgebirge;64§auto Montagnes d'Alterac;64 | x=19.10000038146973 y=-1608.400024414063 | size=1 | links=#18456(auto Alterac Mountains;183):5 #24473(auto Alterac Mountains;251):4
+#7834 | central location;The Headland;Alterac Mountains§zentralpunkt;Die Landzunge;Alteracgebirge§emplacement central;L'Avancée;Montagnes d'Alterac | x=-147.4000091552734 y=-301.2000122070313 | size=1 | links=c2407.1:73 c2407.2:56 c2406.4:81 c2406.7:59 c2406.8:17 c2406.9:35 c14222.9:11 c14222.12:33
+#7840 | auto Alterac Mountains;65§auto Alteracgebirge;65§auto Montagnes d'Alterac;65 | x=919.2000122070312 y=-733.9000244140625 | size=5 | links=#22224(auto Alterac Mountains;225):108 c2407.9:21 c2243.15:35
+#8145 | auto Alterac Mountains;66§auto Alteracgebirge;66§auto Montagnes d'Alterac;66 | x=42.29999923706055 y=-573.7000122070312 | size=5 | links=#19871(auto Alterac Mountains;199):27 #27809(auto Alterac Mountains;282):44 c2240.2:22
+#8163 | auto Alterac Mountains;67§auto Alteracgebirge;67§auto Montagnes d'Alterac;67 | x=698.9000244140625 y=-912.2999877929688 | size=1 | links=#1907(auto Alterac Mountains;11):11 #20662(auto Alterac Mountains;207):8
+#8240 | auto Alterac Mountains;68§auto Alteracgebirge;68§auto Montagnes d'Alterac;68 | x=671 y=-568.7999877929688 | size=1 | links=#1041(auto Alterac Mountains;4):19 #6295(auto Alterac Mountains;51):21
+#8271 | auto Alterac Mountains;69§auto Alteracgebirge;69§auto Montagnes d'Alterac;69 | x=534.7999877929688 y=236.6999969482422 | size=5 | links=#10371(auto Alterac Mountains;97):82 #25570(auto Alterac Mountains;262):51 #28117(auto Alterac Mountains;288):58
+#8342 | auto Alterac Mountains;70§auto Alteracgebirge;70§auto Montagnes d'Alterac;70 | x=861.6000366210938 y=-907.9000244140625 | size=1 | links=#5734(auto Alterac Mountains;43):25 #22224(auto Alterac Mountains;225):74 c2243.27:68 c2243.29:34
+#8343 | auto Alterac Mountains;71§auto Alteracgebirge;71§auto Montagnes d'Alterac;71 | x=653.6000366210938 y=-344.6000061035156 | size=1 | links=#23256(auto Alterac Mountains;237):33 #24051(central location;Ruins of Alterac;Alterac Mountains):23
+#8462 | auto Alterac Mountains;72§auto Alteracgebirge;72§auto Montagnes d'Alterac;72 | x=784.4000244140625 y=-301.3000183105469 | size=1 | links=#10866(auto Alterac Mountains;101):12 #10881(auto Alterac Mountains;102):12
+#8475 | auto Alterac Mountains;73§auto Alteracgebirge;73§auto Montagnes d'Alterac;73 | x=114.0999984741211 y=286.6000061035156 | size=1 | links=#12311(auto Alterac Mountains;118):28 #23639(auto Alterac Mountains;242):12
+#8517 | auto Alterac Mountains;74§auto Alteracgebirge;74§auto Montagnes d'Alterac;74 | x=179.8000030517578 y=-295.7000122070313 | size=5 | links=#19498(auto Alterac Mountains;196):32 o178609.7:46 c2250.12:41 c2250.14:47
+#8549 | auto Alterac Mountains;75§auto Alteracgebirge;75§auto Montagnes d'Alterac;75 | x=102.4000015258789 y=413.7000122070313 | size=1 | links=#23083(auto Alterac Mountains;234):41
+#8562 | auto Alterac Mountains;76§auto Alteracgebirge;76§auto Montagnes d'Alterac;76 | x=17.89999961853027 y=-1621.800048828125 | size=1 | links=#5642(auto Alterac Mountains;41):4 #12358(auto Alterac Mountains;120):4
+#8698 | auto Alterac Mountains;77§auto Alteracgebirge;77§auto Montagnes d'Alterac;77 | x=622.2999877929688 y=-923.6000366210938 | size=1 | links=#2626(auto Alterac Mountains;18):58 #14492(auto Alterac Mountains;148):11 #16465(crossing;Strahnbrad;Alterac Mountains):47 c4075.1:3
+#8721 | auto Alterac Mountains;78§auto Alteracgebirge;78§auto Montagnes d'Alterac;78 | x=765.7999877929688 y=-332.8999938964844 | size=1 | links=#23545(auto Alterac Mountains;240):40 #26544(auto Alterac Mountains;269):24 c2254.13:21 c2254.16:15
+#8944 | auto Alterac Mountains;79§auto Alteracgebirge;79§auto Montagnes d'Alterac;79 | x=425.7000122070313 y=-278.5 | size=1 | links=#1567(auto Alterac Mountains;8):5 c2287.1:33
+#9059 | auto Alterac Mountains;80§auto Alteracgebirge;80§auto Montagnes d'Alterac;80 | x=8.800000190734863 y=-379 | size=5 | links=#3986(camp;Alliance;The Headland;Alterac Mountains):47 #5077(auto Alterac Mountains;36):85 c13816.1:24 c2406.5:43 c2407.5:63
+#9253 | auto Alterac Mountains;81§auto Alteracgebirge;81§auto Montagnes d'Alterac;81 | x=393 y=-263.5 | size=1 | links=c2287.1:29 c2256.3:23
+#9318 | auto Alterac Mountains;82§auto Alteracgebirge;82§auto Montagnes d'Alterac;82 | x=13.60000038146973 y=296.3000183105469 | size=5 | links=#15329(auto Alterac Mountains;157):66 #27487(auto Alterac Mountains;276):50 c2359.16:39
+#9373 | auto Alterac Mountains;83§auto Alteracgebirge;83§auto Montagnes d'Alterac;83 | x=630.1000366210938 y=-1183.5 | size=1 | links=#10263(auto Alterac Mountains;92):46 #28298(auto Alterac Mountains;291):27
+#9398 | auto Alterac Mountains;84§auto Alteracgebirge;84§auto Montagnes d'Alterac;84 | x=513.5 y=-210.1999969482422 | size=1 | links=#7145(auto Alterac Mountains;59):13 #11500(auto Alterac Mountains;107):18
+#9445 | auto Alterac Mountains;85§auto Alteracgebirge;85§auto Montagnes d'Alterac;85 | x=785.7000122070312 y=-308.8000183105469 | size=1 | links=#6250(auto Alterac Mountains;49):17 #20295(auto Alterac Mountains;206):6
+#9449 | auto Alterac Mountains;86§auto Alteracgebirge;86§auto Montagnes d'Alterac;86 | x=411.8000183105469 y=-615.9000244140625 | size=5 | links=#11536(crossing;Gallows' Corner;Alterac Mountains):32 #15653(auto Alterac Mountains;162):61
+#9489 | auto Alterac Mountains;87§auto Alteracgebirge;87§auto Montagnes d'Alterac;87 | x=21.10000038146973 y=-1741.900024414063 | size=1 | links=#3721(auto Alterac Mountains;31):20 #24777(auto Alterac Mountains;253):45
+#9550 | auto Alterac Mountains;88§auto Alteracgebirge;88§auto Montagnes d'Alterac;88 | x=-53.5 y=270.7000122070313 | size=1 | links=#24904(auto Alterac Mountains;256):18 c2414.1:15 c2271.3:4
+#9788 | auto Alterac Mountains;89§auto Alteracgebirge;89§auto Montagnes d'Alterac;89 | x=1209.5 y=-306.3000183105469 | size=1 | links=#4378(auto Alterac Mountains;32):7 #16138(auto Alterac Mountains;166):15
+#9819 | auto Alterac Mountains;90§auto Alteracgebirge;90§auto Montagnes d'Alterac;90 | x=428.1000061035156 y=-1499.5 | size=1 | links=#3635(auto Alterac Mountains;30):42 #17173(auto Alterac Mountains;175):47
+#9822 | auto Alterac Mountains;91§auto Alteracgebirge;91§auto Montagnes d'Alterac;91 | x=1244.700073242188 y=-248.4000091552734 | size=5 | links=#15250(auto Alterac Mountains;156):39 c2247.1:12
+#10263 | auto Alterac Mountains;92§auto Alteracgebirge;92§auto Montagnes d'Alterac;92 | x=632.1000366210938 y=-1229.900024414063 | size=1 | links=#9373(auto Alterac Mountains;83):46 #17237(auto Alterac Mountains;176):46
+#10285 | auto Alterac Mountains;93§auto Alteracgebirge;93§auto Montagnes d'Alterac;93 | x=308.2000122070313 y=-1422.400024414063 | size=1 | links=#11137(auto Alterac Mountains;104):52 #14556(auto Alterac Mountains;151):18 #19161(auto Alterac Mountains;191):48
+#10340 | auto Alterac Mountains;94§auto Alteracgebirge;94§auto Montagnes d'Alterac;94 | x=499.5 y=-603.2999877929688 | size=1 | links=#11536(crossing;Gallows' Corner;Alterac Mountains):59 #24985(auto Alterac Mountains;258):36 c2252.20:28
+#10343 | auto Alterac Mountains;95§auto Alteracgebirge;95§auto Montagnes d'Alterac;95 | x=628.7999877929688 y=-332.7000122070313 | size=1 | links=#6670(auto Alterac Mountains;55):19 #24051(central location;Ruins of Alterac;Alterac Mountains):18
+#10361 | auto Alterac Mountains;96§auto Alteracgebirge;96§auto Montagnes d'Alterac;96 | x=593.6000366210938 y=-1513.599975585938 | size=5 | links=#1157(auto Alterac Mountains;5):28 #16687(auto Alterac Mountains;171):68
+#10371 | auto Alterac Mountains;97§auto Alteracgebirge;97§auto Montagnes d'Alterac;97 | x=506.6000061035156 y=314.3999938964844 | size=5 | links=#5890(auto Alterac Mountains;44):36 #8271(auto Alterac Mountains;69):82
+#10459 | auto Alterac Mountains;98§auto Alteracgebirge;98§auto Montagnes d'Alterac;98 | x=463.2000122070313 y=277.8999938964844 | size=1 | links=o105570.1:22 c2359.3:11 c2408.15:52
+#10572 | auto Alterac Mountains;99§auto Alteracgebirge;99§auto Montagnes d'Alterac;99 | x=627.4000244140625 y=-680.2000122070312 | size=1 | links=#15747(auto Alterac Mountains;163):12 c2453.1:6
+#10753 | auto Alterac Mountains;100§auto Alteracgebirge;100§auto Montagnes d'Alterac;100 | x=516.9000244140625 y=-1579.200073242188 | size=1 | links=#13335(auto Alterac Mountains;134):35 #25900(auto Alterac Mountains;265):34
+#10866 | auto Alterac Mountains;101§auto Alteracgebirge;101§auto Montagnes d'Alterac;101 | x=792.7999877929688 y=-309.8999938964844 | size=1 | links=#8462(auto Alterac Mountains;72):12 #20295(auto Alterac Mountains;206):3
+#10881 | auto Alterac Mountains;102§auto Alteracgebirge;102§auto Montagnes d'Alterac;102 | x=776 y=-291.8000183105469 | size=1 | links=#6018(auto Alterac Mountains;45):3 #8462(auto Alterac Mountains;72):12
+#11109 | auto Alterac Mountains;103§auto Alteracgebirge;103§auto Montagnes d'Alterac;103 | x=689.7999877929688 y=-923.7999877929688 | size=1 | links=#19065(auto Alterac Mountains;190):3 #20662(auto Alterac Mountains;207):12
+#11137 | auto Alterac Mountains;104§auto Alteracgebirge;104§auto Montagnes d'Alterac;104 | x=262.3999938964844 y=-1448 | size=1 | links=#10285(auto Alterac Mountains;93):52 #16725(auto Alterac Mountains;172):15 o89931.1:13
+#11205 | central location;inn;Strahnbrad;Alterac Mountains§zentralpunkt;gasthaus;Strahnbrad;Alteracgebirge§emplacement central;inn;Strahnbrad;Montagnes d'Alterac | x=687.4000244140625 y=-927.2000122070312 | size=1 | links=#1710(auto Alterac Mountains;9):6 #1907(auto Alterac Mountains;11):11
+#11245 | Grel'borg the Miser;Ruins of Alterac;Alterac Mountains§Grel'borg der Horter;Die Ruinen von Alterac;Alteracgebirge§Grel'borg l'Avare;Ruins of Alterac;Montagnes d'Alterac | x=525.9000244140625 y=-283.5 | size=1 | links=c2256.9:6
+#11353 | auto Alterac Mountains;105§auto Alteracgebirge;105§auto Montagnes d'Alterac;105 | x=217.1000061035156 y=-601 | size=1 | links=#2310(auto Alterac Mountains;15):55 #14274(auto Alterac Mountains;142):48
+#11466 | auto Alterac Mountains;106§auto Alteracgebirge;106§auto Montagnes d'Alterac;106 | x=15.69999980926514 y=-1631.300048828125 | size=1 | links=#6961(auto Alterac Mountains;57):8 #12358(auto Alterac Mountains;120):6
+#11500 | auto Alterac Mountains;107§auto Alteracgebirge;107§auto Montagnes d'Alterac;107 | x=496.7000122070313 y=-218.3000030517578 | size=1 | links=#5479(auto Alterac Mountains;39):18 #9398(auto Alterac Mountains;84):18
+#11536 | crossing;Gallows' Corner;Alterac Mountains§kreuzung;Galgeneck;Alteracgebirge§traversée;Fourche du gibet;Montagnes d'Alterac | x=443.5 y=-622.4000244140625 | size=1 | links=#6693(auto Alterac Mountains;56):28 #9449(auto Alterac Mountains;86):32 #10340(auto Alterac Mountains;94):59 o3706.3:15
+#11614 | auto Alterac Mountains;108§auto Alteracgebirge;108§auto Montagnes d'Alterac;108 | x=588.6000366210938 y=-715.7999877929688 | size=1 | links=#19340(auto Alterac Mountains;194):29 #22019(auto Alterac Mountains;221):22
+#11706 | auto Alterac Mountains;109§auto Alteracgebirge;109§auto Montagnes d'Alterac;109 | x=620.7000122070312 y=160.8000030517578 | size=5 | links=#24372(auto Alterac Mountains;249):66 #25570(auto Alterac Mountains;262):63
+#11720 | auto Alterac Mountains;110§auto Alteracgebirge;110§auto Montagnes d'Alterac;110 | x=-183.8000030517578 y=178.1999969482422 | size=1 | links=#24287(auto Alterac Mountains;247):78 #6311(passage;from;Hillsbrad Fields;Hillsbrad Foothills;to;Alterac Mountains):22 c2349.21:28
+#11839 | auto Alterac Mountains;111§auto Alteracgebirge;111§auto Montagnes d'Alterac;111 | x=995.9000244140625 y=-685.1000366210938 | size=5 | links=#16219(auto Alterac Mountains;168):96 c2407.9:72 c2243.25:85
+#11841 | auto Alterac Mountains;112§auto Alteracgebirge;112§auto Montagnes d'Alterac;112 | x=32.40000152587891 y=401.6000061035156 | size=5 | links=#15329(auto Alterac Mountains;157):56 #15476(auto Alterac Mountains;160):24 #28027(auto Alterac Mountains;287):38
+#12247 | auto Alterac Mountains;113§auto Alteracgebirge;113§auto Montagnes d'Alterac;113 | x=594.9000244140625 y=-1715.200073242188 | size=5 | links=#12420(auto Alterac Mountains;122):43 #13203(auto Alterac Mountains;131):45
+#12250 | auto Alterac Mountains;114§auto Alteracgebirge;114§auto Montagnes d'Alterac;114 | x=628.2000122070312 y=-1295.700073242188 | size=1 | links=#17237(auto Alterac Mountains;176):20 #21505(auto Alterac Mountains;217):28
+#12279 | auto Alterac Mountains;115§auto Alteracgebirge;115§auto Montagnes d'Alterac;115 | x=508.6000061035156 y=-211 | size=1 | links=#22114(auto Alterac Mountains;222):12 #22119(auto Alterac Mountains;223):18
+#12287 | auto Alterac Mountains;116§auto Alteracgebirge;116§auto Montagnes d'Alterac;116 | x=563.2000122070312 y=122.5999984741211 | size=5 | links=#15338(auto Alterac Mountains;158):53 #24372(auto Alterac Mountains;249):79
+#12299 | auto Alterac Mountains;117§auto Alteracgebirge;117§auto Montagnes d'Alterac;117 | x=629.6000366210938 y=-1136.099975585938 | size=1 | links=#23558(auto Alterac Mountains;241):26 #28298(auto Alterac Mountains;291):20
+#12311 | auto Alterac Mountains;118§auto Alteracgebirge;118§auto Montagnes d'Alterac;118 | x=97.30000305175781 y=309.1000061035156 | size=1 | links=#8475(auto Alterac Mountains;73):28 #24472(auto Alterac Mountains;250):24 c2628.3:13
+#12357 | auto Alterac Mountains;119§auto Alteracgebirge;119§auto Montagnes d'Alterac;119 | x=13.80000019073486 y=-1577.200073242188 | size=1 | links=#23855(auto Alterac Mountains;245):9 #27429(auto Alterac Mountains;275):11 c7324.1:14
+#12358 | auto Alterac Mountains;120§auto Alteracgebirge;120§auto Montagnes d'Alterac;120 | x=19.89999961853027 y=-1626.099975585938 | size=1 | links=#8562(auto Alterac Mountains;76):4 #11466(auto Alterac Mountains;106):6 c6768.1:7
+#12391 | auto Alterac Mountains;121§auto Alteracgebirge;121§auto Montagnes d'Alterac;121 | x=1.5 y=-1601.800048828125 | size=1 | links=#18178(auto Alterac Mountains;179):10 #24962(auto Alterac Mountains;257):12
+#12420 | auto Alterac Mountains;122§auto Alteracgebirge;122§auto Montagnes d'Alterac;122 | x=610.9000244140625 y=-1755.800048828125 | size=5 | links=#28151(auto Western Plaguelands;175):30 #12247(auto Alterac Mountains;113):43
+#12451 | auto Alterac Mountains;123§auto Alteracgebirge;123§auto Montagnes d'Alterac;123 | x=130.1000061035156 y=197.9000091552734 | size=5 | links=c2628.2:39 c2356.3:44
+#12545 | auto Alterac Mountains;124§auto Alteracgebirge;124§auto Montagnes d'Alterac;124 | x=558.7999877929688 y=-1647.099975585938 | size=5 | links=#13203(auto Alterac Mountains;131):31 #25900(auto Alterac Mountains;265):45
+#12558 | auto Alterac Mountains;125§auto Alteracgebirge;125§auto Montagnes d'Alterac;125 | x=60.5 y=-1517.700073242188 | size=1 | links=#24851(auto Alterac Mountains;255):18 #15704(auto Hillsbrad Foothills;252):21
+#12624 | Jailor Borhuin;Strahnbrad;Alterac Mountains§Kerkermeister Borhuin;Strahnbrad;Alteracgebirge§Geôlier Borhuin;Strahnbrad;Montagnes d'Alterac | x=682.4000244140625 y=-914.7000122070312 | size=1 | links=#19065(auto Alterac Mountains;190):8
+#12693 | auto Alterac Mountains;126§auto Alteracgebirge;126§auto Montagnes d'Alterac;126 | x=541.2000122070312 y=-307 | size=1 | links=#18341(auto Alterac Mountains;182):27 #23032(auto Alterac Mountains;232):11 c2256.9:30
+#12951 | auto Alterac Mountains;127§auto Alteracgebirge;127§auto Montagnes d'Alterac;127 | x=79 y=153.6999969482422 | size=5 | links=#27806(auto Alterac Mountains;281):84 c2356.3:33 c2349.8:51 c2356.13:23
+#13092 | auto Alterac Mountains;128§auto Alteracgebirge;128§auto Montagnes d'Alterac;128 | x=523.9000244140625 y=-1534.400024414063 | size=1 | links=#1157(auto Alterac Mountains;5):44 #13335(auto Alterac Mountains;134):32
+#13124 | auto Alterac Mountains;129§auto Alteracgebirge;129§auto Montagnes d'Alterac;129 | x=965.2999877929688 y=-173.3000030517578 | size=5 | links=#5681(auto Alterac Mountains;42):88 #19787(auto Alterac Mountains;198):53
+#13192 | auto Alterac Mountains;130§auto Alteracgebirge;130§auto Montagnes d'Alterac;130 | x=625.4000244140625 y=-1367.900024414063 | size=1 | links=#16979(auto Alterac Mountains;173):43 #21505(auto Alterac Mountains;217):44
+#13203 | auto Alterac Mountains;131§auto Alteracgebirge;131§auto Montagnes d'Alterac;131 | x=576.5 y=-1673.400024414063 | size=5 | links=#12247(auto Alterac Mountains;113):45 #12545(auto Alterac Mountains;124):31
+#13248 | auto Alterac Mountains;132§auto Alteracgebirge;132§auto Montagnes d'Alterac;132 | x=839.4000244140625 y=-1478.700073242188 | size=1 | links=#25358(passage;from;Chillwind Point;Alterac Mountains;to;Western Plaguelands):24 c883.1:54
+#13324 | auto Alterac Mountains;133§auto Alteracgebirge;133§auto Montagnes d'Alterac;133 | x=-0.699999988079071 y=-1631 | size=1 | links=#6961(auto Alterac Mountains;57):8 #23423(auto Alterac Mountains;239):8
+#13335 | auto Alterac Mountains;134§auto Alteracgebirge;134§auto Montagnes d'Alterac;134 | x=496.3000183105469 y=-1550.700073242188 | size=1 | links=#10753(auto Alterac Mountains;100):35 #13092(auto Alterac Mountains;128):32 #17173(auto Alterac Mountains;175):37
+#13399 | auto Alterac Mountains;135§auto Alteracgebirge;135§auto Montagnes d'Alterac;135 | x=-45.70000076293945 y=157.6999969482422 | size=5 | links=#18942(auto Alterac Mountains;187):27 #24287(auto Alterac Mountains;247):66 #24723(auto Alterac Mountains;252):31
+#13414 | auto Alterac Mountains;136§auto Alteracgebirge;136§auto Montagnes d'Alterac;136 | x=-75.70000457763672 y=261.6000061035156 | size=1 | links=#6271(auto Alterac Mountains;50):4 #25882(auto Alterac Mountains;264):28 c2272.2:11
+#13543 | auto Alterac Mountains;137§auto Alteracgebirge;137§auto Montagnes d'Alterac;137 | x=476.8000183105469 y=-242.9000091552734 | size=1 | links=#15789(auto Alterac Mountains;164):12 #27967(auto Alterac Mountains;285):22
+#13769 | auto Alterac Mountains;138§auto Alteracgebirge;138§auto Montagnes d'Alterac;138 | x=745 y=-1029.200073242188 | size=1 | links=#27613(auto Alterac Mountains;277):62 c2258.1:80
+#13858 | auto Alterac Mountains;139§auto Alteracgebirge;139§auto Montagnes d'Alterac;139 | x=653.4000244140625 y=-611.7999877929688 | size=1 | links=#14898(auto Alterac Mountains;153):10 #25737(auto Alterac Mountains;263):20
+#13949 | auto Alterac Mountains;140§auto Alteracgebirge;140§auto Montagnes d'Alterac;140 | x=80.70000457763672 y=-377.3000183105469 | size=5 | links=#6607(auto Alterac Mountains;54):28 c2250.13:49
+#13976 | auto Alterac Mountains;141§auto Alteracgebirge;141§auto Montagnes d'Alterac;141 | x=328.5 y=139.1000061035156 | size=1 | links=#21013(auto Alterac Mountains;214):30 c2349.2:57
+#14274 | auto Alterac Mountains;142§auto Alteracgebirge;142§auto Montagnes d'Alterac;142 | x=169.9000091552734 y=-589.2000122070312 | size=1 | links=#7196(auto Alterac Mountains;60):57 #11353(auto Alterac Mountains;105):48
+#14281 | auto Alterac Mountains;143§auto Alteracgebirge;143§auto Montagnes d'Alterac;143 | x=-65.20000457763672 y=248 | size=1 | links=#1516(auto Alterac Mountains;7):26 c2271.1:9
+#14286 | auto Alterac Mountains;144§auto Alteracgebirge;144§auto Montagnes d'Alterac;144 | x=374.0285973666382 y=178.5891621608624 | size=1
+#14339 | auto Alterac Mountains;145§auto Alteracgebirge;145§auto Montagnes d'Alterac;145 | x=258.3999938964844 y=-810.2000122070312 | size=1 | links=#3146(auto Alterac Mountains;27):19 #21874(centralpoint;Sofera's Naze;Alterac Mountains):42 c2333.1:56
+#14444 | auto Alterac Mountains;146§auto Alteracgebirge;146§auto Montagnes d'Alterac;146 | x=644.7999877929688 y=-715.9000244140625 | size=1 | links=#2385(auto Alterac Mountains;16):15 c2453.3:16
+#14446 | auto Alterac Mountains;147§auto Alteracgebirge;147§auto Montagnes d'Alterac;147 | x=466.8000183105469 y=-274.3999938964844 | size=1 | links=#2285(auto Alterac Mountains;14):39 #26679(auto Alterac Mountains;270):25 c2256.1:32 c2287.2:14
+#14492 | auto Alterac Mountains;148§auto Alteracgebirge;148§auto Montagnes d'Alterac;148 | x=633.2000122070312 y=-919.5 | size=1 | links=#8698(auto Alterac Mountains;77):11 c2318.3:16
+#14515 | auto Alterac Mountains;149§auto Alteracgebirge;149§auto Montagnes d'Alterac;149 | x=300.5 y=-621.4000244140625 | size=1 | links=#1328(crossing;Alterac Mountains):42 #15653(auto Alterac Mountains;162):53
+#14518 | auto Alterac Mountains;150§auto Alteracgebirge;150§auto Montagnes d'Alterac;150 | x=780 y=-61 | size=5 | links=#3076(auto Alterac Mountains;25):116 #20028(auto Alterac Mountains;201):84
+#14556 | auto Alterac Mountains;151§auto Alteracgebirge;151§auto Montagnes d'Alterac;151 | x=325.2000122070313 y=-1429.400024414063 | size=1 | links=#10285(auto Alterac Mountains;93):18 #25333(auto Alterac Mountains;259):19
+#14890 | auto Alterac Mountains;152§auto Alteracgebirge;152§auto Montagnes d'Alterac;152 | x=223.8000030517578 y=-657.2000122070312 | size=1 | links=#2310(auto Alterac Mountains;15):10 #22371(passage;from;Alterac Mountains;to;Hillsbrad Foothills):30
+#14898 | auto Alterac Mountains;153§auto Alteracgebirge;153§auto Montagnes d'Alterac;153 | x=661.2000122070312 y=-605.5 | size=1 | links=#13858(auto Alterac Mountains;139):10 #17512(entry and exit;Crushridge Hold;Alterac Mountains):9
+#14982 | auto Alterac Mountains;154§auto Alteracgebirge;154§auto Montagnes d'Alterac;154 | x=705.1000366210938 y=-342.2000122070313 | size=1 | links=#23256(auto Alterac Mountains;237):17 #23545(auto Alterac Mountains;240):21
+#15211 | auto Alterac Mountains;155§auto Alteracgebirge;155§auto Montagnes d'Alterac;155 | x=615 y=-312.8999938964844 | size=1 | links=#6670(auto Alterac Mountains;55):14 #26053(auto Alterac Mountains;267):9
+#15250 | auto Alterac Mountains;156§auto Alteracgebirge;156§auto Montagnes d'Alterac;156 | x=1215.5 y=-275 | size=5 | links=#9822(auto Alterac Mountains;91):39 #28003(auto Alterac Mountains;286):37 c2246.2:20 c2246.3:12
+#15329 | auto Alterac Mountains;157§auto Alteracgebirge;157§auto Montagnes d'Alterac;157 | x=-5.400000095367432 y=359.7000122070313 | size=5 | links=#9318(auto Alterac Mountains;82):66 #11841(auto Alterac Mountains;112):56 c2359.22:122
+#15338 | auto Alterac Mountains;158§auto Alteracgebirge;158§auto Montagnes d'Alterac;158 | x=512.2000122070312 y=139.9000091552734 | size=5 | links=#6150(auto Alterac Mountains;46):31 #12287(auto Alterac Mountains;116):53
+#15387 | auto Alterac Mountains;159§auto Alteracgebirge;159§auto Montagnes d'Alterac;159 | x=525.2999877929688 y=-317 | size=1 | links=#23032(auto Alterac Mountains;232):7 c2420.1:13
+#15476 | auto Alterac Mountains;160§auto Alteracgebirge;160§auto Montagnes d'Alterac;160 | x=55.90000152587891 y=407.3000183105469 | size=1 | links=#11841(auto Alterac Mountains;112):24 #23083(auto Alterac Mountains;234):27 c2359.17:29
+#15617 | auto Alterac Mountains;161§auto Alteracgebirge;161§auto Montagnes d'Alterac;161 | x=805 y=-434.1000061035156 | size=5 | links=#19353(auto Alterac Mountains;195):4 c2252.17:18
+#15653 | auto Alterac Mountains;162§auto Alteracgebirge;162§auto Montagnes d'Alterac;162 | x=351.2000122070313 y=-605.9000244140625 | size=5 | links=#9449(auto Alterac Mountains;86):61 #14515(auto Alterac Mountains;149):53 c2252.9:16
+#15747 | auto Alterac Mountains;163§auto Alteracgebirge;163§auto Montagnes d'Alterac;163 | x=635.5 y=-689.9000244140625 | size=1 | links=#452(auto Alterac Mountains;3):42 #10572(auto Alterac Mountains;99):12 #19340(auto Alterac Mountains;194):24
+#15789 | auto Alterac Mountains;164§auto Alteracgebirge;164§auto Montagnes d'Alterac;164 | x=470.6000061035156 y=-232.3000030517578 | size=1 | links=#13543(auto Alterac Mountains;137):12 #20693(auto Alterac Mountains;208):18
+#16046 | auto Alterac Mountains;165§auto Alteracgebirge;165§auto Montagnes d'Alterac;165 | x=-42.5 y=269.7000122070313 | size=1 | links=#7304(auto Alterac Mountains;62):6 #28168(auto Alterac Mountains;289):6
+#16138 | auto Alterac Mountains;166§auto Alteracgebirge;166§auto Montagnes d'Alterac;166 | x=1214.200073242188 y=-320.8000183105469 | size=1 | links=#9788(auto Alterac Mountains;89):15 #27877(auto Alterac Mountains;283):10
+#16212 | auto Alterac Mountains;167§auto Alteracgebirge;167§auto Montagnes d'Alterac;167 | x=717.9000244140625 y=-567.7999877929688 | size=1 | links=#1041(auto Alterac Mountains;4):62 #4394(auto Alterac Mountains;33):31
+#16219 | auto Alterac Mountains;168§auto Alteracgebirge;168§auto Montagnes d'Alterac;168 | x=1083.400024414063 y=-645.6000366210938 | size=5 | links=#6334(auto Alterac Mountains;52):135 #11839(auto Alterac Mountains;111):96 c2243.3:67
+#16329 | auto Alterac Mountains;169§auto Alteracgebirge;169§auto Montagnes d'Alterac;169 | x=677.7999877929688 y=-982.7000122070312 | size=1 | links=#21277(auto Alterac Mountains;215):11 c2431.1:11
+#16465 | crossing;Strahnbrad;Alterac Mountains§kreuzungspunkt;Strahnbrad;Alteracgebirge§traversée;Strahnbrad;Montagnes d'Alterac | x=644.5 y=-965.5 | size=1 | links=#8698(auto Alterac Mountains;77):47 #18667(auto Alterac Mountains;185):35 #21277(auto Alterac Mountains;215):26 c4075.4:29
+#16520 | auto Alterac Mountains;170§auto Alteracgebirge;170§auto Montagnes d'Alterac;170 | x=-19.20000076293945 y=-598.5 | size=5 | links=#3343(central location;Corrahn's Dagger;Alterac Mountains):49 #19871(auto Alterac Mountains;199):40
+#16687 | auto Alterac Mountains;171§auto Alteracgebirge;171§auto Montagnes d'Alterac;171 | x=648.7999877929688 y=-1473.5 | size=5 | links=#10361(auto Alterac Mountains;96):68 #27461(focus point;Chillwind Point;Alterac Mountains):36
+#16725 | auto Alterac Mountains;172§auto Alteracgebirge;172§auto Montagnes d'Alterac;172 | x=252.3000030517578 y=-1459.900024414063 | size=1 | links=#11137(auto Alterac Mountains;104):15 c6176.1:10
+#16979 | auto Alterac Mountains;173§auto Alteracgebirge;173§auto Montagnes d'Alterac;173 | x=635.6000366210938 y=-1409.700073242188 | size=1 | links=#13192(auto Alterac Mountains;130):43 #27461(focus point;Chillwind Point;Alterac Mountains):46
+#16999 | auto Alterac Mountains;174§auto Alteracgebirge;174§auto Montagnes d'Alterac;174 | x=668.2000122070312 y=-646.4000244140625 | size=1 | links=#19772(auto Alterac Mountains;197):29 #25737(auto Alterac Mountains;263):18
+#17173 | auto Alterac Mountains;175§auto Alteracgebirge;175§auto Montagnes d'Alterac;175 | x=464.6000061035156 y=-1529.800048828125 | size=1 | links=#9819(auto Alterac Mountains;90):47 #13335(auto Alterac Mountains;134):37
+#17237 | auto Alterac Mountains;176§auto Alteracgebirge;176§auto Montagnes d'Alterac;176 | x=633.6000366210938 y=-1276.200073242188 | size=1 | links=#10263(auto Alterac Mountains;92):46 #12250(auto Alterac Mountains;114):20
+#17292 | auto Alterac Mountains;177§auto Alteracgebirge;177§auto Montagnes d'Alterac;177 | x=1192.300048828125 y=-384.1000061035156 | size=1 | links=#6210(auto Alterac Mountains;48):64 c2247.2:94 c2246.4:33 c2246.6:59
+#17512 | entry and exit;Crushridge Hold;Alterac Mountains§ein- und ausgang;Trümmergrathöhle;Alteracgebirge§entrée et sortie;Crushridge Hold;Montagnes d'Alterac | x=669.2999877929688 y=-600.2999877929688 | size=1 | links=#6295(auto Alterac Mountains;51):17 #14898(auto Alterac Mountains;153):9
+#17862 | auto Alterac Mountains;178§auto Alteracgebirge;178§auto Montagnes d'Alterac;178 | x=1220.200073242188 y=-317.7000122070313 | size=1 | links=#2915(auto Alterac Mountains;22):10 #5248(auto Alterac Mountains;37):6 c2320.1:13 o1765.1:7
+#18178 | auto Alterac Mountains;179§auto Alteracgebirge;179§auto Montagnes d'Alterac;179 | x=0.4000000059604645 y=-1591.800048828125 | size=1 | links=#12391(auto Alterac Mountains;121):10 c6707.1:10
+#18276 | auto Alterac Mountains;180§auto Alteracgebirge;180§auto Montagnes d'Alterac;180 | x=282.1000061035156 y=-744.5 | size=1 | links=#3146(auto Alterac Mountains;27):50 #28202(auto Alterac Mountains;290):53
+#18301 | auto Alterac Mountains;181§auto Alteracgebirge;181§auto Montagnes d'Alterac;181 | x=422.5 y=-332.8999938964844 | size=1 | links=c2256.4:30 c2287.4:38
+#18341 | auto Alterac Mountains;182§auto Alteracgebirge;182§auto Montagnes d'Alterac;182 | x=566.1000366210938 y=-318.3999938964844 | size=1 | links=#12693(auto Alterac Mountains;126):27 c2255.6:18 c2256.11:22
+#18456 | auto Alterac Mountains;183§auto Alteracgebirge;183§auto Montagnes d'Alterac;183 | x=15.10000038146973 y=-1611.900024414063 | size=1 | links=#3119(auto Alterac Mountains;26):13 #7729(auto Alterac Mountains;64):5
+#18549 | Syndicate Thief;Alterac Mountains;5;48.03;81.88§Dieb des Syndikats;Alteracgebirge;5;48.03;81.88§Larron du Syndicat;Montagnes d'Alterac;5;48.03;81.88 | x=-31.89999961853027 y=-567.9000244140625 | size=1
+#18555 | auto Alterac Mountains;184§auto Alteracgebirge;184§auto Montagnes d'Alterac;184 | x=-80.5999984741211 y=203.6000061035156 | size=1 | links=#22213(auto Alterac Mountains;224):23 #25481(auto Alterac Mountains;260):16 c2411.1:16
+#18667 | auto Alterac Mountains;185§auto Alteracgebirge;185§auto Montagnes d'Alterac;185 | x=641.7000122070312 y=-1000.799987792969 | size=1 | links=#2011(auto Alterac Mountains;12):40 #16465(crossing;Strahnbrad;Alterac Mountains):35 c2242.4:19 c2242.20:10
+#18844 | auto Alterac Mountains;186§auto Alteracgebirge;186§auto Montagnes d'Alterac;186 | x=692.7999877929688 y=-936.4000244140625 | size=1 | links=#1710(auto Alterac Mountains;9):5 #6996(entry and exit;inn;Strahnbrad;Alterac Mountains):15
+#18942 | auto Alterac Mountains;187§auto Alteracgebirge;187§auto Montagnes d'Alterac;187 | x=-57 y=183.3000030517578 | size=1 | links=#13399(auto Alterac Mountains;135):27 #25481(auto Alterac Mountains;260):14
+#19043 | auto Alterac Mountains;188§auto Alteracgebirge;188§auto Montagnes d'Alterac;188 | x=-68.70000457763672 y=290.5 | size=1 | links=#20824(auto Alterac Mountains;210):4 #24904(auto Alterac Mountains;256):15
+#19049 | auto Alterac Mountains;189§auto Alteracgebirge;189§auto Montagnes d'Alterac;189 | x=238.4000091552734 y=-1290.200073242188 | size=1 | links=#22446(auto Alterac Mountains;227):44 #23368(auto Alterac Mountains;238):45
+#19065 | auto Alterac Mountains;190§auto Alteracgebirge;190§auto Montagnes d'Alterac;190 | x=686.6000366210938 y=-922.6000366210938 | size=1 | links=#11109(auto Alterac Mountains;103):3 #12624(Jailor Borhuin;Strahnbrad;Alterac Mountains):8 #26893(auto Alterac Mountains;272):14
+#19161 | auto Alterac Mountains;191§auto Alteracgebirge;191§auto Montagnes d'Alterac;191 | x=292.8000183105469 y=-1376.200073242188 | size=1 | links=#10285(auto Alterac Mountains;93):48 #22446(auto Alterac Mountains;227):59
+#19230 | auto Alterac Mountains;192§auto Alteracgebirge;192§auto Montagnes d'Alterac;192 | x=-66.80000305175781 y=280.2000122070313 | size=1 | links=#3301(auto Alterac Mountains;28):19 #20824(auto Alterac Mountains;210):9
+#19268 | auto Alterac Mountains;193§auto Alteracgebirge;193§auto Montagnes d'Alterac;193 | x=826 y=-952.2000122070312 | size=1 | links=#5734(auto Alterac Mountains;43):31 #27613(auto Alterac Mountains;277):49
+#19340 | auto Alterac Mountains;194§auto Alteracgebirge;194§auto Montagnes d'Alterac;194 | x=612.1000366210938 y=-697.6000366210938 | size=1 | links=#11614(auto Alterac Mountains;108):29 #15747(auto Alterac Mountains;163):24
+#19353 | auto Alterac Mountains;195§auto Alteracgebirge;195§auto Montagnes d'Alterac;195 | x=801.7000122070312 y=-430.5 | size=1 | links=#15617(auto Alterac Mountains;161):4 c6491.1:16
+#19498 | auto Alterac Mountains;196§auto Alteracgebirge;196§auto Montagnes d'Alterac;196 | x=200.5 y=-270.1000061035156 | size=5 | links=#7260(auto Alterac Mountains;61):29 #8517(auto Alterac Mountains;74):32 c13602.2:30 c2250.4:27 c2251.5:24 c2251.7:53
+#19602 | central location;building;Ruins of Alterac;top§zentralpunkt;gebäude;Die Ruinen von Alterac;oben§emplacement central;building;Ruins of Alterac;top | x=500.2000122070313 y=-239.5 | size=1 | links=#22119(auto Alterac Mountains;223):19 c2257.1:27 c2287.22:8 c2287.23:7
+#19772 | auto Alterac Mountains;197§auto Alteracgebirge;197§auto Montagnes d'Alterac;197 | x=688.2000122070312 y=-667.7999877929688 | size=1 | links=#452(auto Alterac Mountains;3):15 #16999(auto Alterac Mountains;174):29
+#19787 | auto Alterac Mountains;198§auto Alteracgebirge;198§auto Montagnes d'Alterac;198 | x=926.6000366210938 y=-135.8000030517578 | size=5 | links=#13124(auto Alterac Mountains;129):53 #19894(auto Alterac Mountains;200):41
+#19871 | auto Alterac Mountains;199§auto Alteracgebirge;199§auto Montagnes d'Alterac;199 | x=21 y=-591.7999877929688 | size=1 | links=#8145(auto Alterac Mountains;66):27 #16520(auto Alterac Mountains;170):40 c2240.2:21
+#19894 | auto Alterac Mountains;200§auto Alteracgebirge;200§auto Montagnes d'Alterac;200 | x=898.7000122070312 y=-105.2000045776367 | size=1 | links=#5634(auto Alterac Mountains;40):8 #19787(auto Alterac Mountains;198):41 #20028(auto Alterac Mountains;201):41
+#20028 | auto Alterac Mountains;201§auto Alteracgebirge;201§auto Montagnes d'Alterac;201 | x=860.2999877929688 y=-88.20000457763672 | size=5 | links=#14518(auto Alterac Mountains;150):84 #19894(auto Alterac Mountains;200):41
+#20097 | auto Alterac Mountains;202§auto Alteracgebirge;202§auto Montagnes d'Alterac;202 | x=539.2999877929688 y=-751 | size=1 | links=#1721(auto Alterac Mountains;10):31 #20853(auto Alterac Mountains;211):36
+#20119 | auto Alterac Mountains;203§auto Alteracgebirge;203§auto Montagnes d'Alterac;203 | x=48.5 y=245.9000091552734 | size=1 | links=#23055(auto Alterac Mountains;233):17 c2543.1:16 c2272.7:7
+#20136 | auto Alterac Mountains;204§auto Alteracgebirge;204§auto Montagnes d'Alterac;204 | x=622.1000366210938 y=-1079.5 | size=1 | links=#2011(auto Alterac Mountains;12):41 #23558(auto Alterac Mountains;241):31
+#20166 | auto Alterac Mountains;205§auto Alteracgebirge;205§auto Montagnes d'Alterac;205 | x=428.1000061035156 y=207.1000061035156 | size=1 | links=#20885(auto Alterac Mountains;212):29 c2628.1:14 c2359.2:23 o2039.6:20
+#20295 | auto Alterac Mountains;206§auto Alteracgebirge;206§auto Montagnes d'Alterac;206 | x=790.5 y=-312.6000061035156 | size=1 | links=#9445(auto Alterac Mountains;85):6 #10866(auto Alterac Mountains;101):3
+#20662 | auto Alterac Mountains;207§auto Alteracgebirge;207§auto Montagnes d'Alterac;207 | x=690.6000366210938 y=-911.7999877929688 | size=1 | links=#8163(auto Alterac Mountains;67):8 #11109(auto Alterac Mountains;103):12
+#20693 | auto Alterac Mountains;208§auto Alteracgebirge;208§auto Montagnes d'Alterac;208 | x=486.3000183105469 y=-223.1000061035156 | size=1 | links=#2991(auto Alterac Mountains;23):16 #15789(auto Alterac Mountains;164):18
+#20726 | auto Alterac Mountains;209§auto Alteracgebirge;209§auto Montagnes d'Alterac;209 | x=8.100000381469727 y=-1617 | size=1 | links=#5642(auto Alterac Mountains;41):6 #24962(auto Alterac Mountains;257):4
+#20824 | auto Alterac Mountains;210§auto Alteracgebirge;210§auto Montagnes d'Alterac;210 | x=-64.20000457763672 y=289.3999938964844 | size=1 | links=#19043(auto Alterac Mountains;188):4 #19230(auto Alterac Mountains;192):9
+#20853 | auto Alterac Mountains;211§auto Alteracgebirge;211§auto Montagnes d'Alterac;211 | x=575.6000366210938 y=-756 | size=1 | links=#6509(auto Alterac Mountains;53):48 #20097(auto Alterac Mountains;202):36
+#20885 | auto Alterac Mountains;212§auto Alteracgebirge;212§auto Montagnes d'Alterac;212 | x=402.9924976165517 y=191.0314240407189 | size=1 | links=#20166(auto Alterac Mountains;205):29 #21594(auto Alterac Mountains;219):26 #27713(auto Alterac Mountains;279):11
+#20992 | auto Alterac Mountains;213§auto Alteracgebirge;213§auto Montagnes d'Alterac;213 | x=703.1000366210938 y=-1456.700073242188 | size=1 | links=#26813(auto Alterac Mountains;271):55 #27461(focus point;Chillwind Point;Alterac Mountains):37
+#21013 | auto Alterac Mountains;214§auto Alteracgebirge;214§auto Montagnes d'Alterac;214 | x=324.5 y=169 | size=1 | links=#13976(auto Alterac Mountains;141):30 #28399(auto Alterac Mountains;292):45 c2359.1:22 o2039.2:28 c2359.9:25
+#21277 | auto Alterac Mountains;215§auto Alteracgebirge;215§auto Montagnes d'Alterac;215 | x=670.2000122070312 y=-973.5 | size=1 | links=#16329(auto Alterac Mountains;169):11 #16465(crossing;Strahnbrad;Alterac Mountains):26
+#21421 | auto Alterac Mountains;216§auto Alteracgebirge;216§auto Montagnes d'Alterac;216 | x=206.3000030517578 y=164.4000091552734 | size=1 | links=#2814(auto Alterac Mountains;20):91 c2356.1:24
+#21505 | auto Alterac Mountains;217§auto Alteracgebirge;217§auto Montagnes d'Alterac;217 | x=627.5 y=-1323.900024414063 | size=1 | links=#12250(auto Alterac Mountains;114):28 #13192(auto Alterac Mountains;130):44
+#21571 | auto Alterac Mountains;218§auto Alteracgebirge;218§auto Montagnes d'Alterac;218 | x=16.70000076293945 y=-1625.700073242188 | size=1 | links=#3119(auto Alterac Mountains;26):13 #26980(auto Alterac Mountains;274):8 c7323.1:7
+#21594 | auto Alterac Mountains;219§auto Alteracgebirge;219§auto Montagnes d'Alterac;219 | x=381.8000183105469 y=175.4000091552734 | size=1 | links=#20885(auto Alterac Mountains;212):26 #28399(auto Alterac Mountains;292):32 o2039.3:27 c4075.7:7
+#21620 | auto Alterac Mountains;220§auto Alteracgebirge;220§auto Montagnes d'Alterac;220 | x=-75.4000015258789 y=-1580.400024414063 | size=1 | links=#24273(auto Alterac Mountains;246):18 c8309.1:35
+#21874 | centralpoint;Sofera's Naze;Alterac Mountains§zentralerpunkt;Soferas Landspitze;Alteracgebirge§point central;Promontoire de Sofera;Montagnes d'Alterac | x=234.4000091552734 y=-845.7000122070312 | size=1 | links=#14339(auto Alterac Mountains;145):42 c2440.1:17 o1740.1:4 c2240.7:18 c2240.10:13 c2319.11:9
+#22019 | auto Alterac Mountains;221§auto Alteracgebirge;221§auto Montagnes d'Alterac;221 | x=570.7000122070312 y=-729.2999877929688 | size=1 | links=#11614(auto Alterac Mountains;108):22 c2453.2:2
+#22114 | auto Alterac Mountains;222§auto Alteracgebirge;222§auto Montagnes d'Alterac;222 | x=497.3000183105469 y=-217.1000061035156 | size=1 | links=#12279(auto Alterac Mountains;115):12 #27958(auto Alterac Mountains;284):16
+#22119 | auto Alterac Mountains;223§auto Alteracgebirge;223§auto Montagnes d'Alterac;223 | x=515.7000122070312 y=-228.3000030517578 | size=1 | links=#12279(auto Alterac Mountains;115):18 #19602(central location;building;Ruins of Alterac;top):19
+#22213 | auto Alterac Mountains;224§auto Alteracgebirge;224§auto Montagnes d'Alterac;224 | x=-103.7000045776367 y=208.4000091552734 | size=1 | links=#4776(auto Alterac Mountains;34):3 #18555(auto Alterac Mountains;184):23
+#22224 | auto Alterac Mountains;225§auto Alteracgebirge;225§auto Montagnes d'Alterac;225 | x=886 y=-837.1000366210938 | size=5 | links=#7840(auto Alterac Mountains;65):108 #8342(auto Alterac Mountains;70):74 c2407.13:47
+#22226 | auto Alterac Mountains;226§auto Alteracgebirge;226§auto Montagnes d'Alterac;226 | x=667.2000122070312 y=-695.5 | size=1 | links=#452(auto Alterac Mountains;3):20 #2385(auto Alterac Mountains;16):16
+#22371 | passage;from;Alterac Mountains;to;Hillsbrad Foothills§passage;von;Alteracgebirge;nach;vorgebirge von hillsbrad§passage;de;Montagnes d'Alterac;vers;Contreforts de Hautebrande | x=201 y=-677.5 | size=1 | links=#14890(auto Alterac Mountains;152):30 #4861(passage;from;Hillsbrad Foothills;to;Alterac Mountains):3
+#22446 | auto Alterac Mountains;227§auto Alteracgebirge;227§auto Montagnes d'Alterac;227 | x=270.8000183105469 y=-1321.300048828125 | size=1 | links=#19049(auto Alterac Mountains;189):44 #19161(auto Alterac Mountains;191):59
+#22492 | auto Alterac Mountains;228§auto Alteracgebirge;228§auto Montagnes d'Alterac;228 | x=43.79999923706055 y=-1563.800048828125 | size=1 | links=#24851(auto Alterac Mountains;255):32 #27429(auto Alterac Mountains;275):24
+#22595 | auto Alterac Mountains;229§auto Alteracgebirge;229§auto Montagnes d'Alterac;229 | x=-63.60000228881836 y=108.5999984741211 | size=1 | links=#24287(auto Alterac Mountains;247):61 c2356.11:20
+#22853 | auto Alterac Mountains;230§auto Alteracgebirge;230§auto Montagnes d'Alterac;230 | x=1097.5 y=-258.8000183105469 | size=5 | links=#5681(auto Alterac Mountains;42):69 #28003(auto Alterac Mountains;286):82
+#22963 | auto Alterac Mountains;231§auto Alteracgebirge;231§auto Montagnes d'Alterac;231 | x=587.7999877929688 y=-555.7999877929688 | size=1 | links=#6076(in area;Ruins of Alterac;Alterac Mountains):23 #23851(auto Alterac Mountains;244):22
+#23032 | auto Alterac Mountains;232§auto Alteracgebirge;232§auto Montagnes d'Alterac;232 | x=531.2000122070312 y=-313.2000122070313 | size=1 | links=#12693(auto Alterac Mountains;126):11 #15387(auto Alterac Mountains;159):7
+#23055 | auto Alterac Mountains;233§auto Alteracgebirge;233§auto Montagnes d'Alterac;233 | x=66.20000457763672 y=245.1999969482422 | size=1 | links=#20119(auto Alterac Mountains;203):17 #23255(auto Alterac Mountains;236):31 c2359.14:5
+#23083 | auto Alterac Mountains;234§auto Alteracgebirge;234§auto Montagnes d'Alterac;234 | x=72.0999984741211 y=385.6000061035156 | size=1 | links=#3032(auto Alterac Mountains;24):27 #8549(auto Alterac Mountains;75):41 #15476(auto Alterac Mountains;160):27 c2628.4:16
+#23110 | auto Alterac Mountains;235§auto Alteracgebirge;235§auto Montagnes d'Alterac;235 | x=515.9000244140625 y=-269.6000061035156 | size=1 | links=c2287.6:17 c2256.9:16
+#23255 | auto Alterac Mountains;236§auto Alteracgebirge;236§auto Montagnes d'Alterac;236 | x=91.0999984741211 y=264.7000122070313 | size=1 | links=#23055(auto Alterac Mountains;233):31 #23639(auto Alterac Mountains;242):19 c4075.2:7 c2358.15:14
+#23256 | auto Alterac Mountains;237§auto Alteracgebirge;237§auto Montagnes d'Alterac;237 | x=687.2999877929688 y=-340.8999938964844 | size=1 | links=#8343(auto Alterac Mountains;71):33 #14982(auto Alterac Mountains;154):17 c2255.4:4
+#23368 | auto Alterac Mountains;238§auto Alteracgebirge;238§auto Montagnes d'Alterac;238 | x=210.3000030517578 y=-1254.900024414063 | size=1 | links=#19049(auto Alterac Mountains;189):45 #20648(passage;river;from;Hillsbrad Foothills;to;Alterac Mountains):23
+#23423 | auto Alterac Mountains;239§auto Alteracgebirge;239§auto Montagnes d'Alterac;239 | x=0.5 y=-1622.300048828125 | size=1 | links=#3119(auto Alterac Mountains;26):4 #13324(auto Alterac Mountains;133):8
+#23545 | auto Alterac Mountains;240§auto Alteracgebirge;240§auto Montagnes d'Alterac;240 | x=725.7000122070312 y=-336.3999938964844 | size=1 | links=#8721(auto Alterac Mountains;78):40 #14982(auto Alterac Mountains;154):21 #26370(auto Alterac Mountains;268):7
+#23558 | auto Alterac Mountains;241§auto Alteracgebirge;241§auto Montagnes d'Alterac;241 | x=620.2999877929688 y=-1111.099975585938 | size=1 | links=#12299(auto Alterac Mountains;117):26 #20136(auto Alterac Mountains;204):31
+#23639 | auto Alterac Mountains;242§auto Alteracgebirge;242§auto Montagnes d'Alterac;242 | x=105.5999984741211 y=278.1000061035156 | size=1 | links=#8475(auto Alterac Mountains;73):12 #23255(auto Alterac Mountains;236):19 c2358.16:14
+#23827 | auto Alterac Mountains;243§auto Alteracgebirge;243§auto Montagnes d'Alterac;243 | x=646.1000366210938 y=-856.7999877929688 | size=1 | links=#2626(auto Alterac Mountains;18):27 #5294(auto Alterac Mountains;38):23 c2242.14:40 c2242.18:40
+#23851 | auto Alterac Mountains;244§auto Alteracgebirge;244§auto Montagnes d'Alterac;244 | x=573 y=-572.9000244140625 | size=1 | links=#22963(auto Alterac Mountains;231):22 #24985(auto Alterac Mountains;258):46
+#23855 | auto Alterac Mountains;245§auto Alteracgebirge;245§auto Montagnes d'Alterac;245 | x=4.400000095367432 y=-1579.200073242188 | size=1 | links=#7613(auto Alterac Mountains;63):20 #12357(auto Alterac Mountains;119):9
+#24051 | central location;Ruins of Alterac;Alterac Mountains§zentralpunkt;Die Ruinen von Alterac;Alteracgebirge§emplacement central;Ruins of Alterac;Montagnes d'Alterac | x=630.7000122070312 y=-351.3000183105469 | size=1 | links=#8343(auto Alterac Mountains;71):23 #10343(auto Alterac Mountains;95):18 #24820(auto Alterac Mountains;254):46 c2255.5:20 o178609.11:24
+#24273 | auto Alterac Mountains;246§auto Alteracgebirge;246§auto Montagnes d'Alterac;246 | x=-90.4000015258789 y=-1591.700073242188 | size=1 | links=#21620(auto Alterac Mountains;220):18 #6098(auto Hillsbrad Foothills;98):14
+#24287 | auto Alterac Mountains;247§auto Alteracgebirge;247§auto Montagnes d'Alterac;247 | x=-111.2000045776367 y=148.3000030517578 | size=5 | links=#11720(auto Alterac Mountains;110):78 #13399(auto Alterac Mountains;135):66 #22595(auto Alterac Mountains;229):61 c2349.11:51 c2271.12:35
+#24345 | auto Alterac Mountains;248§auto Alteracgebirge;248§auto Montagnes d'Alterac;248 | x=681.1000366210938 y=-950 | size=1 | links=#6996(entry and exit;inn;Strahnbrad;Alterac Mountains):4 c4075.4:11
+#24372 | auto Alterac Mountains;249§auto Alteracgebirge;249§auto Montagnes d'Alterac;249 | x=637.7000122070312 y=96.0999984741211 | size=5 | links=#3076(auto Alterac Mountains;25):96 #11706(auto Alterac Mountains;109):66 #12287(auto Alterac Mountains;116):79
+#24472 | auto Alterac Mountains;250§auto Alteracgebirge;250§auto Montagnes d'Alterac;250 | x=81.30000305175781 y=327.7000122070313 | size=1 | links=#12311(auto Alterac Mountains;118):24 c2358.12:13 c2359.12:14 c2359.13:39
+#24473 | auto Alterac Mountains;251§auto Alteracgebirge;251§auto Montagnes d'Alterac;251 | x=23.10000038146973 y=-1605.800048828125 | size=1 | links=#2440(auto Alterac Mountains;17):11 #7729(auto Alterac Mountains;64):4
+#24723 | auto Alterac Mountains;252§auto Alteracgebirge;252§auto Montagnes d'Alterac;252 | x=-15.40000057220459 y=166.1999969482422 | size=1 | links=#13399(auto Alterac Mountains;135):31 #27661(auto Alterac Mountains;278):63
+#24777 | auto Alterac Mountains;253§auto Alteracgebirge;253§auto Montagnes d'Alterac;253 | x=66.0999984741211 y=-1736.200073242188 | size=1 | links=#9489(auto Alterac Mountains;87):45 o181073.1:24
+#24820 | auto Alterac Mountains;254§auto Alteracgebirge;254§auto Montagnes d'Alterac;254 | x=625.9000244140625 y=-397.7000122070313 | size=1 | links=#24051(central location;Ruins of Alterac;Alterac Mountains):46 c2254.5:26
+#24851 | auto Alterac Mountains;255§auto Alteracgebirge;255§auto Montagnes d'Alterac;255 | x=60.90000152587891 y=-1536.599975585938 | size=1 | links=#12558(auto Alterac Mountains;125):18 #22492(auto Alterac Mountains;228):32
+#24904 | auto Alterac Mountains;256§auto Alteracgebirge;256§auto Montagnes d'Alterac;256 | x=-71.4000015258789 y=275.2000122070313 | size=1 | links=#9550(auto Alterac Mountains;88):18 #19043(auto Alterac Mountains;188):15 c2271.4:7 c2271.5:4
+#24962 | auto Alterac Mountains;257§auto Alteracgebirge;257§auto Montagnes d'Alterac;257 | x=6.099999904632568 y=-1613 | size=1 | links=#12391(auto Alterac Mountains;121):12 #20726(auto Alterac Mountains;209):4
+#24985 | auto Alterac Mountains;258§auto Alteracgebirge;258§auto Montagnes d'Alterac;258 | x=535.4000244140625 y=-600.1000366210938 | size=1 | links=#10340(auto Alterac Mountains;94):36 #23851(auto Alterac Mountains;244):46
+#25333 | auto Alterac Mountains;259§auto Alteracgebirge;259§auto Montagnes d'Alterac;259 | x=340 y=-1441.599975585938 | size=1 | links=#1904(Cyclonian;Chillwind Point;Alterac Mountains):32 #3635(auto Alterac Mountains;30):63 #14556(auto Alterac Mountains;151):19
+#25358 | passage;from;Chillwind Point;Alterac Mountains;to;Western Plaguelands§passage;von;Zugwindspitze;Alteracgebirge;nach;Westliche Pestländer§passage;de;Pointe du Noroît;Montagnes d'Alterac;vers;Maleterres de l'ouest | x=863.4000244140625 y=-1477.5 | size=1 | links=#2130(passage;from;Chillwind Camp;Western Plaguelands;to;Alterac Mountains):7 #13248(auto Alterac Mountains;132):24
+#25481 | auto Alterac Mountains;260§auto Alteracgebirge;260§auto Montagnes d'Alterac;260 | x=-67.5999984741211 y=193 | size=1 | links=#18555(auto Alterac Mountains;184):16 #18942(auto Alterac Mountains;187):14 c2271.8:4 c2271.10:3
+#25540 | auto Alterac Mountains;261§auto Alteracgebirge;261§auto Montagnes d'Alterac;261 | x=769.4000244140625 y=-563 | size=1 | links=#4394(auto Alterac Mountains;33):26 #26040(auto Alterac Mountains;266):37 c2253.29:14 c2252.31:50
+#25570 | auto Alterac Mountains;262§auto Alteracgebirge;262§auto Montagnes d'Alterac;262 | x=576.6000366210938 y=207 | size=5 | links=#8271(auto Alterac Mountains;69):51 #11706(auto Alterac Mountains;109):63
+#25737 | auto Alterac Mountains;263§auto Alteracgebirge;263§auto Montagnes d'Alterac;263 | x=657.2000122070312 y=-631.7000122070312 | size=1 | links=#13858(auto Alterac Mountains;139):20 #16999(auto Alterac Mountains;174):18
+#25882 | auto Alterac Mountains;264§auto Alteracgebirge;264§auto Montagnes d'Alterac;264 | x=-47 y=257.7000122070313 | size=1 | links=#7304(auto Alterac Mountains;62):6 #13414(auto Alterac Mountains;136):28
+#25900 | auto Alterac Mountains;265§auto Alteracgebirge;265§auto Montagnes d'Alterac;265 | x=536.7000122070312 y=-1607.599975585938 | size=5 | links=#10753(auto Alterac Mountains;100):34 #12545(auto Alterac Mountains;124):45
+#26040 | auto Alterac Mountains;266§auto Alteracgebirge;266§auto Montagnes d'Alterac;266 | x=806.5 y=-557.7999877929688 | size=1 | links=#25540(auto Alterac Mountains;261):37 c2684.1:40
+#26053 | auto Alterac Mountains;267§auto Alteracgebirge;267§auto Montagnes d'Alterac;267 | x=614.9000244140625 y=-303.8000183105469 | size=1 | links=#15211(auto Alterac Mountains;155):9 c2421.1:13
+#26370 | auto Alterac Mountains;268§auto Alteracgebirge;268§auto Montagnes d'Alterac;268 | x=721.7999877929688 y=-330.3000183105469 | size=1 | links=#23545(auto Alterac Mountains;240):7 #27778(auto Alterac Mountains;280):2
+#26544 | auto Alterac Mountains;269§auto Alteracgebirge;269§auto Montagnes d'Alterac;269 | x=763.1000366210938 y=-308.2000122070313 | size=1 | links=#6250(auto Alterac Mountains;49):16 #8721(auto Alterac Mountains;78):24
+#26679 | auto Alterac Mountains;270§auto Alteracgebirge;270§auto Montagnes d'Alterac;270 | x=459.5 y=-298.5 | size=1 | links=#14446(auto Alterac Mountains;147):25 c2256.13:25
+#26813 | auto Alterac Mountains;271§auto Alteracgebirge;271§auto Montagnes d'Alterac;271 | x=758.7999877929688 y=-1462.400024414063 | size=1 | links=#20992(auto Alterac Mountains;213):55 c883.1:27
+#26893 | auto Alterac Mountains;272§auto Alteracgebirge;272§auto Montagnes d'Alterac;272 | x=680 y=-909.6000366210938 | size=1 | links=#19065(auto Alterac Mountains;190):14 c2316.1:14
+#26971 | auto Alterac Mountains;273§auto Alteracgebirge;273§auto Montagnes d'Alterac;273 | x=482.5 y=-663.2999877929688 | size=1 | links=#1456(auto Alterac Mountains;6):24 #6693(auto Alterac Mountains;56):28
+#26980 | auto Alterac Mountains;274§auto Alteracgebirge;274§auto Montagnes d'Alterac;274 | x=22.80000114440918 y=-1631.900024414063 | size=1 | links=#2640(auto Alterac Mountains;19):6 #21571(auto Alterac Mountains;218):8
+#27429 | auto Alterac Mountains;275§auto Alteracgebirge;275§auto Montagnes d'Alterac;275 | x=25.10000038146973 y=-1579.300048828125 | size=1 | links=#178(auto Alterac Mountains;1):6 #12357(auto Alterac Mountains;119):11 #22492(auto Alterac Mountains;228):24
+#27461 | focus point;Chillwind Point;Alterac Mountains§bündelpunkt;Zugwindspitze;Alteracgebirge§focus point;Pointe du Noroît;Montagnes d'Alterac | x=668.5 y=-1442.800048828125 | size=1 | links=#16687(auto Alterac Mountains;171):36 #16979(auto Alterac Mountains;173):46 #20992(auto Alterac Mountains;213):37
+#27487 | auto Alterac Mountains;276§auto Alteracgebirge;276§auto Montagnes d'Alterac;276 | x=14.90000057220459 y=246 | size=1 | links=#9318(auto Alterac Mountains;82):50 #27661(auto Alterac Mountains;278):25 c2543.1:22
+#27613 | auto Alterac Mountains;277§auto Alteracgebirge;277§auto Montagnes d'Alterac;277 | x=786.7000122070312 y=-982.2999877929688 | size=1 | links=#13769(auto Alterac Mountains;138):62 #19268(auto Alterac Mountains;193):49
+#27661 | auto Alterac Mountains;278§auto Alteracgebirge;278§auto Montagnes d'Alterac;278 | x=-4.099999904632568 y=228.4000091552734 | size=1 | links=#1516(auto Alterac Mountains;7):38 #24723(auto Alterac Mountains;252):63 #27487(auto Alterac Mountains;276):25 c2271.7:35
+#27713 | auto Alterac Mountains;279§auto Alteracgebirge;279§auto Montagnes d'Alterac;279 | x=409.3000183105469 y=180.9000091552734 | size=1 | links=#20885(auto Alterac Mountains;212):11 c2358.18:15
+#27778 | auto Alterac Mountains;280§auto Alteracgebirge;280§auto Montagnes d'Alterac;280 | x=719.7999877929688 y=-328.3999938964844 | size=1 | links=#26370(auto Alterac Mountains;268):2 c2422.1:5
+#27806 | auto Alterac Mountains;281§auto Alteracgebirge;281§auto Montagnes d'Alterac;281 | x=12.80000019073486 y=100.5 | size=5 | links=#12951(auto Alterac Mountains;127):84 c2356.4:27 c2349.10:14 c2356.11:60
+#27809 | auto Alterac Mountains;282§auto Alteracgebirge;282§auto Montagnes d'Alterac;282 | x=73 y=-541.7000122070312 | size=1 | links=#5077(auto Alterac Mountains;36):89 #7196(auto Alterac Mountains;60):53 #8145(auto Alterac Mountains;66):44
+#27877 | auto Alterac Mountains;283§auto Alteracgebirge;283§auto Montagnes d'Alterac;283 | x=1224.300048828125 y=-317.8999938964844 | size=1 | links=#16138(auto Alterac Mountains;166):10 c2423.1:3
+#27958 | auto Alterac Mountains;284§auto Alteracgebirge;284§auto Montagnes d'Alterac;284 | x=488.8999938964844 y=-203 | size=1 | links=#2991(auto Alterac Mountains;23):13 #22114(auto Alterac Mountains;222):16
+#27967 | auto Alterac Mountains;285§auto Alteracgebirge;285§auto Montagnes d'Alterac;285 | x=496.6000061035156 y=-232.1000061035156 | size=1 | links=#2272(entry and exit;building;Ruins of Alterac;Alterac Mountains):9 #7145(auto Alterac Mountains;59):24 #13543(auto Alterac Mountains;137):22
+#28003 | auto Alterac Mountains;286§auto Alteracgebirge;286§auto Montagnes d'Alterac;286 | x=1178.300048828125 y=-276.2000122070313 | size=5 | links=#15250(auto Alterac Mountains;156):37 #22853(auto Alterac Mountains;230):82 c2247.2:18
+#28027 | auto Alterac Mountains;287§auto Alteracgebirge;287§auto Montagnes d'Alterac;287 | x=34.20000076293945 y=440.2000122070313 | size=1 | links=#11841(auto Alterac Mountains;112):38 c4075.3:16
+#28117 | auto Alterac Mountains;288§auto Alteracgebirge;288§auto Montagnes d'Alterac;288 | x=513.2999877929688 y=182.5 | size=1 | links=#6150(auto Alterac Mountains;46):38 #8271(auto Alterac Mountains;69):58 o2039.5:18
+#28168 | auto Alterac Mountains;289§auto Alteracgebirge;289§auto Montagnes d'Alterac;289 | x=-48.5 y=271.3000183105469 | size=1 | links=#3301(auto Alterac Mountains;28):4 #16046(auto Alterac Mountains;165):6
+#28202 | auto Alterac Mountains;290§auto Alteracgebirge;290§auto Montagnes d'Alterac;290 | x=295.6000061035156 y=-692.7000122070312 | size=1 | links=#1328(crossing;Alterac Mountains):44 #18276(auto Alterac Mountains;180):53
+#28298 | auto Alterac Mountains;291§auto Alteracgebirge;291§auto Montagnes d'Alterac;291 | x=632.9000244140625 y=-1156.400024414063 | size=1 | links=#9373(auto Alterac Mountains;83):27 #12299(auto Alterac Mountains;117):20
+#28399 | auto Alterac Mountains;292§auto Alteracgebirge;292§auto Montagnes d'Alterac;292 | x=359.2000122070313 y=198.3000030517578 | size=1 | links=#21013(auto Alterac Mountains;214):45 #21594(auto Alterac Mountains;219):32 c2358.6:23
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c883.1 | links=#13248(auto Alterac Mountains;132):54 #26813(auto Alterac Mountains;271):27
+c2240.1 | links=#3343(central location;Corrahn's Dagger;Alterac Mountains):19
+c2245.1 | links=c2243.4:16 c2245.6:25
+c2247.1 | links=#9822(auto Alterac Mountains;91):12
+c2254.1 | links=c2255.2:17
+c2256.1 | links=#14446(auto Alterac Mountains;147):32 c2287.1:30
+c2257.1 | links=#19602(central location;building;Ruins of Alterac;top):27 c2287.9:4
+c2258.1 | links=#13769(auto Alterac Mountains;138):80 c2242.20:25
+c2271.1 | links=#6271(auto Alterac Mountains;50):5 #14281(auto Alterac Mountains;143):9
+c2272.1 | links=
+c2287.1 | links=#8944(auto Alterac Mountains;79):33 #9253(auto Alterac Mountains;81):29 c2256.1:30
+c2306.1 | links=o3707.1:3 c2318.7:6
+c2316.1 | links=#26893(auto Alterac Mountains;272):14
+c2317.1 | links=c2423.1:5
+c2320.1 | links=#17862(auto Alterac Mountains;178):13 o1765.1:6
+c2333.1 | links=#14339(auto Alterac Mountains;145):56 c14281.1:39
+c2356.1 | links=#21421(auto Alterac Mountains;216):24
+c2358.1 | links=c2359.16:34
+c2359.1 | links=#21013(auto Alterac Mountains;214):22
+c2406.1 | links=c2406.11:34 c2406.20:65
+c2407.1 | links=#3986(camp;Alliance;The Headland;Alterac Mountains):63 #7834(central location;The Headland;Alterac Mountains):73
+c2411.1 | links=#18555(auto Alterac Mountains;184):16
+c2412.1 | links=#7119(auto Alterac Mountains;58):0
+c2413.1 | links=#7119(auto Alterac Mountains;58):13
+c2414.1 | links=#9550(auto Alterac Mountains;88):15 c2415.1:3
+c2415.1 | links=c2414.1:3
+c2417.1 | links=#2830(auto Alterac Mountains;21):8
+c2420.1 | links=#15387(auto Alterac Mountains;159):13
+c2421.1 | links=#26053(auto Alterac Mountains;267):13 o1760.1:9
+c2422.1 | links=#27778(auto Alterac Mountains;280):5
+c2423.1 | links=#27877(auto Alterac Mountains;283):3 c2317.1:5
+c2431.1 | links=#16329(auto Alterac Mountains;169):11
+c2440.1 | links=#21874(centralpoint;Sofera's Naze;Alterac Mountains):17 c2240.6:9
+c2453.1 | links=#10572(auto Alterac Mountains;99):6
+c2480.1 | links=#6018(auto Alterac Mountains;45):2
+c2543.1 | links=#20119(auto Alterac Mountains;203):16 #27487(auto Alterac Mountains;276):22
+c2628.1 | links=#20166(auto Alterac Mountains;205):14
+c2684.1 | links=#26040(auto Alterac Mountains;266):40 #28746(s;Eastern Kingdoms;Alterac Mountains;Crushridge Hold;Slaughter Hollow):24 c2252.14:23
+c3984.1 | links=#6162(auto Alterac Mountains;47):5 c3985.1:3
+c3985.1 | links=c3984.1:3
+c4075.1 | links=#8698(auto Alterac Mountains;77):3
+c6176.1 | links=#16725(auto Alterac Mountains;172):10 o89931.1:33
+c6491.1 | links=#19353(auto Alterac Mountains;195):16
+c6707.1 | links=#18178(auto Alterac Mountains;179):10
+c6768.1 | links=#12358(auto Alterac Mountains;120):7
+c6777.1 | links=#3603(auto Alterac Mountains;29):5
+c6779.1 | links=#3603(auto Alterac Mountains;29):10 c11776.1:1
+c7323.1 | links=#21571(auto Alterac Mountains;218):7
+c7324.1 | links=#12357(auto Alterac Mountains;119):14
+c7325.1 | links=#7613(auto Alterac Mountains;63):11
+c8309.1 | links=#7613(auto Alterac Mountains;63):24 #21620(auto Alterac Mountains;220):35
+c11776.1 | links=c6779.1:1
+c13085.1 | links=#3119(auto Alterac Mountains;26):25
+c13217.1 | links=#3986(camp;Alliance;The Headland;Alterac Mountains):19
+c13602.1 | links=c2452.2:27
+c13636.1 | links=c2250.10:43
+c13816.1 | links=#9059(auto Alterac Mountains;80):24
+c13841.1 | links=#3986(camp;Alliance;The Headland;Alterac Mountains):18
+c14222.1 | links=c14222.4:47 c2406.17:12
+c14281.1 | links=c2333.1:39 c2440.2:21
+c14961.1 | links=#3986(camp;Alliance;The Headland;Alterac Mountains):22
+c16107.1 | links=o181073.1:2
+c18165.1 | links=#5890(auto Alterac Mountains;44):18
+o1740.1 | links=#21874(centralpoint;Sofera's Naze;Alterac Mountains):4
+o1760.1 | links=c2421.1:9
+o1765.1 | links=#17862(auto Alterac Mountains;178):7 c2320.1:6
+o1770.1 | links=c2251.21:18 c2251.23:5 c2251.27:5
+o2039.1 | links=c2358.6:8
+o3707.1 | links=c2306.1:3 c2243.10:8
+o89931.1 | links=#11137(auto Alterac Mountains;104):13 c6176.1:33
+o105570.1 | links=#10459(auto Alterac Mountains;98):22
+o178609.1 | links=c2253.3:29 c2252.16:42 c2253.21:18
+o181073.1 | links=#24777(auto Alterac Mountains;253):24 c16107.1:2
+o186420.1 | links=#3343(central location;Corrahn's Dagger;Alterac Mountains):27
+c2240.2 | links=#8145(auto Alterac Mountains;66):22 #19871(auto Alterac Mountains;199):21
+c2243.2 | links=c2243.3:17 c2245.6:18
+c2245.2 | links=c2243.6:10 c2243.12:12
+c2246.2 | links=#15250(auto Alterac Mountains;156):20
+c2247.2 | links=#17292(auto Alterac Mountains;177):94 #28003(auto Alterac Mountains;286):18
+c2252.2 | links=#6693(auto Alterac Mountains;56):12
+c2255.2 | links=#2175(auto Alterac Mountains;13):20 c2254.1:17 c2254.8:20
+c2256.2 | links=#2285(auto Alterac Mountains;14):21
+c2272.2 | links=#13414(auto Alterac Mountains;136):11
+c2287.2 | links=#14446(auto Alterac Mountains;147):14
+c2349.2 | links=#13976(auto Alterac Mountains;141):57 c2356.6:72 c2356.12:25
+c2359.2 | links=#20166(auto Alterac Mountains;205):23 c4075.6:15
+c2406.2 | links=c2406.7:42 c2406.11:21
+c2407.2 | links=#7834(central location;The Headland;Alterac Mountains):56 c14222.10:22
+c2440.2 | links=c14281.1:21 c2240.9:32
+c2452.2 | links=c13602.1:27 o178609.6:51 c2251.14:24 c2251.15:17 c2251.17:47 c2251.31:15
+c2453.2 | links=#22019(auto Alterac Mountains;221):2
+c2628.2 | links=#12451(auto Alterac Mountains;123):39
+c4075.2 | links=#23255(auto Alterac Mountains;236):7 c2358.9:15
+c13602.2 | links=#19498(auto Alterac Mountains;196):30 c2250.10:25
+c14222.2 | links=c2407.3:38 c14222.6:12 c2406.22:10 c2406.23:38
+o2039.2 | links=#21013(auto Alterac Mountains;214):28
+o3659.2 | links=o2039.3:4
+c2240.3 | links=#3343(central location;Corrahn's Dagger;Alterac Mountains):45
+c2243.3 | links=#16219(auto Alterac Mountains;168):67 c2243.2:17 c2318.6:9
+c2245.3 | links=c2243.16:8 c2243.25:13
+c2246.3 | links=#15250(auto Alterac Mountains;156):12
+c2247.3 | links=#6210(auto Alterac Mountains;48):27
+c2253.3 | links=o178609.1:29 c2252.15:33 c2252.19:26
+c2255.3 | links=c2254.5:23
+c2256.3 | links=#9253(auto Alterac Mountains;81):23 c2287.4:32
+c2271.3 | links=#9550(auto Alterac Mountains;88):4
+c2287.3 | links=#1567(auto Alterac Mountains;8):8
+c2318.3 | links=#14492(auto Alterac Mountains;148):16 c2319.6:8
+c2349.3 | links=c14222.5:62 c2349.16:73 c2406.19:38
+c2356.3 | links=#12451(auto Alterac Mountains;123):44 #12951(auto Alterac Mountains;127):33 c2359.11:40
+c2358.3 | links=c4075.6:17
+c2359.3 | links=#10459(auto Alterac Mountains;98):11
+c2406.3 | links=c2407.3:49 c14222.8:32 c2406.14:33
+c2407.3 | links=c14222.2:38 c2406.3:49 c14222.7:29 c2406.16:34
+c2453.3 | links=#14444(auto Alterac Mountains;146):16
+c2628.3 | links=#12311(auto Alterac Mountains;118):13
+c4075.3 | links=#28027(auto Alterac Mountains;287):16 c2628.6:15 c2358.13:22
+c14222.3 | links=c2406.6:33 c14222.11:14
+o2039.3 | links=#21594(auto Alterac Mountains;219):27 o3659.2:4
+o3706.3 | links=#11536(crossing;Gallows' Corner;Alterac Mountains):15
+o178609.3 | links=c2251.13:38 c2251.15:35 c2252.15:48
+c2240.4 | links=#3343(central location;Corrahn's Dagger;Alterac Mountains):35
+c2242.4 | links=#18667(auto Alterac Mountains;185):19
+c2243.4 | links=c2245.1:16 c2318.6:8
+c2245.4 | links=c2407.9:75 c2243.13:16 c2243.16:9
+c2246.4 | links=#17292(auto Alterac Mountains;177):33 c2247.6:33
+c2250.4 | links=#19498(auto Alterac Mountains;196):27
+c2255.4 | links=#23256(auto Alterac Mountains;237):4
+c2256.4 | links=#18301(auto Alterac Mountains;181):30 c2256.13:28
+c2271.4 | links=#24904(auto Alterac Mountains;256):7
+c2272.4 | links=#3301(auto Alterac Mountains;28):8
+c2287.4 | links=#18301(auto Alterac Mountains;181):38 c2256.3:32
+c2349.4 | links=c2356.9:22
+c2356.4 | links=#27806(auto Alterac Mountains;281):27
+c2406.4 | links=#7834(central location;The Headland;Alterac Mountains):81 c2407.4:23
+c2407.4 | links=c2406.4:23 c2406.6:39
+c2453.4 | links=c2253.10:14
+c2628.4 | links=#23083(auto Alterac Mountains;234):16 c2628.7:5
+c4075.4 | links=#16465(crossing;Strahnbrad;Alterac Mountains):29 #24345(auto Alterac Mountains;248):11
+c14222.4 | links=c14222.1:47 c2356.9:51
+o2039.4 | links=c2358.18:11
+o178609.4 | links=c2251.11:53 c2251.12:11
+c2240.5 | links=c2240.8:19
+c2243.5 | links=c2243.7:20 c2243.10:18
+c2245.5 | links=c2318.8:23
+c2251.5 | links=#19498(auto Alterac Mountains;196):24
+c2254.5 | links=#24820(auto Alterac Mountains;254):26 c2255.3:23 c2254.7:23
+c2255.5 | links=#24051(central location;Ruins of Alterac;Alterac Mountains):20 c2256.11:30
+c2256.5 | links=c2255.6:25 c2256.8:44 c2287.8:29
+c2271.5 | links=#24904(auto Alterac Mountains;256):4
+c2287.5 | links=c2256.13:4
+c2318.5 | links=#5294(auto Alterac Mountains;38):10
+c2406.5 | links=#5077(auto Alterac Mountains;36):43 #6607(auto Alterac Mountains;54):31 #9059(auto Alterac Mountains;80):43
+c2407.5 | links=#9059(auto Alterac Mountains;80):63
+c14222.5 | links=c2349.3:62 c2406.15:23
+o2039.5 | links=#28117(auto Alterac Mountains;288):18
+o178609.5 | links=c2251.9:24 c2251.10:25 c2251.17:44
+c2240.6 | links=c2440.1:9 c2240.9:20
+c2243.6 | links=c2245.2:10
+c2245.6 | links=c2245.1:25 c2243.2:18
+c2246.6 | links=#2915(auto Alterac Mountains;22):6 #17292(auto Alterac Mountains;177):59
+c2247.6 | links=c2246.4:33 c2246.12:27
+c2255.6 | links=#18341(auto Alterac Mountains;182):18 c2256.5:25
+c2256.6 | links=c2256.13:31 c2287.24:28
+c2272.6 | links=c2271.13:13
+c2287.6 | links=#2272(entry and exit;building;Ruins of Alterac;Alterac Mountains):15 #23110(auto Alterac Mountains;235):17
+c2318.6 | links=c2243.3:9 c2243.4:8
+c2319.6 | links=c2318.3:8
+c2349.6 | links=c2406.13:19 c2406.15:20
+c2356.6 | links=c2349.2:72 c2359.7:51 c2349.17:61 c2359.21:52
+c2358.6 | links=#28399(auto Alterac Mountains;292):23 o2039.1:8
+c2359.6 | links=#6150(auto Alterac Mountains;46):30
+c2406.6 | links=c14222.3:33 c2407.4:39 c14222.10:25
+c2407.6 | links=#5077(auto Alterac Mountains;36):40
+c2628.6 | links=c4075.3:15
+c4075.6 | links=c2359.2:15 c2358.3:17
+c14222.6 | links=c14222.2:12
+o2039.6 | links=#20166(auto Alterac Mountains;205):20
+o178609.6 | links=c2452.2:51
+c2240.7 | links=#21874(centralpoint;Sofera's Naze;Alterac Mountains):18
+c2243.7 | links=c2243.5:20 c2243.11:10
+c2251.7 | links=#19498(auto Alterac Mountains;196):53
+c2254.7 | links=#2175(auto Alterac Mountains;13):29 c2254.5:23
+c2256.7 | links=c2287.7:36 c2287.8:32
+c2271.7 | links=#27661(auto Alterac Mountains;278):35
+c2272.7 | links=#20119(auto Alterac Mountains;203):7
+c2287.7 | links=c2256.7:36 c2256.8:31
+c2318.7 | links=c2306.1:6 c2243.11:12 c2243.12:14
+c2356.7 | links=
+c2359.7 | links=c2356.6:51
+c2406.7 | links=#7834(central location;The Headland;Alterac Mountains):59 c2406.2:42
+c2407.7 | links=#5077(auto Alterac Mountains;36):22
+c2628.7 | links=c2628.4:5
+c4075.7 | links=#21594(auto Alterac Mountains;219):7
+c14222.7 | links=c2407.3:29
+o178609.7 | links=#8517(auto Alterac Mountains;74):46 c2251.10:39
+c2240.8 | links=c2240.5:19 c2319.11:12
+c2245.8 | links=c2243.26:23
+c2254.8 | links=#6076(in area;Ruins of Alterac;Alterac Mountains):31 c2255.2:20
+c2256.8 | links=c2256.5:44 c2287.7:31 c2256.9:46
+c2271.8 | links=#25481(auto Alterac Mountains;260):4
+c2287.8 | links=c2256.5:29 c2256.7:32
+c2318.8 | links=c2245.5:23 c2243.13:9
+c2349.8 | links=#12951(auto Alterac Mountains;127):51
+c2358.8 | links=c2359.11:16
+c2406.8 | links=#7834(central location;The Headland;Alterac Mountains):17
+c14222.8 | links=c2406.3:32 c2406.20:27
+c2240.9 | links=c2440.2:32 c2240.6:20
+c2243.9 | links=#6334(auto Alterac Mountains;52):24
+c2251.9 | links=o178609.5:24 c2251.18:12
+c2252.9 | links=#15653(auto Alterac Mountains;162):16 c2252.19:48
+c2253.9 | links=c2252.10:23
+c2256.9 | links=#2285(auto Alterac Mountains;14):17 #11245(Grel'borg the Miser;Ruins of Alterac;Alterac Mountains):6 #12693(auto Alterac Mountains;126):30 #23110(auto Alterac Mountains;235):16 c2256.8:46
+c2287.9 | links=c2257.1:4
+c2349.9 | links=c2356.10:42
+c2356.9 | links=c2349.4:22 c14222.4:51
+c2358.9 | links=c4075.2:15
+c2359.9 | links=#21013(auto Alterac Mountains;214):25
+c2406.9 | links=#7834(central location;The Headland;Alterac Mountains):35
+c2407.9 | links=#7840(auto Alterac Mountains;65):21 #11839(auto Alterac Mountains;111):72 c2245.4:75 c2407.27:21
+c14222.9 | links=#7834(central location;The Headland;Alterac Mountains):11
+c2240.10 | links=#21874(centralpoint;Sofera's Naze;Alterac Mountains):13
+c2243.10 | links=o3707.1:8 c2243.5:18
+c2250.10 | links=c13636.1:43 c13602.2:25
+c2251.10 | links=o178609.5:25 o178609.7:39 c2250.11:35 c2250.15:33
+c2252.10 | links=#6295(auto Alterac Mountains;51):11 c2253.9:23 c2253.17:22
+c2253.10 | links=c2453.4:14 c2253.11:7
+c2271.10 | links=#25481(auto Alterac Mountains;260):3
+c2349.10 | links=#27806(auto Alterac Mountains;281):14
+c2356.10 | links=c2349.9:42
+c2406.10 | links=#7196(auto Alterac Mountains;60):23
+c2407.10 | links=c2407.27:29
+c14222.10 | links=c2407.2:22 c2406.6:25
+c2240.11 | links=#3146(auto Alterac Mountains;27):8
+c2243.11 | links=c2243.7:10 c2318.7:12
+c2250.11 | links=c2251.10:35
+c2251.11 | links=o178609.4:53 c2250.14:36
+c2252.11 | links=c2252.38:26
+c2253.11 | links=#28746(s;Eastern Kingdoms;Alterac Mountains;Crushridge Hold;Slaughter Hollow):15 c2253.10:7
+c2256.11 | links=#18341(auto Alterac Mountains;182):22 c2255.5:30
+c2271.11 | links=c2271.13:6
+c2319.11 | links=#21874(centralpoint;Sofera's Naze;Alterac Mountains):9 c2240.8:12
+c2349.11 | links=#24287(auto Alterac Mountains;247):51
+c2356.11 | links=#22595(auto Alterac Mountains;229):20 #27806(auto Alterac Mountains;281):60
+c2358.11 | links=#3032(auto Alterac Mountains;24):20
+c2359.11 | links=c2356.3:40 c2358.8:16
+c2406.11 | links=c2406.1:34 c2406.2:21 c2406.12:46
+c2407.11 | links=#3343(central location;Corrahn's Dagger;Alterac Mountains):17
+c14222.11 | links=c14222.3:14
+o178609.11 | links=#24051(central location;Ruins of Alterac;Alterac Mountains):24
+c2243.12 | links=#6334(auto Alterac Mountains;52):36 c2245.2:12 c2318.7:14
+c2246.12 | links=c2247.6:27
+c2250.12 | links=#8517(auto Alterac Mountains;74):41 c2250.13:41
+c2251.12 | links=o178609.4:11 c2251.13:44
+c2252.12 | links=#4394(auto Alterac Mountains;33):49
+c2253.12 | links=c2252.45:41
+c2271.12 | links=#24287(auto Alterac Mountains;247):35 c2271.13:20
+c2356.12 | links=c2349.2:25 c2349.18:28
+c2358.12 | links=#24472(auto Alterac Mountains;250):13
+c2359.12 | links=#24472(auto Alterac Mountains;250):14
+c2406.12 | links=c2406.11:46
+c14222.12 | links=#7834(central location;The Headland;Alterac Mountains):33
+c2242.13 | links=#6509(auto Alterac Mountains;53):21
+c2243.13 | links=c2245.4:16 c2318.8:9
+c2250.13 | links=#13949(auto Alterac Mountains;140):49 c2250.12:41
+c2251.13 | links=o178609.3:38 c2251.12:44
+c2253.13 | links=c2252.14:23 c2252.17:57 c2252.45:43
+c2254.13 | links=#8721(auto Alterac Mountains;78):21
+c2256.13 | links=#26679(auto Alterac Mountains;270):25 c2256.4:28 c2287.5:4 c2256.6:31
+c2271.13 | links=c2272.6:13 c2271.11:6 c2271.12:20
+c2349.13 | links=
+c2356.13 | links=#12951(auto Alterac Mountains;127):23 c2349.16:78
+c2358.13 | links=c4075.3:22
+c2359.13 | links=#3032(auto Alterac Mountains;24):6 #24472(auto Alterac Mountains;250):39
+c2406.13 | links=c2349.6:19 c2406.21:56
+c2407.13 | links=#22224(auto Alterac Mountains;225):47 c2243.28:31
+c2242.14 | links=#23827(auto Alterac Mountains;243):40
+c2250.14 | links=#8517(auto Alterac Mountains;74):47 c2251.11:36
+c2251.14 | links=c2452.2:24
+c2252.14 | links=c2684.1:23 c2253.13:23
+c2253.14 | links=c2252.17:31
+c2271.14 | links=c2359.16:29
+c2349.14 | links=c2349.16:37
+c2359.14 | links=#23055(auto Alterac Mountains;233):5 c2358.19:7
+c2406.14 | links=c2406.3:33
+c2243.15 | links=#7840(auto Alterac Mountains;65):35
+c2250.15 | links=c2251.10:33
+c2251.15 | links=c2452.2:17 o178609.3:35
+c2252.15 | links=c2253.3:33 o178609.3:48
+c2358.15 | links=#23255(auto Alterac Mountains;236):14
+c2406.15 | links=c14222.5:23 c2349.6:20
+c2408.15 | links=#10459(auto Alterac Mountains;98):52
+c2243.16 | links=c2245.3:8 c2245.4:9
+c2252.16 | links=o178609.1:42
+c2254.16 | links=#8721(auto Alterac Mountains;78):15
+c2349.16 | links=#2814(auto Alterac Mountains;20):86 c2349.3:73 c2356.13:78 c2349.14:37
+c2358.16 | links=#23639(auto Alterac Mountains;242):14
+c2359.16 | links=#9318(auto Alterac Mountains;82):39 c2358.1:34 c2271.14:29
+c2406.16 | links=c2407.3:34
+c2251.17 | links=c2452.2:47 o178609.5:44
+c2252.17 | links=#15617(auto Alterac Mountains;161):18 c2253.13:57 c2253.14:31 c2252.32:46
+c2253.17 | links=#4394(auto Alterac Mountains;33):33 c2252.10:22
+c2349.17 | links=#6150(auto Alterac Mountains;46):54 c2356.6:61
+c2359.17 | links=#15476(auto Alterac Mountains;160):29
+c2406.17 | links=c14222.1:12 c2406.19:59
+c2242.18 | links=#23827(auto Alterac Mountains;243):40
+c2251.18 | links=c2251.9:12
+c2349.18 | links=#2814(auto Alterac Mountains;20):70 c2356.12:28
+c2358.18 | links=#27713(auto Alterac Mountains;279):15 o2039.4:11
+c2359.18 | links=c2359.22:48
+c2252.19 | links=c2253.3:26 c2252.9:48
+c2358.19 | links=c2359.14:7
+c2406.19 | links=c2349.3:38 c2406.17:59
+c2242.20 | links=#18667(auto Alterac Mountains;185):10 c2258.1:25
+c2252.20 | links=#10340(auto Alterac Mountains;94):28
+c2359.20 | links=c2359.21:21
+c2406.20 | links=c2406.1:65 c14222.8:27 c2406.21:16
+c2251.21 | links=#7260(auto Alterac Mountains;61):14 o1770.1:18
+c2253.21 | links=o178609.1:18
+c2349.21 | links=#11720(auto Alterac Mountains;110):28
+c2359.21 | links=c2356.6:52 c2359.20:21
+c2406.21 | links=c2406.13:56 c2406.20:16
+c2287.22 | links=#19602(central location;building;Ruins of Alterac;top):8
+c2359.22 | links=#15329(auto Alterac Mountains;157):122 c2359.18:48
+c2406.22 | links=c14222.2:10
+c2251.23 | links=o1770.1:5
+c2287.23 | links=#19602(central location;building;Ruins of Alterac;top):7
+c2406.23 | links=c14222.2:38
+c2287.24 | links=c2256.6:28
+c2243.25 | links=#11839(auto Alterac Mountains;111):85 c2245.3:13 c2243.26:18
+c2243.26 | links=c2245.8:23 c2243.25:18
+c2243.27 | links=#8342(auto Alterac Mountains;70):68
+c2251.27 | links=o1770.1:5
+c2252.27 | links=#181(auto Alterac Mountains;2):48 c2252.28:36
+c2407.27 | links=c2407.9:21 c2407.10:29 c2243.31:24
+c2243.28 | links=c2407.13:31
+c2252.28 | links=c2252.27:36 c2252.29:46 c2252.30:58 c2252.47:27
+c2243.29 | links=#8342(auto Alterac Mountains;70):34
+c2252.29 | links=c2252.28:46 c2252.33:35
+c2253.29 | links=#25540(auto Alterac Mountains;261):14
+c2243.30 | links=c2243.31:28
+c2252.30 | links=c2252.28:58
+c2243.31 | links=c2407.27:24 c2243.30:28
+c2251.31 | links=c2452.2:15
+c2252.31 | links=#25540(auto Alterac Mountains;261):50 c2252.32:46
+c2252.32 | links=c2252.17:46 c2252.31:46
+c2252.33 | links=c2252.29:35 c2252.38:59
+c2252.38 | links=#4394(auto Alterac Mountains;33):27 c2252.11:26 c2252.33:59
+c2408.41 | links=#5890(auto Alterac Mountains;44):48
+c2252.45 | links=c2253.12:41 c2253.13:43
+c2252.47 | links=c2252.28:27

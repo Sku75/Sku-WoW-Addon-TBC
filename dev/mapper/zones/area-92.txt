@@ -1,0 +1,3 @@
+Zone areaId 92 — eine Zeile pro Wegpunkt; Links inline.
+
+#28811 | s;Eastern Kingdoms;Elwynn Forest;Mirror Lake§s;Östliche Königreiche;Wald von Elwynn;Spiegelsee§s;Royaumes de l'est;Forêt d'Elwynn;Le lac Miroir | x=-9389.26 y=-458.427 | size=1 | links=c285.2:94 c735.2:135

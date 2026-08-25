@@ -1,0 +1,3 @@
+Zone areaId 131 — eine Zeile pro Wegpunkt; Links inline.
+
+#28760 | s;Eastern Kingdoms;Dun Morogh;Kharanos§s;Östliche Königreiche;Dun Morogh;Kharanos§s;Royaumes de l'est;Dun Morogh;Kharanos | x=-5585.9507 y=-482.12653 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 499 — eine Zeile pro Wegpunkt; Links inline.
+
+#28677 | s;Kalimdor;Dustwallow Marsh;Brackenwall Village;Darkmist Cavern§s;Kalimdor;Marschen von Dustwallow;Brackenwall;Graunebelhöhlen§s;Kalimdor;Marécage d'Âprefange;Mur-de-Fougères;Caverne de Sombrebrume | x=-2829.79 y=-2722.81 | size=1

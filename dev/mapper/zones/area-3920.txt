@@ -1,0 +1,5 @@
+Zone areaId 3920 — eine Zeile pro Wegpunkt; Links inline.
+
+#5019 | auto Shatter Point;Hellfire Peninsula;1§auto Trümmerposten;Höllenfeuerhalbinsel;1§auto Halte du Fracas;Péninsule des Flammes infernales;1 | x=308 y=1448.099975585938 | size=1 | links=#23035(auto Shatter Point;Hellfire Peninsula;3):46
+#19418 | auto Shatter Point;Hellfire Peninsula;2§auto Trümmerposten;Höllenfeuerhalbinsel;2§auto Halte du Fracas;Péninsule des Flammes infernales;2 | x=295.8999938964844 y=1481.700073242188 | size=1 | links=#23035(auto Shatter Point;Hellfire Peninsula;3):30
+#23035 | auto Shatter Point;Hellfire Peninsula;3§auto Trümmerposten;Höllenfeuerhalbinsel;3§auto Halte du Fracas;Péninsule des Flammes infernales;3 | x=267.3000183105469 y=1471.599975585938 | size=5 | links=#5019(auto Shatter Point;Hellfire Peninsula;1):46 #19418(auto Shatter Point;Hellfire Peninsula;2):30

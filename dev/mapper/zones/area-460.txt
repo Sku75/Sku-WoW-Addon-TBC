@@ -1,0 +1,3 @@
+Zone areaId 460 — eine Zeile pro Wegpunkt; Links inline.
+
+#28713 | s;Kalimdor;Stonetalon Mountains;Sun Rock Retreat§s;Kalimdor;Steinkrallengebirge;Sonnenfels§s;Kalimdor;Les Serres-Rocheuses;Sun Rock Retreat | x=936.308 y=-910.974 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 318 — eine Zeile pro Wegpunkt; Links inline.
+
+#28749 | s;Eastern Kingdoms;Arathi Highlands;Hammerfall;Drywhisker Gorge§s;Östliche Königreiche;Arathihochland;Hammerfall;Schlucht der Trockenstoppel§s;Royaumes de l'est;Hautes-terres d'Arathi;Trépas-d'Orgrim;Drywhisker Gorge | x=-1014.22 y=-3827.39 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 3037 — eine Zeile pro Wegpunkt; Links inline.
+
+#28725 | s;Kalimdor;Thousand Needles;Windbreak Canyon;Ironstone Camp§s;Kalimdor;Tausend Nadeln;Schlucht der heulenden Winde;Eisensteinlager§s;Kalimdor;Mille pointes;Canyon de Brisevent;Camp Rochefer | x=-5848.05 y=-3412.38 | size=1

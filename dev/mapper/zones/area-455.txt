@@ -1,0 +1,3 @@
+Zone areaId 455 — eine Zeile pro Wegpunkt; Links inline.
+
+#28666 | s;Kalimdor;Darkshore;The Master's Glaive;Blackwood Den§s;Kalimdor;Dunkelküste;Die Meistergleve;Bau der Schwarzfelle§s;Kalimdor;Sombrivage;Le Glaive du Maître;Blackwood Den | x=4619.42 y=-25.6126 | size=1

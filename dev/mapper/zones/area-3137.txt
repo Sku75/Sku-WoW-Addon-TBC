@@ -1,0 +1,3 @@
+Zone areaId 3137 — eine Zeile pro Wegpunkt; Links inline.
+
+#28649 | s;Kalimdor;Azshara;Shadowsong Shrine;Talrendis Point§s;Kalimdor;Azshara;Shadowsong-Schrein;Talrendisspitze§s;Kalimdor;Azshara;Sanctuaire de Chantelombre;Halte de Talrendis | x=2707.72 y=-3869.25 | size=1

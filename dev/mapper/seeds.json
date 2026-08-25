@@ -1,0 +1,10 @@
+{
+  "current": 1,
+  "seeds": {
+    "1": {
+      "commit": "6bcea84fa9c6becbb1ef7615ffdbcd483f747d88",
+      "date": "2026-08-25",
+      "note": "Bootstrap: Routendaten Stand v43.0"
+    }
+  }
+}

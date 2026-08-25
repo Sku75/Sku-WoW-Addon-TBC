@@ -49,6 +49,8 @@ Mouse buttons
 
 ------------------------------------------------
 Slash commands
+	/sku save <comment>	mark your map work for hand-in (then /reload and run
+				HandInMapData.bat in the addon folder — see release notes 5.0)
 	/sku import		import a text file with map data
 	/sku export		output the map data for the text file
 	/sku follow		set the sku minimap to follow
@@ -58,6 +60,25 @@ Slash commands
 
 ------------------------------------------------
 Release notes
+
+r5.0
+	- New hand-in workflow: /sku save <short comment>, then /reload, then
+	  double-click HandInMapData.bat in the SkuMapper addon folder. It zips the
+	  saved map data to your desktop; send that zip to the Sku team. No more
+	  copy/paste, no digging through the WTF folder. Map anywhere you like —
+	  merging with other mappers' work is done by the team, waypoint by
+	  waypoint, nothing gets lost or overwritten.
+	- Every map dataset now has a MAP NUMBER. The tool records which number your
+	  work is based on and sends it along with the hand-in, so contributions can
+	  never be mixed up.
+	- New waypoints are stamped with the game phase (era/tbc/wotlk) they were
+	  observed in — the Anniversary timeline is cyclical and maps differ between
+	  phases.
+	- French names are preserved: the tool only knew en/de and dropped the third
+	  name column (frFR) on every save, and mis-split three-column names. All
+	  columns are handled correctly now.
+	- Seeds the route baseline from Sku's current per-section route file format
+	  (4.9 would have started empty against it).
 
 r4.9
 	- Route baseline is now seeded from Sku's CURRENT shipped route data

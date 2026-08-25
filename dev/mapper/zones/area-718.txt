@@ -1,0 +1,3 @@
+Zone areaId 718 — eine Zeile pro Wegpunkt; Links inline.
+
+#28651 | s;Kalimdor;The Barrens;Lushwater Oasis;Wailing Caverns§s;Kalimdor;Das Brachland;Die blühende Oase;Die Höhlen des Wehklagens§s;Kalimdor;Les Tarides;Lushwater Oasis;Cavernes des Lamentations | x=-837.968 y=-2037 | size=1

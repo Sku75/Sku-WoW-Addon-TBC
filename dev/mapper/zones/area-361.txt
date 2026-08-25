@@ -1,0 +1,1462 @@
+Zone areaId 361 — eine Zeile pro Wegpunkt; Links inline.
+
+#76 | auto Felwood;1§auto Teufelswald;1§auto Gangrebois;1 | x=4077.300048828125 y=-871.1000366210938 | size=1 | links=#13469(auto Felwood;317):37 #14839(auto Felwood;345):58 c10017.17:17
+#79 | auto Felwood;2§auto Teufelswald;2§auto Gangrebois;2 | x=5299.60009765625 y=-661.9000244140625 | size=1 | links=#4159(auto Felwood;98):6 #24760(auto Felwood;600):15
+#109 | auto Felwood;3§auto Teufelswald;3§auto Gangrebois;3 | x=5182.60009765625 y=-528.7999877929688 | size=1 | links=#728(auto Felwood;15):19 #22075(auto Felwood;541):6
+#137 | auto Felwood;4§auto Teufelswald;4§auto Gangrebois;4 | x=6874.30029296875 y=-2118.699951171875 | size=1 | links=#2783(auto Felwood;67):13 #4292(auto Felwood;101):16
+#216 | auto Felwood;5§auto Teufelswald;5§auto Gangrebois;5 | x=6091.89990234375 y=-717.7000122070312 | size=1 | links=#8225(auto Felwood;202):94 #12572(auto Felwood;289):67 c10017.32:17
+#249 | auto Felwood;6§auto Teufelswald;6§auto Gangrebois;6 | x=5056.30029296875 y=-518.6000366210938 | size=1 | links=#22981(auto Felwood;562):5 c7118.7:9
+#303 | auto Felwood;7§auto Teufelswald;7§auto Gangrebois;7 | x=5336 y=-540.2999877929688 | size=1 | links=#1023(auto Felwood;22):21 #17634(auto Felwood;424):37
+#323 | auto Felwood;8§auto Teufelswald;8§auto Gangrebois;8 | x=3787.60009765625 y=-817 | size=1 | links=#3059(auto Felwood;74):38 c7105.12:7
+#372 | auto Felwood;9§auto Teufelswald;9§auto Gangrebois;9 | x=5347.10009765625 y=-470.5 | size=1 | links=#5309(auto Felwood;134):17 #15287(auto Felwood;357):14
+#491 | auto Felwood;10§auto Teufelswald;10§auto Gangrebois;10 | x=7102.10009765625 y=-2146.300048828125 | size=1 | links=#11548(auto Felwood;269):10 #15141(auto Felwood;352):7
+#521 | auto Felwood;11§auto Teufelswald;11§auto Gangrebois;11 | x=6470.5 y=-1645.599975585938 | size=1 | links=#21787(auto Felwood;529):16 c7101.11:10 c7101.12:5
+#534 | auto Felwood;12§auto Teufelswald;12§auto Gangrebois;12 | x=3774.10009765625 y=-1655.200073242188 | size=5 | links=#12904(auto Felwood;299):29 c8956.14:24
+#690 | auto Felwood;13§auto Teufelswald;13§auto Gangrebois;13 | x=4036.5 y=-731.6000366210938 | size=1 | links=#1682(auto Felwood;39):23 #9970(auto Felwood;238):23 c8959.15:16
+#701 | auto Felwood;14§auto Teufelswald;14§auto Gangrebois;14 | x=3791.400146484375 y=-1430.800048828125 | size=1 | links=#16664(auto Felwood;388):42 #28049(auto Felwood;656):36 c9528.1:43 o164882.2:39
+#728 | auto Felwood;15§auto Teufelswald;15§auto Gangrebois;15 | x=5184.30029296875 y=-509 | size=1 | links=#109(auto Felwood;3):19 #26266(auto Felwood;624):32
+#766 | auto Felwood;16§auto Teufelswald;16§auto Gangrebois;16 | x=6877 y=-1959 | size=1 | links=#18186(auto Felwood;440):13 #26622(auto Felwood;629):10
+#786 | auto Felwood;17§auto Teufelswald;17§auto Gangrebois;17 | x=4799.89990234375 y=-488.5 | size=1 | links=#14711(auto Felwood;343):41 #20009(auto Felwood;493):44
+#789 | auto Felwood;18§auto Teufelswald;18§auto Gangrebois;18 | x=6561.60009765625 y=-1171 | size=1 | links=#2103(auto Felwood;47):48 #6837(auto Felwood;168):51
+#800 | auto Felwood;19§auto Teufelswald;19§auto Gangrebois;19 | x=3996 y=-1301.599975585938 | size=1 | links=#18791(auto Felwood;458):9 #22712(auto Felwood;555):14
+#845 | auto Felwood;20§auto Teufelswald;20§auto Gangrebois;20 | x=6898.2001953125 y=-2091.900146484375 | size=1 | links=#4292(auto Felwood;101):19 #24827(auto Felwood;604):23
+#928 | auto Felwood;21§auto Teufelswald;21§auto Gangrebois;21 | x=4587.5 y=-359.6000061035156 | size=1 | links=#2326(auto Felwood;52):33 #5536(auto Felwood;140):14
+#1023 | auto Felwood;22§auto Teufelswald;22§auto Gangrebois;22 | x=5340.10009765625 y=-561.5 | size=1 | links=#303(auto Felwood;7):21 c7118.19:15
+#1101 | auto Felwood;23§auto Teufelswald;23§auto Gangrebois;23 | x=4820 y=-584.9000244140625 | size=1 | links=#4325(auto Felwood;103):7 #23421(auto Felwood;570):10
+#1169 | auto Felwood;24§auto Teufelswald;24§auto Gangrebois;24 | x=5192.7001953125 y=-629.1000366210938 | size=1 | links=#19286(auto Felwood;470):38 #19552(auto Felwood;478):30
+#1174 | auto Felwood;25§auto Teufelswald;25§auto Gangrebois;25 | x=6577.30029296875 y=-1633.900024414063 | size=1 | links=#3439(auto Felwood;80):76 #14133(auto Felwood;328):76
+#1199 | auto Felwood;26§auto Teufelswald;26§auto Gangrebois;26 | x=5037.60009765625 y=-553.5 | size=1 | links=#10543(auto Felwood;248):13 #17969(auto Felwood;431):7
+#1299 | auto Felwood;27§auto Teufelswald;27§auto Gangrebois;27 | x=6541.89990234375 y=-1482.400024414063 | size=1 | links=#1538(auto Felwood;34):68 #6845(auto Felwood;169):38 c7100.6:34 c7098.10:41 c8957.14:22
+#1318 | auto Felwood;28§auto Teufelswald;28§auto Gangrebois;28 | x=5047 y=-536.2999877929688 | size=1 | links=#2397(auto Felwood;55):9 #10543(auto Felwood;248):6
+#1369 | auto Felwood;29§auto Teufelswald;29§auto Gangrebois;29 | x=5621 y=-696.2999877929688 | size=1 | links=c9879.5:19 c9878.6:26
+#1393 | auto Felwood;30§auto Teufelswald;30§auto Gangrebois;30 | x=6305.30029296875 y=-1765.700073242188 | size=1 | links=c7101.5:16 c7101.6:20
+#1431 | auto Felwood;31§auto Teufelswald;31§auto Gangrebois;31 | x=7002.5 y=-2069.800048828125 | size=1 | links=#2812(auto Felwood;69):8 #19077(auto Felwood;465):6
+#1448 | auto Felwood;32§auto Teufelswald;32§auto Gangrebois;32 | x=4182.5 y=-935.2999877929688 | size=1 | links=#21380(auto Felwood;522):40 #21804(auto Felwood;533):46 c10016.35:31
+#1469 | auto Felwood;33§auto Teufelswald;33§auto Gangrebois;33 | x=4776.60009765625 y=-580.2999877929688 | size=1 | links=#21347(auto Felwood;520):11 #27045(auto Felwood;634):4 c7112.3:3
+#1538 | auto Felwood;34§auto Teufelswald;34§auto Gangrebois;34 | x=6481.30029296875 y=-1514.700073242188 | size=1 | links=#1299(auto Felwood;27):68 c7100.7:29 c7100.8:28 c7100.16:36 c7100.18:42
+#1552 | auto Felwood;35§auto Teufelswald;35§auto Gangrebois;35 | x=6682.10009765625 y=-1931.300048828125 | size=1 | links=#2356(auto Felwood;53):14 #15467(auto Felwood;362):6 c7158.8:21
+#1566 | auto Felwood;36§auto Teufelswald;36§auto Gangrebois;36 | x=4827.2001953125 y=-744.2000122070312 | size=1 | links=#17047(auto Felwood;404):45 #27592(auto Felwood;648):38
+#1665 | auto Felwood;37§auto Teufelswald;37§auto Gangrebois;37 | x=6641.30029296875 y=-1418.900024414063 | size=1 | links=#4032(auto Felwood;95):57 #16280(auto Felwood;377):51 c7098.11:48
+#1673 | auto Felwood;38§auto Teufelswald;38§auto Gangrebois;38 | x=7303 y=-2152.10009765625 | size=1 | links=#7567(auto Felwood;190):19 #11436(auto Felwood;266):13
+#1682 | auto Felwood;39§auto Teufelswald;39§auto Gangrebois;39 | x=4034.10009765625 y=-707.9000244140625 | size=1 | links=#690(auto Felwood;13):23 #1939(auto Felwood;42):10
+#1713 | auto Felwood;40§auto Teufelswald;40§auto Gangrebois;40 | x=6430.30029296875 y=-2036.900024414063 | size=1 | links=#15451(auto Felwood;361):52 #25116(auto Felwood;607):38 c10017.28:15
+#1811 | auto Felwood;41§auto Teufelswald;41§auto Gangrebois;41 | x=6206.7001953125 y=-967.2999877929688 | size=1 | links=#5093(auto Felwood;124):66 #14308(auto Felwood;332):43
+#1840 | rescue;waters;Shadow Hold;Felwood§rettung;gewässer;Schattenfeste;Teufelswald§sauvetage;eaux;Fort des ombres;Gangrebois | x=5355 y=-472.7000122070313 | size=1 | links=#24511(auto Felwood;597):13
+#1939 | auto Felwood;42§auto Teufelswald;42§auto Gangrebois;42 | x=4035 y=-697.2000122070312 | size=1 | links=#1682(auto Felwood;39):10 #22222(auto Felwood;544):10
+#1944 | auto Felwood;43§auto Teufelswald;43§auto Gangrebois;43 | x=5026.89990234375 y=-488 | size=1 | links=#19079(auto Felwood;466):21 #25216(auto Felwood;608):23 c7118.6:3
+#2027 | auto Felwood;44§auto Teufelswald;44§auto Gangrebois;44 | x=5926.7001953125 y=-1283.5 | size=1 | links=#4199(auto Felwood;99):17 #20805(auto Felwood;506):15
+#2054 | auto Felwood;45§auto Teufelswald;45§auto Gangrebois;45 | x=3808.300048828125 y=-1039 | size=1 | links=#12275(auto Felwood;281):40 #12930(auto Felwood;302):45 c8956.8:21
+#2077 | auto Felwood;46§auto Teufelswald;46§auto Gangrebois;46 | x=3769.400146484375 y=-1541.099975585938 | size=1 | links=#3696(auto Felwood;88):39 #12303(auto Felwood;283):37
+#2103 | auto Felwood;47§auto Teufelswald;47§auto Gangrebois;47 | x=6581.39990234375 y=-1215.200073242188 | size=1 | links=#789(auto Felwood;18):48 #17399(auto Felwood;419):51 #25697(auto Felwood;620):47
+#2198 | auto Felwood;48§auto Teufelswald;48§auto Gangrebois;48 | x=5212.2001953125 y=-618.4000244140625 | size=1 | links=#11672(auto Felwood;275):6 #20004(auto Felwood;492):5
+#2202 | auto Felwood;49§auto Teufelswald;49§auto Gangrebois;49 | x=6603.2001953125 y=-1459.599975585938 | size=1 | links=#4032(auto Felwood;95):41 #6845(auto Felwood;169):27 c8961.4:14
+#2203 | auto Felwood;50§auto Teufelswald;50§auto Gangrebois;50 | x=6601.30029296875 y=-942.5 | size=1 | links=#17837(auto Felwood;428):52 #18412(auto Felwood;445):29 c10017.4:8 c7107.10:5
+#2320 | auto Felwood;51§auto Teufelswald;51§auto Gangrebois;51 | x=4239.30029296875 y=-882.7000122070312 | size=1 | links=#12590(auto Felwood;290):25 #18542(auto Felwood;450):22 #21380(auto Felwood;522):36
+#2326 | auto Felwood;52§auto Teufelswald;52§auto Gangrebois;52 | x=4585.39990234375 y=-326.3000183105469 | size=1 | links=#928(auto Felwood;21):33 #12810(auto Felwood;295):27
+#2356 | auto Felwood;53§auto Teufelswald;53§auto Gangrebois;53 | x=6667.7001953125 y=-1930.400024414063 | size=1 | links=#1552(auto Felwood;35):14 #17070(auto Felwood;405):35
+#2379 | auto Felwood;54§auto Teufelswald;54§auto Gangrebois;54 | x=6761.80029296875 y=-1898.900024414063 | size=1 | links=#5884(auto Felwood;146):19 #17277(auto Felwood;414):18
+#2397 | auto Felwood;55§auto Teufelswald;55§auto Gangrebois;55 | x=5054.89990234375 y=-530.6000366210938 | size=1 | links=#1318(auto Felwood;28):9 #11671(auto Felwood;274):6 c7126.3:5
+#2436 | auto Felwood;56§auto Teufelswald;56§auto Gangrebois;56 | x=4505.39990234375 y=-571.7999877929688 | size=1 | links=#7371(auto Felwood;182):26 #19748(auto Felwood;486):42
+#2454 | auto Felwood;57§auto Teufelswald;57§auto Gangrebois;57 | x=6840.89990234375 y=-1915.5 | size=1 | links=#23623(auto Felwood;575):32 c7156.12:23
+#2471 | auto Felwood;58§auto Teufelswald;58§auto Gangrebois;58 | x=5385 y=-542.2000122070312 | size=1 | links=#8719(auto Felwood;212):15 #22790(auto Felwood;558):16
+#2550 | auto Felwood;59§auto Teufelswald;59§auto Gangrebois;59 | x=5220.5 y=-566.4000244140625 | size=1 | links=#21366(auto Felwood;521):17 #24656(auto Felwood;599):16
+#2588 | auto Felwood;60§auto Teufelswald;60§auto Gangrebois;60 | x=3652.300048828125 y=-1163.5 | size=1 | links=#9315(auto Felwood;223):37 #28433(auto Felwood;661):24 c7153.6:12 c7153.13:12
+#2597 | auto Felwood;61§auto Teufelswald;61§auto Gangrebois;61 | x=4582.10009765625 y=-563.2000122070312 | size=1 | links=#11554(auto Felwood;270):20 #15321(auto Felwood;358):36 #19748(auto Felwood;486):41
+#2618 | auto Felwood;62§auto Teufelswald;62§auto Gangrebois;62 | x=5172.7001953125 y=-748.7000122070312 | size=1 | links=#9731(auto Felwood;236):63 #18188(auto Felwood;441):35
+#2677 | auto Felwood;63§auto Teufelswald;63§auto Gangrebois;63 | x=5168.10009765625 y=-460.8000183105469 | size=1 | links=#26266(auto Felwood;624):20 c7118.11:13
+#2690 | centralpoint;Jadefeuerbach;Felwood§zentralerpunkt;Jadefeuerbach;Teufelswald§point central;Jadefeuerbach;Gangrebois | x=6419 y=-784.9000244140625 | size=1 | links=#9600(auto Felwood;233):35 #13303(auto Felwood;313):43 c7108.7:3 c7107.8:19 c7108.9:30 c7107.11:37 c7107.15:32
+#2741 | auto Felwood;64§auto Teufelswald;64§auto Gangrebois;64 | x=4577 y=-238.1000061035156 | size=1 | links=#15779(auto Felwood;366):32 #26522(auto Felwood;627):15
+#2772 | auto Felwood;65§auto Teufelswald;65§auto Gangrebois;65 | x=4898.80029296875 y=-379.8000183105469 | size=1 | links=#17293(auto Felwood;416):6 #20088(auto Felwood;497):6
+#2775 | auto Felwood;66§auto Teufelswald;66§auto Gangrebois;66 | x=6955.30029296875 y=-2078.60009765625 | size=1 | links=#4658(auto Felwood;113):11 #28436(auto Felwood;662):19
+#2783 | auto Felwood;67§auto Teufelswald;67§auto Gangrebois;67 | x=6860.7001953125 y=-2118.400146484375 | size=1 | links=#137(auto Felwood;4):13 #10674(auto Felwood;251):17
+#2788 | auto Felwood;68§auto Teufelswald;68§auto Gangrebois;68 | x=6532 y=-1075.700073242188 | size=1 | links=#3929(auto Felwood;93):21 #6837(auto Felwood;168):61 #7069(auto Felwood;176):53
+#2812 | auto Felwood;69§auto Teufelswald;69§auto Gangrebois;69 | x=7011.2001953125 y=-2072 | size=1 | links=#1431(auto Felwood;31):8 #5520(auto Felwood;138):7
+#2846 | auto Felwood;70§auto Teufelswald;70§auto Gangrebois;70 | x=5969.10009765625 y=-1159.800048828125 | size=1 | links=#13022(auto Felwood;305):26 #14790(auto Felwood;344):26 c7139.16:80
+#2863 | auto Felwood;71§auto Teufelswald;71§auto Gangrebois;71 | x=5707.89990234375 y=-790.2999877929688 | size=1 | links=#14176(auto Felwood;329):24 #25472(auto Felwood;613):13
+#2870 | auto Felwood;72§auto Teufelswald;72§auto Gangrebois;72 | x=6315.10009765625 y=-1743.300048828125 | size=1 | links=#16668(auto Felwood;389):16 c7101.2:13 c7101.5:18
+#2997 | auto Felwood;73§auto Teufelswald;73§auto Gangrebois;73 | x=6518 y=-812.7999877929688 | size=1 | links=#13303(auto Felwood;313):59 #19960(auto Felwood;491):35 c7107.1:5 c7107.3:28
+#3059 | auto Felwood;74§auto Teufelswald;74§auto Gangrebois;74 | x=3812.400146484375 y=-787.5 | size=1 | links=#323(auto Felwood;8):38 #5993(auto Felwood;149):35 #18585(centralpoint;Jadefire Glen;Felwood):30 c7105.4:18 c7105.5:25 c7105.9:22 c7105.15:34 c7109.24:10
+#3142 | auto Felwood;75§auto Teufelswald;75§auto Gangrebois;75 | x=6571.39990234375 y=-811.2999877929688 | size=1 | links=#8042(auto Felwood;197):24 #19960(auto Felwood;491):18 #26877(auto Felwood;631):13 c7108.1:12 c7111.1:13 c7107.5:5
+#3161 | auto Felwood;76§auto Teufelswald;76§auto Gangrebois;76 | x=4208.39990234375 y=-724.7999877929688 | size=1 | links=#11474(auto Felwood;267):58 c8956.35:40
+#3187 | auto Felwood;77§auto Teufelswald;77§auto Gangrebois;77 | x=6360.80029296875 y=-654.6000366210938 | size=1 | links=#13620(auto Felwood;321):23 c7107.14:47
+#3231 | auto Felwood;78§auto Teufelswald;78§auto Gangrebois;78 | x=4950.60009765625 y=-414.3000183105469 | size=1 | links=#3918(auto Felwood;92):17 #27310(auto Felwood;644):14 c7120.4:2
+#3240 | Kernda;Timbermaw Hold ;Felwood§Kernda;Holzschlundfeste;Teufelswald§Kernda;Repaire des Grumegueules;Gangrebois | x=7024 y=-2119.10009765625 | size=1 | links=#8995(central location;Timbermaw Hold ;Felwood):5
+#3416 | auto Felwood;79§auto Teufelswald;79§auto Gangrebois;79 | x=5008.2001953125 y=-465.2000122070313 | size=1 | links=#4753(auto Felwood;116):17 o176161.1:13 c7120.5:14
+#3439 | auto Felwood;80§auto Teufelswald;80§auto Gangrebois;80 | x=6530.39990234375 y=-1693.800048828125 | size=1 | links=#1174(auto Felwood;25):76 #12911(auto Felwood;301):35
+#3441 | auto Felwood;81§auto Teufelswald;81§auto Gangrebois;81 | x=5410.80029296875 y=-429 | size=1 | links=#13360(auto Felwood;315):0 #15929(auto Felwood;370):42 c14522.1:20
+#3479 | auto Felwood;82§auto Teufelswald;82§auto Gangrebois;82 | x=3871.819690212299 y=-1004.371784250487 | size=1 | links=#10949(auto Felwood;257):30 #12275(auto Felwood;281):33 o171939.1:6 c8956.20:18
+#3513 | auto Felwood;83§auto Teufelswald;83§auto Gangrebois;83 | x=3881.800048828125 y=-1309.5 | size=1 | links=#5572(auto Felwood;141):19 #19873(auto Felwood;489):31
+#3581 | auto Felwood;84§auto Teufelswald;84§auto Gangrebois;84 | x=3670 y=-1484.599975585938 | size=1 | links=#14252(auto Felwood;331):54 #23890(auto Felwood;581):22 c10017.74:16 c10017.103:35
+#3590 | auto Felwood;85§auto Teufelswald;85§auto Gangrebois;85 | x=4838.7001953125 y=-595.6000366210938 | size=1 | links=#5432(auto Felwood;135):6 #23421(auto Felwood;570):12
+#3677 | auto Felwood;86§auto Teufelswald;86§auto Gangrebois;86 | x=5944.30029296875 y=-1201.300048828125 | size=1 | links=#14790(auto Felwood;344):24 c6491.2:4
+#3691 | auto Felwood;87§auto Teufelswald;87§auto Gangrebois;87 | x=5034.80029296875 y=-555.5 | size=1 | links=#8779(auto Felwood;214):7 #27755(auto Felwood;651):12 o176188.3:5 c7118.4:2
+#3696 | auto Felwood;88§auto Teufelswald;88§auto Gangrebois;88 | x=3782.800048828125 y=-1578.400024414063 | size=1 | links=#2077(auto Felwood;46):39 #22350(auto Felwood;548):32 c10016.6:35
+#3703 | entry and exit;Eisenstammhöhle;Felwood§ein- und ausgang;Eisenstammhöhle;Teufelswald§entrée et sortie;Eisenstammhöhle;Gangrebois | x=6487.2001953125 y=-1566.200073242188 | size=1 | links=c7100.16:20 c7100.17:16
+#3834 | auto Felwood;89§auto Teufelswald;89§auto Gangrebois;89 | x=4987.39990234375 y=-417.7000122070313 | size=1 | links=#13692(auto Felwood;322):18 #24324(auto Felwood;591):15
+#3872 | auto Felwood;90§auto Teufelswald;90§auto Gangrebois;90 | x=6357.39990234375 y=-1640 | size=1 | links=#12165(auto Felwood;280):12 #16946(auto Felwood;401):14
+#3904 | auto Felwood;91§auto Teufelswald;91§auto Gangrebois;91 | x=5218.89990234375 y=-628.2000122070312 | size=1 | links=#11672(auto Felwood;275):6 #25505(auto Felwood;615):6
+#3918 | auto Felwood;92§auto Teufelswald;92§auto Gangrebois;92 | x=4939 y=-400.7000122070313 | size=1 | links=#3231(auto Felwood;78):17 #27770(auto Felwood;653):11
+#3929 | auto Felwood;93§auto Teufelswald;93§auto Gangrebois;93 | x=6544.39990234375 y=-1058.599975585938 | size=1 | links=#2788(auto Felwood;68):21 #10539(auto Felwood;247):51 c10017.50:32
+#3969 | auto Felwood;94§auto Teufelswald;94§auto Gangrebois;94 | x=5338.60009765625 y=-542.5 | size=1 | links=#10955(auto Felwood;258):10 #15185(auto Felwood;353):5
+#4032 | auto Felwood;95§auto Teufelswald;95§auto Gangrebois;95 | x=6641.39990234375 y=-1476.099975585938 | size=1 | links=#1665(auto Felwood;37):57 #2202(auto Felwood;49):41 #14904(auto Felwood;346):35
+#4036 | auto Felwood;96§auto Teufelswald;96§auto Gangrebois;96 | x=5214.2001953125 y=-624.6000366210938 | size=1 | links=#17106(auto Felwood;409):6 #27824(auto Felwood;654):6
+#4050 | auto Felwood;97§auto Teufelswald;97§auto Gangrebois;97 | x=5071.39990234375 y=-751.6000366210938 | size=1 | links=#9731(auto Felwood;236):37 #25931(auto Felwood;622):49
+#4159 | auto Felwood;98§auto Teufelswald;98§auto Gangrebois;98 | x=5293.60009765625 y=-661.6000366210938 | size=1 | links=#79(auto Felwood;2):6 #19389(auto Felwood;473):10 c7118.18:5
+#4199 | auto Felwood;99§auto Teufelswald;99§auto Gangrebois;99 | x=5939.30029296875 y=-1295.700073242188 | size=1 | links=#2027(auto Felwood;44):17 #11081(auto Felwood;260):18
+#4283 | auto Felwood;100§auto Teufelswald;100§auto Gangrebois;100 | x=4853.10009765625 y=-378.1000061035156 | size=1 | links=#11809(auto Felwood;276):3 #24545(auto Felwood;598):18 c7113.3:9
+#4292 | auto Felwood;101§auto Teufelswald;101§auto Gangrebois;101 | x=6885.80029296875 y=-2107.400146484375 | size=1 | links=#137(auto Felwood;4):16 #845(auto Felwood;20):19 c11516.5:5
+#4293 | auto Felwood;102§auto Teufelswald;102§auto Gangrebois;102 | x=5397.30029296875 y=-699.7999877929688 | size=1 | links=#13268(auto Felwood;312):24 #25555(auto Felwood;616):37
+#4325 | auto Felwood;103§auto Teufelswald;103§auto Gangrebois;103 | x=4816.10009765625 y=-578.7999877929688 | size=1 | links=#1101(auto Felwood;23):7 c7115.5:5
+#4472 | auto Felwood;104§auto Teufelswald;104§auto Gangrebois;104 | x=4882.39990234375 y=-394.5 | size=1 | links=#6495(auto Felwood;157):13 #28214(auto Felwood;659):12
+#4504 | auto Felwood;105§auto Teufelswald;105§auto Gangrebois;105 | x=5159.2001953125 y=-342.7000122070313 | size=1 | links=#21789(auto Felwood;531):21 #23725(auto Felwood;578):34
+#4519 | auto Felwood;106§auto Teufelswald;106§auto Gangrebois;106 | x=5328.2001953125 y=-497.7000122070313 | size=1 | links=#7762(auto Felwood;192):7 #15287(auto Felwood;357):18
+#4533 | auto Felwood;107§auto Teufelswald;107§auto Gangrebois;107 | x=7021.60009765625 y=-2155.800048828125 | size=1 | links=#9982(auto Felwood;239):10 #16834(auto Felwood;396):12 #23947(auto Felwood;582):5
+#4535 | auto Felwood;108§auto Teufelswald;108§auto Gangrebois;108 | x=7200.2001953125 y=-2186.900146484375 | size=1 | links=#10550(auto Felwood;249):42 #27733(auto Felwood;650):15
+#4550 | auto Felwood;109§auto Teufelswald;109§auto Gangrebois;109 | x=3912.800048828125 y=-895.9000244140625 | size=1 | links=#5731(auto Felwood;145):30 c8956.5:20
+#4564 | auto Felwood;110§auto Teufelswald;110§auto Gangrebois;110 | x=3924.400146484375 y=-1110.700073242188 | size=1 | links=#5636(auto Felwood;142):17 #11620(auto Felwood;271):16
+#4619 | auto Felwood;111§auto Teufelswald;111§auto Gangrebois;111 | x=4533.60009765625 y=-504.2000122070313 | size=1 | links=#8423(centralpoint;Ruins of Constellas;Felwood):28 c7110.3:20 c7110.4:23 c7109.18:14
+#4624 | auto Felwood;112§auto Teufelswald;112§auto Gangrebois;112 | x=6735.60009765625 y=-2081.5 | size=1 | links=#6087(auto Felwood;150):38 #21294(auto Felwood;518):32
+#4658 | auto Felwood;113§auto Teufelswald;113§auto Gangrebois;113 | x=6944 y=-2079 | size=1 | links=#2775(auto Felwood;66):11 #24827(auto Felwood;604):24
+#4719 | auto Felwood;114§auto Teufelswald;114§auto Gangrebois;114 | x=6597.30029296875 y=-853.2000122070312 | size=1 | links=#8042(auto Felwood;197):25 #17837(auto Felwood;428):37 c7111.2:13
+#4749 | auto Felwood;115§auto Teufelswald;115§auto Gangrebois;115 | x=5351.10009765625 y=-544.7999877929688 | size=1 | links=#15185(auto Felwood;353):7 #22790(auto Felwood;558):18
+#4753 | auto Felwood;116§auto Teufelswald;116§auto Gangrebois;116 | x=4992.5 y=-471.8999938964844 | size=1 | links=#3416(auto Felwood;79):17 #16866(auto Felwood;397):14
+#4884 | auto Felwood;117§auto Teufelswald;117§auto Gangrebois;117 | x=6281.7001953125 y=-1988.800048828125 | size=1 | links=#22242(auto Felwood;545):29 #26588(auto Felwood;628):52 o174594.1:18 o174614.1:23
+#4923 | auto Felwood;118§auto Teufelswald;118§auto Gangrebois;118 | x=3603.400146484375 y=-1158.900024414063 | size=1 | links=#10878(centralpoint;Deadwood Village;Felwood):28 #28433(auto Felwood;661):24 c7153.3:6
+#4983 | auto Felwood;119§auto Teufelswald;119§auto Gangrebois;119 | x=5026.39990234375 y=-534.7999877929688 | size=1 | links=#12359(auto Felwood;285):8 #21223(auto Felwood;515):7 o176188.11:4
+#4992 | auto Felwood;120§auto Teufelswald;120§auto Gangrebois;120 | x=4915.7001953125 y=-649.7000122070312 | size=1 | links=#10122(auto Felwood;242):41 c7112.7:25
+#4996 | auto Felwood;121§auto Teufelswald;121§auto Gangrebois;121 | x=5229.80029296875 y=-444 | size=1 | links=#14506(auto Felwood;336):39 #18835(auto Felwood;459):28
+#5026 | auto Felwood;122§auto Teufelswald;122§auto Gangrebois;122 | x=7019.7001953125 y=-2183 | size=1 | links=#13142(auto Felwood;309):4 #27000(auto Felwood;633):10
+#5045 | auto Felwood;123§auto Teufelswald;123§auto Gangrebois;123 | x=5260.80029296875 y=-672.9000244140625 | size=1 | links=#16158(auto Felwood;374):11 c7120.1:2 c7118.18:30
+#5093 | auto Felwood;124§auto Teufelswald;124§auto Gangrebois;124 | x=6200 y=-1033.800048828125 | size=1 | links=#1811(auto Felwood;41):66 #11663(auto Felwood;273):58 c7138.2:28 c7139.11:30 c7139.12:30 c7139.14:65 c7139.15:22 c10017.39:29
+#5099 | auto Felwood;125§auto Teufelswald;125§auto Gangrebois;125 | x=5193.2001953125 y=-699.7999877929688 | size=1 | links=#18188(auto Felwood;441):20 #19286(auto Felwood;470):32
+#5112 | auto Felwood;126§auto Teufelswald;126§auto Gangrebois;126 | x=5221 y=-610 | size=1 | links=#22500(auto Felwood;551):6 #26263(auto Felwood;623):6
+#5121 | auto Felwood;127§auto Teufelswald;127§auto Gangrebois;127 | x=5307.30029296875 y=-596.2999877929688 | size=1 | links=#9414(auto Felwood;227):16 c7126.5:8
+#5141 | crossing;Jaedenar;Felwood§kreuzung;Jaedenar;Teufelswald§traversée;Jaedenar;Gangrebois | x=4925.10009765625 y=-732.4000244140625 | size=1 | links=#5275(auto Felwood;131):18 #7293(auto Felwood;180):34 #14465(auto Felwood;335):22 c7099.14:22
+#5168 | auto Felwood;128§auto Teufelswald;128§auto Gangrebois;128 | x=7330.5 y=-2195.199951171875 | size=1 | links=#7045(auto Felwood;175):11 #12286(auto Felwood;282):36
+#5192 | auto Felwood;129§auto Teufelswald;129§auto Gangrebois;129 | x=6555.80029296875 y=-2067.400146484375 | size=1 | links=#7934(auto Felwood;194):22 #11220(auto Felwood;262):41
+#5239 | auto Felwood;130§auto Teufelswald;130§auto Gangrebois;130 | x=6521.30029296875 y=-1813 | size=1 | links=#16699(auto Felwood;392):34 #23831(auto Felwood;580):42 c10016.17:23
+#5275 | auto Felwood;131§auto Teufelswald;131§auto Gangrebois;131 | x=4926.30029296875 y=-713.7000122070312 | size=1 | links=#5141(crossing;Jaedenar;Felwood):18 #10122(auto Felwood;242):23
+#5283 | auto Felwood;132§auto Teufelswald;132§auto Gangrebois;132 | x=5207.39990234375 y=-378.6000061035156 | size=1 | links=#14506(auto Felwood;336):29 #21789(auto Felwood;531):42 o174617.1:58
+#5292 | auto Felwood;133§auto Teufelswald;133§auto Gangrebois;133 | x=7143.2001953125 y=-2160 | size=1 | links=#6465(auto Felwood;156):21 #24642(focus point;here;Timbermaw Hold ;Felwood;to;moonglade):11
+#5309 | auto Felwood;134§auto Teufelswald;134§auto Gangrebois;134 | x=5356.30029296875 y=-456.2000122070313 | size=1 | links=#372(auto Felwood;9):17 #15929(auto Felwood;370):25
+#5432 | auto Felwood;135§auto Teufelswald;135§auto Gangrebois;135 | x=4843.30029296875 y=-600.5 | size=1 | links=#3590(auto Felwood;85):6 #22105(auto Felwood;542):4
+#5455 | auto Felwood;136§auto Teufelswald;136§auto Gangrebois;136 | x=4027.900146484375 y=-655.5 | size=1 | links=#11240(auto Felwood;264):14 c14344.3:27
+#5477 | auto Felwood;137§auto Teufelswald;137§auto Gangrebois;137 | x=6693.30029296875 y=-1987.800048828125 | size=1 | links=#13333(auto Felwood;314):9 c7157.5:18
+#5520 | auto Felwood;138§auto Teufelswald;138§auto Gangrebois;138 | x=7015.30029296875 y=-2077.699951171875 | size=1 | links=#2812(auto Felwood;69):7 #18561(auto Felwood;451):15
+#5527 | auto Felwood;139§auto Teufelswald;139§auto Gangrebois;139 | x=6371 y=-1678.400024414063 | size=1 | links=#17982(auto Felwood;432):24 c7100.9:25
+#5536 | auto Felwood;140§auto Teufelswald;140§auto Gangrebois;140 | x=4584.80029296875 y=-373.3999938964844 | size=1 | links=#928(auto Felwood;21):14 #15899(auto Felwood;369):24
+#5572 | auto Felwood;141§auto Teufelswald;141§auto Gangrebois;141 | x=3890.10009765625 y=-1292.099975585938 | size=1 | links=#3513(auto Felwood;83):19 #17505(crossing;Emerald Sanctuary;Felwood):33 c11554.1:16
+#5636 | auto Felwood;142§auto Teufelswald;142§auto Gangrebois;142 | x=3922 y=-1128.300048828125 | size=1 | links=#4564(auto Felwood;110):17 #20962(auto Felwood;510):55
+#5653 | auto Felwood;143§auto Teufelswald;143§auto Gangrebois;143 | x=5879.89990234375 y=-680.5 | size=1 | links=#6704(auto Felwood;165):59 #17100(auto Felwood;408):57 c8958.19:24 c8960.29:18
+#5669 | auto Felwood;144§auto Teufelswald;144§auto Gangrebois;144 | x=4288.2001953125 y=-852.7000122070312 | size=1 | links=#9547(auto Felwood;232):59 #17944(auto Felwood;430):15
+#5731 | auto Felwood;145§auto Teufelswald;145§auto Gangrebois;145 | x=3903.10009765625 y=-866.5 | size=1 | links=#4550(auto Felwood;109):30 #19126(entry and exit;Jadefire Glen;Felwood):44
+#5884 | auto Felwood;146§auto Teufelswald;146§auto Gangrebois;146 | x=6778.2001953125 y=-1888 | size=1 | links=#2379(auto Felwood;54):19 #10015(auto Felwood;240):11 c7157.2:18
+#5942 | auto Felwood;147§auto Teufelswald;147§auto Gangrebois;147 | x=6785.2001953125 y=-1976.400024414063 | size=1 | links=#15812(auto Felwood;367):11 #25420(auto Felwood;611):35 c7157.16:11 c7158.16:41
+#5984 | auto Felwood;148§auto Teufelswald;148§auto Gangrebois;148 | x=3904 y=-1600.800048828125 | size=5 | links=c10017.10:12 c10016.22:52 c8956.37:33 c10017.78:20
+#5993 | auto Felwood;149§auto Teufelswald;149§auto Gangrebois;149 | x=3831.400146484375 y=-817.7999877929688 | size=1 | links=#3059(auto Felwood;74):35 #19126(entry and exit;Jadefire Glen;Felwood):42
+#6013 | farming area;Deadwood Avenger;Felpaw Village;Felwood§farmgebiet;Rächer der Totenwaldfelle;Revier der Teufelspfoten;Teufelswald§farming area;Vengeur Mort-bois;Village de Gangrepatte;Gangrebois | x=6845.60009765625 y=-1890.900024414063 | size=1 | links=c7156.8:10
+#6087 | auto Felwood;150§auto Teufelswald;150§auto Gangrebois;150 | x=6697.60009765625 y=-2083.400146484375 | size=1 | links=#4624(auto Felwood;112):38 #12460(auto Felwood;286):24
+#6127 | auto Felwood;151§auto Teufelswald;151§auto Gangrebois;151 | x=6726 y=-1947.200073242188 | size=1 | links=#6289(auto Felwood;153):11 #25003(auto Felwood;606):25 c7156.5:16
+#6160 | auto Felwood;152§auto Teufelswald;152§auto Gangrebois;152 | x=6295.39990234375 y=-1693.900024414063 | size=1 | links=#11964(auto Felwood;277):21 #23509(auto Felwood;572):11 c7101.3:7
+#6289 | auto Felwood;153§auto Teufelswald;153§auto Gangrebois;153 | x=6737.30029296875 y=-1944.599975585938 | size=1 | links=#6127(auto Felwood;151):11 #20146(auto Felwood;498):16
+#6293 | central location;Talonbranch Glade;Felwood§zentralpunkt;Nachtlaublichtung;Teufelswald§emplacement central;Clairière de Griffebranche;Gangrebois | x=6217.2001953125 y=-1940 | size=1 | links=#19647(auto Felwood;480):19 c543.1:18 c5501.1:26 c9465.1:32 c12578.1:17
+#6403 | auto Felwood;154§auto Teufelswald;154§auto Gangrebois;154 | x=4809.39990234375 y=-578.7000122070312 | size=1 | links=#13760(auto Felwood;326):8 c7115.5:3
+#6454 | auto Felwood;155§auto Teufelswald;155§auto Gangrebois;155 | x=5409.80029296875 y=-491.8999938964844 | size=1 | links=#9252(auto Felwood;221):34 c7093.1:4 c7093.5:13
+#6465 | auto Felwood;156§auto Teufelswald;156§auto Gangrebois;156 | x=7164.30029296875 y=-2163.900146484375 | size=1 | links=#5292(auto Felwood;133):21 #27733(auto Felwood;650):26
+#6495 | auto Felwood;157§auto Teufelswald;157§auto Gangrebois;157 | x=4869.60009765625 y=-397.8000183105469 | size=1 | links=#4472(auto Felwood;104):13 #24545(auto Felwood;598):16 o173325.2:21 c7113.7:7
+#6516 | auto Felwood;158§auto Teufelswald;158§auto Gangrebois;158 | x=5411.80029296875 y=-644.9000244140625 | size=1 | links=#13616(auto Felwood;320):33 #25555(auto Felwood;616):30 o174613.1:15 c8958.25:25
+#6561 | auto Felwood;159§auto Teufelswald;159§auto Gangrebois;159 | x=3944.400146484375 y=-1086.099975585938 | size=1 | links=#11620(auto Felwood;271):14 #12909(auto Felwood;300):26 #24363(auto Felwood;593):61
+#6583 | auto Felwood;160§auto Teufelswald;160§auto Gangrebois;160 | x=4572.30029296875 y=-420.8000183105469 | size=1 | links=#15899(auto Felwood;369):24 c7106.3:59
+#6613 | auto Felwood;161§auto Teufelswald;161§auto Gangrebois;161 | x=5673.5 y=-932.5 | size=1 | links=#16891(auto Felwood;399):42 #24270(auto Felwood;589):44
+#6675 | auto Felwood;162§auto Teufelswald;162§auto Gangrebois;162 | x=5083.10009765625 y=-334.2000122070313 | size=1 | links=#10894(auto Felwood;256):27 c11900.1:18
+#6690 | auto Felwood;163§auto Teufelswald;163§auto Gangrebois;163 | x=5330.5 y=-623.4000244140625 | size=1 | links=#16108(auto Felwood;373):13 #18690(auto Felwood;455):21
+#6696 | auto Felwood;164§auto Teufelswald;164§auto Gangrebois;164 | x=5220.30029296875 y=-610 | size=1 | links=#16421(auto Felwood;381):6 #20004(auto Felwood;492):6
+#6704 | auto Felwood;165§auto Teufelswald;165§auto Gangrebois;165 | x=5939.39990234375 y=-681.2000122070312 | size=1 | links=#5653(auto Felwood;143):59 #8225(auto Felwood;202):63 c8958.18:39 c10017.40:77
+#6775 | auto Felwood;166§auto Teufelswald;166§auto Gangrebois;166 | x=6444.7001953125 y=-1690.099975585938 | size=1 | links=#20408(auto Felwood;501):20 #27392(auto Felwood;645):20
+#6809 | auto Felwood;167§auto Teufelswald;167§auto Gangrebois;167 | x=7035.39990234375 y=-2117.60009765625 | size=1 | links=#8995(central location;Timbermaw Hold ;Felwood):16 #15436(auto Felwood;360):5 #19681(auto Felwood;481):15
+#6837 | auto Felwood;168§auto Teufelswald;168§auto Gangrebois;168 | x=6523.5 y=-1136.300048828125 | size=1 | links=#789(auto Felwood;18):51 #2788(auto Felwood;68):61 #7069(auto Felwood;176):62 c7099.15:29 c8960.34:38
+#6845 | auto Felwood;169§auto Teufelswald;169§auto Gangrebois;169 | x=6578.10009765625 y=-1470.599975585938 | size=1 | links=#1299(auto Felwood;27):38 #2202(auto Felwood;49):27
+#6890 | auto Felwood;170§auto Teufelswald;170§auto Gangrebois;170 | x=6904.10009765625 y=-1929.700073242188 | size=1 | links=#14549(auto Felwood;338):28 #20813(auto Felwood;508):14
+#6933 | auto Felwood;171§auto Teufelswald;171§auto Gangrebois;171 | x=6169.5 y=-1921.5 | size=1 | links=#8203(auto Felwood;201):17 #16360(auto Felwood;379):26
+#6959 | auto Felwood;172§auto Teufelswald;172§auto Gangrebois;172 | x=6998.39990234375 y=-2143.5 | size=1 | links=#11516(auto Felwood;268):8 #14389(auto Felwood;334):16
+#7007 | auto Felwood;173§auto Teufelswald;173§auto Gangrebois;173 | x=6462 y=-1668.900024414063 | size=1 | links=#9324(auto Felwood;224):17 #18307(auto Felwood;443):19 #27392(auto Felwood;645):7
+#7035 | auto Felwood;174§auto Teufelswald;174§auto Gangrebois;174 | x=6939.30029296875 y=-2261.900146484375 | size=1 | links=#18319(auto Felwood;444):9 #23296(auto Felwood;568):26
+#7045 | auto Felwood;175§auto Teufelswald;175§auto Gangrebois;175 | x=7320.39990234375 y=-2188.800048828125 | size=1 | links=#5168(auto Felwood;128):11 #21788(auto Felwood;530):14
+#7069 | auto Felwood;176§auto Teufelswald;176§auto Gangrebois;176 | x=6480.39990234375 y=-1090.400024414063 | size=1 | links=#2788(auto Felwood;68):53 #6837(auto Felwood;168):62 #27108(auto Felwood;638):22
+#7100 | auto Felwood;177§auto Teufelswald;177§auto Gangrebois;177 | x=4483.39990234375 y=-665.5 | size=1 | links=c7086.23:34 c10017.105:25
+#7229 | auto Felwood;178§auto Teufelswald;178§auto Gangrebois;178 | x=3762.10009765625 y=-1268.5 | size=1 | links=#8008(auto Felwood;196):40 #16820(auto Felwood;395):42 c10017.30:21 c8959.45:19
+#7280 | auto Felwood;179§auto Teufelswald;179§auto Gangrebois;179 | x=6397.5 y=-1016.299987792969 | size=1 | links=#7465(auto Felwood;186):54 #23254(auto Felwood;567):32 c8960.14:50 c8958.23:36
+#7293 | auto Felwood;180§auto Teufelswald;180§auto Gangrebois;180 | x=4956.80029296875 y=-744.7000122070312 | size=1 | links=#5141(crossing;Jaedenar;Felwood):34 #22356(auto Felwood;549):27 c7099.14:13
+#7308 | auto Felwood;181§auto Teufelswald;181§auto Gangrebois;181 | x=3916.800048828125 y=-952.7000122070312 | size=1 | links=#7428(auto Felwood;184):30 #17553(auto Felwood;421):26 c8956.5:37
+#7371 | auto Felwood;182§auto Teufelswald;182§auto Gangrebois;182 | x=4507.30029296875 y=-545.2000122070312 | size=1 | links=#2436(auto Felwood;56):26 #8423(centralpoint;Ruins of Constellas;Felwood):23
+#7422 | auto Felwood;183§auto Teufelswald;183§auto Gangrebois;183 | x=5300.60009765625 y=-715 | size=1 | links=#26638(auto Felwood;630):5 #27059(auto Felwood;636):19
+#7428 | auto Felwood;184§auto Teufelswald;184§auto Gangrebois;184 | x=3911.5 y=-983.2000122070312 | size=1 | links=#7308(auto Felwood;181):30 #10949(auto Felwood;257):19 c8956.1:46
+#7435 | auto Felwood;185§auto Teufelswald;185§auto Gangrebois;185 | x=4627.39990234375 y=-746.7000122070312 | size=1 | links=#10848(auto Felwood;252):33 #17803(auto Felwood;427):19
+#7465 | auto Felwood;186§auto Teufelswald;186§auto Gangrebois;186 | x=6431.7001953125 y=-1058.599975585938 | size=1 | links=#7280(auto Felwood;179):54 #27108(auto Felwood;638):37
+#7471 | auto Felwood;187§auto Teufelswald;187§auto Gangrebois;187 | x=6351 y=-1754.599975585938 | size=1 | links=#8732(auto Felwood;213):9 c7100.4:12
+#7497 | auto Felwood;188§auto Teufelswald;188§auto Gangrebois;188 | x=5236.60009765625 y=-635.7999877929688 | size=1 | links=#10369(auto Felwood;245):9 #22739(auto Felwood;556):9
+#7559 | auto Felwood;189§auto Teufelswald;189§auto Gangrebois;189 | x=5063.10009765625 y=-492.3000183105469 | size=1 | links=#20077(auto Felwood;496):10 #28358(auto Felwood;660):20
+#7567 | auto Felwood;190§auto Teufelswald;190§auto Gangrebois;190 | x=7283.7001953125 y=-2148.300048828125 | size=1 | links=#1673(auto Felwood;38):19 #28019(auto Felwood;655):13
+#7756 | auto Felwood;191§auto Teufelswald;191§auto Gangrebois;191 | x=4801 y=-551.2999877929688 | size=1 | links=#19594(auto Felwood;479):12 c7113.2:5
+#7762 | auto Felwood;192§auto Teufelswald;192§auto Gangrebois;192 | x=5324.39990234375 y=-504.2000122070313 | size=1 | links=#4519(auto Felwood;106):7 #12816(auto Felwood;296):11
+#7776 | auto Felwood;193§auto Teufelswald;193§auto Gangrebois;193 | x=6707 y=-1919.400024414063 | size=1 | links=#21908(auto Felwood;536):6 #21937(auto Felwood;537):11
+#7934 | auto Felwood;194§auto Teufelswald;194§auto Gangrebois;194 | x=6573.89990234375 y=-2081.300048828125 | size=1 | links=#5192(auto Felwood;129):22 #10890(auto Felwood;254):28
+#7968 | auto Felwood;195§auto Teufelswald;195§auto Gangrebois;195 | x=4786.10009765625 y=-538.2000122070312 | size=1 | links=#19219(auto Felwood;469):7 #22179(auto Felwood;543):5 c7113.1:5
+#8008 | auto Felwood;196§auto Teufelswald;196§auto Gangrebois;196 | x=3737.300048828125 y=-1236 | size=1 | links=#7229(auto Felwood;178):40 #16522(auto Felwood;387):40 c7153.1:24
+#8042 | auto Felwood;197§auto Teufelswald;197§auto Gangrebois;197 | x=6586.7001953125 y=-830.5 | size=1 | links=#3142(auto Felwood;75):24 #4719(auto Felwood;114):25 #26877(auto Felwood;631):17 o174685.1:9 c7111.2:17
+#8078 | auto Felwood;198§auto Teufelswald;198§auto Gangrebois;198 | x=3550.800048828125 y=-1121.5 | size=1 | links=#10878(centralpoint;Deadwood Village;Felwood):37 c7155.1:36 c9464.1:33 c14342.1:23 c7153.5:20 c7153.8:10 c7153.9:28 c7153.10:36
+#8168 | auto Felwood;199§auto Teufelswald;199§auto Gangrebois;199 | x=4610.89990234375 y=-822.7999877929688 | size=1 | links=#13052(auto Felwood;307):56 #24466(auto Felwood;596):55 c8958.34:29 c10017.47:34
+#8180 | auto Felwood;200§auto Teufelswald;200§auto Gangrebois;200 | x=5189.2001953125 y=-562.7000122070312 | size=1 | links=#26271(auto Felwood;625):14 c9862.4:16
+#8203 | auto Felwood;201§auto Teufelswald;201§auto Gangrebois;201 | x=6183.30029296875 y=-1910.400024414063 | size=1 | links=#6933(auto Felwood;171):17 c9465.1:12
+#8225 | auto Felwood;202§auto Teufelswald;202§auto Gangrebois;202 | x=5998.7001953125 y=-704.2000122070312 | size=1 | links=#216(auto Felwood;5):94 #6704(auto Felwood;165):63 c10017.3:21
+#8236 | auto Felwood;203§auto Teufelswald;203§auto Gangrebois;203 | x=7089.5 y=-2116.900146484375 | size=1 | links=#12049(auto Felwood;279):13 #13176(auto Felwood;310):12
+#8249 | auto Felwood;204§auto Teufelswald;204§auto Gangrebois;204 | x=6805 y=-1889.700073242188 | size=1 | links=#10015(auto Felwood;240):15 #15043(auto Felwood;349):19
+#8345 | auto Felwood;205§auto Teufelswald;205§auto Gangrebois;205 | x=6340.39990234375 y=-628.7999877929688 | size=1 | links=#13620(auto Felwood;321):9 c7111.12:13
+#8415 | auto Felwood;206§auto Teufelswald;206§auto Gangrebois;206 | x=4201.80029296875 y=-854.5 | size=1 | links=#12590(auto Felwood;290):24 c14344.2:7
+#8423 | centralpoint;Ruins of Constellas;Felwood§zentralerpunkt;Ruinen von Constellas;Teufelswald§point central;Ruines de Constellas;Gangrebois | x=4511 y=-521.7999877929688 | size=1 | links=#4619(auto Felwood;111):28 #7371(auto Felwood;182):23 c7110.2:21 c7110.3:35 c7106.7:6 c7110.9:34
+#8428 | auto Felwood;207§auto Teufelswald;207§auto Gangrebois;207 | x=5532.89990234375 y=-583.4000244140625 | size=1 | links=#10887(auto Felwood;253):50 #14511(auto Felwood;337):83 c7099.10:28 c10016.11:18 c8958.26:28
+#8463 | auto Felwood;208§auto Teufelswald;208§auto Gangrebois;208 | x=4639.10009765625 y=-658 | size=1 | links=#12653(auto Felwood;291):17 #18121(auto Felwood;437):43
+#8485 | auto Felwood;209§auto Teufelswald;209§auto Gangrebois;209 | x=3999.10009765625 y=-1288.400024414063 | size=1 | links=#22712(auto Felwood;555):14 c10921.1:6 c10924.1:7
+#8530 | auto Felwood;210§auto Teufelswald;210§auto Gangrebois;210 | x=6807.89990234375 y=-2090.199951171875 | size=1 | links=#17608(auto Felwood;422):12 #23471(entry and exit;cave;Timbermaw Hold ;Felwood):6 c15395.1:15
+#8543 | auto Felwood;211§auto Teufelswald;211§auto Gangrebois;211 | x=5061.80029296875 y=-555.7999877929688 | size=1 | links=#15898(auto Felwood;368):10 #22956(auto Felwood;561):6
+#8642 | resting location;Felpaw Village;Felwood§ruhepunkt;Revier der Teufelspfoten;Teufelswald§resting location;Village de Gangrepatte;Gangrebois | x=6693.7001953125 y=-1915.400024414063 | size=1 | links=#21937(auto Felwood;537):10
+#8719 | auto Felwood;212§auto Teufelswald;212§auto Gangrebois;212 | x=5396.80029296875 y=-532.6000366210938 | size=1 | links=#2471(auto Felwood;58):15 c7120.10:17
+#8732 | auto Felwood;213§auto Teufelswald;213§auto Gangrebois;213 | x=6343.80029296875 y=-1748.200073242188 | size=1 | links=#7471(auto Felwood;187):9 c7101.2:16
+#8779 | auto Felwood;214§auto Teufelswald;214§auto Gangrebois;214 | x=5029 y=-550.5 | size=1 | links=#3691(auto Felwood;87):7 #21223(auto Felwood;515):8 o176188.8:5
+#8819 | auto Felwood;215§auto Teufelswald;215§auto Gangrebois;215 | x=5099 y=-512.7000122070312 | size=1 | links=#17280(auto Felwood;415):9 #28358(auto Felwood;660):34
+#8885 | auto Felwood;216§auto Teufelswald;216§auto Gangrebois;216 | x=6548 y=-1920.300048828125 | size=1 | links=#12014(auto Felwood;278):46 #22030(auto Felwood;540):36 #24037(auto Felwood;585):22
+#8886 | auto Felwood;217§auto Teufelswald;217§auto Gangrebois;217 | x=4855.2001953125 y=-569.7999877929688 | size=1 | links=#13244(auto Felwood;311):39 #18919(auto Felwood;462):19
+#8966 | auto Felwood;218§auto Teufelswald;218§auto Gangrebois;218 | x=3946.800048828125 y=-1283.200073242188 | size=1 | links=#17505(crossing;Emerald Sanctuary;Felwood):37 #22712(auto Felwood;555):39
+#8995 | central location;Timbermaw Hold ;Felwood§zentralpunkt;Holzschlundfeste;Teufelswald§emplacement central;Repaire des Grumegueules;Gangrebois | x=7019.2001953125 y=-2121.10009765625 | size=1 | links=#3240(Kernda;Timbermaw Hold ;Felwood):5 #6809(auto Felwood;167):16 #14389(auto Felwood;334):21 #23546(auto Felwood;574):8 c11557.1:15
+#9089 | auto Felwood;219§auto Teufelswald;219§auto Gangrebois;219 | x=6504.80029296875 y=-1971.599975585938 | size=1 | links=#14674(auto Felwood;342):33 #22030(auto Felwood;540):50 c10017.21:10 c10017.79:42
+#9187 | auto Felwood;220§auto Teufelswald;220§auto Gangrebois;220 | x=6957.39990234375 y=-2263.199951171875 | size=1 | links=#14673(auto Felwood;341):9 #18319(auto Felwood;444):9
+#9252 | auto Felwood;221§auto Teufelswald;221§auto Gangrebois;221 | x=5378.39990234375 y=-478 | size=1 | links=#6454(auto Felwood;155):34 #24511(auto Felwood;597):37 c7093.2:16 c7093.6:10
+#9260 | auto Felwood;222§auto Teufelswald;222§auto Gangrebois;222 | x=6355.7001953125 y=-1656.900024414063 | size=1 | links=#10518(auto Felwood;246):29 #28175(auto Felwood;658):33
+#9315 | auto Felwood;223§auto Teufelswald;223§auto Gangrebois;223 | x=3689.60009765625 y=-1169.900024414063 | size=1 | links=#2588(auto Felwood;60):37 #16522(auto Felwood;387):40 c7154.7:27
+#9324 | auto Felwood;224§auto Teufelswald;224§auto Gangrebois;224 | x=6444.30029296875 y=-1666.400024414063 | size=1 | links=#7007(auto Felwood;173):17 c7100.12:25
+#9390 | auto Felwood;225§auto Teufelswald;225§auto Gangrebois;225 | x=7370.7001953125 y=-2206.400146484375 | size=1 | links=#13038(auto Felwood;306):2 #15492(passage;from;Timbermaw Hold ;Felwood;to;moonglade):3
+#9393 | auto Felwood;226§auto Teufelswald;226§auto Gangrebois;226 | x=3772.800048828125 y=-1073.300048828125 | size=1 | links=#12930(auto Felwood;302):41 #17996(auto Felwood;433):18
+#9414 | auto Felwood;227§auto Teufelswald;227§auto Gangrebois;227 | x=5321 y=-605.6000366210938 | size=1 | links=#5121(auto Felwood;127):16 #16108(auto Felwood;373):12
+#9416 | auto Felwood;228§auto Teufelswald;228§auto Gangrebois;228 | x=5132.60009765625 y=-510.2000122070313 | size=1 | links=#18206(auto Felwood;442):18 c7093.7:6 c7093.8:24
+#9444 | auto Felwood;229§auto Teufelswald;229§auto Gangrebois;229 | x=6415.60009765625 y=-1710.599975585938 | size=1 | links=#20408(auto Felwood;501):15 #22780(auto Felwood;557):7
+#9455 | auto Felwood;230§auto Teufelswald;230§auto Gangrebois;230 | x=4910.5 y=-381.6000061035156 | size=1 | links=#17293(auto Felwood;416):5 #21447(auto Felwood;525):6
+#9523 | auto Felwood;231§auto Teufelswald;231§auto Gangrebois;231 | x=4778.60009765625 y=-561.6000366210938 | size=1 | links=#18096(auto Felwood;436):13 #19594(auto Felwood;479):12 c7115.3:3
+#9547 | auto Felwood;232§auto Teufelswald;232§auto Gangrebois;232 | x=4347.5 y=-855.2000122070312 | size=1 | links=#5669(auto Felwood;144):59 #16443(auto Felwood;382):27 #21422(auto Felwood;523):76
+#9600 | auto Felwood;233§auto Teufelswald;233§auto Gangrebois;233 | x=6383.7001953125 y=-789.9000244140625 | size=1 | links=#2690(centralpoint;Jadefeuerbach;Felwood):35 #13938(auto Felwood;327):46 c7108.5:11
+#9607 | auto Felwood;234§auto Teufelswald;234§auto Gangrebois;234 | x=6418.10009765625 y=-1641.300048828125 | size=1 | links=#23165(auto Felwood;565):25 c7100.15:14
+#9699 | auto Felwood;235§auto Teufelswald;235§auto Gangrebois;235 | x=3607.800048828125 y=-1569.599975585938 | size=1 | links=#14252(auto Felwood;331):57 c8959.1:27
+#9731 | auto Felwood;236§auto Teufelswald;236§auto Gangrebois;236 | x=5108.89990234375 y=-745.5 | size=1 | links=#2618(auto Felwood;62):63 #4050(auto Felwood;97):37
+#9961 | auto Felwood;237§auto Teufelswald;237§auto Gangrebois;237 | x=4790.39990234375 y=-567.1000366210938 | size=1 | links=#19717(auto Felwood;482):4 #23198(auto Felwood;566):16
+#9970 | auto Felwood;238§auto Teufelswald;238§auto Gangrebois;238 | x=4059.900146484375 y=-735.4000244140625 | size=1 | links=#690(auto Felwood;13):23 #12899(auto Felwood;298):52 #21245(auto Felwood;516):66 c10017.82:8
+#9973 | well;Jaedenar;Felwood§brunnen;Jaedenar;Teufelswald§well;Jaedenar;Gangrebois | x=4847.10009765625 y=-379.3000183105469 | size=1 | links=#11809(auto Felwood;276):2
+#9982 | auto Felwood;239§auto Teufelswald;239§auto Gangrebois;239 | x=7022.5 y=-2145.400146484375 | size=1 | links=#4533(auto Felwood;107):10 #21866(auto Felwood;534):17
+#10015 | auto Felwood;240§auto Teufelswald;240§auto Gangrebois;240 | x=6789.60009765625 y=-1889.200073242188 | size=1 | links=#5884(auto Felwood;146):11 #8249(auto Felwood;204):15
+#10026 | auto Felwood;241§auto Teufelswald;241§auto Gangrebois;241 | x=7062.60009765625 y=-2114.699951171875 | size=1 | links=#13176(auto Felwood;310):14 #19681(auto Felwood;481):12
+#10122 | auto Felwood;242§auto Teufelswald;242§auto Gangrebois;242 | x=4926.7001953125 y=-690 | size=1 | links=#4992(auto Felwood;120):41 #5275(auto Felwood;131):23
+#10256 | auto Felwood;243§auto Teufelswald;243§auto Gangrebois;243 | x=7254.60009765625 y=-2191.5 | size=1 | links=#10550(auto Felwood;249):12 #21958(auto Felwood;538):10
+#10326 | auto Felwood;244§auto Teufelswald;244§auto Gangrebois;244 | x=7024.5 y=-2116.800048828125 | size=1 | links=#21866(auto Felwood;534):11 #27046(auto Felwood;635):15
+#10369 | auto Felwood;245§auto Teufelswald;245§auto Gangrebois;245 | x=5242.89990234375 y=-643 | size=1 | links=#7497(auto Felwood;188):9 #24815(auto Felwood;603):12
+#10518 | auto Felwood;246§auto Teufelswald;246§auto Gangrebois;246 | x=6329.7001953125 y=-1643.900024414063 | size=1 | links=#9260(auto Felwood;222):29 #10891(auto Felwood;255):12 #21066(auto Felwood;513):19 c7100.11:2
+#10539 | auto Felwood;247§auto Teufelswald;247§auto Gangrebois;247 | x=6569.89990234375 y=-1013.700012207031 | size=1 | links=#3929(auto Felwood;93):51 #18412(auto Felwood;445):47 c7107.7:11
+#10543 | auto Felwood;248§auto Teufelswald;248§auto Gangrebois;248 | x=5041.80029296875 y=-540.6000366210938 | size=1 | links=#1199(auto Felwood;26):13 #1318(auto Felwood;28):6 c9862.6:5
+#10550 | auto Felwood;249§auto Teufelswald;249§auto Gangrebois;249 | x=7242.2001953125 y=-2191.900146484375 | size=1 | links=#4535(auto Felwood;108):42 #10256(auto Felwood;243):12
+#10554 | auto Felwood;250§auto Teufelswald;250§auto Gangrebois;250 | x=6758.7001953125 y=-1928.700073242188 | size=1 | links=#18461(auto Felwood;447):9 #20146(auto Felwood;498):10
+#10674 | auto Felwood;251§auto Teufelswald;251§auto Gangrebois;251 | x=6844.80029296875 y=-2111.5 | size=1 | links=#2783(auto Felwood;67):17 #25229(auto Felwood;609):16
+#10848 | auto Felwood;252§auto Teufelswald;252§auto Gangrebois;252 | x=4641.2001953125 y=-716.2000122070312 | size=1 | links=#7435(auto Felwood;185):33 #18121(auto Felwood;437):22
+#10878 | centralpoint;Deadwood Village;Felwood§zentralerpunkt;Lager der Totenwaldfelle;Teufelswald§point central;Village des Mort-bois;Gangrebois | x=3577.60009765625 y=-1147.900024414063 | size=1 | links=#4923(auto Felwood;118):28 #8078(auto Felwood;198):37 c7153.7:13
+#10887 | auto Felwood;253§auto Teufelswald;253§auto Gangrebois;253 | x=5492.80029296875 y=-613.4000244140625 | size=1 | links=#8428(auto Felwood;207):50 #21794(auto Felwood;532):30
+#10890 | auto Felwood;254§auto Teufelswald;254§auto Gangrebois;254 | x=6601.89990234375 y=-2082.900146484375 | size=1 | links=#7934(auto Felwood;194):28 #19172(auto Felwood;467):22
+#10891 | auto Felwood;255§auto Teufelswald;255§auto Gangrebois;255 | x=6339 y=-1635.900024414063 | size=1 | links=#10518(auto Felwood;246):12 #12165(auto Felwood;280):7
+#10894 | auto Felwood;256§auto Teufelswald;256§auto Gangrebois;256 | x=5110 y=-330.2000122070313 | size=1 | links=#6675(auto Felwood;162):27 #23725(auto Felwood;578):22
+#10949 | auto Felwood;257§auto Teufelswald;257§auto Gangrebois;257 | x=3902.5 y=-1000.700012207031 | size=1 | links=#3479(auto Felwood;82):30 #7428(auto Felwood;184):19 #16968(auto Felwood;402):27 c8956.30:22
+#10955 | auto Felwood;258§auto Teufelswald;258§auto Gangrebois;258 | x=5328.5 y=-540.6000366210938 | size=1 | links=#3969(auto Felwood;94):10 #15051(auto Felwood;350):5
+#10990 | auto Felwood;259§auto Teufelswald;259§auto Gangrebois;259 | x=4547.80029296875 y=-624.9000244140625 | size=1 | links=#19748(auto Felwood;486):41 c7086.11:36 c7086.12:60
+#11081 | auto Felwood;260§auto Teufelswald;260§auto Gangrebois;260 | x=5957 y=-1302.5 | size=1 | links=#4199(auto Felwood;99):18 #13727(auto Felwood;324):18
+#11164 | auto Felwood;261§auto Teufelswald;261§auto Gangrebois;261 | x=5312.7001953125 y=-491.3999938964844 | size=1 | links=c7093.4:9 c7120.11:21
+#11220 | auto Felwood;262§auto Teufelswald;262§auto Gangrebois;262 | x=6554.39990234375 y=-2026.200073242188 | size=1 | links=#5192(auto Felwood;129):41 #22030(auto Felwood;540):70
+#11237 | auto Felwood;263§auto Teufelswald;263§auto Gangrebois;263 | x=4361.5 y=-590.2000122070312 | size=1 | links=#15981(auto Felwood;371):39 c7086.7:18 c7086.21:15 c7086.22:15 c10017.37:10
+#11240 | auto Felwood;264§auto Teufelswald;264§auto Gangrebois;264 | x=4032.60009765625 y=-669.2000122070312 | size=1 | links=#5455(auto Felwood;136):14 #22222(auto Felwood;544):17
+#11404 | auto Felwood;265§auto Teufelswald;265§auto Gangrebois;265 | x=3931.400146484375 y=-614.1000366210938 | size=1 | links=#20036(auto Felwood;494):34 c7105.18:13 c7105.22:22 c7109.28:29 c7109.29:25 c7105.34:27
+#11436 | auto Felwood;266§auto Teufelswald;266§auto Gangrebois;266 | x=7314.89990234375 y=-2158.699951171875 | size=1 | links=#1673(auto Felwood;38):13 #21788(auto Felwood;530):16
+#11474 | auto Felwood;267§auto Teufelswald;267§auto Gangrebois;267 | x=4258.10009765625 y=-755.7000122070312 | size=1 | links=#3161(auto Felwood;76):58 #24048(auto Felwood;586):45 c8956.32:13
+#11516 | auto Felwood;268§auto Teufelswald;268§auto Gangrebois;268 | x=6999.80029296875 y=-2151.60009765625 | size=1 | links=#6959(auto Felwood;172):8 #17674(auto Felwood;425):8
+#11548 | auto Felwood;269§auto Teufelswald;269§auto Gangrebois;269 | x=7100.10009765625 y=-2136.400146484375 | size=1 | links=#491(auto Felwood;10):10 #12049(auto Felwood;279):11
+#11554 | auto Felwood;270§auto Teufelswald;270§auto Gangrebois;270 | x=4582.7001953125 y=-543 | size=1 | links=#2597(auto Felwood;61):20
+#11620 | auto Felwood;271§auto Teufelswald;271§auto Gangrebois;271 | x=3935 y=-1097.599975585938 | size=1 | links=#4564(auto Felwood;110):16 #6561(auto Felwood;159):14
+#11639 | auto Felwood;272§auto Teufelswald;272§auto Gangrebois;272 | x=5701.60009765625 y=-618.6000366210938 | size=1 | links=#12694(auto Felwood;292):37 #13455(auto Felwood;316):40 #24170(auto Felwood;588):39 c10016.9:8
+#11663 | auto Felwood;273§auto Teufelswald;273§auto Gangrebois;273 | x=6154.30029296875 y=-1070.300048828125 | size=1 | links=#5093(auto Felwood;124):58 #17188(auto Felwood;411):71
+#11671 | auto Felwood;274§auto Teufelswald;274§auto Gangrebois;274 | x=5060.60009765625 y=-526.7000122070312 | size=1 | links=#2397(auto Felwood;55):6 #21444(auto Felwood;524):10
+#11672 | auto Felwood;275§auto Teufelswald;275§auto Gangrebois;275 | x=5213.7001953125 y=-625.2000122070312 | size=1 | links=#2198(auto Felwood;48):6 #3904(auto Felwood;91):6
+#11809 | auto Felwood;276§auto Teufelswald;276§auto Gangrebois;276 | x=4849.7001953125 y=-378.8000183105469 | size=1 | links=#4283(auto Felwood;100):3 #9973(well;Jaedenar;Felwood):2
+#11964 | auto Felwood;277§auto Teufelswald;277§auto Gangrebois;277 | x=6296.7001953125 y=-1672.099975585938 | size=1 | links=#6160(auto Felwood;152):21 c7101.7:14
+#12014 | auto Felwood;278§auto Teufelswald;278§auto Gangrebois;278 | x=6593.89990234375 y=-1913.599975585938 | size=1 | links=#8885(auto Felwood;216):46 #17070(auto Felwood;405):40 c8957.2:21 c10017.8:23
+#12049 | auto Felwood;279§auto Teufelswald;279§auto Gangrebois;279 | x=7099.7001953125 y=-2125.300048828125 | size=1 | links=#8236(auto Felwood;203):13 #11548(auto Felwood;269):11
+#12165 | auto Felwood;280§auto Teufelswald;280§auto Gangrebois;280 | x=6346 y=-1635.599975585938 | size=1 | links=#3872(auto Felwood;90):12 #10891(auto Felwood;255):7
+#12275 | auto Felwood;281§auto Teufelswald;281§auto Gangrebois;281 | x=3846.60009765625 y=-1026.300048828125 | size=1 | links=#2054(auto Felwood;45):40 #3479(auto Felwood;82):33 o171940.1:15 c10017.62:9
+#12286 | auto Felwood;282§auto Teufelswald;282§auto Gangrebois;282 | x=7365.60009765625 y=-2204.900146484375 | size=1 | links=#5168(auto Felwood;128):36 #13038(auto Felwood;306):2
+#12303 | auto Felwood;283§auto Teufelswald;283§auto Gangrebois;283 | x=3753.900146484375 y=-1507.099975585938 | size=1 | links=#2077(auto Felwood;46):37 #27214(auto Felwood;641):27
+#12348 | auto Felwood;284§auto Teufelswald;284§auto Gangrebois;284 | x=5230.30029296875 y=-623.1000366210938 | size=1 | links=#25505(auto Felwood;615):6 #27632(auto Felwood;649):6
+#12359 | auto Felwood;285§auto Teufelswald;285§auto Gangrebois;285 | x=5031.2001953125 y=-527.7999877929688 | size=1 | links=#4983(auto Felwood;119):8 #22015(auto Felwood;539):8 o176188.15:4
+#12460 | auto Felwood;286§auto Teufelswald;286§auto Gangrebois;286 | x=6673.2001953125 y=-2084.10009765625 | size=1 | links=#6087(auto Felwood;150):24 #19172(auto Felwood;467):49
+#12489 | auto Felwood;287§auto Teufelswald;287§auto Gangrebois;287 | x=5237.30029296875 y=-686 | size=1 | links=#16158(auto Felwood;374):16 #16505(auto Felwood;385):8
+#12498 | auto Felwood;288§auto Teufelswald;288§auto Gangrebois;288 | x=5043.5 y=-566.7999877929688 | size=1 | links=#12960(auto Felwood;304):6 #17969(auto Felwood;431):9
+#12572 | auto Felwood;289§auto Teufelswald;289§auto Gangrebois;289 | x=6159 y=-713 | size=1 | links=#216(auto Felwood;5):67 #21281(auto Felwood;517):49 c8960.30:32
+#12590 | auto Felwood;290§auto Teufelswald;290§auto Gangrebois;290 | x=4214.60009765625 y=-875.9000244140625 | size=1 | links=#2320(auto Felwood;51):25 #8415(auto Felwood;206):24 #21380(auto Felwood;522):30
+#12653 | auto Felwood;291§auto Teufelswald;291§auto Gangrebois;291 | x=4646.39990234375 y=-642 | size=1 | links=#8463(auto Felwood;208):17 #18015(auto Felwood;434):7
+#12694 | auto Felwood;292§auto Teufelswald;292§auto Gangrebois;292 | x=5728.2001953125 y=-644.5 | size=1 | links=#11639(auto Felwood;272):37 #17100(auto Felwood;408):100 #25475(auto Felwood;614):31
+#12701 | auto Felwood;293§auto Teufelswald;293§auto Gangrebois;293 | x=5265.7001953125 y=-716.5 | size=1 | links=#24767(auto Felwood;601):14 #27059(auto Felwood;636):15
+#12743 | auto Felwood;294§auto Teufelswald;294§auto Gangrebois;294 | x=6252.2001953125 y=-886 | size=1 | links=#17305(auto Felwood;417):50 #21755(auto Felwood;528):48
+#12810 | auto Felwood;295§auto Teufelswald;295§auto Gangrebois;295 | x=4582.2001953125 y=-298.8000183105469 | size=1 | links=#2326(auto Felwood;52):27 #15779(auto Felwood;366):28 c7110.8:9
+#12816 | auto Felwood;296§auto Teufelswald;296§auto Gangrebois;296 | x=5318.80029296875 y=-514.4000244140625 | size=1 | links=#7762(auto Felwood;192):11 #19855(auto Felwood;488):24 c7118.3:20 c7114.8:9
+#12874 | auto Felwood;297§auto Teufelswald;297§auto Gangrebois;297 | x=6227.10009765625 y=-808.7000122070312 | size=1 | links=#17305(auto Felwood;417):33 #17742(auto Felwood;426):19 c8960.31:24
+#12899 | auto Felwood;298§auto Teufelswald;298§auto Gangrebois;298 | x=4107.5 y=-712.7000122070312 | size=1 | links=#9970(auto Felwood;238):52 o164881.1:28 c8956.31:21
+#12904 | auto Felwood;299§auto Teufelswald;299§auto Gangrebois;299 | x=3765.60009765625 y=-1627.200073242188 | size=1 | links=#534(auto Felwood;12):29 #22350(auto Felwood;548):24
+#12909 | auto Felwood;300§auto Teufelswald;300§auto Gangrebois;300 | x=3950.10009765625 y=-1060.200073242188 | size=1 | links=#6561(auto Felwood;159):26 c9529.1:14
+#12911 | auto Felwood;301§auto Teufelswald;301§auto Gangrebois;301 | x=6511.89990234375 y=-1724.400024414063 | size=1 | links=#3439(auto Felwood;80):35 #23831(auto Felwood;580):47 c8961.7:30
+#12930 | auto Felwood;302§auto Teufelswald;302§auto Gangrebois;302 | x=3763.60009765625 y=-1033.200073242188 | size=1 | links=#2054(auto Felwood;45):45 #9393(auto Felwood;226):41 #18894(auto Felwood;461):36 c7155.5:40 c7097.7:9 c7154.8:20
+#12958 | auto Felwood;303§auto Teufelswald;303§auto Gangrebois;303 | x=4060.199951171875 y=-1051.5 | size=1 | links=#15985(auto Felwood;372):11 #24363(auto Felwood;593):59
+#12960 | auto Felwood;304§auto Teufelswald;304§auto Gangrebois;304 | x=5050.30029296875 y=-568.4000244140625 | size=1 | links=#12498(auto Felwood;288):6 #15898(auto Felwood;368):9
+#13022 | auto Felwood;305§auto Teufelswald;305§auto Gangrebois;305 | x=5980.60009765625 y=-1135.400024414063 | size=1 | links=#2846(auto Felwood;70):26 #15567(auto Felwood;363):37 c7139.18:15 c10017.33:23
+#13038 | auto Felwood;306§auto Teufelswald;306§auto Gangrebois;306 | x=7368.10009765625 y=-2205.60009765625 | size=1 | links=#9390(auto Felwood;225):2 #12286(auto Felwood;282):2
+#13052 | auto Felwood;307§auto Teufelswald;307§auto Gangrebois;307 | x=4564.39990234375 y=-855.4000244140625 | size=1 | links=#8168(auto Felwood;199):56 #20232(auto Felwood;499):71 c8958.41:31
+#13089 | auto Felwood;308§auto Teufelswald;308§auto Gangrebois;308 | x=6909.7001953125 y=-2291.400146484375 | size=1 | links=#23296(auto Felwood;568):15 #25751(passage;from;Timbermaw Hold ;Felwood;to;Winterspring):6
+#13142 | auto Felwood;309§auto Teufelswald;309§auto Gangrebois;309 | x=7021.89990234375 y=-2178.699951171875 | size=1 | links=#5026(auto Felwood;122):4 #16834(auto Felwood;396):10
+#13176 | auto Felwood;310§auto Teufelswald;310§auto Gangrebois;310 | x=7076.7001953125 y=-2114.900146484375 | size=1 | links=#8236(auto Felwood;203):12 #10026(auto Felwood;241):14
+#13244 | auto Felwood;311§auto Teufelswald;311§auto Gangrebois;311 | x=4893.5 y=-578.7999877929688 | size=1 | links=#8886(auto Felwood;217):39 #18503(auto Felwood;448):16
+#13268 | auto Felwood;312§auto Teufelswald;312§auto Gangrebois;312 | x=5409.10009765625 y=-721.2000122070312 | size=1 | links=#4293(auto Felwood;102):24 c14469.1:17 c14470.1:15 c9878.11:48 c7092.23:26
+#13303 | auto Felwood;313§auto Teufelswald;313§auto Gangrebois;313 | x=6460.7001953125 y=-796.1000366210938 | size=1 | links=#2690(centralpoint;Jadefeuerbach;Felwood):43 #2997(auto Felwood;73):59 c7107.2:33 c7108.6:19 c10017.38:34
+#13333 | auto Felwood;314§auto Teufelswald;314§auto Gangrebois;314 | x=6698 y=-1980 | size=1 | links=#5477(auto Felwood;137):9 #27228(auto Felwood;642):14 c7157.6:9
+#13360 | auto Felwood;315§auto Teufelswald;315§auto Gangrebois;315 | x=5410.80029296875 y=-429 | size=1 | links=#3441(auto Felwood;81):0 c9516.1:20
+#13455 | auto Felwood;316§auto Teufelswald;316§auto Gangrebois;316 | x=5671.60009765625 y=-590.9000244140625 | size=1 | links=#11639(auto Felwood;272):40 #14511(auto Felwood;337):55
+#13469 | auto Felwood;317§auto Teufelswald;317§auto Gangrebois;317 | x=4064.199951171875 y=-906.4000244140625 | size=1 | links=#76(auto Felwood;1):37 #27404(auto Felwood;646):50
+#13472 | auto Felwood;318§auto Teufelswald;318§auto Gangrebois;318 | x=4795.39990234375 y=-564.7000122070312 | size=1 | links=#19717(auto Felwood;482):5 #21875(auto Felwood;535):10
+#13510 | auto Felwood;319§auto Teufelswald;319§auto Gangrebois;319 | x=6903.30029296875 y=-1896.900024414063 | size=1 | links=#14206(auto Felwood;330):23 #20813(auto Felwood;508):18
+#13616 | auto Felwood;320§auto Teufelswald;320§auto Gangrebois;320 | x=5431.30029296875 y=-617.9000244140625 | size=1 | links=#6516(auto Felwood;158):33 #21794(auto Felwood;532):31 c8958.3:30
+#13620 | auto Felwood;321§auto Teufelswald;321§auto Gangrebois;321 | x=6346.10009765625 y=-636.2999877929688 | size=1 | links=#3187(auto Felwood;77):23 #8345(auto Felwood;205):9
+#13692 | auto Felwood;322§auto Teufelswald;322§auto Gangrebois;322 | x=4972 y=-428.7000122070313 | size=1 | links=#3834(auto Felwood;89):18 #27310(auto Felwood;644):13 c7118.5:4
+#13723 | auto Felwood;323§auto Teufelswald;323§auto Gangrebois;323 | x=3848.199951171875 y=-1369.900024414063 | size=1 | links=#19873(auto Felwood;489):40 #28049(auto Felwood;656):46 c8959.26:66 c8959.47:30
+#13727 | auto Felwood;324§auto Teufelswald;324§auto Gangrebois;324 | x=5974.89990234375 y=-1305.599975585938 | size=1 | links=#11081(auto Felwood;260):18
+#13749 | auto Felwood;325§auto Teufelswald;325§auto Gangrebois;325 | x=3724.199951171875 y=-1159.400024414063 | size=1 | links=#16522(auto Felwood;387):48 #16878(auto Felwood;398):33 c7154.4:13 c7153.16:2
+#13760 | auto Felwood;326§auto Teufelswald;326§auto Gangrebois;326 | x=4803.39990234375 y=-573.2000122070312 | size=1 | links=#6403(auto Felwood;154):8 #19717(auto Felwood;482):10
+#13938 | auto Felwood;327§auto Teufelswald;327§auto Gangrebois;327 | x=6347.5 y=-819.2999877929688 | size=1 | links=#9600(auto Felwood;233):46 #17087(auto Felwood;407):31
+#14062 | centralpoint;cave;Shadow Hold;Felwood§zentralerpunkt;höhle;Schattenfeste;Teufelswald§point central;cave;Fort des ombres;Gangrebois | x=5253.39990234375 y=-657 | size=1 | links=#19205(auto Felwood;468):7 #21554(auto Felwood;526):17 #24815(auto Felwood;603):5 c9862.8:4
+#14133 | auto Felwood;328§auto Teufelswald;328§auto Gangrebois;328 | x=6608.30029296875 y=-1564.300048828125 | size=1 | links=#1174(auto Felwood;25):76 #14904(auto Felwood;346):60 o174596.1:124 c8961.3:63
+#14176 | auto Felwood;329§auto Teufelswald;329§auto Gangrebois;329 | x=5713.39990234375 y=-766.4000244140625 | size=1 | links=#2863(auto Felwood;71):24 #22348(auto Felwood;547):52
+#14206 | auto Felwood;330§auto Teufelswald;330§auto Gangrebois;330 | x=6915.5 y=-1876.900024414063 | size=1 | links=#13510(auto Felwood;319):23 #15087(auto Felwood;351):19 c7156.10:6
+#14252 | auto Felwood;331§auto Teufelswald;331§auto Gangrebois;331 | x=3624.199951171875 y=-1515 | size=1 | links=#3581(auto Felwood;84):54 #9699(auto Felwood;235):57 #23872(passage;from;Felwood;to;Ashenvale):56 c8959.42:40
+#14308 | auto Felwood;332§auto Teufelswald;332§auto Gangrebois;332 | x=6238.7001953125 y=-938.4000244140625 | size=1 | links=#1811(auto Felwood;41):43 #21755(auto Felwood;528):17 c8960.5:26 c10017.59:18
+#14374 | auto Felwood;333§auto Teufelswald;333§auto Gangrebois;333 | x=4626.80029296875 y=-607.7000122070312 | size=1 | links=#15321(auto Felwood;358):27 #23428(auto Felwood;571):11
+#14389 | auto Felwood;334§auto Teufelswald;334§auto Gangrebois;334 | x=6998.30029296875 y=-2126.60009765625 | size=1 | links=#6959(auto Felwood;172):16 #8995(central location;Timbermaw Hold ;Felwood):21
+#14465 | auto Felwood;335§auto Teufelswald;335§auto Gangrebois;335 | x=4903.10009765625 y=-739 | size=1 | links=#5141(crossing;Jaedenar;Felwood):22 #27592(auto Felwood;648):37 c10017.83:26
+#14506 | auto Felwood;336§auto Teufelswald;336§auto Gangrebois;336 | x=5221.5 y=-405 | size=1 | links=#4996(auto Felwood;121):39 #5283(auto Felwood;132):29
+#14511 | auto Felwood;337§auto Teufelswald;337§auto Gangrebois;337 | x=5616.60009765625 y=-583.5 | size=1 | links=#8428(auto Felwood;207):83 #13455(auto Felwood;316):55 c8960.19:24 c8960.27:43 c10017.52:24
+#14549 | auto Felwood;338§auto Teufelswald;338§auto Gangrebois;338 | x=6894.30029296875 y=-1956.5 | size=1 | links=#6890(auto Felwood;170):28 #26622(auto Felwood;629):10 c7158.15:10
+#14600 | auto Felwood;339§auto Teufelswald;339§auto Gangrebois;339 | x=5915.5 y=-1165.300048828125 | size=1 | links=#14790(auto Felwood;344):35 #19745(auto Felwood;485):12
+#14644 | auto Felwood;340§auto Teufelswald;340§auto Gangrebois;340 | x=5903.89990234375 y=-1245.300048828125 | size=1 | links=#20805(auto Felwood;506):29 #23980(auto Felwood;584):29
+#14673 | auto Felwood;341§auto Teufelswald;341§auto Gangrebois;341 | x=6966.5 y=-2262 | size=1 | links=#9187(auto Felwood;220):9 #16276(auto Felwood;376):9
+#14674 | auto Felwood;342§auto Teufelswald;342§auto Gangrebois;342 | x=6492.10009765625 y=-2002.200073242188 | size=1 | links=#9089(auto Felwood;219):33 #25116(auto Felwood;607):39
+#14711 | auto Felwood;343§auto Teufelswald;343§auto Gangrebois;343 | x=4795.5 y=-529.5 | size=1 | links=#786(auto Felwood;17):41 #18919(auto Felwood;462):55
+#14790 | auto Felwood;344§auto Teufelswald;344§auto Gangrebois;344 | x=5949 y=-1177.400024414063 | size=1 | links=#2846(auto Felwood;70):26 #3677(auto Felwood;86):24 #14600(auto Felwood;339):35
+#14839 | auto Felwood;345§auto Teufelswald;345§auto Gangrebois;345 | x=4041.199951171875 y=-824.5 | size=1 | links=#76(auto Felwood;1):58 #21245(auto Felwood;516):39 c8959.13:26 c8959.14:23 c10017.80:39
+#14904 | auto Felwood;346§auto Teufelswald;346§auto Gangrebois;346 | x=6635.30029296875 y=-1510.700073242188 | size=1 | links=#4032(auto Felwood;95):35 #14133(auto Felwood;328):60
+#14910 | auto Felwood;347§auto Teufelswald;347§auto Gangrebois;347 | x=3962.5 y=-1397.200073242188 | size=1 | links=#25626(auto Felwood;617):31 c10017.19:19 c8959.39:45 c8959.40:16
+#14949 | auto Felwood;348§auto Teufelswald;348§auto Gangrebois;348 | x=6722.39990234375 y=-1896 | size=1 | links=#17084(auto Felwood;406):13 #17277(auto Felwood;414):20 c7158.13:9
+#15043 | auto Felwood;349§auto Teufelswald;349§auto Gangrebois;349 | x=6820.89990234375 y=-1878.599975585938 | size=1 | links=#8249(auto Felwood;204):19 #24353(auto Felwood;592):18 c7157.12:15
+#15051 | auto Felwood;350§auto Teufelswald;350§auto Gangrebois;350 | x=5322.80029296875 y=-539.6000366210938 | size=1 | links=#10955(auto Felwood;258):5 #19855(auto Felwood;488):4
+#15087 | auto Felwood;351§auto Teufelswald;351§auto Gangrebois;351 | x=6917.2001953125 y=-1857.400024414063 | size=1 | links=#14206(auto Felwood;330):19 c7157.15:23 c10017.35:31
+#15141 | auto Felwood;352§auto Teufelswald;352§auto Gangrebois;352 | x=7106.89990234375 y=-2151.900146484375 | size=1 | links=#491(auto Felwood;10):7 #19500(auto Felwood;477):12
+#15185 | auto Felwood;353§auto Teufelswald;353§auto Gangrebois;353 | x=5344 y=-543.7000122070312 | size=1 | links=#3969(auto Felwood;94):5 #4749(auto Felwood;115):7
+#15187 | auto Felwood;354§auto Teufelswald;354§auto Gangrebois;354 | x=4845.89990234375 y=-398.7000122070313 | size=1 | links=#20493(auto Felwood;502):11 #24545(auto Felwood;598):7
+#15244 | auto Felwood;355§auto Teufelswald;355§auto Gangrebois;355 | x=4867.60009765625 y=-611.2000122070312 | size=1 | links=#16403(auto Felwood;380):15 #23692(auto Felwood;577):11
+#15248 | auto Felwood;356§auto Teufelswald;356§auto Gangrebois;356 | x=5328 y=-573.2000122070312 | size=1 | links=#16517(auto Felwood;386):20 c7118.19:12
+#15287 | auto Felwood;357§auto Teufelswald;357§auto Gangrebois;357 | x=5338.7001953125 y=-482.8999938964844 | size=1 | links=#372(auto Felwood;9):14 #4519(auto Felwood;106):18
+#15321 | auto Felwood;358§auto Teufelswald;358§auto Gangrebois;358 | x=4602.80029296875 y=-593.2999877929688 | size=1 | links=#2597(auto Felwood;61):36 #14374(auto Felwood;333):27
+#15333 | auto Felwood;359§auto Teufelswald;359§auto Gangrebois;359 | x=3832.400146484375 y=-708.1000366210938 | size=1 | links=#23543(auto Felwood;573):24 c7105.14:18 c7105.17:18
+#15436 | auto Felwood;360§auto Teufelswald;360§auto Gangrebois;360 | x=7032.30029296875 y=-2113.400146484375 | size=1 | links=#6809(auto Felwood;167):5 c11555.1:7
+#15451 | auto Felwood;361§auto Teufelswald;361§auto Gangrebois;361 | x=6378 y=-2031.300048828125 | size=1 | links=#1713(auto Felwood;40):52 #17545(auto Felwood;420):24
+#15467 | auto Felwood;362§auto Teufelswald;362§auto Gangrebois;362 | x=6688.89990234375 y=-1931.800048828125 | size=1 | links=#1552(auto Felwood;35):6 #21937(auto Felwood;537):10 #25003(auto Felwood;606):17
+#15492 | passage;from;Timbermaw Hold ;Felwood;to;moonglade§passage;von;Holzschlundfeste;Teufelswald;nach;moonglade§passage;de;Repaire des Grumegueules;Gangrebois;vers;moonglade | x=7374 y=-2204.800048828125 | size=1 | links=#9390(auto Felwood;225):3 #27705(passage;Moonglade;to;Felwood;with;Winterspring):2
+#15567 | auto Felwood;363§auto Teufelswald;363§auto Gangrebois;363 | x=6014.10009765625 y=-1119.599975585938 | size=1 | links=#13022(auto Felwood;305):37 #24778(auto Felwood;602):52 c10017.33:20
+#15618 | central location;Bloodvenom Post;Felwood§zentralpunkt;Blutgiftposten;Teufelswald§emplacement central;Poste de la Vénéneuse;Gangrebois | x=5106.7001953125 y=-354.1000061035156 | size=1 | links=#23725(auto Felwood;578):19 c2806.1:14 c9620.1:7 c10306.1:3 c10379.1:12
+#15623 | auto Felwood;364§auto Teufelswald;364§auto Gangrebois;364 | x=6845.30029296875 y=-2015.200073242188 | size=1 | links=#16921(auto Felwood;400):38 #25420(auto Felwood;611):37
+#15718 | auto Felwood;365§auto Teufelswald;365§auto Gangrebois;365 | x=4960.39990234375 y=-460.7000122070313 | size=1 | links=#18138(auto Felwood;438):11 c9877.1:14 c7111.9:12 c7107.12:7
+#15779 | auto Felwood;366§auto Teufelswald;366§auto Gangrebois;366 | x=4580.60009765625 y=-270.8000183105469 | size=1 | links=#2741(auto Felwood;64):32 #12810(auto Felwood;295):28 c7109.21:18 c7109.22:8
+#15812 | auto Felwood;367§auto Teufelswald;367§auto Gangrebois;367 | x=6786.10009765625 y=-1965.300048828125 | size=5 | links=#5942(auto Felwood;147):11 #19479(auto Felwood;476):29
+#15898 | auto Felwood;368§auto Teufelswald;368§auto Gangrebois;368 | x=5058.89990234375 y=-565.4000244140625 | size=1 | links=#8543(auto Felwood;211):10 #12960(auto Felwood;304):9
+#15899 | auto Felwood;369§auto Teufelswald;369§auto Gangrebois;369 | x=4581.60009765625 y=-398.1000061035156 | size=1 | links=#5536(auto Felwood;140):24 #6583(auto Felwood;160):24 c7106.4:7 c7109.20:10
+#15929 | auto Felwood;370§auto Teufelswald;370§auto Gangrebois;370 | x=5368.80029296875 y=-434 | size=1 | links=#3441(auto Felwood;81):42 #5309(auto Felwood;134):25 c9862.1:9 c9862.3:9
+#15981 | auto Felwood;371§auto Teufelswald;371§auto Gangrebois;371 | x=4399.5 y=-602.4000244140625 | size=1 | links=#11237(auto Felwood;263):39 c7086.4:15 c7086.20:16
+#15985 | auto Felwood;372§auto Teufelswald;372§auto Gangrebois;372 | x=4070.800048828125 y=-1046 | size=1 | links=#12958(auto Felwood;303):11 #20880(auto Felwood;509):32
+#16108 | auto Felwood;373§auto Teufelswald;373§auto Gangrebois;373 | x=5332.5 y=-609.7000122070312 | size=1 | links=#6690(auto Felwood;163):13 #9414(auto Felwood;227):12 c9517.1:20 c7120.9:4
+#16158 | auto Felwood;374§auto Teufelswald;374§auto Gangrebois;374 | x=5249 y=-674.5 | size=1 | links=#5045(auto Felwood;123):11 #12489(auto Felwood;287):16
+#16262 | auto Felwood;375§auto Teufelswald;375§auto Gangrebois;375 | x=4122 y=-992.9000244140625 | size=1 | links=#20880(auto Felwood;509):41 #21804(auto Felwood;533):36
+#16276 | auto Felwood;376§auto Teufelswald;376§auto Gangrebois;376 | x=6971.39990234375 y=-2254 | size=1 | links=#14673(auto Felwood;341):9 #27074(auto Felwood;637):12
+#16280 | auto Felwood;377§auto Teufelswald;377§auto Gangrebois;377 | x=6617.80029296875 y=-1372.800048828125 | size=1 | links=#1665(auto Felwood;37):51 #18691(auto Felwood;456):55
+#16287 | auto Felwood;378§auto Teufelswald;378§auto Gangrebois;378 | x=6998.7001953125 y=-2192.800048828125 | size=1 | links=#20548(auto Felwood;504):13 #27000(auto Felwood;633):12
+#16360 | auto Felwood;379§auto Teufelswald;379§auto Gangrebois;379 | x=6144.60009765625 y=-1929 | size=1 | links=#6933(auto Felwood;171):26 c2803.1:14 c15315.1:17
+#16403 | auto Felwood;380§auto Teufelswald;380§auto Gangrebois;380 | x=4880.60009765625 y=-603.5 | size=1 | links=#15244(auto Felwood;355):15 o174604.1:14 c7115.6:13
+#16421 | auto Felwood;381§auto Teufelswald;381§auto Gangrebois;381 | x=5226.60009765625 y=-607.7999877929688 | size=1 | links=#6696(auto Felwood;164):6 #20807(auto Felwood;507):11
+#16443 | auto Felwood;382§auto Teufelswald;382§auto Gangrebois;382 | x=4355.7001953125 y=-828.7999877929688 | size=1 | links=#9547(auto Felwood;232):27 #26973(auto Felwood;632):14
+#16494 | auto Felwood;383§auto Teufelswald;383§auto Gangrebois;383 | x=5329.5 y=-477.2000122070313 | size=1 | links=#24511(auto Felwood;597):14 c7093.4:12
+#16501 | auto Felwood;384§auto Teufelswald;384§auto Gangrebois;384 | x=4898.5 y=-395.3000183105469 | size=1 | links=#17033(auto Felwood;403):6 #28214(auto Felwood;659):6
+#16505 | auto Felwood;385§auto Teufelswald;385§auto Gangrebois;385 | x=5231.2001953125 y=-692.2000122070312 | size=1 | links=#12489(auto Felwood;287):8
+#16517 | auto Felwood;386§auto Teufelswald;386§auto Gangrebois;386 | x=5308.39990234375 y=-577.5 | size=1 | links=#15248(auto Felwood;356):20 c7126.5:10
+#16522 | auto Felwood;387§auto Teufelswald;387§auto Gangrebois;387 | x=3710.10009765625 y=-1205.400024414063 | size=1 | links=#8008(auto Felwood;196):40 #9315(auto Felwood;223):40 #13749(auto Felwood;325):48
+#16664 | auto Felwood;388§auto Teufelswald;388§auto Gangrebois;388 | x=3761.800048828125 y=-1461.800048828125 | size=1 | links=#701(auto Felwood;14):42 #27214(auto Felwood;641):33
+#16668 | auto Felwood;389§auto Teufelswald;389§auto Gangrebois;389 | x=6304.5 y=-1730.400024414063 | size=1 | links=#2870(auto Felwood;72):16 #23509(auto Felwood;572):26
+#16676 | auto Felwood;390§auto Teufelswald;390§auto Gangrebois;390 | x=5106.80029296875 y=-525.2999877929688 | size=1 | links=#17280(auto Felwood;415):5 o176225.1:9
+#16694 | auto Felwood;391§auto Teufelswald;391§auto Gangrebois;391 | x=4638.10009765625 y=-631.6000366210938 | size=1 | links=#18015(auto Felwood;434):5 #23428(auto Felwood;571):15
+#16699 | auto Felwood;392§auto Teufelswald;392§auto Gangrebois;392 | x=6520.2001953125 y=-1847 | size=1 | links=#5239(auto Felwood;130):34 #24037(auto Felwood;585):57
+#16718 | auto Felwood;393§auto Teufelswald;393§auto Gangrebois;393 | x=6668.10009765625 y=-1228.800048828125 | size=1 | links=#17399(auto Felwood;419):67 o174687.1:19 c8957.31:16
+#16775 | auto Felwood;394§auto Teufelswald;394§auto Gangrebois;394 | x=4800.30029296875 y=-417.3999938964844 | size=1 | links=#18580(auto Felwood;452):34 #20009(auto Felwood;493):28
+#16820 | auto Felwood;395§auto Teufelswald;395§auto Gangrebois;395 | x=3793.300048828125 y=-1297.599975585938 | size=1 | links=#7229(auto Felwood;178):42 #17335(auto Felwood;418):33
+#16834 | auto Felwood;396§auto Teufelswald;396§auto Gangrebois;396 | x=7022.39990234375 y=-2168.60009765625 | size=1 | links=#4533(auto Felwood;107):12 #13142(auto Felwood;309):10
+#16866 | auto Felwood;397§auto Teufelswald;397§auto Gangrebois;397 | x=4985.89990234375 y=-458.8999938964844 | size=1 | links=#4753(auto Felwood;116):14 #18138(auto Felwood;438):18 #24324(auto Felwood;591):30 o176158.1:18
+#16878 | auto Felwood;398§auto Teufelswald;398§auto Gangrebois;398 | x=3735.5 y=-1127.700073242188 | size=1 | links=#13749(auto Felwood;325):33 #17996(auto Felwood;433):47 c7154.11:28
+#16891 | auto Felwood;399§auto Teufelswald;399§auto Gangrebois;399 | x=5665.7001953125 y=-890.9000244140625 | size=1 | links=#6613(auto Felwood;161):42 #19020(auto Felwood;464):43 c7136.1:22 c9878.7:26
+#16921 | auto Felwood;400§auto Teufelswald;400§auto Gangrebois;400 | x=6882.60009765625 y=-2025.900024414063 | size=1 | links=#15623(auto Felwood;364):38 c7156.1:19 c7158.1:16 o174595.1:18 o174715.1:14
+#16946 | auto Felwood;401§auto Teufelswald;401§auto Gangrebois;401 | x=6368.2001953125 y=-1649.599975585938 | size=1 | links=#3872(auto Felwood;90):14 #17982(auto Felwood;432):12
+#16968 | auto Felwood;402§auto Teufelswald;402§auto Gangrebois;402 | x=3903 y=-1027.800048828125 | size=1 | links=#10949(auto Felwood;257):27 #25305(auto Felwood;610):35
+#17033 | auto Felwood;403§auto Teufelswald;403§auto Gangrebois;403 | x=4905 y=-397.1000061035156 | size=1 | links=#16501(auto Felwood;384):6 #27282(auto Felwood;643):6
+#17047 | auto Felwood;404§auto Teufelswald;404§auto Gangrebois;404 | x=4783.7001953125 y=-757.6000366210938 | size=1 | links=#1566(auto Felwood;36):45 #24435(auto Felwood;594):64
+#17070 | auto Felwood;405§auto Teufelswald;405§auto Gangrebois;405 | x=6633.60009765625 y=-1922.200073242188 | size=1 | links=#2356(auto Felwood;53):35 #12014(auto Felwood;278):40 c7156.4:32 c7158.9:28
+#17084 | auto Felwood;406§auto Teufelswald;406§auto Gangrebois;406 | x=6713.7001953125 y=-1905.800048828125 | size=1 | links=#14949(auto Felwood;348):13 #21908(auto Felwood;536):8
+#17087 | auto Felwood;407§auto Teufelswald;407§auto Gangrebois;407 | x=6318.5 y=-831.7000122070312 | size=1 | links=#13938(auto Felwood;327):31 c8960.32:39
+#17100 | auto Felwood;408§auto Teufelswald;408§auto Gangrebois;408 | x=5828 y=-656.1000366210938 | size=1 | links=#5653(auto Felwood;143):57 #12694(auto Felwood;292):100 c8960.23:21
+#17106 | auto Felwood;409§auto Teufelswald;409§auto Gangrebois;409 | x=5220.2001953125 y=-628.1000366210938 | size=1 | links=#4036(auto Felwood;96):6 #22739(auto Felwood;556):10
+#17125 | auto Felwood;410§auto Teufelswald;410§auto Gangrebois;410 | x=4913.2001953125 y=-395.7000122070313 | size=1 | links=#18590(auto Felwood;453):8 #27770(auto Felwood;653):15 c7114.4:3
+#17188 | auto Felwood;411§auto Teufelswald;411§auto Gangrebois;411 | x=6100.30029296875 y=-1117.300048828125 | size=1 | links=#11663(auto Felwood;273):71 #24778(auto Felwood;602):41 c7132.1:65 c7139.13:20
+#17260 | auto Felwood;412§auto Teufelswald;412§auto Gangrebois;412 | x=3916.60009765625 y=-1221.200073242188 | size=1 | links=#17505(crossing;Emerald Sanctuary;Felwood):46 #20962(auto Felwood;510):37 c8956.38:30
+#17270 | auto Felwood;413§auto Teufelswald;413§auto Gangrebois;413 | x=5265.39990234375 y=-673.7999877929688 | size=1 | links=#26358(auto Felwood;626):6 #27762(auto Felwood;652):6
+#17277 | auto Felwood;414§auto Teufelswald;414§auto Gangrebois;414 | x=6742.89990234375 y=-1900.099975585938 | size=1 | links=#2379(auto Felwood;54):18 #14949(auto Felwood;348):20 c7156.3:11
+#17280 | auto Felwood;415§auto Teufelswald;415§auto Gangrebois;415 | x=5103.80029296875 y=-520.5 | size=1 | links=#8819(auto Felwood;215):9 #16676(auto Felwood;390):5 #18206(auto Felwood;442):12 o176159.1:10 c7120.7:8 c9862.7:14
+#17293 | auto Felwood;416§auto Teufelswald;416§auto Gangrebois;416 | x=4905.5 y=-378.5 | size=1 | links=#2772(auto Felwood;65):6 #9455(auto Felwood;230):5
+#17305 | auto Felwood;417§auto Teufelswald;417§auto Gangrebois;417 | x=6247.89990234375 y=-835.5 | size=1 | links=#12743(auto Felwood;294):50 #12874(auto Felwood;297):33 c10017.94:10
+#17335 | auto Felwood;418§auto Teufelswald;418§auto Gangrebois;418 | x=3826.60009765625 y=-1300.5 | size=1 | links=#16820(auto Felwood;395):33 #20723(auto Felwood;505):35 c8959.38:4
+#17399 | auto Felwood;419§auto Teufelswald;419§auto Gangrebois;419 | x=6608.10009765625 y=-1258.700073242188 | size=1 | links=#2103(auto Felwood;47):51 #16718(auto Felwood;393):67 #18691(auto Felwood;456):59 o174597.1:11 o174615.1:37 c8957.29:36 c8957.30:43
+#17505 | crossing;Emerald Sanctuary;Felwood§kreuzung;Das Smaragdrefugium;Teufelswald§traversée;Sanctuaire d'émeraude;Gangrebois | x=3912.900146484375 y=-1267.200073242188 | size=1 | links=#5572(auto Felwood;141):33 #8966(auto Felwood;218):37 #17260(auto Felwood;412):46 c8959.48:41
+#17545 | auto Felwood;420§auto Teufelswald;420§auto Gangrebois;420 | x=6355.10009765625 y=-2039.599975585938 | size=1 | links=#15451(auto Felwood;361):24 #26588(auto Felwood;628):38
+#17553 | auto Felwood;421§auto Teufelswald;421§auto Gangrebois;421 | x=3932.5 y=-931.4000244140625 | size=1 | links=#7308(auto Felwood;181):26 #22329(auto Felwood;546):52 c8956.5:21 c7097.6:28
+#17608 | auto Felwood;422§auto Teufelswald;422§auto Gangrebois;422 | x=6798 y=-2083 | size=1 | links=#8530(auto Felwood;210):12 #21294(auto Felwood;518):30
+#17619 | auto Felwood;423§auto Teufelswald;423§auto Gangrebois;423 | x=6448.10009765625 y=-1649.200073242188 | size=1 | links=c7101.11:13 c7100.15:16
+#17634 | auto Felwood;424§auto Teufelswald;424§auto Gangrebois;424 | x=5353.60009765625 y=-507.6000061035156 | size=1 | links=#303(auto Felwood;7):37 c7126.6:14 c7120.11:22
+#17674 | auto Felwood;425§auto Teufelswald;425§auto Gangrebois;425 | x=7007.39990234375 y=-2154.900146484375 | size=1 | links=#11516(auto Felwood;268):8 #23947(auto Felwood;582):8
+#17742 | auto Felwood;426§auto Teufelswald;426§auto Gangrebois;426 | x=6222.89990234375 y=-789.7000122070312 | size=1 | links=#12874(auto Felwood;297):19 #18695(auto Felwood;457):51
+#17803 | auto Felwood;427§auto Teufelswald;427§auto Gangrebois;427 | x=4633.39990234375 y=-765.5 | size=1 | links=#7435(auto Felwood;185):19 #24466(auto Felwood;596):37
+#17837 | auto Felwood;428§auto Teufelswald;428§auto Gangrebois;428 | x=6599.7001953125 y=-890.5 | size=1 | links=#2203(auto Felwood;50):52 #4719(auto Felwood;114):37 c7107.9:5
+#17911 | auto Felwood;429§auto Teufelswald;429§auto Gangrebois;429 | x=5645.39990234375 y=-674.2999877929688 | size=1 | links=#24170(auto Felwood;588):43 c9878.6:6
+#17944 | auto Felwood;430§auto Teufelswald;430§auto Gangrebois;430 | x=4273.5 y=-857.2999877929688 | size=1 | links=#5669(auto Felwood;144):15 #18542(auto Felwood;450):20
+#17969 | auto Felwood;431§auto Teufelswald;431§auto Gangrebois;431 | x=5036.10009765625 y=-560.7000122070312 | size=1 | links=#1199(auto Felwood;26):7 #12498(auto Felwood;288):9
+#17982 | auto Felwood;432§auto Teufelswald;432§auto Gangrebois;432 | x=6379.2001953125 y=-1655.599975585938 | size=1 | links=#5527(auto Felwood;139):24 #16946(auto Felwood;401):12 #23165(auto Felwood;565):17 c7100.13:3
+#17996 | auto Felwood;433§auto Teufelswald;433§auto Gangrebois;433 | x=3762.60009765625 y=-1088.599975585938 | size=1 | links=#9393(auto Felwood;226):18 #16878(auto Felwood;398):47
+#18015 | auto Felwood;434§auto Teufelswald;434§auto Gangrebois;434 | x=4640.89990234375 y=-636.6000366210938 | size=1 | links=#12653(auto Felwood;291):7 #16694(auto Felwood;391):5
+#18085 | auto Felwood;435§auto Teufelswald;435§auto Gangrebois;435 | x=5225.30029296875 y=-515.1000366210938 | size=1 | links=#18835(auto Felwood;459):43 #19739(auto Felwood;483):45
+#18096 | auto Felwood;436§auto Teufelswald;436§auto Gangrebois;436 | x=4769.2001953125 y=-571.9000244140625 | size=1 | links=#9523(auto Felwood;231):13 #21347(auto Felwood;520):12 c7112.4:2
+#18121 | auto Felwood;437§auto Teufelswald;437§auto Gangrebois;437 | x=4626.30029296875 y=-700 | size=1 | links=#8463(auto Felwood;208):43 #10848(auto Felwood;252):22 c7086.13:30
+#18138 | auto Felwood;438§auto Teufelswald;438§auto Gangrebois;438 | x=4968.30029296875 y=-452.8000183105469 | size=1 | links=#15718(auto Felwood;365):11 #16866(auto Felwood;397):18 #24324(auto Felwood;591):36 c7126.1:6 c7126.2:4
+#18161 | auto Felwood;439§auto Teufelswald;439§auto Gangrebois;439 | x=5219.2001953125 y=-717.4000244140625 | size=1 | links=#18188(auto Felwood;441):25 #24767(auto Felwood;601):32
+#18186 | auto Felwood;440§auto Teufelswald;440§auto Gangrebois;440 | x=6865.2001953125 y=-1953.099975585938 | size=1 | links=#766(auto Felwood;16):13 #23623(auto Felwood;575):36
+#18188 | auto Felwood;441§auto Teufelswald;441§auto Gangrebois;441 | x=5194.10009765625 y=-720.5 | size=1 | links=#2618(auto Felwood;62):35 #5099(auto Felwood;125):20 #18161(auto Felwood;439):25 c7092.32:22
+#18206 | auto Felwood;442§auto Teufelswald;442§auto Gangrebois;442 | x=5116.39990234375 y=-520.1000366210938 | size=1 | links=#9416(auto Felwood;228):18 #17280(auto Felwood;415):12
+#18307 | auto Felwood;443§auto Teufelswald;443§auto Gangrebois;443 | x=6473.5 y=-1685.200073242188 | size=1 | links=#7007(auto Felwood;173):19 c7101.8:26
+#18319 | auto Felwood;444§auto Teufelswald;444§auto Gangrebois;444 | x=6948.30029296875 y=-2262.300048828125 | size=1 | links=#7035(auto Felwood;174):9 #9187(auto Felwood;220):9
+#18412 | auto Felwood;445§auto Teufelswald;445§auto Gangrebois;445 | x=6589.60009765625 y=-970.1000366210938 | size=1 | links=#2203(auto Felwood;50):29 #10539(auto Felwood;247):47 c7108.2:18
+#18434 | auto Felwood;446§auto Teufelswald;446§auto Gangrebois;446 | x=5062.5 y=-547.9000244140625 | size=1 | links=#22956(auto Felwood;561):6 o176188.2:4 c7120.6:5
+#18461 | auto Felwood;447§auto Teufelswald;447§auto Gangrebois;447 | x=6767.60009765625 y=-1926.700073242188 | size=1 | links=#10554(auto Felwood;250):9 #19479(auto Felwood;476):19
+#18503 | auto Felwood;448§auto Teufelswald;448§auto Gangrebois;448 | x=4903.5 y=-591.2999877929688 | size=1 | links=#13244(auto Felwood;311):16 c7115.6:22
+#18512 | auto Felwood;449§auto Teufelswald;449§auto Gangrebois;449 | x=6876.60009765625 y=-1805 | size=1 | links=#21012(auto Felwood;512):21 c7157.13:13 c7157.14:20
+#18542 | auto Felwood;450§auto Teufelswald;450§auto Gangrebois;450 | x=4256.2001953125 y=-867.9000244140625 | size=1 | links=#2320(auto Felwood;51):22 #17944(auto Felwood;430):20
+#18561 | auto Felwood;451§auto Teufelswald;451§auto Gangrebois;451 | x=7017.80029296875 y=-2092.5 | size=1 | links=#5520(auto Felwood;138):15 #27046(auto Felwood;635):9
+#18580 | auto Felwood;452§auto Teufelswald;452§auto Gangrebois;452 | x=4826.80029296875 y=-394.7000122070313 | size=1 | links=#16775(auto Felwood;394):34 #20493(auto Felwood;502):8 c7112.11:4 c7112.12:30
+#18585 | centralpoint;Jadefire Glen;Felwood§zentralerpunkt;Jadefeuertal;Teufelswald§point central;Vallon des Jadefeu;Gangrebois | x=3836.400146484375 y=-769.2000122070312 | size=1 | links=#3059(auto Felwood;74):30 c7105.14:44 c7105.30:28 c7105.31:22
+#18590 | auto Felwood;453§auto Teufelswald;453§auto Gangrebois;453 | x=4905 y=-396.8000183105469 | size=1 | links=#17125(auto Felwood;410):8 #20994(auto Felwood;511):6
+#18611 | auto Felwood;454§auto Teufelswald;454§auto Gangrebois;454 | x=5724.60009765625 y=-971.5 | size=1 | links=#24270(auto Felwood;589):34
+#18690 | auto Felwood;455§auto Teufelswald;455§auto Gangrebois;455 | x=5324.10009765625 y=-643.5 | size=1 | links=#6690(auto Felwood;163):21 #24760(auto Felwood;600):20 c7120.8:2
+#18691 | auto Felwood;456§auto Teufelswald;456§auto Gangrebois;456 | x=6615.2001953125 y=-1317.300048828125 | size=1 | links=#16280(auto Felwood;377):55 #17399(auto Felwood;419):59 c8957.26:44 c8957.27:57 c8957.28:57
+#18695 | auto Felwood;457§auto Teufelswald;457§auto Gangrebois;457 | x=6215.7001953125 y=-739 | size=1 | links=#17742(auto Felwood;426):51 #21281(auto Felwood;517):20 c8958.21:26
+#18791 | auto Felwood;458§auto Teufelswald;458§auto Gangrebois;458 | x=4003.800048828125 y=-1307.300048828125 | size=1 | links=#800(auto Felwood;19):9 c9116.1:6
+#18835 | auto Felwood;459§auto Teufelswald;459§auto Gangrebois;459 | x=5232 y=-472.3000183105469 | size=1 | links=#4996(auto Felwood;121):28 #18085(auto Felwood;435):43
+#18870 | auto Felwood;460§auto Teufelswald;460§auto Gangrebois;460 | x=6460.10009765625 y=-1608 | size=1 | links=#19347(auto Felwood;471):12 c7100.14:13 c7100.17:34
+#18894 | auto Felwood;461§auto Teufelswald;461§auto Gangrebois;461 | x=3760.400146484375 y=-997.2000122070312 | size=1 | links=#12930(auto Felwood;302):36 c8956.3:25
+#18919 | auto Felwood;462§auto Teufelswald;462§auto Gangrebois;462 | x=4836.30029296875 y=-567.5 | size=1 | links=#8886(auto Felwood;217):19 #14711(auto Felwood;343):55
+#18956 | auto Felwood;463§auto Teufelswald;463§auto Gangrebois;463 | x=6462.39990234375 y=-1217.099975585938 | size=1 | links=c10016.3:17 c7139.8:23
+#19020 | auto Felwood;464§auto Teufelswald;464§auto Gangrebois;464 | x=5687.60009765625 y=-853 | size=1 | links=#16891(auto Felwood;399):43 #25472(auto Felwood;613):53
+#19077 | auto Felwood;465§auto Teufelswald;465§auto Gangrebois;465 | x=6996.30029296875 y=-2068.699951171875 | size=1 | links=#1431(auto Felwood;31):6 #28436(auto Felwood;662):23
+#19079 | auto Felwood;466§auto Teufelswald;466§auto Gangrebois;466 | x=5030.39990234375 y=-466.8000183105469 | size=1 | links=#1944(auto Felwood;43):21 c7120.5:8
+#19126 | entry and exit;Jadefire Glen;Felwood§ein- und ausgang;Jadefeuertal;Teufelswald§entrée et sortie;Vallon des Jadefeu;Gangrebois | x=3865.900146484375 y=-842.9000244140625 | size=1 | links=#5731(auto Felwood;145):44 #5993(auto Felwood;149):42
+#19172 | auto Felwood;467§auto Teufelswald;467§auto Gangrebois;467 | x=6624.39990234375 y=-2078.900146484375 | size=1 | links=#10890(auto Felwood;254):22 #12460(auto Felwood;286):49
+#19205 | auto Felwood;468§auto Teufelswald;468§auto Gangrebois;468 | x=5257.7001953125 y=-663 | size=1 | links=#14062(centralpoint;cave;Shadow Hold;Felwood):7 #27762(auto Felwood;652):6
+#19219 | auto Felwood;469§auto Teufelswald;469§auto Gangrebois;469 | x=4789 y=-545.4000244140625 | size=1 | links=#7968(auto Felwood;195):7 #21875(auto Felwood;535):9
+#19286 | auto Felwood;470§auto Teufelswald;470§auto Gangrebois;470 | x=5189.60009765625 y=-667.2000122070312 | size=1 | links=#1169(auto Felwood;24):38 #5099(auto Felwood;125):32
+#19347 | auto Felwood;471§auto Teufelswald;471§auto Gangrebois;471 | x=6461.60009765625 y=-1620.400024414063 | size=1 | links=#18870(auto Felwood;460):12 #21787(auto Felwood;529):10
+#19352 | auto Felwood;472§auto Teufelswald;472§auto Gangrebois;472 | x=5140.60009765625 y=-444.5 | size=1 | links=#27174(auto Felwood;640):13 c7114.3:13 c7118.11:18
+#19389 | auto Felwood;473§auto Teufelswald;473§auto Gangrebois;473 | x=5286.2001953125 y=-654.2999877929688 | size=1 | links=#4159(auto Felwood;98):10 #21554(auto Felwood;526):15
+#19393 | auto Felwood;474§auto Teufelswald;474§auto Gangrebois;474 | x=6381.89990234375 y=-723.1000366210938 | size=1 | links=c7108.9:41 c7107.14:24 c7107.16:32
+#19438 | auto Felwood;475§auto Teufelswald;475§auto Gangrebois;475 | x=6982.5 y=-2226.400146484375 | size=1 | links=#20548(auto Felwood;504):23 #27074(auto Felwood;637):16
+#19479 | auto Felwood;476§auto Teufelswald;476§auto Gangrebois;476 | x=6785.2001953125 y=-1935.700073242188 | size=1 | links=#15812(auto Felwood;367):29 #18461(auto Felwood;447):19 #23656(auto Felwood;576):19 c7158.10:9
+#19500 | auto Felwood;477§auto Teufelswald;477§auto Gangrebois;477 | x=7118.89990234375 y=-2156.5 | size=1 | links=#15141(auto Felwood;352):12 #24642(focus point;here;Timbermaw Hold ;Felwood;to;moonglade):13
+#19552 | auto Felwood;478§auto Teufelswald;478§auto Gangrebois;478 | x=5215.89990234375 y=-609 | size=1 | links=#1169(auto Felwood;24):30 #19739(auto Felwood;483):48
+#19594 | auto Felwood;479§auto Teufelswald;479§auto Gangrebois;479 | x=4789.7001953125 y=-556.2000122070312 | size=1 | links=#7756(auto Felwood;191):12 #9523(auto Felwood;231):12 c7112.6:4
+#19647 | auto Felwood;480§auto Teufelswald;480§auto Gangrebois;480 | x=6229.60009765625 y=-1955.5 | size=1 | links=#6293(central location;Talonbranch Glade;Felwood):19 #22242(auto Felwood;545):34
+#19681 | auto Felwood;481§auto Teufelswald;481§auto Gangrebois;481 | x=7050.30029296875 y=-2115.199951171875 | size=1 | links=#6809(auto Felwood;167):15 #10026(auto Felwood;241):12
+#19717 | auto Felwood;482§auto Teufelswald;482§auto Gangrebois;482 | x=4793.80029296875 y=-570 | size=1 | links=#9961(auto Felwood;237):4 #13472(auto Felwood;318):5 #13760(auto Felwood;326):10 #25643(auto Felwood;618):10 c7125.1:5
+#19739 | auto Felwood;483§auto Teufelswald;483§auto Gangrebois;483 | x=5222.10009765625 y=-560.6000366210938 | size=1 | links=#18085(auto Felwood;435):45 #19552(auto Felwood;478):48
+#19742 | auto Felwood;484§auto Teufelswald;484§auto Gangrebois;484 | x=6936.60009765625 y=-1967 | size=1 | links=#23351(auto Felwood;569):16
+#19745 | auto Felwood;485§auto Teufelswald;485§auto Gangrebois;485 | x=5904.80029296875 y=-1171.900024414063 | size=1 | links=#14600(auto Felwood;339):12 #23980(auto Felwood;584):44
+#19748 | auto Felwood;486§auto Teufelswald;486§auto Gangrebois;486 | x=4545.7001953125 y=-583.9000244140625 | size=1 | links=#2436(auto Felwood;56):42 #2597(auto Felwood;61):41 #10990(auto Felwood;259):41
+#19821 | auto Felwood;487§auto Teufelswald;487§auto Gangrebois;487 | x=6391.2001953125 y=-1690.400024414063 | size=1 | links=#28175(auto Felwood;658):15 c7101.9:24 c7101.10:12
+#19823 | well;Ruins of Constellas;Felwood§brunnen;Ruinen von Constellas;Teufelswald§well;Ruines de Constellas;Gangrebois | x=4578.2001953125 y=-218.1999969482422 | size=1 | links=#26522(auto Felwood;627):7
+#19855 | auto Felwood;488§auto Teufelswald;488§auto Gangrebois;488 | x=5318.39990234375 y=-539 | size=1 | links=#12816(auto Felwood;296):24 #15051(auto Felwood;350):4 c7120.12:9
+#19873 | auto Felwood;489§auto Teufelswald;489§auto Gangrebois;489 | x=3876.300048828125 y=-1340.200073242188 | size=1 | links=#3513(auto Felwood;83):31 #13723(auto Felwood;323):40 c8959.43:32
+#19899 | auto Felwood;490§auto Teufelswald;490§auto Gangrebois;490 | x=6821.89990234375 y=-2100.60009765625 | size=1 | links=#25229(auto Felwood;609):9 #27573(auto Felwood;647):4
+#19960 | auto Felwood;491§auto Teufelswald;491§auto Gangrebois;491 | x=6553.5 y=-809.2000122070312 | size=1 | links=#2997(auto Felwood;73):35 #3142(auto Felwood;75):18 c7111.3:14
+#20004 | auto Felwood;492§auto Teufelswald;492§auto Gangrebois;492 | x=5215 y=-613.1000366210938 | size=1 | links=#2198(auto Felwood;48):5 #6696(auto Felwood;164):6
+#20009 | auto Felwood;493§auto Teufelswald;493§auto Gangrebois;493 | x=4791.30029296875 y=-444.8999938964844 | size=1 | links=#786(auto Felwood;17):44 #16775(auto Felwood;394):28
+#20036 | auto Felwood;494§auto Teufelswald;494§auto Gangrebois;494 | x=3907.5 y=-639.5 | size=1 | links=#11404(auto Felwood;265):34 c7109.10:35 c7105.33:19
+#20066 | auto Felwood;495§auto Teufelswald;495§auto Gangrebois;495 | x=3842.900146484375 y=-674.6000366210938 | size=1 | links=#23543(auto Felwood;573):10 o164883.1:2 c7105.16:10
+#20077 | auto Felwood;496§auto Teufelswald;496§auto Gangrebois;496 | x=5063.10009765625 y=-503.1000061035156 | size=1 | links=#7559(auto Felwood;189):10 #21444(auto Felwood;524):17
+#20088 | auto Felwood;497§auto Teufelswald;497§auto Gangrebois;497 | x=4895 y=-384.5 | size=1 | links=#2772(auto Felwood;65):6 #21645(auto Felwood;527):6
+#20146 | auto Felwood;498§auto Teufelswald;498§auto Gangrebois;498 | x=6748.5 y=-1932.800048828125 | size=1 | links=#6289(auto Felwood;153):16 #10554(auto Felwood;250):10
+#20232 | auto Felwood;499§auto Teufelswald;499§auto Gangrebois;499 | x=4493.30029296875 y=-855.2000122070312 | size=1 | links=#13052(auto Felwood;307):71 #21422(auto Felwood;523):69
+#20266 | auto Felwood;500§auto Teufelswald;500§auto Gangrebois;500 | x=5381.60009765625 y=-510.1000061035156 | size=1 | links=c7126.6:13 c7120.10:11
+#20408 | auto Felwood;501§auto Teufelswald;501§auto Gangrebois;501 | x=6427.10009765625 y=-1699.599975585938 | size=1 | links=#6775(auto Felwood;166):20 #9444(auto Felwood;229):15
+#20493 | auto Felwood;502§auto Teufelswald;502§auto Gangrebois;502 | x=4834.5 y=-398.1000061035156 | size=1 | links=#15187(auto Felwood;354):11 #18580(auto Felwood;452):8
+#20502 | auto Felwood;503§auto Teufelswald;503§auto Gangrebois;503 | x=5365.89990234375 y=-691.7999877929688 | size=1 | links=#25555(auto Felwood;616):35 #27150(auto Felwood;639):41 c7092.34:26
+#20548 | auto Felwood;504§auto Teufelswald;504§auto Gangrebois;504 | x=6993 y=-2204.900146484375 | size=1 | links=#16287(auto Felwood;378):13 #19438(auto Felwood;475):23
+#20723 | auto Felwood;505§auto Teufelswald;505§auto Gangrebois;505 | x=3856.300048828125 y=-1281.599975585938 | size=1 | links=#17335(auto Felwood;418):35 c11554.1:19
+#20805 | auto Felwood;506§auto Teufelswald;506§auto Gangrebois;506 | x=5915.89990234375 y=-1272.099975585938 | size=1 | links=#2027(auto Felwood;44):15 #14644(auto Felwood;340):29
+#20807 | auto Felwood;507§auto Teufelswald;507§auto Gangrebois;507 | x=5228.89990234375 y=-596.7999877929688 | size=1 | links=#16421(auto Felwood;381):11 #24656(auto Felwood;599):20
+#20813 | auto Felwood;508§auto Teufelswald;508§auto Gangrebois;508 | x=6904.39990234375 y=-1915.5 | size=1 | links=#6890(auto Felwood;170):14 #13510(auto Felwood;319):18 c7156.11:15
+#20880 | auto Felwood;509§auto Teufelswald;509§auto Gangrebois;509 | x=4091.10009765625 y=-1020 | size=1 | links=#15985(auto Felwood;372):32 #16262(auto Felwood;375):41
+#20962 | auto Felwood;510§auto Teufelswald;510§auto Gangrebois;510 | x=3918.10009765625 y=-1183.599975585938 | size=1 | links=#5636(auto Felwood;142):55 #17260(auto Felwood;412):37 c8959.35:26
+#20994 | auto Felwood;511§auto Teufelswald;511§auto Gangrebois;511 | x=4898.89990234375 y=-395.5 | size=1 | links=#18590(auto Felwood;453):6 #21645(auto Felwood;527):5
+#21012 | auto Felwood;512§auto Teufelswald;512§auto Gangrebois;512 | x=6867.80029296875 y=-1824.700073242188 | size=1 | links=#18512(auto Felwood;449):21 #21217(auto Felwood;514):33 c7158.12:19
+#21066 | auto Felwood;513§auto Teufelswald;513§auto Gangrebois;513 | x=6310 y=-1645.400024414063 | size=1 | links=#10518(auto Felwood;246):19 c7101.7:16
+#21217 | auto Felwood;514§auto Teufelswald;514§auto Gangrebois;514 | x=6837.5 y=-1839.800048828125 | size=5 | links=#21012(auto Felwood;512):33 #24353(auto Felwood;592):25 c7156.2:32 c10017.66:29
+#21223 | auto Felwood;515§auto Teufelswald;515§auto Gangrebois;515 | x=5024.89990234375 y=-542.6000366210938 | size=1 | links=#4983(auto Felwood;119):7 #8779(auto Felwood;214):8 o176188.13:4
+#21245 | auto Felwood;516§auto Teufelswald;516§auto Gangrebois;516 | x=4021.900146484375 y=-789.5 | size=1 | links=#9970(auto Felwood;238):66 #14839(auto Felwood;345):39 c7097.4:12 c8959.19:34 c8959.29:23
+#21281 | auto Felwood;517§auto Teufelswald;517§auto Gangrebois;517 | x=6208.10009765625 y=-719.5 | size=1 | links=#12572(auto Felwood;289):49 #18695(auto Felwood;457):20 c8958.22:23
+#21294 | auto Felwood;518§auto Teufelswald;518§auto Gangrebois;518 | x=6767.80029296875 y=-2084.300048828125 | size=1 | links=#4624(auto Felwood;112):32 #17608(auto Felwood;422):30
+#21329 | auto Felwood;519§auto Teufelswald;519§auto Gangrebois;519 | x=6330.30029296875 y=-1009.600036621094 | size=1 | links=#23254(auto Felwood;567):35 #25431(auto Felwood;612):58
+#21347 | auto Felwood;520§auto Teufelswald;520§auto Gangrebois;520 | x=4765.5 y=-583.5 | size=1 | links=#1469(auto Felwood;33):11 #18096(auto Felwood;436):12 c7125.2:3 c7115.4:17
+#21366 | auto Felwood;521§auto Teufelswald;521§auto Gangrebois;521 | x=5209.60009765625 y=-553.2000122070312 | size=1 | links=#2550(auto Felwood;59):17 #26271(auto Felwood;625):18
+#21380 | auto Felwood;522§auto Teufelswald;522§auto Gangrebois;522 | x=4211.39990234375 y=-906.6000366210938 | size=1 | links=#1448(auto Felwood;32):40 #2320(auto Felwood;51):36 #12590(auto Felwood;290):30
+#21422 | auto Felwood;523§auto Teufelswald;523§auto Gangrebois;523 | x=4423.80029296875 y=-855.6000366210938 | size=1 | links=#9547(auto Felwood;232):76 #20232(auto Felwood;499):69 c8960.43:58
+#21444 | auto Felwood;524§auto Teufelswald;524§auto Gangrebois;524 | x=5068.7001953125 y=-519.7999877929688 | size=1 | links=#11671(auto Felwood;274):10 #20077(auto Felwood;496):17
+#21447 | auto Felwood;525§auto Teufelswald;525§auto Gangrebois;525 | x=4912.80029296875 y=-387.8000183105469 | size=1 | links=#9455(auto Felwood;230):6 #27282(auto Felwood;643):6
+#21554 | auto Felwood;526§auto Teufelswald;526§auto Gangrebois;526 | x=5270.80029296875 y=-654.6000366210938 | size=1 | links=#14062(centralpoint;cave;Shadow Hold;Felwood):17 #19389(auto Felwood;473):15 c7118.17:2
+#21645 | auto Felwood;527§auto Teufelswald;527§auto Gangrebois;527 | x=4895.39990234375 y=-390.8999938964844 | size=1 | links=#20088(auto Felwood;497):6 #20994(auto Felwood;511):5
+#21755 | auto Felwood;528§auto Teufelswald;528§auto Gangrebois;528 | x=6255.30029296875 y=-934.4000244140625 | size=1 | links=#12743(auto Felwood;294):48 #14308(auto Felwood;332):17 #25431(auto Felwood;612):49 c8960.33:32 c10017.53:35
+#21787 | auto Felwood;529§auto Teufelswald;529§auto Gangrebois;529 | x=6465.39990234375 y=-1630.200073242188 | size=1 | links=#521(auto Felwood;11):16 #19347(auto Felwood;471):10
+#21788 | auto Felwood;530§auto Teufelswald;530§auto Gangrebois;530 | x=7317.60009765625 y=-2174.699951171875 | size=1 | links=#7045(auto Felwood;175):14 #11436(auto Felwood;266):16
+#21789 | auto Felwood;531§auto Teufelswald;531§auto Gangrebois;531 | x=5180.7001953125 y=-345.2000122070313 | size=1 | links=#4504(auto Felwood;105):21 #5283(auto Felwood;132):42 c11180.3:7 c11180.5:10
+#21794 | auto Felwood;532§auto Teufelswald;532§auto Gangrebois;532 | x=5462.2001953125 y=-613.4000244140625 | size=1 | links=#10887(auto Felwood;253):30 #13616(auto Felwood;320):31 c9878.15:53
+#21804 | auto Felwood;533§auto Teufelswald;533§auto Gangrebois;533 | x=4147.80029296875 y=-966.7000122070312 | size=1 | links=#1448(auto Felwood;32):46 #16262(auto Felwood;375):36
+#21866 | auto Felwood;534§auto Teufelswald;534§auto Gangrebois;534 | x=7026 y=-2128.300048828125 | size=1 | links=#9982(auto Felwood;239):17 #10326(auto Felwood;244):11
+#21875 | auto Felwood;535§auto Teufelswald;535§auto Gangrebois;535 | x=4791.80029296875 y=-554.4000244140625 | size=1 | links=#13472(auto Felwood;318):10 #19219(auto Felwood;469):9
+#21908 | auto Felwood;536§auto Teufelswald;536§auto Gangrebois;536 | x=6708.89990234375 y=-1912.900024414063 | size=1 | links=#7776(auto Felwood;193):6 #17084(auto Felwood;406):8 c7158.3:20
+#21937 | auto Felwood;537§auto Teufelswald;537§auto Gangrebois;537 | x=6696.89990234375 y=-1925.400024414063 | size=1 | links=#7776(auto Felwood;193):11 #8642(resting location;Felpaw Village;Felwood):10 #15467(auto Felwood;362):10
+#21958 | auto Felwood;538§auto Teufelswald;538§auto Gangrebois;538 | x=7261.10009765625 y=-2183.199951171875 | size=1 | links=#10256(auto Felwood;243):10 #28019(auto Felwood;655):28
+#22015 | auto Felwood;539§auto Teufelswald;539§auto Gangrebois;539 | x=5037 y=-521 | size=1 | links=#12359(auto Felwood;285):8 #23963(auto Felwood;583):4 #25216(auto Felwood;608):10 o176188.6:5 o176188.7:6
+#22030 | auto Felwood;540§auto Teufelswald;540§auto Gangrebois;540 | x=6552.7001953125 y=-1956 | size=1 | links=#8885(auto Felwood;216):36 #9089(auto Felwood;219):50 #11220(auto Felwood;262):70
+#22075 | auto Felwood;541§auto Teufelswald;541§auto Gangrebois;541 | x=5183.60009765625 y=-535.1000366210938 | size=1 | links=#109(auto Felwood;3):6 #26271(auto Felwood;625):16 c7118.13:4
+#22105 | auto Felwood;542§auto Teufelswald;542§auto Gangrebois;542 | x=4843.80029296875 y=-604.6000366210938 | size=1 | links=#5432(auto Felwood;135):4 #23692(auto Felwood;577):13
+#22179 | auto Felwood;543§auto Teufelswald;543§auto Gangrebois;543 | x=4784.30029296875 y=-533 | size=1 | links=#7968(auto Felwood;195):5 c7112.2:6
+#22222 | auto Felwood;544§auto Teufelswald;544§auto Gangrebois;544 | x=4035 y=-686.6000366210938 | size=1 | links=#1939(auto Felwood;42):10 #11240(auto Felwood;264):17
+#22242 | auto Felwood;545§auto Teufelswald;545§auto Gangrebois;545 | x=6253.30029296875 y=-1980.5 | size=1 | links=#4884(auto Felwood;117):29 #19647(auto Felwood;480):34
+#22329 | auto Felwood;546§auto Teufelswald;546§auto Gangrebois;546 | x=3985.10009765625 y=-931.2000122070312 | size=1 | links=#17553(auto Felwood;421):52 #27404(auto Felwood;646):36 c8956.7:16 c8956.9:46
+#22348 | auto Felwood;547§auto Teufelswald;547§auto Gangrebois;547 | x=5716.89990234375 y=-714.4000244140625 | size=1 | links=#14176(auto Felwood;329):52 #25475(auto Felwood;614):41
+#22350 | auto Felwood;548§auto Teufelswald;548§auto Gangrebois;548 | x=3761.699951171875 y=-1602.599975585938 | size=1 | links=#3696(auto Felwood;88):32 #12904(auto Felwood;299):24
+#22356 | auto Felwood;549§auto Teufelswald;549§auto Gangrebois;549 | x=4984.2001953125 y=-745.7999877929688 | size=1 | links=#7293(auto Felwood;180):27 #25931(auto Felwood;622):38
+#22466 | auto Felwood;550§auto Teufelswald;550§auto Gangrebois;550 | x=4766.30029296875 y=-555.7999877929688 | size=1 | links=#23198(auto Felwood;566):10 c7112.1:16
+#22500 | auto Felwood;551§auto Teufelswald;551§auto Gangrebois;551 | x=5215.39990234375 y=-612.7999877929688 | size=1 | links=#5112(auto Felwood;126):6 #27824(auto Felwood;654):6
+#22502 | auto Felwood;552§auto Teufelswald;552§auto Gangrebois;552 | x=4999.60009765625 y=-437.7000122070313 | size=1 | links=#24324(auto Felwood;591):8 c11016.1:7 c9862.5:10
+#22509 | auto Felwood;553§auto Teufelswald;553§auto Gangrebois;553 | x=5106.7001953125 y=-354.1000061035156 | size=1 | links=#28624(s;u;Mailbox;Felwood):7
+#22553 | auto Felwood;554§auto Teufelswald;554§auto Gangrebois;554 | x=6912.5 y=-2025.400024414063 | size=1 | links=#22995(auto Felwood;563):27 o174595.1:14
+#22712 | auto Felwood;555§auto Teufelswald;555§auto Gangrebois;555 | x=3985.10009765625 y=-1292.599975585938 | size=1 | links=#800(auto Felwood;19):14 #8485(auto Felwood;209):14 #8966(auto Felwood;218):39 c10920.1:15 c10922.1:10 c10923.1:15 c11019.1:18 c22931.1:28 c7097.14:20
+#22739 | auto Felwood;556§auto Teufelswald;556§auto Gangrebois;556 | x=5230.2001953125 y=-629.2000122070312 | size=1 | links=#7497(auto Felwood;188):9 #17106(auto Felwood;409):10
+#22780 | auto Felwood;557§auto Teufelswald;557§auto Gangrebois;557 | x=6410.39990234375 y=-1716 | size=1 | links=#9444(auto Felwood;229):7 #23130(auto Felwood;564):5
+#22790 | auto Felwood;558§auto Teufelswald;558§auto Gangrebois;558 | x=5368.80029296875 y=-540.7000122070312 | size=1 | links=#2471(auto Felwood;58):16 #4749(auto Felwood;115):18 c7118.2:13 c9862.2:16 c7118.20:10
+#22858 | auto Felwood;559§auto Teufelswald;559§auto Gangrebois;559 | x=3769.800048828125 y=-831.5 | size=1 | links=c7109.5:10 c7109.6:17 c7109.7:15 c7105.8:28 c7105.12:14
+#22901 | auto Felwood;560§auto Teufelswald;560§auto Gangrebois;560 | x=7023.5 y=-2109.400146484375 | size=1 | links=#23546(auto Felwood;574):7 c11555.1:7
+#22956 | auto Felwood;561§auto Teufelswald;561§auto Gangrebois;561 | x=5057.10009765625 y=-551.9000244140625 | size=1 | links=#8543(auto Felwood;211):6 #18434(auto Felwood;446):6 #27755(auto Felwood;651):10 o176188.4:4
+#22981 | auto Felwood;562§auto Teufelswald;562§auto Gangrebois;562 | x=5061 y=-521.4000244140625 | size=1 | links=#249(auto Felwood;6):5 #24465(auto Felwood;595):4 o176188.1:7
+#22995 | auto Felwood;563§auto Teufelswald;563§auto Gangrebois;563 | x=6932.2001953125 y=-2006.800048828125 | size=1 | links=#22553(auto Felwood;554):27 #23351(auto Felwood;569):25
+#23130 | auto Felwood;564§auto Teufelswald;564§auto Gangrebois;564 | x=6404.80029296875 y=-1717.200073242188 | size=1 | links=#22780(auto Felwood;557):5 c7101.9:6
+#23165 | auto Felwood;565§auto Teufelswald;565§auto Gangrebois;565 | x=6393.30029296875 y=-1644.5 | size=1 | links=#9607(auto Felwood;234):25 #17982(auto Felwood;432):17
+#23198 | auto Felwood;566§auto Teufelswald;566§auto Gangrebois;566 | x=4775.7001953125 y=-560.2999877929688 | size=1 | links=#9961(auto Felwood;237):16 #22466(auto Felwood;550):10
+#23254 | auto Felwood;567§auto Teufelswald;567§auto Gangrebois;567 | x=6365.7001953125 y=-1012 | size=1 | links=#7280(auto Felwood;179):32 #21329(auto Felwood;519):35
+#23296 | auto Felwood;568§auto Teufelswald;568§auto Gangrebois;568 | x=6920.7001953125 y=-2280.400146484375 | size=1 | links=#7035(auto Felwood;174):26 #13089(auto Felwood;308):15
+#23351 | auto Felwood;569§auto Teufelswald;569§auto Gangrebois;569 | x=6939.60009765625 y=-1982.800048828125 | size=1 | links=#19742(auto Felwood;484):16 #22995(auto Felwood;563):25
+#23421 | auto Felwood;570§auto Teufelswald;570§auto Gangrebois;570 | x=4826.39990234375 y=-593.1000366210938 | size=1 | links=#1101(auto Felwood;23):10 #3590(auto Felwood;85):12 c7125.4:7 c7113.6:6
+#23428 | auto Felwood;571§auto Teufelswald;571§auto Gangrebois;571 | x=4633.30029296875 y=-616.7000122070312 | size=1 | links=#14374(auto Felwood;333):11 #16694(auto Felwood;391):15
+#23471 | entry and exit;cave;Timbermaw Hold ;Felwood§ein- und ausgang;höhle;Holzschlundfeste;Teufelswald§entrée et sortie;cave;Repaire des Grumegueules;Gangrebois | x=6812.2001953125 y=-2095.300048828125 | size=1 | links=#8530(auto Felwood;210):6 #27573(auto Felwood;647):6
+#23509 | auto Felwood;572§auto Teufelswald;572§auto Gangrebois;572 | x=6298.5 y=-1705 | size=1 | links=#6160(auto Felwood;152):11 #16668(auto Felwood;389):26
+#23543 | auto Felwood;573§auto Teufelswald;573§auto Gangrebois;573 | x=3839.60009765625 y=-684.6000366210938 | size=1 | links=#15333(auto Felwood;359):24 #20066(auto Felwood;495):10 c7109.9:18
+#23546 | auto Felwood;574§auto Teufelswald;574§auto Gangrebois;574 | x=7016.89990234375 y=-2112.60009765625 | size=1 | links=#8995(central location;Timbermaw Hold ;Felwood):8 #22901(auto Felwood;560):7
+#23623 | auto Felwood;575§auto Teufelswald;575§auto Gangrebois;575 | x=6829.10009765625 y=-1946 | size=1 | links=#2454(auto Felwood;57):32 #18186(auto Felwood;440):36 #23656(auto Felwood;576):27 c9462.1:21 c7156.7:21 c7157.9:14 c7158.11:35
+#23656 | auto Felwood;576§auto Teufelswald;576§auto Gangrebois;576 | x=6801.39990234375 y=-1945.900024414063 | size=1 | links=#19479(auto Felwood;476):19 #23623(auto Felwood;575):27 c7157.10:17
+#23692 | auto Felwood;577§auto Teufelswald;577§auto Gangrebois;577 | x=4856.80029296875 y=-608.5 | size=1 | links=#15244(auto Felwood;355):11 #22105(auto Felwood;542):13
+#23725 | auto Felwood;578§auto Teufelswald;578§auto Gangrebois;578 | x=5124.89990234375 y=-347.3999938964844 | size=1 | links=#4504(auto Felwood;105):34 #10894(auto Felwood;256):22 #15618(central location;Bloodvenom Post;Felwood):19 c9996.1:22 o174598.1:16 c11180.2:3
+#23775 | auto Felwood;579§auto Teufelswald;579§auto Gangrebois;579 | x=3624.5 y=-1189 | size=1 | links=c7155.3:5 c7153.4:25 c7154.5:3
+#23831 | auto Felwood;580§auto Teufelswald;580§auto Gangrebois;580 | x=6514.2001953125 y=-1771.5 | size=1 | links=#5239(auto Felwood;130):42 #12911(auto Felwood;301):47
+#23872 | passage;from;Felwood;to;Ashenvale§passage;von;Teufelswald;nach;Eschental§passage;de;Gangrebois;vers;Orneval | x=3567.699951171875 y=-1515.700073242188 | size=1 | links=#10213(passage;from;Nightsong Woods;Ashenvale;to;Felwood):4 #14252(auto Felwood;331):56
+#23890 | auto Felwood;581§auto Teufelswald;581§auto Gangrebois;581 | x=3692.900146484375 y=-1485.700073242188 | size=1 | links=#3581(auto Felwood;84):22 #25684(auto Felwood;619):22
+#23947 | auto Felwood;582§auto Teufelswald;582§auto Gangrebois;582 | x=7016.30029296875 y=-2155.60009765625 | size=1 | links=#4533(auto Felwood;107):5 #17674(auto Felwood;425):8
+#23963 | auto Felwood;583§auto Teufelswald;583§auto Gangrebois;583 | x=5041.5 y=-520 | size=1 | links=#22015(auto Felwood;539):4 c7118.7:5 o176188.9:6
+#23980 | auto Felwood;584§auto Teufelswald;584§auto Gangrebois;584 | x=5900.5 y=-1216.400024414063 | size=1 | links=#14644(auto Felwood;340):29 #19745(auto Felwood;485):44
+#24037 | auto Felwood;585§auto Teufelswald;585§auto Gangrebois;585 | x=6535.2001953125 y=-1902 | size=1 | links=#8885(auto Felwood;216):22 #16699(auto Felwood;392):57 c8957.23:57
+#24048 | auto Felwood;586§auto Teufelswald;586§auto Gangrebois;586 | x=4280.2001953125 y=-795.2000122070312 | size=1 | links=#11474(auto Felwood;267):45 #28084(auto Felwood;657):35
+#24141 | auto Felwood;587§auto Teufelswald;587§auto Gangrebois;587 | x=4594.7001953125 y=-224.4000091552734 | size=1 | links=c7110.6:17 c7110.7:12
+#24170 | auto Felwood;588§auto Teufelswald;588§auto Gangrebois;588 | x=5665.80029296875 y=-635.7000122070312 | size=1 | links=#11639(auto Felwood;272):39 #17911(auto Felwood;429):43
+#24270 | auto Felwood;589§auto Teufelswald;589§auto Gangrebois;589 | x=5690 y=-973.6000366210938 | size=1 | links=#6613(auto Felwood;161):44 #18611(auto Felwood;454):34 c9879.1:38
+#24276 | auto Felwood;590§auto Teufelswald;590§auto Gangrebois;590 | x=6886.39990234375 y=-1963.599975585938 | size=1 | links=#26622(auto Felwood;629):0
+#24324 | auto Felwood;591§auto Teufelswald;591§auto Gangrebois;591 | x=4996.80029296875 y=-429.8999938964844 | size=1 | links=#3834(auto Felwood;89):15 #16866(auto Felwood;397):30 #18138(auto Felwood;438):36 #22502(auto Felwood;552):8 o176158.1:25
+#24353 | auto Felwood;592§auto Teufelswald;592§auto Gangrebois;592 | x=6822.2001953125 y=-1860 | size=1 | links=#15043(auto Felwood;349):18 #21217(auto Felwood;514):25 c7157.1:11
+#24363 | auto Felwood;593§auto Teufelswald;593§auto Gangrebois;593 | x=4004.699951171875 y=-1072 | size=1 | links=#6561(auto Felwood;159):61 #12958(auto Felwood;303):59
+#24435 | auto Felwood;594§auto Teufelswald;594§auto Gangrebois;594 | x=4722 y=-778 | size=1 | links=#17047(auto Felwood;404):64 #24466(auto Felwood;596):65 c8958.20:19 c8958.35:42 c10017.108:36
+#24465 | auto Felwood;595§auto Teufelswald;595§auto Gangrebois;595 | x=5063.60009765625 y=-525.4000244140625 | size=1 | links=#22981(auto Felwood;562):4 #25870(auto Felwood;621):9
+#24466 | auto Felwood;596§auto Teufelswald;596§auto Gangrebois;596 | x=4658.10009765625 y=-793.2000122070312 | size=1 | links=#8168(auto Felwood;199):55 #17803(auto Felwood;427):37 #24435(auto Felwood;594):65 c7099.5:16
+#24511 | auto Felwood;597§auto Teufelswald;597§auto Gangrebois;597 | x=5342.2001953125 y=-470.3000183105469 | size=1 | links=#1840(rescue;waters;Shadow Hold;Felwood):13 #9252(auto Felwood;221):37 #16494(auto Felwood;383):14
+#24545 | auto Felwood;598§auto Teufelswald;598§auto Gangrebois;598 | x=4853.10009765625 y=-396.1000061035156 | size=1 | links=#4283(auto Felwood;100):18 #6495(auto Felwood;157):16 #15187(auto Felwood;354):7
+#24642 | focus point;here;Timbermaw Hold ;Felwood;to;moonglade§bündelpunkt;hier;Holzschlundfeste;Teufelswald;zur;Moonglade§focus point;here;Repaire des Grumegueules;Gangrebois;vers;moonglade | x=7131.7001953125 y=-2158.900146484375 | size=1 | links=#5292(auto Felwood;133):11 #19500(auto Felwood;477):13
+#24656 | auto Felwood;599§auto Teufelswald;599§auto Gangrebois;599 | x=5215.30029296875 y=-582.1000366210938 | size=1 | links=#2550(auto Felwood;59):16 #20807(auto Felwood;507):20
+#24760 | auto Felwood;600§auto Teufelswald;600§auto Gangrebois;600 | x=5315.2001953125 y=-662 | size=1 | links=#79(auto Felwood;2):15 #18690(auto Felwood;455):20
+#24767 | auto Felwood;601§auto Teufelswald;601§auto Gangrebois;601 | x=5251.30029296875 y=-718.1000366210938 | size=1 | links=#12701(auto Felwood;293):14 #18161(auto Felwood;439):32
+#24778 | auto Felwood;602§auto Teufelswald;602§auto Gangrebois;602 | x=6063 y=-1100 | size=1 | links=#15567(auto Felwood;363):52 #17188(auto Felwood;411):41 c7139.17:17
+#24815 | auto Felwood;603§auto Teufelswald;603§auto Gangrebois;603 | x=5250.60009765625 y=-652.7999877929688 | size=1 | links=#10369(auto Felwood;245):12 #14062(centralpoint;cave;Shadow Hold;Felwood):5
+#24827 | auto Felwood;604§auto Teufelswald;604§auto Gangrebois;604 | x=6920.2001953125 y=-2084.60009765625 | size=1 | links=#845(auto Felwood;20):23 #4658(auto Felwood;113):24 c11516.6:7
+#24846 | auto Felwood;605§auto Teufelswald;605§auto Gangrebois;605 | x=6638.30029296875 y=-1978.900024414063 | size=1 | links=c7156.4:27 c7157.4:17
+#25003 | auto Felwood;606§auto Teufelswald;606§auto Gangrebois;606 | x=6700.39990234375 y=-1945.300048828125 | size=1 | links=#6127(auto Felwood;151):25 #15467(auto Felwood;362):17 c7158.5:11 c7158.6:14
+#25116 | auto Felwood;607§auto Teufelswald;607§auto Gangrebois;607 | x=6469 y=-2033.800048828125 | size=1 | links=#1713(auto Felwood;40):38 #14674(auto Felwood;342):39
+#25216 | auto Felwood;608§auto Teufelswald;608§auto Gangrebois;608 | x=5032.5 y=-511.2000122070313 | size=1 | links=#1944(auto Felwood;43):23 #22015(auto Felwood;539):10 c7126.4:4
+#25229 | auto Felwood;609§auto Teufelswald;609§auto Gangrebois;609 | x=6829.89990234375 y=-2105 | size=1 | links=#10674(auto Felwood;251):16 #19899(auto Felwood;490):9
+#25305 | auto Felwood;610§auto Teufelswald;610§auto Gangrebois;610 | x=3938.300048828125 y=-1021.299987792969 | size=1 | links=#16968(auto Felwood;402):35 c9529.1:26
+#25420 | auto Felwood;611§auto Teufelswald;611§auto Gangrebois;611 | x=6810.39990234375 y=-2002 | size=1 | links=#5942(auto Felwood;147):35 #15623(auto Felwood;364):37 c7157.3:19 c7157.17:7
+#25431 | auto Felwood;612§auto Teufelswald;612§auto Gangrebois;612 | x=6284.80029296875 y=-973.6000366210938 | size=1 | links=#21329(auto Felwood;519):58 #21755(auto Felwood;528):49
+#25472 | auto Felwood;613§auto Teufelswald;613§auto Gangrebois;613 | x=5702.39990234375 y=-802.1000366210938 | size=1 | links=#2863(auto Felwood;71):13 #19020(auto Felwood;464):53
+#25475 | auto Felwood;614§auto Teufelswald;614§auto Gangrebois;614 | x=5716.2001953125 y=-673.2000122070312 | size=1 | links=#12694(auto Felwood;292):31 #22348(auto Felwood;547):41
+#25505 | auto Felwood;615§auto Teufelswald;615§auto Gangrebois;615 | x=5225.60009765625 y=-627.2000122070312 | size=1 | links=#3904(auto Felwood;91):6 #12348(auto Felwood;284):6
+#25555 | auto Felwood;616§auto Teufelswald;616§auto Gangrebois;616 | x=5387.89990234375 y=-663.9000244140625 | size=1 | links=#4293(auto Felwood;102):37 #6516(auto Felwood;158):30 #20502(auto Felwood;503):35
+#25626 | auto Felwood;617§auto Teufelswald;617§auto Gangrebois;617 | x=3930.900146484375 y=-1402.099975585938 | size=1 | links=#14910(auto Felwood;347):31 c8959.10:16 c8959.26:54
+#25643 | auto Felwood;618§auto Teufelswald;618§auto Gangrebois;618 | x=4786.89990234375 y=-577.7999877929688 | size=1 | links=#19717(auto Felwood;482):10 #27045(auto Felwood;634):6
+#25684 | auto Felwood;619§auto Teufelswald;619§auto Gangrebois;619 | x=3715.199951171875 y=-1486.700073242188 | size=1 | links=#23890(auto Felwood;581):22 #27214(auto Felwood;641):22 c8959.3:39
+#25697 | auto Felwood;620§auto Teufelswald;620§auto Gangrebois;620 | x=6534.39990234375 y=-1219.700073242188 | size=1 | links=#2103(auto Felwood;47):47 c8958.1:25 c7099.7:25
+#25751 | passage;from;Timbermaw Hold ;Felwood;to;Winterspring§passage;von;Holzschlundfeste;Teufelswald;nach;Winterspring§passage;de;Repaire des Grumegueules;Gangrebois;vers;Berceau-de-l'Hiver | x=6905.10009765625 y=-2295.800048828125 | size=1 | links=#13089(auto Felwood;308):6 #7962(passage;from;Winterspring;to;Felwood):3
+#25870 | auto Felwood;621§auto Teufelswald;621§auto Gangrebois;621 | x=5064.80029296875 y=-534.6000366210938 | size=1 | links=#24465(auto Felwood;595):9 c7120.6:7 o176188.12:3 o176188.14:4
+#25931 | auto Felwood;622§auto Teufelswald;622§auto Gangrebois;622 | x=5022.30029296875 y=-752.7999877929688 | size=1 | links=#4050(auto Felwood;97):49 #22356(auto Felwood;549):38
+#26263 | auto Felwood;623§auto Teufelswald;623§auto Gangrebois;623 | x=5227.39990234375 y=-611.7000122070312 | size=1 | links=#5112(auto Felwood;126):6 #27632(auto Felwood;649):5
+#26266 | auto Felwood;624§auto Teufelswald;624§auto Gangrebois;624 | x=5179.7001953125 y=-477.2000122070313 | size=1 | links=#728(auto Felwood;15):32 #2677(auto Felwood;63):20 c7118.12:13
+#26271 | auto Felwood;625§auto Teufelswald;625§auto Gangrebois;625 | x=5191.80029296875 y=-548.9000244140625 | size=1 | links=#8180(auto Felwood;200):14 #21366(auto Felwood;521):18 #22075(auto Felwood;541):16 c9518.1:12
+#26358 | auto Felwood;626§auto Teufelswald;626§auto Gangrebois;626 | x=5269.39990234375 y=-679 | size=1 | links=#17270(auto Felwood;413):6 c7114.1:9
+#26522 | auto Felwood;627§auto Teufelswald;627§auto Gangrebois;627 | x=4572.2001953125 y=-222.9000091552734 | size=1 | links=#2741(auto Felwood;64):15 #19823(well;Ruins of Constellas;Felwood):7 c9454.1:16 c7109.16:18
+#26588 | auto Felwood;628§auto Teufelswald;628§auto Gangrebois;628 | x=6320.10009765625 y=-2024 | size=1 | links=#4884(auto Felwood;117):52 #17545(auto Felwood;420):38
+#26622 | auto Felwood;629§auto Teufelswald;629§auto Gangrebois;629 | x=6886.39990234375 y=-1963.599975585938 | size=1 | links=#766(auto Felwood;16):10 #14549(auto Felwood;338):10 #24276(auto Felwood;590):0
+#26638 | auto Felwood;630§auto Teufelswald;630§auto Gangrebois;630 | x=5306 y=-714.7000122070312 | size=1 | links=#7422(auto Felwood;183):5 #27150(auto Felwood;639):24
+#26877 | auto Felwood;631§auto Teufelswald;631§auto Gangrebois;631 | x=6585.10009765625 y=-813.2000122070312 | size=1 | links=#3142(auto Felwood;75):13 #8042(auto Felwood;197):17 o174608.1:20
+#26973 | auto Felwood;632§auto Teufelswald;632§auto Gangrebois;632 | x=4351.89990234375 y=-814.2999877929688 | size=1 | links=#16443(auto Felwood;382):14 #28084(auto Felwood;657):44
+#27000 | auto Felwood;633§auto Teufelswald;633§auto Gangrebois;633 | x=7010 y=-2187.699951171875 | size=1 | links=#5026(auto Felwood;122):10 #16287(auto Felwood;378):12
+#27045 | auto Felwood;634§auto Teufelswald;634§auto Gangrebois;634 | x=4781.2001953125 y=-580.1000366210938 | size=1 | links=#1469(auto Felwood;33):4 #25643(auto Felwood;618):6
+#27046 | auto Felwood;635§auto Teufelswald;635§auto Gangrebois;635 | x=7019.2001953125 y=-2102 | size=1 | links=#10326(auto Felwood;244):15 #18561(auto Felwood;451):9
+#27059 | auto Felwood;636§auto Teufelswald;636§auto Gangrebois;636 | x=5281 y=-716.6000366210938 | size=1 | links=#7422(auto Felwood;183):19 #12701(auto Felwood;293):15
+#27074 | auto Felwood;637§auto Teufelswald;637§auto Gangrebois;637 | x=6976.10009765625 y=-2242 | size=1 | links=#16276(auto Felwood;376):12 #19438(auto Felwood;475):16
+#27108 | auto Felwood;638§auto Teufelswald;638§auto Gangrebois;638 | x=6458.5 y=-1085.099975585938 | size=1 | links=#7069(auto Felwood;176):22 #7465(auto Felwood;186):37
+#27150 | auto Felwood;639§auto Teufelswald;639§auto Gangrebois;639 | x=5330.2001953125 y=-712.2999877929688 | size=1 | links=#20502(auto Felwood;503):41 #26638(auto Felwood;630):24 c7092.29:21
+#27174 | auto Felwood;640§auto Teufelswald;640§auto Gangrebois;640 | x=5126.80029296875 y=-442.7000122070313 | size=1 | links=#19352(auto Felwood;472):13 c7093.9:20
+#27214 | auto Felwood;641§auto Teufelswald;641§auto Gangrebois;641 | x=3737.800048828125 y=-1485 | size=1 | links=#12303(auto Felwood;283):27 #16664(auto Felwood;388):33 #25684(auto Felwood;619):22 c10017.63:17
+#27228 | auto Felwood;642§auto Teufelswald;642§auto Gangrebois;642 | x=6710.39990234375 y=-1973.5 | size=1 | links=#13333(auto Felwood;314):14 c7158.6:15 c7158.7:11
+#27282 | auto Felwood;643§auto Teufelswald;643§auto Gangrebois;643 | x=4910.60009765625 y=-393.8999938964844 | size=1 | links=#17033(auto Felwood;403):6 #21447(auto Felwood;525):6
+#27310 | auto Felwood;644§auto Teufelswald;644§auto Gangrebois;644 | x=4958.89990234375 y=-425.8000183105469 | size=1 | links=#3231(auto Felwood;78):14 #13692(auto Felwood;322):13
+#27392 | auto Felwood;645§auto Teufelswald;645§auto Gangrebois;645 | x=6460 y=-1676.599975585938 | size=1 | links=#6775(auto Felwood;166):20 #7007(auto Felwood;173):7
+#27404 | auto Felwood;646§auto Teufelswald;646§auto Gangrebois;646 | x=4021.400146484375 y=-933.2000122070312 | size=1 | links=#13469(auto Felwood;317):50 #22329(auto Felwood;546):36 c7097.1:18 c8959.20:12
+#27573 | auto Felwood;647§auto Teufelswald;647§auto Gangrebois;647 | x=6818.30029296875 y=-2098.60009765625 | size=1 | links=#19899(auto Felwood;490):4 #23471(entry and exit;cave;Timbermaw Hold ;Felwood):6
+#27592 | auto Felwood;648§auto Teufelswald;648§auto Gangrebois;648 | x=4865.80029296875 y=-743.4000244140625 | size=1 | links=#1566(auto Felwood;36):38 #14465(auto Felwood;335):37 c10017.88:21
+#27623 | Kroshius;Felwood;1;45.7;34.76§Kroshius;Teufelswald;1;45.7;34.76§Kroshius;Gangrebois;1;45.7;34.76 | x=5778.840922958921 y=-965.2389296370706 | size=1
+#27632 | auto Felwood;649§auto Teufelswald;649§auto Gangrebois;649 | x=5230.30029296875 y=-616.6000366210938 | size=1 | links=#12348(auto Felwood;284):6 #26263(auto Felwood;623):5
+#27733 | auto Felwood;650§auto Teufelswald;650§auto Gangrebois;650 | x=7186.2001953125 y=-2179.199951171875 | size=1 | links=#4535(auto Felwood;108):15 #6465(auto Felwood;156):26
+#27755 | auto Felwood;651§auto Teufelswald;651§auto Gangrebois;651 | x=5047.7001953125 y=-556.1000366210938 | size=1 | links=#3691(auto Felwood;87):12 #22956(auto Felwood;561):10 o176188.5:4
+#27762 | auto Felwood;652§auto Teufelswald;652§auto Gangrebois;652 | x=5261.7001953125 y=-668.6000366210938 | size=1 | links=#17270(auto Felwood;413):6 #19205(auto Felwood;468):6
+#27770 | auto Felwood;653§auto Teufelswald;653§auto Gangrebois;653 | x=4928.10009765625 y=-398.8999938964844 | size=1 | links=#3918(auto Felwood;92):11 #17125(auto Felwood;410):15
+#27824 | auto Felwood;654§auto Teufelswald;654§auto Gangrebois;654 | x=5212.5 y=-618.1000366210938 | size=1 | links=#4036(auto Felwood;96):6 #22500(auto Felwood;551):6
+#28019 | auto Felwood;655§auto Teufelswald;655§auto Gangrebois;655 | x=7275.39990234375 y=-2158.60009765625 | size=1 | links=#7567(auto Felwood;190):13 #21958(auto Felwood;538):28
+#28049 | auto Felwood;656§auto Teufelswald;656§auto Gangrebois;656 | x=3818.10009765625 y=-1405.900024414063 | size=1 | links=#701(auto Felwood;14):36 #13723(auto Felwood;323):46 c8959.41:40
+#28084 | auto Felwood;657§auto Teufelswald;657§auto Gangrebois;657 | x=4307.89990234375 y=-817.6000366210938 | size=1 | links=#24048(auto Felwood;586):35 #26973(auto Felwood;632):44
+#28175 | auto Felwood;658§auto Teufelswald;658§auto Gangrebois;658 | x=6378.80029296875 y=-1681.700073242188 | size=1 | links=#9260(auto Felwood;222):33 #19821(auto Felwood;487):15
+#28214 | auto Felwood;659§auto Teufelswald;659§auto Gangrebois;659 | x=4894.10009765625 y=-390.8000183105469 | size=1 | links=#4472(auto Felwood;104):12 #16501(auto Felwood;384):6
+#28358 | auto Felwood;660§auto Teufelswald;660§auto Gangrebois;660 | x=5082 y=-483.2000122070313 | size=1 | links=#7559(auto Felwood;189):20 #8819(auto Felwood;215):34 o176160.1:15 c7118.10:14
+#28433 | auto Felwood;661§auto Teufelswald;661§auto Gangrebois;661 | x=3627.699951171875 y=-1162.800048828125 | size=1 | links=#2588(auto Felwood;60):24 #4923(auto Felwood;118):24 c7153.12:32 c7153.14:11 c7153.15:22
+#28436 | auto Felwood;662§auto Teufelswald;662§auto Gangrebois;662 | x=6975 y=-2077.900146484375 | size=1 | links=#2775(auto Felwood;66):19 #19077(auto Felwood;465):23
+#28482 | auto Felwood;663§auto Teufelswald;663§auto Gangrebois;663 | x=4133.39990234375 y=-903.2000122070312 | size=1 | links=c10017.17:46 c10016.35:27
+#28624 | s;u;Mailbox;Felwood§s;u;Briefkasten;Teufelswald§s;u;Boîte aux lettres;Gangrebois | x=5103.5830078125 y=-360.483154296875 | size=1 | links=#22509(auto Felwood;553):7
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c543.1 | links=#6293(central location;Talonbranch Glade;Felwood):18
+c2803.1 | links=#16360(auto Felwood;379):14 c15315.1:7
+c2806.1 | links=#15618(central location;Bloodvenom Post;Felwood):14 c10379.1:4
+c5501.1 | links=#6293(central location;Talonbranch Glade;Felwood):26
+c6491.1 | links=c10016.6:11
+c7086.1 | links=c7086.19:34 c8956.33:40
+c7093.1 | links=#6454(auto Felwood;155):4
+c7097.1 | links=#27404(auto Felwood;646):18 c10017.76:19
+c7100.1 | links=c7101.7:11
+c7101.1 | links=c7100.2:25
+c7104.1 | links=c7100.2:13
+c7106.1 | links=c7106.6:11
+c7107.1 | links=#2997(auto Felwood;73):5
+c7108.1 | links=#3142(auto Felwood;75):12
+c7110.1 | links=c10017.36:8
+c7111.1 | links=#3142(auto Felwood;75):13
+c7112.1 | links=#22466(auto Felwood;550):16 c7115.1:6
+c7113.1 | links=#7968(auto Felwood;195):5
+c7114.1 | links=#26358(auto Felwood;626):9 c14523.1:16 c7114.2:2
+c7115.1 | links=c7112.1:6
+c7118.1 | links=c14523.1:2
+c7120.1 | links=#5045(auto Felwood;123):2
+c7125.1 | links=#19717(auto Felwood;482):5
+c7126.1 | links=#18138(auto Felwood;438):6 c7126.2:11
+c7132.1 | links=#17188(auto Felwood;411):65 c7132.6:33
+c7136.1 | links=#16891(auto Felwood;399):22 c9879.3:21 c9878.12:70
+c7137.1 | links=c9878.3:20
+c7138.1 | links=c7139.1:26 c7149.1:56 c7132.2:66
+c7139.1 | links=c7138.1:26 c10016.27:36
+c7149.1 | links=c7138.1:56 c10017.24:41
+c7153.1 | links=#8008(auto Felwood;196):24 c10017.70:17
+c7154.1 | links=c7153.2:55 c7154.9:24
+c7155.1 | links=#8078(auto Felwood;198):36 c7154.3:30
+c7156.1 | links=#16921(auto Felwood;400):19
+c7157.1 | links=#24353(auto Felwood;592):11
+c7158.1 | links=#16921(auto Felwood;400):16
+c8956.1 | links=#7428(auto Felwood;184):46
+c8958.1 | links=#25697(auto Felwood;620):25 c10016.3:32
+c8959.1 | links=#9699(auto Felwood;235):27 c10017.96:10
+c9116.1 | links=#18791(auto Felwood;458):6
+c9454.1 | links=#26522(auto Felwood;627):16 c7106.2:18
+c9462.1 | links=#23623(auto Felwood;575):21 c7157.11:19
+c9464.1 | links=#8078(auto Felwood;198):33
+c9465.1 | links=#6293(central location;Talonbranch Glade;Felwood):32 #8203(auto Felwood;201):12
+c9516.1 | links=#13360(auto Felwood;315):20
+c9517.1 | links=#16108(auto Felwood;373):20 c9860.1:3 c9861.1:3
+c9518.1 | links=#26271(auto Felwood;625):12 c11020.1:12
+c9528.1 | links=#701(auto Felwood;14):43
+c9529.1 | links=#12909(auto Felwood;300):14 #25305(auto Felwood;610):26 c14344.1:36
+c9620.1 | links=#15618(central location;Bloodvenom Post;Felwood):7
+c9860.1 | links=c9517.1:3
+c9861.1 | links=c9517.1:3
+c9862.1 | links=#15929(auto Felwood;370):9
+c9877.1 | links=#15718(auto Felwood;365):14
+c9878.1 | links=o174618.1:57 c9878.12:31
+c9879.1 | links=#24270(auto Felwood;589):38 c10016.1:74
+c9996.1 | links=#23725(auto Felwood;578):22
+c10016.1 | links=c9879.1:74 c8958.24:82 c10017.81:32
+c10306.1 | links=#15618(central location;Bloodvenom Post;Felwood):3
+c10379.1 | links=#15618(central location;Bloodvenom Post;Felwood):12 c2806.1:4
+c10648.1 | links=o174619.1:5 c7111.6:24
+c10916.1 | links=o176091.1:3
+c10920.1 | links=#22712(auto Felwood;555):15
+c10921.1 | links=#8485(auto Felwood;209):6 c10924.1:4
+c10922.1 | links=#22712(auto Felwood;555):10
+c10923.1 | links=#22712(auto Felwood;555):15
+c10924.1 | links=#8485(auto Felwood;209):7 c10921.1:4
+c11016.1 | links=#22502(auto Felwood;552):7
+c11019.1 | links=#22712(auto Felwood;555):18
+c11020.1 | links=c9518.1:12 c7120.2:7 c7118.14:9 c7118.15:7 c7118.16:9
+c11554.1 | links=#5572(auto Felwood;141):16 #20723(auto Felwood;505):19
+c11555.1 | links=#15436(auto Felwood;360):7 #22901(auto Felwood;560):7
+c11557.1 | links=#8995(central location;Timbermaw Hold ;Felwood):15
+c11900.1 | links=#6675(auto Felwood;162):18
+c12578.1 | links=#6293(central location;Talonbranch Glade;Felwood):17
+c14339.1 | links=c8956.4:29 c10017.89:7
+c14340.1 | links=o164883.2:6 c7109.10:26 c7105.16:14 c7105.19:25 c7105.20:30 c7105.32:18
+c14342.1 | links=#8078(auto Felwood;198):23
+c14344.1 | links=c9529.1:36
+c14345.1 | links=c7099.11:27 c7092.25:22 c7092.27:29
+c14469.1 | links=#13268(auto Felwood;312):17 c14470.1:6
+c14470.1 | links=#13268(auto Felwood;312):15 c14469.1:6
+c14522.1 | links=#3441(auto Felwood;81):20
+c14523.1 | links=c7114.1:16 c7118.1:2
+c15315.1 | links=#16360(auto Felwood;379):17 c2803.1:7
+c15395.1 | links=#8530(auto Felwood;210):15
+c22931.1 | links=#22712(auto Felwood;555):28
+o164881.1 | links=#12899(auto Felwood;298):28 c8956.34:19 c8956.35:40
+o164882.1 | links=o164882.2:42
+o164883.1 | links=#20066(auto Felwood;495):2
+o171939.1 | links=#3479(auto Felwood;82):6
+o171940.1 | links=#12275(auto Felwood;281):15
+o173284.1 | links=o174625.1:1 c7139.7:19
+o173325.1 | links=c7113.3:10
+o173326.1 | links=o174604.1:2
+o174594.1 | links=#4884(auto Felwood;117):18
+o174595.1 | links=#16921(auto Felwood;400):18 #22553(auto Felwood;554):14
+o174596.1 | links=#14133(auto Felwood;328):124 o174714.1:14 c7098.9:14 c8957.15:50 c10017.15:29 c8957.16:27 c8957.36:23
+o174597.1 | links=#17399(auto Felwood;419):11
+o174598.1 | links=#23725(auto Felwood;578):16
+o174599.1 | links=c10017.87:24
+o174601.1 | links=c7099.8:27 c8960.14:11
+o174602.1 | links=c7111.6:29
+o174603.1 | links=o174617.1:19 c7092.19:13
+o174604.1 | links=#16403(auto Felwood;380):14 o173326.1:2
+o174605.1 | links=o174687.1:9
+o174606.1 | links=c7107.14:26
+o174608.1 | links=#26877(auto Felwood;631):20
+o174610.1 | links=c10016.4:41
+o174613.1 | links=#6516(auto Felwood;158):15 o174713.1:14
+o174614.1 | links=#4884(auto Felwood;117):23
+o174615.1 | links=#17399(auto Felwood;419):37
+o174617.1 | links=#5283(auto Felwood;132):58 o174603.1:19 c7092.18:20
+o174618.1 | links=c9878.1:57 o174709.1:6 c9878.2:24 c9879.2:30
+o174619.1 | links=c10648.1:5
+o174620.1 | links=c8958.4:45 c8960.14:15
+o174622.1 | links=c7125.8:5
+o174623.1 | links=o174625.2:21
+o174624.1 | links=c7107.14:22
+o174625.1 | links=o173284.1:1
+o174685.1 | links=#8042(auto Felwood;197):9
+o174687.1 | links=#16718(auto Felwood;393):19 o174605.1:9
+o174709.1 | links=o174618.1:6
+o174711.1 | links=c10017.87:15
+o174713.1 | links=o174613.1:14
+o174714.1 | links=o174596.1:14
+o174715.1 | links=#16921(auto Felwood;400):14
+o176091.1 | links=c10916.1:3 c7157.13:24
+o176158.1 | links=#16866(auto Felwood;397):18 #24324(auto Felwood;591):25
+o176159.1 | links=#17280(auto Felwood;415):10
+o176160.1 | links=#28358(auto Felwood;660):15 c7114.5:6 c7118.9:3
+o176161.1 | links=#3416(auto Felwood;79):13
+o176188.1 | links=#22981(auto Felwood;562):7
+o176225.1 | links=#16676(auto Felwood;390):9
+c6491.2 | links=#3677(auto Felwood;86):4 c10017.58:8
+c7086.2 | links=c7086.19:25
+c7092.2 | links=c7092.23:59
+c7093.2 | links=#9252(auto Felwood;221):16
+c7098.2 | links=c10017.95:13
+c7099.2 | links=c8958.35:23 c8958.36:30 c8958.37:16 c8958.38:23
+c7100.2 | links=c7101.1:25 c7104.1:13 c7101.3:16
+c7101.2 | links=#2870(auto Felwood;72):13 #8732(auto Felwood;213):16
+c7105.2 | links=c7105.11:29
+c7106.2 | links=c9454.1:18
+c7107.2 | links=#13303(auto Felwood;313):33
+c7108.2 | links=#18412(auto Felwood;445):18
+c7110.2 | links=#8423(centralpoint;Ruins of Constellas;Felwood):21 c7110.10:27 c7109.15:33
+c7111.2 | links=#4719(auto Felwood;114):13 #8042(auto Felwood;197):17 c7111.4:5
+c7112.2 | links=#22179(auto Felwood;543):6 c7115.2:5
+c7113.2 | links=#7756(auto Felwood;191):5
+c7114.2 | links=c7114.1:2
+c7115.2 | links=c7112.2:5
+c7118.2 | links=#22790(auto Felwood;558):13
+c7120.2 | links=c11020.1:7
+c7125.2 | links=#21347(auto Felwood;520):3
+c7126.2 | links=#18138(auto Felwood;438):4 c7126.1:11
+c7132.2 | links=c7138.1:66
+c7136.2 | links=c9879.6:11 c9878.8:65
+c7138.2 | links=#5093(auto Felwood;124):28
+c7139.2 | links=c10016.27:21
+c7153.2 | links=c7154.1:55 c7154.3:49
+c7154.2 | links=c7153.7:15
+c7155.2 | links=c7154.9:7 c7153.11:25
+c7156.2 | links=#21217(auto Felwood;514):32
+c7157.2 | links=#5884(auto Felwood;146):18
+c7158.2 | links=c10017.66:14
+c8956.2 | links=c8956.31:19
+c8957.2 | links=#12014(auto Felwood;278):21
+c8959.2 | links=c7097.4:17 c8959.5:15
+c9862.2 | links=#22790(auto Felwood;558):16
+c9878.2 | links=o174618.1:24 c9878.13:25
+c9879.2 | links=o174618.1:30 c10016.13:43
+c10016.2 | links=c7086.8:15
+c11180.2 | links=#23725(auto Felwood;578):3
+c14344.2 | links=#8415(auto Felwood;206):7
+o164882.2 | links=#701(auto Felwood;14):39 o164882.1:42 c8959.18:48
+o164883.2 | links=c14340.1:6
+o173325.2 | links=#6495(auto Felwood;157):21
+o174625.2 | links=o174623.1:21
+o176188.2 | links=#18434(auto Felwood;446):4
+c7086.3 | links=c7086.8:29
+c7099.3 | links=c8960.23:14
+c7100.3 | links=c7100.4:16
+c7101.3 | links=#6160(auto Felwood;152):7 c7100.2:16
+c7105.3 | links=c7105.27:25
+c7106.3 | links=#6583(auto Felwood;160):59 c7106.5:26 c10017.107:19
+c7107.3 | links=#2997(auto Felwood;73):28 c7107.4:19 c7107.6:26
+c7108.3 | links=c7111.6:18
+c7110.3 | links=#4619(auto Felwood;111):20 #8423(centralpoint;Ruins of Constellas;Felwood):35
+c7111.3 | links=#19960(auto Felwood;491):14 c7107.4:20
+c7112.3 | links=#1469(auto Felwood;33):3
+c7113.3 | links=#4283(auto Felwood;100):9 o173325.1:10
+c7114.3 | links=#19352(auto Felwood;472):13
+c7115.3 | links=#9523(auto Felwood;231):3
+c7118.3 | links=#12816(auto Felwood;296):20
+c7126.3 | links=#2397(auto Felwood;55):5
+c7132.3 | links=c7132.4:34
+c7136.3 | links=c9878.12:14
+c7139.3 | links=c7139.4:46 c10017.18:25
+c7153.3 | links=#4923(auto Felwood;118):6
+c7154.3 | links=c7155.1:30 c7153.2:49
+c7155.3 | links=#23775(auto Felwood;579):5
+c7156.3 | links=#17277(auto Felwood;414):11
+c7157.3 | links=#25420(auto Felwood;611):19
+c7158.3 | links=#21908(auto Felwood;536):20
+c8956.3 | links=#18894(auto Felwood;461):25
+c8958.3 | links=#13616(auto Felwood;320):30 c8958.12:10
+c8959.3 | links=#25684(auto Felwood;619):39 c10017.102:34
+c8961.3 | links=#14133(auto Felwood;328):63
+c9862.3 | links=#15929(auto Felwood;370):9
+c9878.3 | links=c7137.1:20 c9878.14:19
+c9879.3 | links=c7136.1:21
+c10016.3 | links=#18956(auto Felwood;463):17 c8958.1:32
+c10017.3 | links=#8225(auto Felwood;202):21
+c11180.3 | links=#21789(auto Felwood;531):7
+c14344.3 | links=#5455(auto Felwood;136):27
+o176188.3 | links=#3691(auto Felwood;87):5
+c7086.4 | links=#15981(auto Felwood;371):15 c7086.5:26
+c7093.4 | links=#11164(auto Felwood;261):9 #16494(auto Felwood;383):12
+c7097.4 | links=#21245(auto Felwood;516):12 c8959.2:17 c8959.11:37 c10017.60:34
+c7100.4 | links=#7471(auto Felwood;187):12 c7100.3:16 c7101.4:24
+c7101.4 | links=c7100.4:24
+c7105.4 | links=#3059(auto Felwood;74):18
+c7106.4 | links=#15899(auto Felwood;369):7 c7109.17:12
+c7107.4 | links=c7107.3:19 c7111.3:20
+c7108.4 | links=c7111.6:22
+c7110.4 | links=#4619(auto Felwood;111):23 c10017.107:2
+c7111.4 | links=c7111.2:5
+c7112.4 | links=#18096(auto Felwood;436):2
+c7114.4 | links=#17125(auto Felwood;410):3
+c7115.4 | links=#21347(auto Felwood;520):17 c7112.5:7
+c7118.4 | links=#3691(auto Felwood;87):2
+c7120.4 | links=#3231(auto Felwood;78):2
+c7125.4 | links=#23421(auto Felwood;570):7
+c7126.4 | links=#25216(auto Felwood;608):4
+c7132.4 | links=c7132.3:34 c7132.5:24
+c7139.4 | links=c7139.3:46 c7139.8:21
+c7153.4 | links=#23775(auto Felwood;579):25
+c7154.4 | links=#13749(auto Felwood;325):13
+c7155.4 | links=c7154.7:16 c7153.17:22
+c7156.4 | links=#17070(auto Felwood;405):32 #24846(auto Felwood;605):27
+c7157.4 | links=#24846(auto Felwood;605):17 c7158.4:32 c8957.24:29
+c7158.4 | links=c7157.4:32
+c8956.4 | links=c14339.1:29 c7097.5:42
+c8958.4 | links=o174620.1:45
+c8959.4 | links=c7097.5:2 c10017.96:30
+c8961.4 | links=#2202(auto Felwood;49):14
+c9862.4 | links=#8180(auto Felwood;200):16
+c9879.4 | links=c9879.6:38
+c10016.4 | links=o174610.1:41 c7099.14:13
+c10017.4 | links=#2203(auto Felwood;50):8
+o176188.4 | links=#22956(auto Felwood;561):4
+c7086.5 | links=c7086.4:26 c7086.9:32
+c7093.5 | links=#6454(auto Felwood;155):13
+c7097.5 | links=c8956.4:42 c8959.4:2
+c7099.5 | links=#24466(auto Felwood;596):16
+c7101.5 | links=#1393(auto Felwood;30):16 #2870(auto Felwood;72):18
+c7105.5 | links=#3059(auto Felwood;74):25 c7105.6:8
+c7106.5 | links=c7106.3:26 c7110.5:14
+c7107.5 | links=#3142(auto Felwood;75):5
+c7108.5 | links=#9600(auto Felwood;233):11
+c7109.5 | links=#22858(auto Felwood;559):10
+c7110.5 | links=c7106.5:14 c7106.6:8 c7109.19:25
+c7112.5 | links=c7115.4:7
+c7114.5 | links=o176160.1:6
+c7115.5 | links=#4325(auto Felwood;103):5 #6403(auto Felwood;154):3
+c7118.5 | links=#13692(auto Felwood;322):4
+c7120.5 | links=#3416(auto Felwood;79):14 #19079(auto Felwood;466):8
+c7126.5 | links=#5121(auto Felwood;127):8 #16517(auto Felwood;386):10
+c7132.5 | links=c7132.4:24 c10017.24:57
+c7139.5 | links=c7139.9:60 c7139.10:18 c10016.27:97
+c7153.5 | links=#8078(auto Felwood;198):20
+c7154.5 | links=#23775(auto Felwood;579):3 c7153.14:14
+c7155.5 | links=#12930(auto Felwood;302):40 c7153.11:13
+c7156.5 | links=#6127(auto Felwood;151):16 c7156.6:13 c7157.8:12
+c7157.5 | links=#5477(auto Felwood;137):18
+c7158.5 | links=#25003(auto Felwood;606):11
+c8956.5 | links=#4550(auto Felwood;109):20 #7308(auto Felwood;181):37 #17553(auto Felwood;421):21 c10017.71:43
+c8958.5 | links=c10017.50:22
+c8959.5 | links=c8959.2:15
+c8960.5 | links=#14308(auto Felwood;332):26
+c9862.5 | links=#22502(auto Felwood;552):10
+c9879.5 | links=#1369(auto Felwood;29):19 c9878.9:47
+c11180.5 | links=#21789(auto Felwood;531):10
+c11516.5 | links=#4292(auto Felwood;101):5
+o176188.5 | links=#27755(auto Felwood;651):4
+c7086.6 | links=c7086.8:25 c7086.22:53
+c7093.6 | links=#9252(auto Felwood;221):10
+c7097.6 | links=#17553(auto Felwood;421):28
+c7100.6 | links=#1299(auto Felwood;27):34 c7100.16:47
+c7101.6 | links=#1393(auto Felwood;30):20
+c7105.6 | links=c7105.5:8
+c7106.6 | links=c7106.1:11 c7110.5:8
+c7107.6 | links=c7107.3:26
+c7108.6 | links=#13303(auto Felwood;313):19
+c7109.6 | links=#22858(auto Felwood;559):17
+c7110.6 | links=#24141(auto Felwood;587):17 c7109.21:13
+c7111.6 | links=c10648.1:24 o174602.1:29 c7108.3:18 c7108.4:22 c7111.8:19 c7111.12:31
+c7112.6 | links=#19594(auto Felwood;479):4
+c7113.6 | links=#23421(auto Felwood;570):6
+c7115.6 | links=#16403(auto Felwood;380):13 #18503(auto Felwood;448):22 c7112.7:20
+c7118.6 | links=#1944(auto Felwood;43):3 c7118.8:2
+c7120.6 | links=#18434(auto Felwood;446):5 #25870(auto Felwood;621):7 o176188.10:4
+c7126.6 | links=#17634(auto Felwood;424):14 #20266(auto Felwood;500):13
+c7132.6 | links=c7132.1:33 c7132.8:56 c7132.9:36
+c7153.6 | links=#2588(auto Felwood;60):12
+c7154.6 | links=c7153.16:1
+c7156.6 | links=c7156.5:13
+c7157.6 | links=#13333(auto Felwood;314):9
+c7158.6 | links=#25003(auto Felwood;606):14 #27228(auto Felwood;642):15
+c8956.6 | links=c10017.71:20
+c8958.6 | links=c8958.7:35 c8958.36:35
+c8959.6 | links=c10017.19:23
+c9862.6 | links=#10543(auto Felwood;248):5
+c9878.6 | links=#1369(auto Felwood;29):26 #17911(auto Felwood;429):6
+c9879.6 | links=c7136.2:11 c9879.4:38 c9878.15:52
+c10016.6 | links=#3696(auto Felwood;88):35 c6491.1:11
+c11516.6 | links=#24827(auto Felwood;604):7
+o176188.6 | links=#22015(auto Felwood;539):5
+c7086.7 | links=#11237(auto Felwood;263):18
+c7093.7 | links=#9416(auto Felwood;228):6
+c7097.7 | links=#12930(auto Felwood;302):9
+c7099.7 | links=#25697(auto Felwood;620):25 c10017.101:13
+c7100.7 | links=#1538(auto Felwood;34):29
+c7101.7 | links=#11964(auto Felwood;277):14 #21066(auto Felwood;513):16 c7100.1:11
+c7106.7 | links=#8423(centralpoint;Ruins of Constellas;Felwood):6
+c7107.7 | links=#10539(auto Felwood;247):11
+c7108.7 | links=#2690(centralpoint;Jadefeuerbach;Felwood):3
+c7109.7 | links=#22858(auto Felwood;559):15 c7109.8:27
+c7110.7 | links=#24141(auto Felwood;587):12 c10017.36:17
+c7111.7 | links=c7111.8:17
+c7112.7 | links=#4992(auto Felwood;120):25 c7115.6:20
+c7113.7 | links=#6495(auto Felwood;157):7
+c7118.7 | links=#249(auto Felwood;6):9 #23963(auto Felwood;583):5
+c7120.7 | links=#17280(auto Felwood;415):8
+c7132.7 | links=c7132.8:18
+c7139.7 | links=o173284.1:19 c10016.8:46 c7139.9:46
+c7153.7 | links=#10878(centralpoint;Deadwood Village;Felwood):13 c7154.2:15
+c7154.7 | links=#9315(auto Felwood;223):27 c7155.4:16
+c7156.7 | links=#23623(auto Felwood;575):21
+c7158.7 | links=#27228(auto Felwood;642):11
+c8956.7 | links=#22329(auto Felwood;546):16
+c8958.7 | links=c8958.6:35
+c8961.7 | links=#12911(auto Felwood;301):30
+c9862.7 | links=#17280(auto Felwood;415):14
+c9878.7 | links=#16891(auto Felwood;399):26
+o176188.7 | links=#22015(auto Felwood;539):6
+c7086.8 | links=c10016.2:15 c7086.3:29 c7086.6:25
+c7093.8 | links=#9416(auto Felwood;228):24 c7093.9:34
+c7097.8 | links=c8959.23:8 c8959.24:32 c8959.26:29 c8959.27:45 c10017.41:48
+c7098.8 | links=c8957.11:48 c8957.12:28
+c7099.8 | links=o174601.1:27
+c7100.8 | links=#1538(auto Felwood;34):28
+c7101.8 | links=#18307(auto Felwood;443):26 c7100.10:29
+c7105.8 | links=#22858(auto Felwood;559):28 c7105.11:15
+c7106.8 | links=c7109.31:16
+c7107.8 | links=#2690(centralpoint;Jadefeuerbach;Felwood):19
+c7108.8 | links=c7108.9:19
+c7109.8 | links=c7109.7:27 c7105.10:9
+c7110.8 | links=#12810(auto Felwood;295):9
+c7111.8 | links=c7111.6:19 c7111.7:17
+c7114.8 | links=#12816(auto Felwood;296):9
+c7118.8 | links=c7118.6:2
+c7120.8 | links=#18690(auto Felwood;455):2
+c7125.8 | links=o174622.1:5 c7125.9:11 c7112.12:25
+c7132.8 | links=c7132.6:56 c7132.7:18
+c7139.8 | links=#18956(auto Felwood;463):23 c7139.4:21 c10016.8:10
+c7153.8 | links=#8078(auto Felwood;198):10
+c7154.8 | links=#12930(auto Felwood;302):20
+c7156.8 | links=#6013(farming area;Deadwood Avenger;Felpaw Village;Felwood):10 c7157.12:13
+c7157.8 | links=c7156.5:12
+c7158.8 | links=#1552(auto Felwood;35):21
+c8956.8 | links=#2054(auto Felwood;45):21
+c8958.8 | links=c8960.17:42 c10017.83:9
+c8959.8 | links=c8959.10:23
+c8961.8 | links=c8961.9:51 c8957.23:74 c10017.95:19
+c9862.8 | links=#14062(centralpoint;cave;Shadow Hold;Felwood):4
+c9878.8 | links=c7136.2:65 c9878.9:47 c9878.14:48
+c10016.8 | links=c7139.7:46 c7139.8:10
+c10017.8 | links=#12014(auto Felwood;278):23
+o176188.8 | links=#8779(auto Felwood;214):5
+c7086.9 | links=c7086.5:32 c7086.19:27
+c7093.9 | links=#27174(auto Felwood;640):20 c7093.8:34
+c7097.9 | links=c10017.10:20
+c7098.9 | links=o174596.1:14
+c7100.9 | links=#5527(auto Felwood;139):25
+c7101.9 | links=#19821(auto Felwood;487):24 #23130(auto Felwood;564):6
+c7105.9 | links=#3059(auto Felwood;74):22
+c7107.9 | links=#17837(auto Felwood;428):5
+c7108.9 | links=#2690(centralpoint;Jadefeuerbach;Felwood):30 #19393(auto Felwood;474):41 c7108.8:19 c7111.11:43
+c7109.9 | links=#23543(auto Felwood;573):18
+c7110.9 | links=#8423(centralpoint;Ruins of Constellas;Felwood):34 c7110.11:17
+c7111.9 | links=#15718(auto Felwood;365):12
+c7118.9 | links=o176160.1:3
+c7120.9 | links=#16108(auto Felwood;373):4
+c7125.9 | links=c7125.8:11
+c7132.9 | links=c7132.6:36
+c7139.9 | links=c7139.5:60 c7139.7:46
+c7153.9 | links=#8078(auto Felwood;198):28
+c7154.9 | links=c7154.1:24 c7155.2:7
+c7156.9 | links=c7157.13:25
+c7157.9 | links=#23623(auto Felwood;575):14
+c7158.9 | links=#17070(auto Felwood;405):28
+c8956.9 | links=#22329(auto Felwood;546):46
+c8960.9 | links=c10017.101:18
+c8961.9 | links=c8961.8:51 c8957.20:56
+c9878.9 | links=c9879.5:47 c9878.8:47
+c10016.9 | links=#11639(auto Felwood;272):8 c7099.13:8
+o176188.9 | links=#23963(auto Felwood;583):6
+c7086.10 | links=c7086.13:42
+c7098.10 | links=#1299(auto Felwood;27):41 c10017.12:35
+c7099.10 | links=#8428(auto Felwood;207):28
+c7100.10 | links=c7101.8:29
+c7101.10 | links=#19821(auto Felwood;487):12 c7100.12:22
+c7105.10 | links=c7109.8:9
+c7107.10 | links=#2203(auto Felwood;50):5
+c7109.10 | links=#20036(auto Felwood;494):35 c14340.1:26
+c7110.10 | links=c7110.2:27 c7109.30:31
+c7111.10 | links=c7107.13:14 c7107.16:12
+c7118.10 | links=#28358(auto Felwood;660):14
+c7120.10 | links=#8719(auto Felwood;212):17 #20266(auto Felwood;500):11
+c7132.10 | links=c7132.12:45
+c7139.10 | links=c7139.5:18 c10016.15:25
+c7153.10 | links=#8078(auto Felwood;198):36
+c7154.10 | links=c7153.15:7
+c7156.10 | links=#14206(auto Felwood;330):6
+c7157.10 | links=#23656(auto Felwood;576):17
+c7158.10 | links=#19479(auto Felwood;476):9
+c8959.10 | links=#25626(auto Felwood;617):16 c8959.8:23 c10017.72:13
+c10017.10 | links=#5984(auto Felwood;148):12 c7097.9:20
+o176188.10 | links=c7120.6:4
+c7086.11 | links=#10990(auto Felwood;259):36 c7086.23:27
+c7098.11 | links=#1665(auto Felwood;37):48
+c7099.11 | links=c14345.1:27 c7092.32:21
+c7100.11 | links=#10518(auto Felwood;246):2
+c7101.11 | links=#521(auto Felwood;11):10 #17619(auto Felwood;423):13
+c7105.11 | links=c7105.2:29 c7105.8:15
+c7107.11 | links=#2690(centralpoint;Jadefeuerbach;Felwood):37
+c7109.11 | links=c7109.13:23
+c7110.11 | links=c7110.9:17 c7109.31:10
+c7111.11 | links=c7108.9:43
+c7112.11 | links=#18580(auto Felwood;452):4
+c7118.11 | links=#2677(auto Felwood;63):13 #19352(auto Felwood;472):18
+c7120.11 | links=#11164(auto Felwood;261):21 #17634(auto Felwood;424):22
+c7132.11 | links=c7132.12:54
+c7139.11 | links=#5093(auto Felwood;124):30
+c7153.11 | links=c7155.2:25 c7155.5:13
+c7154.11 | links=#16878(auto Felwood;398):28 c7153.17:24
+c7156.11 | links=#20813(auto Felwood;508):15
+c7157.11 | links=c9462.1:19
+c7158.11 | links=#23623(auto Felwood;575):35
+c8957.11 | links=c7098.8:48 c10017.43:39
+c8959.11 | links=c7097.4:37
+c9878.11 | links=#13268(auto Felwood;312):48
+c10016.11 | links=#8428(auto Felwood;207):18
+c10017.11 | links=c7139.13:13
+o176188.11 | links=#4983(auto Felwood;119):4
+c7086.12 | links=#10990(auto Felwood;259):60 c7086.17:71
+c7097.12 | links=c8959.43:1
+c7100.12 | links=#9324(auto Felwood;224):25 c7101.10:22
+c7101.12 | links=#521(auto Felwood;11):5
+c7105.12 | links=#323(auto Felwood;8):7 #22858(auto Felwood;559):14
+c7107.12 | links=#15718(auto Felwood;365):7
+c7109.12 | links=c7105.21:38 c7105.23:38 c7105.24:44 c7105.25:42
+c7111.12 | links=#8345(auto Felwood;205):13 c7111.6:31
+c7112.12 | links=#18580(auto Felwood;452):30 c7125.8:25
+c7118.12 | links=#26266(auto Felwood;624):13
+c7120.12 | links=#19855(auto Felwood;488):9
+c7132.12 | links=c7132.10:45 c7132.11:54 c10016.15:25
+c7139.12 | links=#5093(auto Felwood;124):30
+c7153.12 | links=#28433(auto Felwood;661):32
+c7156.12 | links=#2454(auto Felwood;57):23
+c7157.12 | links=#15043(auto Felwood;349):15 c7156.8:13
+c7158.12 | links=#21012(auto Felwood;512):19
+c8956.12 | links=c8956.13:13 c10016.23:26 c10016.24:64
+c8957.12 | links=c7098.8:28
+c8958.12 | links=c8958.3:10 c8958.14:17
+c9878.12 | links=c7136.1:70 c9878.1:31 c7136.3:14
+c10017.12 | links=c7098.10:35 c8957.13:5
+o176188.12 | links=#25870(auto Felwood;621):3
+c7086.13 | links=#18121(auto Felwood;437):30 c7086.10:42 c7086.15:31 c7086.16:43 c7086.24:35
+c7098.13 | links=c10017.21:20
+c7099.13 | links=c10016.9:8
+c7100.13 | links=#17982(auto Felwood;432):3
+c7107.13 | links=c7111.10:14 c7107.14:28 c7107.16:18
+c7109.13 | links=c7109.11:23 c7105.21:7 c7105.22:28
+c7118.13 | links=#22075(auto Felwood;541):4
+c7139.13 | links=#17188(auto Felwood;411):20 c10017.11:13
+c7153.13 | links=#2588(auto Felwood;60):12
+c7157.13 | links=#18512(auto Felwood;449):13 o176091.1:24 c7156.9:25 c7158.14:22
+c7158.13 | links=#14949(auto Felwood;348):9
+c8956.13 | links=c8956.12:13 c8956.15:17
+c8957.13 | links=c10017.12:5 c10017.43:23
+c8959.13 | links=#14839(auto Felwood;345):26
+c9878.13 | links=c9878.2:25
+c10016.13 | links=c9879.2:43 c10017.81:49
+c10017.13 | links=c8956.31:19
+o176188.13 | links=#21223(auto Felwood;515):4
+c7086.14 | links=c7086.16:23 c7086.18:28
+c7097.14 | links=#22712(auto Felwood;555):20
+c7099.14 | links=#5141(crossing;Jaedenar;Felwood):22 #7293(auto Felwood;180):13 c10016.4:13
+c7100.14 | links=#18870(auto Felwood;460):13
+c7105.14 | links=#15333(auto Felwood;359):18 #18585(centralpoint;Jadefire Glen;Felwood):44
+c7107.14 | links=#3187(auto Felwood;77):47 #19393(auto Felwood;474):24 o174606.1:26 o174624.1:22 c7107.13:28
+c7118.14 | links=c11020.1:9
+c7139.14 | links=#5093(auto Felwood;124):65 c10017.24:14
+c7153.14 | links=#28433(auto Felwood;661):11 c7154.5:14
+c7157.14 | links=#18512(auto Felwood;449):20
+c7158.14 | links=c7157.13:22
+c8956.14 | links=#534(auto Felwood;12):24 c10016.23:8
+c8957.14 | links=#1299(auto Felwood;27):22
+c8958.14 | links=c8958.12:17
+c8959.14 | links=#14839(auto Felwood;345):23
+c8960.14 | links=#7280(auto Felwood;179):50 o174601.1:11 o174620.1:15
+c8961.14 | links=c10017.46:30 c10017.87:34
+c9878.14 | links=c9878.3:19 c9878.8:48
+o176188.14 | links=#25870(auto Felwood;621):4
+c7086.15 | links=c7086.13:31
+c7099.15 | links=#6837(auto Felwood;168):29
+c7100.15 | links=#9607(auto Felwood;234):14 #17619(auto Felwood;423):16
+c7105.15 | links=#3059(auto Felwood;74):34
+c7107.15 | links=#2690(centralpoint;Jadefeuerbach;Felwood):32
+c7109.15 | links=c7110.2:33
+c7118.15 | links=c11020.1:7
+c7139.15 | links=#5093(auto Felwood;124):22
+c7153.15 | links=#28433(auto Felwood;661):22 c7154.10:7
+c7157.15 | links=#15087(auto Felwood;351):23
+c7158.15 | links=#14549(auto Felwood;338):10
+c8956.15 | links=c8956.13:17
+c8957.15 | links=o174596.1:50
+c8959.15 | links=#690(auto Felwood;13):16
+c9878.15 | links=#21794(auto Felwood;532):53 c9879.6:52
+c10016.15 | links=c7139.10:25 c7132.12:25
+c10017.15 | links=o174596.1:29
+o176188.15 | links=#12359(auto Felwood;285):4
+c7086.16 | links=c7086.13:43 c7086.14:23
+c7100.16 | links=#1538(auto Felwood;34):36 #3703(entry and exit;Eisenstammhöhle;Felwood):20 c7100.6:47
+c7105.16 | links=#20066(auto Felwood;495):10 c14340.1:14
+c7107.16 | links=#19393(auto Felwood;474):32 c7111.10:12 c7107.13:18
+c7109.16 | links=#26522(auto Felwood;627):18
+c7118.16 | links=c11020.1:9
+c7139.16 | links=#2846(auto Felwood;70):80
+c7153.16 | links=#13749(auto Felwood;325):2 c7154.6:1
+c7157.16 | links=#5942(auto Felwood;147):11
+c7158.16 | links=#5942(auto Felwood;147):41 c10017.112:6
+c8956.16 | links=c10017.78:2
+c8957.16 | links=o174596.1:27
+c10016.16 | links=c7086.20:11
+c10017.16 | links=c8960.47:8
+c7086.17 | links=c7086.12:71 c7086.18:31
+c7100.17 | links=#3703(entry and exit;Eisenstammhöhle;Felwood):16 #18870(auto Felwood;460):34
+c7105.17 | links=#15333(auto Felwood;359):18
+c7109.17 | links=c7106.4:12
+c7118.17 | links=#21554(auto Felwood;526):2
+c7139.17 | links=#24778(auto Felwood;602):17
+c7153.17 | links=c7155.4:22 c7154.11:24
+c7157.17 | links=#25420(auto Felwood;611):7
+c8956.17 | links=c10016.22:31
+c8957.17 | links=c10017.87:27
+c8958.17 | links=c8958.18:28 c10017.55:69
+c8960.17 | links=c8958.8:42
+c10016.17 | links=#5239(auto Felwood;130):23 c8957.25:21
+c10017.17 | links=#76(auto Felwood;1):17 #28482(auto Felwood;663):46
+c7086.18 | links=c7086.14:28 c7086.17:31
+c7092.18 | links=o174617.1:20
+c7100.18 | links=#1538(auto Felwood;34):42
+c7105.18 | links=#11404(auto Felwood;265):13
+c7109.18 | links=#4619(auto Felwood;111):14 c7109.19:12
+c7118.18 | links=#4159(auto Felwood;98):5 #5045(auto Felwood;123):30
+c7139.18 | links=#13022(auto Felwood;305):15
+c8956.18 | links=c10016.22:34
+c8958.18 | links=#6704(auto Felwood;165):39 c8958.17:28 c10016.34:3
+c8959.18 | links=o164882.2:48
+c10017.18 | links=c7139.3:25 c10016.27:11
+c7086.19 | links=c7086.1:34 c7086.2:25 c7086.9:27 c10017.105:37
+c7092.19 | links=o174603.1:13
+c7099.19 | links=c8960.43:31 c8960.47:16
+c7105.19 | links=c14340.1:25
+c7109.19 | links=c7110.5:25 c7109.18:12
+c7118.19 | links=#1023(auto Felwood;22):15 #15248(auto Felwood;356):12
+c7139.19 | links=c10017.33:13
+c8958.19 | links=#5653(auto Felwood;143):24
+c8959.19 | links=#21245(auto Felwood;516):34
+c8960.19 | links=#14511(auto Felwood;337):24
+c10017.19 | links=#14910(auto Felwood;347):19 c8959.6:23
+c7086.20 | links=#15981(auto Felwood;371):16 c10016.16:11
+c7105.20 | links=c14340.1:30
+c7109.20 | links=#15899(auto Felwood;369):10
+c7118.20 | links=#22790(auto Felwood;558):10
+c8956.20 | links=#3479(auto Felwood;82):18
+c8957.20 | links=c8961.9:56
+c8958.20 | links=#24435(auto Felwood;594):19
+c8959.20 | links=#27404(auto Felwood;646):12
+c8960.20 | links=c8960.24:39
+c7086.21 | links=#11237(auto Felwood;263):15
+c7105.21 | links=c7109.12:38 c7109.13:7
+c7109.21 | links=#15779(auto Felwood;366):18 c7110.6:13
+c8958.21 | links=#18695(auto Felwood;457):26
+c8960.21 | links=c8960.22:9 c8960.25:34 c8960.28:30
+c10017.21 | links=#9089(auto Felwood;219):10 c7098.13:20 c8957.22:16
+c7086.22 | links=#11237(auto Felwood;263):15 c7086.6:53
+c7105.22 | links=#11404(auto Felwood;265):22 c7109.13:28
+c7109.22 | links=#15779(auto Felwood;366):8
+c8957.22 | links=c10017.21:16
+c8958.22 | links=#21281(auto Felwood;517):23
+c8960.22 | links=c8960.21:9
+c10016.22 | links=#5984(auto Felwood;148):52 c8956.17:31 c8956.18:34
+c10017.22 | links=c8960.24:5
+c7086.23 | links=#7100(auto Felwood;177):34 c7086.11:27
+c7092.23 | links=#13268(auto Felwood;312):26 c7092.2:59
+c7105.23 | links=c7109.12:38
+c7109.23 | links=c7105.28:16 c7105.30:8
+c8957.23 | links=#24037(auto Felwood;585):57 c8961.8:74
+c8958.23 | links=#7280(auto Felwood;179):36
+c8959.23 | links=c7097.8:8
+c8960.23 | links=#17100(auto Felwood;408):21 c7099.3:14
+c10016.23 | links=c8956.12:26 c8956.14:8
+c10017.23 | links=c8958.24:45
+c7086.24 | links=c7086.13:35
+c7105.24 | links=c7109.12:44
+c7109.24 | links=#3059(auto Felwood;74):10
+c8957.24 | links=c7157.4:29
+c8958.24 | links=c10016.1:82 c10017.23:45
+c8959.24 | links=c7097.8:32
+c8960.24 | links=c8960.20:39 c10017.22:5 c10017.52:41
+c10016.24 | links=c8956.12:64 c8956.37:30
+c10017.24 | links=c7149.1:41 c7132.5:57 c7139.14:14
+c7092.25 | links=c14345.1:22 c7092.31:26
+c7105.25 | links=c7109.12:42
+c7109.25 | links=c7109.27:12
+c8957.25 | links=c10016.17:21
+c8958.25 | links=#6516(auto Felwood;158):25
+c8960.25 | links=c8960.21:34
+c7092.26 | links=c10017.44:13
+c7105.26 | links=c7105.28:24
+c8956.26 | links=c8956.39:59
+c8957.26 | links=#18691(auto Felwood;456):44
+c8958.26 | links=#8428(auto Felwood;207):28
+c8959.26 | links=#13723(auto Felwood;323):66 #25626(auto Felwood;617):54 c7097.8:29
+c10016.26 | links=c8958.34:17
+c7092.27 | links=c14345.1:29
+c7105.27 | links=c7105.3:25 c7105.28:24
+c7109.27 | links=c7109.25:12 c7105.32:9
+c8957.27 | links=#18691(auto Felwood;456):57
+c8959.27 | links=c7097.8:45
+c8960.27 | links=#14511(auto Felwood;337):43
+c10016.27 | links=c7139.1:36 c7139.2:21 c7139.5:97 c10017.18:11
+c7092.28 | links=c10017.44:12
+c7105.28 | links=c7109.23:16 c7105.26:24 c7105.27:24 c7105.29:22
+c7109.28 | links=#11404(auto Felwood;265):29
+c8957.28 | links=#18691(auto Felwood;456):57
+c8960.28 | links=c8960.21:30 c8960.29:14
+c10017.28 | links=#1713(auto Felwood;40):15
+c7092.29 | links=#27150(auto Felwood;639):21
+c7105.29 | links=c7105.28:22
+c7109.29 | links=#11404(auto Felwood;265):25
+c8957.29 | links=#17399(auto Felwood;419):36
+c8958.29 | links=c8958.32:27 c8958.39:28
+c8959.29 | links=#21245(auto Felwood;516):23
+c8960.29 | links=#5653(auto Felwood;143):18 c8960.28:14
+c7105.30 | links=#18585(centralpoint;Jadefire Glen;Felwood):28 c7109.23:8
+c7109.30 | links=c7110.10:31
+c8956.30 | links=#10949(auto Felwood;257):22
+c8957.30 | links=#17399(auto Felwood;419):43
+c8958.30 | links=c8958.32:37
+c8960.30 | links=#12572(auto Felwood;289):32
+c10017.30 | links=#7229(auto Felwood;178):21
+c7092.31 | links=c7092.25:26
+c7105.31 | links=#18585(centralpoint;Jadefire Glen;Felwood):22
+c7109.31 | links=c7106.8:16 c7110.11:10
+c8956.31 | links=#12899(auto Felwood;298):21 c8956.2:19 c10017.13:19
+c8957.31 | links=#16718(auto Felwood;393):16
+c8958.31 | links=c8958.34:21
+c8960.31 | links=#12874(auto Felwood;297):24
+c7092.32 | links=#18188(auto Felwood;441):22 c7099.11:21 c10016.32:15
+c7105.32 | links=c14340.1:18 c7109.27:9
+c8956.32 | links=#11474(auto Felwood;267):13
+c8958.32 | links=c8958.29:27 c8958.30:37 c8958.33:20 c8958.34:26
+c8960.32 | links=#17087(auto Felwood;407):39 c10017.94:29
+c10016.32 | links=c7092.32:15
+c10017.32 | links=#216(auto Felwood;5):17 c10017.109:25
+c7105.33 | links=#20036(auto Felwood;494):19
+c8956.33 | links=c7086.1:40
+c8958.33 | links=c8958.32:20
+c8960.33 | links=#21755(auto Felwood;528):32
+c10016.33 | links=c10017.62:7
+c10017.33 | links=#13022(auto Felwood;305):23 #15567(auto Felwood;363):20 c7139.19:13
+c7092.34 | links=#20502(auto Felwood;503):26
+c7105.34 | links=#11404(auto Felwood;265):27
+c8956.34 | links=o164881.1:19
+c8958.34 | links=#8168(auto Felwood;199):29 c10016.26:17 c8958.31:21 c8958.32:26
+c8960.34 | links=#6837(auto Felwood;168):38
+c10016.34 | links=c8958.18:3
+c8956.35 | links=#3161(auto Felwood;76):40 o164881.1:40
+c8958.35 | links=#24435(auto Felwood;594):42 c7099.2:23
+c8959.35 | links=#20962(auto Felwood;510):26
+c10016.35 | links=#1448(auto Felwood;32):31 #28482(auto Felwood;663):27
+c10017.35 | links=#15087(auto Felwood;351):31
+c8957.36 | links=o174596.1:23 c10017.46:37
+c8958.36 | links=c7099.2:30 c8958.6:35
+c10017.36 | links=c7110.1:8 c7110.7:17
+c8956.37 | links=#5984(auto Felwood;148):33 c10016.24:30
+c8958.37 | links=c7099.2:16
+c10017.37 | links=#11237(auto Felwood;263):10
+c8956.38 | links=#17260(auto Felwood;412):30 c8956.39:35
+c8958.38 | links=c7099.2:23
+c8959.38 | links=#17335(auto Felwood;418):4
+c10017.38 | links=#13303(auto Felwood;313):34
+c8956.39 | links=c8956.26:59 c8956.38:35
+c8958.39 | links=c8958.29:28
+c8959.39 | links=#14910(auto Felwood;347):45
+c8960.39 | links=c8960.45:22
+c10017.39 | links=#5093(auto Felwood;124):29
+c8959.40 | links=#14910(auto Felwood;347):16 c8959.46:22
+c10017.40 | links=#6704(auto Felwood;165):77
+c8958.41 | links=#13052(auto Felwood;307):31
+c8959.41 | links=#28049(auto Felwood;656):40
+c10017.41 | links=c7097.8:48
+c8959.42 | links=#14252(auto Felwood;331):40
+c8960.42 | links=c8960.43:29
+c8959.43 | links=#19873(auto Felwood;489):32 c7097.12:1
+c8960.43 | links=#21422(auto Felwood;523):58 c7099.19:31 c8960.42:29 c8960.46:44
+c10017.43 | links=c8957.11:39 c8957.13:23
+c8959.44 | links=c10017.103:14
+c10017.44 | links=c7092.26:13 c7092.28:12
+c8959.45 | links=#7229(auto Felwood;178):19
+c8960.45 | links=c8960.39:22 c8960.46:31
+c8959.46 | links=c8959.40:22
+c8960.46 | links=c8960.43:44 c8960.45:31
+c10017.46 | links=c8961.14:30 c8957.36:37
+c8959.47 | links=#13723(auto Felwood;323):30 c10017.111:3
+c8960.47 | links=c10017.16:8 c7099.19:16
+c10017.47 | links=#8168(auto Felwood;199):34
+c8959.48 | links=#17505(crossing;Emerald Sanctuary;Felwood):41
+c10017.50 | links=#3929(auto Felwood;93):32 c8958.5:22
+c10017.52 | links=#14511(auto Felwood;337):24 c8960.24:41
+c10017.53 | links=#21755(auto Felwood;528):35
+c10017.55 | links=c8958.17:69
+c10017.58 | links=c6491.2:8
+c10017.59 | links=#14308(auto Felwood;332):18
+c10017.60 | links=c7097.4:34
+c10017.62 | links=#12275(auto Felwood;281):9 c10016.33:7
+c10017.63 | links=#27214(auto Felwood;641):17
+c10017.66 | links=#21217(auto Felwood;514):29 c7158.2:14
+c10017.70 | links=c7153.1:17
+c10017.71 | links=c8956.5:43 c8956.6:20
+c10017.72 | links=c8959.10:13
+c10017.74 | links=#3581(auto Felwood;84):16
+c10017.76 | links=c7097.1:19
+c10017.78 | links=#5984(auto Felwood;148):20 c8956.16:2
+c10017.79 | links=#9089(auto Felwood;219):42
+c10017.80 | links=#14839(auto Felwood;345):39
+c10017.81 | links=c10016.1:32 c10016.13:49
+c10017.82 | links=#9970(auto Felwood;238):8
+c10017.83 | links=#14465(auto Felwood;335):26 c8958.8:9
+c10017.87 | links=o174599.1:24 o174711.1:15 c8961.14:34 c8957.17:27
+c10017.88 | links=#27592(auto Felwood;648):21
+c10017.89 | links=c14339.1:7 c10017.102:29
+c10017.94 | links=#17305(auto Felwood;417):10 c8960.32:29
+c10017.95 | links=c7098.2:13 c8961.8:19
+c10017.96 | links=c8959.1:10 c8959.4:30
+c10017.101 | links=c7099.7:13 c8960.9:18
+c10017.102 | links=c8959.3:34 c10017.89:29
+c10017.103 | links=#3581(auto Felwood;84):35 c8959.44:14
+c10017.105 | links=#7100(auto Felwood;177):25 c7086.19:37
+c10017.107 | links=c7106.3:19 c7110.4:2
+c10017.108 | links=#24435(auto Felwood;594):36
+c10017.109 | links=c10017.32:25
+c10017.111 | links=c8959.47:3
+c10017.112 | links=c7158.16:6

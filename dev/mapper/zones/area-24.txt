@@ -1,0 +1,3 @@
+Zone areaId 24 — eine Zeile pro Wegpunkt; Links inline.
+
+#28808 | s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey§s;Östliche Königreiche;Wald von Elwynn;Abtei von Nordhain§s;Royaumes de l'est;Forêt d'Elwynn;Northshire Abbey | x=-8896.159 y=-179.32834 | size=1

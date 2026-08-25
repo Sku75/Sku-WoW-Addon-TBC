@@ -1,0 +1,714 @@
+Zone areaId 1497 — eine Zeile pro Wegpunkt; Links inline.
+
+#91 | auto Undercity;1§auto Unterstadt;1§auto Fossoyeuse;1 | x=1564.099975585938 y=422.3999938964844 | size=1 | links=#13073(auto Undercity;207):9 #22737(auto Undercity;379):6
+#127 | auto Undercity;2§auto Unterstadt;2§auto Fossoyeuse;2 | x=1471.099975585938 y=58.5 | size=1 | links=#6470(auto Undercity;110):33 c7297.1:17
+#136 | auto Undercity;3§auto Unterstadt;3§auto Fossoyeuse;3 | x=1632.599975585938 y=733.7999877929688 | size=1 | links=#300(auto Undercity;8):31 #3602(auto Undercity;54):19
+#163 | auto Undercity;4§auto Unterstadt;4§auto Fossoyeuse;4 | x=1453.200073242188 y=445.1000061035156 | size=1 | links=#5698(auto Undercity;87):8 #27078(auto Undercity;462):13
+#185 | auto Undercity;5§auto Unterstadt;5§auto Fossoyeuse;5 | x=1693.5 y=140.9000091552734 | size=1 | links=#549(auto Undercity;10):13 #3576(auto Undercity;52):17 #25675(auto Undercity;431):13
+#244 | auto Undercity;6§auto Unterstadt;6§auto Fossoyeuse;6 | x=1577.099975585938 y=93.9000015258789 | size=1
+#260 | auto Undercity;7§auto Unterstadt;7§auto Fossoyeuse;7 | x=1804.5 y=188 | size=1 | links=#1712(auto Undercity;23):5 #12213(auto Undercity;188):17
+#300 | auto Undercity;8§auto Unterstadt;8§auto Fossoyeuse;8 | x=1604.099975585938 y=720.2000122070312 | size=1 | links=#136(auto Undercity;3):31 #13300(auto Undercity;212):43
+#394 | auto Undercity;9§auto Unterstadt;9§auto Fossoyeuse;9 | x=1494.700073242188 y=240.9000091552734 | size=1 | links=#4353(auto Undercity;64):35 #12129(auto Undercity;186):25
+#549 | auto Undercity;10§auto Unterstadt;10§auto Fossoyeuse;10 | x=1702.599975585938 y=151.1999969482422 | size=1 | links=#185(auto Undercity;5):13 #20258(auto Undercity;332):16 #28406(auto Undercity;494):7
+#610 | waters;down;Rogues' Quarter;Undercity§gewässer;unten;Schurkenviertel;Unterstadt§eaux;bas;Rogues' Quarter;Fossoyeuse | x=1481.400024414063 y=128 | size=1 | links=#15693(auto Undercity;251):24 #19590(auto Undercity;328):24
+#724 | auto Undercity;11§auto Unterstadt;11§auto Fossoyeuse;11 | x=1559.5 y=254 | size=1 | links=#3308(auto Undercity;47):15 #7114(auto Undercity;120):14 c4486.1:7 c4775.1:6
+#856 | waters;down;Handwerksviertel;Undercity;two§gewässer;unten;Handwerksviertel;Unterstadt;zwei§eaux;bas;Handwerksviertel;Fossoyeuse;deux | x=1605 y=270.8000183105469 | size=1 | links=#12939(auto Undercity;205):9 #27091(auto Undercity;463):16
+#889 | auto Undercity;12§auto Unterstadt;12§auto Fossoyeuse;12 | x=1717.099975585938 y=478.3000183105469 | size=1 | links=#4917(auto Undercity;75):13 #21244(auto Undercity;352):9
+#927 | auto Undercity;13§auto Unterstadt;13§auto Fossoyeuse;13 | x=1752.700073242188 y=44 | size=1 | links=#5705(auto Undercity;88):9 #24551(auto Undercity;409):17 #27788(auto Undercity;478):16
+#929 | auto Undercity;14§auto Unterstadt;14§auto Fossoyeuse;14 | x=1581.300048828125 y=255.5 | size=1 | links=#9797(auto Undercity;152):13 #11286(auto Undercity;174):7 #21763(auto Undercity;360):12 c14402.1:2
+#1033 | auto Undercity;15§auto Unterstadt;15§auto Fossoyeuse;15 | x=1650.300048828125 y=411.6000061035156 | size=1 | links=#6951(auto Undercity;116):11 #17972(auto Undercity;293):26
+#1088 | auto Undercity;16§auto Unterstadt;16§auto Fossoyeuse;16 | x=1767.599975585938 y=212.4000091552734 | size=1 | links=#20090(auto Undercity;330):7
+#1181 | auto Undercity;17§auto Unterstadt;17§auto Fossoyeuse;17 | x=1759.599975585938 y=102.4000015258789 | size=1 | links=#6860(auto Undercity;114):13 #12687(auto Undercity;196):16 #21504(auto Undercity;355):24
+#1335 | auto Undercity;18§auto Unterstadt;18§auto Fossoyeuse;18 | x=1518.5 y=377.6000061035156 | size=1 | links=#12118(auto Undercity;185):17 #25112(auto Undercity;425):18
+#1394 | waters;down;Handwerksviertel;Undercity;one§gewässer;unten;Handwerksviertel;Unterstadt;eins§eaux;bas;Handwerksviertel;Fossoyeuse;un | x=1590 y=209.3000030517578 | size=1 | links=#3671(auto Undercity;55):15 #27643(auto Undercity;476):10
+#1414 | auto Undercity;19§auto Unterstadt;19§auto Fossoyeuse;19 | x=1660.099975585938 y=732.2999877929688 | size=1 | links=#6597(Gneis;path;Tirisfal Glades;entry and exit;to;Undercity):20 #3602(auto Undercity;54):7
+#1425 | auto Undercity;20§auto Unterstadt;20§auto Fossoyeuse;20 | x=1756.5 y=243.5 | size=1 | links=#23212(waters;down;rescue;Ruins of Lordaeron;Undercity):8 #28307(auto Undercity;487):15
+#1529 | auto Undercity;21§auto Unterstadt;21§auto Fossoyeuse;21 | x=1278.099975585938 y=328.2000122070313 | size=1 | links=#26119(auto Undercity;441):18 c2227.1:7 c2425.1:11 c10181.1:17
+#1579 | auto Undercity;22§auto Unterstadt;22§auto Fossoyeuse;22 | x=1595.468707500671 y=102.4450834470294 | size=1 | links=#10033(auto Undercity;157):22 #12181(auto Undercity;187):29 #12611(auto Undercity;193):35 #24644(auto Undercity;412):30 #25173(waters;down;Canals;Undercity;three):25
+#1712 | auto Undercity;23§auto Unterstadt;23§auto Fossoyeuse;23 | x=1804.700073242188 y=193.3000030517578 | size=1 | links=#260(auto Undercity;7):5 #14937(auto Undercity;244):12
+#1823 | auto Undercity;24§auto Unterstadt;24§auto Fossoyeuse;24 | x=1767.400024414063 y=187.1999969482422 | size=1 | links=#12926(auto Undercity;204):27 #18365(auto Undercity;305):10
+#1874 | auto Undercity;25§auto Unterstadt;25§auto Fossoyeuse;25 | x=1446.800048828125 y=289.7000122070313 | size=1 | links=#4306(auto Undercity;63):18 #26282(auto Undercity;451):16
+#1897 | auto Undercity;26§auto Unterstadt;26§auto Fossoyeuse;26 | x=1530.900024414063 y=212.5 | size=1 | links=#14058(auto Undercity;223):9 #23761(auto Undercity;398):14
+#1963 | auto Undercity;27§auto Unterstadt;27§auto Fossoyeuse;27 | x=1597 y=377.8999938964844 | size=1 | links=#5087(auto Undercity;78):22 #12923(auto Undercity;203):23 #27299(auto Undercity;469):30 #27982(auto Undercity;482):30 c5670.1:37
+#2004 | auto Undercity;28§auto Unterstadt;28§auto Fossoyeuse;28 | x=1744.900024414063 y=228.4000091552734 | size=1 | links=#23052(auto Undercity;387):15 #24046(auto Undercity;402):9
+#2008 | auto Undercity;29§auto Unterstadt;29§auto Fossoyeuse;29 | x=1649 y=292.1000061035156 | size=1 | links=#14780(auto Undercity;241):56 #23090(auto Undercity;388):18 #27025(auto Undercity;460):57
+#2018 | auto Undercity;30§auto Unterstadt;30§auto Fossoyeuse;30 | x=1749 y=335.5 | size=1 | links=#6187(auto Undercity;104):21 #17731(auto Undercity;289):7 #17769(auto Undercity;290):4 #26285(auto Undercity;452):20
+#2055 | auto Undercity;31§auto Unterstadt;31§auto Fossoyeuse;31 | x=1853.400024414063 y=237.6000061035156 | size=1 | links=#18232(auto Undercity;300):13 #20585(auto Undercity;339):10
+#2121 | auto Undercity;32§auto Unterstadt;32§auto Fossoyeuse;32 | x=1303.400024414063 y=362.3999938964844 | size=1 | links=#16862(auto Undercity;269):13 #23196(auto Undercity;390):12
+#2191 | auto Undercity;33§auto Unterstadt;33§auto Fossoyeuse;33 | x=1743.300048828125 y=187 | size=1 | links=#20258(auto Undercity;332):57 #28318(auto Undercity;488):23
+#2193 | auto Undercity;34§auto Unterstadt;34§auto Fossoyeuse;34 | x=1775.599975585938 y=418.7000122070313 | size=1 | links=#7313(auto Undercity;124):11 #20393(auto Undercity;334):11 c4593.1:6 c4594.1:9 c4595.1:8
+#2268 | auto Undercity;35§auto Unterstadt;35§auto Fossoyeuse;35 | x=1420.5 y=200.4000091552734 | size=1 | links=#2715(auto Undercity;38):39 #5605(auto Undercity;84):9
+#2438 | auto Undercity;36§auto Unterstadt;36§auto Fossoyeuse;36 | x=1659 y=124.5 | size=1 | links=#7079(auto Undercity;118):28 #12846(auto Undercity;202):17 #21521(auto Undercity;356):16
+#2459 | auto Undercity;37§auto Unterstadt;37§auto Fossoyeuse;37 | x=1529.200073242188 y=98.30000305175781 | size=1 | links=#17688(auto Undercity;287):17 #25045(auto Undercity;423):17
+#2715 | auto Undercity;38§auto Unterstadt;38§auto Fossoyeuse;38 | x=1415 y=239.1999969482422 | size=1 | links=#2268(auto Undercity;35):39 #19366(auto Undercity;322):46
+#2818 | auto Undercity;39§auto Unterstadt;39§auto Fossoyeuse;39 | x=1698.300048828125 y=334.7000122070313 | size=1 | links=#10210(auto Undercity;160):10 #22149(auto Undercity;369):13 #25831(auto Undercity;434):16
+#2857 | waters;down;Canals;Undercity;four§gewässer;unten;Kanäle;Unterstadt;vier§eaux;bas;Canals;Fossoyeuse;quatre | x=1437.800112043437 y=239.7843065908203 | size=1 | links=#4727(auto Undercity;72):20 #12808(auto Undercity;201):41 #25482(auto Undercity;428):29 #28341(auto Undercity;491):37
+#2931 | auto Undercity;40§auto Unterstadt;40§auto Fossoyeuse;40 | x=1712.5 y=235.1999969482422 | size=1 | links=#25023(auto Undercity;422):5 #26347(auto Undercity;453):9
+#2970 | auto Undercity;41§auto Unterstadt;41§auto Fossoyeuse;41 | x=1626.800048828125 y=208.6999969482422 | size=1 | links=#11579(auto Undercity;178):12 #21268(auto Undercity;353):12
+#3010 | auto Undercity;42§auto Unterstadt;42§auto Fossoyeuse;42 | x=1474.599975585938 y=171.1000061035156 | size=1 | links=#3706(auto Undercity;56):18 #20959(auto Undercity;347):13 #22785(auto Undercity;382):12
+#3017 | auto Undercity;43§auto Unterstadt;43§auto Fossoyeuse;43 | x=1604.599975585938 y=422.8999938964844 | size=1 | links=#12784(Gneis;path;entry and exit;Canals;Undercity):7 #20934(auto Undercity;344):15
+#3245 | auto Undercity;44§auto Unterstadt;44§auto Fossoyeuse;44 | x=1481.900024414063 y=321.2000122070313 | size=1 | links=#8425(auto Undercity;135):11 #11920(auto Undercity;182):15 #20096(auto Undercity;331):9
+#3272 | auto Undercity;45§auto Unterstadt;45§auto Fossoyeuse;45 | x=1735.300048828125 y=358.8999938964844 | size=1 | links=#9036(auto Undercity;140):9 #17731(auto Undercity;289):19
+#3275 | auto Undercity;46§auto Unterstadt;46§auto Fossoyeuse;46 | x=1604.400024414063 y=247.6999969482422 | size=1 | links=#25846(auto Undercity;435):7 #28464(auto Undercity;495):8
+#3308 | auto Undercity;47§auto Unterstadt;47§auto Fossoyeuse;47 | x=1558.800048828125 y=238.5 | size=1 | links=#724(auto Undercity;11):15 #9267(auto Undercity;147):14
+#3309 | auto Undercity;48§auto Unterstadt;48§auto Fossoyeuse;48 | x=1553.599975585938 y=110.5 | size=1 | links=#13873(auto Undercity;221):10 #24644(auto Undercity;412):11
+#3310 | auto Undercity;49§auto Unterstadt;49§auto Fossoyeuse;49 | x=1650.300048828125 y=479.5 | size=1 | links=#11161(auto Undercity;171):13 #21981(auto Undercity;364):9
+#3430 | auto Undercity;50§auto Unterstadt;50§auto Fossoyeuse;50 | x=1735.200073242188 y=88.5999984741211 | size=1 | links=#6036(auto Undercity;98):22 #22443(auto Undercity;373):17
+#3554 | auto Undercity;51§auto Unterstadt;51§auto Fossoyeuse;51 | x=1347.800048828125 y=432.8999938964844 | size=1 | links=#8781(auto Undercity;138):23 #19226(auto Undercity;319):12
+#3576 | auto Undercity;52§auto Unterstadt;52§auto Fossoyeuse;52 | x=1705.700073242188 y=128 | size=1 | links=#185(auto Undercity;5):17 #14416(auto Undercity;231):18
+#3577 | auto Undercity;53§auto Unterstadt;53§auto Fossoyeuse;53 | x=1715.700073242188 y=220.6999969482422 | size=1 | links=#23052(auto Undercity;387):16 #26347(auto Undercity;453):5
+#3602 | auto Undercity;54§auto Unterstadt;54§auto Fossoyeuse;54 | x=1652.400024414063 y=732.5 | size=1 | links=#6122(auto Tirisfal Glades;122):33 #6597(Gneis;path;Tirisfal Glades;entry and exit;to;Undercity):28 #10654(auto Tirisfal Glades;193):33 #19394(auto Tirisfal Glades;357):31 #136(auto Undercity;3):19 #1414(auto Undercity;19):7
+#3671 | auto Undercity;55§auto Unterstadt;55§auto Fossoyeuse;55 | x=1605.800048828125 y=211.8000030517578 | size=1 | links=#1394(waters;down;Handwerksviertel;Undercity;one):15 #15776(auto Undercity;253):7
+#3706 | auto Undercity;56§auto Unterstadt;56§auto Fossoyeuse;56 | x=1458.599975585938 y=162.3000030517578 | size=1 | links=#3010(auto Undercity;42):18 #19521(auto Undercity;326):17
+#3937 | auto Undercity;57§auto Unterstadt;57§auto Fossoyeuse;57 | x=1495 y=190.9000091552734 | size=1 | links=#11692(auto Undercity;180):13 #18210(auto Undercity;299):35 c223.1:9 c4590.1:20 c7087.1:10
+#3946 | auto Undercity;58§auto Unterstadt;58§auto Fossoyeuse;58 | x=1758.300048828125 y=238.6000061035156 | size=1 | links=#17316(auto Undercity;276):6 #26187(auto Undercity;443):3
+#3952 | auto Undercity;59§auto Unterstadt;59§auto Fossoyeuse;59 | x=1764.599975585938 y=311.7000122070313 | size=1 | links=#12645(auto Undercity;194):22 #26285(auto Undercity;452):8
+#4073 | auto Undercity;60§auto Unterstadt;60§auto Fossoyeuse;60 | x=1658.599975585938 y=238.9000091552734 | size=1 | links=#16731(auto Undercity;266):7 #42881(auto Undercity;498):11
+#4114 | auto Undercity;61§auto Unterstadt;61§auto Fossoyeuse;61 | x=1633.099975585938 y=240.6000061035156 | size=1 | links=#6111(auto Undercity;103):15 #7847(auto Undercity;130):16 #13283(auto Undercity;211):14
+#4134 | auto Undercity;62§auto Unterstadt;62§auto Fossoyeuse;62 | x=1451.300048828125 y=341.1000061035156 | size=1 | links=#5655(auto Undercity;86):13 c5733.1:10
+#4306 | auto Undercity;63§auto Unterstadt;63§auto Fossoyeuse;63 | x=1453.700073242188 y=307.3000183105469 | size=1 | links=#1874(auto Undercity;25):18 #19554(auto Undercity;327):17
+#4353 | auto Undercity;64§auto Unterstadt;64§auto Fossoyeuse;64 | x=1459.599975585938 y=241.3000030517578 | size=1 | links=#394(auto Undercity;9):35 #12808(auto Undercity;201):31 #28341(auto Undercity;491):30
+#4480 | auto Undercity;65§auto Unterstadt;65§auto Fossoyeuse;65 | x=1675.599975585938 y=376.2000122070313 | size=1 | links=#7143(waters;down;Canals;Undercity;one):46 #25831(auto Undercity;434):44
+#4506 | auto Undercity;66§auto Unterstadt;66§auto Fossoyeuse;66 | x=1443.5 y=89.5999984741211 | size=1 | links=#16555(auto Undercity;264):17 #23100(auto Undercity;389):32
+#4514 | auto Undercity;67§auto Unterstadt;67§auto Fossoyeuse;67 | x=1581.300048828125 y=276.7000122070313 | size=1 | links=#7114(auto Undercity;120):17 #26680(auto Undercity;456):14 c15768.1:7
+#4576 | auto Undercity;68§auto Unterstadt;68§auto Fossoyeuse;68 | x=1594.900024414063 y=231.4000091552734 | size=1 | links=#4778(auto Undercity;73):8 #17412(auto Undercity;278):11 #17771(auto Undercity;291):9 c2459.1:4
+#4622 | auto Undercity;69§auto Unterstadt;69§auto Fossoyeuse;69 | x=1666.800048828125 y=644.2000122070312 | size=1 | links=#4665(auto Undercity;70):48 #28486(auto Undercity;496):37
+#4665 | auto Undercity;70§auto Unterstadt;70§auto Fossoyeuse;70 | x=1618.400024414063 y=647.2000122070312 | size=1 | links=#4622(auto Undercity;69):48 #13300(auto Undercity;212):43
+#4685 | auto Undercity;71§auto Unterstadt;71§auto Fossoyeuse;71 | x=1446.099975585938 y=190.9000091552734 | size=1 | links=#25482(auto Undercity;428):20 #28491(auto Undercity;497):14
+#4727 | auto Undercity;72§auto Unterstadt;72§auto Fossoyeuse;72 | x=1440.700073242188 y=260.3000183105469 | size=1 | links=#2857(waters;down;Canals;Undercity;four):20 #26282(auto Undercity;451):13
+#4778 | auto Undercity;73§auto Unterstadt;73§auto Fossoyeuse;73 | x=1586.300048828125 y=232.6000061035156 | size=1 | links=#4576(auto Undercity;68):8 #10994(auto Undercity;169):8
+#4903 | auto Undercity;74§auto Unterstadt;74§auto Fossoyeuse;74 | x=1643.400024414063 y=265.3999938964844 | size=1 | links=#23090(auto Undercity;388):16 c15683.1:11
+#4917 | auto Undercity;75§auto Unterstadt;75§auto Fossoyeuse;75 | x=1703.300048828125 y=478.1000061035156 | size=1 | links=#889(auto Undercity;12):13 #18707(auto Undercity;309):7
+#4942 | auto Undercity;76§auto Unterstadt;76§auto Fossoyeuse;76 | x=1697.5 y=390.7000122070313 | size=1 | links=#17972(auto Undercity;293):24 #25752(auto Undercity;433):21 #26276(auto Undercity;449):25
+#5050 | auto Undercity;77§auto Unterstadt;77§auto Fossoyeuse;77 | x=1524 y=405.3999938964844 | size=1 | links=#5131(auto Undercity;79):24 #7789(auto Undercity;127):10 #15092(auto Undercity;246):6
+#5087 | auto Undercity;78§auto Unterstadt;78§auto Fossoyeuse;78 | x=1612.5 y=394.5 | size=1 | links=#1963(auto Undercity;27):22 #7143(waters;down;Canals;Undercity;one):20 #12923(auto Undercity;203):29
+#5131 | auto Undercity;79§auto Unterstadt;79§auto Fossoyeuse;79 | x=1547.200073242188 y=413.1000061035156 | size=1 | links=#5050(auto Undercity;77):24 #11521(auto Undercity;176):9
+#5183 | auto Undercity;80§auto Unterstadt;80§auto Fossoyeuse;80 | x=1490.599975585938 y=387.3999938964844 | size=1 | links=#13097(auto Undercity;210):7 #17042(auto Undercity;273):27 #25468(auto Undercity;427):7
+#5405 | auto Undercity;81§auto Unterstadt;81§auto Fossoyeuse;81 | x=1430.800048828125 y=329.3999938964844 | size=1 | links=#9863(auto Undercity;154):15 #18272(auto Undercity;302):16
+#5446 | auto Undercity;82§auto Unterstadt;82§auto Fossoyeuse;82 | x=1575 y=235.6000061035156 | size=1 | links=#6209(auto Undercity;105):9 #6318(auto Undercity;108):11 #21763(auto Undercity;360):8
+#5566 | auto Undercity;83§auto Unterstadt;83§auto Fossoyeuse;83 | x=1388.599975585938 y=414.7000122070313 | size=1 | links=#14606(auto Undercity;236):13 #17713(auto Undercity;288):5
+#5605 | auto Undercity;84§auto Unterstadt;84§auto Fossoyeuse;84 | x=1422.800048828125 y=191.3000030517578 | size=1 | links=#2268(auto Undercity;35):9 #18748(auto Undercity;311):22
+#5629 | auto Undercity;85§auto Unterstadt;85§auto Fossoyeuse;85 | x=1595.900024414063 y=275.7000122070313 | size=1 | links=#20542(auto Undercity;338):15 c2050.1:8 c4552.1:5 c4553.1:6
+#5655 | auto Undercity;86§auto Unterstadt;86§auto Fossoyeuse;86 | x=1444.099975585938 y=330 | size=1 | links=#4134(auto Undercity;62):13 #18184(auto Undercity;298):13 #18833(auto Undercity;313):18
+#5698 | auto Undercity;87§auto Unterstadt;87§auto Fossoyeuse;87 | x=1459.900024414063 y=439.7000122070313 | size=1 | links=#163(auto Undercity;4):8 #16932(auto Undercity;271):10
+#5705 | auto Undercity;88§auto Unterstadt;88§auto Fossoyeuse;88 | x=1746.800048828125 y=51.10000228881836 | size=1 | links=#927(auto Undercity;13):9 #21182(auto Undercity;349):12
+#5707 | auto Undercity;89§auto Unterstadt;89§auto Fossoyeuse;89 | x=1513.599975585938 y=134.6000061035156 | size=1 | links=#13873(auto Undercity;221):36 #14122(auto Undercity;227):16 #17009(auto Undercity;272):22 #25620(auto Undercity;430):8
+#5714 | auto Undercity;90§auto Unterstadt;90§auto Fossoyeuse;90 | x=1735 y=204.8000030517578 | size=1 | links=#20090(auto Undercity;330):25 #26794(auto Undercity;457):13
+#5741 | auto Undercity;91§auto Unterstadt;91§auto Fossoyeuse;91 | x=1603.800048828125 y=228.8000030517578 | size=1 | links=#20939(auto Undercity;345):6 c8403.1:9
+#5743 | auto Undercity;92§auto Unterstadt;92§auto Fossoyeuse;92 | x=1580.900024414063 y=202.5 | size=1 | links=#11269(auto Undercity;173):16 #24390(auto Undercity;408):14
+#5747 | auto Undercity;93§auto Unterstadt;93§auto Fossoyeuse;93 | x=1762.900024414063 y=432.3000183105469 | size=1 | links=#12775(auto Undercity;200):11 #20393(auto Undercity;334):7
+#5835 | auto Undercity;94§auto Unterstadt;94§auto Fossoyeuse;94 | x=1493.200073242188 y=295.6000061035156 | size=1 | links=#16304(auto Undercity;260):35 #20096(auto Undercity;331):27 #25619(auto Undercity;429):23 #45492(auto Undercity;499):14 c4616.1:24 c4617.1:21 c11067.1:22
+#5956 | auto Undercity;95§auto Unterstadt;95§auto Fossoyeuse;95 | x=1620.5 y=218.6000061035156 | size=1 | links=#18083(auto Undercity;295):12 #27498(auto Undercity;471):8
+#5958 | auto Undercity;96§auto Unterstadt;96§auto Fossoyeuse;96 | x=1641.400024414063 y=89 | size=1 | links=#11095(auto Undercity;170):36 #25173(waters;down;Canals;Undercity;three):30
+#5963 | auto Undercity;97§auto Unterstadt;97§auto Fossoyeuse;97 | x=1580.700073242188 y=269.1000061035156 | size=1 | links=#9146(auto Undercity;144):18 #27091(auto Undercity;463):8
+#6036 | auto Undercity;98§auto Unterstadt;98§auto Fossoyeuse;98 | x=1717.200073242188 y=102.9000015258789 | size=1 | links=#3430(auto Undercity;50):22 #18325(auto Undercity;304):10 #23510(auto Undercity;394):5
+#6037 | auto Undercity;99§auto Unterstadt;99§auto Fossoyeuse;99 | x=1736.5 y=182.5 | size=1 | links=#13037(auto Undercity;206):8 #26794(auto Undercity;457):8
+#6047 | auto Undercity;100§auto Unterstadt;100§auto Fossoyeuse;100 | x=1673.700073242188 y=75.30000305175781 | size=1 | links=#9075(auto Undercity;143):9 #27742(auto Undercity;477):13
+#6060 | auto Undercity;101§auto Unterstadt;101§auto Fossoyeuse;101 | x=1489.300048828125 y=92.5 | size=1 | links=#6470(auto Undercity;110):8 #13664(auto Undercity;218):6 #18862(auto Undercity;314):6
+#6092 | auto Undercity;102§auto Unterstadt;102§auto Fossoyeuse;102 | x=1794 y=369.7000122070313 | size=1 | links=#7654(auto Undercity;126):16 #24919(auto Undercity;421):24
+#6111 | auto Undercity;103§auto Unterstadt;103§auto Fossoyeuse;103 | x=1631.400024414063 y=256.2000122070313 | size=1 | links=#4114(auto Undercity;61):15 #24601(auto Undercity;411):14 c4558.1:5 c4561.1:7
+#6187 | auto Undercity;104§auto Unterstadt;104§auto Fossoyeuse;104 | x=1768.800048828125 y=342.8999938964844 | size=1 | links=#2018(auto Undercity;30):21 #24919(auto Undercity;421):13 c23103.1:10
+#6209 | auto Undercity;105§auto Unterstadt;105§auto Fossoyeuse;105 | x=1580.400024414063 y=228.1000061035156 | size=1 | links=#5446(auto Undercity;82):9 #14072(auto Undercity;224):9 #21763(auto Undercity;360):15 #22747(auto Undercity;380):11
+#6253 | auto Undercity;106§auto Unterstadt;106§auto Fossoyeuse;106 | x=1788.099975585938 y=81.80000305175781 | size=1 | links=#8617(auto Undercity;137):17 #17423(auto Undercity;279):8 c2492.1:19
+#6266 | auto Undercity;107§auto Unterstadt;107§auto Fossoyeuse;107 | x=1759.200073242188 y=168.4000091552734 | size=1 | links=#25271(auto Undercity;426):8 #25977(auto Undercity;437):7
+#6318 | auto Undercity;108§auto Unterstadt;108§auto Fossoyeuse;108 | x=1563.800048828125 y=233.6999969482422 | size=1 | links=#5446(auto Undercity;82):11 #18389(auto Undercity;306):13
+#6432 | auto Undercity;109§auto Unterstadt;109§auto Fossoyeuse;109 | x=1804.900024414063 y=334.8000183105469 | size=1 | links=#17539(auto Undercity;283):14 #24784(portal;from;Ruins of Lordaeron;Undercity;to;Silvermoon City):12
+#6470 | auto Undercity;110§auto Unterstadt;110§auto Fossoyeuse;110 | x=1492.099975585938 y=84.0999984741211 | size=1 | links=#127(auto Undercity;2):33 #6060(auto Undercity;101):8 #20624(auto Undercity;340):17
+#6626 | auto Undercity;111§auto Unterstadt;111§auto Fossoyeuse;111 | x=1711.400024414063 y=176.9000091552734 | size=1 | links=#18416(auto Undercity;307):26 #21765(auto Undercity;361):20 #28406(auto Undercity;494):22 c4571.1:5
+#6755 | auto Undercity;112§auto Unterstadt;112§auto Fossoyeuse;112 | x=1422.300048828125 y=384.5 | size=1 | links=#9672(auto Undercity;151):11 c5204.1:21 c8393.1:18
+#6857 | auto Undercity;113§auto Unterstadt;113§auto Fossoyeuse;113 | x=1453.599975585938 y=128.5 | size=1 | links=#12718(auto Undercity;199):10 #23100(auto Undercity;389):21
+#6860 | auto Undercity;114§auto Unterstadt;114§auto Fossoyeuse;114 | x=1746.400024414063 y=100.2000045776367 | size=1 | links=#1181(auto Undercity;17):13 #17964(auto Undercity;292):21
+#6896 | auto Undercity;115§auto Unterstadt;115§auto Fossoyeuse;115 | x=1589 y=240.3000030517578 | size=1 | links=#14226(auto Undercity;229):7 #20841(auto Undercity;341):6
+#6951 | auto Undercity;116§auto Unterstadt;116§auto Fossoyeuse;116 | x=1639.300048828125 y=414.7000122070313 | size=1 | links=#1033(auto Undercity;15):11 #7297(auto Undercity;122):11 #8135(auto Undercity;132):42
+#6980 | auto Undercity;117§auto Unterstadt;117§auto Fossoyeuse;117 | x=1686.700073242188 y=479 | size=1 | links=#12692(auto Undercity;197):7 #18707(auto Undercity;309):9
+#7079 | auto Undercity;118§auto Unterstadt;118§auto Fossoyeuse;118 | x=1634.900024414063 y=109.7000045776367 | size=1 | links=#2438(auto Undercity;36):28 #12181(auto Undercity;187):10
+#7095 | auto Undercity;119§auto Unterstadt;119§auto Fossoyeuse;119 | x=1754.5 y=266.5 | size=1 | links=#27054(auto Undercity;461):12 #28307(auto Undercity;487):8
+#7114 | auto Undercity;120§auto Unterstadt;120§auto Fossoyeuse;120 | x=1567.700073242188 y=265.8999938964844 | size=1 | links=#724(auto Undercity;11):14 #4514(auto Undercity;67):17 c4551.1:0 c5651.1:9
+#7143 | waters;down;Canals;Undercity;one§gewässer;unten;Kanäle;Unterstadt;eins§eaux;bas;Canals;Fossoyeuse;un | x=1633 y=393.8000183105469 | size=1 | links=#4480(auto Undercity;65):46 #5087(auto Undercity;78):20
+#7215 | auto Undercity;121§auto Unterstadt;121§auto Fossoyeuse;121 | x=1390.800048828125 y=374.7000122070313 | size=1 | links=#16102(auto Undercity;255):6 #22862(auto Undercity;383):13 #27971(auto Undercity;481):17
+#7297 | auto Undercity;122§auto Unterstadt;122§auto Fossoyeuse;122 | x=1630.099975585938 y=422.3000183105469 | size=1 | links=#6951(auto Undercity;116):11 #20934(auto Undercity;344):10
+#7302 | auto Undercity;123§auto Unterstadt;123§auto Fossoyeuse;123 | x=1319.5 y=409.8999938964844 | size=1 | links=#19226(auto Undercity;319):24 #26215(auto Undercity;445):10
+#7313 | auto Undercity;124§auto Unterstadt;124§auto Fossoyeuse;124 | x=1783.599975585938 y=410.3000183105469 | size=1 | links=#2193(auto Undercity;34):11 #21998(auto Undercity;365):10
+#7624 | auto Undercity;125§auto Unterstadt;125§auto Fossoyeuse;125 | x=1722.599975585938 y=499.2000122070313 | size=1 | links=#19270(auto Undercity;320):25 #21244(auto Undercity;352):21
+#7654 | auto Undercity;126§auto Unterstadt;126§auto Fossoyeuse;126 | x=1789.400024414063 y=385.6000061035156 | size=1 | links=#6092(auto Undercity;102):16 #13567(auto Undercity;216):11
+#7789 | auto Undercity;127§auto Unterstadt;127§auto Fossoyeuse;127 | x=1513.300048828125 y=405.3999938964844 | size=1 | links=#5050(auto Undercity;77):10 #15102(auto Undercity;247):23 #25468(auto Undercity;427):22
+#7801 | auto Undercity;128§auto Unterstadt;128§auto Fossoyeuse;128 | x=1551.300048828125 y=209 | size=1 | links=#24673(auto Undercity;413):8 #27241(auto Undercity;466):8
+#7819 | auto Undercity;129§auto Unterstadt;129§auto Fossoyeuse;129 | x=1596.5 y=433.8000183105469 | size=1 | links=#12784(Gneis;path;entry and exit;Canals;Undercity):9 #22425(auto Undercity;372):3
+#7847 | auto Undercity;130§auto Unterstadt;130§auto Fossoyeuse;130 | x=1631.099975585938 y=224.6999969482422 | size=1 | links=#4114(auto Undercity;61):16 #14582(auto Undercity;234):14 #22877(s;h;Mailbox;Undercity):3 c6741.1:4
+#7883 | auto Undercity;131§auto Unterstadt;131§auto Fossoyeuse;131 | x=1424.200073242188 y=294.7000122070313 | size=1 | links=#9863(auto Undercity;154):20 #19366(auto Undercity;322):10
+#8135 | auto Undercity;132§auto Unterstadt;132§auto Fossoyeuse;132 | x=1597.200073242188 y=414.3999938964844 | size=1 | links=#6951(auto Undercity;116):42 #22737(auto Undercity;379):33
+#8346 | auto Undercity;133§auto Unterstadt;133§auto Fossoyeuse;133 | x=1714.300048828125 y=314 | size=1 | links=#14705(auto Undercity;240):17 #17363(auto Undercity;277):10 #22149(auto Undercity;369):12
+#8406 | auto Undercity;134§auto Unterstadt;134§auto Fossoyeuse;134 | x=1458.400024414063 y=419 | size=1 | links=#9200(auto Undercity;145):9 #14240(auto Undercity;230):10
+#8425 | auto Undercity;135§auto Unterstadt;135§auto Fossoyeuse;135 | x=1475.900024414063 y=311.6000061035156 | size=1 | links=#3245(auto Undercity;44):11 #18833(auto Undercity;313):18 #19554(auto Undercity;327):13
+#8456 | auto Undercity;136§auto Unterstadt;136§auto Fossoyeuse;136 | x=1645.200073242188 y=67.4000015258789 | size=1 | links=#9075(auto Undercity;143):20 #22102(auto Undercity;368):9
+#8617 | auto Undercity;137§auto Unterstadt;137§auto Fossoyeuse;137 | x=1800.599975585938 y=69.9000015258789 | size=1 | links=#6253(auto Undercity;106):17 c4568.1:18
+#8781 | auto Undercity;138§auto Unterstadt;138§auto Fossoyeuse;138 | x=1371 y=438.5 | size=1 | links=#3554(auto Undercity;51):23 #21699(auto Undercity;358):10
+#8848 | auto Undercity;139§auto Unterstadt;139§auto Fossoyeuse;139 | x=1549.700073242188 y=268.1000061035156 | size=1 | links=#27566(auto Undercity;475):13 c8721.1:14
+#9036 | auto Undercity;140§auto Unterstadt;140§auto Fossoyeuse;140 | x=1727.400024414063 y=364.7000122070313 | size=1 | links=#3272(auto Undercity;45):9 #16155(auto Undercity;258):7 #26276(auto Undercity;449):14 c5654.1:12 c5658.1:7 c5659.1:11 c5660.1:6
+#9053 | auto Undercity;141§auto Unterstadt;141§auto Fossoyeuse;141 | x=1441 y=54.5 | size=1 | links=c4583.1:21 c7297.1:22
+#9070 | auto Undercity;142§auto Unterstadt;142§auto Fossoyeuse;142 | x=1530 y=383.2000122070313 | size=1 | links=#11842(auto Undercity;181):29 #27515(auto Undercity;474):17
+#9075 | auto Undercity;143§auto Unterstadt;143§auto Fossoyeuse;143 | x=1665.5 y=71.0999984741211 | size=1 | links=#6047(auto Undercity;100):9 #8456(auto Undercity;136):20
+#9146 | auto Undercity;144§auto Unterstadt;144§auto Fossoyeuse;144 | x=1568.5 y=255.3000030517578 | size=1 | links=#5963(auto Undercity;97):18 #19368(auto Undercity;323):9
+#9200 | auto Undercity;145§auto Unterstadt;145§auto Fossoyeuse;145 | x=1466 y=424.3000183105469 | size=1 | links=#8406(auto Undercity;134):9 #18145(auto Undercity;296):8
+#9203 | auto Undercity;146§auto Unterstadt;146§auto Fossoyeuse;146 | x=1365.099975585938 y=385.1000061035156 | size=1 | links=#9567(auto Undercity;148):14 #13918(auto Undercity;222):12
+#9267 | auto Undercity;147§auto Unterstadt;147§auto Fossoyeuse;147 | x=1558.5 y=223.9000091552734 | size=1 | links=#3308(auto Undercity;47):14 #11269(auto Undercity;173):14 #23761(auto Undercity;398):15
+#9567 | auto Undercity;148§auto Unterstadt;148§auto Fossoyeuse;148 | x=1360.599975585938 y=371.7000122070313 | size=1 | links=#9203(auto Undercity;146):14 #16927(auto Undercity;270):8
+#9593 | auto Undercity;149§auto Unterstadt;149§auto Fossoyeuse;149 | x=1504.099975585938 y=443.7000122070313 | size=1 | links=#9598(auto Undercity;150):10 #24202(auto Undercity;405):13
+#9598 | auto Undercity;150§auto Unterstadt;150§auto Fossoyeuse;150 | x=1508.599975585938 y=434.5 | size=1 | links=#9593(auto Undercity;149):10 #10567(auto Undercity;164):7
+#9672 | auto Undercity;151§auto Unterstadt;151§auto Fossoyeuse;151 | x=1414.400024414063 y=376.6000061035156 | size=1 | links=#6755(auto Undercity;112):11 #21360(auto Undercity;354):12
+#9797 | auto Undercity;152§auto Unterstadt;152§auto Fossoyeuse;152 | x=1571.700073242188 y=264.8000183105469 | size=1 | links=#929(auto Undercity;14):13 #27566(auto Undercity;475):21
+#9825 | auto Undercity;153§auto Unterstadt;153§auto Fossoyeuse;153 | x=1726.200073242188 y=280.2000122070313 | size=1 | links=#17363(auto Undercity;277):27 #19212(auto Undercity;317):10
+#9863 | auto Undercity;154§auto Unterstadt;154§auto Fossoyeuse;154 | x=1432.099975585938 y=313.6000061035156 | size=1 | links=#5405(auto Undercity;81):15 #7883(auto Undercity;131):20 #18184(auto Undercity;298):7
+#9975 | auto Undercity;155§auto Unterstadt;155§auto Fossoyeuse;155 | x=1432.099975585938 y=409 | size=1 | links=#18736(auto Undercity;310):14 #21700(auto Undercity;359):23
+#10010 | auto Undercity;156§auto Unterstadt;156§auto Fossoyeuse;156 | x=1732 y=238.8000030517578 | size=1 | links=#14780(auto Undercity;241):61 #19212(auto Undercity;317):31 #23395(auto Undercity;392):29 #23662(waters;down;Canals;Undercity;two):22
+#10033 | auto Undercity;157§auto Unterstadt;157§auto Fossoyeuse;157 | x=1582.700073242188 y=83.80000305175781 | size=1 | links=#1579(auto Undercity;22):22 #19030(auto Undercity;315):21 #25173(waters;down;Canals;Undercity;three):29
+#10073 | auto Undercity;158§auto Unterstadt;158§auto Fossoyeuse;158 | x=1617.300048828125 y=244.5 | size=1 | links=#15254(auto Undercity;249):10 #22773(auto Undercity;381):8 #28368(auto Undercity;492):12
+#10153 | auto Undercity;159§auto Unterstadt;159§auto Fossoyeuse;159 | x=1787.5 y=46.29999923706055 | size=1 | links=#13488(auto Undercity;214):9 #24085(auto Undercity;403):11
+#10210 | auto Undercity;160§auto Unterstadt;160§auto Fossoyeuse;160 | x=1688.300048828125 y=335.7000122070313 | size=1 | links=#2818(auto Undercity;39):10 #14424(auto Undercity;232):17 #17363(auto Undercity;277):40 #22617(auto Undercity;376):33
+#10336 | auto Undercity;161§auto Unterstadt;161§auto Fossoyeuse;161 | x=1750.700073242188 y=271 | size=1 | links=#19047(auto Undercity;316):18 #23662(waters;down;Canals;Undercity;two):24
+#10405 | auto Undercity;162§auto Unterstadt;162§auto Fossoyeuse;162 | x=1436.800048828125 y=461.3000183105469 | size=1 | links=#16127(auto Undercity;256):6 #27078(auto Undercity;462):9
+#10513 | auto Undercity;163§auto Unterstadt;163§auto Fossoyeuse;163 | x=1806 y=249.5 | size=1 | links=#18427(auto Undercity;308):24 #24900(auto Undercity;420):18
+#10567 | auto Undercity;164§auto Unterstadt;164§auto Fossoyeuse;164 | x=1505.599975585938 y=427.1000061035156 | size=1 | links=#9598(auto Undercity;150):7 #15102(auto Undercity;247):12
+#10696 | auto Undercity;165§auto Unterstadt;165§auto Fossoyeuse;165 | x=1768.099975585938 y=238.6999969482422 | size=1 | links=#14669(auto Undercity;239):4 #26187(auto Undercity;443):6
+#10755 | auto Undercity;166§auto Unterstadt;166§auto Fossoyeuse;166 | x=1406.400024414063 y=430.5 | size=1 | links=#17595(auto Undercity;285):5 #22029(auto Undercity;366):5
+#10783 | auto Undercity;167§auto Unterstadt;167§auto Fossoyeuse;167 | x=1681.099975585938 y=239.8000030517578 | size=1 | links=#13789(auto Undercity;220):18 #16731(auto Undercity;266):15
+#10855 | auto Undercity;168§auto Unterstadt;168§auto Fossoyeuse;168 | x=1783.599975585938 y=26.80000114440918 | size=1 | links=#24085(auto Undercity;403):17 c4565.1:9
+#10994 | auto Undercity;169§auto Unterstadt;169§auto Fossoyeuse;169 | x=1587.200073242188 y=241 | size=1 | links=#4778(auto Undercity;73):8 #19600(auto Undercity;329):7 c4549.1:4
+#11095 | auto Undercity;170§auto Unterstadt;170§auto Fossoyeuse;170 | x=1674.300048828125 y=104.8000030517578 | size=1 | links=#5958(auto Undercity;96):36 #15707(auto Undercity;252):22
+#11161 | auto Undercity;171§auto Unterstadt;171§auto Fossoyeuse;171 | x=1664.099975585938 y=478.8999938964844 | size=1 | links=#3310(auto Undercity;49):13 #20436(auto Undercity;336):6 #24336(auto Undercity;407):6 c5624.37:3
+#11194 | auto Undercity;172§auto Unterstadt;172§auto Fossoyeuse;172 | x=1776.099975585938 y=190.3000030517578 | size=1 | links=#12213(auto Undercity;188):11 #21195(auto Undercity;350):6
+#11269 | auto Undercity;173§auto Unterstadt;173§auto Fossoyeuse;173 | x=1568.5 y=213 | size=1 | links=#5743(auto Undercity;92):16 #9267(auto Undercity;147):14 c4555.1:5
+#11286 | auto Undercity;174§auto Unterstadt;174§auto Fossoyeuse;174 | x=1588.400024414063 y=258.6000061035156 | size=1 | links=#929(auto Undercity;14):7 #20542(auto Undercity;338):7
+#11485 | auto Undercity;175§auto Unterstadt;175§auto Fossoyeuse;175 | x=1675.300048828125 y=161.3000030517578 | size=1 | links=#12846(auto Undercity;202):33 #21765(auto Undercity;361):35 c2308.1:10 c7825.1:13
+#11521 | auto Undercity;176§auto Unterstadt;176§auto Fossoyeuse;176 | x=1556.700073242188 y=415.3999938964844 | size=1 | links=#5131(auto Undercity;79):9 #22737(auto Undercity;379):7
+#11558 | auto Undercity;177§auto Unterstadt;177§auto Fossoyeuse;177 | x=1759.400024414063 y=268.6000061035156 | size=1 | links=#28079(auto Undercity;484):7 #28307(auto Undercity;487):9
+#11579 | auto Undercity;178§auto Unterstadt;178§auto Fossoyeuse;178 | x=1617.900024414063 y=217.8000030517578 | size=1 | links=#2970(auto Undercity;41):12 #20939(auto Undercity;345):11 c14404.1:1
+#11676 | auto Undercity;179§auto Unterstadt;179§auto Fossoyeuse;179 | x=1731 y=437.3999938964844 | size=1 | links=#12775(auto Undercity;200):22 #14629(auto Undercity;237):22
+#11692 | auto Undercity;180§auto Unterstadt;180§auto Fossoyeuse;180 | x=1485.300048828125 y=182 | size=1 | links=#3937(auto Undercity;57):13 #15230(auto Undercity;248):17 #27294(auto Undercity;468):24
+#11842 | auto Undercity;181§auto Unterstadt;181§auto Fossoyeuse;181 | x=1557.300048828125 y=394 | size=1 | links=#9070(auto Undercity;142):29 #12923(auto Undercity;203):25
+#11920 | auto Undercity;182§auto Unterstadt;182§auto Fossoyeuse;182 | x=1471.599975585938 y=333 | size=1 | links=#3245(auto Undercity;44):15 #25830(waters;down;The Apothecarium;Undercity):29
+#12046 | auto Undercity;183§auto Unterstadt;183§auto Fossoyeuse;183 | x=1592.800048828125 y=64.4000015258789 | size=1 | links=#17537(auto Undercity;282):41 #22102(auto Undercity;368):42
+#12103 | auto Undercity;184§auto Unterstadt;184§auto Fossoyeuse;184 | x=1405.599975585938 y=432 | size=1 | links=#21699(auto Undercity;358):24 #21700(auto Undercity;359):11
+#12118 | auto Undercity;185§auto Unterstadt;185§auto Fossoyeuse;185 | x=1509.5 y=392.8999938964844 | size=1 | links=#1335(auto Undercity;18):17 #13097(auto Undercity;210):13 #15092(auto Undercity;246):12
+#12129 | auto Undercity;186§auto Unterstadt;186§auto Fossoyeuse;186 | x=1520.5 y=241.6999969482422 | size=1 | links=#394(auto Undercity;9):25 #16378(auto Undercity;261):32 #19215(auto Undercity;318):55
+#12181 | auto Undercity;187§auto Unterstadt;187§auto Fossoyeuse;187 | x=1624.800048828125 y=107.0999984741211 | size=1 | links=#1579(auto Undercity;22):29 #7079(auto Undercity;118):10
+#12213 | auto Undercity;188§auto Unterstadt;188§auto Fossoyeuse;188 | x=1787.300048828125 y=188.9000091552734 | size=1 | links=#260(auto Undercity;7):17 #11194(auto Undercity;172):11
+#12233 | auto Undercity;189§auto Unterstadt;189§auto Fossoyeuse;189 | x=1416.400024414063 y=409.8000183105469 | size=1 | links=#26649(auto Undercity;455):11 c4611.1:9 c8390.1:6 c11835.1:19
+#12267 | auto Undercity;190§auto Unterstadt;190§auto Fossoyeuse;190 | x=1515.099975585938 y=348.3000183105469 | size=1 | links=#16750(auto Undercity;267):18 #24770(auto Undercity;415):7 c2934.1:17
+#12313 | auto Undercity;191§auto Unterstadt;191§auto Fossoyeuse;191 | x=1692.200073242188 y=535.4000244140625 | size=1 | links=#17532(auto Undercity;281):3
+#12510 | auto Undercity;192§auto Unterstadt;192§auto Fossoyeuse;192 | x=1721.800048828125 y=335.8999938964844 | size=1 | links=#19324(auto Undercity;321):16 #22149(auto Undercity;369):19
+#12611 | auto Undercity;193§auto Unterstadt;193§auto Fossoyeuse;193 | x=1595.400024414063 y=138.4000091552734 | size=1 | links=#1579(auto Undercity;22):35 #26179(auto Undercity;442):26
+#12645 | auto Undercity;194§auto Unterstadt;194§auto Fossoyeuse;194 | x=1768.5 y=289.7000122070313 | size=1 | links=#3952(auto Undercity;59):22 #23901(auto Undercity;401):10
+#12671 | auto Undercity;195§auto Unterstadt;195§auto Fossoyeuse;195 | x=1458.300048828125 y=380.3999938964844 | size=1 | links=#17042(auto Undercity;273):21 #18736(auto Undercity;310):24
+#12687 | auto Undercity;196§auto Unterstadt;196§auto Fossoyeuse;196 | x=1774.300048828125 y=95.5 | size=1 | links=#1181(auto Undercity;17):16 #17423(auto Undercity;279):11 c5703.1:30
+#12692 | auto Undercity;197§auto Unterstadt;197§auto Fossoyeuse;197 | x=1679.400024414063 y=479 | size=1 | links=#6980(auto Undercity;117):7 #24336(auto Undercity;407):8
+#12696 | auto Undercity;198§auto Unterstadt;198§auto Fossoyeuse;198 | x=1679 y=547.7999877929688 | size=1 | links=#27504(auto Undercity;473):10
+#12718 | auto Undercity;199§auto Unterstadt;199§auto Fossoyeuse;199 | x=1448.099975585938 y=137 | size=1 | links=#6857(auto Undercity;113):10 #17676(auto Undercity;286):8 #18305(auto Undercity;303):5
+#12775 | auto Undercity;200§auto Unterstadt;200§auto Fossoyeuse;200 | x=1751.5 y=429 | size=1 | links=#5747(auto Undercity;93):11 #11676(auto Undercity;179):22 c4608.1:13
+#12784 | Gneis;path;entry and exit;Canals;Undercity§Gneis;weg;ein- und ausgang;Kanäle;Unterstadt§Gneis;path;entrée et sortie;Canals;Fossoyeuse | x=1596.700073242188 y=424 | size=1 | links=#3017(auto Undercity;43):7 #7819(auto Undercity;129):9 #14075(auto Undercity;225):7
+#12808 | auto Undercity;201§auto Unterstadt;201§auto Fossoyeuse;201 | x=1463.200073242188 y=272.1000061035156 | size=1 | links=#2857(waters;down;Canals;Undercity;four):41 #4353(auto Undercity;64):31 #16528(auto Undercity;263):9
+#12846 | auto Undercity;202§auto Unterstadt;202§auto Fossoyeuse;202 | x=1649.599975585938 y=139.6999969482422 | size=1 | links=#2438(auto Undercity;36):17 #11485(auto Undercity;175):33 c4581.1:24 c6293.1:15
+#12923 | auto Undercity;203§auto Unterstadt;203§auto Fossoyeuse;203 | x=1583.099975585938 y=396.3000183105469 | size=1 | links=#1963(auto Undercity;27):23 #5087(auto Undercity;78):29 #11842(auto Undercity;181):25
+#12926 | auto Undercity;204§auto Unterstadt;204§auto Fossoyeuse;204 | x=1757.800048828125 y=161.1999969482422 | size=1 | links=#1823(auto Undercity;24):27 #24180(auto Undercity;404):27
+#12939 | auto Undercity;205§auto Unterstadt;205§auto Fossoyeuse;205 | x=1613.5 y=267 | size=1 | links=#856(waters;down;Handwerksviertel;Undercity;two):9 #16148(auto Undercity;257):16
+#13037 | auto Undercity;206§auto Unterstadt;206§auto Fossoyeuse;206 | x=1738.300048828125 y=174.6999969482422 | size=1 | links=#6037(auto Undercity;99):8 #28066(auto Undercity;483):8
+#13073 | auto Undercity;207§auto Unterstadt;207§auto Fossoyeuse;207 | x=1573.400024414063 y=423.3999938964844 | size=1 | links=#91(auto Undercity;1):9 #14075(auto Undercity;225):15
+#13075 | auto Undercity;208§auto Unterstadt;208§auto Fossoyeuse;208 | x=1776.099975585938 y=175.8000030517578 | size=1 | links=#21195(auto Undercity;350):8 #24890(auto Undercity;419):5
+#13095 | auto Undercity;209§auto Unterstadt;209§auto Fossoyeuse;209 | x=1723.900024414063 y=56.29999923706055 | size=1 | links=#21182(auto Undercity;349):14 c4578.1:19 c5675.1:12
+#13097 | auto Undercity;210§auto Unterstadt;210§auto Fossoyeuse;210 | x=1497.800048828125 y=387 | size=1 | links=#5183(auto Undercity;80):7 #12118(auto Undercity;185):13
+#13283 | auto Undercity;211§auto Unterstadt;211§auto Fossoyeuse;211 | x=1619.099975585938 y=240.1000061035156 | size=1 | links=#4114(auto Undercity;61):14 #25846(auto Undercity;435):12
+#13300 | auto Undercity;212§auto Unterstadt;212§auto Fossoyeuse;212 | x=1588.800048828125 y=679.7000122070312 | size=1 | links=#300(auto Undercity;8):43 #4665(auto Undercity;70):43
+#13319 | auto Undercity;213§auto Unterstadt;213§auto Fossoyeuse;213 | x=1709.200073242188 y=105.0999984741211 | size=1 | links=#14416(auto Undercity;231):13 #18325(auto Undercity;304):5
+#13488 | auto Undercity;214§auto Unterstadt;214§auto Fossoyeuse;214 | x=1780.5 y=52.90000152587891 | size=1 | links=#10153(auto Undercity;159):9 #28372(auto Undercity;493):7 c4563.1:8 c4564.1:8 c4566.1:8 c4567.1:10 c5693.1:7 c5753.1:5
+#13494 | auto Undercity;215§auto Unterstadt;215§auto Fossoyeuse;215 | x=1746.400024414063 y=239.1000061035156 | size=1 | links=#17316(auto Undercity;276):5 #24046(auto Undercity;402):2
+#13567 | auto Undercity;216§auto Unterstadt;216§auto Fossoyeuse;216 | x=1784.5 y=395.8999938964844 | size=1 | links=#7654(auto Undercity;126):11 #21998(auto Undercity;365):10 c4606.1:16 c4607.1:5
+#13614 | auto Undercity;217§auto Unterstadt;217§auto Fossoyeuse;217 | x=1642.900024414063 y=213.4000091552734 | size=1 | links=#21268(auto Undercity;353):15 c15682.1:11
+#13664 | auto Undercity;218§auto Unterstadt;218§auto Fossoyeuse;218 | x=1483.700073242188 y=94.9000015258789 | size=1 | links=#6060(auto Undercity;101):6 #23794(auto Undercity;399):6
+#13666 | auto Undercity;219§auto Unterstadt;219§auto Fossoyeuse;219 | x=1805.900024414063 y=293.8000183105469 | size=1 | links=#27288(auto Undercity;467):15 #27911(auto Undercity;480):14
+#13789 | auto Undercity;220§auto Unterstadt;220§auto Fossoyeuse;220 | x=1700 y=239.1999969482422 | size=1 | links=#10783(auto Undercity;167):18 #25023(auto Undercity;422):8
+#13873 | auto Undercity;221§auto Unterstadt;221§auto Fossoyeuse;221 | x=1543.599975585938 y=113.7000045776367 | size=1 | links=#3309(auto Undercity;48):10 #5707(auto Undercity;89):36 #17009(auto Undercity;272):18 #17688(auto Undercity;287):7
+#13918 | auto Undercity;222§auto Unterstadt;222§auto Fossoyeuse;222 | x=1370.099975585938 y=396.3999938964844 | size=1 | links=#9203(auto Undercity;146):12 #14606(auto Undercity;236):13
+#14058 | auto Undercity;223§auto Unterstadt;223§auto Fossoyeuse;223 | x=1527 y=221.1999969482422 | size=1 | links=#1897(auto Undercity;26):9 #20279(auto Undercity;333):10
+#14072 | auto Undercity;224§auto Unterstadt;224§auto Fossoyeuse;224 | x=1587.900024414063 y=222.1000061035156 | size=1 | links=#6209(auto Undercity;105):9 #17412(auto Undercity;278):7
+#14075 | auto Undercity;225§auto Unterstadt;225§auto Fossoyeuse;225 | x=1589.300048828125 y=423.6000061035156 | size=1 | links=#12784(Gneis;path;entry and exit;Canals;Undercity):7 #13073(auto Undercity;207):15
+#14118 | auto Undercity;226§auto Unterstadt;226§auto Fossoyeuse;226 | x=1629.300048828125 y=452.7000122070313 | size=1 | links=#24809(auto Undercity;416):15 #26880(auto Undercity;458):11
+#14122 | auto Undercity;227§auto Unterstadt;227§auto Fossoyeuse;227 | x=1501.200073242188 y=145.1999969482422 | size=1 | links=#5707(auto Undercity;89):16 #18210(auto Undercity;299):23 #27294(auto Undercity;468):17
+#14174 | auto Undercity;228§auto Unterstadt;228§auto Fossoyeuse;228 | x=1397.400024414063 y=413.7000122070313 | size=1 | links=#17713(auto Undercity;288):6 #26649(auto Undercity;455):15
+#14226 | auto Undercity;229§auto Unterstadt;229§auto Fossoyeuse;229 | x=1581.700073242188 y=240.6000061035156 | size=1 | links=#6896(auto Undercity;115):7 #18821(auto Undercity;312):12
+#14240 | auto Undercity;230§auto Unterstadt;230§auto Fossoyeuse;230 | x=1450.400024414063 y=411.8000183105469 | size=1 | links=#8406(auto Undercity;134):10 c2055.1:17 c5204.1:21
+#14416 | auto Undercity;231§auto Unterstadt;231§auto Fossoyeuse;231 | x=1718.400024414063 y=114.8000030517578 | size=1 | links=#3576(auto Undercity;52):18 #13319(auto Undercity;213):13 #24845(auto Undercity;417):13
+#14424 | auto Undercity;232§auto Unterstadt;232§auto Fossoyeuse;232 | x=1678.200073242188 y=321.1000061035156 | size=1 | links=#10210(auto Undercity;160):17 #21538(auto Undercity;357):34 #23524(auto Undercity;396):35 c4600.1:16 c4601.1:16 c4602.1:15 c11870.1:10
+#14447 | auto Undercity;233§auto Unterstadt;233§auto Fossoyeuse;233 | x=1761.099975585938 y=71.70000457763672 | size=1 | links=#14587(auto Undercity;235):14 #21504(auto Undercity;355):16 #28372(auto Undercity;493):19
+#14582 | auto Undercity;234§auto Unterstadt;234§auto Fossoyeuse;234 | x=1621.900024414063 y=213.1000061035156 | size=1 | links=#7847(auto Undercity;130):14 #16411(auto Undercity;262):15 c4562.1:10
+#14587 | auto Undercity;235§auto Unterstadt;235§auto Fossoyeuse;235 | x=1750.900024414063 y=62 | size=1 | links=#14447(auto Undercity;233):14 #22443(auto Undercity;373):13 c4572.1:5
+#14606 | auto Undercity;236§auto Unterstadt;236§auto Fossoyeuse;236 | x=1378.800048828125 y=406.1000061035156 | size=1 | links=#5566(auto Undercity;83):13 #13918(auto Undercity;222):13
+#14629 | auto Undercity;237§auto Unterstadt;237§auto Fossoyeuse;237 | x=1710.900024414063 y=427.1000061035156 | size=1 | links=#11676(auto Undercity;179):22 #25752(auto Undercity;433):18
+#14646 | auto Undercity;238§auto Unterstadt;238§auto Fossoyeuse;238 | x=1695.400024414063 y=91.70000457763672 | size=1 | links=#18325(auto Undercity;304):14 #27742(auto Undercity;477):14
+#14669 | auto Undercity;239§auto Unterstadt;239§auto Fossoyeuse;239 | x=1772.700073242188 y=239.3000030517578 | size=1 | links=#10696(auto Undercity;165):4 #28340(auto Undercity;490):4
+#14705 | auto Undercity;240§auto Unterstadt;240§auto Fossoyeuse;240 | x=1728.599975585938 y=323.3000183105469 | size=1 | links=#8346(auto Undercity;133):17 #19047(auto Undercity;316):38
+#14780 | auto Undercity;241§auto Unterstadt;241§auto Fossoyeuse;241 | x=1670.700073242188 y=240 | size=1 | links=#2008(auto Undercity;29):56 #10010(auto Undercity;156):61 #20466(auto Undercity;337):56
+#14795 | auto Undercity;242§auto Unterstadt;242§auto Fossoyeuse;242 | x=1576.599975585938 y=103.7000045776367 | size=1
+#14830 | auto Undercity;243§auto Unterstadt;243§auto Fossoyeuse;243 | x=1545.099975585938 y=363.8000183105469 | size=1 | links=#27515(auto Undercity;474):7 #28265(auto Undercity;485):13 c2934.1:16 c5732.1:8
+#14937 | auto Undercity;244§auto Unterstadt;244§auto Fossoyeuse;244 | x=1805.099975585938 y=205.5 | size=1 | links=#1712(auto Undercity;23):12 #27001(auto Undercity;459):14
+#15052 | auto Undercity;245§auto Unterstadt;245§auto Fossoyeuse;245 | x=1429.200073242188 y=158.6999969482422 | size=1 | links=#17676(auto Undercity;286):21 #18748(auto Undercity;311):11 c4586.1:21
+#15092 | auto Undercity;246§auto Unterstadt;246§auto Fossoyeuse;246 | x=1520.300048828125 y=399.5 | size=1 | links=#5050(auto Undercity;77):6 #12118(auto Undercity;185):12
+#15102 | auto Undercity;247§auto Unterstadt;247§auto Fossoyeuse;247 | x=1494.800048828125 y=420.6000061035156 | size=1 | links=#7789(auto Undercity;127):23 #10567(auto Undercity;164):12 #25468(auto Undercity;427):27
+#15230 | auto Undercity;248§auto Unterstadt;248§auto Fossoyeuse;248 | x=1470.200073242188 y=190.8000030517578 | size=1 | links=#11692(auto Undercity;180):17 #20901(auto Undercity;343):11 #20959(auto Undercity;347):7 #27294(auto Undercity;468):37
+#15254 | auto Undercity;249§auto Unterstadt;249§auto Fossoyeuse;249 | x=1610.700073242188 y=253.3000030517578 | size=1 | links=#10073(auto Undercity;158):10 #20939(auto Undercity;345):27 #22320(auto Undercity;370):12 #23521(auto Undercity;395):9
+#15527 | auto Undercity;250§auto Unterstadt;250§auto Fossoyeuse;250 | x=1545.300048828125 y=341 | size=1 | links=#16304(auto Undercity;260):34 c2934.1:23 c4614.1:20 c4615.1:20
+#15693 | auto Undercity;251§auto Unterstadt;251§auto Fossoyeuse;251 | x=1469.300048828125 y=149.6999969482422 | size=1 | links=#610(waters;down;Rogues' Quarter;Undercity):24 #22785(auto Undercity;382):16
+#15707 | auto Undercity;252§auto Unterstadt;252§auto Fossoyeuse;252 | x=1692.400024414063 y=117.8000030517578 | size=1 | links=#11095(auto Undercity;170):22 #25675(auto Undercity;431):15
+#15776 | auto Undercity;253§auto Unterstadt;253§auto Fossoyeuse;253 | x=1613.599975585938 y=211.9000091552734 | size=1 | links=#3671(auto Undercity;55):7 #23456(auto Undercity;393):16
+#16015 | auto Undercity;254§auto Unterstadt;254§auto Fossoyeuse;254 | x=1577.099975585938 y=73.5 | size=1
+#16102 | auto Undercity;255§auto Unterstadt;255§auto Fossoyeuse;255 | x=1394.900024414063 y=379.8999938964844 | size=1 | links=#7215(auto Undercity;121):6 c4609.1:7
+#16127 | auto Undercity;256§auto Unterstadt;256§auto Fossoyeuse;256 | x=1433.200073242188 y=455.8999938964844 | size=1 | links=#10405(auto Undercity;162):6 #17048(auto Undercity;274):18
+#16148 | auto Undercity;257§auto Unterstadt;257§auto Fossoyeuse;257 | x=1623.900024414063 y=254.1999969482422 | size=1 | links=#12939(auto Undercity;205):16 #28368(auto Undercity;492):8
+#16155 | auto Undercity;258§auto Unterstadt;258§auto Fossoyeuse;258 | x=1728 y=357 | size=1 | links=#9036(auto Undercity;140):7 #19324(auto Undercity;321):12
+#16283 | auto Undercity;259§auto Unterstadt;259§auto Fossoyeuse;259 | x=1724.800048828125 y=463.5 | size=1 | links=#21244(auto Undercity;352):14 #22879(auto Undercity;384):34
+#16304 | auto Undercity;260§auto Unterstadt;260§auto Fossoyeuse;260 | x=1516.599975585938 y=321.8999938964844 | size=1 | links=#5835(auto Undercity;94):35 #15527(auto Undercity;250):34 #16750(auto Undercity;267):19 c7683.1:15
+#16378 | auto Undercity;261§auto Unterstadt;261§auto Fossoyeuse;261 | x=1526.800048828125 y=210.1000061035156 | size=1 | links=#12129(auto Undercity;186):32 #22618(auto Undercity;377):27 c5747.1:10
+#16411 | auto Undercity;262§auto Unterstadt;262§auto Fossoyeuse;262 | x=1610.599975585938 y=203 | size=1 | links=#14582(auto Undercity;234):15 #24390(auto Undercity;408):15
+#16528 | auto Undercity;263§auto Unterstadt;263§auto Fossoyeuse;263 | x=1465.300048828125 y=281.5 | size=1 | links=#12808(auto Undercity;201):9 #25619(auto Undercity;429):12
+#16555 | auto Undercity;264§auto Unterstadt;264§auto Fossoyeuse;264 | x=1430.900024414063 y=77.0999984741211 | size=1 | links=#4506(auto Undercity;66):17 #26278(auto Undercity;450):16 c6467.1:6
+#16562 | auto Undercity;265§auto Unterstadt;265§auto Fossoyeuse;265 | x=1737 y=273.3999938964844 | size=1 | links=#21967(auto Undercity;363):14 #27054(auto Undercity;461):6
+#16731 | auto Undercity;266§auto Unterstadt;266§auto Fossoyeuse;266 | x=1665.655986147028 y=239.8497129252101 | size=1 | links=#4073(auto Undercity;60):7 #10783(auto Undercity;167):15
+#16750 | auto Undercity;267§auto Unterstadt;267§auto Fossoyeuse;267 | x=1502.5 y=334.8000183105469 | size=1 | links=#12267(auto Undercity;190):18 #16304(auto Undercity;260):19 #20096(auto Undercity;331):16
+#16825 | auto Undercity;268§auto Unterstadt;268§auto Fossoyeuse;268 | x=1607.700073242188 y=437.3000183105469 | size=1 | links=#22425(auto Undercity;372):11 #28292(auto Undercity;486):11
+#16862 | auto Undercity;269§auto Unterstadt;269§auto Fossoyeuse;269 | x=1307.099975585938 y=375.3999938964844 | size=1 | links=#2121(auto Undercity;32):13 #26215(auto Undercity;445):26
+#16927 | auto Undercity;270§auto Unterstadt;270§auto Fossoyeuse;270 | x=1369.200073242188 y=369.3999938964844 | size=1 | links=#9567(auto Undercity;148):8 #22862(auto Undercity;383):11
+#16932 | auto Undercity;271§auto Unterstadt;271§auto Fossoyeuse;271 | x=1470.099975585938 y=440.7000122070313 | size=1 | links=#5698(auto Undercity;87):10 #27500(auto Undercity;472):14
+#17009 | auto Undercity;272§auto Unterstadt;272§auto Fossoyeuse;272 | x=1535.5 y=130.1999969482422 | size=1 | links=#5707(auto Undercity;89):22 #13873(auto Undercity;221):18 #24881(auto Undercity;418):12
+#17042 | auto Undercity;273§auto Unterstadt;273§auto Fossoyeuse;273 | x=1474 y=365.2000122070313 | size=1 | links=#5183(auto Undercity;80):27 #12671(auto Undercity;195):21 c5733.1:24
+#17048 | auto Undercity;274§auto Unterstadt;274§auto Fossoyeuse;274 | x=1419.900024414063 y=443 | size=1 | links=#16127(auto Undercity;256):18 #17595(auto Undercity;285):13
+#17268 | auto Undercity;275§auto Unterstadt;275§auto Fossoyeuse;275 | x=1642.900024414063 y=240.8000030517578 | size=1 | links=#19501(auto Undercity;325):12
+#17316 | auto Undercity;276§auto Unterstadt;276§auto Fossoyeuse;276 | x=1752.200073242188 y=238.8000030517578 | size=1 | links=#3946(auto Undercity;58):6 #13494(auto Undercity;215):5
+#17363 | auto Undercity;277§auto Unterstadt;277§auto Fossoyeuse;277 | x=1711.900024414063 y=303.3999938964844 | size=1 | links=#8346(auto Undercity;133):10 #9825(auto Undercity;153):27 #10210(auto Undercity;160):40 #21538(auto Undercity;357):12 c5669.1:14
+#17412 | auto Undercity;278§auto Unterstadt;278§auto Fossoyeuse;278 | x=1595.5 y=220.4000091552734 | size=1 | links=#4576(auto Undercity;68):11 #14072(auto Undercity;224):7 #22924(auto Undercity;385):10 #26082(auto Undercity;439):14
+#17423 | auto Undercity;279§auto Unterstadt;279§auto Fossoyeuse;279 | x=1782.599975585938 y=87.70000457763672 | size=1 | links=#6253(auto Undercity;106):8 #12687(auto Undercity;196):11
+#17470 | auto Undercity;280§auto Unterstadt;280§auto Fossoyeuse;280 | x=1609.900024414063 y=278.3999938964844 | size=1 | links=#24601(auto Undercity;411):16 #26680(auto Undercity;456):13 c4556.1:4 c4557.1:10
+#17532 | auto Undercity;281§auto Unterstadt;281§auto Fossoyeuse;281 | x=1694.599975585938 y=533.2000122070312 | size=1 | links=#12313(auto Undercity;191):3 #19270(auto Undercity;320):19
+#17537 | auto Undercity;282§auto Unterstadt;282§auto Fossoyeuse;282 | x=1551.800048828125 y=66.4000015258789 | size=1 | links=#12046(auto Undercity;183):41 #21228(auto Undercity;351):10
+#17539 | auto Undercity;283§auto Unterstadt;283§auto Fossoyeuse;283 | x=1805 y=320.5 | size=1 | links=#6432(auto Undercity;109):14 #27911(auto Undercity;480):12
+#17568 | auto Undercity;284§auto Unterstadt;284§auto Fossoyeuse;284 | x=1628.200073242188 y=272 | size=1 | links=#22320(auto Undercity;370):13 #23090(auto Undercity;388):10
+#17595 | auto Undercity;285§auto Unterstadt;285§auto Fossoyeuse;285 | x=1409.400024414063 y=435.1000061035156 | size=1 | links=#10755(auto Undercity;166):5 #17048(auto Undercity;274):13
+#17676 | auto Undercity;286§auto Unterstadt;286§auto Fossoyeuse;286 | x=1439.700073242188 y=139.9000091552734 | size=1 | links=#12718(auto Undercity;199):8 #15052(auto Undercity;245):21 c5744.1:27
+#17688 | auto Undercity;287§auto Unterstadt;287§auto Fossoyeuse;287 | x=1535.800048828125 y=114 | size=1 | links=#2459(auto Undercity;37):17 #13873(auto Undercity;221):7 #27427(auto Undercity;470):12
+#17713 | auto Undercity;288§auto Unterstadt;288§auto Fossoyeuse;288 | x=1392.800048828125 y=418.3999938964844 | size=1 | links=#5566(auto Undercity;83):5 #14174(auto Undercity;228):6 #22029(auto Undercity;366):13
+#17731 | auto Undercity;289§auto Unterstadt;289§auto Fossoyeuse;289 | x=1746.900024414063 y=342.8999938964844 | size=1 | links=#2018(auto Undercity;30):7 #3272(auto Undercity;45):19
+#17762 | elevator;Ruins of Lordaeron;Undercity§fahrstuhl;Ruinen von Lordaeron;Unterstadt§elevator;Ruins of Lordaeron;Fossoyeuse | x=1545 y=240.6000061035156 | size=1 | links=#22531(pier;elevator;Ruins of Lordaeron;Undercity;top;entry and exit):11 #23384(pier;elevator;Ruins of Lordaeron;Undercity;down):12
+#17769 | auto Undercity;290§auto Unterstadt;290§auto Fossoyeuse;290 | x=1744.099975585938 y=335 | size=1 | links=#2018(auto Undercity;30):4 #19324(auto Undercity;321):14
+#17771 | auto Undercity;291§auto Unterstadt;291§auto Fossoyeuse;291 | x=1604.099975585938 y=231.5 | size=1 | links=#4576(auto Undercity;68):9 #25846(auto Undercity;435):9 #27537(guild vault;Trade Quarter;Undercity):2
+#17964 | auto Undercity;292§auto Unterstadt;292§auto Fossoyeuse;292 | x=1730.700073242188 y=114.3000030517578 | size=1 | links=#6860(auto Undercity;114):21 #23510(auto Undercity;394):12 #26506(auto Undercity;454):10
+#17972 | auto Undercity;293§auto Unterstadt;293§auto Fossoyeuse;293 | x=1675.5 y=402 | size=5 | links=#1033(auto Undercity;15):26 #4942(auto Undercity;76):24 #25752(auto Undercity;433):26
+#18037 | auto Undercity;294§auto Unterstadt;294§auto Fossoyeuse;294 | x=1567.200073242188 y=194.6999969482422 | size=1 | links=#27241(auto Undercity;466):12 c15675.1:13
+#18083 | auto Undercity;295§auto Unterstadt;295§auto Fossoyeuse;295 | x=1612 y=227.6000061035156 | size=1 | links=#5956(auto Undercity;95):12 #20855(auto Undercity;342):13
+#18145 | auto Undercity;296§auto Unterstadt;296§auto Fossoyeuse;296 | x=1473.800048828125 y=428.3000183105469 | size=1 | links=#9200(auto Undercity;145):8 o177884.1:2
+#18174 | auto Undercity;297§auto Unterstadt;297§auto Fossoyeuse;297 | x=1664.800048828125 y=495.2000122070313 | size=1 | links=#20436(auto Undercity;336):10 #25688(auto Undercity;432):14
+#18184 | auto Undercity;298§auto Unterstadt;298§auto Fossoyeuse;298 | x=1437.700073242188 y=318.3000183105469 | size=1 | links=#5655(auto Undercity;86):13 #9863(auto Undercity;154):7
+#18210 | auto Undercity;299§auto Unterstadt;299§auto Fossoyeuse;299 | x=1516.599975585938 y=162.5 | size=1 | links=#3937(auto Undercity;57):35 #14122(auto Undercity;227):23 #24881(auto Undercity;418):35 c4591.1:12
+#18232 | auto Undercity;300§auto Unterstadt;300§auto Fossoyeuse;300 | x=1839.599975585938 y=237.4000091552734 | size=1 | links=#2055(auto Undercity;31):13 #18427(auto Undercity;308):12
+#18256 | auto Undercity;301§auto Unterstadt;301§auto Fossoyeuse;301 | x=1629.200073242188 y=233.1000061035156 | size=1 | links=#22773(auto Undercity;381):13 #23456(auto Undercity;393):9
+#18272 | auto Undercity;302§auto Unterstadt;302§auto Fossoyeuse;302 | x=1440 y=343.5 | size=1 | links=#5405(auto Undercity;81):16 c5733.1:15 c6492.4:28
+#18305 | auto Undercity;303§auto Unterstadt;303§auto Fossoyeuse;303 | x=1449.099975585938 y=142.6000061035156 | size=1 | links=#12718(auto Undercity;199):5 #19521(auto Undercity;326):12
+#18325 | auto Undercity;304§auto Unterstadt;304§auto Fossoyeuse;304 | x=1707.300048828125 y=99.5 | size=1 | links=#6036(auto Undercity;98):10 #13319(auto Undercity;213):5 #14646(auto Undercity;238):14
+#18365 | auto Undercity;305§auto Unterstadt;305§auto Fossoyeuse;305 | x=1770.300048828125 y=196.9000091552734 | size=1 | links=#1823(auto Undercity;24):10 #25052(auto Undercity;424):40
+#18389 | auto Undercity;306§auto Unterstadt;306§auto Fossoyeuse;306 | x=1569.099975585938 y=221 | size=1 | links=#6318(auto Undercity;108):13 #27643(auto Undercity;476):13
+#18416 | auto Undercity;307§auto Unterstadt;307§auto Fossoyeuse;307 | x=1725.900024414063 y=199.5 | size=1 | links=#6626(auto Undercity;111):26 #23395(auto Undercity;392):10
+#18427 | auto Undercity;308§auto Unterstadt;308§auto Fossoyeuse;308 | x=1827.400024414063 y=238.6000061035156 | size=1 | links=#10513(auto Undercity;163):24 #18232(auto Undercity;300):12 #27215(auto Undercity;465):8 #27834(auto Undercity;479):27
+#18707 | auto Undercity;309§auto Unterstadt;309§auto Fossoyeuse;309 | x=1696.200073242188 y=478.8999938964844 | size=1 | links=#4917(auto Undercity;75):7 #6980(auto Undercity;117):9
+#18736 | auto Undercity;310§auto Unterstadt;310§auto Fossoyeuse;310 | x=1442.300048828125 y=398.8000183105469 | size=1 | links=#9975(auto Undercity;155):14 #12671(auto Undercity;195):24
+#18748 | auto Undercity;311§auto Unterstadt;311§auto Fossoyeuse;311 | x=1430.400024414063 y=169.8000030517578 | size=1 | links=#5605(auto Undercity;84):22 #15052(auto Undercity;245):11 #23811(auto Undercity;400):7
+#18821 | auto Undercity;312§auto Unterstadt;312§auto Fossoyeuse;312 | x=1569.700073242188 y=240.1999969482422 | size=1 | links=#14226(auto Undercity;229):12 #22531(pier;elevator;Ruins of Lordaeron;Undercity;top;entry and exit):12
+#18833 | auto Undercity;313§auto Unterstadt;313§auto Fossoyeuse;313 | x=1460 y=321.1000061035156 | size=1 | links=#5655(auto Undercity;86):18 #8425(auto Undercity;135):18 c4488.1:2
+#18862 | auto Undercity;314§auto Unterstadt;314§auto Fossoyeuse;314 | x=1494.700073242188 y=95.9000015258789 | size=1 | links=#6060(auto Undercity;101):6 #27202(auto Undercity;464):12
+#19030 | auto Undercity;315§auto Unterstadt;315§auto Fossoyeuse;315 | x=1561.900024414063 y=86.70000457763672 | size=1 | links=#10033(auto Undercity;157):21 #25045(auto Undercity;423):17
+#19047 | auto Undercity;316§auto Unterstadt;316§auto Fossoyeuse;316 | x=1745.400024414063 y=289.2000122070313 | size=1 | links=#10336(auto Undercity;161):18 #14705(auto Undercity;240):38
+#19212 | auto Undercity;317§auto Unterstadt;317§auto Fossoyeuse;317 | x=1729.099975585938 y=270.3000183105469 | size=1 | links=#9825(auto Undercity;153):10 #10010(auto Undercity;156):31
+#19215 | auto Undercity;318§auto Unterstadt;318§auto Fossoyeuse;318 | x=1544.400024414063 y=291.5 | size=1 | links=#12129(auto Undercity;186):55 #27025(auto Undercity;460):55 #27566(auto Undercity;475):16 c23713.1:11
+#19226 | auto Undercity;319§auto Unterstadt;319§auto Fossoyeuse;319 | x=1337.099975585938 y=427.2000122070313 | size=1 | links=#3554(auto Undercity;51):12 #7302(auto Undercity;123):24
+#19270 | auto Undercity;320§auto Unterstadt;320§auto Fossoyeuse;320 | x=1708 y=519.6000366210938 | size=1 | links=#7624(auto Undercity;125):25 #17532(auto Undercity;281):19
+#19324 | auto Undercity;321§auto Unterstadt;321§auto Fossoyeuse;321 | x=1735 y=346.3000183105469 | size=1 | links=#12510(auto Undercity;192):16 #16155(auto Undercity;258):12 #17769(auto Undercity;290):14
+#19366 | auto Undercity;322§auto Unterstadt;322§auto Fossoyeuse;322 | x=1421.800048828125 y=284.7000122070313 | size=1 | links=#2715(auto Undercity;38):46 #7883(auto Undercity;131):10
+#19368 | auto Undercity;323§auto Unterstadt;323§auto Fossoyeuse;323 | x=1568.200073242188 y=245.8000030517578 | size=1 | links=#9146(auto Undercity;144):9 #21763(auto Undercity;360):9
+#19433 | auto Undercity;324§auto Unterstadt;324§auto Fossoyeuse;324 | x=1623.700073242188 y=286.7000122070313 | size=1 | links=#23090(auto Undercity;388):13 c15684.1:14
+#19501 | auto Undercity;325§auto Unterstadt;325§auto Fossoyeuse;325 | x=1633.900024414063 y=231.6000061035156 | size=1 | links=#17268(auto Undercity;275):12 #27498(auto Undercity;471):9 #42881(auto Undercity;498):14
+#19521 | auto Undercity;326§auto Unterstadt;326§auto Fossoyeuse;326 | x=1442.900024414063 y=153.9000091552734 | size=1 | links=#3706(auto Undercity;56):17 #18305(auto Undercity;303):12 #23811(auto Undercity;400):12
+#19554 | auto Undercity;327§auto Unterstadt;327§auto Fossoyeuse;327 | x=1469.5 y=299.8999938964844 | size=1 | links=#4306(auto Undercity;63):17 #8425(auto Undercity;135):13 #25619(auto Undercity;429):6
+#19590 | auto Undercity;328§auto Unterstadt;328§auto Fossoyeuse;328 | x=1501.400024414063 y=114.2000045776367 | size=1 | links=#610(waters;down;Rogues' Quarter;Undercity):24 #25620(auto Undercity;430):18
+#19600 | auto Undercity;329§auto Unterstadt;329§auto Fossoyeuse;329 | x=1587.400024414063 y=248.3000030517578 | size=1 | links=#10994(auto Undercity;169):7 #28464(auto Undercity;495):9
+#20090 | auto Undercity;330§auto Unterstadt;330§auto Fossoyeuse;330 | x=1759.900024414063 y=212 | size=1 | links=#1088(auto Undercity;16):7 #5714(auto Undercity;90):25 #23018(auto Undercity;386):13
+#20096 | auto Undercity;331§auto Unterstadt;331§auto Fossoyeuse;331 | x=1490.800048828125 y=322.6000061035156 | size=1 | links=#3245(auto Undercity;44):9 #5835(auto Undercity;94):27 #16750(auto Undercity;267):16 c5731.1:16
+#20258 | auto Undercity;332§auto Unterstadt;332§auto Fossoyeuse;332 | x=1712.200073242188 y=138.3000030517578 | size=1 | links=#549(auto Undercity;10):16 #2191(auto Undercity;33):57
+#20279 | auto Undercity;333§auto Unterstadt;333§auto Fossoyeuse;333 | x=1525.700073242188 y=231.6000061035156 | size=1 | links=#14058(auto Undercity;223):10 #26227(auto Undercity;447):9
+#20393 | auto Undercity;334§auto Unterstadt;334§auto Fossoyeuse;334 | x=1767.800048828125 y=427.2000122070313 | size=1 | links=#2193(auto Undercity;34):11 #5747(auto Undercity;93):7
+#20394 | auto Undercity;335§auto Unterstadt;335§auto Fossoyeuse;335 | x=1518.800048828125 y=76.70000457763672 | size=1 | links=#20624(auto Undercity;340):12 #21228(auto Undercity;351):24 #22080(auto Undercity;367):6
+#20436 | auto Undercity;336§auto Unterstadt;336§auto Fossoyeuse;336 | x=1664.5 y=485.2000122070313 | size=1 | links=#11161(auto Undercity;171):6 #18174(auto Undercity;297):10
+#20466 | auto Undercity;337§auto Unterstadt;337§auto Fossoyeuse;337 | x=1647.927890394908 y=187.935495292902 | size=1 | links=#14780(auto Undercity;241):56 #21268(auto Undercity;353):17 #26179(auto Undercity;442):57
+#20542 | auto Undercity;338§auto Unterstadt;338§auto Fossoyeuse;338 | x=1595.800048828125 y=260 | size=1 | links=#5629(auto Undercity;85):15 #11286(auto Undercity;174):7 #28464(auto Undercity;495):12
+#20585 | auto Undercity;339§auto Unterstadt;339§auto Fossoyeuse;339 | x=1854.400024414063 y=247.6999969482422 | size=1 | links=#2055(auto Undercity;31):10 #20953(auto Undercity;346):8
+#20624 | auto Undercity;340§auto Unterstadt;340§auto Fossoyeuse;340 | x=1506.400024414063 y=74.5 | size=1 | links=#6470(auto Undercity;110):17 #20394(auto Undercity;335):12
+#20841 | auto Undercity;341§auto Unterstadt;341§auto Fossoyeuse;341 | x=1591.800048828125 y=234.8000030517578 | size=1 | links=#6896(auto Undercity;115):6 #20855(auto Undercity;342):10
+#20855 | auto Undercity;342§auto Unterstadt;342§auto Fossoyeuse;342 | x=1602.400024414063 y=236.4000091552734 | size=1 | links=#18083(auto Undercity;295):13 #20841(auto Undercity;341):10
+#20901 | auto Undercity;343§auto Unterstadt;343§auto Fossoyeuse;343 | x=1465 y=201.6000061035156 | size=1 | links=#15230(auto Undercity;248):11 #28341(auto Undercity;491):9
+#20934 | auto Undercity;344§auto Unterstadt;344§auto Fossoyeuse;344 | x=1620 y=423.3000183105469 | size=1 | links=#3017(auto Undercity;43):15 #7297(auto Undercity;122):10
+#20939 | auto Undercity;345§auto Unterstadt;345§auto Fossoyeuse;345 | x=1609.300048828125 y=225.9000091552734 | size=1 | links=#5741(auto Undercity;91):6 #11579(auto Undercity;178):11 #15254(auto Undercity;249):27 #22773(auto Undercity;381):12 #22924(auto Undercity;385):4 c14403.1:2
+#20953 | auto Undercity;346§auto Unterstadt;346§auto Fossoyeuse;346 | x=1862.400024414063 y=248.3000030517578 | size=1 | links=#20585(auto Undercity;339):8 #21111(auto Undercity;348):10
+#20959 | auto Undercity;347§auto Unterstadt;347§auto Fossoyeuse;347 | x=1468.099975585938 y=183.4000091552734 | size=1 | links=#3010(auto Undercity;42):13 #15230(auto Undercity;248):7 #28491(auto Undercity;497):17
+#21111 | auto Undercity;348§auto Unterstadt;348§auto Fossoyeuse;348 | x=1864 y=237.9000091552734 | size=1 | links=#20310(auto Tirisfal Glades;372):15 #20953(auto Undercity;346):10
+#21182 | auto Undercity;349§auto Unterstadt;349§auto Fossoyeuse;349 | x=1738.300048828125 y=59.60000228881836 | size=1 | links=#5705(auto Undercity;88):12 #13095(auto Undercity;209):14 #22443(auto Undercity;373):13
+#21195 | auto Undercity;350§auto Unterstadt;350§auto Fossoyeuse;350 | x=1776.200073242188 y=183.8000030517578 | size=1 | links=#11194(auto Undercity;172):6 #13075(auto Undercity;208):8
+#21228 | auto Undercity;351§auto Unterstadt;351§auto Fossoyeuse;351 | x=1542 y=68.5999984741211 | size=1 | links=#17537(auto Undercity;282):10 #20394(auto Undercity;335):24
+#21244 | auto Undercity;352§auto Unterstadt;352§auto Fossoyeuse;352 | x=1726.400024414063 y=478.3999938964844 | size=1 | links=#889(auto Undercity;12):9 #7624(auto Undercity;125):21 #16283(auto Undercity;259):14
+#21268 | auto Undercity;353§auto Unterstadt;353§auto Fossoyeuse;353 | x=1635.5 y=200.1000061035156 | size=1 | links=#2970(auto Undercity;41):12 #13614(auto Undercity;217):15 #20466(auto Undercity;337):17 #26095(auto Undercity;440):16
+#21360 | auto Undercity;354§auto Unterstadt;354§auto Fossoyeuse;354 | x=1405.200073242188 y=368.5 | size=1 | links=#9672(auto Undercity;151):12 c5734.1:4 c5735.2:6
+#21504 | auto Undercity;355§auto Unterstadt;355§auto Fossoyeuse;355 | x=1773.5 y=82.5999984741211 | size=1 | links=#1181(auto Undercity;17):24 #14447(auto Undercity;233):16 c4575.1:4
+#21521 | auto Undercity;356§auto Unterstadt;356§auto Fossoyeuse;356 | x=1672.300048828125 y=133.6000061035156 | size=1 | links=#2438(auto Undercity;36):16 #25675(auto Undercity;431):12 #28406(auto Undercity;494):36
+#21538 | auto Undercity;357§auto Unterstadt;357§auto Fossoyeuse;357 | x=1701.599975585938 y=296.2000122070313 | size=1 | links=#14424(auto Undercity;232):34 #17363(auto Undercity;277):12 c4603.1:25 c4605.1:9 c5819.1:16
+#21699 | auto Undercity;358§auto Unterstadt;358§auto Fossoyeuse;358 | x=1381.800048828125 y=438.3999938964844 | size=1 | links=#8781(auto Undercity;138):10 #12103(auto Undercity;184):24
+#21700 | auto Undercity;359§auto Unterstadt;359§auto Fossoyeuse;359 | x=1415.099975585938 y=425.7000122070313 | size=1 | links=#9975(auto Undercity;155):23 #12103(auto Undercity;184):11
+#21763 | auto Undercity;360§auto Unterstadt;360§auto Fossoyeuse;360 | x=1577.5 y=243.6999969482422 | size=1 | links=#929(auto Undercity;14):12 #5446(auto Undercity;82):8 #6209(auto Undercity;105):15 #19368(auto Undercity;323):9
+#21765 | auto Undercity;361§auto Unterstadt;361§auto Fossoyeuse;361 | x=1696 y=190 | size=1 | links=#6626(auto Undercity;111):20 #11485(auto Undercity;175):35 c4570.1:17 c4580.1:7 c5754.1:18 c5821.1:8 c14729.1:6
+#21889 | auto Undercity;362§auto Unterstadt;362§auto Fossoyeuse;362 | x=1400.300048828125 y=329.6000061035156 | size=1 | links=#28327(auto Undercity;489):12 c6492.2:8
+#21967 | auto Undercity;363§auto Unterstadt;363§auto Fossoyeuse;363 | x=1737.400024414063 y=288.3000183105469 | size=1 | links=#16562(auto Undercity;265):14
+#21981 | auto Undercity;364§auto Unterstadt;364§auto Fossoyeuse;364 | x=1640.800048828125 y=479.1000061035156 | size=1 | links=#3310(auto Undercity;49):9 #26211(auto Undercity;444):11
+#21998 | auto Undercity;365§auto Unterstadt;365§auto Fossoyeuse;365 | x=1791.599975585938 y=403.2000122070313 | size=1 | links=#7313(auto Undercity;124):10 #13567(auto Undercity;216):10
+#22029 | auto Undercity;366§auto Unterstadt;366§auto Fossoyeuse;366 | x=1401.900024414063 y=428.2000122070313 | size=1 | links=#10755(auto Undercity;166):5 #17713(auto Undercity;288):13 c11044.1:2
+#22080 | auto Undercity;367§auto Unterstadt;367§auto Fossoyeuse;367 | x=1517.800048828125 y=82.80000305175781 | size=1 | links=#20394(auto Undercity;335):6 #27202(auto Undercity;464):13
+#22102 | auto Undercity;368§auto Unterstadt;368§auto Fossoyeuse;368 | x=1635.5 y=65 | size=1 | links=#8456(auto Undercity;136):9 #12046(auto Undercity;183):42
+#22149 | auto Undercity;369§auto Unterstadt;369§auto Fossoyeuse;369 | x=1706.5 y=324.2000122070313 | size=1 | links=#2818(auto Undercity;39):13 #8346(auto Undercity;133):12 #12510(auto Undercity;192):19
+#22320 | auto Undercity;370§auto Unterstadt;370§auto Fossoyeuse;370 | x=1618.800048828125 y=262.7000122070313 | size=1 | links=#15254(auto Undercity;249):12 #17568(auto Undercity;284):13
+#22326 | auto Undercity;371§auto Unterstadt;371§auto Fossoyeuse;371 | x=1505.099975585938 y=368.6000061035156 | size=1 | links=#24770(auto Undercity;415):17 #25830(waters;down;The Apothecarium;Undercity):19
+#22425 | auto Undercity;372§auto Unterstadt;372§auto Fossoyeuse;372 | x=1596.300048828125 y=437.6000061035156 | size=1 | links=#7819(auto Undercity;129):3 #16825(auto Undercity;268):11
+#22443 | auto Undercity;373§auto Unterstadt;373§auto Fossoyeuse;373 | x=1742.099975585938 y=72.5 | size=1 | links=#3430(auto Undercity;50):17 #14587(auto Undercity;235):13 #21182(auto Undercity;349):13
+#22454 | auto Undercity;374§auto Unterstadt;374§auto Fossoyeuse;374 | x=1793.700073242188 y=265.5 | size=1 | links=#25860(auto Undercity;436):12 #28340(auto Undercity;490):30
+#22531 | pier;elevator;Ruins of Lordaeron;Undercity;top;entry and exit§anleger;fahrstuhl;Ruinen von Lordaeron;Unterstadt;oben;ein- und ausgang§pier;elevator;Ruins of Lordaeron;Fossoyeuse;top;entrée et sortie | x=1556.800048828125 y=240.5 | size=1 | links=#17762(elevator;Ruins of Lordaeron;Undercity):11 #18821(auto Undercity;312):12
+#22564 | auto Undercity;375§auto Unterstadt;375§auto Fossoyeuse;375 | x=1704 y=422.7000122070313 | size=1 | links=#22879(auto Undercity;384):11 c5624.22:13 c5624.40:13
+#22617 | auto Undercity;376§auto Unterstadt;376§auto Fossoyeuse;376 | x=1661.599975585938 y=356.7000122070313 | size=1 | links=#10210(auto Undercity;160):33 #22637(auto Undercity;378):27 #23524(auto Undercity;396):19 c5699.1:10
+#22618 | auto Undercity;377§auto Unterstadt;377§auto Fossoyeuse;377 | x=1543.700073242188 y=188.5 | size=1 | links=#16378(auto Undercity;261):27 #26179(auto Undercity;442):56 #27241(auto Undercity;466):18
+#22637 | auto Undercity;378§auto Unterstadt;378§auto Fossoyeuse;378 | x=1637.5 y=370.2000122070313 | size=1 | links=#22617(auto Undercity;376):27 #27299(auto Undercity;469):10 c5699.1:18
+#22737 | auto Undercity;379§auto Unterstadt;379§auto Fossoyeuse;379 | x=1564 y=416.3999938964844 | size=1 | links=#91(auto Undercity;1):6 #8135(auto Undercity;132):33 #11521(auto Undercity;176):7
+#22747 | auto Undercity;380§auto Unterstadt;380§auto Fossoyeuse;380 | x=1573.900024414063 y=218.9000091552734 | size=1 | links=#6209(auto Undercity;105):11 #23556(auto Undercity;397):13
+#22773 | auto Undercity;381§auto Unterstadt;381§auto Fossoyeuse;381 | x=1615.900024414063 y=236.1999969482422 | size=1 | links=#10073(auto Undercity;158):8 #18256(auto Undercity;301):13 #20939(auto Undercity;345):12
+#22785 | auto Undercity;382§auto Unterstadt;382§auto Fossoyeuse;382 | x=1481.599975585938 y=160.3000030517578 | size=1 | links=#3010(auto Undercity;42):12 #15693(auto Undercity;251):16 #27294(auto Undercity;468):7
+#22862 | auto Undercity;383§auto Unterstadt;383§auto Fossoyeuse;383 | x=1380.400024414063 y=366.7000122070313 | size=1 | links=#7215(auto Undercity;121):13 #16927(auto Undercity;270):11 #27971(auto Undercity;481):24
+#22877 | s;h;Mailbox;Undercity§s;h;Briefkasten;Undercity§s;h;Boîte aux lettres;Fossoyeuse | x=1632.447626070382 y=221.0627550337694 | size=1 | links=#7847(auto Undercity;130):3
+#22879 | auto Undercity;384§auto Unterstadt;384§auto Fossoyeuse;384 | x=1709.5 y=432.7000122070313 | size=1 | links=#16283(auto Undercity;259):34 #22564(auto Undercity;375):11
+#22924 | auto Undercity;385§auto Unterstadt;385§auto Fossoyeuse;385 | x=1606 y=222.6000061035156 | size=1 | links=#17412(auto Undercity;278):10 #20939(auto Undercity;345):4
+#23018 | auto Undercity;386§auto Unterstadt;386§auto Fossoyeuse;386 | x=1757.200073242188 y=225.4000091552734 | size=1 | links=#20090(auto Undercity;330):13 #23212(waters;down;rescue;Ruins of Lordaeron;Undercity):9
+#23052 | auto Undercity;387§auto Unterstadt;387§auto Fossoyeuse;387 | x=1732.200073242188 y=220.1999969482422 | size=1 | links=#2004(auto Undercity;28):15 #3577(auto Undercity;53):16
+#23090 | auto Undercity;388§auto Unterstadt;388§auto Fossoyeuse;388 | x=1635.300048828125 y=279.7000122070313 | size=1 | links=#2008(auto Undercity;29):18 #4903(auto Undercity;74):16 #17568(auto Undercity;284):10 #19433(auto Undercity;324):13
+#23100 | auto Undercity;389§auto Unterstadt;389§auto Fossoyeuse;389 | x=1466.900024414063 y=111.5999984741211 | size=1 | links=#4506(auto Undercity;66):32 #6857(auto Undercity;113):21 #23794(auto Undercity;399):16
+#23196 | auto Undercity;390§auto Unterstadt;390§auto Fossoyeuse;390 | x=1300.200073242188 y=350 | size=1 | links=#2121(auto Undercity;32):12 #24240(auto Undercity;406):26
+#23212 | waters;down;rescue;Ruins of Lordaeron;Undercity§gewässer;unten;rettung;Ruinen von Lordaeron;Unterstadt§eaux;bas;sauvetage;Ruins of Lordaeron;Fossoyeuse | x=1757.400024414063 y=235.3000030517578 | size=1 | links=#1425(auto Undercity;20):8 #23018(auto Undercity;386):9
+#23343 | auto Undercity;391§auto Unterstadt;391§auto Fossoyeuse;391 | x=1817.700073242188 y=213.8000030517578 | size=1 | links=#27001(auto Undercity;459):8 c6491.1:5
+#23384 | pier;elevator;Ruins of Lordaeron;Undercity;down§anleger;fahrstuhl;Ruinen von Lordaeron;Unterstadt;unten§pier;elevator;Ruins of Lordaeron;Fossoyeuse;bas | x=1532.099975585938 y=240.8000030517578 | size=1 | links=#17762(elevator;Ruins of Lordaeron;Undercity):12 #26227(auto Undercity;447):7
+#23395 | auto Undercity;392§auto Unterstadt;392§auto Fossoyeuse;392 | x=1728.300048828125 y=209.3000030517578 | size=1 | links=#10010(auto Undercity;156):29 #18416(auto Undercity;307):10
+#23456 | auto Undercity;393§auto Unterstadt;393§auto Fossoyeuse;393 | x=1623.599975585938 y=225.1999969482422 | size=1 | links=#15776(auto Undercity;253):16 #18256(auto Undercity;301):9
+#23510 | auto Undercity;394§auto Unterstadt;394§auto Fossoyeuse;394 | x=1721.900024414063 y=105 | size=1 | links=#6036(auto Undercity;98):5 #17964(auto Undercity;292):12
+#23521 | auto Undercity;395§auto Unterstadt;395§auto Fossoyeuse;395 | x=1603.200073242188 y=258.3000183105469 | size=1 | links=#15254(auto Undercity;249):9 c10879.1:7
+#23524 | auto Undercity;396§auto Unterstadt;396§auto Fossoyeuse;396 | x=1648.800048828125 y=341.7000122070313 | size=1 | links=#14424(auto Undercity;232):35 #22617(auto Undercity;376):19 c4598.1:12 c4599.1:14 c4604.1:20
+#23556 | auto Undercity;397§auto Unterstadt;397§auto Fossoyeuse;397 | x=1564.099975585938 y=209.9000091552734 | size=1 | links=#22747(auto Undercity;380):13 #27241(auto Undercity;466):11
+#23662 | waters;down;Canals;Undercity;two§gewässer;unten;Kanäle;Unterstadt;zwei§eaux;bas;Canals;Fossoyeuse;deux | x=1753.599975585938 y=246.6000061035156 | size=1 | links=#10010(auto Undercity;156):22 #10336(auto Undercity;161):24 #28318(auto Undercity;488):36
+#23761 | auto Undercity;398§auto Unterstadt;398§auto Fossoyeuse;398 | x=1543.900024414063 y=218.1000061035156 | size=1 | links=#1897(auto Undercity;26):14 #9267(auto Undercity;147):15
+#23794 | auto Undercity;399§auto Unterstadt;399§auto Fossoyeuse;399 | x=1478.599975585938 y=99.5999984741211 | size=1 | links=#13664(auto Undercity;218):6 #23100(auto Undercity;389):16
+#23811 | auto Undercity;400§auto Unterstadt;400§auto Fossoyeuse;400 | x=1436.700073242188 y=165.1999969482422 | size=1 | links=#18748(auto Undercity;311):7 #19521(auto Undercity;326):12
+#23901 | auto Undercity;401§auto Unterstadt;401§auto Fossoyeuse;401 | x=1770.800048828125 y=279.6000061035156 | size=1 | links=#12645(auto Undercity;194):10 #25052(auto Undercity;424):42
+#24046 | auto Undercity;402§auto Unterstadt;402§auto Fossoyeuse;402 | x=1743.599975585938 y=238.1999969482422 | size=1 | links=#2004(auto Undercity;28):9 #13494(auto Undercity;215):2 #26187(auto Undercity;443):18
+#24085 | auto Undercity;403§auto Unterstadt;403§auto Fossoyeuse;403 | x=1795.700073242188 y=38.79999923706055 | size=1 | links=#10153(auto Undercity;159):11 #10855(auto Undercity;168):17 #24576(auto Undercity;410):17
+#24180 | auto Undercity;404§auto Unterstadt;404§auto Fossoyeuse;404 | x=1743.599975585938 y=137.9000091552734 | size=1 | links=#12926(auto Undercity;204):27 #26506(auto Undercity;454):16
+#24202 | auto Undercity;405§auto Unterstadt;405§auto Fossoyeuse;405 | x=1492.200073242188 y=449.8000183105469 | size=1 | links=#9593(auto Undercity;149):13 #27500(auto Undercity;472):10
+#24240 | auto Undercity;406§auto Unterstadt;406§auto Fossoyeuse;406 | x=1274.5 y=354.1000061035156 | size=1 | links=#23196(auto Undercity;390):26 #26119(auto Undercity;441):25
+#24336 | auto Undercity;407§auto Unterstadt;407§auto Fossoyeuse;407 | x=1670.800048828125 y=478.8000183105469 | size=1 | links=#11161(auto Undercity;171):6 #12692(auto Undercity;197):8
+#24390 | auto Undercity;408§auto Unterstadt;408§auto Fossoyeuse;408 | x=1595.599975585938 y=202.1000061035156 | size=1 | links=#5743(auto Undercity;92):14 #16411(auto Undercity;262):15
+#24551 | auto Undercity;409§auto Unterstadt;409§auto Fossoyeuse;409 | x=1764.800048828125 y=57.10000228881836 | size=1 | links=#927(auto Undercity;13):17 c1498.1:9 c2492.1:15
+#24576 | auto Undercity;410§auto Unterstadt;410§auto Fossoyeuse;410 | x=1807.400024414063 y=51.29999923706055 | size=1 | links=#24085(auto Undercity;403):17 c4568.1:8
+#24601 | auto Undercity;411§auto Unterstadt;411§auto Fossoyeuse;411 | x=1622.300048828125 y=267.2000122070313 | size=1 | links=#6111(auto Undercity;103):14 #17470(auto Undercity;280):16 c4559.1:5 c4560.1:11 c6411.1:11
+#24644 | auto Undercity;412§auto Unterstadt;412§auto Fossoyeuse;412 | x=1565.099975585938 y=107.4000015258789 | size=1 | links=#1579(auto Undercity;22):30 #3309(auto Undercity;48):11
+#24673 | auto Undercity;413§auto Unterstadt;413§auto Fossoyeuse;413 | x=1547.099975585938 y=215.9000091552734 | size=1 | links=#7801(auto Undercity;128):8 c8672.1:10
+#24722 | auto Undercity;414§auto Unterstadt;414§auto Fossoyeuse;414 | x=1569.099975585938 y=288.3999938964844 | size=1 | links=#27566(auto Undercity;475):15 c15686.1:12
+#24770 | auto Undercity;415§auto Unterstadt;415§auto Fossoyeuse;415 | x=1517.5 y=355.6000061035156 | size=1 | links=#12267(auto Undercity;190):7 #22326(auto Undercity;371):17 #25112(auto Undercity;425):10
+#24784 | portal;from;Ruins of Lordaeron;Undercity;to;Silvermoon City§portal;von;Ruinen von Lordaeron;Unterstadt;nach;silbermond§portal;de;Ruins of Lordaeron;Fossoyeuse;vers;Lune-d'argent | x=1805.800048828125 y=346.8000183105469 | size=1 | links=#6432(auto Undercity;109):12
+#24809 | auto Undercity;416§auto Unterstadt;416§auto Fossoyeuse;416 | x=1630.300048828125 y=437.5 | size=1 | links=#14118(auto Undercity;226):15 #28292(auto Undercity;486):11
+#24845 | auto Undercity;417§auto Unterstadt;417§auto Fossoyeuse;417 | x=1727.599975585938 y=124 | size=1 | links=#14416(auto Undercity;231):13 #26506(auto Undercity;454):6
+#24881 | auto Undercity;418§auto Unterstadt;418§auto Fossoyeuse;418 | x=1544 y=139.5 | size=1 | links=#17009(auto Undercity;272):12 #18210(auto Undercity;299):35 c4585.1:13 c4592.1:18
+#24890 | auto Undercity;419§auto Unterstadt;419§auto Fossoyeuse;419 | x=1775.800048828125 y=170.8000030517578 | size=1 | links=#13075(auto Undercity;208):5 #25271(auto Undercity;426):8
+#24900 | auto Undercity;420§auto Unterstadt;420§auto Fossoyeuse;420 | x=1791.599975585938 y=238.6999969482422 | size=1 | links=#10513(auto Undercity;163):18 #28340(auto Undercity;490):14
+#24919 | auto Undercity;421§auto Unterstadt;421§auto Fossoyeuse;421 | x=1780.800048828125 y=349.3000183105469 | size=1 | links=#6092(auto Undercity;102):24 #6187(auto Undercity;104):13
+#25023 | auto Undercity;422§auto Unterstadt;422§auto Fossoyeuse;422 | x=1708.5 y=239.5 | size=1 | links=#2931(auto Undercity;40):5 #13789(auto Undercity;220):8
+#25045 | auto Undercity;423§auto Unterstadt;423§auto Fossoyeuse;423 | x=1545.300048828125 y=91.80000305175781 | size=1 | links=#2459(auto Undercity;37):17 #19030(auto Undercity;315):17
+#25052 | auto Undercity;424§auto Unterstadt;424§auto Fossoyeuse;424 | x=1773.200073242188 y=236.9000091552734 | size=1 | links=#18365(auto Undercity;305):40 #23901(auto Undercity;401):42
+#25112 | auto Undercity;425§auto Unterstadt;425§auto Fossoyeuse;425 | x=1526.5 y=360.8000183105469 | size=1 | links=#1335(auto Undercity;18):18 #24770(auto Undercity;415):10 #27515(auto Undercity;474):13
+#25173 | waters;down;Canals;Undercity;three§gewässer;unten;Kanäle;Unterstadt;drei§eaux;bas;Canals;Fossoyeuse;trois | x=1611.700073242188 y=82.9000015258789 | size=1 | links=#1579(auto Undercity;22):25 #5958(auto Undercity;96):30 #10033(auto Undercity;157):29
+#25271 | auto Undercity;426§auto Unterstadt;426§auto Fossoyeuse;426 | x=1767.300048828125 y=170.5 | size=1 | links=#6266(auto Undercity;107):8 #24890(auto Undercity;419):8
+#25468 | auto Undercity;427§auto Unterstadt;427§auto Fossoyeuse;427 | x=1494.5 y=393.3000183105469 | size=1 | links=#5183(auto Undercity;80):7 #7789(auto Undercity;127):22 #15102(auto Undercity;247):27
+#25482 | auto Undercity;428§auto Unterstadt;428§auto Fossoyeuse;428 | x=1439.300048828125 y=210.5 | size=1 | links=#2857(waters;down;Canals;Undercity;four):29 #4685(auto Undercity;71):20
+#25619 | auto Undercity;429§auto Unterstadt;429§auto Fossoyeuse;429 | x=1469.900024414063 y=293 | size=1 | links=#5835(auto Undercity;94):23 #16528(auto Undercity;263):12 #19554(auto Undercity;327):6 c5731.1:19
+#25620 | auto Undercity;430§auto Unterstadt;430§auto Fossoyeuse;430 | x=1514.700073242188 y=126.5999984741211 | size=1 | links=#5707(auto Undercity;89):8 #19590(auto Undercity;328):18 #27427(auto Undercity;470):11
+#25675 | auto Undercity;431§auto Unterstadt;431§auto Fossoyeuse;431 | x=1684.099975585938 y=131.3000030517578 | size=1 | links=#185(auto Undercity;5):13 #15707(auto Undercity;252):15 #21521(auto Undercity;356):12
+#25688 | auto Undercity;432§auto Unterstadt;432§auto Fossoyeuse;432 | x=1665 y=509.3999938964844 | size=1 | links=#18174(auto Undercity;297):14 #26071(auto Undercity;438):13
+#25752 | auto Undercity;433§auto Unterstadt;433§auto Fossoyeuse;433 | x=1700.400024414063 y=412.2000122070313 | size=1 | links=#4942(auto Undercity;76):21 #14629(auto Undercity;237):18 #17972(auto Undercity;293):26 c5662.1:16 c5663.1:17 c5664.1:12 c5665.1:12 c6395.1:14
+#25830 | waters;down;The Apothecarium;Undercity§gewässer;unten;Das Apothekarium;Unterstadt§eaux;bas;The Apothecarium;Fossoyeuse | x=1490 y=355.7000122070313 | size=1 | links=#11920(auto Undercity;182):29 #22326(auto Undercity;371):19
+#25831 | auto Undercity;434§auto Unterstadt;434§auto Fossoyeuse;434 | x=1708.700073242188 y=347 | size=1 | links=#2818(auto Undercity;39):16 #4480(auto Undercity;65):44
+#25846 | auto Undercity;435§auto Unterstadt;435§auto Fossoyeuse;435 | x=1606.200073242188 y=240.3000030517578 | size=1 | links=#3275(auto Undercity;46):7 #13283(auto Undercity;211):12 #17771(auto Undercity;291):9 c2458.1:6
+#25860 | auto Undercity;436§auto Unterstadt;436§auto Fossoyeuse;436 | x=1806 y=266.3000183105469 | size=1 | links=#22454(auto Undercity;374):12 #27288(auto Undercity;467):12 #27834(auto Undercity;479):14
+#25977 | auto Undercity;437§auto Unterstadt;437§auto Fossoyeuse;437 | x=1752 y=166.6000061035156 | size=1 | links=#6266(auto Undercity;107):7 #28066(auto Undercity;483):7
+#26071 | auto Undercity;438§auto Unterstadt;438§auto Fossoyeuse;438 | x=1665.200073242188 y=523.1000366210938 | size=1 | links=#25688(auto Undercity;432):13 #26258(auto Undercity;448):12
+#26082 | auto Undercity;439§auto Unterstadt;439§auto Fossoyeuse;439 | x=1596 y=206.1999969482422 | size=1 | links=#17412(auto Undercity;278):14 c4613.1:5 c5052.1:3 c5190.1:5 c10781.1:6
+#26095 | auto Undercity;440§auto Unterstadt;440§auto Fossoyeuse;440 | x=1621.099975585938 y=192.4000091552734 | size=1 | links=#21268(auto Undercity;353):16 c15676.1:12
+#26119 | auto Undercity;441§auto Unterstadt;441§auto Fossoyeuse;441 | x=1260.400024414063 y=333.3999938964844 | size=1 | links=#1529(auto Undercity;21):18 #24240(auto Undercity;406):25
+#26179 | auto Undercity;442§auto Unterstadt;442§auto Fossoyeuse;442 | x=1595.300048828125 y=165.1999969482422 | size=1 | links=#12611(auto Undercity;193):26 #20466(auto Undercity;337):57 #22618(auto Undercity;377):56 c15106.7:2 c15106.8:2
+#26187 | auto Undercity;443§auto Unterstadt;443§auto Fossoyeuse;443 | x=1761.599975585938 y=238.9000091552734 | size=1 | links=#3946(auto Undercity;58):3 #10696(auto Undercity;165):6 #24046(auto Undercity;402):18 #28340(auto Undercity;490):15
+#26211 | auto Undercity;444§auto Unterstadt;444§auto Fossoyeuse;444 | x=1629.400024414063 y=479.5 | size=1 | links=#21981(auto Undercity;364):11 #26880(auto Undercity;458):15
+#26215 | auto Undercity;445§auto Unterstadt;445§auto Fossoyeuse;445 | x=1313.900024414063 y=401.1000061035156 | size=1 | links=#7302(auto Undercity;123):10 #16862(auto Undercity;269):26
+#26222 | auto Undercity;446§auto Unterstadt;446§auto Fossoyeuse;446 | x=1515.400024414063 y=104.5 | size=1 | links=#27202(auto Undercity;464):17 #27427(auto Undercity;470):18
+#26227 | auto Undercity;447§auto Unterstadt;447§auto Fossoyeuse;447 | x=1525.099975585938 y=240.6999969482422 | size=1 | links=#20279(auto Undercity;333):9 #23384(pier;elevator;Ruins of Lordaeron;Undercity;down):7
+#26258 | auto Undercity;448§auto Unterstadt;448§auto Fossoyeuse;448 | x=1665.300048828125 y=535.6000366210938 | size=1 | links=#26071(auto Undercity;438):12 #27504(auto Undercity;473):24
+#26276 | auto Undercity;449§auto Unterstadt;449§auto Fossoyeuse;449 | x=1716.900024414063 y=374.1000061035156 | size=1 | links=#4942(auto Undercity;76):25 #9036(auto Undercity;140):14 c5659.1:8
+#26278 | auto Undercity;450§auto Unterstadt;450§auto Fossoyeuse;450 | x=1418.599975585938 y=66 | size=1 | links=#16555(auto Undercity;264):16 c4582.1:3 c4583.1:10
+#26282 | auto Undercity;451§auto Unterstadt;451§auto Fossoyeuse;451 | x=1442.099975585938 y=273.5 | size=5 | links=#1874(auto Undercity;25):16 #4727(auto Undercity;72):13
+#26285 | auto Undercity;452§auto Unterstadt;452§auto Fossoyeuse;452 | x=1760.900024414063 y=318.8000183105469 | size=1 | links=#2018(auto Undercity;30):20 #3952(auto Undercity;59):8
+#26347 | auto Undercity;453§auto Unterstadt;453§auto Fossoyeuse;453 | x=1713.5 y=225.3000030517578 | size=1 | links=#2931(auto Undercity;40):9 #3577(auto Undercity;53):5
+#26506 | auto Undercity;454§auto Unterstadt;454§auto Fossoyeuse;454 | x=1734.200073242188 y=124.7000045776367 | size=1 | links=#17964(auto Undercity;292):10 #24180(auto Undercity;404):16 #24845(auto Undercity;417):6
+#26649 | auto Undercity;455§auto Unterstadt;455§auto Fossoyeuse;455 | x=1407.200073242188 y=402.2000122070313 | size=1 | links=#12233(auto Undercity;189):11 #14174(auto Undercity;228):15
+#26680 | auto Undercity;456§auto Unterstadt;456§auto Fossoyeuse;456 | x=1596.099975585938 y=277.7000122070313 | size=1 | links=#4514(auto Undercity;67):14 #17470(auto Undercity;280):13
+#26794 | auto Undercity;457§auto Unterstadt;457§auto Fossoyeuse;457 | x=1736.5 y=191.3000030517578 | size=1 | links=#5714(auto Undercity;90):13 #6037(auto Undercity;99):8
+#26880 | auto Undercity;458§auto Unterstadt;458§auto Fossoyeuse;458 | x=1629.200073242188 y=464.5 | size=1 | links=#14118(auto Undercity;226):11 #26211(auto Undercity;444):15
+#27001 | auto Undercity;459§auto Unterstadt;459§auto Fossoyeuse;459 | x=1819.5 y=205.1000061035156 | size=1 | links=#14937(auto Undercity;244):14 #23343(auto Undercity;391):8
+#27025 | auto Undercity;460§auto Unterstadt;460§auto Fossoyeuse;460 | x=1595.5 y=312.2000122070313 | size=1 | links=#2008(auto Undercity;29):57 #19215(auto Undercity;318):55 c5670.1:28
+#27054 | auto Undercity;461§auto Unterstadt;461§auto Fossoyeuse;461 | x=1742.599975585938 y=270.8999938964844 | size=1 | links=#7095(auto Undercity;119):12 #16562(auto Undercity;265):6
+#27078 | auto Undercity;462§auto Unterstadt;462§auto Fossoyeuse;462 | x=1443.400024414063 y=455 | size=1 | links=#163(auto Undercity;4):13 #10405(auto Undercity;162):9
+#27091 | auto Undercity;463§auto Unterstadt;463§auto Fossoyeuse;463 | x=1588.800048828125 y=272.2000122070313 | size=1 | links=#856(waters;down;Handwerksviertel;Undercity;two):16 #5963(auto Undercity;97):8
+#27202 | auto Undercity;464§auto Unterstadt;464§auto Fossoyeuse;464 | x=1506 y=89.5999984741211 | size=1 | links=#18862(auto Undercity;314):12 #22080(auto Undercity;367):13 #26222(auto Undercity;446):17
+#27215 | auto Undercity;465§auto Unterstadt;465§auto Fossoyeuse;465 | x=1822 y=231.5 | size=1 | links=#18427(auto Undercity;308):8 c6491.1:12
+#27241 | auto Undercity;466§auto Unterstadt;466§auto Fossoyeuse;466 | x=1556.400024414063 y=201.8000030517578 | size=1 | links=#7801(auto Undercity;128):8 #18037(auto Undercity;294):12 #22618(auto Undercity;377):18 #23556(auto Undercity;397):11
+#27288 | auto Undercity;467§auto Unterstadt;467§auto Fossoyeuse;467 | x=1805.200073242188 y=278.8000183105469 | size=1 | links=#13666(auto Undercity;219):15 #25860(auto Undercity;436):12
+#27294 | auto Undercity;468§auto Unterstadt;468§auto Fossoyeuse;468 | x=1489 y=157.9000091552734 | size=1 | links=#11692(auto Undercity;180):24 #14122(auto Undercity;227):17 #15230(auto Undercity;248):37 #22785(auto Undercity;382):7
+#27299 | auto Undercity;469§auto Unterstadt;469§auto Fossoyeuse;469 | x=1627.200073242188 y=373.1000061035156 | size=1 | links=#1963(auto Undercity;27):30 #22637(auto Undercity;378):10
+#27427 | auto Undercity;470§auto Unterstadt;470§auto Fossoyeuse;470 | x=1524.5 y=120.4000015258789 | size=1 | links=#17688(auto Undercity;287):12 #25620(auto Undercity;430):11 #26222(auto Undercity;446):18
+#27498 | auto Undercity;471§auto Unterstadt;471§auto Fossoyeuse;471 | x=1626.800048828125 y=224.8000030517578 | size=1 | links=#5956(auto Undercity;95):8 #19501(auto Undercity;325):9
+#27500 | auto Undercity;472§auto Unterstadt;472§auto Fossoyeuse;472 | x=1481.400024414063 y=449.3999938964844 | size=1 | links=#16932(auto Undercity;271):14 #24202(auto Undercity;405):10 c11750.1:4
+#27504 | auto Undercity;473§auto Unterstadt;473§auto Fossoyeuse;473 | x=1675.700073242188 y=558 | size=1 | links=#12696(auto Undercity;198):10 #26258(auto Undercity;448):24 #28486(auto Undercity;496):61
+#27515 | auto Undercity;474§auto Unterstadt;474§auto Fossoyeuse;474 | x=1538.099975585938 y=367.2000122070313 | size=1 | links=#9070(auto Undercity;142):17 #14830(auto Undercity;243):7 #25112(auto Undercity;425):13
+#27537 | guild vault;Trade Quarter;Undercity§gildenbank;Handwerksviertel;Unterstadt§guild vault;Trade Quarter;Fossoyeuse | x=1602.136857991917 y=232.894508399826 | size=1 | links=#17771(auto Undercity;291):2
+#27566 | auto Undercity;475§auto Unterstadt;475§auto Fossoyeuse;475 | x=1556.300048828125 y=280.3999938964844 | size=1 | links=#8848(auto Undercity;139):13 #9797(auto Undercity;152):21 #19215(auto Undercity;318):16 #24722(auto Undercity;414):15
+#27643 | auto Undercity;476§auto Unterstadt;476§auto Fossoyeuse;476 | x=1580.5 y=213 | size=1 | links=#1394(waters;down;Handwerksviertel;Undercity;one):10 #18389(auto Undercity;306):13
+#27742 | auto Undercity;477§auto Unterstadt;477§auto Fossoyeuse;477 | x=1685.800048828125 y=80.70000457763672 | size=1 | links=#6047(auto Undercity;100):13 #14646(auto Undercity;238):14 c4574.1:15 c5675.1:34
+#27788 | auto Undercity;478§auto Unterstadt;478§auto Fossoyeuse;478 | x=1765 y=32.5 | size=1 | links=#927(auto Undercity;13):16 c4565.1:16
+#27834 | auto Undercity;479§auto Unterstadt;479§auto Fossoyeuse;479 | x=1820.099975585938 y=265.3999938964844 | size=1 | links=#18427(auto Undercity;308):27 #25860(auto Undercity;436):14
+#27911 | auto Undercity;480§auto Unterstadt;480§auto Fossoyeuse;480 | x=1806.200073242188 y=308.3999938964844 | size=1 | links=#13666(auto Undercity;219):14 #17539(auto Undercity;283):12
+#27971 | auto Undercity;481§auto Unterstadt;481§auto Fossoyeuse;481 | x=1404.800048828125 y=364.1000061035156 | size=1 | links=#7215(auto Undercity;121):17 #22862(auto Undercity;383):24 c4610.1:13 c6492.4:12
+#27982 | auto Undercity;482§auto Unterstadt;482§auto Fossoyeuse;482 | x=1567 y=373.7000122070313 | size=1 | links=#1963(auto Undercity;27):30 #28265(auto Undercity;485):10
+#28066 | auto Undercity;483§auto Unterstadt;483§auto Fossoyeuse;483 | x=1744.300048828125 y=168.3000030517578 | size=1 | links=#13037(auto Undercity;206):8 #25977(auto Undercity;437):7
+#28079 | auto Undercity;484§auto Unterstadt;484§auto Fossoyeuse;484 | x=1766.5 y=265.3000183105469 | size=1 | links=#11558(auto Undercity;177):7 #28307(auto Undercity;487):10
+#28265 | auto Undercity;485§auto Unterstadt;485§auto Fossoyeuse;485 | x=1556.400024414063 y=370.8999938964844 | size=1 | links=#14830(auto Undercity;243):13 #27982(auto Undercity;482):10
+#28292 | auto Undercity;486§auto Unterstadt;486§auto Fossoyeuse;486 | x=1618.800048828125 y=437.3999938964844 | size=1 | links=#16825(auto Undercity;268):11 #24809(auto Undercity;416):11
+#28307 | auto Undercity;487§auto Unterstadt;487§auto Fossoyeuse;487 | x=1758.400024414063 y=258.7000122070313 | size=1 | links=#1425(auto Undercity;20):15 #7095(auto Undercity;119):8 #11558(auto Undercity;177):9 #28079(auto Undercity;484):10
+#28318 | auto Undercity;488§auto Unterstadt;488§auto Fossoyeuse;488 | x=1749.800048828125 y=210.1000061035156 | size=1 | links=#2191(auto Undercity;33):23 #23662(waters;down;Canals;Undercity;two):36
+#28327 | auto Undercity;489§auto Unterstadt;489§auto Fossoyeuse;489 | x=1392 y=338.3000183105469 | size=1 | links=#21889(auto Undercity;362):12 c6522.1:9
+#28340 | auto Undercity;490§auto Unterstadt;490§auto Fossoyeuse;490 | x=1777.200073242188 y=239.5 | size=1 | links=#14669(auto Undercity;239):4 #22454(auto Undercity;374):30 #24900(auto Undercity;420):14 #26187(auto Undercity;443):15
+#28341 | auto Undercity;491§auto Unterstadt;491§auto Fossoyeuse;491 | x=1462.300048828125 y=210.8000030517578 | size=1 | links=#2857(waters;down;Canals;Undercity;four):37 #4353(auto Undercity;64):30 #20901(auto Undercity;343):9
+#28368 | auto Undercity;492§auto Unterstadt;492§auto Fossoyeuse;492 | x=1629.200073242188 y=247.1999969482422 | size=1 | links=#10073(auto Undercity;158):12 #16148(auto Undercity;257):8
+#28372 | auto Undercity;493§auto Unterstadt;493§auto Fossoyeuse;493 | x=1775.800048828125 y=58.40000152587891 | size=1 | links=#13488(auto Undercity;214):7 #14447(auto Undercity;233):19
+#28406 | auto Undercity;494§auto Unterstadt;494§auto Fossoyeuse;494 | x=1700.200073242188 y=157.8000030517578 | size=1 | links=#549(auto Undercity;10):7 #6626(auto Undercity;111):22 #21521(auto Undercity;356):36
+#28464 | auto Undercity;495§auto Unterstadt;495§auto Fossoyeuse;495 | x=1596.400024414063 y=247.6000061035156 | size=1 | links=#3275(auto Undercity;46):8 #19600(auto Undercity;329):9 #20542(auto Undercity;338):12 c4550.1:3
+#28486 | auto Undercity;496§auto Unterstadt;496§auto Fossoyeuse;496 | x=1692.599975585938 y=617.1000366210938 | size=1 | links=#4622(auto Undercity;69):37 #27504(auto Undercity;473):61
+#28491 | auto Undercity;497§auto Unterstadt;497§auto Fossoyeuse;497 | x=1451.700073242188 y=177.1999969482422 | size=1 | links=#4685(auto Undercity;71):14 #20959(auto Undercity;347):17
+#28767 | s;Eastern Kingdoms;capital;Undercity§s;Östliche Königreiche;Hauptstadt;Undercity§s;Royaumes de l'est;capital;Fossoyeuse | x=1849.69 y=-235.699 | size=1
+#28823 | s;Eastern Kingdoms;capital;Undercity§s;Östliche Königreiche;Hauptstadt;Undercity§s;Royaumes de l'est;capital;Fossoyeuse | x=1849.69 y=-235.699 | size=1
+#42881 | auto Undercity;498§auto Unterstadt;498§auto Fossoyeuse;498 | x=1647.700073242188 y=235.5 | size=1 | links=#4073(auto Undercity;60):11 #19501(auto Undercity;325):14
+#45492 | auto Undercity;499§auto Unterstadt;499§auto Fossoyeuse;499 | x=1499.099975585938 y=282.8000183105469 | size=1 | links=#5835(auto Undercity;94):14
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c223.1 | links=#3937(auto Undercity;57):9 c4588.1:9
+c1498.1 | links=#24551(auto Undercity;409):9 c2492.1:12
+c2050.1 | links=#5629(auto Undercity;85):8 c4553.1:3
+c2055.1 | links=#14240(auto Undercity;230):17 c5204.1:15
+c2227.1 | links=#1529(auto Undercity;21):7
+c2308.1 | links=#11485(auto Undercity;175):10
+c2425.1 | links=#1529(auto Undercity;21):11 c16287.1:17
+c2458.1 | links=#25846(auto Undercity;435):6
+c2459.1 | links=#4576(auto Undercity;68):4
+c2492.1 | links=#6253(auto Undercity;106):19 #24551(auto Undercity;409):15 c1498.1:12
+c2799.1 | links=c6566.1:15 c11031.1:9
+c2802.1 | links=c4584.1:29
+c2934.1 | links=#12267(auto Undercity;190):17 #14830(auto Undercity;243):16 #15527(auto Undercity;250):23
+c4486.1 | links=#724(auto Undercity;11):7
+c4488.1 | links=#18833(auto Undercity;313):2
+c4549.1 | links=#10994(auto Undercity;169):4
+c4550.1 | links=#28464(auto Undercity;495):3
+c4551.1 | links=#7114(auto Undercity;120):0
+c4552.1 | links=#5629(auto Undercity;85):5
+c4553.1 | links=#5629(auto Undercity;85):6 c2050.1:3
+c4555.1 | links=#11269(auto Undercity;173):5
+c4556.1 | links=#17470(auto Undercity;280):4
+c4557.1 | links=#17470(auto Undercity;280):10
+c4558.1 | links=#6111(auto Undercity;103):5
+c4559.1 | links=#24601(auto Undercity;411):5
+c4560.1 | links=#24601(auto Undercity;411):11
+c4561.1 | links=#6111(auto Undercity;103):7
+c4562.1 | links=#14582(auto Undercity;234):10
+c4563.1 | links=#13488(auto Undercity;214):8
+c4564.1 | links=#13488(auto Undercity;214):8
+c4565.1 | links=#10855(auto Undercity;168):9 #27788(auto Undercity;478):16
+c4566.1 | links=#13488(auto Undercity;214):8
+c4567.1 | links=#13488(auto Undercity;214):10
+c4568.1 | links=#8617(auto Undercity;137):18 #24576(auto Undercity;410):8
+c4569.1 | links=c4592.1:4
+c4570.1 | links=#21765(auto Undercity;361):17 c5754.1:3
+c4571.1 | links=#6626(auto Undercity;111):5
+c4572.1 | links=#14587(auto Undercity;235):5
+c4573.1 | links=c4574.1:4
+c4574.1 | links=#27742(auto Undercity;477):15 c4573.1:4
+c4575.1 | links=#21504(auto Undercity;355):4
+c4576.1 | links=c4577.1:3 c4580.1:8
+c4577.1 | links=c4576.1:3 c11048.1:5
+c4578.1 | links=#13095(auto Undercity;209):19
+c4580.1 | links=#21765(auto Undercity;361):7 c4576.1:8
+c4581.1 | links=#12846(auto Undercity;202):24
+c4582.1 | links=#26278(auto Undercity;450):3 c4584.1:13
+c4583.1 | links=#9053(auto Undercity;141):21 #26278(auto Undercity;450):10
+c4584.1 | links=c2802.1:29 c4582.1:13
+c4585.1 | links=#24881(auto Undercity;418):13
+c4586.1 | links=#15052(auto Undercity;245):21 c4587.1:7 c11031.1:9
+c4587.1 | links=c4586.1:7
+c4588.1 | links=c223.1:9 c5820.1:5
+c4589.1 | links=c5820.1:2
+c4590.1 | links=#3937(auto Undercity;57):20
+c4591.1 | links=#18210(auto Undercity;299):12 o3662.1:4
+c4592.1 | links=#24881(auto Undercity;418):18 c4569.1:4
+c4593.1 | links=#2193(auto Undercity;34):6
+c4594.1 | links=#2193(auto Undercity;34):9
+c4595.1 | links=#2193(auto Undercity;34):8
+c4596.1 | links=c4597.1:3
+c4597.1 | links=c4596.1:3 c5819.1:7
+c4598.1 | links=#23524(auto Undercity;396):12
+c4599.1 | links=#23524(auto Undercity;396):14
+c4600.1 | links=#14424(auto Undercity;232):16 c4602.1:2
+c4601.1 | links=#14424(auto Undercity;232):16 c4602.1:2
+c4602.1 | links=#14424(auto Undercity;232):15 c4600.1:2 c4601.1:2
+c4603.1 | links=#21538(auto Undercity;357):25
+c4604.1 | links=#23524(auto Undercity;396):20
+c4605.1 | links=#21538(auto Undercity;357):9
+c4606.1 | links=#13567(auto Undercity;216):16
+c4607.1 | links=#13567(auto Undercity;216):5
+c4608.1 | links=#12775(auto Undercity;200):13
+c4609.1 | links=#16102(auto Undercity;255):7
+c4610.1 | links=#27971(auto Undercity;481):13
+c4611.1 | links=#12233(auto Undercity;189):9 c10136.1:3 o174848.1:1
+c4612.1 | links=c5733.1:17
+c4613.1 | links=#26082(auto Undercity;439):5
+c4614.1 | links=#15527(auto Undercity;250):20 c4615.1:8
+c4615.1 | links=#15527(auto Undercity;250):20 c4614.1:8
+c4616.1 | links=#5835(auto Undercity;94):24 c4617.1:5
+c4617.1 | links=#5835(auto Undercity;94):21 c4616.1:5 c11067.1:4
+c4775.1 | links=#724(auto Undercity;11):6
+c5052.1 | links=#26082(auto Undercity;439):3
+c5190.1 | links=#26082(auto Undercity;439):5
+c5204.1 | links=#6755(auto Undercity;112):21 #14240(auto Undercity;230):21 c2055.1:15 c8393.1:20
+c5651.1 | links=#7114(auto Undercity;120):9
+c5653.1 | links=c5654.1:3
+c5654.1 | links=#9036(auto Undercity;140):12 c5653.1:3 c5661.1:11 c5679.1:11 c5686.1:3
+c5655.1 | links=c5656.1:3 c5659.1:3
+c5656.1 | links=c5655.1:3
+c5657.1 | links=c5658.1:4
+c5658.1 | links=#9036(auto Undercity;140):7 c5657.1:4
+c5659.1 | links=#9036(auto Undercity;140):11 #26276(auto Undercity;449):8 c5655.1:3
+c5660.1 | links=#9036(auto Undercity;140):6
+c5661.1 | links=c5654.1:11
+c5662.1 | links=#25752(auto Undercity;433):16
+c5663.1 | links=#25752(auto Undercity;433):17
+c5664.1 | links=#25752(auto Undercity;433):12
+c5665.1 | links=#25752(auto Undercity;433):12
+c5668.1 | links=c5670.1:2
+c5669.1 | links=#17363(auto Undercity;277):14
+c5670.1 | links=#1963(auto Undercity;27):37 #27025(auto Undercity;460):28 c5668.1:2
+c5675.1 | links=#13095(auto Undercity;209):12 #27742(auto Undercity;477):34
+c5679.1 | links=c5654.1:11
+c5680.1 | links=c5686.1:1
+c5686.1 | links=c5654.1:3 c5680.1:1 c5687.1:0
+c5687.1 | links=c5686.1:0
+c5693.1 | links=#13488(auto Undercity;214):7
+c5696.1 | links=c5699.1:2
+c5697.1 | links=c5699.1:1
+c5698.1 | links=c5699.1:2
+c5699.1 | links=#22617(auto Undercity;376):10 #22637(auto Undercity;378):18 c5696.1:2 c5697.1:1 c5698.1:2
+c5700.1 | links=c7825.1:6
+c5702.1 | links=c5704.1:10 c5705.1:10
+c5703.1 | links=#12687(auto Undercity;196):30 c5704.1:10 c5705.1:11
+c5704.1 | links=c5702.1:10 c5703.1:10
+c5705.1 | links=c5702.1:10 c5703.1:11
+c5731.1 | links=#20096(auto Undercity;331):16 #25619(auto Undercity;429):19
+c5732.1 | links=#14830(auto Undercity;243):8
+c5733.1 | links=#4134(auto Undercity;62):10 #17042(auto Undercity;273):24 #18272(auto Undercity;302):15 c4612.1:17
+c5734.1 | links=#21360(auto Undercity;354):4 c5735.1:2 c5739.1:2
+c5735.1 | links=c5734.1:2
+c5736.1 | links=c5735.2:3
+c5738.1 | links=c5735.2:2
+c5739.1 | links=c5734.1:2
+c5744.1 | links=#17676(auto Undercity;286):27 c11031.1:19
+c5747.1 | links=#16378(auto Undercity;261):10
+c5753.1 | links=#13488(auto Undercity;214):5
+c5754.1 | links=#21765(auto Undercity;361):18 c4570.1:3
+c5819.1 | links=#21538(auto Undercity;357):16 c4597.1:7
+c5820.1 | links=c4588.1:5 c4589.1:2
+c5821.1 | links=#21765(auto Undercity;361):8 c11048.1:6
+c6293.1 | links=#12846(auto Undercity;202):15
+c6395.1 | links=#25752(auto Undercity;433):14
+c6411.1 | links=#24601(auto Undercity;411):11
+c6467.1 | links=#16555(auto Undercity;264):6
+c6491.1 | links=#23343(auto Undercity;391):5 #27215(auto Undercity;465):12
+c6492.1 | links=c6492.3:14 c6492.4:12
+c6522.1 | links=#28327(auto Undercity;489):9 o103600.1:6
+c6566.1 | links=c2799.1:15
+c6741.1 | links=#7847(auto Undercity;130):4 c10053.1:3
+c7087.1 | links=#3937(auto Undercity;57):10
+c7297.1 | links=#127(auto Undercity;2):17 #9053(auto Undercity;141):22
+c7683.1 | links=#16304(auto Undercity;260):15
+c7825.1 | links=#11485(auto Undercity;175):13 c5700.1:6
+c8390.1 | links=#12233(auto Undercity;189):6 c8393.1:4
+c8393.1 | links=#6755(auto Undercity;112):18 c5204.1:20 c8390.1:4
+c8403.1 | links=#5741(auto Undercity;91):9
+c8672.1 | links=#24673(auto Undercity;413):10
+c8721.1 | links=#8848(auto Undercity;139):14
+c10053.1 | links=c6741.1:3
+c10136.1 | links=c4611.1:3
+c10181.1 | links=#1529(auto Undercity;21):17 c16287.1:8
+c10781.1 | links=#26082(auto Undercity;439):6
+c10879.1 | links=#23521(auto Undercity;395):7
+c11031.1 | links=c2799.1:9 c4586.1:9 c5744.1:19
+c11044.1 | links=#22029(auto Undercity;366):2
+c11048.1 | links=c4577.1:5 c5821.1:6 c11049.1:4
+c11049.1 | links=c11048.1:4
+c11067.1 | links=#5835(auto Undercity;94):22 c4617.1:4
+c11750.1 | links=#27500(auto Undercity;472):4
+c11835.1 | links=#12233(auto Undercity;189):19
+c11870.1 | links=#14424(auto Undercity;232):10
+c14402.1 | links=#929(auto Undercity;14):2
+c14403.1 | links=#20939(auto Undercity;345):2
+c14404.1 | links=#11579(auto Undercity;178):1
+c14729.1 | links=#21765(auto Undercity;361):6
+c15675.1 | links=#18037(auto Undercity;294):13
+c15676.1 | links=#26095(auto Undercity;440):12
+c15682.1 | links=#13614(auto Undercity;217):11
+c15683.1 | links=#4903(auto Undercity;74):11
+c15684.1 | links=#19433(auto Undercity;324):14
+c15686.1 | links=#24722(auto Undercity;414):12
+c15768.1 | links=#4514(auto Undercity;67):7
+c16287.1 | links=c2425.1:17 c10181.1:8 c20406.1:2
+c20406.1 | links=c16287.1:2
+c23103.1 | links=#6187(auto Undercity;104):10
+c23713.1 | links=#19215(auto Undercity;318):11
+o3662.1 | links=c4591.1:4
+o103600.1 | links=c6522.1:6
+o174848.1 | links=c4611.1:1 o175265.1:1
+o175265.1 | links=o174848.1:1
+o177884.1 | links=#18145(auto Undercity;296):2
+c5735.2 | links=#21360(auto Undercity;354):6 c5736.1:3 c5738.1:2
+c6492.2 | links=#21889(auto Undercity;362):8 c6492.3:9
+c6492.3 | links=c6492.1:14 c6492.2:9 c6492.4:15
+c6492.4 | links=#18272(auto Undercity;302):28 #27971(auto Undercity;481):12 c6492.1:12 c6492.3:15
+c15106.7 | links=#26179(auto Undercity;442):2
+c15106.8 | links=#26179(auto Undercity;442):2
+c5624.22 | links=#22564(auto Undercity;375):13
+c5624.37 | links=#11161(auto Undercity;171):3
+c5624.40 | links=#22564(auto Undercity;375):13

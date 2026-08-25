@@ -1,0 +1,3 @@
+Zone areaId 312 — eine Zeile pro Wegpunkt; Links inline.
+
+#28785 | s;Eastern Kingdoms;Stranglethorn Vale;Booty Bay;Janeiro's Point§s;Östliche Königreiche;Schlingendorntal;Booty Bay;Janeirospitze§s;Royaumes de l'est;Vallée de Strangleronce;Booty Bay;Janeiro's Point | x=-14179.6 y=-718 | size=1

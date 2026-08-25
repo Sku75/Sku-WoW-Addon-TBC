@@ -1,0 +1,3 @@
+Zone areaId 415 — eine Zeile pro Wegpunkt; Links inline.
+
+#28628 | s;Kalimdor;Ashenvale;Astranaar§s;Kalimdor;Eschental;Astranaar§s;Kalimdor;Orneval;Astranaar | x=2720.43 y=-382.391 | size=1

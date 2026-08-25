@@ -1,0 +1,56 @@
+Zone areaId 3917 — eine Zeile pro Wegpunkt; Links inline.
+
+#46231 | auto Auchindoun;1§auto Auchindoun;1§auto Auchindoun;1 | x=-3148.699951171875 y=5005.80029296875 | size=1 | links=#46230(auto Terokkar Forest;254):24 #46234(auto Auchindoun;2):17
+#46234 | auto Auchindoun;2§auto Auchindoun;2§auto Auchindoun;2 | x=-3131.800048828125 y=5010.10009765625 | size=1 | links=#46231(auto Auchindoun;1):17 #46235(auto Auchindoun;3):23
+#46235 | auto Auchindoun;3§auto Auchindoun;3§auto Auchindoun;3 | x=-3138.199951171875 y=5032.39990234375 | size=1 | links=#46234(auto Auchindoun;2):23 #46236(auto Auchindoun;4):19
+#46236 | auto Auchindoun;4§auto Auchindoun;4§auto Auchindoun;4 | x=-3148.800048828125 y=5048.39990234375 | size=1 | links=#46235(auto Auchindoun;3):19 #46237(auto Auchindoun;5):31
+#46237 | auto Auchindoun;5§auto Auchindoun;5§auto Auchindoun;5 | x=-3170 y=5071.7001953125 | size=1 | links=#46236(auto Auchindoun;4):31 #46238(auto Auchindoun;6):29
+#46238 | auto Auchindoun;6§auto Auchindoun;6§auto Auchindoun;6 | x=-3149.10009765625 y=5092.30029296875 | size=1 | links=#46237(auto Auchindoun;5):29 #46239(auto Auchindoun;7):21
+#46239 | auto Auchindoun;7§auto Auchindoun;7§auto Auchindoun;7 | x=-3134.400146484375 y=5108.60009765625 | size=1 | links=#46238(auto Auchindoun;6):21 #46240(auto Auchindoun;8):23
+#46240 | auto Auchindoun;8§auto Auchindoun;8§auto Auchindoun;8 | x=-3149.699951171875 y=5126.60009765625 | size=1 | links=#46239(auto Auchindoun;7):23 #46241(auto Auchindoun;9):19
+#46241 | auto Auchindoun;9§auto Auchindoun;9§auto Auchindoun;9 | x=-3161.800048828125 y=5142.5 | size=1 | links=#46240(auto Auchindoun;8):19 #46242(auto Auchindoun;10):33 #46245(auto Auchindoun;13):22
+#46242 | auto Auchindoun;10§auto Auchindoun;10§auto Auchindoun;10 | x=-3138.900146484375 y=5167 | size=1 | links=#46241(auto Auchindoun;9):33 #46243(auto Auchindoun;11):26
+#46243 | auto Auchindoun;11§auto Auchindoun;11§auto Auchindoun;11 | x=-3120 y=5184.89990234375 | size=1 | links=#46242(auto Auchindoun;10):26 #46244(auto Auchindoun;12):36
+#46244 | auto Auchindoun;12§auto Auchindoun;12§auto Auchindoun;12 | x=-3093.800048828125 y=5210.30029296875 | size=1 | links=#46204(auto Terokkar Forest;230):45 #46243(auto Auchindoun;11):36
+#46245 | auto Auchindoun;13§auto Auchindoun;13§auto Auchindoun;13 | x=-3179.900146484375 y=5156.5 | size=1 | links=#46241(auto Auchindoun;9):22 #46246(auto Auchindoun;14):22
+#46246 | auto Auchindoun;14§auto Auchindoun;14§auto Auchindoun;14 | x=-3195.900146484375 y=5171.7001953125 | size=1 | links=#46245(auto Auchindoun;13):22 #46247(auto Auchindoun;15):18
+#46247 | auto Auchindoun;15§auto Auchindoun;15§auto Auchindoun;15 | x=-3209.5 y=5158.60009765625 | size=1 | links=#46246(auto Auchindoun;14):18 #46248(auto Auchindoun;16):35
+#46248 | auto Auchindoun;16§auto Auchindoun;16§auto Auchindoun;16 | x=-3235 y=5134.10009765625 | size=1 | links=#46247(auto Auchindoun;15):35 #46249(auto Auchindoun;17):28
+#46249 | auto Auchindoun;17§auto Auchindoun;17§auto Auchindoun;17 | x=-3253.900146484375 y=5155.30029296875 | size=1 | links=#46248(auto Auchindoun;16):28 #46250(auto Auchindoun;18):29
+#46250 | auto Auchindoun;18§auto Auchindoun;18§auto Auchindoun;18 | x=-3279.400146484375 y=5170 | size=1 | links=#46249(auto Auchindoun;17):29 #46251(auto Auchindoun;19):16
+#46251 | auto Auchindoun;19§auto Auchindoun;19§auto Auchindoun;19 | x=-3296 y=5172.7001953125 | size=1 | links=#46250(auto Auchindoun;18):16 #46252(auto Auchindoun;20):17
+#46252 | auto Auchindoun;20§auto Auchindoun;20§auto Auchindoun;20 | x=-3299.900146484375 y=5155.30029296875 | size=1 | links=#46251(auto Auchindoun;19):17 #46253(auto Auchindoun;21):16
+#46253 | auto Auchindoun;21§auto Auchindoun;21§auto Auchindoun;21 | x=-3301.199951171875 y=5138.39990234375 | size=1 | links=#46254(auto Terokkar Forest;255):19 #46252(auto Auchindoun;20):16
+#46306 | auto Auchindoun;22§auto Auchindoun;22§auto Auchindoun;22 | x=-3592.10009765625 y=4879.7001953125 | size=1 | links=#46305(auto Terokkar Forest;289):27 #46307(auto Auchindoun;23):28
+#46307 | auto Auchindoun;23§auto Auchindoun;23§auto Auchindoun;23 | x=-3585.300048828125 y=4851.89990234375 | size=1 | links=#46306(auto Auchindoun;22):28 #46308(auto Auchindoun;24):43
+#46308 | auto Auchindoun;24§auto Auchindoun;24§auto Auchindoun;24 | x=-3557 y=4819.10009765625 | size=1 | links=#46307(auto Auchindoun;23):43 #46309(auto Auchindoun;25):27
+#46309 | auto Auchindoun;25§auto Auchindoun;25§auto Auchindoun;25 | x=-3571.900146484375 y=4796.30029296875 | size=1 | links=#46308(auto Auchindoun;24):27 #46310(auto Auchindoun;26):12
+#46310 | auto Auchindoun;26§auto Auchindoun;26§auto Auchindoun;26 | x=-3581 y=4787.2001953125 | size=1 | links=#46309(auto Auchindoun;25):12 #46311(auto Auchindoun;27):12
+#46311 | auto Auchindoun;27§auto Auchindoun;27§auto Auchindoun;27 | x=-3590 y=4778.10009765625 | size=1 | links=#46310(auto Auchindoun;26):12 #46312(auto Auchindoun;28):19
+#46312 | auto Auchindoun;28§auto Auchindoun;28§auto Auchindoun;28 | x=-3577.199951171875 y=4763.7001953125 | size=1 | links=#46311(auto Auchindoun;27):19 #46313(auto Auchindoun;29):24
+#46313 | auto Auchindoun;29§auto Auchindoun;29§auto Auchindoun;29 | x=-3561.400146484375 y=4745.60009765625 | size=1 | links=#46312(auto Auchindoun;28):24 #46314(auto Auchindoun;30):21
+#46314 | auto Auchindoun;30§auto Auchindoun;30§auto Auchindoun;30 | x=-3575.400146484375 y=4729.89990234375 | size=1 | links=#46313(auto Auchindoun;29):21 #46315(auto Auchindoun;31):35
+#46315 | auto Auchindoun;31§auto Auchindoun;31§auto Auchindoun;31 | x=-3600.699951171875 y=4705.10009765625 | size=1 | links=#46316(auto Terokkar Forest;290):16 #46314(auto Auchindoun;30):35
+#46637 | auto Auchindoun;32§auto Auchindoun;32§auto Auchindoun;32 | x=-3653.300048828125 y=4760.60009765625 | size=1 | links=#46636(auto Terokkar Forest;602):57 #46638(auto Auchindoun;33):56
+#46638 | auto Auchindoun;33§auto Auchindoun;33§auto Auchindoun;33 | x=-3662.5 y=4816.80029296875 | size=1 | links=#46637(auto Auchindoun;32):56 #46639(auto Auchindoun;34):63
+#46639 | auto Auchindoun;34§auto Auchindoun;34§auto Auchindoun;34 | x=-3690 y=4874 | size=1 | links=#46638(auto Auchindoun;33):63 #46640(auto Auchindoun;35):25
+#46640 | auto Auchindoun;35§auto Auchindoun;35§auto Auchindoun;35 | x=-3699 y=4898 | size=1 | links=#46639(auto Auchindoun;34):25 #46641(auto Auchindoun;36):25
+#46641 | auto Auchindoun;36§auto Auchindoun;36§auto Auchindoun;36 | x=-3715.800048828125 y=4917.7001953125 | size=1 | links=#46640(auto Auchindoun;35):25 #46642(auto Auchindoun;37):32
+#46642 | auto Auchindoun;37§auto Auchindoun;37§auto Auchindoun;37 | x=-3721.10009765625 y=4949.60009765625 | size=1 | links=#46641(auto Auchindoun;36):32 #46643(auto Auchindoun;38):42 #47606(auto Auchindoun;Terokkar Forest;56):20
+#46643 | auto Auchindoun;38§auto Auchindoun;38§auto Auchindoun;38 | x=-3719.800048828125 y=4991.80029296875 | size=1 | links=#46642(auto Auchindoun;37):42 #46644(auto Auchindoun;39):19
+#46644 | auto Auchindoun;39§auto Auchindoun;39§auto Auchindoun;39 | x=-3720.800048828125 y=5011.5 | size=1 | links=#46645(auto Terokkar Forest;603):40 #46643(auto Auchindoun;38):19
+#46729 | auto Auchindoun;40§auto Auchindoun;40§auto Auchindoun;40 | x=-3649.699951171875 y=5122.7001953125 | size=1
+#46738 | auto Auchindoun;41§auto Auchindoun;41§auto Auchindoun;41 | x=-3461.10009765625 y=5236.60009765625 | size=1 | links=#46739(auto Auchindoun;42):19
+#46739 | auto Auchindoun;42§auto Auchindoun;42§auto Auchindoun;42 | x=-3455.900146484375 y=5217.5 | size=1 | links=#46738(auto Auchindoun;41):19 #46740(auto Auchindoun;43):16
+#46740 | auto Auchindoun;43§auto Auchindoun;43§auto Auchindoun;43 | x=-3449.60009765625 y=5202.39990234375 | size=1 | links=#46739(auto Auchindoun;42):16 #46741(auto Auchindoun;44):47
+#46741 | auto Auchindoun;44§auto Auchindoun;44§auto Auchindoun;44 | x=-3409.800048828125 y=5177.30029296875 | size=1 | links=#46740(auto Auchindoun;43):47
+#46906 | auto Auchindoun;45§auto Auchindoun;45§auto Auchindoun;45 | x=-3141.5 y=4941.89990234375 | size=1
+#47591 | auto Inside;Auchindoun;Terokkar Forest;48§auto Drinnen;Auchindoun;Wälder von Terokkar;48§auto Intérieur;Auchindoun;Forêt de Terokkar;48 | x=-3421.800048828125 y=5168.89990234375 | size=1 | links=#47592(auto Inside;Auchindoun;Terokkar Forest;49):25
+#47592 | auto Inside;Auchindoun;Terokkar Forest;49§auto Drinnen;Auchindoun;Wälder von Terokkar;49§auto Intérieur;Auchindoun;Forêt de Terokkar;49 | x=-3423.10009765625 y=5143.89990234375 | size=1 | links=#47591(auto Inside;Auchindoun;Terokkar Forest;48):25 #47593(auto Auchindoun;Terokkar Forest;50):13
+#47593 | auto Auchindoun;Terokkar Forest;50§auto Auchindoun;Wälder von Terokkar;50§auto Auchindoun;Forêt de Terokkar;50 | x=-3423.10009765625 y=5130.39990234375 | size=1 | links=#47594(auto Ring of Observance;Terokkar Forest;1156):23 #47592(auto Inside;Auchindoun;Terokkar Forest;49):13
+#47601 | auto Auchindoun;Terokkar Forest;51§auto Auchindoun;Wälder von Terokkar;51§auto Auchindoun;Forêt de Terokkar;51 | x=-3581.300048828125 y=4943.2001953125 | size=1 | links=#47602(auto Auchindoun;Terokkar Forest;52):23
+#47602 | auto Auchindoun;Terokkar Forest;52§auto Auchindoun;Wälder von Terokkar;52§auto Auchindoun;Forêt de Terokkar;52 | x=-3604 y=4947.39990234375 | size=1 | links=#47601(auto Auchindoun;Terokkar Forest;51):23 #47603(auto Auchindoun;Terokkar Forest;53):33
+#47603 | auto Auchindoun;Terokkar Forest;53§auto Auchindoun;Wälder von Terokkar;53§auto Auchindoun;Forêt de Terokkar;53 | x=-3637.10009765625 y=4950.30029296875 | size=1 | links=#47602(auto Auchindoun;Terokkar Forest;52):33 #47604(auto Auchindoun;Terokkar Forest;54):27
+#47604 | auto Auchindoun;Terokkar Forest;54§auto Auchindoun;Wälder von Terokkar;54§auto Auchindoun;Forêt de Terokkar;54 | x=-3664.300048828125 y=4946.30029296875 | size=1 | links=#47603(auto Auchindoun;Terokkar Forest;53):27 #47605(auto Auchindoun;Terokkar Forest;55):17
+#47605 | auto Auchindoun;Terokkar Forest;55§auto Auchindoun;Wälder von Terokkar;55§auto Auchindoun;Forêt de Terokkar;55 | x=-3681.5 y=4944.5 | size=1 | links=#47604(auto Auchindoun;Terokkar Forest;54):17 #47606(auto Auchindoun;Terokkar Forest;56):20
+#47606 | auto Auchindoun;Terokkar Forest;56§auto Auchindoun;Wälder von Terokkar;56§auto Auchindoun;Forêt de Terokkar;56 | x=-3701.699951171875 y=4943.10009765625 | size=1 | links=#46642(auto Auchindoun;37):20 #47605(auto Auchindoun;Terokkar Forest;55):20

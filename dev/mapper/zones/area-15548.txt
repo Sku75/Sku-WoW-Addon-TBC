@@ -1,0 +1,5 @@
+Zone areaId 15548 — eine Zeile pro Wegpunkt; Links inline.
+
+#10240 | Hall of Explorers;Ironforge§Die Halle der Forscher;Eisenschmiede§Hall of Explorers;Forgefer | x=-4687.39990234375 y=-1227.200073242188 | size=1 | links=#28100(auto Ironforge;68):9 #21761(auto The Great Forge;Ironforge;59):88 #11973(auto Hall of Explorers;Ironforge;1):73 #22805(auto Hall of Explorers;Ironforge;2):65
+#11973 | auto Hall of Explorers;Ironforge;1§auto Die Halle der Forscher;Eisenschmiede;1§auto Hall of Explorers;Forgefer;1 | x=-4747.80029296875 y=-1269.5 | size=1 | links=#10240(Hall of Explorers;Ironforge):73 #1060(auto Tinker Town;Ironforge;1):25
+#22805 | auto Hall of Explorers;Ironforge;2§auto Die Halle der Forscher;Eisenschmiede;2§auto Hall of Explorers;Forgefer;2 | x=-4642.60009765625 y=-1180 | size=1 | links=#18397(auto The Forlorn Cavern;Ironforge;8):27 #10240(Hall of Explorers;Ironforge):65

@@ -1,0 +1,3 @@
+Zone areaId 412 — eine Zeile pro Wegpunkt; Links inline.
+
+#28636 | s;Kalimdor;Ashenvale;Maestra's Post;The Ruins of Ordil'Aran§s;Kalimdor;Eschental;Maestras Posten;Die Ruinen von Ordil'Aran§s;Kalimdor;Orneval;Maestra's Post;The Ruins of Ordil'Aran | x=3493.89 y=-119.601 | size=1

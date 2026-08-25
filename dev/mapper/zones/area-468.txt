@@ -1,0 +1,3 @@
+Zone areaId 468 — eine Zeile pro Wegpunkt; Links inline.
+
+#28707 | s;Kalimdor;Stonetalon Mountains;Stonetalon Peak;The Talon Den§s;Kalimdor;Steinkrallengebirge;Der Steinkrallengipfel;Der Krallenbau§s;Kalimdor;Les Serres-Rocheuses;Stonetalon Peak;The Talon Den | x=2416.89 y=-1792.39 | size=1

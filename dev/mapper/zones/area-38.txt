@@ -1,0 +1,616 @@
+Zone areaId 38 — eine Zeile pro Wegpunkt; Links inline.
+
+#96 | auto Loch Modan;1§auto Loch Modan;1§auto Loch Modan;1 | x=-5629.60009765625 y=-3059.400146484375 | size=1 | links=#11780(auto Loch Modan;148):17 #27534(auto Loch Modan;325):12
+#215 | auto Loch Modan;2§auto Loch Modan;2§auto Loch Modan;2 | x=-4907.30029296875 y=-3933.199951171875 | size=1 | links=#7210(auto Loch Modan;91):54 c1178.3:23
+#245 | auto Loch Modan;3§auto Loch Modan;3§auto Loch Modan;3 | x=-5568.30029296875 y=-3144.10009765625 | size=1 | links=#1734(auto Loch Modan;28):35 #21365(auto Loch Modan;250):85
+#252 | Mangy Mountain Boar;Loch Modan;26;74.51;52.44§Räudiger Bergeber;Loch Modan;26;74.51;52.44§Sanglier des montagnes galeux;Loch Modan;26;74.51;52.44 | x=-5446.80029296875 y=-4042.699951171875 | size=1
+#273 | auto Loch Modan;4§auto Loch Modan;4§auto Loch Modan;4 | x=-5410.80029296875 y=-3762.800048828125 | size=1 | links=#25075(auto Loch Modan;303):50 c6577.1:44
+#327 | auto Loch Modan;5§auto Loch Modan;5§auto Loch Modan;5 | x=-5579.89990234375 y=-2815.10009765625 | size=1 | links=#9985(auto Loch Modan;128):83 #23282(auto Loch Modan;279):65
+#417 | auto Loch Modan;6§auto Loch Modan;6§auto Loch Modan;6 | x=-5782.60009765625 y=-3429.199951171875 | size=1 | links=#6991(auto Loch Modan;88):19 #11708(auto Loch Modan;145):64 c1379.1:18
+#563 | auto Loch Modan;7§auto Loch Modan;7§auto Loch Modan;7 | x=-6203 y=-2926.10009765625 | size=1 | links=#28030(auto Loch Modan;330):13 c1197.2:11
+#564 | auto Loch Modan;8§auto Loch Modan;8§auto Loch Modan;8 | x=-4773.7001953125 y=-2711.10009765625 | size=1 | links=#7363(route;Algaz Station;Loch Modan;to;Wetlands;one):30 #19114(auto Loch Modan;222):36 c1276.1:22
+#652 | auto Loch Modan;9§auto Loch Modan;9§auto Loch Modan;9 | x=-4859.30029296875 y=-2989.199951171875 | size=1 | links=#14029(auto Loch Modan;170):9 o271.1:12
+#738 | auto Loch Modan;10§auto Loch Modan;10§auto Loch Modan;10 | x=-4978 y=-2994 | size=1 | links=#21628(auto Loch Modan;257):15 #28286(auto Loch Modan;332):27
+#775 | auto Loch Modan;11§auto Loch Modan;11§auto Loch Modan;11 | x=-5651 y=-3876.199951171875 | size=1 | links=#25183(auto Loch Modan;307):26 c1165.3:21
+#837 | auto Loch Modan;12§auto Loch Modan;12§auto Loch Modan;12 | x=-5983 y=-2988.699951171875 | size=1 | links=#6412(Stonesplinter Skullthumper;farming;Loch Modan):19 #9556(auto Loch Modan;122):20 #16752(auto Loch Modan;195):38
+#861 | auto Loch Modan;13§auto Loch Modan;13§auto Loch Modan;13 | x=-4804.7001953125 y=-2937.10009765625 | size=5 | links=#4441(auto Loch Modan;52):51 c1172.1:10
+#922 | auto Loch Modan;14§auto Loch Modan;14§auto Loch Modan;14 | x=-4790.39990234375 y=-3110.60009765625 | size=1 | links=#6532(auto Loch Modan;82):42 #22470(auto Loch Modan;269):42 c1202.3:77
+#984 | auto Loch Modan;15§auto Loch Modan;15§auto Loch Modan;15 | x=-5592.89990234375 y=-3909.800048828125 | size=1 | links=#11965(auto Loch Modan;152):41 #23260(auto Loch Modan;278):27
+#1017 | auto Loch Modan;16§auto Loch Modan;16§auto Loch Modan;16 | x=-5276.10009765625 y=-2880.800048828125 | size=1 | links=#10514(auto Loch Modan;133):18 #23320(auto Loch Modan;280):29 c2509.1:43
+#1246 | auto Loch Modan;17§auto Loch Modan;17§auto Loch Modan;17 | x=-6171 y=-2982.800048828125 | size=1 | links=#19006(auto Loch Modan;220):16 c1197.6:14 c1197.8:19
+#1336 | auto Loch Modan;18§auto Loch Modan;18§auto Loch Modan;18 | x=-5689.39990234375 y=-3946.300048828125 | size=1 | links=#3051(auto Loch Modan;39):13 c1393.2:19
+#1360 | auto Loch Modan;19§auto Loch Modan;19§auto Loch Modan;19 | x=-5634.7001953125 y=-3116.60009765625 | size=1 | links=#19196(auto Loch Modan;223):12 #25564(auto Loch Modan;309):19
+#1410 | auto Loch Modan;20§auto Loch Modan;20§auto Loch Modan;20 | x=-5274.80029296875 y=-3018.10009765625 | size=1 | links=#6491(auto Loch Modan;80):36 #17907(auto Loch Modan;210):52 c2507.1:27
+#1476 | auto Loch Modan;21§auto Loch Modan;21§auto Loch Modan;21 | x=-4957.89990234375 y=-3462.60009765625 | size=1 | links=#14241(focus point;Loch Modan):55 #22674(auto Loch Modan;272):32 o104575.1:32
+#1477 | auto Loch Modan;22§auto Loch Modan;22§auto Loch Modan;22 | x=-5859.7001953125 y=-2624.699951171875 | size=1 | links=#2654(auto Loch Modan;37):16 c1330.1:9
+#1532 | auto Loch Modan;23§auto Loch Modan;23§auto Loch Modan;23 | x=-6071.60009765625 y=-3026.60009765625 | size=1 | links=c1164.4:20 c1163.15:16
+#1574 | auto Loch Modan;24§auto Loch Modan;24§auto Loch Modan;24 | x=-5711.80029296875 y=-3088.5 | size=1 | links=#12852(auto Loch Modan;159):16 #18661(auto Loch Modan;217):11
+#1583 | auto Loch Modan;25§auto Loch Modan;25§auto Loch Modan;25 | x=-5520.39990234375 y=-3784 | size=1 | links=#7596(auto Loch Modan;94):25 #26775(auto Loch Modan;320):44
+#1589 | auto Loch Modan;26§auto Loch Modan;26§auto Loch Modan;26 | x=-4996.2001953125 y=-2965.400146484375 | size=1 | links=#28286(auto Loch Modan;332):9 c1177.3:9
+#1676 | auto Loch Modan;27§auto Loch Modan;27§auto Loch Modan;27 | x=-4719.5 y=-2907.10009765625 | size=1 | links=#9501(auto Loch Modan;121):53 #16677(auto Loch Modan;193):51
+#1734 | auto Loch Modan;28§auto Loch Modan;28§auto Loch Modan;28 | x=-5599.7001953125 y=-3161.400146484375 | size=1 | links=#245(auto Loch Modan;3):35 #23911(auto Loch Modan;288):72
+#1868 | auto Loch Modan;29§auto Loch Modan;29§auto Loch Modan;29 | x=-5347.80029296875 y=-2975.400146484375 | size=1 | links=#17855(auto Loch Modan;209):14 #25071(auto Loch Modan;302):31 c2510.1:13 c2517.1:7
+#1947 | auto Loch Modan;30§auto Loch Modan;30§auto Loch Modan;30 | x=-4941.39990234375 y=-2996.60009765625 | size=1 | links=#16698(auto Loch Modan;194):15 #23626(auto Loch Modan;285):18 o271.3:3
+#1956 | auto Loch Modan;31§auto Loch Modan;31§auto Loch Modan;31 | x=-5941.5 y=-2951 | size=1 | links=#5118(auto Loch Modan;69):9 #10540(auto Loch Modan;134):13
+#2010 | auto Loch Modan;32§auto Loch Modan;32§auto Loch Modan;32 | x=-5958.2001953125 y=-2822.5 | size=5 | links=#3605(Stonesplinter Skullthumper;Stonesplinter Valley;Loch Modan):22 #9951(auto Loch Modan;126):40
+#2129 | auto Loch Modan;33§auto Loch Modan;33§auto Loch Modan;33 | x=-5613.39990234375 y=-4223.5 | size=1 | links=#4656(auto Loch Modan;54):32 #5006(auto Loch Modan;66):24
+#2154 | auto Loch Modan;34§auto Loch Modan;34§auto Loch Modan;34 | x=-4729.89990234375 y=-3056.300048828125 | size=1 | links=#7294(auto Loch Modan;92):34 #22470(auto Loch Modan;269):59 c1202.1:29
+#2596 | auto Loch Modan;35§auto Loch Modan;35§auto Loch Modan;35 | x=-5454.30029296875 y=-3984.10009765625 | size=1 | links=#10759(auto Loch Modan;138):49 #23619(auto Loch Modan;284):28
+#2634 | auto Loch Modan;36§auto Loch Modan;36§auto Loch Modan;36 | x=-5739.89990234375 y=-2818.199951171875 | size=1 | links=#3227(auto Loch Modan;43):27 #9783(auto Loch Modan;125):26
+#2654 | auto Loch Modan;37§auto Loch Modan;37§auto Loch Modan;37 | x=-5850.10009765625 y=-2637.800048828125 | size=1 | links=#1477(auto Loch Modan;22):16 #8872(auto Loch Modan;109):7
+#2974 | auto Loch Modan;38§auto Loch Modan;38§auto Loch Modan;38 | x=-5873.2001953125 y=-2913.10009765625 | size=1 | links=#9769(centralpoint;Stonesplinter Valley;Loch Modan):30 #10199(auto Loch Modan;131):33 c1162.3:20
+#3051 | auto Loch Modan;39§auto Loch Modan;39§auto Loch Modan;39 | x=-5687.7001953125 y=-3933.199951171875 | size=1 | links=#1336(auto Loch Modan;18):13 c1398.2:24
+#3090 | auto Loch Modan;40§auto Loch Modan;40§auto Loch Modan;40 | x=-6110.10009765625 y=-2957.10009765625 | size=1 | links=#5447(auto Loch Modan;73):14 c1163.3:9
+#3104 | auto Loch Modan;41§auto Loch Modan;41§auto Loch Modan;41 | x=-5805.30029296875 y=-3300.900146484375 | size=1 | links=#14729(auto Loch Modan;173):37 #23941(auto Loch Modan;289):36
+#3189 | auto Loch Modan;42§auto Loch Modan;42§auto Loch Modan;42 | x=-5314.80029296875 y=-2980.199951171875 | size=1 | links=#25093(auto Loch Modan;305):14 c1337.1:10 c2513.1:13
+#3227 | auto Loch Modan;43§auto Loch Modan;43§auto Loch Modan;43 | x=-5763.2001953125 y=-2832.60009765625 | size=1 | links=#2634(auto Loch Modan;36):27 #8850(auto Loch Modan;107):34
+#3279 | crossing;Algaz Station;Loch Modan§kreuzung;Station Algaz;Loch Modan§traversée;Poste d'Algaz;Loch Modan | x=-4910.60009765625 y=-2728.900146484375 | size=1 | links=#4733(auto Loch Modan;58):83 #21386(auto Loch Modan;251):57 c1277.1:85
+#3605 | Stonesplinter Skullthumper;Stonesplinter Valley;Loch Modan§Schädelhauer der Splittersteintroggs;Splittersteintal;Loch Modan§Brise-crâne Brisepierre;Vallée des Brisepierre;Loch Modan | x=-5980.5 y=-2819 | size=1 | links=#2010(auto Loch Modan;32):22 #23896(auto Loch Modan;287):45
+#3616 | Mountain Buzzard;Loch Modan;20;76.77;63.67§Bergbussard;Loch Modan;20;76.77;63.67§Busard des montagnes;Loch Modan;20;76.77;63.67 | x=-5640.60009765625 y=-4100.2001953125 | size=1
+#3865 | auto Loch Modan;44§auto Loch Modan;44§auto Loch Modan;44 | x=-6126.2001953125 y=-2912.199951171875 | size=1 | links=#27928(auto Loch Modan;329):9 #28306(auto Loch Modan;333):10
+#3914 | auto Loch Modan;45§auto Loch Modan;45§auto Loch Modan;45 | x=-5639.80029296875 y=-4100.60009765625 | size=1 | links=#24316(auto Loch Modan;296):31 #26249(auto Loch Modan;314):42
+#3972 | auto Loch Modan;46§auto Loch Modan;46§auto Loch Modan;46 | x=-4766 y=-4089.10009765625 | size=1 | links=#5011(auto Loch Modan;67):9 #26438(auto Loch Modan;318):6
+#4135 | auto Loch Modan;47§auto Loch Modan;47§auto Loch Modan;47 | x=-5740.10009765625 y=-2582.900146484375 | size=1 | links=#11282(auto Loch Modan;142):8 #13613(auto Loch Modan;168):5
+#4176 | auto Loch Modan;48§auto Loch Modan;48§auto Loch Modan;48 | x=-5826.10009765625 y=-4129.39990234375 | size=1 | links=#4700(auto Loch Modan;57):31 c1194.2:17
+#4231 | auto Loch Modan;49§auto Loch Modan;49§auto Loch Modan;49 | x=-5202.7001953125 y=-2853.699951171875 | size=1 | links=#6652(auto Loch Modan;84):43 #13408(auto Loch Modan;167):48
+#4281 | cave;Mo'grosh Stronghold;Loch Modan§höhle;Festung Mo'grosh;Loch Modan§cave;Mo'grosh Stronghold;Loch Modan | x=-4853 y=-4047.300048828125 | size=1 | links=#12630(auto Loch Modan;155):15 c1181.1:30
+#4309 | auto Loch Modan;50§auto Loch Modan;50§auto Loch Modan;50 | x=-5109.60009765625 y=-2832.5 | size=1 | links=#9016(auto Loch Modan;111):35 #13408(auto Loch Modan;167):46
+#4376 | auto Loch Modan;51§auto Loch Modan;51§auto Loch Modan;51 | x=-4782.30029296875 y=-4116.30029296875 | size=1 | links=#11889(auto Loch Modan;149):47 #22359(auto Loch Modan;267):23
+#4441 | auto Loch Modan;52§auto Loch Modan;52§auto Loch Modan;52 | x=-4801.10009765625 y=-2885.800048828125 | size=5 | links=#861(auto Loch Modan;13):51 #15273(auto Loch Modan;179):50
+#4499 | auto Loch Modan;53§auto Loch Modan;53§auto Loch Modan;53 | x=-5316.5 y=-2986.800048828125 | size=1 | links=#13194(auto Loch Modan;165):15 c6241.1:3
+#4656 | auto Loch Modan;54§auto Loch Modan;54§auto Loch Modan;54 | x=-5645.5 y=-4223.89990234375 | size=1 | links=#2129(auto Loch Modan;33):32 #11569(auto Loch Modan;143):28
+#4672 | auto Loch Modan;55§auto Loch Modan;55§auto Loch Modan;55 | x=-5756.80029296875 y=-2598.699951171875 | size=1 | links=#11282(auto Loch Modan;142):14 #15657(auto Loch Modan;182):18
+#4695 | auto Loch Modan;56§auto Loch Modan;56§auto Loch Modan;56 | x=-5869.89990234375 y=-2558.900146484375 | size=1 | links=#15157(auto Loch Modan;178):47 #15600(auto Loch Modan;181):61 c1283.1:40
+#4700 | auto Loch Modan;57§auto Loch Modan;57§auto Loch Modan;57 | x=-5817.7001953125 y=-4099.2001953125 | size=1 | links=#4176(auto Loch Modan;48):31 c14268.2:55
+#4733 | auto Loch Modan;58§auto Loch Modan;58§auto Loch Modan;58 | x=-4978 y=-2778.400146484375 | size=1 | links=#3279(crossing;Algaz Station;Loch Modan):83 c1186.1:45 c1279.1:72
+#4741 | auto Loch Modan;59§auto Loch Modan;59§auto Loch Modan;59 | x=-5357.10009765625 y=-3019.60009765625 | size=1 | links=#9461(auto Loch Modan;118):6 #25367(auto Loch Modan;308):9
+#4782 | auto Loch Modan;60§auto Loch Modan;60§auto Loch Modan;60 | x=-5392.7001953125 y=-2909.699951171875 | size=1 | links=#9981(auto Loch Modan;127):18 c1278.1:21 c1340.1:40
+#4785 | auto Loch Modan;61§auto Loch Modan;61§auto Loch Modan;61 | x=-5953.10009765625 y=-2978.900146484375 | size=1 | links=#5118(auto Loch Modan;69):20 #9556(auto Loch Modan;122):14
+#4808 | auto Loch Modan;62§auto Loch Modan;62§auto Loch Modan;62 | x=-5845.80029296875 y=-2627.400146484375 | size=1 | links=#8872(auto Loch Modan;109):6 #18197(auto Loch Modan;213):20
+#4837 | auto Loch Modan;63§auto Loch Modan;63§auto Loch Modan;63 | x=-5748 y=-3844 | size=1 | links=#20439(auto Loch Modan;238):31 #28373(auto Loch Modan;334):17
+#4847 | auto Loch Modan;64§auto Loch Modan;64§auto Loch Modan;64 | x=-4771.89990234375 y=-3524.10009765625 | size=1 | links=#8993(auto Loch Modan;110):16 #19312(auto Loch Modan;224):33 #24489(auto Loch Modan;299):23
+#4862 | auto Loch Modan;65§auto Loch Modan;65§auto Loch Modan;65 | x=-5689.89990234375 y=-3757.60009765625 | size=1 | links=#10743(auto Loch Modan;137):33 #22072(auto Loch Modan;262):35 #23213(auto Loch Modan;277):60
+#5006 | auto Loch Modan;66§auto Loch Modan;66§auto Loch Modan;66 | x=-5590.5 y=-4233.2001953125 | size=1 | links=#2129(auto Loch Modan;33):24 #21503(auto Loch Modan;254):26
+#5011 | auto Loch Modan;67§auto Loch Modan;67§auto Loch Modan;67 | x=-4771.80029296875 y=-4081.60009765625 | size=1 | links=#3972(auto Loch Modan;46):9 #11889(auto Loch Modan;149):15
+#5068 | auto Loch Modan;68§auto Loch Modan;68§auto Loch Modan;68 | x=-5998.7001953125 y=-2511.900146484375 | size=1 | links=#8521(auto Loch Modan;102):38 c3836.1:38
+#5118 | auto Loch Modan;69§auto Loch Modan;69§auto Loch Modan;69 | x=-5946.7001953125 y=-2959.300048828125 | size=1 | links=#1956(auto Loch Modan;31):9 #4785(auto Loch Modan;61):20
+#5291 | auto Loch Modan;70§auto Loch Modan;70§auto Loch Modan;70 | x=-6045.39990234375 y=-2954.800048828125 | size=1 | links=#5882(auto Loch Modan;76):8 #11763(auto Loch Modan;146):13
+#5320 | Black Bear Patriarch;Loch Modan;21;71.72;40.28§Schwarzbärenpatriarch;Loch Modan;21;71.72;40.28§Patriarche ours noir;Loch Modan;21;71.72;40.28 | x=-5236 y=-3950.800048828125 | size=1
+#5434 | auto Loch Modan;71§auto Loch Modan;71§auto Loch Modan;71 | x=-5212.2001953125 y=-3113.10009765625 | size=1 | links=#11147(auto Loch Modan;141):15 #13358(auto Loch Modan;166):7 c1683.1:5 c1224.2:128
+#5439 | auto Loch Modan;72§auto Loch Modan;72§auto Loch Modan;72 | x=-5436.80029296875 y=-4120.2001953125 | size=1 | links=#16300(auto Loch Modan;189):16 #22584(auto Loch Modan;271):16
+#5447 | auto Loch Modan;73§auto Loch Modan;73§auto Loch Modan;73 | x=-6098.7001953125 y=-2966.60009765625 | size=1 | links=#3090(auto Loch Modan;40):14 #10630(auto Loch Modan;135):14 #26816(auto Loch Modan;321):24
+#5537 | auto Loch Modan;74§auto Loch Modan;74§auto Loch Modan;74 | x=-5347.7001953125 y=-2934.800048828125 | size=1 | links=#27902(auto Loch Modan;328):5 c167.1:4
+#5678 | auto Loch Modan;75§auto Loch Modan;75§auto Loch Modan;75 | x=-6066.2001953125 y=-2794.400146484375 | size=1 | links=#23896(auto Loch Modan;287):44 c1163.21:11 c1166.22:19 c1163.23:30 c1166.27:34 c1166.28:33 c1166.43:29
+#5882 | auto Loch Modan;76§auto Loch Modan;76§auto Loch Modan;76 | x=-6051.10009765625 y=-2948.699951171875 | size=1 | links=#5291(auto Loch Modan;70):8 #24226(auto Loch Modan;295):19
+#5914 | auto Loch Modan;77§auto Loch Modan;77§auto Loch Modan;77 | x=-6157.7001953125 y=-3025.400146484375 | size=1 | links=#25754(auto Loch Modan;311):12 c1197.7:13
+#6239 | auto Loch Modan;78§auto Loch Modan;78§auto Loch Modan;78 | x=-5371.39990234375 y=-3019.5 | size=1 | links=#10027(auto Loch Modan;129):7 c1153.1:5
+#6385 | centralpoint;The Farstrider Lodge;Loch Modan§zentralerpunkt;Jagdhütte der Weltenwanderer;Loch Modan§point central;The Farstrider Lodge;Loch Modan | x=-5656.2001953125 y=-4276 | size=1 | links=c954.1:10 c1155.1:29 c1156.1:30 c1187.1:40 c1685.1:8 c1686.1:11 c1687.1:13
+#6412 | Stonesplinter Skullthumper;farming;Loch Modan§Schädelhauer der Splittersteintroggs;farmen;Loch Modan§Brise-crâne Brisepierre;farming;Loch Modan | x=-5994.89990234375 y=-2972.800048828125 | size=1 | links=#837(auto Loch Modan;12):19 #16752(auto Loch Modan;195):27
+#6443 | auto Loch Modan;79§auto Loch Modan;79§auto Loch Modan;79 | x=-5642.5 y=-3933 | size=1 | links=#16568(auto Loch Modan;192):24 #23260(auto Loch Modan;278):36
+#6491 | auto Loch Modan;80§auto Loch Modan;80§auto Loch Modan;80 | x=-5244.39990234375 y=-2997.60009765625 | size=1 | links=#1410(auto Loch Modan;20):36 #8664(auto Loch Modan;105):16 #27764(auto Loch Modan;327):56 c1338.1:10 c2508.1:28
+#6517 | auto Loch Modan;81§auto Loch Modan;81§auto Loch Modan;81 | x=-4902.89990234375 y=-2976.10009765625 | size=1 | links=#24209(auto Loch Modan;293):11 c1175.2:10
+#6532 | auto Loch Modan;82§auto Loch Modan;82§auto Loch Modan;82 | x=-4832.7001953125 y=-3110.300048828125 | size=1 | links=#922(auto Loch Modan;14):42 #24220(auto Loch Modan;294):47
+#6572 | auto Loch Modan;83§auto Loch Modan;83§auto Loch Modan;83 | x=-4739.80029296875 y=-3249.10009765625 | size=1 | links=#15319(auto Loch Modan;180):97 c2526.1:21 c3290.1:12
+#6652 | auto Loch Modan;84§auto Loch Modan;84§auto Loch Modan;84 | x=-5239.2001953125 y=-2878.199951171875 | size=1 | links=#4231(auto Loch Modan;49):43 #10514(auto Loch Modan;133):19
+#6697 | auto Loch Modan;85§auto Loch Modan;85§auto Loch Modan;85 | x=-4823.89990234375 y=-3584.5 | size=1 | links=#8993(auto Loch Modan;110):71 #10965(auto Loch Modan;139):61 c1185.1:103
+#6844 | auto Loch Modan;86§auto Loch Modan;86§auto Loch Modan;86 | x=-5828.10009765625 y=-2589.900146484375 | size=1 | links=c1089.1:13 c1281.1:50 c1283.1:11
+#6941 | auto Loch Modan;87§auto Loch Modan;87§auto Loch Modan;87 | x=-5444.80029296875 y=-3846.699951171875 | size=1 | links=#12334(auto Loch Modan;153):35 #22831(auto Loch Modan;274):29
+#6991 | auto Loch Modan;88§auto Loch Modan;88§auto Loch Modan;88 | x=-5791.7001953125 y=-3412 | size=1 | links=#417(auto Loch Modan;6):19 #24133(auto Loch Modan;292):30
+#7043 | auto Loch Modan;89§auto Loch Modan;89§auto Loch Modan;89 | x=-5760.10009765625 y=-4157.60009765625 | size=1 | links=#24018(auto Loch Modan;290):41 c1194.2:61
+#7102 | auto Loch Modan;90§auto Loch Modan;90§auto Loch Modan;90 | x=-4850.30029296875 y=-2975 | size=1 | links=#14029(auto Loch Modan;170):11 #20396(entry and exit;cave;Silver Stream Mine;Loch Modan):20 o271.7:4
+#7210 | auto Loch Modan;91§auto Loch Modan;91§auto Loch Modan;91 | x=-4934.60009765625 y=-3980.60009765625 | size=1 | links=#215(auto Loch Modan;2):54 c1179.1:83 c14267.1:56
+#7294 | auto Loch Modan;92§auto Loch Modan;92§auto Loch Modan;92 | x=-4716.80029296875 y=-3024.699951171875 | size=1 | links=#2154(auto Loch Modan;34):34 #16677(auto Loch Modan;193):69
+#7363 | route;Algaz Station;Loch Modan;to;Wetlands;one§route;Station Algaz;Loch Modan;zum;Sumpfland;eins§route;Poste d'Algaz;Loch Modan;vers;Les Paluns;un | x=-4743.89990234375 y=-2707.5 | size=1 | links=#564(auto Loch Modan;8):30 #19114(auto Loch Modan;222):39 c1342.1:66
+#7560 | auto Loch Modan;93§auto Loch Modan;93§auto Loch Modan;93 | x=-6108.89990234375 y=-2933.199951171875 | size=1 | links=#26816(auto Loch Modan;321):17 #28306(auto Loch Modan;333):18
+#7596 | auto Loch Modan;94§auto Loch Modan;94§auto Loch Modan;94 | x=-5497.10009765625 y=-3793.60009765625 | size=1 | links=#1583(auto Loch Modan;25):25 #12334(auto Loch Modan;153):39 #25075(auto Loch Modan;303):41
+#7709 | auto Loch Modan;95§auto Loch Modan;95§auto Loch Modan;95 | x=-6117 y=-3012.5 | size=1 | links=#19966(auto Loch Modan;231):17 #24442(auto Loch Modan;298):17
+#7747 | cave;one;Stonesplinter Valley;Loch Modan§höhle;eins;Splittersteintal;Loch Modan§cave;un;Vallée des Brisepierre;Loch Modan | x=-6029.10009765625 y=-2970.5 | size=1 | links=#11763(auto Loch Modan;146):8 #16752(auto Loch Modan;195):14
+#7768 | auto Loch Modan;96§auto Loch Modan;96§auto Loch Modan;96 | x=-5718.7001953125 y=-2585.300048828125 | size=1 | links=#21121(auto Loch Modan;247):15 c1282.1:7
+#7955 | auto Loch Modan;97§auto Loch Modan;97§auto Loch Modan;97 | x=-4849.39990234375 y=-4005.199951171875 | size=1 | links=#25611(auto Loch Modan;310):20 c1181.1:12
+#7964 | auto Loch Modan;98§auto Loch Modan;98§auto Loch Modan;98 | x=-5397.10009765625 y=-2963 | size=1 | links=#8394(auto Loch Modan;100):10 c3948.1:7
+#8147 | auto Loch Modan;99§auto Loch Modan;99§auto Loch Modan;99 | x=-4817.7001953125 y=-2660 | size=1 | links=#9226(auto Loch Modan;113):18 #21435(auto Loch Modan;253):24 c1331.1:6 c1362.1:4
+#8394 | auto Loch Modan;100§auto Loch Modan;100§auto Loch Modan;100 | x=-5387.2001953125 y=-2960.300048828125 | size=1 | links=#7964(auto Loch Modan;98):10 c6734.1:16
+#8506 | auto Loch Modan;101§auto Loch Modan;101§auto Loch Modan;101 | x=-4776.39990234375 y=-2800.10009765625 | size=5 | links=#15273(auto Loch Modan;179):39 #22354(auto Loch Modan;266):37
+#8521 | auto Loch Modan;102§auto Loch Modan;102§auto Loch Modan;102 | x=-5963.39990234375 y=-2528 | size=1 | links=#5068(auto Loch Modan;68):38 #15157(auto Loch Modan;178):53
+#8565 | auto Loch Modan;103§auto Loch Modan;103§auto Loch Modan;103 | x=-5673 y=-3109.800048828125 | size=1 | links=#23380(auto Loch Modan;282):13 #25564(auto Loch Modan;309):21
+#8580 | auto Loch Modan;104§auto Loch Modan;104§auto Loch Modan;104 | x=-6107.30029296875 y=-2988.5 | size=1 | links=#10630(auto Loch Modan;135):9 c1163.1:9
+#8596 | passage;from;South Gate Pass;Loch Modan;to;South Gate Pass;Dun Morogh§passage;von;Südtorpass;Loch Modan;nach;Südtorpass;Dun Morogh§passage;de;Passage de la porte Sud;Loch Modan;vers;Passage de la porte Sud;Dun Morogh | x=-5562.89990234375 y=-2447.60009765625 | size=1 | links=#16499(auto Loch Modan;191):36 #12526(passage;South Gate Outpost;Dun Morogh;to;Loch Modan):10
+#8664 | auto Loch Modan;105§auto Loch Modan;105§auto Loch Modan;105 | x=-5229.2001953125 y=-3003 | size=1 | links=#6491(auto Loch Modan;80):16 #12824(auto Loch Modan;158):21
+#8763 | auto Loch Modan;106§auto Loch Modan;106§auto Loch Modan;106 | x=-4902.5 y=-3387.199951171875 | size=1 | links=#11071(auto Loch Modan;140):106 #19613(auto Loch Modan;229):47 o104574.1:44
+#8850 | auto Loch Modan;107§auto Loch Modan;107§auto Loch Modan;107 | x=-5788.89990234375 y=-2855.199951171875 | size=1 | links=#3227(auto Loch Modan;43):34 c1161.3:43
+#8870 | auto Loch Modan;108§auto Loch Modan;108§auto Loch Modan;108 | x=-4811.80029296875 y=-3694.699951171875 | size=1 | links=#10965(auto Loch Modan;139):50 #17798(auto Loch Modan;207):90
+#8872 | auto Loch Modan;109§auto Loch Modan;109§auto Loch Modan;109 | x=-5844.10009765625 y=-2633.699951171875 | size=1 | links=#2654(auto Loch Modan;37):7 #4808(auto Loch Modan;62):6
+#8993 | auto Loch Modan;110§auto Loch Modan;110§auto Loch Modan;110 | x=-4768.10009765625 y=-3540.5 | size=1 | links=#4847(auto Loch Modan;64):16 #6697(auto Loch Modan;85):71 c1222.1:39
+#9016 | auto Loch Modan;111§auto Loch Modan;111§auto Loch Modan;111 | x=-5075.39990234375 y=-2822.5 | size=1 | links=#4309(auto Loch Modan;50):35 c1279.1:34 c1186.3:78
+#9218 | auto Loch Modan;112§auto Loch Modan;112§auto Loch Modan;112 | x=-5387.39990234375 y=-2977.199951171875 | size=1 | links=c1465.1:4 c6734.1:10
+#9226 | auto Loch Modan;113§auto Loch Modan;113§auto Loch Modan;113 | x=-4819.10009765625 y=-2678.5 | size=1 | links=#8147(auto Loch Modan;99):18 #17288(auto Loch Modan;203):5
+#9263 | auto Loch Modan;114§auto Loch Modan;114§auto Loch Modan;114 | x=-4819 y=-2678.900146484375 | size=1 | links=c1335.1:6 c1343.1:7
+#9283 | auto Loch Modan;115§auto Loch Modan;115§auto Loch Modan;115 | x=-5739.39990234375 y=-3906.199951171875 | size=1 | links=#16418(auto Loch Modan;190):25 #21975(auto Loch Modan;260):18
+#9304 | auto Loch Modan;116§auto Loch Modan;116§auto Loch Modan;116 | x=-5642.89990234375 y=-4295.30029296875 | size=1 | links=#20655(auto Loch Modan;241):30 c1686.1:13 c1687.1:11
+#9369 | auto Loch Modan;117§auto Loch Modan;117§auto Loch Modan;117 | x=-5919.2001953125 y=-3287.10009765625 | size=1 | links=#14247(auto Loch Modan;171):57 #17478(passage;Loch Modan;to;Badlands):62
+#9461 | auto Loch Modan;118§auto Loch Modan;118§auto Loch Modan;118 | x=-5350.30029296875 y=-3019 | size=1 | links=#4741(auto Loch Modan;59):6 #19100(auto Loch Modan;221):6
+#9472 | auto Loch Modan;119§auto Loch Modan;119§auto Loch Modan;119 | x=-5735.10009765625 y=-3534.900146484375 | size=1 | links=#11708(auto Loch Modan;145):51 #13137(auto Loch Modan;164):43
+#9494 | auto Loch Modan;120§auto Loch Modan;120§auto Loch Modan;120 | x=-5732.60009765625 y=-2688.400146484375 | size=1 | links=#20956(auto Loch Modan;243):44 #27375(auto Loch Modan;324):48
+#9501 | auto Loch Modan;121§auto Loch Modan;121§auto Loch Modan;121 | x=-4730.60009765625 y=-2854.300048828125 | size=1 | links=#1676(auto Loch Modan;27):53 #10713(auto Loch Modan;136):38
+#9556 | auto Loch Modan;122§auto Loch Modan;122§auto Loch Modan;122 | x=-5962.80029296875 y=-2989 | size=1 | links=#837(auto Loch Modan;12):20 #4785(auto Loch Modan;61):14
+#9576 | auto Loch Modan;123§auto Loch Modan;123§auto Loch Modan;123 | x=-4986.7001953125 y=-3115 | size=1 | links=#20288(auto Loch Modan;235):58 #21550(auto Loch Modan;256):30
+#9687 | auto Loch Modan;124§auto Loch Modan;124§auto Loch Modan;124 | x=-5731.89990234375 y=-3941.800048828125 | size=1 | links=#21975(auto Loch Modan;260):18 c1167.2:14
+#9769 | centralpoint;Stonesplinter Valley;Loch Modan§zentralerpunkt;Splittersteintal;Loch Modan§point central;Vallée des Brisepierre;Loch Modan | x=-5844.5 y=-2902.699951171875 | size=1 | links=#2974(auto Loch Modan;38):30 #16904(auto Loch Modan;198):69 c1161.3:30 c1162.3:15
+#9783 | auto Loch Modan;125§auto Loch Modan;125§auto Loch Modan;125 | x=-5718.10009765625 y=-2803.199951171875 | size=1 | links=#2634(auto Loch Modan;36):26 #17247(auto Loch Modan;202):10
+#9951 | auto Loch Modan;126§auto Loch Modan;126§auto Loch Modan;126 | x=-5930.60009765625 y=-2852.199951171875 | size=1 | links=#2010(auto Loch Modan;32):40 #16904(auto Loch Modan;198):35
+#9981 | auto Loch Modan;127§auto Loch Modan;127§auto Loch Modan;127 | x=-5406 y=-2921.900146484375 | size=1 | links=#4782(auto Loch Modan;60):18 c1572.1:20
+#9985 | auto Loch Modan;128§auto Loch Modan;128§auto Loch Modan;128 | x=-5656.10009765625 y=-2781 | size=1 | links=#327(auto Loch Modan;5):83 #27086(crossing;one;Loch Modan):38
+#10027 | auto Loch Modan;129§auto Loch Modan;129§auto Loch Modan;129 | x=-5372.30029296875 y=-3011.900146484375 | size=1 | links=#6239(auto Loch Modan;78):7 #25367(auto Loch Modan;308):12
+#10164 | auto Loch Modan;130§auto Loch Modan;130§auto Loch Modan;130 | x=-5587.10009765625 y=-4223.5 | size=1 | links=#21295(auto Loch Modan;249):32 #21503(auto Loch Modan;254):35
+#10199 | auto Loch Modan;131§auto Loch Modan;131§auto Loch Modan;131 | x=-5904.30029296875 y=-2926.60009765625 | size=1 | links=#2974(auto Loch Modan;38):33 #10540(auto Loch Modan;134):31 #16904(auto Loch Modan;198):46
+#10261 | auto Loch Modan;132§auto Loch Modan;132§auto Loch Modan;132 | x=-4816.7001953125 y=-4078.5 | size=1 | links=#14968(auto Loch Modan;176):7 c1180.1:9
+#10514 | auto Loch Modan;133§auto Loch Modan;133§auto Loch Modan;133 | x=-5258.2001953125 y=-2883.699951171875 | size=1 | links=#1017(auto Loch Modan;16):18 #6652(auto Loch Modan;84):19 #26675(auto Loch Modan;319):29
+#10540 | auto Loch Modan;134§auto Loch Modan;134§auto Loch Modan;134 | x=-5932.7001953125 y=-2941 | size=1 | links=#1956(auto Loch Modan;31):13 #10199(auto Loch Modan;131):31
+#10630 | auto Loch Modan;135§auto Loch Modan;135§auto Loch Modan;135 | x=-6101.10009765625 y=-2981.10009765625 | size=1 | links=#5447(auto Loch Modan;73):14 #8580(auto Loch Modan;104):9
+#10713 | auto Loch Modan;136§auto Loch Modan;136§auto Loch Modan;136 | x=-4737.60009765625 y=-2816.400146484375 | size=1 | links=#9501(auto Loch Modan;121):38 #22354(auto Loch Modan;266):42
+#10743 | auto Loch Modan;137§auto Loch Modan;137§auto Loch Modan;137 | x=-5661 y=-3775.300048828125 | size=1 | links=#4862(auto Loch Modan;65):33 #21389(auto Loch Modan;252):17 #22072(auto Loch Modan;262):27
+#10759 | auto Loch Modan;138§auto Loch Modan;138§auto Loch Modan;138 | x=-5450.80029296875 y=-3935 | size=1 | links=#2596(auto Loch Modan;35):49 #14863(auto Loch Modan;175):33
+#10965 | auto Loch Modan;139§auto Loch Modan;139§auto Loch Modan;139 | x=-4808.2001953125 y=-3644.199951171875 | size=1 | links=#6697(auto Loch Modan;85):61 #8870(auto Loch Modan;108):50
+#11071 | auto Loch Modan;140§auto Loch Modan;140§auto Loch Modan;140 | x=-5008.7001953125 y=-3378.60009765625 | size=1 | links=#8763(auto Loch Modan;106):106 #14241(focus point;Loch Modan):57 o104564.1:51
+#11147 | auto Loch Modan;141§auto Loch Modan;141§auto Loch Modan;141 | x=-5197 y=-3115.10009765625 | size=1 | links=#5434(auto Loch Modan;71):15 #26952(auto Loch Modan;322):37
+#11282 | auto Loch Modan;142§auto Loch Modan;142§auto Loch Modan;142 | x=-5746.30029296875 y=-2589.300048828125 | size=1 | links=#4135(auto Loch Modan;47):8 #4672(auto Loch Modan;55):14
+#11569 | auto Loch Modan;143§auto Loch Modan;143§auto Loch Modan;143 | x=-5669.5 y=-4209.2001953125 | size=1 | links=#4656(auto Loch Modan;54):28 #15976(auto Loch Modan;185):30
+#11570 | auto Loch Modan;144§auto Loch Modan;144§auto Loch Modan;144 | x=-6232.30029296875 y=-2934.400146484375 | size=1 | links=#20943(auto Loch Modan;242):16
+#11708 | auto Loch Modan;145§auto Loch Modan;145§auto Loch Modan;145 | x=-5759.80029296875 y=-3489.400146484375 | size=1 | links=#417(auto Loch Modan;6):64 #9472(auto Loch Modan;119):51
+#11763 | auto Loch Modan;146§auto Loch Modan;146§auto Loch Modan;146 | x=-6035.30029296875 y=-2964.199951171875 | size=1 | links=#5291(auto Loch Modan;70):13 #7747(cave;one;Stonesplinter Valley;Loch Modan):8
+#11766 | auto Loch Modan;147§auto Loch Modan;147§auto Loch Modan;147 | x=-5337.60009765625 y=-3010.400146484375 | size=1 | links=#17855(auto Loch Modan;209):22 #17907(auto Loch Modan;210):16 #19100(auto Loch Modan;221):13 o256.1:13
+#11780 | auto Loch Modan;148§auto Loch Modan;148§auto Loch Modan;148 | x=-5637.39990234375 y=-3044.10009765625 | size=1 | links=#96(auto Loch Modan;1):17 #15406(cave;Grizzlepaw Ridge;Loch Modan):8
+#11889 | auto Loch Modan;149§auto Loch Modan;149§auto Loch Modan;149 | x=-4779.89990234375 y=-4068.699951171875 | size=1 | links=#4376(auto Loch Modan;51):47 #5011(auto Loch Modan;67):15 #18350(auto Loch Modan;215):10
+#11915 | auto Loch Modan;150§auto Loch Modan;150§auto Loch Modan;150 | x=-5634.10009765625 y=-2526.400146484375 | size=1 | links=#12798(auto Loch Modan;157):7 #23370(auto Loch Modan;281):12
+#11951 | auto Loch Modan;151§auto Loch Modan;151§auto Loch Modan;151 | x=-4923.2001953125 y=-2960.5 | size=1 | links=c1174.1:5 c1174.2:14 o271.6:6
+#11965 | auto Loch Modan;152§auto Loch Modan;152§auto Loch Modan;152 | x=-5590 y=-3868.5 | size=1 | links=#984(auto Loch Modan;15):41 c1165.1:27
+#12227 | centralpoint;Ironband's Excavation Site;Loch Modan§zentralerpunkt;Eisenbands Ausgrabungsstätte;Loch Modan§point central;Ironband's Excavation Site;Loch Modan | x=-5711.10009765625 y=-3794.10009765625 | size=1 | links=#20439(auto Loch Modan;238):32 c1214.1:15 c1344.1:24 c1345.1:10
+#12334 | auto Loch Modan;153§auto Loch Modan;153§auto Loch Modan;153 | x=-5468.89990234375 y=-3820.699951171875 | size=1 | links=#6941(auto Loch Modan;87):35 #7596(auto Loch Modan;94):39
+#12336 | auto Loch Modan;154§auto Loch Modan;154§auto Loch Modan;154 | x=-6125.30029296875 y=-2915.10009765625 | size=1 | links=#27928(auto Loch Modan;329):12 #28306(auto Loch Modan;333):7
+#12630 | auto Loch Modan;155§auto Loch Modan;155§auto Loch Modan;155 | x=-4851.5 y=-4062.800048828125 | size=1 | links=#4281(cave;Mo'grosh Stronghold;Loch Modan):15 #26338(auto Loch Modan;316):10
+#12655 | auto Loch Modan;156§auto Loch Modan;156§auto Loch Modan;156 | x=-5827.60009765625 y=-2955.900146484375 | size=1 | links=#19755(auto Loch Modan;230):16 c1162.3:46
+#12798 | auto Loch Modan;157§auto Loch Modan;157§auto Loch Modan;157 | x=-5639.89990234375 y=-2531.300048828125 | size=1 | links=#11915(auto Loch Modan;150):7 #15044(auto Loch Modan;177):11
+#12824 | auto Loch Modan;158§auto Loch Modan;158§auto Loch Modan;158 | x=-5209.60009765625 y=-3012.900146484375 | size=1 | links=#8664(auto Loch Modan;105):21 c1190.3:41
+#12829 | Mountain Buzzard;Loch Modan;13;78.87;59.18§Bergbussard;Loch Modan;13;78.87;59.18§Busard des montagnes;Loch Modan;13;78.87;59.18 | x=-5568.30029296875 y=-4171.2001953125 | size=1
+#12852 | auto Loch Modan;159§auto Loch Modan;159§auto Loch Modan;159 | x=-5715.10009765625 y=-3104.199951171875 | size=1 | links=#1574(auto Loch Modan;24):16 #23911(auto Loch Modan;288):65
+#12865 | auto Loch Modan;160§auto Loch Modan;160§auto Loch Modan;160 | x=-5377.7001953125 y=-3001.699951171875 | size=1 | links=#20181(auto Loch Modan;233):15 #25071(auto Loch Modan;302):7 c1473.1:3
+#13002 | auto Loch Modan;161§auto Loch Modan;161§auto Loch Modan;161 | x=-5569.60009765625 y=-4158 | size=1 | links=#19427(auto Loch Modan;227):34 #21295(auto Loch Modan;249):35
+#13061 | auto Loch Modan;162§auto Loch Modan;162§auto Loch Modan;162 | x=-4803.39990234375 y=-2699.60009765625 | size=1 | links=#17134(auto Loch Modan;199):11 #21519(auto Loch Modan;255):32 c1336.1:17
+#13066 | auto Loch Modan;163§auto Loch Modan;163§auto Loch Modan;163 | x=-5758.10009765625 y=-4053.60009765625 | size=1 | links=#21041(auto Loch Modan;244):38 c14268.2:31
+#13137 | auto Loch Modan;164§auto Loch Modan;164§auto Loch Modan;164 | x=-5733 y=-3578 | size=1 | links=#9472(auto Loch Modan;119):43 #27256(auto Loch Modan;323):60 c1184.2:41
+#13170 | Black Bear Patriarch;Loch Modan;19;71.81;40.47§Schwarzbärenpatriarch;Loch Modan;19;71.81;40.47§Patriarche ours noir;Loch Modan;19;71.81;40.47 | x=-5226.30029296875 y=-4008.699951171875 | size=1
+#13194 | auto Loch Modan;165§auto Loch Modan;165§auto Loch Modan;165 | x=-5331.60009765625 y=-2987.800048828125 | size=1 | links=#4499(auto Loch Modan;53):15 #17855(auto Loch Modan;209):8 c1474.1:2
+#13358 | auto Loch Modan;166§auto Loch Modan;166§auto Loch Modan;166 | x=-5212.5 y=-3105.199951171875 | size=1 | links=#5434(auto Loch Modan;71):7 c1684.1:2
+#13408 | auto Loch Modan;167§auto Loch Modan;167§auto Loch Modan;167 | x=-5155.5 y=-2842.10009765625 | size=1 | links=#4231(auto Loch Modan;49):48 #4309(auto Loch Modan;50):46
+#13613 | auto Loch Modan;168§auto Loch Modan;168§auto Loch Modan;168 | x=-5734.2001953125 y=-2582.699951171875 | size=1 | links=#4135(auto Loch Modan;47):5 c1282.1:8
+#13668 | auto Loch Modan;169§auto Loch Modan;169§auto Loch Modan;169 | x=-4709 y=-3427.699951171875 | size=1 | links=#20399(auto Loch Modan;237):54 c2528.1:34
+#14029 | auto Loch Modan;170§auto Loch Modan;170§auto Loch Modan;170 | x=-4861.10009765625 y=-2979.5 | size=1 | links=#652(auto Loch Modan;9):9 #7102(auto Loch Modan;90):11 c1174.3:24
+#14241 | focus point;Loch Modan§bündelpunkt;Loch Modan§focus point;Loch Modan | x=-5006.60009765625 y=-3435.900146484375 | size=1 | links=#1476(auto Loch Modan;21):55 #11071(auto Loch Modan;140):57 c1189.1:184
+#14247 | auto Loch Modan;171§auto Loch Modan;171§auto Loch Modan;171 | x=-5862 y=-3282.199951171875 | size=1 | links=#9369(auto Loch Modan;117):57 #17644(auto Loch Modan;205):49
+#14250 | auto Loch Modan;172§auto Loch Modan;172§auto Loch Modan;172 | x=-5447.60009765625 y=-4142.80029296875 | size=1 | links=#22584(auto Loch Modan;271):10 c14266.1:5
+#14729 | auto Loch Modan;173§auto Loch Modan;173§auto Loch Modan;173 | x=-5788.30029296875 y=-3267.400146484375 | size=1 | links=#3104(auto Loch Modan;41):37 #17644(auto Loch Modan;205):25 #18905(auto Loch Modan;218):45
+#14730 | auto Loch Modan;174§auto Loch Modan;174§auto Loch Modan;174 | x=-5796.5 y=-2968.300048828125 | size=5 | links=#19755(auto Loch Modan;230):17 c1162.1:3
+#14771 | Mountain Buzzard;Loch Modan;16;76.86;55.59§Bergbussard;Loch Modan;16;76.86;55.59§Busard des montagnes;Loch Modan;16;76.86;55.59 | x=-5511.10009765625 y=-4109.30029296875 | size=1
+#14863 | auto Loch Modan;175§auto Loch Modan;175§auto Loch Modan;175 | x=-5447.80029296875 y=-3901.400146484375 | size=1 | links=#10759(auto Loch Modan;138):33 #22831(auto Loch Modan;274):25
+#14968 | auto Loch Modan;176§auto Loch Modan;176§auto Loch Modan;176 | x=-4810.30029296875 y=-4075.10009765625 | size=1 | links=#10261(auto Loch Modan;132):7 #18350(auto Loch Modan;215):22
+#15044 | auto Loch Modan;177§auto Loch Modan;177§auto Loch Modan;177 | x=-5642.39990234375 y=-2542.300048828125 | size=1 | links=#12798(auto Loch Modan;157):11 #22417(auto Loch Modan;268):19
+#15157 | auto Loch Modan;178§auto Loch Modan;178§auto Loch Modan;178 | x=-5910.30029296875 y=-2534 | size=1 | links=#4695(auto Loch Modan;56):47 #8521(auto Loch Modan;102):53
+#15273 | auto Loch Modan;179§auto Loch Modan;179§auto Loch Modan;179 | x=-4792.60009765625 y=-2836.5 | size=5 | links=#4441(auto Loch Modan;52):50 #8506(auto Loch Modan;101):39
+#15319 | auto Loch Modan;180§auto Loch Modan;180§auto Loch Modan;180 | x=-4676.7001953125 y=-3174.199951171875 | size=1 | links=#6572(auto Loch Modan;83):97 c222.1:7 c2524.1:14 c2525.1:25
+#15406 | cave;Grizzlepaw Ridge;Loch Modan§höhle;Grautatzengrat;Loch Modan§cave;Falaise de Vieillegriffe;Loch Modan | x=-5639.89990234375 y=-3035.5 | size=1 | links=#11780(auto Loch Modan;148):8 #16897(Ol' Sooty;Grizzlepaw Ridge;Loch Modan):18
+#15600 | auto Loch Modan;181§auto Loch Modan;181§auto Loch Modan;181 | x=-5910.30029296875 y=-2605.300048828125 | size=1 | links=#4695(auto Loch Modan;56):61 #26313(auto Loch Modan;315):33 c1091.1:41
+#15657 | auto Loch Modan;182§auto Loch Modan;182§auto Loch Modan;182 | x=-5772.60009765625 y=-2608.199951171875 | size=1 | links=#4672(auto Loch Modan;55):18 #23511(crossing;Valley of Kings;Loch Modan):22
+#15714 | auto Loch Modan;183§auto Loch Modan;183§auto Loch Modan;183 | x=-4935.7001953125 y=-2981.199951171875 | size=1 | links=#20382(auto Loch Modan;236):8 c1175.1:12 o271.2:2
+#15860 | Grizzled Black Bear;Loch Modan;17;73.93;55.33§Ergrauter Schwarzbär;Loch Modan;17;73.93;55.33§Vieil ours noir;Loch Modan;17;73.93;55.33 | x=-5487.10009765625 y=-4042 | size=1
+#15932 | auto Loch Modan;184§auto Loch Modan;184§auto Loch Modan;184 | x=-6216 y=-2937 | size=1 | links=c1197.2:11 c1197.11:17
+#15976 | auto Loch Modan;185§auto Loch Modan;185§auto Loch Modan;185 | x=-5696.30029296875 y=-4194.80029296875 | size=1 | links=#11569(auto Loch Modan;143):30 #24018(auto Loch Modan;290):32
+#15982 | auto Loch Modan;186§auto Loch Modan;186§auto Loch Modan;186 | x=-4920.39990234375 y=-3109.800048828125 | size=1 | links=#21550(auto Loch Modan;256):36 #24220(auto Loch Modan;294):40
+#16039 | auto Loch Modan;187§auto Loch Modan;187§auto Loch Modan;187 | x=-5295.80029296875 y=-2987 | size=1 | links=c1337.1:10 c1469.1:10
+#16133 | auto Loch Modan;188§auto Loch Modan;188§auto Loch Modan;188 | x=-5620.2001953125 y=-3108.300048828125 | size=1 | links=#19196(auto Loch Modan;223):6 #24093(auto Loch Modan;291):13
+#16300 | auto Loch Modan;189§auto Loch Modan;189§auto Loch Modan;189 | x=-5427.10009765625 y=-4106.7001953125 | size=1 | links=#5439(auto Loch Modan;72):16 c1192.2:50
+#16418 | auto Loch Modan;190§auto Loch Modan;190§auto Loch Modan;190 | x=-5746.5 y=-3881.60009765625 | size=1 | links=#9283(auto Loch Modan;115):25 #28373(auto Loch Modan;334):19
+#16499 | auto Loch Modan;191§auto Loch Modan;191§auto Loch Modan;191 | x=-5587.30029296875 y=-2474.199951171875 | size=1 | links=#8596(passage;from;South Gate Pass;Loch Modan;to;South Gate Pass;Dun Morogh):36 #19317(auto Loch Modan;225):23
+#16568 | auto Loch Modan;192§auto Loch Modan;192§auto Loch Modan;192 | x=-5666.89990234375 y=-3934.5 | size=1 | links=#6443(auto Loch Modan;79):24 c1393.2:14
+#16677 | auto Loch Modan;193§auto Loch Modan;193§auto Loch Modan;193 | x=-4704.39990234375 y=-2956.10009765625 | size=1 | links=#1676(auto Loch Modan;27):51 #7294(auto Loch Modan;92):69
+#16698 | auto Loch Modan;194§auto Loch Modan;194§auto Loch Modan;194 | x=-4927 y=-2991.60009765625 | size=1 | links=#1947(auto Loch Modan;30):15 #20382(auto Loch Modan;236):6 c1176.3:9
+#16752 | auto Loch Modan;195§auto Loch Modan;195§auto Loch Modan;195 | x=-6020.80029296875 y=-2982.900146484375 | size=1 | links=#837(auto Loch Modan;12):38 #6412(Stonesplinter Skullthumper;farming;Loch Modan):27 #7747(cave;one;Stonesplinter Valley;Loch Modan):14 #25083(auto Loch Modan;304):10 c1163.13:7 c1163.16:15 c1166.17:14
+#16777 | Mailbox;Thelsamar;Loch Modan§briefkasten;Thelsamar;Loch Modan§Boîte aux lettres;Thelsamar;Loch Modan | x=-5365.30029296875 y=-2953.199951171875 | size=1 | links=#17722(centralpoint;Thelsamar;Loch Modan):11 c9989.1:7
+#16806 | auto Loch Modan;196§auto Loch Modan;196§auto Loch Modan;196 | x=-6234.30029296875 y=-2962 | size=1 | links=#20943(auto Loch Modan;242):14 #25772(auto Loch Modan;312):9
+#16843 | auto Loch Modan;197§auto Loch Modan;197§auto Loch Modan;197 | x=-5555.80029296875 y=-4092.300048828125 | size=1 | links=#19427(auto Loch Modan;227):33 #22026(auto Loch Modan;261):49
+#16897 | Ol' Sooty;Grizzlepaw Ridge;Loch Modan§Alte Rußtatze;Grautatzengrat;Loch Modan§Vieux Noiraud;Falaise de Vieillegriffe;Loch Modan | x=-5626.89990234375 y=-3022.10009765625 | size=1 | links=#15406(cave;Grizzlepaw Ridge;Loch Modan):18
+#16904 | auto Loch Modan;198§auto Loch Modan;198§auto Loch Modan;198 | x=-5910 y=-2880.699951171875 | size=1 | links=#9769(centralpoint;Stonesplinter Valley;Loch Modan):69 #9951(auto Loch Modan;126):35 #10199(auto Loch Modan;131):46
+#17134 | auto Loch Modan;199§auto Loch Modan;199§auto Loch Modan;199 | x=-4807.39990234375 y=-2710.699951171875 | size=1 | links=#13061(auto Loch Modan;162):11 #21386(auto Loch Modan;251):48 c1276.1:11
+#17235 | auto Loch Modan;200§auto Loch Modan;200§auto Loch Modan;200 | x=-5846.2001953125 y=-2628.400146484375 | size=1 | links=c1092.1:6 c1330.1:5
+#17246 | auto Loch Modan;201§auto Loch Modan;201§auto Loch Modan;201 | x=-5367.7001953125 y=-2861.10009765625 | size=1 | links=#17811(auto Loch Modan;208):32 c1278.1:44
+#17247 | auto Loch Modan;202§auto Loch Modan;202§auto Loch Modan;202 | x=-5709.80029296875 y=-2797.5 | size=1 | links=#9783(auto Loch Modan;125):10 #27086(crossing;one;Loch Modan):34
+#17288 | auto Loch Modan;203§auto Loch Modan;203§auto Loch Modan;203 | x=-4823.10009765625 y=-2675.10009765625 | size=1 | links=#9226(auto Loch Modan;113):5 #26405(auto Loch Modan;317):7
+#17414 | auto Loch Modan;204§auto Loch Modan;204§auto Loch Modan;204 | x=-6159.30029296875 y=-2907.60009765625 | size=1 | links=#22967(auto Loch Modan;276):17 #25935(auto Loch Modan;313):15 c1164.1:8
+#17478 | passage;Loch Modan;to;Badlands§passage;Loch Modan;zum;Ödland§passage;Loch Modan;vers;Terres ingrates | x=-5981.30029296875 y=-3292.800048828125 | size=1 | links=#20647(passage;from;The Maker's Terrace;Badlands;to;Loch Modan):19 #9369(auto Loch Modan;117):62
+#17644 | auto Loch Modan;205§auto Loch Modan;205§auto Loch Modan;205 | x=-5812.7001953125 y=-3275 | size=1 | links=#14247(auto Loch Modan;171):49 #14729(auto Loch Modan;173):25 c1184.3:7
+#17715 | auto Loch Modan;206§auto Loch Modan;206§auto Loch Modan;206 | x=-4796.30029296875 y=-2638.800048828125 | size=1 | links=#21435(auto Loch Modan;253):19 #21519(auto Loch Modan;255):33 c1332.1:5
+#17722 | centralpoint;Thelsamar;Loch Modan§zentralerpunkt;Thelsamar;Loch Modan§point central;Thelsamar;Loch Modan | x=-5354.30029296875 y=-2952.10009765625 | size=1 | links=#16777(Mailbox;Thelsamar;Loch Modan):11 #27902(auto Loch Modan;328):12 c1340.1:17 c2510.1:12
+#17798 | auto Loch Modan;207§auto Loch Modan;207§auto Loch Modan;207 | x=-4861.60009765625 y=-3770.400146484375 | size=1 | links=#8870(auto Loch Modan;108):90 c1178.2:49 c1179.2:14
+#17811 | auto Loch Modan;208§auto Loch Modan;208§auto Loch Modan;208 | x=-5335.30029296875 y=-2859.60009765625 | size=1 | links=#17246(auto Loch Modan;201):32 #23320(auto Loch Modan;280):34 c1195.1:30
+#17855 | auto Loch Modan;209§auto Loch Modan;209§auto Loch Modan;209 | x=-5340.2001953125 y=-2988.10009765625 | size=1 | links=#1868(auto Loch Modan;29):14 #11766(auto Loch Modan;147):22 #13194(auto Loch Modan;165):8
+#17907 | auto Loch Modan;210§auto Loch Modan;210§auto Loch Modan;210 | x=-5327.30029296875 y=-3023.900146484375 | size=1 | links=#1410(auto Loch Modan;20):52 #11766(auto Loch Modan;147):16 c2514.1:15 c2515.1:50
+#18075 | auto Loch Modan;211§auto Loch Modan;211§auto Loch Modan;211 | x=-5277.60009765625 y=-2968.900146484375 | size=1 | links=c1469.1:16 c1777.1:3
+#18131 | auto Loch Modan;212§auto Loch Modan;212§auto Loch Modan;212 | x=-5379 y=-2956.5 | size=1 | links=#22524(auto Loch Modan;270):9 c1682.1:4
+#18197 | auto Loch Modan;213§auto Loch Modan;213§auto Loch Modan;213 | x=-5863 y=-2639.300048828125 | size=1 | links=#4808(auto Loch Modan;62):20 #21770(auto Loch Modan;258):21 c1090.1:5 c6030.1:11
+#18254 | auto Loch Modan;214§auto Loch Modan;214§auto Loch Modan;214 | x=-5642.89990234375 y=-3792.5 | size=1 | links=#20554(auto Loch Modan;240):30 #21389(auto Loch Modan;252):15
+#18350 | auto Loch Modan;215§auto Loch Modan;215§auto Loch Modan;215 | x=-4790 y=-4065.199951171875 | size=1 | links=#11889(auto Loch Modan;149):10 #14968(auto Loch Modan;176):22
+#18360 | auto Loch Modan;216§auto Loch Modan;216§auto Loch Modan;216 | x=-5680.30029296875 y=-2580.400146484375 | size=1 | links=#19995(auto Loch Modan;232):12 #21121(auto Loch Modan;247):24
+#18661 | auto Loch Modan;217§auto Loch Modan;217§auto Loch Modan;217 | x=-5701.80029296875 y=-3093.300048828125 | size=1 | links=#1574(auto Loch Modan;24):11 #23380(auto Loch Modan;282):19
+#18905 | auto Loch Modan;218§auto Loch Modan;218§auto Loch Modan;218 | x=-5754 y=-3237.300048828125 | size=5 | links=#14729(auto Loch Modan;173):45 #27740(auto Loch Modan;326):56
+#18982 | auto Loch Modan;219§auto Loch Modan;219§auto Loch Modan;219 | x=-5313.2001953125 y=-2954.199951171875 | size=1 | links=#25093(auto Loch Modan;305):15 c1139.1:9 c2510.1:34
+#19006 | auto Loch Modan;220§auto Loch Modan;220§auto Loch Modan;220 | x=-6174.10009765625 y=-2966.199951171875 | size=1 | links=#1246(auto Loch Modan;17):16 c1197.23:7
+#19100 | auto Loch Modan;221§auto Loch Modan;221§auto Loch Modan;221 | x=-5350.7001953125 y=-3012.800048828125 | size=1 | links=#9461(auto Loch Modan;118):6 #11766(auto Loch Modan;147):13
+#19114 | auto Loch Modan;222§auto Loch Modan;222§auto Loch Modan;222 | x=-4757.89990234375 y=-2744 | size=1 | links=#564(auto Loch Modan;8):36 #7363(route;Algaz Station;Loch Modan;to;Wetlands;one):39 #22354(auto Loch Modan;266):32
+#19196 | auto Loch Modan;223§auto Loch Modan;223§auto Loch Modan;223 | x=-5622.60009765625 y=-3114 | size=1 | links=#1360(auto Loch Modan;19):12 #16133(auto Loch Modan;188):6
+#19312 | auto Loch Modan;224§auto Loch Modan;224§auto Loch Modan;224 | x=-4738.80029296875 y=-3516.400146484375 | size=1 | links=#4847(auto Loch Modan;64):33 #19377(auto Loch Modan;226):49
+#19317 | auto Loch Modan;225§auto Loch Modan;225§auto Loch Modan;225 | x=-5603 y=-2491.60009765625 | size=1 | links=#16499(auto Loch Modan;191):23 #24863(auto Loch Modan;300):16
+#19377 | auto Loch Modan;226§auto Loch Modan;226§auto Loch Modan;226 | x=-4703.30029296875 y=-3482.10009765625 | size=1 | links=#19312(auto Loch Modan;224):49 c2528.1:29
+#19427 | auto Loch Modan;227§auto Loch Modan;227§auto Loch Modan;227 | x=-5565.39990234375 y=-4124.2001953125 | size=1 | links=#13002(auto Loch Modan;161):34 #16843(auto Loch Modan;197):33 #24316(auto Loch Modan;296):47
+#19506 | auto Loch Modan;228§auto Loch Modan;228§auto Loch Modan;228 | x=-5599.30029296875 y=-3801.5 | size=1 | links=#22869(auto Loch Modan;275):22 c1165.1:45
+#19613 | auto Loch Modan;229§auto Loch Modan;229§auto Loch Modan;229 | x=-4882.10009765625 y=-3344.5 | size=1 | links=#8763(auto Loch Modan;106):47 o104569.1:23
+#19755 | auto Loch Modan;230§auto Loch Modan;230§auto Loch Modan;230 | x=-5813.7001953125 y=-2965.199951171875 | size=1 | links=#12655(auto Loch Modan;156):16 #14730(auto Loch Modan;174):17
+#19966 | auto Loch Modan;231§auto Loch Modan;231§auto Loch Modan;231 | x=-6130.5 y=-3024.400146484375 | size=1 | links=#7709(auto Loch Modan;95):17 c1197.7:14
+#19995 | auto Loch Modan;232§auto Loch Modan;232§auto Loch Modan;232 | x=-5670.5 y=-2571.900146484375 | size=1 | links=#18360(auto Loch Modan;216):12 #22417(auto Loch Modan;268):21
+#20181 | auto Loch Modan;233§auto Loch Modan;233§auto Loch Modan;233 | x=-5387.7001953125 y=-3013 | size=1 | links=#12865(auto Loch Modan;160):15 c1470.1:8
+#20222 | auto Loch Modan;234§auto Loch Modan;234§auto Loch Modan;234 | x=-4709.5 y=-3139.10009765625 | size=1 | links=#24364(auto Loch Modan;297):26 c2524.1:35
+#20288 | auto Loch Modan;235§auto Loch Modan;235§auto Loch Modan;235 | x=-5044 y=-3102.800048828125 | size=1 | links=#9576(auto Loch Modan;123):58 #22138(auto Loch Modan;264):39
+#20382 | auto Loch Modan;236§auto Loch Modan;236§auto Loch Modan;236 | x=-4933.39990234375 y=-2989.300048828125 | size=1 | links=#15714(auto Loch Modan;183):8 #16698(auto Loch Modan;194):6
+#20395 | Black Bear Patriarch;Loch Modan;13;74.18;44.73§Schwarzbärenpatriarch;Loch Modan;13;74.18;44.73§Patriarche ours noir;Loch Modan;13;74.18;44.73 | x=-5298 y=-4024.199951171875 | size=1
+#20396 | entry and exit;cave;Silver Stream Mine;Loch Modan§ein- und ausgang;höhle;Silberbachmine;Loch Modan§entrée et sortie;cave;Silver Stream Mine;Loch Modan | x=-4829.60009765625 y=-2971.5 | size=1 | links=#7102(auto Loch Modan;90):20 #22160(auto Loch Modan;265):13
+#20399 | auto Loch Modan;237§auto Loch Modan;237§auto Loch Modan;237 | x=-4738.60009765625 y=-3381.699951171875 | size=1 | links=#13668(auto Loch Modan;169):54 c2527.1:50
+#20439 | auto Loch Modan;238§auto Loch Modan;238§auto Loch Modan;238 | x=-5734.89990234375 y=-3815.699951171875 | size=1 | links=#4837(auto Loch Modan;63):31 #12227(centralpoint;Ironband's Excavation Site;Loch Modan):32
+#20532 | auto Loch Modan;239§auto Loch Modan;239§auto Loch Modan;239 | x=-4807.30029296875 y=-2668 | size=1 | links=#21045(auto Loch Modan;245):6 #26405(auto Loch Modan;317):16
+#20554 | auto Loch Modan;240§auto Loch Modan;240§auto Loch Modan;240 | x=-5650.2001953125 y=-3822.199951171875 | size=1 | links=#18254(auto Loch Modan;214):30 #25183(auto Loch Modan;307):27
+#20655 | auto Loch Modan;241§auto Loch Modan;241§auto Loch Modan;241 | x=-5620 y=-4315.7001953125 | size=1 | links=#9304(auto Loch Modan;116):30 #21920(auto Loch Modan;259):30
+#20943 | auto Loch Modan;242§auto Loch Modan;242§auto Loch Modan;242 | x=-6240.10009765625 y=-2948.60009765625 | size=1 | links=#11570(auto Loch Modan;144):16 #16806(auto Loch Modan;196):14
+#20956 | auto Loch Modan;243§auto Loch Modan;243§auto Loch Modan;243 | x=-5762.5 y=-2656 | size=1 | links=#9494(auto Loch Modan;120):44 #23511(crossing;Valley of Kings;Loch Modan):43
+#21041 | auto Loch Modan;244§auto Loch Modan;244§auto Loch Modan;244 | x=-5720.10009765625 y=-4052.5 | size=1 | links=#13066(auto Loch Modan;163):38 c1194.1:50
+#21045 | auto Loch Modan;245§auto Loch Modan;245§auto Loch Modan;245 | x=-4809 y=-2674 | size=1 | links=#20532(auto Loch Modan;239):6 c1335.1:4
+#21115 | auto Loch Modan;246§auto Loch Modan;246§auto Loch Modan;246 | x=-5147 y=-3071.800048828125 | size=1 | links=#22138(auto Loch Modan;264):68 c1190.1:38 c1190.3:46
+#21121 | auto Loch Modan;247§auto Loch Modan;247§auto Loch Modan;247 | x=-5703.80029296875 y=-2588.10009765625 | size=1 | links=#7768(auto Loch Modan;96):15 #18360(auto Loch Modan;216):24
+#21246 | auto Loch Modan;248§auto Loch Modan;248§auto Loch Modan;248 | x=-6123.7001953125 y=-2988.10009765625 | size=1 | links=#24442(auto Loch Modan;298):8 c1166.2:15
+#21295 | auto Loch Modan;249§auto Loch Modan;249§auto Loch Modan;249 | x=-5579.39990234375 y=-4191.89990234375 | size=1 | links=#10164(auto Loch Modan;130):32 #13002(auto Loch Modan;161):35
+#21365 | auto Loch Modan;250§auto Loch Modan;250§auto Loch Modan;250 | x=-5498.39990234375 y=-3095.699951171875 | size=1 | links=#245(auto Loch Modan;3):85 #23839(auto Loch Modan;286):36 c1191.3:51
+#21386 | auto Loch Modan;251§auto Loch Modan;251§auto Loch Modan;251 | x=-4855.60009765625 y=-2713.800048828125 | size=1 | links=#3279(crossing;Algaz Station;Loch Modan):57 #17134(auto Loch Modan;199):48
+#21389 | auto Loch Modan;252§auto Loch Modan;252§auto Loch Modan;252 | x=-5643.30029296875 y=-3777.5 | size=1 | links=#10743(auto Loch Modan;137):17 #18254(auto Loch Modan;214):15 #22869(auto Loch Modan;275):38
+#21435 | auto Loch Modan;253§auto Loch Modan;253§auto Loch Modan;253 | x=-4815.5 y=-2635.10009765625 | size=1 | links=#8147(auto Loch Modan;99):24 #17715(auto Loch Modan;206):19
+#21503 | auto Loch Modan;254§auto Loch Modan;254§auto Loch Modan;254 | x=-5587.30029296875 y=-4259.30029296875 | size=1 | links=#5006(auto Loch Modan;66):26 #10164(auto Loch Modan;130):35 #21920(auto Loch Modan;259):38
+#21519 | auto Loch Modan;255§auto Loch Modan;255§auto Loch Modan;255 | x=-4788.10009765625 y=-2671 | size=1 | links=#13061(auto Loch Modan;162):32 #17715(auto Loch Modan;206):33
+#21550 | auto Loch Modan;256§auto Loch Modan;256§auto Loch Modan;256 | x=-4956.10009765625 y=-3114.60009765625 | size=1 | links=#9576(auto Loch Modan;123):30 #15982(auto Loch Modan;186):36
+#21628 | auto Loch Modan;257§auto Loch Modan;257§auto Loch Modan;257 | x=-4963.89990234375 y=-3000 | size=1 | links=#738(auto Loch Modan;10):15 #23626(auto Loch Modan;285):8 o271.10:8
+#21770 | auto Loch Modan;258§auto Loch Modan;258§auto Loch Modan;258 | x=-5881 y=-2651.699951171875 | size=1 | links=#18197(auto Loch Modan;213):21 #26313(auto Loch Modan;315):21
+#21920 | auto Loch Modan;259§auto Loch Modan;259§auto Loch Modan;259 | x=-5596.5 y=-4296.60009765625 | size=1 | links=#20655(auto Loch Modan;241):30 #21503(auto Loch Modan;254):38
+#21956 | passage§passage§passage | x=-4738.39990234375 y=-2705.60009765625 | size=1
+#21975 | auto Loch Modan;260§auto Loch Modan;260§auto Loch Modan;260 | x=-5734.80029296875 y=-3923.800048828125 | size=1 | links=#9283(auto Loch Modan;115):18 #9687(auto Loch Modan;124):18
+#22026 | auto Loch Modan;261§auto Loch Modan;261§auto Loch Modan;261 | x=-5521.7001953125 y=-4056.800048828125 | size=1 | links=#16843(auto Loch Modan;197):49 #22682(auto Loch Modan;273):39
+#22072 | auto Loch Modan;262§auto Loch Modan;262§auto Loch Modan;262 | x=-5683 y=-3792.199951171875 | size=1 | links=#4862(auto Loch Modan;65):35 #10743(auto Loch Modan;137):27 c1344.1:23
+#22124 | auto Loch Modan;263§auto Loch Modan;263§auto Loch Modan;263 | x=-5630.10009765625 y=-3080.800048828125 | size=1 | links=#24093(auto Loch Modan;291):15 #27534(auto Loch Modan;325):9
+#22138 | auto Loch Modan;264§auto Loch Modan;264§auto Loch Modan;264 | x=-5080.60009765625 y=-3087.300048828125 | size=1 | links=#20288(auto Loch Modan;235):39 #21115(auto Loch Modan;246):68
+#22160 | auto Loch Modan;265§auto Loch Modan;265§auto Loch Modan;265 | x=-4816.5 y=-2966.800048828125 | size=1 | links=#20396(entry and exit;cave;Silver Stream Mine;Loch Modan):13 c1172.1:21
+#22354 | auto Loch Modan;266§auto Loch Modan;266§auto Loch Modan;266 | x=-4748.30029296875 y=-2775.199951171875 | size=1 | links=#8506(auto Loch Modan;101):37 #10713(auto Loch Modan;136):42 #19114(auto Loch Modan;222):32
+#22359 | auto Loch Modan;267§auto Loch Modan;267§auto Loch Modan;267 | x=-4782.80029296875 y=-4140.2001953125 | size=1 | links=#4376(auto Loch Modan;51):23 #23468(auto Loch Modan;283):28
+#22417 | auto Loch Modan;268§auto Loch Modan;268§auto Loch Modan;268 | x=-5657 y=-2555.800048828125 | size=1 | links=#15044(auto Loch Modan;177):19 #19995(auto Loch Modan;232):21
+#22470 | auto Loch Modan;269§auto Loch Modan;269§auto Loch Modan;269 | x=-4747.80029296875 y=-3112.800048828125 | size=1 | links=#922(auto Loch Modan;14):42 #2154(auto Loch Modan;34):59 #24364(auto Loch Modan;297):22
+#22524 | auto Loch Modan;270§auto Loch Modan;270§auto Loch Modan;270 | x=-5376.60009765625 y=-2966.199951171875 | size=1 | links=#18131(auto Loch Modan;212):9 c6734.1:7
+#22584 | auto Loch Modan;271§auto Loch Modan;271§auto Loch Modan;271 | x=-5447.7001953125 y=-4132.60009765625 | size=1 | links=#5439(auto Loch Modan;72):16 #14250(auto Loch Modan;172):10
+#22674 | auto Loch Modan;272§auto Loch Modan;272§auto Loch Modan;272 | x=-4947.80029296875 y=-3431.900146484375 | size=1 | links=#1476(auto Loch Modan;21):32 o104574.1:19
+#22682 | auto Loch Modan;273§auto Loch Modan;273§auto Loch Modan;273 | x=-5493.2001953125 y=-4029.199951171875 | size=1 | links=#22026(auto Loch Modan;261):39 #23619(auto Loch Modan;284):34
+#22831 | auto Loch Modan;274§auto Loch Modan;274§auto Loch Modan;274 | x=-5448.5 y=-3875.60009765625 | size=1 | links=#6941(auto Loch Modan;87):29 #14863(auto Loch Modan;175):25 c1184.1:21
+#22869 | auto Loch Modan;275§auto Loch Modan;275§auto Loch Modan;275 | x=-5605.2001953125 y=-3779.800048828125 | size=1 | links=#19506(auto Loch Modan;228):22 #21389(auto Loch Modan;252):38 #26775(auto Loch Modan;320):40
+#22967 | auto Loch Modan;276§auto Loch Modan;276§auto Loch Modan;276 | x=-6164.60009765625 y=-2924.400146484375 | size=1 | links=#17414(auto Loch Modan;204):17 c1197.1:16
+#23081 | Mountain Buzzard;Loch Modan;17;77.09;58.32§Bergbussard;Loch Modan;17;77.09;58.32§Busard des montagnes;Loch Modan;17;77.09;58.32 | x=-5578 y=-4123 | size=1
+#23187 | Elder Mountain Boar;Loch Modan;6;77.29;47.08§Alter Bergeber;Loch Modan;6;77.29;47.08§Ancien sanglier des montagnes;Loch Modan;6;77.29;47.08 | x=-5310.10009765625 y=-4116.7001953125 | size=1
+#23213 | auto Loch Modan;277§auto Loch Modan;277§auto Loch Modan;277 | x=-5693.2001953125 y=-3696.699951171875 | size=1 | links=#4862(auto Loch Modan;65):60 #27256(auto Loch Modan;323):67
+#23260 | auto Loch Modan;278§auto Loch Modan;278§auto Loch Modan;278 | x=-5606.39990234375 y=-3933.900146484375 | size=1 | links=#984(auto Loch Modan;15):27 #6443(auto Loch Modan;79):36
+#23282 | auto Loch Modan;279§auto Loch Modan;279§auto Loch Modan;279 | x=-5534.7001953125 y=-2862.699951171875 | size=1 | links=#327(auto Loch Modan;5):65 c1280.1:103
+#23320 | auto Loch Modan;280§auto Loch Modan;280§auto Loch Modan;280 | x=-5302.2001953125 y=-2868 | size=1 | links=#1017(auto Loch Modan;16):29 #17811(auto Loch Modan;208):34
+#23370 | auto Loch Modan;281§auto Loch Modan;281§auto Loch Modan;281 | x=-5626.10009765625 y=-2517.199951171875 | size=1 | links=#11915(auto Loch Modan;150):12 #24863(auto Loch Modan;300):18
+#23380 | auto Loch Modan;282§auto Loch Modan;282§auto Loch Modan;282 | x=-5685.10009765625 y=-3104 | size=1 | links=#8565(auto Loch Modan;103):13 #18661(auto Loch Modan;217):19
+#23468 | auto Loch Modan;283§auto Loch Modan;283§auto Loch Modan;283 | x=-4772.30029296875 y=-4166.7001953125 | size=1 | links=#22359(auto Loch Modan;267):28 c1180.3:28
+#23497 | Elder Mountain Boar;Loch Modan;4;74.77;42.14§Alter Bergeber;Loch Modan;4;74.77;42.14§Ancien sanglier des montagnes;Loch Modan;4;74.77;42.14 | x=-5296.2001953125 y=-4069.5 | size=1
+#23511 | crossing;Valley of Kings;Loch Modan§kreuzung;Tal der Könige;Loch Modan§traversée;Vallée des rois;Loch Modan | x=-5790 y=-2622.5 | size=1 | links=#15657(auto Loch Modan;182):22 #20956(auto Loch Modan;243):43 c1281.1:0
+#23619 | auto Loch Modan;284§auto Loch Modan;284§auto Loch Modan;284 | x=-5464.5 y=-4010.60009765625 | size=1 | links=#2596(auto Loch Modan;35):28 #22682(auto Loch Modan;273):34 c1192.2:63
+#23626 | auto Loch Modan;285§auto Loch Modan;285§auto Loch Modan;285 | x=-4957.2001953125 y=-3005.5 | size=1 | links=#1947(auto Loch Modan;30):18 #21628(auto Loch Modan;257):8
+#23839 | auto Loch Modan;286§auto Loch Modan;286§auto Loch Modan;286 | x=-5479 y=-3064.199951171875 | size=1 | links=#21365(auto Loch Modan;250):36 c1195.2:89
+#23896 | auto Loch Modan;287§auto Loch Modan;287§auto Loch Modan;287 | x=-6022.10009765625 y=-2799.699951171875 | size=1 | links=#3605(Stonesplinter Skullthumper;Stonesplinter Valley;Loch Modan):45 #5678(auto Loch Modan;75):44
+#23911 | auto Loch Modan;288§auto Loch Modan;288§auto Loch Modan;288 | x=-5671.89990234375 y=-3153.10009765625 | size=1 | links=#1734(auto Loch Modan;28):72 #12852(auto Loch Modan;159):65 #27740(auto Loch Modan;326):60 c1225.1:34
+#23941 | auto Loch Modan;289§auto Loch Modan;289§auto Loch Modan;289 | x=-5797.60009765625 y=-3336.5 | size=1 | links=#3104(auto Loch Modan;41):36 #24133(auto Loch Modan;292):45 c1191.2:49
+#24018 | auto Loch Modan;290§auto Loch Modan;290§auto Loch Modan;290 | x=-5724.89990234375 y=-4178.89990234375 | size=1 | links=#7043(auto Loch Modan;89):41 #15976(auto Loch Modan;185):32
+#24093 | auto Loch Modan;291§auto Loch Modan;291§auto Loch Modan;291 | x=-5624.80029296875 y=-3095.60009765625 | size=1 | links=#16133(auto Loch Modan;188):13 #22124(auto Loch Modan;263):15
+#24133 | auto Loch Modan;292§auto Loch Modan;292§auto Loch Modan;292 | x=-5797.39990234375 y=-3381.60009765625 | size=1 | links=#6991(auto Loch Modan;88):30 #23941(auto Loch Modan;289):45
+#24206 | Elder Mountain Boar;Loch Modan;16;67.37;41.3§Alter Bergeber;Loch Modan;16;67.37;41.3§Ancien sanglier des montagnes;Loch Modan;16;67.37;41.3 | x=-5247.7001953125 y=-3901.800048828125 | size=1
+#24209 | auto Loch Modan;293§auto Loch Modan;293§auto Loch Modan;293 | x=-4909.30029296875 y=-2967 | size=1 | links=#6517(auto Loch Modan;81):11 c1174.2:2
+#24220 | auto Loch Modan;294§auto Loch Modan;294§auto Loch Modan;294 | x=-4880 y=-3110 | size=1 | links=#6532(auto Loch Modan;82):47 #15982(auto Loch Modan;186):40
+#24226 | auto Loch Modan;295§auto Loch Modan;295§auto Loch Modan;295 | x=-6057.2001953125 y=-2929.699951171875 | size=1 | links=#5882(auto Loch Modan;76):19 #25131(auto Loch Modan;306):27 c1163.5:12 c1166.5:6
+#24316 | auto Loch Modan;296§auto Loch Modan;296§auto Loch Modan;296 | x=-5611.30029296875 y=-4113.30029296875 | size=1 | links=#3914(auto Loch Modan;45):31 #19427(auto Loch Modan;227):47
+#24364 | auto Loch Modan;297§auto Loch Modan;297§auto Loch Modan;297 | x=-4725.80029296875 y=-3118.300048828125 | size=1 | links=#20222(auto Loch Modan;234):26 #22470(auto Loch Modan;269):22
+#24442 | auto Loch Modan;298§auto Loch Modan;298§auto Loch Modan;298 | x=-6118.39990234375 y=-2995.300048828125 | size=1 | links=#7709(auto Loch Modan;95):17 #21246(auto Loch Modan;248):8 c1163.1:5
+#24489 | auto Loch Modan;299§auto Loch Modan;299§auto Loch Modan;299 | x=-4770 y=-3500.699951171875 | size=1 | links=#4847(auto Loch Modan;64):23 o1585.1:113
+#24580 | passage;from;Dun Algaz;Loch Modan;to;Dun Algaz;Wetlands§passage;von;Dun Algaz;Loch Modan;zum;Dun Algaz;Sumpfland§passage;de;Dun Algaz;Loch Modan;vers;Dun Algaz;Les Paluns | x=-4490.39990234375 y=-2690.199951171875 | size=1 | links=#8117(passage;from;Dun Algaz;Wetlands;to;Dun Algaz;Loch Modan):8 #6062(auto;1634473720176348698377):178
+#24863 | auto Loch Modan;300§auto Loch Modan;300§auto Loch Modan;300 | x=-5613.89990234375 y=-2503.5 | size=1 | links=#19317(auto Loch Modan;225):16 #23370(auto Loch Modan;281):18
+#24969 | auto Loch Modan;301§auto Loch Modan;301§auto Loch Modan;301 | x=-4867 y=-3934.10009765625 | size=1 | links=c1178.1:51 c1179.1:49
+#25071 | auto Loch Modan;302§auto Loch Modan;302§auto Loch Modan;302 | x=-5372.5 y=-2995.699951171875 | size=1 | links=#1868(auto Loch Modan;29):31 #12865(auto Loch Modan;160):7
+#25075 | auto Loch Modan;303§auto Loch Modan;303§auto Loch Modan;303 | x=-5459.5 y=-3776.10009765625 | size=1 | links=#273(auto Loch Modan;4):50 #7596(auto Loch Modan;94):41
+#25083 | auto Loch Modan;304§auto Loch Modan;304§auto Loch Modan;304 | x=-6030.80029296875 y=-2986.199951171875 | size=1 | links=#16752(auto Loch Modan;195):10 c1166.18:19
+#25093 | auto Loch Modan;305§auto Loch Modan;305§auto Loch Modan;305 | x=-5321.5 y=-2967.699951171875 | size=1 | links=#3189(auto Loch Modan;42):14 #18982(auto Loch Modan;219):15
+#25131 | auto Loch Modan;306§auto Loch Modan;306§auto Loch Modan;306 | x=-6082.10009765625 y=-2941.10009765625 | size=1 | links=#24226(auto Loch Modan;295):27 #26816(auto Loch Modan;321):12 c1163.5:15
+#25183 | auto Loch Modan;307§auto Loch Modan;307§auto Loch Modan;307 | x=-5649.30029296875 y=-3849.400146484375 | size=1 | links=#775(auto Loch Modan;11):26 #20554(auto Loch Modan;240):27
+#25367 | auto Loch Modan;308§auto Loch Modan;308§auto Loch Modan;308 | x=-5360.30029296875 y=-3010.699951171875 | size=1 | links=#4741(auto Loch Modan;59):9 #10027(auto Loch Modan;129):12
+#25564 | auto Loch Modan;309§auto Loch Modan;309§auto Loch Modan;309 | x=-5653.60009765625 y=-3118.900146484375 | size=1 | links=#1360(auto Loch Modan;19):19 #8565(auto Loch Modan;103):21
+#25611 | auto Loch Modan;310§auto Loch Modan;310§auto Loch Modan;310 | x=-4833.30029296875 y=-3992.800048828125 | size=1 | links=#7955(auto Loch Modan;97):20 c1179.1:21
+#25754 | auto Loch Modan;311§auto Loch Modan;311§auto Loch Modan;311 | x=-6170.2001953125 y=-3026.199951171875 | size=1 | links=#5914(auto Loch Modan;77):12 c1164.16:16
+#25772 | auto Loch Modan;312§auto Loch Modan;312§auto Loch Modan;312 | x=-6224.89990234375 y=-2962 | size=1 | links=#16806(auto Loch Modan;196):9 c1164.6:12 c1197.11:9
+#25935 | auto Loch Modan;313§auto Loch Modan;313§auto Loch Modan;313 | x=-6147 y=-2898.60009765625 | size=1 | links=#17414(auto Loch Modan;204):15 #27928(auto Loch Modan;329):16
+#26249 | auto Loch Modan;314§auto Loch Modan;314§auto Loch Modan;314 | x=-5644.60009765625 y=-4058.199951171875 | size=1 | links=#3914(auto Loch Modan;45):42 c1194.1:27
+#26313 | auto Loch Modan;315§auto Loch Modan;315§auto Loch Modan;315 | x=-5893.80029296875 y=-2634.60009765625 | size=1 | links=#15600(auto Loch Modan;181):33 #21770(auto Loch Modan;258):21
+#26338 | auto Loch Modan;316§auto Loch Modan;316§auto Loch Modan;316 | x=-4844 y=-4070.699951171875 | size=1 | links=#12630(auto Loch Modan;155):10 c1180.1:19
+#26405 | auto Loch Modan;317§auto Loch Modan;317§auto Loch Modan;317 | x=-4823.7001953125 y=-2668.10009765625 | size=1 | links=#17288(auto Loch Modan;203):7 #20532(auto Loch Modan;239):16
+#26438 | auto Loch Modan;318§auto Loch Modan;318§auto Loch Modan;318 | x=-4762.39990234375 y=-4094.699951171875 | size=1 | links=#3972(auto Loch Modan;46):6 c1183.3:20
+#26675 | auto Loch Modan;319§auto Loch Modan;319§auto Loch Modan;319 | x=-5243.5 y=-2909 | size=1 | links=#10514(auto Loch Modan;133):29 #27764(auto Loch Modan;327):32
+#26775 | auto Loch Modan;320§auto Loch Modan;320§auto Loch Modan;320 | x=-5564.80029296875 y=-3784.300048828125 | size=1 | links=#1583(auto Loch Modan;25):44 #22869(auto Loch Modan;275):40
+#26816 | auto Loch Modan;321§auto Loch Modan;321§auto Loch Modan;321 | x=-6094.39990234375 y=-2942.5 | size=1 | links=#5447(auto Loch Modan;73):24 #7560(auto Loch Modan;93):17 #25131(auto Loch Modan;306):12 c1163.2:5
+#26952 | auto Loch Modan;322§auto Loch Modan;322§auto Loch Modan;322 | x=-5187 y=-3078.800048828125 | size=1 | links=#11147(auto Loch Modan;141):37 c1190.3:32
+#27086 | crossing;one;Loch Modan§kreuzung;eins;Loch Modan§traversée;un;Loch Modan | x=-5692 y=-2767.400146484375 | size=1 | links=#9985(auto Loch Modan;128):38 #17247(auto Loch Modan;202):34 #27375(auto Loch Modan;324):40
+#27256 | auto Loch Modan;323§auto Loch Modan;323§auto Loch Modan;323 | x=-5701.39990234375 y=-3629.5 | size=1 | links=#13137(auto Loch Modan;164):60 #23213(auto Loch Modan;277):67 c1191.1:26 c2098.1:41
+#27375 | auto Loch Modan;324§auto Loch Modan;324§auto Loch Modan;324 | x=-5708.89990234375 y=-2730.60009765625 | size=1 | links=#9494(auto Loch Modan;120):48 #27086(crossing;one;Loch Modan):40
+#27534 | auto Loch Modan;325§auto Loch Modan;325§auto Loch Modan;325 | x=-5632 y=-3071.699951171875 | size=1 | links=#96(auto Loch Modan;1):12 #22124(auto Loch Modan;263):9
+#27740 | auto Loch Modan;326§auto Loch Modan;326§auto Loch Modan;326 | x=-5716.5 y=-3194.60009765625 | size=1 | links=#18905(auto Loch Modan;218):56 #23911(auto Loch Modan;288):60
+#27764 | auto Loch Modan;327§auto Loch Modan;327§auto Loch Modan;327 | x=-5247.60009765625 y=-2941.10009765625 | size=1 | links=#6491(auto Loch Modan;80):56 #26675(auto Loch Modan;319):32 c2508.1:29
+#27902 | auto Loch Modan;328§auto Loch Modan;328§auto Loch Modan;328 | x=-5349.60009765625 y=-2940.10009765625 | size=1 | links=#5537(auto Loch Modan;74):5 #17722(centralpoint;Thelsamar;Loch Modan):12
+#27923 | Grizzled Black Bear;Loch Modan;19;75.82;54.93§Ergrauter Schwarzbär;Loch Modan;19;75.82;54.93§Vieil ours noir;Loch Modan;19;75.82;54.93 | x=-5491.30029296875 y=-4070 | size=1
+#27928 | auto Loch Modan;329§auto Loch Modan;329§auto Loch Modan;329 | x=-6130.7001953125 y=-2903.300048828125 | size=1 | links=#3865(auto Loch Modan;44):9 #12336(auto Loch Modan;154):12 #25935(auto Loch Modan;313):16
+#28030 | auto Loch Modan;330§auto Loch Modan;330§auto Loch Modan;330 | x=-6191.2001953125 y=-2932.199951171875 | size=1 | links=#563(auto Loch Modan;7):13 c1197.1:19
+#28275 | auto Loch Modan;331§auto Loch Modan;331§auto Loch Modan;331 | x=-5364.5 y=-2969.699951171875 | size=1 | links=c6734.1:13 c9989.1:21
+#28286 | auto Loch Modan;332§auto Loch Modan;332§auto Loch Modan;332 | x=-4997.10009765625 y=-2974.900146484375 | size=1 | links=#738(auto Loch Modan;10):27 #1589(auto Loch Modan;26):9 o271.13:8
+#28306 | auto Loch Modan;333§auto Loch Modan;333§auto Loch Modan;333 | x=-6123.39990234375 y=-2922.199951171875 | size=1 | links=#3865(auto Loch Modan;44):10 #7560(auto Loch Modan;93):18 #12336(auto Loch Modan;154):7 c1166.3:3
+#28373 | auto Loch Modan;334§auto Loch Modan;334§auto Loch Modan;334 | x=-5748.5 y=-3861.800048828125 | size=1 | links=#4837(auto Loch Modan;63):17 #16418(auto Loch Modan;190):19
+#28587 | s;A;Mailbox;Loch Modan§s;a;Briefkasten;Loch Modan§s;A;Boîte aux lettres;Loch Modan | x=-5364.98095703125 y=-2953.64990234375 | size=1
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c167.1 | links=#5537(auto Loch Modan;74):4
+c222.1 | links=#15319(auto Loch Modan;180):7
+c372.1 | links=c1105.1:5
+c954.1 | links=#6385(centralpoint;The Farstrider Lodge;Loch Modan):10
+c1089.1 | links=#6844(auto Loch Modan;86):13
+c1090.1 | links=#18197(auto Loch Modan;213):5
+c1091.1 | links=#15600(auto Loch Modan;181):41 c1329.1:10
+c1092.1 | links=#17235(auto Loch Modan;200):6
+c1093.1 | links=c2526.1:11 c3290.1:4
+c1105.1 | links=c372.1:5 c1153.1:7
+c1139.1 | links=#18982(auto Loch Modan;219):9
+c1153.1 | links=#6239(auto Loch Modan;78):5 c1105.1:7 c1681.1:6
+c1154.1 | links=c10930.1:22
+c1155.1 | links=#6385(centralpoint;The Farstrider Lodge;Loch Modan):29 c1156.1:10
+c1156.1 | links=#6385(centralpoint;The Farstrider Lodge;Loch Modan):30 c1155.1:10
+c1161.1 | links=c1161.3:33
+c1162.1 | links=#14730(auto Loch Modan;174):3
+c1163.1 | links=#8580(auto Loch Modan;104):9 #24442(auto Loch Modan;298):5
+c1164.1 | links=#17414(auto Loch Modan;204):8
+c1165.1 | links=#11965(auto Loch Modan;152):27 #19506(auto Loch Modan;228):45
+c1166.1 | links=c1166.2:23 c4845.6:11 c4845.8:12 c1166.45:9
+c1172.1 | links=#861(auto Loch Modan;13):10 #22160(auto Loch Modan;265):21
+c1174.1 | links=#11951(auto Loch Modan;151):5
+c1175.1 | links=#15714(auto Loch Modan;183):12
+c1176.1 | links=c1176.2:6 c1202.3:14
+c1177.1 | links=c1425.1:6 c1177.2:16 c1177.3:17 o271.5:8 o271.8:10
+c1178.1 | links=#24969(auto Loch Modan;301):51 c1181.2:35
+c1179.1 | links=#7210(auto Loch Modan;91):83 #24969(auto Loch Modan;301):49 #25611(auto Loch Modan;310):21 o92420.1:35
+c1180.1 | links=#10261(auto Loch Modan;132):9 #26338(auto Loch Modan;316):19
+c1181.1 | links=#4281(cave;Mo'grosh Stronghold;Loch Modan):30 #7955(auto Loch Modan;97):12
+c1184.1 | links=#22831(auto Loch Modan;274):21
+c1185.1 | links=#6697(auto Loch Modan;85):103 c1693.1:29 c1693.2:62
+c1186.1 | links=#4733(auto Loch Modan;58):45 c1279.1:62
+c1187.1 | links=#6385(centralpoint;The Farstrider Lodge;Loch Modan):40
+c1189.1 | links=#14241(focus point;Loch Modan):184 c2476.1:42 c1189.2:64 c1189.3:44
+c1190.1 | links=#21115(auto Loch Modan;246):38 c1186.2:37 c1195.3:61 c2098.3:32
+c1191.1 | links=#27256(auto Loch Modan;323):26
+c1192.1 | links=c2476.1:102 c2476.2:62
+c1194.1 | links=#21041(auto Loch Modan;244):50 #26249(auto Loch Modan;314):27
+c1195.1 | links=#17811(auto Loch Modan;208):30
+c1197.1 | links=#22967(auto Loch Modan;276):16 #28030(auto Loch Modan;330):19 c1206.1:19
+c1202.1 | links=#2154(auto Loch Modan;34):29 c1202.2:14
+c1205.1 | links=c1206.1:7
+c1206.1 | links=c1197.1:19 c1205.1:7 c1207.1:5
+c1207.1 | links=c1206.1:5
+c1210.1 | links=c1180.3:10
+c1214.1 | links=#12227(centralpoint;Ironband's Excavation Site;Loch Modan):15
+c1222.1 | links=#8993(auto Loch Modan;110):39 o257.1:9 c1222.2:6
+c1224.1 | links=c1224.2:83
+c1225.1 | links=#23911(auto Loch Modan;288):34
+c1276.1 | links=#564(auto Loch Modan;8):22 #17134(auto Loch Modan;199):11
+c1277.1 | links=#3279(crossing;Algaz Station;Loch Modan):85
+c1278.1 | links=#4782(auto Loch Modan;60):21 #17246(auto Loch Modan;201):44 c1280.1:33 c6491.1:48
+c1279.1 | links=#4733(auto Loch Modan;58):72 #9016(auto Loch Modan;111):34 c1186.1:62
+c1280.1 | links=#23282(auto Loch Modan;279):103 c1278.1:33
+c1281.1 | links=#6844(auto Loch Modan;86):50 #23511(crossing;Valley of Kings;Loch Modan):0
+c1282.1 | links=#7768(auto Loch Modan;96):7 #13613(auto Loch Modan;168):8
+c1283.1 | links=#4695(auto Loch Modan;56):40 #6844(auto Loch Modan;86):11
+c1329.1 | links=c1091.1:10
+c1330.1 | links=#1477(auto Loch Modan;22):9 #17235(auto Loch Modan;200):5
+c1331.1 | links=#8147(auto Loch Modan;99):6
+c1332.1 | links=#17715(auto Loch Modan;206):5
+c1334.1 | links=c1343.1:7
+c1335.1 | links=#9263(auto Loch Modan;114):6 #21045(auto Loch Modan;245):4
+c1336.1 | links=#13061(auto Loch Modan;162):17
+c1337.1 | links=#3189(auto Loch Modan;42):10 #16039(auto Loch Modan;187):10
+c1338.1 | links=#6491(auto Loch Modan;80):10
+c1340.1 | links=#4782(auto Loch Modan;60):40 #17722(centralpoint;Thelsamar;Loch Modan):17 c9989.1:12
+c1342.1 | links=#7363(route;Algaz Station;Loch Modan;to;Wetlands;one):66 #6062(auto;1634473720176348698377):10
+c1343.1 | links=#9263(auto Loch Modan;114):7 c1334.1:7
+c1344.1 | links=#12227(centralpoint;Ironband's Excavation Site;Loch Modan):24 #22072(auto Loch Modan;262):23
+c1345.1 | links=#12227(centralpoint;Ironband's Excavation Site;Loch Modan):10
+c1362.1 | links=#8147(auto Loch Modan;99):4
+c1379.1 | links=#417(auto Loch Modan;6):18 c2057.1:2
+c1380.1 | links=c2057.1:4
+c1393.1 | links=c1167.3:17
+c1399.1 | links=c1398.2:8
+c1425.1 | links=c1177.1:6
+c1465.1 | links=#9218(auto Loch Modan;112):4
+c1469.1 | links=#16039(auto Loch Modan;187):10 #18075(auto Loch Modan;211):16
+c1470.1 | links=#20181(auto Loch Modan;233):8
+c1473.1 | links=#12865(auto Loch Modan;160):3
+c1474.1 | links=#13194(auto Loch Modan;165):2
+c1572.1 | links=#9981(auto Loch Modan;127):20 c2512.1:25
+c1681.1 | links=c1153.1:6
+c1682.1 | links=#18131(auto Loch Modan;212):4 c1963.1:12
+c1683.1 | links=#5434(auto Loch Modan;71):5
+c1684.1 | links=#13358(auto Loch Modan;166):2
+c1685.1 | links=#6385(centralpoint;The Farstrider Lodge;Loch Modan):8 c3545.1:11
+c1686.1 | links=#6385(centralpoint;The Farstrider Lodge;Loch Modan):11 #9304(auto Loch Modan;116):13 c1687.1:9
+c1687.1 | links=#6385(centralpoint;The Farstrider Lodge;Loch Modan):13 #9304(auto Loch Modan;116):11 c1686.1:9
+c1693.1 | links=c1185.1:29 c1189.2:29
+c1777.1 | links=#18075(auto Loch Modan;211):3
+c1963.1 | links=c1682.1:12
+c2057.1 | links=c1379.1:2 c1380.1:4
+c2098.1 | links=#27256(auto Loch Modan;323):41
+c2476.1 | links=c1189.1:42 c1192.1:102
+c2506.1 | links=c2512.1:43 c2518.1:36
+c2507.1 | links=#1410(auto Loch Modan;20):27
+c2508.1 | links=#6491(auto Loch Modan;80):28 #27764(auto Loch Modan;327):29
+c2509.1 | links=#1017(auto Loch Modan;16):43 c2516.1:38
+c2510.1 | links=#1868(auto Loch Modan;29):13 #17722(centralpoint;Thelsamar;Loch Modan):12 #18982(auto Loch Modan;219):34
+c2511.1 | links=c2515.1:60
+c2512.1 | links=c1572.1:25 c2506.1:43 c1195.2:36
+c2513.1 | links=#3189(auto Loch Modan;42):13
+c2514.1 | links=#17907(auto Loch Modan;210):15
+c2515.1 | links=#17907(auto Loch Modan;210):50 c2511.1:60 c2518.1:66
+c2516.1 | links=c2509.1:38
+c2517.1 | links=#1868(auto Loch Modan;29):7
+c2518.1 | links=c2506.1:36 c2515.1:66
+c2524.1 | links=#15319(auto Loch Modan;180):14 #20222(auto Loch Modan;234):35
+c2525.1 | links=#15319(auto Loch Modan;180):25
+c2526.1 | links=#6572(auto Loch Modan;83):21 c1093.1:11 c2527.1:64
+c2527.1 | links=#20399(auto Loch Modan;237):50 c2526.1:64
+c2528.1 | links=#13668(auto Loch Modan;169):34 #19377(auto Loch Modan;226):29
+c2909.1 | links=
+c3290.1 | links=#6572(auto Loch Modan;83):12 c1093.1:4
+c3545.1 | links=c1685.1:11 c10930.1:9
+c3836.1 | links=#5068(auto Loch Modan;68):38 #13458(door/gate;Stonewrought Pass;Searing Gorge):4
+c3948.1 | links=#7964(auto Loch Modan;98):7
+c6030.1 | links=#18197(auto Loch Modan;213):11
+c6241.1 | links=#4499(auto Loch Modan;53):3
+c6491.1 | links=c1278.1:48
+c6577.1 | links=#273(auto Loch Modan;4):44 c1188.3:62 c1693.3:65
+c6734.1 | links=#8394(auto Loch Modan;100):16 #9218(auto Loch Modan;112):10 #22524(auto Loch Modan;270):7 #28275(auto Loch Modan;331):13
+c9989.1 | links=#16777(Mailbox;Thelsamar;Loch Modan):7 #28275(auto Loch Modan;331):21 c1340.1:12
+c10930.1 | links=c1154.1:22 c3545.1:9
+c14266.1 | links=#14250(auto Loch Modan;172):5
+c14267.1 | links=#7210(auto Loch Modan;91):56
+c14268.1 | links=c1194.2:46
+o256.1 | links=#11766(auto Loch Modan;147):13
+o257.1 | links=c1222.1:9
+o271.1 | links=#652(auto Loch Modan;9):12
+o1585.1 | links=#24489(auto Loch Modan;299):113
+o92420.1 | links=c1179.1:35
+o104564.1 | links=#11071(auto Loch Modan;140):51
+o104569.1 | links=#19613(auto Loch Modan;229):23
+o104574.1 | links=#8763(auto Loch Modan;106):44 #22674(auto Loch Modan;272):19
+o104575.1 | links=#1476(auto Loch Modan;21):32
+c1162.2 | links=c1161.3:38
+c1163.2 | links=#26816(auto Loch Modan;321):5
+c1165.2 | links=c1165.3:2
+c1166.2 | links=#21246(auto Loch Modan;248):15 c1166.1:23
+c1167.2 | links=#9687(auto Loch Modan;124):14
+c1174.2 | links=#11951(auto Loch Modan;151):14 #24209(auto Loch Modan;293):2
+c1175.2 | links=#6517(auto Loch Modan;81):10 c1174.3:9 c1176.3:33 o271.14:9
+c1176.2 | links=c1176.1:6
+c1177.2 | links=c1177.1:16
+c1178.2 | links=#17798(auto Loch Modan;207):49 c1181.2:35
+c1179.2 | links=#17798(auto Loch Modan;207):14
+c1181.2 | links=c1178.1:35 c1178.2:35 c1181.3:37
+c1184.2 | links=#13137(auto Loch Modan;164):41
+c1185.2 | links=c1185.3:50 c1192.3:166
+c1186.2 | links=c1190.1:37
+c1189.2 | links=c1189.1:64 c1693.1:29 c1189.3:42
+c1190.2 | links=c1186.3:54
+c1191.2 | links=#23941(auto Loch Modan;289):49
+c1192.2 | links=#16300(auto Loch Modan;189):50 #23619(auto Loch Modan;284):63 c1192.3:78
+c1194.2 | links=#4176(auto Loch Modan;48):17 #7043(auto Loch Modan;89):61 c14268.1:46
+c1195.2 | links=#23839(auto Loch Modan;286):89 c2512.1:36
+c1197.2 | links=#563(auto Loch Modan;7):11 #15932(auto Loch Modan;184):11
+c1202.2 | links=c1202.1:14
+c1222.2 | links=c1222.1:6
+c1224.2 | links=#5434(auto Loch Modan;71):128 c1224.1:83 c1224.3:175
+c1393.2 | links=#1336(auto Loch Modan;18):19 #16568(auto Loch Modan;192):14 c1167.3:44
+c1398.2 | links=#3051(auto Loch Modan;39):24 c1399.1:8
+c1693.2 | links=c1185.1:62
+c2476.2 | links=c1192.1:62 c1693.3:115
+c14268.2 | links=#4700(auto Loch Modan;57):55 #13066(auto Loch Modan;163):31
+o271.2 | links=#15714(auto Loch Modan;183):2 o271.4:11
+c1161.3 | links=#8850(auto Loch Modan;107):43 #9769(centralpoint;Stonesplinter Valley;Loch Modan):30 c1161.1:33 c1162.2:38
+c1162.3 | links=#2974(auto Loch Modan;38):20 #9769(centralpoint;Stonesplinter Valley;Loch Modan):15 #12655(auto Loch Modan;156):46
+c1163.3 | links=#3090(auto Loch Modan;40):9 c4845.8:12
+c1165.3 | links=#775(auto Loch Modan;11):21 c1165.2:2
+c1166.3 | links=#28306(auto Loch Modan;333):3
+c1167.3 | links=c1393.1:17 c1393.2:44
+c1174.3 | links=#14029(auto Loch Modan;170):24 c1175.2:9 o271.12:8
+c1176.3 | links=#16698(auto Loch Modan;194):9 c1175.2:33
+c1177.3 | links=#1589(auto Loch Modan;26):9 c1177.1:17 o271.9:6
+c1178.3 | links=#215(auto Loch Modan;2):23 c1179.3:5
+c1179.3 | links=c1178.3:5 c1181.3:21
+c1180.3 | links=#23468(auto Loch Modan;283):28 c1210.1:10
+c1181.3 | links=c1181.2:37 c1179.3:21
+c1183.3 | links=#26438(auto Loch Modan;318):20
+c1184.3 | links=#17644(auto Loch Modan;205):7
+c1185.3 | links=c1185.2:50
+c1186.3 | links=#9016(auto Loch Modan;111):78 c1190.2:54
+c1188.3 | links=c6577.1:62
+c1189.3 | links=c1189.1:44 c1189.2:42
+c1190.3 | links=#12824(auto Loch Modan;158):41 #21115(auto Loch Modan;246):46 #26952(auto Loch Modan;322):32
+c1191.3 | links=#21365(auto Loch Modan;250):51
+c1192.3 | links=c1185.2:166 c1192.2:78
+c1195.3 | links=c1190.1:61
+c1202.3 | links=#922(auto Loch Modan;14):77 c1176.1:14
+c1224.3 | links=c1224.2:175
+c1693.3 | links=c6577.1:65 c2476.2:115
+c2098.3 | links=c1190.1:32
+o271.3 | links=#1947(auto Loch Modan;30):3
+c1164.4 | links=#1532(auto Loch Modan;23):20 c1197.4:15
+c1197.4 | links=c1164.4:15
+o271.4 | links=o271.2:11
+c1163.5 | links=#24226(auto Loch Modan;295):12 #25131(auto Loch Modan;306):15
+c1166.5 | links=#24226(auto Loch Modan;295):6
+o271.5 | links=c1177.1:8
+c1164.6 | links=#25772(auto Loch Modan;312):12 c1164.7:11
+c1197.6 | links=#1246(auto Loch Modan;17):14
+c4845.6 | links=c1166.1:11
+o271.6 | links=#11951(auto Loch Modan;151):6
+c1164.7 | links=c1164.6:11 c1197.9:8
+c1197.7 | links=#5914(auto Loch Modan;77):13 #19966(auto Loch Modan;231):14
+o271.7 | links=#7102(auto Loch Modan;90):4
+o2743.7 | links=
+c1197.8 | links=#1246(auto Loch Modan;17):19 c1197.21:20
+c4845.8 | links=c1166.1:12 c1163.3:12
+o271.8 | links=c1177.1:10
+c1197.9 | links=c1164.7:8
+o271.9 | links=c1177.3:6
+c1197.10 | links=c1197.12:6
+o271.10 | links=#21628(auto Loch Modan;257):8
+c1197.11 | links=#15932(auto Loch Modan;184):17 #25772(auto Loch Modan;312):9 c1197.12:8
+c1197.12 | links=c1197.10:6 c1197.11:8
+o271.12 | links=c1174.3:8
+c1163.13 | links=#16752(auto Loch Modan;195):7 c1163.14:5
+o271.13 | links=#28286(auto Loch Modan;332):8
+c1163.14 | links=c1163.13:5
+o271.14 | links=c1175.2:9
+c1163.15 | links=#1532(auto Loch Modan;23):16 c1166.18:24
+c1163.16 | links=#16752(auto Loch Modan;195):15 c1163.17:8
+c1164.16 | links=#25754(auto Loch Modan;311):16 c1164.17:15
+c1163.17 | links=c1163.16:8
+c1164.17 | links=c1164.16:15 c1197.22:18
+c1166.17 | links=#16752(auto Loch Modan;195):14
+c1166.18 | links=#25083(auto Loch Modan;304):19 c1163.15:24
+c1163.21 | links=#5678(auto Loch Modan;75):11
+c1197.21 | links=c1197.8:20 c1197.22:11
+c1166.22 | links=#5678(auto Loch Modan;75):19
+c1197.22 | links=c1164.17:18 c1197.21:11
+c1163.23 | links=#5678(auto Loch Modan;75):30
+c1197.23 | links=#19006(auto Loch Modan;220):7
+c1166.27 | links=#5678(auto Loch Modan;75):34
+c1166.28 | links=#5678(auto Loch Modan;75):33
+c1166.43 | links=#5678(auto Loch Modan;75):29
+c1166.45 | links=c1166.1:9

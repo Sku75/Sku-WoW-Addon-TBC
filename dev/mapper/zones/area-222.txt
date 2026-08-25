@@ -1,0 +1,3 @@
+Zone areaId 222 — eine Zeile pro Wegpunkt; Links inline.
+
+#28692 | s;Kalimdor;Mulgore;Bloodhoof§s;Kalimdor;Mulgore;Bloodhoof§s;Kalimdor;Mulgore;Bloodhoof | x=-2323.92 y=-394.981 | size=1

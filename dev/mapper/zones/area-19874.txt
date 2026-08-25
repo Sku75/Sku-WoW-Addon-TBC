@@ -1,0 +1,5 @@
+Zone areaId 19874 — eine Zeile pro Wegpunkt; Links inline.
+
+#15373 | auto The Canals;Stormwind City;1§auto Die Kanäle;Sturmwind;1§auto The Canals;Hurlevent;1 | x=-8881 y=752.9000244140625 | size=1 | links=#22505(auto Mage Quarter;Stormwind City;20):47 #20868(auto The Canals;Stormwind City;2):13
+#20868 | auto The Canals;Stormwind City;2§auto Die Kanäle;Sturmwind;2§auto The Canals;Hurlevent;2 | x=-8870.1005859375 y=761.5 | size=1 | links=#24790(auto Stormwind City;306):33 c2198.1:24 #15373(auto The Canals;Stormwind City;1):13
+#22623 | auto The Canals;Stormwind City;3§auto Die Kanäle;Sturmwind;3§auto The Canals;Hurlevent;3 | x=-8844.5 y=722.1000366210938 | size=1 | links=#8213(auto Stormwind City;115):56 #22098(auto Stormwind City;276):55 c2198.1:23 #4824(auto Trade District;Stormwind City;4):50

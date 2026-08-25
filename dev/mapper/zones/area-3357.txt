@@ -1,0 +1,3 @@
+Zone areaId 3357 — eine Zeile pro Wegpunkt; Links inline.
+
+#28788 | s;Eastern Kingdoms;Stranglethorn Vale;Yojamba Isle§s;Östliche Königreiche;Schlingendorntal;Die Insel Yojamba§s;Royaumes de l'est;Vallée de Strangleronce;Ile de Yojamba | x=-11874.6 y=-1250.73 | size=1

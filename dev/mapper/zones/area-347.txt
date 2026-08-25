@@ -1,0 +1,3 @@
+Zone areaId 347 — eine Zeile pro Wegpunkt; Links inline.
+
+#28773 | s;Eastern Kingdoms;Badlands;Camp Cagg;Dustbelch Grotto§s;Östliche Königreiche;Ödland;Camp Cagg;Die Staubspeiergrotte§s;Royaumes de l'est;Terres ingrates;Camp Cagg;Dustbelch Grotto | x=-7320.59 y=-2265.09 | size=1

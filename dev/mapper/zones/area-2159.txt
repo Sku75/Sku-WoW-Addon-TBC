@@ -1,0 +1,3 @@
+Zone areaId 2159 — eine Zeile pro Wegpunkt; Links inline.
+
+#28681 | s;Kalimdor;Dustwallow Marsh;Wyrmbog;Onyxia's Lair§s;Kalimdor;Marschen von Dustwallow;Der Drachensumpf;Onyxias Hort§s;Kalimdor;Marécage d'Âprefange;Tourbière du Ver;Repaire d’Onyxia | x=-4698.06 y=-3720.58 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 186 — eine Zeile pro Wegpunkt; Links inline.
+
+#28730 | s;Kalimdor;Teldrassil;Dolanaar§s;Kalimdor;Teldrassil;Dolanaar§s;Kalimdor;Teldrassil;Dolanaar | x=9787.99 y=-949.897 | size=1

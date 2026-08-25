@@ -1,0 +1,848 @@
+Zone areaId 1377 — eine Zeile pro Wegpunkt; Links inline.
+
+#475 | auto Silithus;1§auto Silithus;1§auto Silithus;1 | x=-6778.39990234375 y=132.9000091552734 | size=1 | links=#24305(auto Silithus;87):32 #27400(auto Silithus;103):42 c15545.10:10
+#555 | auto Silithus;2§auto Silithus;2§auto Silithus;2 | x=-6733.60009765625 y=764.4000244140625 | size=1 | links=#2953(auto Silithus;7):3 #12900(auto Silithus;47):4
+#566 | auto Silithus;3§auto Silithus;3§auto Silithus;3 | x=-6741.30029296875 y=765.7999877929688 | size=1 | links=#12900(auto Silithus;47):3 #28092(auto Silithus;105):3
+#1398 | auto Silithus;4§auto Silithus;4§auto Silithus;4 | x=-6607.5 y=-93.0999984741211 | size=1 | links=#14214(auto Silithus;53):53 #18056(auto Silithus;69):58 c11738.16:42
+#1515 | auto Silithus;5§auto Silithus;5§auto Silithus;5 | x=-6835.30029296875 y=775.7000122070312 | size=1 | links=#2092(centralpoint;Cenarion Hold):9 #21816(auto Silithus;81):13
+#2092 | centralpoint;Cenarion Hold§zentralerpunkt;Burg Cenarius§point central;Fort cénarien | x=-6833.89990234375 y=766.2000122070312 | size=1 | links=#1515(auto Silithus;5):9 #25197(auto Silithus;95):9 #27167(auto Silithus;102):15
+#2107 | auto Silithus;6§auto Silithus;6§auto Silithus;6 | x=-6792.7001953125 y=213 | size=1 | links=#10180(auto Silithus;36):72 #27400(auto Silithus;103):39 c11735.3:76
+#2953 | auto Silithus;7§auto Silithus;7§auto Silithus;7 | x=-6730.60009765625 y=765.7000122070312 | size=1 | links=#555(auto Silithus;2):3 #11750(auto Silithus;43):3
+#3283 | auto Silithus;8§auto Silithus;8§auto Silithus;8 | x=-6851.2001953125 y=738.2000122070312 | size=1 | links=#7149(auto Silithus;23):14 #20296(auto Silithus;75):11
+#3284 | entry and exit;west;Cenarion Hold§ein- und ausgang;westlich;Burg Cenarius§entrée et sortie;west;Fort cénarien | x=-6913.30029296875 y=907.2000122070312 | size=1 | links=#12690(auto Silithus;46):23 #45346(auto Silithus;211):43
+#3582 | auto Silithus;9§auto Silithus;9§auto Silithus;9 | x=-6816 y=804.7999877929688 | size=1 | links=#8803(auto Silithus;32):13 #15056(auto Silithus;57):11 #24237(auto Silithus;86):9 c15180.1:14 c15183.1:12
+#3663 | auto Silithus;10§auto Silithus;10§auto Silithus;10 | x=-6284.7001953125 y=-391.2000122070313 | size=1 | links=#15528(auto Silithus;60):20 #21208(auto Silithus;79):50
+#3822 | auto Silithus;11§auto Silithus;11§auto Silithus;11 | x=-6784.89990234375 y=755.2999877929688 | size=1 | links=#10457(auto Silithus;38):5 #24980(auto Silithus;93):9
+#4126 | auto Silithus;12§auto Silithus;12§auto Silithus;12 | x=-6793.10009765625 y=776.7999877929688 | size=1 | links=#8785(auto Silithus;31):12 #24905(auto Silithus;91):7
+#4406 | auto Silithus;13§auto Silithus;13§auto Silithus;13 | x=-6759 y=759.2999877929688 | size=1 | links=#9637(auto Silithus;34):7 #15342(auto Silithus;59):11 #19022(auto Silithus;72):7
+#4574 | auto Silithus;14§auto Silithus;14§auto Silithus;14 | x=-6235.5 y=-454.1000061035156 | size=1 | links=#18526(auto Silithus;71):28 #22277(passage;from;Silithus;to;Un'Goro Crater):14
+#5187 | auto Silithus;15§auto Silithus;15§auto Silithus;15 | x=-6868.30029296875 y=717 | size=1 | links=#20386(auto Silithus;76):11 #24960(auto Silithus;92):11
+#5212 | auto Silithus;16§auto Silithus;16§auto Silithus;16 | x=-6734.30029296875 y=779 | size=1 | links=#15825(auto Silithus;61):4 #23151(tower;from;Cenarion Hold;down):8
+#5504 | auto Silithus;17§auto Silithus;17§auto Silithus;17 | x=-6734.10009765625 y=766.7999877929688 | size=1 | links=#17131(auto Silithus;65):4 c15182.1:6
+#5730 | auto Silithus;18§auto Silithus;18§auto Silithus;18 | x=-6728.80029296875 y=772.5 | size=1 | links=#6530(auto Silithus;19):3 #11750(auto Silithus;43):3
+#6530 | auto Silithus;19§auto Silithus;19§auto Silithus;19 | x=-6730.10009765625 y=775.7000122070312 | size=1 | links=#5730(auto Silithus;18):3 #17435(auto Silithus;67):3
+#6831 | auto Silithus;20§auto Silithus;20§auto Silithus;20 | x=-6798.7001953125 y=868.2999877929688 | size=1 | links=#15837(auto Silithus;62):34 #23535(auto Silithus;85):23
+#7040 | auto Silithus;21§auto Silithus;21§auto Silithus;21 | x=-6758.30029296875 y=75 | size=1 | links=#8169(auto Silithus;27):57 #24305(auto Silithus;87):29
+#7146 | auto Silithus;22§auto Silithus;22§auto Silithus;22 | x=-6390.80029296875 y=-239.5 | size=1 | links=#19782(crossing;Valor's Rest;Silithus):44 #25166(auto Silithus;94):64 #45290(auto Silithus;157):47
+#7149 | auto Silithus;23§auto Silithus;23§auto Silithus;23 | x=-6864.5 y=732 | size=1 | links=#3283(auto Silithus;8):14 c15174.1:4 c15614.1:10
+#7255 | entry and exit;east;Cenarion Hold§ein- und ausgang;östlich;Burg Cenarius§entrée et sortie;east;Fort cénarien | x=-6810.2001953125 y=721.2000122070312 | size=1 | links=#7585(auto Silithus;26):20 #22070(auto Silithus;82):19 c15184.28:0
+#7352 | auto Silithus;24§auto Silithus;24§auto Silithus;24 | x=-6768.60009765625 y=398.7000122070313 | size=1 | links=#24541(auto Silithus;89):53 #26937(auto Silithus;101):66
+#7407 | auto Silithus;25§auto Silithus;25§auto Silithus;25 | x=-6736.80029296875 y=842.6000366210938 | size=1 | links=#8216(entry and exit;north;Cenarion Hold):12 #16408(auto Silithus;64):21
+#7585 | auto Silithus;26§auto Silithus;26§auto Silithus;26 | x=-6800.89990234375 y=703.2000122070312 | size=1 | links=#7255(entry and exit;east;Cenarion Hold):20 #19183(auto Silithus;73):44
+#8169 | auto Silithus;27§auto Silithus;27§auto Silithus;27 | x=-6722.89990234375 y=29.10000038146973 | size=1 | links=#7040(auto Silithus;21):57 #26121(auto Silithus;98):76
+#8216 | entry and exit;north;Cenarion Hold§ein- und ausgang;nördlich;Burg Cenarius§entrée et sortie;north;Fort cénarien | x=-6724.30029296875 y=843.7999877929688 | size=1 | links=#7407(auto Silithus;25):12 #45426(auto Silithus;288):56
+#8229 | auto Silithus;28§auto Silithus;28§auto Silithus;28 | x=-6878.60009765625 y=864.1000366210938 | size=1 | links=#8470(auto Silithus;29):25 #11712(auto Silithus;42):29 #12690(auto Silithus;46):32
+#8470 | auto Silithus;29§auto Silithus;29§auto Silithus;29 | x=-6853.2001953125 y=864.9000244140625 | size=1 | links=#8229(auto Silithus;28):25 #23535(auto Silithus;85):31
+#8620 | auto Silithus;30§auto Silithus;30§auto Silithus;30 | x=-6741.2001953125 y=765.4000244140625 | size=1 | links=#22624(auto Silithus;84):3 #28215(auto Silithus;106):3
+#8785 | auto Silithus;31§auto Silithus;31§auto Silithus;31 | x=-6793.80029296875 y=789.4000244140625 | size=1 | links=#4126(auto Silithus;12):12 #20457(auto Silithus;77):10
+#8803 | auto Silithus;32§auto Silithus;32§auto Silithus;32 | x=-6812.60009765625 y=791.9000244140625 | size=1 | links=#3582(auto Silithus;9):13 #20457(auto Silithus;77):8 #27167(auto Silithus;102):17 c15179.1:13 c15540.1:10
+#9510 | auto Silithus;33§auto Silithus;33§auto Silithus;33 | x=-6859.89990234375 y=758.1000366210938 | size=5 | links=#14612(auto Silithus;55):10 c15176.1:5 c15499.1:3
+#9637 | auto Silithus;34§auto Silithus;34§auto Silithus;34 | x=-6753.10009765625 y=764.2999877929688 | size=1 | links=#4406(auto Silithus;13):7 #15299(auto Silithus;58):9
+#9918 | auto Silithus;35§auto Silithus;35§auto Silithus;35 | x=-6742.39990234375 y=774.5 | size=1 | links=#13044(auto Silithus;48):3 #28215(auto Silithus;106):5
+#10180 | auto Silithus;36§auto Silithus;36§auto Silithus;36 | x=-6782 y=284.5 | size=1 | links=#2107(auto Silithus;6):72 #24541(auto Silithus;89):62
+#10425 | auto Silithus;37§auto Silithus;37§auto Silithus;37 | x=-6728.39990234375 y=772.7000122070312 | size=1 | links=#13545(auto Silithus;49):4 #15825(auto Silithus;61):4
+#10457 | auto Silithus;38§auto Silithus;38§auto Silithus;38 | x=-6780.89990234375 y=752.2999877929688 | size=1 | links=#3822(auto Silithus;11):5 #14022(auto Silithus;52):5
+#10917 | auto Silithus;39§auto Silithus;39§auto Silithus;39 | x=-6730.10009765625 y=766 | size=1 | links=#13545(auto Silithus;49):3 #17584(auto Silithus;68):4
+#10937 | auto Silithus;40§auto Silithus;40§auto Silithus;40 | x=-6527.89990234375 y=-149.4000091552734 | size=1 | links=#12210(auto Silithus;44):55 #18056(auto Silithus;69):39
+#11116 | auto Silithus;41§auto Silithus;41§auto Silithus;41 | x=-6802.2001953125 y=548.2000122070312 | size=1 | links=#24462(auto Silithus;88):50 #26937(auto Silithus;101):87 #45237(auto Silithus;107):49 c11735.65:58
+#11712 | auto Silithus;42§auto Silithus;42§auto Silithus;42 | x=-6868.39990234375 y=836.5 | size=1 | links=#8229(auto Silithus;28):29 #27438(auto Silithus;104):25
+#11750 | auto Silithus;43§auto Silithus;43§auto Silithus;43 | x=-6728.80029296875 y=768.9000244140625 | size=1 | links=#2953(auto Silithus;7):3 #5730(auto Silithus;18):3
+#12210 | auto Silithus;44§auto Silithus;44§auto Silithus;44 | x=-6479.7001953125 y=-177.4000091552734 | size=1 | links=#10937(auto Silithus;40):55 #25166(auto Silithus;94):44
+#12285 | auto Silithus;45§auto Silithus;45§auto Silithus;45 | x=-6795.2001953125 y=809.6000366210938 | size=1 | links=#16349(auto Silithus;63):31 #24237(auto Silithus;86):11
+#12690 | auto Silithus;46§auto Silithus;46§auto Silithus;46 | x=-6895.60009765625 y=891.5 | size=1 | links=#3284(entry and exit;west;Cenarion Hold):23 #8229(auto Silithus;28):32 #14363(auto Silithus;54):30
+#12900 | auto Silithus;47§auto Silithus;47§auto Silithus;47 | x=-6737.89990234375 y=763.9000244140625 | size=1 | links=#555(auto Silithus;2):4 #566(auto Silithus;3):3
+#13044 | auto Silithus;48§auto Silithus;48§auto Silithus;48 | x=-6740 y=777.6000366210938 | size=1 | links=#9918(auto Silithus;35):3 #17225(auto Silithus;66):2
+#13545 | auto Silithus;49§auto Silithus;49§auto Silithus;49 | x=-6728.60009765625 y=768.7000122070312 | size=1 | links=#10425(auto Silithus;37):4 #10917(auto Silithus;39):3
+#13850 | auto Silithus;50§auto Silithus;50§auto Silithus;50 | x=-6842.5 y=719.4000244140625 | size=1 | links=#22070(auto Silithus;82):28 c15498.1:5 c16543.1:17
+#13926 | auto Silithus;51§auto Silithus;51§auto Silithus;51 | x=-6862.80029296875 y=731.9000244140625 | size=1 | links=#24960(auto Silithus;92):12 #25796(auto Silithus;96):15 c15190.1:12
+#14022 | auto Silithus;52§auto Silithus;52§auto Silithus;52 | x=-6775.39990234375 y=752.9000244140625 | size=1 | links=#10457(auto Silithus;38):5 #15342(auto Silithus;59):6
+#14214 | auto Silithus;53§auto Silithus;53§auto Silithus;53 | x=-6648 y=-58.70000076293945 | size=1 | links=#1398(auto Silithus;4):53 #26121(auto Silithus;98):42
+#14363 | auto Silithus;54§auto Silithus;54§auto Silithus;54 | x=-6867.60009765625 y=902.2999877929688 | size=1 | links=#12690(auto Silithus;46):30 c6491.2:44
+#14612 | auto Silithus;55§auto Silithus;55§auto Silithus;55 | x=-6850.10009765625 y=760.2999877929688 | size=1 | links=#9510(auto Silithus;33):10 c15191.1:5
+#14939 | auto Silithus;56§auto Silithus;56§auto Silithus;56 | x=-6740.89990234375 y=776.6000366210938 | size=1 | links=#18464(auto Silithus;70):4 #21054(auto Silithus;78):3
+#15056 | auto Silithus;57§auto Silithus;57§auto Silithus;57 | x=-6817.30029296875 y=816.6000366210938 | size=1 | links=#3582(auto Silithus;9):11 #24775(auto Silithus;90):16
+#15299 | auto Silithus;58§auto Silithus;58§auto Silithus;58 | x=-6744.10009765625 y=768 | size=5 | links=#9637(auto Silithus;34):9 #25799(auto Silithus;97):5
+#15342 | auto Silithus;59§auto Silithus;59§auto Silithus;59 | x=-6768.80029296875 y=754.2999877929688 | size=1 | links=#4406(auto Silithus;13):11 #14022(auto Silithus;52):6
+#15528 | auto Silithus;60§auto Silithus;60§auto Silithus;60 | x=-6274.2001953125 y=-409.1000061035156 | size=1 | links=#3663(auto Silithus;10):20 #18526(auto Silithus;71):30
+#15825 | auto Silithus;61§auto Silithus;61§auto Silithus;61 | x=-6730.89990234375 y=776.4000244140625 | size=1 | links=#5212(auto Silithus;16):4 #10425(auto Silithus;37):4
+#15837 | auto Silithus;62§auto Silithus;62§auto Silithus;62 | x=-6764.2001953125 y=868.2999877929688 | size=1 | links=#6831(auto Silithus;20):34 #16408(auto Silithus;64):16
+#16349 | auto Silithus;63§auto Silithus;63§auto Silithus;63 | x=-6765.7001953125 y=819.4000244140625 | size=1 | links=#12285(auto Silithus;45):31 c15181.1:14
+#16408 | auto Silithus;64§auto Silithus;64§auto Silithus;64 | x=-6753.7001953125 y=856 | size=1 | links=#7407(auto Silithus;25):21 #15837(auto Silithus;62):16
+#16989 | Beetix Ficklespragg;Questgiver;Silithus;1;51.61;38.63§Beetix Wankelhupf;Questgeber;Silithus;1;51.61;38.63§Beetix Kalefragile;Questgiver;Silithus;1;51.61;38.63 | x=-6854.6858781553 y=737.7214501270772 | size=1
+#17131 | auto Silithus;65§auto Silithus;65§auto Silithus;65 | x=-6730 y=769.6000366210938 | size=1 | links=#5504(auto Silithus;17):4 #22239(auto Silithus;83):3
+#17225 | auto Silithus;66§auto Silithus;66§auto Silithus;66 | x=-6737.30029296875 y=778.2000122070312 | size=1 | links=#13044(auto Silithus;48):2 #17435(auto Silithus;67):4
+#17435 | auto Silithus;67§auto Silithus;67§auto Silithus;67 | x=-6733.10009765625 y=778.2000122070312 | size=1 | links=#6530(auto Silithus;19):3 #17225(auto Silithus;66):4
+#17584 | auto Silithus;68§auto Silithus;68§auto Silithus;68 | x=-6733.7001953125 y=763.9000244140625 | size=1 | links=#10917(auto Silithus;39):4 #22624(auto Silithus;84):4
+#18056 | auto Silithus;69§auto Silithus;69§auto Silithus;69 | x=-6560.39990234375 y=-127.4000015258789 | size=1 | links=#1398(auto Silithus;4):58 #10937(auto Silithus;40):39
+#18464 | auto Silithus;70§auto Silithus;70§auto Silithus;70 | x=-6743 y=773.1000366210938 | size=1 | links=#14939(auto Silithus;56):4 #28092(auto Silithus;105):4
+#18526 | auto Silithus;71§auto Silithus;71§auto Silithus;71 | x=-6254.30029296875 y=-432.5 | size=1 | links=#4574(auto Silithus;14):28 #15528(auto Silithus;60):30
+#19022 | auto Silithus;72§auto Silithus;72§auto Silithus;72 | x=-6761.10009765625 y=766 | size=1 | links=#4406(auto Silithus;13):7 c15177.1:9 c17082.1:7
+#19183 | auto Silithus;73§auto Silithus;73§auto Silithus;73 | x=-6803.30029296875 y=659.2000122070312 | size=1 | links=#7585(auto Silithus;26):44 #24462(auto Silithus;88):61
+#19782 | crossing;Valor's Rest;Silithus§kreuzung;Heldenwacht;Silithus§traversée;Le repos des vaillants;Silithus | x=-6370.5 y=-279.6000061035156 | size=1 | links=#7146(auto Silithus;22):44 #21208(auto Silithus;79):90 #21712(auto Silithus;80):27
+#20244 | auto Silithus;74§auto Silithus;74§auto Silithus;74 | x=-6829.80029296875 y=749.1000366210938 | size=1 | links=#20296(auto Silithus;75):12 #22070(auto Silithus;82):14 #25197(auto Silithus;95):9 #28617(s;u;Mailbox;Silithus):15
+#20296 | auto Silithus;75§auto Silithus;75§auto Silithus;75 | x=-6840.39990234375 y=743.4000244140625 | size=1 | links=#3283(auto Silithus;8):11 #20244(auto Silithus;74):12
+#20386 | auto Silithus;76§auto Silithus;76§auto Silithus;76 | x=-6873.7001953125 y=727.2999877929688 | size=1 | links=#5187(auto Silithus;15):11 c15174.1:6
+#20457 | auto Silithus;77§auto Silithus;77§auto Silithus;77 | x=-6803.80029296875 y=790.5 | size=1 | links=#8785(auto Silithus;31):10 #8803(auto Silithus;32):8
+#21054 | auto Silithus;78§auto Silithus;78§auto Silithus;78 | x=-6737.30029296875 y=778.2999877929688 | size=1 | links=#14939(auto Silithus;56):3 #26875(auto Silithus;100):3
+#21208 | auto Silithus;79§auto Silithus;79§auto Silithus;79 | x=-6313 y=-349.1000061035156 | size=1 | links=#3663(auto Silithus;10):50 #19782(crossing;Valor's Rest;Silithus):90
+#21712 | auto Silithus;80§auto Silithus;80§auto Silithus;80 | x=-6382.7001953125 y=-304.6000061035156 | size=1 | links=#19782(crossing;Valor's Rest;Silithus):27 c11805.1:16 c12956.1:18 c13220.1:18
+#21816 | auto Silithus;81§auto Silithus;81§auto Silithus;81 | x=-6840 y=788 | size=1 | links=#1515(auto Silithus;5):13 #27438(auto Silithus;104):30
+#22070 | auto Silithus;82§auto Silithus;82§auto Silithus;82 | x=-6821.10009765625 y=737.7999877929688 | size=1 | links=#7255(entry and exit;east;Cenarion Hold):19 #13850(auto Silithus;50):28 #20244(auto Silithus;74):14 c15184.28:19
+#22239 | auto Silithus;83§auto Silithus;83§auto Silithus;83 | x=-6729.39990234375 y=773.4000244140625 | size=1 | links=#17131(auto Silithus;65):3 #26143(auto Silithus;99):3
+#22277 | passage;from;Silithus;to;Un'Goro Crater§passage;von;Silithus;nach;Un'Goro-Krater§passage;de;Silithus;vers;Cratère d'Un'Goro | x=-6226.80029296875 y=-465.5 | size=1 | links=#21283(passage;from;Un'Goro Crater;to;Silithus):1 #4574(auto Silithus;14):14
+#22624 | auto Silithus;84§auto Silithus;84§auto Silithus;84 | x=-6737.7001953125 y=763.6000366210938 | size=1 | links=#8620(auto Silithus;30):3 #17584(auto Silithus;68):4
+#23151 | tower;from;Cenarion Hold;down§turm;von;Burg Cenarius;unten§tower;de;Fort cénarien;bas | x=-6736.7001953125 y=771.1000366210938 | size=1 | links=#5212(auto Silithus;16):8 #25799(auto Silithus;97):2
+#23535 | auto Silithus;85§auto Silithus;85§auto Silithus;85 | x=-6821.7001953125 y=865.5 | size=1 | links=#6831(auto Silithus;20):23 #8470(auto Silithus;29):31
+#24237 | auto Silithus;86§auto Silithus;86§auto Silithus;86 | x=-6806.2001953125 y=806.6000366210938 | size=1 | links=#3582(auto Silithus;9):9 #12285(auto Silithus;45):11
+#24305 | auto Silithus;87§auto Silithus;87§auto Silithus;87 | x=-6769.2001953125 y=102 | size=1 | links=#475(auto Silithus;1):32 #7040(auto Silithus;21):29
+#24462 | auto Silithus;88§auto Silithus;88§auto Silithus;88 | x=-6808.89990234375 y=598.2000122070312 | size=1 | links=#11116(auto Silithus;41):50 #19183(auto Silithus;73):61
+#24541 | auto Silithus;89§auto Silithus;89§auto Silithus;89 | x=-6767.30029296875 y=345.6000061035156 | size=1 | links=#7352(auto Silithus;24):53 #10180(auto Silithus;36):62
+#24775 | auto Silithus;90§auto Silithus;90§auto Silithus;90 | x=-6817.10009765625 y=833.2000122070312 | size=1 | links=#15056(auto Silithus;57):16 c15175.1:8 c15178.1:11 c17081.1:6 c15184.4:11
+#24905 | auto Silithus;91§auto Silithus;91§auto Silithus;91 | x=-6793.80029296875 y=769.2000122070312 | size=1 | links=#4126(auto Silithus;12):7 #24980(auto Silithus;93):7
+#24960 | auto Silithus;92§auto Silithus;92§auto Silithus;92 | x=-6857.39990234375 y=720.7000122070312 | size=1 | links=#5187(auto Silithus;15):11 #13926(auto Silithus;51):12
+#24980 | auto Silithus;93§auto Silithus;93§auto Silithus;93 | x=-6791.80029296875 y=762 | size=1 | links=#3822(auto Silithus;11):9 #24905(auto Silithus;91):7
+#25166 | auto Silithus;94§auto Silithus;94§auto Silithus;94 | x=-6442.10009765625 y=-201.1999969482422 | size=1 | links=#7146(auto Silithus;22):64 #12210(auto Silithus;44):44 #45290(auto Silithus;157):41
+#25197 | auto Silithus;95§auto Silithus;95§auto Silithus;95 | x=-6834 y=757.1000366210938 | size=1 | links=#2092(centralpoint;Cenarion Hold):9 #20244(auto Silithus;74):9 c15191.1:13 o180448.1:15
+#25796 | auto Silithus;96§auto Silithus;96§auto Silithus;96 | x=-6876.2001953125 y=725.1000366210938 | size=1 | links=#13926(auto Silithus;51):15 c15419.1:4
+#25799 | auto Silithus;97§auto Silithus;97§auto Silithus;97 | x=-6739.10009765625 y=770.1000366210938 | size=1 | links=#15299(auto Silithus;58):5 #23151(tower;from;Cenarion Hold;down):2
+#26121 | auto Silithus;98§auto Silithus;98§auto Silithus;98 | x=-6684.2001953125 y=-36.5 | size=1 | links=#8169(auto Silithus;27):76 #14214(auto Silithus;53):42
+#26143 | auto Silithus;99§auto Silithus;99§auto Silithus;99 | x=-6730.89990234375 y=776.5 | size=1 | links=#22239(auto Silithus;83):3 #26875(auto Silithus;100):3
+#26875 | auto Silithus;100§auto Silithus;100§auto Silithus;100 | x=-6733.89990234375 y=778.2999877929688 | size=1 | links=#21054(auto Silithus;78):3 #26143(auto Silithus;99):3
+#26937 | auto Silithus;101§auto Silithus;101§auto Silithus;101 | x=-6781.5 y=463.6000061035156 | size=1 | links=#7352(auto Silithus;24):66 #11116(auto Silithus;41):87
+#27167 | auto Silithus;102§auto Silithus;102§auto Silithus;102 | x=-6823.89990234375 y=778.2999877929688 | size=1 | links=#2092(centralpoint;Cenarion Hold):15 #8803(auto Silithus;32):17
+#27400 | auto Silithus;103§auto Silithus;103§auto Silithus;103 | x=-6787.60009765625 y=173.9000091552734 | size=1 | links=#475(auto Silithus;1):42 #2107(auto Silithus;6):39
+#27438 | auto Silithus;104§auto Silithus;104§auto Silithus;104 | x=-6856 y=813.7999877929688 | size=1 | links=#11712(auto Silithus;42):25 #21816(auto Silithus;81):30
+#28092 | auto Silithus;105§auto Silithus;105§auto Silithus;105 | x=-6743.2001953125 y=768.7999877929688 | size=1 | links=#566(auto Silithus;3):3 #18464(auto Silithus;70):4
+#28215 | auto Silithus;106§auto Silithus;106§auto Silithus;106 | x=-6743.2001953125 y=768.7000122070312 | size=1 | links=#8620(auto Silithus;30):3 #9918(auto Silithus;35):5
+#28617 | s;u;Mailbox;Silithus§s;u;Briefkasten;Silithus§s;u;Boîte aux lettres;Silithus | x=-6838.71875 y=736.6162109375 | size=1 | links=#20244(auto Silithus;74):15
+#45237 | auto Silithus;107§auto Silithus;107§auto Silithus;107 | x=-6851.2001953125 y=557.2999877929688 | size=1 | links=#11116(auto Silithus;41):49 #45238(auto Silithus;108):49
+#45238 | auto Silithus;108§auto Silithus;108§auto Silithus;108 | x=-6898.89990234375 y=544 | size=1 | links=#45237(auto Silithus;107):49 #45239(auto Silithus;109):36
+#45239 | auto Silithus;109§auto Silithus;109§auto Silithus;109 | x=-6931.60009765625 y=527.4000244140625 | size=1 | links=#45238(auto Silithus;108):36 #45240(auto Silithus;110):31
+#45240 | auto Silithus;110§auto Silithus;110§auto Silithus;110 | x=-6959.10009765625 y=511.6000061035156 | size=1 | links=#45239(auto Silithus;109):31 #45241(auto Silithus;111):62 #45404(auto Silithus;266):53
+#45241 | auto Silithus;111§auto Silithus;111§auto Silithus;111 | x=-7021 y=500.2000122070313 | size=1 | links=#45240(auto Silithus;110):62 #45242(auto Silithus;112):44
+#45242 | auto Silithus;112§auto Silithus;112§auto Silithus;112 | x=-7049.7001953125 y=466.3000183105469 | size=1 | links=#45241(auto Silithus;111):44 #45243(auto Silithus;113):27
+#45243 | auto Silithus;113§auto Silithus;113§auto Silithus;113 | x=-7062.7001953125 y=442 | size=1 | links=#45242(auto Silithus;112):27 #45244(auto Silithus;114):36
+#45244 | auto Silithus;114§auto Silithus;114§auto Silithus;114 | x=-7083.7001953125 y=411.8000183105469 | size=1 | links=#45243(auto Silithus;113):36 #45245(auto Silithus;115):21 c12179.24:21
+#45245 | auto Silithus;115§auto Silithus;115§auto Silithus;115 | x=-7101.39990234375 y=399.2000122070313 | size=1 | links=#45244(auto Silithus;114):21 #45246(auto Silithus;116):45
+#45246 | auto Silithus;116§auto Silithus;116§auto Silithus;116 | x=-7146.39990234375 y=390.6000061035156 | size=1 | links=#45245(auto Silithus;115):45 #45247(auto Silithus;117):24
+#45247 | auto Silithus;117§auto Silithus;117§auto Silithus;117 | x=-7170.5 y=386.7000122070313 | size=1 | links=#45246(auto Silithus;116):24 #45248(auto Silithus;118):38 #45264(auto Silithus;134):13 c12179.23:17
+#45248 | auto Silithus;118§auto Silithus;118§auto Silithus;118 | x=-7189.30029296875 y=420.5 | size=1 | links=#45247(auto Silithus;117):38 #45249(auto Silithus;119):15 c12178.16:30
+#45249 | auto Silithus;119§auto Silithus;119§auto Silithus;119 | x=-7183.60009765625 y=435.2000122070313 | size=1 | links=#45248(auto Silithus;118):15 c12179.25:5 c12179.26:7
+#45250 | auto Silithus;120§auto Silithus;120§auto Silithus;120 | x=-7187.39990234375 y=444.7000122070313 | size=1 | links=#45251(auto Silithus;121):7 c12179.25:5
+#45251 | auto Silithus;121§auto Silithus;121§auto Silithus;121 | x=-7180.80029296875 y=448.6000061035156 | size=1 | links=#45250(auto Silithus;120):7 #45252(auto Silithus;122):7
+#45252 | auto Silithus;122§auto Silithus;122§auto Silithus;122 | x=-7174 y=445.6000061035156 | size=1 | links=#45251(auto Silithus;121):7 #45253(auto Silithus;123):8
+#45253 | auto Silithus;123§auto Silithus;123§auto Silithus;123 | x=-7174.30029296875 y=437.6000061035156 | size=1 | links=#45252(auto Silithus;122):8 #45254(auto Silithus;124):7
+#45254 | auto Silithus;124§auto Silithus;124§auto Silithus;124 | x=-7180.5 y=433.2000122070313 | size=1 | links=#45253(auto Silithus;123):7 #45255(auto Silithus;125):10
+#45255 | auto Silithus;125§auto Silithus;125§auto Silithus;125 | x=-7188.10009765625 y=440 | size=1 | links=#45254(auto Silithus;124):10 #45256(auto Silithus;126):9
+#45256 | auto Silithus;126§auto Silithus;126§auto Silithus;126 | x=-7184.7001953125 y=448.5 | size=1 | links=#45255(auto Silithus;125):9 #45257(auto Silithus;127):7
+#45257 | auto Silithus;127§auto Silithus;127§auto Silithus;127 | x=-7176.89990234375 y=448.3999938964844 | size=1 | links=#45256(auto Silithus;126):7 #45258(auto Silithus;128):7
+#45258 | auto Silithus;128§auto Silithus;128§auto Silithus;128 | x=-7173.2001953125 y=441.3999938964844 | size=1 | links=#45257(auto Silithus;127):7 #45259(auto Silithus;129):9
+#45259 | auto Silithus;129§auto Silithus;129§auto Silithus;129 | x=-7180.60009765625 y=434.8000183105469 | size=1 | links=#45258(auto Silithus;128):9 #45260(auto Silithus;130):10
+#45260 | auto Silithus;130§auto Silithus;130§auto Silithus;130 | x=-7188.10009765625 y=441.6000061035156 | size=1 | links=#45259(auto Silithus;129):10 #45261(auto Silithus;131):10
+#45261 | auto Silithus;131§auto Silithus;131§auto Silithus;131 | x=-7181.2001953125 y=450.1000061035156 | size=1 | links=#45260(auto Silithus;130):10 #45262(auto Silithus;132):6
+#45262 | auto Silithus;132§auto Silithus;132§auto Silithus;132 | x=-7176 y=446.2000122070313 | size=1 | links=#45261(auto Silithus;131):6 #45263(auto Silithus;133):7
+#45263 | auto Silithus;133§auto Silithus;133§auto Silithus;133 | x=-7175.89990234375 y=438.6000061035156 | size=1 | links=#45262(auto Silithus;132):7 o178553.1:4
+#45264 | auto Silithus;134§auto Silithus;134§auto Silithus;134 | x=-7166.2001953125 y=374.3000183105469 | size=1 | links=#45247(auto Silithus;117):13 #45265(auto Silithus;135):28
+#45265 | auto Silithus;135§auto Silithus;135§auto Silithus;135 | x=-7150.5 y=351 | size=1 | links=#45264(auto Silithus;134):28 #45267(auto Silithus;137):17 #45276(auto Silithus;143):28 #45287(auto Silithus;154):11
+#45266 | auto Silithus;136§auto Silithus;136§auto Silithus;136 | x=-7120.30029296875 y=352.6000061035156 | size=1 | links=#45267(auto Silithus;137):12 #45268(auto Silithus;138):12
+#45267 | auto Silithus;137§auto Silithus;137§auto Silithus;137 | x=-7132.80029296875 y=351.8999938964844 | size=1 | links=#45265(auto Silithus;135):17 #45266(auto Silithus;136):12
+#45268 | auto Silithus;138§auto Silithus;138§auto Silithus;138 | x=-7121.2001953125 y=364.8000183105469 | size=1 | links=#45266(auto Silithus;136):12 #45269(auto Silithus;139):12
+#45269 | auto Silithus;139§auto Silithus;139§auto Silithus;139 | x=-7133.30029296875 y=363.8999938964844 | size=1 | links=#45268(auto Silithus;138):12 #45272(auto Silithus;140):12
+#45272 | auto Silithus;140§auto Silithus;140§auto Silithus;140 | x=-7131.39990234375 y=351.8000183105469 | size=1 | links=#45269(auto Silithus;139):12 #45274(auto Silithus;141):6
+#45274 | auto Silithus;141§auto Silithus;141§auto Silithus;141 | x=-7124.7001953125 y=351.8999938964844 | size=1 | links=#45272(auto Silithus;140):6 #45275(auto Silithus;142):8
+#45275 | auto Silithus;142§auto Silithus;142§auto Silithus;142 | x=-7116.2001953125 y=352.7000122070313 | size=1 | links=#45274(auto Silithus;141):8 c12199.1:1 c15293.1:5
+#45276 | auto Silithus;143§auto Silithus;143§auto Silithus;143 | x=-7174.2001953125 y=335.8000183105469 | size=1 | links=#45265(auto Silithus;135):28 #45277(auto Silithus;144):6
+#45277 | auto Silithus;144§auto Silithus;144§auto Silithus;144 | x=-7180.30029296875 y=332.6000061035156 | size=1 | links=#45276(auto Silithus;143):6 #45278(auto Silithus;145):18
+#45278 | auto Silithus;145§auto Silithus;145§auto Silithus;145 | x=-7198 y=328 | size=1 | links=#45277(auto Silithus;144):18 c12179.11:12
+#45279 | auto Silithus;146§auto Silithus;146§auto Silithus;146 | x=-7217.7001953125 y=327.7000122070313 | size=1 | links=#45280(auto Silithus;147):11 c12179.11:7
+#45280 | auto Silithus;147§auto Silithus;147§auto Silithus;147 | x=-7229.30029296875 y=328 | size=1 | links=#45279(auto Silithus;146):11 c12179.12:6
+#45281 | auto Silithus;148§auto Silithus;148§auto Silithus;148 | x=-7246.7001953125 y=328.5 | size=1 | links=c12179.3:11 c12179.12:10
+#45282 | auto Silithus;149§auto Silithus;149§auto Silithus;149 | x=-7056.7001953125 y=337.5 | size=1 | links=c12178.14:17 c12179.20:25
+#45283 | auto Silithus;150§auto Silithus;150§auto Silithus;150 | x=-7048.80029296875 y=293.7000122070313 | size=1 | links=c12178.9:18 c12178.14:26
+#45284 | auto Silithus;151§auto Silithus;151§auto Silithus;151 | x=-7067.10009765625 y=316 | size=1 | links=c12178.10:13 c12178.14:12
+#45285 | auto Silithus;152§auto Silithus;152§auto Silithus;152 | x=-7097.80029296875 y=318.3999938964844 | size=1 | links=c12178.10:18 c12179.15:19
+#45286 | auto Silithus;153§auto Silithus;153§auto Silithus;153 | x=-7136.60009765625 y=330.6000061035156 | size=1 | links=#45287(auto Silithus;154):19 c12179.15:23
+#45287 | auto Silithus;154§auto Silithus;154§auto Silithus;154 | x=-7154 y=339.8000183105469 | size=1 | links=#45265(auto Silithus;135):11 #45286(auto Silithus;153):19
+#45288 | auto Silithus;155§auto Silithus;155§auto Silithus;155 | x=-6448.5 y=-281.5 | size=1 | links=#45289(auto Silithus;156):14 c6491.3:10
+#45289 | auto Silithus;156§auto Silithus;156§auto Silithus;156 | x=-6459.89990234375 y=-272.8000183105469 | size=1 | links=#45288(auto Silithus;155):14 #45290(auto Silithus;157):37
+#45290 | auto Silithus;157§auto Silithus;157§auto Silithus;157 | x=-6438.10009765625 y=-242.1999969482422 | size=1 | links=#7146(auto Silithus;22):47 #25166(auto Silithus;94):41 #45289(auto Silithus;156):37
+#45291 | auto Silithus;158§auto Silithus;158§auto Silithus;158 | x=-6533.5 y=245.6999969482422 | size=1 | links=c11735.2:57 c11735.36:32
+#45292 | auto Silithus;159§auto Silithus;159§auto Silithus;159 | x=-6472.30029296875 y=199.3000030517578 | size=1 | links=#45293(auto Silithus;160):15 c11735.36:47
+#45293 | auto Silithus;160§auto Silithus;160§auto Silithus;160 | x=-6462.10009765625 y=187 | size=1 | links=#45292(auto Silithus;159):15 #45294(auto Silithus;161):27
+#45294 | auto Silithus;161§auto Silithus;161§auto Silithus;161 | x=-6480.2001953125 y=166.9000091552734 | size=1 | links=#45293(auto Silithus;160):27 #45295(auto Silithus;162):12
+#45295 | auto Silithus;162§auto Silithus;162§auto Silithus;162 | x=-6476 y=154.6000061035156 | size=1 | links=#45294(auto Silithus;161):12 #45296(auto Silithus;163):26
+#45296 | auto Silithus;163§auto Silithus;163§auto Silithus;163 | x=-6450.2001953125 y=148.3000030517578 | size=1 | links=#45295(auto Silithus;162):26 #45297(auto Silithus;164):17
+#45297 | auto Silithus;164§auto Silithus;164§auto Silithus;164 | x=-6435.2001953125 y=140 | size=1 | links=#45296(auto Silithus;163):17 #45298(auto Silithus;165):11
+#45298 | auto Silithus;165§auto Silithus;165§auto Silithus;165 | x=-6426 y=133.5 | size=1 | links=#45297(auto Silithus;164):11 #45299(auto Silithus;166):12
+#45299 | auto Silithus;166§auto Silithus;166§auto Silithus;166 | x=-6437.7001953125 y=128.5 | size=1 | links=#45298(auto Silithus;165):12 #45300(auto Silithus;167):20
+#45300 | auto Silithus;167§auto Silithus;167§auto Silithus;167 | x=-6452 y=114 | size=1 | links=#45299(auto Silithus;166):20 #45301(auto Silithus;168):24
+#45301 | auto Silithus;168§auto Silithus;168§auto Silithus;168 | x=-6473 y=101.5 | size=1 | links=#45300(auto Silithus;167):24 #45302(auto Silithus;169):20
+#45302 | auto Silithus;169§auto Silithus;169§auto Silithus;169 | x=-6490.80029296875 y=91.80000305175781 | size=1 | links=#45301(auto Silithus;168):20 #45303(auto Silithus;170):17
+#45303 | auto Silithus;170§auto Silithus;170§auto Silithus;170 | x=-6507.7001953125 y=95.0999984741211 | size=1 | links=#45302(auto Silithus;169):17 #45304(auto Silithus;171):21
+#45304 | auto Silithus;171§auto Silithus;171§auto Silithus;171 | x=-6528.89990234375 y=99.30000305175781 | size=1 | links=#45303(auto Silithus;170):21 #45305(auto Silithus;172):9
+#45305 | auto Silithus;172§auto Silithus;172§auto Silithus;172 | x=-6538.5 y=96.5999984741211 | size=1 | links=#45304(auto Silithus;171):9 #45306(auto Silithus;173):6
+#45306 | auto Silithus;173§auto Silithus;173§auto Silithus;173 | x=-6544.39990234375 y=95.0999984741211 | size=1 | links=#45305(auto Silithus;172):6 #45307(auto Silithus;174):12
+#45307 | auto Silithus;174§auto Silithus;174§auto Silithus;174 | x=-6554 y=86.70000457763672 | size=1 | links=#45306(auto Silithus;173):12 #45308(auto Silithus;175):8
+#45308 | auto Silithus;175§auto Silithus;175§auto Silithus;175 | x=-6558 y=93.70000457763672 | size=1 | links=#45307(auto Silithus;174):8 #45309(auto Silithus;176):9
+#45309 | auto Silithus;176§auto Silithus;176§auto Silithus;176 | x=-6551.80029296875 y=100.5999984741211 | size=1 | links=#45308(auto Silithus;175):9 #45310(auto Silithus;177):9
+#45310 | auto Silithus;177§auto Silithus;177§auto Silithus;177 | x=-6543.10009765625 y=95.70000457763672 | size=1 | links=#45309(auto Silithus;176):9 #45311(auto Silithus;178):9
+#45311 | auto Silithus;178§auto Silithus;178§auto Silithus;178 | x=-6546.60009765625 y=86.5 | size=1 | links=#45310(auto Silithus;177):9 #45312(auto Silithus;179):9
+#45312 | auto Silithus;179§auto Silithus;179§auto Silithus;179 | x=-6556.2001953125 y=88.70000457763672 | size=1 | links=#45311(auto Silithus;178):9 #45313(auto Silithus;180):8
+#45313 | auto Silithus;180§auto Silithus;180§auto Silithus;180 | x=-6556.60009765625 y=97.30000305175781 | size=1 | links=#45312(auto Silithus;179):8 #45314(auto Silithus;181):8
+#45314 | auto Silithus;181§auto Silithus;181§auto Silithus;181 | x=-6548.5 y=100.2000045776367 | size=1 | links=#45313(auto Silithus;180):8 #45315(auto Silithus;182):8
+#45315 | auto Silithus;182§auto Silithus;182§auto Silithus;182 | x=-6542.60009765625 y=93.5 | size=1 | links=#45314(auto Silithus;181):8 #45316(auto Silithus;183):10
+#45316 | auto Silithus;183§auto Silithus;183§auto Silithus;183 | x=-6549.2001953125 y=85.9000015258789 | size=1 | links=#45315(auto Silithus;182):10 #45317(auto Silithus;184):6
+#45317 | auto Silithus;184§auto Silithus;184§auto Silithus;184 | x=-6555.30029296875 y=88.5999984741211 | size=1 | links=#45316(auto Silithus;183):6 #45318(auto Silithus;185):7
+#45318 | auto Silithus;185§auto Silithus;185§auto Silithus;185 | x=-6554.80029296875 y=96.4000015258789 | size=1 | links=#45317(auto Silithus;184):7 #45319(auto Silithus;186):4
+#45319 | auto Silithus;186§auto Silithus;186§auto Silithus;186 | x=-6549.89990234375 y=97.20000457763672 | size=1 | links=#45318(auto Silithus;185):4 c15169.1:5
+#45320 | auto Silithus;187§auto Silithus;187§auto Silithus;187 | x=-6427.80029296875 y=236.5 | size=1 | links=c15213.14:25 c11880.39:21
+#45321 | auto Silithus;188§auto Silithus;188§auto Silithus;188 | x=-6329.30029296875 y=188 | size=1 | links=c11880.2:16 c15213.6:24
+#45322 | auto Silithus;189§auto Silithus;189§auto Silithus;189 | x=-6315.10009765625 y=163.5 | size=1 | links=#45323(auto Silithus;190):18 c11880.2:15
+#45323 | auto Silithus;190§auto Silithus;190§auto Silithus;190 | x=-6314.30029296875 y=145.4000091552734 | size=1 | links=#45322(auto Silithus;189):18 #45324(auto Silithus;191):13
+#45324 | auto Silithus;191§auto Silithus;191§auto Silithus;191 | x=-6307.89990234375 y=133.1999969482422 | size=1 | links=#45323(auto Silithus;190):13 #45325(auto Silithus;192):18 c15201.11:31
+#45325 | auto Silithus;192§auto Silithus;192§auto Silithus;192 | x=-6297.89990234375 y=117.8000030517578 | size=1 | links=#45324(auto Silithus;191):18
+#45326 | auto Silithus;193§auto Silithus;193§auto Silithus;193 | x=-6295.10009765625 y=78.9000015258789 | size=1 | links=c15201.9:16 c15201.13:14
+#45327 | auto Silithus;194§auto Silithus;194§auto Silithus;194 | x=-6278.7001953125 y=56.90000152587891 | size=1 | links=c15201.12:19 c15201.13:16
+#45328 | auto Silithus;195§auto Silithus;195§auto Silithus;195 | x=-6253.30029296875 y=27.60000038146973 | size=1 | links=#45329(auto Silithus;196):10 c15201.12:19
+#45329 | auto Silithus;196§auto Silithus;196§auto Silithus;196 | x=-6246.89990234375 y=19.80000114440918 | size=1 | links=#45328(auto Silithus;195):10 #45342(auto Silithus;207):11 c15213.9:10 c15201.10:19
+#45330 | auto Silithus;197§auto Silithus;197§auto Silithus;197 | x=-6266.5 y=-20.39999961853027 | size=1 | links=#45331(auto Silithus;198):11 c15201.8:11
+#45331 | auto Silithus;198§auto Silithus;198§auto Silithus;198 | x=-6261.60009765625 y=-31 | size=1 | links=#45330(auto Silithus;197):11 c15201.7:19
+#45334 | auto Silithus;199§auto Silithus;199§auto Silithus;199 | x=-6233.2001953125 y=-29.89999961853027 | size=1 | links=#45335(auto Silithus;200):9 c15201.7:18
+#45335 | auto Silithus;200§auto Silithus;200§auto Silithus;200 | x=-6233.5 y=-20.60000038146973 | size=1 | links=#45334(auto Silithus;199):9 #45336(auto Silithus;201):14
+#45336 | auto Silithus;201§auto Silithus;201§auto Silithus;201 | x=-6243.7001953125 y=-11 | size=1 | links=#45335(auto Silithus;200):14 c15201.3:8
+#45337 | auto Silithus;202§auto Silithus;202§auto Silithus;202 | x=-6284.2001953125 y=28.30000114440918 | size=1 | links=c15201.2:11 c15201.4:20
+#45338 | auto Silithus;203§auto Silithus;203§auto Silithus;203 | x=-6303.39990234375 y=28.39999961853027 | size=1 | links=c15201.2:10 c15201.6:20
+#45339 | auto Silithus;204§auto Silithus;204§auto Silithus;204 | x=-6285.89990234375 y=-3.100000143051148 | size=1 | links=#45340(auto Silithus;205):18 c15201.6:15
+#45340 | auto Silithus;205§auto Silithus;205§auto Silithus;205 | x=-6301.10009765625 y=-13.30000019073486 | size=1 | links=#45339(auto Silithus;204):18 #45341(auto Silithus;206):18
+#45341 | auto Silithus;206§auto Silithus;206§auto Silithus;206 | x=-6314.30029296875 y=-0.2000000029802322 | size=1 | links=#45340(auto Silithus;205):18 c15202.1:17 c15213.4:13 c15213.7:9
+#45342 | auto Silithus;207§auto Silithus;207§auto Silithus;207 | x=-6240.10009765625 y=29.39999961853027 | size=1 | links=#45329(auto Silithus;196):11 #45343(auto Silithus;208):12
+#45343 | auto Silithus;208§auto Silithus;208§auto Silithus;208 | x=-6241.10009765625 y=42 | size=1 | links=#45342(auto Silithus;207):12 c15213.3:10
+#45344 | auto Silithus;209§auto Silithus;209§auto Silithus;209 | x=-6454.2001953125 y=218.9000091552734 | size=1 | links=c11883.8:9 c15213.17:10
+#45345 | auto Silithus;210§auto Silithus;210§auto Silithus;210 | x=-6421.80029296875 y=194 | size=1 | links=c11883.2:16 c11880.39:24
+#45346 | auto Silithus;211§auto Silithus;211§auto Silithus;211 | x=-6946.60009765625 y=935.2999877929688 | size=1 | links=#3284(entry and exit;west;Cenarion Hold):43 #45347(auto Silithus;212):49 c11738.73:47
+#45347 | auto Silithus;212§auto Silithus;212§auto Silithus;212 | x=-6986.7001953125 y=964.1000366210938 | size=1 | links=#45346(auto Silithus;211):49 #45348(auto Silithus;213):42 c11738.73:42
+#45348 | auto Silithus;213§auto Silithus;213§auto Silithus;213 | x=-7029.39990234375 y=968.2999877929688 | size=1 | links=#45347(auto Silithus;212):42 #45349(auto Silithus;214):69
+#45349 | auto Silithus;214§auto Silithus;214§auto Silithus;214 | x=-7098.89990234375 y=962.6000366210938 | size=1 | links=#45348(auto Silithus;213):69 #45386(auto Silithus;248):35
+#45350 | auto Silithus;215§auto Silithus;215§auto Silithus;215 | x=-7169.39990234375 y=967.1000366210938 | size=1 | links=#45351(auto Silithus;216):64 #45386(auto Silithus;248):34
+#45351 | auto Silithus;216§auto Silithus;216§auto Silithus;216 | x=-7231.7001953125 y=982 | size=1 | links=#45350(auto Silithus;215):64 #45352(auto Silithus;217):37 #45464(auto Silithus;322):35
+#45352 | auto Silithus;217§auto Silithus;217§auto Silithus;217 | x=-7268 y=992.7000122070312 | size=1 | links=#45351(auto Silithus;216):37 #45353(auto Silithus;218):29 #45464(auto Silithus;322):28
+#45353 | auto Silithus;218§auto Silithus;218§auto Silithus;218 | x=-7297.39990234375 y=996.2999877929688 | size=1 | links=#45352(auto Silithus;217):29 #45354(auto Silithus;219):66
+#45354 | auto Silithus;219§auto Silithus;219§auto Silithus;219 | x=-7363.5 y=995 | size=1 | links=#45353(auto Silithus;218):66 #45355(auto Silithus;220):66 c11736.103:70
+#45355 | auto Silithus;220§auto Silithus;220§auto Silithus;220 | x=-7429.10009765625 y=1006.799987792969 | size=1 | links=#45354(auto Silithus;219):66 #45356(auto Silithus;221):71
+#45356 | auto Silithus;221§auto Silithus;221§auto Silithus;221 | x=-7498.5 y=1024.200073242188 | size=1 | links=#45355(auto Silithus;220):71 #45357(auto Silithus;222):66
+#45357 | auto Silithus;222§auto Silithus;222§auto Silithus;222 | x=-7563.60009765625 y=1037.700073242188 | size=1 | links=#45356(auto Silithus;221):66 #45358(auto Silithus;223):69 #45567(auto Silithus;403):31
+#45358 | auto Silithus;223§auto Silithus;223§auto Silithus;223 | x=-7633.2001953125 y=1042.200073242188 | size=1 | links=#45357(auto Silithus;222):69 #45359(auto Silithus;224):53 c11739.54:73
+#45359 | auto Silithus;224§auto Silithus;224§auto Silithus;224 | x=-7677.60009765625 y=1072.300048828125 | size=1 | links=#45358(auto Silithus;223):53 #45360(auto Silithus;225):56 #45385(auto Silithus;247):27
+#45360 | auto Silithus;225§auto Silithus;225§auto Silithus;225 | x=-7716.80029296875 y=1113.099975585938 | size=1 | links=#45359(auto Silithus;224):56 #45361(auto Silithus;226):64 #45385(auto Silithus;247):31
+#45361 | auto Silithus;226§auto Silithus;226§auto Silithus;226 | x=-7755.60009765625 y=1164.800048828125 | size=1 | links=#45360(auto Silithus;225):64 #45362(auto Silithus;227):58
+#45362 | auto Silithus;227§auto Silithus;227§auto Silithus;227 | x=-7781.7001953125 y=1217.5 | size=1 | links=#45361(auto Silithus;226):58 #45363(auto Silithus;228):59 o181598.6:47 o181598.9:65
+#45363 | auto Silithus;228§auto Silithus;228§auto Silithus;228 | x=-7808.60009765625 y=1270.400024414063 | size=1 | links=#45362(auto Silithus;227):59 #45364(auto Silithus;229):16
+#45364 | auto Silithus;229§auto Silithus;229§auto Silithus;229 | x=-7822 y=1280.200073242188 | size=1 | links=#45363(auto Silithus;228):16 #45365(auto Silithus;230):56
+#45365 | auto Silithus;230§auto Silithus;230§auto Silithus;230 | x=-7873.60009765625 y=1302.700073242188 | size=1 | links=#45364(auto Silithus;229):56 #45366(auto Silithus;231):52 c11739.60:36
+#45366 | auto Silithus;231§auto Silithus;231§auto Silithus;231 | x=-7914.89990234375 y=1335 | size=1 | links=#45365(auto Silithus;230):52 #45367(auto Silithus;232):59
+#45367 | auto Silithus;232§auto Silithus;232§auto Silithus;232 | x=-7953.5 y=1379.700073242188 | size=1 | links=#45366(auto Silithus;231):59 #45368(auto Silithus;233):30
+#45368 | auto Silithus;233§auto Silithus;233§auto Silithus;233 | x=-7954.10009765625 y=1410 | size=1 | links=#45367(auto Silithus;232):30 #45369(auto Silithus;234):28
+#45369 | auto Silithus;234§auto Silithus;234§auto Silithus;234 | x=-7941.39990234375 y=1435.800048828125 | size=1 | links=#45368(auto Silithus;233):28 #45554(auto Silithus;394):67 c11745.1:51
+#45371 | auto Silithus;235§auto Silithus;235§auto Silithus;235 | x=-7993.2001953125 y=1130 | size=1 | links=c15172.1:26 c11737.54:55
+#45372 | auto Silithus;236§auto Silithus;236§auto Silithus;236 | x=-8020.10009765625 y=1106.099975585938 | size=1 | links=#45373(auto Silithus;237):36 c15172.1:11
+#45373 | auto Silithus;237§auto Silithus;237§auto Silithus;237 | x=-8052.80029296875 y=1090.300048828125 | size=1 | links=#45372(auto Silithus;236):36 #45374(auto Silithus;238):27
+#45374 | auto Silithus;238§auto Silithus;238§auto Silithus;238 | x=-8072.80029296875 y=1071.099975585938 | size=1 | links=#45373(auto Silithus;237):27 #45375(auto Silithus;239):26
+#45375 | auto Silithus;239§auto Silithus;239§auto Silithus;239 | x=-8060.89990234375 y=1047.5 | size=1 | links=#45374(auto Silithus;238):26 #45376(auto Silithus;240):23
+#45376 | auto Silithus;240§auto Silithus;240§auto Silithus;240 | x=-8054.80029296875 y=1024.700073242188 | size=1 | links=#45375(auto Silithus;239):23 #45377(auto Silithus;241):31
+#45377 | auto Silithus;241§auto Silithus;241§auto Silithus;241 | x=-8061.60009765625 y=993.5 | size=1 | links=#45376(auto Silithus;240):31 c11737.65:11
+#45378 | auto Silithus;242§auto Silithus;242§auto Silithus;242 | x=-8081.89990234375 y=966.7000122070312 | size=1 | links=c11737.64:16 c11737.84:18
+#45380 | auto Silithus;243§auto Silithus;243§auto Silithus;243 | x=-7955.80029296875 y=786 | size=1 | links=#45382(auto Silithus;244):23 #45515(auto Silithus;359):16 #45570(Spirit Healer; Spirit Healer; Silithus):17
+#45382 | auto Silithus;244§auto Silithus;244§auto Silithus;244 | x=-7944.7001953125 y=806.2000122070312 | size=1 | links=#45380(auto Silithus;243):23 #45383(auto Silithus;245):35
+#45383 | auto Silithus;245§auto Silithus;245§auto Silithus;245 | x=-7916.80029296875 y=828 | size=1 | links=#45382(auto Silithus;244):35 #45384(auto Silithus;246):81 o181598.11:20
+#45384 | auto Silithus;246§auto Silithus;246§auto Silithus;246 | x=-7858.10009765625 y=884 | size=1 | links=#45383(auto Silithus;245):81 #45569(auto Silithus;405):69 c11739.48:78
+#45385 | auto Silithus;247§auto Silithus;247§auto Silithus;247 | x=-7701.39990234375 y=1086 | size=1 | links=#45359(auto Silithus;224):27 #45360(auto Silithus;225):31 c11739.70:29
+#45386 | auto Silithus;248§auto Silithus;248§auto Silithus;248 | x=-7134.60009765625 y=964.1000366210938 | size=1 | links=#45349(auto Silithus;214):35 #45350(auto Silithus;215):34 c11736.94:56
+#45387 | auto Silithus;249§auto Silithus;249§auto Silithus;249 | x=-7122.10009765625 y=1216.700073242188 | size=1 | links=c11736.1:49 c11741.51:47
+#45388 | auto Silithus;250§auto Silithus;250§auto Silithus;250 | x=-7113.2001953125 y=1322.200073242188 | size=1 | links=#45389(auto Silithus;251):63 c11736.1:70
+#45389 | auto Silithus;251§auto Silithus;251§auto Silithus;251 | x=-7134.80029296875 y=1381.700073242188 | size=1 | links=#45388(auto Silithus;250):63 #45390(auto Silithus;252):8 c17068.1:11 c17080.1:10 c17765.3:7
+#45390 | auto Silithus;252§auto Silithus;252§auto Silithus;252 | x=-7142.30029296875 y=1385.400024414063 | size=1 | links=#45389(auto Silithus;251):8 #45391(auto Silithus;253):11
+#45391 | auto Silithus;253§auto Silithus;253§auto Silithus;253 | x=-7153.60009765625 y=1387.400024414063 | size=1 | links=#45390(auto Silithus;252):11 c15441.1:10
+#45392 | auto Silithus;254§auto Silithus;254§auto Silithus;254 | x=-7524.10009765625 y=758.5 | size=1 | links=#45393(auto Silithus;255):10 c11736.64:64
+#45393 | auto Silithus;255§auto Silithus;255§auto Silithus;255 | x=-7534.30029296875 y=755.2999877929688 | size=1 | links=#45392(auto Silithus;254):10 c15617.3:20
+#45394 | auto Silithus;256§auto Silithus;256§auto Silithus;256 | x=-7575.10009765625 y=760.2000122070312 | size=1 | links=c15615.1:21 c17070.1:9 c17079.1:9 c18199.1:7 c17766.3:17
+#45395 | auto Silithus;257§auto Silithus;257§auto Silithus;257 | x=-7600.10009765625 y=762.4000244140625 | size=1 | links=c17766.1:6 c17766.3:7
+#45396 | auto Silithus;258§auto Silithus;258§auto Silithus;258 | x=-7593.5 y=255.1999969482422 | size=1 | links=#45397(auto Silithus;259):10 c11737.71:29
+#45397 | auto Silithus;259§auto Silithus;259§auto Silithus;259 | x=-7586.80029296875 y=246.5 | size=1 | links=#45396(auto Silithus;258):10 #45398(auto Silithus;260):14
+#45398 | auto Silithus;260§auto Silithus;260§auto Silithus;260 | x=-7587.2001953125 y=232.1999969482422 | size=1 | links=#45397(auto Silithus;259):14 #45399(auto Silithus;261):12
+#45399 | auto Silithus;261§auto Silithus;261§auto Silithus;261 | x=-7582.80029296875 y=220.8000030517578 | size=1 | links=#45398(auto Silithus;260):12 #45400(auto Silithus;262):13
+#45400 | auto Silithus;262§auto Silithus;262§auto Silithus;262 | x=-7578.2001953125 y=208.3000030517578 | size=1 | links=#45399(auto Silithus;261):13 c15194.1:11
+#45401 | auto Silithus;263§auto Silithus;263§auto Silithus;263 | x=-7225.10009765625 y=538.6000366210938 | size=1 | links=#45402(auto Silithus;264):76 c11736.52:56
+#45402 | auto Silithus;264§auto Silithus;264§auto Silithus;264 | x=-7148.80029296875 y=540.1000366210938 | size=1 | links=#45401(auto Silithus;263):76 #45403(auto Silithus;265):79 o181598.16:39
+#45403 | auto Silithus;265§auto Silithus;265§auto Silithus;265 | x=-7069.30029296875 y=541.2000122070312 | size=1 | links=#45402(auto Silithus;264):79 #45404(auto Silithus;266):63
+#45404 | auto Silithus;266§auto Silithus;266§auto Silithus;266 | x=-7006.30029296875 y=537.1000366210938 | size=1 | links=#45240(auto Silithus;110):53 #45403(auto Silithus;265):63
+#45405 | auto Silithus;267§auto Silithus;267§auto Silithus;267 | x=-6975.30029296875 y=1149.5 | size=1 | links=#45406(auto Silithus;268):26 #45412(auto Silithus;274):36 c11882.2:21 c11882.8:19 c11880.47:29
+#45406 | auto Silithus;268§auto Silithus;268§auto Silithus;268 | x=-6960.10009765625 y=1171.5 | size=1 | links=#45405(auto Silithus;267):26 #45407(auto Silithus;269):23 c11881.3:13 c11881.4:14 c11882.4:13
+#45407 | auto Silithus;269§auto Silithus;269§auto Silithus;269 | x=-6962.7001953125 y=1195.300048828125 | size=1 | links=#45406(auto Silithus;268):23 #45408(auto Silithus;270):22 c11882.5:15
+#45408 | auto Silithus;270§auto Silithus;270§auto Silithus;270 | x=-6983.39990234375 y=1204.099975585938 | size=1 | links=#45407(auto Silithus;269):22 #45409(auto Silithus;271):22 c11881.2:13 c11882.3:10 c11880.5:13
+#45409 | auto Silithus;271§auto Silithus;271§auto Silithus;271 | x=-7003.39990234375 y=1194.400024414063 | size=1 | links=#45408(auto Silithus;270):22 #45410(auto Silithus;272):23 #45413(auto Silithus;275):15 #45414(auto Silithus;276):18 c11882.1:12 c14479.2:20 c11882.7:16
+#45410 | auto Silithus;272§auto Silithus;272§auto Silithus;272 | x=-7015.89990234375 y=1174.900024414063 | size=1 | links=#45409(auto Silithus;271):23 #45411(auto Silithus;273):27
+#45411 | auto Silithus;273§auto Silithus;273§auto Silithus;273 | x=-7018.80029296875 y=1147.099975585938 | size=1 | links=#45410(auto Silithus;272):27 #45412(auto Silithus;274):9
+#45412 | auto Silithus;274§auto Silithus;274§auto Silithus;274 | x=-7010.60009765625 y=1141.800048828125 | size=1 | links=#45405(auto Silithus;267):36 #45411(auto Silithus;273):9 o180539.1:17
+#45413 | auto Silithus;275§auto Silithus;275§auto Silithus;275 | x=-7008.80029296875 y=1209.300048828125 | size=1 | links=#45409(auto Silithus;271):15 o180503.1:6 c11880.43:6
+#45414 | auto Silithus;276§auto Silithus;276§auto Silithus;276 | x=-6996.89990234375 y=1211.400024414063 | size=1 | links=#45409(auto Silithus;271):18 o180534.1:15 c11880.4:11
+#45415 | auto Silithus;277§auto Silithus;277§auto Silithus;277 | x=-6707.2001953125 y=1430 | size=1 | links=#45416(auto Silithus;278):51 c11736.82:51
+#45416 | auto Silithus;278§auto Silithus;278§auto Silithus;278 | x=-6656.10009765625 y=1431.800048828125 | size=1 | links=#45415(auto Silithus;277):51 c11736.53:38
+#45417 | auto Silithus;279§auto Silithus;279§auto Silithus;279 | x=-6493.10009765625 y=1485.900024414063 | size=1 | links=c11744.17:67 c11738.23:60
+#45418 | auto Silithus;280§auto Silithus;280§auto Silithus;280 | x=-6343.39990234375 y=1509.200073242188 | size=1 | links=c11744.5:31 c11744.16:45
+#45419 | auto Silithus;281§auto Silithus;281§auto Silithus;281 | x=-6246.10009765625 y=1553.200073242188 | size=1 | links=o180436.1:16 c11746.5:57 c11746.6:39
+#45420 | auto Silithus;282§auto Silithus;282§auto Silithus;282 | x=-6176 y=1734.700073242188 | size=1 | links=o180436.5:28 c11746.14:24
+#45421 | auto Silithus;283§auto Silithus;283§auto Silithus;283 | x=-6223.80029296875 y=1803.300048828125 | size=1 | links=c11746.20:19 c11746.22:39
+#45422 | auto Silithus;284§auto Silithus;284§auto Silithus;284 | x=-6306.89990234375 y=981.7000122070312 | size=1 | links=c11723.15:29 c11722.23:27
+#45423 | auto Silithus;285§auto Silithus;285§auto Silithus;285 | x=-6365.5 y=997.9000244140625 | size=1 | links=#45424(auto Silithus;286):16 c11724.27:24
+#45424 | auto Silithus;286§auto Silithus;286§auto Silithus;286 | x=-6381.39990234375 y=1002.900024414063 | size=1 | links=#45423(auto Silithus;285):16 c11722.24:30
+#45425 | auto Silithus;287§auto Silithus;287§auto Silithus;287 | x=-6446.89990234375 y=1061.700073242188 | size=1 | links=c11723.1:37 c11723.9:24
+#45426 | auto Silithus;288§auto Silithus;288§auto Silithus;288 | x=-6730.89990234375 y=899.6000366210938 | size=1 | links=#8216(entry and exit;north;Cenarion Hold):56 c11722.12:59 c11724.26:60
+#45428 | auto Silithus;289§auto Silithus;289§auto Silithus;289 | x=-6586.2001953125 y=880.6000366210938 | size=1 | links=#45429(auto Silithus;290):19 c11724.8:60
+#45429 | auto Silithus;290§auto Silithus;290§auto Silithus;290 | x=-6585.10009765625 y=860.9000244140625 | size=1 | links=#45428(auto Silithus;289):19 #45430(auto Silithus;291):17
+#45430 | auto Silithus;291§auto Silithus;291§auto Silithus;291 | x=-6573.30029296875 y=847.7999877929688 | size=1 | links=#45429(auto Silithus;290):17 #45431(auto Silithus;292):15
+#45431 | auto Silithus;292§auto Silithus;292§auto Silithus;292 | x=-6557.5 y=847.5 | size=1 | links=#45430(auto Silithus;291):15 #45432(auto Silithus;293):16 #45436(auto Silithus;297):23
+#45432 | auto Silithus;293§auto Silithus;293§auto Silithus;293 | x=-6544.30029296875 y=858 | size=1 | links=#45431(auto Silithus;292):16 c11724.28:6
+#45433 | auto Silithus;294§auto Silithus;294§auto Silithus;294 | x=-6561.10009765625 y=774.5 | size=1 | links=#45434(auto Silithus;295):23 c11721.4:17
+#45434 | auto Silithus;295§auto Silithus;295§auto Silithus;295 | x=-6539.5 y=782.7999877929688 | size=1 | links=#45433(auto Silithus;294):23 c11722.18:23
+#45435 | auto Silithus;296§auto Silithus;296§auto Silithus;296 | x=-6540.39990234375 y=810.2999877929688 | size=1 | links=#45436(auto Silithus;297):19 c11722.18:9
+#45436 | auto Silithus;297§auto Silithus;297§auto Silithus;297 | x=-6553.10009765625 y=824.7000122070312 | size=1 | links=#45431(auto Silithus;292):23 #45435(auto Silithus;296):19
+#45438 | auto Silithus;298§auto Silithus;298§auto Silithus;298 | x=-6565 y=886.9000244140625 | size=1 | links=#45439(auto Silithus;299):19 #45440(auto Silithus;300):12
+#45439 | auto Silithus;299§auto Silithus;299§auto Silithus;299 | x=-6582 y=877 | size=1 | links=#45438(auto Silithus;298):19 c11721.9:15
+#45440 | auto Silithus;300§auto Silithus;300§auto Silithus;300 | x=-6552.2001953125 y=885.1000366210938 | size=1 | links=#45438(auto Silithus;298):12 #45441(auto Silithus;301):13
+#45441 | auto Silithus;301§auto Silithus;301§auto Silithus;301 | x=-6544.39990234375 y=873.7000122070312 | size=1 | links=#45440(auto Silithus;300):13 c11724.28:9
+#45444 | auto Silithus;302§auto Silithus;302§auto Silithus;302 | x=-7391.30029296875 y=1686.200073242188 | size=1 | links=#45445(auto Silithus;303):21 c15610.1:32
+#45445 | auto Silithus;303§auto Silithus;303§auto Silithus;303 | x=-7397 y=1665.599975585938 | size=1 | links=#45444(auto Silithus;302):21 #45446(auto Silithus;304):23
+#45446 | auto Silithus;304§auto Silithus;304§auto Silithus;304 | x=-7393.80029296875 y=1642.300048828125 | size=1 | links=#45445(auto Silithus;303):23 c11729.2:54 c11725.16:8
+#45447 | auto Silithus;305§auto Silithus;305§auto Silithus;305 | x=-7371.89990234375 y=1638.700073242188 | size=1 | links=#45448(auto Silithus;306):22 c11725.16:14
+#45448 | auto Silithus;306§auto Silithus;306§auto Silithus;306 | x=-7349.5 y=1637 | size=1 | links=#45447(auto Silithus;305):22 c11727.32:19
+#45449 | auto Silithus;307§auto Silithus;307§auto Silithus;307 | x=-7271.60009765625 y=1611.800048828125 | size=1 | links=#45450(auto Silithus;308):25 c11727.104:17
+#45450 | auto Silithus;308§auto Silithus;308§auto Silithus;308 | x=-7247.10009765625 y=1617.400024414063 | size=1 | links=#45449(auto Silithus;307):25 c11725.21:8
+#45451 | auto Silithus;309§auto Silithus;309§auto Silithus;309 | x=-7234.80029296875 y=1627.700073242188 | size=1 | links=#45452(auto Silithus;310):11 c11725.21:12
+#45452 | auto Silithus;310§auto Silithus;310§auto Silithus;310 | x=-7235.80029296875 y=1638.900024414063 | size=1 | links=#45451(auto Silithus;309):11 #45453(auto Silithus;311):16
+#45453 | auto Silithus;311§auto Silithus;311§auto Silithus;311 | x=-7241.10009765625 y=1654.800048828125 | size=1 | links=#45452(auto Silithus;310):16 c11725.15:17
+#45454 | auto Silithus;312§auto Silithus;312§auto Silithus;312 | x=-7238 y=1700.400024414063 | size=1 | links=c11725.15:30 c11728.24:25
+#45455 | auto Silithus;313§auto Silithus;313§auto Silithus;313 | x=-7270.2001953125 y=1715.300048828125 | size=1 | links=#45456(auto Silithus;314):28 c11728.24:20
+#45456 | auto Silithus;314§auto Silithus;314§auto Silithus;314 | x=-7289.2001953125 y=1694 | size=1 | links=#45455(auto Silithus;313):28 #45457(auto Silithus;315):41
+#45457 | auto Silithus;315§auto Silithus;315§auto Silithus;315 | x=-7319.5 y=1665.099975585938 | size=1 | links=#45456(auto Silithus;314):41 c11728.2:40 c11728.22:29
+#45458 | auto Silithus;316§auto Silithus;316§auto Silithus;316 | x=-7300.5 y=1608 | size=1 | links=#45459(auto Silithus;317):38 c11728.22:31
+#45459 | auto Silithus;317§auto Silithus;317§auto Silithus;317 | x=-7275.5 y=1579 | size=1 | links=#45458(auto Silithus;316):38 #45460(auto Silithus;318):46
+#45460 | auto Silithus;318§auto Silithus;318§auto Silithus;318 | x=-7252.89990234375 y=1538.599975585938 | size=1 | links=#45459(auto Silithus;317):46 #45461(auto Silithus;319):59 c11727.105:12 c11727.106:23 c11727.107:23
+#45461 | auto Silithus;319§auto Silithus;319§auto Silithus;319 | x=-7236.60009765625 y=1481.300048828125 | size=1 | links=#45460(auto Silithus;318):59 #45462(auto Silithus;320):57
+#45462 | auto Silithus;320§auto Silithus;320§auto Silithus;320 | x=-7247.80029296875 y=1424.400024414063 | size=1 | links=#45461(auto Silithus;319):57 c11736.23:68
+#45463 | auto Silithus;321§auto Silithus;321§auto Silithus;321 | x=-7253.30029296875 y=1271.900024414063 | size=1 | links=c11741.25:46 c11736.49:37
+#45464 | auto Silithus;322§auto Silithus;322§auto Silithus;322 | x=-7248.39990234375 y=1013.400024414063 | size=1 | links=#45351(auto Silithus;216):35 #45352(auto Silithus;217):28 c11736.76:68
+#45465 | auto Silithus;323§auto Silithus;323§auto Silithus;323 | x=-7443.30029296875 y=1265.5 | size=1 | links=#45466(auto Silithus;324):4 c11727.45:24
+#45466 | auto Silithus;324§auto Silithus;324§auto Silithus;324 | x=-7447.10009765625 y=1268.700073242188 | size=1 | links=#45465(auto Silithus;323):4 c11728.3:11
+#45467 | auto Silithus;325§auto Silithus;325§auto Silithus;325 | x=-7438.7001953125 y=1287.400024414063 | size=1 | links=c11728.3:13 c11736.58:26
+#45468 | auto Silithus;326§auto Silithus;326§auto Silithus;326 | x=-7433 y=1362.5 | size=1 | links=#45469(auto Silithus;327):25 c11728.7:14
+#45469 | auto Silithus;327§auto Silithus;327§auto Silithus;327 | x=-7433 y=1387.700073242188 | size=1 | links=#45468(auto Silithus;326):25 c11725.20:15
+#45470 | auto Silithus;328§auto Silithus;328§auto Silithus;328 | x=-7468.2001953125 y=1419.400024414063 | size=1 | links=#45471(auto Silithus;329):20 c11726.1:24
+#45471 | auto Silithus;329§auto Silithus;329§auto Silithus;329 | x=-7485.80029296875 y=1430.200073242188 | size=1 | links=#45470(auto Silithus;328):20 c11728.29:12
+#45472 | auto Silithus;330§auto Silithus;330§auto Silithus;330 | x=-7502.89990234375 y=1438.300048828125 | size=1 | links=#45473(auto Silithus;331):22 c11728.29:10
+#45473 | auto Silithus;331§auto Silithus;331§auto Silithus;331 | x=-7516.7001953125 y=1455.599975585938 | size=1 | links=#45472(auto Silithus;330):22 #45474(auto Silithus;332):16
+#45474 | auto Silithus;332§auto Silithus;332§auto Silithus;332 | x=-7533.2001953125 y=1457.900024414063 | size=1 | links=#45473(auto Silithus;331):16 #45475(auto Silithus;333):19
+#45475 | auto Silithus;333§auto Silithus;333§auto Silithus;333 | x=-7543 y=1474.200073242188 | size=1 | links=#45474(auto Silithus;332):19 c11729.21:11
+#45476 | auto Silithus;334§auto Silithus;334§auto Silithus;334 | x=-7541.80029296875 y=1498.900024414063 | size=1 | links=#45477(auto Silithus;335):16 c11729.21:14
+#45477 | auto Silithus;335§auto Silithus;335§auto Silithus;335 | x=-7530.39990234375 y=1510.900024414063 | size=1 | links=#45476(auto Silithus;334):16 #45478(auto Silithus;336):21
+#45478 | auto Silithus;336§auto Silithus;336§auto Silithus;336 | x=-7517.5 y=1528.300048828125 | size=1 | links=#45477(auto Silithus;335):21 #45479(auto Silithus;337):5
+#45479 | auto Silithus;337§auto Silithus;337§auto Silithus;337 | x=-7518.10009765625 y=1533.800048828125 | size=1 | links=#45478(auto Silithus;336):5 c11729.22:7
+#45480 | auto Silithus;338§auto Silithus;338§auto Silithus;338 | x=-7511.2001953125 y=1545.200073242188 | size=1 | links=#45481(auto Silithus;339):15 c11729.22:8
+#45481 | auto Silithus;339§auto Silithus;339§auto Silithus;339 | x=-7499.2001953125 y=1554.400024414063 | size=1 | links=#45480(auto Silithus;338):15 #45482(auto Silithus;340):13
+#45482 | auto Silithus;340§auto Silithus;340§auto Silithus;340 | x=-7492.5 y=1565.900024414063 | size=1 | links=#45481(auto Silithus;339):13 c11729.26:22
+#45493 | auto Silithus;341§auto Silithus;341§auto Silithus;341 | x=-7446.5 y=586.6000366210938 | size=1 | links=#45494(auto Silithus;342):50 c11736.105:66
+#45494 | auto Silithus;342§auto Silithus;342§auto Silithus;342 | x=-7496.39990234375 y=595.6000366210938 | size=1 | links=#45493(auto Silithus;341):50 #45495(auto Silithus;343):54
+#45495 | auto Silithus;343§auto Silithus;343§auto Silithus;343 | x=-7550 y=602.2000122070312 | size=1 | links=#45494(auto Silithus;342):54 #45496(auto Silithus;344):65
+#45496 | auto Silithus;344§auto Silithus;344§auto Silithus;344 | x=-7615 y=606.4000244140625 | size=1 | links=#45495(auto Silithus;343):65 #45497(auto Silithus;345):55 #45543(auto Silithus;385):40 c11733.26:10
+#45497 | auto Silithus;345§auto Silithus;345§auto Silithus;345 | x=-7670.30029296875 y=605.7999877929688 | size=1 | links=#45496(auto Silithus;344):55 #45498(auto Silithus;346):61 c11733.6:51 c11732.8:33 c11734.13:36 c11732.22:32
+#45498 | auto Silithus;346§auto Silithus;346§auto Silithus;346 | x=-7730.10009765625 y=593.2999877929688 | size=1 | links=#45497(auto Silithus;345):61 #45499(auto Silithus;347):73
+#45499 | auto Silithus;347§auto Silithus;347§auto Silithus;347 | x=-7784.60009765625 y=544.7000122070312 | size=1 | links=#45498(auto Silithus;346):73 #45500(auto Silithus;348):60 c11733.20:32
+#45500 | auto Silithus;348§auto Silithus;348§auto Silithus;348 | x=-7843.60009765625 y=531.6000366210938 | size=1 | links=#45499(auto Silithus;347):60 #45507(auto Silithus;351):36
+#45505 | auto Silithus;349§auto Silithus;349§auto Silithus;349 | x=-7964.5 y=574.2000122070312 | size=1 | links=#45506(auto Silithus;350):35 #45518(auto Silithus;362):57 c11730.7:61 c11730.15:15
+#45506 | auto Silithus;350§auto Silithus;350§auto Silithus;350 | x=-7929.89990234375 y=568 | size=1 | links=#45505(auto Silithus;349):35 #45507(auto Silithus;351):57 #45517(auto Silithus;361):29
+#45507 | auto Silithus;351§auto Silithus;351§auto Silithus;351 | x=-7874.89990234375 y=549.9000244140625 | size=1 | links=#45500(auto Silithus;348):36 #45506(auto Silithus;350):57 c11733.10:23
+#45508 | auto Silithus;352§auto Silithus;352§auto Silithus;352 | x=-7962 y=734.5 | size=1 | links=#45509(auto Silithus;353):21 #45515(auto Silithus;359):38
+#45509 | auto Silithus;353§auto Silithus;353§auto Silithus;353 | x=-7953.80029296875 y=715 | size=1 | links=#45508(auto Silithus;352):21 #45510(auto Silithus;354):28
+#45510 | auto Silithus;354§auto Silithus;354§auto Silithus;354 | x=-7976.30029296875 y=697 | size=1 | links=#45509(auto Silithus;353):28 #45511(auto Silithus;355):14
+#45511 | auto Silithus;355§auto Silithus;355§auto Silithus;355 | x=-7990.39990234375 y=693.9000244140625 | size=1 | links=#45510(auto Silithus;354):14 #45512(auto Silithus;356):12
+#45512 | auto Silithus;356§auto Silithus;356§auto Silithus;356 | x=-7991.60009765625 y=681.4000244140625 | size=1 | links=#45511(auto Silithus;355):12 #45513(auto Silithus;357):8
+#45513 | auto Silithus;357§auto Silithus;357§auto Silithus;357 | x=-7991.80029296875 y=673 | size=1 | links=#45512(auto Silithus;356):8 #45514(auto Silithus;358):31
+#45514 | auto Silithus;358§auto Silithus;358§auto Silithus;358 | x=-7963.89990234375 y=658.2000122070312 | size=1 | links=#45513(auto Silithus;357):31 #45516(auto Silithus;360):35
+#45515 | auto Silithus;359§auto Silithus;359§auto Silithus;359 | x=-7966.10009765625 y=772.6000366210938 | size=1 | links=#45380(auto Silithus;243):16 #45508(auto Silithus;352):38
+#45516 | auto Silithus;360§auto Silithus;360§auto Silithus;360 | x=-7934.39990234375 y=638 | size=1 | links=#45514(auto Silithus;358):35 #45517(auto Silithus;361):49
+#45517 | auto Silithus;361§auto Silithus;361§auto Silithus;361 | x=-7913.60009765625 y=592.7000122070312 | size=1 | links=#45506(auto Silithus;350):29 #45516(auto Silithus;360):49 c11733.12:41
+#45518 | auto Silithus;362§auto Silithus;362§auto Silithus;362 | x=-7999 y=619.7999877929688 | size=1 | links=#45505(auto Silithus;349):57 #45519(auto Silithus;363):25
+#45519 | auto Silithus;363§auto Silithus;363§auto Silithus;363 | x=-8010.39990234375 y=642.5 | size=1 | links=#45518(auto Silithus;362):25 #45520(auto Silithus;364):17
+#45520 | auto Silithus;364§auto Silithus;364§auto Silithus;364 | x=-8009.30029296875 y=659.7999877929688 | size=1 | links=#45519(auto Silithus;363):17 #45521(auto Silithus;365):8
+#45521 | auto Silithus;365§auto Silithus;365§auto Silithus;365 | x=-8017.10009765625 y=662.1000366210938 | size=1 | links=#45520(auto Silithus;364):8 #45522(auto Silithus;366):18
+#45522 | auto Silithus;366§auto Silithus;366§auto Silithus;366 | x=-8027.89990234375 y=676.9000244140625 | size=1 | links=#45521(auto Silithus;365):18 #45523(auto Silithus;367):14
+#45523 | auto Silithus;367§auto Silithus;367§auto Silithus;367 | x=-8030.89990234375 y=690.7000122070312 | size=1 | links=#45522(auto Silithus;366):14 #45524(auto Silithus;368):15
+#45524 | auto Silithus;368§auto Silithus;368§auto Silithus;368 | x=-8037 y=705.4000244140625 | size=1 | links=#45523(auto Silithus;367):15 #45525(auto Silithus;369):18
+#45525 | auto Silithus;369§auto Silithus;369§auto Silithus;369 | x=-8053 y=715.2000122070312 | size=1 | links=#45524(auto Silithus;368):18 #45526(auto Silithus;370):18
+#45526 | auto Silithus;370§auto Silithus;370§auto Silithus;370 | x=-8071.30029296875 y=713.4000244140625 | size=1 | links=#45525(auto Silithus;369):18 #45527(auto Silithus;371):14
+#45527 | auto Silithus;371§auto Silithus;371§auto Silithus;371 | x=-8083.60009765625 y=705.2999877929688 | size=1 | links=#45526(auto Silithus;370):14 #45528(auto Silithus;372):13
+#45528 | auto Silithus;372§auto Silithus;372§auto Silithus;372 | x=-8095.2001953125 y=698.9000244140625 | size=1 | links=#45527(auto Silithus;371):13 #45529(auto Silithus;373):9
+#45529 | auto Silithus;373§auto Silithus;373§auto Silithus;373 | x=-8104.89990234375 y=699.2000122070312 | size=1 | links=#45528(auto Silithus;372):9 #45530(auto Silithus;374):10
+#45530 | auto Silithus;374§auto Silithus;374§auto Silithus;374 | x=-8115.39990234375 y=698.2000122070312 | size=1 | links=#45529(auto Silithus;373):10 #45531(auto Silithus;375):8
+#45531 | auto Silithus;375§auto Silithus;375§auto Silithus;375 | x=-8120.60009765625 y=692.1000366210938 | size=1 | links=#45530(auto Silithus;374):8 #45532(auto Silithus;376):13
+#45532 | auto Silithus;376§auto Silithus;376§auto Silithus;376 | x=-8130.5 y=682.2999877929688 | size=1 | links=#45531(auto Silithus;375):13 #45533(auto Silithus;377):12
+#45533 | auto Silithus;377§auto Silithus;377§auto Silithus;377 | x=-8142.2001953125 y=678.9000244140625 | size=1 | links=#45532(auto Silithus;376):12 #45534(auto Silithus;378):21
+#45534 | auto Silithus;378§auto Silithus;378§auto Silithus;378 | x=-8162.80029296875 y=671.7999877929688 | size=1 | links=#45533(auto Silithus;377):21 c11733.36:13
+#45537 | auto Silithus;379§auto Silithus;379§auto Silithus;379 | x=-8181.10009765625 y=663.6000366210938 | size=1 | links=#45538(auto Silithus;380):14 c11733.36:11
+#45538 | auto Silithus;380§auto Silithus;380§auto Silithus;380 | x=-8192.900390625 y=671.2999877929688 | size=1 | links=#45537(auto Silithus;379):14 #45539(auto Silithus;381):26
+#45539 | auto Silithus;381§auto Silithus;381§auto Silithus;381 | x=-8214.7998046875 y=685.6000366210938 | size=1 | links=#45538(auto Silithus;380):26 c15609.1:20
+#45540 | auto Silithus;382§auto Silithus;382§auto Silithus;382 | x=-7885 y=676.9000244140625 | size=1 | links=#45541(auto Silithus;383):52 c11733.12:52
+#45541 | auto Silithus;383§auto Silithus;383§auto Silithus;383 | x=-7837.10009765625 y=697.5 | size=1 | links=#45540(auto Silithus;382):52 c11731.3:35 c11730.22:58
+#45542 | auto Silithus;384§auto Silithus;384§auto Silithus;384 | x=-7638.39990234375 y=515.5 | size=1 | links=#45543(auto Silithus;385):54 c11734.6:39
+#45543 | auto Silithus;385§auto Silithus;385§auto Silithus;385 | x=-7632.2001953125 y=570 | size=1 | links=#45496(auto Silithus;344):40 #45542(auto Silithus;384):54
+#45544 | auto Silithus;386§auto Silithus;386§auto Silithus;386 | x=-7974 y=1513.400024414063 | size=1 | links=#45545(auto Silithus;387):24 #45554(auto Silithus;394):29
+#45545 | auto Silithus;387§auto Silithus;387§auto Silithus;387 | x=-7996.60009765625 y=1522.099975585938 | size=1 | links=#45544(auto Silithus;386):24 o180633.1:36
+#45547 | auto Silithus;388§auto Silithus;388§auto Silithus;388 | x=-8079.30029296875 y=1530.900024414063 | size=1 | links=#45548(auto Silithus;389):55 #45550(auto Silithus;390):29 o180633.1:50
+#45548 | auto Silithus;389§auto Silithus;389§auto Silithus;389 | x=-8134.5 y=1528.599975585938 | size=1 | links=#45547(auto Silithus;388):55 #45571(Ruins of Ahn'Qiraj; Temple of Ahn'Qiraj; Silithus):47
+#45550 | auto Silithus;390§auto Silithus;390§auto Silithus;390 | x=-8068.7001953125 y=1558.800048828125 | size=1 | links=#45547(auto Silithus;388):29 #45551(auto Silithus;391):19 o180633.1:44
+#45551 | auto Silithus;391§auto Silithus;391§auto Silithus;391 | x=-8069.2001953125 y=1578.200073242188 | size=1 | links=#45550(auto Silithus;390):19 #45552(auto Silithus;392):29
+#45552 | auto Silithus;392§auto Silithus;392§auto Silithus;392 | x=-8069.7001953125 y=1607.700073242188 | size=1 | links=#45551(auto Silithus;391):29 #45553(auto Silithus;393):21
+#45553 | auto Silithus;393§auto Silithus;393§auto Silithus;393 | x=-8069.5 y=1629.300048828125 | size=1 | links=#45552(auto Silithus;392):21 c15693.1:4
+#45554 | auto Silithus;394§auto Silithus;394§auto Silithus;394 | x=-7947 y=1502.800048828125 | size=1 | links=#45369(auto Silithus;234):67 #45544(auto Silithus;386):29 #45555(auto Silithus;395):12 c14471.1:24
+#45555 | auto Silithus;395§auto Silithus;395§auto Silithus;395 | x=-7944.80029296875 y=1514.900024414063 | size=1 | links=#45554(auto Silithus;394):12 c11739.24:56
+#45556 | auto Silithus;396§auto Silithus;396§auto Silithus;396 | x=-7916.7001953125 y=1630.400024414063 | size=1 | links=#45557(auto Silithus;397):78 c11739.24:66
+#45557 | auto Silithus;397§auto Silithus;397§auto Silithus;397 | x=-7930.5 y=1708 | size=1 | links=#45556(auto Silithus;396):78 #45559(auto Silithus;398):65
+#45559 | auto Silithus;398§auto Silithus;398§auto Silithus;398 | x=-7974 y=1757.5 | size=1 | links=#45557(auto Silithus;397):65 c11881.20:60
+#45563 | auto Silithus;399§auto Silithus;399§auto Silithus;399 | x=-7969.2001953125 y=1855.200073242188 | size=1 | links=#45564(auto Silithus;400):46 c11881.20:41
+#45564 | auto Silithus;400§auto Silithus;400§auto Silithus;400 | x=-7968.10009765625 y=1901.700073242188 | size=1 | links=#45563(auto Silithus;399):46 #45565(auto Silithus;401):34 c14479.1:15
+#45565 | auto Silithus;401§auto Silithus;401§auto Silithus;401 | x=-7966.2001953125 y=1936.599975585938 | size=1 | links=#45564(auto Silithus;400):34 c11803.1:40
+#45566 | auto Silithus;402§auto Silithus;402§auto Silithus;402 | x=-6869.5 y=1596.900024414063 | size=1 | links=c11741.15:72 c11881.33:85
+#45567 | auto Silithus;403§auto Silithus;403§auto Silithus;403 | x=-7580.5 y=1064.800048828125 | size=1 | links=#45357(auto Silithus;222):31 c11737.30:36
+#45568 | auto Silithus;404§auto Silithus;404§auto Silithus;404 | x=-7986.30029296875 y=875.9000244140625 | size=1 | links=#45569(auto Silithus;405):58 c11747.2:62
+#45569 | auto Silithus;405§auto Silithus;405§auto Silithus;405 | x=-7927.5 y=877.1000366210938 | size=1 | links=#45384(auto Silithus;246):69 #45568(auto Silithus;404):58
+#45570 | Spirit Healer; Spirit Healer; Silithus§Geistheiler; Geistheiler; Silithus§Gardien des âmes;Gardien des âmes;Silithus | x=-7972.80029296875 y=786.9000244140625 | size=1 | links=#45380(auto Silithus;243):17
+#45571 | Ruins of Ahn'Qiraj; Temple of Ahn'Qiraj; Silithus§Ruinen von Ahn'Qiraj; Tempel von Ahn'Qiraj; Silithus§Ruines d’Ahn’Qiraj; Temple of Ahn'Qiraj;Silithus | x=-8182.39990234375 y=1531 | size=1 | links=#45548(auto Silithus;389):47 #48763(auto The Scarab Wall;Silithus;406):20 #48775(auto Gates of Ahn'Qiraj;418):75
+#48763 | auto The Scarab Wall;Silithus;406§auto Der Skarabäuswall;Silithus;406§auto Le Mur du scarabée;Silithus;406 | x=-8194.6005859375 y=1547.900024414063 | size=1 | links=#45571(Ruins of Ahn'Qiraj; Temple of Ahn'Qiraj; Silithus):20 #48764(auto Gates of Ahn'Qiraj;407):45
+#48764 | auto Gates of Ahn'Qiraj;407§auto Tore von Ahn'Qiraj;407§auto Gates of Ahn'Qiraj;407 | x=-8226.2998046875 y=1581.200073242188 | size=1 | links=#48763(auto The Scarab Wall;Silithus;406):45 #48765(auto Gates of Ahn'Qiraj;408):33
+#48765 | auto Gates of Ahn'Qiraj;408§auto Tore von Ahn'Qiraj;408§auto Gates of Ahn'Qiraj;408 | x=-8253.400390625 y=1600.5 | size=1 | links=#48764(auto Gates of Ahn'Qiraj;407):33 #48766(auto Gates of Ahn'Qiraj;409):44
+#48766 | auto Gates of Ahn'Qiraj;409§auto Tore von Ahn'Qiraj;409§auto Gates of Ahn'Qiraj;409 | x=-8270.7998046875 y=1641.5 | size=1 | links=#48765(auto Gates of Ahn'Qiraj;408):44 #48767(auto Gates of Ahn'Qiraj;410):54
+#48767 | auto Gates of Ahn'Qiraj;410§auto Tore von Ahn'Qiraj;410§auto Gates of Ahn'Qiraj;410 | x=-8298.7998046875 y=1688.599975585938 | size=1 | links=#48766(auto Gates of Ahn'Qiraj;409):54 #48768(auto Gates of Ahn'Qiraj;411):56
+#48768 | auto Gates of Ahn'Qiraj;411§auto Tore von Ahn'Qiraj;411§auto Gates of Ahn'Qiraj;411 | x=-8333 y=1733.200073242188 | size=1 | links=#48767(auto Gates of Ahn'Qiraj;410):56 #48769(auto Gates of Ahn'Qiraj;412):58
+#48769 | auto Gates of Ahn'Qiraj;412§auto Tore von Ahn'Qiraj;412§auto Gates of Ahn'Qiraj;412 | x=-8370.7001953125 y=1778.200073242188 | size=1 | links=#48768(auto Gates of Ahn'Qiraj;411):58 #48770(auto Gates of Ahn'Qiraj;413):50
+#48770 | auto Gates of Ahn'Qiraj;413§auto Tore von Ahn'Qiraj;413§auto Gates of Ahn'Qiraj;413 | x=-8401.5 y=1818.300048828125 | size=1 | links=#48769(auto Gates of Ahn'Qiraj;412):50 #48771(auto Gates of Ahn'Qiraj;414):74
+#48771 | auto Gates of Ahn'Qiraj;414§auto Tore von Ahn'Qiraj;414§auto Gates of Ahn'Qiraj;414 | x=-8344.400390625 y=1865.800048828125 | size=1 | links=#48770(auto Gates of Ahn'Qiraj;413):74 #48772(auto Gates of Ahn'Qiraj;415):63
+#48772 | auto Gates of Ahn'Qiraj;415§auto Tore von Ahn'Qiraj;415§auto Gates of Ahn'Qiraj;415 | x=-8294.900390625 y=1905 | size=1 | links=#48771(auto Gates of Ahn'Qiraj;414):63 #48773(auto Gates of Ahn'Qiraj;416):52
+#48773 | auto Gates of Ahn'Qiraj;416§auto Tore von Ahn'Qiraj;416§auto Gates of Ahn'Qiraj;416 | x=-8264.2001953125 y=1948 | size=1 | links=#48772(auto Gates of Ahn'Qiraj;415):52 #48774(dungeon entrance 40 man raid ahn'qiraj;Gates of Ahn'Qiraj;417):55
+#48774 | dungeon entrance 40 man raid ahn'qiraj;Gates of Ahn'Qiraj;417§instanz Eingang raid;ahn'qiraj 40;Tore von Ahn'Qiraj;417§dungeon entrance 40 man raid ahn'qiraj;Gates of Ahn'Qiraj;417 | x=-8234.6005859375 y=1995.300048828125 | size=1 | links=#48773(auto Gates of Ahn'Qiraj;416):55
+#48775 | auto Gates of Ahn'Qiraj;418§auto Tore von Ahn'Qiraj;418§auto Gates of Ahn'Qiraj;418 | x=-8242.2001953125 y=1484.400024414063 | size=1 | links=#45571(Ruins of Ahn'Qiraj; Temple of Ahn'Qiraj; Silithus):75 #48776(auto Gates of Ahn'Qiraj;419):91
+#48776 | auto Gates of Ahn'Qiraj;419§auto Tore von Ahn'Qiraj;419§auto Gates of Ahn'Qiraj;419 | x=-8333 y=1471.400024414063 | size=1 | links=#48775(auto Gates of Ahn'Qiraj;418):91 #48777(auto Gates of Ahn'Qiraj;420):54
+#48777 | auto Gates of Ahn'Qiraj;420§auto Tore von Ahn'Qiraj;420§auto Gates of Ahn'Qiraj;420 | x=-8386.5 y=1480.800048828125 | size=1 | links=#48776(auto Gates of Ahn'Qiraj;419):54 #48778(dungeon entrance 20 man raid ahn'qiraj;Gates of Ahn'Qiraj;421):41
+#48778 | dungeon entrance 20 man raid ahn'qiraj;Gates of Ahn'Qiraj;421§instanz Eingang raid;ahn'qiraj 20;Tore von Ahn'Qiraj;421§dungeon entrance 20 man raid ahn'qiraj;Gates of Ahn'Qiraj;421 | x=-8419.2998046875 y=1505.599975585938 | size=1 | links=#48777(auto Gates of Ahn'Qiraj;420):41
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c6491.1 | links=o180633.1:51
+c11698.1 | links=c11722.7:54 c11724.25:45 c11724.30:70
+c11723.1 | links=#45425(auto Silithus;287):37 o181598.5:60
+c11726.1 | links=#45470(auto Silithus;328):24 c11725.20:15
+c11736.1 | links=#45387(auto Silithus;249):49 #45388(auto Silithus;250):70
+c11745.1 | links=#45369(auto Silithus;234):51
+c11747.1 | links=c11737.29:31
+c11803.1 | links=#45565(auto Silithus;401):40
+c11804.1 | links=c11880.12:51 c11880.24:52 c11880.47:20
+c11805.1 | links=#21712(auto Silithus;80):16
+c11880.1 | links=o188150.1:21 c15213.5:28 c15213.6:32
+c11882.1 | links=#45409(auto Silithus;271):12
+c12199.1 | links=#45275(auto Silithus;142):1
+c12956.1 | links=#21712(auto Silithus;80):18
+c13220.1 | links=#21712(auto Silithus;80):18
+c14347.1 | links=c11746.21:16
+c14454.1 | links=c14455.1:9 c14455.2:10 c14455.3:10 c11738.23:70
+c14455.1 | links=c14454.1:9 c14455.3:9
+c14471.1 | links=#45554(auto Silithus;394):24
+c14472.1 | links=c11736.78:31 c11736.80:51
+c14476.1 | links=c11744.20:46 c11735.28:18
+c14477.1 | links=c11739.48:43
+c14479.1 | links=#45564(auto Silithus;400):15
+c15169.1 | links=#45319(auto Silithus;186):5
+c15170.1 | links=c15172.1:10
+c15171.1 | links=c15172.1:15
+c15172.1 | links=#45371(auto Silithus;235):26 #45372(auto Silithus;236):11 c15170.1:10 c15171.1:15
+c15174.1 | links=#7149(auto Silithus;23):4 #20386(auto Silithus;76):6 c15500.1:9 c16091.1:8
+c15175.1 | links=#24775(auto Silithus;90):8
+c15176.1 | links=#9510(auto Silithus;33):5
+c15177.1 | links=#19022(auto Silithus;72):9
+c15178.1 | links=#24775(auto Silithus;90):11
+c15179.1 | links=#8803(auto Silithus;32):13
+c15180.1 | links=#3582(auto Silithus;9):14 c15722.1:5
+c15181.1 | links=#16349(auto Silithus;63):14
+c15182.1 | links=#5504(auto Silithus;17):6
+c15183.1 | links=#3582(auto Silithus;9):12
+c15190.1 | links=#13926(auto Silithus;51):12
+c15191.1 | links=#14612(auto Silithus;55):5 #25197(auto Silithus;95):13
+c15194.1 | links=#45400(auto Silithus;262):11
+c15196.1 | links=c11737.83:5
+c15200.1 | links=c11881.33:45
+c15201.1 | links=c15213.1:14 c15213.2:14 c15213.3:13
+c15202.1 | links=#45341(auto Silithus;206):17
+c15213.1 | links=c15201.1:14 c15213.2:5
+c15270.1 | links=c15306.1:2
+c15282.1 | links=c15498.1:3
+c15293.1 | links=#45275(auto Silithus;142):5
+c15306.1 | links=c15270.1:2 c15184.4:11
+c15419.1 | links=#25796(auto Silithus;96):4
+c15441.1 | links=#45391(auto Silithus;253):10 c15442.1:2 c15441.6:2
+c15442.1 | links=c15441.1:2 c15441.4:2
+c15443.1 | links=c15441.4:12 c15441.7:1
+c15444.1 | links=c15441.2:2 c15441.5:2
+c15498.1 | links=#13850(auto Silithus;50):5 c15282.1:3
+c15499.1 | links=#9510(auto Silithus;33):3
+c15500.1 | links=c15174.1:9
+c15540.1 | links=#8803(auto Silithus;32):10
+c15541.1 | links=c15542.2:12 c11738.37:63 c11738.39:20
+c15542.1 | links=c15542.2:11
+c15545.1 | links=c15545.2:17 c15545.3:13
+c15570.1 | links=c11746.20:3
+c15609.1 | links=#45539(auto Silithus;381):20
+c15610.1 | links=#45444(auto Silithus;302):32
+c15611.1 | links=c11723.15:19
+c15612.1 | links=c15616.3:6
+c15613.1 | links=c15616.1:7
+c15614.1 | links=#7149(auto Silithus;23):10
+c15615.1 | links=#45394(auto Silithus;256):21 c15617.4:3
+c15616.1 | links=c15613.1:7 c15616.2:4
+c15617.1 | links=c15617.2:2 c15616.3:15 c15617.7:2
+c15693.1 | links=#45553(auto Silithus;393):4
+c15722.1 | links=c15180.1:5
+c15903.1 | links=c15441.2:3 c15441.6:10
+c16091.1 | links=c15174.1:8
+c16543.1 | links=#13850(auto Silithus;50):17
+c17068.1 | links=#45389(auto Silithus;251):11
+c17070.1 | links=#45394(auto Silithus;256):9
+c17074.1 | links=c6491.2:16
+c17079.1 | links=#45394(auto Silithus;256):9
+c17080.1 | links=#45389(auto Silithus;251):10
+c17081.1 | links=#24775(auto Silithus;90):6
+c17082.1 | links=#19022(auto Silithus;72):7
+c17090.1 | links=c17765.3:2
+c17765.1 | links=c17765.2:5
+c17766.1 | links=#45395(auto Silithus;257):6 c17766.2:6
+c18199.1 | links=#45394(auto Silithus;256):7
+o178553.1 | links=#45263(auto Silithus;133):4
+o179565.1 | links=c12179.12:9
+o180435.1 | links=c11737.64:12
+o180436.1 | links=#45419(auto Silithus;281):16
+o180448.1 | links=#25197(auto Silithus;95):15
+o180454.1 | links=c11721.4:8
+o180455.1 | links=c11727.45:17
+o180503.1 | links=#45413(auto Silithus;275):6
+o180529.1 | links=c11881.4:3
+o180534.1 | links=#45414(auto Silithus;276):15
+o180539.1 | links=#45412(auto Silithus;274):17
+o180544.1 | links=c14479.2:15
+o180633.1 | links=#45545(auto Silithus;387):36 #45547(auto Silithus;388):50 #45550(auto Silithus;390):44 c6491.1:51
+o188148.1 | links=c11880.39:19
+o188150.1 | links=c11880.1:21 c11883.3:29
+c6491.2 | links=#14363(auto Silithus;54):44 c17074.1:16
+c11724.2 | links=
+c11726.2 | links=c11727.45:11 c11727.46:3
+c11728.2 | links=#45457(auto Silithus;315):40
+c11729.2 | links=#45446(auto Silithus;304):54 c11726.8:45 c11725.12:30
+c11735.2 | links=#45291(auto Silithus;158):57 c11735.4:55
+c11745.2 | links=c11736.103:26
+c11747.2 | links=#45568(auto Silithus;404):62
+c11880.2 | links=#45321(auto Silithus;188):16 #45322(auto Silithus;189):15
+c11881.2 | links=#45408(auto Silithus;270):13
+c11882.2 | links=#45405(auto Silithus;267):21
+c11883.2 | links=#45345(auto Silithus;210):16
+c14455.2 | links=c14454.1:10
+c14479.2 | links=#45409(auto Silithus;271):20 o180544.1:15
+c15201.2 | links=#45337(auto Silithus;202):11 #45338(auto Silithus;203):10
+c15213.2 | links=c15201.1:14 c15213.1:5
+c15441.2 | links=c15444.1:2 c15903.1:3
+c15442.2 | links=c15441.4:8
+c15542.2 | links=c15541.1:12 c15542.1:11
+c15545.2 | links=c15545.1:17
+c15616.2 | links=c15616.1:4 c15616.3:4
+c15617.2 | links=c15617.1:2 c15617.3:2
+c17765.2 | links=c17765.1:5 c17765.3:5
+c17766.2 | links=c17766.1:6
+c6491.3 | links=#45288(auto Silithus;155):10
+c11728.3 | links=#45466(auto Silithus;324):11 #45467(auto Silithus;325):13
+c11731.3 | links=#45541(auto Silithus;383):35
+c11735.3 | links=#2107(auto Silithus;6):76 c11740.7:33
+c11740.3 | links=c11735.26:29 c11738.39:45
+c11744.3 | links=c11744.5:45
+c11745.3 | links=c11736.20:7
+c11881.3 | links=#45406(auto Silithus;268):13
+c11882.3 | links=#45408(auto Silithus;270):10
+c11883.3 | links=o188150.1:29
+c12179.3 | links=#45281(auto Silithus;148):11
+c14455.3 | links=c14454.1:10 c14455.1:9
+c14479.3 | links=c11881.29:38
+c15201.3 | links=#45336(auto Silithus;201):8 c15201.4:29 c15201.5:1
+c15213.3 | links=#45343(auto Silithus;208):10 c15201.1:13
+c15441.3 | links=c15441.4:6
+c15442.3 | links=c15441.4:4 c15441.6:2
+c15545.3 | links=c15545.1:13 c11736.12:57
+c15616.3 | links=c15612.1:6 c15617.1:15 c15616.2:4 c15616.4:4
+c15617.3 | links=#45393(auto Silithus;255):20 c15617.2:2 c15617.4:2
+c17765.3 | links=#45389(auto Silithus;251):7 c17090.1:2 c17765.2:5
+c17766.3 | links=#45394(auto Silithus;256):17 #45395(auto Silithus;257):7
+c11721.4 | links=#45433(auto Silithus;294):17 o180454.1:8
+c11731.4 | links=c11733.26:14
+c11735.4 | links=c11735.2:55 c11740.7:52
+c11741.4 | links=
+c11744.4 | links=c11744.8:34 c11744.9:42 c11744.16:52
+c11880.4 | links=#45414(auto Silithus;276):11
+c11881.4 | links=#45406(auto Silithus;268):14 o180529.1:3
+c11882.4 | links=#45406(auto Silithus;268):13
+c15184.4 | links=#24775(auto Silithus;90):11 c15306.1:11
+c15201.4 | links=#45337(auto Silithus;202):20 c15201.3:29
+c15213.4 | links=#45341(auto Silithus;206):13
+c15441.4 | links=c15442.1:2 c15443.1:12 c15442.2:8 c15441.3:6 c15442.3:4 c15441.7:11
+c15616.4 | links=c15616.3:4
+c15617.4 | links=c15615.1:3 c15617.3:2 c15617.5:3
+c11722.5 | links=c11722.7:51 c11724.14:54 c11724.30:18
+c11744.5 | links=#45418(auto Silithus;280):31 c11744.3:45 c11746.6:42
+c11745.5 | links=c11739.50:52
+c11746.5 | links=#45419(auto Silithus;281):57 c11746.7:56 c11746.11:65
+c11880.5 | links=#45408(auto Silithus;270):13
+c11882.5 | links=#45407(auto Silithus;269):15
+c15201.5 | links=c15201.3:1
+c15213.5 | links=c11880.1:28
+c15441.5 | links=c15444.1:2
+c15617.5 | links=c15617.4:3 c15617.6:2
+o180436.5 | links=#45420(auto Silithus;282):28 c11746.21:18
+o181598.5 | links=c11723.1:60 c11724.14:75
+c11721.6 | links=c11722.9:18 c11722.11:37
+c11731.6 | links=c11734.6:32
+c11733.6 | links=#45497(auto Silithus;345):51 c11734.11:43 c11732.18:36
+c11734.6 | links=#45542(auto Silithus;384):39 c11731.6:32
+c11746.6 | links=#45419(auto Silithus;281):39 c11744.5:42
+c15201.6 | links=#45338(auto Silithus;203):20 #45339(auto Silithus;204):15
+c15213.6 | links=#45321(auto Silithus;188):24 c11880.1:32
+c15441.6 | links=c15441.1:2 c15903.1:10 c15442.3:2
+c15617.6 | links=c15617.5:2 c15617.7:2
+o181598.6 | links=#45362(auto Silithus;227):47
+c11698.7 | links=c11698.18:29
+c11722.7 | links=c11698.1:54 c11722.5:51
+c11723.7 | links=
+c11728.7 | links=#45468(auto Silithus;326):14 c11725.11:11
+c11730.7 | links=#45505(auto Silithus;349):61
+c11740.7 | links=c11735.3:33 c11735.4:52
+c11746.7 | links=c11746.5:56 c11746.10:38
+c11882.7 | links=#45409(auto Silithus;271):16
+c15201.7 | links=#45331(auto Silithus;198):19 #45334(auto Silithus;199):18 c15213.8:16
+c15213.7 | links=#45341(auto Silithus;206):9
+c15441.7 | links=c15443.1:1 c15441.4:11
+c15617.7 | links=c15617.1:2 c15617.6:2
+c11698.8 | links=
+c11721.8 | links=
+c11724.8 | links=#45428(auto Silithus;289):60 c11698.9:29 c11722.13:74
+c11725.8 | links=c11727.32:18
+c11726.8 | links=c11729.2:45
+c11732.8 | links=#45497(auto Silithus;345):33
+c11741.8 | links=c11736.23:36 c11736.49:19
+c11744.8 | links=c11744.4:34
+c11882.8 | links=#45405(auto Silithus;267):19
+c11883.8 | links=#45344(auto Silithus;209):9
+c12179.8 | links=c12178.9:45
+c15201.8 | links=#45330(auto Silithus;197):11 c15201.10:13
+c15213.8 | links=c15201.7:16
+o180436.8 | links=c11746.10:41 c11746.11:3
+o180501.8 | links=c11746.14:16
+c11698.9 | links=c11724.8:29 c11722.11:49 c11722.12:38
+c11721.9 | links=#45439(auto Silithus;299):15 c11722.17:1
+c11722.9 | links=c11721.6:18
+c11723.9 | links=#45425(auto Silithus;287):24 c11722.24:40
+c11744.9 | links=c11744.4:42
+c11746.9 | links=c11746.14:68 c11746.22:26
+c11883.9 | links=c11880.38:3
+c12178.9 | links=#45283(auto Silithus;150):18 c12179.8:45
+c15201.9 | links=#45326(auto Silithus;193):16 c15201.11:10
+c15213.9 | links=#45329(auto Silithus;196):10
+o180501.9 | links=o180501.11:42 c11746.13:20
+o181598.9 | links=#45362(auto Silithus;227):65
+c11724.10 | links=
+c11733.10 | links=#45507(auto Silithus;351):23
+c11746.10 | links=c11746.7:38 o180436.8:41 o180501.10:12
+c11880.10 | links=c15213.16:55 c11735.28:79
+c12178.10 | links=#45284(auto Silithus;151):13 #45285(auto Silithus;152):18
+c15201.10 | links=#45329(auto Silithus;196):19 c15201.8:13
+c15545.10 | links=#475(auto Silithus;1):10
+o180501.10 | links=c11746.10:12 o180501.11:47
+c11722.11 | links=c11721.6:37 c11698.9:49
+c11725.11 | links=c11728.7:11 c11736.58:30
+c11734.11 | links=c11733.6:43
+c11746.11 | links=c11746.5:65 o180436.8:3 c11746.14:56
+c12179.11 | links=#45278(auto Silithus;145):12 #45279(auto Silithus;146):7
+c15201.11 | links=#45324(auto Silithus;191):31 c15201.9:10
+o180501.11 | links=o180501.9:42 o180501.10:47 c11746.12:20
+o181598.11 | links=#45383(auto Silithus;245):20
+c11722.12 | links=#45426(auto Silithus;288):59 c11698.9:38
+c11725.12 | links=c11729.2:30 c11729.26:24
+c11733.12 | links=#45517(auto Silithus;361):41 #45540(auto Silithus;382):52
+c11736.12 | links=c15545.3:57 c11741.15:75
+c11746.12 | links=o180501.11:20
+c11880.12 | links=c11804.1:51 c11735.43:65 c11735.44:86
+c12179.12 | links=#45280(auto Silithus;147):6 #45281(auto Silithus;148):10 o179565.1:9
+c15201.12 | links=#45327(auto Silithus;194):19 #45328(auto Silithus;195):19
+o181598.12 | links=c11741.27:42
+c11722.13 | links=c11724.8:74 c11698.18:43
+c11734.13 | links=#45497(auto Silithus;345):36
+c11746.13 | links=o180501.9:20
+c15201.13 | links=#45326(auto Silithus;193):14 #45327(auto Silithus;194):16
+c15213.13 | links=
+o181598.13 | links=c11741.63:51
+c11724.14 | links=c11722.5:54 o181598.5:75
+c11734.14 | links=c11732.22:19
+c11746.14 | links=#45420(auto Silithus;282):24 o180501.8:16 c11746.9:68 c11746.11:56
+c12178.14 | links=#45282(auto Silithus;149):17 #45283(auto Silithus;150):26 #45284(auto Silithus;151):12
+c15213.14 | links=#45320(auto Silithus;187):25 c15213.16:20
+c11723.15 | links=#45422(auto Silithus;284):29 c15611.1:19
+c11725.15 | links=#45453(auto Silithus;311):17 #45454(auto Silithus;312):30
+c11730.15 | links=#45505(auto Silithus;349):15
+c11741.15 | links=#45566(auto Silithus;402):72 c11736.12:75
+c11744.15 | links=c11744.17:38
+c12178.15 | links=c12178.16:30 c12179.23:30
+c12179.15 | links=#45285(auto Silithus;152):19 #45286(auto Silithus;153):23
+o181598.15 | links=c11736.66:25
+c11724.16 | links=
+c11725.16 | links=#45446(auto Silithus;304):8 #45447(auto Silithus;305):14
+c11738.16 | links=#1398(auto Silithus;4):42 c11738.74:23
+c11744.16 | links=#45418(auto Silithus;280):45 c11744.4:52 c11744.17:46 c11744.18:41
+c12178.16 | links=#45248(auto Silithus;118):30 c12178.15:30
+c15213.16 | links=c11880.10:55 c15213.14:20 c11735.36:36
+o181598.16 | links=#45402(auto Silithus;264):39
+c11722.17 | links=c11721.9:1
+c11744.17 | links=#45417(auto Silithus;279):67 c11744.15:38 c11744.16:46
+c15213.17 | links=#45344(auto Silithus;209):10
+c11698.18 | links=c11698.7:29 c11722.13:43
+c11722.18 | links=#45434(auto Silithus;295):23 #45435(auto Silithus;296):9
+c11732.18 | links=c11733.6:36
+c11744.18 | links=c11744.16:41
+c11725.20 | links=#45469(auto Silithus;327):15 c11726.1:15
+c11733.20 | links=#45499(auto Silithus;347):32
+c11736.20 | links=c11745.3:7 c11736.75:29
+c11744.20 | links=c14476.1:46 c11738.33:28
+c11746.20 | links=#45421(auto Silithus;283):19 c15570.1:3
+c11881.20 | links=#45559(auto Silithus;398):60 #45563(auto Silithus;399):41
+c12179.20 | links=#45282(auto Silithus;149):25 c12179.24:39
+c11725.21 | links=#45450(auto Silithus;308):8 #45451(auto Silithus;309):12
+c11729.21 | links=#45475(auto Silithus;333):11 #45476(auto Silithus;334):14
+c11746.21 | links=c14347.1:16 o180436.5:18
+c11728.22 | links=#45457(auto Silithus;315):29 #45458(auto Silithus;316):31
+c11729.22 | links=#45479(auto Silithus;337):7 #45480(auto Silithus;338):8
+c11730.22 | links=#45541(auto Silithus;383):58
+c11732.22 | links=#45497(auto Silithus;345):32 c11734.14:19
+c11744.22 | links=c11740.33:43 c11735.43:37
+c11746.22 | links=#45421(auto Silithus;283):39 c11746.9:26
+c11722.23 | links=#45422(auto Silithus;284):27 c11724.27:22
+c11736.23 | links=#45462(auto Silithus;320):68 c11741.8:36
+c11738.23 | links=#45417(auto Silithus;279):60 c14454.1:70 c11736.53:74
+c12179.23 | links=#45247(auto Silithus;117):17 c12178.15:30
+c11722.24 | links=#45424(auto Silithus;286):30 c11723.9:40
+c11728.24 | links=#45454(auto Silithus;312):25 #45455(auto Silithus;313):20
+c11739.24 | links=#45555(auto Silithus;395):56 #45556(auto Silithus;396):66
+c11880.24 | links=c11804.1:52 c11738.73:93
+c12179.24 | links=#45244(auto Silithus;114):21 c12179.20:39
+c11724.25 | links=c11698.1:45 c11724.26:89
+c11741.25 | links=#45463(auto Silithus;321):46 c11741.36:29 c11736.78:27
+c12179.25 | links=#45249(auto Silithus;119):5 #45250(auto Silithus;120):5
+c11724.26 | links=#45426(auto Silithus;288):60 c11724.25:89 c11740.32:69
+c11729.26 | links=#45482(auto Silithus;340):22 c11725.12:24
+c11733.26 | links=#45496(auto Silithus;344):10 c11731.4:14
+c11735.26 | links=c11740.3:29 c11738.33:42
+c12179.26 | links=#45249(auto Silithus;119):7
+c11724.27 | links=#45423(auto Silithus;285):24 c11722.23:22
+c11736.27 | links=c11736.66:87 c11737.85:52
+c11741.27 | links=o181598.12:42 c11735.44:85 c11736.79:85
+c11724.28 | links=#45432(auto Silithus;293):6 #45441(auto Silithus;301):9
+c11735.28 | links=c14476.1:18 c11880.10:79
+c15184.28 | links=#7255(entry and exit;east;Cenarion Hold):0 #22070(auto Silithus;82):19
+c11728.29 | links=#45471(auto Silithus;329):12 #45472(auto Silithus;330):10
+c11737.29 | links=c11747.1:31 c11737.30:65
+c11881.29 | links=c14479.3:38 c11881.33:44 c11736.82:111
+c11724.30 | links=c11698.1:70 c11722.5:18
+c11737.30 | links=#45567(auto Silithus;403):36 c11737.29:65
+c11724.31 | links=
+c11727.32 | links=#45448(auto Silithus;306):19 c11725.8:18 c11727.102:39
+c11740.32 | links=c11724.26:69 c11740.33:71
+c11738.33 | links=c11744.20:28 c11735.26:42
+c11740.33 | links=c11744.22:43 c11740.32:71
+c11881.33 | links=#45566(auto Silithus;402):85 c15200.1:45 c11881.29:44
+c11880.34 | links=
+c11733.36 | links=#45534(auto Silithus;378):13 #45537(auto Silithus;379):11
+c11735.36 | links=#45291(auto Silithus;158):32 #45292(auto Silithus;159):47 c15213.16:36
+c11741.36 | links=c11741.25:29 c11736.75:45
+c11738.37 | links=c15541.1:63 c11738.60:54
+c11880.37 | links=c11880.38:12
+c11880.38 | links=c11883.9:3 c11880.37:12
+c11738.39 | links=c15541.1:20 c11740.3:45
+c11880.39 | links=#45320(auto Silithus;187):21 #45345(auto Silithus;210):24 o188148.1:19
+c11735.43 | links=c11880.12:65 c11744.22:37
+c11880.43 | links=#45413(auto Silithus;275):6
+c11727.44 | links=c11727.45:11 c11727.47:11
+c11735.44 | links=c11880.12:86 c11741.27:85
+c11741.44 | links=
+c11727.45 | links=#45465(auto Silithus;323):24 o180455.1:17 c11726.2:11 c11727.44:11 c11727.46:8 c11727.47:12
+c11741.45 | links=c11741.51:62 c11736.94:94
+c11727.46 | links=c11726.2:3 c11727.45:8
+c11727.47 | links=c11727.44:11 c11727.45:12
+c11880.47 | links=#45405(auto Silithus;267):29 c11804.1:20
+c11739.48 | links=#45384(auto Silithus;246):78 c14477.1:43 c11739.50:40
+c11736.49 | links=#45463(auto Silithus;321):37 c11741.8:19
+c11739.50 | links=c11745.5:52 c11739.48:40 c11739.74:72
+c11740.50 | links=c11738.57:50 c11738.59:45
+c11737.51 | links=c11737.54:46 c11739.63:42
+c11741.51 | links=#45387(auto Silithus;249):47 c11741.45:62
+c11736.52 | links=#45401(auto Silithus;263):56 c11736.98:58
+c11736.53 | links=#45416(auto Silithus;278):38 c11738.23:74
+c11737.54 | links=#45371(auto Silithus;235):55 c11737.51:46
+c11739.54 | links=#45358(auto Silithus;223):73 c11739.80:10
+c11736.56 | links=c11736.79:61 c11736.82:55
+c11736.57 | links=c11736.65:67 c11741.65:45
+c11738.57 | links=c11740.50:50 c11735.65:56
+c11736.58 | links=#45467(auto Silithus;325):26 c11725.11:30
+c11741.58 | links=c11741.61:74 c11741.62:29 c11736.65:57
+c11738.59 | links=c11740.50:45 c11735.73:21
+c11741.59 | links=c11736.98:59
+c11738.60 | links=c11738.37:54 c11735.72:66
+c11739.60 | links=#45365(auto Silithus;230):36 c11739.63:36
+c11741.61 | links=c11741.58:74 c11736.105:34
+c11741.62 | links=c11741.58:29 c11741.66:52
+c11736.63 | links=c11736.64:53 c11741.65:28
+c11739.63 | links=c11737.51:42 c11739.60:36
+c11741.63 | links=o181598.13:51 c11736.98:57
+c11736.64 | links=#45392(auto Silithus;254):64 c11736.63:53 c11737.78:21
+c11737.64 | links=#45378(auto Silithus;242):16 o180435.1:12 c11737.65:7
+c11735.65 | links=#11116(auto Silithus;41):58 c11738.57:56
+c11736.65 | links=c11736.57:67 c11741.58:57
+c11737.65 | links=#45377(auto Silithus;241):11 c11737.64:7
+c11741.65 | links=c11736.57:45 c11736.63:28 c11736.103:78
+c11736.66 | links=o181598.15:25 c11736.27:87 c11736.70:59
+c11741.66 | links=c11741.62:52 c11736.98:41
+c11736.70 | links=c11736.66:59 c11736.105:106
+c11739.70 | links=#45385(auto Silithus;247):29 c11739.74:38
+c11737.71 | links=#45396(auto Silithus;258):29 c11737.85:80
+c11735.72 | links=c11738.60:66 c11735.73:30
+c11735.73 | links=c11738.59:21 c11735.72:30
+c11738.73 | links=#45346(auto Silithus;211):47 #45347(auto Silithus;212):42 c11880.24:93
+c11738.74 | links=c11738.16:23
+c11739.74 | links=c11739.50:72 c11739.70:38
+c11736.75 | links=c11736.20:29 c11741.36:45
+c11736.76 | links=#45464(auto Silithus;322):68 c11736.80:52
+c11739.76 | links=c11739.82:26
+c11736.78 | links=c14472.1:31 c11741.25:27
+c11737.78 | links=c11736.64:21
+c11736.79 | links=c11741.27:85 c11736.56:61
+c11736.80 | links=c14472.1:51 c11736.76:52
+c11739.80 | links=c11739.54:10 c11739.82:42
+c11736.82 | links=#45415(auto Silithus;277):51 c11881.29:111 c11736.56:55
+c11739.82 | links=c11739.76:26 c11739.80:42
+c11737.83 | links=c15196.1:5 c11737.84:3
+c11737.84 | links=#45378(auto Silithus;242):18 c11737.83:3
+c11737.85 | links=c11736.27:52 c11737.71:80
+c11736.94 | links=#45386(auto Silithus;248):56 c11741.45:94
+c11736.98 | links=c11736.52:58 c11741.59:59 c11741.63:57 c11741.66:41 c11736.105:52
+c11727.102 | links=c11727.32:39 c11727.104:15
+c11736.103 | links=#45354(auto Silithus;219):70 c11745.2:26 c11741.65:78
+c11727.104 | links=#45449(auto Silithus;307):17 c11727.102:15
+c11727.105 | links=#45460(auto Silithus;318):12
+c11736.105 | links=#45493(auto Silithus;341):66 c11741.61:34 c11736.70:106 c11736.98:52
+c11727.106 | links=#45460(auto Silithus;318):23
+c11727.107 | links=#45460(auto Silithus;318):23

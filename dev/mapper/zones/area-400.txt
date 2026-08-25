@@ -1,0 +1,970 @@
+Zone areaId 400 — eine Zeile pro Wegpunkt; Links inline.
+
+#111 | auto Thousand Needles;1§auto Tausend Nadeln;1§auto Mille pointes;1 | x=-5544.5 y=-2468.400146484375 | size=1 | links=#6615(auto Thousand Needles;64):6 #27741(auto Thousand Needles;268):7
+#150 | auto Thousand Needles;2§auto Tausend Nadeln;2§auto Mille pointes;2 | x=-5621.7001953125 y=-2480.60009765625 | size=1 | links=#6931(auto Thousand Needles;70):2 #19826(auto Thousand Needles;200):2
+#151 | auto Thousand Needles;3§auto Tausend Nadeln;3§auto Mille pointes;3 | x=-5499.80029296875 y=-2406.5 | size=1 | links=#22327(auto Thousand Needles;219):5 #23174(auto Thousand Needles;226):4
+#189 | auto Thousand Needles;4§auto Tausend Nadeln;4§auto Mille pointes;4 | x=-4695.60009765625 y=-1816.5 | size=1 | links=#1079(auto Thousand Needles;10):22 #28042(auto Thousand Needles;274):18
+#480 | auto Thousand Needles;5§auto Tausend Nadeln;5§auto Mille pointes;5 | x=-4726.5 y=-1118.400024414063 | size=1 | links=#6622(auto Thousand Needles;65):25 #16604(auto Thousand Needles;165):25
+#504 | central location;Whitereach Post;Thousand Needles§zentralpunkt;Weißgipfelposten;Tausend Nadeln§emplacement central;Poste de Blanc-relais;Mille pointes | x=-4901.60009765625 y=-1378.599975585938 | size=1 | links=#5276(auto Thousand Needles;56):53 c3689.1:18 c10428.1:14 c10636.1:30 c10638.1:12 c10941.1:20 c17178.1:21
+#689 | auto Thousand Needles;6§auto Tausend Nadeln;6§auto Mille pointes;6 | x=-5933 y=-3686.699951171875 | size=5 | links=#28502(auto Thousand Needles;278):78 c4151.5:67 o19868.18:143
+#758 | auto Thousand Needles;7§auto Tausend Nadeln;7§auto Mille pointes;7 | x=-6251.2001953125 y=-3969.199951171875 | size=1 | links=c3053.1:25 c4507.1:48 c4707.1:25
+#824 | auto Thousand Needles;8§auto Tausend Nadeln;8§auto Mille pointes;8 | x=-5406.30029296875 y=-2495.900146484375 | size=1 | links=#8388(pier;elevator;Freewind Post;Thousand Needles;top):4 #18182(auto Thousand Needles;182):4
+#959 | auto Thousand Needles;9§auto Tausend Nadeln;9§auto Mille pointes;9 | x=-5521.60009765625 y=-2440.60009765625 | size=1 | links=#15506(auto Thousand Needles;152):3 #18761(auto Thousand Needles;189):3
+#1079 | auto Thousand Needles;10§auto Tausend Nadeln;10§auto Mille pointes;10 | x=-4679.2001953125 y=-1801.5 | size=1 | links=#189(auto Thousand Needles;4):22 #2794(auto Thousand Needles;30):16 #16481(auto Thousand Needles;163):7
+#1090 | auto Thousand Needles;11§auto Tausend Nadeln;11§auto Mille pointes;11 | x=-5417.10009765625 y=-2480.10009765625 | size=1 | links=#22100(auto Thousand Needles;218):4 #22469(auto Thousand Needles;220):4
+#1117 | auto Thousand Needles;12§auto Tausend Nadeln;12§auto Mille pointes;12 | x=-5700.7001953125 y=-2276.10009765625 | size=1 | links=#9145(auto Thousand Needles;92):78 #22904(auto Thousand Needles;221):62
+#1348 | auto Thousand Needles;13§auto Tausend Nadeln;13§auto Mille pointes;13 | x=-5243.80029296875 y=-1850.800048828125 | size=1 | links=#2058(auto Thousand Needles;20):129 #18694(auto Thousand Needles;188):71 #45766(auto Thousand Needles;469):70
+#1625 | auto Thousand Needles;14§auto Tausend Nadeln;14§auto Mille pointes;14 | x=-5424.2001953125 y=-2281.199951171875 | size=1 | links=#9651(auto Thousand Needles;96):12 #16050(auto Thousand Needles;160):2
+#1631 | auto Thousand Needles;15§auto Tausend Nadeln;15§auto Mille pointes;15 | x=-5654.30029296875 y=-2437.900146484375 | size=1 | links=#7504(auto Thousand Needles;76):6 #9117(auto Thousand Needles;91):6
+#1672 | auto Thousand Needles;16§auto Tausend Nadeln;16§auto Mille pointes;16 | x=-5775.80029296875 y=-3430.800048828125 | size=5 | links=#7401(auto Thousand Needles;75):50 #28273(central location;Ironstone Camp;Thousand Needles):67
+#1733 | auto Thousand Needles;17§auto Tausend Nadeln;17§auto Mille pointes;17 | x=-5631.7001953125 y=-2372.300048828125 | size=1 | links=#4989(auto Thousand Needles;55):4 #6772(auto Thousand Needles;69):5
+#1807 | auto Thousand Needles;18§auto Tausend Nadeln;18§auto Mille pointes;18 | x=-4510.80029296875 y=-992.7999877929688 | size=1 | links=#9019(auto Thousand Needles;90):57 #19163(auto Thousand Needles;194):84
+#1849 | passage;from;The Shimmering Flats;Thousand Needles;to;Tanaris§passage;von;Die schimmernde Ebene;Tausend Nadeln;nach;Tanaris§passage;de;The Shimmering Flats;Mille pointes;vers;Tanaris | x=-6831.2001953125 y=-3755.400146484375 | size=1 | links=#8590(auto Thousand Needles;85):23 #14785(passage;from;Tanaris;to;Thousand Needles):4
+#1879 | auto Thousand Needles;19§auto Tausend Nadeln;19§auto Mille pointes;19 | x=-5445.10009765625 y=-2273.400146484375 | size=1 | links=#13539(auto Thousand Needles;132):2 #20231(auto Thousand Needles;202):3
+#2058 | auto Thousand Needles;20§auto Tausend Nadeln;20§auto Mille pointes;20 | x=-5225.80029296875 y=-1978.900024414063 | size=1 | links=#1348(auto Thousand Needles;13):129 #45759(auto Thousand Needles;463):47 #45760(auto Thousand Needles;464):66
+#2059 | auto Thousand Needles;21§auto Tausend Nadeln;21§auto Mille pointes;21 | x=-5472.30029296875 y=-2370.5 | size=1 | links=#4608(auto Thousand Needles;48):12 #8356(auto Thousand Needles;84):8
+#2062 | auto Thousand Needles;22§auto Tausend Nadeln;22§auto Mille pointes;22 | x=-4589.89990234375 y=-1070.5 | size=1 | links=#3000(auto Thousand Needles;34):41 #9019(auto Thousand Needles;90):53
+#2070 | auto Thousand Needles;23§auto Tausend Nadeln;23§auto Mille pointes;23 | x=-5429.39990234375 y=-2462.199951171875 | size=1 | links=#21821(auto Thousand Needles;216):5 #28111(auto Thousand Needles;276):7
+#2074 | auto Thousand Needles;24§auto Tausend Nadeln;24§auto Mille pointes;24 | x=-5430.80029296875 y=-2387.60009765625 | size=1 | links=#17285(auto Thousand Needles;169):10 #21830(auto Thousand Needles;217):8
+#2128 | auto Thousand Needles;25§auto Tausend Nadeln;25§auto Mille pointes;25 | x=-5629.7001953125 y=-2473.800048828125 | size=1 | links=#10399(auto Thousand Needles;104):2 #14239(auto Thousand Needles;142):2
+#2233 | auto Thousand Needles;26§auto Tausend Nadeln;26§auto Mille pointes;26 | x=-5404.89990234375 y=-2531.199951171875 | size=1 | links=#5716(auto Thousand Needles;58):5 #19640(auto Thousand Needles;198):27
+#2316 | auto Thousand Needles;27§auto Tausend Nadeln;27§auto Mille pointes;27 | x=-5726.89990234375 y=-3139.199951171875 | size=1 | links=#25442(auto Thousand Needles;244):43 #25867(auto Thousand Needles;249):36
+#2463 | crossing;to;elevator;Thousand Needles§kreuzung;zum;fahrstuhl;Tausend Nadeln§traversée;vers;elevator;Mille pointes | x=-4968.39990234375 y=-1723.800048828125 | size=1 | links=#10107(auto Thousand Needles;101):44 #25884(auto Thousand Needles;250):50 #27727(auto Thousand Needles;266):59 #45634(auto Thousand Needles;340):67
+#2595 | auto Thousand Needles;28§auto Tausend Nadeln;28§auto Mille pointes;28 | x=-6735.7001953125 y=-3705.400146484375 | size=1 | links=#20801(auto Thousand Needles;206):35 #26287(auto Thousand Needles;253):33
+#2791 | auto Thousand Needles;29§auto Tausend Nadeln;29§auto Mille pointes;29 | x=-5429.30029296875 y=-2273.900146484375 | size=1 | links=#14156(auto Thousand Needles;141):3 #15236(auto Thousand Needles;149):3
+#2794 | auto Thousand Needles;30§auto Tausend Nadeln;30§auto Mille pointes;30 | x=-4667.30029296875 y=-1790.300048828125 | size=1 | links=#1079(auto Thousand Needles;10):16 #4129(auto Thousand Needles;41):13
+#2805 | auto Thousand Needles;31§auto Tausend Nadeln;31§auto Mille pointes;31 | x=-5441.39990234375 y=-2272.10009765625 | size=1 | links=#13539(auto Thousand Needles;132):1 #27738(auto Thousand Needles;267):2
+#2819 | auto Thousand Needles;32§auto Tausend Nadeln;32§auto Mille pointes;32 | x=-5402.60009765625 y=-2520.400146484375 | size=1 | links=#5716(auto Thousand Needles;58):5 #15968(auto Thousand Needles;159):3
+#2907 | auto Thousand Needles;33§auto Tausend Nadeln;33§auto Mille pointes;33 | x=-6244.7001953125 y=-3848.60009765625 | size=1 | links=#20846(auto Thousand Needles;207):11 c4452.1:13 c6730.1:7
+#3000 | auto Thousand Needles;34§auto Tausend Nadeln;34§auto Mille pointes;34 | x=-4624.7001953125 y=-1093 | size=1 | links=#2062(auto Thousand Needles;22):41 #15522(auto Thousand Needles;154):39
+#3029 | auto Thousand Needles;35§auto Tausend Nadeln;35§auto Mille pointes;35 | x=-5557.80029296875 y=-2472.900146484375 | size=1 | links=#12883(auto Thousand Needles;127):6 #27741(auto Thousand Needles;268):6
+#3054 | auto Thousand Needles;36§auto Tausend Nadeln;36§auto Mille pointes;36 | x=-5639.10009765625 y=-2474.199951171875 | size=1 | links=#4285(auto Thousand Needles;43):3 #13937(auto Thousand Needles;136):3
+#3421 | auto Thousand Needles;37§auto Tausend Nadeln;37§auto Mille pointes;37 | x=-5575.10009765625 y=-2350.60009765625 | size=1 | links=#9861(auto Thousand Needles;99):4 #13156(auto Thousand Needles;128):2
+#3503 | elevator;bridge;The Great Lift;Thousand Needles§fahrstuhl;brücke;Der große Aufzug;Tausend Nadeln§elevator;bridge;La Grande élévation;Mille pointes | x=-4627.39990234375 y=-1856.900024414063 | size=1 | links=#15660(auto Thousand Needles;156):9 #18338(pier;The Great Lift;Thousand Needles;top):36
+#3701 | auto Thousand Needles;38§auto Tausend Nadeln;38§auto Mille pointes;38 | x=-5569 y=-2227.199951171875 | size=1 | links=#4822(auto Thousand Needles;50):56 #20377(auto Thousand Needles;203):34
+#3709 | auto Thousand Needles;39§auto Tausend Nadeln;39§auto Mille pointes;39 | x=-5651.5 y=-2406.10009765625 | size=1 | links=#8833(auto Thousand Needles;86):5 #13378(auto Thousand Needles;131):8
+#4093 | auto Thousand Needles;40§auto Tausend Nadeln;40§auto Mille pointes;40 | x=-5649.2001953125 y=-2474.199951171875 | size=1 | links=#12076(auto Thousand Needles;117):3 #23393(auto Thousand Needles;228):3
+#4129 | auto Thousand Needles;41§auto Tausend Nadeln;41§auto Mille pointes;41 | x=-4657.80029296875 y=-1781 | size=1 | links=#2794(auto Thousand Needles;30):13 c6491.2:16
+#4242 | auto Thousand Needles;42§auto Tausend Nadeln;42§auto Mille pointes;42 | x=-5758.10009765625 y=-3263.5 | size=1 | links=#18771(auto Thousand Needles;190):31 #27463(auto Thousand Needles;265):28
+#4285 | auto Thousand Needles;43§auto Tausend Nadeln;43§auto Mille pointes;43 | x=-5642.7001953125 y=-2474.199951171875 | size=1 | links=#3054(auto Thousand Needles;36):3 #23393(auto Thousand Needles;228):3
+#4366 | auto Thousand Needles;44§auto Tausend Nadeln;44§auto Mille pointes;44 | x=-5490.80029296875 y=-2585.5 | size=5 | links=#8899(focus point;two;Thousand Needles):18 #24649(auto Thousand Needles;237):25
+#4445 | auto Thousand Needles;45§auto Tausend Nadeln;45§auto Mille pointes;45 | x=-5513.89990234375 y=-2422.10009765625 | size=1 | links=#11141(auto Thousand Needles;110):4 #21192(auto Thousand Needles;211):4
+#4453 | auto Thousand Needles;46§auto Tausend Nadeln;46§auto Mille pointes;46 | x=-5585.89990234375 y=-2360.900146484375 | size=1 | links=#10117(auto Thousand Needles;102):3 #15368(auto Thousand Needles;151):3
+#4520 | auto Thousand Needles;47§auto Tausend Nadeln;47§auto Mille pointes;47 | x=-5508.80029296875 y=-2415.699951171875 | size=1 | links=#11141(auto Thousand Needles;110):3 #27382(auto Thousand Needles;264):3
+#4608 | auto Thousand Needles;48§auto Tausend Nadeln;48§auto Mille pointes;48 | x=-5471 y=-2357.800048828125 | size=1 | links=#2059(auto Thousand Needles;21):12 #15883(auto Thousand Needles;157):11
+#4645 | auto Thousand Needles;49§auto Tausend Nadeln;49§auto Mille pointes;49 | x=-5582.89990234375 y=-3133.10009765625 | size=1 | links=#11904(auto Thousand Needles;116):56 #15513(auto Thousand Needles;153):109
+#4822 | auto Thousand Needles;50§auto Tausend Nadeln;50§auto Mille pointes;50 | x=-5513.89990234375 y=-2241.5 | size=1 | links=#3701(auto Thousand Needles;38):56 #13566(auto Thousand Needles;133):44 c4117.1:78
+#4921 | auto Thousand Needles;51§auto Tausend Nadeln;51§auto Mille pointes;51 | x=-4778.7001953125 y=-1318.700073242188 | size=1 | links=#20848(auto Thousand Needles;208):39 #23049(auto Thousand Needles;225):80
+#4925 | auto Thousand Needles;52§auto Tausend Nadeln;52§auto Mille pointes;52 | x=-5530.10009765625 y=-2464.10009765625 | size=1 | links=#6615(auto Thousand Needles;64):8 #14736(auto Thousand Needles;147):4
+#4955 | auto Thousand Needles;53§auto Tausend Nadeln;53§auto Mille pointes;53 | x=-5615.5 y=-2489 | size=1 | links=#6473(auto Thousand Needles;63):3 #17927(auto Thousand Needles;177):2
+#4984 | auto Thousand Needles;54§auto Tausend Nadeln;54§auto Mille pointes;54 | x=-5570 y=-2346 | size=1 | links=#9861(auto Thousand Needles;99):2 #16847(auto Thousand Needles;166):4
+#4989 | auto Thousand Needles;55§auto Tausend Nadeln;55§auto Mille pointes;55 | x=-5626.89990234375 y=-2372 | size=1 | links=#1733(auto Thousand Needles;17):4 #25692(auto Thousand Needles;247):4
+#5276 | auto Thousand Needles;56§auto Tausend Nadeln;56§auto Mille pointes;56 | x=-4876.89990234375 y=-1426.200073242188 | size=1 | links=#504(central location;Whitereach Post;Thousand Needles):53 #18941(auto Thousand Needles;192):61 #23049(auto Thousand Needles;225):65
+#5706 | auto Thousand Needles;57§auto Tausend Nadeln;57§auto Mille pointes;57 | x=-5695.30029296875 y=-3073.199951171875 | size=1 | links=#15551(auto Thousand Needles;155):20 #25867(auto Thousand Needles;249):39
+#5716 | auto Thousand Needles;58§auto Tausend Nadeln;58§auto Mille pointes;58 | x=-5403.7001953125 y=-2525.5 | size=1 | links=#2233(auto Thousand Needles;26):5 #2819(auto Thousand Needles;32):5
+#5796 | auto Thousand Needles;59§auto Tausend Nadeln;59§auto Mille pointes;59 | x=-5602.5 y=-2487.10009765625 | size=1 | links=#6285(auto Thousand Needles;62):4 #27988(auto Thousand Needles;272):4
+#5932 | auto Thousand Needles;60§auto Tausend Nadeln;60§auto Mille pointes;60 | x=-5776.10009765625 y=-3325.60009765625 | size=1 | links=#10208(auto Thousand Needles;103):41 #27463(auto Thousand Needles;265):36
+#6042 | passage;from;Thousand Needles;to;Feralas§passage;von;Tausend Nadeln;nach;Feralas§passage;de;Mille pointes;vers;Féralas | x=-4438.7001953125 y=-801.6000366210938 | size=1 | links=#23374(passage;from;Thalanaar;Feralas;to;Thousand Needles):5 #16110(auto Thousand Needles;161):1
+#6091 | auto Thousand Needles;61§auto Tausend Nadeln;61§auto Mille pointes;61 | x=-5519.5 y=-2452.60009765625 | size=1 | links=#6949(auto Thousand Needles;71):3 #11657(auto Thousand Needles;112):2
+#6285 | auto Thousand Needles;62§auto Tausend Nadeln;62§auto Mille pointes;62 | x=-5598.60009765625 y=-2486 | size=1 | links=#5796(auto Thousand Needles;59):4 #16516(auto Thousand Needles;164):5
+#6473 | auto Thousand Needles;63§auto Tausend Nadeln;63§auto Mille pointes;63 | x=-5614.10009765625 y=-2491.900146484375 | size=1 | links=#4955(auto Thousand Needles;53):3 #27988(auto Thousand Needles;272):8
+#6615 | auto Thousand Needles;64§auto Tausend Nadeln;64§auto Mille pointes;64 | x=-5537.89990234375 y=-2466.400146484375 | size=1 | links=#111(auto Thousand Needles;1):6 #4925(auto Thousand Needles;52):8
+#6622 | auto Thousand Needles;65§auto Tausend Nadeln;65§auto Mille pointes;65 | x=-4709.30029296875 y=-1099.5 | size=1 | links=#480(auto Thousand Needles;5):25 #15522(auto Thousand Needles;154):47 c4124.20:40
+#6702 | auto Thousand Needles;66§auto Tausend Nadeln;66§auto Mille pointes;66 | x=-5617.2001953125 y=-2372 | size=1 | links=#9442(auto Thousand Needles;95):4 #25692(auto Thousand Needles;247):5
+#6740 | auto Thousand Needles;67§auto Tausend Nadeln;67§auto Mille pointes;67 | x=-5449.30029296875 y=-2417.199951171875 | size=1 | links=#17285(auto Thousand Needles;169):25 c4878.1:7 c9551.1:9
+#6760 | auto Thousand Needles;68§auto Tausend Nadeln;68§auto Mille pointes;68 | x=-5547 y=-2333.900146484375 | size=5 | links=#8849(auto Thousand Needles;87):12 #11391(auto Thousand Needles;111):11
+#6772 | auto Thousand Needles;69§auto Tausend Nadeln;69§auto Mille pointes;69 | x=-5636.89990234375 y=-2372.10009765625 | size=1 | links=#1733(auto Thousand Needles;17):5 #16279(auto Thousand Needles;162):4
+#6931 | auto Thousand Needles;70§auto Tausend Nadeln;70§auto Mille pointes;70 | x=-5623.80029296875 y=-2478.900146484375 | size=1 | links=#150(auto Thousand Needles;2):2 #7957(auto Thousand Needles;78):2
+#6949 | auto Thousand Needles;71§auto Tausend Nadeln;71§auto Mille pointes;71 | x=-5518.7001953125 y=-2456.300048828125 | size=1 | links=#6091(auto Thousand Needles;61):3 #26424(auto Thousand Needles;254):2
+#6984 | auto Thousand Needles;72§auto Tausend Nadeln;72§auto Mille pointes;72 | x=-6637.30029296875 y=-3730.300048828125 | size=5 | links=#18124(auto Thousand Needles;181):56 #24782(auto Thousand Needles;239):101
+#7012 | pier;The Great Lift;Thousand Needles;down§anleger;Der große Aufzug;Tausend Nadeln;unten§pier;La Grande élévation;Mille pointes;bas | x=-4676.30029296875 y=-1853.5 | size=1 | links=#8433(elevator;waypoint):6 #20921(auto Thousand Needles;210):5
+#7077 | auto Thousand Needles;73§auto Tausend Nadeln;73§auto Mille pointes;73 | x=-5482.5 y=-2393 | size=5 | links=#12555(auto Thousand Needles;123):5 #27807(auto Thousand Needles;269):4
+#7309 | auto Thousand Needles;74§auto Tausend Nadeln;74§auto Mille pointes;74 | x=-5555.30029296875 y=-2734.900146484375 | size=1 | links=#17585(auto Thousand Needles;172):80 #18534(auto Thousand Needles;186):45 o175565.1:32
+#7401 | auto Thousand Needles;75§auto Tausend Nadeln;75§auto Mille pointes;75 | x=-5725.7001953125 y=-3439.400146484375 | size=5 | links=#1672(auto Thousand Needles;16):50 #12723(auto Thousand Needles;124):52 c4116.1:36
+#7504 | auto Thousand Needles;76§auto Tausend Nadeln;76§auto Mille pointes;76 | x=-5655.10009765625 y=-2444.699951171875 | size=1 | links=#1631(auto Thousand Needles;15):6 #17686(auto Thousand Needles;175):8
+#7956 | auto Thousand Needles;77§auto Tausend Nadeln;77§auto Mille pointes;77 | x=-5453.80029296875 y=-2282.199951171875 | size=5 | links=#10544(auto Thousand Needles;105):2 #23030(auto Thousand Needles;223):3
+#7957 | auto Thousand Needles;78§auto Tausend Nadeln;78§auto Mille pointes;78 | x=-5625.80029296875 y=-2477.10009765625 | size=1 | links=#6931(auto Thousand Needles;70):2 #10399(auto Thousand Needles;104):2
+#7990 | auto Thousand Needles;79§auto Tausend Nadeln;79§auto Mille pointes;79 | x=-5488.80029296875 y=-2398.5 | size=1 | links=#12555(auto Thousand Needles;123):2 #17633(auto Thousand Needles;173):5
+#8001 | auto Thousand Needles;80§auto Tausend Nadeln;80§auto Mille pointes;80 | x=-5653.2001953125 y=-2425.300048828125 | size=1 | links=#9117(auto Thousand Needles;91):6 #15105(auto Thousand Needles;148):6
+#8148 | auto Thousand Needles;81§auto Tausend Nadeln;81§auto Mille pointes;81 | x=-5282.60009765625 y=-2182.699951171875 | size=1 | links=#10763(auto Thousand Needles;108):76 #20981(focus point;Thousand Needles):67 #45615(auto Thousand Needles;322):71
+#8313 | auto Thousand Needles;82§auto Tausend Nadeln;82§auto Mille pointes;82 | x=-5520.80029296875 y=-2446.400146484375 | size=1 | links=#11657(auto Thousand Needles;112):3 #15506(auto Thousand Needles;152):2
+#8349 | auto Thousand Needles;83§auto Tausend Nadeln;83§auto Mille pointes;83 | x=-6193.7001953125 y=-3949.10009765625 | size=1 | links=#11771(auto Thousand Needles;113):13 #45581(auto Thousand Needles;289):76 c4630.1:12 c6626.1:15
+#8356 | auto Thousand Needles;84§auto Tausend Nadeln;84§auto Mille pointes;84 | x=-5473.60009765625 y=-2379.400146484375 | size=1 | links=#2059(auto Thousand Needles;21):8 #14127(auto Thousand Needles;140):4
+#8388 | pier;elevator;Freewind Post;Thousand Needles;top§anleger;fahrstuhl;Freiwindposten;Tausend Nadeln;oben§pier;elevator;Freewind Post;Mille pointes;top | x=-5403.89990234375 y=-2499.400146484375 | size=1 | links=#824(auto Thousand Needles;8):4 #12411(elevator;Freewind Post;Thousand Needles):7
+#8433 | elevator;waypoint§fahrstuhl;wegpunkt§elevator;waypoint | x=-4670.89990234375 y=-1850.5 | size=1 | links=#7012(pier;The Great Lift;Thousand Needles;down):6 #18338(pier;The Great Lift;Thousand Needles;top):7
+#8590 | auto Thousand Needles;85§auto Tausend Nadeln;85§auto Mille pointes;85 | x=-6807.89990234375 y=-3755.60009765625 | size=1 | links=#1849(passage;from;The Shimmering Flats;Thousand Needles;to;Tanaris):23 #9807(auto Thousand Needles;98):19
+#8833 | auto Thousand Needles;86§auto Tausend Nadeln;86§auto Mille pointes;86 | x=-5652 y=-2412 | size=1 | links=#3709(auto Thousand Needles;39):5 #15105(auto Thousand Needles;148):7
+#8849 | auto Thousand Needles;87§auto Tausend Nadeln;87§auto Mille pointes;87 | x=-5558.5 y=-2339.60009765625 | size=1 | links=#6760(auto Thousand Needles;68):12 #16847(auto Thousand Needles;166):9
+#8899 | focus point;two;Thousand Needles§bündelpunkt;zwei;Tausend Nadeln§focus point;deux;Mille pointes | x=-5505.60009765625 y=-2596.800048828125 | size=1 | links=#4366(auto Thousand Needles;44):18 #17585(auto Thousand Needles;172):74 #24559(auto Thousand Needles;236):28
+#8981 | auto Thousand Needles;88§auto Tausend Nadeln;88§auto Mille pointes;88 | x=-6332.80029296875 y=-3703.900146484375 | size=1 | links=#17652(auto Thousand Needles;174):97 #25063(auto Thousand Needles;241):120
+#8982 | auto Thousand Needles;89§auto Tausend Nadeln;89§auto Mille pointes;89 | x=-5655.30029296875 y=-2469.800048828125 | size=1 | links=#13955(auto Thousand Needles;137):4 #17262(auto Thousand Needles;168):5
+#9019 | auto Thousand Needles;90§auto Tausend Nadeln;90§auto Mille pointes;90 | x=-4553 y=-1032.300048828125 | size=1 | links=#1807(auto Thousand Needles;18):57 #2062(auto Thousand Needles;22):53 #45840(auto Thousand Needles;541):25 #45849(auto Thousand Needles;550):24
+#9117 | auto Thousand Needles;91§auto Tausend Nadeln;91§auto Mille pointes;91 | x=-5653.60009765625 y=-2431.60009765625 | size=1 | links=#1631(auto Thousand Needles;15):6 #8001(auto Thousand Needles;80):6
+#9145 | auto Thousand Needles;92§auto Tausend Nadeln;92§auto Mille pointes;92 | x=-5717.30029296875 y=-2353 | size=1 | links=#1117(auto Thousand Needles;12):78 #25902(auto Thousand Needles;251):71
+#9353 | auto Thousand Needles;93§auto Tausend Nadeln;93§auto Mille pointes;93 | x=-4836.39990234375 y=-1819.099975585938 | size=1 | links=#13922(auto Thousand Needles;135):61 #28070(auto Thousand Needles;275):54
+#9397 | auto Thousand Needles;94§auto Tausend Nadeln;94§auto Mille pointes;94 | x=-5656.30029296875 y=-2460.10009765625 | size=1 | links=#17262(auto Thousand Needles;168):4 #17686(auto Thousand Needles;175):7
+#9442 | auto Thousand Needles;95§auto Tausend Nadeln;95§auto Mille pointes;95 | x=-5612.89990234375 y=-2371.699951171875 | size=1 | links=#6702(auto Thousand Needles;66):4 #17899(auto Thousand Needles;176):4
+#9651 | auto Thousand Needles;96§auto Tausend Nadeln;96§auto Mille pointes;96 | x=-5418.7001953125 y=-2292.5 | size=1 | links=#1625(auto Thousand Needles;14):12 #16867(auto Thousand Needles;167):6
+#9742 | auto Thousand Needles;97§auto Tausend Nadeln;97§auto Mille pointes;97 | x=-5523 y=-2462.199951171875 | size=1 | links=#14736(auto Thousand Needles;147):2 #26424(auto Thousand Needles;254):5
+#9807 | auto Thousand Needles;98§auto Tausend Nadeln;98§auto Mille pointes;98 | x=-6791.7001953125 y=-3743.900146484375 | size=1 | links=#8590(auto Thousand Needles;85):19 #26287(auto Thousand Needles;253):49
+#9861 | auto Thousand Needles;99§auto Tausend Nadeln;99§auto Mille pointes;99 | x=-5572.10009765625 y=-2347.900146484375 | size=1 | links=#3421(auto Thousand Needles;37):4 #4984(auto Thousand Needles;54):2
+#9898 | auto Thousand Needles;100§auto Tausend Nadeln;100§auto Mille pointes;100 | x=-5411.7001953125 y=-2488 | size=1 | links=#18182(auto Thousand Needles;182):5 #22469(auto Thousand Needles;220):5
+#10107 | auto Thousand Needles;101§auto Tausend Nadeln;101§auto Mille pointes;101 | x=-4938.5 y=-1756.400024414063 | size=1 | links=#2463(crossing;to;elevator;Thousand Needles):44 #10651(auto Thousand Needles;107):44
+#10117 | auto Thousand Needles;102§auto Tausend Nadeln;102§auto Mille pointes;102 | x=-5588.89990234375 y=-2362.699951171875 | size=1 | links=#4453(auto Thousand Needles;46):3 #18245(auto Thousand Needles;184):3
+#10208 | auto Thousand Needles;103§auto Tausend Nadeln;103§auto Mille pointes;103 | x=-5802.30029296875 y=-3357.300048828125 | size=1 | links=#5932(auto Thousand Needles;60):41 #24132(auto Thousand Needles;233):38
+#10399 | auto Thousand Needles;104§auto Tausend Nadeln;104§auto Mille pointes;104 | x=-5627.60009765625 y=-2475.400146484375 | size=1 | links=#2128(auto Thousand Needles;25):2 #7957(auto Thousand Needles;78):2
+#10544 | auto Thousand Needles;105§auto Tausend Nadeln;105§auto Mille pointes;105 | x=-5451.80029296875 y=-2280 | size=1 | links=#7956(auto Thousand Needles;77):2 #19673(auto Thousand Needles;199):2
+#10586 | auto Thousand Needles;106§auto Tausend Nadeln;106§auto Mille pointes;106 | x=-5642.10009765625 y=-2591.5 | size=1 | links=#11814(auto Thousand Needles;115):38 #17938(auto Thousand Needles;178):41
+#10651 | auto Thousand Needles;107§auto Tausend Nadeln;107§auto Mille pointes;107 | x=-4906.30029296875 y=-1787.300048828125 | size=1 | links=#10107(auto Thousand Needles;101):44 #28070(auto Thousand Needles;275):24
+#10763 | auto Thousand Needles;108§auto Tausend Nadeln;108§auto Mille pointes;108 | x=-5278.30029296875 y=-2106.60009765625 | size=1 | links=#8148(auto Thousand Needles;81):76 #45760(auto Thousand Needles;464):71
+#11005 | auto Thousand Needles;109§auto Tausend Nadeln;109§auto Mille pointes;109 | x=-5721.5 y=-2492 | size=1 | links=#21221(auto Thousand Needles;212):58 #25902(auto Thousand Needles;251):68 c4126.17:46 c4126.18:13
+#11141 | auto Thousand Needles;110§auto Tausend Nadeln;110§auto Mille pointes;110 | x=-5511 y=-2419 | size=1 | links=#4445(auto Thousand Needles;45):4 #4520(auto Thousand Needles;47):3
+#11391 | auto Thousand Needles;111§auto Tausend Nadeln;111§auto Mille pointes;111 | x=-5537.60009765625 y=-2328.10009765625 | size=5 | links=#6760(auto Thousand Needles;68):11 #13566(auto Thousand Needles;133):46
+#11657 | auto Thousand Needles;112§auto Tausend Nadeln;112§auto Mille pointes;112 | x=-5520.10009765625 y=-2449.800048828125 | size=1 | links=#6091(auto Thousand Needles;61):2 #8313(auto Thousand Needles;82):3
+#11771 | auto Thousand Needles;113§auto Tausend Nadeln;113§auto Mille pointes;113 | x=-6205.80029296875 y=-3954.199951171875 | size=1 | links=#8349(auto Thousand Needles;83):13 c4507.1:28 c4706.1:15 c6495.1:19
+#11801 | auto Thousand Needles;114§auto Tausend Nadeln;114§auto Mille pointes;114 | x=-4964.10009765625 y=-1634.700073242188 | size=1 | links=#22912(auto Thousand Needles;222):45 #25884(auto Thousand Needles;250):47
+#11814 | auto Thousand Needles;115§auto Tausend Nadeln;115§auto Mille pointes;115 | x=-5606.2001953125 y=-2577.699951171875 | size=1 | links=#10586(auto Thousand Needles;106):38 #25011(auto Thousand Needles;240):47
+#11904 | auto Thousand Needles;116§auto Tausend Nadeln;116§auto Mille pointes;116 | x=-5579.60009765625 y=-3189.699951171875 | size=1 | links=#4645(auto Thousand Needles;49):56 #12174(auto Thousand Needles;119):95
+#12076 | auto Thousand Needles;117§auto Tausend Nadeln;117§auto Mille pointes;117 | x=-5652.80029296875 y=-2474.199951171875 | size=1 | links=#4093(auto Thousand Needles;40):3 #13955(auto Thousand Needles;137):2
+#12160 | auto Thousand Needles;118§auto Tausend Nadeln;118§auto Mille pointes;118 | x=-5650.39990234375 y=-2390.900146484375 | size=1 | links=#13378(auto Thousand Needles;131):6 #26642(auto Thousand Needles;256):6
+#12174 | auto Thousand Needles;119§auto Tausend Nadeln;119§auto Mille pointes;119 | x=-5560.80029296875 y=-3283.400146484375 | size=1 | links=#11904(auto Thousand Needles;116):95 #21746(auto Thousand Needles;215):76 c4249.18:44
+#12355 | auto Thousand Needles;120§auto Tausend Nadeln;120§auto Mille pointes;120 | x=-5518.39990234375 y=-2427.5 | size=1 | links=#21192(auto Thousand Needles;211):2 #24072(auto Thousand Needles;231):3
+#12411 | elevator;Freewind Post;Thousand Needles§fahrstuhl;Freiwindposten;Tausend Nadeln§elevator;Freewind Post;Mille pointes | x=-5399.2001953125 y=-2504.900146484375 | size=1 | links=#8388(pier;elevator;Freewind Post;Thousand Needles;top):7 #16611(pier;elevator;Freewind Post;Thousand Needles;down):5
+#12464 | auto Thousand Needles;121§auto Tausend Nadeln;121§auto Mille pointes;121 | x=-5458.30029296875 y=-2451.900146484375 | size=1 | links=#17296(auto Thousand Needles;170):10 #25848(central location;Freewind Post;Thousand Needles):31 #28111(auto Thousand Needles;276):24 #28622(s;u;Mailbox;Thousand Needles):4 c4875.1:21 c4878.1:32 c10537.1:9 c11117.1:7 o176115.1:5
+#12480 | auto Thousand Needles;122§auto Tausend Nadeln;122§auto Mille pointes;122 | x=-5400.60009765625 y=-2511.400146484375 | size=1 | links=#16611(pier;elevator;Freewind Post;Thousand Needles;down):1 #26695(auto Thousand Needles;257):1
+#12555 | auto Thousand Needles;123§auto Tausend Nadeln;123§auto Mille pointes;123 | x=-5486.5 y=-2396.699951171875 | size=1 | links=#7077(auto Thousand Needles;73):5 #7990(auto Thousand Needles;79):2
+#12723 | auto Thousand Needles;124§auto Tausend Nadeln;124§auto Mille pointes;124 | x=-5674.39990234375 y=-3452.60009765625 | size=5 | links=#7401(auto Thousand Needles;75):52 #26769(auto Thousand Needles;258):45
+#12825 | auto Thousand Needles;125§auto Tausend Nadeln;125§auto Mille pointes;125 | x=-4699.7001953125 y=-1849.200073242188 | size=1 | links=#23371(auto Thousand Needles;227):13 #28042(auto Thousand Needles;274):19
+#12882 | auto Thousand Needles;126§auto Tausend Nadeln;126§auto Mille pointes;126 | x=-5572.2001953125 y=-2477.400146484375 | size=1 | links=#12883(auto Thousand Needles;127):8 #19042(auto Thousand Needles;193):9
+#12883 | auto Thousand Needles;127§auto Tausend Nadeln;127§auto Mille pointes;127 | x=-5563.60009765625 y=-2474.800048828125 | size=1 | links=#3029(auto Thousand Needles;35):6 #12882(auto Thousand Needles;126):8
+#13156 | auto Thousand Needles;128§auto Tausend Nadeln;128§auto Mille pointes;128 | x=-5577.2001953125 y=-2352.5 | size=1 | links=#3421(auto Thousand Needles;37):2 #13967(auto Thousand Needles;138):3
+#13266 | auto Thousand Needles;129§auto Tausend Nadeln;129§auto Mille pointes;129 | x=-4724.80029296875 y=-1808 | size=1 | links=#26822(auto Thousand Needles;259):30 #28042(auto Thousand Needles;274):28
+#13365 | auto Thousand Needles;130§auto Tausend Nadeln;130§auto Mille pointes;130 | x=-5453.60009765625 y=-2548.5 | size=1 | links=#19640(auto Thousand Needles;198):24 #24649(auto Thousand Needles;237):27
+#13378 | auto Thousand Needles;131§auto Tausend Nadeln;131§auto Mille pointes;131 | x=-5650.89990234375 y=-2397.300048828125 | size=1 | links=#3709(auto Thousand Needles;39):8 #12160(auto Thousand Needles;118):6
+#13539 | auto Thousand Needles;132§auto Tausend Nadeln;132§auto Mille pointes;132 | x=-5443.30029296875 y=-2272.5 | size=1 | links=#1879(auto Thousand Needles;19):2 #2805(auto Thousand Needles;31):1
+#13566 | auto Thousand Needles;133§auto Tausend Nadeln;133§auto Mille pointes;133 | x=-5530.2001953125 y=-2282.5 | size=5 | links=#4822(auto Thousand Needles;50):44 #11391(auto Thousand Needles;111):46
+#13675 | central location;Mirage Raceway;Thousand Needles§zentralpunkt;Illusionenrennbahn;Tausend Nadeln§emplacement central;Piste des mirages;Mille pointes | x=-6220.10009765625 y=-3899.60009765625 | size=1 | links=#45601(auto Thousand Needles;308):30 c4453.1:29 c4507.1:30 c6548.1:39
+#13699 | auto Thousand Needles;134§auto Tausend Nadeln;134§auto Mille pointes;134 | x=-5618.39990234375 y=-2485 | size=1 | links=#17927(auto Thousand Needles;177):2 #19826(auto Thousand Needles;200):2
+#13892 | Nag'zehn;Thousand Needles;1;67.84;64.34§Nag'zehn;Tausend Nadeln;1;67.84;64.34§Nag'zehn;Mille pointes;1;67.84;64.34 | x=-5853.162305280964 y=-3418.710577677091 | size=1
+#13922 | auto Thousand Needles;135§auto Tausend Nadeln;135§auto Mille pointes;135 | x=-4783.10009765625 y=-1788.300048828125 | size=1 | links=#9353(auto Thousand Needles;93):61 #26822(auto Thousand Needles;259):30 #45858(auto Thousand Needles;559):23
+#13937 | auto Thousand Needles;136§auto Tausend Nadeln;136§auto Mille pointes;136 | x=-5636 y=-2474.199951171875 | size=1 | links=#3054(auto Thousand Needles;36):3 #14239(auto Thousand Needles;142):3
+#13955 | auto Thousand Needles;137§auto Tausend Nadeln;137§auto Mille pointes;137 | x=-5655.30029296875 y=-2474.199951171875 | size=1 | links=#8982(auto Thousand Needles;89):4 #12076(auto Thousand Needles;117):2
+#13967 | auto Thousand Needles;138§auto Tausend Nadeln;138§auto Mille pointes;138 | x=-5579.10009765625 y=-2355.10009765625 | size=1 | links=#13156(auto Thousand Needles;128):3 #25308(auto Thousand Needles;243):3
+#14028 | auto Thousand Needles;139§auto Tausend Nadeln;139§auto Mille pointes;139 | x=-5665.7001953125 y=-3013.10009765625 | size=1 | links=#14428(auto Thousand Needles;144):78 #15551(auto Thousand Needles;155):46
+#14127 | auto Thousand Needles;140§auto Tausend Nadeln;140§auto Mille pointes;140 | x=-5473.60009765625 y=-2384 | size=1 | links=#8356(auto Thousand Needles;84):4 #19310(auto Thousand Needles;195):4
+#14156 | auto Thousand Needles;141§auto Tausend Nadeln;141§auto Mille pointes;141 | x=-5428.30029296875 y=-2277.300048828125 | size=1 | links=#2791(auto Thousand Needles;29):3 #16050(auto Thousand Needles;160):2
+#14239 | auto Thousand Needles;142§auto Tausend Nadeln;142§auto Mille pointes;142 | x=-5632.60009765625 y=-2474.199951171875 | size=1 | links=#2128(auto Thousand Needles;25):2 #13937(auto Thousand Needles;136):3
+#14341 | auto Thousand Needles;143§auto Tausend Nadeln;143§auto Mille pointes;143 | x=-5549.60009765625 y=-2831.10009765625 | size=1 | links=#18534(auto Thousand Needles;186):52 #24076(auto Thousand Needles;232):75 #45763(auto Thousand Needles;466):20
+#14428 | auto Thousand Needles;144§auto Tausend Nadeln;144§auto Mille pointes;144 | x=-5620.5 y=-2948.699951171875 | size=1 | links=#14028(auto Thousand Needles;139):78 #15513(auto Thousand Needles;153):79 #24076(auto Thousand Needles;232):62
+#14458 | auto Thousand Needles;145§auto Tausend Nadeln;145§auto Mille pointes;145 | x=-5462.89990234375 y=-2306.900146484375 | size=1 | links=#18020(auto Thousand Needles;179):11 #23498(auto Thousand Needles;229):8
+#14525 | auto Thousand Needles;146§auto Tausend Nadeln;146§auto Mille pointes;146 | x=-5650.2001953125 y=-2381.800048828125 | size=1 | links=#25961(auto Thousand Needles;252):3 #26642(auto Thousand Needles;256):2
+#14736 | auto Thousand Needles;147§auto Tausend Nadeln;147§auto Mille pointes;147 | x=-5525.89990234375 y=-2462.300048828125 | size=1 | links=#4925(auto Thousand Needles;52):4 #9742(auto Thousand Needles;97):2
+#15105 | auto Thousand Needles;148§auto Tausend Nadeln;148§auto Mille pointes;148 | x=-5652.5 y=-2419.10009765625 | size=1 | links=#8001(auto Thousand Needles;80):6 #8833(auto Thousand Needles;86):7
+#15236 | auto Thousand Needles;149§auto Tausend Nadeln;149§auto Mille pointes;149 | x=-5433.10009765625 y=-2274 | size=1 | links=#2791(auto Thousand Needles;29):3 #18072(auto Thousand Needles;180):3
+#15330 | auto Thousand Needles;150§auto Tausend Nadeln;150§auto Mille pointes;150 | x=-5120.80029296875 y=-1757.099975585938 | size=1 | links=#18694(auto Thousand Needles;188):83 #27727(auto Thousand Needles;266):109 #45635(auto Thousand Needles;341):45 #45853(auto Thousand Needles;554):49
+#15368 | auto Thousand Needles;151§auto Tausend Nadeln;151§auto Mille pointes;151 | x=-5583.60009765625 y=-2358.800048828125 | size=1 | links=#4453(auto Thousand Needles;46):3 #25308(auto Thousand Needles;243):2
+#15506 | auto Thousand Needles;152§auto Tausend Nadeln;152§auto Mille pointes;152 | x=-5520.89990234375 y=-2444.400146484375 | size=1 | links=#959(auto Thousand Needles;9):3 #8313(auto Thousand Needles;82):2
+#15513 | auto Thousand Needles;153§auto Tausend Nadeln;153§auto Mille pointes;153 | x=-5611.80029296875 y=-3027.699951171875 | size=1 | links=#4645(auto Thousand Needles;49):109 #14428(auto Thousand Needles;144):79
+#15522 | auto Thousand Needles;154§auto Tausend Nadeln;154§auto Mille pointes;154 | x=-4662.30029296875 y=-1103.700073242188 | size=1 | links=#3000(auto Thousand Needles;34):39 #6622(auto Thousand Needles;65):47
+#15551 | auto Thousand Needles;155§auto Tausend Nadeln;155§auto Mille pointes;155 | x=-5685.5 y=-3055 | size=1 | links=#5706(auto Thousand Needles;57):20 #14028(auto Thousand Needles;139):46
+#15660 | auto Thousand Needles;156§auto Tausend Nadeln;156§auto Mille pointes;156 | x=-4618.39990234375 y=-1858.599975585938 | size=1 | links=#3503(elevator;bridge;The Great Lift;Thousand Needles):9 #27933(auto Thousand Needles;271):22 c10079.1:6
+#15883 | auto Thousand Needles;157§auto Tausend Nadeln;157§auto Mille pointes;157 | x=-5469.10009765625 y=-2346.699951171875 | size=1 | links=#4608(auto Thousand Needles;48):11 #28015(auto Thousand Needles;273):19
+#15887 | auto Thousand Needles;158§auto Tausend Nadeln;158§auto Mille pointes;158 | x=-5607.60009765625 y=-3381.800048828125 | size=1 | links=#21746(auto Thousand Needles;215):33 #26769(auto Thousand Needles;258):88 #45603(auto Thousand Needles;310):58
+#15968 | auto Thousand Needles;159§auto Tausend Nadeln;159§auto Mille pointes;159 | x=-5402 y=-2517.199951171875 | size=1 | links=#2819(auto Thousand Needles;32):3 #26695(auto Thousand Needles;257):4
+#16050 | auto Thousand Needles;160§auto Tausend Nadeln;160§auto Mille pointes;160 | x=-5426.30029296875 y=-2279.5 | size=1 | links=#1625(auto Thousand Needles;14):2 #14156(auto Thousand Needles;141):2
+#16110 | auto Thousand Needles;161§auto Tausend Nadeln;161§auto Mille pointes;161 | x=-4437.5 y=-803.1000366210938 | size=1 | links=#6042(passage;from;Thousand Needles;to;Feralas):1 #26844(auto Thousand Needles;261):77
+#16279 | auto Thousand Needles;162§auto Tausend Nadeln;162§auto Mille pointes;162 | x=-5641.30029296875 y=-2372 | size=1 | links=#6772(auto Thousand Needles;69):4 #21744(auto Thousand Needles;214):4
+#16481 | auto Thousand Needles;163§auto Tausend Nadeln;163§auto Mille pointes;163 | x=-4678.30029296875 y=-1793.900024414063 | size=1 | links=#1079(auto Thousand Needles;10):7 #25646(auto Thousand Needles;246):11
+#16516 | auto Thousand Needles;164§auto Tausend Nadeln;164§auto Mille pointes;164 | x=-5593.10009765625 y=-2483.800048828125 | size=1 | links=#6285(auto Thousand Needles;62):5 #25225(auto Thousand Needles;242):6
+#16604 | auto Thousand Needles;165§auto Tausend Nadeln;165§auto Mille pointes;165 | x=-4732.7001953125 y=-1143.300048828125 | size=1 | links=#480(auto Thousand Needles;5):25 #21272(auto Thousand Needles;213):27
+#16611 | pier;elevator;Freewind Post;Thousand Needles;down§anleger;fahrstuhl;Freiwindposten;Tausend Nadeln;unten§pier;elevator;Freewind Post;Mille pointes;bas | x=-5400.39990234375 y=-2510.199951171875 | size=1 | links=#12411(elevator;Freewind Post;Thousand Needles):5 #12480(auto Thousand Needles;122):1
+#16847 | auto Thousand Needles;166§auto Tausend Nadeln;166§auto Mille pointes;166 | x=-5566.89990234375 y=-2343.199951171875 | size=1 | links=#4984(auto Thousand Needles;54):4 #8849(auto Thousand Needles;87):9
+#16867 | auto Thousand Needles;167§auto Tausend Nadeln;167§auto Mille pointes;167 | x=-5415.2001953125 y=-2297.800048828125 | size=1 | links=#9651(auto Thousand Needles;96):6 #18920(auto Thousand Needles;191):3
+#17238 | attention;The Great Lift;Horde§achtung;Der große Aufzug;horde§attention;La Grande élévation;Horde | x=-4572.80029296875 y=-1861.800048828125 | size=1 | links=#17746(passage;from;The Great Lift;Thousand Needles;to;The Barrens):6 #27933(auto Thousand Needles;271):24
+#17262 | auto Thousand Needles;168§auto Tausend Nadeln;168§auto Mille pointes;168 | x=-5656.5 y=-2464.60009765625 | size=1 | links=#8982(auto Thousand Needles;89):5 #9397(auto Thousand Needles;94):4
+#17285 | auto Thousand Needles;169§auto Tausend Nadeln;169§auto Mille pointes;169 | x=-5432.30029296875 y=-2398.10009765625 | size=1 | links=#2074(auto Thousand Needles;24):10 #6740(auto Thousand Needles;67):25 #27823(auto Thousand Needles;270):13 c10539.1:9 c9525.14:8
+#17296 | auto Thousand Needles;170§auto Tausend Nadeln;170§auto Mille pointes;170 | x=-5467.5 y=-2456.199951171875 | size=1 | links=#12464(auto Thousand Needles;121):10 c11116.1:11
+#17388 | auto Thousand Needles;171§auto Tausend Nadeln;171§auto Mille pointes;171 | x=-5649.7001953125 y=-2372.60009765625 | size=1 | links=#21744(auto Thousand Needles;214):4 #25961(auto Thousand Needles;252):5
+#17585 | auto Thousand Needles;172§auto Tausend Nadeln;172§auto Mille pointes;172 | x=-5505.89990234375 y=-2670.900146484375 | size=1 | links=#7309(auto Thousand Needles;74):80 #8899(focus point;two;Thousand Needles):74 #45614(auto Thousand Needles;321):39
+#17633 | auto Thousand Needles;173§auto Tausend Nadeln;173§auto Mille pointes;173 | x=-5493.10009765625 y=-2401.400146484375 | size=1 | links=#7990(auto Thousand Needles;79):5 #23174(auto Thousand Needles;226):4
+#17652 | auto Thousand Needles;174§auto Tausend Nadeln;174§auto Mille pointes;174 | x=-6235.80029296875 y=-3712.60009765625 | size=5 | links=#8981(auto Thousand Needles;88):97 #18577(auto Thousand Needles;187):117 #26826(auto Thousand Needles;260):117
+#17686 | auto Thousand Needles;175§auto Tausend Nadeln;175§auto Mille pointes;175 | x=-5655.7001953125 y=-2452.900146484375 | size=1 | links=#7504(auto Thousand Needles;76):8 #9397(auto Thousand Needles;94):7
+#17746 | passage;from;The Great Lift;Thousand Needles;to;The Barrens§passage;von;Der große Aufzug;Tausend Nadeln;nach;Das Brachland§passage;de;La Grande élévation;Mille pointes;vers;Les Tarides | x=-4566.89990234375 y=-1859.599975585938 | size=1 | links=#2787(passage;from;Southern Gold Road;The Barrens;to;Thousand Needles;attention;Horde):1 #17238(attention;The Great Lift;Horde):6
+#17899 | auto Thousand Needles;176§auto Tausend Nadeln;176§auto Mille pointes;176 | x=-5608.80029296875 y=-2371.199951171875 | size=1 | links=#9442(auto Thousand Needles;95):4 #19941(auto Thousand Needles;201):3
+#17927 | auto Thousand Needles;177§auto Tausend Nadeln;177§auto Mille pointes;177 | x=-5616.89990234375 y=-2487.199951171875 | size=1 | links=#4955(auto Thousand Needles;53):2 #13699(auto Thousand Needles;134):2
+#17938 | auto Thousand Needles;178§auto Tausend Nadeln;178§auto Mille pointes;178 | x=-5683.30029296875 y=-2596.199951171875 | size=1 | links=#10586(auto Thousand Needles;106):41 #21221(auto Thousand Needles;212):55
+#18020 | auto Thousand Needles;179§auto Tausend Nadeln;179§auto Mille pointes;179 | x=-5464.39990234375 y=-2318 | size=1 | links=#14458(auto Thousand Needles;145):11 #28015(auto Thousand Needles;273):9
+#18072 | auto Thousand Needles;180§auto Tausend Nadeln;180§auto Mille pointes;180 | x=-5436.5 y=-2274 | size=1 | links=#15236(auto Thousand Needles;149):3 #27738(auto Thousand Needles;267):2
+#18124 | auto Thousand Needles;181§auto Tausend Nadeln;181§auto Mille pointes;181 | x=-6679.7001953125 y=-3693.199951171875 | size=1 | links=#6984(auto Thousand Needles;72):56 #20801(auto Thousand Needles;206):22
+#18182 | auto Thousand Needles;182§auto Tausend Nadeln;182§auto Mille pointes;182 | x=-5408.60009765625 y=-2492.5 | size=1 | links=#824(auto Thousand Needles;8):4 #9898(auto Thousand Needles;100):5
+#18226 | auto Thousand Needles;183§auto Tausend Nadeln;183§auto Mille pointes;183 | x=-5594.7001953125 y=-2366.400146484375 | size=1 | links=#18245(auto Thousand Needles;184):3 #26464(auto Thousand Needles;255):3
+#18245 | auto Thousand Needles;184§auto Tausend Nadeln;184§auto Mille pointes;184 | x=-5592.10009765625 y=-2364.800048828125 | size=1 | links=#10117(auto Thousand Needles;102):3 #18226(auto Thousand Needles;183):3
+#18302 | auto Thousand Needles;185§auto Tausend Nadeln;185§auto Mille pointes;185 | x=-5602 y=-2369.900146484375 | size=1 | links=#19941(auto Thousand Needles;201):3 #26464(auto Thousand Needles;255):4
+#18338 | pier;The Great Lift;Thousand Needles;top§anleger;Der große Aufzug;Tausend Nadeln;oben§pier;La Grande élévation;Mille pointes;top | x=-4663.30029296875 y=-1852.099975585938 | size=1 | links=#3503(elevator;bridge;The Great Lift;Thousand Needles):36 #8433(elevator;waypoint):7
+#18534 | auto Thousand Needles;186§auto Tausend Nadeln;186§auto Mille pointes;186 | x=-5546.2001953125 y=-2779 | size=1 | links=#7309(auto Thousand Needles;74):45 #14341(auto Thousand Needles;143):52
+#18577 | auto Thousand Needles;187§auto Tausend Nadeln;187§auto Mille pointes;187 | x=-6118.30029296875 y=-3710.900146484375 | size=5 | links=#17652(auto Thousand Needles;174):117 #28502(auto Thousand Needles;278):110 c4140.3:106
+#18694 | auto Thousand Needles;188§auto Tausend Nadeln;188§auto Mille pointes;188 | x=-5189.5 y=-1804.800048828125 | size=1 | links=#1348(auto Thousand Needles;13):71 #15330(auto Thousand Needles;150):83
+#18761 | auto Thousand Needles;189§auto Tausend Nadeln;189§auto Mille pointes;189 | x=-5521.80029296875 y=-2437.199951171875 | size=1 | links=#959(auto Thousand Needles;9):3 #23658(auto Thousand Needles;230):2
+#18771 | auto Thousand Needles;190§auto Tausend Nadeln;190§auto Mille pointes;190 | x=-5744.2001953125 y=-3235.60009765625 | size=1 | links=#4242(auto Thousand Needles;42):31 #25442(auto Thousand Needles;244):54
+#18920 | auto Thousand Needles;191§auto Tausend Nadeln;191§auto Mille pointes;191 | x=-5415.60009765625 y=-2301.300048828125 | size=1 | links=#16867(auto Thousand Needles;167):3 #20912(auto Thousand Needles;209):7
+#18941 | auto Thousand Needles;192§auto Tausend Nadeln;192§auto Mille pointes;192 | x=-4900.30029296875 y=-1483.099975585938 | size=1 | links=#5276(auto Thousand Needles;56):61 #26858(auto Thousand Needles;262):77
+#19042 | auto Thousand Needles;193§auto Tausend Nadeln;193§auto Mille pointes;193 | x=-5580.89990234375 y=-2480.10009765625 | size=1 | links=#12882(auto Thousand Needles;126):9 #25225(auto Thousand Needles;242):6
+#19163 | auto Thousand Needles;194§auto Tausend Nadeln;194§auto Mille pointes;194 | x=-4435.80029296875 y=-953.9000244140625 | size=1 | links=#1807(auto Thousand Needles;18):84 #26844(auto Thousand Needles;261):104 c4249.30:27
+#19310 | auto Thousand Needles;195§auto Tausend Nadeln;195§auto Mille pointes;195 | x=-5474 y=-2388.10009765625 | size=1 | links=#14127(auto Thousand Needles;140):4 #27807(auto Thousand Needles;269):4
+#19524 | auto Thousand Needles;196§auto Tausend Nadeln;196§auto Mille pointes;196 | x=-4687.60009765625 y=-1786.700073242188 | size=1 | links=#25646(auto Thousand Needles;246):5 o19861.1:6
+#19595 | auto Thousand Needles;197§auto Tausend Nadeln;197§auto Mille pointes;197 | x=-5460.7001953125 y=-2293.60009765625 | size=1 | links=#23498(auto Thousand Needles;229):5 #24754(auto Thousand Needles;238):7
+#19640 | auto Thousand Needles;198§auto Tausend Nadeln;198§auto Mille pointes;198 | x=-5431.2001953125 y=-2539.60009765625 | size=1 | links=#2233(auto Thousand Needles;26):27 #13365(auto Thousand Needles;130):24
+#19673 | auto Thousand Needles;199§auto Tausend Nadeln;199§auto Mille pointes;199 | x=-5449.80029296875 y=-2278 | size=1 | links=#10544(auto Thousand Needles;105):2 #20231(auto Thousand Needles;202):2
+#19826 | auto Thousand Needles;200§auto Tausend Nadeln;200§auto Mille pointes;200 | x=-5619.89990234375 y=-2482.900146484375 | size=1 | links=#150(auto Thousand Needles;2):2 #13699(auto Thousand Needles;134):2
+#19941 | auto Thousand Needles;201§auto Tausend Nadeln;201§auto Mille pointes;201 | x=-5605 y=-2371 | size=1 | links=#17899(auto Thousand Needles;176):3 #18302(auto Thousand Needles;185):3
+#20231 | auto Thousand Needles;202§auto Tausend Nadeln;202§auto Mille pointes;202 | x=-5447.89990234375 y=-2276.199951171875 | size=1 | links=#1879(auto Thousand Needles;19):3 #19673(auto Thousand Needles;199):2
+#20377 | auto Thousand Needles;203§auto Tausend Nadeln;203§auto Mille pointes;203 | x=-5603.2001953125 y=-2227.199951171875 | size=1 | links=#3701(auto Thousand Needles;38):34 #22904(auto Thousand Needles;221):47 c4126.16:30
+#20586 | auto Thousand Needles;204§auto Tausend Nadeln;204§auto Mille pointes;204 | x=-5658 y=-3492.400146484375 | size=1 | links=#26769(auto Thousand Needles;258):36 o19872.2:40 o19868.16:64
+#20730 | auto Thousand Needles;205§auto Tausend Nadeln;205§auto Mille pointes;205 | x=-5825.2001953125 y=-3407.10009765625 | size=1 | links=#24132(auto Thousand Needles;233):22 #28273(central location;Ironstone Camp;Thousand Needles):20
+#20801 | auto Thousand Needles;206§auto Tausend Nadeln;206§auto Mille pointes;206 | x=-6701.30029296875 y=-3698.300048828125 | size=1 | links=#2595(auto Thousand Needles;28):35 #18124(auto Thousand Needles;181):22
+#20846 | auto Thousand Needles;207§auto Tausend Nadeln;207§auto Mille pointes;207 | x=-6239.89990234375 y=-3838.10009765625 | size=1 | links=#2907(auto Thousand Needles;33):11 c4720.1:7
+#20848 | auto Thousand Needles;208§auto Tausend Nadeln;208§auto Mille pointes;208 | x=-4756.7001953125 y=-1285.599975585938 | size=1 | links=#4921(auto Thousand Needles;51):39 #27017(auto Thousand Needles;263):85
+#20912 | auto Thousand Needles;209§auto Tausend Nadeln;209§auto Mille pointes;209 | x=-5416.60009765625 y=-2309 | size=1 | links=#18920(auto Thousand Needles;191):7 #25800(auto Thousand Needles;248):10
+#20921 | auto Thousand Needles;210§auto Tausend Nadeln;210§auto Mille pointes;210 | x=-4681.60009765625 y=-1855.200073242188 | size=1 | links=#7012(pier;The Great Lift;Thousand Needles;down):5 #23371(auto Thousand Needles;227):10
+#20981 | focus point;Thousand Needles§bündelpunkt;Tausend Nadeln§focus point;Mille pointes | x=-5329.30029296875 y=-2231.199951171875 | size=1 | links=#8148(auto Thousand Needles;81):67 c4117.1:111
+#21192 | auto Thousand Needles;211§auto Tausend Nadeln;211§auto Mille pointes;211 | x=-5517 y=-2425.400146484375 | size=1 | links=#4445(auto Thousand Needles;45):4 #12355(auto Thousand Needles;120):2
+#21221 | auto Thousand Needles;212§auto Tausend Nadeln;212§auto Mille pointes;212 | x=-5714 y=-2550.10009765625 | size=1 | links=#11005(auto Thousand Needles;109):58 #17938(auto Thousand Needles;178):55
+#21272 | auto Thousand Needles;213§auto Tausend Nadeln;213§auto Mille pointes;213 | x=-4749 y=-1165.5 | size=1 | links=#16604(auto Thousand Needles;165):27 #27017(auto Thousand Needles;263):36
+#21744 | auto Thousand Needles;214§auto Tausend Nadeln;214§auto Mille pointes;214 | x=-5645.7001953125 y=-2371.900146484375 | size=1 | links=#16279(auto Thousand Needles;162):4 #17388(auto Thousand Needles;171):4
+#21746 | auto Thousand Needles;215§auto Tausend Nadeln;215§auto Mille pointes;215 | x=-5600.60009765625 y=-3349 | size=1 | links=#12174(auto Thousand Needles;119):76 #15887(auto Thousand Needles;158):33
+#21821 | auto Thousand Needles;216§auto Tausend Nadeln;216§auto Mille pointes;216 | x=-5426.5 y=-2466.5 | size=1 | links=#2070(auto Thousand Needles;23):5 #24191(auto Thousand Needles;234):5
+#21830 | auto Thousand Needles;217§auto Tausend Nadeln;217§auto Mille pointes;217 | x=-5429.7001953125 y=-2379 | size=1 | links=#2074(auto Thousand Needles;24):8 #24343(auto Thousand Needles;235):12
+#22100 | auto Thousand Needles;218§auto Tausend Nadeln;218§auto Mille pointes;218 | x=-5419.89990234375 y=-2476 | size=1 | links=#1090(auto Thousand Needles;11):4 #24191(auto Thousand Needles;234):5
+#22327 | auto Thousand Needles;219§auto Tausend Nadeln;219§auto Mille pointes;219 | x=-5503.39990234375 y=-2410.400146484375 | size=1 | links=#151(auto Thousand Needles;3):5 #27382(auto Thousand Needles;264):3
+#22469 | auto Thousand Needles;220§auto Tausend Nadeln;220§auto Mille pointes;220 | x=-5414.60009765625 y=-2483.800048828125 | size=1 | links=#1090(auto Thousand Needles;11):4 #9898(auto Thousand Needles;100):5
+#22904 | auto Thousand Needles;221§auto Tausend Nadeln;221§auto Mille pointes;221 | x=-5648.5 y=-2242.199951171875 | size=1 | links=#1117(auto Thousand Needles;12):62 #20377(auto Thousand Needles;203):47
+#22912 | auto Thousand Needles;222§auto Tausend Nadeln;222§auto Mille pointes;222 | x=-4968.30029296875 y=-1589.099975585938 | size=1 | links=#11801(auto Thousand Needles;114):45 #26858(auto Thousand Needles;262):58
+#23030 | auto Thousand Needles;223§auto Tausend Nadeln;223§auto Mille pointes;223 | x=-5455.7001953125 y=-2285 | size=5 | links=#7956(auto Thousand Needles;77):3 #24754(auto Thousand Needles;238):3
+#23039 | auto Thousand Needles;224§auto Tausend Nadeln;224§auto Mille pointes;224 | x=-5421.60009765625 y=-2333.60009765625 | size=1 | links=#25590(auto Thousand Needles;245):16 #25800(auto Thousand Needles;248):14
+#23049 | auto Thousand Needles;225§auto Tausend Nadeln;225§auto Mille pointes;225 | x=-4831.89990234375 y=-1378.700073242188 | size=1 | links=#4921(auto Thousand Needles;51):80 #5276(auto Thousand Needles;56):65 #45841(auto Thousand Needles;542):27
+#23174 | auto Thousand Needles;226§auto Tausend Nadeln;226§auto Mille pointes;226 | x=-5496.5 y=-2403.900146484375 | size=1 | links=#151(auto Thousand Needles;3):4 #17633(auto Thousand Needles;173):4
+#23371 | auto Thousand Needles;227§auto Tausend Nadeln;227§auto Mille pointes;227 | x=-4691.5 y=-1859.300048828125 | size=1 | links=#12825(auto Thousand Needles;125):13 #20921(auto Thousand Needles;210):10
+#23393 | auto Thousand Needles;228§auto Tausend Nadeln;228§auto Mille pointes;228 | x=-5646 y=-2474.199951171875 | size=1 | links=#4093(auto Thousand Needles;40):3 #4285(auto Thousand Needles;43):3
+#23498 | auto Thousand Needles;229§auto Tausend Nadeln;229§auto Mille pointes;229 | x=-5461.80029296875 y=-2298.900146484375 | size=1 | links=#14458(auto Thousand Needles;145):8 #19595(auto Thousand Needles;197):5
+#23658 | auto Thousand Needles;230§auto Tausend Nadeln;230§auto Mille pointes;230 | x=-5521.30029296875 y=-2435 | size=1 | links=#18761(auto Thousand Needles;189):2 #28531(auto Thousand Needles;279):2
+#24072 | auto Thousand Needles;231§auto Tausend Nadeln;231§auto Mille pointes;231 | x=-5519.80029296875 y=-2430.60009765625 | size=1 | links=#12355(auto Thousand Needles;120):3 #28531(auto Thousand Needles;279):2
+#24076 | auto Thousand Needles;232§auto Tausend Nadeln;232§auto Mille pointes;232 | x=-5593.60009765625 y=-2892.10009765625 | size=1 | links=#14341(auto Thousand Needles;143):75 #14428(auto Thousand Needles;144):62
+#24132 | auto Thousand Needles;233§auto Tausend Nadeln;233§auto Mille pointes;233 | x=-5828.80029296875 y=-3385.199951171875 | size=1 | links=#10208(auto Thousand Needles;103):38 #20730(auto Thousand Needles;205):22
+#24191 | auto Thousand Needles;234§auto Tausend Nadeln;234§auto Mille pointes;234 | x=-5423.2001953125 y=-2471.199951171875 | size=1 | links=#21821(auto Thousand Needles;216):5 #22100(auto Thousand Needles;218):5
+#24343 | auto Thousand Needles;235§auto Tausend Nadeln;235§auto Mille pointes;235 | x=-5427.80029296875 y=-2367 | size=1 | links=#21830(auto Thousand Needles;217):12 #25590(auto Thousand Needles;245):17
+#24559 | auto Thousand Needles;236§auto Tausend Nadeln;236§auto Mille pointes;236 | x=-5528.30029296875 y=-2579 | size=1 | links=#8899(focus point;two;Thousand Needles):28 #25011(auto Thousand Needles;240):35
+#24649 | auto Thousand Needles;237§auto Tausend Nadeln;237§auto Mille pointes;237 | x=-5474.39990234375 y=-2566.60009765625 | size=1 | links=#4366(auto Thousand Needles;44):25 #13365(auto Thousand Needles;130):27
+#24754 | auto Thousand Needles;238§auto Tausend Nadeln;238§auto Mille pointes;238 | x=-5455.89990234375 y=-2288.5 | size=1 | links=#19595(auto Thousand Needles;197):7 #23030(auto Thousand Needles;223):3
+#24782 | auto Thousand Needles;239§auto Tausend Nadeln;239§auto Mille pointes;239 | x=-6536.60009765625 y=-3717 | size=5 | links=#6984(auto Thousand Needles;72):101 #25063(auto Thousand Needles;241):84 o19873.9:70 c4150.17:76
+#25011 | auto Thousand Needles;240§auto Tausend Nadeln;240§auto Mille pointes;240 | x=-5560.7001953125 y=-2563.800048828125 | size=1 | links=#11814(auto Thousand Needles;115):47 #24559(auto Thousand Needles;236):35
+#25063 | auto Thousand Needles;241§auto Tausend Nadeln;241§auto Mille pointes;241 | x=-6452.60009765625 y=-3712.400146484375 | size=5 | links=#8981(auto Thousand Needles;88):120 #24782(auto Thousand Needles;239):84
+#25225 | auto Thousand Needles;242§auto Tausend Nadeln;242§auto Mille pointes;242 | x=-5587 y=-2481.800048828125 | size=1 | links=#16516(auto Thousand Needles;164):6 #19042(auto Thousand Needles;193):6
+#25308 | auto Thousand Needles;243§auto Tausend Nadeln;243§auto Mille pointes;243 | x=-5581.80029296875 y=-2357.199951171875 | size=1 | links=#13967(auto Thousand Needles;138):3 #15368(auto Thousand Needles;151):2
+#25442 | auto Thousand Needles;244§auto Tausend Nadeln;244§auto Mille pointes;244 | x=-5733.5 y=-3181.900146484375 | size=1 | links=#2316(auto Thousand Needles;27):43 #18771(auto Thousand Needles;190):54
+#25590 | auto Thousand Needles;245§auto Tausend Nadeln;245§auto Mille pointes;245 | x=-5424.7001953125 y=-2349.900146484375 | size=1 | links=#23039(auto Thousand Needles;224):16 #24343(auto Thousand Needles;235):17
+#25646 | auto Thousand Needles;246§auto Tausend Nadeln;246§auto Mille pointes;246 | x=-4689.89990234375 y=-1792.099975585938 | size=1 | links=#16481(auto Thousand Needles;163):11 #19524(auto Thousand Needles;196):5
+#25692 | auto Thousand Needles;247§auto Tausend Nadeln;247§auto Mille pointes;247 | x=-5622.30029296875 y=-2372.10009765625 | size=1 | links=#4989(auto Thousand Needles;55):4 #6702(auto Thousand Needles;66):5
+#25800 | auto Thousand Needles;248§auto Tausend Nadeln;248§auto Mille pointes;248 | x=-5419 y=-2319.10009765625 | size=1 | links=#20912(auto Thousand Needles;209):10 #23039(auto Thousand Needles;224):14
+#25848 | central location;Freewind Post;Thousand Needles§zentralpunkt;Freiwindposten;Tausend Nadeln§emplacement central;Freewind Post;Mille pointes | x=-5433.80029296875 y=-2431.800048828125 | size=1 | links=#12464(auto Thousand Needles;121):31 #27823(auto Thousand Needles;270):22 #28130(auto Thousand Needles;277):15 c4317.1:29 c15584.1:5
+#25867 | auto Thousand Needles;249§auto Tausend Nadeln;249§auto Mille pointes;249 | x=-5703.5 y=-3111.60009765625 | size=1 | links=#2316(auto Thousand Needles;27):36 #5706(auto Thousand Needles;57):39
+#25884 | auto Thousand Needles;250§auto Tausend Nadeln;250§auto Mille pointes;250 | x=-4945.2001953125 y=-1678.400024414063 | size=1 | links=#2463(crossing;to;elevator;Thousand Needles):50 #11801(auto Thousand Needles;114):47
+#25902 | auto Thousand Needles;251§auto Tausend Nadeln;251§auto Mille pointes;251 | x=-5726 y=-2424.10009765625 | size=1 | links=#9145(auto Thousand Needles;92):71 #11005(auto Thousand Needles;109):68
+#25961 | auto Thousand Needles;252§auto Tausend Nadeln;252§auto Mille pointes;252 | x=-5650 y=-2378.5 | size=1 | links=#14525(auto Thousand Needles;146):3 #17388(auto Thousand Needles;171):5
+#26287 | auto Thousand Needles;253§auto Tausend Nadeln;253§auto Mille pointes;253 | x=-6768.5 y=-3699.900146484375 | size=1 | links=#2595(auto Thousand Needles;28):33 #9807(auto Thousand Needles;98):49
+#26424 | auto Thousand Needles;254§auto Tausend Nadeln;254§auto Mille pointes;254 | x=-5518.2001953125 y=-2458.900146484375 | size=1 | links=#6949(auto Thousand Needles;71):2 #9742(auto Thousand Needles;97):5
+#26464 | auto Thousand Needles;255§auto Tausend Nadeln;255§auto Mille pointes;255 | x=-5597.7001953125 y=-2367.900146484375 | size=1 | links=#18226(auto Thousand Needles;183):3 #18302(auto Thousand Needles;185):4
+#26642 | auto Thousand Needles;256§auto Tausend Nadeln;256§auto Mille pointes;256 | x=-5650.30029296875 y=-2384.400146484375 | size=1 | links=#12160(auto Thousand Needles;118):6 #14525(auto Thousand Needles;146):2
+#26695 | auto Thousand Needles;257§auto Tausend Nadeln;257§auto Mille pointes;257 | x=-5401 y=-2513.199951171875 | size=1 | links=#12480(auto Thousand Needles;122):1 #15968(auto Thousand Needles;159):4
+#26769 | auto Thousand Needles;258§auto Tausend Nadeln;258§auto Mille pointes;258 | x=-5631.30029296875 y=-3467 | size=1 | links=#12723(auto Thousand Needles;124):45 #15887(auto Thousand Needles;158):88 #20586(auto Thousand Needles;204):36 #45603(auto Thousand Needles;310):45
+#26822 | auto Thousand Needles;259§auto Tausend Nadeln;259§auto Mille pointes;259 | x=-4753.10009765625 y=-1796.099975585938 | size=1 | links=#13266(auto Thousand Needles;129):30 #13922(auto Thousand Needles;135):30
+#26826 | auto Thousand Needles;260§auto Tausend Nadeln;260§auto Mille pointes;260 | x=-6208.7001953125 y=-3826.800048828125 | size=1 | links=#17652(auto Thousand Needles;174):117 c6496.1:19 c6548.1:55
+#26844 | auto Thousand Needles;261§auto Tausend Nadeln;261§auto Mille pointes;261 | x=-4387.30029296875 y=-861.9000244140625 | size=1 | links=#12182(auto Feralas;402):148 #16110(auto Thousand Needles;161):77 #19163(auto Thousand Needles;194):104 c4120.1:40 c4249.24:42
+#26858 | auto Thousand Needles;262§auto Tausend Nadeln;262§auto Mille pointes;262 | x=-4961 y=-1530.900024414063 | size=1 | links=#18941(auto Thousand Needles;192):77 #22912(auto Thousand Needles;222):58 #45848(auto Thousand Needles;549):24
+#27017 | auto Thousand Needles;263§auto Tausend Nadeln;263§auto Mille pointes;263 | x=-4758.80029296875 y=-1200.599975585938 | size=1 | links=#20848(auto Thousand Needles;208):85 #21272(auto Thousand Needles;213):36 #45799(auto Thousand Needles;501):29
+#27382 | auto Thousand Needles;264§auto Tausend Nadeln;264§auto Mille pointes;264 | x=-5506.2001953125 y=-2413 | size=1 | links=#4520(auto Thousand Needles;47):3 #22327(auto Thousand Needles;219):3
+#27463 | auto Thousand Needles;265§auto Tausend Nadeln;265§auto Mille pointes;265 | x=-5764.10009765625 y=-3291.60009765625 | size=1 | links=#4242(auto Thousand Needles;42):28 #5932(auto Thousand Needles;60):36
+#27727 | auto Thousand Needles;266§auto Tausend Nadeln;266§auto Mille pointes;266 | x=-5011.5 y=-1764.900024414063 | size=1 | links=#2463(crossing;to;elevator;Thousand Needles):59 #15330(auto Thousand Needles;150):109
+#27738 | auto Thousand Needles;267§auto Tausend Nadeln;267§auto Mille pointes;267 | x=-5439.10009765625 y=-2273.900146484375 | size=1 | links=#2805(auto Thousand Needles;31):2 #18072(auto Thousand Needles;180):2
+#27741 | auto Thousand Needles;268§auto Tausend Nadeln;268§auto Mille pointes;268 | x=-5551.89990234375 y=-2470.900146484375 | size=1 | links=#111(auto Thousand Needles;1):7 #3029(auto Thousand Needles;35):6
+#27807 | auto Thousand Needles;269§auto Tausend Nadeln;269§auto Mille pointes;269 | x=-5478.5 y=-2390.199951171875 | size=5 | links=#7077(auto Thousand Needles;73):4 #19310(auto Thousand Needles;195):4
+#27823 | auto Thousand Needles;270§auto Tausend Nadeln;270§auto Mille pointes;270 | x=-5426.7001953125 y=-2410.800048828125 | size=1 | links=#17285(auto Thousand Needles;169):13 #25848(central location;Freewind Post;Thousand Needles):22 c4317.1:21
+#27933 | auto Thousand Needles;271§auto Tausend Nadeln;271§auto Mille pointes;271 | x=-4597 y=-1864.599975585938 | size=1 | links=#15660(auto Thousand Needles;156):22 #17238(attention;The Great Lift;Horde):24 c12576.1:29
+#27988 | auto Thousand Needles;272§auto Tausend Nadeln;272§auto Mille pointes;272 | x=-5606.7001953125 y=-2488.800048828125 | size=1 | links=#5796(auto Thousand Needles;59):4 #6473(auto Thousand Needles;63):8
+#28015 | auto Thousand Needles;273§auto Tausend Nadeln;273§auto Mille pointes;273 | x=-5465.80029296875 y=-2327.800048828125 | size=1 | links=#15883(auto Thousand Needles;157):19 #18020(auto Thousand Needles;179):9
+#28042 | auto Thousand Needles;274§auto Tausend Nadeln;274§auto Mille pointes;274 | x=-4707.2001953125 y=-1830.800048828125 | size=1 | links=#189(auto Thousand Needles;4):18 #12825(auto Thousand Needles;125):19 #13266(auto Thousand Needles;129):28
+#28070 | auto Thousand Needles;275§auto Tausend Nadeln;275§auto Mille pointes;275 | x=-4888.80029296875 y=-1803.900024414063 | size=1 | links=#9353(auto Thousand Needles;93):54 #10651(auto Thousand Needles;107):24
+#28111 | auto Thousand Needles;276§auto Tausend Nadeln;276§auto Mille pointes;276 | x=-5434 y=-2455.800048828125 | size=5 | links=#2070(auto Thousand Needles;23):7 #12464(auto Thousand Needles;121):24 #28130(auto Thousand Needles;277):9
+#28130 | auto Thousand Needles;277§auto Tausend Nadeln;277§auto Mille pointes;277 | x=-5432.89990234375 y=-2446.800048828125 | size=1 | links=#25848(central location;Freewind Post;Thousand Needles):15 #28111(auto Thousand Needles;276):9
+#28273 | central location;Ironstone Camp;Thousand Needles§zentralpunkt;Eisensteinlager;Tausend Nadeln§emplacement central;Camp Rochefer;Mille pointes | x=-5842.39990234375 y=-3417.60009765625 | size=1 | links=#1672(auto Thousand Needles;16):67 #20730(auto Thousand Needles;205):20 c4483.1:10 c4546.1:3 c4547.1:7 c5523.3:22
+#28502 | auto Thousand Needles;278§auto Tausend Nadeln;278§auto Mille pointes;278 | x=-6007.60009765625 y=-3709.5 | size=5 | links=#689(auto Thousand Needles;6):78 #18577(auto Thousand Needles;187):110
+#28531 | auto Thousand Needles;279§auto Tausend Nadeln;279§auto Mille pointes;279 | x=-5520.7001953125 y=-2433 | size=1 | links=#23658(auto Thousand Needles;230):2 #24072(auto Thousand Needles;231):2
+#28622 | s;u;Mailbox;Thousand Needles§s;u;Briefkasten;Tausend Nadeln§s;u;Boîte aux lettres;Mille pointes | x=-5462.66650390625 y=-2452.93310546875 | size=1 | links=#12464(auto Thousand Needles;121):4
+#45572 | auto Thousand Needles;280§auto Tausend Nadeln;280§auto Mille pointes;280 | x=-6478.89990234375 y=-3895.60009765625 | size=1 | links=o19870.6:32 c4151.8:37 c4151.19:29
+#45573 | auto Thousand Needles;281§auto Tausend Nadeln;281§auto Mille pointes;281 | x=-6412.39990234375 y=-4208.30029296875 | size=1 | links=#45574(auto Thousand Needles;282):74 c4144.3:75
+#45574 | auto Thousand Needles;282§auto Tausend Nadeln;282§auto Mille pointes;282 | x=-6352.7001953125 y=-4253 | size=1 | links=#45573(auto Thousand Needles;281):74 c4151.25:52
+#45575 | auto Thousand Needles;283§auto Tausend Nadeln;283§auto Mille pointes;283 | x=-5878.10009765625 y=-4322.10009765625 | size=1 | links=c4154.3:19 o19869.5:13
+#45576 | auto Thousand Needles;284§auto Tausend Nadeln;284§auto Mille pointes;284 | x=-5603.60009765625 y=-4075.400146484375 | size=1 | links=c4142.13:28 c4142.14:48 c4143.14:22
+#45577 | auto Thousand Needles;285§auto Tausend Nadeln;285§auto Mille pointes;285 | x=-5555.10009765625 y=-4031.199951171875 | size=1 | links=c4143.22:22 c4143.24:22
+#45578 | auto Thousand Needles;286§auto Tausend Nadeln;286§auto Mille pointes;286 | x=-5815.5 y=-3795.199951171875 | size=1 | links=c4151.15:53 c4147.17:64
+#45579 | auto Thousand Needles;287§auto Tausend Nadeln;287§auto Mille pointes;287 | x=-5814.39990234375 y=-3995.400146484375 | size=1 | links=#45580(auto Thousand Needles;288):27 c4147.2:38
+#45580 | auto Thousand Needles;288§auto Tausend Nadeln;288§auto Mille pointes;288 | x=-5787.10009765625 y=-3996.900146484375 | size=1 | links=#45579(auto Thousand Needles;287):27 c4154.6:76
+#45581 | auto Thousand Needles;289§auto Tausend Nadeln;289§auto Mille pointes;289 | x=-6117.10009765625 y=-3943.300048828125 | size=1 | links=#8349(auto Thousand Needles;83):76 c4151.30:83
+#45582 | auto Thousand Needles;290§auto Tausend Nadeln;290§auto Mille pointes;290 | x=-6569.7001953125 y=-3897.5 | size=1 | links=c4150.7:12 c4151.26:12
+#45583 | auto Thousand Needles;291§auto Tausend Nadeln;291§auto Mille pointes;291 | x=-6461.80029296875 y=-3519.199951171875 | size=1 | links=c4133.10:34 c4133.27:19
+#45584 | auto Thousand Needles;292§auto Tausend Nadeln;292§auto Mille pointes;292 | x=-6500.7001953125 y=-3494.60009765625 | size=1 | links=c4133.10:20 c4133.24:10
+#45585 | auto Thousand Needles;293§auto Tausend Nadeln;293§auto Mille pointes;293 | x=-6509.10009765625 y=-3484.10009765625 | size=1 | links=c4133.24:3 c4133.26:26
+#45586 | auto Thousand Needles;294§auto Tausend Nadeln;294§auto Mille pointes;294 | x=-6517.10009765625 y=-3457.900146484375 | size=1 | links=#45587(auto Thousand Needles;295):13 c4133.26:12
+#45587 | auto Thousand Needles;295§auto Tausend Nadeln;295§auto Mille pointes;295 | x=-6511.39990234375 y=-3445.300048828125 | size=1 | links=#45586(auto Thousand Needles;294):13 #45588(auto Thousand Needles;296):12
+#45588 | auto Thousand Needles;296§auto Tausend Nadeln;296§auto Mille pointes;296 | x=-6503.10009765625 y=-3436.199951171875 | size=1 | links=#45587(auto Thousand Needles;295):12 c4133.4:16
+#45589 | auto Thousand Needles;297§auto Tausend Nadeln;297§auto Mille pointes;297 | x=-6467.89990234375 y=-3311.800048828125 | size=1 | links=c4133.11:23 c4133.13:14
+#45590 | auto Thousand Needles;298§auto Tausend Nadeln;298§auto Mille pointes;298 | x=-6479.89990234375 y=-3287.800048828125 | size=1 | links=#45591(auto Thousand Needles;299):19 c4133.13:19
+#45591 | auto Thousand Needles;299§auto Tausend Nadeln;299§auto Mille pointes;299 | x=-6484.2001953125 y=-3268.60009765625 | size=1 | links=#45590(auto Thousand Needles;298):19 #45592(auto Thousand Needles;300):7
+#45592 | auto Thousand Needles;300§auto Tausend Nadeln;300§auto Mille pointes;300 | x=-6486.2001953125 y=-3261.199951171875 | size=1 | links=#45591(auto Thousand Needles;299):7 c4131.6:7
+#45593 | auto Thousand Needles;301§auto Tausend Nadeln;301§auto Mille pointes;301 | x=-6418.2001953125 y=-3494.400146484375 | size=1 | links=#45594(auto Thousand Needles;302):20 c4133.27:32
+#45594 | auto Thousand Needles;302§auto Tausend Nadeln;302§auto Mille pointes;302 | x=-6403.5 y=-3480.10009765625 | size=1 | links=#45593(auto Thousand Needles;301):20 #45595(auto Thousand Needles;303):0 c4133.23:9
+#45595 | auto Thousand Needles;303§auto Tausend Nadeln;303§auto Mille pointes;303 | x=-6403.5 y=-3480.10009765625 | size=1 | links=#45594(auto Thousand Needles;302):0
+#45597 | auto Thousand Needles;304§auto Tausend Nadeln;304§auto Mille pointes;304 | x=-6393.89990234375 y=-3441.60009765625 | size=1 | links=c4132.1:12 c4133.23:31
+#45598 | auto Thousand Needles;305§auto Tausend Nadeln;305§auto Mille pointes;305 | x=-6092.7001953125 y=-3579.400146484375 | size=1 | links=c4154.1:111 c4139.5:20 c4140.16:14
+#45599 | auto Thousand Needles;306§auto Tausend Nadeln;306§auto Mille pointes;306 | x=-6346.30029296875 y=-3868 | size=1 | links=#45600(auto Thousand Needles;307):68 c4150.3:72
+#45600 | auto Thousand Needles;307§auto Tausend Nadeln;307§auto Mille pointes;307 | x=-6279 y=-3877.900146484375 | size=1 | links=#45599(auto Thousand Needles;306):68 #45601(auto Thousand Needles;308):34
+#45601 | auto Thousand Needles;308§auto Tausend Nadeln;308§auto Mille pointes;308 | x=-6244.39990234375 y=-3881.300048828125 | size=1 | links=#13675(central location;Mirage Raceway;Thousand Needles):30 #45600(auto Thousand Needles;307):34
+#45602 | auto Thousand Needles;309§auto Tausend Nadeln;309§auto Mille pointes;309 | x=-5559.10009765625 y=-3445.699951171875 | size=1 | links=#45603(auto Thousand Needles;310):36 c6491.1:30
+#45603 | auto Thousand Needles;310§auto Tausend Nadeln;310§auto Mille pointes;310 | x=-5595.39990234375 y=-3439.5 | size=1 | links=#15887(auto Thousand Needles;158):58 #26769(auto Thousand Needles;258):45 #45602(auto Thousand Needles;309):36
+#45604 | auto Thousand Needles;311§auto Tausend Nadeln;311§auto Mille pointes;311 | x=-5196.7001953125 y=-2801.300048828125 | size=1 | links=c2986.1:14 c5905.1:24
+#45605 | auto Thousand Needles;312§auto Tausend Nadeln;312§auto Mille pointes;312 | x=-5226.80029296875 y=-2799.300048828125 | size=1 | links=#45606(auto Thousand Needles;313):17 c5905.1:13
+#45606 | auto Thousand Needles;313§auto Tausend Nadeln;313§auto Mille pointes;313 | x=-5238.5 y=-2812.10009765625 | size=1 | links=#45605(auto Thousand Needles;312):17 #45607(auto Thousand Needles;314):29
+#45607 | auto Thousand Needles;314§auto Tausend Nadeln;314§auto Mille pointes;314 | x=-5258.39990234375 y=-2834 | size=1 | links=#45606(auto Thousand Needles;313):29 #45608(auto Thousand Needles;315):18
+#45608 | auto Thousand Needles;315§auto Tausend Nadeln;315§auto Mille pointes;315 | x=-5271.30029296875 y=-2847.5 | size=1 | links=#45607(auto Thousand Needles;314):18 #45609(auto Thousand Needles;316):20
+#45609 | auto Thousand Needles;316§auto Tausend Nadeln;316§auto Mille pointes;316 | x=-5290.39990234375 y=-2841.199951171875 | size=1 | links=#45608(auto Thousand Needles;315):20 c4124.3:59
+#45610 | auto Thousand Needles;317§auto Tausend Nadeln;317§auto Mille pointes;317 | x=-5373.30029296875 y=-2751.900146484375 | size=1 | links=#45611(auto Thousand Needles;318):15 c4124.3:70
+#45611 | auto Thousand Needles;318§auto Tausend Nadeln;318§auto Mille pointes;318 | x=-5383.10009765625 y=-2739.60009765625 | size=1 | links=#45610(auto Thousand Needles;317):15 #45612(auto Thousand Needles;319):20
+#45612 | auto Thousand Needles;319§auto Tausend Nadeln;319§auto Mille pointes;319 | x=-5389.80029296875 y=-2720.400146484375 | size=1 | links=#45611(auto Thousand Needles;318):20 #45613(auto Thousand Needles;320):25
+#45613 | auto Thousand Needles;320§auto Tausend Nadeln;320§auto Mille pointes;320 | x=-5404 y=-2698.800048828125 | size=1 | links=#45612(auto Thousand Needles;319):25 c4126.20:26
+#45614 | auto Thousand Needles;321§auto Tausend Nadeln;321§auto Mille pointes;321 | x=-5471.10009765625 y=-2690.300048828125 | size=1 | links=#17585(auto Thousand Needles;172):39 c4126.20:41
+#45615 | auto Thousand Needles;322§auto Tausend Nadeln;322§auto Mille pointes;322 | x=-5221.5 y=-2219.199951171875 | size=1 | links=#8148(auto Thousand Needles;81):71 c4096.22:44
+#45616 | auto Thousand Needles;323§auto Tausend Nadeln;323§auto Mille pointes;323 | x=-5069.30029296875 y=-2366.400146484375 | size=1 | links=c4094.6:19 c4096.7:25
+#45617 | auto Thousand Needles;324§auto Tausend Nadeln;324§auto Mille pointes;324 | x=-5036.5 y=-2387.800048828125 | size=1 | links=c4096.7:13 c4096.26:14
+#45618 | auto Thousand Needles;325§auto Tausend Nadeln;325§auto Mille pointes;325 | x=-4990.89990234375 y=-2373.300048828125 | size=1 | links=c4097.1:15 c4095.9:15
+#45619 | auto Thousand Needles;326§auto Tausend Nadeln;326§auto Mille pointes;326 | x=-4921.60009765625 y=-2352.5 | size=1 | links=o92423.1:8 c4099.19:16
+#45620 | auto Thousand Needles;327§auto Tausend Nadeln;327§auto Mille pointes;327 | x=-5007.10009765625 y=-2362.199951171875 | size=1 | links=c4097.1:13 c4099.2:10
+#45621 | auto Thousand Needles;328§auto Tausend Nadeln;328§auto Mille pointes;328 | x=-5000.39990234375 y=-2334.699951171875 | size=1 | links=#45622(auto Thousand Needles;329):7 c4099.2:17
+#45622 | auto Thousand Needles;329§auto Tausend Nadeln;329§auto Mille pointes;329 | x=-4997.5 y=-2328.300048828125 | size=1 | links=#45621(auto Thousand Needles;328):7 #45623(auto Thousand Needles;330):5
+#45623 | auto Thousand Needles;330§auto Tausend Nadeln;330§auto Mille pointes;330 | x=-4996.89990234375 y=-2322.60009765625 | size=1 | links=#45622(auto Thousand Needles;329):5 c4099.1:11
+#45624 | auto Thousand Needles;331§auto Tausend Nadeln;331§auto Mille pointes;331 | x=-4996.2001953125 y=-2301.60009765625 | size=1 | links=#45625(auto Thousand Needles;332):13 c4099.1:11
+#45625 | auto Thousand Needles;332§auto Tausend Nadeln;332§auto Mille pointes;332 | x=-4989.80029296875 y=-2289.60009765625 | size=1 | links=#45624(auto Thousand Needles;331):13 c4095.5:19
+#45626 | auto Thousand Needles;333§auto Tausend Nadeln;333§auto Mille pointes;333 | x=-4948.30029296875 y=-2271.5 | size=1 | links=c4097.7:18 c4099.9:12
+#45627 | auto Thousand Needles;334§auto Tausend Nadeln;334§auto Mille pointes;334 | x=-5065.39990234375 y=-2244.400146484375 | size=1 | links=c4093.17:25 c4094.19:16
+#45628 | auto Thousand Needles;335§auto Tausend Nadeln;335§auto Mille pointes;335 | x=-5005.5 y=-2230.199951171875 | size=1 | links=c4094.11:21 c4094.12:14
+#45630 | auto Thousand Needles;336§auto Tausend Nadeln;336§auto Mille pointes;336 | x=-4960.60009765625 y=-2178.300048828125 | size=1 | links=c10617.1:25 c4094.16:22
+#45631 | auto Thousand Needles;337§auto Tausend Nadeln;337§auto Mille pointes;337 | x=-5051.7001953125 y=-1805.300048828125 | size=1 | links=#45632(auto Thousand Needles;338):19 #45635(auto Thousand Needles;341):38 #45636(auto Thousand Needles;342):17
+#45632 | auto Thousand Needles;338§auto Tausend Nadeln;338§auto Mille pointes;338 | x=-5033.7001953125 y=-1798.599975585938 | size=1 | links=#45631(auto Thousand Needles;337):19 #45633(auto Thousand Needles;339):40
+#45633 | auto Thousand Needles;339§auto Tausend Nadeln;339§auto Mille pointes;339 | x=-4996.30029296875 y=-1813.5 | size=1 | links=#45632(auto Thousand Needles;338):40 #45634(auto Thousand Needles;340):26 #45745(auto Thousand Needles;449):32
+#45634 | auto Thousand Needles;340§auto Tausend Nadeln;340§auto Mille pointes;340 | x=-4993.89990234375 y=-1786.700073242188 | size=1 | links=#2463(crossing;to;elevator;Thousand Needles):67 #45633(auto Thousand Needles;339):26
+#45635 | auto Thousand Needles;341§auto Tausend Nadeln;341§auto Mille pointes;341 | x=-5083.2001953125 y=-1783.099975585938 | size=1 | links=#15330(auto Thousand Needles;150):45 #45631(auto Thousand Needles;337):38
+#45636 | auto Thousand Needles;342§auto Tausend Nadeln;342§auto Mille pointes;342 | x=-5044.80029296875 y=-1821.200073242188 | size=1 | links=#45631(auto Thousand Needles;337):17 #45637(auto Thousand Needles;343):15
+#45637 | auto Thousand Needles;343§auto Tausend Nadeln;343§auto Mille pointes;343 | x=-5037 y=-1834.200073242188 | size=1 | links=#45636(auto Thousand Needles;342):15 #45638(auto Thousand Needles;344):22
+#45638 | auto Thousand Needles;344§auto Tausend Nadeln;344§auto Mille pointes;344 | x=-5028 y=-1854.599975585938 | size=1 | links=#45637(auto Thousand Needles;343):22 #45639(auto Thousand Needles;345):21
+#45639 | auto Thousand Needles;345§auto Tausend Nadeln;345§auto Mille pointes;345 | x=-5019 y=-1874 | size=1 | links=#45638(auto Thousand Needles;344):21 #45640(auto Thousand Needles;346):19
+#45640 | auto Thousand Needles;346§auto Tausend Nadeln;346§auto Mille pointes;346 | x=-5010 y=-1891.700073242188 | size=1 | links=#45639(auto Thousand Needles;345):19 #45641(auto Thousand Needles;347):7
+#45641 | auto Thousand Needles;347§auto Tausend Nadeln;347§auto Mille pointes;347 | x=-5002.60009765625 y=-1891.800048828125 | size=1 | links=#45640(auto Thousand Needles;346):7 #45642(auto Thousand Needles;348):26
+#45642 | auto Thousand Needles;348§auto Tausend Nadeln;348§auto Mille pointes;348 | x=-4976 y=-1887.300048828125 | size=1 | links=#45641(auto Thousand Needles;347):26 #45643(auto Thousand Needles;349):26
+#45643 | auto Thousand Needles;349§auto Tausend Nadeln;349§auto Mille pointes;349 | x=-4949.39990234375 y=-1884 | size=1 | links=#45642(auto Thousand Needles;348):26 #45644(auto Thousand Needles;350):23
+#45644 | auto Thousand Needles;350§auto Tausend Nadeln;350§auto Mille pointes;350 | x=-4925.89990234375 y=-1881.400024414063 | size=1 | links=#45643(auto Thousand Needles;349):23 #45645(auto Thousand Needles;351):4
+#45645 | auto Thousand Needles;351§auto Tausend Nadeln;351§auto Mille pointes;351 | x=-4921.80029296875 y=-1880.599975585938 | size=1 | links=#45644(auto Thousand Needles;350):4 #45646(auto Thousand Needles;352):10
+#45646 | auto Thousand Needles;352§auto Tausend Nadeln;352§auto Mille pointes;352 | x=-4912.80029296875 y=-1876.099975585938 | size=1 | links=#45645(auto Thousand Needles;351):10 #45647(auto Thousand Needles;353):14
+#45647 | auto Thousand Needles;353§auto Tausend Nadeln;353§auto Mille pointes;353 | x=-4902.7001953125 y=-1865.700073242188 | size=1 | links=#45646(auto Thousand Needles;352):14 #45648(auto Thousand Needles;354):12
+#45648 | auto Thousand Needles;354§auto Tausend Nadeln;354§auto Mille pointes;354 | x=-4898.60009765625 y=-1853.800048828125 | size=1 | links=#45647(auto Thousand Needles;353):12 #45649(auto Thousand Needles;355):4
+#45649 | auto Thousand Needles;355§auto Tausend Nadeln;355§auto Mille pointes;355 | x=-4895.89990234375 y=-1850 | size=1 | links=#45648(auto Thousand Needles;354):4 #45650(auto Thousand Needles;356):9
+#45650 | auto Thousand Needles;356§auto Tausend Nadeln;356§auto Mille pointes;356 | x=-4892.89990234375 y=-1840.800048828125 | size=1 | links=#45649(auto Thousand Needles;355):9 #45651(auto Thousand Needles;357):5
+#45651 | auto Thousand Needles;357§auto Tausend Nadeln;357§auto Mille pointes;357 | x=-4887.30029296875 y=-1840.099975585938 | size=1 | links=#45650(auto Thousand Needles;356):5 #45652(auto Thousand Needles;358):12
+#45652 | auto Thousand Needles;358§auto Tausend Nadeln;358§auto Mille pointes;358 | x=-4874.7001953125 y=-1842.300048828125 | size=1 | links=#45651(auto Thousand Needles;357):12 #45653(auto Thousand Needles;359):26
+#45653 | auto Thousand Needles;359§auto Tausend Nadeln;359§auto Mille pointes;359 | x=-4848.39990234375 y=-1847.099975585938 | size=1 | links=#45652(auto Thousand Needles;358):26 #45654(auto Thousand Needles;360):25
+#45654 | auto Thousand Needles;360§auto Tausend Nadeln;360§auto Mille pointes;360 | x=-4823.60009765625 y=-1851.5 | size=1 | links=#45653(auto Thousand Needles;359):25 #45655(auto Thousand Needles;361):15
+#45655 | auto Thousand Needles;361§auto Tausend Nadeln;361§auto Mille pointes;361 | x=-4808 y=-1854.5 | size=1 | links=#45654(auto Thousand Needles;360):15 #45656(auto Thousand Needles;362):6
+#45656 | auto Thousand Needles;362§auto Tausend Nadeln;362§auto Mille pointes;362 | x=-4801.2001953125 y=-1855.300048828125 | size=1 | links=#45655(auto Thousand Needles;361):6 #45657(auto Thousand Needles;363):6
+#45657 | auto Thousand Needles;363§auto Tausend Nadeln;363§auto Mille pointes;363 | x=-4794.7001953125 y=-1853.5 | size=1 | links=#45656(auto Thousand Needles;362):6 #45658(auto Thousand Needles;364):4
+#45658 | auto Thousand Needles;364§auto Tausend Nadeln;364§auto Mille pointes;364 | x=-4790.60009765625 y=-1853.700073242188 | size=1 | links=#45657(auto Thousand Needles;363):4 #45659(auto Thousand Needles;365):18
+#45659 | auto Thousand Needles;365§auto Tausend Nadeln;365§auto Mille pointes;365 | x=-4773.2001953125 y=-1859.400024414063 | size=1 | links=#45658(auto Thousand Needles;364):18 #45660(auto Thousand Needles;366):9
+#45660 | auto Thousand Needles;366§auto Tausend Nadeln;366§auto Mille pointes;366 | x=-4770.2001953125 y=-1868.599975585938 | size=1 | links=#45659(auto Thousand Needles;365):9 c10759.5:13 c10760.11:26
+#45661 | auto Thousand Needles;367§auto Tausend Nadeln;367§auto Mille pointes;367 | x=-4801.80029296875 y=-1894.900024414063 | size=1 | links=#45662(auto Thousand Needles;368):6 c10760.11:14
+#45662 | auto Thousand Needles;368§auto Tausend Nadeln;368§auto Mille pointes;368 | x=-4806.89990234375 y=-1898.800048828125 | size=1 | links=#45661(auto Thousand Needles;367):6 #45663(auto Thousand Needles;369):17
+#45663 | auto Thousand Needles;369§auto Tausend Nadeln;369§auto Mille pointes;369 | x=-4820.7001953125 y=-1909.900024414063 | size=1 | links=#45662(auto Thousand Needles;368):17 #45664(auto Thousand Needles;370):27
+#45664 | auto Thousand Needles;370§auto Tausend Nadeln;370§auto Mille pointes;370 | x=-4842.2001953125 y=-1927.800048828125 | size=1 | links=#45663(auto Thousand Needles;369):27 #45665(auto Thousand Needles;371):23
+#45665 | auto Thousand Needles;371§auto Tausend Nadeln;371§auto Mille pointes;371 | x=-4859.7001953125 y=-1943 | size=1 | links=#45664(auto Thousand Needles;370):23 #45666(auto Thousand Needles;372):13
+#45666 | auto Thousand Needles;372§auto Tausend Nadeln;372§auto Mille pointes;372 | x=-4869.60009765625 y=-1952 | size=1 | links=#45665(auto Thousand Needles;371):13 #45667(auto Thousand Needles;373):6
+#45667 | auto Thousand Needles;373§auto Tausend Nadeln;373§auto Mille pointes;373 | x=-4874.2001953125 y=-1956.200073242188 | size=1 | links=#45666(auto Thousand Needles;372):6 c10759.3:15
+#45668 | auto Thousand Needles;374§auto Tausend Nadeln;374§auto Mille pointes;374 | x=-4892.2001953125 y=-1972.900024414063 | size=1 | links=#45669(auto Thousand Needles;375):7 c10759.3:15
+#45669 | auto Thousand Needles;375§auto Tausend Nadeln;375§auto Mille pointes;375 | x=-4899.10009765625 y=-1970.900024414063 | size=1 | links=#45668(auto Thousand Needles;374):7 #45670(auto Thousand Needles;376):5
+#45670 | auto Thousand Needles;376§auto Tausend Nadeln;376§auto Mille pointes;376 | x=-4904.2001953125 y=-1969.400024414063 | size=1 | links=#45669(auto Thousand Needles;375):5 #45671(auto Thousand Needles;377):20
+#45671 | auto Thousand Needles;377§auto Tausend Nadeln;377§auto Mille pointes;377 | x=-4923.89990234375 y=-1964.099975585938 | size=1 | links=#45670(auto Thousand Needles;376):20 #45672(auto Thousand Needles;378):25
+#45672 | auto Thousand Needles;378§auto Tausend Nadeln;378§auto Mille pointes;378 | x=-4948.5 y=-1956.800048828125 | size=1 | links=#45671(auto Thousand Needles;377):25 #45673(auto Thousand Needles;379):32
+#45673 | auto Thousand Needles;379§auto Tausend Nadeln;379§auto Mille pointes;379 | x=-4980.30029296875 y=-1948.400024414063 | size=1 | links=#45672(auto Thousand Needles;378):32 #45674(auto Thousand Needles;380):31
+#45674 | auto Thousand Needles;380§auto Tausend Nadeln;380§auto Mille pointes;380 | x=-5010.60009765625 y=-1940.700073242188 | size=1 | links=#45673(auto Thousand Needles;379):31 #45675(auto Thousand Needles;381):6
+#45675 | auto Thousand Needles;381§auto Tausend Nadeln;381§auto Mille pointes;381 | x=-5016.89990234375 y=-1939.200073242188 | size=1 | links=#45674(auto Thousand Needles;380):6 #45676(auto Thousand Needles;382):4
+#45676 | auto Thousand Needles;382§auto Tausend Nadeln;382§auto Mille pointes;382 | x=-5021 y=-1938.099975585938 | size=1 | links=#45675(auto Thousand Needles;381):4 #45677(auto Thousand Needles;383):28
+#45677 | auto Thousand Needles;383§auto Tausend Nadeln;383§auto Mille pointes;383 | x=-5042.80029296875 y=-1919.599975585938 | size=1 | links=#45676(auto Thousand Needles;382):28 #45678(auto Thousand Needles;384):16 c10760.7:15
+#45678 | auto Thousand Needles;384§auto Tausend Nadeln;384§auto Mille pointes;384 | x=-5055.2001953125 y=-1909.200073242188 | size=1 | links=#45677(auto Thousand Needles;383):16 #45679(auto Thousand Needles;385):24 c10760.7:12
+#45679 | auto Thousand Needles;385§auto Tausend Nadeln;385§auto Mille pointes;385 | x=-5079.80029296875 y=-1906.099975585938 | size=1 | links=#45678(auto Thousand Needles;384):24 #45680(auto Thousand Needles;386):21 c10758.4:12
+#45680 | auto Thousand Needles;386§auto Tausend Nadeln;386§auto Mille pointes;386 | x=-5097.60009765625 y=-1917.800048828125 | size=1 | links=#45679(auto Thousand Needles;385):21 #45681(auto Thousand Needles;387):22 c10760.5:5
+#45681 | auto Thousand Needles;387§auto Tausend Nadeln;387§auto Mille pointes;387 | x=-5113.7001953125 y=-1933.099975585938 | size=1 | links=#45680(auto Thousand Needles;386):22 #45682(auto Thousand Needles;388):9 c10758.3:10 c10760.6:17
+#45682 | auto Thousand Needles;388§auto Tausend Nadeln;388§auto Mille pointes;388 | x=-5123.39990234375 y=-1933.700073242188 | size=1 | links=#45681(auto Thousand Needles;387):9 #45683(auto Thousand Needles;389):4
+#45683 | auto Thousand Needles;389§auto Tausend Nadeln;389§auto Mille pointes;389 | x=-5127.80029296875 y=-1933.800048828125 | size=1 | links=#45682(auto Thousand Needles;388):4 c10761.2:18 c10761.5:21
+#45684 | auto Thousand Needles;390§auto Tausend Nadeln;390§auto Mille pointes;390 | x=-5119.10009765625 y=-1997.599975585938 | size=1 | links=#45685(auto Thousand Needles;391):4 c10759.7:18
+#45685 | auto Thousand Needles;391§auto Tausend Nadeln;391§auto Mille pointes;391 | x=-5120.7001953125 y=-2001.700073242188 | size=1 | links=#45684(auto Thousand Needles;390):4 #45686(auto Thousand Needles;392):7
+#45686 | auto Thousand Needles;392§auto Tausend Nadeln;392§auto Mille pointes;392 | x=-5123.60009765625 y=-2008.900024414063 | size=1 | links=#45685(auto Thousand Needles;391):7 #45687(auto Thousand Needles;393):16
+#45687 | auto Thousand Needles;393§auto Tausend Nadeln;393§auto Mille pointes;393 | x=-5127.89990234375 y=-2025.099975585938 | size=1 | links=#45686(auto Thousand Needles;392):16 #45688(auto Thousand Needles;394):25
+#45688 | auto Thousand Needles;394§auto Tausend Nadeln;394§auto Mille pointes;394 | x=-5134.5 y=-2050.199951171875 | size=1 | links=#45687(auto Thousand Needles;393):25 #45689(auto Thousand Needles;395):26
+#45689 | auto Thousand Needles;395§auto Tausend Nadeln;395§auto Mille pointes;395 | x=-5141.10009765625 y=-2076.300048828125 | size=1 | links=#45688(auto Thousand Needles;394):26 #45690(auto Thousand Needles;396):26
+#45690 | auto Thousand Needles;396§auto Tausend Nadeln;396§auto Mille pointes;396 | x=-5146.80029296875 y=-2101.699951171875 | size=1 | links=#45689(auto Thousand Needles;395):26 #45691(auto Thousand Needles;397):14
+#45691 | auto Thousand Needles;397§auto Tausend Nadeln;397§auto Mille pointes;397 | x=-5149.89990234375 y=-2116.199951171875 | size=1 | links=#45690(auto Thousand Needles;396):14 #45692(auto Thousand Needles;398):3
+#45692 | auto Thousand Needles;398§auto Tausend Nadeln;398§auto Mille pointes;398 | x=-5150.60009765625 y=-2119.5 | size=1 | links=#45691(auto Thousand Needles;397):3 #45693(auto Thousand Needles;399):8
+#45693 | auto Thousand Needles;399§auto Tausend Nadeln;399§auto Mille pointes;399 | x=-5153.80029296875 y=-2126.900146484375 | size=1 | links=#45692(auto Thousand Needles;398):8 #45694(auto Thousand Needles;400):15
+#45694 | auto Thousand Needles;400§auto Tausend Nadeln;400§auto Mille pointes;400 | x=-5163.89990234375 y=-2138.60009765625 | size=1 | links=#45693(auto Thousand Needles;399):15 #45695(auto Thousand Needles;401):9
+#45695 | auto Thousand Needles;401§auto Tausend Nadeln;401§auto Mille pointes;401 | x=-5170.7001953125 y=-2145.10009765625 | size=1 | links=#45694(auto Thousand Needles;400):9 #45696(auto Thousand Needles;402):6
+#45696 | auto Thousand Needles;402§auto Tausend Nadeln;402§auto Mille pointes;402 | x=-5175.39990234375 y=-2149.300048828125 | size=1 | links=#45695(auto Thousand Needles;401):6 #45697(auto Thousand Needles;403):6
+#45697 | auto Thousand Needles;403§auto Tausend Nadeln;403§auto Mille pointes;403 | x=-5180.39990234375 y=-2153 | size=1 | links=#45696(auto Thousand Needles;402):6 c10761.1:9
+#45698 | auto Thousand Needles;404§auto Tausend Nadeln;404§auto Mille pointes;404 | x=-4874.7001953125 y=-1998.700073242188 | size=1 | links=#45699(auto Thousand Needles;405):3 c10760.2:7
+#45699 | auto Thousand Needles;405§auto Tausend Nadeln;405§auto Mille pointes;405 | x=-4876 y=-2002.200073242188 | size=1 | links=#45698(auto Thousand Needles;404):3 #45700(auto Thousand Needles;406):5
+#45700 | auto Thousand Needles;406§auto Tausend Nadeln;406§auto Mille pointes;406 | x=-4878.10009765625 y=-2007.5 | size=1 | links=#45699(auto Thousand Needles;405):5 #45701(auto Thousand Needles;407):18
+#45701 | auto Thousand Needles;407§auto Tausend Nadeln;407§auto Mille pointes;407 | x=-4885 y=-2024.700073242188 | size=1 | links=#45700(auto Thousand Needles;406):18 #45702(auto Thousand Needles;408):19
+#45702 | auto Thousand Needles;408§auto Tausend Nadeln;408§auto Mille pointes;408 | x=-4892.60009765625 y=-2042.900024414063 | size=1 | links=#45701(auto Thousand Needles;407):19 #45703(auto Thousand Needles;409):12
+#45703 | auto Thousand Needles;409§auto Tausend Nadeln;409§auto Mille pointes;409 | x=-4897.39990234375 y=-2054.900146484375 | size=1 | links=#45702(auto Thousand Needles;408):12 #45704(auto Thousand Needles;410):2
+#45704 | auto Thousand Needles;410§auto Tausend Nadeln;410§auto Mille pointes;410 | x=-4898.2001953125 y=-2057 | size=1 | links=#45703(auto Thousand Needles;409):2 #45705(auto Thousand Needles;411):5
+#45705 | auto Thousand Needles;411§auto Tausend Nadeln;411§auto Mille pointes;411 | x=-4900.30029296875 y=-2062.199951171875 | size=1 | links=#45704(auto Thousand Needles;410):5 #45715(auto Thousand Needles;420):14
+#45707 | auto Thousand Needles;412§auto Tausend Nadeln;412§auto Mille pointes;412 | x=-4932 y=-2066.400146484375 | size=1 | links=#45708(auto Thousand Needles;413):5 #45715(auto Thousand Needles;420):20
+#45708 | auto Thousand Needles;413§auto Tausend Nadeln;413§auto Mille pointes;413 | x=-4937 y=-2067.60009765625 | size=1 | links=#45707(auto Thousand Needles;412):5 #45709(auto Thousand Needles;414):3
+#45709 | auto Thousand Needles;414§auto Tausend Nadeln;414§auto Mille pointes;414 | x=-4939.89990234375 y=-2068.60009765625 | size=1 | links=#45708(auto Thousand Needles;413):3 #45710(auto Thousand Needles;415):9
+#45710 | auto Thousand Needles;415§auto Tausend Nadeln;415§auto Mille pointes;415 | x=-4948.2001953125 y=-2072.300048828125 | size=1 | links=#45709(auto Thousand Needles;414):9 #45711(auto Thousand Needles;416):20
+#45711 | auto Thousand Needles;416§auto Tausend Nadeln;416§auto Mille pointes;416 | x=-4967.30029296875 y=-2080.800048828125 | size=1 | links=#45710(auto Thousand Needles;415):20 #45712(auto Thousand Needles;417):23
+#45712 | auto Thousand Needles;417§auto Tausend Nadeln;417§auto Mille pointes;417 | x=-4989 y=-2090.699951171875 | size=1 | links=#45711(auto Thousand Needles;416):23 #45713(auto Thousand Needles;418):5
+#45713 | auto Thousand Needles;418§auto Tausend Nadeln;418§auto Mille pointes;418 | x=-4993.7001953125 y=-2093.60009765625 | size=1 | links=#45712(auto Thousand Needles;417):5 #45714(auto Thousand Needles;419):2
+#45714 | auto Thousand Needles;419§auto Tausend Nadeln;419§auto Mille pointes;419 | x=-4996.2001953125 y=-2095.10009765625 | size=1 | links=#45713(auto Thousand Needles;418):2 c10759.2:4 c10758.5:6
+#45715 | auto Thousand Needles;420§auto Tausend Nadeln;420§auto Mille pointes;420 | x=-4911.89990234375 y=-2070.199951171875 | size=1 | links=#45705(auto Thousand Needles;411):14 #45707(auto Thousand Needles;412):20 c10758.2:8 c10758.6:11 c10760.10:16
+#45716 | auto Thousand Needles;421§auto Tausend Nadeln;421§auto Mille pointes;421 | x=-4892.60009765625 y=-2086.10009765625 | size=1 | links=#45717(auto Thousand Needles;422):3 c10760.10:9
+#45717 | auto Thousand Needles;422§auto Tausend Nadeln;422§auto Mille pointes;422 | x=-4890.5 y=-2088.5 | size=1 | links=#45716(auto Thousand Needles;421):3 #45718(auto Thousand Needles;423):5
+#45718 | auto Thousand Needles;423§auto Tausend Nadeln;423§auto Mille pointes;423 | x=-4887.2001953125 y=-2092.800048828125 | size=1 | links=#45717(auto Thousand Needles;422):5 #45719(auto Thousand Needles;424):9
+#45719 | auto Thousand Needles;424§auto Tausend Nadeln;424§auto Mille pointes;424 | x=-4880.89990234375 y=-2099.60009765625 | size=1 | links=#45718(auto Thousand Needles;423):9 #45720(auto Thousand Needles;425):16
+#45720 | auto Thousand Needles;425§auto Tausend Nadeln;425§auto Mille pointes;425 | x=-4869.5 y=-2112.10009765625 | size=1 | links=#45719(auto Thousand Needles;424):16 #45721(auto Thousand Needles;426):18
+#45721 | auto Thousand Needles;426§auto Tausend Nadeln;426§auto Mille pointes;426 | x=-4857.2001953125 y=-2125.300048828125 | size=1 | links=#45720(auto Thousand Needles;425):18 #45722(auto Thousand Needles;427):19
+#45722 | auto Thousand Needles;427§auto Tausend Nadeln;427§auto Mille pointes;427 | x=-4844 y=-2139.5 | size=1 | links=#45721(auto Thousand Needles;426):19 #45723(auto Thousand Needles;428):12
+#45723 | auto Thousand Needles;428§auto Tausend Nadeln;428§auto Mille pointes;428 | x=-4835.30029296875 y=-2147.900146484375 | size=1 | links=#45722(auto Thousand Needles;427):12 #45724(auto Thousand Needles;429):2
+#45724 | auto Thousand Needles;429§auto Tausend Nadeln;429§auto Mille pointes;429 | x=-4833.30029296875 y=-2149.800048828125 | size=1 | links=#45723(auto Thousand Needles;428):2 #45725(auto Thousand Needles;430):6
+#45725 | auto Thousand Needles;430§auto Tausend Nadeln;430§auto Mille pointes;430 | x=-4828.60009765625 y=-2154 | size=1 | links=#45724(auto Thousand Needles;429):6 #45726(auto Thousand Needles;431):7
+#45726 | auto Thousand Needles;431§auto Tausend Nadeln;431§auto Mille pointes;431 | x=-4822.39990234375 y=-2150.199951171875 | size=1 | links=#45725(auto Thousand Needles;430):7 #45729(auto Thousand Needles;433):7
+#45728 | auto Thousand Needles;432§auto Tausend Nadeln;432§auto Mille pointes;432 | x=-4806.30029296875 y=-2143.60009765625 | size=1 | links=#45729(auto Thousand Needles;433):10 #45730(auto Thousand Needles;434):17
+#45729 | auto Thousand Needles;433§auto Tausend Nadeln;433§auto Mille pointes;433 | x=-4817.10009765625 y=-2145.5 | size=1 | links=#45726(auto Thousand Needles;431):7 #45728(auto Thousand Needles;432):10
+#45730 | auto Thousand Needles;434§auto Tausend Nadeln;434§auto Mille pointes;434 | x=-4789.2001953125 y=-2138.60009765625 | size=1 | links=#45728(auto Thousand Needles;432):17 c10760.9:11
+#45731 | auto Thousand Needles;435§auto Tausend Nadeln;435§auto Mille pointes;435 | x=-4765.60009765625 y=-2119.900146484375 | size=1 | links=c10896.1:16 c10760.9:19
+#45732 | auto Thousand Needles;436§auto Tausend Nadeln;436§auto Mille pointes;436 | x=-5035.60009765625 y=-1900.599975585938 | size=1 | links=#45733(auto Thousand Needles;437):4 c10760.7:9
+#45733 | auto Thousand Needles;437§auto Tausend Nadeln;437§auto Mille pointes;437 | x=-5032 y=-1898.5 | size=1 | links=#45732(auto Thousand Needles;436):4 #45734(auto Thousand Needles;438):6
+#45734 | auto Thousand Needles;438§auto Tausend Nadeln;438§auto Mille pointes;438 | x=-5026.10009765625 y=-1895.400024414063 | size=1 | links=#45733(auto Thousand Needles;437):6 #45735(auto Thousand Needles;439):12
+#45735 | auto Thousand Needles;439§auto Tausend Nadeln;439§auto Mille pointes;439 | x=-5015 y=-1889.400024414063 | size=1 | links=#45734(auto Thousand Needles;438):12 #45736(auto Thousand Needles;440):25
+#45736 | auto Thousand Needles;440§auto Tausend Nadeln;440§auto Mille pointes;440 | x=-4992.39990234375 y=-1878.300048828125 | size=1 | links=#45735(auto Thousand Needles;439):25 #45737(auto Thousand Needles;441):25
+#45737 | auto Thousand Needles;441§auto Tausend Nadeln;441§auto Mille pointes;441 | x=-4969.7001953125 y=-1867.700073242188 | size=1 | links=#45736(auto Thousand Needles;440):25 #45738(auto Thousand Needles;442):18
+#45738 | auto Thousand Needles;442§auto Tausend Nadeln;442§auto Mille pointes;442 | x=-4953 y=-1859.599975585938 | size=1 | links=#45737(auto Thousand Needles;441):18 #45739(auto Thousand Needles;443):4
+#45739 | auto Thousand Needles;443§auto Tausend Nadeln;443§auto Mille pointes;443 | x=-4949 y=-1857.599975585938 | size=1 | links=#45738(auto Thousand Needles;442):4 #45740(auto Thousand Needles;444):3
+#45740 | auto Thousand Needles;444§auto Tausend Nadeln;444§auto Mille pointes;444 | x=-4946.2001953125 y=-1856.200073242188 | size=1 | links=#45739(auto Thousand Needles;443):3 #45741(auto Thousand Needles;445):7
+#45741 | auto Thousand Needles;445§auto Tausend Nadeln;445§auto Mille pointes;445 | x=-4939.80029296875 y=-1853.300048828125 | size=1 | links=#45740(auto Thousand Needles;444):7 o176344.1:27 c10759.8:15
+#45742 | auto Thousand Needles;446§auto Tausend Nadeln;446§auto Mille pointes;446 | x=-5075.7001953125 y=-1885.400024414063 | size=1 | links=#45744(auto Thousand Needles;448):10 c10758.4:12 c10761.9:9
+#45743 | auto Thousand Needles;447§auto Tausend Nadeln;447§auto Mille pointes;447 | x=-5103.39990234375 y=-1907 | size=1 | links=c10760.5:6 c10761.6:12
+#45744 | auto Thousand Needles;448§auto Tausend Nadeln;448§auto Mille pointes;448 | x=-5084.60009765625 y=-1879.800048828125 | size=1 | links=#45742(auto Thousand Needles;446):10 c10761.3:10 c10758.4:14
+#45745 | auto Thousand Needles;449§auto Tausend Nadeln;449§auto Mille pointes;449 | x=-4998.39990234375 y=-1846.200073242188 | size=1 | links=#45633(auto Thousand Needles;339):32 #45746(auto Thousand Needles;450):20
+#45746 | auto Thousand Needles;450§auto Tausend Nadeln;450§auto Mille pointes;450 | x=-4990.10009765625 y=-1865 | size=1 | links=#45745(auto Thousand Needles;449):20 #45747(auto Thousand Needles;451):33
+#45747 | auto Thousand Needles;451§auto Tausend Nadeln;451§auto Mille pointes;451 | x=-4970.2001953125 y=-1891.599975585938 | size=1 | links=#45746(auto Thousand Needles;450):33 #45749(auto Thousand Needles;453):10 o175928.10:12
+#45748 | auto Thousand Needles;452§auto Tausend Nadeln;452§auto Mille pointes;452 | x=-4945.7001953125 y=-1894.599975585938 | size=1 | links=#45749(auto Thousand Needles;453):14 o175928.4:16
+#45749 | auto Thousand Needles;453§auto Tausend Nadeln;453§auto Mille pointes;453 | x=-4959.30029296875 y=-1890.200073242188 | size=1 | links=#45747(auto Thousand Needles;451):10 #45748(auto Thousand Needles;452):14
+#45750 | auto Thousand Needles;454§auto Tausend Nadeln;454§auto Mille pointes;454 | x=-4931.89990234375 y=-1935.300048828125 | size=1 | links=#45751(auto Thousand Needles;455):22 c10757.3:25 c10757.8:30
+#45751 | auto Thousand Needles;455§auto Tausend Nadeln;455§auto Mille pointes;455 | x=-4946.7001953125 y=-1951.599975585938 | size=1 | links=#45750(auto Thousand Needles;454):22 #45752(auto Thousand Needles;456):19 c10757.4:3
+#45752 | auto Thousand Needles;456§auto Tausend Nadeln;456§auto Mille pointes;456 | x=-4960.7001953125 y=-1965.700073242188 | size=1 | links=#45751(auto Thousand Needles;455):19 c10756.2:12 c10756.3:30
+#45753 | auto Thousand Needles;457§auto Tausend Nadeln;457§auto Mille pointes;457 | x=-5073 y=-2101.10009765625 | size=1 | links=c10756.1:16 o175928.2:14
+#45754 | auto Thousand Needles;458§auto Tausend Nadeln;458§auto Mille pointes;458 | x=-5103.2001953125 y=-2055.900146484375 | size=1 | links=#45755(auto Thousand Needles;459):9 c10757.5:22
+#45755 | auto Thousand Needles;459§auto Tausend Nadeln;459§auto Mille pointes;459 | x=-5112.60009765625 y=-2054.699951171875 | size=1 | links=#45754(auto Thousand Needles;458):9 #45756(auto Thousand Needles;460):17 c10756.5:9 o175928.5:14
+#45756 | auto Thousand Needles;460§auto Tausend Nadeln;460§auto Mille pointes;460 | x=-5129.89990234375 y=-2049.900146484375 | size=1 | links=#45755(auto Thousand Needles;459):17 #45757(auto Thousand Needles;461):28
+#45757 | auto Thousand Needles;461§auto Tausend Nadeln;461§auto Mille pointes;461 | x=-5157.2001953125 y=-2042.200073242188 | size=1 | links=#45756(auto Thousand Needles;460):28 #45758(auto Thousand Needles;462):40
+#45758 | auto Thousand Needles;462§auto Tausend Nadeln;462§auto Mille pointes;462 | x=-5196.39990234375 y=-2031.300048828125 | size=1 | links=#45757(auto Thousand Needles;461):40 #45759(auto Thousand Needles;463):21
+#45759 | auto Thousand Needles;463§auto Tausend Nadeln;463§auto Mille pointes;463 | x=-5216.89990234375 y=-2025.800048828125 | size=1 | links=#2058(auto Thousand Needles;20):47 #45758(auto Thousand Needles;462):21 #45760(auto Thousand Needles;464):39
+#45760 | auto Thousand Needles;464§auto Tausend Nadeln;464§auto Mille pointes;464 | x=-5254 y=-2039.599975585938 | size=1 | links=#2058(auto Thousand Needles;20):66 #10763(auto Thousand Needles;108):71 #45759(auto Thousand Needles;463):39 #45762(auto Thousand Needles;465):51
+#45762 | auto Thousand Needles;465§auto Tausend Nadeln;465§auto Mille pointes;465 | x=-5303.7001953125 y=-2054.5 | size=1 | links=#45760(auto Thousand Needles;464):51 c4114.2:25
+#45763 | auto Thousand Needles;466§auto Tausend Nadeln;466§auto Mille pointes;466 | x=-5530.80029296875 y=-2839.699951171875 | size=1 | links=#14341(auto Thousand Needles;143):20 #45764(auto Thousand Needles;467):38
+#45764 | auto Thousand Needles;467§auto Tausend Nadeln;467§auto Mille pointes;467 | x=-5504.30029296875 y=-2867.199951171875 | size=1 | links=#45763(auto Thousand Needles;466):38 c4119.17:16
+#45765 | auto Thousand Needles;468§auto Tausend Nadeln;468§auto Mille pointes;468 | x=-5458.30029296875 y=-2888.400146484375 | size=1 | links=c14427.1:14 c4119.17:33
+#45766 | auto Thousand Needles;469§auto Tausend Nadeln;469§auto Mille pointes;469 | x=-5305.10009765625 y=-1815.700073242188 | size=1 | links=#1348(auto Thousand Needles;13):70 #45767(auto Thousand Needles;470):53
+#45767 | auto Thousand Needles;470§auto Tausend Nadeln;470§auto Mille pointes;470 | x=-5333.89990234375 y=-1771.200073242188 | size=1 | links=#45766(auto Thousand Needles;469):53 #45768(auto Thousand Needles;471):36
+#45768 | auto Thousand Needles;471§auto Tausend Nadeln;471§auto Mille pointes;471 | x=-5350.7001953125 y=-1738.5 | size=1 | links=#45767(auto Thousand Needles;470):36 #45769(auto Thousand Needles;472):46
+#45769 | auto Thousand Needles;472§auto Tausend Nadeln;472§auto Mille pointes;472 | x=-5372.60009765625 y=-1697.5 | size=1 | links=#45768(auto Thousand Needles;471):46 c4100.2:25 c4100.3:26
+#45770 | auto Thousand Needles;473§auto Tausend Nadeln;473§auto Mille pointes;473 | x=-5417.7001953125 y=-1649.800048828125 | size=1 | links=#45771(auto Thousand Needles;474):10 c4100.1:16 c4100.3:40
+#45771 | auto Thousand Needles;474§auto Tausend Nadeln;474§auto Mille pointes;474 | x=-5425.30029296875 y=-1642.099975585938 | size=1 | links=#45770(auto Thousand Needles;473):10 #45772(auto Thousand Needles;475):12
+#45772 | auto Thousand Needles;475§auto Tausend Nadeln;475§auto Mille pointes;475 | x=-5435.60009765625 y=-1649.300048828125 | size=1 | links=#45771(auto Thousand Needles;474):12 c4101.8:10
+#45773 | auto Thousand Needles;476§auto Tausend Nadeln;476§auto Mille pointes;476 | x=-5447.89990234375 y=-1663.900024414063 | size=1 | links=#45774(auto Thousand Needles;477):10 c4101.8:9
+#45774 | auto Thousand Needles;477§auto Tausend Nadeln;477§auto Mille pointes;477 | x=-5454.5 y=-1672.200073242188 | size=1 | links=#45773(auto Thousand Needles;476):10 #45775(auto Thousand Needles;478):10
+#45775 | auto Thousand Needles;478§auto Tausend Nadeln;478§auto Mille pointes;478 | x=-5459.30029296875 y=-1681.700073242188 | size=1 | links=#45774(auto Thousand Needles;477):10 #45776(auto Thousand Needles;479):11
+#45776 | auto Thousand Needles;479§auto Tausend Nadeln;479§auto Mille pointes;479 | x=-5464.60009765625 y=-1691.5 | size=1 | links=#45775(auto Thousand Needles;478):11 #45777(auto Thousand Needles;480):7
+#45777 | auto Thousand Needles;480§auto Tausend Nadeln;480§auto Mille pointes;480 | x=-5470.80029296875 y=-1696.200073242188 | size=1 | links=#45776(auto Thousand Needles;479):7 #45778(auto Thousand Needles;481):6
+#45778 | auto Thousand Needles;481§auto Tausend Nadeln;481§auto Mille pointes;481 | x=-5474.5 y=-1691.400024414063 | size=1 | links=#45777(auto Thousand Needles;480):6 #45779(auto Thousand Needles;482):8
+#45779 | auto Thousand Needles;482§auto Tausend Nadeln;482§auto Mille pointes;482 | x=-5473.89990234375 y=-1683.099975585938 | size=1 | links=#45778(auto Thousand Needles;481):8 #45780(auto Thousand Needles;483):9
+#45780 | auto Thousand Needles;483§auto Tausend Nadeln;483§auto Mille pointes;483 | x=-5473 y=-1673.400024414063 | size=1 | links=#45779(auto Thousand Needles;482):9 #45781(auto Thousand Needles;484):13
+#45781 | auto Thousand Needles;484§auto Tausend Nadeln;484§auto Mille pointes;484 | x=-5470.10009765625 y=-1660.200073242188 | size=1 | links=#45780(auto Thousand Needles;483):13 #45782(auto Thousand Needles;485):10
+#45782 | auto Thousand Needles;485§auto Tausend Nadeln;485§auto Mille pointes;485 | x=-5468.39990234375 y=-1650.300048828125 | size=1 | links=#45781(auto Thousand Needles;484):10 #45783(auto Thousand Needles;486):8
+#45783 | auto Thousand Needles;486§auto Tausend Nadeln;486§auto Mille pointes;486 | x=-5464.39990234375 y=-1642.800048828125 | size=1 | links=#45782(auto Thousand Needles;485):8 #45784(auto Thousand Needles;487):8
+#45784 | auto Thousand Needles;487§auto Tausend Nadeln;487§auto Mille pointes;487 | x=-5467.7001953125 y=-1635 | size=1 | links=#45783(auto Thousand Needles;486):8 #45785(auto Thousand Needles;488):7
+#45785 | auto Thousand Needles;488§auto Tausend Nadeln;488§auto Mille pointes;488 | x=-5474.89990234375 y=-1631.800048828125 | size=1 | links=#45784(auto Thousand Needles;487):7 #45786(auto Thousand Needles;489):18
+#45786 | auto Thousand Needles;489§auto Tausend Nadeln;489§auto Mille pointes;489 | x=-5492.60009765625 y=-1626.599975585938 | size=1 | links=#45785(auto Thousand Needles;488):18 #45787(auto Thousand Needles;490):7
+#45787 | auto Thousand Needles;490§auto Tausend Nadeln;490§auto Mille pointes;490 | x=-5499.60009765625 y=-1623.700073242188 | size=1 | links=#45786(auto Thousand Needles;489):7 #45788(auto Thousand Needles;491):8
+#45788 | auto Thousand Needles;491§auto Tausend Nadeln;491§auto Mille pointes;491 | x=-5498 y=-1615.200073242188 | size=1 | links=#45787(auto Thousand Needles;490):8 c4104.4:6
+#45789 | auto Thousand Needles;492§auto Tausend Nadeln;492§auto Mille pointes;492 | x=-5514.80029296875 y=-1591.599975585938 | size=1 | links=#45790(auto Thousand Needles;493):8 c4101.6:4
+#45790 | auto Thousand Needles;493§auto Tausend Nadeln;493§auto Mille pointes;493 | x=-5522.10009765625 y=-1595.800048828125 | size=1 | links=#45789(auto Thousand Needles;492):8 c4101.11:13
+#45791 | auto Thousand Needles;494§auto Tausend Nadeln;494§auto Mille pointes;494 | x=-5538.60009765625 y=-1606.099975585938 | size=1 | links=#45792(auto Thousand Needles;495):13 c4101.11:6
+#45792 | auto Thousand Needles;495§auto Tausend Nadeln;495§auto Mille pointes;495 | x=-5542.10009765625 y=-1618.700073242188 | size=1 | links=#45791(auto Thousand Needles;494):13 #45793(auto Thousand Needles;496):17
+#45793 | auto Thousand Needles;496§auto Tausend Nadeln;496§auto Mille pointes;496 | x=-5550.2001953125 y=-1634.5 | size=1 | links=#45792(auto Thousand Needles;495):17 c4104.5:10
+#45794 | auto Thousand Needles;497§auto Tausend Nadeln;497§auto Mille pointes;497 | x=-5573 y=-1629.200073242188 | size=1 | links=c4104.5:13 c4101.9:13
+#45795 | auto Thousand Needles;498§auto Tausend Nadeln;498§auto Mille pointes;498 | x=-5606.5 y=-1583 | size=1 | links=#45796(auto Thousand Needles;499):19 c4104.3:16
+#45796 | auto Thousand Needles;499§auto Tausend Nadeln;499§auto Mille pointes;499 | x=-5591.10009765625 y=-1571.300048828125 | size=1 | links=#45795(auto Thousand Needles;498):19 c4100.6:13
+#45798 | auto Thousand Needles;500§auto Tausend Nadeln;500§auto Mille pointes;500 | x=-5334.2001953125 y=-1548.200073242188 | size=1 | links=c4114.1:23 c4101.3:63
+#45799 | auto Thousand Needles;501§auto Tausend Nadeln;501§auto Mille pointes;501 | x=-4788.7001953125 y=-1202.099975585938 | size=1 | links=#27017(auto Thousand Needles;263):29 #45800(auto Thousand Needles;502):39
+#45800 | auto Thousand Needles;502§auto Tausend Nadeln;502§auto Mille pointes;502 | x=-4827.7001953125 y=-1195.400024414063 | size=1 | links=#45799(auto Thousand Needles;501):39 #45801(auto Thousand Needles;503):26
+#45801 | auto Thousand Needles;503§auto Tausend Nadeln;503§auto Mille pointes;503 | x=-4844.5 y=-1175.5 | size=1 | links=#45800(auto Thousand Needles;502):26 #45802(auto Thousand Needles;504):46
+#45802 | auto Thousand Needles;504§auto Tausend Nadeln;504§auto Mille pointes;504 | x=-4875.80029296875 y=-1141.400024414063 | size=1 | links=#45801(auto Thousand Needles;503):46 #45803(auto Thousand Needles;505):21
+#45803 | auto Thousand Needles;505§auto Tausend Nadeln;505§auto Mille pointes;505 | x=-4890.30029296875 y=-1125.300048828125 | size=1 | links=#45802(auto Thousand Needles;504):21 #45804(auto Thousand Needles;506):19
+#45804 | auto Thousand Needles;506§auto Tausend Nadeln;506§auto Mille pointes;506 | x=-4903.2001953125 y=-1111.200073242188 | size=1 | links=#45803(auto Thousand Needles;505):19 #45805(auto Thousand Needles;507):9
+#45805 | auto Thousand Needles;507§auto Tausend Nadeln;507§auto Mille pointes;507 | x=-4909.89990234375 y=-1104 | size=1 | links=#45804(auto Thousand Needles;506):9 #45806(auto Thousand Needles;508):30 c4124.5:13
+#45806 | auto Thousand Needles;508§auto Tausend Nadeln;508§auto Mille pointes;508 | x=-4935 y=-1086.200073242188 | size=1 | links=#45805(auto Thousand Needles;507):30 #45807(auto Thousand Needles;509):7
+#45807 | auto Thousand Needles;509§auto Tausend Nadeln;509§auto Mille pointes;509 | x=-4933.30029296875 y=-1078.800048828125 | size=1 | links=#45806(auto Thousand Needles;508):7 #45808(auto Thousand Needles;510):17
+#45808 | auto Thousand Needles;510§auto Tausend Nadeln;510§auto Mille pointes;510 | x=-4921.30029296875 y=-1066.300048828125 | size=1 | links=#45807(auto Thousand Needles;509):17 #45809(auto Thousand Needles;511):18
+#45809 | auto Thousand Needles;511§auto Tausend Nadeln;511§auto Mille pointes;511 | x=-4908.7001953125 y=-1053.200073242188 | size=1 | links=#45808(auto Thousand Needles;510):18 #45810(auto Thousand Needles;512):10
+#45810 | auto Thousand Needles;512§auto Tausend Nadeln;512§auto Mille pointes;512 | x=-4918.5 y=-1048.5 | size=1 | links=#45809(auto Thousand Needles;511):10 #45811(auto Thousand Needles;513):7
+#45811 | auto Thousand Needles;513§auto Tausend Nadeln;513§auto Mille pointes;513 | x=-4925.7001953125 y=-1050.400024414063 | size=1 | links=#45810(auto Thousand Needles;512):7 #45813(auto Thousand Needles;514):12
+#45813 | auto Thousand Needles;514§auto Tausend Nadeln;514§auto Mille pointes;514 | x=-4938 y=-1054 | size=1 | links=#45811(auto Thousand Needles;513):12 #45814(auto Thousand Needles;515):17
+#45814 | auto Thousand Needles;515§auto Tausend Nadeln;515§auto Mille pointes;515 | x=-4953.39990234375 y=-1045.5 | size=1 | links=#45813(auto Thousand Needles;514):17 #45815(auto Thousand Needles;516):9
+#45815 | auto Thousand Needles;516§auto Tausend Nadeln;516§auto Mille pointes;516 | x=-4957 y=-1036.400024414063 | size=1 | links=#45814(auto Thousand Needles;515):9 #45816(auto Thousand Needles;517):20
+#45816 | auto Thousand Needles;517§auto Tausend Nadeln;517§auto Mille pointes;517 | x=-4965.60009765625 y=-1018.200012207031 | size=1 | links=#45815(auto Thousand Needles;516):20 #45817(auto Thousand Needles;518):37
+#45817 | auto Thousand Needles;518§auto Tausend Nadeln;518§auto Mille pointes;518 | x=-4978 y=-983 | size=1 | links=#45816(auto Thousand Needles;517):37 #45818(auto Thousand Needles;519):35
+#45818 | auto Thousand Needles;519§auto Tausend Nadeln;519§auto Mille pointes;519 | x=-4989.30029296875 y=-949.7999877929688 | size=1 | links=#45817(auto Thousand Needles;518):35 c6139.2:35 c4109.5:27
+#45819 | auto Thousand Needles;520§auto Tausend Nadeln;520§auto Mille pointes;520 | x=-5078.39990234375 y=-998.9000244140625 | size=1 | links=#45820(auto Thousand Needles;521):41 c4107.6:46
+#45820 | auto Thousand Needles;521§auto Tausend Nadeln;521§auto Mille pointes;521 | x=-5113.80029296875 y=-1020.299987792969 | size=1 | links=#45819(auto Thousand Needles;520):41 #45821(auto Thousand Needles;522):7
+#45821 | auto Thousand Needles;522§auto Tausend Nadeln;522§auto Mille pointes;522 | x=-5118.5 y=-1015.100036621094 | size=1 | links=#45820(auto Thousand Needles;521):7 #45822(auto Thousand Needles;523):8
+#45822 | auto Thousand Needles;523§auto Tausend Nadeln;523§auto Mille pointes;523 | x=-5126.5 y=-1012.700012207031 | size=1 | links=#45821(auto Thousand Needles;522):8 #45823(auto Thousand Needles;524):6
+#45823 | auto Thousand Needles;524§auto Tausend Nadeln;524§auto Mille pointes;524 | x=-5133.30029296875 y=-1014.299987792969 | size=1 | links=#45822(auto Thousand Needles;523):6 #45824(auto Thousand Needles;525):4
+#45824 | auto Thousand Needles;525§auto Tausend Nadeln;525§auto Mille pointes;525 | x=-5136.80029296875 y=-1016.700012207031 | size=1 | links=#45823(auto Thousand Needles;524):4 #45825(auto Thousand Needles;526):10
+#45825 | auto Thousand Needles;526§auto Tausend Nadeln;526§auto Mille pointes;526 | x=-5145.39990234375 y=-1022.299987792969 | size=1 | links=#45824(auto Thousand Needles;525):10 #45826(auto Thousand Needles;527):8
+#45826 | auto Thousand Needles;527§auto Tausend Nadeln;527§auto Mille pointes;527 | x=-5149 y=-1029.900024414063 | size=1 | links=#45825(auto Thousand Needles;526):8 #45827(auto Thousand Needles;528):11
+#45827 | auto Thousand Needles;528§auto Tausend Nadeln;528§auto Mille pointes;528 | x=-5149.5 y=-1041.099975585938 | size=1 | links=#45826(auto Thousand Needles;527):11 #45828(auto Thousand Needles;529):11
+#45828 | auto Thousand Needles;529§auto Tausend Nadeln;529§auto Mille pointes;529 | x=-5148.7001953125 y=-1052.300048828125 | size=1 | links=#45827(auto Thousand Needles;528):11 #45829(auto Thousand Needles;530):11
+#45829 | auto Thousand Needles;530§auto Tausend Nadeln;530§auto Mille pointes;530 | x=-5141.7001953125 y=-1061.800048828125 | size=1 | links=#45828(auto Thousand Needles;529):11 #45830(auto Thousand Needles;531):9
+#45830 | auto Thousand Needles;531§auto Tausend Nadeln;531§auto Mille pointes;531 | x=-5135.30029296875 y=-1069.200073242188 | size=1 | links=#45829(auto Thousand Needles;530):9 #45831(auto Thousand Needles;532):10
+#45831 | auto Thousand Needles;532§auto Tausend Nadeln;532§auto Mille pointes;532 | x=-5129.2001953125 y=-1078.200073242188 | size=1 | links=#45830(auto Thousand Needles;531):10 #45832(auto Thousand Needles;533):9
+#45832 | auto Thousand Needles;533§auto Tausend Nadeln;533§auto Mille pointes;533 | x=-5128.10009765625 y=-1087.800048828125 | size=1 | links=#45831(auto Thousand Needles;532):9 #45833(auto Thousand Needles;534):16
+#45833 | auto Thousand Needles;534§auto Tausend Nadeln;534§auto Mille pointes;534 | x=-5134.60009765625 y=-1102.700073242188 | size=1 | links=#45832(auto Thousand Needles;533):16 #45834(auto Thousand Needles;535):16
+#45834 | auto Thousand Needles;535§auto Tausend Nadeln;535§auto Mille pointes;535 | x=-5146.7001953125 y=-1113.599975585938 | size=1 | links=#45833(auto Thousand Needles;534):16 c4107.10:11
+#45835 | auto Thousand Needles;536§auto Tausend Nadeln;536§auto Mille pointes;536 | x=-5177.89990234375 y=-1129.099975585938 | size=1 | links=c4109.4:19 c4107.10:25
+#45836 | auto Thousand Needles;537§auto Tausend Nadeln;537§auto Mille pointes;537 | x=-5172.30029296875 y=-1202.200073242188 | size=1 | links=c6139.1:17 c10427.1:24 c4107.14:29
+#45837 | auto Thousand Needles;538§auto Tausend Nadeln;538§auto Mille pointes;538 | x=-4513 y=-1163.900024414063 | size=1 | links=#45838(auto Thousand Needles;539):36 c4095.17:26
+#45838 | auto Thousand Needles;539§auto Tausend Nadeln;539§auto Mille pointes;539 | x=-4511 y=-1127.099975585938 | size=1 | links=#45837(auto Thousand Needles;538):36 #45839(auto Thousand Needles;540):26
+#45839 | auto Thousand Needles;540§auto Tausend Nadeln;540§auto Mille pointes;540 | x=-4526.39990234375 y=-1105.400024414063 | size=1 | links=#45838(auto Thousand Needles;539):26 c4124.30:20
+#45840 | auto Thousand Needles;541§auto Tausend Nadeln;541§auto Mille pointes;541 | x=-4556 y=-1058.099975585938 | size=1 | links=#9019(auto Thousand Needles;90):25 c4124.30:36
+#45841 | auto Thousand Needles;542§auto Tausend Nadeln;542§auto Mille pointes;542 | x=-4804.89990234375 y=-1381.200073242188 | size=1 | links=#23049(auto Thousand Needles;225):27 #45842(auto Thousand Needles;543):22
+#45842 | auto Thousand Needles;543§auto Tausend Nadeln;543§auto Mille pointes;543 | x=-4783.80029296875 y=-1388.300048828125 | size=1 | links=#45841(auto Thousand Needles;542):22 #45843(auto Thousand Needles;544):35
+#45843 | auto Thousand Needles;544§auto Tausend Nadeln;544§auto Mille pointes;544 | x=-4748.89990234375 y=-1394.099975585938 | size=1 | links=#45842(auto Thousand Needles;543):35 #45844(auto Thousand Needles;545):35
+#45844 | auto Thousand Needles;545§auto Tausend Nadeln;545§auto Mille pointes;545 | x=-4713.7001953125 y=-1399.800048828125 | size=1 | links=#45843(auto Thousand Needles;544):35 #45845(auto Thousand Needles;546):26
+#45845 | auto Thousand Needles;546§auto Tausend Nadeln;546§auto Mille pointes;546 | x=-4688.80029296875 y=-1407.800048828125 | size=1 | links=#45844(auto Thousand Needles;545):26 c4118.3:34
+#45846 | auto Thousand Needles;547§auto Tausend Nadeln;547§auto Mille pointes;547 | x=-5043.39990234375 y=-1471.800048828125 | size=1 | links=#45847(auto Thousand Needles;548):44 c4250.3:41
+#45847 | auto Thousand Needles;548§auto Tausend Nadeln;548§auto Mille pointes;548 | x=-5007.10009765625 y=-1497.900024414063 | size=1 | links=#45846(auto Thousand Needles;547):44 #45848(auto Thousand Needles;549):32
+#45848 | auto Thousand Needles;549§auto Tausend Nadeln;549§auto Mille pointes;549 | x=-4982 y=-1518.099975585938 | size=1 | links=#26858(auto Thousand Needles;262):24 #45847(auto Thousand Needles;548):32
+#45849 | auto Thousand Needles;550§auto Tausend Nadeln;550§auto Mille pointes;550 | x=-4555.10009765625 y=-1007.900024414063 | size=1 | links=#9019(auto Thousand Needles;90):24 #45850(auto Thousand Needles;551):38
+#45850 | auto Thousand Needles;551§auto Tausend Nadeln;551§auto Mille pointes;551 | x=-4571.89990234375 y=-973.5 | size=1 | links=#45849(auto Thousand Needles;550):38 c4113.1:27
+#45851 | auto Thousand Needles;552§auto Tausend Nadeln;552§auto Mille pointes;552 | x=-4602.5 y=-956.9000244140625 | size=1 | links=#45852(auto Thousand Needles;553):20 c4249.15:7
+#45852 | auto Thousand Needles;553§auto Tausend Nadeln;553§auto Mille pointes;553 | x=-4622.39990234375 y=-951.7999877929688 | size=1 | links=#45851(auto Thousand Needles;552):20 c4116.3:13
+#45853 | auto Thousand Needles;554§auto Tausend Nadeln;554§auto Mille pointes;554 | x=-5151.89990234375 y=-1719.200073242188 | size=1 | links=#15330(auto Thousand Needles;150):49 #45854(auto Thousand Needles;555):62
+#45854 | auto Thousand Needles;555§auto Tausend Nadeln;555§auto Mille pointes;555 | x=-5183.5 y=-1664.700073242188 | size=1 | links=#45853(auto Thousand Needles;554):62 #45855(auto Thousand Needles;556):31 c4248.38:11
+#45855 | auto Thousand Needles;556§auto Tausend Nadeln;556§auto Mille pointes;556 | x=-5171.89990234375 y=-1635.300048828125 | size=1 | links=#45854(auto Thousand Needles;555):31 #45856(auto Thousand Needles;557):42 c4248.9:33
+#45856 | auto Thousand Needles;557§auto Tausend Nadeln;557§auto Mille pointes;557 | x=-5169.2001953125 y=-1592.5 | size=1 | links=#45855(auto Thousand Needles;556):42 c4499.1:40
+#45857 | auto Thousand Needles;558§auto Tausend Nadeln;558§auto Mille pointes;558 | x=-4648.2001953125 y=-1467.599975585938 | size=1 | links=c4118.3:39 c4111.5:30
+#45858 | auto Thousand Needles;559§auto Tausend Nadeln;559§auto Mille pointes;559 | x=-4788 y=-1765.5 | size=1 | links=#13922(auto Thousand Needles;135):23 #45859(auto Thousand Needles;560):28
+#45859 | auto Thousand Needles;560§auto Tausend Nadeln;560§auto Mille pointes;560 | x=-4798.60009765625 y=-1738.900024414063 | size=1 | links=#45858(auto Thousand Needles;559):28 c4114.3:40
+#45860 | auto Thousand Needles;561§auto Tausend Nadeln;561§auto Mille pointes;561 | x=-5609.10009765625 y=-2146.400146484375 | size=1 | links=#45861(auto Thousand Needles;562):51 c4112.1:38 c4126.16:51
+#45861 | auto Thousand Needles;562§auto Tausend Nadeln;562§auto Mille pointes;562 | x=-5597.39990234375 y=-2096.10009765625 | size=1 | links=#45860(auto Thousand Needles;561):51 c4117.5:24
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c2986.1 | links=#45604(auto Thousand Needles;311):14
+c3053.1 | links=#758(auto Thousand Needles;7):25 c6495.1:16
+c3689.1 | links=#504(central location;Whitereach Post;Thousand Needles):18
+c4097.1 | links=#45618(auto Thousand Needles;325):15 #45620(auto Thousand Needles;327):13 c4096.27:12
+c4099.1 | links=#45623(auto Thousand Needles;330):11 #45624(auto Thousand Needles;331):11
+c4100.1 | links=#45770(auto Thousand Needles;473):16 c4100.3:36
+c4110.1 | links=c4107.7:10
+c4111.1 | links=c5933.1:33 c4248.10:10
+c4112.1 | links=#45860(auto Thousand Needles;561):38
+c4113.1 | links=#45850(auto Thousand Needles;551):27 c4249.15:5
+c4114.1 | links=#45798(auto Thousand Needles;500):23
+c4116.1 | links=#7401(auto Thousand Needles;75):36
+c4117.1 | links=#4822(auto Thousand Needles;50):78 #20981(focus point;Thousand Needles):111
+c4120.1 | links=#26844(auto Thousand Needles;261):40
+c4130.1 | links=c4133.2:48 c4130.5:78 c4133.15:52
+c4131.1 | links=c4133.7:2 c4133.9:53
+c4132.1 | links=#45597(auto Thousand Needles;304):12
+c4140.1 | links=c4140.3:16 c4139.4:33
+c4143.1 | links=c5792.1:100 o19868.10:108
+c4147.1 | links=c9377.2:19 o19868.17:31
+c4154.1 | links=#45598(auto Thousand Needles;305):111 c4147.3:74 c4147.4:40
+c4158.1 | links=c4158.4:53
+c4250.1 | links=c5933.1:2 c4250.3:3
+c4317.1 | links=#25848(central location;Freewind Post;Thousand Needles):29 #27823(auto Thousand Needles;270):21
+c4452.1 | links=#2907(auto Thousand Needles;33):13 c4454.1:12 c4495.1:14 c6730.1:19
+c4453.1 | links=#13675(central location;Mirage Raceway;Thousand Needles):29 c4454.1:3
+c4454.1 | links=c4452.1:12 c4453.1:3 c6548.1:43
+c4483.1 | links=#28273(central location;Ironstone Camp;Thousand Needles):10
+c4495.1 | links=c4452.1:14 c6496.1:10
+c4496.1 | links=c4507.1:18
+c4499.1 | links=#45856(auto Thousand Needles;557):40
+c4507.1 | links=#758(auto Thousand Needles;7):48 #11771(auto Thousand Needles;113):28 #13675(central location;Mirage Raceway;Thousand Needles):30 c4496.1:18 c4706.1:43 c4709.1:15
+c4546.1 | links=#28273(central location;Ironstone Camp;Thousand Needles):3
+c4547.1 | links=#28273(central location;Ironstone Camp;Thousand Needles):7
+c4548.1 | links=c4099.16:2 c4249.16:4 c4095.17:38 c4249.17:8
+c4629.1 | links=c4707.1:29 c5792.1:49
+c4630.1 | links=#8349(auto Thousand Needles;83):12
+c4706.1 | links=#11771(auto Thousand Needles;113):15 c4507.1:43
+c4707.1 | links=#758(auto Thousand Needles;7):25 c4629.1:29
+c4709.1 | links=c4507.1:15
+c4720.1 | links=#20846(auto Thousand Needles;207):7 o20805.1:0
+c4722.1 | links=c11116.1:6
+c4875.1 | links=#12464(auto Thousand Needles;121):21
+c4876.1 | links=c11116.1:7
+c4877.1 | links=c11116.1:6
+c4878.1 | links=#6740(auto Thousand Needles;67):7 #12464(auto Thousand Needles;121):32
+c5792.1 | links=c4143.1:100 c4629.1:49 c6495.1:56
+c5905.1 | links=#45604(auto Thousand Needles;311):24 #45605(auto Thousand Needles;312):13
+c5933.1 | links=c4111.1:33 c4250.1:2 c4250.2:3
+c5934.1 | links=c4109.4:24 c4107.14:10
+c5935.1 | links=o19868.9:86 c4151.25:36
+c5937.1 | links=c4139.7:19
+c6139.1 | links=#45836(auto Thousand Needles;537):17
+c6491.1 | links=#45602(auto Thousand Needles;309):30
+c6495.1 | links=#11771(auto Thousand Needles;113):19 c3053.1:16 c5792.1:56
+c6496.1 | links=#26826(auto Thousand Needles;260):19 c4495.1:10
+c6548.1 | links=#13675(central location;Mirage Raceway;Thousand Needles):39 #26826(auto Thousand Needles;260):55 c4454.1:43 c9238.1:28
+c6626.1 | links=#8349(auto Thousand Needles;83):15
+c6730.1 | links=#2907(auto Thousand Needles;33):7 c4452.1:19
+c7404.1 | links=c7404.2:3
+c9238.1 | links=c6548.1:28
+c9551.1 | links=#6740(auto Thousand Needles;67):9
+c10079.1 | links=#15660(auto Thousand Needles;156):6
+c10427.1 | links=#45836(auto Thousand Needles;537):24
+c10428.1 | links=#504(central location;Whitereach Post;Thousand Needles):14 c10941.1:7
+c10537.1 | links=#12464(auto Thousand Needles;121):9
+c10539.1 | links=#17285(auto Thousand Needles;169):9
+c10617.1 | links=#45630(auto Thousand Needles;336):25
+c10636.1 | links=#504(central location;Whitereach Post;Thousand Needles):30
+c10638.1 | links=#504(central location;Whitereach Post;Thousand Needles):12
+c10645.1 | links=c11116.1:5
+c10646.1 | links=c10896.1:12
+c10756.1 | links=#45753(auto Thousand Needles;457):16 c10757.5:31 c10757.6:35
+c10757.1 | links=c10756.3:37 o175928.6:39
+c10758.1 | links=c10759.1:19 c10759.2:17
+c10759.1 | links=c10758.1:19 c10760.1:14
+c10760.1 | links=c10759.1:14 c10758.5:14
+c10761.1 | links=#45697(auto Thousand Needles;403):9
+c10896.1 | links=#45731(auto Thousand Needles;435):16 c10646.1:12
+c10941.1 | links=#504(central location;Whitereach Post;Thousand Needles):20 c10428.1:7 c17178.1:3
+c10992.1 | links=c4118.3:26
+c11116.1 | links=#17296(auto Thousand Needles;170):11 c4722.1:6 c4876.1:7 c4877.1:6 c10645.1:5
+c11117.1 | links=#12464(auto Thousand Needles;121):7
+c12576.1 | links=#27933(auto Thousand Needles;271):29
+c14426.1 | links=c10759.5:13
+c14427.1 | links=#45765(auto Thousand Needles;468):14 c4119.9:33 c4119.19:26
+c15584.1 | links=#25848(central location;Freewind Post;Thousand Needles):5
+c17178.1 | links=#504(central location;Whitereach Post;Thousand Needles):21 c10941.1:3
+o19861.1 | links=#19524(auto Thousand Needles;196):6
+o19870.1 | links=c4140.10:90 o19868.17:62
+o20447.1 | links=o20447.2:3 o20447.3:3 c4100.6:10
+o20805.1 | links=c4720.1:0
+o20807.1 | links=c7404.2:8
+o92423.1 | links=#45619(auto Thousand Needles;326):8
+o175384.1 | links=c4109.2:21
+o175565.1 | links=#7309(auto Thousand Needles;74):32
+o175944.1 | links=c10758.5:9
+o176115.1 | links=#12464(auto Thousand Needles;121):5
+o176344.1 | links=#45741(auto Thousand Needles;445):27 c10759.8:23
+o180523.1 | links=
+c4099.2 | links=#45620(auto Thousand Needles;327):10 #45621(auto Thousand Needles;328):17
+c4100.2 | links=#45769(auto Thousand Needles;472):25 c4101.2:21
+c4101.2 | links=c4100.2:21 c4101.3:56
+c4104.2 | links=c4101.11:14
+c4107.2 | links=c6139.2:32
+c4109.2 | links=o175384.1:21 c6139.2:46 c4107.6:38
+c4110.2 | links=o175384.4:25 o175384.5:22 c4107.12:24
+c4111.2 | links=c4248.9:15
+c4112.2 | links=o175928.4:26
+c4113.2 | links=c4116.2:29 c4120.4:12 c4120.13:39 c4249.30:38
+c4114.2 | links=#45762(auto Thousand Needles;465):25
+c4116.2 | links=c4113.2:29
+c4130.2 | links=c4133.2:38
+c4131.2 | links=c4133.34:0
+c4133.2 | links=c4130.1:48 c4130.2:38 c4158.6:97
+c4147.2 | links=#45579(auto Thousand Needles;287):38 c4143.20:67
+c4150.2 | links=o19873.7:24 o19873.9:28
+c4154.2 | links=c4140.10:66 c4140.14:75
+c4158.2 | links=c4139.4:29 c4139.9:41
+c4250.2 | links=c5933.1:3 c4250.3:3 c4248.11:11
+c6139.2 | links=#45818(auto Thousand Needles;519):35 c4107.2:32 c4109.2:46 c4107.12:29
+c6491.2 | links=#4129(auto Thousand Needles;41):16
+c7404.2 | links=c7404.1:3 o20807.1:8 c4099.8:23
+c9377.2 | links=c4147.1:19 o19868.11:20
+c10756.2 | links=#45752(auto Thousand Needles;456):12
+c10758.2 | links=#45715(auto Thousand Needles;420):8
+c10759.2 | links=#45714(auto Thousand Needles;419):4 c10758.1:17
+c10760.2 | links=#45698(auto Thousand Needles;404):7 c10759.3:19 c10760.3:6
+c10761.2 | links=#45683(auto Thousand Needles;389):18
+o19870.2 | links=o19872.2:32 c9377.3:59 c4140.10:77
+o19871.2 | links=o19872.4:50 c4154.5:45 o19869.9:95
+o19872.2 | links=#20586(auto Thousand Needles;204):40 o19870.2:32
+o20447.2 | links=o20447.1:3 c4100.6:8
+o175565.2 | links=c4119.9:16
+o175928.2 | links=#45753(auto Thousand Needles;457):14
+c4100.3 | links=#45769(auto Thousand Needles;472):26 #45770(auto Thousand Needles;473):40 c4100.1:36
+c4101.3 | links=#45798(auto Thousand Needles;500):63 c4101.2:56
+c4104.3 | links=#45795(auto Thousand Needles;498):16 c4100.5:11
+c4109.3 | links=o175384.4:38
+c4112.3 | links=c4126.18:27
+c4113.3 | links=c4120.8:44
+c4114.3 | links=#45859(auto Thousand Needles;560):40
+c4116.3 | links=#45852(auto Thousand Needles;553):13
+c4118.3 | links=#45845(auto Thousand Needles;546):34 #45857(auto Thousand Needles;558):39 c10992.1:26 c4097.8:25 c4099.10:20
+c4124.3 | links=#45609(auto Thousand Needles;316):59 #45610(auto Thousand Needles;317):70
+c4131.3 | links=c4131.4:17 c4131.6:17
+c4140.3 | links=#18577(auto Thousand Needles;187):106 c4140.1:16 c4139.5:13
+c4144.3 | links=#45573(auto Thousand Needles;281):75 c4150.8:61
+c4147.3 | links=c4154.1:74 c4147.4:35 o19868.17:70
+c4150.3 | links=#45599(auto Thousand Needles;306):72 o19870.6:54
+c4151.3 | links=o19870.6:20 o19873.7:21
+c4154.3 | links=#45575(auto Thousand Needles;283):19 c4154.4:26
+c4250.3 | links=#45846(auto Thousand Needles;547):41 c4250.1:3 c4250.2:3
+c5523.3 | links=#28273(central location;Ironstone Camp;Thousand Needles):22
+c6139.3 | links=c4107.7:39
+c9377.3 | links=o19870.2:59
+c10756.3 | links=#45752(auto Thousand Needles;456):30 c10757.1:37 c10757.10:32
+c10757.3 | links=#45750(auto Thousand Needles;454):25
+c10758.3 | links=#45681(auto Thousand Needles;387):10
+c10759.3 | links=#45667(auto Thousand Needles;373):15 #45668(auto Thousand Needles;374):15 c10760.2:19
+c10760.3 | links=c10760.2:6
+c10761.3 | links=#45744(auto Thousand Needles;448):10
+o19869.3 | links=o19873.9:75 c4151.36:50
+o20447.3 | links=o20447.1:3 c4100.6:12
+c4100.4 | links=c4104.4:11 c4101.6:14
+c4104.4 | links=#45788(auto Thousand Needles;491):6 c4100.4:11
+c4109.4 | links=#45835(auto Thousand Needles;536):19 c5934.1:24
+c4116.4 | links=c4249.31:23
+c4120.4 | links=c4113.2:12 c4124.40:10
+c4131.4 | links=c4131.3:17 c4131.5:17
+c4133.4 | links=#45588(auto Thousand Needles;296):16 c4133.7:47
+c4139.4 | links=c4140.1:33 c4158.2:29 c4139.7:47
+c4147.4 | links=c4154.1:40 c4147.3:35 c4147.5:22
+c4154.4 | links=c4154.3:26 o19872.4:20
+c4158.4 | links=c4158.1:53 c4140.33:48
+c9377.4 | links=o19868.5:32
+c10757.4 | links=#45751(auto Thousand Needles;455):3
+c10758.4 | links=#45679(auto Thousand Needles;385):12 #45742(auto Thousand Needles;446):12 #45744(auto Thousand Needles;448):14
+c10760.4 | links=c10758.7:21 c10760.11:1
+o19868.4 | links=c4154.6:52 c4147.14:46
+o19871.4 | links=c4143.5:64 o19869.9:65
+o19872.4 | links=o19871.2:50 c4154.4:20 c4143.21:119 c4151.28:63
+o175384.4 | links=c4110.2:25 c4109.3:38 c4107.9:4
+o175928.4 | links=#45748(auto Thousand Needles;452):16 c4112.2:26
+c4095.5 | links=#45625(auto Thousand Needles;332):19 c4097.7:8
+c4100.5 | links=c4104.3:11 c4101.9:19
+c4104.5 | links=#45793(auto Thousand Needles;496):10 #45794(auto Thousand Needles;497):13
+c4109.5 | links=#45818(auto Thousand Needles;519):27
+c4111.5 | links=#45857(auto Thousand Needles;558):30
+c4116.5 | links=c4124.39:12
+c4117.5 | links=#45861(auto Thousand Needles;562):24 c4118.11:27
+c4118.5 | links=c4124.26:52
+c4124.5 | links=#45805(auto Thousand Needles;507):13
+c4130.5 | links=c4130.1:78 c4133.15:50 c4150.17:74
+c4131.5 | links=c4131.4:17 c4131.6:10
+c4139.5 | links=#45598(auto Thousand Needles;305):20 c4140.3:13
+c4143.5 | links=o19871.4:64 o19868.9:31 o19868.10:47
+c4144.5 | links=c4150.8:43
+c4147.5 | links=c4147.4:22 o19868.11:36
+c4150.5 | links=c4151.8:25 c4151.31:20
+c4151.5 | links=#689(auto Thousand Needles;6):67 c4151.15:81
+c4154.5 | links=o19871.2:45 o19869.5:14
+c10756.5 | links=#45755(auto Thousand Needles;459):9 o175928.5:12
+c10757.5 | links=#45754(auto Thousand Needles;458):22 c10756.1:31 c10757.6:26 o175928.16:22
+c10758.5 | links=#45714(auto Thousand Needles;419):6 c10760.1:14 o175944.1:9
+c10759.5 | links=#45660(auto Thousand Needles;366):13 c14426.1:13 c10759.13:20
+c10760.5 | links=#45680(auto Thousand Needles;386):5 #45743(auto Thousand Needles;447):6
+c10761.5 | links=#45683(auto Thousand Needles;389):21
+o19868.5 | links=c9377.4:32 c4140.22:46
+o19869.5 | links=#45575(auto Thousand Needles;283):13 c4154.5:14
+o175384.5 | links=c4110.2:22
+o175928.5 | links=#45755(auto Thousand Needles;459):14 c10756.5:12
+c4094.6 | links=#45616(auto Thousand Needles;323):19 c4094.8:12
+c4097.6 | links=c4099.6:21 c4099.19:16 c4095.22:0
+c4099.6 | links=c4097.6:21 c4095.10:25
+c4100.6 | links=#45796(auto Thousand Needles;499):13 o20447.1:10 o20447.2:8 o20447.3:12
+c4101.6 | links=#45789(auto Thousand Needles;492):4 c4100.4:14
+c4107.6 | links=#45819(auto Thousand Needles;520):46 c4109.2:38
+c4131.6 | links=#45592(auto Thousand Needles;300):7 c4131.3:17 c4131.5:10
+c4133.6 | links=c4133.9:24
+c4139.6 | links=c4158.6:51
+c4144.6 | links=c4151.19:23 c4151.31:41
+c4154.6 | links=#45580(auto Thousand Needles;288):76 o19868.4:52 c4143.17:92
+c4158.6 | links=c4133.2:97 c4139.6:51 c4139.9:74
+c10757.6 | links=c10756.1:35 c10757.5:26 o175928.6:26
+c10758.6 | links=#45715(auto Thousand Needles;420):11
+c10760.6 | links=#45681(auto Thousand Needles;387):17 c10759.7:28
+c10761.6 | links=#45743(auto Thousand Needles;447):12
+o19870.6 | links=#45572(auto Thousand Needles;280):32 c4150.3:54 c4151.3:20
+o175928.6 | links=c10757.1:39 c10757.6:26
+c4096.7 | links=#45616(auto Thousand Needles;323):25 #45617(auto Thousand Needles;324):13
+c4097.7 | links=#45626(auto Thousand Needles;333):18 c4095.5:8
+c4107.7 | links=c4110.1:10 c6139.3:39 o89635.8:16 c4107.12:46
+c4118.7 | links=c4124.26:38 c4248.40:39
+c4133.7 | links=c4131.1:2 c4133.4:47
+c4139.7 | links=c5937.1:19 c4139.4:47 c4140.16:23
+c4150.7 | links=#45582(auto Thousand Needles;290):12 c4151.29:34
+c10758.7 | links=c10760.4:21 c10759.13:5
+c10759.7 | links=#45684(auto Thousand Needles;390):18 c10760.6:28
+c10760.7 | links=#45677(auto Thousand Needles;383):15 #45678(auto Thousand Needles;384):12 #45732(auto Thousand Needles;436):9
+o19873.7 | links=c4150.2:24 c4151.3:21
+c4094.8 | links=c4094.6:12 c4096.14:24
+c4097.8 | links=c4118.3:25
+c4099.8 | links=c7404.2:23 c4099.9:17
+c4101.8 | links=#45772(auto Thousand Needles;475):10 #45773(auto Thousand Needles;476):9
+c4120.8 | links=c4113.3:44
+c4147.8 | links=c4151.14:71 c4151.15:30 c4143.20:109
+c4150.8 | links=c4144.3:61 c4144.5:43 c4139.15:82
+c4151.8 | links=#45572(auto Thousand Needles;280):37 c4150.5:25
+c10757.8 | links=#45750(auto Thousand Needles;454):30 o175928.9:12 o175928.10:15 o175928.12:12
+c10759.8 | links=#45741(auto Thousand Needles;445):15 o176344.1:23
+o89635.8 | links=c4107.7:16
+c4095.9 | links=#45618(auto Thousand Needles;325):15 c4095.10:20
+c4099.9 | links=#45626(auto Thousand Needles;333):12 c4099.8:17
+c4101.9 | links=#45794(auto Thousand Needles;497):13 c4100.5:19
+c4107.9 | links=o175384.4:4
+c4119.9 | links=c14427.1:33 o175565.2:16 c4119.14:4
+c4133.9 | links=c4131.1:53 c4133.6:24 c4133.11:7
+c4139.9 | links=c4158.2:41 c4158.6:74
+c4150.9 | links=c4151.26:25 c4151.36:25
+c4248.9 | links=#45855(auto Thousand Needles;556):33 c4111.2:15
+c10760.9 | links=#45730(auto Thousand Needles;434):11 #45731(auto Thousand Needles;435):19
+c10761.9 | links=#45742(auto Thousand Needles;446):9
+o19868.9 | links=c5935.1:86 c4143.5:31
+o19869.9 | links=o19871.2:95 o19871.4:65
+o19873.9 | links=#24782(auto Thousand Needles;239):70 c4150.2:28 o19869.3:75
+o175928.9 | links=c10757.8:12
+c4095.10 | links=c4099.6:25 c4095.9:20
+c4099.10 | links=c4118.3:20
+c4107.10 | links=#45834(auto Thousand Needles;535):11 #45835(auto Thousand Needles;536):25
+c4119.10 | links=c4119.14:25
+c4133.10 | links=#45583(auto Thousand Needles;291):34 #45584(auto Thousand Needles;292):20
+c4140.10 | links=o19870.1:90 c4154.2:66 o19870.2:77
+c4248.10 | links=c4111.1:10
+c10757.10 | links=c10756.3:32 o175928.15:14
+c10760.10 | links=#45715(auto Thousand Needles;420):16 #45716(auto Thousand Needles;421):9
+o19868.10 | links=c4143.1:108 c4143.5:47
+o175928.10 | links=#45747(auto Thousand Needles;451):12 c10757.8:15
+c4094.11 | links=#45628(auto Thousand Needles;335):21 c4094.19:25
+c4101.11 | links=#45790(auto Thousand Needles;493):13 #45791(auto Thousand Needles;494):6 c4104.2:14
+c4118.11 | links=c4117.5:27 c4248.40:45
+c4133.11 | links=#45589(auto Thousand Needles;297):23 c4133.9:7
+c4248.11 | links=c4250.2:11
+c10760.11 | links=#45660(auto Thousand Needles;366):26 #45661(auto Thousand Needles;367):14 c10760.4:1
+o19868.11 | links=c9377.2:20 c4147.5:36
+c4094.12 | links=#45628(auto Thousand Needles;335):14 c4094.16:37
+c4095.12 | links=c4099.19:2
+c4096.12 | links=c4096.14:31 c4093.17:28
+c4107.12 | links=c4110.2:24 c6139.2:29 c4107.7:46
+c4119.12 | links=c4119.14:18
+c4151.12 | links=c4151.14:62 c4140.18:43
+o175928.12 | links=c10757.8:12
+c4120.13 | links=c4113.2:39
+c4133.13 | links=#45589(auto Thousand Needles;297):14 #45590(auto Thousand Needles;298):19 c4133.34:16
+c4142.13 | links=#45576(auto Thousand Needles;284):28 c4142.17:36 c4143.24:14
+c10759.13 | links=c10759.5:20 c10758.7:5
+c4096.14 | links=c4094.8:24 c4096.12:31
+c4107.14 | links=#45836(auto Thousand Needles;537):29 c5934.1:10
+c4119.14 | links=c4119.9:4 c4119.10:25 c4119.12:18
+c4133.14 | links=c4133.15:24 c4133.27:28
+c4140.14 | links=c4154.2:75 c4147.20:70
+c4142.14 | links=#45576(auto Thousand Needles;284):48 c4143.14:60 c4151.17:112
+c4143.14 | links=#45576(auto Thousand Needles;284):22 c4142.14:60 c4142.21:20
+c4147.14 | links=o19868.4:46 c4147.15:52
+c4151.14 | links=c4147.8:71 c4151.12:62
+c9525.14 | links=#17285(auto Thousand Needles;169):8
+c4133.15 | links=c4130.1:52 c4130.5:50 c4133.14:24
+c4139.15 | links=c4150.8:82 c4151.31:67
+c4143.15 | links=c4143.21:32 c4140.33:73
+c4147.15 | links=c4147.14:52 c4147.17:45 c4147.20:61
+c4151.15 | links=#45578(auto Thousand Needles;286):53 c4151.5:81 c4147.8:30
+c4249.15 | links=#45851(auto Thousand Needles;552):7 c4113.1:5
+o175928.15 | links=c10757.10:14
+c4094.16 | links=#45630(auto Thousand Needles;336):22 c4094.12:37
+c4099.16 | links=c4548.1:2
+c4124.16 | links=c4124.20:30
+c4126.16 | links=#20377(auto Thousand Needles;203):30 #45860(auto Thousand Needles;561):51
+c4140.16 | links=#45598(auto Thousand Needles;305):14 c4139.7:23
+c4249.16 | links=c4548.1:4
+o19868.16 | links=#20586(auto Thousand Needles;204):64 o19868.18:131
+o175928.16 | links=c10757.5:22
+c4093.17 | links=#45627(auto Thousand Needles;334):25 c4096.12:28 c4096.17:32
+c4095.17 | links=#45837(auto Thousand Needles;538):26 c4548.1:38
+c4096.17 | links=c4093.17:32 c4096.19:40
+c4119.17 | links=#45764(auto Thousand Needles;467):16 #45765(auto Thousand Needles;468):33
+c4126.17 | links=#11005(auto Thousand Needles;109):46
+c4142.17 | links=c4142.13:36 c4143.17:47 c4151.22:41 c4143.24:26
+c4143.17 | links=c4154.6:92 c4142.17:47
+c4147.17 | links=#45578(auto Thousand Needles;286):64 c4147.15:45
+c4150.17 | links=#24782(auto Thousand Needles;239):76 c4130.5:74
+c4151.17 | links=c4142.14:112 c4151.21:51
+c4249.17 | links=c4548.1:8
+o19868.17 | links=c4147.1:31 o19870.1:62 c4147.3:70
+c4126.18 | links=#11005(auto Thousand Needles;109):13 c4112.3:27
+c4140.18 | links=c4151.12:43 c4143.20:71 c4151.30:52 c4140.33:122
+c4249.18 | links=#12174(auto Thousand Needles;119):44 c4249.21:48
+o19868.18 | links=#689(auto Thousand Needles;6):143 o19868.16:131
+c4094.19 | links=#45627(auto Thousand Needles;334):16 c4094.11:25
+c4096.19 | links=c4096.17:40 c4096.22:29
+c4099.19 | links=#45619(auto Thousand Needles;326):16 c4097.6:16 c4095.12:2
+c4119.19 | links=c14427.1:26
+c4151.19 | links=#45572(auto Thousand Needles;280):29 c4144.6:23
+c4124.20 | links=#6622(auto Thousand Needles;65):40 c4124.16:30
+c4126.20 | links=#45613(auto Thousand Needles;320):26 #45614(auto Thousand Needles;321):41
+c4140.20 | links=c4151.21:35 c4151.28:53
+c4143.20 | links=c4147.2:67 c4147.8:109 c4140.18:71
+c4147.20 | links=c4140.14:70 c4147.15:61 c4140.22:80 c4140.27:99
+c4142.21 | links=c4143.14:20 c4143.22:18
+c4143.21 | links=o19872.4:119 c4143.15:32
+c4151.21 | links=c4151.17:51 c4140.20:35
+c4249.21 | links=c4249.18:48 c4249.31:46
+c4095.22 | links=c4097.6:0
+c4096.22 | links=#45615(auto Thousand Needles;322):44 c4096.19:29
+c4140.22 | links=o19868.5:46 c4147.20:80
+c4143.22 | links=#45577(auto Thousand Needles;285):22 c4142.21:18
+c4151.22 | links=c4142.17:41 c4140.27:93
+c4133.23 | links=#45594(auto Thousand Needles;302):9 #45597(auto Thousand Needles;304):31
+c4133.24 | links=#45584(auto Thousand Needles;292):10 #45585(auto Thousand Needles;293):3
+c4143.24 | links=#45577(auto Thousand Needles;285):22 c4142.13:14 c4142.17:26
+c4249.24 | links=#26844(auto Thousand Needles;261):42
+c4151.25 | links=#45574(auto Thousand Needles;282):52 c5935.1:36
+c4096.26 | links=#45617(auto Thousand Needles;324):14 c4096.27:20
+c4124.26 | links=c4118.5:52 c4118.7:38
+c4133.26 | links=#45585(auto Thousand Needles;293):26 #45586(auto Thousand Needles;294):12
+c4151.26 | links=#45582(auto Thousand Needles;290):12 c4150.9:25
+c4096.27 | links=c4097.1:12 c4096.26:20
+c4133.27 | links=#45583(auto Thousand Needles;291):19 #45593(auto Thousand Needles;301):32 c4133.14:28
+c4140.27 | links=c4147.20:99 c4151.22:93
+c4151.28 | links=o19872.4:63 c4140.20:53
+c4151.29 | links=c4150.7:34 c4151.31:31
+c4124.30 | links=#45839(auto Thousand Needles;540):20 #45840(auto Thousand Needles;541):36
+c4151.30 | links=#45581(auto Thousand Needles;289):83 c4140.18:52
+c4249.30 | links=#19163(auto Thousand Needles;194):27 c4113.2:38 c4249.36:20
+c4151.31 | links=c4150.5:20 c4144.6:41 c4139.15:67 c4151.29:31
+c4249.31 | links=c4116.4:23 c4249.21:46 c4249.33:52
+c4140.33 | links=c4158.4:48 c4143.15:73 c4140.18:122
+c4249.33 | links=c4249.31:52 c4124.39:56
+c4133.34 | links=c4131.2:0 c4133.13:16
+c4151.36 | links=o19869.3:50 c4150.9:25
+c4249.36 | links=c4249.30:20
+c4248.38 | links=#45854(auto Thousand Needles;555):11
+c4124.39 | links=c4116.5:12 c4249.33:56
+c4124.40 | links=c4120.4:10
+c4248.40 | links=c4118.7:39 c4118.11:45

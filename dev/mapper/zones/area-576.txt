@@ -1,0 +1,3 @@
+Zone areaId 576 — eine Zeile pro Wegpunkt; Links inline.
+
+#28754 | s;Eastern Kingdoms;Duskwood;Darkshire;Beggar's Haunt§s;Östliche Königreiche;Dämmerwald;Dunkelhain;Bettlerschlupfwinkel§s;Royaumes de l'est;Bois de la Pénombre;Darkshire;Repaire des mendiants | x=-10349.7 y=-1538.8 | size=1

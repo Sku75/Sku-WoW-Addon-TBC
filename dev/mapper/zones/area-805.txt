@@ -1,0 +1,4 @@
+Zone areaId 805 — eine Zeile pro Wegpunkt; Links inline.
+
+#10266 | auto South Gate Pass;1§auto Südtorpass;1§auto Passage de la porte Sud;1 | x=-5633.2001953125 y=-2246.5 | size=1 | links=#22168(auto South Gate Pass;2):92 #4284(auto South Gate Outpost;1):126
+#22168 | auto South Gate Pass;2§auto Südtorpass;2§auto Passage de la porte Sud;2 | x=-5608.10009765625 y=-2157.5 | size=1 | links=#10541(auto Dun Morogh;121):90 #10266(auto South Gate Pass;1):92

@@ -1,0 +1,3 @@
+Zone areaId 600 — eine Zeile pro Wegpunkt; Links inline.
+
+#28659 | s;Kalimdor;Desolace;Gelkis Village;Bolgan's Hole§s;Kalimdor;Desolace;Gelkis;Bolgans Loch§s;Kalimdor;Désolace;Village des Gelkis;Trou de Bolgan | x=-2281.95 y=-2499.6 | size=1

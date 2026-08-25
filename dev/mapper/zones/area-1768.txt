@@ -1,0 +1,3 @@
+Zone areaId 1768 — eine Zeile pro Wegpunkt; Links inline.
+
+#28734 | s;Kalimdor;Felwood;Irontree Woods;Irontree Cavern§s;Kalimdor;Teufelswald;Der Eisenwald;Eisenstammhöhle§s;Kalimdor;Gangrebois;Bois d'Arbrefer;Caverne d'Arbrefer | x=6481.87 y=-1571 | size=1

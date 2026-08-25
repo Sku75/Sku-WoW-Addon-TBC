@@ -1,0 +1,3 @@
+Zone areaId 221 — eine Zeile pro Wegpunkt; Links inline.
+
+#28693 | s;Kalimdor;Mulgore;Camp Narache§s;Kalimdor;Mulgore;Camp Narache§s;Kalimdor;Mulgore;Camp Narache | x=-2906.49 y=-253.607 | size=1 | links=#3951(auto Mulgore;77):9

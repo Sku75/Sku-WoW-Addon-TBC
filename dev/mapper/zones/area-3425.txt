@@ -1,0 +1,3 @@
+Zone areaId 3425 — eine Zeile pro Wegpunkt; Links inline.
+
+#28701 | s;Kalimdor;Silithus;Cenarion Hold§s;Kalimdor;Silithus;Burg Cenarius§s;Kalimdor;Silithus;Fort cénarien | x=-6886.15 y=-718.398 | size=1

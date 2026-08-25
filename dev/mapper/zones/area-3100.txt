@@ -1,0 +1,3 @@
+Zone areaId 3100 — eine Zeile pro Wegpunkt; Links inline.
+
+#28702 | s;Kalimdor;Silithus;The Crystal Vale;Ravaged Twilight Camp§s;Kalimdor;Silithus;Das Kristalltal;Verwüsteter Twilight-Stützpunkt§s;Kalimdor;Silithus;La Vallée des cristaux;Camp du Crépuscule ravagé | x=-6206.25 y=-1766.95 | size=1

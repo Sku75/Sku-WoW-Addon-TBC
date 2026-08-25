@@ -1,0 +1,547 @@
+Zone areaId 12 — eine Zeile pro Wegpunkt; Links inline.
+
+#8 | auto Elwynn Forest;1§auto Wald von Elwynn;1§auto Forêt d'Elwynn;1 | x=-9649.7998046875 y=-1530.599975585938 | size=1 | links=#2885(auto Elwynn Forest;24):99 #7165(auto Elwynn Forest;64):56 #18418(auto Elwynn Forest;161):175
+#14 | Young Forest Bear;Elwynn Forest;47;82.02;58.97§Junger Waldbär;Wald von Elwynn;47;82.02;58.97§Jeune ours des forêts;Forêt d'Elwynn;47;82.02;58.97 | x=-9303.2998046875 y=-1286.300048828125 | size=1
+#36 | auto inside fargodeeop mine;Elwynn Forest;2§auto drinnen tiefenschatmine;Wald von Elwynn;2§auto inside fargodeeop mine;Forêt d'Elwynn;2 | x=-9823.5 y=194.6000061035156 | size=1 | links=#10886(auto inside fargodeeop mine;Elwynn Forest;104):22 #27286(auto inside fargodeeop mine;Elwynn Forest;229):15
+#58 | auto Elwynn Forest;3§auto Wald von Elwynn;3§auto Forêt d'Elwynn;3 | x=-9644.5 y=-798.7000122070312 | size=1 | links=#832(auto Elwynn Forest;11):26 #11342(auto Elwynn Forest;111):68 #16225(auto Elwynn Forest;151):124
+#85 | auto Elwynn Forest;4§auto Wald von Elwynn;4§auto Forêt d'Elwynn;4 | x=-9163.900390625 y=-7.900000095367432 | size=1 | links=#15896(auto Elwynn Forest;147):14 c7384.1:16
+#237 | auto Elwynn Forest;5§auto Wald von Elwynn;5§auto Forêt d'Elwynn;5 | x=-9253.7001953125 y=162.8000030517578 | size=1 | links=#6032(auto Elwynn Forest;52):70 #12328(auto Elwynn Forest;119):94 #19625(auto Elwynn Forest;175):114 c94.1:44 c94.2:73 c94.3:68
+#262 | top;Lion's Pride Inn§oben;Gasthaus Zur Höhle des Löwen§top;Lion's Pride Inn | x=-9470 y=24 | size=1 | links=#7864(auto inside;Lion's Pride Inn;Elwynn Forest;76):4 #22872(auto inside;Lion's Pride Inn;Elwynn Forest;200):8 #24956(auto inside;Lion's Pride Inn;Elwynn Forest;212):12 c2329.1:14
+#309 | auto Elwynn Forest;6§auto Wald von Elwynn;6§auto Forêt d'Elwynn;6 | x=-9735.2001953125 y=-1078.599975585938 | size=1 | links=#7636(auto Elwynn Forest;73):58 c118.1:24
+#577 | auto Elwynn Forest;8§auto Wald von Elwynn;8§auto Forêt d'Elwynn;8 | x=-9959.2001953125 y=87.5999984741211 | size=1 | links=#14884(auto Elwynn Forest;141):60 c247.1:60 c250.1:57
+#832 | auto Elwynn Forest;11§auto Wald von Elwynn;11§auto Forêt d'Elwynn;11 | x=-9651.2998046875 y=-824.6000366210938 | size=1 | links=#58(auto Elwynn Forest;3):26 #4482(auto Elwynn Forest;35):85
+#992 | auto Elwynn Forest;12§auto Wald von Elwynn;12§auto Forêt d'Elwynn;12 | x=-9866.2001953125 y=179.5 | size=1 | links=#6363(auto inside fargodeeop mine;Elwynn Forest;55):26 #18964(auto Elwynn Forest;170):41
+#1004 | auto inside fargodeeop mine;Elwynn Forest;13§auto drinnen tiefenschatmine;Wald von Elwynn;13§auto inside fargodeeop mine;Forêt d'Elwynn;13 | x=-9758.400390625 y=106.3000030517578 | size=1 | links=#27247(auto inside fargodeeop mine;Elwynn Forest;228):14 c79.1:26
+#1073 | central location;Lion's Pride Inn§zentralpunkt;Gasthaus Zur Höhle des Löwen§emplacement central;Lion's Pride Inn | x=-9467.7001953125 y=24.70000076293945 | size=1 | links=#14378(auto inside;Lion's Pride Inn;Elwynn Forest;135):6 #27590(auto inside;Lion's Pride Inn;Elwynn Forest;231):8 c6778.1:4
+#1141 | auto inside japerlode mine;Elwynn Forest;14§auto drinnen jaspismine;Wald von Elwynn;14§auto inside japerlode mine;Forêt d'Elwynn;14 | x=-9118 y=-569.7999877929688 | size=1 | links=#7057(auto inside japerlode mine;Elwynn Forest;63):23 #18865(auto inside japerlode mine;Elwynn Forest;169):30
+#1171 | centralpoint;Eastvale Logging Camp;Elwynn Forest§zentralerpunkt;Holzfällerlager des Osttals;Wald von Elwynn§point central;Eastvale Logging Camp;Forêt d'Elwynn | x=-9482.1005859375 y=-1297.800048828125 | size=1 | links=#7481(auto Elwynn Forest;70):84 #14861(auto Elwynn Forest;139):44 #19996(auto Elwynn Forest;177):70 #27210(auto Elwynn Forest;227):48 c6491.3:100
+#1195 | auto Elwynn Forest;15§auto Wald von Elwynn;15§auto Forêt d'Elwynn;15 | x=-9178.2001953125 y=328.1000061035156 | size=1 | links=#9569(auto Elwynn Forest;92):70 #12328(auto Elwynn Forest;119):95 #16763(auto Elwynn Forest;155):73
+#1365 | auto Elwynn Forest;16§auto Wald von Elwynn;16§auto Forêt d'Elwynn;16 | x=-9539.2998046875 y=245.6999969482422 | size=1 | links=#10127(auto Elwynn Forest;96):78 #12967(auto Elwynn Forest;121):105 #26248(auto Elwynn Forest;221):124
+#1966 | auto Elwynn Forest;17§auto Wald von Elwynn;17§auto Forêt d'Elwynn;17 | x=-9443.1005859375 y=465.1000061035156 | size=1 | links=#20765(auto Elwynn Forest;185):7 c99.1:5
+#2079 | auto Elwynn Forest;18§auto Wald von Elwynn;18§auto Forêt d'Elwynn;18 | x=-9625.6005859375 y=-998.1000366210938 | size=1 | links=#4846(auto Elwynn Forest;40):32 #8146(auto Elwynn Forest;79):52 #16225(auto Elwynn Forest;151):99
+#2085 | auto Elwynn Forest;19§auto Wald von Elwynn;19§auto Forêt d'Elwynn;19 | x=-9753.5 y=745.2000122070312 | size=1 | links=#4173(auto Elwynn Forest;32):73 #4957(auto Elwynn Forest;42):33
+#2434 | auto Elwynn Forest;20§auto Wald von Elwynn;20§auto Forêt d'Elwynn;20 | x=-9454.6005859375 y=-967.9000244140625 | size=1 | links=#11195(auto Elwynn Forest;108):67 #16225(auto Elwynn Forest;151):142 #27766(auto Elwynn Forest;235):26
+#2511 | auto Elwynn Forest;21§auto Wald von Elwynn;21§auto Forêt d'Elwynn;21 | x=-9552.7998046875 y=-1415 | size=1 | links=#12079(auto Elwynn Forest;115):7 c294.1:15
+#2871 | auto Elwynn Forest;23§auto Wald von Elwynn;23§auto Forêt d'Elwynn;23 | x=-9528.6005859375 y=-688.2000122070312 | size=1 | links=#6514(entry and exit;Tower of Azora;Elwynn Forest):17 #20955(auto Elwynn Forest;188):55 #21751(auto Elwynn Forest;192):51
+#2885 | auto Elwynn Forest;24§auto Wald von Elwynn;24§auto Forêt d'Elwynn;24 | x=-9643.900390625 y=-1630.200073242188 | size=1 | links=#8(auto Elwynn Forest;1):99 #18424(auto Elwynn Forest;162):82
+#3038 | auto Elwynn Forest;25§auto Wald von Elwynn;25§auto Forêt d'Elwynn;25 | x=-9128.6005859375 y=-87.4000015258789 | size=1 | links=#8815(auto Elwynn Forest;85):74 #22914(auto Elwynn Forest;201):26
+#3205 | auto inside fargodeeop mine;Elwynn Forest;26§auto drinnen tiefenschatmine;Wald von Elwynn;26§auto inside fargodeeop mine;Forêt d'Elwynn;26 | x=-9765.2001953125 y=91.4000015258789 | size=1 | links=c327.1:19 c40.2:48
+#3358 | auto Elwynn Forest;27§auto Wald von Elwynn;27§auto Forêt d'Elwynn;27 | x=-9893.2998046875 y=277 | size=1 | links=#14874(auto Elwynn Forest;140):50 c475.1:40
+#3604 | auto Elwynn Forest;29§auto Wald von Elwynn;29§auto Forêt d'Elwynn;29 | x=-9615.2001953125 y=-1068.099975585938 | size=1 | links=#4846(auto Elwynn Forest;40):38 #18511(auto Elwynn Forest;165):11 #23744(auto Elwynn Forest;206):81
+#3991 | auto Elwynn Forest;30§auto Wald von Elwynn;30§auto Forêt d'Elwynn;30 | x=-9754.400390625 y=-964.7000122070312 | size=1 | links=#13398(auto Elwynn Forest;125):60 #15462(auto Elwynn Forest;144):12
+#4104 | auto Elwynn Forest;31§auto Wald von Elwynn;31§auto Forêt d'Elwynn;31 | x=-9727.7998046875 y=-1511.099975585938 | size=1 | links=#20495(auto Elwynn Forest;182):47 c822.3:55
+#4173 | auto Elwynn Forest;32§auto Wald von Elwynn;32§auto Forêt d'Elwynn;32 | x=-9758.900390625 y=671.7999877929688 | size=1 | links=#2085(auto Elwynn Forest;19):73 #11994(auto Elwynn Forest;113):117 c963.1:98 o156561.1:13 c119.2:39
+#4182 | auto Elwynn Forest;33§auto Wald von Elwynn;33§auto Forêt d'Elwynn;33 | x=-9666.5 y=689 | size=1 | links=#25685(auto Elwynn Forest;218):25 c963.1:6 o68.1:5
+#4287 | auto Elwynn Forest;34§auto Wald von Elwynn;34§auto Forêt d'Elwynn;34 | x=-9553.6005859375 y=-1429.300048828125 | size=1 | links=#27599(auto Elwynn Forest;232):10 o1562.1:10
+#4482 | auto Elwynn Forest;35§auto Wald von Elwynn;35§auto Forêt d'Elwynn;35 | x=-9731 y=-855.6000366210938 | size=1 | links=#832(auto Elwynn Forest;11):85 c330.1:50 o2883.2:8 c116.33:14 c116.34:19
+#4493 | auto inside japerlode mine;Elwynn Forest;36§auto drinnen jaspismine;Wald von Elwynn;36§auto inside japerlode mine;Forêt d'Elwynn;36 | x=-9030.2001953125 y=-589.7000122070312 | size=1 | links=#5246(auto inside japerlode mine;Elwynn Forest;45):13 #23094(auto inside japerlode mine;Elwynn Forest;203):29
+#4720 | auto Elwynn Forest;37§auto Wald von Elwynn;37§auto Forêt d'Elwynn;37 | x=-8729.400390625 y=-97.80000305175781 | size=1 | links=c257.1:70 c80.2:62
+#4737 | auto northshire abbey;Elwynn Forest;38§auto abteil von nordhain;Wald von Elwynn;38§auto northshire abbey;Forêt d'Elwynn;38 | x=-8906.7998046875 y=-183.1999969482422 | size=1 | links=#4816(auto northshire abbey;Elwynn Forest;39):5 #16033(auto northshire abbey;Elwynn Forest;148):18 c911.1:27
+#4816 | auto northshire abbey;Elwynn Forest;39§auto abteil von nordhain;Wald von Elwynn;39§auto northshire abbey;Forêt d'Elwynn;39 | x=-8901.7001953125 y=-185.6999969482422 | size=1 | links=#4737(auto northshire abbey;Elwynn Forest;38):5 #20469(auto northshire abbey;Elwynn Forest;181):8
+#4846 | auto Elwynn Forest;40§auto Wald von Elwynn;40§auto Forêt d'Elwynn;40 | x=-9619.7001953125 y=-1030.300048828125 | size=1 | links=#2079(auto Elwynn Forest;18):32 #3604(auto Elwynn Forest;29):38 c261.1:9
+#4853 | auto Elwynn Forest;41§auto Wald von Elwynn;41§auto Forêt d'Elwynn;41 | x=-9732.2998046875 y=340.6000061035156 | size=1 | links=#7184(auto Elwynn Forest;65):98 #25247(auto Elwynn Forest;215):120 #26248(auto Elwynn Forest;221):107 c475.2:72
+#4957 | auto Elwynn Forest;42§auto Wald von Elwynn;42§auto Forêt d'Elwynn;42 | x=-9760.5 y=778.2999877929688 | size=1 | links=#2085(auto Elwynn Forest;19):33 #16688(passage;Forest's Edge;Elwynn Forest;to;Westfall):60
+#5100 | auto inside fargodeeop mine;Elwynn Forest;43§auto drinnen tiefenschatmine;Wald von Elwynn;43§auto inside fargodeeop mine;Forêt d'Elwynn;43 | x=-9837.900390625 y=128 | size=1 | links=#20949(auto inside fargodeeop mine;Elwynn Forest;186):12 c40.3:15
+#5127 | Prowler;Elwynn Forest;39;79.99;60.74§Streuner;Wald von Elwynn;39;79.99;60.74§Rôdeur;Forêt d'Elwynn;39;79.99;60.74 | x=-9380 y=-1271.900024414063 | size=1
+#5213 | auto Elwynn Forest;44§auto Wald von Elwynn;44§auto Forêt d'Elwynn;44 | x=-9221.7001953125 y=-955.7999877929688 | size=1 | links=#5250(auto Elwynn Forest;46):52 #8483(auto Elwynn Forest;81):41
+#5246 | auto inside japerlode mine;Elwynn Forest;45§auto drinnen jaspismine;Wald von Elwynn;45§auto inside japerlode mine;Forêt d'Elwynn;45 | x=-9035.7001953125 y=-601.9000244140625 | size=1 | links=#4493(auto inside japerlode mine;Elwynn Forest;36):13 c43.1:19
+#5250 | auto Elwynn Forest;46§auto Wald von Elwynn;46§auto Forêt d'Elwynn;46 | x=-9171.7998046875 y=-939 | size=1 | links=#5213(auto Elwynn Forest;44):52 #10249(auto Elwynn Forest;99):43
+#5379 | auto Elwynn Forest;47§auto Wald von Elwynn;47§auto Forêt d'Elwynn;47 | x=-9897.6005859375 y=457.8999938964844 | size=1 | links=#10734(auto Elwynn Forest;103):90 c252.1:52
+#5392 | Prowler;Elwynn Forest;74;88.2;67.87§Streuner;Wald von Elwynn;74;88.2;67.87§Rôdeur;Forêt d'Elwynn;74;88.2;67.87 | x=-9496.1005859375 y=-1510.400024414063 | size=1
+#5509 | auto inside fargodeeop mine;Elwynn Forest;48§auto drinnen tiefenschatmine;Wald von Elwynn;48§auto inside fargodeeop mine;Forêt d'Elwynn;48 | x=-9830.2998046875 y=180.8000030517578 | size=1 | links=#6363(auto inside fargodeeop mine;Elwynn Forest;55):10 #18739(auto inside fargodeeop mine;Elwynn Forest;167):24
+#5542 | auto inside;Lion's Pride Inn;Elwynn Forest;49§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;49§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;49 | x=-9465.5 y=6.300000190734863 | size=1 | links=#7238(auto inside;Lion's Pride Inn;Elwynn Forest;67):5 c3935.1:6
+#6022 | auto Elwynn Forest;51§auto Wald von Elwynn;51§auto Forêt d'Elwynn;51 | x=-9321.400390625 y=283.6000061035156 | size=1 | links=#7572(auto Elwynn Forest;72):4 #13504(auto Elwynn Forest;127):7
+#6032 | auto Elwynn Forest;52§auto Wald von Elwynn;52§auto Forêt d'Elwynn;52 | x=-9305.400390625 y=210.6999969482422 | size=1 | links=#237(auto Elwynn Forest;5):70 c11996.1:61
+#6108 | auto Elwynn Forest;53§auto Wald von Elwynn;53§auto Forêt d'Elwynn;53 | x=-9752.2001953125 y=-671 | size=1 | links=#20118(auto Elwynn Forest;178):57 c524.2:41
+#6283 | auto Elwynn Forest;54§auto Wald von Elwynn;54§auto Forêt d'Elwynn;54 | x=-9043.2001953125 y=-98.4000015258789 | size=1 | links=#7705(auto Elwynn Forest;75):40 c6774.1:52
+#6363 | auto inside fargodeeop mine;Elwynn Forest;55§auto drinnen tiefenschatmine;Wald von Elwynn;55§auto inside fargodeeop mine;Forêt d'Elwynn;55 | x=-9840.2998046875 y=184.3000030517578 | size=1 | links=#992(auto Elwynn Forest;12):26 #5509(auto inside fargodeeop mine;Elwynn Forest;48):10
+#6388 | auto northshire abbey;Elwynn Forest;56§auto abteil von nordhain;Wald von Elwynn;56§auto northshire abbey;Forêt d'Elwynn;56 | x=-8869.7001953125 y=-191.4000091552734 | size=1 | links=#18807(auto northshire abbey;Elwynn Forest;168):12 #22770(auto northshire abbey;Elwynn Forest;199):10
+#6514 | entry and exit;Tower of Azora;Elwynn Forest§ein- und ausgang;Turm von Azora;Wald von Elwynn§entrée et sortie;Tower of Azora;Forêt d'Elwynn | x=-9540.5 y=-701.6000366210938 | size=1 | links=#2871(auto Elwynn Forest;23):17 #46916(auto Inside;Tower of Azora;Elwynn Forest;245):14
+#6518 | auto Elwynn Forest;57§auto Wald von Elwynn;57§auto Forêt d'Elwynn;57 | x=-9343 y=-46.90000152587891 | size=1 | links=#6765(auto Elwynn Forest;60):48 #21211(auto Elwynn Forest;189):31
+#6593 | auto Elwynn Forest;58§auto Wald von Elwynn;58§auto Forêt d'Elwynn;58 | x=-9242.5 y=-96.9000015258789 | size=1 | links=#8624(auto Elwynn Forest;83):36 #13359(auto Elwynn Forest;123):29
+#6643 | auto northshire abbey;Elwynn Forest;59§auto abteil von nordhain;Wald von Elwynn;59§auto northshire abbey;Forêt d'Elwynn;59 | x=-8887.400390625 y=-172.3000030517578 | size=1 | links=#14051(auto northshire abbey;Elwynn Forest;131):14 #14379(auto northshire abbey;Elwynn Forest;136):14
+#6765 | auto Elwynn Forest;60§auto Wald von Elwynn;60§auto Forêt d'Elwynn;60 | x=-9296.2001953125 y=-60.29999923706055 | size=1 | links=#6518(auto Elwynn Forest;57):48 #13359(auto Elwynn Forest;123):35
+#6888 | auto Elwynn Forest;61§auto Wald von Elwynn;61§auto Forêt d'Elwynn;61 | x=-9454.900390625 y=63.90000152587891 | size=1 | links=#13250(centralpoint;Goldshire;Elwynn Forest):17 #16337(Mailbox;Goldshire;Elwynn Forest):17 #18209(outside;inn;Goldshire;Elwynn Forest):13 #19625(auto Elwynn Forest;175):109 #28277(auto Elwynn Forest;239):22 c66.1:43 c240.1:14 c241.1:42 c6749.1:19
+#6943 | auto northshire abbey;Elwynn Forest;62§auto abteil von nordhain;Wald von Elwynn;62§auto northshire abbey;Forêt d'Elwynn;62 | x=-8886.6005859375 y=-178.3000030517578 | size=1 | links=#20469(auto northshire abbey;Elwynn Forest;181):9 #25464(auto northshire abbey;Elwynn Forest;216):10
+#6964 | Defias Rogue Wizard;Elwynn Forest;14;73.63;51.16§Abtrünniger Hexer der Defias;Wald von Elwynn;14;73.63;51.16§Sorcier-voleur défias;Forêt d'Elwynn;14;73.63;51.16 | x=-9113.7998046875 y=-1006.900024414063 | size=1
+#7057 | auto inside japerlode mine;Elwynn Forest;63§auto drinnen jaspismine;Wald von Elwynn;63§auto inside japerlode mine;Forêt d'Elwynn;63 | x=-9094.7998046875 y=-563.7999877929688 | size=1 | links=#1141(auto inside japerlode mine;Elwynn Forest;14):23 #10906(auto inside japerlode mine;Elwynn Forest;105):22 #21667(central location;Jasperlode Mine;Elwynn Forest):4
+#7165 | auto Elwynn Forest;64§auto Wald von Elwynn;64§auto Forêt d'Elwynn;64 | x=-9703.2998046875 y=-1550.200073242188 | size=1 | links=#8(auto Elwynn Forest;1):56 #20495(auto Elwynn Forest;182):34
+#7184 | auto Elwynn Forest;65§auto Wald von Elwynn;65§auto Forêt d'Elwynn;65 | x=-9755.6005859375 y=436.1000061035156 | size=1 | links=#4853(auto Elwynn Forest;41):98 #12837(auto Elwynn Forest;120):90
+#7209 | auto inside japerlode mine;Elwynn Forest;66§auto drinnen jaspismine;Wald von Elwynn;66§auto inside japerlode mine;Forêt d'Elwynn;66 | x=-9156.7998046875 y=-591.7999877929688 | size=1 | links=#7262(auto inside japerlode mine;Elwynn Forest;68):20 #18865(auto inside japerlode mine;Elwynn Forest;169):21
+#7221 | passage;Elwynn Forest;to;Redridge Mountains§passage;Wald von Elwynn;zum;Rotkammgebirge§passage;Forêt d'Elwynn;vers;Les Carmines | x=-9605.7998046875 y=-1719.400024414063 | size=1 | links=#18424(auto Elwynn Forest;162):14 #8353(passage;from;Three Corners;Redridge Mountains;to;Elwynn Forest):19
+#7238 | auto inside;Lion's Pride Inn;Elwynn Forest;67§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;67§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;67 | x=-9459.6005859375 y=5.800000190734863 | size=1 | links=#5542(auto inside;Lion's Pride Inn;Elwynn Forest;49):5 #19321(auto inside;Lion's Pride Inn;Elwynn Forest;173):8
+#7262 | auto inside japerlode mine;Elwynn Forest;68§auto drinnen jaspismine;Wald von Elwynn;68§auto inside japerlode mine;Forêt d'Elwynn;68 | x=-9175.2998046875 y=-601.5 | size=1 | links=#7209(auto inside japerlode mine;Elwynn Forest;66):20 #10534(auto Elwynn Forest;102):26
+#7296 | auto Elwynn Forest;69§auto Wald von Elwynn;69§auto Forêt d'Elwynn;69 | x=-8892.2001953125 y=-465.2000122070313 | size=1 | links=#14307(auto Elwynn Forest;133):29 #16749(auto Elwynn Forest;154):96
+#7481 | auto Elwynn Forest;70§auto Wald von Elwynn;70§auto Forêt d'Elwynn;70 | x=-9495.1005859375 y=-1214.599975585938 | size=1 | links=#1171(centralpoint;Eastvale Logging Camp;Elwynn Forest):84 #9759(auto Elwynn Forest;93):72 c13159.1:21 c118.3:121
+#7541 | auto Elwynn Forest;71§auto Wald von Elwynn;71§auto Forêt d'Elwynn;71 | x=-9867.6005859375 y=216.1999969482422 | size=1 | links=#11312(auto Elwynn Forest;110):43 #27286(auto inside fargodeeop mine;Elwynn Forest;229):42
+#7572 | auto Elwynn Forest;72§auto Wald von Elwynn;72§auto Forêt d'Elwynn;72 | x=-9317.2998046875 y=286.3000183105469 | size=1 | links=#6022(auto Elwynn Forest;51):4 c11979.1:6
+#7636 | auto Elwynn Forest;73§auto Wald von Elwynn;73§auto Forêt d'Elwynn;73 | x=-9787.6005859375 y=-1103.700073242188 | size=1 | links=#309(auto Elwynn Forest;6):58 c732.1:17 c732.3:71
+#7642 | auto Elwynn Forest;74§auto Wald von Elwynn;74§auto Forêt d'Elwynn;74 | x=-9216.1005859375 y=-629.5 | size=1 | links=#10534(auto Elwynn Forest;102):24 #20533(auto Elwynn Forest;183):62
+#7705 | auto Elwynn Forest;75§auto Wald von Elwynn;75§auto Forêt d'Elwynn;75 | x=-9005 y=-84.9000015258789 | size=1 | links=#6283(auto Elwynn Forest;54):40 #25784(spawn location;Northshire Valley;Elwynn Forest):72
+#7864 | auto inside;Lion's Pride Inn;Elwynn Forest;76§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;76§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;76 | x=-9473.7998046875 y=25.5 | size=1 | links=#262(top;Lion's Pride Inn):4 c328.1:9
+#8009 | auto Elwynn Forest;77§auto Wald von Elwynn;77§auto Forêt d'Elwynn;77 | x=-9946.400390625 y=233 | size=1 | links=#11312(auto Elwynn Forest;110):37 #14874(auto Elwynn Forest;140):27 #14884(auto Elwynn Forest;141):98
+#8093 | auto Elwynn Forest;78§auto Wald von Elwynn;78§auto Forêt d'Elwynn;78 | x=-9965.2998046875 y=-142.8000030517578 | size=1 | links=#22616(auto Elwynn Forest;198):18 c6846.1:12 c6927.3:20
+#8146 | auto Elwynn Forest;79§auto Wald von Elwynn;79§auto Forêt d'Elwynn;79 | x=-9677.7998046875 y=-996.1000366210938 | size=1 | links=#2079(auto Elwynn Forest;18):52 #15462(auto Elwynn Forest;144):73
+#8368 | auto Elwynn Forest;80§auto Wald von Elwynn;80§auto Forêt d'Elwynn;80 | x=-9083.5 y=153 | size=1 | links=#13391(auto Elwynn Forest;124):35 c1215.1:27
+#8483 | auto Elwynn Forest;81§auto Wald von Elwynn;81§auto Forêt d'Elwynn;81 | x=-9262.2998046875 y=-962.7999877929688 | size=1 | links=#5213(auto Elwynn Forest;44):41 #19740(auto Elwynn Forest;176):73
+#8624 | auto Elwynn Forest;83§auto Wald von Elwynn;83§auto Forêt d'Elwynn;83 | x=-9208.900390625 y=-110.8000030517578 | size=1 | links=#6593(auto Elwynn Forest;58):36 #8983(auto Elwynn Forest;86):46
+#8692 | auto northshire abbey;Elwynn Forest;84§auto abteil von nordhain;Wald von Elwynn;84§auto northshire abbey;Forêt d'Elwynn;84 | x=-8886.2001953125 y=-176.1999969482422 | size=1 | links=#12296(auto northshire abbey;Elwynn Forest;117):3 #25106(auto northshire abbey;Elwynn Forest;214):11
+#8815 | auto Elwynn Forest;85§auto Wald von Elwynn;85§auto Forêt d'Elwynn;85 | x=-9071.1005859375 y=-40.20000076293945 | size=1 | links=#3038(auto Elwynn Forest;25):74 #16916(auto Elwynn Forest;156):20
+#8825 | Prowler;Elwynn Forest;64;86.87;66.06§Streuner;Wald von Elwynn;64;86.87;66.06§Rôdeur;Forêt d'Elwynn;64;86.87;66.06 | x=-9486.2001953125 y=-1476 | size=1
+#8983 | auto Elwynn Forest;86§auto Wald von Elwynn;86§auto Forêt d'Elwynn;86 | x=-9162.7998046875 y=-108 | size=1 | links=#8624(auto Elwynn Forest;83):46 #15896(auto Elwynn Forest;147):91 #22914(auto Elwynn Forest;201):13
+#9071 | auto inside fargodeeop mine;Elwynn Forest;87§auto drinnen tiefenschatmine;Wald von Elwynn;87§auto inside fargodeeop mine;Forêt d'Elwynn;87 | x=-9793.2998046875 y=95.30000305175781 | size=1 | links=#10456(auto inside fargodeeop mine;Elwynn Forest;101):26 #27247(auto inside fargodeeop mine;Elwynn Forest;228):22
+#9159 | auto Elwynn Forest;88§auto Wald von Elwynn;88§auto Forêt d'Elwynn;88 | x=-9399.400390625 y=-73 | size=1 | links=#10947(auto Elwynn Forest;107):19 #27142(auto Elwynn Forest;226):21
+#9349 | auto inside;Lion's Pride Inn;Elwynn Forest;89§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;89§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;89 | x=-9461.1005859375 y=-11.69999980926514 | size=1 | links=#19321(auto inside;Lion's Pride Inn;Elwynn Forest;173):9 c6374.1:8
+#9366 | auto Elwynn Forest;90§auto Wald von Elwynn;90§auto Forêt d'Elwynn;90 | x=-8950.6005859375 y=-423.3999938964844 | size=1 | links=#14307(auto Elwynn Forest;133):44 o83763.1:11
+#9440 | auto northshire abbey;Elwynn Forest;91§auto abteil von nordhain;Wald von Elwynn;91§auto northshire abbey;Forêt d'Elwynn;91 | x=-8895.5 y=-179.1000061035156 | size=1 | links=#12296(auto northshire abbey;Elwynn Forest;117):8 c952.1:7
+#9569 | auto Elwynn Forest;92§auto Wald von Elwynn;92§auto Forêt d'Elwynn;92 | x=-9248.7001953125 y=333.3000183105469 | size=1 | links=#1195(auto Elwynn Forest;15):70 #25739(auto Elwynn Forest;219):21 c395.1:31 c5917.1:27
+#9759 | auto Elwynn Forest;93§auto Wald von Elwynn;93§auto Forêt d'Elwynn;93 | x=-9552.6005859375 y=-1171 | size=1 | links=#7481(auto Elwynn Forest;70):72 #21764(auto Elwynn Forest;193):72 #23744(auto Elwynn Forest;206):69
+#10127 | auto Elwynn Forest;96§auto Wald von Elwynn;96§auto Forêt d'Elwynn;96 | x=-9486.400390625 y=187.5 | size=1 | links=#1365(auto Elwynn Forest;16):78 #10414(auto Elwynn Forest;100):71
+#10131 | auto Elwynn Forest;97§auto Wald von Elwynn;97§auto Forêt d'Elwynn;97 | x=-9620 y=692.9000244140625 | size=1 | links=#16662(auto Elwynn Forest;152):22 c955.1:15
+#10249 | auto Elwynn Forest;99§auto Wald von Elwynn;99§auto Forêt d'Elwynn;99 | x=-9128.5 y=-941.6000366210938 | size=1 | links=#5250(auto Elwynn Forest;46):43 c472.1:187 c6172.1:42
+#10414 | auto Elwynn Forest;100§auto Wald von Elwynn;100§auto Forêt d'Elwynn;100 | x=-9483.400390625 y=115.9000015258789 | size=1 | links=#10127(auto Elwynn Forest;96):71 #13250(centralpoint;Goldshire;Elwynn Forest):53 c66.1:33 c927.1:16
+#10456 | auto inside fargodeeop mine;Elwynn Forest;101§auto drinnen tiefenschatmine;Wald von Elwynn;101§auto inside fargodeeop mine;Forêt d'Elwynn;101 | x=-9803.1005859375 y=119.7000045776367 | size=1 | links=#9071(auto inside fargodeeop mine;Elwynn Forest;87):26 #15038(auto inside fargodeeop mine;Elwynn Forest;142):32
+#10534 | auto Elwynn Forest;102§auto Wald von Elwynn;102§auto Forêt d'Elwynn;102 | x=-9199.2001953125 y=-612.2000122070312 | size=1 | links=#7262(auto inside japerlode mine;Elwynn Forest;68):26 #7642(auto Elwynn Forest;74):24
+#10734 | auto Elwynn Forest;103§auto Wald von Elwynn;103§auto Forêt d'Elwynn;103 | x=-9866.900390625 y=373.2000122070313 | size=1 | links=#5379(auto Elwynn Forest;47):90 c246.1:41 c894.1:11
+#10886 | auto inside fargodeeop mine;Elwynn Forest;104§auto drinnen tiefenschatmine;Wald von Elwynn;104§auto inside fargodeeop mine;Forêt d'Elwynn;104 | x=-9822.2001953125 y=171.8000030517578 | size=1 | links=#36(auto inside fargodeeop mine;Elwynn Forest;2):22 #13734(auto inside fargodeeop mine;Elwynn Forest;130):34
+#10892 | centralpoint;Northshire Valley;Elwynn Forest§zentralerpunkt;Nordhaintal;Wald von Elwynn§point central;Northshire Valley;Forêt d'Elwynn | x=-8926.400390625 y=-113.4000015258789 | size=1 | links=#25784(spawn location;Northshire Valley;Elwynn Forest):30 #26257(auto northshire abbey;Elwynn Forest;222):19 c1213.1:28
+#10906 | auto inside japerlode mine;Elwynn Forest;105§auto drinnen jaspismine;Wald von Elwynn;105§auto inside japerlode mine;Forêt d'Elwynn;105 | x=-9080.2998046875 y=-546.2000122070312 | size=1 | links=#7057(auto inside japerlode mine;Elwynn Forest;63):22 c43.2:14
+#10927 | auto Elwynn Forest;106§auto Wald von Elwynn;106§auto Forêt d'Elwynn;106 | x=-9945.6005859375 y=-102.2000045776367 | size=1 | links=#22616(auto Elwynn Forest;198):34 #27915(auto Elwynn Forest;236):11
+#10947 | auto Elwynn Forest;107§auto Wald von Elwynn;107§auto Forêt d'Elwynn;107 | x=-9387.2001953125 y=-88 | size=1 | links=#9159(auto Elwynn Forest;88):19 #18271(auto Elwynn Forest;160):16 c1632.1:17
+#11195 | auto Elwynn Forest;108§auto Wald von Elwynn;108§auto Forêt d'Elwynn;108 | x=-9387.6005859375 y=-962.2000122070312 | size=1 | links=#2434(auto Elwynn Forest;20):67 #19740(auto Elwynn Forest;176):54
+#11308 | auto Elwynn Forest;109§auto Wald von Elwynn;109§auto Forêt d'Elwynn;109 | x=-9803 y=-928.4000244140625 | size=1 | links=#13398(auto Elwynn Forest;125):8 c881.1:6
+#11312 | auto Elwynn Forest;110§auto Wald von Elwynn;110§auto Forêt d'Elwynn;110 | x=-9911 y=220.4000091552734 | size=1 | links=#7541(auto Elwynn Forest;71):43 #8009(auto Elwynn Forest;77):37 #18964(auto Elwynn Forest;170):19
+#11342 | auto Elwynn Forest;111§auto Wald von Elwynn;111§auto Forêt d'Elwynn;111 | x=-9655.5 y=-730.7999877929688 | size=1 | links=#58(auto Elwynn Forest;3):68 #20118(auto Elwynn Forest;178):56 #20233(auto Elwynn Forest;180):261 #28809(s;Eastern Kingdoms;Elwynn Forest;Forest's Edge;Westbrook Garrison):74
+#11646 | auto Elwynn Forest;112§auto Wald von Elwynn;112§auto Forêt d'Elwynn;112 | x=-9031.400390625 y=-419.8999938964844 | size=1 | links=#21976(auto Elwynn Forest;195):53 c103.1:48
+#11713 | Defias Rogue Wizard;Elwynn Forest;15;73.38;52.48§Abtrünniger Hexer der Defias;Wald von Elwynn;15;73.38;52.48§Sorcier-voleur défias;Forêt d'Elwynn;15;73.38;52.48 | x=-9139.7998046875 y=-1007.900024414063 | size=1
+#11994 | auto Elwynn Forest;113§auto Wald von Elwynn;113§auto Forêt d'Elwynn;113 | x=-9741.400390625 y=555.4000244140625 | size=1 | links=#4173(auto Elwynn Forest;32):117 #12837(auto Elwynn Forest;120):30
+#12050 | auto Elwynn Forest;114§auto Wald von Elwynn;114§auto Forêt d'Elwynn;114 | x=-9555.2998046875 y=-130.4000091552734 | size=1 | links=#13102(auto Elwynn Forest;122):84 #14207(auto Elwynn Forest;132):76 #27628(auto Elwynn Forest;233):181 c12423.1:40
+#12079 | auto Elwynn Forest;115§auto Wald von Elwynn;115§auto Forêt d'Elwynn;115 | x=-9552.6005859375 y=-1422.099975585938 | size=1 | links=#2511(auto Elwynn Forest;21):7 #12100(auto Elwynn Forest;116):16
+#12100 | auto Elwynn Forest;116§auto Wald von Elwynn;116§auto Forêt d'Elwynn;116 | x=-9536.6005859375 y=-1423.700073242188 | size=1 | links=#12079(auto Elwynn Forest;115):16 #24735(auto Elwynn Forest;211):4
+#12296 | auto northshire abbey;Elwynn Forest;117§auto abteil von nordhain;Wald von Elwynn;117§auto northshire abbey;Forêt d'Elwynn;117 | x=-8889.2001953125 y=-174 | size=1 | links=#8692(auto northshire abbey;Elwynn Forest;84):3 #9440(auto northshire abbey;Elwynn Forest;91):8
+#12302 | auto inside;Lion's Pride Inn;Elwynn Forest;118§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;118§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;118 | x=-9459.400390625 y=35.10000228881836 | size=1 | links=#18209(outside;inn;Goldshire;Elwynn Forest):15 #23434(auto inside;Lion's Pride Inn;Elwynn Forest;204):11
+#12328 | auto Elwynn Forest;119§auto Wald von Elwynn;119§auto Forêt d'Elwynn;119 | x=-9190.7998046875 y=233.1000061035156 | size=1 | links=#237(auto Elwynn Forest;5):94 #1195(auto Elwynn Forest;15):95
+#12377 | Young Forest Bear;Elwynn Forest;35;86.94;69.08§Junger Waldbär;Wald von Elwynn;35;86.94;69.08§Jeune ours des forêts;Forêt d'Elwynn;35;86.94;69.08 | x=-9533 y=-1508.599975585938 | size=1
+#12449 | central location;Fargodeep Mine;Elwynn Forest§zentralpunkt;Tiefenschachtmine;Wald von Elwynn§emplacement central;Fargodeep Mine;Forêt d'Elwynn | x=-9843.7998046875 y=133.5 | size=1 | links=#20949(auto inside fargodeeop mine;Elwynn Forest;186):6
+#12837 | auto Elwynn Forest;120§auto Wald von Elwynn;120§auto Forêt d'Elwynn;120 | x=-9743.5 y=525.2999877929688 | size=1 | links=#7184(auto Elwynn Forest;65):90 #11994(auto Elwynn Forest;113):30
+#12967 | auto Elwynn Forest;121§auto Wald von Elwynn;121§auto Forêt d'Elwynn;121 | x=-9508.6005859375 y=347 | size=1 | links=#1365(auto Elwynn Forest;16):105 #20765(auto Elwynn Forest;185):127
+#13102 | auto Elwynn Forest;122§auto Wald von Elwynn;122§auto Forêt d'Elwynn;122 | x=-9638.7998046875 y=-146.1999969482422 | size=1 | links=#12050(auto Elwynn Forest;114):84 c822.1:92
+#13250 | centralpoint;Goldshire;Elwynn Forest§zentralerpunkt;Goldhain;Wald von Elwynn§point central;Goldshire;Forêt d'Elwynn | x=-9472.5 y=63.70000076293945 | size=1 | links=#6888(auto Elwynn Forest;61):17 #10414(auto Elwynn Forest;100):53 c66.1:29 c241.1:25
+#13359 | auto Elwynn Forest;123§auto Wald von Elwynn;123§auto Forêt d'Elwynn;123 | x=-9266.6005859375 y=-79.20000457763672 | size=1 | links=#6593(auto Elwynn Forest;58):29 #6765(auto Elwynn Forest;60):35
+#13391 | auto Elwynn Forest;124§auto Wald von Elwynn;124§auto Forêt d'Elwynn;124 | x=-9118.7998046875 y=159.1000061035156 | size=1 | links=#8368(auto Elwynn Forest;80):35 c94.3:70
+#13398 | auto Elwynn Forest;125§auto Wald von Elwynn;125§auto Forêt d'Elwynn;125 | x=-9797.7001953125 y=-922.2999877929688 | size=1 | links=#3991(auto Elwynn Forest;30):60 #11308(auto Elwynn Forest;109):8 c330.1:46
+#13504 | auto Elwynn Forest;127§auto Wald von Elwynn;127§auto Forêt d'Elwynn;127 | x=-9320.2001953125 y=276.1000061035156 | size=1 | links=#6022(auto Elwynn Forest;51):7 c11996.1:5 c22985.1:5
+#13618 | auto inside fargodeeop mine;Elwynn Forest;128§auto drinnen tiefenschatmine;Wald von Elwynn;128§auto inside fargodeeop mine;Forêt d'Elwynn;128 | x=-9763.2001953125 y=155.6000061035156 | size=1 | links=#17307(auto inside fargodeeop mine;Elwynn Forest;157):13 #28578(auto inside fargodeeop mine;Elwynn Forest;240):17
+#13631 | auto inside fargodeeop mine;Elwynn Forest;129§auto drinnen tiefenschatmine;Wald von Elwynn;129§auto inside fargodeeop mine;Forêt d'Elwynn;129 | x=-9750.2001953125 y=128.5 | size=1 | links=#17307(auto inside fargodeeop mine;Elwynn Forest;157):17 #18432(auto inside fargodeeop mine;Elwynn Forest;163):28
+#13734 | auto inside fargodeeop mine;Elwynn Forest;130§auto drinnen tiefenschatmine;Wald von Elwynn;130§auto inside fargodeeop mine;Forêt d'Elwynn;130 | x=-9851.2001953125 y=152.6000061035156 | size=1 | links=#10886(auto inside fargodeeop mine;Elwynn Forest;104):34 #20949(auto inside fargodeeop mine;Elwynn Forest;186):20
+#14051 | auto northshire abbey;Elwynn Forest;131§auto abteil von nordhain;Wald von Elwynn;131§auto northshire abbey;Forêt d'Elwynn;131 | x=-8874.2001953125 y=-178.4000091552734 | size=1 | links=#6643(auto northshire abbey;Elwynn Forest;59):14 #22770(auto northshire abbey;Elwynn Forest;199):8 c951.1:8
+#14207 | auto Elwynn Forest;132§auto Wald von Elwynn;132§auto Forêt d'Elwynn;132 | x=-9544.5 y=-54.20000076293945 | size=1 | links=#12050(auto Elwynn Forest;114):76 c113.1:58 c241.1:135 c12423.1:86
+#14218 | passage;Elwynn Forest;to;Stormwind City§passage;Wald von Elwynn;zum;Sturmwind§passage;Forêt d'Elwynn;vers;Hurlevent | x=-9083 y=421 | size=1 | links=#16763(auto Elwynn Forest;155):60 #20864(passage;Valley of Heroes;Stormwind City;to;Elwynn Forest):7
+#14307 | auto Elwynn Forest;133§auto Wald von Elwynn;133§auto Forêt d'Elwynn;133 | x=-8919.7998046875 y=-455.3000183105469 | size=1 | links=#7296(auto Elwynn Forest;69):29 #9366(auto Elwynn Forest;90):44
+#14345 | auto Elwynn Forest;134§auto Wald von Elwynn;134§auto Forêt d'Elwynn;134 | x=-8943.7001953125 y=-264.3999938964844 | size=1 | links=#17415(auto Elwynn Forest;158):76 #23759(auto Elwynn Forest;207):26 c38.1:69
+#14378 | auto inside;Lion's Pride Inn;Elwynn Forest;135§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;135§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;135 | x=-9467 y=31.60000038146973 | size=1 | links=#1073(central location;Lion's Pride Inn):6 #23434(auto inside;Lion's Pride Inn;Elwynn Forest;204):6 c253.1:6
+#14379 | auto northshire abbey;Elwynn Forest;136§auto abteil von nordhain;Wald von Elwynn;136§auto northshire abbey;Forêt d'Elwynn;136 | x=-8894.2998046875 y=-159.6999969482422 | size=1 | links=#6643(auto northshire abbey;Elwynn Forest;59):14 c197.1:8
+#14464 | auto Elwynn Forest;137§auto Wald von Elwynn;137§auto Forêt d'Elwynn;137 | x=-9361.900390625 y=-278.8999938964844 | size=1 | links=c61.1:60 c525.3:52
+#14500 | auto Elwynn Forest;138§auto Wald von Elwynn;138§auto Forêt d'Elwynn;138 | x=-9323.400390625 y=-662 | size=1 | links=#20533(auto Elwynn Forest;183):49 #21261(auto Elwynn Forest;190):80
+#14861 | auto Elwynn Forest;139§auto Wald von Elwynn;139§auto Forêt d'Elwynn;139 | x=-9473.900390625 y=-1341.099975585938 | size=1 | links=#1171(centralpoint;Eastvale Logging Camp;Elwynn Forest):44 c1198.1:14 c1250.1:17
+#14874 | auto Elwynn Forest;140§auto Wald von Elwynn;140§auto Forêt d'Elwynn;140 | x=-9941.2001953125 y=260 | size=1 | links=#3358(auto Elwynn Forest;27):50 #8009(auto Elwynn Forest;77):27 c244.1:85
+#14884 | auto Elwynn Forest;141§auto Wald von Elwynn;141§auto Forêt d'Elwynn;141 | x=-9924 y=137.1999969482422 | size=1 | links=#577(auto Elwynn Forest;8):60 #8009(auto Elwynn Forest;77):98
+#15038 | auto inside fargodeeop mine;Elwynn Forest;142§auto drinnen tiefenschatmine;Wald von Elwynn;142§auto inside fargodeeop mine;Forêt d'Elwynn;142 | x=-9791.900390625 y=150.6000061035156 | size=1 | links=#10456(auto inside fargodeeop mine;Elwynn Forest;101):32 #25489(auto inside fargodeeop mine;Elwynn Forest;217):10 #28578(auto inside fargodeeop mine;Elwynn Forest;240):11
+#15152 | auto Elwynn Forest;143§auto Wald von Elwynn;143§auto Forêt d'Elwynn;143 | x=-9637.6005859375 y=652.2999877929688 | size=1 | links=#16662(auto Elwynn Forest;152):22 c1249.1:17
+#15462 | auto Elwynn Forest;144§auto Wald von Elwynn;144§auto Forêt d'Elwynn;144 | x=-9742.400390625 y=-960.7999877929688 | size=1 | links=#3991(auto Elwynn Forest;30):12 #8146(auto Elwynn Forest;79):73
+#15624 | auto Elwynn Forest;145§auto Wald von Elwynn;145§auto Forêt d'Elwynn;145 | x=-9265.2001953125 y=403.8000183105469 | size=1 | links=#25739(auto Elwynn Forest;219):51 c30.2:41
+#15739 | auto inside;Lion's Pride Inn;Elwynn Forest;146§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;146§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;146 | x=-9477.7998046875 y=22.39999961853027 | size=1 | links=#18606(auto inside;Lion's Pride Inn;Elwynn Forest;166):8 c6778.1:7
+#15896 | auto Elwynn Forest;147§auto Wald von Elwynn;147§auto Forêt d'Elwynn;147 | x=-9152.7998046875 y=-17.5 | size=1 | links=#85(auto Elwynn Forest;4):14 #8983(auto Elwynn Forest;86):91
+#16033 | auto northshire abbey;Elwynn Forest;148§auto abteil von nordhain;Wald von Elwynn;148§auto northshire abbey;Forêt d'Elwynn;148 | x=-8910.1005859375 y=-165.3000030517578 | size=1 | links=#4737(auto northshire abbey;Elwynn Forest;38):18 c197.1:7
+#16067 | auto Elwynn Forest;149§auto Wald von Elwynn;149§auto Forêt d'Elwynn;149 | x=-9368.7998046875 y=142.1999969482422 | size=1 | links=#19625(auto Elwynn Forest;175):30 c6491.1:35 c15565.1:22
+#16206 | auto Elwynn Forest;150§auto Wald von Elwynn;150§auto Forêt d'Elwynn;150 | x=-9573.7001953125 y=-1381.800048828125 | size=1 | links=#18418(auto Elwynn Forest;161):93 c294.1:34 c6491.3:24
+#16225 | auto Elwynn Forest;151§auto Wald von Elwynn;151§auto Forêt d'Elwynn;151 | x=-9583.2001953125 y=-907.6000366210938 | size=1 | links=#58(auto Elwynn Forest;3):124 #2079(auto Elwynn Forest;18):99 #2434(auto Elwynn Forest;20):142
+#16337 | Mailbox;Goldshire;Elwynn Forest§briefkasten;Goldhain;Wald von Elwynn§Boîte aux lettres;Goldshire;Forêt d'Elwynn | x=-9455.1005859375 y=46.5 | size=1 | links=#6888(auto Elwynn Forest;61):17
+#16662 | auto Elwynn Forest;152§auto Wald von Elwynn;152§auto Forêt d'Elwynn;152 | x=-9628.5 y=672.6000366210938 | size=1 | links=#10131(auto Elwynn Forest;97):22 #15152(auto Elwynn Forest;143):22 #25685(auto Elwynn Forest;218):15
+#16688 | passage;Forest's Edge;Elwynn Forest;to;Westfall§passage;Der Waldrand;Wald von Elwynn;zum;Westfall§passage;Forest's Edge;Forêt d'Elwynn;vers;Marche de l'Ouest | x=-9795.900390625 y=827 | size=1 | links=#4957(auto Elwynn Forest;42):60 #5585(passage;Westfall;to;Elwynn Forest):14
+#16712 | auto Elwynn Forest;153§auto Wald von Elwynn;153§auto Forêt d'Elwynn;153 | x=-9382.2001953125 y=-8.600000381469727 | size=1 | links=#21211(auto Elwynn Forest;189):24 #27020(auto Elwynn Forest;225):23
+#16749 | auto Elwynn Forest;154§auto Wald von Elwynn;154§auto Forêt d'Elwynn;154 | x=-8852.400390625 y=-376.8999938964844 | size=1 | links=#7296(auto Elwynn Forest;69):96 c38.3:119
+#16763 | auto Elwynn Forest;155§auto Wald von Elwynn;155§auto Forêt d'Elwynn;155 | x=-9132.2998046875 y=386.1000061035156 | size=1 | links=#1195(auto Elwynn Forest;15):73 #14218(passage;Elwynn Forest;to;Stormwind City):60
+#16916 | auto Elwynn Forest;156§auto Wald von Elwynn;156§auto Forêt d'Elwynn;156 | x=-9050.5 y=-44.20000076293945 | size=1 | links=#8815(auto Elwynn Forest;85):20 c6774.1:6
+#17307 | auto inside fargodeeop mine;Elwynn Forest;157§auto drinnen tiefenschatmine;Wald von Elwynn;157§auto inside fargodeeop mine;Forêt d'Elwynn;157 | x=-9753.6005859375 y=145.6999969482422 | size=1 | links=#13618(auto inside fargodeeop mine;Elwynn Forest;128):13 #13631(auto inside fargodeeop mine;Elwynn Forest;129):17
+#17330 | Prowler;Elwynn Forest;36;78.96;62.33§Streuner;Wald von Elwynn;36;78.96;62.33§Rôdeur;Forêt d'Elwynn;36;78.96;62.33 | x=-9410.6005859375 y=-1237.400024414063 | size=1
+#17415 | auto Elwynn Forest;158§auto Wald von Elwynn;158§auto Forêt d'Elwynn;158 | x=-8874.2998046875 y=-233.3000030517578 | size=1 | links=#14345(auto Elwynn Forest;134):76 c915.1:24 c9296.1:25
+#17531 | auto inside;Lion's Pride Inn;Elwynn Forest;159§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;159§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;159 | x=-9461.1005859375 y=13.40000057220459 | size=1 | links=c917.1:4 o1560.1:15
+#18209 | outside;inn;Goldshire;Elwynn Forest§draußen;gasthaus;Goldhain;Wald von Elwynn§extérieur;inn;Goldshire;Forêt d'Elwynn | x=-9458.1005859375 y=51 | size=1 | links=#6888(auto Elwynn Forest;61):13 #12302(auto inside;Lion's Pride Inn;Elwynn Forest;118):15
+#18271 | auto Elwynn Forest;160§auto Wald von Elwynn;160§auto Forêt d'Elwynn;160 | x=-9378.6005859375 y=-102.0999984741211 | size=1 | links=#10947(auto Elwynn Forest;107):16 c1651.1:15
+#18418 | auto Elwynn Forest;161§auto Wald von Elwynn;161§auto Forêt d'Elwynn;161 | x=-9663 y=-1355.400024414063 | size=1 | links=#8(auto Elwynn Forest;1):175 #16206(auto Elwynn Forest;150):93 #21764(auto Elwynn Forest;193):183
+#18424 | auto Elwynn Forest;162§auto Wald von Elwynn;162§auto Forêt d'Elwynn;162 | x=-9613.900390625 y=-1707.099975585938 | size=1 | links=#2885(auto Elwynn Forest;24):82 #7221(passage;Elwynn Forest;to;Redridge Mountains):14
+#18432 | auto inside fargodeeop mine;Elwynn Forest;163§auto drinnen tiefenschatmine;Wald von Elwynn;163§auto inside fargodeeop mine;Forêt d'Elwynn;163 | x=-9750.2998046875 y=100.5 | size=1 | links=#13631(auto inside fargodeeop mine;Elwynn Forest;129):28 c327.1:13
+#18479 | auto Elwynn Forest;164§auto Wald von Elwynn;164§auto Forêt d'Elwynn;164 | x=-10002.6005859375 y=49.40000152587891 | size=1 | links=c250.1:4 c251.1:16
+#18511 | auto Elwynn Forest;165§auto Wald von Elwynn;165§auto Forêt d'Elwynn;165 | x=-9624.5 y=-1074.200073242188 | size=1 | links=#3604(auto Elwynn Forest;29):11 c118.2:33
+#18606 | auto inside;Lion's Pride Inn;Elwynn Forest;166§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;166§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;166 | x=-9479.7001953125 y=14.60000038146973 | size=1 | links=#15739(auto inside;Lion's Pride Inn;Elwynn Forest;146):8 #24956(auto inside;Lion's Pride Inn;Elwynn Forest;212):9
+#18739 | auto inside fargodeeop mine;Elwynn Forest;167§auto drinnen tiefenschatmine;Wald von Elwynn;167§auto inside fargodeeop mine;Forêt d'Elwynn;167 | x=-9806.2001953125 y=185.3000030517578 | size=1 | links=#5509(auto inside fargodeeop mine;Elwynn Forest;48):24 #25489(auto inside fargodeeop mine;Elwynn Forest;217):27
+#18807 | auto northshire abbey;Elwynn Forest;168§auto abteil von nordhain;Wald von Elwynn;168§auto northshire abbey;Forêt d'Elwynn;168 | x=-8881.7998046875 y=-186.9000091552734 | size=1 | links=#6388(auto northshire abbey;Elwynn Forest;56):12 #22490(auto northshire abbey;Elwynn Forest;196):13
+#18865 | auto inside japerlode mine;Elwynn Forest;169§auto drinnen jaspismine;Wald von Elwynn;169§auto inside japerlode mine;Forêt d'Elwynn;169 | x=-9135.2998046875 y=-594.7000122070312 | size=1 | links=#1141(auto inside japerlode mine;Elwynn Forest;14):30 #7209(auto inside japerlode mine;Elwynn Forest;66):21
+#18964 | auto Elwynn Forest;170§auto Wald von Elwynn;170§auto Forêt d'Elwynn;170 | x=-9895.2001953125 y=208.9000091552734 | size=1 | links=#992(auto Elwynn Forest;12):41 #11312(auto Elwynn Forest;110):19
+#19282 | auto Elwynn Forest;172§auto Wald von Elwynn;172§auto Forêt d'Elwynn;172 | x=-9614.6005859375 y=-419.6000061035156 | size=1 | links=#20233(auto Elwynn Forest;180):62 #27628(auto Elwynn Forest;233):119
+#19321 | auto inside;Lion's Pride Inn;Elwynn Forest;173§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;173§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;173 | x=-9459.400390625 y=-2.299999952316284 | size=1 | links=#7238(auto inside;Lion's Pride Inn;Elwynn Forest;67):8 #9349(auto inside;Lion's Pride Inn;Elwynn Forest;89):9
+#19625 | auto Elwynn Forest;175§auto Wald von Elwynn;175§auto Forêt d'Elwynn;175 | x=-9357.2001953125 y=113.5 | size=1 | links=#237(auto Elwynn Forest;5):114 #6888(auto Elwynn Forest;61):109 #16067(auto Elwynn Forest;149):30
+#19695 | Prowler;Elwynn Forest;70;86.36;64.18§Streuner;Wald von Elwynn;70;86.36;64.18§Rôdeur;Forêt d'Elwynn;70;86.36;64.18 | x=-9440.6005859375 y=-1457 | size=1
+#19740 | auto Elwynn Forest;176§auto Wald von Elwynn;176§auto Forêt d'Elwynn;176 | x=-9334.900390625 y=-976.9000244140625 | size=1 | links=#8483(auto Elwynn Forest;81):73 #11195(auto Elwynn Forest;108):54 o55.1:9
+#19996 | auto Elwynn Forest;177§auto Wald von Elwynn;177§auto Forêt d'Elwynn;177 | x=-9533.7001953125 y=-1249.800048828125 | size=1 | links=#1171(centralpoint;Eastvale Logging Camp;Elwynn Forest):70 c278.1:27 c798.1:43 c801.1:31
+#20118 | auto Elwynn Forest;178§auto Wald von Elwynn;178§auto Forêt d'Elwynn;178 | x=-9702.2001953125 y=-699.7000122070312 | size=1 | links=#6108(auto Elwynn Forest;53):57 #11342(auto Elwynn Forest;111):56
+#20202 | auto Elwynn Forest;179§auto Wald von Elwynn;179§auto Forêt d'Elwynn;179 | x=-9417.5 y=30 | size=1 | links=#27020(auto Elwynn Forest;225):28 #28277(auto Elwynn Forest;239):28
+#20233 | auto Elwynn Forest;180§auto Wald von Elwynn;180§auto Forêt d'Elwynn;180 | x=-9590.2998046875 y=-477.3000183105469 | size=1 | links=#11342(auto Elwynn Forest;111):261 #19282(auto Elwynn Forest;172):62 c735.1:51 #28809(s;Eastern Kingdoms;Elwynn Forest;Forest's Edge;Westbrook Garrison):191
+#20469 | auto northshire abbey;Elwynn Forest;181§auto abteil von nordhain;Wald von Elwynn;181§auto northshire abbey;Forêt d'Elwynn;181 | x=-8893.5 y=-185 | size=1 | links=#4816(auto northshire abbey;Elwynn Forest;39):8 #6943(auto northshire abbey;Elwynn Forest;62):9
+#20495 | auto Elwynn Forest;182§auto Wald von Elwynn;182§auto Forêt d'Elwynn;182 | x=-9736.6005859375 y=-1557.700073242188 | size=1 | links=#4104(auto Elwynn Forest;31):47 #7165(auto Elwynn Forest;64):34 c6093.1:33 c822.2:12
+#20533 | auto Elwynn Forest;183§auto Wald von Elwynn;183§auto Forêt d'Elwynn;183 | x=-9274.7998046875 y=-650.5 | size=1 | links=#7642(auto Elwynn Forest;74):62 #14500(auto Elwynn Forest;138):49 c476.2:24
+#20765 | auto Elwynn Forest;185§auto Wald von Elwynn;185§auto Forêt d'Elwynn;185 | x=-9447 y=458.8999938964844 | size=1 | links=#1966(auto Elwynn Forest;17):7 #12967(auto Elwynn Forest;121):127 #28032(auto Elwynn Forest;237):19
+#20949 | auto inside fargodeeop mine;Elwynn Forest;186§auto drinnen tiefenschatmine;Wald von Elwynn;186§auto inside fargodeeop mine;Forêt d'Elwynn;186 | x=-9849.6005859375 y=131.6999969482422 | size=1 | links=#5100(auto inside fargodeeop mine;Elwynn Forest;43):12 #12449(central location;Fargodeep Mine;Elwynn Forest):6 #13734(auto inside fargodeeop mine;Elwynn Forest;130):20
+#20954 | auto Elwynn Forest;187§auto Wald von Elwynn;187§auto Forêt d'Elwynn;187 | x=-9955.5 y=10.80000019073486 | size=1 | links=#27915(auto Elwynn Forest;236):106 c247.1:42
+#20955 | auto Elwynn Forest;188§auto Wald von Elwynn;188§auto Forêt d'Elwynn;188 | x=-9495.900390625 y=-642.7999877929688 | size=1 | links=#2871(auto Elwynn Forest;23):55 #26142(auto Elwynn Forest;220):26
+#21211 | auto Elwynn Forest;189§auto Wald von Elwynn;189§auto Forêt d'Elwynn;189 | x=-9368 y=-28.20000076293945 | size=1 | links=#6518(auto Elwynn Forest;57):31 #16712(auto Elwynn Forest;153):24 #27142(auto Elwynn Forest;226):36
+#21261 | auto Elwynn Forest;190§auto Wald von Elwynn;190§auto Forêt d'Elwynn;190 | x=-9403.5 y=-659 | size=1 | links=#14500(auto Elwynn Forest;138):80 #26142(auto Elwynn Forest;220):70
+#21667 | central location;Jasperlode Mine;Elwynn Forest§zentralpunkt;Jaspismine;Wald von Elwynn§emplacement central;Jasperlode Mine;Forêt d'Elwynn | x=-9092 y=-567.5 | size=1 | links=#7057(auto inside japerlode mine;Elwynn Forest;63):4
+#21730 | auto northshire abbey;Elwynn Forest;191§auto abteil von nordhain;Wald von Elwynn;191§auto northshire abbey;Forêt d'Elwynn;191 | x=-8898.6005859375 y=-161.1000061035156 | size=1 | links=#25464(auto northshire abbey;Elwynn Forest;216):14 #27657(auto northshire abbey;Elwynn Forest;234):14
+#21751 | auto Elwynn Forest;192§auto Wald von Elwynn;192§auto Forêt d'Elwynn;192 | x=-9578.7998046875 y=-675 | size=1 | links=#2871(auto Elwynn Forest;23):51 #28809(s;Eastern Kingdoms;Elwynn Forest;Forest's Edge;Westbrook Garrison):37
+#21764 | auto Elwynn Forest;193§auto Wald von Elwynn;193§auto Forêt d'Elwynn;193 | x=-9624.712192580395 y=-1175.761222806022 | size=1 | links=#9759(auto Elwynn Forest;93):72 #18418(auto Elwynn Forest;161):183 #23744(auto Elwynn Forest;206):26 c844.1:3
+#21976 | auto Elwynn Forest;195§auto Wald von Elwynn;195§auto Forêt d'Elwynn;195 | x=-9017.7001953125 y=-368.5 | size=1 | links=#11646(auto Elwynn Forest;112):53 #24014(auto Elwynn Forest;208):37 #28807(s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey;Northshire Vineyards):60
+#22057 | Prowler;Elwynn Forest;38;82.4;60.59§Streuner;Wald von Elwynn;38;82.4;60.59§Rôdeur;Forêt d'Elwynn;38;82.4;60.59 | x=-9347.5 y=-1331.300048828125 | size=1
+#22490 | auto northshire abbey;Elwynn Forest;196§auto abteil von nordhain;Wald von Elwynn;196§auto northshire abbey;Forêt d'Elwynn;196 | x=-8876.5 y=-174.3000030517578 | size=1 | links=#18807(auto northshire abbey;Elwynn Forest;168):13 #26923(auto northshire abbey;Elwynn Forest;224):14
+#22616 | auto Elwynn Forest;198§auto Wald von Elwynn;198§auto Forêt d'Elwynn;198 | x=-9970.7001953125 y=-125.3000030517578 | size=1 | links=#8093(auto Elwynn Forest;78):18 #10927(auto Elwynn Forest;106):34
+#22770 | auto northshire abbey;Elwynn Forest;199§auto abteil von nordhain;Wald von Elwynn;199§auto northshire abbey;Forêt d'Elwynn;199 | x=-8866.7001953125 y=-181.6999969482422 | size=1 | links=#6388(auto northshire abbey;Elwynn Forest;56):10 #14051(auto northshire abbey;Elwynn Forest;131):8
+#22872 | auto inside;Lion's Pride Inn;Elwynn Forest;200§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;200§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;200 | x=-9463.2998046875 y=18.20000076293945 | size=1 | links=#262(top;Lion's Pride Inn):8 c917.1:5
+#22914 | auto Elwynn Forest;201§auto Wald von Elwynn;201§auto Forêt d'Elwynn;201 | x=-9150.7001953125 y=-102.0999984741211 | size=1 | links=#3038(auto Elwynn Forest;25):26 #8983(auto Elwynn Forest;86):13
+#23094 | auto inside japerlode mine;Elwynn Forest;203§auto drinnen jaspismine;Wald von Elwynn;203§auto inside japerlode mine;Forêt d'Elwynn;203 | x=-9025.900390625 y=-560.1000366210938 | size=1 | links=#4493(auto inside japerlode mine;Elwynn Forest;36):29 #23482(auto inside japerlode mine;Elwynn Forest;205):24
+#23434 | auto inside;Lion's Pride Inn;Elwynn Forest;204§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;204§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;204 | x=-9470.900390625 y=36.5 | size=1 | links=#12302(auto inside;Lion's Pride Inn;Elwynn Forest;118):11 #14378(auto inside;Lion's Pride Inn;Elwynn Forest;135):6
+#23482 | auto inside japerlode mine;Elwynn Forest;205§auto drinnen jaspismine;Wald von Elwynn;205§auto inside japerlode mine;Forêt d'Elwynn;205 | x=-9049.5 y=-551.9000244140625 | size=1 | links=#23094(auto inside japerlode mine;Elwynn Forest;203):24 c43.2:17
+#23744 | auto Elwynn Forest;206§auto Wald von Elwynn;206§auto Forêt d'Elwynn;206 | x=-9619.2001953125 y=-1149.900024414063 | size=1 | links=#3604(auto Elwynn Forest;29):81 #9759(auto Elwynn Forest;93):69 #21764(auto Elwynn Forest;193):26
+#23759 | auto Elwynn Forest;207§auto Wald von Elwynn;207§auto Forêt d'Elwynn;207 | x=-8932.6005859375 y=-240.6999969482422 | size=1 | links=#14345(auto Elwynn Forest;134):26 c6373.1:39
+#24014 | auto Elwynn Forest;208§auto Wald von Elwynn;208§auto Forêt d'Elwynn;208 | x=-8982.6005859375 y=-356.2000122070313 | size=1 | links=#21976(auto Elwynn Forest;195):37 c38.2:16
+#24054 | auto northshire abbey;Elwynn Forest;209§auto abteil von nordhain;Wald von Elwynn;209§auto northshire abbey;Forêt d'Elwynn;209 | x=-8903.6005859375 y=-185.1000061035156 | size=1 | links=#25106(auto northshire abbey;Elwynn Forest;214):11 #27657(auto northshire abbey;Elwynn Forest;234):15
+#24735 | auto Elwynn Forest;211§auto Wald von Elwynn;211§auto Forêt d'Elwynn;211 | x=-9538.7998046875 y=-1420.099975585938 | size=1 | links=#12100(auto Elwynn Forest;116):4 #27599(auto Elwynn Forest;232):10
+#24956 | auto inside;Lion's Pride Inn;Elwynn Forest;212§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;212§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;212 | x=-9471.2001953125 y=11.40000057220459 | size=1 | links=#262(top;Lion's Pride Inn):12 #18606(auto inside;Lion's Pride Inn;Elwynn Forest;166):9
+#25100 | auto northshire abbey;Elwynn Forest;213§auto abteil von nordhain;Wald von Elwynn;213§auto northshire abbey;Forêt d'Elwynn;213 | x=-8874.7998046875 y=-190.1999969482422 | size=1 | links=#26888(auto northshire abbey;Elwynn Forest;223):8 c951.1:3
+#25106 | auto northshire abbey;Elwynn Forest;214§auto abteil von nordhain;Wald von Elwynn;214§auto northshire abbey;Forêt d'Elwynn;214 | x=-8892.2998046875 y=-186.1000061035156 | size=1 | links=#8692(auto northshire abbey;Elwynn Forest;84):11 #24054(auto northshire abbey;Elwynn Forest;209):11
+#25247 | auto Elwynn Forest;215§auto Wald von Elwynn;215§auto Forêt d'Elwynn;215 | x=-9847.2001953125 y=377.8999938964844 | size=1 | links=#4853(auto Elwynn Forest;41):120 c894.1:16
+#25464 | auto northshire abbey;Elwynn Forest;216§auto abteil von nordhain;Wald von Elwynn;216§auto northshire abbey;Forêt d'Elwynn;216 | x=-8886.400390625 y=-168.1000061035156 | size=1 | links=#6943(auto northshire abbey;Elwynn Forest;62):10 #21730(auto northshire abbey;Elwynn Forest;191):14
+#25489 | auto inside fargodeeop mine;Elwynn Forest;217§auto drinnen tiefenschatmine;Wald von Elwynn;217§auto inside fargodeeop mine;Forêt d'Elwynn;217 | x=-9796.2001953125 y=160.1999969482422 | size=1 | links=#15038(auto inside fargodeeop mine;Elwynn Forest;142):10 #18739(auto inside fargodeeop mine;Elwynn Forest;167):27
+#25661 | Defias Rogue Wizard;Elwynn Forest;11;73.37;49.76§Abtrünniger Hexer der Defias;Wald von Elwynn;11;73.37;49.76§Sorcier-voleur défias;Forêt d'Elwynn;11;73.37;49.76 | x=-9097.7001953125 y=-1008.900024414063 | size=1
+#25685 | auto Elwynn Forest;218§auto Wald von Elwynn;218§auto Forêt d'Elwynn;218 | x=-9642.7998046875 y=679.1000366210938 | size=1 | links=#4182(auto Elwynn Forest;33):25 #16662(auto Elwynn Forest;152):15
+#25739 | auto Elwynn Forest;219§auto Wald von Elwynn;219§auto Forêt d'Elwynn;219 | x=-9249.7001953125 y=354.6000061035156 | size=1 | links=#9569(auto Elwynn Forest;92):21 #15624(auto Elwynn Forest;145):51
+#25784 | spawn location;Northshire Valley;Elwynn Forest§spawnpunkt;Nordhaintal;Wald von Elwynn§spawn location;Northshire Valley;Forêt d'Elwynn | x=-8950 y=-132.5 | size=1 | links=#7705(auto Elwynn Forest;75):72 #10892(centralpoint;Northshire Valley;Elwynn Forest):30 c823.1:2 c69.2:55
+#26142 | auto Elwynn Forest;220§auto Wald von Elwynn;220§auto Forêt d'Elwynn;220 | x=-9474 y=-657.4000244140625 | size=1 | links=#20955(auto Elwynn Forest;188):26 #21261(auto Elwynn Forest;190):70
+#26248 | auto Elwynn Forest;221§auto Wald von Elwynn;221§auto Forêt d'Elwynn;221 | x=-9663.2998046875 y=258.7000122070313 | size=1 | links=#1365(auto Elwynn Forest;16):124 #4853(auto Elwynn Forest;41):107
+#26257 | auto northshire abbey;Elwynn Forest;222§auto abteil von nordhain;Wald von Elwynn;222§auto northshire abbey;Forêt d'Elwynn;222 | x=-8916.2998046875 y=-130 | size=1 | links=#10892(centralpoint;Northshire Valley;Elwynn Forest):19 c197.1:35
+#26888 | auto northshire abbey;Elwynn Forest;223§auto abteil von nordhain;Wald von Elwynn;223§auto northshire abbey;Forêt d'Elwynn;223 | x=-8866.400390625 y=-192.1999969482422 | size=1 | links=#25100(auto northshire abbey;Elwynn Forest;213):8 c375.1:12
+#26923 | auto northshire abbey;Elwynn Forest;224§auto abteil von nordhain;Wald von Elwynn;224§auto northshire abbey;Forêt d'Elwynn;224 | x=-8862.7001953125 y=-179.5 | size=1 | links=#22490(auto northshire abbey;Elwynn Forest;196):14 c198.1:14
+#27020 | auto Elwynn Forest;225§auto Wald von Elwynn;225§auto Forêt d'Elwynn;225 | x=-9399.1005859375 y=8.199999809265137 | size=1 | links=#16712(auto Elwynn Forest;153):23 #20202(auto Elwynn Forest;179):28
+#27142 | auto Elwynn Forest;226§auto Wald von Elwynn;226§auto Forêt d'Elwynn;226 | x=-9396.6005859375 y=-51.20000076293945 | size=1 | links=#9159(auto Elwynn Forest;88):21 #21211(auto Elwynn Forest;189):36
+#27210 | auto Elwynn Forest;227§auto Wald von Elwynn;227§auto Forêt d'Elwynn;227 | x=-9436.1005859375 y=-1314.200073242188 | size=1 | links=#1171(centralpoint;Eastvale Logging Camp;Elwynn Forest):48 c1650.1:42
+#27247 | auto inside fargodeeop mine;Elwynn Forest;228§auto drinnen tiefenschatmine;Wald von Elwynn;228§auto inside fargodeeop mine;Forêt d'Elwynn;228 | x=-9772 y=101.9000015258789 | size=1 | links=#1004(auto inside fargodeeop mine;Elwynn Forest;13):14 #9071(auto inside fargodeeop mine;Elwynn Forest;87):22
+#27286 | auto inside fargodeeop mine;Elwynn Forest;229§auto drinnen tiefenschatmine;Wald von Elwynn;229§auto inside fargodeeop mine;Forêt d'Elwynn;229 | x=-9825.5 y=209.6999969482422 | size=1 | links=#36(auto inside fargodeeop mine;Elwynn Forest;2):15 #7541(auto Elwynn Forest;71):42
+#27350 | auto Elwynn Forest;230§auto Wald von Elwynn;230§auto Forêt d'Elwynn;230 | x=-9453.7998046875 y=-1376.5 | size=1 | links=c384.1:8 c1198.1:26 c4732.1:19
+#27590 | auto inside;Lion's Pride Inn;Elwynn Forest;231§auto drinnen;Gasthaus Zur Höhle des Löwen;Wald von Elwynn;231§auto intérieur;Lion's Pride Inn;Forêt d'Elwynn;231 | x=-9468.400390625 y=16.20000076293945 | size=1 | links=#1073(central location;Lion's Pride Inn):8 c295.1:5 c3935.1:16
+#27599 | auto Elwynn Forest;232§auto Wald von Elwynn;232§auto Forêt d'Elwynn;232 | x=-9549.2998046875 y=-1420.099975585938 | size=1 | links=#4287(auto Elwynn Forest;34):10 #24735(auto Elwynn Forest;211):10
+#27628 | auto Elwynn Forest;233§auto Wald von Elwynn;233§auto Forêt d'Elwynn;233 | x=-9620 y=-300.3999938964844 | size=1 | links=#12050(auto Elwynn Forest;114):181 #19282(auto Elwynn Forest;172):119
+#27657 | auto northshire abbey;Elwynn Forest;234§auto abteil von nordhain;Wald von Elwynn;234§auto northshire abbey;Forêt d'Elwynn;234 | x=-8909.6005859375 y=-171 | size=1 | links=#21730(auto northshire abbey;Elwynn Forest;191):14 #24054(auto northshire abbey;Elwynn Forest;209):15
+#27766 | auto Elwynn Forest;235§auto Wald von Elwynn;235§auto Forêt d'Elwynn;235 | x=-9480.2998046875 y=-974.5 | size=1 | links=#2434(auto Elwynn Forest;20):26 c1922.3:28
+#27915 | auto Elwynn Forest;236§auto Wald von Elwynn;236§auto Forêt d'Elwynn;236 | x=-9936.7998046875 y=-94.20000457763672 | size=1 | links=#10927(auto Elwynn Forest;106):11 #20954(auto Elwynn Forest;187):106
+#28032 | auto Elwynn Forest;237§auto Wald von Elwynn;237§auto Forêt d'Elwynn;237 | x=-9434 y=444.3999938964844 | size=1 | links=#20765(auto Elwynn Forest;185):19 c474.3:95
+#28270 | auto Elwynn Forest;238§auto Wald von Elwynn;238§auto Forêt d'Elwynn;238 | x=-9427.2998046875 y=-1395.900024414063 | size=1 | links=c4732.1:14 o180025.1:14
+#28277 | auto Elwynn Forest;239§auto Wald von Elwynn;239§auto Forêt d'Elwynn;239 | x=-9436 y=51.20000076293945 | size=1 | links=#6888(auto Elwynn Forest;61):22 #20202(auto Elwynn Forest;179):28 o186234.2:9
+#28578 | auto inside fargodeeop mine;Elwynn Forest;240§auto drinnen tiefenschatmine;Wald von Elwynn;240§auto inside fargodeeop mine;Forêt d'Elwynn;240 | x=-9780.400390625 y=151.3000030517578 | size=1 | links=#13618(auto inside fargodeeop mine;Elwynn Forest;128):17 #15038(auto inside fargodeeop mine;Elwynn Forest;142):11
+#28592 | s;A;Mailbox;Elwynn Forest§s;a;Briefkasten;Wald von Elwynn§s;A;Boîte aux lettres;Forêt d'Elwynn | x=-9453.3203125 y=46.42913818359375 | size=1
+#46916 | auto Inside;Tower of Azora;Elwynn Forest;245§auto Drinnen;Turm von Azora;Wald von Elwynn;245§auto Intérieur;Tower of Azora;Forêt d'Elwynn;245 | x=-9551.2001953125 y=-711.7999877929688 | size=1 | links=#6514(entry and exit;Tower of Azora;Elwynn Forest):14 #46917(auto Inside;Tower of Azora;Elwynn Forest;246):10 c1949.1:15 c1949.6:7
+#46917 | auto Inside;Tower of Azora;Elwynn Forest;246§auto Drinnen;Turm von Azora;Wald von Elwynn;246§auto Intérieur;Tower of Azora;Forêt d'Elwynn;246 | x=-9548.2001953125 y=-721.6000366210938 | size=1 | links=#46916(auto Inside;Tower of Azora;Elwynn Forest;245):10 #46918(auto Inside;Tower of Azora;Elwynn Forest;247):12
+#46918 | auto Inside;Tower of Azora;Elwynn Forest;247§auto Drinnen;Turm von Azora;Wald von Elwynn;247§auto Intérieur;Tower of Azora;Forêt d'Elwynn;247 | x=-9556 y=-732 | size=1 | links=#46917(auto Inside;Tower of Azora;Elwynn Forest;246):12 #46922(auto Inside;Tower of Azora;Elwynn Forest;251):4
+#46922 | auto Inside;Tower of Azora;Elwynn Forest;251§auto Drinnen;Turm von Azora;Wald von Elwynn;251§auto Intérieur;Tower of Azora;Forêt d'Elwynn;251 | x=-9560.5 y=-732.6000366210938 | size=1 | links=#46918(auto Inside;Tower of Azora;Elwynn Forest;247):4 #46923(auto Inside;Tower of Azora;Elwynn Forest;252):8
+#46923 | auto Inside;Tower of Azora;Elwynn Forest;252§auto Drinnen;Turm von Azora;Wald von Elwynn;252§auto Intérieur;Tower of Azora;Forêt d'Elwynn;252 | x=-9568.7998046875 y=-729.7999877929688 | size=1 | links=#46922(auto Inside;Tower of Azora;Elwynn Forest;251):8 #46924(auto Inside;Tower of Azora;Elwynn Forest;253):2
+#46924 | auto Inside;Tower of Azora;Elwynn Forest;253§auto Drinnen;Turm von Azora;Wald von Elwynn;253§auto Intérieur;Tower of Azora;Forêt d'Elwynn;253 | x=-9569.400390625 y=-727.2000122070312 | size=1 | links=#46923(auto Inside;Tower of Azora;Elwynn Forest;252):2 #46925(auto Inside;Tower of Azora;Elwynn Forest;254):7 #46945(auto Inside;Tower of Azora;Elwynn Forest;274):4
+#46925 | auto Inside;Tower of Azora;Elwynn Forest;254§auto Drinnen;Turm von Azora;Wald von Elwynn;254§auto Intérieur;Tower of Azora;Forêt d'Elwynn;254 | x=-9564 y=-722.6000366210938 | size=1 | links=#46924(auto Inside;Tower of Azora;Elwynn Forest;253):7 #46926(auto Inside;Tower of Azora;Elwynn Forest;255):7
+#46926 | auto Inside;Tower of Azora;Elwynn Forest;255§auto Drinnen;Turm von Azora;Wald von Elwynn;255§auto Intérieur;Tower of Azora;Forêt d'Elwynn;255 | x=-9558.2001953125 y=-718.2999877929688 | size=1 | links=#46925(auto Inside;Tower of Azora;Elwynn Forest;254):7 #46927(auto Inside;Tower of Azora;Elwynn Forest;256):4 c1949.9:10
+#46927 | auto Inside;Tower of Azora;Elwynn Forest;256§auto Drinnen;Turm von Azora;Wald von Elwynn;256§auto Intérieur;Tower of Azora;Forêt d'Elwynn;256 | x=-9555.2998046875 y=-721.2999877929688 | size=1 | links=#46926(auto Inside;Tower of Azora;Elwynn Forest;255):4 #46928(auto Inside;Tower of Azora;Elwynn Forest;257):6
+#46928 | auto Inside;Tower of Azora;Elwynn Forest;257§auto Drinnen;Turm von Azora;Wald von Elwynn;257§auto Intérieur;Tower of Azora;Forêt d'Elwynn;257 | x=-9550.1005859375 y=-725.7999877929688 | size=1 | links=#46927(auto Inside;Tower of Azora;Elwynn Forest;256):6 #46929(auto Inside;Tower of Azora;Elwynn Forest;258):7
+#46929 | auto Inside;Tower of Azora;Elwynn Forest;258§auto Drinnen;Turm von Azora;Wald von Elwynn;258§auto Intérieur;Tower of Azora;Forêt d'Elwynn;258 | x=-9546.900390625 y=-719.2999877929688 | size=1 | links=#46928(auto Inside;Tower of Azora;Elwynn Forest;257):7 #46930(auto Inside;Tower of Azora;Elwynn Forest;259):5
+#46930 | auto Inside;Tower of Azora;Elwynn Forest;259§auto Drinnen;Turm von Azora;Wald von Elwynn;259§auto Intérieur;Tower of Azora;Forêt d'Elwynn;259 | x=-9548.1005859375 y=-714 | size=1 | links=#46929(auto Inside;Tower of Azora;Elwynn Forest;258):5 #46931(auto Inside;Tower of Azora;Elwynn Forest;260):3
+#46931 | auto Inside;Tower of Azora;Elwynn Forest;260§auto Drinnen;Turm von Azora;Wald von Elwynn;260§auto Intérieur;Tower of Azora;Forêt d'Elwynn;260 | x=-9549.7001953125 y=-711.4000244140625 | size=1 | links=#46930(auto Inside;Tower of Azora;Elwynn Forest;259):3 #46932(auto Inside;Tower of Azora;Elwynn Forest;261):5
+#46932 | auto Inside;Tower of Azora;Elwynn Forest;261§auto Drinnen;Turm von Azora;Wald von Elwynn;261§auto Intérieur;Tower of Azora;Forêt d'Elwynn;261 | x=-9553.1005859375 y=-707.4000244140625 | size=1 | links=#46931(auto Inside;Tower of Azora;Elwynn Forest;260):5 #46933(auto Inside;Tower of Azora;Elwynn Forest;262):5
+#46933 | auto Inside;Tower of Azora;Elwynn Forest;262§auto Drinnen;Turm von Azora;Wald von Elwynn;262§auto Intérieur;Tower of Azora;Forêt d'Elwynn;262 | x=-9558.2001953125 y=-705.9000244140625 | size=1 | links=#46932(auto Inside;Tower of Azora;Elwynn Forest;261):5 #46934(auto Inside;Tower of Azora;Elwynn Forest;263):8
+#46934 | auto Inside;Tower of Azora;Elwynn Forest;263§auto Drinnen;Turm von Azora;Wald von Elwynn;263§auto Intérieur;Tower of Azora;Forêt d'Elwynn;263 | x=-9566.400390625 y=-707 | size=1 | links=#46933(auto Inside;Tower of Azora;Elwynn Forest;262):8 #46935(auto Inside;Tower of Azora;Elwynn Forest;264):3
+#46935 | auto Inside;Tower of Azora;Elwynn Forest;264§auto Drinnen;Turm von Azora;Wald von Elwynn;264§auto Intérieur;Tower of Azora;Forêt d'Elwynn;264 | x=-9565.7001953125 y=-710 | size=1 | links=#46934(auto Inside;Tower of Azora;Elwynn Forest;263):3 #46936(auto Inside;Tower of Azora;Elwynn Forest;265):5
+#46936 | auto Inside;Tower of Azora;Elwynn Forest;265§auto Drinnen;Turm von Azora;Wald von Elwynn;265§auto Intérieur;Tower of Azora;Forêt d'Elwynn;265 | x=-9562.5 y=-714.2999877929688 | size=1 | links=#46935(auto Inside;Tower of Azora;Elwynn Forest;264):5 #46937(auto Inside;Tower of Azora;Elwynn Forest;266):6
+#46937 | auto Inside;Tower of Azora;Elwynn Forest;266§auto Drinnen;Turm von Azora;Wald von Elwynn;266§auto Intérieur;Tower of Azora;Forêt d'Elwynn;266 | x=-9558.400390625 y=-719.7000122070312 | size=1 | links=#46936(auto Inside;Tower of Azora;Elwynn Forest;265):6 #46938(auto Inside;Tower of Azora;Elwynn Forest;267):3
+#46938 | auto Inside;Tower of Azora;Elwynn Forest;267§auto Drinnen;Turm von Azora;Wald von Elwynn;267§auto Intérieur;Tower of Azora;Forêt d'Elwynn;267 | x=-9557 y=-722.9000244140625 | size=1 | links=#46937(auto Inside;Tower of Azora;Elwynn Forest;266):3 #46939(auto Inside;Tower of Azora;Elwynn Forest;268):4
+#46939 | auto Inside;Tower of Azora;Elwynn Forest;268§auto Drinnen;Turm von Azora;Wald von Elwynn;268§auto Intérieur;Tower of Azora;Forêt d'Elwynn;268 | x=-9557.400390625 y=-726.9000244140625 | size=1 | links=#46938(auto Inside;Tower of Azora;Elwynn Forest;267):4 #46940(auto Inside;Tower of Azora;Elwynn Forest;269):4
+#46940 | auto Inside;Tower of Azora;Elwynn Forest;269§auto Drinnen;Turm von Azora;Wald von Elwynn;269§auto Intérieur;Tower of Azora;Forêt d'Elwynn;269 | x=-9560.7998046875 y=-730.2999877929688 | size=1 | links=#46939(auto Inside;Tower of Azora;Elwynn Forest;268):4 #46941(auto Inside;Tower of Azora;Elwynn Forest;270):3
+#46941 | auto Inside;Tower of Azora;Elwynn Forest;270§auto Drinnen;Turm von Azora;Wald von Elwynn;270§auto Intérieur;Tower of Azora;Forêt d'Elwynn;270 | x=-9563.6005859375 y=-733.1000366210938 | size=1 | links=#46940(auto Inside;Tower of Azora;Elwynn Forest;269):3 #46942(auto Inside;Tower of Azora;Elwynn Forest;271):6
+#46942 | auto Inside;Tower of Azora;Elwynn Forest;271§auto Drinnen;Turm von Azora;Wald von Elwynn;271§auto Intérieur;Tower of Azora;Forêt d'Elwynn;271 | x=-9557.1005859375 y=-735 | size=1 | links=#46941(auto Inside;Tower of Azora;Elwynn Forest;270):6 #46943(auto Inside;Tower of Azora;Elwynn Forest;272):9
+#46943 | auto Inside;Tower of Azora;Elwynn Forest;272§auto Drinnen;Turm von Azora;Wald von Elwynn;272§auto Intérieur;Tower of Azora;Forêt d'Elwynn;272 | x=-9549.7001953125 y=-728.7999877929688 | size=1 | links=#46942(auto Inside;Tower of Azora;Elwynn Forest;271):9 #46944(auto Inside;Tower of Azora;Elwynn Forest;273):10
+#46944 | auto Inside;Tower of Azora;Elwynn Forest;273§auto Drinnen;Turm von Azora;Wald von Elwynn;273§auto Intérieur;Tower of Azora;Forêt d'Elwynn;273 | x=-9547.400390625 y=-718.2999877929688 | size=1 | links=#46943(auto Inside;Tower of Azora;Elwynn Forest;272):10 c959.1:8
+#46945 | auto Inside;Tower of Azora;Elwynn Forest;274§auto Drinnen;Turm von Azora;Wald von Elwynn;274§auto Intérieur;Tower of Azora;Forêt d'Elwynn;274 | x=-9572.900390625 y=-723.7999877929688 | size=1 | links=#46924(auto Inside;Tower of Azora;Elwynn Forest;253):4 #46946(auto Inside;Tower of Azora;Elwynn Forest;275):7
+#46946 | auto Inside;Tower of Azora;Elwynn Forest;275§auto Drinnen;Turm von Azora;Wald von Elwynn;275§auto Intérieur;Tower of Azora;Forêt d'Elwynn;275 | x=-9573.7001953125 y=-716.5 | size=1 | links=#46945(auto Inside;Tower of Azora;Elwynn Forest;274):7 #46947(auto Inside;Tower of Azora;Elwynn Forest;276):8
+#46947 | auto Inside;Tower of Azora;Elwynn Forest;276§auto Drinnen;Turm von Azora;Wald von Elwynn;276§auto Intérieur;Tower of Azora;Forêt d'Elwynn;276 | x=-9568.7998046875 y=-709.7000122070312 | size=1 | links=#46946(auto Inside;Tower of Azora;Elwynn Forest;275):8 #46948(auto Inside;Tower of Azora;Elwynn Forest;277):5
+#46948 | auto Inside;Tower of Azora;Elwynn Forest;277§auto Drinnen;Turm von Azora;Wald von Elwynn;277§auto Intérieur;Tower of Azora;Forêt d'Elwynn;277 | x=-9565.6005859375 y=-705.7000122070312 | size=1 | links=#46947(auto Inside;Tower of Azora;Elwynn Forest;276):5 #46949(auto Inside;Tower of Azora;Elwynn Forest;278):5
+#46949 | auto Inside;Tower of Azora;Elwynn Forest;278§auto Drinnen;Turm von Azora;Wald von Elwynn;278§auto Intérieur;Tower of Azora;Forêt d'Elwynn;278 | x=-9566 y=-711.6000366210938 | size=1 | links=#46948(auto Inside;Tower of Azora;Elwynn Forest;277):5 #46950(auto Inside;Tower of Azora;Elwynn Forest;279):4
+#46950 | auto Inside;Tower of Azora;Elwynn Forest;279§auto Drinnen;Turm von Azora;Wald von Elwynn;279§auto Intérieur;Tower of Azora;Forêt d'Elwynn;279 | x=-9566.6005859375 y=-716.2999877929688 | size=1 | links=#46949(auto Inside;Tower of Azora;Elwynn Forest;278):4 #46951(auto Inside;Tower of Azora;Elwynn Forest;280):4
+#46951 | auto Inside;Tower of Azora;Elwynn Forest;280§auto Drinnen;Turm von Azora;Wald von Elwynn;280§auto Intérieur;Tower of Azora;Forêt d'Elwynn;280 | x=-9563.2998046875 y=-718.7999877929688 | size=1 | links=#46950(auto Inside;Tower of Azora;Elwynn Forest;279):4 #46952(auto Inside;Tower of Azora;Elwynn Forest;281):3
+#46952 | auto Inside;Tower of Azora;Elwynn Forest;281§auto Drinnen;Turm von Azora;Wald von Elwynn;281§auto Intérieur;Tower of Azora;Forêt d'Elwynn;281 | x=-9560.6005859375 y=-716.6000366210938 | size=1 | links=#46951(auto Inside;Tower of Azora;Elwynn Forest;280):3 #46953(auto Inside;Tower of Azora;Elwynn Forest;282):3
+#46953 | auto Inside;Tower of Azora;Elwynn Forest;282§auto Drinnen;Turm von Azora;Wald von Elwynn;282§auto Intérieur;Tower of Azora;Forêt d'Elwynn;282 | x=-9561.6005859375 y=-713 | size=1 | links=#46952(auto Inside;Tower of Azora;Elwynn Forest;281):3 #46954(auto Inside;Tower of Azora;Elwynn Forest;283):4
+#46954 | auto Inside;Tower of Azora;Elwynn Forest;283§auto Drinnen;Turm von Azora;Wald von Elwynn;283§auto Intérieur;Tower of Azora;Forêt d'Elwynn;283 | x=-9565.7001953125 y=-711.7000122070312 | size=1 | links=#46953(auto Inside;Tower of Azora;Elwynn Forest;282):4 #46955(auto Inside;Tower of Azora;Elwynn Forest;284):6
+#46955 | auto Inside;Tower of Azora;Elwynn Forest;284§auto Drinnen;Turm von Azora;Wald von Elwynn;284§auto Intérieur;Tower of Azora;Forêt d'Elwynn;284 | x=-9572.6005859375 y=-711.2999877929688 | size=1 | links=#46954(auto Inside;Tower of Azora;Elwynn Forest;283):6 c11072.1:7
+#46956 | auto Inside;Tower of Azora;Elwynn Forest;285§auto Drinnen;Turm von Azora;Wald von Elwynn;285§auto Intérieur;Tower of Azora;Forêt d'Elwynn;285 | x=-9576.400390625 y=-722.2000122070312 | size=1 | links=#46957(auto Inside;Tower of Azora;Elwynn Forest;286):8 c11072.1:4
+#46957 | auto Inside;Tower of Azora;Elwynn Forest;286§auto Drinnen;Turm von Azora;Wald von Elwynn;286§auto Intérieur;Tower of Azora;Forêt d'Elwynn;286 | x=-9573 y=-730 | size=1 | links=#46956(auto Inside;Tower of Azora;Elwynn Forest;285):8 #46958(auto Inside;Tower of Azora;Elwynn Forest;287):7
+#46958 | auto Inside;Tower of Azora;Elwynn Forest;287§auto Drinnen;Turm von Azora;Wald von Elwynn;287§auto Intérieur;Tower of Azora;Forêt d'Elwynn;287 | x=-9567.2001953125 y=-734.6000366210938 | size=1 | links=#46957(auto Inside;Tower of Azora;Elwynn Forest;286):7 c1949.2:4
+#46959 | auto Inside;Tower of Azora;Elwynn Forest;288§auto Drinnen;Turm von Azora;Wald von Elwynn;288§auto Intérieur;Tower of Azora;Forêt d'Elwynn;288 | x=-9558.900390625 y=-734.5 | size=1 | links=c313.1:8 c1949.2:3
+#48677 | Priest trainer;Elwynn Forest;2;48.76;43.31§Priesterlehrer;Trainer;Wald von Elwynn;2;48.76;43.31§Priest trainer;Forêt d'Elwynn;2;48.76;43.31 | x=-8944.228294298995 y=-156.0406677744174 | size=1
+#48678 | Deputy Willem;Questgiver;Elwynn Forest;1;48.17;42.94§Stellvertreter Willem;Questgeber;Wald von Elwynn;1;48.17;42.94§Adjoint Willem;Questgiver;Forêt d'Elwynn;1;48.17;42.94 | x=-8947.21828613221 y=-132.9180403386883 | size=1
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c6.1 | links=c257.1:19 c6.2:24 c6.3:14
+c30.1 | links=c94.2:37
+c38.1 | links=#14345(auto Elwynn Forest;134):69 c38.2:32
+c43.1 | links=#5246(auto inside japerlode mine;Elwynn Forest;45):19 c471.1:5
+c46.1 | links=c46.3:102
+c54.1 | links=c797.1:3 c913.1:15 c2046.1:5
+c60.1 | links=c476.1:6 c476.2:54 c476.3:5
+c61.1 | links=#14464(auto Elwynn Forest;137):60
+c66.1 | links=#6888(auto Elwynn Forest;61):43 #10414(auto Elwynn Forest;100):33 #13250(centralpoint;Goldshire;Elwynn Forest):29 c927.1:36
+c69.1 | links=c69.3:33
+c74.1 | links=c514.1:11
+c78.1 | links=c11940.1:4
+c79.1 | links=#1004(auto inside fargodeeop mine;Elwynn Forest;13):26
+c94.1 | links=#237(auto Elwynn Forest;5):44 c299.3:77
+c99.1 | links=#1966(auto Elwynn Forest;17):5
+c100.1 | links=c448.1:127
+c103.1 | links=#11646(auto Elwynn Forest;112):48
+c113.1 | links=#14207(auto Elwynn Forest;132):58
+c116.1 | links=c30.2:18 c116.3:52
+c118.1 | links=#309(auto Elwynn Forest;6):24 c118.2:54
+c119.1 | links=c119.2:57 c890.3:19
+c151.1 | links=c465.1:5
+c152.1 | links=c1213.1:7 c11940.1:8
+c190.1 | links=c1213.1:4
+c196.1 | links=c2442.3:41
+c197.1 | links=#14379(auto northshire abbey;Elwynn Forest;136):8 #16033(auto northshire abbey;Elwynn Forest;148):7 #26257(auto northshire abbey;Elwynn Forest;222):35
+c198.1 | links=#26923(auto northshire abbey;Elwynn Forest;224):14
+c240.1 | links=#6888(auto Elwynn Forest;61):14 c514.1:16
+c241.1 | links=#6888(auto Elwynn Forest;61):42 #13250(centralpoint;Goldshire;Elwynn Forest):25 #14207(auto Elwynn Forest;132):135
+c244.1 | links=#14874(auto Elwynn Forest;140):85 c246.1:7 c248.1:17
+c246.1 | links=#10734(auto Elwynn Forest;103):41 c244.1:7
+c247.1 | links=#577(auto Elwynn Forest;8):60 #20954(auto Elwynn Forest;187):42 c255.1:5
+c248.1 | links=c244.1:17
+c250.1 | links=#577(auto Elwynn Forest;8):57 #18479(auto Elwynn Forest;164):4 c258.1:12
+c251.1 | links=#18479(auto Elwynn Forest;164):16
+c252.1 | links=#5379(auto Elwynn Forest;47):52
+c253.1 | links=#14378(auto inside;Lion's Pride Inn;Elwynn Forest;135):6
+c255.1 | links=c247.1:5
+c257.1 | links=#4720(auto Elwynn Forest;37):70 c6.1:19 c257.2:13 c257.3:22
+c258.1 | links=c250.1:12
+c261.1 | links=#4846(auto Elwynn Forest;40):9 c1922.1:75
+c278.1 | links=#19996(auto Elwynn Forest;177):27 c1103.1:10
+c294.1 | links=#2511(auto Elwynn Forest;21):15 #16206(auto Elwynn Forest;150):34
+c295.1 | links=#27590(auto inside;Lion's Pride Inn;Elwynn Forest;231):5 c465.1:8 o180523.1:2
+c313.1 | links=#46959(auto Inside;Tower of Azora;Elwynn Forest;288):8 c958.1:16
+c327.1 | links=#3205(auto inside fargodeeop mine;Elwynn Forest;26):19 #18432(auto inside fargodeeop mine;Elwynn Forest;163):13
+c328.1 | links=#7864(auto inside;Lion's Pride Inn;Elwynn Forest;76):9
+c330.1 | links=#4482(auto Elwynn Forest;35):50 #13398(auto Elwynn Forest;125):46 o2883.1:40 c390.2:2 o2883.3:42 c116.29:60 c116.32:35
+c375.1 | links=#26888(auto northshire abbey;Elwynn Forest;223):12
+c377.1 | links=c2329.1:5
+c384.1 | links=#27350(auto Elwynn Forest;230):8
+c395.1 | links=#9569(auto Elwynn Forest;92):31
+c448.1 | links=c100.1:127 c100.2:51 c100.3:12 c119.3:77
+c459.1 | links=c6373.1:6 c6491.2:7
+c465.1 | links=c151.1:5 c295.1:8
+c471.1 | links=c43.1:5
+c472.1 | links=#10249(auto Elwynn Forest;99):187 c472.2:108 c472.3:150
+c473.1 | links=c881.1:3
+c475.1 | links=#3358(auto Elwynn Forest;27):40 c475.2:83
+c476.1 | links=c60.1:6
+c514.1 | links=c74.1:11 c240.1:16 c2046.1:7
+c524.1 | links=c524.2:57
+c525.1 | links=c15565.1:85 c30.3:59
+c732.1 | links=#7636(auto Elwynn Forest;73):17
+c735.1 | links=#20233(auto Elwynn Forest;180):51 c285.2:69
+c795.1 | links=c15565.1:36
+c797.1 | links=c54.1:3
+c798.1 | links=#19996(auto Elwynn Forest;177):43 c799.1:22 c802.1:10
+c799.1 | links=c798.1:22
+c800.1 | links=c802.1:10
+c801.1 | links=#19996(auto Elwynn Forest;177):31 c802.1:5
+c802.1 | links=c798.1:10 c800.1:10 c801.1:5
+c822.1 | links=#13102(auto Elwynn Forest;122):92
+c823.1 | links=#25784(spawn location;Northshire Valley;Elwynn Forest):2
+c844.1 | links=#21764(auto Elwynn Forest;193):3
+c880.1 | links=c881.1:3
+c881.1 | links=#11308(auto Elwynn Forest;109):6 c473.1:3 c880.1:3
+c894.1 | links=#10734(auto Elwynn Forest;103):11 #25247(auto Elwynn Forest;215):16
+c896.1 | links=c1249.1:4
+c906.1 | links=c6121.1:3 c6374.1:5
+c911.1 | links=#4737(auto northshire abbey;Elwynn Forest;38):27 c925.1:7
+c913.1 | links=c54.1:15 c927.1:6
+c915.1 | links=#17415(auto Elwynn Forest;158):24
+c917.1 | links=#17531(auto inside;Lion's Pride Inn;Elwynn Forest;159):4 #22872(auto inside;Lion's Pride Inn;Elwynn Forest;200):5
+c925.1 | links=c911.1:7
+c927.1 | links=#10414(auto Elwynn Forest;100):16 c66.1:36 c913.1:6
+c951.1 | links=#14051(auto northshire abbey;Elwynn Forest;131):8 #25100(auto northshire abbey;Elwynn Forest;213):3
+c952.1 | links=#9440(auto northshire abbey;Elwynn Forest;91):7
+c955.1 | links=#10131(auto Elwynn Forest;97):15
+c958.1 | links=c313.1:16
+c959.1 | links=#46944(auto Inside;Tower of Azora;Elwynn Forest;273):8
+c963.1 | links=#4173(auto Elwynn Forest;32):98 #4182(auto Elwynn Forest;33):6
+c1103.1 | links=c278.1:10
+c1198.1 | links=#14861(auto Elwynn Forest;139):14 #27350(auto Elwynn Forest;230):26
+c1213.1 | links=#10892(centralpoint;Northshire Valley;Elwynn Forest):28 c152.1:7 c190.1:4 c69.3:59 c2442.3:80
+c1215.1 | links=#8368(auto Elwynn Forest;80):27 c1218.1:5
+c1218.1 | links=c1215.1:5
+c1249.1 | links=#15152(auto Elwynn Forest;143):17 c896.1:4 c1645.1:5
+c1250.1 | links=#14861(auto Elwynn Forest;139):17
+c1430.1 | links=c3935.1:4
+c1632.1 | links=#10947(auto Elwynn Forest;107):17 c6306.1:6
+c1645.1 | links=c1249.1:5
+c1650.1 | links=#27210(auto Elwynn Forest;227):42
+c1651.1 | links=#18271(auto Elwynn Forest;160):15
+c1922.1 | links=c261.1:75 c1922.2:64
+c1949.1 | links=#46916(auto Inside;Tower of Azora;Elwynn Forest;245):15
+c2046.1 | links=c54.1:5 c514.1:7
+c2329.1 | links=#262(top;Lion's Pride Inn):14 c377.1:5
+c3935.1 | links=#5542(auto inside;Lion's Pride Inn;Elwynn Forest;49):6 #27590(auto inside;Lion's Pride Inn;Elwynn Forest;231):16 c1430.1:4
+c4732.1 | links=#27350(auto Elwynn Forest;230):19 #28270(auto Elwynn Forest;238):14
+c5403.1 | links=c6373.1:35 c11260.4:73
+c5917.1 | links=#9569(auto Elwynn Forest;92):27 o142076.1:4
+c6093.1 | links=#20495(auto Elwynn Forest;182):33 o85563.1:3
+c6121.1 | links=c906.1:3
+c6172.1 | links=#10249(auto Elwynn Forest;99):42 o20923.1:66
+c6306.1 | links=c1632.1:6
+c6373.1 | links=#23759(auto Elwynn Forest;207):39 c459.1:6 c5403.1:35
+c6374.1 | links=#9349(auto inside;Lion's Pride Inn;Elwynn Forest;89):8 c906.1:5
+c6491.1 | links=#16067(auto Elwynn Forest;149):35
+c6749.1 | links=#6888(auto Elwynn Forest;61):19
+c6774.1 | links=#6283(auto Elwynn Forest;54):52 #16916(auto Elwynn Forest;156):6
+c6778.1 | links=#1073(central location;Lion's Pride Inn):4 #15739(auto inside;Lion's Pride Inn;Elwynn Forest;146):7
+c6846.1 | links=#8093(auto Elwynn Forest;78):12
+c7384.1 | links=#85(auto Elwynn Forest;4):16
+c9296.1 | links=#17415(auto Elwynn Forest;158):25 c2442.3:69
+c11072.1 | links=#46955(auto Inside;Tower of Azora;Elwynn Forest;284):7 #46956(auto Inside;Tower of Azora;Elwynn Forest;285):4
+c11940.1 | links=c78.1:4 c152.1:8
+c11979.1 | links=#7572(auto Elwynn Forest;72):6 c11994.1:7
+c11994.1 | links=c11979.1:7
+c11996.1 | links=#6032(auto Elwynn Forest;52):61 #13504(auto Elwynn Forest;127):5
+c12423.1 | links=#12050(auto Elwynn Forest;114):40 #14207(auto Elwynn Forest;132):86 c735.3:139
+c13159.1 | links=#7481(auto Elwynn Forest;70):21
+c15565.1 | links=#16067(auto Elwynn Forest;149):22 c525.1:85 c795.1:36
+c22985.1 | links=#13504(auto Elwynn Forest;127):5
+o55.1 | links=#19740(auto Elwynn Forest;176):9
+o56.1 | links=o176793.8:27
+o68.1 | links=#4182(auto Elwynn Forest;33):5
+o1560.1 | links=#17531(auto inside;Lion's Pride Inn;Elwynn Forest;159):15
+o1562.1 | links=#4287(auto Elwynn Forest;34):10
+o2883.1 | links=c330.1:40 c116.35:42
+o20923.1 | links=c6172.1:66
+o83763.1 | links=#9366(auto Elwynn Forest;90):11
+o85563.1 | links=c6093.1:3
+o142076.1 | links=c5917.1:4
+o156561.1 | links=#4173(auto Elwynn Forest;32):13
+o178504.1 | links=c472.2:60
+o180025.1 | links=#28270(auto Elwynn Forest;238):14
+o180523.1 | links=c295.1:2
+c6.2 | links=c6.1:24
+c30.2 | links=#15624(auto Elwynn Forest;145):41 c116.1:18
+c38.2 | links=#24014(auto Elwynn Forest;208):16 c38.1:32 c38.3:15
+c40.2 | links=#3205(auto inside fargodeeop mine;Elwynn Forest;26):48 c40.3:17
+c43.2 | links=#10906(auto inside japerlode mine;Elwynn Forest;105):14 #23482(auto inside japerlode mine;Elwynn Forest;205):17
+c61.2 | links=c116.2:42
+c69.2 | links=#25784(spawn location;Northshire Valley;Elwynn Forest):55
+c80.2 | links=#4720(auto Elwynn Forest;37):62 c80.3:44
+c94.2 | links=#237(auto Elwynn Forest;5):73 c30.1:37
+c100.2 | links=c448.1:51
+c116.2 | links=c61.2:42 c61.3:7
+c118.2 | links=#18511(auto Elwynn Forest;165):33 c118.1:54
+c119.2 | links=#4173(auto Elwynn Forest;32):39 c119.1:57
+c257.2 | links=c257.1:13
+c285.2 | links=c735.1:69 #28811(s;Eastern Kingdoms;Elwynn Forest;Mirror Lake):94 c735.2:126
+c390.2 | links=c330.1:2
+c472.2 | links=c472.1:108 o178504.1:60
+c474.2 | links=c474.3:11
+c475.2 | links=#4853(auto Elwynn Forest;41):72 c475.1:83
+c476.2 | links=#20533(auto Elwynn Forest;183):24 c60.1:54
+c478.2 | links=c100.3:5 c119.3:66
+c524.2 | links=#6108(auto Elwynn Forest;53):41 c524.1:57 c46.3:145
+c525.2 | links=c30.3:35
+c732.2 | links=c732.3:43
+c735.2 | links=#28811(s;Eastern Kingdoms;Elwynn Forest;Mirror Lake):135 c285.2:126 c525.3:52
+c822.2 | links=#20495(auto Elwynn Forest;182):12
+c1922.2 | links=c1922.1:64 c1922.3:47
+c1949.2 | links=#46958(auto Inside;Tower of Azora;Elwynn Forest;287):4 #46959(auto Inside;Tower of Azora;Elwynn Forest;288):3
+c6491.2 | links=c459.1:7
+o2883.2 | links=#4482(auto Elwynn Forest;35):8
+o176793.2 | links=o176793.8:78 o176793.14:33
+o186234.2 | links=#28277(auto Elwynn Forest;239):9
+c6.3 | links=c6.1:14 c2442.3:35
+c30.3 | links=c525.1:59 c525.2:35
+c38.3 | links=#16749(auto Elwynn Forest;154):119 c38.2:15
+c40.3 | links=#5100(auto inside fargodeeop mine;Elwynn Forest;43):15 c40.2:17
+c46.3 | links=c46.1:102 c524.2:145
+c61.3 | links=c116.2:7 c116.3:10
+c69.3 | links=c69.1:33 c1213.1:59 c257.3:97
+c80.3 | links=c80.2:44
+c94.3 | links=#237(auto Elwynn Forest;5):68 #13391(auto Elwynn Forest;124):70
+c100.3 | links=c448.1:12 c478.2:5
+c116.3 | links=c116.1:52 c61.3:10
+c118.3 | links=#7481(auto Elwynn Forest;70):121 o176793.4:23 o176793.26:12
+c119.3 | links=c448.1:77 c478.2:66 c890.3:41
+c257.3 | links=c257.1:22 c69.3:97
+c299.3 | links=c94.1:77
+c472.3 | links=c472.1:150
+c474.3 | links=#28032(auto Elwynn Forest;237):95 c474.2:11
+c476.3 | links=c60.1:5
+c525.3 | links=#14464(auto Elwynn Forest;137):52 c735.2:52 c735.3:59
+c732.3 | links=#7636(auto Elwynn Forest;73):71 c732.2:43
+c735.3 | links=c12423.1:139 c525.3:59
+c822.3 | links=#4104(auto Elwynn Forest;31):55
+c890.3 | links=c119.1:19 c119.3:41
+c1922.3 | links=#27766(auto Elwynn Forest;235):28 c1922.2:47
+c2442.3 | links=c196.1:41 c1213.1:80 c9296.1:69 c6.3:35
+c6491.3 | links=#1171(centralpoint;Eastvale Logging Camp;Elwynn Forest):100 #16206(auto Elwynn Forest;150):24
+c6927.3 | links=#8093(auto Elwynn Forest;78):20
+o2883.3 | links=c330.1:42
+o161557.3 | links=o161557.36:13
+o176793.3 | links=o176793.19:39
+c11260.4 | links=c5403.1:73
+o176793.4 | links=c118.3:23 o176793.11:31 o176793.19:45
+o161557.5 | links=o161557.31:10 o161557.34:14
+o176793.5 | links=o176793.16:24
+c1949.6 | links=#46916(auto Inside;Tower of Azora;Elwynn Forest;245):7
+o176793.6 | links=o176793.23:23
+o176793.7 | links=o176793.9:32
+o176793.8 | links=o56.1:27 o176793.2:78
+c1949.9 | links=#46926(auto Inside;Tower of Azora;Elwynn Forest;255):10
+o161557.9 | links=o161557.21:9 o161557.29:14
+o176793.9 | links=o176793.7:32 o176793.12:34
+o176793.10 | links=o176793.15:36
+o176793.11 | links=o176793.4:31 o176793.23:32 o176793.25:30
+o176793.12 | links=o176793.9:34 o176793.13:28 o176793.16:44
+o176793.13 | links=o176793.12:28 o176793.14:35
+o176793.14 | links=o176793.2:33 o176793.13:35 o176793.17:46
+o176793.15 | links=o176793.10:36 o176793.16:34
+o176793.16 | links=o176793.5:24 o176793.12:44 o176793.15:34
+o176793.17 | links=o176793.14:46 o176793.19:34 o176793.27:35
+o176793.18 | links=
+o176793.19 | links=o176793.3:39 o176793.4:45 o176793.17:34
+o176793.20 | links=
+o161557.21 | links=o161557.9:9 o161557.23:9
+o161557.23 | links=o161557.21:9
+o176793.23 | links=o176793.6:23 o176793.11:32
+o176793.25 | links=o176793.11:30
+o161557.26 | links=#28807(s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey;Northshire Vineyards):2 o161557.29:8
+o176793.26 | links=c118.3:12
+c116.27 | links=c116.33:10 c721.108:5
+o176793.27 | links=o176793.17:35
+c116.28 | links=c721.108:13
+c116.29 | links=c330.1:60
+o161557.29 | links=o161557.9:14 o161557.26:8
+o176793.29 | links=
+o161557.31 | links=o161557.5:10
+c116.32 | links=c330.1:35
+c116.33 | links=#4482(auto Elwynn Forest;35):14 c116.27:10
+c116.34 | links=#4482(auto Elwynn Forest;35):19
+o161557.34 | links=#28807(s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey;Northshire Vineyards):6 o161557.5:14
+c116.35 | links=o2883.1:42
+o161557.36 | links=#28807(s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey;Northshire Vineyards):19 o161557.3:13
+c721.108 | links=c116.27:5 c116.28:13

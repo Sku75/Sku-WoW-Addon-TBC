@@ -1,0 +1,4 @@
+Zone areaId 3539 — eine Zeile pro Wegpunkt; Links inline.
+
+#2958 | The Stair of Destiny;Hellfire Peninsula§Die Stufen des Schicksals;Höllenfeuerhalbinsel§L'escalier du Destin;Péninsule des Flammes infernales | x=-246.9000091552734 y=905.9000244140625 | size=1 | links=#23720(auto The Stair of Destiny;Hellfire Peninsula;1):119
+#23720 | auto The Stair of Destiny;Hellfire Peninsula;1§auto Die Stufen des Schicksals;Höllenfeuerhalbinsel;1§auto L'escalier du Destin;Péninsule des Flammes infernales;1 | x=-248.5 y=1024.900024414063 | size=5 | links=#3798(auto Hellfire Peninsula;100):34 #2958(The Stair of Destiny;Hellfire Peninsula):119

@@ -1,0 +1,7 @@
+Zone areaId 2104 — eine Zeile pro Wegpunkt; Links inline.
+
+#13011 | auto Deepwater Tavern;Wetlands;1§auto Tiefenwassertaverne;Sumpfland;1§auto Taverne de l'Eau-profonde;Les Paluns;1 | x=-3810 y=-829.2999877929688 | size=1 | links=c1217.1:8 c1476.1:6 c4962.1:4 #23113(auto Deepwater Tavern;Wetlands;4):6 #23265(auto Deepwater Tavern;Wetlands;5):12
+#18685 | auto Deepwater Tavern;Wetlands;2§auto Tiefenwassertaverne;Sumpfland;2§auto Taverne de l'Eau-profonde;Les Paluns;2 | x=-3803.900146484375 y=-835.7999877929688 | size=1 | links=#21202(auto Deepwater Tavern;Wetlands;3):8 #23113(auto Deepwater Tavern;Wetlands;4):9
+#21202 | auto Deepwater Tavern;Wetlands;3§auto Tiefenwassertaverne;Sumpfland;3§auto Taverne de l'Eau-profonde;Les Paluns;3 | x=-3795.400146484375 y=-835.9000244140625 | size=1 | links=#28620(s;u;Mailbox;Wetlands):2 #24383(central location;Menethil Harbor):21 #18685(auto Deepwater Tavern;Wetlands;2):8
+#23113 | auto Deepwater Tavern;Wetlands;4§auto Tiefenwassertaverne;Sumpfland;4§auto Taverne de l'Eau-profonde;Les Paluns;4 | x=-3804.300048828125 y=-826.6000366210938 | size=1 | links=#13011(auto Deepwater Tavern;Wetlands;1):6 #18685(auto Deepwater Tavern;Wetlands;2):9
+#23265 | auto Deepwater Tavern;Wetlands;5§auto Tiefenwassertaverne;Sumpfland;5§auto Taverne de l'Eau-profonde;Les Paluns;5 | x=-3822.400146484375 y=-829.2999877929688 | size=1 | links=c1464.1:6 c4963.1:1 #13011(auto Deepwater Tavern;Wetlands;1):12

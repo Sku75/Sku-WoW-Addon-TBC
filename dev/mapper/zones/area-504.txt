@@ -1,0 +1,3 @@
+Zone areaId 504 — eine Zeile pro Wegpunkt; Links inline.
+
+#28678 | s;Kalimdor;Dustwallow Marsh;Brackenwall Village;North Point Tower§s;Kalimdor;Marschen von Dustwallow;Brackenwall;Nordwacht§s;Kalimdor;Marécage d'Âprefange;Mur-de-Fougères;Tour de la halte nord | x=-2884.79 y=-3429.99 | size=1

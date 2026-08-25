@@ -1,0 +1,3 @@
+Zone areaId 989 — eine Zeile pro Wegpunkt; Links inline.
+
+#28716 | s;Kalimdor;Tanaris;Valley of the Watchers;Uldum§s;Kalimdor;Tanaris;Tal der Behüter;Uldum§s;Kalimdor;Tanaris;Vallée des guetteurs;Uldum | x=-9635.41 y=-2787.2 | size=1

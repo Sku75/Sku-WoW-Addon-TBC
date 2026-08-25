@@ -1,0 +1,666 @@
+Zone areaId 51 — eine Zeile pro Wegpunkt; Links inline.
+
+#32 | auto Searing Gorge;1§auto Sengende Schlucht;1§auto Gorge des Vents brûlants;1 | x=-6523.89990234375 y=-1299.300048828125 | size=1 | links=#1045(auto Searing Gorge;22):21 #4971(auto Searing Gorge;67):11
+#34 | auto Searing Gorge;2§auto Sengende Schlucht;2§auto Gorge des Vents brûlants;2 | x=-6936.10009765625 y=-1179.599975585938 | size=1 | links=#1317(auto Searing Gorge;24):14 c5852.2:18
+#44 | auto Searing Gorge;3§auto Sengende Schlucht;3§auto Gorge des Vents brûlants;3 | x=-6672 y=-1692.599975585938 | size=1 | links=#6796(auto Searing Gorge;95):31 #24715(auto Searing Gorge;283):31
+#130 | auto Searing Gorge;4§auto Sengende Schlucht;4§auto Gorge des Vents brûlants;4 | x=-6057 y=-2460.400146484375 | size=1 | links=#4827(auto Searing Gorge;64):14 #8892(auto Searing Gorge;119):19
+#169 | auto Searing Gorge;5§auto Sengende Schlucht;5§auto Gorge des Vents brûlants;5 | x=-6918.39990234375 y=-1435.800048828125 | size=1 | links=#25377(auto Searing Gorge;291):18 o149031.1:5
+#264 | auto Searing Gorge;6§auto Sengende Schlucht;6§auto Gorge des Vents brûlants;6 | x=-6702.39990234375 y=-640.9000244140625 | size=1 | links=#13068(auto Searing Gorge;165):16 c5862.11:21
+#286 | auto Searing Gorge;7§auto Sengende Schlucht;7§auto Gorge des Vents brûlants;7 | x=-6923.5 y=-1467.5 | size=1 | links=#11562(auto Searing Gorge;151):16 #14203(auto Searing Gorge;178):9
+#313 | auto Searing Gorge;8§auto Sengende Schlucht;8§auto Gorge des Vents brûlants;8 | x=-6629.89990234375 y=-1257.200073242188 | size=1 | links=#16786(auto Searing Gorge;201):21 #22223(auto Searing Gorge;257):8
+#348 | auto Searing Gorge;9§auto Sengende Schlucht;9§auto Gorge des Vents brûlants;9 | x=-6505.60009765625 y=-993.4000244140625 | size=1 | links=#24859(auto Searing Gorge;287):9 c8282.2:18 c8282.4:22
+#381 | auto Searing Gorge;10§auto Sengende Schlucht;10§auto Gorge des Vents brûlants;10 | x=-6773.80029296875 y=-1483.700073242188 | size=1 | links=#7187(auto Searing Gorge;99):136 #24850(auto Searing Gorge;286):76
+#388 | auto Searing Gorge;11§auto Sengende Schlucht;11§auto Gorge des Vents brûlants;11 | x=-6989.5 y=-1123.400024414063 | size=1 | links=#11729(auto Searing Gorge;152):32 #19146(auto Searing Gorge;223):22
+#402 | auto Searing Gorge;12§auto Sengende Schlucht;12§auto Gorge des Vents brûlants;12 | x=-6531.2001953125 y=-882.1000366210938 | size=1 | links=#6413(auto Searing Gorge;91):22 #20452(auto Searing Gorge;241):21
+#433 | auto Searing Gorge;13§auto Sengende Schlucht;13§auto Gorge des Vents brûlants;13 | x=-6929.30029296875 y=-1432.700073242188 | size=1 | links=#7446(auto Searing Gorge;100):16 #17370(auto Searing Gorge;205):14
+#558 | auto Searing Gorge;14§auto Sengende Schlucht;14§auto Gorge des Vents brûlants;14 | x=-6682.5 y=-1132.700073242188 | size=1 | links=#13117(auto Searing Gorge;166):40 #21580(auto Searing Gorge;249):37
+#588 | auto Searing Gorge;15§auto Sengende Schlucht;15§auto Gorge des Vents brûlants;15 | x=-6508.5 y=-1182.300048828125 | size=1 | links=#9119(auto Searing Gorge;124):22 c14625.1:11
+#673 | auto Searing Gorge;16§auto Sengende Schlucht;16§auto Gorge des Vents brûlants;16 | x=-7001.60009765625 y=-1126.599975585938 | size=1 | links=#5491(auto Searing Gorge;75):16 o149025.1:7
+#790 | auto Searing Gorge;17§auto Sengende Schlucht;17§auto Gorge des Vents brûlants;17 | x=-7193.30029296875 y=-1227.200073242188 | size=1 | links=#5363(auto Searing Gorge;74):8 #6142(auto Searing Gorge;86):10
+#809 | auto Searing Gorge;18§auto Sengende Schlucht;18§auto Gorge des Vents brûlants;18 | x=-6616.10009765625 y=-1194.5 | size=1 | links=#7928(auto Searing Gorge;105):43 c5844.20:47 c5846.30:46
+#813 | auto Searing Gorge;19§auto Sengende Schlucht;19§auto Gorge des Vents brûlants;19 | x=-6551.10009765625 y=-1560 | size=1 | links=#1620(auto Searing Gorge;28):31 #22255(auto Searing Gorge;258):28
+#926 | auto Searing Gorge;20§auto Sengende Schlucht;20§auto Gorge des Vents brûlants;20 | x=-6987.39990234375 y=-1529.700073242188 | size=1 | links=#14342(auto Searing Gorge;179):27 c8566.13:19
+#1039 | auto Searing Gorge;21§auto Sengende Schlucht;21§auto Gorge des Vents brûlants;21 | x=-6498.39990234375 y=-1384.599975585938 | size=1 | links=c9318.6:19 c9318.9:71
+#1045 | auto Searing Gorge;22§auto Sengende Schlucht;22§auto Gorge des Vents brûlants;22 | x=-6509.60009765625 y=-1315.800048828125 | size=1 | links=#32(auto Searing Gorge;1):21 #10721(auto Searing Gorge;139):21
+#1170 | auto Searing Gorge;23§auto Sengende Schlucht;23§auto Gorge des Vents brûlants;23 | x=-6934.10009765625 y=-1261.099975585938 | size=1 | links=#5898(auto Searing Gorge;82):5 #28086(auto Searing Gorge;323):6
+#1317 | auto Searing Gorge;24§auto Sengende Schlucht;24§auto Gorge des Vents brûlants;24 | x=-6930.60009765625 y=-1165.800048828125 | size=1 | links=#34(auto Searing Gorge;2):14 #19546(auto Searing Gorge;227):14
+#1428 | auto Searing Gorge;25§auto Sengende Schlucht;25§auto Gorge des Vents brûlants;25 | x=-6548.10009765625 y=-1275.900024414063 | size=1 | links=#22582(auto Searing Gorge;261):50
+#1596 | auto Searing Gorge;26§auto Sengende Schlucht;26§auto Gorge des Vents brûlants;26 | x=-7216.39990234375 y=-1662 | size=1 | links=#17819(auto Searing Gorge;208):27 c5856.19:76
+#1602 | auto Searing Gorge;27§auto Sengende Schlucht;27§auto Gorge des Vents brûlants;27 | x=-6909.045419341793 y=-1224.863250536882 | size=1 | links=#20016(auto Searing Gorge;234):8 c5854.2:4
+#1605 | Shleipnarr;Searing Gorge;1;58.57;56.55§Shleipnarr;Sengende Schlucht;1;58.57;56.55§Shleipnarr;Gorge des Vents brûlants;1;58.57;56.55 | x=-6947.745384214409 y=-1623.916871799184 | size=1
+#1620 | auto Searing Gorge;28§auto Sengende Schlucht;28§auto Gorge des Vents brûlants;28 | x=-6523.10009765625 y=-1573.900024414063 | size=1 | links=#813(auto Searing Gorge;19):31 c5857.1:35
+#1641 | auto Searing Gorge;29§auto Sengende Schlucht;29§auto Gorge des Vents brûlants;29 | x=-6562.7001953125 y=-1926.400024414063 | size=1 | links=#12502(auto Searing Gorge;159):62 #24320(auto Searing Gorge;276):141
+#1725 | auto Searing Gorge;30§auto Sengende Schlucht;30§auto Gorge des Vents brûlants;30 | x=-6805.30029296875 y=-1397.900024414063 | size=1 | links=#4683(auto Searing Gorge;62):15 #8118(auto Searing Gorge;109):22
+#1839 | crossing;one;Searing Gorge§kreuzung;eins;Sengende Schlucht§traversée;un;Gorge des Vents brûlants | x=-6686.5 y=-1898.700073242188 | size=1 | links=#9076(auto Searing Gorge;121):52 #12502(auto Searing Gorge;159):64 #16049(auto Searing Gorge;195):100
+#1967 | auto Searing Gorge;31§auto Sengende Schlucht;31§auto Gorge des Vents brûlants;31 | x=-7188.2001953125 y=-1295.300048828125 | size=1 | links=#10096(auto Searing Gorge;134):26 #25654(auto Searing Gorge;293):32
+#2038 | auto Searing Gorge;32§auto Sengende Schlucht;32§auto Gorge des Vents brûlants;32 | x=-6645.39990234375 y=-1374 | size=1 | links=#4592(auto Searing Gorge;61):33 #17903(auto Searing Gorge;211):47 c5854.23:24
+#2045 | auto Searing Gorge;33§auto Sengende Schlucht;33§auto Gorge des Vents brûlants;33 | x=-6584.10009765625 y=-1550.099975585938 | size=1 | links=#21966(auto Searing Gorge;255):10 #22255(auto Searing Gorge;258):8
+#2142 | auto Searing Gorge;34§auto Sengende Schlucht;34§auto Gorge des Vents brûlants;34 | x=-6493.30029296875 y=-1307.200073242188 | size=1 | links=#4971(auto Searing Gorge;67):28 #11370(auto Searing Gorge;149):41
+#2155 | auto Searing Gorge;35§auto Sengende Schlucht;35§auto Gorge des Vents brûlants;35 | x=-7023 y=-1663.400024414063 | size=1 | links=#6384(auto Searing Gorge;90):38 #14098(auto Searing Gorge;177):85
+#2156 | auto Searing Gorge;36§auto Sengende Schlucht;36§auto Gorge des Vents brûlants;36 | x=-7085.5 y=-1080.800048828125 | size=1 | links=#7594(auto Searing Gorge;101):42 #10547(auto Searing Gorge;137):68
+#2174 | auto Searing Gorge;37§auto Sengende Schlucht;37§auto Gorge des Vents brûlants;37 | x=-6641 y=-1294.599975585938 | size=1 | links=#4904(auto Searing Gorge;66):12 #26084(auto Searing Gorge;302):22
+#2190 | auto Searing Gorge;38§auto Sengende Schlucht;38§auto Gorge des Vents brûlants;38 | x=-7097.7001953125 y=-1755 | size=1 | links=#14098(auto Searing Gorge;177):60 #26868(auto Searing Gorge;309):40
+#2211 | auto Searing Gorge;39§auto Sengende Schlucht;39§auto Gorge des Vents brûlants;39 | x=-6569 y=-1272.900024414063 | size=1 | links=#16877(auto Searing Gorge;202):22 #19834(auto Searing Gorge;233):31
+#2227 | auto Searing Gorge;40§auto Sengende Schlucht;40§auto Gorge des Vents brûlants;40 | x=-6762.10009765625 y=-1206.5 | size=1 | links=#22076(auto Searing Gorge;256):28 c5846.18:25
+#2321 | auto Searing Gorge;41§auto Sengende Schlucht;41§auto Gorge des Vents brûlants;41 | x=-7195.5 y=-1205 | size=1 | links=#3632(auto Searing Gorge;52):7 #28449(auto Searing Gorge;329):7
+#2335 | auto Searing Gorge;42§auto Sengende Schlucht;42§auto Gorge des Vents brûlants;42 | x=-6593.10009765625 y=-1692.5 | size=1 | links=#10148(auto Searing Gorge;135):15 #19685(auto Searing Gorge;231):34
+#2369 | auto Searing Gorge;43§auto Sengende Schlucht;43§auto Gorge des Vents brûlants;43 | x=-6943.39990234375 y=-1094.400024414063 | size=1 | links=#23612(auto Searing Gorge;272):10
+#2401 | auto Searing Gorge;44§auto Sengende Schlucht;44§auto Gorge des Vents brûlants;44 | x=-7004.89990234375 y=-1190.700073242188 | size=1 | links=#10679(auto Searing Gorge;138):32 #25743(auto Searing Gorge;298):47
+#2821 | auto Searing Gorge;45§auto Sengende Schlucht;45§auto Gorge des Vents brûlants;45 | x=-7078.39990234375 y=-945.9000244140625 | size=1 | links=#12370(auto Searing Gorge;158):38 c5852.4:20 c5858.19:16
+#2935 | auto Searing Gorge;46§auto Sengende Schlucht;46§auto Gorge des Vents brûlants;46 | x=-6994.5 y=-1084.599975585938 | size=1 | links=#28280(auto Searing Gorge;327):26 c9699.9:43
+#3118 | auto Searing Gorge;47§auto Sengende Schlucht;47§auto Gorge des Vents brûlants;47 | x=-6287.80029296875 y=-2166.199951171875 | size=1 | links=#18146(auto Searing Gorge;213):16 #24492(auto Searing Gorge;278):19
+#3150 | auto Searing Gorge;48§auto Sengende Schlucht;48§auto Gorge des Vents brûlants;48 | x=-6601.5 y=-1521.300048828125 | size=1 | links=#15408(auto Searing Gorge;187):38 #16685(auto Searing Gorge;199):26 #17753(auto Searing Gorge;207):35
+#3285 | auto Searing Gorge;49§auto Sengende Schlucht;49§auto Gorge des Vents brûlants;49 | x=-6906.39990234375 y=-1334.099975585938 | size=1 | links=#5641(auto Searing Gorge;79):39 #26953(auto Searing Gorge;310):43
+#3592 | auto Searing Gorge;50§auto Sengende Schlucht;50§auto Gorge des Vents brûlants;50 | x=-6956.472235703513 y=-1569.706827284091 | size=1 | links=#14342(auto Searing Gorge;179):39 #17204(auto Searing Gorge;204):50
+#3596 | auto Searing Gorge;51§auto Sengende Schlucht;51§auto Gorge des Vents brûlants;51 | x=-7195.39990234375 y=-1189.099975585938 | size=1 | links=#3632(auto Searing Gorge;52):8 #19564(auto Searing Gorge;228):8
+#3632 | auto Searing Gorge;52§auto Sengende Schlucht;52§auto Gorge des Vents brûlants;52 | x=-7196.5 y=-1197.599975585938 | size=1 | links=#2321(auto Searing Gorge;41):7 #3596(auto Searing Gorge;51):8
+#3833 | auto Searing Gorge;53§auto Sengende Schlucht;53§auto Gorge des Vents brûlants;53 | x=-6646.30029296875 y=-949.5 | size=1 | links=#9097(auto Searing Gorge;122):39 c5858.25:23
+#3916 | auto Searing Gorge;54§auto Sengende Schlucht;54§auto Gorge des Vents brûlants;54 | x=-6648.39990234375 y=-1546 | size=1 | links=#16685(auto Searing Gorge;199):33 #19751(auto Searing Gorge;232):37 #27894(auto Searing Gorge;320):53 c5857.4:20 c5857.7:40
+#4021 | auto Searing Gorge;55§auto Sengende Schlucht;55§auto Gorge des Vents brûlants;55 | x=-8071.349757796006 y=-1094.044236194495 | size=1 | links=#9276(auto Burning Steppes;109):30 c9698.2:48
+#4058 | auto Searing Gorge;56§auto Sengende Schlucht;56§auto Gorge des Vents brûlants;56 | x=-6499.10009765625 y=-1077 | size=1 | links=#11206(auto Searing Gorge;146):27 #11797(auto Searing Gorge;153):30
+#4086 | auto Searing Gorge;57§auto Sengende Schlucht;57§auto Gorge des Vents brûlants;57 | x=-6962.30029296875 y=-1269 | size=1 | links=#4526(auto Searing Gorge;59):11 #20124(auto Searing Gorge;235):31 #28495(auto Searing Gorge;331):57
+#4095 | auto Searing Gorge;58§auto Sengende Schlucht;58§auto Gorge des Vents brûlants;58 | x=-6964.10009765625 y=-1131.200073242188 | size=1 | links=#25743(auto Searing Gorge;298):29 #28280(auto Searing Gorge;327):29
+#4152 | door/gate;Dustfire Valley;Searing Gorge§tür/tor;Staubfeuertal;Sengende Schlucht§door/gate;Vallée des Escarbilles;Gorge des Vents brûlants | x=-6358.5 y=-2075.10009765625 | size=1 | links=#5563(auto Searing Gorge;76):49 #12544(auto Searing Gorge;160):26
+#4526 | auto Searing Gorge;59§auto Sengende Schlucht;59§auto Gorge des Vents brûlants;59 | x=-6952.2001953125 y=-1264.300048828125 | size=1 | links=#4086(auto Searing Gorge;57):11 #5898(auto Searing Gorge;82):12
+#4586 | auto Searing Gorge;60§auto Sengende Schlucht;60§auto Gorge des Vents brûlants;60 | x=-6851.5 y=-1388.599975585938 | size=1 | links=#5647(auto Searing Gorge;80):24 #7117(auto Searing Gorge;97):23 #24743(auto Searing Gorge;284):60
+#4592 | auto Searing Gorge;61§auto Sengende Schlucht;61§auto Gorge des Vents brûlants;61 | x=-6647.2001953125 y=-1407.200073242188 | size=1 | links=#2038(auto Searing Gorge;32):33 #10818(auto Searing Gorge;141):34 c5846.7:40 c5854.15:45
+#4683 | auto Searing Gorge;62§auto Sengende Schlucht;62§auto Gorge des Vents brûlants;62 | x=-6799.89990234375 y=-1383.400024414063 | size=1 | links=#1725(auto Searing Gorge;30):15 #10038(auto Searing Gorge;133):68
+#4781 | auto Searing Gorge;63§auto Sengende Schlucht;63§auto Gorge des Vents brûlants;63 | x=-6506.30029296875 y=-825.9000244140625 | size=1 | links=c5861.3:17 c5862.5:22
+#4827 | auto Searing Gorge;64§auto Sengende Schlucht;64§auto Gorge des Vents brûlants;64 | x=-6048.30029296875 y=-2472.10009765625 | size=1 | links=#130(auto Searing Gorge;4):14 #22272(auto Searing Gorge;259):11
+#4890 | auto Searing Gorge;65§auto Sengende Schlucht;65§auto Gorge des Vents brûlants;65 | x=-7186.39990234375 y=-1898.400024414063 | size=1 | links=#8567(auto Searing Gorge;114):36 #22983(auto Searing Gorge;267):23
+#4904 | auto Searing Gorge;66§auto Sengende Schlucht;66§auto Gorge des Vents brûlants;66 | x=-6641.89990234375 y=-1306.800048828125 | size=1 | links=#2174(auto Searing Gorge;37):12 #17903(auto Searing Gorge;211):20
+#4971 | auto Searing Gorge;67§auto Sengende Schlucht;67§auto Gorge des Vents brûlants;67 | x=-6516.60009765625 y=-1291 | size=1 | links=#32(auto Searing Gorge;1):11 #2142(auto Searing Gorge;34):28 #19834(auto Searing Gorge;233):28
+#5089 | auto Searing Gorge;68§auto Sengende Schlucht;68§auto Gorge des Vents brûlants;68 | x=-7115.80029296875 y=-1815.099975585938 | size=1 | links=#24426(auto Searing Gorge;277):20 #26868(auto Searing Gorge;309):29
+#5110 | auto Searing Gorge;69§auto Sengende Schlucht;69§auto Gorge des Vents brûlants;69 | x=-6759.80029296875 y=-715.2999877929688 | size=1 | links=c5861.10:7 c5861.12:17
+#5119 | auto Searing Gorge;70§auto Sengende Schlucht;70§auto Gorge des Vents brûlants;70 | x=-6501.5 y=-1171.099975585938 | size=1 | links=#8581(auto Searing Gorge;115):28 #24136(central location;Thorium Point;Searing Gorge):9
+#5185 | auto Searing Gorge;71§auto Sengende Schlucht;71§auto Gorge des Vents brûlants;71 | x=-7197.39990234375 y=-1173.700073242188 | size=1 | links=#5583(auto Searing Gorge;77):6 #19564(auto Searing Gorge;228):6
+#5319 | auto Searing Gorge;72§auto Sengende Schlucht;72§auto Gorge des Vents brûlants;72 | x=-6738.89990234375 y=-631.4000244140625 | size=1 | links=#25691(auto Searing Gorge;295):32 c5862.10:14
+#5347 | auto Searing Gorge;73§auto Sengende Schlucht;73§auto Gorge des Vents brûlants;73 | x=-6854.60009765625 y=-1208.700073242188 | size=1 | links=#8703(auto Searing Gorge;116):67 c5840.2:27 c5840.3:36 c5840.4:47 c5854.13:51
+#5363 | auto Searing Gorge;74§auto Sengende Schlucht;74§auto Gorge des Vents brûlants;74 | x=-7193.89990234375 y=-1219.099975585938 | size=1 | links=#790(auto Searing Gorge;17):8 #28449(auto Searing Gorge;329):6
+#5491 | auto Searing Gorge;75§auto Sengende Schlucht;75§auto Gorge des Vents brûlants;75 | x=-7005.30029296875 y=-1143 | size=1 | links=#673(auto Searing Gorge;16):16 #19146(auto Searing Gorge;223):9
+#5563 | auto Searing Gorge;76§auto Sengende Schlucht;76§auto Gorge des Vents brûlants;76 | x=-6390.60009765625 y=-2037.099975585938 | size=1 | links=#4152(door/gate;Dustfire Valley;Searing Gorge):49 #24320(auto Searing Gorge;276):65
+#5583 | auto Searing Gorge;77§auto Sengende Schlucht;77§auto Gorge des Vents brûlants;77 | x=-7198.2001953125 y=-1167.5 | size=1 | links=#5185(auto Searing Gorge;71):6 #6378(auto Searing Gorge;89):3
+#5626 | auto Searing Gorge;78§auto Sengende Schlucht;78§auto Gorge des Vents brûlants;78 | x=-6691.2001953125 y=-1624.800048828125 | size=1 | links=#7187(auto Searing Gorge;99):38 #24715(auto Searing Gorge;283):40
+#5641 | auto Searing Gorge;79§auto Sengende Schlucht;79§auto Gorge des Vents brûlants;79 | x=-6898.7001953125 y=-1373 | size=1 | links=#3285(auto Searing Gorge;49):39 #5647(auto Searing Gorge;80):33 #7065(auto Searing Gorge;96):33 #12632(auto Searing Gorge;162):20
+#5647 | auto Searing Gorge;80§auto Sengende Schlucht;80§auto Gorge des Vents brûlants;80 | x=-6874.60009765625 y=-1395.800048828125 | size=1 | links=#4586(auto Searing Gorge;60):24 #5641(auto Searing Gorge;79):33
+#5690 | auto Searing Gorge;81§auto Sengende Schlucht;81§auto Gorge des Vents brûlants;81 | x=-6708.39990234375 y=-758.4000244140625 | size=1 | links=#21582(auto Searing Gorge;250):24 c5862.9:31
+#5898 | auto Searing Gorge;82§auto Sengende Schlucht;82§auto Gorge des Vents brûlants;82 | x=-6939.60009765625 y=-1262.900024414063 | size=1 | links=#1170(auto Searing Gorge;23):5 #4526(auto Searing Gorge;59):12
+#5915 | passage;from;Stonewrought Pass;Searing Gorge;to;Stonewrought Pass;Loch Modan§passage;von;Steinwerkpass;Sengende Schlucht;nach;Steinwerkpass;Loch Modan§passage;de;Passage de Formepierre;Gorge des Vents brûlants;vers;Passage de Formepierre;Loch Modan | x=-6100.80029296875 y=-2405.300048828125 | size=1 | links=#6503(auto Searing Gorge;92):34 #9102(auto Searing Gorge;123):57
+#5978 | auto Searing Gorge;83§auto Sengende Schlucht;83§auto Gorge des Vents brûlants;83 | x=-6645.39990234375 y=-1307.099975585938 | size=1 | links=#20196(auto Searing Gorge;238):32 #25707(auto Searing Gorge;296):23
+#6020 | auto Searing Gorge;84§auto Sengende Schlucht;84§auto Gorge des Vents brûlants;84 | x=-6633.80029296875 y=-768.7999877929688 | size=1 | links=c5860.4:20 c5861.8:18
+#6077 | auto Searing Gorge;85§auto Sengende Schlucht;85§auto Gorge des Vents brûlants;85 | x=-7299.39990234375 y=-1064.5 | size=1 | links=#6192(auto Burning Steppes;79):74 #27739(auto Searing Gorge;317):30 #48684(auto Blackrock;Searing Gorge;332):24
+#6142 | auto Searing Gorge;86§auto Sengende Schlucht;86§auto Gorge des Vents brûlants;86 | x=-7192.39990234375 y=-1237.5 | size=1 | links=#790(auto Searing Gorge;17):10 #10096(auto Searing Gorge;134):32 c8439.1:22
+#6159 | auto Searing Gorge;87§auto Sengende Schlucht;87§auto Gorge des Vents brûlants;87 | x=-6539.89990234375 y=-1103.5 | size=1 | links=#17162(auto Searing Gorge;203):22 c3305.1:19
+#6310 | auto Searing Gorge;88§auto Sengende Schlucht;88§auto Gorge des Vents brûlants;88 | x=-6950 y=-1402.5 | size=1 | links=#7065(auto Searing Gorge;96):26
+#6378 | auto Searing Gorge;89§auto Sengende Schlucht;89§auto Gorge des Vents brûlants;89 | x=-7198.7001953125 y=-1163.700073242188 | size=1 | links=#5583(auto Searing Gorge;77):3 #10780(auto Searing Gorge;140):5
+#6384 | auto Searing Gorge;90§auto Sengende Schlucht;90§auto Gorge des Vents brûlants;90 | x=-6985.60009765625 y=-1655.099975585938 | size=1 | links=#2155(auto Searing Gorge;35):38 #7121(auto Searing Gorge;98):32 #26574(auto Searing Gorge;305):39 c5853.5:45
+#6413 | auto Searing Gorge;91§auto Sengende Schlucht;91§auto Gorge des Vents brûlants;91 | x=-6539.10009765625 y=-903.2000122070312 | size=1 | links=#402(auto Searing Gorge;12):22 #25273(auto Searing Gorge;290):50
+#6503 | auto Searing Gorge;92§auto Sengende Schlucht;92§auto Gorge des Vents brûlants;92 | x=-6079.30029296875 y=-2431.800048828125 | size=1 | links=#5915(passage;from;Stonewrought Pass;Searing Gorge;to;Stonewrought Pass;Loch Modan):34 #8892(auto Searing Gorge;119):16
+#6508 | auto Searing Gorge;93§auto Sengende Schlucht;93§auto Gorge des Vents brûlants;93 | x=-6237 y=-2230.60009765625 | size=1 | links=#13162(auto Searing Gorge;168):31 #13329(auto Searing Gorge;171):25
+#6741 | auto Searing Gorge;94§auto Sengende Schlucht;94§auto Gorge des Vents brûlants;94 | x=-6930.10009765625 y=-1958.200073242188 | size=1 | links=#8839(auto Searing Gorge;118):50 #13390(auto Searing Gorge;172):65
+#6796 | auto Searing Gorge;95§auto Sengende Schlucht;95§auto Gorge des Vents brûlants;95 | x=-6678.39990234375 y=-1723 | size=1 | links=#44(auto Searing Gorge;3):31 #13679(auto Searing Gorge;174):40
+#7065 | auto Searing Gorge;96§auto Sengende Schlucht;96§auto Gorge des Vents brûlants;96 | x=-6926 y=-1392.300048828125 | size=1 | links=#5641(auto Searing Gorge;79):33 #6310(auto Searing Gorge;88):26
+#7117 | auto Searing Gorge;97§auto Sengende Schlucht;97§auto Gorge des Vents brûlants;97 | x=-6843.60009765625 y=-1411 | size=1 | links=#4586(auto Searing Gorge;60):23 #24850(auto Searing Gorge;286):25
+#7121 | auto Searing Gorge;98§auto Sengende Schlucht;98§auto Gorge des Vents brûlants;98 | x=-6969.10009765625 y=-1682.900024414063 | size=1 | links=#6384(auto Searing Gorge;90):32 #9867(auto Searing Gorge;132):99 c5853.2:41 c8637.2:39 c8279.3:16
+#7187 | auto Searing Gorge;99§auto Sengende Schlucht;99§auto Gorge des Vents brûlants;99 | x=-6727.2001953125 y=-1612.200073242188 | size=1 | links=#381(auto Searing Gorge;10):136 #5626(auto Searing Gorge;78):38
+#7446 | auto Searing Gorge;100§auto Sengende Schlucht;100§auto Gorge des Vents brûlants;100 | x=-6922.89990234375 y=-1447.599975585938 | size=1 | links=#433(auto Searing Gorge;13):16 #14203(auto Searing Gorge;178):10
+#7594 | auto Searing Gorge;101§auto Sengende Schlucht;101§auto Gorge des Vents brûlants;101 | x=-7126.10009765625 y=-1094.300048828125 | size=1 | links=#2156(auto Searing Gorge;36):42 c9699.19:48
+#7677 | auto Searing Gorge;102§auto Sengende Schlucht;102§auto Gorge des Vents brûlants;102 | x=-6496.10009765625 y=-1136.200073242188 | size=1 | links=#17162(auto Searing Gorge;203):32 #24136(central location;Thorium Point;Searing Gorge):30 #26304(auto Searing Gorge;304):14
+#7726 | auto Searing Gorge;103§auto Sengende Schlucht;103§auto Gorge des Vents brûlants;103 | x=-6643.89990234375 y=-1472 | size=1 | links=#28235(auto Searing Gorge;326):23 c9318.1:13 c9318.2:45
+#7791 | auto Searing Gorge;104§auto Sengende Schlucht;104§auto Gorge des Vents brûlants;104 | x=-6266.80029296875 y=-2192.900146484375 | size=1 | links=#13329(auto Searing Gorge;171):22 #18146(auto Searing Gorge;213):17
+#7928 | auto Searing Gorge;105§auto Sengende Schlucht;105§auto Gorge des Vents brûlants;105 | x=-6659.60009765625 y=-1198.099975585938 | size=1 | links=#809(auto Searing Gorge;18):43 c5846.14:48
+#7977 | auto Searing Gorge;106§auto Sengende Schlucht;106§auto Gorge des Vents brûlants;106 | x=-6561.527453576308 y=-1324.400431396201 | size=1 | links=#18466(auto Searing Gorge;217):12 #27531(auto Searing Gorge;314):19 o179828.4:11 o179828.7:12
+#7993 | auto Searing Gorge;107§auto Sengende Schlucht;107§auto Gorge des Vents brûlants;107 | x=-7176.2001953125 y=-1094.400024414063 | size=1 | links=#24016(auto Searing Gorge;275):25 #25835(auto Searing Gorge;300):19
+#8079 | auto Searing Gorge;108§auto Sengende Schlucht;108§auto Gorge des Vents brûlants;108 | x=-6690.60009765625 y=-629.7000122070312 | size=1 | links=#20700(auto Searing Gorge;243):15 c5862.11:14
+#8118 | auto Searing Gorge;109§auto Sengende Schlucht;109§auto Gorge des Vents brûlants;109 | x=-6801.7001953125 y=-1420.099975585938 | size=1 | links=#1725(auto Searing Gorge;30):22 #9617(auto Searing Gorge;129):24
+#8307 | auto Searing Gorge;110§auto Sengende Schlucht;110§auto Gorge des Vents brûlants;110 | x=-6912.39990234375 y=-1260.200073242188 | size=1 | links=#9400(auto Searing Gorge;126):16 #25791(auto Searing Gorge;299):7 #26953(auto Searing Gorge;310):31 c5854.2:32
+#8319 | auto Searing Gorge;111§auto Sengende Schlucht;111§auto Gorge des Vents brûlants;111 | x=-6653.5 y=-1196.700073242188 | size=1 | links=#19485(auto Searing Gorge;226):48 #20343(auto Searing Gorge;240):39 c8509.1:26
+#8363 | auto Searing Gorge;112§auto Sengende Schlucht;112§auto Gorge des Vents brûlants;112 | x=-6686.89990234375 y=-1353.5 | size=1 | links=#18986(auto Searing Gorge;221):42 #25707(auto Searing Gorge;296):38
+#8465 | auto Searing Gorge;113§auto Sengende Schlucht;113§auto Gorge des Vents brûlants;113 | x=-7254.60009765625 y=-950.1000366210938 | size=1 | links=#26174(auto Searing Gorge;303):33
+#8567 | auto Searing Gorge;114§auto Sengende Schlucht;114§auto Gorge des Vents brûlants;114 | x=-7168.60009765625 y=-1866.800048828125 | size=1 | links=#4890(auto Searing Gorge;65):36 #12276(auto Searing Gorge;157):38
+#8581 | auto Searing Gorge;115§auto Sengende Schlucht;115§auto Gorge des Vents brûlants;115 | x=-6486.2001953125 y=-1195 | size=1 | links=#5119(auto Searing Gorge;70):28 #9119(auto Searing Gorge;124):10
+#8703 | auto Searing Gorge;116§auto Sengende Schlucht;116§auto Gorge des Vents brûlants;116 | x=-6839.7001953125 y=-1274.5 | size=1 | links=#5347(auto Searing Gorge;73):67 #10820(auto Searing Gorge;142):37 #23385(auto Searing Gorge;271):19 #28353(auto Searing Gorge;328):49
+#8796 | auto Searing Gorge;117§auto Sengende Schlucht;117§auto Gorge des Vents brûlants;117 | x=-6949 y=-1485.099975585938 | size=1 | links=#11562(auto Searing Gorge;151):14 #12772(auto Searing Gorge;163):17
+#8839 | auto Searing Gorge;118§auto Sengende Schlucht;118§auto Gorge des Vents brûlants;118 | x=-6937 y=-2008.5 | size=1 | links=#6741(auto Searing Gorge;94):50 #21291(Kotka;waypoint;Searing Gorge):29
+#8892 | auto Searing Gorge;119§auto Sengende Schlucht;119§auto Gorge des Vents brûlants;119 | x=-6068.60009765625 y=-2444.800048828125 | size=1 | links=#130(auto Searing Gorge;4):19 #6503(auto Searing Gorge;92):16
+#9050 | auto Searing Gorge;120§auto Sengende Schlucht;120§auto Gorge des Vents brûlants;120 | x=-7300.39990234375 y=-1662.099975585938 | size=1 | links=#17819(auto Searing Gorge;208):58 c5857.19:18
+#9076 | auto Searing Gorge;121§auto Sengende Schlucht;121§auto Gorge des Vents brûlants;121 | x=-6653.39990234375 y=-1858.5 | size=1 | links=#1839(crossing;one;Searing Gorge):52 #23832(auto Searing Gorge;274):44 c15692.5:27 c5856.7:28
+#9097 | auto Searing Gorge;122§auto Sengende Schlucht;122§auto Gorge des Vents brûlants;122 | x=-6608.061153101184 y=-939.1642413104804 | size=1 | links=#3833(auto Searing Gorge;53):39 #17550(auto Searing Gorge;206):45 c5861.18:53
+#9102 | auto Searing Gorge;123§auto Sengende Schlucht;123§auto Gorge des Vents brûlants;123 | x=-6135.7001953125 y=-2359.400146484375 | size=1 | links=#5915(passage;from;Stonewrought Pass;Searing Gorge;to;Stonewrought Pass;Loch Modan):57 #18039(auto Searing Gorge;212):49
+#9119 | auto Searing Gorge;124§auto Sengende Schlucht;124§auto Gorge des Vents brûlants;124 | x=-6495.30029296875 y=-1200.700073242188 | size=1 | links=#588(auto Searing Gorge;15):22 #8581(auto Searing Gorge;115):10
+#9262 | auto Searing Gorge;125§auto Sengende Schlucht;125§auto Gorge des Vents brûlants;125 | x=-6928.60009765625 y=-1127.400024414063 | size=1 | links=#9587(auto Searing Gorge;128):18 #15415(auto Searing Gorge;188):15
+#9400 | auto Searing Gorge;126§auto Sengende Schlucht;126§auto Gorge des Vents brûlants;126 | x=-6904.30029296875 y=-1246.200073242188 | size=1 | links=#8307(auto Searing Gorge;110):16 #27854(auto Searing Gorge;319):17
+#9484 | auto Searing Gorge;127§auto Sengende Schlucht;127§auto Gorge des Vents brûlants;127 | x=-7100.89990234375 y=-1496.099975585938 | size=1 | links=#12263(auto Searing Gorge;156):46 #28085(auto Searing Gorge;322):28 c8277.3:54
+#9587 | auto Searing Gorge;128§auto Sengende Schlucht;128§auto Gorge des Vents brûlants;128 | x=-6915 y=-1139.300048828125 | size=1 | links=#9262(auto Searing Gorge;125):18 #19546(auto Searing Gorge;227):17
+#9617 | auto Searing Gorge;129§auto Sengende Schlucht;129§auto Gorge des Vents brûlants;129 | x=-6780.39990234375 y=-1433 | size=1 | links=#8118(auto Searing Gorge;109):24 #15685(auto Searing Gorge;192):41
+#9756 | auto Searing Gorge;130§auto Sengende Schlucht;130§auto Gorge des Vents brûlants;130 | x=-6769.80029296875 y=-1192.099975585938 | size=1 | links=#21580(auto Searing Gorge;249):70 c5855.8:54 c5854.13:46
+#9858 | auto Searing Gorge;131§auto Sengende Schlucht;131§auto Gorge des Vents brûlants;131 | x=-6689 y=-1063.200073242188 | size=1 | links=c5858.2:51 c5858.4:20 c5854.17:49
+#9867 | auto Searing Gorge;132§auto Sengende Schlucht;132§auto Gorge des Vents brûlants;132 | x=-6923.60009765625 y=-1771 | size=1 | links=#7121(auto Searing Gorge;98):99 c5856.3:49 c5856.12:51
+#10038 | auto Searing Gorge;133§auto Sengende Schlucht;133§auto Gorge des Vents brûlants;133 | x=-6732.39990234375 y=-1372.900024414063 | size=1 | links=#4683(auto Searing Gorge;62):68 #10942(auto Searing Gorge;143):26
+#10096 | auto Searing Gorge;134§auto Sengende Schlucht;134§auto Gorge des Vents brûlants;134 | x=-7193.89990234375 y=-1269.599975585938 | size=1 | links=#1967(auto Searing Gorge;31):26 #6142(auto Searing Gorge;86):32
+#10148 | auto Searing Gorge;135§auto Sengende Schlucht;135§auto Gorge des Vents brûlants;135 | x=-6599.5 y=-1706.5 | size=1 | links=#2335(auto Searing Gorge;42):15 #10529(auto Searing Gorge;136):20
+#10529 | auto Searing Gorge;136§auto Sengende Schlucht;136§auto Gorge des Vents brûlants;136 | x=-6597.5 y=-1727.200073242188 | size=1 | links=#10148(auto Searing Gorge;135):20 #15994(auto Searing Gorge;194):33 #18966(auto Searing Gorge;220):32
+#10547 | auto Searing Gorge;137§auto Sengende Schlucht;137§auto Gorge des Vents brûlants;137 | x=-7032 y=-1037.800048828125 | size=1 | links=#2156(auto Searing Gorge;36):68 c5858.11:27
+#10679 | auto Searing Gorge;138§auto Sengende Schlucht;138§auto Gorge des Vents brûlants;138 | x=-7013.89990234375 y=-1221.800048828125 | size=1 | links=#2401(auto Searing Gorge;44):32 #20124(auto Searing Gorge;235):38
+#10721 | auto Searing Gorge;139§auto Sengende Schlucht;139§auto Gorge des Vents brûlants;139 | x=-6489.5 y=-1322.5 | size=1 | links=#1045(auto Searing Gorge;22):21 #11212(auto Searing Gorge;147):20
+#10780 | auto Searing Gorge;140§auto Sengende Schlucht;140§auto Gorge des Vents brûlants;140 | x=-7199 y=-1158.200073242188 | size=1 | links=#6378(auto Searing Gorge;89):5 #27758(auto Searing Gorge;318):4
+#10818 | auto Searing Gorge;141§auto Sengende Schlucht;141§auto Gorge des Vents brûlants;141 | x=-6659.621632755126 y=-1439.643457305058 | size=1 | links=#4592(auto Searing Gorge;61):34 #13812(auto Searing Gorge;175):33 c5854.5:24
+#10820 | auto Searing Gorge;142§auto Sengende Schlucht;142§auto Gorge des Vents brûlants;142 | x=-6861.30029296875 y=-1305.400024414063 | size=1 | links=#8703(auto Searing Gorge;116):37 c5846.3:20
+#10942 | auto Searing Gorge;143§auto Sengende Schlucht;143§auto Gorge des Vents brûlants;143 | x=-6718.5 y=-1395.800048828125 | size=1 | links=#10038(auto Searing Gorge;133):26 #22854(auto Searing Gorge;265):14
+#11037 | auto Searing Gorge;144§auto Sengende Schlucht;144§auto Gorge des Vents brûlants;144 | x=-7014 y=-1282.599975585938 | size=1 | links=#13307(auto Searing Gorge;170):9 #23070(auto Searing Gorge;268):19
+#11169 | auto Searing Gorge;145§auto Sengende Schlucht;145§auto Gorge des Vents brûlants;145 | x=-6321.5 y=-2123.5 | size=1 | links=#12544(auto Searing Gorge;160):34 #24492(auto Searing Gorge;278):34
+#11206 | auto Searing Gorge;146§auto Sengende Schlucht;146§auto Gorge des Vents brûlants;146 | x=-6526.5 y=-1073.599975585938 | size=1 | links=#4058(auto Searing Gorge;56):27 #12033(auto Searing Gorge;155):28
+#11212 | auto Searing Gorge;147§auto Sengende Schlucht;147§auto Gorge des Vents brûlants;147 | x=-6485.10009765625 y=-1342.200073242188 | size=1 | links=#10721(auto Searing Gorge;139):20 #27535(auto Searing Gorge;315):6
+#11233 | auto Searing Gorge;148§auto Sengende Schlucht;148§auto Gorge des Vents brûlants;148 | x=-6458.10009765625 y=-1113.599975585938 | size=1 | links=#18668(auto Searing Gorge;219):14 #19568(auto Searing Gorge;229):16
+#11370 | auto Searing Gorge;149§auto Sengende Schlucht;149§auto Gorge des Vents brûlants;149 | x=-6451.60009765625 y=-1309.200073242188 | size=1 | links=#2142(auto Searing Gorge;34):41 c5844.6:20
+#11380 | auto Searing Gorge;150§auto Sengende Schlucht;150§auto Gorge des Vents brûlants;150 | x=-7196.60009765625 y=-1967.700073242188 | size=1 | links=#22983(auto Searing Gorge;267):46 #27213(auto Searing Gorge;312):32
+#11562 | auto Searing Gorge;151§auto Sengende Schlucht;151§auto Gorge des Vents brûlants;151 | x=-6937.39990234375 y=-1477.099975585938 | size=1 | links=#286(auto Searing Gorge;7):16 #8796(auto Searing Gorge;117):14
+#11729 | auto Searing Gorge;152§auto Sengende Schlucht;152§auto Gorge des Vents brûlants;152 | x=-7000.87625024358 y=-1093.005296412466 | size=1 | links=#388(auto Searing Gorge;11):32 #23192(auto Searing Gorge;269):27 #28280(auto Searing Gorge;327):26 c5854.7:25 c9699.9:49
+#11797 | auto Searing Gorge;153§auto Sengende Schlucht;153§auto Gorge des Vents brûlants;153 | x=-6480.80029296875 y=-1101.900024414063 | size=1 | links=#4058(auto Searing Gorge;56):30 #18668(auto Searing Gorge;219):14 #26304(auto Searing Gorge;304):24
+#11937 | auto Searing Gorge;154§auto Sengende Schlucht;154§auto Gorge des Vents brûlants;154 | x=-6828.89990234375 y=-1050.700073242188 | size=1 | links=c5852.1:85 c8566.2:49
+#12033 | auto Searing Gorge;155§auto Sengende Schlucht;155§auto Gorge des Vents brûlants;155 | x=-6553.30029296875 y=-1064 | size=1 | links=#11206(auto Searing Gorge;146):28 #12606(auto Searing Gorge;161):27
+#12263 | auto Searing Gorge;156§auto Sengende Schlucht;156§auto Gorge des Vents brûlants;156 | x=-7056.2001953125 y=-1507.300048828125 | size=1 | links=#9484(auto Searing Gorge;127):46 #18460(auto Searing Gorge;216):35 c9700.11:29
+#12276 | auto Searing Gorge;157§auto Sengende Schlucht;157§auto Gorge des Vents brûlants;157 | x=-7149.80029296875 y=-1833.5 | size=1 | links=#8567(auto Searing Gorge;114):38 #24426(auto Searing Gorge;277):19
+#12370 | auto Searing Gorge;158§auto Sengende Schlucht;158§auto Gorge des Vents brûlants;158 | x=-7047.39990234375 y=-968.1000366210938 | size=1 | links=#2821(auto Searing Gorge;45):38 c5858.9:21
+#12502 | auto Searing Gorge;159§auto Sengende Schlucht;159§auto Gorge des Vents brûlants;159 | x=-6623.89990234375 y=-1915.599975585938 | size=1 | links=#1641(auto Searing Gorge;29):62 #1839(crossing;one;Searing Gorge):64 #15060(auto Searing Gorge;184):32
+#12544 | auto Searing Gorge;160§auto Sengende Schlucht;160§auto Gorge des Vents brûlants;160 | x=-6342.80029296875 y=-2096.400146484375 | size=1 | links=#4152(door/gate;Dustfire Valley;Searing Gorge):26 #11169(auto Searing Gorge;145):34
+#12606 | auto Searing Gorge;161§auto Sengende Schlucht;161§auto Gorge des Vents brûlants;161 | x=-6578.10009765625 y=-1052.800048828125 | size=1 | links=#12033(auto Searing Gorge;155):27 #16724(auto Searing Gorge;200):19
+#12632 | auto Searing Gorge;162§auto Sengende Schlucht;162§auto Gorge des Vents brûlants;162 | x=-6919.30029296875 y=-1370.400024414063 | size=1 | links=#5641(auto Searing Gorge;79):20 c5854.19:24
+#12772 | auto Searing Gorge;163§auto Sengende Schlucht;163§auto Gorge des Vents brûlants;163 | x=-6963 y=-1495.300048828125 | size=1 | links=#8796(auto Searing Gorge;117):17 c8566.12:15
+#12902 | auto Searing Gorge;164§auto Sengende Schlucht;164§auto Gorge des Vents brûlants;164 | x=-6560.10009765625 y=-1474 | size=1 | links=c9318.2:40 c9318.4:27
+#13068 | auto Searing Gorge;165§auto Sengende Schlucht;165§auto Gorge des Vents brûlants;165 | x=-6688.5 y=-649.2999877929688 | size=1 | links=#264(auto Searing Gorge;6):16 c5861.14:13
+#13117 | auto Searing Gorge;166§auto Sengende Schlucht;166§auto Gorge des Vents brûlants;166 | x=-6648 y=-1112.400024414063 | size=1 | links=#558(auto Searing Gorge;14):40 #18334(auto Searing Gorge;214):17 c5854.17:60
+#13135 | auto Searing Gorge;167§auto Sengende Schlucht;167§auto Gorge des Vents brûlants;167 | x=-6843.80029296875 y=-1175.400024414063 | size=1 | links=#20918(auto Searing Gorge;245):46 c5844.14:12
+#13162 | auto Searing Gorge;168§auto Sengende Schlucht;168§auto Gorge des Vents brûlants;168 | x=-6217.2001953125 y=-2255.699951171875 | size=1 | links=#6508(auto Searing Gorge;93):31 #20991(auto Searing Gorge;246):34
+#13178 | auto Searing Gorge;169§auto Sengende Schlucht;169§auto Gorge des Vents brûlants;169 | x=-6965 y=-1204 | size=1 | links=#14886(auto Searing Gorge;183):16 c5852.6:7
+#13307 | auto Searing Gorge;170§auto Sengende Schlucht;170§auto Gorge des Vents brûlants;170 | x=-7023.5 y=-1283.800048828125 | size=1 | links=#11037(auto Searing Gorge;144):9 #15198(auto Searing Gorge;186):25
+#13329 | auto Searing Gorge;171§auto Sengende Schlucht;171§auto Gorge des Vents brûlants;171 | x=-6252.60009765625 y=-2210.800048828125 | size=1 | links=#6508(auto Searing Gorge;93):25 #7791(auto Searing Gorge;104):22
+#13390 | auto Searing Gorge;172§auto Sengende Schlucht;172§auto Gorge des Vents brûlants;172 | x=-6913.80029296875 y=-1895.099975585938 | size=1 | links=#6741(auto Searing Gorge;94):65 #26751(auto Searing Gorge;308):37
+#13447 | auto Searing Gorge;173§auto Sengende Schlucht;173§auto Gorge des Vents brûlants;173 | x=-7202.7001953125 y=-1111.200073242188 | size=1 | links=#25835(auto Searing Gorge;300):25 c5855.21:16
+#13458 | door/gate;Stonewrought Pass;Searing Gorge§tür/tor;Steinwerkpass;Sengende Schlucht§door/gate;Passage de Formepierre;Gorge des Vents brûlants | x=-6032.80029296875 y=-2491.199951171875 | size=1 | links=c3836.1:4 #22272(auto Searing Gorge;259):13
+#13679 | auto Searing Gorge;174§auto Sengende Schlucht;174§auto Gorge des Vents brûlants;174 | x=-6665.30029296875 y=-1760.800048828125 | size=1 | links=#6796(auto Searing Gorge;95):40 #22413(auto Searing Gorge;260):25
+#13812 | auto Searing Gorge;175§auto Sengende Schlucht;175§auto Gorge des Vents brûlants;175 | x=-6661.180185848337 y=-1473.585431392014 | size=1 | links=#10818(auto Searing Gorge;141):33 #19751(auto Searing Gorge;232):35
+#14047 | auto Searing Gorge;176§auto Sengende Schlucht;176§auto Gorge des Vents brûlants;176 | x=-6590.30029296875 y=-864.4000244140625 | size=1 | links=#25273(auto Searing Gorge;290):14 c5860.5:18
+#14098 | auto Searing Gorge;177§auto Sengende Schlucht;177§auto Gorge des Vents brûlants;177 | x=-7103 y=-1694.400024414063 | size=1 | links=#2155(auto Searing Gorge;35):85 #2190(auto Searing Gorge;38):60 c5856.20:27
+#14203 | auto Searing Gorge;178§auto Sengende Schlucht;178§auto Gorge des Vents brûlants;178 | x=-6923.39990234375 y=-1457.700073242188 | size=1 | links=#286(auto Searing Gorge;7):9 #7446(auto Searing Gorge;100):10
+#14342 | auto Searing Gorge;179§auto Sengende Schlucht;179§auto Gorge des Vents brûlants;179 | x=-6993.5 y=-1556.099975585938 | size=1 | links=#926(auto Searing Gorge;20):27 #3592(auto Searing Gorge;50):39 #18460(auto Searing Gorge;216):46 #26574(auto Searing Gorge;305):60
+#14466 | auto Searing Gorge;180§auto Sengende Schlucht;180§auto Gorge des Vents brûlants;180 | x=-7298.10009765625 y=-1951.700073242188 | size=1 | links=#19319(auto Searing Gorge;224):10 c5833.1:28
+#14550 | auto Searing Gorge;181§auto Sengende Schlucht;181§auto Gorge des Vents brûlants;181 | x=-6906.30029296875 y=-1091.200073242188 | size=1 | links=#21672(auto Searing Gorge;252):23 #27234(auto Searing Gorge;313):10
+#14647 | auto Searing Gorge;182§auto Sengende Schlucht;182§auto Gorge des Vents brûlants;182 | x=-6533.60009765625 y=-1170.599975585938 | size=1 | links=#24136(central location;Thorium Point;Searing Gorge):26 c2941.1:25
+#14886 | auto Searing Gorge;183§auto Sengende Schlucht;183§auto Gorge des Vents brûlants;183 | x=-6949.10009765625 y=-1200.099975585938 | size=1 | links=#13178(auto Searing Gorge;169):16 c5852.2:17
+#15060 | auto Searing Gorge;184§auto Sengende Schlucht;184§auto Gorge des Vents brûlants;184 | x=-6616.89990234375 y=-1884.300048828125 | size=1 | links=#12502(auto Searing Gorge;159):32 c15692.5:17 c15692.6:13 c15692.8:27
+#15198 | auto Searing Gorge;186§auto Sengende Schlucht;186§auto Gorge des Vents brûlants;186 | x=-7019.60009765625 y=-1309.5 | size=1 | links=#13307(auto Searing Gorge;170):25 #22644(auto Searing Gorge;263):44
+#15408 | auto Searing Gorge;187§auto Sengende Schlucht;187§auto Gorge des Vents brûlants;187 | x=-6607.39990234375 y=-1483.200073242188 | size=1 | links=#3150(auto Searing Gorge;48):38 c5857.3:31
+#15415 | auto Searing Gorge;188§auto Sengende Schlucht;188§auto Gorge des Vents brûlants;188 | x=-6937.39990234375 y=-1114.5 | size=1 | links=#9262(auto Searing Gorge;125):15 #23612(auto Searing Gorge;272):10
+#15455 | auto Searing Gorge;189§auto Sengende Schlucht;189§auto Gorge des Vents brûlants;189 | x=-6910.5 y=-1072.599975585938 | size=1 | links=#27234(auto Searing Gorge;313):17 o149032.1:6
+#15605 | auto Searing Gorge;190§auto Sengende Schlucht;190§auto Gorge des Vents brûlants;190 | x=-6763.30029296875 y=-683.2999877929688 | size=1 | links=c5862.8:19 c5861.12:14
+#15622 | auto Searing Gorge;191§auto Sengende Schlucht;191§auto Gorge des Vents brûlants;191 | x=-6937.2001953125 y=-1252.800048828125 | size=1 | links=#27735(auto Searing Gorge;316):71 c5855.6:20
+#15685 | auto Searing Gorge;192§auto Sengende Schlucht;192§auto Gorge des Vents brûlants;192 | x=-6750.30029296875 y=-1405.099975585938 | size=1 | links=#9617(auto Searing Gorge;129):41 #18986(auto Searing Gorge;221):39
+#15823 | auto Searing Gorge;193§auto Sengende Schlucht;193§auto Gorge des Vents brûlants;193 | x=-6644.10009765625 y=-741.4000244140625 | size=1 | links=c5860.4:14 c5861.9:6 c5861.11:12
+#15994 | auto Searing Gorge;194§auto Sengende Schlucht;194§auto Gorge des Vents brûlants;194 | x=-6614.39990234375 y=-1698.700073242188 | size=1 | links=#10529(auto Searing Gorge;136):33 #21795(auto Searing Gorge;254):43
+#16049 | auto Searing Gorge;195§auto Sengende Schlucht;195§auto Gorge des Vents brûlants;195 | x=-6782.5 y=-1867.599975585938 | size=1 | links=#1839(crossing;one;Searing Gorge):100 #18990(auto Searing Gorge;222):63 c5856.11:21
+#16186 | auto Searing Gorge;196§auto Sengende Schlucht;196§auto Gorge des Vents brûlants;196 | x=-7140.60009765625 y=-1336 | size=1 | links=#25654(auto Searing Gorge;293):36 #28142(auto Searing Gorge;324):41 c5858.24:43
+#16399 | auto Searing Gorge;197§auto Sengende Schlucht;197§auto Gorge des Vents brûlants;197 | x=-6617.7001953125 y=-1090.5 | size=1 | links=#18334(auto Searing Gorge;214):33 #21687(auto Searing Gorge;253):36
+#16572 | auto Searing Gorge;198§auto Sengende Schlucht;198§auto Gorge des Vents brûlants;198 | x=-6886.2001953125 y=-1068.700073242188 | size=1 | links=#21672(auto Searing Gorge;252):11 c8566.2:15
+#16685 | auto Searing Gorge;199§auto Sengende Schlucht;199§auto Gorge des Vents brûlants;199 | x=-6628.39990234375 y=-1519.599975585938 | size=1 | links=#3150(auto Searing Gorge;48):26 #3916(auto Searing Gorge;54):33
+#16724 | auto Searing Gorge;200§auto Sengende Schlucht;200§auto Gorge des Vents brûlants;200 | x=-6588.5 y=-1036.5 | size=1 | links=#12606(auto Searing Gorge;161):19 #19888(crossing;two;Firewatch Ridge;Searing Gorge):22
+#16786 | auto Searing Gorge;201§auto Sengende Schlucht;201§auto Gorge des Vents brûlants;201 | x=-6649.10009765625 y=-1248.200073242188 | size=1 | links=#313(auto Searing Gorge;8):21 #20343(auto Searing Gorge;240):20
+#16877 | auto Searing Gorge;202§auto Sengende Schlucht;202§auto Gorge des Vents brûlants;202 | x=-6577.793694522412 y=-1293.462697859687 | size=1 | links=#2211(auto Searing Gorge;39):22 #18466(auto Searing Gorge;217):22 #20196(auto Searing Gorge;238):49
+#17162 | auto Searing Gorge;203§auto Sengende Schlucht;203§auto Gorge des Vents brûlants;203 | x=-6521.80029296875 y=-1116.599975585938 | size=1 | links=#6159(auto Searing Gorge;87):22 #7677(auto Searing Gorge;102):32
+#17204 | auto Searing Gorge;204§auto Sengende Schlucht;204§auto Gorge des Vents brûlants;204 | x=-6909.458675122627 y=-1551.600212057186 | size=1 | links=#3592(auto Searing Gorge;50):50 c6491.2:47
+#17370 | auto Searing Gorge;205§auto Sengende Schlucht;205§auto Gorge des Vents brûlants;205 | x=-6931.89990234375 y=-1418.900024414063 | size=1 | links=#433(auto Searing Gorge;13):14 #25377(auto Searing Gorge;291):10
+#17550 | auto Searing Gorge;206§auto Sengende Schlucht;206§auto Gorge des Vents brûlants;206 | x=-6596.301672245518 y=-982.743467253417 | size=1 | links=#9097(auto Searing Gorge;122):45 #19888(crossing;two;Firewatch Ridge;Searing Gorge):34
+#17753 | auto Searing Gorge;207§auto Sengende Schlucht;207§auto Gorge des Vents brûlants;207 | x=-6594.2001953125 y=-1556.099975585938 | size=1 | links=#3150(auto Searing Gorge;48):35 c5857.5:14
+#17819 | auto Searing Gorge;208§auto Sengende Schlucht;208§auto Gorge des Vents brûlants;208 | x=-7242.60009765625 y=-1653.700073242188 | size=1 | links=#1596(auto Searing Gorge;26):27 #9050(auto Searing Gorge;120):58
+#17844 | auto Searing Gorge;209§auto Sengende Schlucht;209§auto Gorge des Vents brûlants;209 | x=-7214.30029296875 y=-995.4000244140625 | size=1 | links=c5852.5:29 c9699.6:33 c5855.10:22
+#17902 | auto Searing Gorge;210§auto Sengende Schlucht;210§auto Gorge des Vents brûlants;210 | x=-6626.60009765625 y=-1630.400024414063 | size=1 | links=#21795(auto Searing Gorge;254):27 #27894(auto Searing Gorge;320):34
+#17903 | auto Searing Gorge;211§auto Sengende Schlucht;211§auto Gorge des Vents brûlants;211 | x=-6640.39990234375 y=-1327 | size=1 | links=#2038(auto Searing Gorge;32):47 #4904(auto Searing Gorge;66):20 c5854.22:35
+#18039 | auto Searing Gorge;212§auto Sengende Schlucht;212§auto Gorge des Vents brûlants;212 | x=-6166.30029296875 y=-2320.800048828125 | size=1 | links=#9102(auto Searing Gorge;123):49 #20294(auto Searing Gorge;239):28
+#18146 | auto Searing Gorge;213§auto Sengende Schlucht;213§auto Gorge des Vents brûlants;213 | x=-6277.7001953125 y=-2179 | size=1 | links=#3118(auto Searing Gorge;47):16 #7791(auto Searing Gorge;104):17
+#18334 | auto Searing Gorge;214§auto Sengende Schlucht;214§auto Gorge des Vents brûlants;214 | x=-6632.30029296875 y=-1120.700073242188 | size=1 | links=#13117(auto Searing Gorge;166):17 #16399(auto Searing Gorge;197):33 #19485(auto Searing Gorge;226):32
+#18387 | auto Searing Gorge;215§auto Sengende Schlucht;215§auto Gorge des Vents brûlants;215 | x=-6494.89990234375 y=-1256.599975585938 | size=1 | links=#21070(auto Searing Gorge;247):37 c8400.1:33 c8417.1:21 o148498.1:21 c5844.6:50
+#18460 | auto Searing Gorge;216§auto Sengende Schlucht;216§auto Gorge des Vents brûlants;216 | x=-7035.2001953125 y=-1535.599975585938 | size=1 | links=#12263(auto Searing Gorge;156):35 #14342(auto Searing Gorge;179):46
+#18466 | auto Searing Gorge;217§auto Sengende Schlucht;217§auto Gorge des Vents brûlants;217 | x=-6566.949544042308 y=-1312.91839636474 | size=1 | links=#7977(auto Searing Gorge;106):12 #16877(auto Searing Gorge;202):22 o179496.1:12 o179828.5:11 o179828.9:12
+#18632 | auto Searing Gorge;218§auto Sengende Schlucht;218§auto Gorge des Vents brûlants;218 | x=-7114.2001953125 y=-1436.700073242188 | size=1 | links=#24604(auto Searing Gorge;282):39 #28085(auto Searing Gorge;322):32
+#18668 | auto Searing Gorge;219§auto Sengende Schlucht;219§auto Gorge des Vents brûlants;219 | x=-6472.39990234375 y=-1113.099975585938 | size=1 | links=#11233(auto Searing Gorge;148):14 #11797(auto Searing Gorge;153):14 #26304(auto Searing Gorge;304):18
+#18966 | auto Searing Gorge;220§auto Sengende Schlucht;220§auto Gorge des Vents brûlants;220 | x=-6603.7001953125 y=-1758.599975585938 | size=1 | links=#10529(auto Searing Gorge;136):32 c5856.9:38
+#18986 | auto Searing Gorge;221§auto Sengende Schlucht;221§auto Gorge des Vents brûlants;221 | x=-6722.2001953125 y=-1377.5 | size=1 | links=#8363(auto Searing Gorge;112):42 #15685(auto Searing Gorge;192):39
+#18990 | auto Searing Gorge;222§auto Sengende Schlucht;222§auto Gorge des Vents brûlants;222 | x=-6841.30029296875 y=-1842.700073242188 | size=1 | links=#16049(auto Searing Gorge;195):63 c5856.12:57 c5856.13:30
+#19146 | auto Searing Gorge;223§auto Sengende Schlucht;223§auto Gorge des Vents brûlants;223 | x=-6996.5 y=-1145.300048828125 | size=1 | links=#388(auto Searing Gorge;11):22 #5491(auto Searing Gorge;75):9
+#19319 | auto Searing Gorge;224§auto Sengende Schlucht;224§auto Gorge des Vents brûlants;224 | x=-7287.30029296875 y=-1951.200073242188 | size=1 | links=#14466(auto Searing Gorge;180):10 #23789(auto Searing Gorge;273):9
+#19326 | auto Searing Gorge;225§auto Sengende Schlucht;225§auto Gorge des Vents brûlants;225 | x=-6671 y=-1446.700073242188 | size=1 | links=#22854(auto Searing Gorge;265):56 #28235(auto Searing Gorge;326):14 c9318.3:11
+#19485 | auto Searing Gorge;226§auto Sengende Schlucht;226§auto Gorge des Vents brûlants;226 | x=-6649.39990234375 y=-1148 | size=1 | links=#8319(auto Searing Gorge;111):48 #18334(auto Searing Gorge;214):32
+#19546 | auto Searing Gorge;227§auto Sengende Schlucht;227§auto Gorge des Vents brûlants;227 | x=-6920.10009765625 y=-1155.599975585938 | size=1 | links=#1317(auto Searing Gorge;24):14 #9587(auto Searing Gorge;128):17
+#19564 | auto Searing Gorge;228§auto Sengende Schlucht;228§auto Gorge des Vents brûlants;228 | x=-7196.5 y=-1180.200073242188 | size=1 | links=#3596(auto Searing Gorge;51):8 #5185(auto Searing Gorge;71):6
+#19568 | auto Searing Gorge;229§auto Sengende Schlucht;229§auto Gorge des Vents brûlants;229 | x=-6442.89990234375 y=-1118.700073242188 | size=1 | links=#11233(auto Searing Gorge;148):16 c6491.1:5
+#19658 | auto Searing Gorge;230§auto Sengende Schlucht;230§auto Gorge des Vents brûlants;230 | x=-6904.89990234375 y=-1207.599975585938 | size=1 | links=#20016(auto Searing Gorge;234):9 #26590(auto Searing Gorge;306):9
+#19685 | auto Searing Gorge;231§auto Sengende Schlucht;231§auto Gorge des Vents brûlants;231 | x=-6562.60009765625 y=-1677 | size=1 | links=#2335(auto Searing Gorge;42):34 #20802(auto Searing Gorge;244):46
+#19751 | auto Searing Gorge;232§auto Sengende Schlucht;232§auto Gorge des Vents brûlants;232 | x=-6655.89990234375 y=-1509.099975585938 | size=1 | links=#3916(auto Searing Gorge;54):37 #13812(auto Searing Gorge;175):35
+#19834 | auto Searing Gorge;233§auto Sengende Schlucht;233§auto Gorge des Vents brûlants;233 | x=-6537.60009765625 y=-1271.900024414063 | size=1 | links=#2211(auto Searing Gorge;39):31 #4971(auto Searing Gorge;67):28
+#19888 | crossing;two;Firewatch Ridge;Searing Gorge§kreuzung;zwei;Feuerwachtgrat;Sengende Schlucht§traversée;deux;Crête de Guet-du-feu;Gorge des Vents brûlants | x=-6599.5 y=-1016.900024414063 | size=1 | links=#16724(auto Searing Gorge;200):22 #17550(auto Searing Gorge;206):34 #24575(auto Searing Gorge;280):19
+#20016 | auto Searing Gorge;234§auto Sengende Schlucht;234§auto Gorge des Vents brûlants;234 | x=-6907.767988071327 y=-1216.794273911154 | size=1 | links=#1602(auto Searing Gorge;27):8 #19658(auto Searing Gorge;230):9
+#20124 | auto Searing Gorge;235§auto Sengende Schlucht;235§auto Gorge des Vents brûlants;235 | x=-6983.30029296875 y=-1245.200073242188 | size=1 | links=#4086(auto Searing Gorge;57):31 #10679(auto Searing Gorge;138):38
+#20167 | auto Searing Gorge;236§auto Sengende Schlucht;236§auto Gorge des Vents brûlants;236 | x=-6899.2001953125 y=-1185.599975585938 | size=1 | links=#22947(auto Searing Gorge;266):27 #26590(auto Searing Gorge;306):13
+#20185 | auto Searing Gorge;237§auto Sengende Schlucht;237§auto Gorge des Vents brûlants;237 | x=-7000.386470088442 y=-1709.441241889618 | size=1 | links=c5853.2:14 c8637.3:18
+#20196 | auto Searing Gorge;238§auto Sengende Schlucht;238§auto Gorge des Vents brûlants;238 | x=-6625.89990234375 y=-1281.400024414063 | size=1 | links=#5978(auto Searing Gorge;83):32 #16877(auto Searing Gorge;202):49 c14621.1:49
+#20294 | auto Searing Gorge;239§auto Sengende Schlucht;239§auto Gorge des Vents brûlants;239 | x=-6183.39990234375 y=-2298 | size=1 | links=#18039(auto Searing Gorge;212):28 #20991(auto Searing Gorge;246):19
+#20343 | auto Searing Gorge;240§auto Sengende Schlucht;240§auto Gorge des Vents brûlants;240 | x=-6664.60009765625 y=-1234.599975585938 | size=1 | links=#8319(auto Searing Gorge;111):39 #16786(auto Searing Gorge;201):20
+#20452 | auto Searing Gorge;241§auto Sengende Schlucht;241§auto Gorge des Vents brûlants;241 | x=-6512 y=-872.4000244140625 | size=1 | links=#402(auto Searing Gorge;12):21 c5862.5:24
+#20692 | auto Searing Gorge;242§auto Sengende Schlucht;242§auto Gorge des Vents brûlants;242 | x=-7064.10009765625 y=-1794.900024414063 | size=1 | links=#26868(auto Searing Gorge;309):29 o173265.1:40
+#20700 | auto Searing Gorge;243§auto Sengende Schlucht;243§auto Gorge des Vents brûlants;243 | x=-6674.89990234375 y=-628.4000244140625 | size=1 | links=#8079(auto Searing Gorge;108):15 c8837.6:16
+#20802 | auto Searing Gorge;244§auto Sengende Schlucht;244§auto Gorge des Vents brûlants;244 | x=-6530 y=-1644.5 | size=1 | links=#19685(auto Searing Gorge;231):46 #28180(auto Searing Gorge;325):63 c8277.2:13
+#20918 | auto Searing Gorge;245§auto Sengende Schlucht;245§auto Gorge des Vents brûlants;245 | x=-6798 y=-1170.099975585938 | size=1 | links=#13135(auto Searing Gorge;167):46 #22076(auto Searing Gorge;256):33
+#20991 | auto Searing Gorge;246§auto Sengende Schlucht;246§auto Gorge des Vents brûlants;246 | x=-6195.2001953125 y=-2282.60009765625 | size=1 | links=#13162(auto Searing Gorge;168):34 #20294(auto Searing Gorge;239):19
+#21070 | auto Searing Gorge;247§auto Sengende Schlucht;247§auto Gorge des Vents brûlants;247 | x=-6532.2001953125 y=-1253.700073242188 | size=1 | links=#18387(auto Searing Gorge;215):37 c5844.20:55
+#21291 | Kotka;waypoint;Searing Gorge§Kotka;wegpunkt;Sengende Schlucht§Kotka;waypoint;Gorge des Vents brûlants | x=-6941.2001953125 y=-2037.599975585938 | size=1 | links=#8839(auto Searing Gorge;118):29 #25836(passage;from;Searing Gorge;to;Badlands):28
+#21492 | auto Searing Gorge;248§auto Sengende Schlucht;248§auto Gorge des Vents brûlants;248 | x=-7065.5 y=-1035.800048828125 | size=1 | links=c5858.11:55 c5858.18:47 c9699.32:36
+#21580 | auto Searing Gorge;249§auto Sengende Schlucht;249§auto Gorge des Vents brûlants;249 | x=-6718.60009765625 y=-1143.900024414063 | size=1 | links=#558(auto Searing Gorge;14):37 #9756(auto Searing Gorge;130):70
+#21582 | auto Searing Gorge;250§auto Sengende Schlucht;250§auto Gorge des Vents brûlants;250 | x=-6685.2001953125 y=-766.9000244140625 | size=1 | links=#5690(auto Searing Gorge;81):24 c5861.21:12
+#21602 | auto Searing Gorge;251§auto Sengende Schlucht;251§auto Gorge des Vents brûlants;251 | x=-7046.30029296875 y=-1283.400024414063 | size=1 | links=c5854.20:31 c5854.21:40
+#21672 | auto Searing Gorge;252§auto Sengende Schlucht;252§auto Gorge des Vents brûlants;252 | x=-6897.39990234375 y=-1069.700073242188 | size=1 | links=#14550(auto Searing Gorge;181):23 #16572(auto Searing Gorge;198):11
+#21687 | auto Searing Gorge;253§auto Sengende Schlucht;253§auto Gorge des Vents brûlants;253 | x=-6616.2001953125 y=-1053.599975585938 | size=1 | links=#16399(auto Searing Gorge;197):36 #24575(auto Searing Gorge;280):22
+#21795 | auto Searing Gorge;254§auto Sengende Schlucht;254§auto Gorge des Vents brûlants;254 | x=-6615 y=-1654.900024414063 | size=1 | links=#15994(auto Searing Gorge;194):43 #17902(auto Searing Gorge;210):27
+#21966 | auto Searing Gorge;255§auto Sengende Schlucht;255§auto Gorge des Vents brûlants;255 | x=-6590.39990234375 y=-1558 | size=1 | links=#2045(auto Searing Gorge;33):10 c5857.5:14
+#22076 | auto Searing Gorge;256§auto Sengende Schlucht;256§auto Gorge des Vents brûlants;256 | x=-6765.5 y=-1178.400024414063 | size=1 | links=#2227(auto Searing Gorge;40):28 #20918(auto Searing Gorge;245):33 #24557(auto Searing Gorge;279):13
+#22223 | auto Searing Gorge;257§auto Sengende Schlucht;257§auto Gorge des Vents brûlants;257 | x=-6621.60009765625 y=-1256 | size=1 | links=#313(auto Searing Gorge;8):8 #26084(auto Searing Gorge;302):20
+#22255 | auto Searing Gorge;258§auto Sengende Schlucht;258§auto Gorge des Vents brûlants;258 | x=-6576.10009765625 y=-1547.300048828125 | size=1 | links=#813(auto Searing Gorge;19):28 #2045(auto Searing Gorge;33):8
+#22272 | auto Searing Gorge;259§auto Sengende Schlucht;259§auto Gorge des Vents brûlants;259 | x=-6041.30029296875 y=-2481.199951171875 | size=1 | links=#4827(auto Searing Gorge;64):11 #13458(door/gate;Stonewrought Pass;Searing Gorge):13
+#22413 | auto Searing Gorge;260§auto Sengende Schlucht;260§auto Gorge des Vents brûlants;260 | x=-6669.60009765625 y=-1786.200073242188 | size=1 | links=#13679(auto Searing Gorge;174):25 c5856.7:53
+#22582 | auto Searing Gorge;261§auto Sengende Schlucht;261§auto Gorge des Vents brûlants;261 | x=-6501.60009765625 y=-1296.800048828125 | size=1 | links=#1428(auto Searing Gorge;25):50 c9318.7:17 c9318.9:38
+#22588 | auto Searing Gorge;262§auto Sengende Schlucht;262§auto Gorge des Vents brûlants;262 | x=-6474.2001953125 y=-827.6000366210938 | size=1 | links=c5862.2:48 c5861.3:17
+#22644 | auto Searing Gorge;263§auto Sengende Schlucht;263§auto Gorge des Vents brûlants;263 | x=-7045.2001953125 y=-1345.700073242188 | size=1 | links=#15198(auto Searing Gorge;186):44 #24604(auto Searing Gorge;282):80 c5855.5:27 c5857.17:38 c5854.21:22
+#22689 | auto Searing Gorge;264§auto Sengende Schlucht;264§auto Gorge des Vents brûlants;264 | x=-7189.2001953125 y=-1135.599975585938 | size=1 | links=#25835(auto Searing Gorge;300):24 #27758(auto Searing Gorge;318):20
+#22854 | auto Searing Gorge;265§auto Sengende Schlucht;265§auto Gorge des Vents brûlants;265 | x=-6711.80029296875 y=-1408.300048828125 | size=1 | links=#10942(auto Searing Gorge;143):14 #19326(auto Searing Gorge;225):56
+#22947 | auto Searing Gorge;266§auto Sengende Schlucht;266§auto Gorge des Vents brûlants;266 | x=-6893.7001953125 y=-1158.200073242188 | size=1 | links=#20167(auto Searing Gorge;236):27 #24596(auto Searing Gorge;281):30
+#22983 | auto Searing Gorge;267§auto Sengende Schlucht;267§auto Gorge des Vents brûlants;267 | x=-7191.10009765625 y=-1921.099975585938 | size=1 | links=#4890(auto Searing Gorge;65):23 #11380(auto Searing Gorge;150):46
+#23070 | auto Searing Gorge;268§auto Sengende Schlucht;268§auto Gorge des Vents brûlants;268 | x=-7009.80029296875 y=-1301.700073242188 | size=1 | links=#11037(auto Searing Gorge;144):19 o149030.1:5
+#23192 | auto Searing Gorge;269§auto Sengende Schlucht;269§auto Gorge des Vents brûlants;269 | x=-7026.5 y=-1102.599975585938 | size=1 | links=#11729(auto Searing Gorge;152):27 c5854.1:37 c8566.9:5
+#23337 | auto Searing Gorge;270§auto Sengende Schlucht;270§auto Gorge des Vents brûlants;270 | x=-6557.5 y=-1406.800048828125 | size=1 | links=#26010(auto Searing Gorge;301):34 c9318.8:46
+#23385 | auto Searing Gorge;271§auto Sengende Schlucht;271§auto Gorge des Vents brûlants;271 | x=-6859.10009765625 y=-1270.800048828125 | size=1 | links=#8703(auto Searing Gorge;116):19 c5840.1:14
+#23612 | auto Searing Gorge;272§auto Sengende Schlucht;272§auto Gorge des Vents brûlants;272 | x=-6943.39990234375 y=-1105.300048828125 | size=1 | links=#2369(auto Searing Gorge;43):10 #15415(auto Searing Gorge;188):10
+#23789 | auto Searing Gorge;273§auto Sengende Schlucht;273§auto Gorge des Vents brûlants;273 | x=-7281.2001953125 y=-1943.700073242188 | size=1 | links=#19319(auto Searing Gorge;224):9 #27213(auto Searing Gorge;312):55
+#23832 | auto Searing Gorge;274§auto Sengende Schlucht;274§auto Gorge des Vents brûlants;274 | x=-6625 y=-1824.800048828125 | size=1 | links=#9076(auto Searing Gorge;121):44 c5856.9:31
+#24016 | auto Searing Gorge;275§auto Sengende Schlucht;275§auto Gorge des Vents brûlants;275 | x=-7191.10009765625 y=-1074 | size=1 | links=#7993(auto Searing Gorge;107):25 #27739(auto Searing Gorge;317):79 #28493(auto Searing Gorge;330):37
+#24136 | central location;Thorium Point;Searing Gorge§zentralpunkt;Thoriumspitze;Sengende Schlucht§emplacement central;Halte du Thorium;Gorge des Vents brûlants | x=-6508.2001953125 y=-1163.700073242188 | size=1 | links=#5119(auto Searing Gorge;70):9 #7677(auto Searing Gorge;102):30 #14647(auto Searing Gorge;182):26 c14624.1:29 c14627.1:20 c14634.1:13 o179827.1:14
+#24320 | auto Searing Gorge;276§auto Sengende Schlucht;276§auto Gorge des Vents brûlants;276 | x=-6435.80029296875 y=-1989.900024414063 | size=1 | links=#1641(auto Searing Gorge;29):141 #5563(auto Searing Gorge;76):65 o175704.1:49
+#24426 | auto Searing Gorge;277§auto Sengende Schlucht;277§auto Gorge des Vents brûlants;277 | x=-7134.89990234375 y=-1821.700073242188 | size=1 | links=#5089(auto Searing Gorge;68):20 #12276(auto Searing Gorge;157):19
+#24492 | auto Searing Gorge;278§auto Sengende Schlucht;278§auto Gorge des Vents brûlants;278 | x=-6300.10009765625 y=-2150.60009765625 | size=1 | links=#3118(auto Searing Gorge;47):19 #11169(auto Searing Gorge;145):34
+#24557 | auto Searing Gorge;279§auto Sengende Schlucht;279§auto Gorge des Vents brûlants;279 | x=-6758.7001953125 y=-1166.800048828125 | size=1 | links=#22076(auto Searing Gorge;256):13 #27951(auto Searing Gorge;321):26
+#24575 | auto Searing Gorge;280§auto Sengende Schlucht;280§auto Gorge des Vents brûlants;280 | x=-6612.5 y=-1031.599975585938 | size=1 | links=#19888(crossing;two;Firewatch Ridge;Searing Gorge):19 #21687(auto Searing Gorge;253):22
+#24596 | auto Searing Gorge;281§auto Sengende Schlucht;281§auto Gorge des Vents brûlants;281 | x=-6887.39990234375 y=-1128.099975585938 | size=1 | links=#22947(auto Searing Gorge;266):30 c8444.1:33
+#24604 | auto Searing Gorge;282§auto Sengende Schlucht;282§auto Gorge des Vents brûlants;282 | x=-7106.2001953125 y=-1398.099975585938 | size=1 | links=#18632(auto Searing Gorge;218):39 #22644(auto Searing Gorge;263):80 #28142(auto Searing Gorge;324):35 c5857.16:37 c9699.31:41
+#24715 | auto Searing Gorge;283§auto Sengende Schlucht;283§auto Gorge des Vents brûlants;283 | x=-6673.39990234375 y=-1660.800048828125 | size=1 | links=#44(auto Searing Gorge;3):31 #5626(auto Searing Gorge;78):40
+#24743 | auto Searing Gorge;284§auto Sengende Schlucht;284§auto Gorge des Vents brûlants;284 | x=-6813.80029296875 y=-1341.200073242188 | size=1 | links=#4586(auto Searing Gorge;60):60 c5850.6:4
+#24771 | auto Searing Gorge;285§auto Sengende Schlucht;285§auto Gorge des Vents brûlants;285 | x=-6746.80029296875 y=-1123.099975585938 | size=1 | links=#27951(auto Searing Gorge;321):19 c5844.7:25 c5843.31:18
+#24850 | auto Searing Gorge;286§auto Sengende Schlucht;286§auto Gorge des Vents brûlants;286 | x=-6832.5 y=-1434.099975585938 | size=1 | links=#381(auto Searing Gorge;10):76 #7117(auto Searing Gorge;97):25
+#24859 | auto Searing Gorge;287§auto Sengende Schlucht;287§auto Gorge des Vents brûlants;287 | x=-6514.39990234375 y=-991.4000244140625 | size=1 | links=#348(auto Searing Gorge;9):9 c8282.3:14
+#24967 | auto Searing Gorge;288§auto Sengende Schlucht;288§auto Gorge des Vents brûlants;288 | x=-6531.546544691693 y=-1348.959275916441 | size=1 | links=#25507(auto Searing Gorge;292):8 #27531(auto Searing Gorge;314):19
+#25113 | auto Searing Gorge;289§auto Sengende Schlucht;289§auto Gorge des Vents brûlants;289 | x=-6368.39990234375 y=-1950.599975585938 | size=1 | links=o175704.1:38 c5856.14:25 c5856.15:36
+#25273 | auto Searing Gorge;290§auto Sengende Schlucht;290§auto Gorge des Vents brûlants;290 | x=-6576.10009765625 y=-869.2000122070312 | size=1 | links=#6413(auto Searing Gorge;91):50 #14047(auto Searing Gorge;176):14
+#25377 | auto Searing Gorge;291§auto Sengende Schlucht;291§auto Gorge des Vents brûlants;291 | x=-6921.30029296875 y=-1417.900024414063 | size=1 | links=#169(auto Searing Gorge;5):18 #17370(auto Searing Gorge;205):10
+#25507 | auto Searing Gorge;292§auto Sengende Schlucht;292§auto Gorge des Vents brûlants;292 | x=-6523.41344379486 y=-1351.829758572681 | size=1 | links=#24967(auto Searing Gorge;288):8 #25740(auto Searing Gorge;297):7 o179496.5:8 o179828.6:11 o179828.10:12 o179828.11:12 o179828.12:12 o179828.16:16
+#25654 | auto Searing Gorge;293§auto Sengende Schlucht;293§auto Gorge des Vents brûlants;293 | x=-7175.5 y=-1325 | size=1 | links=#1967(auto Searing Gorge;31):32 #16186(auto Searing Gorge;196):36
+#25656 | auto Searing Gorge;294§auto Sengende Schlucht;294§auto Gorge des Vents brûlants;294 | x=-6759.30029296875 y=-1073.400024414063 | size=1 | links=c5852.1:60 c5854.6:36 c5854.10:34
+#25691 | auto Searing Gorge;295§auto Sengende Schlucht;295§auto Gorge des Vents brûlants;295 | x=-6754.80029296875 y=-659.2999877929688 | size=1 | links=#5319(auto Searing Gorge;72):32 c5862.8:23
+#25707 | auto Searing Gorge;296§auto Sengende Schlucht;296§auto Gorge des Vents brûlants;296 | x=-6663.7001953125 y=-1322.300048828125 | size=1 | links=#5978(auto Searing Gorge;83):23 #8363(auto Searing Gorge;112):38
+#25740 | auto Searing Gorge;297§auto Sengende Schlucht;297§auto Gorge des Vents brûlants;297 | x=-6516.39990234375 y=-1353.099975585938 | size=1 | links=#25507(auto Searing Gorge;292):7 #27535(auto Searing Gorge;315):32 o179828.8:14
+#25743 | auto Searing Gorge;298§auto Sengende Schlucht;298§auto Gorge des Vents brûlants;298 | x=-6968.39990234375 y=-1160.400024414063 | size=1 | links=#2401(auto Searing Gorge;44):47 #4095(auto Searing Gorge;58):29
+#25791 | auto Searing Gorge;299§auto Sengende Schlucht;299§auto Gorge des Vents brûlants;299 | x=-6919.80029296875 y=-1260.800048828125 | size=1 | links=#8307(auto Searing Gorge;110):7 #28086(auto Searing Gorge;323):8
+#25835 | auto Searing Gorge;300§auto Sengende Schlucht;300§auto Gorge des Vents brûlants;300 | x=-7177.60009765625 y=-1113.800048828125 | size=1 | links=#7993(auto Searing Gorge;107):19 #13447(auto Searing Gorge;173):25 #22689(auto Searing Gorge;264):24 c9699.19:7
+#25836 | passage;from;Searing Gorge;to;Badlands§passage;von;Sengende Schlucht;nach;Ödland§passage;de;Gorge des Vents brûlants;vers;Terres ingrates | x=-6944.80029296875 y=-2066.300048828125 | size=1 | links=#2133(passage;from;Badlands;to;Searing Gorge):13 #21291(Kotka;waypoint;Searing Gorge):28
+#26010 | auto Searing Gorge;301§auto Sengende Schlucht;301§auto Gorge des Vents brûlants;301 | x=-6574.39990234375 y=-1436.599975585938 | size=1 | links=#23337(auto Searing Gorge;270):34 c9318.2:36
+#26084 | auto Searing Gorge;302§auto Sengende Schlucht;302§auto Gorge des Vents brûlants;302 | x=-6630.60009765625 y=-1274.900024414063 | size=1 | links=#2174(auto Searing Gorge;37):22 #22223(auto Searing Gorge;257):20
+#26174 | auto Searing Gorge;303§auto Sengende Schlucht;303§auto Gorge des Vents brûlants;303 | x=-7222.7001953125 y=-960.2000122070312 | size=1 | links=#8465(auto Searing Gorge;113):33 c9699.6:45 c5858.23:15
+#26304 | auto Searing Gorge;304§auto Sengende Schlucht;304§auto Gorge des Vents brûlants;304 | x=-6485.80029296875 y=-1126.099975585938 | size=1 | links=#7677(auto Searing Gorge;102):14 #11797(auto Searing Gorge;153):24 #18668(auto Searing Gorge;219):18 c9699.2:13
+#26574 | auto Searing Gorge;305§auto Sengende Schlucht;305§auto Gorge des Vents brûlants;305 | x=-6991.5 y=-1616.099975585938 | size=1 | links=#6384(auto Searing Gorge;90):39 #14342(auto Searing Gorge;179):60
+#26590 | auto Searing Gorge;306§auto Sengende Schlucht;306§auto Gorge des Vents brûlants;306 | x=-6902.2001953125 y=-1198.900024414063 | size=1 | links=#19658(auto Searing Gorge;230):9 #20167(auto Searing Gorge;236):13
+#26598 | auto Searing Gorge;307§auto Sengende Schlucht;307§auto Gorge des Vents brûlants;307 | x=-7004.2001953125 y=-1725.5 | size=1 | links=c5839.1:28 c5839.3:10
+#26751 | auto Searing Gorge;308§auto Sengende Schlucht;308§auto Gorge des Vents brûlants;308 | x=-6900.39990234375 y=-1860.400024414063 | size=1 | links=#13390(auto Searing Gorge;172):37 c5856.12:52
+#26868 | auto Searing Gorge;309§auto Sengende Schlucht;309§auto Gorge des Vents brûlants;309 | x=-7093.7001953125 y=-1795.800048828125 | size=1 | links=#2190(auto Searing Gorge;38):40 #5089(auto Searing Gorge;68):29 #20692(auto Searing Gorge;242):29
+#26953 | auto Searing Gorge;310§auto Sengende Schlucht;310§auto Gorge des Vents brûlants;310 | x=-6916 y=-1291.900024414063 | size=1 | links=#3285(auto Searing Gorge;49):43 #8307(auto Searing Gorge;110):31 c5843.3:10
+#27082 | auto Searing Gorge;311§auto Sengende Schlucht;311§auto Gorge des Vents brûlants;311 | x=-6890.60009765625 y=-912.9000244140625 | size=1 | links=c5858.12:31 c5858.13:51 c5855.22:48
+#27213 | auto Searing Gorge;312§auto Sengende Schlucht;312§auto Gorge des Vents brûlants;312 | x=-7228.30029296875 y=-1958.800048828125 | size=1 | links=#11380(auto Searing Gorge;150):32 #23789(auto Searing Gorge;273):55
+#27234 | auto Searing Gorge;313§auto Sengende Schlucht;313§auto Gorge des Vents brûlants;313 | x=-6916.2001953125 y=-1088.800048828125 | size=1 | links=#14550(auto Searing Gorge;181):10 #15455(auto Searing Gorge;189):17
+#27531 | auto Searing Gorge;314§auto Sengende Schlucht;314§auto Gorge des Vents brûlants;314 | x=-6548.610151115102 y=-1339.231409262831 | size=1 | links=#7977(auto Searing Gorge;106):19 #24967(auto Searing Gorge;288):19 o179828.2:13 o179828.3:14 o179828.13:13 o179828.14:10
+#27535 | auto Searing Gorge;315§auto Sengende Schlucht;315§auto Gorge des Vents brûlants;315 | x=-6484.30029296875 y=-1348.900024414063 | size=1 | links=#11212(auto Searing Gorge;147):6 #25740(auto Searing Gorge;297):32 c5846.4:14
+#27735 | auto Searing Gorge;316§auto Sengende Schlucht;316§auto Gorge des Vents brûlants;316 | x=-6911.5 y=-1319.700073242188 | size=1 | links=#15622(auto Searing Gorge;191):71 #28495(auto Searing Gorge;331):21
+#27739 | auto Searing Gorge;317§auto Sengende Schlucht;317§auto Gorge des Vents brûlants;317 | x=-7270.30029296875 y=-1072.5 | size=1 | links=#6077(auto Searing Gorge;85):30 #24016(auto Searing Gorge;275):79
+#27758 | auto Searing Gorge;318§auto Sengende Schlucht;318§auto Gorge des Vents brûlants;318 | x=-7199.2001953125 y=-1153.900024414063 | size=1 | links=#10780(auto Searing Gorge;140):4 #22689(auto Searing Gorge;264):20
+#27854 | auto Searing Gorge;319§auto Sengende Schlucht;319§auto Gorge des Vents brûlants;319 | x=-6886.89990234375 y=-1245.099975585938 | size=1 | links=#9400(auto Searing Gorge;126):17 c5846.1:31
+#27894 | auto Searing Gorge;320§auto Sengende Schlucht;320§auto Gorge des Vents brûlants;320 | x=-6641.2001953125 y=-1599.099975585938 | size=1 | links=#3916(auto Searing Gorge;54):53 #17902(auto Searing Gorge;210):34 c5857.8:28
+#27951 | auto Searing Gorge;321§auto Sengende Schlucht;321§auto Gorge des Vents brûlants;321 | x=-6754.5 y=-1140.599975585938 | size=1 | links=#24557(auto Searing Gorge;279):26 #24771(auto Searing Gorge;285):19
+#28085 | auto Searing Gorge;322§auto Sengende Schlucht;322§auto Gorge des Vents brûlants;322 | x=-7108.2001953125 y=-1468.900024414063 | size=1 | links=#9484(auto Searing Gorge;127):28 #18632(auto Searing Gorge;218):32
+#28086 | auto Searing Gorge;323§auto Sengende Schlucht;323§auto Gorge des Vents brûlants;323 | x=-6927.89990234375 y=-1261.099975585938 | size=1 | links=#1170(auto Searing Gorge;23):6 #25791(auto Searing Gorge;299):8
+#28142 | auto Searing Gorge;324§auto Sengende Schlucht;324§auto Gorge des Vents brûlants;324 | x=-7108.30029296875 y=-1362.300048828125 | size=1 | links=#16186(auto Searing Gorge;196):41 #24604(auto Searing Gorge;282):35 c8279.1:15
+#28180 | auto Searing Gorge;325§auto Sengende Schlucht;325§auto Gorge des Vents brûlants;325 | x=-6471.2001953125 y=-1619.599975585938 | size=1 | links=#20802(auto Searing Gorge;244):63 c5857.1:36 c5857.2:41 c8442.4:30 c5857.11:34 c9699.17:21
+#28235 | auto Searing Gorge;326§auto Sengende Schlucht;326§auto Gorge des Vents brûlants;326 | x=-6663.60009765625 y=-1459 | size=1 | links=#7726(auto Searing Gorge;103):23 #19326(auto Searing Gorge;225):14 c9318.1:20
+#28280 | auto Searing Gorge;327§auto Sengende Schlucht;327§auto Gorge des Vents brûlants;327 | x=-6977.7001953125 y=-1104.800048828125 | size=1 | links=#2935(auto Searing Gorge;46):26 #4095(auto Searing Gorge;58):29 #11729(auto Searing Gorge;152):26
+#28353 | auto Searing Gorge;328§auto Sengende Schlucht;328§auto Gorge des Vents brûlants;328 | x=-6799 y=-1245.800048828125 | size=1 | links=#8703(auto Searing Gorge;116):49 c5854.8:53 c5854.18:61
+#28449 | auto Searing Gorge;329§auto Sengende Schlucht;329§auto Gorge des Vents brûlants;329 | x=-7194.5 y=-1212.200073242188 | size=1 | links=#2321(auto Searing Gorge;41):7 #5363(auto Searing Gorge;74):6
+#28493 | auto Searing Gorge;330§auto Sengende Schlucht;330§auto Gorge des Vents brûlants;330 | x=-7188.10009765625 y=-1036.300048828125 | size=1 | links=#24016(auto Searing Gorge;275):37 c8277.4:36
+#28495 | auto Searing Gorge;331§auto Sengende Schlucht;331§auto Gorge des Vents brûlants;331 | x=-6932.60009765625 y=-1318 | size=1 | links=#4086(auto Searing Gorge;57):57 #27735(auto Searing Gorge;316):21 c5854.19:29
+#48684 | auto Blackrock;Searing Gorge;332§auto Der Schwarzfels;Sengende Schlucht;332§auto Blackrock;Gorge des Vents brûlants;332 | x=-7319.5 y=-1078.200073242188 | size=1 | links=#6192(auto Burning Steppes;79):49 #6077(auto Searing Gorge;85):24
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c2941.1 | links=#14647(auto Searing Gorge;182):25
+c3305.1 | links=#6159(auto Searing Gorge;87):19
+c5833.1 | links=#14466(auto Searing Gorge;180):28
+c5839.1 | links=#26598(auto Searing Gorge;307):28 c5853.1:17 c5839.2:14
+c5840.1 | links=#23385(auto Searing Gorge;271):14
+c5843.1 | links=
+c5846.1 | links=#27854(auto Searing Gorge;319):31 c5844.14:41
+c5852.1 | links=#11937(auto Searing Gorge;154):85 #25656(auto Searing Gorge;294):60 c5858.2:45 c5858.3:32
+c5853.1 | links=c5839.1:17 c8637.2:28
+c5854.1 | links=#23192(auto Searing Gorge;269):37 c5854.4:16
+c5855.1 | links=c5858.10:48 c5858.11:34
+c5856.1 | links=c5856.2:40 c5856.3:52
+c5857.1 | links=#1620(auto Searing Gorge;28):35 #28180(auto Searing Gorge;325):36
+c5860.1 | links=c9699.1:31 c5861.19:47
+c5861.1 | links=c8419.1:5
+c5862.1 | links=o148506.1:53 c5862.2:47 c5862.3:27
+c6491.1 | links=#19568(auto Searing Gorge;229):5
+c7868.1 | links=c5856.4:25 c5856.16:77
+c8277.1 | links=c5856.16:34
+c8278.1 | links=c5858.9:4
+c8279.1 | links=#28142(auto Searing Gorge;324):15
+c8283.1 | links=c8402.4:14
+c8284.1 | links=c5839.3:18 c5839.4:8
+c8400.1 | links=#18387(auto Searing Gorge;215):33 c8402.3:3 c8402.4:10 c8402.5:5
+c8402.1 | links=c5846.13:30 c5843.56:9
+c8417.1 | links=#18387(auto Searing Gorge;215):21
+c8419.1 | links=c5861.1:5 o148506.1:12
+c8436.1 | links=c8282.2:2 c8419.3:5
+c8439.1 | links=#6142(auto Searing Gorge;86):22 c8441.1:4 c11703.1:11
+c8441.1 | links=c8439.1:4
+c8442.1 | links=c8442.5:4
+c8444.1 | links=#24596(auto Searing Gorge;281):33 c8447.1:1
+c8447.1 | links=c8444.1:1
+c8479.1 | links=c8509.1:2
+c8509.1 | links=#8319(auto Searing Gorge;111):26 c8479.1:2 c5855.8:37 c5854.9:65
+c8637.1 | links=c5853.3:11 c8637.3:10
+c9318.1 | links=#7726(auto Searing Gorge;103):13 #28235(auto Searing Gorge;326):20
+c9699.1 | links=c5860.1:31 c9699.10:34 c5861.18:11
+c9700.1 | links=c8419.4:2
+c11703.1 | links=c8439.1:11
+c14621.1 | links=#20196(auto Searing Gorge;238):49 o179826.1:7 c8566.5:2
+c14624.1 | links=#24136(central location;Thorium Point;Searing Gorge):29 c14627.1:11
+c14625.1 | links=#588(auto Searing Gorge;15):11
+c14626.1 | links=c14627.1:9
+c14627.1 | links=#24136(central location;Thorium Point;Searing Gorge):20 c14624.1:11 c14626.1:9 c14628.1:5
+c14628.1 | links=c14627.1:5
+c14634.1 | links=#24136(central location;Thorium Point;Searing Gorge):13 o179827.1:2
+c15664.1 | links=c15692.3:4
+c15692.1 | links=c15692.3:25
+o50982.1 | links=c6491.2:13
+o148498.1 | links=#18387(auto Searing Gorge;215):21
+o148506.1 | links=c5862.1:53 c8419.1:12 c8419.2:11 c8419.4:11
+o149025.1 | links=#673(auto Searing Gorge;16):7
+o149030.1 | links=#23070(auto Searing Gorge;268):5
+o149031.1 | links=#169(auto Searing Gorge;5):5
+o149032.1 | links=#15455(auto Searing Gorge;189):6
+o173265.1 | links=#20692(auto Searing Gorge;242):40 o173266.1:2
+o173266.1 | links=o173265.1:2 c5853.4:24
+o175704.1 | links=#24320(auto Searing Gorge;276):49 #25113(auto Searing Gorge;289):38 c5856.17:75
+o179496.1 | links=#18466(auto Searing Gorge;217):12
+o179826.1 | links=c14621.1:7
+o179827.1 | links=#24136(central location;Thorium Point;Searing Gorge):14 c14634.1:2
+o179828.1 | links=o179828.4:23
+c5839.2 | links=c5839.1:14 c5853.2:11
+c5840.2 | links=#5347(auto Searing Gorge;73):27
+c5852.2 | links=#34(auto Searing Gorge;2):18 #14886(auto Searing Gorge;183):17
+c5853.2 | links=#7121(auto Searing Gorge;98):41 #20185(auto Searing Gorge;237):14 c5839.2:11
+c5854.2 | links=#1602(auto Searing Gorge;27):4 #8307(auto Searing Gorge;110):32
+c5856.2 | links=c5856.1:40
+c5857.2 | links=#28180(auto Searing Gorge;325):41
+c5858.2 | links=#9858(auto Searing Gorge;131):51 c5852.1:45
+c5860.2 | links=c5861.7:20 c9699.10:14 c5861.17:42 c5861.19:42 c5861.20:45
+c5862.2 | links=#22588(auto Searing Gorge;262):48 c5862.1:47
+c6491.2 | links=#17204(auto Searing Gorge;204):47 o50982.1:13
+c8277.2 | links=#20802(auto Searing Gorge;244):13
+c8282.2 | links=#348(auto Searing Gorge;9):18 c8436.1:2 c5861.5:4
+c8419.2 | links=o148506.1:11
+c8442.2 | links=c8442.4:5
+c8566.2 | links=#11937(auto Searing Gorge;154):49 #16572(auto Searing Gorge;198):15
+c8637.2 | links=#7121(auto Searing Gorge;98):39 c5853.1:28 c8637.4:6
+c8837.2 | links=c5862.9:18 c5861.10:17
+c9318.2 | links=#7726(auto Searing Gorge;103):45 #12902(auto Searing Gorge;164):40 #26010(auto Searing Gorge;301):36
+c9699.2 | links=#26304(auto Searing Gorge;304):13
+o179828.2 | links=#27531(auto Searing Gorge;314):13
+c5839.3 | links=#26598(auto Searing Gorge;307):10 c8284.1:18
+c5840.3 | links=#5347(auto Searing Gorge;73):36
+c5843.3 | links=#26953(auto Searing Gorge;310):10
+c5846.3 | links=#10820(auto Searing Gorge;142):20
+c5852.3 | links=c9700.11:6 c5857.15:30
+c5853.3 | links=c8637.1:11
+c5854.3 | links=c8566.7:9 c5857.15:36
+c5856.3 | links=#9867(auto Searing Gorge;132):49 c5856.1:52
+c5857.3 | links=#15408(auto Searing Gorge;187):31
+c5858.3 | links=c5852.1:32 c9699.3:31
+c5860.3 | links=c5861.19:25 c5861.20:42
+c5861.3 | links=#4781(auto Searing Gorge;63):17 #22588(auto Searing Gorge;262):17
+c5862.3 | links=c5862.1:27
+c8277.3 | links=#9484(auto Searing Gorge;127):54 c5857.24:34 c5857.26:21
+c8279.3 | links=#7121(auto Searing Gorge;98):16 c5856.10:85 c5855.13:100
+c8282.3 | links=#24859(auto Searing Gorge;287):14
+c8402.3 | links=c8400.1:3 c5846.13:16
+c8419.3 | links=c8436.1:5 c5862.6:3
+c8442.3 | links=c8442.5:4 c5857.18:4
+c8637.3 | links=#20185(auto Searing Gorge;237):18 c8637.1:10 c5839.5:8 c5853.5:32
+c8837.3 | links=c8837.4:27 c5861.13:40
+c9318.3 | links=#19326(auto Searing Gorge;225):11
+c9699.3 | links=c5858.3:31 c5858.5:13 c5858.6:10
+c15692.3 | links=c15664.1:4 c15692.1:25 c5853.7:14 c15692.8:6 c15692.9:6
+o179828.3 | links=#27531(auto Searing Gorge;314):14
+c5839.4 | links=c8284.1:8
+c5840.4 | links=#5347(auto Searing Gorge;73):47 c5840.5:27
+c5844.4 | links=c5846.4:4
+c5846.4 | links=#27535(auto Searing Gorge;315):14 c5844.4:4
+c5852.4 | links=#2821(auto Searing Gorge;45):20
+c5853.4 | links=o173266.1:24
+c5854.4 | links=c5854.1:16 c8566.8:18
+c5856.4 | links=c7868.1:25 c5856.16:79
+c5857.4 | links=#3916(auto Searing Gorge;54):20
+c5858.4 | links=#9858(auto Searing Gorge;131):20
+c5860.4 | links=#6020(auto Searing Gorge;84):20 #15823(auto Searing Gorge;193):14 c5861.16:22
+c8277.4 | links=#28493(auto Searing Gorge;330):36 c9699.6:16
+c8279.4 | links=c9699.9:6 c5858.11:21
+c8282.4 | links=#348(auto Searing Gorge;9):22
+c8402.4 | links=c8283.1:14 c8400.1:10
+c8419.4 | links=c9700.1:2 o148506.1:11 c5861.5:9
+c8442.4 | links=#28180(auto Searing Gorge;325):30 c8442.2:5 c8442.5:3
+c8637.4 | links=c8637.2:6 c8637.5:4
+c8837.4 | links=c8837.3:27 c8837.6:23
+c9318.4 | links=#12902(auto Searing Gorge;164):27 c9318.5:52
+c15692.4 | links=c5839.7:8 c5839.8:7
+o179828.4 | links=#7977(auto Searing Gorge;106):11 o179828.1:23
+c5839.5 | links=c8637.3:8
+c5840.5 | links=c5840.4:27
+c5852.5 | links=#17844(auto Searing Gorge;209):29
+c5853.5 | links=#6384(auto Searing Gorge;90):45 c8637.3:32
+c5854.5 | links=#10818(auto Searing Gorge;141):24
+c5855.5 | links=#22644(auto Searing Gorge;263):27 c9700.6:10
+c5857.5 | links=#17753(auto Searing Gorge;207):14 #21966(auto Searing Gorge;255):14
+c5858.5 | links=c9699.3:13 c5858.8:60
+c5860.5 | links=#14047(auto Searing Gorge;176):18 c5861.7:22 c5861.18:26
+c5861.5 | links=c8282.2:4 c8419.4:9
+c5862.5 | links=#4781(auto Searing Gorge;63):22 #20452(auto Searing Gorge;241):24
+c8279.5 | links=c5854.9:38 c9699.15:34
+c8402.5 | links=c8400.1:5
+c8442.5 | links=c8442.1:4 c8442.3:4 c8442.4:3
+c8566.5 | links=c14621.1:2
+c8637.5 | links=c8637.4:4
+c8837.5 | links=c8837.8:17
+c9318.5 | links=c9318.4:52 c9318.6:43 c9318.13:39
+c15692.5 | links=#9076(auto Searing Gorge;121):27 #15060(auto Searing Gorge;184):17
+o179496.5 | links=#25507(auto Searing Gorge;292):8
+o179828.5 | links=#18466(auto Searing Gorge;217):11
+c5839.6 | links=c15692.10:5
+c5844.6 | links=#11370(auto Searing Gorge;149):20 #18387(auto Searing Gorge;215):50
+c5846.6 | links=c5846.7:9
+c5850.6 | links=#24743(auto Searing Gorge;284):4
+c5852.6 | links=#13178(auto Searing Gorge;169):7 c9700.17:16
+c5853.6 | links=c15692.6:26 c5839.8:13
+c5854.6 | links=#25656(auto Searing Gorge;294):36 c5854.16:46
+c5855.6 | links=#15622(auto Searing Gorge;191):20 c9700.17:19
+c5857.6 | links=c5857.10:23
+c5858.6 | links=c9699.3:10
+c5861.6 | links=c5861.19:31
+c5862.6 | links=c8419.3:3
+c8837.6 | links=#20700(auto Searing Gorge;243):16 c8837.4:23
+c9318.6 | links=#1039(auto Searing Gorge;21):19 c9318.5:43 c9318.8:17
+c9699.6 | links=#17844(auto Searing Gorge;209):33 #26174(auto Searing Gorge;303):45 c8277.4:16 c5858.20:34
+c9700.6 | links=c5855.5:10
+c15692.6 | links=#15060(auto Searing Gorge;184):13 c5853.6:26
+o179828.6 | links=#25507(auto Searing Gorge;292):11
+c5839.7 | links=c15692.4:8 c15692.9:9
+c5844.7 | links=#24771(auto Searing Gorge;285):25 c5846.14:43
+c5846.7 | links=#4592(auto Searing Gorge;61):40 c5846.6:9
+c5853.7 | links=c15692.3:14
+c5854.7 | links=#11729(auto Searing Gorge;152):25
+c5856.7 | links=#9076(auto Searing Gorge;121):28 #22413(auto Searing Gorge;260):53
+c5857.7 | links=#3916(auto Searing Gorge;54):40
+c5858.7 | links=c5858.8:32
+c5861.7 | links=c5860.2:20 c5860.5:22
+c5862.7 | links=c5861.14:27
+c8566.7 | links=c5854.3:9 c8566.12:23
+c9318.7 | links=#22582(auto Searing Gorge;261):17
+c9700.7 | links=c9699.32:53
+c15692.7 | links=c5839.8:7
+o179828.7 | links=#7977(auto Searing Gorge;106):12
+c5839.8 | links=c15692.4:7 c5853.6:13 c15692.7:7
+c5846.8 | links=c5846.9:7 c5854.22:24
+c5854.8 | links=#28353(auto Searing Gorge;328):53 c5855.8:49
+c5855.8 | links=#9756(auto Searing Gorge;130):54 c8509.1:37 c5854.8:49
+c5857.8 | links=#27894(auto Searing Gorge;320):28
+c5858.8 | links=c5858.5:60 c5858.7:32 c5858.12:42
+c5861.8 | links=#6020(auto Searing Gorge;84):18 c5861.17:19
+c5862.8 | links=#15605(auto Searing Gorge;190):19 #25691(auto Searing Gorge;295):23
+c8566.8 | links=c5854.4:18
+c8837.8 | links=c8837.5:17
+c9318.8 | links=#23337(auto Searing Gorge;270):46 c9318.6:17
+c15692.8 | links=#15060(auto Searing Gorge;184):27 c15692.3:6
+o179828.8 | links=#25740(auto Searing Gorge;297):14
+c5843.9 | links=
+c5846.9 | links=c5846.8:7
+c5854.9 | links=c8509.1:65 c8279.5:38 c5855.11:45
+c5856.9 | links=#18966(auto Searing Gorge;220):38 #23832(auto Searing Gorge;274):31
+c5857.9 | links=c9699.31:55
+c5858.9 | links=#12370(auto Searing Gorge;158):21 c8278.1:4 c5858.11:42
+c5861.9 | links=#15823(auto Searing Gorge;193):6
+c5862.9 | links=#5690(auto Searing Gorge;81):31 c8837.2:18
+c8566.9 | links=#23192(auto Searing Gorge;269):5
+c8837.9 | links=
+c9318.9 | links=#1039(auto Searing Gorge;21):71 #22582(auto Searing Gorge;261):38 c5843.15:23
+c9699.9 | links=#2935(auto Searing Gorge;46):43 #11729(auto Searing Gorge;152):49 c8279.4:6
+c15692.9 | links=c15692.3:6 c5839.7:9 c15692.10:6
+o179828.9 | links=#18466(auto Searing Gorge;217):12
+c5843.10 | links=
+c5846.10 | links=c9699.15:39
+c5854.10 | links=#25656(auto Searing Gorge;294):34 c5854.11:43
+c5855.10 | links=#17844(auto Searing Gorge;209):22 c9700.21:5
+c5856.10 | links=c8279.3:85
+c5857.10 | links=c5857.6:23 c9699.21:35
+c5858.10 | links=c5855.1:48 c5858.13:34
+c5861.10 | links=#5110(auto Searing Gorge;69):7 c8837.2:17
+c5862.10 | links=#5319(auto Searing Gorge;72):14 c5862.11:30
+c9318.10 | links=c9318.11:32 c5843.15:28
+c9699.10 | links=c9699.1:34 c5860.2:14
+c15692.10 | links=c5839.6:5 c15692.9:6
+o179828.10 | links=#25507(auto Searing Gorge;292):12
+c5846.11 | links=c5854.11:18 c5846.12:10
+c5854.11 | links=c5854.10:43 c5846.11:18
+c5855.11 | links=c5854.9:45
+c5856.11 | links=#16049(auto Searing Gorge;195):21
+c5857.11 | links=#28180(auto Searing Gorge;325):34
+c5858.11 | links=#10547(auto Searing Gorge;137):27 #21492(auto Searing Gorge;248):55 c5855.1:34 c8279.4:21 c5858.9:42 c5855.17:47
+c5861.11 | links=#15823(auto Searing Gorge;193):12 c5861.21:24
+c5862.11 | links=#264(auto Searing Gorge;6):21 #8079(auto Searing Gorge;108):14 c5862.10:30
+c9318.11 | links=c9318.10:32 c9318.12:37
+c9700.11 | links=#12263(auto Searing Gorge;156):29 c5852.3:6
+o179828.11 | links=#25507(auto Searing Gorge;292):12
+c5846.12 | links=c5846.11:10
+c5856.12 | links=#9867(auto Searing Gorge;132):51 #18990(auto Searing Gorge;222):57 #26751(auto Searing Gorge;308):52
+c5857.12 | links=c5857.13:20 c5856.19:72
+c5858.12 | links=#27082(auto Searing Gorge;311):31 c5858.8:42
+c5861.12 | links=#5110(auto Searing Gorge;69):17 #15605(auto Searing Gorge;190):14
+c8566.12 | links=#12772(auto Searing Gorge;163):15 c8566.7:23 c8566.13:13
+c9318.12 | links=c9318.11:37 c9318.13:52
+o179828.12 | links=#25507(auto Searing Gorge;292):12
+c5846.13 | links=c8402.1:30 c8402.3:16 c5843.48:37 c5843.52:43
+c5854.13 | links=#5347(auto Searing Gorge;73):51 #9756(auto Searing Gorge;130):46
+c5855.13 | links=c8279.3:100
+c5856.13 | links=#18990(auto Searing Gorge;222):30
+c5857.13 | links=c5857.12:20 c5857.14:53 c5857.21:54 c9699.22:33
+c5858.13 | links=#27082(auto Searing Gorge;311):51 c5858.10:34
+c5861.13 | links=c8837.3:40 c5861.15:16
+c8566.13 | links=#926(auto Searing Gorge;20):19 c8566.12:13
+c9318.13 | links=c9318.5:39 c9318.12:52
+o179828.13 | links=#27531(auto Searing Gorge;314):13
+c5844.14 | links=#13135(auto Searing Gorge;167):12 c5846.1:41
+c5846.14 | links=#7928(auto Searing Gorge;105):48 c5844.7:43
+c5854.14 | links=c9699.15:23 c5854.18:67
+c5856.14 | links=#25113(auto Searing Gorge;289):25
+c5857.14 | links=c5857.13:53
+c5861.14 | links=#13068(auto Searing Gorge;165):13 c5862.7:27
+o179828.14 | links=#27531(auto Searing Gorge;314):10
+c5843.15 | links=c9318.9:23 c9318.10:28
+c5854.15 | links=#4592(auto Searing Gorge;61):45
+c5856.15 | links=#25113(auto Searing Gorge;289):36
+c5857.15 | links=c5852.3:30 c5854.3:36
+c5861.15 | links=c5861.13:16 c5861.16:40
+c9699.15 | links=c8279.5:34 c5846.10:39 c5854.14:23 c5854.22:34
+c5854.16 | links=c5854.6:46
+c5856.16 | links=c7868.1:77 c8277.1:34 c5856.4:79 c9699.16:6
+c5857.16 | links=#24604(auto Searing Gorge;282):37
+c5861.16 | links=c5860.4:22 c5861.15:40
+c9699.16 | links=c5856.16:6 c5856.19:53
+o179828.16 | links=#25507(auto Searing Gorge;292):16
+c5854.17 | links=#9858(auto Searing Gorge;131):49 #13117(auto Searing Gorge;166):60
+c5855.17 | links=c5858.11:47
+c5856.17 | links=o175704.1:75
+c5857.17 | links=#22644(auto Searing Gorge;263):38
+c5861.17 | links=c5860.2:42 c5861.8:19
+c9699.17 | links=#28180(auto Searing Gorge;325):21
+c9700.17 | links=c5852.6:16 c5855.6:19
+c5846.18 | links=#2227(auto Searing Gorge;40):25
+c5854.18 | links=#28353(auto Searing Gorge;328):61 c5854.14:67
+c5857.18 | links=c8442.3:4
+c5858.18 | links=#21492(auto Searing Gorge;248):47 c5858.20:47
+c5861.18 | links=#9097(auto Searing Gorge;122):53 c9699.1:11 c5860.5:26
+c5854.19 | links=#12632(auto Searing Gorge;162):24 #28495(auto Searing Gorge;331):29
+c5856.19 | links=#1596(auto Searing Gorge;26):76 c5857.12:72 c9699.16:53 c5856.20:21 c5857.21:65
+c5857.19 | links=#9050(auto Searing Gorge;120):18 c9699.21:35
+c5858.19 | links=#2821(auto Searing Gorge;45):16
+c5861.19 | links=c5860.1:47 c5860.2:42 c5860.3:25 c5861.6:31
+c9699.19 | links=#7594(auto Searing Gorge;101):48 #25835(auto Searing Gorge;300):7
+c5844.20 | links=#809(auto Searing Gorge;18):47 #21070(auto Searing Gorge;247):55
+c5854.20 | links=#21602(auto Searing Gorge;251):31
+c5856.20 | links=#14098(auto Searing Gorge;177):27 c5856.19:21
+c5857.20 | links=c9699.31:42
+c5858.20 | links=c9699.6:34 c5858.18:47
+c5861.20 | links=c5860.2:45 c5860.3:42
+c5854.21 | links=#21602(auto Searing Gorge;251):40 #22644(auto Searing Gorge;263):22
+c5855.21 | links=#13447(auto Searing Gorge;173):16
+c5857.21 | links=c5857.13:54 c5856.19:65 c5855.24:45
+c5861.21 | links=#21582(auto Searing Gorge;250):12 c5861.11:24
+c9699.21 | links=c5857.10:35 c5857.19:35
+c9700.21 | links=c5855.10:5
+c5854.22 | links=#17903(auto Searing Gorge;211):35 c5846.8:24 c9699.15:34
+c5855.22 | links=#27082(auto Searing Gorge;311):48
+c9699.22 | links=c5857.13:33 c5857.26:15
+c5854.23 | links=#2038(auto Searing Gorge;32):24
+c5857.23 | links=c9699.31:40
+c5858.23 | links=#26174(auto Searing Gorge;303):15
+c5855.24 | links=c5857.21:45
+c5857.24 | links=c8277.3:34
+c5858.24 | links=#16186(auto Searing Gorge;196):43
+c5857.25 | links=c9699.31:56
+c5858.25 | links=#3833(auto Searing Gorge;53):23
+c5857.26 | links=c8277.3:21 c9699.22:15
+c5846.30 | links=#809(auto Searing Gorge;18):46
+c5843.31 | links=#24771(auto Searing Gorge;285):18
+c9699.31 | links=#24604(auto Searing Gorge;282):41 c5857.9:55 c5857.20:42 c5857.23:40 c5857.25:56
+c9699.32 | links=#21492(auto Searing Gorge;248):36 c9700.7:53
+c5843.48 | links=c5846.13:37
+c5843.52 | links=c5846.13:43
+c5843.56 | links=c8402.1:9

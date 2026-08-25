@@ -1,0 +1,671 @@
+Zone areaId 1638 — eine Zeile pro Wegpunkt; Links inline.
+
+#22 | auto Thunder Bluff;1§auto Donnerfels;1§auto Les Pitons du Tonnerre;1 | x=-1280.300048828125 y=-39.40000152587891 | size=1 | links=#7951(auto Thunder Bluff;136):19 #13857(auto Thunder Bluff;244):19
+#131 | auto Thunder Bluff;2§auto Donnerfels;2§auto Les Pitons du Tonnerre;2 | x=-1296 y=144.6000061035156 | size=1 | links=#18262(auto Thunder Bluff;316):7 #26045(auto Thunder Bluff;475):3
+#186 | stairway;flight master;tower;two§treppe;flugpunkt;turm;zwei§stairway;flight master;tower;deux | x=-1196.800048828125 y=22.89999961853027 | size=1 | links=#804(auto Thunder Bluff;14):2 #19140(auto Thunder Bluff;339):6 #23106(auto Thunder Bluff;424):5
+#295 | auto Thunder Bluff;3§auto Donnerfels;3§auto Les Pitons du Tonnerre;3 | x=-1240.700073242188 y=-72.20000457763672 | size=1 | links=#19133(auto Thunder Bluff;338):6 #26650(auto Thunder Bluff;487):10
+#376 | auto Thunder Bluff;4§auto Donnerfels;4§auto Les Pitons du Tonnerre;4 | x=-1339.800048828125 y=-102.4000015258789 | size=1 | links=#11247(auto Thunder Bluff;181):42 #20925(auto Thunder Bluff;374):28
+#385 | auto Thunder Bluff;5§auto Donnerfels;5§auto Les Pitons du Tonnerre;5 | x=-1360.099975585938 y=-16.5 | size=1 | links=#12652(auto Thunder Bluff;211):14 #16377(auto Thunder Bluff;288):17
+#386 | auto Thunder Bluff;6§auto Donnerfels;6§auto Les Pitons du Tonnerre;6 | x=-1099.700073242188 y=-52.29999923706055 | size=1 | links=#3561(auto Thunder Bluff;54):9 #21604(auto Thunder Bluff;387):8
+#445 | auto Thunder Bluff;7§auto Donnerfels;7§auto Les Pitons du Tonnerre;7 | x=-1068.900024414063 y=-25.10000038146973 | size=1 | links=#23259(auto Thunder Bluff;428):3 #23495(auto Thunder Bluff;436):4
+#467 | auto Thunder Bluff;8§auto Donnerfels;8§auto Les Pitons du Tonnerre;8 | x=-1162.900024414063 y=165.1999969482422 | size=1 | links=#21760(auto Thunder Bluff;391):4 #26406(auto Thunder Bluff;483):6
+#486 | auto Thunder Bluff;9§auto Donnerfels;9§auto Les Pitons du Tonnerre;9 | x=-1328.300048828125 y=45.10000228881836 | size=1 | links=#8746(auto Thunder Bluff;148):5 #19181(auto Thunder Bluff;340):17
+#505 | auto Thunder Bluff;10§auto Donnerfels;10§auto Les Pitons du Tonnerre;10 | x=-1303.200073242188 y=165.6000061035156 | size=1 | links=#2167(auto Thunder Bluff;33):4 #26052(auto Thunder Bluff;476):3
+#520 | auto Thunder Bluff;11§auto Donnerfels;11§auto Les Pitons du Tonnerre;11 | x=-1068.599975585938 y=229.1000061035156 | size=1 | links=#10253(auto Thunder Bluff;164):10 #12557(auto Thunder Bluff;210):5 #19489(auto Thunder Bluff;348):15
+#680 | auto Thunder Bluff;12§auto Donnerfels;12§auto Les Pitons du Tonnerre;12 | x=-980.6000366210938 y=353.7000122070313 | size=1 | links=#4018(auto Thunder Bluff;62):8 #17691(auto Thunder Bluff;305):5
+#730 | auto Thunder Bluff;13§auto Donnerfels;13§auto Les Pitons du Tonnerre;13 | x=-1044.400024414063 y=-208.6999969482422 | size=1 | links=#11707(auto Thunder Bluff;189):27 #22808(auto Thunder Bluff;419):11 c3037.1:8
+#804 | auto Thunder Bluff;14§auto Donnerfels;14§auto Les Pitons du Tonnerre;14 | x=-1197.700073242188 y=20.70000076293945 | size=1 | links=#186(stairway;flight master;tower;two):2 #27728(auto Thunder Bluff;500):4
+#865 | auto Thunder Bluff;15§auto Donnerfels;15§auto Les Pitons du Tonnerre;15 | x=-1206.200073242188 y=37.20000076293945 | size=1 | links=#2182(flight master;tower;down):11 #8194(auto Thunder Bluff;141):6 #13691(auto Thunder Bluff;237):5
+#932 | auto Thunder Bluff;16§auto Donnerfels;16§auto Les Pitons du Tonnerre;16 | x=-1245 y=68.0999984741211 | size=1 | links=#6656(auto Thunder Bluff;111):11 #9139(auto Thunder Bluff;151):13 #18914(auto Thunder Bluff;332):18 #25302(auto Thunder Bluff;466):22 c15767.1:6
+#933 | auto Thunder Bluff;17§auto Donnerfels;17§auto Les Pitons du Tonnerre;17 | x=-1063.5 y=8.800000190734863 | size=1 | links=#15357(auto Thunder Bluff;270):17 #26069(auto Thunder Bluff;477):11
+#941 | auto Thunder Bluff;18§auto Donnerfels;18§auto Les Pitons du Tonnerre;18 | x=-1296.5 y=33.10000228881836 | size=1 | links=#10074(auto Thunder Bluff;162):13 c6746.1:6
+#1168 | auto Thunder Bluff;19§auto Donnerfels;19§auto Les Pitons du Tonnerre;19 | x=-1249.599975585938 y=-40.90000152587891 | size=1 | links=#20770(auto Thunder Bluff;371):11 c3019.1:6 c3020.1:6 c3021.1:7 c8398.1:5
+#1193 | auto Thunder Bluff;20§auto Donnerfels;20§auto Les Pitons du Tonnerre;20 | x=-974.5 y=284.2000122070313 | size=1 | links=#3164(auto Thunder Bluff;44):8 #22273(auto Thunder Bluff;408):3
+#1205 | auto Thunder Bluff;21§auto Donnerfels;21§auto Les Pitons du Tonnerre;21 | x=-1172.900024414063 y=-79.80000305175781 | size=1 | links=#4952(auto Thunder Bluff;77):16 #26117(auto Thunder Bluff;478):10
+#1257 | auto Thunder Bluff;22§auto Donnerfels;22§auto Les Pitons du Tonnerre;22 | x=-1098.5 y=0.5 | size=1 | links=#4889(auto Thunder Bluff;74):15 #7469(auto Thunder Bluff;127):11 c3016.1:11
+#1273 | auto Thunder Bluff;23§auto Donnerfels;23§auto Les Pitons du Tonnerre;23 | x=-1145.700073242188 y=-109.5999984741211 | size=1 | links=#5507(auto Thunder Bluff;92):6 #14997(auto Thunder Bluff;266):6
+#1290 | auto Thunder Bluff;24§auto Donnerfels;24§auto Les Pitons du Tonnerre;24 | x=-922.7000122070312 y=135.4000091552734 | size=1 | links=#7626(auto Thunder Bluff;129):7 #25642(auto Thunder Bluff;469):6
+#1463 | auto Thunder Bluff;25§auto Donnerfels;25§auto Les Pitons du Tonnerre;25 | x=-1216.200073242188 y=-37.5 | size=1 | links=#4043(auto Thunder Bluff;63):15 #7923(auto Thunder Bluff;134):10 c3023.1:22
+#1691 | auto Thunder Bluff;26§auto Donnerfels;26§auto Les Pitons du Tonnerre;26 | x=-967.7000122070312 y=109.3000030517578 | size=1 | links=#16351(auto Thunder Bluff;287):25 #24897(auto Thunder Bluff;457):22
+#1789 | auto Thunder Bluff;27§auto Donnerfels;27§auto Les Pitons du Tonnerre;27 | x=-1159.800048828125 y=174.9000091552734 | size=1 | links=#3330(auto Thunder Bluff;48):16 #17956(auto Thunder Bluff;312):4
+#1876 | auto Thunder Bluff;28§auto Donnerfels;28§auto Les Pitons du Tonnerre;28 | x=-1326.5 y=26.5 | size=1 | links=#15814(auto Thunder Bluff;277):8 #16798(auto Thunder Bluff;296):4
+#1977 | auto Thunder Bluff;29§auto Donnerfels;29§auto Les Pitons du Tonnerre;29 | x=-1018.600036621094 y=221.8000030517578 | size=1 | links=#12414(auto Thunder Bluff;205):2 #13128(auto Thunder Bluff;223):5
+#1990 | auto Thunder Bluff;30§auto Donnerfels;30§auto Les Pitons du Tonnerre;30 | x=-1094.900024414063 y=111.5 | size=1 | links=#10516(auto Thunder Bluff;170):7 #18047(auto Thunder Bluff;313):4
+#2123 | auto Thunder Bluff;31§auto Donnerfels;31§auto Les Pitons du Tonnerre;31 | x=-1168 y=32.79999923706055 | size=1 | links=#10201(auto Thunder Bluff;163):9 #25298(auto Thunder Bluff;465):7
+#2135 | auto Thunder Bluff;32§auto Donnerfels;32§auto Les Pitons du Tonnerre;32 | x=-1010.700012207031 y=250.6999969482422 | size=1 | links=#14508(auto Thunder Bluff;258):5 #26452(auto Thunder Bluff;484):5
+#2167 | auto Thunder Bluff;33§auto Donnerfels;33§auto Les Pitons du Tonnerre;33 | x=-1304.5 y=169.4000091552734 | size=1 | links=#505(auto Thunder Bluff;10):4 #17694(auto Thunder Bluff;306):3
+#2182 | flight master;tower;down§flugpunkt;turm;unten§flight master;tower;bas | x=-1195.800048828125 y=31.70000076293945 | size=1 | links=#865(auto Thunder Bluff;15):11
+#2432 | auto Thunder Bluff;34§auto Donnerfels;34§auto Les Pitons du Tonnerre;34 | x=-1043 y=342.2000122070313 | size=1 | links=#12190(auto Thunder Bluff;199):16 #27070(auto Thunder Bluff;493):31
+#2447 | auto Thunder Bluff;35§auto Donnerfels;35§auto Les Pitons du Tonnerre;35 | x=-935.7000122070312 y=118.5 | size=1 | links=#24897(auto Thunder Bluff;457):12
+#2617 | s;Kalimdor;capital;Thunder Bluff§s;Kalimdor;Hauptstadt;Thunder Bluff§s;Kalimdor;capital;Les Pitons du Tonnerre | x=-1205.628709230738 y=-28.49749565331182 | size=1
+#2629 | auto Thunder Bluff;36§auto Donnerfels;36§auto Les Pitons du Tonnerre;36 | x=-887.2000122070312 y=215.4000091552734 | size=1 | links=#3401(auto Thunder Bluff;50):42 #22040(auto Thunder Bluff;399):6
+#2716 | auto Thunder Bluff;37§auto Donnerfels;37§auto Les Pitons du Tonnerre;37 | x=-1048.599975585938 y=-42.20000076293945 | size=1 | links=#6300(auto Thunder Bluff;101):3 #25040(auto Thunder Bluff;460):3
+#2817 | auto Thunder Bluff;38§auto Donnerfels;38§auto Les Pitons du Tonnerre;38 | x=-981.4000244140625 y=-66.30000305175781 | size=1 | links=#7824(auto Thunder Bluff;131):10 c6491.1:8
+#2828 | auto Thunder Bluff;39§auto Donnerfels;39§auto Les Pitons du Tonnerre;39 | x=-1185.5 y=30.80000114440918 | size=1 | links=#5322(stairway;flight master;tower;one):4 #25298(auto Thunder Bluff;465):9
+#2849 | auto Thunder Bluff;40§auto Donnerfels;40§auto Les Pitons du Tonnerre;40 | x=-1080.400024414063 y=311.3000183105469 | size=1 | links=#13710(auto Thunder Bluff;239):17 #27070(auto Thunder Bluff;493):17
+#2860 | auto Thunder Bluff;41§auto Donnerfels;41§auto Les Pitons du Tonnerre;41 | x=-1139.700073242188 y=55.79999923706055 | size=1 | links=#6711(auto Thunder Bluff;113):5 #22537(auto Thunder Bluff;411):8 c7089.1:10
+#2983 | waters;two;down;rescue;The Pools of Vision;Thunder Bluff§gewässer;zwei;unten;rettung;Die Teiche der Visionen;Donnerfels§eaux;deux;bas;sauvetage;Les Bassins de la Vision;Les Pitons du Tonnerre | x=-1001.600036621094 y=222.6999969482422 | size=1 | links=#22136(auto Thunder Bluff;401):19 #27261(auto Thunder Bluff;496):7
+#3074 | auto Thunder Bluff;42§auto Donnerfels;42§auto Les Pitons du Tonnerre;42 | x=-1037 y=-241.4000091552734 | size=1 | links=#9361(auto Thunder Bluff;155):20 #18223(auto Thunder Bluff;315):17
+#3133 | auto Thunder Bluff;43§auto Donnerfels;43§auto Les Pitons du Tonnerre;43 | x=-1028.800048828125 y=248.5 | size=1 | links=#11990(auto Thunder Bluff;194):11 #19803(auto Thunder Bluff;354):17
+#3164 | auto Thunder Bluff;44§auto Donnerfels;44§auto Les Pitons du Tonnerre;44 | x=-978.2000122070312 y=276 | size=1 | links=#1193(auto Thunder Bluff;20):8 #13306(auto Thunder Bluff;228):9
+#3198 | auto Thunder Bluff;45§auto Donnerfels;45§auto Les Pitons du Tonnerre;45 | x=-1185.5 y=158.6000061035156 | size=1 | links=#3524(auto Thunder Bluff;53):8 #19292(auto Thunder Bluff;345):10
+#3247 | auto Thunder Bluff;46§auto Donnerfels;46§auto Les Pitons du Tonnerre;46 | x=-1195.5 y=21.20000076293945 | size=1 | links=#5226(auto Thunder Bluff;81):4 #16423(auto Thunder Bluff;289):4
+#3294 | auto Thunder Bluff;47§auto Donnerfels;47§auto Les Pitons du Tonnerre;47 | x=-1058.700073242188 y=-254.1000061035156 | size=1 | links=#17244(auto Thunder Bluff;300):13 #20672(auto Thunder Bluff;369):6
+#3330 | auto Thunder Bluff;48§auto Donnerfels;48§auto Les Pitons du Tonnerre;48 | x=-1145.700073242188 y=183.6000061035156 | size=1 | links=#1789(auto Thunder Bluff;27):16 #22036(auto Thunder Bluff;398):18
+#3366 | auto Thunder Bluff;49§auto Donnerfels;49§auto Les Pitons du Tonnerre;49 | x=-1270 y=-79.9000015258789 | size=1 | links=#15433(auto Thunder Bluff;272):10 #22197(auto Thunder Bluff;405):11
+#3401 | auto Thunder Bluff;50§auto Donnerfels;50§auto Les Pitons du Tonnerre;50 | x=-880.2000122070312 y=173.4000091552734 | size=5 | links=#2629(auto Thunder Bluff;36):42 #10958(auto Thunder Bluff;177):20
+#3410 | auto Thunder Bluff;51§auto Donnerfels;51§auto Les Pitons du Tonnerre;51 | x=-1230.900024414063 y=-47.5 | size=1 | links=#4043(auto Thunder Bluff;63):5 #20770(auto Thunder Bluff;371):8
+#3481 | Spot;flight master;Thunder Bluff§spot;flugpunkt;Donnerfels§Spot;flight master;Les Pitons du Tonnerre | x=-1197.200073242188 y=29.70000076293945 | size=1 | links=c2995.1:3
+#3512 | auto Thunder Bluff;52§auto Donnerfels;52§auto Les Pitons du Tonnerre;52 | x=-1331 y=34.40000152587891 | size=1 | links=#8746(auto Thunder Bluff;148):6 #23676(auto Thunder Bluff;438):23
+#3524 | auto Thunder Bluff;53§auto Donnerfels;53§auto Les Pitons du Tonnerre;53 | x=-1191.700073242188 y=153.4000091552734 | size=1 | links=#3198(auto Thunder Bluff;45):8 #22636(auto Thunder Bluff;414):5
+#3561 | auto Thunder Bluff;54§auto Donnerfels;54§auto Les Pitons du Tonnerre;54 | x=-1097.400024414063 y=-61.60000228881836 | size=1 | links=#386(auto Thunder Bluff;6):9 #22068(auto Thunder Bluff;400):6
+#3564 | auto Thunder Bluff;55§auto Donnerfels;55§auto Les Pitons du Tonnerre;55 | x=-971.2999877929688 y=-67.30000305175781 | size=1 | links=#6435(auto Thunder Bluff;105):9 c6491.1:14
+#3589 | auto Thunder Bluff;56§auto Donnerfels;56§auto Les Pitons du Tonnerre;56 | x=-955.9000244140625 y=281.1000061035156 | size=1 | links=#7410(auto Thunder Bluff;125):4 c3047.1:5
+#3620 | auto Thunder Bluff;57§auto Donnerfels;57§auto Les Pitons du Tonnerre;57 | x=-969.7999877929688 y=71.5999984741211 | size=1 | links=#16351(auto Thunder Bluff;287):30 #26593(auto Thunder Bluff;486):43
+#3624 | auto Thunder Bluff;58§auto Donnerfels;58§auto Les Pitons du Tonnerre;58 | x=-1145.700073242188 y=-119.5 | size=1 | links=#14997(auto Thunder Bluff;266):7 #28355(auto Thunder Bluff;513):10
+#3783 | auto Thunder Bluff;59§auto Donnerfels;59§auto Les Pitons du Tonnerre;59 | x=-1034.599975585938 y=-56.60000228881836 | size=1 | links=#4194(auto Thunder Bluff;66):3 #28160(pier;elevator;Thunder Bluff;north;down):2
+#3886 | auto Thunder Bluff;60§auto Donnerfels;60§auto Les Pitons du Tonnerre;60 | x=-1095 y=-192.1999969482422 | size=1 | links=#16087(auto Thunder Bluff;284):15 #25826(auto Thunder Bluff;471):13
+#3967 | auto Thunder Bluff;61§auto Donnerfels;61§auto Les Pitons du Tonnerre;61 | x=-1332.700073242188 y=14 | size=1 | links=#8440(auto Thunder Bluff;146):10 #22201(auto Thunder Bluff;406):8
+#4018 | auto Thunder Bluff;62§auto Donnerfels;62§auto Les Pitons du Tonnerre;62 | x=-989.4000244140625 y=354.6000061035156 | size=1 | links=#680(auto Thunder Bluff;12):8 #21087(auto Thunder Bluff;377):19
+#4043 | auto Thunder Bluff;63§auto Donnerfels;63§auto Les Pitons du Tonnerre;63 | x=-1226.200073242188 y=-49.5 | size=1 | links=#1463(auto Thunder Bluff;25):15 #3410(auto Thunder Bluff;51):5 #5679(auto Thunder Bluff;93):11
+#4069 | auto Thunder Bluff;64§auto Donnerfels;64§auto Les Pitons du Tonnerre;64 | x=-1005 y=259.2000122070313 | size=1 | links=#14508(auto Thunder Bluff;258):4 #26379(auto Thunder Bluff;482):0 c3045.1:2
+#4168 | auto Thunder Bluff;65§auto Donnerfels;65§auto Les Pitons du Tonnerre;65 | x=-908.7999877929688 y=234.6999969482422 | size=1 | links=#13196(auto Thunder Bluff;226):7 #23332(auto Thunder Bluff;431):11
+#4194 | auto Thunder Bluff;66§auto Donnerfels;66§auto Les Pitons du Tonnerre;66 | x=-1033.700073242188 y=-59.70000076293945 | size=1 | links=#3783(auto Thunder Bluff;59):3 #11139(auto Thunder Bluff;178):4
+#4207 | auto Thunder Bluff;67§auto Donnerfels;67§auto Les Pitons du Tonnerre;67 | x=-1282 y=-111.7000045776367 | size=1 | links=#20063(auto Thunder Bluff;361):7 #24463(auto Thunder Bluff;449):2
+#4331 | Clarice Foster;Questgiver;Thunder Bluff;1;28.87;26.4§Clarice Foster;Questgeber;Donnerfels;1;28.87;26.4§Clarice Foster;Questgiver;Les Pitons du Tonnerre;1;28.87;26.4 | x=-1034.765949875473 y=215.8579556855026 | size=1
+#4390 | auto Thunder Bluff;68§auto Donnerfels;68§auto Les Pitons du Tonnerre;68 | x=-1142 y=-131.5 | size=1 | links=#5848(auto Thunder Bluff;96):3 #13448(auto Thunder Bluff;231):21
+#4428 | auto Thunder Bluff;69§auto Donnerfels;69§auto Les Pitons du Tonnerre;69 | x=-1209.900024414063 y=-99.9000015258789 | size=1 | links=#12917(auto Thunder Bluff;213):22 #24306(auto Thunder Bluff;446):25 c3057.1:12
+#4447 | auto Thunder Bluff;70§auto Donnerfels;70§auto Les Pitons du Tonnerre;70 | x=-1123.700073242188 y=-136.5 | size=1 | links=#10685(auto Thunder Bluff;175):6 #17799(auto Thunder Bluff;308):8
+#4556 | auto Thunder Bluff;71§auto Donnerfels;71§auto Les Pitons du Tonnerre;71 | x=-957 y=245.5 | size=1 | links=#22246(auto Thunder Bluff;407):11 c3044.1:6
+#4751 | auto Thunder Bluff;72§auto Donnerfels;72§auto Les Pitons du Tonnerre;72 | x=-1259.800048828125 y=45.10000228881836 | size=1 | links=#9114(s;h;Mailbox;Thunder Bluff):2 #18914(auto Thunder Bluff;332):9 #20303(auto Thunder Bluff;365):4
+#4882 | auto Thunder Bluff;73§auto Donnerfels;73§auto Les Pitons du Tonnerre;73 | x=-1056.200073242188 y=-167.8000030517578 | size=1 | links=#13793(auto Thunder Bluff;243):10 #15950(auto Thunder Bluff;280):9
+#4889 | auto Thunder Bluff;74§auto Donnerfels;74§auto Les Pitons du Tonnerre;74 | x=-1086 y=-9 | size=1 | links=#1257(auto Thunder Bluff;22):15 #23169(auto Thunder Bluff;426):13
+#4906 | auto Thunder Bluff;75§auto Donnerfels;75§auto Les Pitons du Tonnerre;75 | x=-1206.900024414063 y=112.3000030517578 | size=1 | links=#20061(auto Thunder Bluff;360):7 #21427(auto Thunder Bluff;384):16 c8722.1:7
+#4930 | auto Thunder Bluff;76§auto Donnerfels;76§auto Les Pitons du Tonnerre;76 | x=-1122.5 y=-185.3000030517578 | size=5 | links=#13040(auto Thunder Bluff;217):24 #16578(down;valley;rescue;Elder Rise;Thunder Bluff):42 #26305(auto Thunder Bluff;480):23 #26892(auto Thunder Bluff;488):27
+#4952 | auto Thunder Bluff;77§auto Donnerfels;77§auto Les Pitons du Tonnerre;77 | x=-1156.900024414063 y=-81.5 | size=1 | links=#1205(auto Thunder Bluff;21):16 #22625(auto Thunder Bluff;413):16
+#4981 | auto Thunder Bluff;78§auto Donnerfels;78§auto Les Pitons du Tonnerre;78 | x=-1110.200073242188 y=13.19999980926514 | size=1 | links=#7469(auto Thunder Bluff;127):7 #16449(auto Thunder Bluff;290):13 #27756(auto Thunder Bluff;501):8
+#5036 | auto Thunder Bluff;79§auto Donnerfels;79§auto Les Pitons du Tonnerre;79 | x=-1204.5 y=23.20000076293945 | size=1 | links=#5226(auto Thunder Bluff;81):5 #21132(auto Thunder Bluff;378):5
+#5189 | auto Thunder Bluff;80§auto Donnerfels;80§auto Les Pitons du Tonnerre;80 | x=-1191 y=38.10000228881836 | size=1 | links=#5322(stairway;flight master;tower;one):7 #18315(auto Thunder Bluff;317):4
+#5226 | auto Thunder Bluff;81§auto Donnerfels;81§auto Les Pitons du Tonnerre;81 | x=-1199.800048828125 y=21 | size=1 | links=#3247(auto Thunder Bluff;46):4 #5036(auto Thunder Bluff;79):5
+#5228 | auto Thunder Bluff;82§auto Donnerfels;82§auto Les Pitons du Tonnerre;82 | x=-968.1000366210938 y=-93.0999984741211 | size=1 | links=#6746(auto Thunder Bluff;114):4 #20040(auto Thunder Bluff;359):4
+#5243 | auto Thunder Bluff;83§auto Donnerfels;83§auto Les Pitons du Tonnerre;83 | x=-1046.5 y=262 | size=1 | links=#11990(auto Thunder Bluff;194):10 #18506(auto Thunder Bluff;325):10
+#5298 | auto Thunder Bluff;84§auto Donnerfels;84§auto Les Pitons du Tonnerre;84 | x=-994.5 y=274.3999938964844 | size=1 | links=#15608(auto Thunder Bluff;275):2 #21274(auto Thunder Bluff;381):5
+#5322 | stairway;flight master;tower;one§treppe;flugpunkt;turm;eins§stairway;flight master;tower;un | x=-1189.5 y=31.20000076293945 | size=1 | links=#2828(auto Thunder Bluff;39):4 #5189(auto Thunder Bluff;80):7 #16423(auto Thunder Bluff;289):7
+#5324 | auto Thunder Bluff;85§auto Donnerfels;85§auto Les Pitons du Tonnerre;85 | x=-1244.400024414063 y=-196.6000061035156 | size=5 | links=#9201(auto Thunder Bluff;152):12 #28166(auto Thunder Bluff;509):27
+#5373 | auto Thunder Bluff;86§auto Donnerfels;86§auto Les Pitons du Tonnerre;86 | x=-1396.400024414063 y=-59.10000228881836 | size=1 | links=#21646(auto Thunder Bluff;388):6 #26209(auto Thunder Bluff;479):8
+#5425 | auto Thunder Bluff;87§auto Donnerfels;87§auto Les Pitons du Tonnerre;87 | x=-1117.599975585938 y=57.79999923706055 | size=1 | links=#16515(auto Thunder Bluff;292):7 #25418(auto Thunder Bluff;467):15
+#5427 | auto Thunder Bluff;88§auto Donnerfels;88§auto Les Pitons du Tonnerre;88 | x=-1188.200073242188 y=33.90000152587891 | size=1 | links=#7168(auto Thunder Bluff;121):4 #13141(auto Thunder Bluff;224):6
+#5442 | auto Thunder Bluff;89§auto Donnerfels;89§auto Les Pitons du Tonnerre;89 | x=-1366.300048828125 y=-164.1999969482422 | size=1 | links=#27631(auto Thunder Bluff;497):21 #27832(auto Thunder Bluff;503):5
+#5445 | auto Thunder Bluff;90§auto Donnerfels;90§auto Les Pitons du Tonnerre;90 | x=-1278 y=-125.4000015258789 | size=1 | links=#18921(auto Thunder Bluff;333):12 #27775(auto Thunder Bluff;502):0
+#5449 | auto Thunder Bluff;91§auto Donnerfels;91§auto Les Pitons du Tonnerre;91 | x=-1009.200012207031 y=-94.70000457763672 | size=1 | links=#13315(auto Thunder Bluff;229):13 #18396(auto Thunder Bluff;323):10
+#5507 | auto Thunder Bluff;92§auto Donnerfels;92§auto Les Pitons du Tonnerre;92 | x=-1150.700073242188 y=-105.7000045776367 | size=1 | links=#1273(auto Thunder Bluff;23):6 #9749(auto Thunder Bluff;159):7
+#5679 | auto Thunder Bluff;93§auto Donnerfels;93§auto Les Pitons du Tonnerre;93 | x=-1229.300048828125 y=-61 | size=1 | links=#4043(auto Thunder Bluff;63):11 #26650(auto Thunder Bluff;487):8 c3018.1:17 c4721.1:21
+#5704 | auto Thunder Bluff;94§auto Donnerfels;94§auto Les Pitons du Tonnerre;94 | x=-1094.200073242188 y=213.8000030517578 | size=1 | links=#9310(auto Thunder Bluff;154):12 #28345(auto Thunder Bluff;512):18
+#5786 | auto Thunder Bluff;95§auto Donnerfels;95§auto Les Pitons du Tonnerre;95 | x=-1416.099975585938 y=-113.9000015258789 | size=1 | links=#18612(auto Thunder Bluff;328):10 #19017(auto Thunder Bluff;335):7
+#5848 | auto Thunder Bluff;96§auto Donnerfels;96§auto Les Pitons du Tonnerre;96 | x=-1144.400024414063 y=-133.9000091552734 | size=1 | links=#4390(auto Thunder Bluff;68):3 #24891(auto Thunder Bluff;456):14
+#5960 | auto Thunder Bluff;97§auto Donnerfels;97§auto Les Pitons du Tonnerre;97 | x=-1406.300048828125 y=-196.5 | size=1 | links=#18514(auto Thunder Bluff;326):9
+#6058 | auto Thunder Bluff;98§auto Donnerfels;98§auto Les Pitons du Tonnerre;98 | x=-1383.099975585938 y=-43.70000076293945 | size=1 | links=#12652(auto Thunder Bluff;211):21 #13584(auto Thunder Bluff;234):6
+#6157 | auto Thunder Bluff;99§auto Donnerfels;99§auto Les Pitons du Tonnerre;99 | x=-1188.5 y=-52 | size=1 | links=#13625(auto Thunder Bluff;236):19 #18439(auto Thunder Bluff;324):19 c3024.1:11 c4721.1:19
+#6292 | auto Thunder Bluff;100§auto Donnerfels;100§auto Les Pitons du Tonnerre;100 | x=-1042 y=220.8000030517578 | size=1 | links=#21909(auto Thunder Bluff;393):11 #22154(auto Thunder Bluff;402):9
+#6300 | auto Thunder Bluff;101§auto Donnerfels;101§auto Les Pitons du Tonnerre;101 | x=-1051.400024414063 y=-40 | size=1 | links=#2716(auto Thunder Bluff;37):3 #7811(auto Thunder Bluff;130):4
+#6326 | auto Thunder Bluff;102§auto Donnerfels;102§auto Les Pitons du Tonnerre;102 | x=-1363.900024414063 y=120.0999984741211 | size=1 | links=#8224(auto Thunder Bluff;142):21 #14197(auto Thunder Bluff;254):11
+#6372 | elevator;Thunder Bluff;north§fahrstuhl;Donnerfels;nördlich§elevator;Les Pitons du Tonnerre;north | x=-1037.200073242188 y=-49.29999923706055 | size=1 | links=#6553(pier;elevator;Thunder Bluff;north;top):6 #28160(pier;elevator;Thunder Bluff;north;down):5
+#6381 | auto Thunder Bluff;103§auto Donnerfels;103§auto Les Pitons du Tonnerre;103 | x=-1344.800048828125 y=-127.3000030517578 | size=1 | links=#7127(auto Thunder Bluff;119):20 #16263(auto Thunder Bluff;286):14
+#6429 | auto Thunder Bluff;104§auto Donnerfels;104§auto Les Pitons du Tonnerre;104 | x=-989.2999877929688 y=274.3999938964844 | size=1 | links=#24713(auto Thunder Bluff;455):21 c3031.1:9 c3032.1:15 c26007.1:7
+#6435 | auto Thunder Bluff;105§auto Donnerfels;105§auto Les Pitons du Tonnerre;105 | x=-967.2999877929688 y=-58.90000152587891 | size=1 | links=#3564(auto Thunder Bluff;55):9
+#6489 | auto Thunder Bluff;106§auto Donnerfels;106§auto Les Pitons du Tonnerre;106 | x=-1067.300048828125 y=-133.8000030517578 | size=1 | links=#10598(auto Thunder Bluff;172):12 #18328(auto Thunder Bluff;319):16
+#6553 | pier;elevator;Thunder Bluff;north;top§anleger;fahrstuhl;Donnerfels;nördlich;oben§pier;elevator;Les Pitons du Tonnerre;north;top | x=-1042.900024414063 y=-46.79999923706055 | size=1 | links=#6372(elevator;Thunder Bluff;north):6 #25040(auto Thunder Bluff;460):3
+#6565 | auto Thunder Bluff;107§auto Donnerfels;107§auto Les Pitons du Tonnerre;107 | x=-1060.200073242188 y=-32.5 | size=1 | links=#23845(auto Thunder Bluff;440):3 #25066(auto Thunder Bluff;461):4
+#6598 | auto Thunder Bluff;108§auto Donnerfels;108§auto Les Pitons du Tonnerre;108 | x=-899.2000122070312 y=278.2000122070313 | size=1 | links=#13476(auto Thunder Bluff;232):40 #15069(auto Thunder Bluff;267):16
+#6614 | auto Thunder Bluff;109§auto Donnerfels;109§auto Les Pitons du Tonnerre;109 | x=-1109.900024414063 y=-8.40000057220459 | size=1 | links=#12096(auto Thunder Bluff;195):7 #23967(auto Thunder Bluff;443):9
+#6629 | auto Thunder Bluff;110§auto Donnerfels;110§auto Les Pitons du Tonnerre;110 | x=-1391.5 y=-77.20000457763672 | size=1 | links=#21990(auto Thunder Bluff;395):19 #26209(auto Thunder Bluff;479):13 c7427.1:9 c10360.1:9
+#6656 | auto Thunder Bluff;111§auto Donnerfels;111§auto Les Pitons du Tonnerre;111 | x=-1256.200073242188 y=71.0999984741211 | size=1 | links=#932(auto Thunder Bluff;16):11 #18148(auto Thunder Bluff;314):8
+#6689 | auto Thunder Bluff;112§auto Donnerfels;112§auto Les Pitons du Tonnerre;112 | x=-1107.700073242188 y=124.3000030517578 | size=1 | links=#19200(auto Thunder Bluff;341):6 #24535(auto Thunder Bluff;451):9
+#6711 | auto Thunder Bluff;113§auto Donnerfels;113§auto Les Pitons du Tonnerre;113 | x=-1144 y=59.29999923706055 | size=1 | links=#2860(auto Thunder Bluff;41):5 #24606(auto Thunder Bluff;453):11
+#6746 | auto Thunder Bluff;114§auto Donnerfels;114§auto Les Pitons du Tonnerre;114 | x=-967.4000244140625 y=-88.5999984741211 | size=1 | links=#5228(auto Thunder Bluff;82):4 c6491.1:20
+#6812 | auto Thunder Bluff;115§auto Donnerfels;115§auto Les Pitons du Tonnerre;115 | x=-1206.099975585938 y=28.70000076293945 | size=1 | links=#13973(auto Thunder Bluff;246):5 #19140(auto Thunder Bluff;339):4
+#6924 | auto Thunder Bluff;116§auto Donnerfels;116§auto Les Pitons du Tonnerre;116 | x=-1123.5 y=65.20000457763672 | size=1 | links=#13729(auto Thunder Bluff;241):8 #26974(auto Thunder Bluff;492):6
+#7112 | auto Thunder Bluff;117§auto Donnerfels;117§auto Les Pitons du Tonnerre;117 | x=-1290.099975585938 y=-102.7000045776367 | size=1 | links=#10486(auto Thunder Bluff;168):6 #22672(auto Thunder Bluff;416):4
+#7116 | auto Thunder Bluff;118§auto Donnerfels;118§auto Les Pitons du Tonnerre;118 | x=-1107.900024414063 y=115.8000030517578 | size=1 | links=#10434(auto Thunder Bluff;167):11 #10516(auto Thunder Bluff;170):6
+#7127 | auto Thunder Bluff;119§auto Donnerfels;119§auto Les Pitons du Tonnerre;119 | x=-1364.900024414063 y=-130.8000030517578 | size=1 | links=#6381(auto Thunder Bluff;103):20 #10655(auto Thunder Bluff;174):9
+#7148 | auto Thunder Bluff;120§auto Donnerfels;120§auto Les Pitons du Tonnerre;120 | x=-1292.700073242188 y=-120.5 | size=1 | links=#7389(auto Thunder Bluff;124):16 #7938(auto Thunder Bluff;135):6
+#7168 | auto Thunder Bluff;121§auto Donnerfels;121§auto Les Pitons du Tonnerre;121 | x=-1190.300048828125 y=37.40000152587891 | size=1 | links=#5427(auto Thunder Bluff;88):4 #21915(auto Thunder Bluff;394):6
+#7323 | auto Thunder Bluff;122§auto Donnerfels;122§auto Les Pitons du Tonnerre;122 | x=-1057.200073242188 y=-281 | size=1 | links=#20672(auto Thunder Bluff;369):20 c3033.1:17 c3034.1:20 c3036.1:7 c5770.1:15
+#7358 | auto Thunder Bluff;123§auto Donnerfels;123§auto Les Pitons du Tonnerre;123 | x=-1259 y=36.20000076293945 | size=1 | links=#15859(auto Thunder Bluff;279):8 #20303(auto Thunder Bluff;365):4
+#7389 | auto Thunder Bluff;124§auto Donnerfels;124§auto Les Pitons du Tonnerre;124 | x=-1309.5 y=-123.0999984741211 | size=1 | links=#7148(auto Thunder Bluff;120):16 #10515(auto Thunder Bluff;169):16
+#7410 | auto Thunder Bluff;125§auto Donnerfels;125§auto Les Pitons du Tonnerre;125 | x=-960.2999877929688 y=282.6000061035156 | size=1 | links=#3589(auto Thunder Bluff;56):4 #27843(auto Thunder Bluff;505):7
+#7437 | auto Thunder Bluff;126§auto Donnerfels;126§auto Les Pitons du Tonnerre;126 | x=-1205.300048828125 y=33 | size=1 | links=#15964(auto Thunder Bluff;281):5 #25856(auto Thunder Bluff;473):5
+#7469 | auto Thunder Bluff;127§auto Donnerfels;127§auto Les Pitons du Tonnerre;127 | x=-1109 y=6.099999904632568 | size=1 | links=#1257(auto Thunder Bluff;22):11 #4981(auto Thunder Bluff;78):7 #12096(auto Thunder Bluff;195):7
+#7600 | auto Thunder Bluff;128§auto Donnerfels;128§auto Les Pitons du Tonnerre;128 | x=-1096.400024414063 y=20.20000076293945 | size=1 | links=#23441(auto Thunder Bluff;435):11 #27756(auto Thunder Bluff;501):7
+#7626 | auto Thunder Bluff;129§auto Donnerfels;129§auto Les Pitons du Tonnerre;129 | x=-929.7999877929688 y=135.5 | size=1 | links=#1290(auto Thunder Bluff;24):7
+#7811 | auto Thunder Bluff;130§auto Donnerfels;130§auto Les Pitons du Tonnerre;130 | x=-1054.800048828125 y=-37.40000152587891 | size=1 | links=#6300(auto Thunder Bluff;101):4 #25066(auto Thunder Bluff;461):3
+#7824 | auto Thunder Bluff;131§auto Donnerfels;131§auto Les Pitons du Tonnerre;131 | x=-986.2999877929688 y=-56.90000152587891 | size=1 | links=#2817(auto Thunder Bluff;38):10 #23983(auto Thunder Bluff;444):9
+#7838 | auto Thunder Bluff;132§auto Donnerfels;132§auto Les Pitons du Tonnerre;132 | x=-1262.200073242188 y=128.6000061035156 | size=1 | links=#12475(auto Thunder Bluff;208):14 #27654(auto Thunder Bluff;498):14 c2987.1:5 c4451.1:13
+#7888 | auto Thunder Bluff;133§auto Donnerfels;133§auto Les Pitons du Tonnerre;133 | x=-969.2000122070312 y=242.8000030517578 | size=1 | links=#22001(auto Thunder Bluff;396):4 #22246(auto Thunder Bluff;407):7
+#7923 | auto Thunder Bluff;134§auto Donnerfels;134§auto Les Pitons du Tonnerre;134 | x=-1206.700073242188 y=-33.5 | size=1 | links=#1463(auto Thunder Bluff;25):10 #10548(auto Thunder Bluff;171):13 #18439(auto Thunder Bluff;324):8
+#7938 | auto Thunder Bluff;135§auto Donnerfels;135§auto Les Pitons du Tonnerre;135 | x=-1286.599975585938 y=-119.8000030517578 | size=1 | links=#7148(auto Thunder Bluff;120):6 #13090(auto Thunder Bluff;221):5
+#7951 | auto Thunder Bluff;136§auto Donnerfels;136§auto Les Pitons du Tonnerre;136 | x=-1278.400024414063 y=-20 | size=1 | links=#22(auto Thunder Bluff;1):19 #17904(auto Thunder Bluff;310):17
+#8007 | auto Thunder Bluff;137§auto Donnerfels;137§auto Les Pitons du Tonnerre;137 | x=-1066.5 y=241.9000091552734 | size=1 | links=#12557(auto Thunder Bluff;210):7 #18949(auto Thunder Bluff;334):10
+#8076 | auto Thunder Bluff;138§auto Donnerfels;138§auto Les Pitons du Tonnerre;138 | x=-1016.600036621094 y=-73.5 | size=1 | links=#11835(auto Thunder Bluff;191):9 #21697(auto Thunder Bluff;389):24
+#8097 | auto Thunder Bluff;139§auto Donnerfels;139§auto Les Pitons du Tonnerre;139 | x=-902.4000244140625 y=252.1999969482422 | size=1 | links=#15069(auto Thunder Bluff;267):10 #23332(auto Thunder Bluff;431):8
+#8098 | auto Thunder Bluff;140§auto Donnerfels;140§auto Les Pitons du Tonnerre;140 | x=-1293.900024414063 y=-171.1000061035156 | size=5 | links=#19289(auto Thunder Bluff;344):24 #19478(auto Thunder Bluff;347):30
+#8194 | auto Thunder Bluff;141§auto Donnerfels;141§auto Les Pitons du Tonnerre;141 | x=-1212.099975585938 y=38.60000228881836 | size=1 | links=#865(auto Thunder Bluff;15):6 #18884(auto Thunder Bluff;330):7
+#8224 | auto Thunder Bluff;142§auto Donnerfels;142§auto Les Pitons du Tonnerre;142 | x=-1384.900024414063 y=126.4000015258789 | size=1 | links=#6326(auto Thunder Bluff;102):21 #21808(auto Thunder Bluff;392):7
+#8263 | auto Thunder Bluff;143§auto Donnerfels;143§auto Les Pitons du Tonnerre;143 | x=-1100 y=264.6000061035156 | size=1 | links=#13071(auto Thunder Bluff;218):17 #16013(auto Thunder Bluff;282):15
+#8292 | auto Thunder Bluff;144§auto Donnerfels;144§auto Les Pitons du Tonnerre;144 | x=-1000.799987792969 y=265.2000122070313 | size=1 | links=#21274(auto Thunder Bluff;381):5 #26379(auto Thunder Bluff;482):7
+#8424 | guild vault;Thunder Bluff§gildenbank;Donnerfels§guild vault;Les Pitons du Tonnerre | x=-1257.660096291894 y=63.85790723780396 | size=1 | links=#18914(auto Thunder Bluff;332):9
+#8432 | auto Thunder Bluff;145§auto Donnerfels;145§auto Les Pitons du Tonnerre;145 | x=-1096.400024414063 y=-32.70000076293945 | size=1 | links=#14859(auto Thunder Bluff;262):4 #20658(auto Thunder Bluff;368):7
+#8440 | auto Thunder Bluff;146§auto Donnerfels;146§auto Les Pitons du Tonnerre;146 | x=-1339.400024414063 y=6.5 | size=1 | links=#3967(auto Thunder Bluff;61):10 #16377(auto Thunder Bluff;288):13
+#8496 | auto Thunder Bluff;147§auto Donnerfels;147§auto Les Pitons du Tonnerre;147 | x=-990.2000122070312 y=256.1000061035156 | size=1 | links=#13306(auto Thunder Bluff;228):13 c3046.1:8 c3049.1:6
+#8746 | auto Thunder Bluff;148§auto Donnerfels;148§auto Les Pitons du Tonnerre;148 | x=-1331.599975585938 y=41 | size=1 | links=#486(auto Thunder Bluff;9):5 #3512(auto Thunder Bluff;52):6
+#8959 | auto Thunder Bluff;149§auto Donnerfels;149§auto Les Pitons du Tonnerre;149 | x=-1369.300048828125 y=73.5999984741211 | size=1 | links=#14197(auto Thunder Bluff;254):37 #24001(auto Thunder Bluff;445):28
+#9091 | auto Thunder Bluff;150§auto Donnerfels;150§auto Les Pitons du Tonnerre;150 | x=-1451.300048828125 y=-91.80000305175781 | size=1 | links=#12185(auto Thunder Bluff;198):9 #26039(auto Thunder Bluff;474):23 c3040.1:9 c3043.1:9
+#9114 | s;h;Mailbox;Thunder Bluff§s;h;Briefkasten;Thunder Bluff§s;h;Boîte aux lettres;Les Pitons du Tonnerre | x=-1262.609983542013 y=44.42402113604877 | size=1 | links=#4751(auto Thunder Bluff;72):2
+#9139 | auto Thunder Bluff;151§auto Donnerfels;151§auto Les Pitons du Tonnerre;151 | x=-1235.200073242188 y=76.70000457763672 | size=1 | links=#932(auto Thunder Bluff;16):13 #23949(auto Thunder Bluff;442):16
+#9180 | elevator;Thunder Bluff;south§fahrstuhl;Donnerfels;südlich§elevator;Les Pitons du Tonnerre;south | x=-1309.099975585938 y=184.6000061035156 | size=1 | links=#20008(pier;elevator;Thunder Bluff;south;down):7 #22724(pier;elevator;Thunder Bluff;south;top):6
+#9201 | auto Thunder Bluff;152§auto Donnerfels;152§auto Les Pitons du Tonnerre;152 | x=-1254.599975585938 y=-189.4000091552734 | size=5 | links=#5324(auto Thunder Bluff;85):12 #19289(auto Thunder Bluff;344):19
+#9297 | auto Thunder Bluff;153§auto Donnerfels;153§auto Les Pitons du Tonnerre;153 | x=-1231.700073242188 y=249.4000091552734 | size=5 | links=#9735(auto Thunder Bluff;158):34 #14984(auto Thunder Bluff;265):16
+#9310 | auto Thunder Bluff;154§auto Donnerfels;154§auto Les Pitons du Tonnerre;154 | x=-1083.300048828125 y=220.6999969482422 | size=1 | links=#5704(auto Thunder Bluff;94):12 #10253(auto Thunder Bluff;164):6
+#9361 | auto Thunder Bluff;155§auto Donnerfels;155§auto Les Pitons du Tonnerre;155 | x=-1023 y=-256.2000122070313 | size=1 | links=#3074(auto Thunder Bluff;42):20 #16257(auto Thunder Bluff;285):20 c15580.1:15
+#9420 | auto Thunder Bluff;156§auto Donnerfels;156§auto Les Pitons du Tonnerre;156 | x=-1167.800048828125 y=-101.5999984741211 | size=1 | links=#16483(auto Thunder Bluff;291):9 #23275(auto Thunder Bluff;429):5
+#9597 | auto Thunder Bluff;157§auto Donnerfels;157§auto Les Pitons du Tonnerre;157 | x=-1009.400024414063 y=223.9000091552734 | size=1 | links=#14033(auto Thunder Bluff;249):8 #18380(auto Thunder Bluff;321):12 #19803(auto Thunder Bluff;354):14 #23417(auto Thunder Bluff;433):13
+#9735 | auto Thunder Bluff;158§auto Donnerfels;158§auto Les Pitons du Tonnerre;158 | x=-1239.800048828125 y=215.5 | size=5 | links=#9297(auto Thunder Bluff;153):34 #28452(auto Thunder Bluff;515):23
+#9749 | auto Thunder Bluff;159§auto Donnerfels;159§auto Les Pitons du Tonnerre;159 | x=-1157 y=-101.9000015258789 | size=1 | links=#5507(auto Thunder Bluff;92):7 #16483(auto Thunder Bluff;291):5
+#9800 | Bluff Runner Windstrider;Questgiver;Thunder Bluff;1;36.4;54.78§Kliffläufer Windschreiter;Questgeber;Donnerfels;1;36.4;54.78§Messager des Pitons Rôdeur-du-vent;Questgiver;Les Pitons du Tonnerre;1;36.4;54.78 | x=-1231.096705528453 y=136.9400542886062 | size=1
+#9925 | auto Thunder Bluff;160§auto Donnerfels;160§auto Les Pitons du Tonnerre;160 | x=-1047 y=179.8000030517578 | size=1 | links=#14797(auto Thunder Bluff;261):18 #19599(auto Thunder Bluff;350):13
+#9938 | auto Thunder Bluff;161§auto Donnerfels;161§auto Les Pitons du Tonnerre;161 | x=-937.2999877929688 y=336.8000183105469 | size=1 | links=#12264(auto Thunder Bluff;200):26 #13476(auto Thunder Bluff;232):30
+#10074 | auto Thunder Bluff;162§auto Donnerfels;162§auto Les Pitons du Tonnerre;162 | x=-1308.099975585938 y=27.20000076293945 | size=1 | links=#941(auto Thunder Bluff;18):13 #16659(auto Thunder Bluff;295):7
+#10201 | auto Thunder Bluff;163§auto Donnerfels;163§auto Les Pitons du Tonnerre;163 | x=-1158.800048828125 y=33.20000076293945 | size=1 | links=#2123(auto Thunder Bluff;31):9 #14974(auto Thunder Bluff;264):17
+#10253 | auto Thunder Bluff;164§auto Donnerfels;164§auto Les Pitons du Tonnerre;164 | x=-1078.099975585938 y=223.9000091552734 | size=1 | links=#520(auto Thunder Bluff;11):10 #9310(auto Thunder Bluff;154):6
+#10295 | auto Thunder Bluff;165§auto Donnerfels;165§auto Les Pitons du Tonnerre;165 | x=-1178.5 y=-94.80000305175781 | size=1 | links=#11677(auto Thunder Bluff;188):5 #23275(auto Thunder Bluff;429):7
+#10372 | auto Thunder Bluff;166§auto Donnerfels;166§auto Les Pitons du Tonnerre;166 | x=-1293.599975585938 y=41.40000152587891 | size=1 | links=#14407(auto Thunder Bluff;256):19 c6746.1:7 o180523.1:7
+#10434 | auto Thunder Bluff;167§auto Donnerfels;167§auto Les Pitons du Tonnerre;167 | x=-1119.5 y=118.8000030517578 | size=1 | links=#7116(auto Thunder Bluff;118):11 #22684(auto Thunder Bluff;417):8
+#10486 | auto Thunder Bluff;168§auto Donnerfels;168§auto Les Pitons du Tonnerre;168 | x=-1289.5 y=-95.80000305175781 | size=1 | links=#7112(auto Thunder Bluff;117):6 #18382(auto Thunder Bluff;322):13
+#10515 | auto Thunder Bluff;169§auto Donnerfels;169§auto Les Pitons du Tonnerre;169 | x=-1325.700073242188 y=-125.2000045776367 | size=1 | links=#7389(auto Thunder Bluff;124):16 #16263(auto Thunder Bluff;286):4
+#10516 | auto Thunder Bluff;170§auto Donnerfels;170§auto Les Pitons du Tonnerre;170 | x=-1102.099975585938 y=114 | size=1 | links=#1990(auto Thunder Bluff;30):7 #7116(auto Thunder Bluff;118):6
+#10548 | auto Thunder Bluff;171§auto Donnerfels;171§auto Les Pitons du Tonnerre;171 | x=-1206.000731149003 y=-20.3464260198326 | size=1 | links=#7923(auto Thunder Bluff;134):13 #27930(auto Thunder Bluff;506):22 c3027.1:10
+#10598 | auto Thunder Bluff;172§auto Donnerfels;172§auto Les Pitons du Tonnerre;172 | x=-1063.5 y=-145.1999969482422 | size=1 | links=#6489(auto Thunder Bluff;106):12 #15950(auto Thunder Bluff;280):13
+#10650 | auto Thunder Bluff;173§auto Donnerfels;173§auto Les Pitons du Tonnerre;173 | x=-1299.5 y=155.4000091552734 | size=1 | links=#16649(auto Thunder Bluff;293):4 #27698(auto Thunder Bluff;499):3
+#10655 | auto Thunder Bluff;174§auto Donnerfels;174§auto Les Pitons du Tonnerre;174 | x=-1374.599975585938 y=-132 | size=1 | links=#7127(auto Thunder Bluff;119):9 #28075(auto Thunder Bluff;507):7
+#10685 | auto Thunder Bluff;175§auto Donnerfels;175§auto Les Pitons du Tonnerre;175 | x=-1126.5 y=-130.6999969482422 | size=1 | links=#4447(auto Thunder Bluff;70):6 #13927(auto Thunder Bluff;245):5
+#10929 | auto Thunder Bluff;176§auto Donnerfels;176§auto Les Pitons du Tonnerre;176 | x=-1212.5 y=-227.4000091552734 | size=5 | links=#21309(auto Thunder Bluff;383):28 #28166(auto Thunder Bluff;509):17
+#10958 | auto Thunder Bluff;177§auto Donnerfels;177§auto Les Pitons du Tonnerre;177 | x=-886.2000122070312 y=154.1000061035156 | size=5 | links=#3401(auto Thunder Bluff;50):20 #25642(auto Thunder Bluff;469):36
+#11139 | auto Thunder Bluff;178§auto Donnerfels;178§auto Les Pitons du Tonnerre;178 | x=-1032 y=-63.40000152587891 | size=1 | links=#4194(auto Thunder Bluff;66):4 #11835(auto Thunder Bluff;191):15
+#11170 | auto Thunder Bluff;179§auto Donnerfels;179§auto Les Pitons du Tonnerre;179 | x=-1019.299987792969 y=209.1999969482422 | size=1 | links=#13352(auto Thunder Bluff;230):18 #15547(auto Thunder Bluff;274):7
+#11192 | auto Thunder Bluff;180§auto Donnerfels;180§auto Les Pitons du Tonnerre;180 | x=-1209.5 y=129.1999969482422 | size=1 | links=#11392(auto Thunder Bluff;186):17 #18343(auto Thunder Bluff;320):7 #20061(auto Thunder Bluff;360):10
+#11247 | auto Thunder Bluff;181§auto Donnerfels;181§auto Les Pitons du Tonnerre;181 | x=-1332.700073242188 y=-144.5 | size=5 | links=#376(auto Thunder Bluff;4):42 #19332(auto Thunder Bluff;346):27 #19478(auto Thunder Bluff;347):17 #22016(auto Thunder Bluff;397):19
+#11263 | auto Thunder Bluff;182§auto Donnerfels;182§auto Les Pitons du Tonnerre;182 | x=-1404.099975585938 y=-128.6999969482422 | size=1 | links=#24970(auto Thunder Bluff;458):9 #26901(auto Thunder Bluff;489):4
+#11284 | auto Thunder Bluff;183§auto Donnerfels;183§auto Les Pitons du Tonnerre;183 | x=-1340.800048828125 y=172.8000030517578 | size=1 | links=#22158(auto Thunder Bluff;404):24 #25255(auto Thunder Bluff;464):5
+#11320 | auto Thunder Bluff;184§auto Donnerfels;184§auto Les Pitons du Tonnerre;184 | x=-1093.099975585938 y=138.1999969482422 | size=1 | links=#19603(auto Thunder Bluff;351):13 #24535(auto Thunder Bluff;451):10
+#11383 | auto Thunder Bluff;185§auto Donnerfels;185§auto Les Pitons du Tonnerre;185 | x=-966.5 y=353.8000183105469 | size=1 | links=#15493(auto Thunder Bluff;273):4 #17500(auto Thunder Bluff;304):4
+#11392 | auto Thunder Bluff;186§auto Donnerfels;186§auto Les Pitons du Tonnerre;186 | x=-1225.5 y=137.4000091552734 | size=1 | links=#11192(auto Thunder Bluff;180):17 #27654(auto Thunder Bluff;498):23
+#11463 | auto Thunder Bluff;187§auto Donnerfels;187§auto Les Pitons du Tonnerre;187 | x=-1271.099975585938 y=54.10000228881836 | size=1 | links=#14407(auto Thunder Bluff;256):6 #19258(auto Thunder Bluff;342):7
+#11481 | Chepi;Reagents;Thunder Bluff;1;36.38;54.85§Chepi;Reagenzien;Donnerfels;1;36.38;54.85§Chepi;Reagents;Les Pitons du Tonnerre;1;36.38;54.85 | x=-1232.600155316292 y=136.9400542886062 | size=1
+#11508 | down;rescue;south;Thunder Bluff§unten;rettung;südlich;Donnerfels§bas;sauvetage;south;Les Pitons du Tonnerre | x=-1311.700073242188 y=187.3000030517578 | size=1 | links=#12964(auto Thunder Bluff;214):10 #17775(auto Thunder Bluff;307):11
+#11677 | auto Thunder Bluff;188§auto Donnerfels;188§auto Les Pitons du Tonnerre;188 | x=-1183.200073242188 y=-91.5999984741211 | size=1 | links=#10295(auto Thunder Bluff;165):5 #24306(auto Thunder Bluff;446):5
+#11707 | auto Thunder Bluff;189§auto Donnerfels;189§auto Les Pitons du Tonnerre;189 | x=-1061.700073242188 y=-230.3000030517578 | size=1 | links=#730(auto Thunder Bluff;13):27 #17244(auto Thunder Bluff;300):10 #18223(auto Thunder Bluff;315):9 #25476(auto Thunder Bluff;468):9 c4046.1:18 c4309.1:11 c4310.1:10 c11833.1:14
+#11758 | auto Thunder Bluff;190§auto Donnerfels;190§auto Les Pitons du Tonnerre;190 | x=-1278.300048828125 y=128.6000061035156 | size=1 | links=#12475(auto Thunder Bluff;208):4 #19264(auto Thunder Bluff;343):10 c5054.1:13 c5189.1:12
+#11835 | auto Thunder Bluff;191§auto Donnerfels;191§auto Les Pitons du Tonnerre;191 | x=-1025.300048828125 y=-77.5 | size=1 | links=#8076(auto Thunder Bluff;138):9 #11139(auto Thunder Bluff;178):15 #13315(auto Thunder Bluff;229):11
+#11861 | auto Thunder Bluff;192§auto Donnerfels;192§auto Les Pitons du Tonnerre;192 | x=-1245.200073242188 y=-94.9000015258789 | size=1 | links=#14462(auto Thunder Bluff;257):8 #17387(auto Thunder Bluff;302):8
+#11949 | auto Thunder Bluff;193§auto Donnerfels;193§auto Les Pitons du Tonnerre;193 | x=-1368.900024414063 y=29.5 | size=1 | links=#21043(auto Thunder Bluff;376):19 #24001(auto Thunder Bluff;445):15
+#11957 | passage;from;Thunder Bluff;north;to;Mulgore§passage;von;Donnerfels;nördlich;nach;mulgore§passage;de;Les Pitons du Tonnerre;north;vers;Mulgore | x=-969.7999877929688 y=-115.7000045776367 | size=1 | links=#19447(passage;from;Mulgore;to;Thunder Bluff;north):3 #24520(auto Thunder Bluff;450):18
+#11990 | auto Thunder Bluff;194§auto Donnerfels;194§auto Les Pitons du Tonnerre;194 | x=-1037.5 y=256.3999938964844 | size=1 | links=#3133(auto Thunder Bluff;43):11 #5243(auto Thunder Bluff;83):10 c3447.1:7
+#12078 | down;valley;rescue;Hunter Rise;Thunder Bluff§unten;tal;rettung;Die Anhöhe der Jäger;Donnerfels§bas;valley;sauvetage;Cime des chasseurs;Les Pitons du Tonnerre | x=-1334.5 y=-59.20000076293945 | size=1 | links=#14192(auto Thunder Bluff;252):28 #20925(auto Thunder Bluff;374):17
+#12096 | auto Thunder Bluff;195§auto Donnerfels;195§auto Les Pitons du Tonnerre;195 | x=-1109.400024414063 y=-1.399999976158142 | size=1 | links=#6614(auto Thunder Bluff;109):7 #7469(auto Thunder Bluff;127):7 #22398(auto Thunder Bluff;410):17
+#12130 | auto Thunder Bluff;196§auto Donnerfels;196§auto Les Pitons du Tonnerre;196 | x=-1248.400024414063 y=136 | size=1 | links=#20902(auto Thunder Bluff;373):4 #27654(auto Thunder Bluff;498):3
+#12178 | auto Thunder Bluff;197§auto Donnerfels;197§auto Les Pitons du Tonnerre;197 | x=-1077.099975585938 y=-220.1999969482422 | size=1 | links=#23131(auto Thunder Bluff;425):5 #25476(auto Thunder Bluff;468):9 c9087.1:11
+#12185 | auto Thunder Bluff;198§auto Donnerfels;198§auto Les Pitons du Tonnerre;198 | x=-1459.800048828125 y=-86.9000015258789 | size=1 | links=#9091(auto Thunder Bluff;150):9 #12998(auto Thunder Bluff;215):9 c3038.1:8 c3041.1:6
+#12190 | auto Thunder Bluff;199§auto Donnerfels;199§auto Les Pitons du Tonnerre;199 | x=-1027 y=344.8000183105469 | size=1 | links=#2432(auto Thunder Bluff;34):16 #28124(auto Thunder Bluff;508):11
+#12264 | auto Thunder Bluff;200§auto Donnerfels;200§auto Les Pitons du Tonnerre;200 | x=-957.5 y=353.7000122070313 | size=1 | links=#9938(auto Thunder Bluff;161):26 #15493(auto Thunder Bluff;273):4
+#12295 | auto Thunder Bluff;201§auto Donnerfels;201§auto Les Pitons du Tonnerre;201 | x=-1106.900024414063 y=115.8000030517578 | size=1 | links=#19200(auto Thunder Bluff;341):6 #22860(auto Thunder Bluff;420):9
+#12322 | auto Thunder Bluff;202§auto Donnerfels;202§auto Les Pitons du Tonnerre;202 | x=-975.2999877929688 y=-100.8000030517578 | size=1 | links=#20040(auto Thunder Bluff;359):6 #24520(auto Thunder Bluff;450):12
+#12324 | auto Thunder Bluff;203§auto Donnerfels;203§auto Les Pitons du Tonnerre;203 | x=-1198.900024414063 y=40.20000076293945 | size=1 | links=#17497(auto Thunder Bluff;303):4 #18315(auto Thunder Bluff;317):4
+#12341 | Horde Warbringer;Questgiver;Merchant;Thunder Bluff;1;57.8;76.4§Kriegshetzer der Horde;Questgeber;Händler;Donnerfels;1;57.8;76.4§Porteguerre de la Horde;Questgiver;Merchant;Les Pitons du Tonnerre;1;57.8;76.4 | x=-1383.802374508808 y=-68.26044120421203 | size=1
+#12369 | auto Thunder Bluff;204§auto Donnerfels;204§auto Les Pitons du Tonnerre;204 | x=-1021.400024414063 y=230.9000091552734 | size=1 | links=#14134(auto Thunder Bluff;251):10 #17038(auto Thunder Bluff;298):8
+#12414 | auto Thunder Bluff;205§auto Donnerfels;205§auto Les Pitons du Tonnerre;205 | x=-1017.100036621094 y=220.1000061035156 | size=1 | links=#1977(auto Thunder Bluff;29):2 #27261(auto Thunder Bluff;496):8
+#12428 | auto Thunder Bluff;206§auto Donnerfels;206§auto Les Pitons du Tonnerre;206 | x=-979.9000244140625 y=241.8000030517578 | size=1 | links=#22001(auto Thunder Bluff;396):6 #22136(auto Thunder Bluff;401):9
+#12446 | auto Thunder Bluff;207§auto Donnerfels;207§auto Les Pitons du Tonnerre;207 | x=-944.4000244140625 y=163.8000030517578 | size=5 | links=#25642(auto Thunder Bluff;469):40
+#12475 | auto Thunder Bluff;208§auto Donnerfels;208§auto Les Pitons du Tonnerre;208 | x=-1276.200073242188 y=124.3000030517578 | size=1 | links=#7838(auto Thunder Bluff;132):14 #11758(auto Thunder Bluff;190):4 #20357(auto Thunder Bluff;367):21
+#12494 | auto Thunder Bluff;209§auto Donnerfels;209§auto Les Pitons du Tonnerre;209 | x=-953.4000244140625 y=-4.900000095367432 | size=1 | links=#13036(auto Thunder Bluff;216):12 #20141(auto Thunder Bluff;363):10
+#12557 | auto Thunder Bluff;210§auto Donnerfels;210§auto Les Pitons du Tonnerre;210 | x=-1068.200073242188 y=234.9000091552734 | size=1 | links=#520(auto Thunder Bluff;11):5 #8007(auto Thunder Bluff;137):7
+#12652 | auto Thunder Bluff;211§auto Donnerfels;211§auto Les Pitons du Tonnerre;211 | x=-1369.300048828125 y=-27.60000038146973 | size=1 | links=#385(auto Thunder Bluff;5):14 #6058(auto Thunder Bluff;98):21
+#12792 | auto Thunder Bluff;212§auto Donnerfels;212§auto Les Pitons du Tonnerre;212 | x=-1162.800048828125 y=245 | size=5 | links=#14984(auto Thunder Bluff;265):53 #27227(auto Thunder Bluff;495):53
+#12917 | auto Thunder Bluff;213§auto Donnerfels;213§auto Les Pitons du Tonnerre;213 | x=-1228.300048828125 y=-86.30000305175781 | size=1 | links=#4428(auto Thunder Bluff;69):22 #14462(auto Thunder Bluff;257):10 #26650(auto Thunder Bluff;487):16
+#12964 | auto Thunder Bluff;214§auto Donnerfels;214§auto Les Pitons du Tonnerre;214 | x=-1304.400024414063 y=194.4000091552734 | size=1 | links=#11508(down;rescue;south;Thunder Bluff):10 #14384(auto Thunder Bluff;255):9
+#12998 | auto Thunder Bluff;215§auto Donnerfels;215§auto Les Pitons du Tonnerre;215 | x=-1468.400024414063 y=-82.30000305175781 | size=1 | links=#12185(auto Thunder Bluff;198):9 c3039.1:6 c3042.1:6
+#13036 | auto Thunder Bluff;216§auto Donnerfels;216§auto Les Pitons du Tonnerre;216 | x=-953.5 y=7.400000095367432 | size=1 | links=#12494(auto Thunder Bluff;209):12 #24457(auto Thunder Bluff;448):17
+#13040 | auto Thunder Bluff;217§auto Donnerfels;217§auto Les Pitons du Tonnerre;217 | x=-1145 y=-195.9000091552734 | size=5 | links=#4930(auto Thunder Bluff;76):24 #21309(auto Thunder Bluff;383):46
+#13071 | auto Thunder Bluff;218§auto Donnerfels;218§auto Les Pitons du Tonnerre;218 | x=-1110.400024414063 y=250.9000091552734 | size=1 | links=#8263(auto Thunder Bluff;143):17 #27227(auto Thunder Bluff;495):34
+#13084 | auto Thunder Bluff;219§auto Donnerfels;219§auto Les Pitons du Tonnerre;219 | x=-982.7000122070312 y=286.6000061035156 | size=1 | links=#13209(auto Thunder Bluff;227):4 #20209(auto Thunder Bluff;364):5
+#13086 | auto Thunder Bluff;220§auto Donnerfels;220§auto Les Pitons du Tonnerre;220 | x=-1014.900024414063 y=-290.1000061035156 | size=1 | links=#16257(auto Thunder Bluff;285):14 c9076.1:12
+#13090 | auto Thunder Bluff;221§auto Donnerfels;221§auto Les Pitons du Tonnerre;221 | x=-1281.200073242188 y=-118.4000015258789 | size=1 | links=#7938(auto Thunder Bluff;135):5 #24463(auto Thunder Bluff;449):5
+#13127 | auto Thunder Bluff;222§auto Donnerfels;222§auto Les Pitons du Tonnerre;222 | x=-982.1000366210938 y=216.1999969482422 | size=1 | links=#13352(auto Thunder Bluff;230):20 #17309(auto Thunder Bluff;301):8
+#13128 | auto Thunder Bluff;223§auto Donnerfels;223§auto Les Pitons du Tonnerre;223 | x=-1024.400024414063 y=223.3000030517578 | size=1 | links=#1977(auto Thunder Bluff;29):5 #21060(waters;down;rescue;The Pools of Vision;Thunder Bluff):6
+#13141 | auto Thunder Bluff;224§auto Donnerfels;224§auto Les Pitons du Tonnerre;224 | x=-1188.5 y=27.60000038146973 | size=1 | links=#5427(auto Thunder Bluff;88):6 #23106(auto Thunder Bluff;424):3
+#13161 | auto Thunder Bluff;225§auto Donnerfels;225§auto Les Pitons du Tonnerre;225 | x=-1278.800048828125 y=89.30000305175781 | size=1 | links=#18148(auto Thunder Bluff;314):21 #23433(auto Thunder Bluff;434):11 c2997.1:7 c11869.1:7
+#13196 | auto Thunder Bluff;226§auto Donnerfels;226§auto Les Pitons du Tonnerre;226 | x=-902.6000366210938 y=231.4000091552734 | size=1 | links=#4168(auto Thunder Bluff;65):7 #22040(auto Thunder Bluff;399):15
+#13209 | auto Thunder Bluff;227§auto Donnerfels;227§auto Les Pitons du Tonnerre;227 | x=-986.5 y=283.7000122070313 | size=1 | links=#13084(auto Thunder Bluff;219):4 #13713(auto Thunder Bluff;240):5
+#13306 | auto Thunder Bluff;228§auto Donnerfels;228§auto Les Pitons du Tonnerre;228 | x=-982.9000244140625 y=267.6000061035156 | size=1 | links=#3164(auto Thunder Bluff;44):9 #8496(auto Thunder Bluff;147):13
+#13315 | auto Thunder Bluff;229§auto Donnerfels;229§auto Les Pitons du Tonnerre;229 | x=-1020.700012207031 y=-88 | size=1 | links=#5449(auto Thunder Bluff;91):13 #11835(auto Thunder Bluff;191):11
+#13352 | auto Thunder Bluff;230§auto Donnerfels;230§auto Les Pitons du Tonnerre;230 | x=-1001 y=208.6000061035156 | size=1 | links=#11170(auto Thunder Bluff;179):18 #13127(auto Thunder Bluff;222):20
+#13448 | auto Thunder Bluff;231§auto Donnerfels;231§auto Les Pitons du Tonnerre;231 | x=-1129.900024414063 y=-113.7000045776367 | size=1 | links=#4390(auto Thunder Bluff;68):21 #22658(auto Thunder Bluff;415):14
+#13476 | auto Thunder Bluff;232§auto Donnerfels;232§auto Les Pitons du Tonnerre;232 | x=-914.7999877929688 y=315.5 | size=1 | links=#6598(auto Thunder Bluff;108):40 #9938(auto Thunder Bluff;161):30
+#13528 | auto Thunder Bluff;233§auto Donnerfels;233§auto Les Pitons du Tonnerre;233 | x=-1094.800048828125 y=88.4000015258789 | size=1 | links=#15399(auto Thunder Bluff;271):14 #25838(auto Thunder Bluff;472):11
+#13584 | auto Thunder Bluff;234§auto Donnerfels;234§auto Les Pitons du Tonnerre;234 | x=-1387.5 y=-49 | size=1 | links=#6058(auto Thunder Bluff;98):6 #21646(auto Thunder Bluff;388):6
+#13619 | auto Thunder Bluff;235§auto Donnerfels;235§auto Les Pitons du Tonnerre;235 | x=-993 y=-139.8000030517578 | size=1 | links=#14112(auto Thunder Bluff;250):49 #21544(auto Thunder Bluff;386):19
+#13625 | auto Thunder Bluff;236§auto Donnerfels;236§auto Les Pitons du Tonnerre;236 | x=-1182.800048828125 y=-70.70000457763672 | size=1 | links=#6157(auto Thunder Bluff;99):19 #26117(auto Thunder Bluff;478):9 c3028.1:10 c3029.1:7
+#13691 | auto Thunder Bluff;237§auto Donnerfels;237§auto Les Pitons du Tonnerre;237 | x=-1209.099975585938 y=32.20000076293945 | size=1 | links=#865(auto Thunder Bluff;15):5 #21132(auto Thunder Bluff;378):4
+#13694 | auto Thunder Bluff;238§auto Donnerfels;238§auto Les Pitons du Tonnerre;238 | x=-1084.200073242188 y=-211.1999969482422 | size=1 | links=#16087(auto Thunder Bluff;284):6 #23131(auto Thunder Bluff;425):5
+#13710 | auto Thunder Bluff;239§auto Donnerfels;239§auto Les Pitons du Tonnerre;239 | x=-1086 y=294.3000183105469 | size=1 | links=#2849(auto Thunder Bluff;40):17 #16013(auto Thunder Bluff;282):18
+#13713 | auto Thunder Bluff;240§auto Donnerfels;240§auto Les Pitons du Tonnerre;240 | x=-990.5 y=280.3000183105469 | size=1 | links=#13209(auto Thunder Bluff;227):5 #15608(auto Thunder Bluff;275):4
+#13729 | auto Thunder Bluff;241§auto Donnerfels;241§auto Les Pitons du Tonnerre;241 | x=-1121.400024414063 y=73.0999984741211 | size=1 | links=#6924(auto Thunder Bluff;116):8 #26915(auto Thunder Bluff;490):13
+#13730 | auto Thunder Bluff;242§auto Donnerfels;242§auto Les Pitons du Tonnerre;242 | x=-1031.800048828125 y=193.4000091552734 | size=1 | links=#19599(auto Thunder Bluff;350):6 #26458(auto Thunder Bluff;485):12
+#13793 | auto Thunder Bluff;243§auto Donnerfels;243§auto Les Pitons du Tonnerre;243 | x=-1052.5 y=-177.1000061035156 | size=1 | links=#4882(auto Thunder Bluff;73):10 #18823(auto Thunder Bluff;329):9
+#13857 | auto Thunder Bluff;244§auto Donnerfels;244§auto Les Pitons du Tonnerre;244 | x=-1280.700073242188 y=-58.79999923706055 | size=1 | links=#22(auto Thunder Bluff;1):19 #15433(auto Thunder Bluff;272):15
+#13927 | auto Thunder Bluff;245§auto Donnerfels;245§auto Les Pitons du Tonnerre;245 | x=-1129 y=-125.7000045776367 | size=1 | links=#10685(auto Thunder Bluff;175):5 #19703(auto Thunder Bluff;353):2
+#13973 | auto Thunder Bluff;246§auto Donnerfels;246§auto Les Pitons du Tonnerre;246 | x=-1206 y=33.79999923706055 | size=1 | links=#6812(auto Thunder Bluff;115):5 #17497(auto Thunder Bluff;303):5
+#13995 | auto Thunder Bluff;247§auto Donnerfels;247§auto Les Pitons du Tonnerre;247 | x=-1123.300048828125 y=40.29999923706055 | size=1 | links=#22537(auto Thunder Bluff;411):14 #22729(auto Thunder Bluff;418):11 c3011.1:14 c3012.1:7 c11071.1:12
+#14009 | auto Thunder Bluff;248§auto Donnerfels;248§auto Les Pitons du Tonnerre;248 | x=-1122.099975585938 y=90.5 | size=1 | links=#23699(auto Thunder Bluff;439):11 #26915(auto Thunder Bluff;490):5
+#14033 | auto Thunder Bluff;249§auto Donnerfels;249§auto Les Pitons du Tonnerre;249 | x=-1013.799987792969 y=216.1999969482422 | size=1 | links=#9597(auto Thunder Bluff;157):8 #26458(auto Thunder Bluff;485):16
+#14112 | auto Thunder Bluff;250§auto Donnerfels;250§auto Les Pitons du Tonnerre;250 | x=-1040 y=-155.6999969482422 | size=5 | links=#13619(auto Thunder Bluff;235):49 #16578(down;valley;rescue;Elder Rise;Thunder Bluff):44 #20098(auto Thunder Bluff;362):53
+#14134 | auto Thunder Bluff;251§auto Donnerfels;251§auto Les Pitons du Tonnerre;251 | x=-1026.599975585938 y=221.6000061035156 | size=1 | links=#12369(auto Thunder Bluff;204):10 #24323(auto Thunder Bluff;447):6
+#14192 | auto Thunder Bluff;252§auto Donnerfels;252§auto Les Pitons du Tonnerre;252 | x=-1335.5 y=-30.70000076293945 | size=1 | links=#12078(down;valley;rescue;Hunter Rise;Thunder Bluff):28 #23857(auto Thunder Bluff;441):18
+#14195 | auto Thunder Bluff;253§auto Donnerfels;253§auto Les Pitons du Tonnerre;253 | x=-1199 y=10.80000019073486 | size=1 | links=#27728(auto Thunder Bluff;500):5 #27930(auto Thunder Bluff;506):9
+#14197 | auto Thunder Bluff;254§auto Donnerfels;254§auto Les Pitons du Tonnerre;254 | x=-1358.400024414063 y=109.7000045776367 | size=1 | links=#6326(auto Thunder Bluff;102):11 #8959(auto Thunder Bluff;149):37
+#14384 | auto Thunder Bluff;255§auto Donnerfels;255§auto Les Pitons du Tonnerre;255 | x=-1295.400024414063 y=195.1999969482422 | size=1 | links=#12964(auto Thunder Bluff;214):9 #20307(auto Thunder Bluff;366):8
+#14407 | auto Thunder Bluff;256§auto Donnerfels;256§auto Les Pitons du Tonnerre;256 | x=-1275.900024414063 y=50.20000076293945 | size=1 | links=#10372(auto Thunder Bluff;166):19 #11463(auto Thunder Bluff;187):6
+#14462 | auto Thunder Bluff;257§auto Donnerfels;257§auto Les Pitons du Tonnerre;257 | x=-1237.5 y=-90.70000457763672 | size=1 | links=#11861(auto Thunder Bluff;192):8 #12917(auto Thunder Bluff;213):10
+#14508 | auto Thunder Bluff;258§auto Donnerfels;258§auto Les Pitons du Tonnerre;258 | x=-1007.700012207031 y=255.5 | size=1 | links=#2135(auto Thunder Bluff;32):5 #4069(auto Thunder Bluff;64):4
+#14648 | auto Thunder Bluff;259§auto Donnerfels;259§auto Les Pitons du Tonnerre;259 | x=-1268.209674268016 y=64.68240417529613 | size=1 | links=#16849(auto Thunder Bluff;297):9 #18148(auto Thunder Bluff;314):9 #19258(auto Thunder Bluff;342):6
+#14653 | auto Thunder Bluff;260§auto Donnerfels;260§auto Les Pitons du Tonnerre;260 | x=-1073.900024414063 y=155.6000061035156 | size=1 | links=#14797(auto Thunder Bluff;261):17 #19603(auto Thunder Bluff;351):12
+#14797 | auto Thunder Bluff;261§auto Donnerfels;261§auto Les Pitons du Tonnerre;261 | x=-1060.800048828125 y=167.6000061035156 | size=1 | links=#9925(auto Thunder Bluff;160):18 #14653(auto Thunder Bluff;260):17
+#14833 | cooking;Spot;Thunder Bluff§kochen;spot;Donnerfels§cooking;Spot;Les Pitons du Tonnerre | x=-1239.5 y=43.40000152587891 | size=1 | links=#27835(auto Thunder Bluff;504):7 c8358.1:4 c8359.1:4 c8360.1:5
+#14859 | auto Thunder Bluff;262§auto Donnerfels;262§auto Les Pitons du Tonnerre;262 | x=-1101.099975585938 y=-34.29999923706055 | size=1 | links=#8432(auto Thunder Bluff;145):4 #23967(auto Thunder Bluff;443):17
+#14907 | auto Thunder Bluff;263§auto Donnerfels;263§auto Les Pitons du Tonnerre;263 | x=-1269.599975585938 y=-135.9000091552734 | size=1 | links=#19642(auto Thunder Bluff;352):11 #27775(auto Thunder Bluff;502):12
+#14974 | auto Thunder Bluff;264§auto Donnerfels;264§auto Les Pitons du Tonnerre;264 | x=-1141.200073242188 y=31.10000038146973 | size=1 | links=#10201(auto Thunder Bluff;163):17 #22537(auto Thunder Bluff;411):22 #22729(auto Thunder Bluff;418):17 c3017.1:9
+#14984 | auto Thunder Bluff;265§auto Donnerfels;265§auto Les Pitons du Tonnerre;265 | x=-1215.599975585938 y=252.3000030517578 | size=5 | links=#9297(auto Thunder Bluff;153):16 #12792(auto Thunder Bluff;212):53
+#14997 | auto Thunder Bluff;266§auto Donnerfels;266§auto Les Pitons du Tonnerre;266 | x=-1140.800048828125 y=-113.2000045776367 | size=1 | links=#1273(auto Thunder Bluff;23):6 #3624(auto Thunder Bluff;58):7
+#15069 | auto Thunder Bluff;267§auto Donnerfels;267§auto Les Pitons du Tonnerre;267 | x=-897 y=261.7000122070313 | size=1 | links=#6598(auto Thunder Bluff;108):16 #8097(auto Thunder Bluff;139):10
+#15119 | auto Thunder Bluff;268§auto Donnerfels;268§auto Les Pitons du Tonnerre;268 | x=-1337.599975585938 y=184.5 | size=1 | links=#17775(auto Thunder Bluff;307):18 #25255(auto Thunder Bluff;464):7
+#15293 | auto Thunder Bluff;269§auto Donnerfels;269§auto Les Pitons du Tonnerre;269 | x=-1110.700073242188 y=-162.4000091552734 | size=1 | links=#17821(auto Thunder Bluff;309):10 #26921(auto Thunder Bluff;491):10
+#15357 | auto Thunder Bluff;270§auto Donnerfels;270§auto Les Pitons du Tonnerre;270 | x=-1063.800048828125 y=26.5 | size=1 | links=#933(auto Thunder Bluff;17):17 #18605(auto Thunder Bluff;327):25
+#15399 | auto Thunder Bluff;271§auto Donnerfels;271§auto Les Pitons du Tonnerre;271 | x=-1097.200073242188 y=74 | size=1 | links=#13528(auto Thunder Bluff;233):14 #18605(auto Thunder Bluff;327):32 #25418(auto Thunder Bluff;467):10
+#15433 | auto Thunder Bluff;272§auto Donnerfels;272§auto Les Pitons du Tonnerre;272 | x=-1278.900024414063 y=-74 | size=1 | links=#3366(auto Thunder Bluff;49):10 #13857(auto Thunder Bluff;244):15 #18382(auto Thunder Bluff;322):11
+#15493 | auto Thunder Bluff;273§auto Donnerfels;273§auto Les Pitons du Tonnerre;273 | x=-962.1000366210938 y=353.8000183105469 | size=1 | links=#11383(auto Thunder Bluff;185):4 #12264(auto Thunder Bluff;200):4
+#15547 | auto Thunder Bluff;274§auto Donnerfels;274§auto Les Pitons du Tonnerre;274 | x=-1026.900024414063 y=209.5 | size=1 | links=#11170(auto Thunder Bluff;179):7 #21909(auto Thunder Bluff;393):7
+#15608 | auto Thunder Bluff;275§auto Donnerfels;275§auto Les Pitons du Tonnerre;275 | x=-994.2999877929688 y=277.1000061035156 | size=1 | links=#5298(auto Thunder Bluff;84):2 #13713(auto Thunder Bluff;240):4 c3419.1:1
+#15765 | auto Thunder Bluff;276§auto Donnerfels;276§auto Les Pitons du Tonnerre;276 | x=-973.9000244140625 y=-125 | size=1 | links=#21544(auto Thunder Bluff;386):5 #24520(auto Thunder Bluff;450):21
+#15814 | auto Thunder Bluff;277§auto Donnerfels;277§auto Les Pitons du Tonnerre;277 | x=-1319 y=31.20000076293945 | size=1 | links=#1876(auto Thunder Bluff;28):8 #16659(auto Thunder Bluff;295):8
+#15819 | auto Thunder Bluff;278§auto Donnerfels;278§auto Les Pitons du Tonnerre;278 | x=-1132.5 y=-118.8000030517578 | size=1 | links=#19703(auto Thunder Bluff;353):4 #28355(auto Thunder Bluff;513):7
+#15859 | auto Thunder Bluff;279§auto Donnerfels;279§auto Les Pitons du Tonnerre;279 | x=-1258 y=27.80000114440918 | size=1 | links=#7358(auto Thunder Bluff;123):8 c8356.1:6 c8357.1:6 c14441.1:2
+#15950 | auto Thunder Bluff;280§auto Donnerfels;280§auto Les Pitons du Tonnerre;280 | x=-1059 y=-158.4000091552734 | size=1 | links=#4882(auto Thunder Bluff;73):9 #10598(auto Thunder Bluff;172):13
+#15964 | auto Thunder Bluff;281§auto Donnerfels;281§auto Les Pitons du Tonnerre;281 | x=-1204.300048828125 y=27.30000114440918 | size=1 | links=#7437(auto Thunder Bluff;126):5 c2995.1:7
+#16013 | auto Thunder Bluff;282§auto Donnerfels;282§auto Les Pitons du Tonnerre;282 | x=-1091.700073242188 y=277.1000061035156 | size=1 | links=#8263(auto Thunder Bluff;143):15 #13710(auto Thunder Bluff;239):18
+#16043 | auto Thunder Bluff;283§auto Donnerfels;283§auto Les Pitons du Tonnerre;283 | x=-1184.700073242188 y=122.4000015258789 | size=1 | links=#19983(auto Thunder Bluff;357):16 #23307(auto Thunder Bluff;430):10
+#16087 | auto Thunder Bluff;284§auto Donnerfels;284§auto Les Pitons du Tonnerre;284 | x=-1087.599975585938 y=-205.5 | size=1 | links=#3886(auto Thunder Bluff;60):15 #13694(auto Thunder Bluff;238):6
+#16257 | auto Thunder Bluff;285§auto Donnerfels;285§auto Les Pitons du Tonnerre;285 | x=-1016.700012207031 y=-275.8999938964844 | size=1 | links=#9361(auto Thunder Bluff;155):20 #13086(auto Thunder Bluff;220):14
+#16263 | auto Thunder Bluff;286§auto Donnerfels;286§auto Les Pitons du Tonnerre;286 | x=-1330 y=-125.7000045776367 | size=1 | links=#6381(auto Thunder Bluff;103):14 #10515(auto Thunder Bluff;169):4
+#16351 | auto Thunder Bluff;287§auto Donnerfels;287§auto Les Pitons du Tonnerre;287 | x=-988.5 y=95.30000305175781 | size=5 | links=#1691(auto Thunder Bluff;26):25 #3620(auto Thunder Bluff;57):30 #19052(auto Thunder Bluff;337):40
+#16377 | auto Thunder Bluff;288§auto Donnerfels;288§auto Les Pitons du Tonnerre;288 | x=-1348.5 y=-3.700000047683716 | size=1 | links=#385(auto Thunder Bluff;5):17 #8440(auto Thunder Bluff;146):13
+#16423 | auto Thunder Bluff;289§auto Donnerfels;289§auto Les Pitons du Tonnerre;289 | x=-1191.300048828125 y=23.89999961853027 | size=1 | links=#3247(auto Thunder Bluff;46):4 #5322(stairway;flight master;tower;one):7
+#16449 | auto Thunder Bluff;290§auto Donnerfels;290§auto Les Pitons du Tonnerre;290 | x=-1119 y=22.89999961853027 | size=1 | links=#4981(auto Thunder Bluff;78):13 #22729(auto Thunder Bluff;418):7
+#16483 | auto Thunder Bluff;291§auto Donnerfels;291§auto Les Pitons du Tonnerre;291 | x=-1159.700073242188 y=-106.5 | size=1 | links=#9420(auto Thunder Bluff;156):9 #9749(auto Thunder Bluff;159):5
+#16515 | auto Thunder Bluff;292§auto Donnerfels;292§auto Les Pitons du Tonnerre;292 | x=-1123.800048828125 y=54.29999923706055 | size=1 | links=#5425(auto Thunder Bluff;87):7 #22537(auto Thunder Bluff;411):9 #26974(auto Thunder Bluff;492):4
+#16578 | down;valley;rescue;Elder Rise;Thunder Bluff§unten;tal;rettung;Die Anhöhe der Ältesten;Donnerfels§bas;valley;sauvetage;Cime des Anciens;Les Pitons du Tonnerre | x=-1083 y=-168.6999969482422 | size=1 | links=#4930(auto Thunder Bluff;76):42 #14112(auto Thunder Bluff;250):44 #20098(auto Thunder Bluff;362):30
+#16649 | auto Thunder Bluff;293§auto Donnerfels;293§auto Les Pitons du Tonnerre;293 | x=-1298.200073242188 y=151.5 | size=1 | links=#10650(auto Thunder Bluff;173):4 #26045(auto Thunder Bluff;475):3
+#16654 | auto Thunder Bluff;294§auto Donnerfels;294§auto Les Pitons du Tonnerre;294 | x=-1069 y=196.6000061035156 | size=1 | links=#19489(auto Thunder Bluff;348):16 #28206(auto Thunder Bluff;510):8
+#16659 | auto Thunder Bluff;295§auto Donnerfels;295§auto Les Pitons du Tonnerre;295 | x=-1314.800048828125 y=23.80000114440918 | size=1 | links=#10074(auto Thunder Bluff;162):7 #15814(auto Thunder Bluff;277):8
+#16798 | auto Thunder Bluff;296§auto Donnerfels;296§auto Les Pitons du Tonnerre;296 | x=-1324.400024414063 y=23 | size=1 | links=#1876(auto Thunder Bluff;28):4 #22201(auto Thunder Bluff;406):3
+#16849 | auto Thunder Bluff;297§auto Donnerfels;297§auto Les Pitons du Tonnerre;297 | x=-1277.800048828125 y=64.4000015258789 | size=1 | links=#14648(auto Thunder Bluff;259):9 #20755(auto Thunder Bluff;370):23
+#17038 | auto Thunder Bluff;298§auto Donnerfels;298§auto Les Pitons du Tonnerre;298 | x=-1015.799987792969 y=236.6999969482422 | size=1 | links=#12369(auto Thunder Bluff;204):8 #26452(auto Thunder Bluff;484):9
+#17124 | auto Thunder Bluff;299§auto Donnerfels;299§auto Les Pitons du Tonnerre;299 | x=-1171.200073242188 y=158.5 | size=1 | links=#19292(auto Thunder Bluff;345):9 #21760(auto Thunder Bluff;391):5
+#17244 | auto Thunder Bluff;300§auto Donnerfels;300§auto Les Pitons du Tonnerre;300 | x=-1060.099975585938 y=-240.4000091552734 | size=1 | links=#3294(auto Thunder Bluff;47):13 #11707(auto Thunder Bluff;189):10
+#17309 | auto Thunder Bluff;301§auto Donnerfels;301§auto Les Pitons du Tonnerre;301 | x=-974.7999877929688 y=221.1000061035156 | size=1 | links=#13127(auto Thunder Bluff;222):8 #22246(auto Thunder Bluff;407):18
+#17387 | auto Thunder Bluff;302§auto Donnerfels;302§auto Les Pitons du Tonnerre;302 | x=-1252.599975585938 y=-99.5 | size=1 | links=#11861(auto Thunder Bluff;192):8 #20852(auto Thunder Bluff;372):8
+#17497 | auto Thunder Bluff;303§auto Donnerfels;303§auto Les Pitons du Tonnerre;303 | x=-1203.099975585938 y=38 | size=1 | links=#12324(auto Thunder Bluff;203):4 #13973(auto Thunder Bluff;246):5
+#17500 | auto Thunder Bluff;304§auto Donnerfels;304§auto Les Pitons du Tonnerre;304 | x=-971.2000122070312 y=354.5 | size=1 | links=#11383(auto Thunder Bluff;185):4 #17691(auto Thunder Bluff;305):4
+#17648 | down;valley;rescue;Spirit RiseUNUSED;Thunder Bluff§unten;tal;rettung;Die Anhöhe der Geister;Donnerfels§bas;valley;sauvetage;Spirit RiseUNUSED;Les Pitons du Tonnerre | x=-1099 y=170.9000091552734 | size=1 | links=#21287(auto Thunder Bluff;382):43 #27227(auto Thunder Bluff;495):49
+#17691 | auto Thunder Bluff;305§auto Donnerfels;305§auto Les Pitons du Tonnerre;305 | x=-975.4000244140625 y=354.1000061035156 | size=5 | links=#680(auto Thunder Bluff;12):5 #17500(auto Thunder Bluff;304):4
+#17694 | auto Thunder Bluff;306§auto Donnerfels;306§auto Les Pitons du Tonnerre;306 | x=-1305.5 y=172.5 | size=1 | links=#2167(auto Thunder Bluff;33):3 #23584(auto Thunder Bluff;437):3
+#17775 | auto Thunder Bluff;307§auto Donnerfels;307§auto Les Pitons du Tonnerre;307 | x=-1321.700073242188 y=193.6000061035156 | size=1 | links=#11508(down;rescue;south;Thunder Bluff):11 #15119(auto Thunder Bluff;268):18 #26312(auto Thunder Bluff;481):11
+#17799 | auto Thunder Bluff;308§auto Donnerfels;308§auto Les Pitons du Tonnerre;308 | x=-1119.700073242188 y=-144.5 | size=1 | links=#4447(auto Thunder Bluff;70):8 #26921(auto Thunder Bluff;491):9
+#17821 | auto Thunder Bluff;309§auto Donnerfels;309§auto Les Pitons du Tonnerre;309 | x=-1105.900024414063 y=-171.6999969482422 | size=1 | links=#15293(auto Thunder Bluff;269):10 #25826(auto Thunder Bluff;471):10
+#17904 | auto Thunder Bluff;310§auto Donnerfels;310§auto Les Pitons du Tonnerre;310 | x=-1281.200073242188 y=-2.400000095367432 | size=1 | links=#7951(auto Thunder Bluff;136):17 #20021(auto Thunder Bluff;358):10
+#17937 | auto Thunder Bluff;311§auto Donnerfels;311§auto Les Pitons du Tonnerre;311 | x=-1387.099975585938 y=-188.6000061035156 | size=1 | links=#18514(auto Thunder Bluff;326):11 #27631(auto Thunder Bluff;497):11
+#17956 | auto Thunder Bluff;312§auto Donnerfels;312§auto Les Pitons du Tonnerre;312 | x=-1163.5 y=172.6000061035156 | size=1 | links=#1789(auto Thunder Bluff;27):4 #26406(auto Thunder Bluff;483):5
+#18047 | auto Thunder Bluff;313§auto Donnerfels;313§auto Les Pitons du Tonnerre;313 | x=-1093.599975585938 y=107.3000030517578 | size=1 | links=#1990(auto Thunder Bluff;30):4 #25838(auto Thunder Bluff;472):7
+#18148 | auto Thunder Bluff;314§auto Donnerfels;314§auto Les Pitons du Tonnerre;314 | x=-1264.200073242188 y=73.5999984741211 | size=1 | links=#6656(auto Thunder Bluff;111):8 #13161(auto Thunder Bluff;225):21 #14648(auto Thunder Bluff;259):9
+#18223 | auto Thunder Bluff;315§auto Donnerfels;315§auto Les Pitons du Tonnerre;315 | x=-1053.400024414063 y=-234.6999969482422 | size=1 | links=#3074(auto Thunder Bluff;42):17 #11707(auto Thunder Bluff;189):9
+#18262 | auto Thunder Bluff;316§auto Donnerfels;316§auto Les Pitons du Tonnerre;316 | x=-1289.200073242188 y=140.9000091552734 | size=1 | links=#131(auto Thunder Bluff;2):7 #19264(auto Thunder Bluff;343):6
+#18315 | auto Thunder Bluff;317§auto Donnerfels;317§auto Les Pitons du Tonnerre;317 | x=-1194.599975585938 y=40 | size=1 | links=#5189(auto Thunder Bluff;80):4 #12324(auto Thunder Bluff;203):4
+#18321 | auto Thunder Bluff;318§auto Donnerfels;318§auto Les Pitons du Tonnerre;318 | x=-1405 y=-55.70000076293945 | size=1 | links=#26209(auto Thunder Bluff;479):11 c4943.1:11
+#18328 | auto Thunder Bluff;319§auto Donnerfels;319§auto Les Pitons du Tonnerre;319 | x=-1072.5 y=-118.5999984741211 | size=1 | links=#6489(auto Thunder Bluff;106):16 #22279(auto Thunder Bluff;409):20
+#18343 | auto Thunder Bluff;320§auto Donnerfels;320§auto Les Pitons du Tonnerre;320 | x=-1204.599975585938 y=134.6000061035156 | size=1 | links=#11192(auto Thunder Bluff;180):7 #22977(auto Thunder Bluff;421):6
+#18380 | auto Thunder Bluff;321§auto Donnerfels;321§auto Les Pitons du Tonnerre;321 | x=-1007.600036621094 y=235.9000091552734 | size=1 | links=#9597(auto Thunder Bluff;157):12 #23383(auto Thunder Bluff;432):15
+#18382 | auto Thunder Bluff;322§auto Donnerfels;322§auto Les Pitons du Tonnerre;322 | x=-1283.700073242188 y=-84 | size=1 | links=#10486(auto Thunder Bluff;168):13 #15433(auto Thunder Bluff;272):11
+#18396 | auto Thunder Bluff;323§auto Donnerfels;323§auto Les Pitons du Tonnerre;323 | x=-1000.200012207031 y=-99.9000015258789 | size=1 | links=#5449(auto Thunder Bluff;91):10 #24520(auto Thunder Bluff;450):15
+#18439 | auto Thunder Bluff;324§auto Donnerfels;324§auto Les Pitons du Tonnerre;324 | x=-1199 y=-35.70000076293945 | size=1 | links=#6157(auto Thunder Bluff;99):19 #7923(auto Thunder Bluff;134):8 c3025.1:17
+#18506 | auto Thunder Bluff;325§auto Donnerfels;325§auto Les Pitons du Tonnerre;325 | x=-1053.900024414063 y=269.2000122070313 | size=1 | links=#5243(auto Thunder Bluff;83):10 #22155(auto Thunder Bluff;403):7 #29109(auto Thunder Bluff;521):26
+#18514 | auto Thunder Bluff;326§auto Donnerfels;326§auto Les Pitons du Tonnerre;326 | x=-1398.300048828125 y=-191.8000030517578 | size=1 | links=#5960(auto Thunder Bluff;97):9 #17937(auto Thunder Bluff;311):11
+#18605 | auto Thunder Bluff;327§auto Donnerfels;327§auto Les Pitons du Tonnerre;327 | x=-1076.400024414063 y=48.70000076293945 | size=1 | links=#15357(auto Thunder Bluff;270):25 #15399(auto Thunder Bluff;271):32
+#18612 | auto Thunder Bluff;328§auto Donnerfels;328§auto Les Pitons du Tonnerre;328 | x=-1425.200073242188 y=-108.8000030517578 | size=1 | links=#5786(auto Thunder Bluff;95):10 #26039(auto Thunder Bluff;474):7
+#18823 | auto Thunder Bluff;329§auto Donnerfels;329§auto Les Pitons du Tonnerre;329 | x=-1049.599975585938 y=-186 | size=1 | links=#13793(auto Thunder Bluff;243):9 #22808(auto Thunder Bluff;419):11
+#18884 | auto Thunder Bluff;330§auto Donnerfels;330§auto Les Pitons du Tonnerre;330 | x=-1216.5 y=44.40000152587891 | size=1 | links=#8194(auto Thunder Bluff;141):7 #25302(auto Thunder Bluff;466):14
+#18906 | auto Thunder Bluff;331§auto Donnerfels;331§auto Les Pitons du Tonnerre;331 | x=-974.1000366210938 y=-30.80000114440918 | size=1 | links=#20141(auto Thunder Bluff;363):22 #23983(auto Thunder Bluff;444):20
+#18914 | auto Thunder Bluff;332§auto Donnerfels;332§auto Les Pitons du Tonnerre;332 | x=-1258.300048828125 y=54.60000228881836 | size=1 | links=#932(auto Thunder Bluff;16):18 #4751(auto Thunder Bluff;72):9 #8424(guild vault;Thunder Bluff):9 #19258(auto Thunder Bluff;342):8 #24553(auto Thunder Bluff;452):7
+#18921 | auto Thunder Bluff;333§auto Donnerfels;333§auto Les Pitons du Tonnerre;333 | x=-1283.599975585938 y=-114.5999984741211 | size=1 | links=#5445(auto Thunder Bluff;90):12 #22672(auto Thunder Bluff;416):8
+#18949 | auto Thunder Bluff;334§auto Donnerfels;334§auto Les Pitons du Tonnerre;334 | x=-1062.800048828125 y=251.6000061035156 | size=1 | links=#8007(auto Thunder Bluff;137):10 #22155(auto Thunder Bluff;403):12
+#19017 | auto Thunder Bluff;335§auto Donnerfels;335§auto Les Pitons du Tonnerre;335 | x=-1409.400024414063 y=-117.3000030517578 | size=1 | links=#5786(auto Thunder Bluff;95):7 #24970(auto Thunder Bluff;458):8
+#19026 | auto Thunder Bluff;336§auto Donnerfels;336§auto Les Pitons du Tonnerre;336 | x=-1247.400024414063 y=-145.1999969482422 | size=1 | links=#19642(auto Thunder Bluff;352):13 #23001(auto Thunder Bluff;422):19
+#19052 | auto Thunder Bluff;337§auto Donnerfels;337§auto Les Pitons du Tonnerre;337 | x=-1019.799987792969 y=120.9000015258789 | size=5 | links=#16351(auto Thunder Bluff;287):40 #21287(auto Thunder Bluff;382):50
+#19133 | auto Thunder Bluff;338§auto Donnerfels;338§auto Les Pitons du Tonnerre;338 | x=-1246.400024414063 y=-74.5 | size=1 | links=#295(auto Thunder Bluff;3):6 #22197(auto Thunder Bluff;405):12
+#19140 | auto Thunder Bluff;339§auto Donnerfels;339§auto Les Pitons du Tonnerre;339 | x=-1203.200073242188 y=25.20000076293945 | size=1 | links=#186(stairway;flight master;tower;two):6 #6812(auto Thunder Bluff;115):4
+#19181 | auto Thunder Bluff;340§auto Donnerfels;340§auto Les Pitons du Tonnerre;340 | x=-1315.700073242188 y=57.90000152587891 | size=1 | links=#486(auto Thunder Bluff;9):17 #20755(auto Thunder Bluff;370):15
+#19200 | auto Thunder Bluff;341§auto Donnerfels;341§auto Les Pitons du Tonnerre;341 | x=-1112.099975585938 y=119.2000045776367 | size=1 | links=#6689(auto Thunder Bluff;112):6 #12295(auto Thunder Bluff;201):6
+#19258 | auto Thunder Bluff;342§auto Donnerfels;342§auto Les Pitons du Tonnerre;342 | x=-1265.599975585938 y=59 | size=1 | links=#11463(auto Thunder Bluff;187):7 #14648(auto Thunder Bluff;259):6 #18914(auto Thunder Bluff;332):8
+#19264 | auto Thunder Bluff;343§auto Donnerfels;343§auto Les Pitons du Tonnerre;343 | x=-1283.800048828125 y=137.9000091552734 | size=1 | links=#11758(auto Thunder Bluff;190):10 #18262(auto Thunder Bluff;316):6
+#19289 | auto Thunder Bluff;344§auto Donnerfels;344§auto Les Pitons du Tonnerre;344 | x=-1273.700073242188 y=-184.3000030517578 | size=5 | links=#8098(auto Thunder Bluff;140):24 #9201(auto Thunder Bluff;152):19
+#19292 | auto Thunder Bluff;345§auto Donnerfels;345§auto Les Pitons du Tonnerre;345 | x=-1177.300048828125 y=165.3000030517578 | size=1 | links=#3198(auto Thunder Bluff;45):10 #17124(auto Thunder Bluff;299):9
+#19332 | auto Thunder Bluff;346§auto Donnerfels;346§auto Les Pitons du Tonnerre;346 | x=-1359.700073242188 y=-148.5 | size=1 | links=#11247(auto Thunder Bluff;181):27 #28408(auto Thunder Bluff;514):8
+#19478 | auto Thunder Bluff;347§auto Donnerfels;347§auto Les Pitons du Tonnerre;347 | x=-1319.800048828125 y=-155.8000030517578 | size=1 | links=#8098(auto Thunder Bluff;140):30 #11247(auto Thunder Bluff;181):17
+#19489 | auto Thunder Bluff;348§auto Donnerfels;348§auto Les Pitons du Tonnerre;348 | x=-1069.300048828125 y=213.3000030517578 | size=1 | links=#520(auto Thunder Bluff;11):15 #16654(auto Thunder Bluff;294):16
+#19511 | auto Thunder Bluff;349§auto Donnerfels;349§auto Les Pitons du Tonnerre;349 | x=-1261.700073242188 y=-110.5999984741211 | size=1 | links=#20852(auto Thunder Bluff;372):6 #21224(auto Thunder Bluff;380):7
+#19599 | auto Thunder Bluff;350§auto Donnerfels;350§auto Les Pitons du Tonnerre;350 | x=-1036.599975585938 y=189 | size=1 | links=#9925(auto Thunder Bluff;160):13 #13730(auto Thunder Bluff;242):6
+#19603 | auto Thunder Bluff;351§auto Donnerfels;351§auto Les Pitons du Tonnerre;351 | x=-1082.700073242188 y=147.1000061035156 | size=1 | links=#11320(auto Thunder Bluff;184):13 #14653(auto Thunder Bluff;260):12
+#19642 | auto Thunder Bluff;352§auto Donnerfels;352§auto Les Pitons du Tonnerre;352 | x=-1260.300048828125 y=-142.6999969482422 | size=1 | links=#14907(auto Thunder Bluff;263):11 #19026(auto Thunder Bluff;336):13 c8401.1:13
+#19703 | auto Thunder Bluff;353§auto Donnerfels;353§auto Les Pitons du Tonnerre;353 | x=-1130.300048828125 y=-123.2000045776367 | size=1 | links=#13927(auto Thunder Bluff;245):2 #15819(auto Thunder Bluff;278):4
+#19803 | auto Thunder Bluff;354§auto Donnerfels;354§auto Les Pitons du Tonnerre;354 | x=-1021.200012207031 y=233 | size=1 | links=#3133(auto Thunder Bluff;43):17 #9597(auto Thunder Bluff;157):14
+#19896 | auto Thunder Bluff;355§auto Donnerfels;355§auto Les Pitons du Tonnerre;355 | x=-1316.200073242188 y=8.300000190734863 | size=1 | links=#20021(auto Thunder Bluff;358):25 #23676(auto Thunder Bluff;438):6
+#19953 | auto Thunder Bluff;356§auto Donnerfels;356§auto Les Pitons du Tonnerre;356 | x=-1425.800048828125 y=-56.40000152587891 | size=1 | links=#26209(auto Thunder Bluff;479):27 c10086.1:12
+#19983 | auto Thunder Bluff;357§auto Donnerfels;357§auto Les Pitons du Tonnerre;357 | x=-1168.800048828125 y=118.7000045776367 | size=1 | links=#16043(auto Thunder Bluff;283):16 #21745(auto Thunder Bluff;390):22
+#19997 | passage;from;Thunder Bluff;south;to;Mulgore§passage;von;Donnerfels;südlich;nach;mulgore§passage;de;Les Pitons du Tonnerre;south;vers;Mulgore | x=-1397.900024414063 y=120.5999984741211 | size=1 | links=#5781(passage;from;Mulgore;to;Thunder Bluff;south):7 #21808(auto Thunder Bluff;392):9
+#20008 | pier;elevator;Thunder Bluff;south;down§anleger;fahrstuhl;Donnerfels;südlich;unten§pier;elevator;Les Pitons du Tonnerre;south;bas | x=-1316.200073242188 y=181.9000091552734 | size=1 | links=#9180(elevator;Thunder Bluff;south):7 #25135(auto Thunder Bluff;462):4
+#20021 | auto Thunder Bluff;358§auto Donnerfels;358§auto Les Pitons du Tonnerre;358 | x=-1291.200073242188 y=1.700000047683716 | size=1 | links=#17904(auto Thunder Bluff;310):10 #19896(auto Thunder Bluff;355):25
+#20040 | auto Thunder Bluff;359§auto Donnerfels;359§auto Les Pitons du Tonnerre;359 | x=-969.6000366210938 y=-97 | size=1 | links=#5228(auto Thunder Bluff;82):4 #12322(auto Thunder Bluff;202):6
+#20061 | auto Thunder Bluff;360§auto Donnerfels;360§auto Les Pitons du Tonnerre;360 | x=-1205.900024414063 y=119.7000045776367 | size=1 | links=#4906(auto Thunder Bluff;75):7 #11192(auto Thunder Bluff;180):10 #23307(auto Thunder Bluff;430):10
+#20063 | auto Thunder Bluff;361§auto Donnerfels;361§auto Les Pitons du Tonnerre;361 | x=-1275.400024414063 y=-107.8000030517578 | size=1 | links=#4207(auto Thunder Bluff;67):7 #21224(auto Thunder Bluff;380):9
+#20098 | auto Thunder Bluff;362§auto Donnerfels;362§auto Les Pitons du Tonnerre;362 | x=-1090.900024414063 y=-139.3000030517578 | size=1 | links=#14112(auto Thunder Bluff;250):53 #16578(down;valley;rescue;Elder Rise;Thunder Bluff):30
+#20141 | auto Thunder Bluff;363§auto Donnerfels;363§auto Les Pitons du Tonnerre;363 | x=-960.7999877929688 y=-12.19999980926514 | size=1 | links=#12494(auto Thunder Bluff;209):10 #18906(auto Thunder Bluff;331):22
+#20209 | auto Thunder Bluff;364§auto Donnerfels;364§auto Les Pitons du Tonnerre;364 | x=-978.1000366210938 y=289.8999938964844 | size=1 | links=#13084(auto Thunder Bluff;219):5 #22273(auto Thunder Bluff;408):4
+#20303 | auto Thunder Bluff;365§auto Donnerfels;365§auto Les Pitons du Tonnerre;365 | x=-1259.5 y=41 | size=1 | links=#4751(auto Thunder Bluff;72):4 #7358(auto Thunder Bluff;123):4
+#20307 | auto Thunder Bluff;366§auto Donnerfels;366§auto Les Pitons du Tonnerre;366 | x=-1287.800048828125 y=197.8000030517578 | size=1 | links=#14384(auto Thunder Bluff;255):8 #25647(auto Thunder Bluff;470):16
+#20357 | auto Thunder Bluff;367§auto Donnerfels;367§auto Les Pitons du Tonnerre;367 | x=-1290.099975585938 y=107.7000045776367 | size=1 | links=#12475(auto Thunder Bluff;208):21 #23433(auto Thunder Bluff;434):10 c8362.1:10 c8364.1:7
+#20658 | auto Thunder Bluff;368§auto Donnerfels;368§auto Les Pitons du Tonnerre;368 | x=-1094.400024414063 y=-39.60000228881836 | size=1 | links=#8432(auto Thunder Bluff;145):7 #21604(auto Thunder Bluff;387):11
+#20672 | auto Thunder Bluff;369§auto Donnerfels;369§auto Les Pitons du Tonnerre;369 | x=-1058.099975585938 y=-260.7000122070313 | size=1 | links=#3294(auto Thunder Bluff;47):6 #7323(auto Thunder Bluff;122):20
+#20755 | auto Thunder Bluff;370§auto Donnerfels;370§auto Les Pitons du Tonnerre;370 | x=-1300.900024414063 y=60.5 | size=1 | links=#16849(auto Thunder Bluff;297):23 #19181(auto Thunder Bluff;340):15
+#20770 | auto Thunder Bluff;371§auto Donnerfels;371§auto Les Pitons du Tonnerre;371 | x=-1238.800048828125 y=-44.79999923706055 | size=1 | links=#1168(auto Thunder Bluff;19):11 #3410(auto Thunder Bluff;51):8
+#20852 | auto Thunder Bluff;372§auto Donnerfels;372§auto Les Pitons du Tonnerre;372 | x=-1256.300048828125 y=-107.3000030517578 | size=1 | links=#17387(auto Thunder Bluff;302):8 #19511(auto Thunder Bluff;349):6
+#20902 | auto Thunder Bluff;373§auto Donnerfels;373§auto Les Pitons du Tonnerre;373 | x=-1248.200073242188 y=140.1999969482422 | size=1 | links=#12130(auto Thunder Bluff;196):4 #27148(auto Thunder Bluff;494):3
+#20925 | auto Thunder Bluff;374§auto Donnerfels;374§auto Les Pitons du Tonnerre;374 | x=-1342.400024414063 y=-74.4000015258789 | size=1 | links=#376(auto Thunder Bluff;4):28 #12078(down;valley;rescue;Hunter Rise;Thunder Bluff):17
+#21042 | auto Thunder Bluff;375§auto Donnerfels;375§auto Les Pitons du Tonnerre;375 | x=-1376.200073242188 y=145.4000091552734 | size=1 | links=#21808(auto Thunder Bluff;392):23 #22158(auto Thunder Bluff;404):20
+#21043 | auto Thunder Bluff;376§auto Donnerfels;376§auto Les Pitons du Tonnerre;376 | x=-1364.5 y=10.60000038146973 | size=5 | links=#11949(auto Thunder Bluff;193):19 #23857(auto Thunder Bluff;441):31
+#21060 | waters;down;rescue;The Pools of Vision;Thunder Bluff§gewässer;unten;rettung;Die Teiche der Visionen;Donnerfels§eaux;bas;sauvetage;Les Bassins de la Vision;Les Pitons du Tonnerre | x=-1029.800048828125 y=226.1000061035156 | size=1 | links=#13128(auto Thunder Bluff;223):6
+#21087 | auto Thunder Bluff;377§auto Donnerfels;377§auto Les Pitons du Tonnerre;377 | x=-1008.5 y=357.3000183105469 | size=1 | links=#4018(auto Thunder Bluff;62):19 #28124(auto Thunder Bluff;508):11
+#21132 | auto Thunder Bluff;378§auto Donnerfels;378§auto Les Pitons du Tonnerre;378 | x=-1208 y=27.60000038146973 | size=1 | links=#5036(auto Thunder Bluff;79):5 #13691(auto Thunder Bluff;237):4
+#21215 | auto Thunder Bluff;379§auto Donnerfels;379§auto Les Pitons du Tonnerre;379 | x=-1248.5 y=157.5 | size=1 | links=#27148(auto Thunder Bluff;494):14 c3001.1:4 c3002.1:4
+#21224 | auto Thunder Bluff;380§auto Donnerfels;380§auto Les Pitons du Tonnerre;380 | x=-1268.400024414063 y=-114.5 | size=1 | links=#19511(auto Thunder Bluff;349):7 #20063(auto Thunder Bluff;361):9
+#21274 | auto Thunder Bluff;381§auto Donnerfels;381§auto Les Pitons du Tonnerre;381 | x=-997.6000366210938 y=269.8999938964844 | size=1 | links=#5298(auto Thunder Bluff;84):5 #8292(auto Thunder Bluff;144):5
+#21287 | auto Thunder Bluff;382§auto Donnerfels;382§auto Les Pitons du Tonnerre;382 | x=-1060.700073242188 y=149.8000030517578 | size=5 | links=#17648(down;valley;rescue;Spirit RiseUNUSED;Thunder Bluff):43 #19052(auto Thunder Bluff;337):50
+#21309 | auto Thunder Bluff;383§auto Donnerfels;383§auto Les Pitons du Tonnerre;383 | x=-1185.599975585938 y=-219.3000030517578 | size=5 | links=#10929(auto Thunder Bluff;176):28 #13040(auto Thunder Bluff;217):46
+#21427 | auto Thunder Bluff;384§auto Donnerfels;384§auto Les Pitons du Tonnerre;384 | x=-1214.200073242188 y=97.5999984741211 | size=1 | links=#4906(auto Thunder Bluff;75):16 #23949(auto Thunder Bluff;442):13 c8674.1:4
+#21486 | auto Thunder Bluff;385§auto Donnerfels;385§auto Les Pitons du Tonnerre;385 | x=-1058.800048828125 y=205.4000091552734 | size=1 | links=#22154(auto Thunder Bluff;402):15 #28206(auto Thunder Bluff;510):8
+#21544 | auto Thunder Bluff;386§auto Donnerfels;386§auto Les Pitons du Tonnerre;386 | x=-976.5 y=-129.3000030517578 | size=1 | links=#13619(auto Thunder Bluff;235):19 #15765(auto Thunder Bluff;276):5
+#21604 | auto Thunder Bluff;387§auto Donnerfels;387§auto Les Pitons du Tonnerre;387 | x=-1091.400024414063 y=-50.90000152587891 | size=1 | links=#386(auto Thunder Bluff;6):8 #20658(auto Thunder Bluff;368):11
+#21646 | auto Thunder Bluff;388§auto Donnerfels;388§auto Les Pitons du Tonnerre;388 | x=-1392 y=-53.70000076293945 | size=1 | links=#5373(auto Thunder Bluff;86):6 #13584(auto Thunder Bluff;234):6
+#21697 | auto Thunder Bluff;389§auto Donnerfels;389§auto Les Pitons du Tonnerre;389 | x=-1026.700073242188 y=-51.40000152587891 | size=1 | links=#8076(auto Thunder Bluff;138):24 #23390(down;rescue;north;Thunder Bluff):9
+#21745 | auto Thunder Bluff;390§auto Donnerfels;390§auto Les Pitons du Tonnerre;390 | x=-1146.300048828125 y=117 | size=1 | links=#19983(auto Thunder Bluff;357):22 #22684(auto Thunder Bluff;417):17
+#21760 | auto Thunder Bluff;391§auto Donnerfels;391§auto Les Pitons du Tonnerre;391 | x=-1166.700073242188 y=162.1000061035156 | size=1 | links=#467(auto Thunder Bluff;8):4 #17124(auto Thunder Bluff;299):5
+#21808 | auto Thunder Bluff;392§auto Donnerfels;392§auto Les Pitons du Tonnerre;392 | x=-1391.800048828125 y=128.3000030517578 | size=1 | links=#8224(auto Thunder Bluff;142):7 #19997(passage;from;Thunder Bluff;south;to;Mulgore):9 #21042(auto Thunder Bluff;375):23
+#21909 | auto Thunder Bluff;393§auto Donnerfels;393§auto Les Pitons du Tonnerre;393 | x=-1032.200073242188 y=214.1000061035156 | size=1 | links=#6292(auto Thunder Bluff;100):11 #15547(auto Thunder Bluff;274):7 #24323(auto Thunder Bluff;447):3
+#21915 | auto Thunder Bluff;394§auto Donnerfels;394§auto Les Pitons du Tonnerre;394 | x=-1195.700073242188 y=40.40000152587891 | size=1 | links=#7168(auto Thunder Bluff;121):6 #25856(auto Thunder Bluff;473):7
+#21990 | auto Thunder Bluff;395§auto Donnerfels;395§auto Les Pitons du Tonnerre;395 | x=-1394.099975585938 y=-96.30000305175781 | size=1 | links=#6629(auto Thunder Bluff;110):19 #24970(auto Thunder Bluff;458):24 c12198.1:10 c20388.1:9 c20499.1:10
+#22001 | auto Thunder Bluff;396§auto Donnerfels;396§auto Les Pitons du Tonnerre;396 | x=-973.6000366210938 y=244.1000061035156 | size=1 | links=#7888(auto Thunder Bluff;133):4 #12428(auto Thunder Bluff;206):6
+#22016 | auto Thunder Bluff;397§auto Donnerfels;397§auto Les Pitons du Tonnerre;397 | x=-1343.599975585938 y=-161.1999969482422 | size=1 | links=#11247(auto Thunder Bluff;181):19
+#22036 | auto Thunder Bluff;398§auto Donnerfels;398§auto Les Pitons du Tonnerre;398 | x=-1129.700073242188 y=193 | size=1 | links=#3330(auto Thunder Bluff;48):18 #28345(auto Thunder Bluff;512):22
+#22040 | auto Thunder Bluff;399§auto Donnerfels;399§auto Les Pitons du Tonnerre;399 | x=-890.7000122070312 y=221.1000061035156 | size=1 | links=#2629(auto Thunder Bluff;36):6 #13196(auto Thunder Bluff;226):15
+#22068 | auto Thunder Bluff;400§auto Donnerfels;400§auto Les Pitons du Tonnerre;400 | x=-1091.099975585938 y=-60.29999923706055 | size=1 | links=#3561(auto Thunder Bluff;54):6 #23195(auto Thunder Bluff;427):6
+#22136 | auto Thunder Bluff;401§auto Donnerfels;401§auto Les Pitons du Tonnerre;401 | x=-987.2999877929688 y=235.4000091552734 | size=1 | links=#2983(waters;two;down;rescue;The Pools of Vision;Thunder Bluff):19 #12428(auto Thunder Bluff;206):9
+#22154 | auto Thunder Bluff;402§auto Donnerfels;402§auto Les Pitons du Tonnerre;402 | x=-1051.700073242188 y=219 | size=1 | links=#6292(auto Thunder Bluff;100):9 #21486(auto Thunder Bluff;385):15
+#22155 | auto Thunder Bluff;403§auto Donnerfels;403§auto Les Pitons du Tonnerre;403 | x=-1058.800048828125 y=263.6000061035156 | size=1 | links=#18506(auto Thunder Bluff;325):7 #18949(auto Thunder Bluff;334):12
+#22158 | auto Thunder Bluff;404§auto Donnerfels;404§auto Les Pitons du Tonnerre;404 | x=-1360.900024414063 y=159.1000061035156 | size=1 | links=#11284(auto Thunder Bluff;183):24 #21042(auto Thunder Bluff;375):20
+#22197 | auto Thunder Bluff;405§auto Donnerfels;405§auto Les Pitons du Tonnerre;405 | x=-1258.599975585938 y=-78.70000457763672 | size=1 | links=#3366(auto Thunder Bluff;49):11 #19133(auto Thunder Bluff;338):12
+#22201 | auto Thunder Bluff;406§auto Donnerfels;406§auto Les Pitons du Tonnerre;406 | x=-1327.200073242188 y=20.20000076293945 | size=1 | links=#3967(auto Thunder Bluff;61):8 #16798(auto Thunder Bluff;296):3
+#22246 | auto Thunder Bluff;407§auto Donnerfels;407§auto Les Pitons du Tonnerre;407 | x=-964.6000366210938 y=236.6999969482422 | size=1 | links=#4556(auto Thunder Bluff;71):11 #7888(auto Thunder Bluff;133):7 #17309(auto Thunder Bluff;301):18
+#22273 | auto Thunder Bluff;408§auto Donnerfels;408§auto Les Pitons du Tonnerre;408 | x=-974.2000122070312 y=288.1000061035156 | size=1 | links=#1193(auto Thunder Bluff;20):3 #20209(auto Thunder Bluff;364):4 #27843(auto Thunder Bluff;505):7
+#22279 | auto Thunder Bluff;409§auto Donnerfels;409§auto Les Pitons du Tonnerre;409 | x=-1078.900024414063 y=-99.5 | size=1 | links=#18328(auto Thunder Bluff;319):20 #25028(auto Thunder Bluff;459):20
+#22398 | auto Thunder Bluff;410§auto Donnerfels;410§auto Les Pitons du Tonnerre;410 | x=-1126.599975585938 y=-4.900000095367432 | size=1 | links=#12096(auto Thunder Bluff;195):17 c3013.1:4 c3014.1:4
+#22537 | auto Thunder Bluff;411§auto Donnerfels;411§auto Les Pitons du Tonnerre;411 | x=-1132.5 y=51.60000228881836 | size=1 | links=#2860(auto Thunder Bluff;41):8 #13995(auto Thunder Bluff;247):14 #14974(auto Thunder Bluff;264):22 #16515(auto Thunder Bluff;292):9
+#22559 | auto Thunder Bluff;412§auto Donnerfels;412§auto Les Pitons du Tonnerre;412 | x=-1268.900024414063 y=216.3000030517578 | size=1 | links=#25647(auto Thunder Bluff;470):11 #28452(auto Thunder Bluff;515):6
+#22625 | auto Thunder Bluff;413§auto Donnerfels;413§auto Les Pitons du Tonnerre;413 | x=-1141.200073242188 y=-87.30000305175781 | size=1 | links=#4952(auto Thunder Bluff;77):16 #22658(auto Thunder Bluff;415):15
+#22636 | auto Thunder Bluff;414§auto Donnerfels;414§auto Les Pitons du Tonnerre;414 | x=-1187.599975585938 y=149.5 | size=1 | links=#3524(auto Thunder Bluff;53):5 #22977(auto Thunder Bluff;421):16 c3978.1:14
+#22658 | auto Thunder Bluff;415§auto Donnerfels;415§auto Les Pitons du Tonnerre;415 | x=-1131.599975585938 y=-99.0999984741211 | size=1 | links=#13448(auto Thunder Bluff;231):14 #22625(auto Thunder Bluff;413):15
+#22672 | auto Thunder Bluff;416§auto Donnerfels;416§auto Les Pitons du Tonnerre;416 | x=-1287.800048828125 y=-107 | size=1 | links=#7112(auto Thunder Bluff;117):4 #18921(auto Thunder Bluff;333):8
+#22684 | auto Thunder Bluff;417§auto Donnerfels;417§auto Les Pitons du Tonnerre;417 | x=-1128.400024414063 y=118.0999984741211 | size=1 | links=#10434(auto Thunder Bluff;167):8 #21745(auto Thunder Bluff;390):17
+#22724 | pier;elevator;Thunder Bluff;south;top§anleger;fahrstuhl;Donnerfels;südlich;oben§pier;elevator;Les Pitons du Tonnerre;south;top | x=-1307.5 y=178.5 | size=1 | links=#9180(elevator;Thunder Bluff;south):6 #23584(auto Thunder Bluff;437):2
+#22729 | auto Thunder Bluff;418§auto Donnerfels;418§auto Les Pitons du Tonnerre;418 | x=-1123.599975585938 y=29.30000114440918 | size=1 | links=#13995(auto Thunder Bluff;247):11 #14974(auto Thunder Bluff;264):17 #16449(auto Thunder Bluff;290):7
+#22808 | auto Thunder Bluff;419§auto Donnerfels;419§auto Les Pitons du Tonnerre;419 | x=-1046 y=-197 | size=1 | links=#730(auto Thunder Bluff;13):11 #18823(auto Thunder Bluff;329):11
+#22860 | auto Thunder Bluff;420§auto Donnerfels;420§auto Les Pitons du Tonnerre;420 | x=-1108.5 y=106.5 | size=1 | links=#12295(auto Thunder Bluff;201):9 #25158(auto Thunder Bluff;463):8
+#22977 | auto Thunder Bluff;421§auto Donnerfels;421§auto Les Pitons du Tonnerre;421 | x=-1200.099975585938 y=138.8000030517578 | size=1 | links=#18343(auto Thunder Bluff;320):6 #22636(auto Thunder Bluff;414):16
+#23001 | auto Thunder Bluff;422§auto Donnerfels;422§auto Les Pitons du Tonnerre;422 | x=-1227.599975585938 y=-147.6999969482422 | size=1 | links=#19026(auto Thunder Bluff;336):19 #24891(auto Thunder Bluff;456):70
+#23029 | auto Thunder Bluff;423§auto Donnerfels;423§auto Les Pitons du Tonnerre;423 | x=-1304 y=204.1000061035156 | size=1 | links=#25647(auto Thunder Bluff;470):25 #26312(auto Thunder Bluff;481):13
+#23106 | auto Thunder Bluff;424§auto Donnerfels;424§auto Les Pitons du Tonnerre;424 | x=-1191.400024414063 y=25.30000114440918 | size=1 | links=#186(stairway;flight master;tower;two):5 #13141(auto Thunder Bluff;224):3
+#23131 | auto Thunder Bluff;425§auto Donnerfels;425§auto Les Pitons du Tonnerre;425 | x=-1081.5 y=-216.5 | size=1 | links=#12178(auto Thunder Bluff;197):5 #13694(auto Thunder Bluff;238):5
+#23169 | auto Thunder Bluff;426§auto Donnerfels;426§auto Les Pitons du Tonnerre;426 | x=-1073.5 y=-14.60000038146973 | size=1 | links=#4889(auto Thunder Bluff;74):13 #23259(auto Thunder Bluff;428):8 #26069(auto Thunder Bluff;477):14
+#23195 | auto Thunder Bluff;427§auto Donnerfels;427§auto Les Pitons du Tonnerre;427 | x=-1090.099975585938 y=-67.20000457763672 | size=1 | links=#22068(auto Thunder Bluff;400):6 #25028(auto Thunder Bluff;459):13
+#23259 | auto Thunder Bluff;428§auto Donnerfels;428§auto Les Pitons du Tonnerre;428 | x=-1071.800048828125 y=-22.60000038146973 | size=1 | links=#445(auto Thunder Bluff;7):3 #23169(auto Thunder Bluff;426):8
+#23275 | auto Thunder Bluff;429§auto Donnerfels;429§auto Les Pitons du Tonnerre;429 | x=-1172.300048828125 y=-98.4000015258789 | size=1 | links=#9420(auto Thunder Bluff;156):5 #10295(auto Thunder Bluff;165):7
+#23307 | auto Thunder Bluff;430§auto Donnerfels;430§auto Les Pitons du Tonnerre;430 | x=-1195.300048828125 y=120.5999984741211 | size=1 | links=#16043(auto Thunder Bluff;283):10 #20061(auto Thunder Bluff;360):10
+#23332 | auto Thunder Bluff;431§auto Donnerfels;431§auto Les Pitons du Tonnerre;431 | x=-907 y=245.6000061035156 | size=1 | links=#4168(auto Thunder Bluff;65):11 #8097(auto Thunder Bluff;139):8
+#23383 | auto Thunder Bluff;432§auto Donnerfels;432§auto Les Pitons du Tonnerre;432 | x=-999.7999877929688 y=249.6999969482422 | size=1 | links=#18380(auto Thunder Bluff;321):15 #24713(auto Thunder Bluff;455):5
+#23390 | down;rescue;north;Thunder Bluff§unten;rettung;nördlich;Donnerfels§bas;sauvetage;north;Les Pitons du Tonnerre | x=-1035.400024414063 y=-48.29999923706055 | size=1 | links=#21697(auto Thunder Bluff;389):9
+#23417 | auto Thunder Bluff;433§auto Donnerfels;433§auto Les Pitons du Tonnerre;433 | x=-996.7000122070312 y=219.8000030517578 | size=1 | links=#9597(auto Thunder Bluff;157):13 c2798.1:13
+#23433 | auto Thunder Bluff;434§auto Donnerfels;434§auto Les Pitons du Tonnerre;434 | x=-1285.800048828125 y=97.80000305175781 | size=1 | links=#13161(auto Thunder Bluff;225):11 #20357(auto Thunder Bluff;367):10 c8363.1:10
+#23441 | auto Thunder Bluff;435§auto Donnerfels;435§auto Les Pitons du Tonnerre;435 | x=-1086.900024414063 y=25.89999961853027 | size=1 | links=#7600(auto Thunder Bluff;128):11 c3009.1:7 c3010.1:4 c11047.1:4
+#23495 | auto Thunder Bluff;436§auto Donnerfels;436§auto Les Pitons du Tonnerre;436 | x=-1065.700073242188 y=-27.89999961853027 | size=1 | links=#445(auto Thunder Bluff;7):4 #23845(auto Thunder Bluff;440):3
+#23584 | auto Thunder Bluff;437§auto Donnerfels;437§auto Les Pitons du Tonnerre;437 | x=-1307 y=175.9000091552734 | size=1 | links=#17694(auto Thunder Bluff;306):3 #22724(pier;elevator;Thunder Bluff;south;top):2
+#23676 | auto Thunder Bluff;438§auto Donnerfels;438§auto Les Pitons du Tonnerre;438 | x=-1320.400024414063 y=13.90000057220459 | size=1 | links=#3512(auto Thunder Bluff;52):23 #19896(auto Thunder Bluff;355):6
+#23699 | auto Thunder Bluff;439§auto Donnerfels;439§auto Les Pitons du Tonnerre;439 | x=-1118.800048828125 y=102 | size=1 | links=#14009(auto Thunder Bluff;248):11 #25158(auto Thunder Bluff;463):6
+#23845 | auto Thunder Bluff;440§auto Donnerfels;440§auto Les Pitons du Tonnerre;440 | x=-1062.900024414063 y=-30.30000114440918 | size=1 | links=#6565(auto Thunder Bluff;107):3 #23495(auto Thunder Bluff;436):3
+#23857 | auto Thunder Bluff;441§auto Donnerfels;441§auto Les Pitons du Tonnerre;441 | x=-1346.200073242188 y=-15.19999980926514 | size=5 | links=#14192(auto Thunder Bluff;252):18 #21043(auto Thunder Bluff;376):31
+#23949 | auto Thunder Bluff;442§auto Donnerfels;442§auto Les Pitons du Tonnerre;442 | x=-1223.700073242188 y=88.70000457763672 | size=1 | links=#9139(auto Thunder Bluff;151):16 #21427(auto Thunder Bluff;384):13 c2998.1:19 c2999.1:18 c3003.1:5
+#23967 | auto Thunder Bluff;443§auto Donnerfels;443§auto Les Pitons du Tonnerre;443 | x=-1106.700073242188 y=-17.5 | size=1 | links=#6614(auto Thunder Bluff;109):9 #14859(auto Thunder Bluff;262):17
+#23983 | auto Thunder Bluff;444§auto Donnerfels;444§auto Les Pitons du Tonnerre;444 | x=-980.4000244140625 y=-49.90000152587891 | size=1 | links=#7824(auto Thunder Bluff;131):9 #18906(auto Thunder Bluff;331):20
+#24001 | auto Thunder Bluff;445§auto Donnerfels;445§auto Les Pitons du Tonnerre;445 | x=-1371 y=45.10000228881836 | size=1 | links=#8959(auto Thunder Bluff;149):28 #11949(auto Thunder Bluff;193):15
+#24306 | auto Thunder Bluff;446§auto Donnerfels;446§auto Les Pitons du Tonnerre;446 | x=-1187.5 y=-88.5999984741211 | size=1 | links=#4428(auto Thunder Bluff;69):25 #11677(auto Thunder Bluff;188):5 #26117(auto Thunder Bluff;478):9
+#24323 | auto Thunder Bluff;447§auto Donnerfels;447§auto Les Pitons du Tonnerre;447 | x=-1029.700073242188 y=216 | size=1 | links=#14134(auto Thunder Bluff;251):6 #21909(auto Thunder Bluff;393):3
+#24457 | auto Thunder Bluff;448§auto Donnerfels;448§auto Les Pitons du Tonnerre;448 | x=-943.7000122070312 y=22.10000038146973 | size=1 | links=#13036(auto Thunder Bluff;216):17 #26593(auto Thunder Bluff;486):12
+#24463 | auto Thunder Bluff;449§auto Donnerfels;449§auto Les Pitons du Tonnerre;449 | x=-1284.099975585938 y=-113.7000045776367 | size=1 | links=#4207(auto Thunder Bluff;67):2 #13090(auto Thunder Bluff;221):5
+#24520 | auto Thunder Bluff;450§auto Donnerfels;450§auto Les Pitons du Tonnerre;450 | x=-986.2000122070312 y=-107.0999984741211 | size=1 | links=#11957(passage;from;Thunder Bluff;north;to;Mulgore):18 #12322(auto Thunder Bluff;202):12 #15765(auto Thunder Bluff;276):21 #18396(auto Thunder Bluff;323):15
+#24535 | auto Thunder Bluff;451§auto Donnerfels;451§auto Les Pitons du Tonnerre;451 | x=-1100.800048828125 y=130.9000091552734 | size=1 | links=#6689(auto Thunder Bluff;112):9 #11320(auto Thunder Bluff;184):10
+#24553 | auto Thunder Bluff;452§auto Donnerfels;452§auto Les Pitons du Tonnerre;452 | x=-1264.300048828125 y=49.79999923706055 | size=1 | links=#18914(auto Thunder Bluff;332):7 c10054.1:6
+#24606 | auto Thunder Bluff;453§auto Donnerfels;453§auto Les Pitons du Tonnerre;453 | x=-1153.900024414063 y=65.30000305175781 | size=1 | links=#6711(auto Thunder Bluff;113):11 c3092.1:5 c3093.1:6 c3095.1:9 c11051.1:11 c14728.1:6
+#24675 | auto Thunder Bluff;454§auto Donnerfels;454§auto Les Pitons du Tonnerre;454 | x=-1330.200073242188 y=178.5 | size=1 | links=#25135(auto Thunder Bluff;462):9 #25255(auto Thunder Bluff;464):6
+#24713 | auto Thunder Bluff;455§auto Donnerfels;455§auto Les Pitons du Tonnerre;455 | x=-998.1000366210938 y=254.9000091552734 | size=1 | links=#6429(auto Thunder Bluff;104):21 #23383(auto Thunder Bluff;432):5 c5906.1:5
+#24891 | auto Thunder Bluff;456§auto Donnerfels;456§auto Les Pitons du Tonnerre;456 | x=-1158 y=-138.9000091552734 | size=1 | links=#5848(auto Thunder Bluff;96):14 #23001(auto Thunder Bluff;422):70
+#24897 | auto Thunder Bluff;457§auto Donnerfels;457§auto Les Pitons du Tonnerre;457 | x=-945.7000122070312 y=111.8000030517578 | size=1 | links=#1691(auto Thunder Bluff;26):22 #2447(auto Thunder Bluff;35):12
+#24970 | auto Thunder Bluff;458§auto Donnerfels;458§auto Les Pitons du Tonnerre;458 | x=-1401.800048828125 y=-119.8000030517578 | size=1 | links=#11263(auto Thunder Bluff;182):9 #19017(auto Thunder Bluff;335):8 #21990(auto Thunder Bluff;395):24 #28309(auto Thunder Bluff;511):20 c3441.1:12 c5599.1:16 c6393.1:12
+#25028 | auto Thunder Bluff;459§auto Donnerfels;459§auto Les Pitons du Tonnerre;459 | x=-1085.700073242188 y=-80.20000457763672 | size=1 | links=#22279(auto Thunder Bluff;409):20 #23195(auto Thunder Bluff;427):13
+#25040 | auto Thunder Bluff;460§auto Donnerfels;460§auto Les Pitons du Tonnerre;460 | x=-1045.599975585938 y=-44.60000228881836 | size=1 | links=#2716(auto Thunder Bluff;37):3 #6553(pier;elevator;Thunder Bluff;north;top):3
+#25066 | auto Thunder Bluff;461§auto Donnerfels;461§auto Les Pitons du Tonnerre;461 | x=-1057.099975585938 y=-35.20000076293945 | size=1 | links=#6565(auto Thunder Bluff;107):4 #7811(auto Thunder Bluff;130):3
+#25135 | auto Thunder Bluff;462§auto Donnerfels;462§auto Les Pitons du Tonnerre;462 | x=-1320.700073242188 y=180.8000030517578 | size=1 | links=#20008(pier;elevator;Thunder Bluff;south;down):4 #24675(auto Thunder Bluff;454):9
+#25158 | auto Thunder Bluff;463§auto Donnerfels;463§auto Les Pitons du Tonnerre;463 | x=-1117.099975585938 y=108.5 | size=1 | links=#22860(auto Thunder Bluff;420):8 #23699(auto Thunder Bluff;439):6
+#25255 | auto Thunder Bluff;464§auto Donnerfels;464§auto Les Pitons du Tonnerre;464 | x=-1336.700073242188 y=176.8000030517578 | size=1 | links=#11284(auto Thunder Bluff;183):5 #15119(auto Thunder Bluff;268):7 #24675(auto Thunder Bluff;454):6
+#25298 | auto Thunder Bluff;465§auto Donnerfels;465§auto Les Pitons du Tonnerre;465 | x=-1175.700073242188 y=32 | size=1 | links=#2123(auto Thunder Bluff;31):7 #2828(auto Thunder Bluff;39):9
+#25302 | auto Thunder Bluff;466§auto Donnerfels;466§auto Les Pitons du Tonnerre;466 | x=-1227.5 y=53.40000152587891 | size=1 | links=#932(auto Thunder Bluff;16):22 #18884(auto Thunder Bluff;330):14 #27835(auto Thunder Bluff;504):8
+#25418 | auto Thunder Bluff;467§auto Donnerfels;467§auto Les Pitons du Tonnerre;467 | x=-1103.599975585938 y=65.20000457763672 | size=1 | links=#5425(auto Thunder Bluff;87):15 #15399(auto Thunder Bluff;271):10
+#25476 | auto Thunder Bluff;468§auto Donnerfels;468§auto Les Pitons du Tonnerre;468 | x=-1070.900024414063 y=-227.5 | size=1 | links=#11707(auto Thunder Bluff;189):9 #12178(auto Thunder Bluff;197):9
+#25642 | auto Thunder Bluff;469§auto Donnerfels;469§auto Les Pitons du Tonnerre;469 | x=-916.6000366210938 y=134.5 | size=5 | links=#1290(auto Thunder Bluff;24):6 #10958(auto Thunder Bluff;177):36 #12446(auto Thunder Bluff;207):40
+#25647 | auto Thunder Bluff;470§auto Donnerfels;470§auto Les Pitons du Tonnerre;470 | x=-1279.599975585938 y=212 | size=1 | links=#20307(auto Thunder Bluff;366):16 #22559(auto Thunder Bluff;412):11 #23029(auto Thunder Bluff;423):25
+#25826 | auto Thunder Bluff;471§auto Donnerfels;471§auto Les Pitons du Tonnerre;471 | x=-1101.099975585938 y=-180.5 | size=1 | links=#3886(auto Thunder Bluff;60):13 #17821(auto Thunder Bluff;309):10
+#25838 | auto Thunder Bluff;472§auto Donnerfels;472§auto Les Pitons du Tonnerre;472 | x=-1092.700073242188 y=99.80000305175781 | size=1 | links=#13528(auto Thunder Bluff;233):11 #18047(auto Thunder Bluff;313):7
+#25856 | auto Thunder Bluff;473§auto Donnerfels;473§auto Les Pitons du Tonnerre;473 | x=-1202.700073242188 y=37.60000228881836 | size=1 | links=#7437(auto Thunder Bluff;126):5 #21915(auto Thunder Bluff;394):7
+#26039 | auto Thunder Bluff;474§auto Donnerfels;474§auto Les Pitons du Tonnerre;474 | x=-1431.400024414063 y=-104.5999984741211 | size=1 | links=#9091(auto Thunder Bluff;150):23 #18612(auto Thunder Bluff;328):7
+#26045 | auto Thunder Bluff;475§auto Donnerfels;475§auto Les Pitons du Tonnerre;475 | x=-1297.200073242188 y=148 | size=1 | links=#131(auto Thunder Bluff;2):3 #16649(auto Thunder Bluff;293):3
+#26052 | auto Thunder Bluff;476§auto Donnerfels;476§auto Les Pitons du Tonnerre;476 | x=-1301.900024414063 y=162.4000091552734 | size=1 | links=#505(auto Thunder Bluff;10):3 #27698(auto Thunder Bluff;499):3
+#26069 | auto Thunder Bluff;477§auto Donnerfels;477§auto Les Pitons du Tonnerre;477 | x=-1067 y=-1.700000047683716 | size=1 | links=#933(auto Thunder Bluff;17):11 #23169(auto Thunder Bluff;426):14
+#26117 | auto Thunder Bluff;478§auto Donnerfels;478§auto Les Pitons du Tonnerre;478 | x=-1183.800048828125 y=-79.9000015258789 | size=1 | links=#1205(auto Thunder Bluff;21):10 #13625(auto Thunder Bluff;236):9 #24306(auto Thunder Bluff;446):9
+#26209 | auto Thunder Bluff;479§auto Donnerfels;479§auto Les Pitons du Tonnerre;479 | x=-1400.800048828125 y=-66.80000305175781 | size=1 | links=#5373(auto Thunder Bluff;86):8 #6629(auto Thunder Bluff;110):13 #18321(auto Thunder Bluff;318):11 #19953(auto Thunder Bluff;356):27
+#26260 | Honor Guard;Questgiver;Thunder Bluff;3;51.36;51.31§Ehrenwache;Questgeber;Donnerfels;3;51.36;51.31§Garde d'honneur;Questgiver;Les Pitons du Tonnerre;3;51.36;51.31 | x=-1207.165685200871 y=-22.35306132053498 | size=1
+#26305 | auto Thunder Bluff;480§auto Donnerfels;480§auto Les Pitons du Tonnerre;480 | x=-1137.300048828125 y=-203.4000091552734 | size=5 | links=#4930(auto Thunder Bluff;76):23
+#26312 | auto Thunder Bluff;481§auto Donnerfels;481§auto Les Pitons du Tonnerre;481 | x=-1310.200073242188 y=191.6999969482422 | size=1 | links=#17775(auto Thunder Bluff;307):11 #23029(auto Thunder Bluff;423):13
+#26379 | auto Thunder Bluff;482§auto Donnerfels;482§auto Les Pitons du Tonnerre;482 | x=-1005 y=259.2000122070313 | size=1 | links=#4069(auto Thunder Bluff;64):0 #8292(auto Thunder Bluff;144):7
+#26406 | auto Thunder Bluff;483§auto Donnerfels;483§auto Les Pitons du Tonnerre;483 | x=-1167.900024414063 y=169.3000030517578 | size=1 | links=#467(auto Thunder Bluff;8):6 #17956(auto Thunder Bluff;312):5
+#26452 | auto Thunder Bluff;484§auto Donnerfels;484§auto Les Pitons du Tonnerre;484 | x=-1013.700012207031 y=245.6999969482422 | size=1 | links=#2135(auto Thunder Bluff;32):5 #17038(auto Thunder Bluff;298):9
+#26458 | auto Thunder Bluff;485§auto Donnerfels;485§auto Les Pitons du Tonnerre;485 | x=-1022.100036621094 y=201.6999969482422 | size=1 | links=#13730(auto Thunder Bluff;242):12 #14033(auto Thunder Bluff;249):16
+#26593 | auto Thunder Bluff;486§auto Donnerfels;486§auto Les Pitons du Tonnerre;486 | x=-948 y=34 | size=1 | links=#3620(auto Thunder Bluff;57):43 #24457(auto Thunder Bluff;448):12
+#26650 | auto Thunder Bluff;487§auto Donnerfels;487§auto Les Pitons du Tonnerre;487 | x=-1230 y=-69.9000015258789 | size=1 | links=#295(auto Thunder Bluff;3):10 #5679(auto Thunder Bluff;93):8 #12917(auto Thunder Bluff;213):16
+#26892 | auto Thunder Bluff;488§auto Donnerfels;488§auto Les Pitons du Tonnerre;488 | x=-1120.800048828125 y=-212.3000030517578 | size=1 | links=#4930(auto Thunder Bluff;76):27
+#26901 | auto Thunder Bluff;489§auto Donnerfels;489§auto Les Pitons du Tonnerre;489 | x=-1404.400024414063 y=-132.6999969482422 | size=1 | links=#11263(auto Thunder Bluff;182):4 c8664.1:11
+#26915 | auto Thunder Bluff;490§auto Donnerfels;490§auto Les Pitons du Tonnerre;490 | x=-1117.800048828125 y=86.4000015258789 | size=1 | links=#13729(auto Thunder Bluff;241):13 #14009(auto Thunder Bluff;248):5
+#26921 | auto Thunder Bluff;491§auto Donnerfels;491§auto Les Pitons du Tonnerre;491 | x=-1115.599975585938 y=-152.6999969482422 | size=1 | links=#15293(auto Thunder Bluff;269):10 #17799(auto Thunder Bluff;308):9
+#26974 | auto Thunder Bluff;492§auto Donnerfels;492§auto Les Pitons du Tonnerre;492 | x=-1123.099975585938 y=58.79999923706055 | size=1 | links=#6924(auto Thunder Bluff;116):6 #16515(auto Thunder Bluff;292):4
+#27070 | auto Thunder Bluff;493§auto Donnerfels;493§auto Les Pitons du Tonnerre;493 | x=-1069.099975585938 y=324.7000122070313 | size=1 | links=#2432(auto Thunder Bluff;34):31 #2849(auto Thunder Bluff;40):17
+#27148 | auto Thunder Bluff;494§auto Donnerfels;494§auto Les Pitons du Tonnerre;494 | x=-1248.300048828125 y=143.1999969482422 | size=1 | links=#20902(auto Thunder Bluff;373):3 #21215(auto Thunder Bluff;379):14
+#27227 | auto Thunder Bluff;495§auto Donnerfels;495§auto Les Pitons du Tonnerre;495 | x=-1117.800048828125 y=217 | size=5 | links=#12792(auto Thunder Bluff;212):53 #13071(auto Thunder Bluff;218):34 #17648(down;valley;rescue;Spirit RiseUNUSED;Thunder Bluff):49
+#27261 | auto Thunder Bluff;496§auto Donnerfels;496§auto Les Pitons du Tonnerre;496 | x=-1008.299987792969 y=220.4000091552734 | size=1 | links=#2983(waters;two;down;rescue;The Pools of Vision;Thunder Bluff):7 #12414(auto Thunder Bluff;205):8
+#27631 | auto Thunder Bluff;497§auto Donnerfels;497§auto Les Pitons du Tonnerre;497 | x=-1378.400024414063 y=-181.6999969482422 | size=1 | links=#5442(auto Thunder Bluff;89):21 #17937(auto Thunder Bluff;311):11
+#27654 | auto Thunder Bluff;498§auto Donnerfels;498§auto Les Pitons du Tonnerre;498 | x=-1248.700073242188 y=132.8000030517578 | size=1 | links=#7838(auto Thunder Bluff;132):14 #11392(auto Thunder Bluff;186):23 #12130(auto Thunder Bluff;196):3
+#27698 | auto Thunder Bluff;499§auto Donnerfels;499§auto Les Pitons du Tonnerre;499 | x=-1300.900024414063 y=158.9000091552734 | size=1 | links=#10650(auto Thunder Bluff;173):3 #26052(auto Thunder Bluff;476):3
+#27728 | auto Thunder Bluff;500§auto Donnerfels;500§auto Les Pitons du Tonnerre;500 | x=-1197.700073242188 y=15.90000057220459 | size=1 | links=#804(auto Thunder Bluff;14):4 #14195(auto Thunder Bluff;253):5
+#27756 | auto Thunder Bluff;501§auto Donnerfels;501§auto Les Pitons du Tonnerre;501 | x=-1102.400024414063 y=16 | size=1 | links=#4981(auto Thunder Bluff;78):8 #7600(auto Thunder Bluff;128):7
+#27775 | auto Thunder Bluff;502§auto Donnerfels;502§auto Les Pitons du Tonnerre;502 | x=-1277.700073242188 y=-126.0999984741211 | size=1 | links=#5445(auto Thunder Bluff;90):0 #14907(auto Thunder Bluff;263):12
+#27832 | auto Thunder Bluff;503§auto Donnerfels;503§auto Les Pitons du Tonnerre;503 | x=-1366.099975585938 y=-158.9000091552734 | size=1 | links=#5442(auto Thunder Bluff;89):5 #28408(auto Thunder Bluff;514):4
+#27835 | auto Thunder Bluff;504§auto Donnerfels;504§auto Les Pitons du Tonnerre;504 | x=-1233.700073242188 y=47.79999923706055 | size=1 | links=#14833(cooking;Spot;Thunder Bluff):7 #25302(auto Thunder Bluff;466):8
+#27843 | auto Thunder Bluff;505§auto Donnerfels;505§auto Les Pitons du Tonnerre;505 | x=-966.9000244140625 y=285.1000061035156 | size=1 | links=#7410(auto Thunder Bluff;125):7 #22273(auto Thunder Bluff;408):7 c5957.1:3
+#27930 | auto Thunder Bluff;506§auto Donnerfels;506§auto Les Pitons du Tonnerre;506 | x=-1200.5 y=1.800000071525574 | size=1 | links=#10548(auto Thunder Bluff;171):22 #14195(auto Thunder Bluff;253):9 c3022.1:11
+#28075 | auto Thunder Bluff;507§auto Donnerfels;507§auto Les Pitons du Tonnerre;507 | x=-1381.700073242188 y=-132.8000030517578 | size=1 | links=#10655(auto Thunder Bluff;174):7 #28309(auto Thunder Bluff;511):5
+#28124 | auto Thunder Bluff;508§auto Donnerfels;508§auto Les Pitons du Tonnerre;508 | x=-1016.900024414063 y=349.3000183105469 | size=1 | links=#12190(auto Thunder Bluff;199):11 #21087(auto Thunder Bluff;377):11
+#28160 | pier;elevator;Thunder Bluff;north;down§anleger;fahrstuhl;Donnerfels;nördlich;unten§pier;elevator;Les Pitons du Tonnerre;north;bas | x=-1035.5 y=-54.70000076293945 | size=1 | links=#3783(auto Thunder Bluff;59):2 #6372(elevator;Thunder Bluff;north):5
+#28166 | auto Thunder Bluff;509§auto Donnerfels;509§auto Les Pitons du Tonnerre;509 | x=-1226.900024414063 y=-217.8000030517578 | size=5 | links=#5324(auto Thunder Bluff;85):27 #10929(auto Thunder Bluff;176):17
+#28206 | auto Thunder Bluff;510§auto Donnerfels;510§auto Les Pitons du Tonnerre;510 | x=-1060.400024414063 y=196.9000091552734 | size=1 | links=#16654(auto Thunder Bluff;294):8 #21486(auto Thunder Bluff;385):8
+#28309 | auto Thunder Bluff;511§auto Donnerfels;511§auto Les Pitons du Tonnerre;511 | x=-1386.800048828125 y=-133.4000091552734 | size=1 | links=#24970(auto Thunder Bluff;458):20 #28075(auto Thunder Bluff;507):5
+#28345 | auto Thunder Bluff;512§auto Donnerfels;512§auto Les Pitons du Tonnerre;512 | x=-1110.200073242188 y=204.9000091552734 | size=1 | links=#5704(auto Thunder Bluff;94):18 #22036(auto Thunder Bluff;398):22
+#28355 | auto Thunder Bluff;513§auto Donnerfels;513§auto Les Pitons du Tonnerre;513 | x=-1136.800048828125 y=-125.5 | size=1 | links=#3624(auto Thunder Bluff;58):10 #15819(auto Thunder Bluff;278):7
+#28408 | auto Thunder Bluff;514§auto Donnerfels;514§auto Les Pitons du Tonnerre;514 | x=-1363.300048828125 y=-155.6999969482422 | size=1 | links=#19332(auto Thunder Bluff;346):8 #27832(auto Thunder Bluff;503):4
+#28452 | auto Thunder Bluff;515§auto Donnerfels;515§auto Les Pitons du Tonnerre;515 | x=-1263.599975585938 y=212.9000091552734 | size=5 | links=#9735(auto Thunder Bluff;158):23 #22559(auto Thunder Bluff;412):6
+#29108 | auto Thunder Bluff;520§auto Donnerfels;520§auto Les Pitons du Tonnerre;520 | x=-1028.5 y=310.5 | size=1 | links=#29109(auto Thunder Bluff;521):22
+#29109 | auto Thunder Bluff;521§auto Donnerfels;521§auto Les Pitons du Tonnerre;521 | x=-1043.400024414063 y=293.8000183105469 | size=1 | links=#18506(auto Thunder Bluff;325):26 #29108(auto Thunder Bluff;520):22
+#29111 | Siln Skychaser;Shaman Trainer;Thunder Bluff;1;22.82;21.11§Siln Himmelsjäger;Schamanenlehrerin;Donnerfels;1;22.82;21.11§Siln Chasse-le-ciel;Maître des chamans;Les Pitons du Tonnerre;1;22.82;21.11 | x=-996.9650982855322 y=278.3980417503831 | size=1
+#29112 | Poshken Hardbinder;Inscription Trainer;Thunder Bluff;1;29.5;21.41§Poshken Rückenbinder;Inschriftenkundelehrer;Donnerfels;1;29.5;21.41§Poshken Dur-lieur;Inscription Trainer;Les Pitons du Tonnerre;1;29.5;21.41 | x=-995.6495493389453 y=215.3795712900757 | size=1
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c2798.1 | links=#23417(auto Thunder Bluff;433):13
+c2987.1 | links=#7838(auto Thunder Bluff;132):5
+c2995.1 | links=#3481(Spot;flight master;Thunder Bluff):3 #15964(auto Thunder Bluff;281):7
+c2996.1 | links=c8356.1:7 c8357.1:6
+c2997.1 | links=#13161(auto Thunder Bluff;225):7 c11869.1:5
+c2998.1 | links=#23949(auto Thunder Bluff;442):19 c6410.1:7
+c2999.1 | links=#23949(auto Thunder Bluff;442):18 c19176.1:10
+c3001.1 | links=#21215(auto Thunder Bluff;379):4
+c3002.1 | links=#21215(auto Thunder Bluff;379):4
+c3003.1 | links=#23949(auto Thunder Bluff;442):5
+c3004.1 | links=c3005.1:7 c3050.1:4
+c3005.1 | links=c3004.1:7 c3092.1:6
+c3007.1 | links=c3008.1:8 c11084.1:8
+c3008.1 | links=c3007.1:8 c3093.1:6
+c3009.1 | links=#23441(auto Thunder Bluff;435):7
+c3010.1 | links=#23441(auto Thunder Bluff;435):4
+c3011.1 | links=#13995(auto Thunder Bluff;247):14
+c3012.1 | links=#13995(auto Thunder Bluff;247):7
+c3013.1 | links=#22398(auto Thunder Bluff;410):4
+c3014.1 | links=#22398(auto Thunder Bluff;410):4
+c3016.1 | links=#1257(auto Thunder Bluff;22):11
+c3017.1 | links=#14974(auto Thunder Bluff;264):9
+c3018.1 | links=#5679(auto Thunder Bluff;93):17
+c3019.1 | links=#1168(auto Thunder Bluff;19):6
+c3020.1 | links=#1168(auto Thunder Bluff;19):6
+c3021.1 | links=#1168(auto Thunder Bluff;19):7
+c3022.1 | links=#27930(auto Thunder Bluff;506):11
+c3023.1 | links=#1463(auto Thunder Bluff;25):22
+c3024.1 | links=#6157(auto Thunder Bluff;99):11
+c3025.1 | links=#18439(auto Thunder Bluff;324):17
+c3026.1 | links=c3027.1:5
+c3027.1 | links=#10548(auto Thunder Bluff;171):10 c3026.1:5
+c3028.1 | links=#13625(auto Thunder Bluff;236):10
+c3029.1 | links=#13625(auto Thunder Bluff;236):7
+c3031.1 | links=#6429(auto Thunder Bluff;104):9
+c3032.1 | links=#6429(auto Thunder Bluff;104):15
+c3033.1 | links=#7323(auto Thunder Bluff;122):17
+c3034.1 | links=#7323(auto Thunder Bluff;122):20
+c3036.1 | links=#7323(auto Thunder Bluff;122):7 c5769.1:17
+c3037.1 | links=#730(auto Thunder Bluff;13):8
+c3038.1 | links=#12185(auto Thunder Bluff;198):8
+c3039.1 | links=#12998(auto Thunder Bluff;215):6
+c3040.1 | links=#9091(auto Thunder Bluff;150):9
+c3041.1 | links=#12185(auto Thunder Bluff;198):6
+c3042.1 | links=#12998(auto Thunder Bluff;215):6
+c3043.1 | links=#9091(auto Thunder Bluff;150):9
+c3044.1 | links=#4556(auto Thunder Bluff;71):6 c3048.1:8
+c3045.1 | links=#4069(auto Thunder Bluff;64):2
+c3046.1 | links=#8496(auto Thunder Bluff;147):8 c3049.1:5
+c3047.1 | links=#3589(auto Thunder Bluff;56):5
+c3048.1 | links=c3044.1:8
+c3049.1 | links=#8496(auto Thunder Bluff;147):6 c3046.1:5
+c3050.1 | links=c3004.1:4 c11051.1:2
+c3057.1 | links=#4428(auto Thunder Bluff;69):12 c16075.1:11 c3083.2:15 c3083.5:15
+c3092.1 | links=#24606(auto Thunder Bluff;453):5 c3005.1:6
+c3093.1 | links=#24606(auto Thunder Bluff;453):6 c3008.1:6
+c3095.1 | links=#24606(auto Thunder Bluff;453):9
+c3419.1 | links=#15608(auto Thunder Bluff;275):1
+c3441.1 | links=#24970(auto Thunder Bluff;458):12
+c3447.1 | links=#11990(auto Thunder Bluff;194):7
+c3978.1 | links=#22636(auto Thunder Bluff;414):14
+c4046.1 | links=#11707(auto Thunder Bluff;189):18
+c4309.1 | links=#11707(auto Thunder Bluff;189):11
+c4310.1 | links=#11707(auto Thunder Bluff;189):10
+c4451.1 | links=#7838(auto Thunder Bluff;132):13
+c4721.1 | links=#5679(auto Thunder Bluff;93):21 #6157(auto Thunder Bluff;99):19
+c4943.1 | links=#18321(auto Thunder Bluff;318):11
+c5054.1 | links=#11758(auto Thunder Bluff;190):13 c5189.1:4
+c5189.1 | links=#11758(auto Thunder Bluff;190):12 c5054.1:4
+c5599.1 | links=#24970(auto Thunder Bluff;458):16
+c5769.1 | links=c3036.1:17
+c5770.1 | links=#7323(auto Thunder Bluff;122):15
+c5906.1 | links=#24713(auto Thunder Bluff;455):5
+c5957.1 | links=#27843(auto Thunder Bluff;505):3
+c6393.1 | links=#24970(auto Thunder Bluff;458):12
+c6410.1 | links=c2998.1:7 c10278.1:6
+c6491.1 | links=#2817(auto Thunder Bluff;38):8 #3564(auto Thunder Bluff;55):14 #6746(auto Thunder Bluff;114):20
+c6746.1 | links=#941(auto Thunder Bluff;18):6 #10372(auto Thunder Bluff;166):7
+c7089.1 | links=#2860(auto Thunder Bluff;41):10
+c7427.1 | links=#6629(auto Thunder Bluff;110):9
+c8356.1 | links=#15859(auto Thunder Bluff;279):6 c2996.1:7
+c8357.1 | links=#15859(auto Thunder Bluff;279):6 c2996.1:6
+c8358.1 | links=#14833(cooking;Spot;Thunder Bluff):4
+c8359.1 | links=#14833(cooking;Spot;Thunder Bluff):4
+c8360.1 | links=#14833(cooking;Spot;Thunder Bluff):5
+c8362.1 | links=#20357(auto Thunder Bluff;367):10
+c8363.1 | links=#23433(auto Thunder Bluff;434):10
+c8364.1 | links=#20357(auto Thunder Bluff;367):7
+c8398.1 | links=#1168(auto Thunder Bluff;19):5
+c8401.1 | links=#19642(auto Thunder Bluff;352):13
+c8664.1 | links=#26901(auto Thunder Bluff;489):11
+c8674.1 | links=#21427(auto Thunder Bluff;384):4
+c8722.1 | links=#4906(auto Thunder Bluff;75):7
+c9076.1 | links=#13086(auto Thunder Bluff;220):12
+c9087.1 | links=#12178(auto Thunder Bluff;197):11
+c10054.1 | links=#24553(auto Thunder Bluff;452):6 c16008.1:3
+c10086.1 | links=#19953(auto Thunder Bluff;356):12
+c10278.1 | links=c6410.1:6
+c10360.1 | links=#6629(auto Thunder Bluff;110):9
+c11047.1 | links=#23441(auto Thunder Bluff;435):4
+c11051.1 | links=#24606(auto Thunder Bluff;453):11 c3050.1:2
+c11071.1 | links=#13995(auto Thunder Bluff;247):12
+c11084.1 | links=c3007.1:8 c14728.1:7
+c11833.1 | links=#11707(auto Thunder Bluff;189):14
+c11869.1 | links=#13161(auto Thunder Bluff;225):7 c2997.1:5
+c12198.1 | links=#21990(auto Thunder Bluff;395):10
+c14441.1 | links=#15859(auto Thunder Bluff;279):2
+c14728.1 | links=#24606(auto Thunder Bluff;453):6 c11084.1:7
+c15580.1 | links=#9361(auto Thunder Bluff;155):15
+c15767.1 | links=#932(auto Thunder Bluff;16):6
+c16008.1 | links=c10054.1:3
+c16075.1 | links=c3057.1:11
+c19176.1 | links=c2999.1:10 c19176.2:2
+c20388.1 | links=#21990(auto Thunder Bluff;395):9
+c20499.1 | links=#21990(auto Thunder Bluff;395):10
+c26007.1 | links=#6429(auto Thunder Bluff;104):7
+o180523.1 | links=#10372(auto Thunder Bluff;166):7
+c3083.2 | links=c3057.1:15
+c19176.2 | links=c19176.1:2
+c3083.5 | links=c3057.1:15

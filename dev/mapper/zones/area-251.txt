@@ -1,0 +1,3 @@
+Zone areaId 251 — eine Zeile pro Wegpunkt; Links inline.
+
+#28751 | s;Eastern Kingdoms;Burning Steppes;Ruins of Thaurissan;Flame Crest§s;Östliche Königreiche;Brennende Steppe;Die Ruinen von Thaurissan;Flammenkamm§s;Royaumes de l'est;Steppes ardentes;Ruins of Thaurissan;Flame Crest | x=-7479.77 y=-2186.4 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 94 — eine Zeile pro Wegpunkt; Links inline.
+
+#28756 | s;Eastern Kingdoms;Duskwood;Raven Hill§s;Östliche Königreiche;Dämmerwald;Rabenflucht§s;Royaumes de l'est;Bois de la Pénombre;Colline-aux-Corbeaux | x=-10752.526 y=-310.43338 | size=1

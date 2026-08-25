@@ -1,0 +1,3 @@
+Zone areaId 2897 — eine Zeile pro Wegpunkt; Links inline.
+
+#28629 | s;Kalimdor;Ashenvale;The Zoram Strand;Zoram'gar Outpost§s;Kalimdor;Eschental;Der Zoramstrand;Zoram'gar-Außenposten§s;Kalimdor;Orneval;La grève de Zoram;Avant-poste de Zoram'gar | x=3362.22 y=-1010.16 | size=1

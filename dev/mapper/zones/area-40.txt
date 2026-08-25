@@ -1,0 +1,597 @@
+Zone areaId 40 — eine Zeile pro Wegpunkt; Links inline.
+
+#121 | auto Westfall;1§auto Westfall;1§auto Marche de l'Ouest;1 | x=-10143.5 y=1034.200073242188 | size=1 | links=#1325(auto Westfall;11):19 #5494(auto Westfall;51):25 #9503(auto Westfall;84):63
+#344 | auto Westfall;2§auto Westfall;2§auto Marche de l'Ouest;2 | x=-9658.2001953125 y=968.7999877929688 | size=1 | links=#13831(auto Westfall;135):27 c834.3:18
+#411 | auto Westfall;3§auto Westfall;3§auto Marche de l'Ouest;3 | x=-10999.400390625 y=1419 | size=1 | links=#13606(auto Westfall;129):17 c550.1:26
+#499 | auto Westfall;4§auto Westfall;4§auto Marche de l'Ouest;4 | x=-9833.7001953125 y=875.7000122070312 | size=1 | links=#6030(auto Westfall;54):47 #25234(auto Westfall;237):21
+#578 | auto Westfall;5§auto Westfall;5§auto Marche de l'Ouest;5 | x=-11001.6005859375 y=1493.599975585938 | size=1 | links=#16824(auto Westfall;156):7 #24030(auto Westfall;227):8
+#757 | passage;above;river;Westfall;to;camp;Duskwood§passage;über;flusslauf;Westfall;zum;lager;Dämmerwald§passage;above;river;Marche de l'Ouest;vers;camp;Bois de la Pénombre | x=-10469.6005859375 y=714 | size=1 | links=#27689(passage;above;The Hushed Bank;Duskwood;to;Westfall):7 #7060(auto Westfall;67):65
+#846 | auto spiral stairway to top;Westfall;6§auto wendeltreppe nach oben;Westfall;6§auto spiral stairway to top;Marche de l'Ouest;6 | x=-10490.6005859375 y=1025.200073242188 | size=1 | links=#1974(auto spiral stairway to top;Westfall;22):3 #22008(auto spiral stairway to top;Westfall;200):3
+#1013 | auto Westfall;7§auto Westfall;7§auto Marche de l'Ouest;7 | x=-10567.6005859375 y=1103.700073242188 | size=1 | links=#2363(auto Westfall;27):26 #17068(auto Westfall;160):30
+#1145 | auto Westfall;8§auto Westfall;8§auto Marche de l'Ouest;8 | x=-10562.400390625 y=1078.400024414063 | size=1 | links=#17068(auto Westfall;160):20 #17147(auto Westfall;162):19
+#1152 | auto Westfall;9§auto Westfall;9§auto Marche de l'Ouest;9 | x=-11199 y=1261.5 | size=1 | links=#10233(auto Westfall;94):47 #13304(auto Westfall;127):25
+#1271 | auto Westfall;10§auto Westfall;10§auto Marche de l'Ouest;10 | x=-10661.2001953125 y=1029.099975585938 | size=1 | links=#10970(centralpoint;Sentinel Hill;Westfall):55 #20052(auto Westfall;187):16 #23990(auto Westfall;226):18 c843.1:29
+#1325 | auto Westfall;11§auto Westfall;11§auto Marche de l'Ouest;11 | x=-10132.7001953125 y=1050.800048828125 | size=1 | links=#121(auto Westfall;1):19 c233.1:5
+#1392 | auto Westfall;12§auto Westfall;12§auto Marche de l'Ouest;12 | x=-10506.7001953125 y=1039.800048828125 | size=1 | links=#5215(auto Westfall;49):5 c234.1:5
+#1474 | auto Westfall;13§auto Westfall;13§auto Marche de l'Ouest;13 | x=-11257.5 y=1688.200073242188 | size=5 | links=#6839(auto Westfall;65):21 c1725.1:45 c6271.1:100
+#1542 | auto Westfall;14§auto Westfall;14§auto Marche de l'Ouest;14 | x=-9825.5 y=1114.5 | size=5 | links=c199.1:68 c199.2:33
+#1582 | auto Westfall;15§auto Westfall;15§auto Marche de l'Ouest;15 | x=-11284.2001953125 y=1799.800048828125 | size=1 | links=#12897(auto Westfall;122):70 #14493(auto Westfall;141):96
+#1598 | auto Westfall;16§auto Westfall;16§auto Marche de l'Ouest;16 | x=-10023.1005859375 y=1103.400024414063 | size=1 | links=#11340(auto Westfall;108):47 #19463(auto Westfall;177):37 c454.2:18
+#1683 | Defias Highwayman;Westfall;26;60.61;58.2§Straßenräuber der Defias;Westfall;26;60.61;58.2§Malandrin défias;Marche de l'Ouest;26;60.61;58.2 | x=-10796.400390625 y=901.6000366210938 | size=1
+#1684 | Murloc Raider;Westfall;8;55.3;9.53§Murlocräuber;Westfall;8;55.3;9.53§Ecumeur murloc;Marche de l'Ouest;8;55.3;9.53 | x=-9628 y=1084.800048828125 | size=1
+#1703 | auto Westfall;17§auto Westfall;17§auto Marche de l'Ouest;17 | x=-10899.900390625 y=1326.800048828125 | size=1 | links=#14909(auto Westfall;147):55 #28009(auto Westfall;249):59 c452.1:47
+#1822 | auto Westfall;18§auto Westfall;18§auto Marche de l'Ouest;18 | x=-10943.16401982298 y=1795.494140270616 | size=5 | links=#14493(auto Westfall;141):248 c124.2:117 c462.3:106
+#1928 | auto spiral stairway to top;Westfall;19§auto wendeltreppe nach oben;Westfall;19§auto spiral stairway to top;Marche de l'Ouest;19 | x=-10495.5 y=1028.5 | size=1 | links=#1992(auto spiral stairway to top;Westfall;23):1 #10017(auto Westfall;90):5
+#1951 | auto Westfall;20§auto Westfall;20§auto Marche de l'Ouest;20 | x=-10649.900390625 y=1165.099975585938 | size=1 | links=#3492(auto Westfall;36):4 #6128(Mailbox;Sentinel Hill;Westfall):9 c8931.1:3
+#1957 | auto Westfall;21§auto Westfall;21§auto Marche de l'Ouest;21 | x=-10910.2001953125 y=1236.900024414063 | size=1 | links=#14877(auto Westfall;145):50 #28009(auto Westfall;249):33
+#1974 | auto spiral stairway to top;Westfall;22§auto wendeltreppe nach oben;Westfall;22§auto spiral stairway to top;Marche de l'Ouest;22 | x=-10492.400390625 y=1022.200012207031 | size=1 | links=#846(auto spiral stairway to top;Westfall;6):3 #19655(auto spiral stairway to top;Westfall;180):3
+#1992 | auto spiral stairway to top;Westfall;23§auto wendeltreppe nach oben;Westfall;23§auto spiral stairway to top;Marche de l'Ouest;23 | x=-10495.1005859375 y=1029.599975585938 | size=1 | links=#1928(auto spiral stairway to top;Westfall;19):1 #14880(auto spiral stairway to top;Westfall;146):3
+#2105 | auto Westfall;24§auto Westfall;24§auto Marche de l'Ouest;24 | x=-10116.900390625 y=991.5 | size=1 | links=#5494(auto Westfall;51):24 #9503(auto Westfall;84):68 #23766(auto Westfall;221):44
+#2189 | centralpoint;Moonbrook;Westfall§zentralerpunkt;Mondbruch;Westfall§point central;Moonbrook;Marche de l'Ouest | x=-11024.6005859375 y=1493.599975585938 | size=1 | links=#7099(auto Westfall;68):23 #24030(auto Westfall;227):14 c550.1:55
+#2225 | auto spiral stairway to top;Westfall;25§auto wendeltreppe nach oben;Westfall;25§auto spiral stairway to top;Marche de l'Ouest;25 | x=-10494.2998046875 y=1015.400024414063 | size=1 | links=#6234(auto spiral stairway to top;Westfall;57):5 #18265(auto Westfall;169):7
+#2294 | auto Westfall;26§auto Westfall;26§auto Marche de l'Ouest;26 | x=-10253.5 y=993.2999877929688 | size=1 | links=#9503(auto Westfall;84):68 #25756(auto Westfall;240):41 o2724.2:65
+#2363 | auto Westfall;27§auto Westfall;27§auto Marche de l'Ouest;27 | x=-10555.1005859375 y=1126.800048828125 | size=1 | links=#1013(auto Westfall;7):26 #23214(auto Westfall;216):30
+#2587 | auto Westfall;28§auto Westfall;28§auto Marche de l'Ouest;28 | x=-10869.7998046875 y=698.4000244140625 | size=1 | links=#12831(auto Westfall;121):28 #27797(auto Westfall;248):43 c115.2:29
+#2601 | auto Westfall;29§auto Westfall;29§auto Marche de l'Ouest;29 | x=-10406.2998046875 y=1727.200073242188 | size=1 | links=#13132(auto Westfall;124):42 #22101(auto Westfall;202):13
+#2625 | auto Westfall;30§auto Westfall;30§auto Marche de l'Ouest;30 | x=-11264.900390625 y=1610.599975585938 | size=1 | links=#11289(auto Westfall;107):32 c1725.1:40
+#2678 | auto Westfall;31§auto Westfall;31§auto Marche de l'Ouest;31 | x=-11324.7001953125 y=1669.200073242188 | size=1 | links=#5941(auto Westfall;53):20 #22118(auto Westfall;203):36
+#2989 | auto Westfall;32§auto Westfall;32§auto Marche de l'Ouest;32 | x=-10931.6005859375 y=978.6000366210938 | size=1 | links=#13886(auto Westfall;137):41 #20172(auto Westfall;189):24
+#3039 | auto Westfall;33§auto Westfall;33§auto Marche de l'Ouest;33 | x=-10216.2998046875 y=1779.200073242188 | size=5 | links=#23331(auto Westfall;218):100 c157.1:108
+#3102 | Defias Highwayman;The Dagger Hills;Westfall§Straßenräuber der Defias;Die Dolchhügel;Westfall§Malandrin défias;Les collines de la Dague;Marche de l'Ouest | x=-11289.5 y=1532.800048828125 | size=1 | links=#3340(auto Westfall;35):29
+#3132 | auto Westfall;34§auto Westfall;34§auto Marche de l'Ouest;34 | x=-10237.7998046875 y=2140.699951171875 | size=5 | links=#3853(auto Westfall;40):76 #4505(auto Westfall;45):130
+#3340 | auto Westfall;35§auto Westfall;35§auto Marche de l'Ouest;35 | x=-11265.7001953125 y=1550.099975585938 | size=1 | links=#3102(Defias Highwayman;The Dagger Hills;Westfall):29 #11289(auto Westfall;107):28
+#3492 | auto Westfall;36§auto Westfall;36§auto Marche de l'Ouest;36 | x=-10646.6005859375 y=1162.200073242188 | size=1 | links=#1951(auto Westfall;20):4 #22715(auto Westfall;209):6
+#3618 | auto Westfall;37§auto Westfall;37§auto Marche de l'Ouest;37 | x=-10909.900390625 y=1446.700073242188 | size=1 | links=#11004(auto Westfall;104):27 #19719(auto Westfall;181):72 #21292(auto Westfall;195):50
+#3667 | auto Westfall;38§auto Westfall;38§auto Marche de l'Ouest;38 | x=-10075.2998046875 y=1366.800048828125 | size=1 | links=#17057(auto Westfall;158):37 #22225(auto Westfall;206):72 #28156(auto Westfall;250):40
+#3793 | auto Westfall;39§auto Westfall;39§auto Marche de l'Ouest;39 | x=-10746.1005859375 y=1018.900024414063 | size=1 | links=#12305(auto Westfall;119):33 #24455(auto Westfall;229):37
+#3853 | auto Westfall;40§auto Westfall;40§auto Marche de l'Ouest;40 | x=-10247.6005859375 y=2065 | size=5 | links=#3132(auto Westfall;34):76 #24751(auto Westfall;231):69
+#4067 | auto Westfall;41§auto Westfall;41§auto Marche de l'Ouest;41 | x=-11413.1005859375 y=1625.400024414063 | size=1 | links=#6052(auto Westfall;55):24 #19454(auto Westfall;176):20
+#4221 | auto Westfall;42§auto Westfall;42§auto Marche de l'Ouest;42 | x=-11445.7998046875 y=1720.800048828125 | size=1 | links=#10895(auto Westfall;101):26 #17951(auto Westfall;166):31
+#4240 | auto Westfall;43§auto Westfall;43§auto Marche de l'Ouest;43 | x=-11226.5 y=1913.200073242188 | size=1 | links=#13737(auto Westfall;130):73 #14493(auto Westfall;141):97
+#4300 | auto spiral stairway to top;Westfall;44§auto wendeltreppe nach oben;Westfall;44§auto spiral stairway to top;Marche de l'Ouest;44 | x=-10502.5 y=1033.099975585938 | size=1 | links=#15925(auto spiral stairway to top;Westfall;153):3 #28173(auto spiral stairway to top;Westfall;251):2
+#4505 | auto Westfall;45§auto Westfall;45§auto Marche de l'Ouest;45 | x=-10203 y=2266.10009765625 | size=5 | links=#3132(auto Westfall;34):130 #15489(auto Westfall;150):100
+#4527 | auto Westfall;46§auto Westfall;46§auto Marche de l'Ouest;46 | x=-10249.1005859375 y=1684.800048828125 | size=1 | links=#11136(auto Westfall;105):39 #23331(auto Westfall;218):41
+#4852 | auto Westfall;47§auto Westfall;47§auto Marche de l'Ouest;47 | x=-9965.6005859375 y=1004.600036621094 | size=1 | links=#5761(auto Westfall;52):73 #19800(auto Westfall;182):51 #27507(auto Westfall;246):68
+#4931 | auto Westfall;48§auto Westfall;48§auto Marche de l'Ouest;48 | x=-9712.1005859375 y=914.9000244140625 | size=1 | links=#9681(auto Westfall;86):23 c2442.2:38
+#5215 | auto Westfall;49§auto Westfall;49§auto Marche de l'Ouest;49 | x=-10505.05435056015 y=1034.881157147028 | size=1 | links=#1392(auto Westfall;12):5 #18265(auto Westfall;169):20 c491.1:13
+#5428 | auto Westfall;50§auto Westfall;50§auto Marche de l'Ouest;50 | x=-9819.900390625 y=1023.799987792969 | size=1 | links=#9532(auto Westfall;85):9 #19614(auto Westfall;179):19 o2724.80:23
+#5494 | auto Westfall;51§auto Westfall;51§auto Marche de l'Ouest;51 | x=-10131 y=1012 | size=1 | links=#121(auto Westfall;1):25 #2105(auto Westfall;24):24
+#5585 | passage;Westfall;to;Elwynn Forest§passage;Westfall;zum;Wald von Elwynn§passage;Marche de l'Ouest;vers;Forêt d'Elwynn | x=-9805.400390625 y=838.2000122070312 | size=1 | links=#16688(passage;Forest's Edge;Elwynn Forest;to;Westfall):14 #25234(auto Westfall;237):26
+#5761 | auto Westfall;52§auto Westfall;52§auto Marche de l'Ouest;52 | x=-9895.5 y=984.2000122070312 | size=1 | links=#4852(auto Westfall;47):73 #13751(auto Westfall;132):24 #27635(auto Westfall;247):31 c480.2:32
+#5941 | auto Westfall;53§auto Westfall;53§auto Marche de l'Ouest;53 | x=-11306.900390625 y=1679 | size=1 | links=#2678(auto Westfall;31):20 #6839(auto Westfall;65):29
+#6030 | auto Westfall;54§auto Westfall;54§auto Marche de l'Ouest;54 | x=-9858.2998046875 y=915.7999877929688 | size=1 | links=#499(auto Westfall;4):47 #13287(auto Westfall;126):19 #18817(auto Westfall;172):59 c237.1:7 c238.1:6
+#6052 | auto Westfall;55§auto Westfall;55§auto Marche de l'Ouest;55 | x=-11427.7001953125 y=1606.200073242188 | size=1 | links=#4067(auto Westfall;41):24 #18553(auto Westfall;171):26
+#6128 | Mailbox;Sentinel Hill;Westfall§briefkasten;Späherkuppe;Westfall§Boîte aux lettres;Sentinel Hill;Marche de l'Ouest | x=-10643.7998046875 y=1157.599975585938 | size=1 | links=#1951(auto Westfall;20):9 #15879(s;A;Mailbox;Westfall):0 #22715(auto Westfall;209):2 #23156(auto Westfall;215):7
+#6230 | auto Westfall;56§auto Westfall;56§auto Marche de l'Ouest;56 | x=-10993.7001953125 y=1483.900024414063 | size=1 | links=#16824(auto Westfall;156):9 #20977(auto Westfall;192):8
+#6234 | auto spiral stairway to top;Westfall;57§auto wendeltreppe nach oben;Westfall;57§auto spiral stairway to top;Marche de l'Ouest;57 | x=-10500 y=1013.799987792969 | size=1 | links=#2225(auto spiral stairway to top;Westfall;25):5 #16447(auto spiral stairway to top;Westfall;155):7
+#6258 | auto Westfall;58§auto Westfall;58§auto Marche de l'Ouest;58 | x=-11238 y=1438.200073242188 | size=1 | links=#9057(auto Westfall;79):27 #23822(auto Westfall;222):34
+#6303 | auto Westfall;59§auto Westfall;59§auto Marche de l'Ouest;59 | x=-11399.5 y=1960 | size=1 | links=#13843(auto Westfall;136):13 c392.1:9
+#6340 | auto Westfall;60§auto Westfall;60§auto Marche de l'Ouest;60 | x=-10953.2001953125 y=1420.900024414063 | size=1 | links=#11004(auto Westfall;104):35 #13606(auto Westfall;129):30
+#6450 | auto Westfall;61§auto Westfall;61§auto Marche de l'Ouest;61 | x=-10614.2001953125 y=1554 | size=1 | links=#18172(auto Westfall;168):30 #24648(centralpoint;Alexston Farmstead;Westfall):117 #28375(auto Westfall;255):47
+#6544 | auto Westfall;62§auto Westfall;62§auto Marche de l'Ouest;62 | x=-10964.900390625 y=1107.599975585938 | size=1 | links=#24430(auto Westfall;228):16 #28246(auto Westfall;254):33 c547.1:28
+#6570 | auto Westfall;63§auto Westfall;63§auto Marche de l'Ouest;63 | x=-10148.7998046875 y=1569.5 | size=1 | links=#8043(auto Westfall;75):36 #11537(auto Westfall;111):42 c157.2:125
+#6658 | auto Westfall;64§auto Westfall;64§auto Marche de l'Ouest;64 | x=-10491.2998046875 y=952.2000122070312 | size=1 | links=#10007(auto Westfall;89):61 #15676(auto Westfall;151):68 #23588(auto Westfall;219):98
+#6839 | auto Westfall;65§auto Westfall;65§auto Marche de l'Ouest;65 | x=-11278.5 y=1687.400024414063 | size=1 | links=#1474(auto Westfall;13):21 #5941(auto Westfall;53):29
+#6906 | auto Westfall;66§auto Westfall;66§auto Marche de l'Ouest;66 | x=-10513.7001953125 y=1613.700073242188 | size=1 | links=#10170(auto Westfall;91):36 #25991(auto Westfall;241):35
+#7060 | auto Westfall;67§auto Westfall;67§auto Marche de l'Ouest;67 | x=-10525.7001953125 y=746.9000244140625 | size=1 | links=#757(passage;above;river;Westfall;to;camp;Duskwood):65 #23588(auto Westfall;219):109
+#7099 | auto Westfall;68§auto Westfall;68§auto Marche de l'Ouest;68 | x=-11042.400390625 y=1508.200073242188 | size=1 | links=#2189(centralpoint;Moonbrook;Westfall):23 #22755(auto Westfall;211):17
+#7170 | centralpoint;Sentinel Hill§zentralerpunkt;Späherkuppe§point central;Sentinel Hill | x=-10623.1005859375 y=1084.400024414063 | size=1
+#7240 | auto Westfall;69§auto Westfall;69§auto Marche de l'Ouest;69 | x=-10981.5 y=1484.400024414063 | size=1 | links=#14415(auto Westfall;140):5 #28186(auto Westfall;253):9
+#7281 | auto Westfall;70§auto Westfall;70§auto Marche de l'Ouest;70 | x=-10913.6005859375 y=901.4000244140625 | size=1 | links=#13886(auto Westfall;137):53 #19010(auto Westfall;174):47
+#7566 | auto Westfall;71§auto Westfall;71§auto Marche de l'Ouest;71 | x=-10970.2998046875 y=1495.700073242188 | size=1 | links=#20005(auto Westfall;186):5 #28186(auto Westfall;253):7
+#7651 | Murloc Raider;Westfall;10;55.27;10.1§Murlocräuber;Westfall;10;55.27;10.1§Ecumeur murloc;Marche de l'Ouest;10;55.27;10.1 | x=-9682 y=1096 | size=1
+#7777 | auto spiral stairway to top;Westfall;72§auto wendeltreppe nach oben;Westfall;72§auto spiral stairway to top;Marche de l'Ouest;72 | x=-10497.5 y=1034.800048828125 | size=1 | links=#11866(auto spiral stairway to top;Westfall;115):3 #15771(auto spiral stairway to top;Westfall;152):5
+#7843 | auto Westfall;73§auto Westfall;73§auto Marche de l'Ouest;73 | x=-10968.1005859375 y=1485.099975585938 | size=1 | links=#11285(auto Westfall;106):8 #14415(auto Westfall;140):8
+#7867 | auto Westfall;74§auto Westfall;74§auto Marche de l'Ouest;74 | x=-11089.1005859375 y=1174.900024414063 | size=1 | links=#19844(auto Westfall;183):7 c122.3:32
+#8043 | auto Westfall;75§auto Westfall;75§auto Marche de l'Ouest;75 | x=-10181.2998046875 y=1586.400024414063 | size=1 | links=#6570(auto Westfall;63):36 #11709(auto Westfall;113):32
+#8200 | auto Westfall;76§auto Westfall;76§auto Marche de l'Ouest;76 | x=-9856.7001953125 y=1279.900024414063 | size=1 | links=#23321(auto Westfall;217):7 #24981(auto Westfall;233):18
+#8453 | auto Westfall;77§auto Westfall;77§auto Marche de l'Ouest;77 | x=-10708.6005859375 y=1505.900024414063 | size=1 | links=#23917(auto Westfall;225):37 #25583(auto Westfall;239):32
+#8831 | auto Westfall;78§auto Westfall;78§auto Marche de l'Ouest;78 | x=-10961.6005859375 y=1567.400024414063 | size=1 | links=#18488(auto Westfall;170):10 #21204(auto Westfall;194):15
+#9057 | auto Westfall;79§auto Westfall;79§auto Marche de l'Ouest;79 | x=-11235.1005859375 y=1411.200073242188 | size=1 | links=#6258(auto Westfall;58):27 #15960(auto Westfall;154):56 c122.1:19 c596.1:66
+#9111 | auto Westfall;80§auto Westfall;80§auto Marche de l'Ouest;80 | x=-10628.7001953125 y=1006.600036621094 | size=1 | links=#10235(auto Westfall;95):48 #20052(auto Westfall;187):22
+#9193 | auto Westfall;81§auto Westfall;81§auto Marche de l'Ouest;81 | x=-10931.1005859375 y=814.7999877929688 | size=1 | links=#19010(auto Westfall;174):40 #19876(auto Westfall;185):65
+#9210 | auto Westfall;82§auto Westfall;82§auto Marche de l'Ouest;82 | x=-10981.6005859375 y=1477.599975585938 | size=1 | links=#11285(auto Westfall;106):12 #23056(auto Westfall;214):4
+#9289 | auto Westfall;83§auto Westfall;83§auto Marche de l'Ouest;83 | x=-10168.5 y=2389.300048828125 | size=1 | links=#15489(auto Westfall;150):31 o177844.1:5
+#9503 | auto Westfall;84§auto Westfall;84§auto Marche de l'Ouest;84 | x=-10185.1005859375 y=985.7999877929688 | size=1 | links=#121(auto Westfall;1):63 #2105(auto Westfall;24):68 #2294(auto Westfall;26):68
+#9532 | auto Westfall;85§auto Westfall;85§auto Marche de l'Ouest;85 | x=-9816.2998046875 y=1032.099975585938 | size=1 | links=#5428(auto Westfall;50):9 #22084(auto Westfall;201):38 c199.2:52 o2724.38:17 o2724.60:17
+#9681 | auto Westfall;86§auto Westfall;86§auto Marche de l'Ouest;86 | x=-9688.400390625 y=912.7000122070312 | size=5 | links=#4931(auto Westfall;48):23 #28183(auto Westfall;252):37 c834.2:17
+#9713 | auto Westfall;87§auto Westfall;87§auto Marche de l'Ouest;87 | x=-10518.2998046875 y=1063 | size=1 | links=#17147(auto Westfall;162):29 c234.1:20 c467.1:11 c490.1:8
+#9910 | auto Westfall;88§auto Westfall;88§auto Marche de l'Ouest;88 | x=-10531.2998046875 y=1754.599975585938 | size=5 | links=#21799(auto Westfall;198):79 c114.1:69
+#10007 | auto Westfall;89§auto Westfall;89§auto Marche de l'Ouest;89 | x=-10435.7001953125 y=979.2999877929688 | size=1 | links=#6658(auto Westfall;64):61 #17059(auto Westfall;159):50
+#10017 | auto Westfall;90§auto Westfall;90§auto Marche de l'Ouest;90 | x=-10499.2001953125 y=1025 | size=1 | links=#1928(auto spiral stairway to top;Westfall;19):5 #17083(auto Westfall;161):4
+#10170 | auto Westfall;91§auto Westfall;91§auto Marche de l'Ouest;91 | x=-10491.2001953125 y=1642.400024414063 | size=1 | links=#6906(auto Westfall;66):36 #10731(auto Westfall;99):50 c114.1:50 c36.2:122
+#10194 | auto Westfall;92§auto Westfall;92§auto Marche de l'Ouest;92 | x=-9788.2998046875 y=1139.300048828125 | size=1 | links=#13747(auto Westfall;131):45 #23914(auto Westfall;224):29
+#10228 | auto Westfall;93§auto Westfall;93§auto Marche de l'Ouest;93 | x=-10835.2001953125 y=1014.400024414063 | size=1 | links=#12305(auto Westfall;119):56 #24479(auto Westfall;230):40
+#10233 | auto Westfall;94§auto Westfall;94§auto Marche de l'Ouest;94 | x=-11217.900390625 y=1305.599975585938 | size=1 | links=#1152(auto Westfall;9):47 #15960(auto Westfall;154):51
+#10235 | auto Westfall;95§auto Westfall;95§auto Marche de l'Ouest;95 | x=-10585.1005859375 y=985.1000366210938 | size=1 | links=#9111(auto Westfall;80):48 #15676(auto Westfall;151):31
+#10294 | auto Westfall;96§auto Westfall;96§auto Marche de l'Ouest;96 | x=-10768.7998046875 y=884.2000122070312 | size=1 | links=o2724.84:10
+#10427 | auto Westfall;97§auto Westfall;97§auto Marche de l'Ouest;97 | x=-11354.7001953125 y=1849.599975585938 | size=1 | links=#12203(auto Westfall;117):73 c391.1:23
+#10672 | auto Westfall;98§auto Westfall;98§auto Marche de l'Ouest;98 | x=-9642.2001953125 y=921.7999877929688 | size=1 | links=#22200(auto Westfall;205):13 #28183(auto Westfall;252):12
+#10731 | auto Westfall;99§auto Westfall;99§auto Marche de l'Ouest;99 | x=-10456.5 y=1679.099975585938 | size=1 | links=#10170(auto Westfall;91):50 #22101(auto Westfall;202):55
+#10732 | auto Westfall;100§auto Westfall;100§auto Marche de l'Ouest;100 | x=-10052.1005859375 y=1442.099975585938 | size=1 | links=#26701(auto Westfall;242):46 #28156(auto Westfall;250):38 c95.2:58 c95.3:54
+#10895 | auto Westfall;101§auto Westfall;101§auto Marche de l'Ouest;101 | x=-11467.5 y=1736.700073242188 | size=1 | links=#4221(auto Westfall;42):26 c4305.1:38
+#10910 | auto Westfall;102§auto Westfall;102§auto Marche de l'Ouest;102 | x=-11039.2998046875 y=1175.5 | size=5 | links=#14699(auto Westfall;143):95 #22570(auto Westfall;208):21
+#10912 | auto Westfall;103§auto Westfall;103§auto Marche de l'Ouest;103 | x=-9887.5 y=1306.099975585938 | size=1 | links=#14920(auto Westfall;148):10 c620.1:11
+#10970 | centralpoint;Sentinel Hill;Westfall§zentralerpunkt;Späherkuppe;Westfall§point central;Sentinel Hill;Marche de l'Ouest | x=-10625.900390625 y=1072.200073242188 | size=1 | links=#1271(auto Westfall;10):55 #17068(auto Westfall;160):43 #17730(auto Westfall;165):26 c523.1:34 c876.1:26
+#11004 | auto Westfall;104§auto Westfall;104§auto Marche de l'Ouest;104 | x=-10917.900390625 y=1420.599975585938 | size=1 | links=#3618(auto Westfall;37):27 #6340(auto Westfall;60):35 #14909(auto Westfall;147):40
+#11136 | auto Westfall;105§auto Westfall;105§auto Marche de l'Ouest;105 | x=-10227.6005859375 y=1652.099975585938 | size=1 | links=#4527(auto Westfall;46):39 #11709(auto Westfall;113):47 c506.1:112
+#11144 | central location;The Molsen Farm;Westfall§zentralpunkt;Molsens Hof;Westfall§emplacement central;La ferme des Molsen;Marche de l'Ouest | x=-10255 y=1436.300048828125 | size=1 | links=c573.1:31
+#11230 | meeting stone;Moonbrook;Westfall§versammlungsstein;Mondbruch;Westfall§meeting stone;Moonbrook;Marche de l'Ouest | x=-11088.2998046875 y=1559.099975585938 | size=1 | links=#20926(auto Westfall;191):17
+#11285 | auto Westfall;106§auto Westfall;106§auto Marche de l'Ouest;106 | x=-10968.7998046875 y=1476.800048828125 | size=1 | links=#7843(auto Westfall;73):8 #9210(auto Westfall;82):12
+#11289 | auto Westfall;107§auto Westfall;107§auto Marche de l'Ouest;107 | x=-11267.900390625 y=1578.300048828125 | size=1 | links=#2625(auto Westfall;30):32 #3340(auto Westfall;35):28
+#11340 | auto Westfall;108§auto Westfall;108§auto Marche de l'Ouest;108 | x=-10028.5 y=1150.200073242188 | size=1 | links=#1598(auto Westfall;16):47 #14571(auto Westfall;142):63 c454.2:29
+#11351 | auto Westfall;109§auto Westfall;109§auto Marche de l'Ouest;109 | x=-11066.7001953125 y=1537.599975585938 | size=1 | links=#17439(auto Westfall;163):10 #20926(auto Westfall;191):13
+#11381 | auto Westfall;110§auto Westfall;110§auto Marche de l'Ouest;110 | x=-9741.6005859375 y=1097.700073242188 | size=1 | links=#23914(auto Westfall;224):60 c515.10:59
+#11537 | auto Westfall;111§auto Westfall;111§auto Marche de l'Ouest;111 | x=-10110.900390625 y=1551 | size=1 | links=#6570(auto Westfall;63):42 #12975(auto Westfall;123):45
+#11601 | auto Westfall;112§auto Westfall;112§auto Marche de l'Ouest;112 | x=-10992.7001953125 y=1621.400024414063 | size=1 | links=#21904(auto Westfall;199):16 c1109.2:21
+#11709 | auto Westfall;113§auto Westfall;113§auto Marche de l'Ouest;113 | x=-10202 y=1611.599975585938 | size=1 | links=#8043(auto Westfall;75):32 #11136(auto Westfall;105):47
+#11765 | auto spiral stairway to top;Westfall;114§auto wendeltreppe nach oben;Westfall;114§auto spiral stairway to top;Marche de l'Ouest;114 | x=-10505.7001953125 y=1017.5 | size=1 | links=#13817(auto spiral stairway to top;Westfall;134):3 #22958(auto spiral stairway to top;Westfall;212):5
+#11866 | auto spiral stairway to top;Westfall;115§auto wendeltreppe nach oben;Westfall;115§auto spiral stairway to top;Marche de l'Ouest;115 | x=-10500.7998046875 y=1036.400024414063 | size=1 | links=#7777(auto spiral stairway to top;Westfall;72):3 #25164(auto spiral stairway to top;Westfall;235):4
+#12013 | auto spiral stairway to top;Westfall;116§auto wendeltreppe nach oben;Westfall;116§auto spiral stairway to top;Marche de l'Ouest;116 | x=-10507.6005859375 y=1030.700073242188 | size=1 | links=#15925(auto spiral stairway to top;Westfall;153):2 #21409(auto spiral stairway to top;Westfall;196):2
+#12203 | auto Westfall;117§auto Westfall;117§auto Marche de l'Ouest;117 | x=-11345.7001953125 y=1923 | size=1 | links=#10427(auto Westfall;97):73 #13737(auto Westfall;130):97 #13843(auto Westfall;136):55
+#12223 | auto Westfall;118§auto Westfall;118§auto Marche de l'Ouest;118 | x=-9873.6005859375 y=1261.400024414063 | size=1 | links=#22099(centralpoint;Furlbrow's Pumpkin Farm;Westfall):44 #24981(auto Westfall;233):6
+#12305 | auto Westfall;119§auto Westfall;119§auto Marche de l'Ouest;119 | x=-10779.1005859375 y=1013.900024414063 | size=1 | links=#3793(auto Westfall;39):33 #10228(auto Westfall;93):56 c547.3:54
+#12386 | auto Westfall;120§auto Westfall;120§auto Marche de l'Ouest;120 | x=-11469.5 y=1574 | size=1 | links=#18553(auto Westfall;171):26 c6182.1:20
+#12831 | auto Westfall;121§auto Westfall;121§auto Marche de l'Ouest;121 | x=-10867.2001953125 y=669.9000244140625 | size=1 | links=#2587(auto Westfall;28):28 #19583(auto Westfall;178):14
+#12897 | auto Westfall;122§auto Westfall;122§auto Marche de l'Ouest;122 | x=-11338 y=1755 | size=1 | links=#1582(auto Westfall;15):70 #17951(auto Westfall;166):88
+#12975 | auto Westfall;123§auto Westfall;123§auto Marche de l'Ouest;123 | x=-10080.7998046875 y=1516.400024414063 | size=1 | links=#11537(auto Westfall;111):45 #26701(auto Westfall;242):33
+#13132 | auto Westfall;124§auto Westfall;124§auto Marche de l'Ouest;124 | x=-10363.7001953125 y=1729.300048828125 | size=1 | links=#2601(auto Westfall;29):42 #19864(auto Westfall;184):38 c157.3:37
+#13276 | auto Westfall;125§auto Westfall;125§auto Marche de l'Ouest;125 | x=-10959.900390625 y=1550.400024414063 | size=1 | links=#16894(auto Westfall;157):30 #22129(auto Westfall;204):16
+#13287 | auto Westfall;126§auto Westfall;126§auto Marche de l'Ouest;126 | x=-9871.2001953125 y=930.5 | size=1 | links=#6030(auto Westfall;54):19 #27635(auto Westfall;247):31
+#13304 | auto Westfall;127§auto Westfall;127§auto Marche de l'Ouest;127 | x=-11178.6005859375 y=1246.099975585938 | size=1 | links=#1152(auto Westfall;9):25 #18898(auto Westfall;173):31
+#13430 | auto Westfall;128§auto Westfall;128§auto Marche de l'Ouest;128 | x=-11385.2998046875 y=1647.400024414063 | size=1 | links=#17489(auto Westfall;164):9 #19454(auto Westfall;176):15
+#13606 | auto Westfall;129§auto Westfall;129§auto Marche de l'Ouest;129 | x=-10982.900390625 y=1414.800048828125 | size=1 | links=#411(auto Westfall;3):17 #6340(auto Westfall;60):30
+#13737 | auto Westfall;130§auto Westfall;130§auto Marche de l'Ouest;130 | x=-11264.1005859375 y=1976.099975585938 | size=1 | links=#4240(auto Westfall;43):73 #12203(auto Westfall;117):97
+#13747 | auto Westfall;131§auto Westfall;131§auto Marche de l'Ouest;131 | x=-9763.400390625 y=1177.300048828125 | size=1 | links=#10194(auto Westfall;92):45 c500.3:16
+#13751 | auto Westfall;132§auto Westfall;132§auto Marche de l'Ouest;132 | x=-9871.900390625 y=989.6000366210938 | size=1 | links=#5761(auto Westfall;52):24 #13806(auto Westfall;133):11
+#13806 | auto Westfall;133§auto Westfall;133§auto Marche de l'Ouest;133 | x=-9860.900390625 y=992.2999877929688 | size=1 | links=#13751(auto Westfall;132):11 #19614(auto Westfall;179):32
+#13817 | auto spiral stairway to top;Westfall;134§auto wendeltreppe nach oben;Westfall;134§auto spiral stairway to top;Marche de l'Ouest;134 | x=-10507.7001953125 y=1020 | size=1 | links=#11765(auto spiral stairway to top;Westfall;114):3 #28431(auto spiral stairway to top;Westfall;257):4
+#13831 | auto Westfall;135§auto Westfall;135§auto Marche de l'Ouest;135 | x=-9679.900390625 y=985.1000366210938 | size=1 | links=#344(auto Westfall;2):27 c117.1:29
+#13843 | auto Westfall;136§auto Westfall;136§auto Marche de l'Ouest;136 | x=-11395.1005859375 y=1947.599975585938 | size=1 | links=#6303(auto Westfall;59):13 #12203(auto Westfall;117):55
+#13886 | auto Westfall;137§auto Westfall;137§auto Marche de l'Ouest;137 | x=-10949.1005859375 y=940.9000244140625 | size=1 | links=#2989(auto Westfall;32):41 #7281(auto Westfall;70):53
+#14086 | auto Westfall;138§auto Westfall;138§auto Marche de l'Ouest;138 | x=-10298.1005859375 y=1872.099975585938 | size=5 | links=#19864(auto Westfall;184):152 #24751(auto Westfall;231):131
+#14314 | auto spiral stairway to top;Westfall;139§auto wendeltreppe nach oben;Westfall;139§auto spiral stairway to top;Marche de l'Ouest;139 | x=-10511.900390625 y=1022.200012207031 | size=1 | links=#16447(auto spiral stairway to top;Westfall;155):7 #25190(auto spiral stairway to top;Westfall;236):8
+#14415 | auto Westfall;140§auto Westfall;140§auto Marche de l'Ouest;140 | x=-10976.2998046875 y=1484.900024414063 | size=1 | links=#7240(auto Westfall;69):5 #7843(auto Westfall;73):8
+#14493 | auto Westfall;141§auto Westfall;141§auto Marche de l'Ouest;141 | x=-11190.2001953125 y=1822.300048828125 | size=1 | links=#1582(auto Westfall;15):96 #1822(auto Westfall;18):248 #4240(auto Westfall;43):97 c6271.1:62
+#14571 | auto Westfall;142§auto Westfall;142§auto Marche de l'Ouest;142 | x=-10034.2998046875 y=1213.400024414063 | size=1 | links=#11340(auto Westfall;108):63 #25283(auto Westfall;238):49 c1109.1:54 c573.2:39
+#14699 | auto Westfall;143§auto Westfall;143§auto Marche de l'Ouest;143 | x=-10945.2001953125 y=1160.400024414063 | size=1 | links=#10910(auto Westfall;102):95 #14877(auto Westfall;145):33 #24430(auto Westfall;228):40
+#14847 | auto Westfall;144§auto Westfall;144§auto Marche de l'Ouest;144 | x=-10943.7998046875 y=1020.400024414063 | size=1 | links=#20172(auto Westfall;189):37 #26805(auto Westfall;243):25
+#14877 | auto Westfall;145§auto Westfall;145§auto Marche de l'Ouest;145 | x=-10930.7001953125 y=1191 | size=1 | links=#1957(auto Westfall;21):50 #14699(auto Westfall;143):33
+#14880 | auto spiral stairway to top;Westfall;146§auto wendeltreppe nach oben;Westfall;146§auto spiral stairway to top;Marche de l'Ouest;146 | x=-10497.1005859375 y=1031.900024414063 | size=1 | links=#1992(auto spiral stairway to top;Westfall;23):3 #28173(auto spiral stairway to top;Westfall;251):2
+#14909 | auto Westfall;147§auto Westfall;147§auto Marche de l'Ouest;147 | x=-10910.5 y=1381.200073242188 | size=1 | links=#1703(auto Westfall;17):55 #11004(auto Westfall;104):40
+#14920 | auto Westfall;148§auto Westfall;148§auto Marche de l'Ouest;148 | x=-9881.7998046875 y=1314.5 | size=1 | links=#10912(auto Westfall;103):10 c504.3:8
+#15124 | auto Westfall;149§auto Westfall;149§auto Marche de l'Ouest;149 | x=-11119.400390625 y=1191.200073242188 | size=1 | links=#23718(auto Westfall;220):34 c122.3:13
+#15489 | auto Westfall;150§auto Westfall;150§auto Marche de l'Ouest;150 | x=-10188.6005859375 y=2365.300048828125 | size=5 | links=#4505(auto Westfall;45):100 #9289(auto Westfall;83):31
+#15676 | auto Westfall;151§auto Westfall;151§auto Marche de l'Ouest;151 | x=-10556.2001953125 y=973.1000366210938 | size=1 | links=#6658(auto Westfall;64):68 #10235(auto Westfall;95):31
+#15771 | auto spiral stairway to top;Westfall;152§auto wendeltreppe nach oben;Westfall;152§auto spiral stairway to top;Marche de l'Ouest;152 | x=-10492.6005859375 y=1032 | size=1 | links=#7777(auto spiral stairway to top;Westfall;72):5 #22008(auto spiral stairway to top;Westfall;200):3
+#15879 | s;A;Mailbox;Westfall§s;a;Briefkasten;Westfall§s;A;Boîte aux lettres;Marche de l'Ouest | x=-10644.24489197477 y=1158.092545726929 | size=1 | links=#6128(Mailbox;Sentinel Hill;Westfall):0
+#15925 | auto spiral stairway to top;Westfall;153§auto wendeltreppe nach oben;Westfall;153§auto spiral stairway to top;Marche de l'Ouest;153 | x=-10505.7001953125 y=1031.900024414063 | size=1 | links=#4300(auto spiral stairway to top;Westfall;44):3 #12013(auto spiral stairway to top;Westfall;116):2
+#15960 | auto Westfall;154§auto Westfall;154§auto Marche de l'Ouest;154 | x=-11232.7998046875 y=1355.099975585938 | size=1 | links=#9057(auto Westfall;79):56 #10233(auto Westfall;94):51
+#16447 | auto spiral stairway to top;Westfall;155§auto wendeltreppe nach oben;Westfall;155§auto spiral stairway to top;Marche de l'Ouest;155 | x=-10507.2998046875 y=1015.900024414063 | size=1 | links=#6234(auto spiral stairway to top;Westfall;57):7 #14314(auto spiral stairway to top;Westfall;139):7
+#16824 | auto Westfall;156§auto Westfall;156§auto Marche de l'Ouest;156 | x=-10994 y=1492.900024414063 | size=1 | links=#578(auto Westfall;5):7 #6230(auto Westfall;56):9
+#16894 | auto Westfall;157§auto Westfall;157§auto Marche de l'Ouest;157 | x=-10959.7998046875 y=1519.700073242188 | size=1 | links=#13276(auto Westfall;125):30 #19719(auto Westfall;181):35
+#17057 | auto Westfall;158§auto Westfall;158§auto Marche de l'Ouest;158 | x=-10078 y=1329.400024414063 | size=1 | links=#3667(auto Westfall;38):37 #28386(auto Westfall;256):37
+#17059 | auto Westfall;159§auto Westfall;159§auto Marche de l'Ouest;159 | x=-10385.400390625 y=982.2999877929688 | size=1 | links=#10007(auto Westfall;89):50 #27440(auto Westfall;245):37
+#17068 | auto Westfall;160§auto Westfall;160§auto Marche de l'Ouest;160 | x=-10583.1005859375 y=1077.700073242188 | size=1 | links=#1013(auto Westfall;7):30 #1145(auto Westfall;8):20 #10970(centralpoint;Sentinel Hill;Westfall):43
+#17083 | auto Westfall;161§auto Westfall;161§auto Marche de l'Ouest;161 | x=-10503.1005859375 y=1022.600036621094 | size=1 | links=#10017(auto Westfall;90):4 #20985(auto Westfall;193):3
+#17147 | auto Westfall;162§auto Westfall;162§auto Marche de l'Ouest;162 | x=-10542.6005859375 y=1080 | size=1 | links=#1145(auto Westfall;8):19 #9713(auto Westfall;87):29
+#17439 | auto Westfall;163§auto Westfall;163§auto Marche de l'Ouest;163 | x=-11061.5 y=1528.5 | size=1 | links=#11351(auto Westfall;109):10 #22755(auto Westfall;211):10 #46980(auto Inside;Defias hideout;The Deadmines;258):17
+#17489 | auto Westfall;164§auto Westfall;164§auto Marche de l'Ouest;164 | x=-11376.900390625 y=1651.300048828125 | size=1 | links=#13430(auto Westfall;128):9 #22118(auto Westfall;203):18
+#17730 | auto Westfall;165§auto Westfall;165§auto Marche de l'Ouest;165 | x=-10623.400390625 y=1098.200073242188 | size=1 | links=#10970(centralpoint;Sentinel Hill;Westfall):26 #22510(auto Westfall;207):20
+#17951 | auto Westfall;166§auto Westfall;166§auto Marche de l'Ouest;166 | x=-11415.2001953125 y=1712.700073242188 | size=1 | links=#4221(auto Westfall;42):31 #12897(auto Westfall;122):88
+#18105 | auto Westfall;167§auto Westfall;167§auto Marche de l'Ouest;167 | x=-9814.2998046875 y=923.2000122070312 | size=1 | links=#25082(auto Westfall;234):37 c237.1:37
+#18172 | auto Westfall;168§auto Westfall;168§auto Marche de l'Ouest;168 | x=-10640.400390625 y=1538.800048828125 | size=1 | links=#6450(auto Westfall;61):30 #25583(auto Westfall;239):49
+#18265 | auto Westfall;169§auto Westfall;169§auto Marche de l'Ouest;169 | x=-10489.7001953125 y=1021.900024414063 | size=1 | links=#2225(auto spiral stairway to top;Westfall;25):7 #5215(auto Westfall;49):20
+#18488 | auto Westfall;170§auto Westfall;170§auto Marche de l'Ouest;170 | x=-10951.1005859375 y=1568.200073242188 | size=1 | links=#8831(auto Westfall;78):10 o19019.2:4
+#18553 | auto Westfall;171§auto Westfall;171§auto Marche de l'Ouest;171 | x=-11448.400390625 y=1589.800048828125 | size=1 | links=#6052(auto Westfall;55):26 #12386(auto Westfall;120):26
+#18817 | auto Westfall;172§auto Westfall;172§auto Marche de l'Ouest;172 | x=-9902.2998046875 y=875.7000122070312 | size=1 | links=#6030(auto Westfall;54):59 c833.3:49
+#18898 | auto Westfall;173§auto Westfall;173§auto Marche de l'Ouest;173 | x=-11162.2998046875 y=1219 | size=1 | links=#13304(auto Westfall;127):31 #23718(auto Westfall;220):17
+#19010 | auto Westfall;174§auto Westfall;174§auto Marche de l'Ouest;174 | x=-10922.400390625 y=854.7000122070312 | size=1 | links=#7281(auto Westfall;70):47 #9193(auto Westfall;81):40 c573.3:67
+#19302 | auto Westfall;175§auto Westfall;175§auto Marche de l'Ouest;175 | x=-10788.400390625 y=1497.800048828125 | size=1 | links=#23917(auto Westfall;225):43 #24764(auto Westfall;232):39 c462.2:100
+#19362 | Murloc Coastrunner;Westfall;22;55.72;8.95§Murlocküstenläufer;Westfall;22;55.72;8.95§Cours-la-côte murloc;Marche de l'Ouest;22;55.72;8.95 | x=-9623.7998046875 y=1065.599975585938 | size=1
+#19454 | auto Westfall;176§auto Westfall;176§auto Marche de l'Ouest;176 | x=-11397.900390625 y=1638.400024414063 | size=1 | links=#4067(auto Westfall;41):20 #13430(auto Westfall;128):15
+#19463 | auto Westfall;177§auto Westfall;177§auto Marche de l'Ouest;177 | x=-10006.400390625 y=1070 | size=1 | links=#1598(auto Westfall;16):37 #19800(auto Westfall;182):26 c480.3:34
+#19583 | auto Westfall;178§auto Westfall;178§auto Marche de l'Ouest;178 | x=-10866.2001953125 y=655.7999877929688 | size=1 | links=#12831(auto Westfall;121):14 #21450(passage;Westfall;to;Duskwood):19
+#19614 | auto Westfall;179§auto Westfall;179§auto Marche de l'Ouest;179 | x=-9837.6005859375 y=1014.700012207031 | size=1 | links=#5428(auto Westfall;50):19 #13806(auto Westfall;133):32 #21559(auto Westfall;197):18 c481.3:19
+#19655 | auto spiral stairway to top;Westfall;180§auto wendeltreppe nach oben;Westfall;180§auto spiral stairway to top;Marche de l'Ouest;180 | x=-10493.5 y=1018.900024414063 | size=1 | links=#1974(auto spiral stairway to top;Westfall;22):3 #22958(auto spiral stairway to top;Westfall;212):7
+#19719 | auto Westfall;181§auto Westfall;181§auto Marche de l'Ouest;181 | x=-10924.2001953125 y=1518 | size=1 | links=#3618(auto Westfall;37):72 #16894(auto Westfall;157):35
+#19800 | auto Westfall;182§auto Westfall;182§auto Marche de l'Ouest;182 | x=-9997.900390625 y=1044.400024414063 | size=1 | links=#4852(auto Westfall;47):51 #19463(auto Westfall;177):26
+#19844 | auto Westfall;183§auto Westfall;183§auto Marche de l'Ouest;183 | x=-11083.6005859375 y=1169.900024414063 | size=1 | links=#7867(auto Westfall;74):7 #22570(auto Westfall;208):23
+#19864 | auto Westfall;184§auto Westfall;184§auto Marche de l'Ouest;184 | x=-10325.400390625 y=1722.099975585938 | size=1 | links=#13132(auto Westfall;124):38 #14086(auto Westfall;138):152 #23331(auto Westfall;218):43
+#19876 | auto Westfall;185§auto Westfall;185§auto Marche de l'Ouest;185 | x=-10889.5 y=764.1000366210938 | size=1 | links=#9193(auto Westfall;81):65 #27797(auto Westfall;248):25
+#20005 | auto Westfall;186§auto Westfall;186§auto Marche de l'Ouest;186 | x=-10964.7998046875 y=1495.5 | size=1 | links=#7566(auto Westfall;71):5 c1669.1:7
+#20052 | auto Westfall;187§auto Westfall;187§auto Marche de l'Ouest;187 | x=-10648.6005859375 y=1017.900024414063 | size=1 | links=#1271(auto Westfall;10):16 #9111(auto Westfall;80):22
+#20104 | auto Westfall;188§auto Westfall;188§auto Marche de l'Ouest;188 | x=-10012.7001953125 y=1740.200073242188 | size=1 | links=#50140(auto Westfall;327):60 c157.2:100 c506.2:77
+#20172 | auto Westfall;189§auto Westfall;189§auto Marche de l'Ouest;189 | x=-10914.900390625 y=996.7000122070312 | size=1 | links=#2989(auto Westfall;32):24 #14847(auto Westfall;144):37 #24479(auto Westfall;230):41
+#20517 | auto Westfall;190§auto Westfall;190§auto Marche de l'Ouest;190 | x=-10509 y=1023.299987792969 | size=1 | links=#20985(auto Westfall;193):3 c820.1:10
+#20561 | Murloc Raider;Westfall;9;53.89;9.63§Murlocräuber;Westfall;9;53.89;9.63§Ecumeur murloc;Marche de l'Ouest;9;53.89;9.63 | x=-9635.2001953125 y=1112.200073242188 | size=1
+#20926 | auto Westfall;191§auto Westfall;191§auto Marche de l'Ouest;191 | x=-11077 y=1545.900024414063 | size=1 | links=#11230(meeting stone;Moonbrook;Westfall):17 #11351(auto Westfall;109):13
+#20977 | auto Westfall;192§auto Westfall;192§auto Marche de l'Ouest;192 | x=-10986.400390625 y=1487.400024414063 | size=1 | links=#6230(auto Westfall;56):8 #23056(auto Westfall;214):7
+#20985 | auto Westfall;193§auto Westfall;193§auto Marche de l'Ouest;193 | x=-10506.1005859375 y=1020.799987792969 | size=1 | links=#17083(auto Westfall;161):3 #20517(auto Westfall;190):3
+#21204 | auto Westfall;194§auto Westfall;194§auto Marche de l'Ouest;194 | x=-10976.6005859375 y=1562.599975585938 | size=1 | links=#8831(auto Westfall;78):15 #22129(auto Westfall;204):12 o3643.1:19
+#21292 | auto Westfall;195§auto Westfall;195§auto Marche de l'Ouest;195 | x=-10867.5 y=1473.5 | size=1 | links=#3618(auto Westfall;37):50 #24764(auto Westfall;232):43
+#21409 | auto spiral stairway to top;Westfall;196§auto wendeltreppe nach oben;Westfall;196§auto spiral stairway to top;Marche de l'Ouest;196 | x=-10509.1005859375 y=1028.400024414063 | size=1 | links=#12013(auto spiral stairway to top;Westfall;116):2 #28431(auto spiral stairway to top;Westfall;257):3
+#21450 | passage;Westfall;to;Duskwood§passage;Westfall;zum;Dämmerwald§passage;Marche de l'Ouest;vers;Bois de la Pénombre | x=-10865.6005859375 y=636.7999877929688 | size=1 | links=#17919(passage;from;Duskwood;to;Westfall):7 #19583(auto Westfall;178):19
+#21559 | auto Westfall;197§auto Westfall;197§auto Marche de l'Ouest;197 | x=-9845.6005859375 y=1031.700073242188 | size=1 | links=#19614(auto Westfall;179):18 c481.2:8 o2724.45:6
+#21799 | auto Westfall;198§auto Westfall;198§auto Marche de l'Ouest;198 | x=-10541.900390625 y=1832.900024414063 | size=5 | links=#9910(auto Westfall;88):79 #27319(auto Westfall;244):57
+#21904 | auto Westfall;199§auto Westfall;199§auto Marche de l'Ouest;199 | x=-11002.2998046875 y=1635.099975585938 | size=1 | links=#11601(auto Westfall;112):16 c121.2:24
+#22008 | auto spiral stairway to top;Westfall;200§auto wendeltreppe nach oben;Westfall;200§auto spiral stairway to top;Marche de l'Ouest;200 | x=-10490.7001953125 y=1028.599975585938 | size=1 | links=#846(auto spiral stairway to top;Westfall;6):3 #15771(auto spiral stairway to top;Westfall;152):3
+#22084 | auto Westfall;201§auto Westfall;201§auto Marche de l'Ouest;201 | x=-9839.400390625 y=1062.400024414063 | size=1 | links=#9532(auto Westfall;85):38 c481.1:12 c199.2:35
+#22099 | centralpoint;Furlbrow's Pumpkin Farm;Westfall§zentralerpunkt;Brauenwirbels Kürbishof;Westfall§point central;Furlbrow's Pumpkin Farm;Marche de l'Ouest | x=-9910.6005859375 y=1236.5 | size=1 | links=#12223(auto Westfall;118):44 c454.1:54 c1109.1:71 c114.3:37
+#22101 | auto Westfall;202§auto Westfall;202§auto Marche de l'Ouest;202 | x=-10416.7998046875 y=1718.5 | size=1 | links=#2601(auto Westfall;29):13 #10731(auto Westfall;99):55 c36.2:70
+#22118 | auto Westfall;203§auto Westfall;203§auto Marche de l'Ouest;203 | x=-11359.2001953125 y=1656.5 | size=1 | links=#2678(auto Westfall;31):36 #17489(auto Westfall;164):18
+#22129 | auto Westfall;204§auto Westfall;204§auto Marche de l'Ouest;204 | x=-10975.900390625 y=1549.700073242188 | size=1 | links=#13276(auto Westfall;125):16 #21204(auto Westfall;194):12
+#22200 | auto Westfall;205§auto Westfall;205§auto Marche de l'Ouest;205 | x=-9635.6005859375 y=933.7999877929688 | size=5 | links=#10672(auto Westfall;98):13 c834.3:23
+#22225 | auto Westfall;206§auto Westfall;206§auto Marche de l'Ouest;206 | x=-10132.1005859375 y=1412.599975585938 | size=5 | links=#3667(auto Westfall;38):72 #28156(auto Westfall;250):68 c573.1:99 o2724.57:36 o2724.65:29
+#22298 | Defias Highwayman;Westfall;25;60.76;58.23§Straßenräuber der Defias;Westfall;25;60.76;58.23§Malandrin défias;Marche de l'Ouest;25;60.76;58.23 | x=-10776.2998046875 y=882.7999877929688 | size=1
+#22510 | auto Westfall;207§auto Westfall;207§auto Marche de l'Ouest;207 | x=-10627.6005859375 y=1118 | size=1 | links=#17730(auto Westfall;165):20 #22741(auto Westfall;210):25 c878.1:12
+#22570 | auto Westfall;208§auto Westfall;208§auto Marche de l'Ouest;208 | x=-11060.1005859375 y=1169.400024414063 | size=1 | links=#10910(auto Westfall;102):21 #19844(auto Westfall;183):23
+#22715 | auto Westfall;209§auto Westfall;209§auto Marche de l'Ouest;209 | x=-10641.400390625 y=1159.099975585938 | size=1 | links=#3492(auto Westfall;36):6 #6128(Mailbox;Sentinel Hill;Westfall):2 #23156(auto Westfall;215):5
+#22741 | auto Westfall;210§auto Westfall;210§auto Marche de l'Ouest;210 | x=-10631.900390625 y=1142.700073242188 | size=1 | links=#22510(auto Westfall;207):25 #23156(auto Westfall;215):14
+#22755 | auto Westfall;211§auto Westfall;211§auto Marche de l'Ouest;211 | x=-11055.2001953125 y=1519.599975585938 | size=1 | links=#7099(auto Westfall;68):17 #17439(auto Westfall;163):10
+#22958 | auto spiral stairway to top;Westfall;212§auto wendeltreppe nach oben;Westfall;212§auto spiral stairway to top;Marche de l'Ouest;212 | x=-10500.2998046875 y=1015.600036621094 | size=1 | links=#11765(auto spiral stairway to top;Westfall;114):5 #19655(auto spiral stairway to top;Westfall;180):7
+#22991 | auto Westfall;213§auto Westfall;213§auto Marche de l'Ouest;213 | x=-10849.7998046875 y=1251.800048828125 | size=1 | links=#28009(auto Westfall;249):50 o2724.82:74
+#23056 | auto Westfall;214§auto Westfall;214§auto Marche de l'Ouest;214 | x=-10981.1005859375 y=1482.200073242188 | size=1 | links=#9210(auto Westfall;82):4 #20977(auto Westfall;192):7
+#23156 | auto Westfall;215§auto Westfall;215§auto Marche de l'Ouest;215 | x=-10636.900390625 y=1156.400024414063 | size=1 | links=#6128(Mailbox;Sentinel Hill;Westfall):7 #22715(auto Westfall;209):5 #22741(auto Westfall;210):14 c10045.1:7
+#23214 | auto Westfall;216§auto Westfall;216§auto Marche de l'Ouest;216 | x=-10559 y=1157.400024414063 | size=1 | links=#2363(auto Westfall;27):30 c6491.1:49
+#23321 | auto Westfall;217§auto Westfall;217§auto Marche de l'Ouest;217 | x=-9851.2001953125 y=1284.5 | size=1 | links=#8200(auto Westfall;76):7 c502.1:8
+#23331 | auto Westfall;218§auto Westfall;218§auto Marche de l'Ouest;218 | x=-10285.2001953125 y=1705.800048828125 | size=1 | links=#3039(auto Westfall;33):100 #4527(auto Westfall;46):41 #19864(auto Westfall;184):43 o2724.67:90
+#23588 | auto Westfall;219§auto Westfall;219§auto Marche de l'Ouest;219 | x=-10510.7998046875 y=855.7999877929688 | size=5 | links=#6658(auto Westfall;64):98 #7060(auto Westfall;67):109
+#23718 | auto Westfall;220§auto Westfall;220§auto Marche de l'Ouest;220 | x=-11146.5 y=1212 | size=1 | links=#15124(auto Westfall;149):34 #18898(auto Westfall;173):17
+#23766 | auto Westfall;221§auto Westfall;221§auto Marche de l'Ouest;221 | x=-10076.2001953125 y=1008.299987792969 | size=1 | links=#2105(auto Westfall;24):44 #27507(auto Westfall;246):52
+#23822 | auto Westfall;222§auto Westfall;222§auto Marche de l'Ouest;222 | x=-11271.6005859375 y=1445.900024414063 | size=1 | links=#6258(auto Westfall;58):34 c239.1:9
+#23908 | auto Westfall;223§auto Westfall;223§auto Marche de l'Ouest;223 | x=-10992 y=1060.300048828125 | size=1 | links=#28246(auto Westfall;254):46 c98.1:48
+#23914 | auto Westfall;224§auto Westfall;224§auto Marche de l'Ouest;224 | x=-9800.1005859375 y=1111.800048828125 | size=1 | links=#10194(auto Westfall;92):29 #11381(auto Westfall;110):60 c199.2:29
+#23917 | auto Westfall;225§auto Westfall;225§auto Marche de l'Ouest;225 | x=-10746 y=1505.5 | size=1 | links=#8453(auto Westfall;77):37 #19302(auto Westfall;175):43
+#23990 | auto Westfall;226§auto Westfall;226§auto Marche de l'Ouest;226 | x=-10679.5 y=1032.800048828125 | size=1 | links=#1271(auto Westfall;10):18 #24455(auto Westfall;229):31
+#24030 | auto Westfall;227§auto Westfall;227§auto Marche de l'Ouest;227 | x=-11010.5 y=1493.599975585938 | size=1 | links=#578(auto Westfall;5):8 #2189(centralpoint;Moonbrook;Westfall):14
+#24430 | auto Westfall;228§auto Westfall;228§auto Marche de l'Ouest;228 | x=-10961.400390625 y=1123.599975585938 | size=1 | links=#6544(auto Westfall;62):16 #14699(auto Westfall;143):40
+#24455 | auto Westfall;229§auto Westfall;229§auto Marche de l'Ouest;229 | x=-10711.1005859375 y=1033.5 | size=1 | links=#3793(auto Westfall;39):37 #23990(auto Westfall;226):31
+#24479 | auto Westfall;230§auto Westfall;230§auto Marche de l'Ouest;230 | x=-10874 y=1001.5 | size=1 | links=#10228(auto Westfall;93):40 #20172(auto Westfall;189):41
+#24648 | centralpoint;Alexston Farmstead;Westfall§zentralerpunkt;Alexstons Bauernhof;Westfall§point central;Alexston Farmstead;Marche de l'Ouest | x=-10664.6005859375 y=1659.900024414063 | size=1 | links=#6450(auto Westfall;61):117 c114.2:16
+#24751 | auto Westfall;231§auto Westfall;231§auto Marche de l'Ouest;231 | x=-10278.7001953125 y=2002.599975585938 | size=5 | links=#3853(auto Westfall;40):69 #14086(auto Westfall;138):131
+#24764 | auto Westfall;232§auto Westfall;232§auto Marche de l'Ouest;232 | x=-10826.7998046875 y=1488 | size=1 | links=#19302(auto Westfall;175):39 #21292(auto Westfall;195):43
+#24981 | auto Westfall;233§auto Westfall;233§auto Marche de l'Ouest;233 | x=-9868.400390625 y=1265.900024414063 | size=1 | links=#8200(auto Westfall;76):18 #12223(auto Westfall;118):6
+#25082 | auto Westfall;234§auto Westfall;234§auto Marche de l'Ouest;234 | x=-9776.7998046875 y=926.1000366210938 | size=5 | links=#18105(auto Westfall;167):37 c2442.2:29
+#25164 | auto spiral stairway to top;Westfall;235§auto wendeltreppe nach oben;Westfall;235§auto spiral stairway to top;Marche de l'Ouest;235 | x=-10505.1005859375 y=1035.700073242188 | size=1 | links=#11866(auto spiral stairway to top;Westfall;115):4 #25190(auto spiral stairway to top;Westfall;236):7
+#25190 | auto spiral stairway to top;Westfall;236§auto wendeltreppe nach oben;Westfall;236§auto spiral stairway to top;Marche de l'Ouest;236 | x=-10511 y=1031 | size=1 | links=#14314(auto spiral stairway to top;Westfall;139):8 #25164(auto spiral stairway to top;Westfall;235):7
+#25234 | auto Westfall;237§auto Westfall;237§auto Marche de l'Ouest;237 | x=-9822.6005859375 y=857.7000122070312 | size=1 | links=#499(auto Westfall;4):21 #5585(passage;Westfall;to;Elwynn Forest):26
+#25283 | auto Westfall;238§auto Westfall;238§auto Marche de l'Ouest;238 | x=-10059.7998046875 y=1256.400024414063 | size=1 | links=#14571(auto Westfall;142):49 #28386(auto Westfall;256):39
+#25583 | auto Westfall;239§auto Westfall;239§auto Marche de l'Ouest;239 | x=-10675.900390625 y=1503.800048828125 | size=1 | links=#8453(auto Westfall;77):32 #18172(auto Westfall;168):49
+#25756 | auto Westfall;240§auto Westfall;240§auto Marche de l'Ouest;240 | x=-10284.2998046875 y=965.5 | size=1 | links=#2294(auto Westfall;26):41 #27440(auto Westfall;245):65
+#25991 | auto Westfall;241§auto Westfall;241§auto Marche de l'Ouest;241 | x=-10538.900390625 y=1588.700073242188 | size=1 | links=#6906(auto Westfall;66):35 #28375(auto Westfall;255):36
+#26701 | auto Westfall;242§auto Westfall;242§auto Marche de l'Ouest;242 | x=-10065.400390625 y=1486.200073242188 | size=1 | links=#10732(auto Westfall;100):46 #12975(auto Westfall;123):33
+#26805 | auto Westfall;243§auto Westfall;243§auto Marche de l'Ouest;243 | x=-10941.7001953125 y=1045.400024414063 | size=1 | links=#14847(auto Westfall;144):25 #28246(auto Westfall;254):33
+#27319 | auto Westfall;244§auto Westfall;244§auto Marche de l'Ouest;244 | x=-10543.6005859375 y=1890 | size=5 | links=#21799(auto Westfall;198):57 c501.2:31
+#27440 | auto Westfall;245§auto Westfall;245§auto Marche de l'Ouest;245 | x=-10348.2001953125 y=981 | size=1 | links=#17059(auto Westfall;159):37 #25756(auto Westfall;240):65 c832.3:124
+#27507 | auto Westfall;246§auto Westfall;246§auto Marche de l'Ouest;246 | x=-10030.6005859375 y=981.6000366210938 | size=1 | links=#4852(auto Westfall;47):68 #23766(auto Westfall;221):52
+#27635 | auto Westfall;247§auto Westfall;247§auto Marche de l'Ouest;247 | x=-9873.7998046875 y=961.7999877929688 | size=1 | links=#5761(auto Westfall;52):31 #13287(auto Westfall;126):31
+#27797 | auto Westfall;248§auto Westfall;248§auto Marche de l'Ouest;248 | x=-10878.1005859375 y=741.6000366210938 | size=1 | links=#2587(auto Westfall;28):43 #19876(auto Westfall;185):25
+#28009 | auto Westfall;249§auto Westfall;249§auto Marche de l'Ouest;249 | x=-10897.7001953125 y=1267.599975585938 | size=1 | links=#1703(auto Westfall;17):59 #1957(auto Westfall;21):33 #22991(auto Westfall;213):50
+#28156 | auto Westfall;250§auto Westfall;250§auto Marche de l'Ouest;250 | x=-10064.400390625 y=1405.700073242188 | size=1 | links=#3667(auto Westfall;38):40 #10732(auto Westfall;100):38 #22225(auto Westfall;206):68
+#28173 | auto spiral stairway to top;Westfall;251§auto wendeltreppe nach oben;Westfall;251§auto spiral stairway to top;Marche de l'Ouest;251 | x=-10499.6005859375 y=1032.800048828125 | size=1 | links=#4300(auto spiral stairway to top;Westfall;44):2 #14880(auto spiral stairway to top;Westfall;146):2
+#28183 | auto Westfall;252§auto Westfall;252§auto Marche de l'Ouest;252 | x=-9651.1005859375 y=913.2000122070312 | size=1 | links=#9681(auto Westfall;86):37 #10672(auto Westfall;98):12
+#28186 | auto Westfall;253§auto Westfall;253§auto Marche de l'Ouest;253 | x=-10976.5 y=1492.300048828125 | size=1 | links=#7240(auto Westfall;69):9 #7566(auto Westfall;71):7
+#28246 | auto Westfall;254§auto Westfall;254§auto Marche de l'Ouest;254 | x=-10948.7001953125 y=1078.200073242188 | size=1 | links=#6544(auto Westfall;62):33 #23908(auto Westfall;223):46 #26805(auto Westfall;243):33
+#28375 | auto Westfall;255§auto Westfall;255§auto Marche de l'Ouest;255 | x=-10568.2998046875 y=1567.300048828125 | size=1 | links=#6450(auto Westfall;61):47 #25991(auto Westfall;241):36
+#28386 | auto Westfall;256§auto Westfall;256§auto Marche de l'Ouest;256 | x=-10075.1005859375 y=1292.300048828125 | size=1 | links=#17057(auto Westfall;158):37 #25283(auto Westfall;238):39
+#28431 | auto spiral stairway to top;Westfall;257§auto wendeltreppe nach oben;Westfall;257§auto spiral stairway to top;Marche de l'Ouest;257 | x=-10509 y=1024.599975585938 | size=1 | links=#13817(auto spiral stairway to top;Westfall;134):4 #21409(auto spiral stairway to top;Westfall;196):3
+#46980 | auto Inside;Defias hideout;The Deadmines;258§auto Drinnen;Versteck der Defias;Die Todesminen;258§auto Intérieur;Defias hideout;Mortemines;258 | x=-11078.6005859375 y=1526.800048828125 | size=1 | links=#17439(auto Westfall;163):17 #46981(auto Inside;Defias hideout;The Deadmines;259):3
+#46981 | auto Inside;Defias hideout;The Deadmines;259§auto Drinnen;Versteck der Defias;Die Todesminen;259§auto Intérieur;Defias hideout;Mortemines;259 | x=-11081.900390625 y=1526.900024414063 | size=1 | links=#46980(auto Inside;Defias hideout;The Deadmines;258):3 #46982(auto Inside;Defias hideout;The Deadmines;260):5
+#46982 | auto Inside;Defias hideout;The Deadmines;260§auto Drinnen;Versteck der Defias;Die Todesminen;260§auto Intérieur;Defias hideout;Mortemines;260 | x=-11082 y=1521.200073242188 | size=1 | links=#46981(auto Inside;Defias hideout;The Deadmines;259):5 #46983(auto Inside;Defias hideout;The Deadmines;261):13
+#46983 | auto Inside;Defias hideout;The Deadmines;261§auto Drinnen;Versteck der Defias;Die Todesminen;261§auto Intérieur;Defias hideout;Mortemines;261 | x=-11078.7998046875 y=1508.599975585938 | size=1 | links=#46982(auto Inside;Defias hideout;The Deadmines;260):13 #46984(auto Inside;Defias hideout;The Deadmines;262):11
+#46984 | auto Inside;Defias hideout;The Deadmines;262§auto Drinnen;Versteck der Defias;Die Todesminen;262§auto Intérieur;Defias hideout;Mortemines;262 | x=-11074 y=1498.300048828125 | size=1 | links=#46983(auto Inside;Defias hideout;The Deadmines;261):11 #46985(auto Inside;Defias hideout;The Deadmines;263):18
+#46985 | auto Inside;Defias hideout;The Deadmines;263§auto Drinnen;Versteck der Defias;Die Todesminen;263§auto Intérieur;Defias hideout;Mortemines;263 | x=-11092.7998046875 y=1498.800048828125 | size=1 | links=#46984(auto Inside;Defias hideout;The Deadmines;262):18 #46986(auto Inside;Defias hideout;The Deadmines;264):15
+#46986 | auto Inside;Defias hideout;The Deadmines;264§auto Drinnen;Versteck der Defias;Die Todesminen;264§auto Intérieur;Defias hideout;Mortemines;264 | x=-11090.5 y=1514.599975585938 | size=1 | links=#46985(auto Inside;Defias hideout;The Deadmines;263):15 #46987(auto Inside;Defias hideout;The Deadmines;265):7
+#46987 | auto Inside;Defias hideout;The Deadmines;265§auto Drinnen;Versteck der Defias;Die Todesminen;265§auto Intérieur;Defias hideout;Mortemines;265 | x=-11098 y=1515.400024414063 | size=1 | links=#46986(auto Inside;Defias hideout;The Deadmines;264):7 #46988(auto Inside;Defias hideout;The Deadmines;266):14
+#46988 | auto Inside;Defias hideout;The Deadmines;266§auto Drinnen;Versteck der Defias;Die Todesminen;266§auto Intérieur;Defias hideout;Mortemines;266 | x=-11098.400390625 y=1501 | size=1 | links=#46987(auto Inside;Defias hideout;The Deadmines;265):14 #46989(auto Inside;Defias hideout;The Deadmines;267):11
+#46989 | auto Inside;Defias hideout;The Deadmines;267§auto Drinnen;Versteck der Defias;Die Todesminen;267§auto Intérieur;Defias hideout;Mortemines;267 | x=-11098 y=1489.5 | size=1 | links=#46988(auto Inside;Defias hideout;The Deadmines;266):11 #46990(auto Inside;Defias hideout;The Deadmines;268):11
+#46990 | auto Inside;Defias hideout;The Deadmines;268§auto Drinnen;Versteck der Defias;Die Todesminen;268§auto Intérieur;Defias hideout;Mortemines;268 | x=-11109 y=1488.200073242188 | size=1 | links=#46989(auto Inside;Defias hideout;The Deadmines;267):11 #46992(auto Inside;Defias hideout;The Deadmines;270):10
+#46992 | auto Inside;Defias hideout;The Deadmines;270§auto Drinnen;Versteck der Defias;Die Todesminen;270§auto Intérieur;Defias hideout;Mortemines;270 | x=-11108.2998046875 y=1498.700073242188 | size=1 | links=#46990(auto Inside;Defias hideout;The Deadmines;268):10 #46993(auto Inside;Defias hideout;The Deadmines;271):8
+#46993 | auto Inside;Defias hideout;The Deadmines;271§auto Drinnen;Versteck der Defias;Die Todesminen;271§auto Intérieur;Defias hideout;Mortemines;271 | x=-11099.900390625 y=1499.300048828125 | size=1 | links=#46992(auto Inside;Defias hideout;The Deadmines;270):8 #46994(auto Inside;Defias hideout;The Deadmines;272):6
+#46994 | auto Inside;Defias hideout;The Deadmines;272§auto Drinnen;Versteck der Defias;Die Todesminen;272§auto Intérieur;Defias hideout;Mortemines;272 | x=-11096.2998046875 y=1494 | size=1 | links=#46993(auto Inside;Defias hideout;The Deadmines;271):6 #46995(auto Inside;Defias hideout;The Deadmines;273):7
+#46995 | auto Inside;Defias hideout;The Deadmines;273§auto Drinnen;Versteck der Defias;Die Todesminen;273§auto Intérieur;Defias hideout;Mortemines;273 | x=-11101.1005859375 y=1488.5 | size=1 | links=#46994(auto Inside;Defias hideout;The Deadmines;272):7 #46996(auto Inside;Defias hideout;The Deadmines;274):8
+#46996 | auto Inside;Defias hideout;The Deadmines;274§auto Drinnen;Versteck der Defias;Die Todesminen;274§auto Intérieur;Defias hideout;Mortemines;274 | x=-11108.7998046875 y=1485.800048828125 | size=1 | links=#46995(auto Inside;Defias hideout;The Deadmines;273):8 c594.3:9
+#46997 | auto Inside;The Deadmines;275§auto Drinnen;Die Todesminen;275§auto Intérieur;Mortemines;275 | x=-11131.7001953125 y=1496.900024414063 | size=1 | links=#46998(auto Inside;The Deadmines;276):9 c619.1:10
+#46998 | auto Inside;The Deadmines;276§auto Drinnen;Die Todesminen;276§auto Intérieur;Mortemines;276 | x=-11127 y=1504.800048828125 | size=1 | links=#46997(auto Inside;The Deadmines;275):9 #46999(auto Inside;The Deadmines;277):6
+#46999 | auto Inside;The Deadmines;277§auto Drinnen;Die Todesminen;277§auto Intérieur;Mortemines;277 | x=-11123.2998046875 y=1510.099975585938 | size=1 | links=#46998(auto Inside;The Deadmines;276):6 #47000(auto Inside;The Deadmines;278):16
+#47000 | auto Inside;The Deadmines;278§auto Drinnen;Die Todesminen;278§auto Intérieur;Mortemines;278 | x=-11109 y=1518.599975585938 | size=1 | links=#46999(auto Inside;The Deadmines;277):16 #47001(auto Inside;The Deadmines;279):11
+#47001 | auto Inside;The Deadmines;279§auto Drinnen;Die Todesminen;279§auto Intérieur;Mortemines;279 | x=-11100.5 y=1526.099975585938 | size=1 | links=#47000(auto Inside;The Deadmines;278):11 c824.2:12
+#47002 | auto Inside;The Deadmines;280§auto Drinnen;Die Todesminen;280§auto Intérieur;Mortemines;280 | x=-11100.400390625 y=1504.099975585938 | size=1 | links=#47003(auto Inside;The Deadmines;281):16 c824.39:13
+#47003 | auto Inside;The Deadmines;281§auto Drinnen;Die Todesminen;281§auto Intérieur;Mortemines;281 | x=-11115.2001953125 y=1496.700073242188 | size=1 | links=#47002(auto Inside;The Deadmines;280):16 c824.4:9
+#47004 | auto Inside;The Deadmines;282§auto Drinnen;Die Todesminen;282§auto Intérieur;Mortemines;282 | x=-11128.2998046875 y=1501.400024414063 | size=1 | links=#47005(auto Inside;The Deadmines;283):19 c824.4:19
+#47005 | auto Inside;The Deadmines;283§auto Drinnen;Die Todesminen;283§auto Intérieur;Mortemines;283 | x=-11141 y=1515.800048828125 | size=1 | links=#47004(auto Inside;The Deadmines;282):19 #47006(auto Inside;The Deadmines;284):9
+#47006 | auto Inside;The Deadmines;284§auto Drinnen;Die Todesminen;284§auto Intérieur;Mortemines;284 | x=-11148.2998046875 y=1522.300048828125 | size=1 | links=#47005(auto Inside;The Deadmines;283):9 #47007(auto Inside;The Deadmines;285):7
+#47007 | auto Inside;The Deadmines;285§auto Drinnen;Die Todesminen;285§auto Intérieur;Mortemines;285 | x=-11143.5 y=1528.5 | size=1 | links=#47006(auto Inside;The Deadmines;284):7 c594.5:12
+#47008 | auto Inside;The Deadmines;286§auto Drinnen;Die Todesminen;286§auto Intérieur;Mortemines;286 | x=-11139.7001953125 y=1547.599975585938 | size=1 | links=c594.5:8 c824.10:24
+#47009 | auto Inside;The Deadmines;287§auto Drinnen;Die Todesminen;287§auto Intérieur;Mortemines;287 | x=-11161.900390625 y=1570.700073242188 | size=1 | links=#47010(auto Inside;The Deadmines;288):12 c824.10:8
+#47010 | auto Inside;The Deadmines;288§auto Drinnen;Die Todesminen;288§auto Intérieur;Mortemines;288 | x=-11173.900390625 y=1568.400024414063 | size=1 | links=#47009(auto Inside;The Deadmines;287):12 c824.13:5 c824.24:17
+#47011 | auto Inside;The Deadmines;289§auto Drinnen;Die Todesminen;289§auto Intérieur;Mortemines;289 | x=-11196.2001953125 y=1575.599975585938 | size=1 | links=#47012(auto Inside;The Deadmines;290):12 c824.24:12
+#47012 | auto Inside;The Deadmines;290§auto Drinnen;Die Todesminen;290§auto Intérieur;Mortemines;290 | x=-11207.2998046875 y=1570.099975585938 | size=1 | links=#47011(auto Inside;The Deadmines;289):12 #47013(auto Inside;The Deadmines;291):20
+#47013 | auto Inside;The Deadmines;291§auto Drinnen;Die Todesminen;291§auto Intérieur;Mortemines;291 | x=-11223.2001953125 y=1556.599975585938 | size=1 | links=#47012(auto Inside;The Deadmines;290):20 #47039(auto Inside;The Deadmines;317):21 c594.2:8 c824.21:18
+#47014 | auto Inside;The Deadmines;292§auto Drinnen;Die Todesminen;292§auto Intérieur;Mortemines;292 | x=-11230.7998046875 y=1527.900024414063 | size=1 | links=#47015(auto Inside;The Deadmines;293):25 c824.5:6 c824.21:15
+#47015 | auto Inside;The Deadmines;293§auto Drinnen;Die Todesminen;293§auto Intérieur;Mortemines;293 | x=-11249.400390625 y=1510.099975585938 | size=1 | links=#47014(auto Inside;The Deadmines;292):25 c1727.28:11
+#47016 | auto Inside;The Deadmines;294§auto Drinnen;Die Todesminen;294§auto Intérieur;Mortemines;294 | x=-11264.2001953125 y=1509.800048828125 | size=1 | links=#47017(auto Inside;The Deadmines;295):8 c1727.28:10
+#47017 | auto Inside;The Deadmines;295§auto Drinnen;Die Todesminen;295§auto Intérieur;Mortemines;295 | x=-11271.5 y=1514.200073242188 | size=1 | links=#47016(auto Inside;The Deadmines;294):8 #47018(auto Inside;The Deadmines;296):18
+#47018 | auto Inside;The Deadmines;296§auto Drinnen;Die Todesminen;296§auto Intérieur;Mortemines;296 | x=-11282.7998046875 y=1528.800048828125 | size=1 | links=#47017(auto Inside;The Deadmines;295):18
+#47019 | auto Inside;The Deadmines;297§auto Drinnen;Die Todesminen;297§auto Intérieur;Mortemines;297 | x=-11240.400390625 y=1549.900024414063 | size=1 | links=#47020(auto Inside;The Deadmines;298):4 c594.2:10
+#47020 | auto Inside;The Deadmines;298§auto Drinnen;Die Todesminen;298§auto Intérieur;Mortemines;298 | x=-11243.2001953125 y=1546.400024414063 | size=1 | links=#47019(auto Inside;The Deadmines;297):4 #47021(auto Inside;The Deadmines;299):12
+#47021 | auto Inside;The Deadmines;299§auto Drinnen;Die Todesminen;299§auto Intérieur;Mortemines;299 | x=-11249.900390625 y=1535.300048828125 | size=1 | links=#47020(auto Inside;The Deadmines;298):12 #47022(auto Inside;The Deadmines;300):10
+#47022 | auto Inside;The Deadmines;300§auto Drinnen;Die Todesminen;300§auto Intérieur;Mortemines;300 | x=-11245.5 y=1526.300048828125 | size=1 | links=#47021(auto Inside;The Deadmines;299):10 c1726.2:1
+#47023 | auto Inside;The Deadmines;301§auto Drinnen;Die Todesminen;301§auto Intérieur;Mortemines;301 | x=-11236.2001953125 y=1515.300048828125 | size=1 | links=#47024(auto Inside;The Deadmines;302):10 c1726.2:12
+#47024 | auto Inside;The Deadmines;302§auto Drinnen;Die Todesminen;302§auto Intérieur;Mortemines;302 | x=-11230.400390625 y=1506.300048828125 | size=1 | links=#47023(auto Inside;The Deadmines;301):10 c1727.14:2
+#47025 | auto Inside;The Deadmines;303§auto Drinnen;Die Todesminen;303§auto Intérieur;Mortemines;303 | x=-11235 y=1494.700073242188 | size=1 | links=#47026(auto Inside;The Deadmines;304):9 c1727.14:11
+#47026 | auto Inside;The Deadmines;304§auto Drinnen;Die Todesminen;304§auto Intérieur;Mortemines;304 | x=-11241.6005859375 y=1488.300048828125 | size=1 | links=#47025(auto Inside;The Deadmines;303):9 c599.3:7 c1727.24:5
+#47027 | inside;dungeon entrance;the deadmines;305§Drinnen;instanzeingang;Die Todesminen;305§intérieur;dungeon entrance;the deadmines;305 | x=-11208.2001953125 y=1674 | size=1 | links=c1727.16:25
+#47028 | auto Inside;The Deadmines;306§auto Drinnen;Die Todesminen;306§auto Intérieur;Mortemines;306 | x=-11216.900390625 y=1628.400024414063 | size=1 | links=#47029(auto Inside;The Deadmines;307):13 c1725.2:7
+#47029 | auto Inside;The Deadmines;307§auto Drinnen;Die Todesminen;307§auto Intérieur;Mortemines;307 | x=-11230.400390625 y=1628.700073242188 | size=1 | links=#47028(auto Inside;The Deadmines;306):13 c1727.27:13
+#47030 | auto Inside;The Deadmines;308§auto Drinnen;Die Todesminen;308§auto Intérieur;Mortemines;308 | x=-11252.400390625 y=1659.400024414063 | size=1 | links=#47031(auto Inside;The Deadmines;309):19 c1727.21:7 c1727.27:26
+#47031 | auto Inside;The Deadmines;309§auto Drinnen;Die Todesminen;309§auto Intérieur;Mortemines;309 | x=-11233.400390625 y=1663 | size=1 | links=#47030(auto Inside;The Deadmines;308):19 #47032(auto Inside;The Deadmines;310):12
+#47032 | auto Inside;The Deadmines;310§auto Drinnen;Die Todesminen;310§auto Intérieur;Mortemines;310 | x=-11226.900390625 y=1652 | size=1 | links=#47031(auto Inside;The Deadmines;309):12 #47033(auto Inside;The Deadmines;311):12
+#47033 | auto Inside;The Deadmines;311§auto Drinnen;Die Todesminen;311§auto Intérieur;Mortemines;311 | x=-11225.2001953125 y=1639.400024414063 | size=1 | links=#47032(auto Inside;The Deadmines;310):12 #47034(auto Inside;The Deadmines;312):18
+#47034 | auto Inside;The Deadmines;312§auto Drinnen;Die Todesminen;312§auto Intérieur;Mortemines;312 | x=-11225.400390625 y=1621.200073242188 | size=1 | links=#47033(auto Inside;The Deadmines;311):18 #47035(auto Inside;The Deadmines;313):13
+#47035 | auto Inside;The Deadmines;313§auto Drinnen;Die Todesminen;313§auto Intérieur;Mortemines;313 | x=-11226 y=1608.200073242188 | size=1 | links=#47034(auto Inside;The Deadmines;312):13 c619.2:8
+#47036 | auto Inside;The Deadmines;314§auto Drinnen;Die Todesminen;314§auto Intérieur;Mortemines;314 | x=-11233.5 y=1592.700073242188 | size=1 | links=c619.2:10 c1727.7:7
+#47037 | auto Inside;The Deadmines;315§auto Drinnen;Die Todesminen;315§auto Intérieur;Mortemines;315 | x=-11252.7998046875 y=1585.800048828125 | size=1 | links=c1727.7:12 c122.15:4
+#47038 | auto Inside;The Deadmines;316§auto Drinnen;Die Todesminen;316§auto Intérieur;Mortemines;316 | x=-11258.2998046875 y=1559.599975585938 | size=1 | links=#47039(auto Inside;The Deadmines;317):13 c122.15:22
+#47039 | auto Inside;The Deadmines;317§auto Drinnen;Die Todesminen;317§auto Intérieur;Mortemines;317 | x=-11244.7998046875 y=1557 | size=1 | links=#47013(auto Inside;The Deadmines;291):21 #47038(auto Inside;The Deadmines;316):13
+#47040 | auto Inside;Jangolode Mine;Westfall;318§auto Drinnen;Der Jangoschacht;Westfall;318§auto Intérieur;Jangolode Mine;Marche de l'Ouest;318 | x=-9852.5 y=1389 | size=1 | links=c95.1:4 c1424.1:9 c1236.6:12
+#47041 | auto Inside;Jangolode Mine;Westfall;319§auto Drinnen;Der Jangoschacht;Westfall;319§auto Intérieur;Jangolode Mine;Marche de l'Ouest;319 | x=-9838.2001953125 y=1399.900024414063 | size=1 | links=c1424.1:10 c1236.7:12
+#47042 | auto Inside;Jangolode Mine;Westfall;320§auto Drinnen;Der Jangoschacht;Westfall;320§auto Intérieur;Jangolode Mine;Marche de l'Ouest;320 | x=-9820.400390625 y=1415.300048828125 | size=1 | links=c1236.2:18 c1236.7:12
+#47043 | auto Inside;Jangolode Mine;Westfall;321§auto Drinnen;Der Jangoschacht;Westfall;321§auto Intérieur;Jangolode Mine;Marche de l'Ouest;321 | x=-9838.2998046875 y=1440.300048828125 | size=1 | links=#47044(auto Inside;Jangolode Mine;Westfall;322):10 c1236.2:12
+#47044 | auto Inside;Jangolode Mine;Westfall;322§auto Drinnen;Der Jangoschacht;Westfall;322§auto Intérieur;Jangolode Mine;Marche de l'Ouest;322 | x=-9846.2001953125 y=1447.599975585938 | size=1 | links=#47043(auto Inside;Jangolode Mine;Westfall;321):10 c95.29:8
+#47045 | auto Inside;Jangolode Mine;Westfall;323§auto Drinnen;Der Jangoschacht;Westfall;323§auto Intérieur;Jangolode Mine;Marche de l'Ouest;323 | x=-9880.5 y=1439.800048828125 | size=1 | links=c1236.3:10 c1236.5:9
+#47046 | auto Inside;Jangolode Mine;Westfall;324§auto Drinnen;Der Jangoschacht;Westfall;324§auto Intérieur;Jangolode Mine;Marche de l'Ouest;324 | x=-9907.900390625 y=1453.200073242188 | size=1 | links=c95.19:7 c504.21:7
+#47047 | auto Inside;Jangolode Mine;Westfall;325§auto Drinnen;Der Jangoschacht;Westfall;325§auto Intérieur;Jangolode Mine;Marche de l'Ouest;325 | x=-9953 y=1456.300048828125 | size=1 | links=c1236.1:15 c504.26:7
+#47048 | auto Jangolode Mine;Westfall;326§auto Der Jangoschacht;Westfall;326§auto Jangolode Mine;Marche de l'Ouest;326 | x=-9993.2001953125 y=1457.099975585938 | size=1 | links=c95.3:7 c95.31:14
+#50140 | auto Westfall;327§auto Westfall;327§auto Marche de l'Ouest;327 | x=-9976.62303912045 y=1789.044498164311 | size=1 | links=#20104(auto Westfall;188):60 c513.15:51
+#50141 | auto Longshore;Westfall;328§auto Longshore;Westfall;328§auto Longshore;Marche de l'Ouest;328 | x=-9745.7998046875 y=1792.200073242188 | size=1 | links=#50142(auto Longshore;Westfall;329):9 #50143(auto Longshore;Westfall;330):5
+#50142 | auto Longshore;Westfall;329§auto Longshore;Westfall;329§auto Longshore;Marche de l'Ouest;329 | x=-9754.6005859375 y=1790.300048828125 | size=1 | links=#50141(auto Longshore;Westfall;328):9 c831.5:76
+#50143 | auto Longshore;Westfall;330§auto Longshore;Westfall;330§auto Longshore;Marche de l'Ouest;330 | x=-9741.900390625 y=1787.700073242188 | size=1 | links=#50141(auto Longshore;Westfall;328):5 #50144(auto Longshore;Westfall;331):5
+#50144 | auto Longshore;Westfall;331§auto Longshore;Westfall;331§auto Longshore;Marche de l'Ouest;331 | x=-9745.2998046875 y=1792.5 | size=1 | links=#50143(auto Longshore;Westfall;330):5 #50145(auto Longshore;Westfall;332):4
+#50145 | auto Longshore;Westfall;332§auto Longshore;Westfall;332§auto Longshore;Marche de l'Ouest;332 | x=-9748.7001953125 y=1794.700073242188 | size=1 | links=#50144(auto Longshore;Westfall;331):4 #50146(auto Longshore;Westfall;333):2
+#50146 | auto Longshore;Westfall;333§auto Longshore;Westfall;333§auto Longshore;Marche de l'Ouest;333 | x=-9750.5 y=1796 | size=1 | links=#50145(auto Longshore;Westfall;332):2 #50147(auto Longshore;Westfall;334):2
+#50147 | auto Longshore;Westfall;334§auto Longshore;Westfall;334§auto Longshore;Marche de l'Ouest;334 | x=-9752.2998046875 y=1797.400024414063 | size=1 | links=#50146(auto Longshore;Westfall;333):2 #50148(auto Longshore;Westfall;335):2
+#50148 | auto Longshore;Westfall;335§auto Longshore;Westfall;335§auto Longshore;Marche de l'Ouest;335 | x=-9754 y=1798.599975585938 | size=1 | links=#50147(auto Longshore;Westfall;334):2 #50149(auto Longshore;Westfall;336):1
+#50149 | auto Longshore;Westfall;336§auto Longshore;Westfall;336§auto Longshore;Marche de l'Ouest;336 | x=-9755.2001953125 y=1799.400024414063 | size=1 | links=#50148(auto Longshore;Westfall;335):1 #50150(auto Longshore;Westfall;337):1
+#50150 | auto Longshore;Westfall;337§auto Longshore;Westfall;337§auto Longshore;Marche de l'Ouest;337 | x=-9756.6005859375 y=1800.5 | size=1 | links=#50149(auto Longshore;Westfall;336):1 #50151(auto Longshore;Westfall;338):2
+#50151 | auto Longshore;Westfall;338§auto Longshore;Westfall;338§auto Longshore;Marche de l'Ouest;338 | x=-9758.900390625 y=1802.200073242188 | size=1 | links=#50150(auto Longshore;Westfall;337):2 #50152(auto Longshore;Westfall;339):2
+#50152 | auto Longshore;Westfall;339§auto Longshore;Westfall;339§auto Longshore;Marche de l'Ouest;339 | x=-9760.7998046875 y=1803.599975585938 | size=1 | links=#50151(auto Longshore;Westfall;338):2 #50153(auto Longshore;Westfall;340):2
+#50153 | auto Longshore;Westfall;340§auto Longshore;Westfall;340§auto Longshore;Marche de l'Ouest;340 | x=-9763.1005859375 y=1805.300048828125 | size=1 | links=#50152(auto Longshore;Westfall;339):2 #50154(auto Longshore;Westfall;341):1
+#50154 | auto Longshore;Westfall;341§auto Longshore;Westfall;341§auto Longshore;Marche de l'Ouest;341 | x=-9764.6005859375 y=1806.400024414063 | size=1 | links=#50153(auto Longshore;Westfall;340):1 #50155(auto Longshore;Westfall;342):5
+#50155 | auto Longshore;Westfall;342§auto Longshore;Westfall;342§auto Longshore;Marche de l'Ouest;342 | x=-9768.7998046875 y=1809.400024414063 | size=1 | links=#50154(auto Longshore;Westfall;341):5 c456.4:8
+#50156 | auto Longshore;Westfall;343§auto Longshore;Westfall;343§auto Longshore;Marche de l'Ouest;343 | x=-9789.400390625 y=1818.400024414063 | size=1 | links=#50157(auto Longshore;Westfall;344):16 c513.1:2
+#50157 | auto Longshore;Westfall;344§auto Longshore;Westfall;344§auto Longshore;Marche de l'Ouest;344 | x=-9801.900390625 y=1828.900024414063 | size=1 | links=#50156(auto Longshore;Westfall;343):16 c456.1:6 c513.2:13 c456.18:5
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c95.1 | links=#47040(auto Inside;Jangolode Mine;Westfall;318):4
+c98.1 | links=#23908(auto Westfall;223):48
+c114.1 | links=#9910(auto Westfall;88):69 #10170(auto Westfall;91):50
+c115.1 | links=c115.2:23
+c117.1 | links=#13831(auto Westfall;135):29 c117.3:46
+c121.1 | links=c121.2:14 c2620.2:46
+c122.1 | links=#9057(auto Westfall;79):19
+c123.1 | links=c506.2:29
+c124.1 | links=c124.2:53
+c126.1 | links=c126.2:34 c126.21:93
+c157.1 | links=#3039(auto Westfall;33):108
+c199.1 | links=#1542(auto Westfall;14):68 c454.3:27
+c233.1 | links=#1325(auto Westfall;11):5 c235.1:21 c620.2:16 c620.3:17
+c234.1 | links=#1392(auto Westfall;12):5 #9713(auto Westfall;87):20 c821.1:3
+c235.1 | links=c233.1:21
+c237.1 | links=#6030(auto Westfall;54):7 #18105(auto Westfall;167):37
+c238.1 | links=#6030(auto Westfall;54):6
+c239.1 | links=#23822(auto Westfall;222):9
+c391.1 | links=#10427(auto Westfall;97):23
+c392.1 | links=#6303(auto Westfall;59):9
+c449.1 | links=c6271.1:40 c449.2:15
+c450.1 | links=c449.2:5 c449.3:63
+c452.1 | links=#1703(auto Westfall;17):47 c452.2:32
+c454.1 | links=#22099(centralpoint;Furlbrow's Pumpkin Farm;Westfall):54 c620.1:62 c199.3:28
+c456.1 | links=#50157(auto Longshore;Westfall;344):6
+c462.1 | links=c832.3:149
+c467.1 | links=#9713(auto Westfall;87):11
+c480.1 | links=c454.2:38
+c481.1 | links=#22084(auto Westfall;201):12
+c489.1 | links=c821.1:9
+c490.1 | links=#9713(auto Westfall;87):8
+c491.1 | links=#5215(auto Westfall;49):13
+c500.1 | links=c117.2:7 c117.3:8
+c501.1 | links=c501.2:36 c501.3:39 c589.3:53
+c502.1 | links=#23321(auto Westfall;217):8
+c504.1 | links=c95.2:15
+c506.1 | links=#11136(auto Westfall;105):112 o2724.14:22
+c513.1 | links=#50156(auto Longshore;Westfall;343):2 c456.4:14
+c515.1 | links=c515.3:35 c830.5:57 c126.25:24
+c523.1 | links=#10970(centralpoint;Sentinel Hill;Westfall):34
+c547.1 | links=#6544(auto Westfall;62):28
+c550.1 | links=#411(auto Westfall;3):26 #2189(centralpoint;Moonbrook;Westfall):55 c589.1:18
+c573.1 | links=#11144(central location;The Molsen Farm;Westfall):31 #22225(auto Westfall;206):99 o2724.42:4 o2724.44:66 o2724.71:66
+c589.1 | links=c550.1:18
+c590.1 | links=c590.2:22 c590.3:49 c1426.3:27
+c596.1 | links=#9057(auto Westfall;79):66
+c619.1 | links=#46997(auto Inside;The Deadmines;275):10 c824.22:12
+c620.1 | links=#10912(auto Westfall;103):11 c454.1:62
+c820.1 | links=#20517(auto Westfall;190):10
+c821.1 | links=c234.1:3 c489.1:9
+c830.1 | links=c830.2:16 c830.4:56
+c834.1 | links=c199.3:82
+c843.1 | links=#1271(auto Westfall;10):29 c1668.1:3 c1670.1:8 c8096.1:10
+c870.1 | links=c876.1:16
+c876.1 | links=#10970(centralpoint;Sentinel Hill;Westfall):26 c870.1:16
+c878.1 | links=#22510(auto Westfall;207):12
+c1109.1 | links=#14571(auto Westfall;142):54 #22099(centralpoint;Furlbrow's Pumpkin Farm;Westfall):71
+c1236.1 | links=#47047(auto Inside;Jangolode Mine;Westfall;325):15 c504.23:16
+c1424.1 | links=#47040(auto Inside;Jangolode Mine;Westfall;318):9 #47041(auto Inside;Jangolode Mine;Westfall;319):10
+c1668.1 | links=c843.1:3
+c1669.1 | links=#20005(auto Westfall;186):7
+c1670.1 | links=c843.1:8
+c1725.1 | links=#1474(auto Westfall;13):45 #2625(auto Westfall;30):40
+c4305.1 | links=#10895(auto Westfall;101):38
+c6182.1 | links=#12386(auto Westfall;120):20
+c6271.1 | links=#1474(auto Westfall;13):100 #14493(auto Westfall;141):62 c449.1:40 c450.2:145
+c6491.1 | links=#23214(auto Westfall;216):49
+c8096.1 | links=c843.1:10
+c8931.1 | links=#1951(auto Westfall;20):3 c8934.1:30 o180523.1:12
+c8934.1 | links=c8931.1:30
+c10045.1 | links=#23156(auto Westfall;215):7
+o3643.1 | links=#21204(auto Westfall;194):19
+o177844.1 | links=#9289(auto Westfall;83):5
+o180523.1 | links=c8931.1:12
+c36.2 | links=#10170(auto Westfall;91):122 #22101(auto Westfall;202):70 c36.3:47
+c95.2 | links=#10732(auto Westfall;100):58 c504.1:15 c95.3:19
+c114.2 | links=#24648(centralpoint;Alexston Farmstead;Westfall):16
+c115.2 | links=#2587(auto Westfall;28):29 c115.1:23 c115.3:36
+c117.2 | links=c500.1:7
+c121.2 | links=#21904(auto Westfall;199):24 c121.1:14
+c123.2 | links=c506.2:77
+c124.2 | links=#1822(auto Westfall;18):117 c124.1:53 c124.3:42
+c126.2 | links=c126.1:34 c830.4:52
+c157.2 | links=#6570(auto Westfall;63):125 #20104(auto Westfall;188):100 o3662.4:44
+c199.2 | links=#1542(auto Westfall;14):33 #9532(auto Westfall;85):52 #22084(auto Westfall;201):35 #23914(auto Westfall;224):29
+c449.2 | links=c449.1:15 c450.1:5 c121.3:8
+c450.2 | links=c6271.1:145
+c452.2 | links=c452.1:32 c452.3:8
+c454.2 | links=#1598(auto Westfall;16):18 #11340(auto Westfall;108):29 c480.1:38 o2724.63:61 o2724.72:41
+c456.2 | links=c456.17:1
+c462.2 | links=#19302(auto Westfall;175):100 c1109.3:147 c157.37:121
+c480.2 | links=#5761(auto Westfall;52):32
+c481.2 | links=#21559(auto Westfall;197):8
+c501.2 | links=#27319(auto Westfall;244):31 c501.1:36 c590.3:22
+c506.2 | links=#20104(auto Westfall;188):77 c123.1:29 c123.2:77 c123.3:5
+c513.2 | links=#50157(auto Longshore;Westfall;344):13
+c515.2 | links=c515.3:17
+c573.2 | links=#14571(auto Westfall;142):39 c199.3:55
+c589.2 | links=c501.3:12
+c590.2 | links=c590.1:22
+c594.2 | links=#47013(auto Inside;The Deadmines;291):8 #47019(auto Inside;The Deadmines;297):10
+c619.2 | links=#47035(auto Inside;The Deadmines;313):8 #47036(auto Inside;The Deadmines;314):10
+c620.2 | links=c233.1:16
+c824.2 | links=#47001(auto Inside;The Deadmines;279):12 c824.23:13
+c830.2 | links=c830.1:16 c830.7:67
+c831.2 | links=c831.5:54
+c834.2 | links=#9681(auto Westfall;86):17
+c1109.2 | links=#11601(auto Westfall;112):21 c1109.3:29
+c1236.2 | links=#47042(auto Inside;Jangolode Mine;Westfall;320):18 #47043(auto Inside;Jangolode Mine;Westfall;321):12
+c1725.2 | links=#47028(auto Inside;The Deadmines;306):7 c1727.16:17
+c1726.2 | links=#47022(auto Inside;The Deadmines;300):1 #47023(auto Inside;The Deadmines;301):12
+c2442.2 | links=#4931(auto Westfall;48):38 #25082(auto Westfall;234):29
+c2620.2 | links=c121.1:46 c449.3:36
+o2724.2 | links=#2294(auto Westfall;26):65 o2724.41:36
+o19019.2 | links=#18488(auto Westfall;170):4
+c36.3 | links=c36.2:47
+c95.3 | links=#10732(auto Westfall;100):54 #47048(auto Jangolode Mine;Westfall;326):7 c95.2:19
+c114.3 | links=#22099(centralpoint;Furlbrow's Pumpkin Farm;Westfall):37
+c115.3 | links=c115.2:36
+c117.3 | links=c117.1:46 c500.1:8 o2724.16:13
+c121.3 | links=c449.2:8
+c122.3 | links=#7867(auto Westfall;74):32 #15124(auto Westfall;149):13
+c123.3 | links=c506.2:5
+c124.3 | links=c124.2:42
+c126.3 | links=c515.3:12
+c157.3 | links=#13132(auto Westfall;124):37
+c199.3 | links=c454.1:28 c834.1:82 c573.2:55
+c449.3 | links=c450.1:63 c2620.2:36
+c452.3 | links=c452.2:8
+c454.3 | links=c199.1:27 c500.3:55
+c462.3 | links=#1822(auto Westfall;18):106 c157.37:56
+c480.3 | links=#19463(auto Westfall;177):34
+c481.3 | links=#19614(auto Westfall;179):19
+c500.3 | links=#13747(auto Westfall;131):16 c454.3:55
+c501.3 | links=c501.1:39 c589.2:12
+c504.3 | links=#14920(auto Westfall;148):8
+c515.3 | links=c515.1:35 c515.2:17 c126.3:12 c515.9:45
+c547.3 | links=#12305(auto Westfall;119):54
+c573.3 | links=#19010(auto Westfall;174):67 o2724.50:14
+c589.3 | links=c501.1:53
+c590.3 | links=c590.1:49 c501.2:22
+c594.3 | links=#46996(auto Inside;Defias hideout;The Deadmines;274):9 c824.22:11
+c599.3 | links=#47026(auto Inside;The Deadmines;304):7 c1727.10:6
+c620.3 | links=c233.1:17
+c830.3 | links=c830.5:19 c830.7:20
+c832.3 | links=#27440(auto Westfall;245):124 c462.1:149
+c833.3 | links=#18817(auto Westfall;172):49
+c834.3 | links=#344(auto Westfall;2):18 #22200(auto Westfall;205):23
+c1109.3 | links=c462.2:147 c1109.2:29
+c1236.3 | links=#47045(auto Inside;Jangolode Mine;Westfall;323):10 c1236.4:15 c95.19:23
+c1426.3 | links=c590.1:27
+c456.4 | links=#50155(auto Longshore;Westfall;342):8 c513.1:14 c456.17:6
+c824.4 | links=#47003(auto Inside;The Deadmines;281):9 #47004(auto Inside;The Deadmines;282):19
+c830.4 | links=c830.1:56 c126.2:52
+c1236.4 | links=c1236.3:15 c95.29:13
+o3662.4 | links=c157.2:44
+c126.5 | links=c515.9:15
+c454.5 | links=
+c594.5 | links=#47007(auto Inside;The Deadmines;285):12 #47008(auto Inside;The Deadmines;286):8
+c824.5 | links=#47014(auto Inside;The Deadmines;292):6
+c830.5 | links=c515.1:57 c830.3:19
+c831.5 | links=#50142(auto Longshore;Westfall;329):76 c831.2:54 c513.13:83
+c1236.5 | links=#47045(auto Inside;Jangolode Mine;Westfall;323):9 c95.26:14
+c1727.5 | links=c1727.21:10
+c1236.6 | links=#47040(auto Inside;Jangolode Mine;Westfall;318):12 c95.17:5
+c830.7 | links=c830.2:67 c830.3:20
+c1236.7 | links=#47041(auto Inside;Jangolode Mine;Westfall;319):12 #47042(auto Inside;Jangolode Mine;Westfall;320):12
+c1727.7 | links=#47036(auto Inside;The Deadmines;314):7 #47037(auto Inside;The Deadmines;315):12
+o3662.7 | links=o2724.82:7
+c515.9 | links=c515.3:45 c126.5:15 c515.10:49
+c515.10 | links=#11381(auto Westfall;110):59 c515.9:49
+c824.10 | links=#47008(auto Inside;The Deadmines;286):24 #47009(auto Inside;The Deadmines;287):8
+c1727.10 | links=c599.3:6
+c513.13 | links=c831.5:83 c513.15:15
+c824.13 | links=#47010(auto Inside;The Deadmines;288):5
+c1727.14 | links=#47024(auto Inside;The Deadmines;302):2 #47025(auto Inside;The Deadmines;303):11
+o2724.14 | links=c506.1:22
+c122.15 | links=#47037(auto Inside;The Deadmines;315):4 #47038(auto Inside;The Deadmines;316):22
+c513.15 | links=#50140(auto Westfall;327):51 c513.13:15
+c830.16 | links=c126.21:51
+c1727.16 | links=#47027(inside;dungeon entrance;the deadmines;305):25 c1725.2:17
+o2724.16 | links=c117.3:13 o2724.70:20
+c95.17 | links=c1236.6:5
+c456.17 | links=c456.2:1 c456.4:6
+c456.18 | links=#50157(auto Longshore;Westfall;344):5
+c95.19 | links=#47046(auto Inside;Jangolode Mine;Westfall;324):7 c1236.3:23
+o2724.19 | links=o2724.35:21 o2724.48:14
+c126.21 | links=c126.1:93 c830.16:51
+c504.21 | links=#47046(auto Inside;Jangolode Mine;Westfall;324):7 c504.23:8
+c824.21 | links=#47013(auto Inside;The Deadmines;291):18 #47014(auto Inside;The Deadmines;292):15
+c1727.21 | links=#47030(auto Inside;The Deadmines;308):7 c1727.5:10
+c824.22 | links=c619.1:12 c594.3:11
+c504.23 | links=c1236.1:16 c504.21:8
+c824.23 | links=c824.2:13 c824.39:10
+c824.24 | links=#47010(auto Inside;The Deadmines;288):17 #47011(auto Inside;The Deadmines;289):12
+c1727.24 | links=#47026(auto Inside;The Deadmines;304):5
+c126.25 | links=c515.1:24
+c95.26 | links=c1236.5:14
+c504.26 | links=#47047(auto Inside;Jangolode Mine;Westfall;325):7 c95.31:19
+c1727.27 | links=#47029(auto Inside;The Deadmines;307):13 #47030(auto Inside;The Deadmines;308):26
+c1727.28 | links=#47015(auto Inside;The Deadmines;293):11 #47016(auto Inside;The Deadmines;294):10
+c95.29 | links=#47044(auto Inside;Jangolode Mine;Westfall;322):8 c1236.4:13
+c95.31 | links=#47048(auto Jangolode Mine;Westfall;326):14 c504.26:19
+o2724.35 | links=o2724.19:21 o2724.64:10
+c157.37 | links=c462.2:121 c462.3:56
+o2724.38 | links=#9532(auto Westfall;85):17
+c824.39 | links=#47002(auto Inside;The Deadmines;280):13 c824.23:10
+o2724.39 | links=o2724.61:33
+o2724.41 | links=o2724.2:36
+o2724.42 | links=c573.1:4
+o2724.44 | links=c573.1:66 o2724.64:18
+o2724.45 | links=#21559(auto Westfall;197):6 o2724.79:7
+o2724.46 | links=o2724.71:16
+o2724.48 | links=o2724.19:14
+o2724.50 | links=c573.3:14
+o2724.56 | links=o2724.67:35 o2724.77:19
+o2724.57 | links=#22225(auto Westfall;206):36
+o2724.60 | links=#9532(auto Westfall;85):17
+o2724.61 | links=o2724.39:33 o2724.80:34
+o2724.63 | links=c454.2:61
+o2724.64 | links=o2724.35:10 o2724.44:18
+o2724.65 | links=#22225(auto Westfall;206):29
+o2724.67 | links=#23331(auto Westfall;218):90 o2724.56:35
+o2724.70 | links=o2724.16:20
+o2724.71 | links=c573.1:66 o2724.46:16
+o2724.72 | links=c454.2:41
+o2724.77 | links=o2724.56:19
+o2724.79 | links=o2724.45:7
+o2724.80 | links=#5428(auto Westfall;50):23 o2724.61:34
+o2724.82 | links=#22991(auto Westfall;213):74 o3662.7:7
+o2724.84 | links=#10294(auto Westfall;96):10

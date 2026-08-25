@@ -1,0 +1,3 @@
+Zone areaId 155 — eine Zeile pro Wegpunkt; Links inline.
+
+#28802 | s;Eastern Kingdoms;Tirisfal Glades;Deathknell;Night Web's Hollow§s;Östliche Königreiche;Tirisfal;Deathknell;Nachtwebergrund§s;Royaumes de l'est;Clairières de Tirisfal;Deathknell;Les grottes des Tisse-nuit | x=2046.11 y=-1829.45 | size=1

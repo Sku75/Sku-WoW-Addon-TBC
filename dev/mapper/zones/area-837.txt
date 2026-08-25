@@ -1,0 +1,3 @@
+Zone areaId 837 — eine Zeile pro Wegpunkt; Links inline.
+
+#28798 | s;Eastern Kingdoms;Wetlands;Dun Algaz§s;Östliche Königreiche;Sumpfland;Dun Algaz§s;Royaumes de l'est;Les Paluns;Dun Algaz | x=-4191.0234 y=-2373.1401 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 98 — eine Zeile pro Wegpunkt; Links inline.
+
+#28783 | s;Eastern Kingdoms;Redridge Mountains;Rethban Caverns§s;Östliche Königreiche;Rotkammgebirge;Rethbanhöhlen§s;Royaumes de l'est;Les Carmines;Rethban Caverns | x=-8970.76 y=-2002.7 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 75 — eine Zeile pro Wegpunkt; Links inline.
+
+#28795 | s;Eastern Kingdoms;Swamp of Sorrows;Stonard§s;Östliche Königreiche;Sümpfe des Elends;Stonard§s;Royaumes de l'est;Marais des Chagrins;Stonard | x=-10443.7 y=-3277.49 | size=1

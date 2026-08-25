@@ -1,0 +1,3 @@
+Zone areaId 1337 — eine Zeile pro Wegpunkt; Links inline.
+
+#28776 | s;Eastern Kingdoms;Badlands;The Maker's Terrace;Uldaman§s;Östliche Königreiche;Ödland;Terrasse des Schöpfers;Uldaman§s;Royaumes de l'est;Terres ingrates;La Terrasse du Faiseur;Uldaman | x=-6092.01 y=-3179.35 | size=1

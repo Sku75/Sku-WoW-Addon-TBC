@@ -1,0 +1,3 @@
+Zone areaId 925 — eine Zeile pro Wegpunkt; Links inline.
+
+#28771 | s;Eastern Kingdoms;Loch Modan;North Gate Pass;Algaz Station§s;Östliche Königreiche;Loch Modan;Nordtorpass;Station Algaz§s;Royaumes de l'est;Loch Modan;Passage de la porte Nord;Poste d'Algaz | x=-4817.79 y=-2666.7 | size=1

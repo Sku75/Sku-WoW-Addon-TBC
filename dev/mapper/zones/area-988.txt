@@ -1,0 +1,3 @@
+Zone areaId 988 — eine Zeile pro Wegpunkt; Links inline.
+
+#28715 | s;Kalimdor;Tanaris;Lost Rigger Cove;Wavestrider Beach§s;Kalimdor;Tanaris;Lost-Rigger-Bucht;Wellenschreiterstrand§s;Kalimdor;Tanaris;Crique des Gréements;Plage des Déferlantes | x=-7693.45 y=-4878.96 | size=1 | links=#7270(auto Tanaris;117):19 #21226(auto Tanaris;365):23

@@ -1,0 +1,3 @@
+Zone areaId 2100 — eine Zeile pro Wegpunkt; Links inline.
+
+#28657 | s;Kalimdor;Desolace;Valley of Spears;Maraudon§s;Kalimdor;Desolace;Das Tal der Speere;Maraudon§s;Kalimdor;Désolace;Vallée des Lances;Maraudon | x=-1422.62 y=-2918.45 | size=1

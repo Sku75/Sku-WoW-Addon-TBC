@@ -1,0 +1,3 @@
+Zone areaId 34 — eine Zeile pro Wegpunkt; Links inline.
+
+#28806 | s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey;Echo Ridge Mine§s;Östliche Königreiche;Wald von Elwynn;Abtei von Nordhain;Echokammmine§s;Royaumes de l'est;Forêt d'Elwynn;Northshire Abbey;Echo Ridge Mine | x=-8676.57 y=-119.634 | size=1

@@ -1,0 +1,3 @@
+Zone areaId 498 — eine Zeile pro Wegpunkt; Links inline.
+
+#28683 | s;Kalimdor;Dustwallow Marsh;The Den of Flame;Bloodfen Burrow§s;Kalimdor;Marschen von Dustwallow;Der Flammenbau;Blutsumpfbau§s;Kalimdor;Marécage d'Âprefange;L'Antre des flammes;Terrier des Rougefanges | x=-4335.04 y=-2639.53 | size=1 | links=c4356.9:2

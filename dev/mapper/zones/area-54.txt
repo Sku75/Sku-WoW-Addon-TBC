@@ -1,0 +1,3 @@
+Zone areaId 54 — eine Zeile pro Wegpunkt; Links inline.
+
+#28814 | s;Eastern Kingdoms;Elwynn Forest;Tower of Azora;Jasperlode Mine§s;Östliche Königreiche;Wald von Elwynn;Turm von Azora;Jaspismine§s;Royaumes de l'est;Forêt d'Elwynn;Tower of Azora;Jasperlode Mine | x=-9184.5 y=-605.891 | size=1

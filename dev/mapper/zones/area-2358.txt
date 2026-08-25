@@ -1,0 +1,3 @@
+Zone areaId 2358 — eine Zeile pro Wegpunkt; Links inline.
+
+#28642 | s;Kalimdor;Ashenvale;Satyrnaar;Forest Song§s;Kalimdor;Eschental;Satyrnaar;Forest Song§s;Kalimdor;Orneval;Satyrnaar;Chant des forêts | x=2880.33 y=-3287.54 | size=1

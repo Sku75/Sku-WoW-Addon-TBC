@@ -1,0 +1,561 @@
+Zone areaId 10 — eine Zeile pro Wegpunkt; Links inline.
+
+#122 | auto Duskwood;1§auto Dämmerwald;1§auto Bois de la Pénombre;1 | x=-11098.2001953125 y=-1145.599975585938 | size=1 | links=c920.1:21 c6170.1:17
+#153 | auto Duskwood;2§auto Dämmerwald;2§auto Bois de la Pénombre;2 | x=-10064.7001953125 y=-1506.599975585938 | size=1 | links=#21573(auto Duskwood;242):7 #22194(auto Duskwood;248):61
+#202 | auto Duskwood;3§auto Dämmerwald;3§auto Bois de la Pénombre;3 | x=-10310 y=-1175.400024414063 | size=1 | links=#8701(auto Duskwood;106):12 #17882(auto Duskwood;207):25
+#210 | auto Duskwood;4§auto Dämmerwald;4§auto Bois de la Pénombre;4 | x=-10341.2001953125 y=197.6999969482422 | size=1 | links=#4980(auto Duskwood;61):11 #22728(entry and exit;Dawning Wood Catacombs;north;Duskwood):20
+#347 | auto Duskwood;5§auto Dämmerwald;5§auto Bois de la Pénombre;5 | x=-10737.2001953125 y=-443.7000122070313 | size=1 | links=#8362(auto Duskwood;102):39 #25156(auto Duskwood;277):31
+#429 | auto Duskwood;6§auto Dämmerwald;6§auto Bois de la Pénombre;6 | x=-10708 y=-419.7000122070313 | size=1 | links=#7288(auto Duskwood;88):17 #25156(auto Duskwood;277):6
+#450 | auto Duskwood;7§auto Dämmerwald;7§auto Bois de la Pénombre;7 | x=-10317.400390625 y=104.3000030517578 | size=5 | links=#12117(auto Duskwood;161):33 #17323(auto Duskwood;198):42
+#461 | auto Duskwood;8§auto Dämmerwald;8§auto Bois de la Pénombre;8 | x=-10531.7998046875 y=-1389.099975585938 | size=1 | links=#15788(auto Duskwood;190):16 c828.1:12
+#465 | central location;The Hushed Bank;Duskwood§zentralpunkt;Das stille Ufer;Dämmerwald§emplacement central;La Rive silencieuse;Bois de la Pénombre | x=-10325 y=632.2999877929688 | size=1 | links=#5488(auto Duskwood;71):15 #20210(auto Duskwood;231):82 c311.1:10 c893.1:12
+#604 | auto Duskwood;9§auto Dämmerwald;9§auto Bois de la Pénombre;9 | x=-10559.2001953125 y=-1134.800048828125 | size=1 | links=#21720(auto Duskwood;245):16 c267.1:9
+#664 | auto Duskwood;10§auto Dämmerwald;10§auto Bois de la Pénombre;10 | x=-10531.400390625 y=-1282.5 | size=1 | links=#3415(auto Duskwood;39):9 #15278(auto Duskwood;182):22 #26316(auto Duskwood;292):34 c2409.1:29
+#698 | auto Duskwood;11§auto Dämmerwald;11§auto Bois de la Pénombre;11 | x=-10660.2001953125 y=-382.3000183105469 | size=1 | links=#3522(auto Duskwood;42):16 #7288(auto Duskwood;88):43
+#733 | auto Duskwood;12§auto Dämmerwald;12§auto Bois de la Pénombre;12 | x=-11180.7998046875 y=-839.9000244140625 | size=1 | links=#22857(auto Duskwood;258):26 c534.3:3
+#1040 | auto Duskwood;13§auto Dämmerwald;13§auto Bois de la Pénombre;13 | x=-10040.400390625 y=-301.7000122070313 | size=1 | links=#7830(auto Duskwood;92):81 #8309(auto Duskwood;100):8
+#1086 | auto Duskwood;14§auto Dämmerwald;14§auto Bois de la Pénombre;14 | x=-10284.2998046875 y=145.1000061035156 | size=1 | links=#20858(auto Duskwood;237):14 c570.2:34
+#1105 | auto Duskwood;15§auto Dämmerwald;15§auto Bois de la Pénombre;15 | x=-10858.400390625 y=-840.5 | size=1 | links=#22786(auto Duskwood;256):18 #25937(auto Duskwood;286):40
+#1130 | auto Duskwood;16§auto Dämmerwald;16§auto Bois de la Pénombre;16 | x=-10631.900390625 y=291.8999938964844 | size=5 | links=#3878(auto Duskwood;49):49 c6491.2:29
+#1188 | auto Duskwood;17§auto Dämmerwald;17§auto Bois de la Pénombre;17 | x=-10078.5 y=-1478.200073242188 | size=1 | links=#9031(auto Duskwood;110):4 #21573(auto Duskwood;242):24
+#1201 | Skeletal Mage;one;Tranquil Gardens Cemetery;Duskwood§Skelettmagier;eins;Der Friedhof \"Stille Gärten\";Dämmerwald§Mage squelette;un;Tranquil Gardens Cemetery;Bois de la Pénombre | x=-10942 y=-1252.599975585938 | size=1
+#1286 | auto Duskwood;18§auto Dämmerwald;18§auto Bois de la Pénombre;18 | x=-10833.2001953125 y=481.8999938964844 | size=1 | links=#7552(auto Duskwood;90):36 #20790(auto Duskwood;236):100
+#1366 | auto Duskwood;19§auto Dämmerwald;19§auto Bois de la Pénombre;19 | x=-10847.6005859375 y=-790.7000122070312 | size=1 | links=#2661(auto Duskwood;32):72 #2845(auto Duskwood;34):51
+#1404 | auto Duskwood;20§auto Dämmerwald;20§auto Bois de la Pénombre;20 | x=-10542.6005859375 y=-1323 | size=1 | links=#10828(auto Duskwood;132):26 #15278(auto Duskwood;182):19 c999.1:11 c620.5:19
+#1444 | auto Duskwood;21§auto Dämmerwald;21§auto Bois de la Pénombre;21 | x=-10825.7998046875 y=-1224.200073242188 | size=1 | links=#9362(auto Duskwood;116):32 #16430(auto Duskwood;195):47
+#1493 | auto Duskwood;22§auto Dämmerwald;22§auto Bois de la Pénombre;22 | x=-10925.1005859375 y=-691.2999877929688 | size=1 | links=#2661(auto Duskwood;32):54 #3785(auto Duskwood;47):58
+#1738 | auto Duskwood;23§auto Dämmerwald;23§auto Bois de la Pénombre;23 | x=-10806.1005859375 y=-964.1000366210938 | size=1 | links=#9827(auto Duskwood;122):41 #23859(auto Duskwood;268):71
+#1880 | auto Duskwood;24§auto Dämmerwald;24§auto Bois de la Pénombre;24 | x=-10899.2001953125 y=-917.5 | size=1 | links=#25937(auto Duskwood;286):49 o41.1:8
+#1961 | auto Duskwood;25§auto Dämmerwald;25§auto Bois de la Pénombre;25 | x=-10904 y=-397.6000061035156 | size=1 | links=#11564(auto Duskwood;150):109 #19967(auto Duskwood;222):50 #22939(auto Duskwood;259):9
+#1973 | Stalvan Mistmantle;Manor Mistmantle;Duskwood§Stalvan Dunstmantel;Anwesen der Dunstmantels;Dämmerwald§Stalvan Mantebrume;Manoir Mantebrume;Bois de la Pénombre | x=-10366.7998046875 y=-1256.300048828125 | size=1 | links=#23883(auto Duskwood;269):5
+#2021 | auto Duskwood;26§auto Dämmerwald;26§auto Bois de la Pénombre;26 | x=-10321.2998046875 y=-1217.700073242188 | size=1 | links=#17882(auto Duskwood;207):18 #27009(auto Duskwood;299):18 #27715(auto Duskwood;306):18
+#2039 | auto Duskwood;27§auto Dämmerwald;27§auto Bois de la Pénombre;27 | x=-10120.7998046875 y=327.2000122070313 | size=1 | links=#11110(auto Duskwood;138):39 #20103(auto Duskwood;228):59
+#2087 | auto Duskwood;28§auto Dämmerwald;28§auto Bois de la Pénombre;28 | x=-11081.7998046875 y=-80.30000305175781 | size=1 | links=#10563(quest target;Vul'Gol Ogre Mound;Duskwood):13 #19581(entry and exit;cave;Vul'Gol Ogre Mound;Duskwood):25 #19664(central location;Vul'Gol Ogre Mound;Duskwood):95 c1251.1:34
+#2187 | auto inside;Duskwood;29§auto drinnen;Dämmerwald;29§auto intérieur;Bois de la Pénombre;29 | x=-10510.400390625 y=-1171.800048828125 | size=1 | links=#8120(auto inside;Duskwood;95):10 #12763(auto inside;Duskwood;168):4
+#2404 | auto Duskwood;30§auto Dämmerwald;30§auto Bois de la Pénombre;30 | x=-10801.900390625 y=-1258.599975585938 | size=1 | links=#4138(auto Duskwood;52):25 #9362(auto Duskwood;116):22
+#2528 | auto Duskwood;31§auto Dämmerwald;31§auto Bois de la Pénombre;31 | x=-11129 y=-449.8000183105469 | size=1 | links=#26559(auto Duskwood;295):40 #28099(auto Duskwood;311):34
+#2661 | auto Duskwood;32§auto Dämmerwald;32§auto Bois de la Pénombre;32 | x=-10898.7001953125 y=-738.6000366210938 | size=1 | links=#1366(auto Duskwood;19):72 #1493(auto Duskwood;22):54 #20698(auto Duskwood;235):43
+#2825 | auto Duskwood;33§auto Dämmerwald;33§auto Bois de la Pénombre;33 | x=-10176.2998046875 y=-1116.700073242188 | size=1 | links=#6770(auto Duskwood;80):35 #27855(auto Duskwood;308):49
+#2845 | auto Duskwood;34§auto Dämmerwald;34§auto Bois de la Pénombre;34 | x=-10824.7998046875 y=-836.9000244140625 | size=1 | links=#1366(auto Duskwood;19):51 #8499(auto Duskwood;103):50 #22786(auto Duskwood;256):15
+#2895 | auto Duskwood;35§auto Dämmerwald;35§auto Bois de la Pénombre;35 | x=-10259.6005859375 y=98.0999984741211 | size=1 | links=#12117(auto Duskwood;161):27 #20205(auto Duskwood;230):46 o51708.1:45
+#2910 | auto Duskwood;36§auto Dämmerwald;36§auto Bois de la Pénombre;36 | x=-10730 y=591.9000244140625 | size=1 | links=#6639(auto Duskwood;78):23 #11753(auto Duskwood;155):46 c217.1:66
+#3271 | auto Duskwood;37§auto Dämmerwald;37§auto Bois de la Pénombre;37 | x=-10333.1005859375 y=363.8000183105469 | size=1 | links=#26505(auto Duskwood;294):4 #26791(auto Duskwood;297):14
+#3288 | auto Duskwood;38§auto Dämmerwald;38§auto Bois de la Pénombre;38 | x=-10155.5 y=29.80000114440918 | size=1 | links=#18308(auto Duskwood;209):30 #20003(auto Duskwood;224):33
+#3415 | auto Duskwood;39§auto Dämmerwald;39§auto Bois de la Pénombre;39 | x=-10524.900390625 y=-1289.800048828125 | size=1 | links=#664(auto Duskwood;10):9 #6004(auto Duskwood;75):55 #27085(auto Duskwood;300):13 c275.1:13
+#3432 | auto Duskwood;40§auto Dämmerwald;40§auto Bois de la Pénombre;40 | x=-10812.900390625 y=-97.4000015258789 | size=1 | links=#11330(auto Duskwood;145):99 #19263(auto Duskwood;216):69
+#3442 | auto Duskwood;41§auto Dämmerwald;41§auto Bois de la Pénombre;41 | x=-10849.7001953125 y=-227.4000091552734 | size=1 | links=#18938(auto Duskwood;214):36 #19263(auto Duskwood;216):65
+#3522 | auto Duskwood;42§auto Dämmerwald;42§auto Bois de la Pénombre;42 | x=-10643.5 y=-382.8999938964844 | size=1 | links=#698(auto Duskwood;11):16 #23477(auto Duskwood;265):25
+#3550 | auto Duskwood;43§auto Dämmerwald;43§auto Bois de la Pénombre;43 | x=-10570.6005859375 y=619 | size=1 | links=#11635(auto Duskwood;151):79 #16066(auto Duskwood;192):51
+#3559 | auto Duskwood;44§auto Dämmerwald;44§auto Bois de la Pénombre;44 | x=-10494.5 y=-1414.599975585938 | size=1 | links=#11644(auto Duskwood;152):29 #15788(auto Duskwood;190):28
+#3609 | auto Duskwood;45§auto Dämmerwald;45§auto Bois de la Pénombre;45 | x=-9921.5 y=-1699.099975585938 | size=1 | links=#15526(auto Duskwood;186):97 #27912(passage;from;Duskwood;to;Redridge Mountains):22
+#3688 | auto Duskwood;46§auto Dämmerwald;46§auto Bois de la Pénombre;46 | x=-10281.6005859375 y=-1152.599975585938 | size=1 | links=#8915(auto Duskwood;109):37 #16188(auto Duskwood;193):22
+#3726 | central location;Tranquil Gardens Cemetery;Duskwood§zentralpunkt;Der Friedhof \"Stille Gärten\";Dämmerwald§emplacement central;Tranquil Gardens Cemetery;Bois de la Pénombre | x=-10981.900390625 y=-1306.200073242188 | size=1 | links=#12091(auto Duskwood;159):24 #23933(auto Duskwood;271):28
+#3785 | auto Duskwood;47§auto Dämmerwald;47§auto Bois de la Pénombre;47 | x=-10958.400390625 y=-642.7999877929688 | size=1 | links=#1493(auto Duskwood;22):58 #9909(auto Duskwood;125):29
+#3870 | auto Duskwood;48§auto Dämmerwald;48§auto Bois de la Pénombre;48 | x=-10749.2001953125 y=-1195.700073242188 | size=1 | links=#11280(auto Duskwood;144):5 #19246(auto Duskwood;215):20 #23673(auto Duskwood;267):13
+#3878 | auto Duskwood;49§auto Dämmerwald;49§auto Bois de la Pénombre;49 | x=-10681.5 y=285.6000061035156 | size=1 | links=#1130(auto Duskwood;16):49 #9312(auto Duskwood;115):47
+#3973 | auto Duskwood;50§auto Dämmerwald;50§auto Bois de la Pénombre;50 | x=-10161 y=213.5 | size=1 | links=#15269(auto Duskwood;181):36 #20068(auto Duskwood;226):43
+#3974 | auto inside;Duskwood;51§auto drinnen;Dämmerwald;51§auto intérieur;Bois de la Pénombre;51 | x=-10586.2998046875 y=-1212.800048828125 | size=1 | links=#27781(auto inside;Duskwood;307):9 c3138.1:7
+#4138 | auto Duskwood;52§auto Dämmerwald;52§auto Bois de la Pénombre;52 | x=-10805.5 y=-1283.700073242188 | size=1 | links=#2404(auto Duskwood;30):25 #28025(auto Duskwood;310):15
+#4291 | auto Duskwood;53§auto Dämmerwald;53§auto Bois de la Pénombre;53 | x=-10010 y=-374.6000061035156 | size=1 | links=#8309(auto Duskwood;100):71 #11710(auto Duskwood;153):56
+#4409 | auto Duskwood;54§auto Dämmerwald;54§auto Bois de la Pénombre;54 | x=-10080 y=-110.3000030517578 | size=1 | links=#21599(auto Duskwood;243):50 #22330(auto Duskwood;250):32
+#4417 | The Weathered Grave;Forlorn Rowe;Duskwood§Das verwitterte Grab;Das verlassene Gut;Dämmerwald§La tombe effritée;Forlorn Rowe;Bois de la Pénombre | x=-10240.1005859375 y=355.7000122070313 | size=1 | links=#9763(auto Duskwood;121):55 o61.1:1 c565.3:49
+#4491 | auto Duskwood;55§auto Dämmerwald;55§auto Bois de la Pénombre;55 | x=-10095.2001953125 y=-1249.300048828125 | size=1 | links=#10889(auto Duskwood;133):17 #11430(auto Duskwood;146):17 #23405(auto Duskwood;264):25
+#4531 | auto Duskwood;56§auto Dämmerwald;56§auto Bois de la Pénombre;56 | x=-10432 y=-1163.700073242188 | size=1 | links=#9492(auto Duskwood;117):36 #20142(auto Duskwood;229):36
+#4620 | auto Duskwood;57§auto Dämmerwald;57§auto Bois de la Pénombre;57 | x=-10305.6005859375 y=365.2000122070313 | size=1 | links=#9763(auto Duskwood;121):12 c1110.3:10
+#4660 | auto Duskwood;58§auto Dämmerwald;58§auto Bois de la Pénombre;58 | x=-11127.2998046875 y=-497.2000122070313 | size=1 | links=#9746(quest target;The Yorgen Farmstead;Duskwood):17 #28099(auto Duskwood;311):13
+#4894 | auto Duskwood;59§auto Dämmerwald;59§auto Bois de la Pénombre;59 | x=-10038.2001953125 y=-168.5 | size=1 | links=#7830(auto Duskwood;92):54 #22330(auto Duskwood;250):39
+#4938 | Nightbane Shadow Weaver;one;Brightwood Grove;Duskwood§Schattenwirker der Nachtheuler;eins;Schattenhain;Dämmerwald§Tisseur d'ombre Plaie-de-nuit;un;Brightwood Grove;Bois de la Pénombre | x=-10584.2998046875 y=-950.7999877929688 | size=1 | links=#13424(Nightbane Shadow Weaver;two;Brightwood Grove;Duskwood):62 c205.1:91
+#4968 | auto Duskwood;60§auto Dämmerwald;60§auto Bois de la Pénombre;60 | x=-11006.2001953125 y=190.8000030517578 | size=1 | links=#10078(auto Duskwood;127):53 #27974(auto Duskwood;309):4 c910.1:6 c909.2:5
+#4980 | auto Duskwood;61§auto Dämmerwald;61§auto Bois de la Pénombre;61 | x=-10343.2998046875 y=186 | size=1 | links=#210(auto Duskwood;4):11 c948.2:23
+#4997 | auto Duskwood;62§auto Dämmerwald;62§auto Bois de la Pénombre;62 | x=-10814.7001953125 y=358.3999938964844 | size=1 | links=#13144(auto Duskwood;170):52 #18098(auto Duskwood;208):55
+#5043 | auto Duskwood;63§auto Dämmerwald;63§auto Bois de la Pénombre;63 | x=-10309.5 y=-1277 | size=1 | links=#14460(auto Duskwood;176):35 c1270.1:45
+#5075 | entry and exit;Dawning Wood Catacombs;Duskwood§ein- und ausgang;Katakomben des Morgenwaldes;Dämmerwald§entrée et sortie;Catacombes du Bois-de-l'Aube;Bois de la Pénombre | x=-10413.6005859375 y=403.5 | size=1 | links=#6558(auto Duskwood;77):12 #24126(auto Duskwood;272):16
+#5205 | auto Duskwood;64§auto Dämmerwald;64§auto Bois de la Pénombre;64 | x=-10340.7998046875 y=-949.4000244140625 | size=5 | links=#6016(auto Duskwood;76):72 #20074(central location;Brightwood Grove;Duskwood):85 c628.3:67
+#5233 | auto Duskwood;65§auto Dämmerwald;65§auto Bois de la Pénombre;65 | x=-11182.2998046875 y=-148.1999969482422 | size=1 | links=#11998(auto Duskwood;157):10 #16552(auto Duskwood;196):11
+#5236 | auto Duskwood;66§auto Dämmerwald;66§auto Bois de la Pénombre;66 | x=-10946.5 y=-326 | size=1 | links=#17703(auto Duskwood;204):20 #25222(auto Duskwood;278):50
+#5249 | auto Duskwood;67§auto Dämmerwald;67§auto Bois de la Pénombre;67 | x=-11088.900390625 y=-373.7000122070313 | size=1 | links=#14246(auto Duskwood;174):110 #18656(auto Duskwood;210):40 #26559(auto Duskwood;295):61
+#5306 | auto Duskwood;68§auto Dämmerwald;68§auto Bois de la Pénombre;68 | x=-10533.6005859375 y=-1205.099975585938 | size=1 | links=#15884(auto Duskwood;191):17 c265.1:8
+#5330 | auto Duskwood;69§auto Dämmerwald;69§auto Bois de la Pénombre;69 | x=-10777.2998046875 y=-389.3999938964844 | size=1 | links=#8209(auto Duskwood;97):56 #10814(auto Duskwood;131):27
+#5461 | auto Duskwood;70§auto Dämmerwald;70§auto Bois de la Pénombre;70 | x=-10575.2001953125 y=-1171.200073242188 | size=1 | links=#15345(auto Duskwood;184):6 #27468(auto Duskwood;303):14 c264.1:22
+#5488 | auto Duskwood;71§auto Dämmerwald;71§auto Bois de la Pénombre;71 | x=-10337 y=641.7000122070312 | size=1 | links=#465(central location;The Hushed Bank;Duskwood):15 #15292(auto Duskwood;183):88 #21813(auto Duskwood;247):93
+#5550 | auto Duskwood;72§auto Dämmerwald;72§auto Bois de la Pénombre;72 | x=-9959.2001953125 y=-764.7000122070312 | size=1 | links=#7815(auto Duskwood;91):125 #12458(auto Duskwood;164):90 c213.3:62
+#5573 | auto Duskwood;73§auto Dämmerwald;73§auto Bois de la Pénombre;73 | x=-10992.2998046875 y=-737.2000122070312 | size=1 | links=#20698(auto Duskwood;235):50 #25947(auto Duskwood;287):23
+#5611 | auto inside;Duskwood;74§auto drinnen;Dämmerwald;74§auto intérieur;Bois de la Pénombre;74 | x=-10536 y=-1159.5 | size=1 | links=#11027(entry and exit;Tavern \"The Red Raven\"):8 #14796(auto inside;Duskwood;178):8
+#5614 | Skeletal Warrior;one;Tranquil Gardens Cemetery;Duskwood§Skelettkrieger;eins;Der Friedhof \"Stille Gärten\";Dämmerwald§Guerrier squelette;un;Tranquil Gardens Cemetery;Bois de la Pénombre | x=-11002.5 y=-1268.400024414063 | size=1 | links=#26341(Skeletal Warrior;two;Tranquil Gardens Cemetery;Duskwood):29
+#5832 | Skeletal Fiend;two;Raven Hill Cemetery;Duskwood§Skelettscheusal;zwei;Friedhof von Rabenflucht;Dämmerwald§Démon squelette;deux;Raven Hill Cemetery;Bois de la Pénombre | x=-10533.2998046875 y=390.3999938964844 | size=1 | links=#24690(Skeletal Fiend;one;Raven Hill Cemetery;Duskwood):30
+#6004 | auto Duskwood;75§auto Dämmerwald;75§auto Bois de la Pénombre;75 | x=-10571.7001953125 y=-1320.5 | size=1 | links=#3415(auto Duskwood;39):55 c276.1:9 c620.5:10
+#6016 | auto Duskwood;76§auto Dämmerwald;76§auto Bois de la Pénombre;76 | x=-10409 y=-973.9000244140625 | size=5 | links=#5205(auto Duskwood;64):72 #13424(Nightbane Shadow Weaver;two;Brightwood Grove;Duskwood):114 c628.3:100
+#6558 | auto Duskwood;77§auto Dämmerwald;77§auto Bois de la Pénombre;77 | x=-10401.7998046875 y=401.2000122070313 | size=1 | links=#5075(entry and exit;Dawning Wood Catacombs;Duskwood):12 #10204(auto Duskwood;128):10
+#6639 | auto Duskwood;78§auto Dämmerwald;78§auto Bois de la Pénombre;78 | x=-10706.6005859375 y=593.7999877929688 | size=1 | links=#2910(auto Duskwood;36):23 #11635(auto Duskwood;151):60
+#6682 | passage;from;Duskwood;to;Stranglethorn Vale§passage;von;Dämmerwald;zum;Schlingendorntal§passage;de;Bois de la Pénombre;vers;Vallée de Strangleronce | x=-11299.400390625 y=-367.3999938964844 | size=1 | links=#12110(auto Duskwood;160):19 #397(passage;from;Stranglethorn Vale;to;Duskwood):3
+#6709 | auto Duskwood;79§auto Dämmerwald;79§auto Bois de la Pénombre;79 | x=-10997.2001953125 y=-1336.599975585938 | size=1 | links=#7056(auto Duskwood;86):6 #12091(auto Duskwood;159):9
+#6770 | auto Duskwood;80§auto Dämmerwald;80§auto Bois de la Pénombre;80 | x=-10162.7001953125 y=-1149.300048828125 | size=1 | links=#2825(auto Duskwood;33):35 #12136(auto Duskwood;162):30 #22485(auto Duskwood;251):33
+#6828 | auto Duskwood;81§auto Dämmerwald;81§auto Bois de la Pénombre;81 | x=-10446.2998046875 y=473.2000122070313 | size=1 | links=#18851(auto Duskwood;213):18 #21813(auto Duskwood;247):114
+#6885 | auto Duskwood;82§auto Dämmerwald;82§auto Bois de la Pénombre;82 | x=-10915.6005859375 y=-1208.700073242188 | size=5 | links=#8814(auto Duskwood;108):29 #20017(auto Duskwood;225):51
+#6897 | auto Duskwood;83§auto Dämmerwald;83§auto Bois de la Pénombre;83 | x=-10770.1005859375 y=-1240.300048828125 | size=1 | links=#9362(auto Duskwood;116):26 #11280(auto Duskwood;144):44
+#6985 | auto Duskwood;84§auto Dämmerwald;84§auto Bois de la Pénombre;84 | x=-10375.400390625 y=411.8999938964844 | size=1 | links=#8512(auto Duskwood;104):34 #26496(central location;Dawning Wood Catacombs;Duskwood):9
+#7033 | auto Duskwood;85§auto Dämmerwald;85§auto Bois de la Pénombre;85 | x=-10781.400390625 y=-1374.400024414063 | size=1 | links=#11494(auto Duskwood;147):6 c302.1:6
+#7056 | auto Duskwood;86§auto Dämmerwald;86§auto Bois de la Pénombre;86 | x=-11000.400390625 y=-1342.300048828125 | size=1 | links=#6709(auto Duskwood;79):6 c511.1:14
+#7076 | auto Duskwood;87§auto Dämmerwald;87§auto Bois de la Pénombre;87 | x=-11152 y=-133.8000030517578 | size=1 | links=#10976(auto Duskwood;136):10 #26344(auto Duskwood;293):19
+#7288 | auto Duskwood;88§auto Dämmerwald;88§auto Bois de la Pénombre;88 | x=-10691.5 y=-413 | size=1 | links=#429(auto Duskwood;6):17 #698(auto Duskwood;11):43
+#7324 | passage;from;Duskwood;to;Deadwind Pass§passage;von;Dämmerwald;nach;gebirgspass der totenwinde§passage;de;Bois de la Pénombre;vers;Défilé de Deuillevent | x=-10462.2998046875 y=-1627.5 | size=1 | links=#9127(auto Duskwood;113):19 #2591(passage;from;Deadwind Pass;to;Duskwood):7
+#7419 | auto Duskwood;89§auto Dämmerwald;89§auto Bois de la Pénombre;89 | x=-10164.900390625 y=148.3000030517578 | size=1 | links=#20068(auto Duskwood;226):22 #22759(auto Duskwood;254):38
+#7552 | auto Duskwood;90§auto Dämmerwald;90§auto Bois de la Pénombre;90 | x=-10823 y=447 | size=1 | links=#1286(auto Duskwood;18):36 #18098(auto Duskwood;208):33
+#7815 | auto Duskwood;91§auto Dämmerwald;91§auto Bois de la Pénombre;91 | x=-9921.2001953125 y=-645.2999877929688 | size=1 | links=#5550(auto Duskwood;72):125 #9891(auto Duskwood;124):86
+#7830 | auto Duskwood;92§auto Dämmerwald;92§auto Bois de la Pénombre;92 | x=-10025.900390625 y=-221.9000091552734 | size=1 | links=#1040(auto Duskwood;13):81 #4894(auto Duskwood;59):54
+#7969 | auto Duskwood;93§auto Dämmerwald;93§auto Bois de la Pénombre;93 | x=-10752.400390625 y=74.0999984741211 | size=1 | links=#11330(auto Duskwood;145):82 #21533(auto Duskwood;241):58
+#8075 | auto Duskwood;94§auto Dämmerwald;94§auto Bois de la Pénombre;94 | x=-10177.5 y=-1021.900024414063 | size=5 | links=#19795(auto Duskwood;220):102 #27855(auto Duskwood;308):46 c1258.3:133
+#8120 | auto inside;Duskwood;95§auto drinnen;Dämmerwald;95§auto intérieur;Bois de la Pénombre;95 | x=-10520.2998046875 y=-1173.300048828125 | size=1 | links=#2187(auto inside;Duskwood;29):10 c227.1:4
+#8187 | auto Duskwood;96§auto Dämmerwald;96§auto Bois de la Pénombre;96 | x=-10396.7998046875 y=427.5 | size=1 | links=#11257(Skeletal Raider;one;Raven Hill Cemetery;Duskwood):13 #13277(auto Duskwood;171):11 #15480(auto Duskwood;185):12
+#8209 | auto Duskwood;97§auto Dämmerwald;97§auto Bois de la Pénombre;97 | x=-10787.5 y=-444.8000183105469 | size=1 | links=#5330(auto Duskwood;69):56 #22711(auto Duskwood;253):36
+#8283 | auto Duskwood;98§auto Dämmerwald;98§auto Bois de la Pénombre;98 | x=-10351.400390625 y=-1256.599975585938 | size=1 | links=#23883(auto Duskwood;269):10 #27009(auto Duskwood;299):31 o321.1:28
+#8300 | auto Duskwood;99§auto Dämmerwald;99§auto Bois de la Pénombre;99 | x=-11056.5 y=-741 | size=5 | links=#20643(auto Duskwood;234):28 #21812(auto Duskwood;246):101
+#8309 | auto Duskwood;100§auto Dämmerwald;100§auto Bois de la Pénombre;100 | x=-10040 y=-310 | size=1 | links=#1040(auto Duskwood;13):8 #4291(auto Duskwood;53):71
+#8328 | auto Duskwood;101§auto Dämmerwald;101§auto Bois de la Pénombre;101 | x=-10884.400390625 y=243.4000091552734 | size=5 | links=#17602(auto Duskwood;201):29 #19895(auto Duskwood;221):40
+#8362 | auto Duskwood;102§auto Dämmerwald;102§auto Bois de la Pénombre;102 | x=-10752 y=-407.3000183105469 | size=1 | links=#347(auto Duskwood;5):39 #11519(auto Duskwood;149):28
+#8499 | auto Duskwood;103§auto Dämmerwald;103§auto Bois de la Pénombre;103 | x=-10804.900390625 y=-882.9000244140625 | size=1 | links=#2845(auto Duskwood;34):50 #9827(auto Duskwood;122):42 #26104(auto Duskwood;289):40
+#8512 | auto Duskwood;104§auto Dämmerwald;104§auto Bois de la Pénombre;104 | x=-10342.2998046875 y=403.7000122070313 | size=1 | links=#6985(auto Duskwood;84):34 #25786(auto Duskwood;285):11 c785.3:58
+#8558 | auto inside;Duskwood;105§auto drinnen;Dämmerwald;105§auto intérieur;Bois de la Pénombre;105 | x=-10526.7998046875 y=-1164.5 | size=1 | links=#10863(down;Tavern \"The Red Raven\"):1 #14796(auto inside;Duskwood;178):9
+#8629 | Skeletal Mage;one§Skelettmagier;eins§Mage squelette;un | x=-10942 y=-1252.599975585938 | size=1 | links=#8814(auto Duskwood;108):39 #20414(auto Duskwood;232):32 #26341(Skeletal Warrior;two;Tranquil Gardens Cemetery;Duskwood):36 c48.1:28
+#8701 | auto Duskwood;106§auto Dämmerwald;106§auto Bois de la Pénombre;106 | x=-10307.400390625 y=-1162.900024414063 | size=1 | links=#202(auto Duskwood;3):12 #16188(auto Duskwood;193):20
+#8751 | auto Duskwood;107§auto Dämmerwald;107§auto Bois de la Pénombre;107 | x=-10315.400390625 y=-1131.300048828125 | size=1 | links=#16188(auto Duskwood;193):18 c840.1:7
+#8814 | auto Duskwood;108§auto Dämmerwald;108§auto Bois de la Pénombre;108 | x=-10906.1005859375 y=-1237 | size=1 | links=#6885(auto Duskwood;82):29 #8629(Skeletal Mage;one):39 #16430(auto Duskwood;195):34
+#8915 | auto Duskwood;109§auto Dämmerwald;109§auto Bois de la Pénombre;109 | x=-10244.2001953125 y=-1154.700073242188 | size=1 | links=#3688(auto Duskwood;46):37 #17756(auto Duskwood;205):16
+#9031 | auto Duskwood;110§auto Dämmerwald;110§auto Bois de la Pénombre;110 | x=-10080.5 y=-1474.200073242188 | size=1 | links=#1188(auto Duskwood;17):4 #23146(auto Duskwood;260):56
+#9055 | auto Duskwood;111§auto Dämmerwald;111§auto Bois de la Pénombre;111 | x=-10399.400390625 y=137 | size=1 | links=#27385(Raven Hill Cemetery;north;Duskwood):13 c948.1:9
+#9084 | auto Duskwood;112§auto Dämmerwald;112§auto Bois de la Pénombre;112 | x=-10666.6005859375 y=-1193.400024414063 | size=1 | links=#17283(auto Duskwood;197):57 c887.1:42
+#9127 | auto Duskwood;113§auto Dämmerwald;113§auto Bois de la Pénombre;113 | x=-10461.2998046875 y=-1607.599975585938 | size=1 | links=#7324(passage;from;Duskwood;to;Deadwind Pass):19 #23501(auto Duskwood;266):32
+#9128 | auto Duskwood;114§auto Dämmerwald;114§auto Bois de la Pénombre;114 | x=-10925.1005859375 y=-559.2000122070312 | size=1 | links=#9909(auto Duskwood;125):61 #17698(auto Duskwood;203):14 c923.3:55
+#9312 | auto Duskwood;115§auto Dämmerwald;115§auto Bois de la Pénombre;115 | x=-10728.400390625 y=280.1000061035156 | size=1 | links=#3878(auto Duskwood;49):47 #23301(auto Duskwood;262):16
+#9362 | auto Duskwood;116§auto Dämmerwald;116§auto Bois de la Pénombre;116 | x=-10795.900390625 y=-1236.900024414063 | size=1 | links=#1444(auto Duskwood;21):32 #2404(auto Duskwood;30):22 #6897(auto Duskwood;83):26
+#9492 | auto Duskwood;117§auto Dämmerwald;117§auto Bois de la Pénombre;117 | x=-10414 y=-1131.900024414063 | size=1 | links=#4531(auto Duskwood;56):36 #9986(auto Duskwood;126):29
+#9632 | auto Duskwood;118§auto Dämmerwald;118§auto Bois de la Pénombre;118 | x=-10581.7001953125 y=-1256.099975585938 | size=1 | links=#26316(auto Duskwood;292):29 c1676.1:13 c3133.1:17
+#9728 | auto Duskwood;119§auto Dämmerwald;119§auto Bois de la Pénombre;119 | x=-10010.6005859375 y=-1224.300048828125 | size=1 | links=#11737(auto Duskwood;154):28 #22258(auto Duskwood;249):46
+#9743 | auto Duskwood;120§auto Dämmerwald;120§auto Bois de la Pénombre;120 | x=-10474.900390625 y=617.7999877929688 | size=1 | links=#15138(auto Duskwood;179):36 #26731(auto Duskwood;296):11
+#9746 | quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif de quête;The Yorgen Farmstead;Bois de la Pénombre | x=-11117.5 y=-511.3999938964844 | size=1 | links=#4660(auto Duskwood;58):17 o59.1:2 c910.2:18
+#9763 | auto Duskwood;121§auto Dämmerwald;121§auto Bois de la Pénombre;121 | x=-10294.2998046875 y=369.6000061035156 | size=1 | links=#4417(The Weathered Grave;Forlorn Rowe;Duskwood):55 #4620(auto Duskwood;57):12
+#9827 | auto Duskwood;122§auto Dämmerwald;122§auto Bois de la Pénombre;122 | x=-10794.2998046875 y=-924.4000244140625 | size=1 | links=#1738(auto Duskwood;23):41 #8499(auto Duskwood;103):42
+#9844 | auto Duskwood;123§auto Dämmerwald;123§auto Bois de la Pénombre;123 | x=-10762.1005859375 y=-1139.599975585938 | size=1 | links=#11112(auto Duskwood;139):43 #17283(auto Duskwood;197):52 #19246(auto Duskwood;215):37
+#9891 | auto Duskwood;124§auto Dämmerwald;124§auto Bois de la Pénombre;124 | x=-9898.2001953125 y=-561.5 | size=1 | links=#7815(auto Duskwood;91):86 #11229(auto Duskwood;141):105
+#9909 | auto Duskwood;125§auto Dämmerwald;125§auto Bois de la Pénombre;125 | x=-10955 y=-613.4000244140625 | size=1 | links=#3785(auto Duskwood;47):29 #9128(auto Duskwood;114):61
+#9986 | auto Duskwood;126§auto Dämmerwald;126§auto Bois de la Pénombre;126 | x=-10389.6005859375 y=-1116.099975585938 | size=1 | links=#9492(auto Duskwood;117):29 #14708(auto Duskwood;177):37
+#10078 | auto Duskwood;127§auto Dämmerwald;127§auto Bois de la Pénombre;127 | x=-10952.6005859375 y=196.4000091552734 | size=5 | links=#4968(auto Duskwood;60):53 #19895(auto Duskwood;221):52
+#10204 | auto Duskwood;128§auto Dämmerwald;128§auto Bois de la Pénombre;128 | x=-10399.7001953125 y=411.2000122070313 | size=1 | links=#6558(auto Duskwood;77):10 #13277(auto Duskwood;171):4
+#10227 | auto Duskwood;129§auto Dämmerwald;129§auto Bois de la Pénombre;129 | x=-11127.900390625 y=-130.6999969482422 | size=1 | links=#24138(auto Duskwood;273):18 #26981(auto Duskwood;298):13
+#10403 | auto Duskwood;130§auto Dämmerwald;130§auto Bois de la Pénombre;130 | x=-10570 y=295.6000061035156 | size=1 | links=#24690(Skeletal Fiend;one;Raven Hill Cemetery;Duskwood):80 c202.1:19 c202.2:18 c531.2:26 c949.2:82 c6491.2:32
+#10563 | quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de quête;Vul'Gol Ogre Mound;Bois de la Pénombre | x=-11090.1005859375 y=-69.80000305175781 | size=1 | links=#2087(auto Duskwood;28):13 o119.1:1
+#10814 | auto Duskwood;131§auto Dämmerwald;131§auto Bois de la Pénombre;131 | x=-10765.6005859375 y=-365 | size=1 | links=#5330(auto Duskwood;69):27 #11519(auto Duskwood;149):16
+#10828 | auto Duskwood;132§auto Dämmerwald;132§auto Bois de la Pénombre;132 | x=-10542.400390625 y=-1349.400024414063 | size=1 | links=#1404(auto Duskwood;20):26 c828.1:29
+#10863 | down;Tavern \"The Red Raven\"§unten;Taverne Zum roten Raben§bas;Tavern \"The Red Raven\" | x=-10525.400390625 y=-1164.200073242188 | size=1 | links=#8558(auto inside;Duskwood;105):1 #25320(auto inside;Duskwood;280):9 c227.1:6
+#10889 | auto Duskwood;133§auto Dämmerwald;133§auto Bois de la Pénombre;133 | x=-10102.7998046875 y=-1233.200073242188 | size=1 | links=#4491(auto Duskwood;55):17 #21154(auto Duskwood;238):36
+#10957 | auto Duskwood;134§auto Dämmerwald;134§auto Bois de la Pénombre;134 | x=-10493.6005859375 y=-1184 | size=1 | links=#15884(auto Duskwood;191):42 #20142(auto Duskwood;229):29
+#10960 | auto Duskwood;135§auto Dämmerwald;135§auto Bois de la Pénombre;135 | x=-10173.2998046875 y=469 | size=1 | links=#12200(auto Duskwood;163):43 #20094(auto Duskwood;227):45
+#10976 | auto Duskwood;136§auto Dämmerwald;136§auto Bois de la Pénombre;136 | x=-11159.6005859375 y=-140.5 | size=1 | links=#7076(auto Duskwood;87):10 #16552(auto Duskwood;196):15
+#10999 | auto Duskwood;137§auto Dämmerwald;137§auto Bois de la Pénombre;137 | x=-10082.2998046875 y=-1322.800048828125 | size=1 | links=#11261(auto Duskwood;142):20 #21315(auto Duskwood;240):54
+#11027 | entry and exit;Tavern \"The Red Raven\"§ein- und ausgang;Taverne Zum roten Raben§entrée et sortie;Tavern \"The Red Raven\" | x=-10544.7998046875 y=-1159.800048828125 | size=1 | links=#5611(auto inside;Duskwood;74):8 #28603(s;u;Mailbox;Duskwood):3
+#11110 | auto Duskwood;138§auto Dämmerwald;138§auto Bois de la Pénombre;138 | x=-10135.400390625 y=290.6000061035156 | size=1 | links=#2039(auto Duskwood;27):39 #15269(auto Duskwood;181):44
+#11112 | auto Duskwood;139§auto Dämmerwald;139§auto Bois de la Pénombre;139 | x=-10782.900390625 y=-1101.099975585938 | size=1 | links=#9844(auto Duskwood;123):43 #23859(auto Duskwood;268):69
+#11142 | auto Duskwood;140§auto Dämmerwald;140§auto Bois de la Pénombre;140 | x=-10585.7998046875 y=-1107.5 | size=1 | links=c270.1:8 c325.1:10
+#11229 | auto Duskwood;141§auto Dämmerwald;141§auto Bois de la Pénombre;141 | x=-9949.900390625 y=-469.7000122070313 | size=1 | links=#9891(auto Duskwood;124):105 #11710(auto Duskwood;153):58
+#11257 | Skeletal Raider;one;Raven Hill Cemetery;Duskwood§Skeletträuber;eins;Friedhof von Rabenflucht;Dämmerwald§Ecumeur squelette;un;Raven Hill Cemetery;Bois de la Pénombre | x=-10410 y=429.7000122070313 | size=1 | links=#8187(auto Duskwood;96):13 #18851(auto Duskwood;213):46
+#11261 | auto Duskwood;142§auto Dämmerwald;142§auto Bois de la Pénombre;142 | x=-10084.400390625 y=-1302.200073242188 | size=1 | links=#10999(auto Duskwood;137):20 #23405(auto Duskwood;264):28
+#11271 | auto Duskwood;143§auto Dämmerwald;143§auto Bois de la Pénombre;143 | x=-10527.900390625 y=-1211.099975585938 | size=1 | links=c265.1:4 c1672.1:9
+#11280 | auto Duskwood;144§auto Dämmerwald;144§auto Bois de la Pénombre;144 | x=-10751.2001953125 y=-1200.5 | size=1 | links=#3870(auto Duskwood;48):5 #6897(auto Duskwood;83):44
+#11330 | auto Duskwood;145§auto Dämmerwald;145§auto Bois de la Pénombre;145 | x=-10782.400390625 y=-2.799999952316284 | size=1 | links=#3432(auto Duskwood;40):99 #7969(auto Duskwood;93):82 c930.2:75
+#11430 | auto Duskwood;146§auto Dämmerwald;146§auto Bois de la Pénombre;146 | x=-10082.6005859375 y=-1260.900024414063 | size=1 | links=#4491(auto Duskwood;55):17 #21191(auto Duskwood;239):14 #23405(auto Duskwood;264):12
+#11494 | auto Duskwood;147§auto Dämmerwald;147§auto Bois de la Pénombre;147 | x=-10781 y=-1368.099975585938 | size=1 | links=#7033(auto Duskwood;85):6 #27089(auto Duskwood;301):29 c202.3:22
+#11512 | auto Duskwood;148§auto Dämmerwald;148§auto Bois de la Pénombre;148 | x=-10760.2001953125 y=311.5 | size=1 | links=#13144(auto Duskwood;170):45 #19969(auto Duskwood;223):14 #26051(auto Duskwood;288):33
+#11519 | auto Duskwood;149§auto Dämmerwald;149§auto Bois de la Pénombre;149 | x=-10756.5 y=-379.3000183105469 | size=1 | links=#8362(auto Duskwood;102):28 #10814(auto Duskwood;131):16
+#11564 | auto Duskwood;150§auto Dämmerwald;150§auto Bois de la Pénombre;150 | x=-10908.2998046875 y=-506.8999938964844 | size=1 | links=#1961(auto Duskwood;25):109 #17698(auto Duskwood;203):40 #19967(auto Duskwood;222):60
+#11635 | auto Duskwood;151§auto Dämmerwald;151§auto Bois de la Pénombre;151 | x=-10645.7001953125 y=592.2999877929688 | size=1 | links=#3550(auto Duskwood;43):79 #6639(auto Duskwood;78):60 c539.3:38
+#11644 | auto Duskwood;152§auto Dämmerwald;152§auto Bois de la Pénombre;152 | x=-10469.900390625 y=-1431 | size=1 | links=#3559(auto Duskwood;44):29 #24954(auto Duskwood;275):23
+#11710 | auto Duskwood;153§auto Dämmerwald;153§auto Bois de la Pénombre;153 | x=-9989.6005859375 y=-427 | size=1 | links=#4291(auto Duskwood;53):56 #11229(auto Duskwood;141):58 c217.3:101
+#11737 | auto Duskwood;154§auto Dämmerwald;154§auto Bois de la Pénombre;154 | x=-10008.2001953125 y=-1196 | size=1 | links=#9728(auto Duskwood;119):28 #25373(auto Duskwood;282):54
+#11753 | auto Duskwood;155§auto Dämmerwald;155§auto Bois de la Pénombre;155 | x=-10776.1005859375 y=592 | size=1 | links=#2910(auto Duskwood;36):46 #15610(auto Duskwood;188):43
+#11775 | auto Duskwood;156§auto Dämmerwald;156§auto Bois de la Pénombre;156 | x=-10369.7001953125 y=422.5 | size=1 | links=#15480(auto Duskwood;185):15 c522.1:43
+#11998 | auto Duskwood;157§auto Dämmerwald;157§auto Bois de la Pénombre;157 | x=-11186.2001953125 y=-158.1000061035156 | size=1 | links=#5233(auto Duskwood;65):10 #23361(auto Duskwood;263):34
+#12055 | auto Duskwood;158§auto Dämmerwald;158§auto Bois de la Pénombre;158 | x=-9983.900390625 y=-997.2999877929688 | size=1 | links=#26183(auto Duskwood;290):65 #27572(auto Duskwood;305):73
+#12091 | auto Duskwood;159§auto Dämmerwald;159§auto Bois de la Pénombre;159 | x=-10992.5 y=-1328.400024414063 | size=1 | links=#3726(central location;Tranquil Gardens Cemetery;Duskwood):24 #6709(auto Duskwood;79):9 #23285(auto Duskwood;261):10
+#12110 | auto Duskwood;160§auto Dämmerwald;160§auto Bois de la Pénombre;160 | x=-11281 y=-361.5 | size=1 | links=#6682(passage;from;Duskwood;to;Stranglethorn Vale):19 #14246(auto Duskwood;174):84
+#12117 | auto Duskwood;161§auto Dämmerwald;161§auto Bois de la Pénombre;161 | x=-10286.1005859375 y=92.9000015258789 | size=1 | links=#450(auto Duskwood;7):33 #2895(auto Duskwood;35):27 #26301(auto Duskwood;291):15
+#12136 | auto Duskwood;162§auto Dämmerwald;162§auto Bois de la Pénombre;162 | x=-10137 y=-1164.900024414063 | size=1 | links=#6770(auto Duskwood;80):30 #21610(auto Duskwood;244):22
+#12200 | auto Duskwood;163§auto Dämmerwald;163§auto Bois de la Pénombre;163 | x=-10204.7001953125 y=499.3999938964844 | size=1 | links=#10960(auto Duskwood;135):43 #24284(auto Duskwood;274):55 c565.2:40
+#12458 | auto Duskwood;164§auto Dämmerwald;164§auto Bois de la Pénombre;164 | x=-9983.1005859375 y=-851.7000122070312 | size=1 | links=#5550(auto Duskwood;72):90 #27572(auto Duskwood;305):72
+#12576 | auto Duskwood;165§auto Dämmerwald;165§auto Bois de la Pénombre;165 | x=-10248.2998046875 y=564.2999877929688 | size=1 | links=#20210(auto Duskwood;231):39 #24284(auto Duskwood;274):28
+#12637 | auto Duskwood;166§auto Dämmerwald;166§auto Bois de la Pénombre;166 | x=-10001 y=-1101.300048828125 | size=1 | links=#25373(auto Duskwood;282):40 #26183(auto Duskwood;290):40
+#12758 | auto Duskwood;167§auto Dämmerwald;167§auto Bois de la Pénombre;167 | x=-10447.2001953125 y=-1512 | size=1 | links=#13733(auto Duskwood;173):24 #15621(auto Duskwood;189):41 #46978(auto Beggar's Haunt;Duskwood;331):32
+#12763 | auto inside;Duskwood;168§auto drinnen;Dämmerwald;168§auto intérieur;Bois de la Pénombre;168 | x=-10511.2998046875 y=-1167 | size=1 | links=#2187(auto inside;Duskwood;29):4 #16748(top;Tavern \"The Red Raven\"):11
+#12780 | auto Duskwood;169§auto Dämmerwald;169§auto Bois de la Pénombre;169 | x=-10883.2001953125 y=-334.8000183105469 | size=1 | links=#18938(auto Duskwood;214):75 #23906(auto Duskwood;270):13
+#13144 | auto Duskwood;170§auto Dämmerwald;170§auto Bois de la Pénombre;170 | x=-10805.900390625 y=306.8000183105469 | size=1 | links=#4997(auto Duskwood;62):52 #11512(auto Duskwood;148):45 #22673(auto Duskwood;252):35
+#13277 | auto Duskwood;171§auto Dämmerwald;171§auto Bois de la Pénombre;171 | x=-10398.2998046875 y=415.8000183105469 | size=1 | links=#8187(auto Duskwood;96):11 #10204(auto Duskwood;128):4
+#13424 | Nightbane Shadow Weaver;two;Brightwood Grove;Duskwood§Schattenwirker der Nachtheuler;zwei;Schattenhain;Dämmerwald§Tisseur d'ombre Plaie-de-nuit;deux;Brightwood Grove;Bois de la Pénombre | x=-10521.900390625 y=-954 | size=1 | links=#4938(Nightbane Shadow Weaver;one;Brightwood Grove;Duskwood):62 #6016(auto Duskwood;76):114
+#13452 | auto Duskwood;172§auto Dämmerwald;172§auto Bois de la Pénombre;172 | x=-11011 y=-207.3000030517578 | size=5 | links=#19664(central location;Vul'Gol Ogre Mound;Duskwood):64 #25222(auto Duskwood;278):86
+#13733 | auto Duskwood;173§auto Dämmerwald;173§auto Bois de la Pénombre;173 | x=-10451 y=-1536.400024414063 | size=1 | links=#12758(auto Duskwood;167):24 #23501(auto Duskwood;266):39
+#14246 | auto Duskwood;174§auto Dämmerwald;174§auto Bois de la Pénombre;174 | x=-11198.7998046875 y=-382.2000122070313 | size=1 | links=#5249(auto Duskwood;67):110 #12110(auto Duskwood;160):84 #26559(auto Duskwood;295):67
+#14409 | auto Duskwood;175§auto Dämmerwald;175§auto Bois de la Pénombre;175 | x=-10786.900390625 y=201 | size=1 | links=#21533(auto Duskwood;241):76 #22673(auto Duskwood;252):72
+#14460 | auto Duskwood;176§auto Dämmerwald;176§auto Bois de la Pénombre;176 | x=-10298.5 y=-1243.400024414063 | size=1 | links=#5043(auto Duskwood;63):35 #27715(auto Duskwood;306):16
+#14708 | auto Duskwood;177§auto Dämmerwald;177§auto Bois de la Pénombre;177 | x=-10352.6005859375 y=-1116.5 | size=1 | links=#9986(auto Duskwood;126):37 #25303(auto Duskwood;279):23
+#14796 | auto inside;Duskwood;178§auto drinnen;Dämmerwald;178§auto intérieur;Bois de la Pénombre;178 | x=-10535.2998046875 y=-1167.599975585938 | size=1 | links=#5611(auto inside;Duskwood;74):8 #8558(auto inside;Duskwood;105):9
+#15138 | auto Duskwood;179§auto Dämmerwald;179§auto Bois de la Pénombre;179 | x=-10448.7998046875 y=643.9000244140625 | size=1 | links=#9743(auto Duskwood;120):36 #15292(auto Duskwood;183):41
+#15240 | auto Duskwood;180§auto Dämmerwald;180§auto Bois de la Pénombre;180 | x=-11163.2998046875 y=-784.1000366210938 | size=1 | links=#21812(auto Duskwood;246):42 c534.3:55
+#15269 | auto Duskwood;181§auto Dämmerwald;181§auto Bois de la Pénombre;181 | x=-10149 y=248.1000061035156 | size=1 | links=#3973(auto Duskwood;50):36 #11110(auto Duskwood;138):44 c503.1:58
+#15278 | auto Duskwood;182§auto Dämmerwald;182§auto Bois de la Pénombre;182 | x=-10537.7998046875 y=-1303.700073242188 | size=1 | links=#664(auto Duskwood;10):22 #1404(auto Duskwood;20):19
+#15292 | auto Duskwood;183§auto Dämmerwald;183§auto Bois de la Pénombre;183 | x=-10419.7001953125 y=673.2999877929688 | size=1 | links=#5488(auto Duskwood;71):88 #15138(auto Duskwood;179):41 #27689(passage;above;The Hushed Bank;Duskwood;to;Westfall):56
+#15345 | auto Duskwood;184§auto Dämmerwald;184§auto Bois de la Pénombre;184 | x=-10580.900390625 y=-1175.200073242188 | size=1 | links=#5461(auto Duskwood;70):6 #19650(central location;Darkshire;Duskwood):24 c887.1:44
+#15480 | auto Duskwood;185§auto Dämmerwald;185§auto Bois de la Pénombre;185 | x=-10384 y=427.6000061035156 | size=1 | links=#8187(auto Duskwood;96):12 #11775(auto Duskwood;156):15
+#15526 | auto Duskwood;186§auto Dämmerwald;186§auto Bois de la Pénombre;186 | x=-9982.1005859375 y=-1622.700073242188 | size=1 | links=#3609(auto Duskwood;45):97 #22194(auto Duskwood;248):81
+#15598 | auto Duskwood;187§auto Dämmerwald;187§auto Bois de la Pénombre;187 | x=-10729.400390625 y=-1180.900024414063 | size=1 | links=#17283(auto Duskwood;197):13 #23673(auto Duskwood;267):14
+#15610 | auto Duskwood;188§auto Dämmerwald;188§auto Bois de la Pénombre;188 | x=-10819.1005859375 y=589.9000244140625 | size=1 | links=#11753(auto Duskwood;155):43 #20790(auto Duskwood;236):43
+#15621 | auto Duskwood;189§auto Dämmerwald;189§auto Bois de la Pénombre;189 | x=-10449.400390625 y=-1470.099975585938 | size=1 | links=#12758(auto Duskwood;167):41 #24954(auto Duskwood;275):20
+#15728 | Skeletal Fiend;three;Raven Hill Cemetery;Duskwood§Skelettscheusal;drei;Friedhof von Rabenflucht;Dämmerwald§Démon squelette;trois;Raven Hill Cemetery;Bois de la Pénombre | x=-10550 y=421.1000061035156 | size=1 | links=#24690(Skeletal Fiend;one;Raven Hill Cemetery;Duskwood):46 c218.1:36
+#15788 | auto Duskwood;190§auto Dämmerwald;190§auto Bois de la Pénombre;190 | x=-10518.2001953125 y=-1399 | size=1 | links=#461(auto Duskwood;8):16 #3559(auto Duskwood;44):28
+#15884 | auto Duskwood;191§auto Dämmerwald;191§auto Bois de la Pénombre;191 | x=-10536 y=-1187.5 | size=1 | links=#5306(auto Duskwood;68):17 #10957(auto Duskwood;134):42 c468.1:22
+#16066 | auto Duskwood;192§auto Dämmerwald;192§auto Bois de la Pénombre;192 | x=-10520.400390625 y=629.2999877929688 | size=1 | links=#3550(auto Duskwood;43):51 #26731(auto Duskwood;296):35 c539.2:47
+#16188 | auto Duskwood;193§auto Dämmerwald;193§auto Bois de la Pénombre;193 | x=-10301.400390625 y=-1142.800048828125 | size=1 | links=#3688(auto Duskwood;46):22 #8701(auto Duskwood;106):20 #8751(auto Duskwood;107):18
+#16270 | auto inside;Duskwood;194§auto drinnen;Dämmerwald;194§auto intérieur;Bois de la Pénombre;194 | x=-10509.7001953125 y=-1162.599975585938 | size=1 | links=#25320(auto inside;Duskwood;280):6 c272.1:11 c274.1:7
+#16430 | auto Duskwood;195§auto Dämmerwald;195§auto Bois de la Pénombre;195 | x=-10872.400390625 y=-1231.300048828125 | size=1 | links=#1444(auto Duskwood;21):47 #8814(auto Duskwood;108):34
+#16552 | auto Duskwood;196§auto Dämmerwald;196§auto Bois de la Pénombre;196 | x=-11174.6005859375 y=-139.1999969482422 | size=1 | links=#5233(auto Duskwood;65):11 #10976(auto Duskwood;136):15
+#16748 | top;Tavern \"The Red Raven\"§oben;Taverne Zum roten Raben§top;Tavern \"The Red Raven\" | x=-10522.7998046875 y=-1166.400024414063 | size=1 | links=#12763(auto inside;Duskwood;168):11 #18783(auto inside;Duskwood;212):10 c960.1:9
+#17283 | auto Duskwood;197§auto Dämmerwald;197§auto Bois de la Pénombre;197 | x=-10720.1005859375 y=-1171.099975585938 | size=1 | links=#9084(auto Duskwood;112):57 #9844(auto Duskwood;123):52 #15598(auto Duskwood;187):13
+#17323 | auto Duskwood;198§auto Dämmerwald;198§auto Bois de la Pénombre;198 | x=-10357.400390625 y=117.5 | size=1 | links=#450(auto Duskwood;7):42 #27385(Raven Hill Cemetery;north;Duskwood):42
+#17354 | auto Duskwood;199§auto Dämmerwald;199§auto Bois de la Pénombre;199 | x=-10553.6005859375 y=-1232.5 | size=1 | links=#26316(auto Duskwood;292):21 c468.1:42
+#17556 | auto inside;Duskwood;200§auto drinnen;Dämmerwald;200§auto intérieur;Bois de la Pénombre;200 | x=-10589.6005859375 y=-1198.5 | size=1 | links=#19441(auto Duskwood;219):8 c633.1:4
+#17602 | auto Duskwood;201§auto Dämmerwald;201§auto Bois de la Pénombre;201 | x=-10860.2998046875 y=259.8999938964844 | size=1 | links=#8328(auto Duskwood;101):29 #25758(auto Duskwood;284):24
+#17687 | auto Duskwood;202§auto Dämmerwald;202§auto Bois de la Pénombre;202 | x=-11009.5 y=-360.1000061035156 | size=1 | links=#18656(auto Duskwood;210):39 #19387(auto Duskwood;217):65
+#17698 | auto Duskwood;203§auto Dämmerwald;203§auto Bois de la Pénombre;203 | x=-10920 y=-545.4000244140625 | size=1 | links=#9128(auto Duskwood;114):14 #11564(auto Duskwood;150):40
+#17703 | auto Duskwood;204§auto Dämmerwald;204§auto Bois de la Pénombre;204 | x=-10931.900390625 y=-339.8999938964844 | size=1 | links=#5236(auto Duskwood;66):20 #26820(crossing;Duskwood;one):26
+#17756 | auto Duskwood;205§auto Dämmerwald;205§auto Bois de la Pénombre;205 | x=-10228.2001953125 y=-1153 | size=1 | links=#8915(auto Duskwood;109):16 #22485(auto Duskwood;251):33
+#17858 | auto Duskwood;206§auto Dämmerwald;206§auto Bois de la Pénombre;206 | x=-10604.900390625 y=-449.5 | size=1 | links=#23477(auto Duskwood;265):52 #28041(Lethon;Twilight Grove;Duskwood):51
+#17882 | auto Duskwood;207§auto Dämmerwald;207§auto Bois de la Pénombre;207 | x=-10312.6005859375 y=-1200.900024414063 | size=1 | links=#202(auto Duskwood;3):25 #2021(auto Duskwood;26):18
+#17919 | passage;from;Duskwood;to;Westfall§passage;von;Dämmerwald;zum;Westfall§passage;de;Bois de la Pénombre;vers;Marche de l'Ouest | x=-10865.1005859375 y=629.2999877929688 | size=1 | links=#25346(auto Duskwood;281):33 #21450(passage;Westfall;to;Duskwood):7
+#18098 | auto Duskwood;208§auto Dämmerwald;208§auto Bois de la Pénombre;208 | x=-10818.7998046875 y=413.8999938964844 | size=1 | links=#4997(auto Duskwood;62):55 #7552(auto Duskwood;90):33
+#18308 | auto Duskwood;209§auto Dämmerwald;209§auto Bois de la Pénombre;209 | x=-10140.7001953125 y=3.5 | size=1 | links=#3288(auto Duskwood;38):30 #21599(auto Duskwood;243):78
+#18656 | auto Duskwood;210§auto Dämmerwald;210§auto Bois de la Pénombre;210 | x=-11048.7998046875 y=-366.8000183105469 | size=1 | links=#5249(auto Duskwood;67):40 #17687(auto Duskwood;202):39
+#18743 | auto Duskwood;211§auto Dämmerwald;211§auto Bois de la Pénombre;211 | x=-10770.900390625 y=-1185.200073242188 | size=1 | links=#19246(auto Duskwood;215):14 c6491.1:12
+#18783 | auto inside;Duskwood;212§auto drinnen;Dämmerwald;212§auto intérieur;Bois de la Pénombre;212 | x=-10516.6005859375 y=-1157.599975585938 | size=1 | links=#16748(top;Tavern \"The Red Raven\"):10 c2112.1:17
+#18851 | auto Duskwood;213§auto Dämmerwald;213§auto Bois de la Pénombre;213 | x=-10449.2001953125 y=455.2000122070313 | size=1 | links=#6828(auto Duskwood;81):18 #11257(Skeletal Raider;one;Raven Hill Cemetery;Duskwood):46 c787.3:25
+#18938 | auto Duskwood;214§auto Dämmerwald;214§auto Bois de la Pénombre;214 | x=-10857.400390625 y=-263.3999938964844 | size=1 | links=#3442(auto Duskwood;41):36 #12780(auto Duskwood;169):75
+#19246 | auto Duskwood;215§auto Dämmerwald;215§auto Bois de la Pénombre;215 | x=-10758.7998046875 y=-1177.099975585938 | size=1 | links=#3870(auto Duskwood;48):20 #9844(auto Duskwood;123):37 #18743(auto Duskwood;211):14
+#19263 | auto Duskwood;216§auto Dämmerwald;216§auto Bois de la Pénombre;216 | x=-10835.2998046875 y=-163.6999969482422 | size=1 | links=#3432(auto Duskwood;40):69 #3442(auto Duskwood;41):65
+#19387 | auto Duskwood;217§auto Dämmerwald;217§auto Bois de la Pénombre;217 | x=-10943.6005859375 y=-361.6000061035156 | size=1 | links=#17687(auto Duskwood;202):65 #26820(crossing;Duskwood;one):26 c499.1:22 c888.1:30
+#19437 | auto Duskwood;218§auto Dämmerwald;218§auto Bois de la Pénombre;218 | x=-10983.7998046875 y=-1166.599975585938 | size=5 | links=#20017(auto Duskwood;225):35 c206.1:43
+#19441 | auto Duskwood;219§auto Dämmerwald;219§auto Bois de la Pénombre;219 | x=-10581.7001953125 y=-1197.200073242188 | size=1 | links=#17556(auto inside;Duskwood;200):8 c468.1:24 c663.1:17
+#19581 | entry and exit;cave;Vul'Gol Ogre Mound;Duskwood§ein- und ausgang;höhle;Ogerhort Vul'Gol;Dämmerwald§entrée et sortie;cave;Vul'Gol Ogre Mound;Bois de la Pénombre | x=-11106.6005859375 y=-87.9000015258789 | size=1 | links=#2087(auto Duskwood;28):25 #25706(auto Duskwood;283):11
+#19650 | central location;Darkshire;Duskwood§zentralpunkt;Dunkelhain;Dämmerwald§emplacement central;Darkshire;Bois de la Pénombre | x=-10557 y=-1180 | size=1 | links=#15345(auto Duskwood;184):24 #25078(auto Duskwood;276):20 #28603(s;u;Mailbox;Duskwood):22 c468.1:10 c10062.1:18
+#19664 | central location;Vul'Gol Ogre Mound;Duskwood§zentralpunkt;Ogerhort Vul'Gol;Dämmerwald§emplacement central;Vul'Gol Ogre Mound;Bois de la Pénombre | x=-11010.1005859375 y=-142.6999969482422 | size=1 | links=#2087(auto Duskwood;28):95 #13452(auto Duskwood;172):64 c891.1:35 c892.1:67 c892.2:15 c889.3:64
+#19795 | auto Duskwood;220§auto Dämmerwald;220§auto Bois de la Pénombre;220 | x=-10154.1005859375 y=-921.7000122070312 | size=5 | links=#8075(auto Duskwood;94):102 c1258.2:76 c569.3:87
+#19895 | auto Duskwood;221§auto Dämmerwald;221§auto Bois de la Pénombre;221 | x=-10901.2998046875 y=206.4000091552734 | size=5 | links=#8328(auto Duskwood;101):40 #10078(auto Duskwood;127):52
+#19967 | auto Duskwood;222§auto Dämmerwald;222§auto Bois de la Pénombre;222 | x=-10897.400390625 y=-447.8000183105469 | size=1 | links=#1961(auto Duskwood;25):50 #11564(auto Duskwood;150):60 #22711(auto Duskwood;253):73
+#19969 | auto Duskwood;223§auto Dämmerwald;223§auto Bois de la Pénombre;223 | x=-10748 y=303.8999938964844 | size=1 | links=#11512(auto Duskwood;148):14 #23301(auto Duskwood;262):19
+#20003 | auto Duskwood;224§auto Dämmerwald;224§auto Bois de la Pénombre;224 | x=-10166.2001953125 y=61.70000076293945 | size=1 | links=#3288(auto Duskwood;38):33 #22772(auto Duskwood;255):31
+#20017 | auto Duskwood;225§auto Dämmerwald;225§auto Bois de la Pénombre;225 | x=-10948 y=-1169.099975585938 | size=5 | links=#6885(auto Duskwood;82):51 #19437(auto Duskwood;218):35
+#20068 | auto Duskwood;226§auto Dämmerwald;226§auto Bois de la Pénombre;226 | x=-10167.5 y=170.6999969482422 | size=1 | links=#3973(auto Duskwood;50):43 #7419(auto Duskwood;89):22
+#20074 | central location;Brightwood Grove;Duskwood§zentralpunkt;Schattenhain;Dämmerwald§emplacement central;Brightwood Grove;Bois de la Pénombre | x=-10284.5 y=-884.7999877929688 | size=1 | links=#5205(auto Duskwood;64):85 c507.1:108 c1258.2:69 c1258.3:50
+#20094 | auto Duskwood;227§auto Dämmerwald;227§auto Bois de la Pénombre;227 | x=-10139.1005859375 y=439.7000122070313 | size=1 | links=#10960(auto Duskwood;135):45 #20103(auto Duskwood;228):54
+#20103 | auto Duskwood;228§auto Dämmerwald;228§auto Bois de la Pénombre;228 | x=-10134.7998046875 y=384.8999938964844 | size=1 | links=#2039(auto Duskwood;27):59 #20094(auto Duskwood;227):54
+#20105 | Mor'Ladim;Forlorn Rowe;Duskwood§Mor'Ladim;Das verlassene Gut;Dämmerwald§Mor'Ladim;Forlorn Rowe;Bois de la Pénombre | x=-10399.6005859375 y=320.8000183105469 | size=1 | links=c1110.1:35
+#20142 | auto Duskwood;229§auto Dämmerwald;229§auto Bois de la Pénombre;229 | x=-10464.5 y=-1180.700073242188 | size=1 | links=#4531(auto Duskwood;56):36 #10957(auto Duskwood;134):29
+#20205 | auto Duskwood;230§auto Dämmerwald;230§auto Bois de la Pénombre;230 | x=-10214.5 y=87.0999984741211 | size=1 | links=#2895(auto Duskwood;35):46 #22772(auto Duskwood;255):46
+#20210 | auto Duskwood;231§auto Dämmerwald;231§auto Bois de la Pénombre;231 | x=-10248.1005859375 y=603.7999877929688 | size=1 | links=#465(central location;The Hushed Bank;Duskwood):82 #12576(auto Duskwood;165):39
+#20414 | auto Duskwood;232§auto Dämmerwald;232§auto Bois de la Pénombre;232 | x=-10968.5 y=-1272.200073242188 | size=1 | links=#8629(Skeletal Mage;one):32 #23933(auto Duskwood;271):7
+#20530 | auto Duskwood;233§auto Dämmerwald;233§auto Bois de la Pénombre;233 | x=-10557.6005859375 y=-1114.599975585938 | size=1 | links=c269.1:4 c271.1:10
+#20643 | auto Duskwood;234§auto Dämmerwald;234§auto Bois de la Pénombre;234 | x=-11028.5 y=-736.1000366210938 | size=5 | links=#8300(auto Duskwood;99):28 #25947(auto Duskwood;287):31
+#20698 | auto Duskwood;235§auto Dämmerwald;235§auto Bois de la Pénombre;235 | x=-10941.7998046875 y=-739.6000366210938 | size=1 | links=#2661(auto Duskwood;32):43 #5573(auto Duskwood;73):50
+#20790 | auto Duskwood;236§auto Dämmerwald;236§auto Bois de la Pénombre;236 | x=-10861.2998046875 y=578.5 | size=1 | links=#1286(auto Duskwood;18):100 #15610(auto Duskwood;188):43 #25346(auto Duskwood;281):17
+#20858 | auto Duskwood;237§auto Dämmerwald;237§auto Bois de la Pénombre;237 | x=-10298.7001953125 y=143.3000030517578 | size=1 | links=#1086(auto Duskwood;14):14 c604.2:24
+#21154 | auto Duskwood;238§auto Dämmerwald;238§auto Bois de la Pénombre;238 | x=-10119.1005859375 y=-1200.800048828125 | size=1 | links=#10889(auto Duskwood;133):36 #21610(auto Duskwood;244):18
+#21191 | auto Duskwood;239§auto Dämmerwald;239§auto Bois de la Pénombre;239 | x=-10067.7998046875 y=-1260.599975585938 | size=1 | links=#11430(auto Duskwood;146):14 #22258(auto Duskwood;249):55
+#21315 | auto Duskwood;240§auto Dämmerwald;240§auto Bois de la Pénombre;240 | x=-10079 y=-1377.300048828125 | size=1 | links=#10999(auto Duskwood;137):54 #23146(auto Duskwood;260):40 c3134.1:6
+#21533 | auto Duskwood;241§auto Dämmerwald;241§auto Bois de la Pénombre;241 | x=-10753.2001953125 y=132.3000030517578 | size=1 | links=#7969(auto Duskwood;93):58 #14409(auto Duskwood;175):76
+#21573 | auto Duskwood;242§auto Dämmerwald;242§auto Bois de la Pénombre;242 | x=-10068.400390625 y=-1500.200073242188 | size=1 | links=#153(auto Duskwood;2):7 #1188(auto Duskwood;17):24
+#21599 | auto Duskwood;243§auto Dämmerwald;243§auto Bois de la Pénombre;243 | x=-10101.5 y=-64.9000015258789 | size=1 | links=#4409(auto Duskwood;54):50 #18308(auto Duskwood;209):78 c521.1:82 c521.2:98
+#21610 | auto Duskwood;244§auto Dämmerwald;244§auto Bois de la Pénombre;244 | x=-10126.7998046875 y=-1184.5 | size=1 | links=#12136(auto Duskwood;162):22 #21154(auto Duskwood;238):18
+#21720 | auto Duskwood;245§auto Dämmerwald;245§auto Bois de la Pénombre;245 | x=-10556.5 y=-1150.700073242188 | size=1 | links=#604(auto Duskwood;9):16 c264.1:5
+#21791 | entry and exit;Roland's Doom;Duskwood§ein- und ausgang;Rolands Verdammnis;Dämmerwald§entrée et sortie;Destin de Roland;Bois de la Pénombre | x=-11062.7001953125 y=-1136.800048828125 | size=1 | links=c920.1:15 c206.2:23
+#21812 | auto Duskwood;246§auto Dämmerwald;246§auto Bois de la Pénombre;246 | x=-11157.6005859375 y=-742.2999877929688 | size=1 | links=#8300(auto Duskwood;99):101 #15240(auto Duskwood;180):42
+#21813 | auto Duskwood;247§auto Dämmerwald;247§auto Bois de la Pénombre;247 | x=-10407.900390625 y=581 | size=5 | links=#5488(auto Duskwood;71):93 #6828(auto Duskwood;81):114
+#22194 | auto Duskwood;248§auto Dämmerwald;248§auto Bois de la Pénombre;248 | x=-10024 y=-1552.400024414063 | size=1 | links=#153(auto Duskwood;2):61 #15526(auto Duskwood;186):81
+#22258 | auto Duskwood;249§auto Dämmerwald;249§auto Bois de la Pénombre;249 | x=-10012.900390625 y=-1270.5 | size=1 | links=#9728(auto Duskwood;119):46 #21191(auto Duskwood;239):55
+#22330 | auto Duskwood;250§auto Dämmerwald;250§auto Bois de la Pénombre;250 | x=-10060.7998046875 y=-136.1999969482422 | size=1 | links=#4409(auto Duskwood;54):32 #4894(auto Duskwood;59):39
+#22485 | auto Duskwood;251§auto Dämmerwald;251§auto Bois de la Pénombre;251 | x=-10195.900390625 y=-1145.700073242188 | size=1 | links=#6770(auto Duskwood;80):33 #17756(auto Duskwood;205):33
+#22673 | auto Duskwood;252§auto Dämmerwald;252§auto Bois de la Pénombre;252 | x=-10801.5 y=271.6000061035156 | size=1 | links=#13144(auto Duskwood;170):35 #14409(auto Duskwood;175):72 #25758(auto Duskwood;284):36
+#22711 | auto Duskwood;253§auto Dämmerwald;253§auto Bois de la Pénombre;253 | x=-10823.5 y=-446.8999938964844 | size=1 | links=#8209(auto Duskwood;97):36 #19967(auto Duskwood;222):73
+#22728 | entry and exit;Dawning Wood Catacombs;north;Duskwood§ein- und ausgang;Katakomben des Morgenwaldes;nördlich;Dämmerwald§entrée et sortie;Catacombes du Bois-de-l'Aube;north;Bois de la Pénombre | x=-10361.2998046875 y=193.4000091552734 | size=1 | links=#210(auto Duskwood;4):20 c949.1:17
+#22759 | auto Duskwood;254§auto Dämmerwald;254§auto Bois de la Pénombre;254 | x=-10166.400390625 y=109.7000045776367 | size=1 | links=#7419(auto Duskwood;89):38 #22772(auto Duskwood;255):16
+#22772 | auto Duskwood;255§auto Dämmerwald;255§auto Bois de la Pénombre;255 | x=-10168.5 y=93.0999984741211 | size=1 | links=#20003(auto Duskwood;224):31 #20205(auto Duskwood;230):46 #22759(auto Duskwood;254):16
+#22786 | auto Duskwood;256§auto Dämmerwald;256§auto Bois de la Pénombre;256 | x=-10839.6005859375 y=-840.4000244140625 | size=1 | links=#1105(auto Duskwood;15):18 #2845(auto Duskwood;34):15
+#22798 | auto Duskwood;257§auto Dämmerwald;257§auto Bois de la Pénombre;257 | x=-10970.2998046875 y=-1341.300048828125 | size=1 | links=#23285(auto Duskwood;261):15 c48.2:14
+#22857 | auto Duskwood;258§auto Dämmerwald;258§auto Bois de la Pénombre;258 | x=-11200.1005859375 y=-858.1000366210938 | size=1 | links=#733(auto Duskwood;12):26 c534.1:31
+#22939 | auto Duskwood;259§auto Dämmerwald;259§auto Bois de la Pénombre;259 | x=-10902.5 y=-388 | size=5 | links=#1961(auto Duskwood;25):9 #23906(auto Duskwood;270):43 #26820(crossing;Duskwood;one):30
+#23146 | auto Duskwood;260§auto Dämmerwald;260§auto Bois de la Pénombre;260 | x=-10084.1005859375 y=-1417.700073242188 | size=1 | links=#9031(auto Duskwood;110):56 #21315(auto Duskwood;240):40
+#23285 | auto Duskwood;261§auto Dämmerwald;261§auto Bois de la Pénombre;261 | x=-10983.1005859375 y=-1333.200073242188 | size=1 | links=#12091(auto Duskwood;159):10 #22798(auto Duskwood;257):15
+#23301 | auto Duskwood;262§auto Dämmerwald;262§auto Bois de la Pénombre;262 | x=-10743.7001953125 y=284.8999938964844 | size=1 | links=#9312(auto Duskwood;115):16 #19969(auto Duskwood;223):19
+#23361 | auto Duskwood;263§auto Dämmerwald;263§auto Bois de la Pénombre;263 | x=-11218.7998046875 y=-168.6000061035156 | size=1 | links=#11998(auto Duskwood;157):34 c1251.3:14
+#23405 | auto Duskwood;264§auto Dämmerwald;264§auto Bois de la Pénombre;264 | x=-10085.7998046875 y=-1273.400024414063 | size=1 | links=#4491(auto Duskwood;55):25 #11261(auto Duskwood;142):28 #11430(auto Duskwood;146):12
+#23422 | entry and exit;house;Forlorn Rowe;Duskwood§ein- und ausgang;haus;Das verlassene Gut;Dämmerwald§entrée et sortie;house;Forlorn Rowe;Bois de la Pénombre | x=-10318.2998046875 y=357.5 | size=1 | links=#26791(auto Duskwood;297):5 c1110.3:13
+#23477 | auto Duskwood;265§auto Dämmerwald;265§auto Bois de la Pénombre;265 | x=-10625.400390625 y=-401.2000122070313 | size=1 | links=#3522(auto Duskwood;42):25 #17858(auto Duskwood;206):52
+#23501 | auto Duskwood;266§auto Dämmerwald;266§auto Bois de la Pénombre;266 | x=-10459.2001953125 y=-1575.300048828125 | size=1 | links=#9127(auto Duskwood;113):32 #13733(auto Duskwood;173):39
+#23673 | auto Duskwood;267§auto Dämmerwald;267§auto Bois de la Pénombre;267 | x=-10743.7998046875 y=-1183.700073242188 | size=1 | links=#3870(auto Duskwood;48):13 #15598(auto Duskwood;187):14
+#23859 | auto Duskwood;268§auto Dämmerwald;268§auto Bois de la Pénombre;268 | x=-10805.7998046875 y=-1035.5 | size=1 | links=#1738(auto Duskwood;23):71 #11112(auto Duskwood;139):69
+#23883 | auto Duskwood;269§auto Dämmerwald;269§auto Bois de la Pénombre;269 | x=-10361.6005859375 y=-1256.900024414063 | size=1 | links=#1973(Stalvan Mistmantle;Manor Mistmantle;Duskwood):5 #8283(auto Duskwood;98):10
+#23906 | auto Duskwood;270§auto Dämmerwald;270§auto Bois de la Pénombre;270 | x=-10888.5 y=-346.8000183105469 | size=1 | links=#12780(auto Duskwood;169):13 #22939(auto Duskwood;259):43 #26820(crossing;Duskwood;one):31
+#23933 | auto Duskwood;271§auto Dämmerwald;271§auto Bois de la Pénombre;271 | x=-10972.400390625 y=-1279 | size=1 | links=#3726(central location;Tranquil Gardens Cemetery;Duskwood):28 #20414(auto Duskwood;232):7
+#24126 | auto Duskwood;272§auto Dämmerwald;272§auto Bois de la Pénombre;272 | x=-10410.2998046875 y=420 | size=1 | links=#5075(entry and exit;Dawning Wood Catacombs;Duskwood):16 #27337(auto Duskwood;302):18
+#24138 | auto Duskwood;273§auto Dämmerwald;273§auto Bois de la Pénombre;273 | x=-11121.7998046875 y=-113.0999984741211 | size=1 | links=#10227(auto Duskwood;129):18 #25706(auto Duskwood;283):19
+#24284 | auto Duskwood;274§auto Dämmerwald;274§auto Bois de la Pénombre;274 | x=-10245.7001953125 y=536.2000122070312 | size=1 | links=#12200(auto Duskwood;163):55 #12576(auto Duskwood;165):28
+#24690 | Skeletal Fiend;one;Raven Hill Cemetery;Duskwood§Skelettscheusal;eins;Friedhof von Rabenflucht;Dämmerwald§Démon squelette;un;Raven Hill Cemetery;Bois de la Pénombre | x=-10559.6005859375 y=375.8999938964844 | size=1 | links=#5832(Skeletal Fiend;two;Raven Hill Cemetery;Duskwood):30 #10403(auto Duskwood;130):80 #15728(Skeletal Fiend;three;Raven Hill Cemetery;Duskwood):46
+#24954 | auto Duskwood;275§auto Dämmerwald;275§auto Bois de la Pénombre;275 | x=-10457 y=-1451.099975585938 | size=1 | links=#11644(auto Duskwood;152):23 #15621(auto Duskwood;189):20 #46960(auto Duskwood;313):16
+#25078 | auto Duskwood;276§auto Dämmerwald;276§auto Bois de la Pénombre;276 | x=-10554.7998046875 y=-1160 | size=1 | links=#19650(central location;Darkshire;Duskwood):20 c264.1:8 c494.1:20
+#25156 | auto Duskwood;277§auto Dämmerwald;277§auto Bois de la Pénombre;277 | x=-10712.7001953125 y=-423.6000061035156 | size=1 | links=#347(auto Duskwood;5):31 #429(auto Duskwood;6):6
+#25222 | auto Duskwood;278§auto Dämmerwald;278§auto Bois de la Pénombre;278 | x=-10960.900390625 y=-277.3000183105469 | size=1 | links=#5236(auto Duskwood;66):50 #13452(auto Duskwood;172):86
+#25303 | auto Duskwood;279§auto Dämmerwald;279§auto Bois de la Pénombre;279 | x=-10330.400390625 y=-1123.700073242188 | size=1 | links=#14708(auto Duskwood;177):23 c840.1:10
+#25320 | auto inside;Duskwood;280§auto drinnen;Dämmerwald;280§auto intérieur;Bois de la Pénombre;280 | x=-10515.7998046875 y=-1163.400024414063 | size=1 | links=#10863(down;Tavern \"The Red Raven\"):9 #16270(auto inside;Duskwood;194):6 c6790.1:2
+#25346 | auto Duskwood;281§auto Dämmerwald;281§auto Bois de la Pénombre;281 | x=-10865.1005859375 y=595.7999877929688 | size=1 | links=#17919(passage;from;Duskwood;to;Westfall):33 #20790(auto Duskwood;236):17
+#25373 | auto Duskwood;282§auto Dämmerwald;282§auto Bois de la Pénombre;282 | x=-10003.1005859375 y=-1142.099975585938 | size=1 | links=#11737(auto Duskwood;154):54 #12637(auto Duskwood;166):40
+#25706 | auto Duskwood;283§auto Dämmerwald;283§auto Bois de la Pénombre;283 | x=-11115.5 y=-95.0999984741211 | size=1 | links=#19581(entry and exit;cave;Vul'Gol Ogre Mound;Duskwood):11 #24138(auto Duskwood;273):19
+#25758 | auto Duskwood;284§auto Dämmerwald;284§auto Bois de la Pénombre;284 | x=-10836.2998046875 y=259.6000061035156 | size=5 | links=#17602(auto Duskwood;201):24 #22673(auto Duskwood;252):36
+#25786 | auto Duskwood;285§auto Dämmerwald;285§auto Bois de la Pénombre;285 | x=-10344.900390625 y=392.1000061035156 | size=1 | links=#8512(auto Duskwood;104):11 c771.3:61
+#25937 | auto Duskwood;286§auto Dämmerwald;286§auto Bois de la Pénombre;286 | x=-10887.2001953125 y=-869.4000244140625 | size=1 | links=#1105(auto Duskwood;15):40 #1880(auto Duskwood;24):49
+#25947 | auto Duskwood;287§auto Dämmerwald;287§auto Bois de la Pénombre;287 | x=-11003.7998046875 y=-716.2999877929688 | size=1 | links=#5573(auto Duskwood;73):23 #20643(auto Duskwood;234):31
+#26051 | auto Duskwood;288§auto Dämmerwald;288§auto Bois de la Pénombre;288 | x=-10735.1005859375 y=334.2000122070313 | size=1 | links=#11512(auto Duskwood;148):33 c288.1:4
+#26104 | auto Duskwood;289§auto Dämmerwald;289§auto Bois de la Pénombre;289 | x=-10790.7998046875 y=-845 | size=1 | links=#8499(auto Duskwood;103):40 c923.1:32
+#26166 | quest target;Addle's Stead;Duskwood§questziel;Addles Siedlung;Dämmerwald§objectif de quête;Ferme des Addle;Bois de la Pénombre | x=-11012.7998046875 y=186.6999969482422 | size=1 | links=#27974(auto Duskwood;309):3 c909.1:2 o21052.1:1
+#26183 | auto Duskwood;290§auto Dämmerwald;290§auto Bois de la Pénombre;290 | x=-9995.1005859375 y=-1061.5 | size=1 | links=#12055(auto Duskwood;158):65 #12637(auto Duskwood;166):40
+#26301 | auto Duskwood;291§auto Dämmerwald;291§auto Bois de la Pénombre;291 | x=-10283.7998046875 y=77.80000305175781 | size=1 | links=#12117(auto Duskwood;161):15 c289.1:3
+#26316 | auto Duskwood;292§auto Dämmerwald;292§auto Bois de la Pénombre;292 | x=-10551.900390625 y=-1254.300048828125 | size=1 | links=#664(auto Duskwood;10):34 #9632(auto Duskwood;118):29 #17354(auto Duskwood;199):21
+#26341 | Skeletal Warrior;two;Tranquil Gardens Cemetery;Duskwood§Skelettkrieger;zwei;Der Friedhof \"Stille Gärten\";Dämmerwald§Guerrier squelette;deux;Tranquil Gardens Cemetery;Bois de la Pénombre | x=-10978.2998046875 y=-1251.700073242188 | size=1 | links=#5614(Skeletal Warrior;one;Tranquil Gardens Cemetery;Duskwood):29 #8629(Skeletal Mage;one):36
+#26344 | auto Duskwood;293§auto Dämmerwald;293§auto Bois de la Pénombre;293 | x=-11141.900390625 y=-117.5999984741211 | size=1 | links=#7076(auto Duskwood;87):19 #26981(auto Duskwood;298):7
+#26496 | central location;Dawning Wood Catacombs;Duskwood§zentralpunkt;Katakomben des Morgenwaldes;Dämmerwald§emplacement central;Catacombes du Bois-de-l'Aube;Bois de la Pénombre | x=-10384.5 y=413.3999938964844 | size=1 | links=#6985(auto Duskwood;84):9 #27337(auto Duskwood;302):7 c785.2:13
+#26505 | auto Duskwood;294§auto Dämmerwald;294§auto Bois de la Pénombre;294 | x=-10333.2001953125 y=359.2000122070313 | size=1 | links=#3271(auto Duskwood;37):4 #27555(auto Duskwood;304):17
+#26559 | auto Duskwood;295§auto Dämmerwald;295§auto Bois de la Pénombre;295 | x=-11137.5 y=-410.7000122070313 | size=1 | links=#2528(auto Duskwood;31):40 #5249(auto Duskwood;67):61 #14246(auto Duskwood;174):67
+#26731 | auto Duskwood;296§auto Dämmerwald;296§auto Bois de la Pénombre;296 | x=-10485.900390625 y=620.2999877929688 | size=1 | links=#9743(auto Duskwood;120):11 #16066(auto Duskwood;192):35 c539.1:39
+#26791 | auto Duskwood;297§auto Dämmerwald;297§auto Bois de la Pénombre;297 | x=-10318.7998046875 y=362.7000122070313 | size=1 | links=#3271(auto Duskwood;37):14 #23422(entry and exit;house;Forlorn Rowe;Duskwood):5
+#26820 | crossing;Duskwood;one§kreuzungspunkt;Dämmerwald;eins§traversée;Bois de la Pénombre;un | x=-10916.7998046875 y=-361.1000061035156 | size=1 | links=#17703(auto Duskwood;204):26 #19387(auto Duskwood;217):26 #22939(auto Duskwood;259):30 #23906(auto Duskwood;270):31
+#26981 | auto Duskwood;298§auto Dämmerwald;298§auto Bois de la Pénombre;298 | x=-11134.7001953125 y=-118.5 | size=1 | links=#10227(auto Duskwood;129):13 #26344(auto Duskwood;293):7
+#27009 | auto Duskwood;299§auto Dämmerwald;299§auto Bois de la Pénombre;299 | x=-10332.2998046875 y=-1232 | size=1 | links=#2021(auto Duskwood;26):18 #8283(auto Duskwood;98):31
+#27085 | auto Duskwood;300§auto Dämmerwald;300§auto Bois de la Pénombre;300 | x=-10526.5 y=-1303.400024414063 | size=1 | links=#3415(auto Duskwood;39):13 c3135.1:14
+#27089 | auto Duskwood;301§auto Dämmerwald;301§auto Bois de la Pénombre;301 | x=-10792.400390625 y=-1341.400024414063 | size=5 | links=#11494(auto Duskwood;147):29 #28025(auto Duskwood;310):43
+#27337 | auto Duskwood;302§auto Dämmerwald;302§auto Bois de la Pénombre;302 | x=-10391.7001953125 y=416.3999938964844 | size=1 | links=#24126(auto Duskwood;272):18 #26496(central location;Dawning Wood Catacombs;Duskwood):7
+#27385 | Raven Hill Cemetery;north;Duskwood§Friedhof von Rabenflucht;nördlich;Dämmerwald§Raven Hill Cemetery;north;Bois de la Pénombre | x=-10399.7998046875 y=123.5 | size=1 | links=#9055(auto Duskwood;111):13 #17323(auto Duskwood;198):42
+#27468 | auto Duskwood;303§auto Dämmerwald;303§auto Bois de la Pénombre;303 | x=-10587.7001953125 y=-1163.700073242188 | size=1 | links=#5461(auto Duskwood;70):14 c3136.1:3
+#27555 | auto Duskwood;304§auto Dämmerwald;304§auto Bois de la Pénombre;304 | x=-10315.6005859375 y=361.3000183105469 | size=1 | links=#26505(auto Duskwood;294):17 c1200.1:15
+#27572 | auto Duskwood;305§auto Dämmerwald;305§auto Bois de la Pénombre;305 | x=-9980.400390625 y=-924 | size=1 | links=#12055(auto Duskwood;158):73 #12458(auto Duskwood;164):72
+#27689 | passage;above;The Hushed Bank;Duskwood;to;Westfall§passage;über;Das stille Ufer;Dämmerwald;zum;Westfall§passage;above;La Rive silencieuse;Bois de la Pénombre;vers;Marche de l'Ouest | x=-10463.6005859375 y=709.5 | size=1 | links=#15292(auto Duskwood;183):56 #757(passage;above;river;Westfall;to;camp;Duskwood):7
+#27715 | auto Duskwood;306§auto Dämmerwald;306§auto Bois de la Pénombre;306 | x=-10307.6005859375 y=-1229.900024414063 | size=1 | links=#2021(auto Duskwood;26):18 #14460(auto Duskwood;176):16
+#27781 | auto inside;Duskwood;307§auto drinnen;Dämmerwald;307§auto intérieur;Bois de la Pénombre;307 | x=-10585.900390625 y=-1203.5 | size=1 | links=#3974(auto inside;Duskwood;51):9 c664.1:13
+#27855 | auto Duskwood;308§auto Dämmerwald;308§auto Bois de la Pénombre;308 | x=-10168.7998046875 y=-1067.800048828125 | size=1 | links=#2825(auto Duskwood;33):49 #8075(auto Duskwood;94):46 c521.3:28
+#27912 | passage;from;Duskwood;to;Redridge Mountains§passage;von;Dämmerwald;zum;Rotkammgebirge§passage;de;Bois de la Pénombre;vers;Les Carmines | x=-9901.400390625 y=-1708.800048828125 | size=1 | links=#3609(auto Duskwood;45):22 #19198(passage;from;Three Corners;Redridge Mountains;to;Duskwood):11
+#27974 | auto Duskwood;309§auto Dämmerwald;309§auto Bois de la Pénombre;309 | x=-11009.2001953125 y=187.6999969482422 | size=1 | links=#4968(auto Duskwood;60):4 #26166(quest target;Addle's Stead;Duskwood):3
+#28025 | auto Duskwood;310§auto Dämmerwald;310§auto Bois de la Pénombre;310 | x=-10801.900390625 y=-1298.900024414063 | size=1 | links=#4138(auto Duskwood;52):15 #27089(auto Duskwood;301):43
+#28041 | Lethon;Twilight Grove;Duskwood§Lethon;Zwielichtshain;Dämmerwald§Léthon;Bosquet du crépuscule;Bois de la Pénombre | x=-10554.1005859375 y=-443.7000122070313 | size=1 | links=#17858(auto Duskwood;206):51
+#28099 | auto Duskwood;311§auto Dämmerwald;311§auto Bois de la Pénombre;311 | x=-11127.7998046875 y=-484.1000061035156 | size=1 | links=#2528(auto Duskwood;31):34 #4660(auto Duskwood;58):13
+#28440 | auto Duskwood;312§auto Dämmerwald;312§auto Bois de la Pénombre;312 | x=-10559.5 y=-1106.200073242188 | size=1 | links=c269.1:4 c270.1:17 c17104.1:8
+#28603 | s;u;Mailbox;Duskwood§s;u;Briefkasten;Dämmerwald§s;u;Boîte aux lettres;Bois de la Pénombre | x=-10548.265625 y=-1159.2666015625 | size=1 | links=#11027(entry and exit;Tavern \"The Red Raven\"):3 #19650(central location;Darkshire;Duskwood):22
+#46960 | auto Duskwood;313§auto Dämmerwald;313§auto Bois de la Pénombre;313 | x=-10448.7001953125 y=-1436.300048828125 | size=1 | links=#24954(auto Duskwood;275):16 #46961(auto Duskwood;314):14
+#46961 | auto Duskwood;314§auto Dämmerwald;314§auto Bois de la Pénombre;314 | x=-10436 y=-1429 | size=1 | links=#46960(auto Duskwood;313):14 #46962(auto Duskwood;315):12
+#46962 | auto Duskwood;315§auto Dämmerwald;315§auto Bois de la Pénombre;315 | x=-10424.900390625 y=-1433.599975585938 | size=1 | links=#46961(auto Duskwood;314):12 #46963(auto Duskwood;316):17
+#46963 | auto Duskwood;316§auto Dämmerwald;316§auto Bois de la Pénombre;316 | x=-10408.6005859375 y=-1440.599975585938 | size=1 | links=#46962(auto Duskwood;315):17 #46964(auto Duskwood;317):26
+#46964 | auto Duskwood;317§auto Dämmerwald;317§auto Bois de la Pénombre;317 | x=-10381.900390625 y=-1442.700073242188 | size=1 | links=#46963(auto Duskwood;316):26 #46965(auto Beggar's Haunt;Duskwood;318):31
+#46965 | auto Beggar's Haunt;Duskwood;318§auto Bettlerschlupfwinkel;Dämmerwald;318§auto Repaire des mendiants;Bois de la Pénombre;318 | x=-10351.1005859375 y=-1446.599975585938 | size=1 | links=#46964(auto Duskwood;317):31 #46966(auto Beggar's Haunt;Duskwood;319):34
+#46966 | auto Beggar's Haunt;Duskwood;319§auto Bettlerschlupfwinkel;Dämmerwald;319§auto Repaire des mendiants;Bois de la Pénombre;319 | x=-10316.5 y=-1447.800048828125 | size=1 | links=#46965(auto Beggar's Haunt;Duskwood;318):34 #46967(auto Beggar's Haunt;Duskwood;320):13
+#46967 | auto Beggar's Haunt;Duskwood;320§auto Bettlerschlupfwinkel;Dämmerwald;320§auto Repaire des mendiants;Bois de la Pénombre;320 | x=-10303.400390625 y=-1452.5 | size=1 | links=#46966(auto Beggar's Haunt;Duskwood;319):13 #46968(auto Beggar's Haunt;Duskwood;321):25
+#46968 | auto Beggar's Haunt;Duskwood;321§auto Bettlerschlupfwinkel;Dämmerwald;321§auto Repaire des mendiants;Bois de la Pénombre;321 | x=-10284.2001953125 y=-1469.900024414063 | size=1 | links=#46967(auto Beggar's Haunt;Duskwood;320):25 #46969(auto Beggar's Haunt;Duskwood;322):16
+#46969 | auto Beggar's Haunt;Duskwood;322§auto Bettlerschlupfwinkel;Dämmerwald;322§auto Repaire des mendiants;Bois de la Pénombre;322 | x=-10282 y=-1486 | size=1 | links=#46968(auto Beggar's Haunt;Duskwood;321):16 #46970(auto Beggar's Haunt;Duskwood;323):23
+#46970 | auto Beggar's Haunt;Duskwood;323§auto Bettlerschlupfwinkel;Dämmerwald;323§auto Repaire des mendiants;Bois de la Pénombre;323 | x=-10288.7001953125 y=-1508.099975585938 | size=1 | links=#46969(auto Beggar's Haunt;Duskwood;322):23 #46971(auto Beggar's Haunt;Duskwood;324):20
+#46971 | auto Beggar's Haunt;Duskwood;324§auto Bettlerschlupfwinkel;Dämmerwald;324§auto Repaire des mendiants;Bois de la Pénombre;324 | x=-10287.1005859375 y=-1528.400024414063 | size=1 | links=#46970(auto Beggar's Haunt;Duskwood;323):20 #46972(auto Beggar's Haunt;Duskwood;325):18
+#46972 | auto Beggar's Haunt;Duskwood;325§auto Bettlerschlupfwinkel;Dämmerwald;325§auto Repaire des mendiants;Bois de la Pénombre;325 | x=-10279.6005859375 y=-1544.800048828125 | size=1 | links=#46971(auto Beggar's Haunt;Duskwood;324):18 #46973(auto Beggar's Haunt;Duskwood;326):23
+#46973 | auto Beggar's Haunt;Duskwood;326§auto Bettlerschlupfwinkel;Dämmerwald;326§auto Repaire des mendiants;Bois de la Pénombre;326 | x=-10266.400390625 y=-1564.099975585938 | size=1 | links=#46972(auto Beggar's Haunt;Duskwood;325):23 #46974(auto Beggar's Haunt;Duskwood;327):24
+#46974 | auto Beggar's Haunt;Duskwood;327§auto Bettlerschlupfwinkel;Dämmerwald;327§auto Repaire des mendiants;Bois de la Pénombre;327 | x=-10267.7998046875 y=-1588.800048828125 | size=1 | links=#46973(auto Beggar's Haunt;Duskwood;326):24 #46975(auto Beggar's Haunt;Duskwood;328):32
+#46975 | auto Beggar's Haunt;Duskwood;328§auto Bettlerschlupfwinkel;Dämmerwald;328§auto Repaire des mendiants;Bois de la Pénombre;328 | x=-10265.7998046875 y=-1621.599975585938 | size=1 | links=#46974(auto Beggar's Haunt;Duskwood;327):32
+#46976 | auto Beggar's Haunt;Duskwood;329§auto Bettlerschlupfwinkel;Dämmerwald;329§auto Repaire des mendiants;Bois de la Pénombre;329 | x=-10372.5 y=-1521.800048828125 | size=1 | links=#46977(auto Beggar's Haunt;Duskwood;330):22 c5418.1:21
+#46977 | auto Beggar's Haunt;Duskwood;330§auto Bettlerschlupfwinkel;Dämmerwald;330§auto Repaire des mendiants;Bois de la Pénombre;330 | x=-10395.1005859375 y=-1522.400024414063 | size=1 | links=#46976(auto Beggar's Haunt;Duskwood;329):22 #46978(auto Beggar's Haunt;Duskwood;331):21
+#46978 | auto Beggar's Haunt;Duskwood;331§auto Bettlerschlupfwinkel;Dämmerwald;331§auto Repaire des mendiants;Bois de la Pénombre;331 | x=-10416.1005859375 y=-1520 | size=1 | links=#12758(auto Duskwood;167):32 #46977(auto Beggar's Haunt;Duskwood;330):21
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c3.1 | links=c948.1:21
+c48.1 | links=#8629(Skeletal Mage;one):28 c48.3:69
+c202.1 | links=#10403(auto Duskwood;130):19
+c205.1 | links=#4938(Nightbane Shadow Weaver;one;Brightwood Grove;Duskwood):91 c533.2:45
+c206.1 | links=#19437(auto Duskwood;218):43 c206.3:10
+c210.1 | links=c210.2:24
+c212.1 | links=c892.1:30
+c213.1 | links=c217.2:22 c539.3:45
+c215.1 | links=c215.3:47 c909.3:37
+c217.1 | links=#2910(auto Duskwood;36):66 c569.2:31
+c218.1 | links=#15728(Skeletal Fiend;three;Raven Hill Cemetery;Duskwood):36
+c225.1 | links=c226.1:22
+c226.1 | links=c225.1:22 c3136.1:6 c3137.1:13
+c227.1 | links=#8120(auto inside;Duskwood;95):4 #10863(down;Tavern \"The Red Raven\"):6
+c228.1 | links=c494.1:20
+c263.1 | links=c17104.1:3
+c264.1 | links=#5461(auto Duskwood;70):22 #21720(auto Duskwood;245):5 #25078(auto Duskwood;276):8
+c265.1 | links=#5306(auto Duskwood;68):8 #11271(auto Duskwood;143):4 c1673.1:12
+c267.1 | links=#604(auto Duskwood;9):9 c268.1:13
+c268.1 | links=c267.1:13 c270.1:19
+c269.1 | links=#20530(auto Duskwood;233):4 #28440(auto Duskwood;312):4
+c270.1 | links=#11142(auto Duskwood;140):8 #28440(auto Duskwood;312):17 c268.1:19
+c271.1 | links=#20530(auto Duskwood;233):10
+c272.1 | links=#16270(auto inside;Duskwood;194):11
+c273.1 | links=c6790.1:2
+c274.1 | links=#16270(auto inside;Duskwood;194):7
+c275.1 | links=#3415(auto Duskwood;39):13
+c276.1 | links=#6004(auto Duskwood;75):9
+c288.1 | links=#26051(auto Duskwood;288):4
+c289.1 | links=#26301(auto Duskwood;291):3
+c300.1 | links=c1251.3:15
+c302.1 | links=#7033(auto Duskwood;85):6
+c311.1 | links=#465(central location;The Hushed Bank;Duskwood):10
+c325.1 | links=#11142(auto Duskwood;140):10
+c468.1 | links=#15884(auto Duskwood;191):22 #17354(auto Duskwood;199):42 #19441(auto Duskwood;219):24 #19650(central location;Darkshire;Duskwood):10 c5464.1:24
+c494.1 | links=#25078(auto Duskwood;276):20 c228.1:20
+c499.1 | links=#19387(auto Duskwood;217):22
+c503.1 | links=#15269(auto Duskwood;181):58 c503.2:37 c503.3:53
+c507.1 | links=#20074(central location;Brightwood Grove;Duskwood):108 c533.3:19
+c511.1 | links=#7056(auto Duskwood;86):14
+c521.1 | links=#21599(auto Duskwood;243):82
+c522.1 | links=#11775(auto Duskwood;156):43 c1110.2:24
+c531.1 | links=c531.2:85
+c533.1 | links=c1258.2:57 c898.3:107
+c534.1 | links=#22857(auto Duskwood;258):31
+c539.1 | links=#26731(auto Duskwood;296):39
+c565.1 | links=c217.2:19 c539.2:28
+c569.1 | links=c539.3:97
+c570.1 | links=c948.2:8 c604.3:21
+c604.1 | links=c604.3:14
+c628.1 | links=c923.1:45
+c633.1 | links=#17556(auto inside;Duskwood;200):4 c661.1:5 c3138.1:13
+c661.1 | links=c633.1:5
+c663.1 | links=#19441(auto Duskwood;219):17
+c664.1 | links=#27781(auto inside;Duskwood;307):13
+c771.1 | links=c785.1:32
+c785.1 | links=c771.1:32 c785.2:21
+c787.1 | links=c787.2:28 c949.3:15
+c828.1 | links=#461(auto Duskwood;8):12 #10828(auto Duskwood;132):29
+c840.1 | links=#8751(auto Duskwood;107):7 #25303(auto Duskwood;279):10
+c887.1 | links=#9084(auto Duskwood;112):42 #15345(auto Duskwood;184):44
+c888.1 | links=#19387(auto Duskwood;217):30
+c889.1 | links=c892.3:18
+c891.1 | links=#19664(central location;Vul'Gol Ogre Mound;Duskwood):35 c1251.2:25
+c892.1 | links=#19664(central location;Vul'Gol Ogre Mound;Duskwood):67 c212.1:30 c212.3:39
+c893.1 | links=#465(central location;The Hushed Bank;Duskwood):12
+c898.1 | links=c898.2:51 c507.3:77
+c909.1 | links=#26166(quest target;Addle's Stead;Duskwood):2
+c910.1 | links=#4968(auto Duskwood;60):6 c910.3:64
+c920.1 | links=#122(auto Duskwood;1):21 #21791(entry and exit;Roland's Doom;Duskwood):15
+c923.1 | links=#26104(auto Duskwood;289):32 c628.1:45 c628.2:43 c923.2:42
+c930.1 | links=c930.2:68
+c948.1 | links=#9055(auto Duskwood;111):9 c3.1:21 c949.1:58
+c949.1 | links=#22728(entry and exit;Dawning Wood Catacombs;north;Duskwood):17 c948.1:58 c3.2:33 c210.2:51
+c960.1 | links=#16748(top;Tavern \"The Red Raven\"):9
+c999.1 | links=#1404(auto Duskwood;20):11
+c1110.1 | links=#20105(Mor'Ladim;Forlorn Rowe;Duskwood):35 c949.3:32
+c1200.1 | links=#27555(auto Duskwood;304):15
+c1251.1 | links=#2087(auto Duskwood;28):34
+c1258.1 | links=c923.3:64
+c1270.1 | links=#5043(auto Duskwood;63):45 c1270.2:42 c1270.3:35
+c1487.1 | links=c1251.3:12
+c1672.1 | links=#11271(auto Duskwood;143):9
+c1673.1 | links=c265.1:12
+c1676.1 | links=#9632(auto Duskwood;118):13
+c2112.1 | links=#18783(auto inside;Duskwood;212):17
+c2142.1 | links=c3134.1:3
+c2409.1 | links=#664(auto Duskwood;10):29
+c3133.1 | links=#9632(auto Duskwood;118):17
+c3134.1 | links=#21315(auto Duskwood;240):6 c2142.1:3
+c3135.1 | links=#27085(auto Duskwood;300):14
+c3136.1 | links=#27468(auto Duskwood;303):3 c226.1:6
+c3137.1 | links=c226.1:13
+c3138.1 | links=#3974(auto inside;Duskwood;51):7 c633.1:13
+c5414.1 | links=c5418.1:11 o22706.1:1
+c5418.1 | links=#46976(auto Beggar's Haunt;Duskwood;329):21 c5414.1:11
+c5464.1 | links=c468.1:24
+c6170.1 | links=#122(auto Duskwood;1):17 c534.2:17
+c6491.1 | links=#18743(auto Duskwood;211):12
+c6790.1 | links=#25320(auto inside;Duskwood;280):2 c273.1:2
+c10062.1 | links=#19650(central location;Darkshire;Duskwood):18
+c17104.1 | links=#28440(auto Duskwood;312):8 c263.1:3
+o41.1 | links=#1880(auto Duskwood;24):8
+o59.1 | links=#9746(quest target;The Yorgen Farmstead;Duskwood):2
+o61.1 | links=#4417(The Weathered Grave;Forlorn Rowe;Duskwood):1
+o119.1 | links=#10563(quest target;Vul'Gol Ogre Mound;Duskwood):1
+o321.1 | links=#8283(auto Duskwood;98):28
+o21052.1 | links=#26166(quest target;Addle's Stead;Duskwood):1
+o22706.1 | links=c5414.1:1
+o51708.1 | links=#2895(auto Duskwood;35):45
+c3.2 | links=c949.1:33 c948.3:19
+c48.2 | links=#22798(auto Duskwood;257):14 c48.3:49
+c202.2 | links=#10403(auto Duskwood;130):18
+c205.2 | links=c507.2:18 c507.3:36
+c206.2 | links=#21791(entry and exit;Roland's Doom;Duskwood):23 c206.3:20
+c210.2 | links=c210.1:24 c949.1:51 c210.3:53
+c212.2 | links=c212.3:22
+c215.2 | links=c909.3:35
+c217.2 | links=c213.1:22 c565.1:19
+c503.2 | links=c503.1:37
+c507.2 | links=c205.2:18 c205.3:18
+c521.2 | links=#21599(auto Duskwood;243):98
+c531.2 | links=#10403(auto Duskwood;130):26 c531.1:85
+c533.2 | links=c205.1:45 c898.2:34
+c534.2 | links=c6170.1:17 c920.3:15
+c539.2 | links=#16066(auto Duskwood;192):47 c565.1:28
+c565.2 | links=#12200(auto Duskwood;163):40 c565.3:67
+c569.2 | links=c217.1:31
+c570.2 | links=#1086(auto Duskwood;14):34 c570.3:18
+c604.2 | links=#20858(auto Duskwood;237):24 c604.3:12
+c628.2 | links=c923.1:43
+c785.2 | links=#26496(central location;Dawning Wood Catacombs;Duskwood):13 c785.1:21
+c787.2 | links=c787.1:28 c787.3:26
+c889.2 | links=c892.3:22
+c891.2 | links=c892.3:23
+c892.2 | links=#19664(central location;Vul'Gol Ogre Mound;Duskwood):15
+c898.2 | links=c898.1:51 c533.2:34
+c909.2 | links=#4968(auto Duskwood;60):5
+c910.2 | links=#9746(quest target;The Yorgen Farmstead;Duskwood):18 c909.3:10
+c923.2 | links=c923.1:42
+c930.2 | links=#11330(auto Duskwood;145):75 c930.1:68
+c948.2 | links=#4980(auto Duskwood;61):23 c570.1:8
+c949.2 | links=#10403(auto Duskwood;130):82
+c1110.2 | links=c522.1:24
+c1251.2 | links=c891.1:25
+c1258.2 | links=#19795(auto Duskwood;220):76 #20074(central location;Brightwood Grove;Duskwood):69 c533.1:57 c1258.3:86
+c1270.2 | links=c1270.1:42
+c6491.2 | links=#1130(auto Duskwood;16):29 #10403(auto Duskwood;130):32
+c3.3 | links=c948.3:13
+c48.3 | links=c48.1:69 c48.2:49
+c202.3 | links=#11494(auto Duskwood;147):22
+c205.3 | links=c507.2:18 c533.3:44
+c206.3 | links=c206.1:10 c206.2:20
+c210.3 | links=c210.2:53
+c212.3 | links=c892.1:39 c212.2:22
+c213.3 | links=#5550(auto Duskwood;72):62
+c215.3 | links=c215.1:47
+c217.3 | links=#11710(auto Duskwood;153):101
+c503.3 | links=c503.1:53
+c507.3 | links=c898.1:77 c205.2:36
+c521.3 | links=#27855(auto Duskwood;308):28 c628.3:134
+c533.3 | links=c507.1:19 c205.3:44
+c534.3 | links=#733(auto Duskwood;12):3 #15240(auto Duskwood;180):55
+c539.3 | links=#11635(auto Duskwood;151):38 c213.1:45 c569.1:97
+c565.3 | links=#4417(The Weathered Grave;Forlorn Rowe;Duskwood):49 c565.2:67
+c569.3 | links=#19795(auto Duskwood;220):87
+c570.3 | links=c570.2:18
+c604.3 | links=c570.1:21 c604.1:14 c604.2:12
+c628.3 | links=#5205(auto Duskwood;64):67 #6016(auto Duskwood;76):100 c521.3:134 c1258.3:85
+c771.3 | links=#25786(auto Duskwood;285):61
+c785.3 | links=#8512(auto Duskwood;104):58
+c787.3 | links=#18851(auto Duskwood;213):25 c787.2:26
+c889.3 | links=#19664(central location;Vul'Gol Ogre Mound;Duskwood):64 c891.3:41
+c891.3 | links=c889.3:41 c892.3:10
+c892.3 | links=c889.1:18 c889.2:22 c891.2:23 c891.3:10
+c898.3 | links=c533.1:107
+c909.3 | links=c215.1:37 c215.2:35 c910.2:10
+c910.3 | links=c910.1:64
+c920.3 | links=c534.2:15
+c923.3 | links=#9128(auto Duskwood;114):55 c1258.1:64
+c948.3 | links=c3.2:19 c3.3:13
+c949.3 | links=c787.1:15 c1110.1:32
+c1110.3 | links=#4620(auto Duskwood;57):10 #23422(entry and exit;house;Forlorn Rowe;Duskwood):13
+c1251.3 | links=#23361(auto Duskwood;263):14 c300.1:15 c1487.1:12
+c1258.3 | links=#8075(auto Duskwood;94):133 #20074(central location;Brightwood Grove;Duskwood):50 c1258.2:86 c628.3:85
+c1270.3 | links=c1270.1:35
+c620.5 | links=#1404(auto Duskwood;20):19 #6004(auto Duskwood;75):10

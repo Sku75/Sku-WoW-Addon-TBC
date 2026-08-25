@@ -76,6 +76,15 @@ Vermutung, bis untersucht.
     ersten Login).
   - Status: offen.
 
+## Kartenprobleme
+
+Gemeldete Lücken/Fehler in den Kartendaten (Wegpunkte/Questziele). Kurzform;
+Details erst bei Untersuchung.
+
+- **Schurkenquest in Westfall.** Kartendaten fehlerhaft/fehlend. Status: offen.
+- **Questziele diverser Nachtelf-Startquests fehlen.** Z. B. die Mondbrunnen.
+  Status: offen.
+
 ## Feature-Wünsche / Wishlist
 
 Vom Maintainer gewünschte Features der v42-Linie. Mehrere überschneiden sich mit
@@ -189,6 +198,21 @@ Analyse nicht erneut herleitet.
     `mSkuVoiceQueueBTTS*`). Verwandter ausgelieferter Fix: `e6a9868`.
 
 ## Beobachtung (auf Anfrage nachprüfen)
+
+- **SkuMapper 5.0 Abgabe-Workflow — Tool-Seite verifiziert, Spiel-Seite
+  UNGETESTET.** Anfrage: "check the mapper workflow monitor". Neu (2026-08-25):
+  nummerierte Karten (`dev/mapper/seeds.json`, Karte 1 = v43.0-Stand),
+  `/sku save` + `/reload` + `HandInMapData.bat` als Abgabeweg, Drei-Wege-Merge
+  pro Wegpunkt/Link in `dev/mapper/skumap.py` (selftest + End-to-End-Dry-Run
+  GRÜN, inkl. Roundtrip der echten 52k-Wegpunkt-Datei). Details:
+  `dev/mapper/MAPPER-WORKFLOW.md`. Im Spiel NICHT getestet: das Seeding aus der
+  Abschnitts-Routendatei (4.9 wäre leer gestartet!), /sku save, der
+  Phase-Stempel, der frFR-Namenserhalt (bisher verwarf der Mapper die dritte
+  Namensspalte bei jedem Logout) und die .bat auf einem Fremdrechner.
+  Nachprüfen: SkuMapper 5.0 frisch paketieren, einloggen — Karte muss
+  Wegpunkte zeigen (nicht leer), `/sku save test` + `/reload`, dann die .bat;
+  die ZIP per `skumap.py merge --dry-run` einlesen: Header muss Karte 1,
+  Mapper- und Phasenfeld tragen, 0 Änderungen melden.
 
 - **v43.0 Hardcore-Realms: Kartendaten laden — der Aufbau ist repariert, die
   LISTEN darüber sind es erst teilweise.** Anfrage: "check the hardcore map data

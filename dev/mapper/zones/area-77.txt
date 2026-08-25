@@ -1,0 +1,3 @@
+Zone areaId 77 — eine Zeile pro Wegpunkt; Links inline.
+
+#28757 | s;Eastern Kingdoms;Dun Morogh;Coldridge Valley;Anvilmar§s;Östliche Königreiche;Dun Morogh;Das Coldridgetal;Anvilmar§s;Royaumes de l'est;Dun Morogh;Coldridge Valley;Anvilmar | x=-6134.28 y=-383.763 | size=1

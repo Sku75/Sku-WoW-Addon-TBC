@@ -1,0 +1,258 @@
+Zone areaId 3703 — eine Zeile pro Wegpunkt; Links inline.
+
+#135 | auto Shattrath City;1§auto Shattrath;1§auto Shattrath;1 | x=-1972.099975585938 y=5465.7001953125 | size=1 | links=#11827(auto Shattrath City;79):14
+#380 | auto Shattrath City;2§auto Shattrath;2§auto Shattrath;2 | x=-1637.642440482696 y=5509.993736739589 | size=1 | links=#3982(auto Shattrath City;29):16
+#515 | auto Shattrath City;3§auto Shattrath;3§auto Shattrath;3 | x=-1715.599975585938 y=5719.7001953125 | size=1 | links=#11396(auto Shattrath City;75):51 #16264(auto Shattrath City;110):50
+#559 | auto Shattrath City;4§auto Shattrath;4§auto Shattrath;4 | x=-1587.400024414063 y=5288.2001953125 | size=1 | links=#20429(auto Shattrath City;144):20
+#571 | auto Shattrath City;5§auto Shattrath;5§auto Shattrath;5 | x=-2021.300048828125 y=5355 | size=1 | links=#4597(auto Shattrath City;32):21 #8296(auto Shattrath City;59):8
+#629 | auto Shattrath City;6§auto Shattrath;6§auto Shattrath;6 | x=-1901.599975585938 y=5741.80029296875 | size=1 | links=#19675(auto Shattrath City;133):49 #25939(auto Shattrath City;183):95
+#785 | auto Shattrath City;7§auto Shattrath;7§auto Shattrath;7 | x=-1763 y=5182.39990234375 | size=1 | links=#5612(auto Shattrath City;39):23 #19541(auto Shattrath City;131):12 #24947(auto Shattrath City;172):15
+#883 | auto Shattrath City;8§auto Shattrath;8§auto Shattrath;8 | x=-2113.300048828125 y=5589.2001953125 | size=1 | links=#4206(auto Shattrath City;31):14 #28402(auto Shattrath City;201):52 #45484(auto Shattrath City;204):33
+#893 | auto Shattrath City;9§auto Shattrath;9§auto Shattrath;9 | x=-2005.5 y=5622.10009765625 | size=1 | links=#8352(Shattrath City;Scryer;top;to;down):23 #11159(auto Shattrath City;72):17 #17848(auto Shattrath City;117):23
+#1016 | auto Shattrath City;10§auto Shattrath;10§auto Shattrath;10 | x=-1794.099975585938 y=5659.60009765625 | size=1 | links=#24387(Shattrath City;aldor;elevator;top):38 #25027(auto Shattrath City;174):33
+#1042 | auto Shattrath City;11§auto Shattrath;11§auto Shattrath;11 | x=-1880.900024414063 y=5551.5 | size=1 | links=#14468(auto Shattrath City;99):37 #25165(auto Shattrath City;176):15
+#1148 | auto Shattrath City;12§auto Shattrath;12§auto Shattrath;12 | x=-1893 y=5679.60009765625 | size=1 | links=#20416(auto Shattrath City;143):9 #21390(auto Shattrath City;149):40
+#1227 | auto Shattrath City;13§auto Shattrath;13§auto Shattrath;13 | x=-2031.400024414063 y=5583.30029296875 | size=1 | links=#28402(auto Shattrath City;201):32
+#1544 | auto Shattrath City;14§auto Shattrath;14§auto Shattrath;14 | x=-1711.099975585938 y=5475.30029296875 | size=1 | links=#3938(auto Shattrath City;28):10 #9685(guild vault;aldor):12
+#1570 | auto Shattrath City;15§auto Shattrath;15§auto Shattrath;15 | x=-1797.099975585938 y=5216.80029296875 | size=1 | links=#8941(auto Shattrath City;61):18 #22458(auto Shattrath City;156):26
+#1636 | auto Shattrath City;16§auto Shattrath;16§auto Shattrath;16 | x=-1968.5 y=5479.10009765625 | size=1 | links=#5452(auto Shattrath City;38):13 #27483(auto Shattrath City;196):6
+#1747 | auto Shattrath City;17§auto Shattrath;17§auto Shattrath;17 | x=-1953.700073242188 y=5685.89990234375 | size=1 | links=#13471(auto Shattrath City;91):12 #21390(auto Shattrath City;149):20
+#1962 | auto Shattrath City;18§auto Shattrath;18§auto Shattrath;18 | x=-1962.400024414063 y=5134.5 | size=1 | links=#10789(auto Shattrath City;70):37 #14208(auto Shattrath City;95):35
+#2057 | auto Shattrath City;19§auto Shattrath;19§auto Shattrath;19 | x=-2179.400146484375 y=5429.10009765625 | size=1 | links=#7254(auto Shattrath City;50):21 #17367(auto Shattrath City;113):11
+#2208 | auto Shattrath City;20§auto Shattrath;20§auto Shattrath;20 | x=-1959.099975585938 y=5382.5 | size=1 | links=#4597(auto Shattrath City;32):47 #5355(auto Shattrath City;36):30 #18812(auto Shattrath City;125):83 #28379(auto Shattrath City;200):78
+#2213 | auto Shattrath City;21§auto Shattrath;21§auto Shattrath;21 | x=-1999.300048828125 y=5563.10009765625 | size=1 | links=#2916(auto Shattrath City;24):8 #17848(auto Shattrath City;117):37
+#2301 | auto Shattrath City;22§auto Shattrath;22§auto Shattrath;22 | x=-2121 y=5493.5 | size=1 | links=#9930(auto Shattrath City;67):26 #14329(auto Shattrath City;97):36
+#2360 | guild vault;Scryer§gildenbank;seher§guild vault;Clairvoyant | x=-2024.599975585938 y=5395.5 | size=1 | links=#3753(auto Shattrath City;27):23
+#2837 | Mailbox;Bank;aldor§briefkasten;Bank;aldor§Boîte aux lettres;Bank;aldor | x=-1695.400024414063 y=5522 | size=1 | links=#5777(auto Shattrath City;43):13
+#2879 | auto Shattrath City;23§auto Shattrath;23§auto Shattrath;23 | x=-1730.700073242188 y=5668.30029296875 | size=1 | links=#16616(auto Shattrath City;111):31 #28227(auto Shattrath City;199):26
+#2916 | auto Shattrath City;24§auto Shattrath;24§auto Shattrath;24 | x=-1990.700073242188 y=5562.30029296875 | size=1 | links=#2213(auto Shattrath City;21):8 #10211(auto Shattrath City;68):12
+#3091 | auto Shattrath City;25§auto Shattrath;25§auto Shattrath;25 | x=-1829.599975585938 y=5531.10009765625 | size=1 | links=#26120(auto Shattrath City;184):57
+#3300 | Mailbox;Aldor Rise§briefkasten;Aldorhöhe§Boîte aux lettres;Éminence de l'Aldor | x=-1887 y=5768.89990234375 | size=1 | links=#28010(auto Shattrath City;197):5
+#3497 | auto Shattrath City;26§auto Shattrath;26§auto Shattrath;26 | x=-2156 y=5480 | size=1 | links=#27028(auto Shattrath City;191):23
+#3753 | auto Shattrath City;27§auto Shattrath;27§auto Shattrath;27 | x=-2015.800048828125 y=5373.60009765625 | size=1 | links=#2360(guild vault;Scryer):23 #8296(auto Shattrath City;59):19
+#3938 | auto Shattrath City;28§auto Shattrath;28§auto Shattrath;28 | x=-1710.400024414063 y=5485.7001953125 | size=1 | links=#1544(auto Shattrath City;14):10
+#3982 | auto Shattrath City;29§auto Shattrath;29§auto Shattrath;29 | x=-1646 y=5495.7001953125 | size=1 | links=#380(auto Shattrath City;2):16 #18926(auto Shattrath City;126):40 #24156(auto Shattrath City;165):57
+#4019 | auto Shattrath City;30§auto Shattrath;30§auto Shattrath;30 | x=-1816.099975585938 y=5537.10009765625 | size=1 | links=#5437(auto Shattrath City;37):13 #12800(auto Shattrath City;85):9
+#4103 | entry and exit;Shattrath City;Nagrand§ein- und ausgang;Shattrath;nagrand§entrée et sortie;Shattrath;Nagrand | x=-1960.200073242188 y=5959.5 | size=1 | links=#7663(auto Shattrath City;53):123
+#4206 | auto Shattrath City;31§auto Shattrath;31§auto Shattrath;31 | x=-2123.199951171875 y=5578.89990234375 | size=1 | links=#883(auto Shattrath City;8):14
+#4470 | portal;Ironforge§portal;Eisenschmiede§portal;Forgefer | x=-1795.599975585938 y=5399.7001953125 | size=1 | links=#20371(auto Shattrath City;142):19
+#4597 | auto Shattrath City;32§auto Shattrath;32§auto Shattrath;32 | x=-2000.400024414063 y=5359.39990234375 | size=1 | links=#571(auto Shattrath City;5):21 #2208(auto Shattrath City;20):47 #15431(Mailbox;Bank;Scryer):40
+#4716 | auto Shattrath City;33§auto Shattrath;33§auto Shattrath;33 | x=-1898 y=5276.7001953125 | size=1 | links=#12914(auto Shattrath City;87):13 #21819(auto Shattrath City;152):16
+#4750 | auto Shattrath City;34§auto Shattrath;34§auto Shattrath;34 | x=-1678.5 y=5287.5 | size=1 | links=#8074(auto Shattrath City;58):59 #14581(auto Shattrath City;101):42
+#4901 | auto Shattrath City;35§auto Shattrath;35§auto Shattrath;35 | x=-1927.700073242188 y=5267 | size=1 | links=#23864(auto Shattrath City;163):36 #28458(auto Shattrath City;202):8
+#5355 | auto Shattrath City;36§auto Shattrath;36§auto Shattrath;36 | x=-1932.200073242188 y=5396.5 | size=1 | links=#2208(auto Shattrath City;20):30 #27450(auto Shattrath City;195):34
+#5437 | auto Shattrath City;37§auto Shattrath;37§auto Shattrath;37 | x=-1806.5 y=5546.89990234375 | size=1 | links=#4019(auto Shattrath City;30):13 #18410(auto Shattrath City;122):4
+#5452 | auto Shattrath City;38§auto Shattrath;38§auto Shattrath;38 | x=-1979 y=5487.10009765625 | size=1 | links=#1636(auto Shattrath City;16):13 #14818(auto Shattrath City;103):11 #28379(auto Shattrath City;200):38
+#5612 | auto Shattrath City;39§auto Shattrath;39§auto Shattrath;39 | x=-1760.5 y=5159.2001953125 | size=1 | links=#785(auto Shattrath City;7):23 #19780(auto Shattrath City;134):7
+#5646 | auto Shattrath City;40§auto Shattrath;40§auto Shattrath;40 | x=-1751 y=5137.7001953125 | size=1 | links=#19780(auto Shattrath City;134):16
+#5718 | auto Shattrath City;41§auto Shattrath;41§auto Shattrath;41 | x=-1767 y=5477.2001953125 | size=1 | links=#7723(auto Shattrath City;54):48 #18410(auto Shattrath City;122):77 #26220(auto Shattrath City;185):76
+#5760 | auto Shattrath City;42§auto Shattrath;42§auto Shattrath;42 | x=-2249.300048828125 y=5577.80029296875 | size=1 | links=#17824(auto Shattrath City;116):24 #18409(auto Shattrath City;121):30
+#5777 | auto Shattrath City;43§auto Shattrath;43§auto Shattrath;43 | x=-1707.5 y=5516.89990234375 | size=1 | links=#2837(Mailbox;Bank;aldor):13 #11008(auto Shattrath City;71):14
+#5910 | auto Shattrath City;44§auto Shattrath;44§auto Shattrath;44 | x=-1876 y=5672 | size=1 | links=#12028(auto Shattrath City;81):17 #20416(auto Shattrath City;143):9
+#6418 | auto Shattrath City;45§auto Shattrath;45§auto Shattrath;45 | x=-1825.599975585938 y=5523.5 | size=1 | links=#12800(auto Shattrath City;85):7 #13698(auto Shattrath City;92):3
+#6464 | auto Shattrath City;46§auto Shattrath;46§auto Shattrath;46 | x=-2249.900146484375 y=5588.80029296875 | size=1 | links=#19858(auto Shattrath City;136):25 #22528(auto Shattrath City;159):13
+#6487 | portal;Undercity§portal;Unterstadt§portal;Fossoyeuse | x=-1930.800048828125 y=5460.39990234375 | size=1 | links=#19550(auto Shattrath City;132):16
+#6504 | auto Shattrath City;47§auto Shattrath;47§auto Shattrath;47 | x=-1821 y=5554.30029296875 | size=1 | links=#14885(auto Shattrath City;104):25 #17627(auto Shattrath City;115):18
+#6610 | auto Shattrath City;48§auto Shattrath;48§auto Shattrath;48 | x=-1634.599975585938 y=5466.7001953125 | size=1 | links=#11808(auto Shattrath City;78):17
+#6922 | Shattrath City;Aldor Rise;top;to;down§Shattrath;Aldorhöhe;oben;nach;unten§Shattrath;Éminence de l'Aldor;top;vers;bas | x=-1953.400024414063 y=5678.30029296875 | size=1 | links=#7048(auto Shattrath City;49):8 #20341(auto Shattrath City;141):8
+#7048 | auto Shattrath City;49§auto Shattrath;49§auto Shattrath;49 | x=-1945.303037019881 y=5680.818191308732 | size=1 | links=#6922(Shattrath City;Aldor Rise;top;to;down):8 #21390(auto Shattrath City;149):12
+#7254 | auto Shattrath City;50§auto Shattrath;50§auto Shattrath;50 | x=-2179.800048828125 y=5450.89990234375 | size=1 | links=#2057(auto Shattrath City;19):21
+#7261 | auto Shattrath City;51§auto Shattrath;51§auto Shattrath;51 | x=-2136.400146484375 y=5542.10009765625 | size=1 | links=#12955(auto Shattrath City;88):20
+#7607 | auto Shattrath City;52§auto Shattrath;52§auto Shattrath;52 | x=-1941.356103788709 y=5555.117130556523 | size=1 | links=#21238(auto Shattrath City;148):23 #21980(auto Shattrath City;153):21
+#7663 | auto Shattrath City;53§auto Shattrath;53§auto Shattrath;53 | x=-1911.599975585938 y=5846.10009765625 | size=1 | links=#4103(entry and exit;Shattrath City;Nagrand):123 #19675(auto Shattrath City;133):100
+#7723 | auto Shattrath City;54§auto Shattrath;54§auto Shattrath;54 | x=-1723.200073242188 y=5497.89990234375 | size=1 | links=#5718(auto Shattrath City;41):48 #11008(auto Shattrath City;71):11
+#7739 | auto Shattrath City;55§auto Shattrath;55§auto Shattrath;55 | x=-1874.400024414063 y=5397.89990234375 | size=1 | links=#26676(auto Shattrath City;190):25
+#7786 | auto Shattrath City;56§auto Shattrath;56§auto Shattrath;56 | x=-2291.900146484375 y=5590.30029296875 | size=1 | links=#13704(auto Shattrath City;93):18 #16088(auto Shattrath City;109):22
+#8072 | auto Shattrath City;57§auto Shattrath;57§auto Shattrath;57 | x=-1628.200073242188 y=5381.80029296875 | size=1 | links=#22238(auto Shattrath City;154):23 #28104(auto Shattrath City;198):19
+#8074 | auto Shattrath City;58§auto Shattrath;58§auto Shattrath;58 | x=-1665.700073242188 y=5345.2001953125 | size=1 | links=#4750(auto Shattrath City;34):59 #22238(auto Shattrath City;154):62
+#8153 | portal;Orgrimmar§portal;Orgrimmar§portal;Orgrimmar | x=-1933.099975585938 y=5453.39990234375 | size=1 | links=#19550(auto Shattrath City;132):14
+#8296 | auto Shattrath City;59§auto Shattrath;59§auto Shattrath;59 | x=-2029.300048828125 y=5359.10009765625 | size=1 | links=#571(auto Shattrath City;5):8 #3753(auto Shattrath City;27):19
+#8352 | Shattrath City;Scryer;top;to;down§Shattrath;seher;oben;nach;unten§Shattrath;Clairvoyant;top;vers;bas | x=-2028.300048828125 y=5626.80029296875 | size=1 | links=#893(auto Shattrath City;9):23 #28402(auto Shattrath City;201):43
+#8776 | auto Shattrath City;60§auto Shattrath;60§auto Shattrath;60 | x=-1857 y=5204.89990234375 | size=1 | links=#26475(auto Shattrath City;189):14
+#8941 | auto Shattrath City;61§auto Shattrath;61§auto Shattrath;61 | x=-1790.700073242188 y=5199.30029296875 | size=1 | links=#1570(auto Shattrath City;15):18 #24947(auto Shattrath City;172):18
+#9110 | auto Shattrath City;62§auto Shattrath;62§auto Shattrath;62 | x=-2232.699951171875 y=5602.10009765625 | size=1 | links=#13318(auto Shattrath City;90):52 #16088(auto Shattrath City;109):38
+#9219 | auto Shattrath City;63§auto Shattrath;63§auto Shattrath;63 | x=-1624.5 y=5299.7001953125 | size=1 | links=#19262(auto Shattrath City;128):48
+#9298 | auto Shattrath City;64§auto Shattrath;64§auto Shattrath;64 | x=-2262.900146484375 y=5579.89990234375 | size=1 | links=#12530(auto Shattrath City;82):3 #13289(auto Shattrath City;89):12
+#9421 | auto Shattrath City;65§auto Shattrath;65§auto Shattrath;65 | x=-1952.900024414063 y=5461.39990234375 | size=1 | links=#17591(auto Shattrath City;114):4
+#9485 | auto Shattrath City;66§auto Shattrath;66§auto Shattrath;66 | x=-2255.400146484375 y=5561 | size=1 | links=#18788(auto Shattrath City;124):72 #19858(auto Shattrath City;136):14
+#9685 | guild vault;aldor§gildenbank;aldor§guild vault;aldor | x=-1709.900024414063 y=5462.89990234375 | size=1 | links=#1544(auto Shattrath City;14):12
+#9930 | auto Shattrath City;67§auto Shattrath;67§auto Shattrath;67 | x=-2099.699951171875 y=5509.30029296875 | size=1 | links=#2301(auto Shattrath City;22):26 #25553(auto Shattrath City;179):23
+#10211 | auto Shattrath City;68§auto Shattrath;68§auto Shattrath;68 | x=-1979 y=5567.89990234375 | size=1 | links=#2916(auto Shattrath City;24):12 #21238(auto Shattrath City;148):17
+#10469 | auto Shattrath City;69§auto Shattrath;69§auto Shattrath;69 | x=-1729.700073242188 y=5426.7001953125 | size=1 | links=#20743(auto Shattrath City;146):7 #21713(auto Shattrath City;151):61
+#10789 | auto Shattrath City;70§auto Shattrath;70§auto Shattrath;70 | x=-1975.400024414063 y=5099.5 | size=1 | links=#46106(auto Terokkar Forest;140):419 #1962(auto Shattrath City;18):37 #17159(auto Shattrath City;112):58 #46095(auto Shattrath City;224):47
+#10831 | Mailbox;Scryer's Tier§briefkasten;Sehertreppe§Boîte aux lettres;Degré des Clairvoyants | x=-2175.300048828125 y=5412 | size=1 | links=#17367(auto Shattrath City;113):7 #18285(auto Shattrath City;120):7
+#11008 | auto Shattrath City;71§auto Shattrath;71§auto Shattrath;71 | x=-1713.400024414063 y=5504.10009765625 | size=1 | links=#5777(auto Shattrath City;43):14 #7723(auto Shattrath City;54):11
+#11159 | auto Shattrath City;72§auto Shattrath;72§auto Shattrath;72 | x=-1990.5 y=5631.7001953125 | size=1 | links=#893(auto Shattrath City;9):17 #25522(auto Shattrath City;178):22
+#11166 | auto Shattrath City;73§auto Shattrath;73§auto Shattrath;73 | x=-1606.200073242188 y=5276.30029296875 | size=1 | links=#20029(auto Shattrath City;139):11 #22705(auto Shattrath City;160):15
+#11302 | auto Shattrath City;74§auto Shattrath;74§auto Shattrath;74 | x=-1976.800048828125 y=5190.89990234375 | size=1 | links=#24935(auto Shattrath City;171):27
+#11396 | auto Shattrath City;75§auto Shattrath;75§auto Shattrath;75 | x=-1766.599975585938 y=5719.80029296875 | size=1 | links=#515(auto Shattrath City;3):51 #16616(auto Shattrath City;111):43 #21575(auto Shattrath City;150):66 #24418(auto Shattrath City;167):43 #25027(auto Shattrath City;174):32
+#11445 | auto Shattrath City;76§auto Shattrath;76§auto Shattrath;76 | x=-2024.800048828125 y=5284.10009765625 | size=1
+#11670 | auto Shattrath City;77§auto Shattrath;77§auto Shattrath;77 | x=-1769.800048828125 y=5236.5 | size=1 | links=#22458(auto Shattrath City;156):19
+#11808 | auto Shattrath City;78§auto Shattrath;78§auto Shattrath;78 | x=-1632.300048828125 y=5484 | size=1 | links=#6610(auto Shattrath City;48):17 #22494(auto Shattrath City;157):53
+#11827 | auto Shattrath City;79§auto Shattrath;79§auto Shattrath;79 | x=-1985.5 y=5470.80029296875 | size=1 | links=#135(auto Shattrath City;1):14 #25054(auto Shattrath City;175):19
+#11896 | auto Shattrath City;80§auto Shattrath;80§auto Shattrath;80 | x=-2268.199951171875 y=5557 | size=1 | links=#19411(auto Shattrath City;130):7 #24395(auto Shattrath City;166):8
+#12028 | auto Shattrath City;81§auto Shattrath;81§auto Shattrath;81 | x=-1872.800048828125 y=5689.7001953125 | size=1 | links=#5910(auto Shattrath City;44):17 #19675(auto Shattrath City;133):74
+#12530 | auto Shattrath City;82§auto Shattrath;82§auto Shattrath;82 | x=-2266.699951171875 y=5580.10009765625 | size=1 | links=#9298(auto Shattrath City;64):3 #22528(auto Shattrath City;159):8
+#12679 | auto Shattrath City;83§auto Shattrath;83§auto Shattrath;83 | x=-1900.5 y=5441.39990234375 | size=1 | links=#19550(auto Shattrath City;132):20 #27450(auto Shattrath City;195):30
+#12747 | auto Shattrath City;84§auto Shattrath;84§auto Shattrath;84 | x=-1799.400024414063 y=5312.5 | size=1 | links=#20042(central location;Shattrath City):15
+#12800 | auto Shattrath City;85§auto Shattrath;85§auto Shattrath;85 | x=-1821.400024414063 y=5529.60009765625 | size=1 | links=#4019(auto Shattrath City;30):9 #6418(auto Shattrath City;45):7
+#12804 | Shattrath City;Scryer;elevator;top§Shattrath;seher;fahrstuhl;oben§Shattrath;Clairvoyant;elevator;top | x=-2051.199951171875 y=5492.5 | size=1 | links=#25532(Shattrath City;Scryer;elevator;down):30 #25553(auto Shattrath City;179):28
+#12819 | auto Shattrath City;86§auto Shattrath;86§auto Shattrath;86 | x=-1855.099975585938 y=5088.10009765625 | size=1 | links=#27155(auto Shattrath City;193):20 #27331(auto Shattrath City;194):42
+#12914 | auto Shattrath City;87§auto Shattrath;87§auto Shattrath;87 | x=-1891.200073242188 y=5288 | size=1 | links=#4716(auto Shattrath City;33):13 #27127(auto Shattrath City;192):12
+#12955 | auto Shattrath City;88§auto Shattrath;88§auto Shattrath;88 | x=-2147.699951171875 y=5524.80029296875 | size=1 | links=#7261(auto Shattrath City;51):20 #14329(auto Shattrath City;97):11
+#13289 | auto Shattrath City;89§auto Shattrath;89§auto Shattrath;89 | x=-2251.60009765625 y=5574.89990234375 | size=1 | links=#9298(auto Shattrath City;64):12
+#13318 | auto Shattrath City;90§auto Shattrath;90§auto Shattrath;90 | x=-2189.5 y=5571.89990234375 | size=1 | links=#9110(auto Shattrath City;62):52
+#13471 | auto Shattrath City;91§auto Shattrath;91§auto Shattrath;91 | x=-1966.599975585938 y=5685.89990234375 | size=1 | links=#1747(auto Shattrath City;17):12 #25939(auto Shattrath City;183):12
+#13698 | auto Shattrath City;92§auto Shattrath;92§auto Shattrath;92 | x=-1827.900024414063 y=5520.39990234375 | size=1 | links=#6418(auto Shattrath City;45):3 #25491(auto Shattrath City;177):6
+#13704 | auto Shattrath City;93§auto Shattrath;93§auto Shattrath;93 | x=-2305.300048828125 y=5578.2001953125 | size=1 | links=#7786(auto Shattrath City;56):18 #18409(auto Shattrath City;121):25
+#14069 | portal;Stormwind City§portal;Sturmwind§portal;Hurlevent | x=-1793.599975585938 y=5407 | size=1 | links=#20371(auto Shattrath City;142):18
+#14090 | auto Shattrath City;94§auto Shattrath;94§auto Shattrath;94 | x=-1666.200073242188 y=5210.7001953125 | size=1 | links=#14581(auto Shattrath City;101):41 #19262(auto Shattrath City;128):55 #46094(auto Shattrath City;223):20
+#14208 | auto Shattrath City;95§auto Shattrath;95§auto Shattrath;95 | x=-1951 y=5168.39990234375 | size=1 | links=#1962(auto Shattrath City;18):35 #28458(auto Shattrath City;202):99
+#14235 | auto Shattrath City;96§auto Shattrath;96§auto Shattrath;96 | x=-2081.5 y=5319.39990234375 | size=1 | links=#24792(auto Shattrath City;169):14
+#14299 | entry and exit;Shattrath City;Terokkar Forest§ein- und ausgang;Shattrath;wälder von terokkar§entrée et sortie;Shattrath;Forêt de Terokkar | x=-1508.700073242188 y=5236.60009765625 | size=1 | links=#24108(auto Shattrath City;164):82 #46078(auto Shattrath City;220):30
+#14329 | auto Shattrath City;97§auto Shattrath;97§auto Shattrath;97 | x=-2151.194694508947 y=5513.953070593165 | size=1 | links=#2301(auto Shattrath City;22):36 #12955(auto Shattrath City;88):11 #18788(auto Shattrath City;124):42 #19082(auto Shattrath City;127):13
+#14467 | auto Shattrath City;98§auto Shattrath;98§auto Shattrath;98 | x=-1917.700073242188 y=5385.7001953125 | size=1
+#14468 | auto Shattrath City;99§auto Shattrath;99§auto Shattrath;99 | x=-1844 y=5559.80029296875 | size=1 | links=#1042(auto Shattrath City;11):37 #18410(auto Shattrath City;122):44
+#14480 | auto Shattrath City;100§auto Shattrath;100§auto Shattrath;100 | x=-2307.900146484375 y=5578.30029296875 | size=1 | links=#24436(auto Shattrath City;168):24
+#14581 | auto Shattrath City;101§auto Shattrath;101§auto Shattrath;101 | x=-1687.599975585938 y=5245.80029296875 | size=1 | links=#4750(auto Shattrath City;34):42 #14090(auto Shattrath City;94):41
+#14741 | auto Shattrath City;102§auto Shattrath;102§auto Shattrath;102 | x=-1746.200073242188 y=5363.2001953125 | size=1 | links=#20042(central location;Shattrath City):76 #20510(auto Shattrath City;145):10 #26220(auto Shattrath City;185):45
+#14818 | auto Shattrath City;103§auto Shattrath;103§auto Shattrath;103 | x=-1972.700073242188 y=5496.2001953125 | size=1 | links=#5452(auto Shattrath City;38):11 #25731(auto Shattrath City;182):34
+#14885 | auto Shattrath City;104§auto Shattrath;104§auto Shattrath;104 | x=-1813.700073242188 y=5579.10009765625 | size=1 | links=#6504(auto Shattrath City;47):25 #28559(Shattrath City;aldor;elevator;down):11
+#14975 | auto Shattrath City;105§auto Shattrath;105§auto Shattrath;105 | x=-1947 y=5169.7001953125 | size=1 | links=#24935(auto Shattrath City;171):11
+#15431 | Mailbox;Bank;Scryer§briefkasten;Bank;seher§Boîte aux lettres;Bank;Clairvoyant | x=-2033.5 y=5336.60009765625 | size=1 | links=#4597(auto Shattrath City;32):40
+#15734 | auto Shattrath City;106§auto Shattrath;106§auto Shattrath;106 | x=-1957.900024414063 y=5470.10009765625 | size=1 | links=#17591(auto Shattrath City;114):5 #27483(auto Shattrath City;196):7
+#15745 | auto Shattrath City;107§auto Shattrath;107§auto Shattrath;107 | x=-1672.400024414063 y=5534.2001953125 | size=1 | links=#18715(auto Shattrath City;123):7 #24822(auto Shattrath City;170):12
+#15773 | auto Shattrath City;108§auto Shattrath;108§auto Shattrath;108 | x=-1704.900024414063 y=5364.89990234375 | size=1 | links=#20510(auto Shattrath City;145):31 #23770(auto Shattrath City;162):17
+#16088 | auto Shattrath City;109§auto Shattrath;109§auto Shattrath;109 | x=-2270.900146484375 y=5598.39990234375 | size=1 | links=#7786(auto Shattrath City;56):22 #9110(auto Shattrath City;62):38
+#16264 | auto Shattrath City;110§auto Shattrath;110§auto Shattrath;110 | x=-1671 y=5696.5 | size=1 | links=#515(auto Shattrath City;3):50 #23494(auto Shattrath City;161):19
+#16616 | auto Shattrath City;111§auto Shattrath;111§auto Shattrath;111 | x=-1760.900024414063 y=5676.30029296875 | size=1 | links=#2879(auto Shattrath City;23):31 #11396(auto Shattrath City;75):43
+#17159 | auto Shattrath City;112§auto Shattrath;112§auto Shattrath;112 | x=-1937.200073242188 y=5055.60009765625 | size=1 | links=#16524(auto Terokkar Forest;72):37 #10789(auto Shattrath City;70):58 #46069(auto Shattrath City;211):32
+#17367 | auto Shattrath City;113§auto Shattrath;113§auto Shattrath;113 | x=-2180.699951171875 y=5417.5 | size=1 | links=#2057(auto Shattrath City;19):11 #10831(Mailbox;Scryer's Tier):7
+#17591 | auto Shattrath City;114§auto Shattrath;114§auto Shattrath;114 | x=-1954 y=5466.2001953125 | size=1 | links=#9421(auto Shattrath City;65):4 #15734(auto Shattrath City;106):5
+#17627 | auto Shattrath City;115§auto Shattrath;115§auto Shattrath;115 | x=-1827 y=5537 | size=1 | links=#6504(auto Shattrath City;47):18 #25491(auto Shattrath City;177):19
+#17824 | auto Shattrath City;116§auto Shattrath;116§auto Shattrath;116 | x=-2243.800048828125 y=5554.39990234375 | size=1 | links=#5760(auto Shattrath City;42):24 #19411(auto Shattrath City;130):22
+#17848 | auto Shattrath City;117§auto Shattrath;117§auto Shattrath;117 | x=-1995.800048828125 y=5600.89990234375 | size=1 | links=#893(auto Shattrath City;9):23 #2213(auto Shattrath City;21):37
+#17863 | auto Shattrath City;118§auto Shattrath;118§auto Shattrath;118 | x=-1905.099975585938 y=5771.60009765625 | size=1 | links=#28010(auto Shattrath City;197):14
+#18140 | auto Shattrath City;119§auto Shattrath;119§auto Shattrath;119 | x=-1808.900024414063 y=5179.39990234375 | size=1
+#18285 | auto Shattrath City;120§auto Shattrath;120§auto Shattrath;120 | x=-2167.60009765625 y=5412.5 | size=1 | links=#10831(Mailbox;Scryer's Tier):7
+#18409 | auto Shattrath City;121§auto Shattrath;121§auto Shattrath;121 | x=-2279.699951171875 y=5581.2001953125 | size=1 | links=#5760(auto Shattrath City;42):30 #13704(auto Shattrath City;93):25
+#18410 | auto Shattrath City;122§auto Shattrath;122§auto Shattrath;122 | x=-1801.700073242188 y=5546.30029296875 | size=1 | links=#5437(auto Shattrath City;37):4 #5718(auto Shattrath City;41):77 #14468(auto Shattrath City;99):44 #47564(Begin/End Flying;Terrace of Light;Shattrath City;230):37
+#18715 | auto Shattrath City;123§auto Shattrath;123§auto Shattrath;123 | x=-1675.300048828125 y=5540.60009765625 | size=1 | links=#15745(auto Shattrath City;107):7
+#18788 | auto Shattrath City;124§auto Shattrath;124§auto Shattrath;124 | x=-2186.400146484375 y=5537.80029296875 | size=1 | links=#9485(auto Shattrath City;66):72 #14329(auto Shattrath City;97):42
+#18812 | auto Shattrath City;125§auto Shattrath;125§auto Shattrath;125 | x=-1918.800048828125 y=5308.80029296875 | size=1 | links=#2208(auto Shattrath City;20):83 #23864(auto Shattrath City;163):8 #27127(auto Shattrath City;192):34
+#18926 | auto Shattrath City;126§auto Shattrath;126§auto Shattrath;126 | x=-1663.300048828125 y=5532.30029296875 | size=1 | links=#3982(auto Shattrath City;29):40
+#19082 | auto Shattrath City;127§auto Shattrath;127§auto Shattrath;127 | x=-2155.400146484375 y=5500.89990234375 | size=1 | links=#14329(auto Shattrath City;97):13
+#19262 | auto Shattrath City;128§auto Shattrath;128§auto Shattrath;128 | x=-1629.099975585938 y=5251.5 | size=1 | links=#9219(auto Shattrath City;63):48 #14090(auto Shattrath City;94):55
+#19358 | auto Shattrath City;129§auto Shattrath;129§auto Shattrath;129 | x=-2145.400146484375 y=5396.30029296875 | size=1 | links=#45483(auto Shattrath City;203):25
+#19411 | auto Shattrath City;130§auto Shattrath;130§auto Shattrath;130 | x=-2264.400146484375 y=5563.5 | size=1 | links=#11896(auto Shattrath City;80):7 #17824(auto Shattrath City;116):22
+#19541 | auto Shattrath City;131§auto Shattrath;131§auto Shattrath;131 | x=-1774.900024414063 y=5177.89990234375 | size=1 | links=#785(auto Shattrath City;7):12
+#19550 | auto Shattrath City;132§auto Shattrath;132§auto Shattrath;132 | x=-1920 y=5447.89990234375 | size=1 | links=#6487(portal;Undercity):16 #8153(portal;Orgrimmar):14 #12679(auto Shattrath City;83):20 #21906(portal;Thunder Bluff):15
+#19675 | auto Shattrath City;133§auto Shattrath;133§auto Shattrath;133 | x=-1856.900024414063 y=5762.10009765625 | size=1 | links=#629(auto Shattrath City;6):49 #7663(auto Shattrath City;53):100 #12028(auto Shattrath City;81):74 #24418(auto Shattrath City;167):58 #28010(auto Shattrath City;197):34
+#19780 | auto Shattrath City;134§auto Shattrath;134§auto Shattrath;134 | x=-1755 y=5153.80029296875 | size=1 | links=#5612(auto Shattrath City;39):7 #5646(auto Shattrath City;40):16
+#19841 | auto Shattrath City;135§auto Shattrath;135§auto Shattrath;135 | x=-1593.200073242188 y=5294.7001953125 | size=1 | links=#22705(auto Shattrath City;160):13
+#19858 | auto Shattrath City;136§auto Shattrath;136§auto Shattrath;136 | x=-2241.10009765625 y=5564.60009765625 | size=1 | links=#6464(auto Shattrath City;46):25 #9485(auto Shattrath City;66):14
+#19898 | auto Shattrath City;137§auto Shattrath;137§auto Shattrath;137 | x=-2051.300048828125 y=5257.89990234375 | size=1 | links=#24971(auto Shattrath City;173):19
+#19902 | auto Shattrath City;138§auto Shattrath;138§auto Shattrath;138 | x=-2273.300048828125 y=5577.10009765625 | size=1 | links=#22528(auto Shattrath City;159):14
+#20029 | auto Shattrath City;139§auto Shattrath;139§auto Shattrath;139 | x=-1614.5 y=5284.2001953125 | size=1 | links=#11166(auto Shattrath City;73):11 #20429(auto Shattrath City;144):10
+#20042 | central location;Shattrath City§zentralpunkt;Shattrath§emplacement central;Shattrath | x=-1811.200073242188 y=5323.10009765625 | size=1 | links=#12747(auto Shattrath City;84):15 #14741(auto Shattrath City;102):76 #22349(auto Shattrath City;155):48
+#20215 | auto Shattrath City;140§auto Shattrath;140§auto Shattrath;140 | x=-1623.200073242188 y=5350.2001953125 | size=1 | links=#23770(auto Shattrath City;162):68
+#20341 | auto Shattrath City;141§auto Shattrath;141§auto Shattrath;141 | x=-1958.300048828125 y=5671.30029296875 | size=1 | links=#6922(Shattrath City;Aldor Rise;top;to;down):8 #25522(auto Shattrath City;178):29
+#20371 | auto Shattrath City;142§auto Shattrath;142§auto Shattrath;142 | x=-1810.800048828125 y=5412.60009765625 | size=1 | links=#4470(portal;Ironforge):19 #14069(portal;Stormwind City):18 #26539(portal;Darnassus):19 #26676(auto Shattrath City;190):39
+#20416 | auto Shattrath City;143§auto Shattrath;143§auto Shattrath;143 | x=-1885.599975585938 y=5673.5 | size=1 | links=#1148(auto Shattrath City;12):9 #5910(auto Shattrath City;44):9
+#20429 | auto Shattrath City;144§auto Shattrath;144§auto Shattrath;144 | x=-1607.200073242188 y=5292.10009765625 | size=1 | links=#559(auto Shattrath City;4):20 #20029(auto Shattrath City;139):10
+#20510 | auto Shattrath City;145§auto Shattrath;145§auto Shattrath;145 | x=-1736.300048828125 y=5365.10009765625 | size=1 | links=#14741(auto Shattrath City;102):10 #15773(auto Shattrath City;108):31
+#20743 | auto Shattrath City;146§auto Shattrath;146§auto Shattrath;146 | x=-1736.5 y=5429.2001953125 | size=1 | links=#10469(auto Shattrath City;69):7 #26220(auto Shattrath City;185):21
+#20999 | auto Shattrath City;147§auto Shattrath;147§auto Shattrath;147 | x=-1968.800048828125 y=5228.7001953125 | size=1 | links=#26381(auto Shattrath City;187):16 #26469(auto Shattrath City;188):28
+#21238 | auto Shattrath City;148§auto Shattrath;148§auto Shattrath;148 | x=-1964.800048828125 y=5557 | size=1 | links=#7607(auto Shattrath City;52):23 #10211(auto Shattrath City;68):17
+#21390 | auto Shattrath City;149§auto Shattrath;149§auto Shattrath;149 | x=-1932.800048828125 y=5684 | size=1 | links=#1148(auto Shattrath City;12):40 #1747(auto Shattrath City;17):20 #7048(auto Shattrath City;49):12
+#21575 | auto Shattrath City;150§auto Shattrath;150§auto Shattrath;150 | x=-1745.5 y=5783.30029296875 | size=1 | links=#11396(auto Shattrath City;75):66
+#21713 | auto Shattrath City;151§auto Shattrath;151§auto Shattrath;151 | x=-1668.300048828125 y=5425.80029296875 | size=1 | links=#10469(auto Shattrath City;69):61
+#21819 | auto Shattrath City;152§auto Shattrath;152§auto Shattrath;152 | x=-1907.200073242188 y=5263.2001953125 | size=1 | links=#4716(auto Shattrath City;33):16 #28458(auto Shattrath City;202):13
+#21906 | portal;Thunder Bluff§portal;Donnerfels§portal;Les Pitons du Tonnerre | x=-1935.800048828125 y=5445.5 | size=1 | links=#19550(auto Shattrath City;132):15
+#21980 | auto Shattrath City;153§auto Shattrath;153§auto Shattrath;153 | x=-1919.900024414063 y=5553.10009765625 | size=1 | links=#7607(auto Shattrath City;52):21 #25165(auto Shattrath City;176):24 #25731(auto Shattrath City;182):43
+#22238 | auto Shattrath City;154§auto Shattrath;154§auto Shattrath;154 | x=-1640.599975585938 y=5402.10009765625 | size=1 | links=#8072(auto Shattrath City;57):23 #8074(auto Shattrath City;58):62 #24156(auto Shattrath City;165):38
+#22349 | auto Shattrath City;155§auto Shattrath;155§auto Shattrath;155 | x=-1831.800048828125 y=5367 | size=1 | links=#20042(central location;Shattrath City):48
+#22458 | auto Shattrath City;156§auto Shattrath;156§auto Shattrath;156 | x=-1770.400024414063 y=5217 | size=1 | links=#1570(auto Shattrath City;15):26 #11670(auto Shattrath City;77):19
+#22494 | auto Shattrath City;157§auto Shattrath;157§auto Shattrath;157 | x=-1642.300048828125 y=5536.80029296875 | size=1 | links=#11808(auto Shattrath City;78):53
+#22499 | auto Shattrath City;158§auto Shattrath;158§auto Shattrath;158 | x=-1615.200073242188 y=5396.60009765625 | size=1 | links=#25686(auto Shattrath City;181):54
+#22528 | auto Shattrath City;159§auto Shattrath;159§auto Shattrath;159 | x=-2262.900146484375 y=5587.5 | size=1 | links=#6464(auto Shattrath City;46):13 #12530(auto Shattrath City;82):8 #19902(auto Shattrath City;138):14
+#22705 | auto Shattrath City;160§auto Shattrath;160§auto Shattrath;160 | x=-1591.700073242188 y=5280.80029296875 | size=1 | links=#11166(auto Shattrath City;73):15 #19841(auto Shattrath City;135):13
+#23494 | auto Shattrath City;161§auto Shattrath;161§auto Shattrath;161 | x=-1655.200073242188 y=5685.10009765625 | size=1 | links=#16264(auto Shattrath City;110):19 #26237(auto Shattrath City;186):13
+#23770 | auto Shattrath City;162§auto Shattrath;162§auto Shattrath;162 | x=-1688.400024414063 y=5370.89990234375 | size=1 | links=#15773(auto Shattrath City;108):17 #20215(auto Shattrath City;140):68
+#23864 | auto Shattrath City;163§auto Shattrath;163§auto Shattrath;163 | x=-1925 y=5303.5 | size=1 | links=#4901(auto Shattrath City;35):36 #18812(auto Shattrath City;125):8
+#24108 | auto Shattrath City;164§auto Shattrath;164§auto Shattrath;164 | x=-1531.900024414063 y=5315.80029296875 | size=1 | links=#14299(entry and exit;Shattrath City;Terokkar Forest):82
+#24156 | auto Shattrath City;165§auto Shattrath;165§auto Shattrath;165 | x=-1633.300048828125 y=5440.10009765625 | size=1 | links=#3982(auto Shattrath City;29):57 #22238(auto Shattrath City;154):38
+#24387 | Shattrath City;aldor;elevator;top§Shattrath;aldor;Fahrstuhl;oben§Shattrath;aldor;elevator;top | x=-1799 y=5621.5 | size=1 | links=#1016(auto Shattrath City;10):38 #28559(Shattrath City;aldor;elevator;down):33
+#24395 | auto Shattrath City;166§auto Shattrath;166§auto Shattrath;166 | x=-2276.900146484375 y=5556.2001953125 | size=1 | links=#11896(auto Shattrath City;80):8
+#24418 | auto Shattrath City;167§auto Shattrath;167§auto Shattrath;167 | x=-1800.099975585938 y=5748 | size=1 | links=#11396(auto Shattrath City;75):43 #19675(auto Shattrath City;133):58
+#24436 | auto Shattrath City;168§auto Shattrath;168§auto Shattrath;168 | x=-2285.147858365381 y=5569.682285588733 | size=1 | links=#14480(auto Shattrath City;100):24
+#24792 | auto Shattrath City;169§auto Shattrath;169§auto Shattrath;169 | x=-2084.400146484375 y=5305.2001953125 | size=1 | links=#14235(auto Shattrath City;96):14
+#24822 | auto Shattrath City;170§auto Shattrath;170§auto Shattrath;170 | x=-1661.599975585938 y=5528.39990234375 | size=1 | links=#15745(auto Shattrath City;107):12 #25589(auto Shattrath City;180):10
+#24935 | auto Shattrath City;171§auto Shattrath;171§auto Shattrath;171 | x=-1950.900024414063 y=5180.5 | size=1 | links=#11302(auto Shattrath City;74):27 #14975(auto Shattrath City;105):11
+#24947 | auto Shattrath City;172§auto Shattrath;172§auto Shattrath;172 | x=-1773.200073242188 y=5193.60009765625 | size=1 | links=#785(auto Shattrath City;7):15 #8941(auto Shattrath City;61):18
+#24971 | auto Shattrath City;173§auto Shattrath;173§auto Shattrath;173 | x=-2063.400146484375 y=5273.39990234375 | size=1 | links=#19898(auto Shattrath City;137):19
+#25027 | auto Shattrath City;174§auto Shattrath;174§auto Shattrath;174 | x=-1780.099975585938 y=5689.80029296875 | size=1 | links=#1016(auto Shattrath City;10):33 #11396(auto Shattrath City;75):32
+#25054 | auto Shattrath City;175§auto Shattrath;175§auto Shattrath;175 | x=-2004.400024414063 y=5477.10009765625 | size=1 | links=#11827(auto Shattrath City;79):19 #25532(Shattrath City;Scryer;elevator;down):18
+#25165 | auto Shattrath City;176§auto Shattrath;176§auto Shattrath;176 | x=-1895.800048828125 y=5554.30029296875 | size=1 | links=#1042(auto Shattrath City;11):15 #21980(auto Shattrath City;153):24
+#25491 | auto Shattrath City;177§auto Shattrath;177§auto Shattrath;177 | x=-1833.900024414063 y=5518.39990234375 | size=1 | links=#13698(auto Shattrath City;92):6 #17627(auto Shattrath City;115):19 #28582(City of Light;Shattrath City;quest target;50.45;42.93):44
+#25522 | auto Shattrath City;178§auto Shattrath;178§auto Shattrath;178 | x=-1975.5 y=5647.89990234375 | size=1 | links=#11159(auto Shattrath City;72):22 #20341(auto Shattrath City;141):29
+#25532 | Shattrath City;Scryer;elevator;down§Shattrath;seher;fahrstuhl;unten§Shattrath;Clairvoyant;elevator;bas | x=-2021.800048828125 y=5482.7001953125 | size=1 | links=#12804(Shattrath City;Scryer;elevator;top):30 #25054(auto Shattrath City;175):18
+#25553 | auto Shattrath City;179§auto Shattrath;179§auto Shattrath;179 | x=-2077.699951171875 y=5502.10009765625 | size=1 | links=#9930(auto Shattrath City;67):23 #12804(Shattrath City;Scryer;elevator;top):28
+#25589 | auto Shattrath City;180§auto Shattrath;180§auto Shattrath;180 | x=-1651.099975585938 y=5528.60009765625 | size=1 | links=#24822(auto Shattrath City;170):10
+#25686 | auto Shattrath City;181§auto Shattrath;181§auto Shattrath;181 | x=-1618.599975585938 y=5450.7001953125 | size=1 | links=#22499(auto Shattrath City;158):54
+#25731 | auto Shattrath City;182§auto Shattrath;182§auto Shattrath;182 | x=-1949.800048828125 y=5521.80029296875 | size=1 | links=#14818(auto Shattrath City;103):34 #21980(auto Shattrath City;153):43
+#25939 | auto Shattrath City;183§auto Shattrath;183§auto Shattrath;183 | x=-1979.400024414063 y=5685.7001953125 | size=1 | links=#629(auto Shattrath City;6):95 #13471(auto Shattrath City;91):12
+#26120 | auto Shattrath City;184§auto Shattrath;184§auto Shattrath;184 | x=-1847.400024414063 y=5476.2001953125 | size=1 | links=#3091(auto Shattrath City;25):57 #28582(City of Light;Shattrath City;quest target;50.45;42.93):0
+#26220 | auto Shattrath City;185§auto Shattrath;185§auto Shattrath;185 | x=-1735.700073242188 y=5407.30029296875 | size=1 | links=#5718(auto Shattrath City;41):76 #14741(auto Shattrath City;102):45 #20743(auto Shattrath City;146):21
+#26237 | auto Shattrath City;186§auto Shattrath;186§auto Shattrath;186 | x=-1649.5 y=5673 | size=1 | links=#23494(auto Shattrath City;161):13
+#26381 | auto Shattrath City;187§auto Shattrath;187§auto Shattrath;187 | x=-1982 y=5238.5 | size=1 | links=#20999(auto Shattrath City;147):16 #46105(auto Shattrath City;229):68
+#26469 | auto Shattrath City;188§auto Shattrath;188§auto Shattrath;188 | x=-1978.599975585938 y=5202.2001953125 | size=1 | links=#20999(auto Shattrath City;147):28
+#26475 | auto Shattrath City;189§auto Shattrath;189§auto Shattrath;189 | x=-1850.099975585938 y=5217.10009765625 | size=1 | links=#8776(auto Shattrath City;60):14
+#26539 | portal;Darnassus§portal;Darnassus§portal;Darnassus | x=-1791.099975585938 y=5414.30029296875 | size=1 | links=#20371(auto Shattrath City;142):19
+#26676 | auto Shattrath City;190§auto Shattrath;190§auto Shattrath;190 | x=-1849.400024414063 y=5402.7001953125 | size=1 | links=#7739(auto Shattrath City;55):25 #20371(auto Shattrath City;142):39
+#27028 | auto Shattrath City;191§auto Shattrath;191§auto Shattrath;191 | x=-2172.800048828125 y=5463.5 | size=1 | links=#3497(auto Shattrath City;26):23
+#27127 | auto Shattrath City;192§auto Shattrath;192§auto Shattrath;192 | x=-1885.700073242188 y=5299.60009765625 | size=1 | links=#12914(auto Shattrath City;87):12 #18812(auto Shattrath City;125):34
+#27155 | auto Shattrath City;193§auto Shattrath;193§auto Shattrath;193 | x=-1853.5 y=5108.10009765625 | size=1 | links=#12819(auto Shattrath City;86):20
+#27331 | auto Shattrath City;194§auto Shattrath;194§auto Shattrath;194 | x=-1857.700073242188 y=5045.80029296875 | size=1 | links=#23416(auto Terokkar Forest;102):36 #12819(auto Shattrath City;86):42
+#27450 | auto Shattrath City;195§auto Shattrath;195§auto Shattrath;195 | x=-1900.400024414063 y=5410.5 | size=1 | links=#5355(auto Shattrath City;36):34 #12679(auto Shattrath City;83):30
+#27483 | auto Shattrath City;196§auto Shattrath;196§auto Shattrath;196 | x=-1963.5 y=5474.30029296875 | size=1 | links=#1636(auto Shattrath City;16):6 #15734(auto Shattrath City;106):7
+#28010 | auto Shattrath City;197§auto Shattrath;197§auto Shattrath;197 | x=-1891.5 y=5765.7001953125 | size=1 | links=#3300(Mailbox;Aldor Rise):5 #17863(auto Shattrath City;118):14 #19675(auto Shattrath City;133):34
+#28104 | auto Shattrath City;198§auto Shattrath;198§auto Shattrath;198 | x=-1614.300048828125 y=5367.60009765625 | size=1 | links=#8072(auto Shattrath City;57):19
+#28227 | auto Shattrath City;199§auto Shattrath;199§auto Shattrath;199 | x=-1729.300048828125 y=5642.2001953125 | size=1 | links=#2879(auto Shattrath City;23):26
+#28379 | auto Shattrath City;200§auto Shattrath;200§auto Shattrath;200 | x=-1995.099975585938 y=5452.2001953125 | size=1 | links=#2208(auto Shattrath City;20):78 #5452(auto Shattrath City;38):38
+#28402 | auto Shattrath City;201§auto Shattrath;201§auto Shattrath;201 | x=-2061 y=5597.5 | size=1 | links=#883(auto Shattrath City;8):52 #1227(auto Shattrath City;13):32 #8352(Shattrath City;Scryer;top;to;down):43
+#28458 | auto Shattrath City;202§auto Shattrath;202§auto Shattrath;202 | x=-1920.200073242188 y=5262.5 | size=1 | links=#4901(auto Shattrath City;35):8 #14208(auto Shattrath City;95):99 #21819(auto Shattrath City;152):13
+#28559 | Shattrath City;aldor;elevator;down§Shattrath;aldor;fahrstuhl;unten§Shattrath;aldor;elevator;bas | x=-1810.300048828125 y=5590.39990234375 | size=1 | links=#14885(auto Shattrath City;104):11 #24387(Shattrath City;aldor;elevator;top):33
+#28582 | City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville de Lumière;Shattrath;objectif de quête;50.45;42.93 | x=-1847.8032226562 y=5476.255859375 | size=1 | links=#25491(auto Shattrath City;177):44 #26120(auto Shattrath City;184):0
+#45483 | auto Shattrath City;203§auto Shattrath;203§auto Shattrath;203 | x=-2121.60009765625 y=5386.89990234375 | size=1 | links=#19358(auto Shattrath City;129):25
+#45484 | auto Shattrath City;204§auto Shattrath;204§auto Shattrath;204 | x=-2119.699951171875 y=5622.5 | size=1 | links=#883(auto Shattrath City;8):33 #45485(auto Shattrath City;205):24
+#45485 | auto Shattrath City;205§auto Shattrath;205§auto Shattrath;205 | x=-2100.60009765625 y=5637.10009765625 | size=1 | links=#45484(auto Shattrath City;204):24
+#45487 | auto Shattrath City;206§auto Shattrath;206§auto Shattrath;206 | x=-2260.5 y=5562.89990234375 | size=1 | links=#45488(auto Shattrath City;207):3
+#45488 | auto Shattrath City;207§auto Shattrath;207§auto Shattrath;207 | x=-2263.5 y=5563.80029296875 | size=1 | links=#45487(auto Shattrath City;206):3 #45489(auto Shattrath City;208):2
+#45489 | auto Shattrath City;208§auto Shattrath;208§auto Shattrath;208 | x=-2265.900146484375 y=5564.60009765625 | size=1 | links=#45488(auto Shattrath City;207):2 #45490(auto Shattrath City;209):1
+#45490 | auto Shattrath City;209§auto Shattrath;209§auto Shattrath;209 | x=-2267.400146484375 y=5564.30029296875 | size=1 | links=#45489(auto Shattrath City;208):1 #45491(auto Shattrath City;210):3
+#45491 | auto Shattrath City;210§auto Shattrath;210§auto Shattrath;210 | x=-2270.10009765625 y=5565.80029296875 | size=1 | links=#45490(auto Shattrath City;209):3
+#46069 | auto Shattrath City;211§auto Shattrath;211§auto Shattrath;211 | x=-1905 y=5053.5 | size=1 | links=#17159(auto Shattrath City;112):32 #46070(auto Shattrath City;212):79
+#46070 | auto Shattrath City;212§auto Shattrath;212§auto Shattrath;212 | x=-1825.300048828125 y=5053.89990234375 | size=1 | links=#46069(auto Shattrath City;211):79 #46071(auto Shattrath City;213):41
+#46071 | auto Shattrath City;213§auto Shattrath;213§auto Shattrath;213 | x=-1785.400024414063 y=5063.60009765625 | size=1 | links=#46070(auto Shattrath City;212):41 #46072(auto Shattrath City;214):42
+#46072 | auto Shattrath City;214§auto Shattrath;214§auto Shattrath;214 | x=-1744.200073242188 y=5073.2001953125 | size=1 | links=#46071(auto Shattrath City;213):42 #46073(auto Shattrath City;215):54
+#46073 | auto Shattrath City;215§auto Shattrath;215§auto Shattrath;215 | x=-1690 y=5078.30029296875 | size=1 | links=#46072(auto Shattrath City;214):54 #46074(auto Shattrath City;216):46
+#46074 | auto Shattrath City;216§auto Shattrath;216§auto Shattrath;216 | x=-1648.599975585938 y=5099.7001953125 | size=1 | links=#46087(auto Terokkar Forest;130):28 #46073(auto Shattrath City;215):46 #46075(auto Shattrath City;217):46
+#46075 | auto Shattrath City;217§auto Shattrath;217§auto Shattrath;217 | x=-1615.700073242188 y=5132.60009765625 | size=1 | links=#46074(auto Shattrath City;216):46 #46076(auto Shattrath City;218):54
+#46076 | auto Shattrath City;218§auto Shattrath;218§auto Shattrath;218 | x=-1579.599975585938 y=5173.89990234375 | size=1 | links=#46075(auto Shattrath City;217):54 #46077(auto Shattrath City;219):50
+#46077 | auto Shattrath City;219§auto Shattrath;219§auto Shattrath;219 | x=-1545.300048828125 y=5210.80029296875 | size=1 | links=#46076(auto Shattrath City;218):50 #46078(auto Shattrath City;220):36
+#46078 | auto Shattrath City;220§auto Shattrath;220§auto Shattrath;220 | x=-1509 y=5205.80029296875 | size=1 | links=#46079(auto Terokkar Forest;123):48 #14299(entry and exit;Shattrath City;Terokkar Forest):30 #46077(auto Shattrath City;219):36
+#46092 | auto Shattrath City;221§auto Shattrath;221§auto Shattrath;221 | x=-1577.200073242188 y=5145.89990234375 | size=1 | links=#46091(auto Terokkar Forest;134):36 #46093(auto Shattrath City;222):47
+#46093 | auto Shattrath City;222§auto Shattrath;222§auto Shattrath;222 | x=-1615.599975585938 y=5173.30029296875 | size=1 | links=#46092(auto Shattrath City;221):47 #46094(auto Shattrath City;223):42
+#46094 | auto Shattrath City;223§auto Shattrath;223§auto Shattrath;223 | x=-1650.800048828125 y=5197.30029296875 | size=1 | links=#14090(auto Shattrath City;94):20 #46093(auto Shattrath City;222):42
+#46095 | auto Shattrath City;224§auto Shattrath;224§auto Shattrath;224 | x=-2016.900024414063 y=5122.60009765625 | size=1 | links=#10789(auto Shattrath City;70):47 #46096(auto Shattrath City;225):30
+#46096 | auto Shattrath City;225§auto Shattrath;225§auto Shattrath;225 | x=-2047.300048828125 y=5123.80029296875 | size=1 | links=#46097(auto Terokkar Forest;135):39 #46095(auto Shattrath City;224):30
+#46101 | auto Shattrath City;226§auto Shattrath;226§auto Shattrath;226 | x=-2139 y=5147.80029296875 | size=1 | links=#46100(auto Terokkar Forest;138):14 #46102(auto Terokkar Forest;139):26
+#46103 | auto Shattrath City;227§auto Shattrath;227§auto Shattrath;227 | x=-2091.199951171875 y=5191.89990234375 | size=1 | links=#46102(auto Terokkar Forest;139):38 #46105(auto Shattrath City;229):58
+#46104 | auto Shattrath City;228§auto Shattrath;228§auto Shattrath;228 | x=-2062.400146484375 y=5220.80029296875 | size=1 | links=#46105(auto Shattrath City;229):17
+#46105 | auto Shattrath City;229§auto Shattrath;229§auto Shattrath;229 | x=-2050.199951171875 y=5233.5 | size=1 | links=#26381(auto Shattrath City;187):68 #46103(auto Shattrath City;227):58 #46104(auto Shattrath City;228):17
+#47564 | Begin/End Flying;Terrace of Light;Shattrath City;230§Start/Ende fliegen;Terrasse des Lichts;Shattrath;230§Begin/End Flying;Terrasse de la Lumière;Shattrath;230 | x=-1789.800048828125 y=5511 | size=1 | links=#18410(auto Shattrath City;122):37 #47565(auto Terrace of Light;Shattrath City;231):31
+#47565 | auto Terrace of Light;Shattrath City;231§auto Terrasse des Lichts;Shattrath;231§auto Terrasse de la Lumière;Shattrath;231 | x=-1775 y=5538.5 | size=1 | links=#47564(Begin/End Flying;Terrace of Light;Shattrath City;230):31 #47566(auto Aldor Rise;Shattrath City;232):67
+#47566 | auto Aldor Rise;Shattrath City;232§auto Aldorhöhe;Shattrath;232§auto Éminence de l'Aldor;Shattrath;232 | x=-1747.300048828125 y=5600.39990234375 | size=1 | links=#47565(auto Terrace of Light;Shattrath City;231):67 #47567(auto Aldor Rise;Shattrath City;233):84
+#47567 | auto Aldor Rise;Shattrath City;233§auto Aldorhöhe;Shattrath;233§auto Éminence de l'Aldor;Shattrath;233 | x=-1688.200073242188 y=5661 | size=1 | links=#47566(auto Aldor Rise;Shattrath City;232):84 #47568(auto Aldor Rise;Shattrath City;234):88
+#47568 | auto Aldor Rise;Shattrath City;234§auto Aldorhöhe;Shattrath;234§auto Éminence de l'Aldor;Shattrath;234 | x=-1626.200073242188 y=5724.80029296875 | size=1 | links=#47569(Begin/End Flying;The Barrier Hills;Terokkar Forest;1136):108 #47567(auto Aldor Rise;Shattrath City;233):88

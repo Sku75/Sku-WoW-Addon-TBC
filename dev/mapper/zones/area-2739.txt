@@ -1,0 +1,3 @@
+Zone areaId 2739 — eine Zeile pro Wegpunkt; Links inline.
+
+#28695 | s;Kalimdor;Silithus;Twilight Base Camp;Twilight Base Camp§s;Kalimdor;Silithus;Basislager der Twilight;Basislager der Twilight§s;Kalimdor;Silithus;Campement du crépuscule;Campement du crépuscule | x=-6996.15 y=-1195.01 | size=1

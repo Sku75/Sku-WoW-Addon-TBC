@@ -1,0 +1,1056 @@
+Zone areaId 66 — eine Zeile pro Wegpunkt; Links inline.
+
+#33556 | auto Zul'Drak;1§auto Zul'Drak;1§auto Zul'Drak;1 | x=4748.7001953125 y=-1427.700073242188 | size=1 | links=#33557(Zul'Drak to dragonblight):30 #40257(auto Zul'Drak;182):65
+#33557 | Zul'Drak to dragonblight§Zul'Drak nach Drachenöde§Zul'Drak to dragonblight | x=4729.5 y=-1403.5 | size=1 | links=#33558(dragonblight to Zul'Drak):68 #33556(auto Zul'Drak;1):30
+#35625 | auto Zul'Drak;2§auto Zul'Drak;2§auto Zul'Drak;2 | x=5437.80029296875 y=-1248.599975585938 | size=1 | links=#35627(Zuk'Drak to Crystalsong Forest):27 #40082(auto Zul'Drak;10):27 #40088(auto Zul'Drak;16):19 #40089(auto Zul'Drak;17):23
+#35627 | Zuk'Drak to Crystalsong Forest§Zuk'Drak nach Kristallsangwald§Zuk'Drak to Crystalsong Forest | x=5438.80029296875 y=-1220.800048828125 | size=1 | links=#35625(auto Zul'Drak;2):27 #35626(Crystal Song Forest to Zuk'Drak):41
+#37529 | auto Zul'Drak;3§auto Zul'Drak;3§auto Zul'Drak;3 | x=5075.39990234375 y=-4157.10009765625 | size=1 | links=#40206(auto Zul'Drak;133):56 #40207(zul'drak to grizzly hills east):41
+#38288 | auto Zul'Drak;4§auto Zul'Drak;4§auto Zul'Drak;4 | x=4663 y=-3343 | size=1 | links=#38289(Zul'Drak to Grizzly hills 3):21 #40150(auto Zul'Drak;77):116
+#38289 | Zul'Drak to Grizzly hills 3§Zul'Drak nach Grizzlyhügel 3§Zul'Drak to Grizzly hills 3 | x=4646.39990234375 y=-3357.400146484375 | size=1 | links=#38288(auto Zul'Drak;4):21 #38290(grizzly hills to zul'drak 3):19
+#39721 | drak'tharon keep meeting stone;zul'drak§Feste Drak'Tharon Versammlungsstein; Zul'drak§drak'tharon keep meeting stone;zul'drak | x=4765.30029296875 y=-2046.700073242188 | size=1 | links=#39725(auto Zul'Drak;6):6 #39726(auto Zul'Drak;7):11
+#39723 | drak'tharon keep dungeon entrance;zul'drak§Feste Drak'Tharon instanz eingang; Zul'drak§drak'tharon keep dungeon entrance;zul'drak | x=4774.5 y=-2025.200073242188 | size=1 | links=#39724(auto Zul'Drak;5):8
+#39724 | auto Zul'Drak;5§auto Zul'Drak;5§auto Zul'Drak;5 | x=4773.89990234375 y=-2033.599975585938 | size=1 | links=#39723(drak'tharon keep dungeon entrance;zul'drak):8 #39725(auto Zul'Drak;6):10 #40578(auto Zul'Drak;488):17
+#39725 | auto Zul'Drak;6§auto Zul'Drak;6§auto Zul'Drak;6 | x=4765.30029296875 y=-2040.400024414063 | size=1 | links=#39721(drak'tharon keep meeting stone;zul'drak):6 #39724(auto Zul'Drak;5):10
+#39726 | auto Zul'Drak;7§auto Zul'Drak;7§auto Zul'Drak;7 | x=4753.89990234375 y=-2045 | size=1 | links=#39721(drak'tharon keep meeting stone;zul'drak):11 #39727(auto Zul'Drak;8):33
+#39727 | auto Zul'Drak;8§auto Zul'Drak;8§auto Zul'Drak;8 | x=4720.80029296875 y=-2044.900024414063 | size=1 | links=#39726(auto Zul'Drak;7):33 #39728(auto Zul'Drak;9):18
+#39728 | auto Zul'Drak;9§auto Zul'Drak;9§auto Zul'Drak;9 | x=4702.39990234375 y=-2044.700073242188 | size=1 | links=#39727(auto Zul'Drak;8):18 #40004(grizzly hills to zul'drak west):24
+#40082 | auto Zul'Drak;10§auto Zul'Drak;10§auto Zul'Drak;10 | x=5461.5 y=-1262.800048828125 | size=1 | links=#35625(auto Zul'Drak;2):27 #40083(auto Zul'Drak;11):16
+#40083 | auto Zul'Drak;11§auto Zul'Drak;11§auto Zul'Drak;11 | x=5462 y=-1278.900024414063 | size=1 | links=#40082(auto Zul'Drak;10):16 #40084(auto Zul'Drak;12):23
+#40084 | auto Zul'Drak;12§auto Zul'Drak;12§auto Zul'Drak;12 | x=5461.60009765625 y=-1302.300048828125 | size=1 | links=#40083(auto Zul'Drak;11):23 #40085(auto Zul'Drak;13):32
+#40085 | auto Zul'Drak;13§auto Zul'Drak;13§auto Zul'Drak;13 | x=5476.60009765625 y=-1330.599975585938 | size=1 | links=#40084(auto Zul'Drak;12):32 #40086(auto Zul'Drak;14):36
+#40086 | auto Zul'Drak;14§auto Zul'Drak;14§auto Zul'Drak;14 | x=5474.89990234375 y=-1366.700073242188 | size=1 | links=#40085(auto Zul'Drak;13):36 #40087(auto Zul'Drak;15):33
+#40087 | auto Zul'Drak;15§auto Zul'Drak;15§auto Zul'Drak;15 | x=5476 y=-1399.700073242188 | size=1 | links=#40086(auto Zul'Drak;14):33
+#40088 | auto Zul'Drak;16§auto Zul'Drak;16§auto Zul'Drak;16 | x=5419.30029296875 y=-1253.400024414063 | size=1 | links=#35625(auto Zul'Drak;2):19
+#40089 | auto Zul'Drak;17§auto Zul'Drak;17§auto Zul'Drak;17 | x=5429.30029296875 y=-1270.099975585938 | size=1 | links=#35625(auto Zul'Drak;2):23 #40090(auto Zul'Drak;18):24
+#40090 | auto Zul'Drak;18§auto Zul'Drak;18§auto Zul'Drak;18 | x=5426.80029296875 y=-1294.099975585938 | size=1 | links=#40089(auto Zul'Drak;17):24 #40091(auto Zul'Drak;19):32
+#40091 | auto Zul'Drak;19§auto Zul'Drak;19§auto Zul'Drak;19 | x=5420 y=-1326.300048828125 | size=1 | links=#40090(auto Zul'Drak;18):32 #40092(auto Zul'Drak;20):18
+#40092 | auto Zul'Drak;20§auto Zul'Drak;20§auto Zul'Drak;20 | x=5406.89990234375 y=-1338.700073242188 | size=1 | links=#40091(auto Zul'Drak;19):18 #40093(auto Zul'Drak;21):17
+#40093 | auto Zul'Drak;21§auto Zul'Drak;21§auto Zul'Drak;21 | x=5395.30029296875 y=-1351.200073242188 | size=1 | links=#40092(auto Zul'Drak;20):17 #40094(auto Zul'Drak;22):31
+#40094 | auto Zul'Drak;22§auto Zul'Drak;22§auto Zul'Drak;22 | x=5366.60009765625 y=-1363.5 | size=1 | links=#40093(auto Zul'Drak;21):31 #40095(auto Zul'Drak;23):27
+#40095 | auto Zul'Drak;23§auto Zul'Drak;23§auto Zul'Drak;23 | x=5359.60009765625 y=-1389.900024414063 | size=1 | links=#40094(auto Zul'Drak;22):27 #40096(auto Zul'Drak;24):37
+#40096 | auto Zul'Drak;24§auto Zul'Drak;24§auto Zul'Drak;24 | x=5361.2001953125 y=-1427.800048828125 | size=1 | links=#40095(auto Zul'Drak;23):37 #40097(auto Zul'Drak;25):37
+#40097 | auto Zul'Drak;25§auto Zul'Drak;25§auto Zul'Drak;25 | x=5362.2001953125 y=-1465.599975585938 | size=1 | links=#40096(auto Zul'Drak;24):37
+#40098 | auto Zul'Drak;26§auto Zul'Drak;26§auto Zul'Drak;26 | x=5356.7001953125 y=-1541.700073242188 | size=1
+#40099 | auto Zul'Drak;27§auto Zul'Drak;27§auto Zul'Drak;27 | x=5392.60009765625 y=-1668.5 | size=1
+#40100 | auto Zul'Drak;28§auto Zul'Drak;28§auto Zul'Drak;28 | x=5359.60009765625 y=-1762.800048828125 | size=1 | links=#40101(auto Zul'Drak;29):33
+#40101 | auto Zul'Drak;29§auto Zul'Drak;29§auto Zul'Drak;29 | x=5339.2001953125 y=-1789.800048828125 | size=1 | links=#40100(auto Zul'Drak;28):33 #40329(auto Zul'Drak;247):26
+#40102 | auto Zul'Drak;30§auto Zul'Drak;30§auto Zul'Drak;30 | x=5374.39990234375 y=-1830.5 | size=1 | links=#40103(auto Zul'Drak;31):31
+#40103 | auto Zul'Drak;31§auto Zul'Drak;31§auto Zul'Drak;31 | x=5399.5 y=-1850.300048828125 | size=1 | links=#40102(auto Zul'Drak;30):31 #40104(auto Zul'Drak;32):37
+#40104 | auto Zul'Drak;32§auto Zul'Drak;32§auto Zul'Drak;32 | x=5428.60009765625 y=-1873.700073242188 | size=1 | links=#40103(auto Zul'Drak;31):37 #40105(auto Zul'Drak;33):27
+#40105 | auto Zul'Drak;33§auto Zul'Drak;33§auto Zul'Drak;33 | x=5438.5 y=-1899.700073242188 | size=1 | links=#40104(auto Zul'Drak;32):27 #40106(auto Zul'Drak;34):49
+#40106 | auto Zul'Drak;34§auto Zul'Drak;34§auto Zul'Drak;34 | x=5442.7001953125 y=-1948.900024414063 | size=1 | links=#40105(auto Zul'Drak;33):49 #40107(auto Zul'Drak;35):57 #40234(auto Zul'Drak;160):47
+#40107 | auto Zul'Drak;35§auto Zul'Drak;35§auto Zul'Drak;35 | x=5448.5 y=-2005.800048828125 | size=1 | links=#40106(auto Zul'Drak;34):57 #40108(auto Zul'Drak;36):84
+#40108 | auto Zul'Drak;36§auto Zul'Drak;36§auto Zul'Drak;36 | x=5448.30029296875 y=-2090 | size=1 | links=#40107(auto Zul'Drak;35):84 #40109(auto Zul'Drak;37):28 #40235(auto Zul'Drak;161):44
+#40109 | auto Zul'Drak;37§auto Zul'Drak;37§auto Zul'Drak;37 | x=5450.7001953125 y=-2118.699951171875 | size=1 | links=#40108(auto Zul'Drak;36):28 #40110(auto Zul'Drak;38):48
+#40110 | auto Zul'Drak;38§auto Zul'Drak;38§auto Zul'Drak;38 | x=5449.10009765625 y=-2166.800048828125 | size=1 | links=#40109(auto Zul'Drak;37):48 #40111(auto Zul'Drak;39):42
+#40111 | auto Zul'Drak;39§auto Zul'Drak;39§auto Zul'Drak;39 | x=5448.2001953125 y=-2209 | size=1 | links=#40110(auto Zul'Drak;38):42 #40112(auto Zul'Drak;40):33
+#40112 | auto Zul'Drak;40§auto Zul'Drak;40§auto Zul'Drak;40 | x=5447.39990234375 y=-2242.400146484375 | size=1 | links=#40111(auto Zul'Drak;39):33 #40113(auto Zul'Drak;41):30
+#40113 | auto Zul'Drak;41§auto Zul'Drak;41§auto Zul'Drak;41 | x=5448.5 y=-2273.10009765625 | size=1 | links=#40112(auto Zul'Drak;40):30 #40114(auto Zul'Drak;42):19
+#40114 | auto Zul'Drak;42§auto Zul'Drak;42§auto Zul'Drak;42 | x=5447.5 y=-2292.5 | size=1 | links=#40113(auto Zul'Drak;41):19 #40115(auto Zul'Drak;43):16
+#40115 | auto Zul'Drak;43§auto Zul'Drak;43§auto Zul'Drak;43 | x=5448.7001953125 y=-2309.400146484375 | size=1 | links=#40114(auto Zul'Drak;42):16 #40116(auto Zul'Drak;44):33
+#40116 | auto Zul'Drak;44§auto Zul'Drak;44§auto Zul'Drak;44 | x=5474 y=-2330.800048828125 | size=1 | links=#40115(auto Zul'Drak;43):33
+#40117 | auto Zul'Drak;45§auto Zul'Drak;45§auto Zul'Drak;45 | x=5454.529849170291 y=-2398.859639803374 | size=1
+#40118 | auto Zul'Drak;46§auto Zul'Drak;46§auto Zul'Drak;46 | x=5428 y=-2463.400146484375 | size=1
+#40119 | auto Zul'Drak;47§auto Zul'Drak;47§auto Zul'Drak;47 | x=5435.5 y=-2530.699951171875 | size=1 | links=#40120(auto Zul'Drak;48):21
+#40120 | auto Zul'Drak;48§auto Zul'Drak;48§auto Zul'Drak;48 | x=5438.60009765625 y=-2552.400146484375 | size=1 | links=#40119(auto Zul'Drak;47):21
+#40121 | auto Zul'Drak;49§auto Zul'Drak;49§auto Zul'Drak;49 | x=5448.7001953125 y=-2592.300048828125 | size=1
+#40122 | auto Zul'Drak;50§auto Zul'Drak;50§auto Zul'Drak;50 | x=5454 y=-2630.60009765625 | size=1
+#40123 | auto Zul'Drak;51§auto Zul'Drak;51§auto Zul'Drak;51 | x=5416.7001953125 y=-2631.900146484375 | size=1 | links=#40124(auto Zul'Drak;52):25
+#40124 | auto Zul'Drak;52§auto Zul'Drak;52§auto Zul'Drak;52 | x=5391.7001953125 y=-2632.800048828125 | size=1 | links=#40123(auto Zul'Drak;51):25 #40137(auto Zul'Drak;65):28
+#40125 | auto Zul'Drak;53§auto Zul'Drak;53§auto Zul'Drak;53 | x=5389.10009765625 y=-2605.400146484375 | size=1 | links=#40126(auto Zul'Drak;54):18
+#40126 | auto Zul'Drak;54§auto Zul'Drak;54§auto Zul'Drak;54 | x=5397.89990234375 y=-2588.699951171875 | size=1 | links=#40125(auto Zul'Drak;53):18 #40127(auto Zul'Drak;55):10
+#40127 | auto Zul'Drak;55§auto Zul'Drak;55§auto Zul'Drak;55 | x=5403 y=-2579.699951171875 | size=1 | links=#40126(auto Zul'Drak;54):10 #40128(auto Zul'Drak;56):28
+#40128 | auto Zul'Drak;56§auto Zul'Drak;56§auto Zul'Drak;56 | x=5431.80029296875 y=-2578.900146484375 | size=1 | links=#40127(auto Zul'Drak;55):28
+#40129 | auto Zul'Drak;57§auto Zul'Drak;57§auto Zul'Drak;57 | x=5468.30029296875 y=-2578.800048828125 | size=1 | links=#40130(auto Zul'Drak;58):20
+#40130 | auto Zul'Drak;58§auto Zul'Drak;58§auto Zul'Drak;58 | x=5488.60009765625 y=-2583 | size=1 | links=#40129(auto Zul'Drak;57):20 #40131(auto Zul'Drak;59):18
+#40131 | auto Zul'Drak;59§auto Zul'Drak;59§auto Zul'Drak;59 | x=5506.39990234375 y=-2586 | size=1 | links=#40130(auto Zul'Drak;58):18 #40132(auto Zul'Drak;60):25
+#40132 | auto Zul'Drak;60§auto Zul'Drak;60§auto Zul'Drak;60 | x=5512.89990234375 y=-2610.60009765625 | size=1 | links=#40131(auto Zul'Drak;59):25 #40133(auto Zul'Drak;61):25 #40209(auto Zul'Drak;135):21
+#40133 | auto Zul'Drak;61§auto Zul'Drak;61§auto Zul'Drak;61 | x=5509 y=-2635.900146484375 | size=1 | links=#40132(auto Zul'Drak;60):25 #40134(auto Zul'Drak;62):41
+#40134 | auto Zul'Drak;62§auto Zul'Drak;62§auto Zul'Drak;62 | x=5512.2001953125 y=-2677.300048828125 | size=1 | links=#40133(auto Zul'Drak;61):41
+#40135 | auto Zul'Drak;63§auto Zul'Drak;63§auto Zul'Drak;63 | x=5451.60009765625 y=-2672.699951171875 | size=1 | links=#40136(auto Zul'Drak;64):38
+#40136 | auto Zul'Drak;64§auto Zul'Drak;64§auto Zul'Drak;64 | x=5413.30029296875 y=-2676.60009765625 | size=1 | links=#40135(auto Zul'Drak;63):38
+#40137 | auto Zul'Drak;65§auto Zul'Drak;65§auto Zul'Drak;65 | x=5398.5 y=-2660.60009765625 | size=1 | links=#40124(auto Zul'Drak;52):28 #40208(auto Zul'Drak;134):27
+#40139 | auto Zul'Drak;66§auto Zul'Drak;66§auto Zul'Drak;66 | x=5355.10009765625 y=-2692.5 | size=1 | links=#40140(auto Zul'Drak;67):96 #40208(auto Zul'Drak;134):27
+#40140 | auto Zul'Drak;67§auto Zul'Drak;67§auto Zul'Drak;67 | x=5282.30029296875 y=-2756.199951171875 | size=1 | links=#40139(auto Zul'Drak;66):96
+#40141 | auto Zul'Drak;68§auto Zul'Drak;68§auto Zul'Drak;68 | x=5246.30029296875 y=-2785.699951171875 | size=1 | links=#40142(auto Zul'Drak;69):62
+#40142 | auto Zul'Drak;69§auto Zul'Drak;69§auto Zul'Drak;69 | x=5204.89990234375 y=-2832 | size=1 | links=#40141(auto Zul'Drak;68):62 #40143(auto Zul'Drak;70):58 #40151(auto Zul'Drak;78):25
+#40143 | auto Zul'Drak;70§auto Zul'Drak;70§auto Zul'Drak;70 | x=5167.5 y=-2876.5 | size=1 | links=#40142(auto Zul'Drak;69):58 #40144(auto Zul'Drak;71):26
+#40144 | auto Zul'Drak;71§auto Zul'Drak;71§auto Zul'Drak;71 | x=5145.5 y=-2891.5 | size=1 | links=#40143(auto Zul'Drak;70):26 #40145(auto Zul'Drak;72):49
+#40145 | auto Zul'Drak;72§auto Zul'Drak;72§auto Zul'Drak;72 | x=5105.10009765625 y=-2919.400146484375 | size=1 | links=#40144(auto Zul'Drak;71):49 #40146(auto Zul'Drak;73):115
+#40146 | auto Zul'Drak;73§auto Zul'Drak;73§auto Zul'Drak;73 | x=5020.2001953125 y=-2997 | size=1 | links=#40145(auto Zul'Drak;72):115 #40147(auto Zul'Drak;74):77 #40669(auto Zul'Drak;571):23
+#40147 | auto Zul'Drak;74§auto Zul'Drak;74§auto Zul'Drak;74 | x=4962.7001953125 y=-3049.5 | size=1 | links=#40146(auto Zul'Drak;73):77 #40148(auto Zul'Drak;75):96
+#40148 | auto Zul'Drak;75§auto Zul'Drak;75§auto Zul'Drak;75 | x=4891.60009765625 y=-3114.400146484375 | size=1 | links=#40147(auto Zul'Drak;74):96 #40149(auto Zul'Drak;76):83 #40676(auto Zul'Drak;578):45
+#40149 | auto Zul'Drak;76§auto Zul'Drak;76§auto Zul'Drak;76 | x=4830.2001953125 y=-3170.5 | size=1 | links=#40148(auto Zul'Drak;75):83 #40150(auto Zul'Drak;77):123
+#40150 | auto Zul'Drak;77§auto Zul'Drak;77§auto Zul'Drak;77 | x=4741.2001953125 y=-3256.60009765625 | size=1 | links=#38288(auto Zul'Drak;4):116 #40149(auto Zul'Drak;76):123
+#40151 | auto Zul'Drak;78§auto Zul'Drak;78§auto Zul'Drak;78 | x=5202.80029296875 y=-2857.900146484375 | size=1 | links=#40142(auto Zul'Drak;69):25 #40152(auto Zul'Drak;79):133
+#40152 | auto Zul'Drak;79§auto Zul'Drak;79§auto Zul'Drak;79 | x=5302.30029296875 y=-2946.60009765625 | size=1 | links=#40151(auto Zul'Drak;78):133 #40153(auto Zul'Drak;80):68
+#40153 | auto Zul'Drak;80§auto Zul'Drak;80§auto Zul'Drak;80 | x=5349.39990234375 y=-2996.60009765625 | size=1 | links=#40152(auto Zul'Drak;79):68 #40154(auto Zul'Drak;81):68 #40736(auto Zul'Drak;638):34
+#40154 | auto Zul'Drak;81§auto Zul'Drak;81§auto Zul'Drak;81 | x=5386.7001953125 y=-3053.800048828125 | size=1 | links=#40153(auto Zul'Drak;80):68 #40155(auto Zul'Drak;82):78
+#40155 | auto Zul'Drak;82§auto Zul'Drak;82§auto Zul'Drak;82 | x=5443 y=-3108.300048828125 | size=1 | links=#40154(auto Zul'Drak;81):78 #40156(auto Zul'Drak;83):50 #40777(auto Zul'Drak;674):44
+#40156 | auto Zul'Drak;83§auto Zul'Drak;83§auto Zul'Drak;83 | x=5481.39990234375 y=-3141.800048828125 | size=1 | links=#40155(auto Zul'Drak;82):50 #40157(auto Zul'Drak;84):53
+#40157 | auto Zul'Drak;84§auto Zul'Drak;84§auto Zul'Drak;84 | x=5520.7001953125 y=-3178.699951171875 | size=1 | links=#40156(auto Zul'Drak;83):53 #40158(auto Zul'Drak;85):41
+#40158 | auto Zul'Drak;85§auto Zul'Drak;85§auto Zul'Drak;85 | x=5550 y=-3208.699951171875 | size=1 | links=#40157(auto Zul'Drak;84):41 #40159(auto Zul'Drak;86):76
+#40159 | auto Zul'Drak;86§auto Zul'Drak;86§auto Zul'Drak;86 | x=5604.89990234375 y=-3261.400146484375 | size=1 | links=#40158(auto Zul'Drak;85):76 #40160(auto Zul'Drak;87):115 #40553(auto Zul'Drak;463):48 #40796(auto Zul'Drak;691):75
+#40160 | auto Zul'Drak;87§auto Zul'Drak;87§auto Zul'Drak;87 | x=5689.2001953125 y=-3340.10009765625 | size=1 | links=#40159(auto Zul'Drak;86):115 #40161(auto Zul'Drak;88):89
+#40161 | auto Zul'Drak;88§auto Zul'Drak;88§auto Zul'Drak;88 | x=5754.2001953125 y=-3402.300048828125 | size=1 | links=#40160(auto Zul'Drak;87):89 #40162(auto Zul'Drak;89):105 #40812(auto Zul'Drak;705):50
+#40162 | auto Zul'Drak;89§auto Zul'Drak;89§auto Zul'Drak;89 | x=5831.89990234375 y=-3473.900146484375 | size=1 | links=#40161(auto Zul'Drak;88):105 #40163(auto Zul'Drak;90):54 #40926(auto Zul'Drak;819):57
+#40163 | auto Zul'Drak;90§auto Zul'Drak;90§auto Zul'Drak;90 | x=5871.10009765625 y=-3511.800048828125 | size=1 | links=#40162(auto Zul'Drak;89):54 #40164(auto Zul'Drak;91):77
+#40164 | auto Zul'Drak;91§auto Zul'Drak;91§auto Zul'Drak;91 | x=5912.39990234375 y=-3577.900146484375 | size=1 | links=#40163(auto Zul'Drak;90):77 #40165(auto Zul'Drak;92):104 #40191(auto Zul'Drak;118):27
+#40165 | auto Zul'Drak;92§auto Zul'Drak;92§auto Zul'Drak;92 | x=5982.10009765625 y=-3656.300048828125 | size=1 | links=#40164(auto Zul'Drak;91):104 #40166(auto Zul'Drak;93):102 #40902(auto Zul'Drak;795):24
+#40166 | auto Zul'Drak;93§auto Zul'Drak;93§auto Zul'Drak;93 | x=6052.80029296875 y=-3731 | size=1 | links=#40165(auto Zul'Drak;92):102 #40167(auto Zul'Drak;94):42 #40984(auto Zul'Drak;877):42
+#40167 | auto Zul'Drak;94§auto Zul'Drak;94§auto Zul'Drak;94 | x=6082.10009765625 y=-3761.400146484375 | size=1 | links=#40166(auto Zul'Drak;93):42 #40168(auto Zul'Drak;95):60
+#40168 | auto Zul'Drak;95§auto Zul'Drak;95§auto Zul'Drak;95 | x=6124.2001953125 y=-3804.60009765625 | size=1 | links=#40167(auto Zul'Drak;94):60 #40169(auto Zul'Drak;96):59
+#40169 | auto Zul'Drak;96§auto Zul'Drak;96§auto Zul'Drak;96 | x=6168.80029296875 y=-3844.60009765625 | size=1 | links=#40168(auto Zul'Drak;95):59 #40170(auto Zul'Drak;97):38
+#40170 | auto Zul'Drak;97§auto Zul'Drak;97§auto Zul'Drak;97 | x=6195.2001953125 y=-3872.699951171875 | size=1 | links=#40169(auto Zul'Drak;96):38 #40171(auto Zul'Drak;98):42
+#40171 | auto Zul'Drak;98§auto Zul'Drak;98§auto Zul'Drak;98 | x=6223.7001953125 y=-3904.5 | size=1 | links=#40170(auto Zul'Drak;97):42 #40172(auto Zul'Drak;99):61 #41027(auto Zul'Drak;920):29
+#40172 | auto Zul'Drak;99§auto Zul'Drak;99§auto Zul'Drak;99 | x=6267 y=-3948.60009765625 | size=1 | links=#40171(auto Zul'Drak;98):61 #40173(auto Zul'Drak;100):68
+#40173 | auto Zul'Drak;100§auto Zul'Drak;100§auto Zul'Drak;100 | x=6314.80029296875 y=-3997 | size=1 | links=#40172(auto Zul'Drak;99):68 #40174(auto Zul'Drak;101):57
+#40174 | auto Zul'Drak;101§auto Zul'Drak;101§auto Zul'Drak;101 | x=6355.7001953125 y=-4037.400146484375 | size=1 | links=#40173(auto Zul'Drak;100):57 #40175(auto Zul'Drak;102):31
+#40175 | auto Zul'Drak;102§auto Zul'Drak;102§auto Zul'Drak;102 | x=6377.30029296875 y=-4059.699951171875 | size=1 | links=#40174(auto Zul'Drak;101):31 #40176(auto Zul'Drak;103):47
+#40176 | auto Zul'Drak;103§auto Zul'Drak;103§auto Zul'Drak;103 | x=6410.7001953125 y=-4093.699951171875 | size=1 | links=#40175(auto Zul'Drak;102):47 #40177(auto Zul'Drak;104):38
+#40177 | auto Zul'Drak;104§auto Zul'Drak;104§auto Zul'Drak;104 | x=6438.5 y=-4120.39990234375 | size=1 | links=#40176(auto Zul'Drak;103):38 #40178(auto Zul'Drak;105):24
+#40178 | auto Zul'Drak;105§auto Zul'Drak;105§auto Zul'Drak;105 | x=6450.89990234375 y=-4142.10009765625 | size=1 | links=#40177(auto Zul'Drak;104):24 #40179(auto Zul'Drak;106):15 #41017(auto Zul'Drak;910):45
+#40179 | auto Zul'Drak;106§auto Zul'Drak;106§auto Zul'Drak;106 | x=6461 y=-4153.89990234375 | size=1 | links=#40178(auto Zul'Drak;105):15 #40180(auto Zul'Drak;107):26
+#40180 | auto Zul'Drak;107§auto Zul'Drak;107§auto Zul'Drak;107 | x=6481 y=-4171.30029296875 | size=1 | links=#40179(auto Zul'Drak;106):26 #40181(auto Zul'Drak;108):33
+#40181 | auto Zul'Drak;108§auto Zul'Drak;108§auto Zul'Drak;108 | x=6510.2001953125 y=-4188.5 | size=1 | links=#40180(auto Zul'Drak;107):33 #40182(auto Zul'Drak;109):35
+#40182 | auto Zul'Drak;109§auto Zul'Drak;109§auto Zul'Drak;109 | x=6528.10009765625 y=-4219 | size=1 | links=#40181(auto Zul'Drak;108):35 #40183(auto Zul'Drak;110):46
+#40183 | auto Zul'Drak;110§auto Zul'Drak;110§auto Zul'Drak;110 | x=6558.60009765625 y=-4253.7001953125 | size=1 | links=#40182(auto Zul'Drak;109):46 #40184(auto Zul'Drak;111):67 #41048(auto Zul'Drak;941):17
+#40184 | auto Zul'Drak;111§auto Zul'Drak;111§auto Zul'Drak;111 | x=6607.30029296875 y=-4300.30029296875 | size=1 | links=#40183(auto Zul'Drak;110):67 #40185(auto Zul'Drak;112):46 #41048(auto Zul'Drak;941):51
+#40185 | auto Zul'Drak;112§auto Zul'Drak;112§auto Zul'Drak;112 | x=6643.2001953125 y=-4329.5 | size=1 | links=#40184(auto Zul'Drak;111):46 #41064(auto Zul'Drak;954):21 #41117(auto Zul'Drak;1001):42
+#40186 | auto Zul'Drak;113§auto Zul'Drak;113§auto Zul'Drak;113 | x=6669.10009765625 y=-4352.80029296875 | size=1 | links=#40187(auto Zul'Drak;114):58
+#40187 | auto Zul'Drak;114§auto Zul'Drak;114§auto Zul'Drak;114 | x=6711.39990234375 y=-4392.60009765625 | size=1 | links=#40186(auto Zul'Drak;113):58 #40188(auto Zul'Drak;115):38 #41120(auto Zul'Drak;1004):41
+#40188 | auto Zul'Drak;115§auto Zul'Drak;115§auto Zul'Drak;115 | x=6740.89990234375 y=-4416.89990234375 | size=1 | links=#40187(auto Zul'Drak;114):38 #40189(auto Zul'Drak;116):32
+#40189 | auto Zul'Drak;116§auto Zul'Drak;116§auto Zul'Drak;116 | x=6760.80029296875 y=-4442.30029296875 | size=1 | links=#40188(auto Zul'Drak;115):32 #40190(auto Zul'Drak;117):57
+#40190 | auto Zul'Drak;117§auto Zul'Drak;117§auto Zul'Drak;117 | x=6800.10009765625 y=-4484.89990234375 | size=1 | links=#40189(auto Zul'Drak;116):57 #41096(auto Zul'Drak;986):47
+#40191 | auto Zul'Drak;118§auto Zul'Drak;118§auto Zul'Drak;118 | x=5906.10009765625 y=-3604.60009765625 | size=1 | links=#40164(auto Zul'Drak;91):27 #40192(auto Zul'Drak;119):50
+#40192 | auto Zul'Drak;119§auto Zul'Drak;119§auto Zul'Drak;119 | x=5876.2001953125 y=-3645.60009765625 | size=1 | links=#40191(auto Zul'Drak;118):50
+#40193 | auto Zul'Drak;120§auto Zul'Drak;120§auto Zul'Drak;120 | x=5762.2001953125 y=-3760.5 | size=1 | links=#40194(auto Zul'Drak;121):61 #40899(auto Zul'Drak;792):25
+#40194 | auto Zul'Drak;121§auto Zul'Drak;121§auto Zul'Drak;121 | x=5717.7001953125 y=-3803 | size=1 | links=#40193(auto Zul'Drak;120):61 #40195(auto Zul'Drak;122):75 #40198(auto Zul'Drak;125):111
+#40195 | auto Zul'Drak;122§auto Zul'Drak;122§auto Zul'Drak;122 | x=5715.39990234375 y=-3878.5 | size=1 | links=#40194(auto Zul'Drak;121):75 #40196(auto Zul'Drak;123):74
+#40196 | auto Zul'Drak;123§auto Zul'Drak;123§auto Zul'Drak;123 | x=5714.10009765625 y=-3952.900146484375 | size=1 | links=#40195(auto Zul'Drak;122):74
+#40197 | auto Zul'Drak;124§auto Zul'Drak;124§auto Zul'Drak;124 | x=5714.60009765625 y=-4055.5 | size=1 | links=#40870(auto Zul'Drak;763):31
+#40198 | auto Zul'Drak;125§auto Zul'Drak;125§auto Zul'Drak;125 | x=5641.89990234375 y=-3885.199951171875 | size=1 | links=#40194(auto Zul'Drak;121):111 #40199(auto Zul'Drak;126):112 #40853(auto Zul'Drak;746):27
+#40199 | auto Zul'Drak;126§auto Zul'Drak;126§auto Zul'Drak;126 | x=5560.7001953125 y=-3963.60009765625 | size=1 | links=#40198(auto Zul'Drak;125):112 #40200(auto Zul'Drak;127):43
+#40200 | auto Zul'Drak;127§auto Zul'Drak;127§auto Zul'Drak;127 | x=5529.89990234375 y=-3994.900146484375 | size=1 | links=#40199(auto Zul'Drak;126):43 #40201(auto Zul'Drak;128):39
+#40201 | auto Zul'Drak;128§auto Zul'Drak;128§auto Zul'Drak;128 | x=5491.30029296875 y=-4004 | size=1 | links=#40200(auto Zul'Drak;127):39 #40202(auto Zul'Drak;129):167
+#40202 | auto Zul'Drak;129§auto Zul'Drak;129§auto Zul'Drak;129 | x=5323.5 y=-4008.10009765625 | size=1 | links=#40201(auto Zul'Drak;128):167 #40203(auto Zul'Drak;130):41 #40821(auto Zul'Drak;714):27
+#40203 | auto Zul'Drak;130§auto Zul'Drak;130§auto Zul'Drak;130 | x=5282.5 y=-4016.699951171875 | size=1 | links=#40202(auto Zul'Drak;129):41 #40204(auto Zul'Drak;131):82
+#40204 | auto Zul'Drak;131§auto Zul'Drak;131§auto Zul'Drak;131 | x=5213.60009765625 y=-4061.199951171875 | size=1 | links=#40203(auto Zul'Drak;130):82 #40205(auto Zul'Drak;132):39
+#40205 | auto Zul'Drak;132§auto Zul'Drak;132§auto Zul'Drak;132 | x=5181.80029296875 y=-4084.5 | size=1 | links=#40204(auto Zul'Drak;131):39 #40206(auto Zul'Drak;133):71 #40827(auto Zul'Drak;720):46 #40893(auto Zul'Drak;786):36
+#40206 | auto Zul'Drak;133§auto Zul'Drak;133§auto Zul'Drak;133 | x=5122.10009765625 y=-4124.7001953125 | size=1 | links=#37529(auto Zul'Drak;3):56 #40205(auto Zul'Drak;132):71 #40827(auto Zul'Drak;720):44 #40893(auto Zul'Drak;786):66
+#40207 | zul'drak to grizzly hills east§zul'drak nach grizzlyhügel ost§zul'drak to grizzly hills east | x=5042.7001953125 y=-4182.2001953125 | size=1 | links=#37529(auto Zul'Drak;3):41 #40004(grizzly hills to zul'drak west):2166
+#40208 | auto Zul'Drak;134§auto Zul'Drak;134§auto Zul'Drak;134 | x=5373.7001953125 y=-2672.10009765625 | size=1 | links=#40137(auto Zul'Drak;65):27 #40139(auto Zul'Drak;66):27
+#40209 | auto Zul'Drak;135§auto Zul'Drak;135§auto Zul'Drak;135 | x=5533.39990234375 y=-2618.300048828125 | size=1 | links=#40132(auto Zul'Drak;60):21 #40210(auto Zul'Drak;136):27
+#40210 | auto Zul'Drak;136§auto Zul'Drak;136§auto Zul'Drak;136 | x=5561.30029296875 y=-2619.199951171875 | size=1 | links=#40209(auto Zul'Drak;135):27 #40211(auto Zul'Drak;137):59
+#40211 | auto Zul'Drak;137§auto Zul'Drak;137§auto Zul'Drak;137 | x=5621.2001953125 y=-2619.400146484375 | size=1 | links=#40210(auto Zul'Drak;136):59 #40212(auto Zul'Drak;138):58
+#40212 | auto Zul'Drak;138§auto Zul'Drak;138§auto Zul'Drak;138 | x=5679.80029296875 y=-2618.5 | size=1 | links=#40211(auto Zul'Drak;137):58 #40213(auto Zul'Drak;139):67
+#40213 | auto Zul'Drak;139§auto Zul'Drak;139§auto Zul'Drak;139 | x=5747.2001953125 y=-2618.400146484375 | size=1 | links=#40212(auto Zul'Drak;138):67 #40214(auto Zul'Drak;140):89 #40512(auto Zul'Drak;424):24
+#40214 | auto Zul'Drak;140§auto Zul'Drak;140§auto Zul'Drak;140 | x=5836.60009765625 y=-2618.60009765625 | size=1 | links=#40213(auto Zul'Drak;139):89
+#40215 | auto Zul'Drak;141§auto Zul'Drak;141§auto Zul'Drak;141 | x=5928.89990234375 y=-2621 | size=1
+#40216 | auto Zul'Drak;142§auto Zul'Drak;142§auto Zul'Drak;142 | x=6003.89990234375 y=-2619.5 | size=1 | links=#40217(auto Zul'Drak;143):31 #40487(auto Zul'Drak;399):15
+#40217 | auto Zul'Drak;143§auto Zul'Drak;143§auto Zul'Drak;143 | x=6035.60009765625 y=-2619.300048828125 | size=1 | links=#40216(auto Zul'Drak;142):31
+#40218 | auto Zul'Drak;144§auto Zul'Drak;144§auto Zul'Drak;144 | x=6085.30029296875 y=-2619.199951171875 | size=1 | links=#40219(auto Zul'Drak;145):29
+#40219 | auto Zul'Drak;145§auto Zul'Drak;145§auto Zul'Drak;145 | x=6114.60009765625 y=-2617.900146484375 | size=1 | links=#40218(auto Zul'Drak;144):29 #40220(auto Zul'Drak;146):17
+#40220 | auto Zul'Drak;146§auto Zul'Drak;146§auto Zul'Drak;146 | x=6132.10009765625 y=-2616.5 | size=1 | links=#40219(auto Zul'Drak;145):17 #40221(auto Zul'Drak;147):19
+#40221 | auto Zul'Drak;147§auto Zul'Drak;147§auto Zul'Drak;147 | x=6150.10009765625 y=-2624.60009765625 | size=1 | links=#40220(auto Zul'Drak;146):19 #40222(auto Zul'Drak;148):10
+#40222 | auto Zul'Drak;148§auto Zul'Drak;148§auto Zul'Drak;148 | x=6160 y=-2627.400146484375 | size=1 | links=#40221(auto Zul'Drak;147):10 #40223(auto Zul'Drak;149):24
+#40223 | auto Zul'Drak;149§auto Zul'Drak;149§auto Zul'Drak;149 | x=6183.60009765625 y=-2621 | size=1 | links=#40222(auto Zul'Drak;148):24
+#40224 | auto Zul'Drak;150§auto Zul'Drak;150§auto Zul'Drak;150 | x=6214.10009765625 y=-2618.400146484375 | size=1 | links=#40225(auto Zul'Drak;151):10
+#40225 | auto Zul'Drak;151§auto Zul'Drak;151§auto Zul'Drak;151 | x=6224.2001953125 y=-2620.199951171875 | size=1 | links=#40224(auto Zul'Drak;150):10 #40226(auto Zul'Drak;152):12
+#40226 | auto Zul'Drak;152§auto Zul'Drak;152§auto Zul'Drak;152 | x=6236.7001953125 y=-2621.199951171875 | size=1 | links=#40225(auto Zul'Drak;151):12
+#40227 | auto Zul'Drak;153§auto Zul'Drak;153§auto Zul'Drak;153 | x=5758 y=-2037.900024414063 | size=1 | links=#40228(auto Zul'Drak;154):54
+#40228 | auto Zul'Drak;154§auto Zul'Drak;154§auto Zul'Drak;154 | x=5718.7001953125 y=-2075.900146484375 | size=1 | links=#40227(auto Zul'Drak;153):54 #40229(auto Zul'Drak;155):92
+#40229 | auto Zul'Drak;155§auto Zul'Drak;155§auto Zul'Drak;155 | x=5643.5 y=-2129.300048828125 | size=1 | links=#40228(auto Zul'Drak;154):92 #40230(auto Zul'Drak;156):46
+#40230 | auto Zul'Drak;156§auto Zul'Drak;156§auto Zul'Drak;156 | x=5598.10009765625 y=-2120.5 | size=1 | links=#40229(auto Zul'Drak;155):46 #40231(auto Zul'Drak;157):61
+#40231 | auto Zul'Drak;157§auto Zul'Drak;157§auto Zul'Drak;157 | x=5570 y=-2065.699951171875 | size=1 | links=#40230(auto Zul'Drak;156):61 #40232(auto Zul'Drak;158):47
+#40232 | auto Zul'Drak;158§auto Zul'Drak;158§auto Zul'Drak;158 | x=5557.5 y=-2019.700073242188 | size=1 | links=#40231(auto Zul'Drak;157):47 #40233(auto Zul'Drak;159):57
+#40233 | auto Zul'Drak;159§auto Zul'Drak;159§auto Zul'Drak;159 | x=5525.80029296875 y=-1972.300048828125 | size=1 | links=#40232(auto Zul'Drak;158):57 #40234(auto Zul'Drak;160):39 #40330(auto Zul'Drak;248):33
+#40234 | auto Zul'Drak;160§auto Zul'Drak;160§auto Zul'Drak;160 | x=5489.60009765625 y=-1955.700073242188 | size=1 | links=#40106(auto Zul'Drak;34):47 #40233(auto Zul'Drak;159):39
+#40235 | auto Zul'Drak;161§auto Zul'Drak;161§auto Zul'Drak;161 | x=5418.39990234375 y=-2056.60009765625 | size=1 | links=#40108(auto Zul'Drak;36):44 #40236(auto Zul'Drak;162):47
+#40236 | auto Zul'Drak;162§auto Zul'Drak;162§auto Zul'Drak;162 | x=5371.10009765625 y=-2053.60009765625 | size=1 | links=#40235(auto Zul'Drak;161):47 #40237(auto Zul'Drak;163):21
+#40237 | auto Zul'Drak;163§auto Zul'Drak;163§auto Zul'Drak;163 | x=5350.39990234375 y=-2058.400146484375 | size=1 | links=#40236(auto Zul'Drak;162):21 #40238(auto Zul'Drak;164):32
+#40238 | auto Zul'Drak;164§auto Zul'Drak;164§auto Zul'Drak;164 | x=5329.60009765625 y=-2032.900024414063 | size=1 | links=#40237(auto Zul'Drak;163):32 #40239(auto Zul'Drak;165):19
+#40239 | auto Zul'Drak;165§auto Zul'Drak;165§auto Zul'Drak;165 | x=5310.39990234375 y=-2038.099975585938 | size=1 | links=#40238(auto Zul'Drak;164):19 #40240(auto Zul'Drak;166):38
+#40240 | auto Zul'Drak;166§auto Zul'Drak;166§auto Zul'Drak;166 | x=5271.80029296875 y=-2041.700073242188 | size=1 | links=#40239(auto Zul'Drak;165):38 #40241(auto Zul'Drak;167):48
+#40241 | auto Zul'Drak;167§auto Zul'Drak;167§auto Zul'Drak;167 | x=5223.7001953125 y=-2041.700073242188 | size=1 | links=#40240(auto Zul'Drak;166):48 #40242(auto Zul'Drak;168):82
+#40242 | auto Zul'Drak;168§auto Zul'Drak;168§auto Zul'Drak;168 | x=5141.7001953125 y=-2048.699951171875 | size=1 | links=#40241(auto Zul'Drak;167):82 #40243(auto Zul'Drak;169):59 #40263(auto Zul'Drak;188):24 #40270(auto Zul'Drak;195):39
+#40243 | auto Zul'Drak;169§auto Zul'Drak;169§auto Zul'Drak;169 | x=5082.60009765625 y=-2051.400146484375 | size=1 | links=#40242(auto Zul'Drak;168):59 #40244(auto Zul'Drak;170):65 #40328(auto Zul'Drak;246):36
+#40244 | auto Zul'Drak;170§auto Zul'Drak;170§auto Zul'Drak;170 | x=5017.10009765625 y=-2050.699951171875 | size=1 | links=#40243(auto Zul'Drak;169):65 #40245(auto Zul'Drak;171):89 #40608(auto Zul'Drak;518):28
+#40245 | auto Zul'Drak;171§auto Zul'Drak;171§auto Zul'Drak;171 | x=4927.30029296875 y=-2050.60009765625 | size=1 | links=#40244(auto Zul'Drak;170):89 #40248(auto Zul'Drak;173):65 #40574(auto Zul'Drak;484):41
+#40247 | auto Zul'Drak;172§auto Zul'Drak;172§auto Zul'Drak;172 | x=4914.7001953125 y=-2128.800048828125 | size=1 | links=#40579(auto Zul'Drak;489):30
+#40248 | auto Zul'Drak;173§auto Zul'Drak;173§auto Zul'Drak;173 | x=4913.10009765625 y=-1987 | size=1 | links=#40245(auto Zul'Drak;171):65 #40249(auto Zul'Drak;174):76
+#40249 | auto Zul'Drak;174§auto Zul'Drak;174§auto Zul'Drak;174 | x=4913 y=-1910.599975585938 | size=1 | links=#40248(auto Zul'Drak;173):76 #40250(auto Zul'Drak;175):67
+#40250 | auto Zul'Drak;175§auto Zul'Drak;175§auto Zul'Drak;175 | x=4912.89990234375 y=-1843.5 | size=1 | links=#40249(auto Zul'Drak;174):67 #40251(auto Zul'Drak;176):70
+#40251 | auto Zul'Drak;176§auto Zul'Drak;176§auto Zul'Drak;176 | x=4913.5 y=-1773.300048828125 | size=1 | links=#40250(auto Zul'Drak;175):70
+#40252 | auto Zul'Drak;177§auto Zul'Drak;177§auto Zul'Drak;177 | x=4914.80029296875 y=-1695.200073242188 | size=1 | links=#40253(auto Zul'Drak;178):71
+#40253 | auto Zul'Drak;178§auto Zul'Drak;178§auto Zul'Drak;178 | x=4917.39990234375 y=-1623.800048828125 | size=1 | links=#40252(auto Zul'Drak;177):71 #40254(auto Zul'Drak;179):50
+#40254 | auto Zul'Drak;179§auto Zul'Drak;179§auto Zul'Drak;179 | x=4910.2001953125 y=-1573.400024414063 | size=1 | links=#40253(auto Zul'Drak;178):50 #40255(auto Zul'Drak;180):48
+#40255 | auto Zul'Drak;180§auto Zul'Drak;180§auto Zul'Drak;180 | x=4876.10009765625 y=-1539.300048828125 | size=1 | links=#40254(auto Zul'Drak;179):48 #40256(auto Zul'Drak;181):63
+#40256 | auto Zul'Drak;181§auto Zul'Drak;181§auto Zul'Drak;181 | x=4829.60009765625 y=-1496.5 | size=1 | links=#40255(auto Zul'Drak;180):63 #40257(auto Zul'Drak;182):40
+#40257 | auto Zul'Drak;182§auto Zul'Drak;182§auto Zul'Drak;182 | x=4799.80029296875 y=-1469.099975585938 | size=1 | links=#33556(auto Zul'Drak;1):65 #40256(auto Zul'Drak;181):40
+#40258 | auto Zul'Drak;183§auto Zul'Drak;183§auto Zul'Drak;183 | x=5210.60009765625 y=-1310.700073242188 | size=1 | links=#40259(auto Zul'Drak;184):14
+#40259 | auto Zul'Drak;184§auto Zul'Drak;184§auto Zul'Drak;184 | x=5215.60009765625 y=-1324.200073242188 | size=1 | links=#40258(auto Zul'Drak;183):14 #40260(auto Zul'Drak;185):14
+#40260 | auto Zul'Drak;185§auto Zul'Drak;185§auto Zul'Drak;185 | x=5229.099820336661 y=-1328.794230270667 | size=1 | links=#40259(auto Zul'Drak;184):14 #40261(auto Zul'Drak;186):26
+#40261 | auto Zul'Drak;186§auto Zul'Drak;186§auto Zul'Drak;186 | x=5249.39990234375 y=-1346.099975585938 | size=1 | links=#40260(auto Zul'Drak;185):26 #44589(auto Zul'Drak;1023):50
+#40262 | auto Zul'Drak;187§auto Zul'Drak;187§auto Zul'Drak;187 | x=5318.5 y=-1411.099975585938 | size=1
+#40263 | auto Zul'Drak;188§auto Zul'Drak;188§auto Zul'Drak;188 | x=5160 y=-2064.800048828125 | size=1 | links=#40242(auto Zul'Drak;168):24 #40264(auto Zul'Drak;189):14
+#40264 | auto Zul'Drak;189§auto Zul'Drak;189§auto Zul'Drak;189 | x=5160.89990234375 y=-2079.60009765625 | size=1 | links=#40263(auto Zul'Drak;188):14 #40265(auto Zul'Drak;190):55
+#40265 | auto Zul'Drak;190§auto Zul'Drak;190§auto Zul'Drak;190 | x=5158.2001953125 y=-2135.400146484375 | size=1 | links=#40264(auto Zul'Drak;189):55
+#40266 | auto Zul'Drak;191§auto Zul'Drak;191§auto Zul'Drak;191 | x=5143.89990234375 y=-2193 | size=1
+#40267 | auto Zul'Drak;192§auto Zul'Drak;192§auto Zul'Drak;192 | x=5166.89990234375 y=-2194.300048828125 | size=1 | links=#40268(auto Zul'Drak;193):20
+#40268 | auto Zul'Drak;193§auto Zul'Drak;193§auto Zul'Drak;193 | x=5182.10009765625 y=-2208.5 | size=1 | links=#40267(auto Zul'Drak;192):20
+#40269 | auto Zul'Drak;194§auto Zul'Drak;194§auto Zul'Drak;194 | x=5130.5 y=-2203.699951171875 | size=1
+#40270 | auto Zul'Drak;195§auto Zul'Drak;195§auto Zul'Drak;195 | x=5158.80029296875 y=-2013.099975585938 | size=1 | links=#40242(auto Zul'Drak;168):39
+#40271 | auto Zul'Drak;196§auto Zul'Drak;196§auto Zul'Drak;196 | x=5177.39990234375 y=-1964.900024414063 | size=1 | links=#40272(auto Zul'Drak;197):48
+#40272 | auto Zul'Drak;197§auto Zul'Drak;197§auto Zul'Drak;197 | x=5198.89990234375 y=-1921.800048828125 | size=1 | links=#40271(auto Zul'Drak;196):48
+#40275 | auto Zul'Drak;198§auto Zul'Drak;198§auto Zul'Drak;198 | x=5176.2001953125 y=-1675.5 | size=1 | links=#40276(auto Zul'Drak;199):18 #40285(teleport to zeramas;reliquary of agony;zul'drak):9
+#40276 | auto Zul'Drak;199§auto Zul'Drak;199§auto Zul'Drak;199 | x=5186.30029296875 y=-1691.099975585938 | size=1 | links=#40275(auto Zul'Drak;198):18 #40277(auto Zul'Drak;200):17
+#40277 | auto Zul'Drak;200§auto Zul'Drak;200§auto Zul'Drak;200 | x=5195.5 y=-1706.200073242188 | size=1 | links=#40276(auto Zul'Drak;199):17
+#40278 | auto Zul'Drak;201§auto Zul'Drak;201§auto Zul'Drak;201 | x=5252.30029296875 y=-1822.800048828125 | size=1 | links=#40279(auto Zul'Drak;202):29 #40280(auto Zul'Drak;203):49
+#40279 | auto Zul'Drak;202§auto Zul'Drak;202§auto Zul'Drak;202 | x=5245.80029296875 y=-1851.800048828125 | size=1 | links=#40278(auto Zul'Drak;201):29
+#40280 | auto Zul'Drak;203§auto Zul'Drak;203§auto Zul'Drak;203 | x=5275.89990234375 y=-1866.200073242188 | size=1 | links=#40278(auto Zul'Drak;201):49
+#40281 | auto Zul'Drak;204§auto Zul'Drak;204§auto Zul'Drak;204 | x=5295.30029296875 y=-1950 | size=1
+#40285 | teleport to zeramas;reliquary of agony;zul'drak§Teleport nach Zeramas; Reliquie der Pein; Zul'drak§teleport to zeramas;reliquary of agony;zul'drak | x=5172.10009765625 y=-1667.200073242188 | size=1 | links=#40275(auto Zul'Drak;198):9
+#40286 | teleport to reliquary of agony;zeramas;zul'drak§Teleport zur Reliquie der Pein;zeramas;zul'drak§teleport to reliquary of agony;zeramas;zul'drak | x=5175.30029296875 y=-1665.700073242188 | size=1 | links=#40287(auto Zul'Drak;205):10
+#40287 | auto Zul'Drak;205§auto Zul'Drak;205§auto Zul'Drak;205 | x=5174.60009765625 y=-1654.900024414063 | size=1 | links=#40286(teleport to reliquary of agony;zeramas;zul'drak):10 #40288(auto Zul'Drak;206):16
+#40288 | auto Zul'Drak;206§auto Zul'Drak;206§auto Zul'Drak;206 | x=5180.10009765625 y=-1639.099975585938 | size=1 | links=#40287(auto Zul'Drak;205):16 #40289(auto Zul'Drak;207):23
+#40289 | auto Zul'Drak;207§auto Zul'Drak;207§auto Zul'Drak;207 | x=5186 y=-1616.599975585938 | size=1 | links=#40288(auto Zul'Drak;206):23 #40290(auto Zul'Drak;208):12
+#40290 | auto Zul'Drak;208§auto Zul'Drak;208§auto Zul'Drak;208 | x=5189.2001953125 y=-1604.900024414063 | size=1 | links=#40289(auto Zul'Drak;207):12 #40291(auto Zul'Drak;209):21 #40308(auto Zul'Drak;226):17
+#40291 | auto Zul'Drak;209§auto Zul'Drak;209§auto Zul'Drak;209 | x=5168.2001953125 y=-1602.700073242188 | size=1 | links=#40290(auto Zul'Drak;208):21 #40292(auto Zul'Drak;210):10
+#40292 | auto Zul'Drak;210§auto Zul'Drak;210§auto Zul'Drak;210 | x=5157.39990234375 y=-1604.099975585938 | size=1 | links=#40291(auto Zul'Drak;209):10 #40293(auto Zul'Drak;211):30
+#40293 | auto Zul'Drak;211§auto Zul'Drak;211§auto Zul'Drak;211 | x=5129.89990234375 y=-1618.200073242188 | size=1 | links=#40292(auto Zul'Drak;210):30 #40294(auto Zul'Drak;212):17
+#40294 | auto Zul'Drak;212§auto Zul'Drak;212§auto Zul'Drak;212 | x=5118.5 y=-1632.099975585938 | size=1 | links=#40293(auto Zul'Drak;211):17 #40295(auto Zul'Drak;213):36
+#40295 | auto Zul'Drak;213§auto Zul'Drak;213§auto Zul'Drak;213 | x=5108.7001953125 y=-1667.400024414063 | size=1 | links=#40294(auto Zul'Drak;212):36 #40296(auto Zul'Drak;214):10
+#40296 | auto Zul'Drak;214§auto Zul'Drak;214§auto Zul'Drak;214 | x=5108.89990234375 y=-1677.700073242188 | size=1 | links=#40295(auto Zul'Drak;213):10 #40297(auto Zul'Drak;215):32
+#40297 | auto Zul'Drak;215§auto Zul'Drak;215§auto Zul'Drak;215 | x=5121.80029296875 y=-1707.400024414063 | size=1 | links=#40296(auto Zul'Drak;214):32 #40298(auto Zul'Drak;216):19
+#40298 | auto Zul'Drak;216§auto Zul'Drak;216§auto Zul'Drak;216 | x=5136.80029296875 y=-1720.200073242188 | size=1 | links=#40297(auto Zul'Drak;215):19 #40299(auto Zul'Drak;217):32
+#40299 | auto Zul'Drak;217§auto Zul'Drak;217§auto Zul'Drak;217 | x=5167.2001953125 y=-1730.800048828125 | size=1 | links=#40298(auto Zul'Drak;216):32 #40300(auto Zul'Drak;218):17
+#40300 | auto Zul'Drak;218§auto Zul'Drak;218§auto Zul'Drak;218 | x=5184.60009765625 y=-1728.900024414063 | size=1 | links=#40299(auto Zul'Drak;217):17 #40301(auto Zul'Drak;219):37
+#40301 | auto Zul'Drak;219§auto Zul'Drak;219§auto Zul'Drak;219 | x=5217.2001953125 y=-1711.200073242188 | size=1 | links=#40300(auto Zul'Drak;218):37 #40302(auto Zul'Drak;220):11
+#40302 | auto Zul'Drak;220§auto Zul'Drak;220§auto Zul'Drak;220 | x=5225.30029296875 y=-1703 | size=1 | links=#40301(auto Zul'Drak;219):11 #40303(auto Zul'Drak;221):22
+#40303 | auto Zul'Drak;221§auto Zul'Drak;221§auto Zul'Drak;221 | x=5235.60009765625 y=-1683.200073242188 | size=1 | links=#40302(auto Zul'Drak;220):22 #40304(auto Zul'Drak;222):60 #40305(auto Zul'Drak;223):14
+#40304 | auto Zul'Drak;222§auto Zul'Drak;222§auto Zul'Drak;222 | x=5293.7001953125 y=-1699.800048828125 | size=1 | links=#40303(auto Zul'Drak;221):60
+#40305 | auto Zul'Drak;223§auto Zul'Drak;223§auto Zul'Drak;223 | x=5236.2001953125 y=-1668.599975585938 | size=1 | links=#40303(auto Zul'Drak;221):14 #40306(auto Zul'Drak;224):14
+#40306 | auto Zul'Drak;224§auto Zul'Drak;224§auto Zul'Drak;224 | x=5235.2001953125 y=-1654.400024414063 | size=1 | links=#40305(auto Zul'Drak;223):14 #40307(auto Zul'Drak;225):32
+#40307 | auto Zul'Drak;225§auto Zul'Drak;225§auto Zul'Drak;225 | x=5219.60009765625 y=-1625.400024414063 | size=1 | links=#40306(auto Zul'Drak;224):32 #40308(auto Zul'Drak;226):19
+#40308 | auto Zul'Drak;226§auto Zul'Drak;226§auto Zul'Drak;226 | x=5205.39990234375 y=-1611.599975585938 | size=1 | links=#40290(auto Zul'Drak;208):17 #40307(auto Zul'Drak;225):19
+#40309 | auto Zul'Drak;227§auto Zul'Drak;227§auto Zul'Drak;227 | x=5189.80029296875 y=-1739.200073242188 | size=1
+#40310 | auto Zul'Drak;228§auto Zul'Drak;228§auto Zul'Drak;228 | x=5067.2001953125 y=-1730 | size=1 | links=#40311(auto Zul'Drak;229):19
+#40311 | auto Zul'Drak;229§auto Zul'Drak;229§auto Zul'Drak;229 | x=5049.5 y=-1738.700073242188 | size=1 | links=#40310(auto Zul'Drak;228):19 #40312(auto Zul'Drak;230):23
+#40312 | auto Zul'Drak;230§auto Zul'Drak;230§auto Zul'Drak;230 | x=5026.30029296875 y=-1737.800048828125 | size=1 | links=#40311(auto Zul'Drak;229):23 #40313(auto Zul'Drak;231):32
+#40313 | auto Zul'Drak;231§auto Zul'Drak;231§auto Zul'Drak;231 | x=4994.10009765625 y=-1731.599975585938 | size=1 | links=#40312(auto Zul'Drak;230):32 #40314(auto Zul'Drak;232):19
+#40314 | auto Zul'Drak;232§auto Zul'Drak;232§auto Zul'Drak;232 | x=4986.80029296875 y=-1749.800048828125 | size=1 | links=#40313(auto Zul'Drak;231):19 #40315(auto Zul'Drak;233):12
+#40315 | auto Zul'Drak;233§auto Zul'Drak;233§auto Zul'Drak;233 | x=4984.89990234375 y=-1762.5 | size=1 | links=#40314(auto Zul'Drak;232):12
+#40316 | auto Zul'Drak;234§auto Zul'Drak;234§auto Zul'Drak;234 | x=5024.80029296875 y=-1826.700073242188 | size=1 | links=#40323(auto Zul'Drak;241):28
+#40317 | auto Zul'Drak;235§auto Zul'Drak;235§auto Zul'Drak;235 | x=5089.10009765625 y=-1833.099975585938 | size=1
+#40318 | auto Zul'Drak;236§auto Zul'Drak;236§auto Zul'Drak;236 | x=5206.60009765625 y=-1847.599975585938 | size=1
+#40319 | auto Zul'Drak;237§auto Zul'Drak;237§auto Zul'Drak;237 | x=5311.2001953125 y=-1639.900024414063 | size=1 | links=#40320(auto Zul'Drak;238):35
+#40320 | auto Zul'Drak;238§auto Zul'Drak;238§auto Zul'Drak;238 | x=5300.10009765625 y=-1606.5 | size=1 | links=#40319(auto Zul'Drak;237):35
+#40321 | auto Zul'Drak;239§auto Zul'Drak;239§auto Zul'Drak;239 | x=5241.60009765625 y=-1566.800048828125 | size=1
+#40322 | auto Zul'Drak;240§auto Zul'Drak;240§auto Zul'Drak;240 | x=5263.60009765625 y=-1475 | size=1
+#40323 | auto Zul'Drak;241§auto Zul'Drak;241§auto Zul'Drak;241 | x=5005.39990234375 y=-1847.300048828125 | size=1 | links=#40316(auto Zul'Drak;234):28 #40324(auto Zul'Drak;242):24
+#40324 | auto Zul'Drak;242§auto Zul'Drak;242§auto Zul'Drak;242 | x=4989.10009765625 y=-1865.599975585938 | size=1 | links=#40323(auto Zul'Drak;241):24
+#40325 | auto Zul'Drak;243§auto Zul'Drak;243§auto Zul'Drak;243 | x=5013.30029296875 y=-1984.099975585938 | size=1 | links=#40326(auto Zul'Drak;244):36
+#40326 | auto Zul'Drak;244§auto Zul'Drak;244§auto Zul'Drak;244 | x=5036.89990234375 y=-2012.300048828125 | size=1 | links=#40325(auto Zul'Drak;243):36 #40327(auto Zul'Drak;245):25
+#40327 | auto Zul'Drak;245§auto Zul'Drak;245§auto Zul'Drak;245 | x=5046.89990234375 y=-2035.400024414063 | size=1 | links=#40326(auto Zul'Drak;244):25 #40328(auto Zul'Drak;246):9
+#40328 | auto Zul'Drak;246§auto Zul'Drak;246§auto Zul'Drak;246 | x=5046.30029296875 y=-2045 | size=1 | links=#40243(auto Zul'Drak;169):36 #40327(auto Zul'Drak;245):9
+#40329 | auto Zul'Drak;247§auto Zul'Drak;247§auto Zul'Drak;247 | x=5318 y=-1806.400024414063 | size=1 | links=#40101(auto Zul'Drak;29):26
+#40330 | auto Zul'Drak;248§auto Zul'Drak;248§auto Zul'Drak;248 | x=5522.30029296875 y=-1938.700073242188 | size=1 | links=#40233(auto Zul'Drak;159):33 #40331(auto Zul'Drak;249):32
+#40331 | auto Zul'Drak;249§auto Zul'Drak;249§auto Zul'Drak;249 | x=5523.10009765625 y=-1905.900024414063 | size=1 | links=#40330(auto Zul'Drak;248):32 #40332(auto Zul'Drak;250):41 #40333(auto Zul'Drak;251):25
+#40332 | auto Zul'Drak;250§auto Zul'Drak;250§auto Zul'Drak;250 | x=5541.30029296875 y=-1868.5 | size=1 | links=#40331(auto Zul'Drak;249):41
+#40333 | auto Zul'Drak;251§auto Zul'Drak;251§auto Zul'Drak;251 | x=5543 y=-1890.099975585938 | size=1 | links=#40331(auto Zul'Drak;249):25 #40334(auto Zul'Drak;252):29
+#40334 | auto Zul'Drak;252§auto Zul'Drak;252§auto Zul'Drak;252 | x=5572.30029296875 y=-1890.400024414063 | size=1 | links=#40333(auto Zul'Drak;251):29 #40335(auto Zul'Drak;253):27
+#40335 | auto Zul'Drak;253§auto Zul'Drak;253§auto Zul'Drak;253 | x=5599.30029296875 y=-1897.5 | size=1 | links=#40334(auto Zul'Drak;252):27 #40429(auto Zul'Drak;341):23
+#40336 | auto Zul'Drak;254§auto Zul'Drak;254§auto Zul'Drak;254 | x=5795.5 y=-1732 | size=1 | links=#40337(auto Zul'Drak;255):39
+#40337 | auto Zul'Drak;255§auto Zul'Drak;255§auto Zul'Drak;255 | x=5831.30029296875 y=-1715.5 | size=1 | links=#40336(auto Zul'Drak;254):39
+#40338 | auto Zul'Drak;256§auto Zul'Drak;256§auto Zul'Drak;256 | x=5949 y=-1653.700073242188 | size=1
+#40339 | auto Zul'Drak;257§auto Zul'Drak;257§auto Zul'Drak;257 | x=5896.80029296875 y=-1767.300048828125 | size=1 | links=#40340(auto Zul'Drak;258):18
+#40340 | auto Zul'Drak;258§auto Zul'Drak;258§auto Zul'Drak;258 | x=5914.80029296875 y=-1766.099975585938 | size=1 | links=#40339(auto Zul'Drak;257):18 #40341(auto Zul'Drak;259):29
+#40341 | auto Zul'Drak;259§auto Zul'Drak;259§auto Zul'Drak;259 | x=5939.2001953125 y=-1782.800048828125 | size=1 | links=#40340(auto Zul'Drak;258):29 #40342(auto Zul'Drak;260):40
+#40342 | auto Zul'Drak;260§auto Zul'Drak;260§auto Zul'Drak;260 | x=5949.80029296875 y=-1822.200073242188 | size=1 | links=#40341(auto Zul'Drak;259):40
+#40343 | auto Zul'Drak;261§auto Zul'Drak;261§auto Zul'Drak;261 | x=5913.39990234375 y=-1848.200073242188 | size=1 | links=#40344(auto Zul'Drak;262):34 #40345(auto Zul'Drak;263):19
+#40344 | auto Zul'Drak;262§auto Zul'Drak;262§auto Zul'Drak;262 | x=5879 y=-1848 | size=1 | links=#40343(auto Zul'Drak;261):34 #40345(auto Zul'Drak;263):25
+#40345 | auto Zul'Drak;263§auto Zul'Drak;263§auto Zul'Drak;263 | x=5900 y=-1863 | size=1 | links=#40343(auto Zul'Drak;261):19 #40344(auto Zul'Drak;262):25 #40346(auto Zul'Drak;264):37
+#40346 | auto Zul'Drak;264§auto Zul'Drak;264§auto Zul'Drak;264 | x=5888 y=-1898.200073242188 | size=1 | links=#40345(auto Zul'Drak;263):37
+#40347 | auto Zul'Drak;265§auto Zul'Drak;265§auto Zul'Drak;265 | x=5915.39990234375 y=-1959.5 | size=1 | links=#40348(auto Zul'Drak;266):28 #40350(auto Zul'Drak;268):39
+#40348 | auto Zul'Drak;266§auto Zul'Drak;266§auto Zul'Drak;266 | x=5940.5 y=-1973.800048828125 | size=1 | links=#40347(auto Zul'Drak;265):28 #40349(auto Zul'Drak;267):98 #40418(auto Zul'Drak;330):41
+#40349 | auto Zul'Drak;267§auto Zul'Drak;267§auto Zul'Drak;267 | x=6036.974455325885 y=-1992.52826501059 | size=1 | links=#40348(auto Zul'Drak;266):98 #40360(auto Zul'Drak;276):50 #40397(auto Zul'Drak;309):17 #40417(auto Zul'Drak;329):34
+#40350 | auto Zul'Drak;268§auto Zul'Drak;268§auto Zul'Drak;268 | x=5879.5 y=-1977 | size=1 | links=#40347(auto Zul'Drak;265):39 #40351(auto Zul'Drak;269):63 #40422(auto Zul'Drak;334):75
+#40351 | auto Zul'Drak;269§auto Zul'Drak;269§auto Zul'Drak;269 | x=5823.10009765625 y=-2005.5 | size=1 | links=#40350(auto Zul'Drak;268):63 #40352(auto Zul'Drak;270):48
+#40352 | auto Zul'Drak;270§auto Zul'Drak;270§auto Zul'Drak;270 | x=5782.80029296875 y=-1977.800048828125 | size=1 | links=#40351(auto Zul'Drak;269):48 #40353(auto Zul'Drak;271):79
+#40353 | auto Zul'Drak;271§auto Zul'Drak;271§auto Zul'Drak;271 | x=5727.5 y=-1920.700073242188 | size=1 | links=#40352(auto Zul'Drak;270):79 #40354(auto Zul'Drak;272):58
+#40354 | auto Zul'Drak;272§auto Zul'Drak;272§auto Zul'Drak;272 | x=5732.30029296875 y=-1862.800048828125 | size=1 | links=#40353(auto Zul'Drak;271):58
+#40356 | teleporter bottom to voltarus;Reliquary of pain;zul'drak§Teleporter unten nach Voltarus;Reliquie des Schmerzes;zul'drak§teleporter bottom to voltarus;Reliquary of pain;zul'drak | x=6175.377779928248 y=-2017.900802048974 | size=1 | links=#40357(auto Zul'Drak;273):13
+#40357 | auto Zul'Drak;273§auto Zul'Drak;273§auto Zul'Drak;273 | x=6162.10009765625 y=-2016.200073242188 | size=1 | links=#40356(teleporter bottom to voltarus;Reliquary of pain;zul'drak):13 #40358(auto Zul'Drak;274):17
+#40358 | auto Zul'Drak;274§auto Zul'Drak;274§auto Zul'Drak;274 | x=6144.5 y=-2015 | size=1 | links=#40357(auto Zul'Drak;273):17 #40359(auto Zul'Drak;275):15
+#40359 | auto Zul'Drak;275§auto Zul'Drak;275§auto Zul'Drak;275 | x=6128.60009765625 y=-2014.800048828125 | size=1 | links=#40358(auto Zul'Drak;274):15 #40360(auto Zul'Drak;276):43 #48779(auto Reliquary of Pain;Zul'Drak;1026):49
+#40360 | auto Zul'Drak;276§auto Zul'Drak;276§auto Zul'Drak;276 | x=6085.60009765625 y=-2005.5 | size=1 | links=#40349(auto Zul'Drak;267):50 #40359(auto Zul'Drak;275):43
+#40362 | teleporter top to Reliquary of pain;voltarus;zul'drak§Teleporter oben zu Reliquie des Schmerzes;voltarus;zul'drak§teleporter top to Reliquary of pain;voltarus;zul'drak | x=6172 y=-2019.900024414063 | size=1 | links=#40363(auto Inside Voltarus;Zul'Drak;277):6
+#40363 | auto Inside Voltarus;Zul'Drak;277§auto Drinnen Voltarus;Zul'Drak;277§auto Inside Voltarus;Zul'Drak;277 | x=6166.89990234375 y=-2024.300048828125 | size=1 | links=#40362(teleporter top to Reliquary of pain;voltarus;zul'drak):6 #40364(auto Inside Voltarus;Zul'Drak;278):16
+#40364 | auto Inside Voltarus;Zul'Drak;278§auto Drinnen Voltarus;Zul'Drak;278§auto Inside Voltarus;Zul'Drak;278 | x=6152.80029296875 y=-2033.400024414063 | size=1 | links=#40363(auto Inside Voltarus;Zul'Drak;277):16 #40365(auto Inside Voltarus;Zul'Drak;279):11 #40375(auto Inside Voltarus;Zul'Drak;287):2
+#40365 | auto Inside Voltarus;Zul'Drak;279§auto Drinnen Voltarus;Zul'Drak;279§auto Inside Voltarus;Zul'Drak;279 | x=6143.60009765625 y=-2039.800048828125 | size=1 | links=#40364(auto Inside Voltarus;Zul'Drak;278):11 #40366(auto Inside Voltarus;Zul'Drak;280):22
+#40366 | auto Inside Voltarus;Zul'Drak;280§auto Drinnen Voltarus;Zul'Drak;280§auto Inside Voltarus;Zul'Drak;280 | x=6125 y=-2052.5 | size=1 | links=#40365(auto Inside Voltarus;Zul'Drak;279):22 #40376(auto Inside Voltarus;Zul'Drak;288):16 #40394(auto Inside Voltarus;Zul'Drak;306):20 #40395(auto Inside Voltarus;Zul'Drak;307):20
+#40368 | teleport spawn point top;voltarus;zul'drak§teleport spawn punkt oben;voltarus;zul'drak§teleport spawn point top;voltarus;zul'drak | x=6175.2001953125 y=-2017.300048828125 | size=1 | links=#40369(auto Inside Voltarus;Zul'Drak;281):7
+#40369 | auto Inside Voltarus;Zul'Drak;281§auto Drinnen Voltarus;Zul'Drak;281§auto Inside Voltarus;Zul'Drak;281 | x=6182.2001953125 y=-2018.800048828125 | size=1 | links=#40368(teleport spawn point top;voltarus;zul'drak):7 #40370(auto Inside Voltarus;Zul'Drak;282):8
+#40370 | auto Inside Voltarus;Zul'Drak;282§auto Drinnen Voltarus;Zul'Drak;282§auto Inside Voltarus;Zul'Drak;282 | x=6191 y=-2020.300048828125 | size=1 | links=#40369(auto Inside Voltarus;Zul'Drak;281):8 #40371(auto Inside Voltarus;Zul'Drak;283):8
+#40371 | auto Inside Voltarus;Zul'Drak;283§auto Drinnen Voltarus;Zul'Drak;283§auto Inside Voltarus;Zul'Drak;283 | x=6199.30029296875 y=-2021.300048828125 | size=1 | links=#40370(auto Inside Voltarus;Zul'Drak;282):8 #40372(auto Inside Voltarus;Zul'Drak;284):10
+#40372 | auto Inside Voltarus;Zul'Drak;284§auto Drinnen Voltarus;Zul'Drak;284§auto Inside Voltarus;Zul'Drak;284 | x=6197.7001953125 y=-2031.700073242188 | size=1 | links=#40371(auto Inside Voltarus;Zul'Drak;283):10 #40373(auto Inside Voltarus;Zul'Drak;285):9
+#40373 | auto Inside Voltarus;Zul'Drak;285§auto Drinnen Voltarus;Zul'Drak;285§auto Inside Voltarus;Zul'Drak;285 | x=6193.10009765625 y=-2039.5 | size=1 | links=#40372(auto Inside Voltarus;Zul'Drak;284):9 #40374(auto Inside Voltarus;Zul'Drak;286):18
+#40374 | auto Inside Voltarus;Zul'Drak;286§auto Drinnen Voltarus;Zul'Drak;286§auto Inside Voltarus;Zul'Drak;286 | x=6175.5 y=-2044.900024414063 | size=1 | links=#40373(auto Inside Voltarus;Zul'Drak;285):18 #40375(auto Inside Voltarus;Zul'Drak;287):23
+#40375 | auto Inside Voltarus;Zul'Drak;287§auto Drinnen Voltarus;Zul'Drak;287§auto Inside Voltarus;Zul'Drak;287 | x=6154 y=-2035.5 | size=1 | links=#40364(auto Inside Voltarus;Zul'Drak;278):2 #40374(auto Inside Voltarus;Zul'Drak;286):23
+#40376 | auto Inside Voltarus;Zul'Drak;288§auto Drinnen Voltarus;Zul'Drak;288§auto Inside Voltarus;Zul'Drak;288 | x=6134.60009765625 y=-2066.400146484375 | size=1 | links=#40366(auto Inside Voltarus;Zul'Drak;280):16 #40377(auto Inside Voltarus;Zul'Drak;289):13
+#40377 | auto Inside Voltarus;Zul'Drak;289§auto Drinnen Voltarus;Zul'Drak;289§auto Inside Voltarus;Zul'Drak;289 | x=6145.10009765625 y=-2074.300048828125 | size=1 | links=#40376(auto Inside Voltarus;Zul'Drak;288):13
+#40378 | auto Inside Voltarus;Zul'Drak;290§auto Drinnen Voltarus;Zul'Drak;290§auto Inside Voltarus;Zul'Drak;290 | x=6178 y=-2082.199951171875 | size=1 | links=#40379(auto Inside Voltarus;Zul'Drak;291):18
+#40379 | auto Inside Voltarus;Zul'Drak;291§auto Drinnen Voltarus;Zul'Drak;291§auto Inside Voltarus;Zul'Drak;291 | x=6196.39990234375 y=-2078.400146484375 | size=1 | links=#40378(auto Inside Voltarus;Zul'Drak;290):18 #40380(auto Inside Voltarus;Zul'Drak;292):14
+#40380 | auto Inside Voltarus;Zul'Drak;292§auto Drinnen Voltarus;Zul'Drak;292§auto Inside Voltarus;Zul'Drak;292 | x=6210.39990234375 y=-2073.300048828125 | size=1 | links=#40379(auto Inside Voltarus;Zul'Drak;291):14 #40381(auto Inside Voltarus;Zul'Drak;293):21
+#40381 | auto Inside Voltarus;Zul'Drak;293§auto Drinnen Voltarus;Zul'Drak;293§auto Inside Voltarus;Zul'Drak;293 | x=6225.30029296875 y=-2057.300048828125 | size=1 | links=#40380(auto Inside Voltarus;Zul'Drak;292):21 #40382(auto Inside Voltarus;Zul'Drak;294):10
+#40382 | auto Inside Voltarus;Zul'Drak;294§auto Drinnen Voltarus;Zul'Drak;294§auto Inside Voltarus;Zul'Drak;294 | x=6232 y=-2048.60009765625 | size=1 | links=#40381(auto Inside Voltarus;Zul'Drak;293):10 #40383(auto Inside Voltarus;Zul'Drak;295):19
+#40383 | auto Inside Voltarus;Zul'Drak;295§auto Drinnen Voltarus;Zul'Drak;295§auto Inside Voltarus;Zul'Drak;295 | x=6238.60009765625 y=-2030.5 | size=1 | links=#40382(auto Inside Voltarus;Zul'Drak;294):19 #40384(auto Inside Voltarus;Zul'Drak;296):16
+#40384 | auto Inside Voltarus;Zul'Drak;296§auto Drinnen Voltarus;Zul'Drak;296§auto Inside Voltarus;Zul'Drak;296 | x=6238.39990234375 y=-2013.599975585938 | size=1 | links=#40383(auto Inside Voltarus;Zul'Drak;295):16 #40385(auto Inside Voltarus;Zul'Drak;297):28
+#40385 | auto Inside Voltarus;Zul'Drak;297§auto Drinnen Voltarus;Zul'Drak;297§auto Inside Voltarus;Zul'Drak;297 | x=6232.30029296875 y=-1985.800048828125 | size=1 | links=#40384(auto Inside Voltarus;Zul'Drak;296):28 #40386(auto Inside Voltarus;Zul'Drak;298):19
+#40386 | auto Inside Voltarus;Zul'Drak;298§auto Drinnen Voltarus;Zul'Drak;298§auto Inside Voltarus;Zul'Drak;298 | x=6218.7001953125 y=-1971.599975585938 | size=1 | links=#40385(auto Inside Voltarus;Zul'Drak;297):19 #40387(auto Inside Voltarus;Zul'Drak;299):16
+#40387 | auto Inside Voltarus;Zul'Drak;299§auto Drinnen Voltarus;Zul'Drak;299§auto Inside Voltarus;Zul'Drak;299 | x=6205.39990234375 y=-1961.700073242188 | size=1 | links=#40386(auto Inside Voltarus;Zul'Drak;298):16 #40388(auto Inside Voltarus;Zul'Drak;300):23
+#40388 | auto Inside Voltarus;Zul'Drak;300§auto Drinnen Voltarus;Zul'Drak;300§auto Inside Voltarus;Zul'Drak;300 | x=6182.89990234375 y=-1953.900024414063 | size=1 | links=#40387(auto Inside Voltarus;Zul'Drak;299):23 #40389(auto Inside Voltarus;Zul'Drak;301):18
+#40389 | auto Inside Voltarus;Zul'Drak;301§auto Drinnen Voltarus;Zul'Drak;301§auto Inside Voltarus;Zul'Drak;301 | x=6164.39990234375 y=-1954.900024414063 | size=1 | links=#40388(auto Inside Voltarus;Zul'Drak;300):18
+#40390 | auto Inside Voltarus;Zul'Drak;302§auto Drinnen Voltarus;Zul'Drak;302§auto Inside Voltarus;Zul'Drak;302 | x=6140.5 y=-1967.300048828125 | size=1 | links=#40391(auto Inside Voltarus;Zul'Drak;303):14
+#40391 | auto Inside Voltarus;Zul'Drak;303§auto Drinnen Voltarus;Zul'Drak;303§auto Inside Voltarus;Zul'Drak;303 | x=6129.10009765625 y=-1975.700073242188 | size=1 | links=#40390(auto Inside Voltarus;Zul'Drak;302):14 #40392(auto Inside Voltarus;Zul'Drak;304):16
+#40392 | auto Inside Voltarus;Zul'Drak;304§auto Drinnen Voltarus;Zul'Drak;304§auto Inside Voltarus;Zul'Drak;304 | x=6117.89990234375 y=-1987.599975585938 | size=1 | links=#40391(auto Inside Voltarus;Zul'Drak;303):16 #40393(auto Inside Voltarus;Zul'Drak;305):36
+#40393 | auto Inside Voltarus;Zul'Drak;305§auto Drinnen Voltarus;Zul'Drak;305§auto Inside Voltarus;Zul'Drak;305 | x=6111.60009765625 y=-2023.900024414063 | size=1 | links=#40392(auto Inside Voltarus;Zul'Drak;304):36 #40394(auto Inside Voltarus;Zul'Drak;306):12
+#40394 | auto Inside Voltarus;Zul'Drak;306§auto Drinnen Voltarus;Zul'Drak;306§auto Inside Voltarus;Zul'Drak;306 | x=6113.2001953125 y=-2036.200073242188 | size=1 | links=#40366(auto Inside Voltarus;Zul'Drak;280):20 #40393(auto Inside Voltarus;Zul'Drak;305):12
+#40395 | auto Inside Voltarus;Zul'Drak;307§auto Drinnen Voltarus;Zul'Drak;307§auto Inside Voltarus;Zul'Drak;307 | x=6107.39990234375 y=-2063 | size=1 | links=#40366(auto Inside Voltarus;Zul'Drak;280):20 #40396(auto Inside Voltarus;Zul'Drak;308):15
+#40396 | auto Inside Voltarus;Zul'Drak;308§auto Drinnen Voltarus;Zul'Drak;308§auto Inside Voltarus;Zul'Drak;308 | x=6094.5 y=-2072.300048828125 | size=1 | links=#40395(auto Inside Voltarus;Zul'Drak;307):15
+#40397 | auto Zul'Drak;309§auto Zul'Drak;309§auto Zul'Drak;309 | x=6050.89990234375 y=-2003.099975585938 | size=1 | links=#40349(auto Zul'Drak;267):17 #40398(auto Zul'Drak;310):42
+#40398 | auto Zul'Drak;310§auto Zul'Drak;310§auto Zul'Drak;310 | x=6080.89990234375 y=-2032.900024414063 | size=1 | links=#40397(auto Zul'Drak;309):42 #40399(auto Zul'Drak;311):53
+#40399 | auto Zul'Drak;311§auto Zul'Drak;311§auto Zul'Drak;311 | x=6118.10009765625 y=-2071.900146484375 | size=1 | links=#40398(auto Zul'Drak;310):53 #40400(auto Zul'Drak;312):58
+#40400 | auto Zul'Drak;312§auto Zul'Drak;312§auto Zul'Drak;312 | x=6162.39990234375 y=-2110.400146484375 | size=1 | links=#40399(auto Zul'Drak;311):58 #40401(auto Zul'Drak;313):28
+#40401 | auto Zul'Drak;313§auto Zul'Drak;313§auto Zul'Drak;313 | x=6184.7001953125 y=-2128.5 | size=1 | links=#40400(auto Zul'Drak;312):28
+#40402 | auto Zul'Drak;314§auto Zul'Drak;314§auto Zul'Drak;314 | x=6219.60009765625 y=-2173.10009765625 | size=1
+#40403 | auto Zul'Drak;315§auto Zul'Drak;315§auto Zul'Drak;315 | x=6254.5 y=-2181 | size=1 | links=#40404(auto Zul'Drak;316):17
+#40404 | auto Zul'Drak;316§auto Zul'Drak;316§auto Zul'Drak;316 | x=6271.10009765625 y=-2187.400146484375 | size=1 | links=#40403(auto Zul'Drak;315):17
+#40405 | auto Zul'Drak;317§auto Zul'Drak;317§auto Zul'Drak;317 | x=6297.89990234375 y=-2201 | size=1 | links=#40406(auto Zul'Drak;318):21
+#40406 | auto Zul'Drak;318§auto Zul'Drak;318§auto Zul'Drak;318 | x=6317.80029296875 y=-2208.800048828125 | size=1 | links=#40405(auto Zul'Drak;317):21 #40407(auto Zul'Drak;319):33
+#40407 | auto Zul'Drak;319§auto Zul'Drak;319§auto Zul'Drak;319 | x=6348.39990234375 y=-2222.5 | size=1 | links=#40406(auto Zul'Drak;318):33 #40408(auto Zul'Drak;320):26
+#40408 | auto Zul'Drak;320§auto Zul'Drak;320§auto Zul'Drak;320 | x=6372 y=-2234.699951171875 | size=1 | links=#40407(auto Zul'Drak;319):26 #40409(auto Zul'Drak;321):19
+#40409 | auto Zul'Drak;321§auto Zul'Drak;321§auto Zul'Drak;321 | x=6388.7001953125 y=-2245 | size=1 | links=#40408(auto Zul'Drak;320):19 #40410(auto Zul'Drak;322):18
+#40410 | auto Zul'Drak;322§auto Zul'Drak;322§auto Zul'Drak;322 | x=6404 y=-2256.10009765625 | size=1 | links=#40409(auto Zul'Drak;321):18 #40411(auto Zul'Drak;323):46
+#40411 | auto Zul'Drak;323§auto Zul'Drak;323§auto Zul'Drak;323 | x=6449.7001953125 y=-2245.699951171875 | size=1 | links=#40410(auto Zul'Drak;322):46 #40412(auto Zul'Drak;324):27
+#40412 | auto Zul'Drak;324§auto Zul'Drak;324§auto Zul'Drak;324 | x=6477.30029296875 y=-2244.900146484375 | size=1 | links=#40411(auto Zul'Drak;323):27
+#40413 | auto Zul'Drak;325§auto Zul'Drak;325§auto Zul'Drak;325 | x=6024 y=-2169.800048828125 | size=1 | links=#40414(auto Zul'Drak;326):29
+#40414 | auto Zul'Drak;326§auto Zul'Drak;326§auto Zul'Drak;326 | x=6020.30029296875 y=-2140.400146484375 | size=1 | links=#40413(auto Zul'Drak;325):29 #40415(auto Zul'Drak;327):52
+#40415 | auto Zul'Drak;327§auto Zul'Drak;327§auto Zul'Drak;327 | x=6021.5 y=-2088.300048828125 | size=1 | links=#40414(auto Zul'Drak;326):52 #40416(auto Zul'Drak;328):54
+#40416 | auto Zul'Drak;328§auto Zul'Drak;328§auto Zul'Drak;328 | x=6010.2001953125 y=-2034.5 | size=1 | links=#40415(auto Zul'Drak;327):54 #40417(auto Zul'Drak;329):19
+#40417 | auto Zul'Drak;329§auto Zul'Drak;329§auto Zul'Drak;329 | x=6010.60009765625 y=-2015.200073242188 | size=1 | links=#40349(auto Zul'Drak;267):34 #40416(auto Zul'Drak;328):19
+#40418 | auto Zul'Drak;330§auto Zul'Drak;330§auto Zul'Drak;330 | x=5951.7001953125 y=-2013.900024414063 | size=1 | links=#40348(auto Zul'Drak;266):41 #40419(auto Zul'Drak;331):24
+#40419 | auto Zul'Drak;331§auto Zul'Drak;331§auto Zul'Drak;331 | x=5954.5 y=-2038 | size=1 | links=#40418(auto Zul'Drak;330):24 #40420(auto Zul'Drak;332):20
+#40420 | auto Zul'Drak;332§auto Zul'Drak;332§auto Zul'Drak;332 | x=5955.60009765625 y=-2058 | size=1 | links=#40419(auto Zul'Drak;331):20 #40421(auto Zul'Drak;333):27
+#40421 | auto Zul'Drak;333§auto Zul'Drak;333§auto Zul'Drak;333 | x=5956.30029296875 y=-2085.199951171875 | size=1 | links=#40420(auto Zul'Drak;332):27
+#40422 | auto Zul'Drak;334§auto Zul'Drak;334§auto Zul'Drak;334 | x=5879.80029296875 y=-2052.800048828125 | size=1 | links=#40350(auto Zul'Drak;268):75
+#40423 | auto Zul'Drak;335§auto Zul'Drak;335§auto Zul'Drak;335 | x=5890.80029296875 y=-2138.5 | size=1
+#40424 | auto Zul'Drak;336§auto Zul'Drak;336§auto Zul'Drak;336 | x=5830.80029296875 y=-2171.699951171875 | size=1 | links=#40425(auto Zul'Drak;337):26
+#40425 | auto Zul'Drak;337§auto Zul'Drak;337§auto Zul'Drak;337 | x=5804.7001953125 y=-2164.800048828125 | size=1 | links=#40424(auto Zul'Drak;336):26
+#40426 | auto Zul'Drak;338§auto Zul'Drak;338§auto Zul'Drak;338 | x=5749.39990234375 y=-2119.699951171875 | size=1
+#40427 | auto Zul'Drak;339§auto Zul'Drak;339§auto Zul'Drak;339 | x=5556.10009765625 y=-2221.199951171875 | size=1 | links=#40428(auto Zul'Drak;340):26
+#40428 | auto Zul'Drak;340§auto Zul'Drak;340§auto Zul'Drak;340 | x=5565.39990234375 y=-2196.300048828125 | size=1 | links=#40427(auto Zul'Drak;339):26
+#40429 | auto Zul'Drak;341§auto Zul'Drak;341§auto Zul'Drak;341 | x=5610.39990234375 y=-1876.400024414063 | size=1 | links=#40335(auto Zul'Drak;253):23 #40430(auto Zul'Drak;342):34
+#40430 | auto Zul'Drak;342§auto Zul'Drak;342§auto Zul'Drak;342 | x=5625.80029296875 y=-1845.800048828125 | size=1 | links=#40429(auto Zul'Drak;341):34
+#40431 | auto Zul'Drak;343§auto Zul'Drak;343§auto Zul'Drak;343 | x=5655.5 y=-1334 | size=1
+#40432 | auto Zul'Drak;344§auto Zul'Drak;344§auto Zul'Drak;344 | x=5674.89990234375 y=-1297.099975585938 | size=1
+#40433 | auto Zul'Drak;345§auto Zul'Drak;345§auto Zul'Drak;345 | x=5692.5 y=-1341.200073242188 | size=1 | links=#40434(auto Zul'Drak;346):16
+#40434 | auto Zul'Drak;346§auto Zul'Drak;346§auto Zul'Drak;346 | x=5707.5 y=-1348.5 | size=1 | links=#40433(auto Zul'Drak;345):16 #40435(auto Zul'Drak;347):44
+#40435 | auto Zul'Drak;347§auto Zul'Drak;347§auto Zul'Drak;347 | x=5752 y=-1349.900024414063 | size=1 | links=#40434(auto Zul'Drak;346):44
+#40436 | auto Zul'Drak;348§auto Zul'Drak;348§auto Zul'Drak;348 | x=5785.89990234375 y=-1481.599975585938 | size=1 | links=#40437(auto Zul'Drak;349):26
+#40437 | auto Zul'Drak;349§auto Zul'Drak;349§auto Zul'Drak;349 | x=5766 y=-1498.800048828125 | size=1 | links=#40436(auto Zul'Drak;348):26
+#40438 | auto Zul'Drak;350§auto Zul'Drak;350§auto Zul'Drak;350 | x=5649.30029296875 y=-1505.5 | size=1 | links=#40439(auto Zul'Drak;351):19
+#40439 | auto Zul'Drak;351§auto Zul'Drak;351§auto Zul'Drak;351 | x=5630.60009765625 y=-1511.599975585938 | size=1 | links=#40438(auto Zul'Drak;350):19
+#40440 | auto Zul'Drak;352§auto Zul'Drak;352§auto Zul'Drak;352 | x=5608.2001953125 y=-1549.400024414063 | size=1
+#40441 | auto Zul'Drak;353§auto Zul'Drak;353§auto Zul'Drak;353 | x=5779.89990234375 y=-1587.200073242188 | size=1
+#40442 | auto Zul'Drak;354§auto Zul'Drak;354§auto Zul'Drak;354 | x=5778.287934870112 y=-1624.039130188151 | size=1
+#40443 | auto Zul'Drak;355§auto Zul'Drak;355§auto Zul'Drak;355 | x=5754.60009765625 y=-1624 | size=1
+#40444 | auto Zul'Drak;356§auto Zul'Drak;356§auto Zul'Drak;356 | x=5556.5 y=-2432.800048828125 | size=1 | links=#40445(auto Zul'Drak;357):32
+#40445 | auto Zul'Drak;357§auto Zul'Drak;357§auto Zul'Drak;357 | x=5588.80029296875 y=-2435.60009765625 | size=1 | links=#40444(auto Zul'Drak;356):32 #40446(auto Zul'Drak;358):23
+#40446 | auto Zul'Drak;358§auto Zul'Drak;358§auto Zul'Drak;358 | x=5612.30029296875 y=-2436.800048828125 | size=1 | links=#40445(auto Zul'Drak;357):23
+#40447 | auto Zul'Drak;359§auto Zul'Drak;359§auto Zul'Drak;359 | x=5636.80029296875 y=-2404 | size=1
+#40448 | auto Zul'Drak;360§auto Zul'Drak;360§auto Zul'Drak;360 | x=5707.5 y=-2417.10009765625 | size=1 | links=#40449(auto Zul'Drak;361):15
+#40449 | auto Zul'Drak;361§auto Zul'Drak;361§auto Zul'Drak;361 | x=5722.60009765625 y=-2420.199951171875 | size=1 | links=#40448(auto Zul'Drak;360):15
+#40450 | auto Zul'Drak;362§auto Zul'Drak;362§auto Zul'Drak;362 | x=5769.2001953125 y=-2469.800048828125 | size=1
+#40451 | auto Zul'Drak;363§auto Zul'Drak;363§auto Zul'Drak;363 | x=5790.5 y=-2490.400146484375 | size=1
+#40452 | auto Zul'Drak;364§auto Zul'Drak;364§auto Zul'Drak;364 | x=5886.60009765625 y=-2480.60009765625 | size=1 | links=#40453(auto Zul'Drak;365):51
+#40453 | auto Zul'Drak;365§auto Zul'Drak;365§auto Zul'Drak;365 | x=5924.2001953125 y=-2445.5 | size=1 | links=#40452(auto Zul'Drak;364):51 #40467(auto Zul'Drak;379):37
+#40454 | auto Zul'Drak;366§auto Zul'Drak;366§auto Zul'Drak;366 | x=6153.39990234375 y=-2372.900146484375 | size=1 | links=#40455(auto Zul'Drak;367):10
+#40455 | auto Zul'Drak;367§auto Zul'Drak;367§auto Zul'Drak;367 | x=6163.89990234375 y=-2373.699951171875 | size=1 | links=#40454(auto Zul'Drak;366):10 #40456(auto Zul'Drak;368):16
+#40456 | auto Zul'Drak;368§auto Zul'Drak;368§auto Zul'Drak;368 | x=6174.10009765625 y=-2386.199951171875 | size=1 | links=#40455(auto Zul'Drak;367):16 #40457(auto Zul'Drak;369):20
+#40457 | auto Zul'Drak;369§auto Zul'Drak;369§auto Zul'Drak;369 | x=6194.30029296875 y=-2389.400146484375 | size=1 | links=#40456(auto Zul'Drak;368):20 #40458(auto Zul'Drak;370):37
+#40458 | auto Zul'Drak;370§auto Zul'Drak;370§auto Zul'Drak;370 | x=6183 y=-2425.60009765625 | size=1 | links=#40457(auto Zul'Drak;369):37 #40459(auto Zul'Drak;371):16
+#40459 | auto Zul'Drak;371§auto Zul'Drak;371§auto Zul'Drak;371 | x=6182.5 y=-2441.60009765625 | size=1 | links=#40458(auto Zul'Drak;370):16 #40460(auto Zul'Drak;372):25
+#40460 | auto Zul'Drak;372§auto Zul'Drak;372§auto Zul'Drak;372 | x=6187 y=-2466.699951171875 | size=1 | links=#40459(auto Zul'Drak;371):25 #40461(auto Zul'Drak;373):21
+#40461 | auto Zul'Drak;373§auto Zul'Drak;373§auto Zul'Drak;373 | x=6195.80029296875 y=-2486.60009765625 | size=1 | links=#40460(auto Zul'Drak;372):21 #40462(auto Zul'Drak;374):16
+#40462 | auto Zul'Drak;374§auto Zul'Drak;374§auto Zul'Drak;374 | x=6198.60009765625 y=-2502.699951171875 | size=1 | links=#40461(auto Zul'Drak;373):16 #40463(auto Zul'Drak;375):11
+#40463 | auto Zul'Drak;375§auto Zul'Drak;375§auto Zul'Drak;375 | x=6210.2001953125 y=-2505.300048828125 | size=1 | links=#40462(auto Zul'Drak;374):11
+#40464 | auto Zul'Drak;376§auto Zul'Drak;376§auto Zul'Drak;376 | x=6353.60009765625 y=-2612.800048828125 | size=1 | links=#40465(auto Zul'Drak;377):32 #44585(Main building at the Altar of Sseratus / Explore Zone):15
+#40465 | auto Zul'Drak;377§auto Zul'Drak;377§auto Zul'Drak;377 | x=6322.5 y=-2620.60009765625 | size=1 | links=#40464(auto Zul'Drak;376):32 #40466(auto Zul'Drak;378):22
+#40466 | auto Zul'Drak;378§auto Zul'Drak;378§auto Zul'Drak;378 | x=6300.5 y=-2623.300048828125 | size=1 | links=#40465(auto Zul'Drak;377):22 #44586(auto Zul'Drak;1020):25
+#40467 | auto Zul'Drak;379§auto Zul'Drak;379§auto Zul'Drak;379 | x=5929.2001953125 y=-2408.800048828125 | size=1 | links=#40453(auto Zul'Drak;365):37 #40468(auto Zul'Drak;380):19
+#40468 | auto Zul'Drak;380§auto Zul'Drak;380§auto Zul'Drak;380 | x=5929.80029296875 y=-2389.5 | size=1 | links=#40467(auto Zul'Drak;379):19
+#40469 | auto Zul'Drak;381§auto Zul'Drak;381§auto Zul'Drak;381 | x=5929.60009765625 y=-2369.699951171875 | size=1 | links=#40470(auto Zul'Drak;382):8
+#40470 | auto Zul'Drak;382§auto Zul'Drak;382§auto Zul'Drak;382 | x=5929.7001953125 y=-2361.5 | size=1 | links=#40469(auto Zul'Drak;381):8 #40471(auto Zul'Drak;383):24 #40480(auto Zul'Drak;392):27
+#40471 | auto Zul'Drak;383§auto Zul'Drak;383§auto Zul'Drak;383 | x=5954.10009765625 y=-2362.900146484375 | size=1 | links=#40470(auto Zul'Drak;382):24 #40472(auto Zul'Drak;384):13
+#40472 | auto Zul'Drak;384§auto Zul'Drak;384§auto Zul'Drak;384 | x=5956.30029296875 y=-2349.900146484375 | size=1 | links=#40471(auto Zul'Drak;383):13 #40473(auto Zul'Drak;385):10
+#40473 | auto Zul'Drak;385§auto Zul'Drak;385§auto Zul'Drak;385 | x=5963.7001953125 y=-2342.300048828125 | size=1 | links=#40472(auto Zul'Drak;384):10 #40474(auto Zul'Drak;386):7 #40475(auto Zul'Drak;387):6 #40476(auto Zul'Drak;388):8 #40477(auto Zul'Drak;389):11 #40478(auto Zul'Drak;390):11 #40479(auto Zul'Drak;391):10
+#40474 | auto Zul'Drak;386§auto Zul'Drak;386§auto Zul'Drak;386 | x=5967.901150378926 y=-2335.991092101007 | size=1 | links=#40473(auto Zul'Drak;385):7
+#40475 | auto Zul'Drak;387§auto Zul'Drak;387§auto Zul'Drak;387 | x=5963.97103756751 y=-2335.537624732373 | size=1 | links=#40473(auto Zul'Drak;385):6
+#40476 | auto Zul'Drak;388§auto Zul'Drak;388§auto Zul'Drak;388 | x=5957.697975337705 y=-2335.688786184031 | size=1 | links=#40473(auto Zul'Drak;385):8
+#40477 | auto Zul'Drak;389§auto Zul'Drak;389§auto Zul'Drak;389 | x=5952.860910802679 y=-2339.467737543788 | size=1 | links=#40473(auto Zul'Drak;385):11
+#40478 | auto Zul'Drak;390§auto Zul'Drak;390§auto Zul'Drak;390 | x=5952.407432817581 y=-2345.967535581205 | size=1 | links=#40473(auto Zul'Drak;385):11
+#40479 | auto Zul'Drak;391§auto Zul'Drak;391§auto Zul'Drak;391 | x=5970.697577782414 y=-2350.502294199253 | size=1 | links=#40473(auto Zul'Drak;385):10
+#40480 | auto Zul'Drak;392§auto Zul'Drak;392§auto Zul'Drak;392 | x=5902.29382949296 y=-2361.727762727938 | size=1 | links=#40470(auto Zul'Drak;382):27 #40481(auto Zul'Drak;393):18
+#40481 | auto Zul'Drak;393§auto Zul'Drak;393§auto Zul'Drak;393 | x=5901.026688816569 y=-2343.411847290408 | size=1 | links=#40480(auto Zul'Drak;392):18 #40482(auto Zul'Drak;394):8 #40483(auto Zul'Drak;395):9 #40484(auto Zul'Drak;396):11 #40485(auto Zul'Drak;397):11 #40486(auto Zul'Drak;398):7
+#40482 | auto Zul'Drak;394§auto Zul'Drak;394§auto Zul'Drak;394 | x=5909.090298063562 y=-2342.720678471928 | size=1 | links=#40481(auto Zul'Drak;393):8
+#40483 | auto Zul'Drak;395§auto Zul'Drak;395§auto Zul'Drak;395 | x=5901.026688816569 y=-2334.311494524395 | size=1 | links=#40481(auto Zul'Drak;393):9
+#40484 | auto Zul'Drak;396§auto Zul'Drak;396§auto Zul'Drak;396 | x=5890.659185665463 y=-2337.421734790157 | size=1 | links=#40481(auto Zul'Drak;393):11
+#40485 | auto Zul'Drak;397§auto Zul'Drak;397§auto Zul'Drak;397 | x=5890.313601256222 y=-2348.250029019771 | size=1 | links=#40481(auto Zul'Drak;393):11
+#40486 | auto Zul'Drak;398§auto Zul'Drak;398§auto Zul'Drak;398 | x=5896.994876102488 y=-2349.747550672367 | size=1 | links=#40481(auto Zul'Drak;393):7
+#40487 | auto Zul'Drak;399§auto Zul'Drak;399§auto Zul'Drak;399 | x=6009.10009765625 y=-2634.300048828125 | size=1 | links=#40216(auto Zul'Drak;142):15 #40488(auto Zul'Drak;400):22
+#40488 | auto Zul'Drak;400§auto Zul'Drak;400§auto Zul'Drak;400 | x=5997.39990234375 y=-2653.300048828125 | size=1 | links=#40487(auto Zul'Drak;399):22
+#40489 | auto Zul'Drak;401§auto Zul'Drak;401§auto Zul'Drak;401 | x=6004.39990234375 y=-2776.800048828125 | size=1 | links=#40490(auto Zul'Drak;402):13
+#40490 | auto Zul'Drak;402§auto Zul'Drak;402§auto Zul'Drak;402 | x=6015.30029296875 y=-2784.400146484375 | size=1 | links=#40489(auto Zul'Drak;401):13
+#40491 | auto Zul'Drak;403§auto Zul'Drak;403§auto Zul'Drak;403 | x=6180.2001953125 y=-2798.900146484375 | size=1 | links=#40492(auto Zul'Drak;404):22
+#40492 | auto Zul'Drak;404§auto Zul'Drak;404§auto Zul'Drak;404 | x=6184.89990234375 y=-2777.400146484375 | size=1 | links=#40491(auto Zul'Drak;403):22
+#40493 | auto Zul'Drak;405§auto Zul'Drak;405§auto Zul'Drak;405 | x=6187.30029296875 y=-2738 | size=1
+#40494 | auto Zul'Drak;406§auto Zul'Drak;406§auto Zul'Drak;406 | x=6238.89990234375 y=-2720.60009765625 | size=1 | links=#40495(auto Zul'Drak;407):34
+#40495 | auto Zul'Drak;407§auto Zul'Drak;407§auto Zul'Drak;407 | x=6273.10009765625 y=-2727.800048828125 | size=1 | links=#40494(auto Zul'Drak;406):34
+#40496 | auto Zul'Drak;408§auto Zul'Drak;408§auto Zul'Drak;408 | x=6353.89990234375 y=-2733 | size=1
+#40497 | auto Zul'Drak;409§auto Zul'Drak;409§auto Zul'Drak;409 | x=5791.5 y=-3027.699951171875 | size=1 | links=#40498(auto Zul'Drak;410):12
+#40498 | auto Zul'Drak;410§auto Zul'Drak;410§auto Zul'Drak;410 | x=5783.5 y=-3037 | size=1 | links=#40497(auto Zul'Drak;409):12 #40499(auto Zul'Drak;411):28
+#40499 | auto Zul'Drak;411§auto Zul'Drak;411§auto Zul'Drak;411 | x=5757.60009765625 y=-3048.199951171875 | size=1 | links=#40498(auto Zul'Drak;410):28 #40500(auto Zul'Drak;412):32 #40548(auto Zul'Drak;460):14 #40573(auto Zul'Drak;483):14
+#40500 | auto Zul'Drak;412§auto Zul'Drak;412§auto Zul'Drak;412 | x=5739 y=-3021.5 | size=1 | links=#40499(auto Zul'Drak;411):32 #40501(auto Zul'Drak;413):27
+#40501 | auto Zul'Drak;413§auto Zul'Drak;413§auto Zul'Drak;413 | x=5727.60009765625 y=-2996.300048828125 | size=1 | links=#40500(auto Zul'Drak;412):27 #40502(auto Zul'Drak;414):37
+#40502 | auto Zul'Drak;414§auto Zul'Drak;414§auto Zul'Drak;414 | x=5717.60009765625 y=-2959.699951171875 | size=1 | links=#40501(auto Zul'Drak;413):37 #40503(auto Zul'Drak;415):39
+#40503 | auto Zul'Drak;415§auto Zul'Drak;415§auto Zul'Drak;415 | x=5752.60009765625 y=-2940.900146484375 | size=1 | links=#40502(auto Zul'Drak;414):39 #40504(auto Zul'Drak;416):35
+#40504 | auto Zul'Drak;416§auto Zul'Drak;416§auto Zul'Drak;416 | x=5738.30029296875 y=-2908.10009765625 | size=1 | links=#40503(auto Zul'Drak;415):35 #40505(auto Zul'Drak;417):38
+#40505 | auto Zul'Drak;417§auto Zul'Drak;417§auto Zul'Drak;417 | x=5721.7001953125 y=-2873.199951171875 | size=1 | links=#40504(auto Zul'Drak;416):38
+#40506 | auto Zul'Drak;418§auto Zul'Drak;418§auto Zul'Drak;418 | x=5695 y=-2795.900146484375 | size=1 | links=#40507(auto Zul'Drak;419):29 #40521(auto Zul'Drak;433):44
+#40507 | auto Zul'Drak;419§auto Zul'Drak;419§auto Zul'Drak;419 | x=5692.2001953125 y=-2767 | size=1 | links=#40506(auto Zul'Drak;418):29
+#40508 | auto Zul'Drak;420§auto Zul'Drak;420§auto Zul'Drak;420 | x=5671.60009765625 y=-2731.800048828125 | size=1 | links=#40509(auto Zul'Drak;421):24
+#40509 | auto Zul'Drak;421§auto Zul'Drak;421§auto Zul'Drak;421 | x=5669.39990234375 y=-2707.199951171875 | size=1 | links=#40508(auto Zul'Drak;420):24
+#40510 | auto Zul'Drak;422§auto Zul'Drak;422§auto Zul'Drak;422 | x=5695.60009765625 y=-2670.199951171875 | size=1
+#40511 | auto Zul'Drak;423§auto Zul'Drak;423§auto Zul'Drak;423 | x=5735.39990234375 y=-2661 | size=1 | links=#40512(auto Zul'Drak;424):20 #40513(auto Zul'Drak;425):11
+#40512 | auto Zul'Drak;424§auto Zul'Drak;424§auto Zul'Drak;424 | x=5737.10009765625 y=-2640.199951171875 | size=1 | links=#40213(auto Zul'Drak;139):24 #40511(auto Zul'Drak;423):20
+#40513 | auto Zul'Drak;425§auto Zul'Drak;425§auto Zul'Drak;425 | x=5746.2001953125 y=-2665.800048828125 | size=1 | links=#40511(auto Zul'Drak;423):11 #40514(auto Zul'Drak;426):16
+#40514 | auto Zul'Drak;426§auto Zul'Drak;426§auto Zul'Drak;426 | x=5762.80029296875 y=-2665.5 | size=1 | links=#40513(auto Zul'Drak;425):16
+#40515 | auto Zul'Drak;427§auto Zul'Drak;427§auto Zul'Drak;427 | x=5837.60009765625 y=-2688.10009765625 | size=1 | links=#40516(auto Zul'Drak;428):11
+#40516 | auto Zul'Drak;428§auto Zul'Drak;428§auto Zul'Drak;428 | x=5845.89990234375 y=-2680.800048828125 | size=1 | links=#40515(auto Zul'Drak;427):11
+#40517 | auto Zul'Drak;429§auto Zul'Drak;429§auto Zul'Drak;429 | x=5823 y=-2748.60009765625 | size=1
+#40518 | auto Zul'Drak;430§auto Zul'Drak;430§auto Zul'Drak;430 | x=5851 y=-2810.400146484375 | size=1 | links=#40519(auto Zul'Drak;431):41
+#40519 | auto Zul'Drak;431§auto Zul'Drak;431§auto Zul'Drak;431 | x=5892.10009765625 y=-2805.5 | size=1 | links=#40518(auto Zul'Drak;430):41
+#40520 | auto Zul'Drak;432§auto Zul'Drak;432§auto Zul'Drak;432 | x=5924.60009765625 y=-2865.699951171875 | size=1
+#40521 | auto Zul'Drak;433§auto Zul'Drak;433§auto Zul'Drak;433 | x=5668.2001953125 y=-2831 | size=1 | links=#40506(auto Zul'Drak;418):44 #40522(auto Zul'Drak;434):46
+#40522 | auto Zul'Drak;434§auto Zul'Drak;434§auto Zul'Drak;434 | x=5621.30029296875 y=-2830.60009765625 | size=1 | links=#40521(auto Zul'Drak;433):46 #40523(auto Zul'Drak;435):45
+#40523 | auto Zul'Drak;435§auto Zul'Drak;435§auto Zul'Drak;435 | x=5575.80029296875 y=-2826.900146484375 | size=1 | links=#40522(auto Zul'Drak;434):45 #40524(auto Zul'Drak;436):44 #40530(auto Zul'Drak;442):45 #40536(auto Zul'Drak;448):32
+#40524 | auto Zul'Drak;436§auto Zul'Drak;436§auto Zul'Drak;436 | x=5550.2001953125 y=-2863 | size=1 | links=#40523(auto Zul'Drak;435):44 #40525(auto Zul'Drak;437):40
+#40525 | auto Zul'Drak;437§auto Zul'Drak;437§auto Zul'Drak;437 | x=5527.7001953125 y=-2896.900146484375 | size=1 | links=#40524(auto Zul'Drak;436):40 #40526(auto Zul'Drak;438):27
+#40526 | auto Zul'Drak;438§auto Zul'Drak;438§auto Zul'Drak;438 | x=5520.7001953125 y=-2923 | size=1 | links=#40525(auto Zul'Drak;437):27 #40527(auto Zul'Drak;439):21
+#40527 | auto Zul'Drak;439§auto Zul'Drak;439§auto Zul'Drak;439 | x=5518.39990234375 y=-2944.800048828125 | size=1 | links=#40526(auto Zul'Drak;438):21 #40528(auto Zul'Drak;440):55
+#40528 | auto Zul'Drak;440§auto Zul'Drak;440§auto Zul'Drak;440 | x=5564 y=-2975.60009765625 | size=1 | links=#40527(auto Zul'Drak;439):55 #40529(auto Zul'Drak;441):15
+#40529 | auto Zul'Drak;441§auto Zul'Drak;441§auto Zul'Drak;441 | x=5557.39990234375 y=-2989.300048828125 | size=1 | links=#40528(auto Zul'Drak;440):15
+#40530 | auto Zul'Drak;442§auto Zul'Drak;442§auto Zul'Drak;442 | x=5613.7001953125 y=-2851.900146484375 | size=1 | links=#40523(auto Zul'Drak;435):45 #40531(auto Zul'Drak;443):40
+#40531 | auto Zul'Drak;443§auto Zul'Drak;443§auto Zul'Drak;443 | x=5640.2001953125 y=-2882.900146484375 | size=1 | links=#40530(auto Zul'Drak;442):40 #40532(auto Zul'Drak;444):44
+#40532 | auto Zul'Drak;444§auto Zul'Drak;444§auto Zul'Drak;444 | x=5638.30029296875 y=-2927.800048828125 | size=1 | links=#40531(auto Zul'Drak;443):44 #40533(auto Zul'Drak;445):39
+#40533 | auto Zul'Drak;445§auto Zul'Drak;445§auto Zul'Drak;445 | x=5623.7001953125 y=-2964.400146484375 | size=1 | links=#40532(auto Zul'Drak;444):39 #40534(auto Zul'Drak;446):18
+#40534 | auto Zul'Drak;446§auto Zul'Drak;446§auto Zul'Drak;446 | x=5618.2001953125 y=-2982.10009765625 | size=1 | links=#40533(auto Zul'Drak;445):18 #40535(auto Zul'Drak;447):28
+#40535 | auto Zul'Drak;447§auto Zul'Drak;447§auto Zul'Drak;447 | x=5627.89990234375 y=-3008.800048828125 | size=1 | links=#40534(auto Zul'Drak;446):28
+#40536 | auto Zul'Drak;448§auto Zul'Drak;448§auto Zul'Drak;448 | x=5549 y=-2809.199951171875 | size=1 | links=#40523(auto Zul'Drak;435):32 #40537(auto Zul'Drak;449):37
+#40537 | auto Zul'Drak;449§auto Zul'Drak;449§auto Zul'Drak;449 | x=5515.30029296875 y=-2793.60009765625 | size=1 | links=#40536(auto Zul'Drak;448):37 #40538(auto Zul'Drak;450):30
+#40538 | auto Zul'Drak;450§auto Zul'Drak;450§auto Zul'Drak;450 | x=5514.89990234375 y=-2762.699951171875 | size=1 | links=#40537(auto Zul'Drak;449):30 #40539(auto Zul'Drak;451):29
+#40539 | auto Zul'Drak;451§auto Zul'Drak;451§auto Zul'Drak;451 | x=5518.2001953125 y=-2733.5 | size=1 | links=#40538(auto Zul'Drak;450):29 #40540(auto Zul'Drak;452):27
+#40540 | auto Zul'Drak;452§auto Zul'Drak;452§auto Zul'Drak;452 | x=5544.5 y=-2724.300048828125 | size=1 | links=#40539(auto Zul'Drak;451):27 #40541(auto Zul'Drak;453):34
+#40541 | auto Zul'Drak;453§auto Zul'Drak;453§auto Zul'Drak;453 | x=5577.60009765625 y=-2715 | size=1 | links=#40540(auto Zul'Drak;452):34 #40542(auto Zul'Drak;454):29
+#40542 | auto Zul'Drak;454§auto Zul'Drak;454§auto Zul'Drak;454 | x=5602.2001953125 y=-2698.800048828125 | size=1 | links=#40541(auto Zul'Drak;453):29 #40543(auto Zul'Drak;455):19
+#40543 | auto Zul'Drak;455§auto Zul'Drak;455§auto Zul'Drak;455 | x=5605.5 y=-2679.800048828125 | size=1 | links=#40542(auto Zul'Drak;454):19 #40544(auto Zul'Drak;456):20 #40545(auto Zul'Drak;457):12
+#40544 | auto Zul'Drak;456§auto Zul'Drak;456§auto Zul'Drak;456 | x=5626.39990234375 y=-2681.5 | size=1 | links=#40543(auto Zul'Drak;455):20
+#40545 | auto Zul'Drak;457§auto Zul'Drak;457§auto Zul'Drak;457 | x=5594.5 y=-2672.900146484375 | size=1 | links=#40543(auto Zul'Drak;455):12 #40546(auto Zul'Drak;458):10
+#40546 | auto Zul'Drak;458§auto Zul'Drak;458§auto Zul'Drak;458 | x=5584.30029296875 y=-2669.5 | size=1 | links=#40545(auto Zul'Drak;457):10 #40547(auto Zul'Drak;459):16
+#40547 | auto Zul'Drak;459§auto Zul'Drak;459§auto Zul'Drak;459 | x=5568.89990234375 y=-2663.699951171875 | size=1 | links=#40546(auto Zul'Drak;458):16
+#40548 | auto Zul'Drak;460§auto Zul'Drak;460§auto Zul'Drak;460 | x=5757.5 y=-3033.5 | size=1 | links=#40499(auto Zul'Drak;411):14 #40549(auto Zul'Drak;461):9
+#40549 | auto Zul'Drak;461§auto Zul'Drak;461§auto Zul'Drak;461 | x=5753.2001953125 y=-3025.199951171875 | size=1 | links=#40548(auto Zul'Drak;460):9 #40550(auto Zul'Drak;462):10
+#40550 | auto Zul'Drak;462§auto Zul'Drak;462§auto Zul'Drak;462 | x=5749.7001953125 y=-3015.800048828125 | size=1 | links=#40549(auto Zul'Drak;461):10 #40552(amphitheater arena center;zul'drak):36
+#40552 | amphitheater arena center;zul'drak§amphitheater arena mitte;zul'drak§amphitheater arena center;zul'drak | x=5775.10009765625 y=-2989.60009765625 | size=1 | links=#40550(auto Zul'Drak;462):36
+#40553 | auto Zul'Drak;463§auto Zul'Drak;463§auto Zul'Drak;463 | x=5651.39990234375 y=-3248.900146484375 | size=1 | links=#40159(auto Zul'Drak;86):48 #40554(auto Zul'Drak;464):11
+#40554 | auto Zul'Drak;464§auto Zul'Drak;464§auto Zul'Drak;464 | x=5662.60009765625 y=-3248.60009765625 | size=1 | links=#40553(auto Zul'Drak;463):11 #40555(auto Zul'Drak;465):12
+#40555 | auto Zul'Drak;465§auto Zul'Drak;465§auto Zul'Drak;465 | x=5675.2001953125 y=-3248.199951171875 | size=1 | links=#40554(auto Zul'Drak;464):12 #40556(auto Zul'Drak;466):30
+#40556 | auto Zul'Drak;466§auto Zul'Drak;466§auto Zul'Drak;466 | x=5705.5 y=-3242 | size=1 | links=#40555(auto Zul'Drak;465):30 #40557(auto Zul'Drak;467):13
+#40557 | auto Zul'Drak;467§auto Zul'Drak;467§auto Zul'Drak;467 | x=5716 y=-3234.199951171875 | size=1 | links=#40556(auto Zul'Drak;466):13 #40558(auto Zul'Drak;468):37
+#40558 | auto Zul'Drak;468§auto Zul'Drak;468§auto Zul'Drak;468 | x=5751.89990234375 y=-3222.699951171875 | size=1 | links=#40557(auto Zul'Drak;467):37 #40559(auto Zul'Drak;469):26
+#40559 | auto Zul'Drak;469§auto Zul'Drak;469§auto Zul'Drak;469 | x=5777.10009765625 y=-3213.699951171875 | size=1 | links=#40558(auto Zul'Drak;468):26 #40560(auto Zul'Drak;470):23
+#40560 | auto Zul'Drak;470§auto Zul'Drak;470§auto Zul'Drak;470 | x=5796.89990234375 y=-3200.900146484375 | size=1 | links=#40559(auto Zul'Drak;469):23 #40561(auto Zul'Drak;471):25
+#40561 | auto Zul'Drak;471§auto Zul'Drak;471§auto Zul'Drak;471 | x=5818.10009765625 y=-3186.300048828125 | size=1 | links=#40560(auto Zul'Drak;470):25 #40562(auto Zul'Drak;472):44
+#40562 | auto Zul'Drak;472§auto Zul'Drak;472§auto Zul'Drak;472 | x=5858.89990234375 y=-3168.900146484375 | size=1 | links=#40561(auto Zul'Drak;471):44 #40563(auto Zul'Drak;473):21
+#40563 | auto Zul'Drak;473§auto Zul'Drak;473§auto Zul'Drak;473 | x=5854 y=-3148.300048828125 | size=1 | links=#40562(auto Zul'Drak;472):21 #40564(auto Zul'Drak;474):20
+#40564 | auto Zul'Drak;474§auto Zul'Drak;474§auto Zul'Drak;474 | x=5845.60009765625 y=-3130 | size=1 | links=#40563(auto Zul'Drak;473):20 #40565(auto Zul'Drak;475):32
+#40565 | auto Zul'Drak;475§auto Zul'Drak;475§auto Zul'Drak;475 | x=5828 y=-3102.400146484375 | size=1 | links=#40564(auto Zul'Drak;474):32 #40566(auto Zul'Drak;476):10
+#40566 | auto Zul'Drak;476§auto Zul'Drak;476§auto Zul'Drak;476 | x=5818.60009765625 y=-3106 | size=1 | links=#40565(auto Zul'Drak;475):10 #40567(auto Zul'Drak;477):11
+#40567 | auto Zul'Drak;477§auto Zul'Drak;477§auto Zul'Drak;477 | x=5807.7001953125 y=-3110.800048828125 | size=1 | links=#40566(auto Zul'Drak;476):11 #40568(auto Zul'Drak;478):20
+#40568 | auto Zul'Drak;478§auto Zul'Drak;478§auto Zul'Drak;478 | x=5789.2001953125 y=-3119.699951171875 | size=1 | links=#40567(auto Zul'Drak;477):20 #40569(auto Zul'Drak;479):9
+#40569 | auto Zul'Drak;479§auto Zul'Drak;479§auto Zul'Drak;479 | x=5782.30029296875 y=-3112.699951171875 | size=1 | links=#40568(auto Zul'Drak;478):9 #40570(auto Zul'Drak;480):17
+#40570 | auto Zul'Drak;480§auto Zul'Drak;480§auto Zul'Drak;480 | x=5774.80029296875 y=-3096.5 | size=1 | links=#40569(auto Zul'Drak;479):17 #40571(auto Zul'Drak;481):12
+#40571 | auto Zul'Drak;481§auto Zul'Drak;481§auto Zul'Drak;481 | x=5769.7001953125 y=-3085.300048828125 | size=1 | links=#40570(auto Zul'Drak;480):12 #40572(auto Zul'Drak;482):13
+#40572 | auto Zul'Drak;482§auto Zul'Drak;482§auto Zul'Drak;482 | x=5764 y=-3073.5 | size=1 | links=#40571(auto Zul'Drak;481):13 #40573(auto Zul'Drak;483):11
+#40573 | auto Zul'Drak;483§auto Zul'Drak;483§auto Zul'Drak;483 | x=5763.5 y=-3061.60009765625 | size=1 | links=#40499(auto Zul'Drak;411):14 #40572(auto Zul'Drak;482):11
+#40574 | auto Zul'Drak;484§auto Zul'Drak;484§auto Zul'Drak;484 | x=4885.80029296875 y=-2056.699951171875 | size=1 | links=#40245(auto Zul'Drak;171):41 #40575(auto Zul'Drak;485):28
+#40575 | auto Zul'Drak;485§auto Zul'Drak;485§auto Zul'Drak;485 | x=4857.89990234375 y=-2061.699951171875 | size=1 | links=#40574(auto Zul'Drak;484):28 #40576(auto Zul'Drak;486):23
+#40576 | auto Zul'Drak;486§auto Zul'Drak;486§auto Zul'Drak;486 | x=4835.39990234375 y=-2055.300048828125 | size=1 | links=#40575(auto Zul'Drak;485):23 #40577(auto Zul'Drak;487):28
+#40577 | auto Zul'Drak;487§auto Zul'Drak;487§auto Zul'Drak;487 | x=4807.5 y=-2047.800048828125 | size=1 | links=#40576(auto Zul'Drak;486):28 #40578(auto Zul'Drak;488):22
+#40578 | auto Zul'Drak;488§auto Zul'Drak;488§auto Zul'Drak;488 | x=4784.80029296875 y=-2047.099975585938 | size=1 | links=#39724(auto Zul'Drak;5):17 #40577(auto Zul'Drak;487):22
+#40579 | auto Zul'Drak;489§auto Zul'Drak;489§auto Zul'Drak;489 | x=4907.80029296875 y=-2158.699951171875 | size=1 | links=#40247(auto Zul'Drak;172):30 #40580(auto Zul'Drak;490):24
+#40580 | auto Zul'Drak;490§auto Zul'Drak;490§auto Zul'Drak;490 | x=4902.7001953125 y=-2182.300048828125 | size=1 | links=#40579(auto Zul'Drak;489):24 #40581(auto Zul'Drak;491):11
+#40581 | auto Zul'Drak;491§auto Zul'Drak;491§auto Zul'Drak;491 | x=4903.89990234375 y=-2194.10009765625 | size=1 | links=#40580(auto Zul'Drak;490):11 #40582(auto Zul'Drak;492):37
+#40582 | auto Zul'Drak;492§auto Zul'Drak;492§auto Zul'Drak;492 | x=4914.60009765625 y=-2230.300048828125 | size=1 | links=#40581(auto Zul'Drak;491):37 #40583(auto Zul'Drak;493):61
+#40583 | auto Zul'Drak;493§auto Zul'Drak;493§auto Zul'Drak;493 | x=4885.30029296875 y=-2284.900146484375 | size=1 | links=#40582(auto Zul'Drak;492):61 #40584(auto Zul'Drak;494):17 #40594(auto Zul'Drak;504):9
+#40584 | auto Zul'Drak;494§auto Zul'Drak;494§auto Zul'Drak;494 | x=4900.30029296875 y=-2293.5 | size=1 | links=#40583(auto Zul'Drak;493):17 #40585(auto Zul'Drak;495):24 #40595(auto Zul'Drak;505):19
+#40585 | auto Zul'Drak;495§auto Zul'Drak;495§auto Zul'Drak;495 | x=4897.2001953125 y=-2318.300048828125 | size=1 | links=#40584(auto Zul'Drak;494):24 #40586(auto Zul'Drak;496):38
+#40586 | auto Zul'Drak;496§auto Zul'Drak;496§auto Zul'Drak;496 | x=4879.80029296875 y=-2352.699951171875 | size=1 | links=#40585(auto Zul'Drak;495):38 #40617(auto Zul'Drak;527):26
+#40587 | auto Zul'Drak;497§auto Zul'Drak;497§auto Zul'Drak;497 | x=4849.60009765625 y=-2383.699951171875 | size=1
+#40588 | auto Zul'Drak;498§auto Zul'Drak;498§auto Zul'Drak;498 | x=4835.5 y=-2357.699951171875 | size=1 | links=#40589(auto Zul'Drak;499):20
+#40589 | auto Zul'Drak;499§auto Zul'Drak;499§auto Zul'Drak;499 | x=4817.5 y=-2347.5 | size=1 | links=#40588(auto Zul'Drak;498):20 #40590(auto Zul'Drak;500):13
+#40590 | auto Zul'Drak;500§auto Zul'Drak;500§auto Zul'Drak;500 | x=4815 y=-2334.199951171875 | size=1 | links=#40589(auto Zul'Drak;499):13 #40591(auto Zul'Drak;501):14
+#40591 | auto Zul'Drak;501§auto Zul'Drak;501§auto Zul'Drak;501 | x=4801 y=-2329.400146484375 | size=1 | links=#40590(auto Zul'Drak;500):14 #40592(auto Zul'Drak;502):47
+#40592 | auto Zul'Drak;502§auto Zul'Drak;502§auto Zul'Drak;502 | x=4801.7001953125 y=-2281.900146484375 | size=1 | links=#40591(auto Zul'Drak;501):47 #40593(auto Zul'Drak;503):37
+#40593 | auto Zul'Drak;503§auto Zul'Drak;503§auto Zul'Drak;503 | x=4838.80029296875 y=-2282 | size=1 | links=#40592(auto Zul'Drak;502):37
+#40594 | auto Zul'Drak;504§auto Zul'Drak;504§auto Zul'Drak;504 | x=4881.80029296875 y=-2276.300048828125 | size=1 | links=#40583(auto Zul'Drak;493):9
+#40595 | auto Zul'Drak;505§auto Zul'Drak;505§auto Zul'Drak;505 | x=4919.60009765625 y=-2296.800048828125 | size=1 | links=#40584(auto Zul'Drak;494):19 #40596(auto Zul'Drak;506):23
+#40596 | auto Zul'Drak;506§auto Zul'Drak;506§auto Zul'Drak;506 | x=4939 y=-2283.60009765625 | size=1 | links=#40595(auto Zul'Drak;505):23 #40597(auto Zul'Drak;507):22
+#40597 | auto Zul'Drak;507§auto Zul'Drak;507§auto Zul'Drak;507 | x=4956.5 y=-2297.900146484375 | size=1 | links=#40596(auto Zul'Drak;506):22 #40598(auto Zul'Drak;508):24
+#40598 | auto Zul'Drak;508§auto Zul'Drak;508§auto Zul'Drak;508 | x=4981.39990234375 y=-2298.400146484375 | size=1 | links=#40597(auto Zul'Drak;507):24 #40599(auto Zul'Drak;509):25 #40610(auto Zul'Drak;520):30
+#40599 | auto Zul'Drak;509§auto Zul'Drak;509§auto Zul'Drak;509 | x=5001.30029296875 y=-2282.300048828125 | size=1 | links=#40598(auto Zul'Drak;508):25 #40600(auto Zul'Drak;510):27
+#40600 | auto Zul'Drak;510§auto Zul'Drak;510§auto Zul'Drak;510 | x=5022 y=-2263.5 | size=1 | links=#40599(auto Zul'Drak;509):27
+#40601 | auto Zul'Drak;511§auto Zul'Drak;511§auto Zul'Drak;511 | x=5124.7001953125 y=-2275.199951171875 | size=1 | links=#40602(auto Zul'Drak;512):56
+#40602 | auto Zul'Drak;512§auto Zul'Drak;512§auto Zul'Drak;512 | x=5180.7001953125 y=-2279.10009765625 | size=1 | links=#40601(auto Zul'Drak;511):56
+#40603 | auto Zul'Drak;513§auto Zul'Drak;513§auto Zul'Drak;513 | x=5290.89990234375 y=-2220.5 | size=1 | links=#40604(auto Zul'Drak;514):45
+#40604 | auto Zul'Drak;514§auto Zul'Drak;514§auto Zul'Drak;514 | x=5329.39990234375 y=-2195.800048828125 | size=1 | links=#40603(auto Zul'Drak;513):45 #40605(auto Zul'Drak;515):21
+#40605 | auto Zul'Drak;515§auto Zul'Drak;515§auto Zul'Drak;515 | x=5345.89990234375 y=-2182.300048828125 | size=1 | links=#40604(auto Zul'Drak;514):21 #40606(auto Zul'Drak;516):62
+#40606 | auto Zul'Drak;516§auto Zul'Drak;516§auto Zul'Drak;516 | x=5383.80029296875 y=-2132.5 | size=1 | links=#40605(auto Zul'Drak;515):62 #40607(auto Zul'Drak;517):36
+#40607 | auto Zul'Drak;517§auto Zul'Drak;517§auto Zul'Drak;517 | x=5411.7001953125 y=-2109.699951171875 | size=1 | links=#40606(auto Zul'Drak;516):36
+#40608 | auto Zul'Drak;518§auto Zul'Drak;518§auto Zul'Drak;518 | x=5029.10009765625 y=-2076.199951171875 | size=1 | links=#40244(auto Zul'Drak;170):28
+#40609 | auto Zul'Drak;519§auto Zul'Drak;519§auto Zul'Drak;519 | x=5027.89990234375 y=-2154.300048828125 | size=1
+#40610 | auto Zul'Drak;520§auto Zul'Drak;520§auto Zul'Drak;520 | x=4967 y=-2325.300048828125 | size=1 | links=#40598(auto Zul'Drak;508):30
+#40611 | auto Zul'Drak;521§auto Zul'Drak;521§auto Zul'Drak;521 | x=4988.5 y=-2351.800048828125 | size=1 | links=#40612(auto Zul'Drak;522):26 #40614(auto Zul'Drak;524):16
+#40612 | auto Zul'Drak;522§auto Zul'Drak;522§auto Zul'Drak;522 | x=5014.39990234375 y=-2349.300048828125 | size=1 | links=#40611(auto Zul'Drak;521):26 #40613(auto Zul'Drak;523):32
+#40613 | auto Zul'Drak;523§auto Zul'Drak;523§auto Zul'Drak;523 | x=5046.39990234375 y=-2354.699951171875 | size=1 | links=#40612(auto Zul'Drak;522):32
+#40614 | auto Zul'Drak;524§auto Zul'Drak;524§auto Zul'Drak;524 | x=4976.5 y=-2363 | size=1 | links=#40611(auto Zul'Drak;521):16 #40615(auto Zul'Drak;525):14
+#40615 | auto Zul'Drak;525§auto Zul'Drak;525§auto Zul'Drak;525 | x=4962.10009765625 y=-2364.699951171875 | size=1 | links=#40614(auto Zul'Drak;524):14
+#40616 | auto Zul'Drak;526§auto Zul'Drak;526§auto Zul'Drak;526 | x=4896.60009765625 y=-2381.199951171875 | size=1 | links=#40617(auto Zul'Drak;527):10
+#40617 | auto Zul'Drak;527§auto Zul'Drak;527§auto Zul'Drak;527 | x=4886.80029296875 y=-2377.900146484375 | size=1 | links=#40586(auto Zul'Drak;496):26 #40616(auto Zul'Drak;526):10
+#40618 | auto Zul'Drak;528§auto Zul'Drak;528§auto Zul'Drak;528 | x=4826.60009765625 y=-2454.5 | size=1
+#40619 | auto Zul'Drak;529§auto Zul'Drak;529§auto Zul'Drak;529 | x=5087.30029296875 y=-2544.699951171875 | size=1 | links=#40620(auto Zul'Drak;530):15 #40626(auto Zul'Drak;536):87 #40658(auto Zul'Drak;568):94
+#40620 | auto Zul'Drak;530§auto Zul'Drak;530§auto Zul'Drak;530 | x=5075.7001953125 y=-2533.699951171875 | size=1 | links=#40619(auto Zul'Drak;529):15 #40621(auto Zul'Drak;531):28
+#40621 | auto Zul'Drak;531§auto Zul'Drak;531§auto Zul'Drak;531 | x=5059.10009765625 y=-2510.699951171875 | size=1 | links=#40620(auto Zul'Drak;530):28 #40622(auto Zul'Drak;532):36
+#40622 | auto Zul'Drak;532§auto Zul'Drak;532§auto Zul'Drak;532 | x=5024.5 y=-2498.800048828125 | size=1 | links=#40621(auto Zul'Drak;531):36 #40623(auto Zul'Drak;533):35
+#40623 | auto Zul'Drak;533§auto Zul'Drak;533§auto Zul'Drak;533 | x=4991.10009765625 y=-2486.10009765625 | size=1 | links=#40622(auto Zul'Drak;532):35
+#40624 | auto Zul'Drak;534§auto Zul'Drak;534§auto Zul'Drak;534 | x=4949.60009765625 y=-2436.199951171875 | size=1 | links=#40625(auto Zul'Drak;535):28
+#40625 | auto Zul'Drak;535§auto Zul'Drak;535§auto Zul'Drak;535 | x=4941.5 y=-2408.400146484375 | size=1 | links=#40624(auto Zul'Drak;534):28
+#40626 | auto Zul'Drak;536§auto Zul'Drak;536§auto Zul'Drak;536 | x=5149.10009765625 y=-2482.800048828125 | size=1 | links=#40619(auto Zul'Drak;529):87 #40638(auto Zul'Drak;548):16
+#40627 | auto Zul'Drak;537§auto Zul'Drak;537§auto Zul'Drak;537 | x=5368.89990234375 y=-2436.199951171875 | size=1 | links=#40628(auto Zul'Drak;538):39
+#40628 | auto Zul'Drak;538§auto Zul'Drak;538§auto Zul'Drak;538 | x=5329 y=-2436.300048828125 | size=1 | links=#40627(auto Zul'Drak;537):39 #40629(auto Zul'Drak;539):26
+#40629 | auto Zul'Drak;539§auto Zul'Drak;539§auto Zul'Drak;539 | x=5302.5 y=-2435.699951171875 | size=1 | links=#40628(auto Zul'Drak;538):26
+#40630 | auto Zul'Drak;540§auto Zul'Drak;540§auto Zul'Drak;540 | x=5261.60009765625 y=-2419.199951171875 | size=1 | links=#40631(auto Zul'Drak;541):9
+#40631 | auto Zul'Drak;541§auto Zul'Drak;541§auto Zul'Drak;541 | x=5252.10009765625 y=-2419.400146484375 | size=1 | links=#40630(auto Zul'Drak;540):9 #40632(auto Zul'Drak;542):19
+#40632 | auto Zul'Drak;542§auto Zul'Drak;542§auto Zul'Drak;542 | x=5250.2001953125 y=-2400.400146484375 | size=1 | links=#40631(auto Zul'Drak;541):19 #40633(auto Zul'Drak;543):23
+#40633 | auto Zul'Drak;543§auto Zul'Drak;543§auto Zul'Drak;543 | x=5227.2001953125 y=-2405.199951171875 | size=1 | links=#40632(auto Zul'Drak;542):23 #40634(auto Zul'Drak;544):17
+#40634 | auto Zul'Drak;544§auto Zul'Drak;544§auto Zul'Drak;544 | x=5210.89990234375 y=-2412.60009765625 | size=1 | links=#40633(auto Zul'Drak;543):17 #40635(auto Zul'Drak;545):12
+#40635 | auto Zul'Drak;545§auto Zul'Drak;545§auto Zul'Drak;545 | x=5199.2001953125 y=-2416 | size=1 | links=#40634(auto Zul'Drak;544):12 #40636(auto Zul'Drak;546):15
+#40636 | auto Zul'Drak;546§auto Zul'Drak;546§auto Zul'Drak;546 | x=5184.2001953125 y=-2419.699951171875 | size=1 | links=#40635(auto Zul'Drak;545):15 #40637(auto Zul'Drak;547):38
+#40637 | auto Zul'Drak;547§auto Zul'Drak;547§auto Zul'Drak;547 | x=5169.7001953125 y=-2455.900146484375 | size=1 | links=#40636(auto Zul'Drak;546):38 #40638(auto Zul'Drak;548):21
+#40638 | auto Zul'Drak;548§auto Zul'Drak;548§auto Zul'Drak;548 | x=5164.39990234375 y=-2477.10009765625 | size=1 | links=#40626(auto Zul'Drak;536):16 #40637(auto Zul'Drak;547):21 #40639(auto Zul'Drak;549):35
+#40639 | auto Zul'Drak;549§auto Zul'Drak;549§auto Zul'Drak;549 | x=5199.2001953125 y=-2484 | size=1 | links=#40638(auto Zul'Drak;548):35 #40640(auto Zul'Drak;550):28
+#40640 | auto Zul'Drak;550§auto Zul'Drak;550§auto Zul'Drak;550 | x=5228.10009765625 y=-2485.10009765625 | size=1 | links=#40639(auto Zul'Drak;549):28 #40641(auto Zul'Drak;551):26
+#40641 | auto Zul'Drak;551§auto Zul'Drak;551§auto Zul'Drak;551 | x=5254.5 y=-2484.5 | size=1 | links=#40640(auto Zul'Drak;550):26 #40642(auto Zul'Drak;552):31
+#40642 | auto Zul'Drak;552§auto Zul'Drak;552§auto Zul'Drak;552 | x=5263.89990234375 y=-2514.800048828125 | size=1 | links=#40641(auto Zul'Drak;551):31 #40643(auto Zul'Drak;553):32
+#40643 | auto Zul'Drak;553§auto Zul'Drak;553§auto Zul'Drak;553 | x=5263.30029296875 y=-2547.10009765625 | size=1 | links=#40642(auto Zul'Drak;552):32 #40644(auto Zul'Drak;554):30
+#40644 | auto Zul'Drak;554§auto Zul'Drak;554§auto Zul'Drak;554 | x=5260.7001953125 y=-2577.60009765625 | size=1 | links=#40643(auto Zul'Drak;553):30 #40645(auto Zul'Drak;555):25
+#40645 | auto Zul'Drak;555§auto Zul'Drak;555§auto Zul'Drak;555 | x=5242.989014759336 y=-2596.485770705946 | size=1 | links=#40644(auto Zul'Drak;554):25 #40646(auto Zul'Drak;556):32
+#40646 | auto Zul'Drak;556§auto Zul'Drak;556§auto Zul'Drak;556 | x=5219.89990234375 y=-2619.400146484375 | size=1 | links=#40645(auto Zul'Drak;555):32 #40647(auto Zul'Drak;557):21
+#40647 | auto Zul'Drak;557§auto Zul'Drak;557§auto Zul'Drak;557 | x=5218.39990234375 y=-2640.900146484375 | size=1 | links=#40646(auto Zul'Drak;556):21
+#40648 | auto Zul'Drak;558§auto Zul'Drak;558§auto Zul'Drak;558 | x=5131.80029296875 y=-2736.10009765625 | size=1 | links=#40649(auto Zul'Drak;559):23
+#40649 | auto Zul'Drak;559§auto Zul'Drak;559§auto Zul'Drak;559 | x=5115.2001953125 y=-2752.60009765625 | size=1 | links=#40648(auto Zul'Drak;558):23 #40650(auto Zul'Drak;560):105
+#40650 | auto Zul'Drak;560§auto Zul'Drak;560§auto Zul'Drak;560 | x=5043.10009765625 y=-2830.10009765625 | size=1 | links=#40649(auto Zul'Drak;559):105 #40651(auto Zul'Drak;561):41
+#40651 | auto Zul'Drak;561§auto Zul'Drak;561§auto Zul'Drak;561 | x=5014 y=-2800.400146484375 | size=1 | links=#40650(auto Zul'Drak;560):41 #40652(auto Zul'Drak;562):52
+#40652 | auto Zul'Drak;562§auto Zul'Drak;562§auto Zul'Drak;562 | x=4976.5 y=-2763 | size=1 | links=#40651(auto Zul'Drak;561):52 #40653(auto Zul'Drak;563):24
+#40653 | auto Zul'Drak;563§auto Zul'Drak;563§auto Zul'Drak;563 | x=4959.30029296875 y=-2746 | size=1 | links=#40652(auto Zul'Drak;562):24 #40654(auto Zul'Drak;564):32
+#40654 | auto Zul'Drak;564§auto Zul'Drak;564§auto Zul'Drak;564 | x=4983.7001953125 y=-2724.10009765625 | size=1 | links=#40653(auto Zul'Drak;563):32 #40655(auto Zul'Drak;565):49
+#40655 | auto Zul'Drak;565§auto Zul'Drak;565§auto Zul'Drak;565 | x=5018.7001953125 y=-2689.400146484375 | size=1 | links=#40654(auto Zul'Drak;564):49 #40656(auto Zul'Drak;566):30
+#40656 | auto Zul'Drak;566§auto Zul'Drak;566§auto Zul'Drak;566 | x=5042.39990234375 y=-2670.400146484375 | size=1 | links=#40655(auto Zul'Drak;565):30 #40657(auto Zul'Drak;567):28
+#40657 | auto Zul'Drak;567§auto Zul'Drak;567§auto Zul'Drak;567 | x=5064.89990234375 y=-2652.199951171875 | size=1 | links=#40656(auto Zul'Drak;566):28
+#40658 | auto Zul'Drak;568§auto Zul'Drak;568§auto Zul'Drak;568 | x=5015.30029296875 y=-2605.5 | size=1 | links=#40619(auto Zul'Drak;529):94
+#40659 | auto Zul'Drak;569§auto Zul'Drak;569§auto Zul'Drak;569 | x=4904.5 y=-2897.300048828125 | size=1 | links=#40660(auto Zul'Drak;570):30
+#40660 | auto Zul'Drak;570§auto Zul'Drak;570§auto Zul'Drak;570 | x=4930.30029296875 y=-2880.699951171875 | size=1 | links=#40659(auto Zul'Drak;569):30 #40662(Ancient dirt mound;zul'drak;1):27
+#40662 | Ancient dirt mound;zul'drak;1§Uralter Erdhaufen;zul'drak;1§Ancient dirt mound;zul'drak;1 | x=4957.80029296875 y=-2881.300048828125 | size=1 | links=#40660(auto Zul'Drak;570):27 #40664(Ancient dirt mound;zul'drak;2):34 #40671(auto Zul'Drak;573):54
+#40664 | Ancient dirt mound;zul'drak;2§Uralter Erdhaufen;zul'drak;2§Ancient dirt mound;zul'drak;2 | x=4937.39990234375 y=-2909.400146484375 | size=1 | links=#40662(Ancient dirt mound;zul'drak;1):34
+#40666 | Ancient dirt mound;zul'drak;3§Uralter Erdhaufen;zul'drak;3§Ancient dirt mound;zul'drak;3 | x=4866.7001953125 y=-2880.60009765625 | size=1
+#40668 | Ancient dirt mound;zul'drak;4§Uralter Erdhaufen;zul'drak;4§Ancient dirt mound;zul'drak;4 | x=4875.2001953125 y=-2980.699951171875 | size=1
+#40669 | auto Zul'Drak;571§auto Zul'Drak;571§auto Zul'Drak;571 | x=4998.30029296875 y=-2987.60009765625 | size=1 | links=#40146(auto Zul'Drak;73):23 #40670(auto Zul'Drak;572):22
+#40670 | auto Zul'Drak;572§auto Zul'Drak;572§auto Zul'Drak;572 | x=4980.7001953125 y=-2974 | size=1 | links=#40669(auto Zul'Drak;571):22 #40671(auto Zul'Drak;573):56
+#40671 | auto Zul'Drak;573§auto Zul'Drak;573§auto Zul'Drak;573 | x=4995.89990234375 y=-2919.800048828125 | size=1 | links=#40662(Ancient dirt mound;zul'drak;1):54 #40670(auto Zul'Drak;572):56
+#40672 | auto Zul'Drak;574§auto Zul'Drak;574§auto Zul'Drak;574 | x=4862.7001953125 y=-3048.300048828125 | size=1 | links=#40673(auto Zul'Drak;575):54
+#40673 | auto Zul'Drak;575§auto Zul'Drak;575§auto Zul'Drak;575 | x=4828.30029296875 y=-3090 | size=1 | links=#40672(auto Zul'Drak;574):54 #40674(auto Zul'Drak;576):31
+#40674 | auto Zul'Drak;576§auto Zul'Drak;576§auto Zul'Drak;576 | x=4807.10009765625 y=-3113.800048828125 | size=1 | links=#40673(auto Zul'Drak;575):31 #40675(auto Zul'Drak;577):42
+#40675 | auto Zul'Drak;577§auto Zul'Drak;577§auto Zul'Drak;577 | x=4780.10009765625 y=-3147.10009765625 | size=1 | links=#40674(auto Zul'Drak;576):42
+#40676 | auto Zul'Drak;578§auto Zul'Drak;578§auto Zul'Drak;578 | x=4918.60009765625 y=-3151.5 | size=1 | links=#40148(auto Zul'Drak;75):45 #40677(auto Zul'Drak;579):27
+#40677 | auto Zul'Drak;579§auto Zul'Drak;579§auto Zul'Drak;579 | x=4936.7001953125 y=-3172.5 | size=1 | links=#40676(auto Zul'Drak;578):27 #40678(auto Zul'Drak;580):26
+#40678 | auto Zul'Drak;580§auto Zul'Drak;580§auto Zul'Drak;580 | x=4933.2001953125 y=-3198.699951171875 | size=1 | links=#40677(auto Zul'Drak;579):26 #40679(auto Zul'Drak;581):27
+#40679 | auto Zul'Drak;581§auto Zul'Drak;581§auto Zul'Drak;581 | x=4906 y=-3201.900146484375 | size=1 | links=#40678(auto Zul'Drak;580):27 #40680(auto Zul'Drak;582):12
+#40680 | auto Zul'Drak;582§auto Zul'Drak;582§auto Zul'Drak;582 | x=4893.89990234375 y=-3205.5 | size=1 | links=#40679(auto Zul'Drak;581):12 #40681(auto Zul'Drak;583):20
+#40681 | auto Zul'Drak;583§auto Zul'Drak;583§auto Zul'Drak;583 | x=4885.2001953125 y=-3224.400146484375 | size=1 | links=#40680(auto Zul'Drak;582):20
+#40682 | auto Zul'Drak;584§auto Zul'Drak;584§auto Zul'Drak;584 | x=4925.30029296875 y=-3499 | size=1
+#40683 | auto Zul'Drak;585§auto Zul'Drak;585§auto Zul'Drak;585 | x=5018.80029296875 y=-3391.900146484375 | size=1 | links=#40684(auto Zul'Drak;586):37
+#40684 | auto Zul'Drak;586§auto Zul'Drak;586§auto Zul'Drak;586 | x=5049.10009765625 y=-3414.10009765625 | size=1 | links=#40683(auto Zul'Drak;585):37 #40685(auto Zul'Drak;587):34
+#40685 | auto Zul'Drak;587§auto Zul'Drak;587§auto Zul'Drak;587 | x=5074.7001953125 y=-3437.300048828125 | size=1 | links=#40684(auto Zul'Drak;586):34 #40686(auto Zul'Drak;588):34
+#40686 | auto Zul'Drak;588§auto Zul'Drak;588§auto Zul'Drak;588 | x=5100.39990234375 y=-3459.60009765625 | size=1 | links=#40685(auto Zul'Drak;587):34 #40687(auto Zul'Drak;589):35
+#40687 | auto Zul'Drak;589§auto Zul'Drak;589§auto Zul'Drak;589 | x=5126.7001953125 y=-3483.699951171875 | size=1 | links=#40686(auto Zul'Drak;588):35
+#40688 | auto Zul'Drak;590§auto Zul'Drak;590§auto Zul'Drak;590 | x=4991.60009765625 y=-3582.400146484375 | size=1 | links=#40689(auto Zul'Drak;591):10
+#40689 | auto Zul'Drak;591§auto Zul'Drak;591§auto Zul'Drak;591 | x=5001.60009765625 y=-3583.400146484375 | size=1 | links=#40688(auto Zul'Drak;590):10 #40690(auto Zul'Drak;592):23
+#40690 | auto Zul'Drak;592§auto Zul'Drak;592§auto Zul'Drak;592 | x=5021.80029296875 y=-3595.199951171875 | size=1 | links=#40689(auto Zul'Drak;591):23 #40709(auto Zul'Drak;611):9
+#40691 | auto Zul'Drak;593§auto Zul'Drak;593§auto Zul'Drak;593 | x=5066.60009765625 y=-3701.60009765625 | size=1 | links=#40692(auto Zul'Drak;594):10 #40693(auto Zul'Drak;595):11
+#40692 | auto Zul'Drak;594§auto Zul'Drak;594§auto Zul'Drak;594 | x=5056.39990234375 y=-3704.800048828125 | size=1 | links=#40691(auto Zul'Drak;593):10
+#40693 | auto Zul'Drak;595§auto Zul'Drak;595§auto Zul'Drak;595 | x=5078.2001953125 y=-3700.199951171875 | size=1 | links=#40691(auto Zul'Drak;593):11 #40694(auto Zul'Drak;596):12
+#40694 | auto Zul'Drak;596§auto Zul'Drak;596§auto Zul'Drak;596 | x=5089.39990234375 y=-3695.199951171875 | size=1 | links=#40693(auto Zul'Drak;595):12 #40695(auto Zul'Drak;597):15
+#40695 | auto Zul'Drak;597§auto Zul'Drak;597§auto Zul'Drak;597 | x=5103.89990234375 y=-3689.60009765625 | size=1 | links=#40694(auto Zul'Drak;596):15 #40696(auto Zul'Drak;598):12
+#40696 | auto Zul'Drak;598§auto Zul'Drak;598§auto Zul'Drak;598 | x=5113.60009765625 y=-3681.699951171875 | size=1 | links=#40695(auto Zul'Drak;597):12 #40697(auto Zul'Drak;599):8
+#40697 | auto Zul'Drak;599§auto Zul'Drak;599§auto Zul'Drak;599 | x=5110.89990234375 y=-3673.699951171875 | size=1 | links=#40696(auto Zul'Drak;598):8 #40698(auto Zul'Drak;600):4
+#40698 | auto Zul'Drak;600§auto Zul'Drak;600§auto Zul'Drak;600 | x=5106.80029296875 y=-3674.10009765625 | size=1 | links=#40697(auto Zul'Drak;599):4 #40699(auto Zul'Drak;601):13
+#40699 | auto Zul'Drak;601§auto Zul'Drak;601§auto Zul'Drak;601 | x=5093.80029296875 y=-3678 | size=1 | links=#40698(auto Zul'Drak;600):13 #40700(auto Zul'Drak;602):7
+#40700 | auto Zul'Drak;602§auto Zul'Drak;602§auto Zul'Drak;602 | x=5086.39990234375 y=-3680.199951171875 | size=1 | links=#40699(auto Zul'Drak;601):7 #40701(auto Zul'Drak;603):11
+#40701 | auto Zul'Drak;603§auto Zul'Drak;603§auto Zul'Drak;603 | x=5075.10009765625 y=-3682 | size=1 | links=#40700(auto Zul'Drak;602):11 #40702(auto Zul'Drak;604):27 #40714(auto Zul'Drak;616):16
+#40702 | auto Zul'Drak;604§auto Zul'Drak;604§auto Zul'Drak;604 | x=5047.39990234375 y=-3684.300048828125 | size=1 | links=#40701(auto Zul'Drak;603):27 #40703(auto Zul'Drak;605):17
+#40703 | auto Zul'Drak;605§auto Zul'Drak;605§auto Zul'Drak;605 | x=5030 y=-3679.800048828125 | size=1 | links=#40702(auto Zul'Drak;604):17 #40704(auto Zul'Drak;606):15
+#40704 | auto Zul'Drak;606§auto Zul'Drak;606§auto Zul'Drak;606 | x=5023.10009765625 y=-3665.60009765625 | size=1 | links=#40703(auto Zul'Drak;605):15 #40705(auto Zul'Drak;607):19
+#40705 | auto Zul'Drak;607§auto Zul'Drak;607§auto Zul'Drak;607 | x=5028.89990234375 y=-3646.800048828125 | size=1 | links=#40704(auto Zul'Drak;606):19 #40706(auto Zul'Drak;608):14
+#40706 | auto Zul'Drak;608§auto Zul'Drak;608§auto Zul'Drak;608 | x=5023.30029296875 y=-3633 | size=1 | links=#40705(auto Zul'Drak;607):14 #40707(auto Zul'Drak;609):16
+#40707 | auto Zul'Drak;609§auto Zul'Drak;609§auto Zul'Drak;609 | x=5023.5 y=-3616.800048828125 | size=1 | links=#40706(auto Zul'Drak;608):16 #40708(auto Zul'Drak;610):16
+#40708 | auto Zul'Drak;610§auto Zul'Drak;610§auto Zul'Drak;610 | x=5034.30029296875 y=-3604.900146484375 | size=1 | links=#40707(auto Zul'Drak;609):16 #40709(auto Zul'Drak;611):10 #40710(auto Zul'Drak;612):19 #40721(auto Zul'Drak;623):11
+#40709 | auto Zul'Drak;611§auto Zul'Drak;611§auto Zul'Drak;611 | x=5031.30029296875 y=-3594.400146484375 | size=1 | links=#40690(auto Zul'Drak;592):9 #40708(auto Zul'Drak;610):10
+#40710 | auto Zul'Drak;612§auto Zul'Drak;612§auto Zul'Drak;612 | x=5037.2001953125 y=-3624.10009765625 | size=1 | links=#40708(auto Zul'Drak;610):19 #40711(auto Zul'Drak;613):9
+#40711 | auto Zul'Drak;613§auto Zul'Drak;613§auto Zul'Drak;613 | x=5041.10009765625 y=-3632.400146484375 | size=1 | links=#40710(auto Zul'Drak;612):9 #40712(auto Zul'Drak;614):15
+#40712 | auto Zul'Drak;614§auto Zul'Drak;614§auto Zul'Drak;614 | x=5048.80029296875 y=-3646.400146484375 | size=1 | links=#40711(auto Zul'Drak;613):15
+#40713 | auto Zul'Drak;615§auto Zul'Drak;615§auto Zul'Drak;615 | x=5052.80029296875 y=-3670.10009765625 | size=1 | links=#40714(auto Zul'Drak;616):9
+#40714 | auto Zul'Drak;616§auto Zul'Drak;616§auto Zul'Drak;616 | x=5058.89990234375 y=-3677.300048828125 | size=1 | links=#40701(auto Zul'Drak;603):16 #40713(auto Zul'Drak;615):9
+#40715 | auto Zul'Drak;617§auto Zul'Drak;617§auto Zul'Drak;617 | x=5076.60009765625 y=-3640.60009765625 | size=1 | links=#40716(auto Zul'Drak;618):4
+#40716 | auto Zul'Drak;618§auto Zul'Drak;618§auto Zul'Drak;618 | x=5078.10009765625 y=-3636.400146484375 | size=1 | links=#40715(auto Zul'Drak;617):4 #40717(auto Zul'Drak;619):8
+#40717 | auto Zul'Drak;619§auto Zul'Drak;619§auto Zul'Drak;619 | x=5074.80029296875 y=-3628.60009765625 | size=1 | links=#40716(auto Zul'Drak;618):8 #40718(auto Zul'Drak;620):12
+#40718 | auto Zul'Drak;620§auto Zul'Drak;620§auto Zul'Drak;620 | x=5067.2001953125 y=-3618.10009765625 | size=1 | links=#40717(auto Zul'Drak;619):12 #40719(auto Zul'Drak;621):9
+#40719 | auto Zul'Drak;621§auto Zul'Drak;621§auto Zul'Drak;621 | x=5060.39990234375 y=-3611.800048828125 | size=1 | links=#40718(auto Zul'Drak;620):9 #40720(auto Zul'Drak;622):8
+#40720 | auto Zul'Drak;622§auto Zul'Drak;622§auto Zul'Drak;622 | x=5052.30029296875 y=-3612.5 | size=1 | links=#40719(auto Zul'Drak;621):8 #40721(auto Zul'Drak;623):8
+#40721 | auto Zul'Drak;623§auto Zul'Drak;623§auto Zul'Drak;623 | x=5043.5 y=-3611.900146484375 | size=1 | links=#40708(auto Zul'Drak;610):11 #40720(auto Zul'Drak;622):8
+#40722 | auto Zul'Drak;624§auto Zul'Drak;624§auto Zul'Drak;624 | x=5261.7001953125 y=-3504.5 | size=1 | links=#40723(auto Zul'Drak;625):13
+#40723 | auto Zul'Drak;625§auto Zul'Drak;625§auto Zul'Drak;625 | x=5252 y=-3513.699951171875 | size=1 | links=#40722(auto Zul'Drak;624):13 #40724(auto Zul'Drak;626):10
+#40724 | auto Zul'Drak;626§auto Zul'Drak;626§auto Zul'Drak;626 | x=5255.60009765625 y=-3523.300048828125 | size=1 | links=#40723(auto Zul'Drak;625):10
+#40725 | auto Zul'Drak;627§auto Zul'Drak;627§auto Zul'Drak;627 | x=5248.5 y=-3489.5 | size=1 | links=#40726(auto Zul'Drak;628):67
+#40726 | auto Zul'Drak;628§auto Zul'Drak;628§auto Zul'Drak;628 | x=5196.39990234375 y=-3446.699951171875 | size=1 | links=#40725(auto Zul'Drak;627):67 #40727(auto Zul'Drak;629):67
+#40727 | auto Zul'Drak;629§auto Zul'Drak;629§auto Zul'Drak;629 | x=5159.89990234375 y=-3390.199951171875 | size=1 | links=#40726(auto Zul'Drak;628):67 #40728(auto Zul'Drak;630):27
+#40728 | auto Zul'Drak;630§auto Zul'Drak;630§auto Zul'Drak;630 | x=5143.2001953125 y=-3368.10009765625 | size=1 | links=#40727(auto Zul'Drak;629):27 #40729(auto Zul'Drak;631):21
+#40729 | auto Zul'Drak;631§auto Zul'Drak;631§auto Zul'Drak;631 | x=5129.2001953125 y=-3352.400146484375 | size=1 | links=#40728(auto Zul'Drak;630):21 #40730(auto Zul'Drak;632):43
+#40730 | auto Zul'Drak;632§auto Zul'Drak;632§auto Zul'Drak;632 | x=5111.5 y=-3312.199951171875 | size=1 | links=#40729(auto Zul'Drak;631):43 #40791(auto Zul'Drak;686):15 #40792(auto Zul'Drak;687):50
+#40731 | auto Zul'Drak;633§auto Zul'Drak;633§auto Zul'Drak;633 | x=5197.10009765625 y=-3137.699951171875 | size=1 | links=#40732(auto Zul'Drak;634):33
+#40732 | auto Zul'Drak;634§auto Zul'Drak;634§auto Zul'Drak;634 | x=5223 y=-3115.900146484375 | size=1 | links=#40731(auto Zul'Drak;633):33 #40733(auto Zul'Drak;635):43
+#40733 | auto Zul'Drak;635§auto Zul'Drak;635§auto Zul'Drak;635 | x=5258.10009765625 y=-3091 | size=1 | links=#40732(auto Zul'Drak;634):43 #40734(auto Zul'Drak;636):22
+#40734 | auto Zul'Drak;636§auto Zul'Drak;636§auto Zul'Drak;636 | x=5274.39990234375 y=-3075 | size=1 | links=#40733(auto Zul'Drak;635):22 #40735(auto Zul'Drak;637):26
+#40735 | auto Zul'Drak;637§auto Zul'Drak;637§auto Zul'Drak;637 | x=5293.30029296875 y=-3056 | size=1 | links=#40734(auto Zul'Drak;636):26 #40736(auto Zul'Drak;638):47
+#40736 | auto Zul'Drak;638§auto Zul'Drak;638§auto Zul'Drak;638 | x=5326.2001953125 y=-3021.5 | size=1 | links=#40153(auto Zul'Drak;80):34 #40735(auto Zul'Drak;637):47
+#40737 | auto Zul'Drak;639§auto Zul'Drak;639§auto Zul'Drak;639 | x=5207.39990234375 y=-3038 | size=1 | links=#40738(auto Zul'Drak;640):16 #40740(auto Zul'Drak;642):34 #40743(auto Zul'Drak;645):34
+#40738 | auto Zul'Drak;640§auto Zul'Drak;640§auto Zul'Drak;640 | x=5196.5 y=-3050.800048828125 | size=1 | links=#40737(auto Zul'Drak;639):16 #40739(auto Zul'Drak;641):14
+#40739 | auto Zul'Drak;641§auto Zul'Drak;641§auto Zul'Drak;641 | x=5185.89990234375 y=-3061.10009765625 | size=1 | links=#40738(auto Zul'Drak;640):14
+#40740 | auto Zul'Drak;642§auto Zul'Drak;642§auto Zul'Drak;642 | x=5183.2001953125 y=-3013 | size=1 | links=#40737(auto Zul'Drak;639):34 #40741(auto Zul'Drak;643):11
+#40741 | auto Zul'Drak;643§auto Zul'Drak;643§auto Zul'Drak;643 | x=5176 y=-3003.699951171875 | size=1 | links=#40740(auto Zul'Drak;642):11 #40742(auto Zul'Drak;644):14
+#40742 | auto Zul'Drak;644§auto Zul'Drak;644§auto Zul'Drak;644 | x=5165.89990234375 y=-2993.900146484375 | size=1 | links=#40741(auto Zul'Drak;643):14
+#40743 | auto Zul'Drak;645§auto Zul'Drak;645§auto Zul'Drak;645 | x=5173.5 y=-3031.800048828125 | size=1 | links=#40737(auto Zul'Drak;639):34 #40744(auto Zul'Drak;646):16
+#40744 | auto Zul'Drak;646§auto Zul'Drak;646§auto Zul'Drak;646 | x=5165.30029296875 y=-3045.800048828125 | size=1 | links=#40743(auto Zul'Drak;645):16 #40745(auto Zul'Drak;647):15
+#40745 | auto Zul'Drak;647§auto Zul'Drak;647§auto Zul'Drak;647 | x=5152.39990234375 y=-3054.400146484375 | size=1 | links=#40744(auto Zul'Drak;646):15 #40746(auto Zul'Drak;648):18
+#40746 | auto Zul'Drak;648§auto Zul'Drak;648§auto Zul'Drak;648 | x=5134.39990234375 y=-3052.199951171875 | size=1 | links=#40745(auto Zul'Drak;647):18 #40747(auto Zul'Drak;649):25
+#40747 | auto Zul'Drak;649§auto Zul'Drak;649§auto Zul'Drak;649 | x=5136.5 y=-3026.60009765625 | size=1 | links=#40746(auto Zul'Drak;648):25 #40748(auto Zul'Drak;650):8
+#40748 | auto Zul'Drak;650§auto Zul'Drak;650§auto Zul'Drak;650 | x=5131.30029296875 y=-3033.800048828125 | size=1 | links=#40747(auto Zul'Drak;649):8 #40749(auto Zul'Drak;651):9
+#40749 | auto Zul'Drak;651§auto Zul'Drak;651§auto Zul'Drak;651 | x=5122.10009765625 y=-3033.5 | size=1 | links=#40748(auto Zul'Drak;650):9 #40750(auto Zul'Drak;652):8
+#40750 | auto Zul'Drak;652§auto Zul'Drak;652§auto Zul'Drak;652 | x=5114.10009765625 y=-3030.60009765625 | size=1 | links=#40749(auto Zul'Drak;651):8 #40751(auto Zul'Drak;653):18
+#40751 | auto Zul'Drak;653§auto Zul'Drak;653§auto Zul'Drak;653 | x=5095.7001953125 y=-3028.199951171875 | size=1 | links=#40750(auto Zul'Drak;652):18 #40752(auto Zul'Drak;654):40
+#40752 | auto Zul'Drak;654§auto Zul'Drak;654§auto Zul'Drak;654 | x=5055.89990234375 y=-3023.400146484375 | size=1 | links=#40751(auto Zul'Drak;653):40
+#40753 | auto Zul'Drak;655§auto Zul'Drak;655§auto Zul'Drak;655 | x=5190.39990234375 y=-3204.60009765625 | size=1 | links=#40754(auto Zul'Drak;656):41
+#40754 | auto Zul'Drak;656§auto Zul'Drak;656§auto Zul'Drak;656 | x=5209.7001953125 y=-3240.800048828125 | size=1 | links=#40753(auto Zul'Drak;655):41 #40755(auto Zul'Drak;657):48
+#40755 | auto Zul'Drak;657§auto Zul'Drak;657§auto Zul'Drak;657 | x=5243 y=-3275.699951171875 | size=1 | links=#40754(auto Zul'Drak;656):48 #40756(auto Zul'Drak;658):42
+#40756 | auto Zul'Drak;658§auto Zul'Drak;658§auto Zul'Drak;658 | x=5273 y=-3305.800048828125 | size=1 | links=#40755(auto Zul'Drak;657):42 #40757(auto Zul'Drak;659):24
+#40757 | auto Zul'Drak;659§auto Zul'Drak;659§auto Zul'Drak;659 | x=5290.2001953125 y=-3322.900146484375 | size=1 | links=#40756(auto Zul'Drak;658):24 #40758(auto Zul'Drak;660):17
+#40758 | auto Zul'Drak;660§auto Zul'Drak;660§auto Zul'Drak;660 | x=5302.10009765625 y=-3335.300048828125 | size=1 | links=#40757(auto Zul'Drak;659):17
+#40759 | auto Zul'Drak;661§auto Zul'Drak;661§auto Zul'Drak;661 | x=5331.89990234375 y=-3348.10009765625 | size=1 | links=#40760(auto Zul'Drak;662):19
+#40760 | auto Zul'Drak;662§auto Zul'Drak;662§auto Zul'Drak;662 | x=5350.7001953125 y=-3350.900146484375 | size=1 | links=#40759(auto Zul'Drak;661):19 #40761(auto Zul'Drak;663):18
+#40761 | auto Zul'Drak;663§auto Zul'Drak;663§auto Zul'Drak;663 | x=5363.60009765625 y=-3363.60009765625 | size=1 | links=#40760(auto Zul'Drak;662):18 #40762(auto Zul'Drak;664):7
+#40762 | auto Zul'Drak;664§auto Zul'Drak;664§auto Zul'Drak;664 | x=5369.89990234375 y=-3368 | size=1 | links=#40761(auto Zul'Drak;663):7 #40763(auto Zul'Drak;665):13 #40766(auto Zul'Drak;666):15
+#40763 | auto Zul'Drak;665§auto Zul'Drak;665§auto Zul'Drak;665 | x=5380.30029296875 y=-3360 | size=1 | links=#40762(auto Zul'Drak;664):13
+#40765 | nerubian crater 1;zul'drak§nerubischer Krater 1;zul'drak§nerubian crater 1;zul'drak | x=5420 y=-3356.900146484375 | size=1
+#40766 | auto Zul'Drak;666§auto Zul'Drak;666§auto Zul'Drak;666 | x=5359.30029296875 y=-3379.10009765625 | size=1 | links=#40762(auto Zul'Drak;664):15 #40767(auto Zul'Drak;667):7
+#40767 | auto Zul'Drak;667§auto Zul'Drak;667§auto Zul'Drak;667 | x=5355.80029296875 y=-3385.199951171875 | size=1 | links=#40766(auto Zul'Drak;666):7 #40768(auto Zul'Drak;668):22
+#40768 | auto Zul'Drak;668§auto Zul'Drak;668§auto Zul'Drak;668 | x=5368.10009765625 y=-3404.400146484375 | size=1 | links=#40767(auto Zul'Drak;667):22 #40771(nerubian crater 2;zul'drak):15
+#40771 | nerubian crater 2;zul'drak§nerubischer Krater 2;zul'drak§nerubian crater 2;zul'drak | x=5353 y=-3409.60009765625 | size=1 | links=#40768(auto Zul'Drak;668):15
+#40772 | auto Zul'Drak;669§auto Zul'Drak;669§auto Zul'Drak;669 | x=5363 y=-3317 | size=1
+#40773 | auto Zul'Drak;670§auto Zul'Drak;670§auto Zul'Drak;670 | x=5400.5 y=-3316.900146484375 | size=1
+#40774 | auto Zul'Drak;671§auto Zul'Drak;671§auto Zul'Drak;671 | x=5437.60009765625 y=-3276.400146484375 | size=1
+#40775 | auto Zul'Drak;672§auto Zul'Drak;672§auto Zul'Drak;672 | x=5395.80029296875 y=-3154.900146484375 | size=1 | links=#40776(auto Zul'Drak;673):28 #40781(auto Zul'Drak;678):21
+#40776 | auto Zul'Drak;673§auto Zul'Drak;673§auto Zul'Drak;673 | x=5389.89990234375 y=-3126.699951171875 | size=1 | links=#40775(auto Zul'Drak;672):28 #40777(auto Zul'Drak;674):19
+#40777 | auto Zul'Drak;674§auto Zul'Drak;674§auto Zul'Drak;674 | x=5398.80029296875 y=-3109.10009765625 | size=1 | links=#40155(auto Zul'Drak;82):44 #40776(auto Zul'Drak;673):19
+#40778 | auto Zul'Drak;675§auto Zul'Drak;675§auto Zul'Drak;675 | x=5345 y=-3132.60009765625 | size=1 | links=#40779(auto Zul'Drak;676):13
+#40779 | auto Zul'Drak;676§auto Zul'Drak;676§auto Zul'Drak;676 | x=5335.5 y=-3141.800048828125 | size=1 | links=#40778(auto Zul'Drak;675):13 #40780(auto Zul'Drak;677):12
+#40780 | auto Zul'Drak;677§auto Zul'Drak;677§auto Zul'Drak;677 | x=5326.60009765625 y=-3151.10009765625 | size=1 | links=#40779(auto Zul'Drak;676):12
+#40781 | auto Zul'Drak;678§auto Zul'Drak;678§auto Zul'Drak;678 | x=5375.89990234375 y=-3163 | size=1 | links=#40775(auto Zul'Drak;672):21 #40782(auto Zul'Drak;679):36
+#40782 | auto Zul'Drak;679§auto Zul'Drak;679§auto Zul'Drak;679 | x=5352.7001953125 y=-3191.800048828125 | size=1 | links=#40781(auto Zul'Drak;678):36 #40783(auto Zul'Drak;680):27
+#40783 | auto Zul'Drak;680§auto Zul'Drak;680§auto Zul'Drak;680 | x=5347.5 y=-3218.300048828125 | size=1 | links=#40782(auto Zul'Drak;679):27 #40784(auto Zul'Drak;681):12
+#40784 | auto Zul'Drak;681§auto Zul'Drak;681§auto Zul'Drak;681 | x=5340.89990234375 y=-3229 | size=1 | links=#40783(auto Zul'Drak;680):12 #40785(auto Zul'Drak;682):24
+#40785 | auto Zul'Drak;682§auto Zul'Drak;682§auto Zul'Drak;682 | x=5324.2001953125 y=-3247 | size=1 | links=#40784(auto Zul'Drak;681):24
+#40787 | nerubian crater 4;zul'drak§nerubischer Krater 4;zul'drak§nerubian crater 4;zul'drak | x=5335.7001953125 y=-3271 | size=1
+#40788 | auto Zul'Drak;683§auto Zul'Drak;683§auto Zul'Drak;683 | x=5258.39990234375 y=-3196 | size=1
+#40789 | auto Zul'Drak;684§auto Zul'Drak;684§auto Zul'Drak;684 | x=5169.89990234375 y=-3280.800048828125 | size=1 | links=#40790(auto Zul'Drak;685):26
+#40790 | auto Zul'Drak;685§auto Zul'Drak;685§auto Zul'Drak;685 | x=5151.10009765625 y=-3298.800048828125 | size=1 | links=#40789(auto Zul'Drak;684):26 #40791(auto Zul'Drak;686):26
+#40791 | auto Zul'Drak;686§auto Zul'Drak;686§auto Zul'Drak;686 | x=5126.10009765625 y=-3306.900146484375 | size=1 | links=#40730(auto Zul'Drak;632):15 #40790(auto Zul'Drak;685):26
+#40792 | auto Zul'Drak;687§auto Zul'Drak;687§auto Zul'Drak;687 | x=5068 y=-3285.699951171875 | size=1 | links=#40730(auto Zul'Drak;632):50 #40793(auto Zul'Drak;688):30
+#40793 | auto Zul'Drak;688§auto Zul'Drak;688§auto Zul'Drak;688 | x=5041 y=-3300.699951171875 | size=1 | links=#40792(auto Zul'Drak;687):30 #40794(auto Zul'Drak;689):26
+#40794 | auto Zul'Drak;689§auto Zul'Drak;689§auto Zul'Drak;689 | x=5030.60009765625 y=-3324.699951171875 | size=1 | links=#40793(auto Zul'Drak;688):26 #40795(auto Zul'Drak;690):25
+#40795 | auto Zul'Drak;690§auto Zul'Drak;690§auto Zul'Drak;690 | x=5012.5 y=-3342.900146484375 | size=1 | links=#40794(auto Zul'Drak;689):25
+#40796 | auto Zul'Drak;691§auto Zul'Drak;691§auto Zul'Drak;691 | x=5594.89990234375 y=-3336.5 | size=1 | links=#40159(auto Zul'Drak;86):75 #40797(auto Zul'Drak;692):30
+#40797 | auto Zul'Drak;692§auto Zul'Drak;692§auto Zul'Drak;692 | x=5574.89990234375 y=-3359.900146484375 | size=1 | links=#40796(auto Zul'Drak;691):30
+#40798 | auto Zul'Drak;693§auto Zul'Drak;693§auto Zul'Drak;693 | x=5548.10009765625 y=-3394.400146484375 | size=1 | links=#40799(auto Zul'Drak;694):28 #40806(auto Zul'Drak;699):20
+#40799 | auto Zul'Drak;694§auto Zul'Drak;694§auto Zul'Drak;694 | x=5528.7001953125 y=-3414.800048828125 | size=1 | links=#40798(auto Zul'Drak;693):28 #40806(auto Zul'Drak;699):14 #40807(auto Zul'Drak;700):15
+#40800 | auto Zul'Drak;695§auto Zul'Drak;695§auto Zul'Drak;695 | x=5544.2001953125 y=-3495.5 | size=1 | links=#40801(auto Zul'Drak;696):35
+#40801 | auto Zul'Drak;696§auto Zul'Drak;696§auto Zul'Drak;696 | x=5570.7001953125 y=-3518.60009765625 | size=1 | links=#40800(auto Zul'Drak;695):35
+#40803 | red cauldron;pools of in'alai;zul'drak§roter Kessel;Teiche von In'Alai;zul'drak§red cauldron;pools of in'alai;zul'drak | x=5581.772988694714 y=-3535.219400988891 | size=1
+#40804 | auto Zul'Drak;697§auto Zul'Drak;697§auto Zul'Drak;697 | x=5595.10009765625 y=-3501.300048828125 | size=1 | links=#40808(auto Zul'Drak;701):46
+#40805 | auto Zul'Drak;698§auto Zul'Drak;698§auto Zul'Drak;698 | x=5575 y=-3442.400146484375 | size=1 | links=#40806(auto Zul'Drak;699):42
+#40806 | auto Zul'Drak;699§auto Zul'Drak;699§auto Zul'Drak;699 | x=5543.39990234375 y=-3414.400146484375 | size=1 | links=#40798(auto Zul'Drak;693):20 #40799(auto Zul'Drak;694):14 #40805(auto Zul'Drak;698):42
+#40807 | auto Zul'Drak;700§auto Zul'Drak;700§auto Zul'Drak;700 | x=5513.5 y=-3419.400146484375 | size=1 | links=#40799(auto Zul'Drak;694):15
+#40808 | auto Zul'Drak;701§auto Zul'Drak;701§auto Zul'Drak;701 | x=5604.60009765625 y=-3546.60009765625 | size=1 | links=#40804(auto Zul'Drak;697):46
+#40809 | auto Zul'Drak;702§auto Zul'Drak;702§auto Zul'Drak;702 | x=5594.80029296875 y=-3605.10009765625 | size=1 | links=#41130(auto Zul'Drak;1014):24
+#40810 | auto Zul'Drak;703§auto Zul'Drak;703§auto Zul'Drak;703 | x=5644.10009765625 y=-3547 | size=1 | links=#40811(auto Zul'Drak;704):56 #40818(auto Zul'Drak;711):14
+#40811 | auto Zul'Drak;704§auto Zul'Drak;704§auto Zul'Drak;704 | x=5660.5 y=-3492.699951171875 | size=1 | links=#40810(auto Zul'Drak;703):56
+#40812 | auto Zul'Drak;705§auto Zul'Drak;705§auto Zul'Drak;705 | x=5748.7001953125 y=-3453 | size=1 | links=#40161(auto Zul'Drak;88):50 #40854(auto Zul'Drak;747):24
+#40813 | auto Zul'Drak;706§auto Zul'Drak;706§auto Zul'Drak;706 | x=5793.10009765625 y=-3702.400146484375 | size=1 | links=#40869(auto Zul'Drak;762):37
+#40814 | auto Zul'Drak;707§auto Zul'Drak;707§auto Zul'Drak;707 | x=5728.7001953125 y=-3685 | size=1 | links=#40815(auto Zul'Drak;708):52
+#40815 | auto Zul'Drak;708§auto Zul'Drak;708§auto Zul'Drak;708 | x=5681.30029296875 y=-3662.10009765625 | size=1 | links=#40814(auto Zul'Drak;707):52 #40816(auto Zul'Drak;709):46
+#40816 | auto Zul'Drak;709§auto Zul'Drak;709§auto Zul'Drak;709 | x=5675.80029296875 y=-3615.699951171875 | size=1 | links=#40815(auto Zul'Drak;708):46 #40817(auto Zul'Drak;710):30
+#40817 | auto Zul'Drak;710§auto Zul'Drak;710§auto Zul'Drak;710 | x=5662.7001953125 y=-3587.800048828125 | size=1 | links=#40816(auto Zul'Drak;709):30 #40818(auto Zul'Drak;711):32
+#40818 | auto Zul'Drak;711§auto Zul'Drak;711§auto Zul'Drak;711 | x=5655.7001953125 y=-3556.400146484375 | size=1 | links=#40810(auto Zul'Drak;703):14 #40817(auto Zul'Drak;710):32 #40819(auto Zul'Drak;712):27
+#40819 | auto Zul'Drak;712§auto Zul'Drak;712§auto Zul'Drak;712 | x=5657.10009765625 y=-3529.400146484375 | size=1 | links=#40818(auto Zul'Drak;711):27 #40820(auto Zul'Drak;713):19
+#40820 | auto Zul'Drak;713§auto Zul'Drak;713§auto Zul'Drak;713 | x=5667.39990234375 y=-3512.300048828125 | size=1 | links=#40819(auto Zul'Drak;712):19
+#40821 | auto Zul'Drak;714§auto Zul'Drak;714§auto Zul'Drak;714 | x=5302.89990234375 y=-3990 | size=1 | links=#40202(auto Zul'Drak;129):27 #40822(auto Zul'Drak;715):14
+#40822 | auto Zul'Drak;715§auto Zul'Drak;715§auto Zul'Drak;715 | x=5298.2001953125 y=-3976.10009765625 | size=1 | links=#40821(auto Zul'Drak;714):14
+#40823 | auto Zul'Drak;716§auto Zul'Drak;716§auto Zul'Drak;716 | x=5230.10009765625 y=-3971.400146484375 | size=1
+#40824 | auto Zul'Drak;717§auto Zul'Drak;717§auto Zul'Drak;717 | x=5166.80029296875 y=-3966.60009765625 | size=1 | links=#40825(auto Zul'Drak;718):41
+#40825 | auto Zul'Drak;718§auto Zul'Drak;718§auto Zul'Drak;718 | x=5133.39990234375 y=-3990.60009765625 | size=1 | links=#40824(auto Zul'Drak;717):41
+#40826 | auto Zul'Drak;719§auto Zul'Drak;719§auto Zul'Drak;719 | x=5117 y=-4046.699951171875 | size=1 | links=#40827(auto Zul'Drak;720):40
+#40827 | auto Zul'Drak;720§auto Zul'Drak;720§auto Zul'Drak;720 | x=5135.80029296875 y=-4082.300048828125 | size=1 | links=#40205(auto Zul'Drak;132):46 #40206(auto Zul'Drak;133):44 #40826(auto Zul'Drak;719):40
+#40828 | auto Zul'Drak;721§auto Zul'Drak;721§auto Zul'Drak;721 | x=5088.30029296875 y=-3983.5 | size=1
+#40829 | auto Zul'Drak;722§auto Zul'Drak;722§auto Zul'Drak;722 | x=5035.10009765625 y=-3910.199951171875 | size=1 | links=#40830(auto Zul'Drak;723):32
+#40830 | auto Zul'Drak;723§auto Zul'Drak;723§auto Zul'Drak;723 | x=5037.5 y=-3878.10009765625 | size=1 | links=#40829(auto Zul'Drak;722):32 #40831(auto Zul'Drak;724):24
+#40831 | auto Zul'Drak;724§auto Zul'Drak;724§auto Zul'Drak;724 | x=5052.39990234375 y=-3858.5 | size=1 | links=#40830(auto Zul'Drak;723):24
+#40832 | auto Zul'Drak;725§auto Zul'Drak;725§auto Zul'Drak;725 | x=5191.60009765625 y=-3748.300048828125 | size=1 | links=#40833(auto Zul'Drak;726):24
+#40833 | auto Zul'Drak;726§auto Zul'Drak;726§auto Zul'Drak;726 | x=5216.2001953125 y=-3745.199951171875 | size=1 | links=#40832(auto Zul'Drak;725):24 #40834(auto Zul'Drak;727):12
+#40834 | auto Zul'Drak;727§auto Zul'Drak;727§auto Zul'Drak;727 | x=5225 y=-3753.699951171875 | size=1 | links=#40833(auto Zul'Drak;726):12
+#40835 | auto Zul'Drak;728§auto Zul'Drak;728§auto Zul'Drak;728 | x=5331.7001953125 y=-3770.800048828125 | size=1 | links=#40836(auto Zul'Drak;729):44
+#40836 | auto Zul'Drak;729§auto Zul'Drak;729§auto Zul'Drak;729 | x=5369.30029296875 y=-3747.300048828125 | size=1 | links=#40835(auto Zul'Drak;728):44 #40837(auto Zul'Drak;730):24 #40845(auto Zul'Drak;738):56
+#40837 | auto Zul'Drak;730§auto Zul'Drak;730§auto Zul'Drak;730 | x=5389.5 y=-3733.300048828125 | size=1 | links=#40836(auto Zul'Drak;729):24 #40838(auto Zul'Drak;731):11
+#40838 | auto Zul'Drak;731§auto Zul'Drak;731§auto Zul'Drak;731 | x=5398.30029296875 y=-3725.5 | size=1 | links=#40837(auto Zul'Drak;730):11 #40839(auto Zul'Drak;732):36 #40841(auto Zul'Drak;734):41
+#40839 | auto Zul'Drak;732§auto Zul'Drak;732§auto Zul'Drak;732 | x=5434.39990234375 y=-3729.699951171875 | size=1 | links=#40838(auto Zul'Drak;731):36 #40840(auto Zul'Drak;733):33
+#40840 | auto Zul'Drak;733§auto Zul'Drak;733§auto Zul'Drak;733 | x=5436.89990234375 y=-3696.199951171875 | size=1 | links=#40839(auto Zul'Drak;732):33
+#40841 | auto Zul'Drak;734§auto Zul'Drak;734§auto Zul'Drak;734 | x=5383.609628749521 y=-3686.541122535369 | size=1 | links=#40838(auto Zul'Drak;731):41
+#40842 | auto Zul'Drak;735§auto Zul'Drak;735§auto Zul'Drak;735 | x=5488.89990234375 y=-3625 | size=1
+#40843 | auto Zul'Drak;736§auto Zul'Drak;736§auto Zul'Drak;736 | x=5484.80029296875 y=-3490.400146484375 | size=1 | links=#40844(auto Zul'Drak;737):15 #40851(auto Zul'Drak;744):29
+#40844 | auto Zul'Drak;737§auto Zul'Drak;737§auto Zul'Drak;737 | x=5495.7001953125 y=-3479.60009765625 | size=1 | links=#40843(auto Zul'Drak;736):15
+#40845 | auto Zul'Drak;738§auto Zul'Drak;738§auto Zul'Drak;738 | x=5340.89990234375 y=-3698.400146484375 | size=1 | links=#40836(auto Zul'Drak;729):56 #40846(auto Zul'Drak;739):25
+#40846 | auto Zul'Drak;739§auto Zul'Drak;739§auto Zul'Drak;739 | x=5318.7001953125 y=-3685.800048828125 | size=1 | links=#40845(auto Zul'Drak;738):25 #41131(auto Zul'Drak;1015):48
+#40847 | auto Zul'Drak;740§auto Zul'Drak;740§auto Zul'Drak;740 | x=5349.89990234375 y=-3635.800048828125 | size=1 | links=#40848(auto Zul'Drak;741):17
+#40848 | auto Zul'Drak;741§auto Zul'Drak;741§auto Zul'Drak;741 | x=5334.80029296875 y=-3626.60009765625 | size=1 | links=#40847(auto Zul'Drak;740):17
+#40849 | auto Zul'Drak;742§auto Zul'Drak;742§auto Zul'Drak;742 | x=5419.2001953125 y=-3555.5 | size=1 | links=#40850(auto Zul'Drak;743):34
+#40850 | auto Zul'Drak;743§auto Zul'Drak;743§auto Zul'Drak;743 | x=5422.7001953125 y=-3521.10009765625 | size=1 | links=#40849(auto Zul'Drak;742):34 #40851(auto Zul'Drak;744):51
+#40851 | auto Zul'Drak;744§auto Zul'Drak;744§auto Zul'Drak;744 | x=5456.593786575978 y=-3482.318597945216 | size=1 | links=#40843(auto Zul'Drak;736):29 #40850(auto Zul'Drak;743):51
+#40852 | auto Zul'Drak;745§auto Zul'Drak;745§auto Zul'Drak;745 | x=5620.491717695094 y=-3823.479302823423 | size=1 | links=#40853(auto Zul'Drak;746):53
+#40853 | auto Zul'Drak;746§auto Zul'Drak;746§auto Zul'Drak;746 | x=5615.784388723784 y=-3876.828644759496 | size=1 | links=#40198(auto Zul'Drak;125):27 #40852(auto Zul'Drak;745):53
+#40854 | auto Zul'Drak;747§auto Zul'Drak;747§auto Zul'Drak;747 | x=5754 y=-3477.10009765625 | size=1 | links=#40812(auto Zul'Drak;705):24 #40855(auto Zul'Drak;748):24
+#40855 | auto Zul'Drak;748§auto Zul'Drak;748§auto Zul'Drak;748 | x=5754.10009765625 y=-3502 | size=1 | links=#40854(auto Zul'Drak;747):24 #40856(auto Zul'Drak;749):30
+#40856 | auto Zul'Drak;749§auto Zul'Drak;749§auto Zul'Drak;749 | x=5756.60009765625 y=-3532.400146484375 | size=1 | links=#40855(auto Zul'Drak;748):30 #40857(auto Zul'Drak;750):12
+#40857 | auto Zul'Drak;750§auto Zul'Drak;750§auto Zul'Drak;750 | x=5759.39990234375 y=-3544.60009765625 | size=1 | links=#40856(auto Zul'Drak;749):12 #40858(auto Zul'Drak;751):19 #40864(auto Zul'Drak;757):19
+#40858 | auto Zul'Drak;751§auto Zul'Drak;751§auto Zul'Drak;751 | x=5778.60009765625 y=-3549.699951171875 | size=1 | links=#40857(auto Zul'Drak;750):19 #40859(auto Zul'Drak;752):10
+#40859 | auto Zul'Drak;752§auto Zul'Drak;752§auto Zul'Drak;752 | x=5783.2001953125 y=-3559.400146484375 | size=1 | links=#40858(auto Zul'Drak;751):10 #40860(auto Zul'Drak;753):20
+#40860 | auto Zul'Drak;753§auto Zul'Drak;753§auto Zul'Drak;753 | x=5778.89990234375 y=-3579.900146484375 | size=1 | links=#40859(auto Zul'Drak;752):20 #40861(auto Zul'Drak;754):18
+#40861 | auto Zul'Drak;754§auto Zul'Drak;754§auto Zul'Drak;754 | x=5763.80029296875 y=-3591.300048828125 | size=1 | links=#40860(auto Zul'Drak;753):18 #40862(auto Zul'Drak;755):14 #40865(auto Zul'Drak;758):15
+#40862 | auto Zul'Drak;755§auto Zul'Drak;755§auto Zul'Drak;755 | x=5748.89990234375 y=-3590.10009765625 | size=1 | links=#40861(auto Zul'Drak;754):14 #40863(auto Zul'Drak;756):13 #40868(auto Zul'Drak;761):10
+#40863 | auto Zul'Drak;756§auto Zul'Drak;756§auto Zul'Drak;756 | x=5744.10009765625 y=-3577.699951171875 | size=1 | links=#40862(auto Zul'Drak;755):13 #40864(auto Zul'Drak;757):17
+#40864 | auto Zul'Drak;757§auto Zul'Drak;757§auto Zul'Drak;757 | x=5749.60009765625 y=-3561.400146484375 | size=1 | links=#40857(auto Zul'Drak;750):19 #40863(auto Zul'Drak;756):17
+#40865 | auto Zul'Drak;758§auto Zul'Drak;758§auto Zul'Drak;758 | x=5755.30029296875 y=-3604.800048828125 | size=1 | links=#40861(auto Zul'Drak;754):15 #40866(auto Zul'Drak;759):20
+#40866 | auto Zul'Drak;759§auto Zul'Drak;759§auto Zul'Drak;759 | x=5763.39990234375 y=-3623.199951171875 | size=1 | links=#40865(auto Zul'Drak;758):20 #40867(auto Zul'Drak;760):18
+#40867 | auto Zul'Drak;760§auto Zul'Drak;760§auto Zul'Drak;760 | x=5777.60009765625 y=-3634.60009765625 | size=1 | links=#40866(auto Zul'Drak;759):18 #40869(auto Zul'Drak;762):32
+#40868 | auto Zul'Drak;761§auto Zul'Drak;761§auto Zul'Drak;761 | x=5738.7001953125 y=-3592.199951171875 | size=1 | links=#40862(auto Zul'Drak;755):10
+#40869 | auto Zul'Drak;762§auto Zul'Drak;762§auto Zul'Drak;762 | x=5779.30029296875 y=-3667.10009765625 | size=1 | links=#40813(auto Zul'Drak;706):37 #40867(auto Zul'Drak;760):32
+#40870 | auto Zul'Drak;763§auto Zul'Drak;763§auto Zul'Drak;763 | x=5723.80029296875 y=-4085.60009765625 | size=1 | links=#40197(auto Zul'Drak;124):31 #40871(auto Zul'Drak;764):13
+#40871 | auto Zul'Drak;764§auto Zul'Drak;764§auto Zul'Drak;764 | x=5721.89990234375 y=-4098.7001953125 | size=1 | links=#40870(auto Zul'Drak;763):13 #40872(auto Zul'Drak;765):20
+#40872 | auto Zul'Drak;765§auto Zul'Drak;765§auto Zul'Drak;765 | x=5720.30029296875 y=-4118.7001953125 | size=1 | links=#40871(auto Zul'Drak;764):20 #40873(auto Zul'Drak;766):36
+#40873 | auto Zul'Drak;766§auto Zul'Drak;766§auto Zul'Drak;766 | x=5716.60009765625 y=-4155.39990234375 | size=1 | links=#40872(auto Zul'Drak;765):36 #40874(auto Zul'Drak;767):39 #40888(auto Zul'Drak;781):21
+#40874 | auto Zul'Drak;767§auto Zul'Drak;767§auto Zul'Drak;767 | x=5715.5 y=-4194.5 | size=1 | links=#40873(auto Zul'Drak;766):39 #40875(auto Zul'Drak;768):29
+#40875 | auto Zul'Drak;768§auto Zul'Drak;768§auto Zul'Drak;768 | x=5715.7001953125 y=-4224.2001953125 | size=1 | links=#40874(auto Zul'Drak;767):29 #40876(auto Zul'Drak;769):23
+#40876 | auto Zul'Drak;769§auto Zul'Drak;769§auto Zul'Drak;769 | x=5716.30029296875 y=-4248.10009765625 | size=1 | links=#40875(auto Zul'Drak;768):23 #40877(auto Zul'Drak;770):42
+#40877 | auto Zul'Drak;770§auto Zul'Drak;770§auto Zul'Drak;770 | x=5716.2001953125 y=-4290.10009765625 | size=1 | links=#40876(auto Zul'Drak;769):42 #40878(auto Zul'Drak;771):32
+#40878 | auto Zul'Drak;771§auto Zul'Drak;771§auto Zul'Drak;771 | x=5716.2001953125 y=-4323 | size=1 | links=#40877(auto Zul'Drak;770):32
+#40879 | auto Zul'Drak;772§auto Zul'Drak;772§auto Zul'Drak;772 | x=5747.80029296875 y=-4364.30029296875 | size=1
+#40880 | auto Zul'Drak;773§auto Zul'Drak;773§auto Zul'Drak;773 | x=5683.5 y=-4363.80029296875 | size=1
+#40881 | auto Zul'Drak;774§auto Zul'Drak;774§auto Zul'Drak;774 | x=5655.80029296875 y=-4371.89990234375 | size=1
+#40882 | auto Zul'Drak;775§auto Zul'Drak;775§auto Zul'Drak;775 | x=5630.10009765625 y=-4114.39990234375 | size=1 | links=#40883(auto Zul'Drak;776):21 #40885(auto Zul'Drak;778):13
+#40883 | auto Zul'Drak;776§auto Zul'Drak;776§auto Zul'Drak;776 | x=5632.89990234375 y=-4092.60009765625 | size=1 | links=#40882(auto Zul'Drak;775):21 #40884(auto Zul'Drak;777):26
+#40884 | auto Zul'Drak;777§auto Zul'Drak;777§auto Zul'Drak;777 | x=5631.30029296875 y=-4066 | size=1 | links=#40883(auto Zul'Drak;776):26
+#40885 | auto Zul'Drak;778§auto Zul'Drak;778§auto Zul'Drak;778 | x=5635.2001953125 y=-4126.5 | size=1 | links=#40882(auto Zul'Drak;775):13 #40886(auto Zul'Drak;779):25
+#40886 | auto Zul'Drak;779§auto Zul'Drak;779§auto Zul'Drak;779 | x=5640.39990234375 y=-4151.30029296875 | size=1 | links=#40885(auto Zul'Drak;778):25
+#40887 | auto Zul'Drak;780§auto Zul'Drak;780§auto Zul'Drak;780 | x=5639.39990234375 y=-4172.2001953125 | size=1 | links=#40889(auto Zul'Drak;782):26
+#40888 | auto Zul'Drak;781§auto Zul'Drak;781§auto Zul'Drak;781 | x=5708.099758627448 y=-4175.050936069457 | size=1 | links=#40873(auto Zul'Drak;766):21
+#40889 | auto Zul'Drak;782§auto Zul'Drak;782§auto Zul'Drak;782 | x=5617 y=-4186.10009765625 | size=1 | links=#40887(auto Zul'Drak;780):26 #40890(auto Zul'Drak;783):24
+#40890 | auto Zul'Drak;783§auto Zul'Drak;783§auto Zul'Drak;783 | x=5592.30029296875 y=-4185.30029296875 | size=1 | links=#40889(auto Zul'Drak;782):24 #40891(auto Zul'Drak;784):20
+#40891 | auto Zul'Drak;784§auto Zul'Drak;784§auto Zul'Drak;784 | x=5576.80029296875 y=-4198.2001953125 | size=1 | links=#40890(auto Zul'Drak;783):20
+#40892 | auto Zul'Drak;785§auto Zul'Drak;785§auto Zul'Drak;785 | x=5335.66730905876 y=-4193.238852331383 | size=1
+#40893 | auto Zul'Drak;786§auto Zul'Drak;786§auto Zul'Drak;786 | x=5188 y=-4120.89990234375 | size=1 | links=#40205(auto Zul'Drak;132):36 #40206(auto Zul'Drak;133):66
+#40894 | auto Zul'Drak;787§auto Zul'Drak;787§auto Zul'Drak;787 | x=5840.30029296875 y=-4315.39990234375 | size=1 | links=#40915(auto Zul'Drak;808):61
+#40895 | auto Zul'Drak;788§auto Zul'Drak;788§auto Zul'Drak;788 | x=5840.80029296875 y=-4348.5 | size=1
+#40896 | auto Zul'Drak;789§auto Zul'Drak;789§auto Zul'Drak;789 | x=5815.7001953125 y=-3812.400146484375 | size=1 | links=#40897(auto Zul'Drak;790):38
+#40897 | auto Zul'Drak;790§auto Zul'Drak;790§auto Zul'Drak;790 | x=5803.80029296875 y=-3776.10009765625 | size=1 | links=#40896(auto Zul'Drak;789):38 #40898(auto Zul'Drak;791):14
+#40898 | auto Zul'Drak;791§auto Zul'Drak;791§auto Zul'Drak;791 | x=5796.5 y=-3763.5 | size=1 | links=#40897(auto Zul'Drak;790):14 #40899(auto Zul'Drak;792):11
+#40899 | auto Zul'Drak;792§auto Zul'Drak;792§auto Zul'Drak;792 | x=5787.80029296875 y=-3756 | size=1 | links=#40193(auto Zul'Drak;120):25 #40898(auto Zul'Drak;791):11
+#40900 | auto Zul'Drak;793§auto Zul'Drak;793§auto Zul'Drak;793 | x=5894.80029296875 y=-3799.5 | size=1
+#40901 | auto Zul'Drak;794§auto Zul'Drak;794§auto Zul'Drak;794 | x=5961.148034491196 y=-3711.155063537144 | size=1
+#40902 | auto Zul'Drak;795§auto Zul'Drak;795§auto Zul'Drak;795 | x=5983.373221467017 y=-3680.67481477241 | size=1 | links=#40165(auto Zul'Drak;92):24
+#40903 | auto Zul'Drak;796§auto Zul'Drak;796§auto Zul'Drak;796 | x=5961.60009765625 y=-3850.699951171875 | size=1 | links=#40904(auto Zul'Drak;797):19
+#40904 | auto Zul'Drak;797§auto Zul'Drak;797§auto Zul'Drak;797 | x=5975.39990234375 y=-3864.400146484375 | size=1 | links=#40903(auto Zul'Drak;796):19 #40905(auto Zul'Drak;798):15
+#40905 | auto Zul'Drak;798§auto Zul'Drak;798§auto Zul'Drak;798 | x=5985.89990234375 y=-3875.400146484375 | size=1 | links=#40904(auto Zul'Drak;797):15
+#40906 | auto Zul'Drak;799§auto Zul'Drak;799§auto Zul'Drak;799 | x=6023.676759714843 y=-3799.526242768893 | size=1 | links=#40907(auto Zul'Drak;800):33
+#40907 | auto Zul'Drak;800§auto Zul'Drak;800§auto Zul'Drak;800 | x=5990.418777240415 y=-3794.775066598599 | size=1 | links=#40906(auto Zul'Drak;799):33
+#40908 | auto Zul'Drak;801§auto Zul'Drak;801§auto Zul'Drak;801 | x=5929.2001953125 y=-4008.199951171875 | size=1
+#40909 | auto Zul'Drak;802§auto Zul'Drak;802§auto Zul'Drak;802 | x=5762.184437126711 y=-4115.493442157802 | size=1 | links=#40910(auto Zul'Drak;803):38
+#40910 | auto Zul'Drak;803§auto Zul'Drak;803§auto Zul'Drak;803 | x=5800.452475723353 y=-4115.715928638235 | size=1 | links=#40909(auto Zul'Drak;802):38
+#40911 | auto Zul'Drak;804§auto Zul'Drak;804§auto Zul'Drak;804 | x=6111.2001953125 y=-4417 | size=1 | links=#40912(auto Zul'Drak;805):24
+#40912 | auto Zul'Drak;805§auto Zul'Drak;805§auto Zul'Drak;805 | x=6112.7001953125 y=-4441.2001953125 | size=1 | links=#40911(auto Zul'Drak;804):24 #40913(auto Zul'Drak;806):7
+#40913 | auto Zul'Drak;806§auto Zul'Drak;806§auto Zul'Drak;806 | x=6113.5 y=-4448.7001953125 | size=1 | links=#40912(auto Zul'Drak;805):7 #40914(auto Zul'Drak;807):28
+#40914 | auto Zul'Drak;807§auto Zul'Drak;807§auto Zul'Drak;807 | x=6116.5 y=-4477.30029296875 | size=1 | links=#40913(auto Zul'Drak;806):28 #40918(auto Zul'Drak;811):39
+#40915 | auto Zul'Drak;808§auto Zul'Drak;808§auto Zul'Drak;808 | x=5900.2001953125 y=-4299.7001953125 | size=1 | links=#40894(auto Zul'Drak;787):61 #40916(auto Zul'Drak;809):63
+#40916 | auto Zul'Drak;809§auto Zul'Drak;809§auto Zul'Drak;809 | x=5904.89990234375 y=-4236.39990234375 | size=1 | links=#40915(auto Zul'Drak;808):63
+#40917 | auto Zul'Drak;810§auto Zul'Drak;810§auto Zul'Drak;810 | x=5932.89990234375 y=-4122.89990234375 | size=1
+#40918 | auto Zul'Drak;811§auto Zul'Drak;811§auto Zul'Drak;811 | x=6100.7001953125 y=-4441.2001953125 | size=1 | links=#40914(auto Zul'Drak;807):39 #40919(auto Zul'Drak;812):27
+#40919 | auto Zul'Drak;812§auto Zul'Drak;812§auto Zul'Drak;812 | x=6086.30029296875 y=-4417.60009765625 | size=1 | links=#40918(auto Zul'Drak;811):27 #40920(auto Zul'Drak;813):22
+#40920 | auto Zul'Drak;813§auto Zul'Drak;813§auto Zul'Drak;813 | x=6081.80029296875 y=-4395.39990234375 | size=1 | links=#40919(auto Zul'Drak;812):22 #40921(auto Zul'Drak;814):35
+#40921 | auto Zul'Drak;814§auto Zul'Drak;814§auto Zul'Drak;814 | x=6079.10009765625 y=-4359.89990234375 | size=1 | links=#40920(auto Zul'Drak;813):35 #40922(auto Zul'Drak;815):31
+#40922 | auto Zul'Drak;815§auto Zul'Drak;815§auto Zul'Drak;815 | x=6084.2001953125 y=-4329.30029296875 | size=1 | links=#40921(auto Zul'Drak;814):31 #40923(auto Zul'Drak;816):12
+#40923 | auto Zul'Drak;816§auto Zul'Drak;816§auto Zul'Drak;816 | x=6084.80029296875 y=-4316.89990234375 | size=1 | links=#40922(auto Zul'Drak;815):12 #40924(auto Zul'Drak;817):28
+#40924 | auto Zul'Drak;817§auto Zul'Drak;817§auto Zul'Drak;817 | x=6082.39990234375 y=-4288 | size=1 | links=#40923(auto Zul'Drak;816):28 #40925(auto Zul'Drak;818):44
+#40925 | auto Zul'Drak;818§auto Zul'Drak;818§auto Zul'Drak;818 | x=6079.30029296875 y=-4243.5 | size=1 | links=#40924(auto Zul'Drak;817):44
+#40926 | auto Zul'Drak;819§auto Zul'Drak;819§auto Zul'Drak;819 | x=5882.80029296875 y=-3448.199951171875 | size=1 | links=#40162(auto Zul'Drak;89):57
+#40927 | auto Zul'Drak;820§auto Zul'Drak;820§auto Zul'Drak;820 | x=5952.60009765625 y=-3371.5 | size=1 | links=#40928(auto Zul'Drak;821):30
+#40928 | auto Zul'Drak;821§auto Zul'Drak;821§auto Zul'Drak;821 | x=5981.89990234375 y=-3361.800048828125 | size=1 | links=#40927(auto Zul'Drak;820):30 #40929(auto Zul'Drak;822):25 #40948(auto Zul'Drak;841):9
+#40929 | auto Zul'Drak;822§auto Zul'Drak;822§auto Zul'Drak;822 | x=6007.10009765625 y=-3361.199951171875 | size=1 | links=#40928(auto Zul'Drak;821):25 #40930(auto Zul'Drak;823):25 #40947(auto Zul'Drak;840):44
+#40930 | auto Zul'Drak;823§auto Zul'Drak;823§auto Zul'Drak;823 | x=6031.2001953125 y=-3369.800048828125 | size=1 | links=#40929(auto Zul'Drak;822):25 #40931(auto Zul'Drak;824):14
+#40931 | auto Zul'Drak;824§auto Zul'Drak;824§auto Zul'Drak;824 | x=6044.5 y=-3374.300048828125 | size=1 | links=#40930(auto Zul'Drak;823):14
+#40932 | auto Zul'Drak;825§auto Zul'Drak;825§auto Zul'Drak;825 | x=6112 y=-3375.199951171875 | size=1 | links=#40933(auto Zul'Drak;826):34
+#40933 | auto Zul'Drak;826§auto Zul'Drak;826§auto Zul'Drak;826 | x=6136.89990234375 y=-3351.5 | size=1 | links=#40932(auto Zul'Drak;825):34 #40934(auto Zul'Drak;827):20
+#40934 | auto Zul'Drak;827§auto Zul'Drak;827§auto Zul'Drak;827 | x=6147.5 y=-3333.5 | size=1 | links=#40933(auto Zul'Drak;826):20 #40935(auto Zul'Drak;828):28
+#40935 | auto Zul'Drak;828§auto Zul'Drak;828§auto Zul'Drak;828 | x=6159.80029296875 y=-3308.10009765625 | size=1 | links=#40934(auto Zul'Drak;827):28 #40936(auto Zul'Drak;829):19
+#40936 | auto Zul'Drak;829§auto Zul'Drak;829§auto Zul'Drak;829 | x=6170 y=-3291 | size=1 | links=#40935(auto Zul'Drak;828):19 #40937(auto Zul'Drak;830):23
+#40937 | auto Zul'Drak;830§auto Zul'Drak;830§auto Zul'Drak;830 | x=6167.39990234375 y=-3267.199951171875 | size=1 | links=#40936(auto Zul'Drak;829):23 #40938(auto Zul'Drak;831):21
+#40938 | auto Zul'Drak;831§auto Zul'Drak;831§auto Zul'Drak;831 | x=6162.7001953125 y=-3246.300048828125 | size=1 | links=#40937(auto Zul'Drak;830):21 #40939(auto Zul'Drak;832):23
+#40939 | auto Zul'Drak;832§auto Zul'Drak;832§auto Zul'Drak;832 | x=6141.89990234375 y=-3234.400146484375 | size=1 | links=#40938(auto Zul'Drak;831):23 #40940(auto Zul'Drak;833):18
+#40940 | auto Zul'Drak;833§auto Zul'Drak;833§auto Zul'Drak;833 | x=6126.2001953125 y=-3224.400146484375 | size=1 | links=#40939(auto Zul'Drak;832):18 #40941(auto Zul'Drak;834):27 #40962(auto Zul'Drak;855):36
+#40941 | auto Zul'Drak;834§auto Zul'Drak;834§auto Zul'Drak;834 | x=6098.7001953125 y=-3223.199951171875 | size=1 | links=#40940(auto Zul'Drak;833):27 #40942(auto Zul'Drak;835):25
+#40942 | auto Zul'Drak;835§auto Zul'Drak;835§auto Zul'Drak;835 | x=6073.2001953125 y=-3224.60009765625 | size=1 | links=#40941(auto Zul'Drak;834):25 #40943(auto Zul'Drak;836):21
+#40943 | auto Zul'Drak;836§auto Zul'Drak;836§auto Zul'Drak;836 | x=6051.7001953125 y=-3225.60009765625 | size=1 | links=#40942(auto Zul'Drak;835):21 #40944(auto Zul'Drak;837):26
+#40944 | auto Zul'Drak;837§auto Zul'Drak;837§auto Zul'Drak;837 | x=6030.5 y=-3240.699951171875 | size=1 | links=#40943(auto Zul'Drak;836):26 #40945(auto Zul'Drak;838):25
+#40945 | auto Zul'Drak;838§auto Zul'Drak;838§auto Zul'Drak;838 | x=6017.7001953125 y=-3262.199951171875 | size=1 | links=#40944(auto Zul'Drak;837):25 #40946(auto Zul'Drak;839):30 #40956(auto Zul'Drak;849):18
+#40946 | auto Zul'Drak;839§auto Zul'Drak;839§auto Zul'Drak;839 | x=6017.89990234375 y=-3292.5 | size=1 | links=#40945(auto Zul'Drak;838):30 #40947(auto Zul'Drak;840):25
+#40947 | auto Zul'Drak;840§auto Zul'Drak;840§auto Zul'Drak;840 | x=6016 y=-3317.800048828125 | size=1 | links=#40929(auto Zul'Drak;822):44 #40946(auto Zul'Drak;839):25
+#40948 | auto Zul'Drak;841§auto Zul'Drak;841§auto Zul'Drak;841 | x=5973 y=-3358.10009765625 | size=1 | links=#40928(auto Zul'Drak;821):9 #40949(auto Zul'Drak;842):22
+#40949 | auto Zul'Drak;842§auto Zul'Drak;842§auto Zul'Drak;842 | x=5967 y=-3336.400146484375 | size=1 | links=#40948(auto Zul'Drak;841):22 #40950(auto Zul'Drak;843):18
+#40950 | auto Zul'Drak;843§auto Zul'Drak;843§auto Zul'Drak;843 | x=5966.89990234375 y=-3317.699951171875 | size=1 | links=#40949(auto Zul'Drak;842):18 #40951(auto Zul'Drak;844):31
+#40951 | auto Zul'Drak;844§auto Zul'Drak;844§auto Zul'Drak;844 | x=5967.89990234375 y=-3286.300048828125 | size=1 | links=#40950(auto Zul'Drak;843):31 #40952(auto Zul'Drak;845):26
+#40952 | auto Zul'Drak;845§auto Zul'Drak;845§auto Zul'Drak;845 | x=5973.2001953125 y=-3259.900146484375 | size=1 | links=#40951(auto Zul'Drak;844):26 #40953(auto Zul'Drak;846):20
+#40953 | auto Zul'Drak;846§auto Zul'Drak;846§auto Zul'Drak;846 | x=5973.7001953125 y=-3239.199951171875 | size=1 | links=#40952(auto Zul'Drak;845):20 #40954(auto Zul'Drak;847):16
+#40954 | auto Zul'Drak;847§auto Zul'Drak;847§auto Zul'Drak;847 | x=5980.2001953125 y=-3223.900146484375 | size=1 | links=#40953(auto Zul'Drak;846):16 #40955(auto Zul'Drak;848):19 #40957(auto Zul'Drak;850):38
+#40955 | auto Zul'Drak;848§auto Zul'Drak;848§auto Zul'Drak;848 | x=5996.80029296875 y=-3234.400146484375 | size=1 | links=#40954(auto Zul'Drak;847):19 #40956(auto Zul'Drak;849):18
+#40956 | auto Zul'Drak;849§auto Zul'Drak;849§auto Zul'Drak;849 | x=6012.60009765625 y=-3244.10009765625 | size=1 | links=#40945(auto Zul'Drak;838):18 #40955(auto Zul'Drak;848):18
+#40957 | auto Zul'Drak;850§auto Zul'Drak;850§auto Zul'Drak;850 | x=6005.10009765625 y=-3194.699951171875 | size=1 | links=#40954(auto Zul'Drak;847):38 #40958(auto Zul'Drak;851):29
+#40958 | auto Zul'Drak;851§auto Zul'Drak;851§auto Zul'Drak;851 | x=6028.10009765625 y=-3175.5 | size=1 | links=#40957(auto Zul'Drak;850):29 #40959(auto Zul'Drak;852):33
+#40959 | auto Zul'Drak;852§auto Zul'Drak;852§auto Zul'Drak;852 | x=6059.80029296875 y=-3166.300048828125 | size=1 | links=#40958(auto Zul'Drak;851):33 #40960(auto Zul'Drak;853):45
+#40960 | auto Zul'Drak;853§auto Zul'Drak;853§auto Zul'Drak;853 | x=6104.80029296875 y=-3164.5 | size=1 | links=#40959(auto Zul'Drak;852):45 #40961(auto Zul'Drak;854):29
+#40961 | auto Zul'Drak;854§auto Zul'Drak;854§auto Zul'Drak;854 | x=6133.2001953125 y=-3172.800048828125 | size=1 | links=#40960(auto Zul'Drak;853):29 #40962(auto Zul'Drak;855):15 #40963(auto Zul'Drak;856):21
+#40962 | auto Zul'Drak;855§auto Zul'Drak;855§auto Zul'Drak;855 | x=6131.10009765625 y=-3187.800048828125 | size=1 | links=#40940(auto Zul'Drak;833):36 #40961(auto Zul'Drak;854):15
+#40963 | auto Zul'Drak;856§auto Zul'Drak;856§auto Zul'Drak;856 | x=6155.10009765625 y=-3173.800048828125 | size=1 | links=#40961(auto Zul'Drak;854):21 #40964(auto Zul'Drak;857):16
+#40964 | auto Zul'Drak;857§auto Zul'Drak;857§auto Zul'Drak;857 | x=6172 y=-3174.699951171875 | size=1 | links=#40963(auto Zul'Drak;856):16 #40965(auto Zul'Drak;858):32
+#40965 | auto Zul'Drak;858§auto Zul'Drak;858§auto Zul'Drak;858 | x=6204.5 y=-3170.10009765625 | size=1 | links=#40964(auto Zul'Drak;857):32 #40966(auto Zul'Drak;859):15
+#40966 | auto Zul'Drak;859§auto Zul'Drak;859§auto Zul'Drak;859 | x=6196.30029296875 y=-3183 | size=1 | links=#40965(auto Zul'Drak;858):15
+#40967 | auto Zul'Drak;860§auto Zul'Drak;860§auto Zul'Drak;860 | x=6285.93198517336 y=-3149.092030925653 | size=1
+#40968 | auto Zul'Drak;861§auto Zul'Drak;861§auto Zul'Drak;861 | x=6221.7001953125 y=-3201 | size=1 | links=#40969(auto Zul'Drak;862):24
+#40969 | auto Zul'Drak;862§auto Zul'Drak;862§auto Zul'Drak;862 | x=6215.30029296875 y=-3225.10009765625 | size=1 | links=#40968(auto Zul'Drak;861):24 #40970(auto Zul'Drak;863):24
+#40970 | auto Zul'Drak;863§auto Zul'Drak;863§auto Zul'Drak;863 | x=6216.60009765625 y=-3249.199951171875 | size=1 | links=#40969(auto Zul'Drak;862):24 #40971(auto Zul'Drak;864):26
+#40971 | auto Zul'Drak;864§auto Zul'Drak;864§auto Zul'Drak;864 | x=6210.89990234375 y=-3274.900146484375 | size=1 | links=#40970(auto Zul'Drak;863):26 #40972(auto Zul'Drak;865):39 #40985(auto Zul'Drak;878):44
+#40972 | auto Zul'Drak;865§auto Zul'Drak;865§auto Zul'Drak;865 | x=6206.60009765625 y=-3314.5 | size=1 | links=#40971(auto Zul'Drak;864):39 #40973(auto Zul'Drak;866):37
+#40973 | auto Zul'Drak;866§auto Zul'Drak;866§auto Zul'Drak;866 | x=6211.30029296875 y=-3351.900146484375 | size=1 | links=#40972(auto Zul'Drak;865):37 #40975(auto Zul'Drak;868):33
+#40974 | auto Zul'Drak;867§auto Zul'Drak;867§auto Zul'Drak;867 | x=6185.39990234375 y=-3409 | size=1
+#40975 | auto Zul'Drak;868§auto Zul'Drak;868§auto Zul'Drak;868 | x=6243.985660130479 y=-3358.851234292596 | size=1 | links=#40973(auto Zul'Drak;866):33
+#40976 | auto Zul'Drak;869§auto Zul'Drak;869§auto Zul'Drak;869 | x=6335.80029296875 y=-3584.60009765625 | size=1
+#40977 | auto Zul'Drak;870§auto Zul'Drak;870§auto Zul'Drak;870 | x=6305.39990234375 y=-3676.199951171875 | size=1 | links=#40978(auto Zul'Drak;871):43
+#40978 | auto Zul'Drak;871§auto Zul'Drak;871§auto Zul'Drak;871 | x=6272.7001953125 y=-3646.900146484375 | size=1 | links=#40977(auto Zul'Drak;870):43 #40979(auto Zul'Drak;872):48
+#40979 | auto Zul'Drak;872§auto Zul'Drak;872§auto Zul'Drak;872 | x=6239.30029296875 y=-3611.300048828125 | size=1 | links=#40978(auto Zul'Drak;871):48 #40980(auto Zul'Drak;873):51
+#40980 | auto Zul'Drak;873§auto Zul'Drak;873§auto Zul'Drak;873 | x=6190.2001953125 y=-3627.10009765625 | size=1 | links=#40979(auto Zul'Drak;872):51
+#40981 | auto Zul'Drak;874§auto Zul'Drak;874§auto Zul'Drak;874 | x=6149.7001953125 y=-3524.60009765625 | size=1 | links=#44580(auto Zul'Drak;1017):17
+#40982 | auto Zul'Drak;875§auto Zul'Drak;875§auto Zul'Drak;875 | x=6221.2001953125 y=-3532.400146484375 | size=1
+#40983 | auto Zul'Drak;876§auto Zul'Drak;876§auto Zul'Drak;876 | x=6095.843490307716 y=-3664.157072103973 | size=1 | links=#40984(auto Zul'Drak;877):40
+#40984 | auto Zul'Drak;877§auto Zul'Drak;877§auto Zul'Drak;877 | x=6064.587568409197 y=-3690.371889885341 | size=1 | links=#40166(auto Zul'Drak;93):42 #40983(auto Zul'Drak;876):40
+#40985 | auto Zul'Drak;878§auto Zul'Drak;878§auto Zul'Drak;878 | x=6255.2001953125 y=-3281.400146484375 | size=1 | links=#40971(auto Zul'Drak;864):44 #40986(auto Zul'Drak;879):39 #40988(auto Zul'Drak;881):42
+#40986 | auto Zul'Drak;879§auto Zul'Drak;879§auto Zul'Drak;879 | x=6294.2001953125 y=-3284.699951171875 | size=1 | links=#40985(auto Zul'Drak;878):39
+#40987 | auto Zul'Drak;880§auto Zul'Drak;880§auto Zul'Drak;880 | x=6337.2001953125 y=-3284.800048828125 | size=1
+#40988 | auto Zul'Drak;881§auto Zul'Drak;881§auto Zul'Drak;881 | x=6273.098449866643 y=-3243.350630973979 | size=1 | links=#40985(auto Zul'Drak;878):42
+#40989 | auto Zul'Drak;882§auto Zul'Drak;882§auto Zul'Drak;882 | x=6395.2001953125 y=-3270.199951171875 | size=1 | links=#40990(auto Zul'Drak;883):29
+#40990 | auto Zul'Drak;883§auto Zul'Drak;883§auto Zul'Drak;883 | x=6424.30029296875 y=-3270.699951171875 | size=1 | links=#40989(auto Zul'Drak;882):29 #40991(auto Zul'Drak;884):31
+#40991 | auto Zul'Drak;884§auto Zul'Drak;884§auto Zul'Drak;884 | x=6455.5 y=-3271.10009765625 | size=1 | links=#40990(auto Zul'Drak;883):31
+#40992 | auto Zul'Drak;885§auto Zul'Drak;885§auto Zul'Drak;885 | x=6442 y=-3291.5 | size=1 | links=#40993(auto Zul'Drak;886):5
+#40993 | auto Zul'Drak;886§auto Zul'Drak;886§auto Zul'Drak;886 | x=6437.10009765625 y=-3294.400146484375 | size=1 | links=#40992(auto Zul'Drak;885):5 #40994(auto Zul'Drak;887):11
+#40994 | auto Zul'Drak;887§auto Zul'Drak;887§auto Zul'Drak;887 | x=6435.2001953125 y=-3305.300048828125 | size=1 | links=#40993(auto Zul'Drak;886):11 #40995(auto Zul'Drak;888):9
+#40995 | auto Zul'Drak;888§auto Zul'Drak;888§auto Zul'Drak;888 | x=6433.7001953125 y=-3314.199951171875 | size=1 | links=#40994(auto Zul'Drak;887):9
+#40996 | auto Zul'Drak;889§auto Zul'Drak;889§auto Zul'Drak;889 | x=6435 y=-3333.199951171875 | size=1 | links=#40997(auto Zul'Drak;890):13
+#40997 | auto Zul'Drak;890§auto Zul'Drak;890§auto Zul'Drak;890 | x=6434.2001953125 y=-3346.5 | size=1 | links=#40996(auto Zul'Drak;889):13
+#40998 | auto Zul'Drak;891§auto Zul'Drak;891§auto Zul'Drak;891 | x=6352.492787416827 y=-3173.105177605183 | size=1
+#40999 | auto Zul'Drak;892§auto Zul'Drak;892§auto Zul'Drak;892 | x=6352.445805046312 y=-3384.836066970609 | size=1 | links=#41000(auto Zul'Drak;893):97
+#41000 | auto Zul'Drak;893§auto Zul'Drak;893§auto Zul'Drak;893 | x=6438.981500989269 y=-3429.273380878621 | size=1 | links=#40999(auto Zul'Drak;892):97
+#41001 | auto Zul'Drak;894§auto Zul'Drak;894§auto Zul'Drak;894 | x=6558 y=-3904.199951171875 | size=1 | links=#41002(auto Zul'Drak;895):8
+#41002 | auto Zul'Drak;895§auto Zul'Drak;895§auto Zul'Drak;895 | x=6549.89990234375 y=-3903.400146484375 | size=1 | links=#41001(auto Zul'Drak;894):8
+#41003 | auto Zul'Drak;896§auto Zul'Drak;896§auto Zul'Drak;896 | x=6540.5 y=-3990.699951171875 | size=1 | links=#41004(auto Zul'Drak;897):11 #41007(auto Zul'Drak;900):30
+#41004 | auto Zul'Drak;897§auto Zul'Drak;897§auto Zul'Drak;897 | x=6551.7001953125 y=-3991.400146484375 | size=1 | links=#41003(auto Zul'Drak;896):11
+#41005 | auto Zul'Drak;898§auto Zul'Drak;898§auto Zul'Drak;898 | x=6571.896743352902 y=-3963.603052097749 | size=1
+#41006 | auto Zul'Drak;899§auto Zul'Drak;899§auto Zul'Drak;899 | x=6555.911060747248 y=-4018.811335380644 | size=1
+#41007 | auto Zul'Drak;900§auto Zul'Drak;900§auto Zul'Drak;900 | x=6523 y=-3966.10009765625 | size=1 | links=#41003(auto Zul'Drak;896):30
+#41008 | auto Zul'Drak;901§auto Zul'Drak;901§auto Zul'Drak;901 | x=6493.5 y=-3938.10009765625 | size=1
+#41009 | auto Zul'Drak;902§auto Zul'Drak;902§auto Zul'Drak;902 | x=6459.633808677929 y=-3901.064746518467 | size=1
+#41010 | auto Zul'Drak;903§auto Zul'Drak;903§auto Zul'Drak;903 | x=6486.39990234375 y=-3968.10009765625 | size=1 | links=#41011(auto Zul'Drak;904):29
+#41011 | auto Zul'Drak;904§auto Zul'Drak;904§auto Zul'Drak;904 | x=6457 y=-3967.10009765625 | size=1 | links=#41010(auto Zul'Drak;903):29
+#41012 | auto Zul'Drak;905§auto Zul'Drak;905§auto Zul'Drak;905 | x=6427.827261739847 y=-3951.164167985597 | size=1
+#41013 | auto Zul'Drak;906§auto Zul'Drak;906§auto Zul'Drak;906 | x=6447.2001953125 y=-4006.5 | size=1 | links=#41014(auto Zul'Drak;907):18 #41015(auto Zul'Drak;908):56
+#41014 | auto Zul'Drak;907§auto Zul'Drak;907§auto Zul'Drak;907 | x=6465.7001953125 y=-4006.300048828125 | size=1 | links=#41013(auto Zul'Drak;906):18
+#41015 | auto Zul'Drak;908§auto Zul'Drak;908§auto Zul'Drak;908 | x=6483.80029296875 y=-4049.199951171875 | size=1 | links=#41013(auto Zul'Drak;906):56
+#41016 | auto Zul'Drak;909§auto Zul'Drak;909§auto Zul'Drak;909 | x=6454.39990234375 y=-4058.699951171875 | size=1 | links=#41017(auto Zul'Drak;910):38
+#41017 | auto Zul'Drak;910§auto Zul'Drak;910§auto Zul'Drak;910 | x=6456.89990234375 y=-4097.39990234375 | size=1 | links=#40178(auto Zul'Drak;105):45 #41016(auto Zul'Drak;909):38
+#41018 | auto Zul'Drak;911§auto Zul'Drak;911§auto Zul'Drak;911 | x=6404.994921796391 y=-3947.344500285259 | size=1
+#41019 | auto Zul'Drak;912§auto Zul'Drak;912§auto Zul'Drak;912 | x=6407.715971283884 y=-3863.769231033421 | size=1
+#41020 | auto Zul'Drak;913§auto Zul'Drak;913§auto Zul'Drak;913 | x=6432.39990234375 y=-3815.5 | size=1 | links=#41021(auto Zul'Drak;914):9
+#41021 | auto Zul'Drak;914§auto Zul'Drak;914§auto Zul'Drak;914 | x=6432.30029296875 y=-3805.699951171875 | size=1 | links=#41020(auto Zul'Drak;913):9
+#41022 | auto Zul'Drak;915§auto Zul'Drak;915§auto Zul'Drak;915 | x=6449.10009765625 y=-3828.10009765625 | size=1 | links=#41023(auto Zul'Drak;916):35
+#41023 | auto Zul'Drak;916§auto Zul'Drak;916§auto Zul'Drak;916 | x=6484.30029296875 y=-3828.5 | size=1 | links=#41022(auto Zul'Drak;915):35
+#41024 | auto Zul'Drak;917§auto Zul'Drak;917§auto Zul'Drak;917 | x=6399.30029296875 y=-3881.5 | size=1
+#41025 | auto Zul'Drak;918§auto Zul'Drak;918§auto Zul'Drak;918 | x=6354.39990234375 y=-3879.400146484375 | size=1 | links=#41026(auto Zul'Drak;919):77
+#41026 | auto Zul'Drak;919§auto Zul'Drak;919§auto Zul'Drak;919 | x=6277.7001953125 y=-3889.10009765625 | size=1 | links=#41025(auto Zul'Drak;918):77 #41027(auto Zul'Drak;920):32
+#41027 | auto Zul'Drak;920§auto Zul'Drak;920§auto Zul'Drak;920 | x=6245.89990234375 y=-3885.10009765625 | size=1 | links=#40171(auto Zul'Drak;98):29 #41026(auto Zul'Drak;919):32
+#41028 | auto Zul'Drak;921§auto Zul'Drak;921§auto Zul'Drak;921 | x=6262.10009765625 y=-4374.39990234375 | size=1
+#41029 | auto Zul'Drak;922§auto Zul'Drak;922§auto Zul'Drak;922 | x=6239 y=-4364.80029296875 | size=1
+#41030 | auto Zul'Drak;923§auto Zul'Drak;923§auto Zul'Drak;923 | x=6213.89990234375 y=-4369.39990234375 | size=1
+#41031 | auto Zul'Drak;924§auto Zul'Drak;924§auto Zul'Drak;924 | x=6219.847855037523 y=-4185.188030910991 | size=1
+#41032 | auto Zul'Drak;925§auto Zul'Drak;925§auto Zul'Drak;925 | x=6294.279080787666 y=-4176.291939897064 | size=1 | links=#41033(auto Zul'Drak;926):36
+#41033 | auto Zul'Drak;926§auto Zul'Drak;926§auto Zul'Drak;926 | x=6301.692562166716 y=-4212.173082470205 | size=1 | links=#41032(auto Zul'Drak;925):36
+#41034 | auto Zul'Drak;927§auto Zul'Drak;927§auto Zul'Drak;927 | x=6310.292199566712 y=-4264.363914068351 | size=1
+#41035 | auto Zul'Drak;928§auto Zul'Drak;928§auto Zul'Drak;928 | x=6468.89990234375 y=-4340.60009765625 | size=1 | links=#41036(auto Zul'Drak;929):39
+#41036 | auto Zul'Drak;929§auto Zul'Drak;929§auto Zul'Drak;929 | x=6467.10009765625 y=-4379.60009765625 | size=1 | links=#41035(auto Zul'Drak;928):39 #41037(auto Zul'Drak;930):31
+#41037 | auto Zul'Drak;930§auto Zul'Drak;930§auto Zul'Drak;930 | x=6469.30029296875 y=-4410.80029296875 | size=1 | links=#41036(auto Zul'Drak;929):31 #41038(auto Zul'Drak;931):14
+#41038 | auto Zul'Drak;931§auto Zul'Drak;931§auto Zul'Drak;931 | x=6456.2001953125 y=-4417.2001953125 | size=1 | links=#41037(auto Zul'Drak;930):14 #41039(auto Zul'Drak;932):24
+#41039 | auto Zul'Drak;932§auto Zul'Drak;932§auto Zul'Drak;932 | x=6438.5 y=-4433.60009765625 | size=1 | links=#41038(auto Zul'Drak;931):24 #41040(auto Zul'Drak;933):37
+#41040 | auto Zul'Drak;933§auto Zul'Drak;933§auto Zul'Drak;933 | x=6407.003116635774 y=-4454.599693010044 | size=1 | links=#41039(auto Zul'Drak;932):37 #41041(auto Zul'Drak;934):15
+#41041 | auto Zul'Drak;934§auto Zul'Drak;934§auto Zul'Drak;934 | x=6408.30029296875 y=-4470.10009765625 | size=1 | links=#41040(auto Zul'Drak;933):15 #41042(auto Zul'Drak;935):37
+#41042 | auto Zul'Drak;935§auto Zul'Drak;935§auto Zul'Drak;935 | x=6409.39990234375 y=-4507.60009765625 | size=1 | links=#41041(auto Zul'Drak;934):37 #41043(auto Zul'Drak;936):48
+#41043 | auto Zul'Drak;936§auto Zul'Drak;936§auto Zul'Drak;936 | x=6383.5 y=-4549 | size=1 | links=#41042(auto Zul'Drak;935):48
+#41044 | auto Zul'Drak;937§auto Zul'Drak;937§auto Zul'Drak;937 | x=6291.212689291929 y=-4491.416869350064 | size=1
+#41045 | auto Zul'Drak;938§auto Zul'Drak;938§auto Zul'Drak;938 | x=6570.10009765625 y=-4326.2001953125 | size=1 | links=#41046(auto Zul'Drak;939):37
+#41046 | auto Zul'Drak;939§auto Zul'Drak;939§auto Zul'Drak;939 | x=6559.5 y=-4289.89990234375 | size=1 | links=#41045(auto Zul'Drak;938):37 #41047(auto Zul'Drak;940):12
+#41047 | auto Zul'Drak;940§auto Zul'Drak;940§auto Zul'Drak;940 | x=6556.80029296875 y=-4277.30029296875 | size=1 | links=#41046(auto Zul'Drak;939):12 #41048(auto Zul'Drak;941):11
+#41048 | auto Zul'Drak;941§auto Zul'Drak;941§auto Zul'Drak;941 | x=6565.5 y=-4269.89990234375 | size=1 | links=#40183(auto Zul'Drak;110):17 #40184(auto Zul'Drak;111):51 #41047(auto Zul'Drak;940):11
+#41050 | auto Zul'Drak;942§auto Zul'Drak;942§auto Zul'Drak;942 | x=6654.342647495829 y=-4519.838995743942 | size=1 | links=#41051(auto Zul'Drak;943):10
+#41051 | auto Zul'Drak;943§auto Zul'Drak;943§auto Zul'Drak;943 | x=6661.5 y=-4527.80029296875 | size=1 | links=#41050(auto Zul'Drak;942):10 #41052(auto Zul'Drak;944):21
+#41052 | auto Zul'Drak;944§auto Zul'Drak;944§auto Zul'Drak;944 | x=6675.5 y=-4543.80029296875 | size=1 | links=#41051(auto Zul'Drak;943):21 #41053(auto Zul'Drak;945):43
+#41053 | auto Zul'Drak;945§auto Zul'Drak;945§auto Zul'Drak;945 | x=6703.2001953125 y=-4577.89990234375 | size=1 | links=#41052(auto Zul'Drak;944):43 #41054(auto Zul'Drak;946):59 #41118(auto Zul'Drak;1002):64
+#41054 | auto Zul'Drak;946§auto Zul'Drak;946§auto Zul'Drak;946 | x=6739.2001953125 y=-4625.60009765625 | size=1 | links=#41053(auto Zul'Drak;945):59 #41055(auto Zul'Drak;947):31 #41066(auto Zul'Drak;956):38 #41089(auto Zul'Drak;979):79
+#41055 | auto Zul'Drak;947§auto Zul'Drak;947§auto Zul'Drak;947 | x=6716 y=-4647.2001953125 | size=1 | links=#41054(auto Zul'Drak;946):31 #41103(gundrak dungeon entrance south east;zul'drak):12
+#41058 | auto Zul'Drak;948§auto Zul'Drak;948§auto Zul'Drak;948 | x=6622.088550926408 y=-4487.595121686471 | size=1 | links=#41059(auto Zul'Drak;949):23
+#41059 | auto Zul'Drak;949§auto Zul'Drak;949§auto Zul'Drak;949 | x=6606.10009765625 y=-4470 | size=1 | links=#41058(auto Zul'Drak;948):23 #41060(auto Zul'Drak;950):24
+#41060 | auto Zul'Drak;950§auto Zul'Drak;950§auto Zul'Drak;950 | x=6589.5 y=-4451.89990234375 | size=1 | links=#41059(auto Zul'Drak;949):24 #41061(auto Zul'Drak;951):37 #41094(auto Zul'Drak;984):87
+#41061 | auto Zul'Drak;951§auto Zul'Drak;951§auto Zul'Drak;951 | x=6595.2001953125 y=-4414.5 | size=1 | links=#41060(auto Zul'Drak;950):37 #41062(auto Zul'Drak;952):39 #41121(auto Zul'Drak;1005):38
+#41062 | auto Zul'Drak;952§auto Zul'Drak;952§auto Zul'Drak;952 | x=6586.60009765625 y=-4376 | size=1 | links=#41061(auto Zul'Drak;951):39 #41063(auto Zul'Drak;953):38
+#41063 | auto Zul'Drak;953§auto Zul'Drak;953§auto Zul'Drak;953 | x=6619.30029296875 y=-4356.5 | size=1 | links=#41062(auto Zul'Drak;952):38 #41064(auto Zul'Drak;954):16
+#41064 | auto Zul'Drak;954§auto Zul'Drak;954§auto Zul'Drak;954 | x=6633.39990234375 y=-4348.30029296875 | size=1 | links=#40185(auto Zul'Drak;112):21 #41063(auto Zul'Drak;953):16
+#41065 | auto Zul'Drak;955§auto Zul'Drak;955§auto Zul'Drak;955 | x=6796.39990234375 y=-4566.5 | size=1 | links=#41066(auto Zul'Drak;956):44
+#41066 | auto Zul'Drak;956§auto Zul'Drak;956§auto Zul'Drak;956 | x=6765 y=-4597.39990234375 | size=1 | links=#41054(auto Zul'Drak;946):38 #41065(auto Zul'Drak;955):44
+#41067 | auto Zul'Drak;957§auto Zul'Drak;957§auto Zul'Drak;957 | x=6621.2001953125 y=-4784.7001953125 | size=1 | links=#41068(auto Zul'Drak;958):42
+#41068 | auto Zul'Drak;958§auto Zul'Drak;958§auto Zul'Drak;958 | x=6650.89990234375 y=-4815.2001953125 | size=1 | links=#41067(auto Zul'Drak;957):42 #41069(auto Zul'Drak;959):20
+#41069 | auto Zul'Drak;959§auto Zul'Drak;959§auto Zul'Drak;959 | x=6655.89990234375 y=-4834.80029296875 | size=1 | links=#41068(auto Zul'Drak;958):20
+#41070 | auto Zul'Drak;960§auto Zul'Drak;960§auto Zul'Drak;960 | x=6788.89990234375 y=-4898.89990234375 | size=1 | links=#41071(auto Zul'Drak;961):143
+#41071 | auto Zul'Drak;961§auto Zul'Drak;961§auto Zul'Drak;961 | x=6875 y=-5013.5 | size=1 | links=#41070(auto Zul'Drak;960):143 #41072(auto Zul'Drak;962):36
+#41072 | auto Zul'Drak;962§auto Zul'Drak;962§auto Zul'Drak;962 | x=6900.60009765625 y=-5039.10009765625 | size=1 | links=#41071(auto Zul'Drak;961):36 #41073(auto Zul'Drak;963):16
+#41073 | auto Zul'Drak;963§auto Zul'Drak;963§auto Zul'Drak;963 | x=6915.89990234375 y=-5034.39990234375 | size=1 | links=#41072(auto Zul'Drak;962):16 #41074(auto Zul'Drak;964):126
+#41074 | auto Zul'Drak;964§auto Zul'Drak;964§auto Zul'Drak;964 | x=7037.7001953125 y=-4999.60009765625 | size=1 | links=#41073(auto Zul'Drak;963):126 #41075(auto Zul'Drak;965):128
+#41075 | auto Zul'Drak;965§auto Zul'Drak;965§auto Zul'Drak;965 | x=7131.60009765625 y=-4912.39990234375 | size=1 | links=#41074(auto Zul'Drak;964):128 #41076(auto Zul'Drak;966):126
+#41076 | auto Zul'Drak;966§auto Zul'Drak;966§auto Zul'Drak;966 | x=7220 y=-4822.60009765625 | size=1 | links=#41075(auto Zul'Drak;965):126 #41077(auto Zul'Drak;967):101
+#41077 | auto Zul'Drak;967§auto Zul'Drak;967§auto Zul'Drak;967 | x=7288.60009765625 y=-4748.2001953125 | size=1 | links=#41076(auto Zul'Drak;966):101 #41078(auto Zul'Drak;968):68
+#41078 | auto Zul'Drak;968§auto Zul'Drak;968§auto Zul'Drak;968 | x=7337.7001953125 y=-4700 | size=1 | links=#41077(auto Zul'Drak;967):68 #41079(auto Zul'Drak;969):26
+#41079 | auto Zul'Drak;969§auto Zul'Drak;969§auto Zul'Drak;969 | x=7355.2001953125 y=-4680.60009765625 | size=1 | links=#41078(auto Zul'Drak;968):26 #41080(auto Zul'Drak;970):65
+#41080 | auto Zul'Drak;970§auto Zul'Drak;970§auto Zul'Drak;970 | x=7318.10009765625 y=-4627.2001953125 | size=1 | links=#41079(auto Zul'Drak;969):65 #41081(auto Zul'Drak;971):115
+#41081 | auto Zul'Drak;971§auto Zul'Drak;971§auto Zul'Drak;971 | x=7241 y=-4540.7001953125 | size=1 | links=#41080(auto Zul'Drak;970):115 #41082(auto Zul'Drak;972):73
+#41082 | auto Zul'Drak;972§auto Zul'Drak;972§auto Zul'Drak;972 | x=7176.2001953125 y=-4505 | size=1 | links=#41081(auto Zul'Drak;971):73 #41083(auto Zul'Drak;973):76
+#41083 | auto Zul'Drak;973§auto Zul'Drak;973§auto Zul'Drak;973 | x=7100.10009765625 y=-4509.39990234375 | size=1 | links=#41082(auto Zul'Drak;972):76 #41084(auto Zul'Drak;974):92
+#41084 | auto Zul'Drak;974§auto Zul'Drak;974§auto Zul'Drak;974 | x=7008 y=-4508.10009765625 | size=1 | links=#41083(auto Zul'Drak;973):92 #41085(auto Zul'Drak;975):28 #41086(auto Zul'Drak;976):38
+#41085 | auto Zul'Drak;975§auto Zul'Drak;975§auto Zul'Drak;975 | x=7007.10009765625 y=-4536.2001953125 | size=1 | links=#41084(auto Zul'Drak;974):28
+#41086 | auto Zul'Drak;976§auto Zul'Drak;976§auto Zul'Drak;976 | x=6974.7001953125 y=-4528 | size=1 | links=#41084(auto Zul'Drak;974):38 #41087(auto Zul'Drak;977):80
+#41087 | auto Zul'Drak;977§auto Zul'Drak;977§auto Zul'Drak;977 | x=6915.30029296875 y=-4581.7001953125 | size=1 | links=#41086(auto Zul'Drak;976):80 #41088(auto Zul'Drak;978):51
+#41088 | auto Zul'Drak;978§auto Zul'Drak;978§auto Zul'Drak;978 | x=6880.39990234375 y=-4619.7001953125 | size=1 | links=#41087(auto Zul'Drak;977):51
+#41089 | auto Zul'Drak;979§auto Zul'Drak;979§auto Zul'Drak;979 | x=6801 y=-4675.39990234375 | size=1 | links=#41054(auto Zul'Drak;946):79 #41090(auto Zul'Drak;980):30
+#41090 | auto Zul'Drak;980§auto Zul'Drak;980§auto Zul'Drak;980 | x=6821.89990234375 y=-4697.7001953125 | size=1 | links=#41089(auto Zul'Drak;979):30 #41091(auto Zul'Drak;981):34
+#41091 | auto Zul'Drak;981§auto Zul'Drak;981§auto Zul'Drak;981 | x=6831.54522269034 y=-4731.287738817425 | size=1 | links=#41090(auto Zul'Drak;980):34 #41092(auto Zul'Drak;982):31
+#41092 | auto Zul'Drak;982§auto Zul'Drak;982§auto Zul'Drak;982 | x=6850.444019826608 y=-4756.154533032536 | size=1 | links=#41091(auto Zul'Drak;981):31
+#41093 | auto Zul'Drak;983§auto Zul'Drak;983§auto Zul'Drak;983 | x=6644.049530037231 y=-4636.793641360143 | size=1
+#41094 | auto Zul'Drak;984§auto Zul'Drak;984§auto Zul'Drak;984 | x=6580.887794487687 y=-4538.818449797414 | size=1 | links=#41060(auto Zul'Drak;950):87
+#41095 | auto Zul'Drak;985§auto Zul'Drak;985§auto Zul'Drak;985 | x=6879.289548620911 y=-4476.154005421796 | size=1 | links=#41096(auto Zul'Drak;986):34 #41097(auto Zul'Drak;987):5
+#41096 | auto Zul'Drak;986§auto Zul'Drak;986§auto Zul'Drak;986 | x=6845.470674955574 y=-4470.683299516877 | size=1 | links=#40190(auto Zul'Drak;117):47 #41095(auto Zul'Drak;985):34
+#41097 | auto Zul'Drak;987§auto Zul'Drak;987§auto Zul'Drak;987 | x=6883.39990234375 y=-4479.7001953125 | size=1 | links=#41095(auto Zul'Drak;985):5 #41098(auto Zul'Drak;988):48
+#41098 | auto Zul'Drak;988§auto Zul'Drak;988§auto Zul'Drak;988 | x=6920.10009765625 y=-4447.7001953125 | size=1 | links=#41097(auto Zul'Drak;987):48 #41099(auto Zul'Drak;989):55 #41105(gundrak dungeon meeting storne north west;zul'drak):22 #41106(auto Zul'Drak;990):38
+#41099 | auto Zul'Drak;989§auto Zul'Drak;989§auto Zul'Drak;989 | x=6961 y=-4410.5 | size=1 | links=#41098(auto Zul'Drak;988):55 #41102(gundrak dungeon entrance north west;zul'drak):7
+#41102 | gundrak dungeon entrance north west;zul'drak§gundrak instanz eingang nordwest;zul'drak§gundrak dungeon entrance north west;zul'drak | x=6966.30029296875 y=-4405.5 | size=1 | links=#41099(auto Zul'Drak;989):7
+#41103 | gundrak dungeon entrance south east;zul'drak§gundrak instanz eingang südost;zul'drak§gundrak dungeon entrance south east;zul'drak | x=6706.80029296875 y=-4656.2001953125 | size=1 | links=#41055(auto Zul'Drak;947):12
+#41105 | gundrak dungeon meeting storne north west;zul'drak§gundrak instant versammluntsstein nordwest;zul'drak§gundrak dungeon meeting storne north west;zul'drak | x=6941.39990234375 y=-4453.7001953125 | size=1 | links=#41098(auto Zul'Drak;988):22
+#41106 | auto Zul'Drak;990§auto Zul'Drak;990§auto Zul'Drak;990 | x=6903.60009765625 y=-4412.39990234375 | size=1 | links=#41098(auto Zul'Drak;988):38 #41107(auto Zul'Drak;991):55
+#41107 | auto Zul'Drak;991§auto Zul'Drak;991§auto Zul'Drak;991 | x=6872 y=-4366.2001953125 | size=1 | links=#41106(auto Zul'Drak;990):55 #41108(auto Zul'Drak;992):14
+#41108 | auto Zul'Drak;992§auto Zul'Drak;992§auto Zul'Drak;992 | x=6861.60009765625 y=-4355.5 | size=1 | links=#41107(auto Zul'Drak;991):14 #41109(auto Zul'Drak;993):24
+#41109 | auto Zul'Drak;993§auto Zul'Drak;993§auto Zul'Drak;993 | x=6844.89990234375 y=-4338 | size=1 | links=#41108(auto Zul'Drak;992):24
+#41110 | auto Zul'Drak;994§auto Zul'Drak;994§auto Zul'Drak;994 | x=6810.89990234375 y=-4307.39990234375 | size=1 | links=#41111(auto Zul'Drak;995):10
+#41111 | auto Zul'Drak;995§auto Zul'Drak;995§auto Zul'Drak;995 | x=6803.80029296875 y=-4300.10009765625 | size=1 | links=#41110(auto Zul'Drak;994):10 #41112(auto Zul'Drak;996):16
+#41112 | auto Zul'Drak;996§auto Zul'Drak;996§auto Zul'Drak;996 | x=6791.39990234375 y=-4288.80029296875 | size=1 | links=#41111(auto Zul'Drak;995):16 #41113(auto Zul'Drak;997):21
+#41113 | auto Zul'Drak;997§auto Zul'Drak;997§auto Zul'Drak;997 | x=6793.80029296875 y=-4267.30029296875 | size=1 | links=#41112(auto Zul'Drak;996):21 #41114(auto Zul'Drak;998):16
+#41114 | auto Zul'Drak;998§auto Zul'Drak;998§auto Zul'Drak;998 | x=6777.5 y=-4264 | size=1 | links=#41113(auto Zul'Drak;997):16
+#41115 | auto Zul'Drak;999§auto Zul'Drak;999§auto Zul'Drak;999 | x=6718.80029296875 y=-4296.30029296875 | size=1 | links=#41116(auto Zul'Drak;1000):36
+#41116 | auto Zul'Drak;1000§auto Zul'Drak;1000§auto Zul'Drak;1000 | x=6683.89990234375 y=-4284.30029296875 | size=1 | links=#41115(auto Zul'Drak;999):36 #41117(auto Zul'Drak;1001):20
+#41117 | auto Zul'Drak;1001§auto Zul'Drak;1001§auto Zul'Drak;1001 | x=6665.30029296875 y=-4293.7001953125 | size=1 | links=#40185(auto Zul'Drak;112):42 #41116(auto Zul'Drak;1000):20
+#41118 | auto Zul'Drak;1002§auto Zul'Drak;1002§auto Zul'Drak;1002 | x=6702.078626934925 y=-4512.998027247209 | size=1 | links=#41053(auto Zul'Drak;945):64 #41119(auto Zul'Drak;1003):55
+#41119 | auto Zul'Drak;1003§auto Zul'Drak;1003§auto Zul'Drak;1003 | x=6675.63035905699 y=-4464.375974947576 | size=1 | links=#41118(auto Zul'Drak;1002):55 #41120(auto Zul'Drak;1004):43 #41121(auto Zul'Drak;1005):56
+#41120 | auto Zul'Drak;1004§auto Zul'Drak;1004§auto Zul'Drak;1004 | x=6706.571317402099 y=-4433.356759498454 | size=1 | links=#40187(auto Zul'Drak;114):41 #41119(auto Zul'Drak;1003):43
+#41121 | auto Zul'Drak;1005§auto Zul'Drak;1005§auto Zul'Drak;1005 | x=6629.630945424606 y=-4431.75386010004 | size=1 | links=#41061(auto Zul'Drak;951):38 #41119(auto Zul'Drak;1003):56
+#41122 | auto Zul'Drak;1006§auto Zul'Drak;1006§auto Zul'Drak;1006 | x=6934.80029296875 y=-4152.89990234375 | size=1 | links=#41123(auto Zul'Drak;1007):28
+#41123 | auto Zul'Drak;1007§auto Zul'Drak;1007§auto Zul'Drak;1007 | x=6925 y=-4126.10009765625 | size=1 | links=#41122(auto Zul'Drak;1006):28 #41124(auto Zul'Drak;1008):19
+#41124 | auto Zul'Drak;1008§auto Zul'Drak;1008§auto Zul'Drak;1008 | x=6910.2001953125 y=-4114.10009765625 | size=1 | links=#41123(auto Zul'Drak;1007):19 #41125(auto Zul'Drak;1009):9
+#41125 | auto Zul'Drak;1009§auto Zul'Drak;1009§auto Zul'Drak;1009 | x=6904 y=-4107.5 | size=1 | links=#41124(auto Zul'Drak;1008):9
+#41126 | auto Zul'Drak;1010§auto Zul'Drak;1010§auto Zul'Drak;1010 | x=6929.39990234375 y=-4088.400146484375 | size=1 | links=#41127(auto Zul'Drak;1011):34
+#41127 | auto Zul'Drak;1011§auto Zul'Drak;1011§auto Zul'Drak;1011 | x=6962.89990234375 y=-4097.10009765625 | size=1 | links=#41126(auto Zul'Drak;1010):34
+#41128 | auto Zul'Drak;1012§auto Zul'Drak;1012§auto Zul'Drak;1012 | x=6997.987907548657 y=-4235.901660419569 | size=1
+#41129 | auto Zul'Drak;1013§auto Zul'Drak;1013§auto Zul'Drak;1013 | x=7075.297327940832 y=-4398.767024715045 | size=1
+#41130 | auto Zul'Drak;1014§auto Zul'Drak;1014§auto Zul'Drak;1014 | x=5594.348136855042 y=-3629.965840160893 | size=1 | links=#40809(auto Zul'Drak;702):24
+#41131 | auto Zul'Drak;1015§auto Zul'Drak;1015§auto Zul'Drak;1015 | x=5274.889056587777 y=-3665.781148551928 | size=1 | links=#40846(auto Zul'Drak;739):48 #41132(auto Zul'Drak;1016):66
+#41132 | auto Zul'Drak;1016§auto Zul'Drak;1016§auto Zul'Drak;1016 | x=5225.504058930129 y=-3710.82460560839 | size=1 | links=#41131(auto Zul'Drak;1015):66
+#44579 | purple cauldron; Pools of jin'alai§lila kessel;teiche von jin'alai§purple cauldron; Pools of jin'alai | x=5614.30029296875 y=-3476.800048828125 | size=1
+#44580 | auto Zul'Drak;1017§auto Zul'Drak;1017§auto Zul'Drak;1017 | x=6160.39990234375 y=-3537.900146484375 | size=1 | links=#40981(auto Zul'Drak;874):17 #44581(auto Zul'Drak;1018):12
+#44581 | auto Zul'Drak;1018§auto Zul'Drak;1018§auto Zul'Drak;1018 | x=6165.5 y=-3549.300048828125 | size=1 | links=#44580(auto Zul'Drak;1017):12 #44582(auto Zul'Drak;1019):12
+#44582 | auto Zul'Drak;1019§auto Zul'Drak;1019§auto Zul'Drak;1019 | x=6174.30029296875 y=-3557.900146484375 | size=1 | links=#44581(auto Zul'Drak;1018):12
+#44585 | Main building at the Altar of Sseratus / Explore Zone§Hauptgebäude am Altar von Sseratus zur Zonenerkundung§Main building at the Altar of Sseratus / Explore Zone | x=6369.30029296875 y=-2613.199951171875 | size=1 | links=#40464(auto Zul'Drak;376):15
+#44586 | auto Zul'Drak;1020§auto Zul'Drak;1020§auto Zul'Drak;1020 | x=6275.30029296875 y=-2621.699951171875 | size=1 | links=#40466(auto Zul'Drak;378):25 #44587(auto Zul'Drak;1021):16
+#44587 | auto Zul'Drak;1021§auto Zul'Drak;1021§auto Zul'Drak;1021 | x=6267.89990234375 y=-2635.900146484375 | size=1 | links=#44586(auto Zul'Drak;1020):16 #44588(auto Zul'Drak;1022):29
+#44588 | auto Zul'Drak;1022§auto Zul'Drak;1022§auto Zul'Drak;1022 | x=6255.30029296875 y=-2662.5 | size=1 | links=#44587(auto Zul'Drak;1021):29
+#44589 | auto Zul'Drak;1023§auto Zul'Drak;1023§auto Zul'Drak;1023 | x=5273.2001953125 y=-1301 | size=1 | links=#40261(auto Zul'Drak;186):50
+#44590 | auto Zul'Drak;1024§auto Zul'Drak;1024§auto Zul'Drak;1024 | x=5280.30029296875 y=-1247.900024414063 | size=1
+#44591 | auto Zul'Drak;1025§auto Zul'Drak;1025§auto Zul'Drak;1025 | x=5215.39990234375 y=-1268.300048828125 | size=1
+#48779 | auto Reliquary of Pain;Zul'Drak;1026§auto Reliquiar des Schmerzes;Zul'Drak;1026§auto Reliquary of Pain;Zul'Drak;1026 | x=6146.10009765625 y=-2061.60009765625 | size=1 | links=#40359(auto Zul'Drak;275):49 #48780(auto Reliquary of Pain;Zul'Drak;1027):22
+#48780 | auto Reliquary of Pain;Zul'Drak;1027§auto Reliquiar des Schmerzes;Zul'Drak;1027§auto Reliquary of Pain;Zul'Drak;1027 | x=6167.89990234375 y=-2068.900146484375 | size=1 | links=#48779(auto Reliquary of Pain;Zul'Drak;1026):22 #48781(auto Reliquary of Pain;Zul'Drak;1028):28
+#48781 | auto Reliquary of Pain;Zul'Drak;1028§auto Reliquiar des Schmerzes;Zul'Drak;1028§auto Reliquary of Pain;Zul'Drak;1028 | x=6196.30029296875 y=-2068.400146484375 | size=1 | links=#48780(auto Reliquary of Pain;Zul'Drak;1027):28 #48782(auto Reliquary of Pain;Zul'Drak;1029):31
+#48782 | auto Reliquary of Pain;Zul'Drak;1029§auto Reliquiar des Schmerzes;Zul'Drak;1029§auto Reliquary of Pain;Zul'Drak;1029 | x=6221.60009765625 y=-2049.699951171875 | size=1 | links=#48781(auto Reliquary of Pain;Zul'Drak;1028):31

@@ -1,0 +1,3 @@
+Zone areaId 541 — eine Zeile pro Wegpunkt; Links inline.
+
+#28738 | s;Kalimdor;Un'Goro Crater;Lakkari Tar Pits;Marshal's Refuge§s;Kalimdor;Un'Goro-Krater;Teergruben von Lakkari;Marshals Zuflucht§s;Kalimdor;Cratère d'Un'Goro;Fosses de goudron de Lakkari;Refuge des Marshal | x=-6143.21 y=-1078.89 | size=1

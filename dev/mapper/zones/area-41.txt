@@ -1,0 +1,172 @@
+Zone areaId 41 — eine Zeile pro Wegpunkt; Links inline.
+
+#64 | auto Deadwind Pass;1§auto Gebirgspass der Totenwinde;1§auto Défilé de Deuillevent;1 | x=-10522.5 y=-2122.800048828125 | size=1 | links=#13669(auto Deadwind Pass;61):16 #18440(auto Deadwind Pass;82):15
+#78 | auto Deadwind Pass;2§auto Gebirgspass der Totenwinde;2§auto Défilé de Deuillevent;2 | x=-10473.1005859375 y=-2039.700073242188 | size=1 | links=#891(auto Deadwind Pass;5):23 #19233(auto Deadwind Pass;88):24
+#214 | auto Deadwind Pass;3§auto Gebirgspass der Totenwinde;3§auto Défilé de Deuillevent;3 | x=-10694.900390625 y=-1845.5 | size=1 | links=#8336(auto Deadwind Pass;39):42 #8647(auto Deadwind Pass;41):50
+#227 | passage;from;Deadwind Pass;to;Swamp of Sorrows§passage;von;Gebirgspass der Totenwinde;nach;Sümpfe des Elends§passage;de;Défilé de Deuillevent;vers;Marais des Chagrins | x=-10554.5 y=-2332.199951171875 | size=1 | links=#9344(passage;from;Swamp of Sorrows;to;Deadwind Pass):10 #22988(auto Deadwind Pass;105):10
+#620 | auto Deadwind Pass;4§auto Gebirgspass der Totenwinde;4§auto Défilé de Deuillevent;4 | x=-10387 y=-1946.400024414063 | size=1 | links=#5003(auto Deadwind Pass;25):25 #14610(auto Deadwind Pass;65):28
+#891 | auto Deadwind Pass;5§auto Gebirgspass der Totenwinde;5§auto Défilé de Deuillevent;5 | x=-10496.5 y=-2042.400024414063 | size=1 | links=#78(auto Deadwind Pass;2):23 #7342(auto Deadwind Pass;36):12
+#894 | auto Deadwind Pass;6§auto Gebirgspass der Totenwinde;6§auto Défilé de Deuillevent;6 | x=-10845.5 y=-2189.60009765625 | size=1 | links=#6726(auto Deadwind Pass;31):19 #18486(auto Deadwind Pass;83):25
+#1106 | crossing;The Vice;Deadwind Pass§kreuzung;Das Joch;Gebirgspass der Totenwinde§traversée;L'Etau;Défilé de Deuillevent | x=-10847.2998046875 y=-2088.5 | size=1 | links=#8414(auto Deadwind Pass;40):58 #9300(auto Deadwind Pass;46):36 #18794(auto Deadwind Pass;85):33
+#1144 | Archmage Alturus;Questgiver;Deadwind Pass;1;47.28;75.21§Erzmagier Alturus;Questgeber;Gebirgspass der Totenwinde;1;47.28;75.21§Archimage Alturus;Questgiver;Défilé de Deuillevent;1;47.28;75.21 | x=-11127.94646124672 y=-2006.410110409186 | size=1
+#1172 | auto Deadwind Pass;7§auto Gebirgspass der Totenwinde;7§auto Défilé de Deuillevent;7 | x=-10888.6005859375 y=-2209.800048828125 | size=1 | links=#6726(auto Deadwind Pass;31):29 #16306(auto Deadwind Pass;75):19
+#1315 | auto Deadwind Pass;8§auto Gebirgspass der Totenwinde;8§auto Défilé de Deuillevent;8 | x=-10415.1005859375 y=-1786.599975585938 | size=1 | links=#17096(auto Deadwind Pass;76):14 #23732(auto Deadwind Pass;109):15
+#1390 | auto Deadwind Pass;9§auto Gebirgspass der Totenwinde;9§auto Défilé de Deuillevent;9 | x=-11143.7001953125 y=-1859 | size=1 | links=#22044(auto Deadwind Pass;100):17 #26913(auto Deadwind Pass;119):13
+#1418 | auto Deadwind Pass;10§auto Gebirgspass der Totenwinde;10§auto Défilé de Deuillevent;10 | x=-10443.5 y=-1768.700073242188 | size=1 | links=#3286(auto Deadwind Pass;16):13 #17096(auto Deadwind Pass;76):24
+#1704 | auto Deadwind Pass;11§auto Gebirgspass der Totenwinde;11§auto Défilé de Deuillevent;11 | x=-10539.7001953125 y=-2106.60009765625 | size=1 | links=#13669(auto Deadwind Pass;61):7 #21434(auto Deadwind Pass;98):8
+#2497 | auto Deadwind Pass;12§auto Gebirgspass der Totenwinde;12§auto Défilé de Deuillevent;12 | x=-10587.400390625 y=-2170 | size=1 | links=#6800(auto Deadwind Pass;33):26 #10751(auto Deadwind Pass;53):25
+#2591 | passage;from;Deadwind Pass;to;Duskwood§passage;von;Gebirgspass der Totenwinde;nach;dämmerwald§passage;de;Défilé de Deuillevent;vers;Bois de la Pénombre | x=-10462.5 y=-1635.200073242188 | size=1 | links=#7324(passage;from;Duskwood;to;Deadwind Pass):7 #15695(auto Deadwind Pass;72):10
+#2683 | auto Deadwind Pass;13§auto Gebirgspass der Totenwinde;13§auto Défilé de Deuillevent;13 | x=-10527.7998046875 y=-2079.10009765625 | size=1 | links=#7342(auto Deadwind Pass;36):35 #21434(auto Deadwind Pass;98):27
+#2712 | auto Deadwind Pass;14§auto Gebirgspass der Totenwinde;14§auto Défilé de Deuillevent;14 | x=-10568.900390625 y=-2250.400146484375 | size=1 | links=#13334(auto Deadwind Pass;58):29 #22304(auto Deadwind Pass;102):30
+#3194 | auto Deadwind Pass;15§auto Gebirgspass der Totenwinde;15§auto Défilé de Deuillevent;15 | x=-11181.6005859375 y=-2213.800048828125 | size=1 | links=#11246(auto Deadwind Pass;54):15 #21433(auto Deadwind Pass;97):22
+#3286 | auto Deadwind Pass;16§auto Gebirgspass der Totenwinde;16§auto Défilé de Deuillevent;16 | x=-10450.2001953125 y=-1757.5 | size=1 | links=#1418(auto Deadwind Pass;10):13 #16733(crossing;Deadman's Crossing;Deadwind Pass):20
+#3685 | auto Deadwind Pass;17§auto Gebirgspass der Totenwinde;17§auto Défilé de Deuillevent;17 | x=-10449.7001953125 y=-1858.099975585938 | size=1 | links=#6404(auto Deadwind Pass;30):29 #20270(bridge;west;Deadwind Pass):17
+#3776 | auto Deadwind Pass;18§auto Gebirgspass der Totenwinde;18§auto Défilé de Deuillevent;18 | x=-11010.5 y=-2267.60009765625 | size=1 | links=#11552(auto Deadwind Pass;55):26 #14297(auto Deadwind Pass;63):51 c7379.7:39
+#4101 | auto Deadwind Pass;19§auto Gebirgspass der Totenwinde;19§auto Défilé de Deuillevent;19 | x=-10909.900390625 y=-1998.099975585938 | size=1 | links=#13597(auto Deadwind Pass;60):14 c7376.2:46
+#4545 | bridge;east;Deadwind Pass§brücke;östlich;Gebirgspass der Totenwinde§bridge;east;Défilé de Deuillevent | x=-10438 y=-1930.200073242188 | size=1 | links=#8771(auto Deadwind Pass;42):12 #9323(auto Deadwind Pass;47):7
+#4578 | auto Deadwind Pass;20§auto Gebirgspass der Totenwinde;20§auto Défilé de Deuillevent;20 | x=-11135.400390625 y=-1995.400024414063 | size=1 | links=#21184(auto Deadwind Pass;96):29 #27712(auto Deadwind Pass;124):16
+#4728 | auto Deadwind Pass;21§auto Gebirgspass der Totenwinde;21§auto Défilé de Deuillevent;21 | x=-10428.7001953125 y=-2010.900024414063 | size=1 | links=#6072(auto Deadwind Pass;29):25 #26631(auto Deadwind Pass;117):32
+#4856 | auto Deadwind Pass;22§auto Gebirgspass der Totenwinde;22§auto Défilé de Deuillevent;22 | x=-11152 y=-2134.5 | size=1 | links=#6752(auto Deadwind Pass;32):36 #23154(auto Deadwind Pass;106):31
+#4911 | auto Deadwind Pass;23§auto Gebirgspass der Totenwinde;23§auto Défilé de Deuillevent;23 | x=-10384.6005859375 y=-1778.200073242188 | size=1 | links=#23732(auto Deadwind Pass;109):17 c7376.11:10
+#4972 | auto Deadwind Pass;24§auto Gebirgspass der Totenwinde;24§auto Défilé de Deuillevent;24 | x=-10554.1005859375 y=-2298 | size=1 | links=#22304(auto Deadwind Pass;102):19 #22761(auto Deadwind Pass;104):11
+#5003 | auto Deadwind Pass;25§auto Gebirgspass der Totenwinde;25§auto Défilé de Deuillevent;25 | x=-10412.2998046875 y=-1940.700073242188 | size=1 | links=#620(auto Deadwind Pass;4):25 #8049(auto Deadwind Pass;38):15
+#5757 | auto Deadwind Pass;26§auto Gebirgspass der Totenwinde;26§auto Défilé de Deuillevent;26 | x=-11170.900390625 y=-1944.200073242188 | size=1 | links=#20565(auto Deadwind Pass;94):8 #28505(auto Deadwind Pass;126):16
+#5904 | auto Deadwind Pass;27§auto Gebirgspass der Totenwinde;27§auto Défilé de Deuillevent;27 | x=-10726 y=-1979.900024414063 | size=1 | links=#15663(auto Deadwind Pass;71):22 #18502(auto Deadwind Pass;84):15
+#6049 | auto Deadwind Pass;28§auto Gebirgspass der Totenwinde;28§auto Défilé de Deuillevent;28 | x=-10441.7001953125 y=-1966 | size=1 | links=#8771(auto Deadwind Pass;42):23 #26631(auto Deadwind Pass;117):14
+#6072 | auto Deadwind Pass;29§auto Gebirgspass der Totenwinde;29§auto Défilé de Deuillevent;29 | x=-10432.5 y=-2036.300048828125 | size=1 | links=#4728(auto Deadwind Pass;21):25 #19233(auto Deadwind Pass;88):16
+#6404 | auto Deadwind Pass;30§auto Gebirgspass der Totenwinde;30§auto Défilé de Deuillevent;30 | x=-10435.2001953125 y=-1832.200073242188 | size=1 | links=#3685(auto Deadwind Pass;17):29 #14300(auto Deadwind Pass;64):21
+#6726 | auto Deadwind Pass;31§auto Gebirgspass der Totenwinde;31§auto Défilé de Deuillevent;31 | x=-10860.7001953125 y=-2201 | size=1 | links=#894(auto Deadwind Pass;6):19 #1172(auto Deadwind Pass;7):29 c7369.1:33
+#6752 | auto Deadwind Pass;32§auto Gebirgspass der Totenwinde;32§auto Défilé de Deuillevent;32 | x=-11160.2001953125 y=-2169.800048828125 | size=1 | links=#4856(auto Deadwind Pass;22):36 #10351(auto Deadwind Pass;51):14
+#6800 | auto Deadwind Pass;33§auto Gebirgspass der Totenwinde;33§auto Défilé de Deuillevent;33 | x=-10582.7001953125 y=-2195.900146484375 | size=1 | links=#2497(auto Deadwind Pass;12):26 #13334(auto Deadwind Pass;58):26
+#6813 | auto Deadwind Pass;34§auto Gebirgspass der Totenwinde;34§auto Défilé de Deuillevent;34 | x=-10468.7001953125 y=-2135 | size=1 | links=#15045(auto Deadwind Pass;67):14 #20388(auto Deadwind Pass;92):15
+#7049 | auto Deadwind Pass;35§auto Gebirgspass der Totenwinde;35§auto Défilé de Deuillevent;35 | x=-11169.2998046875 y=-1912.5 | size=1 | links=#27546(auto Deadwind Pass;122):5 #28505(auto Deadwind Pass;126):16
+#7342 | auto Deadwind Pass;36§auto Gebirgspass der Totenwinde;36§auto Défilé de Deuillevent;36 | x=-10506.1005859375 y=-2050.60009765625 | size=1 | links=#891(auto Deadwind Pass;5):12 #2683(auto Deadwind Pass;13):35
+#7637 | auto Deadwind Pass;37§auto Gebirgspass der Totenwinde;37§auto Défilé de Deuillevent;37 | x=-11166 y=-2253.60009765625 | size=1 | links=#17143(auto Deadwind Pass;77):21 #21433(auto Deadwind Pass;97):21
+#8049 | auto Deadwind Pass;38§auto Gebirgspass der Totenwinde;38§auto Défilé de Deuillevent;38 | x=-10427.7001953125 y=-1942 | size=1 | links=#5003(auto Deadwind Pass;25):15 #8771(auto Deadwind Pass;42):10
+#8336 | auto Deadwind Pass;39§auto Gebirgspass der Totenwinde;39§auto Défilé de Deuillevent;39 | x=-10686.5 y=-1887.300048828125 | size=1 | links=#214(auto Deadwind Pass;3):42 #21769(auto Deadwind Pass;99):34
+#8414 | auto Deadwind Pass;40§auto Gebirgspass der Totenwinde;40§auto Défilé de Deuillevent;40 | x=-10890.1005859375 y=-2049.300048828125 | size=1 | links=#1106(crossing;The Vice;Deadwind Pass):58 #13597(auto Deadwind Pass;60):40
+#8647 | auto Deadwind Pass;41§auto Gebirgspass der Totenwinde;41§auto Défilé de Deuillevent;41 | x=-10743.900390625 y=-1833.599975585938 | size=1 | links=#214(auto Deadwind Pass;3):50 #27687(auto Deadwind Pass;123):84
+#8771 | auto Deadwind Pass;42§auto Gebirgspass der Totenwinde;42§auto Défilé de Deuillevent;42 | x=-10438.2001953125 y=-1942.900024414063 | size=1 | links=#4545(bridge;east;Deadwind Pass):12 #6049(auto Deadwind Pass;28):23 #8049(auto Deadwind Pass;38):10
+#8984 | auto Deadwind Pass;43§auto Gebirgspass der Totenwinde;43§auto Défilé de Deuillevent;43 | x=-10458.2001953125 y=-1703.700073242188 | size=1 | links=#19432(auto Deadwind Pass;89):17 #24643(auto Deadwind Pass;112):26
+#9152 | auto Deadwind Pass;44§auto Gebirgspass der Totenwinde;44§auto Défilé de Deuillevent;44 | x=-10668.6005859375 y=-2069.60009765625 | size=1 | links=#26898(auto Deadwind Pass;118):32 c7376.4:25
+#9163 | auto Deadwind Pass;45§auto Gebirgspass der Totenwinde;45§auto Défilé de Deuillevent;45 | x=-10939.400390625 y=-2256.699951171875 | size=1 | links=#16113(auto Deadwind Pass;73):28 #26019(auto Deadwind Pass;115):26
+#9300 | auto Deadwind Pass;46§auto Gebirgspass der Totenwinde;46§auto Défilé de Deuillevent;46 | x=-10821.900390625 y=-2062.5 | size=1 | links=#1106(crossing;The Vice;Deadwind Pass):36 #12840(auto Deadwind Pass;57):33
+#9323 | auto Deadwind Pass;47§auto Gebirgspass der Totenwinde;47§auto Défilé de Deuillevent;47 | x=-10439.2001953125 y=-1922.400024414063 | size=1 | links=#4545(bridge;east;Deadwind Pass):7 #25718(auto Deadwind Pass;114):8
+#9653 | auto Deadwind Pass;48§auto Gebirgspass der Totenwinde;48§auto Défilé de Deuillevent;48 | x=-11123.900390625 y=-2260.400146484375 | size=1 | links=#17143(auto Deadwind Pass;77):20 #20867(central location;The Vice;Deadwind Pass):46
+#10217 | auto Deadwind Pass;49§auto Gebirgspass der Totenwinde;49§auto Défilé de Deuillevent;49 | x=-10604.1005859375 y=-1906.5 | size=1 | links=#21769(auto Deadwind Pass;99):57 #23309(auto Deadwind Pass;107):47
+#10279 | auto Deadwind Pass;50§auto Gebirgspass der Totenwinde;50§auto Défilé de Deuillevent;50 | x=-11115.2001953125 y=-2355.900146484375 | size=1 | links=#28548(auto Deadwind Pass;127):11 c7371.1:11
+#10351 | auto Deadwind Pass;51§auto Gebirgspass der Totenwinde;51§auto Défilé de Deuillevent;51 | x=-11167.2998046875 y=-2182.699951171875 | size=1 | links=#6752(auto Deadwind Pass;32):14 #11246(auto Deadwind Pass;54):20
+#10363 | auto Deadwind Pass;52§auto Gebirgspass der Totenwinde;52§auto Défilé de Deuillevent;52 | x=-11124.6005859375 y=-1833 | size=1 | links=#14860(auto Deadwind Pass;66):8 #25375(auto Deadwind Pass;113):11
+#10751 | auto Deadwind Pass;53§auto Gebirgspass der Totenwinde;53§auto Défilé de Deuillevent;53 | x=-10592.1005859375 y=-2145.10009765625 | size=1 | links=#2497(auto Deadwind Pass;12):25 #11168(crossing;Sleeping Gorge;Deadwind Pass):20
+#11168 | crossing;Sleeping Gorge;Deadwind Pass§kreuzung;Die schlummernde Schlucht;Gebirgspass der Totenwinde§traversée;Gorge endormie;Défilé de Deuillevent | x=-10594.2998046875 y=-2124.300048828125 | size=1 | links=#10751(auto Deadwind Pass;53):20 #19799(auto Deadwind Pass;91):30 #23750(auto Deadwind Pass;110):19
+#11246 | auto Deadwind Pass;54§auto Gebirgspass der Totenwinde;54§auto Défilé de Deuillevent;54 | x=-11180.5 y=-2198.5 | size=1 | links=#3194(auto Deadwind Pass;15):15 #10351(auto Deadwind Pass;51):20
+#11552 | auto Deadwind Pass;55§auto Gebirgspass der Totenwinde;55§auto Défilé de Deuillevent;55 | x=-10985.2001953125 y=-2274.199951171875 | size=1 | links=#3776(auto Deadwind Pass;18):26 #26019(auto Deadwind Pass;115):22
+#11702 | auto Deadwind Pass;56§auto Gebirgspass der Totenwinde;56§auto Défilé de Deuillevent;56 | x=-10894 y=-2286.900146484375 | size=1 | links=#17443(auto Deadwind Pass;79):19 c7379.8:25
+#12840 | auto Deadwind Pass;57§auto Gebirgspass der Totenwinde;57§auto Défilé de Deuillevent;57 | x=-10805.6005859375 y=-2033.599975585938 | size=1 | links=#9300(auto Deadwind Pass;46):33 #17523(auto Deadwind Pass;80):28
+#13334 | auto Deadwind Pass;58§auto Gebirgspass der Totenwinde;58§auto Défilé de Deuillevent;58 | x=-10577.2998046875 y=-2221.60009765625 | size=1 | links=#2712(auto Deadwind Pass;14):29 #6800(auto Deadwind Pass;33):26
+#13499 | auto Deadwind Pass;59§auto Gebirgspass der Totenwinde;59§auto Défilé de Deuillevent;59 | x=-10855.6005859375 y=-1894.300048828125 | size=1 | links=#22064(auto Deadwind Pass;101):39 #27687(auto Deadwind Pass;123):47
+#13597 | auto Deadwind Pass;60§auto Gebirgspass der Totenwinde;60§auto Défilé de Deuillevent;60 | x=-10902.2001953125 y=-2010.599975585938 | size=1 | links=#4101(auto Deadwind Pass;19):14 #8414(auto Deadwind Pass;40):40
+#13669 | auto Deadwind Pass;61§auto Gebirgspass der Totenwinde;61§auto Défilé de Deuillevent;61 | x=-10534.2998046875 y=-2111.5 | size=1 | links=#64(auto Deadwind Pass;1):16 #1704(auto Deadwind Pass;11):7
+#13891 | auto Deadwind Pass;62§auto Gebirgspass der Totenwinde;62§auto Défilé de Deuillevent;62 | x=-11131.7001953125 y=-2075.60009765625 | size=1 | links=#22569(auto Deadwind Pass;103):12 #22681(central location;Karazhan;Deadwind Pass):29
+#14297 | auto Deadwind Pass;63§auto Gebirgspass der Totenwinde;63§auto Défilé de Deuillevent;63 | x=-11061.5 y=-2258.199951171875 | size=1 | links=#3776(auto Deadwind Pass;18):51 #20867(central location;The Vice;Deadwind Pass):16
+#14300 | auto Deadwind Pass;64§auto Gebirgspass der Totenwinde;64§auto Défilé de Deuillevent;64 | x=-10427.5 y=-1812.300048828125 | size=1 | links=#6404(auto Deadwind Pass;30):21 #17096(auto Deadwind Pass;76):23
+#14610 | auto Deadwind Pass;65§auto Gebirgspass der Totenwinde;65§auto Défilé de Deuillevent;65 | x=-10360.7001953125 y=-1957.300048828125 | size=1 | links=#620(auto Deadwind Pass;4):28 #23319(auto Deadwind Pass;108):39
+#14860 | auto Deadwind Pass;66§auto Gebirgspass der Totenwinde;66§auto Défilé de Deuillevent;66 | x=-11116.6005859375 y=-1832.400024414063 | size=1 | links=#10363(auto Deadwind Pass;52):8 c6491.1:13
+#15045 | auto Deadwind Pass;67§auto Gebirgspass der Totenwinde;67§auto Défilé de Deuillevent;67 | x=-10480.400390625 y=-2142.900146484375 | size=1 | links=#6813(auto Deadwind Pass;34):14 #18240(auto Deadwind Pass;81):21
+#15249 | auto Deadwind Pass;68§auto Gebirgspass der Totenwinde;68§auto Défilé de Deuillevent;68 | x=-10463.6005859375 y=-1658.400024414063 | size=1 | links=#15695(auto Deadwind Pass;72):13 #24643(auto Deadwind Pass;112):21
+#15370 | auto Deadwind Pass;69§auto Gebirgspass der Totenwinde;69§auto Défilé de Deuillevent;69 | x=-10444.5 y=-1886.099975585938 | size=1 | links=#20270(bridge;west;Deadwind Pass):10 #27442(auto Deadwind Pass;121):6
+#15429 | auto Deadwind Pass;70§auto Gebirgspass der Totenwinde;70§auto Défilé de Deuillevent;70 | x=-11156.7001953125 y=-1894.700073242188 | size=1 | links=#22044(auto Deadwind Pass;100):23 #27546(auto Deadwind Pass;122):16
+#15663 | auto Deadwind Pass;71§auto Gebirgspass der Totenwinde;71§auto Défilé de Deuillevent;71 | x=-10738.2001953125 y=-1961.099975585938 | size=1 | links=#5904(auto Deadwind Pass;27):22 #20486(auto Deadwind Pass;93):17
+#15695 | auto Deadwind Pass;72§auto Gebirgspass der Totenwinde;72§auto Défilé de Deuillevent;72 | x=-10462.900390625 y=-1645.200073242188 | size=1 | links=#2591(passage;from;Deadwind Pass;to;Duskwood):10 #15249(auto Deadwind Pass;68):13
+#16113 | auto Deadwind Pass;73§auto Gebirgspass der Totenwinde;73§auto Défilé de Deuillevent;73 | x=-10917.6005859375 y=-2239 | size=1 | links=#9163(auto Deadwind Pass;45):28 #16306(auto Deadwind Pass;75):21
+#16144 | auto Deadwind Pass;74§auto Gebirgspass der Totenwinde;74§auto Défilé de Deuillevent;74 | x=-11095.7001953125 y=-2313 | size=1 | links=#17133(entry and exit;cave;Grosh'gok Compound;Deadwind Pass):20 c7379.1:37 c7369.5:29 c7379.6:14
+#16306 | auto Deadwind Pass;75§auto Gebirgspass der Totenwinde;75§auto Défilé de Deuillevent;75 | x=-10903.7001953125 y=-2222.900146484375 | size=1 | links=#1172(auto Deadwind Pass;7):19 #16113(auto Deadwind Pass;73):21 c7369.6:12
+#16733 | crossing;Deadman's Crossing;Deadwind Pass§kreuzungspunkt;Totmannsfurt;Gebirgspass der Totenwinde§traversée;Croisée de l'homme mort;Défilé de Deuillevent | x=-10460.7998046875 y=-1740.400024414063 | size=1 | links=#3286(auto Deadwind Pass;16):20 #19432(auto Deadwind Pass;89):19 c7376.1:65
+#17096 | auto Deadwind Pass;76§auto Gebirgspass der Totenwinde;76§auto Défilé de Deuillevent;76 | x=-10429.7001953125 y=-1788.599975585938 | size=1 | links=#1315(auto Deadwind Pass;8):14 #1418(auto Deadwind Pass;10):24 #14300(auto Deadwind Pass;64):23
+#17133 | entry and exit;cave;Grosh'gok Compound;Deadwind Pass§ein- und ausgang;höhle;Das Lager von Grosh'gok;Gebirgspass der Totenwinde§entrée et sortie;cave;Base des Grosh'gok;Défilé de Deuillevent | x=-11107.5 y=-2329.60009765625 | size=1 | links=#16144(auto Deadwind Pass;74):20 #28761(s;Eastern Kingdoms;Deadwind Pass;The vice;Grosh'gok Compound):7
+#17143 | auto Deadwind Pass;77§auto Gebirgspass der Totenwinde;77§auto Défilé de Deuillevent;77 | x=-11144.5 y=-2256.699951171875 | size=1 | links=#7637(auto Deadwind Pass;37):21 #9653(auto Deadwind Pass;48):20 c7369.4:13
+#17390 | auto Deadwind Pass;78§auto Gebirgspass der Totenwinde;78§auto Défilé de Deuillevent;78 | x=-10802.7998046875 y=-1984.599975585938 | size=1 | links=#17523(auto Deadwind Pass;80):21 #23812(auto Deadwind Pass;111):22
+#17443 | auto Deadwind Pass;79§auto Gebirgspass der Totenwinde;79§auto Défilé de Deuillevent;79 | x=-10913.1005859375 y=-2284.10009765625 | size=1 | links=#11702(auto Deadwind Pass;56):19 c7369.8:34
+#17523 | auto Deadwind Pass;80§auto Gebirgspass der Totenwinde;80§auto Défilé de Deuillevent;80 | x=-10810.5 y=-2005.099975585938 | size=1 | links=#12840(auto Deadwind Pass;57):28 #17390(auto Deadwind Pass;78):21
+#18240 | auto Deadwind Pass;81§auto Gebirgspass der Totenwinde;81§auto Défilé de Deuillevent;81 | x=-10494.7998046875 y=-2126.5 | size=1 | links=#15045(auto Deadwind Pass;67):21 #18440(auto Deadwind Pass;82):14
+#18440 | auto Deadwind Pass;82§auto Gebirgspass der Totenwinde;82§auto Défilé de Deuillevent;82 | x=-10507.1005859375 y=-2119.60009765625 | size=1 | links=#64(auto Deadwind Pass;1):15 #18240(auto Deadwind Pass;81):14
+#18486 | auto Deadwind Pass;83§auto Gebirgspass der Totenwinde;83§auto Défilé de Deuillevent;83 | x=-10831.6005859375 y=-2168.5 | size=1 | links=#894(auto Deadwind Pass;6):25 c7369.2:33 c7379.3:32 c7379.4:28
+#18502 | auto Deadwind Pass;84§auto Gebirgspass der Totenwinde;84§auto Défilé de Deuillevent;84 | x=-10735.2998046875 y=-1992.599975585938 | size=1 | links=#5904(auto Deadwind Pass;27):15 #19693(auto Deadwind Pass;90):27
+#18794 | auto Deadwind Pass;85§auto Gebirgspass der Totenwinde;85§auto Défilé de Deuillevent;85 | x=-10829.2998046875 y=-2116.400146484375 | size=1 | links=#1106(crossing;The Vice;Deadwind Pass):33 c7369.3:15 c7379.4:29
+#18900 | auto Deadwind Pass;86§auto Gebirgspass der Totenwinde;86§auto Défilé de Deuillevent;86 | x=-10307.2001953125 y=-1991 | size=1 | links=#23319(auto Deadwind Pass;108):24 c7376.9:32
+#19207 | auto Deadwind Pass;87§auto Gebirgspass der Totenwinde;87§auto Défilé de Deuillevent;87 | x=-10627 y=-2102.60009765625 | size=1 | links=#23750(auto Deadwind Pass;110):19 c7376.4:27
+#19233 | auto Deadwind Pass;88§auto Gebirgspass der Totenwinde;88§auto Défilé de Deuillevent;88 | x=-10448.7001953125 y=-2039.200073242188 | size=1 | links=#78(auto Deadwind Pass;2):24 #6072(auto Deadwind Pass;29):16
+#19432 | auto Deadwind Pass;89§auto Gebirgspass der Totenwinde;89§auto Défilé de Deuillevent;89 | x=-10460.1005859375 y=-1721.200073242188 | size=1 | links=#8984(auto Deadwind Pass;43):17 #16733(crossing;Deadman's Crossing;Deadwind Pass):19
+#19693 | auto Deadwind Pass;90§auto Gebirgspass der Totenwinde;90§auto Défilé de Deuillevent;90 | x=-10730.6005859375 y=-2019.599975585938 | size=1 | links=#18502(auto Deadwind Pass;84):27 c7376.3:23
+#19799 | auto Deadwind Pass;91§auto Gebirgspass der Totenwinde;91§auto Défilé de Deuillevent;91 | x=-10566.5 y=-2112.400146484375 | size=1 | links=#11168(crossing;Sleeping Gorge;Deadwind Pass):30 #21434(auto Deadwind Pass;98):24
+#20270 | bridge;west;Deadwind Pass§brücke;westlich;Gebirgspass der Totenwinde§bridge;west;Défilé de Deuillevent | x=-10447 y=-1875.5 | size=1 | links=#3685(auto Deadwind Pass;17):17 #15370(auto Deadwind Pass;69):10
+#20388 | auto Deadwind Pass;92§auto Gebirgspass der Totenwinde;92§auto Défilé de Deuillevent;92 | x=-10455.1005859375 y=-2141.699951171875 | size=1 | links=#6813(auto Deadwind Pass;34):15 #28763(s;Eastern Kingdoms;Deadwind Pass;Deadman's Crossing;Ariden's Camp):11
+#20486 | auto Deadwind Pass;93§auto Gebirgspass der Totenwinde;93§auto Défilé de Deuillevent;93 | x=-10753.6005859375 y=-1952.099975585938 | size=1 | links=#15663(auto Deadwind Pass;71):17 #28302(auto Deadwind Pass;125):20
+#20565 | auto Deadwind Pass;94§auto Gebirgspass der Totenwinde;94§auto Défilé de Deuillevent;94 | x=-11171.5 y=-1952.599975585938 | size=1 | links=#5757(auto Deadwind Pass;26):8 #20741(auto Deadwind Pass;95):23 o181963.1:12
+#20741 | auto Deadwind Pass;95§auto Gebirgspass der Totenwinde;95§auto Défilé de Deuillevent;95 | x=-11151.2998046875 y=-1964 | size=1 | links=#20565(auto Deadwind Pass;94):23 #27712(auto Deadwind Pass;124):18 o181963.1:31
+#20867 | central location;The Vice;Deadwind Pass§zentralpunkt;Das Joch;Gebirgspass der Totenwinde§emplacement central;L'Etau;Défilé de Deuillevent | x=-11077.900390625 y=-2254.300048828125 | size=1 | links=#9653(auto Deadwind Pass;48):46 #14297(auto Deadwind Pass;63):16 c7379.1:24
+#21184 | auto Deadwind Pass;96§auto Gebirgspass der Totenwinde;96§auto Défilé de Deuillevent;96 | x=-11130 y=-2024.900024414063 | size=1 | links=#4578(auto Deadwind Pass;20):29 #22681(central location;Karazhan;Deadwind Pass):21 c17613.1:18 c18253.1:17
+#21433 | auto Deadwind Pass;97§auto Gebirgspass der Totenwinde;97§auto Défilé de Deuillevent;97 | x=-11176.400390625 y=-2235.300048828125 | size=1 | links=#3194(auto Deadwind Pass;15):22 #7637(auto Deadwind Pass;37):21
+#21434 | auto Deadwind Pass;98§auto Gebirgspass der Totenwinde;98§auto Défilé de Deuillevent;98 | x=-10545.5 y=-2100.400146484375 | size=1 | links=#1704(auto Deadwind Pass;11):8 #2683(auto Deadwind Pass;13):27 #19799(auto Deadwind Pass;91):24
+#21769 | auto Deadwind Pass;99§auto Gebirgspass der Totenwinde;99§auto Défilé de Deuillevent;99 | x=-10661.7998046875 y=-1911.099975585938 | size=1 | links=#8336(auto Deadwind Pass;39):34 #10217(auto Deadwind Pass;49):57
+#22044 | auto Deadwind Pass;100§auto Gebirgspass der Totenwinde;100§auto Défilé de Deuillevent;100 | x=-11141.5 y=-1876.200073242188 | size=1 | links=#1390(auto Deadwind Pass;9):17 #15429(auto Deadwind Pass;70):23
+#22064 | auto Deadwind Pass;101§auto Gebirgspass der Totenwinde;101§auto Défilé de Deuillevent;101 | x=-10873.1005859375 y=-1930 | size=1 | links=#13499(auto Deadwind Pass;59):39 c7376.2:43
+#22304 | auto Deadwind Pass;102§auto Gebirgspass der Totenwinde;102§auto Défilé de Deuillevent;102 | x=-10560.2998046875 y=-2279.699951171875 | size=1 | links=#2712(auto Deadwind Pass;14):30 #4972(auto Deadwind Pass;24):19
+#22569 | auto Deadwind Pass;103§auto Gebirgspass der Totenwinde;103§auto Défilé de Deuillevent;103 | x=-11136.900390625 y=-2087 | size=1 | links=#13891(auto Deadwind Pass;62):12 #23154(auto Deadwind Pass;106):18
+#22681 | central location;Karazhan;Deadwind Pass§zentralpunkt;Karazhan;Gebirgspass der Totenwinde§emplacement central;Karazhan;Défilé de Deuillevent | x=-11127.7998046875 y=-2046.700073242188 | size=1 | links=#13891(auto Deadwind Pass;62):29 #21184(auto Deadwind Pass;96):21
+#22761 | auto Deadwind Pass;104§auto Gebirgspass der Totenwinde;104§auto Défilé de Deuillevent;104 | x=-10552.5 y=-2309 | size=1 | links=#4972(auto Deadwind Pass;24):11 #22988(auto Deadwind Pass;105):12
+#22988 | auto Deadwind Pass;105§auto Gebirgspass der Totenwinde;105§auto Défilé de Deuillevent;105 | x=-10553.5 y=-2321.400146484375 | size=1 | links=#227(passage;from;Deadwind Pass;to;Swamp of Sorrows):10 #22761(auto Deadwind Pass;104):12
+#23154 | auto Deadwind Pass;106§auto Gebirgspass der Totenwinde;106§auto Défilé de Deuillevent;106 | x=-11144.5 y=-2103.800048828125 | size=1 | links=#4856(auto Deadwind Pass;22):31 #22569(auto Deadwind Pass;103):18
+#23309 | auto Deadwind Pass;107§auto Gebirgspass der Totenwinde;107§auto Défilé de Deuillevent;107 | x=-10571.6005859375 y=-1871.5 | size=1 | links=#10217(auto Deadwind Pass;49):47 #28764(s;Eastern Kingdoms;Deadwind Pass;Deadman's Crossing;Deadwind Ravine):30
+#23319 | auto Deadwind Pass;108§auto Gebirgspass der Totenwinde;108§auto Défilé de Deuillevent;108 | x=-10326 y=-1975.599975585938 | size=1 | links=#14610(auto Deadwind Pass;65):39 #18900(auto Deadwind Pass;86):24
+#23732 | auto Deadwind Pass;109§auto Gebirgspass der Totenwinde;109§auto Défilé de Deuillevent;109 | x=-10402.5 y=-1777 | size=1 | links=#1315(auto Deadwind Pass;8):15 #4911(auto Deadwind Pass;23):17
+#23750 | auto Deadwind Pass;110§auto Gebirgspass der Totenwinde;110§auto Défilé de Deuillevent;110 | x=-10610.900390625 y=-2113.900146484375 | size=1 | links=#11168(crossing;Sleeping Gorge;Deadwind Pass):19 #19207(auto Deadwind Pass;87):19
+#23812 | auto Deadwind Pass;111§auto Gebirgspass der Totenwinde;111§auto Défilé de Deuillevent;111 | x=-10789.6005859375 y=-1965.800048828125 | size=1 | links=#17390(auto Deadwind Pass;78):22 #28302(auto Deadwind Pass;125):19
+#24643 | auto Deadwind Pass;112§auto Gebirgspass der Totenwinde;112§auto Défilé de Deuillevent;112 | x=-10467.7001953125 y=-1679.400024414063 | size=1 | links=#8984(auto Deadwind Pass;43):26 #15249(auto Deadwind Pass;68):21
+#25375 | auto Deadwind Pass;113§auto Gebirgspass der Totenwinde;113§auto Défilé de Deuillevent;113 | x=-11135.2998046875 y=-1836.099975585938 | size=1 | links=#10363(auto Deadwind Pass;52):11 #26913(auto Deadwind Pass;119):12
+#25718 | auto Deadwind Pass;114§auto Gebirgspass der Totenwinde;114§auto Défilé de Deuillevent;114 | x=-10440 y=-1914.300048828125 | size=1 | links=#9323(auto Deadwind Pass;47):8 #26629(auto Deadwind Pass;116):6
+#26019 | auto Deadwind Pass;115§auto Gebirgspass der Totenwinde;115§auto Défilé de Deuillevent;115 | x=-10963.6005859375 y=-2268.10009765625 | size=1 | links=#9163(auto Deadwind Pass;45):26 #11552(auto Deadwind Pass;55):22 c7369.8:21
+#26629 | auto Deadwind Pass;116§auto Gebirgspass der Totenwinde;116§auto Défilé de Deuillevent;116 | x=-10440.1005859375 y=-1908 | size=1 | links=#25718(auto Deadwind Pass;114):6 #26991(auto Deadwind Pass;120):8
+#26631 | auto Deadwind Pass;117§auto Gebirgspass der Totenwinde;117§auto Défilé de Deuillevent;117 | x=-10441.1005859375 y=-1980.700073242188 | size=1 | links=#4728(auto Deadwind Pass;21):32 #6049(auto Deadwind Pass;28):14
+#26898 | auto Deadwind Pass;118§auto Gebirgspass der Totenwinde;118§auto Défilé de Deuillevent;118 | x=-10698.7001953125 y=-2057.10009765625 | size=1 | links=#9152(auto Deadwind Pass;44):32 c7376.3:26
+#26913 | auto Deadwind Pass;119§auto Gebirgspass der Totenwinde;119§auto Défilé de Deuillevent;119 | x=-11143.7001953125 y=-1845.700073242188 | size=1 | links=#1390(auto Deadwind Pass;9):13 #25375(auto Deadwind Pass;113):12
+#26991 | auto Deadwind Pass;120§auto Gebirgspass der Totenwinde;120§auto Défilé de Deuillevent;120 | x=-10440.2001953125 y=-1900 | size=1 | links=#26629(auto Deadwind Pass;116):8 #27442(auto Deadwind Pass;121):8
+#27442 | auto Deadwind Pass;121§auto Gebirgspass der Totenwinde;121§auto Défilé de Deuillevent;121 | x=-10442.6005859375 y=-1892.099975585938 | size=1 | links=#15370(auto Deadwind Pass;69):6 #26991(auto Deadwind Pass;120):8
+#27546 | auto Deadwind Pass;122§auto Gebirgspass der Totenwinde;122§auto Défilé de Deuillevent;122 | x=-11166.2998046875 y=-1907.800048828125 | size=1 | links=#7049(auto Deadwind Pass;35):5 #15429(auto Deadwind Pass;70):16
+#27687 | auto Deadwind Pass;123§auto Gebirgspass der Totenwinde;123§auto Défilé de Deuillevent;123 | x=-10824.2001953125 y=-1858.400024414063 | size=1 | links=#8647(auto Deadwind Pass;41):84 #13499(auto Deadwind Pass;59):47
+#27712 | auto Deadwind Pass;124§auto Gebirgspass der Totenwinde;124§auto Défilé de Deuillevent;124 | x=-11142.6005859375 y=-1980.099975585938 | size=1 | links=#4578(auto Deadwind Pass;20):16 #20741(auto Deadwind Pass;95):18
+#28302 | auto Deadwind Pass;125§auto Gebirgspass der Totenwinde;125§auto Défilé de Deuillevent;125 | x=-10773.900390625 y=-1954.300048828125 | size=1 | links=#20486(auto Deadwind Pass;93):20 #23812(auto Deadwind Pass;111):19
+#28505 | auto Deadwind Pass;126§auto Gebirgspass der Totenwinde;126§auto Défilé de Deuillevent;126 | x=-11166.2001953125 y=-1928.300048828125 | size=1 | links=#5757(auto Deadwind Pass;26):16 #7049(auto Deadwind Pass;35):16
+#28548 | auto Deadwind Pass;127§auto Gebirgspass der Totenwinde;127§auto Défilé de Deuillevent;127 | x=-11118 y=-2344.699951171875 | size=1 | links=#10279(auto Deadwind Pass;50):11 #28761(s;Eastern Kingdoms;Deadwind Pass;The vice;Grosh'gok Compound):10
+
+Kreatur-/Objekt-Verbindungsquellen in dieser Zone:
+c6491.1 | links=#14860(auto Deadwind Pass;66):13
+c7369.1 | links=#6726(auto Deadwind Pass;31):33 c7379.2:26
+c7371.1 | links=#10279(auto Deadwind Pass;50):11
+c7376.1 | links=#16733(crossing;Deadman's Crossing;Deadwind Pass):65 c7376.8:42
+c7379.1 | links=#16144(auto Deadwind Pass;74):37 #20867(central location;The Vice;Deadwind Pass):24
+c17613.1 | links=#21184(auto Deadwind Pass;96):18
+c18253.1 | links=#21184(auto Deadwind Pass;96):17 c18255.1:10
+c18255.1 | links=c18253.1:10
+o181963.1 | links=#20565(auto Deadwind Pass;94):12 #20741(auto Deadwind Pass;95):31
+c7369.2 | links=#18486(auto Deadwind Pass;83):33
+c7376.2 | links=#4101(auto Deadwind Pass;19):46 #22064(auto Deadwind Pass;101):43
+c7379.2 | links=c7369.1:26 c7379.5:15
+c7369.3 | links=#18794(auto Deadwind Pass;85):15
+c7376.3 | links=#19693(auto Deadwind Pass;90):23 #26898(auto Deadwind Pass;118):26
+c7379.3 | links=#18486(auto Deadwind Pass;83):32
+c7369.4 | links=#17143(auto Deadwind Pass;77):13
+c7376.4 | links=#9152(auto Deadwind Pass;44):25 #19207(auto Deadwind Pass;87):27
+c7379.4 | links=#18486(auto Deadwind Pass;83):28 #18794(auto Deadwind Pass;85):29
+c7369.5 | links=#16144(auto Deadwind Pass;74):29
+c7379.5 | links=c7379.2:15
+c7369.6 | links=#16306(auto Deadwind Pass;75):12
+c7379.6 | links=#16144(auto Deadwind Pass;74):14
+c7369.7 | links=c7379.7:16
+c7379.7 | links=#3776(auto Deadwind Pass;18):39 c7369.7:16
+c7369.8 | links=#17443(auto Deadwind Pass;79):34 #26019(auto Deadwind Pass;115):21
+c7376.8 | links=c7376.1:42 #28764(s;Eastern Kingdoms;Deadwind Pass;Deadman's Crossing;Deadwind Ravine):62
+c7379.8 | links=#11702(auto Deadwind Pass;56):25 c7369.9:14
+c7369.9 | links=c7379.8:14
+c7376.9 | links=#18900(auto Deadwind Pass;86):32
+c7376.11 | links=#4911(auto Deadwind Pass;23):10
