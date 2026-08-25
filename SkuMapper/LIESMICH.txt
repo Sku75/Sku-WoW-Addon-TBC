@@ -25,6 +25,10 @@ Kartendaten (alt)
 Neu in 5.0
 - Abgabe-Arbeitsablauf: /sku save <Kommentar> + /reload + HandInMapData.bat
   (siehe oben). Der Kommentar hilft dem Team zu verstehen, was gemacht wurde.
+- Dafuer gibt es auch einen Knopf "Save hand-in" auf dem Optionsfeld der
+  Sku-Karte und eine belegbare Taste "Save map data for hand-in"
+  (Tastenbelegung, Kategorie Other/Sonstiges). Beide nutzen den zuletzt per
+  /sku save gesetzten Kommentar weiter.
 - Jede Datenbasis hat jetzt eine KARTENNUMMER. Das Tool merkt sich, auf welcher
   Nummer die eigene Arbeit aufsetzt, und gibt sie bei der Abgabe mit — so kann
   nichts mehr verwechselt oder ueberschrieben werden.

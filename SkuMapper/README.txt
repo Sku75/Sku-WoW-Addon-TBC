@@ -15,6 +15,8 @@ Key bindings (no default bindings, set them up via Game Settings > Interface > K
 	- Toggle default game minimap size
 	- Undo
 	- Unselect waypoints
+	- NEW Save map data for hand-in (same as the "Save hand-in" map button
+	  and /sku save; keeps the last /sku save comment)
 
 ------------------------------------------------
 Mouse buttons

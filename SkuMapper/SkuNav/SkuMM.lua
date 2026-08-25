@@ -1234,6 +1234,15 @@ function SkuNav:SkuNavMMOpen()
 			end)
 			_G["SkuNavMMMainFrameShowLimitWps"].selectedDefault = false
 
+			-- Save map data for hand-in: same action as /sku save (and the key
+			-- binding of the same name). Fills the free slot of the top grid,
+			-- below "Unique only". The comment stays whatever the last
+			-- /sku save <comment> set (see SkuOptions:BuildMapMeta).
+			local tButtonObj = SkuNav:CreateButtonFrameTemplate("SkuNavMMMainFrameSaveMapData", tOptionsParent, "Save hand-in", 100, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 0, -40)
+			tButtonObj:SetScript("OnMouseUp", function(self, button)
+				SkuOptions:SaveMapData("")
+			end)
+
 			local tDropdownFrame = SkuNav:CreateButtonFrameTemplate("SkuNavMMMainFrameZoneSelect", tOptionsParent, "Zone", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 195, 0)
 			local tex = tDropdownFrame:CreateTexture(nil, "OVERLAY")
 			tex:SetTexture("Interface\\AddOns\\SkuMapper\\SkuNav\\assets\\ui_dropdown.tga")

@@ -172,6 +172,15 @@
          MinimapCluster:SetScale(1)
       end   
    </Binding>
+   <Binding name="Save map data for hand-in">
+		if _G["SkuNavZoneSelector"] and _G["SkuNavZoneSelector"]:IsShown() == true then
+			print("not possible. zone selector open.")
+         SkuNav:PlayFailSound()
+			return
+		end
+
+      SkuOptions:SaveMapData("")
+   </Binding>
    <Binding name="Undo">
 		SkuNav:History_Undo()
    </Binding>
