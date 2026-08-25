@@ -329,6 +329,23 @@ function AuctionHouse:AuctionHouseOnInitialize()
    local tFilterAnnounceElapsed = 0 -- 10-s-Takt für die Filter-Fortschrittsansage
    local tFullScanWorkElapsed = 0   -- verstrichene Zeit der getAll-Arbeitsphase
    local tFullScanSpeak       = 0   -- 10-s-Takt für die getAll-Fortschrittsansage
+   -- Watchdog-Neustart beim Absetzen einer Query. Zwei Leck-Pfade füllten die
+   -- Closure-Zähler schon VOR dem Scan-Start, sodass der 600-s-getAll-Watchdog
+   -- einen frischen Scan im ersten Tick abwürgte (Log: QueryAuctionItems und
+   -- "watchdog: getAll timeout" in derselben Sekunde): (1) tTime wuchs am
+   -- offenen AH im Leerlauf unbegrenzt, weil der Idle-Zweig es nie zurücksetzte
+   -- — der erste Watchdog-Tick addierte die GESAMTE Standzeit auf einmal (den
+   -- 16-min-Cooldown am AH absitzen > 600 s reichte allein); (2)
+   -- tFullScanElapsed überlebte das Scan-Ende, weil sein Reset im
+   -- Serialize-Zweig hinter dem 0,2-s-Tick-Gate liegt, das eine schnelle
+   -- Serialisierung nie passiert — jeder erfolgreiche Scan vererbte so seine
+   -- Server-Wartezeit an den nächsten. StartQuery ruft das hier nach jedem
+   -- wirklich abgesetzten QueryAuctionItems; zusätzlich setzt der Idle-Zweig
+   -- unten tTime jetzt selbst zurück.
+   SkuCore.AuctionScanWatchdogReset = function()
+      tTime = 0
+      tFullScanElapsed = 0
+   end
    local tFrame = CreateFrame("Button", "SkuCoreSecureTabButtonAuctions", _G["UIParent"], "SecureActionButtonTemplate")
    tFrame:SetSize(1, 1)
    tFrame:SetPoint("TOPLEFT", _G["UIParent"], "TOPLEFT", 0, 0)
@@ -465,9 +482,12 @@ function AuctionHouse:AuctionHouseOnInitialize()
             tTime = 0
          end
       else
-         -- Kein Scan aktiv — Watchdog-Zähler zurücksetzen
+         -- Kein Scan aktiv — Watchdog-Zähler zurücksetzen. tTime gehört dazu:
+         -- ohne den Reset sammelt es die komplette Leerlauf-Standzeit am AH und
+         -- der erste Watchdog-Tick des nächsten Scans addiert sie auf einmal.
          tPagedScanElapsed = 0
          tPagedStallTime   = 0
+         tTime = 0
       end
    end)
 end
@@ -3871,6 +3891,10 @@ function AuctionHouse:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFil
    local tMode = (SkuCore.QueryData[tQAIindex.getAll] == true) and "getAll"
       or (SkuCore.QueryBuyData ~= nil) and "buy" or "browse"
    AuctionHouse:AuctionScanSetState("waiting", tMode)
+   -- Die Watchdog-Zähler messen "Zeit seit Absetzen der Query" — jetzt ist
+   -- dieser Zeitpunkt; alles vorher Angesammelte ist Altlast (siehe
+   -- AuctionScanWatchdogReset im Ticker-Closure).
+   if SkuCore.AuctionScanWatchdogReset then SkuCore.AuctionScanWatchdogReset() end
    return true
 end
 

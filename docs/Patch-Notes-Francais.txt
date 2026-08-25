@@ -18,6 +18,7 @@ Changements dans Sku v43.1
 
         Corrections
             Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat réussi avec « Enchère épuisée » et éjectait de la recherche.
+            Hôtel des ventes : le scan complet mourait parfois en silence juste après l'annonce de départ ; le verrou de 16 minutes était tout de même consommé.
 
     Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat avec « Enchère épuisée »
         Simple : En choisissant une entrée de résultats comme « 14 fois Sphère du Vide » pour en
@@ -60,6 +61,29 @@ Changements dans Sku v43.1
             été retiré après l'achat, un repli via AuctionResultsItemEntryFromCursor garde le
             curseur sur l'entrée de l'objet) puis prononce le message 0,4 s plus tard sans
             interruption - le même schéma que le « Terminé. Tous achetés » existant.
+
+    Hôtel des ventes : le scan complet mourait parfois en silence juste après l'annonce de départ
+        Simple : Parfois, « Scan complet démarré » n'était suivi de rien : pas d'annonce de
+            progression toutes les 10 secondes, pas de message de fin, et les menus censés être
+            verrouillés pendant un scan ne l'étaient pas - le verrou de 16 minutes était
+            pourtant consommé. Cela touchait surtout ceux qui attendaient la fin du délai
+            directement à l'hôtel des ventes ouvert. En interne, le scan était tué aussitôt
+            après le départ ; il démarre maintenant toujours avec une horloge remise à zéro.
+        Technique : Prouvé dans le journal de débogage du 2026-08-26 : QueryAuctionItems et
+            « watchdog: getAll timeout 600s » dans la MÊME seconde. Les compteurs du chien de
+            garde du ticker de scan étaient déjà pleins avant le départ : tTime accumulait tout
+            le temps d'inactivité à l'hôtel des ventes ouvert (la branche idle ne le remettait
+            jamais à zéro - l'attente de 16 minutes > 600 s suffisait à elle seule), et
+            tFullScanElapsed survivait à chaque fin de scan parce que sa remise à zéro se
+            trouve derrière la barrière de tick de 0,2 s de la branche de sérialisation, qu'une
+            sérialisation rapide ne franchit jamais. Le premier tick du chien de garde après le
+            départ additionnait les deux et tuait le scan tout frais ; le chien de garde se
+            remettait alors lui-même à zéro, d'où le « la plupart du temps ça marche ».
+            SkuCore.AuctionScanWatchdogReset remet maintenant les deux compteurs à zéro après
+            chaque QueryAuctionItems réellement envoyé, et la branche idle remet elle-même
+            tTime à zéro (ce qui protège aussi le chien de garde de blocage des recherches
+            paginées). Vérifié le 2026-08-26 : un scan après ~28 min d'attente à l'hôtel des
+            ventes est allé au bout, lisant 173841 enchères.
 
 
 -------------------------------------------------------------------------------------------------------

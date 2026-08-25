@@ -15,6 +15,7 @@ Changes in Sku v43.1
 
         Bugfixes
             Auction house: buying multiple pieces wrongly aborted after almost every successful purchase with "Auction sold out" and threw you out of the search.
+            Auction house: the full scan sometimes died silently right after the start announcement; the 16-minute lock was still consumed.
 
     Auction house: buying multiple pieces wrongly aborted after almost every purchase with "Auction sold out"
         Simple: Picking a results entry like "14 times Void Sphere" and buying five of them meant
@@ -53,6 +54,27 @@ Changes in Sku v43.1
             after the purchase, a fallback via AuctionResultsItemEntryFromCursor keeps the
             cursor on the item entry) and speaks the message 0.4 s later without interrupting -
             the same pattern as the existing "Done. All bought".
+
+    Auction house: the full scan sometimes died silently right after the start announcement
+        Simple: Sometimes "Full scan started" was followed by nothing at all: no 10-second
+            progress announcement, no completion message, and the menus that should be locked
+            during a scan were not - yet the 16-minute lock was consumed. This mostly hit after
+            waiting out the cooldown right at the open auction house. Internally the scan was
+            killed immediately after starting; it now always starts with a freshly zeroed
+            clock.
+        Technically: Proven in the debug log of 2026-08-26: QueryAuctionItems and "watchdog:
+            getAll timeout 600s" in the SAME second. The scan ticker's watchdog counters were
+            already full before the start: tTime collected the entire idle time at the open AH
+            (the idle branch never reset it - the 16-minute wait > 600 s was enough on its
+            own), and tFullScanElapsed survived every scan end because its reset sits behind
+            the 0.2 s tick gate of the serialize branch, which a fast serialization never
+            passes. The first watchdog tick after the start added both and killed the fresh
+            scan; the watchdog zeroed itself in doing so, which is why the next attempts worked
+            again - hence the "mostly it works". SkuCore.AuctionScanWatchdogReset now zeroes
+            both counters after every actually sent QueryAuctionItems, and the idle branch
+            resets tTime itself (which also protects the paged searches' stall watchdog).
+            Verified 2026-08-26: a scan after ~28 min of standing at the AH ran through,
+            reading 173841 auctions.
 
 
 -------------------------------------------------------------------------------------------------------

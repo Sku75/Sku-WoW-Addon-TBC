@@ -15,6 +15,7 @@ Aenderungen in Sku v43.1
 
         Fehlerbehebungen
             Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem gelungenen Kauf faelschlich mit "Auktion vergriffen" ab und warf aus der Suche.
+            Auktionshaus: der Komplettscan brach manchmal direkt nach der Startansage stillschweigend ab; die 16-Minuten-Sperre war trotzdem verbraucht.
 
     Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem Kauf faelschlich mit "Auktion vergriffen" ab
         Einfach: Wer in der Ergebnisliste einen Eintrag wie "14 mal Sphaere der Leere" waehlte und
@@ -55,6 +56,27 @@ Aenderungen in Sku v43.1
             Kauf bereits entfernt war, haelt ein Fallback ueber AuctionResultsItemEntryFromCursor
             den Cursor auf dem Item-Eintrag) und spricht die Meldung 0,4 s spaeter ohne
             Unterbrechung - dasselbe Muster wie beim bestehenden "Fertig. Alle gekauft".
+
+    Auktionshaus: der Komplettscan brach manchmal direkt nach der Startansage stillschweigend ab
+        Einfach: Manchmal folgte auf "Komplettscan gestartet" einfach nichts mehr: keine
+            10-Sekunden-Fortschrittsansage, keine Fertigmeldung, und die Menues, die waehrend
+            eines Scans gesperrt sein sollten, waren es nicht - die 16-Minuten-Sperre war
+            trotzdem verbraucht. Das traf vor allem, wer die Wartezeit bis zum naechsten Scan
+            direkt am offenen Auktionshaus absass. Der Scan wurde intern sofort nach dem Start
+            wieder abgewuergt; jetzt startet er immer mit frisch genullter Uhr.
+        Technisch: Belegt im Debug-Log vom 2026-08-26: QueryAuctionItems und "watchdog: getAll
+            timeout 600s" in DERSELBEN Sekunde. Die Watchdog-Zaehler des Scan-Tickers waren
+            schon vor dem Start voll: tTime sammelte die komplette Leerlauf-Standzeit am
+            offenen AH (der Idle-Zweig setzte es nie zurueck - die 16-Minuten-Wartezeit
+            > 600 s reichte allein), und tFullScanElapsed ueberlebte jedes Scan-Ende, weil sein
+            Reset hinter dem 0,2-s-Tick-Gate des Serialize-Zweigs liegt, das eine schnelle
+            Serialisierung nie passiert. Der erste Watchdog-Tick nach dem Start addierte beides
+            und wuergte den frischen Scan ab; dabei nullte der Watchdog sich selbst, weshalb
+            die naechsten Versuche wieder liefen - daher das "meistens geht es". Jetzt nullt
+            SkuCore.AuctionScanWatchdogReset beide Zaehler nach jedem wirklich abgesetzten
+            QueryAuctionItems, und der Idle-Zweig setzt tTime selbst zurueck (schuetzt auch den
+            Stall-Watchdog der paginierten Suchen). Verifiziert 2026-08-26: Scan nach ~28 min
+            Standzeit am AH lief durch, 173841 Auktionen eingelesen.
 
 
 -------------------------------------------------------------------------------------------------------
