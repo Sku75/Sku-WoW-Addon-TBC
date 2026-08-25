@@ -998,6 +998,14 @@ local function _ABContinueOrFinish()
    -- halten). Fehlertolerant: schlägt es fehl, bleibt nur die Stückzahl alt.
    pcall(function() AuctionHouse:AuctionPruneListAuction(SkuCore.QueryBuyData) end)
    if SkuCore.QueryBuyBought < SkuCore.QueryBuyAmount then
+      -- [v43.1] Erfolg des Einzelstücks SOFORT bestätigen. Ohne diese Ansage war das
+      -- einzige hörbare Signal nach einem gelungenen Kauf der NÄCHSTE Prompt —
+      -- und brach der Weiterkauf ab ("vergriffen"), klang der gelungene Kauf
+      -- wie ein Fehlschlag (Log 2026-08-25: 5 echte Käufe, 5x "vergriffen"
+      -- gehört, Nutzer kaufte im Glauben an Fehlschläge immer weiter).
+      local tSay = ((SkuCore.QueryBuyType == 1) and L["Gebot abgegeben"] or L["Gekauft"])
+         ..", "..SkuCore.QueryBuyBought..L[" von "]..SkuCore.QueryBuyAmount
+      SkuOptions.Voice:OutputStringBTtts(tSay, true, true, 0.1, nil, nil, nil, 1)
       _ABReQueryBuy()
    else
       _ABFinalizeAllBought()
@@ -4301,6 +4309,17 @@ function AuctionHouse:AUCTION_ITEM_LIST_UPDATE_BUY()
    -- (gleichwertige) Auktionen überspringen und die nächste der Gruppe nehmen.
    local tSkip = (SkuCore.AuctionBuy and SkuCore.AuctionBuy.failCount) or 0
    local tMatchSeen = 0
+   -- [v43.1] Weiterkauf-Fallback (nur Sofortkauf): billigstes Angebot mit gleichem Item
+   -- und gleicher Stückzahl zum GLEICHEN HÖRBAREN Preis, aber anderem Kupfer-
+   -- Betrag. Auktionslisten sind typischerweise 1-Kupfer-Unterbietungsketten
+   -- (52g99s81c, 52g99s82c, ...); nach dem Kauf des einzigen Angebots zum
+   -- exakten Preis fand der strenge Preisvergleich nie ein zweites Stück und
+   -- meldete fälschlich "vergriffen". Grenze = das Listen-Label: das spricht
+   -- Preise ab 1 Gold ohne Kupfer (SkuGetCoinText very-short), gruppiert also
+   -- effektiv pro Silber. Der Fallback bleibt in GENAU diesem Silber-Eimer —
+   -- ein hörbar teureres Angebot wird NIE automatisch angeboten, dort endet
+   -- der Weiterkauf ("Keine weiteren Angebote zu diesem Preis").
+   local tFallbackIdx, tFallbackBuyout
    for x = 1, tBatch do
       --check if same item (gecachte Zeile wiederverwenden; Link erst beim Treffer)
       local tCurrentResult = tRows[x]
@@ -4337,6 +4356,24 @@ function AuctionHouse:AUCTION_ITEM_LIST_UPDATE_BUY()
       if tCurrentResult[tAIDIndex["highBidder"]] == true then
          tFound = false
          tMismatchField = "alreadyBid(12)"
+      end
+      -- Fallback-Kandidat vormerken (siehe oben): gleiches Item + Stückzahl,
+      -- kaufbar, gleicher Silber-Eimer (= gleicher gesprochener Preis), nur
+      -- anderer Kupfer-Betrag. Den BILLIGSTEN merken. Unter 1 Gold spricht das
+      -- Label den Kupfer mit — dort gibt es keinen unhörbaren Unterschied,
+      -- also auch keinen Fallback (tBuy >= 10000).
+      if SkuCore.QueryBuyType == 2 and not tFound then
+         local tBuy = tCurrentResult[tAIDIndex["buyoutPrice"]]
+         if tCurrentResult[tAIDIndex["itemId"]] == SkuCore.QueryBuyData[tAIDIndex["itemId"]]
+            and tCurrentResult[tAIDIndex["count"]] == SkuCore.QueryBuyData[tAIDIndex["count"]]
+            and type(tBuy) == "number" and tBuy >= 10000
+            and tBuy ~= SkuCore.QueryBuyData[tAIDIndex["buyoutPrice"]]
+            and math.floor(tBuy / 100) == math.floor(SkuCore.QueryBuyData[tAIDIndex["buyoutPrice"]] / 100)
+            and tCurrentResult[tAIDIndex["highBidder"]] ~= true then
+            if not tFallbackBuyout or tBuy < tFallbackBuyout then
+               tFallbackIdx, tFallbackBuyout = x, tBuy
+            end
+         end
       end
       -- found, buy
       if tFound == true then
@@ -4382,20 +4419,72 @@ function AuctionHouse:AUCTION_ITEM_LIST_UPDATE_BUY()
    -- Seiten durchlaufen, sondern sofort melden, die Auktion aus der angezeigten
    -- Liste entfernen und (wenn möglich) auf dem geschrumpften Eintrag bleiben.
    if SkuCore.QueryCurrentPage == 0 then
+      -- Sofortkauf und es gibt noch Angebote desselben Items zum GLEICHEN
+      -- hörbaren Preis (nur Kupfer-Unterschied, 1-Kupfer-Unterbietungsketten):
+      -- NICHT abbrechen, sondern das nächstbilligste anbieten. Der Prompt
+      -- verlangt wie immer Eingabe — gekauft wird nichts ohne Bestätigung.
+      if SkuCore.QueryBuyType == 2 and tFallbackIdx then
+         local tRow = tRows[tFallbackIdx]
+         dprint("auction.buy", "exact price gone, fallback to next offer", {
+            idx = tFallbackIdx,
+            oldBuyout = SkuCore.QueryBuyData[tAIDIndex["buyoutPrice"]],
+            newBuyout = tRow[tAIDIndex["buyoutPrice"]],
+         })
+         -- Preisfelder des Kauf-Datensatzes an das neue Angebot angleichen,
+         -- damit Weiterkauf-Vergleich und Listen-Pruning konsistent bleiben.
+         SkuCore.QueryBuyData[tAIDIndex["minBid"]]       = tRow[tAIDIndex["minBid"]]
+         SkuCore.QueryBuyData[tAIDIndex["minIncrement"]] = tRow[tAIDIndex["minIncrement"]]
+         SkuCore.QueryBuyData[tAIDIndex["buyoutPrice"]]  = tRow[tAIDIndex["buyoutPrice"]]
+         SkuCore.QueryBuyData[tAIDIndex["bidAmount"]]    = tRow[tAIDIndex["bidAmount"]]
+         -- Neue Preisgruppe → Skip-Zähler der alten Gruppe verfällt.
+         SkuCore.AuctionBuy.failCount = 0
+         AuctionHouse:AuctionScanSetState("idle")
+         tRow[21] = GetAuctionItemLink("list", tFallbackIdx)
+         AuctionHouse:AuctionBuyConfirm(tFallbackIdx, tRow)
+         return
+      end
       dprint("auction.buy", "auction gone (page0 no match)", { batchAttempts = tBatch })
       -- Hier sind wir IMMER im Kauf-Kontext (QueryBuyData gesetzt). Auktion
-      -- vergriffen → ansagen, aus der Liste entfernen, Kaufzustand säubern. Das
+      -- vergriffen → aus der Liste entfernen, Kaufzustand säubern, ansagen. Das
       -- Säubern von QueryBuyData verhindert auch den Geister-Prompt bei einer
-      -- späteren, anderen Suche.
+      -- späteren, anderen Suche. Beim Weiterkauf die Bilanz mitsprechen, damit
+      -- ein gelungener Teilkauf nicht wie ein Fehlschlag klingt.
       local tRecord = SkuCore.QueryBuyData
-      SkuOptions.Voice:OutputStringBTtts(L["Auktion vergriffen"], true, true, 0.1, nil, nil, nil, 1)
+      local tBought = SkuCore.QueryBuyBought or 0
+      local tAmount = SkuCore.QueryBuyAmount or 0
+      local tMsg
+      if tBought > 0 then
+         tMsg = L["Keine weiteren Angebote zu diesem Preis"]..". "..tBought..L[" von "]..tAmount..L[" gekauft"]
+      else
+         tMsg = L["Auktion vergriffen"]
+      end
       local tPruned = false
       pcall(function() tPruned = AuctionHouse:AuctionPruneListAuction(tRecord) end)
       _ABClearBuyState()
+      local tStayed = false
       if tPruned then
-         pcall(function() AuctionHouse:AuctionStayOnResultsEntry() end)
+         pcall(function() tStayed = AuctionHouse:AuctionStayOnResultsEntry() end)
       else
-         _ABAscendAndVocalize(nil)
+         -- Pruning fand den Datensatz nicht (z.B. nach Weiterkauf bereits
+         -- entfernt): Cursor trotzdem auf dem Item-Eintrag der Ergebnisliste
+         -- halten statt vier Ebenen hochzuspringen — der Nutzer bleibt in
+         -- seiner Suche.
+         pcall(function()
+            local tEntry = AuctionHouse:AuctionResultsItemEntryFromCursor()
+            if tEntry then
+               if tEntry.BuildChildren then tEntry.children = {} end
+               SkuOptions.currentMenuPosition = tEntry
+               pcall(function() SkuOptions:VocalizeCurrentMenuName(true) end)
+               tStayed = true
+            end
+         end)
+      end
+      if tStayed then
+         _ABTrack(C_Timer.NewTimer(0.4, function()
+            SkuOptions.Voice:OutputStringBTtts(tMsg, false, true, 0.1, nil, nil, nil, 1)
+         end))
+      else
+         _ABAscendAndVocalize(tMsg)
       end
    else
       -- Defensiv (mit Sortierung praktisch nicht erreichbar): wie früher

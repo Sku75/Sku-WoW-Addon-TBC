@@ -4,6 +4,58 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v43.1
+
+    Overview
+
+        Changes
+            Buying multiple pieces at the auction house now runs through as long as more offers at the same audible price exist.
+            Every successful purchase is confirmed right away with "Bought, n of m".
+            When a price is sold out, Sku says "No more offers at this price" with the tally and stays in the results list.
+
+        Bugfixes
+            Auction house: buying multiple pieces wrongly aborted after almost every successful purchase with "Auction sold out" and threw you out of the search.
+
+    Auction house: buying multiple pieces wrongly aborted after almost every purchase with "Auction sold out"
+        Simple: Picking a results entry like "14 times Void Sphere" and buying five of them meant
+            hearing "Auction sold out" after almost every purchase and landing back outside the
+            search - even though the purchase had succeeded and the money was deducted correctly.
+            Since the success itself was never announced, it sounded like a string of failures
+            while the items were already in the bag. The cause: sellers undercut each other by
+            1 copper. The results list groups all auctions whose price SOUNDS the same - above
+            1 gold the copper part is not spoken - but the buy continuation looked for the next
+            piece at the exact copper amount, which usually no longer existed once the cheapest
+            one was bought. The continuation now works through such a group piece by piece: the
+            next offer may only differ in copper, the inaudible part of the price. An audibly
+            more expensive offer - whether 1 silver or 100 gold more - is NEVER offered
+            automatically, and every single piece still requires its own confirmation.
+        Technically: Proven in the debug log of 2026-08-25: five purchases at 52g99s81c through
+            52g99s84c, each run bought exactly one piece and then aborted. The continuation
+            (_ABReQueryBuy → match scan) compared item ID + stack size + EXACT buyout; the
+            results list however groups by the formatted label (SkuGetCoinText very-short drops
+            copper above 1 gold), so a group spans a 1-silver bucket. The scan now tracks the
+            cheapest buyable offer with the same item ID and stack size in the same bucket
+            (floor(buyout/100) equal, only from 10000 copper up) and adopts its price fields
+            (8/9/10/11) into QueryBuyData; failCount restarts at 0 for the new price group.
+            Below 1 gold the label speaks the copper - there the old exact behaviour remains.
+            Bid purchases keep the strict 17-field comparison.
+
+    Auction house: every purchase is confirmed, the end of a price group reports the tally and stays in the list
+        Simple: After every successful piece Sku now immediately says "Bought, n of m" - before,
+            the only success signal was the next buy prompt. Once all offers at the same audible
+            price are gone, it says "No more offers at this price" with the tally, for example
+            "2 of 5 bought", and the cursor stays on the entry in the results list instead of
+            jumping several levels up to "Auctions" as before. From there you can navigate
+            straight to the next, more expensive entry and buy again.
+        Technically: The success announcement sits in _ABContinueOrFinish, right after the
+            server's "Bid accepted.". The sold-out path positions first
+            (AuctionStayOnResultsEntry; if pruning fails because the record was already removed
+            after the purchase, a fallback via AuctionResultsItemEntryFromCursor keeps the
+            cursor on the item entry) and speaks the message 0.4 s later without interrupting -
+            the same pattern as the existing "Done. All bought".
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v43.0
 
     Overview

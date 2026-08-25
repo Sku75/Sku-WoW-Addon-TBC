@@ -7,6 +7,62 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.1
+
+    Aperçu
+
+        Changements
+            L'achat de plusieurs exemplaires à l'hôtel des ventes continue désormais tant qu'il existe d'autres offres au même prix audible.
+            Chaque achat réussi est immédiatement confirmé par « Acheté, n sur m ».
+            Quand un prix est épuisé, Sku annonce « Plus aucune offre à ce prix » avec le bilan et reste dans la liste des résultats.
+
+        Corrections
+            Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat réussi avec « Enchère épuisée » et éjectait de la recherche.
+
+    Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat avec « Enchère épuisée »
+        Simple : En choisissant une entrée de résultats comme « 14 fois Sphère du Vide » pour en
+            acheter cinq, on entendait « Enchère épuisée » après presque chaque achat et on se
+            retrouvait hors de la recherche - alors que l'achat avait réussi et que l'argent
+            était correctement débité. Comme le succès lui-même n'était jamais annoncé, cela
+            ressemblait à une série d'échecs, alors que les objets étaient déjà dans le sac. La
+            cause : les vendeurs se sous-enchérissent de 1 cuivre. La liste des résultats
+            regroupe toutes les enchères dont le prix SONNE pareil - au-dessus de 1 or, la part
+            de cuivre n'est pas prononcée -, mais la continuation d'achat cherchait l'exemplaire
+            suivant au montant de cuivre exact, qui n'existait généralement plus une fois le
+            moins cher acheté. La continuation parcourt maintenant un tel groupe pièce par
+            pièce : l'offre suivante ne peut différer que par le cuivre, la partie inaudible du
+            prix. Une offre audiblement plus chère - que ce soit de 1 argent ou de 100 or - n'est
+            JAMAIS proposée automatiquement, et chaque exemplaire exige toujours sa propre
+            confirmation.
+        Technique : Prouvé dans le journal de débogage du 2026-08-25 : cinq achats de 52po99a81c
+            à 52po99a84c, chaque tentative achetait exactement un exemplaire puis s'interrompait.
+            La continuation (_ABReQueryBuy → match scan) comparait ID d'objet + taille de pile +
+            prix d'achat immédiat EXACT ; or la liste des résultats regroupe selon le libellé
+            formaté (SkuGetCoinText very-short supprime le cuivre au-dessus de 1 or), un groupe
+            couvre donc une tranche de 1 argent. Le scan retient maintenant l'offre achetable la
+            moins chère avec le même ID d'objet et la même taille de pile dans la même tranche
+            (floor(buyout/100) identique, seulement à partir de 10000 cuivre) et reprend ses
+            champs de prix (8/9/10/11) dans QueryBuyData ; failCount repart à 0 pour le nouveau
+            groupe de prix. Sous 1 or, le libellé prononce le cuivre - l'ancien comportement
+            exact y demeure. Les achats par enchère gardent la comparaison stricte sur 17 champs.
+
+    Hôtel des ventes : chaque achat est confirmé, la fin d'un groupe de prix annonce le bilan et reste dans la liste
+        Simple : Après chaque exemplaire réussi, Sku dit maintenant immédiatement « Acheté, n sur
+            m » - avant, le seul signal de succès était l'invite d'achat suivante. Quand toutes
+            les offres au même prix audible sont parties, on entend « Plus aucune offre à ce
+            prix » avec le bilan, par exemple « 2 sur 5 acheté », et le curseur reste sur
+            l'entrée de la liste des résultats au lieu de remonter de plusieurs niveaux vers
+            « Enchères » comme avant. De là, on peut naviguer directement vers l'entrée
+            suivante, plus chère, et racheter.
+        Technique : L'annonce de succès se trouve dans _ABContinueOrFinish, juste après le
+            « Enchère acceptée. » du serveur. Le chemin « épuisée » positionne d'abord
+            (AuctionStayOnResultsEntry ; si l'élagage échoue parce que l'enregistrement a déjà
+            été retiré après l'achat, un repli via AuctionResultsItemEntryFromCursor garde le
+            curseur sur l'entrée de l'objet) puis prononce le message 0,4 s plus tard sans
+            interruption - le même schéma que le « Terminé. Tous achetés » existant.
+
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.0
 
     Aperçu

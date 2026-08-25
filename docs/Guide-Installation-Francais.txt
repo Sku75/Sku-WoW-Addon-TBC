@@ -1,0 +1,193 @@
+SkuAddon - Guide d'installation
+
+
+Qu'est-ce que Sku ?
+Sku est un addon pour World of Warcraft. Il rend le jeu jouable pour les personnes
+aveugles et malvoyantes au moyen d'un lecteur d'écran (NVDA ou JAWS). Ce guide
+concerne la version Anniversary de The Burning Crusade, version du jeu 2.5.6.
+
+À lire d'abord :
+L'installation de Sku n'est PAS possible en complète autonomie pour une personne
+aveugle utilisant un lecteur d'écran. À quelques endroits - les écrans de
+connexion, le contrat de licence, l'activation des addons - une aide voyante est
+nécessaire. Cela peut aussi se faire à distance, par exemple par partage d'écran
+ou avec TeamViewer. Les étapes concernées sont clairement signalées ci-dessous.
+
+Un conseil pour toute la procédure : ne faites jamais qu'un seul téléchargement ou
+qu'une seule copie à la fois. Avancez pas à pas, cela évite les erreurs.
+
+
+La méthode simple : le Sku Installer (installation automatique)
+Il existe désormais un petit programme Windows adapté aux lecteurs d'écran - le
+Sku Installer - qui fait toute la partie addon pour vous : il trouve votre dossier
+World of Warcraft, télécharge Sku ainsi que tous les addons compagnons
+nécessaires, copie le tout au bon endroit et active les réglages du jeu dont Sku a
+besoin. Téléchargez-le depuis la page de téléchargement de Sku :
+https://sku75.github.io/Sku-WoW-Addon-TBC/
+Lancez-le et, quand Windows le demande, autorisez-le à s'exécuter en tant
+qu'administrateur. Le jeu lui-même doit déjà être installé (étapes 1 et 2
+ci-dessous), et une aide voyante reste nécessaire une fois pour les écrans de
+connexion Battle.net et pour le contrat de licence. Si vous utilisez
+l'installateur, il remplace entièrement l'étape 3 ainsi que la partie « Charger
+les AddOns obsolètes » de l'étape 4 - il ne vous reste alors qu'à cocher les
+addons Sku et à recharger l'interface.
+
+Les étapes ci-dessous décrivent l'installation MANUELLE, pour celles et ceux qui
+préfèrent copier les fichiers à la main ou qui ne peuvent pas lancer
+l'installateur.
+
+
+Vue d'ensemble des étapes
+1. Créer un compte Battle.net et souscrire un abonnement.
+2. Installer le jeu et le lancer une fois (aide voyante).
+3. Télécharger les addons Sku et les copier dans le dossier AddOns.
+4. Activer les addons dans le jeu (aide voyante).
+5. Faire les premiers réglages.
+6. Installer l'outil de connexion - et vous êtes prêt à jouer.
+
+
+Étape 1 : compte et abonnement au jeu
+- Créez un compte de jeu pour World of Warcraft sur battle.net et souscrivez
+l'abonnement mensuel.
+- Installez l'application Battle.net et connectez-vous.
+
+
+Étape 2 : installer le jeu et le lancer une fois (aide voyante nécessaire)
+Une partie peut se faire sans voir, mais pas tout. Prévoyez de l'aide ici.
+- Lors de la connexion, cochez si possible la case « Rester connecté ». Elle n'est
+pas disponible sur tous les systèmes, mais il faut la cocher quand elle l'est.
+- Dans l'application Battle.net, cherchez le jeu « World of Warcraft Classic » et
+téléchargez le client.
+- Choisissez la bonne version du jeu : Anniversary, The Burning Crusade, version
+2.5.6.
+- Cliquez sur « Jouer ».
+- Au démarrage apparaît souvent un second écran de connexion. Celui-ci ne peut pas
+être utilisé avec un lecteur d'écran. Connectez-vous ici - et pensez à cocher la
+case de connexion automatique ou « ne plus demander ».
+- Choisissez le serveur.
+- La création de personnage apparaît. Créez un personnage, saisissez un nom et
+appuyez sur Entrée.
+- Vient ensuite le contrat de licence (une aide est de nouveau nécessaire) : le
+texte doit être fait défiler jusqu'à la toute fin - avec la molette de la souris
+vers le bas ou avec la barre de défilement sur le côté droit. Ce n'est qu'ensuite
+que le bouton « Accepter » devient cliquable ; avant cela il est grisé. Cliquez
+sur « Accepter » et connectez-vous une fois.
+- Dès que le monde du jeu apparaît et que votre personnage s'y trouve,
+déconnectez-vous : appuyez sur ÉCHAP et choisissez « Se déconnecter », ou tapez
+/logout et appuyez sur Entrée.
+- Quand l'écran de sélection des personnages est de retour, le jeu est
+correctement installé.
+
+
+Étape 3 : télécharger les addons Sku et les copier dans le dossier AddOns
+Rendez-vous sur la page de téléchargement de Sku et suivez les indications qui s'y
+trouvent. Elle indique toujours ce dont vous avez besoin et dans quelle version :
+https://sku75.github.io/Sku-WoW-Addon-TBC/
+
+Vous avez besoin de ces téléchargements :
+- Sku - l'addon principal.
+- SkuBeaconSoundsets - fournit les sons et les balises. Sans cet addon, les sons
+restent muets. Il est donc obligatoire.
+- un pack de langue - un seul : allemand, anglais ou allemand rapide. Il n'existe
+pas encore de pack de voix français : sur un client français, Sku parle via votre
+lecteur d'écran, et le pack anglais est le choix qui convient ici.
+
+Comment procéder :
+- Téléchargez les fichiers un par un, pas tous à la fois. Les fichiers ZIP se
+trouvent ensuite dans votre dossier Téléchargements.
+- Décompressez chaque fichier ZIP.
+- Copiez les trois dossiers décompressés côte à côte dans le dossier AddOns de
+WoW, c'est-à-dire comme trois dossiers distincts directement dans le dossier
+AddOns, et non imbriqués les uns dans les autres. Assurez-vous d'y placer des
+dossiers et non des fichiers ZIP. Le chemin par défaut est :
+C:\Program Files (x86)\World of Warcraft\_anniversary_\Interface\AddOns\
+- Ensuite le dossier AddOns contient, côte à côte : Sku, SkuBeaconSoundsets et
+votre pack de langue (un dossier SkuAudioData).
+
+Remarque sur les mises à jour : à l'avenir, lors d'une mise à jour, vous n'aurez
+qu'à remplacer l'addon Sku.
+
+
+Étape 4 : activer les addons dans le jeu (aide voyante nécessaire)
+- Démarrez le jeu via Battle.net : sur l'onglet « World of Warcraft Classic »,
+appuyez sur Entrée, vous arrivez alors sur « Jouer ». L'annonce devrait être :
+« Jouer, Anniversary of Burning Crusade, version 2.5.6 ... ». Si la version est
+incorrecte, vous trouvez les listes déroulantes avec Maj+Tab et pouvez y choisir
+la bonne version.
+- Après « Jouer », le serveur est généralement choisi automatiquement. À l'écran
+de connexion, appuyez sur Entrée.
+- Une fois dans le jeu et le personnage visible : appuyez sur ÉCHAP, ouvrez le
+menu, cliquez sur « AddOns ».
+- Cochez tous les addons Sku. Ils peuvent apparaître en rouge comme « obsolètes »
+- ce n'est pas un problème.
+- En haut de la fenêtre, cochez la case « Charger les AddOns obsolètes ».
+- Cliquez sur « Recharger l'interface » en bas. Le jeu effectue un rechargement.
+
+Après le rechargement, Sku est actif et la sortie vocale se fait entendre.
+Test : appuyez sur Maj+F1. Le menu Sku doit s'ouvrir et « Navigation » est
+annoncé. ÉCHAP le referme. Les personnes voyantes voient le menu comme une barre
+noire en haut de l'écran.
+
+
+Étape 5 : premiers réglages et remarques importantes
+
+Attention : en jouant, vous obtiendrez une demande d'exécution de script.
+La première fois que vous utilisez un objet, WoW demande : « Vous êtes sur le
+point d'exécuter un script. Cela pourrait vous faire perdre de l'or ou des objets.
+Exécuter quand même, oui ou non ? » Confirmez par Oui. C'est normal et c'est la
+base de Sku : au lieu de cliquer avec la souris, nous déclenchons les boutons par
+des appuis de touches (des scripts).
+
+Remettre les assignations de touches par défaut (important comme nouvel
+utilisateur) :
+Ouvrez le menu Sku avec Maj+F1. Ensuite :
+- Descendez avec les flèches jusqu'au menu Core et entrez-y avec la flèche droite.
+- Descendez jusqu'à « Assignations de touches du jeu », puis flèche droite jusqu'à
+l'option qui remet toutes les touches par défaut, et confirmez.
+- Revenez dans le menu Core, allez sur « Assignations de touches Sku », flèche
+droite, et rétablissez de même la valeur par défaut.
+Cela active les assignations de touches de Sku.
+
+
+Étape 6 : installer l'outil de connexion
+Les écrans de connexion de WoW ne peuvent pas être utilisés avec un lecteur
+d'écran. Pour pouvoir à l'avenir vous connecter vous-même et créer ou supprimer
+des personnages, vous installez l'outil de connexion WoW pour finir.
+- Le plus simple : le Sku Installer automatique (voir plus haut) installe
+complètement l'outil de connexion si vous laissez sa case cochée - y compris les
+textures, les polices et le moteur AutoHotkey nécessaires. Il crée aussi un
+raccourci « WoW Login Tool » sur le bureau et dans le menu Démarrer. Dans ce cas,
+rien de plus à faire ici.
+- Manuellement : installez AutoHotkey version 2 depuis autohotkey.com,
+téléchargez l'outil de connexion depuis la page de téléchargement de Sku (le lien
+s'y trouve : https://sku75.github.io/Sku-WoW-Addon-TBC/), décompressez-le et
+suivez le fichier readme fourni. Il décrit pas à pas quels dossiers et fichiers
+copier et où. Lancez ensuite v2\START.ahk dans le dossier de l'outil de connexion.
+- ALT+ÉCHAP quitte l'outil. ALT+F1 bascule entre le mode menu et le mode jeu -
+mais l'outil le fait généralement tout seul. ALT+F1 interrompt aussi une action en
+cours.
+- Ensuite, vous pouvez utiliser l'outil de connexion pour vous connecter, changer
+de royaume et créer ou supprimer des personnages. Il lit à voix haute le contenu
+réel de l'écran (noms de personnages, listes de royaumes et messages).
+
+Vous êtes maintenant prêt à jouer.
+
+
+Autres remarques
+Recommandation : lisez les fichiers texte des assignations de touches livrés avec
+l'addon Sku (dans le dossier Sku, en fichiers txt). Ils contiennent les
+assignations par défaut. Vous y trouvez aussi les notes de version, toujours à
+jour pour la version installée. C'est la meilleure source pour les changements
+récents.
+
+
+Si quelque chose ne fonctionne pas
+- Aucune voix après le rechargement : vérifiez que tous les addons Sku sont
+vraiment activés et que la case « Charger les AddOns obsolètes » a bien été
+cochée.
+- Aucun son ni balise : il manque généralement SkuBeaconSoundsets, ou il n'est pas
+activé. Sans cet addon, les sons restent muets.
+- Très faible ou rien du tout : vérifiez le volume de WoW.
+
+
+Bon jeu !

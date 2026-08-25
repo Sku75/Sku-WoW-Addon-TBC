@@ -4,6 +4,60 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.1
+
+    Ueberblick
+
+        Aenderungen
+            Der Kauf mehrerer Stuecke im Auktionshaus laeuft jetzt durch, solange es weitere Angebote zum gleichen hoerbaren Preis gibt.
+            Jeder gelungene Kauf wird sofort mit "Gekauft, n von m" bestaetigt.
+            Ist ein Preis ausverkauft, meldet Sku "Keine weiteren Angebote zu diesem Preis" samt Bilanz und bleibt in der Ergebnisliste stehen.
+
+        Fehlerbehebungen
+            Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem gelungenen Kauf faelschlich mit "Auktion vergriffen" ab und warf aus der Suche.
+
+    Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem Kauf faelschlich mit "Auktion vergriffen" ab
+        Einfach: Wer in der Ergebnisliste einen Eintrag wie "14 mal Sphaere der Leere" waehlte und
+            davon fuenf Stueck kaufen wollte, hoerte fast nach jedem Kauf "Auktion vergriffen" und
+            stand wieder ausserhalb der Suche - obwohl der Kauf gelungen war und das Geld korrekt
+            abging. Da der Erfolg selbst nie angesagt wurde, klang das nach lauter Fehlschlaegen,
+            waehrend die Stuecke laengst im Beutel lagen. Die Ursache: Verkaeufer unterbieten sich
+            um je 1 Kupfer. Die Ergebnisliste fasst alle Auktionen zusammen, deren Preis GLEICH
+            KLINGT - ab 1 Gold wird der Kupferanteil nicht mitgesprochen -, der Weiterkauf suchte
+            das naechste Stueck aber zum exakten Kupferbetrag, und den gab es nach dem Kauf des
+            billigsten meist nicht mehr. Jetzt kauft der Weiterkauf eine solche Gruppe Stueck fuer
+            Stueck durch: das naechste Angebot darf sich nur im Kupfer unterscheiden, also im nicht
+            hoerbaren Teil des Preises. Ein hoerbar teureres Angebot - egal ob 1 Silber oder
+            100 Gold teurer - wird NIE automatisch angeboten, und jedes einzelne Stueck verlangt
+            weiterhin seine eigene Eingabe.
+        Technisch: Belegt im Debug-Log vom 2026-08-25: fuenf Kaeufe zu 52g99s81k bis 52g99s84k,
+            jeder Lauf kaufte genau ein Stueck und brach dann ab. Die Fortsetzung (_ABReQueryBuy →
+            Match-Scan) verglich Item-ID + Stueckzahl + EXAKTEN Sofortkaufpreis; die Ergebnisliste
+            gruppiert aber nach dem formatierten Label (SkuGetCoinText very-short laesst Kupfer ab
+            1 Gold weg), eine Gruppe umfasst also einen 1-Silber-Eimer. Der Scan merkt sich jetzt
+            das billigste kaufbare Angebot mit gleicher Item-ID und Stueckzahl im gleichen Eimer
+            (floor(buyout/100) identisch, nur ab 10000 Kupfer) und uebernimmt dessen Preisfelder
+            (8/9/10/11) in QueryBuyData; der failCount startet fuer die neue Preisgruppe bei 0.
+            Unter 1 Gold spricht das Label den Kupfer mit - dort bleibt das alte exakte Verhalten.
+            Gebots-Kaeufe behalten den strengen 17-Feld-Vergleich.
+
+    Auktionshaus: jeder Kauf wird bestaetigt, das Ende einer Preisgruppe meldet die Bilanz und bleibt in der Liste
+        Einfach: Nach jedem gelungenen Stueck sagt Sku jetzt sofort "Gekauft, n von m" - vorher war
+            das einzige Erfolgssignal der naechste Kaufprompt. Sind alle Angebote zum gleichen
+            hoerbaren Preis weg, heisst es "Keine weiteren Angebote zu diesem Preis" mit der
+            Bilanz, etwa "2 von 5 gekauft", und der Cursor bleibt auf dem Eintrag in der
+            Ergebnisliste stehen, statt wie bisher mehrere Ebenen nach oben auf "Auktionen" zu
+            springen. Von dort laesst sich direkt zum naechsten, teureren Eintrag navigieren und
+            dort neu kaufen.
+        Technisch: Die Erfolgsansage sitzt in _ABContinueOrFinish, direkt nach dem
+            Server-"Gebot akzeptiert.". Der Vergriffen-Pfad positioniert zuerst
+            (AuctionStayOnResultsEntry; schlaegt das Pruning fehl, weil der Datensatz nach dem
+            Kauf bereits entfernt war, haelt ein Fallback ueber AuctionResultsItemEntryFromCursor
+            den Cursor auf dem Item-Eintrag) und spricht die Meldung 0,4 s spaeter ohne
+            Unterbrechung - dasselbe Muster wie beim bestehenden "Fertig. Alle gekauft".
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.0
 
     Ueberblick
