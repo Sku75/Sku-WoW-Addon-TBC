@@ -137,7 +137,15 @@ function Mail:MAIL_SEND_SUCCESS(...)
    -- eine gerade ausgeloeste Aktion und muss SOFORT kommen; angehaengt stand sie
    -- hinter allem, was noch in der Queue lag -- nach einem laengeren Brieftext waren
    -- das womoeglich hunderte Einzelzeichen aus dem Tipp-Vorlesen.
-   SkuOptions.Voice:OutputStringBTtts(L["Sent"], true, true, 0.2)
+   -- [v43.1] ...aber nur, solange der Briefkasten noch OFFEN ist. Das Event ist
+   -- eine Server-Antwort: wer nach "Senden" sofort das Menue schliesst (ESC
+   -- schliesst auch den Briefkasten) oder weglaeuft, bekam "Gesendet" erst NACH
+   -- dem Schliessen -- Nutzerbericht "Ansagen aus dem Briefkasten, obwohl er zu
+   -- ist". Die Server-Systemzeile ("Post verschickt.") laeuft ohnehin ueber den
+   -- Chat. Unterdruecken, nicht nachreichen (siehe Handels-Regel: nie erfinden).
+   if MailboxOpenFlag == true then
+      SkuOptions.Voice:OutputStringBTtts(L["Sent"], true, true, 0.2)
+   end
    -- [v42.08] Erst bei tatsaechlichem Erfolg den Entwurf leeren (frueher wurde er
    -- optimistisch direkt nach SendMail geleert -> bei Fehlschlag verloren). Danach
    -- zurueck auf den Brief-Eintrag; die Kinder werden beim naechsten Abstieg mit
@@ -225,6 +233,14 @@ function Mail:MailEditor(aTargetValue, aLabelPrefix)
 			_G.C_Timer.After(0.30, function()
 				tRepin()
 				if aLabelPrefix and tFieldEntry then
+					-- [v43.1] Nicht mehr sprechen, wenn das Menue inzwischen ZU ist:
+					-- diese Bestaetigung enthaelt den getippten Freitext -- nach dem
+					-- Schliessen klang das wie "Tastatur-Echo nach Menue-Ende"
+					-- (Nutzerbericht). Gleiche Regel wie der zentrale Schutz in
+					-- SkuOptions:VocalizeCurrentMenuName.
+					if not (SkuOptions and SkuOptions.IsMenuOpen) or SkuOptions:IsMenuOpen() ~= true then
+						return
+					end
 					-- engine 2 = Blizzard TTS, immer: der Wert ist Freitext (Spielername,
 					-- Betreff, Brieftext), den die Sku-Audiodatenbank nicht kennt.
 					-- [v42.11] Ueberschreibend: die Bestaetigung des Feldes ist das, was der

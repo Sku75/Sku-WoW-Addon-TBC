@@ -4636,8 +4636,28 @@ end
 ---@param aReset bool reset queue
 function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 	--print("--VocalizeCurrentMenuName", aReset, debugstack())
-	
+
 	if aReset == nil then aReset = true end
+
+	-- [v43.1] Nie in ein GESCHLOSSENES Menue hineinsprechen. Viele Aktionen
+	-- sagen den Zieleintrag VERZOEGERT an (C_Timer 0.3 s nach Anhaengen/Senden/
+	-- Feldeingabe, Server-Events wie MAIL_SEND_SUCCESS) -- schliesst der Nutzer
+	-- das Menue in diesem Fenster, sprachen diese Timer trotzdem ("Neuer Brief
+	-- plus", "Betreff: <Text>" nach dem Schliessen). Ein Menue-Eintragsname ohne
+	-- offenes Menue ist fuer JEDEN Aufrufer falsch; der Tasten-Pfad (OnClick
+	-- ~3173) prueft dieselbe Bedingung schon immer. Ausnahmen: der String-Modus
+	-- (aReturnAsString, reine Textlieferung), das kopflose Kampfmenue, dessen
+	-- Frame in InCombatLockdown nie sichtbar werden kann, und das ZEILEN-MENUE
+	-- von SkuChat (Strg+Enter beim Chat-Lesen): das baut sich direkt in
+	-- SkuOptions.Menu und navigiert hierdurch, OHNE dass OnSkuOptionsMain je
+	-- gezeigt wird (einziger solcher Nutzer, siehe SkuChat/Core.lua ~2767).
+	if not aReturnAsString then
+		local tHeadless = SkuOptions.combatMenuActive == true and InCombatLockdown()
+		local tChatLineMenu = _G["OnSkuChatToggle"] and _G["OnSkuChatToggle"].menuOpen == true
+		if SkuOptions:IsMenuOpen() ~= true and not tHeadless and not tChatLineMenu then
+			return
+		end
+	end
 
 	local tTable = SkuOptions.currentMenuPosition
 
@@ -7199,6 +7219,13 @@ local function tSpeakInput(aText, aChar)
 	if not aText or aText == "" or not tEchoActive then
 		return
 	end
+	-- [v43.1] Abschaltbar (Einstellungen -> Allgemein, "Tastatur-Echo ansagen"):
+	-- gilt fuer ALLES, was durch diesen Trichter laeuft (getippte Zeichen,
+	-- Ruecktaste, Pfeil-/Wort-/Zeilenlesen). Die Statusansagen daneben
+	-- ("Abgebrochen", Feld-Bestaetigung) laufen NICHT hierdurch und bleiben.
+	if SkuSettings and SkuSettings:Sub("SkuOptions") and SkuSettings:Sub("SkuOptions").keyboardEcho == false then
+		return
+	end
 	if aChar then
 		tEchoPending[#tEchoPending + 1] = aText
 		while #tEchoPending > tEchoMaxChars do
@@ -7225,10 +7252,16 @@ local function tEchoStop(aFinalText)
 	tEchoGeneration = tEchoGeneration + 1
 	tEchoScheduled = false
 	wipe(tEchoPending)
-	if SkuOptions.Voice.CancelBttsOutput then
-		pcall(function() SkuOptions.Voice:CancelBttsOutput() end)
-	elseif SkuOptions.Voice.TrimBttsQueue then
-		pcall(function() SkuOptions.Voice:TrimBttsQueue(0) end)
+	-- [v43.1] Der harte Abbruch existiert nur, um den Echo-Rueckstau in der
+	-- Client-Queue zu toeten. Ist das Tastatur-Echo abgeschaltet, GIBT es keinen
+	-- Rueckstau -- der Cancel wuerde dann nur gerade laufende, fremde Ansagen
+	-- (Chat, Kampf) grundlos abschneiden. Also nur bei aktivem Echo abbrechen.
+	if not (SkuSettings and SkuSettings:Sub("SkuOptions") and SkuSettings:Sub("SkuOptions").keyboardEcho == false) then
+		if SkuOptions.Voice.CancelBttsOutput then
+			pcall(function() SkuOptions.Voice:CancelBttsOutput() end)
+		elseif SkuOptions.Voice.TrimBttsQueue then
+			pcall(function() SkuOptions.Voice:TrimBttsQueue(0) end)
+		end
 	end
 	if aFinalText then
 		-- overwrite=false: der harte Abbruch oben hat die Queue schon geleert und

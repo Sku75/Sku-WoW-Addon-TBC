@@ -74,6 +74,15 @@ SkuOptions.options = {
 			desc = "",
 			type = "toggle",
 		},
+		-- [v43.1] Tipp-Echo in Eingabefeldern (SkuOptions:EditBoxShow) abschaltbar:
+		-- manche Nutzer moegen das zeichenweise Vorlesen nicht oder hoeren es doppelt.
+		-- order 2.5 = direkt hinter den beiden Menue-Ansage-Schaltern (Allgemein).
+		keyboardEcho = {
+			order = 2.5,
+			name = L["Tastatur-Echo ansagen"],
+			desc = "",
+			type = "toggle",
+		},
 		TTSSepPause = {
 			order = 3,
 			name = L["Audio Dauer Pause"] ,
@@ -678,6 +687,7 @@ SkuOptions.options = {
 SkuOptions.defaults = {
 	vocalizeMenuNumbers = true,
 	vocalizeSubmenus = true,
+	keyboardEcho = true,
 	TTSSepPause = 85,
 	backgroundSound = "silence.mp3",
 	localActive = true,
@@ -749,6 +759,7 @@ SkuOptions.defaults = {
 SkuSettings:Register("SkuOptions", {
 	["vocalizeMenuNumbers"] = { scope = "profile", default = true, type = "boolean" },
 	["vocalizeSubmenus"] = { scope = "profile", default = true, type = "boolean" },
+	["keyboardEcho"] = { scope = "profile", default = true, type = "boolean" },
 	["TTSSepPause"] = { scope = "profile", default = 85, type = "number" },
 	["backgroundSound"] = { scope = "profile", default = "silence.mp3", type = "string" },
 	["localActive"] = { scope = "profile", default = true, type = "boolean" },

@@ -12,9 +12,40 @@ Aenderungen in Sku v43.1
             Der Kauf mehrerer Stuecke im Auktionshaus laeuft jetzt durch, solange es weitere Angebote zum gleichen hoerbaren Preis gibt.
             Jeder gelungene Kauf wird sofort mit "Gekauft, n von m" bestaetigt.
             Ist ein Preis ausverkauft, meldet Sku "Keine weiteren Angebote zu diesem Preis" samt Bilanz und bleibt in der Ergebnisliste stehen.
+            Neue Einstellung "Tastatur-Echo ansagen" (Einstellungen -> Allgemein, standardmaessig an): das zeichenweise Vorlesen beim Tippen in Eingabefeldern laesst sich abschalten.
 
         Fehlerbehebungen
             Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem gelungenen Kauf faelschlich mit "Auktion vergriffen" ab und warf aus der Suche.
+            Nach dem Schliessen des Menues sprachen verzoegerte Ansagen weiter ("Neuer Brief plus", "Betreff: <Getipptes>", "Gesendet", "Alle geoeffnet" aus dem laengst geschlossenen Briefkasten).
+
+    Neue Einstellung: Tastatur-Echo ansagen
+        Einfach: In Eingabefeldern (Brief schreiben, Suche, Profilname...) liest Sku jedes getippte
+            Zeichen vor, ebenso Ruecktaste und die Cursor-Lesungen mit den Pfeiltasten. Wer das
+            nicht mag oder es doppelt hoert, schaltet es jetzt unter Einstellungen -> Allgemein,
+            "Tastatur-Echo ansagen" ab (direkt neben "Menuenummern ansagen" und "Untermenues
+            ansagen"). Standard ist AN, es aendert sich also nichts, wer nichts umstellt.
+            Statusansagen wie "Abgebrochen" oder die Feld-Bestaetigung nach ENTER bleiben immer.
+
+    Keine Ansagen mehr in ein geschlossenes Menue hinein
+        Einfach: Wer ein Eingabefeld mit ENTER bestaetigte und gleich darauf das Menue schloss,
+            hoerte trotzdem noch "Betreff: <das Getippte>" - als kaeme das Tastatur-Echo nach dem
+            Schliessen hinterher. Genauso sprachen aus dem laengst geschlossenen Briefkasten noch
+            "Neuer Brief plus", "Gesendet" oder "Alle geoeffnet". Jetzt gilt: was einen
+            Menue-Eintrag ansagen will, prueft erst, ob das Menue ueberhaupt noch offen ist -
+            und die Briefkasten-Quittungen pruefen, ob der Briefkasten noch offen ist. Die
+            Server-Systemzeile "Post verschickt." im Chat bleibt davon unberuehrt.
+        Technisch: Die Nachzuegler waren nie die Sprach-Queue (das Schliessen leert sie schon
+            per queuereset + StopSpeakingText), sondern Erzeuger, die NACH dem Schliessen erst
+            einspeisen: C_Timer-Bestaetigungen (0,3 s nach Anhaengen/Feldeingabe/Senden, 0,5 s
+            nach "Alle oeffnen") und Server-Events (MAIL_SEND_SUCCESS). Eine weitere pauschale
+            Queue-Leerung beim Fensterschliessen wuerde sie deshalb nicht erwischen, aber
+            legitime Ansagen (Chat, Kampf, Navigation) mitten im Wort abschiessen. Stattdessen:
+            zentrales Gate in SkuOptions:VocalizeCurrentMenuName (kein offenes Menue, kein
+            kopfloses Kampfmenue und kein SkuChat-Zeilenmenue -> stumm; der String-Modus
+            liefert weiter Text), plus drei
+            Erzeuger-Gates in der Post (MailboxOpenFlag fuer "Gesendet", IsMenuOpen fuer die
+            Feld-Bestaetigung, MailFrame-Sichtbarkeit fuer "Alle geoeffnet"). MAIL_FAILED bleibt
+            bewusst ungefiltert - ein Fehlschlag muss auch nach dem Schliessen hoerbar sein.
 
     Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem Kauf faelschlich mit "Auktion vergriffen" ab
         Einfach: Wer in der Ergebnisliste einen Eintrag wie "14 mal Sphaere der Leere" waehlte und

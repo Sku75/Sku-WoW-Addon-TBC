@@ -2028,6 +2028,13 @@ function SkuCore.MailMenuBuilder(self)
 					else -- done opening
 						-- delay otherwise might be cut off
 						C_Timer.After(0.5, function()
+							-- [v43.1] Briefkasten in der Zwischenzeit geschlossen -> still
+							-- bleiben. Die Verzoegerung hiess sonst: "Alle geoeffnet" kam
+							-- NACH dem Schliessen (Nutzerbericht "Ansagen aus dem
+							-- Briefkasten, obwohl er zu ist").
+							if not (_G.MailFrame and MailFrame:IsVisible()) then
+								return
+							end
 							SkuOptions.Voice:OutputStringBTtts(L["All opened"], false, true, 0.2)
 						end)
 					end

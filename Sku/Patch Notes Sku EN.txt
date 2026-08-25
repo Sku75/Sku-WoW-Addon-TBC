@@ -12,9 +12,39 @@ Changes in Sku v43.1
             Buying multiple pieces at the auction house now runs through as long as more offers at the same audible price exist.
             Every successful purchase is confirmed right away with "Bought, n of m".
             When a price is sold out, Sku says "No more offers at this price" with the tally and stays in the results list.
+            New setting "Speak keyboard echo" (Settings -> General, on by default): the character-by-character read-back while typing in input fields can be turned off.
 
         Bugfixes
             Auction house: buying multiple pieces wrongly aborted after almost every successful purchase with "Auction sold out" and threw you out of the search.
+            After closing the menu, deferred announcements kept speaking ("New letter plus", "Subject: <typed text>", "Sent", "All opened" from a mailbox that was long closed).
+
+    New setting: Speak keyboard echo
+        Simple: In input fields (writing a letter, search, profile name...) Sku reads every typed
+            character out loud, as well as backspace and the cursor readings with the arrow keys.
+            If you dislike that or hear it twice, you can now turn it off under Settings ->
+            General, "Speak keyboard echo" (right next to "Speak menu numbers" and "Announce
+            submenus"). The default is ON, so nothing changes unless you change it. Status
+            announcements like "Cancelled" or the field confirmation after ENTER always remain.
+
+    No more announcements into a closed menu
+        Simple: Confirming an input field with ENTER and closing the menu right after still
+            produced "Subject: <the typed text>" - as if the keyboard echo trailed the close. In
+            the same way, "New letter plus", "Sent" or "All opened" still spoke from a mailbox
+            that was long closed. Now anything that wants to announce a menu entry first checks
+            whether the menu is even open - and the mailbox receipts check whether the mailbox is
+            still open. The server system line "Mail sent." in chat is unaffected.
+        Technical: The stragglers were never the speech queue (closing already clears it via
+            queuereset + StopSpeakingText) but producers that only enqueue AFTER the close:
+            C_Timer confirmations (0.3 s after attaching/field input/sending, 0.5 s after "Open
+            all") and server events (MAIL_SEND_SUCCESS). Another blanket queue purge on window
+            close would therefore not catch them, but WOULD cut legitimate announcements (chat,
+            combat, navigation) off mid-word. Instead: a central gate in
+            SkuOptions:VocalizeCurrentMenuName (no open menu, no headless combat menu and no
+            SkuChat line menu -> silent; the string mode still returns text), plus three
+            producer gates in mail
+            (MailboxOpenFlag for "Sent", IsMenuOpen for the field confirmation, MailFrame
+            visibility for "All opened"). MAIL_FAILED deliberately stays unfiltered - a failure
+            must be audible even after closing.
 
     Auction house: buying multiple pieces wrongly aborted after almost every purchase with "Auction sold out"
         Simple: Picking a results entry like "14 times Void Sphere" and buying five of them meant

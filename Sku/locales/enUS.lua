@@ -2527,6 +2527,7 @@ L["Target menu"]  = "Target menu" --
 L["Target"]  = "Target" --
 L["TARGET_UNIT_NAME"] = "Target unit name"
 L["Targets you attack"] = "Targets you attack"
+L["Tastatur-Echo ansagen"]  = "Speak keyboard echo" --
 L["Taste gedrückt"]  = "Key pressed" --
 L["Taste zuweisen"]  = "Bind key" --
 L["Scan Tasten"]  = "Scan keys" --

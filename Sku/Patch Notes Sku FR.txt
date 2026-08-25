@@ -15,9 +15,45 @@ Changements dans Sku v43.1
             L'achat de plusieurs exemplaires à l'hôtel des ventes continue désormais tant qu'il existe d'autres offres au même prix audible.
             Chaque achat réussi est immédiatement confirmé par « Acheté, n sur m ».
             Quand un prix est épuisé, Sku annonce « Plus aucune offre à ce prix » avec le bilan et reste dans la liste des résultats.
+            Nouveau réglage « Énoncer l'écho du clavier » (Réglages -> Général, activé par défaut) : la lecture caractère par caractère pendant la saisie dans les champs de texte peut être désactivée.
 
         Corrections
             Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat réussi avec « Enchère épuisée » et éjectait de la recherche.
+            Après la fermeture du menu, des annonces différées continuaient de parler (« Nouvelle lettre plus », « Sujet : <texte saisi> », « Envoyé », « Tout ouvert » depuis une boîte aux lettres fermée depuis longtemps).
+
+    Nouveau réglage : Énoncer l'écho du clavier
+        Simple : Dans les champs de saisie (rédaction d'une lettre, recherche, nom de profil...),
+            Sku lit chaque caractère tapé, ainsi que la touche retour arrière et les lectures du
+            curseur avec les flèches. Si cela vous dérange ou si vous l'entendez en double, vous
+            pouvez désormais le désactiver sous Réglages -> Général, « Énoncer l'écho du
+            clavier » (juste à côté de « Énoncer les numéros du menu » et « Annoncer les
+            sous-menus »). Par défaut, c'est ACTIVÉ : rien ne change si vous ne touchez à rien.
+            Les annonces d'état comme « Annulé » ou la confirmation du champ après ENTRÉE
+            restent toujours.
+
+    Plus d'annonces dans un menu fermé
+        Simple : Valider un champ de saisie avec ENTRÉE puis fermer aussitôt le menu produisait
+            quand même « Sujet : <le texte saisi> » - comme si l'écho du clavier traînait après
+            la fermeture. De même, « Nouvelle lettre plus », « Envoyé » ou « Tout ouvert »
+            parlaient encore depuis une boîte aux lettres fermée depuis longtemps. Désormais :
+            tout ce qui veut annoncer une entrée de menu vérifie d'abord que le menu est encore
+            ouvert - et les accusés de la boîte aux lettres vérifient que celle-ci est encore
+            ouverte. La ligne système du serveur « Courrier envoyé. » dans le chat n'est pas
+            concernée.
+        Technique : Les retardataires ne venaient jamais de la file vocale (la fermeture la vide
+            déjà via queuereset + StopSpeakingText) mais de producteurs qui n'enfilent
+            qu'APRÈS la fermeture : confirmations C_Timer (0,3 s après pièce jointe/saisie/
+            envoi, 0,5 s après « Tout ouvrir ») et événements serveur (MAIL_SEND_SUCCESS). Une
+            purge générale supplémentaire de la file à la fermeture d'une fenêtre ne les
+            attraperait donc pas, mais couperait en plein mot des annonces légitimes (chat,
+            combat, navigation). À la place : une garde centrale dans
+            SkuOptions:VocalizeCurrentMenuName (pas de menu ouvert, pas de menu de combat sans
+            affichage et pas de menu de ligne SkuChat -> silence ; le mode chaîne renvoie
+            toujours le texte), plus trois gardes
+            côté producteurs dans le courrier (MailboxOpenFlag pour « Envoyé », IsMenuOpen pour
+            la confirmation de champ, visibilité de MailFrame pour « Tout ouvert »).
+            MAIL_FAILED reste volontairement non filtré - un échec doit rester audible même
+            après la fermeture.
 
     Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat avec « Enchère épuisée »
         Simple : En choisissant une entrée de résultats comme « 14 fois Sphère du Vide » pour en
