@@ -20,7 +20,7 @@ Changements dans Sku v43.1
         Corrections
             Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat réussi avec « Enchère épuisée » et éjectait de la recherche.
             Après la fermeture du menu, des annonces différées continuaient de parler (« Nouvelle lettre plus », « Sujet : <texte saisi> », « Envoyé », « Tout ouvert » depuis une boîte aux lettres fermée depuis longtemps).
-            Hôtel des ventes : ouvrir une catégorie annonçait souvent à tort « vide » la première fois alors que la recherche venait à peine de démarrer.
+            Hôtel des ventes : une réponse incomplète du serveur ne termine plus la recherche à tort par « vide » - une vraie recherche sans résultat répond toujours immédiatement.
 
     Nouveau réglage : Énoncer l'écho du clavier
         Simple : Dans les champs de saisie (rédaction d'une lettre, recherche, nom de profil...),
@@ -98,23 +98,25 @@ Changements dans Sku v43.1
             curseur sur l'entrée de l'objet) puis prononce le message 0,4 s plus tard sans
             interruption - le même schéma que le « Terminé. Tous achetés » existant.
 
-    Hôtel des ventes : une catégorie annonçait à tort « vide » à la première ouverture
-        Simple : En entrant avec flèche droite dans une catégorie (ou « Tous »), on entendait
-            souvent « 0 » puis « vide » au premier essai alors que la recherche venait à peine
-            de démarrer - seul un second essai apportait les résultats. Sku reste désormais
-            sur « Attendre » avec l'indication de chargement jusqu'à l'arrivée de la vraie
-            réponse du serveur, puis lit aussitôt le nombre de résultats et la première
-            entrée.
-        Technique : L'envoi d'une requête de recherche vide la liste côté client, et ce
-            vidage déclenche lui-même un AUCTION_ITEM_LIST_UPDATE avec 0 ligne - AVANT la
-            réponse du serveur. Le chemin de navigation prenait cet événement fantôme pour la
-            réponse : « 0 » annoncé, QueryResultsPartialReady posé, « vide » construit, scan
-            terminé - et la vraie réponse arrivée juste après était rejetée (QueryCurrentPage
-            déjà nil). Le chemin d'achat se protégeait depuis longtemps contre cet événement
-            (QueryBuyEmptyWaits) ; le chemin de navigation a maintenant son jumeau
-            QueryListEmptyWaits : les événements vides sont comptés et ignorés, et le
-            résultat ne vaut réellement « vide » qu'après 10. Pendant ce temps, le ticker
-            redemande la page.
+    Hôtel des ventes : une réponse incomplète du serveur ne vaut plus « aucun résultat »
+        Simple : Quand le serveur répond de façon contradictoire - il annonce des résultats
+            mais ne livre aucune ligne -, Sku terminait aussitôt la recherche par « vide ».
+            Dans ce cas, il attend désormais la réponse complète et redemande la page. Une
+            recherche qui ne trouve réellement rien (faute de frappe dans le champ de
+            recherche, catégorie vide) répond toujours immédiatement avec 0 résultat et
+            « vide » - cela ne change pas.
+        Technique : Dans AUCTION_ITEM_LIST_UPDATE_LIST, une page vide ne compte comme
+            prématurée que si le serveur se contredit : tBatch == 0 (aucune ligne sur cette
+            page) alors que tCount > 0 (nombre total de résultats supérieur à 0).
+            QueryListEmptyWaits s'incrémente alors, le scan reste en « waiting » et le ticker
+            redemande la même page ; après 10 réponses de ce type, le résultat est tout de
+            même accepté (sortie de secours). tCount == 0 est au contraire la réponse honnête
+            « aucun résultat » et passe sans délai. C'est important, car un compteur sur
+            CHAQUE réponse vide - le jumeau de QueryBuyEmptyWaits du chemin d'achat - laisse
+            le cas de la faute de frappe bloqué sur « Attendre » pendant dix requêtes, son de
+            chargement à la seconde compris : dans le journal de débogage du 2026-08-26, le
+            serveur répond à la recherche « feuerpartiekel » par 0 sur 0 dans la même
+            seconde, ce n'est donc pas une réponse fantôme.
 
 
 -------------------------------------------------------------------------------------------------------

@@ -4149,20 +4149,22 @@ function AuctionHouse:AUCTION_ITEM_LIST_UPDATE_LIST()
          if SkuCore.AuctionScan.state ~= "waiting" then
             return
          end
-         -- Verfrühte/leere Antwort abfangen (Zwilling des Kauf-Pfads in
-         -- AUCTION_ITEM_LIST_UPDATE_BUY): AUCTION_ITEM_LIST_UPDATE feuert teils
-         -- BEVOR die Server-Antwort eintrifft — das Absetzen der Query leert die
-         -- Client-Liste und feuert dabei selbst → tBatch=0. Ohne diese Sperre
-         -- lief die leere Liste als "Antwort" durch: "0" angesagt,
-         -- QueryResultsPartialReady=true gesetzt → "leer" gebaut und angesagt,
-         -- Scan als abgeschlossen beendet — und die kurz darauf eintreffende
-         -- ECHTE Antwort wurde verworfen (QueryCurrentPage schon nil). Genau das
-         -- war das "Kategorie sagt beim ersten Mal leer"-Verhalten. Ein echtes
-         -- 0-Treffer-Ergebnis kommt ebenfalls als tBatch=0 und ist nicht sofort
-         -- unterscheidbar, daher wie beim Kauf erst nach mehreren leeren Events
-         -- akzeptieren (der Ticker fragt die Seite währenddessen erneut an;
-         -- der Nutzer bleibt solange auf "Warten").
-         if not tBatch or tBatch == 0 then
+         -- Leere Antwort: NUR eine widerspruechliche gilt als verfrueht.
+         -- tCount ist die Gesamt-Trefferzahl des Servers, tBatch die Zeilen
+         -- dieser Seite. tCount == 0 ist eine EHRLICHE Antwort "keine Treffer"
+         -- (Tippfehler im Suchfeld, leere Kategorie) — die muss SOFORT als
+         -- Ergebnis durchlaufen, damit "leer" gesagt wird. Belegt im Log vom
+         -- 2026-08-26: Suche "feuerpartiekel" -> QueryAuctionItems und
+         -- "tBatch, tCount 0 0" in derselben Sekunde, also die echte
+         -- Server-Antwort, keine Spuk-Antwort.
+         -- Nur wenn der Server sich WIDERSPRICHT (tCount > 0, aber keine Zeile
+         -- geliefert), ist die Antwort unvollstaendig: dann warten und den
+         -- Ticker die Seite erneut anfragen lassen, mit Zaehler-Deckel als
+         -- Notausstieg. Frueher stand hier ein Zaehler auf JEDE leere Antwort
+         -- (Zwilling des Kauf-Pfads QueryBuyEmptyWaits) — der hat genau den
+         -- Tippfehler-Fall 10 Requeries lang auf "Warten" haengen lassen,
+         -- inklusive Lade-Ton im Sekundentakt, statt "leer" zu sagen.
+         if (not tBatch or tBatch == 0) and (tCount or 0) > 0 then
             SkuCore.QueryListEmptyWaits = (SkuCore.QueryListEmptyWaits or 0) + 1
             if SkuCore.QueryListEmptyWaits < 10 then
                return

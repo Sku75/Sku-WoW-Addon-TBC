@@ -17,7 +17,7 @@ Changes in Sku v43.1
         Bugfixes
             Auction house: buying multiple pieces wrongly aborted after almost every successful purchase with "Auction sold out" and threw you out of the search.
             After closing the menu, deferred announcements kept speaking ("New letter plus", "Subject: <typed text>", "Sent", "All opened" from a mailbox that was long closed).
-            Auction house: opening a category often wrongly announced "empty" the first time although the search had only just started.
+            Auction house: an incomplete server response no longer wrongly ends the search with "empty" - a genuine search with no hits still answers immediately.
 
     New setting: Speak keyboard echo
         Simple: In input fields (writing a letter, search, profile name...) Sku reads every typed
@@ -85,21 +85,23 @@ Changes in Sku v43.1
             cursor on the item entry) and speaks the message 0.4 s later without interrupting -
             the same pattern as the existing "Done. All bought".
 
-    Auction house: a category wrongly announced "empty" the first time it was opened
-        Simple: Arrowing right into a category (or "All") often spoke "0" and "empty" on the
-            first attempt although the search had only just started - only a second attempt
-            brought the results. Sku now stays on "Waiting" with the loading cue until the
-            real server response arrives, then immediately reads the hit count and the first
-            result.
-        Technically: Sending a search query clears the client-side list, and that very
-            clearing fires an AUCTION_ITEM_LIST_UPDATE with 0 rows - BEFORE the server
-            response. The browse path took this phantom event for the answer: "0" announced,
-            QueryResultsPartialReady set, "empty" built, scan finished - and the real response
-            arriving moments later was discarded (QueryCurrentPage already nil). The buy path
-            has long guarded against exactly this event (QueryBuyEmptyWaits); the browse path
-            now has the twin QueryListEmptyWaits: empty events are counted and ignored, and
-            only after 10 does the result count as genuinely empty. Meanwhile the ticker
-            re-requests the page.
+    Auction house: an incomplete server response no longer counts as "no hits"
+        Simple: When the server answers contradictorily - it reports hits but delivers not a
+            single row - Sku used to end the search right away with "empty". It now waits for
+            the complete response in that case and requests the page again. A search that
+            genuinely finds nothing (a typo in the search field, an empty category) still
+            answers immediately with a hit count of 0 and "empty" - that part is unchanged.
+        Technically: In AUCTION_ITEM_LIST_UPDATE_LIST an empty page only counts as premature
+            when the server contradicts itself: tBatch == 0 (no row on this page) while
+            tCount > 0 (total hit count greater than 0). QueryListEmptyWaits then counts up,
+            the scan stays in "waiting" and the ticker re-requests the same page; after 10
+            such responses the result is accepted anyway (emergency exit). tCount == 0, by
+            contrast, is the honest "no hits" answer and passes through without delay. This
+            matters because a counter on EVERY empty response - the twin of the buy path's
+            QueryBuyEmptyWaits - leaves the typo case hanging on "Waiting" for ten requeries,
+            loading cue once a second included: in the debug log of 2026-08-26 the server
+            answers the search "feuerpartiekel" with 0 of 0 in the same second, so that is no
+            phantom response.
 
 
 -------------------------------------------------------------------------------------------------------
