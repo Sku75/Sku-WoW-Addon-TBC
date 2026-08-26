@@ -16,6 +16,7 @@ Changements dans Sku v43.1
             Chaque achat réussi est immédiatement confirmé par « Acheté, n sur m ».
             Quand un prix est épuisé, Sku annonce « Plus aucune offre à ce prix » avec le bilan et reste dans la liste des résultats.
             Nouveau réglage « Énoncer l'écho du clavier » (Réglages -> Général, activé par défaut) : la lecture caractère par caractère pendant la saisie dans les champs de texte peut être désactivée.
+            Hôtel des ventes : le scan complet se confirme une première fois au bout de 5 secondes, puis toutes les 10 secondes comme avant.
 
         Corrections
             Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat réussi avec « Enchère épuisée » et éjectait de la recherche.
@@ -224,6 +225,22 @@ Changements dans Sku v43.1
             et AuctionScanFinish ne signale « finished » qu'APRÈS la réinitialisation, avec
             reset=true/false - le journal affirmait jusqu'ici une fin de scan qui n'avait
             jamais eu lieu.
+
+    Hôtel des ventes : première annonce du scan complet au bout de 5 secondes
+        Simple : Pendant que le scan complet attend la réponse du serveur, Sku annonce
+            « scan complet, n secondes » toutes les 10 secondes. La toute première de ces
+            annonces n'arrivait donc qu'au bout de 10 secondes - dix secondes durant
+            lesquelles on ignorait si le scan tournait seulement. La première confirmation
+            arrive maintenant après 5 secondes, la deuxième 10 secondes plus tard, puis au
+            rythme de 10 secondes (soit à 5, 15, 25 ... secondes). Rien d'autre ne change :
+            les messages de 25 pour cent de la phase de lecture et l'annonce finale restent
+            identiques.
+        Technique : Le rythme dans le ticker OnUpdate de l'hôtel des ventes se trouve
+            désormais dans tFullScanSpeakNext, qui démarre à tFullScanSpeakFirst (5) et
+            bascule sur tFullScanSpeakEvery (10) après la première annonce. Le compteur est
+            diminué du seuil en vigueur plutôt que d'un 10 fixe, afin que la phase reste
+            juste. À la fin de la phase de travail, le seuil retombe à 5 - sinon le scan
+            suivant n'aurait de nouveau donné sa première confirmation qu'après 10 secondes.
 
 
 -------------------------------------------------------------------------------------------------------

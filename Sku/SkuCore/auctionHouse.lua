@@ -328,7 +328,15 @@ function AuctionHouse:AuctionHouseOnInitialize()
    local tPagedStallTime   = 0    -- Wie lange schon Server nicht geantwortet
    local tFilterAnnounceElapsed = 0 -- 10-s-Takt für die Filter-Fortschrittsansage
    local tFullScanWorkElapsed = 0   -- verstrichene Zeit der getAll-Arbeitsphase
-   local tFullScanSpeak       = 0   -- 10-s-Takt für die getAll-Fortschrittsansage
+   local tFullScanSpeak       = 0   -- Takt-Zähler für die getAll-Fortschrittsansage
+   -- Die ERSTE Fortschrittsansage kommt schon nach 5 s, danach wieder alle 10 s
+   -- (also bei 5, 15, 25, ... Sekunden). Bei durchgehend 10 s stand der Nutzer
+   -- nach dem Scan-Start zehn Sekunden ohne jede Rückmeldung da und konnte nicht
+   -- wissen, ob der Scan überhaupt läuft; die erste Bestätigung soll früh kommen,
+   -- die Dauerbegleitung danach aber nicht schwatzhaft werden.
+   local tFullScanSpeakFirst  = 5
+   local tFullScanSpeakEvery  = 10
+   local tFullScanSpeakNext   = tFullScanSpeakFirst
    -- Watchdog-Neustart beim Absetzen einer Query. Zwei Leck-Pfade füllten die
    -- Closure-Zähler schon VOR dem Scan-Start, sodass der 600-s-getAll-Watchdog
    -- einen frischen Scan im ersten Tick abwürgte (Log: QueryAuctionItems und
@@ -396,8 +404,10 @@ function AuctionHouse:AuctionHouseOnInitialize()
       if tScanWorking then
          tFullScanWorkElapsed = tFullScanWorkElapsed + time
          tFullScanSpeak = tFullScanSpeak + time
-         if tFullScanSpeak >= 10 then
-            tFullScanSpeak = tFullScanSpeak - 10
+         if tFullScanSpeak >= tFullScanSpeakNext then
+            tFullScanSpeak = tFullScanSpeak - tFullScanSpeakNext
+            -- Ab jetzt der normale Takt: die 5 s gelten nur für die erste Ansage.
+            tFullScanSpeakNext = tFullScanSpeakEvery
             pcall(function()
                SkuOptions.Voice:OutputStringBTtts(
                   L["full scan"]..", "..math.floor(tFullScanWorkElapsed)..L[" Sekunden"],
@@ -407,6 +417,9 @@ function AuctionHouse:AuctionHouseOnInitialize()
       else
          tFullScanWorkElapsed = 0
          tFullScanSpeak = 0
+         -- Zurück auf den frühen Erst-Takt, damit der NÄCHSTE Scan seine
+         -- Bestätigung wieder nach 5 s gibt und nicht erst nach 10.
+         tFullScanSpeakNext = tFullScanSpeakFirst
       end
 
       if SkuCore.AuctionScan.state ~= "idle" or SkuCore.QuerySerializeRunning == true then

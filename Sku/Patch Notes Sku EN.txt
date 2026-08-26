@@ -13,6 +13,7 @@ Changes in Sku v43.1
             Every successful purchase is confirmed right away with "Bought, n of m".
             When a price is sold out, Sku says "No more offers at this price" with the tally and stays in the results list.
             New setting "Speak keyboard echo" (Settings -> General, on by default): the character-by-character read-back while typing in input fields can be turned off.
+            Auction house: the full scan confirms itself for the first time after 5 seconds, then every 10 seconds as before.
 
         Bugfixes
             Auction house: buying multiple pieces wrongly aborted after almost every successful purchase with "Auction sold out" and threw you out of the search.
@@ -198,6 +199,21 @@ Changes in Sku v43.1
             only saw the call above it and assumed the state had been cleared), and
             AuctionScanFinish reports "finished" only AFTER the reset, with reset=true/false
             - the log used to claim a scan end that never happened.
+
+    Auction house: first full-scan announcement after 5 seconds
+        Simple: While the full scan waits for the server's answer, Sku reports "full scan, n
+            seconds" every 10 seconds. That meant the very first of those announcements only
+            arrived after 10 seconds - ten seconds in which you had no way of knowing whether
+            the scan was running at all. The first confirmation now comes after 5 seconds,
+            the second 10 seconds later, and from then on in the 10 second rhythm (so at 5,
+            15, 25 ... seconds). Nothing else changes: the 25 percent messages of the ingest
+            phase and the completion announcement stay as they were.
+        Technically: The interval in the AH OnUpdate ticker now lives in tFullScanSpeakNext,
+            which starts at tFullScanSpeakFirst (5) and switches to tFullScanSpeakEvery (10)
+            after the first announcement. The counter is reduced by whichever threshold
+            currently applies rather than by a fixed 10, so the phase stays correct. When the
+            work phase ends the threshold drops back to 5 - otherwise the next scan would
+            have given its first confirmation only after 10 seconds again.
 
 
 -------------------------------------------------------------------------------------------------------

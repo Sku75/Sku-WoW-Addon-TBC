@@ -13,6 +13,7 @@ Aenderungen in Sku v43.1
             Jeder gelungene Kauf wird sofort mit "Gekauft, n von m" bestaetigt.
             Ist ein Preis ausverkauft, meldet Sku "Keine weiteren Angebote zu diesem Preis" samt Bilanz und bleibt in der Ergebnisliste stehen.
             Neue Einstellung "Tastatur-Echo ansagen" (Einstellungen -> Allgemein, standardmaessig an): das zeichenweise Vorlesen beim Tippen in Eingabefeldern laesst sich abschalten.
+            Auktionshaus: der Komplettscan bestaetigt sich schon nach 5 Sekunden zum ersten Mal, danach wie bisher alle 10 Sekunden.
 
         Fehlerbehebungen
             Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem gelungenen Kauf faelschlich mit "Auktion vergriffen" ab und warf aus der Suche.
@@ -211,6 +212,21 @@ Aenderungen in Sku v43.1
             eigene Zeile (vorher sah man nur den Aufruf davor und hielt den Zustand fuer
             geraeumt), und AuctionScanFinish meldet "finished" erst NACH dem Reset, mit
             reset=true/false - vorher behauptete das Log ein Scan-Ende, das nie stattfand.
+
+    Auktionshaus: erste Komplettscan-Ansage schon nach 5 Sekunden
+        Einfach: Waehrend der Komplettscan auf die Antwort des Servers wartet, meldet Sku
+            alle 10 Sekunden "voller Scan, n Sekunden". Die allererste dieser Ansagen kam
+            damit auch erst nach 10 Sekunden - zehn Sekunden, in denen man nach dem Start
+            nicht wusste, ob der Scan ueberhaupt laeuft. Die erste Bestaetigung kommt jetzt
+            nach 5 Sekunden, die zweite 10 Sekunden spaeter, danach weiter im
+            10-Sekunden-Takt (also bei 5, 15, 25 ... Sekunden). Am Ende aendert sich nichts:
+            die 25-Prozent-Meldungen der Einlesephase und die Abschlussansage bleiben.
+        Technisch: Der Takt im AH-OnUpdate-Ticker liegt jetzt in tFullScanSpeakNext, das mit
+            tFullScanSpeakFirst (5) startet und nach der ersten Ansage auf
+            tFullScanSpeakEvery (10) umschaltet. Der Zaehler wird um den jeweils gueltigen
+            Schwellwert vermindert statt fest um 10, damit die Phase stimmt. Endet die
+            Arbeitsphase, faellt der Schwellwert wieder auf 5 zurueck - sonst haette der
+            naechste Scan erst nach 10 Sekunden seine erste Bestaetigung gegeben.
 
 
 -------------------------------------------------------------------------------------------------------
