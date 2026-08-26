@@ -47,8 +47,19 @@
          releases/latest/download URL at startup, offers the update with a
          strong recommendation, verifies the published SHA-256, renames itself
          aside, moves the new exe into its place and restarts. Every failure
-         path falls through to a normal run with the current exe. -->
-    <Version>4.3</Version>
+         path falls through to a normal run with the current exe.
+         4.4 = login-tool texture hygiene. The texture step only ever copied
+         with overwrite, so recolored .blp files a newer generation renamed or
+         dropped survived every upgrade and no longer matched data.ini's colour
+         tables. Now stale .blp files are swept from the payload's Interface
+         folders before every copy (LoginToolInstaller.RemoveStaleFiducialTextures;
+         only .blp, only the payload folders, never AddOns; SkuSelfTest
+         "texturesweep"). And the log bundle's system-info.txt reports per
+         client whether the recognition textures are present at all
+         (LogCollector.AppendFiducialTextureInfo) — the missing line that made
+         the first "unknown on every screen" report unprovable. Deploys login
+         tool 3.2 (missing-texture self-diagnosis + version announce). -->
+    <Version>4.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
