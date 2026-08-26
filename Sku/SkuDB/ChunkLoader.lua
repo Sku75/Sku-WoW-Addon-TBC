@@ -532,6 +532,58 @@ local function SkuDBEnsureLocalizedMapNames()
 	tFill(SkuDB.ExternalMapID, "Name_lang", tGetMap)
 	tFill(SkuDB.ContinentIds, "Name_lang", nil)
 
+	-- [i18n] ~390 InternalAreaTable rows carry a SYNTHETIC id (>= 100000), so
+	-- C_Map.GetAreaInfo has nothing to resolve for them and the fill above could
+	-- only fall back to English. That is invisible for an outdoor sub-area (the
+	-- uiMap fallback still finds the parent zone), but fatal INSIDE AN INSTANCE
+	-- whose real area row is commented out of the table: there the synthetic row
+	-- is the only candidate SkuNav:GetCurrentAreaId's last fallback can match, and
+	-- that fallback compares it against the client's localized MAP name -> no
+	-- match -> nil areaId -> nil continent -> ListWaypoints2 bails -> the waypoint
+	-- list is EMPTY although the zone is fully mapped and an already running route
+	-- keeps working. (French client, Onyxia's Lair: row 100221 stays "Onyxia's
+	-- Lair" while the client says "Repaire d'Onyxia". Maraudon only escapes it
+	-- because its name is identical in both languages.)
+	--
+	-- The client DOES have a string for these maps - the uiMap's own name - so
+	-- take it from the SkuDB.ExternalMapID row that shares the enUS name. No zone
+	-- name data has to ship, and it is by construction the exact string that
+	-- fallback compares against. Rows the C_Map pass already named are untouched,
+	-- and deDE/enUS never reach here at all.
+	local tPatched = 0
+	local tByEnglish = {}
+	if type(SkuDB.InternalAreaTable) == "table" then
+		for tId, tEntry in pairs(SkuDB.InternalAreaTable) do
+			local tNames = (type(tId) == "number" and tId >= 100000 and type(tEntry) == "table") and tEntry.AreaName_lang
+			-- only rows the fill could NOT name, i.e. still on the enUS fallback
+			if type(tNames) == "table" and tNames.enUS and tNames[tLoc] == tNames.enUS then
+				local tList = tByEnglish[tNames.enUS]
+				if not tList then
+					tList = {}
+					tByEnglish[tNames.enUS] = tList
+				end
+				tList[#tList + 1] = tNames
+			end
+		end
+	end
+	if next(tByEnglish) and type(SkuDB.ExternalMapID) == "table" then
+		for _, tMap in pairs(SkuDB.ExternalMapID) do
+			local tMapNames = (type(tMap) == "table") and tMap.Name_lang
+			if type(tMapNames) == "table" and tMapNames.enUS then
+				local tList = tByEnglish[tMapNames.enUS]
+				local tLocalized = tMapNames[tLoc]
+				if tList and type(tLocalized) == "string" and tLocalized ~= "" and tLocalized ~= tMapNames.enUS then
+					for i = 1, #tList do
+						tList[i][tLoc] = tLocalized
+						tPatched = tPatched + 1
+					end
+				end
+			end
+		end
+	end
+	SkuDB.chunkLoad.mapNamesFromUiMap = tPatched
+	dprint("SkuDB synthetic area rows named from their uiMap for", tLoc, "=", tPatched)
+
 	-- [v42.09 i18n] The five continents have no area id for C_Map to resolve, so
 	-- the fill above can only fall back to English for them. They are the most
 	-- frequently spoken names in the whole map set ("other continent" route
