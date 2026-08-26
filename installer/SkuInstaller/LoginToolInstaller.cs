@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -32,6 +33,25 @@ namespace SkuInstaller
     {
         /// <summary>The 5 texture folders under CopyTheContentOfThisFolderToInterface\.</summary>
         private const string InterfacePayloadFolder = "CopyTheContentOfThisFolderToInterface";
+
+        /// <summary>
+        /// The top-level folders the texture payload writes under the client's
+        /// Interface\. Every generation so far has used exactly these five; the
+        /// stale-texture sweep unions in whatever the current payload actually
+        /// ships, so this list only matters for folders a FUTURE payload drops.
+        /// Shared with <see cref="LogCollector"/>'s texture report.
+        /// </summary>
+        internal static readonly string[] InterfaceTextureFolders =
+            { "BUTTONS", "DialogFrame", "FrameGeneral", "GLUES", "HELPFRAME" };
+
+        /// <summary>
+        /// One texture standing in for the whole payload: the recolored
+        /// GenericRedButton fiducial that login, charselect and every popup-row
+        /// probe key on. Its absence under a client's Interface\ means screen
+        /// recognition can only ever answer "unknown" — the log bundle reports
+        /// it, and the tool itself checks the same path to announce the repair.
+        /// </summary>
+        internal const string FiducialMarkerRelPath = "BUTTONS\\128RedButton.BLP";
 
         /// <summary>Files/dirs in the upstream zip we don't ship (dev cruft / regenerated).</summary>
         private static readonly string[] SkipNames = { ".claude", "log.txt" };
@@ -156,10 +176,19 @@ namespace SkuInstaller
                     CopyTree(source, toolDir, skipInterfacePayload: true);
 
                     // 4. Copy the login-screen textures into the client's Interface.
+                    //    Stale files first: the copy only ever OVERWRITES, so a
+                    //    texture that a newer payload renamed or dropped survived
+                    //    every upgrade — and data.ini's colour tables only match
+                    //    the CURRENT generation, so a surviving old recolor is
+                    //    exactly the "old textures + new data.ini misclassify"
+                    //    case the class comment warns about. After this step the
+                    //    payload folders hold the current generation and nothing
+                    //    else.
                     string interfacePayload = Path.Combine(source, InterfacePayloadFolder);
                     if (interfaceDir != null && Directory.Exists(interfacePayload))
                     {
                         announce(Loc.Get("lt.textures"));
+                        RemoveStaleFiducialTextures(interfacePayload, interfaceDir);
                         CopyTree(interfacePayload, interfaceDir, skipInterfacePayload: false);
                     }
                     else
@@ -289,6 +318,95 @@ namespace SkuInstaller
             var files = Directory.GetFiles(staging);
             if (dirs.Length == 1 && files.Length == 0) return dirs[0];   // single wrapped root
             return staging;
+        }
+
+        /// <summary>
+        /// Deletes every .blp under the payload's Interface folders that the
+        /// CURRENT payload does not ship, so after the following copy the client
+        /// holds exactly the current texture generation — no leftovers from
+        /// older tool releases (whose colours data.ini no longer matches).
+        ///
+        /// Scope is deliberately tight: only files with a .blp extension, only
+        /// inside the payload's own top-level folders (BUTTONS, GLUES, … —
+        /// never Interface\AddOns or anything else a user put there), matched
+        /// case-insensitively by relative path. Emptied subfolders are removed
+        /// too. Best-effort like the rest of this class: every deletion and
+        /// every failure is logged, nothing aborts the install.
+        ///
+        /// Internal, not private: SkuSelfTest links this source file and drives
+        /// the sweep against a throwaway folder tree ("texturesweep" mode).
+        /// </summary>
+        internal static void RemoveStaleFiducialTextures(string interfacePayload, string interfaceDir)
+        {
+            try
+            {
+                // The current generation's file set, as Interface-relative paths.
+                var current = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (string f in Directory.GetFiles(interfacePayload, "*", SearchOption.AllDirectories))
+                    current.Add(f.Substring(interfacePayload.Length)
+                        .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+
+                // Sweep the union of the historical folder list and what the
+                // current payload ships, so a folder a future payload drops
+                // entirely still gets cleaned.
+                var sweepRoots = new HashSet<string>(InterfaceTextureFolders, StringComparer.OrdinalIgnoreCase);
+                foreach (string d in Directory.GetDirectories(interfacePayload))
+                    sweepRoots.Add(Path.GetFileName(d));
+
+                int removed = 0;
+                foreach (string rootName in sweepRoots)
+                {
+                    string root = Path.Combine(interfaceDir, rootName);
+                    if (!Directory.Exists(root)) continue;
+
+                    foreach (string file in Directory.GetFiles(root, "*", SearchOption.AllDirectories))
+                    {
+                        if (!file.EndsWith(".blp", StringComparison.OrdinalIgnoreCase)) continue;
+                        string rel = file.Substring(interfaceDir.Length)
+                            .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                        if (current.Contains(rel)) continue;
+                        try
+                        {
+                            File.Delete(file);
+                            removed++;
+                            Logger.Info($"Login Tool: removed stale texture {rel}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Warning($"Login Tool: could not remove stale texture {rel}: {ex.Message}");
+                        }
+                    }
+                    DeleteEmptySubdirs(root);
+                }
+                if (removed > 0)
+                    Logger.Info($"Login Tool: removed {removed} stale texture file(s) from {interfaceDir}.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning($"Login Tool: stale-texture sweep failed: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Removes directories under (and including) <paramref name="root"/> that
+        /// hold no files, deepest first, so a folder tree the sweep emptied does
+        /// not survive as dead structure. The payload copy recreates anything the
+        /// current generation still needs.
+        /// </summary>
+        private static void DeleteEmptySubdirs(string root)
+        {
+            try
+            {
+                foreach (string dir in Directory.GetDirectories(root, "*", SearchOption.AllDirectories)
+                         .OrderByDescending(d => d.Length))
+                {
+                    try { if (!Directory.EnumerateFileSystemEntries(dir).Any()) Directory.Delete(dir); }
+                    catch { }
+                }
+                if (!Directory.EnumerateFileSystemEntries(root).Any())
+                    Directory.Delete(root);
+            }
+            catch { }
         }
 
         /// <summary>

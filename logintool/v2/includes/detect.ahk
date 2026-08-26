@@ -24,6 +24,7 @@
 global gGametypePin := false      ; user picked one by hand -> never override it
 global gDetectedPid := 0          ; client the current detection came from
 global gDetectedGametype := ""    ; what that client reported ("" = unsupported)
+global gDetectedClientDir := ""   ; the client's flavor folder (…\_anniversary_)
 ; When the current client's window turned up, and whether the tool was already
 ; running when it did. A client we WATCHED appear is a client that is starting,
 ; and that is the one unrecognized screen the tool can put a name to - see the
@@ -135,6 +136,8 @@ ApplyDetectedGametype() {
         return
     gDetectedPid := info.pid
     gDetectedGametype := info.gametype
+    SplitPath(info.exe, , &clientDir)
+    global gDetectedClientDir := clientDir
     global gClientSeenTick := A_TickCount
     ; gLogStart is set when Main() starts, so "the tool had already been up for
     ; five seconds when this client appeared" means we saw it launch.
@@ -167,4 +170,34 @@ ApplyDetectedGametype() {
     ; (SenseStart calls back into this function; that call returns immediately
     ; because gDetectedPid has already been advanced above.)
     SenseStart()
+}
+
+; Every screen check on Era/BC keys on the exact colours of the recolored
+; textures the installer copies into the client's Interface folder. When they
+; are missing, EVERY glue screen classifies "unknown" - a state the generic
+; "close the dialog, Alt F1 twice" hint cannot get anyone out of. One file
+; stands in for the whole set: BUTTONS\128RedButton.BLP is the GenericRedButton
+; fiducial that login, charselect and every popup row probe for.
+;
+; Only answerable once a client has been detected (the check needs ITS
+; Interface folder, not a guess); before that it reports "not missing" so the
+; caller falls back to the generic hint.
+FiducialTexturesMissing() {
+    global gDetectedClientDir
+    if (gDetectedClientDir = "")
+        return false
+    return !FileExist(gDetectedClientDir "\Interface\BUTTONS\128RedButton.BLP")
+}
+
+; The one announcement for "the tool cannot name this screen", shared by the
+; CheckMode streak watcher and InitLogin. Forks on the texture self-check:
+; missing textures are an install problem with a known repair, and telling the
+; user to close a dialog would send them chasing a dialog that does not exist.
+SayUnknownScreenHint() {
+    if FiducialTexturesMissing() {
+        Log("unknown screen and Interface\BUTTONS\128RedButton.BLP is missing - announcing the texture repair")
+        Say(T("The screen recognition textures are missing from the game folder. Please run the Sku installer to reinstall the login tool."))
+    } else {
+        Say(T("Unknown screen. Close the dialog in the game, then press Alt F1 twice."))
+    }
 }

@@ -222,6 +222,13 @@ Main() {
     LoadSettings()
     SapiInit()
     LoadLocalization()
+    ; Say which release is actually running, first thing. Users on an old zip
+    ; reporting a fixed bug is the support loop this closes; the same number
+    ; goes to the log, where a bundle reader needs it even more (the folder's
+    ; installed-release.txt only says what the INSTALLER last deployed, not
+    ; what is running now, and a dev copy can be newer).
+    Log("START: WoW Login Tool " gToolVersion)
+    Say(T("Login tool version") " " gToolVersion)
     LoadGameData()
     BuildMainMenu()
     BuildLoginScreenMenu()
@@ -310,7 +317,7 @@ CheckMode() {
                         global gUnknownAnnounced := true
                         Log("CheckMode: unknown screen for "
                             . Round((A_TickCount - gUnknownSince) / 1000) " s - telling the user")
-                        Say(T("Unknown screen. Close the dialog in the game, then press Alt F1 twice."))
+                        SayUnknownScreenHint()
                     }
                 } else if !SenseOk(s) {
                     ; No answer at all (the window is gone, the helper died).

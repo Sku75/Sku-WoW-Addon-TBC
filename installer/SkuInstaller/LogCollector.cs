@@ -632,6 +632,8 @@ namespace SkuInstaller
                 sb.AppendLine($"Login tool folder:    {toolDir ?? "(unresolved)"}{(toolPresent ? "" : "  (not present)")}");
                 if (toolPresent) AppendFileListing(sb, toolDir, "  login tool folder");
 
+                AppendFiducialTextureInfo(sb, site);
+
                 // The full SavedVariables listing, INCLUDING the files that were not
                 // copied. This is the index that makes an omission visible.
                 if (site.FlavorDir != null)
@@ -681,6 +683,63 @@ namespace SkuInstaller
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
             result.FileCount++;
+        }
+
+        /// <summary>
+        /// Whether the login tool's recolored recognition textures are in the
+        /// client's Interface folder. Screen recognition classifies every glue
+        /// screen from the exact colours of these textures, so a missing marker
+        /// means the tool can only ever answer "unknown screen" — the one fact
+        /// the first live "tool says unknown on every screen" bundle could not
+        /// settle, because nothing in it looked at Interface\.
+        /// </summary>
+        private static void AppendFiducialTextureInfo(StringBuilder sb, ClientSite site)
+        {
+            try
+            {
+                string interfaceDir = Directory.GetParent(site.AddOnsPath)?.FullName;
+                if (interfaceDir == null) return;
+
+                bool markerPresent = File.Exists(Path.Combine(interfaceDir, LoginToolInstaller.FiducialMarkerRelPath));
+
+                int total = 0;
+                DateTime newestUtc = DateTime.MinValue;
+                var parts = new List<string>();
+                foreach (string folder in LoginToolInstaller.InterfaceTextureFolders)
+                {
+                    string dir = Path.Combine(interfaceDir, folder);
+                    if (!Directory.Exists(dir)) { parts.Add(folder + " missing"); continue; }
+
+                    int n = 0;
+                    try
+                    {
+                        foreach (string f in Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories))
+                        {
+                            if (!f.EndsWith(".blp", StringComparison.OrdinalIgnoreCase)) continue;
+                            n++; total++;
+                            try
+                            {
+                                DateTime t = File.GetLastWriteTimeUtc(f);
+                                if (t > newestUtc) newestUtc = t;
+                            }
+                            catch { }
+                        }
+                    }
+                    catch { }
+                    parts.Add($"{folder} {n}");
+                }
+
+                string detail = string.Join(", ", parts);
+                sb.AppendLine(markerPresent
+                    ? $"Recognition textures: present — marker OK, {total} .blp ({detail}), " +
+                      $"newest {newestUtc:yyyy-MM-ddTHH:mm:ssZ}"
+                    : $"Recognition textures: MISSING — Interface\\{LoginToolInstaller.FiducialMarkerRelPath} " +
+                      $"not found, screen recognition cannot work ({total} .blp: {detail})");
+            }
+            catch (Exception ex)
+            {
+                sb.AppendLine($"Recognition textures: (check failed: {ex.Message})");
+            }
         }
 
         /// <summary>The ten newest files of a folder, with UTC date and size.</summary>

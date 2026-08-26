@@ -122,6 +122,8 @@ out of date addons will be loaded==Устаревшие аддоны будут 
 out of date addons will not be loaded==Устаревшие аддоны не будут загружены
 addon menu only available on character selection screen==Меню аддонов доступно только на экране выбора персонажа
 Unknown screen. Close the dialog in the game, then press Alt F1 twice.==Неизвестный экран. Закройте диалог в игре, затем дважды нажмите Alt F1.
+The screen recognition textures are missing from the game folder. Please run the Sku installer to reinstall the login tool.==Текстуры распознавания экрана отсутствуют в папке игры. Запустите установщик Sku, чтобы переустановить инструмент входа.
+Login tool version==Инструмент входа, версия
 The character list may be incomplete. Press Alt F1 twice to rebuild it.==Внимание, список персонажей может быть неполным. Дважды нажмите Alt F1, чтобы построить его заново.
 The game has opened the server selection.==Игра открыла выбор сервера.
 close server selection==закрыть выбор сервера

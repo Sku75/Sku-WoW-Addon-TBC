@@ -122,6 +122,8 @@ out of date addons will be loaded==Les modules obsolètes seront chargés
 out of date addons will not be loaded==Les modules obsolètes ne seront pas chargés
 addon menu only available on character selection screen==Le menu des modules n'est disponible que sur l'écran de sélection des personnages
 Unknown screen. Close the dialog in the game, then press Alt F1 twice.==Écran inconnu. Fermez la boîte de dialogue dans le jeu, puis appuyez deux fois sur Alt F1.
+The screen recognition textures are missing from the game folder. Please run the Sku installer to reinstall the login tool.==Les textures de reconnaissance d'écran sont absentes du dossier du jeu. Veuillez exécuter l'installateur Sku pour réinstaller l'outil de connexion.
+Login tool version==Outil de connexion version
 The character list may be incomplete. Press Alt F1 twice to rebuild it.==Attention, la liste des personnages est peut-être incomplète. Appuyez deux fois sur Alt F1 pour la reconstruire.
 The game has opened the server selection.==Le jeu a ouvert la sélection de royaume.
 close server selection==fermer la sélection de royaume

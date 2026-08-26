@@ -410,7 +410,7 @@ InitLogin(s := "") {
     ; screen. Returning silently is what left the user stranded with no idea
     ; whether the tool was thinking or dead.
     Log("InitLogin: no known screen (" screen ") - telling the user")
-    Say(T("Unknown screen. Close the dialog in the game, then press Alt F1 twice."))
+    SayUnknownScreenHint()
 }
 
 ; ---------- login screen: the dialog itself ----------

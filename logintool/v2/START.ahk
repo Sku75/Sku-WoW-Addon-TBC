@@ -23,6 +23,12 @@ CoordMode "Mouse", "Screen"
 CoordMode "Pixel", "Screen"
 SetWorkingDir A_ScriptDir "\.."  ; tool root: data\ and log.txt live here
 
+; The tool's own release number, spoken at launch and logged. Three places
+; carry this number and are bumped together at publish time: this constant,
+; the CHANGELOG heading, and Config.LoginToolVersion in the installer (which
+; also writes it into installed-release.txt on deploy).
+global gToolVersion := "3.2"
+
 global gSettingsVersion := "3.0"
 
 #Include includes\log.ahk

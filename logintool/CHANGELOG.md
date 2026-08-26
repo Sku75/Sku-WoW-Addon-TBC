@@ -1,5 +1,52 @@
 # WoW Logintool
 
+## 3.2 (unveröffentlicht)
+
+**"Unbekannter Bildschirm" sagt jetzt, wenn die Erkennungs-Texturen fehlen.**
+Auslöser war ein Nutzer-Logbündel vom 2026-08-26: Spiel erkannt, Helper
+gestartet, Client stand auf der ganz normalen Charakterauswahl — und trotzdem
+kam auf jedem Bildschirm nur "unknown". Auf Era/BC hängt JEDE
+Bildschirm-Erkennung an den exakten Farben der umgefärbten Texturen, die der
+Installer in den Interface-Ordner des Clients kopiert. Fehlen die, kann das
+Tool prinzipbedingt nur "Unbekannter Bildschirm" antworten, und der bisherige
+Hinweis ("Schließe den Dialog … zweimal Alt F1") schickt den Nutzer zu einem
+Dialog, den es nicht gibt.
+
+Das Tool prüft jetzt an genau der Stelle, an der es "Unbekannter Bildschirm"
+sagen würde (CheckMode-Streak und InitLogin, gemeinsame Funktion
+`SayUnknownScreenHint`), ob `Interface\BUTTONS\128RedButton.BLP` beim
+erkannten Client existiert — die eine Textur, an der Login, Charakterauswahl
+und jede Popup-Zeile hängen (GenericRedButton). Fehlt sie, kommt stattdessen:
+"Die Texturen für die Bildschirmerkennung fehlen im Spielordner. Bitte führe
+den Sku-Installer aus, um das Login-Tool neu zu installieren." (neuer
+Lokalisierungs-Schlüssel in allen fünf Sprachen). Der Pfad des Clients kommt
+aus der bestehenden Erkennung (`gDetectedClientDir`, gesetzt in
+`ApplyDetectedGametype`); solange kein Client erkannt ist, bleibt es beim
+alten Hinweis. GETESTET am Client 2026-08-26: BUTTONS und GLUES beiseite
+benannt, Client auf den Anmeldebildschirm gestartet — beide Pfade haben die
+neue Ansage ausgelöst (CheckMode-Streak nach 12 s und InitLogin nach Alt+F1,
+Logzeilen "announcing the texture repair"), Ansage auch gehört.
+
+**Das Tool sagt beim Start jetzt seine Version an.** "Login-Tool Version 3.2"
+als erste Ansage in `Main()` (nach Stimme und Lokalisierung, vor allem
+anderen), dieselbe Nummer geht als `START: WoW Login Tool 3.2` ins Log — ein
+Logbündel verrät damit, welcher Stand LIEF, nicht nur, was der Installer
+zuletzt abgelegt hat (installed-release.txt kann von einer Dev-Kopie überholt
+sein). Die Nummer lebt als `gToolVersion` in v2\START.ahk und wird beim
+Veröffentlichen zusammen mit dieser CHANGELOG-Überschrift und
+`Config.LoginToolVersion` im Installer gepflegt. Neuer
+Lokalisierungs-Schlüssel "Login tool version" in allen fünf Sprachen.
+Ansage am Client UNGETESTET (nur `/validate`).
+
+Flankierend im Installer (nicht in diesem Zip): Beim Kopieren der Texturen
+räumt der Installer jetzt zuerst veraltete .blp-Dateien früherer
+Textur-Generationen aus den Payload-Ordnern (BUTTONS, DialogFrame,
+FrameGeneral, GLUES, HELPFRAME) — bisher wurde nur überschrieben, nie
+gelöscht, und eine überlebende alte Umfärbung passt nicht mehr zu data.ini.
+Außerdem meldet das Log-Bündel (system-info.txt) jetzt pro Client, ob die
+Erkennungs-Texturen vorhanden sind. Geprüft per SkuSelfTest `texturesweep`
+(11 Checks, alle grün).
+
 ## 3.1 (2026-08-20)
 
 Ausgeliefert als 3.1, nicht als 3.0: Eine 3.0 ist nie veröffentlicht worden.

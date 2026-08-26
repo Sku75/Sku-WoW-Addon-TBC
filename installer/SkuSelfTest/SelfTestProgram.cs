@@ -41,6 +41,12 @@ namespace SkuInstaller
                 return;
             }
 
+            if (args.Length > 0 && args[0] == "texturesweep")
+            {
+                RunTextureSweepTest();
+                return;
+            }
+
             if (args.Length > 0 && args[0] == "selfupdate")
             {
                 RunSelfUpdateTest(args.Length > 1 ? args[1] : "0.1");
@@ -524,6 +530,77 @@ namespace SkuInstaller
 
             Console.WriteLine();
             Console.WriteLine(fails == 0 ? "TOCTEST: ALL PASS" : $"TOCTEST: {fails} FAILURE(S)");
+            if (fails > 0) Environment.ExitCode = 1;
+        }
+
+        /// <summary>
+        /// Drives LoginToolInstaller.RemoveStaleFiducialTextures against a
+        /// throwaway payload + Interface tree and verifies its whole contract:
+        /// current-generation files and non-.blp files survive, stale .blp files
+        /// (any casing, dropped subfolders, folders the payload no longer ships)
+        /// are removed with their emptied directories, and everything OUTSIDE the
+        /// payload's folders — Interface\AddOns above all — is never touched.
+        /// </summary>
+        private static void RunTextureSweepTest()
+        {
+            int fails = 0;
+            void Check(string label, bool ok)
+            {
+                Console.WriteLine($"    [{(ok ? "PASS" : "FAIL")}] {label}");
+                if (!ok) fails++;
+            }
+
+            string root = Path.Combine(Path.GetTempPath(), "SkuTextureSweepTest");
+            if (Directory.Exists(root)) Directory.Delete(root, true);
+            string payload = Path.Combine(root, "payload");
+            string iface = Path.Combine(root, "Interface");
+
+            void Put(string baseDir, string rel)
+            {
+                string p = Path.Combine(baseDir, rel);
+                Directory.CreateDirectory(Path.GetDirectoryName(p));
+                File.WriteAllText(p, "x");
+            }
+
+            // The current generation the (fake) zip ships. No FrameGeneral — that
+            // folder plays the "dropped from the payload entirely" case below.
+            Put(payload, @"BUTTONS\128RedButton.BLP");
+            Put(payload, @"GLUES\COMMON\Current.blp");
+
+            // The client's Interface folder before the sweep.
+            Put(iface, @"BUTTONS\128RedButton.BLP");        // current -> survives
+            Put(iface, @"BUTTONS\LegacyButton.BLP");        // stale, upper-case ext -> removed
+            Put(iface, @"Glues\Common\Current.blp");        // current, different casing -> survives
+            Put(iface, @"GLUES\OLDGEN\dead.blp");           // stale subfolder -> removed, folder too
+            Put(iface, @"GLUES\readme.txt");                // not a .blp -> survives
+            Put(iface, @"FrameGeneral\gone.blp");           // payload dropped the folder -> removed via the historical list
+            Put(iface, @"AddOns\SomeAddon\art.blp");        // outside the sweep -> survives
+            Put(iface, @"CustomFolder\user.blp");           // user's own folder -> survives
+
+            Console.WriteLine("=== stale fiducial texture sweep ===");
+            LoginToolInstaller.RemoveStaleFiducialTextures(payload, iface);
+
+            Check("current marker survives", File.Exists(Path.Combine(iface, @"BUTTONS\128RedButton.BLP")));
+            Check("current file survives casing differences", File.Exists(Path.Combine(iface, @"GLUES\COMMON\Current.blp")));
+            Check("stale .BLP removed", !File.Exists(Path.Combine(iface, @"BUTTONS\LegacyButton.BLP")));
+            Check("stale subfolder file removed", !File.Exists(Path.Combine(iface, @"GLUES\OLDGEN\dead.blp")));
+            Check("emptied subfolder removed", !Directory.Exists(Path.Combine(iface, @"GLUES\OLDGEN")));
+            Check("non-.blp file untouched", File.Exists(Path.Combine(iface, @"GLUES\readme.txt")));
+            Check("dropped payload folder swept via historical list", !File.Exists(Path.Combine(iface, @"FrameGeneral\gone.blp")));
+            Check("emptied dropped folder removed", !Directory.Exists(Path.Combine(iface, "FrameGeneral")));
+            Check("Interface\\AddOns untouched", File.Exists(Path.Combine(iface, @"AddOns\SomeAddon\art.blp")));
+            Check("unrelated user folder untouched", File.Exists(Path.Combine(iface, @"CustomFolder\user.blp")));
+
+            // Idempotence: a second sweep over the now-clean tree changes nothing.
+            LoginToolInstaller.RemoveStaleFiducialTextures(payload, iface);
+            Check("second sweep is a no-op", File.Exists(Path.Combine(iface, @"BUTTONS\128RedButton.BLP"))
+                                          && File.Exists(Path.Combine(iface, @"GLUES\COMMON\Current.blp"))
+                                          && File.Exists(Path.Combine(iface, @"GLUES\readme.txt")));
+
+            try { Directory.Delete(root, true); } catch { }
+
+            Console.WriteLine();
+            Console.WriteLine(fails == 0 ? "TEXTURESWEEP: ALL PASS" : $"TEXTURESWEEP: {fails} FAILURE(S)");
             if (fails > 0) Environment.ExitCode = 1;
         }
 
