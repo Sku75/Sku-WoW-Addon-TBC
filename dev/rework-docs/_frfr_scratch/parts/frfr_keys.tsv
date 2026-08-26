@@ -1,0 +1,3169 @@
+#format: key	french
+ (Redirected from 	 (Redirigé depuis 
+ (aktiv)	 (actif)
+ (for 1 item)	 pour 1 objet
+ Auktionen	 Enchères
+ Auktionen erstellt	 Enchères créées
+ Du bist Höchstbieter	 Vous êtes le meilleur enchérisseur
+ Einheiten)	 unités)
+ Gegenstände zur Auswahl	 Objets au choix
+ Level 	 niveau 
+ Minuten	 Minutes
+ Nur Kauf 	  achat seul 
+ Prozent	 pour cent
+ Prozent (	 Pour cent (
+ Sekunden	 Secondes
+ Stufe 	 niveau 
+ Stunden	 Heures
+ Tage	 jours
+ Taste 1: 	 Touche 1 : 
+ Taste 2: 	 Touche 2 : 
+ bereit	 Prêt
+ bieten? Eingabe Ja, Escape Nein	 enchérir ? Entrée Oui, Échap Non
+ bis 0	 à 0
+ days	 jours
+ eingeladen	 Invité
+ feste Gegenstände	 Objets fixes
+ für 	 pour 
+ gekauft	 acheté
+ gelb 	 jaune 
+ hat eine Einladung angefordert. Mit /sku invite einladen.	 a demandé une invitation. Invitez avec /sku invite.
+ ice cream	 une glace
+ invalid. canceled.	 invalide. annulé.
+ kaufen? Eingabe Ja, Escape Nein.	 acheter ? Entrée Oui, Échap Non.
+ mal 	 fois 
+ nicht verlernt	 non désappris
+ rot 	 Rouge 
+ set to 	 réglé sur 
+ set to nothing	 réglé sur rien
+ stück	 objets
+ stück wirklich 	 objets 
+ stück wirklich für 	 objets pour 
+ teilt Aurenset 	 partage l'ensemble d'auras 
+ verlernt	 désappris
+ von 	 de 
+ von  	 de 
+ wirklich verlernen? Eingabe Ja, Escape Nein.	 vraiment désapprendre ? Entrée oui, Échap non.
+#	Dièse
+%d Sockel verfuegbar	%d châsses disponibles
+%s Audiogeräte verfügbar. Aktuell Nummer %s.	%s périphériques audio disponibles. Numéro actuel %s.
+%s Treffer — bitte genauer:	%s correspondances, veuillez préciser :
+%s in Sockel %d gesetzt	%s placée dans la châsse %d
+%s von %s Seiten durchsucht	%s sur %s pages analysées
+(%SKU_KEY_TUTORIALSTEPFORWARD%), to proceed to the next step as soon as you have completed the current step. This only works if you have heard the success sound.	(%SKU_KEY_TUTORIALSTEPFORWARD%), pour passer à l'étape suivante dès que vous avez terminé l'étape en cours. Cela ne fonctionne que si vous avez entendu le son de réussite.
+(%SKU_KEY_TUTORIALSTEPREPEAT%), to hear the instructions from the current step again.	(%SKU_KEY_TUTORIALSTEPREPEAT%), pour réentendre les instructions de l'étape en cours.
+(Daily) 	(Quotidien) 
+(Fehlgeschlagen) 	(Échoué) 
+(Fertig) 	(Terminé) 
+)r\nRuhebonus: 	)r\nbonus de repos : 
+,	Virgule
+, average item level 	, niveau d'objet moyen 
+,SkuAuras,Auren,Auren verwalten,	,Auras,Auras,Gérer les auras,
+,SkuCore,Auktionshaus	,Core,Hôtel des ventes
+-	Moins
+.	Point
+. Eine Bestätigungs-Abfrage erscheint.	. Une demande de confirmation apparaîtra.
+. Press the key again to confirm new binding. The current bound action will be unbound!	. Appuyez à nouveau sur la touche pour confirmer la nouvelle assignation. L'action actuellement assignée sera supprimée !
+/	Barre oblique
+1 Meter	1 mètre
+10 Grad 10 Meter	10 degrés 10 mètres
+10 Player	10 joueurs
+100 Prozent	100 pour cent
+15 degrees in front	15 degrés devant
+180 degrees 5-35 meters 10 seconds	100 degrés, 5 à 45 mètres, 22 secondes
+180 degrees in front	180 degrés devant
+180 front	100 devant
+2 Meter	2 mètres
+20 Grad 20 Meter	20 degrés 20 mètres
+20 Grad 30 Meter	20 degrés 30 mètres
+25 Player	25 joueurs
+3 Meter	3 mètres
+360 10 accurate	360 10 précis
+360 10 fast	360 10 rapide
+360 10 very fast	360 10 très rapide
+360 30 accurate	360 30 précis
+360 30 fast	360 30 rapide
+360 degrees 0-10 meters 10 seconds	360 degrés, 0 à 10 mètres, 15 secondes
+360 degrees 0-10 meters 2 second	360 degrés 0-10 mètres 2 secondes
+360 degrees 0-10 meters 4 seconds	360 degrés, 0 à 10 mètres, 10 secondes
+360 degrees 3-30 meters 10 seconds	360 degrés, 3 à 30 mètres, 15 secondes
+360 degrees 3-30 meters 20 seconds	360 degrés, 3 à 30 mètres, 28 secondes
+360 degrees from top to bottom 3-10 meters 15 seconds	360 degrés de haut en bas 3-10 mètres 15 secondes
+360+180 3-10 fast	360+180 3-10 rapide
+40 Grad 40 Meter	40 degrés 40 mètres
+40 Prozent	40 pour cent
+5 Player heroic	5 joueurs héroïque
+5 Player normal	5 joueurs normal
+55 Prozent	55 pour cent
+70 Prozent	70 pour cent
+85 Prozent	85 pour cent
+: drehen auf 	: tourner vers 
+: neigen auf 	: incliner vers 
+: vorwärts von 	: avancer depuis 
+;Meter	 Mètre
+;ausrufungszeichen;	;point d'exclamation;
+;back;quote;	;arrière;guillemet;
+;caret;	;accent circonflexe;
+;degree;	;degré;
+;doppelpunkt;	;deux-points;
+;fragezeichen;	;point d'interrogation;
+;gleich;	;égal;
+;klammer;	;parenthèse;
+;prozent;	;pour cent;
+;punkt;	;point;
+;slash;	;barre oblique;
+;spitze;klammer;	;angle;parenthèse;
+;tilde;	;tilde;
+;und;	;et;
+<	Plus petit
+>	Plus grand
+A dot spell tick has caused damage	Un tic de sort de dégâts sur la durée a infligé des dégâts
+A hot spell tick has caused damage	Un tic de sort de soin sur la durée a été appliqué
+ACC_MenuTitle	Menu rapide
+ACC_OtherTitle	Autre
+ACC_Placeholder1	Volume des espaces réservés
+ACC_Placeholder2	Voix des espaces réservés
+ACC_SpeechTitle	Sortie vocale
+ACC_VolumesTitle	Volume
+ACTIVE_TALENT_GROUP_CHANGED	groupe de talents actif modifié
+AH_CategoriesLoading	Chargement des catégories
+AH_NoResults	aucun résultat
+AH_QueryBusy	Hôtel des ventes occupé, recherche non démarrée
+AL_DifficultyFallback	Difficulté
+AL_Instances	Instances
+AL_Raids	Raids
+AL_Wishlist	Liste de souhaits
+AL_WishlistAddToFavorites	ajouter à la liste de souhaits
+AL_WishlistByDungeon	Par donjon
+AL_WishlistBySlot	Par emplacement
+AL_WishlistItemAdded	Ajouté à la liste de souhaits
+AL_WishlistItemRemoved	Retiré de la liste de souhaits
+AL_WishlistNoDungeonHits	Aucune correspondance dans votre liste de souhaits
+AL_WishlistRemoveFromFavorites	retirer de la liste de souhaits
+AL_WorldBosses	Boss de monde
+AUCTION_BIDDER_LIST_UPDATE	liste des enchères sur lesquelles vous avez misé mise à jour
+AUCTION_ITEM_LIST_UPDATE	Liste des enchères disponibles mise à jour
+AUCTION_OWNED_LIST_UPDATE	Liste des enchères que vous avez créées mise à jour
+AURA_AuraRefGroup	Auras créées par vous
+AURA_AuraRefGroupTip	Si une autre de vos auras s'applique actuellement. Seules les auras que vous avez nommées vous-même apparaissent ici
+AURA_ComboPointsShort	Points de combo
+AURA_GeneralEventsGroup	Événements généraux
+AURA_GeneralEventsGroupTip	Tous les événements qui ne sont pas déclenchés par un sort : mêlée, distance, objets, santé, ressources, changement de cible, mort et touches
+AURA_OutWeMH	Enchantement d'arme main droite (nom)
+AURA_OutWeMHTip	Énonce le nom de l'enchantement actuellement sur votre main droite
+AURA_OutWeOH	Enchantement d'arme main gauche (nom)
+AURA_OutWeOHTip	Énonce le nom de l'enchantement actuellement sur votre main gauche
+AURA_PowerActive	Votre ressource actuelle
+AURA_PowerActiveTip	La ressource dont la barre est affichée actuellement, en pourcentage - pour un druide, mana en forme normale, rage en forme d'ours, énergie en forme de félin
+AURA_PowerEnergy	Votre énergie
+AURA_PowerEnergyOutTip	Votre énergie en pourcentage
+AURA_PowerEnergyTip	Votre énergie en pourcentage, quelle que soit la barre affichée. Jamais vrai si votre personnage n'a pas d'énergie
+AURA_PowerMana	Votre mana
+AURA_PowerManaOutTip	Votre mana en pourcentage
+AURA_PowerManaTip	Votre mana en pourcentage, quelle que soit la barre affichée. Jamais vrai si votre personnage n'a pas de mana
+AURA_PowerRage	Votre rage
+AURA_PowerRageOutTip	Votre rage en pourcentage
+AURA_PowerRageTip	Votre rage en pourcentage, quelle que soit la barre affichée. Jamais vrai si votre personnage n'a pas de rage
+AURA_PowerRunic	Votre puissance runique
+AURA_PowerRunicOutTip	Votre puissance runique en pourcentage
+AURA_PowerRunicTip	Votre puissance runique en pourcentage, quelle que soit la barre affichée. Jamais vrai si votre personnage n'a pas de puissance runique
+AURA_SpellEventsGroup	Événements de sort
+AURA_SpellEventsGroupTip	Tous les événements déclenchés par un sort
+AURA_VitalsGroupTip	La santé du joueur, ou l'une de ses ressources, en pourcentage, plus les points de combo en nombre
+AURA_WeMH	Votre enchantement d'arme en main droite
+AURA_WeMHDur	Durée restante de l'enchantement d'arme en main droite
+AURA_WeMHDurTip	La durée restante de l'enchantement d'arme en main droite, en secondes
+AURA_WeMHTip	L'enchantement d'arme sur votre main droite (poison, huile, pierre à aiguiser, imprégnation de chaman, etc.)
+AURA_WeOH	Votre enchantement d'arme en main gauche
+AURA_WeOHDur	Durée restante de l'enchantement d'arme en main gauche
+AURA_WeOHDurTip	La durée restante de l'enchantement d'arme en main gauche, en secondes
+AURA_WeOHTip	L'enchantement d'arme sur votre main gauche
+AURA_WeaponEnchantRemoved	Enchantement d'arme expiré
+AURA_WeaponEnchantRemovedShort	Enchantement disparu
+AURA_WeaponEnchantRemovedTip	Un enchantement d'arme temporaire (poison, pierre à aiguiser, huile de mage) a expiré
+AUTOFOLLOW_BEGIN	début du suivi automatique
+AUTOFOLLOW_END	fin du suivi automatique
+Abbrechen	Annuler
+Abgabe	Livraison
+Abgebrochen	Annulé
+Abgebrochen, 	Annulé, 
+Abgeschlossen	Terminé
+Ablehnen	Refuser
+Absorbed Damage: 	Dégâts absorbés : 
+Absorbed hits: 	Coups absorbés : 
+Absorbiert	Absorbé
+Abwählen	Désélectionner
+Accept	Accepter
+Accepted Quest	Quête acceptée
+Accuracy one meter	Précision un mètre
+Accuracy three meters	Précision trois mètres
+Achievements	Hauts faits
+Achtung, Set ist fuer eine andere Sprache. Auren koennten nicht ausloesen.	Attention, cet ensemble est pour une autre langue. Les auras risquent de ne pas se déclencher.
+Achtung: Farben sind reine Anzeige. Wenn du bei freigegebener Kamera Plaketten ausblendest, koennen Ziel- und Entfernungsansagen ungenauer werden oder fehlen.	Remarque : les couleurs sont purement visuelles. Si vous masquez les barres de nom alors que la caméra est libérée, les annonces de cible et de distance peuvent devenir moins précises, voire absentes.
+Achtung: Start einer spezialaufgabe. Halte dich exakt an die Anweisungen! 	Attention : début d'une tâche spéciale. Suivez les instructions à la lettre ! 
+Action bars	Barres d'action
+Active waypoint or route or recording	Suit un point de passage ou un itinéraire, ou enregistre
+Activity	Activité
+Activity: 	Activité : 
+Add Dead on 0 percent	Ajouter Mort à 0 pour cent
+Add Link to chat	Ajouter le lien au chat
+Add all steps as linked steps	Ajouter toutes les étapes comme étapes liées
+Add new entry	Ajouter une nouvelle entrée
+Add new filter	Ajouter un filtre
+Add sound on 100 percent	Ajouter un son à 100 pour cent
+Add to favorites	Ajouter aux favoris
+Addons	Extensions
+Affliction	Affliction
+Afterwards you have mastered the basics and can return to your first character and play it without assistance, or you can continue playing with the second character.	Vous aurez ensuite maîtrisé les bases et pourrez revenir à votre premier personnage pour y jouer sans assistance, ou continuer à jouer avec le second personnage.
+Aktion für Aura	Action de l'aura
+Aktion nicht mehr vorhanden	L'action n'existe plus
+Aktive Listung	Annonce active
+Aktivieren	Activer
+Aktivierte	Activé
+Aktivität #	Activité n°
+Aktualisiert	Mis à jour
+Aktuelle Karte Entfernung	Carte actuelle par distance
+Aktuelle Karte Entfernung mit Auto	Carte actuelle par distance avec auto
+Aktuelle Preisdaten (für ein Stück)	Données de prix récentes (pour un objet)
+Aktuelle Quests	Quêtes actuelles
+Aktuelle Ressource	Ressource actuelle
+Aktuelles Ausgabegerät: Nummer %s: %s	Périphérique de sortie actuel : numéro %s : %s
+Aktuelles Element: 	Objet actuel : 
+Aldor zone entered	Zone Aldor atteinte
+Aldor zone left	Zone Aldor quittée
+All	Tout
+All NPCs	Tous les PNJ
+All NPCs in zone	Tous les PNJ de la zone
+All Required	Tous requis
+All alphabetically	Tout par ordre alphabétique
+All enemies	Tous les ennemis
+All entries	Tous les articles
+All fights	Tous les combats
+All opened	tous ouverts
+All voice output via blizzard tts	Toute la synthèse vocale via la synthèse Blizzard
+Alle	Tout
+Alle (	Tout (
+Alle Auren exportieren	Exporter toutes les auras
+Alle Auren löschen	Supprimer toutes les auras
+Alle Routen und Wegpunkte löschen	Supprimer tous les itinéraires et points de passage
+Alle Tasten Belegungen wurden auf die Standardeinstellungen zurückgesetzt.	Toutes les assignations de touches ont été réinitialisées.
+Alle aktueller Kontinent	Tout sur le continent actuel
+Alle auren gelöscht	Toutes les auras supprimées
+Alles gelöscht	Tout supprimer
+Alles repariert	Tout réparé
+Alles zurücksetzen	Tout réinitialiser
+Allgemeines	Général
+Alliance zone entered	Zone Alliance atteinte
+Alliance zone left	Zone Alliance quittée
+Als Gruppe	Butin : butin de groupe
+Always	Toujours
+Always follow the instructions exactly. Never do anything other than the tutorial instructions are requesting, as long as you want to play the tutorial. It will break if you're doing anything else. Always proceed to the next step when you have completed a step.	Suivez toujours les instructions à la lettre. Ne faites jamais autre chose que ce que les instructions du tutoriel demandent, tant que vous souhaitez suivre le tutoriel. Il s'interrompra si vous faites autre chose. Passez toujours à l'étape suivante lorsque vous avez terminé une étape.
+An Chat schicken	Publier dans le chat
+An Gruppe teilen	Partager avec le groupe
+Anderer Kontinent	Autre continent
+Anführer	Chef
+Annahme	Début de quête
+Annehmen	Accepter
+Announce deaths	Annoncer les morts
+Announce enemies entering combat	Annoncer les ennemis entrant en combat
+Announce enemies entering or leaving combat	Annoncer les ennemis entrant en combat ou le quittant
+Announce enemies leaving combat	Annoncer les ennemis quittant le combat
+Announce friendly and hostile players	Annoncer les joueurs alliés et hostiles
+Announce only numbers for entering or leaving combat notifications	N'annoncer que les nombres pour les notifications d'entrée ou de sortie de combat
+Announce out of range	Annoncer hors de portée
+Announce player controled units with generic descriptions	Annoncer les unités contrôlées par des joueurs avec des descriptions génériques
+Announce quest abandoned	Annoncer les quêtes abandonnées
+Announce quest accepted	Annoncer les quêtes acceptées
+Announce quest completed	Annoncer les quêtes terminées
+Announce quest items	Annoncer les objets de quête
+Announce quest progress	Annoncer la progression des quêtes
+Announce relative number of enemies in combat	Annoncer le nombre relatif d'ennemis en combat
+Announce zone names	Annoncer les noms de zone
+Ansage	Annoncer
+Anwenden	Appliquer
+Any	tous
+Anzahl Auktionen	Nombre d'enchères
+Anzahl der Gegner ansagen	Annoncer le nombre d'ennemis
+Apostrophe	apostrophe
+Application Viewer	Visionneuse de candidatures
+Apply settings	Appliquer les réglages
+Arc	Rayon
+Arcane	Arcane
+Arkan	Arcane
+Arms	Armes
+Arrived at Point A	arrivé au point A
+Arrived at Point B	arrivé au point B
+Arrived at target	arrivé à destination
+Arrived;at;waypoint	arrivé;au;point de passage
+Assassination	Assassinat
+Assign nothing	N'assigner aucune action
+Atlas Loot	Atlas Loot
+Atlas Loot addon missing	Extension AtlasLoot manquante
+AtlasLoot addon missing	Extension AtlasLoot manquante
+Attached	Joint
+Attachments	Pièces jointes
+Attention, important before you get into action: If you are new to the game, you can get help with your first steps with the F1 key. If you do not know how to play the game, press F1 now to start a tutorial. Don't do other stuff first. The tutorial might fail if you do things on your own. So, if you would like assistance, press the F1 key now.	Attention, important avant de vous lancer : si vous débutez, vous pouvez obtenir de l'aide pour vos premiers pas avec la touche F1. Si vous ne savez pas comment jouer, appuyez sur F1 maintenant pour lancer un tutoriel. Ne faites rien d'autre avant. Le tutoriel risque d'échouer si vous agissez de votre côté. Donc, si vous souhaitez de l'aide, appuyez sur la touche F1 maintenant.
+Attribut für Bedingung	Attribut de la condition
+Attributes	Valeurs
+Auction house	Hôtel des ventes
+AuctionFrame	Hôtel des ventes
+Audio	Audio
+Audio Dauer Pause	Vitesse de la synthèse vocale
+Audio Log	Journal audio
+Audio Menü Schnellzugriff	Accès rapide au menu audio
+Audio Menü visuell	Menu audio visuel
+Audio notification on chat message	Notification audio sur message de chat
+Audio notification on the end of chat messages	Notification audio à la fin des messages de chat
+Audio-Kanäle	Canaux audio
+Audio-Kanäle,	Canaux audio,
+Audio-Settings	Réglages audio
+Aufzeichnung beendet	Enregistrement terminé
+Aufzeichnung läuft	Enregistrement en cours
+Auktion erstellt	Enchère créée
+Auktion gewonnen: 	Enchère remportée : 
+Auktion nicht mehr an dieser Stelle, Kauf abgebrochen	Enchère absente de cette position, achat annulé
+Auktion vergriffen	Enchère épuisée
+Auktionen	Enchères
+Auktionshaus	Hôtel des ventes
+Aura	Aura
+Aura Aktion: 	Action de l'aura : 
+Aura Ausgaben:r\n	Sorties de l'aura :r\n
+Aura Bedingungen:r\n	Conditions de l'aura :r\n
+Aura Elementer\n	Éléments de l'aurar\n
+Aura Set importieren	Importer un jeu d'auras
+Aura Sets verwalten	Gérer les jeux d'auras
+Aura Typ	Type d'aura
+Aura Typ: 	Type d'aura : 
+Aura daten defekt	Données d'aura corrompues
+Aura erstellen	Créer l'aura
+Aura erstellt	Aura créée
+Aura exportiert	Auras exportées
+Aura gespeichert	Aura enregistrée
+Aura importieren	Importer des auras
+Aura importiert	Auras importées
+Aura importiert:	Auras importées :
+Aura nicht erstellt	Aura non créée
+Aura speichern	Enregistrer l'aura
+Aura version zu alt	Version d'aura trop ancienne
+Aura, die in der Buff liste des Ziels gesucht oder ausgeschlossen wurde	aura à inclure ou exclure de la liste des buffs de la cible
+Aura, die in der Debuff liste des Ziels gesucht oder ausgeschlossen wurde	aura à inclure ou exclure de la liste des debuffs de la cible
+Auren	Auras
+Auren verwalten	Gérer les auras
+Aurenset %s geteilt	Ensemble d'auras %s partagé
+Aurenset %s von %s empfangen. Unter Auren, Sets, Empfangene Sets annehmen.	Ensemble d'auras %s reçu de %s. Acceptez-le sous Auras, Ensembles, Ensembles reçus.
+Aurenset uebernommen, %s Auren	Ensemble d'auras accepté, %s auras
+Aus	Désactivé
+Aus 	Désactivé 
+Ausgabe	Sortie
+Ausgabe Typ	Type de sortie
+Ausgabe von Aura	Sortie de l'aura
+Ausgaben	Sorties
+Ausgewichen	Esquivé
+Ausgewählt: 	Sélectionné : 
+Auswählen	Sélectionner
+Auto	Auto
+Auto announce global direction	Annoncer automatiquement la direction globale
+Auto follow	Suivi automatique
+Auto repair at vendors	Réparation automatique chez les vendeurs
+Auto sell junk at vendors	Vente automatique de la camelote chez les vendeurs
+Auto set hard target to soft target for	Définir automatiquement la cible fixe sur la cible souple pour
+Auto set private Sku raid targets on in combat targets without a raid target	Définir automatiquement des symboles de raid Sku privés sur les cibles en combat sans symbole de raid
+Auto sound on Tom Tom arrow	Signal automatique pour la flèche TomTom
+Auto switching to next similar waypoint	Réglages du prochain point de passage similaire
+Automatisch akzeptieren	Acceptation automatique
+Available	Disponible
+Available Quest	Quête disponible
+Avoid incoming Scarlet Crusade arrows and Javelins by moving out of their line of fire!	Évitez les flèches et les javelots de la Croisade écarlate en sortant de leur ligne de tir !
+BAG_UPDATE	mise à jour du sac
+BIS info	Infos BIS
+Back	Retour
+Back Button	Retour
+Bad Target	Cible invalide
+Badge	Insigne
+Bag	Sac
+Bag 1	Sac 1
+Bag 2	Sac 2
+Bag 3	Sac 3
+Bag 4	Sac 4
+Bag 5	Sac 5
+Bag 6	Sac 6
+Bag-slot	Emplacement de sac
+Bagnon Bank	Banque Bagnon
+Bagnon Guild	Guilde Bagnon
+Bagnon Taschen	Sacs Bagnon
+Bags	Emplacements de sac
+Balance	Équilibre
+Bank	Banque
+BankFrame	Banque
+Bankfächer	Onglets de banque
+Barber Shop	Salon de coiffure
+Basis-Auren	Auras de base
+Battle Net whisper	Chuchotement Battle.net
+Beacon Volume	Volume de la balise
+Bearbeiten	Modifier
+Beast mastery	Maîtrise des bêtes
+Bedarf bevor Gier	Butin : Besoin avant cupidité
+Bedingung hinzufügen	Ajouter une condition
+Bedingungen	Conditions
+Beep	Bip
+Befehle: list, current, set N, find <text>, restart	Commandes : list, current, set N, find <texte>, restart
+Beginn des Dann Teils der Aura	Début de la partie « alors » de l'aura
+Bei Interagieren zum Ziel laufen	Se déplacer vers la cible lors de l'interaction
+Belegung gelöscht	Assignation supprimée
+Belegung löschen	Supprimer l'assignation
+Belohnungen:r\n	Récompenses :r\n
+Belohnungenr\n	Récompensesr\n
+Benny Hill	Benny Hill
+Bereits höheres Gebot vorhanden	Une enchère supérieure existe
+Bereitschaft check	vérification de préparation
+Berufe	Métiers
+Best In Slot	Best In Slot
+Bestätigung veraltet, Kauf abgebrochen	Confirmation expirée, achat annulé
+Bewerbung	Candidature
+Bewerbung gesendet	Candidature envoyée
+Bewerbung zurückgezogen	Candidature retirée
+Bieten	Enchère
+Bind key	Assignation de touche
+Binding canceled	Assignation annulée
+Bisherige Aura Elementer\n	Éléments actuels de l'aurar\n
+Bitte eine Zahl angeben. Beispiel: /skuaudio set 2	Veuillez indiquer un numéro. Exemple : /skuaudio set 2
+Blacklisted	Sur liste noire
+Blau	Bleue
+Blizzard TTS	Synthèse vocale Blizzard
+Blocked Damage: 	Dégâts bloqués : 
+Blocked hits: 	Coups bloqués : 
+Blood	Sang
+Blood Elf	Elfe de sang
+Blood dps	Sang dps
+Blood tank	Sang tank
+Blue	Bleu
+Blutelf	Elfe de sang
+Bobber	bouchon
+Both bindings are kept.	Les deux assignations sont conservées.
+Bottom Multi Bar Left	barre d'action en bas à gauche
+Bottom Multi Bar Right	barre d'action en bas à droite
+Breaks: If you can't finish the tutorial because you don't have enough time or unexpected events such disconnects are disrupting the tutorial, you may resume the tutorial once you are back. Open this help with (F1). Go to the bottom. There, you will be offered to continue the tutorial.	Pauses : si vous ne pouvez pas terminer le tutoriel par manque de temps ou si des événements imprévus comme des déconnexions l'interrompent, vous pourrez le reprendre à votre retour. Ouvrez cette aide avec (F1). Allez tout en bas. Vous y trouverez la possibilité de poursuivre le tutoriel.
+Browse	Parcourir
+Buff Liste Ziel (L)	liste des buffs de la cible (L)
+Buff oder Debuff erhalten oder erneuert	buff ou debuff obtenu ou renouvelé
+Buff oder Debuff verloren	buff ou debuff perdu
+Buffs	Buffs
+Bullet lists as numbers	Listes à puces sous forme de nombres
+Busy	Occupé
+Button	Bouton
+Buy 	Acheter 
+By distance	Par distance
+By name	Par nom
+Bär	Farouche (Tank)
+CALENDAR_FILTER_ALL_HOLIDAYS	Fêtes annuelles
+CAM_ActivateSku	Restaurer le standard Sku, après confirmation par Entrée quittez le jeu avec Alt F4 et redémarrez
+CAM_Active	(actif)
+CAM_AltF4Reminder	Appuyez sur Alt F4 pour fermer le jeu.
+CAM_DistClose	Proche
+CAM_DistFar	Loin
+CAM_DistMax	Maximum
+CAM_DistMedium	Moyenne
+CAM_DistNormal	Normale
+CAM_DistSet	Distance de la caméra réglée sur
+CAM_DistVeryFar	Très loin
+CAM_Distance	Distance de la caméra
+CAM_FollowAlways	Toujours - standard Sku, requis pour la navigation par points de passage
+CAM_FollowChar	Style de suivi de la caméra
+CAM_FollowMoving	Uniquement en mouvement
+CAM_FollowNever	Jamais
+CAM_FollowSet	Suivi de la caméra réglé sur
+CAM_FollowSmart	Intelligent
+CAM_FreeMenu	Déverrouiller le menu vidéo
+CAM_Height	Hauteur de la caméra
+CAM_HeightBehind	Derrière le personnage, à plat
+CAM_HeightBird	Vue à vol d'oiseau
+CAM_HeightHigh	Surélevée
+CAM_HeightHint	Remarque : ne fonctionne que si le style de suivi de la caméra n'est pas réglé sur Toujours.
+CAM_HeightNormal	Normale, légèrement surélevée
+CAM_HeightSet	Hauteur de la caméra réglée sur
+CAM_LockPending	Vraiment réinitialiser au standard Sku ? Entrée pour confirmer, Échap pour annuler.
+CAM_Locked	verrouillé
+CAM_MenuTitle	Caméra
+CAM_More	Plus de fonctions de caméra
+CAM_NPAll	Toutes les barres de nom
+CAM_NPEnemy	Barres de nom ennemies
+CAM_NPFriendly	Barres de nom alliées
+CAM_NPOff	Barres de nom désactivées
+CAM_NPOn	Barres de nom activées
+CAM_Nameplates	Barres de nom
+CAM_OverShoulder	Vue par-dessus l'épaule
+CAM_OverShoulderOff	Vue par-dessus l'épaule désactivée
+CAM_OverShoulderOn	Vue par-dessus l'épaule activée
+CAM_Pitch	Vitesse d'inclinaison de la caméra
+CAM_PitchFast	Rapide
+CAM_PitchNormal	Normale
+CAM_PitchSet	Vitesse d'inclinaison réglée sur
+CAM_PitchSlow	Lente
+CAM_PitchVeryFast	Très rapide
+CAM_PleaseRestart	Standard Sku restauré. Veuillez redémarrer le jeu.
+CAM_ResetConfirm	Réinitialiser la caméra au standard Sku ?
+CAM_SkuDefault	Standard Sku
+CAM_SkuDefaultOff	Standard Sku désactivé. Fonctions de caméra déverrouillées.
+CAM_SkuDefaultOn	Standard Sku activé.
+CAM_SkuLocked	Fonction verrouillée par le standard Sku. Déverrouillez d'abord.
+CAM_StatusFree	non actif
+CAM_StatusLocked	actuellement actif
+CAM_TransInstant	Instantanée
+CAM_TransSet	Transition de la caméra réglée sur
+CAM_TransSmooth	Fluide
+CAM_Transition	Transition de la caméra
+CAM_UIHidden	Interface masquée
+CAM_UIOff	Interface masquée
+CAM_UIOn	Interface affichée
+CAM_UIShown	Interface affichée
+CAM_UIToggle	Afficher ou masquer l'interface
+CAM_UnlockConfirm	Déverrouiller la caméra ?
+CANCEL_LOOT_ROLL	annuler le jet de butin
+CASH ON DELIVERY	CONTRE REMBOURSEMENT
+CHARACTER_POINTS_CHANGED	points de talent modifiés
+CHAT_MSG_CHANNEL	message de chat canal
+CHAT_MSG_CHANNEL_NOTICE	message de chat avis de canal
+CHAT_MSG_LOOT	message de chat objets du butin
+CHAT_MSG_MONEY	message de chat argent du butin
+CHAT_MSG_SAY	message de chat dire
+CHAT_MSG_WHISPER	message de chat chuchotement
+CHAT_MSG_WHISPER_INFORM	message de chat chuchotement envoyé
+CURRENT_COORDINATES	Coordonnées actuelles 4 mètres
+CURRENT_COORDINATES_10	Coordonnées actuelles 10 mètres
+CURRENT_COORDINATES_20	Coordonnées actuelles 20 mètres
+CURRENT_COORDINATES_4	Coordonnées actuelles 4 mètres
+CURRENT_SPELL_CAST_CHANGED	incantation en cours modifiée
+CURRENT_TARGET	ID de votre cible actuelle
+CURSOR_CHANGED	curseur modifié
+Calendar	Calendrier
+Cancel Button	Annuler
+Casting	Incantation
+Category	Catégorie
+Caution: Cash on delivery	Attention : contre remboursement
+Change Role	Changer de rôle
+Channels	Canaux
+Character	Perso
+CharacterFrame	Personnage
+Chat notification on enabling/disabling soft targeting categories	Notification de chat lors de l'activation/désactivation des catégories de ciblage souple
+Chat settings	Réglages du chat
+Chat von kreaturen automatisch lesen	Lire automatiquement le chat des créatures
+ChatTabWhisper	Chuchotements	--name of the default chat tab that only carries whispers
+Chest	Coffre
+Chormusik 1	Musique chorale 1
+Chormusik 2	Musique chorale 2
+Chormusik 3	Musique chorale 3
+Chormusik 4	Musique chorale 4
+Circle	cercle
+Class Trainer	Maître
+ClassTrainerFrame	Maître de classe
+Classes	Classes
+Clear	Effacer
+Clear data	Effacer les données
+Clear history	Effacer l'historique de l'onglet
+Clear list	Effacer la liste
+Clear visited	Effacer les visités
+Close	Fermer
+Closest route	Fermer l'itinéraire
+Collapse all	Tout réduire
+Combat	Combat
+Combat Log	Journal de combat
+Combat end	fin du combat
+Combat start	début du combat
+Comma	virgule
+Communication	Communication
+Companions	Compagnons
+Complete	Terminer
+Complete recording	Terminer l'enregistrement
+Completed	Terminé
+Completed: In log	Terminée : dans le journal de quêtes
+ConfirmationMessage	Êtes-vous sûr ?
+Confirmed	Confirmé
+Contacts	Contacts
+Container	Conteneur
+ContainerFrame1	Sacs
+Content 	Contenu 
+Continue	Continuer
+Continuous output	Sortie continue
+Continuous output every seconds	Sortie continue toutes les x secondes
+Continuous output start at	Début de la sortie continue à
+Continuous output starts after seconds	La sortie continue démarre après (secondes)
+Continuous volume	Volume continu
+Control	Contrôle
+Controls whether a sound is played at the end of a chat message.	Détermine si un son est joué à la fin d'un message de chat.
+Cooldowns	Temps de recharge
+Copper	Cuivre
+Copy data from steps in this tutorial to all steps that are linking to the steps in this tutorial, making them unlinked real steps. Then delete this tutorial	Copier les données des étapes de ce tutoriel vers toutes les étapes qui y sont liées, ce qui en fait des étapes réelles indépendantes. Puis supprimer ce tutoriel
+Copy macro text	Copier le texte de la macro
+Copy text with control plus C and press escape	Copiez le texte avec Contrôle plus C puis appuyez sur Échap
+Copy this step data to all steps that are linking to this step, making them unlinked real steps. Then delete this step	Copier les données de cette étape vers toutes les étapes qui y sont liées, ce qui en fait des étapes réelles indépendantes. Puis supprimer cette étape
+Copy too	Copier aussi
+CorpseLootable	cadavre pillable
+CorpseNotLootable	cadavre non pillable
+CorpseSkinnable	cadavre dépeçable
+Cost	Coût
+Count deaths up	Compter les morts
+Crafting	Artisanat
+Create	Créer
+Create Group	Créer un groupe
+Create new step	Insérer une nouvelle étape
+CreateMacro	Créer une macro
+Creator	Créateur
+CreatureAny	n'importe quelle créature
+CreaturePlayerTarget	créature ciblée
+Critical	Critique
+Critical Damage: 	Dégâts critiques : 
+Critical Max hit: 	Coup critique max : 
+Critical Min hit: 	Coup critique min : 
+Critical hits: 	Coups critiques : 
+Cross	croix
+Crowd Controlled	étourdi
+Currency	Monnaie
+Current fight	Combat actuel
+Current focus target	Cible de focalisation actuelle
+Current map	Carte actuelle
+Current map distance	Distance sur la carte actuelle
+Current target	Cible actuelle
+Cursor	Curseur 
+Custom	Personnalisé
+DAMAGER	Dégâts
+DB_ChatPrefix	Navigateur de donjons Sku :
+DB_ChatPrefixShort	Sku DB :
+DB_Close	Fermer
+DB_CreateListingUnavailable	C_LFGList.CreateListing non disponible
+DB_DeselectAll	Tout désélectionner
+DB_DoEnrollCalled	DoEnroll appelé
+DB_Enroll	S'inscrire
+DB_EnrollFailed	Échec de l'inscription : 
+DB_EnrollStarted	Inscription lancée pour %d donjons
+DB_HeroicPrefix	Héroïque : 
+DB_HeroicSection	Donjons héroïques
+DB_InviteToGroup	Inviter dans le groupe
+DB_Invited	 invité.
+DB_Label	Navigateur de donjons
+DB_Level	Niveau 
+DB_LevelUnknown	 (niveau inconnu)
+DB_No	Non
+DB_NoDungeonsForLevel	Aucun donjon ne correspond à votre niveau
+DB_NoDungeonsSelected	Aucun donjon sélectionné
+DB_NoOtherPlayers	Aucun autre joueur n'est inscrit actuellement
+DB_RefreshList	Actualiser la liste
+DB_RefreshedN	Actualisé. %d joueurs trouvés
+DB_RefreshedNone	Actualisé. Aucun joueur trouvé
+DB_RefreshedOne	Actualisé. 1 joueur trouvé
+DB_RemoveListingUnavailable	RemoveListing non disponible
+DB_Role	Rôle
+DB_RoleActive	 actif
+DB_Role_Damager	Dégâts
+DB_Role_Healer	Soigneur
+DB_Role_Tank	Tank
+DB_SearchInProgress	Recherche en cours, aucun joueur trouvé pour l'instant
+DB_Selected	 sélectionné
+DB_SelfMarker	 (Vous)
+DB_StatusListedAs	Statut : inscrit en tant que 
+DB_StatusNoRole	aucun rôle sélectionné
+DB_StatusNotListed	Statut : non inscrit
+DB_Unenroll	Retirer l'inscription
+DB_Unenrolled	Inscription retirée
+DB_WhisperPlayer	Chuchoter au joueur
+DB_Yes	Oui
+DOWN	BAS
+DPS	DPS
+DSP Effects	Effets DSP
+Damage Meter	Compteur de dégâts
+Damage Split	Répartition des dégâts
+Damage amount	Montant des dégâts
+Damage taken	Dégâts subis
+Damage total	Dégâts totaux
+Damagers	DPS
+Das Auge von Acherus unterliegt Eurer Kontrolle.	L'Œil d'Achérus est sous votre contrôle.
+Das Ereignis, das die Aura auslösen soll	L'événement qui déclenche l'aura
+Daten	Données
+Days duration: 	Durée en jours : 
+Deaktivieren	Désactiver
+Deaktivierte	Désactivé
+Death Knight	Chevalier de la mort
+Death knight	Chevalier de la mort
+Deaths	Morts
+Debuff Liste Ziel (L)	Liste des debuffs de la cible (L)
+Debuff bei Zielwechsel ausgeben	Annoncer un affaiblissement au changement de cible
+Debuff list target remaining duration	Durée restante des debuffs de la cible
+Debuffs	Debuffs
+Debug Optionen	Options de débogage
+Deckkraft	Opacité
+Declined	Refusé
+Deeprun Tram	Tram des profondeurs
+Default	Par défaut
+Default Tab	Onglet par défaut
+Default Waypoints	Points de passage par défaut
+Default beep sound	Son de bip par défaut
+Dein Buff auf Gruppenmitglied ausgelaufen	Votre amélioration sur un membre du groupe a expiré
+Dein Buff auf Ziel läuft aus	Votre amélioration sur la cible expire
+Dein Debuff auf Ziel läuft aus	Votre affaiblissement sur la cible expire
+Dein Gesundheit in Prozent	Votre santé en pourcentage
+Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc.	Votre niveau de ressource en pourcentage pour déclencher l'aura (votre ressource principale comme mana, énergie, rage, etc.).
+Dein combopunkte auf das aktuelle ziel, die die Aura auslösen sollen	Vos points de combo sur la cible actuelle déclenchant l'aura
+Dein gesundheits Level in Prozent, das die Aura auslösen soll	Votre niveau de santé en pourcentage pour déclencher l'aura.
+Deine Gesundheits Menge für das ausgelöste Ereignis	Votre santé lors de l'événement déclencheur
+Deine Ressourcen Menge (Mana, Wut, Energie) für das ausgelöste Ereignis	Votre ressource (mana, rage, énergie) lors de l'événement déclencheur
+Deine combopunkte auf dein aktuelles ziel	Vos points de combo sur la cible actuelle
+Delay before output trigger (milliseconds)	Délai avant le déclenchement de la sortie (millisecondes)
+Delay on found plate	Délai sur plaque trouvée
+Delete	Supprimer
+Delete all custom tutorials	Supprimer tous les tutoriels personnalisés
+Delete all steps that are linking a step in this tutorial. Then delete this tutorial	Supprimer toutes les étapes liées à une étape de ce tutoriel. Puis supprimer ce tutoriel
+Delete all steps that are linking this step. Then delete this step	Supprimer toutes les étapes liées à cette étape. Puis supprimer cette étape
+Delete tab	Supprimer l'onglet
+Delete this filter	Supprimer ce filtre
+Deleted	Supprimé
+Delist	Retirer de la liste
+Demonology	Démonologie
+Der Aura-Typ (Buff oder Debuff), der die Aura auslösen soll	Le type de l'aura (buff ou debuff) qui déclenche l'aura Sku
+Der Cooldown eines Gegenstands hat begonnen	Le temps de recharge d'un objet a démarré
+Der Cooldown eines Gegenstands ist beendet	Le temps de recharge d'un objet est terminé
+Der Cooldown eines Zaubers hat begonnen	Le temps de recharge d'un sort a démarré
+Der Cooldown eines Zaubers ist beendet	Le temps de recharge d'un sort est terminé
+Der Gegenstand wurde nicht gefunden.	L'objet n'a pas été trouvé.
+Der Gegenstandsname, der die Aura auslösen soll	Le nom de l'objet qui déclenche l'aura
+Der Klasse, die die Aura auslösen soll	La classe qui déclenche l'aura
+Der Name des Gegenstands, der die Aura ausgelöst hat	Le nom de l'objet qui a déclenché l'aura
+Der Name des Zaubers, der die Aura ausgelöst hat	Le nom du sort qui a déclenché l'aura
+Der Name des auslösenden Ereignisses der Aura	Le nom de l'événement déclencheur
+Der Südstrom	Fleuve Furie-du-Sud
+Der Typ des Verfehlen Ereignisses	Le type de l'événement d'échec
+Der Zauber-name, der die Aura auslösen soll	Le nom du sort qui déclenche l'aura
+Derzeitiger Begleiter	Familier actuel
+Description and Rewards	Description et récompenses
+Description: 	Description : 
+Deselect all	Tout désélectionner
+Destination	Destination
+Destination: 	Destination : 
+Destruction	Destruction
+Destruction fire	Destruction feu
+Detail	Détails
+Detailed direction and distance	Direction et distance détaillées
+Details	Détails
+Details addon not installed	Extension Details non installée
+Details panel	Volet Détails
+Dial Targeting	Ciblage au cadran
+Dialog	Dialogue
+Dialog 	Dialogue 
+Dialog Lautstärke	Volume des dialogues
+Diamond	losange
+Die Anzahl der Stacks einer Aura (Buff oder Debuff), bei der die Aura auslösen soll	Le nombre de cumuls d'une aura (buff ou debuff) qui déclenche l'aura Sku
+Die Anzahl der verbleibenden Gegenstände in deinen Taschen, vom Typ des Gegenstands, der das Ereignis ausgelöst hat	Le nombre d'unités restantes sur l'objet qui a déclenché l'événement
+Die Anzahl in deiner Tasche des Gegenstands, der die Aura ausgelöst hat	Le nombre de l'objet qui a déclenché l'aura
+Die Ausgaben werden als Audio ausgegeben	Les sorties sont audio
+Die Ausgaben werden als Audio ausgegeben und dabei vor allen anderen Ausgaben platziert. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.	Les sorties sont audio et seront effectuées avant toute autre sortie. L'aura n'est déclenchée qu'une seule fois. La prochaine activation de l'aura aura lieu lorsque l'aura aura été fausse au moins une fois.
+Die Ausgaben werden als Audio ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.	Les sorties sont audio. L'aura n'est déclenchée qu'une seule fois. La prochaine activation de l'aura aura lieu lorsque l'aura aura été fausse au moins une fois.
+Die Ausgaben werden als Audio und chat ausgegeben	L'aura n'est déclenchée qu'une seule fois. La prochaine activation de l'aura aura lieu lorsque l'aura aura été fausse au moins une fois.
+Die Ausgaben werden als Text im Chat ausgegeben	Les sorties sont du texte dans le chat
+Die Ausgaben werden als Text im Chat ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.	La sortie est du texte. L'aura n'est déclenchée qu'une seule fois. La prochaine activation de l'aura aura lieu lorsque l'aura aura été fausse au moins une fois.
+Die Einheit des Ziels deines Ziels	L'unité de la cible de votre cible
+Die Einheiten ID der Quelle für das ausgelöste Ereignis	L'ID d'unité de la source lors de l'événement déclencheur
+Die Einheiten ID des Ziels für das ausgelöste Ereignis	L'ID d'unité de la cible lors de l'événement déclencheur
+Die Gegenstands-ID, die die Aura auslösen soll	L'ID de l'objet qui déclenche l'aura
+Die Höhlen des Wehklagens	Cavernes des lamentations
+Die Klasse der Einheit für das ausgelöste Ereignis	La classe de l'unité lors de l'événement déclencheur
+Die Liste der Buffs des Ziels	La liste des buffs sur la cible
+Die Liste der Debuffs  des Ziels	La liste des debuffs sur la cible
+Die Quell Einheit, bei der die Aura ausgelöst werden soll	L'unité source de l'événement déclencheur. Pour les listes de buffs et debuffs, utilisez plutôt la condition Buff debuff vos sorts uniquement
+Die Stapel Anzahl der Aura	Le nombre de cumuls de l'aura
+Die Zauber-ID, die die Aura auslösen soll	L'ID du sort qui déclenche l'aura
+Die Ziel-Einheit, bei der die Aura ausgelöst werden soll	L'unité cible de l'événement déclencheur, pas votre cible actuelle. Pour votre cible actuelle, utilisez les conditions de liste de buffs et debuffs de la cible
+Die verbleibende Menge eines Gegenstands in deinen Taschen, bei der die auslösen soll	La quantité restante d'un objet qui a déclenché l'aura
+Diese Spezialisierung aktivieren	Activer cette spécialisation
+Difficulty	Difficulté
+Difficulty: 	Difficulté : 
+Dir	Direction
+Dire Maul	Hache-Tripes
+Discipline	Discipline
+Distance to party member	Distance jusqu'au membre du groupe
+Distance to your current target	Distance jusqu'à votre cible actuelle
+Disziplin	Discipline
+Do interact soft targeting if	Effectuer le ciblage souple d'interaction si
+Do not add seen links in history	Ne pas ajouter les liens déjà vus à l'historique
+Do not read out emojis	Ne pas lire les émojis
+Do range check on target change	Annoncer la portée au changement de cible
+Do soft targeting	Effectuer le ciblage souple si
+Don't announce waypoint switching	Aucune sortie vocale pour les points de passage
+Don't skip current outputs	Ne pas interrompre les sorties en cours
+Don't vocalize reaction and level for players in combat	Ne pas vocaliser la réaction (amical ou hostile) ni le niveau des joueurs pendant le combat
+Down	Bas
+Draenei	Draeneï
+DropDownList1	Liste déroulante
+Dropdown List 1	Liste déroulante 1
+Dropdown List 2	Liste déroulante 2
+Dropdown Menu	Menu déroulant
+Dropped by	Butiné sur
+Droprate	Taux de butin
+Druid	Druide
+Druide	druide
+Du bist in keiner Gruppe	Vous n'êtes pas dans un groupe
+Du legst als nächstes die Aktion fest, die bei der Auslösung der Aura passieren soll	Vous configurez maintenant l'action qui doit se produire lorsque l'aura est déclenchée
+Dungeon and raid settings	Réglages des donjons et raids
+Duplizieren	Dupliquer
+Dupliziert	Dupliqué
+Dwarf	Nain
+Dämonologie	Démonologie
+ENERGY	Énergie
+ENTER	Entrée
+ENTER_TEXT	Ouvrir la saisie de texte
+EQ_ActionsFor	Actions pour l'ensemble d'équipement 
+EQ_AlreadyExists	 existe déjà
+EQ_BelongsToSet	Appartient à l'ensemble : 
+EQ_Cancelled	Annulé
+EQ_CreateMacro	Créer une macro
+EQ_CreateMacroTip	Crée une macro de personnage pour équiper cet ensemble.
+EQ_CreateNew	créer un nouvel ensemble d'équipement
+EQ_CreateNewTip	Enregistre l'équipement actuellement porté comme nouvel ensemble.
+EQ_Delete	Supprimer
+EQ_DeleteConfirmPost	? Entrée pour confirmer, Échap pour annuler.
+EQ_DeleteConfirmPre	Voulez-vous vraiment supprimer l'ensemble 
+EQ_DeleteTip	Supprime l'ensemble. Confirmation requise.
+EQ_Deleted	 supprimé
+EQ_EnterNameHint	Saisissez le nom. Entrée confirme, Échap annule.
+EQ_Equip	Équiper
+EQ_EquipTip	Équipe l'ensemble.
+EQ_HintOkEsc	Entrée = OK   |   Échap = Annuler
+EQ_MacroCreated	Macro créée : 
+EQ_MacroLimitReached	Limite de macros atteinte. Supprimez d'abord une macro existante.
+EQ_MacroUpdated	Macro mise à jour : 
+EQ_MenuTip	Enregistrer et rappeler des ensembles d'équipement.
+EQ_NameEmpty	Le nom ne doit pas être vide
+EQ_NamePrompt	Nom de l'ensemble d'équipement :
+EQ_NewNameEmpty	Le nouveau nom ne doit pas être vide
+EQ_NoEquipmentWorn	Aucun équipement porté
+EQ_NotInCombat	Impossible en combat
+EQ_NothingToChange	: rien à changer
+EQ_Overwrite	Écraser
+EQ_OverwriteConfirmPost	 avec l'équipement actuellement porté ? Entrée pour confirmer, Échap pour annuler.
+EQ_OverwriteConfirmPre	Voulez-vous vraiment écraser l'ensemble 
+EQ_OverwriteTip	Écrase l'ensemble avec l'équipement actuellement porté. Confirmation requise.
+EQ_OverwrittenWith	 écrasé avec 
+EQ_Parts	 pièces
+EQ_PiecesEquipped	 pièces équipées
+EQ_Prefix	Ensembles d'équipement Sku :
+EQ_Rename	Renommer
+EQ_RenameTip	Renomme l'ensemble.
+EQ_RenamedTo	 renommé en 
+EQ_SavedWith	 enregistré avec 
+EQ_SetAlreadyExists	L'ensemble existe déjà : 
+EQ_SetNotFound	Ensemble introuvable
+EQ_SetNotFoundColon	Ensemble introuvable : 
+ERRLOG_Active	actif. /skulog pour un aperçu.
+ERRLOG_AllHelp	  /skulog all    - journaliser toutes les erreurs (pas seulement Sku)
+ERRLOG_ClearHelp	  /skulog clear  - vider le journal
+ERRLOG_Cleared	vidé.
+ERRLOG_Disabled	désactivé.
+ERRLOG_Enabled	activé.
+ERRLOG_ExportHelp	  /skulog export - grande fenêtre de texte à copier
+ERRLOG_LogAll	journalise maintenant TOUTES les erreurs.
+ERRLOG_LogSkuOnly	journalise uniquement les erreurs liées à Sku.
+ERRLOG_NoEntries	aucune entrée.
+ERRLOG_OffHelp	  /skulog off    - désactiver la journalisation
+ERRLOG_OnHelp	  /skulog on     - activer la journalisation
+ERRLOG_ShowHelp	  /skulog show   - 10 dernières erreurs
+ERRLOG_SkuOnlyHelp	  /skulog skuonly- erreurs liées à Sku uniquement
+ERRLOG_Unknown	inconnu. /skulog
+ERRLOG_WindowOpened	Fenêtre ouverte. Ctrl+C pour copier.
+ESCAPE	ÉCHAP
+Earth	Terre
+Edelstein einsetzen	Insérer une gemme
+Edit	Modifier
+Eigene Aura erstellen	Créer une aura personnalisée
+Eigene Einträge und Bewerbungen	Mes annonces et candidatures
+Eigene Gesundheit	Santé personnelle
+Eigene Gesundheit oder Ressource	Votre santé ou ressource
+Eigene Gruppe erstellen	Créer son propre groupe
+Eigene Ressource	Ressource personnelle
+Eigene combopunkte	Vos points de combo
+Eigener Cooldown wieder bereit	Votre temps de recharge est de nouveau prêt
+Ein	Sur
+Ein 	Sur 
+Ein Ereignis im Zusammenhang mit einem Buff oder Debuff löst die Aura aus	Un événement lié à un buff ou un debuff déclenche l'aura
+Ein Ereignis im Zusammenhang mit einem Gegenstand löst die Aura aus	Un événement lié à un objet déclenche l'aura
+Ein Ereignis im Zusammenhang mit einem Zauber löst die Aura aus	Un événement lié à un sort déclenche l'aura
+Ein Ereignis im Zusammenhang mit einer Einheit (Spieler, NPC, Mob) löst die Aura aus	Un événement lié à une unité (joueur, PNJ, créature) déclenche l'aura
+Ein Fernkampfangriff hat Schaden verursacht	Une attaque à distance a infligé des dégâts
+Ein Fernkampfangriff hat einen Extraangriff ausgelöst	Une attaque à distance a provoqué une attaque supplémentaire
+Ein Fernkampfangriff hat verfehlt	Une attaque à distance a échoué
+Ein Gegenstand wurde verwendet	Un objet a été utilisé
+Ein Nahkampfangriff hat Schaden verursacht	Une attaque de mêlée a infligé des dégâts
+Ein Nahkampfangriff hat eine Ressource (Wut, Energie, Kombopunkt) gewährt	Une attaque de mêlée a octroyé une ressource (rage, énergie, point de combo)
+Ein Nahkampfangriff hat einen Extrangriff gewährt	Une attaque de mêlée a provoqué une attaque supplémentaire
+Ein Nahkampfangriff hat verfehlt	Une attaque de mêlée a échoué
+Ein Zauber hat Heilung verursacht	Un sort a provoqué des soins
+Ein Zauber hat Schaden verfehlt	Un sort a échoué
+Ein Zauber hat Schaden verursacht	Un sort a infligé des dégâts
+Ein Zauber hat eine Ressource (Mana) gewährt	Un sort a octroyé une ressource (mana)
+Ein Zauber hat einen Extraangriff gewährt	Un sort a provoqué une attaque supplémentaire
+Ein Zauber hat etwas wiederbelebt	Un sort a ressuscité quelque chose
+Ein Zauber ist fehlgeschlagen	Un sort a échoué
+Ein Zauber wurde begonnen	Une incantation a commencé
+Ein Zauber wurde erfolgreich gezaubert	Un sort a été lancé avec succès
+Ein Zauber wurde unterbrochen	Un sort a été interrompu
+Eine Einheit (Spieler, NPC, Mob etc.) ist gestorben	Une unité (joueur, PNJ, créature, etc.) est morte
+Eine Einheit hat das Ziel gewechselt. Quell Einheit ID ist die Einheit, die das Ziel gewechselt hat. Ziel Einheit ID ist das neue Ziel von Quell einheit.	Une unité a changé de cible. L'ID d'unité source est l'unité qui a changé de cible. L'ID d'unité cible est la nouvelle cible de l'unité source.
+Eine Taste wurde gedrückt	Une touche a été pressée
+Eingabe zum Bieten, Escape zum Abbrechen	Entrée pour enchérir, Échap pour annuler
+Eingabe zum Kaufen, Escape zum Abbrechen	Entrée pour acheter, Échap pour annuler
+Einheit	Unité
+Einheiten Route	Itinéraire d'unité
+Einheiten Route folgen gestartet	Suivi de l'itinéraire d'unité démarré
+Einheiten;Route;	Unité;Itinéraire;
+Elemental	Élémentaire
+Elementar	Élémentaire
+Elite	Élite
+Emoji	Émoji
+Empfangene Sets	Ensembles reçus
+Empfangenes Set verworfen	Ensemble reçu rejeté
+Empty	Vide
+Empty;list	liste;vide
+Enable in dungeons/raids only	Activer uniquement dans les donjons/raids
+Enabled	Activé
+Enables / disables audio on new chat line	Active / désactive l'audio sur nouvelle ligne de chat
+Enables / disables audio on new line	Notification audio sur nouveau message de chat
+Enables / disables the addon	Active/désactive l'extension
+Enchants	Enchantements
+Encounters	Rencontres
+End	Fin
+End text	Texte de fin
+End: 	Fin : 
+Enemies	Ennemis
+Enemies attacking party or you	Ennemis attaquant le groupe ou vous
+Enemies attacking you	Ennemis vous attaquant
+Engrave	Graver
+Engraving	Gravure
+Enhanced settings	Réglages avancés
+Enhancement	Amélioration
+Enlist	S'engager
+Enlisted	engagé
+Enter filter term and press enter	Saisissez le terme de filtre et appuyez sur Entrée
+Enter name and press ENTER key	Saisissez le nom et appuyez sur la touche ENTRÉE
+Enter new name	Saisissez le nouveau nom maintenant
+Enter search term and complete with enter or press escape to clear the search term	Saisissez le terme de filtre et validez avec Entrée, ou appuyez sur Échap pour effacer le filtre
+Enter step name	Saisissez le nom de l'étape maintenant
+Enter text	Saisissez le texte
+Enter text and press ENTER key	Saisissez le texte et appuyez sur Entrée.
+Enter tutorial name	Saisissez le nom du tutoriel maintenant
+EnterMacroBody	Saisissez les commandes de macro
+EnterMacroName	Saisissez le nom de la macro
+Entfernung	Distance
+Entries	Entrées
+Entry	Entrée
+Entry Creation	Création d'entrée
+Entry point: 	point d'entrée;
+Entspannungsmusik	Musique de relaxation
+Entwurf verworfen	Brouillon abandonné
+Episch	Épique
+Equiment	Équipement
+Equip	Équiper
+Equipment	Équipement
+Equipment manager	Gestionnaire d'équipement
+Equipment sets	Ensembles d'équipement
+Equipped	Équipé
+Erlernte Berufe öffnen oder verlernen.	Ouvrir ou désapprendre vos métiers.
+Error	Erreur
+Error feedback	Retour d'erreur
+Error in route;follow stopped	Erreur dans l'itinéraire;suivi annulé
+Error or too far away (maximum 50 meters)	erreur ou trop loin (maximum 50 mètres)
+Error. Name already exists. Rename the existing tutorial and try again.	Erreur. Ce nom existe déjà. Renommez le tutoriel existant et réessayez.
+Error: Data language is not current language	Erreur : la langue des données n'est pas la langue actuelle
+Error: No data	Erreur : aucune donnée
+Error: No target or target has no not valid creature id	Erreur : aucune cible ou la cible n'a pas d'ID de créature valide
+Error: unknown event type	Erreur : type d'événement inconnu
+Erstellen: 12 Stunden	Créer : 12 heures
+Erstellen: 24 Stunden	Créer : 24 heures
+Erstellen: 48 Stunden	Créer : 48 heures
+Erstellt	Créée
+Es liegt bereits ein höheres Gebot für diesen Gegenstand vor.	Il existe déjà une enchère supérieure pour cet objet.
+Etwas wurde duch einen Zauber beschworen (z. B. Leerwandler beim Hexer	Quelque chose a été invoqué par un sort (par ex. le marcheur du Vide du démoniste)
+Etwas wurde durch einen Zauber hergestellt (z. B. Berufe-Skill)	Quelque chose a été créé par un sort (par ex. une compétence de métier)
+Etwas wurde zerstört (z. B. ein Totem)	Quelque chose a été détruit (par ex. un totem)
+Event	Événement
+Event Steps	Étapes d'événement
+Event id: 	ID de l'événement : 
+Event output filters	Limitation de la sortie d'événement
+Event output on	Sortie d'événement activée
+Event type: 	Type d'événement : 
+Event volume	Volume des événements
+Event with new step	Événement avec nouvelle étape de sortie
+Events	Événements
+Every event	Chaque événement
+Existing	Existant
+Export	Exporter
+Export all custom Sku newbie tutorials	Exporter tous les tutoriels débutant Sku personnalisés
+Export as text	Exporter en texte
+Export this tutorial	Exporter ce tutoriel
+Export this tutorial as text	Exporter ce tutoriel en texte
+Exportieren	Exporter
+FALSE	Faux
+FOCUS	Focalisation
+FRIENDLIST_UPDATE	mise à jour de la liste d'amis
+Face	Faire face
+Facial Hair	Spécifique au sexe/à la race
+Factor in incoming heals	Prendre en compte les soins entrants
+Fall detection settings	Réglages de détection de chute
+Farbe Feind	Couleur ennemi
+Farbe Freund	Couleur allié
+Farbe Neutral	Couleur neutre
+Favorites	Favoris
+Feet	Pieds
+Fehlende Audio Wörter kopieren	Afficher les mots dont l'audio est manquant
+Fehler anzeigen	Afficher la dernière erreur
+Fehlgeschlagen	Échoué
+Feindlich	Hostile
+Female	Femme
+Fenster verschieben	Déplacer le cadre
+Feral dps	Farouche dps
+Feral tank	Farouche tank
+Fertig. Alle geboten	Terminé. Toutes les enchères
+Fertig. Alle gekauft	Terminé. Tous achetés
+Fertigkeiten:r\n	Compétences :r\n
+Feuer	Feu
+Fight	Combat
+Filter	Filtre
+Filter - noun	Filtre
+Filter Ressourcen vorhanden	Filtre : matériaux disponibles
+Filter applied	Filtre appliqué
+Filter removed	Filtre retiré
+Filter und Sortierung	Filtrer et trier
+Filters	Filtres
+Find Group	Chercher un groupe
+Finger	Doigt
+Fire	Feu
+First Aid	Secourisme
+First a few infos: If you are following the tutorial, you should strictly follow the instructions from the tutorial. Listen carefully to what you are supposed to do, and then do exactly that. Don't do anything else while the tutorial is running. Do not deviate from the tutorial. Otherwise the tutorial will not work anymore!	D'abord quelques informations : si vous suivez le tutoriel, vous devez suivre strictement ses instructions. Écoutez attentivement ce que vous devez faire, puis faites exactement cela. Ne faites rien d'autre pendant que le tutoriel est en cours. Ne vous écartez pas du tutoriel. Sinon le tutoriel ne fonctionnera plus !
+First pos	Première pos
+Fishing	Pêche
+Fishing Bobber	Bouchon de pêche
+Fliegen beendet	Vol arrêté
+Flight zone entered	Zone de vol atteinte
+Flight zone left	Zone de vol quittée
+Flüster Chat automatisch lesen	Lire automatiquement les chuchotements
+Fokus Tasten	Touches de focalisation Sku
+Fokus setzen	Définir la focalisation
+Folgen beendet	Suivi arrêté
+Folgen beim Zaubern temporär beenden	Arrêter temporairement le suivi lors d'une incantation
+Following metaroute	Suivi du méta-itinéraire
+For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it.	Pour vous en tant que (%race%) (%class%), un tutoriel est disponible. Utilisez la flèche bas pour apprendre comment le lancer.
+Form	Forme
+Format	Disposition
+Fortschritt:r\n	Progression :r\n
+Fortschrittr\n	Progressionr\n
+Freie Taschenplätze: 	Emplacements de sac vides : 
+Freund hinzufügen	Ajouter un ami
+Freundlich	Amical
+Friend List	Liste d'amis
+Friendly	Amical
+Friends	Amis
+FriendsFrame	Amis
+Frost	Givre
+Frost (tank)	Givre
+Full scan completed	Analyse complète de l'hôtel des ventes terminée
+Full scan started	Analyse complète de l'hôtel des ventes démarrée, veuillez patienter
+Funktion erst nach Abschluss von Routen Umwandlung verfügbar	Fonction disponible uniquement après conversion de l'itinéraire
+Funktion nicht verfügbar.	Fonction non disponible.
+Furor	Fureur
+Fury	Fureur
+Für Auto Verkaufen markieren	Sélectionner pour la vente automatique de la camelote
+GAME_EVENT	Événement de jeu
+GLYPH_ADDED	glyphe ajouté
+GLYPH_REMOVED	glyphe retiré
+GLYPH_UPDATED	glyphe mis à jour
+GOSSIP_SHOW	affichage du dialogue
+GROUP_JOINED	groupe rejoint
+GROUP_ROSTER_UPDATE	mise à jour de la composition du groupe
+Game Menu	Menu du jeu
+Game focus cleared	Focalisation effacée
+Game focus set to 	Focalisation réglée sur 
+GameMenuFrame	Menu du jeu
+Gas	Gaz
+Gearscore: 	Gearscore : 
+Geblockt	Bloqué
+Gebot 	Enchère 
+Gebot  	Enchère  
+Gebot abgegeben	Enchère placée
+Gebot akzeptiert	Enchère acceptée
+Gebot akzeptiert.	Enchère acceptée.
+Gebote	Enchères
+Gebotspreis für 1 Gegenstand aufsteigend	prix d'enchère pour 1 objet croissant
+Gebotspreis für Auktionsmenge aufsteigend	Prix d'enchère pour la quantité de l'enchère croissant
+Gebrechen	Affliction
+Gegnerstatus Kampf	Statut de combat des ennemis
+Gekauft	Acheté
+Gelb	Jaune
+Geld: 	Argent : 
+Gender	Sexe
+General	Général
+Gerät gewechselt auf Nummer %s: %s	Périphérique changé pour le numéro %s : %s
+Gesamt	Global
+Gesamt 	Global 
+Gesamt Lautstärke	Volume global
+Gesprochen	Parlé
+Gesundheit hat sich verändert	La santé a été mise à jour
+Gesundheit und Status	Santé et statut
+Gesundheit änderung	santé mise à jour
+Gesundheit: 	Santé : 
+Gewitter	Orage
+Gewähltes Attribut enthält den gewählten Wert	L'attribut sélectionné contient la valeur sélectionnée
+Gewähltes Attribut enthält nicht den gewählten Wert	L'attribut sélectionné ne contient pas la valeur sélectionnée
+Gewähltes Attribut entspricht dem gewählten Wert	L'attribut correspond à la valeur
+Gewähltes Attribut entspricht nicht dem gewählten Wert	L'attribut sélectionné ne correspond pas à la valeur
+Gewähltes Attribut ist größer als der gewählte Wert	L'attribut sélectionné est supérieur à la valeur sélectionnée
+Gewähltes Attribut ist kleiner als der gewählte Wert	L'attribut sélectionné est inférieur à la valeur sélectionnée
+Gilde:r\n	Guilde :r\n
+Gilden Chat automatisch lesen	Lire automatiquement le chat de guilde
+Glancing Damage: 	Dégâts de biais : 
+Glancing hits: 	Coups de biais : 
+Gleichgewicht	Équilibre
+Global	Global
+Gnom	Gnome
+Gnome	Gnome
+Goblin	Gobelin
+Gold	Or
+Gossip	Dialogue
+GossipFrame	Dialogue
+Greed	Cupidité
+Greed rolled	a lancé cupidité
+Green	Vert
+Greeting	Salutation
+Grey	Gris
+Groesse	Taille
+Gruppe	Groupe
+Gruppe erstellt	Groupe créé
+Gruppen Chat automatisch lesen	Lire automatiquement le chat de groupe
+Gruppenmitglied 0 (du).	membre du groupe 0 (vous).
+Gruppenmitglied 1.	membre du groupe 1.
+Gruppenmitglied 2.	membre du groupe 2.
+Gruppenmitglied 3.	membre du groupe 3.
+Gruppenmitglied 4.	membre du groupe 4.
+Gruppenmitglieder	Membres du groupe
+Gruppensuche	Recherche de groupe
+Guild	Guilde
+Guild Bank	Banque guilde
+Guild announcement	Annonce de guilde
+Guild event	Événement de guilde
+GuildBankFrame	Banque de guilde
+HAPPINESS	Bonheur
+HEALER	Soigneur
+Hair Color	Couleur des cheveux
+Hair Style	Coiffure
+Hands	Mains
+Happy	Content
+Hard target locked	Cible fixe verrouillée
+Have materials	Matériaux disponibles
+Head	Tête
+Healers	Soigneurs
+Healing amount	Montant des soins
+Health	Santé
+Health Chord Style	Style d'accord de santé
+Health Pitch style	Style de hauteur de santé
+Health/Resource update	Mise à jour santé/ressource
+Heiler	Soigneur
+Heilig	Sacré
+Heirlooms	Objets d'héritage
+Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 2 keyboard shortcuts in tutorials like this one:	Bonjour, %name%. Ceci est un tutoriel. Il vous guidera pas à pas pour apprendre à faire les choses dans le jeu. À chaque étape, vous entendrez des informations ou des instructions sur les activités. Une fois les activités de l'étape terminées, vous entendrez un son de réussite. Vous pourrez alors passer à l'étape suivante. Il y a 3 raccourcis clavier dans les tutoriels comme celui-ci : 
+Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one:	Bonjour, %name%. Ceci est un tutoriel. Il vous guidera pas à pas pour apprendre à faire les choses dans le jeu. À chaque étape, vous entendrez des informations ou des instructions sur les activités. Une fois les activités de l'étape terminées, vous entendrez un son de réussite. Vous pourrez alors passer à l'étape suivante. Il y a 3 raccourcis clavier dans les tutoriels comme celui-ci :
+Hello, %name%. This tutorial will guide you step by step through the game and the Sku addon. In each step you will first hear some information or instructions. While these are played, the tutorial will lock the keyboard.	Bonjour, %name%. Ce tutoriel vous guidera pas à pas à travers le jeu et l'extension Sku. À chaque étape, vous entendrez d'abord des informations ou des instructions. Pendant leur lecture, le tutoriel verrouillera le clavier.
+Herbs	herbes
+Heroic	Héroïque
+Hexer	Démoniste
+Hide	Masquer
+High	Élevé
+Hintergrund Audio	Arrière-plan;son
+Hinweis: Quest nicht im Log, Link evtl. nicht klickbar	Remarque : quête absente du journal, le lien peut ne pas être cliquable pour le destinataire
+Historische Preisdaten (für ein Stück)	Données de prix historiques (pour un objet)
+History	Récent
+Hoch blättern	Faire défiler vers le haut
+Holiday event	Événement saisonnier
+Holy	Sacré
+Honor	Honneur
+HonorFrame	Honneur
+Horde	Horde
+Horde zone entered	Zone de la Horde atteinte
+Horde zone left	Zone de la Horde quittée
+Hostile	Hostile
+How much of the healing amount was overhealing	Quelle part des soins était du surplus de soins
+Human	Humain
+Hunter	Chasseur
+Händlerpreis	Prix vendeur
+Höhle der Nebel	Grotte des Brumes
+IC	Combat
+INCORRECT CREATURE ID	ID DE CRÉATURE INCORRECT
+INFO_STEP	Étape d'information
+INSPECT_READY	inspection prête
+INVTYPE_OTHER	Autre
+If a spell is usable (range, cooldown, stance, etc.)	Si un sort est utilisable (portée, temps de recharge, posture, etc.)
+If cast target is any party member	Si la cible de l'incantation est un membre du groupe
+If cast target is you	Si la cible de l'incantation est vous
+If no hard target locked	Aucune cible fixe verrouillée
+If target of target isn't you	Si la cible de la cible n'est pas vous
+If unit was attacking any party member	Si l'unité attaquait un membre du groupe
+If unit was attacking you	Si l'unité vous attaquait
+If unit was targeting any party member	Si l'ennemi ciblait un membre du groupe
+If unit was targeting you	Si l'ennemi vous ciblait
+If you would like to be supported by a tutorial, you can logout now by typing /logout and pressing enter.	Si vous souhaitez être accompagné par un tutoriel, vous pouvez vous déconnecter maintenant en tapant /logout puis en appuyant sur Entrée.
+Ignore List	Liste d'ignorés
+Ignore dead party pets	Ignorer les familiers morts du groupe
+Ignore jumps	Ignorer les sauts
+Ignore quests x levels below your level	Ignorer les quêtes de plus de x niveaux en dessous du vôtre
+Ihr habt eine Auktion gewonnen für: 	Vous avez remporté une enchère pour
+Ihr habt nicht genug Geld.	Argent insuffisant
+Ihr wurdet bei 	Vous avez été surenchéri sur 
+Im Kampf	En combat
+Immun	Immunisé
+Import	Importer
+Import Sku newbie tutorials	Importer les tutoriels débutant Sku
+Import erfolgreich	Importation réussie
+Import fehlgeschlagen. Daten fehlerhaft.	Échec de l'importation. Données incorrectes.
+Import fehlgeschlagen. Falsche Version.	Échec de l'importation. Mauvaise version.
+Import single tutorial	Importer un tutoriel
+Important! Before you start playing: You may want to check out the help for newbies. If you don't know how to play the game, press F1 right now, to get more information, before you do anything else. So, if you do need help, press F1 now.	Important ! Avant de commencer à jouer : vous pouvez consulter l'aide pour les débutants. Si vous ne savez pas comment jouer, appuyez sur F1 tout de suite pour obtenir plus d'informations, avant de faire quoi que ce soit d'autre. Donc, si vous avez besoin d'aide, appuyez sur F1 maintenant.
+Important: For this quest, first go to Sku Discord and read the post about the quest "An End To All Things..." that is pinned in the General channel	Important : pour cette quête, allez d'abord sur le Discord de Sku et lisez le message épinglé dans le canal General à propos de la quête « An End To All Things... »
+Impossible. Menu is not open.	Impossible. Le menu n'est pas ouvert
+In Combat	En combat
+In this help section you will find basic information on how to use the tutorial. Press the Down or Up key to hear all information.	Dans cette section d'aide, vous trouverez les informations de base sur l'utilisation du tutoriel. Appuyez sur la flèche bas ou haut pour entendre toutes les informations, ou fermez cette aide avec la touche Échap
+In this help you will find information about our tutorials for newbies. Press down arrow or up arrow to listen to the info, or press Escape to close this help. Press F1 to open the help again.	Dans cette aide, vous trouverez des informations sur nos tutoriels pour débutants. Appuyez sur la flèche bas ou haut pour écouter les informations, ou appuyez sur Échap pour fermer cette aide. Appuyez sur F1 pour rouvrir l'aide.
+Inactive	Silencieux
+Include corpses and skinable units	Annoncer les cadavres et les unités dépeçables
+Include non-objects	Annoncer les non-objets
+Include passive units	Annoncer les unités passives
+Include pets	Annoncer les familiers
+Include players	Annoncer les joueurs
+Include self	Inclure soi-même
+Insert	Insérer
+Insert after	Insérer après
+Insert linked step	Insérer une étape liée
+Insert new Step	Insérer une nouvelle étape
+Inspect	Afficher
+InspectFrame	Inspecter
+Inter	Interrompu
+Interact	Interagir
+Interrupted	Interrompu
+Invite status: 	Statut de l'invitation : 
+Invited	Invité
+Invited by: 	Invité par : 
+Invitees: 	Invités : 
+Is Sku newbie tutorial	Est un tutoriel débutant Sku
+Is querying...	Requête en cours...
+Item Level	Niveau d'objet
+Item Text	Texte de l'objet
+Item level	Niveau d'objet
+Items	Objets
+Jeder gegen jeden	Butin : Chacun pour soi
+Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken	Copiez les données d'export avec Contrôle plus C puis appuyez sur Échap
+Jetzt kommentar eingeben und mit ENTER abschließen oder mit ESC abbrechen	Saisissez le commentaire et appuyez sur ENTRÉE, ou ÉCHAP pour annuler
+Jetzt wort liste mit Steuerung plus C kopieren und Escape drücken	Copiez la liste de mots avec Contrôle plus C puis appuyez sur Échap
+Jäger	chasseur
+KATEGORIE	CATÉGORIE
+KEY_PRESS	Appui sur une touche
+Kampf	Combat
+Kampfmenü Steuerung	Commandes du menu de combat
+Katze	Farouche (Dégâts)
+Kauf 	 Acheter 
+Kaufen	Acheter
+Kaufpreis für 1 Gegenstand aufsteigend	Prix d'achat pour 1 objet croissant
+Kaufpreis für Auktionsmenge aufsteigend	Prix d'achat pour la quantité de l'enchère croissant
+Kein Gerät enthält '%s'. /skuaudio list für alle Namen.	Aucun nom de périphérique ne contient '%s'. /skuaudio list pour tous les noms.
+Kein Gold	Pas d'or
+Kein Item zum Sockeln im Sockel-Fenster	Aucun objet à sertir dans la fenêtre de sertissage
+Kein Zauber festgelegt	Aucun sort défini
+Keine	Aucun
+Keine Audiogeräte gefunden.	Aucun périphérique audio trouvé.
+Keine Ausgabe festgelegt	Aucune sortie définie
+Keine Bedingung festgelegt	Aucune condition définie
+Keine Berufe erlernt	Aucun métier appris
+Keine Bewertung für angelegter Gegenstand möglich	Évaluation impossible pour l'objet équipé
+Keine Bewertung für neuen Gegenstand möglich	Évaluation impossible pour le nouvel objet
+Keine Bewertung möglich	Évaluation impossible
+Keine Edelsteine im Inventar gefunden	Aucune gemme trouvée dans l'inventaire
+Keine Informationen vorhanden	Aucune information disponible
+Keine Questie-Daten empfangen	Aucune donnée Questie reçue
+Keine Veränderung	Aucun changement
+Keine aktive Listung	Aucune annonce active
+Keine aktuellen Preisdaten vorhanden	Aucune donnée de prix récente disponible
+Keine historischen Preisdaten vorhanden	Aucune donnée de prix historique disponible
+Keine passenden Auktionen verfügbar	Aucune enchère correspondante disponible
+Keine weiteren Angebote zu diesem Preis	Plus aucune offre à ce prix
+Keine weiteren passenden Auktionen verfügbar	Plus aucune enchère correspondante disponible
+Keiner vorhanden	Aucun disponible
+Key	Touche
+Key Sound	Son de touche
+Key bind	Assignation de touche
+Key;not;assigned	touche;non;assignée
+Kiss	Baiser
+Klick	Clic
+Klick bei Beacons	Balises avec clics
+Komma	virgule
+KommaNumbers	point
+Kommentar leer	Commentaire vide
+Kommentar zugewiesen	commentaire ajouté
+Kommentar zuweisen	Ajouter un commentaire
+Kompass (Striche)	Boussole (lignes)
+Konnte CVar nicht setzen.	Impossible de définir la CVar.
+Kopie;	Copier;
+Kopieren von	Copier depuis
+Krieger	guerrier
+LEARNED_SPELL_IN_TAB	sort appris dans l'onglet
+LEFT	GAUCHE
+LFD Queue Frame	File LFD
+LFD list Frame	groupes préformés
+LFG_LIST_SEARCH_RESULTS_RECEIVED	résultats de recherche LFG reçus
+LFG_LIST_SEARCH_RESULT_UPDATED	résultat de recherche LFG mis à jour
+LOCKED	VERROUILLÉ
+LOOT_SLOT_CHANGED	emplacement de butin modifié
+Large	Grand
+Last pos	Dernière pos
+Laughing	Rire
+Layer	Couche
+Left Multi Bar	barre d'action droite
+Left click	Clic gauche
+Legs	Jambes
+Lesebalken	Barre de lecture
+Lesebalken anzeigen	Afficher la barre de lecture
+Level	Niveau
+Level 	Niveau 
+Level Max	Niveau max
+Level Minimum	Niveau min
+Level absteigend	Niveau décroissant
+Level aufsteigend	Niveau croissant
+Level: 	Niveau : 
+Link History	Historique des liens
+Link history	Origine du lien
+Link indicator in tooltips	Indicateur de lien dans les infobulles
+Link source	Source du lien
+Linking to this step	Lié à cette étape
+Links	Liens
+Links exportiert:	Liens exportés :
+Links importiert:	Liens importés :
+Links:	Liens :
+List links in tooltips	Lister les liens dans les infobulles
+List self	S'inscrire
+Liste lädt noch, bitte gleich erneut Eingabe zum Kaufen	Liste en cours de chargement, appuyez sur Entrée pour acheter dans un instant
+Listen nur selbst gewirkte	Buff debuff vos sorts uniquement
+Lists	Listes
+Listung entfernt	Annonce retirée
+Local	Local
+Lock keyboard if tutorial is playing	Verrouiller le clavier pendant la lecture du tutoriel
+Log out: If you would like to exit the game, do not use Alt + (F4). For the game to save settings you need to log out from the game. To do this type slash logout and press Enter. The wait until you hear the background audio changing. That can take up to 20 seconds. Then close the game using Alt + (F4).	Déconnexion : si vous souhaitez quitter le jeu, n'utilisez pas Alt + (F4). Pour que le jeu enregistre les réglages, vous devez vous déconnecter depuis le jeu. Pour cela, tapez slash logout et appuyez sur Entrée. Attendez ensuite d'entendre le son d'ambiance changer. Cela peut prendre jusqu'à 20 secondes. Fermez alors le jeu avec Alt + (F4).
+Lokal aktiv	Local actif
+Looking for group	Recherche de groupe
+Loot	Butin
+Loot history	Historique du butin
+Loot roll	Jet
+Low	Faible
+Loyalty	Loyauté
+Löschen	Supprimer
+Löschen beendet	Suppression terminée
+Löschen beginnt	La suppression commence
+MAIL_AttachGold	Joindre de l'or
+MAIL_AttachItems	Joindre des objets
+MAIL_CLOSED	courrier fermé
+MAIL_EnterRecipientTab	Saisissez le nom et appuyez sur Tab pour continuer
+MAIL_EnterSubjectTab	Saisissez l'objet et appuyez sur Tab pour continuer
+MAIL_EnterTextEnter	Saisissez le texte et appuyez sur Entrée pour envoyer
+MAIL_FAILED	échec du courrier
+MAIL_INBOX_UPDATE	mise à jour de la boîte de réception
+MAIL_SEND_INFO_UPDATE	mise à jour des informations d'envoi du courrier
+MAIL_SEND_SUCCESS	envoi du courrier réussi
+MAIL_SHOW	affichage du courrier
+MAIL_SUCCESS	courrier réussi
+MAIL_Sent	Courrier envoyé
+MAIL_StartSending	Commencer l'envoi
+MANA	Mana
+MENU_ITEM	Élément de menu
+MERCHANT_CLOSED	marchand fermé
+MERCHANT_SHOW	affichage du marchand
+MIRROR_TIMER_PAUSE	pause du minuteur miroir
+MIRROR_TIMER_START	démarrage du minuteur miroir
+MIRROR_TIMER_STOP	arrêt du minuteur miroir
+MOB_AddFriend	Ajouter un ami
+MOB_AddFriendTip	Ajoute la cible à votre liste d'amis.
+MOB_Duel	Duel
+MOB_DuelTip	Défie la cible en duel.
+MOB_Follow	Suivre
+MOB_FollowTip	Commence à suivre la cible automatiquement.
+MOB_FriendAdded	 ajouté comme ami
+MOB_GroupLeft	Groupe quitté
+MOB_IgnoreToggled	 basculé sur la liste d'ignorés
+MOB_Inspect	Inspecter
+MOB_InspectTip	Ouvre l'aperçu de l'équipement de la cible.
+MOB_InstancesReset	Instances réinitialisées
+MOB_Interact	Interagir
+MOB_InteractTip	Interagit avec la cible.
+MOB_InviteToGroup	Inviter dans le groupe
+MOB_InviteToGroupTip	Invite la cible dans votre groupe ou raid.
+MOB_Invited	 invité
+MOB_LeaveGroup	Quitter le groupe
+MOB_LeaveGroupTip	Quitte le groupe ou raid actuel.
+MOB_LootFFA	Chacun pour soi
+MOB_LootGroup	Butin de groupe
+MOB_LootMaster	Maître du butin
+MOB_LootMethod	Méthode de butin
+MOB_LootMethodSet	Méthode de butin : 
+MOB_LootNBG	Besoin avant cupidité
+MOB_LootRoundRobin	Tour de rôle
+MOB_MarkerCircle	Cercle (orange)
+MOB_MarkerCross	Croix (rouge)
+MOB_MarkerDiamond	Losange (violet)
+MOB_MarkerMoon	Lune (blanc)
+MOB_MarkerRemove	Retirer le symbole
+MOB_MarkerSkull	Crâne (blanc)
+MOB_MarkerSquare	Carré (bleu)
+MOB_MarkerStar	Étoile (jaune)
+MOB_MarkerTriangle	Triangle (vert)
+MOB_NoActions	Aucune action disponible
+MOB_PetAggressive	Agressif
+MOB_PetAttack	Attaque du familier
+MOB_PetAttackTip	Le familier attaque la cible actuelle.
+MOB_PetDefensive	Défensif
+MOB_PetDismiss	Renvoyer
+MOB_PetDismissTip	Renvoie le familier (il peut être rappelé à tout moment).
+MOB_PetDismissed	Familier renvoyé
+MOB_PetMode	Mode du familier
+MOB_PetPassive	Passif
+MOB_PetRecall	Rappeler le familier
+MOB_PetRecallTip	Le familier vous suit à nouveau.
+MOB_PetRelease	Libérer définitivement le familier
+MOB_PetReleaseTip	ATTENTION : libère DÉFINITIVEMENT le familier. Les chasseurs devront l'apprivoiser à nouveau !
+MOB_PetReleaseWarning	ATTENTION : le familier sera libéré DÉFINITIVEMENT ! Cela ne peut pas être annulé. Entrée pour confirmer, Échap pour annuler.
+MOB_PetReleased	Familier libéré définitivement
+MOB_PetRename	Renommer
+MOB_PetRenameConfirm	Confirmer le renommage : 
+MOB_PetRenamePrompt	Saisissez le nouveau nom et validez avec Entrée
+MOB_PetRenameSaved	Nom enregistré. Revenez en arrière et choisissez Confirmer le renommage.
+MOB_PetRenameTip	Ouvre un champ de saisie pour donner un nouveau nom au familier.
+MOB_PetRenamed	Familier renommé en : 
+MOB_PetSetAggressive	Familier réglé sur agressif
+MOB_PetSetDefensive	Familier réglé sur défensif
+MOB_PetSetPassive	Familier réglé sur passif
+MOB_PromoteLeader	Promouvoir chef
+MOB_PromoteLeaderTip	Fait de la cible le chef du groupe.
+MOB_RemoveFromGroup	Retirer du groupe
+MOB_RemoveFromGroupTip	Expulse la cible du groupe ou du raid.
+MOB_Removed	 retiré
+MOB_ReportBadName	Nom inapproprié
+MOB_ReportCheating	Triche
+MOB_ReportHarassment	Harcèlement
+MOB_ReportLanguage	Langage
+MOB_ReportPlayer	Signaler le joueur
+MOB_ReportSent	Signalement envoyé : 
+MOB_ReportSexual	Contenu sexuel
+MOB_ReportSpam	Spam
+MOB_ReportTooltip	Envoie un signalement à Blizzard avec le motif : 
+MOB_ResetInstances	Réinitialiser les instances
+MOB_ResetInstancesTip	Réinitialise toutes les instances actives. Ne fonctionne pas si vous êtes dans une instance ou si vous n'êtes pas chef.
+MOB_SetFocus	Définir la focalisation
+MOB_SetFocusTip	Définit la focalisation sur la cible.
+MOB_SetMarker	Placer un symbole
+MOB_ToggleIgnore	Ignorer / Ne plus ignorer
+MOB_ToggleIgnoreTip	Bascule la cible sur la liste d'ignorés.
+MOB_Trade	Échange
+MOB_TradeTip	Ouvre la fenêtre d'échange avec la cible.
+MOB_Whisper	Chuchoter
+MOB_WhisperTip	Ouvre l'éditeur de chat avec '/w <Nom> '.
+MODIFIER_KEY_DOWN	Touche de modification enfoncée
+Macro	Macro
+MacroBody	Corps de la macro
+MacroCreated	Macro créée
+MacroName	Nom de la macro
+MacroScope	Portée de la macro
+MacroScopeChar	Personnage
+MacroScopeGlobal	Global
+Macros	Macros
+Mage	Mage
+Magie	Mage
+Magier	mage
+Mail	Courrier
+Mailboxes	Boîtes aux lettres
+Main Action Bar	barre d'action
+Main Hand	Main droite
+Main Tank	Tank principal
+Main Tanks	Tanks principaux
+Major	Majeur
+Male	Homme
+Manually	Manuellement
+Maraudon	Maraudon
+Markierung für Auto Verkaufen entfernen	Désélectionner pour la vente automatique de la camelote
+Marksmanship	Précision
+Maus-Finder	Localisateur de souris
+Maus-Finder aktiv	Localisateur de souris actif
+Maximum distance for destinations in routes list	Distance maximale des destinations dans la liste des itinéraires
+Melee combat	Combat de mêlée
+Members	Membres
+Mensch	Humain
+Menu empty	Menu vide
+Menu;closed	Menu;fermé
+Menu;open	menu;ouvert
+Menü Klick Tasten	Touches de clic du menu
+Menünummern ansagen	Énoncer les numéros du menu
+Merchant	Marchand
+MerchantFrame	Marchand
+Meta	Méta
+Metaroute folgen gestartet	Suivi du méta-itinéraire démarré
+Meter	Mètres
+Meucheln	Assassinat
+Minimum cast time	Temps d'incantation minimum
+Minor	Mineur
+Minus	moins
+MissingMacroBody	Corps de la macro manquant
+MissingMacroName	Nom de macro manquant
+Mitglieder	Membres
+Moderator	Modérateur
+Moderator status: 	Statut de modérateur : 
+Module enabled	Module activé
+Modus	Mode
+Money	Argent
+Monitor	Moniteur
+Monitor und Kampf	Moniteur et combat
+Moon	lune
+Mounts	Montures
+Move	En mouvement
+Move Step	Déplacer
+Moving	Pas en mouvement
+Musik	Musique
+Musik 	Musique 
+Musik Lautstärke	Volume de la musique
+Mute in Combat	Couper les noms en combat
+Muted	Muet
+NPC names	Noms des PNJ
+NUMPAD0	PAVÉ NUMÉRIQUE 0
+NUMPAD1	PAVÉ NUMÉRIQUE 1
+NUMPAD2	PAVÉ NUMÉRIQUE 2
+NUMPAD3	PAVÉ NUMÉRIQUE 3
+NUMPAD4	PAVÉ NUMÉRIQUE 4
+NUMPAD5	PAVÉ NUMÉRIQUE 5
+NUMPAD6	PAVÉ NUMÉRIQUE 6
+NUMPAD7	PAVÉ NUMÉRIQUE 7
+NUMPAD8	PAVÉ NUMÉRIQUE 8
+NUMPAD9	PAVÉ NUMÉRIQUE 9
+NUMPADDECIMAL	PAVÉ NUMÉRIQUE VIRGULE
+NUMPADDIVIDE	PAVÉ NUMÉRIQUE DIVISER
+NUMPADMULTIPLY	PAVÉ NUMÉRIQUE MULTIPLIER
+Nach Gruppen suchen	Chercher des groupes
+Nach Name	Par nom
+Nachrichtentypen	Types de message
+Nachtelf	Elfe de la nuit
+Nachts im Wald	Nuit dans les bois
+Nahe Routen	Itinéraires proches
+Name	Nom
+Name output via Blizzard TTS	Sortie des noms via la synthèse Blizzard
+Namen eingeben und Enter, leer für automatisch	Saisissez un nom et appuyez sur Entrée, vide pour automatique
+Namen eingeben und Enter, oder Escape zum Abbrechen	Saisissez un nom et appuyez sur Entrée, ou Échap pour annuler
+Navigation abgebrochen	Navigation annulée
+Navigation und Wegpunkte	Navigation et points de passage
+Neck	Cou
+Need	Besoin
+Need rolled	a lancé besoin
+Neu belegen	Assigner une nouvelle touche
+Neue Auktion	Nouvelle enchère
+Neue Reichweite verfügbar	Nouvelle portée disponible
+Neue aura	Nouvelle aura
+Neuen Namen eingeben und Enter, oder Escape zum Abbrechen	Saisissez le nouveau nom et Entrée, ou Échap pour annuler
+Never	Jamais
+Never reset audio queues	Ne jamais réinitialiser les files audio
+New	Nouveau
+New Tab	Nouvel onglet
+New calendar event	Nouvel événement de calendrier
+New entry	Nouvelle entrée
+New event	Nouvel événement
+New events	Nouveaux événements
+New follow unit	Nouvelle cible de suivi : 
+New key	Assigné à
+New letter	Nouveau courrier
+New set	Nouvel ensemble
+NewMacro	créer une nouvelle macro
+Next	Suivant
+Next_generic	suivant
+Nicht genug Geld	Argent insuffisant
+Nicht genug Gold zum Reparieren	Or insuffisant pour réparer
+Nicht möglich, volle Abfrage läuft	Impossible, requête complète en cours
+Nicht verkaufbar	Ne peut pas être vendu
+Nichts	Rien
+Nichts gefunden	Rien trouvé
+Night Elf	Elfe de la nuit
+No	Non
+No LoS	Pas de ligne de vue
+No Recipient	Destinataire manquant
+No action	Aucune action
+No attackable hard target locked	Aucune cible fixe attaquable verrouillée
+No class info	Aucune info de classe
+No data	Aucune donnée
+No free bag space	Pas de place libre dans les sacs
+No key bind for	Aucune assignation de touche pour
+No level info	Aucune info de niveau
+No one in range	Personne à portée
+No output	Aucune sortie
+No ressource	Ressource manquante
+No results	Aucun résultat
+No role	Aucun rôle
+No soft targeting if	Pas de ciblage souple si
+No sound	Aucun son
+No target	Aucune cible
+No timestamp	Aucun horodatage
+No topic	Aucun objet
+None	Aucun
+Normal	Normal
+Normal Damage: 	Dégâts normaux : 
+Normal Max hit: 	Coup normal max : 
+Normal Min hit: 	Coup normal min : 
+Normal hits: 	Coups normaux : 
+Not Facing	mauvaise direction
+Not Signed up	Non inscrit
+Not completed	Non terminée
+Not implemented yet	Pas encore implémenté
+Not in raid	Pas en raid
+Not longer available. Refresh list.	Plus disponible. Actualisez la liste.
+Not recording	Aucun enregistrement en cours
+Note! That key is also used by	Remarque ! Cette touche est également utilisée par
+Note: 	Note : 
+Nothing	rien
+Nothing selected	Rien de sélectionné
+Notice on pet starving	Annoncer la faim de l'animal
+Notification volume	Volume des sons
+Notify on new holiday events	Notifier les nouveaux événements saisonniers
+Notify on new player and guild events	Notifier les nouveaux événements de joueur et de guilde
+Notiz eingeben und Enter drücken	ajoutez une note et appuyez sur Entrée
+Now press %SKU_KEY_TUTORIALSTEPFORWARD% to start with the first step. To hear this info again, and take note of the shortcuts, press (%SKU_KEY_TUTORIALSTEPREPEAT%).	Appuyez maintenant sur %SKU_KEY_TUTORIALSTEPFORWARD% pour commencer la première étape. Pour réentendre ces informations et noter les raccourcis, appuyez sur (%SKU_KEY_TUTORIALSTEPREPEAT%).
+Nr: 	Numéro : 
+Nummer %s: %s	Numéro %s : %s
+Nur Gebot 	 Enchère seule 
+Nur benutzbare	Utilisable uniquement
+Nur die tasten für vorwärts, links drehen und rechts drehen verwenden! auf keinen fall andere bewegungstasten verwenden!	N'utilisez que les touches avancer, tourner à gauche et tourner à droite ! N'utilisez aucune autre touche de déplacement !
+Nur passendes Level	Niveau correspondant uniquement
+Nur unterbrechbare Zauber ansagen	N'annoncer que les incantations interruptibles
+OBJECT	OBJET
+Ob das Event im Kampf auftritt	Si l'événement se produit en combat
+Ob die Listen Bedingungen nur selbst gewirkte Auren sehen	Si les listes de buffs et debuffs de cette aura ne voient que les auras lancées par vous-même
+Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist	Si l'unité source de l'événement déclencheur est attaquable
+Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist	Si l'unité cible de l'événement déclencheur est attaquable, pas votre cible actuelle
+Ob ein Zauber gerade auf CD ist	Si un sort est actuellement en recharge
+Ob ein Zauber gerade nicht auf CD ist	Si un sort n'est actuellement pas en recharge
+Object Busy	Objet occupé
+Object name missing	Nom d'objet manquant
+ObjectAny	n'importe quel objet
+ObjectCurrentQuest	objet de quête
+ObjectHerb	herbe
+ObjectUsable	objet utilisable
+ObjectVein	filon
+Objectives	Cibles
+Objects	Objets
+Objects and lootable/skinnable	Objets et pillables/dépeçables
+Objects and lootable/skinnable and units	Objets, pillables/dépeçables et unités
+Objects and non-objects	Objets et non-objets
+Oder Rückschritt zum löschen	Ou retour arrière pour supprimer
+Off	Désactivé
+Off Hand	Main gauche
+Off Tank	Tank secondaire
+Off Tanks	Tanks secondaires
+Off hand	Main gauche
+Offline Datenbank	Base de données hors ligne
+Offline Datenbank aktualisieren	Mettre à jour la base de données hors ligne
+Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen	Oh non ! Je suis idiot et je ne veux pas réinitialiser !
+On	Activé
+On first and second key	Sur la première et la deuxième touche
+On first key	Sur la première touche
+On second key	Sur la deuxième touche
+One	Un
+Only custom waypoints can be deleted	Seuls les points de passage personnalisés peuvent être supprimés
+Only directly in front	5 degrés devant
+Only global link list in last line	Uniquement la liste globale des liens en dernière ligne
+Only in combat	Uniquement en combat
+Only raid icon for targets with icon	N'annoncer que le symbole pour les cibles marquées
+Only unit numbers	Uniquement les numéros d'unité
+Onyxias Lair	Repaire d'Onyxia
+Open all	Tout ouvrir
+Operator für Bedingung	Opérateur de la condition
+Operator ändern	Changer l'opérateur
+Option	Option
+Options	Options
+Orange	Orange
+Orc	Orc
+Ork	Orc
+Other	Autre
+Out	Dehors
+Out of range at	Hors de portée à
+Output all enemies casting	Annoncer toutes les incantations ennemies
+Output dead units	Annoncer les ennemis morts
+Output name for	Annoncer le nom pour
+Output sound for	Émettre un son pour
+Output style	Style de sortie
+Output target of target on target change	Annoncer la cible de la cible au changement de cible
+Output unit name	Annoncer le nom de l'unité
+Output your target casting	Annoncer les incantations de votre cible
+Overhealing amount	Montant de surplus de soins
+Overhealing percentage	Pourcentage de surplus de soins
+Overrides subgroup selection	Remplace la sélection de sous-groupe
+Overview page 	Page d'aperçu 
+Overview page sections	Sections de la page d'aperçu
+Overview pages	Pages d'aperçu
+PANEL_CLOSED	Panneau fermé
+PANEL_OPEN	Panneau ouvert
+PETBAR_Autocast	Lancement automatique
+PLAYER_CLASS	Classe du joueur
+PLAYER_CONTROL_GAINED	contrôle du joueur obtenu
+PLAYER_CONTROL_LOST	contrôle du joueur perdu
+PLAYER_DEAD	joueur mort
+PLAYER_ENTERING_WORLD	joueur entrant dans le monde
+PLAYER_EQUIPMENT_CHANGED	équipement du joueur modifié
+PLAYER_FACTION	Faction du joueur
+PLAYER_MONEY	le joueur gagne ou perd de l'argent
+PLAYER_MOUNT_DISPLAY_CHANGED	affichage de la monture du joueur modifié
+PLAYER_POSITION	Position du joueur
+PLAYER_RACE	Race du joueur
+PLAYER_REGEN_DISABLED	début du combat
+PLAYER_REGEN_ENABLED	fin du combat
+PLAYER_SKILL	Compétence du joueur
+PLAYER_SOFT_ENEMY_CHANGED	cible souple ennemie du joueur modifiée
+PLAYER_SOFT_FRIEND_CHANGED	cible souple alliée du joueur modifiée
+PLAYER_SOFT_INTERACT_CHANGED	cible souple d'interaction du joueur modifiée
+PLAYER_STARTED_MOVING	le joueur a commencé à se déplacer
+PLAYER_TALENT_UPDATE	mise à jour des talents du joueur
+PLAYER_TARGET_CHANGED	cible du joueur modifiée
+PLAYER_UNGHOST	joueur ressuscité
+PLAYER_UPDATE_RESTING	mise à jour du repos du joueur
+Paladin	paladin
+Panel	Sous-volet
+Parent quest	Pré-quête
+Pariert	Paré
+Party	Groupe
+Party and Raid	Groupe et raid
+Party health monitor enabled	Moniteur de santé du groupe activé
+Pass	Correspond
+Pass rolled	a lancé Adapté
+Paste data to import now	Insérez maintenant les données à importer
+Paste or edit text	Collez ou modifiez le texte maintenant
+Percent delay for next output in queue	Délai en pourcentage pour la prochaine sortie de la file
+Percentage of your target's primary resource, for example mana or rage	Pourcentage de la ressource principale de votre cible, par exemple mana ou rage
+Persönliche Beute	Butin : butin individuel
+Pet	Familier
+Pet Action Bar	Barre d'action du familier
+Pet Stable	Maître des écuries
+Pet happiness	Bonheur
+PetStableFrame	Écurie
+Pets	Familiers
+Phase	Phase
+Ping	Ping
+Plaketten einfaerben	Colorer les barres de nom
+Plaketten-Farben	Couleurs des barres de nom
+Play NPC greetings	Lire les salutations des PNJ
+Play first time user intro	Lire l'introduction pour les nouveaux utilisateurs
+Player Talents	Talents du joueur
+Player event	Événement de joueur
+Player health monitor disabled	Moniteur de santé du joueur désactivé
+Player health monitor enabled	Moniteur de santé du joueur activé
+PlayerTalentFrame	Talent du joueur
+Plus	plus
+Plündermeister	Butin : maître du butin
+Point B	Point B
+Popup 1	Popup 1
+Popup 2	Popup 2
+Popup 3	Popup 3
+Position	Position
+Positional Low Pass Filter	Filtre passe-bas positionnel
+Post: 	Courrier : 
+Power	Ressource
+Power Type	Type de ressource
+Pre Quest	Pré-quête
+Pre Quests	Pré-quêtes
+Press	Appuyer
+Press ENTER now, to start your tutorial.	Appuyez sur ENTRÉE maintenant pour démarrer votre tutoriel.
+Press ENTER, to continue your tutorial.	Appuyez sur ENTRÉE pour poursuivre votre tutoriel.
+Press control c to copy the macro text, then press escape	Appuyez sur Contrôle C pour copier le texte de la macro, puis sur Échap
+Press new key or Escape to cancel	Appuyez maintenant sur la nouvelle touche ou sur Échap pour annuler
+Previous	Retour
+Priester	prêtre
+Prio	prio
+Prio output	Sortie prioritaire
+Prismatisch	Prismatique
+Private	Privé
+Private Gruppe	Groupe privé
+Profil	Profil
+Profil gewechselt	Profil modifié
+Profil kopiert	Profil copié
+Profil zurückgesetzt	Profil réinitialisé
+Progress	Progression
+Protection	Protection
+Pulsring / Punkt	Anneau pulsé / point
+Purple	Violet
+PvP	JcJ
+QUEST_ACCEPTED	quête acceptée
+QUEST_LOG_UPDATE	mise à jour du journal de quêtes
+QUEST_REMOVED	quête supprimée
+QUEST_TURNED_IN	quête rendue
+Qualität	Qualité
+Quell Einheit angreifbar	Source de l'événement attaquable
+Quelle (L)	Source de l'événement (L)
+Querying data...	Requête des données...
+Quest	Quête
+Quest ID	ID de quête
+Quest Items	Objets de quête
+Quest available	Quête disponible
+Quest for hand-in	Quête à rendre
+Quest;aktive	quête;active
+Quest;available	quête;disponible
+Quest;geschlossen	Quête;fermée
+Quest;geöffnet	Quête;ouverte
+QuestFrame	Quête
+QuestLogFrame	Journal de quêtes
+Questdatenbank	Base de données des quêtes
+Questie announce both	Les deux
+Questie announce party	Groupe
+Questie announce raid	Raid
+Questie chat announcements	Annonces dans le chat
+Questie not installed	Questie n'est pas installé
+Quests	Quêtes
+Quests group	Groupe de quêtes
+Questtext:r\n	Description de la quête :r\n
+Questtextr\n	Description de la quête :r\n
+Questziel	objectif de quête
+Quick waypoint	point de passage rapide
+Quick waypoint 4 set to corpse	Point de passage rapide 4 placé sur le cadavre
+RAGE	Rage
+RIGHT	DROITE
+ROLE_Damage	Dégâts
+ROLE_Healer	Soigneur
+ROLE_Tank	Tank
+RUNIC_POWER	Puissance runique
+Race	Race
+Races	Races
+Raid	Raid
+Raid Chat automatisch lesen	Lire automatiquement le chat de raid
+Raid Warnung automatisch lesen	Lire automatiquement les avertissements de raid
+Raid health monitor enabled	Moniteur de santé du raid activé
+Raid lockout	Verrouillage de raid
+Raid reset	Réinitialisation du raid
+Range	Portée
+Range for counting a waypoint as reached and switching to next waypoint	Portée pour considérer un point de passage comme atteint et passer au suivant
+Range for group members in range checks	Portée pour les membres du groupe dans les vérifications de portée
+Range for near route starts	Portée pour les débuts d'itinéraire proches
+Ranged	À distance
+Rare	Rare
+Rare Elite	Élite rare
+Read all tooltips	Lire toutes les infobulles
+Ready in	Prêt dans
+Reagent bank	Banque de composants
+Reagiert, wenn der Aura-Typ ein Buff ist	Se déclenche si le type d'aura est un buff
+Reagiert, wenn der Aura-Typ ein Debuff ist	Se déclenche si le type d'aura est un debuff
+Reagiert, wenn die Zieleinheit die Klasse Druide hat	Se déclenche si l'unité cible est un druide
+Reagiert, wenn die Zieleinheit die Klasse Dämonenjäger hat	Se déclenche si l'unité cible est un chasseur de démons
+Reagiert, wenn die Zieleinheit die Klasse Hexer hat	Se déclenche si l'unité cible est un démoniste
+Reagiert, wenn die Zieleinheit die Klasse Jäger hat	Se déclenche si l'unité cible est un chasseur
+Reagiert, wenn die Zieleinheit die Klasse Krieger hat	Se déclenche si l'unité cible est un guerrier
+Reagiert, wenn die Zieleinheit die Klasse Magier hat	Se déclenche si l'unité cible est un mage
+Reagiert, wenn die Zieleinheit die Klasse Mönch hat	Se déclenche si l'unité cible est un moine
+Reagiert, wenn die Zieleinheit die Klasse Paladin hat	Se déclenche si l'unité cible est un paladin
+Reagiert, wenn die Zieleinheit die Klasse Priester hat	Se déclenche si l'unité cible est un prêtre
+Reagiert, wenn die Zieleinheit die Klasse Schamane hat	Se déclenche si l'unité cible est un chaman
+Reagiert, wenn die Zieleinheit die Klasse Schurke hat	Se déclenche si l'unité cible est un voleur
+Reagiert, wenn die Zieleinheit die Klasse Todesritter hat	Se déclenche si l'unité cible est un chevalier de la mort
+Recent	Récent
+Recepient	Destinataire
+Recepient missing	Destinataire manquant
+Recording ends at B	L'enregistrement continue jusqu'à B
+Recording ends until manually ended	L'enregistrement continue jusqu'à la fin
+Recording in progress	Enregistrement en cours
+Recording starts at A	L'enregistrement démarre au point A
+Red	Rouge
+Reflektiert	Renvoyé
+Refresh list	Actualiser la liste
+Reihum	Butin : tour de rôle
+Relic	Relique
+Remove Entry	Supprimer l'entrée
+Remove empty bag slots (collapse)	Déplacer tous les objets en haut du sac (compacter)
+Remove from favorites	Retirer des favoris
+Rename	Renommer
+Renamed	Renommé
+Reparatur status: 	Statut de l'objet : 
+Repeat raid target markers on units	Répéter les symboles de cible sur les unités
+Repeating interval (0 is once)	Intervalle de répétition (0 = une fois)
+Replaying the step instructions: You can listen to the instructions of the current tutorial step again at any time. To do this, press the shortcut %SKU_KEY_TUTORIALSTEPREPEAT%.	Réécouter les instructions de l'étape : vous pouvez réécouter à tout moment les instructions de l'étape en cours du tutoriel. Pour cela, appuyez sur le raccourci %SKU_KEY_TUTORIALSTEPREPEAT%.
+Reply	Répondre
+Reports	Rapports
+Reputation	Réputation
+Res	Ressource
+Resistance	Résistances
+Resistances	Résistances
+Resisted Damage: 	Dégâts résistés : 
+Resisted hits: 	Coups résistés : 
+Resolve menu entry	Résoudre l'entrée de menu
+Ressource Scanning	analyse des ressources
+Ressource hat sich verändert (Mana, Energie, Wut etc.	La ressource a été mise à jour (mana, énergie, rage, etc.).
+Ressourcen änderung	Ressource mise à jour
+Ressourcen-Scan gestartet (	Analyse des ressources démarrée (
+Ressourcen-Scan: Nichts gefunden	Analyse des ressources : rien trouvé
+Restoration	Restauration
+Results	Résultats
+Retribution	Vindicte
+Reverb	Réverbération
+Reward Gold	Or de récompense
+Reward Items	Objets de récompense
+Reward XP	XP de récompense
+Reward description	Description de la récompense
+Rewards	Récompenses
+Right Multi Bar	barre d'action droite 2
+Right click	Clic droit
+Rogue	Voleur
+Role Poll	Sondage de rôle
+Role assignment	Attribution des rôles
+Role for this set	Rôle pour cet ensemble
+Roles	Rôles
+Roll on	lancer sur
+Rolle für diese Gruppe	Rôle pour ce groupe
+Rollen für Bewerbung	Rôles pour la candidature
+Rot	Rouge
+Route	Itinéraire
+Route folgen	Suivre l'itinéraire
+Route folgen beendet	suivi de l'itinéraire terminé
+Route folgen läuft	Suivi d'itinéraire en cours
+Routen Umwandlung 	Conversion des itinéraires 
+Routen Umwandlung abgeschlossen	Conversion des itinéraires terminée
+Routen Umwandlung auf neue Version gestartet	Conversion des itinéraires vers la nouvelle version démarrée
+Ruf:r\n	Réputation :r\n
+Ruhestein: 	Pierre de foyer : 
+Runes	Runes
+Runter blättern	Faire défiler vers le bas
+SKU_CLOSEROUTE_STARTED	Sku : itinéraire proche démarré
+SKU_KEY_ACTIONBARSOPEN	ouvrir les barres d'action
+SKU_KEY_ADDLARGEWP	créer un grand point de passage
+SKU_KEY_ADDSMALLWP	créer un petit point de passage
+SKU_KEY_CHATOPEN	ouvrir le chat
+SKU_KEY_CHAT_LINEMENU	Menu de la ligne de chat
+SKU_KEY_CHAT_LINENEXT	Ligne de chat suivante
+SKU_KEY_CHAT_LINEPREV	Ligne de chat précédente
+SKU_KEY_CHAT_TABNEXT	Onglet de chat suivant
+SKU_KEY_CHAT_TABPREV	Onglet de chat précédent
+SKU_KEY_COMBATMENU_BACK	Menu de combat; retour (Retour arrière)
+SKU_KEY_COMBATMENU_CLOSE	Menu de combat; fermer (Échap)
+SKU_KEY_COMBATMENU_DOWN	Menu de combat; bas
+SKU_KEY_COMBATMENU_END	Menu de combat; à la fin (Fin)
+SKU_KEY_COMBATMENU_HOME	Menu de combat; au début (Origine)
+SKU_KEY_COMBATMENU_LEFT	Menu de combat; gauche
+SKU_KEY_COMBATMENU_RIGHT	Menu de combat; droite
+SKU_KEY_COMBATMENU_UP	Menu de combat; haut
+SKU_KEY_COMBATMENU_USE	Menu de combat; utiliser/sélectionner (Entrée)
+SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT	Moniteur de combat; annoncer le nombre actuel d'ennemis en combat
+SKU_KEY_COMBATMONSETFOLLOWTARGET	Moniteur de combat; définir la cible actuelle comme cible de suivi
+SKU_KEY_DEBUGMODE	sortie de débogage
+SKU_KEY_DOMONITORPARTYHEALTH2CONTI	Déclencher la sortie continue du moniteur de groupe
+SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR	Basculer le moniteur de santé joueur, groupe, raid
+SKU_KEY_ENABLESOFTTARGETINGENEMY	Activer / désactiver le ciblage souple ennemi
+SKU_KEY_ENABLESOFTTARGETINGFRIENDLY	Activer / désactiver le ciblage souple allié
+SKU_KEY_ENABLESOFTTARGETINGINTERACT	Activer / désactiver le ciblage souple des objets
+SKU_KEY_GROUPMEMBERSRANGECHECK	Effectuer la vérification de portée des membres du groupe
+SKU_KEY_MENULEFTCLICK	Menu; clic gauche/activer (Entrée)
+SKU_KEY_MENUQUICK1	accès rapide au menu audio 1
+SKU_KEY_MENUQUICK10	accès rapide au menu audio 10
+SKU_KEY_MENUQUICK10SET	définir l'accès rapide au menu audio 10
+SKU_KEY_MENUQUICK1SET	définir l'accès rapide au menu audio 1
+SKU_KEY_MENUQUICK2	accès rapide au menu audio 2
+SKU_KEY_MENUQUICK2SET	définir l'accès rapide au menu audio 2
+SKU_KEY_MENUQUICK3	accès rapide au menu audio 3
+SKU_KEY_MENUQUICK3SET	définir l'accès rapide au menu audio 3
+SKU_KEY_MENUQUICK4	accès rapide au menu audio 4
+SKU_KEY_MENUQUICK4SET	définir l'accès rapide au menu audio 4
+SKU_KEY_MENUQUICK5	accès rapide au menu audio 5
+SKU_KEY_MENUQUICK5SET	définir l'accès rapide au menu audio 5
+SKU_KEY_MENUQUICK6	accès rapide au menu audio 6
+SKU_KEY_MENUQUICK6SET	définir l'accès rapide au menu audio 6
+SKU_KEY_MENUQUICK7	accès rapide au menu audio 7
+SKU_KEY_MENUQUICK7SET	définir l'accès rapide au menu audio 7
+SKU_KEY_MENUQUICK8	accès rapide au menu audio 8
+SKU_KEY_MENUQUICK8SET	définir l'accès rapide au menu audio 8
+SKU_KEY_MENUQUICK9	accès rapide au menu audio 9
+SKU_KEY_MENUQUICK9SET	définir l'accès rapide au menu audio 9
+SKU_KEY_MENURIGHTCLICK	Menu; clic droit (Contrôle+Entrée)
+SKU_KEY_MMSCANNARROW	analyse des ressources étroite
+SKU_KEY_MMSCANWIDE	analyse des ressources large
+SKU_KEY_MOUSEFINDER	trouver la souris
+SKU_KEY_MOVETONEXTWP	point de passage suivant de l'itinéraire
+SKU_KEY_MOVETOPREVWP	point de passage précédent de l'itinéraire
+SKU_KEY_NAVROUTEDESTINATIONSQUICK	ouvrir les destinations d'itinéraire proches
+SKU_KEY_NAVWAYPOINTSQUICK	ouvrir les points de passage proches
+SKU_KEY_NEXTCOMBATENEMY	ennemi suivant en combat
+SKU_KEY_NOTIFYONRESOURCES	basculer la notification des ressources
+SKU_KEY_OPENATLASLOOT	ouvrir AtlasLoot
+SKU_KEY_OPENDUNGEONBROWSER	ouvrir le navigateur de donjons
+SKU_KEY_OPENMENU	ouvrir le menu audio
+SKU_KEY_OUTPUTHARDTARGET	Annoncer la cible fixe actuelle
+SKU_KEY_OUTPUTSOFTTARGET	Annoncer la cible souple actuelle
+SKU_KEY_PANICMODE	mode panique
+SKU_KEY_QUESTABANDON	abandonner la quête
+SKU_KEY_QUESTSHARE	afficher l'infobulle de l'objet de butin actuel
+SKU_KEY_QUICKWP1	sélectionner le point de passage rapide 1
+SKU_KEY_QUICKWP1SET	définir le point de passage rapide 1
+SKU_KEY_QUICKWP2	sélectionner le point de passage rapide 2
+SKU_KEY_QUICKWP2SET	définir le point de passage rapide 2
+SKU_KEY_QUICKWP3	sélectionner le point de passage rapide 3
+SKU_KEY_QUICKWP3SET	définir le point de passage rapide 3
+SKU_KEY_QUICKWP4	sélectionner le point de passage rapide 4
+SKU_KEY_QUICKWP4SET	définir le point de passage rapide 4
+SKU_KEY_ROLLGREED	lancer cupidité
+SKU_KEY_ROLLINFO	info du jet
+SKU_KEY_ROLLNEED	lancer besoin
+SKU_KEY_ROLLPASS	passer le jet
+SKU_KEY_SCAN1	Analyse 1
+SKU_KEY_SCAN2	Analyse 2
+SKU_KEY_SCAN3	Analyse 3
+SKU_KEY_SCAN4	Analyse 4
+SKU_KEY_SCAN5	Analyse 5
+SKU_KEY_SCAN6	Analyse 6
+SKU_KEY_SCAN7	Analyse 7
+SKU_KEY_SCAN8	Analyse 8
+SKU_KEY_SCANCONTINUE	Continuer l'analyse
+SKU_KEY_SELECTNEXTBASEWAYPOINT	Sélectionner le point de passage non visité le plus proche du même type
+SKU_KEY_SKUMARKERCLEARALL	Effacer tous les symboles de cible Sku
+SKU_KEY_SKUMARKERSET1WHITE	Définir le symbole de cible Sku 1 Blanc
+SKU_KEY_SKUMARKERSET2RED	Définir le symbole de cible Sku 2 Rouge
+SKU_KEY_SKUMARKERSET3BLUE	Définir le symbole de cible Sku 3 Bleu
+SKU_KEY_SKUMARKERSET4GREEN	Définir le symbole de cible Sku 4 Vert
+SKU_KEY_SKUMARKERSET5PURPLE	Définir le symbole de cible Sku 5 Violet
+SKU_KEY_SKUMARKERSET6YELLOW	Définir le symbole de cible Sku 6 Jaune
+SKU_KEY_SKUMARKERSET7ORANGE	Définir le symbole de cible Sku 7 Orange
+SKU_KEY_SKUMARKERSET8GREY	Définir le symbole de cible Sku 8 Gris
+SKU_KEY_SKUMMOPEN	ouvrir la minicarte Sku
+SKU_KEY_SKURTMMDISPLAY	afficher les itinéraires sur la minicarte
+SKU_KEY_STARTRRFOLLOW	inverser l'itinéraire
+SKU_KEY_STOPROUTEORWAYPOINT	arrêter de suivre l'itinéraire ou le point de passage
+SKU_KEY_STOPTTSOUTPUT	arrêter la sortie audio
+SKU_KEY_TARGETDISTANCE	annoncer la distance à la cible
+SKU_KEY_TARGETHEALTH	Annoncer la santé de la cible
+SKU_KEY_TAXICANCEL	demander un atterrissage anticipé
+SKU_KEY_TOGGLEMMSIZE	agrandir la minicarte
+SKU_KEY_TOGGLEREACHRANGE	basculer la portée d'atteinte des points de passage
+SKU_KEY_TRADEACCEPT	accepter l'échange
+SKU_KEY_TURNTOBEACON	se tourner vers la balise actuelle
+SKU_KEY_TURNTOUNIT1	Se tourner vers l'unité 1
+SKU_KEY_TURNTOUNIT2	Se tourner vers l'unité 2
+SKU_KEY_TURNTOUNIT3	Se tourner vers l'unité 3
+SKU_KEY_TURNTOUNIT4	Se tourner vers l'unité 4
+SKU_KEY_TURNTOUNIT5	Se tourner vers l'unité 5
+SKU_KEY_TURNTOUNIT6	Se tourner vers l'unité 6
+SKU_KEY_TURNTOUNITTARGET	Se tourner vers la cible
+SKU_KEY_TURNTOUNITTURN180	Se tourner à 180 degrés
+SKU_KEY_TUTORIALSTEPBACK	Passer à l'étape précédente du tutoriel
+SKU_KEY_TUTORIALSTEPFORWARD	Passer à l'étape suivante du tutoriel
+SKU_KEY_TUTORIALSTEPREPEAT	Répéter l'annonce de l'étape actuelle du tutoriel
+SKU_MENU_CLOSED	menu Sku fermé
+SKU_MENU_OPEN	menu Sku ouvert
+SKU_NAVIGATION_STOPPED	Sku : navigation arrêtée
+SKU_QUICKWAYPOINT_UPDATED	Sku : point de passage rapide mis à jour
+SKU_ROUTE_STARTED	Sku : itinéraire démarré
+SKU_UNITROUTE_STARTED	Sku : itinéraire d'unité démarré
+SKU_WAYPOINT_STARTED	Sku : point de passage démarré
+SPACE	ESPACE
+SPELLS_CHANGED	sorts modifiés
+START_LOOT_ROLL	démarrer le jet de butin
+STRAT_AHClosed	Hôtel des ventes fermé, achat stratégique annulé.
+STRAT_Amount	Quantité
+STRAT_AuctionGone	Enchère plus disponible, nouvelle recherche.
+STRAT_BuyFail	Échec de l'achat, tentative
+STRAT_BuyOK	Achat réussi.
+STRAT_Cancelled	Achat stratégique annulé.
+STRAT_Done	Achat stratégique terminé
+STRAT_EnterBuy	Entrée pour acheter, Échap pour annuler.
+STRAT_EnterItem	Saisissez le nom de l'objet
+STRAT_For	pour un maximum de
+STRAT_Found	Trouvé
+STRAT_ItemName	Objet
+STRAT_ItemSet	Objet défini
+STRAT_MaxCopper	Prix maximum en cuivre
+STRAT_MaxFails	Nombre maximum de tentatives atteint. Achat stratégique annulé.
+STRAT_MaxGold	Prix maximum en or
+STRAT_MaxSilver	Prix maximum en argent
+STRAT_NoItem	Aucun objet spécifié.
+STRAT_NoMoney	Pas assez d'or. Achat stratégique annulé.
+STRAT_NoPrice	Aucun prix spécifié.
+STRAT_NoneFound	Aucune enchère correspondante trouvée.
+STRAT_NotSet	non défini
+STRAT_PerPiece	par pièce
+STRAT_Pieces	pièces
+STRAT_PleaseWait	Veuillez patienter...
+STRAT_PressEnter	Appuyez sur Entrée maintenant pour
+STRAT_Retrying	Nouvelle tentative, échec
+STRAT_ScanBusy	Analyse déjà en cours, attente...
+STRAT_SearchError	Erreur de recherche, achat stratégique annulé.
+STRAT_SearchTimeout	Délai de recherche dépassé, le serveur ne répond pas.
+STRAT_Searching	Recherche dans l'hôtel des ventes...
+STRAT_Start	Démarrer l'achat
+STRAT_Starting	Achat stratégique démarré
+STRAT_Times	fois
+STRAT_Title	Stratégie d'achat d'objets uniques
+STRAT_Total	Coût total
+STRAT_TryNext	Essai de l'offre suivante.
+Sad	Triste
+Scan Tasten	Touches d'analyse
+Scan noch nicht möglich	Analyse pas encore possible
+Scan noch nicht möglich, bitte kurz warten	Analyse pas encore possible, veuillez patienter un instant
+Scan settings	Réglages de l'analyse
+Schaden	Dégâts
+Schamane	chaman
+Schatten	Ombre
+Schlachtzugszielsymbol	Symbole de raid
+Schliesst das Sockel-Fenster ohne zu speichern.	Ferme la fenêtre de sertissage sans enregistrer.
+Schließen	Fermer
+Schnellwahl	Sélection rapide
+Schnellwahl 1	Sélection rapide 1
+Schnellwahl 2	Sélection rapide 2
+Schnellwahl 3	Sélection rapide 3
+Schnellwahl 4	Sélection rapide 4
+Schnellwegpunkte	Points de passage rapides
+Schriftgroesse	Taille de police
+Schrott verkauft	Camelote vendue
+Schuke	Voleur
+Schurke	voleur
+Schutz	Protection
+Schwarzfelsspitze	Pic Rochenoire
+Scourge	Fléau
+Scroll down	Faire défiler vers le bas
+Scroll up	Faire défiler vers le haut
+Scyer zone entered	Zone des Clairvoyants atteinte
+Scyer zone left	Zone des Clairvoyants quittée
+Sealed lips	Lèvres scellées
+Search	Rechercher
+Search Panel	Panneau de recherche
+Sekunden	Secondes
+Sekundäre Belegung gelöscht	Assignation secondaire supprimée
+Sekundäre Belegung löschen	Supprimer l'assignation secondaire
+Sekundäre Taste neu belegen	Assigner une touche secondaire
+Select	Sélectionner
+Select category	Sélectionner la catégorie
+Select to disable	Sélectionner pour désactiver
+Select to enable	Sélectionner pour activer
+Selected	Sélection
+Send	Envoyer
+Send Mail	Boîte d'envoi
+Send failed	Échec de l'envoi
+Sender	De
+Sent	Envoyé
+Server hat den Kauf nicht bestätigt, bitte erneut versuchen	Le serveur n'a pas confirmé l'achat, veuillez réessayer
+Set	Définir
+Set Quick Waypoint to coordinates	Placer le point de passage rapide aux coordonnées
+Set aktivieren	Activer l'ensemble
+Set aktiviert, %s Auren	Ensemble activé, %s auras
+Set all to auto	Tout régler sur auto
+Set angelegt	Ensemble créé
+Set angewendet	Ensemble appliqué
+Set aus aktuellen Auren anlegen	Créer un nouvel ensemble à partir des auras actuelles
+Set geloescht	Ensemble supprimé
+Set hinzugefügt	Ensemble ajouté
+Set konnte nicht vorbereitet werden	L'ensemble n'a pas pu être préparé
+Set loeschen	Supprimer l'ensemble
+Set name to auto generated	Générer automatiquement le nom de l'aura
+Set on completion	Définir à la sortie
+Set umbenannt	Ensemble renommé
+Set umbenennen	Renommer l'ensemble
+Set unit for out of range	Définir l'unité pour hors de portée
+Sets (teilen)	Gestion des ensembles
+Setting	Réglage
+Setzt %s in Sockel %d. Die Aenderung wird erst nach Anwenden bestaetigt.	Place %s dans la châsse %d. Le changement ne sera appliqué qu'après avoir cliqué sur Appliquer.
+Setzt alle gewaehlten Edelsteine endgueltig ein. Achtung: Edelsteine werden dadurch verbraucht.	Place définitivement toutes les gemmes sélectionnées. Attention : les gemmes seront consommées.
+Shadow	Ombre
+Shaman	Chaman
+Shamane	Chaman
+Share quest	Partager la quête
+Shift	Maj
+Shortcut	Sélection rapide
+Shoulder	Épaules
+Show	Afficher
+Show as link source	Afficher comme source du lien
+Show extra minimap	Afficher la minicarte supplémentaire
+Show for	Afficher pour
+Show global direction in waypoint lists	Afficher la direction globale dans les listes de points de passage
+Show herbs and mining node waypoints	Afficher les points de passage d'herbes et de filons
+Show in users tutorials list	Afficher dans la liste des tutoriels de l'utilisateur
+Show routes on minimap	Afficher les itinéraires sur la minicarte
+Show your class only	Afficher uniquement votre classe
+Shown days for multi day events	Jours affichés pour les événements sur plusieurs jours
+Sign up	S'inscrire
+Signed up	Inscrit
+Silber	Argent
+Silent on 100 and 0 percent	Silence continu à 100 et 0 pour cent
+Silent on all at 100 percent	Silence continu sur tout à 100 pour cent
+Silver	Argent
+Single key action in raids up to 10 players	Action à touche unique dans les raids jusqu'à 10 joueurs
+Size	Taille
+Skeptical	Sceptique
+Skill	Compétence
+SkillFrame	Compétences du joueur
+Skills	Compétences
+Skin Color	Couleur de peau
+Skinnable	Dépeçable
+Sku	Sku
+Sku CALENDAR ERROR	ERREUR DE CALENDRIER Sku
+Sku Chat Channel beitreten	Rejoindre le canal de chat Sku
+Sku Head	Sku
+Sku Kanal	Canal Sku
+Sku TTS	Synthèse vocale Sku
+Sku Tastenbelegung	Assignations de touches Sku
+Sku menu in combat	Menu Sku en combat
+Sku quest comments:	Commentaires de quête Sku :
+Sku-Audiomenü	Menu audio Sku
+SkuAdventureGuideMenuEntry	Tutoriels et Wiki
+SkuAurasMenuEntry	Auras
+SkuChat audio off	Audio SkuOptions désactivé
+SkuChat audio on	Audio SkuOptions activé
+SkuChat automatisch lesen	Lire automatiquement le canal SkuChat
+SkuChat off	SkuOptions désactivé
+SkuChat on	SkuOptions activé
+SkuChatMenuEntry	Chat
+SkuCore,Aktionsleisten	Core,Barres d'action
+SkuLfgMenuEntry	Recherche de groupe
+SkuMobMenuEntry	Créature
+SkuNav,Alles abwählen	Navigation,Tout désélectionner
+SkuNav,Route,Route folgen,Ziele Entfernung	Navigation,Itinéraire,Suivre l'itinéraire,Destinations par distance
+SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung	Navigation,Point de passage,Sélectionner,Carte actuelle par distance
+SkuQuest,Questdatenbank,Alle	Quest,Base de données des quêtes,Tout
+Skull	crâne
+Slow Reggae	Reggae lent
+Small	Petit
+Smile	Sourire
+Social	Social
+Sockel %d, %s: %s	Châsse %d, %s : %s
+Sockel-API nicht verfuegbar	API de sertissage non disponible
+Sockeln	Châsse
+Sockeln abgebrochen	Sertissage annulé
+Sockelung bestaetigt	Sertissage confirmé
+Socketing	Sertissage
+Sofortkauf Preis pro Stack	Prix d'achat par lot
+Soft targeting	Ciblage souple
+Sort items by name	Trier les objets par nom
+Sort items by quality	Trier les objets par qualité
+Sortierung	Tri
+Sorting and cleanup	Trier et ranger
+Sorting and cleanup all bags	Trier et ranger tous les sacs ouverts
+Soulbound	Lié quand ramassé
+Sound Settings	Réglages du son
+Sound When Game Is In Background	Son quand le jeu est en arrière-plan
+Sound bei Fehler	Audio en cas d'erreur
+Sound if target is in combat	Son si la cible est en combat
+Sound on empty enemy soft target	Son sur cible souple ennemie vide
+Sound on empty friendly soft target	Son sur cible souple alliée vide
+Sound on empty interact soft target	Son sur cible souple d'interaction vide
+Sound on fail	Son en cas d'échec
+Sound on new link in history	Son sur nouveau lien dans l'historique
+Sound on success	Son en cas de réussite
+Sound output	Sortie sonore
+Soundeffekte	Effets sonores
+Soundeffekte 	Effets sonores 
+Soundeffekte Lautstärke	Volume des effets sonores
+Soundsystem neu gestartet.	Système sonore redémarré.
+Source	Source
+Spec	Spé
+Specific dungeon selection	Sélection de donjon spécifique
+Speed	Vitesse
+Speed (higher is faster)	Vitesse (plus élevé = plus rapide)
+Spell details for 	Détails du sort pour 
+Spell usable	Sort utilisable (L)
+Spell: 	Sort : 
+Spellbook	Grimoire
+Spent for	Dépensé pour
+Spezialisierung	Spécialisation
+Spezialisierung wird gewechselt	Changement de spécialisation
+Spiel Tastenbelegung	Assignations de touches du jeu
+Spieler melden wegen:	Signaler le joueur pour :
+Square	carré
+Stack Größe	Taille du lot
+Stall 1	Écurie 1
+Stall 1 	Écurie 1 
+Stall 2	Écurie 2
+Stall 2 	Écurie 2 
+Stall 3	Écurie 3
+Stall 3 	Écurie 3 
+Stall 4	Écurie 4
+Stall 4 	Écurie 4 
+Stance Action Bar	Barre d'action de posture
+Standard profil Allgemein	Profil standard Général
+Standard profil Caster	Profil standard Lanceur de sorts
+Standard profil Heiler	Profil standard Soigneur
+Standard profil Nahkämpfer	Profil standard Mêlée
+Standardrolle	Rôle par défaut
+Standardrollen	Rôles par défaut
+Standby	En attente
+Star	étoile
+Start	Démarrer
+Start Group	Créer un groupe
+Start and end	Début et fin
+Start from this step	Commencer à cette étape
+Start in Zone	Commence dans la zone
+Start only	Début uniquement
+Start or end day: 	Début ou fin : 
+Start over	Recommencer
+Start route to waypoint	Démarrer un itinéraire vers le point de passage
+Start text	Texte de début
+Start: 	Début : 
+Starting the newbie tutorial: Unfortunately at the moment there is no first steps tutorial for you as a 	Démarrage du tutoriel débutant : malheureusement il n'existe pour l'instant aucun tutoriel de premiers pas pour vous en tant que 
+Starting your newbie tutorial: There is a first steps tutorial specifically for your as a 	Démarrage de votre tutoriel débutant : il existe un tutoriel de premiers pas spécialement pour vous en tant que 
+StaticPopup1	Popup
+Statistics	Statistiques
+Stats	Stats
+Step	Étape
+Step settings	Réglages de l'étape
+Steps	Étapes
+Stonewrought-Pass	Passage-de-Roc
+Stop current tutorial	Arrêter le tutoriel en cours
+Straight face	Visage neutre
+Stun	Étourdi
+Sub panel	Sous-section
+Subgroup	Sous-groupe
+Subgroups selection	Sélection des sous-groupes
+Subtlety	Finesse
+Suchbegriff fehlt. Beispiel: /skuaudio find headset	Terme de recherche manquant. Exemple : /skuaudio find casque
+Summary	Résumé
+Survival	Survie
+Synth	Synthé
+TANK	Tank
+TARGET_UNIT_NAME	Nom de l'unité cible
+TRADE_Accept	Accepter l'échange
+TRADE_AcceptAgain	Échange modifié, confirmez à nouveau
+TRADE_AcceptDisabled	L'échange n'est pas possible pour le moment
+TRADE_Accepted	Échange accepté
+TRADE_AlreadyAccepted	Déjà confirmé, en attente de
+TRADE_CLOSED	échange fermé
+TRADE_EmptySlot	Emplacement vide
+TRADE_EnchantClick	Clic gauche pour placer
+TRADE_EnchantEmpty	Emplacement d'enchantement vide
+TRADE_EnchantSlot	Ne sera pas échangé (Enchantement)
+TRADE_InEnchantSlot	dans l'emplacement d'enchantement
+TRADE_InSlot	dans l'emplacement d'échange
+TRADE_InTradeMarker	dans l'échange
+TRADE_NoGold	Pas d'or
+TRADE_NoTradeOpen	Aucune fenêtre d'échange ouverte
+TRADE_OfferChangedWarning	a modifié son offre après coup. En confirmant, une demande de sécurité apparaît, que Sku ne peut pas utiliser
+TRADE_PartnerAccepted	a accepté l'échange
+TRADE_PartnerClears	retire
+TRADE_PartnerGold	Or du partenaire
+TRADE_PartnerItems	Objets du partenaire
+TRADE_PartnerPuts	place
+TRADE_PartnerUnaccepted	a retiré sa confirmation
+TRADE_Refresh	Actualiser
+TRADE_SHOW	affichage de l'échange
+TRADE_SecureConfirmBlocked	Blizzard n'autorise pas les addons à utiliser cette fenêtre. Confirmez l'échange avec l'OCR de votre lecteur d'écran, ou annulez avec Échap, rouvrez l'échange et confirmez une seule fois
+TRADE_SecureConfirmNeeded	Demande de sécurité de Blizzard. L'échange attend une confirmation supplémentaire
+TRADE_SecureConfirmNode	Confirmer la demande de sécurité
+TRADE_SecureConfirmReady	La demande de sécurité peut être confirmée maintenant
+TRADE_SlotCleared	vidé
+TRADE_SlotPrefix	Emplacement d'échange
+TRADE_WaitingConfirm	Confirmation de l'échange
+TRADE_YourGold	Votre or
+TRADE_YourItems	Vos objets
+TRUE	Vrai
+TTS alternative voice	Voix alternative de la synthèse
+TTS pause tags	Balises de pause de la synthèse
+TTS speed	Vitesse de la synthèse
+TTS voice	Voix de la synthèse
+TTS volume	Volume de la synthèse
+TTS_STRING	Chaîne de la synthèse
+Tabs	Onglets
+Take all	Tout prendre
+Take gold	Prendre l'or
+Talent Sets	Sélectionner l'ensemble de talents à afficher
+Talents	Talents
+Tank	Tank
+Tanking	Rôle de tank
+Tanks	Tanks
+Target	Cible
+Target menu	Menu de la cible
+Targets you attack	Cibles que vous attaquez
+Tastatur-Echo ansagen	Énoncer l'écho du clavier
+Taste	touche
+Taste gedrückt	Touche pressée
+Taste zuweisen	Assigner la touche
+Taure	Tauren
+Tauren	Tauren
+Taxi	Maître de vol
+TaxiFrame	Taxi
+Teilbar	Partageable
+Teilen abgeschlossen	Partage terminé
+Teilen nicht moeglich, Kommunikationsbibliothek fehlt	Partage impossible, bibliothèque de communication manquante
+Tentative	Provisoire
+Text	Texte
+That's it for now. Now start the tutorial content by pressing %SKU_KEY_TUTORIALSTEPFORWARD%.	C'est tout pour l'instant. Lancez maintenant le contenu du tutoriel en appuyant sur %SKU_KEY_TUTORIALSTEPFORWARD%.
+The Temple Of Atal'Hakkar	Le Temple d'Atal'Hakkar
+The amount of damage from a spell, melee, or ranged attack	Le montant des dégâts d'un sort, d'une attaque de mêlée ou à distance
+The amount of healing	Le montant des soins
+The amount of overhealing	Le montant du surplus de soins
+The basics: When following the tutorial, you should strictly follow the instructions in the tutorial. Listen closely to what you are supposed to do, and then do exactly that. Do not do anything else while the tutorial is in progress. You can of course do other things in between. But then you may find it difficult to get back to the point you need to go to for the next step of the tutorial. So, unless you already know your way around, you should only do the tutorial steps and not do anything else.	Les bases : lorsque vous suivez le tutoriel, vous devez suivre strictement ses instructions. Écoutez attentivement ce que vous devez faire, puis faites exactement cela. Ne faites rien d'autre pendant que le tutoriel est en cours. Vous pouvez bien sûr faire autre chose entre-temps. Mais vous risquez alors d'avoir du mal à revenir à l'endroit nécessaire pour l'étape suivante. Donc, sauf si vous connaissez déjà bien le jeu, ne faites que les étapes du tutoriel et rien d'autre.
+The player character's active pet	Le familier actif du personnage
+The remaining duration of the buff from the buff list target (L) condition	La durée restante du buff issu de la condition Liste des buffs de la cible (L)
+The remaining duration of the buff from the your buff list (L) condition	La durée restante du buff issu de la condition Votre liste de buffs (L)
+The remaining duration of the debuff from the debuff list target (L) condition	La durée restante du debuff issu de la condition Liste des debuffs de la cible (L)
+The remaining duration of the debuff from the your debuff list (L) condition	La durée restante du debuff issu de la condition Votre liste de debuffs (L)
+The tutorial will take about 2 hours. You can log out at any time and continue the tutorial later via this help. Just press F1 again after logging in.	Le tutoriel dure environ 2 heures. Vous pouvez vous déconnecter à tout moment et le poursuivre plus tard via cette aide. Appuyez simplement sur F1 après vous être reconnecté.
+The updated health or resource percentage from a health update or resource update event	Le pourcentage de santé ou de ressource mis à jour lors d'un événement de mise à jour de santé ou de ressource
+Theat warning repeating interval (0 is once)	Intervalle de répétition de l'avertissement de menace (0 = une fois)
+Then you can create a second character using one of the mentioned race and class combinations. With the second character you can play the tutorial. That takes about 2 hours.	Vous pourrez ensuite créer un second personnage avec l'une des combinaisons de race et de classe mentionnées. Avec ce second personnage, vous pourrez suivre le tutoriel. Cela prend environ 2 heures.
+Then you will take action and carry out the instructions of that step. Once you have completed them, you will hear a success sound. Then you can proceed to the next tutorial step.	Vous passerez ensuite à l'action et suivrez les instructions de cette étape. Une fois terminées, vous entendrez un son de réussite. Vous pourrez alors passer à l'étape suivante du tutoriel.
+This was the last tutorial step. The tutorial is completed.	C'était la dernière étape du tutoriel. Le tutoriel est terminé.
+Threat	Menace
+Threat warning if you are first place (tanking) and second place threat percentage is higher than	Avertissement de menace si vous êtes en première place (tank) et que le pourcentage de menace de la deuxième place dépasse
+Threat warning if you are not first place (not tanking) and your threat percentage is higher than	Avertissement de menace si vous n'êtes pas en première place (pas tank) et que votre pourcentage de menace dépasse
+Tier XP: 	XP : 
+Tierherrschaft	Maîtrise des bêtes
+Timbermaw Hold	Repaire des Grumegueules
+Titel eingeben und Enter drücken	Saisissez un titre et appuyez sur Entrée
+Titel eingeben und veröffentlichen	Saisissez un titre et publiez
+Titel: 	Titre : 
+Title	Titre
+Title: 	Titre : 
+To continue your newbie tutorial from step	Pour reprendre votre tutoriel débutant à l'étape
+To start this tutorial now, please press the ENTER key.	Pour démarrer ce tutoriel maintenant, appuyez sur la touche ENTRÉE.
+Ton	Son
+Ton für Klick bei Beacons	Son pour les balises avec clics
+Tongue sticking out	Tirer la langue
+Topic	Objet
+Topic missing	Objet manquant
+Total Damage: 	Dégâts totaux : 
+Total hits: 	Coups totaux : 
+Totem Bar	Barre de totems
+Totem Set	Ensemble de totems
+Toys	Jouets
+Track whether waypoints were visited	Suivre si les points de passage ont été visités
+Trade	Échange
+Trade skill	Métier
+TradeFrame	Échange
+TradeSkillFrame	Artisanat
+Training	Entraînement
+Treffsicherheit	Précision
+Triangle	triangle
+Trifft nicht zu	n'est pas vrai
+Trigger	Déclencheur
+Triggers	Déclencheurs
+Trinket	Bijou
+Troll	Troll
+Turn to unit	Se tourner vers l'unité
+Tutorial	Tutoriel
+Tutorial Editor	Éditeur de tutoriel
+Tutorial duration: The tutorial can last several hours. However, it usually takes about an hour to complete. But that will depend on your pace. It is better to spend some more time learning how the game and the addon are working. After that, you have to deal with everthing without the tutorial supporting you. You can always create a new character to play the tutorial again.	Durée du tutoriel : le tutoriel peut durer plusieurs heures. Il faut généralement environ une heure pour le terminer, mais cela dépend de votre rythme. Mieux vaut prendre un peu plus de temps pour apprendre le fonctionnement du jeu et de l'extension. Ensuite, vous devrez vous débrouiller sans l'aide du tutoriel. Vous pouvez toujours créer un nouveau personnage pour le refaire.
+Tutorial flow: The tutorial consists of many individual steps. In each step you will first hear an information text. It explains what you have to do next. When you have performed that activity, you will hear a success sound. Then you can proceed to the next step. To proceed to the next step, press the shortcut %SKU_KEY_TUTORIALSTEPFORWARD%. The tutorial will not continue until you have completed the current step (success sound) and pressed %SKU_KEY_TUTORIALSTEPFORWARD%.	Déroulement du tutoriel : le tutoriel se compose de nombreuses étapes. À chaque étape, vous entendrez d'abord un texte d'information qui explique ce que vous devez faire ensuite. Une fois l'activité effectuée, vous entendrez un son de réussite. Vous pourrez alors passer à l'étape suivante en appuyant sur le raccourci %SKU_KEY_TUTORIALSTEPFORWARD%. Le tutoriel ne continuera pas tant que vous n'aurez pas terminé l'étape en cours et appuyé sur %SKU_KEY_TUTORIALSTEPFORWARD%.
+Tutorial help	Aide du tutoriel
+Tutorial helper macro	Macro d'aide du tutoriel
+Tutorial imported	Tutoriel importé
+Tutorial list	Liste des tutoriels
+Tutorial step completed	Ce son signifie que l'étape actuelle du tutoriel est terminée.
+Tutorials	Tutoriels
+Tutorials imported	Tutoriels importés
+Type: 	Type : 
+Täglich	Quotidien
+Täuschung	Finesse
+UI_ERROR_MESSAGE	message d'erreur d'interface
+UI_INFO_MESSAGE	message d'info d'interface
+UNIT_AURA	aura d'unité (buff/debuff) obtenue ou perdue
+UNIT_EXITED_VEHICLE	unité sortie du véhicule
+UNIT_HAPPINESS	bonheur de l'unité
+UNIT_HEALTH	santé de l'unité
+UNIT_INVENTORY_CHANGED	inventaire de l'unité modifié
+UNIT_OTHER_PARTY_CHANGED	autre groupe de l'unité modifié
+UNIT_POWER_FREQUENT	ressource de l'unité fréquente
+UNIT_POWER_UPDATE	mise à jour de la ressource de l'unité
+UNIT_QUEST_LOG_CHANGED	journal de quêtes de l'unité modifié
+UNIT_SPELLCAST_CHANNEL_START	début du canalisation de l'unité
+UNIT_SPELLCAST_CHANNEL_STOP	arrêt de la canalisation de l'unité
+UNIT_SPELLCAST_CHANNEL_UPDATE	mise à jour de la canalisation de l'unité
+UNIT_SPELLCAST_DELAYED	incantation de l'unité retardée
+UNIT_SPELLCAST_FAILED	incantation de l'unité échouée
+UNIT_SPELLCAST_FAILED_QUIET	incantation de l'unité échouée en silence
+UNIT_SPELLCAST_INTERRUPTED	incantation de l'unité interrompue
+UNIT_SPELLCAST_START	début de l'incantation de l'unité
+UNIT_SPELLCAST_STOP	arrêt de l'incantation de l'unité
+UNIT_SPELLCAST_SUCCEEDED	incantation de l'unité réussie
+UP	HAUT
+UPDATE_FACTION	réputation mise à jour
+UPDATE_MOUSEOVER_UNIT	mise à jour de l'unité survolée
+UPDATE_STEALTH	mise à jour de la furtivité
+Umbenannt	Renommé
+Umbenennen	Renommer
+Umgebung	Environnement
+Umgebung 	Environnement 
+Umgebung Lautstärke	Volume de l'environnement
+Umgelenkt	Dévié
+Unbekannt	inconnu
+Unbekannt. Verfügbar: list, current, set N, find <text>, restart	Inconnu. Disponible : list, current, set N, find <texte>, restart
+Unbekannte Zauber-ID	ID de sort inconnu
+Unbekannte Zone	Zone inconnue
+Unbekannter Fehler	Erreur inconnue
+Unbekannter Zauber	Sort inconnu
+Undead	Mort-vivant
+Unfortunately there is no tutorial for you as (%race%) (%class%) yet. The Sku addon contains tutorials for (Human) Warriors, Paladins, Rogues, Priests, Mages, and Warlocks, and for (Night Elf) Hunters, and Druids.	Malheureusement, il n'existe pas encore de tutoriel pour vous en tant que (%race%) (%class%). L'extension Sku contient des tutoriels pour les Guerriers, Paladins, Voleurs, Prêtres, Mages et Démonistes (Humains), ainsi que pour les Chasseurs et Druides (Elfes de la nuit).
+Ungültig. Andere Taste drücken.	Invalide. Appuyez sur une autre touche.
+Ungültige Nummer. Gültig: 0 bis %s. Benutze /skuaudio list.	Numéro invalide. Valide : 0 à %s. Utilisez /skuaudio list.
+Unhappy	Mécontent
+Unholy	Impie
+Unit number first	Numéro d'unité en premier
+Unit selection	Sélection d'unité
+Units in combat	Unités en combat
+Unknown	Inconnu
+Unknown error. Tutorial data corrupt?	Erreur inconnue. Données du tutoriel corrompues ?
+Unlimited	Illimité
+Unspent pet talent points	Points de talent non dépensés
+Unspent pet training points	Points d'entraînement non dépensés
+Unterbrechungen bei allen Gegnern ansagen	Annoncer les interruptions sur tous les ennemis
+Unterbrechungen bei deinem Ziel ansagen	Annoncer les interruptions sur votre cible
+Untermenüs ansagen	Annoncer les sous-menus
+Untoter	Mort-vivant
+Up	Haut
+Update	Mettre à jour
+Update rate (performance)	Fréquence de mise à jour (performance)
+Use Blizzard TTS for audio menu	Utiliser la synthèse Blizzard pour le menu audio
+VIEWING_DIRECTION	Direction du regard
+Vehicle Action Bar	Barre d'action du véhicule
+Vehicle HP 	PV du véhicule 
+Vehicle Mana 	Mana du véhicule 
+Verfehlen Typ	Type d'échec
+Verfehlt	Manqué
+Verfügbare punkte: 	Points disponibles : 
+Vergeltung	Vindicte
+Verkaufen	Vendre
+Verkäufe	Ventes
+Verlernen	Désapprendre
+Verlernt 	Désapprend 
+Vermieden	Atténué
+Verstärkung	Amélioration
+Verwalten	Gérer
+Verwerfen	Rejeter
+Visuelle Hilfen	Aides visuelles
+Voice	Voix
+Voice chat	Chat vocal
+Voice output	Sortie vocale
+Voice volume	Volume de la voix
+Volume	Volume
+Vögel	Oiseaux
+WAIT_FOR_MENU_SELECT	Attendre la sélection d'un élément de menu
+WP created	Point de passage défini
+Waehle pro Sockel einen Edelstein und bestaetige danach mit Anwenden.	Sélectionnez une gemme pour chaque châsse et confirmez avec Appliquer.
+Waffen	Armes
+Waist	Taille
+Walgesang	Baleines
+Warlock	Démoniste
+Warning	Attention
+Warning if your target is switching from you	Avertir si votre cible passe de vous à une autre
+Warning if your target is switching to you	Avertir si votre cible passe à vous
+Warning! That key is already bound to	Attention ! Cette touche est déjà assignée à
+Warning: This quest is blacklisted	Attention ! Cette quête est sur liste noire :
+Warning: You have not completed the current step yet. If you jump to the next step anyway, the tutorial might not work anymore. If you really want to jump to the next step, press %SKU_KEY_TUTORIALSTEPFORWARD% again. Otherwise press %SKU_KEY_TUTORIALSTEPREPEAT% to hear the instructions of the current step again.	Attention : vous n'avez pas encore terminé l'étape en cours. Si vous passez quand même à l'étape suivante, le tutoriel risque de ne plus fonctionner. Si vous voulez vraiment passer à l'étape suivante, appuyez de nouveau sur %SKU_KEY_TUTORIALSTEPFORWARD%. Sinon, appuyez sur %SKU_KEY_TUTORIALSTEPREPEAT% pour réécouter les instructions de l'étape en cours.
+Warning: this will replace all existing custom newbie tutorials!)	Attention : ceci remplacera tous les tutoriels débutant personnalisés existants !)
+Warnton wenn Folgen abbricht	Tonalité d'avertissement quand le suivi s'interrompt
+Warrior	Guerrier
+Warten	Attendre
+Water	Eau
+Waypoint	Point de passage
+Waypoint A missing	Point A manquant
+Waypoint B missing	Le point B est manquant
+Waypoint information	Infos du point de passage
+Waypoint reached at	arrivé au point de passage à
+We are working on more tutorials. Feel free to ask in our Discord for help or more tutorials.	Nous travaillons sur d'autres tutoriels. N'hésitez pas à demander de l'aide ou de nouveaux tutoriels sur notre Discord.
+Weapon	Arme
+Weapon 1h	Arme à une main
+Weapon 2h	Arme à deux mains
+Wegpunkt	Point de passage
+Wegpunkt abgewählt	Point de passage désélectionné
+Wegpunkt erstellt	Point de passage créé
+Wegpunkt folgen läuft	Suivi du point de passage en cours
+Wegpunkt gelöscht	Point de passage supprimé
+Wegpunkt nicht ausgewählt	Aucun point de passage sélectionné
+Wegpunkt umbenannt	Point de passage renommé
+Wegpunkte exportiert:	Points de passage exportés :
+Wegpunkte ignoriert:	Points de passage ignorés :
+Wegpunkte importiert:	Points de passage importés :
+Wegpunkte werden noch geladen	points de passage en cours de chargement
+Wegpunkte werden noch geladen, %d%%	points de passage en cours de chargement, %d %%
+Weiteren Platz kaufen	Acheter un emplacement supplémentaire
+Welche Taste das Ereignis ausgelöst hat	La touche qui déclenche l'événement
+Wenn	Si
+Wenn die Bedingungen dieser Aura nicht zutreffen	Si les conditions de cette aura ne s'appliquent pas
+Wenn die Bedingungen dieser Aura zutreffen	Si les conditions de cette aura s'appliquent
+Wenn nicht	Sinon
+Wer das hört ist doof betreten	Vous ne devriez pas entendre ceci entrer
+Wer das hört ist doof verlassen	Vous ne devriez pas entendre ceci sortir
+Wert für Bedingung	Valeur de la condition
+Wert gesetzt: 	Valeur définie : 
+Werte ändern	Changer les valeurs
+Wertung:	Évaluation :
+Whenever the tutorial speaks, all keys are locked. Wait until the tutorial has finished speaking. Then the keys are available again.	Chaque fois que le tutoriel parle, toutes les touches sont verrouillées. Attendez que le tutoriel ait fini de parler. Les touches redeviennent alors disponibles.
+Whether the damage or heal was critical	Si les dégâts ou les soins étaient critiques
+Whether you can attack your target	Si vous pouvez attaquer votre cible actuellement sélectionnée, indépendamment de l'événement déclencheur
+White	Blanc
+Who	Qui
+Widerstanden	Résisté
+Wiederherstellung	Restauration
+Wiki	Wiki
+Wildtierausbildung	Dressage du familier
+Wink	Clin d'œil
+Winkel für Klick bei Beacons	Angle pour les balises avec clics
+Wird in route verwendet;Erst die Route löschen	Utilisé dans un itinéraire;Supprimez d'abord l'itinéraire
+Wirklich aktivieren? Ersetzt aktuelle Auren	Vraiment activer ? Remplace les auras actuelles. Entrée confirme, Échap annule.
+Wirklich duplizieren?	Vraiment dupliquer ?
+Wirklich loeschen?	Vraiment supprimer ?
+Wirklich löschen?	Vraiment supprimer ?
+Wirklich zurücksetzen? (keine weitere Warnung)	Vraiment réinitialiser ? (plus d'avertissement)
+WoW Token (China Only)	Jeton WoW (Chine uniquement)
+World boundary entered	Périmètre du monde atteint
+World boundary left	Périmètre du monde quitté
+Wrist	Poignets
+Würfeln	Jets de dés
+XP: 	XP : 
+Yellow	Jaune
+Yes	Oui
+You first need to set up that key bind in Core > Sku key binds to use this tutorial.	Vous devez d'abord configurer cette assignation de touche dans (Core), (Assignations de touches Sku) pour utiliser ce tutoriel.
+You receive loot:	Vous recevez du butin :
+You will need the following two shortcut keys, that you should write down now:	Vous aurez besoin des deux raccourcis suivants, que vous devriez noter maintenant :
+You won't hear this tip anymore from now on.	Vous n'entendrez plus cette information désormais.
+Your buff list (L)	Votre liste de buffs (L)
+Your buff list remaining duration	Durée restante de votre liste de buffs
+Your debuff list (L)	Votre liste de debuffs (L)
+Your debuff list remaining duration	Durée restante de votre liste de debuffs
+Your group	Votre groupe
+Your list of buffs	Votre liste de buffs
+Your list of dbuffs	Votre liste de debuffs
+Your pet	Votre familier
+Your target is attackable	Votre cible actuelle est attaquable
+Your target's health	La santé de votre cible
+Your target's health percentage	Le pourcentage de santé de votre cible
+Your target's resource	La ressource de votre cible
+ZONE_CHANGED	sous-zone extérieure atteinte
+ZONE_CHANGED_INDOORS	sous-zone intérieure atteinte
+ZONE_CHANGED_NEW_AREA	nouvelle zone atteinte
+Zauber	Sort
+Zauber eingeben	Saisir le sort
+Zauber-ID eingeben	Saisir l'ID du sort
+Zauber-ID eingeben und Enter, oder Escape zum Abbrechen	Saisissez un ID de sort puis Entrée, ou Échap pour annuler
+Zaubername oder ID eingeben und Enter, oder Escape zum Abbrechen	Saisissez un nom de sort ou un ID et appuyez sur Entrée, ou Échap pour annuler
+Zeit: 	Heure : 
+Zerstören	Détruire
+Zerstörung	Destruction
+Ziel	Cible de quête
+Ziel Einheit angreifbar	Cible de l'événement attaquable
+Ziel Markierungen	Symboles de cible
+Ziel deines ziels	cible de votre cible
+Ziel und Soft Targeting	Cible et ciblage souple
+Ziel änderung	changement de cible
+Ziele Entfernung	Destinations par distance
+Ziele:r\n	Objectifs :r\n
+Zieler\n	Objectifsr\n
+Zone	Zone
+Zone Music No Delay	Musique de zone sans délai
+Zone: 	Zone : 
+Zone: Unknown	Zone : inconnue
+Zone: unkown	Zone : inconnue
+Zonen names	Noms des zones
+Zones	Zones
+Zu Einheit und Drehen	Se tourner vers une unité et rotation
+Zum Wechseln: /skuaudio set <Nummer>  oder  /skuaudio find headset	Pour changer : /skuaudio set <numéro>  ou  /skuaudio find casque
+Zurück Metaroute folgen gestartet	Méta-itinéraire inversé démarré
+Zurücksetzen	Réinitialiser
+Zwerg	Nain
+^	Circonflexe
+abgebrochen Nicht geboten	annulé Aucune enchère
+activities	activités
+add friend	ajouter un ami
+add line numbers	ajouter les numéros de ligne
+add object	ajouter un objet
+add sender to friend list	ajouter l'expéditeur à la liste d'amis
+add timestamp to line end	déplacer l'horodatage en fin de ligne
+add timestamps	ajouter les horodatages
+add to ignore list	ajouter à la liste d'ignorés
+add/edit comment	ajouter/modifier un commentaire (IMPORTANT : terminez la saisie du commentaire avec Échap, pas avec Entrée !)
+added	ajouté
+after this step	après cette étape
+aggressive	agressif
+aktiv	actif
+aktiviert	activé
+aktuell	actuel
+all items	tous les sacs
+alle	Tout
+alle Gegner	tous les ennemis
+alle Plaketten	toutes les barres de nom
+already exists	existe déjà
+an	activé
+and	et
+anzahl	nombre
+anzeigen	afficher
+ascending	croissant
+auctions by item	enchères par objet
+auctions by seach string	enchères par texte de recherche
+auctions from full scan	enchères de l'analyse complète
+audio ausgabe	sortie audio
+audio ausgabe einmal	sortie audio unique
+audio ausgabe einmal sofort	sortie audio unique immédiate
+audio und chat ausgabe	Sortie audio et chat unique
+aura erhalten	aura obtenue
+aura stacks	cumuls d'aura
+aura stapel	cumul d'aura
+aura verloren	aura perdue
+aura;sound	aura;son
+aus	désactivé
+ausgeschaltet	désactivé
+auto	auto
+auto play Settings	lecture automatique
+automatisch	automatique
+available (can be accepted)	disponible (peut être acceptée)
+backslash	barre oblique inverse
+beacon sound	son de balise
+beacon type	type de balise
+beacon volume	volume de la balise
+bekannt	connu
+bereit	prêt
+beschwören	invocation
+bewerben	postuler
+bewerben mit Rolle	postuler avec un autre rôle
+blau	bleu
+bring	bring	-- onomatopée du son de cloche (error_bring.ogg), pas le verbe anglais "to bring" ; les voisins brang/dang/drmm restent eux aussi non traduits
+buff	buff
+buff list target remaining duration	durée restante des buffs de la cible
+buff/debuff	Amélioration ou affaiblissement
+cast	incantation
+category	catégorie
+channel	canal
+chat ausgabe	sortie chat
+chat ausgabe einmal	sortie chat une fois
+chat notification	notification de chat
+checked	coché
+colon	deux-points
+combat notification	notification de combat
+comma	virgule
+comment	commentaire
+convert from linked to real	convertir d'étape liée en étape réelle
+cooldown	temps de recharge
+copy all chat lines	copier toutes les lignes de chat
+copy chat line	copier cette ligne de chat
+copy sender name	copier le nom de l'expéditeur
+creaking	bois
+current	actuel
+current (in your log, ready to hand in)	en cours (dans votre journal, prête à être rendue)
+current Bank box	Case de banque actuelle
+current filter	filtre actuel
+current gem:	gemme actuelle :
+currently equipped	objet actuellement équipé
+curse	malédiction
+cursor;on	curseur;activé
+custom	personnalisé
+dann	alors
+dann aktion 1 verwenden	puis utiliser l'action 1
+dann aktion 1 verwenden, und dann aktion 5 verwenden	puis utiliser l'action 1, puis l'action 5
+dann;	alors;
+dead	mort
+deaktiviert	désactivé
+debuff	debuff
+debuff types	types de debuff
+def Microsoft Hedda Desktop - German	Microsoft Desktop par défaut - Anglais
+default new Chat Line sound	son de nouvelle ligne de chat par défaut
+dein aktuelles Ziel. Beispiel: Ein Debuff, der auf deinem aktuelle Ziel ausgelaufen ist	votre cible actuelle. exemple : un debuff a expiré sur votre cible actuelle
+dein begleiter	votre compagnon
+dein fokus. Beispiel: Ein Buff, der auf deinen focus gezaubert wurde	votre focalisation. exemple : un buff lancé sur votre cible de focalisation
+dein ziel	votre cible
+delete chat history on login	supprimer l'historique du chat à la connexion
+delete whisper tabs without activity after	supprimer les onglets de chuchotement sans activité après
+descending	décroissant
+description	description
+dezent	subtile
+diesen Vergleich verwenden	utiliser cette comparaison
+disable seen quest notifications forever	désactiver définitivement les notifications de quêtes déjà vues
+disabled	Désactivé
+disease	maladie
+distance to quest giver for disabling quest notification	distance jusqu'au donneur de quête pour désactiver la notification de quête
+do not hide tooltip	ne pas masquer l'infobulle du jeu
+dot tick	tic de dot
+druide	druide
+du selbst	vous
+du selbst. Beispiel: Ein Buff, der auf dich gezaubert wurde	vous-même. Exemple : un buff qui a été lancé sur vous
+dämonenjäger	chasseur de démons
+east	est
+easy	vert
+edit note	modifier la note
+eigene Gesundheit	Santé personnelle
+eigene Ressource	Ressource personnelle
+eigene gesundheit	Santé personnelle
+ein	activé
+ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist	n'importe quel membre du groupe. exemple : un buff qui a expiré sur un membre du groupe
+eine beliebige Einheit. Beispiel: Irgendein Mob stirbt	n'importe quelle unité. Exemple : n'importe quelle créature meurt
+einheit tot	unité morte
+einheit zerstört	unité détruite
+empty	vide
+enable Beacons	activer les balises
+enter profile name now	saisissez le nom du profil maintenant
+enter search string	saisissez le texte de recherche
+enter search string now	saisissez le texte de recherche maintenant
+enter x value	saisissez la valeur x
+enter y value	saisissez la valeur y
+enthält	contient
+enthält nicht	ne contient pas
+ereignis	événement
+erhalten	obtenu
+error;sound	Erreur;Son
+erstellen	créer
+exclamation;point	point d'exclamation
+fail. no activity selected	échec. aucune activité sélectionnée
+fail. no category selected	échec. aucune catégorie sélectionnée
+fail. no comment for category custom entered	échec. aucun commentaire saisi pour la catégorie personnalisée
+failure	Erreur
+falsch	faux
+fehler Nicht geboten	erreur Aucune enchère
+fehler anzeigen default	afficher l'erreur par défaut
+feindlicher spieler	joueur hostile
+fernkampf ressource	ressource à distance
+fernkampf schaden	dégâts à distance
+fernkampf verfehlt	attaque à distance échouée
+fernkampf zusatz angriff	attaque à distance supplémentaire
+fishing reel	moulinet
+fixed	fixe
+focus	Focalisation Sku 
+fokus	focalisation
+following stopped	suivi en cours arrêté
+for tutorial creators	pour les créateurs de tutoriels
+found	trouvé
+fremder begleiter	autre compagnon
+freundlicher spieler	joueur amical
+friend not playing wow	L'ami ne joue pas à WoW en ce moment
+full scan	analyse complète
+full scan not ready yet	analyse complète pas encore prête
+gear	équipement
+gegenstand	objet
+gegenstand anzahl	nombre d'objets
+gegenstand cooldown ende	fin du temps de recharge de l'objet
+gegenstand cooldown start	début du temps de recharge de l'objet
+gegenstand name	nom de l'objet
+gegenstand nr	ID de l'objet
+gegenstand verwenden	utiliser l'objet
+gelb	jaune
+gelöscht	supprimé
+gesundheit	santé
+gleich	égal
+gleichbleibend langsam, lauter je näher	constant lent, plus fort en approchant
+gleichbleibend schnell, lauter je näher	constant rapide, plus fort en approchant
+go to first line on tab switch	aller à la première ligne au changement d'onglet
+go to linked	aller à l'étape source liée
+gross	grande
+groupfinder-icon-emptyslot	Vide
+gruen	vert
+gruppenmitglied 0	membre du groupe 0
+gruppenmitglied 1	membre du groupe 1
+gruppenmitglied 2	membre du groupe 2
+gruppenmitglied 3	membre du groupe 3
+gruppenmitglied 4	membre du groupe 4
+gruppenmitglieder	membres du groupe
+gruppenmitglieder ohne dich	membres du groupe sauf vous
+größer	supérieur
+herbalism	herboristerie
+heroic	héroïque
+hexer	sorcier
+hidden	masqué
+hot tick	tic de hot
+iLvlAvg	Niveau d'objet moyen
+if	si
+ignore dead units not in combat	ignorer les ennemis morts hors combat
+ignore non-elite	ignorer les non-élites
+ignore sender	ignorer l'expéditeur
+ignored	ignoré
+ignored debuffs	Debuffs ignorés
+im kampf	en combat
+in AtlasLoot favorites for	dans les favoris AtlasLoot pour
+in den Chat eingefügt	publié dans le chat
+in distance	à distance
+in range	à portée
+in tutorial	dans le tutoriel
+input comment text and complete with escape	saisissez le commentaire et validez avec Échap
+input number and complete with enter	saisissez le nombre et validez avec Entrée
+input text and complete with enter	saisissez le texte et validez avec Entrée
+input text and complete with escape	saisissez le texte et validez avec Échap
+invalid routes including their waypoints were deleted	les itinéraires invalides et leurs points de passage ont été supprimés
+invite	inviter
+invite sender	inviter l'expéditeur
+is Delisted	est retiré de la liste
+is creature ID	ID de créature
+is link	est un lien
+is no player with	il n'y a aucun joueur avec
+is string	chaîne
+item level	Niveau d'objet
+item settings	réglages de l'objet
+jäger	chasseur
+kein Ton	aucun son
+kein name	sans nom
+keine	aucun
+keine Rolle gewählt	aucun rôle sélectionné
+keine empfangenen Sets	aucun ensemble reçu
+keyring	trousseau de clés
+klasse	classe
+klein	petite
+kleiner	inférieur
+kraeftig	forte
+krieger	guerrier
+last beacon sound set	Son pour la dernière balise d'un itinéraire
+last online	dernière connexion
+layers	couches
+leader	chef
+lebt	vivant
+leer	vide
+letzte	Récent
+level	Niveau
+link	lien
+linked	lié
+linking	liaison
+local Bags	Sacs
+locale	frFR
+long	long
+löschen	supprimer
+magic	magie
+magier	mage
+max notification range	portée de notification maximale
+medium	jaune
+menu entry not available at the moment	entrée de menu indisponible pour le moment
+meters	mètres
+minimum percent difference since previous event	différence de santé minimale en pourcentage depuis l'événement précédent
+minimum percent difference since previous output	différence de santé minimale en pourcentage depuis la sortie précédente
+minimum steps difference since previous event	différence minimale de paliers de hauteur depuis l'événement précédent
+minimum steps difference since previous output	différence minimale de paliers de hauteur depuis la sortie précédente
+mining	minage
+mining nodes	filons miniers
+minus 	moins 
+minute	minute
+missing	manquant
+mittel	moyenne
+mönch	moine
+nah	près de 
+nah 	près de 
+nahkampf ressource	ressource de mêlée
+nahkampf schaden	dégâts de mêlée
+nahkampf verfehlt	mêlée échouée
+nahkampf zusatz angriff	attaque de mêlée supplémentaire
+name	nom
+name already exists	ce nom existe déjà
+name already taken	nom déjà pris
+name eingeben und Enter drücken	saisissez le nom et appuyez sur Entrée
+name schon vorhanden	ce nom existe déjà
+narrow beacon sound set	Son pour les petites balises
+neu: %s	nouveau : %s
+new Player Friendly	nouveau joueur amical
+nicht erstellt	non créé
+nicht festgelegt	non spécifié
+nicht sichtbar	non visible
+nicht umbenannt	non renommé
+nichts	Rien
+no data	Aucune donnée
+no description available	aucune description disponible
+noch nicht implementiert	pas encore implémenté
+nodifficulty	inconnu
+none	aucun
+north	nord
+north-east	nord;est
+north-west	nord;ouest
+not available in combat	non disponible en combat
+not checked	non coché
+not created	non créé
+not ignored	non ignoré
+not possible, scan in progess	impossible, analyse en cours
+note	note
+nothing	rien
+notification	note
+notify On Ressources	notifier sur les ressources
+nur Elitegegner	ennemis élites uniquement
+nur Ziel	cible uniquement
+nur ein Zauber, weitere entfernt	un seul sort, les autres ont été retirés
+oben	haut
+oder;	ou;
+off	désactivé
+offline	hors ligne
+on	activé
+online	en ligne
+only one beacon ping	un seul ping de balise
+optimal	orange
+other	Autre
+out of range	Hors de portée
+out of range cast	Hors de portée d'incantation
+out of range melee	Hors de portée de mêlée
+output Distance to next waypoint	annoncer la distance au prochain point de passage
+overrides enabled	remplacements activés
+paladin	paladin
+party member	membre du groupe
+passive	passif
+percent	pour cent
+period	point
+player	joueur
+plus	plus
+plus 	plus 
+poison	poison
+press the Enter key now	appuyez maintenant sur la touche Entrée
+previous_generic	précédent
+priester	prêtre
+quell einheit	unité source
+quest notifications	notifications de quête
+quest;abgebrochen	quête;annulée
+quest;geteilt	quête;partagée
+quest;nicht;teilbar	quête;non;partageable
+question;mark	point d'interrogation
+quick waypoint	point de passage rapide
+r\nAuswählter Wert: 	r\nValeur sélectionnée : 
+r\nDurchschnitt 	r\nMoyenne 
+r\nFeste Gegenständer\n	r\nObjets fixesr\n
+r\nGebotsdaten: r\nDatenpunkte 	r\nDonnées d'enchère : r\nPoints de données 
+r\nGegenstände zur Auswahlr\n	r\nObjets au choixr\n
+r\nHöchster 	r\nPlus haut 
+r\nHöchstes 	r\nPlus haut 
+r\nKeine Gebotsdaten vorhanden	r\nAucune donnée d'enchère disponible
+r\nKeine Sofortkaufdaten vorhanden	r\nAucune donnée d'achat disponible
+r\nNiedrigster 	r\nPlus bas 
+r\nNiedrigstes 	r\nPlus bas 
+r\nPlündern: 	r\nButin : 
+r\nSofortkaufdaten: r\nDatenpunkte 	r\nDonnées d'achat : r\nPoints de données 
+r\nZuletzt vor 	r\nVu pour la dernière fois à 
+raid member	membre du raid
+ranges still loading	portées en cours de chargement
+read only	lecture seule
+record;corrupted;route;deleted	enregistrement;corrompu;itinéraire;supprimé
+recording;completed;route;created	enregistrement terminé;itinéraire;créé
+recording;starts	enregistrement;démarre
+remove	retirer
+remove from ignore list	retirer de la liste d'ignorés
+remove object	retirer l'objet
+required Honor Level	Niveau d'honneur requis
+required Item Level	Niveau d'objet requis
+ressource	ressource
+riesig	énorme
+role selection	sélection du rôle
+rot	rouge
+scan accuracy	précision de l'analyse
+scanning background sound	analyse;Arrière-plan;son
+schamane	chaman
+schneller in blickrichtung, lauter je näher	plus rapide dans la direction du regard, plus fort en approchant
+schneller je näher, lauter je näher	plus rapide en approchant, plus fort en approchant
+schneller je näher, lauter je näher; lauter in blickrichtung	plus rapide en approchant, plus fort en approchant; plus fort dans la direction du regard
+schritt 	étape 
+schurke	voleur
+searching for 	recherche de 
+sehr gross	très grande
+sehr langsam, schneller je näher, lauter je näher; lauter in blickrichtung	très lent, plus rapide en approchant, plus fort en approchant; plus fort dans la direction du regard
+sehr langsam, schneller je näher, lauter je näher; nur in blickrichtung	très lent, plus rapide en approchant, plus fort en approchant; uniquement dans la direction du regard
+selbst	vous-même
+selected	sélectionné
+send item link to channel	envoyer le lien de l'objet au canal
+send to channel	envoyer le message au canal
+set all message types and channels to inactive	régler tous les types de message et canaux sur silencieux
+set all message types and channels to text	régler tous les types de message et canaux sur texte
+short	short
+shorten Channel Names	raccourcir les noms de canaux
+show Whispers In New Tab	afficher les chuchotements dans un nouvel onglet
+show colors for difficulty	afficher les couleurs de difficulté
+show group members quests	afficher les quêtes des membres du groupe
+show item quality	afficher la qualité des objets
+sichtbar	visible
+silent	couper le son
+slash	barre oblique
+socket	châsse
+solo	solo
+sound	son
+sound channel	Canal sonore
+sound on enemy soft target	son sur cible souple ennemie
+sound on friendly soft target	son sur cible souple alliée
+sound on interact soft target	son sur cible souple d'interaction
+sound;	son;
+south	sud
+south-east	sud;est
+south-west	sud;ouest
+sparks	étincelles
+specific	spécifique
+spezialaufgabe abgebrochen	tâche spéciale terminée ou annulée
+spezialaufgabe abgeschlossen	tâche spéciale terminée
+split	séparer
+start full scan	démarrer l'analyse complète
+still	encore
+target distance	distance à la cible
+taxi;ended	vol;terminé
+taxi;started	vol;démarré
+then	alors
+to	après
+to 	vers 
+to continue with the next tutorial step	pour passer à l'étape suivante du tutoriel
+to move to the next step of the tutorial if you have completed the current step.	pour passer à l'étape suivante du tutoriel si vous avez terminé l'étape en cours
+to play the instructions of the current step again.	pour réécouter les instructions de l'étape en cours.
+todesritter	chevalier de la mort
+tot	mort
+training points	points d'entraînement
+triff zu	est vrai
+trivial	gris
+tuerkis	cyan
+type	type
+typing	saisie
+ui-lfg-roleicon-dps-micro	DPS
+ui-lfg-roleicon-generic-micro	Aucun rôle
+ui-lfg-roleicon-healer-micro	Soigneur
+ui-lfg-roleicon-tank-micro	Tank
+unbekannt	inconnu
+uncertain	incertain
+und;	et;
+ungebunden	non assigné
+ungleich	différent
+unknown	inconnu
+unknown name	nom inconnu
+unten	bas
+updated	mis à jour
+updated;to	nouvellement;assigné;à
+verbleibende Dauer	durée restante
+verbleibende Dauer entfernt	durée restante retirée
+verbleibende Dauer groesser	durée restante supérieure à
+verbleibende Dauer kleiner	durée restante inférieure à
+verloren	perdu
+verwenden	utiliser
+visited	Visité
+visited automatically expires after	visité expire automatiquement après
+vocalized	Parlé
+wahr	vrai
+wait for player activating next step	attendre que le joueur active l'étape suivante
+warlock	démoniste
+weiss	blanc
+weit	loin
+wert buff liste ziel	valeur liste des buffs de la cible
+wert debuff liste ziel	valeur liste des debuffs de la cible
+west	ouest
+whisper	chuchotement
+whisper sender	expéditeur du chuchotement
+wide beacon sound set	Son pour les grandes balises
+wiederbeleben	ressusciter
+winzig	minuscule
+wipe	wipe
+word	mot
+world boss	Boss de monde
+your role	votre rôle
+zauber auf cd (L)	sort en recharge (L)
+zauber beschwören	sort d'invocation
+zauber cooldown ende	fin du temps de recharge du sort
+zauber cooldown start	début du temps de recharge du sort
+zauber erfolgreich	sort réussi
+zauber erstellen	sort de création
+zauber fehlgeschlagen	sort échoué
+zauber heilung	soins du sort
+zauber name	nom du sort
+zauber nicht auf cd (L)	sort pas en recharge (L)
+zauber nr	ID du sort
+zauber ressource	ressource du sort
+zauber schaden	dégâts du sort
+zauber start	début du sort
+zauber unterbrochen	sort interrompu
+zauber verfehlt	sort manqué
+zauber wiederbeleben	sort de résurrection
+zauber zusatz angriff	attaque supplémentaire du sort
+zerstört	détruit
+ziel (L)	Cible de l'événement (L)
+ziel deines Ziels	cible de votre cible
+ziel deines deines fokus	cible de votre focalisation
+ziel deines fokus	cible de votre focalisation
+ziel deines ziels	cible de votre cible
+ziel deines ziels (L)	cible de votre cible (L)
+ziel einheit	unité cible
+ziel von Gruppenmitglied 0 (du).	cible du membre du groupe 0 (vous).
+ziel von Gruppenmitglied 1.	cible du membre du groupe 1.
+ziel von Gruppenmitglied 2.	cible du membre du groupe 2.
+ziel von Gruppenmitglied 3.	cible du membre du groupe 3.
+ziel von Gruppenmitglied 4.	cible du membre du groupe 4.
+ziel von gruppenmitglied 0	cible du membre du groupe 0
+ziel von gruppenmitglied 1	cible du membre du groupe 1
+ziel von gruppenmitglied 2	cible du membre du groupe 2
+ziel von gruppenmitglied 3	cible du membre du groupe 3
+ziel von gruppenmitglied 4	cible du membre du groupe 4
+ziel änderung	changement de cible
+zurückziehen	retirer
+Ändern	Modifier
+Öffnen	Ouvrir
+Öffnet das Beruf-Fenster für 	Ouvre la fenêtre de métier pour 
+Überleben	Survie
+Übernehmen hinzufügen	Appliquer en ajoutant
+Übernehmen überschreiben	Appliquer en écrasant
