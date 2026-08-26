@@ -142,19 +142,29 @@ Aenderungen in Sku v43.1
 
     Auktionshaus: laufender Komplettscan wird sofort gemeldet, nicht erst nach 5 Sekunden
         Einfach: Das Verkaufen-Menue sagt schon immer sofort "Nicht moeglich, scan laeuft",
-            wenn im Hintergrund ein Komplettscan laeuft. Die Suche wartete dagegen erst die
-            vollen fuenf Sekunden Wiederholversuche ab, obwohl von vornherein klar war, dass
-            ein Komplettscan Minuten dauert. Jetzt sagt sie denselben Satz sofort. Wird der
-            Komplettscan mitten in den Wiederholversuchen gestartet, bricht Sku sie ebenfalls
-            gleich ab und meldet es.
+            wenn im Hintergrund ein Komplettscan laeuft. Eine Kategorie oder Suche stand
+            dagegen erst fuenf Sekunden auf "Warten", obwohl von vornherein klar war, dass
+            ein Komplettscan Minuten dauert. Jetzt steht dieselbe Meldung sofort in der
+            Liste, man hoert sie also beim Oeffnen der Kategorie. Wird der Komplettscan
+            mitten in den Wiederholversuchen gestartet, bricht Sku sie ebenfalls gleich ab
+            und sagt es an.
         Technisch: AuctionHouseStartQuery liefert den GRUND der Verweigerung als zweiten
             Rueckgabewert ("secureBuy", "getAllRunning", "getAllCooldown", "queryThrew").
-            AuctionBrowseStart entscheidet daran: bei den getAll-Gruenden sofort ansagen
+            AuctionBrowseStart entscheidet daran: bei den getAll-Gruenden sofort melden
             (kein Wiederholversuch), sonst wie bisher einreihen - ein scharfer Kauf und die
             Drossel sind in Sekunden vorbei. Der Retry-Tick prueft den Grund ebenfalls und
-            steigt vorzeitig aus, wenn waehrenddessen ein Scan startet. QueryStartFailed ist
-            jetzt der anzuzeigende TEXT statt nur true, damit derselbe Merker beide Faelle
-            transportiert (AH_QueryBusy bzw. die Scan-Meldung des Verkaufen-Menues).
+            steigt vorzeitig aus, wenn waehrenddessen ein Scan startet; er haengt jetzt ganz
+            vorn im Ticker, vor dessen fruehen Returns, sonst fror er waehrend des
+            getAll-Ingests ein. QueryStartFailed ist der anzuzeigende TEXT statt nur true,
+            damit derselbe Merker beide Faelle transportiert (AH_QueryBusy bzw. die
+            Scan-Meldung des Verkaufen-Menues). Zwei Details, die den ersten Anlauf
+            wirkungslos gemacht hatten: QueryStartFailed wird VOR der "Warten"-Bedingung
+            geprueft - der blockierende Scan haelt AuctionScan.state selbst auf
+            "waiting"/"paging", also gewann sonst immer "Warten" und die Begruendung war
+            unerreichbar. Und der Sofort-Pfad spricht NICHT selbst: die Meldung ist der
+            einzige Listeneintrag und wird beim Oeffnen ohnehin vorgelesen, waehrend eine
+            eigene Ansage vom folgenden Vocalize abgeschnitten wurde und bei jedem
+            Vorbeinavigieren erneut feuerte (OnEnter laeuft schon beim Ankommen).
 
     Auktionshaus: "keine Ergebnisse" statt "leer", und das Suchfeld bleibt erreichbar
         Einfach: Eine Suche ohne Treffer - etwa mit einem Tippfehler - sagte bisher "leer".

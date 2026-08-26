@@ -358,16 +358,20 @@ function AuctionHouse:AuctionHouseOnInitialize()
       -- Läuft der gestückelte getAll-Ingest, dann pro Frame EINEN Block
       -- verarbeiten (anti-freeze) und sonst nichts tun, bis er fertig ist. Die
       -- 25-%-Ansagen macht der Chunk-Prozessor selbst.
+      -- Verweigerte Browse-Query erneut versuchen. Steht GANZ vorn, vor beiden
+      -- fruehen Returns darunter: der getAll-Ingest-Zweig und der getAll-Zweig
+      -- weiter unten kehren beide vorzeitig zurueck, und genau waehrend eines
+      -- Komplettscans wartet hier am ehesten ein Versuch. Hinter dem
+      -- Ingest-Return waere er fuer dessen gesamte Dauer eingefroren - der
+      -- Nutzer saesse ohne Aufgeben-Ansage auf "Warten". Die Pruefung ist ein
+      -- Flag-Test pro Frame und kostet den Ingest nichts.
+      if SkuCore.QueryStartPending then
+         AuctionHouse:AuctionBrowseRetryTick(time)
+      end
+
       if SkuCore.FullScanIngest and SkuCore.FullScanIngest.active then
          AuctionHouse:AuctionFullScanProcessChunk()
          return
-      end
-
-      -- Verweigerte Browse-Query erneut versuchen. Muss VOR den Scan-Zweigen
-      -- unten stehen: laeuft ein getAll-Scan (der haeufigste Verweigerungs-
-      -- grund), kehrt der getAll-Zweig frueh zurueck und der Versuch kaeme nie.
-      if SkuCore.QueryStartPending then
-         AuctionHouse:AuctionBrowseRetryTick(time)
       end
 
       tTime = tTime + time
@@ -2393,7 +2397,16 @@ function AuctionHouse:AuctionHouseMenuBuilder()
          -- Ergebnisse zeigen. Ohne das stuende hier bis zum Scan-Ende "Warten",
          -- und der Nachbau-Pfad unten koennte das Eingabefeld nicht
          -- wiederherstellen.
-         if (SkuCore.AuctionScan.state ~= "idle" or SkuCore.QueryStartPending ~= nil)
+         if SkuCore.QueryStartFailed then
+            -- Wie im ResultsMenuBuilder: der Grund schlaegt den "Warten"-Zweig,
+            -- sonst gewinnt der blockierende Scan (state ~= "idle") und die
+            -- Begruendung waere nie zu hoeren. Der Grund steht ZUERST, damit der
+            -- Cursor auf children[1] ihn ansagt; das Eingabefeld folgt direkt
+            -- darunter, die Suche ist also einen Schritt entfernt.
+            AuctionHouse:AuctionHouseResultsMenuBuilder(tNewMenuEntrysearch)
+            local tNewMenuEntry1 = SkuOptions:InjectMenuItems(tNewMenuEntrysearch, {L["enter search string"]}, SkuGenericMenuItem)
+            tNewMenuEntry1.dynamic = false
+         elseif (SkuCore.AuctionScan.state ~= "idle" or SkuCore.QueryStartPending ~= nil)
             and SkuCore.QueryResultsPartialReady ~= true then
             local tNewMenuEntry1 = SkuOptions:InjectMenuItems(tNewMenuEntrysearch, {L["Warten"]}, SkuGenericMenuItem)
             tNewMenuEntry1.dynamic = false
@@ -3628,20 +3641,27 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function AuctionHouse:AuctionHouseResultsMenuBuilder(aParent)
    dprint("AuctionHouseResultsMenuBuilder", aParent.name)
-   -- "Warten" auch, solange ein Wiederholversuch eingereiht ist: die Query ist
-   -- dann noch nicht raus (state == "idle"), aber es ist auch kein Ergebnis -
-   -- ohne diesen Zweig stuende hier faelschlich "leer".
-   if (SkuCore.AuctionScan.state ~= "idle" or SkuCore.QueryStartPending ~= nil)
-      and SkuCore.QueryResultsPartialReady ~= true then
-      tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["Warten"]}, SkuGenericMenuItem)
-      tNewMenuEntryCategorySubItem.dynamic = false
-      --OnEnterAllFlag = nil
-   elseif SkuCore.QueryStartFailed then
+   -- REIHENFOLGE: QueryStartFailed MUSS vor der "Warten"-Pruefung stehen.
+   -- "Unsere Query ist gar nicht erst rausgegangen" ist die genauere Aussage;
+   -- AuctionScan.state gehoert dagegen dem Scan, der uns gerade blockiert.
+   -- Genau der haelt state auf "waiting"/"paging", d.h. mit der frueheren
+   -- Reihenfolge gewann immer der "Warten"-Zweig und die Begruendung war
+   -- unerreichbar - im Log vom 2026-08-26 achtmal "refused -> immediate",
+   -- gehoert hat der Nutzer jedes Mal nur "Warten".
+   if SkuCore.QueryStartFailed then
       -- Query gar nicht erst rausgegangen: den konkreten Grund zeigen
       -- (laufender Scan bzw. Auktionshaus beschaeftigt), niemals "leer" -
       -- das waere eine Aussage ueber die Daten, die wir nie erhoben haben.
       tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {SkuCore.QueryStartFailed}, SkuGenericMenuItem)
       tNewMenuEntryCategorySubItem.dynamic = false
+   elseif (SkuCore.AuctionScan.state ~= "idle" or SkuCore.QueryStartPending ~= nil)
+      and SkuCore.QueryResultsPartialReady ~= true then
+      -- "Warten" auch, solange ein Wiederholversuch eingereiht ist: die Query
+      -- ist dann noch nicht raus (state == "idle"), aber es ist auch kein
+      -- Ergebnis - ohne diesen Zweig stuende hier faelschlich "keine Ergebnisse".
+      tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["Warten"]}, SkuGenericMenuItem)
+      tNewMenuEntryCategorySubItem.dynamic = false
+      --OnEnterAllFlag = nil
    else
       if #QueryResultsDB == 0 then
          -- "keine Ergebnisse" statt "leer": die Suche lief, sie fand nichts.
@@ -3882,7 +3902,14 @@ function AuctionHouse:AuctionBrowseStart(aStarter, aHost)
    if tReason == "getAllRunning" or tReason == "getAllCooldown" then
       dprint("auction.scan", "browse query refused -> immediate", { reason = tReason })
       SkuCore.QueryStartFailed = L["not possible, scan in progess"]
-      AuctionHouse:AuctionBrowseShowStartFailed(aHost)
+      -- BEWUSST NICHT sprechen und NICHT selbst neu bauen: jeder Aufrufer baut
+      -- direkt nach diesem Aufruf ohnehin neu, und die Meldung IST der einzige
+      -- Listeneintrag - der Tastendruck vocalisiert sie also von selbst. Eine
+      -- eigene Ansage hier wurde vom folgenden Vocalize sofort abgeschnitten
+      -- und feuerte ausserdem bei JEDEM Vorbeinavigieren, weil OnEnter schon
+      -- beim Ankommen auf dem Eintrag laeuft (Log 2026-08-26: achtmal in
+      -- 20 Sekunden). Der Aufgeben-Pfad im Retry-Tick spricht weiterhin selbst,
+      -- dort kommt kein Tastendruck mehr hinterher.
       return false
    end
 

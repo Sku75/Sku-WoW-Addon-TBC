@@ -154,20 +154,28 @@ Changements dans Sku v43.1
 
     Hôtel des ventes : un scan complet en cours est signalé aussitôt, pas après 5 secondes
         Simple : Le menu de vente annonce depuis toujours « Nicht möglich, scan läuft » dès
-            qu'un scan complet tourne en arrière-plan. La recherche, elle, patientait
-            d'abord les cinq secondes de nouvelles tentatives, alors qu'il était clair dès
-            le départ qu'un scan complet dure des minutes. Elle prononce désormais la même
-            phrase immédiatement. Si un scan complet démarre au milieu des tentatives, Sku
-            les interrompt aussi tout de suite et le signale.
+            qu'un scan complet tourne en arrière-plan. Une catégorie ou une recherche, elle,
+            restait cinq secondes sur « Attendre », alors qu'il était clair dès le départ
+            qu'un scan complet dure des minutes. Ce même message figure désormais aussitôt
+            dans la liste : on l'entend en ouvrant la catégorie. Si un scan complet démarre
+            au milieu des tentatives, Sku les interrompt aussi tout de suite et l'annonce.
         Technique : AuctionHouseStartQuery renvoie la RAISON du refus en deuxième valeur
             (« secureBuy », « getAllRunning », « getAllCooldown », « queryThrew »).
-            AuctionBrowseStart décide sur cette base : pour les raisons getAll, annonce
-            immédiate (aucune nouvelle tentative) ; sinon mise en file comme avant - un achat
+            AuctionBrowseStart décide sur cette base : pour les raisons getAll, signalement
+            immédiat (aucune nouvelle tentative) ; sinon mise en file comme avant - un achat
             armé et la limitation passent en quelques secondes. Le tick de reprise vérifie
-            également la raison et sort par anticipation si un scan démarre entre-temps.
-            QueryStartFailed contient maintenant le TEXTE à afficher plutôt que simplement
-            true, afin qu'un seul marqueur porte les deux cas (AH_QueryBusy ou le message de
-            scan du menu de vente).
+            également la raison et sort par anticipation si un scan démarre entre-temps ; il
+            se place maintenant tout en tête du ticker, avant ses retours anticipés, sans
+            quoi il gelait pendant toute l'ingestion getAll. QueryStartFailed contient le
+            TEXTE à afficher plutôt que simplement true, afin qu'un seul marqueur porte les
+            deux cas (AH_QueryBusy ou le message de scan du menu de vente). Deux détails
+            avaient rendu la première tentative inopérante : QueryStartFailed est testé AVANT
+            la condition « Attendre » - le scan bloquant maintient lui-même
+            AuctionScan.state sur « waiting »/« paging », sinon « Attendre » l'emportait
+            toujours et la raison restait inaccessible. Et le chemin immédiat ne parle PAS de
+            lui-même : le message est la seule entrée de la liste et est lu à l'ouverture de
+            toute façon, alors qu'une annonce distincte était coupée par le vocalize suivant
+            et repartait à chaque passage (OnEnter s'exécute déjà à l'arrivée).
 
     Hôtel des ventes : « aucun résultat » au lieu de « vide », et le champ de recherche reste accessible
         Simple : Une recherche sans résultat - une faute de frappe, par exemple - annonçait

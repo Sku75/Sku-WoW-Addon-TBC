@@ -135,19 +135,27 @@ Changes in Sku v43.1
 
     Auction house: a running full scan is reported at once, not after 5 seconds
         Simple: The selling menu has always said "not possible, scan in progess" right away
-            when a full scan runs in the background. The search, by contrast, first sat
-            through the full five seconds of retries, although it was clear from the start
-            that a full scan takes minutes. It now says the same sentence immediately. If a
-            full scan starts in the middle of the retries, Sku aborts them at once and
-            reports it too.
+            when a full scan runs in the background. A category or search, by contrast, sat
+            on "Waiting" for five seconds first, although it was clear from the start that a
+            full scan takes minutes. That same message is now in the list immediately, so you
+            hear it as you open the category. If a full scan starts in the middle of the
+            retries, Sku aborts them at once and announces it too.
         Technically: AuctionHouseStartQuery returns the REASON for the refusal as a second
             return value ("secureBuy", "getAllRunning", "getAllCooldown", "queryThrew").
-            AuctionBrowseStart decides on that: the getAll reasons announce immediately (no
+            AuctionBrowseStart decides on that: the getAll reasons report immediately (no
             retry), everything else queues as before - an armed purchase and the throttle are
             over within seconds. The retry tick checks the reason as well and bails out early
-            if a scan starts meanwhile. QueryStartFailed now holds the TEXT to display rather
-            than just true, so one marker carries both cases (AH_QueryBusy and the selling
-            menu's scan message).
+            if a scan starts meanwhile; it now sits at the very top of the ticker, ahead of
+            its early returns, or it froze for the duration of a getAll ingest.
+            QueryStartFailed holds the TEXT to display rather than just true, so one marker
+            carries both cases (AH_QueryBusy and the selling menu's scan message). Two
+            details had made the first attempt ineffective: QueryStartFailed is checked
+            BEFORE the "Waiting" condition - the blocking scan itself holds AuctionScan.state
+            at "waiting"/"paging", so otherwise "Waiting" always won and the reason was
+            unreachable. And the immediate path does NOT speak by itself: the message is the
+            only list entry and is read out on opening anyway, while a separate announcement
+            was cut off by the following vocalize and fired again on every pass (OnEnter runs
+            on arrival already).
 
     Auction house: "no results" instead of "empty", and the search field stays reachable
         Simple: A search with no hits - a typo, say - used to say "empty". That sounds like
