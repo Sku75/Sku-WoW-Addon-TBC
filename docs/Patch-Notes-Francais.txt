@@ -19,6 +19,7 @@ Changements dans Sku v43.1
         Corrections
             Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat réussi avec « Enchère épuisée » et éjectait de la recherche.
             Hôtel des ventes : le scan complet mourait parfois en silence juste après l'annonce de départ ; le verrou de 16 minutes était tout de même consommé.
+            Clients français : la liste des points de passage était vide dans plusieurs zones (correction de Naxedim).
 
     Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat avec « Enchère épuisée »
         Simple : En choisissant une entrée de résultats comme « 14 fois Sphère du Vide » pour en
@@ -84,6 +85,38 @@ Changements dans Sku v43.1
             tTime à zéro (ce qui protège aussi le chien de garde de blocage des recherches
             paginées). Vérifié le 2026-08-26 : un scan après ~28 min d'attente à l'hôtel des
             ventes est allé au bout, lisant 173841 enchères.
+
+    Clients français : la liste des points de passage était vide dans plusieurs zones (correction de Naxedim)
+        Simple : Dans les Cavernes des lamentations, dans le Tram des profondeurs, au Repaire des
+            Grumegueules et au Repaire d'Onyxia, Sku annonçait une liste de points de passage
+            vide alors que la zone est entièrement cartographiée. Deux observations ont permis de
+            cerner le problème : un itinéraire déjà lancé continuait de fonctionner, et les mêmes
+            points de passage restaient sélectionnables depuis l'extérieur de la zone. Il ne
+            manquait donc aucune donnée : Sku ne savait simplement pas dans quelle zone se
+            trouvait le personnage. Les clients allemands et anglais n'ont jamais été concernés.
+        Technique : Deux causes indépendantes produisant le même symptôme, toutes deux trouvées,
+            corrigées et vérifiées en jeu par Naxedim sur un client français (PR #8).
+            Premièrement, SkuNav/Geo.lua compare quelques noms de zone MOT POUR MOT avec
+            GetMinimapZoneText() ; quatre d'entre eux avaient été traduits librement dans
+            locales/frFR.lua, plus aucune comparaison ne correspondait et GetBestMapForUnit
+            renvoyait la carte du continent au lieu de celle de la zone. Les nouvelles valeurs
+            ont été lues avec C_Map.GetAreaInfo() sur un client français, elles ne sont pas
+            traduites. Deuxièmement, les instances dont la vraie ligne de zone est commentée dans
+            SkuDB/assets/maps.lua dépendent d'une ligne synthétique (id à partir de 100000) pour
+            laquelle C_Map n'a rien à résoudre ; elle restait en anglais alors que le dernier
+            recours de GetCurrentAreaId la compare au nom de CARTE localisé - aucune
+            correspondance, aucun areaId, aucun continent, liste vide. Ces lignes prennent
+            désormais leur nom de l'uiMap qui porte le même nom anglais ; en français il s'agit
+            d'exactement deux zones, le Repaire d'Onyxia et les Cavernes des lamentations. Ajouté
+            ensuite : un garde-fou pour qu'aucune ligne synthétique ne reçoive un nom qu'une
+            vraie ligne porte déjà (Joug-d'hiver), la mention « ne pas traduire librement » sur
+            tous les noms de zone comparés mot pour mot dans locales/enUS.lua, et un magasin de
+            traduction français indexé par la clé et non plus par le numéro de ligne - il avait
+            glissé d'une ligne et aurait décalé presque toute la table à la prochaine
+            régénération.
+        Au passage, pour les clients anglais : L["Die Höhlen des Wehklagens"] contenait « The
+            Wailing Caverns », ce qu'aucun client ne dit. Le même cas particulier y était donc
+            mort lui aussi et vient d'être corrigé.
 
 
 -------------------------------------------------------------------------------------------------------
