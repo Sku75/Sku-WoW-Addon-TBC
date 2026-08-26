@@ -17,6 +17,7 @@ Changes in Sku v43.1
         Bugfixes
             Auction house: buying multiple pieces wrongly aborted after almost every successful purchase with "Auction sold out" and threw you out of the search.
             After closing the menu, deferred announcements kept speaking ("New letter plus", "Subject: <typed text>", "Sent", "All opened" from a mailbox that was long closed).
+            Auction house: opening a category often wrongly announced "empty" the first time although the search had only just started.
 
     New setting: Speak keyboard echo
         Simple: In input fields (writing a letter, search, profile name...) Sku reads every typed
@@ -83,6 +84,22 @@ Changes in Sku v43.1
             after the purchase, a fallback via AuctionResultsItemEntryFromCursor keeps the
             cursor on the item entry) and speaks the message 0.4 s later without interrupting -
             the same pattern as the existing "Done. All bought".
+
+    Auction house: a category wrongly announced "empty" the first time it was opened
+        Simple: Arrowing right into a category (or "All") often spoke "0" and "empty" on the
+            first attempt although the search had only just started - only a second attempt
+            brought the results. Sku now stays on "Waiting" with the loading cue until the
+            real server response arrives, then immediately reads the hit count and the first
+            result.
+        Technically: Sending a search query clears the client-side list, and that very
+            clearing fires an AUCTION_ITEM_LIST_UPDATE with 0 rows - BEFORE the server
+            response. The browse path took this phantom event for the answer: "0" announced,
+            QueryResultsPartialReady set, "empty" built, scan finished - and the real response
+            arriving moments later was discarded (QueryCurrentPage already nil). The buy path
+            has long guarded against exactly this event (QueryBuyEmptyWaits); the browse path
+            now has the twin QueryListEmptyWaits: empty events are counted and ignored, and
+            only after 10 does the result count as genuinely empty. Meanwhile the ticker
+            re-requests the page.
 
 
 -------------------------------------------------------------------------------------------------------

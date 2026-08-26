@@ -3798,6 +3798,12 @@ function AuctionHouse:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFil
 
       QueryResultsDB = {}
 
+      -- Leer-Event-Zähler des Browse-Pfads je frischer Query neu starten
+      -- (Zwilling von QueryBuyEmptyWaits): ein bei einer abgebrochenen Suche
+      -- stehen gebliebener Zählerstand würde sonst die Spuk-Event-Sperre der
+      -- nächsten Suche verkürzen.
+      SkuCore.QueryListEmptyWaits = 0
+
       -- Zustand der inkrementellen Ergebnis-Darstellung zurücksetzen.
       SkuCore.QueryResultsPartialReady = nil
       SkuCore.QueryResultsHost = nil
@@ -4143,6 +4149,26 @@ function AuctionHouse:AUCTION_ITEM_LIST_UPDATE_LIST()
          if SkuCore.AuctionScan.state ~= "waiting" then
             return
          end
+         -- Verfrühte/leere Antwort abfangen (Zwilling des Kauf-Pfads in
+         -- AUCTION_ITEM_LIST_UPDATE_BUY): AUCTION_ITEM_LIST_UPDATE feuert teils
+         -- BEVOR die Server-Antwort eintrifft — das Absetzen der Query leert die
+         -- Client-Liste und feuert dabei selbst → tBatch=0. Ohne diese Sperre
+         -- lief die leere Liste als "Antwort" durch: "0" angesagt,
+         -- QueryResultsPartialReady=true gesetzt → "leer" gebaut und angesagt,
+         -- Scan als abgeschlossen beendet — und die kurz darauf eintreffende
+         -- ECHTE Antwort wurde verworfen (QueryCurrentPage schon nil). Genau das
+         -- war das "Kategorie sagt beim ersten Mal leer"-Verhalten. Ein echtes
+         -- 0-Treffer-Ergebnis kommt ebenfalls als tBatch=0 und ist nicht sofort
+         -- unterscheidbar, daher wie beim Kauf erst nach mehreren leeren Events
+         -- akzeptieren (der Ticker fragt die Seite währenddessen erneut an;
+         -- der Nutzer bleibt solange auf "Warten").
+         if not tBatch or tBatch == 0 then
+            SkuCore.QueryListEmptyWaits = (SkuCore.QueryListEmptyWaits or 0) + 1
+            if SkuCore.QueryListEmptyWaits < 10 then
+               return
+            end
+         end
+         SkuCore.QueryListEmptyWaits = 0
          if SkuCore.QueryMaxPage == nil then
             SkuCore.QueryMaxPage = math.floor(tCount / 50)
             if tCount - ((SkuCore.QueryMaxPage + 1) * 50) > 0 then

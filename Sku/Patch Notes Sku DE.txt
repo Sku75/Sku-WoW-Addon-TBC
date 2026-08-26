@@ -17,6 +17,7 @@ Aenderungen in Sku v43.1
         Fehlerbehebungen
             Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem gelungenen Kauf faelschlich mit "Auktion vergriffen" ab und warf aus der Suche.
             Nach dem Schliessen des Menues sprachen verzoegerte Ansagen weiter ("Neuer Brief plus", "Betreff: <Getipptes>", "Gesendet", "Alle geoeffnet" aus dem laengst geschlossenen Briefkasten).
+            Auktionshaus: das Oeffnen einer Kategorie sagte beim ersten Mal oft faelschlich "leer" an, obwohl die Suche gerade erst gestartet war.
 
     Neue Einstellung: Tastatur-Echo ansagen
         Einfach: In Eingabefeldern (Brief schreiben, Suche, Profilname...) liest Sku jedes getippte
@@ -86,6 +87,22 @@ Aenderungen in Sku v43.1
             Kauf bereits entfernt war, haelt ein Fallback ueber AuctionResultsItemEntryFromCursor
             den Cursor auf dem Item-Eintrag) und spricht die Meldung 0,4 s spaeter ohne
             Unterbrechung - dasselbe Muster wie beim bestehenden "Fertig. Alle gekauft".
+
+    Auktionshaus: Kategorie sagte beim ersten Oeffnen faelschlich "leer" an
+        Einfach: Wer mit Pfeil rechts in eine Kategorie (oder "Alle") ging, hoerte beim ersten
+            Mal oft "0" und "leer", obwohl die Suche gerade erst losgelaufen war - erst ein
+            zweiter Versuch brachte die Ergebnisse. Jetzt bleibt Sku auf "Warten" mit dem
+            Ladehinweis stehen, bis die echte Server-Antwort da ist, und liest dann sofort die
+            Trefferzahl und das erste Ergebnis vor.
+        Technisch: Das Absetzen einer Suchanfrage leert die Client-Liste, und genau dieses
+            Leeren feuert selbst ein AUCTION_ITEM_LIST_UPDATE mit 0 Zeilen - VOR der
+            Server-Antwort. Der Browse-Pfad wertete dieses Spuk-Event als Antwort: "0"
+            angesagt, QueryResultsPartialReady gesetzt, "leer" gebaut, Scan beendet - und die
+            kurz darauf eintreffende echte Antwort wurde verworfen (QueryCurrentPage schon
+            nil). Der Kauf-Pfad hatte gegen genau dieses Event laengst eine Sperre
+            (QueryBuyEmptyWaits); der Browse-Pfad hat jetzt den Zwilling QueryListEmptyWaits:
+            leere Events werden gezaehlt und ignoriert, erst nach 10 gilt das Ergebnis als
+            wirklich leer. Der Ticker fragt die Seite waehrenddessen erneut an.
 
 
 -------------------------------------------------------------------------------------------------------
