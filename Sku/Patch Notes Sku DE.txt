@@ -19,6 +19,8 @@ Aenderungen in Sku v43.1
             Nach dem Schliessen des Menues sprachen verzoegerte Ansagen weiter ("Neuer Brief plus", "Betreff: <Getipptes>", "Gesendet", "Alle geoeffnet" aus dem laengst geschlossenen Briefkasten).
             Auktionshaus: eine unvollstaendige Server-Antwort beendet die Suche nicht mehr faelschlich mit "leer" - eine echte Suche ohne Treffer antwortet weiterhin sofort.
             Auktionshaus: eine gar nicht erst gestartete Suche (Kauf scharf, Komplettscan laeuft, Drossel) wird jetzt wiederholt statt als "leer" angesagt.
+            Auktionshaus: laeuft ein Komplettscan, sagt die Suche das sofort ("Nicht moeglich, scan laeuft") statt erst nach fuenf Sekunden.
+            Auktionshaus: eine Suche ohne Treffer sagt jetzt "keine Ergebnisse" statt "leer" - und das Suchfeld bleibt in der Liste, der Cursor landet direkt darauf.
 
     Neue Einstellung: Tastatur-Echo ansagen
         Einfach: In Eingabefeldern (Brief schreiben, Suche, Profilname...) liest Sku jedes getippte
@@ -137,6 +139,45 @@ Aenderungen in Sku v43.1
             QueryResultsHost neu gesetzt, weil der frische Query-Aufbau ihn nilt. Der
             ResultsMenuBuilder kennt beide Merker: QueryStartPending zeigt "Warten",
             QueryStartFailed den neuen Text AH_QueryBusy; ResetQuery raeumt beide ab.
+
+    Auktionshaus: laufender Komplettscan wird sofort gemeldet, nicht erst nach 5 Sekunden
+        Einfach: Das Verkaufen-Menue sagt schon immer sofort "Nicht moeglich, scan laeuft",
+            wenn im Hintergrund ein Komplettscan laeuft. Die Suche wartete dagegen erst die
+            vollen fuenf Sekunden Wiederholversuche ab, obwohl von vornherein klar war, dass
+            ein Komplettscan Minuten dauert. Jetzt sagt sie denselben Satz sofort. Wird der
+            Komplettscan mitten in den Wiederholversuchen gestartet, bricht Sku sie ebenfalls
+            gleich ab und meldet es.
+        Technisch: AuctionHouseStartQuery liefert den GRUND der Verweigerung als zweiten
+            Rueckgabewert ("secureBuy", "getAllRunning", "getAllCooldown", "queryThrew").
+            AuctionBrowseStart entscheidet daran: bei den getAll-Gruenden sofort ansagen
+            (kein Wiederholversuch), sonst wie bisher einreihen - ein scharfer Kauf und die
+            Drossel sind in Sekunden vorbei. Der Retry-Tick prueft den Grund ebenfalls und
+            steigt vorzeitig aus, wenn waehrenddessen ein Scan startet. QueryStartFailed ist
+            jetzt der anzuzeigende TEXT statt nur true, damit derselbe Merker beide Faelle
+            transportiert (AH_QueryBusy bzw. die Scan-Meldung des Verkaufen-Menues).
+
+    Auktionshaus: "keine Ergebnisse" statt "leer", und das Suchfeld bleibt erreichbar
+        Einfach: Eine Suche ohne Treffer - etwa mit einem Tippfehler - sagte bisher "leer".
+            Das klingt nach einer leeren Liste, gemeint ist aber "nichts gefunden": jetzt
+            heisst es "keine Ergebnisse". Ausserdem war das Suchfeld nach einer Suche aus der
+            Liste verschwunden; fuer eine zweite Suche musste man erst raus- und wieder
+            reinnavigieren. Es steht jetzt weiterhin als "Suchbegriff eingeben" in der Liste,
+            und bei null Treffern springt der Cursor gleich darauf - einmal ENTER und man
+            tippt den naechsten Begriff. Gibt es Treffer, landet der Cursor wie gewohnt auf
+            dem ersten Treffer.
+        Technisch: Der inkrementelle Aufbau rief den ResultsMenuBuilder direkt auf und
+            umging damit BuildChildren des Suchfeld-Eintrags - genau dort wird
+            "Suchbegriff eingeben" eingehaengt, deshalb war es nach der ersten Seite weg. Er
+            ruft jetzt aHost:BuildChildren(aHost) (fuer "Alle"/Einzel-Item IST das der
+            ResultsMenuBuilder). Damit der Suchfeld-Eintrag dabei nicht auf "Warten"
+            zurueckfaellt, prueft sein Gate zusaetzlich QueryResultsPartialReady. Die
+            Cursor-Wahl uebernimmt AuctionFocusAfterResults: erster Eintrag, der weder
+            Eingabefeld noch "keine Ergebnisse" noch "Warten" ist; gibt es keinen, das
+            Eingabefeld. Die Nulltreffer-Ansage laeuft als EINE Ausgabe
+            ("keine Ergebnisse;Suchbegriff eingeben") - ein zweites OutputStringBTtts haette
+            das erste abgeschnitten. In der Komplettscan-Kategorieliste heisst der
+            Nulltreffer-Eintrag ebenfalls "keine Ergebnisse"; der Zweig ohne jegliche
+            Scan-Daten bleibt "leer", weil das eine andere Aussage ist.
 
 
 -------------------------------------------------------------------------------------------------------

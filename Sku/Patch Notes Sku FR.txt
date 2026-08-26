@@ -22,6 +22,8 @@ Changements dans Sku v43.1
             Après la fermeture du menu, des annonces différées continuaient de parler (« Nouvelle lettre plus », « Sujet : <texte saisi> », « Envoyé », « Tout ouvert » depuis une boîte aux lettres fermée depuis longtemps).
             Hôtel des ventes : une réponse incomplète du serveur ne termine plus la recherche à tort par « vide » - une vraie recherche sans résultat répond toujours immédiatement.
             Hôtel des ventes : une recherche qui n'a jamais démarré (achat armé, scan complet en cours, limitation) est désormais retentée au lieu d'être annoncée « vide ».
+            Hôtel des ventes : pendant un scan complet, la recherche l'annonce immédiatement (« Nicht möglich, scan läuft ») au lieu d'attendre cinq secondes.
+            Hôtel des ventes : une recherche sans résultat annonce désormais « aucun résultat » au lieu de « vide » - et le champ de recherche reste dans la liste, le curseur s'y pose directement.
 
     Nouveau réglage : Énoncer l'écho du clavier
         Simple : Dans les champs de saisie (rédaction d'une lettre, recherche, nom de profil...),
@@ -149,6 +151,46 @@ Changements dans Sku v43.1
             car la nouvelle requête le remet à nil. Le constructeur de résultats connaît les
             deux marqueurs : QueryStartPending affiche « Attendre », QueryStartFailed le
             nouveau texte AH_QueryBusy ; ResetQuery efface les deux.
+
+    Hôtel des ventes : un scan complet en cours est signalé aussitôt, pas après 5 secondes
+        Simple : Le menu de vente annonce depuis toujours « Nicht möglich, scan läuft » dès
+            qu'un scan complet tourne en arrière-plan. La recherche, elle, patientait
+            d'abord les cinq secondes de nouvelles tentatives, alors qu'il était clair dès
+            le départ qu'un scan complet dure des minutes. Elle prononce désormais la même
+            phrase immédiatement. Si un scan complet démarre au milieu des tentatives, Sku
+            les interrompt aussi tout de suite et le signale.
+        Technique : AuctionHouseStartQuery renvoie la RAISON du refus en deuxième valeur
+            (« secureBuy », « getAllRunning », « getAllCooldown », « queryThrew »).
+            AuctionBrowseStart décide sur cette base : pour les raisons getAll, annonce
+            immédiate (aucune nouvelle tentative) ; sinon mise en file comme avant - un achat
+            armé et la limitation passent en quelques secondes. Le tick de reprise vérifie
+            également la raison et sort par anticipation si un scan démarre entre-temps.
+            QueryStartFailed contient maintenant le TEXTE à afficher plutôt que simplement
+            true, afin qu'un seul marqueur porte les deux cas (AH_QueryBusy ou le message de
+            scan du menu de vente).
+
+    Hôtel des ventes : « aucun résultat » au lieu de « vide », et le champ de recherche reste accessible
+        Simple : Une recherche sans résultat - une faute de frappe, par exemple - annonçait
+            « vide ». Cela évoque une liste vide, alors que le sens est « rien trouvé » :
+            elle annonce désormais « aucun résultat ». De plus, le champ de recherche
+            disparaissait de la liste après une recherche ; pour en lancer une seconde, il
+            fallait sortir puis revenir. Il reste maintenant dans la liste sous
+            « Suchbegriff eingeben », et en cas de zéro résultat le curseur s'y pose
+            directement - une pression sur ENTRÉE et l'on saisit le terme suivant. S'il y a
+            des résultats, le curseur se pose sur le premier comme auparavant.
+        Technique : La construction incrémentale appelait directement le constructeur de
+            résultats et contournait ainsi le BuildChildren de l'entrée de recherche - c'est
+            là qu'est inséré « Suchbegriff eingeben », d'où sa disparition après la première
+            page. Elle appelle maintenant aHost:BuildChildren(aHost) (pour « Tous » et objet
+            unique, c'EST le constructeur de résultats). Pour que l'entrée de recherche ne
+            retombe pas sur « Attendre » au passage, sa condition vérifie aussi
+            QueryResultsPartialReady. AuctionFocusAfterResults choisit le curseur : la
+            première entrée qui n'est ni le champ de saisie, ni « aucun résultat », ni
+            « Attendre » ; s'il n'y en a pas, le champ de saisie. L'annonce de zéro résultat
+            part en UNE seule sortie (« aucun résultat;Suchbegriff eingeben ») - un second
+            OutputStringBTtts aurait coupé le premier. Dans la liste de catégories du scan
+            complet, l'entrée zéro résultat s'appelle également « aucun résultat » ; la
+            branche sans aucune donnée de scan reste « vide », car c'est un autre constat.
 
 
 -------------------------------------------------------------------------------------------------------

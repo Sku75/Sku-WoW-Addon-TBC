@@ -2387,7 +2387,14 @@ function AuctionHouse:AuctionHouseMenuBuilder()
          -- QueryStartPending mit abfragen: bei einem eingereihten
          -- Wiederholversuch ist noch keine Query raus (state == "idle"), aber
          -- "Suchbegriff eingeben" waere hier die falsche Ansage.
-         if SkuCore.AuctionScan.state ~= "idle" or SkuCore.QueryStartPending ~= nil then
+         -- QueryResultsPartialReady schaltet dagegen ZURUECK auf den
+         -- Ergebnis-Zweig: sobald die erste Seite da ist, laeuft der Scan zwar
+         -- noch (Folgeseiten), die Liste soll aber schon Eingabefeld +
+         -- Ergebnisse zeigen. Ohne das stuende hier bis zum Scan-Ende "Warten",
+         -- und der Nachbau-Pfad unten koennte das Eingabefeld nicht
+         -- wiederherstellen.
+         if (SkuCore.AuctionScan.state ~= "idle" or SkuCore.QueryStartPending ~= nil)
+            and SkuCore.QueryResultsPartialReady ~= true then
             local tNewMenuEntry1 = SkuOptions:InjectMenuItems(tNewMenuEntrysearch, {L["Warten"]}, SkuGenericMenuItem)
             tNewMenuEntry1.dynamic = false
          else
@@ -3229,7 +3236,11 @@ function AuctionHouse:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex
       end
       
       if tHasEntries == false then
-         tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["leer"]}, SkuGenericMenuItem)
+         -- Wie in der Live-Ergebnisliste: die Kategorie wurde durchsucht und
+         -- hat nichts ergeben - "keine Ergebnisse", nicht "leer". (Der Zweig
+         -- weiter oben, #FullScanResultsDB == 0, bleibt "leer": dort gibt es
+         -- ueberhaupt keine Scan-Daten, das ist eine andere Aussage.)
+         tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["AH_NoResults"]}, SkuGenericMenuItem)
          tNewMenuEntryCategorySubItem.dynamic = false
          return
       end
@@ -3625,13 +3636,16 @@ function AuctionHouse:AuctionHouseResultsMenuBuilder(aParent)
       tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["Warten"]}, SkuGenericMenuItem)
       tNewMenuEntryCategorySubItem.dynamic = false
       --OnEnterAllFlag = nil
-   elseif SkuCore.QueryStartFailed == true then
-      -- Wiederholversuche aufgegeben: ehrlicher Hinweis statt "leer".
-      tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["AH_QueryBusy"]}, SkuGenericMenuItem)
+   elseif SkuCore.QueryStartFailed then
+      -- Query gar nicht erst rausgegangen: den konkreten Grund zeigen
+      -- (laufender Scan bzw. Auktionshaus beschaeftigt), niemals "leer" -
+      -- das waere eine Aussage ueber die Daten, die wir nie erhoben haben.
+      tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {SkuCore.QueryStartFailed}, SkuGenericMenuItem)
       tNewMenuEntryCategorySubItem.dynamic = false
    else
       if #QueryResultsDB == 0 then
-         tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["leer"]}, SkuGenericMenuItem)
+         -- "keine Ergebnisse" statt "leer": die Suche lief, sie fand nichts.
+         tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["AH_NoResults"]}, SkuGenericMenuItem)
          tNewMenuEntryCategorySubItem.dynamic = false
       else
          -- Gruppieren (Dubletten je Name zusammenfassen) + sortieren über den
@@ -3792,6 +3806,45 @@ function AuctionHouse:AuctionCursorInResults(aHost)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Cursor setzen, nachdem die erste Ergebnisseite gebaut wurde.
+-- Mit Treffern: auf den ersten echten Treffer - das Eingabefeld
+-- ("Suchbegriff eingeben") steht in der Suchliste an Position 1 und darf den
+-- Sprung nicht abfangen.
+-- Ohne Treffer: "keine Ergebnisse" ansagen und, wenn die Liste ein Eingabefeld
+-- hat, gleich dort landen, damit die naechste Suche eine Taste entfernt ist.
+-- Beides in EINER Ansage (Semikolon trennt die Teile fuer die Sprachausgabe) -
+-- ein zweites OutputStringBTtts wuerde das erste abschneiden.
+function AuctionHouse:AuctionFocusAfterResults(aHost)
+   if not (aHost and aHost.children and aHost.children[1]) then return end
+
+   local tInput, tFirstHit
+   for i = 1, #aHost.children do
+      local tChild = aHost.children[i]
+      local tName = tChild and tChild.name
+      if tName == L["enter search string"] then
+         tInput = tInput or tChild
+      elseif tName ~= L["AH_NoResults"] and tName ~= L["Warten"] and not tFirstHit then
+         tFirstHit = tChild
+      end
+   end
+
+   if tFirstHit then
+      SkuOptions.currentMenuPosition = tFirstHit
+      pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
+      return
+   end
+
+   SkuOptions.currentMenuPosition = tInput or aHost.children[1]
+   local tSay = L["AH_NoResults"]
+   if tInput then
+      tSay = tSay..";"..L["enter search string"]
+   end
+   pcall(function()
+      SkuOptions.Voice:OutputStringBTtts(tSay, true, true, 0.1, nil, nil, nil, 1)
+   end)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- Eine Browse-Query starten, die verweigert werden KANN.
 -- AuctionHouseStartQuery liefert false, wenn gerade ein Kauf scharf ist, ein
 -- getAll-Komplettscan laeuft oder QueryAuctionItems wirft (Drossel). Die
@@ -3808,8 +3861,8 @@ function AuctionHouse:AuctionBrowseStart(aStarter, aHost)
    SkuCore.QueryStartFailed = nil
    SkuCore.QueryStartPending = nil
 
-   local tStarted = false
-   local tOk, tErr = pcall(function() tStarted = aStarter() end)
+   local tStarted, tReason = false, nil
+   local tOk, tErr = pcall(function() tStarted, tReason = aStarter() end)
    if not tOk then
       dprint("auction.scan", "browse starter threw", { err = tostring(tErr or "") })
    end
@@ -3819,17 +3872,29 @@ function AuctionHouse:AuctionBrowseStart(aStarter, aHost)
    -- Host beim frischen Query-Aufbau - der Retry-Tick setzt ihn danach neu.
    SkuCore.QueryResultsHost = aHost
 
-   if tStarted ~= true then
-      dprint("auction.scan", "browse query refused -> retry queued")
-      SkuCore.QueryStartPending = {
-         starter = aStarter,
-         host = aHost,
-         elapsed = 0,
-         sinceTry = 0,
-         tries = 0,
-      }
+   if tStarted == true then
+      return true
    end
-   return tStarted
+
+   -- Laeuft ein Komplettscan, ist Warten sinnlos: der belegt das Auktionshaus
+   -- minutenlang. Sofort dieselbe Meldung wie beim Verkaufen-Menue ("Nicht
+   -- moeglich, scan laeuft") statt fuenf Sekunden Stille auf "Warten".
+   if tReason == "getAllRunning" or tReason == "getAllCooldown" then
+      dprint("auction.scan", "browse query refused -> immediate", { reason = tReason })
+      SkuCore.QueryStartFailed = L["not possible, scan in progess"]
+      AuctionHouse:AuctionBrowseShowStartFailed(aHost)
+      return false
+   end
+
+   dprint("auction.scan", "browse query refused -> retry queued", { reason = tostring(tReason or "unknown") })
+   SkuCore.QueryStartPending = {
+      starter = aStarter,
+      host = aHost,
+      elapsed = 0,
+      sinceTry = 0,
+      tries = 0,
+   }
+   return false
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3849,7 +3914,7 @@ function AuctionHouse:AuctionBrowseRetryTick(aElapsed)
    -- erfahren warum.
    if P.elapsed > 5 then
       SkuCore.QueryStartPending = nil
-      SkuCore.QueryStartFailed = true
+      SkuCore.QueryStartFailed = L["AH_QueryBusy"]
       dprint("auction.scan", "browse retry gave up", { tries = P.tries, elapsed = P.elapsed })
       AuctionHouse:AuctionBrowseShowStartFailed(P.host)
       return
@@ -3861,8 +3926,8 @@ function AuctionHouse:AuctionBrowseRetryTick(aElapsed)
    if CanSendAuctionQuery() ~= true then return end
 
    P.tries = (P.tries or 0) + 1
-   local tStarted = false
-   local tOk, tErr = pcall(function() tStarted = P.starter() end)
+   local tStarted, tReason = false, nil
+   local tOk, tErr = pcall(function() tStarted, tReason = P.starter() end)
 
    -- WICHTIG: AuctionHouseStartQuery ruft intern AuctionHouseResetQuery auf
    -- (und das loescht QueryStartPending), kann danach aber trotzdem false
@@ -3880,6 +3945,13 @@ function AuctionHouse:AuctionBrowseRetryTick(aElapsed)
       SkuCore.QueryStartPending = nil
       -- Host neu setzen: der frische Query-Aufbau hat ihn gerade genilt.
       if P.host then SkuCore.QueryResultsHost = P.host end
+   elseif tReason == "getAllRunning" or tReason == "getAllCooldown" then
+      -- Waehrend des Wartens wurde ein Komplettscan gestartet: nicht die
+      -- restlichen Sekunden aussitzen, sondern sofort ehrlich ansagen.
+      dprint("auction.scan", "browse retry -> scan running, giving up early", { tries = P.tries })
+      SkuCore.QueryStartPending = nil
+      SkuCore.QueryStartFailed = L["not possible, scan in progess"]
+      AuctionHouse:AuctionBrowseShowStartFailed(P.host)
    else
       SkuCore.QueryStartPending = P
    end
@@ -3891,8 +3963,9 @@ end
 -- Nutzer nicht auf einem toten "Warten" sitzen bleibt; LINKS und erneut RECHTS
 -- startet einen neuen Versuch.
 function AuctionHouse:AuctionBrowseShowStartFailed(aHost)
+   local tText = SkuCore.QueryStartFailed or L["AH_QueryBusy"]
    pcall(function()
-      SkuOptions.Voice:OutputStringBTtts(L["AH_QueryBusy"], true, true, 0.1, nil, nil, nil, 1)
+      SkuOptions.Voice:OutputStringBTtts(tText, true, true, 0.1, nil, nil, nil, 1)
    end)
    if not aHost then return end
    aHost.children = {}
@@ -3924,17 +3997,21 @@ function AuctionHouse:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFil
    -- die Treffer der VORIGEN Suche, obwohl gar keine Query rausging. Ohne
    -- Breadcrumb ist dieser Fall im Log nicht von einer echten Nulltreffer-
    -- Antwort zu unterscheiden.
+   -- Zweiter Rueckgabewert = GRUND der Verweigerung. AuctionBrowseStart
+   -- entscheidet daran, ob sich Warten ueberhaupt lohnt: ein laufender
+   -- Komplettscan dauert Minuten (sofort ansagen), ein scharfer Kauf oder die
+   -- Drossel sind in Sekunden vorbei (Wiederholversuch).
    if SkuCore.AuctionSecureBuy and SkuCore.AuctionSecureBuy.active
       and (SkuCore.AuctionSecureBuy.stage == "settling" or SkuCore.AuctionSecureBuy.stage == "trigger") then
       dprint("auction.scan", "StartQuery refused", { reason = "secure buy armed",
          stage = SkuCore.AuctionSecureBuy.stage })
-      return false
+      return false, "secureBuy"
    end
 
    if SkuCore.AuctionScan.state ~= "idle" and SkuCore.QueryData[7] == true then
       dprint("auction.scan", "StartQuery refused", { reason = "getAll scan running",
          state = SkuCore.AuctionScan.state })
-      return false
+      return false, "getAllRunning"
    end
 
    dprint("AuctionHouseStartQuery(aContinue", aContinue)
@@ -3949,7 +4026,7 @@ function AuctionHouse:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFil
       if tCanAll ~= true then
          dprint("auction.scan", "StartQuery refused", { reason = "getAll on cooldown" })
          pcall(function() AuctionHouse:AuctionHouseResetQuery(true) end)
-         return false
+         return false, "getAllCooldown"
       end
    end
 
@@ -4046,7 +4123,7 @@ function AuctionHouse:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFil
          page = SkuCore.QueryData[tQAIindex.page],
       })
       pcall(function() AuctionHouse:AuctionHouseResetQuery(true) end)
-      return false
+      return false, "queryThrew"
    end
 
    -- Genau EINE vollständige Antwort pro abgesetzter Seiten-Query einlesen.
@@ -4382,15 +4459,24 @@ function AuctionHouse:AUCTION_ITEM_LIST_UPDATE_LIST()
          if SkuCore.QueryResultsHost then
             if SkuCore.QueryResultsPartialReady ~= true then
                SkuCore.QueryResultsPartialReady = true
-               SkuCore.QueryResultsHost.children = {}
-               AuctionHouse:AuctionHouseResultsMenuBuilder(SkuCore.QueryResultsHost)
-               -- Cursor von "Warten" in das erste Ergebnis ziehen.
+               local tHost = SkuCore.QueryResultsHost
+               tHost.children = {}
+               -- Ueber BuildChildren des Hosts statt direkt ueber den
+               -- ResultsMenuBuilder: nur so legt der Suchfeld-Eintrag sein
+               -- "Suchbegriff eingeben" wieder mit an, das sonst nach der
+               -- ersten Suche aus der Kette verschwand (Weitersuchen ging nur
+               -- ueber Raus- und Wieder-Reinnavigieren). Fuer "Alle" und
+               -- Einzel-Item IST BuildChildren der ResultsMenuBuilder.
+               if tHost.BuildChildren then
+                  pcall(function() tHost:BuildChildren(tHost) end)
+               else
+                  AuctionHouse:AuctionHouseResultsMenuBuilder(tHost)
+               end
+               -- Cursor von "Warten" auf den ersten echten Treffer ziehen -
+               -- bei null Treffern auf das Eingabefeld, damit sofort neu
+               -- gesucht werden kann.
                if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name == L["Warten"] then
-                  local tHost = SkuCore.QueryResultsHost
-                  if tHost.children and tHost.children[1] then
-                     SkuOptions.currentMenuPosition = tHost.children[1]
-                     pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
-                  end
+                  AuctionHouse:AuctionFocusAfterResults(tHost)
                end
             else
                AuctionHouse:AuctionResultsAppend()
