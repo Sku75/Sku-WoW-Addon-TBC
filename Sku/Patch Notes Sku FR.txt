@@ -22,10 +22,9 @@ Changements dans Sku v43.1
             Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat réussi avec « Enchère épuisée » et éjectait de la recherche.
             Après la fermeture du menu, des annonces différées continuaient de parler (« Nouvelle lettre plus », « Sujet : <texte saisi> », « Envoyé », « Tout ouvert » depuis une boîte aux lettres fermée depuis longtemps).
             Hôtel des ventes : une réponse incomplète du serveur ne termine plus la recherche à tort par « vide » - une vraie recherche sans résultat répond toujours immédiatement.
-            Hôtel des ventes : une recherche qui n'a jamais démarré (achat armé, scan complet en cours, limitation) est désormais retentée au lieu d'être annoncée « vide ».
-            Hôtel des ventes : pendant un scan complet, la recherche l'annonce immédiatement (« Nicht möglich, scan läuft ») au lieu d'attendre cinq secondes.
+            Hôtel des ventes : une recherche qui ne peut pas démarrer indique désormais pourquoi (« impossible, analyse en cours » ou « Hôtel des ventes occupé ») au lieu d'annoncer « vide ».
             Hôtel des ventes : une recherche sans résultat annonce désormais « aucun résultat » au lieu de « vide » - et le champ de recherche reste dans la liste, le curseur s'y pose directement.
-            Hôtel des ventes : un scan complet annulé en fermant la fenêtre bloquait ensuite toute recherche avec « Nicht möglich, scan läuft », alors qu'aucun scan ne tournait plus.
+            Hôtel des ventes : un scan complet annulé en fermant la fenêtre bloquait ensuite toute recherche avec « impossible, analyse en cours », alors qu'aucun scan ne tournait plus.
 
     Nouveau réglage : Énoncer l'écho du clavier
         Simple : Dans les champs de saisie (rédaction d'une lettre, recherche, nom de profil...),
@@ -108,76 +107,64 @@ Changements dans Sku v43.1
             mais ne livre aucune ligne -, Sku terminait aussitôt la recherche par « vide ».
             Dans ce cas, il attend désormais la réponse complète et redemande la page. Une
             recherche qui ne trouve réellement rien (faute de frappe dans le champ de
-            recherche, catégorie vide) répond toujours immédiatement avec 0 résultat et
-            « vide » - cela ne change pas.
+            recherche, catégorie vide) répond toujours immédiatement - avec 0 résultat et
+            « aucun résultat ».
         Technique : Dans AUCTION_ITEM_LIST_UPDATE_LIST, une page vide ne compte comme
             prématurée que si le serveur se contredit : tBatch == 0 (aucune ligne sur cette
             page) alors que tCount > 0 (nombre total de résultats supérieur à 0).
             QueryListEmptyWaits s'incrémente alors, le scan reste en « waiting » et le ticker
             redemande la même page ; après 10 réponses de ce type, le résultat est tout de
             même accepté (sortie de secours). tCount == 0 est au contraire la réponse honnête
-            « aucun résultat » et passe sans délai. C'est important, car un compteur sur
-            CHAQUE réponse vide - le jumeau de QueryBuyEmptyWaits du chemin d'achat - laisse
-            le cas de la faute de frappe bloqué sur « Attendre » pendant dix requêtes, son de
-            chargement à la seconde compris : dans le journal de débogage du 2026-08-26, le
-            serveur répond à la recherche « feuerpartiekel » par 0 sur 0 dans la même
-            seconde, ce n'est donc pas une réponse fantôme.
+            « aucun résultat » et doit passer sans délai : le chemin d'achat compte ici
+            CHAQUE réponse vide (QueryBuyEmptyWaits) parce qu'il cherche à retrouver une
+            enchère peut-être encore vivante - pour une recherche, la même règle serait
+            fausse. Dans le journal de débogage du 2026-08-26, le serveur répond à la
+            recherche « feuerpartiekel » par 0 sur 0 dans la même seconde : c'est la vraie
+            réponse, pas une réponse fantôme.
 
-    Hôtel des ventes : une recherche refusée est retentée au lieu d'être annoncée « vide »
-        Simple : Il y a des moments où l'hôtel des ventes n'accepte tout simplement pas une
-            recherche : pendant qu'un achat est armé, pendant qu'un scan complet tourne en
-            arrière-plan, ou quand le serveur limite les requêtes. Jusqu'ici Sku ne s'en
-            apercevait pas : il construisait quand même la liste et annonçait « vide »,
-            comme si la recherche n'avait rien trouvé. Au premier essai d'une session, cela
-            ressemblait à une catégorie vide ; plus tard, la liste affichait même les
-            résultats de la recherche PRÉCÉDENTE. Sku reste maintenant sur « Attendre » et
-            réessaie de lui-même. Si la recherche passe dans les 5 secondes, tout continue
-            normalement. Si la raison persiste - un scan complet dure des minutes -, Sku
-            annonce « Hôtel des ventes occupé, recherche non démarrée » et place la même
-            indication dans la liste, au lieu d'un constat faux. Flèche gauche puis droite
-            relance un essai.
-        Technique : AuctionHouseStartQuery renvoie false à trois endroits (achat armé, scan
-            getAll en cours, QueryAuctionItems qui lève). Les trois appelants de navigation -
-            champ de recherche, « Tous » et objet unique dans AuctionHouseBuildItemDBMenu -
-            ignoraient cette valeur de retour et posaient malgré tout QueryResultsHost,
-            vidaient children et reconstruisaient ; le constructeur de résultats trouvait
-            state == « idle », sautait sa branche « Attendre » et tombait sur le test de
-            liste vide. Ils passent désormais par AuctionBrowseStart, qui met un nouvel essai
-            en file sur false (QueryStartPending). AuctionBrowseRetryTick s'accroche au
-            ticker OnUpdate existant de l'hôtel des ventes - volontairement piloté par les
-            frames plutôt qu'une chaîne C_Timer, car une chaîne interrompue n'atteint jamais
-            sa ligne de réarmement -, tente au plus toutes les 0,25 s et seulement si
-            CanSendAuctionQuery, et se remet explicitement en file après un échec
-            (StartQuery appelle ResetQuery en interne et efface ainsi le marqueur, même
-            lorsqu'il renvoie ensuite false). Après un succès, QueryResultsHost est reposé,
-            car la nouvelle requête le remet à nil. Le constructeur de résultats connaît les
-            deux marqueurs : QueryStartPending affiche « Attendre », QueryStartFailed le
-            nouveau texte AH_QueryBusy ; ResetQuery efface les deux.
-
-    Hôtel des ventes : un scan complet en cours est signalé aussitôt, pas après 5 secondes
-        Simple : Le menu de vente annonce depuis toujours « Nicht möglich, scan läuft » dès
-            qu'un scan complet tourne en arrière-plan. Une catégorie ou une recherche, elle,
-            restait cinq secondes sur « Attendre », alors qu'il était clair dès le départ
-            qu'un scan complet dure des minutes. Ce même message figure désormais aussitôt
-            dans la liste : on l'entend en ouvrant la catégorie. Si un scan complet démarre
-            au milieu des tentatives, Sku les interrompt aussi tout de suite et l'annonce.
-        Technique : AuctionHouseStartQuery renvoie la RAISON du refus en deuxième valeur
-            (« secureBuy », « getAllRunning », « getAllCooldown », « queryThrew »).
-            AuctionBrowseStart décide sur cette base : pour les raisons getAll, signalement
-            immédiat (aucune nouvelle tentative) ; sinon mise en file comme avant - un achat
-            armé et la limitation passent en quelques secondes. Le tick de reprise vérifie
-            également la raison et sort par anticipation si un scan démarre entre-temps ; il
-            se place maintenant tout en tête du ticker, avant ses retours anticipés, sans
-            quoi il gelait pendant toute l'ingestion getAll. QueryStartFailed contient le
-            TEXTE à afficher plutôt que simplement true, afin qu'un seul marqueur porte les
-            deux cas (AH_QueryBusy ou le message de scan du menu de vente). Deux détails
-            avaient rendu la première tentative inopérante : QueryStartFailed est testé AVANT
-            la condition « Attendre » - le scan bloquant maintient lui-même
-            AuctionScan.state sur « waiting »/« paging », sinon « Attendre » l'emportait
-            toujours et la raison restait inaccessible. Et le chemin immédiat ne parle PAS de
-            lui-même : le message est la seule entrée de la liste et est lu à l'ouverture de
-            toute façon, alors qu'une annonce distincte était coupée par le vocalize suivant
-            et repartait à chaque passage (OnEnter s'exécute déjà à l'arrivée).
+    Hôtel des ventes : une recherche qui ne peut pas démarrer indique désormais pourquoi
+        Simple : Il y a des moments où l'hôtel des ventes n'accepte pas une recherche :
+            pendant qu'un scan complet tourne en arrière-plan, pendant qu'un achat est armé,
+            ou quand le serveur limite les requêtes. Jusqu'ici Sku ne s'en apercevait pas :
+            il construisait quand même la liste et annonçait « vide », comme si la recherche
+            n'avait rien trouvé. Au premier essai d'une session, cela ressemblait à une
+            catégorie vide ; plus tard, la liste affichait même les résultats de la
+            recherche PRÉCÉDENTE.
+            Sku indique maintenant la raison. Si un scan complet tourne, « impossible,
+            analyse en cours » figure dans la liste dès l'ouverture - le message que le menu
+            de vente donne depuis toujours dans cette situation. Attendre n'y a aucun sens : un
+            scan complet occupe l'hôtel des ventes pendant des minutes. Pour les obstacles
+            courts (achat armé, limitation), Sku reste sur « Attendre » et continue d'essayer
+            de lui-même ; si la recherche passe dans les 5 secondes, tout continue
+            normalement, sinon il annonce « Hôtel des ventes occupé, recherche non
+            démarrée ». Si un scan complet démarre pendant ces tentatives, Sku les interrompt
+            aussitôt et le signale. Flèche gauche puis droite relance un essai à tout moment.
+        Technique : AuctionHouseStartQuery renvoie false à trois endroits et, depuis cette
+            version, la RAISON en deuxième valeur (« secureBuy », « getAllRunning »,
+            « getAllCooldown », « queryThrew »). Les trois appelants de navigation - champ de
+            recherche, « Tous » et objet unique dans AuctionHouseBuildItemDBMenu - ignoraient
+            cette valeur de retour et posaient malgré tout QueryResultsHost, vidaient
+            children et reconstruisaient ; le constructeur de résultats trouvait state ==
+            « idle », sautait sa branche « Attendre » et tombait sur le test de liste vide.
+            Ils passent désormais par AuctionBrowseStart, qui décide selon la raison : les
+            raisons getAll sont signalées immédiatement, tout le reste est mis en file comme
+            nouvel essai (QueryStartPending). AuctionBrowseRetryTick s'accroche au ticker
+            OnUpdate existant de l'hôtel des ventes - volontairement piloté par les frames
+            plutôt qu'une chaîne C_Timer, car une chaîne interrompue n'atteint jamais sa
+            ligne de réarmement -, se place tout en tête avant ses retours anticipés (sans
+            quoi il gelait pendant toute l'ingestion getAll), tente au plus toutes les 0,25 s
+            et seulement si CanSendAuctionQuery, revérifie la raison, et se remet
+            explicitement en file après un échec, puisque StartQuery appelle ResetQuery en
+            interne et efface ainsi le marqueur même lorsqu'il renvoie ensuite false. Après
+            un succès, QueryResultsHost est reposé, car la nouvelle requête le remet à nil.
+            QueryStartFailed porte le TEXTE à afficher (AH_QueryBusy ou le message de scan du
+            menu de vente) et est testé AVANT la condition « Attendre » : le scan bloquant
+            maintient lui-même AuctionScan.state sur « waiting »/« paging », sinon
+            « Attendre » l'emporterait toujours et la raison resterait inaccessible. Le
+            chemin immédiat ne parle volontairement PAS de lui-même : le message est la seule
+            entrée de la liste et est lu à l'ouverture de toute façon, alors qu'une annonce
+            distincte serait coupée par le vocalize suivant et repartirait à chaque passage
+            (OnEnter s'exécute déjà à l'arrivée). ResetQuery efface les deux marqueurs.
 
     Hôtel des ventes : « aucun résultat » au lieu de « vide », et le champ de recherche reste accessible
         Simple : Une recherche sans résultat - une faute de frappe, par exemple - annonçait

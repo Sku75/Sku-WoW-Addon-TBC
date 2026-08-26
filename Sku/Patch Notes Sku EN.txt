@@ -19,8 +19,7 @@ Changes in Sku v43.1
             Auction house: buying multiple pieces wrongly aborted after almost every successful purchase with "Auction sold out" and threw you out of the search.
             After closing the menu, deferred announcements kept speaking ("New letter plus", "Subject: <typed text>", "Sent", "All opened" from a mailbox that was long closed).
             Auction house: an incomplete server response no longer wrongly ends the search with "empty" - a genuine search with no hits still answers immediately.
-            Auction house: a search that never started at all (purchase armed, full scan running, throttle) is now retried instead of being announced as "empty".
-            Auction house: while a full scan runs, a search says so immediately ("not possible, scan in progess") instead of only after five seconds.
+            Auction house: a search that cannot start at all now names the reason ("not possible, scan in progess" or "Auction house busy") instead of saying "empty".
             Auction house: a search with no hits now says "no results" instead of "empty" - and the search field stays in the list, with the cursor landing right on it.
             Auction house: a full scan cancelled by closing the window afterwards blocked every search with "not possible, scan in progess", although no scan was running any more.
 
@@ -95,69 +94,59 @@ Changes in Sku v43.1
             single row - Sku used to end the search right away with "empty". It now waits for
             the complete response in that case and requests the page again. A search that
             genuinely finds nothing (a typo in the search field, an empty category) still
-            answers immediately with a hit count of 0 and "empty" - that part is unchanged.
+            answers immediately - with a hit count of 0 and "no results".
         Technically: In AUCTION_ITEM_LIST_UPDATE_LIST an empty page only counts as premature
             when the server contradicts itself: tBatch == 0 (no row on this page) while
             tCount > 0 (total hit count greater than 0). QueryListEmptyWaits then counts up,
             the scan stays in "waiting" and the ticker re-requests the same page; after 10
             such responses the result is accepted anyway (emergency exit). tCount == 0, by
-            contrast, is the honest "no hits" answer and passes through without delay. This
-            matters because a counter on EVERY empty response - the twin of the buy path's
-            QueryBuyEmptyWaits - leaves the typo case hanging on "Waiting" for ten requeries,
-            loading cue once a second included: in the debug log of 2026-08-26 the server
-            answers the search "feuerpartiekel" with 0 of 0 in the same second, so that is no
-            phantom response.
+            contrast, is the honest "no hits" answer and has to pass through without delay:
+            the buy path counts EVERY empty response at this point (QueryBuyEmptyWaits)
+            because it wants to re-find an auction that may still be alive - for a search the
+            same rule would be wrong. In the debug log of 2026-08-26 the server answers the
+            search "feuerpartiekel" with 0 of 0 in the same second; that is the real
+            response, not a phantom one.
 
-    Auction house: a refused search is retried instead of being announced as "empty"
-        Simple: There are moments when the auction house does not accept a search at all:
-            while a purchase is armed, while a full scan runs in the background, or when the
-            server is throttling. Sku did not notice that so far - it built the list anyway
-            and said "empty", as if the search had found nothing. On the first attempt in a
-            session that sounded like an empty category; later the list even showed the hits
-            of the PREVIOUS search. Sku now stays on "Waiting" and retries by itself. If the
-            search gets through within 5 seconds, everything continues as usual. If the
-            reason persists - a full scan takes minutes - Sku says "Auction house busy,
-            search did not start" and puts that same note in the list instead of reporting a
-            false finding. Arrow left and right again starts a fresh attempt.
-        Technically: AuctionHouseStartQuery returns false in three places (armed purchase,
-            running getAll scan, QueryAuctionItems throwing). The three browse callers -
-            search field, "All" and single item in AuctionHouseBuildItemDBMenu - ignored that
-            return value and set QueryResultsHost, cleared children and rebuilt anyway; the
-            results builder found state == "idle", skipped its "Waiting" branch and fell
-            through to the empty check. They now go through AuctionBrowseStart, which queues
-            a retry on false (QueryStartPending). AuctionBrowseRetryTick hangs off the
-            existing AH OnUpdate ticker - deliberately frame-driven rather than a C_Timer
-            chain, because an aborted chain never reaches its re-arm line - attempts at most
-            every 0.25 s and only when CanSendAuctionQuery is true, and re-queues itself
-            explicitly after a failed attempt (StartQuery calls ResetQuery internally and
-            clears the marker in doing so, even when it then returns false). After success
-            QueryResultsHost is set again, because the fresh query setup nils it. The results
-            builder knows both markers: QueryStartPending shows "Waiting", QueryStartFailed
-            shows the new AH_QueryBusy text; ResetQuery clears both.
-
-    Auction house: a running full scan is reported at once, not after 5 seconds
-        Simple: The selling menu has always said "not possible, scan in progess" right away
-            when a full scan runs in the background. A category or search, by contrast, sat
-            on "Waiting" for five seconds first, although it was clear from the start that a
-            full scan takes minutes. That same message is now in the list immediately, so you
-            hear it as you open the category. If a full scan starts in the middle of the
-            retries, Sku aborts them at once and announces it too.
-        Technically: AuctionHouseStartQuery returns the REASON for the refusal as a second
-            return value ("secureBuy", "getAllRunning", "getAllCooldown", "queryThrew").
-            AuctionBrowseStart decides on that: the getAll reasons report immediately (no
-            retry), everything else queues as before - an armed purchase and the throttle are
-            over within seconds. The retry tick checks the reason as well and bails out early
-            if a scan starts meanwhile; it now sits at the very top of the ticker, ahead of
-            its early returns, or it froze for the duration of a getAll ingest.
-            QueryStartFailed holds the TEXT to display rather than just true, so one marker
-            carries both cases (AH_QueryBusy and the selling menu's scan message). Two
-            details had made the first attempt ineffective: QueryStartFailed is checked
-            BEFORE the "Waiting" condition - the blocking scan itself holds AuctionScan.state
-            at "waiting"/"paging", so otherwise "Waiting" always won and the reason was
-            unreachable. And the immediate path does NOT speak by itself: the message is the
-            only list entry and is read out on opening anyway, while a separate announcement
-            was cut off by the following vocalize and fired again on every pass (OnEnter runs
-            on arrival already).
+    Auction house: a search that cannot start at all now names the reason
+        Simple: There are moments when the auction house does not accept a search: while a
+            full scan runs in the background, while a purchase is armed, or when the server
+            is throttling. Sku did not notice that so far - it built the list anyway and said
+            "empty", as if the search had found nothing. On the first attempt in a session
+            that sounded like an empty category; later the list even showed the hits of the
+            PREVIOUS search.
+            Sku now names the reason. If a full scan is running, "not possible, scan in
+            progess" is in the list the moment you open it - the same message the selling
+            menu has always given in this situation. Waiting makes no sense there: a full
+            scan occupies the auction house for minutes. For the short obstacles (armed
+            purchase, throttle) Sku stays on "Waiting" and keeps trying by itself; if the
+            search gets through within 5 seconds everything continues as usual, otherwise it
+            says "Auction house busy, search did not start". If a full scan begins during
+            those attempts, Sku aborts them at once and says so. Arrow left and right again
+            starts a fresh attempt at any time.
+        Technically: AuctionHouseStartQuery returns false in three places and, as of this
+            version, the REASON as a second return value ("secureBuy", "getAllRunning",
+            "getAllCooldown", "queryThrew"). The three browse callers - search field, "All"
+            and single item in AuctionHouseBuildItemDBMenu - had ignored that return value
+            and set QueryResultsHost, cleared children and rebuilt anyway; the results
+            builder found state == "idle", skipped its "Waiting" branch and fell through to
+            the empty check. They now go through AuctionBrowseStart, which decides on the
+            reason: getAll reasons report immediately, everything else is queued as a retry
+            (QueryStartPending). AuctionBrowseRetryTick hangs off the existing AH OnUpdate
+            ticker - deliberately frame-driven rather than a C_Timer chain, because an
+            aborted chain never reaches its re-arm line - sits at the very top ahead of its
+            early returns (or it froze for the duration of a getAll ingest), attempts at most
+            every 0.25 s and only when CanSendAuctionQuery is true, re-checks the reason, and
+            re-queues itself explicitly after a failed attempt, since StartQuery calls
+            ResetQuery internally and clears the marker in doing so even when it then returns
+            false. After success QueryResultsHost is set again, because the fresh query setup
+            nils it. QueryStartFailed carries the TEXT to display (AH_QueryBusy or the selling
+            menu's scan message) and is checked BEFORE the "Waiting" condition: the blocking
+            scan itself holds AuctionScan.state at "waiting"/"paging", so otherwise "Waiting"
+            would always win and the reason would be unreachable. The immediate path
+            deliberately does NOT speak - the message is the only list entry and is read out
+            on opening anyway, while a separate announcement would be cut off by the
+            following vocalize and fired again on every pass (OnEnter runs on arrival
+            already). ResetQuery clears both markers.
 
     Auction house: "no results" instead of "empty", and the search field stays reachable
         Simple: A search with no hits - a typo, say - used to say "empty". That sounds like

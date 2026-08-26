@@ -19,8 +19,7 @@ Aenderungen in Sku v43.1
             Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem gelungenen Kauf faelschlich mit "Auktion vergriffen" ab und warf aus der Suche.
             Nach dem Schliessen des Menues sprachen verzoegerte Ansagen weiter ("Neuer Brief plus", "Betreff: <Getipptes>", "Gesendet", "Alle geoeffnet" aus dem laengst geschlossenen Briefkasten).
             Auktionshaus: eine unvollstaendige Server-Antwort beendet die Suche nicht mehr faelschlich mit "leer" - eine echte Suche ohne Treffer antwortet weiterhin sofort.
-            Auktionshaus: eine gar nicht erst gestartete Suche (Kauf scharf, Komplettscan laeuft, Drossel) wird jetzt wiederholt statt als "leer" angesagt.
-            Auktionshaus: laeuft ein Komplettscan, sagt die Suche das sofort ("Nicht moeglich, scan laeuft") statt erst nach fuenf Sekunden.
+            Auktionshaus: eine Suche, die gar nicht erst starten kann, nennt jetzt den Grund ("Nicht moeglich, scan laeuft" bzw. "Auktionshaus beschaeftigt") statt "leer" zu sagen.
             Auktionshaus: eine Suche ohne Treffer sagt jetzt "keine Ergebnisse" statt "leer" - und das Suchfeld bleibt in der Liste, der Cursor landet direkt darauf.
             Auktionshaus: ein per Schliessen abgebrochener Komplettscan blockierte danach jede Suche mit "Nicht moeglich, scan laeuft", obwohl kein Scan mehr lief.
 
@@ -98,75 +97,62 @@ Aenderungen in Sku v43.1
             einzige Zeile -, dann beendete Sku die Suche bisher sofort mit "leer". Jetzt wartet
             es in diesem Fall auf die vollstaendige Antwort und fragt die Seite noch einmal an.
             Eine Suche, die wirklich nichts findet (Tippfehler im Suchfeld, leere Kategorie),
-            antwortet unveraendert sofort mit der Trefferzahl 0 und "leer" - genau daran
-            aendert sich nichts.
+            antwortet unveraendert sofort - mit der Trefferzahl 0 und "keine Ergebnisse".
         Technisch: In AUCTION_ITEM_LIST_UPDATE_LIST gilt eine leere Seite nur dann als
             verfrueht, wenn der Server sich widerspricht: tBatch == 0 (keine Zeile auf dieser
             Seite) bei tCount > 0 (Gesamttrefferzahl groesser 0). Dann zaehlt
             QueryListEmptyWaits hoch, der Scan bleibt auf "waiting" und der Ticker fragt
             dieselbe Seite erneut an; nach 10 solchen Antworten wird das Ergebnis doch
             akzeptiert (Notausstieg). tCount == 0 ist dagegen die ehrliche Antwort "keine
-            Treffer" und laeuft ohne Verzoegerung durch. Wichtig, weil ein Zaehler auf JEDE
-            leere Antwort - der Zwilling des Kauf-Pfads QueryBuyEmptyWaits - den
-            Tippfehler-Fall zehn Requeries lang auf "Warten" haengen laesst, samt Lade-Ton im
-            Sekundentakt: im Debug-Log vom 2026-08-26 beantwortet der Server die Suche
-            "feuerpartiekel" in derselben Sekunde mit 0 von 0, das ist keine Spuk-Antwort.
+            Treffer" und muss ohne Verzoegerung durchlaufen: der Kauf-Pfad zaehlt an dieser
+            Stelle JEDE leere Antwort (QueryBuyEmptyWaits), weil er eine womoeglich noch
+            lebende Auktion wiederfinden will - fuer die Suche waere dieselbe Regel falsch.
+            Im Debug-Log vom 2026-08-26 beantwortet der Server die Suche "feuerpartiekel" in
+            derselben Sekunde mit 0 von 0; das ist die echte Antwort, keine Spuk-Antwort.
 
-    Auktionshaus: eine verweigerte Suche wird wiederholt statt als "leer" angesagt
-        Einfach: Es gibt Momente, in denen das Auktionshaus eine Suche gar nicht erst
-            annimmt: waehrend ein Kauf scharf ist, waehrend im Hintergrund ein Komplettscan
-            laeuft, oder wenn der Server gerade drosselt. Bisher merkte Sku das nicht - es
-            baute die Liste trotzdem auf und sagte "leer", als haette die Suche nichts
-            gefunden. Beim ersten Aufruf in einer Sitzung klang das nach einer leeren
-            Kategorie, spaeter zeigte die Liste sogar noch die Treffer der VORIGEN Suche.
-            Jetzt bleibt Sku auf "Warten" stehen und versucht es selbsttaetig erneut. Kommt
-            die Suche innerhalb von 5 Sekunden durch, laeuft alles wie gewohnt weiter. Haelt
-            der Grund an - ein Komplettscan dauert Minuten -, sagt Sku "Auktionshaus
-            beschaeftigt, Suche nicht gestartet" und stellt denselben Hinweis in die Liste,
-            statt einen falschen Befund zu melden. Mit Pfeil links und wieder rechts startet
-            man einen neuen Versuch.
-        Technisch: AuctionHouseStartQuery liefert an drei Stellen false (scharfer Kauf,
-            laufender getAll-Scan, geworfenes QueryAuctionItems). Die drei Browse-Aufrufer -
-            Suchfeld, "Alle" und Einzel-Item in AuctionHouseBuildItemDBMenu - haben den
-            Rueckgabewert ignoriert und trotzdem QueryResultsHost gesetzt, children geleert
-            und neu gebaut; der ResultsMenuBuilder fand state == "idle", uebersprang seinen
-            "Warten"-Zweig und fiel auf die Leer-Pruefung durch. Sie laufen jetzt ueber
-            AuctionBrowseStart, das bei false einen Wiederholversuch einreiht
-            (QueryStartPending). AuctionBrowseRetryTick haengt am bestehenden
-            AH-OnUpdate-Ticker - bewusst frame-getrieben und nicht als C_Timer-Kette, weil
-            eine abgewuergte Kette ihre Re-Arm-Zeile nie erreicht - versucht hoechstens alle
-            0,25 s und nur bei CanSendAuctionQuery, und reiht sich nach einem Fehlversuch
-            explizit wieder ein (StartQuery ruft intern ResetQuery auf und loescht dabei den
-            Merker, auch wenn es danach doch false liefert). Nach Erfolg wird
-            QueryResultsHost neu gesetzt, weil der frische Query-Aufbau ihn nilt. Der
-            ResultsMenuBuilder kennt beide Merker: QueryStartPending zeigt "Warten",
-            QueryStartFailed den neuen Text AH_QueryBusy; ResetQuery raeumt beide ab.
-
-    Auktionshaus: laufender Komplettscan wird sofort gemeldet, nicht erst nach 5 Sekunden
-        Einfach: Das Verkaufen-Menue sagt schon immer sofort "Nicht moeglich, scan laeuft",
-            wenn im Hintergrund ein Komplettscan laeuft. Eine Kategorie oder Suche stand
-            dagegen erst fuenf Sekunden auf "Warten", obwohl von vornherein klar war, dass
-            ein Komplettscan Minuten dauert. Jetzt steht dieselbe Meldung sofort in der
-            Liste, man hoert sie also beim Oeffnen der Kategorie. Wird der Komplettscan
-            mitten in den Wiederholversuchen gestartet, bricht Sku sie ebenfalls gleich ab
-            und sagt es an.
-        Technisch: AuctionHouseStartQuery liefert den GRUND der Verweigerung als zweiten
-            Rueckgabewert ("secureBuy", "getAllRunning", "getAllCooldown", "queryThrew").
-            AuctionBrowseStart entscheidet daran: bei den getAll-Gruenden sofort melden
-            (kein Wiederholversuch), sonst wie bisher einreihen - ein scharfer Kauf und die
-            Drossel sind in Sekunden vorbei. Der Retry-Tick prueft den Grund ebenfalls und
-            steigt vorzeitig aus, wenn waehrenddessen ein Scan startet; er haengt jetzt ganz
-            vorn im Ticker, vor dessen fruehen Returns, sonst fror er waehrend des
-            getAll-Ingests ein. QueryStartFailed ist der anzuzeigende TEXT statt nur true,
-            damit derselbe Merker beide Faelle transportiert (AH_QueryBusy bzw. die
-            Scan-Meldung des Verkaufen-Menues). Zwei Details, die den ersten Anlauf
-            wirkungslos gemacht hatten: QueryStartFailed wird VOR der "Warten"-Bedingung
-            geprueft - der blockierende Scan haelt AuctionScan.state selbst auf
-            "waiting"/"paging", also gewann sonst immer "Warten" und die Begruendung war
-            unerreichbar. Und der Sofort-Pfad spricht NICHT selbst: die Meldung ist der
-            einzige Listeneintrag und wird beim Oeffnen ohnehin vorgelesen, waehrend eine
-            eigene Ansage vom folgenden Vocalize abgeschnitten wurde und bei jedem
+    Auktionshaus: eine Suche, die gar nicht erst starten kann, nennt jetzt den Grund
+        Einfach: Es gibt Momente, in denen das Auktionshaus eine Suche nicht annimmt:
+            waehrend im Hintergrund ein Komplettscan laeuft, waehrend ein Kauf scharf ist,
+            oder wenn der Server gerade drosselt. Bisher merkte Sku das nicht - es baute die
+            Liste trotzdem auf und sagte "leer", als haette die Suche nichts gefunden. Beim
+            ersten Aufruf in einer Sitzung klang das nach einer leeren Kategorie, spaeter
+            zeigte die Liste sogar die Treffer der VORIGEN Suche.
+            Jetzt nennt Sku den Grund. Laeuft ein Komplettscan, steht sofort beim Oeffnen
+            "Nicht moeglich, scan laeuft" in der Liste - dieselbe Meldung, die das
+            Verkaufen-Menue in dieser Lage schon immer gibt. Warten hat dort keinen Sinn: ein
+            Komplettscan belegt das Auktionshaus minutenlang. Bei den kurzen Huerden
+            (scharfer Kauf, Drossel) bleibt Sku auf "Warten" stehen und versucht es von
+            selbst weiter; kommt die Suche innerhalb von 5 Sekunden durch, laeuft alles wie
+            gewohnt weiter, sonst heisst es "Auktionshaus beschaeftigt, Suche nicht
+            gestartet". Faengt waehrend dieser Versuche ein Komplettscan an, bricht Sku sie
+            gleich ab und sagt es. Mit Pfeil links und wieder rechts startet man jederzeit
+            einen neuen Versuch.
+        Technisch: AuctionHouseStartQuery liefert an drei Stellen false und seit dieser
+            Version den GRUND als zweiten Rueckgabewert ("secureBuy", "getAllRunning",
+            "getAllCooldown", "queryThrew"). Die drei Browse-Aufrufer - Suchfeld, "Alle" und
+            Einzel-Item in AuctionHouseBuildItemDBMenu - hatten den Rueckgabewert ignoriert
+            und trotzdem QueryResultsHost gesetzt, children geleert und neu gebaut; der
+            ResultsMenuBuilder fand state == "idle", uebersprang seinen "Warten"-Zweig und
+            fiel auf die Leer-Pruefung durch. Sie laufen jetzt ueber AuctionBrowseStart, das
+            am Grund entscheidet: getAll-Gruende sofort melden, alles andere als
+            Wiederholversuch einreihen (QueryStartPending). AuctionBrowseRetryTick haengt am
+            bestehenden AH-OnUpdate-Ticker - bewusst frame-getrieben und nicht als
+            C_Timer-Kette, weil eine abgewuergte Kette ihre Re-Arm-Zeile nie erreicht -,
+            steht ganz vorn vor dessen fruehen Returns (sonst fror er waehrend des
+            getAll-Ingests ein), versucht hoechstens alle 0,25 s und nur bei
+            CanSendAuctionQuery, prueft den Grund erneut und reiht sich nach einem
+            Fehlversuch explizit wieder ein - StartQuery ruft intern ResetQuery auf und
+            loescht dabei den Merker, auch wenn es danach doch false liefert. Nach Erfolg
+            wird QueryResultsHost neu gesetzt, weil der frische Query-Aufbau ihn nilt.
+            QueryStartFailed traegt den anzuzeigenden TEXT (AH_QueryBusy bzw. die
+            Scan-Meldung des Verkaufen-Menues) und wird VOR der "Warten"-Bedingung geprueft:
+            der blockierende Scan haelt AuctionScan.state selbst auf "waiting"/"paging", also
+            gewaenne sonst immer "Warten" und die Begruendung waere unerreichbar. Der
+            Sofort-Pfad spricht bewusst NICHT selbst - die Meldung ist der einzige
+            Listeneintrag und wird beim Oeffnen ohnehin vorgelesen, waehrend eine eigene
+            Ansage vom folgenden Vocalize abgeschnitten wuerde und bei jedem
             Vorbeinavigieren erneut feuerte (OnEnter laeuft schon beim Ankommen).
+            ResetQuery raeumt beide Merker ab.
 
     Auktionshaus: "keine Ergebnisse" statt "leer", und das Suchfeld bleibt erreichbar
         Einfach: Eine Suche ohne Treffer - etwa mit einem Tippfehler - sagte bisher "leer".
