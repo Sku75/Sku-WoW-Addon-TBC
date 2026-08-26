@@ -64,6 +64,9 @@ elease.ps1 -Dev -Version 43.0
     -SkipDiscord  do everything except the Discord announcement.
     -Prerelease   (main mode) publish without the Latest badge.
     -Notes "..."  release/announcement highlights (else a minimal default).
+    -NotesDe "..." the same highlights in German, used for a German-only
+                  Discord channel (falls back to -Notes when not given). The
+                  GitHub release body always uses -Notes.
 
   Discord webhooks are read from installer\.secrets\discord-webhooks.txt
   (gitignored - one URL per line, '#' comments allowed). A line may name that
@@ -87,6 +90,7 @@ param(
     [switch]$Prerelease,
     [switch]$SkipDiscord,
     [string]$Notes,
+    [string]$NotesDe,
     [switch]$DryRun
 )
 
@@ -499,7 +503,13 @@ function Build-AnnouncementBody($ver, $langs) {
         }
     }
     $body = $lines -join "`n"
-    if ($Notes) { $body = $body + "`n`n" + $Notes }
+    # A German-only channel reads the highlights in German; every other channel
+    # (including the mixed one) gets the English text. Same reasoning as the
+    # per-language link lines above: nobody should have to skip past a language
+    # they did not ask for.
+    $extra = $Notes
+    if ($langs.Count -eq 1 -and $langs[0] -eq 'de' -and $NotesDe) { $extra = $NotesDe }
+    if ($extra) { $body = $body + "`n`n" + $extra }
     return $body
 }
 

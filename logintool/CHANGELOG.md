@@ -1,6 +1,6 @@
 # WoW Logintool
 
-## 3.2 (unveröffentlicht)
+## 3.2 (2026-08-26)
 
 **"Unbekannter Bildschirm" sagt jetzt, wenn die Erkennungs-Texturen fehlen.**
 Auslöser war ein Nutzer-Logbündel vom 2026-08-26: Spiel erkannt, Helper
