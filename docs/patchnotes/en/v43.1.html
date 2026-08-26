@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.1 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v43.1.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/v43.1.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v43.1 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.0.html">Older version: v43.0</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Overview</h2>
+<h3>Changes</h3>
+<ul>
+<li>Buying multiple pieces at the auction house now runs through as long as more offers at the same audible price exist.</li>
+<li>Every successful purchase is confirmed right away with "Bought, n of m".</li>
+<li>When a price is sold out, Sku says "No more offers at this price" with the tally and stays in the results list.</li>
+<li>New setting "Speak keyboard echo" (Settings -&gt; General, on by default): the character-by-character read-back while typing in input fields can be turned off.</li>
+<li>Auction house: the full scan confirms itself for the first time after 5 seconds, then every 10 seconds as before.</li>
+<li>Quest menu: the "Group members" entry now sits in third place instead of in the middle, so "Current Quests" and "Quest database" always keep their position.</li>
+</ul>
+<h3>Bugfixes</h3>
+<ul>
+<li>Auction house: buying multiple pieces wrongly aborted after almost every successful purchase with "Auction sold out" and threw you out of the search.</li>
+<li>After closing the menu, deferred announcements kept speaking ("New letter plus", "Subject: &lt;typed text&gt;", "Sent", "All opened" from a mailbox that was long closed).</li>
+<li>Auction house: an incomplete server response no longer wrongly ends the search with "empty" - a genuine search with no hits still answers immediately.</li>
+<li>Auction house: a search that cannot start at all now names the reason ("not possible, scan in progess" or "Auction house busy") instead of saying "empty".</li>
+<li>Auction house: a search with no hits now says "no results" instead of "empty" - and the search field stays in the list, with the cursor landing right on it.</li>
+<li>Auction house: a full scan cancelled by closing the window afterwards blocked every search with "not possible, scan in progess", although no scan was running any more.</li>
+<li>Auction house: the full scan sometimes died silently right after the start announcement; the 16-minute lock was still consumed.</li>
+<li>French clients: the waypoint list was empty in several zones (fix by Naxedim).</li>
+</ul>
+<h2>New setting: Speak keyboard echo</h2>
+<p><strong>Simple:</strong> In input fields (writing a letter, search, profile name...) Sku reads every typed character out loud, as well as backspace and the cursor readings with the arrow keys. If you dislike that or hear it twice, you can now turn it off under Settings -&gt; General, "Speak keyboard echo" (right next to "Speak menu numbers" and "Announce submenus"). The default is ON, so nothing changes unless you change it. Status announcements like "Cancelled" or the field confirmation after ENTER always remain.</p>
+<h2>No more announcements into a closed menu</h2>
+<p><strong>Simple:</strong> Confirming an input field with ENTER and closing the menu right after still produced "Subject: &lt;the typed text&gt;" - as if the keyboard echo trailed the close. In the same way, "New letter plus", "Sent" or "All opened" still spoke from a mailbox that was long closed. Now anything that wants to announce a menu entry first checks whether the menu is even open - and the mailbox receipts check whether the mailbox is still open. The server system line "Mail sent." in chat is unaffected.</p>
+<p><strong>Technical:</strong> The stragglers were never the speech queue (closing already clears it via queuereset + StopSpeakingText) but producers that only enqueue AFTER the close: C_Timer confirmations (0.3 s after attaching/field input/sending, 0.5 s after "Open all") and server events (MAIL_SEND_SUCCESS). Another blanket queue purge on window close would therefore not catch them, but WOULD cut legitimate announcements (chat, combat, navigation) off mid-word. Instead: a central gate in</p>
+<p>SkuOptions:VocalizeCurrentMenuName (no open menu, no headless combat menu and no SkuChat line menu -&gt; silent; the string mode still returns text), plus three producer gates in mail (MailboxOpenFlag for "Sent", IsMenuOpen for the field confirmation, MailFrame visibility for "All opened"). MAIL_FAILED deliberately stays unfiltered - a failure must be audible even after closing.</p>
+<h2>Auction house: buying multiple pieces wrongly aborted after almost every purchase with "Auction sold out"</h2>
+<p><strong>Simple:</strong> Picking a results entry like "14 times Void Sphere" and buying five of them meant hearing "Auction sold out" after almost every purchase and landing back outside the search - even though the purchase had succeeded and the money was deducted correctly. Since the success itself was never announced, it sounded like a string of failures while the items were already in the bag. The cause: sellers undercut each other by 1 copper. The results list groups all auctions whose price SOUNDS the same - above 1 gold the copper part is not spoken - but the buy continuation looked for the next piece at the exact copper amount, which usually no longer existed once the cheapest one was bought. The continuation now works through such a group piece by piece: the next offer may only differ in copper, the inaudible part of the price. An audibly more expensive offer - whether 1 silver or 100 gold more - is NEVER offered automatically, and every single piece still requires its own confirmation.</p>
+<p><strong>Technically:</strong> Proven in the debug log of 2026-08-25: five purchases at 52g99s81c through 52g99s84c, each run bought exactly one piece and then aborted. The continuation (_ABReQueryBuy → match scan) compared item ID + stack size + EXACT buyout; the results list however groups by the formatted label (SkuGetCoinText very-short drops copper above 1 gold), so a group spans a 1-silver bucket. The scan now tracks the cheapest buyable offer with the same item ID and stack size in the same bucket (floor(buyout/100) equal, only from 10000 copper up) and adopts its price fields (8/9/10/11) into QueryBuyData; failCount restarts at 0 for the new price group. Below 1 gold the label speaks the copper - there the old exact behaviour remains. Bid purchases keep the strict 17-field comparison.</p>
+<h2>Auction house: every purchase is confirmed, the end of a price group reports the tally and stays in the list</h2>
+<p><strong>Simple:</strong> After every successful piece Sku now immediately says "Bought, n of m" - before, the only success signal was the next buy prompt. Once all offers at the same audible price are gone, it says "No more offers at this price" with the tally, for example "2 of 5 bought", and the cursor stays on the entry in the results list instead of jumping several levels up to "Auctions" as before. From there you can navigate straight to the next, more expensive entry and buy again.</p>
+<p><strong>Technically:</strong> The success announcement sits in _ABContinueOrFinish, right after the server's "Bid accepted.". The sold-out path positions first</p>
+<p>(AuctionStayOnResultsEntry; if pruning fails because the record was already removed after the purchase, a fallback via AuctionResultsItemEntryFromCursor keeps the cursor on the item entry) and speaks the message 0.4 s later without interrupting - the same pattern as the existing "Done. All bought".</p>
+<h2>Auction house: an incomplete server response no longer counts as "no hits"</h2>
+<p><strong>Simple:</strong> When the server answers contradictorily - it reports hits but delivers not a single row - Sku used to end the search right away with "empty". It now waits for the complete response in that case and requests the page again. A search that genuinely finds nothing (a typo in the search field, an empty category) still answers immediately - with a hit count of 0 and "no results".</p>
+<p><strong>Technically:</strong> In AUCTION_ITEM_LIST_UPDATE_LIST an empty page only counts as premature when the server contradicts itself: tBatch == 0 (no row on this page) while tCount &gt; 0 (total hit count greater than 0). QueryListEmptyWaits then counts up, the scan stays in "waiting" and the ticker re-requests the same page; after 10 such responses the result is accepted anyway (emergency exit). tCount == 0, by contrast, is the honest "no hits" answer and has to pass through without delay: the buy path counts EVERY empty response at this point (QueryBuyEmptyWaits) because it wants to re-find an auction that may still be alive - for a search the same rule would be wrong. In the debug log of 2026-08-26 the server answers the search "feuerpartiekel" with 0 of 0 in the same second; that is the real response, not a phantom one.</p>
+<h2>Auction house: a search that cannot start at all now names the reason</h2>
+<p><strong>Simple:</strong> There are moments when the auction house does not accept a search: while a full scan runs in the background, while a purchase is armed, or when the server is throttling. Sku did not notice that so far - it built the list anyway and said "empty", as if the search had found nothing. On the first attempt in a session that sounded like an empty category; later the list even showed the hits of the PREVIOUS search.</p>
+<p>Sku now names the reason. If a full scan is running, "not possible, scan in progess" is in the list the moment you open it - the same message the selling menu has always given in this situation. Waiting makes no sense there: a full scan occupies the auction house for minutes. For the short obstacles (armed purchase, throttle) Sku stays on "Waiting" and keeps trying by itself; if the search gets through within 5 seconds everything continues as usual, otherwise it says "Auction house busy, search did not start". If a full scan begins during those attempts, Sku aborts them at once and says so. Arrow left and right again starts a fresh attempt at any time.</p>
+<p><strong>Technically:</strong> AuctionHouseStartQuery returns false in three places and, as of this version, the REASON as a second return value ("secureBuy", "getAllRunning", "getAllCooldown", "queryThrew"). The three browse callers - search field, "All" and single item in AuctionHouseBuildItemDBMenu - had ignored that return value and set QueryResultsHost, cleared children and rebuilt anyway; the results builder found state == "idle", skipped its "Waiting" branch and fell through to the empty check. They now go through AuctionBrowseStart, which decides on the reason: getAll reasons report immediately, everything else is queued as a retry (QueryStartPending). AuctionBrowseRetryTick hangs off the existing AH OnUpdate ticker - deliberately frame-driven rather than a C_Timer chain, because an aborted chain never reaches its re-arm line - sits at the very top ahead of its early returns (or it froze for the duration of a getAll ingest), attempts at most every 0.25 s and only when CanSendAuctionQuery is true, re-checks the reason, and re-queues itself explicitly after a failed attempt, since StartQuery calls ResetQuery internally and clears the marker in doing so even when it then returns false. After success QueryResultsHost is set again, because the fresh query setup nils it. QueryStartFailed carries the TEXT to display (AH_QueryBusy or the selling menu's scan message) and is checked BEFORE the "Waiting" condition: the blocking scan itself holds AuctionScan.state at "waiting"/"paging", so otherwise "Waiting" would always win and the reason would be unreachable. The immediate path deliberately does NOT speak - the message is the only list entry and is read out on opening anyway, while a separate announcement would be cut off by the following vocalize and fired again on every pass (OnEnter runs on arrival already). ResetQuery clears both markers.</p>
+<h2>Auction house: "no results" instead of "empty", and the search field stays reachable</h2>
+<p><strong>Simple:</strong> A search with no hits - a typo, say - used to say "empty". That sounds like an empty list, while what is meant is "found nothing": it now says "no results". The search field had also disappeared from the list after a search; a second search meant navigating out and back in. It now stays in the list as "enter search string", and with zero hits the cursor jumps straight to it - one ENTER and you type the next term. When there are hits, the cursor lands on the first hit as before.</p>
+<p><strong>Technically:</strong> The incremental build called the results builder directly and thereby bypassed the search entry's BuildChildren - which is where "enter search string" is injected, so it was gone after the first page. It now calls</p>
+<p>aHost:BuildChildren(aHost) (for "All"/single item that IS the results builder).</p>
+<p>So the search entry does not fall back to "Waiting" in the process, its gate also checks QueryResultsPartialReady. AuctionFocusAfterResults picks the cursor: the first entry that is neither the input field nor "no results" nor "Waiting"; if there is none, the input field. The zero-hit announcement goes out as ONE utterance ("no results;enter search string") - a second OutputStringBTtts would have cut off the first. In the full-scan category list the zero-hit entry is called "no results" too; the branch with no scan data at all stays "empty", because that is a different statement.</p>
+<h2>Auction house: a cancelled full scan blocked every later search</h2>
+<p><strong>Simple:</strong> Cancelling a running full scan by closing the auction house meant that EVERY search and every category afterwards said "not possible, scan in progess"</p>
+<ul>
+<li>although no scan was running any more. It stayed that way until you started
+</li>
+</ul>
+<p>another full scan and let it finish. Closing now tears the scan down properly and the next search runs normally. (The server's 16 minute lock on the next full scan is unaffected - that is server side and applies after a cancel too.)</p>
+<p><strong>Technically:</strong> AuctionHouseResetQuery refuses to reset while a getAll scan runs unless the caller insists with force - that protects a running full scan from being killed by an incidental reset (selling menu, browse paths). AUCTION_HOUSE_CLOSED called AuctionScanFinish WITHOUT force, so closing mid-scan left state = "waiting" with QueryData.getAll = true standing; that is exactly what the search's refusal check tests, so every query from then on was rejected as "getAllRunning". Closing now forces - it IS the end of the scan, and no events arrive afterwards anyway. Two logging gaps that hid the bug are fixed with it: the refusal in AuctionHouseResetQuery now writes its own line (previously you only saw the call above it and assumed the state had been cleared), and AuctionScanFinish reports "finished" only AFTER the reset, with reset=true/false</p>
+<ul>
+<li>the log used to claim a scan end that never happened.
+</li>
+</ul>
+<h2>Auction house: first full-scan announcement after 5 seconds</h2>
+<p><strong>Simple:</strong> While the full scan waits for the server's answer, Sku reports "full scan, n seconds" every 10 seconds. That meant the very first of those announcements only arrived after 10 seconds - ten seconds in which you had no way of knowing whether the scan was running at all. The first confirmation now comes after 5 seconds, the second 10 seconds later, and from then on in the 10 second rhythm (so at 5, 15, 25 ... seconds). Nothing else changes: the 25 percent messages of the ingest phase and the completion announcement stay as they were.</p>
+<p><strong>Technically:</strong> The interval in the AH OnUpdate ticker now lives in tFullScanSpeakNext, which starts at tFullScanSpeakFirst (5) and switches to tFullScanSpeakEvery (10) after the first announcement. The counter is reduced by whichever threshold currently applies rather than by a fixed 10, so the phase stays correct. When the work phase ends the threshold drops back to 5 - otherwise the next scan would have given its first confirmation only after 10 seconds again.</p>
+<h2>Auction house: the full scan sometimes died silently right after the start announcement</h2>
+<p><strong>Simple:</strong> Sometimes "Full scan started" was followed by nothing at all: no 10-second progress announcement, no completion message, and the menus that should be locked during a scan were not - yet the 16-minute lock was consumed. This mostly hit after waiting out the cooldown right at the open auction house. Internally the scan was killed immediately after starting; it now always starts with a freshly zeroed clock.</p>
+<p><strong>Technically:</strong> Proven in the debug log of 2026-08-26: QueryAuctionItems and "watchdog: getAll timeout 600s" in the SAME second. The scan ticker's watchdog counters were already full before the start: tTime collected the entire idle time at the open AH (the idle branch never reset it - the 16-minute wait &gt; 600 s was enough on its own), and tFullScanElapsed survived every scan end because its reset sits behind the 0.2 s tick gate of the serialize branch, which a fast serialization never passes. The first watchdog tick after the start added both and killed the fresh scan; the watchdog zeroed itself in doing so, which is why the next attempts worked again - hence the "mostly it works". SkuCore.AuctionScanWatchdogReset now zeroes both counters after every actually sent QueryAuctionItems, and the idle branch resets tTime itself (which also protects the paged searches' stall watchdog). Verified 2026-08-26: a scan after ~28 min of standing at the AH ran through, reading 173841 auctions.</p>
+<h2>French clients: the waypoint list was empty in several zones (fix by Naxedim)</h2>
+<p><strong>Simple:</strong> In the Wailing Caverns, in the Deeprun Tram, in Timbermaw Hold and in Onyxia's Lair, Sku reported an empty waypoint list although the zone is fully mapped. Two observations narrowed it down: a route that was already running kept working, and the same waypoints stayed selectable from outside the zone. So no data was missing - Sku simply did not know which zone the character was standing in. German and English clients were never affected.</p>
+<p><strong>Technical:</strong> Two independent causes with the same symptom, both found, fixed and verified in game by Naxedim on a French client (PR #8). First, SkuNav/Geo.lua compares a handful of zone names VERBATIM against GetMinimapZoneText(); four of them had been translated freely in locales/frFR.lua, so no comparison matched any more and GetBestMapForUnit handed back the continent map instead of the zone map. The new values were read from C_Map.GetAreaInfo() on a French client, not translated. Second, instances whose real area row is commented out of SkuDB/assets/maps.lua hang on a synthetic row (id 100000 and up) that C_Map can resolve nothing for; it stayed English while GetCurrentAreaId's last fallback compares it against the localized MAP name - no match, no areaId, no continent, empty list. Those rows now take their name from the uiMap that carries the same English name; in French that is exactly two, Onyxia's Lair and the Wailing Caverns. Added afterwards: a guard so that no synthetic row can be given a name a real row already carries (Wintergrasp), the "do not translate freely" marker on every verbatim-compared zone name in locales/enUS.lua, and a French translation store keyed by the locale key instead of by line number - it had drifted by one line and would have shifted almost the whole table on the next regeneration.</p>
+<p>In passing, for English clients: L["Die Hoehlen des Wehklagens"] read "The Wailing Caverns", which no client says. The same special case was dead there too and is corrected now.</p>
+<h2>Quest menu: "Group members" now comes last</h2>
+<p><strong>Simple:</strong> With Questie loaded, Sku shows your party members' quests as an extra entry while you are in a group. Until now that entry sat between "Current Quests" and "Quest database" - and since it appears and disappears with the group, the quest database kept moving between second and third place depending on whether you were grouped. Anyone navigating there from muscle memory ended up somewhere else solo than in a group. "Group members" is now always last, in third place; the first two entries stay exactly where they are, alone or in a group.</p>
+<p><strong>Technical:</strong> In SkuQuest:MenuBuilder the conditional tSpecs block (showGroupQuests + QuestieReady + IsInGroup) moves behind the "Quest database" block. SkuMenu:Build renders the specs in array order without any sorting, so source order is menu order. The entry itself, its condition and its submenus are unchanged.</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.0.html">Older version: v43.0</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>
