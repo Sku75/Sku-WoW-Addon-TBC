@@ -21,6 +21,7 @@ Changes in Sku v43.1
             Auction house: a search that never started at all (purchase armed, full scan running, throttle) is now retried instead of being announced as "empty".
             Auction house: while a full scan runs, a search says so immediately ("not possible, scan in progess") instead of only after five seconds.
             Auction house: a search with no hits now says "no results" instead of "empty" - and the search field stays in the list, with the cursor landing right on it.
+            Auction house: a full scan cancelled by closing the window afterwards blocked every search with "not possible, scan in progess", although no scan was running any more.
 
     New setting: Speak keyboard echo
         Simple: In input fields (writing a letter, search, profile name...) Sku reads every typed
@@ -177,6 +178,26 @@ Changes in Sku v43.1
             have cut off the first. In the full-scan category list the zero-hit entry is
             called "no results" too; the branch with no scan data at all stays "empty",
             because that is a different statement.
+
+    Auction house: a cancelled full scan blocked every later search
+        Simple: Cancelling a running full scan by closing the auction house meant that
+            EVERY search and every category afterwards said "not possible, scan in progess"
+            - although no scan was running any more. It stayed that way until you started
+            another full scan and let it finish. Closing now tears the scan down properly
+            and the next search runs normally. (The server's 16 minute lock on the next full
+            scan is unaffected - that is server side and applies after a cancel too.)
+        Technically: AuctionHouseResetQuery refuses to reset while a getAll scan runs unless
+            the caller insists with force - that protects a running full scan from being
+            killed by an incidental reset (selling menu, browse paths). AUCTION_HOUSE_CLOSED
+            called AuctionScanFinish WITHOUT force, so closing mid-scan left state =
+            "waiting" with QueryData.getAll = true standing; that is exactly what the
+            search's refusal check tests, so every query from then on was rejected as
+            "getAllRunning". Closing now forces - it IS the end of the scan, and no events
+            arrive afterwards anyway. Two logging gaps that hid the bug are fixed with it:
+            the refusal in AuctionHouseResetQuery now writes its own line (previously you
+            only saw the call above it and assumed the state had been cleared), and
+            AuctionScanFinish reports "finished" only AFTER the reset, with reset=true/false
+            - the log used to claim a scan end that never happened.
 
 
 -------------------------------------------------------------------------------------------------------

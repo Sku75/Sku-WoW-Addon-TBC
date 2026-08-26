@@ -21,6 +21,7 @@ Aenderungen in Sku v43.1
             Auktionshaus: eine gar nicht erst gestartete Suche (Kauf scharf, Komplettscan laeuft, Drossel) wird jetzt wiederholt statt als "leer" angesagt.
             Auktionshaus: laeuft ein Komplettscan, sagt die Suche das sofort ("Nicht moeglich, scan laeuft") statt erst nach fuenf Sekunden.
             Auktionshaus: eine Suche ohne Treffer sagt jetzt "keine Ergebnisse" statt "leer" - und das Suchfeld bleibt in der Liste, der Cursor landet direkt darauf.
+            Auktionshaus: ein per Schliessen abgebrochener Komplettscan blockierte danach jede Suche mit "Nicht moeglich, scan laeuft", obwohl kein Scan mehr lief.
 
     Neue Einstellung: Tastatur-Echo ansagen
         Einfach: In Eingabefeldern (Brief schreiben, Suche, Profilname...) liest Sku jedes getippte
@@ -188,6 +189,28 @@ Aenderungen in Sku v43.1
             das erste abgeschnitten. In der Komplettscan-Kategorieliste heisst der
             Nulltreffer-Eintrag ebenfalls "keine Ergebnisse"; der Zweig ohne jegliche
             Scan-Daten bleibt "leer", weil das eine andere Aussage ist.
+
+    Auktionshaus: abgebrochener Komplettscan blockierte danach jede Suche
+        Einfach: Wer einen laufenden Komplettscan abbricht, indem er das Auktionshaus
+            schliesst, bekam danach bei JEDER Suche und jeder Kategorie "Nicht moeglich,
+            scan laeuft" zu hoeren - obwohl gar kein Scan mehr lief. Das blieb so, bis man
+            einen neuen Komplettscan startete und ihn auch durchlaufen liess. Jetzt raeumt
+            das Schliessen den Scan richtig ab, und die naechste Suche laeuft normal. (Die
+            16-Minuten-Sperre des Servers fuer den naechsten Komplettscan bleibt davon
+            unberuehrt - die ist serverseitig und auch nach einem Abbruch aktiv.)
+        Technisch: AuctionHouseResetQuery verweigert den Reset, solange ein getAll-Scan
+            laeuft, ausser der Aufrufer besteht mit force darauf - das schuetzt einen
+            laufenden Komplettscan davor, von einem beilaeufigen Reset (Verkaufen-Menue,
+            Browse-Pfade) abgewuergt zu werden. AUCTION_HOUSE_CLOSED rief
+            AuctionScanFinish OHNE force auf, also blieb nach dem Schliessen mitten im Scan
+            state = "waiting" mit QueryData.getAll = true stehen; genau das prueft die
+            Verweigerungslogik der Suche, also wurde ab da jede Query mit "getAllRunning"
+            abgewiesen. Das Schliessen forciert jetzt - es IST das Scan-Ende, danach kommen
+            ohnehin keine Events mehr. Zwei Log-Luecken, die den Fehler versteckt haben,
+            sind mit gefixt: die Verweigerung in AuctionHouseResetQuery schreibt jetzt eine
+            eigene Zeile (vorher sah man nur den Aufruf davor und hielt den Zustand fuer
+            geraeumt), und AuctionScanFinish meldet "finished" erst NACH dem Reset, mit
+            reset=true/false - vorher behauptete das Log ein Scan-Ende, das nie stattfand.
 
 
 -------------------------------------------------------------------------------------------------------

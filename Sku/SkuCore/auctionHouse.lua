@@ -591,7 +591,15 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function AuctionHouse:AUCTION_HOUSE_CLOSED()
    AuctionHouse:AuctionBuyCancel()
-   AuctionHouse:AuctionScanFinish("AH closed")
+   -- MIT force: das Schliessen des Auktionshauses beendet JEDEN Scan, auch einen
+   -- laufenden Komplettscan (genau so bricht man ihn ab). Ohne force lehnt
+   -- AuctionHouseResetQuery den Reset waehrend eines getAll-Scans ab - der
+   -- Zustand blieb dann auf state="waiting" mit QueryData.getAll=true stehen,
+   -- und JEDE spaetere Suche wurde bis zum naechsten Scan mit "Nicht moeglich,
+   -- scan laeuft" abgewiesen, obwohl gar keiner mehr lief. Belegt im Log vom
+   -- 2026-08-26: 13:37:08 "finished {reason=AH closed}", danach 13:37:13
+   -- weiterhin "StartQuery refused {state=waiting, reason=getAll scan running}".
+   AuctionHouse:AuctionScanFinish("AH closed", true)
    -- Kauf-Fehler-/Leerzähler beim Schließen zurücksetzen, damit kein alter
    -- Zählerstand in einen späteren AH-Besuch übergreift.
    SkuCore.AuctionBuy.failCount = 0
@@ -3752,8 +3760,14 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function AuctionHouse:AuctionHouseResetQuery(aForce)
    dprint("AuctionHouseResetQuery")
+   -- Ein laufender Komplettscan wird NUR mit force abgeraeumt, damit ein
+   -- beilaeufiger Reset (Verkaufen-Menue, Browse-Pfade) ihn nicht mitten im Lauf
+   -- abwuergt. Die Verweigerung MUSS protokolliert werden: ohne sie sah man im
+   -- Log nur den Aufruf oben und hielt den Zustand faelschlich fuer geraeumt.
    if SkuCore.AuctionScan.state ~= "idle" and SkuCore.QueryData[7] == true and aForce ~= true then
-      return
+      dprint("auction.scan", "reset refused (getAll running, no force)", {
+         state = SkuCore.AuctionScan.state })
+      return false
    end
 
    AuctionHouse:AuctionScanSetState("idle")
@@ -3800,10 +3814,16 @@ end
 -- ends and keep calling AuctionHouseResetQuery directly.
 function AuctionHouse:AuctionScanFinish(aReason, aForce)
    local tWasActive = SkuCore.AuctionScan.state ~= "idle"
+   local tReset = AuctionHouse:AuctionHouseResetQuery(aForce)
    if tWasActive then
-      dprint("auction.scan", "finished", { reason = aReason })
+      -- "finished" erst NACH dem Reset melden und mitschreiben, ob er auch
+      -- gegriffen hat. Vorher stand "finished" auch dann im Log, wenn
+      -- AuctionHouseResetQuery gleich darauf verweigerte - der Scan lief also
+      -- weiter, das Log behauptete das Gegenteil, und die Fehlersuche startete
+      -- an der falschen Stelle.
+      dprint("auction.scan", "finished", { reason = aReason, reset = tReset ~= false })
    end
-   AuctionHouse:AuctionHouseResetQuery(aForce)
+   return tReset
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

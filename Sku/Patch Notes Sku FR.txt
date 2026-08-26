@@ -24,6 +24,7 @@ Changements dans Sku v43.1
             Hôtel des ventes : une recherche qui n'a jamais démarré (achat armé, scan complet en cours, limitation) est désormais retentée au lieu d'être annoncée « vide ».
             Hôtel des ventes : pendant un scan complet, la recherche l'annonce immédiatement (« Nicht möglich, scan läuft ») au lieu d'attendre cinq secondes.
             Hôtel des ventes : une recherche sans résultat annonce désormais « aucun résultat » au lieu de « vide » - et le champ de recherche reste dans la liste, le curseur s'y pose directement.
+            Hôtel des ventes : un scan complet annulé en fermant la fenêtre bloquait ensuite toute recherche avec « Nicht möglich, scan läuft », alors qu'aucun scan ne tournait plus.
 
     Nouveau réglage : Énoncer l'écho du clavier
         Simple : Dans les champs de saisie (rédaction d'une lettre, recherche, nom de profil...),
@@ -199,6 +200,30 @@ Changements dans Sku v43.1
             OutputStringBTtts aurait coupé le premier. Dans la liste de catégories du scan
             complet, l'entrée zéro résultat s'appelle également « aucun résultat » ; la
             branche sans aucune donnée de scan reste « vide », car c'est un autre constat.
+
+    Hôtel des ventes : un scan complet annulé bloquait ensuite toute recherche
+        Simple : Annuler un scan complet en cours en fermant l'hôtel des ventes avait pour
+            effet que TOUTE recherche et toute catégorie annonçaient ensuite « Nicht
+            möglich, scan läuft » - alors qu'aucun scan ne tournait plus. Cela persistait
+            jusqu'à ce qu'on relance un scan complet et qu'on le laisse aller au bout. La
+            fermeture démonte désormais correctement le scan et la recherche suivante
+            fonctionne normalement. (Le verrou serveur de 16 minutes sur le prochain scan
+            complet n'est pas concerné : il est côté serveur et s'applique aussi après une
+            annulation.)
+        Technique : AuctionHouseResetQuery refuse la réinitialisation tant qu'un scan getAll
+            tourne, sauf si l'appelant insiste avec force - cela protège un scan complet en
+            cours d'être tué par une réinitialisation incidente (menu de vente, chemins de
+            navigation). AUCTION_HOUSE_CLOSED appelait AuctionScanFinish SANS force : fermer
+            en plein scan laissait donc state = « waiting » avec QueryData.getAll = true ;
+            c'est exactement ce que teste la logique de refus de la recherche, si bien que
+            toute requête ultérieure était rejetée en « getAllRunning ». La fermeture force
+            désormais - elle EST la fin du scan, et plus aucun événement n'arrive ensuite.
+            Deux lacunes de journalisation qui masquaient le bug sont corrigées au passage :
+            le refus dans AuctionHouseResetQuery écrit maintenant sa propre ligne
+            (auparavant on ne voyait que l'appel juste avant et l'on croyait l'état nettoyé),
+            et AuctionScanFinish ne signale « finished » qu'APRÈS la réinitialisation, avec
+            reset=true/false - le journal affirmait jusqu'ici une fin de scan qui n'avait
+            jamais eu lieu.
 
 
 -------------------------------------------------------------------------------------------------------
