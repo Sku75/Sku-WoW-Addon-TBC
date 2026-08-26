@@ -363,6 +363,13 @@ function AuctionHouse:AuctionHouseOnInitialize()
          return
       end
 
+      -- Verweigerte Browse-Query erneut versuchen. Muss VOR den Scan-Zweigen
+      -- unten stehen: laeuft ein getAll-Scan (der haeufigste Verweigerungs-
+      -- grund), kehrt der getAll-Zweig frueh zurueck und der Versuch kaeme nie.
+      if SkuCore.QueryStartPending then
+         AuctionHouse:AuctionBrowseRetryTick(time)
+      end
+
       tTime = tTime + time
 
       -- Filter-Fortschrittsansage etwa alle 10 s. Eigener Akkumulator, weil die
@@ -2323,30 +2330,34 @@ function AuctionHouse:AuctionHouseMenuBuilder()
                local tText = SkuOptionsEditBoxEditBox:GetText()
                print(L["searching for "]..(tText or ""))
 
-               AuctionHouse:AuctionHouseStartQuery(
-                  nil,
-                  "AUCTION_ITEM_LIST_UPDATE",
-                  tText,
-                  SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
-                  SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax,
-                  0,
-                  SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
-                  SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality,
-                  false,
-                  false,
-                  nil,
-                  function()
-                     AuctionHouse:AuctionHouseResetQuery()
-                     C_Timer.After(0.01, function()
-                        if SkuOptions.currentMenuPosition.name == L["Warten"] or SkuOptions.currentMenuPosition.name == L["enter search string"] then
-                           SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
-                        else
-                           SkuOptions.currentMenuPosition:BuildChildren(SkuOptions.currentMenuPosition)
-                        end
-                     end)
-                  end
-               )
-               SkuCore.QueryResultsHost = lSearchEntry
+               -- Ueber AuctionBrowseStart: eine verweigerte Suche (Kauf scharf,
+               -- Komplettscan laeuft, Drossel) wird wiederholt, statt sofort
+               -- als "leer" zu erscheinen.
+               AuctionHouse:AuctionBrowseStart(function()
+                  return AuctionHouse:AuctionHouseStartQuery(
+                     nil,
+                     "AUCTION_ITEM_LIST_UPDATE",
+                     tText,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax,
+                     0,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality,
+                     false,
+                     false,
+                     nil,
+                     function()
+                        AuctionHouse:AuctionHouseResetQuery()
+                        C_Timer.After(0.01, function()
+                           if SkuOptions.currentMenuPosition.name == L["Warten"] or SkuOptions.currentMenuPosition.name == L["enter search string"] then
+                              SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+                           else
+                              SkuOptions.currentMenuPosition:BuildChildren(SkuOptions.currentMenuPosition)
+                           end
+                        end)
+                     end
+                  )
+               end, lSearchEntry)
                -- Sofort-Rebuild der Such-Entry-Children: QueryRunning
                -- ist nun true → "Warten" wird gezeigt; der Lade-Sound
                -- im OnUpdate-Ticker greift dann (er prüft auf "Warten"
@@ -2373,7 +2384,10 @@ function AuctionHouse:AuctionHouseMenuBuilder()
          end)
       end
       tNewMenuEntrysearch.BuildChildren = function(self)
-         if SkuCore.AuctionScan.state ~= "idle" then
+         -- QueryStartPending mit abfragen: bei einem eingereihten
+         -- Wiederholversuch ist noch keine Query raus (state == "idle"), aber
+         -- "Suchbegriff eingeben" waere hier die falsche Ansage.
+         if SkuCore.AuctionScan.state ~= "idle" or SkuCore.QueryStartPending ~= nil then
             local tNewMenuEntry1 = SkuOptions:InjectMenuItems(tNewMenuEntrysearch, {L["Warten"]}, SkuGenericMenuItem)
             tNewMenuEntry1.dynamic = false
          else
@@ -3293,29 +3307,33 @@ function AuctionHouse:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCatego
             filterData = AuctionCategories[categoryIndex].filters
          end
 
-         AuctionHouse:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE",
-            "",
-            SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
-            SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax,
-            0,
-            SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
-            SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality,
-            false,
-            false,
-            filterData,
-            function()
-               self.BuildChildren(self)
-               C_Timer.After(0.01, function()
-                  if not SkuOptions.currentMenuPosition then return end
-                  if SkuOptions.currentMenuPosition.name == L["Warten"] then
-                     SkuOptions.currentMenuPosition:OnUpdate(self)
-                  else
-                     SkuOptions.currentMenuPosition:BuildChildren(self)
-                  end
-               end)
-            end
-         )
-         SkuCore.QueryResultsHost = self
+         -- Ueber AuctionBrowseStart, damit eine VERWEIGERTE Query (Kauf scharf,
+         -- Komplettscan laeuft, Drossel) einen Wiederholversuch bekommt statt
+         -- als "leer" angesagt zu werden.
+         AuctionHouse:AuctionBrowseStart(function()
+            return AuctionHouse:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE",
+               "",
+               SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
+               SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax,
+               0,
+               SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
+               SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality,
+               false,
+               false,
+               filterData,
+               function()
+                  self.BuildChildren(self)
+                  C_Timer.After(0.01, function()
+                     if not SkuOptions.currentMenuPosition then return end
+                     if SkuOptions.currentMenuPosition.name == L["Warten"] then
+                        SkuOptions.currentMenuPosition:OnUpdate(self)
+                     else
+                        SkuOptions.currentMenuPosition:BuildChildren(self)
+                     end
+                  end)
+               end
+            )
+         end, self)
          -- Sofort-Rebuild: nach StartQuery ist QueryRunning=true,
          -- also "Warten"-Eintrag anzeigen statt "leer". Der Lade-Sound
          -- im OnUpdate-Ticker greift nur bei "Warten" — daher wichtig.
@@ -3355,29 +3373,32 @@ function AuctionHouse:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCatego
                      filterData = AuctionCategories[categoryIndex].filters
                   end
 
-                  AuctionHouse:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", 
-                     tLocName, 
-                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin, 
-                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax, 
-                     0, 
-                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable, 
-                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality, 
-                     false, 
-                     true, 
-                     filterData,
-                     function()
-                        self.BuildChildren(self)
-                        C_Timer.After(0.01, function()
-                           if not SkuOptions.currentMenuPosition then return end
-                           if SkuOptions.currentMenuPosition.name == L["Warten"] then
-                              SkuOptions.currentMenuPosition:OnUpdate(self)
-                           else
-                              SkuOptions.currentMenuPosition:BuildChildren(self)
-                           end
-                        end)
-                     end
-                  )
-                  SkuCore.QueryResultsHost = self
+                  -- Wie beim "Alle"-Eintrag: ueber AuctionBrowseStart, damit
+                  -- eine verweigerte Query wiederholt statt "leer" gesagt wird.
+                  AuctionHouse:AuctionBrowseStart(function()
+                     return AuctionHouse:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE",
+                        tLocName,
+                        SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
+                        SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax,
+                        0,
+                        SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
+                        SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality,
+                        false,
+                        true,
+                        filterData,
+                        function()
+                           self.BuildChildren(self)
+                           C_Timer.After(0.01, function()
+                              if not SkuOptions.currentMenuPosition then return end
+                              if SkuOptions.currentMenuPosition.name == L["Warten"] then
+                                 SkuOptions.currentMenuPosition:OnUpdate(self)
+                              else
+                                 SkuOptions.currentMenuPosition:BuildChildren(self)
+                              end
+                           end)
+                        end
+                     )
+                  end, self)
                   -- Sofort-Rebuild: "Warten" + Ladeton schon beim ersten
                   -- Aufrufen statt erst nach Zurück-und-vor-Navigation.
                   self.children = {}
@@ -3596,10 +3617,18 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function AuctionHouse:AuctionHouseResultsMenuBuilder(aParent)
    dprint("AuctionHouseResultsMenuBuilder", aParent.name)
-   if SkuCore.AuctionScan.state ~= "idle" and SkuCore.QueryResultsPartialReady ~= true then
+   -- "Warten" auch, solange ein Wiederholversuch eingereiht ist: die Query ist
+   -- dann noch nicht raus (state == "idle"), aber es ist auch kein Ergebnis -
+   -- ohne diesen Zweig stuende hier faelschlich "leer".
+   if (SkuCore.AuctionScan.state ~= "idle" or SkuCore.QueryStartPending ~= nil)
+      and SkuCore.QueryResultsPartialReady ~= true then
       tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["Warten"]}, SkuGenericMenuItem)
       tNewMenuEntryCategorySubItem.dynamic = false
       --OnEnterAllFlag = nil
+   elseif SkuCore.QueryStartFailed == true then
+      -- Wiederholversuche aufgegeben: ehrlicher Hinweis statt "leer".
+      tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["AH_QueryBusy"]}, SkuGenericMenuItem)
+      tNewMenuEntryCategorySubItem.dynamic = false
    else
       if #QueryResultsDB == 0 then
          tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["leer"]}, SkuGenericMenuItem)
@@ -3709,6 +3738,12 @@ function AuctionHouse:AuctionHouseResetQuery(aForce)
    -- es darf nichts mehr angehängt werden (Host/Flag weg).
    SkuCore.QueryResultsPartialReady = nil
    SkuCore.QueryResultsHost = nil
+   -- Ein eingereihter Wiederholversuch gehoert zur abgeraeumten Suche: er darf
+   -- nicht in die naechste hineinlaufen (AH geschlossen, neue Suche gestartet).
+   -- Ebenso der Aufgeben-Hinweis: sonst zeigte ihn eine spaeter neu gebaute
+   -- Liste erneut an, obwohl laengst eine andere Suche laeuft.
+   SkuCore.QueryStartPending = nil
+   SkuCore.QueryStartFailed = nil
    --[[
    SkuCore.QueryBuyData = nil
    SkuCore.QueryBuyType = nil
@@ -3754,6 +3789,121 @@ function AuctionHouse:AuctionCursorInResults(aHost)
       n = n.parent
    end
    return false
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Eine Browse-Query starten, die verweigert werden KANN.
+-- AuctionHouseStartQuery liefert false, wenn gerade ein Kauf scharf ist, ein
+-- getAll-Komplettscan laeuft oder QueryAuctionItems wirft (Drossel). Die
+-- Browse-Aufrufer haben diesen Rueckgabewert frueher ignoriert: sie bauten die
+-- Kinder trotzdem neu, der ResultsMenuBuilder sah state == "idle" und sagte
+-- "leer" - eine verweigerte Suche klang also wie "keine Treffer" (bzw. zeigte
+-- ab der zweiten Suche die Treffer der VORIGEN, weil eine Verweigerung vor dem
+-- QueryResultsDB-Reset zurueckkehrt).
+-- Jetzt wird bei Verweigerung ein Wiederholversuch eingereiht: der Nutzer
+-- bleibt auf "Warten" stehen, der Ticker versucht es erneut, und erst wenn der
+-- Grund anhaelt, sagt Sku es ehrlich an (AH_QueryBusy).
+-- aStarter MUSS den Rueckgabewert von AuctionHouseStartQuery durchreichen.
+function AuctionHouse:AuctionBrowseStart(aStarter, aHost)
+   SkuCore.QueryStartFailed = nil
+   SkuCore.QueryStartPending = nil
+
+   local tStarted = false
+   local tOk, tErr = pcall(function() tStarted = aStarter() end)
+   if not tOk then
+      dprint("auction.scan", "browse starter threw", { err = tostring(tErr or "") })
+   end
+
+   -- Host in JEDEM Fall setzen (auch bei Verweigerung): ein erfolgreicher
+   -- Wiederholversuch laeuft durch AuctionHouseStartQuery, und das nilt den
+   -- Host beim frischen Query-Aufbau - der Retry-Tick setzt ihn danach neu.
+   SkuCore.QueryResultsHost = aHost
+
+   if tStarted ~= true then
+      dprint("auction.scan", "browse query refused -> retry queued")
+      SkuCore.QueryStartPending = {
+         starter = aStarter,
+         host = aHost,
+         elapsed = 0,
+         sinceTry = 0,
+         tries = 0,
+      }
+   end
+   return tStarted
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Wiederholversuch fuer eine verweigerte Browse-Query. Frame-getrieben aus dem
+-- AH-OnUpdate-Ticker, NICHT als C_Timer-Kette: wird eine Kette vom
+-- Skript-Watchdog abgewuergt, laeuft die Re-Arm-Zeile nie und der Versuch ist
+-- still verloren (siehe die Hardcore-Regel im Wegpunkt-Cache).
+function AuctionHouse:AuctionBrowseRetryTick(aElapsed)
+   local P = SkuCore.QueryStartPending
+   if not P then return end
+
+   P.elapsed = (P.elapsed or 0) + (aElapsed or 0)
+   P.sinceTry = (P.sinceTry or 0) + (aElapsed or 0)
+
+   -- Aufgeben, wenn der Grund anhaelt. Ein laufender Komplettscan blockiert
+   -- Minuten - so lange darf der Nutzer nicht auf "Warten" stehen, ohne zu
+   -- erfahren warum.
+   if P.elapsed > 5 then
+      SkuCore.QueryStartPending = nil
+      SkuCore.QueryStartFailed = true
+      dprint("auction.scan", "browse retry gave up", { tries = P.tries, elapsed = P.elapsed })
+      AuctionHouse:AuctionBrowseShowStartFailed(P.host)
+      return
+   end
+
+   -- Nicht jeden Frame feuern: QueryAuctionItems ist server-gedrosselt.
+   if P.sinceTry < 0.25 then return end
+   P.sinceTry = 0
+   if CanSendAuctionQuery() ~= true then return end
+
+   P.tries = (P.tries or 0) + 1
+   local tStarted = false
+   local tOk, tErr = pcall(function() tStarted = P.starter() end)
+
+   -- WICHTIG: AuctionHouseStartQuery ruft intern AuctionHouseResetQuery auf
+   -- (und das loescht QueryStartPending), kann danach aber trotzdem false
+   -- liefern - etwa wenn QueryAuctionItems wirft, weil die Drossel noch
+   -- zubeisst. Ohne explizites Wieder-Einreihen waere der Wiederholversuch
+   -- nach dem ersten Fehlschlag still verloren und der Nutzer saesse dauerhaft
+   -- auf "Warten", ohne dass je die Aufgeben-Ansage kaeme.
+   if not tOk then
+      dprint("auction.scan", "browse retry threw", { err = tostring(tErr or "") })
+      SkuCore.QueryStartPending = P
+      return
+   end
+   if tStarted == true then
+      dprint("auction.scan", "browse retry succeeded", { tries = P.tries, elapsed = P.elapsed })
+      SkuCore.QueryStartPending = nil
+      -- Host neu setzen: der frische Query-Aufbau hat ihn gerade genilt.
+      if P.host then SkuCore.QueryResultsHost = P.host end
+   else
+      SkuCore.QueryStartPending = P
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Aufgegeben: ehrlich ansagen statt "leer". Der Hinweis wird auch als einziger
+-- Listeneintrag gebaut (ResultsMenuBuilder kennt QueryStartFailed), damit der
+-- Nutzer nicht auf einem toten "Warten" sitzen bleibt; LINKS und erneut RECHTS
+-- startet einen neuen Versuch.
+function AuctionHouse:AuctionBrowseShowStartFailed(aHost)
+   pcall(function()
+      SkuOptions.Voice:OutputStringBTtts(L["AH_QueryBusy"], true, true, 0.1, nil, nil, nil, 1)
+   end)
+   if not aHost then return end
+   aHost.children = {}
+   pcall(function() aHost:BuildChildren(aHost) end)
+   -- Cursor still nachziehen, falls er noch auf "Warten" steht - die Ansage
+   -- oben hat den Text schon gesprochen, ein Vocalize waere doppelt.
+   if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name == L["Warten"] then
+      if aHost.children and aHost.children[1] then
+         SkuOptions.currentMenuPosition = aHost.children[1]
+      end
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

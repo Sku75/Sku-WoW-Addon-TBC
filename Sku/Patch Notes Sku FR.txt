@@ -21,6 +21,7 @@ Changements dans Sku v43.1
             Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat réussi avec « Enchère épuisée » et éjectait de la recherche.
             Après la fermeture du menu, des annonces différées continuaient de parler (« Nouvelle lettre plus », « Sujet : <texte saisi> », « Envoyé », « Tout ouvert » depuis une boîte aux lettres fermée depuis longtemps).
             Hôtel des ventes : une réponse incomplète du serveur ne termine plus la recherche à tort par « vide » - une vraie recherche sans résultat répond toujours immédiatement.
+            Hôtel des ventes : une recherche qui n'a jamais démarré (achat armé, scan complet en cours, limitation) est désormais retentée au lieu d'être annoncée « vide ».
 
     Nouveau réglage : Énoncer l'écho du clavier
         Simple : Dans les champs de saisie (rédaction d'une lettre, recherche, nom de profil...),
@@ -117,6 +118,37 @@ Changements dans Sku v43.1
             chargement à la seconde compris : dans le journal de débogage du 2026-08-26, le
             serveur répond à la recherche « feuerpartiekel » par 0 sur 0 dans la même
             seconde, ce n'est donc pas une réponse fantôme.
+
+    Hôtel des ventes : une recherche refusée est retentée au lieu d'être annoncée « vide »
+        Simple : Il y a des moments où l'hôtel des ventes n'accepte tout simplement pas une
+            recherche : pendant qu'un achat est armé, pendant qu'un scan complet tourne en
+            arrière-plan, ou quand le serveur limite les requêtes. Jusqu'ici Sku ne s'en
+            apercevait pas : il construisait quand même la liste et annonçait « vide »,
+            comme si la recherche n'avait rien trouvé. Au premier essai d'une session, cela
+            ressemblait à une catégorie vide ; plus tard, la liste affichait même les
+            résultats de la recherche PRÉCÉDENTE. Sku reste maintenant sur « Attendre » et
+            réessaie de lui-même. Si la recherche passe dans les 5 secondes, tout continue
+            normalement. Si la raison persiste - un scan complet dure des minutes -, Sku
+            annonce « Hôtel des ventes occupé, recherche non démarrée » et place la même
+            indication dans la liste, au lieu d'un constat faux. Flèche gauche puis droite
+            relance un essai.
+        Technique : AuctionHouseStartQuery renvoie false à trois endroits (achat armé, scan
+            getAll en cours, QueryAuctionItems qui lève). Les trois appelants de navigation -
+            champ de recherche, « Tous » et objet unique dans AuctionHouseBuildItemDBMenu -
+            ignoraient cette valeur de retour et posaient malgré tout QueryResultsHost,
+            vidaient children et reconstruisaient ; le constructeur de résultats trouvait
+            state == « idle », sautait sa branche « Attendre » et tombait sur le test de
+            liste vide. Ils passent désormais par AuctionBrowseStart, qui met un nouvel essai
+            en file sur false (QueryStartPending). AuctionBrowseRetryTick s'accroche au
+            ticker OnUpdate existant de l'hôtel des ventes - volontairement piloté par les
+            frames plutôt qu'une chaîne C_Timer, car une chaîne interrompue n'atteint jamais
+            sa ligne de réarmement -, tente au plus toutes les 0,25 s et seulement si
+            CanSendAuctionQuery, et se remet explicitement en file après un échec
+            (StartQuery appelle ResetQuery en interne et efface ainsi le marqueur, même
+            lorsqu'il renvoie ensuite false). Après un succès, QueryResultsHost est reposé,
+            car la nouvelle requête le remet à nil. Le constructeur de résultats connaît les
+            deux marqueurs : QueryStartPending affiche « Attendre », QueryStartFailed le
+            nouveau texte AH_QueryBusy ; ResetQuery efface les deux.
 
 
 -------------------------------------------------------------------------------------------------------

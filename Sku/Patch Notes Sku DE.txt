@@ -18,6 +18,7 @@ Aenderungen in Sku v43.1
             Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem gelungenen Kauf faelschlich mit "Auktion vergriffen" ab und warf aus der Suche.
             Nach dem Schliessen des Menues sprachen verzoegerte Ansagen weiter ("Neuer Brief plus", "Betreff: <Getipptes>", "Gesendet", "Alle geoeffnet" aus dem laengst geschlossenen Briefkasten).
             Auktionshaus: eine unvollstaendige Server-Antwort beendet die Suche nicht mehr faelschlich mit "leer" - eine echte Suche ohne Treffer antwortet weiterhin sofort.
+            Auktionshaus: eine gar nicht erst gestartete Suche (Kauf scharf, Komplettscan laeuft, Drossel) wird jetzt wiederholt statt als "leer" angesagt.
 
     Neue Einstellung: Tastatur-Echo ansagen
         Einfach: In Eingabefeldern (Brief schreiben, Suche, Profilname...) liest Sku jedes getippte
@@ -106,6 +107,36 @@ Aenderungen in Sku v43.1
             Tippfehler-Fall zehn Requeries lang auf "Warten" haengen laesst, samt Lade-Ton im
             Sekundentakt: im Debug-Log vom 2026-08-26 beantwortet der Server die Suche
             "feuerpartiekel" in derselben Sekunde mit 0 von 0, das ist keine Spuk-Antwort.
+
+    Auktionshaus: eine verweigerte Suche wird wiederholt statt als "leer" angesagt
+        Einfach: Es gibt Momente, in denen das Auktionshaus eine Suche gar nicht erst
+            annimmt: waehrend ein Kauf scharf ist, waehrend im Hintergrund ein Komplettscan
+            laeuft, oder wenn der Server gerade drosselt. Bisher merkte Sku das nicht - es
+            baute die Liste trotzdem auf und sagte "leer", als haette die Suche nichts
+            gefunden. Beim ersten Aufruf in einer Sitzung klang das nach einer leeren
+            Kategorie, spaeter zeigte die Liste sogar noch die Treffer der VORIGEN Suche.
+            Jetzt bleibt Sku auf "Warten" stehen und versucht es selbsttaetig erneut. Kommt
+            die Suche innerhalb von 5 Sekunden durch, laeuft alles wie gewohnt weiter. Haelt
+            der Grund an - ein Komplettscan dauert Minuten -, sagt Sku "Auktionshaus
+            beschaeftigt, Suche nicht gestartet" und stellt denselben Hinweis in die Liste,
+            statt einen falschen Befund zu melden. Mit Pfeil links und wieder rechts startet
+            man einen neuen Versuch.
+        Technisch: AuctionHouseStartQuery liefert an drei Stellen false (scharfer Kauf,
+            laufender getAll-Scan, geworfenes QueryAuctionItems). Die drei Browse-Aufrufer -
+            Suchfeld, "Alle" und Einzel-Item in AuctionHouseBuildItemDBMenu - haben den
+            Rueckgabewert ignoriert und trotzdem QueryResultsHost gesetzt, children geleert
+            und neu gebaut; der ResultsMenuBuilder fand state == "idle", uebersprang seinen
+            "Warten"-Zweig und fiel auf die Leer-Pruefung durch. Sie laufen jetzt ueber
+            AuctionBrowseStart, das bei false einen Wiederholversuch einreiht
+            (QueryStartPending). AuctionBrowseRetryTick haengt am bestehenden
+            AH-OnUpdate-Ticker - bewusst frame-getrieben und nicht als C_Timer-Kette, weil
+            eine abgewuergte Kette ihre Re-Arm-Zeile nie erreicht - versucht hoechstens alle
+            0,25 s und nur bei CanSendAuctionQuery, und reiht sich nach einem Fehlversuch
+            explizit wieder ein (StartQuery ruft intern ResetQuery auf und loescht dabei den
+            Merker, auch wenn es danach doch false liefert). Nach Erfolg wird
+            QueryResultsHost neu gesetzt, weil der frische Query-Aufbau ihn nilt. Der
+            ResultsMenuBuilder kennt beide Merker: QueryStartPending zeigt "Warten",
+            QueryStartFailed den neuen Text AH_QueryBusy; ResetQuery raeumt beide ab.
 
 
 -------------------------------------------------------------------------------------------------------

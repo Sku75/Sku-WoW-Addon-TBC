@@ -18,6 +18,7 @@ Changes in Sku v43.1
             Auction house: buying multiple pieces wrongly aborted after almost every successful purchase with "Auction sold out" and threw you out of the search.
             After closing the menu, deferred announcements kept speaking ("New letter plus", "Subject: <typed text>", "Sent", "All opened" from a mailbox that was long closed).
             Auction house: an incomplete server response no longer wrongly ends the search with "empty" - a genuine search with no hits still answers immediately.
+            Auction house: a search that never started at all (purchase armed, full scan running, throttle) is now retried instead of being announced as "empty".
 
     New setting: Speak keyboard echo
         Simple: In input fields (writing a letter, search, profile name...) Sku reads every typed
@@ -102,6 +103,33 @@ Changes in Sku v43.1
             loading cue once a second included: in the debug log of 2026-08-26 the server
             answers the search "feuerpartiekel" with 0 of 0 in the same second, so that is no
             phantom response.
+
+    Auction house: a refused search is retried instead of being announced as "empty"
+        Simple: There are moments when the auction house does not accept a search at all:
+            while a purchase is armed, while a full scan runs in the background, or when the
+            server is throttling. Sku did not notice that so far - it built the list anyway
+            and said "empty", as if the search had found nothing. On the first attempt in a
+            session that sounded like an empty category; later the list even showed the hits
+            of the PREVIOUS search. Sku now stays on "Waiting" and retries by itself. If the
+            search gets through within 5 seconds, everything continues as usual. If the
+            reason persists - a full scan takes minutes - Sku says "Auction house busy,
+            search did not start" and puts that same note in the list instead of reporting a
+            false finding. Arrow left and right again starts a fresh attempt.
+        Technically: AuctionHouseStartQuery returns false in three places (armed purchase,
+            running getAll scan, QueryAuctionItems throwing). The three browse callers -
+            search field, "All" and single item in AuctionHouseBuildItemDBMenu - ignored that
+            return value and set QueryResultsHost, cleared children and rebuilt anyway; the
+            results builder found state == "idle", skipped its "Waiting" branch and fell
+            through to the empty check. They now go through AuctionBrowseStart, which queues
+            a retry on false (QueryStartPending). AuctionBrowseRetryTick hangs off the
+            existing AH OnUpdate ticker - deliberately frame-driven rather than a C_Timer
+            chain, because an aborted chain never reaches its re-arm line - attempts at most
+            every 0.25 s and only when CanSendAuctionQuery is true, and re-queues itself
+            explicitly after a failed attempt (StartQuery calls ResetQuery internally and
+            clears the marker in doing so, even when it then returns false). After success
+            QueryResultsHost is set again, because the fresh query setup nils it. The results
+            builder knows both markers: QueryStartPending shows "Waiting", QueryStartFailed
+            shows the new AH_QueryBusy text; ResetQuery clears both.
 
 
 -------------------------------------------------------------------------------------------------------
