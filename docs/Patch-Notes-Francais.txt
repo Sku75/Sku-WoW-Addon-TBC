@@ -15,11 +15,53 @@ Changements dans Sku v43.1
             L'achat de plusieurs exemplaires à l'hôtel des ventes continue désormais tant qu'il existe d'autres offres au même prix audible.
             Chaque achat réussi est immédiatement confirmé par « Acheté, n sur m ».
             Quand un prix est épuisé, Sku annonce « Plus aucune offre à ce prix » avec le bilan et reste dans la liste des résultats.
+            Nouveau réglage « Énoncer l'écho du clavier » (Réglages -> Général, activé par défaut) : la lecture caractère par caractère pendant la saisie dans les champs de texte peut être désactivée.
+            Hôtel des ventes : le scan complet se confirme une première fois au bout de 5 secondes, puis toutes les 10 secondes comme avant.
+            Menu des quêtes : l'entrée « Membres du groupe » se place désormais en troisième position au lieu du milieu, ce qui laisse « Quêtes actuelles » et « Base de données des quêtes » toujours à la même place.
 
         Corrections
             Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat réussi avec « Enchère épuisée » et éjectait de la recherche.
+            Après la fermeture du menu, des annonces différées continuaient de parler (« Nouvelle lettre plus », « Sujet : <texte saisi> », « Envoyé », « Tout ouvert » depuis une boîte aux lettres fermée depuis longtemps).
+            Hôtel des ventes : une réponse incomplète du serveur ne termine plus la recherche à tort par « vide » - une vraie recherche sans résultat répond toujours immédiatement.
+            Hôtel des ventes : une recherche qui ne peut pas démarrer indique désormais pourquoi (« impossible, analyse en cours » ou « Hôtel des ventes occupé ») au lieu d'annoncer « vide ».
+            Hôtel des ventes : une recherche sans résultat annonce désormais « aucun résultat » au lieu de « vide » - et le champ de recherche reste dans la liste, le curseur s'y pose directement.
+            Hôtel des ventes : un scan complet annulé en fermant la fenêtre bloquait ensuite toute recherche avec « impossible, analyse en cours », alors qu'aucun scan ne tournait plus.
             Hôtel des ventes : le scan complet mourait parfois en silence juste après l'annonce de départ ; le verrou de 16 minutes était tout de même consommé.
             Clients français : la liste des points de passage était vide dans plusieurs zones (correction de Naxedim).
+
+    Nouveau réglage : Énoncer l'écho du clavier
+        Simple : Dans les champs de saisie (rédaction d'une lettre, recherche, nom de profil...),
+            Sku lit chaque caractère tapé, ainsi que la touche retour arrière et les lectures du
+            curseur avec les flèches. Si cela vous dérange ou si vous l'entendez en double, vous
+            pouvez désormais le désactiver sous Réglages -> Général, « Énoncer l'écho du
+            clavier » (juste à côté de « Énoncer les numéros du menu » et « Annoncer les
+            sous-menus »). Par défaut, c'est ACTIVÉ : rien ne change si vous ne touchez à rien.
+            Les annonces d'état comme « Annulé » ou la confirmation du champ après ENTRÉE
+            restent toujours.
+
+    Plus d'annonces dans un menu fermé
+        Simple : Valider un champ de saisie avec ENTRÉE puis fermer aussitôt le menu produisait
+            quand même « Sujet : <le texte saisi> » - comme si l'écho du clavier traînait après
+            la fermeture. De même, « Nouvelle lettre plus », « Envoyé » ou « Tout ouvert »
+            parlaient encore depuis une boîte aux lettres fermée depuis longtemps. Désormais :
+            tout ce qui veut annoncer une entrée de menu vérifie d'abord que le menu est encore
+            ouvert - et les accusés de la boîte aux lettres vérifient que celle-ci est encore
+            ouverte. La ligne système du serveur « Courrier envoyé. » dans le chat n'est pas
+            concernée.
+        Technique : Les retardataires ne venaient jamais de la file vocale (la fermeture la vide
+            déjà via queuereset + StopSpeakingText) mais de producteurs qui n'enfilent
+            qu'APRÈS la fermeture : confirmations C_Timer (0,3 s après pièce jointe/saisie/
+            envoi, 0,5 s après « Tout ouvrir ») et événements serveur (MAIL_SEND_SUCCESS). Une
+            purge générale supplémentaire de la file à la fermeture d'une fenêtre ne les
+            attraperait donc pas, mais couperait en plein mot des annonces légitimes (chat,
+            combat, navigation). À la place : une garde centrale dans
+            SkuOptions:VocalizeCurrentMenuName (pas de menu ouvert, pas de menu de combat sans
+            affichage et pas de menu de ligne SkuChat -> silence ; le mode chaîne renvoie
+            toujours le texte), plus trois gardes
+            côté producteurs dans le courrier (MailboxOpenFlag pour « Envoyé », IsMenuOpen pour
+            la confirmation de champ, visibilité de MailFrame pour « Tout ouvert »).
+            MAIL_FAILED reste volontairement non filtré - un échec doit rester audible même
+            après la fermeture.
 
     Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat avec « Enchère épuisée »
         Simple : En choisissant une entrée de résultats comme « 14 fois Sphère du Vide » pour en
@@ -62,6 +104,133 @@ Changements dans Sku v43.1
             été retiré après l'achat, un repli via AuctionResultsItemEntryFromCursor garde le
             curseur sur l'entrée de l'objet) puis prononce le message 0,4 s plus tard sans
             interruption - le même schéma que le « Terminé. Tous achetés » existant.
+
+    Hôtel des ventes : une réponse incomplète du serveur ne vaut plus « aucun résultat »
+        Simple : Quand le serveur répond de façon contradictoire - il annonce des résultats
+            mais ne livre aucune ligne -, Sku terminait aussitôt la recherche par « vide ».
+            Dans ce cas, il attend désormais la réponse complète et redemande la page. Une
+            recherche qui ne trouve réellement rien (faute de frappe dans le champ de
+            recherche, catégorie vide) répond toujours immédiatement - avec 0 résultat et
+            « aucun résultat ».
+        Technique : Dans AUCTION_ITEM_LIST_UPDATE_LIST, une page vide ne compte comme
+            prématurée que si le serveur se contredit : tBatch == 0 (aucune ligne sur cette
+            page) alors que tCount > 0 (nombre total de résultats supérieur à 0).
+            QueryListEmptyWaits s'incrémente alors, le scan reste en « waiting » et le ticker
+            redemande la même page ; après 10 réponses de ce type, le résultat est tout de
+            même accepté (sortie de secours). tCount == 0 est au contraire la réponse honnête
+            « aucun résultat » et doit passer sans délai : le chemin d'achat compte ici
+            CHAQUE réponse vide (QueryBuyEmptyWaits) parce qu'il cherche à retrouver une
+            enchère peut-être encore vivante - pour une recherche, la même règle serait
+            fausse. Dans le journal de débogage du 2026-08-26, le serveur répond à la
+            recherche « feuerpartiekel » par 0 sur 0 dans la même seconde : c'est la vraie
+            réponse, pas une réponse fantôme.
+
+    Hôtel des ventes : une recherche qui ne peut pas démarrer indique désormais pourquoi
+        Simple : Il y a des moments où l'hôtel des ventes n'accepte pas une recherche :
+            pendant qu'un scan complet tourne en arrière-plan, pendant qu'un achat est armé,
+            ou quand le serveur limite les requêtes. Jusqu'ici Sku ne s'en apercevait pas :
+            il construisait quand même la liste et annonçait « vide », comme si la recherche
+            n'avait rien trouvé. Au premier essai d'une session, cela ressemblait à une
+            catégorie vide ; plus tard, la liste affichait même les résultats de la
+            recherche PRÉCÉDENTE.
+            Sku indique maintenant la raison. Si un scan complet tourne, « impossible,
+            analyse en cours » figure dans la liste dès l'ouverture - le message que le menu
+            de vente donne depuis toujours dans cette situation. Attendre n'y a aucun sens : un
+            scan complet occupe l'hôtel des ventes pendant des minutes. Pour les obstacles
+            courts (achat armé, limitation), Sku reste sur « Attendre » et continue d'essayer
+            de lui-même ; si la recherche passe dans les 5 secondes, tout continue
+            normalement, sinon il annonce « Hôtel des ventes occupé, recherche non
+            démarrée ». Si un scan complet démarre pendant ces tentatives, Sku les interrompt
+            aussitôt et le signale. Flèche gauche puis droite relance un essai à tout moment.
+        Technique : AuctionHouseStartQuery renvoie false à trois endroits et, depuis cette
+            version, la RAISON en deuxième valeur (« secureBuy », « getAllRunning »,
+            « getAllCooldown », « queryThrew »). Les trois appelants de navigation - champ de
+            recherche, « Tous » et objet unique dans AuctionHouseBuildItemDBMenu - ignoraient
+            cette valeur de retour et posaient malgré tout QueryResultsHost, vidaient
+            children et reconstruisaient ; le constructeur de résultats trouvait state ==
+            « idle », sautait sa branche « Attendre » et tombait sur le test de liste vide.
+            Ils passent désormais par AuctionBrowseStart, qui décide selon la raison : les
+            raisons getAll sont signalées immédiatement, tout le reste est mis en file comme
+            nouvel essai (QueryStartPending). AuctionBrowseRetryTick s'accroche au ticker
+            OnUpdate existant de l'hôtel des ventes - volontairement piloté par les frames
+            plutôt qu'une chaîne C_Timer, car une chaîne interrompue n'atteint jamais sa
+            ligne de réarmement -, se place tout en tête avant ses retours anticipés (sans
+            quoi il gelait pendant toute l'ingestion getAll), tente au plus toutes les 0,25 s
+            et seulement si CanSendAuctionQuery, revérifie la raison, et se remet
+            explicitement en file après un échec, puisque StartQuery appelle ResetQuery en
+            interne et efface ainsi le marqueur même lorsqu'il renvoie ensuite false. Après
+            un succès, QueryResultsHost est reposé, car la nouvelle requête le remet à nil.
+            QueryStartFailed porte le TEXTE à afficher (AH_QueryBusy ou le message de scan du
+            menu de vente) et est testé AVANT la condition « Attendre » : le scan bloquant
+            maintient lui-même AuctionScan.state sur « waiting »/« paging », sinon
+            « Attendre » l'emporterait toujours et la raison resterait inaccessible. Le
+            chemin immédiat ne parle volontairement PAS de lui-même : le message est la seule
+            entrée de la liste et est lu à l'ouverture de toute façon, alors qu'une annonce
+            distincte serait coupée par le vocalize suivant et repartirait à chaque passage
+            (OnEnter s'exécute déjà à l'arrivée). ResetQuery efface les deux marqueurs.
+
+    Hôtel des ventes : « aucun résultat » au lieu de « vide », et le champ de recherche reste accessible
+        Simple : Une recherche sans résultat - une faute de frappe, par exemple - annonçait
+            « vide ». Cela évoque une liste vide, alors que le sens est « rien trouvé » :
+            elle annonce désormais « aucun résultat ». De plus, le champ de recherche
+            disparaissait de la liste après une recherche ; pour en lancer une seconde, il
+            fallait sortir puis revenir. Il reste maintenant dans la liste sous
+            « Suchbegriff eingeben », et en cas de zéro résultat le curseur s'y pose
+            directement - une pression sur ENTRÉE et l'on saisit le terme suivant. S'il y a
+            des résultats, le curseur se pose sur le premier comme auparavant.
+        Technique : La construction incrémentale appelait directement le constructeur de
+            résultats et contournait ainsi le BuildChildren de l'entrée de recherche - c'est
+            là qu'est inséré « Suchbegriff eingeben », d'où sa disparition après la première
+            page. Elle appelle maintenant aHost:BuildChildren(aHost) (pour « Tous » et objet
+            unique, c'EST le constructeur de résultats). Pour que l'entrée de recherche ne
+            retombe pas sur « Attendre » au passage, sa condition vérifie aussi
+            QueryResultsPartialReady. AuctionFocusAfterResults choisit le curseur : la
+            première entrée qui n'est ni le champ de saisie, ni « aucun résultat », ni
+            « Attendre » ; s'il n'y en a pas, le champ de saisie. L'annonce de zéro résultat
+            part en UNE seule sortie (« aucun résultat;Suchbegriff eingeben ») - un second
+            OutputStringBTtts aurait coupé le premier. Dans la liste de catégories du scan
+            complet, l'entrée zéro résultat s'appelle également « aucun résultat » ; la
+            branche sans aucune donnée de scan reste « vide », car c'est un autre constat.
+
+    Hôtel des ventes : un scan complet annulé bloquait ensuite toute recherche
+        Simple : Annuler un scan complet en cours en fermant l'hôtel des ventes avait pour
+            effet que TOUTE recherche et toute catégorie annonçaient ensuite « Nicht
+            möglich, scan läuft » - alors qu'aucun scan ne tournait plus. Cela persistait
+            jusqu'à ce qu'on relance un scan complet et qu'on le laisse aller au bout. La
+            fermeture démonte désormais correctement le scan et la recherche suivante
+            fonctionne normalement. (Le verrou serveur de 16 minutes sur le prochain scan
+            complet n'est pas concerné : il est côté serveur et s'applique aussi après une
+            annulation.)
+        Technique : AuctionHouseResetQuery refuse la réinitialisation tant qu'un scan getAll
+            tourne, sauf si l'appelant insiste avec force - cela protège un scan complet en
+            cours d'être tué par une réinitialisation incidente (menu de vente, chemins de
+            navigation). AUCTION_HOUSE_CLOSED appelait AuctionScanFinish SANS force : fermer
+            en plein scan laissait donc state = « waiting » avec QueryData.getAll = true ;
+            c'est exactement ce que teste la logique de refus de la recherche, si bien que
+            toute requête ultérieure était rejetée en « getAllRunning ». La fermeture force
+            désormais - elle EST la fin du scan, et plus aucun événement n'arrive ensuite.
+            Deux lacunes de journalisation qui masquaient le bug sont corrigées au passage :
+            le refus dans AuctionHouseResetQuery écrit maintenant sa propre ligne
+            (auparavant on ne voyait que l'appel juste avant et l'on croyait l'état nettoyé),
+            et AuctionScanFinish ne signale « finished » qu'APRÈS la réinitialisation, avec
+            reset=true/false - le journal affirmait jusqu'ici une fin de scan qui n'avait
+            jamais eu lieu.
+
+    Hôtel des ventes : première annonce du scan complet au bout de 5 secondes
+        Simple : Pendant que le scan complet attend la réponse du serveur, Sku annonce
+            « scan complet, n secondes » toutes les 10 secondes. La toute première de ces
+            annonces n'arrivait donc qu'au bout de 10 secondes - dix secondes durant
+            lesquelles on ignorait si le scan tournait seulement. La première confirmation
+            arrive maintenant après 5 secondes, la deuxième 10 secondes plus tard, puis au
+            rythme de 10 secondes (soit à 5, 15, 25 ... secondes). Rien d'autre ne change :
+            les messages de 25 pour cent de la phase de lecture et l'annonce finale restent
+            identiques.
+        Technique : Le rythme dans le ticker OnUpdate de l'hôtel des ventes se trouve
+            désormais dans tFullScanSpeakNext, qui démarre à tFullScanSpeakFirst (5) et
+            bascule sur tFullScanSpeakEvery (10) après la première annonce. Le compteur est
+            diminué du seuil en vigueur plutôt que d'un 10 fixe, afin que la phase reste
+            juste. À la fin de la phase de travail, le seuil retombe à 5 - sinon le scan
+            suivant n'aurait de nouveau donné sa première confirmation qu'après 10 secondes.
 
     Hôtel des ventes : le scan complet mourait parfois en silence juste après l'annonce de départ
         Simple : Parfois, « Scan complet démarré » n'était suivi de rien : pas d'annonce de
@@ -117,6 +286,20 @@ Changements dans Sku v43.1
         Au passage, pour les clients anglais : L["Die Höhlen des Wehklagens"] contenait « The
             Wailing Caverns », ce qu'aucun client ne dit. Le même cas particulier y était donc
             mort lui aussi et vient d'être corrigé.
+
+    Menu des quêtes : « Membres du groupe » passe en dernier
+        Simple : Avec Questie chargé, Sku affiche en plus les quêtes des membres du groupe.
+            Cette entrée se trouvait jusqu'ici entre « Quêtes actuelles » et « Base de données
+            des quêtes » - et comme elle apparaît et disparaît avec le groupe, la base de
+            données passait de la deuxième à la troisième place selon que vous étiez en groupe
+            ou non. Qui s'y rendait de mémoire n'atterrissait pas au même endroit seul et en
+            groupe. « Membres du groupe » est désormais toujours en dernier, en troisième
+            position ; les deux premières entrées ne bougent plus, seul comme en groupe.
+        Technique : Dans SkuQuest:MenuBuilder, le bloc tSpecs conditionnel (showGroupQuests +
+            QuestieReady + IsInGroup) passe après le bloc « Base de données des quêtes ».
+            SkuMenu:Build rend les specs dans l'ordre du tableau, sans aucun tri : l'ordre du
+            code source est donc l'ordre du menu. L'entrée elle-même, sa condition et ses
+            sous-menus ne changent pas.
 
 
 -------------------------------------------------------------------------------------------------------

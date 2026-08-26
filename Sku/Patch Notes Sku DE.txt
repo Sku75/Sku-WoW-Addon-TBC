@@ -14,6 +14,7 @@ Aenderungen in Sku v43.1
             Ist ein Preis ausverkauft, meldet Sku "Keine weiteren Angebote zu diesem Preis" samt Bilanz und bleibt in der Ergebnisliste stehen.
             Neue Einstellung "Tastatur-Echo ansagen" (Einstellungen -> Allgemein, standardmaessig an): das zeichenweise Vorlesen beim Tippen in Eingabefeldern laesst sich abschalten.
             Auktionshaus: der Komplettscan bestaetigt sich schon nach 5 Sekunden zum ersten Mal, danach wie bisher alle 10 Sekunden.
+            Questmenue: der Eintrag "Gruppenmitglieder" steht jetzt an dritter Stelle statt in der Mitte, "Aktuelle Quests" und "Questdatenbank" behalten dadurch immer ihren Platz.
 
         Fehlerbehebungen
             Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem gelungenen Kauf faelschlich mit "Auktion vergriffen" ab und warf aus der Suche.
@@ -22,6 +23,8 @@ Aenderungen in Sku v43.1
             Auktionshaus: eine Suche, die gar nicht erst starten kann, nennt jetzt den Grund ("Nicht moeglich, scan laeuft" bzw. "Auktionshaus beschaeftigt") statt "leer" zu sagen.
             Auktionshaus: eine Suche ohne Treffer sagt jetzt "keine Ergebnisse" statt "leer" - und das Suchfeld bleibt in der Liste, der Cursor landet direkt darauf.
             Auktionshaus: ein per Schliessen abgebrochener Komplettscan blockierte danach jede Suche mit "Nicht moeglich, scan laeuft", obwohl kein Scan mehr lief.
+            Auktionshaus: der Komplettscan brach manchmal direkt nach der Startansage stillschweigend ab; die 16-Minuten-Sperre war trotzdem verbraucht.
+            Franzoesische Clients: in mehreren Zonen war die Wegpunktliste leer (Korrektur von Naxedim).
 
     Neue Einstellung: Tastatur-Echo ansagen
         Einfach: In Eingabefeldern (Brief schreiben, Suche, Profilname...) liest Sku jedes getippte
@@ -213,6 +216,72 @@ Aenderungen in Sku v43.1
             Schwellwert vermindert statt fest um 10, damit die Phase stimmt. Endet die
             Arbeitsphase, faellt der Schwellwert wieder auf 5 zurueck - sonst haette der
             naechste Scan erst nach 10 Sekunden seine erste Bestaetigung gegeben.
+
+    Auktionshaus: der Komplettscan brach manchmal direkt nach der Startansage stillschweigend ab
+        Einfach: Manchmal folgte auf "Komplettscan gestartet" einfach nichts mehr: keine
+            10-Sekunden-Fortschrittsansage, keine Fertigmeldung, und die Menues, die waehrend
+            eines Scans gesperrt sein sollten, waren es nicht - die 16-Minuten-Sperre war
+            trotzdem verbraucht. Das traf vor allem, wer die Wartezeit bis zum naechsten Scan
+            direkt am offenen Auktionshaus absass. Der Scan wurde intern sofort nach dem Start
+            wieder abgewuergt; jetzt startet er immer mit frisch genullter Uhr.
+        Technisch: Belegt im Debug-Log vom 2026-08-26: QueryAuctionItems und "watchdog: getAll
+            timeout 600s" in DERSELBEN Sekunde. Die Watchdog-Zaehler des Scan-Tickers waren
+            schon vor dem Start voll: tTime sammelte die komplette Leerlauf-Standzeit am
+            offenen AH (der Idle-Zweig setzte es nie zurueck - die 16-Minuten-Wartezeit
+            > 600 s reichte allein), und tFullScanElapsed ueberlebte jedes Scan-Ende, weil sein
+            Reset hinter dem 0,2-s-Tick-Gate des Serialize-Zweigs liegt, das eine schnelle
+            Serialisierung nie passiert. Der erste Watchdog-Tick nach dem Start addierte beides
+            und wuergte den frischen Scan ab; dabei nullte der Watchdog sich selbst, weshalb
+            die naechsten Versuche wieder liefen - daher das "meistens geht es". Jetzt nullt
+            SkuCore.AuctionScanWatchdogReset beide Zaehler nach jedem wirklich abgesetzten
+            QueryAuctionItems, und der Idle-Zweig setzt tTime selbst zurueck (schuetzt auch den
+            Stall-Watchdog der paginierten Suchen). Verifiziert 2026-08-26: Scan nach ~28 min
+            Standzeit am AH lief durch, 173841 Auktionen eingelesen.
+
+    Franzoesische Clients: in mehreren Zonen war die Wegpunktliste leer (Korrektur von Naxedim)
+        Einfach: In den Hoehlen des Wehklagens, in der Tiefenbahn, in der Holzschlundfeste und in
+            Onyxias Hort meldete Sku eine leere Wegpunktliste, obwohl die Zone vollstaendig
+            kartiert ist. Zwei Beobachtungen grenzten es ein: eine bereits laufende Route lief
+            weiter, und von ausserhalb der Zone liessen sich dieselben Wegpunkte anwaehlen. Es
+            fehlten also keine Daten - Sku wusste nur nicht, in welcher Zone der Charakter steht.
+            Auf deutschen und englischen Clients trat das nie auf.
+        Technisch: Zwei unabhaengige Ursachen mit demselben Symptom, beide von Naxedim auf einem
+            franzoesischen Client gefunden, behoben und im Spiel geprueft (PR #8). Erstens
+            vergleicht SkuNav/Geo.lua eine Handvoll Zonennamen WOERTLICH mit
+            GetMinimapZoneText(); vier davon waren in locales/frFR.lua frei uebersetzt worden,
+            also traf kein Vergleich mehr, und GetBestMapForUnit lieferte die Kontinentkarte
+            statt der Zonenkarte. Die neuen Werte stammen aus C_Map.GetAreaInfo() auf einem
+            franzoesischen Client, nicht aus einer Uebersetzung. Zweitens haengen Instanzen,
+            deren echte Area-Zeile in SkuDB/assets/maps.lua auskommentiert ist, an einer
+            synthetischen Zeile (id ab 100000), fuer die C_Map nichts aufloesen kann; sie blieb
+            englisch, waehrend der letzte Fallback von GetCurrentAreaId sie gegen den
+            lokalisierten KARTENnamen prueft - kein Treffer, keine AreaId, kein Kontinent, leere
+            Liste. Diese Zeilen bekommen ihren Namen jetzt von der uiMap mit demselben
+            englischen Namen; auf franzoesisch sind das genau zwei, Onyxias Hort und die Hoehlen
+            des Wehklagens. Danach ergaenzt: eine Sperre, damit dabei keine synthetische Zeile
+            einen Namen erhaelt, den eine echte Zeile schon traegt (Tausendwinter), die
+            Markierung "nicht frei uebersetzen" an allen woertlich verglichenen Zonennamen in
+            locales/enUS.lua, und ein franzoesischer Uebersetzungsspeicher, der ueber den
+            Schluessel statt ueber die Zeilennummer gefuehrt wird - er war um eine Zeile
+            verrutscht und haette bei der naechsten Neugenerierung fast die ganze Tabelle
+            verschoben.
+        Nebenbei fuer englische Clients: L["Die Hoehlen des Wehklagens"] stand auf "The Wailing
+            Caverns", was kein Client so sagt. Derselbe Sonderfall war dort also ebenfalls tot
+            und ist jetzt korrigiert.
+
+    Questmenue: "Gruppenmitglieder" haengt sich hinten an
+        Einfach: Mit geladenem Questie zeigt Sku in einer Gruppe zusaetzlich die Quests der
+            Mitspieler an. Dieser Eintrag stand bisher zwischen "Aktuelle Quests" und
+            "Questdatenbank" - und weil er mit der Gruppe kommt und geht, rutschte die
+            Questdatenbank je nach Gruppenstatus zwischen Platz zwei und Platz drei hin und
+            her. Wer den Weg dorthin im Muskelgedaechtnis hat, landete solo woanders als in
+            der Gruppe. Jetzt steht "Gruppenmitglieder" immer ganz hinten an dritter Stelle;
+            die ersten beiden Eintraege bleiben an derselben Stelle, allein wie in der Gruppe.
+        Technisch: In SkuQuest:MenuBuilder wandert der bedingte tSpecs-Block (showGroupQuests +
+            QuestieReady + IsInGroup) hinter den "Questdatenbank"-Block. SkuMenu:Build rendert
+            die Specs in Array-Reihenfolge ohne jede Sortierung, die Reihenfolge im Quellcode
+            ist also die Reihenfolge im Menue. Am Eintrag selbst, an seiner Bedingung und an
+            seinen Untermenues aendert sich nichts.
 
 
 -------------------------------------------------------------------------------------------------------

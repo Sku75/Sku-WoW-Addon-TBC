@@ -14,6 +14,7 @@ Changes in Sku v43.1
             When a price is sold out, Sku says "No more offers at this price" with the tally and stays in the results list.
             New setting "Speak keyboard echo" (Settings -> General, on by default): the character-by-character read-back while typing in input fields can be turned off.
             Auction house: the full scan confirms itself for the first time after 5 seconds, then every 10 seconds as before.
+            Quest menu: the "Group members" entry now sits in third place instead of in the middle, so "Current Quests" and "Quest database" always keep their position.
 
         Bugfixes
             Auction house: buying multiple pieces wrongly aborted after almost every successful purchase with "Auction sold out" and threw you out of the search.
@@ -22,6 +23,8 @@ Changes in Sku v43.1
             Auction house: a search that cannot start at all now names the reason ("not possible, scan in progess" or "Auction house busy") instead of saying "empty".
             Auction house: a search with no hits now says "no results" instead of "empty" - and the search field stays in the list, with the cursor landing right on it.
             Auction house: a full scan cancelled by closing the window afterwards blocked every search with "not possible, scan in progess", although no scan was running any more.
+            Auction house: the full scan sometimes died silently right after the start announcement; the 16-minute lock was still consumed.
+            French clients: the waypoint list was empty in several zones (fix by Naxedim).
 
     New setting: Speak keyboard echo
         Simple: In input fields (writing a letter, search, profile name...) Sku reads every typed
@@ -203,6 +206,68 @@ Changes in Sku v43.1
             currently applies rather than by a fixed 10, so the phase stays correct. When the
             work phase ends the threshold drops back to 5 - otherwise the next scan would
             have given its first confirmation only after 10 seconds again.
+
+    Auction house: the full scan sometimes died silently right after the start announcement
+        Simple: Sometimes "Full scan started" was followed by nothing at all: no 10-second
+            progress announcement, no completion message, and the menus that should be locked
+            during a scan were not - yet the 16-minute lock was consumed. This mostly hit after
+            waiting out the cooldown right at the open auction house. Internally the scan was
+            killed immediately after starting; it now always starts with a freshly zeroed
+            clock.
+        Technically: Proven in the debug log of 2026-08-26: QueryAuctionItems and "watchdog:
+            getAll timeout 600s" in the SAME second. The scan ticker's watchdog counters were
+            already full before the start: tTime collected the entire idle time at the open AH
+            (the idle branch never reset it - the 16-minute wait > 600 s was enough on its
+            own), and tFullScanElapsed survived every scan end because its reset sits behind
+            the 0.2 s tick gate of the serialize branch, which a fast serialization never
+            passes. The first watchdog tick after the start added both and killed the fresh
+            scan; the watchdog zeroed itself in doing so, which is why the next attempts worked
+            again - hence the "mostly it works". SkuCore.AuctionScanWatchdogReset now zeroes
+            both counters after every actually sent QueryAuctionItems, and the idle branch
+            resets tTime itself (which also protects the paged searches' stall watchdog).
+            Verified 2026-08-26: a scan after ~28 min of standing at the AH ran through,
+            reading 173841 auctions.
+
+    French clients: the waypoint list was empty in several zones (fix by Naxedim)
+        Simple: In the Wailing Caverns, in the Deeprun Tram, in Timbermaw Hold and in Onyxia's
+            Lair, Sku reported an empty waypoint list although the zone is fully mapped. Two
+            observations narrowed it down: a route that was already running kept working, and
+            the same waypoints stayed selectable from outside the zone. So no data was missing -
+            Sku simply did not know which zone the character was standing in. German and English
+            clients were never affected.
+        Technical: Two independent causes with the same symptom, both found, fixed and verified
+            in game by Naxedim on a French client (PR #8). First, SkuNav/Geo.lua compares a
+            handful of zone names VERBATIM against GetMinimapZoneText(); four of them had been
+            translated freely in locales/frFR.lua, so no comparison matched any more and
+            GetBestMapForUnit handed back the continent map instead of the zone map. The new
+            values were read from C_Map.GetAreaInfo() on a French client, not translated.
+            Second, instances whose real area row is commented out of SkuDB/assets/maps.lua hang
+            on a synthetic row (id 100000 and up) that C_Map can resolve nothing for; it stayed
+            English while GetCurrentAreaId's last fallback compares it against the localized MAP
+            name - no match, no areaId, no continent, empty list. Those rows now take their name
+            from the uiMap that carries the same English name; in French that is exactly two,
+            Onyxia's Lair and the Wailing Caverns. Added afterwards: a guard so that no synthetic
+            row can be given a name a real row already carries (Wintergrasp), the "do not
+            translate freely" marker on every verbatim-compared zone name in locales/enUS.lua,
+            and a French translation store keyed by the locale key instead of by line number - it
+            had drifted by one line and would have shifted almost the whole table on the next
+            regeneration.
+        In passing, for English clients: L["Die Hoehlen des Wehklagens"] read "The Wailing
+            Caverns", which no client says. The same special case was dead there too and is
+            corrected now.
+
+    Quest menu: "Group members" now comes last
+        Simple: With Questie loaded, Sku shows your party members' quests as an extra entry
+            while you are in a group. Until now that entry sat between "Current Quests" and
+            "Quest database" - and since it appears and disappears with the group, the quest
+            database kept moving between second and third place depending on whether you were
+            grouped. Anyone navigating there from muscle memory ended up somewhere else solo
+            than in a group. "Group members" is now always last, in third place; the first two
+            entries stay exactly where they are, alone or in a group.
+        Technical: In SkuQuest:MenuBuilder the conditional tSpecs block (showGroupQuests +
+            QuestieReady + IsInGroup) moves behind the "Quest database" block. SkuMenu:Build
+            renders the specs in array order without any sorting, so source order is menu
+            order. The entry itself, its condition and its submenus are unchanged.
 
 
 -------------------------------------------------------------------------------------------------------

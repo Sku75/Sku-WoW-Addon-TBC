@@ -2163,10 +2163,100 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		end
 		end }
 
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Questdatenbank"],
+		onAction = function(self, aValue, aName)
+		end,
+		build = function(self)
+		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {L["Start in Zone"]}, SkuGenericMenuItem)
+		tNewMenuSubEntry.dynamic = true
+		tNewMenuSubEntry.sorting = true
+		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
+		end
+		tNewMenuSubEntry.BuildChildren = function(self)
+			local tUnSortedTable, tIdTable = SkuQuest:GetUnsortedAvailableQuestsTable()
+
+			local tNewMenuSubEntryDist =SkuOptions:InjectMenuItems(self, {L["By distance"]}, SkuGenericMenuItem)
+			tNewMenuSubEntryDist.dynamic = true
+			tNewMenuSubEntryDist.sorting = true
+			tNewMenuSubEntryDist.OnAction = function(self, aValue, aName)
+			end
+			tNewMenuSubEntryDist.BuildChildren = function(self)
+				local tSortedTable = {}
+				for k,v in SkuSpairs(tUnSortedTable, function(t,a,b) return t[b][1] > t[a][1] end) do --nach wert
+					tSortedTable[#tSortedTable+1] = v[1]..L[";Meter"].."#"..k
+				end
+				if #tSortedTable > 0 then
+					for iS, vS in ipairs(tSortedTable) do
+						local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {vS}, SkuGenericMenuItem)
+						tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
+							SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(tIdTable[vS])
+						end
+						CreateQuestSubmenu(tNewSubMenuEntry2, tIdTable[vS])--iS)
+						tcount = tcount + 1
+					end
+				else
+					local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+				end
+			end
+
+			--[[
+			local tNewMenuSubEntryDist =SkuOptions:InjectMenuItems(self, {"Nach Schwierigkeit"}, SkuGenericMenuItem)
+			tNewMenuSubEntryDist.dynamic = true
+			tNewMenuSubEntryDist.sorting = true
+			]]
+		end
+
+		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {L["Alle"]}, SkuGenericMenuItem)
+		tNewMenuSubEntry.dynamic = true
+		tNewMenuSubEntry.sorting = true
+		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
+			--SkuOptions.db:SetSProfile(aName)
+		end
+		tNewMenuSubEntry.BuildChildren = function(self)
+			local tNameCache = {}
+			for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
+				if SkuDB.questDataTBC[i] then
+					local tZoneId
+					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
+						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1]
+						tZoneId = SkuDB.NpcData.Data[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1][1]][SkuDB.NpcData.Keys['zoneID']]
+					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then --objects
+						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2]
+						if SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]] then
+							tZoneId = SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]]
+						end
+					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3] then --items
+						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3]
+					end
+
+					local tUniqueName = v[1]
+					if not tNameCache[v[1]] then
+						tNameCache[v[1]] = 0
+					else
+						tNameCache[v[1]] = tNameCache[v[1]] + 1
+						tUniqueName = tUniqueName.." "..tNameCache[v[1]]
+					end
+
+					local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {tUniqueName}, SkuGenericMenuItem)
+					tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
+						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(i, tZoneId)
+					end
+					if not CreateQuestSubmenu(tNewSubMenuEntry2, i) then
+						--self.dynamic = false
+					end
+				end
+			end
+		end
+		end }
+
 	-- Quests der Gruppenmitglieder aus Questies Party-Comms. Der Eintrag erscheint NUR
 	-- wenn das Setting an ist, Questie fertig geladen ist und wir in einer Gruppe sind —
 	-- sonst fehlt er komplett. Mitglieder ohne Questie senden keine Daten und bekommen
 	-- einen erklärenden Leereintrag statt einer Questliste.
+	-- [v43.1] Der Eintrag steht bewusst ZULETZT (Position 3), nicht zwischen "Aktuelle Quests"
+	-- und "Questdatenbank": er kommt und geht mit der Gruppe, und würde er in der Mitte
+	-- einhängen, verschöbe er die Questdatenbank je nach Gruppenstatus. So
+	-- bleiben die ersten beiden Einträge immer an derselben Stelle.
 	if SkuSettings:Sub("SkuQuest").showGroupQuests == true and SkuQuest:QuestieReady() and IsInGroup() then
 		tSpecs[#tSpecs+1] = { kind = "list", label = L["Gruppenmitglieder"],
 			onAction = function(self, aValue, aName)
@@ -2306,92 +2396,6 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			end
 			end }
 	end
-
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Questdatenbank"],
-		onAction = function(self, aValue, aName)
-		end,
-		build = function(self)
-		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {L["Start in Zone"]}, SkuGenericMenuItem)
-		tNewMenuSubEntry.dynamic = true
-		tNewMenuSubEntry.sorting = true
-		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-		end
-		tNewMenuSubEntry.BuildChildren = function(self)
-			local tUnSortedTable, tIdTable = SkuQuest:GetUnsortedAvailableQuestsTable()
-
-			local tNewMenuSubEntryDist =SkuOptions:InjectMenuItems(self, {L["By distance"]}, SkuGenericMenuItem)
-			tNewMenuSubEntryDist.dynamic = true
-			tNewMenuSubEntryDist.sorting = true
-			tNewMenuSubEntryDist.OnAction = function(self, aValue, aName)
-			end
-			tNewMenuSubEntryDist.BuildChildren = function(self)
-				local tSortedTable = {}
-				for k,v in SkuSpairs(tUnSortedTable, function(t,a,b) return t[b][1] > t[a][1] end) do --nach wert
-					tSortedTable[#tSortedTable+1] = v[1]..L[";Meter"].."#"..k
-				end
-				if #tSortedTable > 0 then
-					for iS, vS in ipairs(tSortedTable) do
-						local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {vS}, SkuGenericMenuItem)
-						tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
-							SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(tIdTable[vS])
-						end
-						CreateQuestSubmenu(tNewSubMenuEntry2, tIdTable[vS])--iS)
-						tcount = tcount + 1
-					end
-				else
-					local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
-				end
-			end
-
-			--[[
-			local tNewMenuSubEntryDist =SkuOptions:InjectMenuItems(self, {"Nach Schwierigkeit"}, SkuGenericMenuItem)
-			tNewMenuSubEntryDist.dynamic = true
-			tNewMenuSubEntryDist.sorting = true
-			]]
-		end
-
-		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {L["Alle"]}, SkuGenericMenuItem)
-		tNewMenuSubEntry.dynamic = true
-		tNewMenuSubEntry.sorting = true
-		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-			--SkuOptions.db:SetSProfile(aName)
-		end
-		tNewMenuSubEntry.BuildChildren = function(self)
-			local tNameCache = {}
-			for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
-				if SkuDB.questDataTBC[i] then
-					local tZoneId
-					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
-						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1]
-						tZoneId = SkuDB.NpcData.Data[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1][1]][SkuDB.NpcData.Keys['zoneID']]
-					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then --objects
-						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2]
-						if SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]] then
-							tZoneId = SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]]
-						end
-					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3] then --items
-						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3]
-					end
-
-					local tUniqueName = v[1]
-					if not tNameCache[v[1]] then
-						tNameCache[v[1]] = 0
-					else
-						tNameCache[v[1]] = tNameCache[v[1]] + 1
-						tUniqueName = tUniqueName.." "..tNameCache[v[1]]
-					end
-
-					local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {tUniqueName}, SkuGenericMenuItem)
-					tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
-						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(i, tZoneId)
-					end
-					if not CreateQuestSubmenu(tNewSubMenuEntry2, i) then
-						--self.dynamic = false
-					end
-				end
-			end
-		end
-		end }
 
 
 	-- W7: quest settings moved to Einstellungen -> Sonstiges -> Quest (the quest menu

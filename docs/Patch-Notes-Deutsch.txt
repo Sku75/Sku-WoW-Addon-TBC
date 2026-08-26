@@ -12,11 +12,48 @@ Aenderungen in Sku v43.1
             Der Kauf mehrerer Stuecke im Auktionshaus laeuft jetzt durch, solange es weitere Angebote zum gleichen hoerbaren Preis gibt.
             Jeder gelungene Kauf wird sofort mit "Gekauft, n von m" bestaetigt.
             Ist ein Preis ausverkauft, meldet Sku "Keine weiteren Angebote zu diesem Preis" samt Bilanz und bleibt in der Ergebnisliste stehen.
+            Neue Einstellung "Tastatur-Echo ansagen" (Einstellungen -> Allgemein, standardmaessig an): das zeichenweise Vorlesen beim Tippen in Eingabefeldern laesst sich abschalten.
+            Auktionshaus: der Komplettscan bestaetigt sich schon nach 5 Sekunden zum ersten Mal, danach wie bisher alle 10 Sekunden.
+            Questmenue: der Eintrag "Gruppenmitglieder" steht jetzt an dritter Stelle statt in der Mitte, "Aktuelle Quests" und "Questdatenbank" behalten dadurch immer ihren Platz.
 
         Fehlerbehebungen
             Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem gelungenen Kauf faelschlich mit "Auktion vergriffen" ab und warf aus der Suche.
+            Nach dem Schliessen des Menues sprachen verzoegerte Ansagen weiter ("Neuer Brief plus", "Betreff: <Getipptes>", "Gesendet", "Alle geoeffnet" aus dem laengst geschlossenen Briefkasten).
+            Auktionshaus: eine unvollstaendige Server-Antwort beendet die Suche nicht mehr faelschlich mit "leer" - eine echte Suche ohne Treffer antwortet weiterhin sofort.
+            Auktionshaus: eine Suche, die gar nicht erst starten kann, nennt jetzt den Grund ("Nicht moeglich, scan laeuft" bzw. "Auktionshaus beschaeftigt") statt "leer" zu sagen.
+            Auktionshaus: eine Suche ohne Treffer sagt jetzt "keine Ergebnisse" statt "leer" - und das Suchfeld bleibt in der Liste, der Cursor landet direkt darauf.
+            Auktionshaus: ein per Schliessen abgebrochener Komplettscan blockierte danach jede Suche mit "Nicht moeglich, scan laeuft", obwohl kein Scan mehr lief.
             Auktionshaus: der Komplettscan brach manchmal direkt nach der Startansage stillschweigend ab; die 16-Minuten-Sperre war trotzdem verbraucht.
             Franzoesische Clients: in mehreren Zonen war die Wegpunktliste leer (Korrektur von Naxedim).
+
+    Neue Einstellung: Tastatur-Echo ansagen
+        Einfach: In Eingabefeldern (Brief schreiben, Suche, Profilname...) liest Sku jedes getippte
+            Zeichen vor, ebenso Ruecktaste und die Cursor-Lesungen mit den Pfeiltasten. Wer das
+            nicht mag oder es doppelt hoert, schaltet es jetzt unter Einstellungen -> Allgemein,
+            "Tastatur-Echo ansagen" ab (direkt neben "Menuenummern ansagen" und "Untermenues
+            ansagen"). Standard ist AN, es aendert sich also nichts, wer nichts umstellt.
+            Statusansagen wie "Abgebrochen" oder die Feld-Bestaetigung nach ENTER bleiben immer.
+
+    Keine Ansagen mehr in ein geschlossenes Menue hinein
+        Einfach: Wer ein Eingabefeld mit ENTER bestaetigte und gleich darauf das Menue schloss,
+            hoerte trotzdem noch "Betreff: <das Getippte>" - als kaeme das Tastatur-Echo nach dem
+            Schliessen hinterher. Genauso sprachen aus dem laengst geschlossenen Briefkasten noch
+            "Neuer Brief plus", "Gesendet" oder "Alle geoeffnet". Jetzt gilt: was einen
+            Menue-Eintrag ansagen will, prueft erst, ob das Menue ueberhaupt noch offen ist -
+            und die Briefkasten-Quittungen pruefen, ob der Briefkasten noch offen ist. Die
+            Server-Systemzeile "Post verschickt." im Chat bleibt davon unberuehrt.
+        Technisch: Die Nachzuegler waren nie die Sprach-Queue (das Schliessen leert sie schon
+            per queuereset + StopSpeakingText), sondern Erzeuger, die NACH dem Schliessen erst
+            einspeisen: C_Timer-Bestaetigungen (0,3 s nach Anhaengen/Feldeingabe/Senden, 0,5 s
+            nach "Alle oeffnen") und Server-Events (MAIL_SEND_SUCCESS). Eine weitere pauschale
+            Queue-Leerung beim Fensterschliessen wuerde sie deshalb nicht erwischen, aber
+            legitime Ansagen (Chat, Kampf, Navigation) mitten im Wort abschiessen. Stattdessen:
+            zentrales Gate in SkuOptions:VocalizeCurrentMenuName (kein offenes Menue, kein
+            kopfloses Kampfmenue und kein SkuChat-Zeilenmenue -> stumm; der String-Modus
+            liefert weiter Text), plus drei
+            Erzeuger-Gates in der Post (MailboxOpenFlag fuer "Gesendet", IsMenuOpen fuer die
+            Feld-Bestaetigung, MailFrame-Sichtbarkeit fuer "Alle geoeffnet"). MAIL_FAILED bleibt
+            bewusst ungefiltert - ein Fehlschlag muss auch nach dem Schliessen hoerbar sein.
 
     Auktionshaus: der Kauf mehrerer Stuecke brach nach fast jedem Kauf faelschlich mit "Auktion vergriffen" ab
         Einfach: Wer in der Ergebnisliste einen Eintrag wie "14 mal Sphaere der Leere" waehlte und
@@ -57,6 +94,128 @@ Aenderungen in Sku v43.1
             Kauf bereits entfernt war, haelt ein Fallback ueber AuctionResultsItemEntryFromCursor
             den Cursor auf dem Item-Eintrag) und spricht die Meldung 0,4 s spaeter ohne
             Unterbrechung - dasselbe Muster wie beim bestehenden "Fertig. Alle gekauft".
+
+    Auktionshaus: unvollstaendige Server-Antwort gilt nicht mehr als "keine Treffer"
+        Einfach: Antwortet der Server widerspruechlich - er meldet Treffer, liefert aber keine
+            einzige Zeile -, dann beendete Sku die Suche bisher sofort mit "leer". Jetzt wartet
+            es in diesem Fall auf die vollstaendige Antwort und fragt die Seite noch einmal an.
+            Eine Suche, die wirklich nichts findet (Tippfehler im Suchfeld, leere Kategorie),
+            antwortet unveraendert sofort - mit der Trefferzahl 0 und "keine Ergebnisse".
+        Technisch: In AUCTION_ITEM_LIST_UPDATE_LIST gilt eine leere Seite nur dann als
+            verfrueht, wenn der Server sich widerspricht: tBatch == 0 (keine Zeile auf dieser
+            Seite) bei tCount > 0 (Gesamttrefferzahl groesser 0). Dann zaehlt
+            QueryListEmptyWaits hoch, der Scan bleibt auf "waiting" und der Ticker fragt
+            dieselbe Seite erneut an; nach 10 solchen Antworten wird das Ergebnis doch
+            akzeptiert (Notausstieg). tCount == 0 ist dagegen die ehrliche Antwort "keine
+            Treffer" und muss ohne Verzoegerung durchlaufen: der Kauf-Pfad zaehlt an dieser
+            Stelle JEDE leere Antwort (QueryBuyEmptyWaits), weil er eine womoeglich noch
+            lebende Auktion wiederfinden will - fuer die Suche waere dieselbe Regel falsch.
+            Im Debug-Log vom 2026-08-26 beantwortet der Server die Suche "feuerpartiekel" in
+            derselben Sekunde mit 0 von 0; das ist die echte Antwort, keine Spuk-Antwort.
+
+    Auktionshaus: eine Suche, die gar nicht erst starten kann, nennt jetzt den Grund
+        Einfach: Es gibt Momente, in denen das Auktionshaus eine Suche nicht annimmt:
+            waehrend im Hintergrund ein Komplettscan laeuft, waehrend ein Kauf scharf ist,
+            oder wenn der Server gerade drosselt. Bisher merkte Sku das nicht - es baute die
+            Liste trotzdem auf und sagte "leer", als haette die Suche nichts gefunden. Beim
+            ersten Aufruf in einer Sitzung klang das nach einer leeren Kategorie, spaeter
+            zeigte die Liste sogar die Treffer der VORIGEN Suche.
+            Jetzt nennt Sku den Grund. Laeuft ein Komplettscan, steht sofort beim Oeffnen
+            "Nicht moeglich, scan laeuft" in der Liste - dieselbe Meldung, die das
+            Verkaufen-Menue in dieser Lage schon immer gibt. Warten hat dort keinen Sinn: ein
+            Komplettscan belegt das Auktionshaus minutenlang. Bei den kurzen Huerden
+            (scharfer Kauf, Drossel) bleibt Sku auf "Warten" stehen und versucht es von
+            selbst weiter; kommt die Suche innerhalb von 5 Sekunden durch, laeuft alles wie
+            gewohnt weiter, sonst heisst es "Auktionshaus beschaeftigt, Suche nicht
+            gestartet". Faengt waehrend dieser Versuche ein Komplettscan an, bricht Sku sie
+            gleich ab und sagt es. Mit Pfeil links und wieder rechts startet man jederzeit
+            einen neuen Versuch.
+        Technisch: AuctionHouseStartQuery liefert an drei Stellen false und seit dieser
+            Version den GRUND als zweiten Rueckgabewert ("secureBuy", "getAllRunning",
+            "getAllCooldown", "queryThrew"). Die drei Browse-Aufrufer - Suchfeld, "Alle" und
+            Einzel-Item in AuctionHouseBuildItemDBMenu - hatten den Rueckgabewert ignoriert
+            und trotzdem QueryResultsHost gesetzt, children geleert und neu gebaut; der
+            ResultsMenuBuilder fand state == "idle", uebersprang seinen "Warten"-Zweig und
+            fiel auf die Leer-Pruefung durch. Sie laufen jetzt ueber AuctionBrowseStart, das
+            am Grund entscheidet: getAll-Gruende sofort melden, alles andere als
+            Wiederholversuch einreihen (QueryStartPending). AuctionBrowseRetryTick haengt am
+            bestehenden AH-OnUpdate-Ticker - bewusst frame-getrieben und nicht als
+            C_Timer-Kette, weil eine abgewuergte Kette ihre Re-Arm-Zeile nie erreicht -,
+            steht ganz vorn vor dessen fruehen Returns (sonst fror er waehrend des
+            getAll-Ingests ein), versucht hoechstens alle 0,25 s und nur bei
+            CanSendAuctionQuery, prueft den Grund erneut und reiht sich nach einem
+            Fehlversuch explizit wieder ein - StartQuery ruft intern ResetQuery auf und
+            loescht dabei den Merker, auch wenn es danach doch false liefert. Nach Erfolg
+            wird QueryResultsHost neu gesetzt, weil der frische Query-Aufbau ihn nilt.
+            QueryStartFailed traegt den anzuzeigenden TEXT (AH_QueryBusy bzw. die
+            Scan-Meldung des Verkaufen-Menues) und wird VOR der "Warten"-Bedingung geprueft:
+            der blockierende Scan haelt AuctionScan.state selbst auf "waiting"/"paging", also
+            gewaenne sonst immer "Warten" und die Begruendung waere unerreichbar. Der
+            Sofort-Pfad spricht bewusst NICHT selbst - die Meldung ist der einzige
+            Listeneintrag und wird beim Oeffnen ohnehin vorgelesen, waehrend eine eigene
+            Ansage vom folgenden Vocalize abgeschnitten wuerde und bei jedem
+            Vorbeinavigieren erneut feuerte (OnEnter laeuft schon beim Ankommen).
+            ResetQuery raeumt beide Merker ab.
+
+    Auktionshaus: "keine Ergebnisse" statt "leer", und das Suchfeld bleibt erreichbar
+        Einfach: Eine Suche ohne Treffer - etwa mit einem Tippfehler - sagte bisher "leer".
+            Das klingt nach einer leeren Liste, gemeint ist aber "nichts gefunden": jetzt
+            heisst es "keine Ergebnisse". Ausserdem war das Suchfeld nach einer Suche aus der
+            Liste verschwunden; fuer eine zweite Suche musste man erst raus- und wieder
+            reinnavigieren. Es steht jetzt weiterhin als "Suchbegriff eingeben" in der Liste,
+            und bei null Treffern springt der Cursor gleich darauf - einmal ENTER und man
+            tippt den naechsten Begriff. Gibt es Treffer, landet der Cursor wie gewohnt auf
+            dem ersten Treffer.
+        Technisch: Der inkrementelle Aufbau rief den ResultsMenuBuilder direkt auf und
+            umging damit BuildChildren des Suchfeld-Eintrags - genau dort wird
+            "Suchbegriff eingeben" eingehaengt, deshalb war es nach der ersten Seite weg. Er
+            ruft jetzt aHost:BuildChildren(aHost) (fuer "Alle"/Einzel-Item IST das der
+            ResultsMenuBuilder). Damit der Suchfeld-Eintrag dabei nicht auf "Warten"
+            zurueckfaellt, prueft sein Gate zusaetzlich QueryResultsPartialReady. Die
+            Cursor-Wahl uebernimmt AuctionFocusAfterResults: erster Eintrag, der weder
+            Eingabefeld noch "keine Ergebnisse" noch "Warten" ist; gibt es keinen, das
+            Eingabefeld. Die Nulltreffer-Ansage laeuft als EINE Ausgabe
+            ("keine Ergebnisse;Suchbegriff eingeben") - ein zweites OutputStringBTtts haette
+            das erste abgeschnitten. In der Komplettscan-Kategorieliste heisst der
+            Nulltreffer-Eintrag ebenfalls "keine Ergebnisse"; der Zweig ohne jegliche
+            Scan-Daten bleibt "leer", weil das eine andere Aussage ist.
+
+    Auktionshaus: abgebrochener Komplettscan blockierte danach jede Suche
+        Einfach: Wer einen laufenden Komplettscan abbricht, indem er das Auktionshaus
+            schliesst, bekam danach bei JEDER Suche und jeder Kategorie "Nicht moeglich,
+            scan laeuft" zu hoeren - obwohl gar kein Scan mehr lief. Das blieb so, bis man
+            einen neuen Komplettscan startete und ihn auch durchlaufen liess. Jetzt raeumt
+            das Schliessen den Scan richtig ab, und die naechste Suche laeuft normal. (Die
+            16-Minuten-Sperre des Servers fuer den naechsten Komplettscan bleibt davon
+            unberuehrt - die ist serverseitig und auch nach einem Abbruch aktiv.)
+        Technisch: AuctionHouseResetQuery verweigert den Reset, solange ein getAll-Scan
+            laeuft, ausser der Aufrufer besteht mit force darauf - das schuetzt einen
+            laufenden Komplettscan davor, von einem beilaeufigen Reset (Verkaufen-Menue,
+            Browse-Pfade) abgewuergt zu werden. AUCTION_HOUSE_CLOSED rief
+            AuctionScanFinish OHNE force auf, also blieb nach dem Schliessen mitten im Scan
+            state = "waiting" mit QueryData.getAll = true stehen; genau das prueft die
+            Verweigerungslogik der Suche, also wurde ab da jede Query mit "getAllRunning"
+            abgewiesen. Das Schliessen forciert jetzt - es IST das Scan-Ende, danach kommen
+            ohnehin keine Events mehr. Zwei Log-Luecken, die den Fehler versteckt haben,
+            sind mit gefixt: die Verweigerung in AuctionHouseResetQuery schreibt jetzt eine
+            eigene Zeile (vorher sah man nur den Aufruf davor und hielt den Zustand fuer
+            geraeumt), und AuctionScanFinish meldet "finished" erst NACH dem Reset, mit
+            reset=true/false - vorher behauptete das Log ein Scan-Ende, das nie stattfand.
+
+    Auktionshaus: erste Komplettscan-Ansage schon nach 5 Sekunden
+        Einfach: Waehrend der Komplettscan auf die Antwort des Servers wartet, meldet Sku
+            alle 10 Sekunden "voller Scan, n Sekunden". Die allererste dieser Ansagen kam
+            damit auch erst nach 10 Sekunden - zehn Sekunden, in denen man nach dem Start
+            nicht wusste, ob der Scan ueberhaupt laeuft. Die erste Bestaetigung kommt jetzt
+            nach 5 Sekunden, die zweite 10 Sekunden spaeter, danach weiter im
+            10-Sekunden-Takt (also bei 5, 15, 25 ... Sekunden). Am Ende aendert sich nichts:
+            die 25-Prozent-Meldungen der Einlesephase und die Abschlussansage bleiben.
+        Technisch: Der Takt im AH-OnUpdate-Ticker liegt jetzt in tFullScanSpeakNext, das mit
+            tFullScanSpeakFirst (5) startet und nach der ersten Ansage auf
+            tFullScanSpeakEvery (10) umschaltet. Der Zaehler wird um den jeweils gueltigen
+            Schwellwert vermindert statt fest um 10, damit die Phase stimmt. Endet die
+            Arbeitsphase, faellt der Schwellwert wieder auf 5 zurueck - sonst haette der
+            naechste Scan erst nach 10 Sekunden seine erste Bestaetigung gegeben.
 
     Auktionshaus: der Komplettscan brach manchmal direkt nach der Startansage stillschweigend ab
         Einfach: Manchmal folgte auf "Komplettscan gestartet" einfach nichts mehr: keine
@@ -109,6 +268,20 @@ Aenderungen in Sku v43.1
         Nebenbei fuer englische Clients: L["Die Hoehlen des Wehklagens"] stand auf "The Wailing
             Caverns", was kein Client so sagt. Derselbe Sonderfall war dort also ebenfalls tot
             und ist jetzt korrigiert.
+
+    Questmenue: "Gruppenmitglieder" haengt sich hinten an
+        Einfach: Mit geladenem Questie zeigt Sku in einer Gruppe zusaetzlich die Quests der
+            Mitspieler an. Dieser Eintrag stand bisher zwischen "Aktuelle Quests" und
+            "Questdatenbank" - und weil er mit der Gruppe kommt und geht, rutschte die
+            Questdatenbank je nach Gruppenstatus zwischen Platz zwei und Platz drei hin und
+            her. Wer den Weg dorthin im Muskelgedaechtnis hat, landete solo woanders als in
+            der Gruppe. Jetzt steht "Gruppenmitglieder" immer ganz hinten an dritter Stelle;
+            die ersten beiden Eintraege bleiben an derselben Stelle, allein wie in der Gruppe.
+        Technisch: In SkuQuest:MenuBuilder wandert der bedingte tSpecs-Block (showGroupQuests +
+            QuestieReady + IsInGroup) hinter den "Questdatenbank"-Block. SkuMenu:Build rendert
+            die Specs in Array-Reihenfolge ohne jede Sortierung, die Reihenfolge im Quellcode
+            ist also die Reihenfolge im Menue. Am Eintrag selbst, an seiner Bedingung und an
+            seinen Untermenues aendert sich nichts.
 
 
 -------------------------------------------------------------------------------------------------------

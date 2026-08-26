@@ -17,6 +17,7 @@ Changements dans Sku v43.1
             Quand un prix est épuisé, Sku annonce « Plus aucune offre à ce prix » avec le bilan et reste dans la liste des résultats.
             Nouveau réglage « Énoncer l'écho du clavier » (Réglages -> Général, activé par défaut) : la lecture caractère par caractère pendant la saisie dans les champs de texte peut être désactivée.
             Hôtel des ventes : le scan complet se confirme une première fois au bout de 5 secondes, puis toutes les 10 secondes comme avant.
+            Menu des quêtes : l'entrée « Membres du groupe » se place désormais en troisième position au lieu du milieu, ce qui laisse « Quêtes actuelles » et « Base de données des quêtes » toujours à la même place.
 
         Corrections
             Hôtel des ventes : l'achat de plusieurs exemplaires s'interrompait à tort après presque chaque achat réussi avec « Enchère épuisée » et éjectait de la recherche.
@@ -25,6 +26,8 @@ Changements dans Sku v43.1
             Hôtel des ventes : une recherche qui ne peut pas démarrer indique désormais pourquoi (« impossible, analyse en cours » ou « Hôtel des ventes occupé ») au lieu d'annoncer « vide ».
             Hôtel des ventes : une recherche sans résultat annonce désormais « aucun résultat » au lieu de « vide » - et le champ de recherche reste dans la liste, le curseur s'y pose directement.
             Hôtel des ventes : un scan complet annulé en fermant la fenêtre bloquait ensuite toute recherche avec « impossible, analyse en cours », alors qu'aucun scan ne tournait plus.
+            Hôtel des ventes : le scan complet mourait parfois en silence juste après l'annonce de départ ; le verrou de 16 minutes était tout de même consommé.
+            Clients français : la liste des points de passage était vide dans plusieurs zones (correction de Naxedim).
 
     Nouveau réglage : Énoncer l'écho du clavier
         Simple : Dans les champs de saisie (rédaction d'une lettre, recherche, nom de profil...),
@@ -228,6 +231,75 @@ Changements dans Sku v43.1
             diminué du seuil en vigueur plutôt que d'un 10 fixe, afin que la phase reste
             juste. À la fin de la phase de travail, le seuil retombe à 5 - sinon le scan
             suivant n'aurait de nouveau donné sa première confirmation qu'après 10 secondes.
+
+    Hôtel des ventes : le scan complet mourait parfois en silence juste après l'annonce de départ
+        Simple : Parfois, « Scan complet démarré » n'était suivi de rien : pas d'annonce de
+            progression toutes les 10 secondes, pas de message de fin, et les menus censés être
+            verrouillés pendant un scan ne l'étaient pas - le verrou de 16 minutes était
+            pourtant consommé. Cela touchait surtout ceux qui attendaient la fin du délai
+            directement à l'hôtel des ventes ouvert. En interne, le scan était tué aussitôt
+            après le départ ; il démarre maintenant toujours avec une horloge remise à zéro.
+        Technique : Prouvé dans le journal de débogage du 2026-08-26 : QueryAuctionItems et
+            « watchdog: getAll timeout 600s » dans la MÊME seconde. Les compteurs du chien de
+            garde du ticker de scan étaient déjà pleins avant le départ : tTime accumulait tout
+            le temps d'inactivité à l'hôtel des ventes ouvert (la branche idle ne le remettait
+            jamais à zéro - l'attente de 16 minutes > 600 s suffisait à elle seule), et
+            tFullScanElapsed survivait à chaque fin de scan parce que sa remise à zéro se
+            trouve derrière la barrière de tick de 0,2 s de la branche de sérialisation, qu'une
+            sérialisation rapide ne franchit jamais. Le premier tick du chien de garde après le
+            départ additionnait les deux et tuait le scan tout frais ; le chien de garde se
+            remettait alors lui-même à zéro, d'où le « la plupart du temps ça marche ».
+            SkuCore.AuctionScanWatchdogReset remet maintenant les deux compteurs à zéro après
+            chaque QueryAuctionItems réellement envoyé, et la branche idle remet elle-même
+            tTime à zéro (ce qui protège aussi le chien de garde de blocage des recherches
+            paginées). Vérifié le 2026-08-26 : un scan après ~28 min d'attente à l'hôtel des
+            ventes est allé au bout, lisant 173841 enchères.
+
+    Clients français : la liste des points de passage était vide dans plusieurs zones (correction de Naxedim)
+        Simple : Dans les Cavernes des lamentations, dans le Tram des profondeurs, au Repaire des
+            Grumegueules et au Repaire d'Onyxia, Sku annonçait une liste de points de passage
+            vide alors que la zone est entièrement cartographiée. Deux observations ont permis de
+            cerner le problème : un itinéraire déjà lancé continuait de fonctionner, et les mêmes
+            points de passage restaient sélectionnables depuis l'extérieur de la zone. Il ne
+            manquait donc aucune donnée : Sku ne savait simplement pas dans quelle zone se
+            trouvait le personnage. Les clients allemands et anglais n'ont jamais été concernés.
+        Technique : Deux causes indépendantes produisant le même symptôme, toutes deux trouvées,
+            corrigées et vérifiées en jeu par Naxedim sur un client français (PR #8).
+            Premièrement, SkuNav/Geo.lua compare quelques noms de zone MOT POUR MOT avec
+            GetMinimapZoneText() ; quatre d'entre eux avaient été traduits librement dans
+            locales/frFR.lua, plus aucune comparaison ne correspondait et GetBestMapForUnit
+            renvoyait la carte du continent au lieu de celle de la zone. Les nouvelles valeurs
+            ont été lues avec C_Map.GetAreaInfo() sur un client français, elles ne sont pas
+            traduites. Deuxièmement, les instances dont la vraie ligne de zone est commentée dans
+            SkuDB/assets/maps.lua dépendent d'une ligne synthétique (id à partir de 100000) pour
+            laquelle C_Map n'a rien à résoudre ; elle restait en anglais alors que le dernier
+            recours de GetCurrentAreaId la compare au nom de CARTE localisé - aucune
+            correspondance, aucun areaId, aucun continent, liste vide. Ces lignes prennent
+            désormais leur nom de l'uiMap qui porte le même nom anglais ; en français il s'agit
+            d'exactement deux zones, le Repaire d'Onyxia et les Cavernes des lamentations. Ajouté
+            ensuite : un garde-fou pour qu'aucune ligne synthétique ne reçoive un nom qu'une
+            vraie ligne porte déjà (Joug-d'hiver), la mention « ne pas traduire librement » sur
+            tous les noms de zone comparés mot pour mot dans locales/enUS.lua, et un magasin de
+            traduction français indexé par la clé et non plus par le numéro de ligne - il avait
+            glissé d'une ligne et aurait décalé presque toute la table à la prochaine
+            régénération.
+        Au passage, pour les clients anglais : L["Die Höhlen des Wehklagens"] contenait « The
+            Wailing Caverns », ce qu'aucun client ne dit. Le même cas particulier y était donc
+            mort lui aussi et vient d'être corrigé.
+
+    Menu des quêtes : « Membres du groupe » passe en dernier
+        Simple : Avec Questie chargé, Sku affiche en plus les quêtes des membres du groupe.
+            Cette entrée se trouvait jusqu'ici entre « Quêtes actuelles » et « Base de données
+            des quêtes » - et comme elle apparaît et disparaît avec le groupe, la base de
+            données passait de la deuxième à la troisième place selon que vous étiez en groupe
+            ou non. Qui s'y rendait de mémoire n'atterrissait pas au même endroit seul et en
+            groupe. « Membres du groupe » est désormais toujours en dernier, en troisième
+            position ; les deux premières entrées ne bougent plus, seul comme en groupe.
+        Technique : Dans SkuQuest:MenuBuilder, le bloc tSpecs conditionnel (showGroupQuests +
+            QuestieReady + IsInGroup) passe après le bloc « Base de données des quêtes ».
+            SkuMenu:Build rend les specs dans l'ordre du tableau, sans aucun tri : l'ordre du
+            code source est donc l'ordre du menu. L'entrée elle-même, sa condition et ses
+            sous-menus ne changent pas.
 
 
 -------------------------------------------------------------------------------------------------------
