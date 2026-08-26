@@ -550,20 +550,47 @@ local function SkuDBEnsureLocalizedMapNames()
 	-- name data has to ship, and it is by construction the exact string that
 	-- fallback compares against. Rows the C_Map pass already named are untouched,
 	-- and deDE/enUS never reach here at all.
+	--
+	-- [2026-08-26] Scope, measured against maps.lua: of the ~390 synthetic rows
+	-- exactly SIX share their enUS name with an ExternalMapID row (Dalaran,
+	-- Maraudon, Onyxia's Lair, Uldaman, Wailing Caverns, Wintergrasp). Four of
+	-- those six drop out again - Dalaran, Uldaman and Wintergrasp to the shadow
+	-- guard below, Maraudon to the "localized differs from English" test, since
+	-- French spells it the same. So frFR patches TWO rows, Onyxia's Lair and the
+	-- Wailing Caverns, which are the two zones the bug was reported from.
+	-- tPatched is the number to check when this looks like it did nothing.
 	local tPatched = 0
 	local tByEnglish = {}
+	local tRealNames = {}
 	if type(SkuDB.InternalAreaTable) == "table" then
 		for tId, tEntry in pairs(SkuDB.InternalAreaTable) do
-			local tNames = (type(tId) == "number" and tId >= 100000 and type(tEntry) == "table") and tEntry.AreaName_lang
-			-- only rows the fill could NOT name, i.e. still on the enUS fallback
-			if type(tNames) == "table" and tNames.enUS and tNames[tLoc] == tNames.enUS then
-				local tList = tByEnglish[tNames.enUS]
-				if not tList then
-					tList = {}
-					tByEnglish[tNames.enUS] = tList
+			local tNames = (type(tId) == "number" and type(tEntry) == "table") and tEntry.AreaName_lang
+			if type(tNames) == "table" and tNames.enUS then
+				if tId < 100000 then
+					tRealNames[tNames.enUS] = true
+				elseif tNames[tLoc] == tNames.enUS then
+					-- only rows the fill could NOT name, i.e. still on the enUS fallback
+					local tList = tByEnglish[tNames.enUS]
+					if not tList then
+						tList = {}
+						tByEnglish[tNames.enUS] = tList
+					end
+					tList[#tList + 1] = tNames
 				end
-				tList[#tList + 1] = tNames
 			end
+		end
+		-- [shadow guard] Naming a synthetic row whose zone ALSO has a real area
+		-- row would give two rows the same localized name, and GetCurrentAreaId's
+		-- fallback breaks on the first pairs() hit - so it could start answering
+		-- with the synthetic id, which is not stable between sessions. Wintergrasp
+		-- is the one case in the current data (row 100434 beside the real 4197);
+		-- the row keeps its English name, exactly as before this pass existed. The
+		-- rows this pass is FOR (instances) have no real row - theirs is commented
+		-- out of InternalAreaTable, which is what causes the bug in the first
+		-- place. deDE has carried the ambiguity for years, and SkuNav/Core.lua's
+		-- "fix for dalaran map id" (synthetic 100077 -> 4395) is what it costs.
+		for tName in pairs(tRealNames) do
+			tByEnglish[tName] = nil
 		end
 	end
 	if next(tByEnglish) and type(SkuDB.ExternalMapID) == "table" then
@@ -574,8 +601,15 @@ local function SkuDBEnsureLocalizedMapNames()
 				local tLocalized = tMapNames[tLoc]
 				if tList and type(tLocalized) == "string" and tLocalized ~= "" and tLocalized ~= tMapNames.enUS then
 					for i = 1, #tList do
-						tList[i][tLoc] = tLocalized
-						tPatched = tPatched + 1
+						-- Four of the six names have TWO uiMap rows (Dalaran 125/126,
+						-- Maraudon 280/281, Uldaman 230/231, Wintergrasp 123/2104).
+						-- Write only while the row is still on the English fallback, so
+						-- the second row cannot overwrite the first - today they agree,
+						-- but which one pairs() reaches first does not.
+						if tList[i][tLoc] == tMapNames.enUS then
+							tList[i][tLoc] = tLocalized
+							tPatched = tPatched + 1
+						end
 					end
 				end
 			end
