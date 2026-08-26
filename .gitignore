@@ -4,6 +4,8 @@ old-addon-versions/
 /CLAUDE.md
 /archive/
 /userlogs/
+# local run logs (cpu.log etc.) — written on this machine, never part of a release
+/Logs/
 
 # python bytecode from the dev/ helper scripts
 __pycache__/
