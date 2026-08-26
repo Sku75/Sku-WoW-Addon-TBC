@@ -3767,12 +3767,23 @@ function AuctionHouse:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFil
    -- machen → genau das beobachtete No-Op (Gebot auf falschen Index, kein
    -- Geldabzug). Nach Abschluss/Abbruch des Kaufs (active=false) sind Queries
    -- wieder frei (auch der Retry- und der Nächster-Artikel-Requery laufen dann).
+   -- Jede Verweigerung hier hinterlaesst eine Spur: die Browse-Aufrufer
+   -- (Kategorie/"Alle"/Einzel-Item in AuctionHouseBuildItemDBMenu) werten den
+   -- Rueckgabewert NICHT aus, bauen die Kinder trotzdem neu und der
+   -- ResultsMenuBuilder sieht dann state == "idle" -> er sagt "leer" bzw. zeigt
+   -- die Treffer der VORIGEN Suche, obwohl gar keine Query rausging. Ohne
+   -- Breadcrumb ist dieser Fall im Log nicht von einer echten Nulltreffer-
+   -- Antwort zu unterscheiden.
    if SkuCore.AuctionSecureBuy and SkuCore.AuctionSecureBuy.active
       and (SkuCore.AuctionSecureBuy.stage == "settling" or SkuCore.AuctionSecureBuy.stage == "trigger") then
+      dprint("auction.scan", "StartQuery refused", { reason = "secure buy armed",
+         stage = SkuCore.AuctionSecureBuy.stage })
       return false
    end
 
    if SkuCore.AuctionScan.state ~= "idle" and SkuCore.QueryData[7] == true then
+      dprint("auction.scan", "StartQuery refused", { reason = "getAll scan running",
+         state = SkuCore.AuctionScan.state })
       return false
    end
 
@@ -3786,6 +3797,7 @@ function AuctionHouse:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFil
    if aFilterGetAll == true then
       local _, tCanAll = CanSendAuctionQuery()
       if tCanAll ~= true then
+         dprint("auction.scan", "StartQuery refused", { reason = "getAll on cooldown" })
          pcall(function() AuctionHouse:AuctionHouseResetQuery(true) end)
          return false
       end
