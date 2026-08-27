@@ -29,6 +29,7 @@ Changements dans Sku v43.2
             Auras : les entrées qui n'existent que comme enchantement d'arme (par exemple « Compétence Pêche +75 ») sont désormais signalées comme telles dans les sélecteurs.
             Auras : « enchantement d'arme main droite contient X » avec « Enchantement d'arme expiré » ne pouvait jamais se déclencher - /skucheck auras signale désormais cette combinaison.
             Auras : la fin d'un enchantement d'arme est détectée à la frame près au lieu d'un quart de seconde plus tard.
+            Menu : Entrée sur une entrée activé/désactivé dans une liste filtrée annonçait la première entrée de la liste au lieu de l'état basculé.
 
     Le curseur reste sur l'objet dans le sac
         Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le
@@ -264,6 +265,31 @@ Changements dans Sku v43.2
             n'émet que si son état mémorisé a réellement changé. Volontairement NON fait : passer
             le ticker à chaque frame - ce serait quinze fois plus d'interrogations pour le même
             gain.
+
+    Basculer un réglage dans une liste filtrée annonce de nouveau le nouvel état
+        Simple : Restreindre une liste avec le filtre de saisie puis appuyer sur Entrée sur une
+            entrée activé/désactivé retire le filtre - c'est voulu. L'entrée était bien
+            basculée, mais on ne l'entendait pas : le curseur sautait en tête de liste et c'est
+            la première entrée qui était annoncée, pas le nouvel état. Dans les sorties d'auras,
+            l'aperçu sonore de la première entrée se déclenchait en plus. On reste désormais sur
+            l'entrée que l'on vient de basculer et on entend son nouvel état.
+        Technique : Entrée retire le filtre AVANT d'exécuter l'action - le nœud de menu appelle
+            ApplyFilter("") pour cela. Son nettoyage se terminait par un OnFirst() systématique
+            sur le niveau, le curseur partait donc en tête de liste dans TOUS les cas. La
+            bascule elle-même n'a jamais été en cause : elle agit sur le nœud lui-même
+            (actionInPlace), pas sur le curseur. Seul ce qui était lu ensuite était faux - et
+            OnFirst déclenchait au passage le OnEnter de la première entrée, c'est-à-dire
+            l'aperçu sonore pour les sons d'auras. ApplyFilter("") suit maintenant la même
+            règle que ClearFilter : la liste restaurée contient les MÊMES objets de nœud, un
+            curseur posé sur une vraie entrée reste donc valide ; seule la ligne artificielle
+            « Filter;<saisie> » n'y a plus sa place, et c'est pour elle seule que le OnFirst()
+            complet, OnEnter compris, continue de s'exécuter, afin de ne pas perdre l'aperçu
+            sonore à l'arrivée. Sans filtre actif, ApplyFilter("") n'a toujours rien fait -
+            d'où le fait que basculer dans une liste non filtrée n'a jamais posé problème ; les
+            deux cas se comportent désormais de la même façon. Effet de bord de la même règle :
+            Retour arrière laisse maintenant le curseur sur l'entrée où il se trouvait au lieu
+            de sauter en tête de liste.
+
 
 
 -------------------------------------------------------------------------------------------------------

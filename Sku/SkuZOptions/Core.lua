@@ -4386,7 +4386,32 @@ function SkuOptions:ApplyFilter(aFilterstring)
 			-- unrelated list.
 			if SkuOptions.currentMenuPosition
 				and SkuOptions.currentMenuPosition.parent == tRestoredParent then
-				SkuOptions.currentMenuPosition:OnFirst()
+				-- [43.2] ...and then only when the cursor's node did NOT survive the
+				-- unfilter. The restored array holds the SAME node objects, so a cursor
+				-- on a real entry is still valid; the only row with no home in it is the
+				-- synthetic "Filter;<typed>" one. The blanket OnFirst() yanked the cursor
+				-- to the top of the level in BOTH cases -- which is what broke ENTER on a
+				-- two-value setting inside a filtered list: SkuGenericMenuItem.OnSelect
+				-- unfilters BEFORE it dispatches, so by the time the `actionInPlace`
+				-- branch had flipped the setting (on the right node -- it acts on `self`,
+				-- not on the cursor), currentMenuPosition was sitting on the level's first
+				-- entry and that is what got read back. OnFirst's OnEnter also auditioned
+				-- the wrong entry's sound on the way. Same rule SkuOptions:ClearFilter
+				-- already follows -- the two undo paths now behave identically.
+				local tCur = SkuOptions.currentMenuPosition
+				local tSiblings = tRestoredParent.children
+				local tStillThere = false
+				if type(tSiblings) == "table" then
+					for x = 1, #tSiblings do
+						if tSiblings[x] == tCur then tStillThere = true break end
+					end
+				end
+				if not tStillThere then
+					-- Keep the full OnFirst() here (not a bare pointer assignment): the
+					-- cursor is LANDING on a new entry, so its OnEnter has to run -- that
+					-- is what auditions an aura sound entry when Backspace drops a filter.
+					tCur:OnFirst()
+				end
 				SkuOptions.Voice:OutputStringBTtts(L["Filter removed"], true, true, 0.3, nil, nil, nil, 2)
 			end
 			--SkuCore:Debug("ApplyFilter: filter cleared, menu updated")

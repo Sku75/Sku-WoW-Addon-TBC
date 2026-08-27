@@ -26,6 +26,7 @@ Aenderungen in Sku v43.2
             Auren: Eintraege, die es nur als Waffenverzauberung gibt (etwa "Angelfertigkeit +75"), sind in den Auswahllisten jetzt als solche gekennzeichnet.
             Auren: "Waffenverzauberung Haupthand enthaelt X" zusammen mit "Waffenverzauberung abgelaufen" konnte nie ausloesen - /skucheck auras meldet diese Kombination jetzt.
             Auren: das Ende einer Waffenverzauberung wird auf den Frame genau erkannt statt bis zu eine viertel Sekunde spaeter.
+            Menue: Enter auf einem Ein/Aus-Eintrag in einer gefilterten Liste sagte den ersten Eintrag der Liste an statt des umgeschalteten Zustands.
 
     Der Cursor bleibt in der Tasche auf dem Gegenstand
         Einfach: Wer in der Taschenliste einen Gegenstand rechts anklickte - benutzen, anlegen, an
@@ -262,6 +263,32 @@ Aenderungen in Sku v43.2
             meldet, wenn sich sein gemerkter Stand wirklich geaendert hat. Bewusst NICHT gemacht:
             den Ticker auf jeden Frame zu stellen - das waere fuenfzehnmal so viel Abfragerei
             fuer denselben Gewinn.
+
+    Umschalten in einer gefilterten Liste sagt wieder den neuen Zustand an
+        Einfach: Grenzt man eine Liste per Tippfilter ein und drueckt dann Enter auf einem
+            Ein/Aus-Eintrag, wird der Filter entfernt - das ist so gewollt. Der Eintrag wurde
+            auch richtig umgeschaltet, nur zu hoeren war das nicht: der Cursor sprang dabei an
+            den Anfang der Liste, und angesagt wurde der erste Eintrag statt des neuen Zustands.
+            In den Auren-Ausgaben spielte zusaetzlich die Hoerprobe des ersten Eintrags an.
+            Jetzt bleibt man auf dem Eintrag stehen, den man umgeschaltet hat, und hoert seinen
+            neuen Zustand.
+        Technisch: Enter entfernt den Filter, BEVOR es die Aktion ausfuehrt - der Menue-Knoten
+            ruft dafuer ApplyFilter("") auf. Dessen Aufraeumen endete mit einem pauschalen
+            OnFirst() auf der Ebene, der Cursor wanderte also in JEDEM Fall an den Listenanfang.
+            Die Umschaltung selbst war nie betroffen: sie arbeitet auf dem Knoten selbst
+            (actionInPlace), nicht auf dem Cursor. Falsch war nur, was danach vorgelesen wurde -
+            und OnFirst loeste beim Landen zusaetzlich das OnEnter des ersten Eintrags aus, was
+            bei den Auren-Toenen die Hoerprobe ist. ApplyFilter("") folgt jetzt derselben Regel,
+            der ClearFilter schon folgt: die wiederhergestellte Liste enthaelt dieselben
+            Knoten-Objekte, ein Cursor auf einem echten Eintrag bleibt also gueltig; nur die
+            kuenstliche Zeile "Filter;<getippt>" hat dort keinen Platz mehr, und allein fuer sie
+            laeuft weiterhin das vollstaendige OnFirst() samt OnEnter, damit die Hoerprobe beim
+            Landen nicht verloren geht. Ohne aktiven Filter war ApplyFilter("") immer schon
+            wirkungslos - deshalb hat das Umschalten in einer ungefilterten Liste nie gefehlt;
+            beide Faelle verhalten sich jetzt gleich. Nebenwirkung derselben Regel: Backspace
+            laesst den Cursor jetzt auf dem Eintrag stehen, auf dem er stand, statt an den
+            Listenanfang zu springen.
+
 
 
 -------------------------------------------------------------------------------------------------------

@@ -26,6 +26,7 @@ Changes in Sku v43.2
             Auras: entries that only ever exist as a weapon enchant (such as "Fishing Skill +75") are now marked as such in the pickers.
             Auras: "weapon enchant main hand contains X" together with "Weapon enchant expired" could never fire - /skucheck auras now reports that combination.
             Auras: the end of a weapon enchant is detected frame-accurately instead of up to a quarter second later.
+            Menu: Enter on an on/off entry in a filtered list read the first entry of the list back instead of the toggled state.
 
     The cursor stays on the item in the bag
         Simple: Right-clicking an item in the bag list - use it, equip it, sell it to a vendor,
@@ -236,6 +237,29 @@ Changes in Sku v43.2
             impossible because the ticker only emits when its stored snapshot really changed.
             Deliberately NOT done: putting the ticker on every frame - that would be fifteen
             times the polling for the same gain.
+
+    Toggling in a filtered list reads the new state back again
+        Simple: Narrowing a list with the type-ahead filter and then pressing Enter on an on/off
+            entry removes the filter - that part is intended. The entry was toggled correctly
+            too, you just could not hear it: the cursor jumped to the top of the list, and what
+            was announced was the first entry rather than the new state. In the aura outputs the
+            first entry's sound preview played on top of that. You now stay on the entry you
+            toggled and hear its new state.
+        Technically: Enter removes the filter BEFORE it dispatches the action - the menu node
+            calls ApplyFilter("") for that. Its cleanup ended in a blanket OnFirst() on the
+            level, so the cursor moved to the top of the list in EVERY case. The toggle itself
+            was never affected: it acts on the node (actionInPlace), not on the cursor. Only
+            what got read back afterwards was wrong - and OnFirst additionally fired the first
+            entry's OnEnter on landing, which for the aura sounds is the audition.
+            ApplyFilter("") now follows the same rule ClearFilter already follows: the restored
+            list holds the SAME node objects, so a cursor on a real entry stays valid; only the
+            synthetic "Filter;<typed>" row has no home in it, and for that row alone the full
+            OnFirst() including OnEnter still runs, so the audition on landing is not lost. With
+            no filter active ApplyFilter("") always was a no-op - which is why toggling in an
+            unfiltered list never misbehaved; both cases now behave the same. Side effect of the
+            same rule: Backspace now leaves the cursor on the entry it was on instead of jumping
+            to the top of the list.
+
 
 
 -------------------------------------------------------------------------------------------------------
