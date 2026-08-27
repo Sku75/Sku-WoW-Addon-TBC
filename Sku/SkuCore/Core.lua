@@ -3726,6 +3726,123 @@ function SkuCore:GENERIC_OnClose(self)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [DIAG] Quest-window / interact trace.
+--
+-- Chasing the long-standing "quest window reopens after Escape, Escape spam does not
+-- help" case (captured 2026-08-27 13:37 at the Steckbrief object in Terokkar: 14 Escapes
+-- in 14 s, each closing the Sku menu and each followed by the menu landing back on the
+-- quest detail; only a /reload broke it).
+--
+-- Sku is blind here today: SkuCore:QUEST_DETAIL / :QUEST_FINISHED / :GOSSIP_CLOSED exist
+-- but are never registered, so nothing in the log distinguishes "the close was refused"
+-- from "the close worked and the interaction was immediately re-opened". This block
+-- registers the quest/gossip events and watches the two panel-manager entry points
+-- filtered to QuestFrame, so a capture answers that directly:
+--
+--   * "questTrace HideUIPanel(QuestFrame)" present but the frame still shown afterwards
+--     -> the close is a no-op (panel-manager / taint side).
+--   * close takes effect and QUEST_DETAIL arrives again right after -> the client is
+--     re-interacting with the object (soft-target interact + AutoInteract are logged on
+--     every line so that is visible in the same record).
+--
+-- Everything here is read-only and log-only. Remove with the menuClose trace in
+-- SkuZOptions/Core.lua once the cause is known.
+---------------------------------------------------------------------------------------------------------------------------------------
+do
+	local function tCVar(aName)
+		local ok, v = pcall(function() return C_CVar.GetCVar(aName) end)
+		return (ok and v) and v or "?"
+	end
+
+	local function tQuestPanel()
+		for _, n in ipairs({"QuestFrameDetailPanel", "QuestFrameProgressPanel", "QuestFrameRewardPanel", "QuestFrameGreetingPanel"}) do
+			local f = _G[n]
+			if f and f:IsVisible() then return n end
+		end
+		return "-"
+	end
+
+	-- One state snapshot, appended to every trace line so each record stands on its own.
+	local function tSnap()
+		local qf = _G["QuestFrame"]
+		local ok, title = pcall(GetTitleText)
+		return "qf=" .. ((qf and qf:IsShown()) and 1 or 0)
+			.. " vis=" .. ((qf and qf:IsVisible()) and 1 or 0)
+			.. " panel=" .. tQuestPanel()
+			.. " gossip=" .. ((_G["GossipFrame"] and _G["GossipFrame"]:IsVisible()) and 1 or 0)
+			.. " title=" .. tostring((ok and title ~= "") and title or "-")
+			.. " autoInteract=" .. tCVar("AutoInteract")
+			.. " softInteract=" .. tCVar("SoftTargetInteract")
+			.. " softUnit=" .. tostring(select(2, pcall(UnitName, "softinteract")) or "-")
+			.. " target=" .. tostring(UnitName("target") or "-")
+			.. " moving=" .. ((SkuCore.isMoving == true) and 1 or 0)
+			.. " menuOpen=" .. ((SkuOptions and SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen()) and 1 or 0)
+	end
+
+	-- Which quest, and WHO is offering it. "questnpc" resolves the current quest giver;
+	-- its GUID prefix separates a real NPC ("Creature") from a quest-giving game OBJECT
+	-- ("GameObject") -- the Steckbrief is the latter, and no vendor/AH window ever is,
+	-- which is the shape of "this only ever happens on quests".
+	local function tQuestId()
+		local ok, id = pcall(GetQuestID)
+		local guid = select(2, pcall(UnitGUID, "questnpc"))
+		local kind = "-"
+		if type(guid) == "string" then kind = (strsplit("-", guid)) or "-" end
+		return "questId=" .. tostring(ok and id or "?")
+			.. " giverKind=" .. tostring(kind)
+			.. " giver=" .. tostring(guid or "-")
+	end
+
+	local tTraceFrame = CreateFrame("Frame", "SkuQuestWindowTrace")
+	for _, e in ipairs({
+		"QUEST_DETAIL", "QUEST_PROGRESS", "QUEST_COMPLETE", "QUEST_FINISHED",
+		"QUEST_GREETING", "QUEST_ACCEPTED", "GOSSIP_SHOW", "GOSSIP_CLOSED",
+	}) do
+		pcall(function() tTraceFrame:RegisterEvent(e) end)
+	end
+	tTraceFrame:SetScript("OnEvent", function(self, aEvent, ...)
+		dprint("questTrace ev " .. aEvent .. "  " .. tSnap() .. "  " .. tQuestId())
+	end)
+
+	-- ShowUIPanel/HideUIPanel are the only routes the quest window is opened/closed
+	-- through. Post-hooks, filtered to QuestFrame: the second sample (next frame) is what
+	-- shows whether HideUIPanel actually took, since it dispatches asynchronously through
+	-- the secure FramePositionDelegate rather than hiding on the spot.
+	-- The call chain, flattened to one ring line. This is the question the previous
+	-- capture could not answer: the window is closed successfully and something re-opens
+	-- it 0.2 s later with a fresh QUEST_DETAIL, with no Sku code in the gap. The stack
+	-- says who. Expect one of:
+	--   * "...QuestFrame.lua ... QuestFrame_OnEvent"  -> a genuine server QUEST_DETAIL,
+	--     i.e. the client really did re-interact; the culprit is upstream of the UI.
+	--   * an addon path (Questie, WowVision, ...)     -> that addon re-opens it directly.
+	local function tStack()
+		-- Level 2 / 12 frames: wide enough that the pcall + hook frames at the top do not
+		-- push the interesting caller out of the window.
+		local ok, s = pcall(debugstack, 2, 12, 0)
+		if not ok or type(s) ~= "string" then return "stack=?" end
+		s = s:gsub("Interface[/\\]AddOns[/\\]", ""):gsub("%s+", " ")
+		return "stack=" .. s:sub(1, 600)
+	end
+
+	local function tPanelHook(aTag)
+		return function(aFrame)
+			if aFrame ~= _G["QuestFrame"] then return end
+			dprint("questTrace " .. aTag .. "(QuestFrame)  " .. tSnap() .. "  " .. tQuestId())
+			-- Only the OPEN direction needs the stack; the close side is already known
+			-- (Sku's own close-button click) and would just cost ring space.
+			if aTag == "ShowUIPanel" then
+				dprint("questTrace ShowUIPanel " .. tStack())
+			end
+			C_Timer.After(0, function()
+				dprint("questTrace " .. aTag .. " next-frame  " .. tSnap())
+			end)
+		end
+	end
+	pcall(function() hooksecurefunc("ShowUIPanel", tPanelHook("ShowUIPanel")) end)
+	pcall(function() hooksecurefunc("HideUIPanel", tPanelHook("HideUIPanel")) end)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- In-combat item-use mirrors -- priming.
 --
 -- The flat SkuCore.combatBagTree / combatCharTree snapshots that PLAYER_REGEN_DISABLED
@@ -4494,7 +4611,22 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 		local tPendingOnly = tHasPending
 			and #tOpenFrames == 0
 			and SkuCore:AnyWindowContributorVisible() ~= true
+		-- [DIAG] Why the menu (re)opens. ~35 call sites feed this function and every
+		-- interact-frame Hide schedules another run, so when a window survives a close
+		-- the menu snaps straight back into it. Log the inputs of that decision once per
+		-- run that actually opens something, so a capture shows which window did it.
+		-- Remove together with the menuClose trace in SkuZOptions/Core.lua.
 		if #tOpenFrames > 0 or SkuCore:AnyWindowContributorVisible() or tHasPending then
+			local tDiagContrib = {}
+			for _, c in ipairs(SkuCore.localWindowContributors) do
+				local f = _G[c.frame]
+				if f and f.IsVisible and f:IsVisible() then table.insert(tDiagContrib, c.frame) end
+			end
+			dprint("CheckFrames open: frames", (#tOpenFrames > 0) and table.concat(tOpenFrames, ",") or "none",
+				"contrib", (#tDiagContrib > 0) and table.concat(tDiagContrib, ",") or "none",
+				"pendingOnly", tPendingOnly and 1 or 0,
+				"menuWasOpen", (SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen()) and 1 or 0,
+				"forceLocalRoot", aForceLocalRoot and 1 or 0)
 			-- Mark the combat capture as WINDOW-backed, so the else-branch below knows to
 			-- release it when the window later closes -- vs a bare Shift-F1/handoff menu
 			-- (no window), which must NOT be released just because no window is open.

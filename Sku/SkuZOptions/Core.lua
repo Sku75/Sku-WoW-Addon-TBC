@@ -2379,11 +2379,28 @@ function SkuOptions:CreateMainFrame()
 					["InspectFrame"] = "InspectFrameCloseButton",
 
 				}
+				-- [DIAG] Close-path trace. The long-standing "quest window reopens after
+				-- Escape" case (captured 2026-08-27 13:37) shows the menu snapping straight
+				-- back into a window this loop was supposed to close, so the open question is
+				-- whether the close here is refused, silently no-ops, or takes effect and the
+				-- window is re-shown afterwards. Log what was visible, what we did to it, and
+				-- what survived -- immediately and again a beat later, because HideUIPanel
+				-- dispatches through the (secure) FramePositionDelegate rather than hiding
+				-- synchronously. Remove once the cause is known.
+				local tDiagBefore = {}
+				for i, v in pairs(SkuCore.interactFramesList) do
+					if _G[v] and _G[v]:IsVisible() == true then
+						table.insert(tDiagBefore, v)
+					end
+				end
+				dprint("menuClose visible before:", (#tDiagBefore > 0) and table.concat(tDiagBefore, ",") or "none")
+
 				for i, v in pairs(SkuCore.interactFramesList) do
 					if not tExclude[v] then
 						if _G[v] then
 							if _G[v]:IsVisible() == true then
 								--dprint("hide", v)
+								dprint("menuClose hide", v)
 								_G[v]:Hide()
 							end
 						end
@@ -2392,15 +2409,40 @@ function SkuOptions:CreateMainFrame()
 							if _G[v]:IsVisible() == true then
 								if v == "DropDownList1" then
 									--dprint("leave", v)
+									dprint("menuClose leave", v)
 									_G["DropDownList1"]:GetScript("OnLeave")(_G["DropDownList1"])
 								else
 									--dprint("click", v)
-									_G[tExclude[v]]:Click()
+									-- Logged BEFORE the click, so the record survives even
+									-- if the click itself errors (a missing close button
+									-- would abort the rest of this loop, leaving the other
+									-- windows open too). exists/enabled are here because
+									-- either being false is a silent no-op that leaves the
+									-- window -- and its server-side interaction -- open.
+									local tBtn = _G[tExclude[v]]
+									dprint("menuClose click", v, "->", tostring(tExclude[v]),
+										"exists", tBtn and 1 or 0,
+										"enabled", ((tBtn and tBtn.IsEnabled and tBtn:IsEnabled()) and 1 or 0))
+									tBtn:Click()
 								end
 							end
 						end
 					end
 				end
+
+				-- Survivors, sampled twice: now (synchronous refusals) and at +0.3 s (after
+				-- the panel-manager dispatch and any server round-trip would have landed).
+				local function tDiagSurvivors(aTag)
+					local tStill = {}
+					for i, v in pairs(SkuCore.interactFramesList) do
+						if _G[v] and _G[v]:IsVisible() == true then
+							table.insert(tStill, v)
+						end
+					end
+					dprint("menuClose still visible "..aTag..":", (#tStill > 0) and table.concat(tStill, ",") or "none")
+				end
+				tDiagSurvivors("now")
+				C_Timer.After(0.3, function() pcall(tDiagSurvivors, "+0.3s") end)
 
 				if (MailFrame:IsShown() ) then
 					CloseMail();
@@ -2411,7 +2453,8 @@ function SkuOptions:CreateMainFrame()
 						_G["AuctionFrameCloseButton"]:Click()
 					end
 				end
-				
+
+
 
 				-- overwrite=true: appends a "queuereset" to the BTTS queue so any menu
 				-- item announcement still in-flight (e.g. the focused entry that was
