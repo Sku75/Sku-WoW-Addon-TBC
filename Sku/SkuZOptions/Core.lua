@@ -2358,7 +2358,31 @@ function SkuOptions:CreateMainFrame()
 			SkuOptions.currentMenuPosition:OnFirst()
 
 			if self:IsVisible() then
-				self:Hide()
+				-- [43.2] The interact windows are closed FIRST, and this frame is hidden
+				-- afterwards (was: self:Hide() here, windows after).
+				--
+				-- DO NOT "tidy" this back. Hiding this frame first is what caused the
+				-- years-old "quest window reopens after Escape, spamming Escape does not
+				-- help, only /reload gets out" bug. Repro: stand at ~0 m on a quest-giving
+				-- GAME OBJECT (Steckbrief, object 182587, Terokkar, quest 10033), interact,
+				-- Escape. A few steps back and it closes normally, which is why it always
+				-- looked "super rare".
+				--
+				-- Measured 2026-08-27. The discriminator is whether this frame is still
+				-- shown at the instant the quest window hides: hidden -> the client
+				-- re-interacts, the server sends a fresh QUEST_DETAIL and Blizzard's own
+				-- QuestFrame_OnEvent re-opens the frame (stack captured), forever; still
+				-- shown -> it stays closed. Both orderings complete inside the SAME
+				-- keypress, so this is an ordering dependency, not a "keep the menu up
+				-- longer" timing trick. The mechanism is not understood -- the fix is
+				-- empirical, which is exactly why the order must not be changed back.
+				--
+				-- Eliminated by capture, do not re-test: the close mechanism
+				-- (QuestFrameCloseButton:Click, CloseQuest from here, and CloseQuest typed
+				-- by hand all behaved the same), AutoInteract / SkuCore.interactMove,
+				-- soft targeting (off, and the soft unit was empty at the reopen), any
+				-- addon (Questie included -- the stack has no addon in it), and elapsed
+				-- time (a 17 s gap still reopened instantly).
 				local tExclude = {
 					["QuestLogFrame"] = "QuestLogFrameCloseButton",
 					--["GameMenuFrame"] = "GameMenuButtonContinue",
@@ -2455,6 +2479,8 @@ function SkuOptions:CreateMainFrame()
 				end
 
 
+				-- Menu frame down only now -- see the reorder note at the top of this branch.
+				self:Hide()
 
 				-- overwrite=true: appends a "queuereset" to the BTTS queue so any menu
 				-- item announcement still in-flight (e.g. the focused entry that was
