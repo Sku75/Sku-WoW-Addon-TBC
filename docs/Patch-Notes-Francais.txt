@@ -22,6 +22,7 @@ Changements dans Sku v43.2
             Sacs : le filtre de saisie restait bloqué après l'utilisation d'un objet et ne pouvait plus être levé qu'en fermant les sacs.
             Après une action avec temps d'incantation, un mauvais objet était annoncé juste après le bon.
             La liste des sacs tenue pour le combat pouvait se périmer lorsqu'on fermait une fenêtre de quête alors que les sacs étaient ouverts.
+            Synthèse vocale : les annonces devenaient régulièrement muettes pendant un moment lors de la navigation - surtout sur un résultat unique après filtrage.
 
     Le curseur reste sur l'objet dans le sac
         Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le
@@ -123,6 +124,41 @@ Changements dans Sku v43.2
             retour de ce même verrou partagé, et comme les sous-panneaux de quête se déclenchent
             en premier, ils le consommaient et la comptabilité - dont le rafraîchissement de la
             liste des sacs de combat - était sautée.
+    Synthèse vocale : les annonces ne restent plus muettes
+        Simple : Pendant la navigation, la voix se taisait régulièrement pendant un moment -
+            une touche fléchée ne lisait tout simplement pas l'entrée, dans le calme et sans
+            que rien d'autre ne tourne. C'était le plus reproductible quand on filtrait une
+            liste jusqu'à un seul résultat puis qu'on allait vite et venait entre le filtre et
+            ce résultat : après quelques passages, le résultat restait définitivement muet,
+            même en attendant une seconde. Les deux sont corrigés.
+        Technique : Deux causes indépendantes, toutes deux sous la file d'attente - Sku avait
+            transmis proprement chaque annonce ; sur une capture de 95 minutes, chaque appui
+            produisait exactement un SpeakText avec un STARTED.
+            D'abord, la même ligne était réémise jusqu'à quatre fois en une seconde, parce
+            qu'une vérification de fenêtre superflue réannonce l'entrée de menu ; 95 des 1512
+            énoncés étaient de telles répétitions. Chacune apporte son propre
+            « queuereset », donc un StopSpeakingText, et celui-ci atteint bel et bien le
+            lecteur d'écran - la ligne était donc coupée en plein mot puis reprise, et quand
+            le renvoi se perdait en chemin il ne restait rien. Le garde-fou anti-doublon
+            existant ne pouvait rien y faire : il dépend de
+            VOICE_CHAT_TTS_PLAYBACK_FINISHED, et via le pont vers le lecteur d'écran STARTED
+            et FINISHED reviennent dans la même image - il y est donc toujours vide et ne peut
+            jamais se déclencher. Un garde-fou temporel a été ajouté : il écarte une ligne
+            identique immédiatement suivante dans la seconde, avec son queuereset ; n'écarter
+            que le texte annulerait quand même la ligne en cours sans rien mettre à sa place.
+            Il ne se compare qu'à la ligne transmise juste avant, il ne peut donc pas avaler
+            une vraie relecture, et il ne s'applique que si la première copie a réellement
+            commencé à être jouée.
+            Ensuite, le casseur de cache ne fonctionnait plus. Le client range la parole
+            synthétisée par texte et la rejoue lors d'une répétition sans rappeler la voix -
+            via un pont, cette relecture est silencieuse. La parade était jusqu'ici un
+            <bookmark> tournant, mais le client retire le balisage et n'indexe que sur le texte
+            parlé : dans la capture, chaque énoncé portait sa propre marque et le résultat se
+            taisait quand même. Le casseur d'origine faisait varier de vrais caractères et
+            fonctionnait ; le passage à une marque devait ménager la prosodie et a
+            discrètement ramené le défaut même contre lequel il avait été écrit. On rajoute
+            donc du vrai texte : une suite tournante de 1 à 64 espaces insécables après le
+            dernier mot, où elle n'est ni audible ni capable de colorer la prosodie.
 
 
 -------------------------------------------------------------------------------------------------------

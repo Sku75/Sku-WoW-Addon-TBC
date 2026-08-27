@@ -19,6 +19,7 @@ Aenderungen in Sku v43.2
             Taschen: der Tippfilter blieb nach dem Benutzen eines Gegenstands haengen und liess sich nur noch durch Schliessen der Taschen loswerden.
             Nach einer Aktion mit Zauberzeit wurde direkt nach dem richtigen Gegenstand noch ein falscher angesagt.
             Die Taschenliste fuer den Kampf konnte veralten, wenn man ein Questfenster schloss, waehrend die Taschen offen waren.
+            Sprachausgabe: Ansagen blieben beim Navigieren immer wieder fuer eine Weile still - am zuverlaessigsten bei einem einzelnen Treffer nach dem Filtern.
 
     Der Cursor bleibt in der Tasche auf dem Gegenstand
         Einfach: Wer in der Taschenliste einen Gegenstand rechts anklickte - benutzen, anlegen, an
@@ -119,6 +120,43 @@ Aenderungen in Sku v43.2
             eine eigene Sperre bekommen: sie hing vorher am Rueckgabewert derselben geteilten
             Sperre, und da die Quest-Unterbereiche zuerst feuern, verbrauchten diese sie und die
             Buchhaltung - unter anderem das Auffrischen der Kampf-Taschenliste - fiel aus.
+    Sprachausgabe: Ansagen bleiben nicht mehr stumm
+        Einfach: Beim Navigieren blieb die Sprachausgabe immer wieder fuer eine Weile still -
+            ein Pfeiltastendruck las den Eintrag einfach nicht vor, obwohl es ruhig war und
+            nichts anderes lief. Besonders zuverlaessig passierte das, wenn man eine Liste auf
+            einen einzigen Treffer filterte und dann schnell zwischen dem Filter und diesem
+            Treffer hin und her ging: nach ein paar Wechseln blieb der Treffer dauerhaft stumm,
+            auch wenn man eine Sekunde wartete. Beides ist behoben.
+        Technisch: Zwei voneinander unabhaengige Ursachen, beide unterhalb der Warteschlange -
+            Sku selbst hatte jede Ansage sauber abgeschickt, in einem Mitschnitt ueber
+            95 Minuten kam auf jeden Tastendruck genau ein SpeakText mit STARTED.
+            Erstens wurde dieselbe Zeile bis zu viermal innerhalb einer Sekunde erneut
+            ausgegeben, weil eine ueberfluessige Fensterpruefung den Menueeintrag noch einmal
+            ansagt; 95 von 1512 Ausgaben waren solche Wiederholungen. Jede bringt ihr eigenes
+            "queuereset" mit, also ein StopSpeakingText, und das erreicht den Screenreader
+            wirklich - die Zeile wurde also mitten im Wort abgeschnitten und neu begonnen, und
+            wenn dabei die Neuausgabe verlorenging, blieb nichts uebrig. Die vorhandene
+            Dopplungssperre konnte das nicht auffangen: sie haengt an
+            VOICE_CHAT_TTS_PLAYBACK_FINISHED, und ueber die Screenreader-Bruecke kommen STARTED
+            und FINISHED noch im selben Bild zurueck - dort ist die Sperre also immer leer und
+            kann gar nicht greifen. Neu ist eine zeitbasierte Sperre, die eine unmittelbar
+            folgende identische Zeile innerhalb einer Sekunde verwirft, und zwar samt ihrem
+            queuereset; nur den Text zu verwerfen wuerde die laufende Ansage trotzdem abschneiden
+            und nichts an ihre Stelle setzen. Verglichen wird ausschliesslich mit der direkt
+            davor ausgegebenen Zeile, ein echtes erneutes Vorlesen kann sie also nicht
+            schlucken, und sie greift nur, wenn die erste Ausgabe wirklich zu spielen begonnen
+            hatte.
+            Zweitens war der Cache-Brecher wirkungslos geworden. Der Client legt erzeugte
+            Sprachdaten nach Text ab und spielt sie bei einer Wiederholung ab, ohne die Stimme
+            erneut aufzurufen - ueber eine Bruecke ist dieses Abspielen still. Dagegen wurde
+            bisher ein wechselndes <bookmark> angehaengt, aber der Client entfernt
+            Auszeichnungen und schluesselt nur ueber den gesprochenen Text: im Mitschnitt trug
+            jede einzelne Ausgabe ihre eigene Markierung und der Treffer verstummte trotzdem.
+            Der urspruengliche Brecher hatte echte Zeichen variiert und funktionierte; der
+            Wechsel auf eine Markierung sollte die Betonung schonen und hat dabei genau den
+            Fehler wieder hereingeholt, gegen den er geschrieben war. Angehaengt wird jetzt
+            wieder echter Text: eine wechselnde Folge von 1 bis 64 geschuetzten Leerzeichen
+            hinter dem letzten Wort, wo sie weder hoerbar ist noch die Betonung faerben kann.
 
 
 -------------------------------------------------------------------------------------------------------

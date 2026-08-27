@@ -127,14 +127,45 @@ local mSkuVoiceQueueBTTS_Voice = {}
 local tNextSpeakAt = 0
 local tLastStopAt = 0
 
+-- [v43.2] Back-to-back duplicate guard -- the one dedup that also works on the
+-- screen-reader bridge.
+--
+-- The existing dedup (mSkuVoiceQueueBTTS_Speaking, below) asks "is an identical
+-- string still playing?" and is drained by VOICE_CHAT_TTS_PLAYBACK_FINISHED. With
+-- a real SAPI voice that set stays populated for the whole utterance, so the guard
+-- works. With the NVDA/SAPI2SR bridge the client hands the text over and fires
+-- STARTED + FINISHED in the SAME frame, so the set is ALWAYS empty by the time the
+-- next line arrives: on the bridge that dedup can never fire at all.
+--
+-- What that costs, measured over a 95-minute capture (1512 utterances): 95 of them
+-- were an exact repeat of the line immediately before, inside one second -- the
+-- focused menu node re-announced by a redundant CheckFrames/restage pass. Each
+-- repeat is preceded by its own "queuereset", i.e. a StopSpeakingText, and a stop
+-- DOES reach NVDA. So the audible result is: line starts, gets cut mid-word,
+-- restarts, gets cut again -- and if any link in that chain drops the resend (WoW
+-- 12.0 also caches synthesized audio by text) the user is left in silence with
+-- nothing to replace it. That is the "arrow press reads nothing and it stays quiet"
+-- report.
+--
+-- The guard compares only against the utterance handed over IMMEDIATELY before, so
+-- it cannot eat a real re-read: arrowing down and back up puts a different line in
+-- between and resets the marker. Only a literal back-to-back repeat is dropped, and
+-- the reset in front of it is dropped WITH it -- suppressing the text alone would
+-- still cancel the line that is currently being spoken and leave nothing behind.
+local tLastHandedText = nil
+local tLastHandedAt = 0
+local tLastHandedStarted = false
+local tBttsDupWindow = 1.0
+
 -- BTTS cache-buster (WoW 12.0 engine): the new client caches synthesized audio
 -- by text and, on a repeat, REPLAYS the cached audio without re-invoking the
 -- voice. For a real voice (Hedda) that replay is audible; for an out-of-band
 -- screen-reader bridge (NVDA/SAPI2SR) the cached audio is silent AND the bridge
 -- is never called, so already-spoken lines go silent on revisit. Appending a
--- cycling run of U+200B ZERO WIDTH SPACE (invisible, not spoken by NVDA) makes
--- each utterance's text unique -> every SpeakText is a cache MISS -> the voice
--- is always invoked. Only applied to the Blizzard-TTS (SpeakText) path.
+-- cycling run of an invisible character makes each utterance's text unique ->
+-- every SpeakText is a cache MISS -> the voice is always invoked. Only applied
+-- to the Blizzard-TTS (SpeakText) path. See the body for WHICH character, and
+-- why a cycling <bookmark> is NOT enough.
 local mBttsCacheBust = 0
 local function BttsCacheBust(aString)
 	mBttsCacheBust = (mBttsCacheBust % 64) + 1
@@ -145,11 +176,29 @@ local function BttsCacheBust(aString)
 	--    next utterance's first word ("questtext"+"vor" -> "questtextvor"). U+00A0
 	--    is not XML whitespace, so it survives trimming and keeps the word
 	--    boundary at the seam, without being spoken.
-	-- 2) Trailing <bookmark> tag: WoW's 12.0 audio cache replays cached (silent)
-	--    audio for the bridge on repeats; a cycling bookmark makes each string
-	--    unique -> cache miss. SAPI parses it out as metadata (inaudible) and our
-	--    engine patch strips it anyway.
-	return "\194\160" .. aString .. string.format('<bookmark mark="skc%d"/>', mBttsCacheBust)
+	-- 2) Trailing run of U+00A0 -- the actual cache-buster.
+	--
+	--    [v43.2] The cycling <bookmark mark="skcN"/> that used to do this job does
+	--    NOT do it. Proven from a capture: alternating between a filtered list's
+	--    single hit and the filter row above it, every utterance got its own
+	--    bookmark (skc9, skc11, skc13 ... not one repeat), and the hit still went
+	--    silent after a few passes while Sku kept getting a clean SpeakText +
+	--    STARTED + FINISHED for each press. The client parses the markup off and
+	--    keys its audio cache on the SPOKEN text, so a varying bookmark is
+	--    invisible to it. The ORIGINAL buster (a cycling run of zero-width
+	--    characters) varied real character data and therefore worked; swapping it
+	--    for a bookmark to protect NVDA's prosody silently reintroduced the exact
+	--    bug it had been written to fix.
+	--
+	--    So vary real character data again, but place it AFTER the last word where
+	--    it cannot colour the prosody of anything: a run of 1..64 U+00A0. Trailing
+	--    whitespace is inaudible, and U+00A0 is not XML whitespace -- the very
+	--    property point 1 already relies on -- so the client's XML normalization
+	--    cannot trim it back off and collapse the variants into one cache key.
+	--
+	--    The bookmark stays: it costs nothing, the patched engine strips it, and it
+	--    still busts the key on any client that DOES hash the raw string.
+	return "\194\160" .. aString .. string.rep("\194\160", mBttsCacheBust) .. string.format('<bookmark mark="skc%d"/>', mBttsCacheBust)
 end
 
 function SkuVoice:Create()
@@ -173,6 +222,9 @@ function SkuVoice:Create()
 	f:SetScript("OnEvent", function(self, aEventName, ...)
 		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FINISHED" or aEventName == "VOICE_CHAT_TTS_PLAYBACK_FAILED" then
 			if dprint then dprint("BTTS event "..aEventName, ...) end
+			-- [v43.2] A FAILED utterance never reached the voice, so the duplicate
+			-- guard must not treat it as "the user already heard this".
+			if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FAILED" then tLastHandedStarted = false end
 			-- Drain the oldest speaking entry on BOTH end and fail (FIFO — the
 			-- guard's only job is short-lived dedup, so oldest-out is good enough;
 			-- the TTL sweep backstops any out-of-order or missing event).
@@ -181,6 +233,11 @@ function SkuVoice:Create()
 			end
 		elseif aEventName == "VOICE_CHAT_TTS_PLAYBACK_STARTED" then
 			if dprint then dprint("BTTS event STARTED", ...) end
+			-- [v43.2] Playback of the line we last handed over really began. Only then
+			-- may a back-to-back repeat of it be dropped -- an utterance cancelled
+			-- BEFORE its STARTED (the async-stop race documented in the pump) must
+			-- still be allowed through again, or suppressing it would CAUSE silence.
+			tLastHandedStarted = true
 		elseif aEventName == "VOICE_CHAT_TTS_SPEAK_TEXT_UPDATE" then
 			if dprint then dprint("BTTS event SPEAK_TEXT_UPDATE", ...) end
 		elseif aEventName == "VOICE_CHAT_TTS_PLAYBACK_BOOKMARK" then
@@ -249,6 +306,21 @@ function SkuVoice:Create()
 			if #mSkuVoiceQueueBTTS > 0 then
 				local tValue = mSkuVoiceQueueBTTS[1]
 				if tValue == "queuereset" then
+					-- [v43.2] Peek one entry ahead: OutputStringBTtts enqueues the reset
+					-- and its text together in a single call, so a reset sitting at the
+					-- head with its own text right behind it is exactly the "overwrite
+					-- with the same line again" case. (Anything queued in front of the
+					-- LAST reset was already dropped by the tLastReset scan above, so if
+					-- we are here this pair is the tail of the queue.) Drop both: no
+					-- stop, no resend, the line already playing simply runs to its end.
+					local tPeek = mSkuVoiceQueueBTTS[2]
+					if tPeek and tPeek ~= "queuereset" and tLastHandedText and tLastHandedStarted
+						and tPeek == tLastHandedText and (tNow - tLastHandedAt) < tBttsDupWindow then
+						table.remove(mSkuVoiceQueueBTTS, 1)
+						table.remove(mSkuVoiceQueueBTTS, 1)
+						mSkuVoiceQueueBTTS_Voice[tPeek] = nil
+						if dprint then dprint("BTTS DUP-SUPPRESS", "reset+text", "age="..string.format("%.2f", tNow - tLastHandedAt), "text=["..tostring(tPeek).."]") end
+					else
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						if ChatTts().neverResetQueues ~= true then
 							-- [v42.12] Suppress a provably redundant stop.
@@ -283,6 +355,10 @@ function SkuVoice:Create()
 						end
 						mSkuVoiceQueueBTTS_Speaking = {}
 						tNextSpeakAt = tNow + 0.10
+						-- A stop that really fired cancelled whatever was playing, so an
+						-- identical line arriving after it must be allowed through again.
+						tLastHandedText = nil
+					end
 				else
 					if #mSkuVoiceQueueBTTS > 1 or tNow >= tNextSpeakAt then
 						table.remove(mSkuVoiceQueueBTTS, 1)
@@ -293,7 +369,17 @@ function SkuVoice:Create()
 								tIsAlreadySpeakingThat = true
 							end
 						end
-						if not tIsAlreadySpeakingThat then
+						-- [v43.2] Same guard for a repeat that arrives WITHOUT a reset in
+						-- front of it (aOverwrite false). Nothing is cancelled here, so the
+						-- only effect is that the identical line is not queued a second time
+						-- behind itself.
+						local tIsBackToBackDup = false
+						if not tIsAlreadySpeakingThat and tLastHandedText and tLastHandedStarted
+							and tValue == tLastHandedText and (tNow - tLastHandedAt) < tBttsDupWindow then
+							tIsBackToBackDup = true
+							if dprint then dprint("BTTS DUP-SUPPRESS", "no-reset", "age="..string.format("%.2f", tNow - tLastHandedAt), "text=["..tostring(tValue).."]") end
+						end
+						if not tIsAlreadySpeakingThat and not tIsBackToBackDup then
 							table.insert(mSkuVoiceQueueBTTS_Speaking, {text = tValue, at = GetTime()})
 							-- Per-message voice override (nil => global voice). Same
 							-- 1-based domain as WowTtsVoice, so the "- 1" API convention
@@ -314,6 +400,14 @@ function SkuVoice:Create()
 							-- with no boundary words. overlap is omitted (defaults false) so
 							-- Sku keeps driving its own queue without overlapping speech.
 							C_VoiceChat.SpeakText(tVoiceIndex - 1, BttsCacheBust(tValue), ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
+							-- [v43.2] Marker for the back-to-back duplicate guard. Set from the
+							-- handover, NOT from a playback event: on the bridge the events are
+							-- useless for this (see tBttsDupWindow).
+							tLastHandedText = tValue
+							tLastHandedAt = tNow
+							tLastHandedStarted = false
+						elseif tIsBackToBackDup then
+							-- already logged above as DUP-SUPPRESS
 						else
 							-- BTTS diag: a queued line was DROPPED because an identical
 							-- string is still flagged "speaking" (FINISHED never cleared it).
@@ -1476,6 +1570,9 @@ function SkuVoice:CancelBttsOutput()
 	local tNow = GetTime()
 	tLastStopAt = tNow
 	tNextSpeakAt = tNow + 0.15
+	-- [v43.2] A hard cancel really did silence the line, so the confirmation a caller
+	-- speaks right after must never be swallowed as a back-to-back duplicate of it.
+	tLastHandedText = nil
 	if dprint then dprint("BTTS CancelBttsOutput -> StopSpeakingText") end
 	pcall(function() C_VoiceChat.StopSpeakingText() end)
 end

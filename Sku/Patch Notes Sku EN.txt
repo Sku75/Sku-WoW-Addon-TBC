@@ -19,6 +19,7 @@ Changes in Sku v43.2
             Bags: the type-ahead filter stuck after using an item and could only be cleared by closing the bags.
             After an action with a cast time a wrong item was announced right after the correct one.
             The bag list held for combat could go stale when a quest window was closed while the bags were open.
+            Speech: announcements repeatedly went silent for a while while navigating - most reliably on a single hit after filtering.
 
     The cursor stays on the item in the bag
         Simple: Right-clicking an item in the bag list - use it, equip it, sell it to a vendor,
@@ -110,6 +111,38 @@ Changes in Sku v43.2
             it previously hung on the return value of that same shared gate, and since the quest
             sub-panels fire first they consumed it and the bookkeeping - the combat bag list
             refresh among it - was skipped.
+    Speech: announcements no longer fall silent
+        Simple: While navigating, speech kept going quiet for a while - an arrow key simply did
+            not read the entry out, in a quiet moment with nothing else going on. It was most
+            reliable when you filtered a list down to a single hit and then moved quickly
+            between the filter and that one hit: after a few passes the hit stayed silent for
+            good, even if you waited a second. Both are fixed.
+        Technically: Two independent causes, both below the queue - Sku itself had handed over
+            every announcement cleanly; in a 95-minute capture every keypress produced exactly
+            one SpeakText with a STARTED.
+            First, the same line was re-issued up to four times inside one second, because a
+            redundant window check announces the focused menu entry again; 95 of 1512
+            utterances were such repeats. Each carries its own "queuereset", i.e. a
+            StopSpeakingText, and that does reach the screen reader - so the line was cut
+            mid-word and restarted, and whenever the resend was lost along the way nothing was
+            left. The existing duplicate guard could not catch this: it hangs off
+            VOICE_CHAT_TTS_PLAYBACK_FINISHED, and across the screen-reader bridge STARTED and
+            FINISHED both come back in the same frame - so there the guard is always empty and
+            can never fire. There is now a time-based guard that drops an immediately following
+            identical line within one second, together with its queuereset; dropping only the
+            text would still cancel the line being spoken and put nothing in its place. It
+            compares against the line handed over immediately before and nothing else, so it
+            cannot swallow a genuine re-read, and it only applies when the first copy really
+            began to play.
+            Second, the cache-buster had stopped working. The client stores synthesized speech
+            by text and replays it on a repeat without invoking the voice again - across a
+            bridge that replay is silent. The counter-measure so far was a cycling <bookmark>,
+            but the client parses markup off and keys only on the spoken text: in the capture
+            every single utterance carried its own marker and the hit still went silent. The
+            original buster varied real characters and did work; switching it to a marker was
+            meant to protect prosody and quietly brought back the very bug it had been written
+            against. Real text is appended again: a cycling run of 1 to 64 no-break spaces
+            after the last word, where it is neither audible nor able to colour the prosody.
 
 
 -------------------------------------------------------------------------------------------------------
