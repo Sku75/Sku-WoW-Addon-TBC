@@ -4,6 +4,118 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v43.2
+
+    Overview
+
+        Changes
+            Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
+            Bags: actions with a cast time (enchant, fishing lure, weapon oil, armor kit, disenchant) announce the item again once the cast has finished and leave the cursor on it.
+            Bags: a confirmation dialog such as "Replace existing enchantment?" no longer costs the position - after "Yes" as after "No" you land back on the item.
+            Menu: closing a window now rebuilds the menu data once instead of up to six times.
+
+        Bugfixes
+            Escape did not close the menu while standing right on a quest object - the quest window reopened endlessly.
+            Bags: the type-ahead filter stuck after using an item and could only be cleared by closing the bags.
+            A filter with no hits left a list the cursor could not move in, and said nothing about it.
+            After an action with a cast time a wrong item was announced right after the correct one.
+            The bag list held for combat could go stale when a quest window was closed while the bags were open.
+
+    The cursor stays on the item in the bag
+        Simple: Right-clicking an item in the bag list - use it, equip it, sell it to a vendor,
+            apply an enchantment - dropped you onto the first entry of the whole list. For items
+            that vanish straight away that barely showed, because the list re-sorts anyway; for
+            everything else it was simply a lost position. Now the cursor stays on the item you
+            worked on, and when the item leaves the bag you land on its slot - that is, on
+            whatever moved up into it.
+        Technically: The cause was never shifting indices but the third line of the right-click
+            macro, "/script SkuCore:CheckFrames()". It dated from before the event-driven confirm
+            existed and ran AT THE KEYPRESS - before the action had changed anything at all, and
+            for an action with a cast time seconds before. It therefore rebuilt stale data and
+            cost the cursor for nothing. Removed; the refresh belongs to the BAG_UPDATE-driven
+            confirm alone, which rebuilds only once the bags have really settled and then re-pins
+            the cursor by bag slot and item id. In addition, CheckFrames no longer remembers only
+            the row number of the focused entry across a rebuild but its name as well, and looks
+            that up in the rebuilt list - the row number alone stops being right as soon as the
+            list had a different shape in between.
+
+    Enchants, lures and oils: the list refreshes after the cast
+        Simple: An enchantment, a fishing lure, a weapon oil, an armor kit or disenchanting only
+            change the bags when the cast finishes - often five seconds after the click. Sku had
+            long given up by then: the list stayed stale and the cursor sat somewhere. Now Sku
+            waits the cast out, announces the item once afterwards and leaves the cursor on it.
+            If you navigate on yourself in the meantime, you keep your own position - Sku then
+            stays out of it.
+        Technically: The confirm window opened by the right-click expired after 2.5 seconds.
+            UNIT_SPELLCAST_START/-CHANNEL_START now push its deadline out to the end of the cast
+            while keeping the anchor captured at the click, so the re-pin afterwards lands on
+            exactly the item that was worked on. Deliberately without a spell list: an open window
+            is itself the proof that this cast belongs to the action. Two hard guards, both
+            learned from a real case: the cast has to follow the click within one second ("/use"
+            starts it in the same frame), and the extension is a one-shot. Without them a 22
+            second fishing cast kept pushing the deadline ahead of itself and the window never
+            died.
+
+    The confirmation dialog no longer costs the position
+        Simple: Applying an enchantment to an already enchanted item gets you Blizzard's "Replace
+            existing enchantment?" question. After "Yes" or "No" you ended up at the very top of
+            the bag hierarchy, on "Bag 1" instead of on the item. Now both answers lead back to
+            the item, and it is announced once.
+        Technically: The dialog is a modal window between the click and its effect, and it broke
+            the position twice over: the 2.5 second deadline expired while it was up, and Sku
+            anchors the menu INSIDE the dialog, so on closing there was nothing left to return to
+            - the generic entry then took the only open window and landed at the top of the bag
+            list. SkuBagPostActionPopupGate holds the window open for as long as the dialog
+            stands (up to 30 seconds) and triggers the confirm when it closes. That is the right
+            tool precisely because it covers both answers: "No" produces neither a cast nor a bag
+            change, so nothing else could ever put the cursor back. While the dialog stands the
+            confirm holds off entirely - otherwise an unrelated bag change (loot landing, a trade
+            settling) would tear the cursor out of the dialog.
+
+    The type-ahead filter in the bag list clears again
+        Simple: Typing a name in the bag list filters it down to the matches. That filter used to
+            stop clearing as soon as you had used the filtered item: even arrow left and right
+            again did not bring the full list back, only closing the bags helped. Now every one of
+            those keys clears the filter again, the way you are used to. On top of that, a filter
+            that matches nothing now says "no results" - it used to stay silent and leave you
+            stuck in a list nothing would move in.
+        Technically: SkuOptions:ClearFilter only forgot the typed string; the filtered child list
+            ApplyFilter had installed stayed in the tree until something replaced it wholesale -
+            and a level built from game frames, such as the bags, cannot refresh in place, it
+            needs a full rebuild. Masked for years by the forced CheckFrames in the macro (see
+            above), it showed the moment an action does not change the bags at all. ClearFilter
+            now genuinely restores the list, including the forward and backward links, and does so
+            on the node it filtered rather than the currently focused one. The "no hits" test used
+            to count the length of the filtered list, which already contained the filter row
+            itself - so it could never be true.
+
+    Escape did not close the menu while standing right on a quest object
+        Simple: Standing at roughly zero metres in front of a quest object and closing the menu
+            with Escape pulled the quest window straight back up - endlessly. In that spot the
+            menu could barely be closed at all. Now the open game windows are closed first and the
+            menu itself afterwards.
+        Technically: The menu hid itself first and worked through the open interact windows after
+            that. The quest frame was therefore closed while the game still reported the object in
+            range, and it reopened immediately. The order is reversed now and secured by a counter
+            that "/skucheck menu" reads out: a violation of that order is noticed without anyone
+            having to be standing on exactly that spot by chance.
+
+    Fewer duplicate rebuilds when closing a window
+        Simple: A single Escape used to trigger up to six complete rebuilds of the menu data,
+            because several windows close at once and Blizzard's quest window alone hides four
+            sub-panels. That cost noticeable time. Now exactly one rebuild runs per frame. Also,
+            the bag list held for combat could go stale when a quest window was closed while the
+            bags were open - a fault that would only have surfaced later, in combat.
+        Technically: The hide paths run through SkuCore:CheckFramesCoalesced, whose gate opens
+            once per frame; the actual pass is deferred by 0.01 s anyway and reads live state, so
+            it sees exactly what the last call of the burst would have seen. The OnShow side is
+            deliberately left out. The bookkeeping in GENERIC_OnClose has been given its own gate:
+            it previously hung on the return value of that same shared gate, and since the quest
+            sub-panels fire first they consumed it and the bookkeeping - the combat bag list
+            refresh among it - was skipped.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1
 
     Overview

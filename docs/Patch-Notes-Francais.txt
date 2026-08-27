@@ -7,6 +7,128 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.2
+
+    Aperçu
+
+        Changements
+            Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
+            Sacs : les actions avec temps d'incantation (enchantement, appât de pêche, huile d'arme, kit d'armure, désenchantement) annoncent à nouveau l'objet une fois l'incantation terminée et y laissent le curseur.
+            Sacs : une boîte de dialogue de confirmation comme « Remplacer l'enchantement existant ? » ne coûte plus la position - après « Oui » comme après « Non », on revient sur l'objet.
+            Menu : la fermeture d'une fenêtre ne reconstruit plus les données du menu qu'une seule fois au lieu de six.
+
+        Corrections
+            Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête - la fenêtre de quête se rouvrait sans fin.
+            Sacs : le filtre de saisie restait bloqué après l'utilisation d'un objet et ne pouvait plus être levé qu'en fermant les sacs.
+            Un filtre sans résultat laissait une liste dans laquelle le curseur ne bougeait plus, et n'en disait rien.
+            Après une action avec temps d'incantation, un mauvais objet était annoncé juste après le bon.
+            La liste des sacs tenue pour le combat pouvait se périmer lorsqu'on fermait une fenêtre de quête alors que les sacs étaient ouverts.
+
+    Le curseur reste sur l'objet dans le sac
+        Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le
+            vendre à un marchand, appliquer un enchantement - vous déposait sur la première entrée
+            de toute la liste. Pour les objets qui disparaissent aussitôt, cela se voyait à peine,
+            puisque la liste se réordonne de toute façon ; pour tout le reste, c'était simplement
+            une position perdue. Désormais le curseur reste sur l'objet sur lequel vous avez
+            travaillé, et quand l'objet quitte le sac, vous atterrissez sur son emplacement,
+            c'est-à-dire sur ce qui a pris sa place.
+        Technique : La cause n'a jamais été un décalage d'indices, mais la troisième ligne de la
+            macro de clic droit, « /script SkuCore:CheckFrames() ». Elle datait d'avant la
+            confirmation pilotée par les événements et s'exécutait AU MOMENT DE LA TOUCHE - donc
+            avant que l'action ait changé quoi que ce soit, et pour une action avec temps
+            d'incantation, plusieurs secondes avant. Elle reconstruisait donc des données périmées
+            et coûtait la position pour rien. Supprimée ; le rafraîchissement appartient à la
+            seule confirmation pilotée par BAG_UPDATE, qui ne reconstruit qu'une fois les sacs
+            réellement stabilisés et réaccroche alors le curseur par emplacement de sac et
+            identifiant d'objet. De plus, CheckFrames ne retient plus seulement le numéro de ligne
+            de l'entrée à travers une reconstruction, mais aussi son nom, qu'il recherche dans la
+            liste reconstruite - le numéro de ligne seul cesse d'être juste dès que la liste a eu
+            une autre forme entre-temps.
+
+    Enchantements, appâts et huiles : la liste se rafraîchit après l'incantation
+        Simple : Un enchantement, un appât de pêche, une huile d'arme, un kit d'armure ou un
+            désenchantement ne modifient les sacs qu'une fois l'incantation terminée, souvent cinq
+            secondes après le clic. Sku avait depuis longtemps renoncé : la liste restait périmée
+            et le curseur se trouvait quelque part. Désormais Sku attend la fin de l'incantation,
+            annonce ensuite l'objet une fois et y laisse le curseur. Si vous naviguez vous-même
+            entre-temps, vous gardez votre propre position - Sku ne s'en mêle plus.
+        Technique : La fenêtre de confirmation ouverte par le clic droit expirait au bout de
+            2,5 secondes. UNIT_SPELLCAST_START/-CHANNEL_START repoussent maintenant son échéance
+            jusqu'à la fin de l'incantation tout en conservant l'ancre saisie au clic, de sorte
+            que le réaccrochage retombe exactement sur l'objet traité. Volontairement sans liste
+            de sorts : une fenêtre ouverte est en elle-même la preuve que cette incantation
+            appartient à l'action. Deux garde-fous stricts, tous deux appris d'un cas réel :
+            l'incantation doit suivre le clic dans la seconde (« /use » la déclenche dans la même
+            image), et le report n'a lieu qu'une seule fois. Sans eux, une pêche de 22 secondes
+            repoussait l'échéance devant elle sans fin et la fenêtre ne mourait jamais.
+
+    La boîte de dialogue de confirmation ne coûte plus la position
+        Simple : Appliquer un enchantement sur un objet déjà enchanté déclenche la question de
+            Blizzard « Remplacer l'enchantement existant ? ». Après « Oui » ou « Non », on se
+            retrouvait tout en haut de la hiérarchie des sacs, sur « Sac 1 » au lieu de l'objet.
+            Désormais, les deux réponses ramènent à l'objet, et il est annoncé une fois.
+        Technique : La boîte de dialogue est une fenêtre modale entre le clic et son effet, et
+            elle cassait la position doublement : l'échéance de 2,5 secondes expirait pendant
+            qu'elle était affichée, et Sku ancre le menu DANS la boîte, si bien qu'à sa fermeture
+            il ne restait rien où revenir - l'entrée générique prenait alors la seule fenêtre
+            ouverte et atterrissait en haut de la liste des sacs. SkuBagPostActionPopupGate
+            maintient la fenêtre ouverte tant que la boîte est affichée (jusqu'à 30 secondes) et
+            déclenche la confirmation à sa fermeture. C'est le bon outil précisément parce qu'il
+            couvre les deux réponses : « Non » ne produit ni incantation ni changement de sac,
+            rien d'autre ne pourrait donc jamais replacer le curseur. Tant que la boîte est
+            affichée, la confirmation s'abstient entièrement - sinon un changement de sac sans
+            rapport (du butin qui arrive, un échange qui se conclut) arracherait le curseur hors
+            de la boîte.
+
+    Le filtre de saisie de la liste des sacs se lève à nouveau
+        Simple : Taper un nom dans la liste des sacs la filtre sur les correspondances. Ce filtre
+            ne se levait plus dès que vous aviez utilisé l'objet filtré : même flèche gauche puis
+            droite ne ramenait pas la liste complète, seule la fermeture des sacs y parvenait.
+            Désormais, chacune de ces touches lève à nouveau le filtre, comme vous en avez
+            l'habitude. De plus, un filtre qui ne correspond à rien annonce maintenant « aucun
+            résultat » - auparavant il restait muet et vous laissait coincé dans une liste où
+            rien ne bougeait.
+        Technique : SkuOptions:ClearFilter n'oubliait que le texte saisi ; la liste d'enfants
+            filtrée installée par ApplyFilter restait dans l'arbre jusqu'à ce que quelque chose la
+            remplace intégralement - et un niveau construit à partir des fenêtres du jeu, comme
+            les sacs, ne peut pas se rafraîchir sur place, il lui faut une reconstruction
+            complète. Masqué pendant des années par le CheckFrames forcé de la macro (voir
+            ci-dessus), cela est apparu dès qu'une action ne modifie pas du tout les sacs.
+            ClearFilter restaure maintenant réellement la liste, chaînages avant et arrière
+            compris, et ce sur le nœud qu'il a filtré et non sur celui qui a le focus. Le test
+            « aucune correspondance » comptait la longueur de la liste filtrée, laquelle
+            contenait déjà la ligne de filtre elle-même - il ne pouvait donc jamais être vrai.
+
+    Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête
+        Simple : Se tenir à environ zéro mètre devant un objet de quête et fermer le menu avec
+            Échap faisait aussitôt remonter la fenêtre de quête - sans fin. À cet endroit, le menu
+            ne pouvait pratiquement plus être fermé. Désormais les fenêtres de jeu ouvertes sont
+            fermées d'abord, et le menu lui-même ensuite.
+        Technique : Le menu se cachait d'abord et traitait ensuite les fenêtres d'interaction
+            ouvertes. Le cadre de quête était donc fermé alors que le jeu signalait toujours
+            l'objet à portée, et il se rouvrait immédiatement. L'ordre est maintenant inversé et
+            protégé par un compteur que « /skucheck menu » relit : une violation de cet ordre se
+            remarque sans que quiconque ait à se tenir par hasard exactement à cet endroit.
+
+    Moins de reconstructions en double à la fermeture d'une fenêtre
+        Simple : Un seul Échap déclenchait jusqu'à six reconstructions complètes des données du
+            menu, parce que plusieurs fenêtres se ferment en même temps et que la fenêtre de quête
+            de Blizzard à elle seule masque quatre sous-panneaux. Cela coûtait un temps
+            perceptible. Désormais, exactement une reconstruction s'exécute par image. Par
+            ailleurs, la liste des sacs tenue pour le combat pouvait se périmer lorsqu'une fenêtre
+            de quête était fermée alors que les sacs étaient ouverts - un défaut qui ne serait
+            apparu que plus tard, en combat.
+        Technique : Les chemins de masquage passent par SkuCore:CheckFramesCoalesced, dont le
+            verrou s'ouvre une fois par image ; le passage effectif est de toute façon différé de
+            0,01 s et lit l'état vivant, il voit donc exactement ce qu'aurait vu le dernier appel
+            de la rafale. Le côté OnShow est volontairement laissé de côté. La comptabilité de
+            GENERIC_OnClose a reçu son propre verrou : elle dépendait auparavant de la valeur de
+            retour de ce même verrou partagé, et comme les sous-panneaux de quête se déclenchent
+            en premier, ils le consommaient et la comptabilité - dont le rafraîchissement de la
+            liste des sacs de combat - était sautée.
+
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1
 
     Aperçu

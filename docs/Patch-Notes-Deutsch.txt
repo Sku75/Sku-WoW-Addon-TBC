@@ -4,6 +4,127 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.2
+
+    Ueberblick
+
+        Aenderungen
+            Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
+            Taschen: Aktionen mit Zauberzeit (Verzauberung, Angelkoeder, Waffenoel, Ruestungsset, Entzaubern) melden den Gegenstand nach dem Zauber noch einmal und lassen den Cursor darauf stehen.
+            Taschen: ein Bestaetigungsdialog wie "Bestehende Verzauberung ersetzen?" kostet nicht mehr die Position - nach "Ja" wie nach "Nein" landet man wieder auf dem Gegenstand.
+            Menue: das Schliessen eines Fensters baut die Menuedaten nur noch einmal statt bis zu sechsmal neu auf.
+
+        Fehlerbehebungen
+            Escape schloss das Menue nicht, wenn man direkt auf einem Questobjekt stand - das Questfenster ging endlos wieder auf.
+            Taschen: der Tippfilter blieb nach dem Benutzen eines Gegenstands haengen und liess sich nur noch durch Schliessen der Taschen loswerden.
+            Ein Filter ohne Treffer hinterliess eine Liste, in der sich der Cursor nicht mehr bewegen liess, und sagte dazu gar nichts.
+            Nach einer Aktion mit Zauberzeit wurde direkt nach dem richtigen Gegenstand noch ein falscher angesagt.
+            Die Taschenliste fuer den Kampf konnte veralten, wenn man ein Questfenster schloss, waehrend die Taschen offen waren.
+
+    Der Cursor bleibt in der Tasche auf dem Gegenstand
+        Einfach: Wer in der Taschenliste einen Gegenstand rechts anklickte - benutzen, anlegen, an
+            einen Haendler verkaufen, eine Verzauberung anwenden -, stand danach schlagartig auf
+            dem ersten Eintrag der ganzen Liste. Bei Gegenstaenden, die sofort verschwinden, fiel
+            das kaum auf, weil die Liste sich ohnehin neu sortiert; bei allem anderen war es
+            einfach ein Verlust der Position. Jetzt bleibt der Cursor auf dem Gegenstand, auf dem
+            man gearbeitet hat, und wenn der Gegenstand die Tasche verlaesst, landet man an seinem
+            Platz - also auf dem, was nachgerueckt ist.
+        Technisch: Ursache war nie ein Verrutschen von Indizes, sondern die dritte Zeile des
+            Rechtsklick-Makros, "/script SkuCore:CheckFrames()". Sie stammte aus der Zeit vor der
+            ereignisgesteuerten Bestaetigung und lief BEIM TASTENDRUCK - also bevor die Aktion
+            ueberhaupt etwas veraendert hatte, bei einer Aktion mit Zauberzeit sogar Sekunden
+            davor. Sie baute damit veraltete Daten neu auf und kostete dabei die Position.
+            Entfernt; die Auffrischung gehoert allein der von BAG_UPDATE getriebenen Bestaetigung,
+            die erst aufbaut, wenn die Taschen wirklich ruhig sind, und den Cursor dann ueber
+            Taschen-Fach und Gegenstands-ID wieder anheftet. Zusaetzlich merkt sich CheckFrames
+            beim Neuaufbau nicht mehr nur die Zeilennummer, sondern auch den Namen des Eintrags,
+            und sucht ihn in der neu gebauten Liste - die Zeilennummer allein stimmt naemlich
+            nicht mehr, sobald die Liste zwischendurch eine andere Form hatte.
+
+    Verzauberungen, Koeder und Oele: die Liste aktualisiert sich nach dem Zauber
+        Einfach: Eine Verzauberung, ein Angelkoeder, ein Waffenoel, ein Ruestungsset oder das
+            Entzaubern veraendern die Taschen erst, wenn der Zauber fertig ist - oft fuenf
+            Sekunden nach dem Klick. Bis dahin hatte Sku laengst aufgegeben: die Liste blieb
+            veraltet, und der Cursor stand irgendwo. Jetzt wartet Sku den Zauber ab, meldet danach
+            den Gegenstand einmal und laesst den Cursor darauf stehen. Wer waehrenddessen selbst
+            weiterblaettert, behaelt seine eigene Position - dann mischt sich Sku nicht mehr ein.
+        Technisch: Das beim Rechtsklick geoeffnete Bestaetigungsfenster lief nach 2,5 Sekunden ab.
+            UNIT_SPELLCAST_START/-CHANNEL_START schieben seine Frist jetzt bis zum Ende des
+            Zaubers und behalten dabei den beim Klick gemerkten Anker, sodass das Wiederanheften
+            danach genau den behandelten Gegenstand trifft. Bewusst ohne Zauberliste: dass das
+            Fenster offen ist, ist bereits der Beleg, dass der Zauber zu dieser Aktion gehoert.
+            Zwei harte Sperren, beide an einem echten Fall gelernt: der Zauber muss innerhalb
+            einer Sekunde auf den Klick folgen ("/use" startet ihn im selben Frame), und die
+            Verlaengerung greift nur ein einziges Mal. Ohne sie schob das 22 Sekunden lange
+            Angeln die Frist immer weiter vor sich her, und das Fenster starb nie.
+
+    Der Bestaetigungsdialog kostet nicht mehr die Position
+        Einfach: Wer eine Verzauberung auf einen bereits verzauberten Gegenstand anwendet, bekommt
+            von Blizzard die Rueckfrage "Bestehende Verzauberung ersetzen?". Nach "Ja" oder "Nein"
+            stand man anschliessend ganz oben in der Taschenhierarchie, also auf "Tasche 1" statt
+            auf dem Gegenstand. Jetzt fuehrt beide Antworten wieder zum Gegenstand zurueck, und er
+            wird einmal angesagt.
+        Technisch: Der Dialog ist ein modales Fenster zwischen dem Klick und seiner Wirkung und
+            zerstoerte die Position gleich zweifach: die 2,5-Sekunden-Frist lief waehrend des
+            Dialogs ab, und Sku verankert das Menue IM Dialog, sodass beim Schliessen nichts mehr
+            da war, wohin zurueckgekehrt werden konnte - der allgemeine Einstieg nahm dann das
+            einzige offene Fenster und landete oben in der Taschenliste. SkuBagPostActionPopupGate
+            haelt das Fenster offen, solange der Dialog steht (bis 30 Sekunden), und stoesst beim
+            Schliessen die Bestaetigung an. Genau die ist das richtige Werkzeug, weil sie beide
+            Antworten abdeckt: "Nein" erzeugt weder Zauber noch Taschenaenderung, es gaebe also
+            sonst gar nichts, was den Cursor zuruecklegen koennte. Solange der Dialog steht,
+            haelt sich die Bestaetigung komplett zurueck - sonst risse eine unbeteiligte
+            Taschenaenderung (einsammelnde Beute, ein abgeschlossener Handel) den Cursor mitten
+            aus dem Dialog heraus.
+
+    Der Tippfilter in der Taschenliste loest sich wieder
+        Einfach: Wer in der Taschenliste einen Namen tippt, filtert die Liste auf die Treffer.
+            Dieser Filter loeste sich bisher nicht mehr, sobald man den gefilterten Gegenstand
+            benutzt hatte: auch Pfeil links und wieder rechts brachten die volle Liste nicht
+            zurueck, nur das Schliessen der Taschen half. Jetzt raeumt jede dieser Tasten den
+            Filter wieder ab, so wie man es gewohnt ist. Ausserdem sagt ein Filter, auf den nichts
+            passt, jetzt "keine Ergebnisse" - bisher blieb er stumm und man sass in einer Liste
+            fest, in der sich nichts mehr bewegen liess.
+        Technisch: SkuOptions:ClearFilter vergass nur den getippten Text; die von ApplyFilter
+            eingesetzte gefilterte Kinderliste blieb im Baum stehen, bis irgendetwas sie
+            vollstaendig ersetzte - und eine aus Spielfenstern gebaute Ebene wie die Taschen kann
+            sich nicht an Ort und Stelle auffrischen, sie braucht einen kompletten Neuaufbau.
+            Jahrelang verdeckt vom erzwungenen CheckFrames im Makro (siehe oben), fiel es sofort
+            auf, sobald eine Aktion die Taschen gar nicht veraendert. ClearFilter stellt die
+            Liste jetzt wirklich wieder her, samt Vor- und Rueckwaertsverkettung, und zwar an dem
+            Knoten, den sie gefiltert hat, nicht am gerade aktuellen. Die Pruefung auf "keine
+            Treffer" zaehlte bisher die Laenge der gefilterten Liste, in der die Filterzeile
+            selbst schon steckte - sie konnte also nie zutreffen.
+
+    Escape schloss das Menue nicht, wenn man direkt auf einem Questobjekt stand
+        Einfach: Wer mit ungefaehr null Metern Abstand vor einem Questobjekt stand und das Menue
+            mit Escape schloss, bekam das Questfenster sofort wieder aufgezogen - und das endlos.
+            Das Menue liess sich in dieser Lage praktisch nicht mehr schliessen. Jetzt werden erst
+            die offenen Spielfenster geschlossen und danach das Menue selbst.
+        Technisch: Das Menue versteckte sich zuerst und arbeitete danach die offenen
+            Interaktionsfenster ab. Der Quest-Rahmen wurde dadurch geschlossen, waehrend das
+            Spiel den Gegenstand in Reichweite weiter meldete, und zog sich sofort wieder auf.
+            Die Reihenfolge ist jetzt umgekehrt und durch einen Zaehler abgesichert, den
+            "/skucheck menu" ausliest: eine Verletzung dieser Reihenfolge faellt damit auf, ohne
+            dass jemand zufaellig genau auf diesem Fleck stehen muss.
+
+    Weniger doppelte Neuaufbauten beim Fensterschliessen
+        Einfach: Ein einziges Escape loeste bisher bis zu sechs komplette Neuaufbauten der
+            Menuedaten aus, weil mehrere Fenster gleichzeitig zugehen und Blizzards Questfenster
+            allein schon vier Unterbereiche versteckt. Das kostete spuerbar Zeit. Jetzt laeuft pro
+            Bild genau ein Neuaufbau. Ausserdem konnte die fuer den Kampf vorgehaltene
+            Taschenliste veralten, wenn ein Questfenster geschlossen wurde, waehrend die Taschen
+            offen waren - ein Fehler, der erst spaeter im Kampf aufgefallen waere.
+        Technisch: Die Hide-Pfade laufen ueber SkuCore:CheckFramesCoalesced, dessen Sperre einmal
+            pro Bild oeffnet; der eigentliche Durchlauf ist ohnehin um 0,01 s verzoegert und liest
+            den Endzustand, sieht also genau das, was der letzte Aufruf der Serie gesehen haette.
+            Die OnShow-Seite bleibt bewusst aussen vor. Die Buchhaltung in GENERIC_OnClose hat
+            eine eigene Sperre bekommen: sie hing vorher am Rueckgabewert derselben geteilten
+            Sperre, und da die Quest-Unterbereiche zuerst feuern, verbrauchten diese sie und die
+            Buchhaltung - unter anderem das Auffrischen der Kampf-Taschenliste - fiel aus.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1
 
     Ueberblick
