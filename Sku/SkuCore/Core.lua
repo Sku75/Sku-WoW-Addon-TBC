@@ -3858,10 +3858,23 @@ function SkuCore:CheckFramesCoalesced()
 	return true
 end
 
+local tGenericCloseBookkeepingFlag = false
 function SkuCore:GENERIC_OnClose(self)
 	if SkuCore._suppressGenericFrameHooks == true then return end
 	--print("GENERIC_OnClose", _G["AuctionFrame"]:IsShown())
-	if SkuCore:CheckFramesCoalesced() ~= true then return end
+	SkuCore:CheckFramesCoalesced()
+
+	-- The bookkeeping below needs its OWN once-per-frame gate rather than riding on the
+	-- rescan gate above. CheckFramesCoalesced is shared with the QuestFrame sub-panel
+	-- Hide hooks, and those fire FIRST (Blizzard's QuestFrame_OnHide hides the panels
+	-- before the Hide post-hook that lands here). Gating on its return value therefore
+	-- skipped the bag-mirror prime on every close that involved a quest window --
+	-- harmless when only the quest window was open, but it would have left the in-combat
+	-- mirror stale when the bags were open alongside it. Two gates, one purpose each.
+	if tGenericCloseBookkeepingFlag == true then return end
+	tGenericCloseBookkeepingFlag = true
+	C_Timer.After(0, function() tGenericCloseBookkeepingFlag = false end)
+
 	SkuOptions:SendTrackingStatusUpdates()
 	-- Keep the in-combat bag mirror fresh after the bags are closed out of combat:
 	-- CheckFrames only (re)builds VISIBLE frames, so a plain close never rebuilds the bag
