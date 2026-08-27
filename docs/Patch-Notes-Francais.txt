@@ -30,6 +30,7 @@ Changements dans Sku v43.2
             Auras : « enchantement d'arme main droite contient X » avec « Enchantement d'arme expiré » ne pouvait jamais se déclencher - /skucheck auras signale désormais cette combinaison.
             Auras : la fin d'un enchantement d'arme est détectée à la frame près au lieu d'un quart de seconde plus tard.
             Menu : Entrée sur une entrée activé/désactivé dans une liste filtrée annonçait la première entrée de la liste au lieu de l'état basculé.
+            Navigateur de donjons : accepter une invitation de groupe ne vous dépose plus tout seul dans le navigateur de donjons.
 
     Le curseur reste sur l'objet dans le sac
         Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le
@@ -289,6 +290,31 @@ Changements dans Sku v43.2
             deux cas se comportent désormais de la même façon. Effet de bord de la même règle :
             Retour arrière laisse maintenant le curseur sur l'entrée où il se trouvait au lieu
             de sauter en tête de liste.
+
+    Navigateur de donjons : accepter une invitation ne mène plus au navigateur
+        Simple : Si vous étiez inscrit dans le navigateur de donjons et acceptiez ensuite une
+            invitation de groupe, vous vous retrouviez dans le navigateur sans avoir appuyé sur
+            la moindre touche : le menu se rouvrait tout seul et le curseur se posait sur « Non
+            inscrit ». Pour les joueurs voyants, rien ne se passe à ce moment-là - la fenêtre de
+            recherche de groupe de Blizzard ne s'ouvre jamais lorsqu'on accepte une invitation.
+            Sku reste désormais silencieux lui aussi : vous restez là où vous étiez.
+        Technique : Deux chemins y menaient, tous deux sont fermés. (1) Dès que le serveur
+            supprime votre inscription - c'est exactement ce qu'il fait lorsque vous rejoignez un
+            groupe -, LFG_LIST_ACTIVE_ENTRY_UPDATE arrive, et le navigateur reconstruisait alors
+            son entrée de menu. Cette reconstruction se terminait par un SlashFunc vers son
+            propre chemin de menu, et celui-ci rouvre un menu FERMÉ et y descend. Elle ne
+            s'exécute plus que si le menu est ouvert ET que le curseur se trouve réellement dans
+            le navigateur de donjons - ce n'est qu'alors qu'il faut replacer les entrées
+            fraîchement construites sous le curseur. L'omettre ne coûte rien : l'entrée de menu
+            est « dynamic » et se reconstruit de toute façon à la prochaine descente. Ainsi,
+            aucun changement d'inscription que vous n'avez pas provoqué (expiration, modification
+            par le chef de groupe) ne peut plus vous arracher à vos sacs pour vous jeter dans le
+            navigateur. (2) Un tiers de seconde après la disparition de la fenêtre d'invitation,
+            le navigateur vérifie s'il doit se rouvrir. Il demandait seulement « une fenêtre de
+            recherche de groupe est-elle ouverte en ce moment ? » et en faisait une ouverture.
+            Désormais, l'état présent à l'ARRIVÉE de l'invitation est mémorisé, et c'est
+            exactement lui - et rien d'autre - qui est restauré. Si l'invitation vous a fait
+            rejoindre un groupe, il ne se passe plus rien du tout : ni ouverture, ni fermeture.
 
 
 

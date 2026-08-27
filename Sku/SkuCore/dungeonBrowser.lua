@@ -930,9 +930,40 @@ function DungeonBrowser:DungeonBrowserToggle()
    DungeonBrowser:DungeonBrowserOpen()
 end
 
+-- Is the menu cursor standing inside our subtree? Rebuild wipes the top entry's
+-- children, so it may only re-seat the cursor when the cursor was actually on
+-- one of the nodes it just freed.
+local function tCursorInBrowser()
+   local n = SkuOptions and SkuOptions.currentMenuPosition
+   local guard = 0
+   while type(n) == "table" and guard < 64 do
+      if n.name == L.label then return true end
+      n = n.parent
+      guard = guard + 1
+   end
+   return false
+end
+
 -- In-place rebuild of our top entry's children (keeps the menu open).
+--
+-- ★[v43.2] Rebuild NEVER opens the menu and never drags the cursor into the browser.
+-- Most of its callers are events the user did not cause -- above all
+-- LFG_LIST_ACTIVE_ENTRY_UPDATE, which fires when the SERVER drops your listing,
+-- e.g. the instant you accept a party invite while listed. Its tail SlashFunc
+-- re-opens a CLOSED menu (SkuZOptions/Core.lua ~300) and descends into us, which
+-- is how "accept invite" ended with the user parked on "Nicht angemeldet"
+-- (capture 2026-08-27 22:24:57). Skipping costs nothing: the top entry is
+-- `dynamic`, so the next descend rebuilds its children anyway.
 function DungeonBrowser:Rebuild()
    if not (SkuOptions and SkuOptions.Menu) then return end
+   if not (SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen()) then
+      dprint("dungeonBrowser", "Rebuild skipped", { reason = "menu closed" })
+      return
+   end
+   if not tCursorInBrowser() then
+      dprint("dungeonBrowser", "Rebuild skipped", { reason = "cursor outside browser" })
+      return
+   end
    local top = tEnsureEntry()
    if not top then return end
    if type(top.childs) == "table" then for k in pairs(top.childs) do top.childs[k] = nil end end
@@ -956,6 +987,11 @@ DungeonBrowser.tHookedFrames = DungeonBrowser.tHookedFrames or {}
 DungeonBrowser.tHookedToggles = DungeonBrowser.tHookedToggles or false
 DungeonBrowser.tInOpen = DungeonBrowser.tInOpen or false
 DungeonBrowser.tPartyInviteActive = false
+-- State sampled when the invite ARRIVES, so the post-invite re-evaluation can
+-- restore what was there instead of inventing something new (see
+-- tReevaluateAfterInvite).
+DungeonBrowser.tContainerBeforeInvite = false
+DungeonBrowser.tInGroupBeforeInvite = false
 
 local DUNGEON_FRAME_CANDIDATES = { "LFGParentFrame", "PVEFrame", "GroupFinderFrame" }
 
@@ -965,6 +1001,12 @@ local function tIsAnyContainerShown()
       local f = _G[n]
       if f and f.IsShown and f:IsShown() then return true end
    end
+   return false
+end
+
+local function tIsInGroup()
+   if _G.IsInGroup then return _G.IsInGroup() and true or false end
+   if _G.GetNumGroupMembers then return (_G.GetNumGroupMembers() or 0) > 0 end
    return false
 end
 
@@ -996,10 +1038,38 @@ local function tFireClose()
    end
 end
 
+-- After the invite popup is gone: RESTORE the state the invite interrupted --
+-- never create a new one.
+--
+-- ★[v43.2] The old version asked only "is a container shown NOW?" and opened the browser
+-- if so. That turns any pre-existing window state into a forced open the user
+-- never asked for, and it fires on the accept path too, where the browser is the
+-- last place the player wants to land: they just joined a group. Two rules now:
+--   * joined a group through this invite -> do nothing at all (neither open nor
+--     close). The listing is gone, the search is over.
+--   * otherwise only put back what was there BEFORE the invite: re-open if a
+--     container was shown then and still is, close our menu if that container
+--     has meanwhile gone away. If nothing was shown before, nothing happens.
 local function tReevaluateAfterInvite()
    if DungeonBrowser.tPartyInviteActive == true or tIsPartyInviteOpen() then return end
-   if tIsAnyContainerShown() then tFireOpen()
+   local tHadContainer = DungeonBrowser.tContainerBeforeInvite == true
+   local tWasInGroup = DungeonBrowser.tInGroupBeforeInvite == true
+   DungeonBrowser.tContainerBeforeInvite = false
+   DungeonBrowser.tInGroupBeforeInvite = false
+
+   if (not tWasInGroup) and tIsInGroup() then
+      dprint("dungeonBrowser", "invite reevaluate", { action = "none", reason = "joined group" })
+      return
+   end
+   if not tHadContainer then
+      dprint("dungeonBrowser", "invite reevaluate", { action = "none", reason = "no window before invite" })
+      return
+   end
+   if tIsAnyContainerShown() then
+      dprint("dungeonBrowser", "invite reevaluate", { action = "reopen" })
+      tFireOpen()
    elseif SkuOptions and SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen() then
+      dprint("dungeonBrowser", "invite reevaluate", { action = "close" })
       pcall(function() SkuOptions:CloseMenu() end)
    end
 end
@@ -1025,6 +1095,10 @@ local tInviteWatchFrame = CreateFrame("Frame")
 tInviteWatchFrame:SetScript("OnEvent", function(self, event)
    if event == "PARTY_INVITE_REQUEST" then
       DungeonBrowser.tPartyInviteActive = true
+      -- Sample BEFORE the popup steals the menu: this is the state
+      -- tReevaluateAfterInvite is allowed to restore, and nothing else.
+      DungeonBrowser.tContainerBeforeInvite = tIsAnyContainerShown()
+      DungeonBrowser.tInGroupBeforeInvite = tIsInGroup()
       tEnsureInvitePopupHooks()
    elseif event == "PARTY_INVITE_CANCEL" then
       if not tIsPartyInviteOpen() then DungeonBrowser.tPartyInviteActive = false end

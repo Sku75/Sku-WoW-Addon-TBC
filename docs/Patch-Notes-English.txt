@@ -27,6 +27,7 @@ Changes in Sku v43.2
             Auras: "weapon enchant main hand contains X" together with "Weapon enchant expired" could never fire - /skucheck auras now reports that combination.
             Auras: the end of a weapon enchant is detected frame-accurately instead of up to a quarter second later.
             Menu: Enter on an on/off entry in a filtered list read the first entry of the list back instead of the toggled state.
+            Dungeon browser: accepting a group invitation no longer drops you into the dungeon browser by itself.
 
     The cursor stays on the item in the bag
         Simple: Right-clicking an item in the bag list - use it, equip it, sell it to a vendor,
@@ -259,6 +260,28 @@ Changes in Sku v43.2
             unfiltered list never misbehaved; both cases now behave the same. Side effect of the
             same rule: Backspace now leaves the cursor on the entry it was on instead of jumping
             to the top of the list.
+
+    Dungeon browser: accepting an invitation no longer lands you in the browser
+        Simple: If you were listed in the dungeon browser and then accepted a group invitation,
+            you ended up in the dungeon browser without pressing a single key: the menu reopened
+            by itself and the cursor sat on "Not listed". For sighted players nothing happens at
+            that moment - Blizzard's group finder window never opens when an invitation is
+            accepted. Now Sku stays quiet too: you stay where you were.
+        Technically: Two paths led there, both are closed now. (1) The moment the server drops
+            your listing - which is exactly what it does when you join a group -
+            LFG_LIST_ACTIVE_ENTRY_UPDATE arrives, and the browser rebuilt its menu entry in
+            response. That rebuild ended in a SlashFunc onto its own menu path, and that reopens
+            a CLOSED menu and descends into it. It now only runs while the menu is open AND the
+            cursor actually stands inside the dungeon browser - only then do the freshly built
+            entries have to be put back under the cursor. Skipping it costs nothing: the menu
+            entry is "dynamic" and rebuilds on the next descend anyway. As a result no listing
+            change you did not cause yourself (expiry, an edit by the party leader) can yank you
+            out of your bags into the browser either. (2) A third of a second after the
+            invitation dialog has disappeared, the browser checks whether it should reopen. It
+            only asked "is any group finder window open right now?" and turned that into an open.
+            Now the state present when the invitation ARRIVES is remembered, and only exactly
+            that is restored. If the invitation put you into a group, nothing happens at all -
+            neither open nor close.
 
 
 

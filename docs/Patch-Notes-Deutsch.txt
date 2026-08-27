@@ -27,6 +27,7 @@ Aenderungen in Sku v43.2
             Auren: "Waffenverzauberung Haupthand enthaelt X" zusammen mit "Waffenverzauberung abgelaufen" konnte nie ausloesen - /skucheck auras meldet diese Kombination jetzt.
             Auren: das Ende einer Waffenverzauberung wird auf den Frame genau erkannt statt bis zu eine viertel Sekunde spaeter.
             Menue: Enter auf einem Ein/Aus-Eintrag in einer gefilterten Liste sagte den ersten Eintrag der Liste an statt des umgeschalteten Zustands.
+            Dungeonbrowser: das Annehmen einer Gruppeneinladung fuehrt nicht mehr von selbst in den Dungeonbrowser.
 
     Der Cursor bleibt in der Tasche auf dem Gegenstand
         Einfach: Wer in der Taschenliste einen Gegenstand rechts anklickte - benutzen, anlegen, an
@@ -288,6 +289,30 @@ Aenderungen in Sku v43.2
             beide Faelle verhalten sich jetzt gleich. Nebenwirkung derselben Regel: Backspace
             laesst den Cursor jetzt auf dem Eintrag stehen, auf dem er stand, statt an den
             Listenanfang zu springen.
+
+    Dungeonbrowser: eine angenommene Einladung fuehrt nicht mehr in den Browser
+        Einfach: Wer im Dungeonbrowser angemeldet war und dann eine Gruppeneinladung annahm,
+            stand danach ohne einen einzigen Tastendruck im Dungeonbrowser: das Menue ging von
+            selbst wieder auf, der Cursor stand auf "Nicht angemeldet". Fuer sehende Spieler
+            passiert an dieser Stelle nichts - Blizzards Gruppensuche-Fenster geht beim Annehmen
+            einer Einladung nie auf. Jetzt bleibt es auch bei Sku still: man bleibt dort, wo man
+            vorher war.
+        Technisch: Zwei Wege fuehrten dorthin, beide sind jetzt zu. (1) Sobald der Server die
+            eigene Anmeldung loescht - genau das tut er, wenn man einer Gruppe beitritt -, kommt
+            LFG_LIST_ACTIVE_ENTRY_UPDATE, und der Browser baute daraufhin seinen Menuepunkt neu
+            auf. Dieser Neuaufbau endete mit einem SlashFunc auf den eigenen Menuepfad, und der
+            oeffnet ein GESCHLOSSENES Menue wieder und steigt hinein. Er laeuft jetzt nur noch,
+            wenn das Menue offen ist UND der Cursor tatsaechlich im Dungeonbrowser steht - nur
+            dann muessen die neu gebauten Eintraege ueberhaupt wieder unter den Cursor gelegt
+            werden. Faellt er aus, kostet das nichts: der Menuepunkt ist "dynamic" und baut sich
+            beim naechsten Betreten ohnehin neu auf. Damit kann auch keine Anmeldungsaenderung,
+            die man nicht selbst ausgeloest hat (Ablauf, Aenderung durch den Gruppenanfuehrer),
+            einen mehr aus den Taschen in den Browser reissen. (2) Eine drittel Sekunde nachdem
+            das Einladungsfenster verschwunden ist, prueft der Browser, ob er sich wieder oeffnen
+            soll. Er fragte dabei nur "ist gerade irgendein Gruppensuche-Fenster offen?" und
+            machte daraus ein Oeffnen. Jetzt wird beim EINTREFFEN der Einladung gemerkt, was
+            vorher da war, und nur genau das wird wiederhergestellt. Hat die Einladung in eine
+            Gruppe gefuehrt, geschieht gar nichts mehr - weder oeffnen noch schliessen.
 
 
 
