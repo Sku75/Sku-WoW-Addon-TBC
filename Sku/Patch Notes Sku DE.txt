@@ -17,7 +17,6 @@ Aenderungen in Sku v43.2
         Fehlerbehebungen
             Escape schloss das Menue nicht, wenn man direkt auf einem Questobjekt stand - das Questfenster ging endlos wieder auf.
             Taschen: der Tippfilter blieb nach dem Benutzen eines Gegenstands haengen und liess sich nur noch durch Schliessen der Taschen loswerden.
-            Ein Filter ohne Treffer hinterliess eine Liste, in der sich der Cursor nicht mehr bewegen liess, und sagte dazu gar nichts.
             Nach einer Aktion mit Zauberzeit wurde direkt nach dem richtigen Gegenstand noch ein falscher angesagt.
             Die Taschenliste fuer den Kampf konnte veralten, wenn man ein Questfenster schloss, waehrend die Taschen offen waren.
 
@@ -82,9 +81,9 @@ Aenderungen in Sku v43.2
             Dieser Filter loeste sich bisher nicht mehr, sobald man den gefilterten Gegenstand
             benutzt hatte: auch Pfeil links und wieder rechts brachten die volle Liste nicht
             zurueck, nur das Schliessen der Taschen half. Jetzt raeumt jede dieser Tasten den
-            Filter wieder ab, so wie man es gewohnt ist. Ausserdem sagt ein Filter, auf den nichts
-            passt, jetzt "keine Ergebnisse" - bisher blieb er stumm und man sass in einer Liste
-            fest, in der sich nichts mehr bewegen liess.
+            Filter wieder ab, so wie man es gewohnt ist. Passt auf den Filter gar nichts, bleibt
+            die Liste weiterhin leer und die Pfeiltasten wiederholen nur den getippten Filter -
+            genau daran hoert man, dass es keinen Treffer gibt.
         Technisch: SkuOptions:ClearFilter vergass nur den getippten Text; die von ApplyFilter
             eingesetzte gefilterte Kinderliste blieb im Baum stehen, bis irgendetwas sie
             vollstaendig ersetzte - und eine aus Spielfenstern gebaute Ebene wie die Taschen kann
@@ -92,9 +91,7 @@ Aenderungen in Sku v43.2
             Jahrelang verdeckt vom erzwungenen CheckFrames im Makro (siehe oben), fiel es sofort
             auf, sobald eine Aktion die Taschen gar nicht veraendert. ClearFilter stellt die
             Liste jetzt wirklich wieder her, samt Vor- und Rueckwaertsverkettung, und zwar an dem
-            Knoten, den sie gefiltert hat, nicht am gerade aktuellen. Die Pruefung auf "keine
-            Treffer" zaehlte bisher die Laenge der gefilterten Liste, in der die Filterzeile
-            selbst schon steckte - sie konnte also nie zutreffen.
+            Knoten, den sie gefiltert hat, nicht am gerade aktuellen.
 
     Escape schloss das Menue nicht, wenn man direkt auf einem Questobjekt stand
         Einfach: Wer mit ungefaehr null Metern Abstand vor einem Questobjekt stand und das Menue

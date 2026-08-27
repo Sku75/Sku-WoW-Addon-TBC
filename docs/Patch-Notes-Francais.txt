@@ -20,7 +20,6 @@ Changements dans Sku v43.2
         Corrections
             Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête - la fenêtre de quête se rouvrait sans fin.
             Sacs : le filtre de saisie restait bloqué après l'utilisation d'un objet et ne pouvait plus être levé qu'en fermant les sacs.
-            Un filtre sans résultat laissait une liste dans laquelle le curseur ne bougeait plus, et n'en disait rien.
             Après une action avec temps d'incantation, un mauvais objet était annoncé juste après le bon.
             La liste des sacs tenue pour le combat pouvait se périmer lorsqu'on fermait une fenêtre de quête alors que les sacs étaient ouverts.
 
@@ -85,9 +84,9 @@ Changements dans Sku v43.2
             ne se levait plus dès que vous aviez utilisé l'objet filtré : même flèche gauche puis
             droite ne ramenait pas la liste complète, seule la fermeture des sacs y parvenait.
             Désormais, chacune de ces touches lève à nouveau le filtre, comme vous en avez
-            l'habitude. De plus, un filtre qui ne correspond à rien annonce maintenant « aucun
-            résultat » - auparavant il restait muet et vous laissait coincé dans une liste où
-            rien ne bougeait.
+            l'habitude. Quand rien ne correspond au filtre, la liste reste vide comme avant et les
+            flèches ne font que répéter le filtre saisi - c'est précisément ainsi que l'on entend
+            qu'il n'y a aucun résultat.
         Technique : SkuOptions:ClearFilter n'oubliait que le texte saisi ; la liste d'enfants
             filtrée installée par ApplyFilter restait dans l'arbre jusqu'à ce que quelque chose la
             remplace intégralement - et un niveau construit à partir des fenêtres du jeu, comme
@@ -95,9 +94,7 @@ Changements dans Sku v43.2
             complète. Masqué pendant des années par le CheckFrames forcé de la macro (voir
             ci-dessus), cela est apparu dès qu'une action ne modifie pas du tout les sacs.
             ClearFilter restaure maintenant réellement la liste, chaînages avant et arrière
-            compris, et ce sur le nœud qu'il a filtré et non sur celui qui a le focus. Le test
-            « aucune correspondance » comptait la longueur de la liste filtrée, laquelle
-            contenait déjà la ligne de filtre elle-même - il ne pouvait donc jamais être vrai.
+            compris, et ce sur le nœud qu'il a filtré et non sur celui qui a le focus.
 
     Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête
         Simple : Se tenir à environ zéro mètre devant un objet de quête et fermer le menu avec

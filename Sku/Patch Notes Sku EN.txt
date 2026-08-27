@@ -17,7 +17,6 @@ Changes in Sku v43.2
         Bugfixes
             Escape did not close the menu while standing right on a quest object - the quest window reopened endlessly.
             Bags: the type-ahead filter stuck after using an item and could only be cleared by closing the bags.
-            A filter with no hits left a list the cursor could not move in, and said nothing about it.
             After an action with a cast time a wrong item was announced right after the correct one.
             The bag list held for combat could go stale when a quest window was closed while the bags were open.
 
@@ -76,18 +75,16 @@ Changes in Sku v43.2
         Simple: Typing a name in the bag list filters it down to the matches. That filter used to
             stop clearing as soon as you had used the filtered item: even arrow left and right
             again did not bring the full list back, only closing the bags helped. Now every one of
-            those keys clears the filter again, the way you are used to. On top of that, a filter
-            that matches nothing now says "no results" - it used to stay silent and leave you
-            stuck in a list nothing would move in.
+            those keys clears the filter again, the way you are used to. When nothing matches the
+            filter at all, the list stays empty as before and the arrow keys only repeat the
+            typed filter - which is exactly how you hear that there is no hit.
         Technically: SkuOptions:ClearFilter only forgot the typed string; the filtered child list
             ApplyFilter had installed stayed in the tree until something replaced it wholesale -
             and a level built from game frames, such as the bags, cannot refresh in place, it
             needs a full rebuild. Masked for years by the forced CheckFrames in the macro (see
             above), it showed the moment an action does not change the bags at all. ClearFilter
             now genuinely restores the list, including the forward and backward links, and does so
-            on the node it filtered rather than the currently focused one. The "no hits" test used
-            to count the length of the filtered list, which already contained the filter row
-            itself - so it could never be true.
+            on the node it filtered rather than the currently focused one.
 
     Escape did not close the menu while standing right on a quest object
         Simple: Standing at roughly zero metres in front of a quest object and closing the menu

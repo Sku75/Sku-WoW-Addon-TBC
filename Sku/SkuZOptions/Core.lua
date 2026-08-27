@@ -4341,15 +4341,19 @@ function SkuOptions:ApplyFilter(aFilterstring)
 			end
 		end
 
-		-- [43.2] Count MATCHES, not list length. tChildrenFiltered already holds the
-		-- synthetic "Filter;<text>" row at this point, so "#tChildrenFiltered == 0" was
-		-- never true: a filter with no hits produced a one-row list containing only that
-		-- row, silently -- the cursor could not move anywhere and "No results" never
-		-- played. Reproduced live 2026-08-27 filtering "sta" after the pole was equipped.
+		-- [43.2] A filter with no hits leaves the list holding ONLY the synthetic
+		-- "Filter;<text>" row. That is deliberate and is the long-standing behaviour:
+		-- arrowing then re-announces the typed filter and nothing else, which is exactly
+		-- how "nothing matched" reads to the user -- no item is offered that does not
+		-- match. The old code meant to fall back to tOldChildren[1] here, but its test
+		-- ("#tChildrenFiltered == 0") could never be true because the filter row is
+		-- already in the array. Making that fallback reachable turned out to be a
+		-- REGRESSION, not a fix: it put a non-matching item back into a list that is
+		-- supposed to be empty (reported 2026-08-27, filter "lkjl" still offering
+		-- "Neu Goldener Stachelflosser"). So count the matches -- the length never
+		-- could -- and on zero change nothing at all.
 		if tMatches == 0 then
-			table.insert(tChildrenFiltered, tOldChildren[1])
-			--SkuCore:Debug("ApplyFilter: keine Ergebnisse f�r filter, element 1 wird angezeigt")
-			SkuOptions.Voice:OutputStringBTtts(L["No results"], true, true, 0.2, nil, nil, nil, 2)
+			dprint("menu.filter", "no match ->", tostring(aFilterstring), "-- filter row only")
 		end
 
 		for x = 1, #tChildrenFiltered do
