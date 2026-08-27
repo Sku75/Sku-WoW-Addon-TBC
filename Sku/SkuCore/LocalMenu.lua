@@ -5867,6 +5867,21 @@ local function tSkuCheckMenu()
 			tostring(SkuOptions and SkuOptions.tMenuToggleGetFailureLast))
 	end
 
+	-- Menu-close ordering: the interact windows must be closed while the menu frame is
+	-- still shown, and only then may it hide. See the reorder note in
+	-- SkuZOptions/Core.lua -- hiding it first makes a quest window opened at ~0 m from a
+	-- quest OBJECT reopen forever on every Escape. A pure source-ordering rule with no
+	-- visible symptom until someone stands in exactly that spot, so it gets a tripwire.
+	local tCloseOrderBad = (SkuOptions and SkuOptions.tMenuCloseOrderViolations) or 0
+	tChecked = tChecked + 1
+	if tCloseOrderBad > 0 then
+		tViolations = tViolations + tCloseOrderBad
+		dprint("skucheck", "VIOLATION menu:", tCloseOrderBad, "of",
+			tostring((SkuOptions and SkuOptions.tMenuCloseCount) or 0),
+			"menu close(s) ran the interact-window close loop with the menu frame ALREADY HIDDEN",
+			"-- self:Hide() must run AFTER that loop (quest-window reopen regression)")
+	end
+
 	local tPopupDead = (SkuOptions and SkuOptions.tPopupCombatDead) or 0
 	tChecked = tChecked + 1
 	if tPopupDead > 0 then

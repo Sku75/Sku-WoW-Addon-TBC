@@ -2411,6 +2411,17 @@ function SkuOptions:CreateMainFrame()
 				-- what survived -- immediately and again a beat later, because HideUIPanel
 				-- dispatches through the (secure) FramePositionDelegate rather than hiding
 				-- synchronously. Remove once the cause is known.
+				-- [43.2] Ordering tripwire, reported by /skucheck menu. The invariant is
+				-- that this frame is STILL SHOWN while the interact windows are closed
+				-- below (see the reorder note above); moving self:Hide() back before the
+				-- loop reintroduces the quest-window-reopen bug, and that only shows up
+				-- standing at 0 m on a quest object, which is far too rare to catch by
+				-- accident. Recording it here turns the regression into a /skucheck line.
+				SkuOptions.tMenuCloseCount = (SkuOptions.tMenuCloseCount or 0) + 1
+				if self:IsVisible() ~= true then
+					SkuOptions.tMenuCloseOrderViolations = (SkuOptions.tMenuCloseOrderViolations or 0) + 1
+				end
+
 				local tDiagBefore = {}
 				for i, v in pairs(SkuCore.interactFramesList) do
 					if _G[v] and _G[v]:IsVisible() == true then
@@ -4219,12 +4230,69 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tOldChildren = false
-function SkuOptions:ClearFilter()
-	if tOldChildren ~= false then
+-- [43.2] Remember WHOSE children were replaced, not just what they were. Both undo
+-- paths used to write the snapshot back to SkuOptions.currentMenuPosition.parent,
+-- which is only the right node while the cursor is still standing in the filtered
+-- level -- after an ENTER descended, or when ApplyFilter drops a previous filter
+-- before applying a new one at another level, that is a DIFFERENT node and the undo
+-- landed on the wrong list.
+local tOldChildrenParent = nil
+-- The exact array ApplyFilter installed. The undo only fires when the parent still
+-- carries THAT array: if anything replaced the level's children in the meantime (a
+-- CheckFrames rebuild, RebuildVolatileSiblings), the snapshot is stale and writing it
+-- back would resurrect dead nodes. Then we just drop the snapshot.
+local tFilteredChildren = nil
+
+-- Put the unfiltered sibling list back on the node ApplyFilter took it from and
+-- re-link next/prev (the list is a LINKED LIST, the array alone is not enough).
+-- Returns true when something was actually restored. Cursor-safe by construction:
+-- the filtered array holds the SAME node objects, so a cursor on a real entry stays
+-- valid; only the synthetic "Filter;<text>" row has no home in the restored list,
+-- and callers re-point off it.
+local function tRestoreUnfilteredChildren()
+	if tOldChildren == false or not tOldChildrenParent then return false end
+	local tParent = tOldChildrenParent
+	if tParent.children ~= tFilteredChildren then
 		tOldChildren = false
-		--SkuCore:Debug("ClearFilter: filter cleared, no menu update")
-	else
-		--SkuCore:Debug("ClearFilter: error: no old child data", tOldChildren)
+		tOldChildrenParent = nil
+		tFilteredChildren = nil
+		return false
+	end
+	tParent.children = tOldChildren
+	for x = 1, #tParent.children do
+		tParent.children[x].next = tParent.children[x + 1]
+		tParent.children[x].prev = tParent.children[x - 1]
+	end
+	tOldChildren = false
+	tOldChildrenParent = nil
+	tFilteredChildren = nil
+	return true
+end
+
+function SkuOptions:ClearFilter()
+	-- [43.2] Actually UNDO the filter instead of only forgetting the typed string.
+	-- ApplyFilter REPLACES parent.children with a filtered array; the old ClearFilter
+	-- just reset tOldChildren + Filterstring and left that array sitting in the tree,
+	-- so the level stayed filtered until something rebuilt it from scratch -- and a
+	-- frame-walker level (bags) cannot refresh in place, it needs a CheckFrames
+	-- reopen. That was masked for years because every action path forced a
+	-- CheckFrames. It stops being masked as soon as an action does NOT change the
+	-- bags: using an enchant / fishing lure only arms the targeting cursor, no
+	-- BAG_UPDATE, no rebuild -- and the level stayed filtered through Left/Right
+	-- re-entry until the bag was closed.
+	if tRestoreUnfilteredChildren() then
+		-- The synthetic "Filter;<text>" row is gone from the restored list, so a cursor
+		-- parked on it would have nothing to stand on -> first real entry.
+		local tCur = SkuOptions.currentMenuPosition
+		if tCur and tCur.parent and tCur.parent.children then
+			local tStillThere = false
+			for x = 1, #tCur.parent.children do
+				if tCur.parent.children[x] == tCur then tStillThere = true break end
+			end
+			if not tStillThere and tCur.parent.children[1] then
+				SkuOptions.currentMenuPosition = tCur.parent.children[1]
+			end
+		end
 	end
 	SkuOptions.Filterstring = ""
 end
@@ -4245,7 +4313,8 @@ function SkuOptions:ApplyFilter(aFilterstring)
 			SkuOptions:ApplyFilter("")
 		end
 
-		tOldChildren = SkuOptions.currentMenuPosition.parent.children
+		tOldChildrenParent = SkuOptions.currentMenuPosition.parent
+		tOldChildren = tOldChildrenParent.children
 
 		local tChildrenFiltered = {}
 		local tFilterEntry = SkuOptions:TableCopy(tOldChildren[1])
@@ -4258,13 +4327,20 @@ function SkuOptions:ApplyFilter(aFilterstring)
 		setmetatable(tFilterEntry, getmetatable(tOldChildren[1]))
 		tFilterEntry.name = L["Filter"]..";"..aFilterstring
 		table.insert(tChildrenFiltered, tFilterEntry)
+		local tMatches = 0
 		for x = 1, #tOldChildren do
 			if SkuMenuFilterMatch(tOldChildren[x].name, aFilterstring) then
 				table.insert(tChildrenFiltered, tOldChildren[x])
+				tMatches = tMatches + 1
 			end
 		end
 
-		if #tChildrenFiltered == 0 then
+		-- [43.2] Count MATCHES, not list length. tChildrenFiltered already holds the
+		-- synthetic "Filter;<text>" row at this point, so "#tChildrenFiltered == 0" was
+		-- never true: a filter with no hits produced a one-row list containing only that
+		-- row, silently -- the cursor could not move anywhere and "No results" never
+		-- played. Reproduced live 2026-08-27 filtering "sta" after the pole was equipped.
+		if tMatches == 0 then
 			table.insert(tChildrenFiltered, tOldChildren[1])
 			--SkuCore:Debug("ApplyFilter: keine Ergebnisse f�r filter, element 1 wird angezeigt")
 			SkuOptions.Voice:OutputStringBTtts(L["No results"], true, true, 0.2, nil, nil, nil, 2)
@@ -4284,30 +4360,25 @@ function SkuOptions:ApplyFilter(aFilterstring)
 		end
 
 		SkuOptions.currentMenuPosition.parent.children = tChildrenFiltered--tOldChildren)
+		tFilteredChildren = tChildrenFiltered
 		SkuOptions.currentMenuPosition:OnFirst()
 
 		SkuOptions.Voice:OutputStringBTtts(L["Filter applied"], true, true, 0.3, nil, nil, nil, 2)
 		--SkuCore:Debug("ApplyFilter: filter applied, menu updated")
 	end
 	if aFilterstring == "" then
-		if tOldChildren ~= false then
-			SkuOptions.currentMenuPosition.parent.children = tOldChildren--tOldChildren)
-			for x = 1, #SkuOptions.currentMenuPosition.parent.children do
-				if SkuOptions.currentMenuPosition.parent.children[x+1] then
-					SkuOptions.currentMenuPosition.parent.children[x].next = SkuOptions.currentMenuPosition.parent.children[x+1]
-				else
-					SkuOptions.currentMenuPosition.parent.children[x].next = nil
-				end
-				if SkuOptions.currentMenuPosition.parent.children[x-1] then
-					SkuOptions.currentMenuPosition.parent.children[x].prev = SkuOptions.currentMenuPosition.parent.children[x-1]
-				else
-					SkuOptions.currentMenuPosition.parent.children[x].prev = nil
-				end
+		local tRestoredParent = tOldChildrenParent
+		if tRestoreUnfilteredChildren() then
+			-- Re-home the cursor only when the level just unfiltered is the one the cursor
+			-- stands in. ApplyFilter("") doubles as the internal "drop the previous filter
+			-- first" step (see above), and then the restored level can be somewhere else
+			-- entirely -- calling OnFirst() there used to yank the cursor to the top of an
+			-- unrelated list.
+			if SkuOptions.currentMenuPosition
+				and SkuOptions.currentMenuPosition.parent == tRestoredParent then
+				SkuOptions.currentMenuPosition:OnFirst()
+				SkuOptions.Voice:OutputStringBTtts(L["Filter removed"], true, true, 0.3, nil, nil, nil, 2)
 			end
-			SkuOptions.currentMenuPosition:OnFirst()
-			tOldChildren = false
-
-			SkuOptions.Voice:OutputStringBTtts(L["Filter removed"], true, true, 0.3, nil, nil, nil, 2)
 			--SkuCore:Debug("ApplyFilter: filter cleared, menu updated")
 		else
 			--SkuCore:Debug("ApplyFilter: error: no old child data. this should not happen!")
@@ -4382,6 +4453,11 @@ function SkuOptions:RefreshActiveFilterView(aParent)
 		tChildrenFiltered[x].prev = tChildrenFiltered[x - 1] or nil
 	end
 	aParent.children = tChildrenFiltered
+	-- Keep the undo snapshot's identity check in sync: tRestoreUnfilteredChildren
+	-- only restores while the parent still carries the array ApplyFilter installed,
+	-- and this replaces exactly that array.
+	tFilteredChildren = tChildrenFiltered
+	tOldChildrenParent = aParent
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -5099,6 +5175,11 @@ function SkuCaptureSellState()
 		bagSlot = itemEntry and itemEntry.bagSlot,
 		itemId = itemEntry and itemEntry.itemId,
 		deadline = GetTime() + 2.5,
+		-- When the window was armed. tExtendBagPostActionForCast only accepts a cast
+		-- that starts right after this, so an unrelated later cast (fishing!) can't
+		-- keep pushing the deadline forward.
+		armedAt = GetTime(),
+		castExtended = false,
 		lastName = nil,
 	}
 end
@@ -5203,6 +5284,16 @@ function SkuBagConfirmRefresh()
 		return
 	end
 
+	-- Hold the announce gate across the whole rebuild + re-pin. CheckFrames' own
+	-- aQuiet only silences ITS announce; the path walk underneath (SkuOptions:SlashFunc,
+	-- whose aSilent parameter is dead) speaks on its own, and the rebuild transiently
+	-- parks the cursor on the level's first entry until the identity re-pin lands 0.2s
+	-- later. Without this hold a LATE refresh -- one arriving after the settled announce
+	-- already lifted the gate -- blurts that transient entry.
+	if Sku then
+		local tHold = GetTime() + 0.8
+		if tHold > (Sku.tBagAnnounceSuppress or 0) then Sku.tBagAnnounceSuppress = tHold end
+	end
 	-- Quiet rebuild: fresh GossipList + re-rendered nodes, no announce.
 	pcall(function() SkuCore:CheckFrames(nil, nil, true) end)
 
@@ -6003,10 +6094,26 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 							-- (cursor sits on the item node itself, which its bagSlot/itemId
 							-- branch handles); BAG_UPDATE(_DELAYED) then fires the confirm once
 							-- the bag has settled.
+							--
+							-- [43.2] The macro deliberately does NOT end in
+							-- "/script SkuCore:CheckFrames()" any more. That third line was a leftover
+							-- from before the event-driven confirm existed, and it was the thing that
+							-- MOVED the cursor: CheckFrames re-anchors the menu by re-walking the path
+							-- from the root and stepping OnNext() a remembered number of times, so
+							-- whenever that positional bookkeeping does not match (filtered list,
+							-- auto-descend branch taken, display name changed) the user lands on entry 1.
+							-- Worse, it ran at the KEYPRESS -- before the action had changed anything at
+							-- all, and for a cast-time action (enchant, fishing lure, weapon oil, armor
+							-- kit, disenchant) seconds before. It could not even see the change it was
+							-- supposedly refreshing for: a rebuild of stale data that costs the cursor.
+							-- The refresh is owned by the confirm window instead: BAG_UPDATE /
+							-- BAG_UPDATE_DELAYED -> SkuBagConfirmRefresh rebuilds only once the bags have
+							-- really settled, then re-pins by bagSlot/itemId. When the action changes
+							-- nothing in the bags, nothing rebuilds and the cursor stays exactly where
+							-- the user put it -- which is the correct behaviour.
 							tNewMenuEntry.rightMacrotext =
 								"/script SkuCaptureSellState()\r\n"
-								.. "/use "..lBag.." "..lSlot.."\r\n"
-								.. "/script SkuCore:CheckFrames()"
+								.. "/use "..lBag.." "..lSlot
 						end
 					elseif aGossipListTable[index].containerFrameName
 						and string.match(aGossipListTable[index].containerFrameName, "^MerchantItem%d+ItemButton$") then

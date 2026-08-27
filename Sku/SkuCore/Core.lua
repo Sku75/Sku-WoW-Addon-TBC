@@ -539,6 +539,10 @@ function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_FAILED", SkuCore.UNIT_SPELLCAST_FAILED)
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_FAILED_QUIET", SkuCore.UNIT_SPELLCAST_FAILED_QUIET)
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_INTERRUPTED", SkuCore.UIErrors.UNIT_SPELLCAST_INTERRUPTED)
+	-- Second subscriber on the SAME event (the dispatcher fans out, that is what it
+	-- is for here): SkuCore:UNIT_SPELLCAST_INTERRUPTED closes the bag-action window
+	-- that tExtendBagPostActionForCast stretched over a cast that got cut short.
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_INTERRUPTED", SkuCore.UNIT_SPELLCAST_INTERRUPTED)
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_STOP", SkuCore.UNIT_SPELLCAST_STOP)
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_SUCCEEDED", SkuCore.UNIT_SPELLCAST_SUCCEEDED)
 	SkuDispatcher:RegisterEventCallback("NAME_PLATE_CREATED", SkuCore.NAME_PLATE_CREATED)
@@ -2371,7 +2375,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QuestFrameProgressPanel_OnHide(...)
 	--dprint("QuestFrameProgressPanel_OnHide", ...)
-	SkuCore:CheckFrames()
+	-- Coalesced: QuestFrame_OnHide hides every sub-panel, so these three fire
+	-- together on one close. See SkuCore:CheckFramesCoalesced.
+	SkuCore:CheckFramesCoalesced()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QuestFrameDetailPanel_OnShow(...)
@@ -2381,7 +2387,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QuestFrameDetailPanel_OnHide(...)
 	--dprint("QuestFrameDetailsPanel_OnHide", ...)
-	SkuCore:CheckFrames()
+	-- Coalesced: QuestFrame_OnHide hides every sub-panel, so these three fire
+	-- together on one close. See SkuCore:CheckFramesCoalesced.
+	SkuCore:CheckFramesCoalesced()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_LOGIN(...)
@@ -2436,7 +2444,73 @@ end
 function SkuCore:FollowOnCast()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- A bag action whose bags only change when its CAST COMPLETES (applying an
+-- enchant / a fishing lure / a weapon oil / an armor kit, disenchanting,
+-- prospecting) starts that cast INSIDE the 2.5s confirm window
+-- SkuCaptureSellState armed at the right-click -- but the BAG_UPDATE that drives
+-- the cursor repair lands seconds LATER, long after the window expired. So
+-- SkuBagConfirmRefresh no-opped, nothing re-pinned, and the menu silently stayed
+-- on the transient first entry that the macro's own "/script SkuCore:CheckFrames()"
+-- had left it on (the "after enchanting I'm back on item 1" symptom; the announce
+-- was swallowed by the suppress gate, so it happened without a sound).
+--
+-- Fix: push the window's deadline out to the cast's own end time while KEEPING the
+-- original anchor. bagSlot/itemId still point at the item the user right-clicked,
+-- so the post-cast re-pin lands back on exactly that entry (an enchant does not
+-- move the item, so the bagSlot branch of tPickBagTarget hits).
+--
+-- Deliberately NOT keyed on a spell whitelist (tBagMutatingCastSpells below): the
+-- real condition is "the player started a cast while a bag-action window is open",
+-- which covers every current and future cast-time bag action without maintenance.
+-- Safe because manual navigation cancels the whole window (SkuClearBagPostAction,
+-- SkuZOptions/Core.lua:3107), so a longer deadline can never yank a cursor the
+-- user has since moved. The suppress gate is extended in step so the quiet
+-- post-cast rebuild does not blurt the transient entry before the forced announce.
+--
+-- TWO HARD GUARDS, both learned from a live runaway (2026-08-27): right-clicking a
+-- fishing pole equips it, the player then fishes, and Fishing (33095) is a 22s cast
+-- that fired UNIT_SPELLCAST_START INSIDE the still-open window. Each cast pushed the
+-- deadline another 24.5s ahead, so the window -- and with it the announce suppression
+-- -- never died. Therefore:
+--   * grace: only a cast that starts within tBagCastGrace of the right-click can be
+--     the action's own cast ("/use" fires it in the same frame; anything later is the
+--     player doing something else), and
+--   * once: castExtended makes it a one-shot, so no chain of casts can walk the
+--     deadline forward indefinitely.
+-- The clamp is sized for the real cast-time bag actions (enchant / disenchant /
+-- armor kit are ~5s) and deliberately EXCLUDES a 22s fishing cast.
+local tMaxBagCastExtend = 10      -- seconds; also the sanity clamp on a bogus endTime
+local tBagCastGrace = 1.0         -- seconds between the right-click and "its" cast
+local function tExtendBagPostActionForCast(aInfoFunc)
+	local s = Sku and Sku.tBagPostAction
+	if not s then return end
+	if GetTime() > (s.deadline or 0) then return end        -- window already dead
+	if s.castExtended == true then return end               -- one-shot, never a chain
+	if GetTime() - (s.armedAt or 0) > tBagCastGrace then return end
+	if type(aInfoFunc) ~= "function" then return end
+	local tEndMS = select(5, aInfoFunc("player"))
+	if type(tEndMS) ~= "number" or tEndMS <= 0 then return end
+	-- endTimeMS is on GetTime()'s clock in milliseconds (the standard castbar idiom).
+	local tCastEnd = tEndMS / 1000
+	local tNewDeadline = tCastEnd + 2.5
+	if tNewDeadline <= s.deadline then return end
+	if tNewDeadline > GetTime() + tMaxBagCastExtend then return end
+	s.castExtended = true
+	s.deadline = tNewDeadline
+	if Sku then
+		local tSuppress = tCastEnd + 1.5
+		if tSuppress > (Sku.tBagAnnounceSuppress or 0) then
+			Sku.tBagAnnounceSuppress = tSuppress
+		end
+	end
+	dprint("bag confirm", "cast extends window ->",
+		string.format("%.1f", tNewDeadline - GetTime()) .. "s", "anchorSlot", tostring(s.bagSlot))
+end
+
 function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
+	if aUnitTarget == "player" then
+		tExtendBagPostActionForCast(_G.UnitCastingInfo)
+	end
 	if aUnitTarget == "player" and SkuCore.inCombat == false then
 		SkuOptions.Voice:OutputString(L["cast"], true, true, 0.2)
 	end
@@ -2450,6 +2524,7 @@ function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
 end
 function SkuCore:UNIT_SPELLCAST_CHANNEL_START(aEvent, unitTarget, castGUID, spellID)
 	if unitTarget == "player" then
+		tExtendBagPostActionForCast(_G.UnitChannelInfo)
 		SkuCore:UnfollowOnCast()
 	end
 	if SkuStatus.casting == 0 then
@@ -2481,6 +2556,18 @@ end
 function SkuCore:UNIT_SPELLCAST_FAILED_QUIET(aEvent, aUnitTarget, aCastGUID, aSpellID)
 end
 function SkuCore:UNIT_SPELLCAST_INTERRUPTED(aEvent, aUnitTarget, aCastGUID, aSpellID)
+	-- Counterpart to tExtendBagPostActionForCast: the window was stretched to cover
+	-- a cast that has now been cut short, so no BAG_UPDATE will ever arrive to drive
+	-- the repair and the cursor would sit out the rest of the window on the transient
+	-- first entry. Confirm right away instead -- SkuBagConfirmRefresh re-pins by the
+	-- anchor captured at the right-click, so the user lands back on the item they
+	-- tried to enchant whether the cast succeeded or not.
+	if aUnitTarget ~= "player" then return end
+	if not (Sku and Sku.tBagPostAction) then return end
+	if GetTime() > (Sku.tBagPostAction.deadline or 0) then return end
+	dprint("bag cast-refresh", "cast interrupted -> confirm now",
+		tostring(Sku.tBagPostAction.bagSlot))
+	if _G.SkuBagConfirmRefresh then pcall(_G.SkuBagConfirmRefresh) end
 end
 -- Cast-time actions that mutate the player's bags only when the cast COMPLETES,
 -- decoupled from the Sku right-click that started them (unlike a potion/sell,
@@ -2492,8 +2579,20 @@ local tBagMutatingCastSpells = {
 }
 function SkuCore:UNIT_SPELLCAST_SUCCEEDED(aEvent, aUnitTarget, aCastGUID, aSpellID)
 	if aUnitTarget ~= "player" then return end
-	if not (aSpellID and tBagMutatingCastSpells[aSpellID]) then return end
-	dprint("bag cast-refresh", "spell done ->", tostring(aSpellID))
+	-- Two entry conditions:
+	--  * a whitelisted cast-time bag spell (Disenchant) -- kept because it must
+	--    still re-arm a window the user already let expire; and
+	--  * ANY player cast that completes while a bag-action window is STILL OPEN.
+	--    Since tExtendBagPostActionForCast stretches the window across the cast,
+	--    that is the normal case for applying an enchant / fishing lure / weapon oil
+	--    / armor kit from the bag list, and it needs no whitelist: the open window is
+	--    itself the proof that this cast was started by a Sku bag action.
+	local tWhitelisted = (aSpellID and tBagMutatingCastSpells[aSpellID]) == true
+	local tWindowOpen = (Sku and Sku.tBagPostAction
+		and GetTime() <= (Sku.tBagPostAction.deadline or 0)) == true
+	if not (tWhitelisted or tWindowOpen) then return end
+	dprint("bag cast-refresh", "spell done ->", tostring(aSpellID),
+		"whitelisted", tostring(tWhitelisted), "windowOpen", tostring(tWindowOpen))
 	-- Disenchant destroys the item + creates materials only WHEN THE CAST FINISHES
 	-- — often seconds after the right-click that started it. By now the confirm
 	-- window SkuCaptureSellState armed at the click (2.5s deadline) has expired, so
@@ -2505,12 +2604,25 @@ function SkuCore:UNIT_SPELLCAST_SUCCEEDED(aEvent, aUnitTarget, aCastGUID, aSpell
 	-- authoritative "bags settled" signal) drive SkuBagConfirmRefresh — identical
 	-- to the vendor-sell flow, which re-pins by identity and announces once.
 	if not (_G.SkuCaptureSellState and Sku) then return end
-	pcall(_G.SkuCaptureSellState)
+	-- Only re-arm when the original window is really gone. Since
+	-- tExtendBagPostActionForCast pushes the deadline across the cast, the window
+	-- normally survives -- and it still holds the anchor captured at the
+	-- RIGHT-CLICK. Re-arming here would overwrite that with the CURRENT cursor,
+	-- which the macro's own CheckFrames has long since parked on the first list
+	-- entry, throwing the good identity away.
+	if Sku.tBagPostAction and GetTime() <= (Sku.tBagPostAction.deadline or 0) then
+		dprint("bag cast-refresh", "window still open -> keep original anchor",
+			tostring(Sku.tBagPostAction.bagSlot))
+	else
+		pcall(_G.SkuCaptureSellState)
+	end
 	if not Sku.tBagPostAction then return end     -- cursor wasn't on a bag item
 	-- Same suppress gate the ENTER path sets, so the confirm's quiet rebuild doesn't
 	-- announce the transient first item; SkuBagConfirmRefresh force-announces the
 	-- settled entry once and clears this.
-	Sku.tBagAnnounceSuppress = GetTime() + 2.5
+	if (Sku.tBagAnnounceSuppress or 0) < GetTime() + 2.5 then
+		Sku.tBagAnnounceSuppress = GetTime() + 2.5
+	end
 	-- Fallback in case the destroy BAG_UPDATE was dispatched just BEFORE this
 	-- handler (event ordering) or never fires: confirm once against now-settled
 	-- bags. Late enough to give the real BAG_UPDATE_DELAYED first shot; the window
@@ -2518,6 +2630,15 @@ function SkuCore:UNIT_SPELLCAST_SUCCEEDED(aEvent, aUnitTarget, aCastGUID, aSpell
 	-- already announced).
 	if _G.C_Timer and _G.C_Timer.After then
 		_G.C_Timer.After(1.0, function()
+			-- Only when the real BAG_UPDATE path did NOT already land. `announced` is
+			-- set by the settled announce, so it is the proof the event arrived and the
+			-- cursor is where it belongs -- running another full rebuild on top of that
+			-- is pure risk: it re-anchors the menu and, with the announce gate already
+			-- lifted by that same settled announce, spoke the transient first entry a
+			-- second after the correct one (observed 2026-08-27: "Starke Angelrute"
+			-- followed by "Abzeichen der Gerechtigkeit").
+			local s2 = Sku and Sku.tBagPostAction
+			if not s2 or s2.announced == true then return end
 			if _G.SkuBagConfirmRefresh then pcall(_G.SkuBagConfirmRefresh) end
 		end)
 	end
@@ -3121,7 +3242,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QuestFrameGreetingPanel_OnHide(...)
 	--dprint("QuestFrameGreetingPanel_OnHide", self, event, ...)
-	SkuCore:CheckFrames()
+	-- Coalesced: QuestFrame_OnHide hides every sub-panel, so these three fire
+	-- together on one close. See SkuCore:CheckFramesCoalesced.
+	SkuCore:CheckFramesCoalesced()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3709,10 +3832,36 @@ function SkuCore:GENERIC_OnOpen(self)
 end
 ]]
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [43.2] "A frame just hid, rescan" -- coalesced to one run per frame.
+--
+-- Closing the menu hides several tracked frames in a single keypress, and Blizzard's
+-- QuestFrame_OnHide additionally hides all four of its sub-panels, three of which Sku
+-- hooks. Every one of those lands on a rescan request, so one Escape used to run
+-- CheckFrames (a full sweep of all tracked frames) plus PrimeBagMirror (a complete
+-- Build_BagsFrame) four to six times over -- the ++CheckFrames bursts in any capture.
+--
+-- Collapsing them is safe because CheckFrames does its work in a body deferred by
+-- 0.01 s that reads live state: the single run that survives executes after the whole
+-- burst of Hides has finished and therefore sees exactly the end state the LAST call
+-- of the burst would have seen. The first call still runs synchronously, so nothing
+-- about the timing of the first rescan changes; only the redundant repeats are
+-- dropped, and the gate reopens on the next frame.
+--
+-- Hide paths only. The OnShow side is deliberately NOT routed through here: those are
+-- what make the menu appear on a window opening, and they are not the ones that burst.
+local tCheckFramesCoalesceFlag = false
+function SkuCore:CheckFramesCoalesced()
+	if tCheckFramesCoalesceFlag == true then return false end
+	tCheckFramesCoalesceFlag = true
+	C_Timer.After(0, function() tCheckFramesCoalesceFlag = false end)
+	SkuCore:CheckFrames()
+	return true
+end
+
 function SkuCore:GENERIC_OnClose(self)
 	if SkuCore._suppressGenericFrameHooks == true then return end
 	--print("GENERIC_OnClose", _G["AuctionFrame"]:IsShown())
-	SkuCore:CheckFrames()
+	if SkuCore:CheckFramesCoalesced() ~= true then return end
 	SkuOptions:SendTrackingStatusUpdates()
 	-- Keep the in-combat bag mirror fresh after the bags are closed out of combat:
 	-- CheckFrames only (re)builds VISIBLE frames, so a plain close never rebuilds the bag
@@ -4656,12 +4805,24 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			CleanUpGossipList(tGossipList)
 			SkuCore.GossipList = tGossipList
 			local tIndex
+			-- [43.2] Remember the focused entry's NAME beside its index. tIndex is the
+			-- position inside the children list as it stands RIGHT NOW, but the restore
+			-- below steps that many times into the list as it stands AFTER the rebuild --
+			-- two different lists whenever anything reshaped them. The type-ahead filter
+			-- is the reliable way to hit it: SkuOptions:ApplyFilter REPLACES
+			-- parent.children with a filtered array whose entry 1 is a synthetic
+			-- "Filter;<text>" row, so a match at filtered position 2 becomes "step once"
+			-- and lands on entry 2 of the FULL list -- a different item entirely.
+			-- Matching the name in the rebuilt list first makes the restore mean "put me
+			-- back on the same entry" instead of "put me back on the same row number".
+			local tName = nil
 			local tBread = nil
 			local tFirstFrame = nil
 			if SkuOptions.currentMenuPosition then
 				if SkuOptions.currentMenuPosition.parent then
 					local tTable = SkuOptions.currentMenuPosition.parent
 
+					tName = SkuOptions.currentMenuPosition.name
 					if tTable.children then
 						for x = 1, #tTable.children do
 							if tTable.children[x].name == SkuOptions.currentMenuPosition.name then
@@ -4697,7 +4858,23 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 							if _G[i]:IsVisible() then
 								SkuOptions:SlashFunc(Sku.MENU_ROOT..","..tBread)
 								if tIndex then
-									for x = 1, tIndex - 1 do
+									-- Identity first: if the remembered name is still in the rebuilt
+									-- list, step to THAT row. Purely additive -- when the name is gone
+									-- (item sold, consumed, renamed) tSteps stays tIndex and this
+									-- behaves exactly as before, i.e. packed-list semantics: land on
+									-- whatever filled the gap.
+									local tSteps = tIndex
+									local tNewParent = SkuOptions.currentMenuPosition
+										and SkuOptions.currentMenuPosition.parent
+									if tName and tNewParent and tNewParent.children then
+										for x = 1, #tNewParent.children do
+											if tNewParent.children[x].name == tName then
+												tSteps = x
+												break
+											end
+										end
+									end
+									for x = 1, tSteps - 1 do
 										SkuOptions.currentMenuPosition:OnNext()
 									end
 									--SkuOptions.currentMenuPosition.parent.children[tIndex]:OnSelect()
