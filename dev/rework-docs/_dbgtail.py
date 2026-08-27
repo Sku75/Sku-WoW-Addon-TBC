@@ -39,14 +39,25 @@ def unescape(s):
 
 lines = open(PATH, encoding='utf-8-sig', errors='replace').read().splitlines()
 
+# Start at SkuDebugLog and only accept the ring at depth 1 inside it. SkuDebugLog also
+# holds ["dbCheck"], whose entries each carry their OWN nested ["lines"] table (the
+# DB-checksum dumps) and sort BEFORE ["lines"] in the saved file -- grabbing the first
+# ["lines"] in the file therefore printed checksum rows instead of the debug ring.
+try:
+    start = next(i for i, l in enumerate(lines) if l.startswith('SkuDebugLog = {'))
+except StopIteration:
+    sys.exit("no SkuDebugLog in " + PATH)
+
 out = []
 in_lines = False
+depth = 0
 cur = {}
-for ln in lines:
+for ln in lines[start:]:
     s = ln.strip()
     if not in_lines:
-        if s.startswith('["lines"]') and '{' in s:
+        if depth == 1 and s.startswith('["lines"]') and '{' in s:
             in_lines = True
+        depth += s.count('{') - s.count('}')
         continue
 
     # end of the lines table
