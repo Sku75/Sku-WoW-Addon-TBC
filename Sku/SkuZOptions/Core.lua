@@ -3102,8 +3102,14 @@ function SkuOptions:CreateMenuFrame()
 		-- (yanking it away from where the user just moved). Covers both the "no
 		-- bag event at all" case and a late event arriving after the user moved on
 		-- — so no fixed-delay fallback is needed.
+		-- EXCEPT while a modal confirm is holding the window (SkuBagPostActionPopupGate):
+		-- arrowing to the "Ja"/"Nein" button IS navigation, but it is navigation inside
+		-- the popup -- the user cannot reach the bag list at all until they answer, so it
+		-- is not them taking manual control of it. Cancelling here would throw the anchor
+		-- away one keypress before the answer that needs it.
+		local tPopupHolds = Sku and Sku.tBagPostAction and Sku.tBagPostAction.popupHeld == true
 		if Sku and (Sku.tBagAnnounceSuppress or Sku.tBagPostAction)
-			and tNavigationKeys and tNavigationKeys[aKey] then
+			and tNavigationKeys and tNavigationKeys[aKey] and not tPopupHolds then
 			if SkuClearBagPostAction then SkuClearBagPostAction() end
 		end
 
@@ -5112,6 +5118,79 @@ end
 -- menu close/re-sync (so a reopen starts fresh instead of restoring the acted-on
 -- item — the in-combat open/close toggle that normally resets the cursor never
 -- runs headless). Idempotent; safe to call when no window is open.
+-- A StaticPopup raised BY a bag action -- Blizzard's "replace the existing
+-- enchant?" confirm is the everyday case -- is a MODAL sitting between the
+-- right-click and its effect. Two things break while it is up:
+--   * the 2.5s confirm window expires, so the anchor captured at the right-click
+--     is thrown away and the post-cast re-pin never happens; and
+--   * Sku re-anchors the menu INTO the popup, so the position it came from is
+--     gone. When the popup closes, CheckFrames' path restore has nothing to
+--     restore and the generic auto-descend picks the only open frame -- landing
+--     the user at the TOP of the bag hierarchy ("Tasche 1"), not on the item
+--     they acted on. Traced 2026-08-27, 18:04:53 -> 18:04:55.
+-- So: hold the window open for as long as the modal is up (bounded), and confirm
+-- once it closes. The confirm covers BOTH answers, which is why it is the right
+-- tool: "Nein" produces no cast and no bag change at all, so nothing else could
+-- ever put the cursor back.
+local tBagPopupMaxHold = 30      -- seconds a modal may keep the window alive
+function SkuBagPostActionPopupGate(aPopupOpen)
+	local s = Sku and Sku.tBagPostAction
+	if not s then return end
+	if aPopupOpen == true then
+		s.popupFirstSeen = s.popupFirstSeen or GetTime()
+		if GetTime() - s.popupFirstSeen > tBagPopupMaxHold then return end
+		if s.popupHeld ~= true then
+			dprint("bag confirm", "popup holds window ->", tostring(s.bagSlot))
+		end
+		s.popupHeld = true
+		-- Generous, not now+2.5: CheckFrames only runs on frame show/hide, so a user
+		-- who takes a few seconds to answer would otherwise fall out of the window
+		-- between two observations. popupFirstSeen is what bounds this.
+		local tHold = GetTime() + tBagPopupMaxHold
+		if tHold > (s.deadline or 0) then s.deadline = tHold end
+		s.armedAt = GetTime()
+	elseif s.popupHeld == true then
+		-- Blizzard's popup hide drives SEVERAL CheckFrames in the same frame, so this
+		-- branch is entered repeatedly. Do the work once. (popupHeld deliberately stays
+		-- true until the deferred callback below -- see the note there.)
+		if s.popupClosePending == true then return end
+		s.popupClosePending = true
+		dprint("bag confirm", "popup closed -> confirm", tostring(s.bagSlot))
+		-- Arm the announce gate NOW, not inside the confirm 0.1s later. Each of those
+		-- CheckFrames re-anchors the menu and speaks wherever it transiently lands --
+		-- observed 2026-08-27 18:41:43: "Tasche 1" and "Steckbrief" both leaked out
+		-- before the identity re-pin announced "Starke Angelrute".
+		if Sku then
+			local tHold = GetTime() + 1.5
+			if tHold > (Sku.tBagAnnounceSuppress or 0) then Sku.tBagAnnounceSuppress = tHold end
+		end
+		-- NEVER shrink: answering the popup starts the cast, and if
+		-- UNIT_SPELLCAST_START reached tExtendBagPostActionForCast before this hide
+		-- did, the deadline already covers the whole cast. Overwriting it with a flat
+		-- now+2.5 would expire the window seconds before the enchant finishes.
+		if (s.deadline or 0) < GetTime() + 2.5 then s.deadline = GetTime() + 2.5 end
+		s.armedAt = GetTime()
+		if _G.C_Timer and _G.C_Timer.After then
+			_G.C_Timer.After(0.1, function()
+				-- popupHeld stays TRUE until here on purpose: answering the popup starts
+				-- the cast before this frame's hide reaches CheckFrames, and
+				-- tExtendBagPostActionForCast waives its "cast must follow the click
+				-- within a second" grace while the flag is set. Without that the enchant
+				-- released by the popup would not count as this action's cast.
+				local s2 = Sku and Sku.tBagPostAction
+				if s2 then
+					s2.popupHeld = nil
+					s2.popupClosePending = nil
+				end
+				if _G.SkuBagConfirmRefresh then pcall(_G.SkuBagConfirmRefresh) end
+			end)
+		else
+			s.popupHeld = nil
+			s.popupClosePending = nil
+		end
+	end
+end
+
 function SkuClearBagPostAction()
 	if not Sku then return end
 	Sku.tBagAnnounceSuppress = nil
@@ -5180,6 +5259,10 @@ function SkuCaptureSellState()
 		-- keep pushing the deadline forward.
 		armedAt = GetTime(),
 		castExtended = false,
+		-- Set by SkuBagPostActionPopupGate while a modal confirm is on screen.
+		popupHeld = nil,
+		popupFirstSeen = nil,
+		popupClosePending = nil,
 		lastName = nil,
 	}
 end

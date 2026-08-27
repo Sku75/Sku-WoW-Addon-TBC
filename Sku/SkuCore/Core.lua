@@ -2486,7 +2486,9 @@ local function tExtendBagPostActionForCast(aInfoFunc)
 	if not s then return end
 	if GetTime() > (s.deadline or 0) then return end        -- window already dead
 	if s.castExtended == true then return end               -- one-shot, never a chain
-	if GetTime() - (s.armedAt or 0) > tBagCastGrace then return end
+	-- Grace waived while a modal confirm is holding the window: the popup is what
+	-- delayed this cast, and answering it is what released it.
+	if s.popupHeld ~= true and GetTime() - (s.armedAt or 0) > tBagCastGrace then return end
 	if type(aInfoFunc) ~= "function" then return end
 	local tEndMS = select(5, aInfoFunc("player"))
 	if type(tEndMS) ~= "number" or tEndMS <= 0 then return end
@@ -4783,6 +4785,17 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			for _, c in ipairs(SkuCore.localWindowContributors) do
 				local f = _G[c.frame]
 				if f and f.IsVisible and f:IsVisible() then table.insert(tDiagContrib, c.frame) end
+			end
+			-- A modal confirm raised by a bag action must not let that action's window
+			-- expire, and its closing is the moment to put the cursor back. See
+			-- SkuBagPostActionPopupGate (SkuZOptions/Core.lua); no-op unless a bag action
+			-- is actually pending, so every other popup is untouched.
+			if _G.SkuBagPostActionPopupGate then
+				local tPopupOpen = false
+				for x = 1, #tOpenFrames do
+					if string.find(tOpenFrames[x], "^StaticPopup%d+$") then tPopupOpen = true break end
+				end
+				pcall(_G.SkuBagPostActionPopupGate, tPopupOpen)
 			end
 			dprint("CheckFrames open: frames", (#tOpenFrames > 0) and table.concat(tOpenFrames, ",") or "none",
 				"contrib", (#tDiagContrib > 0) and table.concat(tDiagContrib, ",") or "none",
