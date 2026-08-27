@@ -5358,6 +5358,12 @@ function SkuBagConfirmRefresh()
 		Sku.tBagPostAction = nil
 		return
 	end
+	-- While a modal confirm is up the POPUP owns the cursor: the menu is anchored
+	-- inside it and the user is mid-dialog. The gate holds the window open for up to
+	-- 30s there, which means an unrelated BAG_UPDATE (loot landing, a trade settling)
+	-- would otherwise drive this and re-pin them out of the dialog onto the bag item.
+	-- SkuBagPostActionPopupGate runs the confirm itself once the popup closes.
+	if s.popupHeld == true then return end
 	-- In combat the visual OnSkuOptionsMain is hidden (can't Show under lockdown),
 	-- so IsMenuOpen() reports false even though the headless combat menu is
 	-- logically open. Accept the combat-active state so the post-USE refresh (the
