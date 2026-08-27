@@ -3229,6 +3229,11 @@ L["STRAT_ScanBusy"] = "Scan already running, waiting..."
 L["AURA_WeaponEnchantRemoved"] = "Weapon enchant expired"
 L["AURA_WeaponEnchantRemovedShort"] = "Enchant gone"
 L["AURA_WeaponEnchantRemovedTip"] = "A temporary weapon enchant (poison, sharpening stone, wizard oil) has expired"
+L["AURA_WeaponEnchantValueTag"] = "weapon enchant" -- value-list marker: this identity only ever appears as a weapon enchant
+L["AURA_WeHand"] = "weapon enchant hand"
+L["AURA_WeHandTip"] = "Which hand the weapon enchant event is about (main hand or off hand)"
+L["AURA_OutWeHand"] = "weapon enchant hand"
+L["AURA_OutWeHandTip"] = "Announces which hand the weapon enchant event is about"
 
 -- =====================================================================
 -- v41.01.04 Localization: Socketing (Build_SocketingFrame.lua)

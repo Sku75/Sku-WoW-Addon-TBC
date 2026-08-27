@@ -672,6 +672,25 @@ SkuAuras.outputs = {
          end,
       },
    },
+   weaponEnchantHand = {
+      tooltip = L["AURA_OutWeHandTip"],
+      friendlyName = L["AURA_OutWeHand"],
+      functs = {
+         ["nothing"] = tNothingOutputFunction,
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
+            local tEntry = tEvaluateData.weaponEnchantHand and SkuAuras.values[tEvaluateData.weaponEnchantHand]
+            if tEntry and tEntry.friendlyName then
+               SkuOptions.Voice:OutputString(tEntry.friendlyName, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            local tEntry = tEvaluateData.weaponEnchantHand and SkuAuras.values[tEvaluateData.weaponEnchantHand]
+            if tEntry and tEntry.friendlyName then
+               print(tEntry.friendlyName)
+            end
+         end,
+      },
+   },
    itemName = {
       tooltip = L["Der Name des Gegenstands, der die Aura ausgelöst hat"],
       friendlyName = L["gegenstand name"],
@@ -1249,6 +1268,17 @@ SkuAuras.valuesDefault = {
          tooltip = L["Die Anzahl der verbleibenden Gegenstände in deinen Taschen, vom Typ des Gegenstands, der das Ereignis ausgelöst hat"],
          friendlyName = L["gegenstand anzahl"], 
          friendlyNameShort = L["anzahl"],
+      },
+      -- [v43.2] Hand tokens for the weaponEnchantHand attribute/output. Stored as
+      -- stable keys, spoken through friendlyName, so an aura shared between a
+      -- German and a French client still names the same hand.
+      ["MAINHAND"] = {
+         tooltip = L["AURA_WeHandTip"],
+         friendlyName = L["Main Hand"],
+      },
+      ["OFFHAND"] = {
+         tooltip = L["AURA_WeHandTip"],
+         friendlyName = L["Off hand"],
       },
 }
 --add keys for pressedKey
@@ -2174,6 +2204,26 @@ SkuAuras.attributes = {
          return aEventData.weaponEnchantOffHand ~= nil and SkuAuras.Operators[aOperator].func(aEventData.weaponEnchantOffHand, SkuAuras:RemoveTags(aValue)) == true
       end,
       values = {},
+   },
+   -- [v43.2] Which hand the weapon-enchant EVENT is about. Only the two
+   -- synthetic enchant events carry it, so on anything else the guard below is
+   -- nil and the condition is false -- the same shape every event-scoped
+   -- attribute here uses. Exists because the enchant identity moved into the
+   -- event's spellName slot, which is where the hand name used to sit; without
+   -- this the hand would simply have been lost.
+   weaponEnchantHand = {
+      tooltip = L["AURA_WeHandTip"],
+      friendlyName = L["AURA_WeHand"],
+      type = "CATEGORY",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         if aEventData.weaponEnchantHand then
+            return SkuAuras.Operators[aOperator].func(aEventData.weaponEnchantHand, aValue)
+         end
+      end,
+      values = {
+         "MAINHAND",
+         "OFFHAND",
+      },
    },
    weaponEnchantMainHandDuration = {
       tooltip = L["AURA_WeMHDurTip"],

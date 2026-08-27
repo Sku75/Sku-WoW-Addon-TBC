@@ -181,6 +181,11 @@ AURA_WeOHTip	L'enchantement d'arme sur votre main gauche
 AURA_WeaponEnchantRemoved	Enchantement d'arme expiré
 AURA_WeaponEnchantRemovedShort	Enchantement disparu
 AURA_WeaponEnchantRemovedTip	Un enchantement d'arme temporaire (poison, pierre à aiguiser, huile de mage) a expiré
+AURA_WeaponEnchantValueTag	enchantement d'arme
+AURA_WeHand	main de l'enchantement d'arme
+AURA_WeHandTip	Quelle main concerne l'événement d'enchantement d'arme (main droite ou main gauche)
+AURA_OutWeHand	main de l'enchantement d'arme
+AURA_OutWeHandTip	Annonce quelle main concerne l'événement d'enchantement d'arme
 AUTOFOLLOW_BEGIN	début du suivi automatique
 AUTOFOLLOW_END	fin du suivi automatique
 Abbrechen	Annuler

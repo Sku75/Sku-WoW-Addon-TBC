@@ -3233,6 +3233,11 @@ L["STRAT_ScanBusy"] = "Suche läuft bereits, warte..."
 L["AURA_WeaponEnchantRemoved"] = "Waffenverzauberung abgelaufen"
 L["AURA_WeaponEnchantRemovedShort"] = "Verzauberung weg"
 L["AURA_WeaponEnchantRemovedTip"] = "Eine temporäre Waffenverzauberung (Gift, Schärfstein, Zaubereröl) ist abgelaufen"
+L["AURA_WeaponEnchantValueTag"] = "Waffenverzauberung" -- Marker in den Werte-Listen: diese Identität kommt nur als Waffenverzauberung vor
+L["AURA_WeHand"] = "Waffenverzauberung Hand"
+L["AURA_WeHandTip"] = "Welche Hand das Waffenverzauberungs-Ereignis betrifft (Haupthand oder Nebenhand)"
+L["AURA_OutWeHand"] = "Waffenverzauberung Hand"
+L["AURA_OutWeHandTip"] = "Sagt an, welche Hand das Waffenverzauberungs-Ereignis betrifft"
 
 -- =====================================================================
 -- v41.01.04 Lokalisierung: Sockeln (Build_SocketingFrame.lua)

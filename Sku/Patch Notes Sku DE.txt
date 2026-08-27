@@ -13,6 +13,8 @@ Aenderungen in Sku v43.2
             Taschen: Aktionen mit Zauberzeit (Verzauberung, Angelkoeder, Waffenoel, Ruestungsset, Entzaubern) melden den Gegenstand nach dem Zauber noch einmal und lassen den Cursor darauf stehen.
             Taschen: ein Bestaetigungsdialog wie "Bestehende Verzauberung ersetzen?" kostet nicht mehr die Position - nach "Ja" wie nach "Nein" landet man wieder auf dem Gegenstand.
             Menue: das Schliessen eines Fensters baut die Menuedaten nur noch einmal statt bis zu sechsmal neu auf.
+            Auren: eine Waffenverzauberung (Angelkoeder, Gift, Oel) laesst sich jetzt wie ein Zauber ansprechen - Ereignis "Waffenverzauberung abgelaufen" zusammen mit "Zauber name".
+            Auren: neue Bedingung und neue Ausgabe "Waffenverzauberung Hand" (Haupthand oder Nebenhand).
 
         Fehlerbehebungen
             Escape schloss das Menue nicht, wenn man direkt auf einem Questobjekt stand - das Questfenster ging endlos wieder auf.
@@ -20,6 +22,10 @@ Aenderungen in Sku v43.2
             Nach einer Aktion mit Zauberzeit wurde direkt nach dem richtigen Gegenstand noch ein falscher angesagt.
             Die Taschenliste fuer den Kampf konnte veralten, wenn man ein Questfenster schloss, waehrend die Taschen offen waren.
             Sprachausgabe: Ansagen blieben beim Navigieren immer wieder fuer eine Weile still - am zuverlaessigsten bei einem einzelnen Treffer nach dem Filtern.
+            Auren: der Satt-Buff war in der Zauberauswahl doppelt vorhanden - beide Eintraege klangen gleich, nur einer konnte je ausloesen.
+            Auren: Eintraege, die es nur als Waffenverzauberung gibt (etwa "Angelfertigkeit +75"), sind in den Auswahllisten jetzt als solche gekennzeichnet.
+            Auren: "Waffenverzauberung Haupthand enthaelt X" zusammen mit "Waffenverzauberung abgelaufen" konnte nie ausloesen - /skucheck auras meldet diese Kombination jetzt.
+            Auren: das Ende einer Waffenverzauberung wird auf den Frame genau erkannt statt bis zu eine viertel Sekunde spaeter.
 
     Der Cursor bleibt in der Tasche auf dem Gegenstand
         Einfach: Wer in der Taschenliste einen Gegenstand rechts anklickte - benutzen, anlegen, an
@@ -157,6 +163,105 @@ Aenderungen in Sku v43.2
             Fehler wieder hereingeholt, gegen den er geschrieben war. Angehaengt wird jetzt
             wieder echter Text: eine wechselnde Folge von 1 bis 64 geschuetzten Leerzeichen
             hinter dem letzten Wort, wo sie weder hoerbar ist noch die Betonung faerben kann.
+
+    Satt: nur noch ein Eintrag in der Zauberauswahl
+        Einfach: Wer eine Aura auf den Satt-Buff bauen wollte, fand in der Zauberauswahl zwei
+            Eintraege, die beide "Satt" gesprochen wurden. Nur einer davon konnte je ausloesen,
+            der andere war eine Karteileiche - welchen man erwischte, war reine Glueckssache und
+            nicht hoerbar. Es gibt jetzt nur noch einen Eintrag, und der ist der richtige. Eine
+            bereits gespeicherte Aura, die auf den falschen zeigte, wird beim naechsten Anmelden
+            einmalig umgehaengt und funktioniert danach.
+        Technisch: Auren werden seit v43.0 ueber die englische Identitaet eines Zaubers
+            gefuehrt, damit dieselbe Aura in jeder Sprache passt. In der mitgelieferten
+            Zauberdatenbank tragen zehn Zeilen den englischen Namen jedoch in
+            ANFUEHRUNGSZEICHEN - 44097 bis 44106 sowie 69559 und 65365 fuehren den Namen
+            einschliesslich zweier Anfuehrungszeichen, wo die anderen 65 Zeilen ihn ohne
+            fuehren. Damit entstand eine zweite Identitaet
+            hinter demselben deutschen Namen, und die Menue-Unterscheidung haengt in so einem
+            Fall die englische Identitaet an: der eine Eintrag hiess "Satt (Well Fed)", der
+            andere genauso, nur mit zwei zusaetzlichen Anfuehrungszeichen um Well Fed herum.
+            Anfuehrungszeichen spricht die Sprachausgabe nicht mit, also klangen beide Eintraege
+            identisch. "Satt" ist der einzige der 26.650 deutschen Namen im Datenbestand, dessen
+            zwei Identitaeten sich in nichts als diesen Zeichen unterscheiden. Der Name wird jetzt
+            beim Bilden der Identitaet entklammert, und zwar auf BEIDEN Seiten - in der
+            Werteliste und bei jeder Aufloesung eines laufenden Ereignisses -, denn nur eine
+            Seite zu aendern wuerde einen gespeicherten Wert erzeugen, den kein Ereignis mehr
+            trifft. Entklammert wird ausschliesslich, was an BEIDEN Enden ein Anfuehrungszeichen
+            traegt; die 17 uebrigen Zeilen mit Anfuehrungszeichen mitten im Namen (etwa
+            "Goblinbummkiste" oder das Parfuem "TRIUMPH") behalten sie, weil sie dort zum Namen
+            gehoeren. Eine einmalige Wanderung haengt gespeicherte Auren um.
+
+    Waffenverzauberungen sind in der Zauberauswahl erkennbar
+        Einfach: Ein Angelkoeder, ein Schaerfstein oder ein Waffenoel sind keine Buffs, sondern
+            eine Verzauberung auf der Waffe. Sie tauchen in keiner Bufliste des Spiels auf und
+            loesen kein Aura-Ereignis aus - eine Aura auf "Ereignis = Aura verloren und Zauber
+            name = Angelfertigkeit +75" konnte deshalb nie ausloesen, obwohl der Eintrag in der
+            Auswahl steht und voellig normal klingt. Solche Eintraege tragen jetzt in allen
+            Auswahllisten den Zusatz "(Waffenverzauberung)", damit hoerbar ist, worum es sich
+            handelt. Wer darauf reagieren will, nimmt entweder das Ereignis
+            "Waffenverzauberung abgelaufen" oder die Bedingung "Deine Waffenverzauberung
+            Haupthand". In der Ansage einer ausgeloesten Aura wird der Zusatz nicht mitgelesen.
+        Technisch: Die Werteliste des Attributs "Zauber name" ist die komplette Zauberdatenbank,
+            also auch Zeilen, die den Spieler nur als temporaere Waffenverzauberung erreichen -
+            der Koeder ist Zauber 8084 hinter Verzauberungs-ID 265. Die betroffenen Identitaeten
+            werden jetzt beim Aufbau der Listen ermittelt (jede Zauber-ID der Identitaet wird von
+            der Verzauberungsdatenbank referenziert) und bekommen den Zusatz. Bewusst
+            GEKENNZEICHNET statt entfernt: es sind 395 Identitaeten, und sie sind nicht alle
+            wirkungslos - "Feurige Waffe", "Scharfrichter" und "Unheilige Staerke" sind Prozeduren
+            von Verzauberungen, die sehr wohl unter genau diesem Namen im Kampfprotokoll
+            erscheinen. Sie zu entfernen haette funktionierenden Auren ihre einzige
+            Benennungsmoeglichkeit genommen. Der Zusatz nutzt denselben Mechanismus wie die
+            englische Unterscheidung, faellt also in der Sprachausgabe einer ausgeloesten Aura
+            wieder weg.
+
+    Waffenverzauberungen werden angesprochen wie Zauber
+        Einfach: Fuer einen Schadenszauber ueber Zeit schreibt man "Ereignis gleich aura
+            verloren" und "Zauber name gleich <Zauber>" - das Ereignis sagt selbst, worum es
+            geht. Bei einer Waffenverzauberung ging das nicht: den Angelkoeder konnte man nur
+            ueber "Deine Waffenverzauberung Haupthand" benennen, und das ist eine Zustandsfrage,
+            keine Ereignisfrage. In der Fassung "enthaelt" konnte so eine Aura sogar NIE
+            ausloesen - wenn das Ereignis kommt, ist die Verzauberung bereits weg, also enthaelt
+            die Liste sie nicht mehr. Nur die verdrehte Fassung "enthaelt nicht" funktionierte.
+            Jetzt traegt das Ereignis den Namen der Verzauberung selbst, und die Aura wird genau
+            wie bei einem Zauber geschrieben: "Ereignis gleich Waffenverzauberung abgelaufen" und
+            "Zauber name gleich Angelfertigkeit +75". "enthaelt nicht" funktioniert weiter.
+        Technisch: Die beiden erzeugten Ereignisse WEAPON_ENCHANT_REMOVED und
+            WEAPON_ENCHANT_UPDATE legten den Namen der HAND in Feld 13 - und Feld 13 ist das
+            Zauber-name-Feld. Eine Bedingung auf "Zauber name" verglich also gegen "Haupthand",
+            und eine Ausgabe "Zauber name" sagte "Haupthand" statt der Verzauberung. Dort steht
+            jetzt die Verzauberung: Feld 12 bekommt ihre Zauber-ID, Feld 13 ihren Namen, beides
+            ueber dieselben Resolver, aus denen auch die Auswahlliste gebaut wird - der
+            gespeicherte Wert ist derselbe wie bei der Waffenverzauberungs-Bedingung. Beim
+            Entfernen wird die Verzauberung gemeldet, die DA WAR; das ist die Identitaet, die
+            gemeint ist. Bestehende Auren koennen dadurch nicht verstummen: "Haupthand",
+            "Nebenhand", "Main Hand" und "Off hand" kommen in allen 49.117 Zeilen der
+            Zauberdatenbank kein einziges Mal als Zaubername vor, eine Bedingung auf "Zauber
+            name" konnte bei diesem Ereignis also ohnehin nie zutreffen. Die Hand ist nicht
+            verloren, sie zieht in ein eigenes Feld mit eigener Bedingung und eigener Ausgabe um
+            ("Waffenverzauberung Hand"), gespeichert als sprachneutrale Kennung, damit eine
+            geteilte Aura in jeder Sprache dieselbe Hand meint. NICHT gemacht wurde der
+            naheliegende andere Weg - die Zustandsliste beim Entfernen mit der auslaufenden
+            Verzauberung zu fuellen: die Liste ist geteilt, sie wuerde in diesem Durchlauf JEDE
+            andere Aura anluegen, ein "enthaelt nicht"-Gatter wieder scharf schalten und damit
+            doppelte Ansagen erzeugen, und sie wuerde der Restdauer widersprechen, die beim
+            Entfernen bewusst auf 0 gesetzt wird. Zusaetzlich meldet /skucheck auras die
+            Kombination "Entfernt-Ereignis plus enthaelt" jetzt als Aura, die nie ausloesen kann.
+            Nebenbei behoben: aenderte sich nur die Nebenhand, wurde das Ereignis trotzdem als
+            "Haupthand" gemeldet.
+
+    Das Ende einer Waffenverzauberung wird sofort erkannt
+        Einfach: Dass ein Angelkoeder oder ein Gift ausgelaufen ist, meldet das Spiel nicht -
+            Sku sieht alle 0,25 Sekunden nach. Die Ansage kam deshalb bis zu eine viertel
+            Sekunde zu spaet. Jetzt kommt sie im Moment des Ablaufs.
+        Technisch: Wie lange eine Verzauberung noch haelt, steht in dem Moment fest, in dem man
+            sie sieht - GetWeaponEnchantInfo liefert die Restzeit in Millisekunden. Der Ticker
+            merkt sich daraus den naechsten Ablaufzeitpunkt, und der Frame-Treiber vergleicht
+            eine Zahl pro Frame und ruft dann genau den normalen Spieler-Ticker auf. Das ist
+            dieselbe Bauart wie der in v43.0 eingefuehrte Dauer-Terminplaner und kostet kein
+            zusaetzliches Abfragen. Doppelte Ansagen sind ausgeschlossen, weil der Ticker nur
+            meldet, wenn sich sein gemerkter Stand wirklich geaendert hat. Bewusst NICHT gemacht:
+            den Ticker auf jeden Frame zu stellen - das waere fuenfzehnmal so viel Abfragerei
+            fuer denselben Gewinn.
 
 
 -------------------------------------------------------------------------------------------------------

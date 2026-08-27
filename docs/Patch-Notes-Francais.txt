@@ -16,6 +16,8 @@ Changements dans Sku v43.2
             Sacs : les actions avec temps d'incantation (enchantement, appât de pêche, huile d'arme, kit d'armure, désenchantement) annoncent à nouveau l'objet une fois l'incantation terminée et y laissent le curseur.
             Sacs : une boîte de dialogue de confirmation comme « Remplacer l'enchantement existant ? » ne coûte plus la position - après « Oui » comme après « Non », on revient sur l'objet.
             Menu : la fermeture d'une fenêtre ne reconstruit plus les données du menu qu'une seule fois au lieu de six.
+            Auras : un enchantement d'arme (appât de pêche, poison, huile) s'adresse désormais comme un sort - l'événement « Enchantement d'arme expiré » avec « nom du sort ».
+            Auras : nouvelle condition et nouvelle sortie « main de l'enchantement d'arme » (main droite ou main gauche).
 
         Corrections
             Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête - la fenêtre de quête se rouvrait sans fin.
@@ -23,6 +25,10 @@ Changements dans Sku v43.2
             Après une action avec temps d'incantation, un mauvais objet était annoncé juste après le bon.
             La liste des sacs tenue pour le combat pouvait se périmer lorsqu'on fermait une fenêtre de quête alors que les sacs étaient ouverts.
             Synthèse vocale : les annonces devenaient régulièrement muettes pendant un moment lors de la navigation - surtout sur un résultat unique après filtrage.
+            Auras : le buff Rassasié figurait deux fois dans le sélecteur de sorts - les deux entrées sonnaient pareil et une seule pouvait se déclencher.
+            Auras : les entrées qui n'existent que comme enchantement d'arme (par exemple « Compétence Pêche +75 ») sont désormais signalées comme telles dans les sélecteurs.
+            Auras : « enchantement d'arme main droite contient X » avec « Enchantement d'arme expiré » ne pouvait jamais se déclencher - /skucheck auras signale désormais cette combinaison.
+            Auras : la fin d'un enchantement d'arme est détectée à la frame près au lieu d'un quart de seconde plus tard.
 
     Le curseur reste sur l'objet dans le sac
         Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le
@@ -159,6 +165,105 @@ Changements dans Sku v43.2
             discrètement ramené le défaut même contre lequel il avait été écrit. On rajoute
             donc du vrai texte : une suite tournante de 1 à 64 espaces insécables après le
             dernier mot, où elle n'est ni audible ni capable de colorer la prosodie.
+
+    Rassasié : une seule entrée dans le sélecteur de sorts
+        Simple : Qui voulait bâtir une aura sur le buff Rassasié trouvait dans le sélecteur de
+            sorts deux entrées prononcées toutes deux « Rassasié ». Une seule pouvait se
+            déclencher, l'autre était une fiche morte - laquelle on attrapait relevait du pur
+            hasard et ne s'entendait pas. Il n'y a plus qu'une entrée, et c'est la bonne. Une
+            aura déjà enregistrée pointant sur la mauvaise est basculée une fois à la prochaine
+            connexion et fonctionne ensuite.
+        Technique : Depuis la v43.0, les auras sont tenues par l'identité anglaise d'un sort,
+            afin que la même aura convienne dans toutes les langues. Or, dans la base de sorts
+            livrée, dix lignes portent le nom anglais ENTRE GUILLEMETS - 44097 à 44106 ainsi que
+            69559 et 65365 portent le nom entouré de deux guillemets, là où les 65 autres le
+            portent sans. Cela
+            créait une seconde identité derrière un seul et même nom localisé, et la
+            désambiguïsation du menu ajoute dans ce cas l'identité anglaise : une entrée se
+            lisait « Rassasié (Well Fed) », l'autre pareil mais avec deux guillemets
+            supplémentaires autour de Well Fed. La synthèse vocale ne lit pas les
+            guillemets : les deux entrées sonnaient donc à l'identique. Rassasié est le seul des
+            26 650 noms localisés du jeu de données dont les deux identités ne diffèrent que par
+            ces caractères. Le nom est désormais déguillemeté lors de la formation de l'identité,
+            et des DEUX côtés - dans la liste de valeurs et à chaque résolution d'un événement en
+            cours - car ne changer qu'un côté produirait une valeur enregistrée qu'aucun
+            événement ne peut plus atteindre. Seuls les noms encadrés de guillemets aux DEUX
+            extrémités sont traités ; les 17 lignes restantes avec des guillemets à l'intérieur
+            du nom (Goblin "Boom" Box, parfum « TRIUMPH ») les conservent, car ils y font partie
+            du nom. Une migration unique bascule les auras enregistrées.
+
+    Les enchantements d'arme sont reconnaissables dans le sélecteur de sorts
+        Simple : Un appât de pêche, une pierre à aiguiser ou une huile d'arme n'est pas un buff
+            mais un enchantement posé sur l'arme. Il n'apparaît dans aucune liste de buffs du
+            jeu et ne déclenche aucun événement d'aura - une aura sur « événement = aura perdue
+            et nom du sort = Compétence Pêche +75 » ne pouvait donc jamais se déclencher, alors
+            même que l'entrée figure dans le sélecteur et sonne tout à fait normalement. De
+            telles entrées portent désormais la mention « (enchantement d'arme) » dans tous les
+            sélecteurs, afin que l'on entende de quoi il s'agit. Pour y réagir, on prend soit
+            l'événement « Enchantement d'arme expiré », soit la condition « Ton enchantement
+            d'arme main droite ». La mention n'est pas lue dans l'annonce d'une aura déclenchée.
+        Technique : La liste de valeurs de l'attribut « nom du sort » est la base de sorts
+            complète, y compris les lignes qui n'atteignent le joueur que sous forme
+            d'enchantement d'arme temporaire - l'appât est le sort 8084 derrière l'identifiant
+            d'enchantement 265. Les identités concernées sont maintenant déterminées lors de la
+            construction des listes (chaque identifiant de sort de l'identité est référencé par
+            la base des enchantements) et reçoivent la mention. Volontairement SIGNALÉES plutôt
+            que retirées : elles sont 395 et ne sont pas toutes inertes - Arme enflammée,
+            Bourreau et Force impie sont des procédures d'enchantement qui apparaissent bel et
+            bien sous ce nom exact dans le journal de combat. Les retirer aurait privé des auras
+            fonctionnelles de leur seul moyen de les nommer. La mention emprunte le même
+            mécanisme que la désambiguïsation anglaise et disparaît donc de nouveau dans
+            l'énoncé d'une aura déclenchée.
+
+    Les enchantements d'arme s'adressent comme des sorts
+        Simple : Pour un sort de dégâts sur la durée, on écrit « événement égale aura perdue » et
+            « nom du sort égale <sort> » - l'événement dit lui-même de quoi il s'agit. Pour un
+            enchantement d'arme, c'était impossible : l'appât ne pouvait être nommé que par
+            « ton enchantement d'arme main droite », qui est une question d'état et non
+            d'événement. Sous la forme « contient », une telle aura ne pouvait même jamais se
+            déclencher - quand l'événement arrive, l'enchantement a déjà disparu, la liste ne le
+            contient donc plus. Seule la forme inversée « ne contient pas » fonctionnait.
+            L'événement porte maintenant lui-même le nom de l'enchantement, et l'aura s'écrit
+            exactement comme pour un sort : « événement égale Enchantement d'arme expiré » et
+            « nom du sort égale Compétence Pêche +75 ». « ne contient pas » continue de marcher.
+        Technique : Les deux événements générés WEAPON_ENCHANT_REMOVED et WEAPON_ENCHANT_UPDATE
+            plaçaient le nom de la MAIN dans le champ 13 - et le champ 13 est celui du nom du
+            sort. Une condition sur « nom du sort » se comparait donc à « Main droite », et une
+            sortie « nom du sort » annonçait la main au lieu de l'enchantement. C'est désormais
+            l'enchantement qui s'y trouve : le champ 12 reçoit son identifiant de sort, le champ
+            13 son nom, l'un et l'autre par les mêmes résolveurs qui construisent la liste de
+            valeurs - la valeur enregistrée est la même que pour la condition d'enchantement.
+            Une expiration signale l'enchantement qui ÉTAIT là, c'est l'identité visée. Les
+            auras existantes ne peuvent pas devenir muettes : « Main droite », « Main gauche »,
+            « Haupthand » et « Nebenhand » n'apparaissent pas une seule fois comme nom de sort
+            dans les 49 117 lignes de la base de sorts ; une condition sur « nom du sort » ne
+            pouvait donc de toute façon jamais correspondre sur cet événement. La main n'est pas
+            perdue, elle passe dans son propre champ avec sa propre condition et sa propre sortie
+            (« main de l'enchantement d'arme »), enregistrée sous forme de jeton neutre afin
+            qu'une aura partagée désigne la même main dans toutes les langues. Ce qui n'a
+            volontairement PAS été fait, c'est l'autre voie évidente - remplir la liste d'état
+            lors d'une expiration avec l'enchantement sortant : la liste est partagée, elle
+            mentirait à toutes les autres auras durant ce passage, réarmerait une barrière
+            « ne contient pas » et produirait ainsi des annonces en double, et elle
+            contredirait la durée restante, délibérément forcée à 0 lors d'une expiration. De
+            plus, /skucheck auras signale désormais la combinaison « événement d'expiration plus
+            contient » comme une aura qui ne peut jamais se déclencher. Corrigé au passage :
+            lorsque seule la main gauche changeait, l'événement était tout de même signalé comme
+            la main droite.
+
+    La fin d'un enchantement d'arme est détectée immédiatement
+        Simple : Le jeu n'annonce pas qu'un appât de pêche ou un poison a expiré - Sku regarde
+            toutes les 0,25 seconde. L'annonce arrivait donc jusqu'à un quart de seconde trop
+            tard. Elle arrive maintenant au moment de l'expiration.
+        Technique : La durée restante d'un enchantement est connue dès l'instant où on le voit -
+            GetWeaponEnchantInfo renvoie le temps restant en millisecondes. Le ticker en retient
+            la prochaine expiration, et le pilote de frame compare un nombre par frame puis
+            appelle exactement le ticker joueur habituel. C'est la même construction que le
+            planificateur d'échéances de durée introduit en v43.0 et cela ne coûte aucune
+            interrogation supplémentaire. Les annonces en double sont exclues, car le ticker
+            n'émet que si son état mémorisé a réellement changé. Volontairement NON fait : passer
+            le ticker à chaque frame - ce serait quinze fois plus d'interrogations pour le même
+            gain.
 
 
 -------------------------------------------------------------------------------------------------------

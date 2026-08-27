@@ -13,6 +13,8 @@ Changes in Sku v43.2
             Bags: actions with a cast time (enchant, fishing lure, weapon oil, armor kit, disenchant) announce the item again once the cast has finished and leave the cursor on it.
             Bags: a confirmation dialog such as "Replace existing enchantment?" no longer costs the position - after "Yes" as after "No" you land back on the item.
             Menu: closing a window now rebuilds the menu data once instead of up to six times.
+            Auras: a weapon enchant (fishing lure, poison, oil) can now be addressed like a spell - the event "Weapon enchant expired" together with "spell name".
+            Auras: new condition and new output "weapon enchant hand" (main hand or off hand).
 
         Bugfixes
             Escape did not close the menu while standing right on a quest object - the quest window reopened endlessly.
@@ -20,6 +22,10 @@ Changes in Sku v43.2
             After an action with a cast time a wrong item was announced right after the correct one.
             The bag list held for combat could go stale when a quest window was closed while the bags were open.
             Speech: announcements repeatedly went silent for a while while navigating - most reliably on a single hit after filtering.
+            Auras: the Well Fed buff appeared twice in the spell picker - both entries sounded the same and only one could ever fire.
+            Auras: entries that only ever exist as a weapon enchant (such as "Fishing Skill +75") are now marked as such in the pickers.
+            Auras: "weapon enchant main hand contains X" together with "Weapon enchant expired" could never fire - /skucheck auras now reports that combination.
+            Auras: the end of a weapon enchant is detected frame-accurately instead of up to a quarter second later.
 
     The cursor stays on the item in the bag
         Simple: Right-clicking an item in the bag list - use it, equip it, sell it to a vendor,
@@ -143,6 +149,93 @@ Changes in Sku v43.2
             meant to protect prosody and quietly brought back the very bug it had been written
             against. Real text is appended again: a cycling run of 1 to 64 no-break spaces
             after the last word, where it is neither audible nor able to colour the prosody.
+
+    Well Fed: only one entry left in the spell picker
+        Simple: Anyone building an aura on the Well Fed buff found two entries in the spell
+            picker that were both spoken as "Well Fed". Only one of them could ever fire, the
+            other was a dead record - which one you hit was pure luck and not audible. There is
+            only one entry now, and it is the right one. An already saved aura pointing at the
+            wrong one is moved over once at the next login and works afterwards.
+        Technically: Since v43.0 auras are keyed on a spell's English identity, so the same aura
+            fits in every language. In the shipped spell database, however, ten rows carry the
+            English name IN QUOTES - 44097 to 44106 plus 69559 and 65365 carry the name with
+            two quote characters wrapped around it, where the other 65 rows carry it without.
+            That created a second identity behind
+            one and the same localized name, and the menu disambiguation appends the English
+            identity in such a case: one entry read "Well Fed (Well Fed)", the other the same
+            but with two extra quote characters around Well Fed.
+            Speech does not read quotes, so the two entries sounded identical. Well Fed is the
+            only one of the 26,650 localized names in the data set whose two identities differ
+            by nothing but those characters. The name is now unquoted when the identity is
+            formed, and on BOTH sides - in the value list and in every resolution of a live
+            event - because changing one side only would produce a stored value no event can
+            match any more. Only names quoted at BOTH ends are unquoted; the 17 remaining rows
+            with quotes inside the name (Goblin "Boom" Box, "VICTORY" Perfume) keep them,
+            because there they are part of the name. A one-time migration moves saved auras over.
+
+    Weapon enchants are recognisable in the spell picker
+        Simple: A fishing lure, a sharpening stone or a weapon oil is not a buff but an enchant
+            on the weapon. It appears in no buff list of the game and fires no aura event - an
+            aura on "event = aura lost and spell name = Fishing Skill +75" could therefore never
+            fire, even though the entry is in the picker and sounds perfectly normal. Such
+            entries now carry the suffix "(weapon enchant)" in every picker, so it is audible
+            what they are. To react to one, use either the event "Weapon enchant expired" or the
+            condition "Your weapon enchant main hand". The suffix is not read out in the
+            announcement of a fired aura.
+        Technically: The value list of the "spell name" attribute is the entire spell database,
+            including rows that only ever reach the player as a temporary weapon enchant - the
+            lure is spell 8084 behind enchant id 265. The affected identities are now determined
+            while the lists are built (every spell id of the identity is referenced by the
+            enchant database) and get the suffix. Deliberately MARKED rather than removed: there
+            are 395 of them and they are not all inert - Fiery Weapon, Executioner and Unholy
+            Strength are enchant procs that do appear in the combat log under exactly that name.
+            Removing them would have taken working auras their only way to name them. The suffix
+            rides the same mechanism as the English disambiguation, so it drops out again in the
+            speech of a fired aura.
+
+    Weapon enchants are addressed like spells
+        Simple: For a damage-over-time spell you write "event equals aura lost" and "spell name
+            equals <spell>" - the event itself says what it is about. For a weapon enchant that
+            was not possible: the fishing lure could only be named through "your weapon enchant
+            main hand", and that is a question about state, not about the event. In the
+            "contains" form such an aura could not fire at all - by the time the event arrives
+            the enchant is already gone, so the list no longer contains it. Only the inverted
+            "contains not" form worked. The event now carries the enchant's name itself, and the
+            aura is written exactly like a spell one: "event equals Weapon enchant expired" and
+            "spell name equals Fishing Skill +75". "contains not" keeps working.
+        Technically: The two synthesised events WEAPON_ENCHANT_REMOVED and
+            WEAPON_ENCHANT_UPDATE put the HAND name in field 13 - and field 13 is the spell name
+            field. So a "spell name" condition compared against "Main Hand", and a "spell name"
+            output announced the hand instead of the enchant. The enchant now sits there: field
+            12 gets its spell id, field 13 its name, both through the same resolvers the value
+            list is built from - the stored value is the same one the weapon-enchant condition
+            uses. A removal reports the enchant that WAS there, which is the identity meant.
+            Existing auras cannot go silent from this: "Main Hand", "Off hand", "Haupthand" and
+            "Nebenhand" do not occur once as a spell name across all 49,117 rows of the spell
+            database, so a "spell name" condition could never have matched on this event anyway.
+            The hand is not lost, it moves to its own field with its own condition and output
+            ("weapon enchant hand"), stored as a language-neutral token so a shared aura means
+            the same hand in every language. What was deliberately NOT done is the other obvious
+            route - filling the state list on a removal with the outgoing enchant: the list is
+            shared, so it would lie to every other aura on that pass, re-arm a "contains not"
+            gate and thereby produce double announcements, and it would contradict the remaining
+            duration, which is deliberately forced to 0 on a removal. In addition, /skucheck
+            auras now reports the "removal event plus contains" combination as an aura that can
+            never fire. Fixed along the way: when only the off hand changed, the event was still
+            reported as the main hand.
+
+    The end of a weapon enchant is detected at once
+        Simple: The game does not announce that a fishing lure or a poison has run out - Sku
+            looks every 0.25 seconds. The announcement was therefore up to a quarter second
+            late. It now arrives at the moment it expires.
+        Technically: How long an enchant still lasts is fixed the moment you see it -
+            GetWeaponEnchantInfo returns the remaining milliseconds. The ticker records the next
+            expiry from it, and the frame driver compares one number per frame and then calls
+            exactly the ordinary player ticker. That is the same shape as the duration deadline
+            scheduler introduced in v43.0 and costs no extra polling. Double announcements are
+            impossible because the ticker only emits when its stored snapshot really changed.
+            Deliberately NOT done: putting the ticker on every frame - that would be fifteen
+            times the polling for the same gain.
 
 
 -------------------------------------------------------------------------------------------------------

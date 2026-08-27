@@ -99,6 +99,23 @@ local tDirtyCooldowns = false
 -- Same precision as a per-frame evaluation (~16 ms), without its cost.
 local tNextDurationDeadline = nil
 
+-- [v43.2] Weapon-enchant EXPIRY deadline.
+--
+-- Temporary weapon enchants have no expiry event on this client -- that is why
+-- the player ticker polls GetWeaponEnchantInfo and synthesises
+-- WEAPON_ENCHANT_REMOVED from a changed id. But the moment of the end is known
+-- the instant the enchant is seen (GetWeaponEnchantInfo returns the remaining
+-- milliseconds), so paying up to 250 ms of latency for it is waste. The ticker
+-- records the soonest upcoming end here; the frame driver compares one number
+-- per frame and runs the ordinary player UNIT_TICKER when it is reached, which
+-- detects the removal and fires the event as usual.
+--
+-- It cannot double-announce: UNIT_TICKER emits only when its stored snapshot
+-- actually differs, so an extra call on top of the 0.25 s tick is free. Same
+-- self-re-arming shape as tNextDurationDeadline -- every tick recomputes it, and
+-- a deadline whose enchant vanished early costs one no-op tick.
+local tNextEnchantExpiry = nil
+
 -- [v43.0] UNIT_AURA membership diff.
 --
 -- UNIT_AURA used to ONLY stale the list cache — it never scheduled an
@@ -345,6 +362,12 @@ function SkuAuras:OnEnable()
 			tNextDurationDeadline = nil
 			SkuAuras:DURATION_DEADLINE()
 		end
+		-- [v43.2] Weapon-enchant expiry drain (see tNextEnchantExpiry). Cleared
+		-- BEFORE the tick so only the tick's own fresh reading can re-arm it.
+		if tNextEnchantExpiry and GetTime() >= tNextEnchantExpiry then
+			tNextEnchantExpiry = nil
+			SkuAuras:UNIT_TICKER("player")
+		end
 		-- [v43.0] Membership-diff drain, coalesced like the unit marks above.
 		if tAuraMembershipDirtyPending == true then
 			tAuraMembershipDirtyPending = false
@@ -565,6 +588,40 @@ local TableCopy = SkuUtil.TableCopy
 SkuAuras.SPELL_GROUP_TAG = "spellgroup:"
 local SPELL_GROUP_TAG = SkuAuras.SPELL_GROUP_TAG
 
+-- [v43.2] The enUS identity, with a dump artefact stripped.
+--
+-- Ten spells.lua rows carry the English name WRAPPED IN LITERAL QUOTE
+-- CHARACTERS: 44097-44106, 69559 and 65365 all read "\"Well Fed\"" where every
+-- other Well Fed row reads "Well Fed". That manufactured a SECOND group behind
+-- one German name, and "Satt" is the only one of the 26,650 localized names in
+-- the shipped db whose two groups differ by nothing but those quotes - so the
+-- menu offered `Satt (Well Fed)` and `Satt ("Well Fed")`, SAPI speaks neither
+-- quote, and the two entries were audibly identical. The quoted group is WotLK
+-- dump junk that no TBC food buff can ever carry, so picking it (a coin flip by
+-- ear) produced a permanently silent aura.
+--
+-- Stripped only when the name is quoted at BOTH ends and something is left
+-- over. That is the whole point of the both-ends test: of the 27 rows with an
+-- escaped quote anywhere, the other 17 are quoted mid-name or at one end only
+-- ("Plucky" Resumes Human Form, Goblin "Boom" Box, Mark "S" Boomstick,
+-- "VICTORY" Perfume) and MUST keep their quotes - those are real, distinct
+-- names, not artefacts.
+--
+-- Applied on BOTH sides, which is the only thing that makes it safe: the value
+-- list keys through it (BuildAttributeValueLists) and so does every live
+-- resolution (SpellGroupName, ResolveWeaponEnchantGroup). Normalising one side
+-- only would leave a stored value that no live event can match.
+local function tNormalizeGroupName(aName)
+	if type(aName) ~= "string" or #aName < 3 then
+		return aName
+	end
+	if ssub(aName, 1, 1) == '"' and ssub(aName, -1) == '"' then
+		return ssub(aName, 2, -2)
+	end
+	return aName
+end
+SkuAuras.NormalizeSpellGroupName = function(self, aName) return tNormalizeGroupName(aName) end
+
 -- Localized spell name -> enUS group name. Built by BuildAttributeValueLists,
 -- and ONLY on a non-English client: on enUS the two are the same string, so the
 -- map would be 27k identity entries for nothing. It is what the fallback lane
@@ -614,7 +671,10 @@ function SkuAuras:SpellGroupName(aSpellId, aLiveName)
 	-- SkuDB/ChunkLoader.lua:561-564).
 	local tName = tEn and tEn[(SkuDB.spellKeys and SkuDB.spellKeys["name_lang"]) or 1]
 	if tName then
-		return tName
+		-- [v43.2] Same normalisation the value list keys through, see
+		-- tNormalizeGroupName. The localized fallback below is NOT normalised:
+		-- that is the string the client just handed us, not a db field.
+		return tNormalizeGroupName(tName)
 	end
 	if aLiveName then
 		-- The id is not in the db (a rank the dump lacks, or NPC drift). Map the
@@ -674,6 +734,21 @@ function SkuAuras:ConvertAuraValuesToGroups(aAuraData)
 		if tGroupLaneAttributes[tAttName] and type(tAttValue) == "table" then
 			for _, tEntry in pairs(tAttValue) do
 				local tValue = type(tEntry) == "table" and tEntry[2]
+				-- [v43.2] Repair a value saved against the quote-wrapped phantom
+				-- group (spellgroup:"Well Fed") before the normalisation existed.
+				-- It could never match a live event, so this cannot change a
+				-- working aura - it only revives a dead one. Idempotent: after
+				-- the rewrite the bare name no longer normalises to anything
+				-- else.
+				if type(tValue) == "string" and ssub(tValue, 1, #SPELL_GROUP_TAG) == SPELL_GROUP_TAG then
+					local tBareGroup = ssub(tValue, #SPELL_GROUP_TAG + 1)
+					local tFixed = tNormalizeGroupName(tBareGroup)
+					if tFixed ~= tBareGroup and SkuAuras.values and SkuAuras.values[SPELL_GROUP_TAG..tFixed] then
+						tEntry[2] = SPELL_GROUP_TAG..tFixed
+						tValue = tEntry[2]
+						tChanged = tChanged + 1
+					end
+				end
 				if type(tValue) == "string" and ssub(tValue, 1, 6) == "spell:" then
 					local tBare = ssub(tValue, 7)
 					-- A name that spans several groups is left alone on purpose:
@@ -715,7 +790,15 @@ function SkuAuras:MigrateAuraValuesToGroups()
 		return
 	end
 	local tSub = SkuSettings and SkuSettings:Sub("SkuAuras", nil, "char")
-	if not tSub or tSub.auraGroupValueMigration == true then
+	if not tSub then
+		return
+	end
+	-- [v43.2] Second run-once flag. The group migration itself already ran for
+	-- every existing character, so the quote repair added to
+	-- ConvertAuraValuesToGroups would never be reached behind the old gate
+	-- alone. Both flags are set together below; the walk is idempotent, so a
+	-- character that needs only one of them pays one extra sweep, once.
+	if tSub.auraGroupValueMigration == true and tSub.auraGroupQuoteRepair == true then
 		return
 	end
 	local tAuraCount, tChanged, tSetAuras = 0, 0, 0
@@ -742,6 +825,7 @@ function SkuAuras:MigrateAuraValuesToGroups()
 		end
 	end
 	tSub.auraGroupValueMigration = true
+	tSub.auraGroupQuoteRepair = true
 	dprint(string.format("SkuAuras group migration: %d auras + %d set auras walked, %d values moved to group identity",
 		tAuraCount, tSetAuras, tChanged))
 end
@@ -872,6 +956,22 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 			end
 		end
 	end
+	-- [v43.2] Which spell rows are the effect of a WEAPON ENCHANT. Built ahead of
+	-- the spell pass because the marker below needs it per group, and the enchant
+	-- db is two orders of magnitude smaller than the spell db. Both id columns
+	-- count: this asks "is this row referenced by an enchant at all", not "which
+	-- column would tEnchantSpellId pick".
+	local tEnchantSpellIds = {}
+	for _, tRow in pairs(SkuDB.WotLK.enchantIDs) do
+		if type(tRow[3]) == "number" then tEnchantSpellIds[tRow[3]] = true end
+		if type(tRow[4]) == "number" then tEnchantSpellIds[tRow[4]] = true end
+		tTick()
+	end
+	-- Groups the SPELL pass created (so a pure enchant-db name is never marked -
+	-- it is not in the spellName list, so there is no trap to warn about), and
+	-- which of them hold at least one id that is NOT an enchant effect.
+	local tSpellPassGroups, tGroupHasNonEnchantId = {}, {}
+
 	for spellId, spellData in pairs(SkuDB.SpellDataTBC) do
 		local tLocData = spellData and (spellData[Sku.Loc] or spellData.enUS or spellData.deDE)
 		local spellName = tLocData and tLocData[tNameKey]
@@ -880,8 +980,14 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 			-- read above is: a merged row can be missing it, and then the group
 			-- degrades to the localized name (fallback lane).
 			local tEnData = spellData.enUS
-			local tGroupName = (tEnData and tEnData[tNameKey]) or spellName
+			-- [v43.2] tNormalizeGroupName: a dump artefact must not become a
+			-- second group behind one localized name. See its header.
+			local tGroupName = tNormalizeGroupName((tEnData and tEnData[tNameKey]) or spellName)
 			local tGroupValue = SPELL_GROUP_TAG..tostring(tGroupName)
+			tSpellPassGroups[tGroupValue] = true
+			if not tEnchantSpellIds[spellId] then
+				tGroupHasNonEnchantId[tGroupValue] = true
+			end
 			local tExisting = tValues[tGroupValue]
 			if not tExisting then
 				-- (the four lists are appended in lockstep, as before - the old
@@ -987,6 +1093,45 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 		tTick()
 	end
 
+	-- [v43.2] Mark the groups whose EVERY spell id is a weapon-enchant effect.
+	--
+	-- The "Zauber name" list is the whole spell db, so it also offers identities
+	-- that reach the user only as a temporary weapon enchant - the fishing lure
+	-- (`Angelfertigkeit +75`, spell 8084, enchant 265), sharpening stones, oils,
+	-- `Waffe der Flammenzunge (Passiv)`. Those are NOT part of UnitAura and emit
+	-- no SPELL_AURA_* combat-log event, so a `Zauber name ist <enchant>`
+	-- condition can never be true - and by ear the entry is indistinguishable
+	-- from a real spell. That is the same trap the 41.03 fix closed for the
+	-- weapon-enchant list itself; the spell list never got the treatment.
+	--
+	-- MARKED, NOT REMOVED, and the measurement is the reason: 395 of the shipped
+	-- groups qualify, and they are not all inert. `Feurige Waffe` (13897),
+	-- `Scharfrichter` (42976) and `Unheilige Staerke` (53365) are enchant PROCS
+	-- that do fire combat-log events under exactly that name, so dropping the
+	-- 395 from the list would delete working auras' only way to name them.
+	-- Appending the tag costs nothing and makes the trap audible instead.
+	--
+	-- Rides the same speakName mechanism as the English disambiguation above, so
+	-- a fired aura still announces the plain name. Composes after it, giving
+	-- `Waffe der Flammenzunge (Passiv) (Waffenverzauberung)` where both apply.
+	-- The tag also shows up in the weapon-enchant and buff-list menus, which
+	-- share these value entries - redundant there, but correct.
+	local tEnchantTagged = 0
+	local tEnchantTag = " ("..L["AURA_WeaponEnchantValueTag"]..")"
+	for tGroupValue in pairs(tSpellPassGroups) do
+		if not tGroupHasNonEnchantId[tGroupValue] then
+			local tEntry = tValues[tGroupValue]
+			if tEntry and tEntry.friendlyName then
+				if not tEntry.speakName then
+					tEntry.speakName = tEntry.friendlyName
+				end
+				tEntry.friendlyName = tEntry.friendlyName..tEnchantTag
+				tEnchantTagged = tEnchantTagged + 1
+			end
+		end
+		tTick()
+	end
+
 	-- [v42.13] Publish. One assignment per list, no yields past this point, so
 	-- consumers never see a half-built set (see the header comment).
 	SkuAuras.values = tValues
@@ -1012,8 +1157,8 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 	local tGroupMapped, tGroupAmbiguous = 0, 0
 	for _ in pairs(tGroupByLoc) do tGroupMapped = tGroupMapped + 1 end
 	for _ in pairs(tLocAmbiguous) do tGroupAmbiguous = tGroupAmbiguous + 1 end
-	dprint(string.format("SkuAuras value lists built: %d rows, %d items, %d spell groups, %d enchants, %d loc->group (%d ambiguous, %d entries disambiguated), %.0f ms wall",
-		tRows, #tItemNames, #tSpellNames, #tEnchantNames, tGroupMapped, tGroupAmbiguous, tDisambiguated, tMs))
+	dprint(string.format("SkuAuras value lists built: %d rows, %d items, %d spell groups, %d enchants, %d loc->group (%d ambiguous, %d entries disambiguated, %d enchant-tagged), %.0f ms wall",
+		tRows, #tItemNames, #tSpellNames, #tEnchantNames, tGroupMapped, tGroupAmbiguous, tDisambiguated, tEnchantTagged, tMs))
 	if Sku.MetricPoint then
 		Sku:MetricPoint(string.format("SkuAuras value lists = %.0f ms wall, %d rows", tMs, tRows))
 	end
@@ -1409,7 +1554,10 @@ function SkuAuras:ResolveWeaponEnchantGroup(aEnchantId)
 		local tEnData = SkuDB.SpellDataTBC[tSpellId].enUS
 		tName = (tEnData and tEnData[1]) or tName
 	end
-	return tName
+	-- [v43.2] Keyed through the same normalisation as the spell lane, so an
+	-- enchant that borrows its identity from a quote-wrapped row lands on the
+	-- one group the value list actually carries (see tNormalizeGroupName).
+	return tNormalizeGroupName(tName)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1548,17 +1696,79 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			-- scheduler (tNextDurationDeadline, armed in EvaluateAllAuras from the
 			-- per-pass GetWeaponEnchantInfo snapshot). Only the ID-change and
 			-- removal events remain here.
-			local function tFireEnchantEvent(aSubevent, aHandName)
-				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", {
+			-- [v43.2] The event now CARRIES THE ENCHANT'S IDENTITY, in the spellId
+			-- and spellName slots, so a weapon-enchant aura is written the same way
+			-- a DoT aura is: "Ereignis ist Waffenverzauberung abgelaufen UND Zauber
+			-- name ist Angelfertigkeit +75".
+			--
+			-- Before, the only way to name the enchant was the weaponEnchant*Hand
+			-- SET condition - and that reads a LIVE GetWeaponEnchantInfo snapshot
+			-- taken inside the evaluation pass. A removal is only ever DETECTED
+			-- after the enchant is gone (tMainRemoved below is exactly that test),
+			-- so on the removal pass that list is empty and "enthaelt <VZ>" is false
+			-- by construction. The pair "removal event + enthaelt" could never fire,
+			-- in any session; only the inverted "enthaelt nicht" worked, which reads
+			-- backwards and is why nobody found it.
+			--
+			-- Filling the state list from the OUTGOING enchant instead was the
+			-- obvious alternative and is the wrong fix: the list is shared, so it
+			-- would lie to every other aura on that pass - an "enthaelt nicht X"
+			-- aura would see X still present, its once-gate would re-arm, and it
+			-- would fire a second time on the next pass. It would also contradict
+			-- weaponEnchant*HandDuration, which is deliberately forced to 0 on a
+			-- removal. The state lists keep telling the truth; the EVENT carries the
+			-- identity, which is what it was missing.
+			--
+			-- SAFE for existing auras: slot 13 held the HAND name until now
+			-- ("Haupthand"), and no spell in the shipped db carries that name
+			-- (checked: 0 hits for Haupthand/Nebenhand/Main Hand/Off hand across all
+			-- 49,117 rows), so no spellName condition can be matching on this event
+			-- today. The change can only turn never-matching into matching. The hand
+			-- moves to slot 52 and keeps its own attribute + output.
+			local function tFireEnchantEvent(aSubevent, aHandToken, aEnchantId)
+				local tEvent = {
 					GetTime(), aSubevent, nil, UnitGUID(tUnitId), UnitName(tUnitId),
-					nil, nil, UnitGUID(tUnitId), UnitName(tUnitId), nil, nil, nil, aHandName, nil,
-				})
+					nil, nil, UnitGUID(tUnitId), UnitName(tUnitId), nil, nil,
+					tEnchantSpellId(aEnchantId),
+					SkuAuras:ResolveWeaponEnchantName(aEnchantId),
+					nil,
+				}
+				tEvent[52] = aHandToken
+				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEvent)
 			end
-			if tMainRemoved then tFireEnchantEvent("WEAPON_ENCHANT_REMOVED", L["Main Hand"]) end
-			if tOffRemoved then tFireEnchantEvent("WEAPON_ENCHANT_REMOVED", L["Off hand"]) end
+			-- Removals report the enchant that WAS there - that is the identity the
+			-- user means by "the lure ran out".
+			if tMainRemoved then tFireEnchantEvent("WEAPON_ENCHANT_REMOVED", "MAINHAND", tPrevMainId) end
+			if tOffRemoved then tFireEnchantEvent("WEAPON_ENCHANT_REMOVED", "OFFHAND", tPrevOffId) end
 			if not (tMainRemoved or tOffRemoved) then
-				if tCurMainId ~= tPrevMainId or tCurOffId ~= tPrevOffId then
-					tFireEnchantEvent("WEAPON_ENCHANT_UPDATE", L["Main Hand"])
+				-- Still exactly ONE update event per tick, as before - deliberately
+				-- not one per hand, so an aura on this event cannot start announcing
+				-- twice where it announced once. What changes is only that an
+				-- off-hand-only change is no longer mislabelled as the main hand.
+				if tCurMainId ~= tPrevMainId then
+					tFireEnchantEvent("WEAPON_ENCHANT_UPDATE", "MAINHAND", tCurMainId)
+				elseif tCurOffId ~= tPrevOffId then
+					tFireEnchantEvent("WEAPON_ENCHANT_UPDATE", "OFFHAND", tCurOffId)
+				end
+			end
+
+			-- [v43.2] Arm the expiry deadline (see tNextEnchantExpiry). An enchant's
+			-- end is KNOWN the moment it is seen - GetWeaponEnchantInfo returns the
+			-- remaining milliseconds - so waiting for the next 0.25 s tick to notice
+			-- is latency for nothing. Recomputed on every tick, so re-arming is
+			-- implicit; the drain calls this same UNIT_TICKER, which only emits on a
+			-- changed snapshot and therefore cannot double-announce.
+			local tSoonest
+			if hasMainHand and mainExpiration and mainExpiration > 0 then
+				tSoonest = mainExpiration
+			end
+			if hasOffHand and offExpiration and offExpiration > 0 and (not tSoonest or offExpiration < tSoonest) then
+				tSoonest = offExpiration
+			end
+			if tSoonest then
+				local tWhen = GetTime() + (tSoonest / 1000) + 0.05
+				if not tNextEnchantExpiry or tWhen < tNextEnchantExpiry then
+					tNextEnchantExpiry = tWhen
 				end
 			end
 			SkuAuras.UnitRepo[tUnitId].mainHandEnchantID = tCurMainId
@@ -2654,6 +2864,11 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 		tInCombat = SkuState:IsInCombat(),
 		pressedKey = tEventData[50],
+		-- [v43.2] "MAINHAND"/"OFFHAND" on the two synthetic weapon-enchant events,
+		-- nil on every other event. A stable token, not the localized string, so a
+		-- shared aura keeps working across languages -- the localization lives in
+		-- valuesDefault, exactly like the subevent names.
+		weaponEnchantHand = tEventData[52],
 		spellNameOnCd = SkuAuras.thingsNamesOnCd,
 		-- spellNameUsable + itemCount are LAZY now -- see tLazyEvaluateFields.
 	}
@@ -3543,6 +3758,53 @@ function SkuAuras.SkuCheck()
 								dprint("skucheck", "VIOLATION auras: aura", tostring(tAuraName), "uses operator",
 									tostring(tEntry[1]), "on", tDurAtt,
 									"-- a remaining duration is a continuously falling float, so equality never matches and inequality never fails")
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- 6. [v43.2] Conditions that contradict their own event.
+	--
+	-- A weaponEnchant*Hand list is a LIVE GetWeaponEnchantInfo reading taken
+	-- inside the evaluation pass, and WEAPON_ENCHANT_REMOVED is only detected
+	-- once the enchant is already gone -- so "removal event AND the list CONTAINS
+	-- the enchant" is false in every session, forever. It reads like the obvious
+	-- way to say "the lure ran out", which is exactly why it needs naming rather
+	-- than silently never firing (found 2026-08-27 on a fishing-lure aura). Since
+	-- v43.2 the event carries the identity itself, so the intended aura is
+	-- "Ereignis ist Waffenverzauberung abgelaufen UND Zauber name ist <VZ>";
+	-- "enthaelt nicht" also still works.
+	if type(tAuras) == "table" then
+		local tEnchantListAtts = {"weaponEnchantMainHand", "weaponEnchantOffHand"}
+		for tAuraName, tAuraData in pairs(tAuras) do
+			if type(tAuraData) == "table" and type(tAuraData.attributes) == "table" then
+				local tEventAtt = tAuraData.attributes.event
+				local tWatchesRemoval = false
+				if type(tEventAtt) == "table" then
+					for _, tEntry in pairs(tEventAtt) do
+						if type(tEntry) == "table" and tEntry[1] == "is" and type(tEntry[2]) == "string"
+							and sfind(tEntry[2], "WEAPON_ENCHANT_REMOVED", 1, true) then
+							tWatchesRemoval = true
+							break
+						end
+					end
+				end
+				if tWatchesRemoval then
+					for x = 1, #tEnchantListAtts do
+						local tGroup = tAuraData.attributes[tEnchantListAtts[x]]
+						if type(tGroup) == "table" then
+							for _, tEntry in pairs(tGroup) do
+								if type(tEntry) == "table" and tEntry[1] == "contains" then
+									tChecked = tChecked + 1
+									tViolations = tViolations + 1
+									dprint("skucheck", "VIOLATION auras: aura", tostring(tAuraName), "combines the removal event with",
+										tEnchantListAtts[x], "contains", tostring(tEntry[2]),
+										"-- the enchant is already gone when the event fires, so this aura can never fire;",
+										"use the spellName condition (the event carries the identity) or 'contains not'")
+								end
 							end
 						end
 					end
