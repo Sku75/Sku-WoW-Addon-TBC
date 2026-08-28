@@ -13,6 +13,7 @@ Changements dans Sku v43.2
 
         Nouveautés
             Nouveau raccourci « Annoncer l'infobulle complète de la cible » (Ctrl+Maj+V) : lit à voix haute l'infobulle complète de la cible actuelle, y compris ce que révèle la compétence de chasseur Connaissance des bêtes.
+            Les quêtes peuvent être suivies ou retirées du suivi depuis le menu de quête - nouvelle entrée « Suivre la quête » en bas de chaque menu de quête, désactivable.
 
         Changements
             Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
@@ -349,6 +350,42 @@ Changements dans Sku v43.2
             ventes, liens de discussion et textes de quête lisent le même -, il est vidé avant ET
             après, et son propriétaire restauré exactement comme SkuCore le règle à la connexion.
 
+
+
+
+    Suivre une quête et retirer le suivi
+        Simple : le menu de chaque quête se termine désormais par une entrée « Suivre la quête ».
+            Entrée la bascule, le curseur reste en place et le nouvel état est annoncé aussitôt -
+            « Suivre la quête;Activé » ou « Suivre la quête;Désactivé ». Suivie signifie : le
+            marqueur propre à WoW sur la minicarte et la carte du monde. Qui garde un reste de
+            vue trouve ainsi ses objectifs plus vite ; qui ne voit rien n'en tire rien. L'entrée
+            peut donc être désactivée entièrement - sous Réglages Sku, SkuQuest, « afficher
+            l'entrée Suivre la quête » ; elle est active par défaut. Elle n'apparaît que pour les
+            quêtes de votre propre journal, car une quête de la base de données de quêtes n'est
+            pas encore la vôtre. Deux limites viennent du jeu lui-même : The Burning Crusade
+            n'autorise que cinq quêtes suivies à la fois, et une quête sans aucun objectif ne
+            peut pas être suivie. Dans les deux cas, Sku annonce le message du jeu et l'état
+            reste inchangé.
+        Technique : l'idée et l'implémentation de référence viennent de ZenqFR, dans l'addon
+            compagnon SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby) ; avec son accord, la
+            fonction est ici reconstruite nativement sur les interfaces propres à Sku, afin
+            qu'aucun addon supplémentaire ne soit nécessaire. L'entrée est placée dans le
+            CreateQuestSubmenu local au fichier plutôt que sur un hook du wrapper public - c'est
+            pourquoi toutes les vues de quête en bénéficient : journal de quêtes, base de données
+            de quêtes et menus de quête de SkuChat. Il n'y a pas de C_QuestLog sur 2.5.6 :
+            AddQuestWatch, RemoveQuestWatch et IsQuestWatched prennent un INDEX du journal de
+            quêtes, pas un identifiant de quête, et cet index se décale à chaque quête acceptée
+            ou rendue. Sku tient donc une correspondance identifiant vers index, revérifie
+            l'index mémorisé à chaque lecture et abandonne la correspondance lors des événements
+            de quête ; sans ce cache, la liste « base de données de quêtes, toutes » ferait un
+            parcours complet du journal pour chaque quête. L'activation passe par
+            AutoQuestWatch_Insert avec QUEST_WATCH_NO_EXPIRE, pour que la quête entre dans
+            QUEST_WATCH_LIST et qu'aucun minuteur d'expiration ne l'en retire ; la désactivation
+            supprime d'abord la ligne de QUEST_WATCH_LIST puis seulement appelle
+            RemoveQuestWatch - exactement comme le chemin de clic de Blizzard, sinon une quête
+            depuis longtemps non suivie continue de compter dans la limite de cinq.
+            QuestWatch_Update ne s'exécute qu'en dehors du combat, car il finit par déplacer des
+            cadres protégés ; le prochain QUEST_LOG_UPDATE s'en charge de toute façon.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

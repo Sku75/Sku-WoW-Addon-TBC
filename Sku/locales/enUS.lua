@@ -1996,6 +1996,7 @@ L["Quelle (L)"]  = "Event source (L)" -- [v43.0] renamed: filters the TRIGGERING
 L["Querying data..."] = "Querying data..."
 L["Quest available"] = "Quest available"
 L["Quest for hand-in"] = "Quest for hand-in"
+L["Quest verfolgen"] = "Track quest"
 L["Quest ID"]  = "Quest ID" --
 L["Quest Items"] = "Quest Items" --use the exact ingame string (from auction house)
 L["quest notifications"] = "quest notifications"
@@ -3319,6 +3320,7 @@ L["Teilen abgeschlossen"] = "Sharing complete"
 -- Sku42: group members quests via Questie party comms (SkuQuest/Options.lua)
 L["Gruppenmitglieder"] = "Group members"
 L["show group members quests"] = "show group members quests"
+L["show track quest entry"] = "show track quest entry"
 L["Keine Questie-Daten empfangen"] = "No Questie data received"
 L["Unbekannte Zone"] = "Unknown zone"
 -- Sku v43.0: spell-ID input at index 0 of the aura value lists (SkuAuras/Options.lua)

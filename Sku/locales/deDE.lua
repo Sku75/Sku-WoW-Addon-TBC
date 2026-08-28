@@ -2000,6 +2000,7 @@ L["Quelle (L)"] = "Quelle des Ereignisses (L)" -- [v43.0] renamed: filters the T
 L["Querying data..."] = "Daten werden abgefragt ..."
 L["Quest available"] = "Quest verfügbar"
 L["Quest for hand-in"] = "Quest für Abgabe"
+L["Quest verfolgen"] = "Quest verfolgen"
 L["Quest ID"] = "Quest ID" 
 L["Quest Items"] = "Questgegenstände"
 L["quest notifications"] = "Quest Benachrichtigungen"
@@ -3329,6 +3330,7 @@ L["Teilen abgeschlossen"] = "Teilen abgeschlossen"
 -- Sku42: group members quests via Questie party comms (SkuQuest/Options.lua)
 L["Gruppenmitglieder"] = "Gruppenmitglieder"
 L["show group members quests"] = "Quests von Gruppenmitgliedern anzeigen"
+L["show track quest entry"] = "Eintrag Quest verfolgen anzeigen"
 L["Keine Questie-Daten empfangen"] = "Keine Questie-Daten empfangen"
 L["Unbekannte Zone"] = "Unbekannte Zone"
 -- Sku v43.0: Zauber-ID Eingabe an Position 0 der Auren-Wertelisten (SkuAuras/Options.lua)

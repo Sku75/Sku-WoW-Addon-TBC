@@ -43,6 +43,15 @@ SkuQuest.options = {
 			type = "toggle",
 			desc = "",
 		},
+		-- Der Eintrag "Quest verfolgen" im Quest-Untermenue. Standard AN; wer
+		-- nichts sieht, hat von den Karten-Markern nichts und kann ihn hier
+		-- abschalten, statt ihn in jedem Quest-Menue mitzublaettern.
+		showQuestTracking = {
+			name = L["show track quest entry"],
+			order = 1.3,
+			type = "toggle",
+			desc = "",
+		},
 		questMarkerBeacons ={
 			name = L["quest notifications"],
 			type = "group",
@@ -357,6 +366,7 @@ SkuQuest.defaults = {
 	enable = true,
 	showDifficultyColors = true,
 	showGroupQuests = true,
+	showQuestTracking = true,
 	questMarkerBeacons = {
 		availableQuests = {
 			enabled = false,
@@ -400,6 +410,7 @@ SkuQuest.defaults = {
 SkuSettings:Register("SkuQuest", {
 	["showDifficultyColors"]                              = { scope = "profile", default = true,  type = "boolean" },
 	["showGroupQuests"]                                   = { scope = "profile", default = true,  type = "boolean" },
+	["showQuestTracking"]                                 = { scope = "profile", default = true,  type = "boolean" },
 
 	["questMarkerBeacons.availableQuests.enabled"]            = { scope = "profile", default = false,     type = "boolean" },
 	["questMarkerBeacons.availableQuests.enableBeacons"]      = { scope = "profile", default = true,      type = "boolean" },
@@ -1629,6 +1640,77 @@ local function SkuPostQuestToChat(aQuestID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Quest-Verfolgung (WoWs eigene "watched quests" -- Marker auf Mini- und
+-- Weltkarte plus der Tracker am Bildschirmrand).
+--
+-- Auf 2.5.6 gibt es KEIN C_QuestLog: die API nimmt einen Quest-Log-INDEX, keine
+-- questID (AddQuestWatch / RemoveQuestWatch / IsQuestWatched), und dieser Index
+-- verschiebt sich bei jeder angenommenen oder abgegebenen Quest. Die
+-- id->index-Zuordnung wird deshalb gecacht und
+--   a) bei JEDEM Lesezugriff geprueft (der gecachte Index wird zurueckgelesen --
+--      passt die questID nicht mehr, wird neu aufgebaut),
+--   b) von den Quest-Events in SkuQuest/Core.lua verworfen.
+-- Ohne den Cache liefe die Questdatenbank-Liste ("Alle") einen kompletten
+-- Quest-Log-Scan pro Quest -- fuer tausende Quests, die gar nicht im Log stehen.
+--
+-- Bekannte Grenze: Quests unter einem EINGEKLAPPTEN Zonen-Header liefert
+-- GetQuestLogTitle nicht mit. Sku klappt beim Bau von "Aktuelle Quests" ohnehin
+-- alles auf (ExpandQuestHeader(0)); hier wird bewusst NICHT aufgeklappt, weil
+-- ExpandQuestHeader ein QUEST_LOG_UPDATE ausloest, das den Cache sofort wieder
+-- verwirft -- das waere eine Endlosschleife.
+---------------------------------------------------------------------------------------------------------------------------------------
+SkuQuest.tQuestLogIndexCache = SkuQuest.tQuestLogIndexCache or {}
+local tQuestLogIndexCacheValid = false
+
+-- Von den Quest-Events in SkuQuest/Core.lua gerufen. Nur ein Flag: neu gebaut
+-- wird erst beim naechsten Lesezugriff, der ihn wirklich braucht.
+function SkuQuest:InvalidateQuestLogIndexCache()
+	tQuestLogIndexCacheValid = false
+end
+
+local function tGetQuestLogIndexForQuestID(aQuestID)
+	if not aQuestID or aQuestID == 0 then
+		return nil
+	end
+	if not _G.GetNumQuestLogEntries or not _G.GetQuestLogTitle then
+		return nil
+	end
+
+	local tCache = SkuQuest.tQuestLogIndexCache
+	local tIndex = tCache[aQuestID]
+	if tIndex then
+		local _, _, _, tIsHeader, _, _, _, tQid = _G.GetQuestLogTitle(tIndex)
+		if not tIsHeader and tQid == aQuestID then
+			return tIndex
+		end
+		-- Der Index zeigt woanders hin: das Log hat sich verschoben.
+		tQuestLogIndexCacheValid = false
+	end
+	if tQuestLogIndexCacheValid then
+		-- Frisch gebaute Zuordnung, ehrlicher Fehlschlag: die Quest steht nicht
+		-- im Log. NICHT neu aufbauen -- sonst kostet die Questdatenbank-Liste
+		-- einen vollen Scan pro Quest.
+		return nil
+	end
+
+	wipe(tCache)
+	local tNum = _G.GetNumQuestLogEntries() or 0
+	for i = 1, tNum do
+		local _, _, _, tIsHeader, _, _, _, tQid = _G.GetQuestLogTitle(i)
+		if not tIsHeader and tQid and tQid ~= 0 then
+			tCache[tQid] = i
+		end
+	end
+	tQuestLogIndexCacheValid = true
+	return tCache[aQuestID]
+end
+
+local function tQuestTrackingSay(aText)
+	pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, true, true, 0.2, nil, nil, nil, 2) end)
+end
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local function CreateQuestSubmenu(aParent, aQuestID)
 	local tHasEntries
 	--parent qs
@@ -1764,6 +1846,106 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 
 			end
 		end
+
+		-- "Quest verfolgen" -- WoWs eigenes Quest-Tracking (Marker auf Mini- und
+		-- Weltkarte, Tracker am Bildschirmrand). Bewusst der LETZTE Eintrag: er
+		-- ist eine Nebenfunktion und darf die Reihenfolge der eigentlichen
+		-- Quest-Eintraege (Annahme / Ziel / Abgabe / ...) nicht verschieben.
+		--
+		-- Der Eintrag erscheint nur fuer Quests im eigenen Log -- fuer eine Quest
+		-- aus der Questdatenbank gibt es keinen Log-Index und damit nichts zu
+		-- verfolgen. Er steht ausserhalb des questDataTBC-Blocks, damit ihn auch
+		-- eine Quest bekommt, zu der Sku keine DB-Daten hat.
+		if SkuSettings:Sub("SkuQuest").showQuestTracking == true then
+			local tTrackIndex = tGetQuestLogIndexForQuestID(aQuestID)
+			if tTrackIndex and _G.IsQuestWatched then
+				local tNewMenuEntryTrack = SkuOptions:InjectMenuItems(aParent, {L["Quest verfolgen"]}, SkuGenericMenuItem)
+				SkuOptions:MakeToggleNode(tNewMenuEntryTrack, {
+					label = L["Quest verfolgen"],
+					get = function(self)
+						-- Index JEDES Mal neu aufloesen: zwischen zwei Ansagen kann
+						-- eine angenommene Quest alles dahinter verschoben haben.
+						local tIndex = tGetQuestLogIndexForQuestID(aQuestID)
+						if not tIndex then
+							return false
+						end
+						local tOk, tWatched = pcall(_G.IsQuestWatched, tIndex)
+						return (tOk and tWatched) and true or false
+					end,
+					canChange = function(self)
+						local tIndex = tGetQuestLogIndexForQuestID(aQuestID)
+						if not tIndex then
+							return false
+						end
+						local tOk, tWatched = pcall(_G.IsQuestWatched, tIndex)
+						if tOk and tWatched then
+							return true		-- Verfolgung beenden geht immer
+						end
+						-- Dieselben zwei Sperren wie Blizzards eigener Tracking-
+						-- Klick (QuestLogFrame.lua, TBC): eine Quest ohne Ziele
+						-- laesst sich nicht verfolgen, und TBC erlaubt nur
+						-- MAX_WATCHABLE_QUESTS = 5 gleichzeitig. Beide Meldungen
+						-- kommen aus den Spiel-Globals, sind also uebersetzt.
+						if (_G.GetNumQuestLeaderBoards and (_G.GetNumQuestLeaderBoards(tIndex) or 0) == 0) then
+							tQuestTrackingSay(_G.QUEST_WATCH_NO_OBJECTIVES or L["Quest verfolgen"])
+							return false
+						end
+						local tMax = _G.MAX_WATCHABLE_QUESTS or 5
+						if _G.GetNumQuestWatches and (_G.GetNumQuestWatches() or 0) >= tMax then
+							local tMsg = _G.QUEST_WATCH_TOO_MANY
+							tQuestTrackingSay(tMsg and string.format(tMsg, tMax) or tostring(tMax))
+							return false
+						end
+						return true
+					end,
+					set = function(self, aNewValue)
+						local tIndex = tGetQuestLogIndexForQuestID(aQuestID)
+						if not tIndex then
+							return
+						end
+						if aNewValue == true then
+							-- AutoQuestWatch_Insert statt AddQuestWatch: nur so
+							-- landet die Quest auch in QUEST_WATCH_LIST, und
+							-- QUEST_WATCH_NO_EXPIRE verhindert, dass
+							-- AutoQuestWatch_OnUpdate sie nach dem Timer wieder
+							-- entfernt (das passiert bei autoQuestWatch-Eintraegen).
+							if _G.AutoQuestWatch_Insert and _G.QUEST_WATCH_NO_EXPIRE then
+								_G.AutoQuestWatch_Insert(tIndex, _G.QUEST_WATCH_NO_EXPIRE)
+							elseif _G.AddQuestWatch then
+								_G.AddQuestWatch(tIndex)
+							end
+						else
+							-- Gegenstueck: Blizzard raeumt beim Abwaehlen zuerst den
+							-- QUEST_WATCH_LIST-Eintrag weg. Ohne das zaehlt die Liste
+							-- eine nicht mehr verfolgte Quest weiter gegen das
+							-- 5er-Limit.
+							local tWatchList = _G.QUEST_WATCH_LIST
+							if type(tWatchList) == "table" then
+								for i = #tWatchList, 1, -1 do
+									if type(tWatchList[i]) == "table" and tWatchList[i].id == aQuestID then
+										table.remove(tWatchList, i)
+									end
+								end
+							end
+							if _G.RemoveQuestWatch then
+								_G.RemoveQuestWatch(tIndex)
+							end
+						end
+						-- Nur ausserhalb des Kampfes: QuestWatch_Update endet in
+						-- UIParent_ManageFramePositions, das geschuetzte Frames
+						-- verschiebt und im Kampf geblockt wird. Blizzard ruft
+						-- QuestWatch_Update ohnehin bei jedem QUEST_LOG_UPDATE, der
+						-- Tracker holt das also von selbst nach.
+						if _G.QuestWatch_Update and not InCombatLockdown() then
+							pcall(_G.QuestWatch_Update)
+						end
+						dprint("questTracking:", aQuestID, "index", tIndex, "->", tostring(aNewValue))
+					end,
+				})
+				tHasEntries = true
+			end
+		end
+
 	end
 
 	if not tHasEntries then

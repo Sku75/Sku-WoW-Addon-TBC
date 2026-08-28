@@ -10,6 +10,7 @@ Aenderungen in Sku v43.2
 
         Neu
             Neuer Tastenbefehl "Vollstaendigen Tooltip des Ziels ausgeben" (Strg+Umschalt+V): liest den kompletten Tooltip des aktuellen Ziels vor, inklusive dessen, was die Jaegerfaehigkeit Tierkunde offenlegt.
+            Quests lassen sich im Questmenue verfolgen und wieder abwaehlen - neuer Eintrag "Quest verfolgen" ganz unten in jedem Questmenue, abschaltbar.
 
         Aenderungen
             Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
@@ -347,6 +348,40 @@ Aenderungen in Sku v43.2
             geleert und der Besitzer exakt so wiederhergestellt, wie SkuCore ihn beim Anmelden
             setzt.
 
+
+
+
+    Quests verfolgen und wieder abwaehlen
+        Einfach: Im Menue jeder Quest steht jetzt als letzter Eintrag "Quest verfolgen". Enter
+            schaltet ihn um, der Cursor bleibt stehen, und der neue Zustand wird sofort angesagt
+            - "Quest verfolgen;Ein" oder "Quest verfolgen;Aus". Verfolgt heisst: WoWs eigene
+            Markierung auf der Mini- und der Weltkarte. Wer noch etwas sieht, findet Questziele
+            damit schneller; wer nichts sieht, hat von den Markern nichts. Deshalb laesst sich
+            der Eintrag komplett abschalten - unter Sku Einstellungen, SkuQuest, "Eintrag Quest
+            verfolgen anzeigen"; ab Werk ist er an. Er erscheint nur bei Quests im eigenen
+            Questlog, denn eine Quest aus der Questdatenbank hat man noch gar nicht. Zwei
+            Grenzen setzt das Spiel selbst: in The Burning Crusade lassen sich hoechstens fuenf
+            Quests gleichzeitig verfolgen, und eine Quest ganz ohne Ziele gar nicht. In beiden
+            Faellen sagt Sku die Meldung des Spiels an und der Zustand bleibt, wie er war.
+        Technisch: Idee und Referenzumsetzung stammen von ZenqFR, aus dem Begleit-Addon
+            SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby); hier ist die Funktion mit
+            seiner Zustimmung nativ gegen Skus eigene Schnittstellen neu gebaut, damit kein
+            zusaetzliches Addon noetig ist. Der Eintrag haengt im chunk-lokalen
+            CreateQuestSubmenu statt an einem Hook auf dem oeffentlichen Wrapper - deshalb
+            bekommt ihn jede Questansicht: Questlog, Questdatenbank und die Questmenues von
+            SkuChat. Auf 2.5.6 gibt es kein C_QuestLog: AddQuestWatch, RemoveQuestWatch und
+            IsQuestWatched nehmen einen Questlog-Index, keine Quest-ID, und dieser Index
+            verschiebt sich bei jeder angenommenen oder abgegebenen Quest. Sku haelt darum eine
+            Zuordnung Quest-ID auf Index, prueft den gemerkten Index bei jedem Lesen nach und
+            verwirft die Zuordnung bei den Questereignissen; ohne diesen Zwischenspeicher liefe
+            die Liste "Questdatenbank, Alle" einen vollen Questlog-Durchlauf pro Quest.
+            Eingeschaltet wird ueber AutoQuestWatch_Insert mit QUEST_WATCH_NO_EXPIRE, damit die
+            Quest in QUEST_WATCH_LIST landet und kein Ablauftimer sie wieder herausnimmt; beim
+            Abwaehlen wird zuerst der Eintrag aus QUEST_WATCH_LIST entfernt und dann
+            RemoveQuestWatch gerufen - genau wie in Blizzards eigenem Klickpfad, sonst zaehlt
+            eine laengst nicht mehr verfolgte Quest weiter gegen das Limit von fuenf.
+            QuestWatch_Update laeuft nur ausserhalb des Kampfes, weil es am Ende geschuetzte
+            Frames verschiebt; das naechste QUEST_LOG_UPDATE holt es ohnehin nach.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

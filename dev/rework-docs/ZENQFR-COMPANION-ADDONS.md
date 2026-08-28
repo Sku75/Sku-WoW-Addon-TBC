@@ -8,26 +8,24 @@ becomes a native Sku feature. This document records what each addon does, what
 was verified against our own tree, and what a native version would cost — one
 item per session, deliberately.
 
-Item 0 (target tooltip keybind) is **DONE and shipped in v43.2**. Items 1–5 are
-open and each still needs its own analysis pass.
+Items 0 (target tooltip keybind) and 1 (quest track toggle) are **DONE, tested
+in game, and part of v43.2**. Items 2–5 are open and each still needs its own
+analysis pass.
 
 ---
 
-## 0. Who ZenqFR is, and the licensing position
+## 0. Who ZenqFR is
 
 Not a stranger: ZenqFR is the contributor behind locale PRs **#3** and **#4**
 (frFR duplicate keys, locale lint). The five addons are new work, all built with
 Claude Code, all targeting Interface `20506` (our exact TBC-Anniversary build),
 and all written against real Sku public API rather than guesswork.
 
-⚠ **None of the five repos carries a LICENSE file.** Sku ships
-`Sku/LICENSE.txt`. Copying their source into our tree therefore needs ZenqFR's
-explicit permission first. Item 0 sidestepped this by being **reimplemented
-natively** against our own APIs — only the idea and the approach were adopted,
-which is credited in the v43.2 patch notes. For items 1–5 the same route is
-available and, for 4/5/6, actively preferable (their plumbing gets replaced by
-ours anyway). Decide per item: ask for permission, or rebuild natively and
-credit the idea.
+**We have ZenqFR's approval to take this material into Sku** (2026-08-28), so
+the only question per item is technical: lift their code, or rebuild natively
+where our own plumbing is the better base (items 3/4/5 — their mechanism gets
+replaced by ours anyway). Item 0 was rebuilt natively for that reason and the
+idea is credited in the v43.2 patch notes; keep crediting the idea either way.
 
 Note their READMEs link to `github.com/ZenqFR/Sku-WoW-Addon-TBC` — their own
 namespace copy, not `Sku75/…`.
@@ -63,7 +61,7 @@ Findings worth keeping:
 
 ---
 
-## 1. Quest track / untrack toggle (from SkuQuestNearby)
+## 1. DONE — quest track / untrack toggle (from SkuQuestNearby)
 
 **What it is.** A per-quest "track / stop tracking" toggle. Untracking is WoW's
 own way to drop a quest's minimap and world-map markers.
@@ -85,9 +83,48 @@ every quest-detail view in Sku gets it; their hook can never reach those.
 
 **Effort.** Small — roughly 40 lines plus locale strings. Recommended first.
 
-**Open questions.** Where exactly in the submenu the entry should sit; whether
-the label should be a two-value toggle (see the `MakeToggleNode` pattern) rather
-than a relabelling entry.
+### What was built (2026-08-28, TESTED OK in game, v43.2)
+
+Entry `L["Quest verfolgen"]`, a `MakeToggleNode` two-value toggle (ENTER flips,
+cursor stays, the new state is spoken back), placed as the **last** entry of the
+chunk-local `CreateQuestSubmenu` — so every quest-detail view gets it, including
+SkuChat's via the public wrapper. Gated by a new profile setting
+`showQuestTracking` (default **on**, SkuQuest options, "show track quest entry"):
+the markers only help someone with residual sight, so the entry can be switched
+off addon-wide instead of being paged past in every quest menu.
+
+Details that the API forced:
+
+- The entry sits **outside** the `SkuDB.questDataTBC[aQuestID]` block, so a quest
+  with no Sku DB data still gets it, and it is shown **only** for quests actually
+  in the player's log (a database quest has no log index).
+- `AddQuestWatch`/`RemoveQuestWatch`/`IsQuestWatched` take a quest **log index**,
+  which shifts on every accept/abandon. There is now a cached id→index map
+  (`SkuQuest.tQuestLogIndexCache`) that re-verifies the cached index on every
+  read and is invalidated by `QUEST_LOG_UPDATE`, `UNIT_QUEST_LOG_CHANGED`,
+  `QUEST_ACCEPTED`, `QUEST_REMOVED`, `QUEST_TURNED_IN` in `SkuQuest/Core.lua`.
+  Without it the "Questdatenbank, Alle" list would run a full quest-log scan for
+  each of thousands of quests. A miss on a *fresh* map does not rebuild.
+- ★ **TBC allows only `MAX_WATCHABLE_QUESTS` = 5 tracked quests** (retail/Wrath
+  is 25), and a quest with zero objectives cannot be tracked at all. Both refusals
+  are mirrored from Blizzard's own click handler and spoken with the client's own
+  localized `QUEST_WATCH_TOO_MANY` / `QUEST_WATCH_NO_OBJECTIVES` strings, via
+  `canChange` — the label is left on its unchanged state.
+- Tracking on goes through `AutoQuestWatch_Insert(index, QUEST_WATCH_NO_EXPIRE)`,
+  not raw `AddQuestWatch`, so the quest lands in `QUEST_WATCH_LIST` and no expiry
+  timer can drop it again; untracking removes the `QUEST_WATCH_LIST` row first,
+  exactly like Blizzard, or the 5-quest budget leaks.
+- `QuestWatch_Update()` is only called **outside combat** (it ends in
+  `UIParent_ManageFramePositions`); `QUEST_LOG_UPDATE` re-runs it anyway.
+- Known limit, deliberate: quests under a **collapsed** quest-log header are not
+  enumerable, so the entry is missing for them. Expanding from the cache builder
+  would fire `QUEST_LOG_UPDATE`, which invalidates the cache — an endless loop.
+  Sku's own "Aktuelle Quests" builder expands all headers already.
+
+**Tested OK in game 2026-08-28.** The toggle reads and flips, the five-quest
+cap and the no-objectives refusal both speak the client's own message, and the
+index stays correct across accepting a new quest. Credited to ZenqFR and
+SkuQuestNearby in the v43.2 patch notes (DE/EN/FR).
 
 ---
 
@@ -210,8 +247,7 @@ plan document when it starts.
 
 ## 6. Recommended order
 
-1. Quest track/untrack toggle (item 1) — smallest, fills a real gap, native
-   reach beats theirs.
+1. ~~Quest track/untrack toggle (item 1)~~ — DONE 2026-08-28, tested OK.
 2. Nearby quest objectives (item 2).
 3. Quest-target keybind (item 3).
 4. Bag categories, then bag↔bank transfer (item 4).

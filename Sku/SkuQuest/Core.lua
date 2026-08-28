@@ -780,6 +780,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:QUEST_LOG_UPDATE(...)
 	--print("QUEST_LOG_UPDATE", SkuSettings:Sub("SkuQuest", nil, "char"))
+	-- Jede angenommene/abgegebene Quest verschiebt die Quest-Log-Indizes, an
+	-- denen "Quest verfolgen" haengt (SkuQuest/Options.lua).
+	SkuQuest:InvalidateQuestLogIndexCache()
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag, SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList)
 	SkuQuest:UpdateZoneAvailableQuestList()
 end
@@ -795,6 +798,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:UNIT_QUEST_LOG_CHANGED(...)
 	--print("UNIT_QUEST_LOG_CHANGED", SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList)
+	SkuQuest:InvalidateQuestLogIndexCache()
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 	SkuQuest:UpdateZoneAvailableQuestList()
 end
@@ -1127,18 +1131,21 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:QUEST_ACCEPTED()
+	SkuQuest:InvalidateQuestLogIndexCache()
 	SkuQuest:UpdateAllQuestObjects()
 	SkuQuest:UpdateZoneAvailableQuestList()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:QUEST_REMOVED()
+	SkuQuest:InvalidateQuestLogIndexCache()
 	SkuQuest:UpdateAllQuestObjects()
 	SkuQuest:UpdateZoneAvailableQuestList()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:QUEST_TURNED_IN()
+	SkuQuest:InvalidateQuestLogIndexCache()
 	SkuQuest:UpdateAllQuestObjects()
 	SkuQuest:UpdateZoneAvailableQuestList()
 end

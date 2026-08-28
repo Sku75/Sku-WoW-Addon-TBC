@@ -10,6 +10,7 @@ Changes in Sku v43.2
 
         New
             New keybind "Output full tooltip of current target" (Ctrl+Shift+V): reads the current target's complete tooltip aloud, including what the Hunter ability Beast Lore reveals.
+            Quests can be tracked and untracked from the quest menu - a new "Track quest" entry at the bottom of every quest menu, and it can be switched off.
 
         Changes
             Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
@@ -313,6 +314,38 @@ Changes in Sku v43.2
             bags, auction house, chat links and quest text all read the same one - it is cleared
             before AND after, and its owner restored exactly as SkuCore sets it at login.
 
+
+
+
+    Track and untrack quests
+        Simple: Every quest menu now ends with a "Track quest" entry. ENTER flips it, the cursor
+            stays where it is, and the new state is spoken straight back - "Track quest;On" or
+            "Track quest;Off". Tracked means WoW's own marker on the minimap and the world map.
+            Anyone with some remaining sight finds quest objectives faster that way; anyone who
+            sees nothing gets nothing out of the markers. So the entry can be switched off
+            entirely - under Sku settings, SkuQuest, "show track quest entry"; it is on by
+            default. It only appears for quests in your own quest log, because a quest from the
+            quest database is not one you have yet. Two limits come from the game itself: The
+            Burning Crusade allows at most five tracked quests at a time, and a quest with no
+            objectives at all cannot be tracked. In both cases Sku speaks the game's own message
+            and the state stays as it was.
+        Technically: The idea and the reference implementation come from ZenqFR, in the companion
+            addon SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby); with his agreement the
+            feature is rebuilt here natively against Sku's own interfaces, so no extra addon is
+            needed. The entry lives in the chunk-local CreateQuestSubmenu rather than on a hook
+            over the public wrapper - which is why every quest view gets it: quest log, quest
+            database and SkuChat's quest menus. There is no C_QuestLog on 2.5.6: AddQuestWatch,
+            RemoveQuestWatch and IsQuestWatched take a quest LOG INDEX, not a quest ID, and that
+            index shifts whenever a quest is accepted or handed in. Sku therefore keeps a quest
+            ID to index map, re-verifies the remembered index on every read, and drops the map on
+            the quest events; without that cache the "quest database, all" list would run a full
+            quest-log scan per quest. Turning tracking on goes through AutoQuestWatch_Insert with
+            QUEST_WATCH_NO_EXPIRE so the quest lands in QUEST_WATCH_LIST and no expiry timer can
+            remove it again; turning it off removes the QUEST_WATCH_LIST row first and only then
+            calls RemoveQuestWatch - exactly like Blizzard's own click path, or a long-untracked
+            quest keeps counting against the limit of five. QuestWatch_Update only runs outside
+            combat, because it ends up moving protected frames; the next QUEST_LOG_UPDATE runs it
+            anyway.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1
