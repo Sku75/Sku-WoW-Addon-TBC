@@ -14,6 +14,8 @@ Changements dans Sku v43.2
         Nouveautés
             Nouveau raccourci « Annoncer l'infobulle complète de la cible » (Ctrl+Maj+V) : lit à voix haute l'infobulle complète de la cible actuelle, y compris ce que révèle la compétence de chasseur Connaissance des bêtes.
             Les quêtes peuvent être suivies ou retirées du suivi depuis le menu de quête - nouvelle entrée « Suivre la quête » en bas de chaque menu de quête, désactivable.
+            Nouveau raccourci « Cibler la créature de quête la plus proche » (Alt+H) : cible une créature liée à un objectif de quête en cours - y compris celle qui se contente de faire tomber un objet requis.
+            Le raccourci « Ennemi suivant en combat » (désormais sur Ctrl+H par défaut) trouve bien plus souvent quelque chose : il ne dépend plus du cône de vue.
 
         Changements
             Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
@@ -386,6 +388,57 @@ Changements dans Sku v43.2
             depuis longtemps non suivie continue de compter dans la limite de cinq.
             QuestWatch_Update ne s'exécute qu'en dehors du combat, car il finit par déplacer des
             cadres protégés ; le prochain QUEST_LOG_UPDATE s'en charge de toute façon.
+
+    Nouveau raccourci « Cibler la créature de quête la plus proche » (Alt+H)
+        Simple : Une pression cible une créature liée à un objectif de quête encore ouvert -
+            y compris une créature qu'on n'a pas à tuer, mais qui se contente de faire tomber
+            un objet requis. Exemple : pour « Essences pour les moteurs », le journal ne nomme
+            que l'objet ; la touche cible malgré tout le Spectre de mana qui le fait tomber.
+            Si rien ne correspond à portée, Sku annonce « aucune cible de quête à portée » ;
+            si le journal ne contient rien de pertinent, « aucune cible de quête dans le
+            journal ». La touche est sur Alt+H par défaut et se réassigne dans les raccourcis
+            Sku, « Ciblage et ciblage souple ».
+        Technique : L'idée et l'implémentation de référence viennent de ZenqFR, dans l'addon
+            compagnon SkuQuestTarget (github.com/ZenqFR/Sku-QuestTarget) ; la fonction a été
+            reconstruite nativement avec son accord, pour qu'aucun addon supplémentaire ne
+            soit nécessaire. Les candidats proviennent du journal de quêtes via
+            SkuQuest:GetQuestTargetIds ; les objectifs de type objet sont remontés jusqu'aux
+            créatures qui les font tomber (npcDrops, et un niveau plus loin itemDrops). La
+            recherche commence par la zone où l'on se trouve - une créature sans point
+            d'apparition sur place ne peut pas être à portée de ciblage et ne doit pas occuper
+            une place dans la macro ; ce n'est que si rien n'est enregistré pour la zone que le
+            tri se fait sur tout le continent. La distance retient le point d'apparition
+            enregistré le plus proche, et non le premier de la liste. La macro est multiligne,
+            et une particularité du jeu décide du résultat : chaque ligne qui correspond
+            s'exécute et chaque correspondance écrase la précédente - c'est donc la DERNIÈRE
+            qui gagne. Les candidats sont donc retenus du plus proche au plus lointain, afin
+            que le budget de longueur ne coupe que le lointain, mais écrits à l'envers, pour
+            que le plus proche soit la dernière ligne. La macro est reconstruite à chaque
+            pression hors combat ; en combat, c'est le dernier texte construit qui part.
+
+    « Ennemi suivant en combat » trouve aussi ce qu'on ne regarde pas (Ctrl+H)
+        Simple : La touche ne trouvait que ce que l'on regardait déjà - le même ennemi à cinq
+            mètres derrière soi ne donnait rien. Ce n'est pas un réglage, c'est le
+            fonctionnement du ciblage par tabulation du jeu. Sku retient donc désormais les
+            noms des créatures hostiles croisées et les essaie en plus par leur nom - et un nom
+            fonctionne dans toutes les directions. En pratique : ce que l'on a vu, combattu ou
+            ciblé une fois reste accessible de partout pendant deux minutes, même dos tourné.
+            La recherche repart par ailleurs de l'ennemi le plus proche à chaque pression au
+            lieu de continuer le cycle. La touche est sur Ctrl+H par défaut.
+        Technique : L'approche est reprise du SkuQuestTarget de ZenqFR, qui emprunte la même
+            voie pour sa fonction secondaire. /targetenemy est la tabulation et cherche dans le
+            cône de vue - rien ne peut changer cela. « /tar nom » interroge en revanche la
+            liste de noms du client et ne dépend pas de l'orientation, mais il lui faut un nom,
+            et aucune interface ne permet d'énumérer les unités situées derrière soi. Sku
+            collecte donc les noms en continu depuis quatre sources : les plaques hostiles, sa
+            propre cible, l'unité sous le curseur et la liste d'ennemis du moniteur de combat.
+            La collecte tourne à la seconde tant que la touche est assignée, car une plaque
+            n'existe que tant que la créature est en vue - c'est-à-dire précisément quand on
+            n'a pas besoin de la touche. Seuls les noms y sont collectés ; la mesure de
+            distance, coûteuse, ne tourne qu'une fois par pression. Les noms retenus durent
+            deux minutes. La macro est « /cleartarget », puis « /targetenemy », puis les noms
+            retenus du plus lointain au plus proche - la dernière ligne qui correspond
+            l'emporte, donc la plus proche.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

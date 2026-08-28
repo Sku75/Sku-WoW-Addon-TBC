@@ -630,6 +630,183 @@ end
 -- die Ziel-Ansage uebernimmt der vorhandene PLAYER_TARGET_CHANGED-Pfad von Sku.
 -- Die Taste belegt man im Menue Core, Sku Tastenbelegung (SKU_KEY_NEXTCOMBATENEMY).
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+-- 360-Grad-Rueckfall fuer "naechster Gegner"
+--
+-- BEFUND 2026-08-28 (Log, nicht Vermutung): die Bindung kommt an
+-- ("nextEnemy: KEY pressed"), aber /targetenemy liefert NUR etwas, wenn man das
+-- Vieh ANSCHAUT. Weggedreht meldet es "kein Ziel", obwohl derselbe Gegner 5 m
+-- hinter einem steht. Das ist die Engine (TargetNearestEnemy ist Tab und Tab
+-- sucht im Sichtkegel), nicht unsere Bindung -- daran ist auf diesem Weg nichts
+-- zu reparieren.
+--
+-- Was sich reparieren laesst: "/tar <Name>" sucht ueber die Namensliste des
+-- Clients und nicht ueber den Kegel. Deshalb merkt sich Sku jede feindliche
+-- Namensplakette, die es gesehen hat, und haengt daraus "/tar"-Zeilen hinter
+-- das /targetenemy. Dreht man sich weg, ist die Plakette weg -- der gemerkte
+-- NAME aber nicht, und der genuegt.
+--
+-- Reihenfolge wie beim Questziel-Makro: in einem mehrzeiligen Makro gewinnt die
+-- LETZTE passende Zeile, also stehen die Namen von WEIT nach NAH, damit der
+-- naechstgelegene Gegner am Ende steht und die Kegel-Auswahl ueberschreibt.
+--
+-- BEFUND 2026-08-28, zweite Runde: die Namensliste blieb LEER
+-- ("nextEnemy: macro rebuilt remembered 0") -- es lag also nicht an /tar,
+-- sondern daran, dass gar kein Name da war. Plaketten allein reichen als
+-- Quelle nicht: sie entstehen erst, wenn das Vieh im Blick war, und genau
+-- dann braucht man die Taste nicht. Deshalb wird jetzt aus JEDER Gelegenheit
+-- gemerkt, bei der Sku ohnehin eine feindliche Einheit in der Hand hat:
+-- Plakette, eigenes Ziel, Mouseover. Und das Gedaechtnis haelt laenger.
+local tHostileSeen = {}                  -- [Name] = {t = Zeit, range = Meter}
+local tPlateEventCount = 0               -- wie oft NAME_PLATE_UNIT_ADDED ankam
+
+-- Einmal gebaut statt 40 Zeichenkettenverkettungen pro Takt (die waeren reiner
+-- Muell fuer den Garbage Collector).
+local tPlateTokens = {}
+for x = 1, 40 do tPlateTokens[x] = "nameplate" .. x end
+local NEXT_ENEMY_MEMORY = 120            -- Sekunden, die ein Name gemerkt bleibt
+local NEXT_ENEMY_SORT_UNKNOWN = 99       -- unbekannte Entfernung: ans Ende sortieren
+local NEXT_ENEMY_BUDGET = 220            -- Zeichenbudget des Makrotextes
+
+-- Eine feindliche Plakette ist aufgetaucht: Namen und grobe Entfernung merken.
+-- aWantRange: die Entfernung KOSTET. LibRangeCheck sucht sich bei einem
+-- Cache-Fehlschlag durch seine Zauber-/Gegenstands-Pruefkette, also mehrere
+-- API-Aufrufe pro Einheit. Im Sekundentakt mal ein Dutzend Plaketten waere das
+-- der einzige echte Posten dieser Funktion -- und die Entfernung entscheidet
+-- nur die REIHENFOLGE im Makro, nie ob ein Name benutzbar ist. Deshalb holt sie
+-- nur, wer sie wirklich gerade braucht: der Bau beim Tastendruck (einmal, fuer
+-- die paar dann sichtbaren Plaketten) und das eigene Ziel/Mouseover. Die
+-- laufende Ernte sammelt NUR Namen.
+local function tNextEnemyPlateSeen(aEvent, aUnit, aWantRange)
+	if not aUnit or not UnitExists(aUnit) then return end
+	if not UnitCanAttack("player", aUnit) then return end
+	if UnitIsDead(aUnit) then return end
+	local tName = UnitName(aUnit)
+	if not tName or tName == "" then return end
+	local tRange
+	if aWantRange then
+		pcall(function()
+			local _, tMin = SkuOptions.RangeCheck:GetRange(aUnit)
+			tRange = tMin
+		end)
+	end
+	-- Die Entfernung dient NUR der Reihenfolge, nie dem Ausschluss: eine
+	-- /tar-Zeile auf etwas ausser Reichweite ist ein wirkungsloser Leerlauf,
+	-- ein fehlender Name dagegen kostet den Treffer. (Genau daran ging die
+	-- dritte Testrunde verloren: der Name war bekannt, wurde aber beim
+	-- Wiedersehen mit einer groesseren Entfernung ueberschrieben und fiel damit
+	-- aus der Auswahl -- "remembered 0", obwohl Sku den Namen kannte.)
+	local tPrev = tHostileSeen[tName]
+	local tBestRange = tRange or (tPrev and tPrev.range) or NEXT_ENEMY_SORT_UNKNOWN
+	tHostileSeen[tName] = {t = GetTime(), range = tBestRange}
+
+	-- Kommt der Name aus einem ECHTEN Plaketten-Ereignis (aEvent gesetzt), einmal
+	-- pro neuem Namen ins Log. Nur so laesst sich die offene Frage beantworten:
+	-- feuern Namensplakenten auf diesem Client ueberhaupt noch? Der Zaehler beim
+	-- Tastendruck kann das NICHT beantworten, weil dabei immer weggedreht wird --
+	-- 0 Plaketten ist dann das erwartete Ergebnis und beweist nichts.
+	-- Hintergrund: 2.5.6 hat Namensplaketten auf die Midnight-Fassung umgestellt
+	-- und dabei reihenweise Addons zerlegt; ob Token und Ereignis unveraendert
+	-- geblieben sind, ist damit eine Messfrage, keine Annahme.
+	if aEvent then
+		-- NUR zaehlen, nicht drucken. Die erste Fassung loggte nur BEIM ERSTEN
+		-- Auftauchen eines Namens -- und weil derselbe Name fast immer schon
+		-- ueber das eigene Ziel im Speicher stand, blieb die Zeile aus und ihr
+		-- Fehlen bewies gar nichts. Der Zaehler wandert in die Bauzeile.
+		tPlateEventCount = tPlateEventCount + 1
+	end
+end
+
+-- Dieselbe Merkroutine fuer die beiden anderen Quellen: das eigene Ziel und
+-- die Einheit unter dem Mauszeiger. Beide liefern einen Namen auch dann, wenn
+-- nie eine Plakette da war -- und ein einmal bekaempftes Vieh bleibt danach
+-- zwei Minuten lang per /tar erreichbar, egal wohin man schaut.
+local function tNextEnemyRememberUnit(aEvent, aUnitFromEvent)
+	tNextEnemyPlateSeen(nil, "target", true)
+	tNextEnemyPlateSeen(nil, "mouseover", true)
+	if aUnitFromEvent then tNextEnemyPlateSeen(nil, aUnitFromEvent, true) end
+end
+
+-- Makrotext neu bauen. NUR ausserhalb des Kampfes aufrufbar (SetAttribute ist
+-- unter InCombatLockdown gesperrt); im Kampf feuert der zuletzt gebaute Text.
+local function tBuildNextEnemyMacro(aButton)
+	if not aButton or InCombatLockdown() then return end
+
+	-- Was gerade sichtbar ist, zaehlt frisch -- das haelt die Entfernungen aktuell.
+	-- Nur HIER lohnt die Entfernungsabfrage: einmal pro Tastendruck.
+	for x = 1, 40 do
+		tNextEnemyPlateSeen(nil, tPlateTokens[x], true)
+	end
+
+	-- Gratis-Quelle obendrauf: aqCombat fuehrt in SkuCore.threatTable ohnehin
+	-- einen Eintrag je entdecktem Gegner im Kampf, samt Namen. Ein Eintrag ist
+	-- `false`, sobald das Vieh tot oder ausgekehrt ist -- nur die lebenden
+	-- Tabellen zaehlen. Kostet nichts und deckt genau den Fall ab, in dem man
+	-- mitten im Getuemmel steht und sich wegdreht.
+	if SkuCore.threatTable then
+		local tNow2 = GetTime()
+		for _, tEntry in pairs(SkuCore.threatTable) do
+			if type(tEntry) == "table" and tEntry.name and tEntry.name ~= "" then
+				local tPrev2 = tHostileSeen[tEntry.name]
+				tHostileSeen[tEntry.name] = {
+					t = tNow2,
+					range = (tPrev2 and tPrev2.range) or NEXT_ENEMY_SORT_UNKNOWN,
+				}
+			end
+		end
+	end
+
+	local tNow = GetTime()
+	local tList = {}
+	for tName, tInfo in pairs(tHostileSeen) do
+		if (tNow - tInfo.t) > NEXT_ENEMY_MEMORY then
+			tHostileSeen[tName] = nil
+		else
+			tList[#tList + 1] = {name = tName, range = tInfo.range or NEXT_ENEMY_SORT_UNKNOWN}
+		end
+	end
+	-- Aufnahme: naechste zuerst, damit das Budget nur Weitentferntes kappt.
+	table.sort(tList, function(a, b) return a.range < b.range end)
+
+	local tIncluded, tLength = {}, 0
+	for _, tEntry in ipairs(tList) do
+		local tLine = "/tar " .. tEntry.name
+		if tLength + #tLine + 1 <= NEXT_ENEMY_BUDGET then
+			tIncluded[#tIncluded + 1] = tEntry
+			tLength = tLength + #tLine + 1
+		end
+	end
+
+	-- Ausgabe: umgedreht, damit der naechstgelegene Name die letzte Zeile ist.
+	local tLines = {"/cleartarget", "/targetenemy"}
+	local tShown = {}
+	for i = #tIncluded, 1, -1 do
+		tLines[#tLines + 1] = "/tar " .. tIncluded[i].name
+	end
+	for i = 1, #tIncluded do
+		tShown[#tShown + 1] = tIncluded[i].name .. "@" .. string.format("%.0f", tIncluded[i].range)
+	end
+
+	local tMacro = table.concat(tLines, "\n")
+	aButton:SetAttribute("macrotext", tMacro)
+	aButton:SetAttribute("macrotext1", tMacro)
+	-- Plaketten-Diagnose: trennt "Plaketten gibt es gar nicht" (CVar aus, oder
+	-- die Einheiten-Token existieren auf diesem Client nicht) von "Plaketten
+	-- gibt es nur nach vorne".
+	local tPlateCount, tHostilePlates = 0, 0
+	for x = 1, 40 do
+		local u = tPlateTokens[x]
+		if UnitExists(u) then
+			tPlateCount = tPlateCount + 1
+			if UnitCanAttack("player", u) then tHostilePlates = tHostilePlates + 1 end
+		end
+	end
+	dprint("nextEnemy: macro rebuilt", "remembered", #tIncluded, "chars", #tMacro,
+		"plates", tPlateCount, "hostilePlates", tHostilePlates, "plateEvents", tPlateEventCount,
+		"cvarShowEnemies", tostring(GetCVar and GetCVar("nameplateShowEnemies")),
+		"names", table.concat(tShown, ", "))
+end
+
 local tNextEnemyButton
 local function tEnsureNextEnemyButton()
 	if tNextEnemyButton then return tNextEnemyButton end
@@ -638,20 +815,96 @@ local function tEnsureNextEnemyButton()
 	end)
 	if not ok or not b then return nil end
 	b:RegisterForClicks("AnyDown")
+	-- BEIDE Attributformen setzen. Welche die sichere Vorlage liest, haengt am
+	-- Knopfnamen des Klicks (SecureButton_GetButtonSuffix): "LeftButton" -> "1",
+	-- alles andere -> "-<name>". Die Bindung unten klickt jetzt als LeftButton,
+	-- also greift type1/macrotext1; die unnummerierte Form bleibt als Rueckfall
+	-- stehen, falls irgendwo doch mit Knopfnamen geklickt wird.
 	b:SetAttribute("type", "macro")
-	b:SetAttribute("macrotext", "/targetenemy")
+	b:SetAttribute("type1", "macro")
+	-- /cleartarget davor: ohne das ist die Taste Tab, also "der NAECHSTE im
+	-- Durchlauf". Mit leerem Ziel faengt die Suche jedes Mal beim NAECHSTGELEGENEN
+	-- an -- das ist, was die Taste laut ihrem Namen tun soll.
+	b:SetAttribute("macrotext", "/cleartarget\n/targetenemy")
+	b:SetAttribute("macrotext1", "/cleartarget\n/targetenemy")
 	b:SetSize(1, 1)
 	b:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 	b:Show()
+
+	-- Diagnose: ohne diese beiden Zeilen ist "die Taste ist stumm" nicht von
+	-- "die Taste kommt gar nicht an" zu unterscheiden -- genau daran ging beim
+	-- Questziel-Knopf eine ganze Testrunde verloren.
+	b:SetScript("PreClick", function(self)
+		self.tPrevTarget = UnitExists("target") and UnitGUID("target") or nil
+		dprint("nextEnemy: KEY pressed", "combat", tostring(InCombatLockdown() == true))
+		if not InCombatLockdown() then
+			pcall(tBuildNextEnemyMacro, self)
+		end
+	end)
+	b:SetScript("PostClick", function(self)
+		if UnitExists("target") then
+			-- Steht gerade KEINE Plakette fuer dieses Ziel, kam es ueber den
+			-- gemerkten Namen -- also genau ueber den 360-Grad-Weg.
+			local tPlate = false
+			for x = 1, 40 do
+				local u = tPlateTokens[x]
+				if UnitExists(u) and UnitIsUnit(u, "target") then tPlate = true break end
+			end
+			dprint("nextEnemy: target now", tostring(UnitName("target")),
+				UnitGUID("target") == self.tPrevTarget and "(unchanged)" or "(new)",
+				tPlate and "via nameplate/cone" or "via remembered name (no plate)")
+		else
+			dprint("nextEnemy: still no target -- neither /targetenemy nor any remembered /tar name matched")
+		end
+	end)
+
 	tNextEnemyButton = b
 	return b
+end
+
+-- Dauerhafte Ernte. Plaketten existieren nur, solange das Vieh im Blick ist;
+-- wer erst beim Tastendruck hinsieht, sieht genau dann nichts, weil man zum
+-- Druecken ja weggedreht ist. Ein leichter Takt sammelt deshalb laufend ein,
+-- woran man vorbeilaeuft. 40 UnitExists pro Sekunde sind vernachlaessigbar,
+-- und der Takt schreibt NUR in eine Lua-Tabelle -- darf also auch im Kampf
+-- laufen (kein SetAttribute, keine geschuetzte API).
+local tHarvestFrame
+local tHarvestAccum = 0
+local tHarvestPrune = 0
+local function tEnsureHarvest()
+	if tHarvestFrame then return tHarvestFrame end
+	tHarvestFrame = CreateFrame("Frame")
+	tHarvestFrame:Hide()
+	tHarvestFrame:SetScript("OnUpdate", function(self, aElapsed)
+		tHarvestAccum = tHarvestAccum + aElapsed
+		if tHarvestAccum < 1.0 then return end
+		tHarvestAccum = 0
+		for x = 1, 40 do
+			-- ohne Entfernung: nur Namen einsammeln
+			tNextEnemyPlateSeen(nil, tPlateTokens[x], false)
+		end
+		-- Alle 10 s aufraeumen, damit die Tabelle auch ohne Tastendruck nicht
+		-- ueber die Merkdauer hinaus mitwaechst.
+		tHarvestPrune = tHarvestPrune + 1
+		if tHarvestPrune >= 10 then
+			tHarvestPrune = 0
+			local tNow3 = GetTime()
+			for tName, tInfo in pairs(tHostileSeen) do
+				if (tNow3 - tInfo.t) > NEXT_ENEMY_MEMORY then tHostileSeen[tName] = nil end
+			end
+		end
+	end)
+	return tHarvestFrame
 end
 
 local tNextEnemyBindPending = false
 -- Wird von SkuKeyBindsUpdate aufgerufen (object SkuCore, func diese Methode):
 -- setzt die Override-Bindung der gewaehlten Taste auf den sicheren Button.
 function VisualAids:UpdateNextCombatEnemyBinding()
-	if not VisualAids:IsEnabled() then return end
+	if not VisualAids:IsEnabled() then
+		if tHarvestFrame then tHarvestFrame:Hide() end
+		return
+	end
 	local b = tEnsureNextEnemyButton()
 	if not b then return end
 	if InCombatLockdown() then
@@ -664,8 +917,16 @@ function VisualAids:UpdateNextCombatEnemyBinding()
 	local e = kb and kb["SKU_KEY_NEXTCOMBATENEMY"]
 	local k1 = e and e.key or ""
 	local k2 = e and e.key2 or ""
-	if k1 ~= "" then pcall(SetOverrideBindingClick, b, true, k1, "SkuNextCombatEnemyButton", k1) end
-	if k2 ~= "" then pcall(SetOverrideBindingClick, b, true, k2, "SkuNextCombatEnemyButton", k2) end
+	-- OHNE fuenftes Argument (siehe die Attribut-Erklaerung in
+	-- tEnsureNextEnemyButton): der Klick kommt dann als "LeftButton" an.
+	if k1 ~= "" then pcall(SetOverrideBindingClick, b, true, k1, "SkuNextCombatEnemyButton") end
+	if k2 ~= "" then pcall(SetOverrideBindingClick, b, true, k2, "SkuNextCombatEnemyButton") end
+	if k1 ~= "" or k2 ~= "" then
+		tEnsureHarvest():Show()
+	elseif tHarvestFrame then
+		tHarvestFrame:Hide()
+	end
+	dprint("nextEnemy: binding armed", "key1", k1 ~= "" and k1 or "-", "key2", k2 ~= "" and k2 or "-")
 end
 
 -- The SkuKeyBinds override-binding dispatcher (SkuZOptions/SkuKeyBinds.lua) is
@@ -829,6 +1090,11 @@ end
 function VisualAids:OnEnable()
 	-- Folgen-Abbruch-Warnung: Frame anlegen + AUTOFOLLOW_BEGIN/END registrieren.
 	pcall(tEnsureFollowWarn)
+	-- Feindliche Plaketten mitschreiben, solange sie da sind -- gedreht wird
+	-- meist ERST und die Taste DANN gedrueckt.
+	pcall(function() SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_ADDED", tNextEnemyPlateSeen) end)
+	pcall(function() SkuDispatcher:RegisterEventCallback("PLAYER_TARGET_CHANGED", tNextEnemyRememberUnit) end)
+	pcall(function() SkuDispatcher:RegisterEventCallback("UPDATE_MOUSEOVER_UNIT", tNextEnemyRememberUnit) end)
 	-- Naechster-Gegner-Button: Regen-Event scharfschalten und Bindung anwenden.
 	if tNextEnemyRegenFrame then tNextEnemyRegenFrame:RegisterEvent("PLAYER_REGEN_ENABLED") end
 	if tNextEnemyButton then tNextEnemyButton:Show() end
@@ -838,6 +1104,10 @@ end
 -- Disarm the umbrella: hide the lazy frames, unregister all driver events and clear
 -- the next-enemy override binding, so a disabled VisualAids genuinely does nothing.
 function VisualAids:OnDisable()
+	pcall(function() SkuDispatcher:UnregisterEventCallback("NAME_PLATE_UNIT_ADDED", tNextEnemyPlateSeen) end)
+	pcall(function() SkuDispatcher:UnregisterEventCallback("PLAYER_TARGET_CHANGED", tNextEnemyRememberUnit) end)
+	pcall(function() SkuDispatcher:UnregisterEventCallback("UPDATE_MOUSEOVER_UNIT", tNextEnemyRememberUnit) end)
+	if tHarvestFrame then tHarvestFrame:Hide() end
 	-- Lesebalken
 	if tLineBar then tLineBar:Hide() end
 	-- Maus-Finder

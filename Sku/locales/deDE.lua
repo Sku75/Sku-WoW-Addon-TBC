@@ -2270,6 +2270,7 @@ L["SKU_KEY_COMBATMONSETFOLLOWTARGET"] = "Kampfmonitor; aktuelles Ziel als Folgen
 L["SKU_KEY_NAVROUTEDESTINATIONSQUICK"] = "routenziele in der nähe öffnen"
 L["SKU_KEY_NAVWAYPOINTSQUICK"] = "wegpunkte in der nähe öffnen"
 L["SKU_KEY_NEXTCOMBATENEMY"] = "naechster Gegner im Kampf"
+L["SKU_KEY_QUESTTARGET"] = "naechstes Questziel ins Ziel nehmen"
 L["SKU_KEY_TRADEACCEPT"] = "Handel annehmen"
 L["SKU_KEY_COMBATMENU_UP"] = "Kampfmenü; nach oben"
 L["SKU_KEY_COMBATMENU_DOWN"] = "Kampfmenü; nach unten"

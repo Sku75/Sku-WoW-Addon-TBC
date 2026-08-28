@@ -11,6 +11,8 @@ Changes in Sku v43.2
         New
             New keybind "Output full tooltip of current target" (Ctrl+Shift+V): reads the current target's complete tooltip aloud, including what the Hunter ability Beast Lore reveals.
             Quests can be tracked and untracked from the quest menu - a new "Track quest" entry at the bottom of every quest menu, and it can be switched off.
+            New keybind "Target nearest quest mob" (Alt+H): targets a creature belonging to an open quest objective - including one that merely drops an item you need.
+            The "Next enemy in combat" keybind (now bound to Ctrl+H by default) finds something far more often: it no longer depends on the view cone.
 
         Changes
             Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
@@ -346,6 +348,52 @@ Changes in Sku v43.2
             quest keeps counting against the limit of five. QuestWatch_Update only runs outside
             combat, because it ends up moving protected frames; the next QUEST_LOG_UPDATE runs it
             anyway.
+
+    New keybind "Target nearest quest mob" (Alt+H)
+        Simple: One press targets a creature that belongs to a quest objective you still have
+            open - including one you do not have to kill at all, but which merely drops an
+            item you need. Example: for "Essence for the Engines" the quest log only names the
+            item; the key still targets the Mana Wraith that drops it. If nothing matches in
+            range Sku says "no quest target in range"; if the quest log holds nothing suitable
+            at all, "no quest target in your log". The key is bound to Alt+H out of the box
+            and can be rebound under Sku keybindings, "Target and soft targeting".
+        Technically: The idea and the reference implementation come from ZenqFR, in the
+            companion addon SkuQuestTarget (github.com/ZenqFR/Sku-QuestTarget); here the
+            feature was rebuilt natively with his agreement, so no extra addon is needed.
+            Candidates come from your own quest log via SkuQuest:GetQuestTargetIds; item
+            objectives are traced back through the drop source (npcDrops, and one level deep
+            also itemDrops) to the creatures that drop them. The search looks in the zone you
+            are standing in first - a creature with no spawn there cannot possibly be in
+            targeting range and must not take a slot in the macro; only when nothing is
+            recorded for your own zone does it sort across the whole continent. Distance uses
+            the nearest recorded spawn point, not the first one in the list. The macro is
+            multi-line, and one quirk of the game decides the outcome: every matching line
+            fires and each match overwrites the previous one, so the LAST one wins. Candidates
+            are therefore included near to far, so the length budget can only cut distant
+            ones, but written out reversed, so the closest candidate is the final line. It is
+            rebuilt on every press out of combat; in combat the last built text fires.
+
+    "Next enemy in combat" now finds things you are not facing (Ctrl+H)
+        Simple: The key could only ever find what you were already looking at - with the same
+            enemy five metres behind you it reported nothing. That is not a setting, it is how
+            the game's tab targeting works. So Sku now remembers the names of hostile creatures
+            you come across and additionally tries them by name - and a name works in every
+            direction. In practice: anything you have seen, fought or targeted once stays
+            reachable from anywhere for two minutes, including with your back to it. The
+            search now also restarts at the nearest enemy on every press instead of cycling
+            onwards. The key is bound to Ctrl+H out of the box.
+        Technically: The approach is borrowed from ZenqFR's SkuQuestTarget, which uses the
+            same route for its secondary function. /targetenemy is tab and searches the view
+            cone - nothing can change that. "/tar name" instead searches the client's name
+            list and is direction-independent, but it needs a name, and there is no interface
+            that enumerates units behind you. Sku therefore collects names continuously from
+            four sources: hostile nameplates, your own target, the unit under the mouse, and
+            the combat monitor's enemy list. Collection runs on a one-second tick while the key
+            is bound, because a nameplate only exists while the creature is in view - which is
+            exactly when you do not need the key. Only names are collected there; the expensive
+            range measurement runs once per key press. Remembered names last two minutes. The
+            macro is "/cleartarget", then "/targetenemy", then the remembered names far to
+            near - the last matching line wins, so the nearest one.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

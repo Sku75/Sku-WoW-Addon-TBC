@@ -200,7 +200,15 @@ SkuOptions.skuDefaultKeyBindings = {
 
    ["SKU_KEY_COMBATMONSETFOLLOWTARGET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_NEXTCOMBATENEMY"] = {key = "", object = "SkuCore", func = "UpdateNextCombatEnemyBinding",},
+   -- STRG-H als Vorgabe, passend zum ALT-H des Questziels: beide Tasten sind
+   -- frei und gehoeren sachlich zusammen ("nimm etwas ins Ziel").
+   ["SKU_KEY_NEXTCOMBATENEMY"] = {key = "CTRL-H", object = "SkuCore", func = "UpdateNextCombatEnemyBinding",},
+
+   -- Naechstes Questziel: eigener sicherer Button in SkuQuest/QuestTarget.lua,
+   -- deshalb dieselbe Objekt/Funktion-Zustellung wie beim naechsten Gegner.
+   -- ALT-H als Vorgabe: frei (kein anderer Sku-Const und keine Standardbelegung
+   -- des Spiels liegt darauf), und ohne Vorgabe entdeckt die Funktion niemand.
+   ["SKU_KEY_QUESTTARGET"] = {key = "ALT-H", object = "SkuQuest", func = "UpdateQuestTargetBinding",},
 
    ["SKU_KEY_TARGETHEALTH"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
 

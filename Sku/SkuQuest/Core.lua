@@ -133,6 +133,13 @@ function SkuQuest:OnEnable()
 	-- Arm the WoW events on every enable (re-armable; see RegisterQuestEvents).
 	SkuQuest:RegisterQuestEvents()
 
+	-- SKU_KEY_QUESTTARGET (SkuQuest/QuestTarget.lua) uses the string-dispatch
+	-- keybind path, which does not run at login -- so arm it from here, like the
+	-- other bindings of that kind. A no-op while the key is unbound.
+	if SkuQuest.UpdateQuestTargetBinding then
+		pcall(function() SkuQuest:UpdateQuestTargetBinding() end)
+	end
+
 	-- Install the ToggleQuestLog hook here (once). It used to be installed in the
 	-- VARIABLES_LOADED handler, which fires once per session; doing it here ensures
 	-- a mid-session enable (after VARIABLES_LOADED already fired) still arms the
@@ -318,6 +325,11 @@ function SkuQuest:OnDisable()
 	if _G["SkuQuestMain"] then
 		ClearOverrideBindings(_G["SkuQuestMain"])
 		_G["SkuQuestMain"]:Hide()
+	end
+
+	-- 4) Drop the quest-target key's override binding and stop its driver.
+	if SkuQuest.QuestTargetDisable then
+		pcall(function() SkuQuest:QuestTargetDisable() end)
 	end
 
 	-- NOTE: the ToggleQuestLog hooksecurefunc cannot be removed; its body is

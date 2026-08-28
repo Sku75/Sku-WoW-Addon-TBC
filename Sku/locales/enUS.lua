@@ -2266,6 +2266,7 @@ L["SKU_KEY_COMBATMONSETFOLLOWTARGET"] = "Combat monitor; set current target as f
 L["SKU_KEY_NAVROUTEDESTINATIONSQUICK"] = "open nearby route destinations"
 L["SKU_KEY_NAVWAYPOINTSQUICK"] = "open nearby waypoints"
 L["SKU_KEY_NEXTCOMBATENEMY"] = "next enemy in combat"
+L["SKU_KEY_QUESTTARGET"] = "target nearest quest mob"
 L["SKU_KEY_TRADEACCEPT"] = "accept trade"
 L["SKU_KEY_COMBATMENU_UP"] = "Combat menu; up"
 L["SKU_KEY_COMBATMENU_DOWN"] = "Combat menu; down"

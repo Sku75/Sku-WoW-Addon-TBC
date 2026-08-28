@@ -9,8 +9,9 @@ was verified against our own tree, and what a native version would cost — one
 item per session, deliberately.
 
 Items 0 (target tooltip keybind) and 1 (quest track toggle) are **DONE, tested
-in game, and part of v43.2**. Items 2–5 are open and each still needs its own
-analysis pass.
+in game, and part of v43.2**. Item 3 (quest-target keybind) is **built
+2026-08-28, not yet tested in game**. Items 2, 4 and 5 are open and each still
+needs its own analysis pass.
 
 ---
 
@@ -154,31 +155,177 @@ routine.
 
 ---
 
-## 3. Quest-target keybind (SkuQuestTarget)
+## 3. DONE — quest-target keybind (from SkuQuestTarget)
 
 **What it is.** A key that targets a creature relevant to a current quest
-objective — including creatures that merely *drop* a needed item — plus a
-modifier variant for "nearest enemy".
+objective — including creatures that merely *drop* a needed item.
 
-**Verified.** No `TargetNearestEnemy` anywhere in Sku, so that half is a genuine
-gap too.
+**CORRECTION (2026-08-28).** An earlier draft of this section claimed "no
+`TargetNearestEnemy` anywhere in Sku, so that half is a genuine gap too". That
+was wrong, and only literally true of the API *name*. Sku has had a
+nearest-enemy key all along: `SKU_KEY_NEXTCOMBATENEMY`
+(`SkuCore/visualAids.lua:627-670`), a secure button whose `macrotext` is
+`/targetenemy`. Verified against the client's own shipped source: the default
+Tab binding runs `TargetNearestEnemy()`
+(`BlizzardInterfaceCode/.../Bindings_Cata.xml:1086`) and `/targetenemy` runs the
+exact same call (`.../SlashCommands.lua:493`). So our key **is** Tab on another
+key, and it does not care about combat state — it already targets the nearest
+attackable enemy out of combat. The "nearest enemy" half of their addon was
+therefore never a gap and was **not** ported.
 
-**Take the feature, drop their mechanism.** They rebuilt secure-button plumbing
-we already have and have already debugged: `SkuCore/combatMenuKeys.lua` and
-`SkuCore/skuFocus.lua` already drive `/tar` through `macrotext` +
-`SetOverrideBindingClick` (see `skuFocus.lua:213`). A native version reuses that
-and inherits our combat-grace-window handling.
+Changes made to that existing key on 2026-08-28 (UNTESTED):
+- `/cleartarget` now runs in front of `/targetenemy`, so the key means "the
+  nearest one" instead of "the next one in the Tab cycle". Plain Tab cannot do
+  this.
+- It now also carries `type1`/`macrotext1` beside the unnumbered pair, and its
+  binding no longer passes the click-name argument. This turned out **not** to
+  be what ailed it (harmless hardening), which the added logging settled at once.
+- ★★ **MEASURED 2026-08-28: `/targetenemy` is cone-limited and that is the
+  engine.** The log shows the binding arriving fine (`nextEnemy: KEY pressed`)
+  and then `no target after /targetenemy` — repeatedly — with an attackable
+  Managespenst a few metres away; turn to face it and the very next press
+  targets it. `TargetNearestEnemy` **is** Tab, and Tab searches the view cone.
+  Nothing in the binding, the attributes or the CVars changes that. For a blind
+  player that makes the raw key close to useless on its own: you have to already
+  be facing what you are trying to find.
+- ★ **Fix: remember hostile names, then `/tar` them.** `/tar <name>` searches
+  the client's name list, not the cone. `visualAids.lua` now records every
+  hostile nameplate it sees (`NAME_PLATE_UNIT_ADDED` via SkuDispatcher, plus a
+  `nameplate1..40` sweep on each press) into `tHostileSeen[name] = {t, range}`,
+  keeps entries 25 s, drops anything last seen beyond 45 m, and builds
+  `/cleartarget` + `/targetenemy` + `/tar <name>` lines. Same reversal rule as
+  the quest macro: names run far → near so the nearest is the last line and
+  wins. Turning away destroys the plate but not the remembered name.
+  PostClick logs `via nameplate/cone` vs `via remembered name (no plate)`.
+- ★ **Second test round: the name list was EMPTY** (`macro rebuilt remembered
+  0`). So `/tar` was never the problem — there was nothing to `/tar`. Nameplates
+  alone are a bad source: a plate only exists once the unit has been in view,
+  and that is exactly the case where the key is not needed. Name supply is the
+  whole feature. Now fed from three sources — nameplate, own target,
+  mouseover — and remembered for **120 s**, so a mob type fought once stays
+  reachable by name regardless of facing.
+- ★ **PROVEN 2026-08-28**: `via remembered name (no plate)` — `/tar` took a
+  target with no nameplate present and the cone empty. The 360° path works.
+- Bug found in the same round: the remembered distance was also used as a
+  **filter** (drop above 45 m). Seeing the same mob again from further away
+  overwrote the entry and silently removed a name Sku already knew
+  (`remembered 0`). Distance is for ORDERING only now; a `/tar` line on
+  something out of range is a free no-op, a missing name is a lost hit.
+- ⚠ **Do not conclude "nameplates are dead" from the press-time counter.**
+  Every `plates 0` sample was taken while the player was deliberately turned
+  away, where zero is the expected value — it proves nothing. The open question
+  is real though: **2.5.6 replaced Classic nameplates and raid frames with the
+  Midnight versions and broke a wave of addons**, so whether
+  `NAME_PLATE_UNIT_ADDED` and the `nameplate1..40` tokens still reach addons is
+  a measurement, not an assumption. The shipped UI code still carries the full
+  modern driver (`NamePlateDriverMixin`, `namePlateUnitToken`,
+  `NamePlateForUnit`). Instrument: `nextEnemy: hostile nameplate EVENT <name>`
+  fires once per new hostile name at plate-creation time, independent of any
+  keypress. Sku's own Ctrl+Shift+Tab starting-area NPC cycle rides the same
+  event and **was already repaired after the 2.5.6 nameplate change**, so the
+  event does fire here — the zero counts were simply all turned-away samples,
+  which is the expected value. The remaining open half is narrower: whether
+  plates fire for HOSTILE units specifically (Ctrl+Shift+Tab only proves the
+  friendly/neutral half, and Sku forces the friendly CVars on every tick while
+  `nameplateShowEnemies` is set once at login). The `hostile nameplate EVENT`
+  line answers exactly that.
+- ★ **The harvest must run continuously, not at press time.** Plates only exist
+  while the unit is in view, and the key is pressed precisely when the player is
+  turned away — so a press-time-only sweep looks at the one moment it can never
+  see anything. Measured consequence: across a whole session the remembered-name
+  count never exceeded **1**, and everything it did know had come from the
+  player's own target. A 1 s ticker (`tHarvestFrame`, only while the key is
+  bound) now banks what you walk past.
+- **Cost control on that ticker.** It collects NAMES only: 40 `UnitExists` plus
+  `UnitCanAttack`/`UnitName` for the plates that exist, against precomputed
+  unit-token strings (no 40 concats per tick). `LibRangeCheck:GetRange` is the
+  one genuinely expensive call — on a cache miss it walks its spell/item checker
+  chain — so it is **not** in the ticker: range is fetched once per key press for
+  the few plates visible then, plus on target/mouseover. Distance only orders the
+  macro, so a missing one costs nothing. The table holds one entry per distinct
+  NAME, not per mob, so a crowd of 40 mobs of 4 types is 4 entries; pruned every
+  10 s and on every press. For scale: aqCombat's own OnUpdate already walks ~240
+  unit tokens at up to 10 Hz.
+- Name sources are now four: hostile nameplate, own target, mouseover, and
+  `SkuCore.threatTable` (aqCombat already keeps one named entry per enemy
+  discovered in combat; live entries are tables, `false` means dead or swept).
+  The last one is free and covers standing in a melee and turning around.
+- Remaining cold-start gap: a creature never faced in this session. The only
+  real source for that is SkuDB spawn data (what makes the quest key work), and
+  it would need a per-zone hostile-creature index — one pass over
+  `NpcData.Data` per zone change. Not built; do it only if the cold start
+  actually bites in practice. A cheaper half-measure: Sku's own nearby
+  waypoints already carry creature names (the Netherstorm log line reads
+  `206 meter südost managespenst`).
+- `TargetNearestEnemy(true)` is the reverse cycle, if a modifier variant is ever
+  wanted.
 
-**Their one genuinely useful insight**: Blizzard's macro text has a length
-limit, so with a long quest log not every candidate fits. Resolve candidates to
-distance and sort **closest first**, so the limit can only ever drop a far-away
-candidate, never the one you are standing next to.
+**Nameplates were considered and rejected as the finder.** `/target <name>`
+is engine-side and searches the client's own unit list, so it reaches units with
+no nameplate at all; nameplates are capped by distance and CVar, churn with the
+camera, and — decisive — a `unit="nameplateN"` attribute cannot be written
+under combat lockdown, whereas a name macro built before the pull is already
+armed when the fight starts.
 
-**Watch out.** The focus-get double-fire trap (AnyUp+AnyDown both running `/tar`,
-second announce killing the first) is in this exact area — see
-`[[focus-get-double-fire]]`.
+### What was built (2026-08-28, v43.2, UNTESTED in game)
 
-**Effort.** Medium, mostly care rather than volume.
+`Sku/SkuQuest/QuestTarget.lua` + `SKU_KEY_QUESTTARGET`, default **Alt+H**
+(menu group "Ziel und Soft Targeting"). Native, no companion addon, no Questie, no GatherMate2.
+
+- Candidates: quest log walk (skip headers and completed quests) →
+  `questDataTBC` objectives → `SkuQuest:GetQuestTargetIds`. Creature-type
+  objectives contribute directly; item-type objectives resolve through
+  `itemDataTBC[...].npcDrops` (and one nesting level of `itemDrops`) to the
+  creatures that drop them. Names via `SkuDB.NpcData.Names[Sku.Loc]`, falling
+  back to `enUS`, then to `NpcData.Data[id][name]`.
+- Distance: `NpcData.Keys.spawns` → `C_Map.GetWorldPosFromMapPos` →
+  `SkuNav.Geo:Distance`, same continent only, unresolvable sorted last (never
+  hard-excluded — SkuDB spawn coverage has known gaps). This is nearest
+  *recorded spawn*, not nearest live creature; it only decides macro ordering.
+- ★ **Ordering has two directions and they are opposite.** Closest-first
+  decides who makes the length budget; the macro is then emitted in REVERSE, so
+  the closest included candidate is the LAST line. Every matching `/target` line
+  in a multi-line macro fires in order and each match overwrites the previous
+  one, so the last match wins. Their addon found this the hard way.
+- ★ **Candidate selection is two-tier, and it has to be.** First real test
+  (Netherstorm, 2026-08-28) produced **160 candidates of which only 8 fit** the
+  240-char budget — item objectives expand to every NPC that drops the item, and
+  every quest in the log contributes, so the list was gathered across all of
+  Outland. A `/target` can only ever reach a unit in targeting range, i.e. in
+  the zone you are standing in, so candidates with a spawn in the player's
+  current `areaId` are selected first and the continent-wide sort is only a
+  fallback for when that set is empty.
+- ★ **In-zone distance uses the NEAREST recorded spawn, not `spawns[area][1]`.**
+  A creature has ~100 spawn points per zone and the first one in the table is
+  arbitrary. The pick runs in map coordinates (cheap) and only the winner is
+  converted to world coordinates. ZenqFR's addon reads the first entry only.
+- Rebuild is out-of-combat only (`SetAttribute` on a secure button is blocked
+  under lockdown), driven by `QUEST_LOG_UPDATE` / zone change / leaving combat,
+  plus a gated `OnUpdate` that rebuilds after ~40 yd of movement. No timer
+  chain — see `[[hardcore-realm-script-budget]]`.
+- `RegisterForClicks("AnyDown")` only, per `[[focus-get-double-fire]]`.
+- ★★ **`SetOverrideBindingClick` must NOT get a fifth argument here.** First
+  in-game run: the macro was built correctly (`Managespenst@5`, 5 m away,
+  nothing dropped for budget) and the key still did nothing but speak "kein
+  Questziel in Reichweite". Cause: the fifth argument is the *click's button
+  name*, and `SecureButton_GetButtonSuffix`
+  (`Blizzard_FrameXML/SecureTemplates.lua:95`) turns `"LeftButton"` into `"1"`
+  and anything else into `"-<name>"`. Passing the key (`"ALT-H"`) therefore made
+  the secure template look for `type-ALT-H` / `macrotext-ALT-H`, which never
+  exist — the button carries `type1`/`macrotext1`. PreClick and PostClick are
+  insecure and run on any click, so the feature *looked* alive and reported a
+  miss while the secure action never fired at all. Omit the argument (the click
+  arrives as `LeftButton` → suffix `1`), exactly as `skuFocus.lua:120` does.
+  `visualAids.lua` gets away with passing it only because it uses the
+  *unnumbered* `type`/`macrotext`, which is the fallback for any suffix.
+- Macro lines use `/tar`, the form Sku already proves working on this client,
+  3 characters per line cheaper than `/target`.
+- Not the locale: deDE name resolution was never at fault — `Sku.Loc` picks up
+  `NpcData.Names.deDE[18864] = "Managespenst"` and that exact string reached
+  the macro.
+- Spoken outcomes are distinct: the new target's name, "no quest target in
+  range" when nothing matched, and "no quest target in the log" when there were
+  no candidates at all — silence is never the answer.
 
 ---
 
@@ -249,7 +396,7 @@ plan document when it starts.
 
 1. ~~Quest track/untrack toggle (item 1)~~ — DONE 2026-08-28, tested OK.
 2. Nearby quest objectives (item 2).
-3. Quest-target keybind (item 3).
+~~Quest-target keybind (item 3)~~ — DONE 2026-08-28.
 4. Bag categories, then bag↔bank transfer (item 4).
 5. Native gather routes (item 5).
 

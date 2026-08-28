@@ -158,6 +158,7 @@ SkuNav\importExport.lua
 
 SkuQuest\Core.lua
 SkuQuest\Options.lua
+SkuQuest\QuestTarget.lua
 
 SkuAuras\Core.lua
 SkuAuras\defaultAuras.lua

@@ -11,6 +11,8 @@ Aenderungen in Sku v43.2
         Neu
             Neuer Tastenbefehl "Vollstaendigen Tooltip des Ziels ausgeben" (Strg+Umschalt+V): liest den kompletten Tooltip des aktuellen Ziels vor, inklusive dessen, was die Jaegerfaehigkeit Tierkunde offenlegt.
             Quests lassen sich im Questmenue verfolgen und wieder abwaehlen - neuer Eintrag "Quest verfolgen" ganz unten in jedem Questmenue, abschaltbar.
+            Neuer Tastenbefehl "Naechstes Questziel ins Ziel nehmen" (Alt+H): nimmt eine Kreatur ins Ziel, die zu einem offenen Questziel gehoert - auch eine, die einen benoetigten Gegenstand nur fallen laesst.
+            Der Tastenbefehl "Naechster Gegner im Kampf" (jetzt ab Werk auf Strg+H) findet deutlich oefter etwas: er ist nicht mehr auf den Blickkegel angewiesen.
 
         Aenderungen
             Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
@@ -382,6 +384,56 @@ Aenderungen in Sku v43.2
             eine laengst nicht mehr verfolgte Quest weiter gegen das Limit von fuenf.
             QuestWatch_Update laeuft nur ausserhalb des Kampfes, weil es am Ende geschuetzte
             Frames verschiebt; das naechste QUEST_LOG_UPDATE holt es ohnehin nach.
+
+    Neuer Tastenbefehl "Naechstes Questziel ins Ziel nehmen" (Alt+H)
+        Einfach: Ein Druck nimmt eine Kreatur ins Ziel, die zu einem noch offenen Questziel
+            gehoert - und zwar auch dann, wenn man sie gar nicht toeten muss, sondern sie nur
+            einen benoetigten Gegenstand fallen laesst. Beispiel: fuer "Essenzen fuer die
+            Motoren" nennt das Questlog nur den Gegenstand; die Taste nimmt trotzdem das
+            Managespenst ins Ziel, das ihn fallen laesst. Passt nichts in Reichweite, sagt Sku
+            "kein Questziel in Reichweite"; ist im Questlog ueberhaupt nichts Passendes,
+            "kein Questziel im Questlog". Die Taste liegt ab Werk auf Alt+H und laesst sich
+            unter Sku Tastenbelegung, "Ziel und Soft Targeting" umlegen.
+        Technisch: Idee und Referenzumsetzung stammen von ZenqFR, aus dem Begleit-Addon
+            SkuQuestTarget (github.com/ZenqFR/Sku-QuestTarget); hier ist die Funktion mit
+            seiner Zustimmung nativ neu gebaut, damit kein zusaetzliches Addon noetig ist.
+            Die Kandidaten kommen aus dem eigenen Questlog ueber SkuQuest:GetQuestTargetIds;
+            Gegenstandsziele werden ueber die Fallquelle (npcDrops, eine Ebene tief auch
+            itemDrops) auf die Kreaturen zurueckgefuehrt, die sie fallen lassen. Gesucht wird
+            zuerst in der Zone, in der man selbst steht - wer dort keinen Spawnpunkt hat, kann
+            gar nicht in Zielreichweite sein und darf keinen Platz im Makro belegen; erst wenn
+            in der eigenen Zone nichts hinterlegt ist, wird ueber den ganzen Kontinent
+            sortiert. Die Entfernung nimmt den naechstgelegenen aufgezeichneten Spawnpunkt,
+            nicht den ersten der Liste. Das Makro ist mehrzeilig, und dabei entscheidet eine
+            Eigenheit des Spiels: jede passende Zeile feuert, und jeder Treffer ueberschreibt
+            den vorherigen - es gewinnt also die LETZTE. Aufgenommen wird deshalb von nah nach
+            fern, damit das Laengenbudget nur Weitentferntes kappt, ausgegeben aber umgekehrt,
+            damit der naechstgelegene Kandidat die letzte Zeile ist. Gebaut wird ausserhalb des
+            Kampfes bei jedem Tastendruck; im Kampf feuert der zuletzt gebaute Text.
+
+    "Naechster Gegner im Kampf" findet auch, was man nicht anschaut (Strg+H)
+        Einfach: Die Taste konnte bisher nur finden, was man ohnehin anschaut - stand derselbe
+            Gegner fuenf Meter hinter einem, meldete sie nichts. Das ist keine Einstellung,
+            sondern das Verhalten der Tabulator-Zielsuche des Spiels. Sku merkt sich deshalb
+            jetzt die Namen feindlicher Kreaturen, an denen man vorbeikommt, und probiert sie
+            zusaetzlich ueber den Namen - und ein Name funktioniert in jede Richtung. In der
+            Praxis heisst das: was man einmal gesehen, angegriffen oder ins Ziel genommen hat,
+            bleibt zwei Minuten lang von ueberall aus erreichbar, auch weggedreht. Ausserdem
+            beginnt die Suche jetzt bei jedem Druck beim naechstgelegenen Gegner, statt im
+            Kreis weiterzuspringen. Die Taste liegt ab Werk auf Strg+H.
+        Technisch: Die Anregung stammt aus ZenqFRs SkuQuestTarget, das denselben Weg fuer seine
+            Nebenfunktion benutzt. /targetenemy ist Tabulator und sucht im Sichtkegel - daran
+            ist nichts zu aendern. "/tar Name" dagegen sucht ueber die Namensliste des Clients
+            und ist richtungsunabhaengig, braucht aber einen Namen, und es gibt keine
+            Schnittstelle, die Einheiten hinter einem aufzaehlt. Sku sammelt die Namen deshalb
+            laufend aus vier Quellen: feindliche Namensplaketten, das eigene Ziel, die Einheit
+            unter dem Mauszeiger und die Gegnerliste der Kampfueberwachung. Das Einsammeln
+            laeuft im Sekundentakt, solange die Taste belegt ist, denn eine Plakette gibt es
+            nur, solange die Kreatur im Blick ist - genau dann braucht man die Taste aber
+            nicht. Dort werden nur Namen gesammelt; die teure Entfernungsmessung laeuft einmal
+            pro Tastendruck. Gemerkte Namen halten zwei Minuten. Das Makro ist "/cleartarget",
+            dann "/targetenemy", dann die gemerkten Namen von fern nach nah - die letzte
+            passende Zeile gewinnt, also der naechstgelegene.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

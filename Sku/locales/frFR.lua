@@ -2276,6 +2276,7 @@ L["SKU_KEY_COMBATMONSETFOLLOWTARGET"] = "Moniteur de combat; définir la cible a
 L["SKU_KEY_NAVROUTEDESTINATIONSQUICK"] = "ouvrir les destinations d'itinéraire proches"
 L["SKU_KEY_NAVWAYPOINTSQUICK"] = "ouvrir les points de passage proches"
 L["SKU_KEY_NEXTCOMBATENEMY"] = "ennemi suivant en combat"
+L["SKU_KEY_QUESTTARGET"] = "cibler la créature de quête la plus proche"
 L["SKU_KEY_TRADEACCEPT"] = "accepter l'échange"
 L["SKU_KEY_COMBATMENU_UP"] = "Menu de combat; haut"
 L["SKU_KEY_COMBATMENU_DOWN"] = "Menu de combat; bas"
