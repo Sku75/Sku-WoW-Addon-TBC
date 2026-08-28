@@ -8,10 +8,9 @@ becomes a native Sku feature. This document records what each addon does, what
 was verified against our own tree, and what a native version would cost — one
 item per session, deliberately.
 
-Items 0 (target tooltip keybind) and 1 (quest track toggle) are **DONE, tested
-in game, and part of v43.2**. Item 3 (quest-target keybind) is **built
-2026-08-28, not yet tested in game**. Items 2, 4 and 5 are open and each still
-needs its own analysis pass.
+Items 0 (target tooltip keybind), 1 (quest track toggle), 2 (nearby quests) and
+3 (quest-target keybind) are all **DONE, tested in game, and part of v43.2**.
+Items 4 and 5 are open and each still needs its own analysis pass.
 
 ---
 
@@ -129,7 +128,7 @@ SkuQuestNearby in the v43.2 patch notes (DE/EN/FR).
 
 ---
 
-## 2. Nearby quest objectives, distance-sorted (SkuQuestNearby)
+## 2. DONE — nearby quest objectives, distance-sorted (SkuQuestNearby)
 
 **What it is.** One list of every quest in your log, in-progress and
 ready-to-turn-in mixed, sorted by distance to whatever matters right now
@@ -153,6 +152,94 @@ quest giver when the objective cannot be located.
 **Effort.** Medium. The distance resolution is the substance; the menu side is
 routine.
 
+### What was built (2026-08-28, TESTED OK in game)
+
+New entry `L["Quests in der Nähe"]`, **third** in the quest menu after
+"Aktuelle Quests" and "Questdatenbank", in front of "Gruppenmitglieder" (which
+stays last). Gated by a new profile setting `showNearbyQuests`, **default off**
+(SkuQuest options, "show nearby quests entry") — unlike the other two lists this
+one recomputes the whole quest log against SkuDB's spawn tables on every build,
+so only someone who uses it should pay for it.
+
+The distance maths sits in a **new file `Sku/SkuQuest/Proximity.lua`**
+(`SkuQuest.Proximity`, ~300 lines, no state, no menu code); the list builder is
+in `SkuQuest:MenuBuilder`. TOC order: after `Options.lua`, before
+`QuestTarget.lua`.
+
+Per quest: `isComplete == 1` → distance to the **turn-in** NPC/object
+(`finishedBy`); otherwise → nearest **open objective**; an auto-complete quest
+(no objectives, no `triggerEnd`) falls back to the turn-in. Label is
+`<metres>;Meter;<compass direction>;<kind>#<quest title>`, so the menu speaks
+distance, direction and kind *before* the name — in a distance-sorted list that
+is the part you are waiting for. Kinds: `L["Questziel"]`, `L["Questabgabe"]`,
+`L["Ort unbekannt"]`.
+
+Decisions worth keeping:
+
+- ★ **`SkuQuest:GetQuestTargetIds` cannot be used here.** Its branch chain is
+  `elseif`, so it returns only the *first* non-empty objective list — a quest
+  with "kill 8 wolves AND collect 5 pelts" yields only the wolves. That is right
+  for a waypoint (one target per waypoint) and wrong for "how far is this quest".
+  Proximity walks lists 1, 2, 3 and 5 itself. (This also caps item 3's coverage;
+  left alone there on purpose, it is a different question.)
+- **Objective filtering is by KIND, never by individual sub-objective.** The
+  order of SkuDB's `objectives` entries and the order of Blizzard's progress
+  lines are not bound to each other, so matching line-to-entry would be guessing.
+  `GetQuestLogLeaderBoard(j, logIndex)` returns `objectiveType`
+  ("monster"/"item"/"object"), which maps one-to-one onto the three lists — that
+  much *is* reliable, and it is used to drop already-finished kinds.
+- **Two tiers, in this order**: nearest recorded spawn *in the player's own
+  zone* (selection in map coords, one world conversion for the winner), and only
+  if that yields nothing, the shortest recorded distance across all zones of the
+  **same continent**. A different continent is not an imprecise distance, it is
+  no distance — those zones stay out. Same shape as `QuestTarget.lua`'s
+  resolver, which is where the approach was proven.
+- **An unresolvable distance sorts last, it never removes the quest.** SkuDB's
+  spawn data has known gaps; a silently missing quest would be worse than one
+  without a metre reading. Those rows read `L["Ort unbekannt"]` and carry no
+  number.
+- `MAX_IDS_PER_QUEST = 12` per quest and per kind: a collection objective can
+  have dozens of drop sources, and the whole list is recomputed on every build.
+  The hardcore-realm script budget is the limit here, not the last decimal.
+- `triggerEnd` (explore objectives) is keyed by areaId exactly like a spawn
+  table, so it runs through the same maths with no special case.
+- Same quest-log preparation as "Aktuelle Quests" (`ToggleQuestLog` +
+  `ExpandQuestHeader(0)`): quests under a collapsed header are not enumerable.
+- ★ **The compass direction, not the clock position.** `GetQuestProximity`
+  returns the winning point's world coordinates alongside the distance, and
+  `SkuNav.Geo:GetDirectionToAsString(worldX, worldY)` turns them into "nordost"
+  — the same helper the waypoint lists and the minimap scanner use, and it reads
+  the player position itself, so the caller needs nothing else. The other helper,
+  `SkuNav.Geo:GetDirectionTo`, returns a **clock position relative to facing**
+  (what `gameWorldObjects` uses to turn the camera) and is wrong here: a menu
+  list is built once and then read through, so a facing-relative reading is stale
+  the moment you turn. A compass bearing stays true as long as you stand still.
+  No new locale keys — `L["north"]`…`L["south-west"]` already exist.
+
+**Tested OK in game 2026-08-28.** First run (log trace at 16:48): the entry is
+third, the list opened sub-second, and it read 70 m Questabgabe → 172 m
+Questabgabe → 354 m Questziel → 670 m Questziel → 980 m Questziel — ascending,
+both kinds, no "Ort unbekannt" rows, and no entry in `SkuErrorLog` (the newest
+error there is still from 2026-08-27). Second run confirmed the compass
+direction in the labels and the collapsed "Start in Zone". Credited to ZenqFR
+and SkuQuestNearby in the v43.2 patch notes (DE/EN/FR).
+
+### Fixed on the way: "Start in Zone" had a dead menu level
+
+`Questdatenbank → Start in Zone` had exactly one child, "Nach Entfernung" —
+a keypress with nothing to choose. The level existed only because a second sort
+("Nach Schwierigkeit") was meant to live beside it; that block sat commented out
+next to it and was never built. The distance list is now injected directly under
+"Start in Zone" and the level is gone.
+
+★ **The same block carried a live bug.** Its per-entry loop ran
+`tcount = tcount + 1` on an **undefined global** (the only `tcount` declarations
+in the tree are function-locals in `GetUnsortedAvailableQuestsTable` and
+`SkuNav/Core.lua`). Reading it yields nil, `nil + 1` raises, and a raised
+`BuildChildren` is swallowed — so the list aborted after injecting its *first*
+quest. The counter was never read by anything; it is deleted rather than
+initialised.
+
 ---
 
 ## 3. DONE — quest-target keybind (from SkuQuestTarget)
@@ -173,7 +260,7 @@ key, and it does not care about combat state — it already targets the nearest
 attackable enemy out of combat. The "nearest enemy" half of their addon was
 therefore never a gap and was **not** ported.
 
-Changes made to that existing key on 2026-08-28 (UNTESTED):
+Changes made to that existing key on 2026-08-28 (all tested OK in game):
 - `/cleartarget` now runs in front of `/targetenemy`, so the key means "the
   nearest one" instead of "the next one in the Tab cycle". Plain Tab cannot do
   this.
@@ -267,7 +354,7 @@ camera, and — decisive — a `unit="nameplateN"` attribute cannot be written
 under combat lockdown, whereas a name macro built before the pull is already
 armed when the fight starts.
 
-### What was built (2026-08-28, v43.2, UNTESTED in game)
+### What was built (2026-08-28, v43.2, TESTED OK in game)
 
 `Sku/SkuQuest/QuestTarget.lua` + `SKU_KEY_QUESTTARGET`, default **Alt+H**
 (menu group "Ziel und Soft Targeting"). Native, no companion addon, no Questie, no GatherMate2.
@@ -395,8 +482,8 @@ plan document when it starts.
 ## 6. Recommended order
 
 1. ~~Quest track/untrack toggle (item 1)~~ — DONE 2026-08-28, tested OK.
-2. Nearby quest objectives (item 2).
-~~Quest-target keybind (item 3)~~ — DONE 2026-08-28.
+2. ~~Nearby quest objectives (item 2)~~ — DONE 2026-08-28, tested OK.
+3. ~~Quest-target keybind (item 3)~~ — DONE 2026-08-28, tested OK.
 4. Bag categories, then bag↔bank transfer (item 4).
 5. Native gather routes (item 5).
 

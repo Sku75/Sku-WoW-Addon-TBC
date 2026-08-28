@@ -3408,3 +3408,9 @@ L["Wirklich löschen?"] = "Wirklich löschen?"
 -- Sku v43.0: Aura-Referenzen in einem Untermenue (SkuAuras/Options.lua)
 L["AURA_AuraRefGroup"] = "Selbsterstellte Auren"
 L["AURA_AuraRefGroupTip"] = "Ob eine andere deiner Auren gerade zutrifft. Hier stehen nur Auren, denen du selbst einen Namen gegeben hast"
+
+-- Sku v43.2: "Quests in der Nähe" -- Questlog nach Entfernung (SkuQuest/Options.lua)
+L["Quests in der Nähe"] = "Quests in der Nähe"
+L["Questabgabe"] = "Questabgabe"
+L["Ort unbekannt"] = "Ort unbekannt"
+L["show nearby quests entry"] = "Eintrag Quests in der Nähe anzeigen"

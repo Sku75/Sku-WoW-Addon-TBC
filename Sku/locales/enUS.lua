@@ -3398,3 +3398,9 @@ L["Wirklich löschen?"] = "Really delete?"
 -- Sku v43.0: aura references in one submenu (SkuAuras/Options.lua)
 L["AURA_AuraRefGroup"] = "Your own auras"
 L["AURA_AuraRefGroupTip"] = "Whether another one of your auras currently applies. Only auras you have named yourself appear here"
+
+-- Sku v43.2: "nearby quests" -- the quest log sorted by distance (SkuQuest/Options.lua)
+L["Quests in der Nähe"] = "Nearby quests"
+L["Questabgabe"] = "Turn in"
+L["Ort unbekannt"] = "Location unknown"
+L["show nearby quests entry"] = "show nearby quests entry"

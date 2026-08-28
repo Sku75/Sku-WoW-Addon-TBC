@@ -13,6 +13,7 @@ Changes in Sku v43.2
             Quests can be tracked and untracked from the quest menu - a new "Track quest" entry at the bottom of every quest menu, and it can be switched off.
             New keybind "Target nearest quest mob" (Alt+H): targets a creature belonging to an open quest objective - including one that merely drops an item you need.
             The "Next enemy in combat" keybind (now bound to Ctrl+H by default) finds something far more often: it no longer depends on the view cone.
+            New "Nearby quests" list in the quest menu: your whole quest log in one list, sorted by how far away the next thing is - with distance and compass direction. Off by default.
 
         Changes
             Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
@@ -21,6 +22,7 @@ Changes in Sku v43.2
             Menu: closing a window now rebuilds the menu data once instead of up to six times.
             Auras: a weapon enchant (fishing lure, poison, oil) can now be addressed like a spell - the event "Weapon enchant expired" together with "spell name".
             Auras: new condition and new output "weapon enchant hand" (main hand or off hand).
+            Quest database: "Starts in zone" shows the distance-sorted list directly - the intermediate "By distance" level is gone.
 
         Bugfixes
             Escape did not close the menu while standing right on a quest object - the quest window reopened endlessly.
@@ -34,6 +36,7 @@ Changes in Sku v43.2
             Auras: the end of a weapon enchant is detected frame-accurately instead of up to a quarter second later.
             Menu: Enter on an on/off entry in a filtered list read the first entry of the list back instead of the toggled state.
             Dungeon browser: accepting a group invitation no longer drops you into the dungeon browser by itself.
+            Quest database: the "Starts in zone, By distance" list broke off after the first quest.
 
     The cursor stays on the item in the bag
         Simple: Right-clicking an item in the bag list - use it, equip it, sell it to a vendor,
@@ -332,7 +335,7 @@ Changes in Sku v43.2
             objectives at all cannot be tracked. In both cases Sku speaks the game's own message
             and the state stays as it was.
         Technically: The idea and the reference implementation come from ZenqFR, in the companion
-            addon SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby); with his agreement the
+            addon SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby); with ZenqFR's agreement
             feature is rebuilt here natively against Sku's own interfaces, so no extra addon is
             needed. The entry lives in the chunk-local CreateQuestSubmenu rather than on a hook
             over the public wrapper - which is why every quest view gets it: quest log, quest
@@ -359,7 +362,7 @@ Changes in Sku v43.2
             and can be rebound under Sku keybindings, "Target and soft targeting".
         Technically: The idea and the reference implementation come from ZenqFR, in the
             companion addon SkuQuestTarget (github.com/ZenqFR/Sku-QuestTarget); here the
-            feature was rebuilt natively with his agreement, so no extra addon is needed.
+            feature was rebuilt natively with ZenqFR's agreement, so no extra addon is needed.
             Candidates come from your own quest log via SkuQuest:GetQuestTargetIds; item
             objectives are traced back through the drop source (npcDrops, and one level deep
             also itemDrops) to the creatures that drop them. The search looks in the zone you
@@ -394,6 +397,62 @@ Changes in Sku v43.2
             range measurement runs once per key press. Remembered names last two minutes. The
             macro is "/cleartarget", then "/targetenemy", then the remembered names far to
             near - the last matching line wins, so the nearest one.
+
+    New "Nearby quests" list
+        Simple: The quest menu has a third entry now, after "Current Quests" and "Quest
+            database": "Nearby quests". It holds your whole quest log in ONE list - started
+            and finished mixed together - sorted by how far away the thing that currently
+            matters for each quest is. Every entry names the distance first, then the compass
+            direction, then the kind, then the quest, so you hear "180 Meters; north-east;
+            quest target; Thieving Kobolds" or "340 Meters; south; Turn in; The Wolf Pack
+            Leader". For a quest with open objectives that
+            is the distance to the nearest objective; for one reported complete, the distance
+            to the turn-in. "Current Quests" groups by the quest log's own headers and
+            therefore sorts by zone - this list answers the other question: what is nearest
+            from where I stand. Enter opens the same quest menu as everywhere else, waypoints
+            and the "Track quest" entry included. The list is OFF out of the box and is
+            switched on under Sku settings, SkuQuest, "show nearby quests entry": it
+            recomputes the whole quest log against Sku's spawn database every time it opens,
+            and only someone who uses it should pay for that. Where Sku's data yields no
+            location the entry reads "Location unknown" instead of a distance and sorts to the
+            end - it never disappears.
+        Technically: Idea and reference implementation by ZenqFR, from the companion addon
+            SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby); rebuilt natively here with
+            ZenqFR's permission so no extra addon is needed - in particular without Questie and without
+            GatherMate2. The maths lives in the new, stateless file SkuQuest/Proximity.lua.
+            Two tiers, and the order is the point: first the nearest recorded spawn point IN
+            the zone you are standing in - the selection runs cheaply in map coordinates and
+            only the winner is converted to world coordinates once; only if that yields
+            nothing, the minimum across all zones of the same continent. A different continent
+            is not an imprecise distance, it is no distance, and stays out. Item objectives are
+            traced back to the creatures and world objects that drop them, explore objectives
+            to their recorded coordinates. Unlike the waypoint path, ALL of a quest's objective
+            lists are read, not just the first non-empty one - a quest with "kill eight wolves
+            AND collect five pelts" would otherwise only ever show the wolves. Filtering is by
+            objective KIND only: which kinds are still open comes from Blizzard's own progress
+            display ("monster", "item", "object"), and that maps one-to-one onto the three
+            lists; matching a progress line against an individual database entry would be
+            guesswork, because neither order is bound to the other. At most twelve ids are
+            evaluated per quest and kind - the limit here is the hardcore realms' script
+            budget, not the last decimal. The compass direction comes from the same world
+            coordinates through the same helper the waypoint lists and the minimap scanner
+            use. Deliberately a compass bearing and not a clock position: a clock position is
+            relative to where you are facing and would be wrong the moment you turn - but the
+            list is built once and then read through.
+
+    Quest database: "Starts in zone" without the extra level
+        Simple: "Quest database, Starts in zone" held exactly one entry, "By distance", and
+            only inside it the quests. A level with nothing to choose is just a keypress. The
+            list now sits directly under "Starts in zone". That list was also broken: it broke
+            off after the first quest, so you got exactly one entry instead of all the zone's
+            quests.
+        Technically: The extra level existed because a second sort ("by difficulty") was once
+            meant to sit beside it; that construction site sat commented out next to it for
+            years and was never built. The break came from a line "tcount = tcount + 1" in the
+            list builder: tcount was not a local there but a global that is never set, so
+            incrementing it raised on nil. An error inside a menu's child build is swallowed -
+            the build therefore ended silently after the first entry. Nothing ever read the
+            counter; it is removed rather than initialised.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

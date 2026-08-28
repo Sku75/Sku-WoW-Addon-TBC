@@ -13,6 +13,7 @@ Aenderungen in Sku v43.2
             Quests lassen sich im Questmenue verfolgen und wieder abwaehlen - neuer Eintrag "Quest verfolgen" ganz unten in jedem Questmenue, abschaltbar.
             Neuer Tastenbefehl "Naechstes Questziel ins Ziel nehmen" (Alt+H): nimmt eine Kreatur ins Ziel, die zu einem offenen Questziel gehoert - auch eine, die einen benoetigten Gegenstand nur fallen laesst.
             Der Tastenbefehl "Naechster Gegner im Kampf" (jetzt ab Werk auf Strg+H) findet deutlich oefter etwas: er ist nicht mehr auf den Blickkegel angewiesen.
+            Neue Liste "Quests in der Naehe" im Questmenue: das ganze Questlog in einer Liste, sortiert danach, wie weit das Naechste weg ist - mit Entfernung und Himmelsrichtung. Ab Werk aus.
 
         Aenderungen
             Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
@@ -21,6 +22,7 @@ Aenderungen in Sku v43.2
             Menue: das Schliessen eines Fensters baut die Menuedaten nur noch einmal statt bis zu sechsmal neu auf.
             Auren: eine Waffenverzauberung (Angelkoeder, Gift, Oel) laesst sich jetzt wie ein Zauber ansprechen - Ereignis "Waffenverzauberung abgelaufen" zusammen mit "Zauber name".
             Auren: neue Bedingung und neue Ausgabe "Waffenverzauberung Hand" (Haupthand oder Nebenhand).
+            Questdatenbank: "Start in Zone" zeigt die nach Entfernung sortierte Liste direkt an - die Zwischenebene "Nach Entfernung" ist weg.
 
         Fehlerbehebungen
             Escape schloss das Menue nicht, wenn man direkt auf einem Questobjekt stand - das Questfenster ging endlos wieder auf.
@@ -34,6 +36,7 @@ Aenderungen in Sku v43.2
             Auren: das Ende einer Waffenverzauberung wird auf den Frame genau erkannt statt bis zu eine viertel Sekunde spaeter.
             Menue: Enter auf einem Ein/Aus-Eintrag in einer gefilterten Liste sagte den ersten Eintrag der Liste an statt des umgeschalteten Zustands.
             Dungeonbrowser: das Annehmen einer Gruppeneinladung fuehrt nicht mehr von selbst in den Dungeonbrowser.
+            Questdatenbank: die Liste "Start in Zone, Nach Entfernung" brach nach der ersten Quest ab.
 
     Der Cursor bleibt in der Tasche auf dem Gegenstand
         Einfach: Wer in der Taschenliste einen Gegenstand rechts anklickte - benutzen, anlegen, an
@@ -367,7 +370,7 @@ Aenderungen in Sku v43.2
             Faellen sagt Sku die Meldung des Spiels an und der Zustand bleibt, wie er war.
         Technisch: Idee und Referenzumsetzung stammen von ZenqFR, aus dem Begleit-Addon
             SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby); hier ist die Funktion mit
-            seiner Zustimmung nativ gegen Skus eigene Schnittstellen neu gebaut, damit kein
+            ZenqFRs Zustimmung nativ gegen Skus eigene Schnittstellen neu gebaut, damit kein
             zusaetzliches Addon noetig ist. Der Eintrag haengt im chunk-lokalen
             CreateQuestSubmenu statt an einem Hook auf dem oeffentlichen Wrapper - deshalb
             bekommt ihn jede Questansicht: Questlog, Questdatenbank und die Questmenues von
@@ -396,7 +399,7 @@ Aenderungen in Sku v43.2
             unter Sku Tastenbelegung, "Ziel und Soft Targeting" umlegen.
         Technisch: Idee und Referenzumsetzung stammen von ZenqFR, aus dem Begleit-Addon
             SkuQuestTarget (github.com/ZenqFR/Sku-QuestTarget); hier ist die Funktion mit
-            seiner Zustimmung nativ neu gebaut, damit kein zusaetzliches Addon noetig ist.
+            ZenqFRs Zustimmung nativ neu gebaut, damit kein zusaetzliches Addon noetig ist.
             Die Kandidaten kommen aus dem eigenen Questlog ueber SkuQuest:GetQuestTargetIds;
             Gegenstandsziele werden ueber die Fallquelle (npcDrops, eine Ebene tief auch
             itemDrops) auf die Kreaturen zurueckgefuehrt, die sie fallen lassen. Gesucht wird
@@ -434,6 +437,66 @@ Aenderungen in Sku v43.2
             pro Tastendruck. Gemerkte Namen halten zwei Minuten. Das Makro ist "/cleartarget",
             dann "/targetenemy", dann die gemerkten Namen von fern nach nah - die letzte
             passende Zeile gewinnt, also der naechstgelegene.
+
+    Neue Liste "Quests in der Naehe"
+        Einfach: Im Questmenue steht als dritter Eintrag, nach "Aktuelle Quests" und
+            "Questdatenbank", jetzt "Quests in der Naehe". Darin liegt das ganze Questlog in
+            EINER Liste - angefangene und fertige gemischt -, sortiert danach, wie weit das
+            weg ist, worum es bei der jeweiligen Quest gerade geht. Jeder Eintrag nennt zuerst
+            die Entfernung, dann die Himmelsrichtung, dann die Art und dann den Questnamen,
+            also etwa "180 Meter; nordost; Questziel; Diebische Kobolde" oder "340 Meter;
+            sued; Questabgabe; Der Wolfsrudelfuehrer".
+            Bei einer Quest, die noch offene Ziele hat, ist das die Entfernung zum naechsten
+            Ziel; bei einer fertig gemeldeten Quest die Entfernung zur Abgabestelle. "Aktuelle
+            Quests" gruppiert nach den Ueberschriften des Questlogs, sortiert also nach Zone -
+            die neue Liste beantwortet dagegen die Frage "was ist von hier aus das Naechste".
+            Enter oeffnet dasselbe Questmenue wie ueberall sonst, samt Wegpunkten und dem
+            Eintrag "Quest verfolgen". Die Liste ist ab Werk AUS und wird unter Sku
+            Einstellungen, SkuQuest, "Eintrag Quests in der Naehe anzeigen" eingeschaltet: sie
+            rechnet bei jedem Oeffnen das ganze Questlog gegen Skus Spawn-Datenbank durch, und
+            das soll nur zahlen, wer sie auch benutzt. Wo Skus Daten keinen Ort hergeben,
+            steht statt der Entfernung "Ort unbekannt", und die Quest rutscht ans Ende - sie
+            verschwindet nicht.
+        Technisch: Idee und Referenzumsetzung stammen von ZenqFR, aus dem Begleit-Addon
+            SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby); hier ist die Funktion mit
+            ZenqFRs Zustimmung nativ neu gebaut, damit kein zusaetzliches Addon noetig ist -
+            insbesondere ohne Questie und ohne GatherMate2. Die Rechnung liegt in der neuen
+            Datei SkuQuest/Proximity.lua und ist zustandslos. Zwei Stufen, und die Reihenfolge
+            ist der Punkt: zuerst der naechstgelegene aufgezeichnete Spawnpunkt IN DER Zone,
+            in der man selbst steht - die Auswahl laeuft billig in Kartenkoordinaten, nur der
+            Gewinner wird einmal in Weltkoordinaten umgerechnet; erst wenn das nichts hergibt,
+            das Minimum ueber alle Zonen desselben Kontinents. Ein anderer Kontinent ist keine
+            ungenaue Entfernung, sondern gar keine, und bleibt draussen. Gegenstandsziele
+            werden ueber die Fallquelle auf Kreaturen und Weltobjekte zurueckgefuehrt,
+            Erkundungsziele ueber die hinterlegten Koordinaten. Anders als beim Wegpunkt-Pfad
+            werden ALLE Ziellisten einer Quest gelesen, nicht nur die erste nichtleere - eine
+            Quest mit "toete acht Woelfe UND sammle fuenf Felle" haette sonst nur die Woelfe.
+            Gefiltert wird nur nach ZIELART: welche Arten noch offen sind, sagt Blizzards
+            eigene Fortschrittsanzeige ("monster", "item", "object"), und die passt eins zu
+            eins auf die drei Listen; ein Abgleich Zeile gegen einzelnen Datenbankeintrag
+            waere dagegen geraten, weil beide Reihenfolgen nirgends aneinander gebunden sind.
+            Pro Quest und Art werden hoechstens zwoelf IDs durchgerechnet - die Grenze ist das
+            Skript-Budget der Hardcore-Realms, nicht die letzte Nachkommastelle. Die
+            Himmelsrichtung kommt aus denselben Weltkoordinaten, ueber dieselbe Funktion, die
+            auch die Wegpunktlisten und der Minimap-Scanner benutzen. Bewusst die
+            Himmelsrichtung und nicht eine Uhrzeit: eine Uhrzeit gilt relativ zur
+            Blickrichtung und waere falsch, sobald man sich dreht - die Liste wird aber einmal
+            gebaut und dann durchgelesen.
+
+    Questdatenbank: "Start in Zone" ohne Zwischenebene
+        Einfach: Unter "Questdatenbank, Start in Zone" lag bisher noch genau ein Eintrag,
+            "Nach Entfernung", und darin erst die Quests. Eine Ebene, in der es nichts zu
+            waehlen gibt, ist nur ein Tastendruck. Die Liste steht jetzt direkt unter "Start in
+            Zone". Ausserdem war diese Liste kaputt: sie brach nach der ersten Quest ab, man
+            bekam also genau einen Eintrag statt aller Quests der Zone.
+        Technisch: Die Zwischenebene stammte daher, dass daneben einmal eine zweite Sortierung
+            ("Nach Schwierigkeit") stehen sollte; deren Baustelle stand seit Jahren
+            auskommentiert daneben und wurde nie gebaut. Der Abbruch kam von einer Zeile
+            "tcount = tcount + 1" im Aufbau der Liste: tcount war dort keine lokale Variable,
+            sondern eine nie gesetzte globale, das Hochzaehlen also ein Fehler auf nil. Ein
+            Fehler im Kindaufbau eines Menues wird verschluckt - der Aufbau endete damit
+            stillschweigend nach dem ersten Eintrag. Der Zaehler wurde von nichts gelesen und
+            ist ersatzlos entfernt.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

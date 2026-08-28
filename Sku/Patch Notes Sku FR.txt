@@ -16,6 +16,7 @@ Changements dans Sku v43.2
             Les quêtes peuvent être suivies ou retirées du suivi depuis le menu de quête - nouvelle entrée « Suivre la quête » en bas de chaque menu de quête, désactivable.
             Nouveau raccourci « Cibler la créature de quête la plus proche » (Alt+H) : cible une créature liée à un objectif de quête en cours - y compris celle qui se contente de faire tomber un objet requis.
             Le raccourci « Ennemi suivant en combat » (désormais sur Ctrl+H par défaut) trouve bien plus souvent quelque chose : il ne dépend plus du cône de vue.
+            Nouvelle liste « Quêtes à proximité » dans le menu de quête : tout le journal de quêtes en une seule liste, triée selon la distance de ce qui compte pour chaque quête - avec la distance et le point cardinal. Désactivée par défaut.
 
         Changements
             Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
@@ -24,6 +25,7 @@ Changements dans Sku v43.2
             Menu : la fermeture d'une fenêtre ne reconstruit plus les données du menu qu'une seule fois au lieu de six.
             Auras : un enchantement d'arme (appât de pêche, poison, huile) s'adresse désormais comme un sort - l'événement « Enchantement d'arme expiré » avec « nom du sort ».
             Auras : nouvelle condition et nouvelle sortie « main de l'enchantement d'arme » (main droite ou main gauche).
+            Base de données des quêtes : « Commence dans la zone » affiche directement la liste triée par distance - le niveau intermédiaire « Par distance » a disparu.
 
         Corrections
             Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête - la fenêtre de quête se rouvrait sans fin.
@@ -37,6 +39,7 @@ Changements dans Sku v43.2
             Auras : la fin d'un enchantement d'arme est détectée à la frame près au lieu d'un quart de seconde plus tard.
             Menu : Entrée sur une entrée activé/désactivé dans une liste filtrée annonçait la première entrée de la liste au lieu de l'état basculé.
             Navigateur de donjons : accepter une invitation de groupe ne vous dépose plus tout seul dans le navigateur de donjons.
+            Base de données des quêtes : la liste « Commence dans la zone, Par distance » s'interrompait après la première quête.
 
     Le curseur reste sur l'objet dans le sac
         Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le
@@ -369,7 +372,7 @@ Changements dans Sku v43.2
             peut pas être suivie. Dans les deux cas, Sku annonce le message du jeu et l'état
             reste inchangé.
         Technique : l'idée et l'implémentation de référence viennent de ZenqFR, dans l'addon
-            compagnon SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby) ; avec son accord, la
+            compagnon SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby) ; avec l'accord de ZenqFR, la
             fonction est ici reconstruite nativement sur les interfaces propres à Sku, afin
             qu'aucun addon supplémentaire ne soit nécessaire. L'entrée est placée dans le
             CreateQuestSubmenu local au fichier plutôt que sur un hook du wrapper public - c'est
@@ -400,7 +403,7 @@ Changements dans Sku v43.2
             Sku, « Ciblage et ciblage souple ».
         Technique : L'idée et l'implémentation de référence viennent de ZenqFR, dans l'addon
             compagnon SkuQuestTarget (github.com/ZenqFR/Sku-QuestTarget) ; la fonction a été
-            reconstruite nativement avec son accord, pour qu'aucun addon supplémentaire ne
+            reconstruite nativement avec l'accord de ZenqFR, pour qu'aucun addon supplémentaire ne
             soit nécessaire. Les candidats proviennent du journal de quêtes via
             SkuQuest:GetQuestTargetIds ; les objectifs de type objet sont remontés jusqu'aux
             créatures qui les font tomber (npcDrops, et un niveau plus loin itemDrops). La
@@ -439,6 +442,69 @@ Changements dans Sku v43.2
             deux minutes. La macro est « /cleartarget », puis « /targetenemy », puis les noms
             retenus du plus lointain au plus proche - la dernière ligne qui correspond
             l'emporte, donc la plus proche.
+
+    Nouvelle liste « Quêtes à proximité »
+        Simple : Le menu de quête possède désormais une troisième entrée, après « Quêtes
+            actuelles » et « Base de données des quêtes » : « Quêtes à proximité ». Elle
+            contient tout le journal de quêtes en UNE seule liste - quêtes en cours et quêtes
+            terminées mélangées - triée selon la distance de ce qui compte actuellement pour
+            chaque quête. Chaque entrée annonce d'abord la distance, puis le point cardinal,
+            puis le type, puis le nom de la quête : « 180 Mètre ; nordest ; objectif de quête ;
+            Kobolds voleurs » ou « 340 Mètre ; sud ; Rendre la quête ; Le chef de la meute ».
+            Pour une quête aux objectifs encore
+            ouverts, c'est la distance jusqu'à l'objectif le plus proche ; pour une quête
+            signalée terminée, la distance jusqu'au lieu de remise. « Quêtes actuelles »
+            regroupe selon les en-têtes du journal et trie donc par zone - la nouvelle liste
+            répond à l'autre question : qu'est-ce qui est le plus proche d'ici. Entrée ouvre le
+            même menu de quête que partout ailleurs, points de passage et entrée « Suivre la
+            quête » compris. La liste est DÉSACTIVÉE par défaut et s'active sous Paramètres
+            Sku, SkuQuest, « afficher l'entrée Quêtes à proximité » : elle recalcule tout le
+            journal de quêtes contre la base de données de spawns de Sku à chaque ouverture, et
+            seul celui qui s'en sert devrait le payer. Là où les données de Sku ne donnent
+            aucun lieu, l'entrée indique « Lieu inconnu » au lieu d'une distance et passe en
+            fin de liste - elle ne disparaît pas.
+        Technique : Idée et implémentation de référence de ZenqFR, tirées de l'addon compagnon
+            SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby) ; reconstruite ici nativement
+            avec l'accord de ZenqFR afin qu'aucun addon supplémentaire ne soit nécessaire - en
+            particulier sans Questie et sans GatherMate2. Le calcul vit dans le nouveau fichier
+            sans état SkuQuest/Proximity.lua. Deux étages, et l'ordre est l'essentiel : d'abord
+            le point de spawn enregistré le plus proche DANS la zone où l'on se trouve - la
+            sélection tourne à bas coût en coordonnées de carte, seul le gagnant est converti
+            une fois en coordonnées du monde ; ensuite seulement, si cela ne donne rien, le
+            minimum sur toutes les zones du même continent. Un autre continent n'est pas une
+            distance imprécise, c'est une absence de distance, et il reste dehors. Les
+            objectifs d'objet sont ramenés aux créatures et objets du monde qui les font
+            tomber, les objectifs d'exploration à leurs coordonnées enregistrées. Contrairement
+            au chemin des points de passage, TOUTES les listes d'objectifs d'une quête sont
+            lues, pas seulement la première non vide - une quête « tuez huit loups ET
+            récoltez cinq peaux » n'afficherait sinon que les loups. Le filtrage porte
+            uniquement sur le TYPE d'objectif : quels types sont encore ouverts vient de
+            l'affichage de progression de Blizzard lui-même (« monster », « item », « object »),
+            et il correspond exactement aux trois listes ; comparer une ligne de progression à
+            une entrée de base de données précise relèverait de la devinette, car aucun des
+            deux ordres n'est lié à l'autre. Douze identifiants au maximum sont évalués par
+            quête et par type - la limite ici est le budget de script des royaumes hardcore,
+            pas la dernière décimale. Le point cardinal provient des mêmes coordonnées du
+            monde, via la même fonction qu'utilisent les listes de points de passage et le
+            scanner de minicarte. Volontairement un point cardinal et non une position
+            horaire : une position horaire est relative à l'orientation du regard et serait
+            fausse dès qu'on se tourne - or la liste est construite une fois puis parcourue.
+
+    Base de données des quêtes : « Commence dans la zone » sans niveau intermédiaire
+        Simple : Sous « Base de données des quêtes, Commence dans la zone » se trouvait
+            exactement une entrée, « Par distance », et seulement à l'intérieur les quêtes. Un
+            niveau où il n'y a rien à choisir n'est qu'une pression de touche. La liste se
+            trouve désormais directement sous « Commence dans la zone ». Cette liste était par
+            ailleurs cassée : elle s'interrompait après la première quête, on obtenait donc
+            exactement une entrée au lieu de toutes les quêtes de la zone.
+        Technique : Le niveau intermédiaire venait de ce qu'un second tri (« par difficulté »)
+            devait un jour s'installer à côté ; ce chantier est resté commenté à côté pendant
+            des années et n'a jamais été construit. L'interruption venait d'une ligne
+            « tcount = tcount + 1 » dans la construction de la liste : tcount n'y était pas une
+            variable locale mais une globale jamais définie, l'incrémentation levait donc une
+            erreur sur nil. Une erreur dans la construction des enfants d'un menu est avalée -
+            la construction se terminait donc silencieusement après la première entrée. Le
+            compteur n'était lu par rien ; il est supprimé plutôt qu'initialisé.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

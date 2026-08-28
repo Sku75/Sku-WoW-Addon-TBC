@@ -52,6 +52,15 @@ SkuQuest.options = {
 			type = "toggle",
 			desc = "",
 		},
+		-- Der Eintrag "Quests in der Nähe" im Questmenü. Standard AUS: die Liste
+		-- rechnet bei jedem Aufbau das ganze Questlog gegen SkuDBs Spawn-Daten
+		-- durch, das soll nur zahlen, wer sie auch benutzt.
+		showNearbyQuests = {
+			name = L["show nearby quests entry"],
+			order = 1.4,
+			type = "toggle",
+			desc = "",
+		},
 		questMarkerBeacons ={
 			name = L["quest notifications"],
 			type = "group",
@@ -367,6 +376,7 @@ SkuQuest.defaults = {
 	showDifficultyColors = true,
 	showGroupQuests = true,
 	showQuestTracking = true,
+	showNearbyQuests = false,
 	questMarkerBeacons = {
 		availableQuests = {
 			enabled = false,
@@ -411,6 +421,7 @@ SkuSettings:Register("SkuQuest", {
 	["showDifficultyColors"]                              = { scope = "profile", default = true,  type = "boolean" },
 	["showGroupQuests"]                                   = { scope = "profile", default = true,  type = "boolean" },
 	["showQuestTracking"]                                 = { scope = "profile", default = true,  type = "boolean" },
+	["showNearbyQuests"]                                  = { scope = "profile", default = false, type = "boolean" },
 
 	["questMarkerBeacons.availableQuests.enabled"]            = { scope = "profile", default = false,     type = "boolean" },
 	["questMarkerBeacons.availableQuests.enableBeacons"]      = { scope = "profile", default = true,      type = "boolean" },
@@ -2349,6 +2360,11 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		onAction = function(self, aValue, aName)
 		end,
 		build = function(self)
+		-- [v43.2] "Start in Zone" listet die Quests DIREKT, ohne die alte
+		-- Zwischenebene "Nach Entfernung". Die gab es nur, weil daneben einmal
+		-- "Nach Schwierigkeit" stehen sollte -- gebaut wurde die nie (der
+		-- auskommentierte Block stand seit Jahren daneben). Bei genau EINER
+		-- Sortierung ist die Ebene ein Tastendruck ohne Auswahl.
 		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {L["Start in Zone"]}, SkuGenericMenuItem)
 		tNewMenuSubEntry.dynamic = true
 		tNewMenuSubEntry.sorting = true
@@ -2357,35 +2373,21 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		tNewMenuSubEntry.BuildChildren = function(self)
 			local tUnSortedTable, tIdTable = SkuQuest:GetUnsortedAvailableQuestsTable()
 
-			local tNewMenuSubEntryDist =SkuOptions:InjectMenuItems(self, {L["By distance"]}, SkuGenericMenuItem)
-			tNewMenuSubEntryDist.dynamic = true
-			tNewMenuSubEntryDist.sorting = true
-			tNewMenuSubEntryDist.OnAction = function(self, aValue, aName)
+			local tSortedTable = {}
+			for k,v in SkuSpairs(tUnSortedTable, function(t,a,b) return t[b][1] > t[a][1] end) do --nach wert
+				tSortedTable[#tSortedTable+1] = v[1]..L[";Meter"].."#"..k
 			end
-			tNewMenuSubEntryDist.BuildChildren = function(self)
-				local tSortedTable = {}
-				for k,v in SkuSpairs(tUnSortedTable, function(t,a,b) return t[b][1] > t[a][1] end) do --nach wert
-					tSortedTable[#tSortedTable+1] = v[1]..L[";Meter"].."#"..k
-				end
-				if #tSortedTable > 0 then
-					for iS, vS in ipairs(tSortedTable) do
-						local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {vS}, SkuGenericMenuItem)
-						tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
-							SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(tIdTable[vS])
-						end
-						CreateQuestSubmenu(tNewSubMenuEntry2, tIdTable[vS])--iS)
-						tcount = tcount + 1
+			if #tSortedTable > 0 then
+				for iS, vS in ipairs(tSortedTable) do
+					local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {vS}, SkuGenericMenuItem)
+					tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
+						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(tIdTable[vS])
 					end
-				else
-					local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+					CreateQuestSubmenu(tNewSubMenuEntry2, tIdTable[vS])--iS)
 				end
+			else
+				local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
 			end
-
-			--[[
-			local tNewMenuSubEntryDist =SkuOptions:InjectMenuItems(self, {"Nach Schwierigkeit"}, SkuGenericMenuItem)
-			tNewMenuSubEntryDist.dynamic = true
-			tNewMenuSubEntryDist.sorting = true
-			]]
 		end
 
 		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {L["Alle"]}, SkuGenericMenuItem)
@@ -2431,11 +2433,141 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		end
 		end }
 
+	-- [v43.2] "Quests in der Nähe": das ganze Questlog in EINER Liste, sortiert
+	-- nach der Entfernung zu dem, worum es bei der jeweiligen Quest gerade geht --
+	-- offenes Ziel, oder bei einer fertigen Quest der Abgabe-Ort. "Aktuelle
+	-- Quests" gruppiert nach Questlog-Überschrift, sortiert also nach Zone und
+	-- nicht danach, was von hier aus das Nächste ist.
+	--
+	-- Idee aus ZenqFRs Begleit-Addon SkuQuestNearby, Rechnung nativ in
+	-- SkuQuest/Proximity.lua (kein Questie, kein GatherMate2, kein zweites Addon).
+	--
+	-- Standard AUS und abschaltbar: die Liste rechnet bei jedem Aufbau das ganze
+	-- Questlog gegen SkuDBs Spawn-Daten durch, und wer sie nicht benutzt, soll
+	-- weder die Rechnung noch den Menüeintrag haben. Sie steht an dritter Stelle,
+	-- vor "Gruppenmitglieder" -- der Gruppeneintrag bleibt damit der letzte.
+	if SkuSettings:Sub("SkuQuest").showNearbyQuests == true then
+		tSpecs[#tSpecs+1] = { kind = "list", label = L["Quests in der Nähe"], sorting = true,
+			onAction = function(self, aValue, aName)
+			end,
+			build = function(self)
+			-- Gleiche Vorbereitung wie "Aktuelle Quests": Quests unter einer
+			-- zugeklappten Überschrift sind gar nicht aufzählbar.
+			if QuestLogFrame:IsVisible() ~= true then
+				ToggleQuestLog()
+			end
+			if (QuestLogFrame:IsVisible()) then
+				ExpandQuestHeader(0)
+			end
+
+			-- Ohne die Rechendatei gaebe ein blanker Zugriff einen Fehler mitten im
+			-- Aufbau -- und ein verschluckter BuildChildren-Fehler ist Stille.
+			local tProx = SkuQuest.Proximity
+			if not tProx then
+				SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+				return
+			end
+
+			local tCtx = tProx:GetPlayerContext()
+			local tRows = {}
+			local tNumEntries = GetNumQuestLogEntries() or 0
+			for tLogIndex = 1, tNumEntries do
+				local tTitle, _, _, tIsHeader, _, tIsComplete, _, tQuestID = GetQuestLogTitle(tLogIndex)
+				if not tIsHeader and tTitle and tQuestID and tQuestID > 0 then
+					local tOk, tDistance, tKind, _, tWx, tWy = pcall(tProx.GetQuestProximity,
+						tProx, tCtx, tQuestID, tLogIndex, tIsComplete)
+					if not tOk then tDistance, tKind, tWx, tWy = nil, nil, nil, nil end
+
+					-- Himmelsrichtung aus denselben Weltkoordinaten, ueber dieselbe
+					-- Funktion, die die Wegpunktlisten benutzen. Bewusst die
+					-- Himmelsrichtung und nicht die Uhrzeit: eine Uhrzeit gilt relativ
+					-- zur Blickrichtung und waere falsch, sobald man sich dreht -- die
+					-- Liste wird aber einmal gebaut und dann durchgelesen.
+					local tDirection
+					if tWx and tWy and SkuNav and SkuNav.Geo then
+						local tOkDir, tDirString = pcall(SkuNav.Geo.GetDirectionToAsString, SkuNav.Geo, tWx, tWy)
+						if tOkDir and tDirString and tDirString ~= "" then tDirection = tDirString end
+					end
+
+					tRows[#tRows+1] = {
+						questId = tQuestID,
+						title = tTitle,
+						distance = tDistance,
+						kind = tKind,
+						direction = tDirection,
+						order = tLogIndex,
+					}
+				end
+			end
+
+			-- Eine unauflösbare Entfernung sortiert ans Ende, sie entfernt die Quest
+			-- NICHT: SkuDBs Spawn-Daten haben bekannte Lücken, und eine verschwiegene
+			-- Quest wäre schlimmer als eine ohne Meterangabe.
+			table.sort(tRows, function(a, b)
+				if (a.distance == nil) ~= (b.distance == nil) then
+					return b.distance == nil
+				end
+				if a.distance and b.distance and a.distance ~= b.distance then
+					return a.distance < b.distance
+				end
+				return a.order < b.order
+			end)
+
+			if #tRows == 0 then
+				SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+				return
+			end
+
+			-- Zwei Quests können denselben Titel tragen (Questketten, Fraktions-
+			-- dubletten). Gleiche Namen wären im Menü nicht auseinanderzuhalten,
+			-- deshalb dieselbe Zähler-Endung wie in "Questdatenbank, Alle".
+			local tNameCache = {}
+			for _, tRow in ipairs(tRows) do
+				local tKindText = L["Questziel"]
+				if tRow.kind == "turnin" then
+					tKindText = L["Questabgabe"]
+				elseif not tRow.distance then
+					tKindText = L["Ort unbekannt"]
+				end
+
+				local tUniqueName = tRow.title
+				if not tNameCache[tRow.title] then
+					tNameCache[tRow.title] = 0
+				else
+					tNameCache[tRow.title] = tNameCache[tRow.title] + 1
+					tUniqueName = tUniqueName.." "..tNameCache[tRow.title]
+				end
+
+				-- Entfernung, Richtung und Art als Präfix VOR dem "#": das Menü
+				-- spricht den Teil vor dem Namen, und in einer nach Entfernung
+				-- sortierten Liste ist genau das die Information, auf die man wartet.
+				-- Reihenfolge wie in den Wegpunktlisten: Entfernung, dann Richtung.
+				local tLabel
+				if tRow.distance then
+					tLabel = tRow.distance..L[";Meter"]
+					if tRow.direction then
+						tLabel = tLabel..";"..tRow.direction
+					end
+					tLabel = tLabel..";"..tKindText.."#"..tUniqueName
+				else
+					tLabel = tKindText.."#"..tUniqueName
+				end
+
+				local tEntry = SkuOptions:InjectMenuItems(self, {tLabel}, SkuGenericMenuItem)
+				local tQuestId = tRow.questId
+				tEntry.OnEnter = function(self, aValue, aName)
+					SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(tQuestId)
+				end
+				CreateQuestSubmenu(tEntry, tQuestId)
+			end
+			end }
+	end
+
 	-- Quests der Gruppenmitglieder aus Questies Party-Comms. Der Eintrag erscheint NUR
 	-- wenn das Setting an ist, Questie fertig geladen ist und wir in einer Gruppe sind —
 	-- sonst fehlt er komplett. Mitglieder ohne Questie senden keine Daten und bekommen
 	-- einen erklärenden Leereintrag statt einer Questliste.
-	-- [v43.1] Der Eintrag steht bewusst ZULETZT (Position 3), nicht zwischen "Aktuelle Quests"
+	-- [v43.1] Der Eintrag steht bewusst ZULETZT, nicht zwischen "Aktuelle Quests"
 	-- und "Questdatenbank": er kommt und geht mit der Gruppe, und würde er in der Mitte
 	-- einhängen, verschöbe er die Questdatenbank je nach Gruppenstatus. So
 	-- bleiben die ersten beiden Einträge immer an derselben Stelle.

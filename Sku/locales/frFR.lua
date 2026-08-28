@@ -3358,6 +3358,10 @@ L["AURA_GeneralEventsGroupTip"] = "Tous les événements qui ne sont pas déclen
 L["Wirklich löschen?"] = "Vraiment supprimer ?"
 L["AURA_AuraRefGroup"] = "Auras créées par vous"
 L["AURA_AuraRefGroupTip"] = "Si une autre de vos auras s'applique actuellement. Seules les auras que vous avez nommées vous-même apparaissent ici"
+L["Quests in der Nähe"] = "Quêtes à proximité"
+L["Questabgabe"] = "Rendre la quête"
+L["Ort unbekannt"] = "Lieu inconnu"
+L["show nearby quests entry"] = "afficher l'entrée Quêtes à proximité"
 
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
