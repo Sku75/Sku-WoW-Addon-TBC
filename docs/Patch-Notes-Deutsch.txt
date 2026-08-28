@@ -8,6 +8,9 @@ Aenderungen in Sku v43.2
 
     Ueberblick
 
+        Neu
+            Neuer Tastenbefehl "Vollstaendigen Tooltip des Ziels ausgeben" (Strg+Umschalt+V): liest den kompletten Tooltip des aktuellen Ziels vor, inklusive dessen, was die Jaegerfaehigkeit Tierkunde offenlegt.
+
         Aenderungen
             Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
             Taschen: Aktionen mit Zauberzeit (Verzauberung, Angelkoeder, Waffenoel, Ruestungsset, Entzaubern) melden den Gegenstand nach dem Zauber noch einmal und lassen den Cursor darauf stehen.
@@ -314,6 +317,35 @@ Aenderungen in Sku v43.2
             vorher da war, und nur genau das wird wiederhergestellt. Hat die Einladung in eine
             Gruppe gefuehrt, geschieht gar nichts mehr - weder oeffnen noch schliessen.
 
+
+
+    Neuer Tastenbefehl: den vollstaendigen Tooltip des Ziels vorlesen
+        Einfach: Bei einem Zielwechsel sagt Sku eine feste, kurze Auswahl an - Name, Stufe,
+            Elite oder Selten, dazu die zweite Tooltip-Zeile mit der Kreaturenart. Alles, was
+            darunter im Tooltip steht, war bisher gar nicht erreichbar: die Fraktionszeile, die
+            PvP-Kennzeichnung und vor allem das, was die Jaegerfaehigkeit Tierkunde bei einem
+            Wildtier offenlegt - Familie, Nahrung und ob es zaehmbar ist. Der neue Tastenbefehl
+            (Standard: Strg+Umschalt+V) liest auf Wunsch den kompletten Tooltip vor. Er wirkt
+            ausschliesslich auf Tastendruck: die normale Zielansage bleibt unveraendert kurz, und
+            wer die Zusatzinformation nicht braucht, hoert nie etwas davon. Genau deshalb gibt es
+            dafuer auch keine Option - der Tastendruck selbst ist die Nachfrage. Ist kein hartes
+            Ziel vorhanden, gilt der Befehl dem aktuellen Soft-Ziel, sodass sich auch etwas
+            beschreiben laesst, auf das man sich noch gar nicht festgelegt hat. Umzubelegen unter
+            Sku Tastenbelegung, Ziel und Soft Targeting.
+        Technisch: Idee, Nachweis und Referenzumsetzung stammen von ZenqFR, aus dem Begleit-Addon
+            SkuBeastLore (github.com/ZenqFR/Sku-BeastLore); die Tierkunde-Ausgabe ist dort an
+            einem echten Jaeger getestet worden. Hier ist die Funktion nativ gegen Skus eigene
+            Schnittstellen neu gebaut, damit kein zusaetzliches Addon noetig ist. Die
+            Tierkunde-Zeilen erzeugt der Client selbst im Unit-Tooltip; kein Lua der
+            Blizzard-Oberflaeche baut sie, und keine Programmschnittstelle liefert sie einzeln -
+            den Tooltip zu lesen ist der einzige Weg dorthin. Deshalb ist eine getrennte Option
+            nur fuer die Jaegerinformation auch nicht moeglich: die Zeilen liessen sich nur ueber
+            sprachabhaengigen Textvergleich herausloesen. SkuMob:OutputTargetTooltip loest target,
+            softenemy, softfriend und softinteract der Reihe nach auf und liest ueber Skus
+            gemeinsam genutzten SkuScanningTooltip. Weil dieser Frame geteilt ist - Taschen,
+            Auktionshaus, Chatlinks und Questtexte lesen denselben -, wird davor UND danach
+            geleert und der Besitzer exakt so wiederhergestellt, wie SkuCore ihn beim Anmelden
+            setzt.
 
 
 -------------------------------------------------------------------------------------------------------

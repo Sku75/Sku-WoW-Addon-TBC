@@ -11,6 +11,9 @@ Changements dans Sku v43.2
 
     Aperçu
 
+        Nouveautés
+            Nouveau raccourci « Annoncer l'infobulle complète de la cible » (Ctrl+Maj+V) : lit à voix haute l'infobulle complète de la cible actuelle, y compris ce que révèle la compétence de chasseur Connaissance des bêtes.
+
         Changements
             Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
             Sacs : les actions avec temps d'incantation (enchantement, appât de pêche, huile d'arme, kit d'armure, désenchantement) annoncent à nouveau l'objet une fois l'incantation terminée et y laissent le curseur.
@@ -316,6 +319,35 @@ Changements dans Sku v43.2
             exactement lui - et rien d'autre - qui est restauré. Si l'invitation vous a fait
             rejoindre un groupe, il ne se passe plus rien du tout : ni ouverture, ni fermeture.
 
+
+
+    Nouveau raccourci : lire l'infobulle complète de la cible
+        Simple : lors d'un changement de cible, Sku annonce un ensemble fixe et court - nom,
+            niveau, élite ou rare, plus la deuxième ligne de l'infobulle avec le type de créature.
+            Tout ce qui se trouve en dessous dans l'infobulle était jusqu'ici inaccessible : la
+            ligne de faction, le marqueur JcJ et surtout ce que la compétence de chasseur
+            Connaissance des bêtes révèle d'une bête - sa famille, son régime et si elle est
+            apprivoisable. Le nouveau raccourci (par défaut : Ctrl+Maj+V) lit l'infobulle complète
+            à la demande. Il n'agit que lorsqu'on appuie dessus : l'annonce de cible habituelle
+            reste aussi courte qu'avant, et qui n'a pas besoin de ce détail ne l'entend jamais.
+            C'est aussi pourquoi il n'y a pas d'option pour cela - appuyer sur la touche EST la
+            demande. Sans cible fixe, la touche décrit la cible souple actuelle, ce qui permet
+            aussi de décrire quelque chose sur quoi on ne s'est pas encore engagé. Réassignable
+            dans Raccourcis clavier Sku, cible et ciblage souple.
+        Technique : l'idée, la démonstration et l'implémentation de référence viennent de ZenqFR,
+            dans l'addon compagnon SkuBeastLore (github.com/ZenqFR/Sku-BeastLore) ; la sortie
+            Connaissance des bêtes y a été testée sur un vrai chasseur. Ici la fonction est
+            reconstruite nativement sur les interfaces de Sku, pour qu'aucun addon supplémentaire
+            ne soit nécessaire. Les lignes de Connaissance des bêtes sont produites par le client
+            lui-même dans l'infobulle d'unité ; aucun Lua de l'interface Blizzard ne les construit
+            et aucune API ne les renvoie séparément - lire l'infobulle est le seul moyen d'y
+            accéder. C'est aussi pourquoi une option distincte pour la seule information de
+            chasseur n'est pas possible : ces lignes ne pourraient être isolées que par une
+            comparaison de texte dépendante de la langue. SkuMob:OutputTargetTooltip résout
+            target, softenemy, softfriend puis softinteract dans cet ordre et lit via le
+            SkuScanningTooltip partagé de Sku. Comme ce frame est partagé - sacs, hôtel des
+            ventes, liens de discussion et textes de quête lisent le même -, il est vidé avant ET
+            après, et son propriétaire restauré exactement comme SkuCore le règle à la connexion.
 
 
 -------------------------------------------------------------------------------------------------------

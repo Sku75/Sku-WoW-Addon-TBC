@@ -164,6 +164,12 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_ENABLESOFTTARGETINGINTERACT"] = {key = "SHIFT-O", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_OUTPUTHARDTARGET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_OUTPUTSOFTTARGET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   -- [v43.2] Speak the CURRENT unit's FULL tooltip on demand. Sits with the two
+   -- OUTPUT*TARGET keys above because it is the same kind of action -- describe
+   -- what I am on, now -- just at the verbose end. CTRL-SHIFT-V is free (CTRL-V
+   -- alone is SKU_KEY_STOPTTSOUTPUT; the two do not collide, and /skucheck keys
+   -- reports it if a profile ever binds over it).
+   ["SKU_KEY_OUTPUTTARGETTOOLTIP"] = {key = "CTRL-SHIFT-V", object = "SkuOptions", func = "CreateMainFrame",},
 
 
 

@@ -1993,6 +1993,7 @@ SKU_KEY_OPENDUNGEONBROWSER	ouvrir le navigateur de donjons
 SKU_KEY_OPENMENU	ouvrir le menu audio
 SKU_KEY_OUTPUTHARDTARGET	Annoncer la cible fixe actuelle
 SKU_KEY_OUTPUTSOFTTARGET	Annoncer la cible souple actuelle
+SKU_KEY_OUTPUTTARGETTOOLTIP	Annoncer l'infobulle complète de la cible
 SKU_KEY_PANICMODE	mode panique
 SKU_KEY_QUESTABANDON	abandonner la quête
 SKU_KEY_QUESTSHARE	afficher l'infobulle de l'objet de butin actuel

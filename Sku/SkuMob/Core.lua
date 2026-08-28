@@ -108,6 +108,89 @@ function SkuMob:OutputTargetHealth(aForce)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.2] SKU_KEY_OUTPUTTARGETTOOLTIP -- speak the CURRENT unit's FULL tooltip.
+--
+-- PLAYER_TARGET_CHANGED below speaks a deliberately short, fixed set on every
+-- target change: marker, dead, reaction, combat, name, level, classification,
+-- plus tooltip LINE 2 only. Everything from line 3 on has therefore never been
+-- reachable -- the faction/city line, the PvP flag, and above all the block the
+-- server appends to a beast's tooltip once a Hunter has cast Beast Lore on it
+-- (family, diet, tameable). Those lines are injected client-side in C: nothing
+-- in the shipped Blizzard Lua builds them and no API returns them, so reading
+-- the tooltip is the ONLY way to reach them at all.
+--
+-- On a key rather than folded into the automatic announce, and deliberately not
+-- a setting: the frequent case (tab-targeting in combat) has to stay as terse as
+-- it is today, and pressing the key IS the request for detail -- finer-grained
+-- than any on/off option, because it is per-press.
+--
+-- Unit resolution: the hard target first, then the soft targets, so the same key
+-- describes whatever the player is currently on rather than only a committed
+-- target. softinteract is last -- it is the least likely to be what was meant
+-- when anything else exists.
+local tTooltipUnitOrder = {"target", "softenemy", "softfriend", "softinteract"}
+
+function SkuMob:OutputTargetTooltip()
+	local tUnitId
+	for _, tCandidate in ipairs(tTooltipUnitOrder) do
+		if UnitExists(tCandidate) then
+			tUnitId = tCandidate
+			break
+		end
+	end
+	if not tUnitId then
+		dprint("SkuMob OutputTargetTooltip: no unit on any of target/softenemy/softfriend/softinteract")
+		SkuOptions.Voice:OutputStringBTtts(L["No target"], true, true, 0.3, nil, nil, nil, 1)
+		return
+	end
+
+	local tTooltip = _G["SkuScanningTooltip"]
+	if not tTooltip then
+		dprint("SkuMob OutputTargetTooltip: SkuScanningTooltip missing (pre-PLAYER_LOGIN?)")
+		return
+	end
+
+	-- SkuScanningTooltip is SHARED -- bags, auction house, chat links and quest
+	-- text all read this one frame. So: clear before AND after, and restore the
+	-- owner exactly as SkuCore:PLAYER_LOGIN set it, or whichever module reads it
+	-- next inherits this unit's lines. Same reason SkuUtil:TooltipItemLink has to
+	-- validate against the rendered first line -- :GetItem() stays sticky when a
+	-- SetX fails.
+	local tOk, tErr = pcall(function()
+		tTooltip:ClearLines()
+		tTooltip:SetOwner(WorldFrame, "ANCHOR_NONE")
+		tTooltip:SetUnit(tUnitId)
+	end)
+	if not tOk then
+		pcall(function() tTooltip:ClearLines() end)
+		dprint("SkuMob OutputTargetTooltip: SetUnit threw for", tUnitId, tostring(tErr))
+		return
+	end
+
+	local tOkText, tRaw = pcall(TooltipLines_helper, tTooltip:GetRegions())
+	pcall(function() tTooltip:ClearLines() end)
+	if not tOkText then
+		dprint("SkuMob OutputTargetTooltip: TooltipLines_helper threw:", tostring(tRaw))
+		return
+	end
+	if not tRaw or tRaw == "" then
+		dprint("SkuMob OutputTargetTooltip: empty tooltip for", tUnitId, tostring(GetUnitName(tUnitId, false)))
+		-- A unit DOES exist here, the tooltip just came back empty, so "No target"
+		-- would be plainly wrong. Something must still be spoken: a key press with
+		-- no audible answer cannot be told apart from a dead keybind.
+		SkuOptions.Voice:OutputStringBTtts(L["Unknown"], true, true, 0.3, nil, nil, nil, 1)
+		return
+	end
+
+	-- No newline handling needed: TooltipLines_helper joins its lines with a
+	-- CRLF, and the SkuVoice-1.0 sanitiser already converts those to ";" --
+	-- the character the voice layer actually splits parts on.
+	local tText = SkuUtil:Unescape(tRaw)
+	dprint("SkuMob OutputTargetTooltip: unit", tUnitId, "chars", #tText)
+	SkuOptions.Voice:OutputStringBTtts(tText, true, true, 0.3, nil, nil, nil, 1)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:OnEnable()
 	--dprint("SkuMob OnEnable")
 	-- Called when the addon is enabled. Re-arm the WoW events on every enable so

@@ -8,6 +8,9 @@ Changes in Sku v43.2
 
     Overview
 
+        New
+            New keybind "Output full tooltip of current target" (Ctrl+Shift+V): reads the current target's complete tooltip aloud, including what the Hunter ability Beast Lore reveals.
+
         Changes
             Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
             Bags: actions with a cast time (enchant, fishing lure, weapon oil, armor kit, disenchant) announce the item again once the cast has finished and leave the cursor on it.
@@ -283,6 +286,32 @@ Changes in Sku v43.2
             that is restored. If the invitation put you into a group, nothing happens at all -
             neither open nor close.
 
+
+
+    New keybind: read the current target's full tooltip
+        Simple: On a target change Sku announces a fixed, short set - name, level, elite or rare,
+            plus the second tooltip line with the creature type. Everything below that in the
+            tooltip has never been reachable: the faction line, the PvP marker, and above all
+            what the Hunter ability Beast Lore reveals about a beast - its family, its diet and
+            whether it can be tamed. The new keybind (default: Ctrl+Shift+V) reads the complete
+            tooltip out loud on request. It acts only when pressed: the normal target announce
+            stays exactly as short as it was, and anyone who does not want the extra detail never
+            hears it. That is also why there is no setting for it - pressing the key IS the
+            request. With no hard target the key describes the current soft target instead, so it
+            also works on something you have not committed to yet. Rebindable under Sku key
+            bindings, target and soft targeting.
+        Technically: The idea, the proof and the reference implementation come from ZenqFR, in the
+            companion addon SkuBeastLore (github.com/ZenqFR/Sku-BeastLore); the Beast Lore output
+            was tested there on a real Hunter. Here the feature is rebuilt natively against Sku's
+            own interfaces, so no extra addon is needed. The Beast Lore lines are produced by the
+            client itself inside the unit tooltip; no Blizzard interface Lua builds them and no
+            API returns them separately - reading the tooltip is the only way to reach them. That
+            is also why a separate option for just the Hunter information is not possible: those
+            lines could only be isolated by locale-dependent text matching.
+            SkuMob:OutputTargetTooltip resolves target, softenemy, softfriend and softinteract in
+            turn and reads through Sku's shared SkuScanningTooltip. Because that frame is shared -
+            bags, auction house, chat links and quest text all read the same one - it is cleared
+            before AND after, and its owner restored exactly as SkuCore sets it at login.
 
 
 -------------------------------------------------------------------------------------------------------

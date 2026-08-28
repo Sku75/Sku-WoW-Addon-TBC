@@ -1692,6 +1692,14 @@ function SkuOptions:CreateMainFrame()
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_OUTPUTHARDTARGET") then
 			SkuMob:PLAYER_TARGET_CHANGED()
 		end
+		-- [v43.2] Full tooltip of whatever unit is current, on demand. The two keys
+		-- above re-speak the SHORT automatic announce; this one adds everything that
+		-- announce deliberately leaves out (line 3 onward: faction, PvP flag, and the
+		-- Beast Lore block a Hunter reveals). Kept a separate key rather than made a
+		-- setting on the automatic announce: pressing it IS the request for detail.
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_OUTPUTTARGETTOOLTIP") then
+			SkuMob:OutputTargetTooltip()
+		end
 
 		--toggle mm warning background sound
 		if SkuOptions.db.profile["SkuNav"].showSkuMM == true or SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap == true then
@@ -2624,6 +2632,8 @@ function SkuOptions:CreateMainFrame()
 	if tKbds["SKU_KEY_OUTPUTHARDTARGET"].key2 and tKbds["SKU_KEY_OUTPUTHARDTARGET"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OUTPUTHARDTARGET"].key2, tFrame:GetName(), tKbds["SKU_KEY_OUTPUTHARDTARGET"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OUTPUTSOFTTARGET"].key, tFrame:GetName(), tKbds["SKU_KEY_OUTPUTSOFTTARGET"].key)
 	if tKbds["SKU_KEY_OUTPUTSOFTTARGET"].key2 and tKbds["SKU_KEY_OUTPUTSOFTTARGET"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OUTPUTSOFTTARGET"].key2, tFrame:GetName(), tKbds["SKU_KEY_OUTPUTSOFTTARGET"].key2) end
+	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OUTPUTTARGETTOOLTIP"].key, tFrame:GetName(), tKbds["SKU_KEY_OUTPUTTARGETTOOLTIP"].key)
+	if tKbds["SKU_KEY_OUTPUTTARGETTOOLTIP"].key2 and tKbds["SKU_KEY_OUTPUTTARGETTOOLTIP"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OUTPUTTARGETTOOLTIP"].key2, tFrame:GetName(), tKbds["SKU_KEY_OUTPUTTARGETTOOLTIP"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_DEBUGMODE"].key, tFrame:GetName(), tKbds["SKU_KEY_DEBUGMODE"].key)
 	if tKbds["SKU_KEY_DEBUGMODE"].key2 and tKbds["SKU_KEY_DEBUGMODE"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_DEBUGMODE"].key2, tFrame:GetName(), tKbds["SKU_KEY_DEBUGMODE"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key, tFrame:GetName(), tKbds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key)
