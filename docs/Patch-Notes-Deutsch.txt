@@ -10,6 +10,9 @@ Aenderungen in Sku v43.2
 
         Neu
             Neuer Tastenbefehl "Vollstaendigen Tooltip des Ziels ausgeben" (Strg+Umschalt+V): liest den kompletten Tooltip des aktuellen Ziels vor, inklusive dessen, was die Jaegerfaehigkeit Tierkunde offenlegt.
+            Chat: die Eingabezeile spricht jetzt wie jedes andere Sku-Eingabefeld - jedes getippte Zeichen, das Zeichen oder Wort unter dem Cursor, und mit Pfeil hoch die zuletzt gesendeten Nachrichten zum erneuten Senden oder Aendern.
+            Chat: der Zielkanal wird angesagt, sobald er nicht "Sagen" ist - beim Oeffnen und bei jedem Wechsel.
+            Chat: ein unbekannter Slash-Befehl wird angesagt, statt still verworfen zu werden.
 
         Aenderungen
             Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
@@ -18,6 +21,10 @@ Aenderungen in Sku v43.2
             Menue: das Schliessen eines Fensters baut die Menuedaten nur noch einmal statt bis zu sechsmal neu auf.
             Auren: eine Waffenverzauberung (Angelkoeder, Gift, Oel) laesst sich jetzt wie ein Zauber ansprechen - Ereignis "Waffenverzauberung abgelaufen" zusammen mit "Zauber name".
             Auren: neue Bedingung und neue Ausgabe "Waffenverzauberung Hand" (Haupthand oder Nebenhand).
+            Chat: "Link zu Chat hinzufuegen" fuegt den Gegenstand an der Cursorposition ein, statt die Zeile zu ersetzen, und laesst den Cursor davor stehen - davor passt jetzt noch ein Kanal wie "/p ".
+            Chat: ein Gegenstandslink zaehlt beim Lesen als ein einziges Zeichen - Pfeil links und rechts springen ueber den ganzen Link und sagen den Namen.
+            Chat: "Link zu Chat hinzufuegen" schliesst die Taschen nicht mehr.
+            Chat: die Pfeiltasten bewegen in der Chateingabe den Textcursor; abschaltbar unter Chateinstellungen.
 
         Fehlerbehebungen
             Escape schloss das Menue nicht, wenn man direkt auf einem Questobjekt stand - das Questfenster ging endlos wieder auf.
@@ -31,6 +38,7 @@ Aenderungen in Sku v43.2
             Auren: das Ende einer Waffenverzauberung wird auf den Frame genau erkannt statt bis zu eine viertel Sekunde spaeter.
             Menue: Enter auf einem Ein/Aus-Eintrag in einer gefilterten Liste sagte den ersten Eintrag der Liste an statt des umgeschalteten Zustands.
             Dungeonbrowser: das Annehmen einer Gruppeneinladung fuehrt nicht mehr von selbst in den Dungeonbrowser.
+            Sprachausgabe: Gegenstandslinks wurden als Folge von Farbcodes vorgelesen statt als Name - ueberall in Sku, nicht nur im Chat.
 
     Der Cursor bleibt in der Tasche auf dem Gegenstand
         Einfach: Wer in der Taschenliste einen Gegenstand rechts anklickte - benutzen, anlegen, an
@@ -346,6 +354,43 @@ Aenderungen in Sku v43.2
             Auktionshaus, Chatlinks und Questtexte lesen denselben -, wird davor UND danach
             geleert und der Besitzer exakt so wiederhergestellt, wie SkuCore ihn beim Anmelden
             setzt.
+
+    Die Chateingabe ist bedienbar geworden
+        Einfach: Die Chatzeile war das einzige Eingabefeld in Sku, in das man blind tippte. Es gab
+            einen Ton beim Oeffnen und einen beim Schliessen, sonst nichts - kein Zeichen-Echo,
+            kein Vorlesen unter dem Cursor, und keine Auskunft darueber, wohin die Nachricht
+            eigentlich ginge. Jetzt verhaelt sie sich wie jedes andere Sku-Eingabefeld. Jedes
+            getippte und geloeschte Zeichen wird gesprochen, Pfeil links und rechts lesen das
+            Zeichen unter dem Cursor und mit Strg das ganze Wort, Pfeil hoch holt die zuletzt
+            gesendeten Nachrichten zurueck - zum erneuten Absenden oder zum Aendern - und sagt
+            dabei den Kanal mit, denn den sieht man einer zurueckgeholten Zeile nicht an.
+            Angesagt wird der Kanal ausserdem beim Oeffnen und bei jedem Wechsel, aber bewusst
+            nicht bei "Sagen": das ist der harmlose Fall, und ihn jedes Mal vorzusagen waere nur
+            Geraeusch. Ein Gegenstand im Chat zaehlt beim Lesen als ein einziges Zeichen statt
+            als fuenfundsechzig Zeichen Steuerkram. Und ein vertippter Befehl wie "/tets" sagt
+            jetzt "Unbekannter Befehl", statt einfach nichts zu tun.
+        Technisch: Das Tastatur-Echo der Sku-eigenen Felder haengt ueber
+            SkuOptions:AttachInputEcho jetzt auch an fremden. Drei Dinge sind dort anders:
+            angehaengt wird mit HookScript statt SetScript, weil auf Blizzards Feld dessen eigene
+            Handler fuer Verlauf und Namensvervollstaendigung liegen; die Vorlage traegt
+            ignoreArrows, weshalb schlichte Pfeile an das Spiel gingen und der Textcursor ALT
+            brauchte - das wird zurueckgedreht; und scharf geschaltet wird am Fokus, weil ein
+            fremdes Feld kein Oeffnen-und-Schliessen-Paar hat, an dem das Echo haengen koennte.
+            Der Kanal wird aus der Kopfzeile der Eingabe gelesen statt aus chatType nachgebaut -
+            die Kopfzeile ist bereits uebersetzt und deckt Fluesterziele, nummerierte Kanaele und
+            Blizzards eigene Umschaltungen mitten im Aufruf ab. Ihre Ansage laeuft verzoegert und
+            in einem einzigen Slot, denn jeder Kanalwechsel wird durch einen Tastendruck
+            ausgeloest, und dessen Zeichen-Echo hatte die Ansage sonst jedes Mal aus der
+            Warteschlange geworfen, bevor sie ueberhaupt gesprochen war.
+
+    Gegenstandslinks werden als Name gelesen, nicht als Farbcode
+        Einfach: Ein Gegenstand - im Chat, in der Post, in der Beute - wurde als lange Folge aus
+            Farbcodes, Kennungen und Doppelpunkten vorgelesen statt schlicht als sein Name.
+        Technisch: In der Sprachausgabe wurden erst alle senkrechten Striche durch Leerzeichen
+            ersetzt und DANACH die Funktion gerufen, die Farbcodes, Links und Texturen entfernt.
+            Deren Muster suchen alle nach einem senkrechten Strich, den es zu dem Zeitpunkt nicht
+            mehr gab - sie liefen also seit jeher ins Leere. Reihenfolge getauscht; der pauschale
+            Ersatz ist jetzt nur noch ein Auffangnetz dahinter.
 
 
 -------------------------------------------------------------------------------------------------------

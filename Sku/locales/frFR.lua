@@ -3366,6 +3366,7 @@ L["show nearby quests entry"] = "afficher l'entrée Quêtes à proximité"
 L["Pfeiltasten bewegen den Textcursor in der Chateingabe"] = "arrow keys move the text cursor in the chat input"
 L["Kanal der Chateingabe ansagen"] = "announce the chat input channel"
 L["SkuChatAnnounceChannelTip"] = "Announces the target channel whenever it differs from your default channel, and on every change. The default channel itself is not announced when you open the chat."
+L["Unbekannter Befehl"] = "unknown command"
 
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the

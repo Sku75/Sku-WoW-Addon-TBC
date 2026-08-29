@@ -13,6 +13,9 @@ Changements dans Sku v43.2
 
         Nouveautés
             Nouveau raccourci « Annoncer l'infobulle complète de la cible » (Ctrl+Maj+V) : lit à voix haute l'infobulle complète de la cible actuelle, y compris ce que révèle la compétence de chasseur Connaissance des bêtes.
+            Chat : la ligne de saisie parle désormais comme tout autre champ de saisie de Sku - chaque caractère tapé, le caractère ou le mot sous le curseur, et avec la flèche haut les derniers messages envoyés, pour les renvoyer ou les modifier.
+            Chat : le canal cible est annoncé dès qu'il n'est pas « Dire » - à l'ouverture et à chaque changement.
+            Chat : une commande slash inconnue est maintenant annoncée au lieu d'être ignorée en silence.
 
         Changements
             Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
@@ -21,6 +24,10 @@ Changements dans Sku v43.2
             Menu : la fermeture d'une fenêtre ne reconstruit plus les données du menu qu'une seule fois au lieu de six.
             Auras : un enchantement d'arme (appât de pêche, poison, huile) s'adresse désormais comme un sort - l'événement « Enchantement d'arme expiré » avec « nom du sort ».
             Auras : nouvelle condition et nouvelle sortie « main de l'enchantement d'arme » (main droite ou main gauche).
+            Chat : « Ajouter le lien au chat » insère l'objet à la position du curseur au lieu de remplacer la ligne, et laisse le curseur devant - un canal comme « /p » tient donc encore avant.
+            Chat : un lien d'objet compte pour un seul caractère à la lecture - les flèches gauche et droite franchissent tout le lien et en disent le nom.
+            Chat : « Ajouter le lien au chat » ne ferme plus les sacs.
+            Chat : les flèches déplacent le curseur de texte dans la saisie du chat ; désactivable dans les paramètres du chat.
 
         Corrections
             Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête - la fenêtre de quête se rouvrait sans fin.
@@ -34,6 +41,7 @@ Changements dans Sku v43.2
             Auras : la fin d'un enchantement d'arme est détectée à la frame près au lieu d'un quart de seconde plus tard.
             Menu : Entrée sur une entrée activé/désactivé dans une liste filtrée annonçait la première entrée de la liste au lieu de l'état basculé.
             Navigateur de donjons : accepter une invitation de groupe ne vous dépose plus tout seul dans le navigateur de donjons.
+            Sortie vocale : les liens d'objet étaient lus comme une suite de codes de couleur au lieu de leur nom - partout dans Sku, pas seulement dans le chat.
 
     Le curseur reste sur l'objet dans le sac
         Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le
@@ -348,6 +356,42 @@ Changements dans Sku v43.2
             SkuScanningTooltip partagé de Sku. Comme ce frame est partagé - sacs, hôtel des
             ventes, liens de discussion et textes de quête lisent le même -, il est vidé avant ET
             après, et son propriétaire restauré exactement comme SkuCore le règle à la connexion.
+
+    La saisie du chat est devenue utilisable
+        Simple : La ligne de chat était le seul champ de saisie de Sku dans lequel on tapait à
+            l'aveugle. Il y avait un son à l'ouverture et un à la fermeture, rien d'autre - pas
+            d'écho des caractères, pas de lecture sous le curseur, et aucune indication sur la
+            destination réelle du message. Elle se comporte désormais comme tout autre champ de
+            saisie de Sku. Chaque caractère tapé ou effacé est prononcé, les flèches gauche et
+            droite lisent le caractère sous le curseur et, avec Ctrl, le mot entier, la flèche
+            haut rappelle les derniers messages envoyés - pour les renvoyer ou les modifier - et
+            annonce le canal avec eux, car une ligne rappelée ne montre pas où elle irait. Le
+            canal est aussi annoncé à l'ouverture et à chaque changement, mais volontairement pas
+            pour « Dire » : c'est le cas inoffensif, et l'annoncer chaque fois ne serait que du
+            bruit. Un objet dans le chat compte pour un seul caractère à la lecture au lieu de
+            soixante-cinq caractères de balisage. Et une commande mal tapée comme « /tets » dit
+            maintenant « commande inconnue » au lieu de ne rien faire.
+        Technique : L'écho clavier des champs propres à Sku s'attache maintenant aussi aux champs
+            étrangers via SkuOptions:AttachInputEcho. Trois choses y diffèrent : l'attache se
+            fait avec HookScript et non SetScript, car le champ de Blizzard porte ses propres
+            gestionnaires d'historique et de complétion de noms ; le modèle pose ignoreArrows,
+            d'où des flèches simples envoyées au jeu et un curseur de texte exigeant ALT - ce qui
+            est inversé ; et l'armement se fait sur le focus, car un champ étranger n'a pas de
+            paire ouverture-fermeture à laquelle accrocher l'écho. Le canal est lu dans l'en-tête
+            de la saisie plutôt que reconstruit depuis chatType - l'en-tête est déjà traduit et
+            couvre les cibles de chuchotement, les canaux numérotés et les bascules propres à
+            Blizzard en plein appel. Son annonce est différée et tient dans un seul emplacement,
+            car tout changement de canal est déclenché par une frappe, et l'écho de cette frappe
+            éjectait sinon l'annonce de la file avant même qu'elle ne soit prononcée.
+
+    Les liens d'objet sont lus par leur nom, pas en codes de couleur
+        Simple : Un objet - dans le chat, dans le courrier, dans le butin - était lu comme une
+            longue suite de codes de couleur, d'identifiants et de deux-points au lieu de son nom.
+        Technique : La sortie vocale remplaçait d'abord chaque barre verticale par une espace,
+            PUIS appelait la fonction qui retire les codes de couleur, les liens et les textures.
+            Tous ses motifs cherchent une barre verticale, qui n'existait plus à ce moment - ils
+            ne correspondaient donc à rien depuis toujours. Ordre inversé ; le remplacement
+            général n'est plus qu'un filet de sécurité derrière.
 
 
 -------------------------------------------------------------------------------------------------------

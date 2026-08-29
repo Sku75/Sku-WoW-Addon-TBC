@@ -10,6 +10,9 @@ Changes in Sku v43.2
 
         New
             New keybind "Output full tooltip of current target" (Ctrl+Shift+V): reads the current target's complete tooltip aloud, including what the Hunter ability Beast Lore reveals.
+            Chat: the input line now speaks like every other Sku input field - every typed character, the character or word under the cursor, and with arrow up the messages you sent last, to send again or to change.
+            Chat: the target channel is announced whenever it is not "Say" - on opening and on every change.
+            Chat: an unknown slash command is now announced instead of being silently discarded.
 
         Changes
             Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
@@ -18,6 +21,10 @@ Changes in Sku v43.2
             Menu: closing a window now rebuilds the menu data once instead of up to six times.
             Auras: a weapon enchant (fishing lure, poison, oil) can now be addressed like a spell - the event "Weapon enchant expired" together with "spell name".
             Auras: new condition and new output "weapon enchant hand" (main hand or off hand).
+            Chat: "Add Link to chat" inserts the item at the cursor instead of replacing the line, and leaves the cursor in front of it - so a channel such as "/p " still fits before it.
+            Chat: an item link counts as a single character when reading - arrow left and right jump across the whole link and speak its name.
+            Chat: "Add Link to chat" no longer closes the bags.
+            Chat: the arrow keys move the text cursor in the chat input; can be turned off under chat settings.
 
         Bugfixes
             Escape did not close the menu while standing right on a quest object - the quest window reopened endlessly.
@@ -31,6 +38,7 @@ Changes in Sku v43.2
             Auras: the end of a weapon enchant is detected frame-accurately instead of up to a quarter second later.
             Menu: Enter on an on/off entry in a filtered list read the first entry of the list back instead of the toggled state.
             Dungeon browser: accepting a group invitation no longer drops you into the dungeon browser by itself.
+            Voice output: item links were read out as a run of colour codes instead of as their name - everywhere in Sku, not only in chat.
 
     The cursor stays on the item in the bag
         Simple: Right-clicking an item in the bag list - use it, equip it, sell it to a vendor,
@@ -312,6 +320,41 @@ Changes in Sku v43.2
             turn and reads through Sku's shared SkuScanningTooltip. Because that frame is shared -
             bags, auction house, chat links and quest text all read the same one - it is cleared
             before AND after, and its owner restored exactly as SkuCore sets it at login.
+
+    The chat input has become usable
+        Simple: The chat line was the only input field in Sku you typed into blind. There was a
+            sound on opening and one on closing, and nothing else - no character echo, no reading
+            under the cursor, and no word about where the message would actually go. It now
+            behaves like every other Sku input field. Every typed and deleted character is
+            spoken, arrow left and right read the character under the cursor and with Ctrl the
+            whole word, arrow up recalls the messages you sent last - to send again or to change
+            - and says the channel along with them, because a recalled line does not show you
+            where it would go. The channel is also announced on opening and on every change, but
+            deliberately not for "Say": that is the harmless case, and saying it every time would
+            be noise. An item in the chat counts as a single character when reading instead of
+            sixty-five characters of markup. And a mistyped command such as "/tets" now says
+            "unknown command" instead of simply doing nothing.
+        Technical: The keyboard echo of Sku's own fields now attaches to foreign ones through
+            SkuOptions:AttachInputEcho. Three things differ there: it attaches with HookScript
+            rather than SetScript, because Blizzard's field carries its own handlers for history
+            and name completion; the template sets ignoreArrows, which is why plain arrows went
+            to the game and the text cursor needed ALT - that is turned back; and it arms on
+            focus, because a foreign field has no open-and-close pair for the echo to hang off.
+            The channel is read from the input's header rather than rebuilt from chatType - the
+            header is already translated and covers whisper targets, numbered channels and
+            Blizzard's own switches mid-call. Its announcement runs deferred and in a single
+            slot, because every channel change is triggered by a keystroke, and that keystroke's
+            character echo used to throw the announcement out of the queue every time before it
+            was ever spoken.
+
+    Item links are read as their name, not as colour codes
+        Simple: An item - in chat, in the mail, in loot - was read out as a long run of colour
+            codes, identifiers and colons instead of simply as its name.
+        Technical: The voice output first replaced every vertical bar with a space and THEN
+            called the function that strips colour codes, links and textures. All of its patterns
+            look for a vertical bar, which no longer existed by that point - so they had been
+            matching nothing all along. Order swapped; the blanket replacement is now only a
+            safety net behind it.
 
 
 -------------------------------------------------------------------------------------------------------

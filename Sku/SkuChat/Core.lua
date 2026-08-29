@@ -3539,6 +3539,15 @@ function SkuChat:PLAYER_LOGIN(...)
 		SkuChat:ResetEditboxChannelMemo()
 	end)
 
+	-- Unbekannte Slash-Befehle hoerbar machen (siehe AnnounceUnknownChatCommand).
+	if _G.ChatFrameUtil and ChatFrameUtil.DisplayHelpTextSimple then
+		hooksecurefunc(ChatFrameUtil, "DisplayHelpTextSimple", function()
+			SkuChat:AnnounceUnknownChatCommand()
+		end)
+	else
+		dprint("chatCommand", "ChatFrameUtil.DisplayHelpTextSimple fehlt, keine Ansage")
+	end
+
 	C_TTSSettings.SetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks, SkuSettings:Sub("SkuChat").chatSettings.audioOnMessageEnd)
 end
 
@@ -3647,6 +3656,40 @@ end
 -- ohne Zutun passiert. Jeder ANDERE Kanal -- Gilde, Gruppe, Fluestern, ein
 -- nummerierter Kanal -- ist einer, in dem ein versehentliches Absenden zaehlt.
 -- Der wird deshalb bei JEDEM Oeffnen gesagt, nicht nur beim ersten.
+
+-- [v43.2] Unbekannter Slash-Befehl.
+--
+-- Ein vertippter Befehl ist der eine Fall, in dem gar nichts passiert und man
+-- es nicht merkt: "/test" sieht beim Tippen aus wie eine Nachricht, wird aber
+-- nie gesendet -- WoW sucht einen Befehl, findet keinen und schreibt nur die
+-- allgemeine Hilfezeile (HELP_TEXT_SIMPLE) in den Chatrahmen. Ob die beim
+-- Nutzer ankommt, haengt daran, welcher SkuChat-Reiter Systemmeldungen zeigt.
+-- Genau diese Stille kostete hier eine Testrunde: die Nachricht "kam nicht an",
+-- weil sie nie eine war.
+--
+-- ChatFrameUtil.DisplayHelpTextSimple ist Blizzards Behandlung genau dieses
+-- Falls und laeuft VOR ClearChat -- der getippte Text steht also noch in der
+-- Zeile und der Befehl laesst sich mitsagen. Der Schraegstrich wird von der
+-- Sprachausgabe als "slash" gelesen, das ist hier genau richtig.
+function SkuChat:AnnounceUnknownChatCommand()
+    local tText = (ChatFrame1EditBox and ChatFrame1EditBox:GetText()) or ""
+    local tCommand = string.match(tText, "^(/[^%s]+)") or ""
+    local tMessage = L["Unbekannter Befehl"]
+    if tCommand ~= "" then
+        -- Semikolon: das ist Skus Trennzeichen in der Sprachausgabe.
+        tMessage = tMessage .. "; " .. tCommand
+    end
+    dprint("chatCommand", "unbekannt", tCommand ~= "" and tCommand or tText)
+    -- Verzoegert, weil unmittelbar danach die Chatzeile schliesst: der
+    -- Fokusverlust laeuft in tEchoStop, und dessen Abbruch wuerde diese Ansage
+    -- gleich wieder abschneiden (das Tastatur-Echo lief eben noch, also greift
+    -- dort auch die "nur wenn kuerzlich"-Bedingung).
+    C_Timer.After(0.25, function()
+        pcall(function()
+            SkuOptions.Voice:OutputStringBTtts(tMessage, {overwrite = true, wait = false, length = 0.05, engine = 2, ignoreLinks = true})
+        end)
+    end)
+end
 
 ---@param aForce boolean|nil auch ansagen, wenn sich der Kanal nicht geaendert hat
 ---@param aWhy string|nil Ausloeser, nur fuers Log
