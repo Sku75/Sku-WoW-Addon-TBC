@@ -6412,7 +6412,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 													if itemLink then
 														SkuOptions:InsertLinkIntoChat(itemLink)
 													end
-													C_Timer.After(0.35, function() SkuOptions:CloseMenu() end)
+													-- [v43.2] KEIN CloseMenu mehr, siehe unten beim Taschen-Eintrag.
 												end
 											end
 										end
@@ -6563,7 +6563,26 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										if itemLink then
 											SkuOptions:InsertLinkIntoChat(itemLink)
 										end
-										C_Timer.After(0.35, function() SkuOptions:CloseMenu() end)
+										-- [v43.2] Frueher folgte hier ein CloseMenu(). Das war zu viel:
+										-- SkuOptions:CloseMenu druckt die Menue-Taste nach, und der
+										-- Schliessweg macht ausdruecklich JEDES Interaktionsfenster zu --
+										-- Haendler, Questgeber, und eben auch die Taschen. Fuer einen
+										-- Haendler ist das richtig (Menue verlassen = Laden verlassen),
+										-- fuers Verlinken nicht: die Taschen sollen offen bleiben, sonst
+										-- baut die naechste Taschenliste auf halb geschlossenen
+										-- ContainerFrames auf und zeigt leere Faecher (Log 2026-08-29:
+										-- "menuClose hide ContainerFrame1", danach "CheckFrames open:
+										-- frames ContainerFrame1" und drei Eintraege "leer").
+										--
+										-- Das Menue offen zu lassen ist kein Wagnis: SkuOptions:EditBoxShow
+										-- laeuft ueberall genauso (Menue bleibt stehen, Eingabefeld hat den
+										-- Fokus), und der Quest-Link-Weg in SkuQuest/Options.lua macht es
+										-- seit jeher ohne CloseMenu. Die schlichten Pfeile sind bewusst
+										-- nicht an die Menuenavigation gebunden, ENTER geht an das
+										-- fokussierte Eingabefeld -- genau deshalb funktioniert dort das
+										-- Bestaetigen mit ENTER. Nach dem Absenden steht der Cursor noch
+										-- auf demselben Gegenstand, man kann ihn also gleich noch einmal
+										-- verlinken.
 									end
 
 									-- Sockeln-Eintrag temporär deaktiviert (Diagnose).
