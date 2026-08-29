@@ -39,6 +39,7 @@ Aenderungen in Sku v43.2
             Dungeonbrowser: das Annehmen einer Gruppeneinladung fuehrt nicht mehr von selbst in den Dungeonbrowser.
             Questdatenbank: die Liste "Start in Zone, Nach Entfernung" brach nach der ersten Quest ab.
             Taschenmenue: mit einem Taschen-Ersatz-Addon wie Bagnon, das Blizzards Bankfenster versteckt, verschwanden saemtliche Bankfaecher aus dem Menue.
+            Das Loeschen eines eigenen Wegpunkts entfernte die falsche interne Kennung, und "/skucheck wp" meldete vier Fehler bei den Schnellwegpunkten, die keine waren.
 
     Der Cursor bleibt in der Tasche auf dem Gegenstand
         Einfach: Wer in der Taschenliste einen Gegenstand rechts anklickte - benutzen, anlegen, an
@@ -529,6 +530,24 @@ Aenderungen in Sku v43.2
             Zustand zurueckgesetzt, und die alte Fensterpruefung bleibt zusaetzlich erhalten -
             die Erkennung kann dadurch nur mehr Faelle richtig treffen als vorher, keine
             weniger.
+
+
+
+    Loeschen eines eigenen Wegpunkts raeumte den falschen Eintrag ab
+        Einfach: Beim Loeschen eines selbst angelegten Wegpunkts wurde intern nicht dessen eigene
+            Kennung aus einer Nachschlagetabelle entfernt, sondern die eines anderen Wegpunkts.
+            Ausserdem meldete "/skucheck wp" vier Fehler bei den vier Schnellwegpunkten, obwohl
+            mit ihnen alles in Ordnung war.
+        Technisch: Die wpId ist die Identitaet eines Wegpunkts - die Verbindungstabelle ist
+            ueber sie verschluesselt -, keine Beschreibung seines Ortes. Die in ihr steckende
+            Gebiets-ID stammt aus dem Moment des Cache-Aufbaus und bleibt stehen, wenn ein
+            eigener Wegpunkt umzieht; genau das passiert den vier Schnellwegpunkten bei jedem
+            Ladebildschirm, denn dabei werden sie auf die Spielerposition neu gesetzt. Die
+            Pruefung baute die Kennung aus dem aktuellen areaId des Datensatzes neu auf und
+            verglich - sie rechnet jetzt mit der in der Kennung selbst steckenden Gebiets-ID.
+            Der Loeschpfad baute die Kennung ueber ".areaid" (das Feld heisst areaId), also mit
+            Gebiet 1 statt des echten, und raeumte damit den Eintrag desjenigen Datensatzes ab,
+            dem dieser Schluessel wirklich gehoert; er benutzt jetzt die gespeicherte Kennung.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

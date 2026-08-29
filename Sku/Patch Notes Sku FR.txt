@@ -42,6 +42,7 @@ Changements dans Sku v43.2
             Navigateur de donjons : accepter une invitation de groupe ne vous dépose plus tout seul dans le navigateur de donjons.
             Base de données des quêtes : la liste « Commence dans la zone, Par distance » s'interrompait après la première quête.
             Menu des sacs : avec un addon de remplacement des sacs comme Bagnon, qui masque la fenêtre de banque de Blizzard, tous les compartiments de banque disparaissaient du menu.
+            La suppression d'un point de passage personnel retirait le mauvais identifiant interne, et « /skucheck wp » signalait quatre erreurs sur les points de passage rapides qui n'en étaient pas.
 
     Le curseur reste sur l'objet dans le sac
         Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le
@@ -538,6 +539,25 @@ Changements dans Sku v43.2
             réinitialisé au chargement et après /reload, et l'ancienne vérification de la
             fenêtre est conservée à côté - la détection ne peut donc que reconnaître plus de
             cas qu'avant, jamais moins.
+
+
+
+    La suppression d'un point de passage personnel effaçait la mauvaise entrée
+        Simple : supprimer un point de passage que vous aviez créé vous-même ne retirait pas son
+            propre identifiant d'une table de recherche interne, mais celui d'un autre point de
+            passage. Et « /skucheck wp » signalait quatre erreurs sur les quatre points de
+            passage rapides alors que tout allait bien pour eux.
+        Technique : le wpId d'un point de passage est son identité - la table des liaisons est
+            indexée dessus -, pas une description de l'endroit où il se trouve. L'identifiant de
+            zone qui y est encodé date du moment de la construction du cache et ne bouge plus
+            quand un point de passage personnel se déplace ; c'est exactement ce qui arrive aux
+            quatre points de passage rapides à chaque écran de chargement, puisqu'ils sont alors
+            replacés sur la position du joueur. La vérification reconstruisait l'identifiant à
+            partir de l'areaId actuel de l'enregistrement et comparait - elle utilise désormais
+            la zone encodée dans l'identifiant lui-même. Le chemin de suppression construisait
+            l'identifiant à partir de « .areaid » (le champ s'appelle areaId), donc avec la zone
+            1 au lieu de la vraie, et effaçait ainsi l'entrée de l'enregistrement à qui cette
+            clé appartient réellement ; il utilise maintenant l'identifiant stocké.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

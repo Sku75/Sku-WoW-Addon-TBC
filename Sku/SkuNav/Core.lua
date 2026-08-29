@@ -4620,7 +4620,16 @@ function SkuNav:DeleteWaypoint(aWpName, aIsTempWaypoint)
 				end
 			end
 
-			WaypointCacheLookupIdForCacheIndex[SkuNav:BuildWpIdFromData(WaypointCache[tCacheIndex].typeId, WaypointCache[tCacheIndex].dbIndex, WaypointCache[tCacheIndex].spawn, WaypointCache[tCacheIndex].areaid)] = nil
+			-- [2026-08-29] This line still built the id from ".areaid" - the field is
+			-- areaId, so it read nil, BuildWpIdFromData fell back to area 1 and the
+			-- statement cleared the entry of whatever record really owns
+			-- (dbIndex, spawn, area 1) while the deleted waypoint's own entry leaked.
+			-- tOwnId is the record's STORED id (WaypointCacheGetIdForIndex), which is
+			-- the key the build wrote; nil only for a temp waypoint, which never gets
+			-- here (the branch above owns those).
+			if tOwnId then
+				WaypointCacheLookupIdForCacheIndex[tOwnId] = nil
+			end
 			WaypointCacheLookupPerContintent[tWpData.contintentId][tCacheIndex] = nil
 			WaypointCacheLookupAll[aWpName] = nil
 			WaypointCache[tCacheIndex] = nil

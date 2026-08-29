@@ -39,6 +39,7 @@ Changes in Sku v43.2
             Dungeon browser: accepting a group invitation no longer drops you into the dungeon browser by itself.
             Quest database: the "Starts in zone, By distance" list broke off after the first quest.
             Bags menu: with a bag-replacement addon such as Bagnon, which hides Blizzard's bank window, every bank container vanished from the menu.
+            Deleting a custom waypoint removed the wrong internal id, and "/skucheck wp" reported four errors on the quick waypoints that were none.
 
     The cursor stays on the item in the bag
         Simple: Right-clicking an item in the bag list - use it, equip it, sell it to a vendor,
@@ -482,6 +483,22 @@ Changes in Sku v43.2
             independent of who draws the window. It is reset on load and after /reload, and the
             old window check is kept alongside - so the detection can only ever get more cases
             right than before, never fewer.
+
+
+
+    Deleting a custom waypoint cleared the wrong entry
+        Simple: Deleting a waypoint you had created yourself did not remove its own id from an
+            internal lookup table but that of a different waypoint. And "/skucheck wp" reported
+            four errors on the four quick waypoints although nothing was wrong with them.
+        Technically: A waypoint's wpId is its identity - the link table is keyed by it - not a
+            description of where it is. The area id packed into it dates from the moment the
+            waypoint cache was built and stays put when a custom waypoint moves; that is exactly
+            what happens to the four quick waypoints at every loading screen, because they are
+            re-set to the player position then. The check rebuilt the id from the record's
+            current areaId and compared - it now uses the area packed into the id itself. The
+            delete path built the id from ".areaid" (the field is areaId), so it computed with
+            area 1 instead of the real one and cleared the entry of whichever record really owns
+            that key; it now uses the record's stored id.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

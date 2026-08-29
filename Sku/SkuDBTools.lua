@@ -509,10 +509,20 @@ local function SkuDBToolsRunWpCheck()
 			if rawget(tRec, "links") then
 				tResult.linked = tResult.linked + 1
 			end
-			-- wpId round-trip through the DERIVED dbIndex/spawn
+			-- wpId round-trip through the DERIVED dbIndex/spawn.
+			-- [2026-08-29] Rebuilt with the areaId PACKED INTO THE ID, not with
+			-- tRec.areaId. The id is the record's identity (SessionRouteData.Links is
+			-- keyed by it), so SkuNav:SetWaypoint deliberately keeps it when a custom
+			-- waypoint is MOVED - including into another zone, which is what the
+			-- login/zone-in reset of the four Schnellwegpunkte does every loading
+			-- screen. Comparing against the mutable tRec.areaId therefore reported four
+			-- violations for correct data. What the round-trip must still prove is the
+			-- bit packing itself: dbIndex and spawn are DERIVED from the id, so
+			-- re-packing them with the id's own area has to reproduce the id exactly.
 			local tWpId = rawget(tRec, "wpId")
 			if tWpId then
-				local tRebuilt = SkuNav:BuildWpIdFromData(tRec.typeId, tRec.dbIndex, tRec.spawn, tRec.areaId)
+				local tPackedAreaId = select(4, SkuNav:GetWpDataFromId(tWpId))
+				local tRebuilt = SkuNav:BuildWpIdFromData(tRec.typeId, tRec.dbIndex, tRec.spawn, tPackedAreaId)
 				if tRebuilt ~= tWpId then tFail(tRec.name, "wpId roundtrip") end
 				if tIdForIdx[tWpId] ~= tIdx then tFail(tRec.name, "IdForCacheIndex") end
 			else
