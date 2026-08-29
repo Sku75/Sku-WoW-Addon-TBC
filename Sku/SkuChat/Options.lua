@@ -343,14 +343,15 @@ SkuChat.options = {
 					end,
 				},
 
-				-- [v43.2] Ansage des Zielkanals beim Oeffnen der Chatzeile und
-				-- bei jedem Kanalwechsel -- also immer dann, wenn sich aendert,
-				-- wohin ENTER senden wuerde.
+				-- [v43.2] Ansage des Zielkanals. Bewusst NICHT bei jedem Oeffnen:
+				-- der Standardkanal ist das, was ohne Zutun passiert, und ihn
+				-- jedes Mal vorzusagen waere reines Geraeusch. Angesagt wird,
+				-- was davon abweicht, und jeder spaetere Wechsel.
 				announceChatChannel = {
 					name = L["Kanal der Chateingabe ansagen"],
 					order = 11,
 					type = "toggle",
-					desc = "",
+					desc = L["SkuChatAnnounceChannelTip"],
 				},
 
 

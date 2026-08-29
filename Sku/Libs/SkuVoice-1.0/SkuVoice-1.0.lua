@@ -1021,11 +1021,12 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	while string.find(aString, "|n") do
 		aString = string.gsub(aString, "|n", ";")
 	end
+	aString = Unescape(aString)
+
 	while string.find(aString, "|") do
 		aString = string.gsub(aString, "|", " ")
 	end
 
-	aString = Unescape(aString)
 	aString = aString:gsub("\"", "")
 
 	local tStrings = {}
@@ -1307,11 +1308,12 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 			while string.find(aString, "|n") do
 				aString = string.gsub(aString, "|n", ";")
 			end
+			aString = Unescape(aString)
+
 			while string.find(aString, "|") do
 				aString = string.gsub(aString, "|", " ")
 			end
 
-			aString = Unescape(aString)
 			aString = aString:gsub("\"", "")
 
 			--collect links

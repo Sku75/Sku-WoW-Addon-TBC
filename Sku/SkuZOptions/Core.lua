@@ -6410,9 +6410,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 												local tNewMenuEntryItem = SkuOptions:InjectMenuItems(self, {L["Add Link to chat"]}, SkuGenericMenuItem)
 												tNewMenuEntryItem.OnAction = function(self, a, b)
 													if itemLink then
-														ChatFrame1EditBox:Show()
-														ChatFrame1EditBox:SetFocus()
-														ChatFrame1EditBox:SetText(itemLink)
+														SkuOptions:InsertLinkIntoChat(itemLink)
 													end
 													C_Timer.After(0.35, function() SkuOptions:CloseMenu() end)
 												end
@@ -6563,9 +6561,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									tNewSubMenuEntry.OnAction = function(self, a, amount)
 										local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(aGossipListTable[index].bag, aGossipListTable[index].slot)
 										if itemLink then
-											ChatFrame1EditBox:Show()
-											ChatFrame1EditBox:SetFocus()
-											ChatFrame1EditBox:SetText(itemLink)
+											SkuOptions:InsertLinkIntoChat(itemLink)
 										end
 										C_Timer.After(0.35, function() SkuOptions:CloseMenu() end)
 									end
@@ -7587,6 +7583,42 @@ local function tEchoStop(aFinalText, aCancelOnlyIfRecent)
 	end
 end
 
+-- [v43.2] Liegt der Cursor INNERHALB eines Hyperlinks? Dann liefert dies die
+-- Grenzen der ganzen Link-Spanne (samt Farbcode davor und |r danach) und den
+-- Anzeigetext.
+--
+-- Ein in die Chatzeile gelegter Gegenstand ist rund 65 Zeichen Steuerkram, von
+-- denen genau einer den Namen traegt. Zeichenweise darueber zu laufen liest
+-- Pipes, Farbcodes und Doppelpunkte vor und braucht 65 Tastendruecke fuer EINEN
+-- Gegenstand. Fuer den Nutzer ist der Link ein Ding, also wird er auch wie eines
+-- behandelt: ein Tastendruck springt ueber die ganze Spanne und sagt den Namen.
+local function tLinkSpanAt(aText, aPos)
+	local tInit = 1
+	while true do
+		local tStart, tStop, tName = string.find(aText, "|H.-|h(.-)|h", tInit)
+		if not tStart then
+			return nil
+		end
+		-- Farbcode davor und Farbende danach gehoeren zur Spanne, sonst landet
+		-- der Sprung mitten in den Steuerzeichen.
+		local tSpanStart = tStart
+		local tBefore = string.sub(aText, (tStart - 10 > 1) and (tStart - 10) or 1, tStart - 1)
+		local tPrefix = string.match(tBefore, "(|c%x%x%x%x%x%x%x%x)$")
+		if tPrefix then
+			tSpanStart = tStart - string.len(tPrefix)
+		end
+		local tSpanStop = tStop
+		if string.sub(aText, tStop + 1, tStop + 2) == "|r" then
+			tSpanStop = tStop + 2
+		end
+		-- Cursorpositionen sind nullbasiert, string.find liefert einsbasiert.
+		if aPos >= (tSpanStart - 1) and aPos <= tSpanStop then
+			return tSpanStart - 1, tSpanStop, tName
+		end
+		tInit = tStop + 1
+	end
+end
+
 local function tReadCursorCharacter(aEb)
 	local tText = aEb:GetText() or ""
 	local tPos = aEb:GetCursorPosition()
@@ -7653,6 +7685,46 @@ local function tEditBoxOnKeyDownRead(self, aKey)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.2] Einen Link in die Chatzeile legen -- der eine Weg fuer Gegenstaende
+-- (Taschen, angelegte Ausruestung) und Quests.
+--
+-- Frueher SetText: das warf alles weg, was schon in der Zeile stand, also auch
+-- einen Kanal-Praefix, den der Nutzer VOR dem Einfuegen getippt hatte. Blizzards
+-- eigener Umschalt-Klick fuegt an der Cursorposition EIN (ChatEdit_InsertLink),
+-- und genauso wird es hier gemacht.
+--
+-- Danach steht der Cursor VOR dem Link, wenn die Zeile vorher leer war. Das ist
+-- der ganze Trick am Verschicken in einen anderen Kanal, und er braucht kein
+-- Menue dafuer: Link anhaengen, "/p " tippen, Enter. Blizzards ParseText
+-- verschluckt den Praefix und stellt den Kanal um (die Kanalansage meldet den
+-- Wechsel), der Link bleibt stehen. Stand schon Text in der Zeile, wird der
+-- Cursor NICHT bewegt -- dort fuegt der Nutzer mitten in einen Satz ein und
+-- will hinter dem Eingefuegten weiterschreiben.
+---@param aLink string
+---@return boolean eingefuegt
+function SkuOptions:InsertLinkIntoChat(aLink)
+	if type(aLink) ~= "string" or aLink == "" then
+		return false
+	end
+	local tBox = _G.ChatFrame1EditBox
+	if not tBox then
+		return false
+	end
+	tBox:Show()
+	tBox:SetFocus()
+	if tBox.Insert then
+		tBox:Insert(aLink)
+	else
+		tBox:SetText(aLink)
+	end
+	if (tBox:GetText() or "") == aLink and tBox.SetCursorPosition then
+		pcall(function() tBox:SetCursorPosition(0) end)
+	end
+	dprint("chatLink", "eingefuegt", aLink)
+	return true
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- [v43.2] Dasselbe Tastatur-Echo an eine FREMDE EditBox haengen. Gedacht fuer
 -- Blizzards Chat-Eingabe, bis hierher das einzige Eingabefeld in Sku, in dem man
 -- blind tippt: SkuChat hatte darauf nur einen Oeffnen- und einen Schliessen-Ton,
@@ -7689,7 +7761,9 @@ local tEchoAttachedBoxes = {}
 ---@param aEditBox table die fremde EditBox
 ---@param aOptions table|nil arrowsMoveCursor: boolean ODER Funktion -- true erzwingt
 ---              SetAltArrowKeyMode(false); softStop: harten Sprachabbruch beim
----              Fokusverlust nur, wenn eben noch wirklich Echo lief (tEchoStop)
+---              Fokusverlust nur, wenn eben noch wirklich Echo lief (tEchoStop);
+---              wholeTextPrefix: Funktion, deren Rueckgabe der Ganztext-Lesung
+---              (Pfeil hoch/runter) vorangestellt wird
 ---@return boolean angehaengt
 function SkuOptions:AttachInputEcho(aEditBox, aOptions)
 	if type(aEditBox) ~= "table" or not aEditBox.HookScript then
@@ -7710,6 +7784,19 @@ function SkuOptions:AttachInputEcho(aEditBox, aOptions)
 			return tOk and tResult == true
 		end
 		return tValue == true
+	end
+
+	-- Optionaler Zusatz vor der Ganztext-Lesung (siehe OnKeyDown unten).
+	local function tWholeTextPrefix()
+		local tFn = tOptions.wholeTextPrefix
+		if type(tFn) ~= "function" then
+			return nil
+		end
+		local tOk, tValue = pcall(tFn)
+		if tOk and type(tValue) == "string" then
+			return tValue
+		end
+		return nil
 	end
 
 	local function tApplyArrowMode(aBox, aWhen)
@@ -7747,6 +7834,55 @@ function SkuOptions:AttachInputEcho(aEditBox, aOptions)
 				return
 			end
 		end
+
+		if aKey == "LEFT" or aKey == "RIGHT" then
+			C_Timer.After(0.01, function()
+				local tText = self:GetText() or ""
+				local tPos = self:GetCursorPosition() or 0
+				local tStart, tStop, tName = tLinkSpanAt(tText, tPos)
+				if tName and tName ~= "" then
+					-- An den Rand der Spanne setzen, damit der naechste Druck
+					-- WEITER geht und nicht wieder im selben Link landet.
+					local tTarget = (aKey == "LEFT") and tStart or tStop
+					pcall(function() self:SetCursorPosition(tTarget) end)
+					tSpeakInput(tName)
+					return
+				end
+				if IsControlKeyDown() then tReadCursorWord(self) else tReadCursorCharacter(self) end
+			end)
+			return
+		end
+
+		if aKey == "UP" or aKey == "DOWN" then
+			-- Eigene Ganztext-Lesung statt der aus tEditBoxOnKeyDownRead. Auf
+			-- einem fremden Feld steht hier zweierlei anders:
+			--  * Der Text kann HYPERLINKS enthalten (ein in den Chat gelegter
+			--    Gegenstand). Roh vorgelesen ist das eine Folge aus Farbcode,
+			--    item-Kennung und Klammern statt schlicht des Namens --
+			--    SkuUtil:Unescape macht daraus den reinen Anzeigetext.
+			--  * Nach Pfeil hoch steht eine zurueckgeholte Verlaufszeile im
+			--    Feld. Man hoert ihr NICHT an, wohin sie ginge -- Blizzards
+			--    Verlauf merkt sich nur den Text, nie den Kanal. Deshalb sagt
+			--    der Aufrufer per wholeTextPrefix den Zielkanal davor.
+			C_Timer.After(0.01, function()
+				local tText = self:GetText() or ""
+				if SkuUtil and SkuUtil.Unescape then
+					tText = SkuUtil:Unescape(tText) or tText
+				end
+				if tText == "" then
+					tText = Sku.deEn("Leer", "Empty", "Vide")
+				end
+				local tPrefix = tWholeTextPrefix()
+				if tPrefix and tPrefix ~= "" then
+					-- Semikolon, nicht Doppelpunkt: nur das Semikolon trennt in
+					-- Skus Sprachausgabe wirklich zwei Teile.
+					tText = tPrefix .. "; " .. tText
+				end
+				tSpeakInput(tText)
+			end)
+			return
+		end
+
 		tEditBoxOnKeyDownRead(self, aKey)
 	end)
 

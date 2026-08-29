@@ -1625,15 +1625,10 @@ local function SkuPostQuestToChat(aQuestID)
 	-- gerendert. Falls der Server den |Hquest:|h-Link beim Senden
 	-- filtert, bleibt die Klartext-ID lesbar.
 	local tFullText = link .. " (Quest " .. tostring(aQuestID) .. ")"
-	if _G.ChatFrame1EditBox then
-		ChatFrame1EditBox:Show()
-		ChatFrame1EditBox:SetFocus()
-		ChatFrame1EditBox:SetText(tFullText)
-		-- Cursor an den Anfang setzen, damit der User direkt einen
-		-- Channel-Prefix (z. B. "/p ", "/g ", "/2 ") tippen kann.
-		if ChatFrame1EditBox.SetCursorPosition then
-			pcall(function() ChatFrame1EditBox:SetCursorPosition(0) end)
-		end
+	-- Gemeinsamer Weg mit den Gegenstands-Links: einfuegen statt ersetzen, und
+	-- den Cursor davor parken, damit direkt ein Kanal-Praefix getippt werden kann.
+	if SkuOptions.InsertLinkIntoChat then
+		SkuOptions:InsertLinkIntoChat(tFullText)
 	end
 	if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
 		local tMsg = (L["Quest"] or "Quest") .. " " .. title

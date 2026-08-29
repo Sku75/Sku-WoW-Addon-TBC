@@ -3492,6 +3492,14 @@ function SkuChat:PLAYER_LOGIN(...)
 				return tSettings.chatSettings.chatArrowsMoveCursor ~= false
 			end,
 			softStop = true,
+			-- Pfeil hoch holt eine gesendete Zeile zurueck. Blizzards Verlauf
+			-- merkt sich nur den TEXT -- wohin die Zeile ginge, sieht man ihr
+			-- nicht an, und der Kanal ist derselbe wie vor dem Tastendruck, es
+			-- gibt also auch keine Aenderung, die die normale Kanalansage
+			-- ausloesen wuerde. Deshalb steht er hier vor der Zeile.
+			wholeTextPrefix = function()
+				return SkuChat:GetEditboxChannelLabel()
+			end,
 		})
 	end
 
@@ -3581,6 +3589,65 @@ function SkuChat:ResetEditboxChannelMemo()
 	tLastAnnouncedChatHeader = nil
 end
 
+-- Die Kanalansage laeuft VERZOEGERT und in EINEM Slot -- genau wie das
+-- Tastatur-Echo, und aus demselben Grund.
+--
+-- Jeder Kanalwechsel wird durch einen Tastendruck ausgeloest, und dessen
+-- Zeichen-Echo geht mit overwrite in dieselbe Warteschlange. Sofort gesprochen
+-- verliert die Ansage deshalb IMMER gegen das ausloesende Zeichen: Skus Pumpe
+-- taktet nur alle 0.1 s, das Echo raeumt die Queue vorher leer. Im Log zweimal
+-- exakt so belegt --
+--     ansage Gilde -> queuereset -> SpeakText [ leerzeichen ]
+--     ansage Sagen -> queuereset -> SpeakText [ / ]
+-- -- das Leerzeichen aus "/g " bzw. der Schraegstrich beim Oeffnen kamen als
+-- letzte und haben die Ansage aus der Queue geworfen, bevor sie je gesprochen
+-- war. Kommt die Ansage dagegen NACH dem Zeichen, ueberschreibt sie es. Ein
+-- Zeichen-Echo dafuer zu verlieren ist der richtige Tausch: dass sich der
+-- Zielkanal geaendert hat, ist die wichtigere Information.
+--
+-- Ein Slot mit Generationszaehler: mehrere Ansagen kurz hintereinander (Blizzard
+-- ruft UpdateHeader beim Oeffnen dreimal) sprechen nur EINMAL, mit dem zuletzt
+-- gueltigen Kanal.
+local tChannelPendingLabel = nil
+local tChannelPendingGeneration = 0
+local tChannelSpeakDelay = 0.3
+
+local function tSpeakChannelSoon(aLabel)
+	tChannelPendingLabel = aLabel
+	tChannelPendingGeneration = tChannelPendingGeneration + 1
+	local tGeneration = tChannelPendingGeneration
+	C_Timer.After(tChannelSpeakDelay, function()
+		if tGeneration ~= tChannelPendingGeneration then return end
+		-- Zwischenzeitlich geschlossen (z. B. abgeschickt): dann waere die
+		-- Ansage nur noch eine Ansage ins Leere.
+		if not ChatFrame1EditBox or not ChatFrame1EditBox:IsShown() then
+			dprintv("chatChannel", "spricht nicht, Editbox zu", tostring(tChannelPendingLabel))
+			return
+		end
+		dprint("chatChannel", "spricht", tostring(tChannelPendingLabel))
+		pcall(function()
+			SkuOptions.Voice:OutputStringBTtts(tChannelPendingLabel, {overwrite = true, wait = false, length = 0.05, engine = 2, ignoreLinks = true})
+		end)
+	end)
+end
+
+-- Beim Oeffnen schweigt die Ansage NUR bei "Sagen".
+--
+-- Zwei Anlaeufe davor waren beide falsch herum gedacht:
+--  * chatType == stickyType: bei einem nummerierten Kanal sind BEIDE schlicht
+--    "CHANNEL", damit galt [4. SkuChat] als Standard -- und [2. Handel] haette
+--    genauso gegolten, obwohl es ein ganz anderer Kanal ist.
+--  * "wie beim letzten Oeffnen": technisch korrekt, praktisch das Gegenteil des
+--    Gewuenschten. Blizzard oeffnet die Zeile auf dem zuletzt benutzten Kanal
+--    (stickyType), also stand sie dauerhaft auf [4. SkuChat] -- und genau DAS
+--    wurde dann nie wieder gesagt. Wer nichts hoert, tippt in einen Kanal, den
+--    er nicht gewaehlt hat.
+--
+-- "Sagen" ist der harmlose Fall: es geht an die Umstehenden und ist das, was
+-- ohne Zutun passiert. Jeder ANDERE Kanal -- Gilde, Gruppe, Fluestern, ein
+-- nummerierter Kanal -- ist einer, in dem ein versehentliches Absenden zaehlt.
+-- Der wird deshalb bei JEDEM Oeffnen gesagt, nicht nur beim ersten.
+
 ---@param aForce boolean|nil auch ansagen, wenn sich der Kanal nicht geaendert hat
 ---@param aWhy string|nil Ausloeser, nur fuers Log
 function SkuChat:AnnounceEditboxChannel(aForce, aWhy)
@@ -3608,6 +3675,20 @@ function SkuChat:AnnounceEditboxChannel(aForce, aWhy)
 			tostring(ChatFrame1EditBox:GetAttribute("chatType")))
 		return
 	end
+
+	-- Leerer Merker = erste Ansage nach dem Fokuswechsel = das Oeffnen. Regel
+	-- dafuer siehe oben bei tLastAnnouncedChatHeader: nur "Sagen" schweigt.
+	-- Jeder spaetere WECHSEL laeuft ohnehin weiter unten durch, weil der Merker
+	-- dann nicht mehr leer ist.
+	if aForce ~= true and tLastAnnouncedChatHeader == nil then
+		if ChatFrame1EditBox:GetAttribute("chatType") == "SAY" then
+			tLastAnnouncedChatHeader = tLabel
+			dprint("chatChannel", aWhy, "Sagen beim Oeffnen, nicht angesagt", tLabel)
+			return
+		end
+		dprint("chatChannel", aWhy, "Oeffnen auf", tLabel)
+	end
+
 	-- Nur bei Aenderung ansagen: UpdateHeader laeuft auch bei jedem Tastendruck
 	-- durch, der ein Schraegstrich-Befehl sein koennte.
 	if aForce ~= true and tLabel == tLastAnnouncedChatHeader then
@@ -3616,9 +3697,7 @@ function SkuChat:AnnounceEditboxChannel(aForce, aWhy)
 	end
 	dprint("chatChannel", aWhy, "ansage", tLabel, "vorher", tostring(tLastAnnouncedChatHeader))
 	tLastAnnouncedChatHeader = tLabel
-	pcall(function()
-		SkuOptions.Voice:OutputStringBTtts(tLabel, {overwrite = true, wait = false, length = 0.05, engine = 2, ignoreLinks = true})
-	end)
+	tSpeakChannelSoon(tLabel)
 end
 
 function SkuChat:ChatFrame1EditBoxOnShow()
@@ -3626,11 +3705,9 @@ function SkuChat:ChatFrame1EditBoxOnShow()
 	if ChatFrame1EditBoxIsShown == false  then
 		ChatFrame1EditBoxIsShown = true
 		PlaySoundFile("Interface\\AddOns\\Sku\\SkuChat\\assets\\audio\\chateditbox_open.mp3", "Talking Head")
-		-- [v43.2] Beim Oeffnen IMMER sagen, wohin ENTER senden wuerde. Der
-		-- Header steht je nach Weg (Tastendruck, Mausklick, SetEditboxToCustom)
-		-- erst kurz NACH dem Show, deshalb einen Tick spaeter.
-		tLastAnnouncedChatHeader = nil
-		C_Timer.After(0.05, function() SkuChat:AnnounceEditboxChannel(nil, "show") end)
+		-- [v43.2] Merker UND Ansage haengen am FOKUS (unten in PLAYER_LOGIN). Die
+		-- Show-Kante ist die unzuverlaessigere: sie feuert laut Log teils VOR
+		-- dem Fokus und teils gar nicht (siehe "OHNE Kante" unten).
 		dprint("chatChannel", "editbox show")
 	else
 		-- Kante verschluckt: das Flag stand schon auf true. Genau hier faellt
