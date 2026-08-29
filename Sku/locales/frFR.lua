@@ -3363,6 +3363,8 @@ L["Quests in der Nähe"] = "Quêtes à proximité"
 L["Questabgabe"] = "Rendre la quête"
 L["Ort unbekannt"] = "Lieu inconnu"
 L["show nearby quests entry"] = "afficher l'entrée Quêtes à proximité"
+L["Pfeiltasten bewegen den Textcursor in der Chateingabe"] = "arrow keys move the text cursor in the chat input"
+L["Kanal der Chateingabe ansagen"] = "announce the chat input channel"
 
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the

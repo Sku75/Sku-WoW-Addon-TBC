@@ -7548,7 +7548,7 @@ end
 -- Wird auf JEDEM Schliessweg gerufen (ENTER, OK, ESCAPE, fremdes :Hide()) und ist
 -- danach ein No-op, damit ein spaeterer Weg die Ansage des ersten nicht abschiesst.
 ---@param aFinalText string|nil Ansage, die den Abbruch ueberleben soll ("Abgebrochen")
-local function tEchoStop(aFinalText)
+local function tEchoStop(aFinalText, aCancelOnlyIfRecent)
 	if not tEchoActive then
 		return
 	end
@@ -7560,7 +7560,17 @@ local function tEchoStop(aFinalText)
 	-- Client-Queue zu toeten. Ist das Tastatur-Echo abgeschaltet, GIBT es keinen
 	-- Rueckstau -- der Cancel wuerde dann nur gerade laufende, fremde Ansagen
 	-- (Chat, Kampf) grundlos abschneiden. Also nur bei aktivem Echo abbrechen.
-	if not (SkuSettings and SkuSettings:Sub("SkuOptions") and SkuSettings:Sub("SkuOptions").keyboardEcho == false) then
+	-- [v43.2] aCancelOnlyIfRecent -- fuer FREMDE Eingabefelder, die den Fokus
+	-- staendig verlieren: Blizzards Chat-Editbox verliert ihn bei JEDEM Absenden.
+	-- Dort darf der harte Abbruch nicht auf jedem Schliessweg feuern, sonst
+	-- schneidet er die Ansage der gerade gesendeten Nachricht ab, die unmittelbar
+	-- danach vom Server zurueckkommt. Einen Rueckstau GIBT es ohnehin nur, wenn
+	-- eben noch wirklich Echo lief -- daran wird der Abbruch hier gebunden.
+	local tDoCancel = not (SkuSettings and SkuSettings:Sub("SkuOptions") and SkuSettings:Sub("SkuOptions").keyboardEcho == false)
+	if tDoCancel and aCancelOnlyIfRecent == true and (GetTime() - tEchoLastAt) > 1.0 then
+		tDoCancel = false
+	end
+	if tDoCancel then
 		if SkuOptions.Voice.CancelBttsOutput then
 			pcall(function() SkuOptions.Voice:CancelBttsOutput() end)
 		elseif SkuOptions.Voice.TrimBttsQueue then
@@ -7642,6 +7652,122 @@ local function tEditBoxOnKeyDownRead(self, aKey)
 	end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.2] Dasselbe Tastatur-Echo an eine FREMDE EditBox haengen. Gedacht fuer
+-- Blizzards Chat-Eingabe, bis hierher das einzige Eingabefeld in Sku, in dem man
+-- blind tippt: SkuChat hatte darauf nur einen Oeffnen- und einen Schliessen-Ton,
+-- kein Zeichen-Echo und kein Cursor-Lesen.
+--
+-- Warum eine eigene Funktion und nicht ein zweiter Aufruf von EditBoxShow -- drei
+-- Unterschiede zur Sku-eigenen EditBox:
+--
+--  * HookScript statt SetScript. Auf einem fremden Feld haengen Blizzards eigene
+--    Handler (Verlauf, Tabulator-Vervollstaendigung, Kanalwechsel). Das SetScript
+--    aus EditBoxShow ist dort genau richtig -- es raeumt einen fremden Handler mit
+--    veralteten Closures weg -- und hier genau falsch: es wuerde diese Handler
+--    ersatzlos loeschen.
+--  * Der Chat-Editbox-Vorlage steht ignoreArrows im XML
+--    (Blizzard_ChatFrameBase/Classic/ChatFrameEditBox.xml, entspricht
+--    SetAltArrowKeyMode(true)): schlichte Pfeile gehen dort an das SPIEL (Figur
+--    drehen), der Textcursor braucht ALT+Pfeil. Genau das macht das Feld
+--    inkonsistent zu allen anderen Sku-Feldern. aOptions.arrowsMoveCursor kippt
+--    es zurueck; ohne diese Option bleiben die Pfeile beim Spiel und werden dann
+--    auch NICHT vorgelesen (sie bewegen ja keinen Textcursor).
+--  * Scharf/unscharf haengt am FOKUS, nicht am Oeffnen eines Dialogs: ein fremdes
+--    Feld hat kein EditBoxShow/OnHide-Paar, an dem das Echo haengen koennte.
+--    Blizzard zeigt die Chat-Editbox ausserdem auch ohne Tastaturfokus.
+--
+-- Der OnKeyDown-Leser ist derselbe wie fuer die Sku-EditBox. Auf der Chat-Editbox
+-- bekommt "Pfeil hoch/runter liest den ganzen Text" damit eine zweite Bedeutung
+-- geschenkt: dort liegt Blizzards Verlauf der zuletzt GESENDETEN Nachrichten
+-- (historyLines="32" in derselben Vorlage). Nach dem Tastendruck steht die
+-- zurueckgeholte Zeile im Feld -- vorgelesen wird also genau das Richtige. Den
+-- Verlauf selbst kann man nicht auslesen (GetHistoryLines liefert nur die
+-- ANZAHL), das Feld danach aber schon; deshalb dieser Umweg und keine eigene
+-- Verlaufsliste.
+local tEchoAttachedBoxes = {}
+---@param aEditBox table die fremde EditBox
+---@param aOptions table|nil arrowsMoveCursor: boolean ODER Funktion -- true erzwingt
+---              SetAltArrowKeyMode(false); softStop: harten Sprachabbruch beim
+---              Fokusverlust nur, wenn eben noch wirklich Echo lief (tEchoStop)
+---@return boolean angehaengt
+function SkuOptions:AttachInputEcho(aEditBox, aOptions)
+	if type(aEditBox) ~= "table" or not aEditBox.HookScript then
+		return false
+	end
+	if tEchoAttachedBoxes[aEditBox] then
+		return true
+	end
+	tEchoAttachedBoxes[aEditBox] = true
+	local tOptions = aOptions or {}
+
+	-- Die Option darf eine Funktion sein, damit ein Umschalten in den
+	-- Einstellungen sofort greift statt erst beim naechsten Login.
+	local function tWantArrowCursor()
+		local tValue = tOptions.arrowsMoveCursor
+		if type(tValue) == "function" then
+			local tOk, tResult = pcall(tValue)
+			return tOk and tResult == true
+		end
+		return tValue == true
+	end
+
+	local function tApplyArrowMode(aBox, aWhen)
+		if not aBox.SetAltArrowKeyMode then
+			dprint("inputEcho", aWhen, "SetAltArrowKeyMode NICHT vorhanden")
+			return
+		end
+		local tWant = tWantArrowCursor()
+		local tOk = pcall(function() aBox:SetAltArrowKeyMode(not tWant) end)
+		-- Zurueckgelesen: AutoComplete stellt den Modus beim Ausblenden seiner
+		-- Vorschlagsliste auf den Wert zurueck, den es sich beim Einblenden
+		-- gemerkt hat -- ein Setzen kann also wieder verlorengehen.
+		local tNow
+		if aBox.GetAltArrowKeyMode then
+			local tOk2, tVal = pcall(function() return aBox:GetAltArrowKeyMode() end)
+			if tOk2 then tNow = tVal end
+		end
+		dprint("inputEcho", aWhen, "wantCursor", tostring(tWant), "set ok", tostring(tOk), "altArrowMode jetzt", tostring(tNow))
+	end
+	tApplyArrowMode(aEditBox, "attach")
+
+	aEditBox:HookScript("OnChar", function(self, aChar)
+		tSpeakInput(aChar == " " and Sku.deEn("Leerzeichen", "Space", "Espace") or aChar, true)
+	end)
+
+	aEditBox:HookScript("OnKeyDown", function(self, aKey)
+		if aKey == "LEFT" or aKey == "RIGHT" or aKey == "UP" or aKey == "DOWN" then
+			dprint("inputEcho", "keyDown", aKey, "wantCursor", tostring(tWantArrowCursor()),
+				"altArrowMode", tostring(self.GetAltArrowKeyMode and self:GetAltArrowKeyMode()),
+				"cursor", tostring(self.GetCursorPosition and self:GetCursorPosition()))
+			-- Liegen die Pfeile beim Spiel, bewegen sie hier keinen Textcursor.
+			-- Sie als Cursorbewegung vorzulesen waere schlicht gelogen, und beim
+			-- Laufen mit offener Chatzeile eine Dauerbeschallung.
+			if tWantArrowCursor() ~= true then
+				return
+			end
+		end
+		tEditBoxOnKeyDownRead(self, aKey)
+	end)
+
+	aEditBox:HookScript("OnEditFocusGained", function(self)
+		dprint("inputEcho", "focus gained", tostring(self.GetName and self:GetName()))
+		tApplyArrowMode(self, "focusGained")
+		tEchoGeneration = tEchoGeneration + 1
+		tEchoScheduled = false
+		wipe(tEchoPending)
+		tEchoActive = true
+	end)
+
+	aEditBox:HookScript("OnEditFocusLost", function(self)
+		dprint("inputEcho", "focus lost", tostring(self.GetName and self:GetName()))
+		tEchoStop(nil, tOptions.softStop == true)
+	end)
+
+	return true
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aText string
 ---@param aOkScript function
 function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)

@@ -321,6 +321,39 @@ SkuChat.options = {
 					end,
 				},
 
+				-- [v43.2] Pfeiltasten in der Chat-Eingabe. Blizzards Vorlage
+				-- setzt dort ignoreArrows: schlichte Pfeile gehen an das SPIEL
+				-- (Figur drehen), der Textcursor braucht ALT+Pfeil. Damit ist
+				-- die Chatzeile das einzige Eingabefeld in Sku, das sich anders
+				-- bedienen laesst als alle anderen. AN = wie ueberall sonst
+				-- (Pfeil = Cursor, wird vorgelesen); AUS = Blizzard-Verhalten.
+				chatArrowsMoveCursor = {
+					name = L["Pfeiltasten bewegen den Textcursor in der Chateingabe"],
+					order = 10,
+					type = "toggle",
+					desc = "",
+					OnAction = function(self, info, val)
+						C_Timer.After(0.1, function()
+							if _G.ChatFrame1EditBox and ChatFrame1EditBox.SetAltArrowKeyMode then
+								pcall(function()
+									ChatFrame1EditBox:SetAltArrowKeyMode(SkuSettings:Sub("SkuChat").chatSettings.chatArrowsMoveCursor == false)
+								end)
+							end
+						end)
+					end,
+				},
+
+				-- [v43.2] Ansage des Zielkanals beim Oeffnen der Chatzeile und
+				-- bei jedem Kanalwechsel -- also immer dann, wenn sich aendert,
+				-- wohin ENTER senden wuerde.
+				announceChatChannel = {
+					name = L["Kanal der Chateingabe ansagen"],
+					order = 11,
+					type = "toggle",
+					desc = "",
+				},
+
+
 			},
 		},
 		WowTtsVoice = {
@@ -391,6 +424,8 @@ SkuChat.defaults = {
 		deleteHistoryOnLogin = false,
 		audioOnNewMessage = false,
 		audioOnMessageEnd = false,
+		chatArrowsMoveCursor = true,
+		announceChatChannel = true,
 	},
 	WowTtsVoice = 1,
 	WowTtsSpeed = 3,
@@ -419,6 +454,8 @@ SkuSettings:Register("SkuChat", {
 	["chatSettings.deleteWhisperTabsAfter"] = { scope = "profile", default = 3,   type = "number"  },
 	["chatSettings.audioOnNewMessage"]    = { scope = "profile", default = false, type = "boolean" },
 	["chatSettings.audioOnMessageEnd"]    = { scope = "profile", default = false, type = "boolean" },
+	["chatSettings.chatArrowsMoveCursor"] = { scope = "profile", default = true,  type = "boolean" },
+	["chatSettings.announceChatChannel"]  = { scope = "profile", default = true,  type = "boolean" },
 	["WowTtsVoice"]                       = { scope = "profile", default = 1,      type = "number"  },
 	["WowTtsSpeed"]                       = { scope = "profile", default = 3,      type = "number"  },
 	["WowTtsVolume"]                      = { scope = "profile", default = 50,     type = "number"  },

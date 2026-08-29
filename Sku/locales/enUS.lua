@@ -3405,3 +3405,7 @@ L["Quests in der Nähe"] = "Nearby quests"
 L["Questabgabe"] = "Turn in"
 L["Ort unbekannt"] = "Location unknown"
 L["show nearby quests entry"] = "show nearby quests entry"
+
+-- Sku v43.2: keyboard echo and channel announce in the chat input (SkuChat/Options.lua)
+L["Pfeiltasten bewegen den Textcursor in der Chateingabe"] = "arrow keys move the text cursor in the chat input"
+L["Kanal der Chateingabe ansagen"] = "announce the chat input channel"

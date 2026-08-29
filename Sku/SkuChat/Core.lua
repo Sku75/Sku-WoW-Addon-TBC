@@ -3477,17 +3477,165 @@ function SkuChat:PLAYER_LOGIN(...)
 	hooksecurefunc(ChatFrame1EditBox, "Show", SkuChat.ChatFrame1EditBoxOnShow)
 	hooksecurefunc(ChatFrame1EditBox, "Hide", SkuChat.ChatFrame1EditBoxOnHide)
 
+	-- [v43.2] Tastatur-Echo fuer Blizzards Chat-Eingabe. Bis hierher war sie das
+	-- einzige Eingabefeld ohne Zeichen-Echo -- Sku hatte darauf nur den
+	-- Oeffnen-/Schliessen-Ton. Beim SkuBeacon muss nichts registriert werden:
+	-- "ChatFrame1EditBox" steht dort fest in der eingebauten Liste der
+	-- Texteingaben. Ob ueberhaupt gesprochen wird, entscheidet weiterhin die
+	-- allgemeine Einstellung "Tastatur-Echo ansagen"; die Einstellung hier
+	-- entscheidet nur ueber die Pfeiltasten.
+	if SkuOptions.AttachInputEcho then
+		SkuOptions:AttachInputEcho(ChatFrame1EditBox, {
+			arrowsMoveCursor = function()
+				local tSettings = SkuSettings and SkuSettings:Sub("SkuChat")
+				if not tSettings or not tSettings.chatSettings then return true end
+				return tSettings.chatSettings.chatArrowsMoveCursor ~= false
+			end,
+			softStop = true,
+		})
+	end
+
+	-- Kanalwechsel ansagen. Es braucht ZWEI Haken:
+	--  * Blizzards eigene Aufrufe laufen als Methode (self:UpdateHeader()) und
+	--    landen deshalb nur auf dem Feld AM FRAME,
+	--  * der globale ChatEdit_UpdateHeader ist in Blizzard_DeprecatedChatInfo
+	--    dagegen nur ein ALIAS auf die Mixin-Funktion selbst
+	--    (ChatEdit_UpdateHeader = ChatFrameEditBoxMixin.UpdateHeader). Er zeigt
+	--    also am Frame-Feld VORBEI -- und genau diesen globalen Namen ruft Skus
+	--    eigenes SetEditboxToCustom.
+	-- Die Ansage entdoppelt sich selbst (sie feuert nur bei geaendertem Header),
+	-- deshalb sind beide Haken zusammen unproblematisch.
+	if ChatFrame1EditBox.UpdateHeader then
+		hooksecurefunc(ChatFrame1EditBox, "UpdateHeader", function()
+			SkuChat:AnnounceEditboxChannel(nil, "updateHeader:method")
+		end)
+	end
+	if _G.ChatEdit_UpdateHeader then
+		hooksecurefunc("ChatEdit_UpdateHeader", function()
+			SkuChat:AnnounceEditboxChannel(nil, "updateHeader:global")
+		end)
+	end
+
+	-- [v43.2] Der Merker fuer die Entdopplung haengt am FOKUS, nicht nur an der
+	-- Show-Kante. Die Show-Kante liegt hinter dem Merkflag der Oeffnen-/
+	-- Schliessen-Toene (ChatFrame1EditBoxIsShown); bleibt das Flag einmal
+	-- stehen -- etwa weil die Box ohne :Hide() verschwindet --, dann meldet die
+	-- Ansage danach fuer immer "unveraendert" und schweigt. Der Fokuswechsel
+	-- ist die Kante, die nachweislich jedes Mal feuert: das Tastatur-Echo
+	-- haengt daran und funktioniert.
+	ChatFrame1EditBox:HookScript("OnEditFocusGained", function()
+		SkuChat:ResetEditboxChannelMemo()
+		C_Timer.After(0.05, function() SkuChat:AnnounceEditboxChannel(nil, "focusGained") end)
+	end)
+	ChatFrame1EditBox:HookScript("OnEditFocusLost", function()
+		SkuChat:ResetEditboxChannelMemo()
+	end)
+
 	C_TTSSettings.SetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks, SkuSettings:Sub("SkuChat").chatSettings.audioOnMessageEnd)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 --hooks to play the chateditbox sounds
 local ChatFrame1EditBoxIsShown = false
+
+-- [v43.2] Kanalansage der Chat-Eingabe.
+--
+-- Blizzard schreibt den Zielkanal als FontString links in die Editbox
+-- (ChatFrame1EditBoxHeader, gesetzt in ChatFrameEditBoxMixin:UpdateHeader). Der
+-- Text ist bereits vollstaendig lokalisiert und deckt jeden Fall ab, den diese
+-- Funktion kennt -- "Sagen:", "Gruppe:", "An Kai:", "2. Handel:", Emote,
+-- BN-Fluestern, Instanz-Chat. Ihn auszulesen ist deshalb richtiger, als
+-- chatType/channelTarget hier noch einmal selbst in einen Namen
+-- zurueckzuuebersetzen: eine solche zweite Tabelle wuerde bei jedem dieser
+-- Sonderfaelle auseinanderlaufen, und UpdateHeader schaltet einige davon sogar
+-- im Lauf um (PARTY wird zu INSTANCE_CHAT, SMART_WHISPER zu BN_WHISPER).
+local tLastAnnouncedChatHeader = nil
+
+function SkuChat:GetEditboxChannelLabel()
+	local tHeader = _G["ChatFrame1EditBoxHeader"]
+	if not tHeader or not tHeader.GetText then
+		return nil
+	end
+	local tText = tHeader:GetText()
+	if type(tText) ~= "string" or tText == "" then
+		return nil
+	end
+	-- Farbcodes raus und den Doppelpunkt am Ende weg: der Doppelpunkt trennt in
+	-- Skus TTS-Ausgabe NICHTS (das tut nur das Semikolon), er wuerde die Ansage
+	-- also nur mit dem naechsten Teil verkleben.
+	tText = string.gsub(tText, "|c%x%x%x%x%x%x%x%x", "")
+	tText = string.gsub(tText, "|r", "")
+	tText = string.gsub(tText, "%s*:%s*$", "")
+	tText = strtrim(tText)
+	if tText == "" then
+		return nil
+	end
+	return tText
+end
+
+-- Merker fuer die Entdopplung zuruecksetzen. Als Methode, weil PLAYER_LOGIN
+-- WEITER OBEN in der Datei steht: eine Closure dort kann diesen local gar nicht
+-- sehen (er existiert dort lexikalisch noch nicht) und wuerde stillschweigend
+-- eine GLOBALE gleichen Namens schreiben.
+function SkuChat:ResetEditboxChannelMemo()
+	tLastAnnouncedChatHeader = nil
+end
+
+---@param aForce boolean|nil auch ansagen, wenn sich der Kanal nicht geaendert hat
+---@param aWhy string|nil Ausloeser, nur fuers Log
+function SkuChat:AnnounceEditboxChannel(aForce, aWhy)
+	aWhy = aWhy or "?"
+	if SkuChat.IsEnabled and not SkuChat:IsEnabled() then
+		dprint("chatChannel", aWhy, "SkuChat aus")
+		return
+	end
+	local tSettings = SkuSettings and SkuSettings:Sub("SkuChat")
+	if not tSettings or not tSettings.chatSettings then
+		dprint("chatChannel", aWhy, "keine Einstellungen")
+		return
+	end
+	if tSettings.chatSettings.announceChatChannel == false then
+		dprint("chatChannel", aWhy, "abgeschaltet")
+		return
+	end
+	if not ChatFrame1EditBox or not ChatFrame1EditBox:IsShown() then
+		dprintv("chatChannel", aWhy, "Editbox nicht sichtbar")
+		return
+	end
+	local tLabel = SkuChat:GetEditboxChannelLabel()
+	if not tLabel then
+		dprint("chatChannel", aWhy, "kein Kopfzeilentext", "chatType",
+			tostring(ChatFrame1EditBox:GetAttribute("chatType")))
+		return
+	end
+	-- Nur bei Aenderung ansagen: UpdateHeader laeuft auch bei jedem Tastendruck
+	-- durch, der ein Schraegstrich-Befehl sein koennte.
+	if aForce ~= true and tLabel == tLastAnnouncedChatHeader then
+		dprintv("chatChannel", aWhy, "unveraendert", tLabel)
+		return
+	end
+	dprint("chatChannel", aWhy, "ansage", tLabel, "vorher", tostring(tLastAnnouncedChatHeader))
+	tLastAnnouncedChatHeader = tLabel
+	pcall(function()
+		SkuOptions.Voice:OutputStringBTtts(tLabel, {overwrite = true, wait = false, length = 0.05, engine = 2, ignoreLinks = true})
+	end)
+end
+
 function SkuChat:ChatFrame1EditBoxOnShow()
 	if SkuChat.IsEnabled and not SkuChat:IsEnabled() then return end
 	if ChatFrame1EditBoxIsShown == false  then
 		ChatFrame1EditBoxIsShown = true
 		PlaySoundFile("Interface\\AddOns\\Sku\\SkuChat\\assets\\audio\\chateditbox_open.mp3", "Talking Head")
+		-- [v43.2] Beim Oeffnen IMMER sagen, wohin ENTER senden wuerde. Der
+		-- Header steht je nach Weg (Tastendruck, Mausklick, SetEditboxToCustom)
+		-- erst kurz NACH dem Show, deshalb einen Tick spaeter.
+		tLastAnnouncedChatHeader = nil
+		C_Timer.After(0.05, function() SkuChat:AnnounceEditboxChannel(nil, "show") end)
+		dprint("chatChannel", "editbox show")
+	else
+		-- Kante verschluckt: das Flag stand schon auf true. Genau hier faellt
+		-- sonst auch die Ansage aus, ohne dass sichtbar etwas schiefgeht.
+		dprint("chatChannel", "editbox show OHNE Kante (Flag stand schon)")
 	end
 end
 
@@ -3497,6 +3645,10 @@ function SkuChat:ChatFrame1EditBoxOnHide()
 	if ChatFrame1EditBoxIsShown == true  then
 		ChatFrame1EditBoxIsShown = false
 		PlaySoundFile("Interface\\AddOns\\Sku\\SkuChat\\assets\\audio\\chateditbox_close.mp3", "Talking Head")
+		tLastAnnouncedChatHeader = nil
+		dprint("chatChannel", "editbox hide")
+	else
+		dprint("chatChannel", "editbox hide OHNE Kante (Flag stand schon)")
 	end
 end
 
