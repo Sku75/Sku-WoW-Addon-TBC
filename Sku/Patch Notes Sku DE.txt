@@ -14,6 +14,7 @@ Aenderungen in Sku v43.2
             Neuer Tastenbefehl "Naechstes Questziel ins Ziel nehmen" (Alt+H): nimmt eine Kreatur ins Ziel, die zu einem offenen Questziel gehoert - auch eine, die einen benoetigten Gegenstand nur fallen laesst.
             Der Tastenbefehl "Naechster Gegner im Kampf" (jetzt ab Werk auf Strg+H) findet deutlich oefter etwas: er ist nicht mehr auf den Blickkegel angewiesen.
             Neue Liste "Quests in der Naehe" im Questmenue: das ganze Questlog in einer Liste, sortiert danach, wie weit das Naechste weg ist - mit Entfernung und Himmelsrichtung. Ab Werk aus.
+            Taschenmenue: neuer Eintrag "alle bank" direkt hinter "alle taschen", solange die Bank offen ist - alles in der Bank in einer flachen Liste, genau wie "alle taschen" fuer die Taschen. Strg+Eingabe holt einen Gegenstand von dort in die Taschen, wie bisher schon in den einzelnen Bankfaechern.
 
         Aenderungen
             Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
@@ -37,6 +38,7 @@ Aenderungen in Sku v43.2
             Menue: Enter auf einem Ein/Aus-Eintrag in einer gefilterten Liste sagte den ersten Eintrag der Liste an statt des umgeschalteten Zustands.
             Dungeonbrowser: das Annehmen einer Gruppeneinladung fuehrt nicht mehr von selbst in den Dungeonbrowser.
             Questdatenbank: die Liste "Start in Zone, Nach Entfernung" brach nach der ersten Quest ab.
+            Taschenmenue: mit einem Taschen-Ersatz-Addon wie Bagnon, das Blizzards Bankfenster versteckt, verschwanden saemtliche Bankfaecher aus dem Menue.
 
     Der Cursor bleibt in der Tasche auf dem Gegenstand
         Einfach: Wer in der Taschenliste einen Gegenstand rechts anklickte - benutzen, anlegen, an
@@ -497,6 +499,36 @@ Aenderungen in Sku v43.2
             Fehler im Kindaufbau eines Menues wird verschluckt - der Aufbau endete damit
             stillschweigend nach dem ersten Eintrag. Der Zaehler wurde von nichts gelesen und
             ist ersatzlos entfernt.
+
+    Alles in der Bank in einer Liste, und die Bank wird auch unter Bagnon erkannt
+        Einfach: Im Taschenmenue gab es "alle taschen" - eine flache Liste ueber alle Taschen
+            hinweg, nach Namen sortiert. Fuer die Bank gab es das nicht: an der offenen Bank
+            standen zwar "Bank" und "Bank Tasche 1" bis "Bank Tasche 7" im Menue, aber wer
+            etwas suchte, musste jedes Fach einzeln durchgehen. Jetzt steht direkt hinter
+            "alle taschen" der Eintrag "alle bank", solange die Bank offen ist: alles, was in
+            der Bank liegt, in einer Liste, mit demselben Tippfilter. Strg+Eingabe holt einen
+            Gegenstand von dort in die Taschen - genau wie bisher schon in den einzelnen
+            Bankfaechern. Ausserdem erkennt Sku jetzt an den Meldungen des Spiels selbst, ob
+            die Bank offen ist, und nicht mehr am Fenster von Blizzard. Wer ein
+            Taschen-Ersatz-Addon wie Bagnon benutzt, das dieses Fenster versteckt, hatte
+            bisher gar keine Bank im Menue - Sku hielt sie fuer geschlossen und liess saemtliche
+            Bankfaecher verschwinden. Dafuer ist jetzt kein Bruecken-Addon mehr noetig.
+        Technisch: Die Anregung stammt aus ZenqFRs Begleit-Addon SkuBagnonBridge
+            (github.com/ZenqFR/Sku-BagnonBridge), das dieselbe Luecke auf seine Weise schliesst
+            und die Bank ebenfalls ueber die Ereignisse des Spiels erkennt; hier ist mit
+            ZenqFRs Zustimmung der Teil nativ gebaut, der ohne ein weiteres Addon auskommt. Die
+            flache Liste war auf die Taschen 0 bis 4 begrenzt; die Bankbehaelter (-1, -3, 5 bis
+            11) wurden nie in sie kopiert. Sie sammeln sich jetzt in einer eigenen Liste,
+            absichtlich getrennt von der Taschenliste: aus dieser leitet sich
+            SkuCore.combatBagOrder ab, die Spiegelung fuer den Kampf, und die kann von Haus aus
+            nur Taschenfaecher benutzen. Die Eintraege der neuen Liste sind Kopien derselben
+            Fach-Eintraege und tragen Tasche und Fach mit, also greifen alle vorhandenen
+            Aktionen unveraendert. Der Zustand der Bank haengt jetzt an BANKFRAME_OPENED und
+            BANKFRAME_CLOSED: beide kommen aus der Interaktion mit dem Bankier selbst und sind
+            unabhaengig davon, wer das Fenster zeichnet. Beim Laden und nach /reload wird der
+            Zustand zurueckgesetzt, und die alte Fensterpruefung bleibt zusaetzlich erhalten -
+            die Erkennung kann dadurch nur mehr Faelle richtig treffen als vorher, keine
+            weniger.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

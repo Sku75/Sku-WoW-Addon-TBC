@@ -14,6 +14,7 @@ Changes in Sku v43.2
             New keybind "Target nearest quest mob" (Alt+H): targets a creature belonging to an open quest objective - including one that merely drops an item you need.
             The "Next enemy in combat" keybind (now bound to Ctrl+H by default) finds something far more often: it no longer depends on the view cone.
             New "Nearby quests" list in the quest menu: your whole quest log in one list, sorted by how far away the next thing is - with distance and compass direction. Off by default.
+            Bags menu: a new "all bank" entry right after "all bags" while the bank is open - everything in the bank in one flat list, exactly like "all bags" is for your bags. Ctrl+Enter moves an item from there into your bags, the same way it already did inside the individual bank bags.
 
         Changes
             Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
@@ -37,6 +38,7 @@ Changes in Sku v43.2
             Menu: Enter on an on/off entry in a filtered list read the first entry of the list back instead of the toggled state.
             Dungeon browser: accepting a group invitation no longer drops you into the dungeon browser by itself.
             Quest database: the "Starts in zone, By distance" list broke off after the first quest.
+            Bags menu: with a bag-replacement addon such as Bagnon, which hides Blizzard's bank window, every bank container vanished from the menu.
 
     The cursor stays on the item in the bag
         Simple: Right-clicking an item in the bag list - use it, equip it, sell it to a vendor,
@@ -453,6 +455,33 @@ Changes in Sku v43.2
             incrementing it raised on nil. An error inside a menu's child build is swallowed -
             the build therefore ended silently after the first entry. Nothing ever read the
             counter; it is removed rather than initialised.
+
+    Everything in the bank in one list, and the bank is recognised under Bagnon too
+        Simple: The bags menu had "all bags" - one flat list across every bag, sorted by name.
+            The bank had no such thing: at an open bank the menu did show "Bank" and "Bank Bag
+            1" through "Bank Bag 7", but looking for something meant walking into each
+            compartment in turn. Now, while the bank is open, a new "all bank" entry sits
+            directly after "all bags": everything lying in the bank in one list, with the same
+            type-ahead filter. Ctrl+Enter moves an item from there into your bags - exactly as
+            it already did inside the individual bank bags. On top of that, Sku now works out
+            whether the bank is open from the game's own messages rather than from Blizzard's
+            window. Anyone using a bag-replacement addon such as Bagnon, which hides that
+            window, had no bank in the menu at all until now - Sku considered it closed and let
+            every bank container disappear. No bridge addon is needed for that any more.
+        Technically: The suggestion comes from ZenqFR's companion addon SkuBagnonBridge
+            (github.com/ZenqFR/Sku-BagnonBridge), which closes the same gap in its own way and
+            likewise recognises the bank from the game's events; with ZenqFR's agreement the
+            part that needs no further addon is built natively here. The flat list was limited
+            to bags 0 to 4; the bank containers (-1, -3, 5 to 11) were never copied into it.
+            They now collect in a list of their own, deliberately kept separate from the bag
+            list: SkuCore.combatBagOrder derives from that one - the mirror used in combat -
+            and it can only ever use bag slots. The entries in the new list are copies of the
+            same per-slot entries and carry bag and slot with them, so every existing action
+            works unchanged. The bank's state now hangs on BANKFRAME_OPENED and
+            BANKFRAME_CLOSED: both come from the interaction with the banker itself and are
+            independent of who draws the window. It is reset on load and after /reload, and the
+            old window check is kept alongside - so the detection can only ever get more cases
+            right than before, never fewer.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

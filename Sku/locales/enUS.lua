@@ -219,6 +219,7 @@ L["All alphabetically"]  = "All alphabetically" --
 L["All enemies"] = "All enemies"
 L["All entries"] = "All articles"
 L["All fights"] = "All fights"
+L["all bank items"] = "all bank"
 L["all items"] = "all bags"
 L["All NPCs in zone"]  = "All NPCs in zone" --
 L["All NPCs"]  = "All NPCs" --

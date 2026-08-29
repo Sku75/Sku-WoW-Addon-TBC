@@ -8,9 +8,14 @@ becomes a native Sku feature. This document records what each addon does, what
 was verified against our own tree, and what a native version would cost — one
 item per session, deliberately.
 
-Items 0 (target tooltip keybind), 1 (quest track toggle), 2 (nearby quests) and
-3 (quest-target keybind) are all **DONE, tested in game, and part of v43.2**.
-Items 4 and 5 are open and each still needs its own analysis pass.
+Items 0 (target tooltip keybind), 1 (quest track toggle), 2 (nearby quests),
+3 (quest-target keybind) and 4 (SkuBagnonBridge) are all **CLOSED** and part of
+v43.2. Only item 5 (gather routes) is open, and it still needs its own analysis
+pass.
+
+★ **Item 4 is closed, not paused.** Most of it was deliberately rejected (see
+section 4); what was worth having is built and tested. Do not re-open it or
+re-propose the rejected parts unless the user asks.
 
 ---
 
@@ -416,7 +421,90 @@ armed when the fight starts.
 
 ---
 
-## 4. Bag categories and bag↔bank transfer (from SkuBagnonBridge)
+## 4. CLOSED — bag categories and bag↔bank transfer (from SkuBagnonBridge)
+
+**RE-SCOPED AND CLOSED 2026-08-29, most of it deliberately NOT adopted.** The transfer
+half was reviewed against what Sku already does and rejected: Ctrl+Enter on a
+bank item already moves it to the bags (`SkuZOptions/Core.lua:6202`, the
+`tIsBankContainer` branch), and `/use` on a bag item while the bank is open is
+contextual in the client, so both directions exist. What their version adds on
+top — move *every* stack of an item at once, direction chosen from a menu
+branch — is a different feature, not a missing one, and it does not fit our
+menu. Pawn is out too: it is used by exactly one of their six categories
+(`CategoryUpgrades.lua`) and the maintainer does not trust its judgements. Not
+substituting LibGearScore either — a gear score answers a different question
+than "is this an upgrade for me".
+
+What WAS taken is the asymmetry underneath it all, plus the one piece of
+robustness their bridge has that we can get without knowing Bagnon exists:
+
+### 4a. DONE — flat "all bank items" list (v43.2, TESTED OK in game)
+
+`SkuCore:Build_BagsFrame`'s flat list was bags 0..4 only
+(`LocalMenu.lua`, `if not isEmpty and bagId >= 0 and bagId <= 4`), so at an open
+bank you got the per-bag nodes ("Bank", "Bank Bag 1..7") but no flat view — bank
+content was reachable only by walking into the right bank bag. There is now a
+second accumulator `allBankResults` (containers -1, -3, 5..11) and a matching
+`L["all bank items"]` node inserted directly after `L["all items"]`, gated on
+the bank being open AND the list being non-empty.
+
+- The two lists stay **separate on purpose**. `SkuCore.combatBagOrder` is derived
+  from `allBagResults` alone and feeds the in-combat secure `/use` mirror, which
+  is bag-only by nature — merging them would stage bank slots into it.
+- Rows are plain copies of the same per-slot entries, so `.bag`/`.slot` (and
+  `containerFrameName` for the -1 slots) come along and every existing action
+  works unchanged: ENTER reads, CTRL-ENTER moves the item out to the bags.
+- Same sort as the bag list (alphabetical, new items first) and the same
+  post-sort new/trade prefix loop — neither normally fires for a bank item, but
+  running the identical loop stops the two lists drifting apart.
+- Breadcrumb: `dprint("bags", "bank flat list", <n>, "entries")`.
+
+### 4b. DONE — bank-open state from the events, not the frame (v43.2, TESTED OK)
+
+Four sites asked `BankFrame:IsVisible()`. That is the one thing a bag-replacement
+addon breaks: Bagnon reparents `BankFrame` to a hidden frame, so `IsVisible()`
+answers "closed" while the bank is open and every bank container silently drops
+out of the menu — which is the actual reason their bridge exists for this half.
+
+`SkuCore:BankIsOpen()` now holds a flag driven by `BANKFRAME_OPENED` /
+`BANKFRAME_CLOSED` (fired by the banker interaction itself, independent of who
+draws the window), cleared on `PLAYER_ENTERING_WORLD`, with the old frame check
+kept as an OR so the change can only ever ADD a true case. Sku learns nothing
+about Bagnon and needs no bridge for the bank list.
+
+### Not adopted, and why
+
+- Transfer menus (both directions, "items on both sides", move-all-stacks) — the
+  per-item move already exists on Ctrl+Enter; see above.
+- "Best equipment" — needs Pawn.
+- Bagnon frame detection, sort routing, the `UISpecialFrames` Escape proxy —
+  bridge work, belongs in a bridge. Bagnon users keep theirs.
+- **Category submenu — dropped 2026-08-29, not deferred work.** It needs NO
+  third-party addon (Pawn powers one of six categories, `Category.lua` reads the
+  container API and never touches a Bagnon frame, and our profession walk already
+  exists at `LocalMenu.lua:2844`), so the ~200-250 native lines were affordable —
+  the win just is not there. Type-ahead already beats a category walk whenever
+  you know the item's name; the only genuine gap is filtering by KIND ("all
+  food", "all quest items"), which no amount of name filtering closes. Judged not
+  worth it against "all items" + "all bank" + type-ahead. If it is ever revived:
+  it belongs beside those two at the TOP level of the bags menu, NOT under
+  "Sorting and cleanup" — those entries are physical re-sorts of a container
+  (`tSortStart` → `PickupContainerItem` swaps, one per `BAG_UPDATE_DELAYED`
+  settle) and are per-bag, while a category list is a cross-bag VIEW.
+
+### Verified in game 2026-08-28/29
+
+Debug ring: `bags bank flat list 97 entries` on the first build, then `96` across
+a Ctrl+Enter move out of the bank — the list and the move-plus-rebuild both work.
+`skucheck bags: bank (-1) skipped, bank closed` afterwards proves the flag falls
+back to false on `BANKFRAME_CLOSED` (a stuck-true flag would have swept a closed
+bank). `skucheck bags done: 83 filled slots checked, 0 pending, 0 violations`, no
+new `SkuErrorLog` entry. Still unverified, and cheap to leave so: the Bagnon case
+itself — the mechanism is event-based and cannot depend on the frame, but nobody
+has run it with Bagnon actually installed.
+
+### Original survey (kept for reference)
+
 
 **Split this addon.** The Bagnon-specific half — frame detection, sort routing,
 the `UISpecialFrames` Escape proxy — must **stay** a companion addon; that is
@@ -484,7 +572,9 @@ plan document when it starts.
 1. ~~Quest track/untrack toggle (item 1)~~ — DONE 2026-08-28, tested OK.
 2. ~~Nearby quest objectives (item 2)~~ — DONE 2026-08-28, tested OK.
 3. ~~Quest-target keybind (item 3)~~ — DONE 2026-08-28, tested OK.
-4. Bag categories, then bag↔bank transfer (item 4).
+4. ~~Bag categories, then bag↔bank transfer (item 4)~~ — CLOSED 2026-08-29:
+   flat bank list + bank-open event flag shipped and tested; transfer half, Pawn
+   and the category submenu rejected.
 5. Native gather routes (item 5).
 
 ## 7. Local clones

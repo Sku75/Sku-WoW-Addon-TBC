@@ -17,6 +17,7 @@ Changements dans Sku v43.2
             Nouveau raccourci « Cibler la créature de quête la plus proche » (Alt+H) : cible une créature liée à un objectif de quête en cours - y compris celle qui se contente de faire tomber un objet requis.
             Le raccourci « Ennemi suivant en combat » (désormais sur Ctrl+H par défaut) trouve bien plus souvent quelque chose : il ne dépend plus du cône de vue.
             Nouvelle liste « Quêtes à proximité » dans le menu de quête : tout le journal de quêtes en une seule liste, triée selon la distance de ce qui compte pour chaque quête - avec la distance et le point cardinal. Désactivée par défaut.
+            Menu des sacs : nouvelle entrée « toute la banque » juste après « tous les sacs » tant que la banque est ouverte - tout le contenu de la banque en une seule liste à plat, exactement comme « tous les sacs » pour vos sacs. Ctrl+Entrée y déplace un objet vers vos sacs, comme il le faisait déjà dans chaque sac de banque.
 
         Changements
             Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
@@ -40,6 +41,7 @@ Changements dans Sku v43.2
             Menu : Entrée sur une entrée activé/désactivé dans une liste filtrée annonçait la première entrée de la liste au lieu de l'état basculé.
             Navigateur de donjons : accepter une invitation de groupe ne vous dépose plus tout seul dans le navigateur de donjons.
             Base de données des quêtes : la liste « Commence dans la zone, Par distance » s'interrompait après la première quête.
+            Menu des sacs : avec un addon de remplacement des sacs comme Bagnon, qui masque la fenêtre de banque de Blizzard, tous les compartiments de banque disparaissaient du menu.
 
     Le curseur reste sur l'objet dans le sac
         Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le
@@ -505,6 +507,37 @@ Changements dans Sku v43.2
             erreur sur nil. Une erreur dans la construction des enfants d'un menu est avalée -
             la construction se terminait donc silencieusement après la première entrée. Le
             compteur n'était lu par rien ; il est supprimé plutôt qu'initialisé.
+
+    Tout le contenu de la banque en une seule liste, et la banque reconnue aussi sous Bagnon
+        Simple : Le menu des sacs avait « tous les sacs » - une liste à plat sur l'ensemble des
+            sacs, triée par nom. La banque n'avait pas d'équivalent : devant une banque ouverte
+            le menu affichait bien « Banque » et « Banque Sac 1 » à « Banque Sac 7 », mais
+            chercher quelque chose obligeait à entrer dans chaque compartiment l'un après
+            l'autre. Désormais, tant que la banque est ouverte, une nouvelle entrée « toute la
+            banque » se place juste après « tous les sacs » : tout ce qui se trouve dans la
+            banque en une seule liste, avec le même filtre à la frappe. Ctrl+Entrée y déplace
+            un objet vers vos sacs - exactement comme il le faisait déjà dans chaque sac de
+            banque. De plus, Sku détermine maintenant si la banque est ouverte à partir des
+            messages du jeu lui-même, et non plus de la fenêtre de Blizzard. Qui utilise un
+            addon de remplacement des sacs comme Bagnon, lequel masque cette fenêtre, n'avait
+            jusqu'ici aucune banque dans le menu - Sku la croyait fermée et faisait disparaître
+            tous les compartiments de banque. Aucun addon-pont n'est plus nécessaire pour cela.
+        Technique : La suggestion vient de l'addon compagnon SkuBagnonBridge de ZenqFR
+            (github.com/ZenqFR/Sku-BagnonBridge), qui comble la même lacune à sa manière et
+            reconnaît lui aussi la banque via les événements du jeu ; avec l'accord de ZenqFR,
+            la part qui se passe de tout addon supplémentaire est construite ici nativement. La
+            liste à plat se limitait aux sacs 0 à 4 ; les conteneurs de banque (-1, -3, 5 à 11)
+            n'y étaient jamais copiés. Ils sont désormais rassemblés dans une liste propre,
+            délibérément séparée de celle des sacs : SkuCore.combatBagOrder en dérive - le
+            miroir utilisé en combat - et celui-ci ne peut utiliser que des emplacements de
+            sac. Les entrées de la nouvelle liste sont des copies des mêmes entrées par
+            emplacement et emportent le sac et l'emplacement, si bien que toutes les actions
+            existantes fonctionnent sans changement. L'état de la banque tient maintenant à
+            BANKFRAME_OPENED et BANKFRAME_CLOSED : tous deux proviennent de l'interaction avec
+            le banquier elle-même et sont indépendants de qui dessine la fenêtre. Il est
+            réinitialisé au chargement et après /reload, et l'ancienne vérification de la
+            fenêtre est conservée à côté - la détection ne peut donc que reconnaître plus de
+            cas qu'avant, jamais moins.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

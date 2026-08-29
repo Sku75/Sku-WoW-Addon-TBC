@@ -189,6 +189,21 @@ local function tPrewarmContainer(aBagId)
 	end
 end
 
+-- Bank open/closed is tracked from the SERVER-side events, not from
+-- BankFrame:IsVisible(). BANKFRAME_OPENED/BANKFRAME_CLOSED are fired by the
+-- banker interaction itself, independent of which addon draws the window, so
+-- the flag stays honest when a bag-replacement addon reparents or hides
+-- Blizzard's BankFrame -- that made IsVisible() answer "closed" while the bank
+-- was very much open, and silently dropped every bank container out of the
+-- bags menu. The frame check is kept as an OR, so this can only ever ADD a
+-- true case, never take away one that already worked.
+local tBankFrameOpen = false
+function SkuCore:BankIsOpen()
+	if tBankFrameOpen == true then return true end
+	if _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true then return true end
+	return false
+end
+
 local tItemDataDriver = CreateFrame("Frame")
 tItemDataDriver:SetScript("OnEvent", function(self, aEvent, arg1)
 	if aEvent == "GET_ITEM_INFO_RECEIVED" then
@@ -198,17 +213,24 @@ tItemDataDriver:SetScript("OnEvent", function(self, aEvent, arg1)
 			tQueuePendingRefresh()
 		end
 	elseif aEvent == "BANKFRAME_OPENED" then
+		tBankFrameOpen = true
 		tPrewarmContainer(-1)
 		for tBagId = 5, 11 do tPrewarmContainer(tBagId) end
 		dprint("itemdata", "prewarm bank")
 	elseif aEvent == "PLAYERBANKSLOTS_CHANGED" then
 		local tItemId = arg1 and GetContainerItemID(-1, arg1)
 		if tItemId then SkuCore:RequestItemData(tItemId) end
+	elseif aEvent == "BANKFRAME_CLOSED" or aEvent == "PLAYER_ENTERING_WORLD" then
+		-- PLAYER_ENTERING_WORLD covers login and /reload: the banker interaction does
+		-- not survive either, so a flag left true by a reload at the bank is cleared.
+		tBankFrameOpen = false
 	end
 end)
 tItemDataDriver:RegisterEvent("GET_ITEM_INFO_RECEIVED")
 tItemDataDriver:RegisterEvent("BANKFRAME_OPENED")
 tItemDataDriver:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
+tItemDataDriver:RegisterEvent("BANKFRAME_CLOSED")
+tItemDataDriver:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- [v42.11] Quality and item level are resolved HERE from the tooltip we are
@@ -1088,7 +1110,7 @@ local function tSortSwapSlots(bag, s1, s2)
 end
 
 local function tSortBankVisible()
-	return _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true
+	return SkuCore:BankIsOpen()
 end
 
 -- Bank main (-1), bank bags (5..11) and the reagent bank (-3) can only be moved while
@@ -1279,6 +1301,11 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 
 	local tCurrentParentContainer = nil
 	local allBagResults = {}
+	-- Flat list for the BANK containers, built exactly like allBagResults but kept
+	-- separate: the two lists must never merge (a bank item cannot be used, equipped
+	-- or sold from where it lies), and SkuCore.combatBagOrder below is derived from
+	-- allBagResults alone -- the in-combat secure /use mirror is bag-only by nature.
+	local allBankResults = {}
 	local tBagResultsByBag = {}
 	local inventoryTooltipTextCache = {}
 
@@ -1291,12 +1318,12 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 	-- reachable with its frame already up).
 	for q = 1, #tBagSlotListSorted do
 		local bagId = tBagSlotListSorted[q]
-		local tIsBankSlot = (bagId == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)
+		local tIsBankSlot = (bagId == -1 and SkuCore:BankIsOpen() == true)
 		local tNumSlots = GetContainerNumSlots(bagId) or 0
 		-- BUGFIX: the bank container (-1) reports its 28 slots even when the bank UI is
 		-- closed, producing a phantom "Bank" view in the bags menu. Only include it while the
 		-- bank frame is actually open (0 slots -> the slot loop skips it, no bag node created).
-		if bagId == -1 and not (_G["BankFrame"] and _G["BankFrame"]:IsVisible() == true) then
+		if bagId == -1 and not SkuCore:BankIsOpen() then
 			tNumSlots = 0
 		end
 		-- [v43.0] The keyring container reports its MAXIMUM (32) here, but most of
@@ -1427,6 +1454,21 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				-- bagSlot stays the precise identity for cursor restore / duplicate stacks
 				table.insert(allBagResults, copy)
 				allBagResults[copy] = copy
+			-- ... and the bank containers into their own flat list, the same way. Until
+			-- now the bank was reachable ONLY by walking into the right bank bag, while
+			-- bags had the flat view -- the asymmetry this closes. The copy carries
+			-- .bag/.slot (and, for the -1 slots, containerFrameName), which is what the
+			-- menu actions key on, so a row here behaves exactly like the same row inside
+			-- its bank bag: ENTER reads it, CTRL-ENTER moves it out to the bags via the
+			-- tIsBankContainer branch in SkuZOptions/Core.lua.
+			elseif not isEmpty and (bagId == -1 or bagId == -3 or (bagId >= 5 and bagId <= 11)) then
+				local copy = {}
+				for k, v in pairs(bagItemButton) do
+					copy[k] = v
+				end
+				copy.textFirstLine = tPlainFirstLine
+				table.insert(allBankResults, copy)
+				allBankResults[copy] = copy
 			end
 		end
 	end
@@ -1504,6 +1546,47 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 			textFirstLine = allItemsMenuItemName,
 			noMenuNumbers = true,
 			childs = allBagResults,
+		}
+	end
+
+	-- all bank items menu item -- same list, same sort, same actions, for the bank
+	-- side. Only while the bank is actually open: the bank containers report no
+	-- usable slots otherwise (and -1 is zeroed above), so an empty entry would be a
+	-- dead keypress. Sits right after "all items" so the two flat views are
+	-- neighbours instead of being separated by the per-bag nodes.
+	if SkuCore:BankIsOpen() == true and #allBankResults > 0 then
+		table.sort(allBankResults, function(item1, item2)
+			if item1.isNewItem and not item2.isNewItem then
+				return true
+			elseif item2.isNewItem and not item1.isNewItem then
+				return false
+			end
+			return item1.textFirstLine < item2.textFirstLine
+		end)
+		-- Same post-sort prefixes as the bag list. Neither normally fires for a bank
+		-- item (nothing in the bank is in a trade, and the new-item flag is a bag
+		-- concept), but running the identical loop keeps the two lists from drifting
+		-- apart if either ever does.
+		for _, itemButton in pairs(allBankResults) do
+			if itemButton.isNewItem then
+				if not string.find(itemButton.textFirstLine, "^"..L["New"]) then
+					itemButton.textFirstLine = L["New"] .. " " .. itemButton.textFirstLine
+				end
+			end
+			if itemButton.inTrade and not itemButton.inTradeMarked then
+				itemButton.inTradeMarked = true
+				itemButton.textFirstLine = L["TRADE_InTradeMarker"] .. " " .. itemButton.textFirstLine
+			end
+		end
+		dprint("bags", "bank flat list", #allBankResults, "entries")
+		local allBankItemsMenuItemName = L["all bank items"]
+		table.insert(aParentChilds, allBankItemsMenuItemName)
+		aParentChilds[allBankItemsMenuItemName] = {
+			RoC = "Child",
+			type = "Button",
+			textFirstLine = allBankItemsMenuItemName,
+			noMenuNumbers = true,
+			childs = allBankResults,
 		}
 	end
 
@@ -5304,7 +5387,7 @@ local function tSkuCheckBags()
 		-- Same gate as Build_BagsFrame: the CLOSED bank still reports 28 slots but
 		-- reads are not valid then -- sweeping it would only produce noise. Say so
 		-- in the log instead of skipping silently.
-		if tBagId == -1 and not (_G["BankFrame"] and _G["BankFrame"]:IsVisible() == true) then
+		if tBagId == -1 and not SkuCore:BankIsOpen() then
 			if tNumSlots > 0 then
 				dprint("skucheck", "bags: bank (-1) skipped, bank closed")
 			end
