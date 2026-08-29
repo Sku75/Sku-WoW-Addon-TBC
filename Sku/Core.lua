@@ -587,6 +587,90 @@ SlashCmdList["SKUDEBUG"] = function(aMsg)
 		print(string.format("|cff80c0ffSkuDebug|r: dumping %d spell names for %s, running in background...",
 			#tIds, tostring(GetLocale())))
 		return
+	elseif aMsg == "tts" or aMsg:match("^tts%s") then
+		-- [v43.2] Handover-Audit der Blizzard-TTS-Pumpe.
+		--
+		-- Es gibt das hier, um die beiden Nachsperren der Pumpe an echtem Spiel zu
+		-- MESSEN, statt sie weiter von der Audiodatei-Pumpe zu erben: beide stehen
+		-- seit jeher auf 0.1 s, keine der beiden wurde je auf diesem Client
+		-- nachgemessen, und zusammen sind sie die Latenzuntergrenze jedes
+		-- Tastendrucks im Menue.
+		--
+		-- Die entscheidende Zahl ist "ohne Start": eine Aeusserung, die uebergeben
+		-- wurde und nie ein PLAYBACK_STARTED bekam, wurde vom asynchron landenden
+		-- StopSpeakingText getoetet -- genau das Rennen, gegen das postStop
+		-- existiert. Bleibt sie bei 0, war die Sperre zu vorsichtig und darf
+		-- kuerzer; steigt sie beim Verkuerzen, ist die Untergrenze gefunden.
+		--
+		-- Messvorgehen: /skudebug tts hold <postStop> <postSpeak> setzt beide fuer
+		-- DIESE Sitzung und nullt die Zaehler; danach normal spielen und /skudebug
+		-- tts lesen. Nicht persistent, mit Absicht -- eine falsche Zahl hier
+		-- kostet Sprache und darf die Sitzung nicht ueberleben.
+		if not (SkuOptions and SkuOptions.Voice and SkuOptions.Voice.GetBttsStats) then
+			print("|cff80c0ffSkuDebug|r: TTS-Statistik nicht verfuegbar (SkuVoice zu alt oder noch nicht geladen).")
+			return
+		end
+		local tArg = aMsg:match("^tts%s+(.-)%s*$") or ""
+		if tArg == "reset" then
+			SkuOptions.Voice:ResetBttsStats()
+			print("|cff80c0ffSkuDebug|r: TTS-Zaehler zurueckgesetzt.")
+			return
+		end
+		local tSetStop, tSetSpeak = tArg:match("^hold%s+([%d%.]+)%s+([%d%.]+)$")
+		if tSetStop and SkuOptions.Voice.SetBttsHolds then
+			SkuOptions.Voice:SetBttsHolds(tonumber(tSetStop), tonumber(tSetSpeak))
+			SkuOptions.Voice:ResetBttsStats()
+			local _, tNowStop, tNowSpeak = SkuOptions.Voice:GetBttsStats()
+			print(string.format("|cff80c0ffSkuDebug|r: postStop = %.3f s, postSpeak = %.3f s (nur diese Sitzung). Zaehler zurueckgesetzt.",
+				tNowStop, tNowSpeak))
+			return
+		end
+		if tArg ~= "" and tArg ~= "show" then
+			print("|cff80c0ffSkuDebug|r: /skudebug tts [reset | hold <postStop> <postSpeak>]")
+			return
+		end
+		local tS, tPostStop, tPostSpeak, tDup, tGap = SkuOptions.Voice:GetBttsStats()
+		local tPct = 0
+		if tS.handed > 0 then tPct = (tS.lost / tS.handed) * 100 end
+		local tHead = string.format("postStop %.3f s, postSpeak %.3f s, Dublettenfenster %.2f s", tPostStop, tPostSpeak, tDup)
+		local tL1 = string.format("uebergeben %d, gestartet %d", tS.handed, tS.started)
+		local tL1b = string.format("VERLOREN %d (%.1f Prozent) -- die eine Zahl, die zaehlt", tS.lost, tPct)
+		local tL1c = string.format("absichtlich abgeloest %d (normal)", tS.superseded)
+		local tL2 = string.format("abgelehnt %d", tS.failed)
+		local tL3 = string.format("Dubletten verschluckt %d, per Taste durchgelassen %d", tS.dupSuppressed, tS.userAction)
+		local tL4 = string.format("Echo-Zeichen %d", tS.echo)
+		print("|cff80c0ffSkuDebug TTS|r: "..tHead)
+		print("  "..tL1)
+		print("  "..tL1b)
+		print("  "..tL1c)
+		print("  "..tL2)
+		print("  "..tL3)
+		print("  "..tL4)
+		-- Abstand zwischen dem Stop und der Uebergabe, in 10-ms-Stufen, mit der
+		-- Zahl der dabei verlorenen Aeusserungen. Das ist die MESSUNG, aus der
+		-- sich die kuerzeste sichere Nachsperre direkt ablesen laesst: die
+		-- niedrigste Stufe, die noch 0 verloren zeigt. Bei der ausgelieferten
+		-- Sperre von 0.1 s landet alles in "100+", die Kurve bleibt also leer --
+		-- zum Messen des kurzen Endes "/skudebug tts hold 0 0" setzen.
+		local tAny = false
+		for i = 1, 11 do if tGap[i].n > 0 then tAny = true end end
+		if not tAny then
+			print("  Abstand Stop bis Uebergabe: noch keine Messwerte - fuer die Kurve /skudebug tts hold 0 0 setzen und normal spielen.")
+		else
+			print("  Abstand Stop bis Uebergabe (Stufe: Anzahl, davon verloren):")
+			for i = 1, 11 do
+				if tGap[i].n > 0 then
+					local tLabel = (i == 11) and "100+ ms" or (((i - 1) * 10).." bis "..((i * 10) - 1).." ms")
+					local tLine = string.format("%s: %d, davon verloren %d", tLabel, tGap[i].n, tGap[i].lost)
+					print("    "..tLine)
+					dprint("BTTS GAP", tLine)
+				end
+			end
+		end
+		-- Auch in den Ring, damit die Messung in einer Aufzeichnung steht und
+		-- nicht nur im Chatfenster stand.
+		dprint("BTTS STATS", tHead, tL1, tL1b, tL1c, tL2, tL3, tL4)
+		return
 	elseif aMsg == "clear" then
 		if type(SkuDebugLog) == "table" then SkuDebugLog.lines = {} ; SkuDebugLog.seq = 0 end
 		print("|cff80c0ffSkuDebug|r: log cleared.")

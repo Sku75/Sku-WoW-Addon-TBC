@@ -3267,7 +3267,15 @@ function SkuOptions:CreateMenuFrame()
 		-- re-pinned by identity. Suppressing here stops the wrong item starting
 		-- to announce before the correct one cuts it off.
 		if aKey ~= "ESCAPE" and (_G["OnSkuOptionsMainOption1"]:IsVisible() or (SkuOptions.combatMenuActive == true and InCombatLockdown())) and aKey ~= "SHIFT-DOWN" and SkuOptions.TTS.MainFrame:IsVisible() ~= true and not tSuppressBagAnnounce then
-			SkuOptions:VocalizeCurrentMenuName(tVocalizeReset)
+			-- [v43.2] Der dritte Parameter ist der EINE Tasten-Tag im ganzen Addon.
+			-- Jede Menuetaste (Hoch/Runter/Links/Rechts/Pos1/Ende/Enter/Ruecktaste/
+			-- Zugriffstasten) endet hier, und nur hier -- die rund 64 uebrigen
+			-- Aufrufer von VocalizeCurrentMenuName sind ereignisgetrieben. Damit
+			-- unterscheidet die Sprachebene zwei Zeilen, die als Text identisch
+			-- sind und Gegenteiliges bedeuten: erneut angefordert (sprechen) und
+			-- ueberfluessig wiederholt (verschlucken). Siehe SkuVoice-1.0,
+			-- mSkuVoiceQueueBTTS_UserAction.
+			SkuOptions:VocalizeCurrentMenuName(tVocalizeReset, nil, true)
 			if string.len(SkuOptions.Filterstring) > 1  then
 				--SkuOptions.Voice:OutputStringBTtts("Filter", false, true, 0.3, nil, nil, nil, 2)
 			end
@@ -4782,7 +4790,11 @@ end
 ---@param aWait bool if this should be queued
 ---@param aDuration number duration of the audio
 ---@param aDoNotOverride bool if this audio could be reseted by others
-function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoNotOverride, engine, aVocalizeAsIs)
+---@param aUserAction boolean|nil [v43.2] Diese Zeile ist die unmittelbare Folge
+---              einer Taste, die der Nutzer GERADE gedrueckt hat. Nimmt sie von
+---              der Dublettensperre der Sprachebene aus -- siehe
+---              mSkuVoiceQueueBTTS_UserAction in SkuVoice-1.0.
+function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoNotOverride, engine, aVocalizeAsIs, aUserAction)
 	--print("--VocalizeMultipartString", aStr, aReset, aWait, aDuration, aDoNotOverride, engine, aVocalizeAsIs)
 
 	-- don't vocalize object numbers
@@ -4790,7 +4802,11 @@ function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoN
 	--aStr = tTempHayStack
 
 	--if SkuSettings:Sub("SkuOptions").useBlizzTtsInMenu == true then
-	SkuOptions.Voice:OutputStringBTtts(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, true, 2, aVocalizeAsIs)
+	-- [v43.2] Die fuenf nil davor sind aInstant, aDnQ, aIgnoreLinks, aIsTutorial
+	-- und aVoice: aUserAction ist der 16. Parameter, und ausgeschrieben werden
+	-- statt in die Tabellenform gewechselt, damit an dieser einen Zeile -- durch
+	-- die JEDE Menueansage laeuft -- sonst nichts anders ist als vorher.
+	SkuOptions.Voice:OutputStringBTtts(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, true, 2, aVocalizeAsIs, nil, nil, nil, nil, nil, aUserAction)
 	return
 	--end
 --[[
@@ -4824,7 +4840,16 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aReset bool reset queue
-function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
+---@param aReturnAsString bool|nil nur den Text liefern, nichts sprechen
+---@param aUserAction boolean|nil [v43.2] von einer gerade gedrueckten Taste
+---              ausgeloest. NUR der Tasten-Trichter des Menues setzt das (die
+---              eine Stelle weiter oben, an der jede Menuetaste endet); alle
+---              anderen rund 64 Aufrufer sind ereignisgetrieben und bleiben
+---              ungetaggt. Wirkung: die Dublettensperre der Sprachebene darf die
+---              Zeile nicht verschlucken -- wer dieselbe Zeile per Taste erneut
+---              anfordert, will sie erneut hoeren; ein ueberfluessiger
+---              CheckFrames-Nachschlag dagegen nicht.
+function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString, aUserAction)
 	--print("--VocalizeCurrentMenuName", aReset, debugstack())
 
 	if aReset == nil then aReset = true end
@@ -4990,7 +5015,7 @@ function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 		local tBagSuppressed = Sku and Sku.tBagAnnounceSuppress
 			and GetTime() < Sku.tBagAnnounceSuppress and not Sku.tBagAnnounceForce
 		if not tBagSuppressed then
-			SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, 2, SkuOptions.currentMenuPosition.vocalizeAsIs)
+			SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, 2, SkuOptions.currentMenuPosition.vocalizeAsIs, aUserAction)
 			pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarSet then SkuCore.VisualAids:VisualAidsLineBarSet(tFinalString) end end)
 		end
 	end
@@ -7456,84 +7481,56 @@ end
 local tStrLenUtf8 = _G.strlenutf8 or string.len
 local tStrSubUtf8 = _G.strsubutf8 or string.sub
 
--- [v42.13] EIN Slot statt einer Warteschlange -- so, wie ein Screenreader beim
--- Tippen arbeitet: der naechste Anschlag bricht die Ansage des vorigen ab.
+-- [v43.2] Getippte Zeichen gehen NICHT mehr durch die Ansage-Warteschlange,
+-- sondern durch die Schnellspur SkuVoice:SpeakEcho.
 --
--- Warum die beiden Vorgaenger-Ansaetze das Problem nicht loesen konnten:
+-- Warum die drei Vorgaenger-Ansaetze das Problem nicht geloest haben:
 --
 --  * v42.08 haengte je getipptem Zeichen eine eigene Aeusserung an die
---    BTTS-Queue an. Wer schneller tippt als die Stimme spricht (4-5 Anschlaege/s
---    gegen ~0.4 s je Zeichen), erzeugt damit einen Rueckstau, der beim
---    Schliessen des Feldes weiterlaeuft.
+--    BTTS-Queue. Wer schneller tippt als die Stimme spricht, erzeugte damit
+--    einen Rueckstau, der nach dem Schliessen des Feldes weiterlief.
 --  * v42.11 setzte einen Deckel auf diesen Rueckstau (GetBttsQueueDepth /
---    TrimBttsQueue). Der greift aber ins Leere, denn die Pumpe in SkuVoice
---    ueberspringt ihre 0.1-s-Taktung, sobald mehr als ein Eintrag wartet
---    (`#mSkuVoiceQueueBTTS > 1`): sie schiebt den ganzen Schwall binnen weniger
---    Frames per C_VoiceChat.SpeakText in die Queue des CLIENTS. Skus eigene
---    Queue ist danach leer -- die gemessene Tiefe ist praktisch immer 0, der
---    Deckel loest nie aus, und Trim findet beim Schliessen nichts mehr zum
---    Wegwerfen. Der Rueckstau steht zu diesem Zeitpunkt in der Client-/
---    SAPI-Queue, an die nur ein echtes StopSpeakingText herankommt.
+--    TrimBttsQueue). Der greift ins Leere: die Pumpe ueberspringt ihre Taktung,
+--    sobald mehr als ein Eintrag wartet, und schiebt den ganzen Schwall in die
+--    Queue des CLIENTS. Skus eigene Tiefe ist danach ~0, der Deckel loest nie
+--    aus.
+--  * v42.13 sammelte Zeichen 0.1 s lang und sprach sie als EINE Aeusserung mit
+--    overwrite. Das beseitigte den Rueckstau, kostete aber rund 0.2 s je
+--    Zeichen (0.1 s Sammeln PLUS 0.1 s Nachsperre nach dem Stop, nacheinander),
+--    und jeder Anschlag feuerte ein StopSpeakingText, dessen asynchrone Landung
+--    das NAECHSTE Zeichen abschoss. Mit der Dublettensperre der Sprachebene
+--    (v43.2) kam obendrauf, dass jeder Doppelbuchstabe verschluckt wurde --
+--    "Wasser", "alle", "immer" --, denn ein einzelnes Zeichen ist als
+--    Aeusserung mit sich selbst identisch.
 --
--- Neues Verhalten:
---  * Zeichen werden bis zum naechsten Flush gesammelt (max. tEchoMaxChars, die
---    NEUESTEN gewinnen) und als EINE Aeusserung gesprochen. Damit kann auch
---    Einfuegen per Strg+V oder eine gedrueckt gehaltene Pfeiltaste keine
---    hunderte Aeusserungen mehr erzeugen.
---  * Jeder Flush laeuft ueberschreibend (aOverwrite=true) -> ein neuer Anschlag
---    bricht die noch laufende Ansage ab, statt sich dahinter zu stellen.
---  * tEchoMinGap begrenzt die Rate; darunter waere ohnehin nur die 0.1-s-Sperre
---    der Pumpe wirksam.
---  * ignoreLinks=true: OutputStringBTtts jagte sonst JEDES getippte Zeichen
---    durch die Wiki-Link-Suche (GetLinksTableFromString) -- ein Durchlauf ueber
---    den kompletten Link-Index pro Tastendruck, dessen Ergebnis hier verworfen
---    wird.
---  * tEchoActive: nach dem Schliessen des Feldes wird nichts mehr gesprochen --
+-- Ein Bildschirmleser macht das anders, und zwar weil seine Schnittstelle es
+-- anders anbietet: Speak(text, interrupt). Das Abbrechen ist Teil des
+-- Sprechbefehls, EINE Operation, es braucht keinerlei Taktung. C_VoiceChat kann
+-- das nicht -- SpeakText hat keinen interrupt-Parameter, StopSpeakingText ist
+-- ein getrennter asynchroner Aufruf ohne Rueckmeldung. Sku muss die eine
+-- Operation also aus zweien nachbauen, und der Trick ist, das EINMAL je
+-- Tippfolge zu tun statt bei jedem Anschlag. Das erledigt die Schnellspur in
+-- SkuVoice-1.0; hier bleibt nur der Trichter.
+--
+-- Unveraendert gueltig:
+--  * Die Wiki-Link-Suche je Tastendruck ist weg -- das Echo laeuft gar nicht
+--    mehr durch OutputStringBTtts.
+--  * tEchoActive: nach dem Schliessen des Feldes wird nichts mehr gesprochen,
 --    auch nicht aus den verzoegerten Pfeil-Lesungen (C_Timer unten).
-local tEchoMinGap = 0.10
-local tEchoMaxChars = 6
-local tEchoPending = {}
-local tEchoScheduled = false
-local tEchoLastAt = 0
 local tEchoActive = false
+-- Zeitpunkt der letzten Echo-Ausgabe. Nur noch fuer die Rueckfrage "lief eben
+-- wirklich Echo?" beim weichen Stop fremder Eingabefelder (siehe tEchoStop).
+local tEchoLastAt = 0
 -- Wird bei jedem Stop hochgezaehlt; ein noch laufender C_Timer aus der alten
 -- Generation erkennt daran, dass er nichts mehr zu sprechen hat.
 local tEchoGeneration = 0
 
-local function tEchoFlush(aGeneration)
-	if aGeneration ~= tEchoGeneration then
-		return
-	end
-	tEchoScheduled = false
-	if #tEchoPending == 0 then
-		return
-	end
-	local tText = table.concat(tEchoPending, " ")
-	wipe(tEchoPending)
-	tEchoLastAt = GetTime()
-	if dprintv then dprintv("editbox echo flush", tText) end
-	pcall(function()
-		SkuOptions.Voice:OutputStringBTtts(tText, {overwrite = true, wait = false, length = 0.05, engine = 2, ignoreLinks = true})
-	end)
-end
-
-local function tEchoSchedule()
-	if tEchoScheduled then
-		return
-	end
-	tEchoScheduled = true
-	local tWait = tEchoMinGap - (GetTime() - tEchoLastAt)
-	if tWait < 0.01 then
-		tWait = 0.01
-	end
-	local tGeneration = tEchoGeneration
-	C_Timer.After(tWait, function() tEchoFlush(tGeneration) end)
-end
-
 ---@param aText string was gesprochen werden soll
----@param aChar boolean|nil true = getipptes/geloeschtes Zeichen (wird gesammelt);
----              sonst eine Positionsansage (Pfeil/Wort/Zeile) -- die neueste
----              ersetzt eine noch wartende, damit schnelles Pfeilen nicht nachhinkt
+---@param aChar boolean|nil true = getipptes/geloeschtes Zeichen. Seit v43.2 ohne
+---              Wirkung: die Schnellspur hat EINEN Slot, in dem der neueste
+---              Eintrag gewinnt -- fuer Zeichen und fuer Positionsansagen
+---              gleichermassen richtig. Der Parameter bleibt stehen, weil er an
+---              den Aufrufstellen dokumentiert, was dort ansteht.
 local function tSpeakInput(aText, aChar)
 	if not aText or aText == "" or not tEchoActive then
 		return
@@ -7545,16 +7542,17 @@ local function tSpeakInput(aText, aChar)
 	if SkuSettings and SkuSettings:Sub("SkuOptions") and SkuSettings:Sub("SkuOptions").keyboardEcho == false then
 		return
 	end
-	if aChar then
-		tEchoPending[#tEchoPending + 1] = aText
-		while #tEchoPending > tEchoMaxChars do
-			table.remove(tEchoPending, 1)
-		end
+	tEchoLastAt = GetTime()
+	if dprintv then dprintv("editbox echo", aText) end
+	if SkuOptions.Voice.SpeakEcho then
+		pcall(function() SkuOptions.Voice:SpeakEcho(aText) end)
 	else
-		wipe(tEchoPending)
-		tEchoPending[1] = aText
+		-- Fallback fuer eine aeltere eingebettete SkuVoice-Kopie: der alte Weg,
+		-- mit allen unter v42.13 beschriebenen Nachteilen, aber nicht stumm.
+		pcall(function()
+			SkuOptions.Voice:OutputStringBTtts(aText, {overwrite = true, wait = false, length = 0.05, engine = 2, ignoreLinks = true})
+		end)
 	end
-	tEchoSchedule()
 end
 
 -- Echo beenden: Wartendes verwerfen UND Laufendes abbrechen. Ohne den Abbruch
@@ -7569,8 +7567,13 @@ local function tEchoStop(aFinalText, aCancelOnlyIfRecent)
 	end
 	tEchoActive = false
 	tEchoGeneration = tEchoGeneration + 1
-	tEchoScheduled = false
-	wipe(tEchoPending)
+	-- [v43.2] Ein noch nicht ausgegebenes Zeichen aus der Schnellspur werfen. Das
+	-- ist der Ersatz fuer das alte wipe(tEchoPending) und muss VOR dem harten
+	-- Abbruch stehen: sonst koennte der Slot nach dem Cancel noch auslaufen und
+	-- ausgerechnet die Ansage abschiessen, die den Abbruch ueberleben soll.
+	if SkuOptions.Voice.CancelEcho then
+		pcall(function() SkuOptions.Voice:CancelEcho() end)
+	end
 	-- [v43.1] Der harte Abbruch existiert nur, um den Echo-Rueckstau in der
 	-- Client-Queue zu toeten. Ist das Tastatur-Echo abgeschaltet, GIBT es keinen
 	-- Rueckstau -- der Cancel wuerde dann nur gerade laufende, fremde Ansagen
@@ -7909,8 +7912,11 @@ function SkuOptions:AttachInputEcho(aEditBox, aOptions)
 		dprint("inputEcho", "focus gained", tostring(self.GetName and self:GetName()))
 		tApplyArrowMode(self, "focusGained")
 		tEchoGeneration = tEchoGeneration + 1
-		tEchoScheduled = false
-		wipe(tEchoPending)
+		-- [v43.2] Ein Restzeichen der VORIGEN Eingabe darf nicht in diese
+		-- hineinsprechen (Ersatz fuer das alte wipe(tEchoPending)).
+		if SkuOptions.Voice.CancelEcho then
+			pcall(function() SkuOptions.Voice:CancelEcho() end)
+		end
 		tEchoActive = true
 	end)
 
@@ -8066,8 +8072,9 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 	-- einen etwaigen Flush-Timer der VORIGEN Eingabe, damit deren letztes Zeichen
 	-- nicht in diese hineinspricht.
 	tEchoGeneration = tEchoGeneration + 1
-	tEchoScheduled = false
-	wipe(tEchoPending)
+	if SkuOptions.Voice.CancelEcho then
+		pcall(function() SkuOptions.Voice:CancelEcho() end)
+	end
 	tEchoActive = true
 end
 

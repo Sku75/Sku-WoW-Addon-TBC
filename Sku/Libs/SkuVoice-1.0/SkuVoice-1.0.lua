@@ -117,6 +117,29 @@ local tBttsSpeakingTtl = 12
 -- untouched. nil (no entry) => fall back to the global voice. See
 -- OutputStringBTtts (writes) and the OnUpdate dequeue (reads+clears).
 local mSkuVoiceQueueBTTS_Voice = {}
+-- [v43.2] "This line was caused by a key the user just pressed." Same side-map
+-- shape as the voice override above, and for the same reason: the queue entries
+-- must stay plain strings.
+--
+-- It exists because the back-to-back duplicate guard (tBttsDupWindow, below)
+-- cannot tell two identical strings apart by looking at them, and the two cases
+-- it has to separate mean OPPOSITE things:
+--   * a menu node re-announced by a redundant CheckFrames/restage pass -- nobody
+--     asked for it, suppress it (that is what the guard was written for);
+--   * the same node announced again because the user pressed a key -- they asked
+--     for it, speaking it is the whole point.
+-- No timing window separates those; only the producer knows. So the ONE keypress
+-- funnel (SkuZOptions/Core.lua, the menu key handler) tags its announce and the
+-- guard never suppresses a tagged line. Every other producer stays untagged and
+-- keeps exactly today's behaviour.
+--
+-- Keyed by TEXT, like the voice map, and inheriting the same known weakness: if
+-- two producers emit the identical string and only one tagged it, the tag
+-- applies to whichever entry dequeues. The failure that causes is a redundant
+-- repeat being spoken instead of suppressed -- i.e. it degrades to the
+-- pre-v43.2 behaviour, never to silence. That is the right direction to fail in,
+-- which is why it is not worth a parallel structured queue.
+local mSkuVoiceQueueBTTS_UserAction = {}
 
 -- [v42.13] Pump pacing state, hoisted out of SkuVoice:Create's closure so
 -- SkuVoice:CancelBttsOutput (below) can arm the same hold the queuereset branch
@@ -156,6 +179,141 @@ local tLastHandedText = nil
 local tLastHandedAt = 0
 local tLastHandedStarted = false
 local tBttsDupWindow = 1.0
+
+-- [v43.2] The pump's two holds, named so they sit in ONE place and can be read
+-- back by /skudebug tts.
+--
+-- WHY A HOLD EXISTS AT ALL -- the thing that is easy to get backwards: it does
+-- NOT keep utterances apart. Separation comes from the client, which is handed
+-- each line with `overlap` false and speaks them in order. Remove the holds and
+-- speech does not merge into one blob; what breaks is the opposite.
+--
+-- A screen reader's own API takes the interrupt as part of the speak call --
+-- Speak(text, interrupt) -- so replacing what is playing is ONE atomic
+-- operation and needs no pacing anywhere. C_VoiceChat has no such parameter:
+-- SpeakText(voiceID, text, rate, volume [, overlap]) cannot cancel, and
+-- StopSpeakingText is a separate ASYNCHRONOUS call with no completion signal.
+-- So Sku has to emulate one atomic operation with two racing ones, and
+-- tBttsPostStopHold is the gap that stops the stop from landing on -- and
+-- killing -- the very line it was issued to make room for. That race is real
+-- and measured: see the comment at the queuereset branch below.
+--
+-- tBttsPostSpeakHold is the weaker of the two. It only ever delays a LONE queued
+-- line (the `#queue > 1` bypass skips it otherwise) and its one real effect is
+-- coalescing: while a line waits, a newer overwrite can prune it before it is
+-- ever spoken. Inherited from the audio-file pump, where the same cadence has a
+-- genuine clip-sequencing job that does not apply here.
+--
+-- ★MEASURED 2026-08-29, and 0.1 STAYS. Both numbers were inherited from the
+-- audio-file pump and had never been checked, so they were measured properly
+-- (gap histogram, see tAuditGap): one session run at `/skudebug tts hold 0 0`,
+-- 233 handovers, 191 of them following a stop. Result:
+--
+--   0-9 ms:    2 samples, 0 lost
+--   10-19 ms: 85 samples, 1 LOST      <- the async-stop race, exactly here
+--   20-29 ms: 93 samples, 0 lost
+--   30-39 ms:  7 samples, 0 lost
+--   40-49 ms:  3 samples, 0 lost
+--
+-- Three things came out of that, all worth keeping written down:
+--
+-- 1. Setting the hold to 0 does NOT produce a 0 ms gap -- it produces ~10-30 ms
+--    (93% of samples). The real floor is the pump's own `fTimeBTTS > 0.01` gate
+--    plus the fact that a queuereset and its text are handled in SEPARATE pump
+--    passes. The hold is not what creates the gap; it only widens it.
+-- 2. So removing the hold saves ~80 ms per interrupted announcement, not 100.
+--    Play-tested at 0: the reporter could not tell the difference. 80 ms of
+--    speech-onset latency is below the perceptual threshold here, with the
+--    bridge's own startup on top of it.
+-- 3. The price of those 80 ms is the one loss above -- 1 in 233 handovers, where
+--    two sessions at 0.1 s lost 0 in 358. For a screen-reader user a silently
+--    dropped announcement is far worse than latency nobody can feel.
+--
+-- Hence: keep 0.1. Not because it was inherited, but because an imperceptible
+-- gain is not worth a rare silent loss. Do not reopen without new evidence --
+-- `/skudebug tts` reproduces the measurement.
+local tBttsPostStopHold = 0.10
+local tBttsPostSpeakHold = 0.10
+
+-- [v43.2] Handover audit for tuning the two holds above. Counters only, no
+-- strings kept; read with /skudebug tts, reset with /skudebug tts reset.
+--   handed:        utterances passed to C_VoiceChat.SpeakText
+--   started:       PLAYBACK_STARTED events received
+--   superseded:    handed, then deliberately cancelled by a stop before playback
+--                  began. NORMAL -- it is what fast arrowing and "typing cancels
+--                  the announcement" look like from here. Informational only.
+--   lost:          ★THE number. Handed, NOT superseded, and still no STARTED
+--                  after tBttsAuditLostAfter. Nothing cancelled it and it never
+--                  played -- i.e. the async stop landed on it. That, and only
+--                  that, says tBttsPostStopHold is too short.
+--   failed:        PLAYBACK_FAILED -- a refusal with a known cause, never `lost`
+--   dupSuppressed: back-to-back duplicates dropped by the guard
+--   userAction:    repeats spared because a keypress asked for them
+--   echo:          characters handed over through the typing fast lane
+--
+-- ★The distinction is the whole point, and the first version of this audit got
+-- it wrong: it counted every handover that had not started yet when the next one
+-- arrived. In a real capture all three hits were benign -- two correct supersedes
+-- (arrow pressed again, typing started) and one echo character that was NOT
+-- cancelled at all and played perfectly well, because the echo path issues no
+-- stop between characters and the client simply queues both. A figure that
+-- counts normal operation cannot justify changing a safety hold.
+local tBttsStats = {handed = 0, started = 0, superseded = 0, lost = 0, failed = 0, dupSuppressed = 0, userAction = 0, echo = 0}
+-- Is there a handover still waiting for its PLAYBACK_STARTED?
+local tAuditPendingHandover = false
+local tAuditPendingText = nil
+local tAuditPendingAt = 0
+-- Was a StopSpeakingText issued since that handover? Only then can a missing
+-- STARTED be blamed on a cancel rather than on the client still warming up.
+local tAuditStopSinceHandover = false
+
+-- [v43.2] ★Gap histogram -- the instrument that answers the hold question by
+-- MEASURING instead of by bisecting hold values until something breaks.
+--
+-- For every handover that a stop cleared the way for, this records how long
+-- after that stop the utterance was actually handed over, and whether it then
+-- played. Buckets are 10 ms wide, index 11 = 100 ms and above. Read off
+-- directly: the shortest bucket that still shows 0 lost is the shortest safe
+-- hold. One session gives the whole curve.
+--
+-- ★It only samples gaps the holds ALLOW, so at the shipped 0.1 s everything
+-- lands in bucket 11 and the curve is empty. To measure the short end you have
+-- to let handovers go earlier: /skudebug tts hold 0 0.
+local tAuditGap = {}
+for i = 1, 11 do tAuditGap[i] = {n = 0, lost = 0} end
+-- Bucket of the handover currently awaiting its STARTED, or nil when no stop
+-- preceded it. nil ALSO means "do not time this one out" -- see the lost check.
+local tAuditPendingBucket = nil
+-- How long a handover may stay silent before it counts as lost. Generously above
+-- any real start latency: STARTED is the START of playback, not its end, and on
+-- the bridge it arrives in the handover frame.
+local tBttsAuditLostAfter = 0.5
+
+-- [v43.2] Typing-echo fast lane.
+--
+-- A typed character has the opposite requirements to an announcement: it must be
+-- audible NOW, it is one character long, and pressing the same key twice is the
+-- user saying something, never a redundant repeat. Routing it through the normal
+-- queue cost it ~0.2s (batching + post-stop hold, serialized) and fed it to a
+-- dedup guard that swallowed every doubled letter.
+--
+-- So it gets its own single slot, drained by the same OnUpdate:
+--   * ONE slot, newest wins -- a held key or a paste coalesces at frame
+--     resolution instead of producing hundreds of utterances;
+--   * no queuereset, so consecutive characters never stop each other. The stop
+--     is issued ONCE, when typing starts and something else is still audible;
+--   * never writes tLastHandedText, so the duplicate guard cannot see it.
+local tEchoSlotText = nil
+local tEchoSlotDueAt = 0
+local tEchoSlotVoice = nil
+-- Handover delay for the echo slot. Not pacing -- it is the same post-stop race
+-- as above, and only applies to the FIRST character of a burst (the one that
+-- carries a stop). Subsequent characters go out on the next frame.
+local tEchoHandoverDelay = 0.02
+-- Was the last thing handed to the client a typed character? This is what "am I
+-- still inside the same typing burst?" is decided on -- and therefore whether a
+-- character has to stop anything at all.
+local tLastHandoverWasEcho = false
 
 -- BTTS cache-buster (WoW 12.0 engine): the new client caches synthesized audio
 -- by text and, on a repeat, REPLAYS the cached audio without re-invoking the
@@ -201,6 +359,59 @@ local function BttsCacheBust(aString)
 	return "\194\160" .. aString .. string.rep("\194\160", mBttsCacheBust) .. string.format('<bookmark mark="skc%d"/>', mBttsCacheBust)
 end
 
+-- [v43.2] The ONE place an utterance reaches the client. The normal queue and the
+-- typing fast lane both go through here, so the audit counters can never disagree
+-- with what was actually spoken.
+--
+-- Patch 12.0.0 (ported to the Anniversary client) REMOVED the `destination` arg
+-- from C_VoiceChat.SpeakText and added an optional `overlap`. New signature:
+--   SpeakText(voiceID, text, rate, volume [, overlap])
+-- The old call passed the now-dead destination (4) here, which shifted
+-- rate/volume by one and let the old volume land in the new `overlap` slot
+-- (truthy => overlap on). That mangled call made the engine speak "start"/"end"
+-- around every utterance and ignored the user's speed/volume. Proven on-client:
+-- Enum.VoiceTtsDestination is now nil and a clean 4-arg call speaks with no
+-- boundary words. overlap is omitted (defaults false) so Sku keeps driving its
+-- own sequencing without overlapping speech.
+local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
+	if tAuditPendingHandover and tAuditStopSinceHandover then
+		-- Deliberately cancelled before it played. Normal; counted for context
+		-- only. Without a stop in between nothing was cancelled -- the client just
+		-- queues both and speaks them in turn -- so that case is not counted at all.
+		tBttsStats.superseded = tBttsStats.superseded + 1
+		if dprint then dprint("BTTS SUPERSEDED", "cancelled before playback",
+			"text=["..tostring(tAuditPendingText).."]") end
+	end
+	tAuditPendingHandover = true
+	tAuditPendingText = aText
+	tAuditPendingAt = GetTime()
+	-- ★A handover is only expected to start PROMPTLY when a stop cleared the way
+	-- for it. Without one it is queued behind whatever is still speaking, and
+	-- waiting a second or three for its turn is correct behaviour, not a loss.
+	-- Measured proof that this matters: two lines flagged lost at the 0.1 s hold
+	-- were both simply queued behind a playing utterance -- one of them got its
+	-- STARTED right after the one in front finished, the other was cancelled by
+	-- the user's next keypress. Neither was a loss, and the first version of this
+	-- check called both of them one.
+	if tAuditStopSinceHandover then
+		local tGap = tAuditPendingAt - tLastStopAt
+		local tBucket = math.floor(tGap * 100) + 1
+		if tBucket < 1 then tBucket = 1 end
+		if tBucket > 11 then tBucket = 11 end
+		tAuditPendingBucket = tBucket
+	else
+		tAuditPendingBucket = nil
+	end
+	tAuditStopSinceHandover = false
+	tLastHandoverWasEcho = (aIsEcho == true)
+	tBttsStats.handed = tBttsStats.handed + 1
+	if aIsEcho then tBttsStats.echo = tBttsStats.echo + 1 end
+	if dprint then dprint("BTTS SpeakText", aIsEcho and "echo" or "queue",
+		"voice="..tostring(aVoiceIndex - 1), "speed="..tostring(ChatTts().WowTtsSpeed),
+		"vol="..tostring(ChatTts().WowTtsVolume), "text=["..tostring(aText).."]") end
+	C_VoiceChat.SpeakText(aVoiceIndex - 1, BttsCacheBust(aText), ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
+end
+
 function SkuVoice:Create()
 	local f = CreateFrame("Frame", "SkuVoiceMainFrame", UIParent)
 	f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_FINISHED")
@@ -224,7 +435,13 @@ function SkuVoice:Create()
 			if dprint then dprint("BTTS event "..aEventName, ...) end
 			-- [v43.2] A FAILED utterance never reached the voice, so the duplicate
 			-- guard must not treat it as "the user already heard this".
-			if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FAILED" then tLastHandedStarted = false end
+			if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FAILED" then
+				tLastHandedStarted = false
+				-- A refusal is a non-start with a KNOWN cause, so it must not be
+				-- counted as the async-stop race the `lost` figure is measuring.
+				tBttsStats.failed = tBttsStats.failed + 1
+				tAuditPendingHandover = false
+			end
 			-- Drain the oldest speaking entry on BOTH end and fail (FIFO — the
 			-- guard's only job is short-lived dedup, so oldest-out is good enough;
 			-- the TTL sweep backstops any out-of-order or missing event).
@@ -238,6 +455,13 @@ function SkuVoice:Create()
 			-- BEFORE its STARTED (the async-stop race documented in the pump) must
 			-- still be allowed through again, or suppressing it would CAUSE silence.
 			tLastHandedStarted = true
+			tBttsStats.started = tBttsStats.started + 1
+			tAuditPendingHandover = false
+			-- It survived the gap it was handed over at: one sample for the curve.
+			if tAuditPendingBucket then
+				tAuditGap[tAuditPendingBucket].n = tAuditGap[tAuditPendingBucket].n + 1
+				tAuditPendingBucket = nil
+			end
 		elseif aEventName == "VOICE_CHAT_TTS_SPEAK_TEXT_UPDATE" then
 			if dprint then dprint("BTTS event SPEAK_TEXT_UPDATE", ...) end
 		elseif aEventName == "VOICE_CHAT_TTS_PLAYBACK_BOOKMARK" then
@@ -260,6 +484,45 @@ function SkuVoice:Create()
 	-- (tNextSpeakAt / tLastStopAt are file-locals now -- see their declaration
 	-- above; SkuVoice:CancelBttsOutput needs to arm the same hold.)
 	f:SetScript("OnUpdate", function(self, time)
+
+		-- [v43.2] Did a handover go silent? Nothing superseded it (a supersede
+		-- clears the flag at the next handover) and no STARTED arrived -- so the
+		-- async stop landed on it and the user heard nothing. This is the ONE
+		-- figure that says tBttsPostStopHold is too short; everything else in the
+		-- audit is context. Checked here because it needs a clock, not an event:
+		-- the whole failure is that no event ever comes.
+		-- ★Only handovers that a stop cleared the way for (tAuditPendingBucket set)
+		-- are timed out. One that is queued behind a playing utterance is SUPPOSED
+		-- to wait, and timing it out reports a loss where the client is merely
+		-- taking its turn -- which is exactly what the first version did.
+		if tAuditPendingHandover and tAuditPendingBucket
+			and (GetTime() - tAuditPendingAt) > tBttsAuditLostAfter then
+			tAuditPendingHandover = false
+			tBttsStats.lost = tBttsStats.lost + 1
+			tAuditGap[tAuditPendingBucket].n = tAuditGap[tAuditPendingBucket].n + 1
+			tAuditGap[tAuditPendingBucket].lost = tAuditGap[tAuditPendingBucket].lost + 1
+			if dprint then dprint("BTTS LOST", "handed but never played",
+				"gapBucket="..tostring((tAuditPendingBucket - 1) * 10).."ms",
+				"postStopHold="..tostring(tBttsPostStopHold),
+				"text=["..tostring(tAuditPendingText).."]") end
+			tAuditPendingBucket = nil
+		end
+
+		-- [v43.2] Typing fast lane, drained BEFORE the 0.01s pump gate and before
+		-- the queue below: a typed character has to reach the voice on the frame it
+		-- is due, not a pump tick later. One slot, so a character typed while the
+		-- previous one is still waiting simply replaces it -- that is the coalescing
+		-- a held key and a paste need, at frame resolution.
+		if tEchoSlotText then
+			local tNowEcho = GetTime()
+			if tNowEcho >= tEchoSlotDueAt then
+				local tText = tEchoSlotText
+				local tVoice = tEchoSlotVoice
+				tEchoSlotText = nil
+				tEchoSlotVoice = nil
+				BttsHandOver(tText, tVoice or ChatTts().WowTtsVoice, true)
+			end
+		end
 
 		fTimeBTTS = fTimeBTTS + time
 		if fTimeBTTS > 0.01 and #mSkuVoiceQueueBTTS == 0 and #mSkuVoiceQueueBTTS_Speaking == 0 then
@@ -294,6 +557,13 @@ function SkuVoice:Create()
 			if tLastReset then
 				for x = 1, tLastReset - 1 do
 					--print("  Q R: ", x, mSkuVoiceQueueBTTS[1])
+					-- [v43.2] Drop the side-map entry with the string it belongs to, so
+					-- a superseded line cannot leave a stale user-action tag behind for
+					-- the next identical string to inherit.
+					local tDropped = mSkuVoiceQueueBTTS[1]
+					if tDropped and tDropped ~= "queuereset" then
+						mSkuVoiceQueueBTTS_UserAction[tDropped] = nil
+					end
 					table.remove(mSkuVoiceQueueBTTS, 1)
 				end
 			end
@@ -314,13 +584,31 @@ function SkuVoice:Create()
 					-- we are here this pair is the tail of the queue.) Drop both: no
 					-- stop, no resend, the line already playing simply runs to its end.
 					local tPeek = mSkuVoiceQueueBTTS[2]
+					-- [v43.2] A line the user's own keypress produced is never a
+					-- redundant repeat -- they asked for it again. Only untagged
+					-- (rebuild-driven) repeats are suppressed. See
+					-- mSkuVoiceQueueBTTS_UserAction.
+					local tPeekIsUserAction = tPeek and mSkuVoiceQueueBTTS_UserAction[tPeek] == true
 					if tPeek and tPeek ~= "queuereset" and tLastHandedText and tLastHandedStarted
-						and tPeek == tLastHandedText and (tNow - tLastHandedAt) < tBttsDupWindow then
+						and tPeek == tLastHandedText and (tNow - tLastHandedAt) < tBttsDupWindow
+						and not tPeekIsUserAction then
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						mSkuVoiceQueueBTTS_Voice[tPeek] = nil
+						mSkuVoiceQueueBTTS_UserAction[tPeek] = nil
+						tBttsStats.dupSuppressed = tBttsStats.dupSuppressed + 1
 						if dprint then dprint("BTTS DUP-SUPPRESS", "reset+text", "age="..string.format("%.2f", tNow - tLastHandedAt), "text=["..tostring(tPeek).."]") end
 					else
+						-- Count a rescue only when the guard WOULD have suppressed this
+						-- line -- same three conditions as the branch above. Without the
+						-- age and started checks it also counted repeats that were
+						-- outside the window anyway (measured: ages of 2.0 s and 3.3 s),
+						-- which overstates what the tag is actually buying.
+						if tPeekIsUserAction and tPeek == tLastHandedText and tLastHandedStarted
+							and (tNow - tLastHandedAt) < tBttsDupWindow then
+							tBttsStats.userAction = tBttsStats.userAction + 1
+							if dprint then dprint("BTTS DUP-ALLOW", "user action", "age="..string.format("%.2f", tNow - tLastHandedAt), "text=["..tostring(tPeek).."]") end
+						end
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						if ChatTts().neverResetQueues ~= true then
 							-- [v42.12] Suppress a provably redundant stop.
@@ -349,15 +637,21 @@ function SkuVoice:Create()
 								if dprint then dprint("BTTS queuereset -> StopSpeakingText") end
 								C_VoiceChat.StopSpeakingText()
 								tLastStopAt = tNow
+								tAuditStopSinceHandover = true
 							elseif dprint then
 								dprint("BTTS queuereset -> stop suppressed (nothing in flight)")
 							end
 						end
 						mSkuVoiceQueueBTTS_Speaking = {}
-						tNextSpeakAt = tNow + 0.10
+						tNextSpeakAt = tNow + tBttsPostStopHold
 						-- A stop that really fired cancelled whatever was playing, so an
 						-- identical line arriving after it must be allowed through again.
 						tLastHandedText = nil
+						-- [v43.2] A real announcement supersedes a typed character that has
+						-- not gone out yet -- otherwise the stale letter would be spoken
+						-- after the line that replaced it.
+						tEchoSlotText = nil
+						tEchoSlotVoice = nil
 					end
 				else
 					if #mSkuVoiceQueueBTTS > 1 or tNow >= tNextSpeakAt then
@@ -374,10 +668,19 @@ function SkuVoice:Create()
 						-- only effect is that the identical line is not queued a second time
 						-- behind itself.
 						local tIsBackToBackDup = false
+						-- [v43.2] Never suppress a line the user's own keypress asked
+						-- for -- see mSkuVoiceQueueBTTS_UserAction.
+						local tIsUserAction = mSkuVoiceQueueBTTS_UserAction[tValue] == true
 						if not tIsAlreadySpeakingThat and tLastHandedText and tLastHandedStarted
 							and tValue == tLastHandedText and (tNow - tLastHandedAt) < tBttsDupWindow then
-							tIsBackToBackDup = true
-							if dprint then dprint("BTTS DUP-SUPPRESS", "no-reset", "age="..string.format("%.2f", tNow - tLastHandedAt), "text=["..tostring(tValue).."]") end
+							if tIsUserAction then
+								tBttsStats.userAction = tBttsStats.userAction + 1
+								if dprint then dprint("BTTS DUP-ALLOW", "user action", "age="..string.format("%.2f", tNow - tLastHandedAt), "text=["..tostring(tValue).."]") end
+							else
+								tIsBackToBackDup = true
+								tBttsStats.dupSuppressed = tBttsStats.dupSuppressed + 1
+								if dprint then dprint("BTTS DUP-SUPPRESS", "no-reset", "age="..string.format("%.2f", tNow - tLastHandedAt), "text=["..tostring(tValue).."]") end
+							end
 						end
 						if not tIsAlreadySpeakingThat and not tIsBackToBackDup then
 							table.insert(mSkuVoiceQueueBTTS_Speaking, {text = tValue, at = GetTime()})
@@ -385,21 +688,7 @@ function SkuVoice:Create()
 							-- 1-based domain as WowTtsVoice, so the "- 1" API convention
 							-- is identical whether the voice is per-channel or global.
 							local tVoiceIndex = mSkuVoiceQueueBTTS_Voice[tValue] or ChatTts().WowTtsVoice
-							-- BTTS diag: the EXACT string + params handed to WoW.
-							if dprint then dprint("BTTS SpeakText", "voice="..tostring(tVoiceIndex - 1), "speed="..tostring(ChatTts().WowTtsSpeed), "vol="..tostring(ChatTts().WowTtsVolume), "text=["..tostring(tValue).."]") end
-							-- Patch 12.0.0 (ported to the Anniversary client) REMOVED the
-							-- `destination` arg from C_VoiceChat.SpeakText and added an
-							-- optional `overlap`. New signature:
-							--   SpeakText(voiceID, text, rate, volume [, overlap])
-							-- The old call passed the now-dead destination (4) here, which
-							-- shifted rate/volume by one and let the old volume land in the
-							-- new `overlap` slot (truthy => overlap on). That mangled call
-							-- made the engine speak "start"/"end" around every utterance and
-							-- ignored the user's speed/volume. Proven on-client: Enum.
-							-- VoiceTtsDestination is now nil and a clean 4-arg call speaks
-							-- with no boundary words. overlap is omitted (defaults false) so
-							-- Sku keeps driving its own queue without overlapping speech.
-							C_VoiceChat.SpeakText(tVoiceIndex - 1, BttsCacheBust(tValue), ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
+							BttsHandOver(tValue, tVoiceIndex, false)
 							-- [v43.2] Marker for the back-to-back duplicate guard. Set from the
 							-- handover, NOT from a playback event: on the bridge the events are
 							-- useless for this (see tBttsDupWindow).
@@ -415,7 +704,8 @@ function SkuVoice:Create()
 							if dprint then dprint("BTTS DEDUP-SKIP", "speaking="..#mSkuVoiceQueueBTTS_Speaking, "text=["..tostring(tValue).."]") end
 						end
 						mSkuVoiceQueueBTTS_Voice[tValue] = nil
-						tNextSpeakAt = tNow + 0.1
+						mSkuVoiceQueueBTTS_UserAction[tValue] = nil
+						tNextSpeakAt = tNow + tBttsPostSpeakHold
 					end
 				end
 			end
@@ -898,7 +1188,10 @@ function SkuVoice:TokenizeNumberToAudio(aToken, aStrings, aVocalizeAsIs, aMode)
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aVoice)
+-- aUserAction: this line is the direct consequence of a key the user just
+-- pressed. Only the menu's keypress funnel sets it; it exempts the line from the
+-- back-to-back duplicate guard (see mSkuVoiceQueueBTTS_UserAction).
+function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aVoice, aUserAction)
 	if not aString then
 		return
 	end
@@ -921,6 +1214,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		-- SkuChat.WowTtsVoices). Attached to the queued string below so the
 		-- dequeue can pick it instead of the global voice.
 		aVoice = aOverwrite.voice
+		aUserAction = aOverwrite.userAction
 		aOverwrite = aOverwrite.overwrite
 	end
 
@@ -1117,6 +1411,9 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		if aVoice then
 			mSkuVoiceQueueBTTS_Voice[tFinalStringForBTtsMac] = aVoice
 		end
+		if aUserAction then
+			mSkuVoiceQueueBTTS_UserAction[tFinalStringForBTtsMac] = true
+		end
 		if not aIgnoreLinks then
 			SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTtsMac, "")
 		end
@@ -1128,6 +1425,9 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		end
 		if aVoice then
 			mSkuVoiceQueueBTTS_Voice[tFinalStringForBTts] = aVoice
+		end
+		if aUserAction then
+			mSkuVoiceQueueBTTS_UserAction[tFinalStringForBTts] = true
 		end
 
 		if not aIgnoreLinks then
@@ -1565,10 +1865,15 @@ function SkuVoice:CancelBttsOutput()
 		local tValue = mSkuVoiceQueueBTTS[x]
 		if tValue then
 			mSkuVoiceQueueBTTS_Voice[tValue] = nil
+			mSkuVoiceQueueBTTS_UserAction[tValue] = nil
 		end
 		mSkuVoiceQueueBTTS[x] = nil
 	end
 	mSkuVoiceQueueBTTS_Speaking = {}
+	-- [v43.2] A pending typed character must not survive a hard cancel either.
+	tEchoSlotText = nil
+	tEchoSlotVoice = nil
+	tLastHandoverWasEcho = false
 	local tNow = GetTime()
 	tLastStopAt = tNow
 	tNextSpeakAt = tNow + 0.15
@@ -1577,6 +1882,129 @@ function SkuVoice:CancelBttsOutput()
 	tLastHandedText = nil
 	if dprint then dprint("BTTS CancelBttsOutput -> StopSpeakingText") end
 	pcall(function() C_VoiceChat.StopSpeakingText() end)
+	tAuditStopSinceHandover = true
+end
+
+---------------------------------------------------------------------------------------------------------
+-- [v43.2] Speak ONE typed character (or a short key-feedback string) with the
+-- lowest latency this API allows.
+--
+-- Why it does not go through OutputStringBTtts: an announcement and a keystroke
+-- want opposite things. The queue path batches, paces, overwrites-by-stop and
+-- dedups -- correct for a menu line, and four separate ways to swallow or delay a
+-- letter. The measured cost was ~0.2s per character (a 0.1s producer-side batch
+-- and the 0.1s post-stop hold, serialized), doubled letters eaten by the
+-- back-to-back guard, and a StopSpeakingText per keystroke whose async landing
+-- killed the NEXT letter.
+--
+-- What happens here instead:
+--   * ONE slot. A character typed while the previous one is still waiting simply
+--     replaces it, so a held key or a paste can never produce a burst of
+--     utterances -- the coalescing the old 0.1s batch existed for, at frame
+--     resolution instead.
+--   * The stop is issued ONCE, on the first character of a burst, where it has
+--     something real to interrupt (the field's own announce). Consecutive
+--     characters never stop each other: the client sequences them itself, and a
+--     stop between two letters can only cut the first or kill the second.
+--   * tLastHandedText is never written, so the duplicate guard cannot see typed
+--     characters at all. Pressing the same key twice is the user saying
+--     something, never a redundant repeat.
+---@param aText string one character, or a short spoken key name ("Leerzeichen")
+---@param aVoice number|nil optional 1-based voice index, same domain as WowTtsVoice
+function SkuVoice:SpeakEcho(aText, aVoice)
+	if type(aText) ~= "string" or aText == "" then
+		return
+	end
+	local tNow = GetTime()
+	if tLastHandoverWasEcho ~= true then
+		-- First character of a burst: whatever is audible now is superseded by it.
+		-- Clear the queue too, or a menu line already waiting would be spoken on
+		-- top of the typing.
+		for x = #mSkuVoiceQueueBTTS, 1, -1 do
+			local tValue = mSkuVoiceQueueBTTS[x]
+			if tValue then
+				mSkuVoiceQueueBTTS_Voice[tValue] = nil
+				mSkuVoiceQueueBTTS_UserAction[tValue] = nil
+			end
+			mSkuVoiceQueueBTTS[x] = nil
+		end
+		mSkuVoiceQueueBTTS_Speaking = {}
+		tLastStopAt = tNow
+		-- The stop really silenced that line, so an identical one arriving later
+		-- must be allowed through again.
+		tLastHandedText = nil
+		if dprint then dprint("BTTS echo burst start -> StopSpeakingText") end
+		pcall(function() C_VoiceChat.StopSpeakingText() end)
+		tAuditStopSinceHandover = true
+		-- Only THIS character waits, and only for the stop to land -- the same
+		-- race tBttsPostStopHold covers, but the echo pays it once per burst
+		-- rather than once per keystroke.
+		tEchoSlotDueAt = tNow + tEchoHandoverDelay
+	else
+		-- Mid-burst: due now, i.e. the very next frame.
+		tEchoSlotDueAt = 0
+	end
+	tLastHandoverWasEcho = true
+	tEchoSlotText = aText
+	tEchoSlotVoice = aVoice
+end
+
+---------------------------------------------------------------------------------------------------------
+-- [v43.2] Drop a typed character that has not gone out yet. Does NOT stop
+-- anything already speaking -- the caller decides that (SkuOptions' tEchoStop
+-- uses CancelBttsOutput when it wants the hard cancel).
+function SkuVoice:CancelEcho()
+	tEchoSlotText = nil
+	tEchoSlotVoice = nil
+	tLastHandoverWasEcho = false
+end
+
+---------------------------------------------------------------------------------------------------------
+-- [v43.2] Handover audit, for tuning tBttsPostStopHold / tBttsPostSpeakHold
+-- against real play instead of the inherited 0.1s guess. See /skudebug tts.
+---@return table stats, number postStopHold, number postSpeakHold, number dupWindow, table gapHistogram
+function SkuVoice:GetBttsStats()
+	return {
+		handed = tBttsStats.handed,
+		started = tBttsStats.started,
+		superseded = tBttsStats.superseded,
+		lost = tBttsStats.lost,
+		failed = tBttsStats.failed,
+		dupSuppressed = tBttsStats.dupSuppressed,
+		userAction = tBttsStats.userAction,
+		echo = tBttsStats.echo,
+	}, tBttsPostStopHold, tBttsPostSpeakHold, tBttsDupWindow, tAuditGap
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuVoice:ResetBttsStats()
+	tBttsStats.handed = 0
+	tBttsStats.started = 0
+	tBttsStats.superseded = 0
+	tBttsStats.lost = 0
+	tBttsStats.failed = 0
+	tBttsStats.dupSuppressed = 0
+	tBttsStats.userAction = 0
+	tBttsStats.echo = 0
+	for i = 1, 11 do
+		tAuditGap[i].n = 0
+		tAuditGap[i].lost = 0
+	end
+end
+
+---------------------------------------------------------------------------------------------------------
+-- [v43.2] Session-only override of the pump's two holds, so a value can be tried
+-- and measured without a rebuild. Deliberately NOT persisted: a wrong number here
+-- costs speech, and it must never outlive the session that set it.
+---@param aPostStop number|nil seconds after a StopSpeakingText before a line may be handed over
+---@param aPostSpeak number|nil seconds after a handover before a LONE queued line may follow
+function SkuVoice:SetBttsHolds(aPostStop, aPostSpeak)
+	if type(aPostStop) == "number" and aPostStop >= 0 and aPostStop <= 1 then
+		tBttsPostStopHold = aPostStop
+	end
+	if type(aPostSpeak) == "number" and aPostSpeak >= 0 and aPostSpeak <= 1 then
+		tBttsPostSpeakHold = aPostSpeak
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------

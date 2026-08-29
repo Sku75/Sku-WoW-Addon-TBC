@@ -10,6 +10,11 @@ Aenderungen in Sku v43.2
 
         Neu
             Neuer Tastenbefehl "Vollstaendigen Tooltip des Ziels ausgeben" (Strg+Umschalt+V): liest den kompletten Tooltip des aktuellen Ziels vor, inklusive dessen, was die Jaegerfaehigkeit Tierkunde offenlegt.
+            Quests lassen sich im Questmenue verfolgen und wieder abwaehlen - neuer Eintrag "Quest verfolgen" ganz unten in jedem Questmenue, abschaltbar.
+            Neuer Tastenbefehl "Naechstes Questziel ins Ziel nehmen" (Alt+H): nimmt eine Kreatur ins Ziel, die zu einem offenen Questziel gehoert - auch eine, die einen benoetigten Gegenstand nur fallen laesst.
+            Der Tastenbefehl "Naechster Gegner im Kampf" (jetzt ab Werk auf Strg+H) findet deutlich oefter etwas: er ist nicht mehr auf den Blickkegel angewiesen.
+            Neue Liste "Quests in der Naehe" im Questmenue: das ganze Questlog in einer Liste, sortiert danach, wie weit das Naechste weg ist - mit Entfernung und Himmelsrichtung. Ab Werk aus.
+            Taschenmenue: neuer Eintrag "alle bank" direkt hinter "alle taschen", solange die Bank offen ist - alles in der Bank in einer flachen Liste, genau wie "alle taschen" fuer die Taschen. Strg+Eingabe holt einen Gegenstand von dort in die Taschen, wie bisher schon in den einzelnen Bankfaechern.
             Chat: die Eingabezeile spricht jetzt wie jedes andere Sku-Eingabefeld - jedes getippte Zeichen, das Zeichen oder Wort unter dem Cursor, und mit Pfeil hoch die zuletzt gesendeten Nachrichten zum erneuten Senden oder Aendern.
             Chat: der Zielkanal wird angesagt, sobald er nicht "Sagen" ist - beim Oeffnen und bei jedem Wechsel.
             Chat: ein unbekannter Slash-Befehl wird angesagt, statt still verworfen zu werden.
@@ -21,6 +26,7 @@ Aenderungen in Sku v43.2
             Menue: das Schliessen eines Fensters baut die Menuedaten nur noch einmal statt bis zu sechsmal neu auf.
             Auren: eine Waffenverzauberung (Angelkoeder, Gift, Oel) laesst sich jetzt wie ein Zauber ansprechen - Ereignis "Waffenverzauberung abgelaufen" zusammen mit "Zauber name".
             Auren: neue Bedingung und neue Ausgabe "Waffenverzauberung Hand" (Haupthand oder Nebenhand).
+            Questdatenbank: "Start in Zone" zeigt die nach Entfernung sortierte Liste direkt an - die Zwischenebene "Nach Entfernung" ist weg.
             Chat: "Link zu Chat hinzufuegen" fuegt den Gegenstand an der Cursorposition ein, statt die Zeile zu ersetzen, und laesst den Cursor davor stehen - davor passt jetzt noch ein Kanal wie "/p ".
             Chat: ein Gegenstandslink zaehlt beim Lesen als ein einziges Zeichen - Pfeil links und rechts springen ueber den ganzen Link und sagen den Namen.
             Chat: "Link zu Chat hinzufuegen" schliesst die Taschen nicht mehr.
@@ -38,6 +44,11 @@ Aenderungen in Sku v43.2
             Auren: das Ende einer Waffenverzauberung wird auf den Frame genau erkannt statt bis zu eine viertel Sekunde spaeter.
             Menue: Enter auf einem Ein/Aus-Eintrag in einer gefilterten Liste sagte den ersten Eintrag der Liste an statt des umgeschalteten Zustands.
             Dungeonbrowser: das Annehmen einer Gruppeneinladung fuehrt nicht mehr von selbst in den Dungeonbrowser.
+            Questdatenbank: die Liste "Start in Zone, Nach Entfernung" brach nach der ersten Quest ab.
+            Taschenmenue: mit einem Taschen-Ersatz-Addon wie Bagnon, das Blizzards Bankfenster versteckt, verschwanden saemtliche Bankfaecher aus dem Menue.
+            Das Loeschen eines eigenen Wegpunkts entfernte die falsche interne Kennung, und "/skucheck wp" meldete vier Fehler bei den Schnellwegpunkten, die keine waren.
+            Tastatur-Echo: getippte Zeichen kommen sofort; verschluckte und verspaetete Buchstaben sind weg.
+            Menue: eine Zeile, die man per Tastendruck erneut anfordert, wird wieder vorgelesen statt verschluckt.
             Sprachausgabe: Gegenstandslinks wurden als Folge von Farbcodes vorgelesen statt als Name - ueberall in Sku, nicht nur im Chat.
 
     Der Cursor bleibt in der Tasche auf dem Gegenstand
@@ -355,6 +366,199 @@ Aenderungen in Sku v43.2
             geleert und der Besitzer exakt so wiederhergestellt, wie SkuCore ihn beim Anmelden
             setzt.
 
+
+
+
+    Quests verfolgen und wieder abwaehlen
+        Einfach: Im Menue jeder Quest steht jetzt als letzter Eintrag "Quest verfolgen". Enter
+            schaltet ihn um, der Cursor bleibt stehen, und der neue Zustand wird sofort angesagt
+            - "Quest verfolgen;Ein" oder "Quest verfolgen;Aus". Verfolgt heisst: WoWs eigene
+            Markierung auf der Mini- und der Weltkarte. Wer noch etwas sieht, findet Questziele
+            damit schneller; wer nichts sieht, hat von den Markern nichts. Deshalb laesst sich
+            der Eintrag komplett abschalten - unter Sku Einstellungen, SkuQuest, "Eintrag Quest
+            verfolgen anzeigen"; ab Werk ist er an. Er erscheint nur bei Quests im eigenen
+            Questlog, denn eine Quest aus der Questdatenbank hat man noch gar nicht. Zwei
+            Grenzen setzt das Spiel selbst: in The Burning Crusade lassen sich hoechstens fuenf
+            Quests gleichzeitig verfolgen, und eine Quest ganz ohne Ziele gar nicht. In beiden
+            Faellen sagt Sku die Meldung des Spiels an und der Zustand bleibt, wie er war.
+        Technisch: Idee und Referenzumsetzung stammen von ZenqFR, aus dem Begleit-Addon
+            SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby); hier ist die Funktion mit
+            ZenqFRs Zustimmung nativ gegen Skus eigene Schnittstellen neu gebaut, damit kein
+            zusaetzliches Addon noetig ist. Der Eintrag haengt im chunk-lokalen
+            CreateQuestSubmenu statt an einem Hook auf dem oeffentlichen Wrapper - deshalb
+            bekommt ihn jede Questansicht: Questlog, Questdatenbank und die Questmenues von
+            SkuChat. Auf 2.5.6 gibt es kein C_QuestLog: AddQuestWatch, RemoveQuestWatch und
+            IsQuestWatched nehmen einen Questlog-Index, keine Quest-ID, und dieser Index
+            verschiebt sich bei jeder angenommenen oder abgegebenen Quest. Sku haelt darum eine
+            Zuordnung Quest-ID auf Index, prueft den gemerkten Index bei jedem Lesen nach und
+            verwirft die Zuordnung bei den Questereignissen; ohne diesen Zwischenspeicher liefe
+            die Liste "Questdatenbank, Alle" einen vollen Questlog-Durchlauf pro Quest.
+            Eingeschaltet wird ueber AutoQuestWatch_Insert mit QUEST_WATCH_NO_EXPIRE, damit die
+            Quest in QUEST_WATCH_LIST landet und kein Ablauftimer sie wieder herausnimmt; beim
+            Abwaehlen wird zuerst der Eintrag aus QUEST_WATCH_LIST entfernt und dann
+            RemoveQuestWatch gerufen - genau wie in Blizzards eigenem Klickpfad, sonst zaehlt
+            eine laengst nicht mehr verfolgte Quest weiter gegen das Limit von fuenf.
+            QuestWatch_Update laeuft nur ausserhalb des Kampfes, weil es am Ende geschuetzte
+            Frames verschiebt; das naechste QUEST_LOG_UPDATE holt es ohnehin nach.
+
+    Neuer Tastenbefehl "Naechstes Questziel ins Ziel nehmen" (Alt+H)
+        Einfach: Ein Druck nimmt eine Kreatur ins Ziel, die zu einem noch offenen Questziel
+            gehoert - und zwar auch dann, wenn man sie gar nicht toeten muss, sondern sie nur
+            einen benoetigten Gegenstand fallen laesst. Beispiel: fuer "Essenzen fuer die
+            Motoren" nennt das Questlog nur den Gegenstand; die Taste nimmt trotzdem das
+            Managespenst ins Ziel, das ihn fallen laesst. Passt nichts in Reichweite, sagt Sku
+            "kein Questziel in Reichweite"; ist im Questlog ueberhaupt nichts Passendes,
+            "kein Questziel im Questlog". Die Taste liegt ab Werk auf Alt+H und laesst sich
+            unter Sku Tastenbelegung, "Ziel und Soft Targeting" umlegen.
+        Technisch: Idee und Referenzumsetzung stammen von ZenqFR, aus dem Begleit-Addon
+            SkuQuestTarget (github.com/ZenqFR/Sku-QuestTarget); hier ist die Funktion mit
+            ZenqFRs Zustimmung nativ neu gebaut, damit kein zusaetzliches Addon noetig ist.
+            Die Kandidaten kommen aus dem eigenen Questlog ueber SkuQuest:GetQuestTargetIds;
+            Gegenstandsziele werden ueber die Fallquelle (npcDrops, eine Ebene tief auch
+            itemDrops) auf die Kreaturen zurueckgefuehrt, die sie fallen lassen. Gesucht wird
+            zuerst in der Zone, in der man selbst steht - wer dort keinen Spawnpunkt hat, kann
+            gar nicht in Zielreichweite sein und darf keinen Platz im Makro belegen; erst wenn
+            in der eigenen Zone nichts hinterlegt ist, wird ueber den ganzen Kontinent
+            sortiert. Die Entfernung nimmt den naechstgelegenen aufgezeichneten Spawnpunkt,
+            nicht den ersten der Liste. Das Makro ist mehrzeilig, und dabei entscheidet eine
+            Eigenheit des Spiels: jede passende Zeile feuert, und jeder Treffer ueberschreibt
+            den vorherigen - es gewinnt also die LETZTE. Aufgenommen wird deshalb von nah nach
+            fern, damit das Laengenbudget nur Weitentferntes kappt, ausgegeben aber umgekehrt,
+            damit der naechstgelegene Kandidat die letzte Zeile ist. Gebaut wird ausserhalb des
+            Kampfes bei jedem Tastendruck; im Kampf feuert der zuletzt gebaute Text.
+
+    "Naechster Gegner im Kampf" findet auch, was man nicht anschaut (Strg+H)
+        Einfach: Die Taste konnte bisher nur finden, was man ohnehin anschaut - stand derselbe
+            Gegner fuenf Meter hinter einem, meldete sie nichts. Das ist keine Einstellung,
+            sondern das Verhalten der Tabulator-Zielsuche des Spiels. Sku merkt sich deshalb
+            jetzt die Namen feindlicher Kreaturen, an denen man vorbeikommt, und probiert sie
+            zusaetzlich ueber den Namen - und ein Name funktioniert in jede Richtung. In der
+            Praxis heisst das: was man einmal gesehen, angegriffen oder ins Ziel genommen hat,
+            bleibt zwei Minuten lang von ueberall aus erreichbar, auch weggedreht. Ausserdem
+            beginnt die Suche jetzt bei jedem Druck beim naechstgelegenen Gegner, statt im
+            Kreis weiterzuspringen. Die Taste liegt ab Werk auf Strg+H.
+        Technisch: Die Anregung stammt aus ZenqFRs SkuQuestTarget, das denselben Weg fuer seine
+            Nebenfunktion benutzt. /targetenemy ist Tabulator und sucht im Sichtkegel - daran
+            ist nichts zu aendern. "/tar Name" dagegen sucht ueber die Namensliste des Clients
+            und ist richtungsunabhaengig, braucht aber einen Namen, und es gibt keine
+            Schnittstelle, die Einheiten hinter einem aufzaehlt. Sku sammelt die Namen deshalb
+            laufend aus vier Quellen: feindliche Namensplaketten, das eigene Ziel, die Einheit
+            unter dem Mauszeiger und die Gegnerliste der Kampfueberwachung. Das Einsammeln
+            laeuft im Sekundentakt, solange die Taste belegt ist, denn eine Plakette gibt es
+            nur, solange die Kreatur im Blick ist - genau dann braucht man die Taste aber
+            nicht. Dort werden nur Namen gesammelt; die teure Entfernungsmessung laeuft einmal
+            pro Tastendruck. Gemerkte Namen halten zwei Minuten. Das Makro ist "/cleartarget",
+            dann "/targetenemy", dann die gemerkten Namen von fern nach nah - die letzte
+            passende Zeile gewinnt, also der naechstgelegene.
+
+    Neue Liste "Quests in der Naehe"
+        Einfach: Im Questmenue steht als dritter Eintrag, nach "Aktuelle Quests" und
+            "Questdatenbank", jetzt "Quests in der Naehe". Darin liegt das ganze Questlog in
+            EINER Liste - angefangene und fertige gemischt -, sortiert danach, wie weit das
+            weg ist, worum es bei der jeweiligen Quest gerade geht. Jeder Eintrag nennt zuerst
+            die Entfernung, dann die Himmelsrichtung, dann die Art und dann den Questnamen,
+            also etwa "180 Meter; nordost; Questziel; Diebische Kobolde" oder "340 Meter;
+            sued; Questabgabe; Der Wolfsrudelfuehrer".
+            Bei einer Quest, die noch offene Ziele hat, ist das die Entfernung zum naechsten
+            Ziel; bei einer fertig gemeldeten Quest die Entfernung zur Abgabestelle. "Aktuelle
+            Quests" gruppiert nach den Ueberschriften des Questlogs, sortiert also nach Zone -
+            die neue Liste beantwortet dagegen die Frage "was ist von hier aus das Naechste".
+            Enter oeffnet dasselbe Questmenue wie ueberall sonst, samt Wegpunkten und dem
+            Eintrag "Quest verfolgen". Die Liste ist ab Werk AUS und wird unter Sku
+            Einstellungen, SkuQuest, "Eintrag Quests in der Naehe anzeigen" eingeschaltet: sie
+            rechnet bei jedem Oeffnen das ganze Questlog gegen Skus Spawn-Datenbank durch, und
+            das soll nur zahlen, wer sie auch benutzt. Wo Skus Daten keinen Ort hergeben,
+            steht statt der Entfernung "Ort unbekannt", und die Quest rutscht ans Ende - sie
+            verschwindet nicht.
+        Technisch: Idee und Referenzumsetzung stammen von ZenqFR, aus dem Begleit-Addon
+            SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby); hier ist die Funktion mit
+            ZenqFRs Zustimmung nativ neu gebaut, damit kein zusaetzliches Addon noetig ist -
+            insbesondere ohne Questie und ohne GatherMate2. Die Rechnung liegt in der neuen
+            Datei SkuQuest/Proximity.lua und ist zustandslos. Zwei Stufen, und die Reihenfolge
+            ist der Punkt: zuerst der naechstgelegene aufgezeichnete Spawnpunkt IN DER Zone,
+            in der man selbst steht - die Auswahl laeuft billig in Kartenkoordinaten, nur der
+            Gewinner wird einmal in Weltkoordinaten umgerechnet; erst wenn das nichts hergibt,
+            das Minimum ueber alle Zonen desselben Kontinents. Ein anderer Kontinent ist keine
+            ungenaue Entfernung, sondern gar keine, und bleibt draussen. Gegenstandsziele
+            werden ueber die Fallquelle auf Kreaturen und Weltobjekte zurueckgefuehrt,
+            Erkundungsziele ueber die hinterlegten Koordinaten. Anders als beim Wegpunkt-Pfad
+            werden ALLE Ziellisten einer Quest gelesen, nicht nur die erste nichtleere - eine
+            Quest mit "toete acht Woelfe UND sammle fuenf Felle" haette sonst nur die Woelfe.
+            Gefiltert wird nur nach ZIELART: welche Arten noch offen sind, sagt Blizzards
+            eigene Fortschrittsanzeige ("monster", "item", "object"), und die passt eins zu
+            eins auf die drei Listen; ein Abgleich Zeile gegen einzelnen Datenbankeintrag
+            waere dagegen geraten, weil beide Reihenfolgen nirgends aneinander gebunden sind.
+            Pro Quest und Art werden hoechstens zwoelf IDs durchgerechnet - die Grenze ist das
+            Skript-Budget der Hardcore-Realms, nicht die letzte Nachkommastelle. Die
+            Himmelsrichtung kommt aus denselben Weltkoordinaten, ueber dieselbe Funktion, die
+            auch die Wegpunktlisten und der Minimap-Scanner benutzen. Bewusst die
+            Himmelsrichtung und nicht eine Uhrzeit: eine Uhrzeit gilt relativ zur
+            Blickrichtung und waere falsch, sobald man sich dreht - die Liste wird aber einmal
+            gebaut und dann durchgelesen.
+
+    Questdatenbank: "Start in Zone" ohne Zwischenebene
+        Einfach: Unter "Questdatenbank, Start in Zone" lag bisher noch genau ein Eintrag,
+            "Nach Entfernung", und darin erst die Quests. Eine Ebene, in der es nichts zu
+            waehlen gibt, ist nur ein Tastendruck. Die Liste steht jetzt direkt unter "Start in
+            Zone". Ausserdem war diese Liste kaputt: sie brach nach der ersten Quest ab, man
+            bekam also genau einen Eintrag statt aller Quests der Zone.
+        Technisch: Die Zwischenebene stammte daher, dass daneben einmal eine zweite Sortierung
+            ("Nach Schwierigkeit") stehen sollte; deren Baustelle stand seit Jahren
+            auskommentiert daneben und wurde nie gebaut. Der Abbruch kam von einer Zeile
+            "tcount = tcount + 1" im Aufbau der Liste: tcount war dort keine lokale Variable,
+            sondern eine nie gesetzte globale, das Hochzaehlen also ein Fehler auf nil. Ein
+            Fehler im Kindaufbau eines Menues wird verschluckt - der Aufbau endete damit
+            stillschweigend nach dem ersten Eintrag. Der Zaehler wurde von nichts gelesen und
+            ist ersatzlos entfernt.
+
+    Alles in der Bank in einer Liste, und die Bank wird auch unter Bagnon erkannt
+        Einfach: Im Taschenmenue gab es "alle taschen" - eine flache Liste ueber alle Taschen
+            hinweg, nach Namen sortiert. Fuer die Bank gab es das nicht: an der offenen Bank
+            standen zwar "Bank" und "Bank Tasche 1" bis "Bank Tasche 7" im Menue, aber wer
+            etwas suchte, musste jedes Fach einzeln durchgehen. Jetzt steht direkt hinter
+            "alle taschen" der Eintrag "alle bank", solange die Bank offen ist: alles, was in
+            der Bank liegt, in einer Liste, mit demselben Tippfilter. Strg+Eingabe holt einen
+            Gegenstand von dort in die Taschen - genau wie bisher schon in den einzelnen
+            Bankfaechern. Ausserdem erkennt Sku jetzt an den Meldungen des Spiels selbst, ob
+            die Bank offen ist, und nicht mehr am Fenster von Blizzard. Wer ein
+            Taschen-Ersatz-Addon wie Bagnon benutzt, das dieses Fenster versteckt, hatte
+            bisher gar keine Bank im Menue - Sku hielt sie fuer geschlossen und liess saemtliche
+            Bankfaecher verschwinden. Dafuer ist jetzt kein Bruecken-Addon mehr noetig.
+        Technisch: Die Anregung stammt aus ZenqFRs Begleit-Addon SkuBagnonBridge
+            (github.com/ZenqFR/Sku-BagnonBridge), das dieselbe Luecke auf seine Weise schliesst
+            und die Bank ebenfalls ueber die Ereignisse des Spiels erkennt; hier ist mit
+            ZenqFRs Zustimmung der Teil nativ gebaut, der ohne ein weiteres Addon auskommt. Die
+            flache Liste war auf die Taschen 0 bis 4 begrenzt; die Bankbehaelter (-1, -3, 5 bis
+            11) wurden nie in sie kopiert. Sie sammeln sich jetzt in einer eigenen Liste,
+            absichtlich getrennt von der Taschenliste: aus dieser leitet sich
+            SkuCore.combatBagOrder ab, die Spiegelung fuer den Kampf, und die kann von Haus aus
+            nur Taschenfaecher benutzen. Die Eintraege der neuen Liste sind Kopien derselben
+            Fach-Eintraege und tragen Tasche und Fach mit, also greifen alle vorhandenen
+            Aktionen unveraendert. Der Zustand der Bank haengt jetzt an BANKFRAME_OPENED und
+            BANKFRAME_CLOSED: beide kommen aus der Interaktion mit dem Bankier selbst und sind
+            unabhaengig davon, wer das Fenster zeichnet. Beim Laden und nach /reload wird der
+            Zustand zurueckgesetzt, und die alte Fensterpruefung bleibt zusaetzlich erhalten -
+            die Erkennung kann dadurch nur mehr Faelle richtig treffen als vorher, keine
+            weniger.
+
+
+
+    Loeschen eines eigenen Wegpunkts raeumte den falschen Eintrag ab
+        Einfach: Beim Loeschen eines selbst angelegten Wegpunkts wurde intern nicht dessen eigene
+            Kennung aus einer Nachschlagetabelle entfernt, sondern die eines anderen Wegpunkts.
+            Ausserdem meldete "/skucheck wp" vier Fehler bei den vier Schnellwegpunkten, obwohl
+            mit ihnen alles in Ordnung war.
+        Technisch: Die wpId ist die Identitaet eines Wegpunkts - die Verbindungstabelle ist
+            ueber sie verschluesselt -, keine Beschreibung seines Ortes. Die in ihr steckende
+            Gebiets-ID stammt aus dem Moment des Cache-Aufbaus und bleibt stehen, wenn ein
+            eigener Wegpunkt umzieht; genau das passiert den vier Schnellwegpunkten bei jedem
+            Ladebildschirm, denn dabei werden sie auf die Spielerposition neu gesetzt. Die
+            Pruefung baute die Kennung aus dem aktuellen areaId des Datensatzes neu auf und
+            verglich - sie rechnet jetzt mit der in der Kennung selbst steckenden Gebiets-ID.
+            Der Loeschpfad baute die Kennung ueber ".areaid" (das Feld heisst areaId), also mit
+            Gebiet 1 statt des echten, und raeumte damit den Eintrag desjenigen Datensatzes ab,
+            dem dieser Schluessel wirklich gehoert; er benutzt jetzt die gespeicherte Kennung.
+
     Die Chateingabe ist bedienbar geworden
         Einfach: Die Chatzeile war das einzige Eingabefeld in Sku, in das man blind tippte. Es gab
             einen Ton beim Oeffnen und einen beim Schliessen, sonst nichts - kein Zeichen-Echo,
@@ -392,6 +596,44 @@ Aenderungen in Sku v43.2
             mehr gab - sie liefen also seit jeher ins Leere. Reihenfolge getauscht; der pauschale
             Ersatz ist jetzt nur noch ein Auffangnetz dahinter.
 
+
+-------------------------------------------------------------------------------------------------------
+
+    Tastatur-Echo: Zeichen kommen sofort
+        Einfach: Beim Tippen in ein Eingabefeld kamen die Buchstaben nicht im Takt der Finger:
+            manche wurden verschluckt, andere kamen deutlich zu spaet, und Doppelbuchstaben wie
+            in "Wasser" oder "alle" waren regelmaessig nur einmal zu hoeren. Jetzt kommt jedes
+            getippte Zeichen sofort, und ein zweimal gedrueckter Buchstabe wird auch zweimal
+            gesprochen.
+        Technisch: Das Echo lief bisher durch dieselbe Warteschlange wie jede Menueansage, und
+            die ist fuer Ansagen gebaut, nicht fuer Tastendruecke. Sie sammelte Zeichen eine
+            Zehntelsekunde lang und sprach sie ueberschreibend - und Ueberschreiben heisst hier:
+            erst StopSpeakingText, dann noch einmal eine Zehntelsekunde warten, damit dieser Stop
+            nicht ausgerechnet die Ansage abraeumt, fuer die er Platz machen soll. Beides
+            nacheinander sind rund 0.2 Sekunden je Anschlag, und der Stop des einen Anschlags
+            landete regelmaessig auf dem naechsten. Dazu kam die in dieser Version neu
+            eingefuehrte Dublettensperre der Sprachausgabe, fuer die ein einzelnes Zeichen als
+            Aeusserung mit sich selbst identisch ist - daher die verschluckten Doppelbuchstaben.
+            Getippte Zeichen laufen jetzt ueber eine eigene Schnellspur: ein einziger Platz, in
+            dem der neueste Anschlag gewinnt, Ausgabe im selben Frame, der Stop nur noch einmal
+            zu Beginn einer Tippfolge statt bei jedem Anschlag, und die Dublettensperre sieht
+            getippte Zeichen gar nicht mehr. Hintergrund: ein Bildschirmleser braucht so etwas
+            nie, weil seine Schnittstelle das Abbrechen als Teil des Sprechbefehls anbietet -
+            eine einzige Operation. Die Schnittstelle des Spiels kann das nicht, also muss Sku
+            sie aus zwei Aufrufen nachbauen, die einander ueberholen koennen. Neu ist, das nur
+            noch einmal je Tippfolge zu tun.
+
+    Eine per Taste erneut angeforderte Zeile wird wieder gesprochen
+        Einfach: Wer eine Menuezeile per Tastendruck noch einmal hoeren wollte, bekam
+            gelegentlich Stille - die Sprachausgabe hielt die Wiederholung fuer ueberfluessig.
+        Technisch: Die Dublettensperre verwirft eine Zeile, die innerhalb einer Sekunde genauso
+            schon einmal gesprochen wurde. Das ist richtig fuer den ueberfluessigen Nachschlag
+            eines Menue-Neuaufbaus und falsch fuer denselben Text, den der Nutzer gerade per
+            Taste angefordert hat. Am Text sind die beiden nicht zu unterscheiden, und keine
+            Zeitspanne trennt sie - nur der Ausloeser. Die Tastenauswertung des Menues markiert
+            ihre Ansage deshalb jetzt als tastenausgeloest, und die Sperre laesst markierte
+            Zeilen immer durch. Ueberfluessige Wiederholungen werden weiterhin verworfen, jetzt
+            unabhaengig davon, wie schnell sie eintreffen.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

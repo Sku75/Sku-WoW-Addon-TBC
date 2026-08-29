@@ -18,6 +18,9 @@ Changements dans Sku v43.2
             Le raccourci « Ennemi suivant en combat » (désormais sur Ctrl+H par défaut) trouve bien plus souvent quelque chose : il ne dépend plus du cône de vue.
             Nouvelle liste « Quêtes à proximité » dans le menu de quête : tout le journal de quêtes en une seule liste, triée selon la distance de ce qui compte pour chaque quête - avec la distance et le point cardinal. Désactivée par défaut.
             Menu des sacs : nouvelle entrée « toute la banque » juste après « tous les sacs » tant que la banque est ouverte - tout le contenu de la banque en une seule liste à plat, exactement comme « tous les sacs » pour vos sacs. Ctrl+Entrée y déplace un objet vers vos sacs, comme il le faisait déjà dans chaque sac de banque.
+            Chat : la ligne de saisie parle désormais comme tout autre champ de saisie de Sku - chaque caractère tapé, le caractère ou le mot sous le curseur, et avec la flèche haut les derniers messages envoyés, pour les renvoyer ou les modifier.
+            Chat : le canal cible est annoncé dès qu'il n'est pas « Dire » - à l'ouverture et à chaque changement.
+            Chat : une commande slash inconnue est maintenant annoncée au lieu d'être ignorée en silence.
 
         Changements
             Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
@@ -27,6 +30,10 @@ Changements dans Sku v43.2
             Auras : un enchantement d'arme (appât de pêche, poison, huile) s'adresse désormais comme un sort - l'événement « Enchantement d'arme expiré » avec « nom du sort ».
             Auras : nouvelle condition et nouvelle sortie « main de l'enchantement d'arme » (main droite ou main gauche).
             Base de données des quêtes : « Commence dans la zone » affiche directement la liste triée par distance - le niveau intermédiaire « Par distance » a disparu.
+            Chat : « Ajouter le lien au chat » insère l'objet à la position du curseur au lieu de remplacer la ligne, et laisse le curseur devant - un canal comme « /p » tient donc encore avant.
+            Chat : un lien d'objet compte pour un seul caractère à la lecture - les flèches gauche et droite franchissent tout le lien et en disent le nom.
+            Chat : « Ajouter le lien au chat » ne ferme plus les sacs.
+            Chat : les flèches déplacent le curseur de texte dans la saisie du chat ; désactivable dans les paramètres du chat.
 
         Corrections
             Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête - la fenêtre de quête se rouvrait sans fin.
@@ -43,6 +50,9 @@ Changements dans Sku v43.2
             Base de données des quêtes : la liste « Commence dans la zone, Par distance » s'interrompait après la première quête.
             Menu des sacs : avec un addon de remplacement des sacs comme Bagnon, qui masque la fenêtre de banque de Blizzard, tous les compartiments de banque disparaissaient du menu.
             La suppression d'un point de passage personnel retirait le mauvais identifiant interne, et « /skucheck wp » signalait quatre erreurs sur les points de passage rapides qui n'en étaient pas.
+            Écho clavier : les caractères tapés sont annoncés immédiatement ; plus de lettres avalées ni en retard.
+            Menu : une ligne redemandée par une touche est relue au lieu d'être avalée.
+            Sortie vocale : les liens d'objet étaient lus comme une suite de codes de couleur au lieu de leur nom - partout dans Sku, pas seulement dans le chat.
 
     Le curseur reste sur l'objet dans le sac
         Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le
@@ -558,6 +568,82 @@ Changements dans Sku v43.2
             l'identifiant à partir de « .areaid » (le champ s'appelle areaId), donc avec la zone
             1 au lieu de la vraie, et effaçait ainsi l'entrée de l'enregistrement à qui cette
             clé appartient réellement ; il utilise maintenant l'identifiant stocké.
+
+    La saisie du chat est devenue utilisable
+        Simple : La ligne de chat était le seul champ de saisie de Sku dans lequel on tapait à
+            l'aveugle. Il y avait un son à l'ouverture et un à la fermeture, rien d'autre - pas
+            d'écho des caractères, pas de lecture sous le curseur, et aucune indication sur la
+            destination réelle du message. Elle se comporte désormais comme tout autre champ de
+            saisie de Sku. Chaque caractère tapé ou effacé est prononcé, les flèches gauche et
+            droite lisent le caractère sous le curseur et, avec Ctrl, le mot entier, la flèche
+            haut rappelle les derniers messages envoyés - pour les renvoyer ou les modifier - et
+            annonce le canal avec eux, car une ligne rappelée ne montre pas où elle irait. Le
+            canal est aussi annoncé à l'ouverture et à chaque changement, mais volontairement pas
+            pour « Dire » : c'est le cas inoffensif, et l'annoncer chaque fois ne serait que du
+            bruit. Un objet dans le chat compte pour un seul caractère à la lecture au lieu de
+            soixante-cinq caractères de balisage. Et une commande mal tapée comme « /tets » dit
+            maintenant « commande inconnue » au lieu de ne rien faire.
+        Technique : L'écho clavier des champs propres à Sku s'attache maintenant aussi aux champs
+            étrangers via SkuOptions:AttachInputEcho. Trois choses y diffèrent : l'attache se
+            fait avec HookScript et non SetScript, car le champ de Blizzard porte ses propres
+            gestionnaires d'historique et de complétion de noms ; le modèle pose ignoreArrows,
+            d'où des flèches simples envoyées au jeu et un curseur de texte exigeant ALT - ce qui
+            est inversé ; et l'armement se fait sur le focus, car un champ étranger n'a pas de
+            paire ouverture-fermeture à laquelle accrocher l'écho. Le canal est lu dans l'en-tête
+            de la saisie plutôt que reconstruit depuis chatType - l'en-tête est déjà traduit et
+            couvre les cibles de chuchotement, les canaux numérotés et les bascules propres à
+            Blizzard en plein appel. Son annonce est différée et tient dans un seul emplacement,
+            car tout changement de canal est déclenché par une frappe, et l'écho de cette frappe
+            éjectait sinon l'annonce de la file avant même qu'elle ne soit prononcée.
+
+    Les liens d'objet sont lus par leur nom, pas en codes de couleur
+        Simple : Un objet - dans le chat, dans le courrier, dans le butin - était lu comme une
+            longue suite de codes de couleur, d'identifiants et de deux-points au lieu de son nom.
+        Technique : La sortie vocale remplaçait d'abord chaque barre verticale par une espace,
+            PUIS appelait la fonction qui retire les codes de couleur, les liens et les textures.
+            Tous ses motifs cherchent une barre verticale, qui n'existait plus à ce moment - ils
+            ne correspondaient donc à rien depuis toujours. Ordre inversé ; le remplacement
+            général n'est plus qu'un filet de sécurité derrière.
+
+
+-------------------------------------------------------------------------------------------------------
+
+    Écho clavier : les caractères sont annoncés immédiatement
+        Simple : En tapant dans un champ de saisie, les lettres ne suivaient pas les doigts :
+            certaines étaient avalées, d'autres arrivaient nettement en retard, et les lettres
+            doubles comme dans « aller » ou « pomme » n'étaient souvent entendues qu'une fois.
+            Chaque caractère tapé arrive maintenant immédiatement, et une touche pressée deux
+            fois est prononcée deux fois.
+        Technique : L'écho passait jusqu'ici par la même file d'attente que chaque annonce de
+            menu, et cette file est conçue pour des annonces, pas pour des frappes. Elle
+            regroupait les caractères pendant un dixième de seconde et les prononçait en mode
+            écrasement - et écraser signifie ici : d'abord StopSpeakingText, puis attendre encore
+            un dixième de seconde pour que cet arrêt ne supprime pas justement la ligne à
+            laquelle il devait faire place. Les deux à la suite font environ 0,2 seconde par
+            frappe, et l'arrêt d'une frappe atterrissait régulièrement sur la suivante. S'y
+            ajoutait le nouveau garde-fou anti-doublon de cette version, pour lequel un caractère
+            isolé est un énoncé identique à lui-même - d'où les lettres doubles avalées. Les
+            caractères tapés empruntent désormais leur propre voie rapide : une seule place où la
+            frappe la plus récente l'emporte, transmission dans la même image, l'arrêt émis une
+            seule fois au début d'une série de frappes au lieu d'une fois par touche, et le
+            garde-fou anti-doublon ne voit plus du tout les caractères tapés. Contexte : un
+            lecteur d'écran n'a jamais besoin de tout cela, car son interface propose
+            l'interruption comme partie intégrante de la commande de parole - une seule
+            opération. L'interface du jeu ne le permet pas, Sku doit donc la reconstituer à
+            partir de deux appels qui peuvent se doubler. La nouveauté est de ne le faire qu'une
+            fois par série de frappes.
+
+    Une ligne redemandée par une touche est de nouveau prononcée
+        Simple : Redemander une ligne de menu par une touche produisait parfois du silence - la
+            synthèse vocale considérait la répétition comme superflue.
+        Technique : Le garde-fou anti-doublon écarte une ligne déjà prononcée à l'identique dans
+            la seconde précédente. C'est juste pour la reprise superflue d'une reconstruction de
+            menu, et faux pour le même texte que l'utilisateur vient de demander par une touche.
+            Les deux sont indiscernables par leur texte, et aucun délai ne les sépare - seul leur
+            déclencheur diffère. La gestion des touches du menu marque donc maintenant son
+            annonce comme déclenchée par une touche, et le garde-fou laisse toujours passer les
+            lignes marquées. Les répétitions superflues restent écartées, désormais quelle que
+            soit leur rapidité.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

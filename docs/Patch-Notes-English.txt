@@ -10,6 +10,11 @@ Changes in Sku v43.2
 
         New
             New keybind "Output full tooltip of current target" (Ctrl+Shift+V): reads the current target's complete tooltip aloud, including what the Hunter ability Beast Lore reveals.
+            Quests can be tracked and untracked from the quest menu - a new "Track quest" entry at the bottom of every quest menu, and it can be switched off.
+            New keybind "Target nearest quest mob" (Alt+H): targets a creature belonging to an open quest objective - including one that merely drops an item you need.
+            The "Next enemy in combat" keybind (now bound to Ctrl+H by default) finds something far more often: it no longer depends on the view cone.
+            New "Nearby quests" list in the quest menu: your whole quest log in one list, sorted by how far away the next thing is - with distance and compass direction. Off by default.
+            Bags menu: a new "all bank" entry right after "all bags" while the bank is open - everything in the bank in one flat list, exactly like "all bags" is for your bags. Ctrl+Enter moves an item from there into your bags, the same way it already did inside the individual bank bags.
             Chat: the input line now speaks like every other Sku input field - every typed character, the character or word under the cursor, and with arrow up the messages you sent last, to send again or to change.
             Chat: the target channel is announced whenever it is not "Say" - on opening and on every change.
             Chat: an unknown slash command is now announced instead of being silently discarded.
@@ -21,6 +26,7 @@ Changes in Sku v43.2
             Menu: closing a window now rebuilds the menu data once instead of up to six times.
             Auras: a weapon enchant (fishing lure, poison, oil) can now be addressed like a spell - the event "Weapon enchant expired" together with "spell name".
             Auras: new condition and new output "weapon enchant hand" (main hand or off hand).
+            Quest database: "Starts in zone" shows the distance-sorted list directly - the intermediate "By distance" level is gone.
             Chat: "Add Link to chat" inserts the item at the cursor instead of replacing the line, and leaves the cursor in front of it - so a channel such as "/p " still fits before it.
             Chat: an item link counts as a single character when reading - arrow left and right jump across the whole link and speak its name.
             Chat: "Add Link to chat" no longer closes the bags.
@@ -38,6 +44,11 @@ Changes in Sku v43.2
             Auras: the end of a weapon enchant is detected frame-accurately instead of up to a quarter second later.
             Menu: Enter on an on/off entry in a filtered list read the first entry of the list back instead of the toggled state.
             Dungeon browser: accepting a group invitation no longer drops you into the dungeon browser by itself.
+            Quest database: the "Starts in zone, By distance" list broke off after the first quest.
+            Bags menu: with a bag-replacement addon such as Bagnon, which hides Blizzard's bank window, every bank container vanished from the menu.
+            Deleting a custom waypoint removed the wrong internal id, and "/skucheck wp" reported four errors on the quick waypoints that were none.
+            Keyboard echo: typed characters are spoken instantly; swallowed and late letters are gone.
+            Menu: a line you ask for again with a keypress is read out again instead of being swallowed.
             Voice output: item links were read out as a run of colour codes instead of as their name - everywhere in Sku, not only in chat.
 
     The cursor stays on the item in the bag
@@ -321,6 +332,184 @@ Changes in Sku v43.2
             bags, auction house, chat links and quest text all read the same one - it is cleared
             before AND after, and its owner restored exactly as SkuCore sets it at login.
 
+
+
+
+    Track and untrack quests
+        Simple: Every quest menu now ends with a "Track quest" entry. ENTER flips it, the cursor
+            stays where it is, and the new state is spoken straight back - "Track quest;On" or
+            "Track quest;Off". Tracked means WoW's own marker on the minimap and the world map.
+            Anyone with some remaining sight finds quest objectives faster that way; anyone who
+            sees nothing gets nothing out of the markers. So the entry can be switched off
+            entirely - under Sku settings, SkuQuest, "show track quest entry"; it is on by
+            default. It only appears for quests in your own quest log, because a quest from the
+            quest database is not one you have yet. Two limits come from the game itself: The
+            Burning Crusade allows at most five tracked quests at a time, and a quest with no
+            objectives at all cannot be tracked. In both cases Sku speaks the game's own message
+            and the state stays as it was.
+        Technically: The idea and the reference implementation come from ZenqFR, in the companion
+            addon SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby); with ZenqFR's agreement
+            feature is rebuilt here natively against Sku's own interfaces, so no extra addon is
+            needed. The entry lives in the chunk-local CreateQuestSubmenu rather than on a hook
+            over the public wrapper - which is why every quest view gets it: quest log, quest
+            database and SkuChat's quest menus. There is no C_QuestLog on 2.5.6: AddQuestWatch,
+            RemoveQuestWatch and IsQuestWatched take a quest LOG INDEX, not a quest ID, and that
+            index shifts whenever a quest is accepted or handed in. Sku therefore keeps a quest
+            ID to index map, re-verifies the remembered index on every read, and drops the map on
+            the quest events; without that cache the "quest database, all" list would run a full
+            quest-log scan per quest. Turning tracking on goes through AutoQuestWatch_Insert with
+            QUEST_WATCH_NO_EXPIRE so the quest lands in QUEST_WATCH_LIST and no expiry timer can
+            remove it again; turning it off removes the QUEST_WATCH_LIST row first and only then
+            calls RemoveQuestWatch - exactly like Blizzard's own click path, or a long-untracked
+            quest keeps counting against the limit of five. QuestWatch_Update only runs outside
+            combat, because it ends up moving protected frames; the next QUEST_LOG_UPDATE runs it
+            anyway.
+
+    New keybind "Target nearest quest mob" (Alt+H)
+        Simple: One press targets a creature that belongs to a quest objective you still have
+            open - including one you do not have to kill at all, but which merely drops an
+            item you need. Example: for "Essence for the Engines" the quest log only names the
+            item; the key still targets the Mana Wraith that drops it. If nothing matches in
+            range Sku says "no quest target in range"; if the quest log holds nothing suitable
+            at all, "no quest target in your log". The key is bound to Alt+H out of the box
+            and can be rebound under Sku keybindings, "Target and soft targeting".
+        Technically: The idea and the reference implementation come from ZenqFR, in the
+            companion addon SkuQuestTarget (github.com/ZenqFR/Sku-QuestTarget); here the
+            feature was rebuilt natively with ZenqFR's agreement, so no extra addon is needed.
+            Candidates come from your own quest log via SkuQuest:GetQuestTargetIds; item
+            objectives are traced back through the drop source (npcDrops, and one level deep
+            also itemDrops) to the creatures that drop them. The search looks in the zone you
+            are standing in first - a creature with no spawn there cannot possibly be in
+            targeting range and must not take a slot in the macro; only when nothing is
+            recorded for your own zone does it sort across the whole continent. Distance uses
+            the nearest recorded spawn point, not the first one in the list. The macro is
+            multi-line, and one quirk of the game decides the outcome: every matching line
+            fires and each match overwrites the previous one, so the LAST one wins. Candidates
+            are therefore included near to far, so the length budget can only cut distant
+            ones, but written out reversed, so the closest candidate is the final line. It is
+            rebuilt on every press out of combat; in combat the last built text fires.
+
+    "Next enemy in combat" now finds things you are not facing (Ctrl+H)
+        Simple: The key could only ever find what you were already looking at - with the same
+            enemy five metres behind you it reported nothing. That is not a setting, it is how
+            the game's tab targeting works. So Sku now remembers the names of hostile creatures
+            you come across and additionally tries them by name - and a name works in every
+            direction. In practice: anything you have seen, fought or targeted once stays
+            reachable from anywhere for two minutes, including with your back to it. The
+            search now also restarts at the nearest enemy on every press instead of cycling
+            onwards. The key is bound to Ctrl+H out of the box.
+        Technically: The approach is borrowed from ZenqFR's SkuQuestTarget, which uses the
+            same route for its secondary function. /targetenemy is tab and searches the view
+            cone - nothing can change that. "/tar name" instead searches the client's name
+            list and is direction-independent, but it needs a name, and there is no interface
+            that enumerates units behind you. Sku therefore collects names continuously from
+            four sources: hostile nameplates, your own target, the unit under the mouse, and
+            the combat monitor's enemy list. Collection runs on a one-second tick while the key
+            is bound, because a nameplate only exists while the creature is in view - which is
+            exactly when you do not need the key. Only names are collected there; the expensive
+            range measurement runs once per key press. Remembered names last two minutes. The
+            macro is "/cleartarget", then "/targetenemy", then the remembered names far to
+            near - the last matching line wins, so the nearest one.
+
+    New "Nearby quests" list
+        Simple: The quest menu has a third entry now, after "Current Quests" and "Quest
+            database": "Nearby quests". It holds your whole quest log in ONE list - started
+            and finished mixed together - sorted by how far away the thing that currently
+            matters for each quest is. Every entry names the distance first, then the compass
+            direction, then the kind, then the quest, so you hear "180 Meters; north-east;
+            quest target; Thieving Kobolds" or "340 Meters; south; Turn in; The Wolf Pack
+            Leader". For a quest with open objectives that
+            is the distance to the nearest objective; for one reported complete, the distance
+            to the turn-in. "Current Quests" groups by the quest log's own headers and
+            therefore sorts by zone - this list answers the other question: what is nearest
+            from where I stand. Enter opens the same quest menu as everywhere else, waypoints
+            and the "Track quest" entry included. The list is OFF out of the box and is
+            switched on under Sku settings, SkuQuest, "show nearby quests entry": it
+            recomputes the whole quest log against Sku's spawn database every time it opens,
+            and only someone who uses it should pay for that. Where Sku's data yields no
+            location the entry reads "Location unknown" instead of a distance and sorts to the
+            end - it never disappears.
+        Technically: Idea and reference implementation by ZenqFR, from the companion addon
+            SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby); rebuilt natively here with
+            ZenqFR's permission so no extra addon is needed - in particular without Questie and without
+            GatherMate2. The maths lives in the new, stateless file SkuQuest/Proximity.lua.
+            Two tiers, and the order is the point: first the nearest recorded spawn point IN
+            the zone you are standing in - the selection runs cheaply in map coordinates and
+            only the winner is converted to world coordinates once; only if that yields
+            nothing, the minimum across all zones of the same continent. A different continent
+            is not an imprecise distance, it is no distance, and stays out. Item objectives are
+            traced back to the creatures and world objects that drop them, explore objectives
+            to their recorded coordinates. Unlike the waypoint path, ALL of a quest's objective
+            lists are read, not just the first non-empty one - a quest with "kill eight wolves
+            AND collect five pelts" would otherwise only ever show the wolves. Filtering is by
+            objective KIND only: which kinds are still open comes from Blizzard's own progress
+            display ("monster", "item", "object"), and that maps one-to-one onto the three
+            lists; matching a progress line against an individual database entry would be
+            guesswork, because neither order is bound to the other. At most twelve ids are
+            evaluated per quest and kind - the limit here is the hardcore realms' script
+            budget, not the last decimal. The compass direction comes from the same world
+            coordinates through the same helper the waypoint lists and the minimap scanner
+            use. Deliberately a compass bearing and not a clock position: a clock position is
+            relative to where you are facing and would be wrong the moment you turn - but the
+            list is built once and then read through.
+
+    Quest database: "Starts in zone" without the extra level
+        Simple: "Quest database, Starts in zone" held exactly one entry, "By distance", and
+            only inside it the quests. A level with nothing to choose is just a keypress. The
+            list now sits directly under "Starts in zone". That list was also broken: it broke
+            off after the first quest, so you got exactly one entry instead of all the zone's
+            quests.
+        Technically: The extra level existed because a second sort ("by difficulty") was once
+            meant to sit beside it; that construction site sat commented out next to it for
+            years and was never built. The break came from a line "tcount = tcount + 1" in the
+            list builder: tcount was not a local there but a global that is never set, so
+            incrementing it raised on nil. An error inside a menu's child build is swallowed -
+            the build therefore ended silently after the first entry. Nothing ever read the
+            counter; it is removed rather than initialised.
+
+    Everything in the bank in one list, and the bank is recognised under Bagnon too
+        Simple: The bags menu had "all bags" - one flat list across every bag, sorted by name.
+            The bank had no such thing: at an open bank the menu did show "Bank" and "Bank Bag
+            1" through "Bank Bag 7", but looking for something meant walking into each
+            compartment in turn. Now, while the bank is open, a new "all bank" entry sits
+            directly after "all bags": everything lying in the bank in one list, with the same
+            type-ahead filter. Ctrl+Enter moves an item from there into your bags - exactly as
+            it already did inside the individual bank bags. On top of that, Sku now works out
+            whether the bank is open from the game's own messages rather than from Blizzard's
+            window. Anyone using a bag-replacement addon such as Bagnon, which hides that
+            window, had no bank in the menu at all until now - Sku considered it closed and let
+            every bank container disappear. No bridge addon is needed for that any more.
+        Technically: The suggestion comes from ZenqFR's companion addon SkuBagnonBridge
+            (github.com/ZenqFR/Sku-BagnonBridge), which closes the same gap in its own way and
+            likewise recognises the bank from the game's events; with ZenqFR's agreement the
+            part that needs no further addon is built natively here. The flat list was limited
+            to bags 0 to 4; the bank containers (-1, -3, 5 to 11) were never copied into it.
+            They now collect in a list of their own, deliberately kept separate from the bag
+            list: SkuCore.combatBagOrder derives from that one - the mirror used in combat -
+            and it can only ever use bag slots. The entries in the new list are copies of the
+            same per-slot entries and carry bag and slot with them, so every existing action
+            works unchanged. The bank's state now hangs on BANKFRAME_OPENED and
+            BANKFRAME_CLOSED: both come from the interaction with the banker itself and are
+            independent of who draws the window. It is reset on load and after /reload, and the
+            old window check is kept alongside - so the detection can only ever get more cases
+            right than before, never fewer.
+
+
+
+    Deleting a custom waypoint cleared the wrong entry
+        Simple: Deleting a waypoint you had created yourself did not remove its own id from an
+            internal lookup table but that of a different waypoint. And "/skucheck wp" reported
+            four errors on the four quick waypoints although nothing was wrong with them.
+        Technically: A waypoint's wpId is its identity - the link table is keyed by it - not a
+            description of where it is. The area id packed into it dates from the moment the
+            waypoint cache was built and stays put when a custom waypoint moves; that is exactly
+            what happens to the four quick waypoints at every loading screen, because they are
+            re-set to the player position then. The check rebuilt the id from the record's
+            current areaId and compared - it now uses the area packed into the id itself. The
+            delete path built the id from ".areaid" (the field is areaId), so it computed with
+            area 1 instead of the real one and cleared the entry of whichever record really owns
+            that key; it now uses the record's stored id.
+
     The chat input has become usable
         Simple: The chat line was the only input field in Sku you typed into blind. There was a
             sound on opening and one on closing, and nothing else - no character echo, no reading
@@ -356,6 +545,40 @@ Changes in Sku v43.2
             matching nothing all along. Order swapped; the blanket replacement is now only a
             safety net behind it.
 
+
+-------------------------------------------------------------------------------------------------------
+
+    Keyboard echo: characters are spoken instantly
+        Simple: While typing into an input field the letters did not keep up with your fingers:
+            some were swallowed, others arrived noticeably late, and doubled letters as in
+            "letter" or "all" were regularly heard only once. Every typed character now arrives
+            immediately, and a key pressed twice is spoken twice.
+        Technically: The echo used to run through the same queue as every menu announcement, and
+            that queue is built for announcements, not for keystrokes. It collected characters
+            for a tenth of a second and spoke them with overwrite - and overwrite here means:
+            first StopSpeakingText, then wait another tenth of a second so that stop does not
+            wipe out the very line it was meant to make room for. Those two in series are about
+            0.2 seconds per keystroke, and one keystroke's stop regularly landed on the next one.
+            On top of that came this version's new back-to-back duplicate guard, for which a
+            single character is an utterance identical to itself - hence the swallowed doubled
+            letters. Typed characters now take their own fast lane: one slot in which the newest
+            keystroke wins, handover on the same frame, the stop issued once at the start of a
+            typing burst instead of once per keystroke, and the duplicate guard no longer sees
+            typed characters at all. Background: a screen reader never needs any of this, because
+            its own interface offers cancelling as part of the speak call - one single operation.
+            The game's interface cannot do that, so Sku has to rebuild it from two calls that can
+            overtake each other. What is new is doing that only once per typing burst.
+
+    A line asked for again by keypress is spoken again
+        Simple: Asking to hear a menu line again with a keypress sometimes produced silence - the
+            speech output considered the repeat redundant.
+        Technically: The duplicate guard discards a line that was already spoken identically
+            within one second. That is right for the redundant echo of a menu rebuild and wrong
+            for the same text the user just asked for with a key. The two cannot be told apart by
+            their text, and no time window separates them - only what triggered them. The menu's
+            key handler therefore now marks its announcement as key-triggered, and the guard
+            always lets marked lines through. Redundant repeats are still discarded, now
+            regardless of how fast they arrive.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

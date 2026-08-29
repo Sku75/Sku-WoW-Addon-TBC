@@ -13,6 +13,11 @@ Changements dans Sku v43.2
 
         Nouveautés
             Nouveau raccourci « Annoncer l'infobulle complète de la cible » (Ctrl+Maj+V) : lit à voix haute l'infobulle complète de la cible actuelle, y compris ce que révèle la compétence de chasseur Connaissance des bêtes.
+            Les quêtes peuvent être suivies ou retirées du suivi depuis le menu de quête - nouvelle entrée « Suivre la quête » en bas de chaque menu de quête, désactivable.
+            Nouveau raccourci « Cibler la créature de quête la plus proche » (Alt+H) : cible une créature liée à un objectif de quête en cours - y compris celle qui se contente de faire tomber un objet requis.
+            Le raccourci « Ennemi suivant en combat » (désormais sur Ctrl+H par défaut) trouve bien plus souvent quelque chose : il ne dépend plus du cône de vue.
+            Nouvelle liste « Quêtes à proximité » dans le menu de quête : tout le journal de quêtes en une seule liste, triée selon la distance de ce qui compte pour chaque quête - avec la distance et le point cardinal. Désactivée par défaut.
+            Menu des sacs : nouvelle entrée « toute la banque » juste après « tous les sacs » tant que la banque est ouverte - tout le contenu de la banque en une seule liste à plat, exactement comme « tous les sacs » pour vos sacs. Ctrl+Entrée y déplace un objet vers vos sacs, comme il le faisait déjà dans chaque sac de banque.
             Chat : la ligne de saisie parle désormais comme tout autre champ de saisie de Sku - chaque caractère tapé, le caractère ou le mot sous le curseur, et avec la flèche haut les derniers messages envoyés, pour les renvoyer ou les modifier.
             Chat : le canal cible est annoncé dès qu'il n'est pas « Dire » - à l'ouverture et à chaque changement.
             Chat : une commande slash inconnue est maintenant annoncée au lieu d'être ignorée en silence.
@@ -24,6 +29,7 @@ Changements dans Sku v43.2
             Menu : la fermeture d'une fenêtre ne reconstruit plus les données du menu qu'une seule fois au lieu de six.
             Auras : un enchantement d'arme (appât de pêche, poison, huile) s'adresse désormais comme un sort - l'événement « Enchantement d'arme expiré » avec « nom du sort ».
             Auras : nouvelle condition et nouvelle sortie « main de l'enchantement d'arme » (main droite ou main gauche).
+            Base de données des quêtes : « Commence dans la zone » affiche directement la liste triée par distance - le niveau intermédiaire « Par distance » a disparu.
             Chat : « Ajouter le lien au chat » insère l'objet à la position du curseur au lieu de remplacer la ligne, et laisse le curseur devant - un canal comme « /p » tient donc encore avant.
             Chat : un lien d'objet compte pour un seul caractère à la lecture - les flèches gauche et droite franchissent tout le lien et en disent le nom.
             Chat : « Ajouter le lien au chat » ne ferme plus les sacs.
@@ -41,6 +47,11 @@ Changements dans Sku v43.2
             Auras : la fin d'un enchantement d'arme est détectée à la frame près au lieu d'un quart de seconde plus tard.
             Menu : Entrée sur une entrée activé/désactivé dans une liste filtrée annonçait la première entrée de la liste au lieu de l'état basculé.
             Navigateur de donjons : accepter une invitation de groupe ne vous dépose plus tout seul dans le navigateur de donjons.
+            Base de données des quêtes : la liste « Commence dans la zone, Par distance » s'interrompait après la première quête.
+            Menu des sacs : avec un addon de remplacement des sacs comme Bagnon, qui masque la fenêtre de banque de Blizzard, tous les compartiments de banque disparaissaient du menu.
+            La suppression d'un point de passage personnel retirait le mauvais identifiant interne, et « /skucheck wp » signalait quatre erreurs sur les points de passage rapides qui n'en étaient pas.
+            Écho clavier : les caractères tapés sont annoncés immédiatement ; plus de lettres avalées ni en retard.
+            Menu : une ligne redemandée par une touche est relue au lieu d'être avalée.
             Sortie vocale : les liens d'objet étaient lus comme une suite de codes de couleur au lieu de leur nom - partout dans Sku, pas seulement dans le chat.
 
     Le curseur reste sur l'objet dans le sac
@@ -357,6 +368,207 @@ Changements dans Sku v43.2
             ventes, liens de discussion et textes de quête lisent le même -, il est vidé avant ET
             après, et son propriétaire restauré exactement comme SkuCore le règle à la connexion.
 
+
+
+
+    Suivre une quête et retirer le suivi
+        Simple : le menu de chaque quête se termine désormais par une entrée « Suivre la quête ».
+            Entrée la bascule, le curseur reste en place et le nouvel état est annoncé aussitôt -
+            « Suivre la quête;Activé » ou « Suivre la quête;Désactivé ». Suivie signifie : le
+            marqueur propre à WoW sur la minicarte et la carte du monde. Qui garde un reste de
+            vue trouve ainsi ses objectifs plus vite ; qui ne voit rien n'en tire rien. L'entrée
+            peut donc être désactivée entièrement - sous Réglages Sku, SkuQuest, « afficher
+            l'entrée Suivre la quête » ; elle est active par défaut. Elle n'apparaît que pour les
+            quêtes de votre propre journal, car une quête de la base de données de quêtes n'est
+            pas encore la vôtre. Deux limites viennent du jeu lui-même : The Burning Crusade
+            n'autorise que cinq quêtes suivies à la fois, et une quête sans aucun objectif ne
+            peut pas être suivie. Dans les deux cas, Sku annonce le message du jeu et l'état
+            reste inchangé.
+        Technique : l'idée et l'implémentation de référence viennent de ZenqFR, dans l'addon
+            compagnon SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby) ; avec l'accord de ZenqFR, la
+            fonction est ici reconstruite nativement sur les interfaces propres à Sku, afin
+            qu'aucun addon supplémentaire ne soit nécessaire. L'entrée est placée dans le
+            CreateQuestSubmenu local au fichier plutôt que sur un hook du wrapper public - c'est
+            pourquoi toutes les vues de quête en bénéficient : journal de quêtes, base de données
+            de quêtes et menus de quête de SkuChat. Il n'y a pas de C_QuestLog sur 2.5.6 :
+            AddQuestWatch, RemoveQuestWatch et IsQuestWatched prennent un INDEX du journal de
+            quêtes, pas un identifiant de quête, et cet index se décale à chaque quête acceptée
+            ou rendue. Sku tient donc une correspondance identifiant vers index, revérifie
+            l'index mémorisé à chaque lecture et abandonne la correspondance lors des événements
+            de quête ; sans ce cache, la liste « base de données de quêtes, toutes » ferait un
+            parcours complet du journal pour chaque quête. L'activation passe par
+            AutoQuestWatch_Insert avec QUEST_WATCH_NO_EXPIRE, pour que la quête entre dans
+            QUEST_WATCH_LIST et qu'aucun minuteur d'expiration ne l'en retire ; la désactivation
+            supprime d'abord la ligne de QUEST_WATCH_LIST puis seulement appelle
+            RemoveQuestWatch - exactement comme le chemin de clic de Blizzard, sinon une quête
+            depuis longtemps non suivie continue de compter dans la limite de cinq.
+            QuestWatch_Update ne s'exécute qu'en dehors du combat, car il finit par déplacer des
+            cadres protégés ; le prochain QUEST_LOG_UPDATE s'en charge de toute façon.
+
+    Nouveau raccourci « Cibler la créature de quête la plus proche » (Alt+H)
+        Simple : Une pression cible une créature liée à un objectif de quête encore ouvert -
+            y compris une créature qu'on n'a pas à tuer, mais qui se contente de faire tomber
+            un objet requis. Exemple : pour « Essences pour les moteurs », le journal ne nomme
+            que l'objet ; la touche cible malgré tout le Spectre de mana qui le fait tomber.
+            Si rien ne correspond à portée, Sku annonce « aucune cible de quête à portée » ;
+            si le journal ne contient rien de pertinent, « aucune cible de quête dans le
+            journal ». La touche est sur Alt+H par défaut et se réassigne dans les raccourcis
+            Sku, « Ciblage et ciblage souple ».
+        Technique : L'idée et l'implémentation de référence viennent de ZenqFR, dans l'addon
+            compagnon SkuQuestTarget (github.com/ZenqFR/Sku-QuestTarget) ; la fonction a été
+            reconstruite nativement avec l'accord de ZenqFR, pour qu'aucun addon supplémentaire ne
+            soit nécessaire. Les candidats proviennent du journal de quêtes via
+            SkuQuest:GetQuestTargetIds ; les objectifs de type objet sont remontés jusqu'aux
+            créatures qui les font tomber (npcDrops, et un niveau plus loin itemDrops). La
+            recherche commence par la zone où l'on se trouve - une créature sans point
+            d'apparition sur place ne peut pas être à portée de ciblage et ne doit pas occuper
+            une place dans la macro ; ce n'est que si rien n'est enregistré pour la zone que le
+            tri se fait sur tout le continent. La distance retient le point d'apparition
+            enregistré le plus proche, et non le premier de la liste. La macro est multiligne,
+            et une particularité du jeu décide du résultat : chaque ligne qui correspond
+            s'exécute et chaque correspondance écrase la précédente - c'est donc la DERNIÈRE
+            qui gagne. Les candidats sont donc retenus du plus proche au plus lointain, afin
+            que le budget de longueur ne coupe que le lointain, mais écrits à l'envers, pour
+            que le plus proche soit la dernière ligne. La macro est reconstruite à chaque
+            pression hors combat ; en combat, c'est le dernier texte construit qui part.
+
+    « Ennemi suivant en combat » trouve aussi ce qu'on ne regarde pas (Ctrl+H)
+        Simple : La touche ne trouvait que ce que l'on regardait déjà - le même ennemi à cinq
+            mètres derrière soi ne donnait rien. Ce n'est pas un réglage, c'est le
+            fonctionnement du ciblage par tabulation du jeu. Sku retient donc désormais les
+            noms des créatures hostiles croisées et les essaie en plus par leur nom - et un nom
+            fonctionne dans toutes les directions. En pratique : ce que l'on a vu, combattu ou
+            ciblé une fois reste accessible de partout pendant deux minutes, même dos tourné.
+            La recherche repart par ailleurs de l'ennemi le plus proche à chaque pression au
+            lieu de continuer le cycle. La touche est sur Ctrl+H par défaut.
+        Technique : L'approche est reprise du SkuQuestTarget de ZenqFR, qui emprunte la même
+            voie pour sa fonction secondaire. /targetenemy est la tabulation et cherche dans le
+            cône de vue - rien ne peut changer cela. « /tar nom » interroge en revanche la
+            liste de noms du client et ne dépend pas de l'orientation, mais il lui faut un nom,
+            et aucune interface ne permet d'énumérer les unités situées derrière soi. Sku
+            collecte donc les noms en continu depuis quatre sources : les plaques hostiles, sa
+            propre cible, l'unité sous le curseur et la liste d'ennemis du moniteur de combat.
+            La collecte tourne à la seconde tant que la touche est assignée, car une plaque
+            n'existe que tant que la créature est en vue - c'est-à-dire précisément quand on
+            n'a pas besoin de la touche. Seuls les noms y sont collectés ; la mesure de
+            distance, coûteuse, ne tourne qu'une fois par pression. Les noms retenus durent
+            deux minutes. La macro est « /cleartarget », puis « /targetenemy », puis les noms
+            retenus du plus lointain au plus proche - la dernière ligne qui correspond
+            l'emporte, donc la plus proche.
+
+    Nouvelle liste « Quêtes à proximité »
+        Simple : Le menu de quête possède désormais une troisième entrée, après « Quêtes
+            actuelles » et « Base de données des quêtes » : « Quêtes à proximité ». Elle
+            contient tout le journal de quêtes en UNE seule liste - quêtes en cours et quêtes
+            terminées mélangées - triée selon la distance de ce qui compte actuellement pour
+            chaque quête. Chaque entrée annonce d'abord la distance, puis le point cardinal,
+            puis le type, puis le nom de la quête : « 180 Mètre ; nordest ; objectif de quête ;
+            Kobolds voleurs » ou « 340 Mètre ; sud ; Rendre la quête ; Le chef de la meute ».
+            Pour une quête aux objectifs encore
+            ouverts, c'est la distance jusqu'à l'objectif le plus proche ; pour une quête
+            signalée terminée, la distance jusqu'au lieu de remise. « Quêtes actuelles »
+            regroupe selon les en-têtes du journal et trie donc par zone - la nouvelle liste
+            répond à l'autre question : qu'est-ce qui est le plus proche d'ici. Entrée ouvre le
+            même menu de quête que partout ailleurs, points de passage et entrée « Suivre la
+            quête » compris. La liste est DÉSACTIVÉE par défaut et s'active sous Paramètres
+            Sku, SkuQuest, « afficher l'entrée Quêtes à proximité » : elle recalcule tout le
+            journal de quêtes contre la base de données de spawns de Sku à chaque ouverture, et
+            seul celui qui s'en sert devrait le payer. Là où les données de Sku ne donnent
+            aucun lieu, l'entrée indique « Lieu inconnu » au lieu d'une distance et passe en
+            fin de liste - elle ne disparaît pas.
+        Technique : Idée et implémentation de référence de ZenqFR, tirées de l'addon compagnon
+            SkuQuestNearby (github.com/ZenqFR/Sku-QuestNearby) ; reconstruite ici nativement
+            avec l'accord de ZenqFR afin qu'aucun addon supplémentaire ne soit nécessaire - en
+            particulier sans Questie et sans GatherMate2. Le calcul vit dans le nouveau fichier
+            sans état SkuQuest/Proximity.lua. Deux étages, et l'ordre est l'essentiel : d'abord
+            le point de spawn enregistré le plus proche DANS la zone où l'on se trouve - la
+            sélection tourne à bas coût en coordonnées de carte, seul le gagnant est converti
+            une fois en coordonnées du monde ; ensuite seulement, si cela ne donne rien, le
+            minimum sur toutes les zones du même continent. Un autre continent n'est pas une
+            distance imprécise, c'est une absence de distance, et il reste dehors. Les
+            objectifs d'objet sont ramenés aux créatures et objets du monde qui les font
+            tomber, les objectifs d'exploration à leurs coordonnées enregistrées. Contrairement
+            au chemin des points de passage, TOUTES les listes d'objectifs d'une quête sont
+            lues, pas seulement la première non vide - une quête « tuez huit loups ET
+            récoltez cinq peaux » n'afficherait sinon que les loups. Le filtrage porte
+            uniquement sur le TYPE d'objectif : quels types sont encore ouverts vient de
+            l'affichage de progression de Blizzard lui-même (« monster », « item », « object »),
+            et il correspond exactement aux trois listes ; comparer une ligne de progression à
+            une entrée de base de données précise relèverait de la devinette, car aucun des
+            deux ordres n'est lié à l'autre. Douze identifiants au maximum sont évalués par
+            quête et par type - la limite ici est le budget de script des royaumes hardcore,
+            pas la dernière décimale. Le point cardinal provient des mêmes coordonnées du
+            monde, via la même fonction qu'utilisent les listes de points de passage et le
+            scanner de minicarte. Volontairement un point cardinal et non une position
+            horaire : une position horaire est relative à l'orientation du regard et serait
+            fausse dès qu'on se tourne - or la liste est construite une fois puis parcourue.
+
+    Base de données des quêtes : « Commence dans la zone » sans niveau intermédiaire
+        Simple : Sous « Base de données des quêtes, Commence dans la zone » se trouvait
+            exactement une entrée, « Par distance », et seulement à l'intérieur les quêtes. Un
+            niveau où il n'y a rien à choisir n'est qu'une pression de touche. La liste se
+            trouve désormais directement sous « Commence dans la zone ». Cette liste était par
+            ailleurs cassée : elle s'interrompait après la première quête, on obtenait donc
+            exactement une entrée au lieu de toutes les quêtes de la zone.
+        Technique : Le niveau intermédiaire venait de ce qu'un second tri (« par difficulté »)
+            devait un jour s'installer à côté ; ce chantier est resté commenté à côté pendant
+            des années et n'a jamais été construit. L'interruption venait d'une ligne
+            « tcount = tcount + 1 » dans la construction de la liste : tcount n'y était pas une
+            variable locale mais une globale jamais définie, l'incrémentation levait donc une
+            erreur sur nil. Une erreur dans la construction des enfants d'un menu est avalée -
+            la construction se terminait donc silencieusement après la première entrée. Le
+            compteur n'était lu par rien ; il est supprimé plutôt qu'initialisé.
+
+    Tout le contenu de la banque en une seule liste, et la banque reconnue aussi sous Bagnon
+        Simple : Le menu des sacs avait « tous les sacs » - une liste à plat sur l'ensemble des
+            sacs, triée par nom. La banque n'avait pas d'équivalent : devant une banque ouverte
+            le menu affichait bien « Banque » et « Banque Sac 1 » à « Banque Sac 7 », mais
+            chercher quelque chose obligeait à entrer dans chaque compartiment l'un après
+            l'autre. Désormais, tant que la banque est ouverte, une nouvelle entrée « toute la
+            banque » se place juste après « tous les sacs » : tout ce qui se trouve dans la
+            banque en une seule liste, avec le même filtre à la frappe. Ctrl+Entrée y déplace
+            un objet vers vos sacs - exactement comme il le faisait déjà dans chaque sac de
+            banque. De plus, Sku détermine maintenant si la banque est ouverte à partir des
+            messages du jeu lui-même, et non plus de la fenêtre de Blizzard. Qui utilise un
+            addon de remplacement des sacs comme Bagnon, lequel masque cette fenêtre, n'avait
+            jusqu'ici aucune banque dans le menu - Sku la croyait fermée et faisait disparaître
+            tous les compartiments de banque. Aucun addon-pont n'est plus nécessaire pour cela.
+        Technique : La suggestion vient de l'addon compagnon SkuBagnonBridge de ZenqFR
+            (github.com/ZenqFR/Sku-BagnonBridge), qui comble la même lacune à sa manière et
+            reconnaît lui aussi la banque via les événements du jeu ; avec l'accord de ZenqFR,
+            la part qui se passe de tout addon supplémentaire est construite ici nativement. La
+            liste à plat se limitait aux sacs 0 à 4 ; les conteneurs de banque (-1, -3, 5 à 11)
+            n'y étaient jamais copiés. Ils sont désormais rassemblés dans une liste propre,
+            délibérément séparée de celle des sacs : SkuCore.combatBagOrder en dérive - le
+            miroir utilisé en combat - et celui-ci ne peut utiliser que des emplacements de
+            sac. Les entrées de la nouvelle liste sont des copies des mêmes entrées par
+            emplacement et emportent le sac et l'emplacement, si bien que toutes les actions
+            existantes fonctionnent sans changement. L'état de la banque tient maintenant à
+            BANKFRAME_OPENED et BANKFRAME_CLOSED : tous deux proviennent de l'interaction avec
+            le banquier elle-même et sont indépendants de qui dessine la fenêtre. Il est
+            réinitialisé au chargement et après /reload, et l'ancienne vérification de la
+            fenêtre est conservée à côté - la détection ne peut donc que reconnaître plus de
+            cas qu'avant, jamais moins.
+
+
+
+    La suppression d'un point de passage personnel effaçait la mauvaise entrée
+        Simple : supprimer un point de passage que vous aviez créé vous-même ne retirait pas son
+            propre identifiant d'une table de recherche interne, mais celui d'un autre point de
+            passage. Et « /skucheck wp » signalait quatre erreurs sur les quatre points de
+            passage rapides alors que tout allait bien pour eux.
+        Technique : le wpId d'un point de passage est son identité - la table des liaisons est
+            indexée dessus -, pas une description de l'endroit où il se trouve. L'identifiant de
+            zone qui y est encodé date du moment de la construction du cache et ne bouge plus
+            quand un point de passage personnel se déplace ; c'est exactement ce qui arrive aux
+            quatre points de passage rapides à chaque écran de chargement, puisqu'ils sont alors
+            replacés sur la position du joueur. La vérification reconstruisait l'identifiant à
+            partir de l'areaId actuel de l'enregistrement et comparait - elle utilise désormais
+            la zone encodée dans l'identifiant lui-même. Le chemin de suppression construisait
+            l'identifiant à partir de « .areaid » (le champ s'appelle areaId), donc avec la zone
+            1 au lieu de la vraie, et effaçait ainsi l'entrée de l'enregistrement à qui cette
+            clé appartient réellement ; il utilise maintenant l'identifiant stocké.
+
     La saisie du chat est devenue utilisable
         Simple : La ligne de chat était le seul champ de saisie de Sku dans lequel on tapait à
             l'aveugle. Il y avait un son à l'ouverture et un à la fermeture, rien d'autre - pas
@@ -393,6 +605,45 @@ Changements dans Sku v43.2
             ne correspondaient donc à rien depuis toujours. Ordre inversé ; le remplacement
             général n'est plus qu'un filet de sécurité derrière.
 
+
+-------------------------------------------------------------------------------------------------------
+
+    Écho clavier : les caractères sont annoncés immédiatement
+        Simple : En tapant dans un champ de saisie, les lettres ne suivaient pas les doigts :
+            certaines étaient avalées, d'autres arrivaient nettement en retard, et les lettres
+            doubles comme dans « aller » ou « pomme » n'étaient souvent entendues qu'une fois.
+            Chaque caractère tapé arrive maintenant immédiatement, et une touche pressée deux
+            fois est prononcée deux fois.
+        Technique : L'écho passait jusqu'ici par la même file d'attente que chaque annonce de
+            menu, et cette file est conçue pour des annonces, pas pour des frappes. Elle
+            regroupait les caractères pendant un dixième de seconde et les prononçait en mode
+            écrasement - et écraser signifie ici : d'abord StopSpeakingText, puis attendre encore
+            un dixième de seconde pour que cet arrêt ne supprime pas justement la ligne à
+            laquelle il devait faire place. Les deux à la suite font environ 0,2 seconde par
+            frappe, et l'arrêt d'une frappe atterrissait régulièrement sur la suivante. S'y
+            ajoutait le nouveau garde-fou anti-doublon de cette version, pour lequel un caractère
+            isolé est un énoncé identique à lui-même - d'où les lettres doubles avalées. Les
+            caractères tapés empruntent désormais leur propre voie rapide : une seule place où la
+            frappe la plus récente l'emporte, transmission dans la même image, l'arrêt émis une
+            seule fois au début d'une série de frappes au lieu d'une fois par touche, et le
+            garde-fou anti-doublon ne voit plus du tout les caractères tapés. Contexte : un
+            lecteur d'écran n'a jamais besoin de tout cela, car son interface propose
+            l'interruption comme partie intégrante de la commande de parole - une seule
+            opération. L'interface du jeu ne le permet pas, Sku doit donc la reconstituer à
+            partir de deux appels qui peuvent se doubler. La nouveauté est de ne le faire qu'une
+            fois par série de frappes.
+
+    Une ligne redemandée par une touche est de nouveau prononcée
+        Simple : Redemander une ligne de menu par une touche produisait parfois du silence - la
+            synthèse vocale considérait la répétition comme superflue.
+        Technique : Le garde-fou anti-doublon écarte une ligne déjà prononcée à l'identique dans
+            la seconde précédente. C'est juste pour la reprise superflue d'une reconstruction de
+            menu, et faux pour le même texte que l'utilisateur vient de demander par une touche.
+            Les deux sont indiscernables par leur texte, et aucun délai ne les sépare - seul leur
+            déclencheur diffère. La gestion des touches du menu marque donc maintenant son
+            annonce comme déclenchée par une touche, et le garde-fou laisse toujours passer les
+            lignes marquées. Les répétitions superflues restent écartées, désormais quelle que
+            soit leur rapidité.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1
