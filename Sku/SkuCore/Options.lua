@@ -2337,9 +2337,22 @@ end
 local SETTINGS_SEARCH_MAXDEPTH = 10
 local SETTINGS_SEARCH_MAXVISIT = 6000
 
+-- Same accent folding the menu type-ahead uses (see SkuOptions.FoldAccents in
+-- SkuZOptions/Core.lua for the full rationale): without it "reglages" cannot
+-- find "Réglages", and "ö" cannot find "Ö", because string.lower only maps A-Z.
+--
+-- Read through SkuOptions at CALL time, never at load time: this file is line
+-- 74 of the .toc and SkuZOptions/Core.lua is line 169, so the helper does not
+-- exist yet while this file is being parsed. The fallback keeps the previous
+-- behaviour if that order ever changes.
 local function SettingsSearchMatch(aName, aQueryLower)
 	if type(aName) ~= "string" then return false end
-	return string.find(string.lower(aName), aQueryLower, 1, true) ~= nil
+	local tFold = SkuOptions and SkuOptions.FoldAccents
+	local tName = string.lower(aName)
+	if tFold then
+		return string.find(tFold(tName), tFold(aQueryLower), 1, true) ~= nil
+	end
+	return string.find(tName, aQueryLower, 1, true) ~= nil
 end
 
 -- DFS the scratch tree, collecting {name=breadcrumb, path={names}} for every entry
