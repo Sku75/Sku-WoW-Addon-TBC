@@ -30,6 +30,7 @@ Changements dans Sku v43.2
             Auras : un enchantement d'arme (appât de pêche, poison, huile) s'adresse désormais comme un sort - l'événement « Enchantement d'arme expiré » avec « nom du sort ».
             Auras : nouvelle condition et nouvelle sortie « main de l'enchantement d'arme » (main droite ou main gauche).
             Base de données des quêtes : « Commence dans la zone » affiche directement la liste triée par distance - le niveau intermédiaire « Par distance » a disparu.
+            Base de données des quêtes : « Commence dans la zone » indique désormais aussi le point cardinal de chaque quête, et non plus seulement la distance.
             Chat : « Ajouter le lien au chat » insère l'objet à la position du curseur au lieu de remplacer la ligne, et laisse le curseur devant - un canal comme « /p » tient donc encore avant.
             Chat : un lien d'objet compte pour un seul caractère à la lecture - les flèches gauche et droite franchissent tout le lien et en disent le nom.
             Chat : « Ajouter le lien au chat » ne ferme plus les sacs.
@@ -604,6 +605,19 @@ Changements dans Sku v43.2
             Tous ses motifs cherchent une barre verticale, qui n'existait plus à ce moment - ils
             ne correspondaient donc à rien depuis toujours. Ordre inversé ; le remplacement
             général n'est plus qu'un filet de sécurité derrière.
+
+    Base de données des quêtes : « Commence dans la zone » indique aussi le point cardinal
+        Simple : La liste des quêtes qui commencent dans cette zone ne donnait jusqu'ici que la
+            distance du donneur de quête. Elle indique maintenant aussi, comme la liste
+            « Quêtes à proximité », dans quelle direction elle se trouve - d'abord la distance,
+            puis le point cardinal.
+        Technique : Les coordonnées mondiales du donneur de quête figuraient déjà dans cette
+            liste ; la direction vient de la même fonction que celle qu'utilisent les listes de
+            points de passage. Volontairement le point cardinal et non l'heure : un relèvement
+            horaire dépend de l'orientation du regard et serait faux dès qu'on tourne, alors que
+            cette liste est construite une fois puis parcourue. L'identifiant de quête d'une
+            entrée provient désormais directement de la ligne, au lieu d'une table de
+            correspondance indexée sur l'ancien libellé sans direction.
 
 
 -------------------------------------------------------------------------------------------------------

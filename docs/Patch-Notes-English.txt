@@ -27,6 +27,7 @@ Changes in Sku v43.2
             Auras: a weapon enchant (fishing lure, poison, oil) can now be addressed like a spell - the event "Weapon enchant expired" together with "spell name".
             Auras: new condition and new output "weapon enchant hand" (main hand or off hand).
             Quest database: "Starts in zone" shows the distance-sorted list directly - the intermediate "By distance" level is gone.
+            Quest database: "Starts in zone" now names the compass direction of every quest as well, not just the distance.
             Chat: "Add Link to chat" inserts the item at the cursor instead of replacing the line, and leaves the cursor in front of it - so a channel such as "/p " still fits before it.
             Chat: an item link counts as a single character when reading - arrow left and right jump across the whole link and speak its name.
             Chat: "Add Link to chat" no longer closes the bags.
@@ -544,6 +545,17 @@ Changes in Sku v43.2
             look for a vertical bar, which no longer existed by that point - so they had been
             matching nothing all along. Order swapped; the blanket replacement is now only a
             safety net behind it.
+
+    Quest database: "Starts in zone" also names the compass direction
+        Simple: The list of quests that start in this zone used to say only how far away the
+            quest giver is. Now, like the "Nearby quests" list, it also says which direction that
+            is - distance first, then the compass direction.
+        Technically: The quest giver's world coordinates were already in this list; the direction
+            comes from the same function the waypoint lists use. Deliberately the compass
+            direction and not a clock direction: a clock bearing is relative to where you are
+            facing and would be wrong the moment you turn, while this list is built once and then
+            read through. An entry's quest id now comes straight off the row instead of a lookup
+            table whose key was the old label text without the direction.
 
 
 -------------------------------------------------------------------------------------------------------

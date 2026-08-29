@@ -27,6 +27,7 @@ Aenderungen in Sku v43.2
             Auren: eine Waffenverzauberung (Angelkoeder, Gift, Oel) laesst sich jetzt wie ein Zauber ansprechen - Ereignis "Waffenverzauberung abgelaufen" zusammen mit "Zauber name".
             Auren: neue Bedingung und neue Ausgabe "Waffenverzauberung Hand" (Haupthand oder Nebenhand).
             Questdatenbank: "Start in Zone" zeigt die nach Entfernung sortierte Liste direkt an - die Zwischenebene "Nach Entfernung" ist weg.
+            Questdatenbank: "Start in Zone" nennt zu jeder Quest jetzt auch die Himmelsrichtung, nicht nur die Entfernung.
             Chat: "Link zu Chat hinzufuegen" fuegt den Gegenstand an der Cursorposition ein, statt die Zeile zu ersetzen, und laesst den Cursor davor stehen - davor passt jetzt noch ein Kanal wie "/p ".
             Chat: ein Gegenstandslink zaehlt beim Lesen als ein einziges Zeichen - Pfeil links und rechts springen ueber den ganzen Link und sagen den Namen.
             Chat: "Link zu Chat hinzufuegen" schliesst die Taschen nicht mehr.
@@ -595,6 +596,18 @@ Aenderungen in Sku v43.2
             Deren Muster suchen alle nach einem senkrechten Strich, den es zu dem Zeitpunkt nicht
             mehr gab - sie liefen also seit jeher ins Leere. Reihenfolge getauscht; der pauschale
             Ersatz ist jetzt nur noch ein Auffangnetz dahinter.
+
+    Questdatenbank: "Start in Zone" nennt auch die Himmelsrichtung
+        Einfach: Die Liste der Quests, die in dieser Zone beginnen, sagte bisher nur, wie weit
+            der Questgeber entfernt ist. Jetzt sagt sie wie die Liste "Quests in der Naehe" auch,
+            in welcher Richtung er liegt - erst die Entfernung, dann die Himmelsrichtung.
+        Technisch: Die Weltkoordinaten des Questgebers lagen in dieser Liste ohnehin schon vor;
+            die Richtung kommt aus derselben Funktion, die auch die Wegpunktlisten benutzen.
+            Bewusst die Himmelsrichtung und nicht die Uhrzeit: eine Uhrzeit gilt relativ zur
+            Blickrichtung und waere falsch, sobald man sich dreht, waehrend diese Liste einmal
+            gebaut und dann durchgelesen wird. Die Quest-ID eines Eintrags kommt jetzt direkt aus
+            der Zeile statt aus einer Nachschlagetabelle, deren Schluessel der alte
+            Beschriftungstext ohne Richtung war.
 
 
 -------------------------------------------------------------------------------------------------------

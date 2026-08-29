@@ -2368,17 +2368,38 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		tNewMenuSubEntry.BuildChildren = function(self)
 			local tUnSortedTable, tIdTable = SkuQuest:GetUnsortedAvailableQuestsTable()
 
+			-- [v43.2] Wie in "Quests in der Nähe": nach der Entfernung auch die
+			-- Himmelsrichtung. Die Weltkoordinaten des Questgebers liegen in dieser
+			-- Tabelle schon bereit (v[2]/v[3]), es ist dieselbe Funktion und dieselbe
+			-- Reihenfolge -- Entfernung, dann Richtung -- wie in den Wegpunktlisten.
+			-- Bewusst die Himmelsrichtung und nicht die Uhrzeit: eine Uhrzeit gilt
+			-- relativ zur Blickrichtung und wäre falsch, sobald man sich dreht; die
+			-- Liste wird aber einmal gebaut und dann durchgelesen.
 			local tSortedTable = {}
 			for k,v in SkuSpairs(tUnSortedTable, function(t,a,b) return t[b][1] > t[a][1] end) do --nach wert
-				tSortedTable[#tSortedTable+1] = v[1]..L[";Meter"].."#"..k
+				local tDirection = ""
+				if v[2] and v[3] and SkuNav and SkuNav.Geo then
+					local tOkDir, tDirString = pcall(SkuNav.Geo.GetDirectionToAsString, SkuNav.Geo, v[2], v[3])
+					if tOkDir and tDirString and tDirString ~= "" then
+						tDirection = ";"..tDirString
+					end
+				end
+				-- Die Quest-ID direkt aus der Zeile (v[4]) statt über tIdTable: dessen
+				-- Schlüssel ist der ALTE Beschriftungstext ohne Richtung, ein Nachschlagen
+				-- mit der neuen Beschriftung gäbe nil und damit ein Untermenü ohne Inhalt.
+				tSortedTable[#tSortedTable+1] = {
+					label = v[1]..L[";Meter"]..tDirection.."#"..k,
+					questId = v[4] or tIdTable[v[1]..L[";Meter"].."#"..k],
+				}
 			end
 			if #tSortedTable > 0 then
 				for iS, vS in ipairs(tSortedTable) do
-					local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {vS}, SkuGenericMenuItem)
+					local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {vS.label}, SkuGenericMenuItem)
+					local tQuestId = vS.questId
 					tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
-						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(tIdTable[vS])
+						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(tQuestId)
 					end
-					CreateQuestSubmenu(tNewSubMenuEntry2, tIdTable[vS])--iS)
+					CreateQuestSubmenu(tNewSubMenuEntry2, tQuestId)
 				end
 			else
 				local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
