@@ -19,7 +19,7 @@ SkuOptions.LGS = LibStub:GetLibrary("LibGearScore.1000",true)
 
 SkuOptions.Menu = {}
 SkuOptions.currentMenuPosition = nil
-SkuOptions.MenuAccessKeysChars = {" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ö", "ü", "ä", "ß", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", "shift-,",}
+SkuOptions.MenuAccessKeysChars = {" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ö", "ü", "ä", "ß", "ù", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", "shift-,",}
 SkuOptions.MenuAccessKeysNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
 
 local ssplit = string.split
@@ -4241,8 +4241,66 @@ end
 -- cursor), so typing-to-match feels identical in both modes. The name is lowercased,
 -- OBJECT ids and the ;/# separators are flattened to spaces, and large or fractional
 -- numeric tokens (item stack counts, prices) are stripped so they don't match.
+--
+-- [v43.2 i18n] Diacritics are FOLDED on both sides before comparing, so "foret"
+-- matches "Forêt" and "desolace" matches "Désolace".
+--
+-- This is not a convenience, it is the only way a French player can filter at
+-- all. The menu's type-ahead is fed by SetOverrideBindingClick over
+-- SkuOptions.MenuAccessKeysChars, i.e. by KEY NAMES, and on a French keyboard
+-- WoW reports the PHYSICAL key: pressing é delivers "2", à delivers "0", ç
+-- delivers "9". Worse, the circumflex and diaeresis letters (ê î â ô û, ï ë)
+-- are dead-key compositions that produce no key event for the composed
+-- character at all - they exist only in OnChar, which this input path never
+-- sees. Measured on a live frFR client, not assumed. So â can never be typed
+-- into a menu filter, and adding those letters to MenuAccessKeysChars would
+-- change nothing. German works only because ä ö ü ß are dedicated keys on
+-- QWERTZ.
+--
+-- Folding sidesteps the whole problem: the player types unaccented ASCII, which
+-- every keyboard can produce, and still matches the accented name. It also
+-- makes the reverse work, so a German pressing ß still matches "ss" and vice
+-- versa. Both sides are folded, so this never makes a previously-matching
+-- search stop matching.
+--
+-- Bytewise on purpose: WoW's string.lower only lowercases ASCII, so "É" would
+-- survive slower() untouched; the map therefore carries both cases.
+local tFoldMap = {
+	["à"] = "a", ["á"] = "a", ["â"] = "a", ["ã"] = "a", ["ä"] = "a", ["å"] = "a",
+	["è"] = "e", ["é"] = "e", ["ê"] = "e", ["ë"] = "e",
+	["ì"] = "i", ["í"] = "i", ["î"] = "i", ["ï"] = "i",
+	["ò"] = "o", ["ó"] = "o", ["ô"] = "o", ["õ"] = "o", ["ö"] = "o",
+	["ù"] = "u", ["ú"] = "u", ["û"] = "u", ["ü"] = "u",
+	["ç"] = "c", ["ñ"] = "n", ["ý"] = "y", ["ÿ"] = "y",
+	["À"] = "a", ["Á"] = "a", ["Â"] = "a", ["Ã"] = "a", ["Ä"] = "a", ["Å"] = "a",
+	["È"] = "e", ["É"] = "e", ["Ê"] = "e", ["Ë"] = "e",
+	["Ì"] = "i", ["Í"] = "i", ["Î"] = "i", ["Ï"] = "i",
+	["Ò"] = "o", ["Ó"] = "o", ["Ô"] = "o", ["Õ"] = "o", ["Ö"] = "o",
+	["Ù"] = "u", ["Ú"] = "u", ["Û"] = "u", ["Ü"] = "u",
+	["Ç"] = "c", ["Ñ"] = "n", ["Ý"] = "y",
+	["ß"] = "ss", ["æ"] = "ae", ["Æ"] = "ae", ["œ"] = "oe", ["Œ"] = "oe",
+}
+
+-- Matches one UTF-8 multibyte sequence: a lead byte plus its continuation
+-- bytes. Pure-ASCII strings skip the gsub entirely - this runs once per menu
+-- entry per keystroke, and most names have no high bytes at all.
+local function tFoldDiacritics(aString)
+	if not aString or not string.find(aString, "[\128-\255]") then
+		return aString or ""
+	end
+	return (string.gsub(aString, "[\194-\244][\128-\191]*", function(aChar)
+		return tFoldMap[aChar] or aChar
+	end))
+end
+
 local function SkuMenuFilterMatch(aName, aFilterstring)
-	local tHayStack = slower(aName or "")
+	-- Fold FIRST, before anything lowercases or gsubs. string.lower is bytewise
+	-- and, under a C locale that touches bytes >= 128, rewrites the lead byte of
+	-- a UTF-8 sequence (0xC3 -> 0xE3) - which would destroy the character before
+	-- the fold map ever saw it. Folding at the door leaves plain ASCII for every
+	-- covered letter, so everything downstream is encoding-safe. The map carries
+	-- both letter cases precisely so it can run ahead of slower().
+	local tHayStack = slower(tFoldDiacritics(aName or ""))
 	tHayStack = string.gsub(tHayStack, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
 	tHayStack = string.gsub(tHayStack, ";", " ")
 	tHayStack = string.gsub(tHayStack, "#", " ")
@@ -4259,7 +4317,8 @@ local function SkuMenuFilterMatch(aName, aFilterstring)
 	end
 	tHayStack = tTempHayStack
 
-	return string.find(slower(tHayStack), slower(aFilterstring)) ~= nil
+	return string.find(tHayStack,
+		slower(tFoldDiacritics(aFilterstring or "")), 1, true) ~= nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
