@@ -582,6 +582,12 @@ SkuCore.defaults = {
 	-- the SPEECH: the route tracking and the SKU_KEY_TAXICANCEL keybind (with its
 	-- own spoken confirmation) keep working either way.
 	taxiAnnounceLandingPoints = true,
+	-- Neigungssperre automatisch beim Schwimmen/Fliegen (pitchlimit 0, loest
+	-- sich an Land; SkuCore/Core.lua TogglePitchLock-Block). ON by default:
+	-- keyboard players lose nothing (Space/X still move vertically) and it kills
+	-- the turn-to-beacon dive. Partially sighted players who want to pitch the
+	-- view/dive with the mouse while swimming turn it off here.
+	pitchLockAuto = true,
 	turnToUnit = {
 		speed = 6,
 		soundOnSuccess = "sound-waterdrop5",
@@ -689,6 +695,9 @@ SkuSettings:Register("SkuCore", {
 	-- Taxi: announce the flight point you could land at early. Default ON; the
 	-- toggle is in Einstellungen -> Allgemein (SkuCore.Taxi.AnnounceMenuBuilder).
 	["taxiAnnounceLandingPoints"]                 = { scope = "profile", default = true, type = "boolean" },
+	-- Automatic pitch lock while swimming/flying. Default ON; toggle sits in
+	-- Einstellungen -> Allgemein (SkuCore.PitchLockAutoMenuBuilder).
+	["pitchLockAuto"]                             = { scope = "profile", default = true, type = "boolean" },
 	["turnToUnit.speed"]                          = { scope = "profile", default = 6, type = "number" },
 	["turnToUnit.soundOnSuccess"]                 = { scope = "profile", default = "sound-waterdrop5", type = "string" },
 	["turnToUnit.soundOnFail"]                    = { scope = "profile", default = "sound-waterdrop1", type = "string" },
@@ -3030,6 +3039,12 @@ function SkuCore:MenuBuilder(aParentEntry)
 				-- the early-landing keybind keeps working when it is off.
 				if SkuCore.Taxi and SkuCore.Taxi.AnnounceMenuBuilder then
 					SkuCore.Taxi.AnnounceMenuBuilder(self)
+				end
+				-- Automatic pitch lock while swimming/flying on/off
+				-- (SkuCore/Core.lua). The manual key SKU_KEY_PITCHLOCK keeps
+				-- working when it is off.
+				if SkuCore.PitchLockAutoMenuBuilder then
+					SkuCore.PitchLockAutoMenuBuilder(self)
 				end
 			end },
 		{ kind = "submenu", label = tDeEn("Spieleinstellungen", "Game options"),

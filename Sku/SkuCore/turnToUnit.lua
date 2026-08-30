@@ -98,13 +98,29 @@ local function StopSearch()
    TurnToUnit.gameMarker = nil
    TurnToUnit.skuMarker = nil
 
-   MoveViewRightStart(0)
-   MoveViewUpStart(0)
-   MoveViewDownStart(0)
+   -- Echte Stop-Aufrufe statt Start(0). Start(0) haelt die Bewegung zwar an,
+   -- laesst den Bewegungszustand aber eingeschaltet - MoveViewUpStop und
+   -- MoveViewDownStop wurden in dieser Datei bisher NIE aufgerufen, die
+   -- Zustaende "Kamera faehrt hoch" und "Kamera faehrt runter" blieben also
+   -- ab der ersten Drehung dauerhaft aktiv.
+   MoveViewRightStop()
+   MoveViewUpStop()
+   MoveViewDownStop()
+   -- Der Mouselook-Impuls MUSS vor dem Zuruecksetzen liegen: er ist das, was
+   -- die Kamera-Gierung auf die Blickrichtung des Charakters uebertraegt,
+   -- also das eigentliche "dreh dich zum Ziel".
    MouselookStart()
    MouselookStop() 
-   CameraZoomOut(TurnToUnit.CameraZoom)
+   -- Ersetzt CameraZoomOut(TurnToUnit.CameraZoom): SetView gibt Zoom UND
+   -- Neigung exakt zurueck, CameraZoomOut nur den Zoom - die Neigung des
+   -- SetView(2)-Snaps blieb stehen und wurde beim Fliegen/Schwimmen auf den
+   -- Charakter uebertragen. Siehe SkuCore.CameraScratchView.
+   pcall(SetView, SkuCore.CameraScratchView or 5)
    C_CVar.SetCVar("cameraZoomSpeed", TurnToUnit.CameraZoomSpeed)
+   if TurnToUnit.oldCursorCenteredYPos then
+      SetCVar("CursorCenteredYPos", TurnToUnit.oldCursorCenteredYPos)
+      TurnToUnit.oldCursorCenteredYPos = nil
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -239,14 +255,20 @@ function TurnToUnit:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
       return
    end
 
+   -- CursorCenteredYPos wurde frueher gesetzt und nie zurueckgegeben (es ist
+   -- eine gespeicherte CVar, der Wert ueberlebte /reload und Logout).
+   -- Zuruecksetzen erst in StopSearch, weil er waehrend der Suche gilt.
+   TurnToUnit.oldCursorCenteredYPos = TurnToUnit.oldCursorCenteredYPos or GetCVar("CursorCenteredYPos")
+   local tOldFreelook = GetCVar("CursorFreelookCentering")
+   local tOldSticky = GetCVar("CursorStickyCentering")
    SetCVar("CursorCenteredYPos", 0.6)
    SetCVar("CursorFreelookCentering", 1)
    SetCVar("CursorStickyCentering", 1)
    MouselookStart()
    C_Timer.After(0.01, function() 
       MouselookStop()
-      SetCVar("CursorFreelookCentering", 0)
-      SetCVar("CursorStickyCentering", 0)
+      SetCVar("CursorFreelookCentering", tOldFreelook)
+      SetCVar("CursorStickyCentering", tOldSticky)
 
       C_Timer.After(0.01, function() 
          TurnToUnit.unit = aUnitId
@@ -262,15 +284,24 @@ function TurnToUnit:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
          -- zum Ziel, nur ohne erzwungenen View-Snap.
          -- RUECKBAU: naechste Zeile wieder durch  SetView(2)  ersetzen.
          -- DOKU: Nachschlagewerke/"Kamera Freigabe Entkopplung.txt"
-         if not SkuCore.CameraSkuStandardActive or SkuCore:CameraSkuStandardActive() then SetView(2) end
+         -- Reihenfolge: erst messen und sichern, DANN veraendern. Vorher stand
+         -- GetCameraZoom() eine Zeile NACH dem SetView(2) und hat damit den
+         -- Zoom der Voreinstellung erfasst, nicht den des Nutzers.
          TurnToUnit.CameraZoom = GetCameraZoom()
          TurnToUnit.CameraZoomSpeed = C_CVar.GetCVar("cameraZoomSpeed")
+         -- Ganze Kamera (Neigung UND Zoom) sichern - StopSearch holt sie
+         -- ueber SetView zurueck. Ungetaktet vom SkuStandard-Schalter, weil
+         -- CameraZoomIn(50) unten in JEDEM Fall laeuft.
+         pcall(SaveView, SkuCore.CameraScratchView or 5)
+         if not SkuCore.CameraSkuStandardActive or SkuCore:CameraSkuStandardActive() then SetView(2) end
          C_CVar.SetCVar("cameraZoomSpeed", 1000)
       
          CameraZoomIn(50)
          MoveViewRightStart(1 * SkuSettings:Sub("SkuCore").turnToUnit.speed)
-         MoveViewDownStart(0)
-         MoveViewUpStart(0)
+         -- Echte Stop-Aufrufe: hier soll nur die Neigungsbewegung aus sein,
+         -- Start(0) haette den Bewegungszustand eingeschaltet gelassen.
+         MoveViewDownStop()
+         MoveViewUpStop()
       end)
    end)
 end
@@ -284,13 +315,13 @@ function TurnToUnit:TurnToUnitTurn180()
 
    TurnToUnit.searching = true
    MoveViewRightStart(6.7)
-   MoveViewDownStart(0)
-   MoveViewUpStart(0)
+   MoveViewDownStop()
+   MoveViewUpStop()
    C_Timer.After(0.1, function()
       TurnToUnit.searching = false
-      MoveViewRightStart(0)
-      MoveViewUpStart(0)
-      MoveViewDownStart(0)
+      MoveViewRightStop()
+      MoveViewUpStop()
+      MoveViewDownStop()
       MouselookStart()
       MouselookStop() 
    end)

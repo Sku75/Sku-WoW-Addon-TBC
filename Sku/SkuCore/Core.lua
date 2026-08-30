@@ -614,6 +614,272 @@ function SkuCore:CameraSkuStandardActive()
    return tActive
 end
 
+-- ==========================================================================
+-- KAMERA-SCRATCH-SLOT (Ansichts-Speicherplatz fuer Sichern/Zuruecksetzen)
+-- Die WoW-API hat KEINEN Getter fuer die Kameraneigung (kein GetCameraPitch,
+-- weder auf TBC noch sonstwo) - der Wert lebt nur in der Engine. Der einzige
+-- Weg, Neigung UND Zoom exakt zurueckzugeben, ist SaveView(n) vorher und
+-- SetView(n) hinterher: der Wert wird durchgereicht, ohne ihn je zu lesen.
+-- Slot 5 ist Skus Notizblock. Sku besitzt ohnehin schon Slot 2 (Login-Reset in
+-- diesem File) und benutzt Slot 3 (SkuZOptions/Core.lua). Slot 5 ueberschreibt
+-- die Tastenbelegung SAVEVIEW5 des Nutzers - bewusst gewaehlt, weil am
+-- unwahrscheinlichsten belegt, und jederzeit neu speicherbar.
+-- ==========================================================================
+SkuCore.CameraScratchView = 5
+
+-- ==========================================================================
+-- NEIGUNGSSPERRE (SKU_KEY_PITCHLOCK, Standard Strg+Shift+N)
+-- Beim Schwimmen/Fliegen koppelt der Mouselook-Impuls der Beacon-Drehung die
+-- Kameraneigung auf den Charakter und stupst ihn nach unten (Details:
+-- memory/camera-pitch-api-gap). Messen laesst sich die Neigung nicht, aber
+-- BEGRENZEN: die Konsolenvariable pitchlimit deckelt, wie weit sich der
+-- Charakter beim Bewegen neigen kann. pitchlimit 0 = er bewegt sich exakt
+-- waagerecht (die Technik der Addons LevelFlight und FlightHUD, dort seit
+-- Jahren im Einsatz). Preis: gewolltes Ab-/Auftauchen per Neigung geht
+-- waehrend der Sperre auch nicht (Leertaste schwimmt weiter nach oben),
+-- deshalb ein bewusster Nutzer-Schalter und kein Automatismus.
+-- pitchlimit ist beschreibbar, aber NICHT lesbar (GetCVar nil) - der Wert
+-- kann also nie gesichert/exakt zurueckgestellt werden. 88 ist der
+-- Client-Standard und wird beim Entsperren und bei jedem Login/Reload (s.
+-- PLAYER_ENTERING_WORLD) blind gesetzt, damit nie eine Sperre haengenbleibt.
+--
+-- AUTOMATIK (Einstellung pitchLockAuto, Standard AN, Einstellungen ->
+-- Allgemein): die Sperre greift von selbst, sobald geschwommen/geflogen
+-- wird, und loest sich still wieder an Land bzw. am Boden. Getestet
+-- 2026-08-30: Leertaste (hoch) und X (runter) funktionieren UNTER der
+-- Sperre weiter, ein Tastatur-Spieler verliert also keinerlei vertikale
+-- Bewegung. Wer per Neigung tauchen will (Restsicht, Maus), schaltet die
+-- Einstellung aus - pitchlimit deckelt naemlich auch die BLICK-Neigung,
+-- mit 0 laesst sich die Kamera nicht mehr auf/ab neigen. Deshalb greift
+-- die Automatik NUR im Wasser/in der Luft und nie an Land.
+-- Zusammenspiel mit der manuellen Taste: manuell Sperren uebernimmt die
+-- Sperre dauerhaft (die Automatik loest sie an Land nicht mehr); manuell
+-- Entsperren im Wasser setzt einen Merker, damit die Automatik nicht im
+-- naechsten Tick sofort wieder zusperrt - der Merker verfaellt an Land.
+-- ==========================================================================
+SkuCore.pitchLocked = false
+SkuCore.pitchLockAutoEngaged = false
+SkuCore.pitchLockManualOff = false
+
+local function tPitchLockAutoEnabled()
+   if not (SkuSettings and SkuSettings.Get) then return true end
+   local tOk, tVal = pcall(SkuSettings.Get, SkuSettings, "SkuCore", "pitchLockAuto")
+   if not tOk then return true end
+   return tVal ~= false
+end
+
+-- Aktives WIEDER-GERADESTELLEN. Noetig, weil die Sperre nur haelt, was da
+-- ist: engine-gesteuerte Bewegung (Interagieren-Anflug zu einem NPC,
+-- getestet 2026-08-30 04:05) neigt den Charakter TROTZ pitchlimit 0 steil
+-- nach unten, und danach gibt es fuer einen Tastatur-Spieler keinerlei
+-- Eingabe, die die Neigung wieder anhebt - vorwaerts ging dauerhaft steil
+-- abwaerts. Der Ausweg ist derselbe Transfer, der urspruenglich den
+-- Tauch-Bug verursachte, nur absichtlich und mit BEKANNTER Kameralage:
+-- ResetView stellt den Scratch-Slot auf die Standard-Voreinstellung
+-- (hinter dem Charakter, fast waagerecht), SetView schnappt die Kamera
+-- dorthin (cameraViewBlendStyle 2 = sofort), und der Mouselook-Impuls
+-- uebertraegt diese Lage auf den Charakter. Die kleine Restneigung der
+-- Voreinstellung deckelt die aktive Sperre beim Bewegen auf 0.
+function SkuCore:PitchLockLevelPulse()
+   pcall(ResetView, SkuCore.CameraScratchView)
+   pcall(SetView, SkuCore.CameraScratchView)
+   MouselookStart()
+   MouselookStop()
+   dprint("PitchLock", "level pulse (ResetView/SetView", SkuCore.CameraScratchView, "+ mouselook)")
+end
+
+function SkuCore:TogglePitchLock()
+   -- CVars sind im Kampf geschuetzt; lieber ansagen als still nichts tun.
+   if InCombatLockdown() == true then
+      SkuOptions.Voice:OutputString(L["not available in combat"], true, true, 0.3, true)
+      return
+   end
+   if SkuCore.pitchLocked ~= true then
+      ConsoleExec("pitchlimit 0")
+      SkuCore.pitchLocked = true
+      SkuCore.pitchLockAutoEngaged = false
+      SkuCore.pitchLockManualOff = false
+      -- Manuelles Sperren stellt IMMER auch gerade: so ist die Taste selbst
+      -- die Rettung, wenn ein Anflug einen schief hinterlassen hat
+      -- (aus- und wieder einschalten = neu ausrichten und halten).
+      SkuCore:PitchLockLevelPulse()
+      dprint("PitchLock", "manual on (pitchlimit 0)")
+      SkuOptions.Voice:OutputString(L["Pitch locked"], true, true, 0.3, true)
+   else
+      ConsoleExec("pitchlimit 88")
+      SkuCore.pitchLocked = false
+      SkuCore.pitchLockAutoEngaged = false
+      SkuCore.pitchLockManualOff = true
+      dprint("PitchLock", "manual off (pitchlimit 88)")
+      SkuOptions.Voice:OutputString(L["Pitch unlocked"], true, true, 0.3, true)
+   end
+end
+
+-- Automatik-Tick: ein einzelner leichter OnUpdate (alle 0.25 s zwei
+-- IsSwimming/IsFlying-Abfragen), KEINE Timer-Kette (Hardcore-Skriptbudget).
+-- Zustandslogik als Dauerbedingung statt Flanke, damit sie sich selbst
+-- heilt: ein im Kampf verweigerter Schaltversuch wird im naechsten Tick
+-- einfach nachgeholt.
+do
+   local tFrame = CreateFrame("Frame")
+   local tElapsed = 0
+   -- Neigungsmesser, NUR fuers Log (Technik des DirectionLine-Addons): die
+   -- gemessene horizontale Geschwindigkeit (UnitPosition-X/Y-Deltas) geteilt
+   -- durch GetUnitSpeed (3D-Gesamtgeschwindigkeit) ist cos(Neigung) - der
+   -- einzige Neigungs-"Getter", den dieser Client hergibt. Braucht
+   -- Vorwaertsbewegung; Vorzeichen unbekannt (unser Problem ist immer
+   -- abwaerts). Geloggt wird nur bei Wechsel des 10-Grad-Eimers, damit eine
+   -- lange Schwimmstrecke den Ring nicht flutet.
+   local tGaugeX, tGaugeY, tGaugeT
+   local tGaugeSamples = {}
+   local tGaugeIdx = 0
+   local tGaugeBucket
+   local tInteractPulsed = false
+   tFrame:SetScript("OnUpdate", function(self, aDelta)
+      tElapsed = tElapsed + aDelta
+      if tElapsed < 0.25 then return end
+      tElapsed = 0
+      -- Taxiflug zaehlt fuer IsFlying, aber die Bewegung gehoert dem Server:
+      -- dort weder sperren (sinnlos + Ansage-Geplapper an jedem Flugmeister)
+      -- noch die Blickneigung deckeln. Taxi gilt als "trocken".
+      local tWet = (IsSwimming() == true or IsFlying() == true) and UnitOnTaxi("player") ~= true
+      if tWet ~= true then
+         SkuCore.pitchLockManualOff = false
+         tGaugeX, tGaugeY, tGaugeT, tGaugeBucket, tGaugeIdx = nil, nil, nil, nil, 0
+         if next(tGaugeSamples) then tGaugeSamples = {} end
+         tInteractPulsed = false
+         -- Nur eine AUTOMATISCH gesetzte Sperre still loesen; eine manuell
+         -- gesetzte gehoert dem Nutzer und bleibt.
+         if SkuCore.pitchLocked == true and SkuCore.pitchLockAutoEngaged == true and InCombatLockdown() ~= true then
+            ConsoleExec("pitchlimit 88")
+            SkuCore.pitchLocked = false
+            SkuCore.pitchLockAutoEngaged = false
+            dprint("PitchLock", "auto off (an Land, pitchlimit 88)")
+         end
+         return
+      end
+      -- Neigungsmesser fuettern (siehe oben; nur bei echter Vorwaertsfahrt).
+      local tNow = GetTime()
+      local tPosY, tPosX = UnitPosition("player")
+      if tPosY and tGaugeY and tGaugeT and tNow > tGaugeT then
+         local tDx, tDy = tPosX - tGaugeX, tPosY - tGaugeY
+         tGaugeIdx = tGaugeIdx % 4 + 1
+         tGaugeSamples[tGaugeIdx] = math.sqrt(tDx * tDx + tDy * tDy) / (tNow - tGaugeT)
+      end
+      tGaugeY, tGaugeX, tGaugeT = tPosY, tPosX, tNow
+      local tSpeed = GetUnitSpeed("player")
+      if tGaugeSamples[4] and tSpeed and tSpeed > 1 then
+         local tSum = tGaugeSamples[1] + tGaugeSamples[2] + tGaugeSamples[3] + tGaugeSamples[4]
+         local tRatio = math.min((tSum / 4) / tSpeed, 1)
+         local tAngle = math.deg(math.acos(tRatio))
+         local tBucket = math.floor(tAngle / 10)
+         if tBucket ~= tGaugeBucket then
+            tGaugeBucket = tBucket
+            dprint("PitchGauge", string.format("%d Grad (ratio %.2f, horizontal %.1f, gesamt %.1f, locked %s)",
+               tAngle, tRatio, tSum / 4, tSpeed, tostring(SkuCore.pitchLocked)))
+         end
+      end
+      -- Sonderfall Anflug: Interagieren-mit-Bewegung neigt den Charakter
+      -- TROTZ Sperre steil abwaerts (engine-gesteuert, ignoriert pitchlimit;
+      -- getestet 2026-08-30 04:05). Das Ende des Anflugs ist das Aufgehen des
+      -- NPC-Fensters - dann einmal aktiv geradestellen, solange wir noch im
+      -- Wasser/in der Luft haengen. Ein Schuss pro Fenster-Episode.
+      if SkuCore.pitchLocked == true then
+         local tInteractWindowOpen =
+            (GossipFrame and GossipFrame:IsVisible() == true) or
+            (QuestFrame and QuestFrame:IsVisible() == true) or
+            (MerchantFrame and MerchantFrame:IsVisible() == true)
+         if tInteractWindowOpen then
+            if tInteractPulsed ~= true then
+               tInteractPulsed = true
+               SkuCore:PitchLockLevelPulse()
+               dprint("PitchLock", "level pulse nach Anflug (NPC-Fenster offen)")
+            end
+         else
+            tInteractPulsed = false
+         end
+      end
+      if tPitchLockAutoEnabled() == true then
+         if SkuCore.pitchLocked ~= true and SkuCore.pitchLockManualOff ~= true and InCombatLockdown() ~= true then
+            ConsoleExec("pitchlimit 0")
+            SkuCore.pitchLocked = true
+            SkuCore.pitchLockAutoEngaged = true
+            -- Bewusst OHNE Ansage (Nutzer-Wunsch 2026-08-30): die ohnehin
+            -- gesprochenen Schwimmen/Fliegen-Meldungen reichen; nur die
+            -- MANUELLE Taste quittiert per Sprache (sie beantwortet einen
+            -- Tastendruck).
+            dprint("PitchLock", "auto on (im Wasser/Luft, pitchlimit 0)")
+         end
+      else
+         -- Einstellung wurde bei aktiver Auto-Sperre ausgeschaltet: sofort
+         -- freigeben (mit Ansage - der Nutzer schwimmt/fliegt ja gerade).
+         if SkuCore.pitchLocked == true and SkuCore.pitchLockAutoEngaged == true and InCombatLockdown() ~= true then
+            ConsoleExec("pitchlimit 88")
+            SkuCore.pitchLocked = false
+            SkuCore.pitchLockAutoEngaged = false
+            -- Ebenfalls ohne Ansage: der Menue-Schalter selbst spricht sein
+            -- Ja/Nein schon.
+            dprint("PitchLock", "auto off (Einstellung aus, pitchlimit 88)")
+         end
+      end
+   end)
+end
+
+-- Steig-/Sinktasten als Geradestell-Ausloeser: "Ich habe Space gedrueckt,
+-- um den Anflug-Sinkflug zu stoppen - JETZT will ich waagerecht." Die
+-- physischen Tasten sind egal: die Bindings JUMP und SITORSLEEP rufen immer
+-- dieselben Engine-Funktionen, und die lassen sich per hooksecurefunc
+-- nachlaufend abgreifen (Kamera-/Mouselook-Aufrufe sind nicht geschuetzt,
+-- der insecure Post-Hook darf sie). Gegated auf Sperre aktiv + im Wasser/
+-- in der Luft (an Land ist Space ein normaler Sprung und loest nichts aus),
+-- entprellt, und waehrend einer frischen Beacon-Drehung zurueckhaltend
+-- (deren eigener nachgelagerter Impuls stellt ohnehin gerade).
+do
+   local tLastVerticalPulse = 0
+   local function tVerticalKeyPulse(aWhich)
+      if SkuCore.pitchLocked ~= true then return end
+      if IsSwimming() ~= true and IsFlying() ~= true then return end
+      if UnitOnTaxi("player") == true then return end
+      local tNow = GetTime()
+      if tNow - tLastVerticalPulse < 0.75 then return end
+      if SkuCore.gameWorldObjectsTurnStartedAt and tNow - SkuCore.gameWorldObjectsTurnStartedAt < 1.2 then return end
+      tLastVerticalPulse = tNow
+      SkuCore:PitchLockLevelPulse()
+      dprint("PitchLock", "level pulse nach Steig-/Sinktaste", aWhich)
+   end
+   if type(JumpOrAscendStart) == "function" then hooksecurefunc("JumpOrAscendStart", function() tVerticalKeyPulse("ascendStart") end) end
+   if type(AscendStop) == "function" then hooksecurefunc("AscendStop", function() tVerticalKeyPulse("ascendStop") end) end
+   if type(SitStandOrDescendStart) == "function" then hooksecurefunc("SitStandOrDescendStart", function() tVerticalKeyPulse("descendStart") end) end
+   if type(DescendStop) == "function" then hooksecurefunc("DescendStop", function() tVerticalKeyPulse("descendStop") end) end
+end
+
+-- Einstellungen -> Allgemein: "Neigungssperre automatisch" (default AN).
+-- Gebaut wie SkuCore.Taxi.AnnounceMenuBuilder, aufgerufen aus der
+-- Allgemein-Spec in SkuCore/Options.lua.
+function SkuCore.PitchLockAutoMenuBuilder(aParentEntry)
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {
+      Sku.deEn("Neigungssperre automatisch beim Schwimmen und Fliegen",
+         "Automatic pitch lock while swimming and flying",
+         "Verrouillage automatique de l'inclinaison en nage et en vol"),
+   }, SkuGenericMenuItem)
+   tNewMenuEntry.sorting = true
+   tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+      if tPitchLockAutoEnabled() == true then
+         return L["Yes"]
+      else
+         return L["No"]
+      end
+   end
+   tNewMenuEntry.OnAction = function(self, aValue, aName)
+      if aName == L["No"] then
+         SkuSettings:Set("SkuCore", "pitchLockAuto", false)
+      elseif aName == L["Yes"] then
+         SkuSettings:Set("SkuCore", "pitchLockAuto", true)
+      end
+   end
+   SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["No"], L["Yes"])
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_STARTED_MOVING()
    SkuCoreMovement.Flags.EngineMoving = true
@@ -2760,6 +3026,16 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	-- without speaking, so a login or /reload mid-flight neither claims the
 	-- flight just started nor leaves a stale "we are airborne" behind.
 	SkuCore:TaxiAnnounceSyncSilent()
+
+	-- Neigungssperre: pitchlimit ist nicht lesbar und koennte (je nach Client)
+	-- eine Sitzung ueberleben. Nach Login/Reload ist der Sitzungs-Schalter
+	-- pitchLocked immer false, also die Grenze blind auf den Standard 88
+	-- stellen, damit nie eine unsichtbare Sperre aus einer alten Sitzung
+	-- haengenbleibt. Nur wenn die Sperre NICHT als aktiv gilt - ein reines
+	-- Zonen-PLAYER_ENTERING_WORLD mit aktiver Sperre soll sie nicht aufheben.
+	if SkuCore.pitchLocked ~= true then
+		ConsoleExec("pitchlimit 88")
+	end
 
 	-- Control-frame OnShow handlers stamp the deferred-menu-open flags
 	-- (openMenuAfterCombat/Moving) when they are created during login IF inCombat or

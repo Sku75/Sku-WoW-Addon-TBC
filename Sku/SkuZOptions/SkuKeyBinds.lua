@@ -29,6 +29,9 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_QUICKWP4"] = {key = "SHIFT-F8", object = "SkuNav", func = "CreateSkuNavMain",},
    ["SKU_KEY_QUICKWP4SET"] = {key = "CTRL-SHIFT-F8", object = "SkuNav", func = "CreateSkuNavMain",},
    ["SKU_KEY_DEBUGMODE"] = {key = "CTRL-SHIFT-F3", object = "SkuOptions", func = "CreateMainFrame",},
+   -- Neigungssperre beim Schwimmen/Fliegen (pitchlimit 0/88 umschalten,
+   -- SkuCore:TogglePitchLock). N wie Neigung; CTRL-SHIFT-N war frei.
+   ["SKU_KEY_PITCHLOCK"] = {key = "CTRL-SHIFT-N", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_QUESTSHARE"] = {key = "CTRL-SHIFT-T", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_OPENMENU"] = {key = "SHIFT-F1", object = "SkuOptions", func = "CreateMainFrame",},
    -- Quick-access slots 1-4 ship UNBOUND like slots 5-10. They used to default to

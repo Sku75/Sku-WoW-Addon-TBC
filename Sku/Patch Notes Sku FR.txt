@@ -21,6 +21,8 @@ Changements dans Sku v43.2
             Chat : la ligne de saisie parle désormais comme tout autre champ de saisie de Sku - chaque caractère tapé, le caractère ou le mot sous le curseur, et avec la flèche haut les derniers messages envoyés, pour les renvoyer ou les modifier.
             Chat : le canal cible est annoncé dès qu'il n'est pas « Dire » - à l'ouverture et à chaque changement.
             Chat : une commande slash inconnue est maintenant annoncée au lieu d'être ignorée en silence.
+            Nage et vol : Sku vous maintient à l'horizontale. Le nouveau verrouillage de l'inclinaison met fin à la plongée insidieuse lors des virages automatiques, et après une approche automatique vers un PNJ ou un appui sur monter/descendre, vous êtes activement redressé. Activé par défaut ; désactivable sous Paramètres -> Général.
+            Nouveau raccourci « verrouillage de l'inclinaison en nage et en vol » (Ctrl+Maj+N) : verrouille et libère l'inclinaison manuellement - l'éteindre puis le rallumer vous remet à l'horizontale à tout moment.
 
         Changements
             Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
@@ -54,6 +56,41 @@ Changements dans Sku v43.2
             Écho clavier : les caractères tapés sont annoncés immédiatement ; plus de lettres avalées ni en retard.
             Menu : une ligne redemandée par une touche est relue au lieu d'être avalée.
             Sortie vocale : les liens d'objet étaient lus comme une suite de codes de couleur au lieu de leur nom - partout dans Sku, pas seulement dans le chat.
+
+    Nage et vol : le verrouillage de l'inclinaison met fin à la plongée involontaire
+        Simple : En nageant ou en volant, chaque virage automatique vers la balise tirait un peu
+            vers le bas - sur une longue distance, cela s'additionnait jusqu'à se retrouver sous
+            l'eau ou au sol sans s'en apercevoir. Désormais Sku verrouille l'inclinaison dès que
+            vous nagez ou volez : vous vous déplacez parfaitement à l'horizontale, et Espace et X
+            continuent de vous porter vers le haut et vers le bas. Et si quelque chose vous
+            incline malgré tout - par exemple l'approche automatique en interagissant avec un
+            PNJ - Sku vous redresse activement : à l'ouverture de la fenêtre du PNJ, peu après
+            chaque virage, et à chaque appui sur monter ou descendre. Activé par défaut ; qui
+            veut plonger à la souris en inclinant la vue (vision résiduelle) le désactive sous
+            Paramètres -> Général. S'y ajoute le nouveau raccourci « verrouillage de
+            l'inclinaison » (Ctrl+Maj+N) pour verrouiller et libérer manuellement.
+        Technique : Trois éléments. Premièrement, la variable console pitchlimit 0 plafonne
+            l'inclinaison de déplacement du personnage (la technique des addons LevelFlight et
+            FlightHUD) - posée durablement plutôt qu'autour de chaque impulsion de virage, car
+            c'est exactement cette course au basculement qui a fait échouer les tentatives
+            précédentes. pitchlimit s'écrit mais ne se lit pas ; chaque connexion rétablit donc
+            aveuglément la valeur par défaut 88, pour qu'un verrouillage ne reste jamais coincé.
+            Deuxièmement, le verrouillage ne fait que conserver ce qui est : un déplacement piloté
+            par le moteur, comme l'approche d'interaction, incline quand même le personnage, et
+            ensuite aucune touche du clavier ne permet de relever l'inclinaison. Le redressement
+            actif utilise précisément le transfert qui causait le bug à l'origine :
+            ResetView/SetView cale la caméra sur le préréglage par défaut connu, presque
+            horizontal, une impulsion mouselook le transfère au personnage, et le verrouillage
+            plafonne le petit reste à zéro. Les déclencheurs sont la fenêtre du PNJ, chaque
+            virage (différé de 0,5 s, car le moteur n'applique le transfert de cap qu'une frame
+            plus tard - une seconde impulsion immédiate annulerait le virage) et, via
+            hooksecurefunc, les fonctions monter/descendre JumpOrAscendStart, AscendStop,
+            SitStandOrDescendStart et DescendStop - quelles que soient les touches où elles sont
+            assignées. Troisièmement, un inclinomètre pour le journal : la vitesse horizontale
+            mesurée divisée par GetUnitSpeed donne le cosinus de l'angle de trajectoire - la
+            seule mesure que ce client offre (GetUnitPitch a été retiré au patch 7.1 et manque
+            ici aussi). Il mesure la trajectoire, pas l'inclinaison du corps, et ne sert qu'au
+            diagnostic.
 
     Le curseur reste sur l'objet dans le sac
         Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le

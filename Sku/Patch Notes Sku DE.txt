@@ -18,6 +18,8 @@ Aenderungen in Sku v43.2
             Chat: die Eingabezeile spricht jetzt wie jedes andere Sku-Eingabefeld - jedes getippte Zeichen, das Zeichen oder Wort unter dem Cursor, und mit Pfeil hoch die zuletzt gesendeten Nachrichten zum erneuten Senden oder Aendern.
             Chat: der Zielkanal wird angesagt, sobald er nicht "Sagen" ist - beim Oeffnen und bei jedem Wechsel.
             Chat: ein unbekannter Slash-Befehl wird angesagt, statt still verworfen zu werden.
+            Schwimmen und Fliegen: Sku haelt dich waagerecht. Die neue Neigungssperre beendet das schleichende Abtauchen bei den automatischen Drehungen, und nach einem Anflug auf einen NPC oder einem Druck auf Steigen/Sinken wirst du aktiv wieder gerade ausgerichtet. Ab Werk an; abschaltbar unter Einstellungen -> Allgemein.
+            Neuer Tastenbefehl "Neigungssperre beim Schwimmen und Fliegen umschalten" (Strg+Umschalt+N): sperrt und loest die Neigung manuell - aus- und wieder einschalten richtet dich jederzeit neu waagerecht aus.
 
         Aenderungen
             Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
@@ -51,6 +53,39 @@ Aenderungen in Sku v43.2
             Tastatur-Echo: getippte Zeichen kommen sofort; verschluckte und verspaetete Buchstaben sind weg.
             Menue: eine Zeile, die man per Tastendruck erneut anfordert, wird wieder vorgelesen statt verschluckt.
             Sprachausgabe: Gegenstandslinks wurden als Folge von Farbcodes vorgelesen statt als Name - ueberall in Sku, nicht nur im Chat.
+
+    Schwimmen und Fliegen: die Neigungssperre beendet das ungewollte Abtauchen
+        Einfach: Beim Schwimmen oder Fliegen zog jede automatische Drehung zum Funkfeuer ein
+            kleines Stueck nach unten - ueber eine Strecke summierte sich das, bis man unbemerkt
+            unter Wasser oder am Boden war. Jetzt sperrt Sku die Neigung, sobald du schwimmst
+            oder fliegst: du bewegst dich exakt waagerecht, und Leertaste und X tragen dich
+            weiterhin nach oben und unten. Wenn dich doch etwas schief stellt - etwa der
+            automatische Anflug beim Interagieren mit einem NPC -, richtet Sku dich aktiv wieder
+            gerade: beim Oeffnen des NPC-Fensters, kurz nach jeder Drehung und immer, wenn du
+            Steigen oder Sinken drueckst. Ab Werk an; wer beim Schwimmen mit der Maus per Neigung
+            tauchen will (Restsehvermoegen), schaltet es unter Einstellungen -> Allgemein ab.
+            Dazu der neue Tastenbefehl "Neigungssperre" (Strg+Umschalt+N) zum manuellen Sperren
+            und Loesen.
+        Technisch: Drei Bausteine. Erstens deckelt die Konsolenvariable pitchlimit 0 die
+            Bewegungsneigung des Charakters (die Technik der Addons LevelFlight und FlightHUD) -
+            dauerhaft gesetzt statt um jeden Dreh-Impuls herum, denn genau dieses Umschalt-Rennen
+            hat fruehere Versuche scheitern lassen. pitchlimit ist beschreibbar, aber nicht
+            lesbar; bei jedem Login wird deshalb blind der Standard 88 wiederhergestellt, damit
+            nie eine Sperre haengenbleibt. Zweitens haelt die Sperre nur, was da ist:
+            engine-gesteuerte Bewegung wie der Interagieren-Anflug neigt den Charakter trotzdem,
+            und danach gibt es keine Tastatur-Eingabe, die die Neigung wieder anhebt. Das aktive
+            Geradestellen benutzt genau den Transfer, der urspruenglich den Fehler verursachte:
+            ResetView/SetView schnappt die Kamera auf die bekannte fast-waagerechte
+            Voreinstellung, ein Mouselook-Impuls uebertraegt sie auf den Charakter, und die
+            Sperre deckelt den kleinen Rest auf null. Ausloeser sind das NPC-Fenster, jede
+            Drehung (um 0,5 s verzoegert, weil die Engine die Gierung erst einen Frame spaeter
+            anwendet - ein sofortiger zweiter Impuls wuerde die Drehung aufheben) und per
+            hooksecurefunc die Steig-/Sinkfunktionen JumpOrAscendStart, AscendStop,
+            SitStandOrDescendStart und DescendStop - unabhaengig davon, auf welchen Tasten sie
+            liegen. Drittens ein Neigungsmesser fuers Log: gemessene Horizontalgeschwindigkeit
+            geteilt durch GetUnitSpeed ist der Kosinus der Bahnneigung - der einzige Messweg,
+            den dieser Client hergibt (GetUnitPitch wurde mit Patch 7.1 entfernt und fehlt auch
+            hier). Er misst die Bahn, nicht die Koerperneigung, und dient nur der Diagnose.
 
     Der Cursor bleibt in der Tasche auf dem Gegenstand
         Einfach: Wer in der Taschenliste einen Gegenstand rechts anklickte - benutzen, anlegen, an

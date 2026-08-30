@@ -18,6 +18,8 @@ Changes in Sku v43.2
             Chat: the input line now speaks like every other Sku input field - every typed character, the character or word under the cursor, and with arrow up the messages you sent last, to send again or to change.
             Chat: the target channel is announced whenever it is not "Say" - on opening and on every change.
             Chat: an unknown slash command is now announced instead of being silently discarded.
+            Swimming and flying: Sku keeps you level. The new pitch lock ends the creeping dive during automatic turns, and after an interact approach to an NPC or a press of ascend/descend you are actively straightened out again. On by default; can be switched off under Settings -> General.
+            New keybind "Toggle pitch lock while swimming and flying" (Ctrl+Shift+N): locks and releases the pitch manually - switching it off and on again re-levels you at any time.
 
         Changes
             Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
@@ -51,6 +53,37 @@ Changes in Sku v43.2
             Keyboard echo: typed characters are spoken instantly; swallowed and late letters are gone.
             Menu: a line you ask for again with a keypress is read out again instead of being swallowed.
             Voice output: item links were read out as a run of colour codes instead of as their name - everywhere in Sku, not only in chat.
+
+    Swimming and flying: the pitch lock ends the unwanted diving
+        Simple: While swimming or flying, every automatic turn towards the beacon pulled you a
+            little bit downwards - over a longer stretch that added up until you were under water
+            or on the ground without noticing. Now Sku locks your pitch as soon as you swim or
+            fly: you move exactly level, and Space and X still carry you up and down. And if
+            something does tilt you - such as the automatic approach when interacting with an
+            NPC - Sku actively straightens you out again: when the NPC window opens, shortly
+            after every turn, and whenever you press ascend or descend. On by default; anyone who
+            wants to dive by pitching with the mouse while swimming (residual sight) switches it
+            off under Settings -> General. On top of that, the new keybind "pitch lock"
+            (Ctrl+Shift+N) locks and releases manually.
+        Technical: Three building blocks. First, the console variable pitchlimit 0 caps the
+            character's movement pitch (the technique of the LevelFlight and FlightHUD addons) -
+            set persistently rather than around each turn impulse, because exactly that
+            toggle race is what made earlier attempts fail. pitchlimit is writable but not
+            readable; every login therefore blindly restores the default of 88 so a lock can
+            never get stuck. Second, the lock only holds what is there: engine-driven movement
+            such as the interact approach still tilts the character, and afterwards no keyboard
+            input exists that raises the pitch again. The active re-leveling uses the very
+            transfer that originally caused the bug: ResetView/SetView snaps the camera to the
+            known, almost level default preset, a mouselook impulse transfers it onto the
+            character, and the lock caps the small remainder to zero. Triggers are the NPC
+            window, every turn (delayed by 0.5 s, because the engine applies the yaw transfer a
+            frame later - an immediate second impulse would undo the turn) and, via
+            hooksecurefunc, the ascend/descend functions JumpOrAscendStart, AscendStop,
+            SitStandOrDescendStart and DescendStop - independent of which keys they are bound
+            to. Third, a pitch gauge for the log: measured horizontal speed divided by
+            GetUnitSpeed is the cosine of the trajectory angle - the only measurement this
+            client offers (GetUnitPitch was removed in patch 7.1 and is missing here too). It
+            measures the trajectory, not the body pitch, and serves diagnosis only.
 
     The cursor stays on the item in the bag
         Simple: Right-clicking an item in the bag list - use it, equip it, sell it to a vendor,

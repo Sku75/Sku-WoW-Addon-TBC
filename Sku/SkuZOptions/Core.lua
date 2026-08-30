@@ -1700,6 +1700,14 @@ function SkuOptions:CreateMainFrame()
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_OUTPUTTARGETTOOLTIP") then
 			SkuMob:OutputTargetTooltip()
 		end
+		-- Neigungssperre MUSS vor dem Bewegungs-Gate unten stehen: die Taste
+		-- wird gerade beim Schwimmen/Fliegen gedrueckt, also WAEHREND Bewegung.
+		-- Hinter dem Gate wuerde der Druck als Menue-Oeffnung vorgemerkt statt
+		-- ausgefuehrt.
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_PITCHLOCK") then
+			SkuCore:TogglePitchLock()
+			return
+		end
 
 		--toggle mm warning background sound
 		if SkuOptions.db.profile["SkuNav"].showSkuMM == true or SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap == true then
@@ -2636,6 +2644,8 @@ function SkuOptions:CreateMainFrame()
 	if tKbds["SKU_KEY_OUTPUTTARGETTOOLTIP"].key2 and tKbds["SKU_KEY_OUTPUTTARGETTOOLTIP"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OUTPUTTARGETTOOLTIP"].key2, tFrame:GetName(), tKbds["SKU_KEY_OUTPUTTARGETTOOLTIP"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_DEBUGMODE"].key, tFrame:GetName(), tKbds["SKU_KEY_DEBUGMODE"].key)
 	if tKbds["SKU_KEY_DEBUGMODE"].key2 and tKbds["SKU_KEY_DEBUGMODE"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_DEBUGMODE"].key2, tFrame:GetName(), tKbds["SKU_KEY_DEBUGMODE"].key2) end
+	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_PITCHLOCK"].key, tFrame:GetName(), tKbds["SKU_KEY_PITCHLOCK"].key)
+	if tKbds["SKU_KEY_PITCHLOCK"].key2 and tKbds["SKU_KEY_PITCHLOCK"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_PITCHLOCK"].key2, tFrame:GetName(), tKbds["SKU_KEY_PITCHLOCK"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key, tFrame:GetName(), tKbds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key)
 	if tKbds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key2 and tKbds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key2, tFrame:GetName(), tKbds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"].key, tFrame:GetName(), tKbds["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"].key)

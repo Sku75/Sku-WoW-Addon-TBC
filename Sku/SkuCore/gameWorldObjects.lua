@@ -133,14 +133,23 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function GameWorldObjects:GameWorldObjectsCenterMouseCursor(aPos)
    dprint("GameWorldObjectsCenterMouseCursor", aPos)
+   -- Alle DREI CVars sichern und wieder zuruecksetzen. Frueher wurden nur
+   -- CursorFreelookCentering/CursorStickyCentering zurueckgesetzt (und zwar
+   -- hart auf 0 statt auf den Vorwert), CursorCenteredYPos aber NIE - der
+   -- Scan-Wert (0.5/0.6/0.65) blieb dauerhaft stehen, ueber /reload und
+   -- Logout hinweg, weil es eine gespeicherte CVar ist.
+   local tOldYPos = GetCVar("CursorCenteredYPos")
+   local tOldFreelook = GetCVar("CursorFreelookCentering")
+   local tOldSticky = GetCVar("CursorStickyCentering")
    SetCVar("CursorCenteredYPos", aPos)
    SetCVar("CursorFreelookCentering", 1)
    SetCVar("CursorStickyCentering", 1)
    MouselookStart()
    C_Timer.After(0.1, function() 
       MouselookStop()
-      SetCVar("CursorFreelookCentering", 0)
-      SetCVar("CursorStickyCentering", 0)
+      SetCVar("CursorCenteredYPos", tOldYPos)
+      SetCVar("CursorFreelookCentering", tOldFreelook)
+      SetCVar("CursorStickyCentering", tOldSticky)
    end)
 end
 
@@ -156,7 +165,15 @@ function GameWorldObjects:GameWorldObjectsRestoreView()
       GameWorldObjects.gameWorldObjectsScanFrame.CameraYaw = 0
       SkuCore.MinimapScanner.noMouseOverNotification = nil
       SetCVar("cameraPitchMoveSpeed", GameWorldObjects.gameWorldObjectsScanFrame.oldCameraPitchMoveSpeed)
-      SetView(2)
+      -- Die Gierung (Yaw) wird oben exakt zurueckgerechnet, die Neigung
+      -- (Pitch) KANN nicht zurueckgerechnet werden: es gibt keinen Getter
+      -- dafuer in der API. Frueher stand hier SetView(2) - das ist aber kein
+      -- "zurueck", sondern ein Sprung auf eine feste Voreinstellung, die
+      -- leicht nach unten schaut. Beim Fliegen/Schwimmen wurde diese Neigung
+      -- auf den Charakter uebertragen -> ungewolltes Sinken/Abtauchen.
+      -- Jetzt: SetView auf den in GameWorldObjectsScan gesicherten Slot, das
+      -- gibt Neigung UND Zoom exakt zurueck. Siehe SkuCore.CameraScratchView.
+      pcall(SetView, SkuCore.CameraScratchView or 5)
       SkuOptions:StartStopBackgroundSound(false)
    end
 end
@@ -165,16 +182,55 @@ end
 function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
    aWaypointName = aWaypointName or SkuOptions.db.profile["SkuNav"].selectedWaypoint
    if aWaypointName and aWaypointName ~= "" then
-      local fPlayerPosX, fPlayerPosY = UnitPosition("player")
+      local fPlayerPosX, fPlayerPosY, fPlayerPosZ = UnitPosition("player")
       local tData = SkuNav:GetWaypointData2(aWaypointName)
       local _, _, degree = SkuNav.Geo:GetDirectionTo(fPlayerPosX, fPlayerPosY, tData.worldX, tData.worldY)
-      -- [Kamera-Entkopplung 41.02.07] Kamera-Snap NUR im SkuStandard.
-      -- Der Drehwinkel (degree) ist oben rein rechnerisch ermittelt und
-      -- kameraunabhaengig. Bei Freigabe bleibt die freie Kamera erhalten;
-      -- die Wegpunkt-Drehung (MoveViewLeft/Right unten) funktioniert weiter.
-      -- RUECKBAU: naechste Zeile wieder durch  SetView(2)  ersetzen.
-      -- DOKU: Nachschlagewerke/"Kamera Freigabe Entkopplung.txt"
-      if not SkuCore.CameraSkuStandardActive or SkuCore:CameraSkuStandardActive() then SetView(2) end
+      -- Bis 43.2 hatte dieser Pfad KEINE einzige dprint-Zeile, der Tastendruck
+      -- war im Log unsichtbar. Blickrichtung vorher/nachher plus Schwimmen/
+      -- Fliegen protokollieren, damit ein Tauch-Report belegbar wird.
+      dprint("TurnToWp start", aWaypointName, "degree", degree,
+         "facing", GetPlayerFacing(), "hoehe", fPlayerPosZ,
+         "swim", tostring(IsSwimming()), "fly", tostring(IsFlying()),
+         "mounted", tostring(IsMounted()), "falling", tostring(IsFalling()))
+      -- Laufende Nummer der Drehung: der nachgelagerte Geradestell-Impuls
+      -- unten verfaellt, wenn inzwischen eine NEUERE Drehung laeuft (deren
+      -- eigener Impuls uebernimmt) - sonst wuerde sein Kamera-Schnapp einer
+      -- gerade rotierenden Kamera die Gierung unter dem Hintern wegziehen.
+      SkuCore.gameWorldObjectsTurnSeq = (SkuCore.gameWorldObjectsTurnSeq or 0) + 1
+      local tMyTurnSeq = SkuCore.gameWorldObjectsTurnSeq
+      -- Zeitstempel dazu: der Steig-/Sinktasten-Geradestell-Impuls (SkuCore/
+      -- Core.lua) haelt sich zurueck, solange eine Drehung frisch ist.
+      SkuCore.gameWorldObjectsTurnStartedAt = GetTime()
+      -- Objektive Tauchmessung statt Bauchgefuehl: die dritte Rueckgabe von
+      -- UnitPosition ist die Hoehe. Vorher, direkt nach dem Impuls und noch
+      -- einmal eine Sekunde spaeter -> das Tauchen wird eine Zahl im Log.
+      -- Ist die Hoehe nil oder konstant 0, gibt dieser Client sie nicht her
+      -- und wir brauchen einen anderen Messweg.
+      local tFacingAtStart = GetPlayerFacing()
+      C_Timer.After(1.0, function()
+         -- Auch die Blickrichtung noch einmal, eine Sekunde spaeter. Im Log
+         -- vom 2026-08-30 war "facing nach impuls" IMMER identisch mit
+         -- "facing vor impuls", bei Startwinkeln bis 168 Grad. Entweder
+         -- dreht die Funktion gar nicht mehr, oder die Messung direkt nach
+         -- MouselookStop ist einen Frame zu frueh. Diese Zeile trennt die
+         -- beiden Faelle: aendert sich facing bis +1s, war es die Messung.
+         local tPx, tPy = UnitPosition("player")
+         local _, _, tRestLater = SkuNav.Geo:GetDirectionTo(tPx, tPy, tData.worldX, tData.worldY)
+         dprint("TurnToWp +1s", "facing start", tFacingAtStart, "jetzt", GetPlayerFacing(),
+            "startdegree", degree, "restdegree jetzt", tRestLater,
+            "swim", tostring(IsSwimming()), "fly", tostring(IsFlying()),
+            "smoothstyle", tostring(GetCVar("cameraSmoothStyle")))
+      end)
+      -- KEIN Kamera-Snap mehr. Hier stand frueher ein SetView(2) (spaeter auf
+      -- den SkuStandard begrenzt). Es hat fuer die Drehung nie etwas getan:
+      -- degree ist oben rein rechnerisch aus Welt-X/Y ermittelt, Wegpunkte
+      -- haben gar kein Z, und MoveViewLeft/RightStart dreht relativ, also aus
+      -- jeder Kameralage heraus korrekt. Der einzige Effekt war, die Neigung
+      -- auf eine feste, leicht nach unten gerichtete Voreinstellung zu
+      -- schnappen - die der Mouselook-Impuls unten beim Fliegen/Schwimmen auf
+      -- den Charakter uebertragen hat (ungewolltes Landen/Abtauchen).
+      -- Der Mouselook-Impuls selbst MUSS bleiben: er ist das, was die
+      -- Kamera-Gierung auf die Blickrichtung des Charakters uebertraegt.
       --SkuCore:GameWorldObjectsCenterMouseCursor(0.5)
       
       local tOldCameraYawMoveSpeed = GetCVar("cameraYawMoveSpeed")
@@ -202,8 +258,41 @@ function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
          MoveViewRightStop()
          MoveViewLeftStop()
          SetCVar("cameraYawMoveSpeed", tOldCameraYawMoveSpeed)
+         -- Der Impuls uebertraegt die Kamera-Gierung auf die Blickrichtung des
+         -- Charakters. Beim Schwimmen/Fliegen nimmt er auch die Kamera-Neigung
+         -- mit und stupst dadurch nach unten. Dagegen ist hier BEWUSST nichts
+         -- eingebaut: die Versuche (Neigung um einen eingemessenen Gradwert
+         -- ausgleichen, pitchLimit auf 0 sperren, Kamera vorher an den
+         -- Anschlag fahren) haben es alle nicht behoben, und ohne Getter fuer
+         -- Kamera- oder Charakterneigung laesst sich das Ergebnis auch nicht
+         -- pruefen. Details und alle Sackgassen: memory/camera-pitch-api-gap.
+         -- Was es stattdessen gibt: die manuelle Neigungssperre
+         -- SKU_KEY_PITCHLOCK (SkuCore:TogglePitchLock, Strg+Shift+N) - sie
+         -- deckelt per pitchlimit 0, wie weit sich der Charakter beim Bewegen
+         -- ueberhaupt neigen KANN, statt eine vorhandene Neigung zu messen.
          MouselookStart()
-         MouselookStop() 
+         MouselookStop()
+         -- Nach JEDER Drehung im Wasser/in der Luft mit aktiver Sperre einmal
+         -- aktiv geradestellen (PitchLockLevelPulse: Kamera auf die bekannte
+         -- fast-waagerechte Voreinstellung, Transfer-Impuls, Sperre deckelt
+         -- den Rest). Schliesst die Luecke "Anflug abgebrochen, kein
+         -- NPC-Fenster, schief geblieben": die naechste Beacon-Drehung
+         -- richtet wieder aus. VERZOEGERT um 0.5 s, weil die Engine den
+         -- Gierungs-Transfer erst einen spaeteren Frame anwendet - ein
+         -- sofortiger zweiter Impuls mit zurueckgeschnappter Kamera wuerde
+         -- die alte Blickrichtung uebertragen und die Drehung aufheben.
+         -- Ohne Sperre KEIN Impuls: er hinterlaesst die kleine Abwaerts-
+         -- Restneigung der Voreinstellung - genau der alte Tauch-Bug.
+         if SkuCore.pitchLocked == true and (IsSwimming() == true or IsFlying() == true) then
+            C_Timer.After(0.5, function()
+               if SkuCore.gameWorldObjectsTurnSeq == tMyTurnSeq
+                  and SkuCore.pitchLocked == true
+                  and (IsSwimming() == true or IsFlying() == true) then
+                  SkuCore:PitchLockLevelPulse()
+                  dprint("PitchLock", "level pulse nach Drehung", tMyTurnSeq)
+               end
+            end)
+         end
       end)
    end
 end
@@ -538,6 +627,12 @@ function GameWorldObjects:GameWorldObjectsScan(aContinue, aFindList, aHStepSizeD
          dprint(t, self.hStepSizeDeg * self.CameraYawMod, ((self.DownSteps + 1) / self.vStepsMax), (((self.DownSteps + 1) / self.vStepsMax) * 5), self.DownSteps, self.vStepsMax)
          if tTextLeft1 and GameWorldObjects:GameWorldObjectsCheckResult(tTextLeft1, tTextLeft2, tTextLeft3) then
             MoveViewUpStop()
+            -- Die Ansicht wird hier bewusst NICHT zurueckgesetzt - der Fund
+            -- soll im Blick bleiben. Die Scan-Neigungsgeschwindigkeit muss
+            -- aber trotzdem weg, sonst laufen die eigenen Kameratasten des
+            -- Nutzers bis zum naechsten Restore mit dem Scan-Wert (0.2 bis
+            -- 6.0 je nach Scantyp) weiter.
+            SetCVar("cameraPitchMoveSpeed", self.oldCameraPitchMoveSpeed)
             FlipCameraYaw((t) * -1)
             self.CameraYaw = self.CameraYaw + ((t) * -1)
             if self.callback then
@@ -569,6 +664,12 @@ function GameWorldObjects:GameWorldObjectsScan(aContinue, aFindList, aHStepSizeD
    SkuCore.MinimapScanner.noMouseOverNotification = true
 
    if aContinue ~= true then
+      -- Erst die echte Kamera des Nutzers sichern (Neigung UND Zoom), DANN
+      -- auf die Voreinstellung schnappen. SetView(2) bleibt bewusst stehen:
+      -- es normiert die Start-Neigung, und genau daran haengt, auf welche
+      -- Boden-Ringe die vertikalen Baender treffen - also die Trefferqualitaet
+      -- des Scans. GameWorldObjectsRestoreView holt den Slot wieder zurueck.
+      pcall(SaveView, SkuCore.CameraScratchView or 5)
       SetView(2)
       GameWorldObjects:GameWorldObjectsCenterMouseCursor(aHStart)
       tFrame.CameraYawMod = 1
