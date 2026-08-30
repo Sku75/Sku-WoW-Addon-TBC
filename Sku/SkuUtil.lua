@@ -139,6 +139,41 @@ function Sku.locStr(aStrings)
 	return aStrings[tLoc] or aStrings.enUS or aStrings.deDE
 end
 
+local function tNonEmptyList(aList)
+	if type(aList) == "table" and #aList > 0 then return aList end
+	return nil
+end
+
+-- [v43.2] Same idea as Sku.locStr, but for locale-keyed LISTS of strings. The
+-- waypoint comments (lComments in the route data) are the only such structure
+-- today: {enUS = {"Wait here for Zeppelin!"}, deDE = {"Hier auf Zeppelin ..."}}.
+--
+-- Why this exists: the shipped routedata carries lComments for enUS and deDE
+-- only - ~296 waypoints, and they are the SAFETY ones ("caution, this route runs
+-- along the edge of a gorge", "wait here for the zeppelin", "this NPC moves").
+-- Before v42.11 a French client had Sku.Loc == "enUS" and heard the English
+-- ones; once locales/frFR.lua shipped, Sku.Loc became "frFR", the lookup in
+-- SkuNav:PlayWpComments went nil and it returned without saying anything. Every
+-- future locale would land in the same hole. Falling back keeps the warnings
+-- audible until the data is translated, and a translated list still wins.
+--
+-- Two differences from locStr, both load-bearing:
+--  * an EMPTY list must not win. SkuMM.lua materializes an empty
+--    comments[Sku.Loc] on every waypoint it draws, so a plain
+--    `aLists[tLoc] or aLists.enUS` would latch onto that empty table and never
+--    reach the populated enUS one.
+--  * the locale is Sku.Loc, not GetLocale(): comments are DATA, keyed the way
+--    the route files ship everything else, so /skudebug locale must steer them.
+--
+-- (Deliberately no {a, b, c} candidate array + loop: aLists[tLoc] is nil in
+-- exactly the case this function exists for, and `#` on a table built with a nil
+-- first slot is undefined in Lua.)
+function Sku.locList(aLists)
+	if type(aLists) ~= "table" then return nil end
+	local tLoc = Sku.Loc or "enUS"
+	return tNonEmptyList(aLists[tLoc]) or tNonEmptyList(aLists.enUS) or tNonEmptyList(aLists.deDE)
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Tooltip item resolution (item level + quality)
 --
