@@ -155,6 +155,7 @@ SkuNav\SkuMM.lua
 SkuNav\data.lua
 SkuNav\Options.lua
 SkuNav\importExport.lua
+SkuNav\waypointComments_frFR.lua
 
 SkuQuest\Core.lua
 SkuQuest\Options.lua

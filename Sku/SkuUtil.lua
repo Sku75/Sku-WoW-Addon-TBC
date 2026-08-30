@@ -174,6 +174,61 @@ function Sku.locList(aLists)
 	return tNonEmptyList(aLists[tLoc]) or tNonEmptyList(aLists.enUS) or tNonEmptyList(aLists.deDE)
 end
 
+-- [v43.2] Waypoint comments, resolved through the per-locale translation table
+-- in SkuNav/waypointComments_<loc>.lua when the route data itself has none.
+--
+-- Order matters: translated DATA wins over the translation table, so a comment
+-- a user typed on their own waypoint (SkuNav/Options.lua stores it under
+-- comments[Sku.Loc]) is never overwritten by a shipped translation.
+--
+-- The table is keyed on the GERMAN string - the original, and the only field
+-- that is always filled. Building the list off comments.deDE rather than
+-- comments.enUS is what makes the "elevators can be lethal" warning speak at
+-- all: its enUS entry is a single space. Per entry, an untranslated German
+-- string still degrades to the English text rather than to German.
+--
+-- Memoized on the comments table itself: PlayWpComments runs on every waypoint
+-- arrival, and rebuilding a list per arrival for the whole route is waste. The
+-- cache is weak-keyed so it cannot pin freed waypoint records.
+local tWpCommentCache = setmetatable({}, {__mode = "k"})
+
+function Sku.WpComments(aComments)
+	if type(aComments) ~= "table" then return nil end
+
+	local tOwn = aComments[Sku.Loc]
+	if type(tOwn) == "table" and #tOwn > 0 then return tOwn end
+
+	local tTable = SkuWaypointComments and SkuWaypointComments[Sku.Loc]
+	if not tTable then return Sku.locList(aComments) end
+
+	local tHit = tWpCommentCache[aComments]
+	if tHit ~= nil then
+		if tHit == false then return nil end
+		return tHit
+	end
+
+	local tDe, tEn = aComments.deDE, aComments.enUS
+	local tSource = (type(tDe) == "table" and #tDe > 0) and tDe or tEn
+	if type(tSource) ~= "table" or #tSource == 0 then
+		tWpCommentCache[aComments] = false
+		return nil
+	end
+
+	local tOut = {}
+	for x = 1, #tSource do
+		local tGerman = tSource[x]
+		-- the English fallback must be REAL text: the whole reason this path
+		-- reads German is that some enUS entries are "" or a single space, and
+		-- degrading to one of those would speak nothing where German has a
+		-- genuine warning.
+		local tEnglish = (type(tEn) == "table") and tEn[x] or nil
+		if type(tEnglish) ~= "string" or not tEnglish:find("%S") then tEnglish = nil end
+		tOut[x] = tTable[tGerman] or tEnglish or tGerman
+	end
+	tWpCommentCache[aComments] = tOut
+	return tOut
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Tooltip item resolution (item level + quality)
 --
