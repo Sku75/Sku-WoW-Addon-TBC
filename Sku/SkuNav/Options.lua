@@ -1207,11 +1207,19 @@ function SkuNav:MenuBuilder(aParentEntry)
 					SkuOptions:EditBoxShow("test", function(a, b, c) 
 						local tText = SkuOptionsEditBoxEditBox:GetText() 
 						if tText ~= "" then
-							if not tWpData.comments or not tWpData.comments[Sku.Loc] then
-								tWpData.comments = {
-									["deDE"] = {},
-									["enUS"] = {},
-								}
+							-- [v43.2 i18n] The rebuilt literal used to list deDE and enUS
+							-- only, while the very next line indexes comments[Sku.Loc].
+							-- On any client whose locale is neither (frFR since v42.11)
+							-- that is a nil index and assigning a comment threw, so a
+							-- French user could not annotate a waypoint at all. Seed the
+							-- CLIENT's bucket, and only that one - a comment the user
+							-- types is in their language, and creating empty sibling
+							-- buckets would be read back as "no comments" anyway.
+							if not tWpData.comments then
+								tWpData.comments = {}
+							end
+							if not tWpData.comments[Sku.Loc] then
+								tWpData.comments[Sku.Loc] = {}
 							end
 							tWpData.comments[Sku.Loc][#tWpData.comments[Sku.Loc] + 1] = tText
 							SkuNav:SetWaypoint(aName, tWpData)

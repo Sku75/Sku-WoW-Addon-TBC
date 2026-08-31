@@ -2131,10 +2131,17 @@ function SkuNav:PlayWpComments(aWpName)
 		return
 	end
 
-	if tWpData.comments and tWpData.comments[Sku.Loc] then
-		if #tWpData.comments[Sku.Loc] > 0 then
-			for x = 1, #tWpData.comments[Sku.Loc] do
-				local comment = tWpData.comments[Sku.Loc][x] -- the comment to read out
+	-- [v43.2 i18n] Sku.locList, not a bare comments[Sku.Loc]: the shipped route
+	-- data carries lComments for enUS and deDE only, so on a locale that has no
+	-- translated comments yet the direct lookup is nil and every waypoint warning
+	-- ("edge of a gorge", "wait here for the zeppelin", "this NPC moves") goes
+	-- silent. Falls back to enUS/deDE; a non-empty list in the client's own
+	-- locale still wins. See Sku.locList in SkuUtil.lua.
+	local tComments = tWpData.comments and Sku.locList(tWpData.comments)
+	if tComments then
+		if #tComments > 0 then
+			for x = 1, #tComments do
+				local comment = tComments[x] -- the comment to read out
 				if comment ~= nil and comment ~= "" then -- check comment of waypoint is a empty string
 					print(L["Waypoint information"]..": "..comment)
 					C_Timer.After(0.1, function()
