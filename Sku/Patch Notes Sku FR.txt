@@ -37,6 +37,7 @@ Changements dans Sku v43.2
             Chat : un lien d'objet compte pour un seul caractère à la lecture - les flèches gauche et droite franchissent tout le lien et en disent le nom.
             Chat : « Ajouter le lien au chat » ne ferme plus les sacs.
             Chat : les flèches déplacent le curseur de texte dans la saisie du chat ; désactivable dans les paramètres du chat.
+            Base de données des quêtes : mise au niveau des données actuelles de Questie - 33 quêtes sans cible en ont désormais une, cinq quêtes manquantes ajoutées, plus environ 2000 petites corrections de noms, niveaux, donneurs de quête et prérequis.
 
         Corrections
             Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête - la fenêtre de quête se rouvrait sans fin.
@@ -56,6 +57,8 @@ Changements dans Sku v43.2
             Écho clavier : les caractères tapés sont annoncés immédiatement ; plus de lettres avalées ni en retard.
             Menu : une ligne redemandée par une touche est relue au lieu d'être avalée.
             Sortie vocale : les liens d'objet étaient lus comme une suite de codes de couleur au lieu de leur nom - partout dans Sku, pas seulement dans le chat.
+            Menu de quête : pour les quêtes à objectifs mixtes (« tuer X et ramasser Y »), l'entrée « Cible de quête » ne montrait que le premier type d'objectif - ennemis, sources d'objets et point d'exploration figurent désormais côte à côte.
+            Base de données des quêtes : juste après un /reload, des quêtes d'événements mondiaux inactifs (par exemple les quêtes du Solstice d'été) pouvaient apparaître dans « Commence dans la zone ».
 
     Nage et vol : le verrouillage de l'inclinaison met fin à la plongée involontaire
         Simple : En nageant ou en volant, chaque virage automatique vers la balise tirait un peu
@@ -695,6 +698,68 @@ Changements dans Sku v43.2
             annonce comme déclenchée par une touche, et le garde-fou laisse toujours passer les
             lignes marquées. Les répétitions superflues restent écartées, désormais quelle que
             soit leur rapidité.
+
+    Les quêtes à objectifs mixtes montrent tous les types d'objectifs
+        Simple : Pour une quête comme « tuez 8 loups ET ramassez 5 peaux », l'entrée « Cible
+            de quête » du menu de quête ne montrait que le premier type d'objectif - le plus
+            souvent les ennemis ; les sources de l'objet à ramasser, ou un point
+            d'exploration, manquaient en silence. 95 quêtes étaient concernées. Tous les
+            types d'objectifs figurent désormais côte à côte dans une seule liste, et le
+            raccourci « Cibler la créature de quête la plus proche » connaît lui aussi les
+            deux moitiés de ces quêtes. Corrigé au passage : une quête qui n'a qu'un point
+            d'exploration et aucune autre donnée d'objectif reçoit enfin une entrée « Cible
+            de quête », et un point d'exploration irrésoluble ne produit plus une entrée qui
+            se contente d'annoncer « vide ».
+        Technique : SkuQuest:GetQuestTargetIds était une chaîne de elseif sur les listes
+            d'objectifs de la base de données (créatures, sinon objets, sinon objets à
+            ramasser, ...) et ne pouvait, par sa signature même, renvoyer qu'UNE liste avec
+            UN type. Remplacée par GetQuestTargetGroups : un tableau de groupes
+            {targets, type} - créatures fusionnées avec les crédits de mise à mort
+            dédupliqués, objets, objets à ramasser et, pour les seuls appelants objectives,
+            le point triggerEnd de la quête. Les sept sites d'appel sont convertis (menu de
+            quête, cache des points de passage, marqueurs de quête, touche de cible de
+            quête) ; l'ancien nom demeure comme enveloppe premier-groupe pour le port
+            WowVision. La branche item de GetResultingWps est en outre protégée contre les
+            identifiants d'objets inconnus - elle indexait sans vérification et laissait la
+            construction du menu mourir en un silencieux « liste vide ».
+
+    Base de données des quêtes mise au niveau actuel de Questie
+        Simple : La base de données de quêtes intégrée à Sku provient de Questie et datait
+            d'environ deux ans. Après la synchronisation, 33 quêtes dont la « Cible de
+            quête » restait vide ont de vraies cibles (les jeux de cartes de Sombrelune, les
+            quêtes répétables d'Ogri'la et de l'Œil pourpre, « Trouver le maître des
+            clés »), les six quêtes « Enquêter sur le Fléau » ont désormais des points
+            d'exploration, cinq quêtes manquantes ont été ajoutées, et environ 2000
+            enregistrements portent de petites corrections de noms, niveaux, donneurs de
+            quête et chaînes de prérequis. Vérifié : les corrections sont identiques pour
+            Era et TBC, la mise à jour est sûre sur les deux.
+        Technique : Une fusion sémantique, pas une copie d'octets (nouvel outil
+            dev/rework-docs/_refresh_questdata_from_questie.py, puis _db_convert.py) : le
+            schéma de Questie diverge à partir du champ 27, seuls les champs 1-26 sont
+            repris ; les champs propres à Sku, extraObjectives et skuData, sont préservés
+            par enregistrement. La convention requiredRaces (ancien masque toutes-races
+            2047, désormais 0 - identique pour la logique de Sku) compte comme égale dans
+            la comparaison, sans quoi 2117 enregistrements sans changement de contenu
+            auraient encombré le diff. Chaque identifiant de créature, d'objet et d'objet à
+            ramasser référencé a été validé contre les bases livrées (base + WotLK) ; un
+            enregistrement est resté à son ancien état pour cette raison.
+
+    Les quêtes d'événement n'apparaissent plus juste après le chargement
+        Simple : Dans les premières secondes après un /reload, des quêtes d'événements
+            mondiaux inactifs pouvaient apparaître dans « Commence dans la zone » - des
+            quêtes du Solstice d'été en août, par exemple. Une fois Questie complètement
+            chargé, elles disparaissaient d'elles-mêmes ; elles sont désormais masquées
+            aussi dans cette fenêtre.
+        Technique : Les deux barrières de disponibilité n'interrogeaient Questie qu'à
+            partir de Questie.started, et ce drapeau ne bascule qu'à la toute FIN de
+            l'initialisation de Questie. La liste noire statique de Questie,
+            QuestieCorrections.hiddenQuests - quêtes retirées du jeu plus TOUTES les quêtes
+            d'événement ; les actives ne sont dévoilées qu'après la réponse du calendrier
+            du serveur - existe pourtant bien plus tôt. IsQuestieUnavailable la lit
+            désormais directement avant started : une simple lecture de table ; le risque
+            d'empoisonnement de mémoïsation derrière la barrière started ne concerne que
+            IsDoable. La valeur « HIDE_ON_MAP » est ignorée comme le fait Questie lui-même,
+            et chaque masquage d'avant-démarrage écrit une ligne dprint dans le journal.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

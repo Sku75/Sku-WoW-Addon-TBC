@@ -34,6 +34,7 @@ Aenderungen in Sku v43.2
             Chat: ein Gegenstandslink zaehlt beim Lesen als ein einziges Zeichen - Pfeil links und rechts springen ueber den ganzen Link und sagen den Namen.
             Chat: "Link zu Chat hinzufuegen" schliesst die Taschen nicht mehr.
             Chat: die Pfeiltasten bewegen in der Chateingabe den Textcursor; abschaltbar unter Chateinstellungen.
+            Questdatenbank: auf den aktuellen Questie-Datenstand gebracht - 33 Quests ohne Ziel haben jetzt eines, fuenf fehlende ergaenzt, dazu rund 2000 kleinere Korrekturen an Namen, Stufen, Questgebern und Vorquests.
 
         Fehlerbehebungen
             Escape schloss das Menue nicht, wenn man direkt auf einem Questobjekt stand - das Questfenster ging endlos wieder auf.
@@ -53,6 +54,8 @@ Aenderungen in Sku v43.2
             Tastatur-Echo: getippte Zeichen kommen sofort; verschluckte und verspaetete Buchstaben sind weg.
             Menue: eine Zeile, die man per Tastendruck erneut anfordert, wird wieder vorgelesen statt verschluckt.
             Sprachausgabe: Gegenstandslinks wurden als Folge von Farbcodes vorgelesen statt als Name - ueberall in Sku, nicht nur im Chat.
+            Questmenue: bei Quests mit gemischten Zielen ("toete X und sammle Y") zeigte "Ziel" nur die erste Zielart - jetzt stehen Gegner, Fundorte und Erkundungspunkt nebeneinander.
+            Questdatenbank: direkt nach einem /reload konnten Quests inaktiver Weltereignisse (etwa Sonnenwendquests) in "Start in Zone" auftauchen.
 
     Schwimmen und Fliegen: die Neigungssperre beendet das ungewollte Abtauchen
         Einfach: Beim Schwimmen oder Fliegen zog jede automatische Drehung zum Funkfeuer ein
@@ -682,6 +685,62 @@ Aenderungen in Sku v43.2
             ihre Ansage deshalb jetzt als tastenausgeloest, und die Sperre laesst markierte
             Zeilen immer durch. Ueberfluessige Wiederholungen werden weiterhin verworfen, jetzt
             unabhaengig davon, wie schnell sie eintreffen.
+
+    Quests mit gemischten Zielen zeigen alle Zielarten
+        Einfach: Bei einer Quest wie "toete 8 Woelfe UND sammle 5 Felle" zeigte der Eintrag
+            "Ziel" im Questmenue nur die erste Zielart - meist die Gegner; die Fundorte des
+            Sammelgegenstands oder ein Erkundungspunkt fehlten still. Betroffen waren 95
+            Quests. Jetzt stehen alle Zielarten nebeneinander in einer Liste, und auch der
+            Tastenbefehl "Naechstes Questziel ins Ziel nehmen" kennt bei solchen Quests
+            beide Haelften. Nebenbei behoben: eine Quest, die nur einen Erkundungspunkt und
+            sonst keine Zieldaten hat, bekommt ueberhaupt erst einen "Ziel"-Eintrag, und ein
+            nicht aufloesbarer Erkundungspunkt erzeugt keinen Eintrag mehr, der nur noch
+            "leer" ansagt.
+        Technisch: SkuQuest:GetQuestTargetIds war eine elseif-Kette ueber die Ziellisten der
+            Questdatenbank (Kreaturen, sonst Objekte, sonst Gegenstaende, ...) und konnte
+            schon per Signatur nur EINE Liste mit EINEM Typ zurueckgeben. Ersetzt durch
+            GetQuestTargetGroups: ein Feld von Gruppen {targets, type} - Kreaturen samt
+            deduplizierten Toetungs-Credits, Objekte, Gegenstaende und, nur fuer die
+            objectives-Aufrufer, der triggerEnd-Punkt der Quest. Alle sieben Aufrufer sind
+            umgestellt (Questmenue, Wegpunkt-Cache, Questmarker, Questziel-Taste); der alte
+            Name bleibt als Erste-Gruppe-Wrapper fuer den WowVision-Port stehen. Dazu ist
+            der item-Zweig von GetResultingWps gegen unbekannte Gegenstands-IDs abgesichert:
+            der indizierte bisher ungeprueft und liess den verschluckten Menueaufbau als
+            stilles "Liste leer" sterben.
+
+    Questdatenbank auf den aktuellen Questie-Stand gebracht
+        Einfach: Skus eingebaute Questdatenbank stammt von Questie und war rund zwei Jahre
+            alt. Nach dem Abgleich haben 33 Quests, deren "Ziel" bisher leer blieb, echte
+            Ziele (die Dunkelmond-Kartensets, die wiederholbaren Ogri'la- und
+            Violettes-Auge-Quests, "Den Schluesselmeister finden"), die sechs "Untersucht
+            die Geissel"-Quests haben jetzt Erkundungspunkte, fuenf fehlende Quests sind
+            ergaenzt, und rund 2000 Datensaetze tragen kleinere Korrekturen an Namen,
+            Stufen, Questgebern und Vorquest-Ketten. Geprueft: die Korrekturen sind fuer
+            Era und TBC identisch, die Aktualisierung ist auf beiden sicher.
+        Technisch: Semantischer Abgleich statt Byte-Kopie (neues Werkzeug
+            dev/rework-docs/_refresh_questdata_from_questie.py, danach _db_convert.py):
+            Questies Schema divergiert ab Feld 27, uebernommen werden nur die Felder 1-26;
+            Skus eigene Felder extraObjectives und skuData bleiben je Datensatz erhalten.
+            Die requiredRaces-Konvention (alte Alle-Rassen-Maske 2047, neu 0 - fuer Skus
+            Logik dasselbe) gilt beim Vergleich als gleich, sonst haetten 2117 Datensaetze
+            ohne inhaltliche Aenderung im Diff gestanden. Jede referenzierte Kreatur-,
+            Objekt- und Gegenstands-ID wurde gegen die mitgelieferten Datenbanken (Basis +
+            WotLK) validiert; ein Datensatz blieb deshalb beim alten Stand.
+
+    Ereignisquests tauchen direkt nach dem Laden nicht mehr auf
+        Einfach: In den ersten Sekunden nach einem /reload konnten in "Start in Zone"
+            Quests inaktiver Weltereignisse auftauchen - etwa Sonnenwendquests im August.
+            Sobald Questie fertig geladen war, verschwanden sie von selbst wieder; jetzt
+            sind sie auch in diesem Zeitfenster ausgeblendet.
+        Technisch: Die beiden Verfuegbarkeits-Tore fragten Questie erst ab Questie.started,
+            und das Flag kippt ganz am Ende von Questies Initialisierung. Questies statische
+            Ausschlussliste QuestieCorrections.hiddenQuests - entfernte Quests plus ALLE
+            Ereignisquests; die aktiven werden erst nach der Kalender-Antwort des Servers
+            freigeschaltet - existiert aber viel frueher. IsQuestieUnavailable liest sie
+            vor started jetzt direkt: das ist ein reiner Tabellenzugriff, die
+            Memoize-Vergiftungsgefahr hinter dem started-Tor betrifft nur IsDoable. Der
+            Wert "HIDE_ON_MAP" wird wie bei Questie selbst uebersprungen, und jede
+            Vor-Start-Ausblendung schreibt eine dprint-Zeile ins Log.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

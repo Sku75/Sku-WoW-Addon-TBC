@@ -34,6 +34,7 @@ Changes in Sku v43.2
             Chat: an item link counts as a single character when reading - arrow left and right jump across the whole link and speak its name.
             Chat: "Add Link to chat" no longer closes the bags.
             Chat: the arrow keys move the text cursor in the chat input; can be turned off under chat settings.
+            Quest database: brought up to Questie's current data - 33 quests that had no target now have one, five missing quests added, plus about 2000 smaller corrections to names, levels, quest givers and prequests.
 
         Bugfixes
             Escape did not close the menu while standing right on a quest object - the quest window reopened endlessly.
@@ -53,6 +54,8 @@ Changes in Sku v43.2
             Keyboard echo: typed characters are spoken instantly; swallowed and late letters are gone.
             Menu: a line you ask for again with a keypress is read out again instead of being swallowed.
             Voice output: item links were read out as a run of colour codes instead of as their name - everywhere in Sku, not only in chat.
+            Quest menu: for quests with mixed objectives ("kill X and collect Y") the "Quest target" entry only showed the first objective kind - enemies, item sources and the exploration point now sit side by side.
+            Quest database: right after a /reload, quests of inactive world events (such as Midsummer quests) could appear in "Starts in zone".
 
     Swimming and flying: the pitch lock ends the unwanted diving
         Simple: While swimming or flying, every automatic turn towards the beacon pulled you a
@@ -624,6 +627,61 @@ Changes in Sku v43.2
             key handler therefore now marks its announcement as key-triggered, and the guard
             always lets marked lines through. Redundant repeats are still discarded, now
             regardless of how fast they arrive.
+
+    Quests with mixed objectives show every objective kind
+        Simple: For a quest like "kill 8 wolves AND collect 5 pelts", the "Quest target"
+            entry in the quest menu only showed the first objective kind - usually the
+            enemies; the places to find the collectible item, or an exploration point, were
+            silently missing. 95 quests were affected. All objective kinds now sit side by
+            side in one list, and the "Target nearest quest mob" keybind also knows both
+            halves of such quests. Fixed along the way: a quest that has only an exploration
+            point and no other objective data now gets a "Quest target" entry at all, and an
+            unresolvable exploration point no longer produces an entry that just announces
+            "empty".
+        Technically: SkuQuest:GetQuestTargetIds was an elseif chain over the quest
+            database's objective lists (creatures, else objects, else items, ...) and could
+            only ever return ONE list with ONE type by its very signature. Replaced by
+            GetQuestTargetGroups: an array of {targets, type} groups - creatures merged
+            with deduplicated kill credits, objects, items and, for the objectives callers
+            only, the quest's triggerEnd point. All seven call sites are converted (quest
+            menu, waypoint cache, quest markers, quest-target key); the old name remains as
+            a first-group wrapper for the WowVision port. The item branch of
+            GetResultingWps is also guarded against unknown item ids now - it indexed
+            unchecked so far and let the swallowed menu build die as a silent "list empty".
+
+    Quest database brought up to Questie's current data
+        Simple: Sku's built-in quest database comes from Questie and was about two years
+            old. After the sync, 33 quests whose "Quest target" used to stay empty have
+            real targets (the Darkmoon card decks, the repeatable Ogri'la and Violet Eye
+            quests, "Finding the Keymaster"), the six "Investigate the Scourge" quests now
+            have exploration points, five missing quests were added, and about 2000 records
+            carry smaller corrections to names, levels, quest givers and prequest chains.
+            Verified: the corrections are identical for Era and TBC, the update is safe on
+            both.
+        Technically: A semantic merge, not a byte copy (new tool
+            dev/rework-docs/_refresh_questdata_from_questie.py, then _db_convert.py):
+            Questie's schema diverges from field 27 on, so only fields 1-26 are adopted;
+            Sku's own extraObjectives and skuData fields are preserved per record. The
+            requiredRaces convention (old all-races mask 2047, now 0 - identical for Sku's
+            logic) counts as equal in the comparison, otherwise 2117 records with no
+            content change would have sat in the diff. Every referenced creature, object
+            and item id was validated against the shipped databases (base + WotLK); one
+            record was kept at its old state because of that.
+
+    Event quests no longer show up right after loading
+        Simple: In the first seconds after a /reload, quests of inactive world events could
+            appear in "Starts in zone" - Midsummer quests in August, say. Once Questie had
+            finished loading they vanished again by themselves; they are now hidden in that
+            window too.
+        Technically: The two availability gates only consulted Questie from Questie.started
+            on, and that flag flips at the very END of Questie's initialization. Questie's
+            static blacklist QuestieCorrections.hiddenQuests - removed quests plus ALL
+            event quests; the active ones are only unhidden after the server's calendar
+            answer - exists much earlier though. IsQuestieUnavailable now reads it directly
+            before started: a plain table read; the memoize-poisoning hazard behind the
+            started gate is specific to IsDoable. The value "HIDE_ON_MAP" is skipped just
+            like Questie itself does, and every pre-start hide writes a dprint line to the
+            log.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1
