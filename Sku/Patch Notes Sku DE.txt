@@ -60,6 +60,7 @@ Aenderungen in Sku v43.2
             Sprachausgabe: Gegenstandslinks wurden als Folge von Farbcodes vorgelesen statt als Name - ueberall in Sku, nicht nur im Chat.
             Questmenue: bei Quests mit gemischten Zielen ("toete X und sammle Y") zeigte "Ziel" nur die erste Zielart - jetzt stehen Gegner, Fundorte und Erkundungspunkt nebeneinander.
             Questdatenbank: direkt nach einem /reload konnten Quests inaktiver Weltereignisse (etwa Sonnenwendquests) in "Start in Zone" auftauchen.
+            Dreizehn Sprich-mit-Quests (u.a. die alten Priester-Zauberquests) standen ohne Abgabepunkt in den Daten - jetzt fuehrt die Abgabe zu dem NPC, den der Questtext nennt.
 
     Schwimmen und Fliegen: die Neigungssperre beendet das ungewollte Abtauchen
         Einfach: Beim Schwimmen oder Fliegen zog jede automatische Drehung zum Funkfeuer ein
@@ -745,6 +746,19 @@ Aenderungen in Sku v43.2
             Memoize-Vergiftungsgefahr hinter dem started-Tor betrifft nur IsDoable. Der
             Wert "HIDE_ON_MAP" wird wie bei Questie selbst uebersprungen, und jede
             Vor-Start-Ausblendung schreibt eine dprint-Zeile ins Log.
+
+    Dreizehn Sprich-mit-Quests haben wieder eine Abgabe
+        Einfach: Dreizehn Quests - vor allem die alten Priester-Zauberquests (Sterne
+            Elunes, Elunes Anmut, Furchtlosigkeit, Schwaechungsfluch), dazu unter anderem
+            "Der Foliant des Adels" und "Verbuendeter des Netherschwingenclans" - standen
+            ohne Abgabepunkt in den Daten: weder Ziel noch Abgabe, nichts war routbar.
+            Jetzt fuehrt die Abgabe zu dem NPC, den der Questtext selbst nennt.
+        Technisch: finishedBy-Eintraege in quests_fixes.lua; die Kreatur-IDs sind aus dem
+            Questtext gegen die Kreaturdatenbank aufgeloest (jeder Name ist dort eindeutig,
+            die Spawns liegen in der im Text genannten Zone). Die Kandidaten stammen aus
+            dem neuen Werkzeug dev/rework-docs/_quest_target_candidates.py, das alle
+            zielllosen Quests klassifiziert und fuer die restlichen (echte Feldziele ohne
+            Koordinatenquelle) die Pruefliste QUEST-TARGET-CANDIDATES.txt schreibt.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

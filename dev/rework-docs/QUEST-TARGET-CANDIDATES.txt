@@ -7,80 +7,8 @@ Quests whose objective is only bring/speak/deliver are NOT listed - the
 Abgabe entry already routes those.
 
 ======================================================================
-A: QUESTS WITH NEITHER TARGET NOR TURN-IN (nothing to route at all) (13)
+A: QUESTS WITH NEITHER TARGET NOR TURN-IN (nothing to route at all) (0)
 ======================================================================
-
-Quest 1661: The Tome of Nobility
-  class Paladin; level -1 (min 40); turn-in NO
-  Objective text: Speak to Duthorian Rall in Stormwind.
-  PROPOSED FIX: finishedBy creature Duthorian Rall = [6171] (talk-to; no coords needed)
-  Wiki coords: none found
-
-Quest 5627: Stars of Elune
-  class Priest; level -1 (min 10); turn-in NO
-  Wiki coords: none found
-
-Quest 5632: Returning Home
-  class Priest; level 10 (min 10); turn-in NO
-  Objective text: Speak to Priestess Alathea in Darnassus.
-  PROPOSED FIX: finishedBy creature Priestess Alathea = [11401] (talk-to; no coords needed)
-  Wiki coords: none found
-
-Quest 5633: Returning Home
-  class Priest; level 10 (min 10); turn-in NO
-  Objective text: Speak to Priestess Alathea in Darnassus.
-  PROPOSED FIX: finishedBy creature Priestess Alathea = [11401] (talk-to; no coords needed)
-  Wiki coords: none found
-
-Quest 5641: A Lack of Fear
-  class Priest; level -1 (min 20); turn-in NO
-  Wiki coords: none found
-
-Quest 5645: A Lack of Fear
-  class Priest; level -1 (min 20); turn-in NO
-  Objective text: Speak to High Priest Rohan in Ironforge.
-  PROPOSED FIX: finishedBy creature High Priest Rohan = [11406] (talk-to; no coords needed)
-  Wiki coords: none found
-
-Quest 5647: A Lack of Fear
-  class Priest; level -1 (min 20); turn-in NO
-  Objective text: Speak to High Priest Rohan in Ironforge.
-  PROPOSED FIX: finishedBy creature High Priest Rohan = [11406] (talk-to; no coords needed)
-  Wiki coords: none found
-
-Quest 5655: Hex of Weakness
-  class Priest; level 10 (min 10); turn-in NO
-  Objective text: Speak to Ur'kyo in Orgrimmar.
-  PROPOSED FIX: finishedBy creature Ur'kyo = [6018] (talk-to; no coords needed)
-  Wiki coords: none found
-
-Quest 5674: Elune's Grace
-  class Priest; level 20 (min 20); turn-in NO
-  Objective text: Speak to Priestess Alathea in Darnassus.
-  PROPOSED FIX: finishedBy creature Priestess Alathea = [11401] (talk-to; no coords needed)
-  Wiki coords: none found
-
-Quest 8329: Warrior Training
-  level 2 (min 2); zone Sunstrider Isle (3431); turn-in NO
-  Objective text: Speak with Jesthenis Sunstriker - the warrior class trainer - inside the Sunspire on Sunstrider Isle.
-  PROPOSED FIX: finishedBy creature Jesthenis Sunstriker = [15280] (talk-to; no coords needed)
-  Wiki coords: none found
-
-Quest 9733: Warning the Cenarion Circle
-  level 64 (min 2); zone Zangarmarsh (3521); turn-in NO
-  Objective text: Speak to Mahuram Stouthoof at Thrallmar in Hellfire Peninsula.
-  PROPOSED FIX: finishedBy creature Mahuram Stouthoof = [16888] (talk-to; no coords needed)
-  Wiki coords: none found
-
-Quest 9734: Return to the Marsh
-  level 63 (min 2); zone Zangarmarsh (3521); turn-in NO
-  Objective text: Return to Ysiel Windsinger at the Cenarion Refuge in Zangarmarsh.
-  Wiki coords: none found
-
-Quest 10871: Ally of the Netherwing
-  level 70 (min 70); zone Shadowmoon Valley (3520); turn-in NO
-  Objective text: Let Karynaku return you to Mordenai in the Netherwing Fields.
-  Wiki coords: none found
 
 ======================================================================
 B: CLASS QUESTS WITH A FIELD OBJECTIVE (turn-in exists, but the field step is unguided) (64)

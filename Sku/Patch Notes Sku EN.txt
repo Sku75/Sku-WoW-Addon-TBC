@@ -60,6 +60,7 @@ Changes in Sku v43.2
             Voice output: item links were read out as a run of colour codes instead of as their name - everywhere in Sku, not only in chat.
             Quest menu: for quests with mixed objectives ("kill X and collect Y") the "Quest target" entry only showed the first objective kind - enemies, item sources and the exploration point now sit side by side.
             Quest database: right after a /reload, quests of inactive world events (such as Midsummer quests) could appear in "Starts in zone".
+            Thirteen talk-to quests (among them the old priest spell quests) shipped without a turn-in in the data - the Delivery entry now leads to the NPC the quest text names.
 
     Swimming and flying: the pitch lock ends the unwanted diving
         Simple: While swimming or flying, every automatic turn towards the beacon pulled you a
@@ -686,6 +687,19 @@ Changes in Sku v43.2
             started gate is specific to IsDoable. The value "HIDE_ON_MAP" is skipped just
             like Questie itself does, and every pre-start hide writes a dprint line to the
             log.
+
+    Thirteen talk-to quests have a turn-in again
+        Simple: Thirteen quests - above all the old priest spell quests (Stars of Elune,
+            Elune's Grace, A Lack of Fear, Hex of Weakness), plus among others "The Tome of
+            Nobility" and "Ally of the Netherwing" - shipped without a turn-in in the data:
+            neither a target nor a delivery point, nothing was routable. The Delivery entry
+            now leads to the NPC the quest text itself names.
+        Technically: finishedBy entries in quests_fixes.lua; the creature ids were resolved
+            from the quest text against the creature database (every name is unique there,
+            and the spawns lie in the zone the text names). The candidates come from the
+            new tool dev/rework-docs/_quest_target_candidates.py, which classifies every
+            target-less quest and writes the review list QUEST-TARGET-CANDIDATES.txt for
+            the remaining ones (real field objectives without a coordinate source).
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

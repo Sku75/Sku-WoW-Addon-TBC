@@ -63,6 +63,7 @@ Changements dans Sku v43.2
             Sortie vocale : les liens d'objet étaient lus comme une suite de codes de couleur au lieu de leur nom - partout dans Sku, pas seulement dans le chat.
             Menu de quête : pour les quêtes à objectifs mixtes (« tuer X et ramasser Y »), l'entrée « Cible de quête » ne montrait que le premier type d'objectif - ennemis, sources d'objets et point d'exploration figurent désormais côte à côte.
             Base de données des quêtes : juste après un /reload, des quêtes d'événements mondiaux inactifs (par exemple les quêtes du Solstice d'été) pouvaient apparaître dans « Commence dans la zone ».
+            Treize quêtes de dialogue (dont les anciennes quêtes de sorts de prêtre) n'avaient aucun point de remise dans les données - l'entrée Livraison mène désormais au PNJ que nomme le texte de la quête.
 
     Nage et vol : le verrouillage de l'inclinaison met fin à la plongée involontaire
         Simple : En nageant ou en volant, chaque virage automatique vers la balise tirait un peu
@@ -764,6 +765,21 @@ Changements dans Sku v43.2
             d'empoisonnement de mémoïsation derrière la barrière started ne concerne que
             IsDoable. La valeur « HIDE_ON_MAP » est ignorée comme le fait Questie lui-même,
             et chaque masquage d'avant-démarrage écrit une ligne dprint dans le journal.
+
+    Treize quêtes de dialogue ont retrouvé leur point de remise
+        Simple : Treize quêtes - surtout les anciennes quêtes de sorts de prêtre (Étoiles
+            d'Élune, Grâce d'Élune, Sans peur, Maléfice de faiblesse), plus entre autres
+            « Le tome de noblesse » et « Allié des Aile-du-Néant » - n'avaient aucun point
+            de remise dans les données : ni cible ni livraison, rien n'était routable.
+            L'entrée Livraison mène désormais au PNJ que le texte de la quête nomme
+            lui-même.
+        Technique : Entrées finishedBy dans quests_fixes.lua ; les identifiants de
+            créature ont été résolus depuis le texte de quête contre la base de données des
+            créatures (chaque nom y est unique, et les points d'apparition se trouvent dans
+            la zone que le texte nomme). Les candidats proviennent du nouvel outil
+            dev/rework-docs/_quest_target_candidates.py, qui classe toutes les quêtes sans
+            cible et écrit la liste de relecture QUEST-TARGET-CANDIDATES.txt pour les
+            restantes (vrais objectifs de terrain sans source de coordonnées).
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

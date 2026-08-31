@@ -4074,6 +4074,27 @@ local SkuQuestFixes = {
         --[questKeys.zoneOrSort] = sortKeys.REPUTATION,
     },
     ]]
+
+    -- [v43.2] Talk-to quests that ship without a finishedBy: neither a target
+    -- nor a turn-in in the data, so nothing was routable at all. Each entry is
+    -- the NPC the quest's own objective text names, resolved to its creature
+    -- id (every name is unique in the creature DB, spawns verified in the
+    -- zone the text names). 5627/5641 carry no objectivesText; their turn-in
+    -- follows their same-name sibling quests (5632/5674 -> Alathea,
+    -- 5645/5647 -> Rohan).
+    [1661] = { [questKeys.finishedBy] = {{6171},nil} },   -- The Tome of Nobility: Duthorian Rall, Stormwind
+    [5627] = { [questKeys.finishedBy] = {{11401},nil} },  -- Stars of Elune: Priestess Alathea, Darnassus
+    [5632] = { [questKeys.finishedBy] = {{11401},nil} },  -- Returning Home: Priestess Alathea
+    [5633] = { [questKeys.finishedBy] = {{11401},nil} },  -- Returning Home: Priestess Alathea
+    [5641] = { [questKeys.finishedBy] = {{11406},nil} },  -- A Lack of Fear: High Priest Rohan, Ironforge
+    [5645] = { [questKeys.finishedBy] = {{11406},nil} },  -- A Lack of Fear: High Priest Rohan
+    [5647] = { [questKeys.finishedBy] = {{11406},nil} },  -- A Lack of Fear: High Priest Rohan
+    [5655] = { [questKeys.finishedBy] = {{6018},nil} },   -- Hex of Weakness: Ur'kyo, Orgrimmar
+    [5674] = { [questKeys.finishedBy] = {{11401},nil} },  -- Elune's Grace: Priestess Alathea
+    [8329] = { [questKeys.finishedBy] = {{15280},nil} },  -- Warrior Training: Jesthenis Sunstriker, Sunstrider Isle
+    [9733] = { [questKeys.finishedBy] = {{16888},nil} },  -- Warning the Cenarion Circle: Mahuram Stouthoof, Thrallmar
+    [9734] = { [questKeys.finishedBy] = {{17841},nil} },  -- Return to the Marsh: Ysiel Windsinger, Cenarion Refuge
+    [10871] = { [questKeys.finishedBy] = {{22113},nil} }, -- Ally of the Netherwing: Mordenai, Netherwing Fields
 }
 
 local SkuQuestFixesHorde = {
