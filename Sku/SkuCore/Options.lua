@@ -1270,6 +1270,17 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 			if numEntries > 0 then
 				for y = offset + 1, offset + numEntries do
 					local spellName, spellSubName, spellID = GetSpellBookItemName(y, aBooktype) --BOOKTYPE_PET
+					-- GetSpellBookItemName has the CLASSIC signature here and returns
+					-- only (name, rank) -- the third return is a retail addition, so
+					-- spellID can be nil. Recovered from GetSpellBookItemInfo, whose
+					-- second return IS the id, so that IsPassiveSpell/IsSpellKnown
+					-- below and the tooltip read all get a real id. One extra call per
+					-- spell, paid once while the list is built, and skipped entirely
+					-- when the third return already worked.
+					if not spellID and GetSpellBookItemInfo then
+						local tOkInfo, _, tInfoId = pcall(GetSpellBookItemInfo, y, aBooktype)
+						if tOkInfo then spellID = tInfoId end
+					end
 					if spellName then
 						local tIsPassive = IsPassiveSpell(spellID)
 						local isKnown = IsSpellKnown(spellID, aIsPet)
@@ -1282,13 +1293,40 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 							tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 								self.selectTarget.petDefaultControlId = nil
 								self.selectTarget.spellID = spellID
-								_G["SkuScanningTooltip"]:ClearLines()
-								_G["SkuScanningTooltip"]:SetSpellByID(spellID)
-								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-										local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-										SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
+								-- Shift-Down on a spell read out nothing at all. It reads
+								-- currentMenuPosition.textFull, and nothing here ever
+								-- filled it, for two independent reasons:
+								--
+								--  * The shared scanning tooltip can be left without a
+								--    usable owner by whatever used it last, after which
+								--    Set* populates nothing -- silently, no error. Same
+								--    re-own as the three sibling reads below.
+								--  * SetSpellByID needs an id the Classic
+								--    GetSpellBookItemName does not return (see above).
+								--    SetSpellBookItem takes the spellbook INDEX and needs
+								--    no id at all, so it is preferred, with SetSpellByID
+								--    kept as the fallback.
+								--
+								-- pcall'd because this runs on every cursor move: a throw
+								-- here would break menu navigation itself, not just the
+								-- description. TooltipLines_helper is also called once
+								-- now rather than three times per move.
+								local tTip = _G["SkuScanningTooltip"]
+								if not tTip then return end
+								local tOk = pcall(function()
+									tTip:ClearLines()
+									tTip:SetOwner(WorldFrame, "ANCHOR_NONE")
+									if tTip.SetSpellBookItem then
+										tTip:SetSpellBookItem(y, aBooktype)
+									elseif spellID then
+										tTip:SetSpellByID(spellID)
 									end
+								end)
+								if not tOk then return end
+								local tLines = TooltipLines_helper(tTip:GetRegions())
+								if tLines and tLines ~= "" and tLines ~= "asd" then
+									local tText = SkuUtil:Unescape(tLines)
+									SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 								end
 							end
 							tHasEntries = true
@@ -1303,6 +1341,11 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 						self.selectTarget.spellID = nil
 						self.selectTarget.petDefaultControlId = v
 						_G["SkuScanningTooltip"]:ClearLines()
+						-- Re-own the shared scanning tooltip before populating it. It is created
+						-- once at login (SkuCore:PLAYER_LOGIN) and used by every module, so a
+						-- previous user can leave it without a usable owner, after which Set*
+						-- silently fills nothing and Shift-Down reads out nothing at all.
+						_G["SkuScanningTooltip"]:SetOwner(WorldFrame, "ANCHOR_NONE")
 						_G["SkuScanningTooltip"]:SetPetAction(v)
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
@@ -1355,6 +1398,11 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				self.equipmentSetID = nil
 				if self.buttonObj.action then
 					_G["SkuScanningTooltip"]:ClearLines()
+					-- Re-own the shared scanning tooltip before populating it. It is created
+					-- once at login (SkuCore:PLAYER_LOGIN) and used by every module, so a
+					-- previous user can leave it without a usable owner, after which Set*
+					-- silently fills nothing and Shift-Down reads out nothing at all.
+					_G["SkuScanningTooltip"]:SetOwner(WorldFrame, "ANCHOR_NONE")
 					_G["SkuScanningTooltip"]:SetAction(self.buttonObj.action)
 					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
@@ -1481,6 +1529,11 @@ local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				self.macroID = nil
 				if self.buttonObj:GetID() and name then
 					_G["SkuScanningTooltip"]:ClearLines()
+					-- Re-own the shared scanning tooltip before populating it. It is created
+					-- once at login (SkuCore:PLAYER_LOGIN) and used by every module, so a
+					-- previous user can leave it without a usable owner, after which Set*
+					-- silently fills nothing and Shift-Down reads out nothing at all.
+					_G["SkuScanningTooltip"]:SetOwner(WorldFrame, "ANCHOR_NONE")
 					_G["SkuScanningTooltip"]:SetPetAction(x)
 					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
