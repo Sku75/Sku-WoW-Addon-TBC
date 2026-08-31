@@ -576,6 +576,25 @@ end
 -- Silent SHOW on any uncertainty or when Questie is absent/not ready.
 function SkuQuest:IsQuestieUnavailable(aQuestID)
 	if not SkuQuest:QuestieReady() then
+		-- [2026-08-31] Post-/reload window: Questie.started flips only at the
+		-- END of Questie's init, but its static quest blacklist (removed
+		-- quests + ALL event quests; QuestieEvent:Load() later un-hides the
+		-- active ones once the calendar answers) exists much earlier. A list
+		-- built in that window leaked every Midsummer quest of the local
+		-- questgiver (seen 17:14:25, 7s after PLAYER_LOGIN; the same list was
+		-- clean at 17:26). Reading the table directly is safe - the cache-
+		-- poisoning hazard QuestieReady() guards against is specific to
+		-- IsDoable's race/class memoization, not to this plain table. Mirror
+		-- QuestieDB's own check: hidden and not merely HIDE_ON_MAP. Bias
+		-- stays SHOW whenever the table is not there yet.
+		local tQC = SkuQuest:QuestieModule("QuestieCorrections")
+		if tQC and type(tQC.hiddenQuests) == "table" then
+			local tHide = tQC.hiddenQuests[aQuestID]
+			if tHide and tHide ~= "HIDE_ON_MAP" then
+				dprint("IsQuestieUnavailable pre-start fallback hid", aQuestID)
+				return true
+			end
+		end
 		return false
 	end
 	local tQDB = SkuQuest:QuestieModule("QuestieDB")
