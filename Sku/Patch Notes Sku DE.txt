@@ -755,7 +755,10 @@ Aenderungen in Sku v43.2
             waren dort bisher leer, weil es in Instanzen keine Weltkarte gibt. Jetzt steht
             dort stattdessen der Eintrag "NPC, Eingang, Dungeonname, Zone" mit Route zum
             Dungeoneingang - auch bei Schlachtfeldquests (Alteractal je Fraktion am
-            richtigen Eingang).
+            richtigen Eingang). Fundquellen eines GEGENSTANDS im selben Dungeon werden
+            dabei zu einem einzigen Eintrag "Dungeonname, Eingang, Zone" zusammengefasst -
+            "Ramaladnis Schicksal" nannte sonst 29 Naxxramas-Trashmobs einzeln, die alle
+            zum selben Tor fuehren; Toetungsziele behalten ihre einzelnen Mobnamen.
         Technisch: Neue generierte Tabelle SkuDB.InstanceEntrances (aus Questies
             Dungeon-Tabelle, Werkzeug dev/rework-docs/_gen_instance_entrances.py):
             Instanz-AreaId -> Eingaenge {Elternzone, x, y, ggf. Fraktion}, inklusive der

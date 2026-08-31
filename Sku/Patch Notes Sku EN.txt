@@ -696,7 +696,10 @@ Changes in Sku v43.2
             Delivery used to be empty there, because instances have no world map. Those
             entries now read "NPC, entrance, dungeon name, zone" with a route to the
             dungeon entrance - battleground quests included (Alterac Valley picks the
-            right entrance per faction).
+            right entrance per faction). Drop sources of an ITEM inside the same dungeon
+            collapse into a single "dungeon name, entrance, zone" entry - "The Fate of
+            Ramaladni" otherwise named 29 Naxxramas trash mobs one by one, all leading to
+            the same gate; kill objectives keep their individual mob names.
         Technically: New generated table SkuDB.InstanceEntrances (from Questie's dungeon
             table, tool dev/rework-docs/_gen_instance_entrances.py): instance areaId ->
             entrances {parent zone, x, y, optional faction}, including the wing sub-ids

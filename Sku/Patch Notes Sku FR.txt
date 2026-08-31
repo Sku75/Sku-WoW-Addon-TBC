@@ -774,7 +774,11 @@ Changements dans Sku v43.2
             Cible de quête et Livraison y restaient vides, car les instances n'ont pas de
             carte du monde. Ces entrées affichent désormais « PNJ, entrée, nom du donjon,
             zone » avec une route vers l'entrée du donjon - quêtes de champ de bataille
-            comprises (la vallée d'Alterac choisit la bonne entrée selon la faction).
+            comprises (la vallée d'Alterac choisit la bonne entrée selon la faction). Les
+            sources d'un OBJET dans le même donjon sont regroupées en une seule entrée
+            « nom du donjon, entrée, zone » - « Le destin de Ramaladni » énumérait sinon
+            un à un 29 monstres de Naxxramas menant tous à la même porte ; les objectifs
+            d'élimination gardent leurs noms de monstres individuels.
         Technique : Nouvelle table générée SkuDB.InstanceEntrances (depuis la table des
             donjons de Questie, outil dev/rework-docs/_gen_instance_entrances.py) :
             areaId d'instance -> entrées {zone parente, x, y, faction éventuelle}, y

@@ -987,7 +987,14 @@ end
 -- "<name>;Eingang;<dungeon>;<zone>" backed by the entrance's nearest route
 -- waypoint. Mirrors the normal spawn path including the other-continent
 -- text line and the aOnlyUiMapId filter (quest beacons).
-local function AddInstanceEntranceEntries(aTargetTable, aName, aAreaId, aPlayerContinentID, aOnlyUiMapId)
+--
+-- aCollapse: for ITEM drop sources the per-mob naming is noise - the "Fate
+-- of Ramaladni" item lists 29 Naxxramas trash droppers, which read as 29
+-- entries that all route to the same gate. Collapsed, the whole dungeon
+-- becomes ONE "<dungeon>;Eingang;<zone>" entry. Kill objectives keep their
+-- per-mob names (a quest with targets in two dungeons deliberately shows
+-- each mob with its own entrance).
+local function AddInstanceEntranceEntries(aTargetTable, aName, aAreaId, aPlayerContinentID, aOnlyUiMapId, aCollapse)
 	local tEntrances = GetInstanceEntranceWps(aAreaId)
 	if not tEntrances then
 		return
@@ -995,7 +1002,12 @@ local function AddInstanceEntranceEntries(aTargetTable, aName, aAreaId, aPlayerC
 	for i = 1, #tEntrances do
 		local tE = tEntrances[i]
 		if (not aOnlyUiMapId) or aOnlyUiMapId == tE.uiMapId then
-			local tKey = aName..";"..L["Eingang"]..";"..tE.dungeonName..";"..tE.parentName
+			local tKey
+			if aCollapse then
+				tKey = tE.dungeonName..";"..L["Eingang"]..";"..tE.parentName
+			else
+				tKey = aName..";"..L["Eingang"]..";"..tE.dungeonName..";"..tE.parentName
+			end
 			local tLine
 			if tE.continentId == aPlayerContinentID then
 				tLine = tE.wp
@@ -1019,7 +1031,7 @@ local function AddInstanceEntranceEntries(aTargetTable, aName, aAreaId, aPlayerC
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3, aOnlyUiMapId)
+local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3, aOnlyUiMapId, aCollapseEntrances)
 	local _, _, tPlayerContinentID  = SkuNav.Geo:GetAreaData(SkuNav.Geo:GetCurrentAreaId())
 
 	for i, tNpcID in pairs(aCreatureIds) do
@@ -1033,7 +1045,7 @@ local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3, aOnlyUiMapId
 					--not in the open world: route to the instance entrance instead of skipping
 					if not isUiMap then
 						if SkuDB.NpcData.Names[Sku.Loc][i] then
-							AddInstanceEntranceEntries(aTargetTable, SkuDB.NpcData.Names[Sku.Loc][i][1], is, tPlayerContinentID, aOnlyUiMapId)
+							AddInstanceEntranceEntries(aTargetTable, SkuDB.NpcData.Names[Sku.Loc][i][1], is, tPlayerContinentID, aOnlyUiMapId, aCollapseEntrances)
 						end
 					elseif (not aOnlyUiMapId or aOnlyUiMapId == isUiMap ) then
 						local tData = SkuDB.InternalAreaTable[is]
@@ -1129,7 +1141,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 							for is, vs in pairs(tObjectSpawns) do
 								local isUiMap = SkuNav.Geo:GetUiMapIdFromAreaId(is)
 								if not isUiMap then
-									AddInstanceEntranceEntries(tResultWPs, tObjectName or "", is, tPlayerContinentID, aOnlyUiMapId)
+									AddInstanceEntranceEntries(tResultWPs, tObjectName or "", is, tPlayerContinentID, aOnlyUiMapId, true)
 								elseif (not aOnlyUiMapId or aOnlyUiMapId == isUiMap ) then
 									--if is == tCurrentAreaId then
 										local tData = SkuDB.InternalAreaTable[is]
@@ -1168,10 +1180,10 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 				end
 			end
 			if SkuDB.itemDataTBC[tItemId] and SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["npcDrops"]] then
-				CreatureIdHelper(SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["npcDrops"]], tResultWPs, aOnly3, aOnlyUiMapId)
+				CreatureIdHelper(SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["npcDrops"]], tResultWPs, aOnly3, aOnlyUiMapId, true)
 			end
 			if SkuDB.itemDataTBC[tItemId] and SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["vendors"]] then
-				CreatureIdHelper(SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["vendors"]], tResultWPs, aOnly3, aOnlyUiMapId)
+				CreatureIdHelper(SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["vendors"]], tResultWPs, aOnly3, aOnlyUiMapId, true)
 			end
 		end
 	elseif aSubType == "object" then
