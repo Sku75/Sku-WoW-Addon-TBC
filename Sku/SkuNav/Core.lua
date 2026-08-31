@@ -1732,15 +1732,29 @@ function SkuNav:GetWaypointData2(aName, aIndex)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
-function SkuNav:GetNearestWpToCoords2(aX, aY, aContintent)
+-- aTypeId (optional): restrict the search to one waypoint class. Pass 1 to get a
+-- ROUTE waypoint - the named, link-carrying kind - instead of whatever happens to
+-- sit closest, which in a populated zone is almost always one of the ~145k
+-- generated creature (2) / object (3) spawn points. Nil keeps the old
+-- "nearest of anything" behaviour.
+-- The continent bucket can be missing outright (nothing cached for that
+-- continent yet, or an id that never had one); pairs(nil) threw there.
+function SkuNav:GetNearestWpToCoords2(aX, aY, aContintent, aTypeId)
 	local tNearestDistance, tNearestWpName = 40000, nil
 
-	for tIndex, tValue in pairs(WaypointCacheLookupPerContintent[aContintent]) do
+	local tBucket = WaypointCacheLookupPerContintent[aContintent]
+	if not tBucket then
+		return nil
+	end
+
+	for tIndex, tValue in pairs(tBucket) do
 		local tWpData = SkuNav:GetWaypointData2(nil, tIndex)
-		local tThisDistance = SkuNav:Distance(aX, aY, tWpData.worldX, tWpData.worldY)
-		if tThisDistance < tNearestDistance then
-			tNearestDistance = tThisDistance
-			tNearestWpName = tValue
+		if aTypeId == nil or tWpData.typeId == aTypeId then
+			local tThisDistance = SkuNav:Distance(aX, aY, tWpData.worldX, tWpData.worldY)
+			if tThisDistance < tNearestDistance then
+				tNearestDistance = tThisDistance
+				tNearestWpName = tValue
+			end
 		end
 	end
 
