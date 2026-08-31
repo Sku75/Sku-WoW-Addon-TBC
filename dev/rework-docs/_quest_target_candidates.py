@@ -89,12 +89,17 @@ def has_list(v, idx):
 # --- enUS names from the lookup -------------------------------------------
 text = open(os.path.join(ASSETS, "quests.lua.bak"), encoding="utf-8-sig",
             errors="replace").read()
-i = text.find("SkuDB.questLookup = {")
-i = text.find('["enUS"] = {', i)
+i0 = text.find("SkuDB.questLookup = {")
+i = text.find('["enUS"] = {', i0)
 end = text.find('\n\t},', i)
 names = {}
 for m in re.finditer(r'\[(\d+)\] = \{"((?:[^"\\]|\\.)*)"', text[i:end]):
     names[int(m.group(1))] = unescape(m.group(2))
+i = text.find('["deDE"] = {', i0)
+end = text.find('\n\t},', i)
+names_de = {}
+for m in re.finditer(r'\[(\d+)\] = \{"((?:[^"\\]|\\.)*)"', text[i:end]):
+    names_de[int(m.group(1))] = unescape(m.group(2))
 
 # --- what quests_fixes.lua already provides -------------------------------
 fixes_txt = open(os.path.join(ASSETS, "quests_fixes.lua"), encoding="utf-8-sig",
@@ -125,9 +130,13 @@ if os.path.exists(QUESTIE_BL):
 maps_txt = open(os.path.join(ASSETS, "maps.lua"), encoding="utf-8-sig",
                 errors="replace").read()
 zone_names = {}
+zone_names_de = {}
 for m in re.finditer(r'\[(\d+)\] = \{ZoneName = "[^"]*", AreaName_lang = \{[^}]*\["enUS"\] = "([^"]*)"',
                      maps_txt):
     zone_names[int(m.group(1))] = m.group(2)
+for m in re.finditer(r'\[(\d+)\] = \{ZoneName = "[^"]*", AreaName_lang = \{[^}]*\["deDE"\] = "([^"]*)"',
+                     maps_txt):
+    zone_names_de[int(m.group(1))] = m.group(2)
 
 # --- wiki dump (enUS articles) --------------------------------------------
 wiki_txt = open(os.path.join(ASSETS, "wiki.lua"), encoding="utf-8-sig",
@@ -201,41 +210,94 @@ def wiki_coords(name):
 
 
 # --- hand-made quest-target waypoints from routedata ----------------------
+# Naming is free-form and multi-locale: "quest target;...", "questziel;...",
+# "class quest;druid;...", "waters;top;quest target;druid;Mist's Edge;..." -
+# the quest keyword can sit ANYWHERE in the name. Scan by contains.
+WP_KEYWORDS = ("quest target", "questziel", "questgegner", "class quest",
+               "klassenquest", "objectif de qu")
+# class tag -> canonical class bit (standard chrClasses mask)
+WP_CLASS_TAGS = {
+    "druid": 1024, "druide": 1024,
+    "shaman": 64, "schamane": 64, "chaman": 64,
+    "rogue": 8, "schurke": 8, "voleur": 8,
+    "warrior": 1, "krieger": 1, "guerrier": 1,
+    "priest": 16, "priester": 16,
+    "paladin": 2,
+    "mage": 128, "magier": 128,
+    "warlock": 256, "hexenmeister": 256,
+    "hunter": 4, "chasseur": 4,
+}
+
 route_txt = open(os.path.join(ASSETS, "routedata_global.lua"), encoding="utf-8-sig",
                  errors="replace").read()
 route_wps = []
+seen_names = set()
 for chunk in re.split(r"\n\},\s*\n\{", route_txt):
-    m = re.search(r'\["names"\] = "((?:quest target|questziel)[^"]*)', chunk)
+    m = re.search(r'\["names"\] = "([^"]*)"', chunk)
     if not m:
         continue
-    # the locale separator byte decodes to U+FFFD under errors="replace";
-    # keep only the enUS segment
-    name = m.group(1).split("�")[0]
+    full = m.group(1)
+    low = full.lower()
+    if not any(k in low for k in WP_KEYWORDS):
+        continue
+    if full in seen_names:
+        continue
+    seen_names.add(full)
     area = re.search(r'\["areaId"\] = (\d+)', chunk)
     wx = re.search(r'\["worldX"\] = ([-\d.]+)', chunk)
     wy = re.search(r'\["worldY"\] = ([-\d.]+)', chunk)
+    words = set(w.lower() for w in re.findall(r"[A-Za-z'À-ÿ]{4,}", full))
+    cls = 0
+    for tag, bit in WP_CLASS_TAGS.items():
+        if tag in words:
+            cls |= bit
     route_wps.append({
-        "name": name,
+        "name": full.replace("�", " / "),
         "areaId": int(area.group(1)) if area else None,
         "worldX": wx.group(1) if wx else "?",
         "worldY": wy.group(1) if wy else "?",
-        "tokens": set(w.lower() for w in re.findall(r"[A-Za-z']{4,}", name)),
+        "tokens": words,
+        "class": cls,
     })
 
-STOP = {"quest", "target", "questziel", "north", "south", "east", "west",
-        "northwest", "northeast", "southwest", "southeast", "auto", "the",
-        "isle", "lake", "shore", "camp", "hill", "vale", "forest"}
+STOP = {"quest", "target", "questziel", "questgegner", "klassenquest",
+        "class", "auto", "north", "south", "east", "west", "northwest",
+        "northeast", "southwest", "southeast", "the", "down", "unten",
+        "oben", "ramp", "rampe", "entry", "exit", "eingang", "ausgang",
+        "cave", "objectif", "isle", "lake", "shore", "camp", "hill",
+        "vale", "forest", "and", "und"}
+STOP |= set(WP_CLASS_TAGS)
 
 
-def route_matches(qname, zname):
-    """Only report a hand-made waypoint when the overlap is convincing:
-    two shared tokens, or one shared token of 7+ characters."""
-    qtok = set(w.lower() for w in re.findall(r"[A-Za-z']{4,}", qname + " " + (zname or ""))) - STOP
+def route_matches(qname, qname_de, zname, zname_de, qclass, qzid, qtext):
+    """Score hand-made waypoints against a quest. The class tag alone is NOT
+    enough (every druid quest would list every druid waypoint) - it needs
+    corroboration from name-token overlap or zone agreement (waypoint areaId
+    equals the quest zone, or the waypoint's zone name appears in the quest's
+    objective text)."""
+    qtok = set()
+    for s in (qname, qname_de, zname, zname_de):
+        if s:
+            qtok |= set(w.lower() for w in re.findall(r"[A-Za-z'À-ÿ]{4,}", s))
+    qtok -= STOP
+    tlow = (qtext or "").lower()
     hits = []
     for wp in route_wps:
         overlap = (wp["tokens"] - STOP) & qtok
-        if len(overlap) >= 2 or any(len(t) >= 7 for t in overlap):
-            hits.append((len(overlap), wp))
+        evidence = len(overlap)
+        wz = zone_names.get(wp["areaId"])
+        if (qzid and wp["areaId"] == qzid) or (wz and len(wz) > 4 and wz.lower() in tlow):
+            evidence += 2
+        if evidence == 0:
+            continue  # class tag alone is not evidence
+        score = evidence
+        if qclass and wp["class"]:
+            if wp["class"] & qclass:
+                score += 1
+            else:
+                continue  # tagged for a DIFFERENT class - never a match
+        if score >= 2 or any(len(t) >= 7 for t in overlap):
+            hits.append((score, wp))
     hits.sort(key=lambda h: -h[0])
     return [h[1] for h in hits[:3]]
 
@@ -344,9 +406,12 @@ def block(qid, cls, has_finish):
         lines.append("  Wiki coords: " + " | ".join(wc))
     else:
         lines.append("  Wiki coords: none found")
-    for wp in route_matches(name, zname):
-        lines.append("  Routedata waypoint: %s (areaId %s, world %s/%s)"
-                     % (wp["name"][:90], wp["areaId"], wp["worldX"], wp["worldY"]))
+    for wp in route_matches(name, names_de.get(qid), zname,
+                            zone_names_de.get(zid) if zid else None, cls,
+                            zid, text):
+        wz = zone_names.get(wp["areaId"], "?")
+        lines.append("  Routedata waypoint: %s (zone %s, areaId %s, world %s/%s)"
+                     % (wp["name"][:110], wz, wp["areaId"], wp["worldX"], wp["worldY"]))
     return "\n".join(lines)
 
 
@@ -376,5 +441,15 @@ with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
                 n_wiki += 1
             fh.write(b + "\n\n")
 
+    fh.write("=" * 70 + "\n")
+    fh.write("INVENTORY: ALL HAND-MADE QUEST-FLAVORED WAYPOINTS IN ROUTEDATA (%d)\n" % len(route_wps))
+    fh.write("(for eyeballing matches the scorer missed; world coords, NOT map percent)\n")
+    fh.write("=" * 70 + "\n\n")
+    for wp in sorted(route_wps, key=lambda w: (zone_names.get(w["areaId"], "?"), w["name"])):
+        fh.write("%s | zone %s (areaId %s) | world %s / %s\n"
+                 % (wp["name"][:120], zone_names.get(wp["areaId"], "?"),
+                    wp["areaId"], wp["worldX"], wp["worldY"]))
+
+print("quest-flavored waypoints found: %d" % len(route_wps))
 print("blocks with wiki coordinates: %d" % n_wiki)
 print("wrote %s" % OUT)

@@ -48,7 +48,7 @@ Quest 2281: Redridge Rendezvous
   class Rogue; level 16 (min 16); turn-in yes
   Objective text: Venture forth to Lakeshire in the Redridge Mountains and speak with Lucius.
   Wiki coords: none found
-  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§ob (areaId 44, world -9366.2001953125/-2471.900146484375)
+  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 2383: Simple Parchment
   class Warrior; level 1 (min 1); turn-in yes
@@ -269,6 +269,9 @@ Quest 6002: Body and Heart
   class Druid; level -1 (min 10); turn-in yes
   Objective text: Use the Cenarion Lunardust on the Moonkin Stone between Mulgore and the Barrens to bring forth Lunaclaw. From there, you must face Lunaclaw and earn the strength of body and heart it possesses.
   Wiki coords: none found
+  Routedata waypoint: quest target;druid;Southern Barrens;The Barrens§questziel;druide;Südliches Brachland;Brachland§objectif de quê (zone The Barrens, areaId 17, world -2500.800048828125/-1632.599975585938)
+  Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;nordwestlich;Brachland (zone The Barrens, areaId 17, world 89.70000457763672/-1944.400024414063)
+  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
 
 Quest 6061: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
@@ -363,9 +366,9 @@ Quest 266: Inquire at the Inn
   level 25 (min 20); zone Duskwood (10); turn-in yes
   Objective text: Search the inn for clues about the shadowy figure.
   Wiki coords: none found
-  Routedata waypoint: quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif (areaId 10, world -11117.5/-511.3999938964844)
-  Routedata waypoint: quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de (areaId 10, world -11090.1005859375/-69.80000305175781)
-  Routedata waypoint: quest target;Addle's Stead;Duskwood§questziel;Addles Siedlung;Dämmerwald§objectif de quête (areaId 10, world -11012.7998046875/186.6999969482422)
+  Routedata waypoint: quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif de quête;The Yorgen (zone Duskwood, areaId 10, world -11117.5/-511.3999938964844)
+  Routedata waypoint: quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de quête;Vul'Gol Ogre  (zone Duskwood, areaId 10, world -11090.1005859375/-69.80000305175781)
+  Routedata waypoint: quest target;Addle's Stead;Duskwood§questziel;Addles Siedlung;Dämmerwald§objectif de quête;Ferme des Addle;Boi (zone Duskwood, areaId 10, world -11012.7998046875/186.6999969482422)
 
 Quest 280: A Dark Threat Looms
   level 18 (min 16); zone Loch Modan (38); turn-in yes
@@ -376,36 +379,36 @@ Quest 281: Reclaiming Goods
   level 25 (min 20); zone Wetlands (11); turn-in yes
   Objective text: Search the crates and barrels at the coastal Murloc camps.
   Wiki coords: none found
-  Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sum (areaId 11, world -3552.699951171875/-1721.200073242188)
-  Routedata waypoint: quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;V (areaId 330, world -2367.10009765625/-2509)
+  Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sumpfland§objectif de q (zone Wetlands, areaId 11, world -3552.699951171875/-1721.200073242188)
+  Routedata waypoint: quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;Viaduc de Thandol;Les (zone Thandol Span, areaId 330, world -2367.10009765625/-2509)
 
 Quest 293: Cleansing the Eye
   level 30 (min 22); zone Wetlands (11); turn-in yes
   Objective text: Bring Archbishop Benedictus the Cursed Eye of Paleth. Benedictus is in the Cathedral of Light, in the city of Stormwind.
   Wiki coords: none found
-  Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sum (areaId 11, world -3552.699951171875/-1721.200073242188)
-  Routedata waypoint: quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;V (areaId 330, world -2367.10009765625/-2509)
+  Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sumpfland§objectif de q (zone Wetlands, areaId 11, world -3552.699951171875/-1721.200073242188)
+  Routedata waypoint: quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;Viaduc de Thandol;Les (zone Thandol Span, areaId 330, world -2367.10009765625/-2509)
 
 Quest 321: Lightforge Iron
   level 29 (min 20); zone Duskwood (10); turn-in yes
   Objective text: Search the wreckage of The Flying Osprey in the Wetlands.
   Wiki coords: none found
-  Routedata waypoint: quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif (areaId 10, world -11117.5/-511.3999938964844)
-  Routedata waypoint: quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de (areaId 10, world -11090.1005859375/-69.80000305175781)
-  Routedata waypoint: quest target;Addle's Stead;Duskwood§questziel;Addles Siedlung;Dämmerwald§objectif de quête (areaId 10, world -11012.7998046875/186.6999969482422)
+  Routedata waypoint: quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif de quête;The Yorgen (zone Duskwood, areaId 10, world -11117.5/-511.3999938964844)
+  Routedata waypoint: quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de quête;Vul'Gol Ogre  (zone Duskwood, areaId 10, world -11090.1005859375/-69.80000305175781)
+  Routedata waypoint: quest target;Addle's Stead;Duskwood§questziel;Addles Siedlung;Dämmerwald§objectif de quête;Ferme des Addle;Boi (zone Duskwood, areaId 10, world -11012.7998046875/186.6999969482422)
 
 Quest 328: The Hidden Key
   level 37 (min 30); zone Stranglethorn Vale (33); turn-in yes
   Objective text: Use the Small Brass Key to open Bookie Herod's Strongbox.
   Wiki coords: none found
-  Routedata waypoint: quest target;Yojamba Isle;Stranglethorn Vale§questziel;Die Insel Yojamba;Schlingendorntal§ (areaId 33, world -11811/1365.400024414063)
+  Routedata waypoint: quest target;Yojamba Isle;Stranglethorn Vale§questziel;Die Insel Yojamba;Schlingendorntal§objectif de quête;Il (zone Stranglethorn Vale, areaId 33, world -11811/1365.400024414063)
 
 Quest 465: Nek'rosh's Gambit
   level 26 (min 23); zone Wetlands (11); turn-in yes
   Objective text: Destroy the Dragonmaw catapults.
   Wiki coords: none found
-  Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sum (areaId 11, world -3552.699951171875/-1721.200073242188)
-  Routedata waypoint: quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;V (areaId 330, world -2367.10009765625/-2509)
+  Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sumpfland§objectif de q (zone Wetlands, areaId 11, world -3552.699951171875/-1721.200073242188)
+  Routedata waypoint: quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;Viaduc de Thandol;Les (zone Thandol Span, areaId 330, world -2367.10009765625/-2509)
 
 Quest 492: A New Plague
   level 11 (min 6); zone Tirisfal Glades (85); turn-in yes
@@ -421,38 +424,41 @@ Quest 751: The Ravaged Caravan
   level 8 (min 5); zone Mulgore (215); turn-in yes
   Objective text: Return the Venture Co. Documents to Morin Cloudstalker near Bloodhoof Village.
   Wiki coords: none found
-  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bae (areaId 215, world -1983.400024414063/441.6000061035156)
+  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
 
 Quest 754: Winterhoof Cleansing
   level 6 (min 4); zone Mulgore (215); turn-in yes
   Objective text: Use the Winterhoof Cleansing Totem at the Winterhoof Water Well, then return to Mull Thunderhorn.
   Wiki coords: none found
-  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bae (areaId 215, world -1983.400024414063/441.6000061035156)
+  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
 
 Quest 758: Thunderhorn Cleansing
   level 8 (min 5); zone Mulgore (215); turn-in yes
   Objective text: Use the Thunderhorn Cleansing Totem at the Thunderhorn Water Well, then return to Mull.
   Wiki coords: none found
-  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bae (areaId 215, world -1983.400024414063/441.6000061035156)
+  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
 
 Quest 760: Wildmane Cleansing
   level 10 (min 7); zone Mulgore (215); turn-in yes
   Objective text: Use the Wildmane Cleansing Totem at the Wildmane Water Well, then return to Mull Thunderhorn.
   Wiki coords: none found
-  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bae (areaId 215, world -1983.400024414063/441.6000061035156)
+  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
 
 Quest 894: Samophlange
   level 14 (min 10); zone The Barrens (17); turn-in yes
   Objective text: Access the control console at the Venture Company research site.
   Wiki coords: none found
-  Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;no (areaId 17, world 89.70000457763672/-1944.400024414063)
-  Routedata waypoint: quest target;druid;Southern Barrens;The Barrens§questziel;druide;Südliches Brachland;Brach (areaId 17, world -2500.800048828125/-1632.599975585938)
-  Routedata waypoint: quest target;waters;Dreadmist Peak;The Barrens§questziel;gewässer;Glutnebelgipfel;Brachlan (areaId 17, world 332.7000122070313/-2276.60009765625)
+  Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;nordwestlich;Brachland (zone The Barrens, areaId 17, world 89.70000457763672/-1944.400024414063)
+  Routedata waypoint: quest target;druid;Southern Barrens;The Barrens§questziel;druide;Südliches Brachland;Brachland§objectif de quê (zone The Barrens, areaId 17, world -2500.800048828125/-1632.599975585938)
+  Routedata waypoint: entry and exit;ship;class quest;rogue;The Merchant Coast;The Barrens§ein- und ausgang;schiff;klassenquest;schu (zone The Barrens, areaId 17, world -1460.5/-3881.300048828125)
 
 Quest 941: Planting the Heart
   level 12 (min 9); zone Teldrassil (141); turn-in yes
   Objective text: Plant the Tainted Heart in Denalan's Planter.
   Wiki coords: none found
+  Routedata waypoint: Grell;quest target;Shadowglen;Teldrassil§Grell;questgegner;Laubschattental;Teldrassil§Grell;objectif de quête; (zone Teldrassil, areaId 141, world 10303.2998046875/946.5)
+  Routedata waypoint: well;quest target;Shadowglen;Teldrassil§brunnen;questziel;Laubschattental;Teldrassil§well;objectif de quête;Sh (zone Teldrassil, areaId 141, world 10707.5/762.9000244140625)
+  Routedata waypoint: Gnarlpine Shaman;quest target;Teldrassil§Schamane der Knarzklauen;questgegner;Teldrassil§Chaman Pin-tordu;obje (zone Teldrassil, areaId 141, world 9266.1005859375/888.6000366210938)
 
 Quest 1000: The New Frontier
   level 55 (min 54); zone Thunder Bluff (1638); turn-in yes
@@ -468,6 +474,7 @@ Quest 1015: The New Frontier
   level 55 (min 54); zone Stormwind City (1519); turn-in yes
   Objective text: Speak with Arch Druid Fandral Staghelm at the Cenarion Enclave of Darnassus about the Cenarion Circle's call to explore the frontiers of Kalimdor.
   Wiki coords: none found
+  Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête; (zone Darnassus, areaId 1657, world 9644.400390625/2520.900146484375)
 
 Quest 1018: The New Frontier
   level 55 (min 54); zone Orgrimmar (1637); turn-in yes
@@ -478,17 +485,19 @@ Quest 1019: The New Frontier
   level 55 (min 54); zone Ironforge (1537); turn-in yes
   Objective text: Speak with Arch Druid Fandral Staghelm at the Cenarion Enclave of Darnassus about the Cenarion Circle's call to explore the frontiers of Kalimdor.
   Wiki coords: none found
+  Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête; (zone Darnassus, areaId 1657, world 9644.400390625/2520.900146484375)
 
 Quest 1030: Raene's Cleansing
   level 28 (min 18); zone Ashenvale (331); turn-in yes
   Objective text: Find an uncorrupted furbolg, and using the power of Dartol's Rod of Transformation, speak to him.
   Wiki coords: none found
+  Routedata waypoint: class quest;shaman;quest target;Ashenvale§klassenquest;schamane;questziel;Eschental§class quest;shaman;objecti (zone Ashenvale, areaId 331, world 2080.5/-234.5)
 
 Quest 1047: The New Frontier
   level 55 (min 54); zone Darnassus (1657); turn-in yes
   Objective text: Speak with Arch Druid Fandral Staghelm at the Cenarion Enclave of Darnassus about the Cenarion Circle's call to explore the frontiers of Kalimdor.
   Wiki coords: none found
-  Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassu (areaId 1657, world 9644.400390625/2520.900146484375)
+  Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête; (zone Darnassus, areaId 1657, world 9644.400390625/2520.900146484375)
 
 Quest 1086: The Flying Machine Airport
   level 23 (min 13); zone Thunder Bluff (1638); turn-in yes
@@ -499,20 +508,20 @@ Quest 1091: Kaela's Update
   level 22 (min 18); zone Stonetalon Mountains (406); turn-in yes
   Objective text: Bring the Venture Co. Letters to Kaela Shadowspear.
   Wiki coords: none found
-  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§ob (areaId 44, world -9366.2001953125/-2471.900146484375)
+  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 2278: The Platinum Discs
   level 47 (min 40); zone Uldaman (1517); turn-in yes
   Objective text: Speak with stone watcher and learn what ancient lore it keeps. Once you have learned what lore it has to offer, activate the Discs of Norgannon.
   Wiki coords: none found
-  Routedata waypoint: quest target;the sealed hall;Uldaman§questziel;Die versiegelte Halle;Uldaman§objectif de q (areaId 3, world -6201.39990234375/-3057.300048828125)
-  Routedata waypoint: quest target;South Common Hall;Uldaman§questziel;Südliche Bankenhalle;Uldaman§objectif de  (areaId 3, world -6198.5/-2929.800048828125)
+  Routedata waypoint: quest target;the sealed hall;Uldaman§questziel;Die versiegelte Halle;Uldaman§objectif de quête;the sealed hall (zone Badlands, areaId 3, world -6201.39990234375/-3057.300048828125)
+  Routedata waypoint: quest target;South Common Hall;Uldaman§questziel;Südliche Bankenhalle;Uldaman§objectif de quête;South Common H (zone Badlands, areaId 3, world -6198.5/-2929.800048828125)
 
 Quest 2520: Sathrah's Sacrifice
   level 12 (min 9); zone Darnassus (1657); turn-in yes
   Objective text: Priestess A'moora wants you to place Lady Sathrah's silvery spinnerets at the fountain inside the temple, and then return to her.
   Wiki coords: none found
-  Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassu (areaId 1657, world 9644.400390625/2520.900146484375)
+  Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête; (zone Darnassus, areaId 1657, world 9644.400390625/2520.900146484375)
 
 Quest 2701: Heroes of Old
   level 57 (min 45); zone Blasted Lands (4); turn-in yes
@@ -523,21 +532,22 @@ Quest 2844: The Giant Guardian
   level 49 (min 44); zone Feralas (357); turn-in yes
   Objective text: Locate the lost night elf girl.
   Wiki coords: none found
-  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmli (areaId 357, world -4530.89990234375/806.6000366210938)
-  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§ (areaId 357, world -3979.10009765625/-72.4000015258789)
+  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
+  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
 
 Quest 2932: Grim Message
   level 42 (min 35); zone The Hinterlands (47); turn-in yes
   Objective text: Gather Witherbark Skulls and place on Nimboya's Pike. Place Nimboya's Laden Pike at one of the Witherbark Villages in the Hinterlands, then return to Nimboya in Stranglethorn.
   Wiki coords: none found
-  Routedata waypoint: quest target;The Altar of Zul;The Hinterlands§questziel;Der Altar von Zul;Hinterland§objec (areaId 47, world -291/-3456.800048828125)
+  Routedata waypoint: quest target;The Altar of Zul;The Hinterlands§questziel;Der Altar von Zul;Hinterland§objectif de quête;L'autel (zone The Hinterlands, areaId 47, world -291/-3456.800048828125)
+  Routedata waypoint: elite;quest target;Seradane;The Hinterlands§elite;questziel;Seradane;Hinterland§elite;objectif de quête;Serada (zone The Hinterlands, areaId 47, world 1193.599975585938/-4265.10009765625)
 
 Quest 2969: Freedom for All Creatures
   level 47 (min 40); zone Feralas (357); turn-in yes
   Objective text: Using the Bamboo Cage Key, free the Sprite Darters from the pen in the Grimtotem camp. At least 6 Sprite Darters and Kindal Moonweaver must survive.
   Wiki coords: none found
-  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmli (areaId 357, world -4530.89990234375/806.6000366210938)
-  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§ (areaId 357, world -3979.10009765625/-72.4000015258789)
+  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
+  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
 
 Quest 3373: The Essence of Eranikus
   level 55 (min 48); zone Sunken Temple (1417); turn-in yes
@@ -563,48 +573,50 @@ Quest 3821: Dreadmaul Rock
   level 52 (min 48); zone Badlands (3); turn-in yes
   Objective text: Venture forth to the Burning Steppes and find out what became of Sha'ni Proudtusk.
   Wiki coords: none found
+  Routedata waypoint: quest target;the sealed hall;Uldaman§questziel;Die versiegelte Halle;Uldaman§objectif de quête;the sealed hall (zone Badlands, areaId 3, world -6201.39990234375/-3057.300048828125)
+  Routedata waypoint: quest target;South Common Hall;Uldaman§questziel;Südliche Bankenhalle;Uldaman§objectif de quête;South Common H (zone Badlands, areaId 3, world -6198.5/-2929.800048828125)
 
 Quest 3912: Meet at the Grave
   level 52 (min 47); zone Un'Goro Crater (490); turn-in yes
   Objective text: Go to the graveyard outside Gadgetzan, and use the Videre Elixir. Follow the rest of Donova's instructions to find Gaeriyan.
   Wiki coords: none found
-  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§ (areaId 490, world -7109.89990234375/-1287)
-  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;K (areaId 490, world -7205.2001953125/-649.7000122070312)
+  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
+  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
 
 Quest 4125: The Missing Courier
   level 43 (min 40); zone Feralas (357); turn-in yes
   Objective text: Locate the courier's boat somewhere along the coast of Feralas.
   Wiki coords: none found
-  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmli (areaId 357, world -4530.89990234375/806.6000366210938)
-  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§ (areaId 357, world -3979.10009765625/-72.4000015258789)
+  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
+  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
 
 Quest 4131: The Woodpaw Gnolls
   level 44 (min 40); zone Feralas (357); turn-in yes
   Objective text: Search the Woodpaw Gnoll camps of southern Feralas for evidence of the courier's belongings or the courier himself.
   Wiki coords: none found
-  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmli (areaId 357, world -4530.89990234375/806.6000366210938)
-  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§ (areaId 357, world -3979.10009765625/-72.4000015258789)
+  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
+  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
 
 Quest 4285: The Northern Pylon
   level 53 (min 47); zone Un'Goro Crater (490); turn-in yes
   Objective text: Discover the location of the Northern Crystal Pylon in Un'Goro Crater.
   Wiki coords: none found
-  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§ (areaId 490, world -7109.89990234375/-1287)
-  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;K (areaId 490, world -7205.2001953125/-649.7000122070312)
+  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
+  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
 
 Quest 4287: The Eastern Pylon
   level 53 (min 47); zone Un'Goro Crater (490); turn-in yes
   Objective text: Discover the location of the Eastern Crystal Pylon in Un'Goro Crater.
   Wiki coords: none found
-  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§ (areaId 490, world -7109.89990234375/-1287)
-  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;K (areaId 490, world -7205.2001953125/-649.7000122070312)
+  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
+  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
 
 Quest 4288: The Western Pylon
   level 53 (min 47); zone Un'Goro Crater (490); turn-in yes
   Objective text: Discover the location of the Western Crystal Pylon.
   Wiki coords: none found
-  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§ (areaId 490, world -7109.89990234375/-1287)
-  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;K (areaId 490, world -7205.2001953125/-649.7000122070312)
+  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
+  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
 
 Quest 4451: The Key to Freedom
   level 47 (min 43); zone Searing Gorge (51); turn-in yes
@@ -725,13 +737,14 @@ Quest 7843: The Final Message to the Wildhammer
   level 50 (min 44); zone The Hinterlands (47); turn-in yes
   Objective text: Otho Moji'ko at Revantusk Village in the Hinterlands wants you to travel to Aerie Peak in the western region of the Hinterlands and place the Final Message to the Wildhammer by the well in the center of town. Return to h
   Wiki coords: none found
-  Routedata waypoint: quest target;The Altar of Zul;The Hinterlands§questziel;Der Altar von Zul;Hinterland§objec (areaId 47, world -291/-3456.800048828125)
+  Routedata waypoint: quest target;The Altar of Zul;The Hinterlands§questziel;Der Altar von Zul;Hinterland§objectif de quête;L'autel (zone The Hinterlands, areaId 47, world -291/-3456.800048828125)
+  Routedata waypoint: elite;quest target;Seradane;The Hinterlands§elite;questziel;Seradane;Hinterland§elite;objectif de quête;Serada (zone The Hinterlands, areaId 47, world 1193.599975585938/-4265.10009765625)
 
 Quest 8305: Long Forgotten Memories
   level 60 (min 60); zone Silithus (1377); turn-in yes
   Objective text: Locate the Crystalline Tear in Silithus and gaze into its depths.
   Wiki coords: none found
-  Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;no (areaId 17, world 89.70000457763672/-1944.400024414063)
+  Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;nordwestlich;Brachland (zone The Barrens, areaId 17, world 89.70000457763672/-1944.400024414063)
 
 Quest 8447: Waking Legends
   level 60 (min 60); turn-in yes
@@ -787,31 +800,33 @@ Quest 9410: A Spirit Guide
   level 62 (min 60); zone Hellfire Peninsula (3483); turn-in yes
   Objective text: Use the Wolf Totem at the location where you found Krun Spinebreaker's body and follow the Ancestral Spirit Wolf.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 9539: Totem of Coo
   level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
   Objective text: Find the Totem of Coo using the clues provided to you.
   Wiki coords: none found
-  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azur (areaId 3524, world -4396.204058049421/-13653.71437554363)
+  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
 
 Quest 9540: Totem of Tikti
   level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
   Objective text: Find the Totem of Tikti using the clues provided to you.
   Wiki coords: none found
-  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azur (areaId 3524, world -4396.204058049421/-13653.71437554363)
+  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
 
 Quest 9541: Totem of Yor
   level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
   Objective text: Find the Totem of Yor using the clues provided to you.
   Wiki coords: none found
-  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azur (areaId 3524, world -4396.204058049421/-13653.71437554363)
+  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
 
 Quest 9542: Totem of Vark
   level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
   Objective text: Find the Totem of Vark using the clues provided to you.
   Wiki coords: none found
-  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azur (areaId 3524, world -4396.204058049421/-13653.71437554363)
+  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
 
 Quest 9550: A Map to Where?
   level 16 (min 13); zone Bloodmyst Isle (3525); turn-in yes
@@ -842,9 +857,9 @@ Quest 10166: Whitebark's Memory
   level 10 (min 7); zone Eversong Woods (3430); turn-in yes
   Objective text: Larianna Riverwind wants you to place Old Whitebark's Pendant by the runestone at the Scorched Grove.
   Wiki coords: none found
-  Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§ (areaId 3430, world 8207/-6336.5)
-  Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald (areaId 3430, world 8278.2001953125/-7211.80029296875)
-  Routedata waypoint: quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald (areaId 3430, world 8229.6005859375/-6662.7001953125)
+  Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le (zone Eversong Woods, areaId 3430, world 8207/-6336.5)
+  Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8278.2001953125/-7211.80029296875)
+  Routedata waypoint: quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8229.6005859375/-6662.7001953125)
 
 Quest 10174: Curse of the Violet Tower
   level 68 (min 67); zone Netherstorm (3523); turn-in yes
@@ -865,6 +880,7 @@ Quest 10280: Special Delivery to Shattrath City
   level 70 (min 67); zone Shattrath City (3703); turn-in yes
   Objective text: Deliver the Ata'mal Crystal to A'dal on the Terrace of Light in Shattrath City.
   Wiki coords: none found
+  Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
 Quest 10282: Old Hillsbrad
   level 68 (min 66); zone Caverns of Time (1941); turn-in yes
@@ -875,17 +891,19 @@ Quest 10410: Ishanah's Help
   level 70 (min 67); zone Netherstorm (3523); turn-in yes
   Objective text: Take Socrethar's Teleportation Stone to High Priestess Ishanah at the Shrine of Unending Light on the Aldor Rise in Shattrath City.
   Wiki coords: none found
+  Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
 Quest 10554: Ishanah
   level 65 (min 60); zone Shattrath City (3703); turn-in yes
   Objective text: Speak to Ishanah inside the Shrine of Unending Light at the Aldor Rise in Shattrath City.
   Wiki coords: none found
+  Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
 Quest 10581: Follow the Breadcrumbs
   level 67 (min 65); zone Blade's Edge Mountains (3522); turn-in yes
   Objective text: In a round-about way, R-3D0 has informed you that if you follow the trail of spare parts up the ramp here to the Razor Ridge, you will find the gnomes at a place named Toshley's Station.
   Wiki coords: none found
-  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§ob (areaId 44, world -9366.2001953125/-2471.900146484375)
+  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 10599: The Deathforge
   level 69 (min 67); zone Shadowmoon Valley (3520); turn-in yes
@@ -896,13 +914,13 @@ Quest 10819: Felsworn Gas Mask
   level 68 (min 65); zone Blade's Edge Mountains (3522); turn-in yes
   Objective text: Wear the Felsworn Gas Mask and use the Legion Communicator at Forge Camp: Anger.
   Wiki coords: none found
-  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§ob (areaId 44, world -9366.2001953125/-2471.900146484375)
+  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 10910: Death's Door
   level 68 (min 65); zone Blade's Edge Mountains (3522); turn-in yes
   Objective text: Wildlord Antelarion has implored you to travel to Death's Door. Once you arrive there, use the Druid Signal to call down an Evergrove Druid so that you can speak with them.
   Wiki coords: none found
-  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§ob (areaId 44, world -9366.2001953125/-2471.900146484375)
+  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 10926: Return to Sha'tari Base Camp
   level 65 (min 65); zone Terokkar Forest (3519); turn-in yes
@@ -913,6 +931,7 @@ Quest 11534: Report to Nasuun
   level 70 (min 70); zone Shattrath City (3703); turn-in yes
   Objective text: Tradesman Portanuus has asked you to speak with Exarch Nasuun on the Terrace of Light in Shattrath City.
   Wiki coords: none found
+  Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
 ======================================================================
 APPENDIX: QUESTIE-BLACKLISTED (likely removed from game or seasonal - probably skip) (158)
@@ -922,9 +941,9 @@ Quest 1: The "Chow" Quest (123)aa
   level 4 (min 1); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Kill Kobold Vermin, 2 of em.
   Wiki coords: none found
-  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düs (areaId 15, world -2693.5/-4247.10009765625)
-  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif d (areaId 15, world -4237.10009765625/-3935)
-  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düste (areaId 15, world -2694.800048828125/-4257.39990234375)
+  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
+  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
+  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düstermarschen§objectif d (zone Dustwallow Marsh, areaId 15, world -2694.800048828125/-4257.39990234375)
 
 Quest 172: Children's Week
   level 60 (min 10); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -935,32 +954,34 @@ Quest 402: Sirra is Busy
   level 30 (min 20); zone Duskwood (10); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Check back with Sirra later to see if he's still busy.
   Wiki coords: none found
-  Routedata waypoint: quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif (areaId 10, world -11117.5/-511.3999938964844)
-  Routedata waypoint: quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de (areaId 10, world -11090.1005859375/-69.80000305175781)
-  Routedata waypoint: quest target;Addle's Stead;Duskwood§questziel;Addles Siedlung;Dämmerwald§objectif de quête (areaId 10, world -11012.7998046875/186.6999969482422)
+  Routedata waypoint: quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif de quête;The Yorgen (zone Duskwood, areaId 10, world -11117.5/-511.3999938964844)
+  Routedata waypoint: quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de quête;Vul'Gol Ogre  (zone Duskwood, areaId 10, world -11090.1005859375/-69.80000305175781)
+  Routedata waypoint: quest target;Addle's Stead;Duskwood§questziel;Addles Siedlung;Dämmerwald§objectif de quête;Ferme des Addle;Boi (zone Duskwood, areaId 10, world -11012.7998046875/186.6999969482422)
 
 Quest 620: UNUSED The Monogrammed Sash
   level 42 (min 42); zone Stranglethorn Vale (33); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Return the Monogrammed Sash to its owner.
   Wiki coords: none found
-  Routedata waypoint: quest target;Yojamba Isle;Stranglethorn Vale§questziel;Die Insel Yojamba;Schlingendorntal§ (areaId 33, world -11811/1365.400024414063)
+  Routedata waypoint: quest target;Yojamba Isle;Stranglethorn Vale§questziel;Die Insel Yojamba;Schlingendorntal§objectif de quête;Il (zone Stranglethorn Vale, areaId 33, world -11811/1365.400024414063)
 
 Quest 636: Legends of the Earth <NYI>
   level 35 (min 30); zone Arathi Highlands (45); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Find the Shards of Myzrael.
   Wiki coords: none found
-  Routedata waypoint: quest target;Faldir's Cove;Arathi Highlands§questziel;Die Faldirbucht;Arathihochland§objec (areaId 45, world -2042.200073242188/-2154.10009765625)
+  Routedata waypoint: quest target;Faldir's Cove;Arathi Highlands§questziel;Die Faldirbucht;Arathihochland§objectif de quête;Faldir' (zone Arathi Highlands, areaId 45, world -2042.200073242188/-2154.10009765625)
 
 Quest 785: A Strategic Alliance
   level 8 (min 2); zone Durotar (14); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Seek out Lar Prowltusk on the western flank of Sen'jin Village.
   Wiki coords: none found
-  Routedata waypoint: quest target;Echo Isles;Durotar§questziel;Die Echoinseln;Durotar§objectif de quête;Echo Is (areaId 14, world -1287/-5529.7001953125)
+  Routedata waypoint: rescue;class quest;shaman;down;Durotar§rettung;klassenquest;schamane;unten;Durotar§sauvetage;class quest;shama (zone Durotar, areaId 14, world -167.8000030517578/-3982.900146484375)
+  Routedata waypoint: quest target;Echo Isles;Durotar§questziel;Die Echoinseln;Durotar§objectif de quête;Echo Isles;Durotar (zone Durotar, areaId 14, world -1287/-5529.7001953125)
 
 Quest 909: Baron Aquanis
   level 30 (min 29); zone Ashenvale (331); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Bring the Strange Water Globe to Je'neu Sancrea at Zoram'gar Outpost, Ashenvale.
   Wiki coords: none found
+  Routedata waypoint: class quest;shaman;quest target;Ashenvale§klassenquest;schamane;questziel;Eschental§class quest;shaman;objecti (zone Ashenvale, areaId 331, world 2080.5/-234.5)
 
 Quest 999: When Dreams Turn to Nightmares
   level 25 (min 25); zone Wailing Caverns (718); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -977,47 +998,47 @@ Quest 1006: What Lies Beyond
 Quest 1263: The Burning Inn <CHANGE TO GOSSIP>
   level 35 (min 35); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Wiki coords: none found
-  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düs (areaId 15, world -2693.5/-4247.10009765625)
-  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif d (areaId 15, world -4237.10009765625/-3935)
-  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düste (areaId 15, world -2694.800048828125/-4257.39990234375)
+  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
+  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
+  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düstermarschen§objectif d (zone Dustwallow Marsh, areaId 15, world -2694.800048828125/-4257.39990234375)
 
 Quest 1272: Finding Reethe <CHANGE INTO GOSSIP>
   level 37 (min 37); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Wiki coords: none found
-  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düs (areaId 15, world -2693.5/-4247.10009765625)
-  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif d (areaId 15, world -4237.10009765625/-3935)
-  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düste (areaId 15, world -2694.800048828125/-4257.39990234375)
+  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
+  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
+  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düstermarschen§objectif d (zone Dustwallow Marsh, areaId 15, world -2694.800048828125/-4257.39990234375)
 
 Quest 1281: Jim's Song <CHANGE TO GOSSIP>
   level 35 (min 35); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Wiki coords: none found
-  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düs (areaId 15, world -2693.5/-4247.10009765625)
-  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif d (areaId 15, world -4237.10009765625/-3935)
-  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düste (areaId 15, world -2694.800048828125/-4257.39990234375)
+  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
+  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
+  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düstermarschen§objectif d (zone Dustwallow Marsh, areaId 15, world -2694.800048828125/-4257.39990234375)
 
 Quest 1288: Vimes's Report
   level 38 (min 33); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Bring Vimes's Report to Lady Jaina Proudmoore in Theramore.
   Wiki coords: none found
-  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düs (areaId 15, world -2693.5/-4247.10009765625)
-  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif d (areaId 15, world -4237.10009765625/-3935)
-  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düste (areaId 15, world -2694.800048828125/-4257.39990234375)
+  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
+  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
+  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düstermarschen§objectif d (zone Dustwallow Marsh, areaId 15, world -2694.800048828125/-4257.39990234375)
 
 Quest 1289: Vimes's Report
   level 38 (min 33); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Return to Captain Garran Vimes in Theramore.
   Wiki coords: none found
-  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düs (areaId 15, world -2693.5/-4247.10009765625)
-  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif d (areaId 15, world -4237.10009765625/-3935)
-  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düste (areaId 15, world -2694.800048828125/-4257.39990234375)
+  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
+  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
+  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düstermarschen§objectif d (zone Dustwallow Marsh, areaId 15, world -2694.800048828125/-4257.39990234375)
 
 Quest 1390: Oops, We Killed Them Again.
   level 1 (min 1); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Missing text
   Wiki coords: none found
-  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düs (areaId 15, world -2693.5/-4247.10009765625)
-  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif d (areaId 15, world -4237.10009765625/-3935)
-  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düste (areaId 15, world -2694.800048828125/-4257.39990234375)
+  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
+  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
+  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düstermarschen§objectif d (zone Dustwallow Marsh, areaId 15, world -2694.800048828125/-4257.39990234375)
 
 Quest 1468: Children's Week
   level 60 (min 10); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1033,6 +1054,7 @@ Quest 2000: Rokar Bladeshadow
   Objective text: Speak with Rokar Bladeshadow in Durotar.
   PROPOSED FIX: finishedBy creature Rokar Bladeshadow = [6586] (talk-to; no coords needed)
   Wiki coords: none found
+  Routedata waypoint: quest target;Echo Isles;Durotar§questziel;Die Echoinseln;Durotar§objectif de quête;Echo Isles;Durotar (zone Durotar, areaId 14, world -1287/-5529.7001953125)
 
 Quest 3366: The Glowing Shard
   level 25 (min 20); zone Wailing Caverns (718); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1112,7 +1134,7 @@ Quest 7908: Arena Master
   Objective text: Speak with Short John Mithril in the Stranglethorn Arena.
   PROPOSED FIX: finishedBy creature Short John Mithril = [14508] (talk-to; no coords needed)
   Wiki coords: none found
-  Routedata waypoint: quest target;Yojamba Isle;Stranglethorn Vale§questziel;Die Insel Yojamba;Schlingendorntal§ (areaId 33, world -11811/1365.400024414063)
+  Routedata waypoint: quest target;Yojamba Isle;Stranglethorn Vale§questziel;Die Insel Yojamba;Schlingendorntal§objectif de quête;Il (zone Stranglethorn Vale, areaId 33, world -11811/1365.400024414063)
 
 Quest 7961: Waskily Wabbits!
   level 1 (min 1); zone Northshire Valley (9); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1128,6 +1150,7 @@ Quest 8150: Honoring a Hero
   level -1 (min 30); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel to Grom's Monument in the Demon Fall Canyon of Ashenvale and use Grom's Tribute at the base of the monument. Return to Javnir Nashak outside Orgrimmar before the Harvest Festival is over.
   Wiki coords: none found
+  Routedata waypoint: class quest;shaman;quest target;Ashenvale§klassenquest;schamane;questziel;Eschental§class quest;shaman;objecti (zone Ashenvale, areaId 331, world 2080.5/-234.5)
 
 Quest 8230: Collin's Test Quest
   level 0 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1155,22 +1178,23 @@ Quest 8373: The Power of Pine
 Quest 8478: Choose Your Weapon
   level 9 (min 9); zone Eversong Woods (3430); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Wiki coords: none found
-  Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§ (areaId 3430, world 8207/-6336.5)
-  Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald (areaId 3430, world 8278.2001953125/-7211.80029296875)
-  Routedata waypoint: quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald (areaId 3430, world 8229.6005859375/-6662.7001953125)
+  Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le (zone Eversong Woods, areaId 3430, world 8207/-6336.5)
+  Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8278.2001953125/-7211.80029296875)
+  Routedata waypoint: quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8229.6005859375/-6662.7001953125)
 
 Quest 8489: An Intact Converter
   level 6 (min 2); zone Eversong Woods (3430); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Bring the Intact Arcane Converter to Ley-Keeper Velania.
   Wiki coords: none found
-  Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§ (areaId 3430, world 8207/-6336.5)
-  Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald (areaId 3430, world 8278.2001953125/-7211.80029296875)
-  Routedata waypoint: quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald (areaId 3430, world 8229.6005859375/-6662.7001953125)
+  Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le (zone Eversong Woods, areaId 3430, world 8207/-6336.5)
+  Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8278.2001953125/-7211.80029296875)
+  Routedata waypoint: quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8229.6005859375/-6662.7001953125)
 
 Quest 8530: The Alliance Needs Singed Corestones!
   level 60 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Bring 50 singed corestones to Commander Stronghammer at the airfield in Dun Morogh.
   Wiki coords: none found
+  Routedata waypoint: down;ramp;class quest;rogue;Gnomeregan;Dun Morogh§unten;rampe;klassenquest;schurke;Gnomeregan;Dun Morogh§bas;r (zone Dun Morogh, areaId 1, world -5332.30029296875/571)
 
 Quest 8618: The Horde Needs More Singed Corestones!
   level 60 (min 60); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1208,9 +1232,9 @@ Quest 8896: The Dwarven Spy
   level 7 (min 2); zone Eversong Woods (3430); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Find and kill Prospector Anvilward in the North Sanctum and report back to Aeldon Sunbrand in Eversong Woods.
   Wiki coords: none found
-  Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§ (areaId 3430, world 8207/-6336.5)
-  Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald (areaId 3430, world 8278.2001953125/-7211.80029296875)
-  Routedata waypoint: quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald (areaId 3430, world 8229.6005859375/-6662.7001953125)
+  Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le (zone Eversong Woods, areaId 3430, world 8207/-6336.5)
+  Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8278.2001953125/-7211.80029296875)
+  Routedata waypoint: quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8229.6005859375/-6662.7001953125)
 
 Quest 9030: Anthion's Parting Words
   level 60 (min 2); zone Dire Maul (2557); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1222,9 +1246,9 @@ Quest 9065: The "Chow" Quest (123)aa
   level 4 (min 1); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Kill Kobold Vermin, 2 of em.
   Wiki coords: none found
-  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düs (areaId 15, world -2693.5/-4247.10009765625)
-  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif d (areaId 15, world -4237.10009765625/-3935)
-  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düste (areaId 15, world -2694.800048828125/-4257.39990234375)
+  Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
+  Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
+  Routedata waypoint: quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düstermarschen§objectif d (zone Dustwallow Marsh, areaId 15, world -2694.800048828125/-4257.39990234375)
 
 Quest 9154: Light's Hope Chapel
   level -1 (min 50); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1282,15 +1306,17 @@ Quest 9344: A Hasty Departure
   level 61 (min 61); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Far Seer Regulkut wants you to track down her student Grelag.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 9357: Report to Aeldon Sunbrand
   level 5 (min 2); zone Eversong Woods (3430); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Report to Aeldon Sunbrand at the Inner Elf Gate in Eversong Woods.
   Wiki coords: none found
-  Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§ (areaId 3430, world 8207/-6336.5)
-  Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald (areaId 3430, world 8278.2001953125/-7211.80029296875)
-  Routedata waypoint: quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald (areaId 3430, world 8229.6005859375/-6662.7001953125)
+  Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le (zone Eversong Woods, areaId 3430, world 8207/-6336.5)
+  Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8278.2001953125/-7211.80029296875)
+  Routedata waypoint: quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8229.6005859375/-6662.7001953125)
 
 Quest 9378: DND FLAG The Dread Citadel - Naxxramas
   level 60 (min 2); zone Eastern Plaguelands (139); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1301,26 +1327,33 @@ Quest 9380: Hounded for More
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Collect 6 Undamaged Warp Hound Corpses and bring them to Prospector Murantus in Honor Hold.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 9408: Forgotten Heroes
   level 60 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Force Commander Danath Trollbane at Honor Hold.
   PROPOSED FIX: finishedBy creature Force Commander Danath Trollbane = [16819] (talk-to; no coords needed)
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
-  Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;no (areaId 17, world 89.70000457763672/-1944.400024414063)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 9510: Bristlehide Clefthoof Hides
   level 62 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Provisioner Braknar at Mag'har Post in Hellfire Peninsula wants you to bring him 5 Bristlehide Clefthoof Hides.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 9511: Kargath's Battle Plans
   level 70 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 9599: <UNUSED>
   class Paladin; level 12 (min 12); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1354,11 +1387,13 @@ Quest 9929: The Missing Merchant
   level 63 (min 60); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel northwest along the road toward Shattrath and search for evidence of what happened to Dugar.
   Wiki coords: none found
+  Routedata waypoint: entry and exit;ship;class quest;rogue;The Merchant Coast;The Barrens§ein- und ausgang;schiff;klassenquest;schu (zone The Barrens, areaId 17, world -1460.5/-3881.300048828125)
 
 Quest 9930: The Missing Merchant
   level 63 (min 63); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel northwest along the road toward Shattrath and search for evidence of what happened to Deirom.
   Wiki coords: none found
+  Routedata waypoint: entry and exit;ship;class quest;rogue;The Merchant Coast;The Barrens§ein- und ausgang;schiff;klassenquest;schu (zone The Barrens, areaId 17, world -1460.5/-3881.300048828125)
 
 Quest 9941: Tracking Down the Culprits
   level 63 (min 63); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1422,66 +1457,87 @@ Quest 10046: Through the Dark Portal
   Objective text: Travel through the Dark Portal and speak with Nazgrel at Thrallmar.
   PROPOSED FIX: finishedBy creature Nazgrel = [3230] (talk-to; no coords needed)
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10090: The Legion's Plans
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Retrieve the Forge Camp: Spite Plans and return them to Overlord Hun Maimfist at Reaver's Fall.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10122: The Citadel's Reach
   level 61 (min 61); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Search the northernmost camp along the Southern Rampart for any trace of Private Imarion.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10126: Warboss Nekrogg's Orders
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel south along the west side of the South Rampart and search the next camp for signs of Private Imarion.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10128: Saving Private Imarion
   level 61 (min 60); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Continue south along the Southern Rampart and search for where Warboss Nekrogg is holding Private Imarion.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10135: Mission: Be the Messenger
   level 62 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Legion Missive to Nazgrel at Thrallmar in Hellfire Peninsula.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10148: Mission: Be the Messenger
   level 62 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Legion Missive to Force Commander Danath Trollbane at Honor Hold in Hellfire Peninsula.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10150: The Citadel's Reach
   level 61 (min 61); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Search the northernmost camp along the Northern Rampart for any trace of Scout Makha.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10151: Warboss Nekrogg's Orders
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel south along the west side of the Northern Rampart and search the next camp for signs of Scout Makha
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10153: Saving Scout Makha
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Continue south across the Path of Glory to the Southern Rampart and search for where Warboss Nekrogg is holding Scout Makha.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10169: Losing Gracefully
   level 65 (min 62); zone Shattrath City (3703); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Magister Falris in Shattrath wants you to take the Vial of Sedative Serum to the Terrace of Light and pour it into Haronem's Regiment Cooking Pot.
   Wiki coords: none found
+  Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
 Quest 10179: The Custodian of Kirin'Var
   level 68 (min 2); zone Netherstorm (3523); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1498,7 +1554,9 @@ Quest 10207: Forward Base: Reaver's Fall REUSE
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Report to Forward Commander To'arch at Reaver's Fall.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10219: Walk the Dog
   level 255 (min 70); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1524,7 +1582,9 @@ Quest 10364: Caedmos
 Quest 10370: Nazgrel's Command <TXT>
   level 70 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10377: Nothing to Fear
   class Priest; level 20 (min 20); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1550,7 +1610,9 @@ Quest 10398: Return to Honor Hold
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: PH: Go to Honor Hold.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10441: Peddling the Goods
   level 69 (min 2); zone Netherstorm (3523); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1587,18 +1649,23 @@ Quest 10558: Revered Among Honor Hold
   level 70 (min 70); zone Hellfire Citadel (3545); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Force Commander Danath Trollbane at Honor Hold in Hellfire Peninsula wants you to become revered with Honor Hold by fighting Fel Orcs inside the Shattered Halls of Hellfire Citadel.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10559: Revered Among Thrallmar
   level 70 (min 70); zone Hellfire Citadel (3535); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Nazgrel at Thrallmar in Hellfire Peninsula wants you to become revered with Thrallmar by fighting the Fel Orcs inside the Shattered Halls of Hellfire Citadel.
   Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerha (areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
+  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
+  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
 
 Quest 10561: Revered Among the Keepers of Time
   level 70 (min 70); zone Caverns of Time (2300); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Andormu inside the Caverns of Time in Tanaris wants you to become revered with the Keepers of Time by continuing to defend the events of Old Hillsbrad and the Black Morass inside the Caverns of Time.
   Wiki coords: none found
+  Routedata waypoint: quest target;waters;Sandsorrow Watch;Tanaris§questziel;gewässer;Sandmarterwache;Tanaris§objectif de quête;eaux (zone Tanaris, areaId 440, world -7225.80029296875/-2892.900146484375)
 
 Quest 10610: Prospecting Basics
   level 5 (min 5); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1614,7 +1681,7 @@ Quest 10716: Test Flight: Raven's Wood <needs reward>
   Objective text: Speak with Rally Zapnabber to use the Zephyrium Capacitorium. Return to Tally Zapnabber at Toshley's Station.
   PROPOSED FIX: finishedBy creature Rally Zapnabber = [21461] (talk-to; no coords needed)
   Wiki coords: none found
-  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§ob (areaId 44, world -9366.2001953125/-2471.900146484375)
+  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 10737: The Master's Touch
   level 70 (min 70); zone Caverns of Time (1941); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1640,7 +1707,7 @@ Quest 10841: The Vengeful Harbringer
 Quest 10844: Forge Camp: Anger
   level 68 (min 68); zone Blade's Edge Mountains (3522); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Wiki coords: none found
-  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§ob (areaId 44, world -9366.2001953125/-2471.900146484375)
+  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 10931: Return to the Exodar
   class Priest; level 0 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1711,6 +1778,8 @@ Quest 11403: Free at Last!
   level -1 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Tome of Thomas Thomson to a Masked Orphan Matron in Durotar, Brill or Falconwing Square.
   Wiki coords: none found
+  Routedata waypoint: rescue;class quest;shaman;down;Durotar§rettung;klassenquest;schamane;unten;Durotar§sauvetage;class quest;shama (zone Durotar, areaId 14, world -167.8000030517578/-3982.900146484375)
+  Routedata waypoint: quest target;Echo Isles;Durotar§questziel;Die Echoinseln;Durotar§objectif de quête;Echo Isles;Durotar (zone Durotar, areaId 14, world -1287/-5529.7001953125)
 
 Quest 11404: Call the Headless Horseman
   level -1 (min 65); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1736,6 +1805,7 @@ Quest 11517: Report to Nasuun
   level 70 (min 70); zone Shattrath City (3703); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Tradesman Portanuus has asked you to speak with Exarch Nasuun on the Terrace of Light in Shattrath City.
   Wiki coords: none found
+  Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
 Quest 11518: Sunwell Daily Portal Flag
   level 0 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
@@ -1768,3 +1838,71 @@ Quest 11976: Ice Shards
   Objective text: Bring the Ice Shards to Luma Skymother.
   Wiki coords: none found
 
+======================================================================
+INVENTORY: ALL HAND-MADE QUEST-FLAVORED WAYPOINTS IN ROUTEDATA (63)
+(for eyeballing matches the scorer missed; world coords, NOT map percent)
+======================================================================
+
+quest target;Faldir's Cove;Arathi Highlands§questziel;Die Faldirbucht;Arathihochland§objectif de quête;Faldir's Cove;Hau | zone Arathi Highlands (areaId 45) | world -2042.200073242188 / -2154.10009765625
+class quest;shaman;quest target;Ashenvale§klassenquest;schamane;questziel;Eschental§class quest;shaman;objectif de quête | zone Ashenvale (areaId 331) | world 2080.5 / -234.5
+quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif de quête; | zone Azuremyst Isle (areaId 3524) | world -4396.204058049421 / -13653.71437554363
+quest target;South Common Hall;Uldaman§questziel;Südliche Bankenhalle;Uldaman§objectif de quête;South Common Hall;Uldama | zone Badlands (areaId 3) | world -6198.5 / -2929.800048828125
+quest target;the sealed hall;Uldaman§questziel;Die versiegelte Halle;Uldaman§objectif de quête;the sealed hall;Uldaman | zone Badlands (areaId 3) | world -6201.39990234375 / -3057.300048828125
+Cliffspring Falls;Darkshore;druid;class quest§Klippenquellfälle;Dunkelküste;druide;klassenquest§Cliffspring Falls;Sombri | zone Darkshore (areaId 148) | world 6878.89990234375 / -655.6000366210938
+Lunaclaw Spirit;class quest;druid§Geist von Mondklaue;klassenquest;druide§Esprit de Lunegriffe;class quest;druid | zone Darkshore (areaId 148) | world 6328.7001953125 / 98.5
+cave;druid;class quest;entry and exit§höhle;druide;klassenquest;ein- und ausgang§cave;druid;class quest;entrée et sortie | zone Darkshore (areaId 148) | world 6347.2001953125 / 125.7000045776367
+quest target;class quest;druid;Darkshore§questziel;klassenquest;druide;Dunkelküste§objectif de quête;class quest;druid;S | zone Darkshore (areaId 148) | world 6325.2001953125 / 92.4000015258789
+waters;top;quest target;druid;Mist's Edge;Darkshore§gewässer;oben;questziel;druide;Nebelrand;Dunkelküste§eaux;top;object | zone Darkshore (areaId 148) | world 7841.2001953125 / -254
+quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête;well;Tempe | zone Darnassus (areaId 1657) | world 9644.400390625 / 2520.900146484375
+down;ramp;class quest;rogue;Gnomeregan;Dun Morogh§unten;rampe;klassenquest;schurke;Gnomeregan;Dun Morogh§bas;ramp;class  | zone Dun Morogh (areaId 1) | world -5332.30029296875 / 571
+quest target;Echo Isles;Durotar§questziel;Die Echoinseln;Durotar§objectif de quête;Echo Isles;Durotar | zone Durotar (areaId 14) | world -1287 / -5529.7001953125
+rescue;class quest;shaman;down;Durotar§rettung;klassenquest;schamane;unten;Durotar§sauvetage;class quest;shaman;bas;Duro | zone Durotar (areaId 14) | world -167.8000030517578 / -3982.900146484375
+quest target;Addle's Stead;Duskwood§questziel;Addles Siedlung;Dämmerwald§objectif de quête;Ferme des Addle;Bois de la Pé | zone Duskwood (areaId 10) | world -11012.7998046875 / 186.6999969482422
+quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif de quête;The Yorgen Farmstead | zone Duskwood (areaId 10) | world -11117.5 / -511.3999938964844
+quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de quête;Vul'Gol Ogre Mound;Bois | zone Duskwood (areaId 10) | world -11090.1005859375 / -69.80000305175781
+quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Mascaret;Mar | zone Dustwallow Marsh (areaId 15) | world -4237.10009765625 / -3935
+quest target;Wyrmbog;Dustwallow Marsh§questgegner;Der Drachensumpf;Düstermarschen§objectif de quête;Tourbière du Ver;Mar | zone Dustwallow Marsh (areaId 15) | world -4688.2001953125 / -3709.900146484375
+quest target;one;Dreadmurk Shore;Dustwallow Marsh§questziel;eins;Schreckensmoorküste;Düstermarschen§objectif de quête;un | zone Dustwallow Marsh (areaId 15) | world -2682.400146484375 / -4285.2001953125
+quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif de quête; | zone Dustwallow Marsh (areaId 15) | world -2693.5 / -4247.10009765625
+quest target;two;Dreadmurk Shore;Dustwallow Marsh§questziel;zwei;Schreckensmoorküste;Düstermarschen§objectif de quête;de | zone Dustwallow Marsh (areaId 15) | world -2694.800048828125 / -4257.39990234375
+quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald§objectif de quête;Pierre runi | zone Eversong Woods (areaId 3430) | world 8229.6005859375 / -6662.7001953125
+quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;Pierre runi | zone Eversong Woods (areaId 3430) | world 8278.2001953125 / -7211.80029296875
+quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le bosquet i | zone Eversong Woods (areaId 3430) | world 8207 / -6336.5
+quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§objectif de  | zone Feralas (areaId 357) | world -4530.89990234375 / 806.6000366210938
+quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un;Avant-pos | zone Feralas (areaId 357) | world -3979.10009765625 / -72.4000015258789
+The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête | zone Hellfire Peninsula (areaId 3483) | world -521.7999877929688 / 2200.800048828125
+When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va trop vite | zone Hellfire Peninsula (areaId 3483) | world -682 / 2693.900146484375
+quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de quête;inn; | zone Hellfire Peninsula (areaId 3483) | world -699.2999877929688 / 2742.400146484375
+quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§objectif de quêt | zone Mulgore (areaId 215) | world -1983.400024414063 / 441.6000061035156
+quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake Everstill | zone Redridge Mountains (areaId 44) | world -9366.2001953125 / -2471.900146484375
+City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville de Lumière; | zone Shattrath City (areaId 3703) | world -1847.8032226562 / 5476.255859375
+quest target;Yojamba Isle;Stranglethorn Vale§questziel;Die Insel Yojamba;Schlingendorntal§objectif de quête;Ile de Yojam | zone Stranglethorn Vale (areaId 33) | world -11811 / 1365.400024414063
+quest target;waters;Sandsorrow Watch;Tanaris§questziel;gewässer;Sandmarterwache;Tanaris§objectif de quête;eaux;Guet de T | zone Tanaris (areaId 440) | world -7225.80029296875 / -2892.900146484375
+Gnarlpine Augur;quest target;Teldrassil§Augur der Knarzklauen;questgegner;Teldrassil§Augure Pin-tordu;objectif de quête; | zone Teldrassil (areaId 141) | world 9290 / 929.7999877929688
+Gnarlpine Defender;quest target;Teldrassil§Verteidiger der Knarzklauen;questgegner;Teldrassil§Défenseur Pin-tordu;object | zone Teldrassil (areaId 141) | world 9287 / 923.7000122070312
+Gnarlpine Gardener;quest target;Teldrassil§Gärtner der Knarzklauen;questgegner;Teldrassil§Jardinier Pin-tordu;objectif d | zone Teldrassil (areaId 141) | world 9651 / 467.3000183105469
+Gnarlpine Shaman;quest target;Teldrassil§Schamane der Knarzklauen;questgegner;Teldrassil§Chaman Pin-tordu;objectif de qu | zone Teldrassil (areaId 141) | world 9266.1005859375 / 888.6000366210938
+Grell;quest target;Shadowglen;Teldrassil§Grell;questgegner;Laubschattental;Teldrassil§Grell;objectif de quête;Shadowglen | zone Teldrassil (areaId 141) | world 10303.2998046875 / 946.5
+Webwood Spider;quest target;Shadowthread Cave;Teldrassil§Waldweberspinne;questgegner;Schattenweberhöhle;Teldrassil§Araig | zone Teldrassil (areaId 141) | world 10909.2001953125 / 965
+class quest;druid;Ban'ethil Barrow Den;Teldrassil§klassenquest;druide;Grabhügel von Ban'ethil;Teldrassil§class quest;dru | zone Teldrassil (areaId 141) | world 9749.2001953125 / 1577.5
+quest target;druid§questziel;druide§objectif de quête;druid | zone Teldrassil (areaId 141) | world 9780.6005859375 / 1547.5
+quest target;euest;Ban'ethil Barrow Den§questziel;quest;Grabhügel von Ban'ethil§objectif de quête;euest;Ban'ethil Barrow | zone Teldrassil (areaId 141) | world 9886.507037603129 / 1487.529549904143
+well;quest target;Shadowglen;Teldrassil§brunnen;questziel;Laubschattental;Teldrassil§well;objectif de quête;Shadowglen;T | zone Teldrassil (areaId 141) | world 10707.5 / 762.9000244140625
+quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;Viaduc de Thandol;Les Paluns | zone Thandol Span (areaId 330) | world -2367.10009765625 / -2509
+entry and exit;ship;class quest;rogue;The Merchant Coast;The Barrens§ein- und ausgang;schiff;klassenquest;schurke;Die Hä | zone The Barrens (areaId 17) | world -1460.5 / -3881.300048828125
+quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;nordwestlich;Brachland§objectif  | zone The Barrens (areaId 17) | world 89.70000457763672 / -1944.400024414063
+quest target;druid;Southern Barrens;The Barrens§questziel;druide;Südliches Brachland;Brachland§objectif de quête;druid;T | zone The Barrens (areaId 17) | world -2500.800048828125 / -1632.599975585938
+quest target;waters;Dreadmist Peak;The Barrens§questziel;gewässer;Glutnebelgipfel;Brachland§objectif de quête;eaux;Dread | zone The Barrens (areaId 17) | world 332.7000122070313 / -2276.60009765625
+rogue;tower;class quest;The Barrens;down§schurke;turm;klassenquest;Brachland;unten§rogue;tower;class quest;Les Tarides;b | zone The Barrens (areaId 17) | world 1229.900024414063 / -2926.800048828125
+elite;quest target;Seradane;The Hinterlands§elite;questziel;Seradane;Hinterland§elite;objectif de quête;Seradane;Les Hin | zone The Hinterlands (areaId 47) | world 1193.599975585938 / -4265.10009765625
+quest target;The Altar of Zul;The Hinterlands§questziel;Der Altar von Zul;Hinterland§objectif de quête;L'autel de Zul;Le | zone The Hinterlands (areaId 47) | world -291 / -3456.800048828125
+Disrupt Their Reinforcements;quest target;one§Die Kommunikation unterbrechen;questziel;eins§Couper l'ennemi de ses renfo | zone The Legion Front (areaId 3804) | world -548.7000122070312 / 1783.400024414063
+Disrupt Their Reinforcements;quest target;two§Die Kommunikation unterbrechen;questziel;zwei§Couper l'ennemi de ses renfo | zone The Legion Front (areaId 3804) | world -419.1000061035156 / 1839.200073242188
+quest objective slightly above ground level§Questziel befindet sich etwas über dem boden§quest objective slightly above  | zone The Storm Peaks (areaId 67) | world 7516.5 / -966.7999877929688
+quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Crête de la  | zone Un'Goro Crater (areaId 490) | world -7109.89990234375 / -1287
+quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§objectif de  | zone Un'Goro Crater (areaId 490) | world -7205.2001953125 / -649.7000122070312
+quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sumpfland§objectif de quête;Whelg | zone Wetlands (areaId 11) | world -3552.699951171875 / -1721.200073242188
+Zeth'Gor Must Burn!;quest target;four§Zeth'Gor muss brennen!;questziel;vier§Que Zeth'Gor brûle !;objectif de quête;quatr | zone Zeth'Gor (areaId 3582) | world -1149.099975585938 / 2108.10009765625
+Zeth'Gor Must Burn!;quest target;one§Zeth'Gor muss brennen!;questziel;eins§Que Zeth'Gor brûle !;objectif de quête;un | zone Zeth'Gor (areaId 3582) | world -892.7999877929688 / 1916.400024414063
+Zeth'Gor Must Burn!;quest target;three§Zeth'Gor muss brennen!;questziel;drei§Que Zeth'Gor brûle !;objectif de quête;troi | zone Zeth'Gor (areaId 3582) | world -969.1000366210938 / 1874.099975585938
+Zeth'Gor Must Burn!;quest target;two§Zeth'Gor muss brennen!;questziel;zwei§Que Zeth'Gor brûle !;objectif de quête;deux | zone Zeth'Gor (areaId 3582) | world -822.4000244140625 / 2025.300048828125
