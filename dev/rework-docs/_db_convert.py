@@ -36,7 +36,10 @@ import os
 import re
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# this file lives in <repo>/dev/rework-docs/ since the 2026-07-10 single-repo
+# merge (formerly <repo>/Sku42-Rework-Docs/) - ROOT is the repo root
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(HERE))
 SKU = os.path.join(ROOT, "Sku")
 ASSETS = os.path.join(SKU, "SkuDB", "assets")
 BOM = b"\xef\xbb\xbf"
@@ -102,7 +105,7 @@ SCAN_FILES = [
     os.path.join(ASSETS, "SoD", "spells.lua"),
 ]
 
-RECORDS_MANIFEST = os.path.join(ROOT, "Sku42-Rework-Docs", "MANIFEST-DB-RECORDS.txt")
+RECORDS_MANIFEST = os.path.join(HERE, "MANIFEST-DB-RECORDS.txt")
 
 
 class ConvertError(Exception):
