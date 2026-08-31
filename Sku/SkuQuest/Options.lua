@@ -1006,7 +1006,10 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 	if aSubType == "item" then
 		for i, tItemId in pairs(aSubIDTable) do
 			--dprint("  i, tItemId", i, tItemId)
-			if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["objectDrops"]] then
+			-- unlike the creature/object branches this one indexed the id
+			-- UNCHECKED - an item id the item DB does not carry crashed the
+			-- whole (swallowed) menu build into a silent "Liste leer"
+			if SkuDB.itemDataTBC[tItemId] and SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["objectDrops"]] then
 				for x = 1, #SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["objectDrops"]] do
 					--dprint("     item drops from object", x, SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["objectDrops"]][x])
 					local tObjectId = SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["objectDrops"]][x]
@@ -1054,14 +1057,10 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 					end
 				end
 			end
-			if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["npcDrops"]] then
+			if SkuDB.itemDataTBC[tItemId] and SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["npcDrops"]] then
 				CreatureIdHelper(SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["npcDrops"]], tResultWPs, aOnly3, aOnlyUiMapId)
 			end
-			if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["itemDrops"]] then
-				--dprint("item drop from item")
-
-			end
-			if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["vendors"]] then
+			if SkuDB.itemDataTBC[tItemId] and SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["vendors"]] then
 				CreatureIdHelper(SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["vendors"]], tResultWPs, aOnly3, aOnlyUiMapId)
 			end
 		end
@@ -1139,10 +1138,15 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
-	dprint("CreateRtWpSubmenu aSubIDTable ", aSubIDTable, " - aSubType ", aSubType, " - aQuestID ", aQuestID)
+-- aGroups: array of {targets=,type=} from GetQuestTargetGroups. All groups
+-- resolve into ONE name-keyed result table, so a mixed quest lists its kill
+-- targets, drop/gather sources and trigger point side by side.
+local function CreateRtWpSubmenu(aParent, aGroups, aQuestID)
+	dprint("CreateRtWpSubmenu #aGroups ", #aGroups, " - aQuestID ", aQuestID)
 	local tResultWPs = {}
-	SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs)
+	for tGi = 1, #aGroups do
+		SkuQuest:GetResultingWps(aGroups[tGi].targets, aGroups[tGi].type, aQuestID, tResultWPs)
+	end
 
 	local tPlayX, tPlayY = UnitPosition("player")
 	local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, SkuNav.MaxMetaEntryRange)--SkuOptions.db.profile["SkuNav"].nearbyWpRange)
@@ -1470,54 +1474,79 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuQuest:GetQuestTargetIds(aQuestID, aList)
-	local tTargets = {}
-	local tTargetType = nil
+-- A quest's objective lists are not mutually exclusive: 95 shipped quests
+-- carry more than one kind (67x creature+item "toete X und sammle Y", 8x
+-- creature+triggerEnd, ...). The old form of this function was an if/elseif
+-- chain over the lists AND returned one flat list with ONE type string, so
+-- only the first kind ever reached the menus, the quest-target key and the
+-- waypoint cache. Return ALL kinds as an array of {targets=,type=} groups.
+--
+-- aIncludeTriggerEnd: the triggerEnd point hangs off the QUEST, not off the
+-- passed list, and this function is also called with startedBy/finishedBy -
+-- only the objectives callers want the trigger point appended. An unresolved
+-- trigger (GetTriggerEndWps came back empty) adds no group, so the menu
+-- correctly hides instead of announcing "Empty".
+function SkuQuest:GetQuestTargetGroups(aQuestID, aList, aIncludeTriggerEnd)
+	local tGroups = {}
+	aList = aList or {}
 
-	if aList[1] then --creatures
-		for i, v in pairs(aList[1]) do
-			if type(v) == "number" then
-				tTargets[#tTargets+1] = v
-			else
-				tTargets[#tTargets+1] = v[1]
+	-- creatures: list 1 plus the kill-credit creatures of list 5, deduped -
+	-- a kill-credit id can re-list a creature-objective id
+	local tCreatures, tSeen = {}, {}
+	local function tAddCreatures(aSource)
+		if not aSource then return end
+		for i, v in pairs(aSource) do
+			local tId = v
+			if type(v) == "table" then tId = v[1] end
+			if type(tId) == "number" and not tSeen[tId] then
+				tSeen[tId] = true
+				tCreatures[#tCreatures+1] = tId
 			end
 		end
-		tTargetType = "creature"
-
-	elseif aList[2] then --objects
-		for i, v in pairs(aList[2]) do
-			if type(v) == "number" then
-				tTargets[#tTargets+1] = v
-			else
-				tTargets[#tTargets+1] = v[1]
-			end
-		end
-		tTargetType = "object"
-
-	elseif aList[3] then --items
-		for i, v in pairs(aList[3]) do
-			if type(v) == "number" then
-				tTargets[#tTargets+1] = v
-			else
-				tTargets[#tTargets+1] = v[1]
-			end
-		end
-		tTargetType = "item"
-
-	elseif aList[4] then--rep
-		-- TO IMPLEMENT
-
-
-	elseif aList[5] then--kills
-		tTargets = aList[5][1]
-		tTargetType = "creature"
-
-	elseif SkuDB.questDataTBC[aQuestID][SkuDB.questKeys.triggerEnd] then--triggerEnd
-		tTargets = SkuQuest:GetTriggerEndWps(aQuestID)
-		tTargetType = "waypoint"
 	end
-	
-	return tTargets, tTargetType
+	tAddCreatures(aList[1])
+	tAddCreatures(aList[5] and aList[5][1])
+	if #tCreatures > 0 then
+		tGroups[#tGroups+1] = {targets = tCreatures, type = "creature"}
+	end
+
+	local function tAddPlain(aSource, aType)
+		if not aSource then return end
+		local tTargets = {}
+		for i, v in pairs(aSource) do
+			if type(v) == "number" then
+				tTargets[#tTargets+1] = v
+			else
+				tTargets[#tTargets+1] = v[1]
+			end
+		end
+		if #tTargets > 0 then
+			tGroups[#tGroups+1] = {targets = tTargets, type = aType}
+		end
+	end
+	tAddPlain(aList[2], "object")
+	tAddPlain(aList[3], "item")
+	-- aList[4] (reputation) has no location data to point at - unchanged gap
+
+	if aIncludeTriggerEnd and SkuDB.questDataTBC[aQuestID] and SkuDB.questDataTBC[aQuestID][SkuDB.questKeys.triggerEnd] then
+		local tWps = SkuQuest:GetTriggerEndWps(aQuestID)
+		if #tWps > 0 then
+			tGroups[#tGroups+1] = {targets = tWps, type = "waypoint"}
+		end
+	end
+
+	return tGroups
+end
+
+-- Old single-type signature, kept as a wrapper (first group only) for any
+-- caller outside this repo (the WowVision port diffs against this name). All
+-- in-repo callers use GetQuestTargetGroups.
+function SkuQuest:GetQuestTargetIds(aQuestID, aList)
+	local tGroups = SkuQuest:GetQuestTargetGroups(aQuestID, aList, true)
+	if tGroups[1] then
+		return tGroups[1].targets, tGroups[1].type
+	end
+	return {}, nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1811,40 +1840,33 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				tHasEntries = true
 				local tstartedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]]
 				if tstartedBy then
-					local tTargets = {}
-					local tTargetType = nil
-					
-					tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tstartedBy)
+					local tGroups = SkuQuest:GetQuestTargetGroups(aQuestID, tstartedBy)
 
 					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Annahme"]}, SkuGenericMenuItem)
 					tNewMenuSubEntry.dynamic = true
 					tNewMenuSubEntry.sorting = true
 					tNewMenuSubEntry.BuildChildren = function(self)
 						tHasEntries = true
-						CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
-						--CreateRtWpSubmenu(self, SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1], "creature", aQuestID)
+						CreateRtWpSubmenu(self, tGroups, aQuestID)
 					end
 				end
 			end
 
+			-- objectives may be nil while a triggerEnd still exists - pass the
+			-- (possibly nil) list on and let GetQuestTargetGroups decide; no
+			-- groups back means no Ziel entry (deliver quests stay hidden)
 			local tObjectives = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["objectives"]]
-			if tObjectives then
+			local tGroups = SkuQuest:GetQuestTargetGroups(aQuestID, tObjectives, true)
+			if #tGroups > 0 then
 				tHasEntries = true
-				local tTargets = {}
-				local tTargetType = nil
-
-				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tObjectives)
-
-				if	tTargetType then
-					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Ziel"]}, SkuGenericMenuItem)
-					tNewMenuSubEntry.dynamic = true
-					--tNewMenuSubEntry.sorting = true
-					tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-					end
-					tNewMenuSubEntry.BuildChildren = function(self)
-						tHasEntries = true
-						CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
-					end
+				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Ziel"]}, SkuGenericMenuItem)
+				tNewMenuSubEntry.dynamic = true
+				--tNewMenuSubEntry.sorting = true
+				tNewMenuSubEntry.OnAction = function(self, aValue, aName)
+				end
+				tNewMenuSubEntry.BuildChildren = function(self)
+					tHasEntries = true
+					CreateRtWpSubmenu(self, tGroups, aQuestID)
 				end
 			end
 
@@ -1854,15 +1876,12 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				tNewMenuSubEntry.dynamic = true
 				tNewMenuSubEntry.sorting = true
 				local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
-				if tFinishedBy and tFinishedBy then
-					local tTargets = {}
-					local tTargetType = nil
-
-					tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
+				if tFinishedBy then
+					local tGroups = SkuQuest:GetQuestTargetGroups(aQuestID, tFinishedBy)
 
 					tNewMenuSubEntry.BuildChildren = function(self)
 						tHasEntries = true
-						CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
+						CreateRtWpSubmenu(self, tGroups, aQuestID)
 					end
 				end
 			end

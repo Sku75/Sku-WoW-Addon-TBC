@@ -191,9 +191,9 @@ end
 -- offenes Toetungsziel mehr. Objekt-Ziele (Weltobjekte) bleiben draussen, die
 -- sind ueber /target nicht sinnvoll erreichbar.
 --
--- BEWUSST KEIN Filter je EINZELNEM Teilziel: SkuQuest:GetQuestTargetIds flacht
--- alle Kreaturen einer Quest in EIN Feld ab, ohne festzuhalten, welche sich
--- einen gemeinsamen Zaehler teilen ("toete 8 von diesen drei Typen"). Ein
+-- BEWUSST KEIN Filter je EINZELNEM Teilziel: SkuQuest:GetQuestTargetGroups
+-- flacht alle Kreaturen einer Quest in EIN Feld ab, ohne festzuhalten, welche
+-- sich einen gemeinsamen Zaehler teilen ("toete 8 von diesen drei Typen"). Ein
 -- Teilziel-Filter wuerde dann Namen ausblenden, die der Spieler noch braucht.
 -- Schlimmster Fall ohne Filter ist eine wirkungslose /target-Zeile.
 local function tCollectCandidates()
@@ -209,37 +209,41 @@ local function tCollectCandidates()
 				local tObjectives = tData[SkuDB.questKeys["objectives"]]
 				if not tObjectives then return end
 
-				local tOk, tTargets, tTargetType = pcall(SkuQuest.GetQuestTargetIds, SkuQuest, tQuestID, tObjectives)
-				if not tOk or type(tTargets) ~= "table" then return end
+				-- Gruppenweise: eine gemischte Quest ("toete X und sammle Y")
+				-- traegt jetzt Kreaturen- UND Gegenstandskandidaten bei; Objekt-
+				-- und Wegpunktgruppen werden weiter uebersprungen (siehe oben).
+				local tOk, tGroups = pcall(SkuQuest.GetQuestTargetGroups, SkuQuest, tQuestID, tObjectives)
+				if not tOk or type(tGroups) ~= "table" then return end
 
 				local tNpcIds = {}
-				if tTargetType == "creature" then
-					for _, tNpcId in ipairs(tTargets) do
-						if type(tNpcId) == "number" then tNpcIds[#tNpcIds + 1] = tNpcId end
-					end
-				elseif tTargetType == "item" then
-					-- Gegenstands-Ziele ueber die Fallquelle aufloesen -- derselbe
-					-- npcDrops/itemDrops-Weg, den SkuQuest/Core.lua schon fuer die
-					-- Wegpunkte benutzt. Eine Verschachtelungsebene tief, wie dort.
-					for _, tItemId in ipairs(tTargets) do
-						local tItemData = SkuDB.itemDataTBC and SkuDB.itemDataTBC[tItemId]
-						local tDrops = tItemData and tItemData[SkuDB.itemKeys["npcDrops"]]
-						if tDrops then
-							for _, tNpcId in ipairs(tDrops) do tNpcIds[#tNpcIds + 1] = tNpcId end
+				for tGi = 1, #tGroups do
+					local tTargets, tTargetType = tGroups[tGi].targets, tGroups[tGi].type
+					if tTargetType == "creature" then
+						for _, tNpcId in ipairs(tTargets) do
+							if type(tNpcId) == "number" then tNpcIds[#tNpcIds + 1] = tNpcId end
 						end
-						local tSubItems = tItemData and tItemData[SkuDB.itemKeys["itemDrops"]]
-						if tSubItems then
-							for _, tSubItemId in ipairs(tSubItems) do
-								local tSubData = SkuDB.itemDataTBC and SkuDB.itemDataTBC[tSubItemId]
-								local tSubDrops = tSubData and tSubData[SkuDB.itemKeys["npcDrops"]]
-								if tSubDrops then
-									for _, tNpcId in ipairs(tSubDrops) do tNpcIds[#tNpcIds + 1] = tNpcId end
+					elseif tTargetType == "item" then
+						-- Gegenstands-Ziele ueber die Fallquelle aufloesen -- derselbe
+						-- npcDrops/itemDrops-Weg, den SkuQuest/Core.lua schon fuer die
+						-- Wegpunkte benutzt. Eine Verschachtelungsebene tief, wie dort.
+						for _, tItemId in ipairs(tTargets) do
+							local tItemData = SkuDB.itemDataTBC and SkuDB.itemDataTBC[tItemId]
+							local tDrops = tItemData and tItemData[SkuDB.itemKeys["npcDrops"]]
+							if tDrops then
+								for _, tNpcId in ipairs(tDrops) do tNpcIds[#tNpcIds + 1] = tNpcId end
+							end
+							local tSubItems = tItemData and tItemData[SkuDB.itemKeys["itemDrops"]]
+							if tSubItems then
+								for _, tSubItemId in ipairs(tSubItems) do
+									local tSubData = SkuDB.itemDataTBC and SkuDB.itemDataTBC[tSubItemId]
+									local tSubDrops = tSubData and tSubData[SkuDB.itemKeys["npcDrops"]]
+									if tSubDrops then
+										for _, tNpcId in ipairs(tSubDrops) do tNpcIds[#tNpcIds + 1] = tNpcId end
+									end
 								end
 							end
 						end
 					end
-				else
-					return
 				end
 
 				for _, tNpcId in ipairs(tNpcIds) do

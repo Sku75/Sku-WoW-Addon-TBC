@@ -908,31 +908,11 @@ function SkuQuest:GetAllQuestWps(aQuestID, aStart, aObjective, aFinish, aOnly3)
 		then
 			local tstartedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]]
 			if tstartedBy then
-				local tTargets = {}
-				local tTargetType = nil
-				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tstartedBy)
-				if	tTargetType then
-					local tResultWPs = {}
-					SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, aOnly3)
-					for i, v in pairs(tResultWPs) do
-						for ri, rv in pairs(v) do
-							SkuQuest.QuestWpCache[rv] = true
-						end
-					end
-				end
-			end
-		end
-	end
-
-	if aObjective == true then
-		local tObjectives = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["objectives"]]
-		if tObjectives then
-			local tTargets = {}
-			local tTargetType = nil
-			tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tObjectives)
-			if	tTargetType then
+				local tGroups = SkuQuest:GetQuestTargetGroups(aQuestID, tstartedBy)
 				local tResultWPs = {}
-				SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, aOnly3)
+				for tGi = 1, #tGroups do
+					SkuQuest:GetResultingWps(tGroups[tGi].targets, tGroups[tGi].type, aQuestID, tResultWPs, aOnly3)
+				end
 				for i, v in pairs(tResultWPs) do
 					for ri, rv in pairs(v) do
 						SkuQuest.QuestWpCache[rv] = true
@@ -941,20 +921,34 @@ function SkuQuest:GetAllQuestWps(aQuestID, aStart, aObjective, aFinish, aOnly3)
 			end
 		end
 	end
+
+	if aObjective == true then
+		-- objectives may be nil while a triggerEnd still exists; the groups
+		-- helper handles a nil list
+		local tObjectives = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["objectives"]]
+		local tGroups = SkuQuest:GetQuestTargetGroups(aQuestID, tObjectives, true)
+		local tResultWPs = {}
+		for tGi = 1, #tGroups do
+			SkuQuest:GetResultingWps(tGroups[tGi].targets, tGroups[tGi].type, aQuestID, tResultWPs, aOnly3)
+		end
+		for i, v in pairs(tResultWPs) do
+			for ri, rv in pairs(v) do
+				SkuQuest.QuestWpCache[rv] = true
+			end
+		end
+	end
 	if aFinish == true then
 		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]] and (SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3]) then
 			local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
 			if tFinishedBy then
-				local tTargets = {}
-				local tTargetType = nil
-				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
-				if	tTargetType then
-					local tResultWPs = {}
-					SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, aOnly3)
-					for i, v in pairs(tResultWPs) do
-						for ri, rv in pairs(v) do
-							SkuQuest.QuestWpCache[rv] = true
-						end
+				local tGroups = SkuQuest:GetQuestTargetGroups(aQuestID, tFinishedBy)
+				local tResultWPs = {}
+				for tGi = 1, #tGroups do
+					SkuQuest:GetResultingWps(tGroups[tGi].targets, tGroups[tGi].type, aQuestID, tResultWPs, aOnly3)
+				end
+				for i, v in pairs(tResultWPs) do
+					for ri, rv in pairs(v) do
+						SkuQuest.QuestWpCache[rv] = true
 					end
 				end
 			end
@@ -1327,11 +1321,11 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 					if SkuDB.questDataTBC[aQuestID] and SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]] and (SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3]) then
 						local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
 						if tFinishedBy then
-							local tTargets = {}
-							local tTargetType = nil
-							tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
+							local tGroups = SkuQuest:GetQuestTargetGroups(aQuestID, tFinishedBy)
 							local tResultWPs = {}
-							SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, true, tPlayerUIMap)					
+							for tGi = 1, #tGroups do
+								SkuQuest:GetResultingWps(tGroups[tGi].targets, tGroups[tGi].type, aQuestID, tResultWPs, true, tPlayerUIMap)
+							end
 							for unitGeneralName, wpTable in pairs(tResultWPs) do
 								for wpIndex, wpName in pairs(wpTable) do
 									local tWpObj = SkuNav:GetWaypointData2(wpName)

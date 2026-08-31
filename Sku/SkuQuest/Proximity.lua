@@ -290,10 +290,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Entfernung zum naechsten OFFENEN Questziel.
 --
--- Anders als SkuQuest:GetQuestTargetIds werden hier ALLE Listen gelesen, nicht
--- nur die erste nichtleere: dort ist die Kette bewusst elseif-verzweigt (ein
--- Ziel je Wegpunkt), hier waere das falsch -- eine Quest mit "toete 8 Woelfe
--- UND sammle 5 Felle" haette sonst nur die Woelfe.
+-- Alle Listen werden gelesen -- eine Quest mit "toete 8 Woelfe UND sammle 5
+-- Felle" haette sonst nur die Woelfe. (SkuQuest:GetQuestTargetGroups macht das
+-- inzwischen genauso; dieser Pfad hier war der Vorreiter und bleibt separat,
+-- weil er zusaetzlich je Teilziel auf offen/erledigt filtert.)
 function P:GetObjectiveDistance(aCtx, aQuestId, aLogIndex)
 	local tData = SkuDB.questDataTBC and SkuDB.questDataTBC[aQuestId]
 	if not tData then return nil end
