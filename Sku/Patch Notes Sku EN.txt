@@ -62,6 +62,7 @@ Changes in Sku v43.2
             Quest database: right after a /reload, quests of inactive world events (such as Midsummer quests) could appear in "Starts in zone".
             Thirteen talk-to quests (among them the old priest spell quests) shipped without a turn-in in the data - the Delivery entry now leads to the NPC the quest text names.
             Quest menu: about 300 quests whose quest giver, target or turn-in sits inside a dungeon showed empty entries - they now lead to the dungeon entrance.
+            77 quests with a field objective (explore X, use Y at place Z) that had no data at all now have a real quest target - some locations come from web sources: reports on whether they are right are welcome.
 
     Swimming and flying: the pitch lock ends the unwanted diving
         Simple: While swimming or flying, every automatic turn towards the beacon pulled you a
@@ -709,6 +710,25 @@ Changes in Sku v43.2
             the entrance coordinates to world coordinates, take the nearest route
             waypoint. Memoised per waypoint-cache generation; the faction filter reads
             UnitFactionGroup.
+
+    77 field-objective quests now have a real quest target
+        Simple: 77 quests whose objective is a place or object out in the field (the
+            Mulgore water wells, the druids' Moonkin Stone, the Crystal Pylons of Un'Goro
+            Crater, Rolf's corpse, the four draenei totems, the hunters' Taming the Beast
+            chain and many more) had no target data at all - the "Quest target" entry was
+            simply missing. All of them now have a real, routable quest target.
+            Important: the objects and creatures come from Sku's own spawn data, but 26
+            locations come from web sources (warcraft.wiki.gg, Wowhead) and could not all
+            be checked in game. They were chosen with care but may be off in individual
+            cases - a report on whether such a target is right or wrong helps a lot. Even
+            an imprecise point beats none at all: the route leads into the right area.
+        Technically: Result of the review list dev/rework-docs/QUEST-TARGET-PROPOSALS.txt
+            (sections 1-3, reviewed by hand): 27 object and 24 creature targets as
+            objectives entries in quests_fixes.lua (ids validated against the own
+            databases, spawn zones verified, no -1,-1 positions in the open world) plus
+            26 triggerEnd coordinates from the web research. Two quests (9410, 10166)
+            already carried the right object id in extraObjectives, which the target
+            menus do not read - the objectives field was added there.
 
     Thirteen talk-to quests have a turn-in again
         Simple: Thirteen quests - above all the old priest spell quests (Stars of Elune,

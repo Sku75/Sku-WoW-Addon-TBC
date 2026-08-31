@@ -11,32 +11,8 @@ A: QUESTS WITH NEITHER TARGET NOR TURN-IN (nothing to route at all) (0)
 ======================================================================
 
 ======================================================================
-B: CLASS QUESTS WITH A FIELD OBJECTIVE (turn-in exists, but the field step is unguided) (64)
+B: CLASS QUESTS WITH A FIELD OBJECTIVE (turn-in exists, but the field step is unguided) (45)
 ======================================================================
-
-Quest 28: Trial of the Lake
-  class Druid; level -1 (min 16); turn-in yes
-  Objective text: Find a Shrine Bauble in Lake Elune'ara, and take it to the Shrine of Remulos in northwestern Moonglade. Once there, use the Shrine Bauble.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 29: Trial of the Lake
-  class Druid; level -1 (min 16); turn-in yes
-  Objective text: Find a Shrine Bauble in Lake Elune'ara, and take it to the Shrine of Remulos in northwestern Moonglade. Once there, use the Shrine Bauble.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 1517: Call of Earth
-  class Shaman; level 4 (min 4); turn-in yes
-  Objective text: Find Spirit Rock and drink the Earth Sapta.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 1520: Call of Earth
-  class Shaman; level 4 (min 4); turn-in yes
-  Objective text: Find Kodo Rock and drink the Earth Sapta.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
 
 Quest 1643: The Tome of Divinity
   class Paladin; level -1 (min 12); turn-in yes
@@ -309,126 +285,9 @@ Quest 5922: Moonglade
   Triage: WEB - needs external coordinates
   Wiki coords: none found
 
-Quest 6001: Body and Heart
-  class Druid; level -1 (min 10); turn-in yes
-  Objective text: Use the Cenarion Moondust on the Moonkin Stone of Auberdine to bring forth Lunaclaw. From there, you must face Lunaclaw and earn the strength of body and heart it possesses.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6002: Body and Heart
-  class Druid; level -1 (min 10); turn-in yes
-  Objective text: Use the Cenarion Lunardust on the Moonkin Stone between Mulgore and the Barrens to bring forth Lunaclaw. From there, you must face Lunaclaw and earn the strength of body and heart it possesses.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;druid;Southern Barrens;The Barrens§questziel;druide;Südliches Brachland;Brachland§objectif de quê (zone The Barrens, areaId 17, world -2500.800048828125/-1632.599975585938)
-  Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;nordwestlich;Brachland (zone The Barrens, areaId 17, world 89.70000457763672/-1944.400024414063)
-  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
-
-Quest 6061: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame an Adult Plainstrider. Practice your skills, then return the Taming Rod to Yaw Sharpmane in Bloodhoof Village.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6062: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame a Dire Mottled Boar. Practice your skills, then return the Taming Rod to Thotar in Razor Hill.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6063: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame a Webwood Lurker. Practice your skills, then return the Taming Rod to Dazalar in Dolanaar.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6064: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame a Large Crag Boar. Practice your skills, then return the Taming Rod to Grif Wildheart in Kharanos.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6082: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame an Armored Scorpid. Practice your skills, then return to Thotar at Razor Hill.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6083: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame a Surf Crawler. Practice your skills, then return the Taming Rod to Thotar at Razor Hill.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6084: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame a Snow Leopard. Practice your skills, then return to Grif Wildheart in Kharanos.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6085: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame an Ice Claw Bear. Practice your skills, then return the Taming Rod to Grif Wildheart in Kharanos.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6087: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame a Prairie Stalker. Practice your skills, then return the Taming Rod to Yaw Sharpmane in Bloodhoof Village.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6088: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame a Swoop. Practice your skills, then return the Taming Rod to Yaw Sharpmane in Bloodhoof Village.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6101: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame a Nightsaber Stalker. Practice your skills, then return the Taming Rod to Dazalar in Dolanaar.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6102: Taming the Beast
-  class Hunter; level -1 (min 10); turn-in yes
-  Objective text: Use the Taming Rod to tame a Strigid Screecher. Practice your skills, then return the Taming Rod to Dazalar in Dolanaar.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 10964: Waking the Sleeper
-  class Druid; level -1 (min 70); turn-in yes
-  Objective text: Use the Ward of Waking to help Clintar Dreamwalker emerge from the Emerald Dream. When he is conscious, speak to him.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
 ======================================================================
-C: OTHER QUESTS WITH A FIELD OBJECTIVE (turn-in exists, but the field step is unguided) (104)
+C: OTHER QUESTS WITH A FIELD OBJECTIVE (turn-in exists, but the field step is unguided) (44)
 ======================================================================
-
-Quest 45: Discover Rolf's Fate
-  level 10 (min 7); zone Elwynn Forest (12); turn-in yes
-  Objective text: Search the murloc village for Rolf, or signs of his death.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 139: Captain Sander's Hidden Treasure
-  level 16 (min 14); zone Westfall (40); turn-in yes
-  Objective text: Search the empty jug next to the windmill for the next clue.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 250: A Dark Threat Looms
-  level 18 (min 16); zone Loch Modan (38); turn-in yes
-  Objective text: Investigate the area near the eastern ramp of the Dam and bring Chief Engineer Hinderweir a clue that might reveal what the Dark Iron Dwarves are up to.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 264: Until Death Do Us Part
-  level 15 (min 12); zone Thunder Bluff (1638); turn-in yes
-  Objective text: Place Clarice's Pendant on Yuriv's Tomb in Silverpine.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
 
 Quest 266: Inquire at the Inn
   level 25 (min 20); zone Duskwood (10); turn-in yes
@@ -439,47 +298,9 @@ Quest 266: Inquire at the Inn
   Routedata waypoint: quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de quête;Vul'Gol Ogre  (zone Duskwood, areaId 10, world -11090.1005859375/-69.80000305175781)
   Routedata waypoint: quest target;Addle's Stead;Duskwood§questziel;Addles Siedlung;Dämmerwald§objectif de quête;Ferme des Addle;Boi (zone Duskwood, areaId 10, world -11012.7998046875/186.6999969482422)
 
-Quest 280: A Dark Threat Looms
-  level 18 (min 16); zone Loch Modan (38); turn-in yes
-  Objective text: Chief Engineer Hinderweir wants you to swim down to the base of the dam, locate the powder keg and stir in the Disarming Mixture to prevent an explosion.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 281: Reclaiming Goods
-  level 25 (min 20); zone Wetlands (11); turn-in yes
-  Objective text: Search the crates and barrels at the coastal Murloc camps.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sumpfland§objectif de q (zone Wetlands, areaId 11, world -3552.699951171875/-1721.200073242188)
-  Routedata waypoint: quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;Viaduc de Thandol;Les (zone Thandol Span, areaId 330, world -2367.10009765625/-2509)
-
 Quest 293: Cleansing the Eye
   level 30 (min 22); zone Wetlands (11); turn-in yes
   Objective text: Bring Archbishop Benedictus the Cursed Eye of Paleth. Benedictus is in the Cathedral of Light, in the city of Stormwind.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sumpfland§objectif de q (zone Wetlands, areaId 11, world -3552.699951171875/-1721.200073242188)
-  Routedata waypoint: quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;Viaduc de Thandol;Les (zone Thandol Span, areaId 330, world -2367.10009765625/-2509)
-
-Quest 321: Lightforge Iron
-  level 29 (min 20); zone Duskwood (10); turn-in yes
-  Objective text: Search the wreckage of The Flying Osprey in the Wetlands.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif de quête;The Yorgen (zone Duskwood, areaId 10, world -11117.5/-511.3999938964844)
-  Routedata waypoint: quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de quête;Vul'Gol Ogre  (zone Duskwood, areaId 10, world -11090.1005859375/-69.80000305175781)
-  Routedata waypoint: quest target;Addle's Stead;Duskwood§questziel;Addles Siedlung;Dämmerwald§objectif de quête;Ferme des Addle;Boi (zone Duskwood, areaId 10, world -11012.7998046875/186.6999969482422)
-
-Quest 328: The Hidden Key
-  level 37 (min 30); zone Stranglethorn Vale (33); turn-in yes
-  Objective text: Use the Small Brass Key to open Bookie Herod's Strongbox.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Yojamba Isle;Stranglethorn Vale§questziel;Die Insel Yojamba;Schlingendorntal§objectif de quête;Il (zone Stranglethorn Vale, areaId 33, world -11811/1365.400024414063)
-
-Quest 465: Nek'rosh's Gambit
-  level 26 (min 23); zone Wetlands (11); turn-in yes
-  Objective text: Destroy the Dragonmaw catapults.
   Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sumpfland§objectif de q (zone Wetlands, areaId 11, world -3552.699951171875/-1721.200073242188)
@@ -491,57 +312,12 @@ Quest 492: A New Plague
   Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
-Quest 524: Elixir of Agony
-  level 30 (min 24); zone Hillsbrad Foothills (267); turn-in yes
-  Objective text: Place the Tainted Keg on the rug for the captured farmers.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
 Quest 751: The Ravaged Caravan
   level 8 (min 5); zone Mulgore (215); turn-in yes
   Objective text: Return the Venture Co. Documents to Morin Cloudstalker near Bloodhoof Village.
   Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
   Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
-
-Quest 754: Winterhoof Cleansing
-  level 6 (min 4); zone Mulgore (215); turn-in yes
-  Objective text: Use the Winterhoof Cleansing Totem at the Winterhoof Water Well, then return to Mull Thunderhorn.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
-
-Quest 758: Thunderhorn Cleansing
-  level 8 (min 5); zone Mulgore (215); turn-in yes
-  Objective text: Use the Thunderhorn Cleansing Totem at the Thunderhorn Water Well, then return to Mull.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
-
-Quest 760: Wildmane Cleansing
-  level 10 (min 7); zone Mulgore (215); turn-in yes
-  Objective text: Use the Wildmane Cleansing Totem at the Wildmane Water Well, then return to Mull Thunderhorn.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
-
-Quest 894: Samophlange
-  level 14 (min 10); zone The Barrens (17); turn-in yes
-  Objective text: Access the control console at the Venture Company research site.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;nordwestlich;Brachland (zone The Barrens, areaId 17, world 89.70000457763672/-1944.400024414063)
-  Routedata waypoint: quest target;druid;Southern Barrens;The Barrens§questziel;druide;Südliches Brachland;Brachland§objectif de quê (zone The Barrens, areaId 17, world -2500.800048828125/-1632.599975585938)
-  Routedata waypoint: entry and exit;ship;class quest;rogue;The Merchant Coast;The Barrens§ein- und ausgang;schiff;klassenquest;schu (zone The Barrens, areaId 17, world -1460.5/-3881.300048828125)
-
-Quest 941: Planting the Heart
-  level 12 (min 9); zone Teldrassil (141); turn-in yes
-  Objective text: Plant the Tainted Heart in Denalan's Planter.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: Grell;quest target;Shadowglen;Teldrassil§Grell;questgegner;Laubschattental;Teldrassil§Grell;objectif de quête; (zone Teldrassil, areaId 141, world 10303.2998046875/946.5)
-  Routedata waypoint: well;quest target;Shadowglen;Teldrassil§brunnen;questziel;Laubschattental;Teldrassil§well;objectif de quête;Sh (zone Teldrassil, areaId 141, world 10707.5/762.9000244140625)
-  Routedata waypoint: Gnarlpine Shaman;quest target;Teldrassil§Schamane der Knarzklauen;questgegner;Teldrassil§Chaman Pin-tordu;obje (zone Teldrassil, areaId 141, world 9266.1005859375/888.6000366210938)
 
 Quest 1000: The New Frontier
   level 55 (min 54); zone Thunder Bluff (1638); turn-in yes
@@ -574,13 +350,6 @@ Quest 1019: The New Frontier
   Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête; (zone Darnassus, areaId 1657, world 9644.400390625/2520.900146484375)
-
-Quest 1030: Raene's Cleansing
-  level 28 (min 18); zone Ashenvale (331); turn-in yes
-  Objective text: Find an uncorrupted furbolg, and using the power of Dartol's Rod of Transformation, speak to him.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: class quest;shaman;quest target;Ashenvale§klassenquest;schamane;questziel;Eschental§class quest;shaman;objecti (zone Ashenvale, areaId 331, world 2080.5/-234.5)
 
 Quest 1047: The New Frontier
   level 55 (min 54); zone Darnassus (1657); turn-in yes
@@ -617,36 +386,6 @@ Quest 2520: Sathrah's Sacrifice
   Wiki coords: none found
   Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête; (zone Darnassus, areaId 1657, world 9644.400390625/2520.900146484375)
 
-Quest 2701: Heroes of Old
-  level 57 (min 45); zone Blasted Lands (4); turn-in yes
-  Objective text: Open the chest and claim your reward.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 2844: The Giant Guardian
-  level 49 (min 44); zone Feralas (357); turn-in yes
-  Objective text: Locate the lost night elf girl.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
-  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
-
-Quest 2932: Grim Message
-  level 42 (min 35); zone The Hinterlands (47); turn-in yes
-  Objective text: Gather Witherbark Skulls and place on Nimboya's Pike. Place Nimboya's Laden Pike at one of the Witherbark Villages in the Hinterlands, then return to Nimboya in Stranglethorn.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;The Altar of Zul;The Hinterlands§questziel;Der Altar von Zul;Hinterland§objectif de quête;L'autel (zone The Hinterlands, areaId 47, world -291/-3456.800048828125)
-  Routedata waypoint: elite;quest target;Seradane;The Hinterlands§elite;questziel;Seradane;Hinterland§elite;objectif de quête;Serada (zone The Hinterlands, areaId 47, world 1193.599975585938/-4265.10009765625)
-
-Quest 2969: Freedom for All Creatures
-  level 47 (min 40); zone Feralas (357); turn-in yes
-  Objective text: Using the Bamboo Cage Key, free the Sprite Darters from the pen in the Grimtotem camp. At least 6 Sprite Darters and Kindal Moonweaver must survive.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
-  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
-
 Quest 3373: The Essence of Eranikus
   level 55 (min 48); zone Sunken Temple (1417); turn-in yes
   Objective text: Place the Essence of Eranikus in the Essence Font located in this lair in the Sunken Temple.
@@ -657,12 +396,6 @@ Quest 3382: A Crew Under Fire
   level 57 (min 49); zone Azshara (16); turn-in yes
   Objective text: Defend Captain Vanessa Beltis, her crew and the Horizon Scout's passengers against the naga attack. Captain Vanessa Beltis must survive.
   Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
-  Wiki coords: none found
-
-Quest 3447: Secret of the Circle
-  level 51 (min 46); zone Sunken Temple (1417); turn-in yes
-  Objective text: Travel into the Sunken Temple and discover the secret hidden in the circle of statues.
-  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 3481: Trinkets...
@@ -679,93 +412,9 @@ Quest 3821: Dreadmaul Rock
   Routedata waypoint: quest target;the sealed hall;Uldaman§questziel;Die versiegelte Halle;Uldaman§objectif de quête;the sealed hall (zone Badlands, areaId 3, world -6201.39990234375/-3057.300048828125)
   Routedata waypoint: quest target;South Common Hall;Uldaman§questziel;Südliche Bankenhalle;Uldaman§objectif de quête;South Common H (zone Badlands, areaId 3, world -6198.5/-2929.800048828125)
 
-Quest 3912: Meet at the Grave
-  level 52 (min 47); zone Un'Goro Crater (490); turn-in yes
-  Objective text: Go to the graveyard outside Gadgetzan, and use the Videre Elixir. Follow the rest of Donova's instructions to find Gaeriyan.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
-  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
-
-Quest 4125: The Missing Courier
-  level 43 (min 40); zone Feralas (357); turn-in yes
-  Objective text: Locate the courier's boat somewhere along the coast of Feralas.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
-  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
-
-Quest 4131: The Woodpaw Gnolls
-  level 44 (min 40); zone Feralas (357); turn-in yes
-  Objective text: Search the Woodpaw Gnoll camps of southern Feralas for evidence of the courier's belongings or the courier himself.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
-  Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
-
-Quest 4285: The Northern Pylon
-  level 53 (min 47); zone Un'Goro Crater (490); turn-in yes
-  Objective text: Discover the location of the Northern Crystal Pylon in Un'Goro Crater.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
-  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
-
-Quest 4287: The Eastern Pylon
-  level 53 (min 47); zone Un'Goro Crater (490); turn-in yes
-  Objective text: Discover the location of the Eastern Crystal Pylon in Un'Goro Crater.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
-  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
-
-Quest 4288: The Western Pylon
-  level 53 (min 47); zone Un'Goro Crater (490); turn-in yes
-  Objective text: Discover the location of the Western Crystal Pylon.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
-  Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
-
-Quest 4451: The Key to Freedom
-  level 47 (min 43); zone Searing Gorge (51); turn-in yes
-  Objective text: Search Searing Gorge and find a use for the Grimesilt Outhouse Key you have found.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 4506: Corrupted Sabers
-  level 54 (min 49); zone Felwood (361); turn-in yes
-  Objective text: Take Winna's kitten to the corrupted moonwell, release it, then bring it back to Winna.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 4734: Egg Freezing
-  level 60 (min 57); zone Blackrock Spire (1583); turn-in yes
-  Objective text: Use the Eggscilloscope Prototype on an egg in the Rookery.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 5084: Falling to Corruption
-  level 56 (min 52); zone Winterspring (618); turn-in yes
-  Objective text: Search the Deadwood furbolg camp in northern Felwood for a clue.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 5202: A Strange Red Key
-  level 55 (min 49); zone Felwood (361); turn-in yes
-  Objective text: Search through Jaedenar to discover what the Blood Red Key is used for.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
 Quest 5252: Remorseful Highborne
   level 58 (min 53); zone Winterspring (618); turn-in yes
   Objective text: Speak with Wynd Nightchaser in Starfall Village, and ask about the proper place for the Crystal of Zin-Malor.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 5265: The Argent Hold
-  level 60 (min 55); zone Eastern Plaguelands (139); turn-in yes
-  Objective text: Open the Argent Hold and claim your reward.
   Triage: WEB - needs external coordinates
   Wiki coords: none found
 
@@ -775,27 +424,9 @@ Quest 5462: The Dying, Ras Frostwhisper
   Triage: WEB - needs external coordinates
   Wiki coords: none found
 
-Quest 5463: Menethil's Gift
-  level 60 (min 57); zone Stratholme (2017); turn-in yes
-  Objective text: Travel to Stratholme and find Menethil's Gift. Place the Keepsake of Remembrance upon the unholy ground.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
 Quest 5582: Healthy Dragon Scale
   level 58 (min 55); zone Scholomance (2057); turn-in yes
   Objective text: Bring the Healthy Dragon Scale to Betina Bigglezink at the Light's Hope Chapel in Eastern Plaguelands.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 5902: A Plague Upon Thee
-  level 55 (min 51); zone Tirisfal Glades (85); turn-in yes
-  Objective text: Find someplace suitable in the center of the Northridge Lumber Mill in Western Plaguelands to place the Barrel of Plagueland Termites.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 5904: A Plague Upon Thee
-  level 55 (min 48); zone Western Plaguelands (28); turn-in yes
-  Objective text: Find someplace suitable in the center of the Northridge Lumber Mill in Western Plaguelands to place the Barrel of Plagueland Termites.
   Triage: WEB - needs external coordinates
   Wiki coords: none found
 
@@ -805,28 +436,10 @@ Quest 6030: Duke Nicholas Zverenhoff
   Triage: WEB - needs external coordinates
   Wiki coords: none found
 
-Quest 6389: A Plague Upon Thee
-  level 55 (min 48); zone Western Plaguelands (28); turn-in yes
-  Objective text: Release the Plagueland Termites in the Northridge Lumber Mill, then return with the Barrel of Plagueland Termites to Nathaniel Dumah at Chillwind Camp in Western Plaguelands.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 6390: A Plague Upon Thee
-  level 55 (min 51); zone Western Plaguelands (28); turn-in yes
-  Objective text: Release the Plagueland Termites in the Northridge Lumber Mill, then return with the Barrel of Plagueland Termites to Mickey Levine at the Bulwark in Tirisfal Glades.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
 Quest 6402: Stormwind Rendezvous
   level 60 (min 52); zone Stormwind City (1519); turn-in yes
   Objective text: Travel to Stormwind City and venture to the city gates. Speak with Squire Rowe so that he may let Marshal Windsor know that you have arrived.
   Triage: NPCOBJ - propose creature objective, ids [9023, 17804] (NPC named in text, not the turn-in)
-  Wiki coords: none found
-
-Quest 6501: The Dragon's Eye
-  level 60 (min 52); zone Stormwind City (1519); turn-in yes
-  Objective text: You must search the world for a being capable of restoring the power to the Fragment of the Dragon's Eye. The only information you possess about such a being is that they exist.
-  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6622: Triage
@@ -838,18 +451,6 @@ Quest 6622: Triage
 Quest 6624: Triage
   level 45 (min 35); turn-in yes
   Objective text: Save patients by using Triage Bandages to tend to their wounds. You must save 15 patients before 6 of them die from their injuries.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 7001: Empty Stables
-  level -1 (min 51); zone Alterac Valley (2597); turn-in yes
-  Objective text: Locate a Frostwolf in Alterac Valley. Use the Frostwolf Muzzle when you are near the Frostwolf to 'tame' the beast. Once tamed, the Frostwolf will follow you back to the Frostwolf Stable Master. Speak with the Frostwolf 
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 7027: Empty Stables
-  level -1 (min 51); zone Alterac Valley (2597); turn-in yes
-  Objective text: Locate an Alterac Ram in Alterac Valley. Use the Stormpike Training Collar when you are near the Alterac Ram to 'tame' the beast. Once tamed, the Alterac Ram will follow you back to the Stable Master. Speak with the Stab
   Triage: WEB - needs external coordinates
   Wiki coords: none found
 
@@ -865,27 +466,6 @@ Quest 7782: The Lord of Blackrock
   Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
-Quest 7843: The Final Message to the Wildhammer
-  level 50 (min 44); zone The Hinterlands (47); turn-in yes
-  Objective text: Otho Moji'ko at Revantusk Village in the Hinterlands wants you to travel to Aerie Peak in the western region of the Hinterlands and place the Final Message to the Wildhammer by the well in the center of town. Return to h
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;The Altar of Zul;The Hinterlands§questziel;Der Altar von Zul;Hinterland§objectif de quête;L'autel (zone The Hinterlands, areaId 47, world -291/-3456.800048828125)
-  Routedata waypoint: elite;quest target;Seradane;The Hinterlands§elite;questziel;Seradane;Hinterland§elite;objectif de quête;Serada (zone The Hinterlands, areaId 47, world 1193.599975585938/-4265.10009765625)
-
-Quest 8305: Long Forgotten Memories
-  level 60 (min 60); zone Silithus (1377); turn-in yes
-  Objective text: Locate the Crystalline Tear in Silithus and gaze into its depths.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;nordwestlich;Brachland (zone The Barrens, areaId 17, world 89.70000457763672/-1944.400024414063)
-
-Quest 8447: Waking Legends
-  level 60 (min 60); turn-in yes
-  Objective text: Wait for Keeper Remulos at the Moonglade to cleanse the Nightmare Engulfed Object.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
 Quest 8470: Deadwood Ritual Totem
   level 55 (min 45); zone Felwood (361); turn-in yes
   Objective text: Take the Deadwood Ritual Totem inside Timbermaw Hold and see if one of the furbolgs there will find a use for the item. The Timbermaw will not speak with you unless you are of Neutral reputation or greater with them.
@@ -895,30 +475,6 @@ Quest 8470: Deadwood Ritual Totem
 Quest 8471: Winterfall Ritual Totem
   level 56 (min 50); zone Winterspring (618); turn-in yes
   Objective text: Take the Winterfall Ritual Totem inside Timbermaw Hold and see if one of the furbolgs there will find a use for the item. The Timbermaw will not speak with you unless you are of Neutral reputation or greater with them.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 8929: In Search of Anthion
-  level 60 (min 58); zone Eastern Plaguelands (139); turn-in yes
-  Objective text: Use the Extra-Dimensional Ghost Revealer at the entrance to Stratholme and speak with the ghost of Anthion Harmon.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 8930: In Search of Anthion
-  level 60 (min 58); zone Eastern Plaguelands (139); turn-in yes
-  Objective text: Use the Extra-Dimensional Ghost Revealer at the entrance to Stratholme and speak with the ghost of Anthion Harmon.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 8960: Bodley's Unfortunate Fate
-  level 60 (min 60); zone Blackrock Mountain (25); turn-in yes
-  Objective text: Travel to Blackrock Mountain and use the Extra-Dimensional Ghost Revealer to find Bodley near Blackrock Spire.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 9032: Bodley's Unfortunate Fate
-  level 60 (min 60); zone Blackrock Mountain (25); turn-in yes
-  Objective text: Travel to Blackrock Mountain and use the Extra-Dimensional Ghost Revealer to find Bodley near Blackrock Spire.
   Triage: WEB - needs external coordinates
   Wiki coords: none found
 
@@ -940,61 +496,6 @@ Quest 9233: Omarion's Handbook
   Triage: WEB - needs external coordinates
   Wiki coords: none found
 
-Quest 9410: A Spirit Guide
-  level 62 (min 60); zone Hellfire Peninsula (3483); turn-in yes
-  Objective text: Use the Wolf Totem at the location where you found Krun Spinebreaker's body and follow the Ancestral Spirit Wolf.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
-  Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
-  Routedata waypoint: When This Mine's a-Rockin';quest target§Bringt diese Mine zum Beben!;questgegner§Mineur, tu dors, ton wagon va (zone Hellfire Peninsula, areaId 3483, world -682/2693.900146484375)
-
-Quest 9539: Totem of Coo
-  level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
-  Objective text: Find the Totem of Coo using the clues provided to you.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
-
-Quest 9540: Totem of Tikti
-  level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
-  Objective text: Find the Totem of Tikti using the clues provided to you.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
-
-Quest 9541: Totem of Yor
-  level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
-  Objective text: Find the Totem of Yor using the clues provided to you.
-  Triage: NPCOBJ - propose creature objective, ids [22930] (NPC named in text, not the turn-in)
-  Wiki coords: none found
-  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
-
-Quest 9542: Totem of Vark
-  level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
-  Objective text: Find the Totem of Vark using the clues provided to you.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
-
-Quest 9550: A Map to Where?
-  level 16 (min 13); zone Bloodmyst Isle (3525); turn-in yes
-  Objective text: Locate the pavilion described by the map and search for what the map's maker was trying to record.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 9561: Nolkai's Words
-  level 16 (min 13); zone Bloodmyst Isle (3525); turn-in yes
-  Objective text: Find the location described in Nolkai's journal and discover his long-buried possessions.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
-Quest 9771: Searching for Scout Jyoba
-  level 62 (min 60); zone Zangarmarsh (3521); turn-in yes
-  Objective text: Search for Scout Jyoba.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-
 Quest 10039: Speak with Scout Neftis
   level 64 (min 61); zone Terokkar Forest (3519); turn-in yes
   Objective text: Locate and speak with Scout Neftis near the south entrance to Grangol'var Village in Terokkar Forest.
@@ -1005,21 +506,6 @@ Quest 10064: Talk to the Hand
   level 18 (min 16); zone Bloodmyst Isle (3525); turn-in yes
   Objective text: Report to Scout Jorli at Vindicator's Rest.
   Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
-  Wiki coords: none found
-
-Quest 10166: Whitebark's Memory
-  level 10 (min 7); zone Eversong Woods (3430); turn-in yes
-  Objective text: Larianna Riverwind wants you to place Old Whitebark's Pendant by the runestone at the Scorched Grove.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le (zone Eversong Woods, areaId 3430, world 8207/-6336.5)
-  Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8278.2001953125/-7211.80029296875)
-  Routedata waypoint: quest target;Runestone Falithas;Eversong Woods§questziel;Runenstein Falithas;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8229.6005859375/-6662.7001953125)
-
-Quest 10174: Curse of the Violet Tower
-  level 68 (min 67); zone Netherstorm (3523); turn-in yes
-  Objective text: Use Archmage Vargoth's Staff to make contact with Archmage Vargoth.
-  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10175: Thrall, Son of Durotan
@@ -1073,20 +559,6 @@ Quest 10599: The Deathforge
   Objective text: Report to Scout Zagran at Slag Watch.
   Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
-
-Quest 10819: Felsworn Gas Mask
-  level 68 (min 65); zone Blade's Edge Mountains (3522); turn-in yes
-  Objective text: Wear the Felsworn Gas Mask and use the Legion Communicator at Forge Camp: Anger.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
-
-Quest 10910: Death's Door
-  level 68 (min 65); zone Blade's Edge Mountains (3522); turn-in yes
-  Objective text: Wildlord Antelarion has implored you to travel to Death's Door. Once you arrive there, use the Druid Signal to call down an Evergrove Druid so that you can speak with them.
-  Triage: WEB - needs external coordinates
-  Wiki coords: none found
-  Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 10926: Return to Sha'tari Base Camp
   level 65 (min 65); zone Terokkar Forest (3519); turn-in yes

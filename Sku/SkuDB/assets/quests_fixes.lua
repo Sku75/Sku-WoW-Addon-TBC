@@ -1,4 +1,4 @@
---[[
+﻿--[[
 SkuDB.questDataTBC[7668] = {} -- Add missing quest index
 SkuDB.questDataTBC[7669] = {} -- Add missing quest index
 SkuDB.questDataTBC[7670] = {} -- Add missing quest index #1432
@@ -692,6 +692,8 @@ local SkuQuestFixes = {
     },
     [9410] = {
         [questKeys.extraObjectives] = {{nil, ICON_TYPE_EVENT, "Use the Wolf Totem at the location where you found Krun Spinebreaker's body and follow the Ancestral Spirit Wolf.", 0, {{"object", 181630}}}},
+        -- [v43.2] quest target: the corpse focus object (own spawn data, Hellfire 33.62,43.52)
+        [questKeys.objectives] = {nil,{{181630,nil}},nil,nil,nil},
     },
     [9417] = {
         [questKeys.preQuestSingle] = {},
@@ -1303,6 +1305,8 @@ local SkuQuestFixes = {
     },
     [10166] = {
         [questKeys.extraObjectives] = {{nil, ICON_TYPE_EVENT, "Place Old Whitebark's Pendant by the runestone at the Scorched Grove.", 0, {{"object", 181260}}}},
+        -- [v43.2] quest target: the runestone object (own spawn data, Eversong 37.53,86.34)
+        [questKeys.objectives] = {nil,{{181260,nil}},nil,nil,nil},
     },
     [10168] = {
         [questKeys.extraObjectives] = {{nil, ICON_TYPE_EVENT, "Use the Soul Mirror near Ancient Orc Ancestors to summon Darkened Spirits.", 0, {{"monster", 18688}}}},
@@ -4095,6 +4099,89 @@ local SkuQuestFixes = {
     [9733] = { [questKeys.finishedBy] = {{16888},nil} },  -- Warning the Cenarion Circle: Mahuram Stouthoof, Thrallmar
     [9734] = { [questKeys.finishedBy] = {{17841},nil} },  -- Return to the Marsh: Ysiel Windsinger, Cenarion Refuge
     [10871] = { [questKeys.finishedBy] = {{22113},nil} }, -- Ally of the Netherwing: Mordenai, Netherwing Fields
+
+    -- [v43.2] Quest targets for the field-objective quests from the
+    -- QUEST-TARGET-PROPOSALS.txt review (sections 1-3, user-approved).
+    -- Object/creature ids come from Sku's own spawn data; the triggerEnd
+    -- coordinates were researched on the web (warcraft.wiki.gg/wowhead) -
+    -- if one of those spots turns out wrong in game, a report is welcome.
+    [28] = { [questKeys.objectives] = {nil,{{177117,nil},{177122,nil},{177129,nil}},nil,nil,nil} }, -- Trial of the Lake: Shrine of Remulos
+    [29] = { [questKeys.objectives] = {nil,{{177117,nil},{177122,nil},{177129,nil}},nil,nil,nil} }, -- Trial of the Lake: Shrine of Remulos
+    [264] = { [questKeys.objectives] = {nil,{{24776,nil}},nil,nil,nil} }, -- Until Death Do Us Part: Yuriv's Tombstone
+    [280] = { [questKeys.objectives] = {nil,{{1585,nil}},nil,nil,nil} }, -- A Dark Threat Looms: Explosive Charge
+    [281] = { [questKeys.objectives] = {nil,{{261,nil}},nil,nil,nil} }, -- Reclaiming Goods: Damaged Crate
+    [321] = { [questKeys.objectives] = {nil,{{2734,nil}},nil,nil,nil} }, -- Lightforge Iron: Waterlogged Chest
+    [328] = { [questKeys.objectives] = {nil,{{288,nil}},nil,nil,nil} }, -- The Hidden Key: Bookie Herod's Strongbox
+    [524] = { [questKeys.objectives] = {nil,{{1728,nil}},nil,nil,nil} }, -- Elixir of Agony: Dusty Rug
+    [754] = { [questKeys.objectives] = {nil,{{2913,nil}},nil,nil,nil} }, -- Winterhoof Cleansing: Winterhoof Water Well
+    [760] = { [questKeys.objectives] = {nil,{{2909,nil}},nil,nil,nil} }, -- Wildmane Cleansing: Wildmane Water Pump
+    [894] = { [questKeys.objectives] = {nil,{{4141,nil}},nil,nil,nil} }, -- Samophlange: Control Console
+    [941] = { [questKeys.objectives] = {nil,{{7923,nil}},nil,nil,nil} }, -- Planting the Heart: Denalan's Planter
+    [2701] = { [questKeys.objectives] = {nil,{{141980,nil}},nil,nil,nil} }, -- Heroes of Old: Spectral Lockbox
+    [3447] = { [questKeys.objectives] = {nil,{{148832,nil},{148833,nil},{148834,nil}},nil,nil,nil} }, -- Secret of the Circle: Atal'ai Statue
+    [3912] = { [questKeys.objectives] = {nil,{{148504,nil}},nil,nil,nil} }, -- Meet at the Grave: A Conspicuous Gravestone
+    [4125] = { [questKeys.objectives] = {nil,{{164909,nil}},nil,nil,nil} }, -- The Missing Courier: Wrecked Row Boat
+    [4131] = { [questKeys.objectives] = {nil,{{164953,nil}},nil,nil,nil} }, -- The Woodpaw Gnolls: Large Leather Backpacks
+    [4285] = { [questKeys.objectives] = {nil,{{164955,nil}},nil,nil,nil} }, -- The Northern Pylon: Northern Crystal Pylon
+    [4287] = { [questKeys.objectives] = {nil,{{164957,nil}},nil,nil,nil} }, -- The Eastern Pylon: Eastern Crystal Pylon
+    [4288] = { [questKeys.objectives] = {nil,{{164956,nil}},nil,nil,nil} }, -- The Western Pylon: Western Crystal Pylon
+    [4451] = { [questKeys.objectives] = {nil,{{173265,nil}},nil,nil,nil} }, -- The Key to Freedom: Wooden Outhouse
+    [5084] = { [questKeys.objectives] = {nil,{{176091,nil}},nil,nil,nil} }, -- Falling to Corruption: Deadwood Cauldron
+    [5463] = { [questKeys.objectives] = {nil,{{176631,nil}},nil,nil,nil} }, -- Menethil's Gift: Menethil's Gift
+    [6001] = { [questKeys.objectives] = {nil,{{177525,nil}},nil,nil,nil} }, -- Body and Heart: Moonkin Stone
+    [6002] = { [questKeys.objectives] = {nil,{{177525,nil}},nil,nil,nil} }, -- Body and Heart: Moonkin Stone
+    [7843] = { [questKeys.objectives] = {nil,{{179912,nil}},nil,nil,nil} }, -- The Final Message to the Wildhammer: Aerie Peak Town Center
+    [10819] = { [questKeys.objectives] = {nil,{{185165,nil}},nil,nil,nil} }, -- Felsworn Gas Mask: Legion Communicator
+    [1030] = { [questKeys.objectives] = {{{3897,nil}},nil,nil,nil,nil} }, -- Raene's Cleansing: Krolg
+    [2844] = { [questKeys.objectives] = {{{7774,nil}},nil,nil,nil,nil} }, -- The Giant Guardian: Shay Leafrunner
+    [6061] = { [questKeys.objectives] = {{{2956,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Adult Plainstrider
+    [6062] = { [questKeys.objectives] = {{{3099,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Dire Mottled Boar
+    [6063] = { [questKeys.objectives] = {{{1998,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Webwood Lurker
+    [6064] = { [questKeys.objectives] = {{{1126,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Large Crag Boar
+    [6082] = { [questKeys.objectives] = {{{3126,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Armored Scorpid
+    [6083] = { [questKeys.objectives] = {{{3107,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Surf Crawler
+    [6084] = { [questKeys.objectives] = {{{1201,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Snow Leopard
+    [6085] = { [questKeys.objectives] = {{{1196,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Ice Claw Bear
+    [6087] = { [questKeys.objectives] = {{{2959,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Prairie Stalker
+    [6088] = { [questKeys.objectives] = {{{2970,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Swoop
+    [6101] = { [questKeys.objectives] = {{{2043,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Nightsaber Stalker
+    [6102] = { [questKeys.objectives] = {{{1996,nil}},nil,nil,nil,nil} }, -- Taming the Beast: Strigid Screecher
+    [6501] = { [questKeys.objectives] = {{{10929,nil}},nil,nil,nil,nil} }, -- The Dragon's Eye: Haleh
+    [7001] = { [questKeys.objectives] = {{{10981,nil}},nil,nil,nil,nil} }, -- Empty Stables: Frostwolf
+    [7027] = { [questKeys.objectives] = {{{10990,nil}},nil,nil,nil,nil} }, -- Empty Stables: Alterac Ram
+    [8447] = { [questKeys.objectives] = {{{11832,nil}},nil,nil,nil,nil} }, -- Waking Legends: Keeper Remulos
+    [9539] = { [questKeys.objectives] = {{{17361,nil}},nil,nil,nil,nil} }, -- Totem of Coo: Totem of Coo
+    [9540] = { [questKeys.objectives] = {{{17362,nil}},nil,nil,nil,nil} }, -- Totem of Tikti: Totem of Tikti
+    [9541] = { [questKeys.objectives] = {{{17363,nil}},nil,nil,nil,nil} }, -- Totem of Yor: Totem of Yor
+    [9542] = { [questKeys.objectives] = {{{17364,nil}},nil,nil,nil,nil} }, -- Totem of Vark: Totem of Vark
+    [9771] = { [questKeys.objectives] = {{{18035,nil}},nil,nil,nil,nil} }, -- Searching for Scout Jyoba: Scout Jyoba
+    [10964] = { [questKeys.objectives] = {{{22834,nil}},nil,nil,nil,nil} }, -- Waking the Sleeper: Clintar Dreamwalker
+    [45] = { [questKeys.triggerEnd] = {"Search the murloc village for Rolf", {[12]={{79.0,55.0}}}} }, -- Discover Rolf's Fate (Elwynn Forest, high confidence)
+    [139] = { [questKeys.triggerEnd] = {"Search the empty jug next to the windmill", {[40]={{40.7,17.1}}}} }, -- Captain Sander's Hidden Treasure (Westfall, high confidence)
+    [250] = { [questKeys.triggerEnd] = {"Investigate near the eastern dam ramp", {[38]={{56.1,13.2}}}} }, -- A Dark Threat Looms (Loch Modan, high confidence)
+    [465] = { [questKeys.triggerEnd] = {"Destroy the Dragonmaw catapults", {[11]={{47.5,46.9}}}} }, -- Nek'rosh's Gambit (Wetlands, medium confidence)
+    [758] = { [questKeys.triggerEnd] = {"Use the totem at the Thunderhorn Water Well", {[215]={{44.0,46.0}}}} }, -- Thunderhorn Cleansing (Mulgore, high confidence)
+    [1517] = { [questKeys.triggerEnd] = {"Drink the Earth Sapta at Spirit Rock", {[14]={{44.0,76.0}}}} }, -- Call of Earth (Durotar, medium confidence)
+    [1520] = { [questKeys.triggerEnd] = {"Drink the Earth Sapta at Kodo Rock", {[215]={{54.0,80.0}}}} }, -- Call of Earth (Mulgore, high confidence)
+    [2932] = { [questKeys.triggerEnd] = {"Place the pike at a Witherbark village", {[47]={{31.5,58.0},{22.8,57.0}}}} }, -- Grim Message (The Hinterlands, medium confidence)
+    [2969] = { [questKeys.triggerEnd] = {"The Sprite Darter pen behind the Grimtotem camp", {[357]={{65.5,47.4}}}} }, -- Freedom for All Creatures (Feralas, medium confidence)
+    [4506] = { [questKeys.triggerEnd] = {"The corrupted moonwell in the Ruins of Constellas", {[361]={{32.32,66.56}}}} }, -- Corrupted Sabers (Felwood, high confidence)
+    [4734] = { [questKeys.triggerEnd] = {"Blackrock Mountain entrance (Rookery is inside UBRS)", {[51]={{35.4,84.7}}}} }, -- Egg Freezing (Searing Gorge, medium confidence)
+    [5202] = { [questKeys.triggerEnd] = {"Jaedenar entrance (the cell is inside Shadow Hold)", {[361]={{37.0,58.0}}}} }, -- A Strange Red Key (Felwood, medium confidence)
+    [5265] = { [questKeys.triggerEnd] = {"The Argent Hold chest at Light's Hope", {[139]={{76.0,52.0}}}} }, -- The Argent Hold (Eastern Plaguelands, high confidence)
+    [5902] = { [questKeys.triggerEnd] = {"Place the barrel at the Northridge Lumber Mill crate", {[28]={{48.4,31.9}}}} }, -- A Plague Upon Thee (Western Plaguelands, high confidence)
+    [5904] = { [questKeys.triggerEnd] = {"Place the barrel at the Northridge Lumber Mill crate", {[28]={{48.4,31.9}}}} }, -- A Plague Upon Thee (Western Plaguelands, high confidence)
+    [6389] = { [questKeys.triggerEnd] = {"Release the termites at the Northridge Lumber Mill", {[28]={{48.4,31.9}}}} }, -- A Plague Upon Thee (Western Plaguelands, high confidence)
+    [6390] = { [questKeys.triggerEnd] = {"Release the termites at the Northridge Lumber Mill", {[28]={{48.4,31.9}}}} }, -- A Plague Upon Thee (Western Plaguelands, high confidence)
+    [8305] = { [questKeys.triggerEnd] = {"The Crystalline Tear before the Scarab Wall", {[1377]={{28.7,89.1}}}} }, -- Long Forgotten Memories (Silithus, high confidence)
+    [8929] = { [questKeys.triggerEnd] = {"Use the Ghost Revealer outside the Stratholme gate", {[139]={{27.0,12.0}}}} }, -- In Search of Anthion (Eastern Plaguelands, medium confidence)
+    [8930] = { [questKeys.triggerEnd] = {"Use the Ghost Revealer outside the Stratholme gate", {[139]={{27.0,12.0}}}} }, -- In Search of Anthion (Eastern Plaguelands, medium confidence)
+    [8960] = { [questKeys.triggerEnd] = {"Blackrock Mountain entrance (Bodley's ghost is inside)", {[51]={{35.4,84.7}}}} }, -- Bodley's Unfortunate Fate (Searing Gorge, medium confidence)
+    [9032] = { [questKeys.triggerEnd] = {"Blackrock Mountain entrance (Bodley's ghost is inside)", {[51]={{35.4,84.7}}}} }, -- Bodley's Unfortunate Fate (Searing Gorge, medium confidence)
+    [9550] = { [questKeys.triggerEnd] = {"The ruined pavilion north of the Ruins of Loreth'Aran", {[3525]={{61.2,41.9}}}} }, -- A Map to Where? (Bloodmyst Isle, high confidence)
+    [9561] = { [questKeys.triggerEnd] = {"The Mound of Dirt in the Ruins of Loreth'Aran", {[3525]={{60.9,49.6}}}} }, -- Nolkai's Words (Bloodmyst Isle, high confidence)
+    [10174] = { [questKeys.triggerEnd] = {"Use the staff at the Violet Tower, Kirin'Var", {[3523]={{57.6,86.2}}}} }, -- Curse of the Violet Tower (Netherstorm, medium confidence)
+    [10910] = { [questKeys.triggerEnd] = {"Death's Door; use the Druid Signal", {[3522]={{64.0,64.0}}}} }, -- Death's Door (Blade's Edge Mountains, medium confidence)
 }
 
 local SkuQuestFixesHorde = {

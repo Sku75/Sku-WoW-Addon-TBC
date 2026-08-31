@@ -65,6 +65,7 @@ Changements dans Sku v43.2
             Base de données des quêtes : juste après un /reload, des quêtes d'événements mondiaux inactifs (par exemple les quêtes du Solstice d'été) pouvaient apparaître dans « Commence dans la zone ».
             Treize quêtes de dialogue (dont les anciennes quêtes de sorts de prêtre) n'avaient aucun point de remise dans les données - l'entrée Livraison mène désormais au PNJ que nomme le texte de la quête.
             Menu de quête : environ 300 quêtes dont le donneur, la cible ou la remise se trouve dans un donjon affichaient des entrées vides - elles mènent désormais à l'entrée du donjon.
+            77 quêtes à objectif de terrain (explorer X, utiliser Y à l'endroit Z) sans aucune donnée ont désormais une vraie cible de quête - certains lieux proviennent de sources web : les retours sur leur exactitude sont bienvenus.
 
     Nage et vol : le verrouillage de l'inclinaison met fin à la plongée involontaire
         Simple : En nageant ou en volant, chaque virage automatique vers la balise tirait un peu
@@ -789,6 +790,28 @@ Changements dans Sku v43.2
             les coordonnées de l'entrée en coordonnées du monde, prendre le point de
             passage de route le plus proche. Mémoïsé par génération du cache de points de
             passage ; le filtre de faction lit UnitFactionGroup.
+
+    77 quêtes à objectif de terrain ont désormais une vraie cible
+        Simple : 77 quêtes dont l'objectif est un lieu ou un objet sur le terrain (les
+            puits de Mulgore, la pierre de sélénien des druides, les pylônes de cristal
+            du cratère d'Un'Goro, la dépouille de Rolf, les quatre totems draeneï, la
+            série Dressage de bêtes des chasseurs et bien d'autres) n'avaient aucune
+            donnée de cible - l'entrée « Cible de quête » manquait tout simplement.
+            Toutes ont désormais une vraie cible routable. Important : les objets et
+            créatures viennent des données d'apparition propres de Sku, mais 26 lieux
+            proviennent de sources web (warcraft.wiki.gg, Wowhead) et n'ont pas tous pu
+            être vérifiés en jeu. Ils ont été choisis avec soin mais peuvent être
+            inexacts dans certains cas - un retour indiquant si une telle cible est
+            juste ou non aide beaucoup. Même un point imprécis vaut mieux que rien : la
+            route mène dans la bonne région.
+        Technique : Résultat de la liste de relecture
+            dev/rework-docs/QUEST-TARGET-PROPOSALS.txt (sections 1-3, relue à la main) :
+            27 cibles objet et 24 cibles créature comme entrées objectives dans
+            quests_fixes.lua (identifiants validés contre les bases propres, zones
+            d'apparition vérifiées, aucune position -1,-1 en extérieur) plus 26
+            coordonnées triggerEnd issues de la recherche web. Deux quêtes (9410, 10166)
+            portaient déjà le bon identifiant d'objet dans extraObjectives, que les
+            menus de cible ne lisent pas - le champ objectives y a été ajouté.
 
     Treize quêtes de dialogue ont retrouvé leur point de remise
         Simple : Treize quêtes - surtout les anciennes quêtes de sorts de prêtre (Étoiles
