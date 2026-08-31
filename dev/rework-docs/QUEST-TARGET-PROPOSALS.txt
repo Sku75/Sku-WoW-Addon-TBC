@@ -5,7 +5,7 @@ Object/creature proposals use OUR OWN spawn data (exact positions);
 triggerEnd proposals use web map-percent coordinates.
 
 ======================================================================
-SECTION 1: OBJECT OBJECTIVES (25 quests)
+SECTION 1: OBJECT OBJECTIVES (27 quests)
 Fix form: [questKeys.objectives] = {nil,{{id,nil}},nil,nil,nil}
 ======================================================================
 
@@ -61,6 +61,10 @@ Quest 2701: Heroes of Old
   object Spectral Lockbox = [141980]; spawns in ['Swamp of Sorrows']
   evidence: web agent via SkuDB + web 33.5,66 Swamp of Sorrows
 
+Quest 3447: Secret of the Circle
+  object Atal'ai Statue = [148832, 148833, 148834]; spawns in ["The Temple of Atal'Hakkar"]
+  evidence: local; statue circle in the Sunken Temple - entrance fallback routes to the Pool of Tears
+
 Quest 3912: Meet at the Grave
   object A Conspicuous Gravestone = [148504]; spawns in ['Tanaris']
   evidence: web agent via SkuDB; Gadgetzan graveyard
@@ -93,6 +97,10 @@ Quest 5084: Falling to Corruption
   object Deadwood Cauldron = [176091]; spawns in ['Felwood']
   evidence: web agent via SkuDB; Felpaw Village
 
+Quest 5463: Menethil's Gift
+  object Menethil's Gift = [176631]; spawns in ['Stratholme']
+  evidence: local; spawns in Stratholme - the entrance fallback routes to the gate
+
 Quest 6001: Body and Heart
   object Moonkin Stone = [177525]; spawns in ['Darkshore', 'The Barrens']
   evidence: local; spawns Darkshore+Barrens cover both variants
@@ -110,7 +118,7 @@ Quest 10819: Felsworn Gas Mask
   evidence: local name match, Blade's Edge
 
 ======================================================================
-SECTION 2: CREATURE OBJECTIVES (22 quests)
+SECTION 2: CREATURE OBJECTIVES (24 quests)
 Fix form: [questKeys.objectives] = {{{id,nil}},nil,nil,nil,nil}
 ======================================================================
 
@@ -174,6 +182,14 @@ Quest 6501: The Dragon's Eye
   creature Haleh = [10929]; spawns in ['Winterspring']
   evidence: local; Winterspring; NOTE reachable only via teleport runes at the bottom of Mazthoril
 
+Quest 7001: Empty Stables
+  creature Frostwolf = [10981]; spawns in ['Alterac Valley']
+  evidence: local; spawns in Alterac Valley - the entrance fallback routes to the faction entrance
+
+Quest 7027: Empty Stables
+  creature Alterac Ram = [10990]; spawns in ['Alterac Valley']
+  evidence: local; spawns in Alterac Valley - the entrance fallback routes to the faction entrance
+
 Quest 8447: Waking Legends
   creature Keeper Remulos = [11832]; spawns in ['Moonglade']
   evidence: local; Moonglade; event runs at his shrine
@@ -203,7 +219,7 @@ Quest 10964: Waking the Sleeper
   evidence: local; Moonglade
 
 ======================================================================
-SECTION 3: TRIGGEREND COORDINATES (30 quests)
+SECTION 3: TRIGGEREND COORDINATES (28 quests)
 Fix form: [questKeys.triggerEnd] = {"text", {[zoneID]={{x,y},...}}}
 ======================================================================
 
@@ -242,11 +258,6 @@ Quest 1520: Call of Earth
   text: Drink the Earth Sapta at Kodo Rock
   evidence: wiki.gg; east of Camp Narache
 
-Quest 2278: The Platinum Discs
-  Badlands (3) [(42.6, 12.2)] - confidence medium
-  text: Uldaman entrance (discs at the end of the instance)
-  evidence: dungeon guides
-
 Quest 2932: Grim Message
   The Hinterlands (47) [(31.5, 58.0), (22.8, 57.0)] - confidence medium
   text: Place the pike at a Witherbark village
@@ -256,16 +267,6 @@ Quest 2969: Freedom for All Creatures
   Feralas (357) [(65.5, 47.4)] - confidence medium
   text: The Sprite Darter pen behind the Grimtotem camp
   evidence: spawn clusters + guide; hidden cliff path
-
-Quest 3373: The Essence of Eranikus
-  Swamp of Sorrows (8) [(69.0, 53.0)] - confidence medium
-  text: Sunken Temple entrance (Essence Font is inside)
-  evidence: instance-interior objective; Pool of Tears
-
-Quest 3447: Secret of the Circle
-  Swamp of Sorrows (8) [(69.0, 53.0)] - confidence medium
-  text: Sunken Temple entrance (statue circle is inside)
-  evidence: Pool of Tears, underwater portal
 
 Quest 4506: Corrupted Sabers
   Felwood (361) [(32.32, 66.56)] - confidence high
@@ -286,11 +287,6 @@ Quest 5265: The Argent Hold
   Eastern Plaguelands (139) [(76.0, 52.0)] - confidence high
   text: The Argent Hold chest at Light's Hope
   evidence: wiki.gg [76, 52]
-
-Quest 5463: Menethil's Gift
-  Eastern Plaguelands (139) [(27.0, 12.0)] - confidence medium
-  text: Stratholme entrance (the Gift is inside)
-  evidence: instance-interior objective
 
 Quest 5902: A Plague Upon Thee
   Western Plaguelands (28) [(48.4, 31.9)] - confidence high
@@ -327,6 +323,16 @@ Quest 8930: In Search of Anthion
   text: Use the Ghost Revealer outside the Stratholme gate
   evidence: same as 8929
 
+Quest 8960: Bodley's Unfortunate Fate
+  Searing Gorge (51) [(35.4, 84.7)] - confidence medium
+  text: Blackrock Mountain entrance (Bodley's ghost is inside)
+  evidence: creature 16033 has no spawn data; entrance stand-in
+
+Quest 9032: Bodley's Unfortunate Fate
+  Searing Gorge (51) [(35.4, 84.7)] - confidence medium
+  text: Blackrock Mountain entrance (Bodley's ghost is inside)
+  evidence: same as 8960
+
 Quest 9410: A Spirit Guide
   Hellfire Peninsula (3483) [(33.0, 43.0)] - confidence high
   text: Krun Spinebreaker's body; use the Wolf Totem
@@ -358,21 +364,12 @@ Quest 10910: Death's Door
   evidence: wiki.gg; via tunnel south of Mok'Nathal
 
 ======================================================================
-SECTION 4: PARKED / OPEN (5 quests)
+SECTION 4: PARKED / OPEN (2 quests)
 ======================================================================
-
-Quest 7001: Empty Stables
-  Frostwolf taming: AV zone 2597 missing from InternalAreaTable - fix the maps gap first
-
-Quest 7027: Empty Stables
-  Alterac Ram taming: same AV zone gap
-
-Quest 8960: Bodley's Unfortunate Fate
-  Bodley: inside Blackrock Mountain, no open-world zone map for waypoints
-
-Quest 9032: Bodley's Unfortunate Fate
-  Bodley: same as 8960
 
 Quest 3481: Trinkets...
   Searing Gorge chest: no source named the object or coords
+
+Quest 2278: The Platinum Discs
+  NO FIX NEEDED anymore: giver/turn-in stone watcher sits in Uldaman - the instance-entrance fallback routes Annahme/Abgabe to the gate
 

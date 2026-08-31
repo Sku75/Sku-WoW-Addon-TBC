@@ -17,257 +17,308 @@ B: CLASS QUESTS WITH A FIELD OBJECTIVE (turn-in exists, but the field step is un
 Quest 28: Trial of the Lake
   class Druid; level -1 (min 16); turn-in yes
   Objective text: Find a Shrine Bauble in Lake Elune'ara, and take it to the Shrine of Remulos in northwestern Moonglade. Once there, use the Shrine Bauble.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 29: Trial of the Lake
   class Druid; level -1 (min 16); turn-in yes
   Objective text: Find a Shrine Bauble in Lake Elune'ara, and take it to the Shrine of Remulos in northwestern Moonglade. Once there, use the Shrine Bauble.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 1517: Call of Earth
   class Shaman; level 4 (min 4); turn-in yes
   Objective text: Find Spirit Rock and drink the Earth Sapta.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 1520: Call of Earth
   class Shaman; level 4 (min 4); turn-in yes
   Objective text: Find Kodo Rock and drink the Earth Sapta.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 1643: The Tome of Divinity
   class Paladin; level -1 (min 12); turn-in yes
   Objective text: Search the Trade District of Stormwind for Stephanie Turner.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 1647: The Tome of Divinity
   class Paladin; level -1 (min 12); turn-in yes
   Objective text: Search the outer ring of Ironforge for John Turner.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 2281: Redridge Rendezvous
   class Rogue; level 16 (min 16); turn-in yes
   Objective text: Venture forth to Lakeshire in the Redridge Mountains and speak with Lucius.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
   Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 2383: Simple Parchment
   class Warrior; level 1 (min 1); turn-in yes
   Objective text: Read the Simple Parchment and speak to Frang in the Valley of Trials.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 2458: Deep Cover
   class Rogue; level -1 (min 20); turn-in yes
   Objective text: Travel to the Venture Co. Tower, north of the Sludge Fen and contact the Shattered Hand's covert operative, Taskmaster Fizzule.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 2460: The Shattered Salute
   class Rogue; level -1 (min 20); turn-in yes
   Objective text: Perform the Shattered Salute on Shenthul.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3065: Simple Tablet
   class Warrior; level 1 (min 1); turn-in yes
   Objective text: Read the Simple Tablet and speak to Frang in the Valley of Trials.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3083: Encrypted Tablet
   class Rogue; level 1 (min 1); turn-in yes
   Objective text: Read the Encrypted Tablet and speak to Rwag in the Valley of Trials.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3085: Hallowed Tablet
   class Priest; level 1 (min 1); turn-in yes
   Objective text: Read the Hallowed Tablet and speak to Ken'jai outside the Den in the Valley of Trials.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3086: Glyphic Tablet
   class Mage; level 1 (min 1); turn-in yes
   Objective text: Read the Glyphic Tablet and speak with Mai'ah near the entrance to the Den in the Valley of Trials.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3087: Etched Parchment
   class Hunter; level 1 (min 1); turn-in yes
   Objective text: Read the Etched Parchment and speak to Jen'shan in the Valley of Trials.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3088: Encrypted Parchment
   class Rogue; level 1 (min 1); turn-in yes
   Objective text: Read the Encrypted Parchment and speak to Rwag in the Valley of Trials.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3089: Rune-Inscribed Parchment
   class Shaman; level 1 (min 1); turn-in yes
   Objective text: Read the Rune-Inscribed Parchment and speak to Shikrik in the Valley of Trials.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3090: Tainted Parchment
   class Warlock; level 1 (min 1); turn-in yes
   Objective text: Read the Tainted Parchment and speak to Nartok inside the Den in the Valley of Trials.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3091: Simple Note
   class Warrior; level 1 (min 1); turn-in yes
   Objective text: Read the Simple Note and speak to Harutt Thunderhorn in Camp Narache.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3092: Etched Note
   class Hunter; level 1 (min 1); turn-in yes
   Objective text: Read the Etched Note and speak to Lanka Farshot in Red Cloud Mesa.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3093: Rune-Inscribed Note
   class Shaman; level 1 (min 1); turn-in yes
   Objective text: Read the Rune-Inscribed Note and speak to Meela Dawnstrider in Camp Narache.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3094: Verdant Note
   class Druid; level 1 (min 1); turn-in yes
   Objective text: Read the Verdant Note and speak to Gart Mistrunner in Camp Narache.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3095: Simple Scroll
   class Warrior; level 1 (min 1); turn-in yes
   Objective text: Read the Simple Scroll and speak to Dannal Stern in Deathknell.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3096: Encrypted Scroll
   class Rogue; level 1 (min 1); turn-in yes
   Objective text: Read the Encrypted Scroll and speak to David Trias in Deathknell.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3097: Hallowed Scroll
   class Priest; level 1 (min 1); turn-in yes
   Objective text: Read the Hallowed Scroll and speak to Dark Cleric Duesten in the church in Deathknell.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3098: Glyphic Scroll
   class Mage; level 1 (min 1); turn-in yes
   Objective text: Read the Glyphic Scroll and speak to Isabella in the church in Deathknell.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3099: Tainted Scroll
   class Warlock; level 1 (min 1); turn-in yes
   Objective text: Read the Tainted Scroll and speak to Maximillion in Deathknell.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3100: Simple Letter
   class Warrior; level 1 (min 1); turn-in yes
   Objective text: Read the Simple Letter and speak to Llane Beshere in Northshire Abbey.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3101: Consecrated Letter
   class Paladin; level 1 (min 1); turn-in yes
   Objective text: Read the Consecrated Letter and speak to Brother Sammuel in Northshire Abbey.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3102: Encrypted Letter
   class Rogue; level 1 (min 1); turn-in yes
   Objective text: Read the Encrypted Letter and speak to Jorik Kerridan in the stable behind Northshire Abbey.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3103: Hallowed Letter
   class Priest; level 1 (min 1); turn-in yes
   Objective text: Read the Hallowed Letter and speak to Priestess Anetta in Northshire Abbey.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3104: Glyphic Letter
   class Mage; level 1 (min 1); turn-in yes
   Objective text: Read the Glyphic Letter and speak to Khelden Bremen inside Northshire Abbey.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3105: Tainted Letter
   class Warlock; level 1 (min 1); turn-in yes
   Objective text: Read the Tainted Letter and speak to Drusilla La Salle next to Northshire Abbey.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3106: Simple Rune
   class Warrior; level 1 (min 1); turn-in yes
   Objective text: Read the Simple Rune and speak to Thran Khorman in Coldridge Valley.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3107: Consecrated Rune
   class Paladin; level 1 (min 1); turn-in yes
   Objective text: Read the Consecrated Rune and speak to Bromos Grummner in Coldridge Valley.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3108: Etched Rune
   class Hunter; level 1 (min 1); turn-in yes
   Objective text: Read the Etched Rune and speak to Thorgas Grimson in Coldridge Valley.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3109: Encrypted Rune
   class Rogue; level 1 (min 1); turn-in yes
   Objective text: Read the Encrypted Rune and speak to Solm Hargrin in Coldridge Valley.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3110: Hallowed Rune
   class Priest; level 1 (min 1); turn-in yes
   Objective text: Read the Hallowed Rune and speak to Branstock Khalder in Anvilmar.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3112: Simple Memorandum
   class Warrior; level 1 (min 1); turn-in yes
   Objective text: Read the Simple Memorandum and speak to Thran Khorman in Coldridge Valley.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3113: Encrypted Memorandum
   class Rogue; level 1 (min 1); turn-in yes
   Objective text: Read the Encrypted Memorandum and speak to Solm Hargrin in Coldridge Valley.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3114: Glyphic Memorandum
   class Mage; level 1 (min 1); turn-in yes
   Objective text: Read the Glyphic Memorandum and speak to Marryk Nurribit inside Anvilmar above Coldridge Valley.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3115: Tainted Memorandum
   class Warlock; level 1 (min 1); turn-in yes
   Objective text: Read the Tainted Memorandum and speak to Alamar Grimm inside Anvilmar above Coldridge Valley.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3116: Simple Sigil
   class Warrior; level 1 (min 1); turn-in yes
   Objective text: Read the Simple Sigil and speak to Alyissia in Shadowglen.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3117: Etched Sigil
   class Hunter; level 1 (min 1); turn-in yes
   Objective text: Read the Etched Sigil and speak to Ayanna Everstride at the top of Aldrassil in Shadowglen.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3118: Encrypted Sigil
   class Rogue; level 1 (min 1); turn-in yes
   Objective text: Read the Encrypted Sigil and speak to Frahun Shadewhisper in Shadowglen.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3119: Hallowed Sigil
   class Priest; level 1 (min 1); turn-in yes
   Objective text: Read the Hallowed Sigil and speak to Shanda in Aldrassil.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3120: Verdant Sigil
   class Druid; level 1 (min 1); turn-in yes
   Objective text: Read the Verdant Sigil and speak to Mardant Strongoak, in the tree Aldrassil in Shadowglen.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 5921: Moonglade
   class Druid; level -1 (min 10); turn-in yes
   Objective text: Use the spell \Teleport: Moonglade\ to travel to Moonglade. When you arrive, speak with Dendrite Starblaze in the village of Nighthaven.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 5922: Moonglade
   class Druid; level -1 (min 10); turn-in yes
   Objective text: Use the spell \Teleport: Moonglade\ to travel to Moonglade. When you arrive, speak with Dendrite Starblaze in the village of Nighthaven.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6001: Body and Heart
   class Druid; level -1 (min 10); turn-in yes
   Objective text: Use the Cenarion Moondust on the Moonkin Stone of Auberdine to bring forth Lunaclaw. From there, you must face Lunaclaw and earn the strength of body and heart it possesses.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6002: Body and Heart
   class Druid; level -1 (min 10); turn-in yes
   Objective text: Use the Cenarion Lunardust on the Moonkin Stone between Mulgore and the Barrens to bring forth Lunaclaw. From there, you must face Lunaclaw and earn the strength of body and heart it possesses.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;druid;Southern Barrens;The Barrens§questziel;druide;Südliches Brachland;Brachland§objectif de quê (zone The Barrens, areaId 17, world -2500.800048828125/-1632.599975585938)
   Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;nordwestlich;Brachland (zone The Barrens, areaId 17, world 89.70000457763672/-1944.400024414063)
@@ -276,66 +327,79 @@ Quest 6002: Body and Heart
 Quest 6061: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame an Adult Plainstrider. Practice your skills, then return the Taming Rod to Yaw Sharpmane in Bloodhoof Village.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6062: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame a Dire Mottled Boar. Practice your skills, then return the Taming Rod to Thotar in Razor Hill.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6063: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame a Webwood Lurker. Practice your skills, then return the Taming Rod to Dazalar in Dolanaar.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6064: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame a Large Crag Boar. Practice your skills, then return the Taming Rod to Grif Wildheart in Kharanos.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6082: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame an Armored Scorpid. Practice your skills, then return to Thotar at Razor Hill.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6083: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame a Surf Crawler. Practice your skills, then return the Taming Rod to Thotar at Razor Hill.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6084: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame a Snow Leopard. Practice your skills, then return to Grif Wildheart in Kharanos.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6085: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame an Ice Claw Bear. Practice your skills, then return the Taming Rod to Grif Wildheart in Kharanos.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6087: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame a Prairie Stalker. Practice your skills, then return the Taming Rod to Yaw Sharpmane in Bloodhoof Village.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6088: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame a Swoop. Practice your skills, then return the Taming Rod to Yaw Sharpmane in Bloodhoof Village.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6101: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame a Nightsaber Stalker. Practice your skills, then return the Taming Rod to Dazalar in Dolanaar.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6102: Taming the Beast
   class Hunter; level -1 (min 10); turn-in yes
   Objective text: Use the Taming Rod to tame a Strigid Screecher. Practice your skills, then return the Taming Rod to Dazalar in Dolanaar.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10964: Waking the Sleeper
   class Druid; level -1 (min 70); turn-in yes
   Objective text: Use the Ward of Waking to help Clintar Dreamwalker emerge from the Emerald Dream. When he is conscious, speak to him.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 ======================================================================
@@ -345,26 +409,31 @@ C: OTHER QUESTS WITH A FIELD OBJECTIVE (turn-in exists, but the field step is un
 Quest 45: Discover Rolf's Fate
   level 10 (min 7); zone Elwynn Forest (12); turn-in yes
   Objective text: Search the murloc village for Rolf, or signs of his death.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 139: Captain Sander's Hidden Treasure
   level 16 (min 14); zone Westfall (40); turn-in yes
   Objective text: Search the empty jug next to the windmill for the next clue.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 250: A Dark Threat Looms
   level 18 (min 16); zone Loch Modan (38); turn-in yes
   Objective text: Investigate the area near the eastern ramp of the Dam and bring Chief Engineer Hinderweir a clue that might reveal what the Dark Iron Dwarves are up to.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 264: Until Death Do Us Part
   level 15 (min 12); zone Thunder Bluff (1638); turn-in yes
   Objective text: Place Clarice's Pendant on Yuriv's Tomb in Silverpine.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 266: Inquire at the Inn
   level 25 (min 20); zone Duskwood (10); turn-in yes
   Objective text: Search the inn for clues about the shadowy figure.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif de quête;The Yorgen (zone Duskwood, areaId 10, world -11117.5/-511.3999938964844)
   Routedata waypoint: quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de quête;Vul'Gol Ogre  (zone Duskwood, areaId 10, world -11090.1005859375/-69.80000305175781)
@@ -373,11 +442,13 @@ Quest 266: Inquire at the Inn
 Quest 280: A Dark Threat Looms
   level 18 (min 16); zone Loch Modan (38); turn-in yes
   Objective text: Chief Engineer Hinderweir wants you to swim down to the base of the dam, locate the powder keg and stir in the Disarming Mixture to prevent an explosion.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 281: Reclaiming Goods
   level 25 (min 20); zone Wetlands (11); turn-in yes
   Objective text: Search the crates and barrels at the coastal Murloc camps.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sumpfland§objectif de q (zone Wetlands, areaId 11, world -3552.699951171875/-1721.200073242188)
   Routedata waypoint: quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;Viaduc de Thandol;Les (zone Thandol Span, areaId 330, world -2367.10009765625/-2509)
@@ -385,6 +456,7 @@ Quest 281: Reclaiming Goods
 Quest 293: Cleansing the Eye
   level 30 (min 22); zone Wetlands (11); turn-in yes
   Objective text: Bring Archbishop Benedictus the Cursed Eye of Paleth. Benedictus is in the Cathedral of Light, in the city of Stormwind.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sumpfland§objectif de q (zone Wetlands, areaId 11, world -3552.699951171875/-1721.200073242188)
   Routedata waypoint: quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;Viaduc de Thandol;Les (zone Thandol Span, areaId 330, world -2367.10009765625/-2509)
@@ -392,6 +464,7 @@ Quest 293: Cleansing the Eye
 Quest 321: Lightforge Iron
   level 29 (min 20); zone Duskwood (10); turn-in yes
   Objective text: Search the wreckage of The Flying Osprey in the Wetlands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif de quête;The Yorgen (zone Duskwood, areaId 10, world -11117.5/-511.3999938964844)
   Routedata waypoint: quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de quête;Vul'Gol Ogre  (zone Duskwood, areaId 10, world -11090.1005859375/-69.80000305175781)
@@ -400,12 +473,14 @@ Quest 321: Lightforge Iron
 Quest 328: The Hidden Key
   level 37 (min 30); zone Stranglethorn Vale (33); turn-in yes
   Objective text: Use the Small Brass Key to open Bookie Herod's Strongbox.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Yojamba Isle;Stranglethorn Vale§questziel;Die Insel Yojamba;Schlingendorntal§objectif de quête;Il (zone Stranglethorn Vale, areaId 33, world -11811/1365.400024414063)
 
 Quest 465: Nek'rosh's Gambit
   level 26 (min 23); zone Wetlands (11); turn-in yes
   Objective text: Destroy the Dragonmaw catapults.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Whelgar's Excavation Site;Wetlands§questgegner;Whelgars Ausgrabungsstätte;Sumpfland§objectif de q (zone Wetlands, areaId 11, world -3552.699951171875/-1721.200073242188)
   Routedata waypoint: quest target;Thandol Span;Wetlands§questziel;Thandolübergang;Sumpfland§objectif de quête;Viaduc de Thandol;Les (zone Thandol Span, areaId 330, world -2367.10009765625/-2509)
@@ -413,40 +488,47 @@ Quest 465: Nek'rosh's Gambit
 Quest 492: A New Plague
   level 11 (min 6); zone Tirisfal Glades (85); turn-in yes
   Objective text: Bring Johaan's Special Drink to the Captured Mountaineer.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 524: Elixir of Agony
   level 30 (min 24); zone Hillsbrad Foothills (267); turn-in yes
   Objective text: Place the Tainted Keg on the rug for the captured farmers.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 751: The Ravaged Caravan
   level 8 (min 5); zone Mulgore (215); turn-in yes
   Objective text: Return the Venture Co. Documents to Morin Cloudstalker near Bloodhoof Village.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
   Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
 
 Quest 754: Winterhoof Cleansing
   level 6 (min 4); zone Mulgore (215); turn-in yes
   Objective text: Use the Winterhoof Cleansing Totem at the Winterhoof Water Well, then return to Mull Thunderhorn.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
 
 Quest 758: Thunderhorn Cleansing
   level 8 (min 5); zone Mulgore (215); turn-in yes
   Objective text: Use the Thunderhorn Cleansing Totem at the Thunderhorn Water Well, then return to Mull.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
 
 Quest 760: Wildmane Cleansing
   level 10 (min 7); zone Mulgore (215); turn-in yes
   Objective text: Use the Wildmane Cleansing Totem at the Wildmane Water Well, then return to Mull Thunderhorn.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Blacksmith;Bael'dun Digsite;Mulgore§questziel;schmiede;Grabungsstätte von Bael'dun;Mulgore§object (zone Mulgore, areaId 215, world -1983.400024414063/441.6000061035156)
 
 Quest 894: Samophlange
   level 14 (min 10); zone The Barrens (17); turn-in yes
   Objective text: Access the control console at the Venture Company research site.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;nordwestlich;Brachland (zone The Barrens, areaId 17, world 89.70000457763672/-1944.400024414063)
   Routedata waypoint: quest target;druid;Southern Barrens;The Barrens§questziel;druide;Südliches Brachland;Brachland§objectif de quê (zone The Barrens, areaId 17, world -2500.800048828125/-1632.599975585938)
@@ -455,6 +537,7 @@ Quest 894: Samophlange
 Quest 941: Planting the Heart
   level 12 (min 9); zone Teldrassil (141); turn-in yes
   Objective text: Plant the Tainted Heart in Denalan's Planter.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: Grell;quest target;Shadowglen;Teldrassil§Grell;questgegner;Laubschattental;Teldrassil§Grell;objectif de quête; (zone Teldrassil, areaId 141, world 10303.2998046875/946.5)
   Routedata waypoint: well;quest target;Shadowglen;Teldrassil§brunnen;questziel;Laubschattental;Teldrassil§well;objectif de quête;Sh (zone Teldrassil, areaId 141, world 10707.5/762.9000244140625)
@@ -463,56 +546,66 @@ Quest 941: Planting the Heart
 Quest 1000: The New Frontier
   level 55 (min 54); zone Thunder Bluff (1638); turn-in yes
   Objective text: Speak with Arch Druid Hamuul Runetotem on the Elder Rise of Thunder Bluff about the Cenarion Circle's call to explore the frontiers of Kalimdor.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 1004: The New Frontier
   level 55 (min 54); zone Undercity (1497); turn-in yes
   Objective text: Speak with Arch Druid Hamuul Runetotem on the Elder Rise of Thunder Bluff about the Cenarion Circle's call to explore the frontiers of Kalimdor.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 1015: The New Frontier
   level 55 (min 54); zone Stormwind City (1519); turn-in yes
   Objective text: Speak with Arch Druid Fandral Staghelm at the Cenarion Enclave of Darnassus about the Cenarion Circle's call to explore the frontiers of Kalimdor.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête; (zone Darnassus, areaId 1657, world 9644.400390625/2520.900146484375)
 
 Quest 1018: The New Frontier
   level 55 (min 54); zone Orgrimmar (1637); turn-in yes
   Objective text: Speak with Arch Druid Hamuul Runetotem on the Elder Rise of Thunder Bluff about the Cenarion Circle's call to explore the frontiers of Kalimdor.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 1019: The New Frontier
   level 55 (min 54); zone Ironforge (1537); turn-in yes
   Objective text: Speak with Arch Druid Fandral Staghelm at the Cenarion Enclave of Darnassus about the Cenarion Circle's call to explore the frontiers of Kalimdor.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête; (zone Darnassus, areaId 1657, world 9644.400390625/2520.900146484375)
 
 Quest 1030: Raene's Cleansing
   level 28 (min 18); zone Ashenvale (331); turn-in yes
   Objective text: Find an uncorrupted furbolg, and using the power of Dartol's Rod of Transformation, speak to him.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: class quest;shaman;quest target;Ashenvale§klassenquest;schamane;questziel;Eschental§class quest;shaman;objecti (zone Ashenvale, areaId 331, world 2080.5/-234.5)
 
 Quest 1047: The New Frontier
   level 55 (min 54); zone Darnassus (1657); turn-in yes
   Objective text: Speak with Arch Druid Fandral Staghelm at the Cenarion Enclave of Darnassus about the Cenarion Circle's call to explore the frontiers of Kalimdor.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête; (zone Darnassus, areaId 1657, world 9644.400390625/2520.900146484375)
 
 Quest 1086: The Flying Machine Airport
   level 23 (min 13); zone Thunder Bluff (1638); turn-in yes
   Objective text: Bring the Toxic Fogger to the Venture Co. sky port, then return to Apothecary Zamah.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 1091: Kaela's Update
   level 22 (min 18); zone Stonetalon Mountains (406); turn-in yes
   Objective text: Bring the Venture Co. Letters to Kaela Shadowspear.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
   Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 2278: The Platinum Discs
   level 47 (min 40); zone Uldaman (1517); turn-in yes
   Objective text: Speak with stone watcher and learn what ancient lore it keeps. Once you have learned what lore it has to offer, activate the Discs of Norgannon.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;the sealed hall;Uldaman§questziel;Die versiegelte Halle;Uldaman§objectif de quête;the sealed hall (zone Badlands, areaId 3, world -6201.39990234375/-3057.300048828125)
   Routedata waypoint: quest target;South Common Hall;Uldaman§questziel;Südliche Bankenhalle;Uldaman§objectif de quête;South Common H (zone Badlands, areaId 3, world -6198.5/-2929.800048828125)
@@ -520,17 +613,20 @@ Quest 2278: The Platinum Discs
 Quest 2520: Sathrah's Sacrifice
   level 12 (min 9); zone Darnassus (1657); turn-in yes
   Objective text: Priestess A'moora wants you to place Lady Sathrah's silvery spinnerets at the fountain inside the temple, and then return to her.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;well;Tempel des Mondes;Darnassus§questziel;brunnen;Tempel des Mondes;Darnassus§objectif de quête; (zone Darnassus, areaId 1657, world 9644.400390625/2520.900146484375)
 
 Quest 2701: Heroes of Old
   level 57 (min 45); zone Blasted Lands (4); turn-in yes
   Objective text: Open the chest and claim your reward.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 2844: The Giant Guardian
   level 49 (min 44); zone Feralas (357); turn-in yes
   Objective text: Locate the lost night elf girl.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
   Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
@@ -538,6 +634,7 @@ Quest 2844: The Giant Guardian
 Quest 2932: Grim Message
   level 42 (min 35); zone The Hinterlands (47); turn-in yes
   Objective text: Gather Witherbark Skulls and place on Nimboya's Pike. Place Nimboya's Laden Pike at one of the Witherbark Villages in the Hinterlands, then return to Nimboya in Stranglethorn.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;The Altar of Zul;The Hinterlands§questziel;Der Altar von Zul;Hinterland§objectif de quête;L'autel (zone The Hinterlands, areaId 47, world -291/-3456.800048828125)
   Routedata waypoint: elite;quest target;Seradane;The Hinterlands§elite;questziel;Seradane;Hinterland§elite;objectif de quête;Serada (zone The Hinterlands, areaId 47, world 1193.599975585938/-4265.10009765625)
@@ -545,6 +642,7 @@ Quest 2932: Grim Message
 Quest 2969: Freedom for All Creatures
   level 47 (min 40); zone Feralas (357); turn-in yes
   Objective text: Using the Bamboo Cage Key, free the Sprite Darters from the pen in the Grimtotem camp. At least 6 Sprite Darters and Kindal Moonweaver must survive.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
   Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
@@ -552,26 +650,31 @@ Quest 2969: Freedom for All Creatures
 Quest 3373: The Essence of Eranikus
   level 55 (min 48); zone Sunken Temple (1417); turn-in yes
   Objective text: Place the Essence of Eranikus in the Essence Font located in this lair in the Sunken Temple.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 3382: A Crew Under Fire
   level 57 (min 49); zone Azshara (16); turn-in yes
   Objective text: Defend Captain Vanessa Beltis, her crew and the Horizon Scout's passengers against the naga attack. Captain Vanessa Beltis must survive.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 3447: Secret of the Circle
   level 51 (min 46); zone Sunken Temple (1417); turn-in yes
   Objective text: Travel into the Sunken Temple and discover the secret hidden in the circle of statues.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 3481: Trinkets...
   level 50 (min 40); zone Searing Gorge (51); turn-in yes
   Objective text: Open the chest.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 3821: Dreadmaul Rock
   level 52 (min 48); zone Badlands (3); turn-in yes
   Objective text: Venture forth to the Burning Steppes and find out what became of Sha'ni Proudtusk.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
   Routedata waypoint: quest target;the sealed hall;Uldaman§questziel;Die versiegelte Halle;Uldaman§objectif de quête;the sealed hall (zone Badlands, areaId 3, world -6201.39990234375/-3057.300048828125)
   Routedata waypoint: quest target;South Common Hall;Uldaman§questziel;Südliche Bankenhalle;Uldaman§objectif de quête;South Common H (zone Badlands, areaId 3, world -6198.5/-2929.800048828125)
@@ -579,6 +682,7 @@ Quest 3821: Dreadmaul Rock
 Quest 3912: Meet at the Grave
   level 52 (min 47); zone Un'Goro Crater (490); turn-in yes
   Objective text: Go to the graveyard outside Gadgetzan, and use the Videre Elixir. Follow the rest of Donova's instructions to find Gaeriyan.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
   Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
@@ -586,6 +690,7 @@ Quest 3912: Meet at the Grave
 Quest 4125: The Missing Courier
   level 43 (min 40); zone Feralas (357); turn-in yes
   Objective text: Locate the courier's boat somewhere along the coast of Feralas.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
   Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
@@ -593,6 +698,7 @@ Quest 4125: The Missing Courier
 Quest 4131: The Woodpaw Gnolls
   level 44 (min 40); zone Feralas (357); turn-in yes
   Objective text: Search the Woodpaw Gnoll camps of southern Feralas for evidence of the courier's belongings or the courier himself.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;door/gate;Captured Sprite Darter;Feralas§questziel;tür/tor;Gefangener Grimmlingflitzer;Feralas§ob (zone Feralas, areaId 357, world -4530.89990234375/806.6000366210938)
   Routedata waypoint: quest target;one;Gordunni Outpost;Feralas§questziel;eins;Außenposten der Gordunni;Feralas§objectif de quête;un (zone Feralas, areaId 357, world -3979.10009765625/-72.4000015258789)
@@ -600,6 +706,7 @@ Quest 4131: The Woodpaw Gnolls
 Quest 4285: The Northern Pylon
   level 53 (min 47); zone Un'Goro Crater (490); turn-in yes
   Objective text: Discover the location of the Northern Crystal Pylon in Un'Goro Crater.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
   Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
@@ -607,6 +714,7 @@ Quest 4285: The Northern Pylon
 Quest 4287: The Eastern Pylon
   level 53 (min 47); zone Un'Goro Crater (490); turn-in yes
   Objective text: Discover the location of the Eastern Crystal Pylon in Un'Goro Crater.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
   Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
@@ -614,6 +722,7 @@ Quest 4287: The Eastern Pylon
 Quest 4288: The Western Pylon
   level 53 (min 47); zone Un'Goro Crater (490); turn-in yes
   Objective text: Discover the location of the Western Crystal Pylon.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Fire Plume Ridge;Un'Goro Crater§questziel;Feuersäulengrat;Krater von Un'Goro§objectif de quête;Cr (zone Un'Goro Crater, areaId 490, world -7109.89990234375/-1287)
   Routedata waypoint: quest target;Golakka Hot Springs;Un'Goro Crater§questziel;Die heißen Quellen von Golakka;Krater von Un'Goro§ob (zone Un'Goro Crater, areaId 490, world -7205.2001953125/-649.7000122070312)
@@ -621,121 +730,145 @@ Quest 4288: The Western Pylon
 Quest 4451: The Key to Freedom
   level 47 (min 43); zone Searing Gorge (51); turn-in yes
   Objective text: Search Searing Gorge and find a use for the Grimesilt Outhouse Key you have found.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 4506: Corrupted Sabers
   level 54 (min 49); zone Felwood (361); turn-in yes
   Objective text: Take Winna's kitten to the corrupted moonwell, release it, then bring it back to Winna.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 4734: Egg Freezing
   level 60 (min 57); zone Blackrock Spire (1583); turn-in yes
   Objective text: Use the Eggscilloscope Prototype on an egg in the Rookery.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 5084: Falling to Corruption
   level 56 (min 52); zone Winterspring (618); turn-in yes
   Objective text: Search the Deadwood furbolg camp in northern Felwood for a clue.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 5202: A Strange Red Key
   level 55 (min 49); zone Felwood (361); turn-in yes
   Objective text: Search through Jaedenar to discover what the Blood Red Key is used for.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 5252: Remorseful Highborne
   level 58 (min 53); zone Winterspring (618); turn-in yes
   Objective text: Speak with Wynd Nightchaser in Starfall Village, and ask about the proper place for the Crystal of Zin-Malor.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 5265: The Argent Hold
   level 60 (min 55); zone Eastern Plaguelands (139); turn-in yes
   Objective text: Open the Argent Hold and claim your reward.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 5462: The Dying, Ras Frostwhisper
   level 60 (min 57); zone Western Plaguelands (28); turn-in yes
   Objective text: Travel to Light's Hope in Eastern Plaguelands and seek out Leonid Barthalomew the Revered. Show him the Keepsake of Remembrance and tell him all that you have discovered.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 5463: Menethil's Gift
   level 60 (min 57); zone Stratholme (2017); turn-in yes
   Objective text: Travel to Stratholme and find Menethil's Gift. Place the Keepsake of Remembrance upon the unholy ground.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 5582: Healthy Dragon Scale
   level 58 (min 55); zone Scholomance (2057); turn-in yes
   Objective text: Bring the Healthy Dragon Scale to Betina Bigglezink at the Light's Hope Chapel in Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 5902: A Plague Upon Thee
   level 55 (min 51); zone Tirisfal Glades (85); turn-in yes
   Objective text: Find someplace suitable in the center of the Northridge Lumber Mill in Western Plaguelands to place the Barrel of Plagueland Termites.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 5904: A Plague Upon Thee
   level 55 (min 48); zone Western Plaguelands (28); turn-in yes
   Objective text: Find someplace suitable in the center of the Northridge Lumber Mill in Western Plaguelands to place the Barrel of Plagueland Termites.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6030: Duke Nicholas Zverenhoff
   level 52 (min 50); zone Winterspring (618); turn-in yes
   Objective text: Deliver the book, \Studies in Spirit Speaking\, to Duke Nicholas Zverenhoff at Light's Hope Chapel, Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6389: A Plague Upon Thee
   level 55 (min 48); zone Western Plaguelands (28); turn-in yes
   Objective text: Release the Plagueland Termites in the Northridge Lumber Mill, then return with the Barrel of Plagueland Termites to Nathaniel Dumah at Chillwind Camp in Western Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6390: A Plague Upon Thee
   level 55 (min 51); zone Western Plaguelands (28); turn-in yes
   Objective text: Release the Plagueland Termites in the Northridge Lumber Mill, then return with the Barrel of Plagueland Termites to Mickey Levine at the Bulwark in Tirisfal Glades.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6402: Stormwind Rendezvous
   level 60 (min 52); zone Stormwind City (1519); turn-in yes
   Objective text: Travel to Stormwind City and venture to the city gates. Speak with Squire Rowe so that he may let Marshal Windsor know that you have arrived.
+  Triage: NPCOBJ - propose creature objective, ids [9023, 17804] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 6501: The Dragon's Eye
   level 60 (min 52); zone Stormwind City (1519); turn-in yes
   Objective text: You must search the world for a being capable of restoring the power to the Fragment of the Dragon's Eye. The only information you possess about such a being is that they exist.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6622: Triage
   level 45 (min 35); turn-in yes
   Objective text: Save patients by using Triage Bandages to tend to their wounds. You must save 15 patients before 6 of them die from their injuries.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6624: Triage
   level 45 (min 35); turn-in yes
   Objective text: Save patients by using Triage Bandages to tend to their wounds. You must save 15 patients before 6 of them die from their injuries.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 7001: Empty Stables
   level -1 (min 51); zone Alterac Valley (2597); turn-in yes
   Objective text: Locate a Frostwolf in Alterac Valley. Use the Frostwolf Muzzle when you are near the Frostwolf to 'tame' the beast. Once tamed, the Frostwolf will follow you back to the Frostwolf Stable Master. Speak with the Frostwolf 
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 7027: Empty Stables
   level -1 (min 51); zone Alterac Valley (2597); turn-in yes
   Objective text: Locate an Alterac Ram in Alterac Valley. Use the Stormpike Training Collar when you are near the Alterac Ram to 'tame' the beast. Once tamed, the Alterac Ram will follow you back to the Stable Master. Speak with the Stab
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 7241: In Defense of Frostwolf
   level -1 (min 51); zone Alterac Valley (2597); turn-in yes
   Objective text: Venture to Alterac Valley, located in the Alterac Mountains. Find and speak with Warmaster Laggrond - who stands outside the tunnel entrance - to begin your career as a soldier of Frostwolf. You will find Alterac Valley 
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 7782: The Lord of Blackrock
   level 60 (min 60); zone Stormwind City (1519); turn-in yes
   Objective text: Venture to the Valley of Heroes in Stormwind City and speak with Field Marshal Afrasiabi.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 7843: The Final Message to the Wildhammer
   level 50 (min 44); zone The Hinterlands (47); turn-in yes
   Objective text: Otho Moji'ko at Revantusk Village in the Hinterlands wants you to travel to Aerie Peak in the western region of the Hinterlands and place the Final Message to the Wildhammer by the well in the center of town. Return to h
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;The Altar of Zul;The Hinterlands§questziel;Der Altar von Zul;Hinterland§objectif de quête;L'autel (zone The Hinterlands, areaId 47, world -291/-3456.800048828125)
   Routedata waypoint: elite;quest target;Seradane;The Hinterlands§elite;questziel;Seradane;Hinterland§elite;objectif de quête;Serada (zone The Hinterlands, areaId 47, world 1193.599975585938/-4265.10009765625)
@@ -743,62 +876,74 @@ Quest 7843: The Final Message to the Wildhammer
 Quest 8305: Long Forgotten Memories
   level 60 (min 60); zone Silithus (1377); turn-in yes
   Objective text: Locate the Crystalline Tear in Silithus and gaze into its depths.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;The Forgotten Pools;northwest;The Barrens§questziel;Die vergessenen Teiche;nordwestlich;Brachland (zone The Barrens, areaId 17, world 89.70000457763672/-1944.400024414063)
 
 Quest 8447: Waking Legends
   level 60 (min 60); turn-in yes
   Objective text: Wait for Keeper Remulos at the Moonglade to cleanse the Nightmare Engulfed Object.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8470: Deadwood Ritual Totem
   level 55 (min 45); zone Felwood (361); turn-in yes
   Objective text: Take the Deadwood Ritual Totem inside Timbermaw Hold and see if one of the furbolgs there will find a use for the item. The Timbermaw will not speak with you unless you are of Neutral reputation or greater with them.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8471: Winterfall Ritual Totem
   level 56 (min 50); zone Winterspring (618); turn-in yes
   Objective text: Take the Winterfall Ritual Totem inside Timbermaw Hold and see if one of the furbolgs there will find a use for the item. The Timbermaw will not speak with you unless you are of Neutral reputation or greater with them.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8929: In Search of Anthion
   level 60 (min 58); zone Eastern Plaguelands (139); turn-in yes
   Objective text: Use the Extra-Dimensional Ghost Revealer at the entrance to Stratholme and speak with the ghost of Anthion Harmon.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8930: In Search of Anthion
   level 60 (min 58); zone Eastern Plaguelands (139); turn-in yes
   Objective text: Use the Extra-Dimensional Ghost Revealer at the entrance to Stratholme and speak with the ghost of Anthion Harmon.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8960: Bodley's Unfortunate Fate
   level 60 (min 60); zone Blackrock Mountain (25); turn-in yes
   Objective text: Travel to Blackrock Mountain and use the Extra-Dimensional Ghost Revealer to find Bodley near Blackrock Spire.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9032: Bodley's Unfortunate Fate
   level 60 (min 60); zone Blackrock Mountain (25); turn-in yes
   Objective text: Travel to Blackrock Mountain and use the Extra-Dimensional Ghost Revealer to find Bodley near Blackrock Spire.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9120: The Fall of Kel'Thuzad
   level 60 (min 60); zone Naxxramas (3456); turn-in yes
   Objective text: Take the Phylactery of Kel'Thuzad to Light's Hope Chapel in the Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9123: The Dread Citadel - Naxxramas
   level 60 (min 55); zone Eastern Plaguelands (139); turn-in yes
   Objective text: Archmage Angela Dosantos at Light's Hope Chapel in the Eastern Plaguelands will grant you Arcane Cloaking at no cost. You must be Exalted with the Argent Dawn.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9233: Omarion's Handbook
   level 60 (min 60); zone Naxxramas (3456); turn-in yes
   Objective text: Take Omarion's Handbook to Craftsman Wilhelm at Light's Hope Chapel in the Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9410: A Spirit Guide
   level 62 (min 60); zone Hellfire Peninsula (3483); turn-in yes
   Objective text: Use the Wolf Totem at the location where you found Krun Spinebreaker's body and follow the Ancestral Spirit Wolf.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -807,55 +952,65 @@ Quest 9410: A Spirit Guide
 Quest 9539: Totem of Coo
   level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
   Objective text: Find the Totem of Coo using the clues provided to you.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
 
 Quest 9540: Totem of Tikti
   level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
   Objective text: Find the Totem of Tikti using the clues provided to you.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
 
 Quest 9541: Totem of Yor
   level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
   Objective text: Find the Totem of Yor using the clues provided to you.
+  Triage: NPCOBJ - propose creature objective, ids [22930] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
 
 Quest 9542: Totem of Vark
   level 10 (min 8); zone Azuremyst Isle (3524); turn-in yes
   Objective text: Find the Totem of Vark using the clues provided to you.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;waters;Silverline Lake;Azuremyst Isle§questziel;gewässer;Silberwellensee;Azurmythosinsel§objectif (zone Azuremyst Isle, areaId 3524, world -4396.204058049421/-13653.71437554363)
 
 Quest 9550: A Map to Where?
   level 16 (min 13); zone Bloodmyst Isle (3525); turn-in yes
   Objective text: Locate the pavilion described by the map and search for what the map's maker was trying to record.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9561: Nolkai's Words
   level 16 (min 13); zone Bloodmyst Isle (3525); turn-in yes
   Objective text: Find the location described in Nolkai's journal and discover his long-buried possessions.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9771: Searching for Scout Jyoba
   level 62 (min 60); zone Zangarmarsh (3521); turn-in yes
   Objective text: Search for Scout Jyoba.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10039: Speak with Scout Neftis
   level 64 (min 61); zone Terokkar Forest (3519); turn-in yes
   Objective text: Locate and speak with Scout Neftis near the south entrance to Grangol'var Village in Terokkar Forest.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 10064: Talk to the Hand
   level 18 (min 16); zone Bloodmyst Isle (3525); turn-in yes
   Objective text: Report to Scout Jorli at Vindicator's Rest.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 10166: Whitebark's Memory
   level 10 (min 7); zone Eversong Woods (3430); turn-in yes
   Objective text: Larianna Riverwind wants you to place Old Whitebark's Pendant by the runestone at the Scorched Grove.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le (zone Eversong Woods, areaId 3430, world 8207/-6336.5)
   Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8278.2001953125/-7211.80029296875)
@@ -864,72 +1019,85 @@ Quest 10166: Whitebark's Memory
 Quest 10174: Curse of the Violet Tower
   level 68 (min 67); zone Netherstorm (3523); turn-in yes
   Objective text: Use Archmage Vargoth's Staff to make contact with Archmage Vargoth.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10175: Thrall, Son of Durotan
   level 68 (min 66); zone Nagrand (3518); turn-in yes
   Objective text: Venture to Orgrimmar and deliver Geyah's message to Thrall.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 10210: A'dal
   level 65 (min 60); zone Terokkar Forest (3519); turn-in yes
   Objective text: Speak to A'dal, the leader of the Sha'tar, in the center of the Terrace of Light.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10280: Special Delivery to Shattrath City
   level 70 (min 67); zone Shattrath City (3703); turn-in yes
   Objective text: Deliver the Ata'mal Crystal to A'dal on the Terrace of Light in Shattrath City.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
 Quest 10282: Old Hillsbrad
   level 68 (min 66); zone Caverns of Time (1941); turn-in yes
   Objective text: Andormu at the Caverns of Time has asked that you venture to Old Hillsbrad and speak with Erozion.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 10410: Ishanah's Help
   level 70 (min 67); zone Netherstorm (3523); turn-in yes
   Objective text: Take Socrethar's Teleportation Stone to High Priestess Ishanah at the Shrine of Unending Light on the Aldor Rise in Shattrath City.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
 Quest 10554: Ishanah
   level 65 (min 60); zone Shattrath City (3703); turn-in yes
   Objective text: Speak to Ishanah inside the Shrine of Unending Light at the Aldor Rise in Shattrath City.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
 Quest 10581: Follow the Breadcrumbs
   level 67 (min 65); zone Blade's Edge Mountains (3522); turn-in yes
   Objective text: In a round-about way, R-3D0 has informed you that if you follow the trail of spare parts up the ramp here to the Razor Ridge, you will find the gnomes at a place named Toshley's Station.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 10599: The Deathforge
   level 69 (min 67); zone Shadowmoon Valley (3520); turn-in yes
   Objective text: Report to Scout Zagran at Slag Watch.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 10819: Felsworn Gas Mask
   level 68 (min 65); zone Blade's Edge Mountains (3522); turn-in yes
   Objective text: Wear the Felsworn Gas Mask and use the Legion Communicator at Forge Camp: Anger.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 10910: Death's Door
   level 68 (min 65); zone Blade's Edge Mountains (3522); turn-in yes
   Objective text: Wildlord Antelarion has implored you to travel to Death's Door. Once you arrive there, use the Druid Signal to call down an Evergrove Druid so that you can speak with them.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 10926: Return to Sha'tari Base Camp
   level 65 (min 65); zone Terokkar Forest (3519); turn-in yes
   Objective text: Vindicator Haylen wants you to return to Sha'tari Base Camp and speak with Scout Navrin.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 11534: Report to Nasuun
   level 70 (min 70); zone Shattrath City (3703); turn-in yes
   Objective text: Tradesman Portanuus has asked you to speak with Exarch Nasuun on the Terrace of Light in Shattrath City.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
@@ -940,6 +1108,7 @@ APPENDIX: QUESTIE-BLACKLISTED (likely removed from game or seasonal - probably s
 Quest 1: The "Chow" Quest (123)aa
   level 4 (min 1); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Kill Kobold Vermin, 2 of em.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
   Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
@@ -948,11 +1117,13 @@ Quest 1: The "Chow" Quest (123)aa
 Quest 172: Children's Week
   level 60 (min 10); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Use the Orcish Orphan Whistle to talk with the child you will be looking after during Children's Week.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 402: Sirra is Busy
   level 30 (min 20); zone Duskwood (10); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Check back with Sirra later to see if he's still busy.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;The Yorgen Farmstead;Duskwood§questziel;Yorgens Bauernhof;Dämmerwald§objectif de quête;The Yorgen (zone Duskwood, areaId 10, world -11117.5/-511.3999938964844)
   Routedata waypoint: quest target;Vul'Gol Ogre Mound;Duskwood§questziel;Ogerhort Vul'Gol;Dämmerwald§objectif de quête;Vul'Gol Ogre  (zone Duskwood, areaId 10, world -11090.1005859375/-69.80000305175781)
@@ -961,18 +1132,21 @@ Quest 402: Sirra is Busy
 Quest 620: UNUSED The Monogrammed Sash
   level 42 (min 42); zone Stranglethorn Vale (33); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Return the Monogrammed Sash to its owner.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Yojamba Isle;Stranglethorn Vale§questziel;Die Insel Yojamba;Schlingendorntal§objectif de quête;Il (zone Stranglethorn Vale, areaId 33, world -11811/1365.400024414063)
 
 Quest 636: Legends of the Earth <NYI>
   level 35 (min 30); zone Arathi Highlands (45); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Find the Shards of Myzrael.
+  Triage: NPCOBJ - propose creature objective, ids [2755] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;Faldir's Cove;Arathi Highlands§questziel;Die Faldirbucht;Arathihochland§objectif de quête;Faldir' (zone Arathi Highlands, areaId 45, world -2042.200073242188/-2154.10009765625)
 
 Quest 785: A Strategic Alliance
   level 8 (min 2); zone Durotar (14); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Seek out Lar Prowltusk on the western flank of Sen'jin Village.
+  Triage: NPCOBJ - propose creature objective, ids [3140] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: rescue;class quest;shaman;down;Durotar§rettung;klassenquest;schamane;unten;Durotar§sauvetage;class quest;shama (zone Durotar, areaId 14, world -167.8000030517578/-3982.900146484375)
   Routedata waypoint: quest target;Echo Isles;Durotar§questziel;Die Echoinseln;Durotar§objectif de quête;Echo Isles;Durotar (zone Durotar, areaId 14, world -1287/-5529.7001953125)
@@ -980,23 +1154,28 @@ Quest 785: A Strategic Alliance
 Quest 909: Baron Aquanis
   level 30 (min 29); zone Ashenvale (331); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Bring the Strange Water Globe to Je'neu Sancrea at Zoram'gar Outpost, Ashenvale.
+  Triage: NPCOBJ - propose creature objective, ids [12736] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: class quest;shaman;quest target;Ashenvale§klassenquest;schamane;questziel;Eschental§class quest;shaman;objecti (zone Ashenvale, areaId 331, world 2080.5/-234.5)
 
 Quest 999: When Dreams Turn to Nightmares
   level 25 (min 25); zone Wailing Caverns (718); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 1005: What Lurks Beyond
   level 20 (min 20); zone Shadowfang Keep (236); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 1006: What Lies Beyond
   level 18 (min 18); zone Shadowfang Keep (236); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 1263: The Burning Inn <CHANGE TO GOSSIP>
   level 35 (min 35); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
   Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
@@ -1004,6 +1183,7 @@ Quest 1263: The Burning Inn <CHANGE TO GOSSIP>
 
 Quest 1272: Finding Reethe <CHANGE INTO GOSSIP>
   level 37 (min 37); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
   Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
@@ -1011,6 +1191,7 @@ Quest 1272: Finding Reethe <CHANGE INTO GOSSIP>
 
 Quest 1281: Jim's Song <CHANGE TO GOSSIP>
   level 35 (min 35); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
   Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
@@ -1019,6 +1200,7 @@ Quest 1281: Jim's Song <CHANGE TO GOSSIP>
 Quest 1288: Vimes's Report
   level 38 (min 33); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Bring Vimes's Report to Lady Jaina Proudmoore in Theramore.
+  Triage: NPCOBJ - propose creature objective, ids [4968] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
   Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
@@ -1027,6 +1209,7 @@ Quest 1288: Vimes's Report
 Quest 1289: Vimes's Report
   level 38 (min 33); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Return to Captain Garran Vimes in Theramore.
+  Triage: NPCOBJ - propose creature objective, ids [4944] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
   Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
@@ -1035,6 +1218,7 @@ Quest 1289: Vimes's Report
 Quest 1390: Oops, We Killed Them Again.
   level 1 (min 1); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Missing text
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
   Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
@@ -1043,140 +1227,168 @@ Quest 1390: Oops, We Killed Them Again.
 Quest 1468: Children's Week
   level 60 (min 10); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Use the Human Orphan Whistle to talk with the child you will be looking after during Children's Week.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 1500: Waking Naralex
   level 25 (min 25); zone Wailing Caverns (718); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 2000: Rokar Bladeshadow
   class Rogue; level 16 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Rokar Bladeshadow in Durotar.
   PROPOSED FIX: finishedBy creature Rokar Bladeshadow = [6586] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [6586] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;Echo Isles;Durotar§questziel;Die Echoinseln;Durotar§objectif de quête;Echo Isles;Durotar (zone Durotar, areaId 14, world -1287/-5529.7001953125)
 
 Quest 3366: The Glowing Shard
   level 25 (min 20); zone Wailing Caverns (718); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel to Ratchet to find the meaning behind the Nightmare Shard.
+  Triage: NPCOBJ - propose creature objective, ids [5407] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 3482: <NYI> <TXT> The Pocked Black Box
   level 35 (min 35); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take this box to Kravel.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 5383: Krastinov's Bag of Horrors
   level 60 (min 2); zone Scholomance (2057); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Bag of Horrors to Eva Sarkhoff on Caer Darrow.
+  Triage: NPCOBJ - propose creature objective, ids [11216] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 6843: Da Foo
   level 0 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 6963: Stolen Winter Veil Treats
   level -1 (min 30); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Locate the Smokywood Pastures investigator that has gone missing in the snowy regions of the Alterac Mountains.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 7042: Stolen Winter Veil Treats
   level -1 (min 30); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Locate the Smokywood Pastures investigator that has gone missing in the snowy regions of the Alterac Mountains.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 7061: The Feast of Winter Veil
   level -1 (min 59); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Feel free to read the book, \The Feast of Winter Veil\, to learn more about the holiday. When you are finished with the book, deliver it to Cairne Bloodhoof in Thunder Bluff.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 7063: The Feast of Winter Veil
   level -1 (min 36); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Feel free to read the book, \The Feast of Winter Veil\, to learn more about the holiday. When you are finished with the book, deliver it to King Magni Bronzebeard in Ironforge.
+  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there
   Wiki coords: none found
 
 Quest 7221: Speak with Prospector Stonehewer
   level 60 (min 2); zone Alterac Valley (2597); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Prospector Stonehewer in the Dun Baldar garrison.
   PROPOSED FIX: finishedBy creature Prospector Stonehewer = [13816] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [13816] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 7222: Speak with Voggah Deathgrip
   level 60 (min 2); zone Alterac Valley (2597); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Voggah in Frostwolf Keep.
+  Triage: NPCOBJ - propose creature objective, ids [10981] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 7522: Examine the Vessel
   level 1 (min 59); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Examine the Vessel of Rebirth and return it to Highlord Demitrian.
+  Triage: NPCOBJ - propose creature objective, ids [14347] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 7681: Hunter test quest
   level 10 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Feed your pet, then talk to your questgiver.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 7682: Hunter test quest2
   level 10 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Feed your pet, then talk to your questgiver.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 7741: Praise from the Emerald Circle <NYI> <TXT>
   level 59 (min 59); zone Felwood (361); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 7797: Dimensional Ripper - Everlook
   level 1 (min 1); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 7908: Arena Master
   level 55 (min 2); zone Stranglethorn Vale (33); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Short John Mithril in the Stranglethorn Arena.
   PROPOSED FIX: finishedBy creature Short John Mithril = [14508] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [14508] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;Yojamba Isle;Stranglethorn Vale§questziel;Die Insel Yojamba;Schlingendorntal§objectif de quête;Il (zone Stranglethorn Vale, areaId 33, world -11811/1365.400024414063)
 
 Quest 7961: Waskily Wabbits!
   level 1 (min 1); zone Northshire Valley (9); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Kill 5 rabbits and return to Jon LeCraft by the forge on Designer Island.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8149: Honoring a Hero
   level -1 (min 30); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel to Uther's Tomb in Western Plaguelands and use Uther's Tribute at his statue, and then return to Wagner Hammerstrike outside Ironforge before the Harvest Festival is over.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8150: Honoring a Hero
   level -1 (min 30); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel to Grom's Monument in the Demon Fall Canyon of Ashenvale and use Grom's Tribute at the base of the monument. Return to Javnir Nashak outside Orgrimmar before the Harvest Festival is over.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: class quest;shaman;quest target;Ashenvale§klassenquest;schamane;questziel;Eschental§class quest;shaman;objecti (zone Ashenvale, areaId 331, world 2080.5/-234.5)
 
 Quest 8230: Collin's Test Quest
   level 0 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8322: Rotten Eggs
   level -1 (min 30); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Place the Rotten Eggs in the main brew keg located inside the Southshore Inn.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8339: Royalty of the Council <NYI> <TXT> UNUSED
   level 60 (min 2); zone Silithus (1377); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Bring the items to Aurel Goldleaf in Cenarion Hold.
+  Triage: NPCOBJ - propose creature objective, ids [15282] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 8340: Twilight Signet Ring <NYI> <TXT>
   level 60 (min 60); zone Silithus (1377); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8373: The Power of Pine
   level -1 (min 59); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Use a Stink Bomb Cleaner to remove any Forsaken Stink Bomb that's been dropped on Southshore. Return to Sergeant Hartman in Southshore when you're done.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8478: Choose Your Weapon
   level 9 (min 9); zone Eversong Woods (3430); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le (zone Eversong Woods, areaId 3430, world 8207/-6336.5)
   Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8278.2001953125/-7211.80029296875)
@@ -1185,6 +1397,7 @@ Quest 8478: Choose Your Weapon
 Quest 8489: An Intact Converter
   level 6 (min 2); zone Eversong Woods (3430); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Bring the Intact Arcane Converter to Ley-Keeper Velania.
+  Triage: NPCOBJ - propose creature objective, ids [15401] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le (zone Eversong Woods, areaId 3430, world 8207/-6336.5)
   Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8278.2001953125/-7211.80029296875)
@@ -1193,44 +1406,52 @@ Quest 8489: An Intact Converter
 Quest 8530: The Alliance Needs Singed Corestones!
   level 60 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Bring 50 singed corestones to Commander Stronghammer at the airfield in Dun Morogh.
+  Triage: NPCOBJ - propose creature objective, ids [15458] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: down;ramp;class quest;rogue;Gnomeregan;Dun Morogh§unten;rampe;klassenquest;schurke;Gnomeregan;Dun Morogh§bas;r (zone Dun Morogh, areaId 1, world -5332.30029296875/571)
 
 Quest 8618: The Horde Needs More Singed Corestones!
   level 60 (min 60); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8795: The Alliance Needs Your Help!
   level 60 (min 49); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Field Marshal Snowfall in Ironforge's Military Ward.
   PROPOSED FIX: finishedBy creature Field Marshal Snowfall = [15701] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [15701] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 8796: The Alliance Needs Your Help!
   level 60 (min 60); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Field Marshal Snowfall in Ironforge's Military Ward.
   PROPOSED FIX: finishedBy creature Field Marshal Snowfall = [15701] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [15701] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 8797: The Alliance Needs Your Help!
   level 60 (min 60); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Field Marshal Snowfall in Ironforge's Military Ward.
   PROPOSED FIX: finishedBy creature Field Marshal Snowfall = [15701] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [15701] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 8859: Secrets of the Colossus - Zora
   level 60 (min 55); zone Silithus (1377); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Colossus of Zora's Husk to Lord Maxwell Tyrosus at Light's Hope Chapel in the Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8883: Valadar Starsong
   level 60 (min 1); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Use your Lunar Festival Invitation in the moonlight to travel to Moonglade. Speak with Valadar Starsong in Nighthaven when you arrive.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 8896: The Dwarven Spy
   level 7 (min 2); zone Eversong Woods (3430); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Find and kill Prospector Anvilward in the North Sanctum and report back to Aeldon Sunbrand in Eversong Woods.
+  Triage: NPCOBJ - propose creature objective, ids [15403, 15420] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le (zone Eversong Woods, areaId 3430, world 8207/-6336.5)
   Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8278.2001953125/-7211.80029296875)
@@ -1240,11 +1461,13 @@ Quest 9030: Anthion's Parting Words
   level 60 (min 2); zone Dire Maul (2557); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak to Deliana in Ironforge.
   PROPOSED FIX: finishedBy creature Deliana = [16013] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [16013] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 9065: The "Chow" Quest (123)aa
   level 4 (min 1); zone Dustwallow Marsh (15); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Kill Kobold Vermin, 2 of em.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;three;Dreadmurk Shore;Dustwallow Marsh§questziel;drei;Schreckensmoorküste;Düstermarschen§objectif (zone Dustwallow Marsh, areaId 15, world -2693.5/-4247.10009765625)
   Routedata waypoint: quest target;Tidefury Cove;Dustwallow Marsh§questziel;Tidenbucht;Düstermarschen§objectif de quête;Crique du Ma (zone Dustwallow Marsh, areaId 15, world -4237.10009765625/-3935)
@@ -1253,58 +1476,70 @@ Quest 9065: The "Chow" Quest (123)aa
 Quest 9154: Light's Hope Chapel
   level -1 (min 50); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Deliver the Call to Arms Announcement to the Keeper of the Rolls at Light's Hope Chapel in the Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9247: The Keeper's Call
   level -1 (min 60); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Letter from the Keeper of the Rolls to him at Light's Hope Chapel in the Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9284: Aldor Faction Test
   level 60 (min 60); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9285: Consortium Faction Test
   level 60 (min 60); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9286: Scryers Faction Test
   level 60 (min 60); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9295: Letter from the Front
   level -1 (min 45); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Torn Letter to the Keeper of the Rolls at Light's Hope Chapel in the Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9299: Note from the Front
   level -1 (min 45); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Careworn Note to the Keeper of the Rolls at Light's Hope Chapel in the Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9300: Page from the Front
   level -1 (min 45); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Ragged Page to the Keeper of the Rolls at Light's Hope Chapel in the Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9301: Envelope from the Front
   level -1 (min 45); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Bloodstained Envelope to the Keeper of the Rolls at Light's Hope Chapel in the Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9302: Missive from the Front
   level -1 (min 45); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Crumpled Missive to the Keeper of the Rolls at Light's Hope Chapel in the Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9304: Document from the Front
   level -1 (min 45); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Smudged Document to the Keeper of the Rolls at Light's Hope Chapel in the Eastern Plaguelands.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9344: A Hasty Departure
   level 61 (min 61); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Far Seer Regulkut wants you to track down her student Grelag.
+  Triage: NPCOBJ - propose creature objective, ids [16574, 16858] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1313,6 +1548,7 @@ Quest 9344: A Hasty Departure
 Quest 9357: Report to Aeldon Sunbrand
   level 5 (min 2); zone Eversong Woods (3430); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Report to Aeldon Sunbrand at the Inner Elf Gate in Eversong Woods.
+  Triage: NPCOBJ - propose creature objective, ids [15403] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;The Scorched Grove;Eversong Woods§questziel;Der versengte Hain;Immersangwald§objectif de quête;Le (zone Eversong Woods, areaId 3430, world 8207/-6336.5)
   Routedata waypoint: quest target;Runestone Shan'dor;Eversong Woods§questziel;Runenstein Shan'dor;Immersangwald§objectif de quête;P (zone Eversong Woods, areaId 3430, world 8278.2001953125/-7211.80029296875)
@@ -1321,11 +1557,13 @@ Quest 9357: Report to Aeldon Sunbrand
 Quest 9378: DND FLAG The Dread Citadel - Naxxramas
   level 60 (min 2); zone Eastern Plaguelands (139); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Archmage Angela Dosantos at Light's Hope Chapel in the Eastern Plaguelands will grant you Arcane Cloaking at no cost. You must be Exalted with the Argent Dawn.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9380: Hounded for More
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Collect 6 Undamaged Warp Hound Corpses and bring them to Prospector Murantus in Honor Hold.
+  Triage: NPCOBJ - propose creature objective, ids [16832] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1335,6 +1573,7 @@ Quest 9408: Forgotten Heroes
   level 60 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Force Commander Danath Trollbane at Honor Hold.
   PROPOSED FIX: finishedBy creature Force Commander Danath Trollbane = [16819] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [16819] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1343,6 +1582,7 @@ Quest 9408: Forgotten Heroes
 Quest 9510: Bristlehide Clefthoof Hides
   level 62 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Provisioner Braknar at Mag'har Post in Hellfire Peninsula wants you to bring him 5 Bristlehide Clefthoof Hides.
+  Triage: NPCOBJ - propose creature objective, ids [16848, 16970] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1350,6 +1590,7 @@ Quest 9510: Bristlehide Clefthoof Hides
 
 Quest 9511: Kargath's Battle Plans
   level 70 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1359,103 +1600,123 @@ Quest 9599: <UNUSED>
   class Paladin; level 12 (min 12); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Jol in the Exodar.
   PROPOSED FIX: finishedBy creature Jol = [17509] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [17509] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 9712: The Thalassian Warhorse
   class Paladin; level -1 (min 40); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Talk to Knight-Lord Bloodvalor to learn how to summon your Thalassian Warhorse.
+  Triage: NPCOBJ - propose creature objective, ids [17717, 20029] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 9713: Glowcap Harvesting Enabling Flag
   level 0 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9750: UNUSED Urgent Delivery
   level 18 (min 18); zone Bloodmyst Isle (3525); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9767: Know Your Enemy
   level 70 (min 2); zone Serpentshrine Cavern (3607); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Obtain a Coilfang Spellbook from the naga inside of Coilfang Reservoir and bring it to Ashyen at the Cenarion Refuge in Zangarmarsh.
+  Triage: NPCOBJ - propose creature objective, ids [17900] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 9926: FLAG Shadow Council/Warmaul Questline
   level 66 (min 2); zone Nagrand (3518); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9929: The Missing Merchant
   level 63 (min 60); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel northwest along the road toward Shattrath and search for evidence of what happened to Dugar.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: entry and exit;ship;class quest;rogue;The Merchant Coast;The Barrens§ein- und ausgang;schiff;klassenquest;schu (zone The Barrens, areaId 17, world -1460.5/-3881.300048828125)
 
 Quest 9930: The Missing Merchant
   level 63 (min 63); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel northwest along the road toward Shattrath and search for evidence of what happened to Deirom.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: entry and exit;ship;class quest;rogue;The Merchant Coast;The Barrens§ein- und ausgang;schiff;klassenquest;schu (zone The Barrens, areaId 17, world -1460.5/-3881.300048828125)
 
 Quest 9941: Tracking Down the Culprits
   level 63 (min 63); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Continue your search for signs of Deirom in the Arakkoa settlement north of the broken cart.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9942: Tracking Down the Culprits
   level 63 (min 60); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Continue your search for signs of Dugar in the Arakkoa settlement north of the broken cart.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9943: Return to Thander
   level 64 (min 63); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Return to Thander at the Allerian Stronghold with news of your findings.
+  Triage: NPCOBJ - propose creature objective, ids [18389] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 9947: Return to Rokag
   level 64 (min 61); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Return to Rokag at Stonebreaker Hold with news of your findings.
+  Triage: NPCOBJ - propose creature objective, ids [18386] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 9952: Prospector Balmoral
   level 65 (min 63); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Locate and speak with Prospector Balmoral.
   PROPOSED FIX: finishedBy creature Prospector Balmoral = [18442] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [18442] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 9953: Lookout Nodak
   level 65 (min 62); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Locate and speak with Lookout Nodak.
   PROPOSED FIX: finishedBy creature Lookout Nodak = [18443] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [18443] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 9963: Seeking Help from the Source
   level 65 (min 65); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Find Kokorek in Veil Lithic and speak with him.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9964: Seeking Help from the Source
   level 65 (min 62); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Find Kokorek in Veil Lithic and speak with him.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 9984: Host of the Hidden City
   level 65 (min 63); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take Luanga's Orders to Andarl at the Allerian Stronghold.
+  Triage: NPCOBJ - propose creature objective, ids [18252] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 9985: Host of the Hidden City
   level 65 (min 64); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Bring Luanga's Orders to Kurgatok at Stonebreaker Hold.
+  Triage: NPCOBJ - propose creature objective, ids [18383] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10029: The Spirits Are Calling
   level 65 (min 65); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Anchorite Lyteera wants you to locate her assistant, Soolaveen at the Refugee Caravan in the Bone Wastes of Terokkar Forest.
+  Triage: NPCOBJ - propose creature objective, ids [18675] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10046: Through the Dark Portal
   level 60 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel through the Dark Portal and speak with Nazgrel at Thrallmar.
   PROPOSED FIX: finishedBy creature Nazgrel = [3230] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [3230] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1464,6 +1725,7 @@ Quest 10046: Through the Dark Portal
 Quest 10090: The Legion's Plans
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Retrieve the Forge Camp: Spite Plans and return them to Overlord Hun Maimfist at Reaver's Fall.
+  Triage: NPCOBJ - propose creature objective, ids [16576] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1472,6 +1734,7 @@ Quest 10090: The Legion's Plans
 Quest 10122: The Citadel's Reach
   level 61 (min 61); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Search the northernmost camp along the Southern Rampart for any trace of Private Imarion.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1480,6 +1743,7 @@ Quest 10122: The Citadel's Reach
 Quest 10126: Warboss Nekrogg's Orders
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel south along the west side of the South Rampart and search the next camp for signs of Private Imarion.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1488,6 +1752,7 @@ Quest 10126: Warboss Nekrogg's Orders
 Quest 10128: Saving Private Imarion
   level 61 (min 60); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Continue south along the Southern Rampart and search for where Warboss Nekrogg is holding Private Imarion.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1496,6 +1761,7 @@ Quest 10128: Saving Private Imarion
 Quest 10135: Mission: Be the Messenger
   level 62 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Legion Missive to Nazgrel at Thrallmar in Hellfire Peninsula.
+  Triage: NPCOBJ - propose creature objective, ids [3230] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1504,6 +1770,7 @@ Quest 10135: Mission: Be the Messenger
 Quest 10148: Mission: Be the Messenger
   level 62 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Legion Missive to Force Commander Danath Trollbane at Honor Hold in Hellfire Peninsula.
+  Triage: NPCOBJ - propose creature objective, ids [16819] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1512,6 +1779,7 @@ Quest 10148: Mission: Be the Messenger
 Quest 10150: The Citadel's Reach
   level 61 (min 61); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Search the northernmost camp along the Northern Rampart for any trace of Scout Makha.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1520,6 +1788,7 @@ Quest 10150: The Citadel's Reach
 Quest 10151: Warboss Nekrogg's Orders
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Travel south along the west side of the Northern Rampart and search the next camp for signs of Scout Makha
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1528,6 +1797,7 @@ Quest 10151: Warboss Nekrogg's Orders
 Quest 10153: Saving Scout Makha
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Continue south across the Path of Glory to the Southern Rampart and search for where Warboss Nekrogg is holding Scout Makha.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1536,23 +1806,27 @@ Quest 10153: Saving Scout Makha
 Quest 10169: Losing Gracefully
   level 65 (min 62); zone Shattrath City (3703); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Magister Falris in Shattrath wants you to take the Vial of Sedative Serum to the Terrace of Light and pour it into Haronem's Regiment Cooking Pot.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
 Quest 10179: The Custodian of Kirin'Var
   level 68 (min 2); zone Netherstorm (3523); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Custodian Dierworth in Kirin'Var Village.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10187: A Message for the Archmage
   level 69 (min 2); zone Netherstorm (3523); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak to Archmage Vargoth at the top of the Violet Tower.
   PROPOSED FIX: finishedBy creature Archmage Vargoth = [19481] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [19481] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10207: Forward Base: Reaver's Fall REUSE
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Report to Forward Commander To'arch at Reaver's Fall.
+  Triage: NPCOBJ - propose creature objective, ids [19273] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1560,27 +1834,32 @@ Quest 10207: Forward Base: Reaver's Fall REUSE
 
 Quest 10219: Walk the Dog
   level 255 (min 70); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10244: R.T.F.R.C.M.
   level 69 (min 67); zone Netherstorm (3523); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Fel Reaver Construction Manual to Mama Wheeler at the Midrealm Post inside Eco-Dome Midrealm in the Netherstorm.
+  Triage: NPCOBJ - propose creature objective, ids [18733, 19728] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10260: Netherologist Coppernickels
   level 68 (min 2); zone Netherstorm (3523); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Netherologist Coppernickels at the bridge leading into the Netherstorm from Blade's Edge.
   PROPOSED FIX: finishedBy creature Netherologist Coppernickels = [19569] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [19569] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10364: Caedmos
   class Priest; level 10 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Caedmos in the Vault of Lights of the Exodar.
   PROPOSED FIX: finishedBy creature Caedmos = [16756] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [16756] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10370: Nazgrel's Command <TXT>
   level 70 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1588,27 +1867,32 @@ Quest 10370: Nazgrel's Command <TXT>
 
 Quest 10377: Nothing to Fear
   class Priest; level 20 (min 20); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10383: This is a Breadcrumb!
   level 1 (min 1); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Jonathan LeCraft about the wabbits.
   PROPOSED FIX: finishedBy creature Jonathan LeCraft = [14885] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [14885] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10386: The Fel Reaver Slayer
   level 61 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Overlord Hun Maimist.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10387: The Fel Reaver Slayer
   level 61 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Overlord Hun Maimist.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10398: Return to Honor Hold
   level 61 (min 2); zone Hellfire Peninsula (3483); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: PH: Go to Honor Hold.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1618,36 +1902,43 @@ Quest 10441: Peddling the Goods
   level 69 (min 2); zone Netherstorm (3523); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Aurine Moonblaze at the bottom of the Stormspire.
   PROPOSED FIX: finishedBy creature Aurine Moonblaze = [20871] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [20871] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10454: FLAG - OFF THE RAILS
   level 0 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10459: Revered Among the Cenarion Expedition
   level 70 (min 70); zone Coilfang Reservoir (3905); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Ysiel Windsinger at the Cenarion Refuge wants you to become revered with the Cenarion Expedition.
+  Triage: NPCOBJ - propose creature objective, ids [17841] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10529: The Hunter's Path
   class Hunter; level -1 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Lieutenant Dawnrunner at Farstrider Retreat.
   PROPOSED FIX: finishedBy creature Lieutenant Dawnrunner = [15399] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [15399] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10534: Returning Home
   class Priest; level 10 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Caedmos at the Exodar has requested you come see him.
+  Triage: NPCOBJ - propose creature objective, ids [16756] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10539: Returning Home
   class Priest; level 10 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Caedmos at the Exodar has requested you come see him.
+  Triage: NPCOBJ - propose creature objective, ids [16756] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10558: Revered Among Honor Hold
   level 70 (min 70); zone Hellfire Citadel (3545); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Force Commander Danath Trollbane at Honor Hold in Hellfire Peninsula wants you to become revered with Honor Hold by fighting Fel Orcs inside the Shattered Halls of Hellfire Citadel.
+  Triage: NPCOBJ - propose creature objective, ids [16819] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1656,6 +1947,7 @@ Quest 10558: Revered Among Honor Hold
 Quest 10559: Revered Among Thrallmar
   level 70 (min 70); zone Hellfire Citadel (3535); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Nazgrel at Thrallmar in Hellfire Peninsula wants you to become revered with Thrallmar by fighting the Fel Orcs inside the Shattered Halls of Hellfire Citadel.
+  Triage: NPCOBJ - propose creature objective, ids [3230] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;inn;Honor Hold;Hellfire Peninsula§questziel;gasthaus;Ehrenfeste;Höllenfeuerhalbinsel§objectif de  (zone Hellfire Peninsula, areaId 3483, world -699.2999877929688/2742.400146484375)
   Routedata waypoint: The Path of Anguish;quest target§Der Pfad der Pein;questgegner§Le Chemin de l'angoisse;objectif de quête (zone Hellfire Peninsula, areaId 3483, world -521.7999877929688/2200.800048828125)
@@ -1664,48 +1956,57 @@ Quest 10559: Revered Among Thrallmar
 Quest 10561: Revered Among the Keepers of Time
   level 70 (min 70); zone Caverns of Time (2300); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Andormu inside the Caverns of Time in Tanaris wants you to become revered with the Keepers of Time by continuing to defend the events of Old Hillsbrad and the Black Morass inside the Caverns of Time.
+  Triage: NPCOBJ - propose creature objective, ids [19932, 20130] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: quest target;waters;Sandsorrow Watch;Tanaris§questziel;gewässer;Sandmarterwache;Tanaris§objectif de quête;eaux (zone Tanaris, areaId 440, world -7225.80029296875/-2892.900146484375)
 
 Quest 10610: Prospecting Basics
   level 5 (min 5); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10638: NOT A QUEST
   class Priest; level 10 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Seek <NAME> in the <DISTRICT> of Silvermoon City.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10716: Test Flight: Raven's Wood <needs reward>
   level 64 (min 64); zone Blade's Edge Mountains (3522); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Rally Zapnabber to use the Zephyrium Capacitorium. Return to Tally Zapnabber at Toshley's Station.
   PROPOSED FIX: finishedBy creature Rally Zapnabber = [21461] (talk-to; no coords needed)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
 Quest 10737: The Master's Touch
   level 70 (min 70); zone Caverns of Time (1941); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Go into the Caverns of Time and convince Medivh to enable your Restored Apprentice's Key.
+  Triage: NPCOBJ - propose creature objective, ids [15608] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10779: The Hunter's Path
   class Hunter; level 10 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Huntress Kella Nightbow at LOCATION.
   PROPOSED FIX: finishedBy creature Huntress Kella Nightbow = [17614] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [17614] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10815: The Journal of Val'zareq: Portends of War
   level 70 (min 2); zone Shadowmoon Valley (3520); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Locate Marcus Auralion, High General of the Sha'tar, at Crimson Watch.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10841: The Vengeful Harbringer
   level 255 (min 70); zone Terokkar Forest (3519); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: [PH] Activate the thingy.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10844: Forge Camp: Anger
   level 68 (min 68); zone Blade's Edge Mountains (3522); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: quest target;Lake Everstill;Redridge Mountains§questziel;Der Immerruhsee;Rotkammgebirge§objectif de quête;Lake (zone Redridge Mountains, areaId 44, world -9366.2001953125/-2471.900146484375)
 
@@ -1713,70 +2014,83 @@ Quest 10931: Return to the Exodar
   class Priest; level 0 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Caedmos at the Exodar.
   PROPOSED FIX: finishedBy creature Caedmos = [16756] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [16756] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10932: Return to the Exodar
   class Priest; level 0 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Caedmos at the Exodar.
   PROPOSED FIX: finishedBy creature Caedmos = [16756] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [16756] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10933: Return to Silvermoon
   class Priest; level 0 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Aldrae in Silvermoon City.
   PROPOSED FIX: finishedBy creature Aldrae = [16658] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [16658] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10934: Return to Silvermoon
   class Priest; level 0 (min 2); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak with Aldrae in Silvermoon City.
   PROPOSED FIX: finishedBy creature Aldrae = [16658] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [16658] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 10942: Children's Week
   level 70 (min 60); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Use the Blood Elf Orphan Whistle to call for the ward that you will be looking after during Children's Week.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10943: Children's Week
   level 70 (min 60); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Use the Draenei Orphan Whistle to call for the ward that you will be looking after during Children's Week.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 10960: When I Grow Up...
   level -1 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take your orphan, Salandria, to the paladin trainers in Silvermoon City's Farstriders' Square. Make sure to call for her if she is not present when you arrive. Then, speak with Lady Liadrin, the Blood Knight Matriarch.
   PROPOSED FIX: finishedBy creature Lady Liadrin = [26247, 17076, 25246] (talk-to; no coords needed)
+  Triage: NPCOBJ - propose creature objective, ids [17076, 22914, 25246, 26247] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 11196: TEMP X
   level 70 (min 70); zone Zul'Aman (3805); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Prigmon has tasked you with locating and assisting his cousin Zungam, somewhere within Zul'aman.
+  Triage: NPCOBJ - propose creature objective, ids [23761, 23897] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 11242: Free at Last!
   level -1 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Tome of Thomas Thomson to the Costumed Orphan Matron in Goldshire, Kharanos or Azure Watch.
+  Triage: NPCOBJ - propose creature objective, ids [4982, 24519] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 11321: Did Someone Say "Souvenir?"
   level -1 (min 1); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Redeem the Brewfest Stein Voucher with Belbi Quikswitch in the Brewfest camp.
+  Triage: NPCOBJ - propose creature objective, ids [23710] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 11392: Call the Headless Horseman
   level 70 (min 65); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take a Dreary Candle to the Loosely Turned Soil.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 11401: Call the Headless Horseman
   level -1 (min 65); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take a Dreary Candle to the Loosely Turned Soil.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 11403: Free at Last!
   level -1 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take the Tome of Thomas Thomson to a Masked Orphan Matron in Durotar, Brill or Falconwing Square.
+  Triage: NPCOBJ - propose creature objective, ids [4982, 23973] (NPC named in text, not the turn-in)
   Wiki coords: none found
   Routedata waypoint: rescue;class quest;shaman;down;Durotar§rettung;klassenquest;schamane;unten;Durotar§sauvetage;class quest;shama (zone Durotar, areaId 14, world -167.8000030517578/-3982.900146484375)
   Routedata waypoint: quest target;Echo Isles;Durotar§questziel;Die Echoinseln;Durotar§objectif de quête;Echo Isles;Durotar (zone Durotar, areaId 14, world -1287/-5529.7001953125)
@@ -1784,58 +2098,70 @@ Quest 11403: Free at Last!
 Quest 11404: Call the Headless Horseman
   level -1 (min 65); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Take a Dreary Candle to the Loosely Turned Soil.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 11413: Did Someone Say "Souvenir?"
   level -1 (min 1); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Redeem the Brewfest Stein Voucher with Blix Fixwidget in the back of the Brewfest camp.
+  Triage: NPCOBJ - propose creature objective, ids [24495] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 11442: Welcome to Brewfest!
   level -1 (min 1); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: [PH] Speak to the Brewfest Organizer and receive a free beer.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 11447: Welcome to Brewfest!
   level -1 (min 1); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: [PH] Speak to the Brewfest Organizer and receive a free beer.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 11517: Report to Nasuun
   level 70 (min 70); zone Shattrath City (3703); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Tradesman Portanuus has asked you to speak with Exarch Nasuun on the Terrace of Light in Shattrath City.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
   Routedata waypoint: City of Light;Shattrath City;quest target;50.45;42.93§Stadt des Lichts;Shattrath;Questziel;50.45;42.93§Ville d (zone Shattrath City, areaId 3703, world -1847.8032226562/5476.255859375)
 
 Quest 11518: Sunwell Daily Portal Flag
   level 0 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 11526: The Missing Magistrix
   level 70 (min 70); zone Isle of Quel'Danas (4080); turn-in yes; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Use the Captured Legion Scroll near the portal at Dawning Square. Once you've gone through the portal, find Magistrix Seyla.
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 11577: WoW Collector's Edition: - DEM - E - FLAG
   level 1 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 11874: Upper Deck Promo - Rocket Mount
   level 0 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 11883: Fire Dancing?
   level -1 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Speak to a Master Fire Dancer in any Horde capital.
+  Triage: NPCOBJ - propose creature objective, ids [25974] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 Quest 11937: FLAG - all torch return quests are complete
   level 0 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
+  Triage: WEB - needs external coordinates
   Wiki coords: none found
 
 Quest 11976: Ice Shards
   level -1 (min 0); turn-in NO; QUESTIE-BLACKLISTED (likely removed/seasonal - probably skip)
   Objective text: Bring the Ice Shards to Luma Skymother.
+  Triage: NPCOBJ - propose creature objective, ids [25697] (NPC named in text, not the turn-in)
   Wiki coords: none found
 
 ======================================================================

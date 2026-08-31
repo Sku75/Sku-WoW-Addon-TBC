@@ -314,6 +314,51 @@ for m in re.finditer(r'\[(\d+)\] = \{"((?:[^"\\]|\\.)*)"', cre_txt[i:cre_end]):
 
 SPEAK_RE = re.compile(r"[Ss]peak (?:to|with) ((?:[A-Z][\w'-]+[ .]?)+)")
 
+# verbs that act on a PLACE or OBJECT (not on an NPC) - if one of these is
+# present, reaching an NPC is not the whole quest and web research is needed
+STRONG_FIELD = re.compile(
+    r"\b(use|place|plant|fill|light|extinguish|douse|cleanse|purify|activate|"
+    r"open the|destroy|release|free the|search the|search for|investigate|"
+    r"explore|discover|dig|swim|gaze)\b", re.I)
+
+
+def npcs_in_text(text):
+    """All creature ids whose exact enUS name appears in the text."""
+    ids = set()
+    for m in re.finditer(r"([A-Z][\w'-]+(?: [A-Z][\w'-]+){0,3})", text):
+        words = m.group(1).split()
+        for n in range(len(words), 0, -1):
+            nm = " ".join(words[:n])
+            if nm in npc_by_name:
+                ids.update(npc_by_name[nm])
+                break
+    return ids
+
+
+def triage(text, f):
+    """NOFIX  - the only goal is an NPC we already route to (turn-in);
+    NPCOBJ - the text names a reachable NPC that is NOT the turn-in ->
+             propose a creature objective, no coordinates needed;
+    WEB    - a real field location, needs external coordinates."""
+    if not text:
+        return ("WEB", None)
+    fin = tbl_pos(f[2])
+    tids = set()
+    if fin and fin[0] is not None:
+        for e in tbl_pos(fin[0]):
+            if isinstance(e, int):
+                tids.add(e)
+            elif isinstance(e, tuple) and e[0] == "T" and tbl_pos(e):
+                tids.add(tbl_pos(e)[0])
+    nids = npcs_in_text(text)
+    strong = STRONG_FIELD.search(text)
+    if not strong:
+        if tids & nids:
+            return ("NOFIX", None)
+        if nids - tids:
+            return ("NPCOBJ", sorted(nids - tids))
+    return ("WEB", None)
+
 
 def finishedby_proposal(text):
     """If the objective text names a talk-to NPC we carry, propose its id."""
@@ -401,6 +446,13 @@ def block(qid, cls, has_finish):
             pname, ids = prop
             lines.append("  PROPOSED FIX: finishedBy creature %s = %s (talk-to; no coords needed)"
                          % (pname, ids))
+    tr, tr_ids = triage(text, f)
+    if tr == "NOFIX":
+        lines.append("  Triage: NOFIX - the objective NPC is already the turn-in; Abgabe routes there")
+    elif tr == "NPCOBJ":
+        lines.append("  Triage: NPCOBJ - propose creature objective, ids %s (NPC named in text, not the turn-in)" % tr_ids)
+    else:
+        lines.append("  Triage: WEB - needs external coordinates")
     wc = wiki_coords(name)
     if wc:
         lines.append("  Wiki coords: " + " | ".join(wc))

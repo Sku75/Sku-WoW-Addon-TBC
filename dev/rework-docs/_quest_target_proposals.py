@@ -72,6 +72,8 @@ OBJ_FIX = {  # qid -> (object ids, label, evidence)
     4451: ([173265], "Wooden Outhouse", "local; Searing Gorge 65.59,62.17"),
     280: ([1585], "Explosive Charge", "local; Loch Modan 50.58,14.3 = dam base"),
     7843: ([179912], "Aerie Peak Town Center", "local; Hinterlands 14.34,48.0 = the well in the town center"),
+    5463: ([176631], "Menethil's Gift", "local; spawns in Stratholme - the entrance fallback routes to the gate"),
+    3447: ([148832, 148833, 148834], "Atal'ai Statue", "local; statue circle in the Sunken Temple - entrance fallback routes to the Pool of Tears"),
 }
 
 CRE_FIX = {  # qid -> (creature ids, label, evidence)
@@ -97,6 +99,8 @@ CRE_FIX = {  # qid -> (creature ids, label, evidence)
     6101: ([2043], "Nightsaber Stalker", "local; tame target"),
     6102: ([1996], "Strigid Screecher", "local; tame target"),
     6501: ([10929], "Haleh", "local; Winterspring; NOTE reachable only via teleport runes at the bottom of Mazthoril"),
+    7001: ([10981], "Frostwolf", "local; spawns in Alterac Valley - the entrance fallback routes to the faction entrance"),
+    7027: ([10990], "Alterac Ram", "local; spawns in Alterac Valley - the entrance fallback routes to the faction entrance"),
 }
 
 TRIG_FIX = {  # qid -> (zone name, [(x,y)...], text, confidence, evidence)
@@ -107,11 +111,8 @@ TRIG_FIX = {  # qid -> (zone name, [(x,y)...], text, confidence, evidence)
     250: ("Loch Modan", [(56.1, 13.2)], "Investigate near the eastern dam ramp", "high", "wiki.gg; Suspicious Barrel"),
     465: ("Wetlands", [(47.5, 46.9)], "Destroy the Dragonmaw catapults", "medium", "wowpedia; around the Dragonmaw gates"),
     758: ("Mulgore", [(44.0, 46.0)], "Use the totem at the Thunderhorn Water Well", "high", "wiki.gg; NW of Bloodhoof Village"),
-    2278: ("Badlands", [(42.6, 12.2)], "Uldaman entrance (discs at the end of the instance)", "medium", "dungeon guides"),
     2932: ("The Hinterlands", [(31.5, 58.0), (22.8, 57.0)], "Place the pike at a Witherbark village", "medium", "Hiri'watha and Zun'watha"),
     2969: ("Feralas", [(65.5, 47.4)], "The Sprite Darter pen behind the Grimtotem camp", "medium", "spawn clusters + guide; hidden cliff path"),
-    3373: ("Swamp of Sorrows", [(69.0, 53.0)], "Sunken Temple entrance (Essence Font is inside)", "medium", "instance-interior objective; Pool of Tears"),
-    3447: ("Swamp of Sorrows", [(69.0, 53.0)], "Sunken Temple entrance (statue circle is inside)", "medium", "Pool of Tears, underwater portal"),
     4734: ("Searing Gorge", [(35.4, 84.7)], "Blackrock Mountain entrance (Rookery is inside UBRS)", "medium", "instance-interior objective"),
     5265: ("Eastern Plaguelands", [(76.0, 52.0)], "The Argent Hold chest at Light's Hope", "high", "wiki.gg [76, 52]"),
     8305: ("Silithus", [(28.7, 89.1)], "The Crystalline Tear before the Scarab Wall", "high", "warcrafttavern 28.68,89.14"),
@@ -123,21 +124,19 @@ TRIG_FIX = {  # qid -> (zone name, [(x,y)...], text, confidence, evidence)
     9550: ("Bloodmyst Isle", [(61.2, 41.9)], "The ruined pavilion north of the Ruins of Loreth'Aran", "high", "wiki.gg"),
     9561: ("Bloodmyst Isle", [(60.9, 49.6)], "The Mound of Dirt in the Ruins of Loreth'Aran", "high", "wowpedia"),
     5202: ("Felwood", [(37.0, 58.0)], "Jaedenar entrance (the cell is inside Shadow Hold)", "medium", "cave-interior objective"),
-    5463: ("Eastern Plaguelands", [(27.0, 12.0)], "Stratholme entrance (the Gift is inside)", "medium", "instance-interior objective"),
     8929: ("Eastern Plaguelands", [(27.0, 12.0)], "Use the Ghost Revealer outside the Stratholme gate", "medium", "wiki.gg"),
     8930: ("Eastern Plaguelands", [(27.0, 12.0)], "Use the Ghost Revealer outside the Stratholme gate", "medium", "same as 8929"),
     10166: ("Eversong Woods", [(38.0, 86.0)], "The runestone at the Scorched Grove", "high", "wiki.gg"),
     10174: ("Netherstorm", [(57.6, 86.2)], "Use the staff at the Violet Tower, Kirin'Var", "medium", "wiki.gg"),
     10910: ("Blade's Edge Mountains", [(64.0, 64.0)], "Death's Door; use the Druid Signal", "medium", "wiki.gg; via tunnel south of Mok'Nathal"),
+    8960: ("Searing Gorge", [(35.4, 84.7)], "Blackrock Mountain entrance (Bodley's ghost is inside)", "medium", "creature 16033 has no spawn data; entrance stand-in"),
+    9032: ("Searing Gorge", [(35.4, 84.7)], "Blackrock Mountain entrance (Bodley's ghost is inside)", "medium", "same as 8960"),
     4506: ("Felwood", [(32.32, 66.56)], "The corrupted moonwell in the Ruins of Constellas", "high", "own DB: DND spell-focus object 148501 spawn; object name too ugly to list, use coords"),
 }
 
 PARKED = [
-    (7001, "Frostwolf taming: AV zone 2597 missing from InternalAreaTable - fix the maps gap first"),
-    (7027, "Alterac Ram taming: same AV zone gap"),
-    (8960, "Bodley: inside Blackrock Mountain, no open-world zone map for waypoints"),
-    (9032, "Bodley: same as 8960"),
     (3481, "Searing Gorge chest: no source named the object or coords"),
+    (2278, "NO FIX NEEDED anymore: giver/turn-in stone watcher sits in Uldaman - the instance-entrance fallback routes Annahme/Abgabe to the gate"),
 ]
 # 266 resolved as NOFIX: finishedBy is already Tavernkeep Smitts (273)
 
