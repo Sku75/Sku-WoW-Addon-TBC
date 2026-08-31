@@ -934,19 +934,108 @@ function SkuQuest:GetQuestDataStringFromDB(aQuestID, aZoneID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [instance entrances] A spawn inside an instance has no world map, so the
+-- spawn resolvers used to skip it silently - 298 quests answered with an
+-- EMPTY Annahme/Ziel/Abgabe because giver, target or turn-in lives in a
+-- dungeon (193/60/209 sections). SkuDB.InstanceEntrances (generated from
+-- Questie's dungeon table) maps every instance area to its entrance(s) in
+-- the open world; like the triggerEnd geometry fallback each entrance
+-- resolves to the NEAREST ROUTE WAYPOINT, so Route / Closest route work
+-- unchanged. Memoised per waypoint-cache generation - the availability
+-- scans hit this once per quest in the area.
+local InstanceEntranceWpCache = {}
+local InstanceEntranceWpCacheGen = nil
+local function GetInstanceEntranceWps(aAreaId)
+	if not SkuDB.InstanceEntrances or not SkuDB.InstanceEntrances[aAreaId] then
+		return nil
+	end
+	if InstanceEntranceWpCacheGen ~= SkuNav._wpcGen then
+		InstanceEntranceWpCacheGen = SkuNav._wpcGen
+		InstanceEntranceWpCache = {}
+	end
+	if InstanceEntranceWpCache[aAreaId] then
+		return InstanceEntranceWpCache[aAreaId]
+	end
+	local tOut = {}
+	InstanceEntranceWpCache[aAreaId] = tOut
+	local tPlayerFaction = UnitFactionGroup("player")
+	local tAreaData = SkuDB.InternalAreaTable[aAreaId]
+	local tDungeonName = (tAreaData and tAreaData.AreaName_lang and tAreaData.AreaName_lang[Sku.Loc]) or ""
+	local tEntrances = SkuDB.InstanceEntrances[aAreaId]
+	for i = 1, #tEntrances do
+		local tE = tEntrances[i]
+		-- 4th element = faction-specific battleground entrance
+		if not tE[4] or tE[4] == tPlayerFaction then
+			local _, tParentName, tContinentID = SkuNav.Geo:GetAreaData(tE[1])
+			local tUiMapId = SkuNav.Geo:GetUiMapIdFromAreaId(tE[1])
+			if tParentName and tUiMapId and tContinentID then
+				local _, tWorldPos = C_Map.GetWorldPosFromMapPos(tUiMapId, CreateVector2D(tE[2] / 100, tE[3] / 100))
+				if tWorldPos then
+					local tWorldX, tWorldY = tWorldPos:GetXY()
+					local tWp = SkuNav:GetNearestWpToCoords2(tWorldX, tWorldY, tContinentID, 1)
+					if tWp then
+						tOut[#tOut + 1] = {wp = tWp, dungeonName = tDungeonName, parentName = tParentName, continentId = tContinentID, uiMapId = tUiMapId}
+					end
+				end
+			end
+		end
+	end
+	return tOut
+end
+
+-- Shared appender for the resolvers below: lists the target as
+-- "<name>;Eingang;<dungeon>;<zone>" backed by the entrance's nearest route
+-- waypoint. Mirrors the normal spawn path including the other-continent
+-- text line and the aOnlyUiMapId filter (quest beacons).
+local function AddInstanceEntranceEntries(aTargetTable, aName, aAreaId, aPlayerContinentID, aOnlyUiMapId)
+	local tEntrances = GetInstanceEntranceWps(aAreaId)
+	if not tEntrances then
+		return
+	end
+	for i = 1, #tEntrances do
+		local tE = tEntrances[i]
+		if (not aOnlyUiMapId) or aOnlyUiMapId == tE.uiMapId then
+			local tKey = aName..";"..L["Eingang"]..";"..tE.dungeonName..";"..tE.parentName
+			local tLine
+			if tE.continentId == aPlayerContinentID then
+				tLine = tE.wp
+			else
+				tLine = L["Anderer Kontinent"]..";"..(SkuNav.Geo:GetContinentNameFromContinentId(tE.continentId) or "")..";"..tE.parentName
+			end
+			if not aTargetTable[tKey] then
+				aTargetTable[tKey] = {}
+			end
+			local tDupe = false
+			for x = 1, #aTargetTable[tKey] do
+				if aTargetTable[tKey][x] == tLine then
+					tDupe = true
+				end
+			end
+			if not tDupe then
+				table.insert(aTargetTable[tKey], tLine)
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3, aOnlyUiMapId)
 	local _, _, tPlayerContinentID  = SkuNav.Geo:GetAreaData(SkuNav.Geo:GetCurrentAreaId())
 
 	for i, tNpcID in pairs(aCreatureIds) do
-		--dprint("CreateRtWpSubmenu", i, tNpcID)		
+		--dprint("CreateRtWpSubmenu", i, tNpcID)
 		local i = tNpcID
 		if SkuDB.NpcData.Data[i] then
 			local tSpawns = SkuDB.NpcData.Data[i][7]
 			if tSpawns then
 				for is, vs in pairs(tSpawns) do
 					local isUiMap = SkuNav.Geo:GetUiMapIdFromAreaId(is)
-					--we don't care for stuff that isn't in the open world
-					if isUiMap and (not aOnlyUiMapId or aOnlyUiMapId == isUiMap ) then
+					--not in the open world: route to the instance entrance instead of skipping
+					if not isUiMap then
+						if SkuDB.NpcData.Names[Sku.Loc][i] then
+							AddInstanceEntranceEntries(aTargetTable, SkuDB.NpcData.Names[Sku.Loc][i][1], is, tPlayerContinentID, aOnlyUiMapId)
+						end
+					elseif (not aOnlyUiMapId or aOnlyUiMapId == isUiMap ) then
 						local tData = SkuDB.InternalAreaTable[is]
 						if tData then
 							if SkuNav.Geo:GetContinentNameFromContinentId(tData.ContinentID) then
@@ -1039,7 +1128,9 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 						if tObjectSpawns then
 							for is, vs in pairs(tObjectSpawns) do
 								local isUiMap = SkuNav.Geo:GetUiMapIdFromAreaId(is)
-								if isUiMap and (not aOnlyUiMapId or aOnlyUiMapId == isUiMap ) then
+								if not isUiMap then
+									AddInstanceEntranceEntries(tResultWPs, tObjectName or "", is, tPlayerContinentID, aOnlyUiMapId)
+								elseif (not aOnlyUiMapId or aOnlyUiMapId == isUiMap ) then
 									--if is == tCurrentAreaId then
 										local tData = SkuDB.InternalAreaTable[is]
 										if tData then
@@ -1090,8 +1181,11 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 				if tSpawns then
 					for is, vs in pairs(tSpawns) do
 						local isUiMap = SkuNav.Geo:GetUiMapIdFromAreaId(is)
-						--we don't care for stuff that isn't in the open world
-						if isUiMap then
+						--not in the open world: route to the instance entrance instead of skipping
+						if not isUiMap then
+							local tObjectName = SkuDB.objectLookup[Sku.Loc][tObjectId] or SkuDB.objectDataTBC[tObjectId][1] or L["Object name missing"]
+							AddInstanceEntranceEntries(tResultWPs, tObjectName, is, tPlayerContinentID, aOnlyUiMapId)
+						elseif isUiMap then
 							local tData = SkuDB.InternalAreaTable[is]
 							if tData then
 								if tPlayerContinentID == tData.ContinentID then

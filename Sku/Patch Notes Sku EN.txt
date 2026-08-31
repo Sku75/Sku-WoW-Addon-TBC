@@ -61,6 +61,7 @@ Changes in Sku v43.2
             Quest menu: for quests with mixed objectives ("kill X and collect Y") the "Quest target" entry only showed the first objective kind - enemies, item sources and the exploration point now sit side by side.
             Quest database: right after a /reload, quests of inactive world events (such as Midsummer quests) could appear in "Starts in zone".
             Thirteen talk-to quests (among them the old priest spell quests) shipped without a turn-in in the data - the Delivery entry now leads to the NPC the quest text names.
+            Quest menu: about 300 quests whose quest giver, target or turn-in sits inside a dungeon showed empty entries - they now lead to the dungeon entrance.
 
     Swimming and flying: the pitch lock ends the unwanted diving
         Simple: While swimming or flying, every automatic turn towards the beacon pulled you a
@@ -687,6 +688,24 @@ Changes in Sku v43.2
             started gate is specific to IsDoable. The value "HIDE_ON_MAP" is skipped just
             like Questie itself does, and every pre-start hide writes a dprint line to the
             log.
+
+    Quests in dungeons lead to the entrance instead of nowhere
+        Simple: For about 300 quests the quest giver, the target or the turn-in sits
+            inside a dungeon - "Vorrel's Revenge" starts in the Scarlet Monastery,
+            "Willix the Importer" ends in Razorfen Kraul. Quest start, Quest target and
+            Delivery used to be empty there, because instances have no world map. Those
+            entries now read "NPC, entrance, dungeon name, zone" with a route to the
+            dungeon entrance - battleground quests included (Alterac Valley picks the
+            right entrance per faction).
+        Technically: New generated table SkuDB.InstanceEntrances (from Questie's dungeon
+            table, tool dev/rework-docs/_gen_instance_entrances.py): instance areaId ->
+            entrances {parent zone, x, y, optional faction}, including the wing sub-ids
+            and a GetBuildInfo gate for the WotLK entrance moves. The spawn resolvers
+            (CreatureIdHelper, the object and item branches of GetResultingWps) no longer
+            skip map-less areas; they answer like the v43.2 triggerEnd detour: convert
+            the entrance coordinates to world coordinates, take the nearest route
+            waypoint. Memoised per waypoint-cache generation; the faction filter reads
+            UnitFactionGroup.
 
     Thirteen talk-to quests have a turn-in again
         Simple: Thirteen quests - above all the old priest spell quests (Stars of Elune,

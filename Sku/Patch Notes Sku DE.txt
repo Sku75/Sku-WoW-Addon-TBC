@@ -61,6 +61,7 @@ Aenderungen in Sku v43.2
             Questmenue: bei Quests mit gemischten Zielen ("toete X und sammle Y") zeigte "Ziel" nur die erste Zielart - jetzt stehen Gegner, Fundorte und Erkundungspunkt nebeneinander.
             Questdatenbank: direkt nach einem /reload konnten Quests inaktiver Weltereignisse (etwa Sonnenwendquests) in "Start in Zone" auftauchen.
             Dreizehn Sprich-mit-Quests (u.a. die alten Priester-Zauberquests) standen ohne Abgabepunkt in den Daten - jetzt fuehrt die Abgabe zu dem NPC, den der Questtext nennt.
+            Questmenue: rund 300 Quests, deren Questgeber, Ziel oder Abgabe in einem Dungeon liegt, zeigten leere Eintraege - jetzt fuehren sie zum Dungeoneingang.
 
     Schwimmen und Fliegen: die Neigungssperre beendet das ungewollte Abtauchen
         Einfach: Beim Schwimmen oder Fliegen zog jede automatische Drehung zum Funkfeuer ein
@@ -746,6 +747,24 @@ Aenderungen in Sku v43.2
             Memoize-Vergiftungsgefahr hinter dem started-Tor betrifft nur IsDoable. Der
             Wert "HIDE_ON_MAP" wird wie bei Questie selbst uebersprungen, und jede
             Vor-Start-Ausblendung schreibt eine dprint-Zeile ins Log.
+
+    Quests in Dungeons fuehren zum Eingang statt ins Leere
+        Einfach: Bei rund 300 Quests liegt der Questgeber, das Ziel oder die Abgabe in
+            einem Dungeon - "Rache fuer Vorrel" beginnt im Scharlachroten Kloster, "Willix
+            der Importeur" endet im Kral von Rasierklingenfarn. Annahme, Ziel und Abgabe
+            waren dort bisher leer, weil es in Instanzen keine Weltkarte gibt. Jetzt steht
+            dort stattdessen der Eintrag "NPC, Eingang, Dungeonname, Zone" mit Route zum
+            Dungeoneingang - auch bei Schlachtfeldquests (Alteractal je Fraktion am
+            richtigen Eingang).
+        Technisch: Neue generierte Tabelle SkuDB.InstanceEntrances (aus Questies
+            Dungeon-Tabelle, Werkzeug dev/rework-docs/_gen_instance_entrances.py):
+            Instanz-AreaId -> Eingaenge {Elternzone, x, y, ggf. Fraktion}, inklusive der
+            Nebenfluegel-IDs und einem GetBuildInfo-Tor fuer die WotLK-Verschiebungen.
+            Die Spawn-Aufloeser (CreatureIdHelper, Objekt- und Gegenstands-Zweig von
+            GetResultingWps) ueberspringen kartenlose Gebiete nicht mehr, sondern
+            beantworten sie wie der triggerEnd-Umweg von v43.2: Eingangskoordinaten in
+            Weltkoordinaten wandeln, naechsten Routen-Wegpunkt nehmen. Memoisiert je
+            Wegpunktcache-Generation; der Fraktionsfilter liest UnitFactionGroup.
 
     Dreizehn Sprich-mit-Quests haben wieder eine Abgabe
         Einfach: Dreizehn Quests - vor allem die alten Priester-Zauberquests (Sterne

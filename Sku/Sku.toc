@@ -88,6 +88,7 @@ _psC_preSkuDB.lua
 SkuDB\Core.lua
 SkuDB\uninterruptibleCasts.lua
 SkuDB\assets\maps.lua
+SkuDB\assets\instances.lua
 SkuDB\assets\default_waypoints.lua
 SkuDB\assets\quests.lua
 SkuDB\assets\quests_fixes.lua

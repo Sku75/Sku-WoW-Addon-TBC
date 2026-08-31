@@ -64,6 +64,7 @@ Changements dans Sku v43.2
             Menu de quête : pour les quêtes à objectifs mixtes (« tuer X et ramasser Y »), l'entrée « Cible de quête » ne montrait que le premier type d'objectif - ennemis, sources d'objets et point d'exploration figurent désormais côte à côte.
             Base de données des quêtes : juste après un /reload, des quêtes d'événements mondiaux inactifs (par exemple les quêtes du Solstice d'été) pouvaient apparaître dans « Commence dans la zone ».
             Treize quêtes de dialogue (dont les anciennes quêtes de sorts de prêtre) n'avaient aucun point de remise dans les données - l'entrée Livraison mène désormais au PNJ que nomme le texte de la quête.
+            Menu de quête : environ 300 quêtes dont le donneur, la cible ou la remise se trouve dans un donjon affichaient des entrées vides - elles mènent désormais à l'entrée du donjon.
 
     Nage et vol : le verrouillage de l'inclinaison met fin à la plongée involontaire
         Simple : En nageant ou en volant, chaque virage automatique vers la balise tirait un peu
@@ -765,6 +766,25 @@ Changements dans Sku v43.2
             d'empoisonnement de mémoïsation derrière la barrière started ne concerne que
             IsDoable. La valeur « HIDE_ON_MAP » est ignorée comme le fait Questie lui-même,
             et chaque masquage d'avant-démarrage écrit une ligne dprint dans le journal.
+
+    Les quêtes de donjon mènent à l'entrée au lieu de nulle part
+        Simple : Pour environ 300 quêtes, le donneur, la cible ou la remise se trouve
+            dans un donjon - « La vengeance de Vorrel » commence au Monastère écarlate,
+            « Willix l'importateur » se termine au Kraal de Tranchebauge. Début de quête,
+            Cible de quête et Livraison y restaient vides, car les instances n'ont pas de
+            carte du monde. Ces entrées affichent désormais « PNJ, entrée, nom du donjon,
+            zone » avec une route vers l'entrée du donjon - quêtes de champ de bataille
+            comprises (la vallée d'Alterac choisit la bonne entrée selon la faction).
+        Technique : Nouvelle table générée SkuDB.InstanceEntrances (depuis la table des
+            donjons de Questie, outil dev/rework-docs/_gen_instance_entrances.py) :
+            areaId d'instance -> entrées {zone parente, x, y, faction éventuelle}, y
+            compris les identifiants des ailes et une barrière GetBuildInfo pour les
+            déplacements d'entrées de WotLK. Les résolveurs de spawns (CreatureIdHelper,
+            branches objet et objet-ramassé de GetResultingWps) ne sautent plus les zones
+            sans carte ; ils répondent comme le détour triggerEnd de la v43.2 : convertir
+            les coordonnées de l'entrée en coordonnées du monde, prendre le point de
+            passage de route le plus proche. Mémoïsé par génération du cache de points de
+            passage ; le filtre de faction lit UnitFactionGroup.
 
     Treize quêtes de dialogue ont retrouvé leur point de remise
         Simple : Treize quêtes - surtout les anciennes quêtes de sorts de prêtre (Étoiles

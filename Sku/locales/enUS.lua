@@ -2022,6 +2022,7 @@ L["Quests"]  = "Quests" --
 L["Questtext:\r\n"]  = "Quest description:\r\n" --
 L["Questtext\r\n"]  = "Quest description:\r\n" --
 L["Questziel"] = "quest target"
+L["Eingang"] = "entrance"
 L["Quick waypoint 4 set to corpse"]  = "Quick waypoint 4 set to corpse" --
 L["quick waypoint"]  = "quick waypoint" --
 L["Quick waypoint"]  = "quick waypoint" --
