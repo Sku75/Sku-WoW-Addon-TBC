@@ -35,8 +35,12 @@ Changes in Sku v43.2
             Chat: "Add Link to chat" no longer closes the bags.
             Chat: the arrow keys move the text cursor in the chat input; can be turned off under chat settings.
             Quest database: brought up to Questie's current data - 33 quests that had no target now have one, five missing quests added, plus about 2000 smaller corrections to names, levels, quest givers and prequests.
+            Turn towards beacon (T): the turn now lands far more accurately. It used to run so fast that merely stopping it frame-exactly could cost 20 degrees and more of overshoot depending on frame rate; the speed now scales with the size of the turn, and no turn takes longer than a quarter of a second.
+            Turn towards beacon: while moving, the turn leads the target - it aims where the waypoint will be when the turn finishes. This ends the circling around close waypoints, known above all from riding and flying.
+            Turn towards beacon: a press during a running turn is discarded instead of cutting the turn short - pressing repeatedly keeps refining as before.
 
         Bugfixes
+            Turn towards beacon: after turns triggered in quick succession, the camera keys' turn speed could stay permanently quadrupled.
             Escape did not close the menu while standing right on a quest object - the quest window reopened endlessly.
             Bags: the type-ahead filter stuck after using an item and could only be cleared by closing the bags.
             After an action with a cast time a wrong item was announced right after the correct one.

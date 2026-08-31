@@ -35,8 +35,12 @@ Aenderungen in Sku v43.2
             Chat: "Link zu Chat hinzufuegen" schliesst die Taschen nicht mehr.
             Chat: die Pfeiltasten bewegen in der Chateingabe den Textcursor; abschaltbar unter Chateinstellungen.
             Questdatenbank: auf den aktuellen Questie-Datenstand gebracht - 33 Quests ohne Ziel haben jetzt eines, fuenf fehlende ergaenzt, dazu rund 2000 kleinere Korrekturen an Namen, Stufen, Questgebern und Vorquests.
+            Zum Beacon drehen (T): die Drehung sitzt jetzt deutlich genauer. Vorher lief sie so schnell, dass allein das framegenaue Stoppen je nach Bildrate 20 Grad und mehr Ueberdreh kosten konnte; jetzt richtet sich das Tempo nach der Drehgroesse, und keine Drehung dauert laenger als eine Viertelsekunde.
+            Zum Beacon drehen: in Bewegung wird vorgehalten - gezielt wird dorthin, wo der Wegpunkt am Ende der Drehung liegen wird. Das beendet das Im-Kreis-Laufen um nahe Wegpunkte, das vor allem beritten und im Flug auftrat.
+            Zum Beacon drehen: ein Druck waehrend einer laufenden Drehung wird verworfen, statt die Drehung mittendrin abzubrechen - gewohntes Mehrfachdruecken verfeinert weiter wie bisher.
 
         Fehlerbehebungen
+            Zum Beacon drehen: nach schnell hintereinander ausgeloesten Drehungen konnte die Drehgeschwindigkeit der Kamera-Tasten dauerhaft vervierfacht haengenbleiben.
             Escape schloss das Menue nicht, wenn man direkt auf einem Questobjekt stand - das Questfenster ging endlos wieder auf.
             Taschen: der Tippfilter blieb nach dem Benutzen eines Gegenstands haengen und liess sich nur noch durch Schliessen der Taschen loswerden.
             Nach einer Aktion mit Zauberzeit wurde direkt nach dem richtigen Gegenstand noch ein falscher angesagt.

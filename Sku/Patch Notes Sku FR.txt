@@ -38,8 +38,12 @@ Changements dans Sku v43.2
             Chat : « Ajouter le lien au chat » ne ferme plus les sacs.
             Chat : les flèches déplacent le curseur de texte dans la saisie du chat ; désactivable dans les paramètres du chat.
             Base de données des quêtes : mise au niveau des données actuelles de Questie - 33 quêtes sans cible en ont désormais une, cinq quêtes manquantes ajoutées, plus environ 2000 petites corrections de noms, niveaux, donneurs de quête et prérequis.
+            Se tourner vers la balise (T) : la rotation est désormais nettement plus précise. Avant, elle tournait si vite que le simple arrêt à la trame près pouvait coûter 20 degrés et plus de dépassement selon la fréquence d'images ; la vitesse s'adapte maintenant à l'ampleur de la rotation, et aucune rotation ne dure plus d'un quart de seconde.
+            Se tourner vers la balise : en mouvement, la rotation anticipe - elle vise l'endroit où se trouvera le point de passage à la fin de la rotation. Cela met fin aux tours en rond autour des points proches, surtout connus en monture et en vol.
+            Se tourner vers la balise : un appui pendant une rotation en cours est ignoré au lieu d'interrompre la rotation - appuyer plusieurs fois continue d'affiner comme avant.
 
         Corrections
+            Se tourner vers la balise : après des rotations déclenchées coup sur coup, la vitesse de rotation des touches de caméra pouvait rester quadruplée en permanence.
             Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête - la fenêtre de quête se rouvrait sans fin.
             Sacs : le filtre de saisie restait bloqué après l'utilisation d'un objet et ne pouvait plus être levé qu'en fermant les sacs.
             Après une action avec temps d'incantation, un mauvais objet était annoncé juste après le bon.

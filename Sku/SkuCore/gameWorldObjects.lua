@@ -179,6 +179,12 @@ function GameWorldObjects:GameWorldObjectsRestoreView()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Der Nutzerwert von cameraYawMoveSpeed, solange eine Drehung offen ist.
+-- Lebt AUSSERHALB der Funktion: ein schneller zweiter Tastendruck darf nicht
+-- unseren eigenen, gerade gesetzten Drehwert als "alt" einfangen - sonst wird
+-- beim Zuruecksetzen der Drehwert verewigt und die Kamera-Tasten des Nutzers
+-- laufen dauerhaft schneller.
+local tTurnYawSpeedSaved
 function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
    aWaypointName = aWaypointName or SkuOptions.db.profile["SkuNav"].selectedWaypoint
    if aWaypointName and aWaypointName ~= "" then
@@ -192,6 +198,55 @@ function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
          "facing", GetPlayerFacing(), "hoehe", fPlayerPosZ,
          "swim", tostring(IsSwimming()), "fly", tostring(IsFlying()),
          "mounted", tostring(IsMounted()), "falling", tostring(IsFalling()))
+      -- Laeuft noch eine Drehung, den Tastendruck VERWERFEN statt neu zu
+      -- starten: die laufende Drehung steuert eine keine Viertelsekunde alte
+      -- Peilung an - sie abzubrechen wuerfe ihre halbe Arbeit weg (der
+      -- Transfer-Impuls feuert erst am Ende). Genau das zeigte das Log
+      -- 2026-08-31 16:08: vier Druecke im Drehtakt auf dieselbe 140-Grad-
+      -- Peilung, drei davon annulliert. Der naechste Druck NACH dem Ende
+      -- verfeinert dann mit frischer Peilung - das gewohnte Mehrfachdruecken
+      -- bleibt sinnvoll.
+      if SkuCore.gameWorldObjectsTurnBusyUntil and GetTime() < SkuCore.gameWorldObjectsTurnBusyUntil then
+         dprint("TurnToWp ignoriert, Drehung laeuft noch",
+            string.format("%.2f", SkuCore.gameWorldObjectsTurnBusyUntil - GetTime()))
+         return
+      end
+      -- VORHALTEN gegen das Kreisen um nahe Wegpunkte (Log 2026-08-31 16:26:
+      -- 15 Druecke, jede Drehung ausgefuehrt, Peilung trotzdem konstant ~70
+      -- Grad links - ein stabiler Orbit): degree oben ist die Peilung ZUM
+      -- ZEITPUNKT DES DRUCKS, aber waehrend Drehung + Transfer laeuft man
+      -- weiter, und nah am Punkt wandert die Peilung mit v/r - beim Gehen in
+      -- 5 Metern Abstand ~80 Grad pro Sekunde. Darum wird hier auf die
+      -- Peilung BEIM LANDEN der Drehung gezielt: Position um Geschwindigkeit
+      -- mal (geschaetzte Drehdauer + Transferpuffer) in Blickrichtung
+      -- vorgerueckt, Peilung von dort neu gerechnet. Im Stand ist v = 0 und
+      -- nichts aendert sich. Der Vorhalteweg ist auf den halben Restabstand
+      -- gedeckelt, damit nie HINTER den Wegpunkt gezielt wird (sonst
+      -- kommandierte ein naher Frontal-Anlauf eine 180-Grad-Wende).
+      -- Blickrichtungsvektor in den Koordinaten von GetDirectionTo: aus
+      -- dessen eigener Algebra folgt "geradeaus" = (cos f, sin f) - fuer
+      -- afinal = 0 muss atan2(dy, dx) gleich der Blickrichtung sein.
+      local tSpeedNow = GetUnitSpeed("player")
+      if tSpeedNow and tSpeedNow > 0 and GetPlayerFacing() then
+         local tDurEst = math.min(0.25, math.abs(degree) / 360) + 0.15
+         local tLeadDist = tSpeedNow * tDurEst
+         local _, tDist = SkuNav:Distance(fPlayerPosX, fPlayerPosY, tData.worldX, tData.worldY)
+         if tDist and tDist > 0 then
+            tLeadDist = math.min(tLeadDist, tDist * 0.5)
+         end
+         local tFacingNow = GetPlayerFacing()
+         local tPredX = fPlayerPosX + math.cos(tFacingNow) * tLeadDist
+         local tPredY = fPlayerPosY + math.sin(tFacingNow) * tLeadDist
+         local _, _, tLeadDegree = SkuNav.Geo:GetDirectionTo(tPredX, tPredY, tData.worldX, tData.worldY)
+         if tLeadDegree then
+            dprint("TurnToWp lead", "v", string.format("%.1f", tSpeedNow),
+               "leadDist", string.format("%.1f", tLeadDist),
+               "dist", tDist and string.format("%.1f", tDist) or "nil",
+               "degree alt", string.format("%.1f", degree),
+               "neu", string.format("%.1f", tLeadDegree))
+            degree = tLeadDegree
+         end
+      end
       -- Laufende Nummer der Drehung: der nachgelagerte Geradestell-Impuls
       -- unten verfaellt, wenn inzwischen eine NEUERE Drehung laeuft (deren
       -- eigener Impuls uebernimmt) - sonst wuerde sein Kamera-Schnapp einer
@@ -221,43 +276,72 @@ function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
             "swim", tostring(IsSwimming()), "fly", tostring(IsFlying()),
             "smoothstyle", tostring(GetCVar("cameraSmoothStyle")))
       end)
-      -- KEIN Kamera-Snap mehr. Hier stand frueher ein SetView(2) (spaeter auf
-      -- den SkuStandard begrenzt). Es hat fuer die Drehung nie etwas getan:
-      -- degree ist oben rein rechnerisch aus Welt-X/Y ermittelt, Wegpunkte
-      -- haben gar kein Z, und MoveViewLeft/RightStart dreht relativ, also aus
-      -- jeder Kameralage heraus korrekt. Der einzige Effekt war, die Neigung
-      -- auf eine feste, leicht nach unten gerichtete Voreinstellung zu
-      -- schnappen - die der Mouselook-Impuls unten beim Fliegen/Schwimmen auf
-      -- den Charakter uebertragen hat (ungewolltes Landen/Abtauchen).
-      -- Der Mouselook-Impuls selbst MUSS bleiben: er ist das, was die
-      -- Kamera-Gierung auf die Blickrichtung des Charakters uebertraegt.
+      -- Eine noch laufende Kamera-Drehung eines schnellen vorherigen
+      -- Tastendrucks anhalten, BEVOR neu ausgerichtet wird - sonst dreht ihre
+      -- Restbewegung nach dem Snap weiter und verfaelscht den Startpunkt.
+      MoveViewRightStop()
+      MoveViewLeftStop()
+      -- Kamera-Snap auf die SkuStandard-Ansicht (Slot 2, hinter dem
+      -- Charakter) - 43.2 entfernt, hier WIEDER EINGEBAUT: degree wird oben
+      -- aus der Blickrichtung des CHARAKTERS berechnet, unten aber als
+      -- KAMERA-Drehung ausgefuehrt und per Mouselook-Impuls zurueck-
+      -- uebertragen. Die Rechnung geht nur auf, wenn Kamera und Charakter
+      -- beim Start uebereinstimmen - genau das stellt der Snap her. Ohne ihn
+      -- blieb im Stand jeder Versatz dauerhaft stehen (Smoothstyle richtet
+      -- nur bei Bewegung nach) und jede weitere Drehung erbte ihn: Drehungen
+      -- landeten teils in der falschen Richtung (Log 2026-08-31 15:25).
+      -- Die kleine Abwaerts-Neigung der Voreinstellung, wegen der der Snap
+      -- entfernt worden war, faengt beim Schwimmen/Fliegen jetzt die
+      -- Neigungssperre samt Geradestell-Impuls unten ab.
+      -- Der Mouselook-Impuls unten MUSS ebenfalls bleiben: er ist das, was
+      -- die Kamera-Gierung auf die Blickrichtung des Charakters uebertraegt.
+      if not SkuCore.CameraSkuStandardActive or SkuCore:CameraSkuStandardActive() then SetView(2) end
       --SkuCore:GameWorldObjectsCenterMouseCursor(0.5)
-      
-      local tOldCameraYawMoveSpeed = GetCVar("cameraYawMoveSpeed")
 
-      local tFullTurnTime = 0.5
-      local tOneDegreeTime = tFullTurnTime / 180
-      local tYawMoveSpeedForOneSecond = 180 * (1 / tFullTurnTime)
+      if tTurnYawSpeedSaved == nil then
+         tTurnYawSpeedSaved = GetCVar("cameraYawMoveSpeed")
+      end
 
-      SetCVar("cameraYawMoveSpeed", tYawMoveSpeedForOneSecond)
-      
       if degree < 0 then
          degree = degree - 5
       else
          degree = degree + 5
       end
-      local tDuration = tOneDegreeTime * degree
+
+      -- Drehgeschwindigkeit nach Drehgroesse: C_Timer.After stoppt nur
+      -- framegenau und feuert IMMER erst im Frame NACH Ablauf - der
+      -- Ueberdreh-Fehler ist Drehgeschwindigkeit mal Frame-Verspaetung
+      -- (gemessen 2026-08-31: ~3-8 ms auf diesem Rechner). Die alten festen
+      -- 1440 Grad/s kosteten damit 8-24 Grad pro Druck, feste 360 Grad/s
+      -- machten grosse Drehungen langsam genug, dass das gewohnte
+      -- Mehrfachdruecken sie mitten in der Fahrt traf. Deshalb: kleine
+      -- Drehungen (die Endkorrektur, Median 5 Grad) laufen praezise mit
+      -- 360 Grad/s, groessere gerade so schnell, dass KEINE Drehung laenger
+      -- als 0.25 s dauert - selbst 180 Grad kosten dann nur ~720 Grad/s,
+      -- also ~3-6 Grad Frame-Fehler, und der Folge-Druck korrigiert langsam.
+      local tMaxTurnTime = 0.25
+      local tSpeed = math.max(360, math.abs(degree) / tMaxTurnTime)
+      SetCVar("cameraYawMoveSpeed", tSpeed)
+      local tDuration = degree / tSpeed
 
       if tDuration < 0 then
-         MoveViewRightStart(4)
+         MoveViewRightStart(1)
          tDuration = tDuration * -1
       else
-         MoveViewLeftStart(4)
+         MoveViewLeftStart(1)
       end
-      C_Timer.After(tDuration / 4, function()
+      SkuCore.gameWorldObjectsTurnBusyUntil = GetTime() + tDuration
+      C_Timer.After(tDuration, function()
+         -- Nur die NEUESTE Drehung stoppt und raeumt auf. Laeuft schon eine
+         -- neuere, hat DEREN Tastendruck oben unsere Bewegung bereits
+         -- angehalten und neu gestartet - ein Stop hier wuerde sie mitten in
+         -- der Fahrt abwuergen, und der Impuls unten wuerde ihre halbe
+         -- Drehung vorzeitig auf den Charakter uebertragen.
+         if SkuCore.gameWorldObjectsTurnSeq ~= tMyTurnSeq then return end
          MoveViewRightStop()
          MoveViewLeftStop()
-         SetCVar("cameraYawMoveSpeed", tOldCameraYawMoveSpeed)
+         SetCVar("cameraYawMoveSpeed", tTurnYawSpeedSaved)
+         tTurnYawSpeedSaved = nil
          -- Der Impuls uebertraegt die Kamera-Gierung auf die Blickrichtung des
          -- Charakters. Beim Schwimmen/Fliegen nimmt er auch die Kamera-Neigung
          -- mit und stupst dadurch nach unten. Dagegen ist hier BEWUSST nichts
