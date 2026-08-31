@@ -149,6 +149,8 @@ AURA_AuraRefGroupTip	Si une autre de vos auras s'applique actuellement. Seules l
 AURA_ComboPointsShort	Points de combo
 AURA_GeneralEventsGroup	Événements généraux
 AURA_GeneralEventsGroupTip	Tous les événements qui ne sont pas déclenchés par un sort : mêlée, distance, objets, santé, ressources, changement de cible, mort et touches
+AURA_OutWeHand	main de l'enchantement d'arme
+AURA_OutWeHandTip	Annonce quelle main concerne l'événement d'enchantement d'arme
 AURA_OutWeMH	Enchantement d'arme main droite (nom)
 AURA_OutWeMHTip	Énonce le nom de l'enchantement actuellement sur votre main droite
 AURA_OutWeOH	Enchantement d'arme main gauche (nom)
@@ -170,6 +172,8 @@ AURA_PowerRunicTip	Votre puissance runique en pourcentage, quelle que soit la ba
 AURA_SpellEventsGroup	Événements de sort
 AURA_SpellEventsGroupTip	Tous les événements déclenchés par un sort
 AURA_VitalsGroupTip	La santé du joueur, ou l'une de ses ressources, en pourcentage, plus les points de combo en nombre
+AURA_WeHand	main de l'enchantement d'arme
+AURA_WeHandTip	Quelle main concerne l'événement d'enchantement d'arme (main droite ou main gauche)
 AURA_WeMH	Votre enchantement d'arme en main droite
 AURA_WeMHDur	Durée restante de l'enchantement d'arme en main droite
 AURA_WeMHDurTip	La durée restante de l'enchantement d'arme en main droite, en secondes
@@ -182,10 +186,6 @@ AURA_WeaponEnchantRemoved	Enchantement d'arme expiré
 AURA_WeaponEnchantRemovedShort	Enchantement disparu
 AURA_WeaponEnchantRemovedTip	Un enchantement d'arme temporaire (poison, pierre à aiguiser, huile de mage) a expiré
 AURA_WeaponEnchantValueTag	enchantement d'arme
-AURA_WeHand	main de l'enchantement d'arme
-AURA_WeHandTip	Quelle main concerne l'événement d'enchantement d'arme (main droite ou main gauche)
-AURA_OutWeHand	main de l'enchantement d'arme
-AURA_OutWeHandTip	Annonce quelle main concerne l'événement d'enchantement d'arme
 AUTOFOLLOW_BEGIN	début du suivi automatique
 AUTOFOLLOW_END	fin du suivi automatique
 Abbrechen	Annuler
@@ -1686,6 +1686,7 @@ Options	Options
 Orange	Orange
 Orc	Orc
 Ork	Orc
+Ort unbekannt	Lieu inconnu
 Other	Autre
 Out	Dehors
 Out of range at	Hors de portée à
@@ -1750,6 +1751,8 @@ PetStableFrame	Écurie
 Pets	Familiers
 Phase	Phase
 Ping	Ping
+Pitch locked	inclinaison verrouillée
+Pitch unlocked	inclinaison libre
 Plaketten einfaerben	Colorer les barres de nom
 Plaketten-Farben	Couleurs des barres de nom
 Play NPC greetings	Lire les salutations des PNJ
@@ -1806,12 +1809,14 @@ Quest ID	ID de quête
 Quest Items	Objets de quête
 Quest available	Quête disponible
 Quest for hand-in	Quête à rendre
+Quest verfolgen	Suivre la quête
 Quest;aktive	quête;active
 Quest;available	quête;disponible
 Quest;geschlossen	Quête;fermée
 Quest;geöffnet	Quête;ouverte
 QuestFrame	Quête
 QuestLogFrame	Journal de quêtes
+Questabgabe	Rendre la quête
 Questdatenbank	Base de données des quêtes
 Questie announce both	Les deux
 Questie announce party	Groupe
@@ -1820,6 +1825,7 @@ Questie chat announcements	Annonces dans le chat
 Questie not installed	Questie n'est pas installé
 Quests	Quêtes
 Quests group	Groupe de quêtes
+Quests in der Nähe	Quêtes à proximité
 Questtext:r\n	Description de la quête :r\n
 Questtextr\n	Description de la quête :r\n
 Questziel	objectif de quête
@@ -1995,8 +2001,10 @@ SKU_KEY_OUTPUTHARDTARGET	Annoncer la cible fixe actuelle
 SKU_KEY_OUTPUTSOFTTARGET	Annoncer la cible souple actuelle
 SKU_KEY_OUTPUTTARGETTOOLTIP	Annoncer l'infobulle complète de la cible
 SKU_KEY_PANICMODE	mode panique
+SKU_KEY_PITCHLOCK	verrouillage de l'inclinaison en nage et en vol
 SKU_KEY_QUESTABANDON	abandonner la quête
 SKU_KEY_QUESTSHARE	afficher l'infobulle de l'objet de butin actuel
+SKU_KEY_QUESTTARGET	cibler la créature de quête la plus proche
 SKU_KEY_QUICKWP1	sélectionner le point de passage rapide 1
 SKU_KEY_QUICKWP1SET	définir le point de passage rapide 1
 SKU_KEY_QUICKWP2	sélectionner le point de passage rapide 2
@@ -2676,6 +2684,7 @@ aggressive	agressif
 aktiv	actif
 aktiviert	activé
 aktuell	actuel
+all bank items	toute la banque
 all items	tous les sacs
 alle	Tout
 alle Gegner	tous les ennemis
@@ -3051,6 +3060,8 @@ show Whispers In New Tab	afficher les chuchotements dans un nouvel onglet
 show colors for difficulty	afficher les couleurs de difficulté
 show group members quests	afficher les quêtes des membres du groupe
 show item quality	afficher la qualité des objets
+show nearby quests entry	afficher l'entrée Quêtes à proximité
+show track quest entry	afficher l'entrée Suivre la quête
 sichtbar	visible
 silent	couper le son
 slash	barre oblique
@@ -3173,14 +3184,3 @@ zurückziehen	retirer
 Überleben	Survie
 Übernehmen hinzufügen	Appliquer en ajoutant
 Übernehmen überschreiben	Appliquer en écrasant
-Quest verfolgen	Suivre la quête
-show track quest entry	afficher l'entrée Suivre la quête
-SKU_KEY_QUESTTARGET	cibler la créature de quête la plus proche
-Quests in der Nähe	Quêtes à proximité
-Questabgabe	Rendre la quête
-Ort unbekannt	Lieu inconnu
-show nearby quests entry	afficher l'entrée Quêtes à proximité
-all bank items	toute la banque
-SKU_KEY_PITCHLOCK	verrouillage de l'inclinaison en nage et en vol
-Pitch locked	inclinaison verrouillée
-Pitch unlocked	inclinaison libre

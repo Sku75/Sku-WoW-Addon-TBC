@@ -4,6 +4,8 @@ old-addon-versions/
 /CLAUDE.md
 /archive/
 /userlogs/
+# third-party addons pulled in for study (foreign code, never ship/publish)
+/interessante addons/
 # local run logs (cpu.log etc.) — written on this machine, never part of a release
 /Logs/
 

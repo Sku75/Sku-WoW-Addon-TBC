@@ -715,6 +715,14 @@ function SkuCore:TogglePitchLock()
    end
 end
 
+-- Ein TIEFENMESSER beim Schwimmen wurde hier gebaut, dreimal im Spiel
+-- getestet und 2026-08-31 wieder AUSGEBAUT: die Abwaertszaehlung wurde
+-- Fantasie, sobald man auf dem tiefen Gewaesserboden aufsass (keine
+-- lesbare Kollision, keine Hoehe, GetUnitSpeed ist Befehls- nicht
+-- Ist-Geschwindigkeit, und in tiefem Wasser gibt es keinen
+-- Zustandswechsel bei Bodenkontakt). Vollstaendige Doku samt Code zum
+-- Wiedereinbau: dev/rework-docs/TIEFENMESSER.md.
+
 -- Automatik-Tick: ein einzelner leichter OnUpdate (alle 0.25 s zwei
 -- IsSwimming/IsFlying-Abfragen), KEINE Timer-Kette (Hardcore-Skriptbudget).
 -- Zustandslogik als Dauerbedingung statt Flanke, damit sie sich selbst
@@ -761,10 +769,13 @@ do
       -- Neigungsmesser fuettern (siehe oben; nur bei echter Vorwaertsfahrt).
       local tNow = GetTime()
       local tPosY, tPosX = UnitPosition("player")
+      local tHTick, tDt
       if tPosY and tGaugeY and tGaugeT and tNow > tGaugeT then
          local tDx, tDy = tPosX - tGaugeX, tPosY - tGaugeY
+         tDt = tNow - tGaugeT
+         tHTick = math.sqrt(tDx * tDx + tDy * tDy) / tDt
          tGaugeIdx = tGaugeIdx % 4 + 1
-         tGaugeSamples[tGaugeIdx] = math.sqrt(tDx * tDx + tDy * tDy) / (tNow - tGaugeT)
+         tGaugeSamples[tGaugeIdx] = tHTick
       end
       tGaugeY, tGaugeX, tGaugeT = tPosY, tPosX, tNow
       local tSpeed = GetUnitSpeed("player")
