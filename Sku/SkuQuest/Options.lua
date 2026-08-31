@@ -1521,14 +1521,77 @@ function SkuQuest:GetQuestTargetIds(aQuestID, aList)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- The name composed below - "<quest>;<zone>;<quest target>;<x>;<y>" - is a ROUTE
+-- DATA convention: the caller (GetResultingWps, "waypoint" branch) resolves it
+-- through WaypointCacheLookupAll, an EXACT-name lookup, so a waypoint carrying
+-- that exact string has to have been authored into routedata by hand. Nothing
+-- generates them the way creature/object spawns are generated (SkuNav/Core.lua
+-- ~743 / ~807), and exactly ONE was ever authored: quest 10211, "City of Light /
+-- Shattrath City". Meanwhile 174 quests reach this path (45 triggerEnds in
+-- quests.lua + 163 in quests_fixes.lua, 34 in both), so "Quest target" came out
+-- EMPTY for all of them - in every locale, not just frFR. Reported case: 870
+-- "The Forgotten Pools" (The Barrens 45.06/22.56), whose hand-made waypoint does
+-- exist but under a descriptive name ("quest target;The Forgotten Pools;
+-- northwest;The Barrens"), which this lookup can never match.
+--
+-- So: keep the composed name whenever it DOES resolve (10211, plus anything
+-- authored that way later), and otherwise fall back to geometry - turn the
+-- triggerEnd map coordinates into world coordinates and answer with the nearest
+-- real ROUTE waypoint. That is all the caller needs: it only ever reads
+-- worldX/worldY and the link graph off the name.
+--
+-- Two more fixes fall out of the rewrite: every coordinate pair of every zone is
+-- used now (the old form read data[1] only and silently dropped the rest, e.g.
+-- the two-point "Put Out the Fires" entries in quests_fixes.lua), and the result
+-- is memoised per waypoint-cache generation - SkuMM's RebuildQuestWps calls this
+-- once per quest in the player's area, and the geometric fallback scans a whole
+-- continent bucket.
+SkuQuest.TriggerEndWpCache = {}
+SkuQuest.TriggerEndWpCacheGen = nil
 function SkuQuest:GetTriggerEndWps(aQuestId)
+	if SkuQuest.TriggerEndWpCacheGen ~= SkuNav._wpcGen then
+		SkuQuest.TriggerEndWpCacheGen = SkuNav._wpcGen
+		SkuQuest.TriggerEndWpCache = {}
+	end
+	if SkuQuest.TriggerEndWpCache[aQuestId] then
+		return SkuQuest.TriggerEndWpCache[aQuestId]
+	end
+
 	local tWaypoints = {}
-	if SkuDB.questDataTBC[aQuestId][SkuDB.questKeys["triggerEnd"]] ~= nil then 
-		for zone, data in pairs(SkuDB.questDataTBC[aQuestId][SkuDB.questKeys["triggerEnd"]][2]) do
-			local _, taName = SkuNav.Geo:GetAreaData(zone)
-			if taName then
-				if SkuDB.questLookup[Sku.Loc][aQuestId] then
-					tWaypoints[#tWaypoints + 1] = SkuDB.questLookup[Sku.Loc][aQuestId][1]..";"..taName..";"..L["Questziel"]..";"..data[1][1]..";"..data[1][2]
+	SkuQuest.TriggerEndWpCache[aQuestId] = tWaypoints
+
+	local tQuestData = SkuDB.questDataTBC[aQuestId]
+	local tTriggerEnd = tQuestData and tQuestData[SkuDB.questKeys["triggerEnd"]]
+	if not tTriggerEnd or not tTriggerEnd[2] then
+		return tWaypoints
+	end
+	local tQuestLookup = SkuDB.questLookup[Sku.Loc] and SkuDB.questLookup[Sku.Loc][aQuestId]
+	if not tQuestLookup then
+		return tWaypoints
+	end
+	local tQuestName = tQuestLookup[1]
+
+	local tSeen = {}
+	for zone, data in pairs(tTriggerEnd[2]) do
+		local _, taName, tContinentID = SkuNav.Geo:GetAreaData(zone)
+		if taName then
+			local tUiMapId = SkuNav.Geo:GetUiMapIdFromAreaId(zone)
+			for c = 1, #data do
+				local tX, tY = data[c][1], data[c][2]
+				local tName = tQuestName..";"..taName..";"..L["Questziel"]..";"..tX..";"..tY
+				if not SkuNav:GetWaypointData2(tName) then
+					tName = nil
+					if tUiMapId and tContinentID then
+						local _, tWorldPos = C_Map.GetWorldPosFromMapPos(tUiMapId, CreateVector2D(tX / 100, tY / 100))
+						if tWorldPos then
+							local tWorldX, tWorldY = tWorldPos:GetXY()
+							tName = SkuNav:GetNearestWpToCoords2(tWorldX, tWorldY, tContinentID, 1)
+						end
+					end
+				end
+				if tName and not tSeen[tName] then
+					tSeen[tName] = true
+					tWaypoints[#tWaypoints + 1] = tName
 				end
 			end
 		end
