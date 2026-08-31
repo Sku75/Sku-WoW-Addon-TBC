@@ -4241,6 +4241,59 @@ end
 -- cursor), so typing-to-match feels identical in both modes. The name is lowercased,
 -- OBJECT ids and the ;/# separators are flattened to spaces, and large or fractional
 -- numeric tokens (item stack counts, prices) are stripped so they don't match.
+-- Accent folding for the menu type-ahead / filter.
+--
+-- Lua's string.lower is BYTE-WISE: it maps A-Z and nothing else. Two
+-- consequences, both of which made accented names hard or impossible to
+-- reach from the keyboard:
+--
+--  1) An accented capital never folds to its lower-case form -- "Ö" is
+--     0xC3 0x96 while "ö" is 0xC3 0xB6 -- so typing "ö" has never matched a
+--     menu entry starting with "Ö". This affects German directly.
+--
+--  2) There is no folding at all, so an ASCII query cannot reach an
+--     accented name: "ingenieur" never matched "Ingénieur", and neither did
+--     "general" match "Fournitures générales". This is the normal case on a
+--     French or Spanish client, where most entries carry an accent.
+--
+-- MenuAccessKeysChars (top of this file) is also the exhaustive list of
+-- characters bound as menu keys, and it holds ASCII plus the German umlauts
+-- only -- so on a French AZERTY keyboard the accented letters cannot be
+-- typed into the filter at all. Folding both sides of the comparison to
+-- unaccented ASCII solves that too, without touching the key bindings: the
+-- user types what their keyboard reaches easily and still finds the entry.
+--
+-- Strictly more permissive -- nothing that matched before stops matching.
+-- Only 2-byte UTF-8 sequences in the Latin-1 Supplement / Latin Extended-A
+-- range are considered; a pure-ASCII string takes the fast path and is
+-- returned untouched, so the common case costs one extra string.find.
+local tAccentFold = {
+	["à"]="a", ["á"]="a", ["â"]="a", ["ã"]="a", ["ä"]="a", ["å"]="a",
+	["À"]="a", ["Á"]="a", ["Â"]="a", ["Ã"]="a", ["Ä"]="a", ["Å"]="a",
+	["è"]="e", ["é"]="e", ["ê"]="e", ["ë"]="e",
+	["È"]="e", ["É"]="e", ["Ê"]="e", ["Ë"]="e",
+	["ì"]="i", ["í"]="i", ["î"]="i", ["ï"]="i",
+	["Ì"]="i", ["Í"]="i", ["Î"]="i", ["Ï"]="i",
+	["ò"]="o", ["ó"]="o", ["ô"]="o", ["õ"]="o", ["ö"]="o", ["ø"]="o",
+	["Ò"]="o", ["Ó"]="o", ["Ô"]="o", ["Õ"]="o", ["Ö"]="o", ["Ø"]="o",
+	["ù"]="u", ["ú"]="u", ["û"]="u", ["ü"]="u",
+	["Ù"]="u", ["Ú"]="u", ["Û"]="u", ["Ü"]="u",
+	["ç"]="c", ["Ç"]="c", ["ñ"]="n", ["Ñ"]="n",
+	["ý"]="y", ["ÿ"]="y", ["Ý"]="y",
+	["æ"]="ae", ["Æ"]="ae", ["œ"]="oe", ["Œ"]="oe", ["ß"]="ss",
+}
+
+-- gsub with a table leaves any sequence that is not a key untouched, so an
+-- accent outside the table above degrades to the previous behaviour rather
+-- than being mangled.
+local function tFoldAccents(aText)
+	if not aText or aText == "" then return aText or "" end
+	if not string.find(aText, "[\128-\255]") then return aText end
+	local tFolded = string.gsub(aText, "[\194-\197][\128-\191]", tAccentFold)
+	return tFolded
+end
+SkuOptions.FoldAccents = tFoldAccents
+
 local function SkuMenuFilterMatch(aName, aFilterstring)
 	local tHayStack = slower(aName or "")
 	tHayStack = string.gsub(tHayStack, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
@@ -4259,7 +4312,11 @@ local function SkuMenuFilterMatch(aName, aFilterstring)
 	end
 	tHayStack = tTempHayStack
 
-	return string.find(slower(tHayStack), slower(aFilterstring)) ~= nil
+	-- plain=true: the filter string is whatever the player typed, not a
+	-- pattern. Without it a typed "%", "(" or "-" is parsed as pattern syntax;
+	-- "50%" and "(long" both throw a malformed-pattern error straight out of
+	-- the menu key handler.
+	return string.find(tFoldAccents(slower(tHayStack)), tFoldAccents(slower(aFilterstring)), 1, true) ~= nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
