@@ -1,0 +1,378 @@
+Proposed quest-target fixes - REVIEW FILE, nothing applied yet.
+Sources: local SkuDB name/spawn matches, six web research agents
+(warcraft.wiki.gg / wowhead / guides), routedata waypoint cross-checks.
+Object/creature proposals use OUR OWN spawn data (exact positions);
+triggerEnd proposals use web map-percent coordinates.
+
+======================================================================
+SECTION 1: OBJECT OBJECTIVES (25 quests)
+Fix form: [questKeys.objectives] = {nil,{{id,nil}},nil,nil,nil}
+======================================================================
+
+Quest 28: Trial of the Lake
+  object Shrine of Remulos = [177117, 177122, 177129]; spawns in ['Moonglade']
+  evidence: local name match, all Moonglade
+
+Quest 29: Trial of the Lake
+  object Shrine of Remulos = [177117, 177122, 177129]; spawns in ['Moonglade']
+  evidence: local name match, all Moonglade
+
+Quest 264: Until Death Do Us Part
+  object Yuriv's Tombstone = [24776]; spawns in ['Silverpine Forest']
+  evidence: web agent via SkuDB; graveyard behind the Sepulcher
+
+Quest 280: A Dark Threat Looms
+  object Explosive Charge = [1585]; spawns in ['Loch Modan']
+  evidence: local; Loch Modan 50.58,14.3 = dam base
+
+Quest 281: Reclaiming Goods
+  object Damaged Crate = [261]; spawns in ['Wetlands']
+  evidence: web agent via SkuDB + wiki 13.5,41.5 Bluegill Marsh
+
+Quest 321: Lightforge Iron
+  object Waterlogged Chest = [2734]; spawns in ['Wetlands']
+  evidence: web agent via SkuDB; ends quest 321
+
+Quest 328: The Hidden Key
+  object Bookie Herod's Strongbox = [288]; spawns in ['Stranglethorn Vale']
+  evidence: local name match, STV
+
+Quest 524: Elixir of Agony
+  object Dusty Rug = [1728]; spawns in ['Hillsbrad Foothills']
+  evidence: local; Hillsbrad 62.81,18.73 = Tarren Mill inn upstairs
+
+Quest 754: Winterhoof Cleansing
+  object Winterhoof Water Well = [2913]; spawns in ['Mulgore']
+  evidence: local name match, Mulgore
+
+Quest 760: Wildmane Cleansing
+  object Wildmane Water Pump = [2909]; spawns in ['Mulgore']
+  evidence: web agent via SkuDB; Wildmane Water Well
+
+Quest 894: Samophlange
+  object Control Console = [4141]; spawns in ['The Barrens']
+  evidence: web agent via SkuDB + guide 52,12 Barrens
+
+Quest 941: Planting the Heart
+  object Denalan's Planter = [7923]; spawns in ['Teldrassil']
+  evidence: local name match, Teldrassil
+
+Quest 2701: Heroes of Old
+  object Spectral Lockbox = [141980]; spawns in ['Swamp of Sorrows']
+  evidence: web agent via SkuDB + web 33.5,66 Swamp of Sorrows
+
+Quest 3912: Meet at the Grave
+  object A Conspicuous Gravestone = [148504]; spawns in ['Tanaris']
+  evidence: web agent via SkuDB; Gadgetzan graveyard
+
+Quest 4125: The Missing Courier
+  object Wrecked Row Boat = [164909]; spawns in ['Feralas']
+  evidence: web agent via SkuDB; ends quest 4125
+
+Quest 4131: The Woodpaw Gnolls
+  object Large Leather Backpacks = [164953]; spawns in ['Feralas']
+  evidence: web agent via SkuDB + wiki
+
+Quest 4285: The Northern Pylon
+  object Northern Crystal Pylon = [164955]; spawns in ["Un'Goro Crater"]
+  evidence: local name match, Un'Goro
+
+Quest 4287: The Eastern Pylon
+  object Eastern Crystal Pylon = [164957]; spawns in ["Un'Goro Crater"]
+  evidence: local name match, Un'Goro
+
+Quest 4288: The Western Pylon
+  object Western Crystal Pylon = [164956]; spawns in ["Un'Goro Crater"]
+  evidence: local name match, Un'Goro
+
+Quest 4451: The Key to Freedom
+  object Wooden Outhouse = [173265]; spawns in ['Searing Gorge']
+  evidence: local; Searing Gorge 65.59,62.17
+
+Quest 5084: Falling to Corruption
+  object Deadwood Cauldron = [176091]; spawns in ['Felwood']
+  evidence: web agent via SkuDB; Felpaw Village
+
+Quest 6001: Body and Heart
+  object Moonkin Stone = [177525]; spawns in ['Darkshore', 'The Barrens']
+  evidence: local; spawns Darkshore+Barrens cover both variants
+
+Quest 6002: Body and Heart
+  object Moonkin Stone = [177525]; spawns in ['Darkshore', 'The Barrens']
+  evidence: local; spawns Darkshore+Barrens cover both variants
+
+Quest 7843: The Final Message to the Wildhammer
+  object Aerie Peak Town Center = [179912]; spawns in ['The Hinterlands']
+  evidence: local; Hinterlands 14.34,48.0 = the well in the town center
+
+Quest 10819: Felsworn Gas Mask
+  object Legion Communicator = [185165]; spawns in ["Blade's Edge Mountains"]
+  evidence: local name match, Blade's Edge
+
+======================================================================
+SECTION 2: CREATURE OBJECTIVES (22 quests)
+Fix form: [questKeys.objectives] = {{{id,nil}},nil,nil,nil,nil}
+======================================================================
+
+Quest 1030: Raene's Cleansing
+  creature Krolg = [3897]; spawns in ['Ashenvale']
+  evidence: local + web 50.8,75.1 Ashenvale, Krolg's Hut
+
+Quest 2844: The Giant Guardian
+  creature Shay Leafrunner = [7774]; spawns in ['Feralas']
+  evidence: web agent via SkuDB + web ~38,10 Feralas
+
+Quest 6061: Taming the Beast
+  creature Adult Plainstrider = [2956]; spawns in ['Mulgore']
+  evidence: local; tame target
+
+Quest 6062: Taming the Beast
+  creature Dire Mottled Boar = [3099]; spawns in ['Durotar']
+  evidence: local; tame target
+
+Quest 6063: Taming the Beast
+  creature Webwood Lurker = [1998]; spawns in ['Teldrassil']
+  evidence: local; tame target
+
+Quest 6064: Taming the Beast
+  creature Large Crag Boar = [1126]; spawns in ['Dun Morogh']
+  evidence: local; tame target
+
+Quest 6082: Taming the Beast
+  creature Armored Scorpid = [3126]; spawns in ['Durotar']
+  evidence: local; tame target
+
+Quest 6083: Taming the Beast
+  creature Surf Crawler = [3107]; spawns in ['Durotar']
+  evidence: local; tame target
+
+Quest 6084: Taming the Beast
+  creature Snow Leopard = [1201]; spawns in ['Dun Morogh']
+  evidence: local; tame target
+
+Quest 6085: Taming the Beast
+  creature Ice Claw Bear = [1196]; spawns in ['Dun Morogh']
+  evidence: local; tame target
+
+Quest 6087: Taming the Beast
+  creature Prairie Stalker = [2959]; spawns in ['Mulgore', 'Thunder Bluff']
+  evidence: local; tame target
+
+Quest 6088: Taming the Beast
+  creature Swoop = [2970]; spawns in ['Mulgore']
+  evidence: local; tame target
+
+Quest 6101: Taming the Beast
+  creature Nightsaber Stalker = [2043]; spawns in ['Teldrassil']
+  evidence: local; tame target
+
+Quest 6102: Taming the Beast
+  creature Strigid Screecher = [1996]; spawns in ['Teldrassil']
+  evidence: local; tame target
+
+Quest 6501: The Dragon's Eye
+  creature Haleh = [10929]; spawns in ['Winterspring']
+  evidence: local; Winterspring; NOTE reachable only via teleport runes at the bottom of Mazthoril
+
+Quest 8447: Waking Legends
+  creature Keeper Remulos = [11832]; spawns in ['Moonglade']
+  evidence: local; Moonglade; event runs at his shrine
+
+Quest 9539: Totem of Coo
+  creature Totem of Coo = [17361]; spawns in ['Azuremyst Isle']
+  evidence: local; Azuremyst; web coords 55.2,41.7 agree
+
+Quest 9540: Totem of Tikti
+  creature Totem of Tikti = [17362]; spawns in ['Azuremyst Isle']
+  evidence: local; Azuremyst; web coords 64.2,40.2 agree
+
+Quest 9541: Totem of Yor
+  creature Totem of Yor = [17363]; spawns in ['Azuremyst Isle']
+  evidence: local; Azuremyst
+
+Quest 9542: Totem of Vark
+  creature Totem of Vark = [17364]; spawns in ['Azuremyst Isle']
+  evidence: local; Azuremyst; web coords 28.1,62.4 agree
+
+Quest 9771: Searching for Scout Jyoba
+  creature Scout Jyoba = [18035]; spawns in ['Zangarmarsh']
+  evidence: local name match, Zangarmarsh
+
+Quest 10964: Waking the Sleeper
+  creature Clintar Dreamwalker = [22834]; spawns in ['Moonglade']
+  evidence: local; Moonglade
+
+======================================================================
+SECTION 3: TRIGGEREND COORDINATES (30 quests)
+Fix form: [questKeys.triggerEnd] = {"text", {[zoneID]={{x,y},...}}}
+======================================================================
+
+Quest 45: Discover Rolf's Fate
+  Elwynn Forest (12) [(79.0, 55.0)] - confidence high
+  text: Search the murloc village for Rolf
+  evidence: wiki.gg; eastern lakeshore
+
+Quest 139: Captain Sander's Hidden Treasure
+  Westfall (40) [(40.7, 17.1)] - confidence high
+  text: Search the empty jug next to the windmill
+  evidence: wiki.gg; sea bluffs
+
+Quest 250: A Dark Threat Looms
+  Loch Modan (38) [(56.1, 13.2)] - confidence high
+  text: Investigate near the eastern dam ramp
+  evidence: wiki.gg; Suspicious Barrel
+
+Quest 465: Nek'rosh's Gambit
+  Wetlands (11) [(47.5, 46.9)] - confidence medium
+  text: Destroy the Dragonmaw catapults
+  evidence: wowpedia; around the Dragonmaw gates
+
+Quest 758: Thunderhorn Cleansing
+  Mulgore (215) [(44.0, 46.0)] - confidence high
+  text: Use the totem at the Thunderhorn Water Well
+  evidence: wiki.gg; NW of Bloodhoof Village
+
+Quest 1517: Call of Earth
+  Durotar (14) [(44.0, 76.0)] - confidence medium
+  text: Drink the Earth Sapta at Spirit Rock
+  evidence: wowpedia; atop the Hidden Path above the Valley of Trials
+
+Quest 1520: Call of Earth
+  Mulgore (215) [(54.0, 80.0)] - confidence high
+  text: Drink the Earth Sapta at Kodo Rock
+  evidence: wiki.gg; east of Camp Narache
+
+Quest 2278: The Platinum Discs
+  Badlands (3) [(42.6, 12.2)] - confidence medium
+  text: Uldaman entrance (discs at the end of the instance)
+  evidence: dungeon guides
+
+Quest 2932: Grim Message
+  The Hinterlands (47) [(31.5, 58.0), (22.8, 57.0)] - confidence medium
+  text: Place the pike at a Witherbark village
+  evidence: Hiri'watha and Zun'watha
+
+Quest 2969: Freedom for All Creatures
+  Feralas (357) [(65.5, 47.4)] - confidence medium
+  text: The Sprite Darter pen behind the Grimtotem camp
+  evidence: spawn clusters + guide; hidden cliff path
+
+Quest 3373: The Essence of Eranikus
+  Swamp of Sorrows (8) [(69.0, 53.0)] - confidence medium
+  text: Sunken Temple entrance (Essence Font is inside)
+  evidence: instance-interior objective; Pool of Tears
+
+Quest 3447: Secret of the Circle
+  Swamp of Sorrows (8) [(69.0, 53.0)] - confidence medium
+  text: Sunken Temple entrance (statue circle is inside)
+  evidence: Pool of Tears, underwater portal
+
+Quest 4506: Corrupted Sabers
+  Felwood (361) [(32.32, 66.56)] - confidence high
+  text: The corrupted moonwell in the Ruins of Constellas
+  evidence: own DB: DND spell-focus object 148501 spawn; object name too ugly to list, use coords
+
+Quest 4734: Egg Freezing
+  Searing Gorge (51) [(35.4, 84.7)] - confidence medium
+  text: Blackrock Mountain entrance (Rookery is inside UBRS)
+  evidence: instance-interior objective
+
+Quest 5202: A Strange Red Key
+  Felwood (361) [(37.0, 58.0)] - confidence medium
+  text: Jaedenar entrance (the cell is inside Shadow Hold)
+  evidence: cave-interior objective
+
+Quest 5265: The Argent Hold
+  Eastern Plaguelands (139) [(76.0, 52.0)] - confidence high
+  text: The Argent Hold chest at Light's Hope
+  evidence: wiki.gg [76, 52]
+
+Quest 5463: Menethil's Gift
+  Eastern Plaguelands (139) [(27.0, 12.0)] - confidence medium
+  text: Stratholme entrance (the Gift is inside)
+  evidence: instance-interior objective
+
+Quest 5902: A Plague Upon Thee
+  Western Plaguelands (28) [(48.4, 31.9)] - confidence high
+  text: Place the barrel at the Northridge Lumber Mill crate
+  evidence: wowpedia Termite Barrel
+
+Quest 5904: A Plague Upon Thee
+  Western Plaguelands (28) [(48.4, 31.9)] - confidence high
+  text: Place the barrel at the Northridge Lumber Mill crate
+  evidence: same spot as 5902
+
+Quest 6389: A Plague Upon Thee
+  Western Plaguelands (28) [(48.4, 31.9)] - confidence high
+  text: Release the termites at the Northridge Lumber Mill
+  evidence: same spot as 5902
+
+Quest 6390: A Plague Upon Thee
+  Western Plaguelands (28) [(48.4, 31.9)] - confidence high
+  text: Release the termites at the Northridge Lumber Mill
+  evidence: same spot as 5902
+
+Quest 8305: Long Forgotten Memories
+  Silithus (1377) [(28.7, 89.1)] - confidence high
+  text: The Crystalline Tear before the Scarab Wall
+  evidence: warcrafttavern 28.68,89.14
+
+Quest 8929: In Search of Anthion
+  Eastern Plaguelands (139) [(27.0, 12.0)] - confidence medium
+  text: Use the Ghost Revealer outside the Stratholme gate
+  evidence: wiki.gg
+
+Quest 8930: In Search of Anthion
+  Eastern Plaguelands (139) [(27.0, 12.0)] - confidence medium
+  text: Use the Ghost Revealer outside the Stratholme gate
+  evidence: same as 8929
+
+Quest 9410: A Spirit Guide
+  Hellfire Peninsula (3483) [(33.0, 43.0)] - confidence high
+  text: Krun Spinebreaker's body; use the Wolf Totem
+  evidence: wiki.gg [33, 43]
+
+Quest 9550: A Map to Where?
+  Bloodmyst Isle (3525) [(61.2, 41.9)] - confidence high
+  text: The ruined pavilion north of the Ruins of Loreth'Aran
+  evidence: wiki.gg
+
+Quest 9561: Nolkai's Words
+  Bloodmyst Isle (3525) [(60.9, 49.6)] - confidence high
+  text: The Mound of Dirt in the Ruins of Loreth'Aran
+  evidence: wowpedia
+
+Quest 10166: Whitebark's Memory
+  Eversong Woods (3430) [(38.0, 86.0)] - confidence high
+  text: The runestone at the Scorched Grove
+  evidence: wiki.gg
+
+Quest 10174: Curse of the Violet Tower
+  Netherstorm (3523) [(57.6, 86.2)] - confidence medium
+  text: Use the staff at the Violet Tower, Kirin'Var
+  evidence: wiki.gg
+
+Quest 10910: Death's Door
+  Blade's Edge Mountains (3522) [(64.0, 64.0)] - confidence medium
+  text: Death's Door; use the Druid Signal
+  evidence: wiki.gg; via tunnel south of Mok'Nathal
+
+======================================================================
+SECTION 4: PARKED / OPEN (5 quests)
+======================================================================
+
+Quest 7001: Empty Stables
+  Frostwolf taming: AV zone 2597 missing from InternalAreaTable - fix the maps gap first
+
+Quest 7027: Empty Stables
+  Alterac Ram taming: same AV zone gap
+
+Quest 8960: Bodley's Unfortunate Fate
+  Bodley: inside Blackrock Mountain, no open-world zone map for waypoints
+
+Quest 9032: Bodley's Unfortunate Fate
+  Bodley: same as 8960
+
+Quest 3481: Trinkets...
+  Searing Gorge chest: no source named the object or coords
+
