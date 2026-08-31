@@ -1193,7 +1193,7 @@ How much of the healing amount was overhealing	Quelle part des soins était du s
 Human	Humain
 Hunter	Chasseur
 Händlerpreis	Prix vendeur
-Höhle der Nebel	Caverne des Brumes
+Höhle der Nebel	Caverne des Brumes	-- zone name; read from GetMinimapZoneText() in the zone on a frFR client, do not translate freely
 IC	Combat
 INCORRECT CREATURE ID	ID DE CRÉATURE INCORRECT
 INFO_STEP	Étape d'information
