@@ -424,6 +424,20 @@ function SkuTTS:Output(text, duration)
 
 	--show it
 	duration = duration or 1
+	-- Darstellung (Schriftart/-groesse, Farbpaar, Deckkraft) aus den Sku-Optionen
+	-- anwenden, BEVOR der Text steht. Frueher war das hier hart verdrahtet
+	-- (Playfair Display 12 px ohne Umriss) und nirgends einstellbar -- fuer
+	-- sehbehinderte Spieler die kleinste und duennste Flaeche des Addons, obwohl
+	-- hier Questtext, Tooltips, Chatverlauf und Wiki landen. Die Werte liegen in
+	-- SkuCore VisualAids (Einstellungen -> Visuelle Hilfen -> Textfenster); der
+	-- Aufruf ist pcall-gesichert und richtungsgleich mit dem Lesebalken-Feed in
+	-- SkuZOptions/Core.lua, damit diese Lib die Optionen nicht kennen muss und bei
+	-- abgeschalteter oder fehlender VisualAids einfach das bisherige Aussehen bleibt.
+	pcall(function()
+		if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.TextWindowLayout then
+			SkuCore.VisualAids:TextWindowLayout()
+		end
+	end)
 	SkuTTS.MainFrame.FS:SetText(text)
 	if duration > 0 then
 		if SkuTTS.MainFrame:IsVisible() == false then

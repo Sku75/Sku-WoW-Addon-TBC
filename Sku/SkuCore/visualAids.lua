@@ -66,6 +66,52 @@ local function tEnsureVA()
 	if va.mouseFinder.enabled == nil then va.mouseFinder.enabled = false end
 	va.mouseFinder.shape = va.mouseFinder.shape or "pulse"
 
+	-- Textfenster (SkuTTS-Lesefenster: Questtext, Tooltips, Chatverlauf, Wiki).
+	-- BEWUSST OHNE "enabled"-Schalter, anders als die drei Overlays darueber: das
+	-- Fenster existiert ohnehin und wurde bisher HART auf Playfair Display 12 px
+	-- gesetzt (Libs/SkuTTS-1.0) -- eine duenne Serifen-Anzeigeschrift in der
+	-- kleinsten Groesse des ganzen Addons, also fuer niemanden eine gute Wahl.
+	-- Hier wird nichts zugeschaltet, sondern nur eingestellt, wie die vorhandene
+	-- Flaeche aussieht; die Standardwerte sind ein serifenloser, groesserer
+	-- Ausgangspunkt. Eigene Werte, NICHT die des Lesebalkens: sehbehinderte Nutzer
+	-- brauchen pro Flaeche unterschiedliche Groessen (ein kurzer Balken vertraegt
+	-- riesige Schrift, ein voller Questtext nicht).
+	va.textWindow = va.textWindow or {}
+	va.textWindow.size = va.textWindow.size or 2
+	va.textWindow.font = va.textWindow.font or "standard"
+	va.textWindow.scheme = va.textWindow.scheme or "whiteOnBlack"
+	va.textWindow.opacity = va.textWindow.opacity or 4
+	if va.textWindow.outline == nil then va.textWindow.outline = false end
+
+	-- Schrift/Farbe auch fuer den Lesebalken einstellbar (bisher hart FRIZQT weiss
+	-- auf schwarz). Gleiche Auswahl, getrennte Werte -- siehe oben.
+	va.lineBar.font = va.lineBar.font or "standard"
+	va.lineBar.scheme = va.lineBar.scheme or "whiteOnBlack"
+
+	-- Native Plaketten-Optionen. Anders als "Plaketten-Farben" (unsere eigene
+	-- Textur) sind das die ECHTEN Einstellungen der Spiel-Engine: sie skalieren und
+	-- faerben die Plakette selbst, ueberleben jede Blizzard-Ueberarbeitung und
+	-- kosten keinen Frame. Das Spiel kann sie -- nur erreichbar sind sie nicht:
+	-- Blizzards eigenes Optionsfenster zeigt keine davon an (die Retail-Checkbox
+	-- "Groessere Namensplaketten" ist in Classic ausdruecklich leer gelassen), also
+	-- kaeme ein Nutzer ohne uns nur per /console heran.
+	-- ALLE Standardwerte spiegeln den gemessenen Auslieferungszustand des Clients
+	-- (2.5.6.69546: alle Skalen 1.0, alle Klassenfarben 0) -- wer nichts umstellt,
+	-- bekommt exakt das bisherige Bild.
+	va.namePlates = va.namePlates or {}
+	va.namePlates.scale = va.namePlates.scale or 1
+	va.namePlates.targetScale = va.namePlates.targetScale or 1
+	va.namePlates.otherAlpha = va.namePlates.otherAlpha or 1
+	if va.namePlates.classColorEnemy == nil then va.namePlates.classColorEnemy = false end
+	if va.namePlates.classColorFriend == nil then va.namePlates.classColorFriend = false end
+	if va.namePlates.friendlyNamesOnly == nil then va.namePlates.friendlyNamesOnly = false end
+	-- Erst wenn der Nutzer hier wirklich etwas ausgewaehlt hat, schreibt Sku diese
+	-- CVars beim Login mit. Ohne das Flag wuerde das Nachziehen beim Login jedem,
+	-- der seine Plaketten frueher von Hand per /console eingestellt hat, still seine
+	-- Werte ueberbuegeln -- die Voreinstellung "alles Stufe 1 / aus" ist ja nicht
+	-- "der Nutzer will 1.0", sondern "der Nutzer hat nie etwas gesagt".
+	if va.namePlates.userSet == nil then va.namePlates.userSet = false end
+
 	return va
 end
 
@@ -73,6 +119,74 @@ local tPalette = {
 	red = {1, 0, 0}, orange = {1, 0.5, 0}, yellow = {1, 1, 0}, green = {0, 1, 0},
 	cyan = {0, 1, 1}, blue = {0.2, 0.5, 1}, magenta = {1, 0, 1}, white = {1, 1, 1},
 }
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Gemeinsame Darstellungs-Bausteine fuer die beiden TEXTFLAECHEN (Lesebalken und
+-- Textfenster). Bewusst geteilte Tabellen, aber GETRENNTE gespeicherte Werte.
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Schriftdateien: die beiden mitgelieferten Familien liegen unter Libs/SkuTTS-1.0/
+-- fonts (sie sind .gitignored und kommen nur ueber das Release-ZIP mit -- ein
+-- Clone hat sie NICHT). Deshalb wird jede SetFont-Anwendung geprueft und faellt
+-- auf die Client-Standardschrift zurueck, statt eine leere Flaeche zu hinterlassen.
+local tFontPath = {
+	standard    = nil,   -- zur Laufzeit STANDARD_TEXT_FONT
+	raleway     = [[Interface\AddOns\Sku\Libs\SkuTTS-1.0\fonts\Raleway-Regular.ttf]],
+	ralewayBold = [[Interface\AddOns\Sku\Libs\SkuTTS-1.0\fonts\Raleway-Bold.ttf]],
+	playfair    = [[Interface\AddOns\Sku\Libs\SkuTTS-1.0\fonts\PlayfairDisplay-Regular.ttf]],
+}
+
+local function tResolveFont(aKey)
+	local tStd = STANDARD_TEXT_FONT or "Fonts\\FRIZQT__.TTF"
+	if aKey == nil or aKey == "standard" then return tStd, tStd end
+	return tFontPath[aKey] or tStd, tStd
+end
+
+-- Vordergrund/Hintergrund-Paare. Hohe Kontraste, beide Polaritaeten: helle Schrift
+-- auf dunkel hilft den meisten, dunkel auf hell einem Teil der Nutzer deutlich mehr.
+local tSchemes = {
+	whiteOnBlack  = {fg = {1, 1, 1},       bg = {0, 0, 0}},
+	yellowOnBlack = {fg = {1, 0.95, 0},    bg = {0, 0, 0}},
+	blackOnWhite  = {fg = {0, 0, 0},       bg = {1, 1, 1}},
+	whiteOnBlue   = {fg = {1, 1, 1},       bg = {0, 0, 0.45}},
+}
+
+local function tResolveScheme(aKey)
+	return tSchemes[aKey] or tSchemes.whiteOnBlack
+end
+
+-- SetFont mit Rueckfall. Gibt true zurueck, wenn die gewuenschte Schrift stand.
+local function tApplyFont(aFontString, aFontKey, aPx, aFlags)
+	if not aFontString then return false end
+	local tWant, tStd = tResolveFont(aFontKey)
+	if pcall(aFontString.SetFont, aFontString, tWant, aPx, aFlags) then return true end
+	pcall(aFontString.SetFont, aFontString, tStd, aPx, aFlags)
+	return false
+end
+
+-- Auswahllisten, die sich Lesebalken und Textfenster teilen. Als Funktionen, damit
+-- die Locale erst beim Menue-Aufbau gelesen wird. Sie stehen VOR den Menue-Buildern,
+-- die sie als Upvalue fangen -- und damit auch vor dem `local L = Sku.L` weiter
+-- unten in dieser Datei, weshalb hier bewusst Sku.L direkt indiziert wird: ein
+-- blosses L waere an dieser Stelle das (nicht existierende) Global.
+local function tFontValues()
+	local L = Sku.L
+	return {
+		standard = L["Standard (serifenlos)"],
+		raleway = L["Raleway (serifenlos)"],
+		ralewayBold = L["Raleway fett"],
+		playfair = L["Playfair (Serifen)"],
+	}
+end
+
+local function tSchemeValues()
+	local L = Sku.L
+	return {
+		whiteOnBlack = L["weiss auf schwarz"],
+		yellowOnBlack = L["gelb auf schwarz"],
+		blackOnWhite = L["schwarz auf weiss"],
+		whiteOnBlue = L["weiss auf blau"],
+	}
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Lesebalken
@@ -111,15 +225,20 @@ function VisualAids:VisualAidsLineBarLayout()
 	local f = tEnsureLineBar()
 	local size = tonumber(va.lineBar.size) or 3
 	local px = tSizePx[size] or 38
-	-- groessere Schrift = fetter (dickerer Umriss ab Stufe "mittel")
-	local flags = (size >= 3) and "THICKOUTLINE" or "OUTLINE"
-	if not pcall(f.fs.SetFont, f.fs, STANDARD_TEXT_FONT or "Fonts\\FRIZQT__.TTF", px, flags) then
-		pcall(f.fs.SetFont, f.fs, "Fonts\\FRIZQT__.TTF", px, flags)
+	local tScheme = tResolveScheme(va.lineBar.scheme)
+	-- groessere Schrift = fetter (dickerer Umriss ab Stufe "mittel"). Der WoW-Umriss
+	-- ist IMMER schwarz -- bei dunkler Schrift auf hellem Grund verschmiert er sie,
+	-- also dort keiner.
+	local tDarkText = (tScheme.fg[1] + tScheme.fg[2] + tScheme.fg[3]) < 1.2
+	local flags = ""
+	if not tDarkText then
+		flags = (size >= 3) and "THICKOUTLINE" or "OUTLINE"
 	end
-	f.fs:SetTextColor(1, 1, 1, 1)
+	tApplyFont(f.fs, va.lineBar.font, px, flags)
+	f.fs:SetTextColor(tScheme.fg[1], tScheme.fg[2], tScheme.fg[3], 1)
 	f.fs:SetJustifyV("TOP")
 	local alpha = tOpacityAlpha[tonumber(va.lineBar.opacity) or 5] or 1.0
-	f.tex:SetColorTexture(0, 0, 0, alpha)
+	f.tex:SetColorTexture(tScheme.bg[1], tScheme.bg[2], tScheme.bg[3], alpha)
 	f:ClearAllPoints()
 	-- genug Hoehe, damit auch sehr grosse Schrift samt Umriss nach unten Platz hat
 	f:SetHeight(px + math.floor(px * 0.4) + 12)
@@ -132,9 +251,20 @@ function VisualAids:VisualAidsLineBarLayout()
 	end
 end
 
+-- "Menue ist offen" fuer den Lesebalken. IsMenuOpen() allein reicht NICHT: es
+-- testet OnSkuOptionsMain:IsVisible(), und dieser Frame wird im KAMPF absichtlich
+-- nie gezeigt (er ist Vorfahr der sicheren ENTER-Buttons, Show() ist dort
+-- blockiert -- siehe SkuZOptions/Core.lua). Das Kampfmenue laeuft headless und
+-- meldet sich ueber SkuOptions.combatMenuActive; genau dieses Paar ist im
+-- restlichen Code die uebliche "logisch offen"-Pruefung (templates.lua ~995,
+-- SkuZOptions/Core.lua ~3050/5515). Der Lesebalken ist ein gewoehnlicher,
+-- unsicherer Frame ohne sichere Kinder -- sein Show() ist im Kampf erlaubt.
+-- Damit sieht ein sehbehinderter Spieler den aktuellen Menuepunkt auch dann,
+-- wenn das Menue nur noch headless existiert.
 local function tMenuIsOpen()
-	if not _G["OnSkuOptionsMain"] then return false end
 	if not (SkuOptions and SkuOptions.IsMenuOpen) then return false end
+	if SkuOptions.combatMenuActive == true then return true end
+	if not _G["OnSkuOptionsMain"] then return false end
 	local ok, res = pcall(SkuOptions.IsMenuOpen, SkuOptions)
 	return ok and res == true
 end
@@ -146,16 +276,143 @@ function VisualAids:VisualAidsLineBarSet(aText)
 		if tLineBar then tLineBar:Hide() end
 		return
 	end
-	-- nur den AKTUELLEN Menuepunkt anzeigen, nicht den ganzen Pfad
-	local txt = (SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name) or aText or ""
+	-- Den VOLLEN gesprochenen Text zeigen, nicht nur den Knotennamen: der Aufrufer
+	-- in SkuZOptions/Core.lua uebergibt exakt den String, den Sku gerade vorliest
+	-- (Name + Wert + ggf. "plus"). Vorher wurde dieser Parameter weggeworfen und
+	-- stattdessen currentMenuPosition.name gezeigt -- Schalterzustaende, Anzahlen
+	-- und Werte waren hoerbar, aber nicht lesbar. aText hat jetzt Vorrang; der
+	-- Knotenname bleibt Rueckfall fuer Aufrufer ohne String (Menue-Oeffnen).
+	local txt = aText
+	if txt == nil or txt == "" then
+		txt = (SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name) or ""
+	end
+	-- Sku trennt Sprech-Segmente mit ";" (siehe SkuTTS/Voice). Gelesen wird das als
+	-- Pause, angezeigt waere es Zeichenmuell -- daher fuer die Anzeige zu " - ".
+	txt = tostring(txt):gsub("%s*;%s*", " - ")
 	local f = tEnsureLineBar()
 	VisualAids:VisualAidsLineBarLayout()
 	f.fs:SetText(tostring(txt))
+	-- Selbst-Ausblenden. VisualAidsLineBarHide haengt nur am SICHTBAREN Schliessen
+	-- des Menues (SkuZOptions/Core.lua ~2520). Der KAMPF-Weg schliesst aber nur
+	-- logisch (combatMenuActive = false an sechs Stellen, Frame-Hide ist dort
+	-- geschuetzt) -- ohne diese Pruefung bliebe der Balken mit dem letzten Eintrag
+	-- stehen. Ein gewoehnliches OnUpdate loest das an EINER Stelle statt an sechs
+	-- und deckt auch spaeter hinzukommende Schliess-Pfade ab: WoW ruft OnUpdate
+	-- ausschliesslich bei SICHTBAREN Frames auf, im ausgeblendeten Zustand kostet
+	-- es also nichts, und im sichtbaren nur alle 0,25 s einen Flag-Vergleich.
+	if not f.tHideWatch then
+		f.tHideWatch = 0
+		f:SetScript("OnUpdate", function(self, elapsed)
+			self.tHideWatch = (self.tHideWatch or 0) + (elapsed or 0)
+			if self.tHideWatch < 0.25 then return end
+			self.tHideWatch = 0
+			if tMenuIsOpen() ~= true then self:Hide() end
+		end)
+	end
 	f:Show()
 end
 
 function VisualAids:VisualAidsLineBarHide()
 	if tLineBar then tLineBar:Hide() end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Textfenster (SkuTTS-Lesefenster)
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Die Flaeche selbst gehoert Libs/SkuTTS-1.0 (Frame "SkuTTSMainFrame" + FontString
+-- .FS). Dort stand die Darstellung hart im Code; hier bekommt sie ihre
+-- Einstellungen. SkuTTS ruft TextWindowLayout vor jedem Anzeigen auf -- dieselbe
+-- pcall-gesicherte Richtung, in der SkuZOptions den Lesebalken fuettert -- damit
+-- die Lib nichts ueber die Optionen wissen muss und eine abgeschaltete oder
+-- fehlende VisualAids einfach beim bisherigen Aussehen bleibt.
+--
+-- Groessenstufen bewusst kleiner als beim Lesebalken: hier steht ein ganzer
+-- Questtext, kein Einzeiler. Ohne Rollbalken schneidet der Frame unten ab, je
+-- groesser die Schrift desto frueher -- gesprochen wird aber weiterhin alles, die
+-- Anzeige ist die Zweitspur.
+local tTextWinPx = {[1] = 14, [2] = 18, [3] = 22, [4] = 28, [5] = 36, [6] = 44}
+local tTextWinAlpha = {[1] = 0.5, [2] = 0.65, [3] = 0.75, [4] = 0.85, [5] = 1.0}
+
+function VisualAids:TextWindowLayout()
+	if not VisualAids:IsEnabled() then return end
+	local va = tEnsureVA(); if not va then return end
+	local tts = SkuOptions and SkuOptions.TTS
+	local f = tts and tts.MainFrame
+	if not f or not f.FS then return end
+
+	local tw = va.textWindow
+	local px = tTextWinPx[tonumber(tw.size) or 2] or 18
+	local tScheme = tResolveScheme(tw.scheme)
+	local tDarkText = (tScheme.fg[1] + tScheme.fg[2] + tScheme.fg[3]) < 1.2
+	-- Umriss ist schwarz: nur bei heller Schrift sinnvoll (siehe Lesebalken).
+	local flags = (tw.outline == true and not tDarkText) and "OUTLINE" or ""
+	tApplyFont(f.FS, tw.font, px, flags)
+	f.FS:SetTextColor(tScheme.fg[1], tScheme.fg[2], tScheme.fg[3], 1)
+	local alpha = tTextWinAlpha[tonumber(tw.opacity) or 4] or 0.85
+	pcall(f.SetBackdropColor, f, tScheme.bg[1], tScheme.bg[2], tScheme.bg[3], alpha)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Native Plaketten-Optionen (echte Engine-CVars)
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Gemessen am lebenden Client 2.5.6.69546 (WVDebug-Abzug): jede dieser CVars
+-- existiert, alle Skalen stehen auf 1.0, alle Klassenfarben auf 0. Stufe 1 ist
+-- daher ueberall der Auslieferungszustand.
+-- ACHTUNG bei den Namen: die entpackte BlizzardInterfaceCode im Client-Ordner ist
+-- ein Abzug von Maerz/April 2026 und damit AELTER als die Plaketten-Umstellung vom
+-- Juli -- sie nennt Retail-Namen (NamePlateVerticalScale, ShowClassColorInNameplate,
+-- ...), die es in dieser exe NICHT gibt. Massgeblich sind die Strings der exe.
+local tPlateScaleSteps  = {[1] = 1.0, [2] = 1.25, [3] = 1.5,  [4] = 2.0}
+local tPlateTargetSteps = {[1] = 1.0, [2] = 1.25, [3] = 1.5,  [4] = 2.0}
+-- Deckkraft der NICHT anvisierten Plaketten: kleiner = das Ziel hebt sich staerker ab.
+local tPlateAlphaSteps  = {[1] = 1.0, [2] = 0.8,  [3] = 0.6,  [4] = 0.4}
+
+-- CVar-Schreibzugriffe sind im Kampf gesperrt (stille No-Ops, siehe Soft-Targeting).
+-- Faellt eine Anwendung deshalb aus, wird sie vorgemerkt und beim Kampfende
+-- nachgeholt; das Ereignis wird nur registriert, solange wirklich etwas aussteht.
+local tPlateCVarPending = false
+local tPlateCVarFrame
+
+local function tEnsurePlateCVarFrame()
+	if tPlateCVarFrame then return tPlateCVarFrame end
+	tPlateCVarFrame = CreateFrame("Frame", "SkuVisualAidPlateCVars", UIParent)
+	tPlateCVarFrame:SetScript("OnEvent", function(self)
+		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+		if tPlateCVarPending == true then
+			tPlateCVarPending = false
+			pcall(function() VisualAids:NamePlatesApply() end)
+		end
+	end)
+	return tPlateCVarFrame
+end
+
+-- aOnlyIfChosen: nur schreiben, wenn der Nutzer im Menue tatsaechlich etwas
+-- ausgewaehlt hat (siehe userSet in tEnsureVA). Der Login-Weg setzt das, der
+-- Menue-Weg nicht -- dort IST die Auswahl gerade passiert.
+function VisualAids:NamePlatesApply(aOnlyIfChosen)
+	if not VisualAids:IsEnabled() then return end
+	local va = tEnsureVA(); if not va then return end
+	if aOnlyIfChosen == true and va.namePlates.userSet ~= true then return end
+	if InCombatLockdown and InCombatLockdown() then
+		tPlateCVarPending = true
+		pcall(function() tEnsurePlateCVarFrame():RegisterEvent("PLAYER_REGEN_ENABLED") end)
+		return
+	end
+	local np = va.namePlates
+	local function tSet(aCVar, aValue)
+		pcall(C_CVar.SetCVar, aCVar, tostring(aValue))
+	end
+	local tScale = tPlateScaleSteps[tonumber(np.scale) or 1] or 1.0
+	-- Min und Max gemeinsam: getrennt gesetzt ergaebe eine entfernungsabhaengige
+	-- Skalierung, und genau die will hier niemand -- gewuenscht ist "alle Plaketten
+	-- gleich gross", unabhaengig von der Distanz.
+	tSet("nameplateMinScale", tScale)
+	tSet("nameplateMaxScale", tScale)
+	tSet("nameplateSelectedScale", tPlateTargetSteps[tonumber(np.targetScale) or 1] or 1.0)
+	tSet("nameplateMinAlpha", tPlateAlphaSteps[tonumber(np.otherAlpha) or 1] or 1.0)
+	tSet("nameplateShowClassColor", np.classColorEnemy == true and 1 or 0)
+	tSet("nameplateShowFriendlyClassColor", np.classColorFriend == true and 1 or 0)
+	tSet("nameplateShowOnlyNameForFriendlyPlayerUnits", np.friendlyNamesOnly == true and 1 or 0)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -976,20 +1233,116 @@ local function tBuildBar(self)
 			get = function() local v = tEnsureVA(); return (v and v.lineBar.size) or 3 end,
 			OnAction = function() pcall(function() VisualAids:VisualAidsLineBarLayout() end) end,
 		},
+		font = {
+			order = 3, name = L["Schriftart"], type = "select", values = tFontValues(),
+			get = function() local v = tEnsureVA(); return (v and v.lineBar.font) or "standard" end,
+			OnAction = function() pcall(function() VisualAids:VisualAidsLineBarLayout() end) end,
+		},
+		scheme = {
+			order = 4, name = L["Farben"], type = "select", values = tSchemeValues(),
+			get = function() local v = tEnsureVA(); return (v and v.lineBar.scheme) or "whiteOnBlack" end,
+			OnAction = function() pcall(function() VisualAids:VisualAidsLineBarLayout() end) end,
+		},
 		position = {
-			order = 3, name = L["Position"], type = "select",
+			order = 5, name = L["Position"], type = "select",
 			values = {top = L["oben"], bottom = L["unten"]},
 			get = function() local v = tEnsureVA(); return (v and v.lineBar.position) or "top" end,
 			OnAction = function() pcall(function() VisualAids:VisualAidsLineBarLayout() end) end,
 		},
 		opacity = {
-			order = 4, name = L["Deckkraft"], type = "select",
+			order = 6, name = L["Deckkraft"], type = "select",
 			values = {[1] = L["40 Prozent"], [2] = L["55 Prozent"], [3] = L["70 Prozent"], [4] = L["85 Prozent"], [5] = L["100 Prozent"]},
 			get = function() local v = tEnsureVA(); return (v and v.lineBar.opacity) or 5 end,
 			OnAction = function() pcall(function() VisualAids:VisualAidsLineBarLayout() end) end,
 		},
 	}
 	SkuOptions:IterateOptionsArgs(tArgs, self, va.lineBar)
+	for _, tChild in ipairs(self.children or {}) do tChild.noStepUpAfterSelect = true end
+end
+
+local function tBuildTextWindow(self)
+	local va = tEnsureVA(); if not va or not self then return end
+	SkuOptions:InjectMenuItems(self, {L["Dies betrifft das Lesefenster fuer Questtexte, Tooltips, Chatverlauf und Wiki."]}, SkuGenericMenuItem)
+	local tArgs = {
+		size = {
+			order = 1, name = L["Schriftgroesse"], type = "select",
+			values = {[1] = L["klein"], [2] = L["normal"], [3] = L["gross"], [4] = L["sehr gross"], [5] = L["riesig"], [6] = L["maximal"]},
+			get = function() local v = tEnsureVA(); return (v and v.textWindow.size) or 2 end,
+			OnAction = function() pcall(function() VisualAids:TextWindowLayout() end) end,
+		},
+		font = {
+			order = 2, name = L["Schriftart"], type = "select", values = tFontValues(),
+			get = function() local v = tEnsureVA(); return (v and v.textWindow.font) or "standard" end,
+			OnAction = function() pcall(function() VisualAids:TextWindowLayout() end) end,
+		},
+		scheme = {
+			order = 3, name = L["Farben"], type = "select", values = tSchemeValues(),
+			get = function() local v = tEnsureVA(); return (v and v.textWindow.scheme) or "whiteOnBlack" end,
+			OnAction = function() pcall(function() VisualAids:TextWindowLayout() end) end,
+		},
+		opacity = {
+			order = 4, name = L["Deckkraft"], type = "select",
+			values = {[1] = L["50 Prozent"], [2] = L["65 Prozent"], [3] = L["75 Prozent"], [4] = L["85 Prozent"], [5] = L["100 Prozent"]},
+			get = function() local v = tEnsureVA(); return (v and v.textWindow.opacity) or 4 end,
+			OnAction = function() pcall(function() VisualAids:TextWindowLayout() end) end,
+		},
+		outline = {
+			order = 5, name = L["Umriss"], type = "toggle",
+			get = function() local v = tEnsureVA(); return v ~= nil and v.textWindow.outline == true end,
+			OnAction = function() pcall(function() VisualAids:TextWindowLayout() end) end,
+		},
+	}
+	SkuOptions:IterateOptionsArgs(tArgs, self, va.textWindow)
+	for _, tChild in ipairs(self.children or {}) do tChild.noStepUpAfterSelect = true end
+end
+
+-- Jede Auswahl im Plaketten-Menue markiert die Einstellungen als "vom Nutzer
+-- gewaehlt" und wendet sie an. Ab da zieht Sku sie auch beim Login nach; vorher
+-- laesst es die CVars des Spielers unangetastet (siehe userSet in tEnsureVA).
+local function tNamePlatesChosen()
+	local va = tEnsureVA()
+	if va then va.namePlates.userSet = true end
+	VisualAids:NamePlatesApply()
+end
+
+local function tBuildNamePlates(self)
+	local va = tEnsureVA(); if not va or not self then return end
+	SkuOptions:InjectMenuItems(self, {L["Diese Einstellungen aendern die echten Plaketten des Spiels. Sie sind im Blizzard-Optionsfenster nicht erreichbar."]}, SkuGenericMenuItem)
+	local tSizeValues = {[1] = L["normal"], [2] = L["gross"], [3] = L["sehr gross"], [4] = L["riesig"]}
+	local tArgs = {
+		scale = {
+			order = 1, name = L["Plakettengroesse"], type = "select", values = tSizeValues,
+			get = function() local v = tEnsureVA(); return (v and v.namePlates.scale) or 1 end,
+			OnAction = function() pcall(tNamePlatesChosen) end,
+		},
+		targetScale = {
+			order = 2, name = L["Ziel hervorheben"], type = "select", values = tSizeValues,
+			get = function() local v = tEnsureVA(); return (v and v.namePlates.targetScale) or 1 end,
+			OnAction = function() pcall(tNamePlatesChosen) end,
+		},
+		otherAlpha = {
+			order = 3, name = L["Andere Plaketten abschwaechen"], type = "select",
+			values = {[1] = L["aus"], [2] = L["leicht"], [3] = L["deutlich"], [4] = L["stark"]},
+			get = function() local v = tEnsureVA(); return (v and v.namePlates.otherAlpha) or 1 end,
+			OnAction = function() pcall(tNamePlatesChosen) end,
+		},
+		classColorEnemy = {
+			order = 4, name = L["Klassenfarben Gegner"], type = "toggle",
+			get = function() local v = tEnsureVA(); return v ~= nil and v.namePlates.classColorEnemy == true end,
+			OnAction = function() pcall(tNamePlatesChosen) end,
+		},
+		classColorFriend = {
+			order = 5, name = L["Klassenfarben Verbuendete"], type = "toggle",
+			get = function() local v = tEnsureVA(); return v ~= nil and v.namePlates.classColorFriend == true end,
+			OnAction = function() pcall(tNamePlatesChosen) end,
+		},
+		friendlyNamesOnly = {
+			order = 6, name = L["Nur Namen bei freundlichen Spielern"], type = "toggle",
+			get = function() local v = tEnsureVA(); return v ~= nil and v.namePlates.friendlyNamesOnly == true end,
+			OnAction = function() pcall(tNamePlatesChosen) end,
+		},
+	}
+	SkuOptions:IterateOptionsArgs(tArgs, self, va.namePlates)
 	for _, tChild in ipairs(self.children or {}) do tChild.noStepUpAfterSelect = true end
 end
 
@@ -1071,6 +1424,14 @@ function VisualAids:VisualAidsBuildMenu(aParentSelf)
 	tBar.dynamic = true
 	tBar.BuildChildren = function(self) pcall(tBuildBar, self) end
 
+	local tTextWin = SkuOptions:InjectMenuItems(aParentSelf, {L["Textfenster"]}, SkuGenericMenuItem)
+	tTextWin.dynamic = true
+	tTextWin.BuildChildren = function(self) pcall(tBuildTextWindow, self) end
+
+	local tNamePlates = SkuOptions:InjectMenuItems(aParentSelf, {L["Namensplaketten"]}, SkuGenericMenuItem)
+	tNamePlates.dynamic = true
+	tNamePlates.BuildChildren = function(self) pcall(tBuildNamePlates, self) end
+
 	local tPlate = SkuOptions:InjectMenuItems(aParentSelf, {L["Plaketten-Farben"]}, SkuGenericMenuItem)
 	tPlate.dynamic = true
 	tPlate.BuildChildren = function(self) pcall(tBuildPlates, self) end
@@ -1090,6 +1451,35 @@ end
 function VisualAids:OnEnable()
 	-- Folgen-Abbruch-Warnung: Frame anlegen + AUTOFOLLOW_BEGIN/END registrieren.
 	pcall(tEnsureFollowWarn)
+	-- Plaketten-Farben: den Event-Treiber scharfschalten, wenn der Schalter AN ist.
+	-- BUGFIX: VisualAidsPlateSetActive wurde NUR aus dem Menue-Schalter heraus
+	-- gerufen. Nach jedem Login/Reload stand die Einstellung damit zwar auf "an",
+	-- aber NAME_PLATE_UNIT_ADDED/_REMOVED/PLAYER_TARGET_CHANGED waren nirgends
+	-- registriert -- die Faerbung war jede Sitzung tot, bis der Nutzer den Schalter
+	-- von Hand zweimal umgelegt hat. Das Armieren gehoert in den Modul-Lebenszyklus,
+	-- genau wie die Folgen-Warnung und der Naechster-Gegner-Button darueber/darunter.
+	-- tEnsureVA liefert nil, solange SkuOptions.db noch nicht steht (OnEnable kann
+	-- vor dem Profil-Load laufen); dann einmal verzoegert nachziehen.
+	local function tArmPlates()
+		local va = tEnsureVA()
+		if not va then return false end
+		if va.plateColors.enabled == true then
+			VisualAids:VisualAidsPlateSetActive(true)
+		end
+		-- Native Plaketten-CVars nachziehen. Noetig, weil sie serverseitig
+		-- zurueckgeschrieben werden koennen und weil Sku beim Login ohnehin einen
+		-- Teil des Plaketten-Satzes neu setzt (Kamera-Standard) -- ohne dieses
+		-- Nachziehen haette der Nutzer seine Auswahl nach dem naechsten Login
+		-- still verloren. Bei Stufe 1 / aus schreibt es exakt die Client-Standards
+		-- zurueck, ist also auch dann harmlos.
+		pcall(function() VisualAids:NamePlatesApply(true) end)
+		return true
+	end
+	pcall(function()
+		if tArmPlates() ~= true then
+			C_Timer.After(3, function() pcall(tArmPlates) end)
+		end
+	end)
 	-- Feindliche Plaketten mitschreiben, solange sie da sind -- gedreht wird
 	-- meist ERST und die Taste DANN gedrueckt.
 	pcall(function() SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_ADDED", tNextEnemyPlateSeen) end)
