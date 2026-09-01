@@ -4152,8 +4152,33 @@ function AuctionHouse:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFil
    -- bestätigt (mehrere Käufe inkl. Strategiekauf: Gebot traf stets die richtige
    -- Auktion, ERR_AUCTION_BID_PLACED). Die Entkopplung entsteht nur beim
    -- nachträglichen Client-Re-Sort (SortAuctionItems), den wir nicht nutzen.
+   --
+   -- [v43.2] ABER: die Sortierspalte gehoert zur Query, und die Ergebnisliste
+   -- wird SEITENWEISE und append-only aufgebaut (AuctionResultsAppend haengt
+   -- neue Gegenstaende hinten an, damit der Cursor nicht springt). Beides
+   -- zusammen heisst: die Reihenfolge der Liste ist immer die des SERVERS,
+   -- die SortBy-Sortierung im Client wirkt nur INNERHALB einer Seite. Mit
+   -- "unitprice" fuer jede Suche stand bei "Level absteigend" darum die
+   -- hoechststufige Zeile der 50 BILLIGSTEN Auktionen ganz oben - also
+   -- Graugut - und die gesuchten Stufe-70-Sachen lagen Hunderte Eintraege
+   -- weiter unten, wo die Preisbaender sie schliesslich erreichten. Auch nach
+   -- dem Fertig-Ton, denn nachsortiert wird nie.
+   -- Deshalb: bei "Level auf-/absteigend" laesst sich die SERVER-Antwort nach
+   -- der Spalte "level" sortieren (dieselbe Spalte, die Blizzards eigener
+   -- Stufen-Sortierknopf setzt) - dann stimmt schon Seite 0 und append-only
+   -- bleibt korrekt, statt die Sortierung zu bekaempfen.
+   -- NICHT fuer Kauf/Strategiekauf: die brauchen den guenstigsten Treffer auf
+   -- Seite 0 und bleiben auf "unitprice".
    if SkuCore.QueryData[tQAIindex.getAll] ~= true then
-      pcall(SortAuctionSetSort, "list", "unitprice", false)
+      local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter or {}
+      local tSortBy = tFilter.SortBy or 1
+      local tIsBuy = (SkuCore.QueryBuyData ~= nil) or (SkuCore.QuerySinglePage == true)
+      if not tIsBuy and (tSortBy == 5 or tSortBy == 6) then
+         -- dritter Parameter = absteigend
+         pcall(SortAuctionSetSort, "list", "level", tSortBy == 5)
+      else
+         pcall(SortAuctionSetSort, "list", "unitprice", false)
+      end
    end
 
    -- pcall um QueryAuctionItems: einzelne Seitenanfragen können bei
