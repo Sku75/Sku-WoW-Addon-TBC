@@ -486,6 +486,7 @@ function AuctionHouse:AuctionHouseOnInitialize()
                dprint("auction.scan", "watchdog: paged stall 60s", {
                   page = SkuCore.QueryData and SkuCore.QueryData[tQAIindex.page],
                })
+               AuctionHouse:AuctionAnnounceScanTruncated()
                AuctionHouse:AuctionScanFinish("watchdog: paged stall", true)
                tPagedScanElapsed = 0
                tPagedStallTime   = 0
@@ -498,6 +499,7 @@ function AuctionHouse:AuctionHouseOnInitialize()
             -- normale paginierte Suchen in unter 30 s durch.
             if tPagedScanElapsed > 180 then
                dprint("auction.scan", "watchdog: paged total 180s")
+               AuctionHouse:AuctionAnnounceScanTruncated()
                AuctionHouse:AuctionScanFinish("watchdog: paged total", true)
                tPagedScanElapsed = 0
                tPagedStallTime   = 0
@@ -3903,6 +3905,29 @@ end
 -- (or any reset) while already idle stays quiet. Restart-resets inside
 -- StartQuery and the buy-flow / menu pre-resets (SECTIONs 3 and 6) are NOT scan
 -- ends and keep calling AuctionHouseResetQuery directly.
+-- [v43.2] Der Watchdog bricht eine paginierte Suche ab (Server antwortet 60 s
+-- nicht bzw. 180 s Gesamtdauer) - bisher lautlos. Die bereits gezeigte
+-- Ergebnisliste blieb dann stehen und sah aus wie ein fertiges Ergebnis,
+-- obwohl die restlichen Seiten fehlen. Der Fertig-Ton ist das Signal fuer
+-- "vollstaendig"; sein Ausbleiben ist keins, das man hoert. Also sagen wir es.
+-- Gleiche Regel wie beim Fertig-Ton: nur wenn der Nutzer auch wirklich in
+-- dieser Ergebnisliste navigiert (sonst laeuft die Suche nur als Prefetch im
+-- Hintergrund, waehrend er ganz woanders steht).
+function AuctionHouse:AuctionAnnounceScanTruncated()
+   local tSpeak = false
+   if SkuCore.QueryResultsHost then
+      tSpeak = AuctionHouse:AuctionCursorInResults(SkuCore.QueryResultsHost)
+   elseif SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name == L["Warten"] then
+      tSpeak = true
+   end
+   if not tSpeak then return false end
+   pcall(function()
+      SkuOptions.Voice:OutputStringBTtts(L["AH_ScanTruncated"], true, true, 0.1, nil, nil, nil, 1)
+   end)
+   return true
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function AuctionHouse:AuctionScanFinish(aReason, aForce)
    local tWasActive = SkuCore.AuctionScan.state ~= "idle"
    local tReset = AuctionHouse:AuctionHouseResetQuery(aForce)
