@@ -3271,7 +3271,14 @@ function AuctionHouse:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex
       tNewMenuEntryCategorySubItem.dynamic = false
    else
       tCurrentDBClean = {}
-      local lmin, lmax, isuse, qmin = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin or 1, SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax or 1000, SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable or false, SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality or 1
+      -- [v43.2] Vorgaben eines NICHT gesetzten Filters: 0. Hier stand vorher je
+      -- eine 1, und die filterte: lmin=1 warf jede Zeile ohne Stufen-
+      -- anforderung raus (Handelswaren, Materialien, und jede Zeile, deren
+      -- Stufe der Client beim Scan nicht kannte), qmin=1 warf alles graue raus
+      -- - obwohl das Menue "Qualität" unverändert "Arm" anzeigt, also
+      -- "keine Einschränkung". Die Live-Liste kannte das nie: sie reicht die
+      -- ungesetzten Filter als nil an den Server weiter, der dann nicht filtert.
+      local lmin, lmax, isuse, qmin = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin or 0, SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax or 1000, SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable or false, SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality or 0
 
       for tIndex, tRecord in pairs(FullScanResultsDB) do
          if tRecord then
@@ -3299,11 +3306,13 @@ function AuctionHouse:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex
                      end
                   end
 
-                  -- Nil-Schutz: Stufe (6) bzw. Qualität (4) können trotz Reparatur
-                  -- oben noch nil sein (GetItemQualityByID liefert manchmal nil).
-                  -- Ohne Coerce bräche der Vergleich den ganzen Menüaufbau ab —
-                  -- der Zwilling in SECTION 7 schützt die Stufe bereits.
-                  local tFsLvl  = tRecord[6] or 0
+                  -- Nil-Schutz: Qualität (4) kann trotz Reparatur oben noch nil
+                  -- sein (GetItemQualityByID liefert manchmal nil). Ohne Coerce
+                  -- bräche der Vergleich den ganzen Menüaufbau ab. Die Stufe
+                  -- kommt aus dem gemeinsamen Leser (Feld 6, sonst SkuDB) —
+                  -- vorher stand hier tRecord[6] roh, und eine beim Scan
+                  -- unbekannte Stufe (0) fiel damit unter lmin.
+                  local tFsLvl  = AuctionHouse:AuctionRecordRequiredLevel(tRecord)
                   local tFsQual = tRecord[4] or 0
                   if tFsLvl >= lmin and tFsLvl <= lmax
                      and (isuse == false or AuctionHouse:AuctionRecordUsable(tRecord))
@@ -4389,9 +4398,10 @@ function AuctionHouse:AuctionFullScanBeginIngest(aBatch, aCount)
       getInfo       = _G.GetAuctionItemInfo,
       getLink       = _G.GetAuctionItemLink,
       itemData      = SkuDB.itemDataTBC,
-      reqLevelKey   = SkuDB.WotLK.itemKeys.requiredLevel,
+      -- Schluessel der BASIS-Tabelle, die hier gelesen wird (itemDataTBC). Beide
+      -- Key-Tabellen haben requiredLevel zufaellig auf 10 - das war Glueck.
+      reqLevelKey   = SkuDB.itemKeys.requiredLevel,
       itemLookup    = SkuDB.itemLookup[Sku.Loc],
-      fallbackLevel = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
    }
    -- Während der Ingest läuft, ist der Scan nicht mehr "waiting" (sonst liefe die
    -- 10-s-Warteansage weiter); "paging" markiert "Antwort da, wird verarbeitet".
@@ -4420,11 +4430,18 @@ function AuctionHouse:AuctionFullScanProcessChunk()
       end
       tInfo[21] = fs.getLink("list", i)
       local tID = tInfo[17]
-      -- Required-level normalisieren (fehlt oder absurd)
-      if tInfo[6] == nil or tInfo[6] > 10000 then
+      -- Stufenanforderung normalisieren (fehlt, ist 0 oder absurd). 0 zaehlt
+      -- jetzt mit als "fehlt": der Client liefert die Stufe nur fuer Zeilen,
+      -- deren Item-Daten er schon hatte, und gab sie sonst als 0 zurueck - die
+      -- alte Reparatur (nur bei nil) hat den DB-Wert dann nie nachgeschlagen.
+      -- Kennt auch die DB den Gegenstand nicht, bleibt es bei 0 = "keine
+      -- Anforderung". Frueher stand hier als letzter Ausweg das LevelMin des
+      -- Nutzers: das ist ein Zirkelschluss (die Zeile bestand den eigenen
+      -- Filter dann immer) und wurde als Stufe der Zeile auch noch angesagt.
+      if tInfo[6] == nil or tInfo[6] == 0 or tInfo[6] > 10000 then
          local row = tID and fs.itemData[tID]
-         if row then tInfo[6] = row[fs.reqLevelKey] end
-         if tInfo[6] == nil then tInfo[6] = fs.fallbackLevel end
+         if row and row[fs.reqLevelKey] then tInfo[6] = row[fs.reqLevelKey] end
+         if tInfo[6] == nil or tInfo[6] > 10000 then tInfo[6] = 0 end
       end
       -- Name aus DB nachlegen, wenn vom Server leer
       if tInfo[1] == "" and tID and fs.itemLookup[tID] then
