@@ -1906,6 +1906,32 @@ function AuctionHouse:AuctionRecordRequiredLevel(aRecord)
    return tLevel or 0
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.2] "Nur benutzbare" auf KOMPLETTSCAN-Daten. In der Live-Liste filtert
+-- der Server (QueryAuctionItems bekommt das Flag), der Komplettscan holt aber
+-- alles ungefiltert und Sku entscheidet selbst - bisher stur ueber canUse
+-- (Feld 5) aus der Scan-Antwort.
+--
+-- Dieses Feld kann der Client nur fuellen, wenn er die Item-Daten der Zeile
+-- schon hatte. Beim getAll-Scan hat er sie fuer einen Grossteil der Zeilen
+-- NICHT - es sind dieselben Zeilen, fuer die der Ingest Name, Stufe und
+-- Qualitaet nachreparieren muss. Ein rohes "canUse ~= true" hat damit
+-- ausgerechnet das versteckt, was der Spieler noch nie gesehen hat, also die
+-- hochstufigen Sachen, nach denen er sucht: die Kategorie zeigte nur noch
+-- niedrigstufiges Zeug aus dem eigenen Item-Cache.
+--
+-- Regel jetzt: canUse == false zaehlt nur bei VOLLSTAENDIGER Zeile (Feld 18,
+-- hasAllInfo). Ist die Zeile unvollstaendig, entscheidet die Stufenanforderung
+-- aus SkuDB. Klassen- und Rassenbeschraenkungen kennt die DB nicht - im
+-- Zweifel also einen Gegenstand zu viel zeigen statt den gesuchten zu
+-- verschweigen.
+function AuctionHouse:AuctionRecordUsable(aRecord)
+   if not aRecord then return false end
+   if aRecord[tAIDIndex.canUse] == true then return true end
+   if aRecord[tAIDIndex.hasAllInfo] == true then return false end
+   return AuctionHouse:AuctionRecordRequiredLevel(aRecord) <= (UnitLevel("player") or 0)
+end
+
 -- ===========================================================================
 -- SECTION 5 — STRATEGY BUY (automated repeated buy up to a price limit)
 -- Runs entirely on the COMMON scan/buy infrastructure now: the search goes
@@ -3280,7 +3306,7 @@ function AuctionHouse:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex
                   local tFsLvl  = tRecord[6] or 0
                   local tFsQual = tRecord[4] or 0
                   if tFsLvl >= lmin and tFsLvl <= lmax
-                     and (isuse == false or (isuse == true and tRecord[5] == true))
+                     and (isuse == false or AuctionHouse:AuctionRecordUsable(tRecord))
                      and tFsQual >= qmin
                   then
                      tHasEntries = true
