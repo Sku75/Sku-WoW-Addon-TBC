@@ -3466,11 +3466,18 @@ function AuctionHouse:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCatego
    end
 
 
+   -- [v43.2] "not subClassID or ..." wie im Komplettscan-Zwilling: eine
+   -- Kategorie OHNE Unterkategorien wird nur mit categoryIndex aufgerufen, ihre
+   -- Unterklasse ist dann nil - und "v[subClass] == nil" ist fuer jeden
+   -- Gegenstand falsch. Die Liste blieb damit leer, obwohl der Server auf
+   -- "Alle" sehr wohl die ganze Klasse liefert (die filterData der Kategorie
+   -- hat dieselbe nil-Unterklasse). Gleiches gilt fuer Unterkategorien, die
+   -- keine subClassID mitbringen.
    for i, v in pairs(SkuDB.itemDataTBC) do
       if 
          v[SkuDB.itemKeys.class] == classID
          and
-         v[SkuDB.itemKeys.subClass] == subClassID
+         (not subClassID or v[SkuDB.itemKeys.subClass] == subClassID)
       then
          if not inventoryType or (inventoryType and C_Item.GetItemInventoryTypeByID(i) == tFilterInventoryTypeToGetItemInventoryTypeByID[inventoryType]) then
             local tLocName = v[SkuDB.itemKeys.name]
