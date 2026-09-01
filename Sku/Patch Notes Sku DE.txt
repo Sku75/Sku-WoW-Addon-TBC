@@ -9,11 +9,11 @@ Aenderungen in Sku v43.2
     Ueberblick
 
         Neu
-            Neuer Tastenbefehl "Vollstaendigen Tooltip des Ziels ausgeben" (Strg+Umschalt+V): liest den kompletten Tooltip des aktuellen Ziels vor, inklusive dessen, was die Jaegerfaehigkeit Tierkunde offenlegt.
             Quests lassen sich im Questmenue verfolgen und wieder abwaehlen - neuer Eintrag "Quest verfolgen" ganz unten in jedem Questmenue, abschaltbar.
+            Neue Liste "Quests in der Naehe" im Questmenue: das ganze Questlog in einer Liste, sortiert danach, wie weit das Naechste weg ist - mit Entfernung und Himmelsrichtung. Ab Werk aus.
             Neuer Tastenbefehl "Naechstes Questziel ins Ziel nehmen" (Alt+H): nimmt eine Kreatur ins Ziel, die zu einem offenen Questziel gehoert - auch eine, die einen benoetigten Gegenstand nur fallen laesst.
             Der Tastenbefehl "Naechster Gegner im Kampf" (jetzt ab Werk auf Strg+H) findet deutlich oefter etwas: er ist nicht mehr auf den Blickkegel angewiesen.
-            Neue Liste "Quests in der Naehe" im Questmenue: das ganze Questlog in einer Liste, sortiert danach, wie weit das Naechste weg ist - mit Entfernung und Himmelsrichtung. Ab Werk aus.
+            Neuer Tastenbefehl "Vollstaendigen Tooltip des Ziels ausgeben" (Strg+Umschalt+V): liest den kompletten Tooltip des aktuellen Ziels vor, inklusive dessen, was die Jaegerfaehigkeit Tierkunde offenlegt.
             Taschenmenue: neuer Eintrag "alle bank" direkt hinter "alle taschen", solange die Bank offen ist - alles in der Bank in einer flachen Liste, genau wie "alle taschen" fuer die Taschen. Strg+Eingabe holt einen Gegenstand von dort in die Taschen, wie bisher schon in den einzelnen Bankfaechern.
             Chat: die Eingabezeile spricht jetzt wie jedes andere Sku-Eingabefeld - jedes getippte Zeichen, das Zeichen oder Wort unter dem Cursor, und mit Pfeil hoch die zuletzt gesendeten Nachrichten zum erneuten Senden oder Aendern.
             Chat: der Zielkanal wird angesagt, sobald er nicht "Sagen" ist - beim Oeffnen und bei jedem Wechsel.
@@ -23,57 +23,57 @@ Aenderungen in Sku v43.2
             Experimentell: Sammelrouten fuer Erze, Kraeuter, Gaswolken und Truhen - Sku fuehrt dich Vorkommen fuer Vorkommen durch die Zone, immer das naechstgelegene zuerst. Unter Einstellungen -> Scan -> ressourcen scan -> Sammelrouten. Neu und im Spiel erst in Ansaetzen erprobt; Rueckmeldungen sind ausdruecklich erwuenscht.
 
         Aenderungen
-            Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
-            Taschen: Aktionen mit Zauberzeit (Verzauberung, Angelkoeder, Waffenoel, Ruestungsset, Entzaubern) melden den Gegenstand nach dem Zauber noch einmal und lassen den Cursor darauf stehen.
-            Taschen: ein Bestaetigungsdialog wie "Bestehende Verzauberung ersetzen?" kostet nicht mehr die Position - nach "Ja" wie nach "Nein" landet man wieder auf dem Gegenstand.
-            Menue: das Schliessen eines Fensters baut die Menuedaten nur noch einmal statt bis zu sechsmal neu auf.
-            Auren: eine Waffenverzauberung (Angelkoeder, Gift, Oel) laesst sich jetzt wie ein Zauber ansprechen - Ereignis "Waffenverzauberung abgelaufen" zusammen mit "Zauber name".
-            Auren: neue Bedingung und neue Ausgabe "Waffenverzauberung Hand" (Haupthand oder Nebenhand).
-            Questdatenbank: "Start in Zone" zeigt die nach Entfernung sortierte Liste direkt an - die Zwischenebene "Nach Entfernung" ist weg.
-            Questdatenbank: "Start in Zone" nennt zu jeder Quest jetzt auch die Himmelsrichtung, nicht nur die Entfernung.
-            Chat: "Link zu Chat hinzufuegen" fuegt den Gegenstand an der Cursorposition ein, statt die Zeile zu ersetzen, und laesst den Cursor davor stehen - davor passt jetzt noch ein Kanal wie "/p ".
-            Chat: ein Gegenstandslink zaehlt beim Lesen als ein einziges Zeichen - Pfeil links und rechts springen ueber den ganzen Link und sagen den Namen.
-            Chat: "Link zu Chat hinzufuegen" schliesst die Taschen nicht mehr.
-            Chat: die Pfeiltasten bewegen in der Chateingabe den Textcursor; abschaltbar unter Chateinstellungen.
-            Questdatenbank: auf den aktuellen Questie-Datenstand gebracht - 33 Quests ohne Ziel haben jetzt eines, fuenf fehlende ergaenzt, dazu rund 2000 kleinere Korrekturen an Namen, Stufen, Questgebern und Vorquests.
             Zum Beacon drehen (T): die Drehung sitzt jetzt deutlich genauer. Vorher lief sie so schnell, dass allein das framegenaue Stoppen je nach Bildrate 20 Grad und mehr Ueberdreh kosten konnte; jetzt richtet sich das Tempo nach der Drehgroesse, und keine Drehung dauert laenger als eine Viertelsekunde.
             Zum Beacon drehen: in Bewegung wird vorgehalten - gezielt wird dorthin, wo der Wegpunkt am Ende der Drehung liegen wird. Das beendet das Im-Kreis-Laufen um nahe Wegpunkte, das vor allem beritten und im Flug auftrat.
             Zum Beacon drehen: ein Druck waehrend einer laufenden Drehung wird verworfen, statt die Drehung mittendrin abzubrechen - gewohntes Mehrfachdruecken verfeinert weiter wie bisher.
             Navigation: unter "Direkter Wegpunkt" steht "Aktuelle Karte Entfernung" jetzt an erster Stelle und "Letzte" dahinter.
+            Questdatenbank: "Start in Zone" zeigt die nach Entfernung sortierte Liste direkt an - die Zwischenebene "Nach Entfernung" ist weg.
+            Questdatenbank: "Start in Zone" nennt zu jeder Quest jetzt auch die Himmelsrichtung, nicht nur die Entfernung.
+            Questdatenbank: auf den aktuellen Questie-Datenstand gebracht - 33 Quests ohne Ziel haben jetzt eines, fuenf fehlende ergaenzt, dazu rund 2000 kleinere Korrekturen an Namen, Stufen, Questgebern und Vorquests.
+            Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
+            Taschen: Aktionen mit Zauberzeit (Verzauberung, Angelkoeder, Waffenoel, Ruestungsset, Entzaubern) melden den Gegenstand nach dem Zauber noch einmal und lassen den Cursor darauf stehen.
+            Taschen: ein Bestaetigungsdialog wie "Bestehende Verzauberung ersetzen?" kostet nicht mehr die Position - nach "Ja" wie nach "Nein" landet man wieder auf dem Gegenstand.
+            Chat: "Link zu Chat hinzufuegen" fuegt den Gegenstand an der Cursorposition ein, statt die Zeile zu ersetzen, und laesst den Cursor davor stehen - davor passt jetzt noch ein Kanal wie "/p ".
+            Chat: ein Gegenstandslink zaehlt beim Lesen als ein einziges Zeichen - Pfeil links und rechts springen ueber den ganzen Link und sagen den Namen.
+            Chat: "Link zu Chat hinzufuegen" schliesst die Taschen nicht mehr.
+            Chat: die Pfeiltasten bewegen in der Chateingabe den Textcursor; abschaltbar unter Chateinstellungen.
+            Auren: eine Waffenverzauberung (Angelkoeder, Gift, Oel) laesst sich jetzt wie ein Zauber ansprechen - Ereignis "Waffenverzauberung abgelaufen" zusammen mit "Zauber name".
+            Auren: neue Bedingung und neue Ausgabe "Waffenverzauberung Hand" (Haupthand oder Nebenhand).
+            Menue: das Schliessen eines Fensters baut die Menuedaten nur noch einmal statt bis zu sechsmal neu auf.
             Menue: der Tippfilter ignoriert Akzente - auf einem franzoesischen Client findet "general" jetzt "Fournitures generales", und "oe" findet einen Eintrag, der mit "Oe" beginnt. Auf einer franzoesischen AZERTY-Tastatur tippt die Taste ù jetzt auch in den Filter.
             Franzoesisch: die Wegpunktkommentare gibt es jetzt auf Franzoesisch - 207 Texte auf 546 Wegpunkten, aus dem deutschen Original uebersetzt.
 
         Fehlerbehebungen
-            Zum Beacon drehen: nach schnell hintereinander ausgeloesten Drehungen konnte die Drehgeschwindigkeit der Kamera-Tasten dauerhaft vervierfacht haengenbleiben.
+            Menue: waehrend man ging, war das geoeffnete Menue wie tot - jede Taste ausser Escape wurde verschluckt, bis man stehen blieb.
             Escape schloss das Menue nicht, wenn man direkt auf einem Questobjekt stand - das Questfenster ging endlos wieder auf.
+            Menue: Enter auf einem Ein/Aus-Eintrag in einer gefilterten Liste sagte den ersten Eintrag der Liste an statt des umgeschalteten Zustands.
+            Menue: eine Zeile, die man per Tastendruck erneut anfordert, wird wieder vorgelesen statt verschluckt.
+            Menue: der Tippfilter fasste das Getippte als Suchmuster auf - eine Eingabe wie "50%" oder "(lang" fand nichts oder brach ab.
+            Tastatur-Echo: getippte Zeichen kommen sofort; verschluckte und verspaetete Buchstaben sind weg.
+            Sprachausgabe: Ansagen blieben beim Navigieren immer wieder fuer eine Weile still - am zuverlaessigsten bei einem einzelnen Treffer nach dem Filtern.
+            Sprachausgabe: Gegenstandslinks wurden als Folge von Farbcodes vorgelesen statt als Name - ueberall in Sku, nicht nur im Chat.
+            Zum Beacon drehen: nach schnell hintereinander ausgeloesten Drehungen konnte die Drehgeschwindigkeit der Kamera-Tasten dauerhaft vervierfacht haengenbleiben.
+            Das Loeschen eines eigenen Wegpunkts entfernte die falsche interne Kennung, und "/skucheck wp" meldete vier Fehler bei den Schnellwegpunkten, die keine waren.
+            Questmenue: bei Quests mit gemischten Zielen ("toete X und sammle Y") zeigte "Ziel" nur die erste Zielart - jetzt stehen Gegner, Fundorte und Erkundungspunkt nebeneinander.
+            Questmenue: bei 174 Quests, deren Ziel ein ORT ist, stand der Ort zwar in den Daten, aber "Questziel" meldete trotzdem nur "Leer" - gesucht wurde ein Wegpunkt unter einem Namen, den nie jemand vergibt. Jetzt wird aus den Koordinaten der naechstgelegene Routenwegpunkt berechnet.
+            Bei 77 WEITEREN Quests fehlten die Zieldaten dagegen ganz - fuer sie sind Objekte, Kreaturen und 26 Ortskoordinaten neu eingetragen, ein Teil davon aus Webquellen: Rueckmeldungen, ob sie stimmen, sind willkommen.
+            Questmenue: rund 300 Quests, deren Questgeber, Ziel oder Abgabe in einem Dungeon liegt, zeigten leere Eintraege - jetzt fuehren sie zum Dungeoneingang.
+            Dreizehn Sprich-mit-Quests (u.a. die alten Priester-Zauberquests) standen ohne Abgabepunkt in den Daten - jetzt fuehrt die Abgabe zu dem NPC, den der Questtext nennt.
+            Questdatenbank: direkt nach einem /reload konnten Quests inaktiver Weltereignisse (etwa Sonnenwendquests) in "Start in Zone" auftauchen.
+            Questdatenbank: die Liste "Start in Zone, Nach Entfernung" brach nach der ersten Quest ab.
             Taschen: der Tippfilter blieb nach dem Benutzen eines Gegenstands haengen und liess sich nur noch durch Schliessen der Taschen loswerden.
             Nach einer Aktion mit Zauberzeit wurde direkt nach dem richtigen Gegenstand noch ein falscher angesagt.
             Die Taschenliste fuer den Kampf konnte veralten, wenn man ein Questfenster schloss, waehrend die Taschen offen waren.
-            Sprachausgabe: Ansagen blieben beim Navigieren immer wieder fuer eine Weile still - am zuverlaessigsten bei einem einzelnen Treffer nach dem Filtern.
+            Taschenmenue: mit einem Taschen-Ersatz-Addon wie Bagnon, das Blizzards Bankfenster versteckt, verschwanden saemtliche Bankfaecher aus dem Menue.
             Auren: der Satt-Buff war in der Zauberauswahl doppelt vorhanden - beide Eintraege klangen gleich, nur einer konnte je ausloesen.
             Auren: Eintraege, die es nur als Waffenverzauberung gibt (etwa "Angelfertigkeit +75"), sind in den Auswahllisten jetzt als solche gekennzeichnet.
             Auren: "Waffenverzauberung Haupthand enthaelt X" zusammen mit "Waffenverzauberung abgelaufen" konnte nie ausloesen - /skucheck auras meldet diese Kombination jetzt.
             Auren: das Ende einer Waffenverzauberung wird auf den Frame genau erkannt statt bis zu eine viertel Sekunde spaeter.
-            Menue: Enter auf einem Ein/Aus-Eintrag in einer gefilterten Liste sagte den ersten Eintrag der Liste an statt des umgeschalteten Zustands.
-            Dungeonbrowser: das Annehmen einer Gruppeneinladung fuehrt nicht mehr von selbst in den Dungeonbrowser.
-            Questdatenbank: die Liste "Start in Zone, Nach Entfernung" brach nach der ersten Quest ab.
-            Taschenmenue: mit einem Taschen-Ersatz-Addon wie Bagnon, das Blizzards Bankfenster versteckt, verschwanden saemtliche Bankfaecher aus dem Menue.
-            Das Loeschen eines eigenen Wegpunkts entfernte die falsche interne Kennung, und "/skucheck wp" meldete vier Fehler bei den Schnellwegpunkten, die keine waren.
-            Tastatur-Echo: getippte Zeichen kommen sofort; verschluckte und verspaetete Buchstaben sind weg.
-            Menue: eine Zeile, die man per Tastendruck erneut anfordert, wird wieder vorgelesen statt verschluckt.
-            Sprachausgabe: Gegenstandslinks wurden als Folge von Farbcodes vorgelesen statt als Name - ueberall in Sku, nicht nur im Chat.
-            Questmenue: bei Quests mit gemischten Zielen ("toete X und sammle Y") zeigte "Ziel" nur die erste Zielart - jetzt stehen Gegner, Fundorte und Erkundungspunkt nebeneinander.
-            Questdatenbank: direkt nach einem /reload konnten Quests inaktiver Weltereignisse (etwa Sonnenwendquests) in "Start in Zone" auftauchen.
-            Dreizehn Sprich-mit-Quests (u.a. die alten Priester-Zauberquests) standen ohne Abgabepunkt in den Daten - jetzt fuehrt die Abgabe zu dem NPC, den der Questtext nennt.
-            Questmenue: rund 300 Quests, deren Questgeber, Ziel oder Abgabe in einem Dungeon liegt, zeigten leere Eintraege - jetzt fuehren sie zum Dungeoneingang.
-            77 Quests mit einem Ziel im Feld (erkunde X, benutze Y an Ort Z), zu denen keine Daten existierten, haben jetzt ein echtes Questziel - ein Teil der Orte stammt aus Webquellen: Rueckmeldungen, ob sie stimmen, sind willkommen.
-            Menue: waehrend man ging, war das geoeffnete Menue wie tot - jede Taste ausser Escape wurde verschluckt, bis man stehen blieb.
             Aktionsleisten: Umschalt+Ab las im Zuweisungsmenue den Zauber-Tooltip nicht mehr vor.
-            Questmenue: 174 Quests, deren Ziel ein Ort ist (erkunde X, benutze Y dort), meldeten unter "Questziel" nur "Leer".
+            Dungeonbrowser: das Annehmen einer Gruppeneinladung fuehrt nicht mehr von selbst in den Dungeonbrowser.
             Franzoesisch: die Wegpunktkommentare blieben seit v42.11 vollstaendig stumm - auch die Warnungen wie "Vorsicht, Abgrund" oder "hier auf den Zeppelin warten".
             Franzoesisch: 22 der 94 Ressourcennamen des Minikartenscanners waren falsch, diese Vorkommen wurden nie angesagt.
             Franzoesisch: in der Hoehle der Nebel blieb die Wegpunktliste leer.
-            Menue: der Tippfilter fasste das Getippte als Suchmuster auf - eine Eingabe wie "50%" oder "(lang" fand nichts oder brach ab.
 
     Schwimmen und Fliegen: die Neigungssperre beendet das ungewollte Abtauchen
         Einfach: Beim Schwimmen oder Fliegen zog jede automatische Drehung zum Funkfeuer ein
@@ -942,7 +942,7 @@ Aenderungen in Sku v43.2
             braucht. Der Lesevorgang laeuft zusaetzlich in einem pcall, weil er bei jeder
             Cursorbewegung ausgeloest wird. Aus PR #10 (ZenqFR).
 
-    Questziel fuer Quests, deren Ziel ein Ort ist
+    Questziel: der Ort stand in den Daten, gefunden wurde er nie
         Einfach: 174 Quests, bei denen man einen Ort erkunden oder dort etwas benutzen
             soll, antworteten unter "Questziel" nur "Leer". Jetzt fuehrt der Eintrag zum
             naechstgelegenen Routenwegpunkt an diesem Ort.

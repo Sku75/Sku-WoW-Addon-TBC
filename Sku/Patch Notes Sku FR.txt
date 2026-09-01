@@ -12,11 +12,11 @@ Changements dans Sku v43.2
     Aperçu
 
         Nouveautés
-            Nouveau raccourci « Annoncer l'infobulle complète de la cible » (Ctrl+Maj+V) : lit à voix haute l'infobulle complète de la cible actuelle, y compris ce que révèle la compétence de chasseur Connaissance des bêtes.
             Les quêtes peuvent être suivies ou retirées du suivi depuis le menu de quête - nouvelle entrée « Suivre la quête » en bas de chaque menu de quête, désactivable.
+            Nouvelle liste « Quêtes à proximité » dans le menu de quête : tout le journal de quêtes en une seule liste, triée selon la distance de ce qui compte pour chaque quête - avec la distance et le point cardinal. Désactivée par défaut.
             Nouveau raccourci « Cibler la créature de quête la plus proche » (Alt+H) : cible une créature liée à un objectif de quête en cours - y compris celle qui se contente de faire tomber un objet requis.
             Le raccourci « Ennemi suivant en combat » (désormais sur Ctrl+H par défaut) trouve bien plus souvent quelque chose : il ne dépend plus du cône de vue.
-            Nouvelle liste « Quêtes à proximité » dans le menu de quête : tout le journal de quêtes en une seule liste, triée selon la distance de ce qui compte pour chaque quête - avec la distance et le point cardinal. Désactivée par défaut.
+            Nouveau raccourci « Annoncer l'infobulle complète de la cible » (Ctrl+Maj+V) : lit à voix haute l'infobulle complète de la cible actuelle, y compris ce que révèle la compétence de chasseur Connaissance des bêtes.
             Menu des sacs : nouvelle entrée « toute la banque » juste après « tous les sacs » tant que la banque est ouverte - tout le contenu de la banque en une seule liste à plat, exactement comme « tous les sacs » pour vos sacs. Ctrl+Entrée y déplace un objet vers vos sacs, comme il le faisait déjà dans chaque sac de banque.
             Chat : la ligne de saisie parle désormais comme tout autre champ de saisie de Sku - chaque caractère tapé, le caractère ou le mot sous le curseur, et avec la flèche haut les derniers messages envoyés, pour les renvoyer ou les modifier.
             Chat : le canal cible est annoncé dès qu'il n'est pas « Dire » - à l'ouverture et à chaque changement.
@@ -26,57 +26,57 @@ Changements dans Sku v43.2
             Expérimental : itinéraires de récolte pour les minerais, les herbes, les nuages de gaz et les coffres - Sku vous guide de gisement en gisement à travers la zone, le plus proche d'abord. Sous Réglages -> Scan -> analyse des ressources -> Itinéraires de récolte. Nouveau et à peine testé en jeu ; vos retours sont expressément souhaités.
 
         Changements
-            Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
-            Sacs : les actions avec temps d'incantation (enchantement, appât de pêche, huile d'arme, kit d'armure, désenchantement) annoncent à nouveau l'objet une fois l'incantation terminée et y laissent le curseur.
-            Sacs : une boîte de dialogue de confirmation comme « Remplacer l'enchantement existant ? » ne coûte plus la position - après « Oui » comme après « Non », on revient sur l'objet.
-            Menu : la fermeture d'une fenêtre ne reconstruit plus les données du menu qu'une seule fois au lieu de six.
-            Auras : un enchantement d'arme (appât de pêche, poison, huile) s'adresse désormais comme un sort - l'événement « Enchantement d'arme expiré » avec « nom du sort ».
-            Auras : nouvelle condition et nouvelle sortie « main de l'enchantement d'arme » (main droite ou main gauche).
-            Base de données des quêtes : « Commence dans la zone » affiche directement la liste triée par distance - le niveau intermédiaire « Par distance » a disparu.
-            Base de données des quêtes : « Commence dans la zone » indique désormais aussi le point cardinal de chaque quête, et non plus seulement la distance.
-            Chat : « Ajouter le lien au chat » insère l'objet à la position du curseur au lieu de remplacer la ligne, et laisse le curseur devant - un canal comme « /p » tient donc encore avant.
-            Chat : un lien d'objet compte pour un seul caractère à la lecture - les flèches gauche et droite franchissent tout le lien et en disent le nom.
-            Chat : « Ajouter le lien au chat » ne ferme plus les sacs.
-            Chat : les flèches déplacent le curseur de texte dans la saisie du chat ; désactivable dans les paramètres du chat.
-            Base de données des quêtes : mise au niveau des données actuelles de Questie - 33 quêtes sans cible en ont désormais une, cinq quêtes manquantes ajoutées, plus environ 2000 petites corrections de noms, niveaux, donneurs de quête et prérequis.
             Se tourner vers la balise (T) : la rotation est désormais nettement plus précise. Avant, elle tournait si vite que le simple arrêt à la trame près pouvait coûter 20 degrés et plus de dépassement selon la fréquence d'images ; la vitesse s'adapte maintenant à l'ampleur de la rotation, et aucune rotation ne dure plus d'un quart de seconde.
             Se tourner vers la balise : en mouvement, la rotation anticipe - elle vise l'endroit où se trouvera le point de passage à la fin de la rotation. Cela met fin aux tours en rond autour des points proches, surtout connus en monture et en vol.
             Se tourner vers la balise : un appui pendant une rotation en cours est ignoré au lieu d'interrompre la rotation - appuyer plusieurs fois continue d'affiner comme avant.
             Navigation : sous « Point de passage direct », « Carte actuelle par distance » vient désormais en premier et « Récent » en second.
+            Base de données des quêtes : « Commence dans la zone » affiche directement la liste triée par distance - le niveau intermédiaire « Par distance » a disparu.
+            Base de données des quêtes : « Commence dans la zone » indique désormais aussi le point cardinal de chaque quête, et non plus seulement la distance.
+            Base de données des quêtes : mise au niveau des données actuelles de Questie - 33 quêtes sans cible en ont désormais une, cinq quêtes manquantes ajoutées, plus environ 2000 petites corrections de noms, niveaux, donneurs de quête et prérequis.
+            Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
+            Sacs : les actions avec temps d'incantation (enchantement, appât de pêche, huile d'arme, kit d'armure, désenchantement) annoncent à nouveau l'objet une fois l'incantation terminée et y laissent le curseur.
+            Sacs : une boîte de dialogue de confirmation comme « Remplacer l'enchantement existant ? » ne coûte plus la position - après « Oui » comme après « Non », on revient sur l'objet.
+            Chat : « Ajouter le lien au chat » insère l'objet à la position du curseur au lieu de remplacer la ligne, et laisse le curseur devant - un canal comme « /p » tient donc encore avant.
+            Chat : un lien d'objet compte pour un seul caractère à la lecture - les flèches gauche et droite franchissent tout le lien et en disent le nom.
+            Chat : « Ajouter le lien au chat » ne ferme plus les sacs.
+            Chat : les flèches déplacent le curseur de texte dans la saisie du chat ; désactivable dans les paramètres du chat.
+            Auras : un enchantement d'arme (appât de pêche, poison, huile) s'adresse désormais comme un sort - l'événement « Enchantement d'arme expiré » avec « nom du sort ».
+            Auras : nouvelle condition et nouvelle sortie « main de l'enchantement d'arme » (main droite ou main gauche).
+            Menu : la fermeture d'une fenêtre ne reconstruit plus les données du menu qu'une seule fois au lieu de six.
             Menu : le filtre de saisie ignore les accents - « general » trouve maintenant « Fournitures générales », et « ingenieur » trouve « Ingénieur ». Sur un clavier AZERTY, la touche ù alimente désormais aussi le filtre.
             Français : les commentaires de points de passage existent maintenant en français - 207 textes sur 546 points de passage, traduits depuis l'original allemand.
 
         Corrections
-            Se tourner vers la balise : après des rotations déclenchées coup sur coup, la vitesse de rotation des touches de caméra pouvait rester quadruplée en permanence.
+            Menu : pendant la marche, un menu ouvert était comme mort - toutes les touches sauf Échap étaient avalées jusqu'à l'arrêt complet.
             Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête - la fenêtre de quête se rouvrait sans fin.
+            Menu : Entrée sur une entrée activé/désactivé dans une liste filtrée annonçait la première entrée de la liste au lieu de l'état basculé.
+            Menu : une ligne redemandée par une touche est relue au lieu d'être avalée.
+            Menu : le filtre de saisie interprétait le texte tapé comme un motif de recherche - une saisie comme « 50% » ou « (long » ne trouvait rien ou échouait.
+            Écho clavier : les caractères tapés sont annoncés immédiatement ; plus de lettres avalées ni en retard.
+            Synthèse vocale : les annonces devenaient régulièrement muettes pendant un moment lors de la navigation - surtout sur un résultat unique après filtrage.
+            Sortie vocale : les liens d'objet étaient lus comme une suite de codes de couleur au lieu de leur nom - partout dans Sku, pas seulement dans le chat.
+            Se tourner vers la balise : après des rotations déclenchées coup sur coup, la vitesse de rotation des touches de caméra pouvait rester quadruplée en permanence.
+            La suppression d'un point de passage personnel retirait le mauvais identifiant interne, et « /skucheck wp » signalait quatre erreurs sur les points de passage rapides qui n'en étaient pas.
+            Menu de quête : pour les quêtes à objectifs mixtes (« tuer X et ramasser Y »), l'entrée « Cible de quête » ne montrait que le premier type d'objectif - ennemis, sources d'objets et point d'exploration figurent désormais côte à côte.
+            Menu de quête : pour 174 quêtes dont l'objectif est un LIEU, le lieu figurait bien dans les données, mais « Objectif de quête » ne répondait que « Vide » - la recherche portait sur un point de passage dont personne n'attribue jamais le nom. Le point de passage de route le plus proche est désormais calculé à partir des coordonnées.
+            Pour 77 AUTRES quêtes, les données d'objectif manquaient en revanche totalement - objets, créatures et 26 coordonnées de lieu y ont été ajoutés, une partie provenant de sources web : vos retours sur leur exactitude sont les bienvenus.
+            Menu de quête : environ 300 quêtes dont le donneur, la cible ou la remise se trouve dans un donjon affichaient des entrées vides - elles mènent désormais à l'entrée du donjon.
+            Treize quêtes de dialogue (dont les anciennes quêtes de sorts de prêtre) n'avaient aucun point de remise dans les données - l'entrée Livraison mène désormais au PNJ que nomme le texte de la quête.
+            Base de données des quêtes : juste après un /reload, des quêtes d'événements mondiaux inactifs (par exemple les quêtes du Solstice d'été) pouvaient apparaître dans « Commence dans la zone ».
+            Base de données des quêtes : la liste « Commence dans la zone, Par distance » s'interrompait après la première quête.
             Sacs : le filtre de saisie restait bloqué après l'utilisation d'un objet et ne pouvait plus être levé qu'en fermant les sacs.
             Après une action avec temps d'incantation, un mauvais objet était annoncé juste après le bon.
             La liste des sacs tenue pour le combat pouvait se périmer lorsqu'on fermait une fenêtre de quête alors que les sacs étaient ouverts.
-            Synthèse vocale : les annonces devenaient régulièrement muettes pendant un moment lors de la navigation - surtout sur un résultat unique après filtrage.
+            Menu des sacs : avec un addon de remplacement des sacs comme Bagnon, qui masque la fenêtre de banque de Blizzard, tous les compartiments de banque disparaissaient du menu.
             Auras : le buff Rassasié figurait deux fois dans le sélecteur de sorts - les deux entrées sonnaient pareil et une seule pouvait se déclencher.
             Auras : les entrées qui n'existent que comme enchantement d'arme (par exemple « Compétence Pêche +75 ») sont désormais signalées comme telles dans les sélecteurs.
             Auras : « enchantement d'arme main droite contient X » avec « Enchantement d'arme expiré » ne pouvait jamais se déclencher - /skucheck auras signale désormais cette combinaison.
             Auras : la fin d'un enchantement d'arme est détectée à la frame près au lieu d'un quart de seconde plus tard.
-            Menu : Entrée sur une entrée activé/désactivé dans une liste filtrée annonçait la première entrée de la liste au lieu de l'état basculé.
-            Navigateur de donjons : accepter une invitation de groupe ne vous dépose plus tout seul dans le navigateur de donjons.
-            Base de données des quêtes : la liste « Commence dans la zone, Par distance » s'interrompait après la première quête.
-            Menu des sacs : avec un addon de remplacement des sacs comme Bagnon, qui masque la fenêtre de banque de Blizzard, tous les compartiments de banque disparaissaient du menu.
-            La suppression d'un point de passage personnel retirait le mauvais identifiant interne, et « /skucheck wp » signalait quatre erreurs sur les points de passage rapides qui n'en étaient pas.
-            Écho clavier : les caractères tapés sont annoncés immédiatement ; plus de lettres avalées ni en retard.
-            Menu : une ligne redemandée par une touche est relue au lieu d'être avalée.
-            Sortie vocale : les liens d'objet étaient lus comme une suite de codes de couleur au lieu de leur nom - partout dans Sku, pas seulement dans le chat.
-            Menu de quête : pour les quêtes à objectifs mixtes (« tuer X et ramasser Y »), l'entrée « Cible de quête » ne montrait que le premier type d'objectif - ennemis, sources d'objets et point d'exploration figurent désormais côte à côte.
-            Base de données des quêtes : juste après un /reload, des quêtes d'événements mondiaux inactifs (par exemple les quêtes du Solstice d'été) pouvaient apparaître dans « Commence dans la zone ».
-            Treize quêtes de dialogue (dont les anciennes quêtes de sorts de prêtre) n'avaient aucun point de remise dans les données - l'entrée Livraison mène désormais au PNJ que nomme le texte de la quête.
-            Menu de quête : environ 300 quêtes dont le donneur, la cible ou la remise se trouve dans un donjon affichaient des entrées vides - elles mènent désormais à l'entrée du donjon.
-            77 quêtes à objectif de terrain (explorer X, utiliser Y à l'endroit Z) sans aucune donnée ont désormais une vraie cible de quête - certains lieux proviennent de sources web : les retours sur leur exactitude sont bienvenus.
-            Menu : pendant la marche, un menu ouvert était comme mort - toutes les touches sauf Échap étaient avalées jusqu'à l'arrêt complet.
             Barres d'action : Maj+Bas ne lisait plus l'infobulle du sort dans le menu d'affectation.
-            Menu de quête : 174 quêtes dont l'objectif est un lieu (explorer X, utiliser Y sur place) ne répondaient que « Vide » sous « Objectif de quête ».
+            Navigateur de donjons : accepter une invitation de groupe ne vous dépose plus tout seul dans le navigateur de donjons.
             Français : les commentaires de points de passage étaient totalement muets depuis la v42.11 - y compris les avertissements comme « attention, ravin » ou « attendre le zeppelin ici ».
             Français : 22 des 94 noms de ressources du scanner de minicarte étaient erronés, ces gisements n'étaient donc jamais annoncés.
             Français : dans la Caverne des Brumes, la liste des points de passage restait vide.
-            Menu : le filtre de saisie interprétait le texte tapé comme un motif de recherche - une saisie comme « 50% » ou « (long » ne trouvait rien ou échouait.
 
     Nage et vol : le verrouillage de l'inclinaison met fin à la plongée involontaire
         Simple : En nageant ou en volant, chaque virage automatique vers la balise tirait un peu
@@ -970,7 +970,7 @@ Changements dans Sku v43.2
             puisqu'elle se déclenche à chaque déplacement du curseur. Issu de la PR #10
             (ZenqFR).
 
-    Un objectif de quête pour les quêtes dont le but est un lieu
+    Objectif de quête : le lieu figurait dans les données, mais restait introuvable
         Simple : 174 quêtes qui demandent d'explorer un endroit ou d'y utiliser quelque
             chose ne répondaient que « Vide » sous « Objectif de quête ». L'entrée mène
             désormais au point de passage de route le plus proche de ce lieu.

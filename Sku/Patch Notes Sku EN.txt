@@ -9,11 +9,11 @@ Changes in Sku v43.2
     Overview
 
         New
-            New keybind "Output full tooltip of current target" (Ctrl+Shift+V): reads the current target's complete tooltip aloud, including what the Hunter ability Beast Lore reveals.
             Quests can be tracked and untracked from the quest menu - a new "Track quest" entry at the bottom of every quest menu, and it can be switched off.
+            New "Nearby quests" list in the quest menu: your whole quest log in one list, sorted by how far away the next thing is - with distance and compass direction. Off by default.
             New keybind "Target nearest quest mob" (Alt+H): targets a creature belonging to an open quest objective - including one that merely drops an item you need.
             The "Next enemy in combat" keybind (now bound to Ctrl+H by default) finds something far more often: it no longer depends on the view cone.
-            New "Nearby quests" list in the quest menu: your whole quest log in one list, sorted by how far away the next thing is - with distance and compass direction. Off by default.
+            New keybind "Output full tooltip of current target" (Ctrl+Shift+V): reads the current target's complete tooltip aloud, including what the Hunter ability Beast Lore reveals.
             Bags menu: a new "all bank" entry right after "all bags" while the bank is open - everything in the bank in one flat list, exactly like "all bags" is for your bags. Ctrl+Enter moves an item from there into your bags, the same way it already did inside the individual bank bags.
             Chat: the input line now speaks like every other Sku input field - every typed character, the character or word under the cursor, and with arrow up the messages you sent last, to send again or to change.
             Chat: the target channel is announced whenever it is not "Say" - on opening and on every change.
@@ -23,57 +23,57 @@ Changes in Sku v43.2
             Experimental: gather routes for ore, herbs, gas clouds and chests - Sku walks you through the zone node by node, nearest first. Under Settings -> Scan -> resource scanning -> Gather routes. New and barely tested in game; feedback is explicitly wanted.
 
         Changes
-            Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
-            Bags: actions with a cast time (enchant, fishing lure, weapon oil, armor kit, disenchant) announce the item again once the cast has finished and leave the cursor on it.
-            Bags: a confirmation dialog such as "Replace existing enchantment?" no longer costs the position - after "Yes" as after "No" you land back on the item.
-            Menu: closing a window now rebuilds the menu data once instead of up to six times.
-            Auras: a weapon enchant (fishing lure, poison, oil) can now be addressed like a spell - the event "Weapon enchant expired" together with "spell name".
-            Auras: new condition and new output "weapon enchant hand" (main hand or off hand).
-            Quest database: "Starts in zone" shows the distance-sorted list directly - the intermediate "By distance" level is gone.
-            Quest database: "Starts in zone" now names the compass direction of every quest as well, not just the distance.
-            Chat: "Add Link to chat" inserts the item at the cursor instead of replacing the line, and leaves the cursor in front of it - so a channel such as "/p " still fits before it.
-            Chat: an item link counts as a single character when reading - arrow left and right jump across the whole link and speak its name.
-            Chat: "Add Link to chat" no longer closes the bags.
-            Chat: the arrow keys move the text cursor in the chat input; can be turned off under chat settings.
-            Quest database: brought up to Questie's current data - 33 quests that had no target now have one, five missing quests added, plus about 2000 smaller corrections to names, levels, quest givers and prequests.
             Turn towards beacon (T): the turn now lands far more accurately. It used to run so fast that merely stopping it frame-exactly could cost 20 degrees and more of overshoot depending on frame rate; the speed now scales with the size of the turn, and no turn takes longer than a quarter of a second.
             Turn towards beacon: while moving, the turn leads the target - it aims where the waypoint will be when the turn finishes. This ends the circling around close waypoints, known above all from riding and flying.
             Turn towards beacon: a press during a running turn is discarded instead of cutting the turn short - pressing repeatedly keeps refining as before.
             Navigation: under "Direct waypoint", "Current map by distance" now comes first and "Recent" second.
+            Quest database: "Starts in zone" shows the distance-sorted list directly - the intermediate "By distance" level is gone.
+            Quest database: "Starts in zone" now names the compass direction of every quest as well, not just the distance.
+            Quest database: brought up to Questie's current data - 33 quests that had no target now have one, five missing quests added, plus about 2000 smaller corrections to names, levels, quest givers and prequests.
+            Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
+            Bags: actions with a cast time (enchant, fishing lure, weapon oil, armor kit, disenchant) announce the item again once the cast has finished and leave the cursor on it.
+            Bags: a confirmation dialog such as "Replace existing enchantment?" no longer costs the position - after "Yes" as after "No" you land back on the item.
+            Chat: "Add Link to chat" inserts the item at the cursor instead of replacing the line, and leaves the cursor in front of it - so a channel such as "/p " still fits before it.
+            Chat: an item link counts as a single character when reading - arrow left and right jump across the whole link and speak its name.
+            Chat: "Add Link to chat" no longer closes the bags.
+            Chat: the arrow keys move the text cursor in the chat input; can be turned off under chat settings.
+            Auras: a weapon enchant (fishing lure, poison, oil) can now be addressed like a spell - the event "Weapon enchant expired" together with "spell name".
+            Auras: new condition and new output "weapon enchant hand" (main hand or off hand).
+            Menu: closing a window now rebuilds the menu data once instead of up to six times.
             Menu: the type-ahead filter ignores accents - on a French client "general" now finds "Fournitures generales", and "o" finds an entry starting with "O". On a French AZERTY keyboard the u key now types into the filter too.
             French: the waypoint comments are now available in French - 207 texts across 546 waypoints, translated from the German original.
 
         Bugfixes
-            Turn towards beacon: after turns triggered in quick succession, the camera keys' turn speed could stay permanently quadrupled.
+            Menu: while you were walking, an open menu was as good as dead - every key except Escape was swallowed until you stood still.
             Escape did not close the menu while standing right on a quest object - the quest window reopened endlessly.
+            Menu: Enter on an on/off entry in a filtered list read the first entry of the list back instead of the toggled state.
+            Menu: a line you ask for again with a keypress is read out again instead of being swallowed.
+            Menu: the type-ahead filter treated what you typed as a search pattern - an input like "50%" or "(long" found nothing or broke off.
+            Keyboard echo: typed characters are spoken instantly; swallowed and late letters are gone.
+            Speech: announcements repeatedly went silent for a while while navigating - most reliably on a single hit after filtering.
+            Voice output: item links were read out as a run of colour codes instead of as their name - everywhere in Sku, not only in chat.
+            Turn towards beacon: after turns triggered in quick succession, the camera keys' turn speed could stay permanently quadrupled.
+            Deleting a custom waypoint removed the wrong internal id, and "/skucheck wp" reported four errors on the quick waypoints that were none.
+            Quest menu: for quests with mixed objectives ("kill X and collect Y") the "Quest target" entry only showed the first objective kind - enemies, item sources and the exploration point now sit side by side.
+            Quest menu: for 174 quests whose objective is a PLACE, the place was in the data but "Quest target" still answered only "Empty" - it looked for a waypoint under a name nobody ever assigns. The nearest route waypoint is now computed from the coordinates.
+            For 77 FURTHER quests the objective data was missing entirely - objects, creatures and 26 place coordinates have been entered for them, some of them from web sources: reports on whether they are right are welcome.
+            Quest menu: about 300 quests whose quest giver, target or turn-in sits inside a dungeon showed empty entries - they now lead to the dungeon entrance.
+            Thirteen talk-to quests (among them the old priest spell quests) shipped without a turn-in in the data - the Delivery entry now leads to the NPC the quest text names.
+            Quest database: right after a /reload, quests of inactive world events (such as Midsummer quests) could appear in "Starts in zone".
+            Quest database: the "Starts in zone, By distance" list broke off after the first quest.
             Bags: the type-ahead filter stuck after using an item and could only be cleared by closing the bags.
             After an action with a cast time a wrong item was announced right after the correct one.
             The bag list held for combat could go stale when a quest window was closed while the bags were open.
-            Speech: announcements repeatedly went silent for a while while navigating - most reliably on a single hit after filtering.
+            Bags menu: with a bag-replacement addon such as Bagnon, which hides Blizzard's bank window, every bank container vanished from the menu.
             Auras: the Well Fed buff appeared twice in the spell picker - both entries sounded the same and only one could ever fire.
             Auras: entries that only ever exist as a weapon enchant (such as "Fishing Skill +75") are now marked as such in the pickers.
             Auras: "weapon enchant main hand contains X" together with "Weapon enchant expired" could never fire - /skucheck auras now reports that combination.
             Auras: the end of a weapon enchant is detected frame-accurately instead of up to a quarter second later.
-            Menu: Enter on an on/off entry in a filtered list read the first entry of the list back instead of the toggled state.
-            Dungeon browser: accepting a group invitation no longer drops you into the dungeon browser by itself.
-            Quest database: the "Starts in zone, By distance" list broke off after the first quest.
-            Bags menu: with a bag-replacement addon such as Bagnon, which hides Blizzard's bank window, every bank container vanished from the menu.
-            Deleting a custom waypoint removed the wrong internal id, and "/skucheck wp" reported four errors on the quick waypoints that were none.
-            Keyboard echo: typed characters are spoken instantly; swallowed and late letters are gone.
-            Menu: a line you ask for again with a keypress is read out again instead of being swallowed.
-            Voice output: item links were read out as a run of colour codes instead of as their name - everywhere in Sku, not only in chat.
-            Quest menu: for quests with mixed objectives ("kill X and collect Y") the "Quest target" entry only showed the first objective kind - enemies, item sources and the exploration point now sit side by side.
-            Quest database: right after a /reload, quests of inactive world events (such as Midsummer quests) could appear in "Starts in zone".
-            Thirteen talk-to quests (among them the old priest spell quests) shipped without a turn-in in the data - the Delivery entry now leads to the NPC the quest text names.
-            Quest menu: about 300 quests whose quest giver, target or turn-in sits inside a dungeon showed empty entries - they now lead to the dungeon entrance.
-            77 quests with a field objective (explore X, use Y at place Z) that had no data at all now have a real quest target - some locations come from web sources: reports on whether they are right are welcome.
-            Menu: while you were walking, an open menu was as good as dead - every key except Escape was swallowed until you stood still.
             Action bars: Shift-Down no longer read the spell tooltip in the assignment menu.
-            Quest menu: 174 quests whose objective is a place (explore X, use Y there) answered nothing but "Empty" under "Quest target".
+            Dungeon browser: accepting a group invitation no longer drops you into the dungeon browser by itself.
             French: the waypoint comments had been completely silent since v42.11 - including warnings such as "careful, ravine" or "wait here for the zeppelin".
             French: 22 of the 94 minimap scanner resource names were wrong, so those nodes were never announced.
             French: inside the Cave of the Mists the waypoint list stayed empty.
-            Menu: the type-ahead filter treated what you typed as a search pattern - an input like "50%" or "(long" found nothing or broke off.
 
     Swimming and flying: the pitch lock ends the unwanted diving
         Simple: While swimming or flying, every automatic turn towards the beacon pulled you a
@@ -870,7 +870,7 @@ Changes in Sku v43.2
             The read is also pcall'd, since it runs on every cursor move. From PR #10
             (ZenqFR).
 
-    A quest target for quests whose objective is a place
+    Quest target: the place was in the data, but never found
         Simple: 174 quests that ask you to explore a spot or use something there answered
             nothing but "Empty" under "Quest target". The entry now leads to the nearest
             route waypoint at that place.
