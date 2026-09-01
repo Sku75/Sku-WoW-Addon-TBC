@@ -947,9 +947,7 @@ function AuctionHouse:AuctionPruneListAuction(aRecord)
       tRep[19] = tDupes
       tRep[20] = tEntry.data[20]
       tEntry.data = tRep
-      local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter
-      local tWithLevel = (tFilter.SortBy == 5 or tFilter.SortBy == 6
-         or tFilter.LevelMin or tFilter.LevelMax) and true or nil
+      local tWithLevel = AuctionHouse:AuctionShowLevelInName(tRep)
       local tPrefix = (#tDupes > 1) and (#tDupes..L[" mal "]) or ""
       tEntry.name = tPrefix .. AuctionHouse:AuctionItemNameFormat(tRep, nil, tWithLevel)
       SkuCore.AuctionPrunePos = { entry = tEntry, removed = false }
@@ -1932,6 +1930,37 @@ function AuctionHouse:AuctionRecordRequiredLevel(aRecord)
       end
    end
    return tLevel or 0
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.2] Gehoert die Stufe in den Namen einer Ergebniszeile? EINE Regel fuer
+-- alle vier Stellen, die eine Zeile beschriften (Erstaufbau, Nachladen,
+-- Komplettscan, Nachfuehren nach einem Kauf).
+--
+-- Bisher reichte "nach Stufe sortiert" - und damit las Sku die Stufe auch in
+-- einer Suche nach EINEM Gegenstandsnamen vor, wo jede Zeile dieselbe Stufe
+-- hat: 800 mal dieselbe Zahl, die nichts unterscheidet. Jetzt:
+--   - Stufenfilter gesetzt (LevelMin/LevelMax) -> immer ansagen, der Nutzer
+--     sucht ausdruecklich nach Stufen.
+--   - sonst nur bei Stufen-Sortierung UND einer Liste, die verschiedene
+--     Gegenstaende enthalten kann: Kategorie/"Alle" (leerer Suchtext) oder
+--     Komplettscan-Liste (die Datensaetze tragen gar keine Query).
+-- aRecord ist eine Auktionszeile; ihr Feld .query ist die Query, aus der sie
+-- stammt (der Browse-Pfad haengt sie beim Einlesen an). Sie wird bewusst der
+-- Zeile entnommen und nicht dem globalen QueryData: beim spaeteren Neuaufbau
+-- einer schon gefuellten Liste ist QueryData laengst die naechste Suche.
+function AuctionHouse:AuctionShowLevelInName(aRecord)
+   local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter or {}
+   if tFilter.LevelMin or tFilter.LevelMax then return true end
+   if not (tFilter.SortBy == 5 or tFilter.SortBy == 6) then return nil end
+   local tQuery = aRecord and aRecord.query
+   -- Der Kauf aus der Komplettscan-Liste legt .query auf den Datensatz SELBST
+   -- (siehe aFullScanKaufen). Das ist keine Query - sonst laese Feld 1, der
+   -- Name, sich hier als Suchtext.
+   if tQuery == aRecord then tQuery = nil end
+   local tText = tQuery and tQuery[tQAIindex.text]
+   if tText and tText ~= "" then return nil end
+   return true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3399,10 +3428,7 @@ function AuctionHouse:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex
                if #tData[19] > 1 then
                   tNewMenuItemName = #tData[19]..L[" mal "]
                end
-               local tWithLevel = nil
-               if SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.SortBy == 5 or SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.SortBy == 6 or SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin or SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax then
-                  tWithLevel = true
-               end
+               local tWithLevel = AuctionHouse:AuctionShowLevelInName(tData)
    
                tNewMenuEntryCategorySubSubItem = SkuOptions:InjectMenuItems(aParent, {tNewMenuItemName..AuctionHouse:AuctionItemNameFormat(tData, nil, tWithLevel)}, SkuGenericMenuItem)
                tNewMenuEntryCategorySubSubItem.dynamic = false
@@ -3631,9 +3657,7 @@ function AuctionHouse:AuctionResultsCreateEntry(aParent, tDataTmp, tIndex)
       return nil
    end
 
-   local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter
-   local tWithLevelGlobal = (tFilter.SortBy == 5 or tFilter.SortBy == 6
-      or tFilter.LevelMin or tFilter.LevelMax) and true or nil
+   local tWithLevelGlobal = AuctionHouse:AuctionShowLevelInName(tData)
 
    local tNewMenuItemName = ""
    if #tData[19] > 1 then
@@ -3690,9 +3714,7 @@ function AuctionHouse:AuctionResultsAppend()
 
    SkuCore.QueryResultsByName = SkuCore.QueryResultsByName or {}
    local tSorted = AuctionHouse:AuctionGroupResults()
-   local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter
-   local tWithLevelGlobal = (tFilter.SortBy == 5 or tFilter.SortBy == 6
-      or tFilter.LevelMin or tFilter.LevelMax) and true or nil
+   local tWithLevelGlobal = AuctionHouse:AuctionShowLevelInName(tSorted[1] and tSorted[1].dupes[1])
 
    local tSavedView
    if tFilterBase then
@@ -3806,11 +3828,10 @@ function AuctionHouse:AuctionHouseResultsMenuBuilder(aParent)
          SkuCore.QueryResultsByName = {}
          SkuCore.QueryResultsParent = aParent
 
-         -- "tWithLevel" einmal außerhalb der Schleife auswerten
-         -- (Filter ändert sich nicht pro Item).
-         local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter
-         local tWithLevelGlobal = (tFilter.SortBy == 5 or tFilter.SortBy == 6
-            or tFilter.LevelMin or tFilter.LevelMax) and true or nil
+         -- "tWithLevel" einmal außerhalb der Schleife auswerten (Filter und
+         -- Query sind fuer die ganze Liste dieselben).
+         local tWithLevelGlobal = AuctionHouse:AuctionShowLevelInName(
+            tCurrentDBCleanSorted[1] and tCurrentDBCleanSorted[1].dupes[1])
 
          for tIndex = 1, #tCurrentDBCleanSorted do
             local tDataTmp = tCurrentDBCleanSorted[tIndex]
