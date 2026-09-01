@@ -16,7 +16,7 @@ Changes in Sku v43.2
             New keybind "Output full tooltip of current target" (Ctrl+Shift+V): reads the current target's complete tooltip aloud, including what the Hunter ability Beast Lore reveals.
             Bags menu: a new "all bank" entry right after "all bags" while the bank is open - everything in the bank in one flat list, exactly like "all bags" is for your bags. Ctrl+Enter moves an item from there into your bags, the same way it already did inside the individual bank bags.
             Chat: the input line now speaks like every other Sku input field - every typed character, the character or word under the cursor, and with arrow up the messages you sent last, to send again or to change.
-            Chat: the target channel is announced whenever it is not "Say" - on opening and on every change.
+            Chat: the target channel is announced whenever it is not "Say" - on opening and on every change; can be turned off in the chat settings ("announce the chat input channel"), on by default.
             Chat: an unknown slash command is now announced instead of being silently discarded.
             Swimming and flying: Sku keeps you level. The new pitch lock ends the creeping dive during automatic turns, and after an interact approach to an NPC or a press of ascend/descend you are actively straightened out again. On by default; can be switched off under Settings -> General.
             New keybind "Toggle pitch lock while swimming and flying" (Ctrl+Shift+N): locks and releases the pitch manually - switching it off and on again re-levels you at any time.
@@ -576,7 +576,10 @@ Changes in Sku v43.2
             - and says the channel along with them, because a recalled line does not show you
             where it would go. The channel is also announced on opening and on every change, but
             deliberately not for "Say": that is the harmless case, and saying it every time would
-            be noise. An item in the chat counts as a single character when reading instead of
+            be noise. If the announcement does not suit your workflow, turn it off in the chat
+            settings under "announce the chat input channel"; it is on by default. Turning it
+            off also drops the channel in front of a line recalled with arrow up.
+            An item in the chat counts as a single character when reading instead of
             sixty-five characters of markup. And a mistyped command such as "/tets" now says
             "unknown command" instead of simply doing nothing.
         Technical: The keyboard echo of Sku's own fields now attaches to foreign ones through

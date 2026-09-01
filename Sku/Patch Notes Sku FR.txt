@@ -19,7 +19,7 @@ Changements dans Sku v43.2
             Nouveau raccourci « Annoncer l'infobulle complète de la cible » (Ctrl+Maj+V) : lit à voix haute l'infobulle complète de la cible actuelle, y compris ce que révèle la compétence de chasseur Connaissance des bêtes.
             Menu des sacs : nouvelle entrée « toute la banque » juste après « tous les sacs » tant que la banque est ouverte - tout le contenu de la banque en une seule liste à plat, exactement comme « tous les sacs » pour vos sacs. Ctrl+Entrée y déplace un objet vers vos sacs, comme il le faisait déjà dans chaque sac de banque.
             Chat : la ligne de saisie parle désormais comme tout autre champ de saisie de Sku - chaque caractère tapé, le caractère ou le mot sous le curseur, et avec la flèche haut les derniers messages envoyés, pour les renvoyer ou les modifier.
-            Chat : le canal cible est annoncé dès qu'il n'est pas « Dire » - à l'ouverture et à chaque changement.
+            Chat : le canal cible est annoncé dès qu'il n'est pas « Dire » - à l'ouverture et à chaque changement ; désactivable dans les réglages du chat, activé par défaut.
             Chat : une commande slash inconnue est maintenant annoncée au lieu d'être ignorée en silence.
             Nage et vol : Sku vous maintient à l'horizontale. Le nouveau verrouillage de l'inclinaison met fin à la plongée insidieuse lors des virages automatiques, et après une approche automatique vers un PNJ ou un appui sur monter/descendre, vous êtes activement redressé. Activé par défaut ; désactivable sous Paramètres -> Général.
             Nouveau raccourci « verrouillage de l'inclinaison en nage et en vol » (Ctrl+Maj+N) : verrouille et libère l'inclinaison manuellement - l'éteindre puis le rallumer vous remet à l'horizontale à tout moment.
@@ -640,7 +640,10 @@ Changements dans Sku v43.2
             annonce le canal avec eux, car une ligne rappelée ne montre pas où elle irait. Le
             canal est aussi annoncé à l'ouverture et à chaque changement, mais volontairement pas
             pour « Dire » : c'est le cas inoffensif, et l'annoncer chaque fois ne serait que du
-            bruit. Un objet dans le chat compte pour un seul caractère à la lecture au lieu de
+            bruit. Si l'annonce ne convient pas à votre façon de faire, elle se désactive dans
+            les réglages du chat ; elle est activée par défaut. La désactiver retire aussi le
+            canal devant une ligne rappelée avec la flèche haut.
+            Un objet dans le chat compte pour un seul caractère à la lecture au lieu de
             soixante-cinq caractères de balisage. Et une commande mal tapée comme « /tets » dit
             maintenant « commande inconnue » au lieu de ne rien faire.
         Technique : L'écho clavier des champs propres à Sku s'attache maintenant aussi aux champs

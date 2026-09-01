@@ -16,7 +16,7 @@ Aenderungen in Sku v43.2
             Neuer Tastenbefehl "Vollstaendigen Tooltip des Ziels ausgeben" (Strg+Umschalt+V): liest den kompletten Tooltip des aktuellen Ziels vor, inklusive dessen, was die Jaegerfaehigkeit Tierkunde offenlegt.
             Taschenmenue: neuer Eintrag "alle bank" direkt hinter "alle taschen", solange die Bank offen ist - alles in der Bank in einer flachen Liste, genau wie "alle taschen" fuer die Taschen. Strg+Eingabe holt einen Gegenstand von dort in die Taschen, wie bisher schon in den einzelnen Bankfaechern.
             Chat: die Eingabezeile spricht jetzt wie jedes andere Sku-Eingabefeld - jedes getippte Zeichen, das Zeichen oder Wort unter dem Cursor, und mit Pfeil hoch die zuletzt gesendeten Nachrichten zum erneuten Senden oder Aendern.
-            Chat: der Zielkanal wird angesagt, sobald er nicht "Sagen" ist - beim Oeffnen und bei jedem Wechsel.
+            Chat: der Zielkanal wird angesagt, sobald er nicht "Sagen" ist - beim Oeffnen und bei jedem Wechsel; abschaltbar in den Chat-Einstellungen ("Kanal der Chateingabe ansagen"), ab Werk an.
             Chat: ein unbekannter Slash-Befehl wird angesagt, statt still verworfen zu werden.
             Schwimmen und Fliegen: Sku haelt dich waagerecht. Die neue Neigungssperre beendet das schleichende Abtauchen bei den automatischen Drehungen, und nach einem Anflug auf einen NPC oder einem Druck auf Steigen/Sinken wirst du aktiv wieder gerade ausgerichtet. Ab Werk an; abschaltbar unter Einstellungen -> Allgemein.
             Neuer Tastenbefehl "Neigungssperre beim Schwimmen und Fliegen umschalten" (Strg+Umschalt+N): sperrt und loest die Neigung manuell - aus- und wieder einschalten richtet dich jederzeit neu waagerecht aus.
@@ -628,7 +628,10 @@ Aenderungen in Sku v43.2
             dabei den Kanal mit, denn den sieht man einer zurueckgeholten Zeile nicht an.
             Angesagt wird der Kanal ausserdem beim Oeffnen und bei jedem Wechsel, aber bewusst
             nicht bei "Sagen": das ist der harmlose Fall, und ihn jedes Mal vorzusagen waere nur
-            Geraeusch. Ein Gegenstand im Chat zaehlt beim Lesen als ein einziges Zeichen statt
+            Geraeusch. Wem die Kanalansage im eigenen Ablauf nicht passt, schaltet sie in den
+            Chat-Einstellungen unter "Kanal der Chateingabe ansagen" ab, ab Werk ist sie an;
+            das nimmt dann auch den Kanal vor der mit Pfeil hoch zurueckgeholten Zeile weg.
+            Ein Gegenstand im Chat zaehlt beim Lesen als ein einziges Zeichen statt
             als fuenfundsechzig Zeichen Steuerkram. Und ein vertippter Befehl wie "/tets" sagt
             jetzt "Unbekannter Befehl", statt einfach nichts zu tun.
         Technisch: Das Tastatur-Echo der Sku-eigenen Felder haengt ueber

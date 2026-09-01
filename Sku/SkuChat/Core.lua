@@ -3498,6 +3498,11 @@ function SkuChat:PLAYER_LOGIN(...)
 			-- gibt also auch keine Aenderung, die die normale Kanalansage
 			-- ausloesen wuerde. Deshalb steht er hier vor der Zeile.
 			wholeTextPrefix = function()
+				-- Dieselbe Einstellung wie die Kanalansage: wer den Kanal nicht
+				-- hoeren will, will ihn auch hier nicht vorgeschaltet haben.
+				if not SkuChat:IsChannelAnnounceEnabled() then
+					return nil
+				end
 				return SkuChat:GetEditboxChannelLabel()
 			end,
 		})
@@ -3567,6 +3572,19 @@ local ChatFrame1EditBoxIsShown = false
 -- Sonderfaelle auseinanderlaufen, und UpdateHeader schaltet einige davon sogar
 -- im Lauf um (PARTY wird zu INSTANCE_CHAT, SMART_WHISPER zu BN_WHISPER).
 local tLastAnnouncedChatHeader = nil
+
+-- Die Kanalansage an EINER Stelle ein-/ausschalten. Sie hat zwei Ausgaenge --
+-- die Ansage beim Wechsel und den Kanal-Vorspann beim Zurueckholen einer
+-- gesendeten Zeile (Pfeil hoch, wholeTextPrefix oben) -- und beide sind fuer den
+-- Nutzer dieselbe Ansage. Fehlen die Einstellungen noch (frisches Profil, sehr
+-- frueh im Ladevorgang), gilt der Standard: an.
+function SkuChat:IsChannelAnnounceEnabled()
+	local tSettings = SkuSettings and SkuSettings:Sub("SkuChat")
+	if not tSettings or not tSettings.chatSettings then
+		return true
+	end
+	return tSettings.chatSettings.announceChatChannel ~= false
+end
 
 function SkuChat:GetEditboxChannelLabel()
 	local tHeader = _G["ChatFrame1EditBoxHeader"]
@@ -3704,7 +3722,7 @@ function SkuChat:AnnounceEditboxChannel(aForce, aWhy)
 		dprint("chatChannel", aWhy, "keine Einstellungen")
 		return
 	end
-	if tSettings.chatSettings.announceChatChannel == false then
+	if not SkuChat:IsChannelAnnounceEnabled() then
 		dprint("chatChannel", aWhy, "abgeschaltet")
 		return
 	end
