@@ -82,6 +82,11 @@ Aenderungen in Sku v43.2
             Die Plaketten-Farben waren nach jedem Login und jedem Neuladen tot: der Schalter stand auf an, gefaerbt wurde aber nichts, bis man ihn von Hand zweimal umlegte.
             Der Lesebalken blieb im Kampf unsichtbar - also genau dann, wenn er am dringendsten gebraucht wird.
             Der Lesebalken zeigte nur den Namen eines Menueeintrags, nicht den vorgelesenen Wert dahinter - Schalterzustaende und Anzahlen waren hoerbar, aber nicht lesbar.
+            Ein geschlossenes Fenster konnte spaeter noch einmal angesagt werden - typisch der Lehrer, nachdem man laengst sein Berufsfenster geoeffnet hatte.
+            Das Menue ging gelegentlich von selbst auf der obersten Ebene auf, statt dort, wo man hinwollte.
+            Waren zwei Fenster gleichzeitig offen, wurde das Schliessen des zweiten nicht bemerkt.
+            Nach dem Schliessen eines Fensters konnten dessen Eintraege unter "Lokal" stehenbleiben.
+            Lehrer: lernte man mehrere Zauber schnell hintereinander und schloss das Fenster gleich danach, sprach es noch weiter.
 
     Schwimmen und Fliegen: die Neigungssperre beendet das ungewollte Abtauchen
         Einfach: Beim Schwimmen oder Fliegen zog jede automatische Drehung zum Funkfeuer ein
@@ -1164,6 +1169,70 @@ Aenderungen in Sku v43.2
             VisualAids:OnEnable, wo die Folgen-Warnung und der Naechster-Gegner-Button schon immer
             armiert wurden, mit einem verzoegerten zweiten Versuch fuer den Fall, dass das Profil
             beim ersten Durchlauf noch nicht steht.
+
+    Ein geschlossenes Fenster wird nicht mehr nachtraeglich angesagt
+        Einfach: Wer beim Lehrer schnell mehrere Zauber lernte, das Fenster zuegig schloss und
+            dann sein Berufsfenster oeffnete, hoerte nach einer Weile wieder das Lehrerfenster -
+            manchmal erst, nachdem er einen Tooltip gelesen hatte. Sku merkte sich, wohin es im
+            Menue eigentlich noch springen wollte, und holte das spaeter nach, ohne zu pruefen,
+            ob es dieses Fenster ueberhaupt noch gibt.
+        Technisch: Der aufgeschobene Menuesprung besteht aus drei Feldern (openMenuAfterCombat,
+            openMenuAfterMoving, openMenuAfterPath), die bisher unabhaengig voneinander
+            beschrieben wurden. SlashFunc setzt Merker UND Pfad gemeinsam; andere Stellen setzten
+            nur den Merker - und erbten damit den Pfad, der noch herumlag. Geloescht wurde der
+            Pfad ausserdem nur im verzoegerten Teil von CheckFrames, der in Bewegung abbricht und
+            erst eine halbe Sekunde spaeter nachfasst, waehrend die Freigabe im Bild-Takt genau in
+            dem Moment feuert, in dem man stehen bleibt - ein Rennen, das die Freigabe gewann.
+            Die drei Felder sind jetzt eine Einheit (SkuCore:ClearDeferredMenuOpen), das Setzen
+            eines Merkers loescht den Pfad, und geleert wird im Hide-Hook des Fensters
+            (SkuCore:GENERIC_OnClose) - also genau dann, wenn der Sprung ungueltig wird. Bewusst
+            ohne Verfallszeit und ohne Sichtbarkeitspruefung: der Zustand wird dort geloescht, wo
+            er falsch wird, statt einem Fehler davonzulaufen.
+
+    Das Menue oeffnet nicht mehr von selbst die oberste Ebene
+        Einfach: Ab und zu ging das Menue von allein auf - und dann auch noch ganz oben, statt
+            dort, wo man hinwollte.
+        Technisch: SkuCoreControlOption1 haelt Tastenbelegungen (Zielentfernung, Panikmodus,
+            Minikartenscan, Flug abbrechen, zu Einheit drehen) und hat mit dem Menue nichts zu
+            tun. Sein OnShow bricht ab, solange man sich bewegt oder im Kampf ist, weil
+            SetOverrideBindingClick dort nicht erlaubt ist und einer gehaltenen Bewegungstaste das
+            Loslassen wegnehmen wuerde - es brach aber ab, indem es openMenuAfterMoving setzte,
+            und die Freigabe machte daraus mangels Pfad ein Menue-Oeffnen auf der Wurzel. Der
+            Frame hat jetzt seinen eigenen Merker (rebindControlKeysAfterBlock) und bekommt nur
+            noch seine Tasten zurueck.
+
+    Das Schliessen eines zweiten offenen Fensters wird wieder bemerkt
+        Einfach: Waren zwei Fenster gleichzeitig offen - etwa Haendler und Taschen -, wurde nur
+            das erste Schliessen bemerkt. Beim zweiten baute sich das Menue nicht neu auf und
+            schloss sich nicht.
+        Technisch: Einer der beiden Hook-Installateure klammerte Show und Hide um einen einzigen
+            gemeinsamen Schalter (SkuDropdownlistGenericFlag): jedes Show setzte ihn, und nur das
+            erste Hide danach verbrauchte ihn. Welcher Installateur ein Fenster erwischte, war
+            reine Zeitfrage - dieser nimmt alles, was eine Sekunde nach dem Betreten der Welt
+            existiert, waehrend Fenster wie Lehrer, Beruf und Auktionshaus erst spaeter entstehen
+            und dem anderen zufallen. Der Schalter ist weg; GENERIC_OnClose fasst ohnehin selbst
+            zusammen.
+
+    Kein Inhalt eines geschlossenen Fensters mehr unter "Lokal"
+        Einfach: Nach dem Schliessen eines Fensters konnten dessen Eintraege unter "Lokal"
+            stehenbleiben und beim naechsten Oeffnen des Menues noch einmal auftauchen.
+        Technisch: SkuCore.GossipList ist die Datenquelle des Lokal-Menues, wurde aber nur
+            geleert, wenn das Menue in genau diesem Moment offen war. Beim Schliessen per Escape
+            ist es das nie: der Menue-Frame geht absichtlich vor den Fenstern zu, und der
+            zustaendige Programmteil laeuft ein Bild spaeter. Jetzt wird geleert, sobald kein
+            Fenster mehr offen ist.
+
+    Lehrer: nach dem Schliessen ist Ruhe
+        Einfach: Wer mehrere Zauber schnell hintereinander lernte und das Fenster gleich danach
+            schloss, hoerte die Ansagen des Lehrers noch weiter.
+        Technisch: Jeder Klick auf "Erlernen" stellte eine Neuerfassung nach einer halben Sekunde
+            und eine Ansage nach 0,85 Sekunden in die Warteschlange, ohne Abbruchmoeglichkeit.
+            Beide Schritte pruefen jetzt, ob ClassTrainerFrame ueberhaupt noch sichtbar ist. Die
+            Sperre aus v43.1, die nicht in ein geschlossenes Menue hineinspricht, half hier nicht:
+            sobald das naechste Fenster das Menue wieder oeffnete, war sie offen. Ausserdem verlor
+            die Wiederholung stiller Neuerfassungen in Bewegung ihren Stumm-Auftrag und wurde je
+            Klick einmal eingeplant - sie traegt ihre Argumente jetzt mit und laeuft nur noch
+            einmal.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

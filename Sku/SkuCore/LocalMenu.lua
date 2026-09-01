@@ -3451,12 +3451,24 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 					func = function()
 						_G["ClassTrainerTrainButton"]:Click()
 						pcall(function() SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true) end)
+						-- [43.2] Both steps below only make sense while THIS window is still
+						-- open. Each click queues a 0.5 s rescan and a 0.85 s announce, and
+						-- neither can be cancelled -- so learning several spells in quick
+						-- succession and then closing the trainer left announcements in flight
+						-- that outlived it. The closed-menu guard in VocalizeCurrentMenuName
+						-- (v43.1) only swallows them while NO menu is open; opening the next
+						-- window (a profession, say) reopens the menu and they spoke into it.
+						local function tTrainerStillOpen()
+							return _G["ClassTrainerFrame"] and _G["ClassTrainerFrame"]:IsVisible() == true
+						end
 						C_Timer.After(0.5, function()
+							if not tTrainerStillOpen() then return end
 							-- aQuiet: the index-based re-anchor inside CheckFrames may land
 							-- anywhere after the skill list changed; only the identity re-pin
 							-- below is spoken.
 							pcall(function() SkuCore:CheckFrames(nil, nil, true) end)
 							C_Timer.After(0.35, function()
+								if not tTrainerStillOpen() then return end
 								pcall(function()
 									local tTarget = _G["ClassTrainerTrainButton"]
 										and _G["ClassTrainerTrainButton"]:IsVisible()

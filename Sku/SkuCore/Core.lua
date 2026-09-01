@@ -132,13 +132,39 @@ SkuCore.openMenuAfterPath = ""
 -- SkuCore-owned deferred-action flags: other code (SkuZOptions) used to set them
 -- by reaching straight into SkuCore's table — a cross-module raw write, the
 -- write-side of the category-C coupling. These setters give SkuCore sole control
--- of the writes (so the storage can later move or fire a change-event) while
--- staying byte-identical to the former direct assignments. The consumer stays
--- SkuCore's own update loop. SkuCore's internal writes keep using the fields
--- directly (it is the owner).
-function SkuCore:SetOpenMenuAfterCombat(aValue) SkuCore.openMenuAfterCombat = aValue end
-function SkuCore:SetOpenMenuAfterMoving(aValue) SkuCore.openMenuAfterMoving = aValue end
+-- of the writes (so the storage can later move or fire a change-event). The
+-- consumer stays SkuCore's own update loop. [43.2] The setters are no longer bare
+-- assignments and SkuCore no longer writes the fields directly either -- see the
+-- note below.
+--
+-- [43.2] The three fields are ONE piece of state: "a menu descend was blocked, replay
+-- it when the block lifts". They used to be written independently, and that is what
+-- let a closed window speak again much later: SlashFunc arms flag AND path together
+-- (SkuZOptions/Core.lua ~278/~298), while SkuCoreControlOption1's OnShow used to arm
+-- only the FLAG -- so that pathless arm inherited whatever path was still lying
+-- around (e.g. the trainer window the player had long since closed) and the release
+-- site replayed it. That frame has its own flag now (rebindControlKeysAfterBlock,
+-- ~2243): it wants its keybinds back, never a menu. The rule below is what keeps any
+-- future pathless arm honest.
+-- Arming a flag therefore DROPS the path; a caller that has one writes it in the very
+-- next line. ClearDeferredMenuOpen is the single "this request is void" call, used by
+-- the window-close path (SkuCore:GENERIC_OnClose) and by CheckFrames when the last
+-- window is gone. No age limit and no IsVisible() probe at the release site: the state
+-- is cleared where it actually becomes invalid, so there is nothing stale to outrun.
+function SkuCore:SetOpenMenuAfterCombat(aValue)
+	if aValue == true then SkuCore.openMenuAfterPath = "" end
+	SkuCore.openMenuAfterCombat = aValue
+end
+function SkuCore:SetOpenMenuAfterMoving(aValue)
+	if aValue == true then SkuCore.openMenuAfterPath = "" end
+	SkuCore.openMenuAfterMoving = aValue
+end
 function SkuCore:SetOpenMenuAfterPath(aValue) SkuCore.openMenuAfterPath = aValue end
+function SkuCore:ClearDeferredMenuOpen()
+	SkuCore.openMenuAfterCombat = false
+	SkuCore.openMenuAfterMoving = false
+	SkuCore.openMenuAfterPath = ""
+end
 
 local EnumItemQuality = {
 	[0] = ITEM_QUALITY0_DESC,
@@ -1691,12 +1717,29 @@ function SkuCore:OnEnable()
 			SkuCore.isMoving = false
 		end
 
+		-- [43.2] Deferred KEYBIND rebind for SkuCoreControlOption1 (~2243). Separate from
+		-- the menu release below on purpose: this one must never open anything. Re-running
+		-- the handler is idempotent -- it only re-installs override bindings.
+		if SkuCore.rebindControlKeysAfterBlock == true
+			and SkuCore.inCombat == false and SkuCore.isMoving == false then
+			SkuCore.rebindControlKeysAfterBlock = nil
+			local tCtl = _G["SkuCoreControlOption1"]
+			if tCtl and tCtl:IsVisible() == true and tCtl:GetScript("OnShow") then
+				dprint("menuMovingDefer", "release -> rebind control keys")
+				tCtl:GetScript("OnShow")(tCtl)
+			end
+		end
+
 		if SkuCore.openMenuAfterCombat == true or SkuCore.openMenuAfterMoving == true then
 			if SkuCore.inCombat == false and SkuCore.isMoving == false then
 				dprint("menuMovingDefer", "release -> reopen", "afterCombat", SkuCore.openMenuAfterCombat, "afterMoving", SkuCore.openMenuAfterMoving, "path", SkuCore.openMenuAfterPath)
 				if SkuCore.openMenuAfterPath ~= "" then
-					SkuOptions:SlashFunc(SkuCore.openMenuAfterPath)
+					-- Consume the path BEFORE the call. SlashFunc can re-arm (it defers
+					-- again when the player starts moving in the same frame), and clearing
+					-- afterwards wiped that FRESH arm instead of this consumed one.
+					local tPath = SkuCore.openMenuAfterPath
 					SkuCore.openMenuAfterPath = ""
+					SkuOptions:SlashFunc(tPath)
 				else
 					if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
 						_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
@@ -1707,8 +1750,7 @@ function SkuCore:OnEnable()
 						-- close. Disarm them; if the visible menu is key-dead (its
 						-- OnShow deferred, menuNavKeysBound false) re-run the nav
 						-- frame's OnShow to rebind -- idempotent when already bound.
-						SkuCore.openMenuAfterCombat = false
-						SkuCore.openMenuAfterMoving = false
+						SkuCore:ClearDeferredMenuOpen()
 						local tOpt = _G["OnSkuOptionsMainOption1"]
 						if tOpt and tOpt:IsVisible() == true and SkuOptions.menuNavKeysBound ~= true and tOpt:GetScript("OnShow") then
 							tOpt:GetScript("OnShow")(tOpt)
@@ -2216,14 +2258,19 @@ function SkuCore:OnEnable()
 	end)
 	tFrame:SetScript("OnShow", function(self) 
 		--dprint("SkuCoreControlOption1 OnShow")
-		if SkuCore.inCombat == true then
-			SkuCore.openMenuAfterCombat = true
+		-- [43.2] This frame holds KEYBINDS (target distance, panic mode, minimap scan,
+		-- taxi cancel, turn-to-unit) and has nothing to do with the menu. It bails while
+		-- blocked because SetOverrideBindingClick is illegal in combat and would swallow
+		-- a held movement key's key-up while moving -- but it used to bail by setting
+		-- openMenuAfterCombat/Moving, and the release ticker, finding no path stored,
+		-- OPENED THE ROOT MENU. The frame asked for its keybinds back and got a menu:
+		-- one flag standing for two unrelated requests, the same category error as the
+		-- inherited path. Its own flag now, released next to the menu one (~1717).
+		if SkuCore.inCombat == true or SkuCore.isMoving == true then
+			SkuCore.rebindControlKeysAfterBlock = true
 			return
 		end
-		if SkuCore.isMoving == true then
-			SkuCore.openMenuAfterMoving = true
-			return
-		end
+		SkuCore.rebindControlKeysAfterBlock = nil
 
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-UP", "SkuCoreControlOption1", "CTRL-SHIFT-UP")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-DOWN", "SkuCoreControlOption1", "CTRL-SHIFT-DOWN")
@@ -3077,14 +3124,10 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	-- itself the instant combat/movement ends -- "menu up at start", needing an Escape.
 	-- Those login-time stamps are spurious (the user didn't open the menu), so clear
 	-- them right after login. Genuine in-game defers happen later and are unaffected.
-	SkuCore.openMenuAfterCombat = false
-	SkuCore.openMenuAfterMoving = false
-	SkuCore.openMenuAfterPath = ""
+	SkuCore:ClearDeferredMenuOpen()
 	if _G.C_Timer and _G.C_Timer.After then
 		_G.C_Timer.After(0.5, function()
-			SkuCore.openMenuAfterCombat = false
-			SkuCore.openMenuAfterMoving = false
-			SkuCore.openMenuAfterPath = ""
+			SkuCore:ClearDeferredMenuOpen()
 		end)
 	end
 
@@ -4173,6 +4216,21 @@ local tGenericCloseBookkeepingFlag = false
 function SkuCore:GENERIC_OnClose(self)
 	if SkuCore._suppressGenericFrameHooks == true then return end
 	--print("GENERIC_OnClose", _G["AuctionFrame"]:IsShown())
+	-- [43.2] A tracked window just hid, so any menu descend still waiting to be
+	-- replayed (SkuCore.openMenuAfter*) is void. This MUST happen here, on the
+	-- synchronous Hide hook, and not only in CheckFrames' deferred body: CheckFrames
+	-- early-returns while the player is moving and retries 0.5 s later, whereas the
+	-- release site is an OnUpdate that fires the instant movement stops -- so a window
+	-- closed while running let the release WIN that race and speak the dead window
+	-- (the reported "trainer talks again after opening a profession"). Clearing at the
+	-- close event removes the race instead of outrunning it with a timeout.
+	--
+	-- Unconditional, including when another window is still open: a pending descend is
+	-- at most a moment old and CheckFrames re-descends into whatever is still there on
+	-- the rescan below. The only cost is that a deferred NON-window path (a menu-quick
+	-- key pressed while moving) that coincides with a window close opens the menu at
+	-- its root instead -- graceful, and the release site already has that branch.
+	SkuCore:ClearDeferredMenuOpen()
 	SkuCore:CheckFramesCoalesced()
 
 	-- The bookkeeping below needs its OWN once-per-frame gate rather than riding on the
@@ -5017,6 +5075,16 @@ end
 
 -------------------------------------------------------------------------------------------------
 ---@param aForceLocalRoot bool force the audio menu to return to the "Local" root element if there are new childs in Local
+-- [43.2] Moving-retry state. The retry used to call SkuCore:CheckFrames() with NO
+-- arguments, so a deliberately SILENT rescan (aQuiet, e.g. the one the trainer's
+-- Train button fires after each click) came back as a talking one -- and it was
+-- scheduled per call, so training several spells while running queued that many
+-- independent chains, each announcing. One pending retry now carries the merged
+-- arguments, merged so the surviving run does what the burst would have done:
+-- aForceLocalRoot if ANY caller forced it, aDontClose/aQuiet only if EVERY caller
+-- asked for it (one non-quiet caller in the burst used to produce an announce).
+local tMovingRetryPending = false
+local tMovingRetryForce, tMovingRetryDontClose, tMovingRetryQuiet = false, true, true
 function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 	dprint("++CheckFrames", aForceLocalRoot)
 
@@ -5025,8 +5093,19 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 	end
 	
 	if SkuCore.isMoving == true then
+		if tMovingRetryPending == true then
+			tMovingRetryForce = tMovingRetryForce or (aForceLocalRoot == true)
+			tMovingRetryDontClose = tMovingRetryDontClose and (aDontClose == true)
+			tMovingRetryQuiet = tMovingRetryQuiet and (aQuiet == true)
+			return
+		end
+		tMovingRetryPending = true
+		tMovingRetryForce = (aForceLocalRoot == true)
+		tMovingRetryDontClose = (aDontClose == true)
+		tMovingRetryQuiet = (aQuiet == true)
 		C_Timer.After(0.5, function()
-			SkuCore:CheckFrames()
+			tMovingRetryPending = false
+			SkuCore:CheckFrames(tMovingRetryForce or nil, tMovingRetryDontClose or nil, tMovingRetryQuiet or nil)
 		end)
 		return
 	end
@@ -5340,10 +5419,16 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 				if SkuLogCombat then SkuLogCombat("capture", "release (window closed)") end
 			end
 			if not aDontClose then
-				SkuCore.openMenuAfterMoving = false
-				SkuCore.openMenuAfterCombat = false
+				SkuCore:ClearDeferredMenuOpen()
+				-- [43.2] GossipList is the Local menu's live source
+				-- (SkuZOptions/Core.lua ~6805), and it was only emptied when the menu
+				-- happened to be OPEN at this moment. On the Escape path it never is:
+				-- the menu frame is hidden before the interact windows are closed (the
+				-- deliberate close ORDER), and this body runs a frame later still -- so
+				-- the closed window's whole child tree survived and the next Local
+				-- render spoke it again. Nothing is open, so clear it either way.
+				SkuCore.GossipList = {}
 				if SkuOptions:IsMenuOpen() == true then
-					SkuCore.GossipList = {}
 					--SkuOptions:SlashFunc("short,lokal")
 					SkuOptions:CloseMenu()
 				end

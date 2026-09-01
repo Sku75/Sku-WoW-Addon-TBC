@@ -85,6 +85,11 @@ Changements dans Sku v43.2
             La coloration des barres de nom était morte après chaque connexion et chaque rechargement : l'interrupteur indiquait « activé », mais plus rien n'était coloré tant qu'on ne le basculait pas deux fois à la main.
             La barre de lecture restait invisible en combat - précisément quand elle est la plus utile.
             La barre de lecture n'affichait que le nom d'une entrée de menu, pas la valeur lue ensuite - les états d'interrupteur et les quantités étaient audibles mais pas lisibles.
+            Une fenêtre fermée pouvait être annoncée de nouveau plus tard - typiquement le maître, bien après l'ouverture de la fenêtre de métier.
+            Le menu s'ouvrait parfois tout seul à son niveau le plus haut, au lieu de là où l'on voulait aller.
+            Avec deux fenêtres ouvertes en même temps, la fermeture de la seconde passait inaperçue.
+            Après la fermeture d'une fenêtre, ses entrées pouvaient subsister sous « Local ».
+            Maître : apprendre plusieurs sorts coup sur coup puis fermer la fenêtre juste après la laissait continuer à parler.
 
     Nage et vol : le verrouillage de l'inclinaison met fin à la plongée involontaire
         Simple : En nageant ou en volant, chaque virage automatique vers la balise tirait un peu
@@ -1189,6 +1194,70 @@ Changements dans Sku v43.2
             dans VisualAids:OnEnable, là où l'avertissement de suivi et le bouton du prochain
             ennemi ont toujours été armés, avec une seconde tentative différée au cas où le profil
             ne serait pas encore prêt au premier passage.
+
+    Une fenêtre fermée n'est plus annoncée après coup
+        Simple : Apprendre plusieurs sorts chez un maître, fermer la fenêtre rapidement puis
+            ouvrir sa fenêtre de métier ramenait la fenêtre du maître au bout d'un moment -
+            parfois seulement après la lecture d'une infobulle. Sku retenait où il comptait encore
+            sauter dans le menu et le faisait plus tard, sans vérifier si cette fenêtre existait
+            toujours.
+        Technique : Le saut de menu différé tient en trois champs (openMenuAfterCombat,
+            openMenuAfterMoving, openMenuAfterPath) qui étaient jusqu'ici écrits indépendamment.
+            SlashFunc arme le drapeau ET le chemin ensemble ; d'autres endroits n'armaient que le
+            drapeau - et héritaient donc du chemin qui traînait encore. Le chemin n'était
+            d'ailleurs effacé que dans la partie différée de CheckFrames, qui abandonne tant qu'on
+            se déplace et ne reprend qu'une demi-seconde plus tard, alors que la libération
+            s'exécute à chaque image et se déclenche à l'instant où l'on s'arrête - une course que
+            la libération gagnait. Les trois champs forment désormais un tout
+            (SkuCore:ClearDeferredMenuOpen), armer un drapeau efface le chemin, et l'effacement a
+            lieu dans le hook Hide de la fenêtre (SkuCore:GENERIC_OnClose) - exactement au moment
+            où le saut devient caduc. Délibérément sans délai d'expiration ni contrôle de
+            visibilité : l'état est effacé là où il devient faux, au lieu d'être distancé.
+
+    Le menu n'ouvre plus son niveau le plus haut tout seul
+        Simple : De temps en temps le menu s'ouvrait de lui-même - et tout en haut, au lieu de
+            là où l'on voulait aller.
+        Technique : SkuCoreControlOption1 porte des raccourcis clavier (distance de la cible, mode
+            panique, scan de la minicarte, annuler le vol, se tourner vers une unité) et n'a rien
+            à voir avec le menu. Son OnShow abandonne tant qu'on se déplace ou qu'on est en
+            combat, car SetOverrideBindingClick y est interdit et avalerait le relâchement d'une
+            touche de déplacement maintenue - mais il abandonnait en posant openMenuAfterMoving,
+            et la libération, faute de chemin, en faisait une ouverture du menu à sa racine. Ce
+            cadre a maintenant son propre drapeau (rebindControlKeysAfterBlock) et ne récupère
+            que ses touches.
+
+    La fermeture d'une seconde fenêtre ouverte est de nouveau remarquée
+        Simple : Avec deux fenêtres ouvertes en même temps - un marchand et les sacs, par exemple
+            - seule la première fermeture était remarquée. À la seconde, le menu ne se
+            reconstruisait pas et ne se fermait pas.
+        Technique : L'un des deux installateurs de hooks enveloppait Show et Hide autour d'un
+            unique interrupteur partagé (SkuDropdownlistGenericFlag) : tout Show le posait, et
+            seul le premier Hide suivant le consommait. Quel installateur prenait une fenêtre
+            était une pure question de temps - celui-ci prend tout ce qui existe une seconde
+            après l'entrée dans le monde, tandis que des fenêtres comme le maître, le métier et
+            l'hôtel des ventes naissent plus tard et reviennent à l'autre. L'interrupteur a
+            disparu ; GENERIC_OnClose regroupe de toute façon lui-même.
+
+    Plus de contenu d'une fenêtre fermée sous « Local »
+        Simple : Après la fermeture d'une fenêtre, ses entrées pouvaient rester sous « Local »
+            et réapparaître à la prochaine ouverture du menu.
+        Technique : SkuCore.GossipList est la source de données du menu Local, mais elle n'était
+            vidée que si le menu était ouvert à cet instant précis. Sur le chemin d'Échap il ne
+            l'est jamais : le cadre du menu descend volontairement avant les fenêtres, et la
+            partie de code concernée s'exécute une image plus tard. Elle est maintenant vidée dès
+            qu'aucune fenêtre n'est ouverte.
+
+    Maître : le silence une fois la fenêtre fermée
+        Simple : Apprendre plusieurs sorts coup sur coup et fermer la fenêtre juste après
+            laissait les annonces du maître continuer.
+        Technique : Chaque clic sur « Apprendre » mettait en file une re-lecture après une
+            demi-seconde et une annonce après 0,85 seconde, sans possibilité d'annulation. Les
+            deux étapes vérifient maintenant que ClassTrainerFrame est encore visible. Le
+            garde-fou de la v43.1, qui évite de parler dans un menu fermé, n'aidait pas ici : dès
+            que la fenêtre suivante rouvrait le menu, il était ouvert. De plus, la reprise des
+            re-lectures silencieuses en déplacement perdait sa consigne de silence et était
+            planifiée une fois par clic - elle transporte désormais ses arguments et ne s'exécute
+            qu'une fois.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

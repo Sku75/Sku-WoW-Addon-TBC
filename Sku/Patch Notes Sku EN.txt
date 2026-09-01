@@ -82,6 +82,11 @@ Changes in Sku v43.2
             Nameplate coloring was dead after every login and every reload: the switch read as on, but nothing was colored until you flipped it off and on again by hand.
             The reading bar stayed invisible in combat - exactly when it is needed most.
             The reading bar showed only the name of a menu entry, not the value spoken after it - switch states and counts were audible but not readable.
+            A window that had been closed could be announced again later - typically the trainer, long after you had opened your profession window.
+            The menu sometimes opened by itself at its top level instead of where you had asked to go.
+            With two windows open at once, closing the second one went unnoticed.
+            After a window was closed, its entries could linger under "Local".
+            Trainer: learning several spells in quick succession and closing the window right after left it still talking.
 
     Swimming and flying: the pitch lock ends the unwanted diving
         Simple: While swimming or flying, every automatic turn towards the beacon pulled you a
@@ -1073,6 +1078,62 @@ Changes in Sku v43.2
             was registered. Arming now sits in VisualAids:OnEnable, where the follow warning and
             the next-enemy button have always been armed, with a delayed second attempt in case
             the profile is not up yet on the first pass.
+
+    A closed window is no longer announced after the fact
+        Simple: Learning several spells at a trainer, closing the window quickly and then opening
+            your profession window brought the trainer window back after a while - sometimes only
+            after you had read a tooltip. Sku remembered where in the menu it still meant to jump
+            and did it later, without checking whether that window still existed.
+        Technically: The deferred menu jump is three fields (openMenuAfterCombat,
+            openMenuAfterMoving, openMenuAfterPath) that used to be written independently.
+            SlashFunc arms flag AND path together; other sites armed only the flag - and so
+            inherited whatever path was still lying around. The path was also only cleared in the
+            deferred part of CheckFrames, which bails out while you are moving and retries half a
+            second later, whereas the release runs per frame and fires the instant you stop - a
+            race the release won. The three fields are one unit now
+            (SkuCore:ClearDeferredMenuOpen), arming a flag drops the path, and the clearing
+            happens in the window's Hide hook (SkuCore:GENERIC_OnClose) - exactly when the jump
+            becomes invalid. Deliberately without a timeout and without a visibility probe: the
+            state is cleared where it goes wrong, rather than outrun.
+
+    The menu no longer opens its top level by itself
+        Simple: Now and then the menu opened on its own - and at its very top, instead of where
+            you wanted to go.
+        Technically: SkuCoreControlOption1 holds keybinds (target distance, panic mode, minimap
+            scan, cancel flight, turn to unit) and has nothing to do with the menu. Its OnShow
+            bails while you are moving or in combat because SetOverrideBindingClick is not allowed
+            there and would swallow the key-up of a held movement key - but it bailed by setting
+            openMenuAfterMoving, and the release, finding no path, turned that into a menu opening
+            at its root. The frame has its own flag now (rebindControlKeysAfterBlock) and only
+            gets its keys back.
+
+    Closing a second open window is noticed again
+        Simple: With two windows open at once - a vendor and the bags, say - only the first close
+            was noticed. On the second the menu neither rebuilt nor closed.
+        Technically: One of the two hook installers wrapped Show and Hide around a single shared
+            switch (SkuDropdownlistGenericFlag): any Show set it, and only the first Hide after
+            that consumed it. Which installer got a window was pure timing - this one takes
+            everything that exists one second after entering the world, while windows such as the
+            trainer, the tradeskill and the auction house are created later and fall to the other.
+            The switch is gone; GENERIC_OnClose coalesces on its own anyway.
+
+    No contents of a closed window under "Local" any more
+        Simple: After a window was closed its entries could stay under "Local" and turn up again
+            the next time the menu was opened.
+        Technically: SkuCore.GossipList is the Local menu's data source, but it was only emptied
+            when the menu happened to be open at that moment. On the Escape path it never is: the
+            menu frame deliberately goes down before the windows, and the code responsible runs a
+            frame later. It is now emptied as soon as no window is open.
+
+    Trainer: quiet once it is closed
+        Simple: Learning several spells in quick succession and closing the window right after
+            left the trainer's announcements still coming.
+        Technically: Every click on "Train" queued a rescan after half a second and an
+            announcement after 0.85 seconds, with no way to cancel them. Both steps now check
+            whether ClassTrainerFrame is still visible at all. The v43.1 guard against speaking
+            into a closed menu did not help here: as soon as the next window reopened the menu, it
+            was open. The retry for silent rescans while moving also lost its silent flag and was
+            scheduled once per click - it now carries its arguments along and runs only once.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1
