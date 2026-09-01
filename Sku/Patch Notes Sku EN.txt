@@ -20,6 +20,7 @@ Changes in Sku v43.2
             Chat: an unknown slash command is now announced instead of being silently discarded.
             Swimming and flying: Sku keeps you level. The new pitch lock ends the creeping dive during automatic turns, and after an interact approach to an NPC or a press of ascend/descend you are actively straightened out again. On by default; can be switched off under Settings -> General.
             New keybind "Toggle pitch lock while swimming and flying" (Ctrl+Shift+N): locks and releases the pitch manually - switching it off and on again re-levels you at any time.
+            Experimental: gather routes for ore, herbs, gas clouds and chests - Sku walks you through the zone node by node, nearest first. Under Settings -> Scan -> resource scanning -> Gather routes. New and barely tested in game; feedback is explicitly wanted.
 
         Changes
             Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
@@ -742,6 +743,57 @@ Changes in Sku v43.2
             new tool dev/rework-docs/_quest_target_candidates.py, which classifies every
             target-less quest and writes the review list QUEST-TARGET-CANDIDATES.txt for
             the remaining ones (real field objectives without a coordinate source).
+
+
+    Experimental: gather routes
+        Simply: You pick a resource - an ore, a herb, a gas cloud or a kind of chest - and
+            Sku walks you through the zone node by node, always the nearest one first.
+            Where the path data covers the node it takes a real route; where it does not
+            you get a straight beacon and Sku says so - a beacon can point through a wall,
+            a route cannot. While flying it never routes: up there the straight line is
+            the right answer, not the fallback.
+            At the node Sku waits briefly while you gather, then moves on. The keybind
+            "next route waypoint" (Ctrl+Shift+W by default) skips the current node while a
+            gather route is running, so no new key is needed.
+            With the matching tracking active (Find Minerals, Find Herbs) the minimap
+            scanner checks on approach whether the node is actually still there, and skips
+            mined-out ones with an announcement of its own. Without tracking the route
+            still runs, just without that check.
+            Found under Settings -> Scan -> resource scanning -> Gather routes, together
+            with the check radius, the number of nodes per route and the switch for the
+            check itself. For ore, herbs and chests "Show herb and mining node waypoints"
+            has to be on in the navigation settings - otherwise those nodes do not exist
+            as waypoints at all, and Sku says exactly that on start rather than wrongly
+            declaring the zone empty. Gas clouds do not need the setting.
+        Important: This feature is explicitly experimental. It has only been tried in game
+            in outline, and the "is the node still there" check could not be exercised
+            under real conditions at all, because no character here has a gathering
+            profession - without Find Minerals or Find Herbs there are no blips on the
+            minimap for the scanner to read. If you play Mining or Herbalism: please try
+            it and report what goes wrong.
+        Technically: The idea and the reference implementation come from ZenqFR, from the
+            companion addon SkuGatherRoute (github.com/ZenqFR/Sku-GatherRoute); the route
+            mechanics were devised and demonstrated there - a waypoint family under one
+            shared base name, every node reached over a close route, a distinct
+            announcement for every transition, and the existing keybind as the skip key.
+            Here the feature is rebuilt natively with ZenqFR's agreement, so that no
+            additional addon is required.
+            One difference is deliberate: the original requires GatherMate2, this version
+            does not. We see no advantage in that dependency - the nodes have long been in
+            SkuNav's waypoint cache complete with world coordinates, and named so that the
+            resource IS the waypoint's base name; a second data source and a second addon
+            would add nothing to that while costing every user another install. Should
+            GatherMate2 do something we have overlooked - self-recording of nodes actually
+            gathered would be the candidate - then please tell us what for, and we will
+            look at it.
+            The presence check hooks MinimapScanner:MinimapScanFastStop, the one point
+            every scan funnels through. With "notify on resources" on, the scan that is
+            running anyway is enough; otherwise the route scans by itself, throttled and
+            only within range of the target, and those scans stay silent. A hit confirms,
+            a miss proves nothing - a scan only ever reports one name and may have caught
+            a different blip. Only after several unsuccessful scans in range does a node
+            count as gone. When in doubt it never skips: a node wrongly kept costs a few
+            steps, a node wrongly skipped is never noticed at all.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

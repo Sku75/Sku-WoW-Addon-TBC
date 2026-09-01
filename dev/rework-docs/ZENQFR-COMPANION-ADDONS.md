@@ -10,8 +10,9 @@ item per session, deliberately.
 
 Items 0 (target tooltip keybind), 1 (quest track toggle), 2 (nearby quests),
 3 (quest-target keybind) and 4 (SkuBagnonBridge) are all **CLOSED** and part of
-v43.2. Only item 5 (gather routes) is open, and it still needs its own analysis
-pass.
+v43.2. Item 5 (gather routes) is **BUILT and shipping as EXPERIMENTAL** in
+v43.2 — see section 5 and `GATHER-ROUTES-PLAN.md`; the only part still unproven
+is the presence check, which needs a character with a gathering profession.
 
 ★ **Item 4 is closed, not paused.** Most of it was deliberately rejected (see
 section 4); what was worth having is built and tested. Do not re-open it or
@@ -562,8 +563,24 @@ not the data plumbing:
 - Distinct spoken outcomes for every transition (confirmed / reached / skipped /
   not found), so a genuine arrival is never confusable with a wrongly-early one.
 
-**Effort.** Largest item overall, and the biggest user-facing win. Needs its own
-plan document when it starts.
+**Effort.** Largest item overall, and the biggest user-facing win.
+
+**BUILT 2026-09-01, shipped as EXPERIMENTAL in v43.2.** Plan document:
+`GATHER-ROUTES-PLAN.md` (user decisions: native/no GatherMate2, submenu under
+Ressourcen Scan, `SKU_KEY_MOVETONEXTWP` doubles as the skip key while a route is
+active). Code: `Sku/SkuCore/gatherRoute.lua`.
+
+Not closed: the presence check has never run under real conditions, because no
+character here has a gathering profession and therefore no tracking spell — with
+no blips on the minimap there is nothing for the scanner to read. Everything
+else (node selection, routing, skip key, advance, cleanup) is confirmed working
+in game. The patch notes say so out loud and ask for reports.
+
+The GatherMate2 dependency was dropped deliberately and the notes state why: the
+nodes are already in SkuNav's waypoint cache with world coordinates, named so
+that the resource is the waypoint's base name, so a second data source would add
+nothing. If ZenqFR has a reason we have missed — self-recording of nodes actually
+gathered is the obvious candidate — the notes invite them to say what for.
 
 ---
 

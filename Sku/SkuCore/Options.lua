@@ -698,6 +698,16 @@ SkuSettings:Register("SkuCore", {
 	-- Automatic pitch lock while swimming/flying. Default ON; toggle sits in
 	-- Einstellungen -> Allgemein (SkuCore.PitchLockAutoMenuBuilder).
 	["pitchLockAuto"]                             = { scope = "profile", default = true, type = "boolean" },
+	-- Gather routes (SkuCore/gatherRoute.lua). Their menu lives inside
+	-- Einstellungen -> Scan -> Ressourcen Scan -> Sammelrouten and is built by
+	-- SkuCore.GatherRoute:MenuBuilder, so these three carry no option node here.
+	-- presenceRange: how close the node has to be before a minimap scan is taken
+	-- as evidence about it. maxNodes: family size per route. presenceCheck: the
+	-- verification as a whole -- off, the route still walks every node, it just
+	-- never says "not present" and advances on arrival instead.
+	["gatherRoute.presenceRange"]                 = { scope = "profile", default = 50, type = "number" },
+	["gatherRoute.maxNodes"]                      = { scope = "profile", default = 40, type = "number" },
+	["gatherRoute.presenceCheck"]                 = { scope = "profile", default = true, type = "boolean" },
 	["turnToUnit.speed"]                          = { scope = "profile", default = 6, type = "number" },
 	["turnToUnit.soundOnSuccess"]                 = { scope = "profile", default = "sound-waterdrop5", type = "string" },
 	["turnToUnit.soundOnFail"]                    = { scope = "profile", default = "sound-waterdrop1", type = "string" },
@@ -3161,10 +3171,33 @@ function SkuCore:MenuBuilder(aParentEntry)
 		-- into Allgemein above.
 		{ kind = "submenu", label = tDeEn("Scan", "Scan"),
 			build = function(self)
+				-- "Ressourcen Scan" is built BY HAND instead of being handed to
+				-- IterateOptionsArgs with the others, for one reason: the gather-route
+				-- menu has to live INSIDE it, and a group node in an AceConfig args
+				-- table has no builder hook -- IterateOptionsArgs renders v.args and
+				-- nothing else. Injecting the group ourselves and recursing into
+				-- exactly the same args table with the same profile path and the same
+				-- key prefix ("ressourceScanning.") keeps every saved value where it
+				-- was; only the extra child at the end is new. Placed first so the
+				-- entry keeps the position users are used to.
+				local tResGroup = SkuCore.options.args.ressourceScanning
+				local tResEntry = SkuOptions:InjectMenuItems(self, {tResGroup.name}, SkuGenericMenuItem)
+				tResEntry.dynamic = true
+				tResEntry.sorting = true
+				tResEntry.BuildChildren = function(self)
+					SkuOptions:IterateOptionsArgs(tResGroup.args, self, tSub.ressourceScanning, "SkuCore", "ressourceScanning.", true)
+					-- Gather routes (SkuCore/gatherRoute.lua): start a route over the
+					-- ore/herb/chest nodes of the current zone, with the minimap
+					-- scanner verifying each one. Sits here because it IS resource
+					-- scanning -- it consumes the same toggles and the same scans.
+					if SkuCore.GatherRoute and SkuCore.GatherRoute.MenuBuilder then
+						SkuCore.GatherRoute:MenuBuilder(self)
+					end
+				end
+
 				-- Scan-related settings relocated from the SkuCore "Options" group.
 				local tScanArgs = {
 					scanBackgroundSound = SkuCore.options.args.scanBackgroundSound,
-					ressourceScanning   = SkuCore.options.args.ressourceScanning,
 					doNotHideTooltip    = SkuCore.options.args.doNotHideTooltip,
 					turnToUnit          = SkuCore.options.args.turnToUnit,
 				}

@@ -82,6 +82,7 @@ SkuCore\combatMenuKeys.lua
 SkuCore\updateCheck.lua
 SkuCore\companionPacks.lua
 SkuCore\taxi.lua
+SkuCore\gatherRoute.lua
 
 
 _psC_preSkuDB.lua

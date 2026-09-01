@@ -20,6 +20,7 @@ Aenderungen in Sku v43.2
             Chat: ein unbekannter Slash-Befehl wird angesagt, statt still verworfen zu werden.
             Schwimmen und Fliegen: Sku haelt dich waagerecht. Die neue Neigungssperre beendet das schleichende Abtauchen bei den automatischen Drehungen, und nach einem Anflug auf einen NPC oder einem Druck auf Steigen/Sinken wirst du aktiv wieder gerade ausgerichtet. Ab Werk an; abschaltbar unter Einstellungen -> Allgemein.
             Neuer Tastenbefehl "Neigungssperre beim Schwimmen und Fliegen umschalten" (Strg+Umschalt+N): sperrt und loest die Neigung manuell - aus- und wieder einschalten richtet dich jederzeit neu waagerecht aus.
+            Experimentell: Sammelrouten fuer Erze, Kraeuter, Gaswolken und Truhen - Sku fuehrt dich Vorkommen fuer Vorkommen durch die Zone, immer das naechstgelegene zuerst. Unter Einstellungen -> Scan -> ressourcen scan -> Sammelrouten. Neu und im Spiel erst in Ansaetzen erprobt; Rueckmeldungen sind ausdruecklich erwuenscht.
 
         Aenderungen
             Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
@@ -803,6 +804,60 @@ Aenderungen in Sku v43.2
             dem neuen Werkzeug dev/rework-docs/_quest_target_candidates.py, das alle
             zielllosen Quests klassifiziert und fuer die restlichen (echte Feldziele ohne
             Koordinatenquelle) die Pruefliste QUEST-TARGET-CANDIDATES.txt schreibt.
+
+
+    Experimentell: Sammelrouten
+        Einfach: Du waehlst eine Ressource - ein Erz, ein Kraut, eine Gaswolke oder eine
+            Truhensorte - und Sku fuehrt dich durch die Zone, Vorkommen fuer Vorkommen,
+            immer das naechstgelegene zuerst. Wo Wegedaten vorliegen, geht es ueber eine
+            echte Route; ist keine da, gibt es einen direkten Peilton, und Sku sagt das
+            dazu - ein Peilton kann durch eine Wand zeigen, eine Route nicht. Im Flug wird
+            nie geroutet: dort ist die Gerade der richtige Weg, nicht der Notbehelf.
+            Am Vorkommen wartet Sku kurz, waehrend du abbaust, und geht dann weiter. Der
+            Tastenbefehl "naechster Routenwegpunkt" (ab Werk Strg+Umschalt+W) ueberspringt
+            waehrend einer Sammelroute das aktuelle Vorkommen - es braucht also keine
+            neue Taste.
+            Ist die passende Suche aktiv (Mineralien finden, Kraeuter finden), prueft der
+            Minikartenscanner beim Herangehen, ob das Vorkommen ueberhaupt noch da ist,
+            und ueberspringt abgebaute mit einer eigenen Ansage. Ohne Suche laeuft die
+            Route trotzdem, nur eben ohne diese Pruefung.
+            Zu finden unter Einstellungen -> Scan -> ressourcen scan -> Sammelrouten; dort
+            liegen auch Pruefradius, Anzahl der Vorkommen je Route und der Schalter fuer
+            die Pruefung. Fuer Erze, Kraeuter und Truhen muss "Wegpunkte fuer Kraeuter und
+            Bergbau anzeigen" in den Navigationseinstellungen an sein - sonst liegen diese
+            Vorkommen gar nicht als Wegpunkte vor, und Sku sagt beim Start genau das,
+            statt die Zone faelschlich fuer leer zu erklaeren. Gaswolken brauchen die
+            Einstellung nicht.
+        Wichtig: Diese Funktion ist ausdruecklich experimentell. Sie ist im Spiel erst in
+            Ansaetzen erprobt, und die Pruefung "ist das Vorkommen ueberhaupt noch da"
+            konnte gar nicht unter echten Bedingungen laufen, weil hier kein Charakter
+            einen Sammelberuf hat - ohne Mineralien finden oder Kraeuter finden gibt es
+            keine Punkte auf der Minikarte, die der Scanner lesen koennte. Wer Bergbau
+            oder Kraeuterkunde spielt: bitte ausprobieren und berichten, was schiefgeht.
+        Technisch: Idee und Referenzumsetzung stammen von ZenqFR, aus dem Begleit-Addon
+            SkuGatherRoute (github.com/ZenqFR/Sku-GatherRoute); die Routenmechanik ist
+            dort erdacht und vorgefuehrt worden - eine Wegpunktfamilie unter einem
+            gemeinsamen Basisnamen, jedes Vorkommen ueber eine nahe Route, eine eigene
+            Ansage fuer jeden Uebergang, und der vorhandene Tastenbefehl als Ueberspringer.
+            Hier ist die Funktion mit ZenqFRs Zustimmung nativ neu gebaut, damit kein
+            zusaetzliches Addon noetig ist.
+            Ein Unterschied ist bewusst: das Original setzt GatherMate2 voraus, diese
+            Fassung nicht. Wir sehen darin keinen Vorteil - die Vorkommen stehen samt
+            Weltkoordinaten laengst in SkuNavs Wegpunkt-Cache, und zwar so benannt, dass
+            die Ressource der Basisname des Wegpunkts ist; eine zweite Datenquelle und ein
+            zweites Addon wuerden dem nichts hinzufuegen, kosteten aber jeden Nutzer eine
+            weitere Installation. Sollte GatherMate2 etwas leisten, das wir uebersehen
+            haben - das Selbstaufzeichnen tatsaechlich abgebauter Knoten waere der
+            Kandidat -, dann sagt uns bitte wofuer, und wir sehen es uns an.
+            Die Praesenzpruefung haengt sich in MinimapScanner:MinimapScanFastStop, den
+            Punkt, durch den jeder Scan laeuft. Ist "bei Ressourcen benachrichtigen" an,
+            reicht der ohnehin laufende Scan; sonst scannt die Route selbst, gedrosselt
+            und nur in Reichweite des Ziels, und diese Scans bleiben stumm. Ein Treffer
+            bestaetigt, ein Fehlschlag beweist nichts - ein Scan meldet immer nur einen
+            Namen und kann einen anderen Punkt erwischt haben. Erst nach mehreren
+            erfolglosen Scans in Reichweite gilt ein Vorkommen als weg. Im Zweifel wird
+            nie uebersprungen: ein zu Unrecht behaltenes Vorkommen kostet ein paar
+            Schritte, ein zu Unrecht uebersprungenes faellt gar nicht auf.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

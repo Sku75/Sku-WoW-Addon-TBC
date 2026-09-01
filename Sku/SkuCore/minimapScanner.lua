@@ -128,7 +128,12 @@ SkuCore.RessourceTypes = {
       [40] = { deDE = "Schlangenzunge", enUS = "Adder's Tongue", zhCN = "蛇信草", ruRU = "Язык аспида",},
       [41] = { deDE = "Talandras Rose", enUS = "Talandra's Rose", zhCN = "塔兰德拉的玫瑰", ruRU = "Роза Таландры",},
       [42] = { deDE = "Lichblüte", enUS = "Lichbloom", zhCN = "巫妖花", ruRU = "Личецвет",},
-      [43] = { deDE = "Eisdorn", enUS = "Icethor", zhCN = "冰极草", ruRU = "Ледошип",},
+      -- [2026-09-01] enUS was "Icethor" -- a typo, the herb is "Icethorn"
+      -- (SkuDB.objectResourceNames.enUS and objects.lua both spell it that way).
+      -- The scanner matches this string against the tooltip line, so on an
+      -- English client Eisdorn/Icethorn was the one Northrend herb that could
+      -- never be announced, and the gather route could not find its nodes either.
+      [43] = { deDE = "Eisdorn", enUS = "Icethorn", zhCN = "冰极草", ruRU = "Ледошип",},
       [44] = { deDE = "Frostlotus", enUS = "Frost Lotus", zhCN = "雪莲花", ruRU = "Северный лотос",},
       [45] = { deDE = "Blutdistel", enUS = "Bloodthistle", zhCN = "血蓟", ruRU = "Кровопийка",},
    },
@@ -561,6 +566,10 @@ function MinimapScanner:MinimapStopScan()
    -- lösen, sonst ist es kein Stop.
    MinimapScanner.MinimapScanFastRunning = false
    MinimapScanner.MinimapScanFastStartedAt = nil
+   -- [2026-09-01] The gather route's "this scan is mine, stay silent" flag is
+   -- normally cleared in MinimapScanFastStop. A hard stop skips that tail, and a
+   -- flag left standing would silence the NEXT ambient announcement instead.
+   MinimapScanner.routeScanSilent = nil
    MinimapScanner:RestoreMinimap()
    MinimapScanner.noMouseOverNotification = nil
    -- Auch Zoom/Rotation/Altitude-Hint zurücksetzen, falls vor dem Scan
@@ -911,7 +920,30 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function MinimapScanner:MinimapScanFastStop(aResult)
-   if aResult then
+   -- [2026-09-01] THE choke point every scan path funnels through -- the passive
+   -- "bei Ressourcen benachrichtigen" notifier, the manual scan, and the gather
+   -- route's own presence check (SkuCore/gatherRoute.lua). The route reads its
+   -- answer here instead of scanning on a schedule of its own: while the passive
+   -- notifier is on, the ambient 0.5 s scans already produce exactly the result
+   -- it needs, so the route schedules nothing and costs nothing.
+   --
+   -- The hook gets the RAW result, before the "\" / "|" escaping below, because
+   -- it matches the name against SkuCore.RessourceTypes -- the very table this
+   -- scan matched to produce it, so the two agree by construction.
+   local tRouteScan = MinimapScanner.routeScanSilent
+   MinimapScanner.routeScanSilent = nil
+   if SkuCore.GatherRoute and SkuCore.GatherRoute.OnMinimapScanResult then
+      pcall(SkuCore.GatherRoute.OnMinimapScanResult, SkuCore.GatherRoute, aResult, tRouteScan)
+   end
+
+   if tRouteScan then
+      -- A scan the ROUTE asked for: the route speaks its own outcome ("nicht
+      -- vorhanden", "übersprungen", ...), so the bare resource name must not also
+      -- be announced -- with the passive notifier off the user would otherwise
+      -- start hearing ore names they never asked for. tPrevResult is left
+      -- untouched on purpose: it is the announce path's dedup state, and a silent
+      -- scan writing to it would swallow the NEXT ambient announcement.
+   elseif aResult then
       if tPrevResult ~= aResult then
          aResult = string.gsub(aResult, "\\", " slash")
          aResult = string.gsub(aResult, "|", " slash")
@@ -962,17 +994,18 @@ function MinimapScanner:MinimapScannerOnLogin()
    local a = MinimapScanner.minimapScannerFrame
    a.timeCounter = 0
    a:SetScript("OnUpdate", function(self, atime)
-      if SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources ~= true then
-         return
-      end
-      if SkuCore.inCombat == true then
-         return
-      end
       -- [v43.0] Deadline gegen einen hängenden Schnellscan-Lock. Der Lock wird
       -- im C_Timer-Tail freigegeben (nominell nach 0,1 s); läuft dieser Tail gar
       -- nicht erst an - abgebrochene Ausführung, gelöschter Timer -, greift der
       -- pcall im Tail nicht, weil er nie erreicht wird. Dann räumt das hier auf.
       -- Ein Vergleich pro Frame, und nur solange ein Scan als laufend gilt.
+      --
+      -- [2026-09-01] Steht VOR dem notifyOnRessources-Tor. Der Lock gehoerte
+      -- frueher allein der passiven Ansage, also war "Ansage aus" gleichbedeutend
+      -- mit "niemand kann ihn nehmen". Seit die Sammelroute selbst scannt
+      -- (SkuCore/gatherRoute.lua, Praesenzpruefung) gilt das nicht mehr: ein
+      -- haengender Lock aus einem Routen-Scan wurde hinter dem Tor nie wieder
+      -- freigegeben und die Praesenzpruefung blieb bis zum /reload tot.
       if MinimapScanner.MinimapScanFastRunning == true
          and MinimapScanner.MinimapScanFastStartedAt
          and GetTime() - MinimapScanner.MinimapScanFastStartedAt > 5 then
@@ -981,7 +1014,14 @@ function MinimapScanner:MinimapScannerOnLogin()
          MinimapScanner.MinimapScanFastRunning = false
          MinimapScanner.MinimapScanFastStartedAt = nil
          MinimapScanner.IsMMScanning = false
+         MinimapScanner.routeScanSilent = nil
          self.timeCounter = 0
+         return
+      end
+      if SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources ~= true then
+         return
+      end
+      if SkuCore.inCombat == true then
          return
       end
       if (GetUnitSpeed("player") or 0) <= 0 then

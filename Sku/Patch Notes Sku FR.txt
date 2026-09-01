@@ -23,6 +23,7 @@ Changements dans Sku v43.2
             Chat : une commande slash inconnue est maintenant annoncée au lieu d'être ignorée en silence.
             Nage et vol : Sku vous maintient à l'horizontale. Le nouveau verrouillage de l'inclinaison met fin à la plongée insidieuse lors des virages automatiques, et après une approche automatique vers un PNJ ou un appui sur monter/descendre, vous êtes activement redressé. Activé par défaut ; désactivable sous Paramètres -> Général.
             Nouveau raccourci « verrouillage de l'inclinaison en nage et en vol » (Ctrl+Maj+N) : verrouille et libère l'inclinaison manuellement - l'éteindre puis le rallumer vous remet à l'horizontale à tout moment.
+            Expérimental : itinéraires de récolte pour les minerais, les herbes, les nuages de gaz et les coffres - Sku vous guide de gisement en gisement à travers la zone, le plus proche d'abord. Sous Réglages -> Scan -> analyse des ressources -> Itinéraires de récolte. Nouveau et à peine testé en jeu ; vos retours sont expressément souhaités.
 
         Changements
             Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
@@ -827,6 +828,64 @@ Changements dans Sku v43.2
             dev/rework-docs/_quest_target_candidates.py, qui classe toutes les quêtes sans
             cible et écrit la liste de relecture QUEST-TARGET-CANDIDATES.txt pour les
             restantes (vrais objectifs de terrain sans source de coordonnées).
+
+
+    Expérimental : itinéraires de récolte
+        Simplement : Vous choisissez une ressource - un minerai, une herbe, un nuage de gaz
+            ou une sorte de coffre - et Sku vous guide à travers la zone, gisement après
+            gisement, toujours le plus proche d'abord. Là où les données de chemin couvrent
+            le gisement, il emprunte un véritable itinéraire ; sinon vous obtenez une
+            balise directe et Sku vous le dit - une balise peut pointer à travers un mur,
+            un itinéraire non. En vol, il n'y a jamais d'itinéraire : là-haut la ligne
+            droite est la bonne réponse, pas le pis-aller.
+            Au gisement, Sku attend brièvement pendant que vous récoltez, puis poursuit. Le
+            raccourci « point de passage suivant de l'itinéraire » (Ctrl+Maj+W par défaut)
+            ignore le gisement courant pendant un itinéraire de récolte ; aucune nouvelle
+            touche n'est donc nécessaire.
+            Si le pistage correspondant est actif (Détection des minerais, Détection des
+            herbes), l'analyseur de minicarte vérifie à l'approche si le gisement est
+            encore là, et ignore ceux déjà récoltés avec une annonce propre. Sans pistage
+            l'itinéraire fonctionne quand même, simplement sans cette vérification.
+            À trouver sous Réglages -> Scan -> analyse des ressources -> Itinéraires de
+            récolte, avec le rayon de vérification, le nombre de gisements par itinéraire
+            et l'interrupteur de la vérification. Pour les minerais, les herbes et les
+            coffres, « Afficher les points de passage d'herbes et de filons » doit être
+            activé dans les réglages de navigation - sinon ces gisements n'existent pas du
+            tout en tant que points de passage, et Sku le dit précisément au démarrage au
+            lieu de déclarer la zone vide à tort. Les nuages de gaz n'ont pas besoin de ce
+            réglage.
+        Important : Cette fonction est expressément expérimentale. Elle n'a été essayée en
+            jeu que dans les grandes lignes, et la vérification « le gisement est-il encore
+            là » n'a pas pu être exercée dans des conditions réelles, car aucun personnage
+            ici n'a de métier de récolte - sans Détection des minerais ni Détection des
+            herbes, il n'y a aucun point sur la minicarte que l'analyseur puisse lire. Si
+            vous jouez Minage ou Herboristerie : essayez et signalez ce qui ne va pas.
+        Technique : L'idée et l'implémentation de référence viennent de ZenqFR, de l'addon
+            compagnon SkuGatherRoute (github.com/ZenqFR/Sku-GatherRoute) ; la mécanique
+            d'itinéraire y a été conçue et démontrée - une famille de points de passage
+            sous un nom de base commun, chaque gisement atteint par un itinéraire proche,
+            une annonce distincte pour chaque transition, et le raccourci existant comme
+            touche pour ignorer. Ici la fonction est reconstruite nativement avec l'accord
+            de ZenqFR, afin qu'aucun addon supplémentaire ne soit nécessaire.
+            Une différence est délibérée : l'original nécessite GatherMate2, cette version
+            non. Nous n'y voyons aucun avantage - les gisements se trouvent depuis
+            longtemps dans le cache de points de passage de SkuNav, coordonnées mondiales
+            comprises, et nommés de telle sorte que la ressource EST le nom de base du
+            point de passage ; une deuxième source de données et un deuxième addon
+            n'y ajouteraient rien tout en coûtant une installation de plus à chaque
+            utilisateur. Si GatherMate2 fait quelque chose qui nous a échappé -
+            l'enregistrement automatique des gisements réellement récoltés serait le
+            candidat -, dites-nous alors à quoi cela sert, et nous y regarderons.
+            La vérification de présence s'accroche à MinimapScanner:MinimapScanFastStop, le
+            point unique par lequel passe chaque analyse. Si « notifier les ressources »
+            est activé, l'analyse déjà en cours suffit ; sinon l'itinéraire analyse
+            lui-même, de manière limitée et uniquement à portée de la cible, et ces
+            analyses restent silencieuses. Une correspondance confirme, un échec ne prouve
+            rien - une analyse ne rapporte jamais qu'un seul nom et peut avoir attrapé un
+            autre point. Ce n'est qu'après plusieurs analyses infructueuses à portée qu'un
+            gisement est considéré comme disparu. Dans le doute, rien n'est jamais ignoré :
+            un gisement conservé à tort coûte quelques pas, un gisement ignoré à tort ne se
+            remarque pas du tout.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

@@ -3222,7 +3222,23 @@ function SkuNav:CreateSkuNavMain()
 		
 		--move to prev/next wp on following a rt
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_MOVETONEXTWP") then
-			SkuNav.MoveToWp = 1
+			-- [2026-09-01] While a gather route runs (SkuCore/gatherRoute.lua) this
+			-- key means "skip this node", not "skip one hop of the close route": the
+			-- route walks a FAMILY of nodes, one close route each, so the useful
+			-- manual override at that level is "I do not care about this ore" (or
+			-- "the presence check is wrong"), which is what SkipCurrentTarget does.
+			-- Handled BEFORE MoveToWp is set, and MoveToWp is deliberately left at 0
+			-- so the hop-stepper in the OnUpdate driver does not also fire on the
+			-- close route we are about to tear down and replace.
+			-- SKU_KEY_MOVETOPREVWP is untouched and still steps hops.
+			local tGatherSkipped = false
+			if SkuCore and SkuCore.GatherRoute and SkuCore.GatherRoute.IsActive and SkuCore.GatherRoute:IsActive() then
+				tGatherSkipped = true
+				SkuCore.GatherRoute:SkipCurrentTarget()
+			end
+			if not tGatherSkipped then
+				SkuNav.MoveToWp = 1
+			end
 		end
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_MOVETOPREVWP") then
 			SkuNav.MoveToWp = -1
@@ -3666,6 +3682,159 @@ function SkuNav:CancelNavigationSilent()
 	SkuNav:SelectWP("", true)
 	if SkuNav.ClearWaypointsTemporary then SkuNav:ClearWaypointsTemporary() end
 	SkuDispatcher:TriggerSkuEvent("SKU_NAVIGATION_STOPPED")
+	return true
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- "Nahe Routen" as a CALLABLE function (2026-09-01, for SkuCore/gatherRoute.lua).
+--
+-- The close-route computation used to exist only inside the Nav menu builder
+-- (SkuNav/Options.lua, the "Nahe Routen" level plus the close-route branch of
+-- SkuNav.WaypointSelectOnAction): find a linked entry waypoint near the player,
+-- flood the link graph from it, and pick the network waypoint whose metaroute
+-- plus final straight hop to the target is cheapest. A feature that wants to
+-- route to a waypoint programmatically could not reach any of that -- a menu
+-- handler needs a menu. The body below is that same computation, lifted out; the
+-- two menu levels keep their own copy because they must present the intermediate
+-- CHOICES (which entry point, which route) to the user, which a caller does not.
+--
+-- Two deliberate differences from the menu version:
+--   * The menu asks the user to pick an entry point; here we walk the candidates
+--     nearest-first and take the first one that can actually reach the target,
+--     then pick the best route through it. GetAllMetaTargetsFromWp5 is a full
+--     Dijkstra flood of the link graph, so running it for all ten candidates the
+--     menu lists would be ten floods in one frame -- that is exactly the shape
+--     the script watchdog kills. Entry points this close to each other are
+--     almost always in the same connected component anyway, so the first that
+--     reaches the target is the same answer for a tenth of the cost. The scan
+--     stops after ENTRY_CANDIDATE_LIMIT candidates regardless.
+--   * No voice, no menu close, no SKU_CLOSEROUTE_STARTED. The caller owns what
+--     the user hears; a gather route speaks per NODE, not per hop.
+SkuNav.CloseRouteEntryCandidateLimit = 5
+
+---@param aTargetWpName string waypoint to route to (any waypoint, incl. temporary)
+---@param aMaxDistanceToTargetWp number|nil how far the network may end from the target (default 500)
+---@return table|nil {entryWp, metarouteIndex, metapathLength, distanceTargetWp, weightedDistance}
+function SkuNav:GetBestCloseRouteToWaypoint(aTargetWpName, aMaxDistanceToTargetWp)
+	if not aTargetWpName then return nil end
+	local tTargetObj = SkuNav:GetWaypointData2(aTargetWpName)
+	if not tTargetObj then return nil end
+
+	local tPlayX, tPlayY = UnitPosition("player")
+	if not tPlayX then return nil end
+
+	aMaxDistanceToTargetWp = aMaxDistanceToTargetWp or 500
+
+	-- Network waypoints near the TARGET; without one, no route can end usefully.
+	local tNearWps = SkuNav:GetNearestWpsWithLinksToWp(aTargetWpName, 10, aMaxDistanceToTargetWp)
+	if #tNearWps == 0 then
+		dprint("GetBestCloseRouteToWaypoint: no linked waypoint within", aMaxDistanceToTargetWp, "of", tostring(aTargetWpName))
+		return nil
+	end
+
+	-- Entry candidates near the PLAYER, nearest first.
+	local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, SkuNav.MaxMetaEntryRange)
+	local tEntries = {}
+	for k, v in SkuSpairs(tRoutesInRange, function(t, a, b) return t[b].nearestWpRange > t[a].nearestWpRange end) do
+		tEntries[#tEntries + 1] = v.nearestWP
+	end
+	if #tEntries == 0 then
+		dprint("GetBestCloseRouteToWaypoint: no linked waypoint within", SkuNav.MaxMetaEntryRange, "of the player")
+		return nil
+	end
+
+	local tRoutesMaxDistance = SkuSettings:Sub("SkuNav").routesMaxDistance
+
+	for tCandidate = 1, math.min(#tEntries, SkuNav.CloseRouteEntryCandidateLimit) do
+		local tEntryWp = tEntries[tCandidate]
+		local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(tEntryWp, tRoutesMaxDistance, SkuNav.MaxMetaWPs, nil, true)
+
+		local tBest, tBestWeighted = nil, 100000
+		for x = 1, #tNearWps do
+			local tMeta = tMetapaths[tNearWps[x].wpName]
+			if tMeta then
+				local tEndObj = SkuNav:GetWaypointData2(tNearWps[x].wpName)
+				if tEndObj then
+					local tDistToTargetWp = SkuNav:Distance(tEndObj.worldX, tEndObj.worldY, tTargetObj.worldX, tTargetObj.worldY)
+					local tWeighted = (tMeta.distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToTargetWp
+					if tWeighted < tBestWeighted then
+						tBestWeighted = tWeighted
+						tBest = {
+							entryWp = tEntryWp,
+							metarouteIndex = tNearWps[x].wpName,
+							metapathLength = tMeta.distance,
+							distanceTargetWp = tDistToTargetWp,
+							weightedDistance = tWeighted,
+						}
+					end
+				end
+			end
+		end
+
+		-- First entry point that reaches the target wins (see the note above).
+		if tBest then
+			dprint("GetBestCloseRouteToWaypoint:", tostring(aTargetWpName), "via", tostring(tBest.entryWp),
+				"candidate", tCandidate, "of", #tEntries, "meta", tBest.metapathLength, "final", tBest.distanceTargetWp)
+			return tBest
+		end
+	end
+
+	dprint("GetBestCloseRouteToWaypoint: no entry point reaches", tostring(aTargetWpName))
+	return nil
+end
+
+-- Compute the best close route to aTargetWpName and START following it. Returns
+-- true when a real metaroute is now running, false when the link graph has no
+-- coverage -- the caller then falls back to a straight beacon (SkuNav:SelectWP).
+--
+-- The state assembly below is the close-route branch of
+-- SkuNav.WaypointSelectOnAction, copied verbatim in ORDER and MEANING: the
+-- second GetAllMetaTargetsFromWp5 (this time WITH aReturnPathForWp) is the call
+-- that materialises pathWps, and the target waypoint is then appended to that
+-- path so the route ends AT the target rather than at the network waypoint
+-- nearest to it. Do not "simplify" the double flood away -- the first pass
+-- answers "which target is cheapest", the second builds the path to the winner.
+---@param aTargetWpName string
+---@param aMaxDistanceToTargetWp number|nil
+---@return boolean started
+function SkuNav:StartCloseRouteToWaypoint(aTargetWpName, aMaxDistanceToTargetWp)
+	local tBest = SkuNav:GetBestCloseRouteToWaypoint(aTargetWpName, aMaxDistanceToTargetWp)
+	if not tBest then return false end
+
+	local tNavS = SkuSettings:Sub("SkuNav")
+
+	tNavS.metapathFollowing = false
+	tNavS.metapathFollowingStart = tBest.entryWp
+	tNavS.metapathFollowingTarget = tBest.metarouteIndex
+	tNavS.metapathFollowingEndTarget = aTargetWpName
+	tNavS.metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp5(tNavS.metapathFollowingStart, tNavS.routesMaxDistance, SkuNav.MaxMetaWPs, tNavS.metapathFollowingTarget, true)
+
+	local tPath = tNavS.metapathFollowingMetapaths[tNavS.metapathFollowingTarget]
+	if not tPath or not tPath.pathWps then
+		-- The second flood did not reproduce the path the first one found. Only
+		-- reachable if the cache changed between the two calls; answer "no route"
+		-- rather than leave half-built follow state behind.
+		dprint("StartCloseRouteToWaypoint: second flood lost the path to", tostring(tNavS.metapathFollowingTarget))
+		tNavS.metapathFollowingMetapaths = nil
+		tNavS.metapathFollowingStart = nil
+		tNavS.metapathFollowingTarget = nil
+		tNavS.metapathFollowingEndTarget = nil
+		return false
+	end
+
+	tNavS.metapathFollowingMetapaths[#tNavS.metapathFollowingMetapaths + 1] = tNavS.metapathFollowingEndTarget
+	tNavS.metapathFollowingMetapaths[tNavS.metapathFollowingEndTarget] = tPath
+	table.insert(tPath.pathWps, tNavS.metapathFollowingEndTarget)
+	tNavS.metapathFollowingTarget = tNavS.metapathFollowingEndTarget
+
+	local tBaseName = SkuNav:StripBaseNameFromWaypointName(tNavS.metapathFollowingTarget)
+	if tBaseName then
+		SkuNav.lastSelectedWaypointFullName = tNavS.metapathFollowingTarget
+	end
+
+	tNavS.metapathFollowingCurrentWp = 1
+	tNavS.metapathFollowing = true
+	SkuNav:SelectWP(tNavS.metapathFollowingStart, true)
 	return true
 end
 
@@ -4868,7 +5037,18 @@ function SkuNav:StripBaseNameFromWaypointName(aWaypointName)
 		return
 	end
 
-	local tWaypointType = string.gsub(aWaypointName, "OBJEKT;%d+;", "")
+	-- [2026-09-01] The object prefix is LOCALIZED - L["OBJECT"] is "OBJEKT" on
+	-- deDE but "OBJECT" on enUS and "OBJET" on frFR. This gsub hardcoded the
+	-- German spelling, so on any other client it matched nothing and EVERY object
+	-- waypoint reported the base name "OBJECT" / "OBJET" instead of the object's
+	-- own name. Object waypoints are named
+	--   <OBJECT>;<id>;<name>;[<resource type>;]<zone>;<spawn>;<x>;<y>
+	-- so with the prefix left in place the first ";" cut returns the prefix, and
+	-- every object on the map collapsed into ONE base-name family. That silently
+	-- broke "next base waypoint" (SKU_KEY_SELECTNEXTBASEWAYPOINT) and the auto-
+	-- next-waypoint mode for non-German clients: instead of walking the next vein
+	-- of the same ore, they walked the nearest object of any kind.
+	local tWaypointType = string.gsub(aWaypointName, L["OBJECT"]..";%d+;", "")
 
 	if string.find(tWaypointType, ";") then
 		tWaypointType = string.sub(tWaypointType, 1, string.find(tWaypointType, ";") - 1)
