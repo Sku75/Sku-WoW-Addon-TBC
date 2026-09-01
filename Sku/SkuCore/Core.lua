@@ -1131,6 +1131,27 @@ function SkuCore:Distance(sx, sy, dx, dy)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Names the movement latches that are currently set, for the menu moving-defer
+-- dprints. The gate itself is silent by design; without this a "menu did not
+-- open while walking" report has no evidence in SkuDebugLog of WHICH held key
+-- (or stale latch) held it.
+function SkuCore:MovingFlagsDesc()
+	local f = SkuCoreMovement and SkuCoreMovement.Flags
+	if not f then return "noflags" end
+	local t = {}
+	if f.IsTurningOrAutorunningOrStrafing == true then t[#t + 1] = "turnstrafe" end
+	if f.MoveForward == true then t[#t + 1] = "fwd" end
+	if f.MoveBackward == true then t[#t + 1] = "back" end
+	if f.StrafeLeft == true then t[#t + 1] = "strafeL" end
+	if f.StrafeRight == true then t[#t + 1] = "strafeR" end
+	if f.Ascend == true then t[#t + 1] = "ascend" end
+	if f.Descend == true then t[#t + 1] = "descend" end
+	if f.AutoRun == true then t[#t + 1] = "autorun(ungated)" end
+	if #t == 0 then return "none(cached isMoving stale)" end
+	return table.concat(t, "+")
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:IsPlayerMoving()
 	local rValue = false
 	if SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true or
@@ -1672,6 +1693,7 @@ function SkuCore:OnEnable()
 
 		if SkuCore.openMenuAfterCombat == true or SkuCore.openMenuAfterMoving == true then
 			if SkuCore.inCombat == false and SkuCore.isMoving == false then
+				dprint("menuMovingDefer", "release -> reopen", "afterCombat", SkuCore.openMenuAfterCombat, "afterMoving", SkuCore.openMenuAfterMoving, "path", SkuCore.openMenuAfterPath)
 				if SkuCore.openMenuAfterPath ~= "" then
 					SkuOptions:SlashFunc(SkuCore.openMenuAfterPath)
 					SkuCore.openMenuAfterPath = ""

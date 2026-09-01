@@ -1010,6 +1010,13 @@ function SkuNav:MenuBuilder(aParentEntry)
 		tNewMenuEntry.OnAction = SkuNav.WaypointSelectOnAction
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
+			--wps in current map sortet by range
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Aktuelle Karte Entfernung"]}, SkuGenericMenuItem)
+			tNewMenuEntry.id = "navWaypointCurrentMap"
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.sorting = true
+			tNewMenuEntry.BuildChildren = SkuNav.WaypointsCurrentMapBuildChildren
+
 			--recent wps 
 			if #SkuSettings:Sub("SkuNav").RecentWPs > 0 then
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Recent"]}, SkuGenericMenuItem)
@@ -1026,13 +1033,6 @@ function SkuNav:MenuBuilder(aParentEntry)
 					end
 				end
 			end
-
-			--wps in current map sortet by range
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Aktuelle Karte Entfernung"]}, SkuGenericMenuItem)
-			tNewMenuEntry.id = "navWaypointCurrentMap"
-			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.sorting = true
-			tNewMenuEntry.BuildChildren = SkuNav.WaypointsCurrentMapBuildChildren
 
 			-- all wps
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alle aktueller Kontinent"]}, SkuGenericMenuItem)

@@ -293,6 +293,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 				end
 			end
 			if SkuState:IsMoving() == true then
+				dprint("menuMovingDefer", "SlashFunc", "held", SkuCore:MovingFlagsDesc(), "path", tostring(input))
 				SkuCore:SetOpenMenuAfterMoving(true)
 				SkuCore:SetOpenMenuAfterPath(input)
 				return
@@ -1735,6 +1736,7 @@ function SkuOptions:CreateMainFrame()
 		local tIsCloseToggle = self:IsVisible() == true and (a == nil or SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_OPENMENU"))
 
 		if tIsCloseToggle ~= true and (SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true) then
+			dprint("menuMovingDefer", "OnClick-live", "held", SkuCore:MovingFlagsDesc(), "key", tostring(a))
 			SkuCore:SetOpenMenuAfterMoving(true)
 			return
 		end
@@ -2084,7 +2086,7 @@ function SkuOptions:CreateMainFrame()
 		-- moving flag either. Falling through also reaches the flag resets below, so
 		-- a successful close disarms any pending deferred reopen.
 		if tIsCloseToggle ~= true and SkuState:IsMoving() == true then
-			--dprint("SkuCore.isMoving", SkuCore.isMoving)
+			dprint("menuMovingDefer", "OnClick-cached", "held", SkuCore:MovingFlagsDesc(), "key", tostring(a))
 			SkuCore:SetOpenMenuAfterMoving(true)
 			return
 		end
@@ -3033,10 +3035,19 @@ function SkuOptions:CreateMenuFrame()
 				return
 			end
 		end
-		-- ESCAPE is a close request: never defer it while moving (mirrors the
-		-- close-toggle exemption in the OnSkuOptionsMain toggle handler). A deferred
+		-- Moving gate, NAVIGATION side. The moving defers exist to stop the menu
+		-- OPENING while a movement key is held (its override bindings would swallow
+		-- the key-up and the player would run on forever). Once the menu IS open
+		-- that ship has sailed: the bindings already own the keys, so swallowing the
+		-- keypress here stops no movement -- it only froze the open menu until the
+		-- player stood still (every arrow/letter/ENTER returned early; only ESCAPE
+		-- was exempt). Worse, it stamped openMenuAfterMoving on a menu that is
+		-- already open, which the reopen ticker then has to disarm. So gate only
+		-- when the menu is NOT open (defensive; this handler is the menu's own
+		-- secure-button click path). ESCAPE stays exempt either way -- a deferred
 		-- ESCAPE left the menu open with all its key bindings still armed.
-		if SkuState:IsMoving() == true and aKey ~= "ESCAPE" then
+		if SkuState:IsMoving() == true and aKey ~= "ESCAPE"
+			and SkuOptions:IsMenuOpen() ~= true and SkuOptions.combatMenuActive ~= true then
 			SkuCore:SetOpenMenuAfterMoving(true)
 			return
 		end
@@ -3587,6 +3598,7 @@ function SkuOptions:CreateMenuFrame()
 		-- so it must come back key-bound even while the player is still moving -- deferring
 		-- here would show the frame without any nav bindings (key-dead menu).
 		if SkuState:IsMoving() == true and SkuOptions.combatMenuRestoring ~= true then
+			dprint("menuMovingDefer", "OnShow", "held", SkuCore:MovingFlagsDesc())
 			SkuCore:SetOpenMenuAfterMoving(true)
 			return
 		end

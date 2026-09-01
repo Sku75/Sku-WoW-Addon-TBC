@@ -42,6 +42,9 @@ Changements dans Sku v43.2
             Se tourner vers la balise (T) : la rotation est désormais nettement plus précise. Avant, elle tournait si vite que le simple arrêt à la trame près pouvait coûter 20 degrés et plus de dépassement selon la fréquence d'images ; la vitesse s'adapte maintenant à l'ampleur de la rotation, et aucune rotation ne dure plus d'un quart de seconde.
             Se tourner vers la balise : en mouvement, la rotation anticipe - elle vise l'endroit où se trouvera le point de passage à la fin de la rotation. Cela met fin aux tours en rond autour des points proches, surtout connus en monture et en vol.
             Se tourner vers la balise : un appui pendant une rotation en cours est ignoré au lieu d'interrompre la rotation - appuyer plusieurs fois continue d'affiner comme avant.
+            Navigation : sous « Point de passage direct », « Carte actuelle par distance » vient désormais en premier et « Récent » en second.
+            Menu : le filtre de saisie ignore les accents - « general » trouve maintenant « Fournitures générales », et « ingenieur » trouve « Ingénieur ». Sur un clavier AZERTY, la touche ù alimente désormais aussi le filtre.
+            Français : les commentaires de points de passage existent maintenant en français - 207 textes sur 546 points de passage, traduits depuis l'original allemand.
 
         Corrections
             Se tourner vers la balise : après des rotations déclenchées coup sur coup, la vitesse de rotation des touches de caméra pouvait rester quadruplée en permanence.
@@ -67,6 +70,13 @@ Changements dans Sku v43.2
             Treize quêtes de dialogue (dont les anciennes quêtes de sorts de prêtre) n'avaient aucun point de remise dans les données - l'entrée Livraison mène désormais au PNJ que nomme le texte de la quête.
             Menu de quête : environ 300 quêtes dont le donneur, la cible ou la remise se trouve dans un donjon affichaient des entrées vides - elles mènent désormais à l'entrée du donjon.
             77 quêtes à objectif de terrain (explorer X, utiliser Y à l'endroit Z) sans aucune donnée ont désormais une vraie cible de quête - certains lieux proviennent de sources web : les retours sur leur exactitude sont bienvenus.
+            Menu : pendant la marche, un menu ouvert était comme mort - toutes les touches sauf Échap étaient avalées jusqu'à l'arrêt complet.
+            Barres d'action : Maj+Bas ne lisait plus l'infobulle du sort dans le menu d'affectation.
+            Menu de quête : 174 quêtes dont l'objectif est un lieu (explorer X, utiliser Y sur place) ne répondaient que « Vide » sous « Objectif de quête ».
+            Français : les commentaires de points de passage étaient totalement muets depuis la v42.11 - y compris les avertissements comme « attention, ravin » ou « attendre le zeppelin ici ».
+            Français : 22 des 94 noms de ressources du scanner de minicarte étaient erronés, ces gisements n'étaient donc jamais annoncés.
+            Français : dans la Caverne des Brumes, la liste des points de passage restait vide.
+            Menu : le filtre de saisie interprétait le texte tapé comme un motif de recherche - une saisie comme « 50% » ou « (long » ne trouvait rien ou échouait.
 
     Nage et vol : le verrouillage de l'inclinaison met fin à la plongée involontaire
         Simple : En nageant ou en volant, chaque virage automatique vers la balise tirait un peu
@@ -886,6 +896,158 @@ Changements dans Sku v43.2
             gisement est considéré comme disparu. Dans le doute, rien n'est jamais ignoré :
             un gisement conservé à tort coûte quelques pas, un gisement ignoré à tort ne se
             remarque pas du tout.
+
+    Le menu reste utilisable pendant la marche
+        Simple : Si vous ouvriez le menu en marchant, il s'affichait et annonçait « menu
+            ouvert », mais plus aucune touche ne faisait quoi que ce soit - ni flèche, ni
+            lettre, ni Entrée. Seule Échap passait. Il ne redevenait utilisable qu'une fois
+            à l'arrêt. C'est corrigé : un menu ouvert accepte désormais les touches que
+            vous marchiez, couriez ou soyez en course automatique.
+        Technique : Il y avait deux verrous de mouvement, pas un. Le premier empêche
+            l'OUVERTURE tant qu'une touche de déplacement est maintenue - il reste, et il
+            est nécessaire : les raccourcis du menu avaleraient le relâchement de la touche
+            et vous courriez sans fin. La course automatique en est exemptée depuis la
+            v42.00 (son propre indicateur AutoRun, que IsPlayerMoving ne lit délibérément
+            pas). Le second se trouvait dans le gestionnaire de touches du menu lui-même
+            et, tant qu'un verrou de mouvement était posé, laissait expirer chaque appui
+            sauf Échap. Ce second verrou n'apporte rien : une fois le menu ouvert, les
+            raccourcis lui appartiennent déjà, écarter l'appui n'arrête aucun mouvement -
+            il ne fait que rendre le menu sourd, et marque de surcroît « ouvrir plus tard »
+            sur un menu déjà ouvert, que la boucle de réouverture doit ensuite défaire. Il
+            ne s'applique plus que si le menu n'est PAS ouvert. Les quatre verrous
+            d'ouverture restants écrivent en outre une ligne dans le journal de débogage
+            nommant la touche de déplacement qui les retient - auparavant ils étaient
+            muets, et un rapport « le menu ne s'ouvrait pas en marchant » ne laissait
+            aucune trace.
+
+    Navigation : « Carte actuelle par distance » vient désormais en premier
+        Simple : Sous « Point de passage direct », « Récent » était en première position et
+            « Carte actuelle par distance » en deuxième. Les deux sont permutés - la liste
+            des points de passage de la zone actuelle est l'entrée la plus fréquente, et
+            elle se trouve maintenant directement sous le curseur.
+        Technique : Uniquement l'ordre des injections dans SkuNav:MenuBuilder. « Récent »
+            reste conditionné à une liste non vide de points de passage récents ; si elle
+            est vide, « Carte actuelle par distance » est de toute façon en tête, comme
+            avant.
+
+    Le filtre de saisie ignore les accents
+        Simple : Dans chaque liste que l'on peut restreindre en tapant, les lettres
+            accentuées étaient traitées comme des caractères d'une autre langue.
+            « general » ne trouvait rien alors que « Fournitures générales » était là, et
+            « ingenieur » ne trouvait pas « Ingénieur » - alors que « ing » y parvenait.
+            C'est maintenant la lettre qui compte, pas l'accent. De plus, la touche ù d'un
+            clavier AZERTY alimente désormais aussi le filtre : c'est la seule lettre
+            accentuée que ce clavier livre comme véritable événement de touche.
+        Technique : string.lower en Lua travaille octet par octet et ne transpose que A-Z ;
+            il ne replie donc jamais un caractère accentué, d'aucun côté de la comparaison.
+            SkuMenuFilterMatch (utilisé par ApplyFilter et JumpToFilterMatch) et
+            SettingsSearchMatch replient désormais le nom de l'entrée et le texte tapé en
+            ASCII sans accents avant de comparer ; seules les séquences de 2 octets du
+            supplément Latin-1 et du latin étendu A sont touchées, l'ASCII pur emprunte une
+            voie rapide. Strictement plus permissif qu'avant : ce qui correspondait
+            correspond toujours. Les deux appels string.find passent en outre plain=true -
+            le texte tapé était lu comme un motif Lua, si bien qu'une saisie comme « 50% »
+            ou « (long » ne trouvait rien ou levait une erreur.
+            Le repli des accents vient de la PR #9 (ZenqFR), la touche ù de la PR #13
+            (Naxedim).
+
+    Barres d'action : l'infobulle du sort est de nouveau lue
+        Simple : Dans le menu des barres d'action (Maj+F11), Maj+Bas sur un sort de la
+            liste d'affectation ne lisait plus rien du tout. L'infobulle est de retour - de
+            même que pour le contenu actuel d'une touche et pour les deux lectures de
+            capacités du familier voisines, qui présentaient la même faiblesse.
+        Technique : Deux causes indépendantes, toutes deux traitées car aucune ne pouvait
+            être écartée à la seule lecture du code. D'abord, SkuScanningTooltip est créé
+            une fois à la connexion, sans modèle, et partagé par tous les modules ; celui
+            qui l'a utilisé en dernier peut le laisser sans propriétaire exploitable, après
+            quoi chaque appel Set* ne remplit plus rien - en silence, sans erreur. Il est
+            désormais réapproprié juste avant d'être rempli. Ensuite, SetSpellByID recevait
+            la troisième valeur de retour de GetSpellBookItemName, qui suit sur ce client
+            la signature Classic et ne renvoie que (name, rank) - l'identifiant est un
+            ajout retail et valait nil. L'identifiant provient maintenant de
+            GetSpellBookItemInfo, et l'infobulle est remplie par SetSpellBookItem, qui n'a
+            besoin d'aucun identifiant. La lecture est en outre encapsulée dans un pcall,
+            puisqu'elle se déclenche à chaque déplacement du curseur. Issu de la PR #10
+            (ZenqFR).
+
+    Un objectif de quête pour les quêtes dont le but est un lieu
+        Simple : 174 quêtes qui demandent d'explorer un endroit ou d'y utiliser quelque
+            chose ne répondaient que « Vide » sous « Objectif de quête ». L'entrée mène
+            désormais au point de passage de route le plus proche de ce lieu.
+        Technique : GetTriggerEndWps composait un NOM de point de passage
+            (« <quête>;<zone>;<objectif>;<x>;<y> ») et le résolvait via la recherche par
+            nom exact dans le cache des points de passage. Or rien ne génère de point de
+            passage sous ce nom - contrairement aux apparitions de créatures et d'objets -
+            il ne trouvait donc quelque chose que si quelqu'un en avait écrit un à la main
+            dans les données de route : il en existe exactement un (quête 10211,
+            Shattrath). Le nom composé reste utilisé lorsqu'il se résout ; sinon la
+            géométrie prend le relais - coordonnées de carte vers coordonnées monde, puis
+            le point de passage de ROUTE réel le plus proche. GetNearestWpToCoords2 a reçu
+            pour cela un filtre typeId optionnel, afin que le repli n'atterrisse pas parmi
+            les quelque 145 000 points d'apparition générés, plus une protection contre un
+            seau de continent manquant, où pairs(nil) levait une erreur. Toutes les paires
+            de coordonnées de chaque zone sont désormais lues au lieu de la première seule,
+            et le résultat est mémorisé par génération du cache.
+
+    Français : les commentaires de points de passage reparlent - et en français
+        Simple : Les commentaires attachés aux points de passage - dont ceux qui touchent à
+            la sécurité, comme « attention, à partir d'ici la route longe le bord d'un
+            ravin », « attendre le zeppelin ici » ou « ce PNJ se déplace » - étaient
+            totalement muets sur un client français depuis la v42.11. Ils reparlent, et ils
+            parlent désormais français : 207 textes répartis sur 546 points de passage.
+        Technique : Les données de route ne portent lComments que pour enUS et deDE
+            (environ 296 points de passage). SkuNav:PlayWpComments lisait
+            comments[Sku.Loc] sans repli. Jusqu'à la v42.11, Sku.Loc valait « enUS » sur un
+            client français faute de locale frFR, et l'on entendait les textes anglais ;
+            depuis que locales/frFR.lua est livré, Sku.Loc vaut « frFR », la recherche
+            renvoie nil et la fonction sort sans un mot. Nouveauté : Sku.locList
+            (SkuUtil.lua), le pendant liste de Sku.locStr, renvoie la première liste NON
+            VIDE parmi Sku.Loc / enUS / deDE. « Non vide » est déterminant, car SkuMM.lua
+            matérialise un comments[Sku.Loc] vide sur chaque point de passage qu'il dessine
+            - une simple chaîne de « ou » s'y accrocherait. La traduction est faite depuis
+            l'original ALLEMAND, non via l'anglais : l'anglais avait perdu du détail sur
+            précisément ces textes de sécurité, et plusieurs entrées anglaises sont vides,
+            dont l'avertissement sur les ascenseurs mortels qui figure sur huit points de
+            passage.
+
+    Français : noms de ressources et la Caverne des Brumes
+        Simple : Deux défauts qui ne touchaient qu'un client français. D'abord, 22 des 94
+            noms de ressources du scanner de minicarte étaient erronés - le scanner les
+            compare à l'infobulle du jeu, un nom faux signifie donc que ce gisement n'est
+            jamais annoncé, sans message d'erreur. Ensuite, dans la Caverne des Brumes la
+            liste des points de passage restait vide, alors qu'une route lancée à
+            l'extérieur continuait de fonctionner.
+        Technique : Chacun des 22 noms a été tranché à l'aide d'une source indépendante des
+            deux addons : 19 par les tables frFR de SkuDB (importées des chaînes Blizzard
+            de Questie), trois par l'API d'infobulle de Wowhead. Pour la caverne, Geo.lua
+            compare GetMinimapZoneText() mot pour mot à L["Caverne des Brumes"] ; la locale
+            frFR générée portait « Grotte des Brumes », une traduction libre - le client
+            dit « Caverne des Brumes ». La comparaison était donc morte, uiMap restait sur
+            le continent, GetAreaIdFromUiMapId répondait -1 et GetCurrentAreaId nil, si
+            bien que ListWaypoints2 abandonnait. La valeur a été relevée avec /szp dans la
+            zone, non traduite, et figure désormais tant dans le fichier généré que dans le
+            magasin TSV à partir duquel il est assemblé - avec la note interdisant de la
+            traduire librement. Issu des PR #14 et #16 (Naxedim).
+
+    Tourner vers la balise : plus précis, et avec anticipation
+        Simple : La rotation automatique vers la balise (T) tombe désormais bien plus
+            juste. Auparavant elle allait si vite que le seul arrêt à la frontière d'une
+            image pouvait coûter vingt degrés de dépassement ou plus, selon la fréquence
+            d'images. La vitesse suit maintenant l'ampleur de la rotation, et aucune
+            rotation ne dure plus d'un quart de seconde. En mouvement, elle anticipe
+            également : elle vise là où se trouvera le point de passage à la fin de la
+            rotation - ce qui met fin aux tours en rond autour des points de passage
+            proches, surtout monté et en vol. Et un appui pendant une rotation en cours est
+            écarté au lieu d'interrompre celle-ci en plein milieu ; les appuis répétés
+            habituels affinent toujours comme avant.
+        Technique : Quatre éléments, testés ensemble. Le calage sur la caméra par défaut
+            avant la rotation reste - il porte le lacet, sans lui l'angle est faux. La
+            vitesse de rotation est plafonnée d'après l'angle restant au lieu de tourner à
+            plein régime. L'anticipation calcule, à partir de la vitesse actuelle et de la
+            durée prévue de la rotation, où sera le point de passage à la fin. S'y ajoute
+            une protection contre le défaut par lequel, après des rotations déclenchées
+            coup sur coup, la vitesse de rotation des touches de caméra pouvait rester
+            quadruplée définitivement.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

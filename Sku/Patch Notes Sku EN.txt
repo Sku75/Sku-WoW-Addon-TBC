@@ -39,6 +39,9 @@ Changes in Sku v43.2
             Turn towards beacon (T): the turn now lands far more accurately. It used to run so fast that merely stopping it frame-exactly could cost 20 degrees and more of overshoot depending on frame rate; the speed now scales with the size of the turn, and no turn takes longer than a quarter of a second.
             Turn towards beacon: while moving, the turn leads the target - it aims where the waypoint will be when the turn finishes. This ends the circling around close waypoints, known above all from riding and flying.
             Turn towards beacon: a press during a running turn is discarded instead of cutting the turn short - pressing repeatedly keeps refining as before.
+            Navigation: under "Direct waypoint", "Current map by distance" now comes first and "Recent" second.
+            Menu: the type-ahead filter ignores accents - on a French client "general" now finds "Fournitures generales", and "o" finds an entry starting with "O". On a French AZERTY keyboard the u key now types into the filter too.
+            French: the waypoint comments are now available in French - 207 texts across 546 waypoints, translated from the German original.
 
         Bugfixes
             Turn towards beacon: after turns triggered in quick succession, the camera keys' turn speed could stay permanently quadrupled.
@@ -64,6 +67,13 @@ Changes in Sku v43.2
             Thirteen talk-to quests (among them the old priest spell quests) shipped without a turn-in in the data - the Delivery entry now leads to the NPC the quest text names.
             Quest menu: about 300 quests whose quest giver, target or turn-in sits inside a dungeon showed empty entries - they now lead to the dungeon entrance.
             77 quests with a field objective (explore X, use Y at place Z) that had no data at all now have a real quest target - some locations come from web sources: reports on whether they are right are welcome.
+            Menu: while you were walking, an open menu was as good as dead - every key except Escape was swallowed until you stood still.
+            Action bars: Shift-Down no longer read the spell tooltip in the assignment menu.
+            Quest menu: 174 quests whose objective is a place (explore X, use Y there) answered nothing but "Empty" under "Quest target".
+            French: the waypoint comments had been completely silent since v42.11 - including warnings such as "careful, ravine" or "wait here for the zeppelin".
+            French: 22 of the 94 minimap scanner resource names were wrong, so those nodes were never announced.
+            French: inside the Cave of the Mists the waypoint list stayed empty.
+            Menu: the type-ahead filter treated what you typed as a search pattern - an input like "50%" or "(long" found nothing or broke off.
 
     Swimming and flying: the pitch lock ends the unwanted diving
         Simple: While swimming or flying, every automatic turn towards the beacon pulled you a
@@ -794,6 +804,145 @@ Changes in Sku v43.2
             a different blip. Only after several unsuccessful scans in range does a node
             count as gone. When in doubt it never skips: a node wrongly kept costs a few
             steps, a node wrongly skipped is never noticed at all.
+
+    The menu stays usable while you walk
+        Simple: If you opened the menu while walking, it came up and said "menu opened",
+            but no key did anything any more - no arrow, no letter, no Enter. Only Escape
+            got through. It only became usable once you stood still. That is fixed: an
+            open menu now accepts keys whether you are walking, running or auto-running.
+        Technically: There were two movement gates, not one. The first prevents the menu
+            from OPENING while a movement key is held down - that one stays, and it is
+            needed: the menu's bindings would swallow the key-up and you would run on
+            forever. Auto-run has been exempt from it since v42.00 (its own AutoRun flag,
+            which IsPlayerMoving deliberately does not read). The second sat in the menu's
+            own key handler and, as long as a movement latch was set, let every keypress
+            except Escape expire. That second gate buys nothing: once the menu is open the
+            bindings already own the keys, so discarding the press stops no movement - it
+            only deadens the menu, and on top of that stamps "open later" on a menu that is
+            already open, which the reopen loop then has to clear again. It now applies
+            only when the menu is NOT open. The four remaining open-gates also write a line
+            to the debug log naming the movement key that is holding them - before, they
+            were silent, and a report of "the menu would not open while walking" left no
+            trace at all.
+
+    Navigation: "Current map by distance" now comes first
+        Simple: Under "Direct waypoint", "Recent" was first and "Current map by distance"
+            second. The two are swapped - the list of waypoints in the current zone is the
+            more common way in, and it now sits directly under the cursor.
+        Technically: Purely the order of the injections in SkuNav:MenuBuilder. "Recent"
+            remains tied to a non-empty list of recently used waypoints; when that list is
+            empty, "Current map by distance" is first anyway, as it was before.
+
+    The type-ahead filter ignores accents
+        Simple: In every list you can narrow down by typing, accented letters were treated
+            as characters of a different language. On a French client "general" found
+            nothing even though "Fournitures generales" was right there, and "ingenieur"
+            did not find "Ingenieur" - while "ing" did. German was hit too: an entry
+            starting with a capital umlaut could never be reached through the filter. Now
+            the letter counts, not the accent. On top of that, the u key on a French AZERTY
+            keyboard now types into the filter as well - it is the only accented letter
+            that keyboard delivers as a real key event.
+        Technically: string.lower in Lua is byte-wise and maps A-Z and nothing else, so it
+            never folds an accented character on either side of the comparison.
+            SkuMenuFilterMatch (used by both ApplyFilter and JumpToFilterMatch) and
+            SettingsSearchMatch now fold the entry name and the typed query to unaccented
+            ASCII before comparing; only 2-byte Latin-1 Supplement and Latin Extended-A
+            sequences are touched, and pure ASCII takes a fast path. Strictly more
+            permissive than before: nothing that matched stops matching. The two
+            string.find calls also pass plain=true now - the typed query was being read as
+            a Lua pattern, so an input like "50%" or "(long" found nothing or threw.
+            The accent folding comes from PR #9 (ZenqFR), the u key from PR #13 (Naxedim).
+
+    Action bars: the spell tooltip is read out again
+        Simple: In the action bar menu (Shift-F11), Shift-Down on a spell in the assignment
+            list read out nothing at all. The tooltip is back - as it is for a key's current
+            content and for the two pet ability reads next to it, which had the same
+            weakness.
+        Technically: Two independent causes, both addressed because neither could be ruled
+            out from the code alone. First, SkuScanningTooltip is created once at login with
+            no template and shared by every module; whatever used it last can leave it
+            without a usable owner, after which every Set* call populates nothing -
+            silently, with no error. It is now re-owned immediately before being populated.
+            Second, SetSpellByID was handed the third return of GetSpellBookItemName, which
+            on this client follows the Classic signature and returns only (name, rank) - the
+            id is a retail addition and was nil. The id now comes from GetSpellBookItemInfo,
+            and the tooltip is populated with SetSpellBookItem, which needs no id at all.
+            The read is also pcall'd, since it runs on every cursor move. From PR #10
+            (ZenqFR).
+
+    A quest target for quests whose objective is a place
+        Simple: 174 quests that ask you to explore a spot or use something there answered
+            nothing but "Empty" under "Quest target". The entry now leads to the nearest
+            route waypoint at that place.
+        Technically: GetTriggerEndWps composed a waypoint NAME
+            ("<quest>;<zone>;<quest target>;<x>;<y>") and resolved it through the
+            exact-name lookup in the waypoint cache. But nothing generates a waypoint under
+            that name - unlike creature and object spawns - so it only ever hit if someone
+            had authored one by hand into the route data: exactly one exists (quest 10211,
+            Shattrath). The composed name is still used whenever it resolves; otherwise
+            geometry takes over - map coordinates to world coordinates, then the nearest
+            real ROUTE waypoint. GetNearestWpToCoords2 gained an optional typeId filter for
+            that, so the fallback does not land in the ~145,000 generated spawn points,
+            plus a guard for a missing continent bucket where pairs(nil) threw. Every
+            coordinate pair of every zone is read now instead of only the first, and the
+            result is memoised per waypoint-cache generation.
+
+    French: the waypoint comments speak again - and now in French
+        Simple: The comments on waypoints - among them the safety-critical ones such as
+            "careful, from here the route runs along the edge of a gorge", "wait here for
+            the zeppelin" or "this NPC moves" - had been completely silent on a French
+            client since v42.11. They speak again, and they now speak French: 207 texts
+            sitting on 546 waypoints.
+        Technically: The route data carries lComments for enUS and deDE only (~296
+            waypoints). SkuNav:PlayWpComments read comments[Sku.Loc] with no fallback.
+            Until v42.11 Sku.Loc was "enUS" on a French client because no frFR locale
+            existed, and you heard the English texts; since locales/frFR.lua ships, Sku.Loc
+            is "frFR", the lookup is nil, and the function returns without a word. New
+            Sku.locList (SkuUtil.lua), the list counterpart of Sku.locStr, returns the
+            first NON-EMPTY list among Sku.Loc / enUS / deDE. Non-empty matters, because
+            SkuMM.lua materialises an empty comments[Sku.Loc] on every waypoint it draws -
+            a plain or chain would latch onto that. The translation is made from the GERMAN
+            original, not via the English: the English lost detail on exactly these safety
+            texts (the gorge warning without "you walk on the edge" and without the
+            direction of travel, "extremely narrow bridge with a ravine" reduced to
+            "extremely narrow bridge"), and several English entries are empty, including
+            the lethal-elevator warning that sits on eight waypoints.
+
+    French: resource names and the Cave of the Mists
+        Simple: Two faults that hit a French client only. First, 22 of the 94 minimap
+            scanner resource names were wrong - the scanner matches them against the game's
+            tooltip, so a wrong name means that node is never announced, with no error.
+            Second, inside the Cave of the Mists the waypoint list stayed empty, while a
+            route started outside kept running.
+        Technically: Each of the 22 names was adjudicated against a source independent of
+            both addons: 19 through SkuDB's own frFR tables (imported from Questie's
+            Blizzard strings), three through Wowhead's tooltip API. For the cave, Geo.lua
+            compares GetMinimapZoneText() verbatim against L["Cave of the Mists"]; the
+            generated frFR locale held "Grotte des Brumes", a free translation - the client
+            says "Caverne des Brumes". The compare was therefore dead, uiMap stayed on the
+            continent, GetAreaIdFromUiMapId answered -1 and GetCurrentAreaId nil, so
+            ListWaypoints2 bailed out. The value was read with /szp in the zone, not
+            translated, and now sits both in the generated file and in the TSV store it is
+            assembled from - together with the note that it must not be translated freely.
+            From PRs #14 and #16 (Naxedim).
+
+    Turn to beacon: more accurate, and with lead
+        Simple: The automatic turn to the beacon (T) now lands much more accurately. It
+            used to run so fast that stopping it on a frame boundary alone could cost
+            twenty degrees of overshoot or more, depending on your frame rate. The speed
+            now follows the size of the turn, and no turn takes longer than a quarter
+            second. While you are moving it also leads: it aims at where the waypoint will
+            be when the turn ends - which ends the circling around nearby waypoints that
+            showed up mostly when mounted and in flight. And a press during a turn that is
+            already running is discarded instead of aborting that turn halfway; pressing
+            repeatedly still refines as it always did.
+        Technically: Four parts, tested together. The snap to the default camera before the
+            turn stays - it is load-bearing for the yaw, without it the angle is wrong. The
+            turn speed is capped from the remaining angle instead of running flat out. The
+            lead computes from the current speed and the expected duration of the turn
+            where the waypoint will be at the end. Plus a guard against the fault where,
+            after turns triggered in quick succession, the camera keys' turn speed could
+            stay quadrupled for good.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

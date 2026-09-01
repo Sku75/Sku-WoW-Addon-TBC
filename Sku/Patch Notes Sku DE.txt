@@ -39,6 +39,9 @@ Aenderungen in Sku v43.2
             Zum Beacon drehen (T): die Drehung sitzt jetzt deutlich genauer. Vorher lief sie so schnell, dass allein das framegenaue Stoppen je nach Bildrate 20 Grad und mehr Ueberdreh kosten konnte; jetzt richtet sich das Tempo nach der Drehgroesse, und keine Drehung dauert laenger als eine Viertelsekunde.
             Zum Beacon drehen: in Bewegung wird vorgehalten - gezielt wird dorthin, wo der Wegpunkt am Ende der Drehung liegen wird. Das beendet das Im-Kreis-Laufen um nahe Wegpunkte, das vor allem beritten und im Flug auftrat.
             Zum Beacon drehen: ein Druck waehrend einer laufenden Drehung wird verworfen, statt die Drehung mittendrin abzubrechen - gewohntes Mehrfachdruecken verfeinert weiter wie bisher.
+            Navigation: unter "Direkter Wegpunkt" steht "Aktuelle Karte Entfernung" jetzt an erster Stelle und "Letzte" dahinter.
+            Menue: der Tippfilter ignoriert Akzente - auf einem franzoesischen Client findet "general" jetzt "Fournitures generales", und "oe" findet einen Eintrag, der mit "Oe" beginnt. Auf einer franzoesischen AZERTY-Tastatur tippt die Taste ù jetzt auch in den Filter.
+            Franzoesisch: die Wegpunktkommentare gibt es jetzt auf Franzoesisch - 207 Texte auf 546 Wegpunkten, aus dem deutschen Original uebersetzt.
 
         Fehlerbehebungen
             Zum Beacon drehen: nach schnell hintereinander ausgeloesten Drehungen konnte die Drehgeschwindigkeit der Kamera-Tasten dauerhaft vervierfacht haengenbleiben.
@@ -64,6 +67,13 @@ Aenderungen in Sku v43.2
             Dreizehn Sprich-mit-Quests (u.a. die alten Priester-Zauberquests) standen ohne Abgabepunkt in den Daten - jetzt fuehrt die Abgabe zu dem NPC, den der Questtext nennt.
             Questmenue: rund 300 Quests, deren Questgeber, Ziel oder Abgabe in einem Dungeon liegt, zeigten leere Eintraege - jetzt fuehren sie zum Dungeoneingang.
             77 Quests mit einem Ziel im Feld (erkunde X, benutze Y an Ort Z), zu denen keine Daten existierten, haben jetzt ein echtes Questziel - ein Teil der Orte stammt aus Webquellen: Rueckmeldungen, ob sie stimmen, sind willkommen.
+            Menue: waehrend man ging, war das geoeffnete Menue wie tot - jede Taste ausser Escape wurde verschluckt, bis man stehen blieb.
+            Aktionsleisten: Umschalt+Ab las im Zuweisungsmenue den Zauber-Tooltip nicht mehr vor.
+            Questmenue: 174 Quests, deren Ziel ein Ort ist (erkunde X, benutze Y dort), meldeten unter "Questziel" nur "Leer".
+            Franzoesisch: die Wegpunktkommentare blieben seit v42.11 vollstaendig stumm - auch die Warnungen wie "Vorsicht, Abgrund" oder "hier auf den Zeppelin warten".
+            Franzoesisch: 22 der 94 Ressourcennamen des Minikartenscanners waren falsch, diese Vorkommen wurden nie angesagt.
+            Franzoesisch: in der Hoehle der Nebel blieb die Wegpunktliste leer.
+            Menue: der Tippfilter fasste das Getippte als Suchmuster auf - eine Eingabe wie "50%" oder "(lang" fand nichts oder brach ab.
 
     Schwimmen und Fliegen: die Neigungssperre beendet das ungewollte Abtauchen
         Einfach: Beim Schwimmen oder Fliegen zog jede automatische Drehung zum Funkfeuer ein
@@ -858,6 +868,159 @@ Aenderungen in Sku v43.2
             erfolglosen Scans in Reichweite gilt ein Vorkommen als weg. Im Zweifel wird
             nie uebersprungen: ein zu Unrecht behaltenes Vorkommen kostet ein paar
             Schritte, ein zu Unrecht uebersprungenes faellt gar nicht auf.
+
+    Das Menue bleibt beim Gehen bedienbar
+        Einfach: Oeffnete man das Menue waehrend man lief, stand es zwar da und sagte
+            "Menue geoeffnet", aber keine Taste tat noch etwas - keine Pfeiltaste, kein
+            Buchstabe, kein Eingabe. Nur Escape kam durch. Bedienbar wurde es erst, wenn
+            man stehen blieb. Das ist behoben: ein offenes Menue nimmt Tasten jetzt
+            entgegen, egal ob man geht, laeuft oder autolaeuft.
+        Technisch: Es gab zwei Bewegungssperren, nicht eine. Die erste verhindert das
+            OEFFNEN, waehrend eine Bewegungstaste gedrueckt gehalten wird - die bleibt,
+            sie ist noetig: die Tastenbelegungen des Menues wuerden das Loslassen
+            schlucken und man liefe endlos weiter. Autolaufen ist davon seit v42.00
+            ausgenommen (eigenes Flag AutoRun, das IsPlayerMoving bewusst nicht liest).
+            Die zweite sass im Tastenhandler des Menues selbst und liess, solange eine
+            Bewegungssperre stand, jeden Tastendruck ausser Escape verfallen. Diese
+            zweite Sperre kauft nichts: ist das Menue erst offen, gehoeren ihm die Tasten
+            ohnehin schon, das Verwerfen stoppt keine Bewegung - es macht nur das Menue
+            taub und setzt zu allem Ueberfluss das Merkzeichen "spaeter oeffnen" auf ein
+            laengst offenes Menue, das die Wiederoeffnungs-Schleife dann wieder abraeumen
+            muss. Sie greift jetzt nur noch, wenn das Menue NICHT offen ist. Die vier
+            verbliebenen Oeffnungssperren schreiben ausserdem eine Zeile ins Debug-Log,
+            die die haltende Bewegungstaste beim Namen nennt - vorher waren sie stumm,
+            und ein Bericht "das Menue ging beim Laufen nicht auf" hatte keinerlei Spur.
+
+    Navigation: "Aktuelle Karte Entfernung" steht jetzt vorn
+        Einfach: Unter "Direkter Wegpunkt" stand "Letzte" an erster und "Aktuelle Karte
+            Entfernung" an zweiter Stelle. Die beiden sind getauscht - die Liste der
+            Wegpunkte in der aktuellen Zone ist der haeufigere Einstieg und liegt jetzt
+            direkt unter dem Cursor.
+        Technisch: Reine Reihenfolge der Injektionen in SkuNav:MenuBuilder. "Letzte"
+            bleibt an eine nicht leere Liste zuletzt benutzter Wegpunkte gebunden; ist
+            sie leer, steht "Aktuelle Karte Entfernung" ohnehin an erster Stelle, wie
+            vorher auch.
+
+    Der Tippfilter ignoriert Akzente
+        Einfach: In jeder Liste, die sich durch Tippen einengen laesst, wurden Akzente
+            wie Zeichen einer anderen Sprache behandelt. Auf einem franzoesischen Client
+            fand "general" nichts, obwohl "Fournitures generales" dastand, und
+            "ingenieur" fand "Ingenieur" nicht - "ing" dagegen schon. Das traf auch
+            Deutsch: ein Eintrag, der mit einem grossen Umlaut beginnt, war ueber den
+            Filter nie erreichbar. Jetzt zaehlt der Buchstabe, nicht der Akzent. Dazu
+            tippt auf einer franzoesischen AZERTY-Tastatur die Taste ù jetzt ebenfalls in
+            den Filter - sie ist der einzige akzentuierte Buchstabe, den diese Tastatur
+            als echtes Tastenereignis liefert.
+        Technisch: string.lower ist in Lua bytweise und bildet ausschliesslich A-Z ab, es
+            faltet also auf keiner Seite des Vergleichs je ein akzentuiertes Zeichen.
+            SkuMenuFilterMatch (benutzt von ApplyFilter und JumpToFilterMatch) und
+            SettingsSearchMatch falten Eintragsnamen und Suchtext jetzt vorher auf
+            akzentfreies ASCII; nur 2-Byte-Sequenzen aus Latin-1 Supplement und Latin
+            Extended-A werden angefasst, reines ASCII nimmt den schnellen Weg. Streng
+            durchlaessiger als vorher: was frueher passte, passt weiterhin. Ausserdem
+            laufen die beiden string.find jetzt mit plain=true - der Suchtext wurde als
+            Lua-Suchmuster gelesen, weshalb eine Eingabe wie "50%" oder "(lang" nichts
+            fand oder mit einem Fehler abbrach.
+            Die Akzentfaltung stammt aus PR #9 (ZenqFR), die ù-Taste aus PR #13
+            (Naxedim).
+
+    Aktionsleisten: der Zauber-Tooltip wird wieder vorgelesen
+        Einfach: Im Aktionsleisten-Menue (Umschalt+F11) las Umschalt+Ab auf einem Zauber
+            der Zuweisungsliste gar nichts mehr vor. Jetzt kommt der Tooltip wieder -
+            ebenso bei der aktuellen Belegung einer Taste und bei den beiden
+            Begleiter-Faehigkeiten daneben, die dieselbe Schwaeche hatten.
+        Technisch: Zwei unabhaengige Ursachen, beide behoben, weil sich aus dem Code
+            keine ausschliessen liess. Erstens wird SkuScanningTooltip einmalig beim
+            Login ohne Vorlage erzeugt und von jedem Modul geteilt; wer ihn zuletzt
+            benutzt hat, kann ihn ohne brauchbaren Besitzer zuruecklassen, und danach
+            fuellt jeder Set*-Aufruf nichts mehr - lautlos, ohne Fehler. Er wird jetzt
+            unmittelbar vor dem Fuellen neu in Besitz genommen. Zweitens bekam
+            SetSpellByID den dritten Rueckgabewert von GetSpellBookItemName, der auf
+            diesem Client der Classic-Signatur folgt und nur (name, rank) liefert - die
+            Id ist eine Retail-Ergaenzung und war nil. Die Id kommt jetzt aus
+            GetSpellBookItemInfo, gefuellt wird mit SetSpellBookItem, das gar keine Id
+            braucht. Der Lesevorgang laeuft zusaetzlich in einem pcall, weil er bei jeder
+            Cursorbewegung ausgeloest wird. Aus PR #10 (ZenqFR).
+
+    Questziel fuer Quests, deren Ziel ein Ort ist
+        Einfach: 174 Quests, bei denen man einen Ort erkunden oder dort etwas benutzen
+            soll, antworteten unter "Questziel" nur "Leer". Jetzt fuehrt der Eintrag zum
+            naechstgelegenen Routenwegpunkt an diesem Ort.
+        Technisch: GetTriggerEndWps setzte einen Wegpunkt-NAMEN zusammen
+            ("<Quest>;<Zone>;<Questziel>;<x>;<y>") und liess ihn ueber die exakte
+            Namenssuche im Wegpunkt-Cache aufloesen. Einen Wegpunkt unter diesem Namen
+            erzeugt aber nichts - anders als bei Kreaturen- und Objektvorkommen -, er
+            traf also nur, wenn jemand ihn von Hand in die Routendaten geschrieben hatte:
+            genau einer existiert (Quest 10211, Shattrath). Der zusammengesetzte Name
+            wird weiter benutzt, wenn er aufloest; sonst uebernimmt jetzt die Geometrie -
+            Kartenkoordinaten in Weltkoordinaten, dann der naechste echte ROUTEN-Wegpunkt.
+            GetNearestWpToCoords2 bekam dafuer einen optionalen typeId-Filter, damit die
+            Ersatzsuche nicht in den rund 145000 erzeugten Vorkommenspunkten landet, und
+            eine Absicherung gegen einen fehlenden Kontinent-Eimer, wo pairs(nil) warf.
+            Ausserdem werden jetzt alle Koordinatenpaare jeder Zone gelesen statt nur des
+            ersten, und das Ergebnis wird pro Cache-Generation gemerkt.
+
+    Franzoesisch: die Wegpunktkommentare sprechen wieder - und jetzt franzoesisch
+        Einfach: Die Kommentare an Wegpunkten - darunter die sicherheitsrelevanten wie
+            "Vorsicht, ab hier fuehrt die Route am Rand einer Schlucht entlang", "hier auf
+            den Zeppelin warten" oder "dieser NPC bewegt sich" - blieben auf einem
+            franzoesischen Client seit v42.11 restlos stumm. Sie sprechen wieder, und sie
+            sprechen jetzt Franzoesisch: 207 Texte, die auf 546 Wegpunkten sitzen.
+        Technisch: Die Routendaten fuehren lComments nur fuer enUS und deDE (rund 296
+            Wegpunkte). SkuNav:PlayWpComments las comments[Sku.Loc] ohne Rueckfall. Bis
+            v42.11 war Sku.Loc auf einem franzoesischen Client "enUS", weil es keine
+            frFR-Locale gab, und man hoerte die englischen Texte; seit locales/frFR.lua
+            existiert, ist Sku.Loc "frFR", die Suche liefert nil, und die Funktion kehrt
+            wortlos zurueck. Neu ist Sku.locList (SkuUtil.lua), das Listengegenstueck zu
+            Sku.locStr: es liefert die erste NICHT LEERE Liste aus Sku.Loc / enUS / deDE.
+            "Nicht leer" ist entscheidend, weil SkuMM.lua an jedem gezeichneten Wegpunkt
+            ein leeres comments[Sku.Loc] anlegt - eine einfache oder-Kette bliebe daran
+            haengen. Die Uebersetzung ist aus dem DEUTSCHEN Original gemacht, nicht ueber
+            das Englische: das Englische hat auf genau diesen Sicherheitstexten Details
+            verloren (die Schlucht-Warnung ohne "du gehst am Rand" und ohne Laufrichtung,
+            "extrem schmale Bruecke mit Schlucht" zu "extrem schmale Bruecke"), und
+            mehrere englische Eintraege sind leer, darunter die Warnung vor toedlichen
+            Aufzuegen auf acht Wegpunkten.
+
+    Franzoesisch: Ressourcennamen und die Hoehle der Nebel
+        Einfach: Zwei Fehler, die nur einen franzoesischen Client trafen. Erstens waren 22
+            der 94 Ressourcennamen des Minikartenscanners falsch - der Scanner vergleicht
+            sie mit dem Tooltip des Spiels, ein falscher Name heisst also, dass dieses
+            Vorkommen nie angesagt wird, ohne Fehlermeldung. Zweitens blieb in der Hoehle
+            der Nebel die Wegpunktliste leer, waehrend eine draussen gestartete Route
+            weiterlief.
+        Technisch: Die 22 Namen wurden einzeln gegen eine von beiden Addons unabhaengige
+            Quelle entschieden: 19 ueber SkuDBs eigene frFR-Tabellen (aus Questies
+            Blizzard-Strings), drei ueber die Tooltip-Schnittstelle von Wowhead. Bei der
+            Hoehle vergleicht Geo.lua GetMinimapZoneText() woertlich mit L["Hoehle der
+            Nebel"]; die generierte frFR-Locale trug "Grotte des Brumes", eine freie
+            Uebersetzung - der Client sagt "Caverne des Brumes". Der Vergleich lief also
+            ins Leere, uiMap blieb auf dem Kontinent, GetAreaIdFromUiMapId antwortete -1
+            und GetCurrentAreaId nil, worauf ListWaypoints2 aufgab. Der Wert wurde mit
+            /szp in der Zone gelesen, nicht uebersetzt, und liegt jetzt sowohl in der
+            generierten Datei als auch in der TSV-Ablage, aus der sie zusammengebaut wird
+            - samt der Notiz, dass er nicht frei uebersetzt werden darf.
+            Aus den PRs #14 und #16 (Naxedim).
+
+    Zum Beacon drehen: genauer, und mit Vorhalt
+        Einfach: Die automatische Drehung zum Funkfeuer (T) sitzt jetzt deutlich genauer.
+            Vorher lief sie so schnell, dass allein das framegenaue Stoppen je nach
+            Bildrate zwanzig Grad und mehr Ueberdreh kosten konnte. Jetzt richtet sich das
+            Tempo nach der Groesse der Drehung, und keine Drehung dauert laenger als eine
+            Viertelsekunde. Waehrend man sich bewegt, wird ausserdem vorgehalten: gezielt
+            wird dorthin, wo der Wegpunkt am Ende der Drehung liegen wird - das beendet
+            das Im-Kreis-Laufen um nahe Wegpunkte, das vor allem beritten und im Flug
+            auftrat. Und ein Druck waehrend einer laufenden Drehung wird verworfen statt
+            die Drehung mittendrin abzubrechen; gewohntes Mehrfachdruecken verfeinert
+            weiter wie bisher.
+        Technisch: Vier Teile, die zusammen getestet wurden. Der Schnappschuss auf die
+            Standardkamera vor der Drehung bleibt - er ist fuer die Gierung tragend, ohne
+            ihn stimmt der Winkel nicht. Die Drehgeschwindigkeit wird aus dem Restwinkel
+            gedeckelt, statt fest zu laufen. Der Vorhalt rechnet aus der aktuellen
+            Geschwindigkeit und der voraussichtlichen Dauer der Drehung, wo der Wegpunkt
+            am Ende steht. Dazu eine Absicherung gegen den Fehler, dass nach schnell
+            hintereinander ausgeloesten Drehungen die Drehgeschwindigkeit der Kamera-
+            Tasten dauerhaft vervierfacht haengenblieb.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1
