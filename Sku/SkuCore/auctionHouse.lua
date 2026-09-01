@@ -632,6 +632,11 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function AuctionHouse:AUCTION_HOUSE_CLOSED()
    AuctionHouse:AuctionBuyCancel()
+   -- [v43.2] Kein Auktionshaus, kein offener Kauf: auch das KAUFZIEL faellt weg.
+   -- AuctionBuyCancel loest nur Timer und Bindings; SkuCore.QueryBuyData blieb
+   -- stehen und haette die erste Abfrage des naechsten Besuchs in den
+   -- Kauf-Handler umgeleitet (StartQuery erkennt den Modus daran).
+   pcall(function() AuctionHouse:AuctionClearBuyState() end)
    -- MIT force: das Schliessen des Auktionshauses beendet JEDEN Scan, auch einen
    -- laufenden Komplettscan (genau so bricht man ihn ab). Ohne force lehnt
    -- AuctionHouseResetQuery den Reset waehrend eines getAll-Scans ab - der
@@ -827,6 +832,12 @@ local function _ABClearBuyState()
    SkuCore.AuctionBuy.failCount = 0
    SkuCore.QueryBuyEmptyWaits = 0
    AuctionHouse:AuctionHouseResetQuery()
+end
+
+-- Dasselbe als Methode, damit auch die weiter OBEN im File definierten Handler
+-- (AUCTION_HOUSE_CLOSED) sie erreichen - ein local ist dort noch nicht sichtbar.
+function AuctionHouse:AuctionClearBuyState()
+   _ABClearBuyState()
 end
 
 -- Vier Ebenen im Menü hochnavigieren und nach kurzer Verzögerung den Menünamen
@@ -1377,9 +1388,22 @@ function AuctionHouse:AuctionSecureBuyCancel(announce)
    if p and p.onCancel then
       if wasActive then _ABLog("secure buy cancel", {}) end
       p.onCancel(wasActive)
-   elseif announce and wasActive then
-      _ABLog("secure buy cancel", {})
-      SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.1, nil, nil, nil, 1)
+   else
+      if announce and wasActive then
+         _ABLog("secure buy cancel", {})
+         SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.1, nil, nil, nil, 1)
+      end
+      -- [v43.2] Auch das KAUFZIEL loeschen, nicht nur die Bindings. Sonst blieb
+      -- SkuCore.QueryBuyData nach einem Abbruch stehen - und weil
+      -- AuctionHouseStartQuery den Modus genau daran erkennt
+      -- ("QueryBuyData ~= nil" -> "buy"), lief die NAECHSTE, voellig fremde
+      -- Abfrage des Nutzers in den Kauf-Handler: der fand das alte Ziel erneut,
+      -- baute den Kauf-Prompt auf und schaltete Eingabe scharf. Belegt im Log
+      -- vom 2026-09-01: Abbruch 18:45:40, danach eine neue Suche 18:46:12 ->
+      -- "MATCH FOUND, showing popup" ohne jeden Kauf-Wunsch, und das Enter, mit
+      -- dem der Nutzer das Suchfeld oeffnen wollte, kaufte 18:46:16 ("Gebot
+      -- akzeptiert"). Der Strategiekauf (p.onCancel) raeumt selbst auf.
+      _ABClearBuyState()
    end
 end
 
@@ -4063,6 +4087,25 @@ end
 function AuctionHouse:AuctionBrowseStart(aStarter, aHost)
    SkuCore.QueryStartFailed = nil
    SkuCore.QueryStartPending = nil
+
+   -- [v43.2] Zweiter Riegel gegen den entfuehrten Kauf (siehe
+   -- AuctionSecureBuyCancel): wer eine neue Liste oeffnet oder sucht, will
+   -- nicht kaufen. Ein noch herumliegendes Kaufziel wuerde diese Abfrage in den
+   -- Kauf-Handler umleiten (StartQuery erkennt den Modus an QueryBuyData) und
+   -- unaufgefordert einen Kauf-Prompt scharf schalten. Es wird deshalb hier
+   -- verworfen - aber NUR, wenn gerade wirklich kein Kauf laeuft: waehrend ein
+   -- Kauf scharf ist, verweigert StartQuery die Browse-Abfrage ohnehin und der
+   -- Aufrufer wiederholt sie, das Ziel muss dafuer erhalten bleiben.
+   -- Der Kauf-Pfad selbst geht nie durch AuctionBrowseStart (er ruft
+   -- AuctionHouseStartQuery direkt), ist von diesem Riegel also nicht betroffen.
+   if SkuCore.QueryBuyData
+      and not (SkuCore.AuctionSecureBuy and SkuCore.AuctionSecureBuy.active) then
+      dprint("auction.buy", "browse start: dropping stale buy target", {
+         name = SkuCore.QueryBuyData[1],
+         buyout = SkuCore.QueryBuyData[10],
+      })
+      _ABClearBuyState()
+   end
 
    local tStarted, tReason = false, nil
    local tOk, tErr = pcall(function() tStarted, tReason = aStarter() end)
