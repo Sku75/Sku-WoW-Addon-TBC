@@ -297,6 +297,17 @@ local OwnDB = {}
 
 local OnEnterAllFlag = nil
 
+-- Stueckpreis eines gruppierten Eintrags: Kaufpreis je Stueck, und wenn es
+-- keinen Kaufpreis gibt (Nur-Gebot-Auktion) das Gebot je Stueck. So bleibt der
+-- Wert vergleichbar, statt jede Nur-Gebot-Auktion mit 0 nach ganz vorne zu
+-- ziehen.
+local function _AuctionUnitPrice(aEntry)
+   local tPrice = aEntry and aEntry.pricePerItem
+   if not tPrice then return 0 end
+   if (tPrice.buy or 0) > 0 then return tPrice.buy end
+   return tPrice.bid or 0
+end
+
 -- [W6-C #17] shared AH result-list sort comparators (SortBy 1-6), used by both
 -- AuctionHouseBuildItemFullScanDBMenu and AuctionGroupResults.
 local tSortComparators = {
@@ -304,8 +315,23 @@ local tSortComparators = {
    [2] = function(a, b) return a.pricePerAuction.buy < b.pricePerAuction.buy end,
    [3] = function(a, b) return a.pricePerItem.bid    < b.pricePerItem.bid    end,
    [4] = function(a, b) return a.pricePerAuction.bid < b.pricePerAuction.bid end,
-   [5] = function(a, b) return (a.level or 0) > (b.level or 0) end,
-   [6] = function(a, b) return (a.level or 0) < (b.level or 0) end,
+   -- [v43.2] Stufen-Sortierung mit Stueckpreis als ZWEITEM Schluessel. Ohne den
+   -- war eine Suche nach EINEM Gegenstand komplett unsortiert: dort haben alle
+   -- Treffer dieselbe Stufe, der Vergleich war fuer jedes Paar unentschieden
+   -- und die Reihenfolge damit die zufaellige der Server-Antwort - eine
+   -- 1-Stueck-Auktion fuer 2g stand vor 5 Stueck fuer 9g, obwohl die zweite je
+   -- Stueck billiger ist. Bei gleicher Stufe zaehlt jetzt der Preis JE STUECK
+   -- (dieselbe Groesse wie in Vergleich 1), nicht der Preis der Auktion.
+   [5] = function(a, b)
+      local la, lb = a.level or 0, b.level or 0
+      if la ~= lb then return la > lb end
+      return _AuctionUnitPrice(a) < _AuctionUnitPrice(b)
+   end,
+   [6] = function(a, b)
+      local la, lb = a.level or 0, b.level or 0
+      if la ~= lb then return la < lb end
+      return _AuctionUnitPrice(a) < _AuctionUnitPrice(b)
+   end,
 }
 
 -- ===========================================================================
@@ -4272,11 +4298,20 @@ function AuctionHouse:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFil
    -- bleibt korrekt, statt die Sortierung zu bekaempfen.
    -- NICHT fuer Kauf/Strategiekauf: die brauchen den guenstigsten Treffer auf
    -- Seite 0 und bleiben auf "unitprice".
+   -- [v43.2] Die Spalte "level" hilft nur, wenn die Liste ueberhaupt
+   -- VERSCHIEDENE Gegenstaende enthalten kann - also bei einer Kategorie
+   -- ("Alle", leerer Suchtext). Eine Suche nach einem Namen liefert lauter
+   -- Auktionen desselben Gegenstands, dort ist jede Stufe gleich: der Server
+   -- haette dann nach einem Feld sortiert, in dem sich nichts unterscheidet,
+   -- und die Seiten kaemen in seiner Zufallsreihenfolge statt der billigsten
+   -- zuerst. Mit Suchtext bleibt es deshalb bei "unitprice".
    if SkuCore.QueryData[tQAIindex.getAll] ~= true then
       local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter or {}
       local tSortBy = tFilter.SortBy or 1
       local tIsBuy = (SkuCore.QueryBuyData ~= nil) or (SkuCore.QuerySinglePage == true)
-      if not tIsBuy and (tSortBy == 5 or tSortBy == 6) then
+      local tText = SkuCore.QueryData[tQAIindex.text]
+      local tMixedList = (tText == nil or tText == "")
+      if not tIsBuy and tMixedList and (tSortBy == 5 or tSortBy == 6) then
          -- dritter Parameter = absteigend
          pcall(SortAuctionSetSort, "list", "level", tSortBy == 5)
       else
