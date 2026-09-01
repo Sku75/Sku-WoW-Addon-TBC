@@ -1829,7 +1829,10 @@ function AuctionHouse:AuctionItemNameFormat(aItemData, aIndex, aAddLevel)
       rName = rName..aItemData[tAIDIndex["name"]]
    end
 
-   if aAddLevel and aItemData[20] then
+   -- 0 = keine Stufenanforderung. Das ist keine Stufe, die man ansagt - frueher
+   -- kam hier "Level 0" heraus, weil 0 in Lua wahr ist (und davor die
+   -- Gegenstandsstufe, siehe AuctionRecordRequiredLevel).
+   if aAddLevel and (aItemData[20] or 0) > 0 then
       rName = rName..L[" Level "]..aItemData[20]
    end
 
@@ -1865,6 +1868,42 @@ function AuctionHouse:AuctionGetPricePerItem(aData)
    if tCount <= 0 then tCount = 1 end
    local tPPIBid, tPPIBuy = (aData[8] or 0) / tCount, (aData[10] or 0) / tCount
    return {bid = tPPIBid, buy = tPPIBuy,}
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.2] EINE Bedeutung von "Stufe" fuer die ganze Auktionsanzeige: die
+-- STUFENANFORDERUNG des Gegenstands (die Spalte, die auch Blizzards
+-- Auktionshaus als "Stufe" zeigt und nach der der Server sortieren kann).
+--
+-- Frueher rechneten die beiden Ergebnislisten unterschiedlich: die Live-Liste
+-- nahm Feld 6 und sprang bei 0 auf die GEGENSTANDSSTUFE (GetItemInfo #4), die
+-- Komplettscan-Liste nahm IMMER die Gegenstandsstufe. Das mischte zwei Skalen
+-- in einer Sortierung - ein Stapel Netherstoff (Anforderung 0, Gegenstands-
+-- stufe 55) stand damit ueber einem Stufe-40-Schwert - und sprach die falsche
+-- Zahl an. Gegenstandsstufe wird hier nie mehr eingesetzt.
+--
+-- Reihenfolge: Feld 6 der Server-Antwort, sonst SkuDB. Feld 6 ist nur dann
+-- eine Stufe, wenn Feld 7 das sagt: bei Rezepten steht dort der geforderte
+-- Berufs-Skill, bei Behaeltern die Zahl der Taschenplaetze. Und gefuellt ist
+-- es nur, wenn der Client die Item-Daten der Zeile schon hatte (Feld 18,
+-- hasAllInfo) - beim Komplettscan oft nicht, deshalb der DB-Nachschlag.
+-- 0 = keine Stufenanforderung (Handelswaren, Materialien), nicht "unbekannt".
+function AuctionHouse:AuctionRecordRequiredLevel(aRecord)
+   if not aRecord then return 0 end
+   local tLevel = aRecord[tAIDIndex.level]
+   local tHeader = aRecord[tAIDIndex.levelColHeader]
+   if tHeader and tHeader ~= "REQ_LEVEL_ABBR" then
+      tLevel = nil
+   end
+   if not tLevel or tLevel == 0 or tLevel > 10000 then
+      local tId = aRecord[tAIDIndex.itemId]
+      local tRow = tId and SkuDB and SkuDB.itemDataTBC and SkuDB.itemDataTBC[tId]
+      local tDbLevel = tRow and SkuDB.itemKeys and tRow[SkuDB.itemKeys.requiredLevel]
+      if tDbLevel then
+         tLevel = tDbLevel
+      end
+   end
+   return tLevel or 0
 end
 
 -- ===========================================================================
@@ -3256,7 +3295,7 @@ function AuctionHouse:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex
                      if tFound == false then
                         tCurrentDBClean[#tCurrentDBClean + 1] = {}
                         tCurrentDBClean[#tCurrentDBClean].name = tName
-                        tCurrentDBClean[#tCurrentDBClean].level = select(4, GetItemInfo(tRecord[17])) or 0
+                        tCurrentDBClean[#tCurrentDBClean].level = AuctionHouse:AuctionRecordRequiredLevel(tRecord)
                         tCurrentDBClean[#tCurrentDBClean].pricePerItem = AuctionHouse:AuctionGetPricePerItem(tRecord)
                         tCurrentDBClean[#tCurrentDBClean].pricePerAuction = {bid = tRecord[8], buy = tRecord[10],}
                         tCurrentDBClean[#tCurrentDBClean].dupes = {}
@@ -3482,10 +3521,7 @@ function AuctionHouse:AuctionGroupResults()
             local dupes = tCurrentDBClean[existingIdx].dupes
             dupes[#dupes + 1] = tRecord
          else
-            local tLevel = tRecord[6]
-            if not tLevel or tLevel == 0 or tLevel > 10000 then
-               tLevel = select(4, GetItemInfo(tRecord[17])) or 0
-            end
+            local tLevel = AuctionHouse:AuctionRecordRequiredLevel(tRecord)
             local entry = {
                name = tName,
                level = tLevel,
