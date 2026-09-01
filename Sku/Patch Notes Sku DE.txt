@@ -21,6 +21,8 @@ Aenderungen in Sku v43.2
             Schwimmen und Fliegen: Sku haelt dich waagerecht. Die neue Neigungssperre beendet das schleichende Abtauchen bei den automatischen Drehungen, und nach einem Anflug auf einen NPC oder einem Druck auf Steigen/Sinken wirst du aktiv wieder gerade ausgerichtet. Ab Werk an; abschaltbar unter Einstellungen -> Allgemein.
             Neuer Tastenbefehl "Neigungssperre beim Schwimmen und Fliegen umschalten" (Strg+Umschalt+N): sperrt und loest die Neigung manuell - aus- und wieder einschalten richtet dich jederzeit neu waagerecht aus.
             Experimentell: Sammelrouten fuer Erze, Kraeuter, Gaswolken und Truhen - Sku fuehrt dich Vorkommen fuer Vorkommen durch die Zone, immer das naechstgelegene zuerst. Unter Einstellungen -> Scan -> ressourcen scan -> Sammelrouten. Neu und im Spiel erst in Ansaetzen erprobt; Rueckmeldungen sind ausdruecklich erwuenscht.
+            Neues Menue "Namensplaketten" unter Einstellungen -> Visuelle Hilfen: Groesse der Plaketten, Hervorhebung des Ziels, Klassenfarben und Abschwaechung der uebrigen Plaketten - Einstellungen, die das Spiel beherrscht, in seinem eigenen Optionsfenster aber nirgends anbietet.
+            Das Lesefenster fuer Questtexte, Tooltips, Chatverlauf und Wiki ist einstellbar geworden: Schriftgroesse, Schriftart, Farbkombination, Deckkraft und Umriss unter Einstellungen -> Visuelle Hilfen -> Textfenster.
 
         Aenderungen
             Zum Beacon drehen (T): die Drehung sitzt jetzt deutlich genauer. Vorher lief sie so schnell, dass allein das framegenaue Stoppen je nach Bildrate 20 Grad und mehr Ueberdreh kosten konnte; jetzt richtet sich das Tempo nach der Drehgroesse, und keine Drehung dauert laenger als eine Viertelsekunde.
@@ -43,6 +45,8 @@ Aenderungen in Sku v43.2
             Menue: der Tippfilter ignoriert Akzente - auf einem franzoesischen Client findet "general" jetzt "Fournitures generales", und "oe" findet einen Eintrag, der mit "Oe" beginnt. Auf einer franzoesischen AZERTY-Tastatur tippt die Taste ù jetzt auch in den Filter.
             Franzoesisch: die Wegpunktkommentare gibt es jetzt auf Franzoesisch - 207 Texte auf 546 Wegpunkten, aus dem deutschen Original uebersetzt.
             Installationsprogramm: ein WoW an einem ungewoehnlichen Ort muss nur einmal gezeigt werden - das Installationsprogramm merkt sich, wo jeder Client liegt, und findet ihn bei jedem spaeteren Update von selbst wieder.
+            Das Lesefenster startet ab Werk serifenlos in 18 Punkt statt in Playfair Display in 12 - die bisherige Voreinstellung war die kleinste und duennste Textflaeche des ganzen Addons.
+            Auch der Lesebalken laesst sich jetzt in Schriftart und Farbkombination einstellen, mit eigenen Werten getrennt vom Textfenster.
 
         Fehlerbehebungen
             Menue: waehrend man ging, war das geoeffnete Menue wie tot - jede Taste ausser Escape wurde verschluckt, bis man stehen blieb.
@@ -75,6 +79,9 @@ Aenderungen in Sku v43.2
             Franzoesisch: die Wegpunktkommentare blieben seit v42.11 vollstaendig stumm - auch die Warnungen wie "Vorsicht, Abgrund" oder "hier auf den Zeppelin warten".
             Franzoesisch: 22 der 94 Ressourcennamen des Minikartenscanners waren falsch, diese Vorkommen wurden nie angesagt.
             Franzoesisch: in der Hoehle der Nebel blieb die Wegpunktliste leer.
+            Die Plaketten-Farben waren nach jedem Login und jedem Neuladen tot: der Schalter stand auf an, gefaerbt wurde aber nichts, bis man ihn von Hand zweimal umlegte.
+            Der Lesebalken blieb im Kampf unsichtbar - also genau dann, wenn er am dringendsten gebraucht wird.
+            Der Lesebalken zeigte nur den Namen eines Menueeintrags, nicht den vorgelesenen Wert dahinter - Schalterzustaende und Anzahlen waren hoerbar, aber nicht lesbar.
 
     Schwimmen und Fliegen: die Neigungssperre beendet das ungewollte Abtauchen
         Einfach: Beim Schwimmen oder Fliegen zog jede automatische Drehung zum Funkfeuer ein
@@ -1063,6 +1070,100 @@ Aenderungen in Sku v43.2
             "SkuSelfTest pathmemory": sie gibt aus, was auf diesem Rechner vermerkt ist, und
             spielt Schreiben, Lesen und die Faelle veralteter Notizen gegen einen
             Wegwerfspeicher durch, ohne den echten anzufassen.
+
+    Das Lesefenster laesst sich einstellen
+        Einfach: Questtexte, Tooltips, der Chatverlauf und die Wiki-Seiten landen alle im selben
+            Lesefenster. Wie dieses Fenster aussieht, stand bisher fest im Code: Playfair Display
+            in 12 Punkt, eine duenne Schrift mit Serifen in der kleinsten Groesse, die das Addon
+            ueberhaupt verwendet. Fuer jemanden mit Restsehvermoegen war das ausgerechnet die
+            wichtigste Flaeche im Addon und zugleich die am schlechtesten lesbare. Unter
+            Einstellungen -> Visuelle Hilfen -> Textfenster stehen jetzt Schriftgroesse von 14 bis
+            44 Punkt, vier Schriftarten, vier Farbkombinationen (weiss auf schwarz, gelb auf
+            schwarz, schwarz auf weiss, weiss auf blau), die Deckkraft des Hintergrunds und ein
+            Umriss zur Wahl. Ab Werk laeuft das Fenster jetzt serifenlos in 18 Punkt. Wer nichts
+            umstellt, bekommt also trotzdem eine deutlich besser lesbare Flaeche als vorher.
+        Technisch: Die Flaeche selbst gehoert Libs/SkuTTS-1.0 (Frame SkuTTSMainFrame samt
+            FontString .FS); dort stand die Darstellung als ein einziger harter SetFont-Aufruf.
+            Die Einstellungen liegen jetzt in SkuCore VisualAids unter visualAids.textWindow, und
+            SkuTTS:Output ruft vor jedem Anzeigen VisualAids:TextWindowLayout auf - pcall-
+            gesichert und in derselben Richtung, in der SkuZOptions schon den Lesebalken fuettert.
+            Die Lib muss so nichts ueber die Optionen wissen, und ein abgeschaltetes Modul
+            Visuelle Hilfen laesst das Fenster einfach beim alten Aussehen. Jede Schriftzuweisung
+            ist geprueft und faellt auf die Client-Standardschrift zurueck, statt eine leere
+            Flaeche zu hinterlassen - die beiden mitgelieferten Familien Raleway und Playfair
+            liegen unter Libs/SkuTTS-1.0/fonts und kommen nur ueber das Release-ZIP mit. Die
+            Groessenstufen sind bewusst kleiner als beim Lesebalken: hier steht ein ganzer
+            Questtext, und das Fenster hat keinen Rollbalken, schneidet also unten umso frueher
+            ab, je groesser die Schrift ist. Gesprochen wird weiterhin alles, die Anzeige ist die
+            Zweitspur.
+
+    Der Lesebalken zeigt, was Sku sagt - und er funktioniert im Kampf
+        Einfach: Zwei Dinge auf einmal. Erstens blieb der Balken im Kampf leer, also genau dann,
+            wenn Vorlesen und Mitlesen am wichtigsten sind. Zweitens zeigte er nur den Namen eines
+            Menueeintrags: bei einem Ein/Aus-Schalter stand dort der Name, aber nicht der Zustand,
+            bei einer Taschenzeile der Name, aber nicht die Anzahl - alles, was Sku zusaetzlich
+            vorliest, fehlte auf dem Balken. Beides ist behoben; der Balken zeigt jetzt dieselbe
+            Zeile, die Sku spricht, und er tut es auch mitten im Kampf. Ausserdem sind Schriftart
+            und Farbkombination jetzt auch fuer ihn waehlbar, mit eigenen Werten neben denen des
+            Textfensters.
+        Technisch: Die Kampf-Sperre war eine Verwechslung von sichtbar und offen: die Pruefung
+            haengte an SkuOptions:IsMenuOpen(), und das testet OnSkuOptionsMain:IsVisible().
+            Dieser Frame ist Vorfahr der sicheren ENTER-Buttons und damit geschuetzt, sein Show()
+            ist im Kampf blockiert - das Kampfmenue laeuft absichtlich headless und meldet sich
+            stattdessen ueber SkuOptions.combatMenuActive. Genau dieses Paar pruefen templates.lua
+            und SkuZOptions ohnehin schon; der Lesebalken kannte es nur nicht. Er selbst ist ein
+            gewoehnlicher Frame ohne sichere Kinder, sein Show() war im Kampf nie das Problem.
+            Weil das Kampfmenue nur logisch schliesst (der Frame-Hide ist dort geschuetzt) und das
+            an sechs Stellen tut, blendet sich der Balken jetzt selbst aus: ein OnUpdate prueft
+            alle 0,25 s, ob das Menue noch offen ist - WoW ruft OnUpdate ausschliesslich bei
+            sichtbaren Frames auf, im ausgeblendeten Zustand kostet das also nichts. Der Inhalt
+            war schlicht ein weggeworfener Parameter: der Aufrufer uebergab immer schon den
+            vollstaendigen Sprechstring, angezeigt wurde trotzdem currentMenuPosition.name. Jetzt
+            hat der uebergebene String Vorrang, die Semikolons der Sprechtrennung werden fuer die
+            Anzeige zu Bindestrichen.
+
+    Namensplaketten: die Einstellungen, die das Spiel versteckt
+        Einfach: Der Client kann seine Namensplaketten laengst groesser, farbiger und
+            kontrastreicher darstellen - er bietet es nur nirgends an. Blizzards eigenes
+            Optionsfenster zeigt in Classic keine einzige dieser Einstellungen; die Checkbox fuer
+            groessere Plaketten, die es im aktuellen WoW gibt, ist in Classic ausdruecklich leer
+            gelassen. Ohne Sku kaeme man nur ueber Konsolenbefehle heran. Das neue Menue unter
+            Einstellungen -> Visuelle Hilfen -> Namensplaketten macht sie zugaenglich:
+            Plakettengroesse, Hervorhebung des Ziels, Abschwaechung aller uebrigen Plaketten,
+            Klassenfarben fuer Gegner und Verbuendete sowie nur Namen bei freundlichen Spielern.
+            Anders als die aelteren Plaketten-Farben faerbt das nicht etwas hinter die Plakette,
+            sondern veraendert die echte Plakette selbst. Ab Werk steht alles so, wie der Client
+            es ausliefert - wer nichts auswaehlt, sieht keine Veraenderung.
+        Technisch: Reine CVar-Einstellungen, kein eigener Frame, kein Taint. Plakettengroesse
+            setzt nameplateMinScale und nameplateMaxScale gemeinsam (getrennt ergaebe das eine
+            entfernungsabhaengige Skalierung, die hier niemand will), Hervorhebung setzt
+            nameplateSelectedScale, Abschwaechung nameplateMinAlpha, dazu nameplateShowClassColor,
+            nameplateShowFriendlyClassColor und nameplateShowOnlyNameForFriendlyPlayerUnits. Alle
+            Werte und die Existenz jeder einzelnen CVar wurden am lebenden Client 2.5.6.69546
+            gemessen, die Obergrenze 2.0 gegen die Klemmung des Clients geprueft. Wichtig fuer
+            kuenftige Arbeit: die entpackte BlizzardInterfaceCode im Client-Ordner ist ein Abzug
+            von Maerz/April 2026 und damit aelter als die Plaketten-Umstellung vom Juli; sie nennt
+            Retail-Namen wie NamePlateVerticalScale oder ShowClassColorInNameplate, die es in
+            dieser exe gar nicht gibt. Massgeblich sind die Strings der exe. Schreibzugriffe auf
+            CVars sind im Kampf gesperrt und scheitern still, eine dort gemachte Aenderung wird
+            deshalb vorgemerkt und bei PLAYER_REGEN_ENABLED nachgeholt. Beim Login zieht Sku die
+            Werte nach, aber erst, nachdem im Menue wirklich einmal etwas ausgewaehlt wurde - wer
+            seine Plaketten frueher von Hand per Konsole eingestellt hat, behaelt sie
+            unangetastet.
+
+    Die Plaketten-Farben ueberleben einen Neustart
+        Einfach: Wer die Plaketten-Faerbung einschaltete, hatte sie genau so lange, bis er sich
+            neu einloggte oder die Oberflaeche neu lud. Danach stand der Schalter weiter auf an,
+            gefaerbt wurde aber nichts mehr. Wieder in Gang brachte man es nur, indem man den
+            Schalter von Hand aus- und wieder einschaltete - und das in jeder Sitzung erneut. Das
+            ist behoben; die Einstellung wirkt jetzt einfach.
+        Technisch: Das Scharfschalten des Ereignis-Treibers (NAME_PLATE_UNIT_ADDED, _REMOVED und
+            PLAYER_TARGET_CHANGED) haengte ausschliesslich am OnAction des Menue-Schalters. Der
+            gespeicherte Wert wurde beim Laden zwar gelesen, aber nirgends angewandt, also war
+            nach jedem Login kein einziges Ereignis registriert. Das Armieren sitzt jetzt in
+            VisualAids:OnEnable, wo die Folgen-Warnung und der Naechster-Gegner-Button schon immer
+            armiert wurden, mit einem verzoegerten zweiten Versuch fuer den Fall, dass das Profil
+            beim ersten Durchlauf noch nicht steht.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

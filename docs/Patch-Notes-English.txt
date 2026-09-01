@@ -9,48 +9,110 @@ Changes in Sku v43.2
     Overview
 
         New
-            New keybind "Output full tooltip of current target" (Ctrl+Shift+V): reads the current target's complete tooltip aloud, including what the Hunter ability Beast Lore reveals.
             Quests can be tracked and untracked from the quest menu - a new "Track quest" entry at the bottom of every quest menu, and it can be switched off.
+            New "Nearby quests" list in the quest menu: your whole quest log in one list, sorted by how far away the next thing is - with distance and compass direction. Off by default.
             New keybind "Target nearest quest mob" (Alt+H): targets a creature belonging to an open quest objective - including one that merely drops an item you need.
             The "Next enemy in combat" keybind (now bound to Ctrl+H by default) finds something far more often: it no longer depends on the view cone.
-            New "Nearby quests" list in the quest menu: your whole quest log in one list, sorted by how far away the next thing is - with distance and compass direction. Off by default.
+            New keybind "Output full tooltip of current target" (Ctrl+Shift+V): reads the current target's complete tooltip aloud, including what the Hunter ability Beast Lore reveals.
             Bags menu: a new "all bank" entry right after "all bags" while the bank is open - everything in the bank in one flat list, exactly like "all bags" is for your bags. Ctrl+Enter moves an item from there into your bags, the same way it already did inside the individual bank bags.
             Chat: the input line now speaks like every other Sku input field - every typed character, the character or word under the cursor, and with arrow up the messages you sent last, to send again or to change.
-            Chat: the target channel is announced whenever it is not "Say" - on opening and on every change.
+            Chat: the target channel is announced whenever it is not "Say" - on opening and on every change; can be turned off in the chat settings ("announce the chat input channel"), on by default.
             Chat: an unknown slash command is now announced instead of being silently discarded.
+            Swimming and flying: Sku keeps you level. The new pitch lock ends the creeping dive during automatic turns, and after an interact approach to an NPC or a press of ascend/descend you are actively straightened out again. On by default; can be switched off under Settings -> General.
+            New keybind "Toggle pitch lock while swimming and flying" (Ctrl+Shift+N): locks and releases the pitch manually - switching it off and on again re-levels you at any time.
+            Experimental: gather routes for ore, herbs, gas clouds and chests - Sku walks you through the zone node by node, nearest first. Under Settings -> Scan -> resource scanning -> Gather routes. New and barely tested in game; feedback is explicitly wanted.
+            New "Nameplates" menu under Settings -> Visual aids: nameplate size, target emphasis, class colors and dimming of the remaining plates - settings the game supports but never offers anywhere in its own options window.
+            The reading window for quest text, tooltips, chat history and wiki is now configurable: font size, font, color pair, opacity and outline under Settings -> Visual aids -> Text window.
 
         Changes
+            Turn towards beacon (T): the turn now lands far more accurately. It used to run so fast that merely stopping it frame-exactly could cost 20 degrees and more of overshoot depending on frame rate; the speed now scales with the size of the turn, and no turn takes longer than a quarter of a second.
+            Turn towards beacon: while moving, the turn leads the target - it aims where the waypoint will be when the turn finishes. This ends the circling around close waypoints, known above all from riding and flying.
+            Turn towards beacon: a press during a running turn is discarded instead of cutting the turn short - pressing repeatedly keeps refining as before.
+            Navigation: under "Direct waypoint", "Current map by distance" now comes first and "Recent" second.
+            Quest database: "Starts in zone" shows the distance-sorted list directly - the intermediate "By distance" level is gone.
+            Quest database: "Starts in zone" now names the compass direction of every quest as well, not just the distance.
+            Quest database: brought up to Questie's current data - 33 quests that had no target now have one, five missing quests added, plus about 2000 smaller corrections to names, levels, quest givers and prequests.
             Bags: after right-clicking an item the cursor stays on that item instead of jumping to the top of the list.
             Bags: actions with a cast time (enchant, fishing lure, weapon oil, armor kit, disenchant) announce the item again once the cast has finished and leave the cursor on it.
             Bags: a confirmation dialog such as "Replace existing enchantment?" no longer costs the position - after "Yes" as after "No" you land back on the item.
-            Menu: closing a window now rebuilds the menu data once instead of up to six times.
-            Auras: a weapon enchant (fishing lure, poison, oil) can now be addressed like a spell - the event "Weapon enchant expired" together with "spell name".
-            Auras: new condition and new output "weapon enchant hand" (main hand or off hand).
-            Quest database: "Starts in zone" shows the distance-sorted list directly - the intermediate "By distance" level is gone.
-            Quest database: "Starts in zone" now names the compass direction of every quest as well, not just the distance.
             Chat: "Add Link to chat" inserts the item at the cursor instead of replacing the line, and leaves the cursor in front of it - so a channel such as "/p " still fits before it.
             Chat: an item link counts as a single character when reading - arrow left and right jump across the whole link and speak its name.
             Chat: "Add Link to chat" no longer closes the bags.
             Chat: the arrow keys move the text cursor in the chat input; can be turned off under chat settings.
+            Auras: a weapon enchant (fishing lure, poison, oil) can now be addressed like a spell - the event "Weapon enchant expired" together with "spell name".
+            Auras: new condition and new output "weapon enchant hand" (main hand or off hand).
+            Menu: closing a window now rebuilds the menu data once instead of up to six times.
+            Menu: the type-ahead filter ignores accents - on a French client "general" now finds "Fournitures generales", and "o" finds an entry starting with "O". On a French AZERTY keyboard the u key now types into the filter too.
+            French: the waypoint comments are now available in French - 207 texts across 546 waypoints, translated from the German original.
+            Installer: a game folder off the beaten track only has to be pointed out once - the installer now remembers where each WoW client lives and finds it again on every later update.
+            The reading window now starts in a sans serif font at 18 point instead of Playfair Display at 12 - the previous default was the smallest and thinnest text surface in the whole addon.
+            The reading bar can now be set to a font and color pair as well, with its own values kept separate from the text window.
 
         Bugfixes
+            Menu: while you were walking, an open menu was as good as dead - every key except Escape was swallowed until you stood still.
             Escape did not close the menu while standing right on a quest object - the quest window reopened endlessly.
+            Menu: Enter on an on/off entry in a filtered list read the first entry of the list back instead of the toggled state.
+            Menu: a line you ask for again with a keypress is read out again instead of being swallowed.
+            Menu: the type-ahead filter treated what you typed as a search pattern - an input like "50%" or "(long" found nothing or broke off.
+            Keyboard echo: typed characters are spoken instantly; swallowed and late letters are gone.
+            Speech: announcements repeatedly went silent for a while while navigating - most reliably on a single hit after filtering.
+            Voice output: item links were read out as a run of colour codes instead of as their name - everywhere in Sku, not only in chat.
+            Turn towards beacon: after turns triggered in quick succession, the camera keys' turn speed could stay permanently quadrupled.
+            Deleting a custom waypoint removed the wrong internal id, and "/skucheck wp" reported four errors on the quick waypoints that were none.
+            Quest menu: for quests with mixed objectives ("kill X and collect Y") the "Quest target" entry only showed the first objective kind - enemies, item sources and the exploration point now sit side by side.
+            Quest menu: for 174 quests whose objective is a PLACE, the place was in the data but "Quest target" still answered only "Empty" - it looked for a waypoint under a name nobody ever assigns. The nearest route waypoint is now computed from the coordinates.
+            For 77 FURTHER quests the objective data was missing entirely - objects, creatures and 26 place coordinates have been entered for them, some of them from web sources: reports on whether they are right are welcome.
+            Quest menu: about 300 quests whose quest giver, target or turn-in sits inside a dungeon showed empty entries - they now lead to the dungeon entrance.
+            Thirteen talk-to quests (among them the old priest spell quests) shipped without a turn-in in the data - the Delivery entry now leads to the NPC the quest text names.
+            Quest database: right after a /reload, quests of inactive world events (such as Midsummer quests) could appear in "Starts in zone".
+            Quest database: the "Starts in zone, By distance" list broke off after the first quest.
             Bags: the type-ahead filter stuck after using an item and could only be cleared by closing the bags.
             After an action with a cast time a wrong item was announced right after the correct one.
             The bag list held for combat could go stale when a quest window was closed while the bags were open.
-            Speech: announcements repeatedly went silent for a while while navigating - most reliably on a single hit after filtering.
+            Bags menu: with a bag-replacement addon such as Bagnon, which hides Blizzard's bank window, every bank container vanished from the menu.
             Auras: the Well Fed buff appeared twice in the spell picker - both entries sounded the same and only one could ever fire.
             Auras: entries that only ever exist as a weapon enchant (such as "Fishing Skill +75") are now marked as such in the pickers.
             Auras: "weapon enchant main hand contains X" together with "Weapon enchant expired" could never fire - /skucheck auras now reports that combination.
             Auras: the end of a weapon enchant is detected frame-accurately instead of up to a quarter second later.
-            Menu: Enter on an on/off entry in a filtered list read the first entry of the list back instead of the toggled state.
+            Action bars: Shift-Down no longer read the spell tooltip in the assignment menu.
             Dungeon browser: accepting a group invitation no longer drops you into the dungeon browser by itself.
-            Quest database: the "Starts in zone, By distance" list broke off after the first quest.
-            Bags menu: with a bag-replacement addon such as Bagnon, which hides Blizzard's bank window, every bank container vanished from the menu.
-            Deleting a custom waypoint removed the wrong internal id, and "/skucheck wp" reported four errors on the quick waypoints that were none.
-            Keyboard echo: typed characters are spoken instantly; swallowed and late letters are gone.
-            Menu: a line you ask for again with a keypress is read out again instead of being swallowed.
-            Voice output: item links were read out as a run of colour codes instead of as their name - everywhere in Sku, not only in chat.
+            French: the waypoint comments had been completely silent since v42.11 - including warnings such as "careful, ravine" or "wait here for the zeppelin".
+            French: 22 of the 94 minimap scanner resource names were wrong, so those nodes were never announced.
+            French: inside the Cave of the Mists the waypoint list stayed empty.
+            Nameplate coloring was dead after every login and every reload: the switch read as on, but nothing was colored until you flipped it off and on again by hand.
+            The reading bar stayed invisible in combat - exactly when it is needed most.
+            The reading bar showed only the name of a menu entry, not the value spoken after it - switch states and counts were audible but not readable.
+
+    Swimming and flying: the pitch lock ends the unwanted diving
+        Simple: While swimming or flying, every automatic turn towards the beacon pulled you a
+            little bit downwards - over a longer stretch that added up until you were under water
+            or on the ground without noticing. Now Sku locks your pitch as soon as you swim or
+            fly: you move exactly level, and Space and X still carry you up and down. And if
+            something does tilt you - such as the automatic approach when interacting with an
+            NPC - Sku actively straightens you out again: when the NPC window opens, shortly
+            after every turn, and whenever you press ascend or descend. On by default; anyone who
+            wants to dive by pitching with the mouse while swimming (residual sight) switches it
+            off under Settings -> General. On top of that, the new keybind "pitch lock"
+            (Ctrl+Shift+N) locks and releases manually.
+        Technical: Three building blocks. First, the console variable pitchlimit 0 caps the
+            character's movement pitch (the technique of the LevelFlight and FlightHUD addons) -
+            set persistently rather than around each turn impulse, because exactly that
+            toggle race is what made earlier attempts fail. pitchlimit is writable but not
+            readable; every login therefore blindly restores the default of 88 so a lock can
+            never get stuck. Second, the lock only holds what is there: engine-driven movement
+            such as the interact approach still tilts the character, and afterwards no keyboard
+            input exists that raises the pitch again. The active re-leveling uses the very
+            transfer that originally caused the bug: ResetView/SetView snaps the camera to the
+            known, almost level default preset, a mouselook impulse transfers it onto the
+            character, and the lock caps the small remainder to zero. Triggers are the NPC
+            window, every turn (delayed by 0.5 s, because the engine applies the yaw transfer a
+            frame later - an immediate second impulse would undo the turn) and, via
+            hooksecurefunc, the ascend/descend functions JumpOrAscendStart, AscendStop,
+            SitStandOrDescendStart and DescendStop - independent of which keys they are bound
+            to. Third, a pitch gauge for the log: measured horizontal speed divided by
+            GetUnitSpeed is the cosine of the trajectory angle - the only measurement this
+            client offers (GetUnitPitch was removed in patch 7.1 and is missing here too). It
+            measures the trajectory, not the body pitch, and serves diagnosis only.
 
     The cursor stays on the item in the bag
         Simple: Right-clicking an item in the bag list - use it, equip it, sell it to a vendor,
@@ -521,7 +583,10 @@ Changes in Sku v43.2
             - and says the channel along with them, because a recalled line does not show you
             where it would go. The channel is also announced on opening and on every change, but
             deliberately not for "Say": that is the harmless case, and saying it every time would
-            be noise. An item in the chat counts as a single character when reading instead of
+            be noise. If the announcement does not suit your workflow, turn it off in the chat
+            settings under "announce the chat input channel"; it is on by default. Turning it
+            off also drops the channel in front of a line recalled with arrow up.
+            An item in the chat counts as a single character when reading instead of
             sixty-five characters of markup. And a mistyped command such as "/tets" now says
             "unknown command" instead of simply doing nothing.
         Technical: The keyboard echo of Sku's own fields now attaches to foreign ones through
@@ -591,6 +656,423 @@ Changes in Sku v43.2
             key handler therefore now marks its announcement as key-triggered, and the guard
             always lets marked lines through. Redundant repeats are still discarded, now
             regardless of how fast they arrive.
+
+    Quests with mixed objectives show every objective kind
+        Simple: For a quest like "kill 8 wolves AND collect 5 pelts", the "Quest target"
+            entry in the quest menu only showed the first objective kind - usually the
+            enemies; the places to find the collectible item, or an exploration point, were
+            silently missing. 95 quests were affected. All objective kinds now sit side by
+            side in one list, and the "Target nearest quest mob" keybind also knows both
+            halves of such quests. Fixed along the way: a quest that has only an exploration
+            point and no other objective data now gets a "Quest target" entry at all, and an
+            unresolvable exploration point no longer produces an entry that just announces
+            "empty".
+        Technically: SkuQuest:GetQuestTargetIds was an elseif chain over the quest
+            database's objective lists (creatures, else objects, else items, ...) and could
+            only ever return ONE list with ONE type by its very signature. Replaced by
+            GetQuestTargetGroups: an array of {targets, type} groups - creatures merged
+            with deduplicated kill credits, objects, items and, for the objectives callers
+            only, the quest's triggerEnd point. All seven call sites are converted (quest
+            menu, waypoint cache, quest markers, quest-target key); the old name remains as
+            a first-group wrapper for the WowVision port. The item branch of
+            GetResultingWps is also guarded against unknown item ids now - it indexed
+            unchecked so far and let the swallowed menu build die as a silent "list empty".
+
+    Quest database brought up to Questie's current data
+        Simple: Sku's built-in quest database comes from Questie and was about two years
+            old. After the sync, 33 quests whose "Quest target" used to stay empty have
+            real targets (the Darkmoon card decks, the repeatable Ogri'la and Violet Eye
+            quests, "Finding the Keymaster"), the six "Investigate the Scourge" quests now
+            have exploration points, five missing quests were added, and about 2000 records
+            carry smaller corrections to names, levels, quest givers and prequest chains.
+            Verified: the corrections are identical for Era and TBC, the update is safe on
+            both.
+        Technically: A semantic merge, not a byte copy (new tool
+            dev/rework-docs/_refresh_questdata_from_questie.py, then _db_convert.py):
+            Questie's schema diverges from field 27 on, so only fields 1-26 are adopted;
+            Sku's own extraObjectives and skuData fields are preserved per record. The
+            requiredRaces convention (old all-races mask 2047, now 0 - identical for Sku's
+            logic) counts as equal in the comparison, otherwise 2117 records with no
+            content change would have sat in the diff. Every referenced creature, object
+            and item id was validated against the shipped databases (base + WotLK); one
+            record was kept at its old state because of that.
+
+    Event quests no longer show up right after loading
+        Simple: In the first seconds after a /reload, quests of inactive world events could
+            appear in "Starts in zone" - Midsummer quests in August, say. Once Questie had
+            finished loading they vanished again by themselves; they are now hidden in that
+            window too.
+        Technically: The two availability gates only consulted Questie from Questie.started
+            on, and that flag flips at the very END of Questie's initialization. Questie's
+            static blacklist QuestieCorrections.hiddenQuests - removed quests plus ALL
+            event quests; the active ones are only unhidden after the server's calendar
+            answer - exists much earlier though. IsQuestieUnavailable now reads it directly
+            before started: a plain table read; the memoize-poisoning hazard behind the
+            started gate is specific to IsDoable. The value "HIDE_ON_MAP" is skipped just
+            like Questie itself does, and every pre-start hide writes a dprint line to the
+            log.
+
+    Quests in dungeons lead to the entrance instead of nowhere
+        Simple: For about 300 quests the quest giver, the target or the turn-in sits
+            inside a dungeon - "Vorrel's Revenge" starts in the Scarlet Monastery,
+            "Willix the Importer" ends in Razorfen Kraul. Quest start, Quest target and
+            Delivery used to be empty there, because instances have no world map. Those
+            entries now read "NPC, entrance, dungeon name, zone" with a route to the
+            dungeon entrance - battleground quests included (Alterac Valley picks the
+            right entrance per faction). Drop sources of an ITEM inside the same dungeon
+            collapse into a single "dungeon name, entrance, zone" entry - "The Fate of
+            Ramaladni" otherwise named 29 Naxxramas trash mobs one by one, all leading to
+            the same gate; kill objectives keep their individual mob names.
+        Technically: New generated table SkuDB.InstanceEntrances (from Questie's dungeon
+            table, tool dev/rework-docs/_gen_instance_entrances.py): instance areaId ->
+            entrances {parent zone, x, y, optional faction}, including the wing sub-ids
+            and a GetBuildInfo gate for the WotLK entrance moves. The spawn resolvers
+            (CreatureIdHelper, the object and item branches of GetResultingWps) no longer
+            skip map-less areas; they answer like the v43.2 triggerEnd detour: convert
+            the entrance coordinates to world coordinates, take the nearest route
+            waypoint. Memoised per waypoint-cache generation; the faction filter reads
+            UnitFactionGroup.
+
+    77 field-objective quests now have a real quest target
+        Simple: 77 quests whose objective is a place or object out in the field (the
+            Mulgore water wells, the druids' Moonkin Stone, the Crystal Pylons of Un'Goro
+            Crater, Rolf's corpse, the four draenei totems, the hunters' Taming the Beast
+            chain and many more) had no target data at all - the "Quest target" entry was
+            simply missing. All of them now have a real, routable quest target.
+            Important: the objects and creatures come from Sku's own spawn data, but 26
+            locations come from web sources (warcraft.wiki.gg, Wowhead) and could not all
+            be checked in game. They were chosen with care but may be off in individual
+            cases - a report on whether such a target is right or wrong helps a lot. Even
+            an imprecise point beats none at all: the route leads into the right area.
+        Technically: Result of the review list dev/rework-docs/QUEST-TARGET-PROPOSALS.txt
+            (sections 1-3, reviewed by hand): 27 object and 24 creature targets as
+            objectives entries in quests_fixes.lua (ids validated against the own
+            databases, spawn zones verified, no -1,-1 positions in the open world) plus
+            26 triggerEnd coordinates from the web research. Two quests (9410, 10166)
+            already carried the right object id in extraObjectives, which the target
+            menus do not read - the objectives field was added there.
+
+    Thirteen talk-to quests have a turn-in again
+        Simple: Thirteen quests - above all the old priest spell quests (Stars of Elune,
+            Elune's Grace, A Lack of Fear, Hex of Weakness), plus among others "The Tome of
+            Nobility" and "Ally of the Netherwing" - shipped without a turn-in in the data:
+            neither a target nor a delivery point, nothing was routable. The Delivery entry
+            now leads to the NPC the quest text itself names.
+        Technically: finishedBy entries in quests_fixes.lua; the creature ids were resolved
+            from the quest text against the creature database (every name is unique there,
+            and the spawns lie in the zone the text names). The candidates come from the
+            new tool dev/rework-docs/_quest_target_candidates.py, which classifies every
+            target-less quest and writes the review list QUEST-TARGET-CANDIDATES.txt for
+            the remaining ones (real field objectives without a coordinate source).
+
+
+    Experimental: gather routes
+        Simply: You pick a resource - an ore, a herb, a gas cloud or a kind of chest - and
+            Sku walks you through the zone node by node, always the nearest one first.
+            Where the path data covers the node it takes a real route; where it does not
+            you get a straight beacon and Sku says so - a beacon can point through a wall,
+            a route cannot. While flying it never routes: up there the straight line is
+            the right answer, not the fallback.
+            At the node Sku waits briefly while you gather, then moves on. The keybind
+            "next route waypoint" (Ctrl+Shift+W by default) skips the current node while a
+            gather route is running, so no new key is needed.
+            With the matching tracking active (Find Minerals, Find Herbs) the minimap
+            scanner checks on approach whether the node is actually still there, and skips
+            mined-out ones with an announcement of its own. Without tracking the route
+            still runs, just without that check.
+            Found under Settings -> Scan -> resource scanning -> Gather routes, together
+            with the check radius, the number of nodes per route and the switch for the
+            check itself. For ore, herbs and chests "Show herb and mining node waypoints"
+            has to be on in the navigation settings - otherwise those nodes do not exist
+            as waypoints at all, and Sku says exactly that on start rather than wrongly
+            declaring the zone empty. Gas clouds do not need the setting.
+        Important: This feature is explicitly experimental. It has only been tried in game
+            in outline, and the "is the node still there" check could not be exercised
+            under real conditions at all, because no character here has a gathering
+            profession - without Find Minerals or Find Herbs there are no blips on the
+            minimap for the scanner to read. If you play Mining or Herbalism: please try
+            it and report what goes wrong.
+        Technically: The idea and the reference implementation come from ZenqFR, from the
+            companion addon SkuGatherRoute (github.com/ZenqFR/Sku-GatherRoute); the route
+            mechanics were devised and demonstrated there - a waypoint family under one
+            shared base name, every node reached over a close route, a distinct
+            announcement for every transition, and the existing keybind as the skip key.
+            Here the feature is rebuilt natively with ZenqFR's agreement, so that no
+            additional addon is required.
+            One difference is deliberate: the original requires GatherMate2, this version
+            does not. We see no advantage in that dependency - the nodes have long been in
+            SkuNav's waypoint cache complete with world coordinates, and named so that the
+            resource IS the waypoint's base name; a second data source and a second addon
+            would add nothing to that while costing every user another install. Should
+            GatherMate2 do something we have overlooked - self-recording of nodes actually
+            gathered would be the candidate - then please tell us what for, and we will
+            look at it.
+            The presence check hooks MinimapScanner:MinimapScanFastStop, the one point
+            every scan funnels through. With "notify on resources" on, the scan that is
+            running anyway is enough; otherwise the route scans by itself, throttled and
+            only within range of the target, and those scans stay silent. A hit confirms,
+            a miss proves nothing - a scan only ever reports one name and may have caught
+            a different blip. Only after several unsuccessful scans in range does a node
+            count as gone. When in doubt it never skips: a node wrongly kept costs a few
+            steps, a node wrongly skipped is never noticed at all.
+
+    The menu stays usable while you walk
+        Simple: If you opened the menu while walking, it came up and said "menu opened",
+            but no key did anything any more - no arrow, no letter, no Enter. Only Escape
+            got through. It only became usable once you stood still. That is fixed: an
+            open menu now accepts keys whether you are walking, running or auto-running.
+        Technically: There were two movement gates, not one. The first prevents the menu
+            from OPENING while a movement key is held down - that one stays, and it is
+            needed: the menu's bindings would swallow the key-up and you would run on
+            forever. Auto-run has been exempt from it since v42.00 (its own AutoRun flag,
+            which IsPlayerMoving deliberately does not read). The second sat in the menu's
+            own key handler and, as long as a movement latch was set, let every keypress
+            except Escape expire. That second gate buys nothing: once the menu is open the
+            bindings already own the keys, so discarding the press stops no movement - it
+            only deadens the menu, and on top of that stamps "open later" on a menu that is
+            already open, which the reopen loop then has to clear again. It now applies
+            only when the menu is NOT open. The four remaining open-gates also write a line
+            to the debug log naming the movement key that is holding them - before, they
+            were silent, and a report of "the menu would not open while walking" left no
+            trace at all.
+
+    Navigation: "Current map by distance" now comes first
+        Simple: Under "Direct waypoint", "Recent" was first and "Current map by distance"
+            second. The two are swapped - the list of waypoints in the current zone is the
+            more common way in, and it now sits directly under the cursor.
+        Technically: Purely the order of the injections in SkuNav:MenuBuilder. "Recent"
+            remains tied to a non-empty list of recently used waypoints; when that list is
+            empty, "Current map by distance" is first anyway, as it was before.
+
+    The type-ahead filter ignores accents
+        Simple: In every list you can narrow down by typing, accented letters were treated
+            as characters of a different language. On a French client "general" found
+            nothing even though "Fournitures generales" was right there, and "ingenieur"
+            did not find "Ingenieur" - while "ing" did. German was hit too: an entry
+            starting with a capital umlaut could never be reached through the filter. Now
+            the letter counts, not the accent. On top of that, the u key on a French AZERTY
+            keyboard now types into the filter as well - it is the only accented letter
+            that keyboard delivers as a real key event.
+        Technically: string.lower in Lua is byte-wise and maps A-Z and nothing else, so it
+            never folds an accented character on either side of the comparison.
+            SkuMenuFilterMatch (used by both ApplyFilter and JumpToFilterMatch) and
+            SettingsSearchMatch now fold the entry name and the typed query to unaccented
+            ASCII before comparing; only 2-byte Latin-1 Supplement and Latin Extended-A
+            sequences are touched, and pure ASCII takes a fast path. Strictly more
+            permissive than before: nothing that matched stops matching. The two
+            string.find calls also pass plain=true now - the typed query was being read as
+            a Lua pattern, so an input like "50%" or "(long" found nothing or threw.
+            The accent folding comes from PR #9 (ZenqFR), the u key from PR #13 (Naxedim).
+
+    Action bars: the spell tooltip is read out again
+        Simple: In the action bar menu (Shift-F11), Shift-Down on a spell in the assignment
+            list read out nothing at all. The tooltip is back - as it is for a key's current
+            content and for the two pet ability reads next to it, which had the same
+            weakness.
+        Technically: Two independent causes, both addressed because neither could be ruled
+            out from the code alone. First, SkuScanningTooltip is created once at login with
+            no template and shared by every module; whatever used it last can leave it
+            without a usable owner, after which every Set* call populates nothing -
+            silently, with no error. It is now re-owned immediately before being populated.
+            Second, SetSpellByID was handed the third return of GetSpellBookItemName, which
+            on this client follows the Classic signature and returns only (name, rank) - the
+            id is a retail addition and was nil. The id now comes from GetSpellBookItemInfo,
+            and the tooltip is populated with SetSpellBookItem, which needs no id at all.
+            The read is also pcall'd, since it runs on every cursor move. From PR #10
+            (ZenqFR).
+
+    Quest target: the place was in the data, but never found
+        Simple: 174 quests that ask you to explore a spot or use something there answered
+            nothing but "Empty" under "Quest target". The entry now leads to the nearest
+            route waypoint at that place.
+        Technically: GetTriggerEndWps composed a waypoint NAME
+            ("<quest>;<zone>;<quest target>;<x>;<y>") and resolved it through the
+            exact-name lookup in the waypoint cache. But nothing generates a waypoint under
+            that name - unlike creature and object spawns - so it only ever hit if someone
+            had authored one by hand into the route data: exactly one exists (quest 10211,
+            Shattrath). The composed name is still used whenever it resolves; otherwise
+            geometry takes over - map coordinates to world coordinates, then the nearest
+            real ROUTE waypoint. GetNearestWpToCoords2 gained an optional typeId filter for
+            that, so the fallback does not land in the ~145,000 generated spawn points,
+            plus a guard for a missing continent bucket where pairs(nil) threw. Every
+            coordinate pair of every zone is read now instead of only the first, and the
+            result is memoised per waypoint-cache generation.
+
+    French: the waypoint comments speak again - and now in French
+        Simple: The comments on waypoints - among them the safety-critical ones such as
+            "careful, from here the route runs along the edge of a gorge", "wait here for
+            the zeppelin" or "this NPC moves" - had been completely silent on a French
+            client since v42.11. They speak again, and they now speak French: 207 texts
+            sitting on 546 waypoints.
+        Technically: The route data carries lComments for enUS and deDE only (~296
+            waypoints). SkuNav:PlayWpComments read comments[Sku.Loc] with no fallback.
+            Until v42.11 Sku.Loc was "enUS" on a French client because no frFR locale
+            existed, and you heard the English texts; since locales/frFR.lua ships, Sku.Loc
+            is "frFR", the lookup is nil, and the function returns without a word. New
+            Sku.locList (SkuUtil.lua), the list counterpart of Sku.locStr, returns the
+            first NON-EMPTY list among Sku.Loc / enUS / deDE. Non-empty matters, because
+            SkuMM.lua materialises an empty comments[Sku.Loc] on every waypoint it draws -
+            a plain or chain would latch onto that. The translation is made from the GERMAN
+            original, not via the English: the English lost detail on exactly these safety
+            texts (the gorge warning without "you walk on the edge" and without the
+            direction of travel, "extremely narrow bridge with a ravine" reduced to
+            "extremely narrow bridge"), and several English entries are empty, including
+            the lethal-elevator warning that sits on eight waypoints.
+
+    French: resource names and the Cave of the Mists
+        Simple: Two faults that hit a French client only. First, 22 of the 94 minimap
+            scanner resource names were wrong - the scanner matches them against the game's
+            tooltip, so a wrong name means that node is never announced, with no error.
+            Second, inside the Cave of the Mists the waypoint list stayed empty, while a
+            route started outside kept running.
+        Technically: Each of the 22 names was adjudicated against a source independent of
+            both addons: 19 through SkuDB's own frFR tables (imported from Questie's
+            Blizzard strings), three through Wowhead's tooltip API. For the cave, Geo.lua
+            compares GetMinimapZoneText() verbatim against L["Cave of the Mists"]; the
+            generated frFR locale held "Grotte des Brumes", a free translation - the client
+            says "Caverne des Brumes". The compare was therefore dead, uiMap stayed on the
+            continent, GetAreaIdFromUiMapId answered -1 and GetCurrentAreaId nil, so
+            ListWaypoints2 bailed out. The value was read with /szp in the zone, not
+            translated, and now sits both in the generated file and in the TSV store it is
+            assembled from - together with the note that it must not be translated freely.
+            From PRs #14 and #16 (Naxedim).
+
+    Turn to beacon: more accurate, and with lead
+        Simple: The automatic turn to the beacon (T) now lands much more accurately. It
+            used to run so fast that stopping it on a frame boundary alone could cost
+            twenty degrees of overshoot or more, depending on your frame rate. The speed
+            now follows the size of the turn, and no turn takes longer than a quarter
+            second. While you are moving it also leads: it aims at where the waypoint will
+            be when the turn ends - which ends the circling around nearby waypoints that
+            showed up mostly when mounted and in flight. And a press during a turn that is
+            already running is discarded instead of aborting that turn halfway; pressing
+            repeatedly still refines as it always did.
+        Technically: Four parts, tested together. The snap to the default camera before the
+            turn stays - it is load-bearing for the yaw, without it the angle is wrong. The
+            turn speed is capped from the remaining angle instead of running flat out. The
+            lead computes from the current speed and the expected duration of the turn
+            where the waypoint will be at the end. Plus a guard against the fault where,
+            after turns triggered in quick succession, the camera keys' turn speed could
+            stay quadrupled for good.
+
+    The installer remembers where your WoW is
+        Simple: The installer looks for the game in the usual places - Program Files, plus a
+            handful of likely folders on C, D and E. Anyone whose WoW sits anywhere else had
+            to browse to the folder by hand, and not once but on EVERY update: the installer
+            forgot the answer the moment it closed. It now writes the folder down after an
+            install has gone through, and starts there the next time. Showing it one client
+            also finds the other one beside it, so a Classic Era next to an Anniversary on
+            the same unusual drive is picked up by itself. If the game later moves or is
+            uninstalled, the note is dropped and the search runs as it did before. The
+            installer is version 4.5 with this.
+        Technical: New PathMemory.cs. The install manifest could not serve for this -
+            SkuInstall.json lives INSIDE the AddOns folder, so reading it presupposes having
+            already found the folder we are trying to remember. Each client's folder is
+            therefore written as a plain "product=path" line into SkuPaths.txt, in two
+            places: %LOCALAPPDATA%\SkuUpdater, beside the persistent updater copy the "Sku
+            Updater" shortcut launches, and %ProgramData%\SkuUpdater as a machine-wide
+            mirror. The mirror is not redundancy for its own sake: the installer requests
+            elevation, so a standard user who answers the UAC prompt with someone else's
+            admin credentials runs the whole program under that other profile and would
+            otherwise write the note into a LOCALAPPDATA they never see again. On the next
+            run a remembered folder outranks detection - it is a decision, while detection is
+            a guess over a short list of drives - and its base directory is prepended to the
+            probe list, which is what makes remembering one client pay off for the other.
+            Guards against a stale note: the folder must still exist, and its .flavor.info
+            must not now report a different client; either way the note is ignored rather
+            than sending an install somewhere dead. Written only after a client has installed
+            cleanly, so a cancelled or failed run leaves nothing on record. Plain text on
+            purpose - it can be read out and corrected in Notepad, and deleting a line
+            restores auto-detection for that client. New headless check "SkuSelfTest
+            pathmemory": it prints what the machine has on record and round-trips the write,
+            read and stale cases against a throwaway store, never touching the real one.
+
+    The reading window can be configured
+        Simple: Quest text, tooltips, the chat history and the wiki pages all end up in the same
+            reading window. How that window looked was fixed in the code: Playfair Display at 12
+            point, a thin serif face at the smallest size the addon uses anywhere. For someone
+            with residual vision that was the most important surface in the addon and at the same
+            time the hardest to read. Settings -> Visual aids -> Text window now offers font sizes
+            from 14 to 44 point, four fonts, four color pairs (white on black, yellow on black,
+            black on white, white on blue), the background opacity and an outline. Out of the box
+            the window now runs in a sans serif face at 18 point, so even without changing
+            anything it is considerably easier to read than before.
+        Technically: The surface itself belongs to Libs/SkuTTS-1.0 (frame SkuTTSMainFrame with its
+            FontString .FS), where the appearance was a single hardcoded SetFont call. The
+            settings now live in SkuCore VisualAids under visualAids.textWindow, and SkuTTS:Output
+            calls VisualAids:TextWindowLayout before each show - pcall-guarded and in the same
+            direction in which SkuZOptions already feeds the reading bar. That way the lib needs
+            to know nothing about the options, and a disabled Visual aids module simply leaves the
+            window looking as it did. Every font assignment is checked and falls back to the
+            client's standard font rather than leaving a blank surface - the two bundled families
+            Raleway and Playfair live under Libs/SkuTTS-1.0/fonts and ship only in the release
+            ZIP. The size steps are deliberately smaller than the reading bar's: a whole quest
+            text goes here, and the window has no scrollbar, so it clips at the bottom sooner the
+            larger the font gets. Everything is still spoken in full; the display is the second
+            track.
+
+    The reading bar shows what Sku says - and it works in combat
+        Simple: Two things at once. First, the bar stayed empty in combat, which is exactly when
+            reading along matters most. Second, it showed only the name of a menu entry: on an
+            on/off switch you got the name but not the state, on a bag line the name but not the
+            count - everything Sku additionally reads out was missing from the bar. Both are
+            fixed; the bar now shows the same line Sku speaks, and it does so in the middle of
+            combat too. On top of that its font and color pair are now selectable as well, with
+            values of its own alongside the text window's.
+        Technically: The combat lockout was a confusion of visible with open: the check hung off
+            SkuOptions:IsMenuOpen(), which tests OnSkuOptionsMain:IsVisible(). That frame is an
+            ancestor of the secure ENTER buttons and therefore protected, so its Show() is blocked
+            in combat - the combat menu deliberately runs headless and reports through
+            SkuOptions.combatMenuActive instead. templates.lua and SkuZOptions already check
+            exactly that pair; the reading bar simply did not know about it. The bar itself is an
+            ordinary frame with no secure children, so its Show() was never the problem in combat.
+            Because the combat path only closes the menu logically (the frame Hide is protected
+            there) and does so at six different sites, the bar now hides itself: an OnUpdate
+            checks every 0.25 s whether the menu is still open - WoW runs OnUpdate only on visible
+            frames, so it costs nothing while hidden. The content was simply a discarded
+            parameter: the caller always passed the complete spoken string, yet
+            currentMenuPosition.name was displayed instead. The passed string now takes
+            precedence, and the semicolons of the speech separator become dashes for display.
+
+    Nameplates: the settings the game hides
+        Simple: The client has long been able to draw its nameplates bigger, more colorful and
+            with more contrast - it just never offers it. Blizzard's own options window shows not
+            one of these settings in Classic; the checkbox for larger nameplates that current WoW
+            has is explicitly left empty in Classic. Without Sku you could only reach them through
+            console commands. The new menu under Settings -> Visual aids -> Nameplates makes them
+            available: nameplate size, target emphasis, dimming of all other plates, class colors
+            for enemies and allies, and names only for friendly players. Unlike the older
+            nameplate coloring this does not paint something behind the plate but changes the real
+            plate itself. Out of the box everything sits exactly where the client ships it -
+            choose nothing and nothing changes.
+        Technically: Pure CVar settings, no frame of our own, no taint. Nameplate size sets
+            nameplateMinScale and nameplateMaxScale together (setting them apart would produce
+            distance-dependent scaling, which nobody wants here), emphasis sets
+            nameplateSelectedScale, dimming nameplateMinAlpha, plus nameplateShowClassColor,
+            nameplateShowFriendlyClassColor and nameplateShowOnlyNameForFriendlyPlayerUnits. Every
+            value and the existence of each individual CVar was measured against the live client
+            2.5.6.69546, and the 2.0 ceiling checked against the client's clamping. Important for
+            future work: the extracted BlizzardInterfaceCode in the client folder is a March/April
+            2026 dump and therefore older than the July nameplate change; it names retail CVars
+            such as NamePlateVerticalScale or ShowClassColorInNameplate that do not exist in this
+            exe at all. The exe strings are what counts. CVar writes are blocked in combat and
+            fail silently, so a change made there is remembered and applied at
+            PLAYER_REGEN_ENABLED. Sku re-applies the values at login, but only once something has
+            actually been chosen in the menu - anyone who set their nameplates by hand through the
+            console keeps them untouched.
+
+    Nameplate coloring survives a restart
+        Simple: If you switched nameplate coloring on, you had it exactly until you logged in
+            again or reloaded the interface. After that the switch still read as on, but nothing
+            was colored any more. The only way to get it going again was to flip the switch off
+            and on by hand - once per session, every session. That is fixed; the setting now
+            simply works.
+        Technically: Arming the event driver (NAME_PLATE_UNIT_ADDED, _REMOVED and
+            PLAYER_TARGET_CHANGED) hung exclusively off the menu switch's OnAction. The stored
+            value was read at load but applied nowhere, so after every login not a single event
+            was registered. Arming now sits in VisualAids:OnEnable, where the follow warning and
+            the next-enemy button have always been armed, with a delayed second attempt in case
+            the profile is not up yet on the first pass.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

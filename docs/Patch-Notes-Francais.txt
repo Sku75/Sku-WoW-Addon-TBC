@@ -12,48 +12,114 @@ Changements dans Sku v43.2
     Aperçu
 
         Nouveautés
-            Nouveau raccourci « Annoncer l'infobulle complète de la cible » (Ctrl+Maj+V) : lit à voix haute l'infobulle complète de la cible actuelle, y compris ce que révèle la compétence de chasseur Connaissance des bêtes.
             Les quêtes peuvent être suivies ou retirées du suivi depuis le menu de quête - nouvelle entrée « Suivre la quête » en bas de chaque menu de quête, désactivable.
+            Nouvelle liste « Quêtes à proximité » dans le menu de quête : tout le journal de quêtes en une seule liste, triée selon la distance de ce qui compte pour chaque quête - avec la distance et le point cardinal. Désactivée par défaut.
             Nouveau raccourci « Cibler la créature de quête la plus proche » (Alt+H) : cible une créature liée à un objectif de quête en cours - y compris celle qui se contente de faire tomber un objet requis.
             Le raccourci « Ennemi suivant en combat » (désormais sur Ctrl+H par défaut) trouve bien plus souvent quelque chose : il ne dépend plus du cône de vue.
-            Nouvelle liste « Quêtes à proximité » dans le menu de quête : tout le journal de quêtes en une seule liste, triée selon la distance de ce qui compte pour chaque quête - avec la distance et le point cardinal. Désactivée par défaut.
+            Nouveau raccourci « Annoncer l'infobulle complète de la cible » (Ctrl+Maj+V) : lit à voix haute l'infobulle complète de la cible actuelle, y compris ce que révèle la compétence de chasseur Connaissance des bêtes.
             Menu des sacs : nouvelle entrée « toute la banque » juste après « tous les sacs » tant que la banque est ouverte - tout le contenu de la banque en une seule liste à plat, exactement comme « tous les sacs » pour vos sacs. Ctrl+Entrée y déplace un objet vers vos sacs, comme il le faisait déjà dans chaque sac de banque.
             Chat : la ligne de saisie parle désormais comme tout autre champ de saisie de Sku - chaque caractère tapé, le caractère ou le mot sous le curseur, et avec la flèche haut les derniers messages envoyés, pour les renvoyer ou les modifier.
-            Chat : le canal cible est annoncé dès qu'il n'est pas « Dire » - à l'ouverture et à chaque changement.
+            Chat : le canal cible est annoncé dès qu'il n'est pas « Dire » - à l'ouverture et à chaque changement ; désactivable dans les réglages du chat, activé par défaut.
             Chat : une commande slash inconnue est maintenant annoncée au lieu d'être ignorée en silence.
+            Nage et vol : Sku vous maintient à l'horizontale. Le nouveau verrouillage de l'inclinaison met fin à la plongée insidieuse lors des virages automatiques, et après une approche automatique vers un PNJ ou un appui sur monter/descendre, vous êtes activement redressé. Activé par défaut ; désactivable sous Paramètres -> Général.
+            Nouveau raccourci « verrouillage de l'inclinaison en nage et en vol » (Ctrl+Maj+N) : verrouille et libère l'inclinaison manuellement - l'éteindre puis le rallumer vous remet à l'horizontale à tout moment.
+            Expérimental : itinéraires de récolte pour les minerais, les herbes, les nuages de gaz et les coffres - Sku vous guide de gisement en gisement à travers la zone, le plus proche d'abord. Sous Réglages -> Scan -> analyse des ressources -> Itinéraires de récolte. Nouveau et à peine testé en jeu ; vos retours sont expressément souhaités.
+            Nouveau menu « Barres de nom » sous Réglages -> Aides visuelles : taille des barres, mise en évidence de la cible, couleurs de classe et atténuation des autres barres - des réglages que le jeu sait faire mais n'offre nulle part dans sa propre fenêtre d'options.
+            La fenêtre de lecture des textes de quête, infobulles, historique de discussion et wiki devient configurable : taille de police, police, couleurs, opacité et contour sous Réglages -> Aides visuelles -> Fenêtre de texte.
 
         Changements
+            Se tourner vers la balise (T) : la rotation est désormais nettement plus précise. Avant, elle tournait si vite que le simple arrêt à la trame près pouvait coûter 20 degrés et plus de dépassement selon la fréquence d'images ; la vitesse s'adapte maintenant à l'ampleur de la rotation, et aucune rotation ne dure plus d'un quart de seconde.
+            Se tourner vers la balise : en mouvement, la rotation anticipe - elle vise l'endroit où se trouvera le point de passage à la fin de la rotation. Cela met fin aux tours en rond autour des points proches, surtout connus en monture et en vol.
+            Se tourner vers la balise : un appui pendant une rotation en cours est ignoré au lieu d'interrompre la rotation - appuyer plusieurs fois continue d'affiner comme avant.
+            Navigation : sous « Point de passage direct », « Carte actuelle par distance » vient désormais en premier et « Récent » en second.
+            Base de données des quêtes : « Commence dans la zone » affiche directement la liste triée par distance - le niveau intermédiaire « Par distance » a disparu.
+            Base de données des quêtes : « Commence dans la zone » indique désormais aussi le point cardinal de chaque quête, et non plus seulement la distance.
+            Base de données des quêtes : mise au niveau des données actuelles de Questie - 33 quêtes sans cible en ont désormais une, cinq quêtes manquantes ajoutées, plus environ 2000 petites corrections de noms, niveaux, donneurs de quête et prérequis.
             Sacs : après un clic droit sur un objet, le curseur reste sur cet objet au lieu de sauter en tête de liste.
             Sacs : les actions avec temps d'incantation (enchantement, appât de pêche, huile d'arme, kit d'armure, désenchantement) annoncent à nouveau l'objet une fois l'incantation terminée et y laissent le curseur.
             Sacs : une boîte de dialogue de confirmation comme « Remplacer l'enchantement existant ? » ne coûte plus la position - après « Oui » comme après « Non », on revient sur l'objet.
-            Menu : la fermeture d'une fenêtre ne reconstruit plus les données du menu qu'une seule fois au lieu de six.
-            Auras : un enchantement d'arme (appât de pêche, poison, huile) s'adresse désormais comme un sort - l'événement « Enchantement d'arme expiré » avec « nom du sort ».
-            Auras : nouvelle condition et nouvelle sortie « main de l'enchantement d'arme » (main droite ou main gauche).
-            Base de données des quêtes : « Commence dans la zone » affiche directement la liste triée par distance - le niveau intermédiaire « Par distance » a disparu.
-            Base de données des quêtes : « Commence dans la zone » indique désormais aussi le point cardinal de chaque quête, et non plus seulement la distance.
             Chat : « Ajouter le lien au chat » insère l'objet à la position du curseur au lieu de remplacer la ligne, et laisse le curseur devant - un canal comme « /p » tient donc encore avant.
             Chat : un lien d'objet compte pour un seul caractère à la lecture - les flèches gauche et droite franchissent tout le lien et en disent le nom.
             Chat : « Ajouter le lien au chat » ne ferme plus les sacs.
             Chat : les flèches déplacent le curseur de texte dans la saisie du chat ; désactivable dans les paramètres du chat.
+            Auras : un enchantement d'arme (appât de pêche, poison, huile) s'adresse désormais comme un sort - l'événement « Enchantement d'arme expiré » avec « nom du sort ».
+            Auras : nouvelle condition et nouvelle sortie « main de l'enchantement d'arme » (main droite ou main gauche).
+            Menu : la fermeture d'une fenêtre ne reconstruit plus les données du menu qu'une seule fois au lieu de six.
+            Menu : le filtre de saisie ignore les accents - « general » trouve maintenant « Fournitures générales », et « ingenieur » trouve « Ingénieur ». Sur un clavier AZERTY, la touche ù alimente désormais aussi le filtre.
+            Français : les commentaires de points de passage existent maintenant en français - 207 textes sur 546 points de passage, traduits depuis l'original allemand.
+            Programme d'installation : un WoW installé à un endroit inhabituel ne doit être indiqué qu'une seule fois - le programme d'installation retient désormais où se trouve chaque client et le retrouve tout seul à chaque mise à jour ultérieure.
+            La fenêtre de lecture démarre désormais dans une police sans empattement en 18 points au lieu de Playfair Display en 12 - l'ancien réglage par défaut était la surface de texte la plus petite et la plus fine de tout l'addon.
+            La barre de lecture se règle elle aussi en police et en couleurs, avec ses propres valeurs distinctes de celles de la fenêtre de texte.
 
         Corrections
+            Menu : pendant la marche, un menu ouvert était comme mort - toutes les touches sauf Échap étaient avalées jusqu'à l'arrêt complet.
             Échap ne fermait pas le menu lorsqu'on se tenait juste sur un objet de quête - la fenêtre de quête se rouvrait sans fin.
+            Menu : Entrée sur une entrée activé/désactivé dans une liste filtrée annonçait la première entrée de la liste au lieu de l'état basculé.
+            Menu : une ligne redemandée par une touche est relue au lieu d'être avalée.
+            Menu : le filtre de saisie interprétait le texte tapé comme un motif de recherche - une saisie comme « 50% » ou « (long » ne trouvait rien ou échouait.
+            Écho clavier : les caractères tapés sont annoncés immédiatement ; plus de lettres avalées ni en retard.
+            Synthèse vocale : les annonces devenaient régulièrement muettes pendant un moment lors de la navigation - surtout sur un résultat unique après filtrage.
+            Sortie vocale : les liens d'objet étaient lus comme une suite de codes de couleur au lieu de leur nom - partout dans Sku, pas seulement dans le chat.
+            Se tourner vers la balise : après des rotations déclenchées coup sur coup, la vitesse de rotation des touches de caméra pouvait rester quadruplée en permanence.
+            La suppression d'un point de passage personnel retirait le mauvais identifiant interne, et « /skucheck wp » signalait quatre erreurs sur les points de passage rapides qui n'en étaient pas.
+            Menu de quête : pour les quêtes à objectifs mixtes (« tuer X et ramasser Y »), l'entrée « Cible de quête » ne montrait que le premier type d'objectif - ennemis, sources d'objets et point d'exploration figurent désormais côte à côte.
+            Menu de quête : pour 174 quêtes dont l'objectif est un LIEU, le lieu figurait bien dans les données, mais « Objectif de quête » ne répondait que « Vide » - la recherche portait sur un point de passage dont personne n'attribue jamais le nom. Le point de passage de route le plus proche est désormais calculé à partir des coordonnées.
+            Pour 77 AUTRES quêtes, les données d'objectif manquaient en revanche totalement - objets, créatures et 26 coordonnées de lieu y ont été ajoutés, une partie provenant de sources web : vos retours sur leur exactitude sont les bienvenus.
+            Menu de quête : environ 300 quêtes dont le donneur, la cible ou la remise se trouve dans un donjon affichaient des entrées vides - elles mènent désormais à l'entrée du donjon.
+            Treize quêtes de dialogue (dont les anciennes quêtes de sorts de prêtre) n'avaient aucun point de remise dans les données - l'entrée Livraison mène désormais au PNJ que nomme le texte de la quête.
+            Base de données des quêtes : juste après un /reload, des quêtes d'événements mondiaux inactifs (par exemple les quêtes du Solstice d'été) pouvaient apparaître dans « Commence dans la zone ».
+            Base de données des quêtes : la liste « Commence dans la zone, Par distance » s'interrompait après la première quête.
             Sacs : le filtre de saisie restait bloqué après l'utilisation d'un objet et ne pouvait plus être levé qu'en fermant les sacs.
             Après une action avec temps d'incantation, un mauvais objet était annoncé juste après le bon.
             La liste des sacs tenue pour le combat pouvait se périmer lorsqu'on fermait une fenêtre de quête alors que les sacs étaient ouverts.
-            Synthèse vocale : les annonces devenaient régulièrement muettes pendant un moment lors de la navigation - surtout sur un résultat unique après filtrage.
+            Menu des sacs : avec un addon de remplacement des sacs comme Bagnon, qui masque la fenêtre de banque de Blizzard, tous les compartiments de banque disparaissaient du menu.
             Auras : le buff Rassasié figurait deux fois dans le sélecteur de sorts - les deux entrées sonnaient pareil et une seule pouvait se déclencher.
             Auras : les entrées qui n'existent que comme enchantement d'arme (par exemple « Compétence Pêche +75 ») sont désormais signalées comme telles dans les sélecteurs.
             Auras : « enchantement d'arme main droite contient X » avec « Enchantement d'arme expiré » ne pouvait jamais se déclencher - /skucheck auras signale désormais cette combinaison.
             Auras : la fin d'un enchantement d'arme est détectée à la frame près au lieu d'un quart de seconde plus tard.
-            Menu : Entrée sur une entrée activé/désactivé dans une liste filtrée annonçait la première entrée de la liste au lieu de l'état basculé.
+            Barres d'action : Maj+Bas ne lisait plus l'infobulle du sort dans le menu d'affectation.
             Navigateur de donjons : accepter une invitation de groupe ne vous dépose plus tout seul dans le navigateur de donjons.
-            Base de données des quêtes : la liste « Commence dans la zone, Par distance » s'interrompait après la première quête.
-            Menu des sacs : avec un addon de remplacement des sacs comme Bagnon, qui masque la fenêtre de banque de Blizzard, tous les compartiments de banque disparaissaient du menu.
-            La suppression d'un point de passage personnel retirait le mauvais identifiant interne, et « /skucheck wp » signalait quatre erreurs sur les points de passage rapides qui n'en étaient pas.
-            Écho clavier : les caractères tapés sont annoncés immédiatement ; plus de lettres avalées ni en retard.
-            Menu : une ligne redemandée par une touche est relue au lieu d'être avalée.
-            Sortie vocale : les liens d'objet étaient lus comme une suite de codes de couleur au lieu de leur nom - partout dans Sku, pas seulement dans le chat.
+            Français : les commentaires de points de passage étaient totalement muets depuis la v42.11 - y compris les avertissements comme « attention, ravin » ou « attendre le zeppelin ici ».
+            Français : 22 des 94 noms de ressources du scanner de minicarte étaient erronés, ces gisements n'étaient donc jamais annoncés.
+            Français : dans la Caverne des Brumes, la liste des points de passage restait vide.
+            La coloration des barres de nom était morte après chaque connexion et chaque rechargement : l'interrupteur indiquait « activé », mais plus rien n'était coloré tant qu'on ne le basculait pas deux fois à la main.
+            La barre de lecture restait invisible en combat - précisément quand elle est la plus utile.
+            La barre de lecture n'affichait que le nom d'une entrée de menu, pas la valeur lue ensuite - les états d'interrupteur et les quantités étaient audibles mais pas lisibles.
+
+    Nage et vol : le verrouillage de l'inclinaison met fin à la plongée involontaire
+        Simple : En nageant ou en volant, chaque virage automatique vers la balise tirait un peu
+            vers le bas - sur une longue distance, cela s'additionnait jusqu'à se retrouver sous
+            l'eau ou au sol sans s'en apercevoir. Désormais Sku verrouille l'inclinaison dès que
+            vous nagez ou volez : vous vous déplacez parfaitement à l'horizontale, et Espace et X
+            continuent de vous porter vers le haut et vers le bas. Et si quelque chose vous
+            incline malgré tout - par exemple l'approche automatique en interagissant avec un
+            PNJ - Sku vous redresse activement : à l'ouverture de la fenêtre du PNJ, peu après
+            chaque virage, et à chaque appui sur monter ou descendre. Activé par défaut ; qui
+            veut plonger à la souris en inclinant la vue (vision résiduelle) le désactive sous
+            Paramètres -> Général. S'y ajoute le nouveau raccourci « verrouillage de
+            l'inclinaison » (Ctrl+Maj+N) pour verrouiller et libérer manuellement.
+        Technique : Trois éléments. Premièrement, la variable console pitchlimit 0 plafonne
+            l'inclinaison de déplacement du personnage (la technique des addons LevelFlight et
+            FlightHUD) - posée durablement plutôt qu'autour de chaque impulsion de virage, car
+            c'est exactement cette course au basculement qui a fait échouer les tentatives
+            précédentes. pitchlimit s'écrit mais ne se lit pas ; chaque connexion rétablit donc
+            aveuglément la valeur par défaut 88, pour qu'un verrouillage ne reste jamais coincé.
+            Deuxièmement, le verrouillage ne fait que conserver ce qui est : un déplacement piloté
+            par le moteur, comme l'approche d'interaction, incline quand même le personnage, et
+            ensuite aucune touche du clavier ne permet de relever l'inclinaison. Le redressement
+            actif utilise précisément le transfert qui causait le bug à l'origine :
+            ResetView/SetView cale la caméra sur le préréglage par défaut connu, presque
+            horizontal, une impulsion mouselook le transfère au personnage, et le verrouillage
+            plafonne le petit reste à zéro. Les déclencheurs sont la fenêtre du PNJ, chaque
+            virage (différé de 0,5 s, car le moteur n'applique le transfert de cap qu'une frame
+            plus tard - une seconde impulsion immédiate annulerait le virage) et, via
+            hooksecurefunc, les fonctions monter/descendre JumpOrAscendStart, AscendStop,
+            SitStandOrDescendStart et DescendStop - quelles que soient les touches où elles sont
+            assignées. Troisièmement, un inclinomètre pour le journal : la vitesse horizontale
+            mesurée divisée par GetUnitSpeed donne le cosinus de l'angle de trajectoire - la
+            seule mesure que ce client offre (GetUnitPitch a été retiré au patch 7.1 et manque
+            ici aussi). Il mesure la trajectoire, pas l'inclinaison du corps, et ne sert qu'au
+            diagnostic.
 
     Le curseur reste sur l'objet dans le sac
         Simple : Faire un clic droit sur un objet de la liste des sacs - l'utiliser, l'équiper, le
@@ -581,7 +647,10 @@ Changements dans Sku v43.2
             annonce le canal avec eux, car une ligne rappelée ne montre pas où elle irait. Le
             canal est aussi annoncé à l'ouverture et à chaque changement, mais volontairement pas
             pour « Dire » : c'est le cas inoffensif, et l'annoncer chaque fois ne serait que du
-            bruit. Un objet dans le chat compte pour un seul caractère à la lecture au lieu de
+            bruit. Si l'annonce ne convient pas à votre façon de faire, elle se désactive dans
+            les réglages du chat ; elle est activée par défaut. La désactiver retire aussi le
+            canal devant une ligne rappelée avec la flèche haut.
+            Un objet dans le chat compte pour un seul caractère à la lecture au lieu de
             soixante-cinq caractères de balisage. Et une commande mal tapée comme « /tets » dit
             maintenant « commande inconnue » au lieu de ne rien faire.
         Technique : L'écho clavier des champs propres à Sku s'attache maintenant aussi aux champs
@@ -658,6 +727,468 @@ Changements dans Sku v43.2
             annonce comme déclenchée par une touche, et le garde-fou laisse toujours passer les
             lignes marquées. Les répétitions superflues restent écartées, désormais quelle que
             soit leur rapidité.
+
+    Les quêtes à objectifs mixtes montrent tous les types d'objectifs
+        Simple : Pour une quête comme « tuez 8 loups ET ramassez 5 peaux », l'entrée « Cible
+            de quête » du menu de quête ne montrait que le premier type d'objectif - le plus
+            souvent les ennemis ; les sources de l'objet à ramasser, ou un point
+            d'exploration, manquaient en silence. 95 quêtes étaient concernées. Tous les
+            types d'objectifs figurent désormais côte à côte dans une seule liste, et le
+            raccourci « Cibler la créature de quête la plus proche » connaît lui aussi les
+            deux moitiés de ces quêtes. Corrigé au passage : une quête qui n'a qu'un point
+            d'exploration et aucune autre donnée d'objectif reçoit enfin une entrée « Cible
+            de quête », et un point d'exploration irrésoluble ne produit plus une entrée qui
+            se contente d'annoncer « vide ».
+        Technique : SkuQuest:GetQuestTargetIds était une chaîne de elseif sur les listes
+            d'objectifs de la base de données (créatures, sinon objets, sinon objets à
+            ramasser, ...) et ne pouvait, par sa signature même, renvoyer qu'UNE liste avec
+            UN type. Remplacée par GetQuestTargetGroups : un tableau de groupes
+            {targets, type} - créatures fusionnées avec les crédits de mise à mort
+            dédupliqués, objets, objets à ramasser et, pour les seuls appelants objectives,
+            le point triggerEnd de la quête. Les sept sites d'appel sont convertis (menu de
+            quête, cache des points de passage, marqueurs de quête, touche de cible de
+            quête) ; l'ancien nom demeure comme enveloppe premier-groupe pour le port
+            WowVision. La branche item de GetResultingWps est en outre protégée contre les
+            identifiants d'objets inconnus - elle indexait sans vérification et laissait la
+            construction du menu mourir en un silencieux « liste vide ».
+
+    Base de données des quêtes mise au niveau actuel de Questie
+        Simple : La base de données de quêtes intégrée à Sku provient de Questie et datait
+            d'environ deux ans. Après la synchronisation, 33 quêtes dont la « Cible de
+            quête » restait vide ont de vraies cibles (les jeux de cartes de Sombrelune, les
+            quêtes répétables d'Ogri'la et de l'Œil pourpre, « Trouver le maître des
+            clés »), les six quêtes « Enquêter sur le Fléau » ont désormais des points
+            d'exploration, cinq quêtes manquantes ont été ajoutées, et environ 2000
+            enregistrements portent de petites corrections de noms, niveaux, donneurs de
+            quête et chaînes de prérequis. Vérifié : les corrections sont identiques pour
+            Era et TBC, la mise à jour est sûre sur les deux.
+        Technique : Une fusion sémantique, pas une copie d'octets (nouvel outil
+            dev/rework-docs/_refresh_questdata_from_questie.py, puis _db_convert.py) : le
+            schéma de Questie diverge à partir du champ 27, seuls les champs 1-26 sont
+            repris ; les champs propres à Sku, extraObjectives et skuData, sont préservés
+            par enregistrement. La convention requiredRaces (ancien masque toutes-races
+            2047, désormais 0 - identique pour la logique de Sku) compte comme égale dans
+            la comparaison, sans quoi 2117 enregistrements sans changement de contenu
+            auraient encombré le diff. Chaque identifiant de créature, d'objet et d'objet à
+            ramasser référencé a été validé contre les bases livrées (base + WotLK) ; un
+            enregistrement est resté à son ancien état pour cette raison.
+
+    Les quêtes d'événement n'apparaissent plus juste après le chargement
+        Simple : Dans les premières secondes après un /reload, des quêtes d'événements
+            mondiaux inactifs pouvaient apparaître dans « Commence dans la zone » - des
+            quêtes du Solstice d'été en août, par exemple. Une fois Questie complètement
+            chargé, elles disparaissaient d'elles-mêmes ; elles sont désormais masquées
+            aussi dans cette fenêtre.
+        Technique : Les deux barrières de disponibilité n'interrogeaient Questie qu'à
+            partir de Questie.started, et ce drapeau ne bascule qu'à la toute FIN de
+            l'initialisation de Questie. La liste noire statique de Questie,
+            QuestieCorrections.hiddenQuests - quêtes retirées du jeu plus TOUTES les quêtes
+            d'événement ; les actives ne sont dévoilées qu'après la réponse du calendrier
+            du serveur - existe pourtant bien plus tôt. IsQuestieUnavailable la lit
+            désormais directement avant started : une simple lecture de table ; le risque
+            d'empoisonnement de mémoïsation derrière la barrière started ne concerne que
+            IsDoable. La valeur « HIDE_ON_MAP » est ignorée comme le fait Questie lui-même,
+            et chaque masquage d'avant-démarrage écrit une ligne dprint dans le journal.
+
+    Les quêtes de donjon mènent à l'entrée au lieu de nulle part
+        Simple : Pour environ 300 quêtes, le donneur, la cible ou la remise se trouve
+            dans un donjon - « La vengeance de Vorrel » commence au Monastère écarlate,
+            « Willix l'importateur » se termine au Kraal de Tranchebauge. Début de quête,
+            Cible de quête et Livraison y restaient vides, car les instances n'ont pas de
+            carte du monde. Ces entrées affichent désormais « PNJ, entrée, nom du donjon,
+            zone » avec une route vers l'entrée du donjon - quêtes de champ de bataille
+            comprises (la vallée d'Alterac choisit la bonne entrée selon la faction). Les
+            sources d'un OBJET dans le même donjon sont regroupées en une seule entrée
+            « nom du donjon, entrée, zone » - « Le destin de Ramaladni » énumérait sinon
+            un à un 29 monstres de Naxxramas menant tous à la même porte ; les objectifs
+            d'élimination gardent leurs noms de monstres individuels.
+        Technique : Nouvelle table générée SkuDB.InstanceEntrances (depuis la table des
+            donjons de Questie, outil dev/rework-docs/_gen_instance_entrances.py) :
+            areaId d'instance -> entrées {zone parente, x, y, faction éventuelle}, y
+            compris les identifiants des ailes et une barrière GetBuildInfo pour les
+            déplacements d'entrées de WotLK. Les résolveurs de spawns (CreatureIdHelper,
+            branches objet et objet-ramassé de GetResultingWps) ne sautent plus les zones
+            sans carte ; ils répondent comme le détour triggerEnd de la v43.2 : convertir
+            les coordonnées de l'entrée en coordonnées du monde, prendre le point de
+            passage de route le plus proche. Mémoïsé par génération du cache de points de
+            passage ; le filtre de faction lit UnitFactionGroup.
+
+    77 quêtes à objectif de terrain ont désormais une vraie cible
+        Simple : 77 quêtes dont l'objectif est un lieu ou un objet sur le terrain (les
+            puits de Mulgore, la pierre de sélénien des druides, les pylônes de cristal
+            du cratère d'Un'Goro, la dépouille de Rolf, les quatre totems draeneï, la
+            série Dressage de bêtes des chasseurs et bien d'autres) n'avaient aucune
+            donnée de cible - l'entrée « Cible de quête » manquait tout simplement.
+            Toutes ont désormais une vraie cible routable. Important : les objets et
+            créatures viennent des données d'apparition propres de Sku, mais 26 lieux
+            proviennent de sources web (warcraft.wiki.gg, Wowhead) et n'ont pas tous pu
+            être vérifiés en jeu. Ils ont été choisis avec soin mais peuvent être
+            inexacts dans certains cas - un retour indiquant si une telle cible est
+            juste ou non aide beaucoup. Même un point imprécis vaut mieux que rien : la
+            route mène dans la bonne région.
+        Technique : Résultat de la liste de relecture
+            dev/rework-docs/QUEST-TARGET-PROPOSALS.txt (sections 1-3, relue à la main) :
+            27 cibles objet et 24 cibles créature comme entrées objectives dans
+            quests_fixes.lua (identifiants validés contre les bases propres, zones
+            d'apparition vérifiées, aucune position -1,-1 en extérieur) plus 26
+            coordonnées triggerEnd issues de la recherche web. Deux quêtes (9410, 10166)
+            portaient déjà le bon identifiant d'objet dans extraObjectives, que les
+            menus de cible ne lisent pas - le champ objectives y a été ajouté.
+
+    Treize quêtes de dialogue ont retrouvé leur point de remise
+        Simple : Treize quêtes - surtout les anciennes quêtes de sorts de prêtre (Étoiles
+            d'Élune, Grâce d'Élune, Sans peur, Maléfice de faiblesse), plus entre autres
+            « Le tome de noblesse » et « Allié des Aile-du-Néant » - n'avaient aucun point
+            de remise dans les données : ni cible ni livraison, rien n'était routable.
+            L'entrée Livraison mène désormais au PNJ que le texte de la quête nomme
+            lui-même.
+        Technique : Entrées finishedBy dans quests_fixes.lua ; les identifiants de
+            créature ont été résolus depuis le texte de quête contre la base de données des
+            créatures (chaque nom y est unique, et les points d'apparition se trouvent dans
+            la zone que le texte nomme). Les candidats proviennent du nouvel outil
+            dev/rework-docs/_quest_target_candidates.py, qui classe toutes les quêtes sans
+            cible et écrit la liste de relecture QUEST-TARGET-CANDIDATES.txt pour les
+            restantes (vrais objectifs de terrain sans source de coordonnées).
+
+
+    Expérimental : itinéraires de récolte
+        Simplement : Vous choisissez une ressource - un minerai, une herbe, un nuage de gaz
+            ou une sorte de coffre - et Sku vous guide à travers la zone, gisement après
+            gisement, toujours le plus proche d'abord. Là où les données de chemin couvrent
+            le gisement, il emprunte un véritable itinéraire ; sinon vous obtenez une
+            balise directe et Sku vous le dit - une balise peut pointer à travers un mur,
+            un itinéraire non. En vol, il n'y a jamais d'itinéraire : là-haut la ligne
+            droite est la bonne réponse, pas le pis-aller.
+            Au gisement, Sku attend brièvement pendant que vous récoltez, puis poursuit. Le
+            raccourci « point de passage suivant de l'itinéraire » (Ctrl+Maj+W par défaut)
+            ignore le gisement courant pendant un itinéraire de récolte ; aucune nouvelle
+            touche n'est donc nécessaire.
+            Si le pistage correspondant est actif (Détection des minerais, Détection des
+            herbes), l'analyseur de minicarte vérifie à l'approche si le gisement est
+            encore là, et ignore ceux déjà récoltés avec une annonce propre. Sans pistage
+            l'itinéraire fonctionne quand même, simplement sans cette vérification.
+            À trouver sous Réglages -> Scan -> analyse des ressources -> Itinéraires de
+            récolte, avec le rayon de vérification, le nombre de gisements par itinéraire
+            et l'interrupteur de la vérification. Pour les minerais, les herbes et les
+            coffres, « Afficher les points de passage d'herbes et de filons » doit être
+            activé dans les réglages de navigation - sinon ces gisements n'existent pas du
+            tout en tant que points de passage, et Sku le dit précisément au démarrage au
+            lieu de déclarer la zone vide à tort. Les nuages de gaz n'ont pas besoin de ce
+            réglage.
+        Important : Cette fonction est expressément expérimentale. Elle n'a été essayée en
+            jeu que dans les grandes lignes, et la vérification « le gisement est-il encore
+            là » n'a pas pu être exercée dans des conditions réelles, car aucun personnage
+            ici n'a de métier de récolte - sans Détection des minerais ni Détection des
+            herbes, il n'y a aucun point sur la minicarte que l'analyseur puisse lire. Si
+            vous jouez Minage ou Herboristerie : essayez et signalez ce qui ne va pas.
+        Technique : L'idée et l'implémentation de référence viennent de ZenqFR, de l'addon
+            compagnon SkuGatherRoute (github.com/ZenqFR/Sku-GatherRoute) ; la mécanique
+            d'itinéraire y a été conçue et démontrée - une famille de points de passage
+            sous un nom de base commun, chaque gisement atteint par un itinéraire proche,
+            une annonce distincte pour chaque transition, et le raccourci existant comme
+            touche pour ignorer. Ici la fonction est reconstruite nativement avec l'accord
+            de ZenqFR, afin qu'aucun addon supplémentaire ne soit nécessaire.
+            Une différence est délibérée : l'original nécessite GatherMate2, cette version
+            non. Nous n'y voyons aucun avantage - les gisements se trouvent depuis
+            longtemps dans le cache de points de passage de SkuNav, coordonnées mondiales
+            comprises, et nommés de telle sorte que la ressource EST le nom de base du
+            point de passage ; une deuxième source de données et un deuxième addon
+            n'y ajouteraient rien tout en coûtant une installation de plus à chaque
+            utilisateur. Si GatherMate2 fait quelque chose qui nous a échappé -
+            l'enregistrement automatique des gisements réellement récoltés serait le
+            candidat -, dites-nous alors à quoi cela sert, et nous y regarderons.
+            La vérification de présence s'accroche à MinimapScanner:MinimapScanFastStop, le
+            point unique par lequel passe chaque analyse. Si « notifier les ressources »
+            est activé, l'analyse déjà en cours suffit ; sinon l'itinéraire analyse
+            lui-même, de manière limitée et uniquement à portée de la cible, et ces
+            analyses restent silencieuses. Une correspondance confirme, un échec ne prouve
+            rien - une analyse ne rapporte jamais qu'un seul nom et peut avoir attrapé un
+            autre point. Ce n'est qu'après plusieurs analyses infructueuses à portée qu'un
+            gisement est considéré comme disparu. Dans le doute, rien n'est jamais ignoré :
+            un gisement conservé à tort coûte quelques pas, un gisement ignoré à tort ne se
+            remarque pas du tout.
+
+    Le menu reste utilisable pendant la marche
+        Simple : Si vous ouvriez le menu en marchant, il s'affichait et annonçait « menu
+            ouvert », mais plus aucune touche ne faisait quoi que ce soit - ni flèche, ni
+            lettre, ni Entrée. Seule Échap passait. Il ne redevenait utilisable qu'une fois
+            à l'arrêt. C'est corrigé : un menu ouvert accepte désormais les touches que
+            vous marchiez, couriez ou soyez en course automatique.
+        Technique : Il y avait deux verrous de mouvement, pas un. Le premier empêche
+            l'OUVERTURE tant qu'une touche de déplacement est maintenue - il reste, et il
+            est nécessaire : les raccourcis du menu avaleraient le relâchement de la touche
+            et vous courriez sans fin. La course automatique en est exemptée depuis la
+            v42.00 (son propre indicateur AutoRun, que IsPlayerMoving ne lit délibérément
+            pas). Le second se trouvait dans le gestionnaire de touches du menu lui-même
+            et, tant qu'un verrou de mouvement était posé, laissait expirer chaque appui
+            sauf Échap. Ce second verrou n'apporte rien : une fois le menu ouvert, les
+            raccourcis lui appartiennent déjà, écarter l'appui n'arrête aucun mouvement -
+            il ne fait que rendre le menu sourd, et marque de surcroît « ouvrir plus tard »
+            sur un menu déjà ouvert, que la boucle de réouverture doit ensuite défaire. Il
+            ne s'applique plus que si le menu n'est PAS ouvert. Les quatre verrous
+            d'ouverture restants écrivent en outre une ligne dans le journal de débogage
+            nommant la touche de déplacement qui les retient - auparavant ils étaient
+            muets, et un rapport « le menu ne s'ouvrait pas en marchant » ne laissait
+            aucune trace.
+
+    Navigation : « Carte actuelle par distance » vient désormais en premier
+        Simple : Sous « Point de passage direct », « Récent » était en première position et
+            « Carte actuelle par distance » en deuxième. Les deux sont permutés - la liste
+            des points de passage de la zone actuelle est l'entrée la plus fréquente, et
+            elle se trouve maintenant directement sous le curseur.
+        Technique : Uniquement l'ordre des injections dans SkuNav:MenuBuilder. « Récent »
+            reste conditionné à une liste non vide de points de passage récents ; si elle
+            est vide, « Carte actuelle par distance » est de toute façon en tête, comme
+            avant.
+
+    Le filtre de saisie ignore les accents
+        Simple : Dans chaque liste que l'on peut restreindre en tapant, les lettres
+            accentuées étaient traitées comme des caractères d'une autre langue.
+            « general » ne trouvait rien alors que « Fournitures générales » était là, et
+            « ingenieur » ne trouvait pas « Ingénieur » - alors que « ing » y parvenait.
+            C'est maintenant la lettre qui compte, pas l'accent. De plus, la touche ù d'un
+            clavier AZERTY alimente désormais aussi le filtre : c'est la seule lettre
+            accentuée que ce clavier livre comme véritable événement de touche.
+        Technique : string.lower en Lua travaille octet par octet et ne transpose que A-Z ;
+            il ne replie donc jamais un caractère accentué, d'aucun côté de la comparaison.
+            SkuMenuFilterMatch (utilisé par ApplyFilter et JumpToFilterMatch) et
+            SettingsSearchMatch replient désormais le nom de l'entrée et le texte tapé en
+            ASCII sans accents avant de comparer ; seules les séquences de 2 octets du
+            supplément Latin-1 et du latin étendu A sont touchées, l'ASCII pur emprunte une
+            voie rapide. Strictement plus permissif qu'avant : ce qui correspondait
+            correspond toujours. Les deux appels string.find passent en outre plain=true -
+            le texte tapé était lu comme un motif Lua, si bien qu'une saisie comme « 50% »
+            ou « (long » ne trouvait rien ou levait une erreur.
+            Le repli des accents vient de la PR #9 (ZenqFR), la touche ù de la PR #13
+            (Naxedim).
+
+    Barres d'action : l'infobulle du sort est de nouveau lue
+        Simple : Dans le menu des barres d'action (Maj+F11), Maj+Bas sur un sort de la
+            liste d'affectation ne lisait plus rien du tout. L'infobulle est de retour - de
+            même que pour le contenu actuel d'une touche et pour les deux lectures de
+            capacités du familier voisines, qui présentaient la même faiblesse.
+        Technique : Deux causes indépendantes, toutes deux traitées car aucune ne pouvait
+            être écartée à la seule lecture du code. D'abord, SkuScanningTooltip est créé
+            une fois à la connexion, sans modèle, et partagé par tous les modules ; celui
+            qui l'a utilisé en dernier peut le laisser sans propriétaire exploitable, après
+            quoi chaque appel Set* ne remplit plus rien - en silence, sans erreur. Il est
+            désormais réapproprié juste avant d'être rempli. Ensuite, SetSpellByID recevait
+            la troisième valeur de retour de GetSpellBookItemName, qui suit sur ce client
+            la signature Classic et ne renvoie que (name, rank) - l'identifiant est un
+            ajout retail et valait nil. L'identifiant provient maintenant de
+            GetSpellBookItemInfo, et l'infobulle est remplie par SetSpellBookItem, qui n'a
+            besoin d'aucun identifiant. La lecture est en outre encapsulée dans un pcall,
+            puisqu'elle se déclenche à chaque déplacement du curseur. Issu de la PR #10
+            (ZenqFR).
+
+    Objectif de quête : le lieu figurait dans les données, mais restait introuvable
+        Simple : 174 quêtes qui demandent d'explorer un endroit ou d'y utiliser quelque
+            chose ne répondaient que « Vide » sous « Objectif de quête ». L'entrée mène
+            désormais au point de passage de route le plus proche de ce lieu.
+        Technique : GetTriggerEndWps composait un NOM de point de passage
+            (« <quête>;<zone>;<objectif>;<x>;<y> ») et le résolvait via la recherche par
+            nom exact dans le cache des points de passage. Or rien ne génère de point de
+            passage sous ce nom - contrairement aux apparitions de créatures et d'objets -
+            il ne trouvait donc quelque chose que si quelqu'un en avait écrit un à la main
+            dans les données de route : il en existe exactement un (quête 10211,
+            Shattrath). Le nom composé reste utilisé lorsqu'il se résout ; sinon la
+            géométrie prend le relais - coordonnées de carte vers coordonnées monde, puis
+            le point de passage de ROUTE réel le plus proche. GetNearestWpToCoords2 a reçu
+            pour cela un filtre typeId optionnel, afin que le repli n'atterrisse pas parmi
+            les quelque 145 000 points d'apparition générés, plus une protection contre un
+            seau de continent manquant, où pairs(nil) levait une erreur. Toutes les paires
+            de coordonnées de chaque zone sont désormais lues au lieu de la première seule,
+            et le résultat est mémorisé par génération du cache.
+
+    Français : les commentaires de points de passage reparlent - et en français
+        Simple : Les commentaires attachés aux points de passage - dont ceux qui touchent à
+            la sécurité, comme « attention, à partir d'ici la route longe le bord d'un
+            ravin », « attendre le zeppelin ici » ou « ce PNJ se déplace » - étaient
+            totalement muets sur un client français depuis la v42.11. Ils reparlent, et ils
+            parlent désormais français : 207 textes répartis sur 546 points de passage.
+        Technique : Les données de route ne portent lComments que pour enUS et deDE
+            (environ 296 points de passage). SkuNav:PlayWpComments lisait
+            comments[Sku.Loc] sans repli. Jusqu'à la v42.11, Sku.Loc valait « enUS » sur un
+            client français faute de locale frFR, et l'on entendait les textes anglais ;
+            depuis que locales/frFR.lua est livré, Sku.Loc vaut « frFR », la recherche
+            renvoie nil et la fonction sort sans un mot. Nouveauté : Sku.locList
+            (SkuUtil.lua), le pendant liste de Sku.locStr, renvoie la première liste NON
+            VIDE parmi Sku.Loc / enUS / deDE. « Non vide » est déterminant, car SkuMM.lua
+            matérialise un comments[Sku.Loc] vide sur chaque point de passage qu'il dessine
+            - une simple chaîne de « ou » s'y accrocherait. La traduction est faite depuis
+            l'original ALLEMAND, non via l'anglais : l'anglais avait perdu du détail sur
+            précisément ces textes de sécurité, et plusieurs entrées anglaises sont vides,
+            dont l'avertissement sur les ascenseurs mortels qui figure sur huit points de
+            passage.
+
+    Français : noms de ressources et la Caverne des Brumes
+        Simple : Deux défauts qui ne touchaient qu'un client français. D'abord, 22 des 94
+            noms de ressources du scanner de minicarte étaient erronés - le scanner les
+            compare à l'infobulle du jeu, un nom faux signifie donc que ce gisement n'est
+            jamais annoncé, sans message d'erreur. Ensuite, dans la Caverne des Brumes la
+            liste des points de passage restait vide, alors qu'une route lancée à
+            l'extérieur continuait de fonctionner.
+        Technique : Chacun des 22 noms a été tranché à l'aide d'une source indépendante des
+            deux addons : 19 par les tables frFR de SkuDB (importées des chaînes Blizzard
+            de Questie), trois par l'API d'infobulle de Wowhead. Pour la caverne, Geo.lua
+            compare GetMinimapZoneText() mot pour mot à L["Caverne des Brumes"] ; la locale
+            frFR générée portait « Grotte des Brumes », une traduction libre - le client
+            dit « Caverne des Brumes ». La comparaison était donc morte, uiMap restait sur
+            le continent, GetAreaIdFromUiMapId répondait -1 et GetCurrentAreaId nil, si
+            bien que ListWaypoints2 abandonnait. La valeur a été relevée avec /szp dans la
+            zone, non traduite, et figure désormais tant dans le fichier généré que dans le
+            magasin TSV à partir duquel il est assemblé - avec la note interdisant de la
+            traduire librement. Issu des PR #14 et #16 (Naxedim).
+
+    Tourner vers la balise : plus précis, et avec anticipation
+        Simple : La rotation automatique vers la balise (T) tombe désormais bien plus
+            juste. Auparavant elle allait si vite que le seul arrêt à la frontière d'une
+            image pouvait coûter vingt degrés de dépassement ou plus, selon la fréquence
+            d'images. La vitesse suit maintenant l'ampleur de la rotation, et aucune
+            rotation ne dure plus d'un quart de seconde. En mouvement, elle anticipe
+            également : elle vise là où se trouvera le point de passage à la fin de la
+            rotation - ce qui met fin aux tours en rond autour des points de passage
+            proches, surtout monté et en vol. Et un appui pendant une rotation en cours est
+            écarté au lieu d'interrompre celle-ci en plein milieu ; les appuis répétés
+            habituels affinent toujours comme avant.
+        Technique : Quatre éléments, testés ensemble. Le calage sur la caméra par défaut
+            avant la rotation reste - il porte le lacet, sans lui l'angle est faux. La
+            vitesse de rotation est plafonnée d'après l'angle restant au lieu de tourner à
+            plein régime. L'anticipation calcule, à partir de la vitesse actuelle et de la
+            durée prévue de la rotation, où sera le point de passage à la fin. S'y ajoute
+            une protection contre le défaut par lequel, après des rotations déclenchées
+            coup sur coup, la vitesse de rotation des touches de caméra pouvait rester
+            quadruplée définitivement.
+
+    Le programme d'installation retient où se trouve votre WoW
+        Simple : Le programme d'installation cherche le jeu aux endroits habituels -
+            Program Files, plus une poignée de dossiers probables sur C, D et E. Qui a son
+            WoW ailleurs devait chercher le dossier à la main, et pas une fois mais à
+            CHAQUE mise à jour : le programme oubliait la réponse au moment même où il se
+            fermait. Il note maintenant le dossier dès qu'une installation a abouti, et
+            recommence là la fois suivante. Lui montrer un client permet aussi de trouver
+            l'autre à côté : une Classic Era voisine d'une Anniversary sur le même disque
+            inhabituel est prise en compte toute seule. Si le jeu déménage plus tard ou est
+            désinstallé, la note est abandonnée et la recherche se déroule comme avant. Le
+            programme d'installation passe ainsi en version 4.5.
+        Technique : Nouveau fichier PathMemory.cs. Le manifeste d'installation ne pouvait
+            pas servir à cela - SkuInstall.json se trouve DANS le dossier AddOns, le lire
+            suppose donc d'avoir déjà trouvé le dossier que l'on veut retenir. Le dossier de
+            chaque client est donc écrit sous forme d'une simple ligne « produit=chemin »
+            dans SkuPaths.txt, à deux endroits : %LOCALAPPDATA%\SkuUpdater, à côté de la
+            copie permanente de l'updater que lance le raccourci « Sku Updater », et
+            %ProgramData%\SkuUpdater comme miroir valable pour toute la machine. Ce miroir
+            n'est pas une redondance gratuite : le programme demande l'élévation, un
+            utilisateur standard qui répond à l'invite UAC avec les identifiants
+            administrateur de quelqu'un d'autre exécute donc tout sous cet autre profil et
+            écrirait sinon la note dans un LOCALAPPDATA qu'il ne reverra jamais. Au
+            démarrage suivant, un dossier retenu l'emporte sur la détection - c'est une
+            décision, alors que la détection n'est qu'une supposition sur une courte liste
+            de disques - et son répertoire de base est placé en tête de la liste sondée,
+            ce qui est précisément ce qui fait que retenir un client profite à l'autre.
+            Garde-fous contre une note périmée : le dossier doit exister encore, et son
+            .flavor.info ne doit pas annoncer entre-temps un autre client ; sinon la note
+            est ignorée plutôt que d'envoyer une installation dans le vide. L'écriture n'a
+            lieu qu'après l'installation propre d'un client : une exécution annulée ou
+            échouée ne laisse donc rien. Du texte brut à dessein - le fichier se laisse lire
+            à voix haute et corriger dans le Bloc-notes, et supprimer une ligne rend la
+            détection automatique à ce client. Nouveau contrôle sans interface, « SkuSelfTest
+            pathmemory » : il affiche ce qui est noté sur cette machine et déroule
+            l'écriture, la lecture et les cas de note périmée sur un stockage jetable, sans
+            jamais toucher au vrai.
+
+    La fenêtre de lecture devient configurable
+        Simple : Les textes de quête, les infobulles, l'historique de discussion et les pages du
+            wiki aboutissent tous dans la même fenêtre de lecture. Son apparence était figée dans
+            le code : Playfair Display en 12 points, une police à empattements fine, dans la plus
+            petite taille utilisée par l'addon. Pour une personne ayant une vision résiduelle,
+            c'était à la fois la surface la plus importante de l'addon et la moins lisible.
+            Réglages -> Aides visuelles -> Fenêtre de texte propose désormais des tailles de 14 à
+            44 points, quatre polices, quatre combinaisons de couleurs (blanc sur noir, jaune sur
+            noir, noir sur blanc, blanc sur bleu), l'opacité du fond et un contour. Par défaut la
+            fenêtre s'affiche maintenant sans empattement en 18 points : même sans rien changer,
+            elle est nettement plus lisible qu'avant.
+        Technique : La surface appartient à Libs/SkuTTS-1.0 (cadre SkuTTSMainFrame et son
+            FontString .FS), où l'apparence tenait en un seul appel SetFont codé en dur. Les
+            réglages vivent désormais dans SkuCore VisualAids sous visualAids.textWindow, et
+            SkuTTS:Output appelle VisualAids:TextWindowLayout avant chaque affichage - protégé par
+            pcall et dans le même sens que SkuZOptions alimente déjà la barre de lecture. La
+            bibliothèque n'a ainsi rien à savoir des options, et un module Aides visuelles
+            désactivé laisse simplement la fenêtre telle quelle. Chaque attribution de police est
+            vérifiée et retombe sur la police standard du client au lieu de laisser une surface
+            vide - les deux familles fournies, Raleway et Playfair, se trouvent sous
+            Libs/SkuTTS-1.0/fonts et ne sont livrées que par l'archive de version. Les paliers de
+            taille sont volontairement plus petits que ceux de la barre : un texte de quête entier
+            tient ici, et la fenêtre n'a pas d'ascenseur, donc elle coupe d'autant plus tôt que la
+            police est grande. Tout reste lu intégralement ; l'affichage est la seconde piste.
+
+    La barre de lecture affiche ce que Sku dit - et fonctionne en combat
+        Simple : Deux choses à la fois. D'abord, la barre restait vide en combat, c'est-à-dire
+            précisément quand suivre le texte compte le plus. Ensuite, elle n'affichait que le nom
+            d'une entrée de menu : sur un interrupteur on avait le nom mais pas l'état, sur une
+            ligne de sac le nom mais pas la quantité - tout ce que Sku lit en plus manquait sur la
+            barre. Les deux sont corrigés ; la barre affiche maintenant la même ligne que Sku
+            prononce, y compris en plein combat. Sa police et ses couleurs sont en outre
+            réglables, avec des valeurs propres à côté de celles de la fenêtre de texte.
+        Technique : Le blocage en combat venait d'une confusion entre visible et ouvert : le test
+            s'appuyait sur SkuOptions:IsMenuOpen(), qui interroge OnSkuOptionsMain:IsVisible(). Ce
+            cadre est un ancêtre des boutons ENTER sécurisés, donc protégé, et son Show() est
+            bloqué en combat - le menu de combat tourne volontairement sans affichage et se
+            signale via SkuOptions.combatMenuActive. templates.lua et SkuZOptions testent déjà
+            exactement ce couple ; la barre de lecture ne le connaissait pas. Elle-même est un
+            cadre ordinaire sans enfant sécurisé : son Show() n'a jamais posé problème en combat.
+            Comme le chemin de combat ne ferme le menu que logiquement (le Hide du cadre y est
+            protégé) et le fait à six endroits, la barre se masque désormais d'elle-même : un
+            OnUpdate vérifie toutes les 0,25 s si le menu est encore ouvert - WoW n'appelle
+            OnUpdate que sur les cadres visibles, cela ne coûte donc rien une fois masquée. Le
+            contenu, lui, était un paramètre jeté : l'appelant transmettait depuis toujours la
+            chaîne parlée complète, mais c'est currentMenuPosition.name qui était affiché. La
+            chaîne transmise est désormais prioritaire, et les points-virgules du séparateur de
+            parole deviennent des tirets à l'affichage.
+
+    Barres de nom : les réglages que le jeu cache
+        Simple : Le client sait depuis longtemps afficher ses barres de nom plus grandes, plus
+            colorées et plus contrastées - simplement, il ne le propose nulle part. La fenêtre
+            d'options de Blizzard n'affiche aucun de ces réglages sous Classic ; la case pour des
+            barres de nom plus grandes qui existe dans le WoW actuel est explicitement laissée
+            vide sous Classic. Sans Sku, on n'y accédait que par des commandes console. Le nouveau
+            menu sous Réglages -> Aides visuelles -> Barres de nom les rend accessibles : taille
+            des barres, mise en évidence de la cible, atténuation de toutes les autres, couleurs
+            de classe pour les ennemis et les alliés, et noms seuls pour les joueurs alliés.
+            Contrairement à l'ancienne coloration, cela ne peint pas quelque chose derrière la
+            barre mais modifie la vraie barre. Par défaut, tout reste tel que le client le livre :
+            si vous ne choisissez rien, rien ne change.
+        Technique : Uniquement des réglages de CVar, aucun cadre propre, aucune contamination. La
+            taille écrit nameplateMinScale et nameplateMaxScale ensemble (les séparer produirait
+            une mise à l'échelle dépendante de la distance, dont personne ne veut ici), la mise en
+            évidence écrit nameplateSelectedScale, l'atténuation nameplateMinAlpha, auxquels
+            s'ajoutent nameplateShowClassColor, nameplateShowFriendlyClassColor et
+            nameplateShowOnlyNameForFriendlyPlayerUnits. Toutes les valeurs et l'existence de
+            chaque CVar ont été mesurées sur le client vivant 2.5.6.69546, et le plafond de 2.0
+            vérifié contre l'écrêtage du client. Important pour la suite : le dossier
+            BlizzardInterfaceCode extrait dans le répertoire du client date de mars/avril 2026 et
+            est donc antérieur au changement des barres de nom de juillet ; il cite des noms de
+            CVar de la version actuelle comme NamePlateVerticalScale ou ShowClassColorInNameplate
+            qui n'existent pas du tout dans cet exécutable. Ce sont les chaînes de l'exécutable
+            qui font foi. Les écritures de CVar sont bloquées en combat et échouent en silence :
+            une modification faite là est donc mémorisée et appliquée à PLAYER_REGEN_ENABLED. Sku
+            réapplique les valeurs à la connexion, mais seulement une fois qu'un choix a
+            réellement été fait dans le menu - qui a réglé ses barres de nom à la main par la
+            console les conserve intactes.
+
+    La coloration des barres de nom survit à un redémarrage
+        Simple : Qui activait la coloration des barres de nom l'avait exactement jusqu'à sa
+            prochaine connexion ou au prochain rechargement de l'interface. Ensuite l'interrupteur
+            indiquait toujours « activé », mais plus rien n'était coloré. Le seul moyen de la
+            relancer était de basculer l'interrupteur à la main, à chaque session. C'est corrigé ;
+            le réglage fonctionne désormais simplement.
+        Technique : L'armement du pilote d'événements (NAME_PLATE_UNIT_ADDED, _REMOVED et
+            PLAYER_TARGET_CHANGED) ne tenait qu'au OnAction de l'interrupteur du menu. La valeur
+            enregistrée était bien lue au chargement mais appliquée nulle part : après chaque
+            connexion, aucun événement n'était donc enregistré. L'armement se trouve maintenant
+            dans VisualAids:OnEnable, là où l'avertissement de suivi et le bouton du prochain
+            ennemi ont toujours été armés, avec une seconde tentative différée au cas où le profil
+            ne serait pas encore prêt au premier passage.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

@@ -21,6 +21,8 @@ Changes in Sku v43.2
             Swimming and flying: Sku keeps you level. The new pitch lock ends the creeping dive during automatic turns, and after an interact approach to an NPC or a press of ascend/descend you are actively straightened out again. On by default; can be switched off under Settings -> General.
             New keybind "Toggle pitch lock while swimming and flying" (Ctrl+Shift+N): locks and releases the pitch manually - switching it off and on again re-levels you at any time.
             Experimental: gather routes for ore, herbs, gas clouds and chests - Sku walks you through the zone node by node, nearest first. Under Settings -> Scan -> resource scanning -> Gather routes. New and barely tested in game; feedback is explicitly wanted.
+            New "Nameplates" menu under Settings -> Visual aids: nameplate size, target emphasis, class colors and dimming of the remaining plates - settings the game supports but never offers anywhere in its own options window.
+            The reading window for quest text, tooltips, chat history and wiki is now configurable: font size, font, color pair, opacity and outline under Settings -> Visual aids -> Text window.
 
         Changes
             Turn towards beacon (T): the turn now lands far more accurately. It used to run so fast that merely stopping it frame-exactly could cost 20 degrees and more of overshoot depending on frame rate; the speed now scales with the size of the turn, and no turn takes longer than a quarter of a second.
@@ -43,6 +45,8 @@ Changes in Sku v43.2
             Menu: the type-ahead filter ignores accents - on a French client "general" now finds "Fournitures generales", and "o" finds an entry starting with "O". On a French AZERTY keyboard the u key now types into the filter too.
             French: the waypoint comments are now available in French - 207 texts across 546 waypoints, translated from the German original.
             Installer: a game folder off the beaten track only has to be pointed out once - the installer now remembers where each WoW client lives and finds it again on every later update.
+            The reading window now starts in a sans serif font at 18 point instead of Playfair Display at 12 - the previous default was the smallest and thinnest text surface in the whole addon.
+            The reading bar can now be set to a font and color pair as well, with its own values kept separate from the text window.
 
         Bugfixes
             Menu: while you were walking, an open menu was as good as dead - every key except Escape was swallowed until you stood still.
@@ -75,6 +79,9 @@ Changes in Sku v43.2
             French: the waypoint comments had been completely silent since v42.11 - including warnings such as "careful, ravine" or "wait here for the zeppelin".
             French: 22 of the 94 minimap scanner resource names were wrong, so those nodes were never announced.
             French: inside the Cave of the Mists the waypoint list stayed empty.
+            Nameplate coloring was dead after every login and every reload: the switch read as on, but nothing was colored until you flipped it off and on again by hand.
+            The reading bar stayed invisible in combat - exactly when it is needed most.
+            The reading bar showed only the name of a menu entry, not the value spoken after it - switch states and counts were audible but not readable.
 
     Swimming and flying: the pitch lock ends the unwanted diving
         Simple: While swimming or flying, every automatic turn towards the beacon pulled you a
@@ -979,6 +986,93 @@ Changes in Sku v43.2
             restores auto-detection for that client. New headless check "SkuSelfTest
             pathmemory": it prints what the machine has on record and round-trips the write,
             read and stale cases against a throwaway store, never touching the real one.
+
+    The reading window can be configured
+        Simple: Quest text, tooltips, the chat history and the wiki pages all end up in the same
+            reading window. How that window looked was fixed in the code: Playfair Display at 12
+            point, a thin serif face at the smallest size the addon uses anywhere. For someone
+            with residual vision that was the most important surface in the addon and at the same
+            time the hardest to read. Settings -> Visual aids -> Text window now offers font sizes
+            from 14 to 44 point, four fonts, four color pairs (white on black, yellow on black,
+            black on white, white on blue), the background opacity and an outline. Out of the box
+            the window now runs in a sans serif face at 18 point, so even without changing
+            anything it is considerably easier to read than before.
+        Technically: The surface itself belongs to Libs/SkuTTS-1.0 (frame SkuTTSMainFrame with its
+            FontString .FS), where the appearance was a single hardcoded SetFont call. The
+            settings now live in SkuCore VisualAids under visualAids.textWindow, and SkuTTS:Output
+            calls VisualAids:TextWindowLayout before each show - pcall-guarded and in the same
+            direction in which SkuZOptions already feeds the reading bar. That way the lib needs
+            to know nothing about the options, and a disabled Visual aids module simply leaves the
+            window looking as it did. Every font assignment is checked and falls back to the
+            client's standard font rather than leaving a blank surface - the two bundled families
+            Raleway and Playfair live under Libs/SkuTTS-1.0/fonts and ship only in the release
+            ZIP. The size steps are deliberately smaller than the reading bar's: a whole quest
+            text goes here, and the window has no scrollbar, so it clips at the bottom sooner the
+            larger the font gets. Everything is still spoken in full; the display is the second
+            track.
+
+    The reading bar shows what Sku says - and it works in combat
+        Simple: Two things at once. First, the bar stayed empty in combat, which is exactly when
+            reading along matters most. Second, it showed only the name of a menu entry: on an
+            on/off switch you got the name but not the state, on a bag line the name but not the
+            count - everything Sku additionally reads out was missing from the bar. Both are
+            fixed; the bar now shows the same line Sku speaks, and it does so in the middle of
+            combat too. On top of that its font and color pair are now selectable as well, with
+            values of its own alongside the text window's.
+        Technically: The combat lockout was a confusion of visible with open: the check hung off
+            SkuOptions:IsMenuOpen(), which tests OnSkuOptionsMain:IsVisible(). That frame is an
+            ancestor of the secure ENTER buttons and therefore protected, so its Show() is blocked
+            in combat - the combat menu deliberately runs headless and reports through
+            SkuOptions.combatMenuActive instead. templates.lua and SkuZOptions already check
+            exactly that pair; the reading bar simply did not know about it. The bar itself is an
+            ordinary frame with no secure children, so its Show() was never the problem in combat.
+            Because the combat path only closes the menu logically (the frame Hide is protected
+            there) and does so at six different sites, the bar now hides itself: an OnUpdate
+            checks every 0.25 s whether the menu is still open - WoW runs OnUpdate only on visible
+            frames, so it costs nothing while hidden. The content was simply a discarded
+            parameter: the caller always passed the complete spoken string, yet
+            currentMenuPosition.name was displayed instead. The passed string now takes
+            precedence, and the semicolons of the speech separator become dashes for display.
+
+    Nameplates: the settings the game hides
+        Simple: The client has long been able to draw its nameplates bigger, more colorful and
+            with more contrast - it just never offers it. Blizzard's own options window shows not
+            one of these settings in Classic; the checkbox for larger nameplates that current WoW
+            has is explicitly left empty in Classic. Without Sku you could only reach them through
+            console commands. The new menu under Settings -> Visual aids -> Nameplates makes them
+            available: nameplate size, target emphasis, dimming of all other plates, class colors
+            for enemies and allies, and names only for friendly players. Unlike the older
+            nameplate coloring this does not paint something behind the plate but changes the real
+            plate itself. Out of the box everything sits exactly where the client ships it -
+            choose nothing and nothing changes.
+        Technically: Pure CVar settings, no frame of our own, no taint. Nameplate size sets
+            nameplateMinScale and nameplateMaxScale together (setting them apart would produce
+            distance-dependent scaling, which nobody wants here), emphasis sets
+            nameplateSelectedScale, dimming nameplateMinAlpha, plus nameplateShowClassColor,
+            nameplateShowFriendlyClassColor and nameplateShowOnlyNameForFriendlyPlayerUnits. Every
+            value and the existence of each individual CVar was measured against the live client
+            2.5.6.69546, and the 2.0 ceiling checked against the client's clamping. Important for
+            future work: the extracted BlizzardInterfaceCode in the client folder is a March/April
+            2026 dump and therefore older than the July nameplate change; it names retail CVars
+            such as NamePlateVerticalScale or ShowClassColorInNameplate that do not exist in this
+            exe at all. The exe strings are what counts. CVar writes are blocked in combat and
+            fail silently, so a change made there is remembered and applied at
+            PLAYER_REGEN_ENABLED. Sku re-applies the values at login, but only once something has
+            actually been chosen in the menu - anyone who set their nameplates by hand through the
+            console keeps them untouched.
+
+    Nameplate coloring survives a restart
+        Simple: If you switched nameplate coloring on, you had it exactly until you logged in
+            again or reloaded the interface. After that the switch still read as on, but nothing
+            was colored any more. The only way to get it going again was to flip the switch off
+            and on by hand - once per session, every session. That is fixed; the setting now
+            simply works.
+        Technically: Arming the event driver (NAME_PLATE_UNIT_ADDED, _REMOVED and
+            PLAYER_TARGET_CHANGED) hung exclusively off the menu switch's OnAction. The stored
+            value was read at load but applied nowhere, so after every login not a single event
+            was registered. Arming now sits in VisualAids:OnEnable, where the follow warning and
+            the next-enemy button have always been armed, with a delayed second attempt in case
+            the profile is not up yet on the first pass.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

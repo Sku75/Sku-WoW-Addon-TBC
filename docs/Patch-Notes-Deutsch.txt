@@ -9,48 +9,112 @@ Aenderungen in Sku v43.2
     Ueberblick
 
         Neu
-            Neuer Tastenbefehl "Vollstaendigen Tooltip des Ziels ausgeben" (Strg+Umschalt+V): liest den kompletten Tooltip des aktuellen Ziels vor, inklusive dessen, was die Jaegerfaehigkeit Tierkunde offenlegt.
             Quests lassen sich im Questmenue verfolgen und wieder abwaehlen - neuer Eintrag "Quest verfolgen" ganz unten in jedem Questmenue, abschaltbar.
+            Neue Liste "Quests in der Naehe" im Questmenue: das ganze Questlog in einer Liste, sortiert danach, wie weit das Naechste weg ist - mit Entfernung und Himmelsrichtung. Ab Werk aus.
             Neuer Tastenbefehl "Naechstes Questziel ins Ziel nehmen" (Alt+H): nimmt eine Kreatur ins Ziel, die zu einem offenen Questziel gehoert - auch eine, die einen benoetigten Gegenstand nur fallen laesst.
             Der Tastenbefehl "Naechster Gegner im Kampf" (jetzt ab Werk auf Strg+H) findet deutlich oefter etwas: er ist nicht mehr auf den Blickkegel angewiesen.
-            Neue Liste "Quests in der Naehe" im Questmenue: das ganze Questlog in einer Liste, sortiert danach, wie weit das Naechste weg ist - mit Entfernung und Himmelsrichtung. Ab Werk aus.
+            Neuer Tastenbefehl "Vollstaendigen Tooltip des Ziels ausgeben" (Strg+Umschalt+V): liest den kompletten Tooltip des aktuellen Ziels vor, inklusive dessen, was die Jaegerfaehigkeit Tierkunde offenlegt.
             Taschenmenue: neuer Eintrag "alle bank" direkt hinter "alle taschen", solange die Bank offen ist - alles in der Bank in einer flachen Liste, genau wie "alle taschen" fuer die Taschen. Strg+Eingabe holt einen Gegenstand von dort in die Taschen, wie bisher schon in den einzelnen Bankfaechern.
             Chat: die Eingabezeile spricht jetzt wie jedes andere Sku-Eingabefeld - jedes getippte Zeichen, das Zeichen oder Wort unter dem Cursor, und mit Pfeil hoch die zuletzt gesendeten Nachrichten zum erneuten Senden oder Aendern.
-            Chat: der Zielkanal wird angesagt, sobald er nicht "Sagen" ist - beim Oeffnen und bei jedem Wechsel.
+            Chat: der Zielkanal wird angesagt, sobald er nicht "Sagen" ist - beim Oeffnen und bei jedem Wechsel; abschaltbar in den Chat-Einstellungen ("Kanal der Chateingabe ansagen"), ab Werk an.
             Chat: ein unbekannter Slash-Befehl wird angesagt, statt still verworfen zu werden.
+            Schwimmen und Fliegen: Sku haelt dich waagerecht. Die neue Neigungssperre beendet das schleichende Abtauchen bei den automatischen Drehungen, und nach einem Anflug auf einen NPC oder einem Druck auf Steigen/Sinken wirst du aktiv wieder gerade ausgerichtet. Ab Werk an; abschaltbar unter Einstellungen -> Allgemein.
+            Neuer Tastenbefehl "Neigungssperre beim Schwimmen und Fliegen umschalten" (Strg+Umschalt+N): sperrt und loest die Neigung manuell - aus- und wieder einschalten richtet dich jederzeit neu waagerecht aus.
+            Experimentell: Sammelrouten fuer Erze, Kraeuter, Gaswolken und Truhen - Sku fuehrt dich Vorkommen fuer Vorkommen durch die Zone, immer das naechstgelegene zuerst. Unter Einstellungen -> Scan -> ressourcen scan -> Sammelrouten. Neu und im Spiel erst in Ansaetzen erprobt; Rueckmeldungen sind ausdruecklich erwuenscht.
+            Neues Menue "Namensplaketten" unter Einstellungen -> Visuelle Hilfen: Groesse der Plaketten, Hervorhebung des Ziels, Klassenfarben und Abschwaechung der uebrigen Plaketten - Einstellungen, die das Spiel beherrscht, in seinem eigenen Optionsfenster aber nirgends anbietet.
+            Das Lesefenster fuer Questtexte, Tooltips, Chatverlauf und Wiki ist einstellbar geworden: Schriftgroesse, Schriftart, Farbkombination, Deckkraft und Umriss unter Einstellungen -> Visuelle Hilfen -> Textfenster.
 
         Aenderungen
+            Zum Beacon drehen (T): die Drehung sitzt jetzt deutlich genauer. Vorher lief sie so schnell, dass allein das framegenaue Stoppen je nach Bildrate 20 Grad und mehr Ueberdreh kosten konnte; jetzt richtet sich das Tempo nach der Drehgroesse, und keine Drehung dauert laenger als eine Viertelsekunde.
+            Zum Beacon drehen: in Bewegung wird vorgehalten - gezielt wird dorthin, wo der Wegpunkt am Ende der Drehung liegen wird. Das beendet das Im-Kreis-Laufen um nahe Wegpunkte, das vor allem beritten und im Flug auftrat.
+            Zum Beacon drehen: ein Druck waehrend einer laufenden Drehung wird verworfen, statt die Drehung mittendrin abzubrechen - gewohntes Mehrfachdruecken verfeinert weiter wie bisher.
+            Navigation: unter "Direkter Wegpunkt" steht "Aktuelle Karte Entfernung" jetzt an erster Stelle und "Letzte" dahinter.
+            Questdatenbank: "Start in Zone" zeigt die nach Entfernung sortierte Liste direkt an - die Zwischenebene "Nach Entfernung" ist weg.
+            Questdatenbank: "Start in Zone" nennt zu jeder Quest jetzt auch die Himmelsrichtung, nicht nur die Entfernung.
+            Questdatenbank: auf den aktuellen Questie-Datenstand gebracht - 33 Quests ohne Ziel haben jetzt eines, fuenf fehlende ergaenzt, dazu rund 2000 kleinere Korrekturen an Namen, Stufen, Questgebern und Vorquests.
             Taschen: nach einem Rechtsklick auf einen Gegenstand bleibt der Cursor auf diesem Gegenstand stehen, statt an den Anfang der Liste zu springen.
             Taschen: Aktionen mit Zauberzeit (Verzauberung, Angelkoeder, Waffenoel, Ruestungsset, Entzaubern) melden den Gegenstand nach dem Zauber noch einmal und lassen den Cursor darauf stehen.
             Taschen: ein Bestaetigungsdialog wie "Bestehende Verzauberung ersetzen?" kostet nicht mehr die Position - nach "Ja" wie nach "Nein" landet man wieder auf dem Gegenstand.
-            Menue: das Schliessen eines Fensters baut die Menuedaten nur noch einmal statt bis zu sechsmal neu auf.
-            Auren: eine Waffenverzauberung (Angelkoeder, Gift, Oel) laesst sich jetzt wie ein Zauber ansprechen - Ereignis "Waffenverzauberung abgelaufen" zusammen mit "Zauber name".
-            Auren: neue Bedingung und neue Ausgabe "Waffenverzauberung Hand" (Haupthand oder Nebenhand).
-            Questdatenbank: "Start in Zone" zeigt die nach Entfernung sortierte Liste direkt an - die Zwischenebene "Nach Entfernung" ist weg.
-            Questdatenbank: "Start in Zone" nennt zu jeder Quest jetzt auch die Himmelsrichtung, nicht nur die Entfernung.
             Chat: "Link zu Chat hinzufuegen" fuegt den Gegenstand an der Cursorposition ein, statt die Zeile zu ersetzen, und laesst den Cursor davor stehen - davor passt jetzt noch ein Kanal wie "/p ".
             Chat: ein Gegenstandslink zaehlt beim Lesen als ein einziges Zeichen - Pfeil links und rechts springen ueber den ganzen Link und sagen den Namen.
             Chat: "Link zu Chat hinzufuegen" schliesst die Taschen nicht mehr.
             Chat: die Pfeiltasten bewegen in der Chateingabe den Textcursor; abschaltbar unter Chateinstellungen.
+            Auren: eine Waffenverzauberung (Angelkoeder, Gift, Oel) laesst sich jetzt wie ein Zauber ansprechen - Ereignis "Waffenverzauberung abgelaufen" zusammen mit "Zauber name".
+            Auren: neue Bedingung und neue Ausgabe "Waffenverzauberung Hand" (Haupthand oder Nebenhand).
+            Menue: das Schliessen eines Fensters baut die Menuedaten nur noch einmal statt bis zu sechsmal neu auf.
+            Menue: der Tippfilter ignoriert Akzente - auf einem franzoesischen Client findet "general" jetzt "Fournitures generales", und "oe" findet einen Eintrag, der mit "Oe" beginnt. Auf einer franzoesischen AZERTY-Tastatur tippt die Taste ù jetzt auch in den Filter.
+            Franzoesisch: die Wegpunktkommentare gibt es jetzt auf Franzoesisch - 207 Texte auf 546 Wegpunkten, aus dem deutschen Original uebersetzt.
+            Installationsprogramm: ein WoW an einem ungewoehnlichen Ort muss nur einmal gezeigt werden - das Installationsprogramm merkt sich, wo jeder Client liegt, und findet ihn bei jedem spaeteren Update von selbst wieder.
+            Das Lesefenster startet ab Werk serifenlos in 18 Punkt statt in Playfair Display in 12 - die bisherige Voreinstellung war die kleinste und duennste Textflaeche des ganzen Addons.
+            Auch der Lesebalken laesst sich jetzt in Schriftart und Farbkombination einstellen, mit eigenen Werten getrennt vom Textfenster.
 
         Fehlerbehebungen
+            Menue: waehrend man ging, war das geoeffnete Menue wie tot - jede Taste ausser Escape wurde verschluckt, bis man stehen blieb.
             Escape schloss das Menue nicht, wenn man direkt auf einem Questobjekt stand - das Questfenster ging endlos wieder auf.
+            Menue: Enter auf einem Ein/Aus-Eintrag in einer gefilterten Liste sagte den ersten Eintrag der Liste an statt des umgeschalteten Zustands.
+            Menue: eine Zeile, die man per Tastendruck erneut anfordert, wird wieder vorgelesen statt verschluckt.
+            Menue: der Tippfilter fasste das Getippte als Suchmuster auf - eine Eingabe wie "50%" oder "(lang" fand nichts oder brach ab.
+            Tastatur-Echo: getippte Zeichen kommen sofort; verschluckte und verspaetete Buchstaben sind weg.
+            Sprachausgabe: Ansagen blieben beim Navigieren immer wieder fuer eine Weile still - am zuverlaessigsten bei einem einzelnen Treffer nach dem Filtern.
+            Sprachausgabe: Gegenstandslinks wurden als Folge von Farbcodes vorgelesen statt als Name - ueberall in Sku, nicht nur im Chat.
+            Zum Beacon drehen: nach schnell hintereinander ausgeloesten Drehungen konnte die Drehgeschwindigkeit der Kamera-Tasten dauerhaft vervierfacht haengenbleiben.
+            Das Loeschen eines eigenen Wegpunkts entfernte die falsche interne Kennung, und "/skucheck wp" meldete vier Fehler bei den Schnellwegpunkten, die keine waren.
+            Questmenue: bei Quests mit gemischten Zielen ("toete X und sammle Y") zeigte "Ziel" nur die erste Zielart - jetzt stehen Gegner, Fundorte und Erkundungspunkt nebeneinander.
+            Questmenue: bei 174 Quests, deren Ziel ein ORT ist, stand der Ort zwar in den Daten, aber "Questziel" meldete trotzdem nur "Leer" - gesucht wurde ein Wegpunkt unter einem Namen, den nie jemand vergibt. Jetzt wird aus den Koordinaten der naechstgelegene Routenwegpunkt berechnet.
+            Bei 77 WEITEREN Quests fehlten die Zieldaten dagegen ganz - fuer sie sind Objekte, Kreaturen und 26 Ortskoordinaten neu eingetragen, ein Teil davon aus Webquellen: Rueckmeldungen, ob sie stimmen, sind willkommen.
+            Questmenue: rund 300 Quests, deren Questgeber, Ziel oder Abgabe in einem Dungeon liegt, zeigten leere Eintraege - jetzt fuehren sie zum Dungeoneingang.
+            Dreizehn Sprich-mit-Quests (u.a. die alten Priester-Zauberquests) standen ohne Abgabepunkt in den Daten - jetzt fuehrt die Abgabe zu dem NPC, den der Questtext nennt.
+            Questdatenbank: direkt nach einem /reload konnten Quests inaktiver Weltereignisse (etwa Sonnenwendquests) in "Start in Zone" auftauchen.
+            Questdatenbank: die Liste "Start in Zone, Nach Entfernung" brach nach der ersten Quest ab.
             Taschen: der Tippfilter blieb nach dem Benutzen eines Gegenstands haengen und liess sich nur noch durch Schliessen der Taschen loswerden.
             Nach einer Aktion mit Zauberzeit wurde direkt nach dem richtigen Gegenstand noch ein falscher angesagt.
             Die Taschenliste fuer den Kampf konnte veralten, wenn man ein Questfenster schloss, waehrend die Taschen offen waren.
-            Sprachausgabe: Ansagen blieben beim Navigieren immer wieder fuer eine Weile still - am zuverlaessigsten bei einem einzelnen Treffer nach dem Filtern.
+            Taschenmenue: mit einem Taschen-Ersatz-Addon wie Bagnon, das Blizzards Bankfenster versteckt, verschwanden saemtliche Bankfaecher aus dem Menue.
             Auren: der Satt-Buff war in der Zauberauswahl doppelt vorhanden - beide Eintraege klangen gleich, nur einer konnte je ausloesen.
             Auren: Eintraege, die es nur als Waffenverzauberung gibt (etwa "Angelfertigkeit +75"), sind in den Auswahllisten jetzt als solche gekennzeichnet.
             Auren: "Waffenverzauberung Haupthand enthaelt X" zusammen mit "Waffenverzauberung abgelaufen" konnte nie ausloesen - /skucheck auras meldet diese Kombination jetzt.
             Auren: das Ende einer Waffenverzauberung wird auf den Frame genau erkannt statt bis zu eine viertel Sekunde spaeter.
-            Menue: Enter auf einem Ein/Aus-Eintrag in einer gefilterten Liste sagte den ersten Eintrag der Liste an statt des umgeschalteten Zustands.
+            Aktionsleisten: Umschalt+Ab las im Zuweisungsmenue den Zauber-Tooltip nicht mehr vor.
             Dungeonbrowser: das Annehmen einer Gruppeneinladung fuehrt nicht mehr von selbst in den Dungeonbrowser.
-            Questdatenbank: die Liste "Start in Zone, Nach Entfernung" brach nach der ersten Quest ab.
-            Taschenmenue: mit einem Taschen-Ersatz-Addon wie Bagnon, das Blizzards Bankfenster versteckt, verschwanden saemtliche Bankfaecher aus dem Menue.
-            Das Loeschen eines eigenen Wegpunkts entfernte die falsche interne Kennung, und "/skucheck wp" meldete vier Fehler bei den Schnellwegpunkten, die keine waren.
-            Tastatur-Echo: getippte Zeichen kommen sofort; verschluckte und verspaetete Buchstaben sind weg.
-            Menue: eine Zeile, die man per Tastendruck erneut anfordert, wird wieder vorgelesen statt verschluckt.
-            Sprachausgabe: Gegenstandslinks wurden als Folge von Farbcodes vorgelesen statt als Name - ueberall in Sku, nicht nur im Chat.
+            Franzoesisch: die Wegpunktkommentare blieben seit v42.11 vollstaendig stumm - auch die Warnungen wie "Vorsicht, Abgrund" oder "hier auf den Zeppelin warten".
+            Franzoesisch: 22 der 94 Ressourcennamen des Minikartenscanners waren falsch, diese Vorkommen wurden nie angesagt.
+            Franzoesisch: in der Hoehle der Nebel blieb die Wegpunktliste leer.
+            Die Plaketten-Farben waren nach jedem Login und jedem Neuladen tot: der Schalter stand auf an, gefaerbt wurde aber nichts, bis man ihn von Hand zweimal umlegte.
+            Der Lesebalken blieb im Kampf unsichtbar - also genau dann, wenn er am dringendsten gebraucht wird.
+            Der Lesebalken zeigte nur den Namen eines Menueeintrags, nicht den vorgelesenen Wert dahinter - Schalterzustaende und Anzahlen waren hoerbar, aber nicht lesbar.
+
+    Schwimmen und Fliegen: die Neigungssperre beendet das ungewollte Abtauchen
+        Einfach: Beim Schwimmen oder Fliegen zog jede automatische Drehung zum Funkfeuer ein
+            kleines Stueck nach unten - ueber eine Strecke summierte sich das, bis man unbemerkt
+            unter Wasser oder am Boden war. Jetzt sperrt Sku die Neigung, sobald du schwimmst
+            oder fliegst: du bewegst dich exakt waagerecht, und Leertaste und X tragen dich
+            weiterhin nach oben und unten. Wenn dich doch etwas schief stellt - etwa der
+            automatische Anflug beim Interagieren mit einem NPC -, richtet Sku dich aktiv wieder
+            gerade: beim Oeffnen des NPC-Fensters, kurz nach jeder Drehung und immer, wenn du
+            Steigen oder Sinken drueckst. Ab Werk an; wer beim Schwimmen mit der Maus per Neigung
+            tauchen will (Restsehvermoegen), schaltet es unter Einstellungen -> Allgemein ab.
+            Dazu der neue Tastenbefehl "Neigungssperre" (Strg+Umschalt+N) zum manuellen Sperren
+            und Loesen.
+        Technisch: Drei Bausteine. Erstens deckelt die Konsolenvariable pitchlimit 0 die
+            Bewegungsneigung des Charakters (die Technik der Addons LevelFlight und FlightHUD) -
+            dauerhaft gesetzt statt um jeden Dreh-Impuls herum, denn genau dieses Umschalt-Rennen
+            hat fruehere Versuche scheitern lassen. pitchlimit ist beschreibbar, aber nicht
+            lesbar; bei jedem Login wird deshalb blind der Standard 88 wiederhergestellt, damit
+            nie eine Sperre haengenbleibt. Zweitens haelt die Sperre nur, was da ist:
+            engine-gesteuerte Bewegung wie der Interagieren-Anflug neigt den Charakter trotzdem,
+            und danach gibt es keine Tastatur-Eingabe, die die Neigung wieder anhebt. Das aktive
+            Geradestellen benutzt genau den Transfer, der urspruenglich den Fehler verursachte:
+            ResetView/SetView schnappt die Kamera auf die bekannte fast-waagerechte
+            Voreinstellung, ein Mouselook-Impuls uebertraegt sie auf den Charakter, und die
+            Sperre deckelt den kleinen Rest auf null. Ausloeser sind das NPC-Fenster, jede
+            Drehung (um 0,5 s verzoegert, weil die Engine die Gierung erst einen Frame spaeter
+            anwendet - ein sofortiger zweiter Impuls wuerde die Drehung aufheben) und per
+            hooksecurefunc die Steig-/Sinkfunktionen JumpOrAscendStart, AscendStop,
+            SitStandOrDescendStart und DescendStop - unabhaengig davon, auf welchen Tasten sie
+            liegen. Drittens ein Neigungsmesser fuers Log: gemessene Horizontalgeschwindigkeit
+            geteilt durch GetUnitSpeed ist der Kosinus der Bahnneigung - der einzige Messweg,
+            den dieser Client hergibt (GetUnitPitch wurde mit Patch 7.1 entfernt und fehlt auch
+            hier). Er misst die Bahn, nicht die Koerperneigung, und dient nur der Diagnose.
 
     Der Cursor bleibt in der Tasche auf dem Gegenstand
         Einfach: Wer in der Taschenliste einen Gegenstand rechts anklickte - benutzen, anlegen, an
@@ -571,7 +635,10 @@ Aenderungen in Sku v43.2
             dabei den Kanal mit, denn den sieht man einer zurueckgeholten Zeile nicht an.
             Angesagt wird der Kanal ausserdem beim Oeffnen und bei jedem Wechsel, aber bewusst
             nicht bei "Sagen": das ist der harmlose Fall, und ihn jedes Mal vorzusagen waere nur
-            Geraeusch. Ein Gegenstand im Chat zaehlt beim Lesen als ein einziges Zeichen statt
+            Geraeusch. Wem die Kanalansage im eigenen Ablauf nicht passt, schaltet sie in den
+            Chat-Einstellungen unter "Kanal der Chateingabe ansagen" ab, ab Werk ist sie an;
+            das nimmt dann auch den Kanal vor der mit Pfeil hoch zurueckgeholten Zeile weg.
+            Ein Gegenstand im Chat zaehlt beim Lesen als ein einziges Zeichen statt
             als fuenfundsechzig Zeichen Steuerkram. Und ein vertippter Befehl wie "/tets" sagt
             jetzt "Unbekannter Befehl", statt einfach nichts zu tun.
         Technisch: Das Tastatur-Echo der Sku-eigenen Felder haengt ueber
@@ -647,6 +714,456 @@ Aenderungen in Sku v43.2
             ihre Ansage deshalb jetzt als tastenausgeloest, und die Sperre laesst markierte
             Zeilen immer durch. Ueberfluessige Wiederholungen werden weiterhin verworfen, jetzt
             unabhaengig davon, wie schnell sie eintreffen.
+
+    Quests mit gemischten Zielen zeigen alle Zielarten
+        Einfach: Bei einer Quest wie "toete 8 Woelfe UND sammle 5 Felle" zeigte der Eintrag
+            "Ziel" im Questmenue nur die erste Zielart - meist die Gegner; die Fundorte des
+            Sammelgegenstands oder ein Erkundungspunkt fehlten still. Betroffen waren 95
+            Quests. Jetzt stehen alle Zielarten nebeneinander in einer Liste, und auch der
+            Tastenbefehl "Naechstes Questziel ins Ziel nehmen" kennt bei solchen Quests
+            beide Haelften. Nebenbei behoben: eine Quest, die nur einen Erkundungspunkt und
+            sonst keine Zieldaten hat, bekommt ueberhaupt erst einen "Ziel"-Eintrag, und ein
+            nicht aufloesbarer Erkundungspunkt erzeugt keinen Eintrag mehr, der nur noch
+            "leer" ansagt.
+        Technisch: SkuQuest:GetQuestTargetIds war eine elseif-Kette ueber die Ziellisten der
+            Questdatenbank (Kreaturen, sonst Objekte, sonst Gegenstaende, ...) und konnte
+            schon per Signatur nur EINE Liste mit EINEM Typ zurueckgeben. Ersetzt durch
+            GetQuestTargetGroups: ein Feld von Gruppen {targets, type} - Kreaturen samt
+            deduplizierten Toetungs-Credits, Objekte, Gegenstaende und, nur fuer die
+            objectives-Aufrufer, der triggerEnd-Punkt der Quest. Alle sieben Aufrufer sind
+            umgestellt (Questmenue, Wegpunkt-Cache, Questmarker, Questziel-Taste); der alte
+            Name bleibt als Erste-Gruppe-Wrapper fuer den WowVision-Port stehen. Dazu ist
+            der item-Zweig von GetResultingWps gegen unbekannte Gegenstands-IDs abgesichert:
+            der indizierte bisher ungeprueft und liess den verschluckten Menueaufbau als
+            stilles "Liste leer" sterben.
+
+    Questdatenbank auf den aktuellen Questie-Stand gebracht
+        Einfach: Skus eingebaute Questdatenbank stammt von Questie und war rund zwei Jahre
+            alt. Nach dem Abgleich haben 33 Quests, deren "Ziel" bisher leer blieb, echte
+            Ziele (die Dunkelmond-Kartensets, die wiederholbaren Ogri'la- und
+            Violettes-Auge-Quests, "Den Schluesselmeister finden"), die sechs "Untersucht
+            die Geissel"-Quests haben jetzt Erkundungspunkte, fuenf fehlende Quests sind
+            ergaenzt, und rund 2000 Datensaetze tragen kleinere Korrekturen an Namen,
+            Stufen, Questgebern und Vorquest-Ketten. Geprueft: die Korrekturen sind fuer
+            Era und TBC identisch, die Aktualisierung ist auf beiden sicher.
+        Technisch: Semantischer Abgleich statt Byte-Kopie (neues Werkzeug
+            dev/rework-docs/_refresh_questdata_from_questie.py, danach _db_convert.py):
+            Questies Schema divergiert ab Feld 27, uebernommen werden nur die Felder 1-26;
+            Skus eigene Felder extraObjectives und skuData bleiben je Datensatz erhalten.
+            Die requiredRaces-Konvention (alte Alle-Rassen-Maske 2047, neu 0 - fuer Skus
+            Logik dasselbe) gilt beim Vergleich als gleich, sonst haetten 2117 Datensaetze
+            ohne inhaltliche Aenderung im Diff gestanden. Jede referenzierte Kreatur-,
+            Objekt- und Gegenstands-ID wurde gegen die mitgelieferten Datenbanken (Basis +
+            WotLK) validiert; ein Datensatz blieb deshalb beim alten Stand.
+
+    Ereignisquests tauchen direkt nach dem Laden nicht mehr auf
+        Einfach: In den ersten Sekunden nach einem /reload konnten in "Start in Zone"
+            Quests inaktiver Weltereignisse auftauchen - etwa Sonnenwendquests im August.
+            Sobald Questie fertig geladen war, verschwanden sie von selbst wieder; jetzt
+            sind sie auch in diesem Zeitfenster ausgeblendet.
+        Technisch: Die beiden Verfuegbarkeits-Tore fragten Questie erst ab Questie.started,
+            und das Flag kippt ganz am Ende von Questies Initialisierung. Questies statische
+            Ausschlussliste QuestieCorrections.hiddenQuests - entfernte Quests plus ALLE
+            Ereignisquests; die aktiven werden erst nach der Kalender-Antwort des Servers
+            freigeschaltet - existiert aber viel frueher. IsQuestieUnavailable liest sie
+            vor started jetzt direkt: das ist ein reiner Tabellenzugriff, die
+            Memoize-Vergiftungsgefahr hinter dem started-Tor betrifft nur IsDoable. Der
+            Wert "HIDE_ON_MAP" wird wie bei Questie selbst uebersprungen, und jede
+            Vor-Start-Ausblendung schreibt eine dprint-Zeile ins Log.
+
+    Quests in Dungeons fuehren zum Eingang statt ins Leere
+        Einfach: Bei rund 300 Quests liegt der Questgeber, das Ziel oder die Abgabe in
+            einem Dungeon - "Rache fuer Vorrel" beginnt im Scharlachroten Kloster, "Willix
+            der Importeur" endet im Kral von Rasierklingenfarn. Annahme, Ziel und Abgabe
+            waren dort bisher leer, weil es in Instanzen keine Weltkarte gibt. Jetzt steht
+            dort stattdessen der Eintrag "NPC, Eingang, Dungeonname, Zone" mit Route zum
+            Dungeoneingang - auch bei Schlachtfeldquests (Alteractal je Fraktion am
+            richtigen Eingang). Fundquellen eines GEGENSTANDS im selben Dungeon werden
+            dabei zu einem einzigen Eintrag "Dungeonname, Eingang, Zone" zusammengefasst -
+            "Ramaladnis Schicksal" nannte sonst 29 Naxxramas-Trashmobs einzeln, die alle
+            zum selben Tor fuehren; Toetungsziele behalten ihre einzelnen Mobnamen.
+        Technisch: Neue generierte Tabelle SkuDB.InstanceEntrances (aus Questies
+            Dungeon-Tabelle, Werkzeug dev/rework-docs/_gen_instance_entrances.py):
+            Instanz-AreaId -> Eingaenge {Elternzone, x, y, ggf. Fraktion}, inklusive der
+            Nebenfluegel-IDs und einem GetBuildInfo-Tor fuer die WotLK-Verschiebungen.
+            Die Spawn-Aufloeser (CreatureIdHelper, Objekt- und Gegenstands-Zweig von
+            GetResultingWps) ueberspringen kartenlose Gebiete nicht mehr, sondern
+            beantworten sie wie der triggerEnd-Umweg von v43.2: Eingangskoordinaten in
+            Weltkoordinaten wandeln, naechsten Routen-Wegpunkt nehmen. Memoisiert je
+            Wegpunktcache-Generation; der Fraktionsfilter liest UnitFactionGroup.
+
+    77 Feldziel-Quests haben jetzt ein echtes Questziel
+        Einfach: Fuer 77 Quests, deren Ziel ein Ort oder Gegenstand im Feld ist (die
+            Wasserbrunnen von Mulgore, der Mondfederstein der Druiden, die Kristallpylonen
+            im Krater von Un'Goro, Rolfs Leichnam, die vier Draenei-Totems, die
+            Tierzaehmungs-Questreihe der Jaeger und viele mehr), gab es bisher keinerlei
+            Zieldaten - der Eintrag "Ziel" fehlte einfach. Jetzt haben alle ein echtes,
+            routbares Questziel. Wichtig: Die Objekte und Kreaturen kommen aus Skus
+            eigenen Spawndaten, aber 26 Ortsangaben stammen aus Webquellen
+            (warcraft.wiki.gg, Wowhead) und konnten nicht alle im Spiel geprueft werden.
+            Sie sind mit Bedacht gewaehlt, koennen aber im Einzelfall danebenliegen -
+            eine Rueckmeldung, ob so ein Ziel stimmt oder nicht, hilft sehr. Auch ein
+            ungenauer Punkt ist besser als gar keiner: die Route fuehrt in die richtige
+            Gegend.
+        Technisch: Ergebnis der Pruefliste dev/rework-docs/QUEST-TARGET-PROPOSALS.txt
+            (Abschnitte 1-3, von Hand geprueft): 27 Objekt- und 24 Kreaturenziele als
+            objectives-Eintraege in quests_fixes.lua (IDs gegen die eigenen Datenbanken
+            validiert, Spawnzonen verifiziert, keine -1,-1-Positionen im Freiland) plus
+            26 triggerEnd-Koordinaten aus der Webrecherche. Zwei Quests (9410, 10166)
+            trugen die richtige Objekt-ID schon in extraObjectives, das die Zielmenues
+            nicht lesen - dort ist das objectives-Feld ergaenzt.
+
+    Dreizehn Sprich-mit-Quests haben wieder eine Abgabe
+        Einfach: Dreizehn Quests - vor allem die alten Priester-Zauberquests (Sterne
+            Elunes, Elunes Anmut, Furchtlosigkeit, Schwaechungsfluch), dazu unter anderem
+            "Der Foliant des Adels" und "Verbuendeter des Netherschwingenclans" - standen
+            ohne Abgabepunkt in den Daten: weder Ziel noch Abgabe, nichts war routbar.
+            Jetzt fuehrt die Abgabe zu dem NPC, den der Questtext selbst nennt.
+        Technisch: finishedBy-Eintraege in quests_fixes.lua; die Kreatur-IDs sind aus dem
+            Questtext gegen die Kreaturdatenbank aufgeloest (jeder Name ist dort eindeutig,
+            die Spawns liegen in der im Text genannten Zone). Die Kandidaten stammen aus
+            dem neuen Werkzeug dev/rework-docs/_quest_target_candidates.py, das alle
+            zielllosen Quests klassifiziert und fuer die restlichen (echte Feldziele ohne
+            Koordinatenquelle) die Pruefliste QUEST-TARGET-CANDIDATES.txt schreibt.
+
+
+    Experimentell: Sammelrouten
+        Einfach: Du waehlst eine Ressource - ein Erz, ein Kraut, eine Gaswolke oder eine
+            Truhensorte - und Sku fuehrt dich durch die Zone, Vorkommen fuer Vorkommen,
+            immer das naechstgelegene zuerst. Wo Wegedaten vorliegen, geht es ueber eine
+            echte Route; ist keine da, gibt es einen direkten Peilton, und Sku sagt das
+            dazu - ein Peilton kann durch eine Wand zeigen, eine Route nicht. Im Flug wird
+            nie geroutet: dort ist die Gerade der richtige Weg, nicht der Notbehelf.
+            Am Vorkommen wartet Sku kurz, waehrend du abbaust, und geht dann weiter. Der
+            Tastenbefehl "naechster Routenwegpunkt" (ab Werk Strg+Umschalt+W) ueberspringt
+            waehrend einer Sammelroute das aktuelle Vorkommen - es braucht also keine
+            neue Taste.
+            Ist die passende Suche aktiv (Mineralien finden, Kraeuter finden), prueft der
+            Minikartenscanner beim Herangehen, ob das Vorkommen ueberhaupt noch da ist,
+            und ueberspringt abgebaute mit einer eigenen Ansage. Ohne Suche laeuft die
+            Route trotzdem, nur eben ohne diese Pruefung.
+            Zu finden unter Einstellungen -> Scan -> ressourcen scan -> Sammelrouten; dort
+            liegen auch Pruefradius, Anzahl der Vorkommen je Route und der Schalter fuer
+            die Pruefung. Fuer Erze, Kraeuter und Truhen muss "Wegpunkte fuer Kraeuter und
+            Bergbau anzeigen" in den Navigationseinstellungen an sein - sonst liegen diese
+            Vorkommen gar nicht als Wegpunkte vor, und Sku sagt beim Start genau das,
+            statt die Zone faelschlich fuer leer zu erklaeren. Gaswolken brauchen die
+            Einstellung nicht.
+        Wichtig: Diese Funktion ist ausdruecklich experimentell. Sie ist im Spiel erst in
+            Ansaetzen erprobt, und die Pruefung "ist das Vorkommen ueberhaupt noch da"
+            konnte gar nicht unter echten Bedingungen laufen, weil hier kein Charakter
+            einen Sammelberuf hat - ohne Mineralien finden oder Kraeuter finden gibt es
+            keine Punkte auf der Minikarte, die der Scanner lesen koennte. Wer Bergbau
+            oder Kraeuterkunde spielt: bitte ausprobieren und berichten, was schiefgeht.
+        Technisch: Idee und Referenzumsetzung stammen von ZenqFR, aus dem Begleit-Addon
+            SkuGatherRoute (github.com/ZenqFR/Sku-GatherRoute); die Routenmechanik ist
+            dort erdacht und vorgefuehrt worden - eine Wegpunktfamilie unter einem
+            gemeinsamen Basisnamen, jedes Vorkommen ueber eine nahe Route, eine eigene
+            Ansage fuer jeden Uebergang, und der vorhandene Tastenbefehl als Ueberspringer.
+            Hier ist die Funktion mit ZenqFRs Zustimmung nativ neu gebaut, damit kein
+            zusaetzliches Addon noetig ist.
+            Ein Unterschied ist bewusst: das Original setzt GatherMate2 voraus, diese
+            Fassung nicht. Wir sehen darin keinen Vorteil - die Vorkommen stehen samt
+            Weltkoordinaten laengst in SkuNavs Wegpunkt-Cache, und zwar so benannt, dass
+            die Ressource der Basisname des Wegpunkts ist; eine zweite Datenquelle und ein
+            zweites Addon wuerden dem nichts hinzufuegen, kosteten aber jeden Nutzer eine
+            weitere Installation. Sollte GatherMate2 etwas leisten, das wir uebersehen
+            haben - das Selbstaufzeichnen tatsaechlich abgebauter Knoten waere der
+            Kandidat -, dann sagt uns bitte wofuer, und wir sehen es uns an.
+            Die Praesenzpruefung haengt sich in MinimapScanner:MinimapScanFastStop, den
+            Punkt, durch den jeder Scan laeuft. Ist "bei Ressourcen benachrichtigen" an,
+            reicht der ohnehin laufende Scan; sonst scannt die Route selbst, gedrosselt
+            und nur in Reichweite des Ziels, und diese Scans bleiben stumm. Ein Treffer
+            bestaetigt, ein Fehlschlag beweist nichts - ein Scan meldet immer nur einen
+            Namen und kann einen anderen Punkt erwischt haben. Erst nach mehreren
+            erfolglosen Scans in Reichweite gilt ein Vorkommen als weg. Im Zweifel wird
+            nie uebersprungen: ein zu Unrecht behaltenes Vorkommen kostet ein paar
+            Schritte, ein zu Unrecht uebersprungenes faellt gar nicht auf.
+
+    Das Menue bleibt beim Gehen bedienbar
+        Einfach: Oeffnete man das Menue waehrend man lief, stand es zwar da und sagte
+            "Menue geoeffnet", aber keine Taste tat noch etwas - keine Pfeiltaste, kein
+            Buchstabe, kein Eingabe. Nur Escape kam durch. Bedienbar wurde es erst, wenn
+            man stehen blieb. Das ist behoben: ein offenes Menue nimmt Tasten jetzt
+            entgegen, egal ob man geht, laeuft oder autolaeuft.
+        Technisch: Es gab zwei Bewegungssperren, nicht eine. Die erste verhindert das
+            OEFFNEN, waehrend eine Bewegungstaste gedrueckt gehalten wird - die bleibt,
+            sie ist noetig: die Tastenbelegungen des Menues wuerden das Loslassen
+            schlucken und man liefe endlos weiter. Autolaufen ist davon seit v42.00
+            ausgenommen (eigenes Flag AutoRun, das IsPlayerMoving bewusst nicht liest).
+            Die zweite sass im Tastenhandler des Menues selbst und liess, solange eine
+            Bewegungssperre stand, jeden Tastendruck ausser Escape verfallen. Diese
+            zweite Sperre kauft nichts: ist das Menue erst offen, gehoeren ihm die Tasten
+            ohnehin schon, das Verwerfen stoppt keine Bewegung - es macht nur das Menue
+            taub und setzt zu allem Ueberfluss das Merkzeichen "spaeter oeffnen" auf ein
+            laengst offenes Menue, das die Wiederoeffnungs-Schleife dann wieder abraeumen
+            muss. Sie greift jetzt nur noch, wenn das Menue NICHT offen ist. Die vier
+            verbliebenen Oeffnungssperren schreiben ausserdem eine Zeile ins Debug-Log,
+            die die haltende Bewegungstaste beim Namen nennt - vorher waren sie stumm,
+            und ein Bericht "das Menue ging beim Laufen nicht auf" hatte keinerlei Spur.
+
+    Navigation: "Aktuelle Karte Entfernung" steht jetzt vorn
+        Einfach: Unter "Direkter Wegpunkt" stand "Letzte" an erster und "Aktuelle Karte
+            Entfernung" an zweiter Stelle. Die beiden sind getauscht - die Liste der
+            Wegpunkte in der aktuellen Zone ist der haeufigere Einstieg und liegt jetzt
+            direkt unter dem Cursor.
+        Technisch: Reine Reihenfolge der Injektionen in SkuNav:MenuBuilder. "Letzte"
+            bleibt an eine nicht leere Liste zuletzt benutzter Wegpunkte gebunden; ist
+            sie leer, steht "Aktuelle Karte Entfernung" ohnehin an erster Stelle, wie
+            vorher auch.
+
+    Der Tippfilter ignoriert Akzente
+        Einfach: In jeder Liste, die sich durch Tippen einengen laesst, wurden Akzente
+            wie Zeichen einer anderen Sprache behandelt. Auf einem franzoesischen Client
+            fand "general" nichts, obwohl "Fournitures generales" dastand, und
+            "ingenieur" fand "Ingenieur" nicht - "ing" dagegen schon. Das traf auch
+            Deutsch: ein Eintrag, der mit einem grossen Umlaut beginnt, war ueber den
+            Filter nie erreichbar. Jetzt zaehlt der Buchstabe, nicht der Akzent. Dazu
+            tippt auf einer franzoesischen AZERTY-Tastatur die Taste ù jetzt ebenfalls in
+            den Filter - sie ist der einzige akzentuierte Buchstabe, den diese Tastatur
+            als echtes Tastenereignis liefert.
+        Technisch: string.lower ist in Lua bytweise und bildet ausschliesslich A-Z ab, es
+            faltet also auf keiner Seite des Vergleichs je ein akzentuiertes Zeichen.
+            SkuMenuFilterMatch (benutzt von ApplyFilter und JumpToFilterMatch) und
+            SettingsSearchMatch falten Eintragsnamen und Suchtext jetzt vorher auf
+            akzentfreies ASCII; nur 2-Byte-Sequenzen aus Latin-1 Supplement und Latin
+            Extended-A werden angefasst, reines ASCII nimmt den schnellen Weg. Streng
+            durchlaessiger als vorher: was frueher passte, passt weiterhin. Ausserdem
+            laufen die beiden string.find jetzt mit plain=true - der Suchtext wurde als
+            Lua-Suchmuster gelesen, weshalb eine Eingabe wie "50%" oder "(lang" nichts
+            fand oder mit einem Fehler abbrach.
+            Die Akzentfaltung stammt aus PR #9 (ZenqFR), die ù-Taste aus PR #13
+            (Naxedim).
+
+    Aktionsleisten: der Zauber-Tooltip wird wieder vorgelesen
+        Einfach: Im Aktionsleisten-Menue (Umschalt+F11) las Umschalt+Ab auf einem Zauber
+            der Zuweisungsliste gar nichts mehr vor. Jetzt kommt der Tooltip wieder -
+            ebenso bei der aktuellen Belegung einer Taste und bei den beiden
+            Begleiter-Faehigkeiten daneben, die dieselbe Schwaeche hatten.
+        Technisch: Zwei unabhaengige Ursachen, beide behoben, weil sich aus dem Code
+            keine ausschliessen liess. Erstens wird SkuScanningTooltip einmalig beim
+            Login ohne Vorlage erzeugt und von jedem Modul geteilt; wer ihn zuletzt
+            benutzt hat, kann ihn ohne brauchbaren Besitzer zuruecklassen, und danach
+            fuellt jeder Set*-Aufruf nichts mehr - lautlos, ohne Fehler. Er wird jetzt
+            unmittelbar vor dem Fuellen neu in Besitz genommen. Zweitens bekam
+            SetSpellByID den dritten Rueckgabewert von GetSpellBookItemName, der auf
+            diesem Client der Classic-Signatur folgt und nur (name, rank) liefert - die
+            Id ist eine Retail-Ergaenzung und war nil. Die Id kommt jetzt aus
+            GetSpellBookItemInfo, gefuellt wird mit SetSpellBookItem, das gar keine Id
+            braucht. Der Lesevorgang laeuft zusaetzlich in einem pcall, weil er bei jeder
+            Cursorbewegung ausgeloest wird. Aus PR #10 (ZenqFR).
+
+    Questziel: der Ort stand in den Daten, gefunden wurde er nie
+        Einfach: 174 Quests, bei denen man einen Ort erkunden oder dort etwas benutzen
+            soll, antworteten unter "Questziel" nur "Leer". Jetzt fuehrt der Eintrag zum
+            naechstgelegenen Routenwegpunkt an diesem Ort.
+        Technisch: GetTriggerEndWps setzte einen Wegpunkt-NAMEN zusammen
+            ("<Quest>;<Zone>;<Questziel>;<x>;<y>") und liess ihn ueber die exakte
+            Namenssuche im Wegpunkt-Cache aufloesen. Einen Wegpunkt unter diesem Namen
+            erzeugt aber nichts - anders als bei Kreaturen- und Objektvorkommen -, er
+            traf also nur, wenn jemand ihn von Hand in die Routendaten geschrieben hatte:
+            genau einer existiert (Quest 10211, Shattrath). Der zusammengesetzte Name
+            wird weiter benutzt, wenn er aufloest; sonst uebernimmt jetzt die Geometrie -
+            Kartenkoordinaten in Weltkoordinaten, dann der naechste echte ROUTEN-Wegpunkt.
+            GetNearestWpToCoords2 bekam dafuer einen optionalen typeId-Filter, damit die
+            Ersatzsuche nicht in den rund 145000 erzeugten Vorkommenspunkten landet, und
+            eine Absicherung gegen einen fehlenden Kontinent-Eimer, wo pairs(nil) warf.
+            Ausserdem werden jetzt alle Koordinatenpaare jeder Zone gelesen statt nur des
+            ersten, und das Ergebnis wird pro Cache-Generation gemerkt.
+
+    Franzoesisch: die Wegpunktkommentare sprechen wieder - und jetzt franzoesisch
+        Einfach: Die Kommentare an Wegpunkten - darunter die sicherheitsrelevanten wie
+            "Vorsicht, ab hier fuehrt die Route am Rand einer Schlucht entlang", "hier auf
+            den Zeppelin warten" oder "dieser NPC bewegt sich" - blieben auf einem
+            franzoesischen Client seit v42.11 restlos stumm. Sie sprechen wieder, und sie
+            sprechen jetzt Franzoesisch: 207 Texte, die auf 546 Wegpunkten sitzen.
+        Technisch: Die Routendaten fuehren lComments nur fuer enUS und deDE (rund 296
+            Wegpunkte). SkuNav:PlayWpComments las comments[Sku.Loc] ohne Rueckfall. Bis
+            v42.11 war Sku.Loc auf einem franzoesischen Client "enUS", weil es keine
+            frFR-Locale gab, und man hoerte die englischen Texte; seit locales/frFR.lua
+            existiert, ist Sku.Loc "frFR", die Suche liefert nil, und die Funktion kehrt
+            wortlos zurueck. Neu ist Sku.locList (SkuUtil.lua), das Listengegenstueck zu
+            Sku.locStr: es liefert die erste NICHT LEERE Liste aus Sku.Loc / enUS / deDE.
+            "Nicht leer" ist entscheidend, weil SkuMM.lua an jedem gezeichneten Wegpunkt
+            ein leeres comments[Sku.Loc] anlegt - eine einfache oder-Kette bliebe daran
+            haengen. Die Uebersetzung ist aus dem DEUTSCHEN Original gemacht, nicht ueber
+            das Englische: das Englische hat auf genau diesen Sicherheitstexten Details
+            verloren (die Schlucht-Warnung ohne "du gehst am Rand" und ohne Laufrichtung,
+            "extrem schmale Bruecke mit Schlucht" zu "extrem schmale Bruecke"), und
+            mehrere englische Eintraege sind leer, darunter die Warnung vor toedlichen
+            Aufzuegen auf acht Wegpunkten.
+
+    Franzoesisch: Ressourcennamen und die Hoehle der Nebel
+        Einfach: Zwei Fehler, die nur einen franzoesischen Client trafen. Erstens waren 22
+            der 94 Ressourcennamen des Minikartenscanners falsch - der Scanner vergleicht
+            sie mit dem Tooltip des Spiels, ein falscher Name heisst also, dass dieses
+            Vorkommen nie angesagt wird, ohne Fehlermeldung. Zweitens blieb in der Hoehle
+            der Nebel die Wegpunktliste leer, waehrend eine draussen gestartete Route
+            weiterlief.
+        Technisch: Die 22 Namen wurden einzeln gegen eine von beiden Addons unabhaengige
+            Quelle entschieden: 19 ueber SkuDBs eigene frFR-Tabellen (aus Questies
+            Blizzard-Strings), drei ueber die Tooltip-Schnittstelle von Wowhead. Bei der
+            Hoehle vergleicht Geo.lua GetMinimapZoneText() woertlich mit L["Hoehle der
+            Nebel"]; die generierte frFR-Locale trug "Grotte des Brumes", eine freie
+            Uebersetzung - der Client sagt "Caverne des Brumes". Der Vergleich lief also
+            ins Leere, uiMap blieb auf dem Kontinent, GetAreaIdFromUiMapId antwortete -1
+            und GetCurrentAreaId nil, worauf ListWaypoints2 aufgab. Der Wert wurde mit
+            /szp in der Zone gelesen, nicht uebersetzt, und liegt jetzt sowohl in der
+            generierten Datei als auch in der TSV-Ablage, aus der sie zusammengebaut wird
+            - samt der Notiz, dass er nicht frei uebersetzt werden darf.
+            Aus den PRs #14 und #16 (Naxedim).
+
+    Zum Beacon drehen: genauer, und mit Vorhalt
+        Einfach: Die automatische Drehung zum Funkfeuer (T) sitzt jetzt deutlich genauer.
+            Vorher lief sie so schnell, dass allein das framegenaue Stoppen je nach
+            Bildrate zwanzig Grad und mehr Ueberdreh kosten konnte. Jetzt richtet sich das
+            Tempo nach der Groesse der Drehung, und keine Drehung dauert laenger als eine
+            Viertelsekunde. Waehrend man sich bewegt, wird ausserdem vorgehalten: gezielt
+            wird dorthin, wo der Wegpunkt am Ende der Drehung liegen wird - das beendet
+            das Im-Kreis-Laufen um nahe Wegpunkte, das vor allem beritten und im Flug
+            auftrat. Und ein Druck waehrend einer laufenden Drehung wird verworfen statt
+            die Drehung mittendrin abzubrechen; gewohntes Mehrfachdruecken verfeinert
+            weiter wie bisher.
+        Technisch: Vier Teile, die zusammen getestet wurden. Der Schnappschuss auf die
+            Standardkamera vor der Drehung bleibt - er ist fuer die Gierung tragend, ohne
+            ihn stimmt der Winkel nicht. Die Drehgeschwindigkeit wird aus dem Restwinkel
+            gedeckelt, statt fest zu laufen. Der Vorhalt rechnet aus der aktuellen
+            Geschwindigkeit und der voraussichtlichen Dauer der Drehung, wo der Wegpunkt
+            am Ende steht. Dazu eine Absicherung gegen den Fehler, dass nach schnell
+            hintereinander ausgeloesten Drehungen die Drehgeschwindigkeit der Kamera-
+            Tasten dauerhaft vervierfacht haengenblieb.
+
+    Das Installationsprogramm merkt sich, wo WoW liegt
+        Einfach: Das Installationsprogramm sucht das Spiel an den ueblichen Stellen -
+            Programme, dazu eine Handvoll wahrscheinlicher Ordner auf C, D und E. Wer sein
+            WoW woanders hat, musste den Ordner von Hand suchen, und das nicht einmal,
+            sondern bei JEDEM Update: das Installationsprogramm vergass die Antwort in dem
+            Moment, in dem es sich schloss. Jetzt schreibt es den Ordner auf, sobald eine
+            Installation durchgelaufen ist, und faengt beim naechsten Mal dort an. Zeigt man
+            ihm einen Client, findet es auch den zweiten daneben - eine Classic Era neben
+            einer Anniversary auf demselben ungewoehnlichen Laufwerk wird von selbst
+            mitgenommen. Zieht das Spiel spaeter um oder wird deinstalliert, wird die Notiz
+            verworfen und es wird gesucht wie vorher. Das Installationsprogramm steht damit
+            auf Version 4.5.
+        Technisch: Neue Datei PathMemory.cs. Das Installationsmanifest taugt dafuer nicht -
+            SkuInstall.json liegt IM AddOns-Ordner, es zu lesen setzt also voraus, den
+            Ordner schon gefunden zu haben, den man sich merken will. Der Ordner jedes
+            Clients wird deshalb als einfache Zeile "produkt=pfad" in SkuPaths.txt
+            geschrieben, und zwar an zwei Stellen: %LOCALAPPDATA%\SkuUpdater, neben der
+            dauerhaften Kopie des Updaters, die die Verknuepfung "Sku Updater" startet, und
+            %ProgramData%\SkuUpdater als maschinenweite Spiegelung. Die Spiegelung ist kein
+            Selbstzweck: das Installationsprogramm fordert Adminrechte an, ein
+            Standardbenutzer, der die UAC-Abfrage mit den Adminzugangsdaten eines anderen
+            beantwortet, laeuft also komplett unter jenem Profil und wuerde die Notiz sonst
+            in ein LOCALAPPDATA schreiben, das er nie wiedersieht. Beim naechsten Start
+            schlaegt ein gemerkter Ordner die Erkennung - er ist eine Entscheidung, die
+            Erkennung nur eine Vermutung ueber eine kurze Laufwerksliste - und sein
+            Basisverzeichnis wird der Suchliste vorangestellt; genau das macht das Merken
+            eines Clients fuer den anderen bezahlt. Absicherungen gegen eine veraltete
+            Notiz: der Ordner muss noch existieren, und seine .flavor.info darf nicht
+            inzwischen einen anderen Client melden - sonst wird die Notiz ignoriert, statt
+            eine Installation ins Leere zu schicken. Geschrieben wird erst, nachdem ein
+            Client sauber installiert wurde, ein abgebrochener oder fehlgeschlagener Lauf
+            hinterlaesst also nichts. Klartext mit Absicht - die Datei laesst sich vorlesen
+            und im Editor korrigieren, und wer eine Zeile loescht, bekommt fuer diesen
+            Client die automatische Erkennung zurueck. Neue Pruefung ohne Oberflaeche,
+            "SkuSelfTest pathmemory": sie gibt aus, was auf diesem Rechner vermerkt ist, und
+            spielt Schreiben, Lesen und die Faelle veralteter Notizen gegen einen
+            Wegwerfspeicher durch, ohne den echten anzufassen.
+
+    Das Lesefenster laesst sich einstellen
+        Einfach: Questtexte, Tooltips, der Chatverlauf und die Wiki-Seiten landen alle im selben
+            Lesefenster. Wie dieses Fenster aussieht, stand bisher fest im Code: Playfair Display
+            in 12 Punkt, eine duenne Schrift mit Serifen in der kleinsten Groesse, die das Addon
+            ueberhaupt verwendet. Fuer jemanden mit Restsehvermoegen war das ausgerechnet die
+            wichtigste Flaeche im Addon und zugleich die am schlechtesten lesbare. Unter
+            Einstellungen -> Visuelle Hilfen -> Textfenster stehen jetzt Schriftgroesse von 14 bis
+            44 Punkt, vier Schriftarten, vier Farbkombinationen (weiss auf schwarz, gelb auf
+            schwarz, schwarz auf weiss, weiss auf blau), die Deckkraft des Hintergrunds und ein
+            Umriss zur Wahl. Ab Werk laeuft das Fenster jetzt serifenlos in 18 Punkt. Wer nichts
+            umstellt, bekommt also trotzdem eine deutlich besser lesbare Flaeche als vorher.
+        Technisch: Die Flaeche selbst gehoert Libs/SkuTTS-1.0 (Frame SkuTTSMainFrame samt
+            FontString .FS); dort stand die Darstellung als ein einziger harter SetFont-Aufruf.
+            Die Einstellungen liegen jetzt in SkuCore VisualAids unter visualAids.textWindow, und
+            SkuTTS:Output ruft vor jedem Anzeigen VisualAids:TextWindowLayout auf - pcall-
+            gesichert und in derselben Richtung, in der SkuZOptions schon den Lesebalken fuettert.
+            Die Lib muss so nichts ueber die Optionen wissen, und ein abgeschaltetes Modul
+            Visuelle Hilfen laesst das Fenster einfach beim alten Aussehen. Jede Schriftzuweisung
+            ist geprueft und faellt auf die Client-Standardschrift zurueck, statt eine leere
+            Flaeche zu hinterlassen - die beiden mitgelieferten Familien Raleway und Playfair
+            liegen unter Libs/SkuTTS-1.0/fonts und kommen nur ueber das Release-ZIP mit. Die
+            Groessenstufen sind bewusst kleiner als beim Lesebalken: hier steht ein ganzer
+            Questtext, und das Fenster hat keinen Rollbalken, schneidet also unten umso frueher
+            ab, je groesser die Schrift ist. Gesprochen wird weiterhin alles, die Anzeige ist die
+            Zweitspur.
+
+    Der Lesebalken zeigt, was Sku sagt - und er funktioniert im Kampf
+        Einfach: Zwei Dinge auf einmal. Erstens blieb der Balken im Kampf leer, also genau dann,
+            wenn Vorlesen und Mitlesen am wichtigsten sind. Zweitens zeigte er nur den Namen eines
+            Menueeintrags: bei einem Ein/Aus-Schalter stand dort der Name, aber nicht der Zustand,
+            bei einer Taschenzeile der Name, aber nicht die Anzahl - alles, was Sku zusaetzlich
+            vorliest, fehlte auf dem Balken. Beides ist behoben; der Balken zeigt jetzt dieselbe
+            Zeile, die Sku spricht, und er tut es auch mitten im Kampf. Ausserdem sind Schriftart
+            und Farbkombination jetzt auch fuer ihn waehlbar, mit eigenen Werten neben denen des
+            Textfensters.
+        Technisch: Die Kampf-Sperre war eine Verwechslung von sichtbar und offen: die Pruefung
+            haengte an SkuOptions:IsMenuOpen(), und das testet OnSkuOptionsMain:IsVisible().
+            Dieser Frame ist Vorfahr der sicheren ENTER-Buttons und damit geschuetzt, sein Show()
+            ist im Kampf blockiert - das Kampfmenue laeuft absichtlich headless und meldet sich
+            stattdessen ueber SkuOptions.combatMenuActive. Genau dieses Paar pruefen templates.lua
+            und SkuZOptions ohnehin schon; der Lesebalken kannte es nur nicht. Er selbst ist ein
+            gewoehnlicher Frame ohne sichere Kinder, sein Show() war im Kampf nie das Problem.
+            Weil das Kampfmenue nur logisch schliesst (der Frame-Hide ist dort geschuetzt) und das
+            an sechs Stellen tut, blendet sich der Balken jetzt selbst aus: ein OnUpdate prueft
+            alle 0,25 s, ob das Menue noch offen ist - WoW ruft OnUpdate ausschliesslich bei
+            sichtbaren Frames auf, im ausgeblendeten Zustand kostet das also nichts. Der Inhalt
+            war schlicht ein weggeworfener Parameter: der Aufrufer uebergab immer schon den
+            vollstaendigen Sprechstring, angezeigt wurde trotzdem currentMenuPosition.name. Jetzt
+            hat der uebergebene String Vorrang, die Semikolons der Sprechtrennung werden fuer die
+            Anzeige zu Bindestrichen.
+
+    Namensplaketten: die Einstellungen, die das Spiel versteckt
+        Einfach: Der Client kann seine Namensplaketten laengst groesser, farbiger und
+            kontrastreicher darstellen - er bietet es nur nirgends an. Blizzards eigenes
+            Optionsfenster zeigt in Classic keine einzige dieser Einstellungen; die Checkbox fuer
+            groessere Plaketten, die es im aktuellen WoW gibt, ist in Classic ausdruecklich leer
+            gelassen. Ohne Sku kaeme man nur ueber Konsolenbefehle heran. Das neue Menue unter
+            Einstellungen -> Visuelle Hilfen -> Namensplaketten macht sie zugaenglich:
+            Plakettengroesse, Hervorhebung des Ziels, Abschwaechung aller uebrigen Plaketten,
+            Klassenfarben fuer Gegner und Verbuendete sowie nur Namen bei freundlichen Spielern.
+            Anders als die aelteren Plaketten-Farben faerbt das nicht etwas hinter die Plakette,
+            sondern veraendert die echte Plakette selbst. Ab Werk steht alles so, wie der Client
+            es ausliefert - wer nichts auswaehlt, sieht keine Veraenderung.
+        Technisch: Reine CVar-Einstellungen, kein eigener Frame, kein Taint. Plakettengroesse
+            setzt nameplateMinScale und nameplateMaxScale gemeinsam (getrennt ergaebe das eine
+            entfernungsabhaengige Skalierung, die hier niemand will), Hervorhebung setzt
+            nameplateSelectedScale, Abschwaechung nameplateMinAlpha, dazu nameplateShowClassColor,
+            nameplateShowFriendlyClassColor und nameplateShowOnlyNameForFriendlyPlayerUnits. Alle
+            Werte und die Existenz jeder einzelnen CVar wurden am lebenden Client 2.5.6.69546
+            gemessen, die Obergrenze 2.0 gegen die Klemmung des Clients geprueft. Wichtig fuer
+            kuenftige Arbeit: die entpackte BlizzardInterfaceCode im Client-Ordner ist ein Abzug
+            von Maerz/April 2026 und damit aelter als die Plaketten-Umstellung vom Juli; sie nennt
+            Retail-Namen wie NamePlateVerticalScale oder ShowClassColorInNameplate, die es in
+            dieser exe gar nicht gibt. Massgeblich sind die Strings der exe. Schreibzugriffe auf
+            CVars sind im Kampf gesperrt und scheitern still, eine dort gemachte Aenderung wird
+            deshalb vorgemerkt und bei PLAYER_REGEN_ENABLED nachgeholt. Beim Login zieht Sku die
+            Werte nach, aber erst, nachdem im Menue wirklich einmal etwas ausgewaehlt wurde - wer
+            seine Plaketten frueher von Hand per Konsole eingestellt hat, behaelt sie
+            unangetastet.
+
+    Die Plaketten-Farben ueberleben einen Neustart
+        Einfach: Wer die Plaketten-Faerbung einschaltete, hatte sie genau so lange, bis er sich
+            neu einloggte oder die Oberflaeche neu lud. Danach stand der Schalter weiter auf an,
+            gefaerbt wurde aber nichts mehr. Wieder in Gang brachte man es nur, indem man den
+            Schalter von Hand aus- und wieder einschaltete - und das in jeder Sitzung erneut. Das
+            ist behoben; die Einstellung wirkt jetzt einfach.
+        Technisch: Das Scharfschalten des Ereignis-Treibers (NAME_PLATE_UNIT_ADDED, _REMOVED und
+            PLAYER_TARGET_CHANGED) haengte ausschliesslich am OnAction des Menue-Schalters. Der
+            gespeicherte Wert wurde beim Laden zwar gelesen, aber nirgends angewandt, also war
+            nach jedem Login kein einziges Ereignis registriert. Das Armieren sitzt jetzt in
+            VisualAids:OnEnable, wo die Folgen-Warnung und der Naechster-Gegner-Button schon immer
+            armiert wurden, mit einem verzoegerten zweiten Versuch fuer den Fall, dass das Profil
+            beim ersten Durchlauf noch nicht steht.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

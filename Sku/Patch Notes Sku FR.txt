@@ -24,6 +24,8 @@ Changements dans Sku v43.2
             Nage et vol : Sku vous maintient à l'horizontale. Le nouveau verrouillage de l'inclinaison met fin à la plongée insidieuse lors des virages automatiques, et après une approche automatique vers un PNJ ou un appui sur monter/descendre, vous êtes activement redressé. Activé par défaut ; désactivable sous Paramètres -> Général.
             Nouveau raccourci « verrouillage de l'inclinaison en nage et en vol » (Ctrl+Maj+N) : verrouille et libère l'inclinaison manuellement - l'éteindre puis le rallumer vous remet à l'horizontale à tout moment.
             Expérimental : itinéraires de récolte pour les minerais, les herbes, les nuages de gaz et les coffres - Sku vous guide de gisement en gisement à travers la zone, le plus proche d'abord. Sous Réglages -> Scan -> analyse des ressources -> Itinéraires de récolte. Nouveau et à peine testé en jeu ; vos retours sont expressément souhaités.
+            Nouveau menu « Barres de nom » sous Réglages -> Aides visuelles : taille des barres, mise en évidence de la cible, couleurs de classe et atténuation des autres barres - des réglages que le jeu sait faire mais n'offre nulle part dans sa propre fenêtre d'options.
+            La fenêtre de lecture des textes de quête, infobulles, historique de discussion et wiki devient configurable : taille de police, police, couleurs, opacité et contour sous Réglages -> Aides visuelles -> Fenêtre de texte.
 
         Changements
             Se tourner vers la balise (T) : la rotation est désormais nettement plus précise. Avant, elle tournait si vite que le simple arrêt à la trame près pouvait coûter 20 degrés et plus de dépassement selon la fréquence d'images ; la vitesse s'adapte maintenant à l'ampleur de la rotation, et aucune rotation ne dure plus d'un quart de seconde.
@@ -46,6 +48,8 @@ Changements dans Sku v43.2
             Menu : le filtre de saisie ignore les accents - « general » trouve maintenant « Fournitures générales », et « ingenieur » trouve « Ingénieur ». Sur un clavier AZERTY, la touche ù alimente désormais aussi le filtre.
             Français : les commentaires de points de passage existent maintenant en français - 207 textes sur 546 points de passage, traduits depuis l'original allemand.
             Programme d'installation : un WoW installé à un endroit inhabituel ne doit être indiqué qu'une seule fois - le programme d'installation retient désormais où se trouve chaque client et le retrouve tout seul à chaque mise à jour ultérieure.
+            La fenêtre de lecture démarre désormais dans une police sans empattement en 18 points au lieu de Playfair Display en 12 - l'ancien réglage par défaut était la surface de texte la plus petite et la plus fine de tout l'addon.
+            La barre de lecture se règle elle aussi en police et en couleurs, avec ses propres valeurs distinctes de celles de la fenêtre de texte.
 
         Corrections
             Menu : pendant la marche, un menu ouvert était comme mort - toutes les touches sauf Échap étaient avalées jusqu'à l'arrêt complet.
@@ -78,6 +82,9 @@ Changements dans Sku v43.2
             Français : les commentaires de points de passage étaient totalement muets depuis la v42.11 - y compris les avertissements comme « attention, ravin » ou « attendre le zeppelin ici ».
             Français : 22 des 94 noms de ressources du scanner de minicarte étaient erronés, ces gisements n'étaient donc jamais annoncés.
             Français : dans la Caverne des Brumes, la liste des points de passage restait vide.
+            La coloration des barres de nom était morte après chaque connexion et chaque rechargement : l'interrupteur indiquait « activé », mais plus rien n'était coloré tant qu'on ne le basculait pas deux fois à la main.
+            La barre de lecture restait invisible en combat - précisément quand elle est la plus utile.
+            La barre de lecture n'affichait que le nom d'une entrée de menu, pas la valeur lue ensuite - les états d'interrupteur et les quantités étaient audibles mais pas lisibles.
 
     Nage et vol : le verrouillage de l'inclinaison met fin à la plongée involontaire
         Simple : En nageant ou en volant, chaque virage automatique vers la balise tirait un peu
@@ -1089,6 +1096,99 @@ Changements dans Sku v43.2
             pathmemory » : il affiche ce qui est noté sur cette machine et déroule
             l'écriture, la lecture et les cas de note périmée sur un stockage jetable, sans
             jamais toucher au vrai.
+
+    La fenêtre de lecture devient configurable
+        Simple : Les textes de quête, les infobulles, l'historique de discussion et les pages du
+            wiki aboutissent tous dans la même fenêtre de lecture. Son apparence était figée dans
+            le code : Playfair Display en 12 points, une police à empattements fine, dans la plus
+            petite taille utilisée par l'addon. Pour une personne ayant une vision résiduelle,
+            c'était à la fois la surface la plus importante de l'addon et la moins lisible.
+            Réglages -> Aides visuelles -> Fenêtre de texte propose désormais des tailles de 14 à
+            44 points, quatre polices, quatre combinaisons de couleurs (blanc sur noir, jaune sur
+            noir, noir sur blanc, blanc sur bleu), l'opacité du fond et un contour. Par défaut la
+            fenêtre s'affiche maintenant sans empattement en 18 points : même sans rien changer,
+            elle est nettement plus lisible qu'avant.
+        Technique : La surface appartient à Libs/SkuTTS-1.0 (cadre SkuTTSMainFrame et son
+            FontString .FS), où l'apparence tenait en un seul appel SetFont codé en dur. Les
+            réglages vivent désormais dans SkuCore VisualAids sous visualAids.textWindow, et
+            SkuTTS:Output appelle VisualAids:TextWindowLayout avant chaque affichage - protégé par
+            pcall et dans le même sens que SkuZOptions alimente déjà la barre de lecture. La
+            bibliothèque n'a ainsi rien à savoir des options, et un module Aides visuelles
+            désactivé laisse simplement la fenêtre telle quelle. Chaque attribution de police est
+            vérifiée et retombe sur la police standard du client au lieu de laisser une surface
+            vide - les deux familles fournies, Raleway et Playfair, se trouvent sous
+            Libs/SkuTTS-1.0/fonts et ne sont livrées que par l'archive de version. Les paliers de
+            taille sont volontairement plus petits que ceux de la barre : un texte de quête entier
+            tient ici, et la fenêtre n'a pas d'ascenseur, donc elle coupe d'autant plus tôt que la
+            police est grande. Tout reste lu intégralement ; l'affichage est la seconde piste.
+
+    La barre de lecture affiche ce que Sku dit - et fonctionne en combat
+        Simple : Deux choses à la fois. D'abord, la barre restait vide en combat, c'est-à-dire
+            précisément quand suivre le texte compte le plus. Ensuite, elle n'affichait que le nom
+            d'une entrée de menu : sur un interrupteur on avait le nom mais pas l'état, sur une
+            ligne de sac le nom mais pas la quantité - tout ce que Sku lit en plus manquait sur la
+            barre. Les deux sont corrigés ; la barre affiche maintenant la même ligne que Sku
+            prononce, y compris en plein combat. Sa police et ses couleurs sont en outre
+            réglables, avec des valeurs propres à côté de celles de la fenêtre de texte.
+        Technique : Le blocage en combat venait d'une confusion entre visible et ouvert : le test
+            s'appuyait sur SkuOptions:IsMenuOpen(), qui interroge OnSkuOptionsMain:IsVisible(). Ce
+            cadre est un ancêtre des boutons ENTER sécurisés, donc protégé, et son Show() est
+            bloqué en combat - le menu de combat tourne volontairement sans affichage et se
+            signale via SkuOptions.combatMenuActive. templates.lua et SkuZOptions testent déjà
+            exactement ce couple ; la barre de lecture ne le connaissait pas. Elle-même est un
+            cadre ordinaire sans enfant sécurisé : son Show() n'a jamais posé problème en combat.
+            Comme le chemin de combat ne ferme le menu que logiquement (le Hide du cadre y est
+            protégé) et le fait à six endroits, la barre se masque désormais d'elle-même : un
+            OnUpdate vérifie toutes les 0,25 s si le menu est encore ouvert - WoW n'appelle
+            OnUpdate que sur les cadres visibles, cela ne coûte donc rien une fois masquée. Le
+            contenu, lui, était un paramètre jeté : l'appelant transmettait depuis toujours la
+            chaîne parlée complète, mais c'est currentMenuPosition.name qui était affiché. La
+            chaîne transmise est désormais prioritaire, et les points-virgules du séparateur de
+            parole deviennent des tirets à l'affichage.
+
+    Barres de nom : les réglages que le jeu cache
+        Simple : Le client sait depuis longtemps afficher ses barres de nom plus grandes, plus
+            colorées et plus contrastées - simplement, il ne le propose nulle part. La fenêtre
+            d'options de Blizzard n'affiche aucun de ces réglages sous Classic ; la case pour des
+            barres de nom plus grandes qui existe dans le WoW actuel est explicitement laissée
+            vide sous Classic. Sans Sku, on n'y accédait que par des commandes console. Le nouveau
+            menu sous Réglages -> Aides visuelles -> Barres de nom les rend accessibles : taille
+            des barres, mise en évidence de la cible, atténuation de toutes les autres, couleurs
+            de classe pour les ennemis et les alliés, et noms seuls pour les joueurs alliés.
+            Contrairement à l'ancienne coloration, cela ne peint pas quelque chose derrière la
+            barre mais modifie la vraie barre. Par défaut, tout reste tel que le client le livre :
+            si vous ne choisissez rien, rien ne change.
+        Technique : Uniquement des réglages de CVar, aucun cadre propre, aucune contamination. La
+            taille écrit nameplateMinScale et nameplateMaxScale ensemble (les séparer produirait
+            une mise à l'échelle dépendante de la distance, dont personne ne veut ici), la mise en
+            évidence écrit nameplateSelectedScale, l'atténuation nameplateMinAlpha, auxquels
+            s'ajoutent nameplateShowClassColor, nameplateShowFriendlyClassColor et
+            nameplateShowOnlyNameForFriendlyPlayerUnits. Toutes les valeurs et l'existence de
+            chaque CVar ont été mesurées sur le client vivant 2.5.6.69546, et le plafond de 2.0
+            vérifié contre l'écrêtage du client. Important pour la suite : le dossier
+            BlizzardInterfaceCode extrait dans le répertoire du client date de mars/avril 2026 et
+            est donc antérieur au changement des barres de nom de juillet ; il cite des noms de
+            CVar de la version actuelle comme NamePlateVerticalScale ou ShowClassColorInNameplate
+            qui n'existent pas du tout dans cet exécutable. Ce sont les chaînes de l'exécutable
+            qui font foi. Les écritures de CVar sont bloquées en combat et échouent en silence :
+            une modification faite là est donc mémorisée et appliquée à PLAYER_REGEN_ENABLED. Sku
+            réapplique les valeurs à la connexion, mais seulement une fois qu'un choix a
+            réellement été fait dans le menu - qui a réglé ses barres de nom à la main par la
+            console les conserve intactes.
+
+    La coloration des barres de nom survit à un redémarrage
+        Simple : Qui activait la coloration des barres de nom l'avait exactement jusqu'à sa
+            prochaine connexion ou au prochain rechargement de l'interface. Ensuite l'interrupteur
+            indiquait toujours « activé », mais plus rien n'était coloré. Le seul moyen de la
+            relancer était de basculer l'interrupteur à la main, à chaque session. C'est corrigé ;
+            le réglage fonctionne désormais simplement.
+        Technique : L'armement du pilote d'événements (NAME_PLATE_UNIT_ADDED, _REMOVED et
+            PLAYER_TARGET_CHANGED) ne tenait qu'au OnAction de l'interrupteur du menu. La valeur
+            enregistrée était bien lue au chargement mais appliquée nulle part : après chaque
+            connexion, aucun événement n'était donc enregistré. L'armement se trouve maintenant
+            dans VisualAids:OnEnable, là où l'avertissement de suivi et le bouton du prochain
+            ennemi ont toujours été armés, avec une seconde tentative différée au cas où le profil
+            ne serait pas encore prêt au premier passage.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1
