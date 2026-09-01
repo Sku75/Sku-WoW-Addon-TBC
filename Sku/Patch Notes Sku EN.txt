@@ -47,6 +47,8 @@ Changes in Sku v43.2
             Installer: a game folder off the beaten track only has to be pointed out once - the installer now remembers where each WoW client lives and finds it again on every later update.
             The reading window now starts in a sans serif font at 18 point instead of Playfair Display at 12 - the previous default was the smallest and thinnest text surface in the whole addon.
             The reading bar can now be set to a font and color pair as well, with its own values kept separate from the text window.
+            Auction house: "Level descending" now sorts the whole result list instead of only its first page; equal levels are ordered by the price per item.
+            Auction house: "level" means the required level everywhere - and is only read out where it actually tells the entries apart.
 
         Bugfixes
             Menu: while you were walking, an open menu was as good as dead - every key except Escape was swallowed until you stood still.
@@ -87,6 +89,11 @@ Changes in Sku v43.2
             With two windows open at once, closing the second one went unnoticed.
             After a window was closed, its entries could linger under "Local".
             Trainer: learning several spells in quick succession and closing the window right after left it still talking.
+            Auction house: "usable only" hid exactly the high-level items you are shopping for from the full-scan list.
+            Auction house: the full-scan list filtered by level and quality although no filter was set - trade goods, materials and everything grey were missing.
+            Auction house: a category without subcategories showed nothing but "All".
+            Auction house: a cancelled purchase could hijack the next search and arm a buy nobody asked for.
+            Auction house: a search the watchdog cuts short says so now - a half-filled list used to look like a finished result.
 
     Swimming and flying: the pitch lock ends the unwanted diving
         Simple: While swimming or flying, every automatic turn towards the beacon pulled you a
@@ -1134,6 +1141,103 @@ Changes in Sku v43.2
             into a closed menu did not help here: as soon as the next window reopened the menu, it
             was open. The retry for silent rescans while moving also lost its silent flag and was
             scheduled once per click - it now carries its arguments along and runs only once.
+
+    Auction house: the result list really is sorted
+        Simple: Sorting by "Level descending" still gave you a list that started with low-level
+            junk. The sort only ever worked inside one page - and one page is the 50 cheapest
+            auctions. What stood at the top was the highest level among the cheapest grey goods,
+            while the level 70 items sat hundreds of entries further down. Even after the
+            finished sound, because nothing was ever re-sorted. Now the server sorts the result
+            list by level itself, and equal levels are ordered by the price per item.
+        Technically: Every query went out with the server sort hard-wired to "unitprice", and the
+            result list is built page by page, append-only (new items go to the end so the user's
+            cursor never jumps). The order of the list is therefore always the server's, and our
+            own sort only ever ordered one page. For "Level ascending" and "descending" the
+            server answer is now sorted by the "level" column - the same column Blizzard's own
+            level sort button sets. Buy and strategy buy stay on "unitprice": they depend on the
+            cheapest offer being on page 0. So does a name search, where every hit is the same
+            item: the server would have sorted by a field in which nothing differs and handed
+            back its pages in its own order instead of cheapest first. On top of that, the level
+            comparators now use the price per item as their second key; bid-only auctions count
+            with their bid per item instead of a buyout of 0.
+
+    Auction house: "level" means the required level everywhere
+        Simple: The level in the results was sometimes the required level and sometimes the item
+            level, depending on which list it came from and whether the item has a requirement at
+            all. A stack of Netherweave Cloth (requirement 0, item level 55) therefore outranked
+            a level 40 sword. It is now always the required level, the column the auction house
+            itself calls "level". And it is only read out where it tells the entries apart: in a
+            category or in the full-scan list. A search for an item name returns auctions of one
+            and the same item - there it was the same number 800 times over. If you filter by
+            level, you still get it announced everywhere.
+        Technically: One shared reader for both result lists: field 6 of the server answer, else
+            the value from SkuDB. Field 7 is honoured - for recipes field 6 holds the required
+            profession skill, for containers the number of bag slots, neither of which is a
+            level. The item level is never substituted again. 0 now means "no level requirement"
+            instead of "unknown", which is why no "Level 0" is announced any more (0 is true in
+            Lua, which is how it got spoken in the first place).
+
+    Auction house: "usable only" no longer hides anything
+        Simple: In the full-scan list this filter left nothing but low-level goods in some
+            categories - exactly the high-level items you were shopping for were gone. The normal
+            search never behaved that way.
+        Technically: In the live list the server filters. The full scan fetches everything
+            unfiltered and Sku decides for itself - until now strictly by the canUse field from
+            the scan answer. The client can only fill that field when it already had the item
+            data for the row; during a full scan it does not have it for the majority of rows.
+            They are the very same rows for which name, level and quality have to be repaired -
+            only canUse had no repair. So what disappeared was what the player has never seen,
+            and that is mostly the high-level things. A "not usable" now only counts on a
+            complete row; otherwise the required level from SkuDB decides. The database knows no
+            class or race restrictions, so in case of doubt one item too many is shown rather
+            than the wanted one hidden.
+
+    Auction house: no filter means no filtering
+        Simple: Even with no filter set, the full-scan list dropped everything without a level
+            requirement - trade goods, materials, many recipes - and all grey items on top of
+            that, although the quality menu kept displaying "Poor", i.e. no restriction.
+        Technically: The defaults of the unset filters were a 1 each instead of a 0, and the
+            level was read raw from the scan answer. A row whose level the client did not know
+            during the scan came back as 0 and thus fell below the minimum level of 1; the repair
+            from the database only fired on a missing value, not on a 0. Both defaults are 0 now,
+            the level comes from the shared reader, and the repair during ingest treats 0 as
+            "missing". The user's own minimum level as a last-resort fallback is gone: a row
+            stamped with it always passed the user's own filter and was then announced with that
+            level as well.
+
+    Auction house: categories without subcategories list their items again
+        Simple: Under "Auctions by item" there were categories that contained nothing but "All" -
+            quest items, for instance.
+        Technically: The item list compared the subclass even where there is none. A category
+            without subcategories is built without a subclass, and the comparison is then false
+            for every item. The full-scan twin has carried the guard all along; the item list
+            does now too.
+
+    Auction house: a cancelled purchase stays cancelled
+        Simple: Cancel a buy, do something else, and out of nowhere the buy dialog could come
+            back - and the next Enter, meant to open the search field, bought. At least it bought
+            the right thing, but nobody had asked for it.
+        Technically: Cancelling dropped the timers and the key bindings, but not the buy target.
+            The query function reads its mode off exactly that - there is a buy target, so this
+            is a buy query - and so the user's next, completely unrelated query ran into the buy
+            path: it found the old target in the fresh list, built the dialog and armed Enter. In
+            the log of 2026-09-01 the cancel (18:45:40), the new search (18:46:12, immediately
+            "MATCH FOUND, showing popup") and the purchase (18:46:16, "bid accepted") are four
+            menu keypresses apart. The buy target is now cleared at the three points where the
+            intent to buy ends: cancelling the dialog (including through the 30 second safety
+            net), starting a new search or list, and closing the auction house. The buy path
+            itself is untouched - it does not go through the search entry point, and the retry
+            after a lost race keeps its target.
+
+    Auction house: an aborted search says so
+        Simple: When a search is cut short because the server stops answering, the half-filled
+            result list stayed on screen and looked like a finished result. Now you hear "Search
+            aborted, list incomplete".
+        Technically: The watchdog ends a paged search after 60 seconds without a server answer,
+            or after 180 seconds in total - silently, until now. The finished sound is the signal
+            for "complete", but its absence is not something you hear. It is only announced when
+            the user is actually inside that result list; a search running in the background
+            stays quiet.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

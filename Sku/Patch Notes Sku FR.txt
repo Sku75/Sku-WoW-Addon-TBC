@@ -50,6 +50,8 @@ Changements dans Sku v43.2
             Programme d'installation : un WoW installé à un endroit inhabituel ne doit être indiqué qu'une seule fois - le programme d'installation retient désormais où se trouve chaque client et le retrouve tout seul à chaque mise à jour ultérieure.
             La fenêtre de lecture démarre désormais dans une police sans empattement en 18 points au lieu de Playfair Display en 12 - l'ancien réglage par défaut était la surface de texte la plus petite et la plus fine de tout l'addon.
             La barre de lecture se règle elle aussi en police et en couleurs, avec ses propres valeurs distinctes de celles de la fenêtre de texte.
+            Hôtel des ventes : « Niveau décroissant » trie désormais toute la liste des résultats et non plus sa seule première page ; à niveau égal, c'est le prix à l'unité qui décide.
+            Hôtel des ventes : « niveau » désigne partout le niveau requis de l'objet - et n'est lu que là où il distingue réellement les entrées.
 
         Corrections
             Menu : pendant la marche, un menu ouvert était comme mort - toutes les touches sauf Échap étaient avalées jusqu'à l'arrêt complet.
@@ -90,6 +92,11 @@ Changements dans Sku v43.2
             Avec deux fenêtres ouvertes en même temps, la fermeture de la seconde passait inaperçue.
             Après la fermeture d'une fenêtre, ses entrées pouvaient subsister sous « Local ».
             Maître : apprendre plusieurs sorts coup sur coup puis fermer la fenêtre juste après la laissait continuer à parler.
+            Hôtel des ventes : « utilisables uniquement » cachait précisément les objets de haut niveau recherchés dans la liste du scan complet.
+            Hôtel des ventes : la liste du scan complet filtrait par niveau et par qualité alors qu'aucun filtre n'était réglé - les marchandises, les composants et tout le gris manquaient.
+            Hôtel des ventes : une catégorie sans sous-catégories n'affichait rien d'autre que « Tout ».
+            Hôtel des ventes : un achat annulé pouvait détourner la recherche suivante et armer un achat que personne n'avait demandé.
+            Hôtel des ventes : une recherche interrompue par le chien de garde le dit désormais - une liste à moitié remplie ressemblait à un résultat terminé.
 
     Nage et vol : le verrouillage de l'inclinaison met fin à la plongée involontaire
         Simple : En nageant ou en volant, chaque virage automatique vers la balise tirait un peu
@@ -1258,6 +1265,110 @@ Changements dans Sku v43.2
             re-lectures silencieuses en déplacement perdait sa consigne de silence et était
             planifiée une fois par clic - elle transporte désormais ses arguments et ne s'exécute
             qu'une fois.
+
+    Hôtel des ventes : la liste des résultats est vraiment triée
+        Simple : Trier par « Niveau décroissant » donnait malgré tout une liste qui commençait par
+            du bas niveau. Le tri n'agissait qu'à l'intérieur d'une page - et une page, ce sont les
+            50 enchères les moins chères. En haut se trouvait donc le plus haut niveau parmi la
+            camelote grise la moins chère, tandis que les objets de niveau 70 étaient des centaines
+            d'entrées plus bas. Même après le son de fin, car rien n'était jamais retrié.
+            Maintenant, c'est le serveur qui trie lui-même la liste par niveau ; à niveau égal,
+            c'est le prix à l'unité qui décide.
+        Technique : Chaque requête partait avec le tri serveur figé sur « unitprice », et la liste
+            des résultats se construit page après page, par simple ajout à la fin (les nouveaux
+            objets vont en bas pour que le curseur ne saute pas). L'ordre de la liste est donc
+            toujours celui du serveur, et notre propre tri n'ordonnait qu'une page. Pour « Niveau
+            croissant » et « décroissant », la réponse du serveur est désormais triée sur la
+            colonne « level » - celle-là même que règle le bouton de tri par niveau de Blizzard.
+            L'achat et l'achat stratégique restent sur « unitprice » : ils ont besoin de l'offre la
+            moins chère en page 0. Une recherche par nom aussi : tous les résultats y ont le même
+            niveau, le serveur aurait trié sur un champ où rien ne diffère et aurait renvoyé ses
+            pages dans son propre ordre au lieu des moins chères d'abord. De plus, les
+            comparateurs de niveau utilisent maintenant le prix à l'unité comme second critère ;
+            les enchères sans achat immédiat comptent avec leur enchère à l'unité au lieu d'un
+            prix d'achat de 0.
+
+    Hôtel des ventes : « niveau » signifie partout le niveau requis
+        Simple : Le niveau affiché dans les résultats était tantôt le niveau requis, tantôt le
+            niveau d'objet, selon la liste d'où il venait et selon que l'objet a ou non une
+            exigence. Une pile d'Étoffe du Néant (exigence 0, niveau d'objet 55) passait ainsi
+            devant une épée de niveau 40. C'est désormais toujours le niveau requis, la colonne que
+            l'hôtel des ventes lui-même appelle « niveau ». Et il n'est plus lu que là où il
+            distingue les entrées : dans une catégorie ou dans la liste du scan complet. Une
+            recherche par nom d'objet ne renvoie que des enchères du même objet - le même nombre y
+            revenait 800 fois. Qui filtre par niveau continue de l'entendre partout.
+        Technique : Un lecteur commun aux deux listes de résultats : le champ 6 de la réponse du
+            serveur, sinon la valeur de SkuDB. Le champ 7 est pris en compte - pour les recettes,
+            le champ 6 contient la compétence de métier requise, pour les contenants le nombre
+            d'emplacements, et ce ne sont pas des niveaux. Le niveau d'objet n'est plus jamais
+            utilisé en remplacement. 0 signifie maintenant « aucune exigence de niveau » et non
+            « inconnu », d'où la disparition du « Niveau 0 » annoncé (0 est vrai en Lua, c'est
+            ainsi qu'il finissait par être lu).
+
+    Hôtel des ventes : « utilisables uniquement » ne cache plus rien
+        Simple : Dans la liste du scan complet, ce filtre ne laissait plus, dans certaines
+            catégories, que du bas niveau - précisément les objets de haut niveau recherchés
+            avaient disparu. La recherche normale n'a jamais eu ce défaut.
+        Technique : Dans la liste en direct, c'est le serveur qui filtre. Le scan complet récupère
+            tout sans filtre et Sku décide lui-même - jusqu'ici strictement d'après le champ canUse
+            de la réponse du scan. Le client ne peut remplir ce champ que s'il disposait déjà des
+            données de l'objet ; lors d'un scan complet, il ne les a pas pour la majorité des
+            lignes. Ce sont exactement les lignes dont le nom, le niveau et la qualité doivent être
+            réparés - seul canUse n'avait aucune réparation. Disparaissait donc ce que le joueur
+            n'a jamais vu, c'est-à-dire surtout le haut niveau. Un « non utilisable » ne compte
+            plus que sur une ligne complète ; sinon, c'est le niveau requis de SkuDB qui décide. La
+            base ne connaît ni les restrictions de classe ni celles de race - dans le doute, mieux
+            vaut montrer un objet de trop que taire celui que l'on cherche.
+
+    Hôtel des ventes : sans filtre, rien n'est filtré
+        Simple : Même sans filtre réglé, la liste du scan complet écartait tout ce qui n'a pas
+            d'exigence de niveau - marchandises, composants, beaucoup de recettes - et en plus tout
+            le gris, alors que le menu de qualité affichait toujours « Médiocre », donc aucune
+            restriction.
+        Technique : Les valeurs par défaut des filtres non réglés étaient un 1 au lieu d'un 0, et
+            le niveau était lu brut dans la réponse du scan. Une ligne dont le client ne
+            connaissait pas le niveau pendant le scan revenait à 0 et tombait donc sous le niveau
+            minimum de 1 ; la réparation depuis la base ne se déclenchait que sur une valeur
+            absente, pas sur un 0. Les deux valeurs par défaut sont maintenant 0, le niveau vient
+            du lecteur commun, et la réparation à la lecture traite 0 comme « absent ». Le niveau
+            minimum de l'utilisateur employé en dernier recours a disparu : une ligne ainsi
+            marquée passait toujours son propre filtre et était en plus annoncée avec ce niveau.
+
+    Hôtel des ventes : les catégories sans sous-catégories affichent de nouveau leurs objets
+        Simple : Sous « Enchères par objet », certaines catégories ne contenaient rien d'autre que
+            « Tout » - les objets de quête, par exemple.
+        Technique : La liste d'objets comparait la sous-classe même là où il n'y en a aucune. Une
+            catégorie sans sous-catégories est construite sans sous-classe, et la comparaison est
+            alors fausse pour chaque objet. Le jumeau du scan complet portait cette protection
+            depuis toujours ; la liste d'objets l'a maintenant aussi.
+
+    Hôtel des ventes : un achat annulé reste annulé
+        Simple : Annulez un achat, faites autre chose, et le dialogue d'achat pouvait revenir de
+            nulle part - et la touche Entrée suivante, destinée à ouvrir le champ de recherche,
+            achetait. C'était au moins le bon objet, mais personne ne l'avait demandé.
+        Technique : L'annulation libérait les minuteurs et les raccourcis, mais pas la cible
+            d'achat. La fonction de requête déduit son mode exactement de là - il existe une cible
+            d'achat, donc c'est une requête d'achat -, et la requête suivante, pourtant sans aucun
+            rapport, partait dans le chemin d'achat : il retrouvait l'ancienne cible dans la liste
+            fraîche, construisait le dialogue et armait la touche Entrée. Dans le journal du
+            01/09/2026, l'annulation (18:45:40), la nouvelle recherche (18:46:12, aussitôt
+            « MATCH FOUND, showing popup ») et l'achat (18:46:16, « enchère acceptée ») ne sont
+            séparés que par quatre appuis de touche. La cible d'achat est désormais effacée aux
+            trois endroits où l'intention d'acheter prend fin : annulation du dialogue (y compris
+            par la sécurité de 30 secondes), démarrage d'une nouvelle recherche ou liste, et
+            fermeture de l'hôtel des ventes. Le chemin d'achat lui-même reste intact : il ne passe
+            pas par l'entrée de recherche, et la nouvelle tentative après une course perdue
+            conserve sa cible.
+
+    Hôtel des ventes : une recherche interrompue le dit
+        Simple : Quand une recherche s'interrompt parce que le serveur ne répond plus, la liste à
+            moitié remplie restait affichée et ressemblait à un résultat terminé. On entend
+            maintenant « Recherche interrompue, liste incomplète ».
+        Technique : Le chien de garde met fin à une recherche paginée après 60 secondes sans
+            réponse du serveur, ou après 180 secondes au total - en silence, jusqu'ici. Le son de
+            fin est le signal du « complet », mais son absence ne s'entend pas. L'annonce n'a lieu
+            que si l'utilisateur se trouve réellement dans cette liste de résultats ; une recherche
+            qui tourne en arrière-plan reste silencieuse.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

@@ -47,6 +47,8 @@ Aenderungen in Sku v43.2
             Installationsprogramm: ein WoW an einem ungewoehnlichen Ort muss nur einmal gezeigt werden - das Installationsprogramm merkt sich, wo jeder Client liegt, und findet ihn bei jedem spaeteren Update von selbst wieder.
             Das Lesefenster startet ab Werk serifenlos in 18 Punkt statt in Playfair Display in 12 - die bisherige Voreinstellung war die kleinste und duennste Textflaeche des ganzen Addons.
             Auch der Lesebalken laesst sich jetzt in Schriftart und Farbkombination einstellen, mit eigenen Werten getrennt vom Textfenster.
+            Auktionshaus: "Level absteigend" sortiert jetzt die ganze Trefferliste und nicht mehr nur die erste Seite; bei gleicher Stufe entscheidet der Preis je Stueck.
+            Auktionshaus: "Stufe" ist ueberall die Stufenanforderung des Gegenstands - und wird nur noch dort vorgelesen, wo sie die Eintraege wirklich unterscheidet.
 
         Fehlerbehebungen
             Menue: waehrend man ging, war das geoeffnete Menue wie tot - jede Taste ausser Escape wurde verschluckt, bis man stehen blieb.
@@ -87,6 +89,11 @@ Aenderungen in Sku v43.2
             Waren zwei Fenster gleichzeitig offen, wurde das Schliessen des zweiten nicht bemerkt.
             Nach dem Schliessen eines Fensters konnten dessen Eintraege unter "Lokal" stehenbleiben.
             Lehrer: lernte man mehrere Zauber schnell hintereinander und schloss das Fenster gleich danach, sprach es noch weiter.
+            Auktionshaus: "Nur benutzbare" versteckte in der Komplettscan-Liste ausgerechnet das Hochstufige, nach dem man sucht.
+            Auktionshaus: die Komplettscan-Liste filterte nach Stufe und Qualitaet, obwohl gar kein Filter gesetzt war - Handelswaren, Materialien und alles Graue fehlten.
+            Auktionshaus: eine Kategorie ohne Unterkategorien zeigte ausser "Alle" keinen einzigen Gegenstand.
+            Auktionshaus: ein abgebrochener Kauf konnte die naechste Suche entfuehren und ungefragt einen Kauf scharf schalten.
+            Auktionshaus: eine Suche, die der Waechter abbricht, sagt das jetzt - vorher sah die halbe Liste wie ein fertiges Ergebnis aus.
 
     Schwimmen und Fliegen: die Neigungssperre beendet das ungewollte Abtauchen
         Einfach: Beim Schwimmen oder Fliegen zog jede automatische Drehung zum Funkfeuer ein
@@ -1233,6 +1240,108 @@ Aenderungen in Sku v43.2
             die Wiederholung stiller Neuerfassungen in Bewegung ihren Stumm-Auftrag und wurde je
             Klick einmal eingeplant - sie traegt ihre Argumente jetzt mit und laeuft nur noch
             einmal.
+
+    Auktionshaus: die Trefferliste ist wirklich sortiert
+        Einfach: Wer nach "Level absteigend" sortierte, bekam trotzdem eine Liste, die mit
+            niedrigstufigem Kram anfing. Sortiert wurde naemlich nur innerhalb einer Seite - und
+            eine Seite sind die 50 billigsten Auktionen. Ganz oben stand also das Hoechststufige
+            unter dem billigsten Graugut, waehrend die Stufe-70-Sachen Hunderte Eintraege weiter
+            unten lagen. Auch nach dem Fertig-Ton, denn nachsortiert wurde nie. Jetzt sortiert der
+            Server die Trefferliste selbst nach Stufe; bei gleicher Stufe entscheidet der Preis je
+            Stueck.
+        Technisch: Jede Abfrage ging mit fest verdrahteter Server-Sortierung "unitprice" raus, und
+            die Ergebnisliste wird seitenweise und nur anhaengend aufgebaut (neue Gegenstaende
+            kommen ans Ende, damit der Cursor des Nutzers nicht springt). Die Reihenfolge der Liste
+            ist damit immer die des Servers, die eigene Sortierung wirkt nur je Seite. Bei "Level
+            auf-" und "absteigend" wird die Server-Antwort jetzt nach der Spalte "level" sortiert -
+            genau die Spalte, die auch Blizzards eigener Stufen-Sortierknopf setzt. Kauf und
+            Strategiekauf bleiben auf "unitprice", die brauchen den guenstigsten Treffer auf Seite
+            0. Eine Namenssuche ebenfalls: dort haben alle Treffer dieselbe Stufe, der Server
+            haette nach einem Feld sortiert, in dem sich nichts unterscheidet, und die Seiten
+            kaemen in seiner Zufallsreihenfolge statt der billigsten zuerst. Zusaetzlich haben die
+            Stufen-Vergleiche jetzt den Stueckpreis als zweiten Schluessel; Nur-Gebot-Auktionen
+            zaehlen dabei mit ihrem Gebot je Stueck statt mit einem Kaufpreis von 0.
+
+    Auktionshaus: "Stufe" heisst ueberall Stufenanforderung
+        Einfach: Die Stufe in den Ergebnissen war mal die Stufenanforderung, mal die
+            Gegenstandsstufe - je nachdem, aus welcher Liste sie kam und ob der Gegenstand
+            ueberhaupt eine Anforderung hat. Ein Stapel Netherstoff (Anforderung 0,
+            Gegenstandsstufe 55) stand damit ueber einem Stufe-40-Schwert. Jetzt ist es immer die
+            Stufenanforderung, also die Spalte, die auch das Auktionshaus selbst "Stufe" nennt. Und
+            sie wird nur noch dort vorgelesen, wo sie die Eintraege unterscheidet: in einer
+            Kategorie oder in der Komplettscan-Liste. Eine Suche nach einem Gegenstandsnamen
+            liefert lauter Auktionen desselben Gegenstands - dort war es 800 Mal dieselbe Zahl. Wer
+            nach Stufe filtert, bekommt sie weiterhin ueberall angesagt.
+        Technisch: Ein gemeinsamer Leser fuer beide Ergebnislisten: Feld 6 der Server-Antwort,
+            sonst der Wert aus SkuDB. Feld 7 wird beachtet - bei Rezepten steht in Feld 6 der
+            geforderte Berufs-Skill, bei Behaeltern die Zahl der Taschenplaetze, beides keine
+            Stufe. Die Gegenstandsstufe wird nie mehr ersatzweise eingesetzt. 0 heisst jetzt "keine
+            Anforderung" statt "unbekannt", weshalb auch kein "Level 0" mehr angesagt wird (0 ist
+            in Lua wahr, deshalb kam es ueberhaupt heraus).
+
+    Auktionshaus: "Nur benutzbare" versteckt nichts mehr
+        Einfach: In der Komplettscan-Liste liess dieser Filter in manchen Kategorien nur noch
+            niedrigstufiges Zeug uebrig - ausgerechnet das Hochstufige, nach dem man sucht, war
+            weg. In der normalen Suche war das nie so.
+        Technisch: In der Live-Liste filtert der Server. Der Komplettscan holt alles ungefiltert,
+            Sku entscheidet selbst - bisher stur nach dem Feld canUse aus der Scan-Antwort. Das
+            kann der Client nur fuellen, wenn er die Gegenstandsdaten der Zeile schon hatte; beim
+            Komplettscan hat er sie fuer den Grossteil der Zeilen nicht. Es sind genau dieselben
+            Zeilen, fuer die Name, Stufe und Qualitaet nachgetragen werden muessen - nur fuer
+            canUse gab es keine Nachbesserung. Damit verschwand, was der Spieler noch nie gesehen
+            hat, und das ist ueberwiegend das Hochstufige. Jetzt zaehlt ein "nicht benutzbar" nur
+            bei vollstaendiger Zeile; sonst entscheidet die Stufenanforderung aus SkuDB. Klassen-
+            und Rassenbeschraenkungen kennt die Datenbank nicht - im Zweifel wird lieber ein
+            Gegenstand zu viel gezeigt als der gesuchte verschwiegen.
+
+    Auktionshaus: ohne Filter wird nicht gefiltert
+        Einfach: Die Komplettscan-Liste liess auch ohne gesetzten Filter alles weg, was keine
+            Stufenanforderung hat - Handelswaren, Materialien, viele Rezepte - und ausserdem alles
+            Graue, obwohl das Qualitaetsmenue unveraendert "Arm" anzeigte, also "keine
+            Einschraenkung".
+        Technisch: Die Vorgaben der ungesetzten Filter waren je eine 1 statt einer 0, und die Stufe
+            wurde roh aus der Scan-Antwort gelesen. Eine Zeile, deren Stufe der Client beim Scan
+            nicht kannte, kam als 0 zurueck und fiel damit unter die Mindeststufe 1; die Reparatur
+            aus der Datenbank sprang nur bei einem fehlenden, nicht bei einem 0-Wert an. Beide
+            Vorgaben sind jetzt 0, die Stufe kommt aus dem gemeinsamen Leser, und die Nachbesserung
+            beim Einlesen behandelt 0 als "fehlt". Der frueher als letzter Ausweg eingesetzte
+            eigene Mindeststufen-Wert ist weg: eine Zeile bestand damit immer ihren eigenen Filter
+            und wurde auch noch mit dieser Stufe angesagt.
+
+    Auktionshaus: Kategorien ohne Unterkategorien zeigen wieder Gegenstaende
+        Einfach: Unter "Auktionen nach Gegenstand" gab es Kategorien, die ausser "Alle" nichts
+            enthielten - zum Beispiel Questgegenstaende.
+        Technisch: Die Gegenstandsliste verglich die Unterklasse auch dann, wenn es gar keine gibt.
+            Eine Kategorie ohne Unterkategorien wird ohne Unterklasse aufgebaut, und der Vergleich
+            ist dann fuer jeden Gegenstand falsch. Der Komplettscan-Zwilling hatte die Absicherung
+            von Anfang an, die Gegenstandsliste jetzt auch.
+
+    Auktionshaus: ein abgebrochener Kauf bleibt abgebrochen
+        Einfach: Wer einen Kauf abbrach und danach etwas anderes tat, konnte aus dem Nichts wieder
+            den Kauf-Dialog bekommen - und die naechste Eingabetaste, die eigentlich das Suchfeld
+            oeffnen sollte, kaufte. Gekauft wurde immerhin das Richtige, aber ungefragt.
+        Technisch: Der Abbruch loeste Timer und Tastenbelegungen, loeschte aber das Kaufziel nicht.
+            Die Abfragefunktion erkennt ihren Modus genau daran - es gibt ein Kaufziel, also ist
+            das eine Kauf-Abfrage -, und so lief die naechste, voellig fremde Abfrage des Nutzers
+            in den Kauf-Pfad: der fand das alte Ziel in der frischen Liste wieder, baute den Dialog
+            auf und schaltete die Eingabetaste scharf. Im Log vom 01.09.2026 liegen Abbruch
+            (18:45:40), neue Suche (18:46:12, sofort "MATCH FOUND, showing popup") und der Kauf
+            (18:46:16, "Gebot akzeptiert") nur vier Menue-Tastendruecke auseinander. Das Kaufziel
+            wird jetzt an den drei Stellen geloescht, an denen der Kaufwunsch endet: Abbruch des
+            Dialogs (auch durch die 30-Sekunden-Sicherung), Start einer neuen Suche oder Liste, und
+            Schliessen des Auktionshauses. Der Kaufweg selbst bleibt unangetastet - er laeuft nicht
+            ueber den Sucheinstieg, und die Wiederholung nach einem verlorenen Wettlauf behaelt ihr
+            Ziel.
+
+    Auktionshaus: eine abgebrochene Suche sagt es
+        Einfach: Bricht eine Suche ab, weil der Server nicht mehr antwortet, blieb die halb
+            gefuellte Trefferliste stehen und sah aus wie ein fertiges Ergebnis. Jetzt kommt
+            "Suche abgebrochen, Liste unvollstaendig".
+        Technisch: Der Waechter beendet eine seitenweise Suche nach 60 Sekunden ohne Server-Antwort
+            bzw. nach 180 Sekunden Gesamtdauer - bisher lautlos. Der Fertig-Ton ist das Signal fuer
+            "vollstaendig", sein Ausbleiben aber hoert man nicht. Angesagt wird nur, wenn der
+            Nutzer auch wirklich in dieser Ergebnisliste steht; laeuft die Suche im Hintergrund,
+            bleibt es still.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1
