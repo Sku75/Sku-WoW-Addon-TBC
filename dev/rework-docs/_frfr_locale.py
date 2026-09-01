@@ -424,5 +424,15 @@ if __name__ == "__main__":
         cmd_prune()
     elif cmd == "verify":
         cmd_verify()
-    else:
+    elif cmd == "assemble":
         cmd_assemble()
+    else:
+        # An UNKNOWN argument used to fall through to assemble, so a harmless
+        # "--help" silently rewrote frFR.lua - and with it reverted every string
+        # that had been hand-added to the file but never put into the store
+        # (28 of them on 2026-09-01). Nothing but "assemble" or no argument at
+        # all may write the locale.
+        sys.exit("unknown command %r\n"
+                 "usage: _frfr_locale.py [extract | batch <n> [size] | migrate | "
+                 "prune | verify | assemble]\n"
+                 "       no argument = assemble (writes Sku/locales/frFR.lua)" % cmd)

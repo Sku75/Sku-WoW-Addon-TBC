@@ -94,8 +94,11 @@
 40 Prozent	40 pour cent
 5 Player heroic	5 joueurs héroïque
 5 Player normal	5 joueurs normal
+50 Prozent	50 pour cent
 55 Prozent	55 pour cent
+65 Prozent	65 pour cent
 70 Prozent	70 pour cent
+75 Prozent	75 pour cent
 85 Prozent	85 pour cent
 : drehen auf 	: tourner vers 
 : neigen auf 	: incliner vers 
@@ -129,6 +132,7 @@ ACTIVE_TALENT_GROUP_CHANGED	groupe de talents actif modifié
 AH_CategoriesLoading	Chargement des catégories
 AH_NoResults	aucun résultat
 AH_QueryBusy	Hôtel des ventes occupé, recherche non démarrée
+AH_ScanTruncated	Recherche interrompue, liste incomplète
 AL_DifficultyFallback	Difficulté
 AL_Instances	Instances
 AL_Raids	Raids
@@ -265,6 +269,7 @@ Always	Toujours
 Always follow the instructions exactly. Never do anything other than the tutorial instructions are requesting, as long as you want to play the tutorial. It will break if you're doing anything else. Always proceed to the next step when you have completed a step.	Suivez toujours les instructions à la lettre. Ne faites jamais autre chose que ce que les instructions du tutoriel demandent, tant que vous souhaitez suivre le tutoriel. Il s'interrompra si vous faites autre chose. Passez toujours à l'étape suivante lorsque vous avez terminé une étape.
 An Chat schicken	Publier dans le chat
 An Gruppe teilen	Partager avec le groupe
+Andere Plaketten abschwaechen	Atténuer les autres barres de nom
 Anderer Kontinent	Autre continent
 Anführer	Chef
 Annahme	Début de quête
@@ -776,6 +781,8 @@ Die Stapel Anzahl der Aura	Le nombre de cumuls de l'aura
 Die Zauber-ID, die die Aura auslösen soll	L'ID du sort qui déclenche l'aura
 Die Ziel-Einheit, bei der die Aura ausgelöst werden soll	L'unité cible de l'événement déclencheur, pas votre cible actuelle. Pour votre cible actuelle, utilisez les conditions de liste de buffs et debuffs de la cible
 Die verbleibende Menge eines Gegenstands in deinen Taschen, bei der die auslösen soll	La quantité restante d'un objet qui a déclenché l'aura
+Dies betrifft das Lesefenster fuer Questtexte, Tooltips, Chatverlauf und Wiki.	Ceci concerne la fenêtre de lecture des textes de quête, infobulles, historique de discussion et wiki.
+Diese Einstellungen aendern die echten Plaketten des Spiels. Sie sind im Blizzard-Optionsfenster nicht erreichbar.	Ces réglages modifient les véritables barres de nom du jeu. Ils ne sont pas accessibles dans la fenêtre d'options de Blizzard.
 Diese Spezialisierung aktivieren	Activer cette spécialisation
 Difficulty	Difficulté
 Difficulty: 	Difficulté : 
@@ -912,6 +919,7 @@ Eine Einheit hat das Ziel gewechselt. Quell Einheit ID ist die Einheit, die das 
 Eine Taste wurde gedrückt	Une touche a été pressée
 Eingabe zum Bieten, Escape zum Abbrechen	Entrée pour enchérir, Échap pour annuler
 Eingabe zum Kaufen, Escape zum Abbrechen	Entrée pour acheter, Échap pour annuler
+Eingang	entrée
 Einheit	Unité
 Einheiten Route	Itinéraire d'unité
 Einheiten Route folgen gestartet	Suivi de l'itinéraire d'unité démarré
@@ -1012,6 +1020,7 @@ Fall detection settings	Réglages de détection de chute
 Farbe Feind	Couleur ennemi
 Farbe Freund	Couleur allié
 Farbe Neutral	Couleur neutre
+Farben	Couleurs
 Favorites	Favoris
 Feet	Pieds
 Fehlende Audio Wörter kopieren	Afficher les mots dont l'audio est manquant
@@ -1265,6 +1274,7 @@ KATEGORIE	CATÉGORIE
 KEY_PRESS	Appui sur une touche
 Kampf	Combat
 Kampfmenü Steuerung	Commandes du menu de combat
+Kanal der Chateingabe ansagen	annoncer le canal de la saisie du chat
 Katze	Farouche (Dégâts)
 Kauf 	 Acheter 
 Kaufen	Acheter
@@ -1298,6 +1308,8 @@ Key Sound	Son de touche
 Key bind	Assignation de touche
 Key;not;assigned	touche;non;assignée
 Kiss	Baiser
+Klassenfarben Gegner	Couleurs de classe ennemis
+Klassenfarben Verbuendete	Couleurs de classe alliés
 Klick	Clic
 Klick bei Beacons	Balises avec clics
 Komma	virgule
@@ -1556,6 +1568,7 @@ Name	Nom
 Name output via Blizzard TTS	Sortie des noms via la synthèse Blizzard
 Namen eingeben und Enter, leer für automatisch	Saisissez un nom et appuyez sur Entrée, vide pour automatique
 Namen eingeben und Enter, oder Escape zum Abbrechen	Saisissez un nom et appuyez sur Entrée, ou Échap pour annuler
+Namensplaketten	Barres de nom	-- [43.2] options natives des barres de nom (Aides visuelles -> Barres de nom)
 Navigation abgebrochen	Navigation annulée
 Navigation und Wegpunkte	Navigation et points de passage
 Neck	Cou
@@ -1634,6 +1647,7 @@ Now press %SKU_KEY_TUTORIALSTEPFORWARD% to start with the first step. To hear th
 Nr: 	Numéro : 
 Nummer %s: %s	Numéro %s : %s
 Nur Gebot 	 Enchère seule 
+Nur Namen bei freundlichen Spielern	Noms seuls pour les joueurs alliés
 Nur benutzbare	Utilisable uniquement
 Nur die tasten für vorwärts, links drehen und rechts drehen verwenden! auf keinen fall andere bewegungstasten verwenden!	N'utilisez que les touches avancer, tourner à gauche et tourner à droite ! N'utilisez aucune autre touche de déplacement !
 Nur passendes Level	Niveau correspondant uniquement
@@ -1749,12 +1763,14 @@ Pet Stable	Maître des écuries
 Pet happiness	Bonheur
 PetStableFrame	Écurie
 Pets	Familiers
+Pfeiltasten bewegen den Textcursor in der Chateingabe	les touches fléchées déplacent le curseur de texte dans la saisie du chat
 Phase	Phase
 Ping	Ping
 Pitch locked	inclinaison verrouillée
 Pitch unlocked	inclinaison libre
 Plaketten einfaerben	Colorer les barres de nom
 Plaketten-Farben	Couleurs des barres de nom
+Plakettengroesse	Taille des barres de nom
 Play NPC greetings	Lire les salutations des PNJ
 Play first time user intro	Lire l'introduction pour les nouveaux utilisateurs
 Player Talents	Talents du joueur
@@ -1762,6 +1778,7 @@ Player event	Événement de joueur
 Player health monitor disabled	Moniteur de santé du joueur désactivé
 Player health monitor enabled	Moniteur de santé du joueur activé
 PlayerTalentFrame	Talent du joueur
+Playfair (Serifen)	Playfair (avec empattement)
 Plus	plus
 Plündermeister	Butin : maître du butin
 Point B	Point B
@@ -1845,6 +1862,8 @@ Raid Warnung automatisch lesen	Lire automatiquement les avertissements de raid
 Raid health monitor enabled	Moniteur de santé du raid activé
 Raid lockout	Verrouillage de raid
 Raid reset	Réinitialisation du raid
+Raleway (serifenlos)	Raleway (sans empattement)
+Raleway fett	Raleway gras
 Range	Portée
 Range for counting a waypoint as reached and switching to next waypoint	Portée pour considérer un point de passage comme atteint et passer au suivant
 Range for group members in range checks	Portée pour les membres du groupe dans les vérifications de portée
@@ -2123,6 +2142,7 @@ Schnellwahl 2	Sélection rapide 2
 Schnellwahl 3	Sélection rapide 3
 Schnellwahl 4	Sélection rapide 4
 Schnellwegpunkte	Points de passage rapides
+Schriftart	Police
 Schriftgroesse	Taille de police
 Schrott verkauft	Camelote vendue
 Schuke	Voleur
@@ -2221,6 +2241,7 @@ SkuChat audio on	Audio SkuOptions activé
 SkuChat automatisch lesen	Lire automatiquement le canal SkuChat
 SkuChat off	SkuOptions désactivé
 SkuChat on	SkuOptions activé
+SkuChatAnnounceChannelTip	Annonce le canal cible dès qu'il diffère de votre canal par défaut, ainsi qu'à chaque changement. Le canal par défaut lui-même n'est pas annoncé à l'ouverture du chat.
 SkuChatMenuEntry	Chat
 SkuCore,Aktionsleisten	Core,Barres d'action
 SkuLfgMenuEntry	Recherche de groupe
@@ -2288,6 +2309,7 @@ Stall 3 	Écurie 3
 Stall 4	Écurie 4
 Stall 4 	Écurie 4 
 Stance Action Bar	Barre d'action de posture
+Standard (serifenlos)	Standard (sans empattement)
 Standard profil Allgemein	Profil standard Général
 Standard profil Caster	Profil standard Lanceur de sorts
 Standard profil Heiler	Profil standard Soigneur
@@ -2393,6 +2415,7 @@ Teilen abgeschlossen	Partage terminé
 Teilen nicht moeglich, Kommunikationsbibliothek fehlt	Partage impossible, bibliothèque de communication manquante
 Tentative	Provisoire
 Text	Texte
+Textfenster	Fenêtre de texte	-- [43.2] apparence de la fenetre de texte + choix police/couleurs (Aides visuelles)
 That's it for now. Now start the tutorial content by pressing %SKU_KEY_TUTORIALSTEPFORWARD%.	C'est tout pour l'instant. Lancez maintenant le contenu du tutoriel en appuyant sur %SKU_KEY_TUTORIALSTEPFORWARD%.
 The Temple Of Atal'Hakkar	Le Temple d'Atal'Hakkar
 The amount of damage from a spell, melee, or ranged attack	Le montant des dégâts d'un sort, d'une attaque de mêlée ou à distance
@@ -2492,10 +2515,12 @@ Umgebung	Environnement
 Umgebung 	Environnement 
 Umgebung Lautstärke	Volume de l'environnement
 Umgelenkt	Dévié
+Umriss	Contour
 Unbekannt	inconnu
 Unbekannt. Verfügbar: list, current, set N, find <text>, restart	Inconnu. Disponible : list, current, set N, find <texte>, restart
 Unbekannte Zauber-ID	ID de sort inconnu
 Unbekannte Zone	Zone inconnue
+Unbekannter Befehl	commande inconnue
 Unbekannter Fehler	Erreur inconnue
 Unbekannter Zauber	Sort inconnu
 Undead	Mort-vivant
@@ -2650,6 +2675,7 @@ Ziel	Cible de quête
 Ziel Einheit angreifbar	Cible de l'événement attaquable
 Ziel Markierungen	Symboles de cible
 Ziel deines ziels	cible de votre cible
+Ziel hervorheben	Mettre la cible en évidence
 Ziel und Soft Targeting	Cible et ciblage souple
 Ziel änderung	changement de cible
 Ziele Entfernung	Destinations par distance
@@ -2771,6 +2797,7 @@ delete chat history on login	supprimer l'historique du chat à la connexion
 delete whisper tabs without activity after	supprimer les onglets de chuchotement sans activité après
 descending	décroissant
 description	description
+deutlich	net
 dezent	subtile
 diesen Vergleich verwenden	utiliser cette comparaison
 disable seen quest notifications forever	désactiver définitivement les notifications de quêtes déjà vues
@@ -2841,6 +2868,7 @@ gegenstand name	nom de l'objet
 gegenstand nr	ID de l'objet
 gegenstand verwenden	utiliser l'objet
 gelb	jaune
+gelb auf schwarz	jaune sur noir
 gelöscht	supprimé
 gesundheit	santé
 gleich	égal
@@ -2909,6 +2937,7 @@ layers	couches
 leader	chef
 lebt	vivant
 leer	vide
+leicht	léger
 letzte	Récent
 level	Niveau
 link	lien
@@ -2921,6 +2950,7 @@ löschen	supprimer
 magic	magie
 magier	mage
 max notification range	portée de notification maximale
+maximal	maximal
 medium	jaune
 menu entry not available at the moment	entrée de menu indisponible pour le moment
 meters	mètres
@@ -3044,6 +3074,7 @@ schneller je näher, lauter je näher	plus rapide en approchant, plus fort en ap
 schneller je näher, lauter je näher; lauter in blickrichtung	plus rapide en approchant, plus fort en approchant; plus fort dans la direction du regard
 schritt 	étape 
 schurke	voleur
+schwarz auf weiss	noir sur blanc
 searching for 	recherche de 
 sehr gross	très grande
 sehr langsam, schneller je näher, lauter je näher; lauter in blickrichtung	très lent, plus rapide en approchant, plus fort en approchant; plus fort dans la direction du regard
@@ -3081,6 +3112,7 @@ specific	spécifique
 spezialaufgabe abgebrochen	tâche spéciale terminée ou annulée
 spezialaufgabe abgeschlossen	tâche spéciale terminée
 split	séparer
+stark	fort
 start full scan	démarrer l'analyse complète
 still	encore
 target distance	distance à la cible
@@ -3127,6 +3159,8 @@ wahr	vrai
 wait for player activating next step	attendre que le joueur active l'étape suivante
 warlock	démoniste
 weiss	blanc
+weiss auf blau	blanc sur bleu
+weiss auf schwarz	blanc sur noir
 weit	loin
 wert buff liste ziel	valeur liste des buffs de la cible
 wert debuff liste ziel	valeur liste des debuffs de la cible
@@ -3184,4 +3218,3 @@ zurückziehen	retirer
 Überleben	Survie
 Übernehmen hinzufügen	Appliquer en ajoutant
 Übernehmen überschreiben	Appliquer en écrasant
-Eingang	entrée

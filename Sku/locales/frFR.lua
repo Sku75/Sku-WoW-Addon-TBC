@@ -1851,8 +1851,7 @@ L["Visuelle Hilfen"] = "Aides visuelles"
 L["Lesebalken"] = "Barre de lecture"
 L["Plaketten-Farben"] = "Couleurs des barres de nom"
 L["Maus-Finder"] = "Localisateur de souris"
--- [43.2] options natives des barres de nom (Aides visuelles -> Barres de nom)
-L["Namensplaketten"] = "Barres de nom"
+L["Namensplaketten"] = "Barres de nom" -- [43.2] options natives des barres de nom (Aides visuelles -> Barres de nom)
 L["Plakettengroesse"] = "Taille des barres de nom"
 L["Ziel hervorheben"] = "Mettre la cible en évidence"
 L["Andere Plaketten abschwaechen"] = "Atténuer les autres barres de nom"
@@ -1863,8 +1862,7 @@ L["leicht"] = "léger"
 L["deutlich"] = "net"
 L["stark"] = "fort"
 L["Diese Einstellungen aendern die echten Plaketten des Spiels. Sie sind im Blizzard-Optionsfenster nicht erreichbar."] = "Ces réglages modifient les véritables barres de nom du jeu. Ils ne sont pas accessibles dans la fenêtre d'options de Blizzard."
--- [43.2] apparence de la fenetre de texte + choix police/couleurs (Aides visuelles)
-L["Textfenster"] = "Fenêtre de texte"
+L["Textfenster"] = "Fenêtre de texte" -- [43.2] apparence de la fenetre de texte + choix police/couleurs (Aides visuelles)
 L["Schriftart"] = "Police"
 L["Farben"] = "Couleurs"
 L["Umriss"] = "Contour"
@@ -3399,10 +3397,10 @@ L["Quests in der Nähe"] = "Quêtes à proximité"
 L["Questabgabe"] = "Rendre la quête"
 L["Ort unbekannt"] = "Lieu inconnu"
 L["show nearby quests entry"] = "afficher l'entrée Quêtes à proximité"
-L["Pfeiltasten bewegen den Textcursor in der Chateingabe"] = "arrow keys move the text cursor in the chat input"
-L["Kanal der Chateingabe ansagen"] = "announce the chat input channel"
-L["SkuChatAnnounceChannelTip"] = "Announces the target channel whenever it differs from your default channel, and on every change. The default channel itself is not announced when you open the chat."
-L["Unbekannter Befehl"] = "unknown command"
+L["Pfeiltasten bewegen den Textcursor in der Chateingabe"] = "les touches fléchées déplacent le curseur de texte dans la saisie du chat"
+L["Kanal der Chateingabe ansagen"] = "annoncer le canal de la saisie du chat"
+L["SkuChatAnnounceChannelTip"] = "Annonce le canal cible dès qu'il diffère de votre canal par défaut, ainsi qu'à chaque changement. Le canal par défaut lui-même n'est pas annoncé à l'ouverture du chat."
+L["Unbekannter Befehl"] = "commande inconnue"
 
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
