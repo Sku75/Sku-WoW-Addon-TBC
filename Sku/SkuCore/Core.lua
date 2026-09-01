@@ -3087,7 +3087,6 @@ function SkuCore:PLAYER_LEAVING_WORLD(...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local SkuDropdownlistGenericFlag = false
 function SkuCore:PLAYER_ENTERING_WORLD(...)
 	local event, isInitialLogin, isReloadingUi = ...
 	dprint("PLAYER_ENTERING_WORLD", isInitialLogin, isReloadingUi)
@@ -3336,18 +3335,22 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 				_G["TalentMicroButton"]:Click()
 			end
 			
+			-- [43.2] Identical to the lazy installer in the SkuCoreControl ticker (~1658).
+			-- It used to wrap both hooks around ONE shared boolean
+			-- (SkuDropdownlistGenericFlag): any Show set it, and only the FIRST Hide after
+			-- that consumed it -- so with two windows open (a vendor and the bags, say) the
+			-- second window to close never ran GENERIC_OnClose at all. No rescan, no menu
+			-- close, and now no ClearDeferredMenuOpen either. Which of the two installers a
+			-- frame got was pure timing (this one takes every frame that exists 1 s after
+			-- entering the world; on-demand frames like the trainer, tradeskill and auction
+			-- windows fall to the ticker), so the close path was reliable for some windows
+			-- and not others. GENERIC_OnClose does its own coalescing (CheckFramesCoalesced
+			-- plus tGenericCloseBookkeepingFlag), which is what the flag was standing in
+			-- for, so dropping it costs nothing and makes both installers behave the same.
 			for x = 1, #SkuCore.interactFramesList do
 				if _G[SkuCore.interactFramesList[x]] then
-					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Show", function(self, a, b, c, d, e) 
-						SkuDropdownlistGenericFlag = true 
-						SkuCore.GENERIC_OnOpen(self, a, b, c, d, e) 
-					end)
-					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Hide", function(self, a, b, c, d, e) 
-						if SkuDropdownlistGenericFlag == true then 
-							SkuDropdownlistGenericFlag = false 
-							SkuCore.GENERIC_OnClose(self, a, b, c, d, e) 
-						end 
-					end)
+					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Show", SkuCore.GENERIC_OnOpen)
+					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Hide", SkuCore.GENERIC_OnClose)
 					SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] = true
 				end
 			end
