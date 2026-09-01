@@ -130,6 +130,13 @@ namespace SkuInstaller
         /// <summary>
         /// Builds one target per Sku-supported client, auto-detection filled in
         /// where possible. Anniversary comes first (the primary target).
+        ///
+        /// A folder the user picked by hand on an earlier run (PathMemory) beats
+        /// detection, because it is the one piece of evidence here that somebody
+        /// actually confirmed. Detection is a guess over a handful of likely
+        /// drives; a remembered folder is a decision. That ordering is the whole
+        /// point of remembering: a game outside the probed locations had to be
+        /// browsed to on EVERY update, which is precisely the chore this removes.
         /// </summary>
         public static List<InstallTarget> BuildAll()
         {
@@ -146,6 +153,21 @@ namespace SkuInstaller
                     AddOnsPath = found?.AddOnsPath,
                     AutoDetected = found != null,
                 };
+
+                // ResolveFor returns null for a memory that has gone stale (folder
+                // deleted, or now belonging to a different client), so a moved or
+                // uninstalled game falls back to detection instead of sending the
+                // install somewhere dead.
+                string remembered = PathMemory.ResolveFor(product);
+                if (remembered != null &&
+                    !string.Equals(remembered, t.AddOnsPath, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    Logger.Info($"Using remembered folder for {product}: {remembered} " +
+                                $"(detection said {t.AddOnsPath ?? "(nothing)"})");
+                    t.AddOnsPath = remembered;
+                    t.AutoDetected = false;
+                }
+
                 t.RefreshInstalledVersion();
                 targets.Add(t);
             }

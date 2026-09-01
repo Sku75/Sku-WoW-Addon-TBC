@@ -86,6 +86,12 @@ namespace SkuInstaller
         {
             var dirs = new System.Collections.Generic.List<string>();
 
+            // FIRST: the base dirs implied by folders the user already installed
+            // into (PathMemory). A game on a drive we would never guess is found
+            // straight away on the second run, and — because the probe is by BASE
+            // dir — pointing us at one client there also finds the other one.
+            dirs.AddRange(PathMemory.RememberedBaseDirs());
+
             foreach (var pf in new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),

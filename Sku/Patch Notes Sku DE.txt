@@ -42,6 +42,7 @@ Aenderungen in Sku v43.2
             Menue: das Schliessen eines Fensters baut die Menuedaten nur noch einmal statt bis zu sechsmal neu auf.
             Menue: der Tippfilter ignoriert Akzente - auf einem franzoesischen Client findet "general" jetzt "Fournitures generales", und "oe" findet einen Eintrag, der mit "Oe" beginnt. Auf einer franzoesischen AZERTY-Tastatur tippt die Taste ù jetzt auch in den Filter.
             Franzoesisch: die Wegpunktkommentare gibt es jetzt auf Franzoesisch - 207 Texte auf 546 Wegpunkten, aus dem deutschen Original uebersetzt.
+            Installationsprogramm: ein WoW an einem ungewoehnlichen Ort muss nur einmal gezeigt werden - das Installationsprogramm merkt sich, wo jeder Client liegt, und findet ihn bei jedem spaeteren Update von selbst wieder.
 
         Fehlerbehebungen
             Menue: waehrend man ging, war das geoeffnete Menue wie tot - jede Taste ausser Escape wurde verschluckt, bis man stehen blieb.
@@ -1021,6 +1022,44 @@ Aenderungen in Sku v43.2
             am Ende steht. Dazu eine Absicherung gegen den Fehler, dass nach schnell
             hintereinander ausgeloesten Drehungen die Drehgeschwindigkeit der Kamera-
             Tasten dauerhaft vervierfacht haengenblieb.
+
+    Das Installationsprogramm merkt sich, wo WoW liegt
+        Einfach: Das Installationsprogramm sucht das Spiel an den ueblichen Stellen -
+            Programme, dazu eine Handvoll wahrscheinlicher Ordner auf C, D und E. Wer sein
+            WoW woanders hat, musste den Ordner von Hand suchen, und das nicht einmal,
+            sondern bei JEDEM Update: das Installationsprogramm vergass die Antwort in dem
+            Moment, in dem es sich schloss. Jetzt schreibt es den Ordner auf, sobald eine
+            Installation durchgelaufen ist, und faengt beim naechsten Mal dort an. Zeigt man
+            ihm einen Client, findet es auch den zweiten daneben - eine Classic Era neben
+            einer Anniversary auf demselben ungewoehnlichen Laufwerk wird von selbst
+            mitgenommen. Zieht das Spiel spaeter um oder wird deinstalliert, wird die Notiz
+            verworfen und es wird gesucht wie vorher. Das Installationsprogramm steht damit
+            auf Version 4.5.
+        Technisch: Neue Datei PathMemory.cs. Das Installationsmanifest taugt dafuer nicht -
+            SkuInstall.json liegt IM AddOns-Ordner, es zu lesen setzt also voraus, den
+            Ordner schon gefunden zu haben, den man sich merken will. Der Ordner jedes
+            Clients wird deshalb als einfache Zeile "produkt=pfad" in SkuPaths.txt
+            geschrieben, und zwar an zwei Stellen: %LOCALAPPDATA%\SkuUpdater, neben der
+            dauerhaften Kopie des Updaters, die die Verknuepfung "Sku Updater" startet, und
+            %ProgramData%\SkuUpdater als maschinenweite Spiegelung. Die Spiegelung ist kein
+            Selbstzweck: das Installationsprogramm fordert Adminrechte an, ein
+            Standardbenutzer, der die UAC-Abfrage mit den Adminzugangsdaten eines anderen
+            beantwortet, laeuft also komplett unter jenem Profil und wuerde die Notiz sonst
+            in ein LOCALAPPDATA schreiben, das er nie wiedersieht. Beim naechsten Start
+            schlaegt ein gemerkter Ordner die Erkennung - er ist eine Entscheidung, die
+            Erkennung nur eine Vermutung ueber eine kurze Laufwerksliste - und sein
+            Basisverzeichnis wird der Suchliste vorangestellt; genau das macht das Merken
+            eines Clients fuer den anderen bezahlt. Absicherungen gegen eine veraltete
+            Notiz: der Ordner muss noch existieren, und seine .flavor.info darf nicht
+            inzwischen einen anderen Client melden - sonst wird die Notiz ignoriert, statt
+            eine Installation ins Leere zu schicken. Geschrieben wird erst, nachdem ein
+            Client sauber installiert wurde, ein abgebrochener oder fehlgeschlagener Lauf
+            hinterlaesst also nichts. Klartext mit Absicht - die Datei laesst sich vorlesen
+            und im Editor korrigieren, und wer eine Zeile loescht, bekommt fuer diesen
+            Client die automatische Erkennung zurueck. Neue Pruefung ohne Oberflaeche,
+            "SkuSelfTest pathmemory": sie gibt aus, was auf diesem Rechner vermerkt ist, und
+            spielt Schreiben, Lesen und die Faelle veralteter Notizen gegen einen
+            Wegwerfspeicher durch, ohne den echten anzufassen.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.1

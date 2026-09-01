@@ -58,8 +58,20 @@
          client whether the recognition textures are present at all
          (LogCollector.AppendFiducialTextureInfo) — the missing line that made
          the first "unknown on every screen" report unprovable. Deploys login
-         tool 3.2 (missing-texture self-diagnosis + version announce). -->
-    <Version>4.4</Version>
+         tool 3.2 (missing-texture self-diagnosis + version announce).
+         4.5 = the installer remembers where the game is (PathMemory). Detection
+         only probes Program Files and a short list of likely drives, so a user
+         with WoW anywhere else had to browse to the folder again on EVERY
+         update. The AddOns folder each client was installed into is now recorded
+         after a successful run — in %LOCALAPPDATA%\SkuUpdater\SkuPaths.txt and
+         mirrored to %ProgramData% for the "elevated with someone else's admin
+         account" case — and a remembered folder outranks detection on the next
+         run. Its base dir is also fed back into the probe list, so pointing us
+         at one client on an unusual drive finds the other one there for free. A
+         memory that has gone stale (folder deleted, or now reporting a different
+         client) is dropped and detection has its say. SkuSelfTest "pathmemory".
+         -->
+    <Version>4.5</Version>
   </PropertyGroup>
 
   <ItemGroup>

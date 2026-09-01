@@ -42,6 +42,7 @@ Changes in Sku v43.2
             Menu: closing a window now rebuilds the menu data once instead of up to six times.
             Menu: the type-ahead filter ignores accents - on a French client "general" now finds "Fournitures generales", and "o" finds an entry starting with "O". On a French AZERTY keyboard the u key now types into the filter too.
             French: the waypoint comments are now available in French - 207 texts across 546 waypoints, translated from the German original.
+            Installer: a game folder off the beaten track only has to be pointed out once - the installer now remembers where each WoW client lives and finds it again on every later update.
 
         Bugfixes
             Menu: while you were walking, an open menu was as good as dead - every key except Escape was swallowed until you stood still.
@@ -943,6 +944,38 @@ Changes in Sku v43.2
             where the waypoint will be at the end. Plus a guard against the fault where,
             after turns triggered in quick succession, the camera keys' turn speed could
             stay quadrupled for good.
+
+    The installer remembers where your WoW is
+        Simple: The installer looks for the game in the usual places - Program Files, plus a
+            handful of likely folders on C, D and E. Anyone whose WoW sits anywhere else had
+            to browse to the folder by hand, and not once but on EVERY update: the installer
+            forgot the answer the moment it closed. It now writes the folder down after an
+            install has gone through, and starts there the next time. Showing it one client
+            also finds the other one beside it, so a Classic Era next to an Anniversary on
+            the same unusual drive is picked up by itself. If the game later moves or is
+            uninstalled, the note is dropped and the search runs as it did before. The
+            installer is version 4.5 with this.
+        Technical: New PathMemory.cs. The install manifest could not serve for this -
+            SkuInstall.json lives INSIDE the AddOns folder, so reading it presupposes having
+            already found the folder we are trying to remember. Each client's folder is
+            therefore written as a plain "product=path" line into SkuPaths.txt, in two
+            places: %LOCALAPPDATA%\SkuUpdater, beside the persistent updater copy the "Sku
+            Updater" shortcut launches, and %ProgramData%\SkuUpdater as a machine-wide
+            mirror. The mirror is not redundancy for its own sake: the installer requests
+            elevation, so a standard user who answers the UAC prompt with someone else's
+            admin credentials runs the whole program under that other profile and would
+            otherwise write the note into a LOCALAPPDATA they never see again. On the next
+            run a remembered folder outranks detection - it is a decision, while detection is
+            a guess over a short list of drives - and its base directory is prepended to the
+            probe list, which is what makes remembering one client pay off for the other.
+            Guards against a stale note: the folder must still exist, and its .flavor.info
+            must not now report a different client; either way the note is ignored rather
+            than sending an install somewhere dead. Written only after a client has installed
+            cleanly, so a cancelled or failed run leaves nothing on record. Plain text on
+            purpose - it can be read out and corrected in Notepad, and deleting a line
+            restores auto-detection for that client. New headless check "SkuSelfTest
+            pathmemory": it prints what the machine has on record and round-trips the write,
+            read and stale cases against a throwaway store, never touching the real one.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.1

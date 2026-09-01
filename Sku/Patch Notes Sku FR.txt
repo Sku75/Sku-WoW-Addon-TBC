@@ -45,6 +45,7 @@ Changements dans Sku v43.2
             Menu : la fermeture d'une fenêtre ne reconstruit plus les données du menu qu'une seule fois au lieu de six.
             Menu : le filtre de saisie ignore les accents - « general » trouve maintenant « Fournitures générales », et « ingenieur » trouve « Ingénieur ». Sur un clavier AZERTY, la touche ù alimente désormais aussi le filtre.
             Français : les commentaires de points de passage existent maintenant en français - 207 textes sur 546 points de passage, traduits depuis l'original allemand.
+            Programme d'installation : un WoW installé à un endroit inhabituel ne doit être indiqué qu'une seule fois - le programme d'installation retient désormais où se trouve chaque client et le retrouve tout seul à chaque mise à jour ultérieure.
 
         Corrections
             Menu : pendant la marche, un menu ouvert était comme mort - toutes les touches sauf Échap étaient avalées jusqu'à l'arrêt complet.
@@ -1048,6 +1049,43 @@ Changements dans Sku v43.2
             une protection contre le défaut par lequel, après des rotations déclenchées
             coup sur coup, la vitesse de rotation des touches de caméra pouvait rester
             quadruplée définitivement.
+
+    Le programme d'installation retient où se trouve votre WoW
+        Simple : Le programme d'installation cherche le jeu aux endroits habituels -
+            Program Files, plus une poignée de dossiers probables sur C, D et E. Qui a son
+            WoW ailleurs devait chercher le dossier à la main, et pas une fois mais à
+            CHAQUE mise à jour : le programme oubliait la réponse au moment même où il se
+            fermait. Il note maintenant le dossier dès qu'une installation a abouti, et
+            recommence là la fois suivante. Lui montrer un client permet aussi de trouver
+            l'autre à côté : une Classic Era voisine d'une Anniversary sur le même disque
+            inhabituel est prise en compte toute seule. Si le jeu déménage plus tard ou est
+            désinstallé, la note est abandonnée et la recherche se déroule comme avant. Le
+            programme d'installation passe ainsi en version 4.5.
+        Technique : Nouveau fichier PathMemory.cs. Le manifeste d'installation ne pouvait
+            pas servir à cela - SkuInstall.json se trouve DANS le dossier AddOns, le lire
+            suppose donc d'avoir déjà trouvé le dossier que l'on veut retenir. Le dossier de
+            chaque client est donc écrit sous forme d'une simple ligne « produit=chemin »
+            dans SkuPaths.txt, à deux endroits : %LOCALAPPDATA%\SkuUpdater, à côté de la
+            copie permanente de l'updater que lance le raccourci « Sku Updater », et
+            %ProgramData%\SkuUpdater comme miroir valable pour toute la machine. Ce miroir
+            n'est pas une redondance gratuite : le programme demande l'élévation, un
+            utilisateur standard qui répond à l'invite UAC avec les identifiants
+            administrateur de quelqu'un d'autre exécute donc tout sous cet autre profil et
+            écrirait sinon la note dans un LOCALAPPDATA qu'il ne reverra jamais. Au
+            démarrage suivant, un dossier retenu l'emporte sur la détection - c'est une
+            décision, alors que la détection n'est qu'une supposition sur une courte liste
+            de disques - et son répertoire de base est placé en tête de la liste sondée,
+            ce qui est précisément ce qui fait que retenir un client profite à l'autre.
+            Garde-fous contre une note périmée : le dossier doit exister encore, et son
+            .flavor.info ne doit pas annoncer entre-temps un autre client ; sinon la note
+            est ignorée plutôt que d'envoyer une installation dans le vide. L'écriture n'a
+            lieu qu'après l'installation propre d'un client : une exécution annulée ou
+            échouée ne laisse donc rien. Du texte brut à dessein - le fichier se laisse lire
+            à voix haute et corriger dans le Bloc-notes, et supprimer une ligne rend la
+            détection automatique à ce client. Nouveau contrôle sans interface, « SkuSelfTest
+            pathmemory » : il affiche ce qui est noté sur cette machine et déroule
+            l'écriture, la lecture et les cas de note périmée sur un stockage jetable, sans
+            jamais toucher au vrai.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.1

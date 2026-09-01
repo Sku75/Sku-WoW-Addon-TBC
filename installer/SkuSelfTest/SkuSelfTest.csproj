@@ -36,6 +36,7 @@
     <Compile Include="..\SkuInstaller\GameSettings.cs"    Link="GameSettings.cs" />
     <Compile Include="..\SkuInstaller\TocSync.cs"         Link="TocSync.cs" />
     <Compile Include="..\SkuInstaller\Shortcut.cs"        Link="Shortcut.cs" />
+    <Compile Include="..\SkuInstaller\PathMemory.cs"      Link="PathMemory.cs" />
     <Compile Include="..\SkuInstaller\SelfUpdater.cs"     Link="SelfUpdater.cs" />
     <Compile Include="..\SkuInstaller\LoginToolInstaller.cs" Link="LoginToolInstaller.cs" />
   </ItemGroup>

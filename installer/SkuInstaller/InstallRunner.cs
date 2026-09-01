@@ -231,6 +231,13 @@ namespace SkuInstaller
                     manifest.Save(r.Target.AddOnsPath);
                     r.Target.RefreshInstalledVersion();
 
+                    // Remember where this client actually lives, so a game outside
+                    // the probed default locations is browsed to once and found by
+                    // itself from now on. Written here — after a client installed
+                    // cleanly — rather than when the user browsed, so a cancelled
+                    // or failed run never leaves a folder on record.
+                    PathMemory.Remember(r.Target.Product, r.Target.AddOnsPath);
+
                     // Close each client with an explicit verdict, so a multi-client
                     // run is audibly a sequence of finished steps rather than an
                     // undifferentiated stream that only resolves at the very end.

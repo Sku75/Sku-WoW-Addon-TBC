@@ -190,6 +190,32 @@ on modern Battle.net, **no registry key**. `WowLocator.DetectFlavors()`:
    of all detected flavors (Anniversary listed first); picking one sets the
    install target. Browse is still there for a custom path.
 
+**Remembered folders (`PathMemory.cs`).** Step 1's "saved location" is real
+since installer 4.5. Detection only probes Program Files plus `C:`/`D:`/`E:`
+`\World of Warcraft` and `\Games\World of Warcraft`, so a user with the game
+anywhere else had to browse to it **on every single update** — the folder was
+never written down anywhere the next run could find it. (The install manifest
+`SkuInstall.json` cannot serve: it lives *inside* the AddOns folder, so reading
+it presupposes having found the folder.)
+
+After a client installs cleanly, its AddOns folder is recorded as a
+`product=path` line in `SkuPaths.txt`, in **two** places:
+
+- `%LOCALAPPDATA%\SkuUpdater\` — beside the persistent updater copy.
+- `%ProgramData%\SkuUpdater\` — a machine-wide mirror. Not redundancy for its
+  own sake: the installer requests elevation, so a standard user who answers
+  UAC with *someone else's* admin credentials runs under that other profile and
+  would otherwise write the memory into a `LOCALAPPDATA` they never see again.
+
+On the next run a remembered folder **outranks detection** (it is a decision;
+detection is a guess), and its base dir is prepended to the probe list — so
+pointing the installer at one client on an unusual drive finds the other client
+there for free. A memory that has gone stale — folder deleted, or the flavor now
+reporting a different product — is ignored and detection has its say. Written
+only after a *successful* install, so a cancelled run leaves nothing on record.
+The file is plain text on purpose: a user can read it out and correct it in
+Notepad, and deleting a line restores auto-detection for that client.
+
 **Classic Era support.** Era runs a separate "SkuEra" line historically (the
 installed one is `SkuEra 32.39`, Interface 11507), and the TBC repo ships **no**
 Era asset. Per project decision, the **same Sku 41.x build is used for Era too**
@@ -444,6 +470,9 @@ exercising the no-re-download path.
 It also takes single-word commands for the pieces that have no other test:
 
 - `flavors` — list the detected WoW installs.
+- `pathmemory` — prints what this machine has on record in `SkuPaths.txt` (both
+  stores), then round-trips write/read/stale-memory cases against a throwaway
+  store via `PathMemory.DirOverride`. The real user's memory is never touched.
 - `toctest` — build-version → interface-number math, no network.
 - `resolve` — the live "latest release" discovery, no download.
 - `selfupdate [poseAsVersion]` — the real self-update check end to end except

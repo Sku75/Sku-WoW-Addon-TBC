@@ -35,6 +35,12 @@ namespace SkuInstaller
                 return;
             }
 
+            if (args.Length > 0 && args[0] == "pathmemory")
+            {
+                RunPathMemoryTest();
+                return;
+            }
+
             if (args.Length > 0 && args[0] == "toctest")
             {
                 RunTocTest();
@@ -471,6 +477,86 @@ namespace SkuInstaller
                 foreach (byte b in sha.ComputeHash(fs)) sb.Append(b.ToString("x2"));
                 return sb.ToString();
             }
+        }
+
+        /// <summary>
+        /// PathMemory round-trip: what the installer remembers about where each
+        /// client lives. Prints the REAL stores read-only (so a support log can
+        /// say what this machine has on record), then runs the write/read/stale
+        /// cases against a throwaway folder via PathMemory.DirOverride — the real
+        /// user's memory is never touched.
+        /// </summary>
+        private static void RunPathMemoryTest()
+        {
+            int fails = 0;
+            void Check(string label, bool ok)
+            {
+                Console.WriteLine($"    [{(ok ? "PASS" : "FAIL")}] {label}");
+                if (!ok) fails++;
+            }
+
+            Console.WriteLine("=== PathMemory: what this machine has on record ===");
+            Console.WriteLine($"    per-user : {PathMemory.LocalFile} {(File.Exists(PathMemory.LocalFile) ? "" : "(absent)")}");
+            Console.WriteLine($"    machine  : {PathMemory.MachineFile} {(File.Exists(PathMemory.MachineFile) ? "" : "(absent)")}");
+            foreach (var kv in PathMemory.Load())
+                Console.WriteLine($"    {kv.Key,-18} -> {kv.Value}");
+            Console.WriteLine();
+
+            string root = Path.Combine(Path.GetTempPath(), "SkuPathMemoryTest");
+            if (Directory.Exists(root)) Directory.Delete(root, true);
+
+            string store = Path.Combine(root, "store");
+            string wowBase = Path.Combine(root, "Games", "World of Warcraft");
+            string annAddons = Path.Combine(wowBase, "_anniversary_", "Interface", "AddOns");
+            string eraAddons = Path.Combine(wowBase, "_classic_era_", "Interface", "AddOns");
+            Directory.CreateDirectory(store);
+            Directory.CreateDirectory(annAddons);
+            Directory.CreateDirectory(eraAddons);
+
+            PathMemory.DirOverride = store;
+            try
+            {
+                Console.WriteLine("=== PathMemory: round-trip against a throwaway store ===");
+                Console.WriteLine($"    store    : {store}");
+
+                PathMemory.Remember(Config.AnniversaryFlavor, annAddons);
+                PathMemory.Remember("wow_classic_era", eraAddons);
+
+                var loaded = PathMemory.Load();
+                Check("both clients survive a reload",
+                      loaded.Count == 2 &&
+                      loaded[Config.AnniversaryFlavor] == annAddons &&
+                      loaded["wow_classic_era"] == eraAddons);
+
+                Check("a path with spaces comes back verbatim",
+                      PathMemory.ResolveFor(Config.AnniversaryFlavor) == annAddons);
+
+                Check("the base dir is derived for detection",
+                      PathMemory.RememberedBaseDirs()
+                                .Exists(d => string.Equals(d, wowBase, StringComparison.OrdinalIgnoreCase)));
+
+                // Stale case 1: the folder is gone (game moved or uninstalled).
+                Directory.Delete(eraAddons, true);
+                Check("a vanished folder resolves to null", PathMemory.ResolveFor("wow_classic_era") == null);
+
+                // Stale case 2: the folder is now a DIFFERENT client.
+                File.WriteAllText(Path.Combine(wowBase, "_anniversary_", ".flavor.info"),
+                                  "Product!STRING:0\nwow_classic_era\n");
+                Check("a folder that now reports another client is ignored",
+                      PathMemory.ResolveFor(Config.AnniversaryFlavor) == null);
+
+                // Unknown client: nothing on record, and that must be quiet.
+                Check("an unremembered client resolves to null", PathMemory.ResolveFor("wow_sod") == null);
+            }
+            finally
+            {
+                PathMemory.DirOverride = null;
+                try { Directory.Delete(root, true); } catch { }
+            }
+
+            Console.WriteLine();
+            Console.WriteLine(fails == 0 ? "RESULT: PASS" : $"RESULT: FAIL ({fails})");
+            if (fails > 0) Environment.ExitCode = 1;
         }
 
         private static void RunTocTest()
