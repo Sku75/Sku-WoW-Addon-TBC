@@ -94,6 +94,10 @@
          v2\START.ahk driver. Deployed at runtime by LoginToolInstaller. -->
     <EmbeddedResource Include="payload\AutoHotkey64_v2.exe" />
     <EmbeddedResource Include="payload\AutoHotkey-license.txt" />
+    <!-- Shared with the macOS installer; release/package definitions have one
+         repository source even though each platform keeps a native UI. -->
+    <EmbeddedResource Include="..\shared\addon-catalog.json" Link="shared\addon-catalog.json" />
+    <EmbeddedResource Include="..\shared\installer-channel.json" Link="shared\installer-channel.json" />
   </ItemGroup>
 
 </Project>
