@@ -4,7 +4,7 @@
 | --- | --- |
 | Native, screenreaderfreundliche Oberfläche | vorhanden |
 | Deutsche/englische/französische Installer-Sprache | Deutsch vorhanden; EN/FR ausstehend |
-| Live-Ermittlung der Sku-Version + Offline-Pin | vorhanden, Pin 43.1 |
+| Live-Ermittlung der Sku-Version + Offline-Pin | vorhanden, Pin 43.3 |
 | Anniversary und Classic Era erkennen | vorhanden |
 | Zwischen mehreren installierten Clients wechseln | vorhanden |
 | Ein-Klick-Aktualisierung vorhandener Installationen | vorhanden |
@@ -23,4 +23,3 @@
 | Alle Diagnoseprotokolle als ZIP sammeln | vorhanden |
 | Installer-Selbstupdate mit SHA-256 | vorhanden, aktiv sobald Assets veröffentlicht sind |
 | Signatur-/Team-ID-Prüfung des Selbstupdates | vorhanden |
-

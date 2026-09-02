@@ -9,7 +9,7 @@ export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 APP_NAME="Sku Installer und Updater"
 APP_VERSION="5.3.0"
 REPO="Sku75/Sku-WoW-Addon-TBC"
-FALLBACK_MAIN_VERSION="43.1"
+FALLBACK_MAIN_VERSION="43.3"
 COMPANION_TAG="v41.02.05"
 MANIFEST_NAME="SkuInstall.json"
 PREFERENCES_DOMAIN="org.sku-project.installer"
@@ -769,26 +769,62 @@ version_is_newer() {
     }'
 }
 
+replace_installed_app() {
+    local source="$1" destination_dir target new backup
+    destination_dir="${SKU_INSTALLER_APPLICATIONS_DIR:-/Applications}"
+    target="$destination_dir/Sku Installer.app"
+    new="$destination_dir/.Sku Installer.new-$$"
+    backup="$destination_dir/.Sku Installer.backup-$$"
+
+    if [ "${SKU_INSTALLER_TEST_MODE:-0}" = "1" ]; then
+        /bin/rm -rf "$new" "$backup"
+        /usr/bin/ditto "$source" "$new" || return 1
+        [ ! -e "$target" ] || /bin/mv "$target" "$backup" || return 1
+        if /bin/mv "$new" "$target"; then
+            /bin/rm -rf "$backup"
+            return 0
+        fi
+        /bin/rm -rf "$target"
+        [ ! -e "$backup" ] || /bin/mv "$backup" "$target"
+        return 1
+    fi
+
+    /usr/bin/osascript - "$source" "$target" "$new" "$backup" <<'APPLESCRIPT'
+on run argv
+    set sourcePath to item 1 of argv
+    set targetPath to item 2 of argv
+    set newPath to item 3 of argv
+    set backupPath to item 4 of argv
+    set qSource to quoted form of sourcePath
+    set qTarget to quoted form of targetPath
+    set qNew to quoted form of newPath
+    set qBackup to quoted form of backupPath
+    set commandText to "/bin/rm -rf " & qNew & " " & qBackup & " && /usr/bin/ditto " & qSource & " " & qNew & " && if [ -e " & qTarget & " ]; then /bin/mv " & qTarget & " " & qBackup & " || exit 1; fi; if /bin/mv " & qNew & " " & qTarget & "; then /bin/rm -rf " & qBackup & "; else result=$?; /bin/rm -rf " & qTarget & "; if [ -e " & qBackup & " ]; then /bin/mv " & qBackup & " " & qTarget & "; fi; exit $result; fi"
+    do shell script commandText with administrator privileges
+end run
+APPLESCRIPT
+}
+
 self_update_check() {
     local metadata latest sha
     metadata="$(mac_installer_metadata 2>/dev/null || true)"
-    latest="$(printf '%s\n' "$metadata" | /usr/bin/awk 'NR==1 {gsub(/^[vV]/,""); gsub(/\r/,""); print; exit}')"
-    sha="$(printf '%s\n' "$metadata" | /usr/bin/awk 'NR==2 {gsub(/\r/,""); print tolower($1); exit}')"
+    latest="$(printf '%s\n' "$metadata" | /usr/bin/awk 'NR==1 {sub(/^version=/,""); gsub(/^[vV]/,""); gsub(/\r/,""); print; exit}')"
+    sha="$(printf '%s\n' "$metadata" | /usr/bin/awk 'NR==2 {sub(/^sha256=/,""); gsub(/\r/,""); print tolower($1); exit}')"
     printf 'CURRENT=%s\nLATEST=%s\nSHA256=%s\n' "$APP_VERSION" "$latest" "$sha"
     if [ -n "$latest" ] && version_is_newer "$latest" "$APP_VERSION"; then printf 'AVAILABLE=1\n'; else printf 'AVAILABLE=0\n'; fi
 }
 
 self_update_apply() {
-    local metadata latest expected zip stage app actual bundle team
+    local metadata latest expected zip stage app actual bundle team current_app expected_team installed_app
     metadata="$(mac_installer_metadata)" || return 1
-    latest="$(printf '%s\n' "$metadata" | /usr/bin/awk 'NR==1 {gsub(/^[vV]/,""); gsub(/\r/,""); print; exit}')"
-    expected="$(printf '%s\n' "$metadata" | /usr/bin/awk 'NR==2 {gsub(/\r/,""); print tolower($1); exit}')"
+    latest="$(printf '%s\n' "$metadata" | /usr/bin/awk 'NR==1 {sub(/^version=/,""); gsub(/^[vV]/,""); gsub(/\r/,""); print; exit}')"
+    expected="$(printf '%s\n' "$metadata" | /usr/bin/awk 'NR==2 {sub(/^sha256=/,""); gsub(/\r/,""); print tolower($1); exit}')"
     case "$expected" in [0-9a-f][0-9a-f]*) ;; *) log "Ungültige Prüfsumme für das Installer-Update."; return 1 ;; esac
     [ "${#expected}" -eq 64 ] || return 1
     zip="$TEMP_ROOT/Sku-Installer-macOS.zip"; stage="$TEMP_ROOT/self-update"; mkdir -p "$stage"
     /usr/bin/curl -fL --retry 3 --connect-timeout 15 \
         "https://github.com/$REPO/releases/latest/download/Sku-Installer-macOS.zip" -o "$zip" || return 1
-    actual="$(/usr/bin/shasum -a 256 "$zip" | /usr/bin/awk '{print tolower($1)}')"
+    actual="$(env LC_ALL=C LANG=C /usr/bin/shasum -a 256 "$zip" | /usr/bin/awk '{print tolower($1)}')"
     [ "$actual" = "$expected" ] || { log "Prüfsumme des Installer-Updates stimmt nicht."; return 1; }
     /usr/bin/ditto -x -k "$zip" "$stage" || return 1
     app="$(/usr/bin/find "$stage" -maxdepth 2 -type d -name 'Sku Installer.app' -print -quit)"
@@ -797,11 +833,16 @@ self_update_apply() {
     bundle="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app/Contents/Info.plist" 2>/dev/null || true)"
     [ "$bundle" = "org.sku-project.installer" ] || return 1
     team="$(/usr/bin/codesign -dv --verbose=4 "$app" 2>&1 | /usr/bin/awk -F= '/^TeamIdentifier=/{print $2; exit}')"
+    current_app="$(cd "$SCRIPT_DIR/../.." 2>/dev/null && pwd || true)"
+    expected_team="${SKU_EXPECTED_TEAM_ID:-$(/usr/bin/codesign -dv --verbose=4 "$current_app" 2>&1 | /usr/bin/awk -F= '/^TeamIdentifier=/{print $2; exit}')}"
     [ -n "$team" ] && [ "$team" != "not set" ] || { log "Das veröffentlichte Update besitzt keine Developer-ID-Signatur."; return 1; }
-    /usr/bin/ditto "$app" "/Applications/Sku Installer.app" || return 1
-    /usr/bin/codesign --verify --deep --strict "/Applications/Sku Installer.app" || return 1
+    [ -n "$expected_team" ] && [ "$team" = "$expected_team" ] || { log "Die Developer Team-ID des Updates stimmt nicht mit der installierten App überein."; return 1; }
+    /usr/sbin/spctl --assess --type execute "$app" || { log "Das Installer-Update wurde von Gatekeeper nicht akzeptiert."; return 1; }
+    replace_installed_app "$app" || return 1
+    installed_app="${SKU_INSTALLER_APPLICATIONS_DIR:-/Applications}/Sku Installer.app"
+    /usr/bin/codesign --verify --deep --strict "$installed_app" || return 1
     log "Installer wurde auf Version $latest aktualisiert."
-    /usr/bin/open -a "/Applications/Sku Installer.app" >/dev/null 2>&1 &
+    /usr/bin/open -a "$installed_app" >/dev/null 2>&1 &
 }
 
 MANIFEST_KEYS=""
@@ -866,7 +907,7 @@ sync_toc() {
 }
 
 install_login_tool() {
-    local source="$SCRIPT_DIR/SkuLoginTool.lua" sense="$SCRIPT_DIR/SkuLoginSense" target_dir="$HOME/.hammerspoon"
+    local source="$SCRIPT_DIR/SkuLoginTool.lua" sense="$SCRIPT_DIR/SkuLoginSense" starter="$SCRIPT_DIR/StartSkuLoginTool.applescript" target_dir="$HOME/.hammerspoon"
     if [ ! -f "$source" ]; then
         log "SkuLoginTool.lua liegt nicht neben dem Installer und wurde daher nicht installiert."
         return 0
@@ -883,6 +924,15 @@ install_login_tool() {
         printf '\ndofile(hs.configdir .. "/SkuLoginTool.lua")\n' >> "$target_dir/init.lua"
     fi
     log "Hammerspoon-Login-Tool wurde unter $target_dir installiert."
+    if [ -d "/Applications/Hammerspoon.app" ] && [ -f "$starter" ]; then
+        /usr/bin/osascript "$starter" >>"$LOG_FILE" 2>&1 || {
+            log "Hammerspoon konnte nicht automatisch neu geladen werden. Das Skript ist vollständig installiert."
+            return 1
+        }
+        log "Hammerspoon wurde gestartet und die Sku-Konfiguration geladen."
+    else
+        log "Hammerspoon ist nicht unter /Applications installiert. Das Login-Tool wird beim nächsten Hammerspoon-Start geladen."
+    fi
 }
 
 main() {
@@ -1033,4 +1083,3 @@ if [ "${SKU_INSTALLER_TEST_MODE:-0}" != "1" ]; then
         exit "$status"
     }
 fi
-

@@ -52,6 +52,7 @@ local SkuLoginTool = {
 -- Hammerspoon remains available as a menu-bar background service and should
 -- not occupy a Dock slot when it is started automatically at login.
 if hs.dockIcon then hs.dockIcon(false) end
+if hs.autoLaunch then hs.autoLaunch(true) end
 
 local function appendLog(message)
     local file = io.open(SkuLoginTool.logPath, "a")
@@ -573,4 +574,3 @@ appendLog("Sku Login Tool " .. SkuLoginTool.version .. " geladen")
 say("Sku Login Tool fuer Mac wurde geladen.")
 
 return SkuLoginTool
-

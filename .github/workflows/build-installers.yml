@@ -54,13 +54,13 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
-      - name: Run backend tests
+      - name: Build macOS installer
+        run: installer/macos/build-release-assets.sh
+      - name: Run macOS tests
         run: |
           python3 installer/tests/test_catalog_parity.py
           for test_file in installer/macos/Tests/*.sh; do "$test_file"; done
           installer/tests/test_universal_installer.sh
-      - name: Build macOS installer
-        run: installer/macos/build-release-assets.sh
       - uses: actions/upload-artifact@v4
         with:
           name: Sku-Installer-macOS

@@ -82,11 +82,27 @@ Dungeonbrowser frei; „zum Beacon drehen“ bleibt auf `T`.
 
 Das Ergebnis liegt unter `build/Sku Installer.app`.
 
+`./build-release-assets.sh` erzeugt das universelle Intel-/Apple-Silicon-ZIP,
+die passende SHA-256-Metadatei und den kleinen Installations-Bootstrap unter
+`../dist-universal`.
+
+Für einen öffentlichen, notarisierten Build müssen die Developer-ID im
+Schlüsselbund und ein `notarytool`-Profil vorhanden sein. Danach genügt:
+
+```bash
+MACOS_CODESIGN_IDENTITY="Developer ID Application: …" \
+MACOS_NOTARY_PROFILE="sku-notary" \
+./build-release-assets.sh
+```
+
+Das Skript signiert mit Hardened Runtime, übermittelt das ZIP an Apple, heftet
+das Notarisierungsticket an die App, baut das endgültige ZIP neu und berechnet
+erst anschließend dessen veröffentlichte Prüfsumme.
+
 ## Veröffentlichung und Selbstaktualisierung
 
 Ein Release stellt `Sku-Installer-macOS.zip` und `installer-version-macos.txt`
-bereit. Die Textdatei enthält in Zeile 1 die Version und in Zeile 2 den
-SHA-256-Wert des ZIP-Archivs. Vor dem Ersetzen prüft die App außerdem Bundle-ID,
+bereit. Die Textdatei enthält in Zeile 1 `version=…` und in Zeile 2
+`sha256=…` für das ZIP-Archiv. Vor dem Ersetzen prüft die App außerdem Bundle-ID,
 Codesign-Signatur und Apple Developer Team-ID. Ad-hoc signierte Entwicklungs-
 Builds werden nicht als automatische Aktualisierung akzeptiert.
-

@@ -27,6 +27,7 @@ mkdir -p "$stage"
 app="$(/usr/bin/find "$stage" -maxdepth 2 -type d -name 'Sku Installer.app' -print -quit)"
 [ -n "$app" ] || { printf '%s\n' 'Das Archiv enthaelt keine Sku Installer App.' >&2; exit 1; }
 /usr/bin/codesign --verify --deep --strict "$app"
+/usr/sbin/spctl --assess --type execute "$app"
 bundle="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app/Contents/Info.plist")"
 [ "$bundle" = 'org.sku-project.installer' ] || { printf '%s\n' 'Die Bundle-ID des Installers ist ungueltig.' >&2; exit 1; }
 
