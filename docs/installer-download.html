@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sku Installer herunterladen</title>
+  <style>
+    body { font: 1.15rem/1.55 system-ui, sans-serif; max-width: 48rem; margin: 3rem auto; padding: 0 1.25rem; }
+    a.button { display: block; margin: 1rem 0; padding: 1rem; border: 2px solid currentColor; border-radius: .5rem; }
+    [hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Sku Installer und Updater</h1>
+    <p id="detected" role="status" aria-live="polite">Betriebssystem wird erkannt.</p>
+    <section id="windows" hidden>
+      <h2>Windows</h2>
+      <a class="button" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/latest/download/Install-SkuUpdater.ps1">Windows-Installer herunterladen</a>
+      <p>Das PowerShell-Startprogramm prueft den offiziellen Installer per SHA-256 und startet danach die barrierefreie Windows-Installation.</p>
+    </section>
+    <section id="macos" hidden>
+      <h2>macOS</h2>
+      <a class="button" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/latest/download/Install-SkuUpdater-macOS.zip">macOS-Installer herunterladen</a>
+      <p>Das Startprogramm prueft App und Archiv und installiert Sku Installer unter Programme.</p>
+    </section>
+    <button id="show-all" type="button">Anderes Betriebssystem auswaehlen</button>
+  </main>
+  <script>
+    const windows = document.querySelector('#windows');
+    const macos = document.querySelector('#macos');
+    const status = document.querySelector('#detected');
+    const platform = navigator.userAgentData?.platform || navigator.platform || '';
+    const isWindows = /win/i.test(platform);
+    const isMac = /mac/i.test(platform);
+    windows.hidden = !isWindows;
+    macos.hidden = !isMac;
+    status.textContent = isWindows ? 'Windows wurde erkannt.' : isMac ? 'macOS wurde erkannt.' : 'Das Betriebssystem konnte nicht eindeutig erkannt werden. Bitte waehle es aus.';
+    if (!isWindows && !isMac) { windows.hidden = false; macos.hidden = false; }
+    document.querySelector('#show-all').addEventListener('click', () => {
+      windows.hidden = false;
+      macos.hidden = false;
+      status.textContent = 'Beide Installationsvarianten werden angezeigt.';
+    });
+  </script>
+</body>
+</html>

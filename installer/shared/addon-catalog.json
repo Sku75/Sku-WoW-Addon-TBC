@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "repository": "Sku75/Sku-WoW-Addon-TBC",
+  "mainAddon": {
+    "key": "Sku",
+    "displayName": "Sku",
+    "provider": "github-latest",
+    "assetPattern": "Sku-{version}.zip",
+    "rootFolders": ["Sku"]
+  },
+  "companionTag": "v41.02.05",
+  "companions": [
+    {
+      "key": "SkuBeaconSoundsets",
+      "displayName": "Sku Beacon Soundsets",
+      "asset": "SkuBeaconSoundsets.zip",
+      "rootFolders": ["SkuBeaconSoundsets"],
+      "required": true,
+      "media": true
+    },
+    {
+      "key": "SkuCustomBeaconsEssential",
+      "displayName": "Sku Custom Beacons Essential",
+      "asset": "SkuCustomBeaconsEssential.zip",
+      "rootFolders": ["SkuCustomBeaconsEssential"],
+      "required": true,
+      "media": true
+    },
+    {
+      "key": "SkuCustomBeaconsAdditional",
+      "displayName": "Sku Custom Beacons Additional",
+      "asset": "SkuCustomBeaconsAdditional.zip",
+      "rootFolders": ["SkuCustomBeaconsAdditional"],
+      "required": true,
+      "media": true
+    }
+  ],
+  "languagePacks": [
+    {"key": "SkuAudioData", "locale": "deDE", "displayName": "Deutsch", "asset": "SkuAudioData.zip", "rootFolders": ["SkuAudioData"], "media": true},
+    {"key": "SkuAudioData_fast_de", "locale": "deDE-fast", "displayName": "Deutsch schnell", "asset": "SkuAudioData_fast_de.zip", "rootFolders": ["SkuAudioData_fast_de"], "media": true},
+    {"key": "SkuAudioData_en", "locale": "enUS", "displayName": "English", "asset": "SkuAudioData_en.zip", "rootFolders": ["SkuAudioData_en"], "media": true}
+  ],
+  "managedAnniversaryAddons": [
+    {"key": "CurseQuestie", "displayName": "Questie", "provider": "github", "project": "Questie/Questie", "assetContains": "Questie-v", "rootFolders": ["Questie"]},
+    {"key": "CurseAtlasLootAnniversary", "displayName": "AtlasLootClassic Anniversary", "provider": "catalog", "rootFolders": ["AtlasLootClassic", "AtlasLootClassic_Data"]},
+    {"key": "CurseDetailsTBC", "displayName": "Details Damage Meter", "provider": "catalog", "rootFolders": ["Details", "Details_Compare2", "Details_DataStorage", "Details_EncounterDetails", "Details_RaidCheck", "Details_Streamer", "Details_TinyThreat", "Details_Vanguard"]},
+    {"key": "CursePawnTBC", "displayName": "Pawn", "provider": "github", "project": "VgerMods/Pawn", "assetContains": "BurningCrusade", "rootFolders": ["Pawn"]}
+  ],
+  "inventory": {
+    "hiddenPackages": ["!BugGrabber", "BugSack", "GTFO"],
+    "skuOwnedPrefixes": ["SkuAudioData"]
+  }
+}
