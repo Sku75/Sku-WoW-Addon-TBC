@@ -354,9 +354,14 @@ local function BttsCacheBust(aString)
 	--    property point 1 already relies on -- so the client's XML normalization
 	--    cannot trim it back off and collapse the variants into one cache key.
 	--
-	--    The bookmark stays: it costs nothing, the patched engine strips it, and it
-	--    still busts the key on any client that DOES hash the raw string.
-	return "\194\160" .. aString .. string.rep("\194\160", mBttsCacheBust) .. string.format('<bookmark mark="skc%d"/>', mBttsCacheBust)
+	--    macOS speaks the literal bookmark markup instead of stripping it. The
+	--    varying NBSP run already busts the spoken-text cache there, so only send
+	--    the bookmark on clients which handle the markup correctly.
+	local tBookmark = ""
+	if not (IsMacClient and IsMacClient()) then
+		tBookmark = string.format('<bookmark mark="skc%d"/>', mBttsCacheBust)
+	end
+	return "\194\160" .. aString .. string.rep("\194\160", mBttsCacheBust) .. tBookmark
 end
 
 -- [v43.2] The ONE place an utterance reaches the client. The normal queue and the
@@ -2068,4 +2073,3 @@ function SkuVoice:GetAudiodata(aString)
 
 	return tFile, tPath, tLen
 end
-
