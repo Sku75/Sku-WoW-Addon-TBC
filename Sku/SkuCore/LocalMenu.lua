@@ -4358,15 +4358,47 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:Build_PetStableFrame(aParentChilds)
-
-	local tId, tName, tLevel, _, tType = GetStablePetInfo(0)
-	local tFrame = _G["PetStableCurrentPet"]
-	local tText, tFullText = GetButtonTooltipLines(tFrame)
-	if tId then
-		tText, tFullText = tName, tName.."\r\n"..tLevel.."\r\n"..tType
-	else
-		tText, tFullText = L["Empty"], ""
+	-- Blizzard's stable buttons use action indices 1 (current pet), 2 and 3
+	-- (the two stored pets). Their visible button IDs are one lower.
+	local function tPetInfo(aSlot)
+		local tIcon, tName, tLevel, tFamily, tLoyalty = GetStablePetInfo(aSlot)
+		return {
+			exists = tIcon ~= nil,
+			name = tName,
+			level = tLevel,
+			family = tFamily,
+			loyalty = tLoyalty,
+		}
 	end
+
+	local function tCurrentPetInfo()
+		local tName = UnitName("pet")
+		if not tName then
+			-- A pet selected at the stable can be current but dismissed. Blizzard's
+			-- stable frame exposes that pet through stable API slot 1.
+			return tPetInfo(1)
+		end
+		return {
+			exists = true,
+			name = tName,
+			level = UnitLevel("pet"),
+			family = UnitCreatureFamily("pet"),
+			loyalty = GetPetLoyalty and GetPetLoyalty() or nil,
+		}
+	end
+
+	local function tPetText(aPet)
+		if not aPet.exists then return L["Empty"], "" end
+		local tParts = {aPet.name}
+		if aPet.level then table.insert(tParts, (L["Level"] or "Level").." "..tostring(aPet.level)) end
+		if aPet.family and aPet.family ~= "" then table.insert(tParts, aPet.family) end
+		if aPet.loyalty and aPet.loyalty ~= "" then table.insert(tParts, tostring(aPet.loyalty)) end
+		return table.concat(tParts, ", "), table.concat(tParts, "\r\n")
+	end
+
+	local tCurrentPet = tCurrentPetInfo()
+	local tFrame = _G["PetStableCurrentPet"]
+	local tText, tFullText = tPetText(tCurrentPet)
 
 	table.insert(aParentChilds, L["Derzeitiger Begleiter"])
 	aParentChilds[L["Derzeitiger Begleiter"]] = {
@@ -4377,27 +4409,14 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 		textFirstLine = L["Derzeitiger Begleiter"].." "..tText,
 		textFull = L["Derzeitiger Begleiter"].." "..tFullText,
 		childs = {},
-		func = function(...)
-			local tCursorInfo = GetCursorInfo()
-			if tCursorInfo then
-				tFrame:GetScript("OnReceiveDrag")(...)
-			else
-				tFrame:GetScript("OnDragStart")(...)
-			end
-		end,
-		click = true,
+		-- Informational: selecting a stored pet performs the complete swap.
 	}
 
-	for x = 1, 4 do
-		local tId, tName, tLevel, _, tType = GetStablePetInfo(x)
+	for x = 1, NUM_PET_STABLE_SLOTS do
+		local tPet = tPetInfo(x + 1)
 		if _G["PetStableStabledPet"..x] and _G["PetStableStabledPet"..x]:IsEnabled() == true then
 			local tFrame = _G["PetStableStabledPet"..x]
-			local tText, tFullText = GetButtonTooltipLines(tFrame)
-			if tId then
-				tText, tFullText = tName, tName.."\r\n"..tLevel.."\r\n"..tType
-			else
-				tText, tFullText = L["Empty"], ""
-			end
+			local tText, tFullText = tPetText(tPet)
 			table.insert(aParentChilds, L["Stall "..x])
 			aParentChilds[L["Stall "..x]] = {
 				frameName = "PetStableStabledPet"..x,
@@ -4407,15 +4426,17 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 				textFirstLine = L["Stall "..x].." "..tText,
 				textFull = L["Stall "..x].." "..tFullText,
 				childs = {},
-				func = function(...)
-					local tCursorInfo = GetCursorInfo()
-					if tCursorInfo then
-						tFrame:GetScript("OnReceiveDrag")(...)
-					else
-						tFrame:GetScript("OnDragStart")(...)
-					end
-				end,
-				click = true,
+				directAction = tPet.exists,
+				-- Same pickup/drop sequence as Blizzard's stable UI.
+				macrotext = tPet.exists and ("/run if GetCursorInfo() then ClearCursor() end; PickupStablePet("..(x + 1).."); ClickStablePet(1)") or nil,
+				func = tPet.exists and function()
+					if not _G.PetStableFrame or not _G.PetStableFrame:IsShown() then return end
+					SkuCore.petStablePendingSwap = {
+						name = tPet.name,
+						level = tPet.level,
+						family = tPet.family,
+					}
+				end or nil,
 			}
 		end
 	end
