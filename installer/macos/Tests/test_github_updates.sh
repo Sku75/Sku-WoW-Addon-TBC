@@ -10,10 +10,10 @@ mkdir -p "$HOME" "$TMPDIR" "$TEST_ROOT/api/repos/Test/Addon/releases"
 # shellcheck source=../Resources/SkuInstaller.command
 source "$ROOT/Resources/SkuInstaller.command"
 
-metadata_fixture=$'version=5.4.0\nsha256=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'
+metadata_fixture=$'version=5.5.0\nsha256=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'
 mac_installer_metadata() { printf '%s\n' "$metadata_fixture"; }
 self_update_output="$(self_update_check)"
-printf '%s\n' "$self_update_output" | grep -Fqx 'LATEST=5.4.0'
+printf '%s\n' "$self_update_output" | grep -Fqx 'LATEST=5.5.0'
 printf '%s\n' "$self_update_output" | grep -Fqx 'SHA256=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'
 printf '%s\n' "$self_update_output" | grep -Fqx 'AVAILABLE=1'
 

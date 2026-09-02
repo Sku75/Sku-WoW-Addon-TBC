@@ -22,4 +22,4 @@
 | Abschlusszusammenfassung | vorhanden |
 | Alle Diagnoseprotokolle als ZIP sammeln | vorhanden |
 | Installer-Selbstupdate mit SHA-256 | vorhanden, aktiv sobald Assets veröffentlicht sind |
-| Signatur-/Team-ID-Prüfung des Selbstupdates | vorhanden |
+| Signatur-, SHA-256-, Bundle-ID- und Versionsprüfung des Selbstupdates | vorhanden; Team-ID nach späterer Developer-ID-Umstellung |

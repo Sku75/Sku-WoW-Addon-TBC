@@ -104,5 +104,7 @@ erst anschließend dessen veröffentlichte Prüfsumme.
 Ein Release stellt `Sku-Installer-macOS.zip` und `installer-version-macos.txt`
 bereit. Die Textdatei enthält in Zeile 1 `version=…` und in Zeile 2
 `sha256=…` für das ZIP-Archiv. Vor dem Ersetzen prüft die App außerdem Bundle-ID,
-Codesign-Signatur und Apple Developer Team-ID. Ad-hoc signierte Entwicklungs-
-Builds werden nicht als automatische Aktualisierung akzeptiert.
+Codesign-Struktur, Bundle-ID und die Übereinstimmung der App-Version mit den
+Release-Metadaten. In der kostenlosen Veröffentlichung beruht die
+Herausgeberidentität auf dem offiziellen GitHub-Konto und HTTPS; beim ersten
+Start kann deshalb die einmalige macOS-Freigabe „Dennoch öffnen“ nötig sein.
