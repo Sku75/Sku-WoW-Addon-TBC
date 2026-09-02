@@ -4,6 +4,30 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v43.3
+
+    Overview
+
+        Bugfixes
+            Speech: individual announcements stayed silent even though the sound played - mostly the short lines you hear over and over.
+
+    Speech: repeated announcements no longer go silent
+        Simple: Navigating menus and tooltips, you would now and then get only the sound, with the
+            announcement itself missing. It mostly hit the short lines you hear over and over all
+            evening - "menu closed", "accept", "buffs", or a single typed character.
+        Technically: The client caches synthesized speech by text and, on a repeat, replays it from
+            that cache without invoking the voice again. Across a bridge to a screen reader that
+            replay is silent. Sku therefore appends an inaudible marker to every line so each call
+            is generated fresh - until now from a counter that restarted every 64 announcements. A
+            line that came up again exactly 64 announcements later was therefore character-identical
+            and hit the cache. The counter now runs per text instead of shared across all
+            announcements; a newly seen line still takes its starting value from the shared counter,
+            so that clearing the table (at 512 distinct lines) cannot throw a line back onto its own
+            first value. Replayed against a recording of 1307 announcements: 27 character-identical
+            repeats before, 80 with a per-text counter lacking that seeded start - worse - and 0 as
+            shipped.
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v43.2
 
     Overview

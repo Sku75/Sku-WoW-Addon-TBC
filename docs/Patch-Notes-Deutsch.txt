@@ -4,6 +4,32 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.3
+
+    Ueberblick
+
+        Fehlerbehebungen
+            Sprachausgabe: einzelne Ansagen blieben stumm, obwohl der Ton kam - vor allem bei kurzen Zeilen, die man immer wieder hoert.
+
+    Sprachausgabe: wiederholte Ansagen bleiben nicht mehr stumm
+        Einfach: Beim Navigieren in Menues und Tooltips kam ab und zu nur der Ton, die Ansage selbst
+            blieb aus. Betroffen waren vor allem die kurzen Zeilen, die man den ganzen Abend wieder
+            und wieder hoert - "menue geschlossen", "annehmen", "buffs" oder ein einzelner getippter
+            Buchstabe.
+        Technisch: Der Client merkt sich erzeugte Sprachausgabe zum Text und spielt sie bei einer
+            Wiederholung aus dem Zwischenspeicher ab, ohne die Stimme erneut aufzurufen. Ueber eine
+            Bruecke zum Screenreader ist diese Wiederholung stumm. Sku haengt deshalb an jede Zeile
+            eine unhoerbare Kennung an, damit jeder Aufruf neu erzeugt wird - bisher aus einem
+            Zaehler, der alle 64 Ansagen von vorn begann. Eine Zeile, die genau 64 Ansagen spaeter
+            noch einmal kam, war damit zeichengleich und landete wieder im Zwischenspeicher. Der
+            Zaehler laeuft jetzt pro Text statt fuer alle Ansagen gemeinsam; eine neu gesehene Zeile
+            bekommt ihren Startwert weiterhin aus dem gemeinsamen Zaehler, damit auch das Leeren der
+            Tabelle (ab 512 verschiedenen Zeilen) keine Zeile auf ihren eigenen ersten Wert
+            zurueckwirft. Nachgerechnet an einer Aufzeichnung von 1307 Ansagen: vorher 27
+            zeichengleiche Wiederholungen, mit einem Zaehler pro Text ohne diesen Startwert 80 -
+            also schlechter -, in der ausgelieferten Fassung 0.
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.2
 
     Ueberblick

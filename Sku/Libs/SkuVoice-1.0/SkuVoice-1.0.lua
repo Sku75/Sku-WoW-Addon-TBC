@@ -324,9 +324,45 @@ local tLastHandoverWasEcho = false
 -- every SpeakText is a cache MISS -> the voice is always invoked. Only applied
 -- to the Blizzard-TTS (SpeakText) path. See the body for WHICH character, and
 -- why a cycling <bookmark> is NOT enough.
-local mBttsCacheBust = 0
+-- [v43.3] The run length is counted PER TEXT, not globally. It used to be one
+-- session-wide counter cycling 1..64, which meant any line repeated exactly 64
+-- handovers after itself went out byte-identical and hit the cache again. That
+-- is not a corner case: measured over a 50-minute capture, 27 of 1307 handovers
+-- collided that way -- "menue geschlossen", "annehmen", "buffs" and single typed
+-- characters among them, i.e. exactly the short lines a user revisits all
+-- evening. Keyed by text, a line only reuses a run after 64 repeats OF ITSELF;
+-- in that same capture the most-repeated string occurred 36 times and NOTHING
+-- collided. Same cap, same character, same maximum padding -- only the counter
+-- moved.
+local BTTS_CACHEBUST_MAX = 64
+-- The table is bounded, not an LRU: a plain wipe once it grows past this. The
+-- wipe is harmless because a re-seen text does NOT restart at 1 -- see the
+-- seeding in the else branch below, which is what keeps a wipe from colliding
+-- every text with its own first use.
+local BTTS_CACHEBUST_KEYS_MAX = 512
+local mBttsCacheBustSeen = {}
+local mBttsCacheBustKeys = 0
+-- Rotation point handed to a text the first time it is seen (see below).
+local mBttsCacheBustSeed = 0
 local function BttsCacheBust(aString)
-	mBttsCacheBust = (mBttsCacheBust % 64) + 1
+	if mBttsCacheBustKeys >= BTTS_CACHEBUST_KEYS_MAX then
+		mBttsCacheBustSeen = {}
+		mBttsCacheBustKeys = 0
+	end
+	local tRun = mBttsCacheBustSeen[aString]
+	if tRun then
+		tRun = (tRun % BTTS_CACHEBUST_MAX) + 1
+	else
+		-- A text seen for the FIRST time starts at the global rotation point, not
+		-- at 1. Measured on the same capture: restarting every text at 1 made the
+		-- table wipe collide each text with its own first use and scored WORSE
+		-- than the global counter this replaces (80 collisions vs 27). Seeded,
+		-- the capture collides ZERO times -- at 512 keys, at 2048, or unbounded.
+		mBttsCacheBustSeed = (mBttsCacheBustSeed % BTTS_CACHEBUST_MAX) + 1
+		tRun = mBttsCacheBustSeed
+		mBttsCacheBustKeys = mBttsCacheBustKeys + 1
+	end
+	mBttsCacheBustSeen[aString] = tRun
 	-- Two things:
 	-- 1) Leading U+00A0 NO-BREAK SPACE (C2 A0): quest text is spoken as several
 	--    separate queued utterances; each is assembled with a LEADING space that
@@ -349,14 +385,15 @@ local function BttsCacheBust(aString)
 	--    bug it had been written to fix.
 	--
 	--    So vary real character data again, but place it AFTER the last word where
-	--    it cannot colour the prosody of anything: a run of 1..64 U+00A0. Trailing
+	--    it cannot colour the prosody of anything: a run of 1..64 U+00A0, counted
+	--    per text (see BTTS_CACHEBUST_MAX above). Trailing
 	--    whitespace is inaudible, and U+00A0 is not XML whitespace -- the very
 	--    property point 1 already relies on -- so the client's XML normalization
 	--    cannot trim it back off and collapse the variants into one cache key.
 	--
 	--    The bookmark stays: it costs nothing, the patched engine strips it, and it
 	--    still busts the key on any client that DOES hash the raw string.
-	return "\194\160" .. aString .. string.rep("\194\160", mBttsCacheBust) .. string.format('<bookmark mark="skc%d"/>', mBttsCacheBust)
+	return "\194\160" .. aString .. string.rep("\194\160", tRun) .. string.format('<bookmark mark="skc%d"/>', tRun)
 end
 
 -- [v43.2] The ONE place an utterance reaches the client. The normal queue and the

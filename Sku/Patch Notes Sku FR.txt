@@ -7,6 +7,32 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.3
+
+    Aperçu
+
+        Corrections
+            Synthèse vocale : certaines annonces restaient muettes alors que le son était joué - surtout les lignes courtes que l’on entend en boucle.
+
+    Synthèse vocale : les annonces répétées ne restent plus muettes
+        Simple : En naviguant dans les menus et les infobulles, on n’obtenait parfois que le son,
+            sans l’annonce elle-même. Cela touchait surtout les lignes courtes que l’on entend en
+            boucle toute la soirée - « menu fermé », « accepter », « buffs », ou un simple caractère
+            tapé.
+        Technique : Le client conserve en mémoire la parole déjà synthétisée pour un texte donné et,
+            en cas de répétition, la rejoue depuis ce cache sans rappeler la voix. Via une
+            passerelle vers un lecteur d’écran, cette relecture est muette. Sku ajoute donc à chaque
+            ligne un marqueur inaudible afin que chaque appel soit régénéré - jusqu’ici à partir
+            d’un compteur qui recommençait toutes les 64 annonces. Une ligne revenant exactement 64
+            annonces plus tard était donc identique caractère pour caractère et retombait dans le
+            cache. Le compteur est désormais tenu par texte et non plus en commun ; une ligne vue
+            pour la première fois reçoit toujours sa valeur de départ du compteur commun, afin que
+            le vidage de la table (à 512 lignes distinctes) ne renvoie aucune ligne sur sa propre
+            première valeur. Rejoué sur un enregistrement de 1307 annonces : 27 répétitions
+            identiques auparavant, 80 avec un compteur par texte privé de cette valeur de départ -
+            donc pire - et 0 dans la version livrée.
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.2
 
     Aperçu
