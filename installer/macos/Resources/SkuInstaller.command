@@ -7,7 +7,7 @@ set -o pipefail
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 
 APP_NAME="Sku Installer und Updater"
-APP_VERSION="5.3.0"
+APP_VERSION="5.4.0"
 REPO="Sku75/Sku-WoW-Addon-TBC"
 FALLBACK_MAIN_VERSION="43.3"
 COMPANION_TAG="v41.02.05"
@@ -815,12 +815,13 @@ self_update_check() {
 }
 
 self_update_apply() {
-    local metadata latest expected zip stage app actual bundle team current_app expected_team installed_app
+    local metadata latest expected zip stage app actual bundle app_version installed_app
     metadata="$(mac_installer_metadata)" || return 1
     latest="$(printf '%s\n' "$metadata" | /usr/bin/awk 'NR==1 {sub(/^version=/,""); gsub(/^[vV]/,""); gsub(/\r/,""); print; exit}')"
     expected="$(printf '%s\n' "$metadata" | /usr/bin/awk 'NR==2 {sub(/^sha256=/,""); gsub(/\r/,""); print tolower($1); exit}')"
     case "$expected" in [0-9a-f][0-9a-f]*) ;; *) log "Ungültige Prüfsumme für das Installer-Update."; return 1 ;; esac
     [ "${#expected}" -eq 64 ] || return 1
+    [ -n "$latest" ] && version_is_newer "$latest" "$APP_VERSION" || { log "Das angebotene Installer-Update ist nicht neuer als die laufende Version."; return 1; }
     zip="$TEMP_ROOT/Sku-Installer-macOS.zip"; stage="$TEMP_ROOT/self-update"; mkdir -p "$stage"
     /usr/bin/curl -fL --retry 3 --connect-timeout 15 \
         "https://github.com/$REPO/releases/latest/download/Sku-Installer-macOS.zip" -o "$zip" || return 1
@@ -832,12 +833,8 @@ self_update_apply() {
     /usr/bin/codesign --verify --deep --strict "$app" || return 1
     bundle="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app/Contents/Info.plist" 2>/dev/null || true)"
     [ "$bundle" = "org.sku-project.installer" ] || return 1
-    team="$(/usr/bin/codesign -dv --verbose=4 "$app" 2>&1 | /usr/bin/awk -F= '/^TeamIdentifier=/{print $2; exit}')"
-    current_app="$(cd "$SCRIPT_DIR/../.." 2>/dev/null && pwd || true)"
-    expected_team="${SKU_EXPECTED_TEAM_ID:-$(/usr/bin/codesign -dv --verbose=4 "$current_app" 2>&1 | /usr/bin/awk -F= '/^TeamIdentifier=/{print $2; exit}')}"
-    [ -n "$team" ] && [ "$team" != "not set" ] || { log "Das veröffentlichte Update besitzt keine Developer-ID-Signatur."; return 1; }
-    [ -n "$expected_team" ] && [ "$team" = "$expected_team" ] || { log "Die Developer Team-ID des Updates stimmt nicht mit der installierten App überein."; return 1; }
-    /usr/sbin/spctl --assess --type execute "$app" || { log "Das Installer-Update wurde von Gatekeeper nicht akzeptiert."; return 1; }
+    app_version="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$app/Contents/Info.plist" 2>/dev/null || true)"
+    [ "$app_version" = "$latest" ] || { log "Die App-Version stimmt nicht mit den Release-Metadaten überein."; return 1; }
     replace_installed_app "$app" || return 1
     installed_app="${SKU_INSTALLER_APPLICATIONS_DIR:-/Applications}/Sku Installer.app"
     /usr/bin/codesign --verify --deep --strict "$installed_app" || return 1

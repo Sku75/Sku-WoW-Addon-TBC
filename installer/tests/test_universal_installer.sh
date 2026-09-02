@@ -30,6 +30,7 @@ grep -Fq 'Install-SkuUpdater.ps1' "$page"
 grep -Fq 'Install-SkuUpdater-macOS.zip' "$page"
 grep -Fq 'installer-version.txt' "$windows_bootstrap"
 grep -Fq 'installer-version-macos.txt' "$mac_bootstrap"
+grep -Fq 'CFBundleShortVersionString' "$mac_bootstrap"
 grep -Fq 'build-release-assets.sh' "$root/.github/workflows/build-installers.yml"
 grep -Fq 'installer-version-macos.txt' "$root/.github/workflows/build-installers.yml"
 
