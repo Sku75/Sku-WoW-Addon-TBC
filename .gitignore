@@ -20,3 +20,4 @@ __pycache__/
 
 # generated cross-platform installer release assets
 /installer/dist-universal/
+/installer/macos/build/
