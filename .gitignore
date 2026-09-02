@@ -17,3 +17,6 @@ __pycache__/
 /dev/mapper/inbox/
 # outgoing mapper data packs (derived from the tracked route file, ~6 MB each)
 /dev/mapper/packs/
+
+# generated cross-platform installer release assets
+/installer/dist-universal/

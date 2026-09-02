@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "channel": "stable",
+  "repository": "Sku75/Sku-WoW-Addon-TBC",
+  "platforms": {
+    "windows-x64": {
+      "asset": "SkuInstaller.exe",
+      "metadata": "installer-version.txt",
+      "installer": "Install-SkuUpdater.ps1"
+    },
+    "macos-universal": {
+      "asset": "Sku-Installer-macOS.zip",
+      "metadata": "installer-version-macos.txt",
+      "installer": "Install-SkuUpdater.command"
+    }
+  },
+  "addonCatalog": "addon-catalog.json"
+}

@@ -1,0 +1,41 @@
+name: Universal installer checks
+
+on:
+  push:
+    paths:
+      - 'installer/bootstrap/**'
+      - 'installer/shared/**'
+      - 'installer/tests/**'
+      - 'docs/installer-download.html'
+  pull_request:
+    paths:
+      - 'installer/bootstrap/**'
+      - 'installer/shared/**'
+      - 'installer/tests/**'
+      - 'docs/installer-download.html'
+
+jobs:
+  portable-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate catalogs and bootstrap files
+        run: installer/tests/test_universal_installer.sh
+
+  windows-powershell:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse Windows bootstrap
+        shell: powershell
+        run: |
+          $tokens = $null
+          $errors = $null
+          [void][System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'installer/bootstrap/Install-SkuUpdater.ps1'),
+            [ref]$tokens,
+            [ref]$errors)
+          if ($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_.Message }
+            exit 1
+          }
