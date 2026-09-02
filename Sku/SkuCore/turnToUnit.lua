@@ -248,11 +248,101 @@ function TurnToUnit:TurnToUnit_NAME_PLATE_UNIT_ADDED(aEvent, aNameplateId)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function ResolveTurnUnit(aUnitId, aGameMarker, aSkuMarker)
+   if aUnitId and UnitExists(aUnitId) then return aUnitId end
+
+   local function tMatches(aCandidate)
+      if not aCandidate or not UnitExists(aCandidate) then return false end
+      if aGameMarker and GetRaidTargetIndex(aCandidate) == aGameMarker then return true end
+      if aSkuMarker and UnitGUID(aCandidate) and SkuCore.aqCombat and SkuCore.aqCombat.aqCombatGetSkuRaidTarget then
+         local tOk, tMarker = pcall(SkuCore.aqCombat.aqCombatGetSkuRaidTarget, SkuCore.aqCombat, UnitGUID(aCandidate))
+         if tOk and tMarker == aSkuMarker then return true end
+      end
+      return false
+   end
+
+   local tFixedUnits = {"target", "focus", "mouseover"}
+   for x = 1, 4 do tFixedUnits[#tFixedUnits + 1] = "party"..x end
+   for x = 1, 40 do tFixedUnits[#tFixedUnits + 1] = "raid"..x end
+   for _, tUnitId in ipairs(tFixedUnits) do
+      if tMatches(tUnitId) then return tUnitId end
+   end
+
+   if C_NamePlate and C_NamePlate.GetNamePlates then
+      for _, tPlate in ipairs(C_NamePlate.GetNamePlates()) do
+         local tUnitId = tPlate.namePlateUnitToken or (tPlate.UnitFrame and tPlate.UnitFrame.unit)
+         if tMatches(tUnitId) then return tUnitId end
+      end
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function TurnToUnit:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
    if not TurnToUnit:IsEnabled() then return end
    if (aUnitId and UnitName(aUnitId) == nil) or TurnToUnit.searching == true then
       SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnFail, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
       return
+   end
+
+   -- Use the same coordinate-based turn as "turn to beacon" whenever WoW
+   -- exposes a position for the requested unit. This is deterministic and does
+   -- not depend on a nameplate crossing the mouse cursor. The existing scan
+   -- below remains the fallback for units without coordinates.
+   local tResolvedUnit = ResolveTurnUnit(aUnitId, aGameMarker, aSkuMarker)
+   if tResolvedUnit then
+      local tPlayerX, tPlayerY, _, tPlayerInstance = UnitPosition("player")
+      local tTargetX, tTargetY, _, tTargetInstance = UnitPosition(tResolvedUnit)
+      if tPlayerX and tPlayerY and tTargetX and tTargetY
+         and tPlayerInstance == tTargetInstance
+         and (tPlayerX ~= tTargetX or tPlayerY ~= tTargetY)
+         and GetPlayerFacing() then
+         local _, _, tDegree = SkuNav.Geo:GetDirectionTo(tPlayerX, tPlayerY, tTargetX, tTargetY)
+         if tDegree then
+            local tPreserveAutoRepeat = IsAutoRepeatSpell and IsAutoRepeatSpell() == true
+            TurnToUnit.unit = aUnitId
+            TurnToUnit.gameMarker = aGameMarker
+            TurnToUnit.skuMarker = aSkuMarker
+            TurnToUnit.searching = true
+
+            if not SkuCore.CameraSkuStandardActive or SkuCore:CameraSkuStandardActive() then SetView(2) end
+            local tOldYawSpeed = GetCVar("cameraYawMoveSpeed")
+            local tFullTurnTime = 0.5
+            local tOneDegreeTime = tFullTurnTime / 180
+            SetCVar("cameraYawMoveSpeed", 180 * (1 / tFullTurnTime))
+
+            if tDegree < 0 then
+               tDegree = tDegree - 5
+            else
+               tDegree = tDegree + 5
+            end
+            local tDuration = tOneDegreeTime * tDegree
+            if tDuration < 0 then
+               MoveViewRightStart(4)
+               tDuration = tDuration * -1
+            else
+               MoveViewLeftStart(4)
+            end
+
+            C_Timer.After(tDuration / 4, function()
+               MoveViewRightStop()
+               MoveViewLeftStop()
+               SetCVar("cameraYawMoveSpeed", tOldYawSpeed)
+               -- Mouselook is not required for the coordinate turn itself and
+               -- can cancel a hunter's already-running Auto Shot.
+               if not tPreserveAutoRepeat then
+                  MouselookStart()
+                  MouselookStop()
+               end
+               TurnToUnit.time = -1
+               TurnToUnit.searching = false
+               TurnToUnit.unit = nil
+               TurnToUnit.gameMarker = nil
+               TurnToUnit.skuMarker = nil
+               SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnSuccess, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
+            end)
+            return
+         end
+      end
    end
 
    -- CursorCenteredYPos wurde frueher gesetzt und nie zurueckgegeben (es ist
@@ -326,4 +416,3 @@ function TurnToUnit:TurnToUnitTurn180()
       MouselookStop() 
    end)
 end
-
