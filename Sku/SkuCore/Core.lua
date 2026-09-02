@@ -4145,14 +4145,37 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PET_STABLE_CLOSED(...)
 	--dprint("PET_STABLE_CLOSED")
+	SkuCore.petStablePendingSwap = nil
+	if GetCursorInfo and GetCursorInfo() and ClearCursor then ClearCursor() end
 	SkuCore:CheckFrames()
 	SkuOptions:StopSounds(5)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PET_STABLE_UPDATE(...)
-	-- Refresh nach Pet-Tausch oder Stallplatz-Kauf
 	C_Timer.After(0.2, function()
+		local tPending = SkuCore.petStablePendingSwap
+		if tPending then
+			local tName = UnitName("pet")
+			local tLevel = UnitLevel("pet")
+			local tFamily = UnitCreatureFamily("pet")
+			if not tName then
+				-- A newly selected pet may be current but dismissed.
+				local _, tStableName, tStableLevel, tStableFamily = GetStablePetInfo(1)
+				tName, tLevel, tFamily = tStableName, tStableLevel, tStableFamily
+			end
+			local tSuccess = tName == tPending.name
+				and (not tPending.level or tLevel == tPending.level)
+				and (not tPending.family or tFamily == tPending.family)
+			SkuCore.petStablePendingSwap = nil
+			local tMessage
+			if tSuccess then
+				tMessage = (L["Begleiter gewechselt"] or "Begleiter gewechselt")..": "..tostring(tName)
+			else
+				tMessage = L["Begleiter konnte nicht gewechselt werden"] or "Begleiter konnte nicht gewechselt werden"
+			end
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(tMessage, false, false, 0.2) end)
+		end
 		pcall(function() SkuCore:CheckFrames() end)
 	end)
 end
