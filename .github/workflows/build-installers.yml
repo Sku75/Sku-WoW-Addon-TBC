@@ -19,6 +19,16 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
       - name: Build Windows installer
         run: msbuild installer\SkuInstaller\SkuInstaller.csproj /p:Configuration=Release
+      - name: Package Windows release metadata
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force installer\dist-universal | Out-Null
+          Copy-Item installer\SkuInstaller\bin\Release\net48\SkuInstaller.exe installer\dist-universal\SkuInstaller.exe
+          Copy-Item installer\bootstrap\Install-SkuUpdater.ps1 installer\dist-universal\Install-SkuUpdater.ps1
+          $xml = [xml](Get-Content installer\SkuInstaller\SkuInstaller.csproj)
+          $version = ($xml.Project.PropertyGroup.Version | Where-Object { $_ } | Select-Object -First 1)
+          $sha = (Get-FileHash installer\dist-universal\SkuInstaller.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          "version=$version`nsha256=$sha" | Set-Content -Encoding ASCII installer\dist-universal\installer-version.txt
       - name: Parse bootstrap
         shell: powershell
         run: |
@@ -35,8 +45,9 @@ jobs:
         with:
           name: Sku-Installer-Windows
           path: |
-            installer/SkuInstaller/bin/Release/net48/SkuInstaller.exe
-            installer/bootstrap/Install-SkuUpdater.ps1
+            installer/dist-universal/SkuInstaller.exe
+            installer/dist-universal/Install-SkuUpdater.ps1
+            installer/dist-universal/installer-version.txt
             installer/shared/*.json
 
   macos:
@@ -49,16 +60,12 @@ jobs:
           for test_file in installer/macos/Tests/*.sh; do "$test_file"; done
           installer/tests/test_universal_installer.sh
       - name: Build macOS installer
-        run: installer/macos/build.sh
-      - name: Package macOS artifacts
-        run: |
-          mkdir -p installer/dist-universal
-          ditto -c -k --norsrc --keepParent 'installer/macos/build/Sku Installer.app' installer/dist-universal/Sku-Installer-macOS.zip
-          installer/bootstrap/build-bootstrap-macos.sh
+        run: installer/macos/build-release-assets.sh
       - uses: actions/upload-artifact@v4
         with:
           name: Sku-Installer-macOS
           path: |
             installer/dist-universal/Sku-Installer-macOS.zip
             installer/dist-universal/Install-SkuUpdater-macOS.zip
+            installer/dist-universal/installer-version-macos.txt
             installer/shared/*.json
