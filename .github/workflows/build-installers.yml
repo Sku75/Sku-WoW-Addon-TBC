@@ -1,0 +1,64 @@
+name: Build Windows and macOS installers
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'installer/SkuInstaller/**'
+      - 'installer/SkuSelfTest/**'
+      - 'installer/macos/**'
+      - 'installer/shared/**'
+      - 'installer/bootstrap/**'
+      - '.github/workflows/build-installers.yml'
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: microsoft/setup-msbuild@v2
+      - name: Build Windows installer
+        run: msbuild installer\SkuInstaller\SkuInstaller.csproj /p:Configuration=Release
+      - name: Parse bootstrap
+        shell: powershell
+        run: |
+          $tokens = $null
+          $errors = $null
+          [void][System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'installer/bootstrap/Install-SkuUpdater.ps1'),
+            [ref]$tokens,
+            [ref]$errors)
+          if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Error $_.Message }; exit 1 }
+      - name: Verify shared addon catalog
+        run: python installer/tests/test_catalog_parity.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sku-Installer-Windows
+          path: |
+            installer/SkuInstaller/bin/Release/net48/SkuInstaller.exe
+            installer/bootstrap/Install-SkuUpdater.ps1
+            installer/shared/*.json
+
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run backend tests
+        run: |
+          python3 installer/tests/test_catalog_parity.py
+          for test_file in installer/macos/Tests/*.sh; do "$test_file"; done
+          installer/tests/test_universal_installer.sh
+      - name: Build macOS installer
+        run: installer/macos/build.sh
+      - name: Package macOS artifacts
+        run: |
+          mkdir -p installer/dist-universal
+          ditto -c -k --norsrc --keepParent 'installer/macos/build/Sku Installer.app' installer/dist-universal/Sku-Installer-macOS.zip
+          installer/bootstrap/build-bootstrap-macos.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sku-Installer-macOS
+          path: |
+            installer/dist-universal/Sku-Installer-macOS.zip
+            installer/dist-universal/Install-SkuUpdater-macOS.zip
+            installer/shared/*.json

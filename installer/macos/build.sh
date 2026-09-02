@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 BUILD="$ROOT/build"
 APP="$BUILD/Sku Installer.app"
+SIGN_IDENTITY="${MACOS_CODESIGN_IDENTITY:--}"
 
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources/de.lproj"
 /usr/bin/clang -fobjc-arc -fmodules \
@@ -20,6 +21,6 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources/de.lproj"
 /usr/bin/ditto "$ROOT/../shared/addon-catalog.json" "$APP/Contents/Resources/addon-catalog.json"
 /usr/bin/ditto "$ROOT/../shared/installer-channel.json" "$APP/Contents/Resources/installer-channel.json"
 /bin/chmod 755 "$APP/Contents/MacOS/SkuInstaller" "$APP/Contents/Resources/SkuInstaller.command" "$APP/Contents/Resources/SkuLoginSense"
-/usr/bin/codesign --force --deep --sign - "$APP"
+/usr/bin/codesign --force --deep --sign "$SIGN_IDENTITY" "$APP"
 /usr/bin/codesign --verify --deep --strict "$APP"
 printf '%s\n' "$APP"
