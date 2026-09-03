@@ -23,6 +23,8 @@
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>de</string>
+		<string>en</string>
+		<string>fr</string>
 	</array>
     <key>LSMinimumSystemVersion</key>
     <string>10.15</string>

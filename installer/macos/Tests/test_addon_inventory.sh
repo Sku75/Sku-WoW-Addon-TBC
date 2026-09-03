@@ -8,6 +8,9 @@ trap 'rm -rf "$TEST_ROOT"' EXIT
 export HOME="$TEST_ROOT/home"
 export TMPDIR="$TEST_ROOT/tmp"
 export SKU_INSTALLER_TEST_MODE=1
+# The assertions below check the German wording; pin the UI language so the
+# test is independent of the machine's locale and stored preferences.
+export SKU_UI_LANGUAGE=de
 mkdir -p "$HOME" "$TMPDIR"
 
 # shellcheck source=../Resources/SkuInstaller.command

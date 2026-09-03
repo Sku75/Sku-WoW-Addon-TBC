@@ -7,7 +7,7 @@ APP="$BUILD/Sku Installer.app"
 SIGN_IDENTITY="${MACOS_CODESIGN_IDENTITY:--}"
 ARCH_FLAGS=(-arch arm64 -arch x86_64)
 
-mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources/de.lproj"
+mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources/de.lproj" "$APP/Contents/Resources/en.lproj" "$APP/Contents/Resources/fr.lproj"
 /usr/bin/clang -fobjc-arc -fmodules \
   "${ARCH_FLAGS[@]}" \
   -fmodules-cache-path="${TMPDIR:-/tmp}/sku-installer-clang-cache" \
