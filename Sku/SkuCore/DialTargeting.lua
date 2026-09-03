@@ -74,6 +74,12 @@ function DialTargeting:DialTargetingOnInitialize()
 
    --SkuSecureTargetingFrame
    local tSkuSecureTargetingFrame = CreateFrame("Button", "SkuSecureTargetingFrame", UIParent, "SecureHandlerClickTemplate,SecureActionButtonTemplate")
+   -- The anniversary client delivers binding clicks per RegisterForClicks (default
+   -- LeftButtonUp never matches the virtual Button0..Button100 names) and gates the
+   -- secure action on the ActionButtonUseKeyDown edge; AnyDown + useOnKeyDown=true
+   -- fires the target action exactly once per key press for every user.
+   tSkuSecureTargetingFrame:RegisterForClicks("AnyDown")
+   tSkuSecureTargetingFrame:SetAttribute("useOnKeyDown", true)
    tSkuSecureTargetingFrame:SetAttribute("type", "target")
    tSkuSecureTargetingFrame:SetAttribute("unit", "player")
    tSkuSecureTargetingFrame:SetAttribute("groupType", nil)
@@ -140,6 +146,7 @@ function DialTargeting:DialTargetingOnInitialize()
 
    --SkuSecureTargetingToggleHandler
 	local tSkuSecureTargetingToggleHandler = CreateFrame("Button", "SkuSecureTargetingToggleHandler", UIParent, "SecureHandlerClickTemplate")
+	tSkuSecureTargetingToggleHandler:RegisterForClicks("AnyDown")
 	tSkuSecureTargetingToggleHandler:SetFrameRef("SkuSecureTargetingFrame", tSkuSecureTargetingFrame)
    tSkuSecureTargetingFrame:SetFrameRef("SkuSecureTargetingToggleHandler", tSkuSecureTargetingToggleHandler)
    tSkuSecureStateDriveFrame:SetFrameRef("SkuSecureTargetingFrame", tSkuSecureTargetingFrame)
@@ -148,7 +155,9 @@ function DialTargeting:DialTargetingOnInitialize()
 	tSkuSecureTargetingToggleHandler:SetAttribute("lastButton", "")
 	tSkuSecureTargetingToggleHandler:SetAttribute("_onclick", [=[
       if self:GetAttribute("lastButton") == "" then
-         if tonumber(string.sub(button, 7)) <= 2 then
+         -- first digit of the two-digit member number 01-40: 0-4 are valid ("<= 2"
+         -- made members 30-40 unreachable, i.e. subgroups 6-8 and 40-player raids)
+         if tonumber(string.sub(button, 7)) <= 4 then
             self:SetAttribute("lastButton", button)
             for x = 0, 9 do
                self:GetFrameRef("SkuSecureTargetingFrame"):SetBindingClick(true, "NUMPAD"..x, "SkuSecureTargetingFrame", "Button"..x)
@@ -225,11 +234,51 @@ end
 local function tApplyNumpadBindings(aNumpadFrameName)
    ClearOverrideBindings(_G["SkuSecureTargetingFrame"])
    ClearOverrideBindings(_G["SkuSecureTargetingToggleHandler"])
+   -- a half-entered raid dial must not leak into the new binding layout (a stale
+   -- lastButton makes the party/raid10 single-key math read two digits)
+   _G["SkuSecureTargetingToggleHandler"]:SetAttribute("lastButton", "")
    for x = 0, 9 do
       SetOverrideBindingClick(_G[aNumpadFrameName], true, "NUMPAD"..x, aNumpadFrameName, "Button"..x)
    end
    SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADPLUS", "SkuSecureTargetingFrame", "Button100")
    SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADDECIMAL", "SkuSecureTargetingFrame", "Button99")
+end
+
+-- Log the filled slot grid with the dial key per member ("11:Name"), one line per
+-- group, only when the content changed (roster events fire in bursts; an ungated
+-- dump would flood the ring). This is the ground truth for "which key targets whom".
+local function tLogRosterGrid()
+   local tGroupType = _G["SkuSecureTargetingFrame"]:GetAttribute("groupType") or "none"
+   local tLines = {"groupType="..tGroupType}
+   for tG = 1, 10 do
+      local tNames
+      for tS = 1, 5 do
+         local tName = _G["SkuSecureTargetingFrame"]:GetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS))
+         if tName then
+            tNames = tNames or {}
+            local tKey
+            if tGroupType == "party" then
+               tKey = tostring(tS)
+            elseif tGroupType == "raid10" then
+               local tNo = (tG - 1) * 5 + tS
+               tKey = tostring(tNo == 10 and 0 or tNo)
+            else
+               tKey = string.format("%02d", (tG - 1) * 5 + tS)
+            end
+            tNames[#tNames + 1] = tKey..":"..tName
+         end
+      end
+      if tNames then
+         tLines[#tLines + 1] = "g"..tG.." "..table.concat(tNames, " ")
+      end
+   end
+   local tFull = table.concat(tLines, " | ")
+   if tFull ~= DialTargeting.lastGridLog then
+      DialTargeting.lastGridLog = tFull
+      for x = 1, #tLines do
+         dprint("DialTargeting grid:", tLines[x])
+      end
+   end
 end
 
 function DialTargeting:DialTargetingRosterUpdate()
@@ -280,44 +329,54 @@ function DialTargeting:DialTargetingRosterUpdate()
             tApplyNumpadBindings("SkuSecureTargetingToggleHandler")
          else
             _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "raid10")
-         
+
             tClearUnitNameSlots()
-            local tsubgroupcounter = {}
+            -- single-key mode reads only slots 01-01..02-05 (member number 1-10), so
+            -- flatten the members in subgroup order into those linear slots; filling
+            -- by actual subgroup left keys dead whenever anyone sat outside groups 1-2
+            local tBySubgroup = {}
             for x = 1, MAX_RAID_MEMBERS do
                local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
                if name and subgroup then
-                  tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] or 0
-                  tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] + 1
-                  _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", subgroup).."-"..string.format("%02d", tsubgroupcounter[subgroup]), name)
+                  tBySubgroup[subgroup] = tBySubgroup[subgroup] or {}
+                  table.insert(tBySubgroup[subgroup], name)
                end
             end
-   
+            local tMemberNo = 0
+            for tSubgroup = 1, 8 do
+               for _, tName in ipairs(tBySubgroup[tSubgroup] or {}) do
+                  tMemberNo = tMemberNo + 1
+                  local tG = math.ceil(tMemberNo / 5)
+                  local tS = tMemberNo - ((tG - 1) * 5)
+                  _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS), tName)
+               end
+            end
+
             tApplyNumpadBindings("SkuSecureTargetingFrame")
          end
 
       elseif UnitInParty("player") == true then
          _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "party")
-         
+
          tClearUnitNameSlots()
-         local tsubgroupcounter = {[1] = 0}
-         for x = 1, 5 do
-            local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
-            if name and subgroup then
-               if name == _G["SkuSecureTargetingFrame"]:GetAttribute("playername") then
-                  --_G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..1.."-"..string.format("%02d", tsubgroupcounter[subgroup]), name)
-               else
-                  tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] + 1
-                  _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot01".."-"..string.format("%02d", tsubgroupcounter[subgroup]), name)
-               end
+         -- GetRaidRosterInfo returns nil outside raids, so build the slots from the
+         -- party unit tokens instead (party1..party4 never include the player; NUMPAD0
+         -- targets self via the Button0 branch). Key N = partyN, matching the party
+         -- frames, and the token dodges the "Pet..." name rewriting in
+         -- SecureButton_GetModifiedUnit.
+         for x = 1, 4 do
+            if UnitExists("party"..x) then
+               _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot01-"..string.format("%02d", x), "party"..x)
             end
          end
-
 
          tApplyNumpadBindings("SkuSecureTargetingFrame")
       
       else
          _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", nil)
       end
+
+      tLogRosterGrid()
    end
 end
 
