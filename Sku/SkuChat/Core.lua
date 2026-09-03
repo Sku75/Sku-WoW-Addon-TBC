@@ -2413,7 +2413,7 @@ function SkuChat:OnDisable()
 	end
 
 	-- 2) Drop every AceEvent registration this addon armed (CHAT_MSG_WHISPER,
-	-- CHAT_MSG_WHISPER_INFORM, CHAT_MSG_CHANNEL_NOTICE, COMBAT_LOG_EVENT,
+	-- CHAT_MSG_WHISPER_INFORM, CHAT_MSG_CHANNEL_NOTICE, COMBAT_LOG_EVENT_UNFILTERED,
 	-- PLAYER_ENTERING_WORLD, PLAYER_LOGIN).
 	SkuChat:UnregisterAllEvents()
 
@@ -2455,7 +2455,7 @@ function SkuChat:GetChannelAccessIdFromChannelName(aName)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuChat:COMBAT_LOG_EVENT()
+function SkuChat:COMBAT_LOG_EVENT_UNFILTERED()
 	if not CombatLog_OnEvent then return end
 	if not Blizzard_CombatLog_CurrentSettings then return end
 	local text, r, g, b, a = CombatLog_OnEvent(Blizzard_CombatLog_CurrentSettings, CombatLogGetCurrentEventInfo() );
@@ -2476,7 +2476,7 @@ function SkuChat:ArmEvents()
 	SkuChat:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	SkuChat:RegisterEvent("CHAT_MSG_WHISPER")
 	SkuChat:RegisterEvent("CHAT_MSG_WHISPER_INFORM")
-	SkuChat:RegisterEvent("COMBAT_LOG_EVENT")
+	SkuChat:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 
 	-- Dispatcher callbacks for the synthetic Sku chat streams (Combat/Audio log
 	-- tabs). These are otherwise wired by tab init at PLAYER_ENTERING_WORLD;
