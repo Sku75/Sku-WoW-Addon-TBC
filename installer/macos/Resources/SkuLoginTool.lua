@@ -1,5 +1,7 @@
 -- Sku Login Tool fuer macOS / Hammerspoon
--- Version 3.5.1 (macOS-Portierung des Windows Login Tools 3.2)
+-- Version 3.6 (macOS-Portierung des Windows Login Tools 3.2)
+-- Spricht Deutsch, Englisch und Franzoesisch: gespeicherte Wahl zuerst
+-- (Menue "Sprache auswaehlen"), sonst die Systemsprache, sonst Englisch.
 --
 -- Installation:
 -- 1. Hammerspoon installieren und unter Systemeinstellungen > Datenschutz &
@@ -23,8 +25,201 @@
 -- In Browsern und ChatGPT: Wahltaste+E zum naechsten Eingabefeld,
 -- Wahltaste+Umschalt+E zum vorherigen Eingabefeld
 
+-- ---------------------------------------------------------------------------
+-- Localization (de/en/fr). T(key) falls back to English, then to the key, so
+-- a missing translation never silences an announcement.
+-- ---------------------------------------------------------------------------
+local translations = {
+    de = {
+        ["loaded"] = "Sku Login Tool fuer Mac wurde geladen.",
+        ["wow.notfront"] = "World of Warcraft ist nicht im Vordergrund.",
+        ["noscreen"] = "Es wurde kein Bildschirm gefunden.",
+        ["diag.saved"] = "Diagnosebild auf dem Schreibtisch gespeichert.",
+        ["diag.failed"] = "Das Diagnosebild konnte nicht gespeichert werden.",
+        ["state.paused"] = "pausiert",
+        ["state.play"] = "im Spielmodus",
+        ["state.login"] = "im Loginmodus",
+        ["status.front"] = "Sku Login Tool %s. World of Warcraft ist im Vordergrund.",
+        ["status.back"] = "Sku Login Tool %s. World of Warcraft ist nicht im Vordergrund.",
+        ["ocr.none.yet"] = "Auf dem Loginbildschirm wurde noch kein Text erkannt.",
+        ["ocr.item"] = "%d von %d: %s",
+        ["sense.notinstalled"] = "Die Bilderkennung des Login Tools ist nicht installiert.",
+        ["scan.already"] = "Die Erkennung läuft bereits. Bitte warten.",
+        ["scan.running"] = "Die Erkennung läuft. Bitte warten.",
+        ["scan.permission"] = "Bitte erlaube Hammerspoon die Bildschirmaufnahme in den Mac OS Datenschutzeinstellungen.",
+        ["scan.failed"] = "Der Loginbildschirm konnte nicht gelesen werden.",
+        ["scan.notext"] = "Es wurde kein Text erkannt.",
+        ["scan.startfailed"] = "Die Bilderkennung konnte nicht gestartet werden.",
+        ["item.activated"] = "%s aktiviert.",
+        ["item.selected"] = "%s ausgewählt.",
+        ["item.none"] = "Es ist kein erkanntes Element ausgewählt.",
+        ["window.notfound"] = "Das World of Warcraft Fenster wurde nicht gefunden.",
+        ["char.notnow"] = "Der Charakter kann momentan nicht ausgewählt werden.",
+        ["char.none"] = "Es wurden keine Charaktere erkannt. Bitte warte kurz und versuche es erneut.",
+        ["char.loaded.one"] = "%d Charakter wurde geladen.",
+        ["char.loaded.many"] = "%d Charaktere wurden geladen.",
+        ["menu.main"] = "Hauptmenue",
+        ["menu.selectchar"] = "Charakter auswaehlen",
+        ["menu.login"] = "Mit ausgewaehltem Charakter einloggen",
+        ["menu.newchar"] = "Neuen Charakter erstellen",
+        ["menu.server"] = "Server wechseln",
+        ["menu.delchar"] = "Charakter loeschen",
+        ["menu.voice"] = "Stimme auswaehlen",
+        ["menu.sysvoice"] = "Mac OS Systemstimme",
+        ["voice.selected"] = "Mac OS Systemstimme ausgewaehlt.",
+        ["menu.language"] = "Sprache auswaehlen",
+        ["lang.selected"] = "Deutsch ausgewaehlt. Das Werkzeug wird neu geladen.",
+        ["menu.gametype"] = "Spieltyp auswaehlen",
+        ["gametype.selected"] = "Anniversary ausgewaehlt.",
+        ["menu.autodetect"] = "Spieltyp automatisch erkennen",
+        ["autodetect.selected"] = "Der Spieltyp wird automatisch erkannt.",
+        ["menu.region"] = "Region auswaehlen",
+        ["menu.europe"] = "Europa",
+        ["europe.selected"] = "Europa ausgewaehlt.",
+        ["menu.version"] = "WoW Login Tool fuer Mac, Version %s",
+        ["mode.paused"] = "Sku Login Tool pausiert.",
+        ["mode.play"] = "Sku Login Tool im Spielmodus.",
+        ["mode.login"] = "Sku Login Tool im Loginmodus.",
+        ["tool.exited"] = "Sku Login Tool beendet.",
+        ["help"] = "Sku Login Tool fuer Mac. Wahltaste F1 schaltet das Werkzeug um. Steuerung Wahltaste F2 speichert ein Diagnosebild.",
+        ["wow.starting"] = "World of Warcraft wird gestartet.",
+        ["secure.input"] = "Mac OS blockiert momentan die Tastenerkennung durch sicheren Tastaturmodus.",
+    },
+    en = {
+        ["loaded"] = "The Sku login tool for Mac has been loaded.",
+        ["wow.notfront"] = "World of Warcraft is not in the foreground.",
+        ["noscreen"] = "No screen was found.",
+        ["diag.saved"] = "Diagnostic image saved to the desktop.",
+        ["diag.failed"] = "The diagnostic image could not be saved.",
+        ["state.paused"] = "paused",
+        ["state.play"] = "in play mode",
+        ["state.login"] = "in login mode",
+        ["status.front"] = "Sku login tool %s. World of Warcraft is in the foreground.",
+        ["status.back"] = "Sku login tool %s. World of Warcraft is not in the foreground.",
+        ["ocr.none.yet"] = "No text has been recognized on the login screen yet.",
+        ["ocr.item"] = "%d of %d: %s",
+        ["sense.notinstalled"] = "The login tool's image recognition is not installed.",
+        ["scan.already"] = "Recognition is already running. Please wait.",
+        ["scan.running"] = "Recognition is running. Please wait.",
+        ["scan.permission"] = "Please allow Hammerspoon screen recording in the macOS privacy settings.",
+        ["scan.failed"] = "The login screen could not be read.",
+        ["scan.notext"] = "No text was recognized.",
+        ["scan.startfailed"] = "The image recognition could not be started.",
+        ["item.activated"] = "%s activated.",
+        ["item.selected"] = "%s selected.",
+        ["item.none"] = "No recognized element is selected.",
+        ["window.notfound"] = "The World of Warcraft window was not found.",
+        ["char.notnow"] = "The character cannot be selected right now.",
+        ["char.none"] = "No characters were recognized. Please wait a moment and try again.",
+        ["char.loaded.one"] = "%d character was loaded.",
+        ["char.loaded.many"] = "%d characters were loaded.",
+        ["menu.main"] = "Main menu",
+        ["menu.selectchar"] = "Select character",
+        ["menu.login"] = "Log in with the selected character",
+        ["menu.newchar"] = "Create a new character",
+        ["menu.server"] = "Switch server",
+        ["menu.delchar"] = "Delete character",
+        ["menu.voice"] = "Select voice",
+        ["menu.sysvoice"] = "Mac OS system voice",
+        ["voice.selected"] = "Mac OS system voice selected.",
+        ["menu.language"] = "Select language",
+        ["lang.selected"] = "English selected. The tool is reloading.",
+        ["menu.gametype"] = "Select game type",
+        ["gametype.selected"] = "Anniversary selected.",
+        ["menu.autodetect"] = "Detect game type automatically",
+        ["autodetect.selected"] = "The game type is detected automatically.",
+        ["menu.region"] = "Select region",
+        ["menu.europe"] = "Europe",
+        ["europe.selected"] = "Europe selected.",
+        ["menu.version"] = "WoW login tool for Mac, version %s",
+        ["mode.paused"] = "Sku login tool paused.",
+        ["mode.play"] = "Sku login tool in play mode.",
+        ["mode.login"] = "Sku login tool in login mode.",
+        ["tool.exited"] = "Sku login tool exited.",
+        ["help"] = "Sku login tool for Mac. Option F1 toggles the tool. Control Option F2 saves a diagnostic image.",
+        ["wow.starting"] = "World of Warcraft is starting.",
+        ["secure.input"] = "macOS is currently blocking key detection through secure input mode.",
+    },
+    fr = {
+        ["loaded"] = "L'outil de connexion Sku pour Mac a été chargé.",
+        ["wow.notfront"] = "World of Warcraft n'est pas au premier plan.",
+        ["noscreen"] = "Aucun écran n'a été trouvé.",
+        ["diag.saved"] = "Image de diagnostic enregistrée sur le bureau.",
+        ["diag.failed"] = "L'image de diagnostic n'a pas pu être enregistrée.",
+        ["state.paused"] = "en pause",
+        ["state.play"] = "en mode jeu",
+        ["state.login"] = "en mode connexion",
+        ["status.front"] = "Outil de connexion Sku %s. World of Warcraft est au premier plan.",
+        ["status.back"] = "Outil de connexion Sku %s. World of Warcraft n'est pas au premier plan.",
+        ["ocr.none.yet"] = "Aucun texte n'a encore été reconnu sur l'écran de connexion.",
+        ["ocr.item"] = "%d sur %d : %s",
+        ["sense.notinstalled"] = "La reconnaissance d'image de l'outil de connexion n'est pas installée.",
+        ["scan.already"] = "La reconnaissance est déjà en cours. Veuillez patienter.",
+        ["scan.running"] = "La reconnaissance est en cours. Veuillez patienter.",
+        ["scan.permission"] = "Veuillez autoriser Hammerspoon à enregistrer l'écran dans les réglages de confidentialité de macOS.",
+        ["scan.failed"] = "L'écran de connexion n'a pas pu être lu.",
+        ["scan.notext"] = "Aucun texte n'a été reconnu.",
+        ["scan.startfailed"] = "La reconnaissance d'image n'a pas pu être démarrée.",
+        ["item.activated"] = "%s activé.",
+        ["item.selected"] = "%s sélectionné.",
+        ["item.none"] = "Aucun élément reconnu n'est sélectionné.",
+        ["window.notfound"] = "La fenêtre de World of Warcraft n'a pas été trouvée.",
+        ["char.notnow"] = "Le personnage ne peut pas être sélectionné pour le moment.",
+        ["char.none"] = "Aucun personnage n'a été reconnu. Veuillez patienter un instant et réessayer.",
+        ["char.loaded.one"] = "%d personnage a été chargé.",
+        ["char.loaded.many"] = "%d personnages ont été chargés.",
+        ["menu.main"] = "Menu principal",
+        ["menu.selectchar"] = "Sélectionner le personnage",
+        ["menu.login"] = "Se connecter avec le personnage sélectionné",
+        ["menu.newchar"] = "Créer un nouveau personnage",
+        ["menu.server"] = "Changer de royaume",
+        ["menu.delchar"] = "Supprimer le personnage",
+        ["menu.voice"] = "Sélectionner la voix",
+        ["menu.sysvoice"] = "Voix système de Mac OS",
+        ["voice.selected"] = "Voix système de Mac OS sélectionnée.",
+        ["menu.language"] = "Choisir la langue",
+        ["lang.selected"] = "Français sélectionné. L'outil est en cours de rechargement.",
+        ["menu.gametype"] = "Choisir le type de jeu",
+        ["gametype.selected"] = "Anniversary sélectionné.",
+        ["menu.autodetect"] = "Détecter automatiquement le type de jeu",
+        ["autodetect.selected"] = "Le type de jeu est détecté automatiquement.",
+        ["menu.region"] = "Choisir la région",
+        ["menu.europe"] = "Europe",
+        ["europe.selected"] = "Europe sélectionnée.",
+        ["menu.version"] = "Outil de connexion WoW pour Mac, version %s",
+        ["mode.paused"] = "Outil de connexion Sku en pause.",
+        ["mode.play"] = "Outil de connexion Sku en mode jeu.",
+        ["mode.login"] = "Outil de connexion Sku en mode connexion.",
+        ["tool.exited"] = "Outil de connexion Sku fermé.",
+        ["help"] = "Outil de connexion Sku pour Mac. Option F1 bascule l'outil. Contrôle Option F2 enregistre une image de diagnostic.",
+        ["wow.starting"] = "World of Warcraft démarre.",
+        ["secure.input"] = "macOS bloque actuellement la détection des touches à cause du mode de saisie sécurisée.",
+    },
+}
+
+local LANGUAGE_SETTING = "SkuLoginToolLanguage"
+
+local function detectLanguage()
+    local stored = hs.settings.get(LANGUAGE_SETTING)
+    if translations[stored] then return stored end
+    local ok, preferred = pcall(function()
+        return hs.host.locale.preferredLanguages()
+    end)
+    local first = ok and preferred and preferred[1] or ""
+    local code = string.lower(string.sub(first, 1, 2))
+    if translations[code] then return code end
+    return "en"
+end
+
+local language = detectLanguage()
+
+local function T(key)
+    local table_ = translations[language]
+    return (table_ and table_[key]) or translations.en[key] or key
+end
+
 local SkuLoginTool = {
-    version = "3.5.1",
+    version = "3.6",
     -- Wie das Windows-Original im Pausenmodus starten. Der erkannte Login-
     -- beziehungsweise Charakterbildschirm aktiviert die Menuebedienung
     -- automatisch; Wahl+F1 bleibt als manuelle Umschaltung erhalten.
@@ -47,6 +242,7 @@ local SkuLoginTool = {
     autoSenseTimer = nil,
     lastAutoSense = 0,
     nonGlueCount = 0,
+    language = language,
 }
 
 -- Hammerspoon remains available as a menu-bar background service and should
@@ -61,7 +257,27 @@ local function appendLog(message)
     file:close()
 end
 
-local speaker = hs.speech.new()
+-- Prefer a speech voice that matches the tool language; keep the user's
+-- default voice whenever it already speaks that language.
+local function voiceForLanguage(code)
+    local okDefault, defaultVoice = pcall(hs.speech.defaultVoice)
+    if okDefault and defaultVoice then
+        local okAttrs, attrs = pcall(hs.speech.attributesForVoice, defaultVoice)
+        local locale = okAttrs and attrs and (attrs.localeIdentifier or "") or ""
+        if string.sub(string.lower(locale), 1, 2) == code then return nil end
+    end
+    local okList, voices = pcall(hs.speech.availableVoices)
+    if not okList or not voices then return nil end
+    for _, candidate in ipairs(voices) do
+        local okAttrs, attrs = pcall(hs.speech.attributesForVoice, candidate)
+        local locale = okAttrs and attrs and (attrs.localeIdentifier or "") or ""
+        if string.sub(string.lower(locale), 1, 2) == code then return candidate end
+    end
+    return nil
+end
+
+local speaker = hs.speech.new(voiceForLanguage(language))
+if not speaker then speaker = hs.speech.new() end
 speaker:rate(185)
 
 local function say(message)
@@ -87,7 +303,7 @@ end
 local function sendKey(modifiers, key)
     local app = wowApplication()
     if not app then
-        say("World of Warcraft ist nicht im Vordergrund.")
+        say(T("wow.notfront"))
         return
     end
     hs.eventtap.keyStroke(modifiers, key, 0, app)
@@ -131,51 +347,51 @@ local function saveDiagnosticScreenshot()
     local path = desktopPath() .. "/SkuLoginTool-Diagnose-" .. stamp .. ".png"
     local screen = hs.screen.mainScreen()
     if not screen then
-        say("Es wurde kein Bildschirm gefunden.")
+        say(T("noscreen"))
         return
     end
 
     local image = screen:snapshot()
     if image and image:saveToFile(path) then
         appendLog("Diagnosebild gespeichert: " .. path)
-        say("Diagnosebild auf dem Schreibtisch gespeichert.")
+        say(T("diag.saved"))
     else
         appendLog("FEHLER Diagnosebild konnte nicht gespeichert werden: " .. path)
-        say("Das Diagnosebild konnte nicht gespeichert werden.")
+        say(T("diag.failed"))
     end
 end
 
 local function speakStatus()
     local app = wowApplication()
-    local states = {paused = "pausiert", play = "im Spielmodus", login = "im Loginmodus"}
+    local states = {paused = T("state.paused"), play = T("state.play"), login = T("state.login")}
     local state = states[SkuLoginTool.mode] or SkuLoginTool.mode
     if app then
-        say("Sku Login Tool " .. state .. ". World of Warcraft ist im Vordergrund.")
+        say(string.format(T("status.front"), state))
     else
-        say("Sku Login Tool " .. state .. ". World of Warcraft ist nicht im Vordergrund.")
+        say(string.format(T("status.back"), state))
     end
 end
 
 local function announceOcrItem()
     local item = SkuLoginTool.ocrItems[SkuLoginTool.ocrIndex]
-    if not item then say("Auf dem Loginbildschirm wurde noch kein Text erkannt.") return end
-    say(SkuLoginTool.ocrIndex .. " von " .. #SkuLoginTool.ocrItems .. ": " .. item.text)
+    if not item then say(T("ocr.none.yet")) return end
+    say(string.format(T("ocr.item"), SkuLoginTool.ocrIndex, #SkuLoginTool.ocrItems, item.text))
 end
 
 local function scanLoginScreen(after, quiet)
-    if not wowApplication() then say("World of Warcraft ist nicht im Vordergrund.") return end
-    if not hs.fs.attributes(SkuLoginTool.sensePath) then say("Die Bilderkennung des Login Tools ist nicht installiert.") return end
+    if not wowApplication() then say(T("wow.notfront")) return end
+    if not hs.fs.attributes(SkuLoginTool.sensePath) then say(T("sense.notinstalled")) return end
     if SkuLoginTool.scanTask then
-        if not quiet then say("Die Erkennung läuft bereits. Bitte warten.") end
+        if not quiet then say(T("scan.already")) end
         return
     end
-    if not quiet then say("Die Erkennung läuft. Bitte warten.") end
+    if not quiet then say(T("scan.running")) end
     local task = hs.task.new(SkuLoginTool.sensePath, function(code, output, errorOutput)
         SkuLoginTool.scanTask = nil
         if code ~= 0 then
             appendLog("OCR FEHLER " .. tostring(code) .. " " .. (errorOutput or ""))
             if not quiet then
-                say(code == 3 and "Bitte erlaube Hammerspoon die Bildschirmaufnahme in den Mac OS Datenschutzeinstellungen." or "Der Loginbildschirm konnte nicht gelesen werden.")
+                say(code == 3 and T("scan.permission") or T("scan.failed"))
             end
             return
         end
@@ -187,13 +403,13 @@ local function scanLoginScreen(after, quiet)
         end)
         SkuLoginTool.ocrIndex = 1
         appendLog("OCR " .. #SkuLoginTool.ocrItems .. " Texte erkannt")
-        if after then after() elseif #SkuLoginTool.ocrItems == 0 then say("Es wurde kein Text erkannt.") else announceOcrItem() end
+        if after then after() elseif #SkuLoginTool.ocrItems == 0 then say(T("scan.notext")) else announceOcrItem() end
     end)
-    if not task then if not quiet then say("Die Bilderkennung konnte nicht gestartet werden.") end return end
+    if not task then if not quiet then say(T("scan.startfailed")) end return end
     SkuLoginTool.scanTask = task
     if not task:start() then
         SkuLoginTool.scanTask = nil
-        if not quiet then say("Die Bilderkennung konnte nicht gestartet werden.") end
+        if not quiet then say(T("scan.startfailed")) end
     end
 end
 
@@ -206,26 +422,26 @@ end
 local function activateOcrItem()
     local item = SkuLoginTool.ocrItems[SkuLoginTool.ocrIndex]
     local app = wowApplication()
-    if not item or not app then say("Es ist kein erkanntes Element ausgewählt.") return end
+    if not item or not app then say(T("item.none")) return end
     local window = app:focusedWindow()
-    if not window then say("Das World of Warcraft Fenster wurde nicht gefunden.") return end
+    if not window then say(T("window.notfound")) return end
     local frame = window:frame()
     local point = {x = frame.x + ((item.x or 0) + (item.width or 0) / 2) * frame.w,
                    y = frame.y + (1 - ((item.y or 0) + (item.height or 0) / 2)) * frame.h}
     hs.eventtap.leftClick(point)
-    say(item.text .. " aktiviert.")
+    say(string.format(T("item.activated"), item.text))
 end
 
 local function activateSpecificOcrItem(item)
     local app = wowApplication()
-    if not item or not app then say("Der Charakter kann momentan nicht ausgewählt werden.") return end
+    if not item or not app then say(T("char.notnow")) return end
     local window = app:focusedWindow()
-    if not window then say("Das World of Warcraft Fenster wurde nicht gefunden.") return end
+    if not window then say(T("window.notfound")) return end
     local frame = window:frame()
     local point = {x = frame.x + ((item.x or 0) + (item.width or 0) / 2) * frame.w,
                    y = frame.y + (1 - ((item.y or 0) + (item.height or 0) / 2)) * frame.h}
     hs.eventtap.leftClick(point)
-    say(item.text .. " ausgewählt.")
+    say(string.format(T("item.selected"), item.text))
 end
 
 local function node(label, action, children)
@@ -241,11 +457,15 @@ end
 
 local characterMenuItem
 local announceMenu
+-- Client-screen markers are independent of the TOOL language: they must
+-- match whatever language the GAME client displays (de/en/fr).
 local function looksLikeGlueScreen()
     local markers = {
         "welt betreten", "enter world", "charakter erstellen", "create new character",
         "charakter löschen", "delete character", "realm wechseln", "change realm",
         "accountname", "account name", "passwort", "password", "einloggen", "log in",
+        "entrer dans le monde", "créer un personnage", "supprimer le personnage",
+        "changer de royaume", "nom du compte", "mot de passe", "se connecter",
     }
     for _, item in ipairs(SkuLoginTool.ocrItems) do
         local value = string.lower(item.text or "")
@@ -259,10 +479,11 @@ end
 local function characterLevelText(item)
     local text = item.text or ""
     local value = string.lower(text)
-    if string.match(value, "^stufe%s+%d+") then
-        return "Level" .. string.sub(text, 6)
-    end
+    -- Announce the level line verbatim in the client's language: German
+    -- "Stufe 36", English "Level 36", French "Niveau 36".
+    if string.match(value, "^stufe%s+%d+") then return text end
     if string.match(value, "^level%s+%d+") then return text end
+    if string.match(value, "^niveau%s+%d+") then return text end
     return nil
 end
 
@@ -304,10 +525,10 @@ local function buildCharacterMenu(openFirst)
     characterMenuItem.children = children
     connectParents(characterMenuItem)
     if #children == 0 then
-        say("Es wurden keine Charaktere erkannt. Bitte warte kurz und versuche es erneut.")
+        say(T("char.none"))
         return
     end
-    say(#children .. (#children == 1 and " Charakter wurde geladen." or " Charaktere wurden geladen."))
+    say(string.format(#children == 1 and T("char.loaded.one") or T("char.loaded.many"), #children))
     if openFirst then
         SkuLoginTool.currentItem = children[1]
         hs.timer.doAfter(0.7, announceMenu)
@@ -318,26 +539,39 @@ local function loadCharacters(openFirst)
     scanLoginScreen(function() buildCharacterMenu(openFirst) end, false)
 end
 
-local mainMenu = node("Hauptmenue", nil, {
-    node("Charakter auswaehlen"),
-    node("Mit ausgewaehltem Charakter einloggen", function() sendKey({}, "return") end),
-    node("Neuen Charakter erstellen", function() sendKey({}, "tab") end),
-    node("Server wechseln", function() scanLoginScreen(announceOcrItem) end),
-    node("Charakter loeschen", function() sendKey({}, "delete") end),
-    node("Stimme auswaehlen", nil, {
-        node("Mac OS Systemstimme", function() say("Mac OS Systemstimme ausgewaehlt.") end),
+-- Selecting a language stores it, confirms in the NEW language, and reloads
+-- Hammerspoon so every menu label and announcement switches over.
+local function selectLanguage(code)
+    hs.settings.set(LANGUAGE_SETTING, code)
+    appendLog("language=" .. code)
+    say(translations[code]["lang.selected"])
+    -- Long enough for the spoken confirmation to finish before the reload
+    -- restarts speech with the "loaded" announcement in the new language.
+    hs.timer.doAfter(3.5, hs.reload)
+end
+
+local mainMenu = node(T("menu.main"), nil, {
+    node(T("menu.selectchar")),
+    node(T("menu.login"), function() sendKey({}, "return") end),
+    node(T("menu.newchar"), function() sendKey({}, "tab") end),
+    node(T("menu.server"), function() scanLoginScreen(announceOcrItem) end),
+    node(T("menu.delchar"), function() sendKey({}, "delete") end),
+    node(T("menu.voice"), nil, {
+        node(T("menu.sysvoice"), function() say(T("voice.selected")) end),
     }),
-    node("Sprache auswaehlen", nil, {
-        node("Deutsch", function() say("Deutsch ausgewaehlt.") end),
+    node(T("menu.language"), nil, {
+        node("Deutsch", function() selectLanguage("de") end),
+        node("English", function() selectLanguage("en") end),
+        node("Français", function() selectLanguage("fr") end),
     }),
-    node("Spieltyp auswaehlen", nil, {
-        node("Anniversary", function() say("Anniversary ausgewaehlt.") end),
-        node("Spieltyp automatisch erkennen", function() say("Der Spieltyp wird automatisch erkannt.") end),
+    node(T("menu.gametype"), nil, {
+        node("Anniversary", function() say(T("gametype.selected")) end),
+        node(T("menu.autodetect"), function() say(T("autodetect.selected")) end),
     }),
-    node("Region auswaehlen", nil, {
-        node("Europa", function() say("Europa ausgewaehlt.") end),
+    node(T("menu.region"), nil, {
+        node(T("menu.europe"), function() say(T("europe.selected")) end),
     }),
-    node("WoW Login Tool fuer Mac, Version 3.5.1", speakStatus),
+    node(string.format(T("menu.version"), SkuLoginTool.version), speakStatus),
 })
 connectParents(mainMenu)
 characterMenuItem = mainMenu.children[1]
@@ -416,14 +650,14 @@ local function setMode(mode, announce)
     SkuLoginTool.enabled = mode ~= "paused"
     if mode == "paused" then
         SkuLoginTool.nonGlueCount = 0
-        if announce then say("Sku Login Tool pausiert.") end
+        if announce then say(T("mode.paused")) end
     elseif mode == "play" then
         SkuLoginTool.nonGlueCount = 0
-        if announce then say("Sku Login Tool im Spielmodus.") end
+        if announce then say(T("mode.play")) end
     elseif mode == "login" then
         SkuLoginTool.nonGlueCount = 0
         SkuLoginTool.currentItem = mainMenu
-        if announce then say("Sku Login Tool im Loginmodus.") end
+        if announce then say(T("mode.login")) end
     end
     refreshMenuHotkeys()
     refreshGameHotkeys()
@@ -442,7 +676,7 @@ end
 -- Globale Steuerbefehle. Diese bleiben auch im Pausenmodus erreichbar.
 table.insert(SkuLoginTool.hotkeys, hs.hotkey.bind({"alt"}, "f1", toggleTool))
 table.insert(SkuLoginTool.hotkeys, hs.hotkey.bind({"alt"}, "escape", function()
-    say("Sku Login Tool beendet.")
+    say(T("tool.exited"))
     hs.timer.doAfter(0.8, function()
         for _, hotkey in ipairs(SkuLoginTool.hotkeys) do hotkey:disable() end
         for _, hotkey in ipairs(SkuLoginTool.menuHotkeys) do hotkey:disable() end
@@ -454,7 +688,7 @@ table.insert(SkuLoginTool.hotkeys, hs.hotkey.bind({"alt"}, "escape", function()
     end)
 end))
 table.insert(SkuLoginTool.hotkeys, hs.hotkey.bind({"ctrl", "alt"}, "f1", function()
-    say("Sku Login Tool fuer Mac. Wahltaste F1 schaltet das Werkzeug um. Steuerung Wahltaste F2 speichert ein Diagnosebild.")
+    say(T("help"))
 end))
 table.insert(SkuLoginTool.hotkeys, hs.hotkey.bind({"ctrl", "alt"}, "f2", saveDiagnosticScreenshot))
 table.insert(SkuLoginTool.hotkeys, hs.hotkey.bind({"ctrl", "alt"}, "f3", scanLoginScreen))
@@ -537,7 +771,7 @@ local function onApplicationEvent(appName, eventType, app)
         appendLog("WoW gestartet")
         SkuLoginTool.wowActive = true
         setMode("play", true)
-        say("World of Warcraft wird gestartet.")
+        say(T("wow.starting"))
         hs.timer.doAfter(0.7, autoSenseLoginScreen)
     elseif eventType == hs.application.watcher.terminated and SkuLoginTool.wowActive then
         SkuLoginTool.wowActive = false
@@ -564,13 +798,13 @@ SkuLoginTool.secureInputTimer = hs.timer.doEvery(2, function()
     if secure and not SkuLoginTool.lastSecureInputWarning and wowApplication() then
         SkuLoginTool.lastSecureInputWarning = true
         appendLog("Sicherer Tastaturmodus aktiv")
-        say("Mac OS blockiert momentan die Tastenerkennung durch sicheren Tastaturmodus.")
+        say(T("secure.input"))
     elseif not secure then
         SkuLoginTool.lastSecureInputWarning = false
     end
 end)
 
-appendLog("Sku Login Tool " .. SkuLoginTool.version .. " geladen")
-say("Sku Login Tool fuer Mac wurde geladen.")
+appendLog("Sku Login Tool " .. SkuLoginTool.version .. " geladen (Sprache " .. language .. ")")
+say(T("loaded"))
 
 return SkuLoginTool

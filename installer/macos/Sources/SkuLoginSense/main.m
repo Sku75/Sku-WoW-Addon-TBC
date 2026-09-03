@@ -33,7 +33,7 @@ int main(int argc, const char *argv[]) {
         VNRecognizeTextRequest *request = [VNRecognizeTextRequest new];
         request.recognitionLevel = VNRequestTextRecognitionLevelAccurate;
         request.usesLanguageCorrection = YES;
-        request.recognitionLanguages = @[@"de-DE", @"en-US"];
+        request.recognitionLanguages = @[@"de-DE", @"en-US", @"fr-FR"];
         NSError *error = nil;
         VNImageRequestHandler *handler = [[VNImageRequestHandler alloc] initWithCGImage:image options:@{}];
         BOOL ok = [handler performRequests:@[request] error:&error]; CGImageRelease(image);
