@@ -8,8 +8,33 @@ Changes in Sku v43.3
 
     Overview
 
+        New
+            The installer now exists for the Mac too - install, update and self-update just like on Windows. Thanks to Yennesta.
+            Installer 5.0: seven proven companion addons such as Questie and Deadly Boss Mods can be installed alongside and are kept up to date - Windows and Mac, Anniversary and Classic Era.
+            Mac: the installer and the login tool speak German, English and French; the login tool recognizes French clients too.
+
+        Changes
+            Turn to unit and Turn to target now turn like the beacon turn: shortest way around, at most a quarter second.
+
         Bugfixes
             Speech: individual announcements stayed silent even though the sound played - mostly the short lines you hear over and over.
+            Interact key: after a kill it sometimes grabs a far-off mob and runs at it instead of looting - Sku now warns you with a sound.
+            Mac: the voice read technical control markup along with every line.
+            Stable master: the menu showed and swapped the wrong pet slots, and the swap announcement reported failure too early.
+            Chat: a combat log tab stayed completely silent.
+            Dial Targeting was completely dead on the anniversary client - it works again, tested in a 25-player raid.
+            French: four chat settings texts still spoke English.
+
+    French: four chat texts still spoke English
+        Simple: On a French client, the arrow-keys setting for the chat input, the channel
+            announcement setting with its explanation, and the message for an unknown slash
+            command could still be heard in English. They are translated now.
+        Technically: The four v43.1 texts were missing from the translation store the French
+            locale file is generated from. While fixing that, 29 texts hand-written into the
+            generated file for v43.2 turned out to exist only there - the next generation run
+            would have silently reverted them to English. All of them are now in the store, and
+            the generation tool only writes the file on an explicit command instead of on any
+            unrecognized argument.
 
     Speech: repeated announcements no longer go silent
         Simple: Navigating menus and tooltips, you would now and then get only the sound, with the
@@ -26,6 +51,106 @@ Changes in Sku v43.3
             first value. Replayed against a recording of 1307 announcements: 27 character-identical
             repeats before, 80 with a per-text counter lacking that seeded start - worse - and 0 as
             shipped.
+
+    Mac: the voice no longer reads control markup
+        Simple: On the Mac, the voice audibly spoke control characters along with lines that are
+            meant only for the machinery. They are gone there now.
+        Technically: For the handshake with the screen reader, Sku appends a <bookmark> marker to
+            every line; the Mac client does not filter such markup out of the speech and read it
+            verbatim. On the Mac the marker is now withheld; the inaudible characters that defeat
+            the repeat cache stay, so every repeat is still generated fresh there too. Idea by
+            Yennesta.
+
+    Turn to unit: faster and more precise
+        Simple: "Turn to unit" and "Turn to target" now turn exactly like the beacon turn: the
+            shortest way around, in at most a quarter second, instead of searching clockwise for
+            up to a second and a half.
+        Technically: The turn core built and extensively tested for v43.2 (direction snap, speed
+            cap, leading while moving, leveling with the pitch lock) has been separated from the
+            waypoint resolution, so the unit turn now calls it whenever the client provides
+            coordinates for the unit. The old search across nameplates remains as the fallback
+            for instances, where there are no coordinates. Resolving the target to a unit follows
+            an idea by Yennesta.
+
+    Stable master: the pet swap hits the right slots again
+        Simple: In the hunter's stable master menu the slots were shifted - the wrong pet was
+            shown and swapped. On top of that, on a slow connection the swap wrongly announced
+            that the pet could not be swapped even though it had worked. Both are fixed, and the
+            announcement now names the new pet.
+        Technically: Blizzard's stable window uses action indices 1 to 3 (active pet plus two
+            stable slots); Sku queried one too low. Fix by Yennesta. The success announcement
+            also no longer decides on the first stable event (which already fires for picking a
+            pet up) but waits until the active pet's name matches or two seconds have passed -
+            and it is translated in all three languages now.
+
+    New: the installer exists for the Mac too
+        Simple: Sku can now be installed and kept up to date on macOS just as comfortably as on
+            Windows: an installer with speech output, self-update and the same components. The
+            download page offers one link per platform. Contributed by Yennesta - thank you!
+        Technically: The Mac branch hangs off the same release flow as Windows: version detection
+            follows GitHub's releases/latest redirect instead of reading a web page, and the
+            files with their sha256 checksums are verified locally at publish time and attached
+            to the same release.
+
+    Interact key: a warning sound when it grabs the wrong target
+        Simple: Right after something dies, the interact key (G by default) sometimes targets a
+            completely different attackable mob - even a far-off one - instead of the corpse in
+            front of you, and auto-walks you there instead of looting. Sku now plays a warning sound
+            at exactly that moment, so you hear the wrong grab immediately and can cancel the
+            auto-walk by hand.
+        Technically: The key calls Blizzard's InteractUnit("anyinteract") with loose targeting; when
+            the just-looted corpse vanishes under the keypress, the client loosely reaches to the
+            nearest attackable unit in tab range, makes it your hard target and walks there. The key
+            itself cannot be replaced (InteractUnit is protected), and the target cannot be cleared
+            from an addon either (ClearTarget is protected too, in combat and out). What remains is
+            detection: immediately after a corpse leaves, a live, attackable target that is NOT in
+            combat with you - then the warning sound. A target you chose deliberately with a key
+            (Alt+H / Ctrl+H) does not trigger it.
+
+    Installer 5.0: install proven companion addons alongside
+        Simple: On the components page you can now check seven proven addons - Questie, Deadly
+            Boss Mods, AtlasLoot, Details, GTFO, BugSack with BugGrabber, and Pawn. Whatever is
+            checked, the installer installs alongside Sku and keeps up to date on every run - on
+            Windows and on the Mac, for Anniversary and Classic Era, each client getting the
+            build that matches it. Everything is on by default except Pawn.
+        Technically: Both platforms read the same catalog. Addons with GitHub releases come
+            straight from there (resolved via the releases/latest redirect, no API key, no rate
+            limit); the rest is pinned to verified CurseForge files with sha256 checksums. Deadly
+            Boss Mods is one entry made of four packages, and BugSack and BugGrabber are
+            deliberately one shared checkbox. Each client receives its matching build - Pawn for
+            Classic Era, for example, comes from the Classic package.
+
+    Mac: installer and login tool in three languages
+        Simple: Both now speak German, English and French. The language can be changed in the
+            respective menu and otherwise follows the system language. The login tool also
+            recognizes French clients and reads level lines verbatim - so a German client says
+            "Stufe 36" again instead of "Level 36".
+        Technically: The app, the install script and the login tool share one language choice
+            (stored setting before system language before English); stored values such as the
+            voice-pack names stay German internally so existing preferences keep working. The
+            login tool's screen detection is independent of the interface language.
+
+    Chat: the combat log gets its events again
+        Simple: A "Combat Log" chat tab stayed completely silent. It fills up again. Thanks to
+            the community tester for the report including the solution.
+        Technically: The tab had subscribed to the COMBAT_LOG_EVENT event, which does not fire on
+            this client the way the code expects; it now subscribes to
+            COMBAT_LOG_EVENT_UNFILTERED - the same event the other Sku modules have long used.
+
+    Dial Targeting works again
+        Simple: Targeting via the number pad (the "Dial Targeting" entry in the Sku menu) was
+            completely dead on the anniversary client - no keypress arrived. It works again,
+            tested in a 25-player raid. On top of that: in a regular party (outside a raid) it
+            had never found anyone, members 30 to 40 could not be dialed, and a half-entered
+            number could corrupt the next input - all fixed.
+        Technically: The modern client only delivers keyboard clicks a button has registered for
+            via RegisterForClicks - that was missing, which muted the whole feature. The action
+            now also fires exactly once per keypress regardless of the user's click setting. The
+            party layout comes from party1 through party4 instead of the raid-only query, the
+            first-digit gate lets subgroups 6 to 8 through, and the filled key grid is written to
+            the debug log on every change. Note: the numbers match the raid section of the
+            overview page; the group section there always counts you as 1 and shifts the others -
+            that is intentional and not a bug in the targeting.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.2
