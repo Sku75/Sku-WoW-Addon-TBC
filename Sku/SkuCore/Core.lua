@@ -1478,6 +1478,118 @@ function SkuCore:UpdateInteractMove(aForceFlag)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [43.3] Interact-Guard gegen den "Loose-Targeting"-Fehlgriff.
+-- Diagnose (aus BlizzardInterfaceCode + Trace bewiesen): die Interaktionstaste
+-- ruft nativ InteractUnit("anyinteract") mit looseTargeting=true. Verschwindet
+-- im selben Tastendruck die eben gelootete Leiche aus dem softinteract-Slot,
+-- greift der Client LOSE die naechste angreifbare Einheit in Tab-Reichweite
+-- (gemessen 40-45 m), macht sie zum HARTEN Ziel und laeuft (AutoInteract) hin.
+-- Wir koennen die Taste selbst nicht ersetzen (InteractUnit ist geschuetzt,
+-- ein Addon-Aufruf ist ADDON_ACTION_FORBIDDEN). Aber ClearTarget() ist NICHT
+-- geschuetzt (kein HasRestrictions in TargetScriptDocumentation) und laeuft auch
+-- im Kampf. Also: genau im kleinen Fenster nach dem Verlassen einer Leiche das
+-- Ziel EINMAL pruefen und, wenn es der Fehlgriff ist, hart zuruecksetzen -- das
+-- stoppt zugleich den Autowalk (kein Ziel = nichts, wohin gelaufen wird).
+-- Der Fingerabdruck ist eng gewaehlt, damit ein bewusst getabtes Ziel NICHT
+-- geloescht wird: nur unmittelbar nach einer Leiche, nur lebend+angreifbar, nur
+-- NICHT im Kampf mit mir (echte Adds bleiben), nur WEIT (>15 m, das eigentliche
+-- Problem). Alles geloggt (interactGuard) zum Nachjustieren.
+SkuCore.tInteractGuardEnabled = true
+
+local tInteractGuardUntil = 0
+local tInteractGuardCorpseFlag = false
+
+local function tInteractGuardLowRange(aUnitId)
+	if not (SkuOptions and SkuOptions.RangeCheck and SkuOptions.RangeCheck.GetRange) then
+		return nil
+	end
+	-- GetRange liefert (maxRange, minRange); der Fehlgriff ist "weit", also die
+	-- KLEINERE der beiden Grenzen als untere Schranke nehmen.
+	local tOk, tA, tB = pcall(function() return SkuOptions.RangeCheck:GetRange(aUnitId) end)
+	if tOk ~= true then return nil end
+	local tLo
+	for _, v in ipairs({ tA, tB }) do
+		if type(v) == "number" then
+			tLo = (tLo == nil) and v or math.min(tLo, v)
+		end
+	end
+	return tLo
+end
+
+-- ★BEWIESEN (Traces 2026-09-03): ClearTarget() ist geschuetzt und aus unserem
+-- (getainteten) Code IMMER verboten -- nicht nur im Kampf. Belege: "Schamane der
+-- Distelfelle" (lockdown true) UND "Wutzahn"/"Erzmagier Arugal" mit lockdown
+-- FALSE + changed FALSE + ADDON_ACTION_FORBIDDEN, sogar der auf PLAYER_REGEN_
+-- ENABLED verschobene Versuch. Das API-Doc (kein HasRestrictions) LUEGT; die
+-- Funktion braucht ein Hardware-Ereignis wie InteractUnit. Es gibt KEINEN
+-- automatischen Weg (Makro, SecureHandler, State-Driver), das Ziel im Kampf zu
+-- loeschen -- eine geschuetzte Aktion braucht immer einen echten Tastendruck.
+-- Also: NICHT mehr loeschen (das warf nur Fehler ohne Wirkung), sondern WARNEN.
+-- Die Erkennung ist bewiesen praezise; ein Warnton ist nicht geschuetzt, laeuft
+-- im Kampf und wirft keinen Fehler. Der Nutzer bricht den Autowalk dann selbst
+-- ab. "Stop, gib acht" -- die minimale, aber verlaessliche Loesung.
+local function tInteractGuardWarn(aName, aRange)
+	-- Warnton DIREKT per PlaySoundFile, NICHT ueber die TTS-Queue: in Instanzen
+	-- verschluckt die Dauer-Kampf-TTS eine gequeuete Ausgabe (BTTS SUPERSEDED),
+	-- der Warnton MUSS sie also ueberlagern statt sich anzustellen. Die Datei liegt
+	-- im Addon selbst (SkuCore/assets/audio/error/), unabhaengig vom Sprachpaket --
+	-- also immer vorhanden, egal welches Audiopaket installiert ist.
+	if _G.PlaySoundFile then
+		local tChannel = (SkuOptions and SkuOptions.db and SkuOptions.db.profile
+			and SkuOptions.db.profile["SkuOptions"] and SkuOptions.db.profile["SkuOptions"].soundChannels
+			and SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel) or "Talking Head"
+		pcall(_G.PlaySoundFile, "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_dang.ogg", tChannel)
+	end
+	dprint("interactGuard WARN phantom grab", aName or "?", "minRange", tostring(aRange),
+		"lockdown", tostring(InCombatLockdown() == true))
+end
+
+local function tInteractGuardCheck()
+	if SkuCore.tInteractGuardEnabled ~= true then return end
+	if GetTime() > tInteractGuardUntil then return end
+	if UnitExists("target") ~= true or UnitIsDead("target") == true then return end
+	if UnitCanAttack("player", "target") ~= true then return end
+	-- echtes Add, das mich angreift, NICHT als Fehlgriff werten:
+	if UnitAffectingCombat("target") == true then return end
+	-- BEWUSSTER Zielwechsel per Taste (Questziel Alt+H / naechster Gegner)? Dann
+	-- ist das KEIN Fehlgriff -- nicht warnen. Fenster grosszuegig, weil der
+	-- Tastendruck (PreClick) minimal vor dem Zielwechsel und unserem Check liegt.
+	if type(SkuCore.tDeliberateTargetTime) == "number"
+		and (GetTime() - SkuCore.tDeliberateTargetTime) < 0.6 then
+		tInteractGuardUntil = 0
+		dprint("interactGuard skip: deliberate target key", UnitName("target") or "?")
+		return
+	end
+	-- KEINE Entfernungsschwelle: der Fehlgriff soll auch 2 m neben mir gemeldet
+	-- werden. Der enge Zeitfingerabdruck (nur direkt nach dem Verlassen einer
+	-- Leiche, nur NICHT-im-Kampf-mit-mir) traegt die Genauigkeit.
+	tInteractGuardUntil = 0 -- one-shot pro Leiche
+	tInteractGuardWarn(UnitName("target") or "?", tInteractGuardLowRange("target"))
+end
+
+local tInteractGuardFrame = CreateFrame("Frame", "SkuCoreInteractGuard", UIParent)
+tInteractGuardFrame:RegisterEvent("PLAYER_SOFT_INTERACT_CHANGED")
+tInteractGuardFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
+tInteractGuardFrame:SetScript("OnEvent", function(_, aEvent)
+	if SkuCore.tInteractGuardEnabled ~= true then return end
+	if aEvent == "PLAYER_SOFT_INTERACT_CHANGED" then
+		local tNowCorpse = (UnitExists("softinteract") == true and UnitIsDead("softinteract") == true)
+		-- true->false = die Leiche hat gerade den Reticle-Slot verlassen: das ist
+		-- der Moment, in dem der Fehlgriff feuert -> Fenster oeffnen. Die zwei
+		-- verzoegerten Checks fangen den Fall ab, dass PLAYER_TARGET_CHANGED im
+		-- selben Frame VOR diesem Event lief (Reihenfolge nicht garantiert).
+		if tInteractGuardCorpseFlag == true and tNowCorpse == false then
+			tInteractGuardUntil = GetTime() + 0.5
+			C_Timer.After(0.05, tInteractGuardCheck)
+			C_Timer.After(0.15, tInteractGuardCheck)
+		end
+		tInteractGuardCorpseFlag = tNowCorpse
+	else -- PLAYER_TARGET_CHANGED (eigener, ungedrosselter Handler)
+		tInteractGuardCheck()
+	end
+end)
+
+---------------------------------------------------------------------------------------------------------------------------------------
 SkuCore.PetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
 
 ---Check whether player is a hunter

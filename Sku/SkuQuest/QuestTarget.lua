@@ -402,6 +402,10 @@ local function tEnsureButton()
 
 	b:SetScript("PreClick", function(self)
 		self.tOriginalGUID = UnitExists("target") and UnitGUID("target") or nil
+		-- [43.3] Dem Interact-Guard mitteilen, dass ein BEWUSSTER Zielwechsel per
+		-- Taste laeuft -- er darf das dann NICHT als Fehlgriff loeschen (und darf
+		-- auch nicht im vom Secure-Button verunreinigten Frame ClearTarget rufen).
+		SkuCore.tDeliberateTargetTime = GetTime()
 		-- Ohne diese Zeile ist im Log nicht zu unterscheiden, ob ein Neubau vom
 		-- Tastendruck oder vom Hintergrundtreiber kam.
 		dprint("questTarget: KEY pressed", "combat", tostring(InCombatLockdown() == true))

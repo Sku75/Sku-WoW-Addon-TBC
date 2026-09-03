@@ -1093,6 +1093,8 @@ local function tEnsureNextEnemyButton()
 	-- Questziel-Knopf eine ganze Testrunde verloren.
 	b:SetScript("PreClick", function(self)
 		self.tPrevTarget = UnitExists("target") and UnitGUID("target") or nil
+		-- [43.3] siehe QuestTarget: bewusster Zielwechsel -> Interact-Guard sperren.
+		SkuCore.tDeliberateTargetTime = GetTime()
 		dprint("nextEnemy: KEY pressed", "combat", tostring(InCombatLockdown() == true))
 		if not InCombatLockdown() then
 			pcall(tBuildNextEnemyMacro, self)

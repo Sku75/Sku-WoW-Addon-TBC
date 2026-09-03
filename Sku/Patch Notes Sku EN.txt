@@ -10,6 +10,7 @@ Changes in Sku v43.3
 
         Bugfixes
             Speech: individual announcements stayed silent even though the sound played - mostly the short lines you hear over and over.
+            Interact key: after a kill it sometimes grabs a far-off mob and runs at it instead of looting - Sku now warns you with a sound.
 
     Speech: repeated announcements no longer go silent
         Simple: Navigating menus and tooltips, you would now and then get only the sound, with the
@@ -26,6 +27,21 @@ Changes in Sku v43.3
             first value. Replayed against a recording of 1307 announcements: 27 character-identical
             repeats before, 80 with a per-text counter lacking that seeded start - worse - and 0 as
             shipped.
+
+    Interact key: a warning sound when it grabs the wrong target
+        Simple: Right after something dies, the interact key (G by default) sometimes targets a
+            completely different attackable mob - even a far-off one - instead of the corpse in
+            front of you, and auto-walks you there instead of looting. Sku now plays a warning sound
+            at exactly that moment, so you hear the wrong grab immediately and can cancel the
+            auto-walk by hand.
+        Technically: The key calls Blizzard's InteractUnit("anyinteract") with loose targeting; when
+            the just-looted corpse vanishes under the keypress, the client loosely reaches to the
+            nearest attackable unit in tab range, makes it your hard target and walks there. The key
+            itself cannot be replaced (InteractUnit is protected), and the target cannot be cleared
+            from an addon either (ClearTarget is protected too, in combat and out). What remains is
+            detection: immediately after a corpse leaves, a live, attackable target that is NOT in
+            combat with you - then the warning sound. A target you chose deliberately with a key
+            (Alt+H / Ctrl+H) does not trigger it.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.2

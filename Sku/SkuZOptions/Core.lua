@@ -1372,7 +1372,17 @@ function SkuOptions:UpdateSoftTargetLockRule()
 	-- hard target and must keep soft targeting alive while walking).
 	local tNonAttackableTarget = UnitExists("target") == true
 		and (UnitCanAttack("player", "target") ~= true or UnitIsDead("target") == true)
-	tSetSoftTargetCVar("SoftTargetWithLocked", tNonAttackableTarget and 2 or 0)
+	local tWant = tNonAttackableTarget and 2 or 0
+	-- [43.3] softTrace-Forensik (nur unter /skudebug verbose): die Regel-Auswertung
+	-- loggen, nicht nur den tatsaechlichen CVar-Schreib (der loggt weiter in
+	-- tSetSoftTargetCVar). Ohne diese Zeile ist "Regel lief, wollte denselben Wert"
+	-- vom "Regel lief nie" im Ring nicht zu unterscheiden.
+	dprintv(string.format("softTrace lockRule tgt=%s dead=%s atk=%s want=%d cur=%s combat=%d t=%.2f",
+		UnitExists("target") == true and (UnitName("target") or "?") or "-",
+		tostring(UnitIsDead("target")), tostring(UnitCanAttack("player", "target")),
+		tWant, tostring(GetCVar("SoftTargetWithLocked")),
+		UnitAffectingCombat("player") == true and 1 or 0, GetTime() % 100))
+	tSetSoftTargetCVar("SoftTargetWithLocked", tWant)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

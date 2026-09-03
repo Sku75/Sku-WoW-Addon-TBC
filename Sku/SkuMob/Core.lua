@@ -31,6 +31,7 @@ local function RegisterSkuMobEvents()
 	SkuMob:RegisterEvent("PLAYER_SOFT_ENEMY_CHANGED")
 	SkuMob:RegisterEvent("PLAYER_SOFT_FRIEND_CHANGED")
 	SkuMob:RegisterEvent("PLAYER_SOFT_INTERACT_CHANGED")
+	SkuMob:RegisterEvent("PLAYER_SOFT_TARGET_INTERACTION")
 end
 
 -- Build the InCombatSounds lookup + wire it into the options menu. Originally
@@ -302,8 +303,70 @@ function SkuMob:GetTtsAwareUnitName(aUnitId)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [43.3] softTrace: Breadcrumbs fuer die Softtarget-Forensik ("nach dem Kill
+-- greift Interact ploetzlich eine lebende angreifbare Einheit"). Genau EINE
+-- Zeile pro PLAYER_SOFT_*_CHANGED, geloggt VOR allen Gates -- damit auch das
+-- Leeren des Slots und Picks in DEAKTIVIERTEN Slots (Phantom-softenemy!) im
+-- Ring landen, die die Ansage-Logik verschluckt. Lesen:
+--   py -3 dev/rework-docs/_dbgtail.py 3000 softTrace
+-- t= ist GetTime() mod 100 (Sekunden mit Nachkommastellen), weil der Ring nur
+-- sekundengenaue Stempel hat und die fragliche Sequenz innerhalb 1-2 s liegt.
+local function tSoftTraceGuid(aGuid)
+	if type(aGuid) ~= "string" or aGuid == "" then return "-" end
+	local tType = string.match(aGuid, "^(%a+)") or "?"
+	local tTail = string.match(aGuid, "(%x+)$") or "?"
+	return tType .. "-" .. tTail
+end
+
+local function tSoftTraceUnit(aUnitId)
+	if UnitExists(aUnitId) ~= true then return "-" end
+	-- Entfernungs-Klammer (LibRangeCheck: max,min) -- quantifiziert das "weit
+	-- weg" des Phantom-Picks: die gemeldeten 25-30 m liegen UEBER der
+	-- SoftTargetInteractRange von 15, das ist der offene Widerspruch.
+	local tRng = "?"
+	if SkuOptions and SkuOptions.RangeCheck and SkuOptions.RangeCheck.GetRange then
+		local tOk, tMax, tMin = pcall(function() return SkuOptions.RangeCheck:GetRange(aUnitId) end)
+		if tOk == true then tRng = tostring(tMin or "?") .. "-" .. tostring(tMax or "?") end
+	end
+	return string.format("%s dead=%d atk=%d typ=%s rng=%s", UnitName(aUnitId) or "?",
+		UnitIsDead(aUnitId) == true and 1 or 0,
+		UnitCanAttack("player", aUnitId) == true and 1 or 0,
+		UnitCreatureType(aUnitId) or "?", tRng)
+end
+
+local function tSoftTrace(aSlot, aUnitId, aOldGuid, aNewGuid)
+	-- [43.3] Nur unter /skudebug verbose: der Trace ruft pro Softtarget-Wechsel 4x
+	-- LibRangeCheck (je Slot + Ziel) auf -- zu teuer, um dauerhaft mitzulaufen.
+	local d = Sku.debug
+	if not d or d.verbose ~= true then return end
+	dprint(string.format("softTrace %s %s->%s  [%s]  tgt=[%s]  combat=%d WL=%s t=%.2f",
+		aSlot, tSoftTraceGuid(aOldGuid), tSoftTraceGuid(aNewGuid),
+		tSoftTraceUnit(aUnitId), tSoftTraceUnit("target"),
+		UnitAffectingCombat("player") == true and 1 or 0,
+		tostring(GetCVar("SoftTargetWithLocked")), GetTime() % 100))
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [43.3] Feuert, wenn eine Interaktion tatsaechlich UEBER das Softtarget lief
+-- (nicht ueber das Hardtarget) -- unterscheidet im Trace "G lief auf das
+-- Softtarget zu" von "G wirkte auf das Hardtarget". Loggt ALLE drei Slots:
+-- der Phantom-Pick koennte in einem anderen Slot sitzen als dem interact-Slot
+-- (der deaktivierte enemy-Slot kann nachweislich Einheiten halten, und seine
+-- Range steht auf 60 -- die 25-30-m-Picks passen zu ihm, nicht zu interact/15).
+function SkuMob:PLAYER_SOFT_TARGET_INTERACTION(aEvent, ...)
+	local d = Sku.debug
+	if not d or d.verbose ~= true then return end
+	dprint(string.format("softTrace INTERACTION si=[%s] se=[%s] sf=[%s]  tgt=[%s]  combat=%d WL=%s t=%.2f",
+		tSoftTraceUnit("softinteract"), tSoftTraceUnit("softenemy"), tSoftTraceUnit("softfriend"),
+		tSoftTraceUnit("target"),
+		UnitAffectingCombat("player") == true and 1 or 0,
+		tostring(GetCVar("SoftTargetWithLocked")), GetTime() % 100))
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tLastSoftEnemyGuid
-function SkuMob:PLAYER_SOFT_ENEMY_CHANGED(arg1, arg2)
+function SkuMob:PLAYER_SOFT_ENEMY_CHANGED(arg1, arg2, arg3)
+	tSoftTrace("enemy", "softenemy", arg2, arg3)
 	if not UnitGUID("softenemy") then
 		if SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.soundNoTarget ~= " " then
 			if UnitGUID("softenemy") ~= tLastSoftEnemyGuid then
@@ -340,7 +403,8 @@ function SkuMob:PLAYER_SOFT_ENEMY_CHANGED(arg1, arg2)
 	tLastSoftEnemyGuid = UnitGUID("softenemy")
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuMob:PLAYER_SOFT_FRIEND_CHANGED(aEvent, aGuid)
+function SkuMob:PLAYER_SOFT_FRIEND_CHANGED(aEvent, aGuid, aNewGuid)
+	tSoftTrace("friend", "softfriend", aGuid, aNewGuid)
 	if not UnitGUID("softfriend") then
 		return
 	end
@@ -361,7 +425,8 @@ function SkuMob:PLAYER_SOFT_FRIEND_CHANGED(aEvent, aGuid)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuMob:PLAYER_SOFT_INTERACT_CHANGED(aEvent, aGuid)
+function SkuMob:PLAYER_SOFT_INTERACT_CHANGED(aEvent, aGuid, aNewGuid)
+	tSoftTrace("interact", "softinteract", aGuid, aNewGuid)
 	if not UnitGUID("softinteract") then
 		return
 	end

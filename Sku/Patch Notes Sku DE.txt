@@ -10,6 +10,7 @@ Aenderungen in Sku v43.3
 
         Fehlerbehebungen
             Sprachausgabe: einzelne Ansagen blieben stumm, obwohl der Ton kam - vor allem bei kurzen Zeilen, die man immer wieder hoert.
+            Interagieren-Taste: nach einem Kill schnappt sie manchmal ein weit entferntes Vieh ins Ziel und laeuft hin statt zu pluendern - Sku warnt jetzt mit einem Ton.
 
     Sprachausgabe: wiederholte Ansagen bleiben nicht mehr stumm
         Einfach: Beim Navigieren in Menues und Tooltips kam ab und zu nur der Ton, die Ansage selbst
@@ -28,6 +29,22 @@ Aenderungen in Sku v43.3
             zurueckwirft. Nachgerechnet an einer Aufzeichnung von 1307 Ansagen: vorher 27
             zeichengleiche Wiederholungen, mit einem Zaehler pro Text ohne diesen Startwert 80 -
             also schlechter -, in der ausgelieferten Fassung 0.
+
+    Interagieren-Taste: Warnton, wenn sie das falsche Ziel schnappt
+        Einfach: Direkt nachdem etwas stirbt, nimmt die Interagieren-Taste (Standard G) manchmal
+            statt der Leiche vor dir ein ganz anderes, angreifbares Vieh ins Ziel - auch eines weit
+            entfernt - und laeuft per Autolauf dorthin, statt zu pluendern. Sku spielt jetzt in
+            genau diesem Moment einen Warnton, damit du den Fehlgriff sofort hoerst und den Autolauf
+            von Hand abbrechen kannst.
+        Technisch: Die Taste ruft Blizzards InteractUnit("anyinteract") mit lockerer Zielwahl auf;
+            verschwindet die gerade gepluenderte Leiche unter dem Tastendruck, greift der Client
+            lose auf die naechste angreifbare Einheit in Tab-Reichweite ueber, macht sie zum
+            Hartziel und laeuft hin. Die Taste selbst laesst sich nicht ersetzen (InteractUnit ist
+            geschuetzt), und auch das Ziel laesst sich aus einem Addon nicht zuruecksetzen
+            (ClearTarget ist ebenfalls geschuetzt, im Kampf wie ausserhalb). Bleibt die Erkennung:
+            unmittelbar nach dem Verlassen einer Leiche ein lebendes, angreifbares, NICHT mit dir im
+            Kampf stehendes neues Ziel - dann der Warnton. Ein bewusst per Taste (Alt+H / Strg+H)
+            gewaehltes Ziel loest ihn nicht aus.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.2

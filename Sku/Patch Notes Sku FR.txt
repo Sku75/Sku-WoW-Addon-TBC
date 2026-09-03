@@ -13,6 +13,7 @@ Changements dans Sku v43.3
 
         Corrections
             Synthèse vocale : certaines annonces restaient muettes alors que le son était joué - surtout les lignes courtes que l’on entend en boucle.
+            Touche Interagir : après un kill, elle attrape parfois une créature au loin et vous y fait courir au lieu de dépouiller - Sku vous prévient maintenant par un son.
 
     Synthèse vocale : les annonces répétées ne restent plus muettes
         Simple : En naviguant dans les menus et les infobulles, on n’obtenait parfois que le son,
@@ -31,6 +32,22 @@ Changements dans Sku v43.3
             première valeur. Rejoué sur un enregistrement de 1307 annonces : 27 répétitions
             identiques auparavant, 80 avec un compteur par texte privé de cette valeur de départ -
             donc pire - et 0 dans la version livrée.
+
+    Touche Interagir : un son d'avertissement quand elle attrape la mauvaise cible
+        Simple : Juste après la mort d'une créature, la touche Interagir (G par défaut) prend
+            parfois pour cible une tout autre créature attaquable - même lointaine - au lieu du
+            cadavre devant vous, et vous y fait courir automatiquement au lieu de dépouiller. Sku
+            joue maintenant un son d'avertissement à cet instant précis, pour que vous entendiez
+            aussitôt la mauvaise prise et puissiez annuler la course automatique à la main.
+        Technique : La touche appelle InteractUnit("anyinteract") de Blizzard avec un ciblage
+            relâché ; quand le cadavre tout juste dépouillé disparaît sous l'appui, le client
+            attrape de façon relâchée l'unité attaquable la plus proche à portée de Tab, en fait
+            votre cible dure et y court. La touche elle-même ne peut pas être remplacée (InteractUnit
+            est protégée), et la cible ne peut pas non plus être effacée depuis un addon (ClearTarget
+            est protégée aussi, en combat comme hors combat). Reste la détection : juste après qu'un
+            cadavre quitte le réticule, une cible vivante, attaquable et PAS en combat avec vous -
+            alors le son. Une cible choisie volontairement au clavier (Alt+H / Ctrl+H) ne le
+            déclenche pas.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.2
