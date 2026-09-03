@@ -393,6 +393,14 @@ local function BttsCacheBust(aString)
 	--
 	--    The bookmark stays: it costs nothing, the patched engine strips it, and it
 	--    still busts the key on any client that DOES hash the raw string.
+	--
+	--    [v43.3] Except on macOS: that client's engine does not parse the markup
+	--    off and speaks it literally ("bookmark skc..."), reported in PR #17. The
+	--    NBSP run above is the real buster and varies per repeat, so withholding
+	--    the bookmark there loses nothing.
+	if IsMacClient and IsMacClient() then
+		return "\194\160" .. aString .. string.rep("\194\160", tRun)
+	end
 	return "\194\160" .. aString .. string.rep("\194\160", tRun) .. string.format('<bookmark mark="skc%d"/>', tRun)
 end
 
