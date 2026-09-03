@@ -3,14 +3,14 @@
 | Funktion | macOS-Status |
 | --- | --- |
 | Native, screenreaderfreundliche Oberfläche | vorhanden |
-| Deutsche/englische/französische Installer-Sprache | Deutsch vorhanden; EN/FR ausstehend |
+| Deutsche/englische/französische Installer-Sprache | vorhanden (App, Backend-Skript und Login-Tool; gespeicherte Wahl > Systemsprache > Englisch, live umschaltbar in App und Menü) |
 | Live-Ermittlung der Sku-Version + Offline-Pin | vorhanden, Pin 43.3 |
 | Anniversary und Classic Era erkennen | vorhanden |
 | Zwischen mehreren installierten Clients wechseln | vorhanden |
 | Ein-Klick-Aktualisierung vorhandener Installationen | vorhanden |
 | Ordneranzeige und manuelle Auswahl | vorhanden |
 | Sprachpaket wählen/beibehalten | vorhanden |
-| Login Tool wählen | Hammerspoon 3.3-Port mit nativer Vision-OCR und Windows-Menünavigation |
+| Login Tool wählen | Hammerspoon-Port (3.6) mit nativer Vision-OCR (de/en/fr), Windows-Menünavigation und dreisprachiger Ansage |
 | Reparaturmodus / alles neu installieren | vorhanden |
 | Installationsplan vor Schreibzugriff | durch Hauptansicht und Komponentenauswahl abgedeckt |
 | Downloadfortschritt und sicherer Abbruch | vorhanden, Fortschritt unbestimmt |

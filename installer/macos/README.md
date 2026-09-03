@@ -6,6 +6,13 @@ Native macOS-Portierung des offiziellen Windows-Installers aus
 ## Ziele
 
 - Gleicher geführter Ablauf und dieselbe Terminologie wie der Windows-Installer.
+- Dreisprachig wie der Windows-Installer (Deutsch, Englisch, Französisch):
+  gespeicherte Wahl vor Systemsprache vor Englisch; umschaltbar in der App
+  („Sprache der Oberfläche“), im Menü des Backend-Skripts und im
+  Login-Tool-Menü („Sprache auswählen“). App und Skript teilen die Wahl über
+  den Preferences-Schlüssel `UILanguage` (de/en/fr); `SKU_UI_LANGUAGE`
+  übersteuert für Tests. Das Login-Tool speichert seine Wahl in
+  `hs.settings` und erkennt Glue-Screens der Clients in allen drei Sprachen.
 - Vollständige Bedienbarkeit mit VoiceOver und ausschließlich nativen AppKit-Steuerelementen.
 - Anniversary und Classic Era in einem Durchgang installieren oder aktualisieren.
 - Downloads ausschließlich aus dem offiziellen Sku-Repository.
