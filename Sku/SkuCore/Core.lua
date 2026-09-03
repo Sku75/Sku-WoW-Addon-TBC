@@ -4167,14 +4167,19 @@ function SkuCore:PET_STABLE_UPDATE(...)
 			local tSuccess = tName == tPending.name
 				and (not tPending.level or tLevel == tPending.level)
 				and (not tPending.family or tFamily == tPending.family)
-			SkuCore.petStablePendingSwap = nil
-			local tMessage
+			-- [v43.3] Nicht auf dem ERSTEN Update entscheiden: PET_STABLE_UPDATE
+			-- feuert schon fuer das blosse Aufnehmen, und bei langsamer
+			-- Verbindung ist der Tausch dann serverseitig noch nicht durch -
+			-- die Ansage waere ein falsches "konnte nicht gewechselt werden".
+			-- Offen halten, bis der Name passt oder 2 s seit dem Klick vergangen
+			-- sind; jedes weitere Update prueft erneut.
 			if tSuccess then
-				tMessage = (L["Begleiter gewechselt"] or "Begleiter gewechselt")..": "..tostring(tName)
-			else
-				tMessage = L["Begleiter konnte nicht gewechselt werden"] or "Begleiter konnte nicht gewechselt werden"
+				SkuCore.petStablePendingSwap = nil
+				pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Begleiter gewechselt"]..": "..tostring(tName), false, false, 0.2) end)
+			elseif GetTime() - (tPending.t or 0) > 2 then
+				SkuCore.petStablePendingSwap = nil
+				pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Begleiter konnte nicht gewechselt werden"], false, false, 0.2) end)
 			end
-			pcall(function() SkuOptions.Voice:OutputStringBTtts(tMessage, false, false, 0.2) end)
 		end
 		pcall(function() SkuCore:CheckFrames() end)
 	end)

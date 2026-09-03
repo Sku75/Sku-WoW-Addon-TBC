@@ -4435,6 +4435,7 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 						name = tPet.name,
 						level = tPet.level,
 						family = tPet.family,
+						t = GetTime(),
 					}
 				end or nil,
 			}
