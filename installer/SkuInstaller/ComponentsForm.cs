@@ -136,7 +136,7 @@ namespace SkuInstaller
         private static string ManagedItemText(ManagedEntry entry)
         {
             string version = ManagedAddons.Resolved(entry.Packages[0]).Version ?? "";
-            return $"{entry.DisplayName} — {version.TrimStart('v', 'V')}";
+            return $"{entry.DisplayName} — {ManagedAddons.DisplayVersion(version)}";
         }
 
         /// <summary>Adds a checkbox plus its own description label underneath.</summary>

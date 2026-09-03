@@ -220,8 +220,8 @@ namespace SkuInstaller
 
                         SayScoped(Loc.Format("status.installingAddon", managed.Entry.DisplayName), true);
                         ManagedAddonInstaller.InstallEntryAsync(
-                                r.Target.AddOnsPath, managed.Entry, _github, manifest,
-                                OnProgress, _options.Force, _cancel)
+                                r.Target.AddOnsPath, r.Target.Product, managed.Entry, _github,
+                                manifest, OnProgress, _options.Force, _cancel)
                             .GetAwaiter().GetResult();
                     }
 
@@ -377,17 +377,20 @@ namespace SkuInstaller
                 }
             }
 
-            // Managed third-party addons — Anniversary only, like on macOS. Any
-            // work here forces the game closed: these are whole-folder swaps of
-            // addons (with sounds) the running client may hold open.
+            // Managed third-party addons — Anniversary and Classic Era, each
+            // client getting its applicable packages (multi-flavor zips serve
+            // both; Pawn and the DBM raid mods are per-flavor). Any work here
+            // forces the game closed: these are whole-folder swaps of addons
+            // (with sounds) the running client may hold open.
             if (ManagedAddons.AppliesTo(target))
             {
                 var enabled = _options.EffectiveManaged();
                 foreach (var entry in ManagedAddons.Entries)
                 {
                     if (!enabled.TryGetValue(entry.PrefKey, out bool on) || !on) continue;
-                    bool installed = ManagedAddons.EntryInstalled(addonsFolder, entry);
-                    if (_options.Force || ManagedAddons.EntryNeedsWork(addonsFolder, manifest, entry))
+                    bool installed = ManagedAddons.EntryInstalled(addonsFolder, target.Product, entry);
+                    if (_options.Force ||
+                        ManagedAddons.EntryNeedsWork(addonsFolder, target.Product, manifest, entry))
                     {
                         plan.ManagedItems.Add(new ManagedPlanItem { Entry = entry, FirstInstall = !installed });
                         plan.NeedsGameClosed = true;
@@ -478,10 +481,11 @@ namespace SkuInstaller
                     }
                     foreach (var managed in r.Plan.ManagedItems)
                     {
-                        var first = managed.Entry.Packages[0];
-                        string ver = ManagedAddons.Resolved(first).Version ?? "";
+                        var first = System.Linq.Enumerable.FirstOrDefault(
+                            ManagedAddons.PackagesFor(managed.Entry, r.Target.Product));
+                        string ver = first == null ? "" : (ManagedAddons.Resolved(first).Version ?? "");
                         lines.Add(Loc.Format("summary.updated", managed.Entry.DisplayName,
-                                             ver.TrimStart('v', 'V')));
+                                             ManagedAddons.DisplayVersion(ver)));
                     }
                     if (r.Plan.Items.Count == 0 && r.Plan.ManagedItems.Count == 0)
                         lines.Add(Loc.Get("summary.addonsCurrent"));

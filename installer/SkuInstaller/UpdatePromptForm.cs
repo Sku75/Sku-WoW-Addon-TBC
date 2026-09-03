@@ -220,18 +220,21 @@ namespace SkuInstaller
             foreach (var t in Found)
                 sb.AppendLine($"{t.DisplayName}: {t.StatusLine()}");
 
-            // Managed third-party addons (Anniversary): say by name what "Update
-            // now" would additionally update or newly install, so the one-click
-            // button never does silent extra work.
-            var anniversary = Found.Find(ManagedAddons.AppliesTo);
-            if (anniversary != null)
+            // Managed third-party addons (Anniversary and Classic Era): say by
+            // name and PER CLIENT what "Update now" would additionally update or
+            // newly install, so the one-click button never does silent extra work.
+            var prefs = ManagedPrefs.Load();
+            foreach (var t in Found)
             {
-                ManagedAddons.PendingWork(anniversary, ManagedPrefs.Load(),
+                if (!ManagedAddons.AppliesTo(t)) continue;
+                ManagedAddons.PendingWork(t, prefs,
                                           out var managedUpdates, out var managedInstalls);
                 if (managedUpdates.Count > 0)
-                    sb.AppendLine(Loc.Format("update.managedUpdates", string.Join(", ", managedUpdates)));
+                    sb.AppendLine(Loc.Format("update.managedUpdates",
+                                             t.DisplayName, string.Join(", ", managedUpdates)));
                 if (managedInstalls.Count > 0)
-                    sb.AppendLine(Loc.Format("update.managedInstalls", string.Join(", ", managedInstalls)));
+                    sb.AppendLine(Loc.Format("update.managedInstalls",
+                                             t.DisplayName, string.Join(", ", managedInstalls)));
             }
 
             sb.AppendLine();

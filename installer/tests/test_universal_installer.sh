@@ -29,13 +29,20 @@ assert [e["prefKey"] for e in entries] == [
     "ManageQuestie", "ManageAtlasLoot", "ManageDetails", "ManagePawn",
     "ManageDBM", "ManageGTFO", "ManageBugSack",
 ]
-# DBM is ONE entry bundling three release packages; the BugSack pair two.
-assert len([p for e in entries for p in e["packages"]]) == 10
+# DBM is ONE entry bundling four release packages (BC and Vanilla raids are
+# per-client); Pawn has one package per client; the BugSack pair two.
+assert len([p for e in entries for p in e["packages"]]) == 12
 for entry in entries:
+    clients = set()
     for package in entry["packages"]:
         assert package["fallbackUrl"].startswith("https://")
         assert len(package["fallbackSha256"]) == 64
         assert package["requiredRoots"], package["key"]
+        assert set(package["clients"]) <= {"anniversary", "era"}, package["key"]
+        assert package["clients"], package["key"]
+        clients.update(package["clients"])
+    # Every entry serves BOTH managed clients (per-client packages included).
+    assert clients == {"anniversary", "era"}, entry["prefKey"]
 PY
 
 # The download page carries one clearly labeled link per platform.

@@ -394,8 +394,9 @@ installer/
     app.manifest             ← UAC elevation (writing under Program Files)
     Program.cs               ← entry point, CLI args, flow selection
     Config.cs                ← repo URL + the Sku addon/companion catalog
-    ManagedAddons.cs         ← managed third-party addons (Anniversary): specs,
-                               prefs store, GitHub-latest resolution, installer.
+    ManagedAddons.cs         ← managed third-party addons (Anniversary + Era):
+                               specs, prefs store, GitHub-latest resolution,
+                               per-client packages, installer.
                                Mirror of installer/shared/addon-catalog.json
                                (kept in step by tests/test_catalog_parity.py)
     GitHubClient.cs          ← releases redirect resolve, streamed download

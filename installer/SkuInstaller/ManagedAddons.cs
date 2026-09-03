@@ -21,8 +21,19 @@ namespace SkuInstaller
         /// <summary>Manifest key, e.g. "CurseQuestie". Same key as the macOS installer.</summary>
         public string Key;
 
+        /// <summary>
+        /// WoW product tokens this package applies to. Most zips are multi-flavor
+        /// (one download serves Anniversary and Classic Era); the exceptions are
+        /// per-flavor release assets like Pawn's -BurningCrusade/-Classic zips and
+        /// DBM's per-era raid packages. Null = every managed client.
+        /// </summary>
+        public string[] Products;
+
         /// <summary>Top-level zip folders that must exist and land in AddOns.</summary>
         public string[] RequiredRoots;
+
+        public bool AppliesTo(string product) =>
+            Products == null || Array.IndexOf(Products, product) >= 0;
 
         /// <summary>
         /// Additional top-level folders are accepted and installed when they start
@@ -64,11 +75,13 @@ namespace SkuInstaller
 
     /// <summary>
     /// The well-known non-Sku addons the installer manages for the Anniversary
-    /// client — mirror of installer/shared/addon-catalog.json "managedAnniversaryAddons"
-    /// (test_catalog_parity.py holds the two in step). GitHub is used for every
+    /// and Classic Era clients — mirror of installer/shared/addon-catalog.json
+    /// "managedAnniversaryAddons" (test_catalog_parity.py holds the two in step).
+    /// Most zips are multi-flavor and serve both clients from one download; the
+    /// per-flavor exceptions carry a Products list. GitHub is used for every
     /// addon that publishes releases there; the CurseForge CDN pins remain only
-    /// for addons without GitHub releases (AtlasLoot Anniversary, Details, GTFO,
-    /// BugGrabber) until we hold a CurseForge API key.
+    /// for addons without GitHub releases (AtlasLoot, Details, GTFO, BugGrabber)
+    /// until we hold a CurseForge API key.
     /// </summary>
     public static class ManagedAddons
     {
@@ -91,7 +104,9 @@ namespace SkuInstaller
             },
             new ManagedEntry
             {
-                PrefKey = "ManageAtlasLoot", DisplayName = "AtlasLootClassic Anniversary",
+                // The pinned "Anniversary" build ships Vanilla, TBC and Wrath TOCs
+                // in one zip, so the same pin serves Classic Era too.
+                PrefKey = "ManageAtlasLoot", DisplayName = "AtlasLootClassic",
                 Packages = new[]
                 {
                     new ManagedPackage
@@ -107,34 +122,48 @@ namespace SkuInstaller
             },
             new ManagedEntry
             {
+                // Details releases are multi-flavor since mid-2026 (one zip carries
+                // Details_TBC.toc AND Details_Classic.toc), so one pin serves both.
                 PrefKey = "ManageDetails", DisplayName = "Details Damage Meter",
                 Packages = new[]
                 {
                     new ManagedPackage
                     {
-                        Key = "CurseDetailsTBC",
+                        Key = "CurseDetails",
                         RequiredRoots = new[] { "Details", "Details_DataStorage" },
                         RootPrefix = "Details",
-                        PinVersion = "20260707.15250.172_TBC",
-                        PinUrl = "https://edge.forgecdn.net/files/8401/886/Details.20260707.15250.172_TBC.zip",
-                        PinSha256 = "9c16a88e153fd855fb2177aa23cc2a1110ede6928553c373706c946b6e10cb25",
+                        PinVersion = "20260811.15275.172",
+                        PinUrl = "https://edge.forgecdn.net/files/8680/856/Details-Details.20260811.15275.172.zip",
+                        PinSha256 = "3a1f83db2ec4cebde18f36ac496e3fd15134351aae9cde2ead62a233a64c751e",
                     },
                 },
             },
             new ManagedEntry
             {
                 // Off by default: gear-weighting advice is a personal taste, not a
-                // baseline accessibility need like the others.
+                // baseline accessibility need like the others. Pawn publishes one
+                // release asset PER flavor under a "Pawn-x.y.z" tag, hence the
+                // "{tag}-<flavor>.zip" templates and one package per client.
                 PrefKey = "ManagePawn", DisplayName = "Pawn", DefaultEnabled = false,
                 Packages = new[]
                 {
                     new ManagedPackage
                     {
                         Key = "CursePawnTBC", RequiredRoots = new[] { "Pawn" },
-                        GitHubRepo = "VgerMods/Pawn", AssetTemplate = "Pawn-{tag}-BurningCrusade.zip",
-                        PinVersion = "2.13.15",
+                        Products = new[] { Config.AnniversaryFlavor },
+                        GitHubRepo = "VgerMods/Pawn", AssetTemplate = "{tag}-BurningCrusade.zip",
+                        PinVersion = "Pawn-2.13.15",
                         PinUrl = "https://edge.forgecdn.net/files/8671/944/Pawn-2.13.15-BurningCrusade.zip",
                         PinSha256 = "412a77ae5007aa00cf50ae91272f0af84262c63c0b70144906dedc0ab8d39750",
+                    },
+                    new ManagedPackage
+                    {
+                        Key = "CursePawnVanilla", RequiredRoots = new[] { "Pawn" },
+                        Products = new[] { Config.EraFlavor },
+                        GitHubRepo = "VgerMods/Pawn", AssetTemplate = "{tag}-Classic.zip",
+                        PinVersion = "Pawn-2.13.15",
+                        PinUrl = "https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.15/Pawn-2.13.15-Classic.zip",
+                        PinSha256 = "2b182e663fa4f3c0a60efa82f31a0623cbf11bc7d48d7e4f8faea203e93f6325",
                     },
                 },
             },
@@ -156,7 +185,9 @@ namespace SkuInstaller
                     },
                     new ManagedPackage
                     {
+                        // TBC raid mods; the release declares no Era flavor.
                         Key = "DBMRaidsBC", RequiredRoots = new[] { "DBM-Raids-BC" }, RootPrefix = "DBM-",
+                        Products = new[] { Config.AnniversaryFlavor },
                         GitHubRepo = "DeadlyBossMods/DBM-BurningCrusade", AssetTemplate = "DBM-Raids-BC-{tag}.zip",
                         PinVersion = "r19",
                         PinUrl = "https://github.com/DeadlyBossMods/DBM-BurningCrusade/releases/download/r19/DBM-Raids-BC-r19.zip",
@@ -164,7 +195,18 @@ namespace SkuInstaller
                     },
                     new ManagedPackage
                     {
-                        Key = "DBMDungeons", RequiredRoots = new[] { "DBM-Party-BC" }, RootPrefix = "DBM-",
+                        // Vanilla/SoD raid mods - the Era counterpart of Raids-BC.
+                        Key = "DBMRaidsVanilla", RequiredRoots = new[] { "DBM-Raids-Vanilla" }, RootPrefix = "DBM-",
+                        Products = new[] { Config.EraFlavor },
+                        GitHubRepo = "DeadlyBossMods/DBM-Vanilla", AssetTemplate = "DBM-Vanilla_SoD-{tag}.zip",
+                        PinVersion = "r826",
+                        PinUrl = "https://github.com/DeadlyBossMods/DBM-Vanilla/releases/download/r826/DBM-Vanilla_SoD-r826.zip",
+                        PinSha256 = "0a68a1a21ee73a1f8da40117f3c244c363677fd36cf0fb6ae5b9885c5ff3116c",
+                    },
+                    new ManagedPackage
+                    {
+                        // One zip carries the BC and Vanilla dungeon folders.
+                        Key = "DBMDungeons", RequiredRoots = new[] { "DBM-Party-BC", "DBM-Party-Vanilla" }, RootPrefix = "DBM-",
                         GitHubRepo = "DeadlyBossMods/DBM-Dungeons", AssetTemplate = "DBM-Dungeons-{tag}.zip",
                         PinVersion = "r261",
                         PinUrl = "https://github.com/DeadlyBossMods/DBM-Dungeons/releases/download/r261/DBM-Dungeons-r261.zip",
@@ -272,22 +314,42 @@ namespace SkuInstaller
 
         // ── State queries ──────────────────────────────────────────────────────
 
-        /// <summary>Managed addons are an Anniversary-only feature, like on macOS.</summary>
-        public static bool AppliesTo(InstallTarget target) =>
-            target != null && target.Product == Config.AnniversaryFlavor && target.ClientFound;
+        /// <summary>
+        /// A version/tag as shown to the user: leading non-digits stripped, the
+        /// same rule the macOS installer applies ("v11.37.1" → "11.37.1",
+        /// "Pawn-2.13.15" → "2.13.15", "r261" → "261").
+        /// </summary>
+        public static string DisplayVersion(string version)
+        {
+            if (string.IsNullOrEmpty(version)) return "";
+            int i = 0;
+            while (i < version.Length && !char.IsDigit(version[i])) i++;
+            return version.Substring(i);
+        }
 
-        /// <summary>True when every required folder of every package exists on disk.</summary>
-        public static bool EntryInstalled(string addonsFolder, ManagedEntry entry) =>
-            entry.Packages.All(p => p.RequiredRoots.All(
+        /// <summary>The clients this feature manages: Anniversary and Classic Era.</summary>
+        public static bool AppliesTo(InstallTarget target) =>
+            target != null && target.ClientFound &&
+            (target.Product == Config.AnniversaryFlavor || target.Product == Config.EraFlavor);
+
+        /// <summary>The entry's packages that apply to one client.</summary>
+        public static IEnumerable<ManagedPackage> PackagesFor(ManagedEntry entry, string product) =>
+            entry.Packages.Where(p => p.AppliesTo(product));
+
+        /// <summary>True when every required folder of every applicable package exists on disk.</summary>
+        public static bool EntryInstalled(string addonsFolder, string product, ManagedEntry entry) =>
+            PackagesFor(entry, product).All(p => p.RequiredRoots.All(
                 r => Directory.Exists(Path.Combine(addonsFolder, r))));
 
         /// <summary>
-        /// True when the entry needs a download this run: a package's recorded
-        /// version differs from the resolved one, or a required folder is missing.
+        /// True when the entry needs a download for this client this run: an
+        /// applicable package's recorded version differs from the resolved one, or
+        /// a required folder is missing.
         /// </summary>
-        public static bool EntryNeedsWork(string addonsFolder, InstallManifest manifest, ManagedEntry entry)
+        public static bool EntryNeedsWork(string addonsFolder, string product,
+                                          InstallManifest manifest, ManagedEntry entry)
         {
-            foreach (var pkg in entry.Packages)
+            foreach (var pkg in PackagesFor(entry, product))
             {
                 var resolved = Resolved(pkg);
                 string current = manifest.GetTag(pkg.Key);
@@ -301,7 +363,7 @@ namespace SkuInstaller
 
         /// <summary>
         /// Display names for the opening screen: (updates, freshInstalls) among the
-        /// enabled entries of the given Anniversary target.
+        /// enabled entries of one managed client.
         /// </summary>
         public static void PendingWork(InstallTarget target, IDictionary<string, bool> enabled,
                                        out List<string> updates, out List<string> freshInstalls)
@@ -314,8 +376,8 @@ namespace SkuInstaller
             foreach (var entry in Entries)
             {
                 if (!enabled.TryGetValue(entry.PrefKey, out bool on) || !on) continue;
-                if (!EntryNeedsWork(target.AddOnsPath, manifest, entry)) continue;
-                if (EntryInstalled(target.AddOnsPath, entry)) updates.Add(entry.DisplayName);
+                if (!EntryNeedsWork(target.AddOnsPath, target.Product, manifest, entry)) continue;
+                if (EntryInstalled(target.AddOnsPath, target.Product, entry)) updates.Add(entry.DisplayName);
                 else freshInstalls.Add(entry.DisplayName);
             }
         }
@@ -383,17 +445,18 @@ namespace SkuInstaller
         private static string TempRoot => Path.Combine(Path.GetTempPath(), "SkuInstaller");
 
         /// <summary>
-        /// Installs every package of one entry. Returns true when all packages
-        /// ended installed and current; false when any failed (logged, the rest
-        /// still tried — one broken CDN pin must not cost the other addons).
+        /// Installs every package of one entry that applies to the given client.
+        /// Returns true when all packages ended installed and current; false when
+        /// any failed (logged, the rest still tried — one broken CDN pin must not
+        /// cost the other addons).
         /// </summary>
         public static async Task<bool> InstallEntryAsync(
-            string addonsFolder, ManagedEntry entry, GitHubClient github,
+            string addonsFolder, string product, ManagedEntry entry, GitHubClient github,
             InstallManifest manifest, Action<InstallProgress> report, bool force,
             CancellationToken cancel = default(CancellationToken))
         {
             bool ok = true;
-            foreach (var pkg in entry.Packages)
+            foreach (var pkg in ManagedAddons.PackagesFor(entry, product))
             {
                 cancel.ThrowIfCancellationRequested();
                 try

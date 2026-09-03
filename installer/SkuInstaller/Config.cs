@@ -138,6 +138,9 @@ namespace SkuInstaller
         /// <summary>Conventional flavor folder name, used as a fast-path / fallback.</summary>
         public const string AnniversaryFolder = "_anniversary_";
 
+        /// <summary>Classic Era flavor token in .flavor.info / .build.info Product column.</summary>
+        public const string EraFlavor = "wow_classic_era";
+
         /// <summary>
         /// The addons installed on every run (besides the chosen language pack).
         /// The main Sku addon is primary; SkuBeaconSoundsets is a hard dependency;

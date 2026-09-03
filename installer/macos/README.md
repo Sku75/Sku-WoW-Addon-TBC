@@ -17,15 +17,18 @@ Native macOS-Portierung des offiziellen Windows-Installers aus
 - Alphabetisch sortierte Bestandsaufnahme installierter AddOn-Pakete mit
   Version, erkannter Quelle und Hinweis auf unbekannte oder doppelte Ordner.
 
-## Anniversary-AddOns
+## Verwaltete AddOns (Anniversary und Classic Era)
 
-Version 5 verwaltet auf Wunsch sieben bekannte AddOns für den erkannten
-`_anniversary_`-Client: Questie, AtlasLootClassic Anniversary, Details! Damage
+Version 5 verwaltet auf Wunsch sieben bekannte AddOns für die Clients
+`_anniversary_` UND `_classic_era_`: Questie, AtlasLootClassic, Details! Damage
 Meter, Deadly Boss Mods (Kern-, Schlachtzugs- und Dungeon-Pakete als EIN
-Eintrag), GTFO, das Paar BugSack + BugGrabber sowie Pawn. Andere WoW-Versionen
-bleiben davon unberührt. Die Auswahl wird in den Installer-Einstellungen
-gespeichert; alle Einträge sind vorgewählt, nur Pawn ist standardmäßig
-abgewählt.
+Eintrag), GTFO, das Paar BugSack + BugGrabber sowie Pawn. Jeder Client erhält
+die zu ihm passende Fassung: die meisten Pakete sind Mehrfach-Flavor-ZIPs und
+decken beide Clients mit einem Download ab; Pawn und die DBM-Schlachtzugsmodule
+haben je Client ein eigenes Paket (Era: Pawn-Classic und DBM-Vanilla). Andere
+WoW-Versionen bleiben unberührt. Die Auswahl wird in den
+Installer-Einstellungen gespeichert; alle Einträge sind vorgewählt, nur Pawn
+ist standardmäßig abgewählt.
 
 Beim Start fasst die Statuszeile Sku und alle ausgewählten Anniversary-AddOns
 zusammen. Sind Aktualisierungen nötig, nennt sie ausschließlich die betroffenen

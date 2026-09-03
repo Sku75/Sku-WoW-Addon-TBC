@@ -556,10 +556,14 @@ JXA
 }
 
 install_anniversary_addons() {
-    local failures=0 release version url sha
+    # Despite the historical name this covers BOTH managed clients: Anniversary
+    # (TBC) and Classic Era. Most zips are multi-flavor and serve both; Pawn and
+    # the DBM raid mods are per-flavor and switch on $client below.
+    local failures=0 release version url sha client=""
     case "$ADDONS_FOLDER" in
-        */_anniversary_/Interface/AddOns) ;;
-        *) log "Kuratierte AddOns werden nur fuer Anniversary verwaltet."; return 0 ;;
+        */_anniversary_/Interface/AddOns) client="anniversary" ;;
+        */_classic_era_/Interface/AddOns) client="era" ;;
+        *) log "Kuratierte AddOns werden nur fuer Anniversary und Classic Era verwaltet."; return 0 ;;
     esac
 
     if preference_enabled "ManageQuestie"; then
@@ -572,25 +576,38 @@ install_anniversary_addons() {
             "Questie" || failures=$((failures + 1))
     fi
     if preference_enabled "ManageAtlasLoot"; then
-        install_curated_package "CurseAtlasLootAnniversary" "AtlasLootClassic Anniversary" "2.5.6.12334" \
+        # The "Anniversary" build ships Vanilla, TBC and Wrath TOCs in one zip.
+        install_curated_package "CurseAtlasLootAnniversary" "AtlasLootClassic" "2.5.6.12334" \
             "https://edge.forgecdn.net/files/8721/161/AtlasLootClassic-Master_12334.zip" \
             "e286fa10bfe2a5ae15d405ebe65071caab386d1eb61cf9b25bad3ab6a9e1ad0d" \
             "AtlasLootClassic AtlasLootClassic_BiS AtlasLootClassic_Collections AtlasLootClassic_Crafting AtlasLootClassic_Data AtlasLootClassic_DungeonsAndRaids AtlasLootClassic_Factions AtlasLootClassic_Options AtlasLootClassic_PvP" || failures=$((failures + 1))
     fi
     if preference_enabled "ManageDetails"; then
-        install_curated_package "CurseDetailsTBC" "Details Damage Meter" "20260707.15250.172_TBC" \
-            "https://edge.forgecdn.net/files/8401/886/Details.20260707.15250.172_TBC.zip" \
-            "9c16a88e153fd855fb2177aa23cc2a1110ede6928553c373706c946b6e10cb25" \
-            "Details Details_Compare2 Details_DataStorage Details_EncounterDetails Details_RaidCheck Details_Streamer Details_TinyThreat Details_Vanguard" || failures=$((failures + 1))
+        # Multi-flavor upload: one zip carries Details_TBC.toc AND Details_Classic.toc.
+        install_curated_package "CurseDetails" "Details Damage Meter" "20260811.15275.172" \
+            "https://edge.forgecdn.net/files/8680/856/Details-Details.20260811.15275.172.zip" \
+            "3a1f83db2ec4cebde18f36ac496e3fd15134351aae9cde2ead62a233a64c751e" \
+            "Details Details_DataStorage Details_*" || failures=$((failures + 1))
     fi
     if preference_enabled "ManagePawn"; then
-        release="$(github_release_asset "VgerMods/Pawn" "BurningCrusade" || true)"
-        version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
-        url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
-        sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
-        [ -n "$version" ] || { version="2.13.15"; url="https://edge.forgecdn.net/files/8671/944/Pawn-2.13.15-BurningCrusade.zip"; sha="412a77ae5007aa00cf50ae91272f0af84262c63c0b70144906dedc0ab8d39750"; }
-        install_curated_package "CursePawnTBC" "Pawn" "$version" "$url" "$sha" \
-            "Pawn" || failures=$((failures + 1))
+        # Pawn publishes one asset PER flavor under a "Pawn-x.y.z" tag.
+        if [ "$client" = "era" ]; then
+            release="$(github_release_asset "VgerMods/Pawn" "-Classic.zip" || true)"
+            version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
+            url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
+            sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
+            [ -n "$version" ] || { version="2.13.15"; url="https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.15/Pawn-2.13.15-Classic.zip"; sha="2b182e663fa4f3c0a60efa82f31a0623cbf11bc7d48d7e4f8faea203e93f6325"; }
+            install_curated_package "CursePawnVanilla" "Pawn" "$version" "$url" "$sha" \
+                "Pawn" || failures=$((failures + 1))
+        else
+            release="$(github_release_asset "VgerMods/Pawn" "-BurningCrusade.zip" || true)"
+            version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
+            url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
+            sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
+            [ -n "$version" ] || { version="2.13.15"; url="https://edge.forgecdn.net/files/8671/944/Pawn-2.13.15-BurningCrusade.zip"; sha="412a77ae5007aa00cf50ae91272f0af84262c63c0b70144906dedc0ab8d39750"; }
+            install_curated_package "CursePawnTBC" "Pawn" "$version" "$url" "$sha" \
+                "Pawn" || failures=$((failures + 1))
+        fi
     fi
     if preference_enabled "ManageDBM"; then
         # ONE user-facing entry, three release packages: the core zip carries no
@@ -602,20 +619,31 @@ install_anniversary_addons() {
         [ -n "$version" ] || { version="12.1.8"; url="https://github.com/DeadlyBossMods/DeadlyBossMods/releases/download/12.1.8/DBM-Core-12.1.8.zip"; sha="980e833949071ba6359e6d5f326a5d51c1134010299cb7b7a6f9599c9df3e755"; }
         install_curated_package "DBMCore" "Deadly Boss Mods" "$version" "$url" "$sha" \
             "DBM-Core DBM-GUI DBM-StatusBarTimers DBM-*" || failures=$((failures + 1))
-        release="$(github_release_asset "DeadlyBossMods/DBM-BurningCrusade" "DBM-Raids-BC-" || true)"
-        version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
-        url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
-        sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
-        [ -n "$version" ] || { version="19"; url="https://github.com/DeadlyBossMods/DBM-BurningCrusade/releases/download/r19/DBM-Raids-BC-r19.zip"; sha="5c6d3567018c0770653c8c9b82e3393411d0eea4405dd41445b7ff2e2406a32a"; }
-        install_curated_package "DBMRaidsBC" "Deadly Boss Mods Schlachtzuege" "$version" "$url" "$sha" \
-            "DBM-Raids-BC DBM-*" || failures=$((failures + 1))
+        if [ "$client" = "era" ]; then
+            # Era raid mods live in the DBM-Vanilla repository (Vanilla + SoD).
+            release="$(github_release_asset "DeadlyBossMods/DBM-Vanilla" "DBM-Vanilla_SoD-" || true)"
+            version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
+            url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
+            sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
+            [ -n "$version" ] || { version="826"; url="https://github.com/DeadlyBossMods/DBM-Vanilla/releases/download/r826/DBM-Vanilla_SoD-r826.zip"; sha="0a68a1a21ee73a1f8da40117f3c244c363677fd36cf0fb6ae5b9885c5ff3116c"; }
+            install_curated_package "DBMRaidsVanilla" "Deadly Boss Mods Schlachtzuege" "$version" "$url" "$sha" \
+                "DBM-Raids-Vanilla DBM-*" || failures=$((failures + 1))
+        else
+            release="$(github_release_asset "DeadlyBossMods/DBM-BurningCrusade" "DBM-Raids-BC-" || true)"
+            version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
+            url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
+            sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
+            [ -n "$version" ] || { version="19"; url="https://github.com/DeadlyBossMods/DBM-BurningCrusade/releases/download/r19/DBM-Raids-BC-r19.zip"; sha="5c6d3567018c0770653c8c9b82e3393411d0eea4405dd41445b7ff2e2406a32a"; }
+            install_curated_package "DBMRaidsBC" "Deadly Boss Mods Schlachtzuege" "$version" "$url" "$sha" \
+                "DBM-Raids-BC DBM-*" || failures=$((failures + 1))
+        fi
         release="$(github_release_asset "DeadlyBossMods/DBM-Dungeons" "DBM-Dungeons-" || true)"
         version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
         url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
         sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
         [ -n "$version" ] || { version="261"; url="https://github.com/DeadlyBossMods/DBM-Dungeons/releases/download/r261/DBM-Dungeons-r261.zip"; sha="4cdf4afa9d058da384a170095381041e7925730aba8b731d3e89ea5087afee09"; }
         install_curated_package "DBMDungeons" "Deadly Boss Mods Dungeons" "$version" "$url" "$sha" \
-            "DBM-Party-BC DBM-*" || failures=$((failures + 1))
+            "DBM-Party-BC DBM-Party-Vanilla DBM-*" || failures=$((failures + 1))
     fi
     if preference_enabled "ManageGTFO"; then
         install_curated_package "CurseGTFO" "GTFO" "6.9.1" \
@@ -824,7 +852,7 @@ addon_update_status_json() {
     bugsack="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$bugsack" ] || bugsack="12.0.13"
     printf '{"Questie":{"latest":"%s","installed":"%s"},' "$(json_escape "$questie")" "$(json_escape "$(manifest_tag "CurseQuestie")")"
     printf '"AtlasLoot":{"latest":"2.5.6.12334","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseAtlasLootAnniversary")")"
-    printf '"Details":{"latest":"20260707.15250.172_TBC","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseDetailsTBC")")"
+    printf '"Details":{"latest":"20260811.15275.172","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseDetails")")"
     printf '"Pawn":{"latest":"%s","installed":"%s"},' "$(json_escape "$pawn")" "$(json_escape "$(manifest_tag "CursePawnTBC")")"
     printf '"DBM":{"latest":"%s","installed":"%s"},' "$(json_escape "$dbm")" "$(json_escape "$(manifest_tag "DBMCore")")"
     printf '"GTFO":{"latest":"6.9.1","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseGTFO")")"
