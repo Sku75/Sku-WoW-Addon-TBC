@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.3 - notes de version</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Langue des notes de version">
+<ul class="langnav">
+<li><a href="../en/v43.3.html" lang="en" hreflang="en">English</a></li>
+<li><a href="../de/v43.3.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><span aria-current="page" lang="fr">Français</span></li>
+</ul>
+</nav>
+<h1>Sku v43.3 - notes de version</h1>
+<nav aria-label="Navigation dans les notes de version">
+<ul class="pagenav">
+<li><a href="index.html">Toutes les notes de version</a></li>
+<li><a href="v43.2.html">Version plus ancienne : v43.2</a></li>
+<li><a href="../../index-fr.html">Page de téléchargement de Sku</a></li>
+</ul>
+</nav>
+<main>
+<h2>Aperçu</h2>
+<h3>Nouveautés</h3>
+<ul>
+<li>Le programme d'installation existe désormais aussi pour Mac - installation, mise à jour et auto-mise à jour comme sous Windows. Merci à Yennesta.</li>
+<li>Programme d'installation 5.0 : sept addons compagnons éprouvés comme Questie et Deadly Boss Mods peuvent être installés en plus et sont tenus à jour - Windows et Mac, Anniversary et Classic Era.</li>
+<li>Mac : le programme d'installation et l'outil de connexion parlent allemand, anglais et français ; l'outil de connexion reconnaît aussi les clients français.</li>
+</ul>
+<h3>Changements</h3>
+<ul>
+<li>Se tourner vers l'unité et Se tourner vers la cible tournent désormais comme la rotation vers la balise : le chemin le plus court, un quart de seconde au maximum.</li>
+</ul>
+<h3>Corrections</h3>
+<ul>
+<li>Synthèse vocale : certaines annonces restaient muettes alors que le son était joué - surtout les lignes courtes que l’on entend en boucle.</li>
+<li>Touche Interagir : après un kill, elle attrape parfois une créature au loin et vous y fait courir au lieu de dépouiller - Sku vous prévient maintenant par un son.</li>
+<li>Mac : la synthèse vocale lisait à chaque ligne un balisage technique de contrôle.</li>
+<li>Maître des écuries : le menu affichait et échangeait les mauvais emplacements de familier, et l'annonce d'échange signalait un échec trop tôt.</li>
+<li>Chat : un onglet Journal de combat restait complètement muet.</li>
+<li>Le Ciblage au cadran était complètement mort sur le client Anniversary - il fonctionne de nouveau, testé en raid à 25.</li>
+<li>Français : quatre textes des réglages du chat parlaient encore anglais.</li>
+</ul>
+<h2>Français : quatre textes du chat parlaient encore anglais</h2>
+<p><strong>Simple :</strong> Sur un client français, le réglage des flèches dans la saisie du chat, l'annonce du canal avec son explication et le message pour une commande inconnue s'entendaient encore en anglais. Ils sont maintenant traduits.</p>
+<p><strong>Technique :</strong> Ces quatre textes de la v43.1 manquaient dans le magasin de traduction à partir duquel le fichier de langue français est généré. En corrigeant cela, il est apparu que 29 textes écrits à la main dans le fichier généré pour la v43.2 n'existaient qu'à cet endroit - la prochaine génération les aurait silencieusement ramenés à l'anglais. Tous sont désormais repris dans le magasin, et l'outil de génération n'écrit plus le fichier que sur commande explicite, au lieu de le faire pour tout argument inconnu.</p>
+<h2>Synthèse vocale : les annonces répétées ne restent plus muettes</h2>
+<p><strong>Simple :</strong> En naviguant dans les menus et les infobulles, on n’obtenait parfois que le son, sans l’annonce elle-même. Cela touchait surtout les lignes courtes que l’on entend en boucle toute la soirée - « menu fermé », « accepter », « buffs », ou un simple caractère tapé.</p>
+<p><strong>Technique :</strong> Le client conserve en mémoire la parole déjà synthétisée pour un texte donné et, en cas de répétition, la rejoue depuis ce cache sans rappeler la voix. Via une passerelle vers un lecteur d’écran, cette relecture est muette. Sku ajoute donc à chaque ligne un marqueur inaudible afin que chaque appel soit régénéré - jusqu’ici à partir d’un compteur qui recommençait toutes les 64 annonces. Une ligne revenant exactement 64 annonces plus tard était donc identique caractère pour caractère et retombait dans le cache. Le compteur est désormais tenu par texte et non plus en commun ; une ligne vue pour la première fois reçoit toujours sa valeur de départ du compteur commun, afin que le vidage de la table (à 512 lignes distinctes) ne renvoie aucune ligne sur sa propre première valeur. Rejoué sur un enregistrement de 1307 annonces : 27 répétitions identiques auparavant, 80 avec un compteur par texte privé de cette valeur de départ - donc pire - et 0 dans la version livrée.</p>
+<h2>Mac : la synthèse vocale ne lit plus le balisage de contrôle</h2>
+<p><strong>Simple :</strong> Sur Mac, la voix lisait à voix haute, avec les lignes, des caractères de contrôle destinés uniquement à la technique. Ils ont disparu là-bas.</p>
+<p><strong>Technique :</strong> Pour la poignée de main avec le lecteur d'écran, Sku ajoute un marqueur &lt;bookmark&gt; à chaque ligne ; le client Mac ne filtre pas ce balisage de la synthèse et le lisait tel quel. Sur Mac, le marqueur est désormais omis ; les caractères inaudibles qui déjouent le cache de répétition restent, si bien que chaque répétition y est elle aussi régénérée. Idée de Yennesta.</p>
+<h2>Se tourner vers l'unité : plus rapide et plus précis</h2>
+<p><strong>Simple :</strong> « Se tourner vers l'unité » et « Se tourner vers la cible » tournent désormais exactement comme la rotation vers la balise : par le chemin le plus court, en un quart de seconde au maximum, au lieu de chercher jusqu'à une seconde et demie en tournant vers la droite.</p>
+<p><strong>Technique :</strong> Le coeur de rotation construit et longuement testé pour la v43.2 (alignement de direction, plafond de vitesse, anticipation en mouvement, remise à plat avec le verrou d'inclinaison) a été séparé de la résolution des points de passage ; la rotation vers une unité l'appelle donc dès que le client fournit des coordonnées pour l'unité. L'ancienne recherche par barres de nom reste en secours pour les instances, où il n'y a pas de coordonnées. La résolution de la cible vers une unité suit une idée de Yennesta.</p>
+<h2>Maître des écuries : l'échange de familier retrouve les bons emplacements</h2>
+<p><strong>Simple :</strong> Dans le menu du maître des écuries du chasseur, les emplacements étaient décalés - le mauvais familier était affiché et échangé. De plus, sur une connexion lente, l'échange annonçait à tort que le familier n'avait pas pu être changé alors qu'il avait réussi. Les deux sont corrigés, et l'annonce donne désormais le nom du nouveau familier.</p>
+<p><strong>Technique :</strong> La fenêtre d'écurie de Blizzard utilise les indices d'action 1 à 3 (familier actif plus deux emplacements) ; Sku interrogeait un cran trop bas. Correctif de Yennesta. L'annonce de réussite ne se décide en outre plus sur le premier événement d'écurie (qui se déclenche déjà à la prise en main), mais attend que le nom du familier actif corresponde ou que deux secondes soient passées - et elle est maintenant traduite dans les trois langues.</p>
+<h2>Nouveau : le programme d'installation existe aussi pour Mac</h2>
+<p><strong>Simple :</strong> Sku s'installe et se tient à jour sur macOS aussi confortablement que sous Windows : un programme d'installation avec sortie vocale, auto-mise à jour et les mêmes composants. La page de téléchargement propose un lien par plateforme. Contribué par Yennesta - merci !</p>
+<p><strong>Technique :</strong> La branche Mac est accrochée au même flux de publication que Windows : la détection de version suit la redirection releases/latest de GitHub au lieu de lire une page web, et les fichiers avec leurs sommes sha256 sont vérifiés localement à la publication puis attachés à la même publication.</p>
+<h2>Touche Interagir : un son d'avertissement quand elle attrape la mauvaise cible</h2>
+<p><strong>Simple :</strong> Juste après la mort d'une créature, la touche Interagir (G par défaut) prend parfois pour cible une tout autre créature attaquable - même lointaine - au lieu du cadavre devant vous, et vous y fait courir automatiquement au lieu de dépouiller. Sku joue maintenant un son d'avertissement à cet instant précis, pour que vous entendiez aussitôt la mauvaise prise et puissiez annuler la course automatique à la main.</p>
+<p><strong>Technique :</strong> La touche appelle InteractUnit("anyinteract") de Blizzard avec un ciblage relâché ; quand le cadavre tout juste dépouillé disparaît sous l'appui, le client attrape de façon relâchée l'unité attaquable la plus proche à portée de Tab, en fait votre cible dure et y court. La touche elle-même ne peut pas être remplacée (InteractUnit est protégée), et la cible ne peut pas non plus être effacée depuis un addon (ClearTarget est protégée aussi, en combat comme hors combat). Reste la détection : juste après qu'un cadavre quitte le réticule, une cible vivante, attaquable et PAS en combat avec vous - alors le son. Une cible choisie volontairement au clavier (Alt+H / Ctrl+H) ne le déclenche pas.</p>
+<h2>Programme d'installation 5.0 : installer des addons compagnons éprouvés</h2>
+<p><strong>Simple :</strong> Sur la page des composants, sept addons éprouvés peuvent désormais être cochés - Questie, Deadly Boss Mods, AtlasLoot, Details, GTFO, BugSack avec BugGrabber, et Pawn. Ce qui est coché, le programme d'installation l'installe avec Sku et le tient à jour à chaque exécution - sous Windows et sur Mac, pour Anniversary et Classic Era, chaque client recevant la version qui lui correspond. Tout est activé par défaut sauf Pawn.</p>
+<p><strong>Technique :</strong> Les deux plateformes lisent le même catalogue. Les addons publiés sur GitHub viennent directement de là (résolus via la redirection releases/latest, sans clé d'API ni limite de débit) ; le reste est épinglé sur des fichiers CurseForge vérifiés par sommes sha256. Deadly Boss Mods est une entrée composée de quatre paquets, et BugSack et BugGrabber partagent délibérément une seule case. Chaque client reçoit la version qui lui correspond - Pawn pour Classic Era vient par exemple du paquet Classic.</p>
+<h2>Mac : programme d'installation et outil de connexion en trois langues</h2>
+<p><strong>Simple :</strong> Les deux parlent désormais allemand, anglais et français. La langue se change dans le menu correspondant et suit sinon la langue du système. L'outil de connexion reconnaît en outre les clients français et lit les lignes de niveau mot pour mot - un client allemand redit donc « Stufe 36 » au lieu de « Level 36 ».</p>
+<p><strong>Technique :</strong> L'application, le script d'installation et l'outil de connexion partagent un même choix de langue (réglage enregistré avant langue du système avant anglais) ; les valeurs enregistrées comme les noms des packs vocaux restent allemandes en interne pour que les préférences existantes continuent de fonctionner. La détection d'écran de l'outil de connexion est indépendante de la langue de l'interface.</p>
+<h2>Chat : le journal de combat reçoit de nouveau ses événements</h2>
+<p><strong>Simple :</strong> Un onglet de chat « Journal de combat » restait complètement muet. Il se remplit de nouveau. Merci au testeur de la communauté pour le signalement accompagné de la solution.</p>
+<p><strong>Technique :</strong> L'onglet s'était abonné à l'événement COMBAT_LOG_EVENT, qui ne se déclenche pas sur ce client comme le code l'attend ; il s'abonne désormais à COMBAT_LOG_EVENT_UNFILTERED - le même événement que les autres modules de Sku utilisent depuis longtemps.</p>
+<h2>Le Ciblage au cadran fonctionne de nouveau</h2>
+<p><strong>Simple :</strong> Le ciblage par le pavé numérique (entrée « Ciblage au cadran » dans le menu Sku) était complètement mort sur le client Anniversary - aucun appui n'arrivait. Il fonctionne de nouveau, testé en raid à 25. En plus : dans un groupe normal (hors raid), il n'avait jamais trouvé personne, les membres 30 à 40 n'étaient pas composables, et un numéro à moitié saisi pouvait corrompre la saisie suivante - tout est corrigé.</p>
+<p><strong>Technique :</strong> Le client moderne ne délivre les clics clavier que si le bouton les a enregistrés via RegisterForClicks - cela manquait, ce qui rendait toute la fonction muette. L'action se déclenche en outre exactement une fois par appui, quel que soit le réglage de clic de l'utilisateur. La disposition du groupe vient de party1 à party4 au lieu de la seule requête de raid, le seuil du premier chiffre laisse passer les sous-groupes 6 à 8, et la grille de touches remplie est écrite dans le journal de débogage à chaque changement. Note : les numéros correspondent à la section raid de la page d'aperçu ; la section groupe y compte toujours vous-même comme 1 et décale les autres - c'est voulu et non un défaut du ciblage.</p>
+</main>
+<hr>
+<nav aria-label="Navigation dans les notes de version">
+<ul class="pagenav">
+<li><a href="index.html">Toutes les notes de version</a></li>
+<li><a href="v43.2.html">Version plus ancienne : v43.2</a></li>
+<li><a href="../../index-fr.html">Page de téléchargement de Sku</a></li>
+</ul>
+</nav>
+</body>
+</html>
