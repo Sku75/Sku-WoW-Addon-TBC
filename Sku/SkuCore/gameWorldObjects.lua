@@ -185,16 +185,25 @@ end
 -- beim Zuruecksetzen der Drehwert verewigt und die Kamera-Tasten des Nutzers
 -- laufen dauerhaft schneller.
 local tTurnYawSpeedSaved
-function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
-   aWaypointName = aWaypointName or SkuOptions.db.profile["SkuNav"].selectedWaypoint
-   if aWaypointName and aWaypointName ~= "" then
-      local fPlayerPosX, fPlayerPosY, fPlayerPosZ = UnitPosition("player")
-      local tData = SkuNav:GetWaypointData2(aWaypointName)
-      local _, _, degree = SkuNav.Geo:GetDirectionTo(fPlayerPosX, fPlayerPosY, tData.worldX, tData.worldY)
+-- [v43.3] Der getestete Dreh-Kern (Snap + Geschwindigkeitsdeckel + Vorhalten +
+-- Sequenz-Guards + Transfer-Impuls + Geradestell-Impuls) haengt nicht mehr am
+-- Wegpunkt: TurnToWorldPosition dreht zu beliebigen Weltkoordinaten, damit
+-- "zu Einheit drehen" (SkuCore/turnToUnit.lua) DENSELBEN Kern nutzt statt
+-- einer eigenen, driftenden Kopie. Rueckgabe: true = Drehung angenommen,
+-- false = verworfen (Drehung laeuft noch, oder Position/Peilung nicht
+-- ermittelbar). Der Busy-Verwurf bleibt absichtlich still - das gewohnte
+-- Mehrfachdruecken verfeinert einfach mit dem naechsten Druck nach dem Ende.
+function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
+   local fPlayerPosX, fPlayerPosY, fPlayerPosZ = UnitPosition("player")
+   local degree
+   if fPlayerPosX and aWorldX and aWorldY then
+      degree = select(3, SkuNav.Geo:GetDirectionTo(fPlayerPosX, fPlayerPosY, aWorldX, aWorldY))
+   end
+   if degree then
       -- Bis 43.2 hatte dieser Pfad KEINE einzige dprint-Zeile, der Tastendruck
       -- war im Log unsichtbar. Blickrichtung vorher/nachher plus Schwimmen/
       -- Fliegen protokollieren, damit ein Tauch-Report belegbar wird.
-      dprint("TurnToWp start", aWaypointName, "degree", degree,
+      dprint("TurnToWp start", aLabel, "degree", degree,
          "facing", GetPlayerFacing(), "hoehe", fPlayerPosZ,
          "swim", tostring(IsSwimming()), "fly", tostring(IsFlying()),
          "mounted", tostring(IsMounted()), "falling", tostring(IsFalling()))
@@ -209,7 +218,7 @@ function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
       if SkuCore.gameWorldObjectsTurnBusyUntil and GetTime() < SkuCore.gameWorldObjectsTurnBusyUntil then
          dprint("TurnToWp ignoriert, Drehung laeuft noch",
             string.format("%.2f", SkuCore.gameWorldObjectsTurnBusyUntil - GetTime()))
-         return
+         return false
       end
       -- VORHALTEN gegen das Kreisen um nahe Wegpunkte (Log 2026-08-31 16:26:
       -- 15 Druecke, jede Drehung ausgefuehrt, Peilung trotzdem konstant ~70
@@ -230,14 +239,14 @@ function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
       if tSpeedNow and tSpeedNow > 0 and GetPlayerFacing() then
          local tDurEst = math.min(0.25, math.abs(degree) / 360) + 0.15
          local tLeadDist = tSpeedNow * tDurEst
-         local _, tDist = SkuNav:Distance(fPlayerPosX, fPlayerPosY, tData.worldX, tData.worldY)
+         local _, tDist = SkuNav:Distance(fPlayerPosX, fPlayerPosY, aWorldX, aWorldY)
          if tDist and tDist > 0 then
             tLeadDist = math.min(tLeadDist, tDist * 0.5)
          end
          local tFacingNow = GetPlayerFacing()
          local tPredX = fPlayerPosX + math.cos(tFacingNow) * tLeadDist
          local tPredY = fPlayerPosY + math.sin(tFacingNow) * tLeadDist
-         local _, _, tLeadDegree = SkuNav.Geo:GetDirectionTo(tPredX, tPredY, tData.worldX, tData.worldY)
+         local _, _, tLeadDegree = SkuNav.Geo:GetDirectionTo(tPredX, tPredY, aWorldX, aWorldY)
          if tLeadDegree then
             dprint("TurnToWp lead", "v", string.format("%.1f", tSpeedNow),
                "leadDist", string.format("%.1f", tLeadDist),
@@ -270,7 +279,7 @@ function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
          -- MouselookStop ist einen Frame zu frueh. Diese Zeile trennt die
          -- beiden Faelle: aendert sich facing bis +1s, war es die Messung.
          local tPx, tPy = UnitPosition("player")
-         local _, _, tRestLater = SkuNav.Geo:GetDirectionTo(tPx, tPy, tData.worldX, tData.worldY)
+         local _, _, tRestLater = SkuNav.Geo:GetDirectionTo(tPx, tPy, aWorldX, aWorldY)
          dprint("TurnToWp +1s", "facing start", tFacingAtStart, "jetzt", GetPlayerFacing(),
             "startdegree", degree, "restdegree jetzt", tRestLater,
             "swim", tostring(IsSwimming()), "fly", tostring(IsFlying()),
@@ -378,6 +387,19 @@ function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
             end)
          end
       end)
+      return true
+   end
+   return false
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
+   aWaypointName = aWaypointName or SkuOptions.db.profile["SkuNav"].selectedWaypoint
+   if aWaypointName and aWaypointName ~= "" then
+      local tData = SkuNav:GetWaypointData2(aWaypointName)
+      if tData then
+         GameWorldObjects:TurnToWorldPosition(tData.worldX, tData.worldY, aWaypointName)
+      end
    end
 end
 

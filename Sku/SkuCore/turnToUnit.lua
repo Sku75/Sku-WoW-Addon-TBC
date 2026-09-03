@@ -215,7 +215,12 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function TurnToUnit:TurnToUnit_NAME_PLATE_UNIT_ADDED(aEvent, aNameplateId)
-   if TurnToUnit.searching == true then
+   -- [v43.3] Wie die beiden anderen Handler auf time ~= -1 gatten: nur die
+   -- laufende Plate-SUCHE setzt time > 0. Ohne das Gate feuerte der Handler
+   -- in jedem Zustand mit searching == true und wuergte eine fremde Drehung
+   -- mitten in der Fahrt ab (StopSearch: Transfer-Impuls einer halben Drehung
+   -- plus SetView auf einen in dem Pfad nie gesicherten Slot).
+   if TurnToUnit.searching == true and TurnToUnit.time ~= -1 then
       local tFound = false
       if TurnToUnit.unit then
          if C_NamePlate.GetNamePlateForUnit(TurnToUnit.unit) then 
@@ -248,11 +253,69 @@ function TurnToUnit:TurnToUnit_NAME_PLATE_UNIT_ADDED(aEvent, aNameplateId)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.3] Marker oder Einheit zu einem konkreten Unit-Token aufloesen, damit
+-- die Koordinaten-Drehung unten eine Position abfragen kann. Ansatz nach
+-- PR #17 (Yennesta): erst die festen Tokens (target/focus/mouseover/party/
+-- raid), dann die sichtbaren Nameplates.
+local function ResolveTurnUnit(aUnitId, aGameMarker, aSkuMarker)
+   if aUnitId and UnitExists(aUnitId) then return aUnitId end
+
+   local function tMatches(aCandidate)
+      if not aCandidate or not UnitExists(aCandidate) then return false end
+      if aGameMarker and GetRaidTargetIndex(aCandidate) == aGameMarker then return true end
+      if aSkuMarker and UnitGUID(aCandidate) and SkuCore.aqCombat and SkuCore.aqCombat.aqCombatGetSkuRaidTarget then
+         local tOk, tMarker = pcall(SkuCore.aqCombat.aqCombatGetSkuRaidTarget, SkuCore.aqCombat, UnitGUID(aCandidate))
+         if tOk and tMarker == aSkuMarker then return true end
+      end
+      return false
+   end
+
+   local tFixedUnits = {"target", "focus", "mouseover"}
+   for x = 1, 4 do tFixedUnits[#tFixedUnits + 1] = "party"..x end
+   for x = 1, 40 do tFixedUnits[#tFixedUnits + 1] = "raid"..x end
+   for _, tUnitId in ipairs(tFixedUnits) do
+      if tMatches(tUnitId) then return tUnitId end
+   end
+
+   if C_NamePlate and C_NamePlate.GetNamePlates then
+      for _, tPlate in ipairs(C_NamePlate.GetNamePlates()) do
+         local tUnitId = tPlate.namePlateUnitToken or (tPlate.UnitFrame and tPlate.UnitFrame.unit)
+         if tMatches(tUnitId) then return tUnitId end
+      end
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function TurnToUnit:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
    if not TurnToUnit:IsEnabled() then return end
    if (aUnitId and UnitName(aUnitId) == nil) or TurnToUnit.searching == true then
       SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnFail, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
       return
+   end
+
+   -- [v43.3] Koordinaten-Drehung zuerst: liefert WoW eine Position fuer die
+   -- gewuenschte Einheit, dreht DERSELBE getestete Kern wie "zum Beacon
+   -- drehen" (GameWorldObjects:TurnToWorldPosition) - deterministisch, in die
+   -- kuerzere Richtung, maximal 0.25 s, mit Vorhalten, Guards und Impulsen.
+   -- Die Plate-Suche unten bleibt der Fallback fuer Einheiten ohne
+   -- Koordinaten (v. a. Instanzen: UnitPosition liefert dort nil). Idee aus
+   -- PR #17 (Yennesta), hier auf dem geteilten Kern statt als Kopie.
+   -- searching wird in diesem Pfad bewusst NICHT gesetzt - das wuerde die
+   -- Plate-Handler scharf schalten; die Wiedereintritts-Sperre ist der
+   -- Busy-Guard im Dreh-Kern selbst.
+   local tResolvedUnit = ResolveTurnUnit(aUnitId, aGameMarker, aSkuMarker)
+   if tResolvedUnit then
+      local tPlayerX, tPlayerY, _, tPlayerInstance = UnitPosition("player")
+      local tTargetX, tTargetY, _, tTargetInstance = UnitPosition(tResolvedUnit)
+      if tPlayerX and tTargetX and tPlayerInstance == tTargetInstance
+         and (tPlayerX ~= tTargetX or tPlayerY ~= tTargetY) and GetPlayerFacing() then
+         if SkuCore.GameWorldObjects:TurnToWorldPosition(tTargetX, tTargetY, "unit "..tostring(tResolvedUnit)) then
+            SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnSuccess, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
+         end
+         -- Auch bei false (eine Drehung laeuft noch) NICHT in die Plate-
+         -- Suche fallen: still verwerfen, wie beim Beacon-Mehrfachdruecken.
+         return
+      end
    end
 
    -- CursorCenteredYPos wurde frueher gesetzt und nie zurueckgegeben (es ist
