@@ -7,7 +7,10 @@ set -o pipefail
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 
 APP_NAME="Sku Installer und Updater"
-APP_VERSION="5.4.0"
+# 5.0: renumbered onto the shared Windows/macOS installer versioning before the
+# first public macOS release (nothing deployed compares against the old 5.4.0);
+# both platforms ship the managed-addons rework as 5.0.
+APP_VERSION="5.0"
 REPO="Sku75/Sku-WoW-Addon-TBC"
 FALLBACK_MAIN_VERSION="43.3"
 COMPANION_TAG="v41.02.05"
@@ -366,27 +369,50 @@ install_package() {
 }
 
 preference_enabled() {
-    [ "$(read_preference "$1")" != "Nein" ]
+    local value
+    value="$(read_preference "$1")"
+    if [ -z "$value" ]; then
+        # No stored choice yet: everything defaults ON except Pawn (gear-weighting
+        # advice is taste, not a baseline accessibility need).
+        case "$1" in ManagePawn) return 1 ;; esac
+        return 0
+    fi
+    [ "$value" != "Nein" ]
 }
 
 all_package_roots_exist() {
-    local root
+    # Pattern entries ("DBM-*") only widen validation; presence is required only
+    # of the literally named roots. set -f keeps the patterns from globbing
+    # against the current directory.
+    local root ok=0
+    set -f
     for root in $1; do
-        [ -d "$ADDONS_FOLDER/$root" ] || return 1
+        case "$root" in *\**) continue ;; esac
+        [ -d "$ADDONS_FOLDER/$root" ] || { ok=1; break; }
     done
+    set +f
+    return "$ok"
 }
 
 package_root_allowed() {
+    # Entries in the allowlist may be shell patterns ("DBM-*"): a future DBM
+    # release adding a sub-folder must not fail validation. set -f stops the
+    # pattern from globbing against the current directory on expansion; case
+    # still pattern-matches it against the candidate.
     local candidate="$1" allowed="$2" root
+    set -f
     for root in $allowed; do
-        [ "$candidate" = "$root" ] && return 0
+        case "$candidate" in
+            $root) set +f; return 0 ;;
+        esac
     done
+    set +f
     return 1
 }
 
 install_curated_package() {
     local key="$1" label="$2" version="$3" url="$4" expected_sha="$5" roots="$6"
-    local current zip staging actual root entry backup new_target failed=0
+    local current zip staging actual root entry backup new_target actual_roots failed=0
     current="$(manifest_tag "$key")"
 
     if [ "$FORCE_INSTALL" != "1" ] && [ "$current" = "$version" ] && all_package_roots_exist "$roots"; then
@@ -425,8 +451,24 @@ EOF
         log "$label: symbolischer Link im Archiv erkannt; Paket wird abgelehnt."
         return 1
     fi
+
+    # Presence is required only of the literally named roots; pattern entries
+    # ("DBM-*") merely widen what the archive may additionally contain.
+    set -f
     for root in $roots; do
-        [ -d "$staging/$root" ] || { log "$label: erwarteter Ordner $root fehlt."; return 1; }
+        case "$root" in *\**) continue ;; esac
+        [ -d "$staging/$root" ] || { set +f; log "$label: erwarteter Ordner $root fehlt."; return 1; }
+    done
+    set +f
+
+    # Installed is what the archive actually ships (already validated against
+    # the allowlist above) — so a new sub-folder in a future release lands
+    # instead of silently missing.
+    actual_roots="$(/usr/bin/find "$staging" -mindepth 1 -maxdepth 1 -type d -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"
+    [ -n "$actual_roots" ] || { log "$label: Archiv enthaelt keine Add-on-Ordner."; return 1; }
+
+    while IFS= read -r root; do
+        [ -n "$root" ] || continue
         [ -n "$(/usr/bin/find "$staging/$root" -maxdepth 1 -type f -name '*.toc' -print -quit)" ] || {
             log "$label: $root enthaelt keine Add-on-TOC-Datei."
             return 1
@@ -437,20 +479,26 @@ EOF
         [ ! -e "$backup" ] && [ ! -e "$new_target" ] || { log "$label: unerwarteter Sicherungspfad fuer $root."; return 1; }
         /usr/bin/ditto "$staging/$root" "$new_target" >>"$LOG_FILE" 2>&1 || failed=1
         [ "$failed" = "0" ] || break
-    done
+    done <<EOF
+$actual_roots
+EOF
 
     if [ "$failed" = "0" ]; then
-        for root in $roots; do
+        while IFS= read -r root; do
+            [ -n "$root" ] || continue
             backup="$ADDONS_FOLDER/.${root}.old-$$"
             new_target="$ADDONS_FOLDER/.${root}.new-$$"
             if [ -d "$ADDONS_FOLDER/$root" ]; then /bin/mv "$ADDONS_FOLDER/$root" "$backup" || { failed=1; break; }; fi
             /bin/mv "$new_target" "$ADDONS_FOLDER/$root" || { failed=1; break; }
-        done
+        done <<EOF
+$actual_roots
+EOF
     fi
 
     if [ "$failed" != "0" ]; then
         log "$label: Austausch fehlgeschlagen; vorherige Fassung wird wiederhergestellt."
-        for root in $roots; do
+        while IFS= read -r root; do
+            [ -n "$root" ] || continue
             backup="$ADDONS_FOLDER/.${root}.old-$$"
             new_target="$ADDONS_FOLDER/.${root}.new-$$"
             [ -e "$new_target" ] && /bin/rm -rf "$new_target"
@@ -458,14 +506,19 @@ EOF
                 [ -e "$ADDONS_FOLDER/$root" ] && /bin/rm -rf "$ADDONS_FOLDER/$root"
                 /bin/mv "$backup" "$ADDONS_FOLDER/$root"
             fi
-        done
+        done <<EOF
+$actual_roots
+EOF
         return 1
     fi
 
-    for root in $roots; do
+    while IFS= read -r root; do
+        [ -n "$root" ] || continue
         backup="$ADDONS_FOLDER/.${root}.old-$$"
         [ -d "$backup" ] && /bin/rm -rf "$backup"
-    done
+    done <<EOF
+$actual_roots
+EOF
     record_manifest "$key" "$version"
     log "$label wurde installiert ($version)."
 }
@@ -538,6 +591,51 @@ install_anniversary_addons() {
         [ -n "$version" ] || { version="2.13.15"; url="https://edge.forgecdn.net/files/8671/944/Pawn-2.13.15-BurningCrusade.zip"; sha="412a77ae5007aa00cf50ae91272f0af84262c63c0b70144906dedc0ab8d39750"; }
         install_curated_package "CursePawnTBC" "Pawn" "$version" "$url" "$sha" \
             "Pawn" || failures=$((failures + 1))
+    fi
+    if preference_enabled "ManageDBM"; then
+        # ONE user-facing entry, three release packages: the core zip carries no
+        # TBC bosses — raids and dungeons ship from their own repositories.
+        release="$(github_release_asset "DeadlyBossMods/DeadlyBossMods" "DBM-Core-" || true)"
+        version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
+        url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
+        sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
+        [ -n "$version" ] || { version="12.1.8"; url="https://github.com/DeadlyBossMods/DeadlyBossMods/releases/download/12.1.8/DBM-Core-12.1.8.zip"; sha="980e833949071ba6359e6d5f326a5d51c1134010299cb7b7a6f9599c9df3e755"; }
+        install_curated_package "DBMCore" "Deadly Boss Mods" "$version" "$url" "$sha" \
+            "DBM-Core DBM-GUI DBM-StatusBarTimers DBM-*" || failures=$((failures + 1))
+        release="$(github_release_asset "DeadlyBossMods/DBM-BurningCrusade" "DBM-Raids-BC-" || true)"
+        version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
+        url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
+        sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
+        [ -n "$version" ] || { version="19"; url="https://github.com/DeadlyBossMods/DBM-BurningCrusade/releases/download/r19/DBM-Raids-BC-r19.zip"; sha="5c6d3567018c0770653c8c9b82e3393411d0eea4405dd41445b7ff2e2406a32a"; }
+        install_curated_package "DBMRaidsBC" "Deadly Boss Mods Schlachtzuege" "$version" "$url" "$sha" \
+            "DBM-Raids-BC DBM-*" || failures=$((failures + 1))
+        release="$(github_release_asset "DeadlyBossMods/DBM-Dungeons" "DBM-Dungeons-" || true)"
+        version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
+        url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
+        sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
+        [ -n "$version" ] || { version="261"; url="https://github.com/DeadlyBossMods/DBM-Dungeons/releases/download/r261/DBM-Dungeons-r261.zip"; sha="4cdf4afa9d058da384a170095381041e7925730aba8b731d3e89ea5087afee09"; }
+        install_curated_package "DBMDungeons" "Deadly Boss Mods Dungeons" "$version" "$url" "$sha" \
+            "DBM-Party-BC DBM-*" || failures=$((failures + 1))
+    fi
+    if preference_enabled "ManageGTFO"; then
+        install_curated_package "CurseGTFO" "GTFO" "6.9.1" \
+            "https://edge.forgecdn.net/files/8729/407/GTFO-6.9.1.zip" \
+            "a82d14b214f3a423ef99f5e7d9edbd7a186c552d9c5aa5ee1c75e92bf4aa18ae" \
+            "GTFO" || failures=$((failures + 1))
+    fi
+    if preference_enabled "ManageBugSack"; then
+        # The pair is one decision: BugSack without BugGrabber does nothing.
+        release="$(github_release_asset "funkydude/BugSack" "BugSack-v" || true)"
+        version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
+        url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
+        sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
+        [ -n "$version" ] || { version="12.0.13"; url="https://github.com/funkydude/BugSack/releases/download/v12.0.13/BugSack-v12.0.13.zip"; sha="e62c9a35bbfdca89dd4b66016e7828d3dd145ad9b7cdde2a62acdec1fc7bbb9b"; }
+        install_curated_package "BugSack" "BugSack" "$version" "$url" "$sha" \
+            "BugSack" || failures=$((failures + 1))
+        install_curated_package "CurseBugGrabber" "BugGrabber" "12.0.21" \
+            "https://edge.forgecdn.net/files/8619/054/%21BugGrabber-v12.0.21.zip" \
+            "f031635ad509b8597b9f35bc94ae032ecf6f3292aaa9baa80b56bde3d8738520" \
+            "!BugGrabber" || failures=$((failures + 1))
     fi
     return "$failures"
 }
@@ -657,7 +755,10 @@ EOF
             [ -n "$source" ] || source="GitHub"
             [ -n "$source_id" ] || source_id="$REPO"
             ;;
-        Questie|AtlasLootClassic|"Details Damage Meter"|Pawn)
+        Questie|Pawn|"Deadly Boss Mods"|"BugSack + BugGrabber")
+            [ -n "$source" ] || source="GitHub"
+            ;;
+        AtlasLootClassic|"Details Damage Meter"|GTFO)
             [ -n "$source" ] || source="CurseForge"
             ;;
     esac
@@ -681,7 +782,8 @@ addon_inventory() {
         [ -d "$folder" ] && [ ! -L "$folder" ] || continue
         base="$(basename "$folder")"
         case "$base" in
-            !BugGrabber|BugSack|GTFO) continue ;;
+            !BugGrabber|BugSack) roots="$(/usr/bin/find "$ADDONS_FOLDER" -mindepth 1 -maxdepth 1 -type d \( -name 'BugSack' -o -name '!BugGrabber' \) -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"; name="BugSack + BugGrabber" ;;
+            DBM-*) roots="$(/usr/bin/find "$ADDONS_FOLDER" -mindepth 1 -maxdepth 1 -type d -name 'DBM-*' -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"; name="Deadly Boss Mods" ;;
             Details|Details_*) roots="$(/usr/bin/find "$ADDONS_FOLDER" -mindepth 1 -maxdepth 1 -type d -name 'Details*' -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"; name="Details Damage Meter" ;;
             AtlasLootClassic|AtlasLootClassic_*) roots="$(/usr/bin/find "$ADDONS_FOLDER" -mindepth 1 -maxdepth 1 -type d -name 'AtlasLootClassic*' -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"; name="AtlasLootClassic" ;;
             SkuCustomBeaconsEssential|SkuCustomBeaconsAdditional) roots="$(printf '%s\n' SkuCustomBeaconsEssential SkuCustomBeaconsAdditional)"; name="Sku Custom Beacons" ;;
@@ -708,7 +810,7 @@ addon_inventory() {
 }
 
 addon_update_status_json() {
-    local selected release questie pawn questie_current pawn_current atlas_current details_current
+    local selected release questie pawn dbm bugsack
     selected="${SKU_ADDONS_FOLDER_OVERRIDE:-$(read_preference "SelectedAddonsFolder")}"
     ADDONS_FOLDER="$(normalize_addons_folder "$selected" || true)"
     [ -n "$ADDONS_FOLDER" ] && [ -d "$ADDONS_FOLDER" ] || return 1
@@ -716,14 +818,18 @@ addon_update_status_json() {
     questie="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$questie" ] || questie="11.37.1"
     release="$(github_release_asset "VgerMods/Pawn" "BurningCrusade" || true)"
     pawn="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$pawn" ] || pawn="2.13.15"
-    questie_current="$(manifest_tag "CurseQuestie")"
-    atlas_current="$(manifest_tag "CurseAtlasLootAnniversary")"
-    details_current="$(manifest_tag "CurseDetailsTBC")"
-    pawn_current="$(manifest_tag "CursePawnTBC")"
-    printf '{"Questie":{"latest":"%s","installed":"%s"},' "$(json_escape "$questie")" "$(json_escape "$questie_current")"
-    printf '"AtlasLoot":{"latest":"2.5.6.12334","installed":"%s"},' "$(json_escape "$atlas_current")"
-    printf '"Details":{"latest":"20260707.15250.172_TBC","installed":"%s"},' "$(json_escape "$details_current")"
-    printf '"Pawn":{"latest":"%s","installed":"%s"}}\n' "$(json_escape "$pawn")" "$(json_escape "$pawn_current")"
+    release="$(github_release_asset "DeadlyBossMods/DeadlyBossMods" "DBM-Core-" || true)"
+    dbm="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$dbm" ] || dbm="12.1.8"
+    release="$(github_release_asset "funkydude/BugSack" "BugSack-v" || true)"
+    bugsack="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$bugsack" ] || bugsack="12.0.13"
+    printf '{"Questie":{"latest":"%s","installed":"%s"},' "$(json_escape "$questie")" "$(json_escape "$(manifest_tag "CurseQuestie")")"
+    printf '"AtlasLoot":{"latest":"2.5.6.12334","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseAtlasLootAnniversary")")"
+    printf '"Details":{"latest":"20260707.15250.172_TBC","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseDetailsTBC")")"
+    printf '"Pawn":{"latest":"%s","installed":"%s"},' "$(json_escape "$pawn")" "$(json_escape "$(manifest_tag "CursePawnTBC")")"
+    printf '"DBM":{"latest":"%s","installed":"%s"},' "$(json_escape "$dbm")" "$(json_escape "$(manifest_tag "DBMCore")")"
+    printf '"GTFO":{"latest":"6.9.1","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseGTFO")")"
+    printf '"BugSack":{"latest":"%s","installed":"%s"},' "$(json_escape "$bugsack")" "$(json_escape "$(manifest_tag "BugSack")")"
+    printf '"BugGrabber":{"latest":"12.0.21","installed":"%s"}}\n' "$(json_escape "$(manifest_tag "CurseBugGrabber")")"
 }
 
 collect_logs() {

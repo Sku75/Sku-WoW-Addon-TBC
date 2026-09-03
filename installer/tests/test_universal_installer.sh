@@ -18,12 +18,24 @@ import sys
 
 catalog = json.load(open(sys.argv[1], encoding="utf-8"))
 channel = json.load(open(sys.argv[2], encoding="utf-8"))
-assert catalog["schemaVersion"] == 1
+assert catalog["schemaVersion"] == 2
 assert channel["schemaVersion"] == 1
 assert set(channel["platforms"]) == {"windows-x64", "macos-universal"}
 assert catalog["mainAddon"]["key"] == "Sku"
-assert set(catalog["inventory"]["hiddenPackages"]) == {"!BugGrabber", "BugSack", "GTFO"}
-assert len(catalog["managedAnniversaryAddons"]) == 4
+# Since installer 5.0 the error/warning addons are MANAGED, not hidden.
+assert catalog["inventory"]["hiddenPackages"] == []
+entries = catalog["managedAnniversaryAddons"]
+assert [e["prefKey"] for e in entries] == [
+    "ManageQuestie", "ManageAtlasLoot", "ManageDetails", "ManagePawn",
+    "ManageDBM", "ManageGTFO", "ManageBugSack",
+]
+# DBM is ONE entry bundling three release packages; the BugSack pair two.
+assert len([p for e in entries for p in e["packages"]]) == 10
+for entry in entries:
+    for package in entry["packages"]:
+        assert package["fallbackUrl"].startswith("https://")
+        assert len(package["fallbackSha256"]) == 64
+        assert package["requiredRoots"], package["key"]
 PY
 
 # The download page carries one clearly labeled link per platform.

@@ -15,6 +15,17 @@ namespace SkuInstaller
         public bool InstallSapi2Sr = true;
         public bool InstallLoginTool = true;
 
+        /// <summary>
+        /// Which managed third-party entries to handle, keyed by
+        /// <see cref="ManagedEntry.PrefKey"/>. Null = load the persisted choices
+        /// (<see cref="ManagedPrefs"/>) — the one-click path.
+        /// </summary>
+        public System.Collections.Generic.Dictionary<string, bool> ManagedEnabled;
+
+        /// <summary>The effective managed choices, loading the persisted store on demand.</summary>
+        public System.Collections.Generic.Dictionary<string, bool> EffectiveManaged()
+            => ManagedEnabled ?? (ManagedEnabled = ManagedPrefs.Load());
+
         /// <summary>Reinstall everything, ignoring version checks (repair).</summary>
         public bool Force = false;
     }
@@ -135,7 +146,7 @@ namespace SkuInstaller
                 {
                     var manifest = InstallManifest.Load(target.AddOnsPath);
                     var installer = new AddonInstaller(target.AddOnsPath, _github, manifest, OnProgress);
-                    result.Plan = BuildPlanFor(target.AddOnsPath, installer, manifest);
+                    result.Plan = BuildPlanFor(target, installer, manifest);
                 }
                 catch (Exception ex)
                 {
@@ -199,6 +210,19 @@ namespace SkuInstaller
                         SayScoped(Loc.Format("status.installingAddon", item.Spec.DisplayName), true);
                         installer.InstallAddonAsync(item.Spec, item.Resolved, _options.Force, _cancel)
                                  .GetAwaiter().GetResult();
+                    }
+
+                    if (WasCancelled) break;
+
+                    foreach (var managed in r.Plan.ManagedItems)
+                    {
+                        if (_cancel.IsCancellationRequested) { WasCancelled = true; break; }
+
+                        SayScoped(Loc.Format("status.installingAddon", managed.Entry.DisplayName), true);
+                        ManagedAddonInstaller.InstallEntryAsync(
+                                r.Target.AddOnsPath, managed.Entry, _github, manifest,
+                                OnProgress, _options.Force, _cancel)
+                            .GetAwaiter().GetResult();
                     }
 
                     if (WasCancelled) break;
@@ -319,9 +343,10 @@ namespace SkuInstaller
         /// settings must be written, and whether any TOC interface line has
         /// drifted from the client build.
         /// </summary>
-        private InstallPlan BuildPlanFor(string addonsFolder, AddonInstaller installer,
+        private InstallPlan BuildPlanFor(InstallTarget target, AddonInstaller installer,
                                          InstallManifest manifest)
         {
+            string addonsFolder = target.AddOnsPath;
             int langIdx = Math.Max(0, _options.LanguagePackIndex);
             var work = new List<AddonSpec>(Config.CoreAddons) { Config.LanguagePacks[langIdx] };
 
@@ -349,6 +374,24 @@ namespace SkuInstaller
                     plan.Items.Add(item);
                     if (AddonInstaller.RequiresGameClosed(item))
                         plan.NeedsGameClosed = true;
+                }
+            }
+
+            // Managed third-party addons — Anniversary only, like on macOS. Any
+            // work here forces the game closed: these are whole-folder swaps of
+            // addons (with sounds) the running client may hold open.
+            if (ManagedAddons.AppliesTo(target))
+            {
+                var enabled = _options.EffectiveManaged();
+                foreach (var entry in ManagedAddons.Entries)
+                {
+                    if (!enabled.TryGetValue(entry.PrefKey, out bool on) || !on) continue;
+                    bool installed = ManagedAddons.EntryInstalled(addonsFolder, entry);
+                    if (_options.Force || ManagedAddons.EntryNeedsWork(addonsFolder, manifest, entry))
+                    {
+                        plan.ManagedItems.Add(new ManagedPlanItem { Entry = entry, FirstInstall = !installed });
+                        plan.NeedsGameClosed = true;
+                    }
                 }
             }
 
@@ -433,7 +476,14 @@ namespace SkuInstaller
                         string ver = (item.Resolved?.Tag ?? "").TrimStart('v', 'V');
                         lines.Add(Loc.Format("summary.updated", item.Spec.DisplayName, ver));
                     }
-                    if (r.Plan.Items.Count == 0)
+                    foreach (var managed in r.Plan.ManagedItems)
+                    {
+                        var first = managed.Entry.Packages[0];
+                        string ver = ManagedAddons.Resolved(first).Version ?? "";
+                        lines.Add(Loc.Format("summary.updated", managed.Entry.DisplayName,
+                                             ver.TrimStart('v', 'V')));
+                    }
+                    if (r.Plan.Items.Count == 0 && r.Plan.ManagedItems.Count == 0)
                         lines.Add(Loc.Get("summary.addonsCurrent"));
                     if (r.Plan.SettingsNeedWriting)
                         lines.Add(Loc.Get("summary.settings"));

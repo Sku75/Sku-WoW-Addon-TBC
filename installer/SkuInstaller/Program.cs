@@ -68,6 +68,13 @@ namespace SkuInstaller
             // build-time pin stays in effect.
             GitHubClient.ResolveAndAdoptLatestMainVersion();
 
+            // Resolve the managed third-party addons' newest releases too (Questie,
+            // DBM, BugSack, Pawn — the ones with GitHub releases), in parallel and
+            // time-boxed; anything unresolved stays on its baked-in pin. Runs before
+            // the opening screen so it can report their pending updates.
+            using (var github = new GitHubClient())
+                ManagedAddons.ResolveAll(github, TimeSpan.FromSeconds(10));
+
             var targets = InstallTarget.BuildAll();
             ApplyPathArgument(targets, pathArg);
 

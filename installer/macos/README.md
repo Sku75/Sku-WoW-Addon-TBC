@@ -12,15 +12,20 @@ Native macOS-Portierung des offiziellen Windows-Installers aus
 - Keine Downgrades, keine Schreibzugriffe durch Symlinks und keine halbfertigen Installationen.
 - Installations- und Selbstupdates nur nach Integritätsprüfung.
 - Kuratierte, barrierefrei auswählbare AddOn-Aktualisierung für Anniversary:
-  Questie, AtlasLootClassic Anniversary, Details! Damage Meter und Pawn.
+  Questie, AtlasLootClassic Anniversary, Details! Damage Meter, Deadly Boss
+  Mods, GTFO, BugSack + BugGrabber und Pawn.
 - Alphabetisch sortierte Bestandsaufnahme installierter AddOn-Pakete mit
   Version, erkannter Quelle und Hinweis auf unbekannte oder doppelte Ordner.
 
 ## Anniversary-AddOns
 
-Version 5 verwaltet auf Wunsch vier CurseForge-Pakete für den erkannten
-`_anniversary_`-Client. Andere WoW-Versionen bleiben davon unberührt. Die
-Auswahl wird in den Installer-Einstellungen gespeichert.
+Version 5 verwaltet auf Wunsch sieben bekannte AddOns für den erkannten
+`_anniversary_`-Client: Questie, AtlasLootClassic Anniversary, Details! Damage
+Meter, Deadly Boss Mods (Kern-, Schlachtzugs- und Dungeon-Pakete als EIN
+Eintrag), GTFO, das Paar BugSack + BugGrabber sowie Pawn. Andere WoW-Versionen
+bleiben davon unberührt. Die Auswahl wird in den Installer-Einstellungen
+gespeichert; alle Einträge sind vorgewählt, nur Pawn ist standardmäßig
+abgewählt.
 
 Beim Start fasst die Statuszeile Sku und alle ausgewählten Anniversary-AddOns
 zusammen. Sind Aktualisierungen nötig, nennt sie ausschließlich die betroffenen
@@ -33,11 +38,13 @@ ZIP-Pfade, die vollständige Liste erlaubter AddOn-Ordner und vorhandene
 eine Transaktion ersetzt; bei einem Fehler wird die vorherige Installation
 wiederhergestellt. Dateien unter `WTF` werden dabei nicht verändert.
 
-Questie und Pawn werden dynamisch über ihre offiziellen GitHub Releases
-ermittelt. Der Installer wählt das passende Release-ZIP und übernimmt dessen
-von GitHub veröffentlichten SHA-256-Digest. AtlasLootClassic Anniversary und
-Details! verwenden weiterhin geprüfte Katalogeinträge, weil CurseForge seine
-öffentliche Dateiliste ohne API-Schlüssel nicht maschinenlesbar bereitstellt.
+Questie, Pawn, Deadly Boss Mods und BugSack werden dynamisch über ihre
+offiziellen GitHub Releases ermittelt. Der Installer wählt das passende
+Release-ZIP und übernimmt dessen von GitHub veröffentlichten SHA-256-Digest.
+AtlasLootClassic Anniversary, Details!, GTFO und BugGrabber verwenden weiterhin
+geprüfte Katalogeinträge mit fester Version, URL und Prüfsumme, weil diese
+Projekte keine GitHub Releases veröffentlichen und CurseForge seine öffentliche
+Dateiliste ohne API-Schlüssel nicht maschinenlesbar bereitstellt.
 
 ## AddOn-Inventar
 
@@ -48,10 +55,9 @@ TOC-Feldern `X-Curse-Project-ID`, `X-Wago-ID` und `X-WoWI-ID` sowie den
 Sku-Installer-Feldern `X-SkuInstaller-Provider` und
 `X-SkuInstaller-Project` erkannt. Nicht zugeordnete Pakete und möglicherweise
 doppelte, mit einer Versionsnummer benannte Ordner werden deutlich markiert.
-Die Diagnosewerkzeuge `!BugGrabber` und `BugSack` sowie `GTFO` bleiben
-installiert, erscheinen aber nicht als selbstständig verwaltete Pakete und
-werden vom Sku Installer nicht aktualisiert. Vorhandene Sku-Sprachpakete werden
-dem Hauptpaket `Sku` zugerechnet.
+`BugSack` und `!BugGrabber` erscheinen als EIN Paket, ebenso alle
+`DBM-*`-Ordner als „Deadly Boss Mods“. Vorhandene Sku-Sprachpakete werden dem
+Hauptpaket `Sku` zugerechnet.
 
 ## Plattformersetzungen
 

@@ -182,6 +182,12 @@ namespace SkuInstaller
             ["opt.force.label"]      = "Reinstall everything (repair)",
             ["opt.force.desc"]       = "Downloads and replaces every addon even when it is already current. Use this to repair a broken install — it takes considerably longer.",
 
+            ["managed.label"]        = "Additional recommended addons (Anniversary only)",
+            ["managed.acc"]          = "Additional recommended addons. These well-known addons are installed and kept up to date together with Sku, in the Anniversary client only. Space toggles the highlighted addon.",
+            ["update.managedUpdates"]  = "Updates available for additional addons: {0}.",
+            ["update.managedInstalls"] = "Additional addons that will be installed: {0}.",
+            ["managed.badHash"]      = "{0}: the download failed its integrity check and was not installed.",
+
             // ── progress ─────────────────────────────────────────────────────
             ["progress.heading"]          = "Installing Sku",
             ["progress.starting"]         = "Starting…",
@@ -395,6 +401,12 @@ namespace SkuInstaller
             ["opt.loginTool.desc"]   = "Ein eigenes Programm, das Login-, Server- und Charakterbildschirm ein Audiomenü gibt. Diese Bildschirme sind von sich aus nicht zugänglich.",
             ["opt.force.label"]      = "Alles neu installieren (Reparatur)",
             ["opt.force.desc"]       = "Lädt jedes AddOn erneut herunter und ersetzt es, auch wenn es bereits aktuell ist. Für die Reparatur einer defekten Installation – dauert deutlich länger.",
+
+            ["managed.label"]        = "Zusätzliche empfohlene AddOns (nur Anniversary)",
+            ["managed.acc"]          = "Zusätzliche empfohlene AddOns. Diese bekannten AddOns werden zusammen mit Sku installiert und aktuell gehalten, nur im Anniversary-Client. Die Leertaste schaltet das markierte AddOn um.",
+            ["update.managedUpdates"]  = "Updates für zusätzliche AddOns verfügbar: {0}.",
+            ["update.managedInstalls"] = "Zusätzliche AddOns, die neu installiert werden: {0}.",
+            ["managed.badHash"]      = "{0}: Der Download hat die Integritätsprüfung nicht bestanden und wurde nicht installiert.",
 
             // ── Fortschritt ──────────────────────────────────────────────────
             ["progress.heading"]          = "Sku wird installiert",
@@ -615,6 +627,12 @@ namespace SkuInstaller
             ["opt.loginTool.desc"]   = "Un programme séparé qui donne un menu audio aux écrans de connexion, de serveur et de personnage. Ces écrans ne sont pas accessibles par eux-mêmes.",
             ["opt.force.label"]      = "Tout réinstaller (réparation)",
             ["opt.force.desc"]       = "Télécharge et remplace chaque addon même s'il est déjà à jour. À utiliser pour réparer une installation défectueuse — c'est nettement plus long.",
+
+            ["managed.label"]        = "Addons supplémentaires recommandés (Anniversary uniquement)",
+            ["managed.acc"]          = "Addons supplémentaires recommandés. Ces addons connus sont installés et maintenus à jour avec Sku, uniquement dans le client Anniversary. La barre d'espace bascule l'addon en surbrillance.",
+            ["update.managedUpdates"]  = "Mises à jour disponibles pour les addons supplémentaires : {0}.",
+            ["update.managedInstalls"] = "Addons supplémentaires qui seront installés : {0}.",
+            ["managed.badHash"]      = "{0} : le téléchargement a échoué au contrôle d'intégrité et n'a pas été installé.",
 
             // ── progression ──────────────────────────────────────────────────
             ["progress.heading"]          = "Installation de Sku",

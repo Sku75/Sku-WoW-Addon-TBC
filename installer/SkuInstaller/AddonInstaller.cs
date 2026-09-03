@@ -22,6 +22,13 @@ namespace SkuInstaller
         public bool FirstInstall;  // target folder doesn't exist yet
     }
 
+    /// <summary>One managed third-party entry that needs installing/updating this run.</summary>
+    public class ManagedPlanItem
+    {
+        public ManagedEntry Entry;
+        public bool FirstInstall;  // some required folder doesn't exist yet
+    }
+
     /// <summary>
     /// The decided work for a run: what to install, and whether the game must be
     /// fully closed first (true if any item is a large media addon or a brand-new
@@ -31,6 +38,11 @@ namespace SkuInstaller
     {
         public System.Collections.Generic.List<PlanItem> Items =
             new System.Collections.Generic.List<PlanItem>();
+
+        /// <summary>Managed third-party addons (Anniversary only) needing work this run.</summary>
+        public System.Collections.Generic.List<ManagedPlanItem> ManagedItems =
+            new System.Collections.Generic.List<ManagedPlanItem>();
+
         public bool NeedsGameClosed;
 
         /// <summary>Required game-client CVars that are currently wrong and need writing.</summary>
@@ -49,7 +61,8 @@ namespace SkuInstaller
             new System.Collections.Generic.List<string>();
 
         /// <summary>True if there's anything to do at all (addons, settings, or TOC sync).</summary>
-        public bool HasWork => Items.Count > 0 || SettingsNeedWriting || TocInterfaceNeedsSync;
+        public bool HasWork => Items.Count > 0 || ManagedItems.Count > 0 ||
+                               SettingsNeedWriting || TocInterfaceNeedsSync;
     }
 
     /// <summary>
@@ -423,7 +436,7 @@ namespace SkuInstaller
         /// folder is removed and the old one restored. Only call with the game
         /// closed (a running game can hold files open and break the rename).
         /// </summary>
-        private static void CleanReplace(string source, string target)
+        internal static void CleanReplace(string source, string target)
         {
             string backup = target + ".old-" + Guid.NewGuid().ToString("N");
             bool movedAside = false;
@@ -451,7 +464,7 @@ namespace SkuInstaller
         /// (locked by the running game) is skipped and counted rather than throwing,
         /// so one open file never aborts the whole addon. Returns the locked count.
         /// </summary>
-        private static int OverwriteInPlace(string src, string dst)
+        internal static int OverwriteInPlace(string src, string dst)
         {
             Directory.CreateDirectory(dst);
 

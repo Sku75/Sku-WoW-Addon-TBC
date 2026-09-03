@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "repository": "Sku75/Sku-WoW-Addon-TBC",
   "mainAddon": {
     "key": "Sku",
@@ -41,13 +41,161 @@
     {"key": "SkuAudioData_en", "locale": "enUS", "displayName": "English", "asset": "SkuAudioData_en.zip", "rootFolders": ["SkuAudioData_en"], "media": true}
   ],
   "managedAnniversaryAddons": [
-    {"key": "CurseQuestie", "displayName": "Questie", "provider": "github", "project": "Questie/Questie", "assetContains": "Questie-v", "rootFolders": ["Questie"]},
-    {"key": "CurseAtlasLootAnniversary", "displayName": "AtlasLootClassic Anniversary", "provider": "catalog", "rootFolders": ["AtlasLootClassic", "AtlasLootClassic_Data"]},
-    {"key": "CurseDetailsTBC", "displayName": "Details Damage Meter", "provider": "catalog", "rootFolders": ["Details", "Details_Compare2", "Details_DataStorage", "Details_EncounterDetails", "Details_RaidCheck", "Details_Streamer", "Details_TinyThreat", "Details_Vanguard"]},
-    {"key": "CursePawnTBC", "displayName": "Pawn", "provider": "github", "project": "VgerMods/Pawn", "assetContains": "BurningCrusade", "rootFolders": ["Pawn"]}
+    {
+      "prefKey": "ManageQuestie",
+      "displayName": "Questie",
+      "defaultEnabled": true,
+      "packages": [
+        {
+          "key": "CurseQuestie",
+          "provider": "github",
+          "project": "Questie/Questie",
+          "assetContains": "Questie-v",
+          "assetTemplate": "Questie-{tag}.zip",
+          "fallbackVersion": "11.37.1",
+          "fallbackUrl": "https://edge.forgecdn.net/files/8742/429/Questie-v11.37.1.zip",
+          "fallbackSha256": "450e09bd795ff25d5529abdb4b431d360e76d1097bb59992098bb39a907b8926",
+          "requiredRoots": ["Questie"]
+        }
+      ]
+    },
+    {
+      "prefKey": "ManageAtlasLoot",
+      "displayName": "AtlasLootClassic Anniversary",
+      "defaultEnabled": true,
+      "packages": [
+        {
+          "key": "CurseAtlasLootAnniversary",
+          "provider": "pinned",
+          "fallbackVersion": "2.5.6.12334",
+          "fallbackUrl": "https://edge.forgecdn.net/files/8721/161/AtlasLootClassic-Master_12334.zip",
+          "fallbackSha256": "e286fa10bfe2a5ae15d405ebe65071caab386d1eb61cf9b25bad3ab6a9e1ad0d",
+          "requiredRoots": ["AtlasLootClassic", "AtlasLootClassic_Data"],
+          "rootPrefix": "AtlasLootClassic"
+        }
+      ]
+    },
+    {
+      "prefKey": "ManageDetails",
+      "displayName": "Details Damage Meter",
+      "defaultEnabled": true,
+      "packages": [
+        {
+          "key": "CurseDetailsTBC",
+          "provider": "pinned",
+          "fallbackVersion": "20260707.15250.172_TBC",
+          "fallbackUrl": "https://edge.forgecdn.net/files/8401/886/Details.20260707.15250.172_TBC.zip",
+          "fallbackSha256": "9c16a88e153fd855fb2177aa23cc2a1110ede6928553c373706c946b6e10cb25",
+          "requiredRoots": ["Details", "Details_DataStorage"],
+          "rootPrefix": "Details"
+        }
+      ]
+    },
+    {
+      "prefKey": "ManagePawn",
+      "displayName": "Pawn",
+      "defaultEnabled": false,
+      "packages": [
+        {
+          "key": "CursePawnTBC",
+          "provider": "github",
+          "project": "VgerMods/Pawn",
+          "assetContains": "BurningCrusade",
+          "assetTemplate": "Pawn-{tag}-BurningCrusade.zip",
+          "fallbackVersion": "2.13.15",
+          "fallbackUrl": "https://edge.forgecdn.net/files/8671/944/Pawn-2.13.15-BurningCrusade.zip",
+          "fallbackSha256": "412a77ae5007aa00cf50ae91272f0af84262c63c0b70144906dedc0ab8d39750",
+          "requiredRoots": ["Pawn"]
+        }
+      ]
+    },
+    {
+      "prefKey": "ManageDBM",
+      "displayName": "Deadly Boss Mods",
+      "defaultEnabled": true,
+      "packages": [
+        {
+          "key": "DBMCore",
+          "provider": "github",
+          "project": "DeadlyBossMods/DeadlyBossMods",
+          "assetContains": "DBM-Core-",
+          "assetTemplate": "DBM-Core-{tag}.zip",
+          "fallbackVersion": "12.1.8",
+          "fallbackUrl": "https://github.com/DeadlyBossMods/DeadlyBossMods/releases/download/12.1.8/DBM-Core-12.1.8.zip",
+          "fallbackSha256": "980e833949071ba6359e6d5f326a5d51c1134010299cb7b7a6f9599c9df3e755",
+          "requiredRoots": ["DBM-Core", "DBM-GUI", "DBM-StatusBarTimers"],
+          "rootPrefix": "DBM-"
+        },
+        {
+          "key": "DBMRaidsBC",
+          "provider": "github",
+          "project": "DeadlyBossMods/DBM-BurningCrusade",
+          "assetContains": "DBM-Raids-BC-",
+          "assetTemplate": "DBM-Raids-BC-{tag}.zip",
+          "fallbackVersion": "r19",
+          "fallbackUrl": "https://github.com/DeadlyBossMods/DBM-BurningCrusade/releases/download/r19/DBM-Raids-BC-r19.zip",
+          "fallbackSha256": "5c6d3567018c0770653c8c9b82e3393411d0eea4405dd41445b7ff2e2406a32a",
+          "requiredRoots": ["DBM-Raids-BC"],
+          "rootPrefix": "DBM-"
+        },
+        {
+          "key": "DBMDungeons",
+          "provider": "github",
+          "project": "DeadlyBossMods/DBM-Dungeons",
+          "assetContains": "DBM-Dungeons-",
+          "assetTemplate": "DBM-Dungeons-{tag}.zip",
+          "fallbackVersion": "r261",
+          "fallbackUrl": "https://github.com/DeadlyBossMods/DBM-Dungeons/releases/download/r261/DBM-Dungeons-r261.zip",
+          "fallbackSha256": "4cdf4afa9d058da384a170095381041e7925730aba8b731d3e89ea5087afee09",
+          "requiredRoots": ["DBM-Party-BC"],
+          "rootPrefix": "DBM-"
+        }
+      ]
+    },
+    {
+      "prefKey": "ManageGTFO",
+      "displayName": "GTFO",
+      "defaultEnabled": true,
+      "packages": [
+        {
+          "key": "CurseGTFO",
+          "provider": "pinned",
+          "fallbackVersion": "6.9.1",
+          "fallbackUrl": "https://edge.forgecdn.net/files/8729/407/GTFO-6.9.1.zip",
+          "fallbackSha256": "a82d14b214f3a423ef99f5e7d9edbd7a186c552d9c5aa5ee1c75e92bf4aa18ae",
+          "requiredRoots": ["GTFO"]
+        }
+      ]
+    },
+    {
+      "prefKey": "ManageBugSack",
+      "displayName": "BugSack + BugGrabber",
+      "defaultEnabled": true,
+      "packages": [
+        {
+          "key": "BugSack",
+          "provider": "github",
+          "project": "funkydude/BugSack",
+          "assetContains": "BugSack-v",
+          "assetTemplate": "BugSack-{tag}.zip",
+          "fallbackVersion": "12.0.13",
+          "fallbackUrl": "https://github.com/funkydude/BugSack/releases/download/v12.0.13/BugSack-v12.0.13.zip",
+          "fallbackSha256": "e62c9a35bbfdca89dd4b66016e7828d3dd145ad9b7cdde2a62acdec1fc7bbb9b",
+          "requiredRoots": ["BugSack"]
+        },
+        {
+          "key": "CurseBugGrabber",
+          "provider": "pinned",
+          "fallbackVersion": "12.0.21",
+          "fallbackUrl": "https://edge.forgecdn.net/files/8619/054/%21BugGrabber-v12.0.21.zip",
+          "fallbackSha256": "f031635ad509b8597b9f35bc94ae032ecf6f3292aaa9baa80b56bde3d8738520",
+          "requiredRoots": ["!BugGrabber"]
+        }
+      ]
+    }
   ],
   "inventory": {
-    "hiddenPackages": ["!BugGrabber", "BugSack", "GTFO"],
+    "hiddenPackages": [],
     "skuOwnedPrefixes": ["SkuAudioData"]
   }
 }

@@ -23,6 +23,8 @@ namespace SkuInstaller
         private ComboBox _installerLangCombo, _voiceCombo;
         private CheckBox _forceCheck, _shortcutCheck, _sapi2srCheck, _loginToolCheck;
         private Label _forceDesc, _shortcutDesc, _sapi2srDesc, _loginToolDesc;
+        private Label _managedLabel;
+        private CheckedListBox _managedList;
 
         // The voice-pack default follows the installer language (English UI ->
         // English pack, German UI -> German Fast) until the user picks one
@@ -99,8 +101,42 @@ namespace SkuInstaller
             AddOption(ref _loginToolCheck, ref _loginToolDesc, ref y, Options.InstallLoginTool);
             AddOption(ref _forceCheck, ref _forceDesc, ref y, Options.Force);
 
+            // Managed third-party addons (Anniversary only). A CheckedListBox
+            // rather than seven more checkbox+description rows: it is one tab
+            // stop, arrow keys walk the entries, Space toggles — and NVDA/JAWS
+            // announce item text and checked state natively.
+            _managedLabel = AddContentLabel(ContentLeft, y, ContentWidth, 18);
+            _managedLabel.Font = new Font(Font.FontFamily, 9.5f, FontStyle.Bold);
+            y += 22;
+            _managedList = new CheckedListBox
+            {
+                Location = new Point(ContentLeft, y),
+                Size = new Size(ContentWidth, ManagedAddons.Entries.Count * 19 + 8),
+                CheckOnClick = true,
+                IntegralHeight = false,
+            };
+            var enabled = Options.EffectiveManaged();
+            foreach (var entry in ManagedAddons.Entries)
+            {
+                bool on = enabled.TryGetValue(entry.PrefKey, out bool v) ? v : entry.DefaultEnabled;
+                _managedList.Items.Add(ManagedItemText(entry), on);
+            }
+            Controls.Add(_managedList);
+            y += _managedList.Height + 12;
+
             SetContentHeight(y);
             ActiveControl = _voiceCombo;
+        }
+
+        /// <summary>
+        /// One list row: the addon's proper name plus the version this run would
+        /// install, e.g. "Deadly Boss Mods — 12.1.8". The names are proper nouns
+        /// and stay untranslated.
+        /// </summary>
+        private static string ManagedItemText(ManagedEntry entry)
+        {
+            string version = ManagedAddons.Resolved(entry.Packages[0]).Version ?? "";
+            return $"{entry.DisplayName} — {version.TrimStart('v', 'V')}";
         }
 
         /// <summary>Adds a checkbox plus its own description label underneath.</summary>
@@ -170,6 +206,9 @@ namespace SkuInstaller
             SetOptionText(_loginToolCheck, _loginToolDesc, "loginTool");
             SetOptionText(_forceCheck, _forceDesc, "force");
 
+            _managedLabel.Text = Loc.Get("managed.label");
+            _managedList.AccessibleName = Loc.Get("managed.acc");
+
             AnnouncePage();
         }
 
@@ -186,6 +225,12 @@ namespace SkuInstaller
 
         protected override void OnNext()
         {
+            var managed = new System.Collections.Generic.Dictionary<string, bool>(
+                StringComparer.OrdinalIgnoreCase);
+            for (int i = 0; i < ManagedAddons.Entries.Count; i++)
+                managed[ManagedAddons.Entries[i].PrefKey] = _managedList.GetItemChecked(i);
+            ManagedPrefs.Save(managed);   // one-click runs reuse the same choices
+
             Options = new InstallOptions
             {
                 LanguagePackIndex = Math.Max(0, _voiceCombo.SelectedIndex),
@@ -193,6 +238,7 @@ namespace SkuInstaller
                 InstallSapi2Sr = _sapi2srCheck.Checked,
                 InstallLoginTool = _loginToolCheck.Checked,
                 Force = _forceCheck.Checked,
+                ManagedEnabled = managed,
             };
             Result = WizardResult.Next;
             Close();

@@ -16,7 +16,8 @@ ADDONS_FOLDER="$TEST_ROOT/World of Warcraft/_anniversary_/Interface/AddOns"
 export SKU_ADDONS_FOLDER_OVERRIDE="$ADDONS_FOLDER"
 mkdir -p "$ADDONS_FOLDER/Details" "$ADDONS_FOLDER/Details_DataStorage" \
     "$ADDONS_FOLDER/Pawn" "$ADDONS_FOLDER/UnknownAddon" "$ADDONS_FOLDER/Questie 1.2.3" \
-    "$ADDONS_FOLDER/Sku" "$ADDONS_FOLDER/SkuAudioData_en" "$ADDONS_FOLDER/!BugGrabber" "$ADDONS_FOLDER/BugSack" "$ADDONS_FOLDER/GTFO"
+    "$ADDONS_FOLDER/Sku" "$ADDONS_FOLDER/SkuAudioData_en" "$ADDONS_FOLDER/!BugGrabber" "$ADDONS_FOLDER/BugSack" "$ADDONS_FOLDER/GTFO" \
+    "$ADDONS_FOLDER/DBM-Core" "$ADDONS_FOLDER/DBM-GUI" "$ADDONS_FOLDER/DBM-Party-BC"
 
 printf '## Version: 1.0.0\n## X-Curse-Project-ID: 61284\n' > "$ADDONS_FOLDER/Details/Details.toc"
 printf '## Version: 1.0.0\n' > "$ADDONS_FOLDER/Details_DataStorage/Details_DataStorage.toc"
@@ -28,6 +29,9 @@ printf '## Version: 12\n' > "$ADDONS_FOLDER/SkuAudioData_en/SkuAudioData_en.toc"
 printf '## Version: 1\n' > "$ADDONS_FOLDER/!BugGrabber/!BugGrabber.toc"
 printf '## Version: 1\n' > "$ADDONS_FOLDER/BugSack/BugSack.toc"
 printf '## Version: 5.16.3\n' > "$ADDONS_FOLDER/GTFO/GTFO.toc"
+printf '## Version: 12.1.8\n' > "$ADDONS_FOLDER/DBM-Core/DBM-Core_TBC.toc"
+printf '## Version: 12.1.8\n' > "$ADDONS_FOLDER/DBM-GUI/DBM-GUI_TBC.toc"
+printf '## Version: r19\n' > "$ADDONS_FOLDER/DBM-Party-BC/DBM-Party-BC_TBC.toc"
 
 output="$(addon_inventory)"
 printf '%s\n' "$output" | /usr/bin/grep -Fq 'Details Damage Meter'
@@ -39,10 +43,14 @@ printf '%s\n' "$output" | /usr/bin/grep -Fq 'Status: möglicher doppelter Ordner
 printf '%s\n' "$output" | /usr/bin/grep -Fq 'Sku'
 printf '%s\n' "$output" | /usr/bin/grep -Fq 'Quelle: GitHub – Sku75/Sku-WoW-Addon-TBC'
 ! printf '%s\n' "$output" | /usr/bin/grep -Fq 'SkuAudioData_en'
-! printf '%s\n' "$output" | /usr/bin/grep -Fq 'BugGrabber'
-! printf '%s\n' "$output" | /usr/bin/grep -Fq 'BugSack'
-! printf '%s\n' "$output" | /usr/bin/grep -Fq 'GTFO'
-printf '%s\n' "$output" | /usr/bin/grep -Fq '5 Pakete erkannt, 1 ohne eindeutige Quelle, 1 mögliche Dubletten.'
+# Die verwalteten Fehler-, Warn- und Bossmod-AddOns erscheinen jetzt im
+# Inventar: BugSack+BugGrabber als EIN Paket, alle DBM-Ordner als EIN Paket.
+printf '%s\n' "$output" | /usr/bin/grep -Fq 'BugSack + BugGrabber'
+[ "$(printf '%s\n' "$output" | /usr/bin/grep -Fc 'BugSack + BugGrabber')" -eq 1 ]
+printf '%s\n' "$output" | /usr/bin/grep -Fq 'GTFO'
+printf '%s\n' "$output" | /usr/bin/grep -Fq 'Deadly Boss Mods'
+[ "$(printf '%s\n' "$output" | /usr/bin/grep -Fc 'Deadly Boss Mods')" -eq 1 ]
+printf '%s\n' "$output" | /usr/bin/grep -Fq '8 Pakete erkannt, 1 ohne eindeutige Quelle, 1 mögliche Dubletten.'
 
 echo "Alle Tests fuer das AddOn-Inventar bestanden."
 

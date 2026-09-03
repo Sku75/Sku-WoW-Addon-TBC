@@ -70,8 +70,20 @@
          at one client on an unusual drive finds the other one there for free. A
          memory that has gone stale (folder deleted, or now reporting a different
          client) is dropped and detection has its say. SkuSelfTest "pathmemory".
+         5.0 = managed third-party addons (Anniversary only), in feature parity
+         with the macOS installer 5.0: Questie, AtlasLootClassic Anniversary,
+         Details, Pawn, Deadly Boss Mods (core + BC raids + dungeons as ONE
+         entry), GTFO, and the BugSack+BugGrabber pair are installed and kept
+         current alongside Sku (ManagedAddons.cs; choices persist in
+         %LOCALAPPDATA%\SkuUpdater\SkuManagedAddons.txt, Pawn off by default).
+         GitHub /releases/latest is the source wherever the project publishes
+         releases there; only AtlasLoot/Details/GTFO/BugGrabber remain pinned to
+         CurseForge CDN files with SHA-256 until we hold a CurseForge API key.
+         The opening screen names pending managed updates and fresh installs, so
+         one-click never does silent extra work. Shared definitions live in
+         installer/shared/addon-catalog.json (test_catalog_parity.py).
          -->
-    <Version>4.5</Version>
+    <Version>5.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

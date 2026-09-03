@@ -118,6 +118,41 @@ namespace SkuInstaller
         }
 
         /// <summary>
+        /// Resolve the newest release TAG of any GitHub project from its
+        /// /releases/latest redirect — the same non-API mechanism as
+        /// <see cref="ResolveLatestMainVersionAsync"/>, so it cannot rate-limit.
+        /// Used for the managed third-party addons (Questie, DBM, …), whose tag
+        /// formats vary ("v11.37.1", "12.1.8", "r261"), hence the loose
+        /// validation. Returns null on any failure; the caller falls back to the
+        /// package's pin.
+        /// </summary>
+        public async Task<string> ResolveLatestTagAsync(string ownerRepo)
+        {
+            string url = $"https://github.com/{ownerRepo}/releases/latest";
+            try
+            {
+                using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15)))
+                using (var resp = await _http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cts.Token))
+                {
+                    resp.EnsureSuccessStatusCode();
+                    string finalPath = resp.RequestMessage?.RequestUri?.AbsolutePath ?? string.Empty;
+                    var m = Regex.Match(finalPath, @"/releases/tag/([A-Za-z0-9._\-]+)$");
+                    if (!m.Success)
+                    {
+                        Logger.Warning($"{ownerRepo}/releases/latest resolved to '{finalPath}' — no usable tag.");
+                        return null;
+                    }
+                    return Uri.UnescapeDataString(m.Groups[1].Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning($"Could not resolve {ownerRepo}/releases/latest ({ex.Message}).");
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Build the download reference for one managed addon from its pinned
         /// (Tag, AssetName) in <see cref="Config"/>. No network call — the URL is
         /// constructed, so this can't rate-limit or fail on a transient API error.

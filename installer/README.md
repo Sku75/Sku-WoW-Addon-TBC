@@ -393,8 +393,12 @@ installer/
     SkuInstaller.csproj      ← .NET Framework 4.7.2 WinForms (matches Arena)
     app.manifest             ← UAC elevation (writing under Program Files)
     Program.cs               ← entry point, CLI args, flow selection
-    Config.cs                ← repo URL + the managed-addon catalog
-    GitHubClient.cs          ← releases API, multi-asset resolve, streamed download
+    Config.cs                ← repo URL + the Sku addon/companion catalog
+    ManagedAddons.cs         ← managed third-party addons (Anniversary): specs,
+                               prefs store, GitHub-latest resolution, installer.
+                               Mirror of installer/shared/addon-catalog.json
+                               (kept in step by tests/test_catalog_parity.py)
+    GitHubClient.cs          ← releases redirect resolve, streamed download
     WowLocator.cs            ← flavor detection, AddOns path, game-running + TOC version
     AddonInstaller.cs        ← plan/classify, download → extract → overwrite-in-place
     InstallManifest.cs       ← the per-addon installed-tag record (SkuInstall.json)

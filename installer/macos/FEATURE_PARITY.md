@@ -1,4 +1,4 @@
-# Funktionsparität mit Windows-Installer 4.4
+# Funktionsparität mit Windows-Installer 5.0
 
 | Funktion | macOS-Status |
 | --- | --- |
@@ -18,6 +18,7 @@
 | Atomarer Ordnertausch/Rollback | vorhanden |
 | Symlink-Schutz | vorhanden |
 | Manifest und TOC-Abgleich | vorhanden |
+| Verwaltete Anniversary-AddOns (Questie, AtlasLoot, Details, DBM, GTFO, BugSack+BugGrabber, Pawn) | vorhanden; seit 5.0 auf beiden Plattformen |
 | Spieleinstellungen anwenden | vorhanden |
 | Abschlusszusammenfassung | vorhanden |
 | Alle Diagnoseprotokolle als ZIP sammeln | vorhanden |
