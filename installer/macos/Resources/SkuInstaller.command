@@ -176,14 +176,11 @@ APPLESCRIPT
 }
 
 resolve_main_version() {
-    local effective tag page official
-    page="$(/usr/bin/curl -fsSL --connect-timeout 10 --max-time 30 \
-        "https://sku75.github.io/Sku-WoW-Addon-TBC/" 2>>"$LOG_FILE" || true)"
-    official="$(printf '%s\n' "$page" | /usr/bin/sed -nE 's/.*Sku \(Main Addon\) - Version ([0-9]+([.][0-9]+)+).*/\1/p' | /usr/bin/head -n 1)"
-    if [ -n "$official" ]; then
-        printf '%s\n' "$official"
-        return 0
-    fi
+    # Same mechanism as the Windows installer (GitHubClient.cs): resolve the
+    # releases/latest redirect and read the tag. Never scrape the website HTML
+    # for a version string - a wording change on the page must not be able to
+    # break version detection.
+    local effective tag
     effective="$(/usr/bin/curl -LIsS --connect-timeout 10 --max-time 30 \
         -o /dev/null -w '%{url_effective}' "https://github.com/$REPO/releases/latest" 2>>"$LOG_FILE" || true)"
     tag="${effective##*/}"

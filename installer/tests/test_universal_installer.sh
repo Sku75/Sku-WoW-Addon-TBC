@@ -6,7 +6,7 @@ catalog="$root/installer/shared/addon-catalog.json"
 channel="$root/installer/shared/installer-channel.json"
 mac_bootstrap="$root/installer/bootstrap/Install-SkuUpdater.command"
 windows_bootstrap="$root/installer/bootstrap/Install-SkuUpdater.ps1"
-page="$root/docs/installer-download.html"
+page="$root/docs/index.html"
 
 python3 -m json.tool "$catalog" >/dev/null
 python3 -m json.tool "$channel" >/dev/null
@@ -26,8 +26,11 @@ assert set(catalog["inventory"]["hiddenPackages"]) == {"!BugGrabber", "BugSack",
 assert len(catalog["managedAnniversaryAddons"]) == 4
 PY
 
-grep -Fq 'Install-SkuUpdater.ps1' "$page"
+# The download page carries one clearly labeled link per platform.
+grep -Fq 'SkuInstaller.exe' "$page"
 grep -Fq 'Install-SkuUpdater-macOS.zip' "$page"
+grep -Fq 'Install-SkuUpdater-macOS.zip' "$root/docs/index-de.html"
+grep -Fq 'Install-SkuUpdater-macOS.zip' "$root/docs/index-fr.html"
 grep -Fq 'installer-version.txt' "$windows_bootstrap"
 grep -Fq 'installer-version-macos.txt' "$mac_bootstrap"
 grep -Fq 'CFBundleShortVersionString' "$mac_bootstrap"

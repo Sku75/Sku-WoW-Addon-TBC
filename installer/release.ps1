@@ -67,6 +67,16 @@ elease.ps1 -Dev -Version 43.0
     -NotesDe "..." the same highlights in German, used for a German-only
                   Discord channel (falls back to -Notes when not given). The
                   GitHub release body always uses -Notes.
+    -MacAssetsDir <dir>  folder holding the macOS installer set: Sku-Installer-
+                  macOS.zip + installer-version-macos.txt + Install-SkuUpdater-
+                  macOS.zip (e.g. the extracted Sku-Installer-macOS artifact of
+                  the 'Build Windows and macOS installers' workflow - it cannot
+                  be built on Windows). Verified locally (all three present,
+                  metadata sha256 matches the zip), then attached wherever
+                  installer assets are published: the main release and
+                  -PublishInstaller. Without it a release simply carries no
+                  macOS assets and the macOS download link stays on the
+                  previous release's files.
 
   Discord webhooks are read from installer\.secrets\discord-webhooks.txt
   (gitignored - one URL per line, '#' comments allowed). A line may name that
@@ -87,6 +97,7 @@ param(
     [string]$SkuMapperVersion,
     [switch]$PublishInstaller,
     [switch]$BackfillLatestAssets,
+    [string]$MacAssetsDir,
     [switch]$Prerelease,
     [switch]$SkipDiscord,
     [string]$Notes,
@@ -597,9 +608,12 @@ function Do-MainRelease($ver) {
     if ($Notes) { $notesArg = $Notes } else { $notesArg = "Sku TBC v$ver. See the patch notes on the download page." }
     if ($insVer) { $notesArg = "$notesArg`n`nIncluded Sku Installer: $insVer" }
     if ($Prerelease) { $latestArg = '--prerelease' } else { $latestArg = '--latest' }
-    Info "Creating GitHub release $tag with Sku-$ver.zip + SkuInstaller.exe + installer-version.txt..."
-    Exec "gh release create $tag (zip + exe + version file) $latestArg --target main" {
-        gh release create $tag $zip $ExeDist $verFile --repo $Slug --title "Sku TBC $tag" --notes $notesArg --target main $latestArg
+    $macAssets = Get-MacAssets
+    $assetArgs = @($zip, $ExeDist, $verFile) + @($macAssets | Where-Object { $_ })
+    $macNote = ''; if ($macAssets) { $macNote = ' + macOS assets' }
+    Info "Creating GitHub release $tag with Sku-$ver.zip + SkuInstaller.exe + installer-version.txt$macNote..."
+    Exec "gh release create $tag (zip + exe + version file$macNote) $latestArg --target main" {
+        gh release create $tag @assetArgs --repo $Slug --title "Sku TBC $tag" --notes $notesArg --target main $latestArg
     }
 
     Announce-Discord $ver $SiteUrl
@@ -743,6 +757,31 @@ function Do-PublishSkuMapper($ver) {
     Info "  SkuMapper $ver published. Docs link now uses releases/download/$tag/SkuMapper-$ver.zip"
 }
 
+# --- macOS installer assets --------------------------------------------------
+# The macOS build cannot be produced on this machine; it comes out of the
+# 'Build Windows and macOS installers' workflow (macos runner) or a Mac. Pass
+# the folder holding those files as -MacAssetsDir and every mode that publishes
+# installer assets attaches the macOS set next to the Windows one. All three
+# files are required, and the metadata hash is verified against the zip HERE,
+# before anything is uploaded: a release carrying a zip whose published
+# checksum is wrong or stale would offer every installed macOS updater a
+# self-update whose hash check then fails, over and over.
+function Get-MacAssets {
+    if (-not $MacAssetsDir) { return $null }
+    $zip  = Join-Path $MacAssetsDir 'Sku-Installer-macOS.zip'
+    $meta = Join-Path $MacAssetsDir 'installer-version-macos.txt'
+    $boot = Join-Path $MacAssetsDir 'Install-SkuUpdater-macOS.zip'
+    foreach ($f in @($zip, $meta, $boot)) {
+        if (-not (Test-Path $f)) { throw "-MacAssetsDir: missing $(Split-Path $f -Leaf) in $MacAssetsDir" }
+    }
+    $shaLine = ((Get-Content $meta | Where-Object { $_ -match '^sha256=' } | Select-Object -First 1) -replace '^sha256=', '').Trim().ToLowerInvariant()
+    if ($shaLine -notmatch '^[0-9a-f]{64}$') { throw "-MacAssetsDir: installer-version-macos.txt carries no valid sha256= line." }
+    $actual = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+    if ($actual -ne $shaLine) { throw "-MacAssetsDir: sha256 in installer-version-macos.txt does not match Sku-Installer-macOS.zip." }
+    Info "  macOS installer assets verified in $MacAssetsDir"
+    return @($zip, $meta, $boot)
+}
+
 # --- Mode: ship a new installer WITHOUT a new Sku release --------------------
 # The two version lines are independent: most Sku releases ship an unchanged
 # installer, and an installer fix often needs no new addon at all. This is that
@@ -774,8 +813,11 @@ function Do-PublishInstaller {
     # land separately: a release carrying a new exe with the old version file
     # would offer every installed updater a self-update whose hash check then
     # fails, over and over.
-    Exec "upload SkuInstaller.exe + installer-version.txt to $latestTag --clobber" {
-        gh release upload $latestTag $ExeDist $verFile --repo $Slug --clobber
+    $macAssets = Get-MacAssets
+    $uploadArgs = @($ExeDist, $verFile) + @($macAssets | Where-Object { $_ })
+    $macNote = ''; if ($macAssets) { $macNote = ' + macOS assets' }
+    Exec "upload SkuInstaller.exe + installer-version.txt$macNote to $latestTag --clobber" {
+        gh release upload $latestTag @uploadArgs --repo $Slug --clobber
     }
 
     Set-DocsInstallerLatest

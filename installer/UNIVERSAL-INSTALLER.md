@@ -1,9 +1,10 @@
 # Gemeinsame Installation fuer Windows und macOS
 
-Der universelle Einstieg ist die barrierefreie Downloadseite
-`docs/installer-download.html`. Sie erkennt Windows oder macOS im Browser und
-zeigt automatisch den passenden Installer. Eine manuelle Umschaltung bleibt
-verfuegbar, falls die Browsererkennung blockiert oder falsch ist.
+Der Einstieg ist die bestehende Downloadseite (`docs/index.html`,
+`index-de.html`, `index-fr.html`): Sie traegt pro Plattform einen klar
+beschrifteten Link — "Sku Installer (Windows)" und "Sku Installer (macOS)".
+Keine Browser-Erkennung; zwei benannte Links sind fuer Screenreader-Nutzer
+eindeutiger als eine automatische Umschaltung.
 
 Es gibt absichtlich keine einzelne ausfuehrbare Datei fuer beide Systeme:
 Windows startet eine EXE, macOS ein signiertes App-Bundle. Beide Varianten

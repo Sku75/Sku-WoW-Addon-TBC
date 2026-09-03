@@ -2,17 +2,23 @@ name: Universal installer checks
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'installer/bootstrap/**'
       - 'installer/shared/**'
       - 'installer/tests/**'
-      - 'docs/installer-download.html'
+      - 'docs/index.html'
+      - 'docs/index-de.html'
+      - 'docs/index-fr.html'
   pull_request:
     paths:
       - 'installer/bootstrap/**'
       - 'installer/shared/**'
       - 'installer/tests/**'
-      - 'docs/installer-download.html'
+      - 'docs/index.html'
+      - 'docs/index-de.html'
+      - 'docs/index-fr.html'
 
 jobs:
   portable-files:

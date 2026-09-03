@@ -28,7 +28,11 @@ jobs:
           $xml = [xml](Get-Content installer\SkuInstaller\SkuInstaller.csproj)
           $version = ($xml.Project.PropertyGroup.Version | Where-Object { $_ } | Select-Object -First 1)
           $sha = (Get-FileHash installer\dist-universal\SkuInstaller.exe -Algorithm SHA256).Hash.ToLowerInvariant()
-          "version=$version`nsha256=$sha" | Set-Content -Encoding ASCII installer\dist-universal\installer-version.txt
+          # Deliberately NOT named installer-version.txt: that exact filename on
+          # releases/latest is the deployed fleet's self-update channel and is
+          # written only by installer\release.ps1. The CI copy exists for build
+          # verification and must never be attachable to a release by mistake.
+          "version=$version`nsha256=$sha" | Set-Content -Encoding ASCII installer\dist-universal\installer-version-ci.txt
       - name: Parse bootstrap
         shell: powershell
         run: |
@@ -47,7 +51,7 @@ jobs:
           path: |
             installer/dist-universal/SkuInstaller.exe
             installer/dist-universal/Install-SkuUpdater.ps1
-            installer/dist-universal/installer-version.txt
+            installer/dist-universal/installer-version-ci.txt
             installer/shared/*.json
 
   macos:
