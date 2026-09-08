@@ -194,11 +194,12 @@ function DamageMeter:DamageMeterMenuBuilder()
    end
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Reports"]}, SkuGenericMenuItem)
+   tNewMenuEntry.id = "Reports"
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.BuildChildren = function(self)
       local tEmpty = true
       local tCombatId = -1
-      local Combat = Details:GetCombat(1) -- -1 all
+      local Combat = Details:GetCombat(-1) -- overall data
       while Details:GetCombat(tCombatId) ~= nil do
          local tNewMenuEntry
          
@@ -214,14 +215,11 @@ function DamageMeter:DamageMeterMenuBuilder()
             tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Fight"].." "..tCombatId.. " "..(Combat.enemy or L["unknown"]).." "..tTime}, SkuGenericMenuItem)
          end
          tNewMenuEntry.combatID = tCombatId
-         tNewMenuEntry.OnEnter = function(self, aValue, aName)
-            local Combat = Details:GetCombat(self.combatID)
-            local body = L["no data"]
-            if Combat then
-               body = BuildCombatTooltip(Combat, self.name, tAll)
-            end
-            SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = aName, body
-         end
+         -- Shift+Down reads textFull directly from the focused menu node. Populate
+         -- it while building the entry instead of relying on OnEnter argument and
+         -- callback timing; Details already returned this exact combat above.
+         tNewMenuEntry.textFirstLine = tNewMenuEntry.name
+         tNewMenuEntry.textFull = BuildCombatTooltip(Combat, tNewMenuEntry.name, tAll)
 
          tEmpty = false
 

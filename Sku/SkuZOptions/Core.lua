@@ -1279,28 +1279,49 @@ end
 function SkuOptions:CreateControlFrame()
 	local ttime = 0
 	local f = CreateFrame("Frame", "SkuOptionsControl", UIParent)
+	local function tIsMacClient()
+		if _G.IsMacClient and IsMacClient() == true then return true end
+		local tGxApi = _G.GetCVar and GetCVar("gxApi")
+		return type(tGxApi) == "string" and tGxApi:lower():find("metal", 1, true) ~= nil
+	end
+	local function tCloseTooltipReader()
+		if SkuOptions.TTS:IsAutoRead() == true then
+			SkuOptions.TTS:ToggleAutoRead()
+			SkuOptions.TTS.AutoReadEventFlag = nil
+		end
+		if SkuOptions.currentMenuPosition then
+			if SkuOptions.currentMenuPosition.textFullInitial then
+				SkuOptions.currentMenuPosition.textFull = SkuOptions.currentMenuPosition.textFullInitial
+			end
+			SkuOptions.currentMenuPosition.textFullInitial = nil
+			SkuOptions.currentMenuPosition.links = {}
+			SkuOptions.currentMenuPosition.linksSelected = 0
+			SkuOptions.currentMenuPosition.currentLinkName = nil
+			SkuOptions.currentMenuPosition.linksHistory = nil
+		end
+		SkuOptions.TTS:Output("", -1)
+		SkuOptions.TTS:Hide()
+	end
+
+	-- IsShiftKeyDown is unreliable while macOS translates Fn+arrow keys. The
+	-- modifier event gives us the real key-up: keep the reader alive while Shift
+	-- is held, then close it immediately when either Shift key is released.
+	f:RegisterEvent("MODIFIER_STATE_CHANGED")
+	f:SetScript("OnEvent", function(self, aEvent, aKey, aState)
+		if tIsMacClient() and (aKey == "LSHIFT" or aKey == "RSHIFT")
+			and (aState == 0 or aState == "0") and SkuChat.ChatOpen ~= true
+			and SkuOptions.TTS:IsVisible() == true then
+			tCloseTooltipReader()
+		end
+	end)
 	f:SetScript("OnUpdate", function(self, time)
 		ttime = ttime + time
 		if ttime > 0.1 then
-			if SkuOptions.TTS:IsVisible() == true then
-				if IsShiftKeyDown() == false and SkuChat.ChatOpen ~= true and SkuOptions.TTS:IsAutoRead() ~= true then
-					if SkuOptions.currentMenuPosition then
-						if SkuOptions.currentMenuPosition.textFullInitial then
-							SkuOptions.currentMenuPosition.textFull = SkuOptions.currentMenuPosition.textFullInitial
-						end
-						SkuOptions.currentMenuPosition.textFullInitial = nil
-						SkuOptions.currentMenuPosition.links = {}
-						SkuOptions.currentMenuPosition.linksSelected = 0
-						SkuOptions.currentMenuPosition.currentLinkName = nil
-						SkuOptions.currentMenuPosition.linksHistory = nil
-					end
-		
-					SkuOptions.TTS:Output("", -1)
-					--SkuOptions.TTS.MainFrame:Hide()
-					SkuOptions.TTS:Hide()
-				end
+			local tIsMac = tIsMacClient()
+			if not tIsMac and SkuOptions.TTS:IsVisible() == true and IsShiftKeyDown() == false
+				and SkuChat.ChatOpen ~= true and SkuOptions.TTS:IsAutoRead() ~= true then
+				tCloseTooltipReader()
 			end
-
 			ttime = 0
 		end
 	end)
@@ -1560,6 +1581,10 @@ function SkuOptions:CreateMainFrame()
 			if SkuNav and SkuNav.OpenRouteDestinationsQuick then SkuNav:OpenRouteDestinationsQuick() end
 			return
 		end
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_OPENDAMAGEMETER") then
+			SkuOptions:SlashFunc(Sku.MENU_ROOT..",Addons,DamageMeter,Reports")
+			return
+		end
 
 		if not SkuOptions.TTS:IsVisible() then
 			tCurrentOverviewPage = nil
@@ -1640,6 +1665,12 @@ function SkuOptions:CreateMainFrame()
 					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].raid.health2.enabled = true
 					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].player.health.enabled = false
 					print(L["Raid health monitor enabled"])
+					-- Give immediate audible proof that the monitor and its raid-number
+					-- mapping work; otherwise the default thresholds can keep it silent.
+					if SkuCore.Aq and SkuCore.Aq.MonitorRaidRosterUpdate then
+						SkuCore.Aq:MonitorRaidRosterUpdate()
+						SkuCore.Aq:MonitorRaidHealth2Conti()
+					end
 				end
 			elseif UnitInParty("player") == true then
 				SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].raid.health2.enabled = false
@@ -1941,7 +1972,8 @@ function SkuOptions:CreateMainFrame()
 			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.currentMenuPosition.textFull ~= "" then
 				local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
-				if not SkuOptions.TTS:IsVisible() then
+				local wasVisible = SkuOptions.TTS:IsVisible()
+				if not wasVisible then
 					SkuOptions.TTS:Output(tTextFull, 1000)
 				end
 				SkuOptions.currentMenuPosition.links = {}
@@ -1950,7 +1982,7 @@ function SkuOptions:CreateMainFrame()
 					SkuOptions.TTS:ToggleAutoRead()
 					SkuOptions.TTS.AutoReadEventFlag = nil
 				end					
-				SkuOptions.TTS:PreviousSection()
+				if wasVisible then SkuOptions.TTS:PreviousSection() else SkuOptions.TTS:CurrentLine() end
 			end
 		end
 		if a == "CTRL-SHIFT-DOWN" then
@@ -1958,7 +1990,8 @@ function SkuOptions:CreateMainFrame()
 			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.currentMenuPosition.textFull ~= "" then
 				local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
-				if not SkuOptions.TTS:IsVisible() then
+				local wasVisible = SkuOptions.TTS:IsVisible()
+				if not wasVisible then
 					SkuOptions.TTS:Output(tTextFull, 1000)
 				end
 				SkuOptions.currentMenuPosition.links = {}
@@ -1967,7 +2000,7 @@ function SkuOptions:CreateMainFrame()
 					SkuOptions.TTS:ToggleAutoRead()
 					SkuOptions.TTS.AutoReadEventFlag = nil
 				end					
-				SkuOptions.TTS:NextSection()
+				if wasVisible then SkuOptions.TTS:NextSection() else SkuOptions.TTS:CurrentLine() end
 			end
 		end
 		if a == "SHIFT-PAGEDOWN" then
@@ -2689,6 +2722,8 @@ function SkuOptions:CreateMainFrame()
 	if tKbds["SKU_KEY_OPENMENU"].key2 and tKbds["SKU_KEY_OPENMENU"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OPENMENU"].key2, tFrame:GetName(), tKbds["SKU_KEY_OPENMENU"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key, tFrame:GetName(), tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key)
 	if tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2 and tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2, tFrame:GetName(), tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2) end
+	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OPENDAMAGEMETER"].key, tFrame:GetName(), tKbds["SKU_KEY_OPENDAMAGEMETER"].key)
+	if tKbds["SKU_KEY_OPENDAMAGEMETER"].key2 and tKbds["SKU_KEY_OPENDAMAGEMETER"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OPENDAMAGEMETER"].key2, tFrame:GetName(), tKbds["SKU_KEY_OPENDAMAGEMETER"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_ACTIONBARSOPEN"].key, tFrame:GetName(), tKbds["SKU_KEY_ACTIONBARSOPEN"].key)
 	if tKbds["SKU_KEY_ACTIONBARSOPEN"].key2 and tKbds["SKU_KEY_ACTIONBARSOPEN"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_ACTIONBARSOPEN"].key2, tFrame:GetName(), tKbds["SKU_KEY_ACTIONBARSOPEN"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_NAVWAYPOINTSQUICK"].key, tFrame:GetName(), tKbds["SKU_KEY_NAVWAYPOINTSQUICK"].key)
@@ -2782,6 +2817,16 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull, aItemId)
 				tItemId = aItemId
 			end
 		end
+	end
+
+	-- Refresh the standard equipped-item sections when the reader actually opens.
+	-- This belongs to Sku's generic tooltip path and works with or without Pawn.
+	if aItemId and SkuCore.InsertComparisnSections and type(tNewTextFull) == "table" then
+		SkuCore:InsertComparisnSections(aItemId, tNewTextFull)
+	end
+
+	if aItemId and SkuCore.PawnIntegration and SkuCore.PawnIntegration.AddTooltipData then
+		tNewTextFull = SkuCore.PawnIntegration:AddTooltipData(tNewTextFull, aItemId) or tNewTextFull
 	end
 
 	return tNewTextFull
@@ -2916,8 +2961,14 @@ function SkuOptions:CreateMenuFrame()
 	tFrame:SetPoint("TOP", _G["OnSkuOptionsMain"], "BOTTOM", 0, 0)
 
 	local OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
+	local OnSkuOptionsMainLastKey
 
 	tFrame:SetScript("OnChar", function(self, aKey, aB)
+		-- macOS emits an Apple private-use character (U+F700 range) through
+		-- OnChar immediately before the real bound arrow/function key. Forwarding
+		-- it closed the tooltip reader, so the following SHIFT-DOWN reopened line
+		-- one on every press. The real key still arrives through OnClick.
+		if type(aKey) == "string" and string.byte(aKey, 1) == 239 and string.byte(aKey, 2) == 156 then return end
 		--dprint("OnSkuOptionsMainOption1 OnChar", aKey)
 		OnSkuOptionsMainOption1:GetScript("OnClick")(self, aKey)
 	end)
@@ -3002,14 +3053,21 @@ function SkuOptions:CreateMenuFrame()
 
 		local tIsDoubleDown = false
 		local tSecondTime = GetTimePreciseSec() - OnSkuOptionsMainOnKeyPressTimer
-		if tSecondTime < 0.25 then
+		if tSecondTime < 0.25 and aKey == OnSkuOptionsMainLastKey then
 			tIsDoubleDown = true
 		end
 		OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
+		OnSkuOptionsMainLastKey = aKey
 		-- Combat mirror lockstep: the double-tap "skip empty entries" jumps the cursor
 		-- several steps on one keypress, which would desync the secure bags mirror (it moves
 		-- one step per key). Disable it while the combat menu is active so 1 key = 1 move.
 		if SkuOptions.combatMenuActive == true then
+			tIsDoubleDown = false
+		end
+		-- Empty bag, bank and action-bar slots are real destinations. Never apply
+		-- the optional double-tap shortcut that skips entries named "Empty" here.
+		local tCurrentEntry = SkuOptions.currentMenuPosition
+		if tCurrentEntry and ((tCurrentEntry.bag ~= nil and tCurrentEntry.slot ~= nil) or tCurrentEntry.isActionBarSlot == true) then
 			tIsDoubleDown = false
 		end
 
@@ -3438,7 +3496,8 @@ function SkuOptions:CreateMenuFrame()
 				if SkuOptions.currentMenuPosition.textFull then
 					if SkuOptions.currentMenuPosition.textFull ~= "" then
 						local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
-						if not SkuOptions.TTS:IsVisible() then
+						local wasVisible = SkuOptions.TTS:IsVisible()
+						if not wasVisible then
 							SkuOptions.TTS:Output(tTextFull, 1000)
 						end
 						SkuOptions.currentMenuPosition.links = {}
@@ -3447,7 +3506,7 @@ function SkuOptions:CreateMenuFrame()
 							SkuOptions.TTS:ToggleAutoRead()
 							SkuOptions.TTS.AutoReadEventFlag = nil
 						end					
-						SkuOptions.TTS:PreviousSection()
+						if wasVisible then SkuOptions.TTS:PreviousSection() else SkuOptions.TTS:CurrentLine() end
 					end
 				end
 			end
@@ -3455,7 +3514,8 @@ function SkuOptions:CreateMenuFrame()
 				if SkuOptions.currentMenuPosition.textFull then
 					if SkuOptions.currentMenuPosition.textFull ~= "" then
 						local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
-						if not SkuOptions.TTS:IsVisible() then
+						local wasVisible = SkuOptions.TTS:IsVisible()
+						if not wasVisible then
 							SkuOptions.TTS:Output(tTextFull, 1000)
 						end
 						SkuOptions.currentMenuPosition.links = {}
@@ -3464,7 +3524,7 @@ function SkuOptions:CreateMenuFrame()
 							SkuOptions.TTS:ToggleAutoRead()
 							SkuOptions.TTS.AutoReadEventFlag = nil
 						end					
-						SkuOptions.TTS:NextSection()
+						if wasVisible then SkuOptions.TTS:NextSection() else SkuOptions.TTS:CurrentLine() end
 					end
 				end
 			end
@@ -6413,34 +6473,50 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 						self.children = {}
 						if ((aGossipListTable[index].isBag and CursorHasItem())) or not aGossipListTable[index].isBag or aGossipListTable[index].isPurchasable then
 							if aGossipListTable[index] and aGossipListTable[index].obj and aGossipListTable[index].obj.GetName and aGossipListTable[index].obj:GetName() and string.find(aGossipListTable[index].obj:GetName(), "MerchantItem") then
+								local tIsBuyback = MerchantFrame and MerchantFrame.selectedTab == 2
 								local tStock = 1000
 								if aGossipListTable[index].obj.numInStock and aGossipListTable[index].obj.numInStock ~= -1 then
 									tStock = aGossipListTable[index].obj.numInStock
 								end
 								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Kaufen"]}, SkuGenericMenuItem)
 								tNewSubMenuEntry.sorting = true
-								tNewSubMenuEntry.dynamic = true
-								tNewSubMenuEntry.BuildChildren = function(self)
-									for tN = 1, tStock do
-										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {tN}, SkuGenericMenuItem)
-										tNewSubMenuEntry.OnAction = function()
-											local trem = tN - (20 * math.floor(tN / 20))
-											tN = math.floor(tN / 20)
-											BuyMerchantItem(aGossipListTable[index].obj:GetID(), trem)
-											if tN > 0 then
-												C_Timer.After(0.25, function()
-													C_Timer.NewTicker(0.25,
-													function()
-														SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)
-														BuyMerchantItem(aGossipListTable[index].obj:GetID(), 20)
-													end,
-													tN)
+								if tIsBuyback then
+									-- A buyback entry is one sold stack, not a vendor offer with a
+									-- selectable quantity. Buy it directly from the buyback list.
+									local tBuybackIndex = aGossipListTable[index].obj:GetID()
+									tNewSubMenuEntry.OnAction = function()
+										if _G.BuybackItem then _G.BuybackItem(tBuybackIndex) end
+										SkuCore:CheckFrames()
+										C_Timer.After(0.35, function()
+											if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
+												SkuOptions.currentMenuPosition:OnUpdate()
+											end
+										end)
+									end
+								else
+									tNewSubMenuEntry.dynamic = true
+									tNewSubMenuEntry.BuildChildren = function(self)
+										for tN = 1, tStock do
+											local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {tN}, SkuGenericMenuItem)
+											tNewSubMenuEntry.OnAction = function()
+												local trem = tN - (20 * math.floor(tN / 20))
+												tN = math.floor(tN / 20)
+												BuyMerchantItem(aGossipListTable[index].obj:GetID(), trem)
+												if tN > 0 then
+													C_Timer.After(0.25, function()
+														C_Timer.NewTicker(0.25,
+														function()
+															SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)
+															BuyMerchantItem(aGossipListTable[index].obj:GetID(), 20)
+														end,
+														tN)
+													end)
+												end
+												C_Timer.After((tN * 0.25) + 0.01, function()
+													SkuCore:CheckFrames()
+													C_Timer.After(0.35 + (tN * 0.5), function() SkuOptions.currentMenuPosition:OnUpdate() end)
 												end)
 											end
-											C_Timer.After((tN * 0.25) + 0.01, function()
-												SkuCore:CheckFrames()
-												C_Timer.After(0.35 + (tN * 0.5), function() SkuOptions.currentMenuPosition:OnUpdate() end)
-											end)
 										end
 									end
 								end

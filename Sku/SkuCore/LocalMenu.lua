@@ -429,8 +429,14 @@ end
 ---@param invSlot InvSlot
 ---@return string|nil
 local function getEquippedItemTooltipText(invSlot)
+	-- SetInventoryItem intermittently leaves the shared scanning tooltip empty on
+	-- the macOS client. An equipped item already has a complete instance link, so
+	-- scan that link directly. This path is intentionally limited to EQUIPPED
+	-- comparison sections and cannot affect bag enumeration.
+	local tEquippedLink = GetInventoryItemLink("player", invSlot)
+	if not tEquippedLink then return end
 	return getItemTooltipTextHelper(function(tooltip)
-		tooltip:SetInventoryItem("player", invSlot)
+		tooltip:SetHyperlink(tEquippedLink)
 	end)
 end
 
@@ -507,7 +513,13 @@ end
 ---@param textFull string[] List of strings intwo which comparisn sections will be inserted
 ---@param cache table|nil Optional lookup table for saving tooltip texts between calls to this function
 function SkuCore:InsertComparisnSections(itemId, textFull, cache)
-	if itemId and IsEquippableItem(itemId) then
+	if itemId and type(textFull) == "table" and IsEquippableItem(itemId) then
+		-- This function is also called again when the reading frame opens, because
+		-- some clients do not yield the equipped tooltip while the menu is built.
+		-- Never duplicate a comparison that was already available on the first pass.
+		for _, tSection in ipairs(textFull) do
+			if type(tSection) == "string" and tSection:find(L["currently equipped"], 1, true) == 1 then return end
+		end
 		local comparisnSections = SkuCore:getItemComparisnSections(itemId, cache)
 		if comparisnSections then
 			for i, section in ipairs(comparisnSections) do
@@ -1589,7 +1601,6 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 			childs = allBankResults,
 		}
 	end
-
 	local tFriendlyName = L["Bags"]
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {

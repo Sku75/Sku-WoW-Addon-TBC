@@ -91,11 +91,11 @@ end
 
 
 local tActionBarData = {
-	MultiBarLeft = {friendlyName = L["Left Multi Bar"], buttonName = "MultiBarLeftButton", command = "MULTIACTIONBAR4BUTTON", header = "BINDING_HEADER_MULTIACTIONBAR"},
-	MultiBarRight = {friendlyName = L["Right Multi Bar"], buttonName = "MultiBarRightButton", command = "MULTIACTIONBAR3BUTTON", header = "BINDING_HEADER_MULTIACTIONBAR"},
-	MultiBarBottomLeft = {friendlyName = L["Bottom Multi Bar Left"], buttonName = "MultiBarBottomLeftButton", command = "MULTIACTIONBAR1BUTTON", header = "BINDING_HEADER_MULTIACTIONBAR"},
-	MultiBarBottomRight = {friendlyName = L["Bottom Multi Bar Right"], buttonName = "MultiBarBottomRightButton", command = "MULTIACTIONBAR2BUTTON", header = "BINDING_HEADER_MULTIACTIONBAR"},
-	MainMenuBar = {friendlyName = L["Main Action Bar"], buttonName = "ActionButton", command = "ACTIONBUTTON", header = "BINDING_HEADER_ACTIONBAR"},
+	MultiBarLeft = {friendlyName = L["Left Multi Bar"], buttonName = "MultiBarLeftButton", command = "MULTIACTIONBAR4BUTTON", header = "BINDING_HEADER_MULTIACTIONBAR", actionSlotBase = 36},
+	MultiBarRight = {friendlyName = L["Right Multi Bar"], buttonName = "MultiBarRightButton", command = "MULTIACTIONBAR3BUTTON", header = "BINDING_HEADER_MULTIACTIONBAR", actionSlotBase = 24},
+	MultiBarBottomLeft = {friendlyName = L["Bottom Multi Bar Left"], buttonName = "MultiBarBottomLeftButton", command = "MULTIACTIONBAR1BUTTON", header = "BINDING_HEADER_MULTIACTIONBAR", actionSlotBase = 60},
+	MultiBarBottomRight = {friendlyName = L["Bottom Multi Bar Right"], buttonName = "MultiBarBottomRightButton", command = "MULTIACTIONBAR2BUTTON", header = "BINDING_HEADER_MULTIACTIONBAR", actionSlotBase = 48},
+	MainMenuBar = {friendlyName = L["Main Action Bar"], buttonName = "ActionButton", command = "ACTIONBUTTON", header = "BINDING_HEADER_ACTIONBAR", actionSlotBase = 0},
 	PetBar = {friendlyName = L["Pet Action Bar"], buttonName = "PetActionButton", command = "BONUSACTIONBUTTON", header = "BINDING_HEADER_ACTIONBAR"},
 	ShapeshiftBar = {friendlyName = L["Stance Action Bar"], buttonName = "", command = "SHAPESHIFTBUTTON", header = "BINDING_HEADER_ACTIONBAR"},
 	OverrideActionBar = {friendlyName = L["Vehicle Action Bar"], buttonName = "OverrideActionBarButton", command = "SHAPESHIFTBUTTON", header = "BINDING_HEADER_ACTIONBAR"},
@@ -1391,7 +1391,16 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 
 	for x = tFrom, tTo do
 		local tButtonObj = _G[tActionBarData[aActionBarName].buttonName..x]
-		if tButtonObj then
+		-- Some clients do not instantiate hidden empty action buttons. The action
+		-- slot itself still exists, so use its stable API index as a fallback rather
+		-- than dropping that position from the accessible menu. A real button's
+		-- action remains authoritative (important for a paged main action bar).
+		local tActionSlot = tButtonObj and tButtonObj.action
+		if not tActionSlot and tActionBarData[aActionBarName].actionSlotBase then
+			tActionSlot = tActionBarData[aActionBarName].actionSlotBase + x
+		end
+		if tActionSlot then
+			tButtonObj = tButtonObj or {action = tActionSlot}
 			local actionType, id, subType = GetActionInfo(tButtonObj.action)
 			local tButtonName =""
 			tButtonName = ButtonContentNameHelper(actionType, id, subType, aActionBarName, x)
@@ -1399,7 +1408,8 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Button"].." "..(x - tNameNumberMod)..(tAdditionalTotemBarNameParts[tActionBarData[aActionBarName].buttonName..x] or "")..";"..tButtonName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.isSelect = true
-			tNewMenuEntry.buttonObj = _G[tActionBarData[aActionBarName].buttonName..x]
+			tNewMenuEntry.buttonObj = tButtonObj
+			tNewMenuEntry.isActionBarSlot = true
 			tNewMenuEntry.OnEnter = function(self, aValue, aName)
 				self.spellID = nil
 				self.itemID = nil
@@ -1788,12 +1798,16 @@ function SkuCore:AddonsMenuBuilder(aParentEntry)
 			build = SkuCore.AtlasLootIntegration.alIntegrationMenuBuilder }
 	end
 	if SkuCore.DamageMeter and SkuCore.DamageMeter.DamageMeterMenuBuilder then
-		tSpecs[#tSpecs+1] = { kind = "list", label = L["Damage Meter"], sorting = true,
+		tSpecs[#tSpecs+1] = { kind = "list", id = "DamageMeter", label = L["Damage Meter"], sorting = true,
 			build = SkuCore.DamageMeter.DamageMeterMenuBuilder }
 	end
 	if _G.Questie and _G.Questie.db then
 		tSpecs[#tSpecs+1] = { kind = "list", label = "Questie", sorting = true,
 			build = SkuCore.QuestieMenuBuilder }
+	end
+	if SkuCore.PawnIntegration and SkuCore.PawnIntegration.MenuBuilder then
+		tSpecs[#tSpecs+1] = { kind = "list", id = "Pawn", label = "Pawn", sorting = true,
+			build = SkuCore.PawnIntegration.MenuBuilder }
 	end
 	-- Other addons' AceConfig settings (Questie, ECS, ...) rendered generically;
 	-- logic in SkuCore/addonOptions.lua. The Escape menu's "AddOns" button routes
@@ -2888,7 +2902,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 				"SKU_KEY_NAVWAYPOINTSQUICK", "SKU_KEY_NAVROUTEDESTINATIONSQUICK", }, },
 			{ label = L["Monitor und Kampf"], members = {
 				"SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR", "SKU_KEY_DOMONITORPARTYHEALTH2CONTI", "SKU_KEY_GROUPMEMBERSRANGECHECK",
-				"SKU_KEY_COMBATMONSETFOLLOWTARGET", "SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT", "SKU_KEY_NEXTCOMBATENEMY", }, },
+				"SKU_KEY_COMBATMONSETFOLLOWTARGET", "SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT", "SKU_KEY_NEXTCOMBATENEMY",
+				"SKU_KEY_OPENDAMAGEMETER", }, },
 			{ label = L["Würfeln"], members = {
 				"SKU_KEY_ROLLNEED", "SKU_KEY_ROLLGREED", "SKU_KEY_ROLLPASS", "SKU_KEY_ROLLINFO",
 				"SKU_KEY_QUESTSHARE", }, },
@@ -3331,8 +3346,3 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 	SkuMenu:Build(aParentEntry, tSpecs)
 end
-
-
-
-
-

@@ -99,6 +99,10 @@ SkuOptions.skuDefaultKeyBindings = {
 
    ["SKU_KEY_OPENDUNGEONBROWSER"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
 
+   -- Direct access to Details' stored combat reports. Unbound by default so an
+   -- existing character never loses a key; configurable in Sku key bindings.
+   ["SKU_KEY_OPENDAMAGEMETER"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+
    ["SKU_KEY_OPENATLASLOOT"] = {key = "CTRL-SHIFT-L", object = "SkuCore", func = "AtlasLootApplyKeyBinding",},
 
    -- (Combat bag access + combat trading keybinds removed 2026-07-01 -- their probe-era

@@ -3491,7 +3491,11 @@ function SkuChat:PLAYER_LOGIN(...)
 				if not tSettings or not tSettings.chatSettings then return true end
 				return tSettings.chatSettings.chatArrowsMoveCursor ~= false
 			end,
-			softStop = true,
+			-- Beim Absenden (ENTER) und Abbrechen (ESCAPE) verliert das Chatfeld
+			-- den Fokus. Dann muss auch die bereits an die System-TTS uebergebene
+			-- Zeichenfolge beendet werden; ein weicher Stop liess besonders unter
+			-- Windows lange Nachrichten noch nach geschlossenem Feld auslaufen.
+			softStop = false,
 			-- Pfeil hoch holt eine gesendete Zeile zurueck. Blizzards Verlauf
 			-- merkt sich nur den TEXT -- wohin die Zeile ginge, sieht man ihr
 			-- nicht an, und der Kanal ist derselbe wie vor dem Tastendruck, es
