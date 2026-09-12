@@ -6472,28 +6472,45 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								end
 								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Kaufen"]}, SkuGenericMenuItem)
 								tNewSubMenuEntry.sorting = true
-								tNewSubMenuEntry.dynamic = true
-								tNewSubMenuEntry.BuildChildren = function(self)
-									for tN = 1, tStock do
-										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {tN}, SkuGenericMenuItem)
-										tNewSubMenuEntry.OnAction = function()
-											local trem = tN - (20 * math.floor(tN / 20))
-											tN = math.floor(tN / 20)
-											BuyMerchantItem(aGossipListTable[index].obj:GetID(), trem)
-											if tN > 0 then
-												C_Timer.After(0.25, function()
-													C_Timer.NewTicker(0.25,
-													function()
-														SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)
-														BuyMerchantItem(aGossipListTable[index].obj:GetID(), 20)
-													end,
-													tN)
+								-- The buyback tab reuses the MerchantItem buttons and their IDs. On
+								-- that tab an entry is one sold stack, not a vendor offer with a
+								-- selectable quantity: BuyMerchantItem(id, n) would buy the vendor's
+								-- item with the same index. Buy it back from the buyback list directly.
+								if MerchantFrame and MerchantFrame.selectedTab == 2 then
+									local tBuybackIndex = aGossipListTable[index].obj:GetID()
+									tNewSubMenuEntry.OnAction = function()
+										if _G.BuybackItem then _G.BuybackItem(tBuybackIndex) end
+										SkuCore:CheckFrames()
+										C_Timer.After(0.35, function()
+											if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
+												SkuOptions.currentMenuPosition:OnUpdate()
+											end
+										end)
+									end
+								else
+									tNewSubMenuEntry.dynamic = true
+									tNewSubMenuEntry.BuildChildren = function(self)
+										for tN = 1, tStock do
+											local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {tN}, SkuGenericMenuItem)
+											tNewSubMenuEntry.OnAction = function()
+												local trem = tN - (20 * math.floor(tN / 20))
+												tN = math.floor(tN / 20)
+												BuyMerchantItem(aGossipListTable[index].obj:GetID(), trem)
+												if tN > 0 then
+													C_Timer.After(0.25, function()
+														C_Timer.NewTicker(0.25,
+														function()
+															SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)
+															BuyMerchantItem(aGossipListTable[index].obj:GetID(), 20)
+														end,
+														tN)
+													end)
+												end
+												C_Timer.After((tN * 0.25) + 0.01, function()
+													SkuCore:CheckFrames()
+													C_Timer.After(0.35 + (tN * 0.5), function() SkuOptions.currentMenuPosition:OnUpdate() end)
 												end)
 											end
-											C_Timer.After((tN * 0.25) + 0.01, function()
-												SkuCore:CheckFrames()
-												C_Timer.After(0.35 + (tN * 0.5), function() SkuOptions.currentMenuPosition:OnUpdate() end)
-											end)
 										end
 									end
 								end

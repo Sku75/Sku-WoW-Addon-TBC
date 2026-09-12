@@ -5003,7 +5003,16 @@ function SkuCore:IterateChildren(t, tab)
 
 								elseif string.find(fName, "ItemButton") and string.find(fName, "MerchantItem") then
 									_G["SkuScanningTooltip"]:ClearLines()
-									local hsd, rc = _G["SkuScanningTooltip"]:SetMerchantItem(tResults[fName].obj:GetID())
+									-- The buyback tab reuses the MerchantItem buttons and their IDs.
+									-- SetMerchantItem would therefore read the item with the same index
+									-- from the vendor's normal inventory instead of the sold item.
+									local hsd, rc
+									if MerchantFrame and MerchantFrame.selectedTab == 2
+										and _G["SkuScanningTooltip"].SetBuybackItem then
+										hsd, rc = _G["SkuScanningTooltip"]:SetBuybackItem(tResults[fName].obj:GetID())
+									else
+										hsd, rc = _G["SkuScanningTooltip"]:SetMerchantItem(tResults[fName].obj:GetID())
+									end
 									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 										if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
 											local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
