@@ -140,6 +140,18 @@ local mSkuVoiceQueueBTTS_Voice = {}
 -- pre-v43.2 behaviour, never to silence. That is the right direction to fail in,
 -- which is why it is not worth a parallel structured queue.
 local mSkuVoiceQueueBTTS_UserAction = {}
+-- [v43.4] Speech scopes. A queued line may carry the context it speaks FOR
+-- (side map keyed by the string, like the voice and user-action maps): "menu"
+-- for the menu's own announcements, "echo" is implicit for the typing lane.
+-- SkuVoice:EndScope(scope) is called at the moment that context ends (menu
+-- closed, chat box lost focus) and does two things only: drop the queued
+-- lines of that scope, and stop the engine if the utterance in flight belongs
+-- to that scope. Nothing untagged is ever touched. This is what a keypress
+-- alone deliberately does NOT do (see the v43.2 rules), and what the
+-- one-second guesses could not do: on the bridge the end of an utterance is
+-- unknowable, but "what was handed last, and for whom" is known exactly.
+local mSkuVoiceQueueBTTS_Scope = {}
+local tLastHandedScope = nil
 
 -- [v42.13] Pump pacing state, hoisted out of SkuVoice:Create's closure so
 -- SkuVoice:CancelBttsOutput (below) can arm the same hold the queuereset branch
@@ -468,6 +480,7 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	end
 	tAuditStopSinceHandover = false
 	tLastHandoverWasEcho = (aIsEcho == true)
+	if aIsEcho then tLastHandedScope = "echo" end
 	tBttsStats.handed = tBttsStats.handed + 1
 	if aIsEcho then tBttsStats.echo = tBttsStats.echo + 1 end
 	if dprint then dprint("BTTS SpeakText", aIsEcho and "echo" or "queue",
@@ -660,6 +673,7 @@ function SkuVoice:Create()
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						mSkuVoiceQueueBTTS_Voice[tPeek] = nil
 						mSkuVoiceQueueBTTS_UserAction[tPeek] = nil
+						mSkuVoiceQueueBTTS_Scope[tPeek] = nil
 						tBttsStats.dupSuppressed = tBttsStats.dupSuppressed + 1
 						if dprint then dprint("BTTS DUP-SUPPRESS", "reset+text", "age="..string.format("%.2f", tNow - tLastHandedAt), "text=["..tostring(tPeek).."]") end
 					else
@@ -759,6 +773,7 @@ function SkuVoice:Create()
 							tLastHandedText = tValue
 							tLastHandedAt = tNow
 							tLastHandedStarted = false
+							tLastHandedScope = mSkuVoiceQueueBTTS_Scope[tValue]
 						elseif tIsBackToBackDup then
 							-- already logged above as DUP-SUPPRESS
 						else
@@ -769,6 +784,7 @@ function SkuVoice:Create()
 						end
 						mSkuVoiceQueueBTTS_Voice[tValue] = nil
 						mSkuVoiceQueueBTTS_UserAction[tValue] = nil
+						mSkuVoiceQueueBTTS_Scope[tValue] = nil
 						tNextSpeakAt = tNow + tBttsPostSpeakHold
 					end
 				end
@@ -1255,7 +1271,7 @@ end
 -- aUserAction: this line is the direct consequence of a key the user just
 -- pressed. Only the menu's keypress funnel sets it; it exempts the line from the
 -- back-to-back duplicate guard (see mSkuVoiceQueueBTTS_UserAction).
-function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aVoice, aUserAction)
+function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aVoice, aUserAction, aScope)
 	if not aString then
 		return
 	end
@@ -1279,6 +1295,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		-- dequeue can pick it instead of the global voice.
 		aVoice = aOverwrite.voice
 		aUserAction = aOverwrite.userAction
+		aScope = aOverwrite.scope
 		aOverwrite = aOverwrite.overwrite
 	end
 	-- Inside a key handler's mark window every line is key-triggered (see
@@ -1483,6 +1500,9 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		if aUserAction then
 			mSkuVoiceQueueBTTS_UserAction[tFinalStringForBTtsMac] = true
 		end
+		if aScope then
+			mSkuVoiceQueueBTTS_Scope[tFinalStringForBTtsMac] = aScope
+		end
 		if not aIgnoreLinks then
 			SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTtsMac, "")
 		end
@@ -1497,6 +1517,9 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		end
 		if aUserAction then
 			mSkuVoiceQueueBTTS_UserAction[tFinalStringForBTts] = true
+		end
+		if aScope then
+			mSkuVoiceQueueBTTS_Scope[tFinalStringForBTts] = aScope
 		end
 
 		if not aIgnoreLinks then
@@ -1935,6 +1958,7 @@ function SkuVoice:CancelBttsOutput()
 		if tValue then
 			mSkuVoiceQueueBTTS_Voice[tValue] = nil
 			mSkuVoiceQueueBTTS_UserAction[tValue] = nil
+						mSkuVoiceQueueBTTS_Scope[tValue] = nil
 		end
 		mSkuVoiceQueueBTTS[x] = nil
 	end
@@ -1949,6 +1973,7 @@ function SkuVoice:CancelBttsOutput()
 	-- [v43.2] A hard cancel really did silence the line, so the confirmation a caller
 	-- speaks right after must never be swallowed as a back-to-back duplicate of it.
 	tLastHandedText = nil
+	tLastHandedScope = nil
 	if dprint then dprint("BTTS CancelBttsOutput -> StopSpeakingText") end
 	pcall(function() C_VoiceChat.StopSpeakingText() end)
 	tAuditStopSinceHandover = true
@@ -1994,6 +2019,7 @@ function SkuVoice:SpeakEcho(aText, aVoice)
 			if tValue then
 				mSkuVoiceQueueBTTS_Voice[tValue] = nil
 				mSkuVoiceQueueBTTS_UserAction[tValue] = nil
+						mSkuVoiceQueueBTTS_Scope[tValue] = nil
 			end
 			mSkuVoiceQueueBTTS[x] = nil
 		end
@@ -2022,6 +2048,58 @@ end
 -- [v43.2] Drop a typed character that has not gone out yet. Does NOT stop
 -- anything already speaking -- the caller decides that (SkuOptions' tEchoStop
 -- uses CancelBttsOutput when it wants the hard cancel).
+-- [v43.4] The typing lane's utterance is in flight until something else is
+-- handed over or a cancel lands. On the bridge FINISHED arrives in the same
+-- frame as the handover, so it says nothing about audibility; a later handover
+-- or a cancel is the only reliable end. Used by the chat box's focus-loss stop
+-- instead of a one-second age guess: a slow voice still reading a recalled
+-- line five seconds later is still "in flight" here, and the server's readback
+-- of the sent message, once handed, makes this false again -- so it can never
+-- be the one that gets cut.
+function SkuVoice:IsEchoInFlight()
+	return tLastHandedScope == "echo"
+end
+
+-- [v43.4] End a speech scope: drop its queued lines, and stop the engine only
+-- if the utterance in flight belongs to it. Untagged speech is never touched.
+-- Returns true when the engine was stopped.
+function SkuVoice:EndScope(aScope)
+	if not aScope then
+		return false
+	end
+	local tDropped = 0
+	for x = #mSkuVoiceQueueBTTS, 1, -1 do
+		local tValue = mSkuVoiceQueueBTTS[x]
+		if tValue and tValue ~= "queuereset" and mSkuVoiceQueueBTTS_Scope[tValue] == aScope then
+			table.remove(mSkuVoiceQueueBTTS, x)
+			mSkuVoiceQueueBTTS_Voice[tValue] = nil
+			mSkuVoiceQueueBTTS_UserAction[tValue] = nil
+			mSkuVoiceQueueBTTS_Scope[tValue] = nil
+			tDropped = tDropped + 1
+		end
+	end
+	if aScope == "echo" then
+		tEchoSlotText = nil
+		tEchoSlotVoice = nil
+	end
+	local tStopped = false
+	if tLastHandedScope == aScope then
+		local tNow = GetTime()
+		mSkuVoiceQueueBTTS_Speaking = {}
+		tLastStopAt = tNow
+		tNextSpeakAt = tNow + 0.15
+		-- A real stop: an identical line arriving after it must be allowed again.
+		tLastHandedText = nil
+		tLastHandedScope = nil
+		tLastHandoverWasEcho = false
+		pcall(function() C_VoiceChat.StopSpeakingText() end)
+		tAuditStopSinceHandover = true
+		tStopped = true
+	end
+	if dprint then dprint("BTTS EndScope", tostring(aScope), "dropped="..tDropped, "stopped="..tostring(tStopped)) end
+	return tStopped
+end
+
 function SkuVoice:CancelEcho()
 	tEchoSlotText = nil
 	tEchoSlotVoice = nil
