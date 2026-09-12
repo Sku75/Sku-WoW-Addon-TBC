@@ -21,6 +21,11 @@ Event- und API-Namen bleiben im Original.
   `AddOns\Sku` (im `_anniversary_`-Client), der auf den Ordner `Sku/` dieses
   Repos zeigt — Änderungen sind nach `/reload` sofort aktiv. (Der alte
   v41-/v42-Doppel-Worktree ist Geschichte: v42 ist ausgeliefert, ein Repo.)
+- **Repo / CI.** Der Windows-Job von `build-installers` ist rot: NETSDK1004,
+  msbuild ohne NuGet-Restore (`msbuild /t:Restore` oder `dotnet build` fehlt).
+  Für Releases harmlos — die Windows-EXE baut `release.ps1` lokal —, der
+  macOS-Job läuft (v43.3-Assets kamen daraus). PR #19 (Yennesta) ist am
+  2026-09-12 als eigene Commits übernommen, beantwortet und geschlossen.
 
 ## Offene Fehler
 
@@ -40,7 +45,7 @@ Event- und API-Namen bleiben im Original.
     Bones" auf die erste passende areaId aufgelöst (Namenskollision, zwei
     Gebiete teilen den Namen).
   - Status: offen, niedrige Priorität — Defekt in den ausgelieferten
-    Routendaten, nicht im Code.
+    Routendaten, nicht im Code. (Stand 2026-09-12 unverändert.)
 - **Selbst angelegte Wegpunkte und Links überleben keinen Relog.**
   - Symptom: SkuNav:SetWaypoint hängt an SkuDB.SessionRouteData.Waypoints an;
     diese Tabelle wird bei jedem Login aus den ausgelieferten Routendateien neu
@@ -48,6 +53,10 @@ Event- und API-Namen bleiben im Original.
     dieselbe In-Memory-Tabelle. Nur Quick- und Temp-Wegpunkte überleben (sie
     liegen in den Einstellungen); importExport ist der einzige Weg zu dauerhaft
     eigenen Kartendaten.
+  - Stand: Seit 2026-08-25 ist der SkuMapper-Abgabeweg (`/sku save` +
+    Drei-Wege-Merge, `dev/mapper/MAPPER-WORKFLOW.md`) der vorgesehene Weg zu
+    dauerhaften Kartendaten. Das entschärft die Frage, entscheidet sie aber
+    nicht: ob Sku selbst Wegpunkte persistieren soll, ist weiter offen.
   - Status: offene FRAGE, kein bestätigter Bug — es braucht eine Entscheidung,
     ob das so gewollt ist.
 
@@ -58,23 +67,28 @@ Vermutung, bis untersucht.
   - Symptom: arenabezogene Abfragen / Ansagen funktionieren noch nicht.
   - Repro: offen (Arena-Kontext betreten/abfragen).
   - Vermuteter Bereich: Arena-Daten-/Abfragecode (noch zu lokalisieren).
-  - Status: offen.
-- **Das Menü "Zurückkaufen" (buy-back) ist kaputt.**
-  - Symptom: Das Rückkauf-Menü beim Händler funktioniert nicht (Items werden
-    nicht gelistet / Auswahl tut nichts — genaues Fehlbild noch aufzunehmen).
-  - Repro: Item an einen Händler verkaufen, Rückkauf-Menü öffnen, zurückkaufen.
-  - Vermuteter Bereich: Händler-Menücode (Aufbau der Rückkaufliste + Aktion).
-  - Status: offen — braucht ein `/wdsku`-Capture plus `SkuDebugLog`-Trace beim
-    Händler, um Listenaufbau und Aktionspfad zu trennen.
+  - Status: offen, seit Aufnahme unberührt (kein Commit zum Thema).
 - **Einige Standard-Tastenbelegungen fehlen bei einem brandneuen Nutzer.**
   - Symptom: Bei frischer Installation (keine gespeicherten Bindings) sind
     einige Tasten, die Sku per Default belegen soll, unbelegt.
-  - Repro: frischer Account / `SkuOptions.SkuKeyBinds` leeren; nach dem ersten
-    Login prüfen, welche SKU_KEY_*-Defaults tatsächlich gebunden sind.
-  - Vermuteter Bereich: Anwendung der Default-Bindings in
-    SkuZOptions/SkuKeyBinds.lua (`skuDefaultKeyBindings` + der Apply-Pass beim
-    ersten Login).
-  - Status: offen.
+  - Stand: Zwei Teilbefunde sind behoben, beide 2026-08-15 — die Taste "Handel
+    annehmen" war nie gebunden (`a76e581`), und der Default-Satz für neue
+    Spieler wurde überarbeitet (`c4e3e62`: Fokus-Slots 1-5 auf den
+    Nummernblock, `T` als zweite Taste für "zum Beacon drehen", Flüster-Tab im
+    Chat mit eigenem Sound, Kampfmonitor an). Dabei fiel auf, dass der Binder in
+    `SkuNav/Core.lua` nur `.key` anwandte — ein konfiguriertes `key2` war für
+    JEDE SkuNav-Aktion tot; behoben (`skuFocus.lua` wendet weiter nur `.key`
+    an). Die Shift-F9..F12-Aktionen bekamen eigene Bindings (`9d6b05c`).
+  - Repro / Nachprüfen: frisches Profil bzw. "Tastenbelegung zurücksetzen";
+    dann: Nummernblock ruft/setzt Fokus (Taste = holen, Strg+Taste = setzen),
+    `T` und `I` drehen zum Beacon, ein frischer Char hört den Gegnerzähler im
+    Kampf, der Chat hat 4 Tabs und ein Flüstern wird genau EINMAL gesprochen
+    (mit notification3). Ob danach noch Defaults fehlen, entscheidet dieser
+    Test.
+  - Bereich: SkuZOptions/SkuKeyBinds.lua (`skuDefaultKeyBindings` + Apply-Pass
+    beim ersten Login).
+  - Status: offen, bis der Frischprofil-Test gelaufen ist (im Spiel UNGETESTET
+    seit 2026-08-15).
 
 ## Kartenprobleme
 
@@ -85,18 +99,33 @@ Details erst bei Untersuchung.
 - **Questziele diverser Nachtelf-Startquests fehlen.** Z. B. die Mondbrunnen.
   Status: offen.
 
+Hinweis: Der Questziel-Datenpass vom 2026-08-31 (`85dfb9c` echte Ziele für 77
+Feldquests, `fa4e275` Abgaben für 13 Sprich-mit-Quests, `9d9021c`
+Instanz-Innenräume laufen zum Eingang, `e9bc2a6` Questdaten aus Questie
+11.37.1) hat diese beiden Meldungen NICHT gezielt geprüft — beim nächsten
+Nachtelf-/Westfall-Test zuerst schauen, ob sie noch reproduzieren. Für eine
+Quest mit echtem Feldziel ohne Daten reicht seit PR #15 ein handgeschriebener
+`triggerEnd` in `quests_fixes.lua` (Zone + Koordinaten), keine
+Wegpunkt-Autorenschaft.
+
 ## Feature-Wünsche / Wishlist
 
 Vom Maintainer gewünschte Features der v42-Linie. Mehrere überschneiden sich mit
 bestehenden Workstreams (vermerkt) — dort einarbeiten, wenn der Workstream läuft.
+Erledigt seit der letzten Durchsicht und deshalb gestrichen (2026-09-12):
+Quest-Button-Funktionalität (Quest verfolgen/nicht verfolgen aus dem Questmenü
+`6090927`, Questziel-Taste Alt+H `60c2804`, beides getestet 2026-08-28) und die
+Chat-Defaults (im Neue-Spieler-Defaultsatz `c4e3e62`, Flüster-Tab; Kanalansage
+als ein Schalter `b7ed493` — Test siehe "Standard-Tastenbelegungen").
 
+- **Sehrest-Nutzer (Low Vision).** Die offenen Punkte nach dem
+  v43.2-Sehhilfen-Pass stehen in `VISUAL-IMPAIRMENT-IMPROVEMENTS.md` (selber
+  Ordner), nicht hier.
 - **Standardmakro zum Einfügen.** Ein fertiges Makro anbieten, das der Nutzer
   (z. B. ins Makro-UI) einfügen kann, für gängige Sku-Aktionen — damit ein
   Screenreader-Nutzer keine Secure-Makros von Hand schreiben muss. Umfang und
-  Inhalt mit dem Maintainer zu klären.
-- **Quest-Button-Funktionalität.** Button / Menüaktion zum Interagieren mit
-  Quests (annehmen / abgeben / verfolgen). Betrifft `SkuQuest`; genaues
-  Verhalten mit dem Maintainer zu klären.
+  Inhalt mit dem Maintainer zu klären. (`SkuCore/Macro.lua` ist nur der
+  Menü-Builder für vorhandene Makros, kein Vorlagenangebot.)
 - **GEPLANT: Blizzard-TTS-Sprachmischung (Deutsch/Englisch automatisch).** Wir
   spielen auf einem internationalen Server, gemischte Inhalte sind Dauerzustand.
   Plan: kleiner Lua-Sprachdetektor (Stoppwortlisten + Umlaut-/ß-Signal), der die
@@ -121,21 +150,33 @@ bestehenden Workstreams (vermerkt) — dort einarbeiten, wenn der Workstream lä
   Deutsch/Englisch für die konkatenative Stimme.
 - **Ausrüstungssets: Slash-Befehle + Makrofähigkeit.** Die Equip-Slash-Befehle
   mit den WoW-Ausrüstungssets zusammenarbeiten lassen und diese Aktionen
-  makrofähig machen (aus einem Makro / im Kampf auslösbar).
+  makrofähig machen (aus einem Makro / im Kampf auslösbar). Unberührt seit
+  Aufnahme; `equipmentSets.lua` erzeugt heute `/run`-Makros pro Set
+  (`EQ_CreateMacro`), mehr nicht.
 - **Performance-Pass für die Monitore.** Performance der Monitore (Gesundheit /
-  Energie / etc.) prüfen und verbessern. HINWEIS: Der Gegnerzähler des
-  **Kampf**monitors ist ERLEDIGT (2026-07-09, Commits `5fbfa22`/`f35638c`/
-  `40eed35`, nachgezogen in `5dec1f8`); Gesundheit/Energie und der Rest stehen
-  noch aus.
+  Energie / etc.) prüfen und verbessern. ERLEDIGT sind der Gegnerzähler des
+  **Kampf**monitors (2026-07-09, `5fbfa22`/`f35638c`/`40eed35`, nachgezogen in
+  `5dec1f8`) und die **Auren-Engine** (v43.0, Welle 1+2 — Eintrag unter
+  Beobachtung); Gesundheit/Energie und der Rest stehen noch aus.
 - **Reaktionszeit- und Präzisionspass für Monitore + Auren.** Reaktionszeit und
-  Präzision messen und verbessern. HINWEIS: Reaktivität und Präzision des
-  Gegnerzählers im **Kampf**monitor sind ERLEDIGT (2026-07-09 / `5dec1f8`);
-  Gesundheit/Energie/Auren stehen noch aus.
+  Präzision messen und verbessern. ERLEDIGT: Gegnerzähler im **Kampf**monitor
+  (2026-07-09 / `5dec1f8`) und **Auren** (v43.0, Deadline-Scheduler
+  framegenau, verifiziert 2026-08-18); Gesundheit/Energie stehen noch aus.
 - **Erkundungsmodus.** Neuer Modus — Umfang/Verhalten mit dem Maintainer zu
-  klären.
+  klären. Unberührt.
 - **Steckenbleib-Erkennung für Dungeons (Experimente).** Ideen zum Testen —
   Sturzerkennung und Ähnliches —, damit der Spieler im Dungeon mehr
   "stecke ich fest / wo bin ich"-Information bekommt.
+  - Stand: Der Tiefenmesser wurde gebaut, dreimal im Spiel getestet und am
+    2026-08-31 wieder entfernt (`c741564`) — der Client meldet keinen
+    Bodenkontakt in tiefem Wasser (GetUnitSpeed ist befohlene, nicht echte
+    Geschwindigkeit), eine Fantasiezahl wäre schlimmer als keine. Messungen,
+    Sackgassen, der komplette Code und der offene Begleiter-Orakel-Ansatz (die
+    GetUnitSpeed eines ANDEREN Units ist echte Geschwindigkeit; ein folgender
+    Begleiter, der stehen bleibt, während man Bewegung befiehlt, wäre ein echtes
+    Steckenbleib-Signal) stehen in `TIEFENMESSER.md`. Wände beim
+    Auto-Interact-Lauf deckt die Selbstkollisions-Warnung schon ab
+    (EngineMoving-Arm, getestet 2026-08-13).
 - **AddOn-Einstellungsmenü — ausgeliefert, ausbaufähig.** Addons →
   "AddOn-Einstellungen" (SkuCore/addonOptions.lua) rendert die
   AceConfig-Einstellungen anderer Addons (Questie, ECS, AtlasLoot über den
@@ -143,24 +184,26 @@ bestehenden Workstreams (vermerkt) — dort einarbeiten, wenn der Workstream lä
   Escape-Menü führt dorthin. Seit 42.05 liegt ein kuratiertes, handgebautes
   Questie-Menü (Chat-Ansagen; `SkuCore:QuestieMenuBuilder`) in derselben
   Addons-Liste — prüfen, ob die zwei Questie-Einträge Nutzer verwirren, ggf.
-  zusammenlegen. Läuft im Spiel, aber noch nicht fehlerfrei — Politur-Kandidaten:
-  Slider/Dropdowns über mehr Addons hinweg verifizieren (dprint-Breadcrumbs
-  liegen drin), Bestätigungs-Buttons, Color-/Keybinding-Typen, Aufteilung der
-  Blizzard-Settings-AddOns-Kategorie, DBM-Core-Optionen. Details und Befunde:
-  `ADDON-SETTINGS-ACCESS.md` (selber Ordner).
-- **GEPLANT: sinnvolle Defaults für die Chat-Einstellungen.** Gute
-  Auslieferungs-Defaults wählen (welche Kanäle gelesen werden, Stimmen usw.).
-  Chat ist als Priorität benannt.
+  zusammenlegen. Seit 2026-09-12 stehen dort auch Addons → Pawn (`3b880de`,
+  `SkuCore/pawnIntegration.lua`) und für Details die Taste "damage meter
+  öffnen" mit eigener Tastengruppe "Addons" (`b1ee429`). Läuft im Spiel, aber
+  noch nicht fehlerfrei — Politur-Kandidaten: Slider/Dropdowns über mehr Addons
+  hinweg verifizieren (dprint-Breadcrumbs liegen drin), Bestätigungs-Buttons,
+  Color-/Keybinding-Typen, Aufteilung der Blizzard-Settings-AddOns-Kategorie,
+  DBM-Core-Optionen. Details und Befunde: `ADDON-SETTINGS-ACCESS.md` (selber
+  Ordner).
 - **GEPLANT: unterschiedliche Sounds für Menü-Öffnen und Tooltip-Lesen.** Beide
   nutzen derzeit den Follow-/Unfollow-Sound — dasselbe Signal bedeutet zwei
   unzusammenhängende Dinge. Getrennte Sounds wählen für (a) Menü öffnen und
-  (b) Tooltip lesen. Bereich: die geteilten Sound-ID-Konstanten der Menü- und
-  Tooltip-Pfade (siehe Notizen zu den geteilten Sound-Assets: Menü auf = 88,
-  zu = 89, Nav-Klick = 811).
+  (b) Tooltip lesen. Bereich, präzisiert 2026-09-12: Menü auf/zu sind die
+  SoundKit-IDs 88/89 in `SkuZOptions/Core.lua` (Nav-Klick = 811); der
+  Tooltip-Leser spielt `sound-on3_1`/`sound-off2` (`SkuTTS-1.0.lua` ~454/477)
+  — dieselben Dateien wie Autofollow, SkuChat auf/zu und der Mouseover-Scan.
+  Zu ändern ist also die Leserseite, nicht das Menü.
 - **GEPLANT: Escape-Menü-Einträge reagieren auf Pfeil RECHTS statt Enter.** Die
   Einträge des Escape-(Spiel-)Menüs sollen auf Pfeil RECHTS reagieren, damit sie
   sich wie der restliche Sku-Menübaum verhalten. Bereich: der Spielmenü-Mirror
-  (gameOptions-/LocalMenu-Pfad).
+  (gameOptions-/LocalMenu-Pfad). Unberührt.
 
 ## Mögliche Änderungen (unentschieden)
 
@@ -196,6 +239,57 @@ Analyse nicht erneut herleitet.
     Default AUS, und pro Stimme im Spiel A/B testen, bevor es Default wird.
     Bereich: `SkuVoice-1.0.lua` (`OutputStringBTtts`, das OnUpdate-BTTS-Dequeue,
     `mSkuVoiceQueueBTTS*`). Verwandter ausgelieferter Fix: `e6a9868`.
+  - Verwandt seit 2026-09-12, aber die Produzentenseite: Sprach-Scopes
+    (`d3bb3ad`) — eine Zeile kann einem Kontext (Menü/Fenster) gehören, dessen
+    Ende sie zurückzieht (Wartendes verworfen, Laufendes gestoppt). Der
+    Cancel-Leak IN der Engine bleibt davon unberührt.
+
+## Ausgeliefert, im Spiel noch nicht bestätigt
+
+Änderungen, die in einem Release oder im offenen Stand liegen und deren Feldtest
+aussteht. Eine Zeile pro Punkt: Version, Commit, was zu prüfen ist. Bestätigtes
+hier streichen. (Angelegt 2026-09-12; neueste zuerst.)
+
+- **v43.4 (offen), Yennestas PR-#19-Paket** (`9c46694` Mac-Phantomtasten,
+  `cb4fdfe` Raid-Rollen, `b5866ac` Rückkauf, `3b880de` Pawn, `b1ee429`/`4e5368e`
+  Damage-Meter-Taste, `c93fab7` Scan-Tooltip, `d3bb3ad`/`65dd7dd`/`a9d35c4`
+  Sprach-Scopes, `75bd8a6`, `c4c6e18`) — von Yennesta im Spiel getestet, hier
+  als eigene Commits übernommen; gilt als in Ordnung, bis ein Bericht kommt.
+  Nur die Sprach-Scopes und der Dublettenwächter (`c4c6e18`: zweiter
+  Tastendruck innerhalb 1 s muss wieder sprechen) sind UNSERE Umbauten, nicht
+  Yennestas Code — die beim nächsten Spielen mithören.
+- **v43.3: Zu Einheit drehen über den Koordinaten-Drehkern** (`3ba714a`,
+  `GameWorldObjects:TurnToWorldPosition`, Plattenscan nur noch Fallback in
+  Instanzen). Log-Marker `TurnToWp start unit <token>`. Offene Frage: bricht
+  der abschließende Mouselook-Impuls einen laufenden Jäger-Autoschuss ab (PR #17
+  behauptet es; gilt dann für die Beacon-Drehung genauso) — Jägertest.
+- **v43.3: Interact-Taste greift nach einem Kill ein fernes Ziel — Warnton
+  statt Fix** (`fd2e9b6`). Ursache belegt (`InteractUnit("anyinteract")` mit
+  looseTargeting), Erkennung im Live-Trace exakt; `InteractUnit` UND
+  `ClearTarget` sind geschützt, ein Auto-Fix ist unmöglich. Nachhören: nach
+  einem Kill G drücken, wenn ein fremdes Ziel gefangen wird, muss `error_dang`
+  kommen; Alt+H/Strg+H-Ziele dürfen NICHT warnen (0,6-s-Fenster).
+- **v43.2: Questziele** — gemischte Questziele liefern ALLE Zielarten
+  (`95c0a8f`, `GetQuestTargetGroups`), Questdaten aus Questie 11.37.1
+  (`e9bc2a6`, nur Felder 1-26), 77 Feldquests von Hand (`85dfb9c`).
+  Nachprüfen: Ziel-Menü und Alt+H an einer Sammel+Töte-Quest (z. B. 532
+  Schlacht um Hillsbrad). Quests 503/11496/11523 bleiben unabhängig davon
+  kaputt (Zonen 2597/4075 fehlen).
+- **v43.1: Auren-Editor-Rework** (`AURA-CREATE-REWORK-PLAN.md`, gebaut
+  2026-08-23, Commits `e34f445`..`6b14298`): Editor-Bedienung einmal
+  durchspielen (Aura anlegen, Bedingung mit zwei Werten, löschen fragt nach).
+  **ID-/Gruppen-Port** (`AURA-ID-PORT-PLAN.md`, v43.0): erster Spieldurchlauf
+  gemacht, ein Defekt (12.5) behoben — der Fix selbst ungetestet.
+- **v43.1: Menü-Schließ-Gates + "Tastatur-Echo ansagen"** (`5524e83`).
+  Nachprüfen: Postfach → Senden → sofort ESC: kein "Gesendet"/"Neuer Brief
+  plus" nach "Menü geschlossen"; Feld-Enter → sofort ESC: kein "Betreff: …";
+  Echo aus → Tippen still, "Abgebrochen"/Bestätigungen bleiben; das
+  Strg+Enter-Chat-Zeilenmenü muss weiter sprechen (baut das Menü ohne Frame).
+- **v43.0: Auren** — Once-Gate ZWEITE Ursache (Zensus vor der Schleife,
+  2026-08-21) und Wirker-Filter `listsOwnOnly` (2026-08-18): siehe den
+  Auren-Eintrag unter Beobachtung.
+- **v43.0: Neue-Spieler-Defaults** (`c4e3e62`): Checkliste beim Eintrag
+  "Standard-Tastenbelegungen" unter Offene Fehler.
 
 ## Beobachtung (auf Anfrage nachprüfen)
 
@@ -212,7 +306,11 @@ Analyse nicht erneut herleitet.
   Nachprüfen: SkuMapper 5.0 frisch paketieren, einloggen — Karte muss
   Wegpunkte zeigen (nicht leer), `/sku save test` + `/reload`, dann die .bat;
   die ZIP per `skumap.py merge --dry-run` einlesen: Header muss Karte 1,
-  Mapper- und Phasenfeld tragen, 0 Änderungen melden.
+  Mapper- und Phasenfeld tragen, 0 Änderungen melden. Dazugekommen am selben
+  Tag: `skumap.py pack` + `InstallMapData.bat` für den Rückweg zum Mapper
+  (`ac7748a`), Tastenbelegung + Kartenknopf für `/sku save` (`2334773`) — beide
+  ebenfalls nur tool-seitig geprüft. Stand 2026-09-12: Spiel-Seite weiter
+  UNGETESTET.
 
 - **v43.0 Hardcore-Realms: Kartendaten laden — der Aufbau ist repariert, die
   LISTEN darüber sind es erst teilweise.** Anfrage: "check the hardcore map data
@@ -253,6 +351,17 @@ Analyse nicht erneut herleitet.
   `SkuDebugLog` nach `deferred build 'routes'`, `builder ... is MISSING`,
   `restarting waypoint cache build` und `CleanupWaypoints: disconnected custom
   waypoints removed` suchen, dazu das Feld `SkuDebugLog.wpcResult`.
+  **Kill-Zensus 2026-08-23** über den ganzen Era-/Hardcore-Store: 568
+  Budget-Warnungen, 15 echte Abbrüche — 8 im Wegpunkt-Cache, 6 in
+  Menü-`BuildChildren` (alles Auren-Wertelisten), NULL in `EnsureData` / dem
+  Routenaufbau, der bei ADDON_LOADED hinter dem Ladebildschirm läuft. Punkt 1
+  ist damit latent, nicht akut — die Abschnitts-Builder zu schneiden wäre
+  Überbau, das ausdrücklich so festhalten statt es zu bauen. Die
+  Wertelisten-Builds sind seit v42.13 yieldend (getestet 2026-08-16). Der
+  Abbruchpunkt ist kein fester Deckel (dieselbe Liste starb zwischen 4.404 und
+  12.695 Einträgen), das Budget ist mit den anderen Addons im Frame geteilt:
+  nur resumierbar machen und dem adaptiven Backoff (`Sku:BuildFrameBudgetMs`
+  150 → 75 → 37,5 → 20 ms) das Schrumpfen überlassen.
 - **v43.0 "Liste leer" statt einer Aussage — drei Härtungen vom 2026-08-21,
   UNGETESTET im Spiel.** Anfrage: "check the empty list monitor". Auslöser: Ein
   Tester meldete auf einem Hardcore-Realm (Era) für Shift-F10 nur "Liste leer",
@@ -283,6 +392,12 @@ Analyse nicht erneut herleitet.
   `SkuNav:InjectWpListEmptyHint` fällt mangels Kontinent auf das GLOBALE
   `wpCacheReady` zurück — das `true` ist. Ergebnis: "Liste leer" als Aussage über
   Daten, obwohl die Aussage in Wahrheit "ich weiß nicht, wo du stehst" lautet.
+  Gefundene Instanz der Wächter-Kante (2026-08-28): `Questdatenbank → Start in
+  Zone → Nach Entfernung` zählte `tcount` als undefiniertes Global hoch, der
+  Build starb nach dem ERSTEN Eintrag — die Liste hatte genau einen Eintrag,
+  ohne Fehler, seit Jahren. Behoben (`local tcount`, `SkuQuest/Options.lua`).
+  Muster zum Greppen: `x = x + 1`, dessen `local` in einer anderen Funktion
+  steht; das Symptom ist "ein Eintrag", nicht "leer".
   Nachprüfen: Tester an dieselbe Stelle stellen, `/szp` (`/skuzoneprobe`),
   `/reload`, `Sku.lua` auswerten — der Dump enthält "BROKEN: GetCurrentAreaId
   returned nil ..." und "Shift-F10 source GetAllLinkedWPsInRangeToCoords: N
@@ -305,18 +420,6 @@ Analyse nicht erneut herleitet.
   (`SkuZOptions/Core.lua`) plus die `skuClickStagingBlocked`-Markierung in
   `SkuZOptions/templates.lua`.
 
-- **Dial Targeting (#21-Dedup) — in Gruppe/Raid ungetestet.** Das W6-C-#21-Refactor
-  (Commit `d5a4eb9`) hat gemeinsame Helfer `tClearUnitNameSlots()` /
-  `tApplyNumpadBindings(aNumpadFrameName)` aus den Raid-/Raid10-/Party-Zweigen
-  von `DialTargetingRosterUpdate` herausgezogen (secure
-  `SetOverrideBindingClick`). Es lädt sauber und ist identisch bis auf den
-  Numpad-Besitzerframe (Raid = ToggleHandler, Raid10/Party = TargetingFrame),
-  eine Regression ist also unwahrscheinlich — aber die Numpad-Mitgliederauswahl
-  wurde nie in einer Gruppe ausgeübt. Nachprüfen: In einer **Gruppe**
-  Numpad-Ziffern drücken und Mitglieder per Slot wählen; in einem **Raid**
-  (zweistellige Eingabe über `SkuSecureTargetingToggleHandler`) prüfen, ob die
-  richtige Einheit anvisiert wird. Bereich `SkuCore/DialTargeting.lua`;
-  Revert-Kandidat = allein `d5a4eb9`, falls es sich falsch verhält.
 - **Syntherceptor (jcsteh) als künftiger Ersatz der mitgelieferten
   NVDA-SAPI-Stimme.** Anfrage: "check the Syntherceptor monitor". SAPI5-Voice-DLL,
   die Sprache an NVDA weiterreicht (github.com/jcsteh/syntherceptor, Installer
@@ -351,8 +454,12 @@ Analyse nicht erneut herleitet.
   (github.com/LeonarddeR/SAPIence, LGPL, Rust, gleicher Mechanismus) — Stand
   2026-07-05 null Releases/Binaries, noch kein Kandidat.
 - **v43.0 Auren-Reaktionszeit — ZWEI WELLEN, 15 Änderungen; Kern-Scheduler
-  VERIFIZIERT 2026-08-18, Rest wartet auf Spieltests.** Anfrage: "check the aura
-  latency monitor". Untersucht 2026-08-17 nach der stehenden Beschwerde, Auren
+  VERIFIZIERT 2026-08-18, Once-Gate ZWEITE Ursache 2026-08-21 behoben
+  (UNGETESTET), Rest wartet auf Spieltests.** Anfrage: "check the aura
+  latency monitor". Stand 2026-09-12: seit dem 2026-08-21 keine Änderung an
+  der Engine außer `c8ad6dd` (2026-08-27, Waffenverzauberung wie ein Zauber
+  benannt, Phantom-"Satt" beseitigt); die Testliste unten ist unverändert
+  offen. Untersucht 2026-08-17 nach der stehenden Beschwerde, Auren
   reagierten früher eine Sekunde oder mehr zu spät. Punkte 1-8 sind Welle 1
   (Commit `4e81678`), Punkte 9-15 Welle 2 (je ein Commit, selber Tag). Die Sounds
   wurden zuerst entlastet: Die MP3s wurden über die Layer-III-Side-Info auf
@@ -456,6 +563,27 @@ Analyse nicht erneut herleitet.
       beim Tabben und in Dauerwarnungen; unmarkierte Auren verhalten sich exakt
       wie vorher; `/skuauracache verify on` bleibt mismatch-frei (es diffed jetzt
       auch own/ownExp); keine Once-Gate-Doppelsounds im Bosskampf.
+  - **Once-Gate: ZWEITE Ursache gefunden 2026-08-21, Fix im Tree, UNGETESTET.**
+    Der `tSmallerDurationNoRead`-Wächter vom 2026-08-18 reichte nicht — der
+    Nutzer hörte sechs "dang" in einer Sekunde auf einem Mondfeuer (Log seq
+    47642..47653; Regel "Debuff-Liste Ziel enthält Mondfeuer + Ereignis Ziel
+    enthält dein Ziel + verbleibende Dauer kleiner 1 → einmal"). Der echte
+    Defekt: Der `tHasCountCondition_*`-ZENSUS wurde INNERHALB der
+    Attributschleife gebaut, und die `break`t bei der ersten falschen
+    Bedingung — er sah also nur ein Präfix, in `pairs()`-Hash-Reihenfolge.
+    Folge: eine Aura MIT Schwelle nahm den Zweig "ohne Schwelle", der `used`
+    bedingungslos zurücksetzt; jedes unbeteiligte Kampflog-Event, das nur an
+    "Ereignis Ziel" scheiterte, armierte das Gate neu. Fix: Zensus über ALLE
+    Attribute VOR der Schleife; die Schleife läuft erst die einfachen, dann die
+    Schwellen-Bedingungen (`tAttOrderPlain`/`tAttOrderCount`, keine Allokation
+    pro Event). Damit hat ein `break` feste Bedeutung: an einer einfachen
+    Bedingung = "dieses Event ging uns nichts an", KEIN Re-Arm; an einer
+    Schwelle = alle einfachen wahr, Re-Arm (Refresh/Neuanwendung). Gesetz:
+    nie eine Entscheidung aus Zählern ableiten, die eine abbrechende Schleife
+    gesammelt hat. Stolperdraht: `/skucheck auras` zählt Sub-Sekunden-Refires
+    einer "einmal"-Aura mit Schwelle (`SkuAuras.tSingleGateRefires`).
+    - Nachprüfen: Bosskampf mit einem DoT + "Dauer kleiner 1 → einmal": genau
+      EIN Ton pro Anwendung; `/skucheck auras` meldet 0 Refires.
   - Semantik-Hinweis, kein Bug: Um 11:36:40 feuerte die SW:Pain-Warnung für ein
     Gruppenmitglied (Chouffer), das ein Schattenwort: Schmerz eines GEGNERS trug,
     das gleich ablief. Listen- und Dauerbedingungen haben keinen Wirker-Filter —
