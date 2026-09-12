@@ -12,6 +12,7 @@ Aenderungen in Sku v43.5
             Questdatenbank: das Oeffnen von "Alle" (ebenso "Start in Zone" und "Quests in der Naehe") liess das Spiel sekundenlang einfrieren.
             Chat: nach dem Oeffnen der Chatzeile mit "/" wurde der alte Kanal angesagt (etwa "An Kai"), obwohl erst der Befehl danach den Kanal festlegt.
             Sprachausgabe: einzelne Zeilen blieben ueber die NVDA/SAPI-Bruecke zufaellig stumm (etwa ein Ausruestungsteil in der Liste), waehrend die Nachbarn gesprochen wurden.
+            Quest: "Raenes Saeuberung" (Eisenknauf, Eschental) hatte kein Questziel; es fuehrt jetzt zur Rostigen Truhe der Faulenden Bruehschleimer.
 
     Questdatenbank: das Oeffnen der Questlisten liess das Spiel einfrieren
         Einfach: Wer unter Quest > Questdatenbank die Liste "Alle" oeffnete, bekam seit v43.2 einen
@@ -65,6 +66,18 @@ Aenderungen in Sku v43.5
             Zaehler liegen jetzt in SkuOptionsDB.global (bttsCacheBust) und laufen ueber den Reload
             weiter; zudem ist der Raum pro Text 512 Varianten statt 64 (fuehrende geschuetzte
             Leerzeichen 1..8 tragen den hohen Teil des Zaehlers).
+    Quest: "Raenes Saeuberung" (Eisenknauf) hatte kein Questziel
+        Einfach: Die Quest 1027 "Raenes Saeuberung" im Eschental verlangt das letzte Teil von Dartols
+            Rute, den Eisenknauf. Sku kannte dafuer keinen Ort, "Questziel" blieb leer. Jetzt fuehrt
+            das Questziel in das Schleimgebiet suedoestlich von Raynewoods Zuflucht: Dort lassen die
+            Faulenden Bruehschleimer beim Tod eine Rostige Truhe zurueck, in der der Knauf liegt.
+        Technisch: Der Gegenstand 5519 (Iron Pommel) verweist in der Datenbank korrekt auf das
+            Objekt 19021 (Rusty Chest), doch dessen Datensatz hatte keine Spawn-Koordinaten, weder in
+            objects.lua noch in objects_fixes.lua - der Item-Zweig von GetResultingWps fand nichts.
+            objects_fixes.lua (TBC und Era) traegt jetzt die 44 Truhenpositionen von Wowhead im
+            Eschental nach (Zone 331, etwa 68-78 / 68-80); das ist dieselbe Flaeche wie die Spawns
+            des Faulenden Bruehschleimers (3928), der die Truhe hinterlaesst.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.4

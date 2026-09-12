@@ -122,6 +122,14 @@
      }
 
 local SkuObjectsFixes = {
+    [19021] = { -- Rusty Chest (Rostige Truhe): Iron Pommel for quest 1027 Raene's Cleansing.
+        -- The base record has no spawns, so the quest had no target. The chest is
+        -- left behind by a killed Rotting Slime (3928); these are Wowhead's 44
+        -- chest positions (nether.wowhead.com/classic/tooltip/object/19021), the
+        -- same patch as the slime spawns south-east of Raynewood Retreat.
+        [objectKeys.spawns] = {[zoneIDs.ASHENVALE]={{68.1,77.4},{68.2,77.5},{69.3,80.1},{69.8,74.1},{70.1,75},{70.1,75.8},{71,72.6},{71,74.4},{71.1,74.5},{71.1,75.7},{71.8,72.6},{72.3,69.3},{72.3,75.4},{72.3,75.6},{72.4,69.6},{72.4,71},{72.4,71.5},{72.4,73.9},{72.5,69.4},{72.5,71.4},{72.5,73.4},{72.6,71.8},{72.7,69.5},{72.8,74.7},{73.3,74.4},{73.5,76.7},{73.6,70.8},{73.6,73.6},{73.9,75.1},{74.2,69.5},{74.3,69.4},{74.9,70},{74.9,75.4},{75,75.5},{75.9,73},{76.2,67.8},{76.2,70.3},{76.2,70.7},{76.7,68.9},{76.7,72.1},{76.8,68},{77.7,72.7},{78.1,67.8},{78.2,73.9}}},
+        [objectKeys.zoneID] = zoneIDs.ASHENVALE,
+    },
     [177281] = {
         [objectKeys.spawns] = {[zoneIDs.ZANGARMARSH]={{80.32,65.06}}},
     },

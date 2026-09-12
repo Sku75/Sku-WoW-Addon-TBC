@@ -12,6 +12,7 @@ Changes in Sku v43.5
             Quest database: opening "All" (and "Starts in zone", "Nearby quests") froze the game for several seconds.
             Chat: after opening the chat line with "/" the old channel was announced (e.g. "Tell Kai"), although only the command typed next decides the channel.
             Speech: single lines randomly stayed silent over the NVDA/SAPI bridge (e.g. one item in the equipment list) while their neighbours were spoken.
+            Quest: "Raene's Cleansing" (Iron Pommel, Ashenvale) had no quest target; it now points at the Rusty Chest the Rotting Slimes leave behind.
 
     Quest database: opening the quest lists froze the game
         Simple: Opening the "All" list under Quest > Quest database had caused a freeze of several
@@ -63,6 +64,18 @@ Changes in Sku v43.5
             SkuOptionsDB.global (bttsCacheBust) and continue across the reload; in addition the
             per-text space is 512 variants instead of 64 (leading no-break spaces 1..8 carry the
             high part of the counter).
+    Quest: "Raene's Cleansing" (Iron Pommel) had no quest target
+        Simple: Quest 1027 "Raene's Cleansing" in Ashenvale asks for the last piece of Dartol's Rod,
+            the Iron Pommel. Sku knew no place for it, so "Quest target" stayed empty. The quest
+            target now leads into the slime area south-east of Raynewood Retreat: the Rotting Slimes
+            there leave a Rusty Chest behind when killed, and the pommel is inside.
+        Technically: Item 5519 (Iron Pommel) correctly points at object 19021 (Rusty Chest) in the
+            database, but that record carried no spawn coordinates, neither in objects.lua nor in
+            objects_fixes.lua - the item branch of GetResultingWps found nothing. objects_fixes.lua
+            (TBC and Era) now adds Wowhead's 44 chest positions in Ashenvale (zone 331, roughly
+            68-78 / 68-80); that is the same patch as the spawns of the Rotting Slime (3928) that
+            leaves the chest.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.4

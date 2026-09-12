@@ -15,6 +15,7 @@ Changements dans Sku v43.5
             Base de données des quêtes : ouvrir « Tout » (ainsi que « Commence dans la zone » et « Quêtes à proximité ») figeait le jeu plusieurs secondes.
             Chat : après ouverture de la ligne de chat avec « / », l'ancien canal était annoncé (par ex. « À Kai »), alors que seule la commande tapée ensuite décide du canal.
             Voix : certaines lignes restaient muettes au hasard via le pont NVDA/SAPI (par ex. un objet de la liste d'équipement) alors que leurs voisines étaient lues.
+            Quête : « Le nettoyage selon Raene » (Bâtonnet de Dartol, Orneval) n'avait pas de cible ; elle mène maintenant au Coffre rouillé laissé par les Gelées pourrissantes.
 
     Base de données des quêtes : ouvrir les listes de quêtes figeait le jeu
         Simple : Ouvrir la liste « Tout » sous Quête > Base de données des quêtes provoquait depuis la v43.2 un
@@ -68,6 +69,19 @@ Changements dans Sku v43.5
             FINISHED propres. Les compteurs vivent maintenant dans SkuOptionsDB.global (bttsCacheBust)
             et continuent au-delà du reload ; de plus l'espace par texte passe de 64 à 512 variantes
             (des espaces insécables en tête, 1..8, portent la partie haute du compteur).
+    Quête : « Le nettoyage selon Raene » (Bâtonnet de Dartol) n'avait pas de cible
+        Simple : La quête 1027 « Le nettoyage selon Raene » en Orneval demande le dernier morceau du
+            Bâtonnet de Dartol, le pommeau de fer. Sku ne connaissait aucun lieu pour lui, « Cible de
+            quête » restait vide. La cible mène maintenant dans la zone des gelées au sud-est de la
+            Retraite de Raynewood : les Gelées pourrissantes y laissent un Coffre rouillé à leur mort,
+            et le pommeau s'y trouve.
+        Technique : L'objet 5519 (Iron Pommel) renvoie correctement à l'objet de jeu 19021 (Rusty
+            Chest) dans la base, mais cet enregistrement n'avait aucune coordonnée de spawn, ni dans
+            objects.lua ni dans objects_fixes.lua - la branche « item » de GetResultingWps ne trouvait
+            rien. objects_fixes.lua (TBC et Era) ajoute maintenant les 44 positions du coffre relevées
+            par Wowhead en Orneval (zone 331, environ 68-78 / 68-80) ; c'est la même surface que les
+            spawns de la Gelée pourrissante (3928) qui laisse le coffre.
+
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.4
