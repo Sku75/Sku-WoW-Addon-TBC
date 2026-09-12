@@ -194,6 +194,7 @@ function DamageMeter:DamageMeterMenuBuilder()
    end
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Reports"]}, SkuGenericMenuItem)
+   tNewMenuEntry.id = "Reports"  -- stable anchor for the SKU_KEY_OPENDAMAGEMETER path walk
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.BuildChildren = function(self)
       local tEmpty = true

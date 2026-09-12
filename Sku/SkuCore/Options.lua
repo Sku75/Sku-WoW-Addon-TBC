@@ -1791,7 +1791,7 @@ function SkuCore:AddonsMenuBuilder(aParentEntry)
 			build = SkuCore.AtlasLootIntegration.alIntegrationMenuBuilder }
 	end
 	if SkuCore.DamageMeter and SkuCore.DamageMeter.DamageMeterMenuBuilder then
-		tSpecs[#tSpecs+1] = { kind = "list", label = L["Damage Meter"], sorting = true,
+		tSpecs[#tSpecs+1] = { kind = "list", id = "DamageMeter", label = L["Damage Meter"], sorting = true,
 			build = SkuCore.DamageMeter.DamageMeterMenuBuilder }
 	end
 	if _G.Questie and _G.Questie.db then
@@ -2899,6 +2899,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 			{ label = L["Würfeln"], members = {
 				"SKU_KEY_ROLLNEED", "SKU_KEY_ROLLGREED", "SKU_KEY_ROLLPASS", "SKU_KEY_ROLLINFO",
 				"SKU_KEY_QUESTSHARE", }, },
+			-- Keys that open a third-party addon's data through Sku (the Addons menu).
+			{ label = L["Addons"], members = {
+				"SKU_KEY_OPENATLASLOOT", "SKU_KEY_OPENDAMAGEMETER", }, },
 		}
 
 		local tGrouped = {}

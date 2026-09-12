@@ -2604,6 +2604,12 @@ function SkuOptions:CreateMainFrame()
 			SkuCore.DungeonBrowser:DungeonBrowserOpen()
 		end
 
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_OPENDAMAGEMETER") then
+			-- Path by node ids (locale-independent): the Addons root is a registry
+			-- id, DamageMeter is the spec id, Reports the node id (damageMeter.lua).
+			SkuOptions:SlashFunc(Sku.MENU_ROOT..",Addons,DamageMeter,Reports")
+		end
+
 		for q = 1, 10 do
 			if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_MENUQUICK"..q) then
 				if SkuSettings:Sub("SkuOptions").allModules["MenuQuickSelect"..q] and SkuSettings:Sub("SkuOptions").allModules["MenuQuickSelect"..q] ~= "" then
@@ -2730,6 +2736,8 @@ function SkuOptions:CreateMainFrame()
 	if tKbds["SKU_KEY_OPENMENU"].key2 and tKbds["SKU_KEY_OPENMENU"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OPENMENU"].key2, tFrame:GetName(), tKbds["SKU_KEY_OPENMENU"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key, tFrame:GetName(), tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key)
 	if tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2 and tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2, tFrame:GetName(), tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2) end
+	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OPENDAMAGEMETER"].key, tFrame:GetName(), tKbds["SKU_KEY_OPENDAMAGEMETER"].key)
+	if tKbds["SKU_KEY_OPENDAMAGEMETER"].key2 and tKbds["SKU_KEY_OPENDAMAGEMETER"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OPENDAMAGEMETER"].key2, tFrame:GetName(), tKbds["SKU_KEY_OPENDAMAGEMETER"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_ACTIONBARSOPEN"].key, tFrame:GetName(), tKbds["SKU_KEY_ACTIONBARSOPEN"].key)
 	if tKbds["SKU_KEY_ACTIONBARSOPEN"].key2 and tKbds["SKU_KEY_ACTIONBARSOPEN"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_ACTIONBARSOPEN"].key2, tFrame:GetName(), tKbds["SKU_KEY_ACTIONBARSOPEN"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_NAVWAYPOINTSQUICK"].key, tFrame:GetName(), tKbds["SKU_KEY_NAVWAYPOINTSQUICK"].key)

@@ -101,6 +101,11 @@ SkuOptions.skuDefaultKeyBindings = {
 
    ["SKU_KEY_OPENATLASLOOT"] = {key = "CTRL-SHIFT-L", object = "SkuCore", func = "AtlasLootApplyKeyBinding",},
 
+   -- Jump straight to Addons > Damage Meter > Reports (Details). Unbound by
+   -- default so no existing character loses a key; dispatched like the dungeon
+   -- browser key (SkuZOptions/Core.lua CreateMainFrame).
+   ["SKU_KEY_OPENDAMAGEMETER"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+
    -- (Combat bag access + combat trading keybinds removed 2026-07-01 -- their probe-era
    -- modules SkuCore/combatBags.lua + combatTrade.lua were archived. The Path A combat
    -- item-use rework will register its own keys. See [[sku42-combat-item-use-design]].)
