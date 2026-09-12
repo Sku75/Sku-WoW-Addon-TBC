@@ -335,8 +335,7 @@ end
 ---@return string | nil Tooltip text
 ---@return boolean | nil True when the client has not sent the item's data yet
 local function getItemTooltipTextHelper(tooltipSetter)
-	local tooltip = _G["SkuScanningTooltip"]
-	tooltip:ClearLines()
+	local tooltip = SkuUtil:ResetScanningTooltip()
 	tooltipSetter(tooltip)
 	local tEscapedText = TooltipLines_helper(tooltip:GetRegions())
 	-- [v42.13] "Frage Gegenstandsinformationen ab" is a state, not a name -- report
@@ -2479,7 +2478,7 @@ function SkuCore:BuildEngravingFrame(aParentChilds)
 		local runes = C_Engraving.GetRunesForCategory(category, true);
 		for tindex, rune in ipairs(runes) do
 			local tFull = ""
-			_G["SkuScanningTooltip"]:ClearLines()
+			SkuUtil:ResetScanningTooltip()
 			_G["SkuScanningTooltip"]:SetEngravingRune(rune.skillLineAbilityID)
 			if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 				if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then

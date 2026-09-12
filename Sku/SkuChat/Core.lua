@@ -2713,7 +2713,7 @@ function SkuChat:OnInitialize()
 							ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
 						end
 					end
-					_G["SkuScanningTooltip"]:ClearLines()
+					SkuUtil:ResetScanningTooltip()
 
 					if ltSkuCurrentLineDatalinktTextFirstLine ~= "" then
 						if w == 1 then
@@ -2809,7 +2809,7 @@ function SkuChat:OnInitialize()
 								ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
 							end
 						end
-						_G["SkuScanningTooltip"]:ClearLines()
+						SkuUtil:ResetScanningTooltip()
 						if ltSkuCurrentLineDatalinktTextFirstLine ~= "" then
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["link"].." "..w.." "..ltSkuCurrentLineDatalinktTextFirstLine}, SkuGenericMenuItem)
 							tNewMenuEntry.tSkuCurrentLineDatalinktTextFirstLine = ltSkuCurrentLineDatalinktTextFirstLine

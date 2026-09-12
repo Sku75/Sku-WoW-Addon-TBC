@@ -4965,7 +4965,7 @@ function SkuCore:IterateChildren(t, tab)
 							--text from tooltip available?
 							if tResults[fName].textFirstLine == "" and tResults[fName].textFull == "" then
 								if string.find(fName, "ContainerFrame") then
-									_G["SkuScanningTooltip"]:ClearLines()
+									SkuUtil:ResetScanningTooltip()
 									local hsd, rc = _G["SkuScanningTooltip"]:SetBagItem(tResults[fName].obj:GetParent():GetID(), tResults[fName].obj:GetID())
 									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 										if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
@@ -5002,7 +5002,7 @@ function SkuCore:IterateChildren(t, tab)
 									end
 
 								elseif string.find(fName, "ItemButton") and string.find(fName, "MerchantItem") then
-									_G["SkuScanningTooltip"]:ClearLines()
+									SkuUtil:ResetScanningTooltip()
 									-- The buyback tab reuses the MerchantItem buttons and their IDs.
 									-- SetMerchantItem would therefore read the item with the same index
 									-- from the vendor's normal inventory instead of the sold item.

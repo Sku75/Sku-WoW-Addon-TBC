@@ -1229,7 +1229,7 @@ local function ItemsMenuBuilder(aParentEntry)
 					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..itemName.." ("..itemCount..")"}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.itemID = itemID
-						_G["SkuScanningTooltip"]:ClearLines()
+						SkuUtil:ResetScanningTooltip()
 						_G["SkuScanningTooltip"]:SetItemByID(itemID)
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
@@ -1353,12 +1353,7 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.spellID = nil
 						self.selectTarget.petDefaultControlId = v
-						_G["SkuScanningTooltip"]:ClearLines()
-						-- Re-own the shared scanning tooltip before populating it. It is created
-						-- once at login (SkuCore:PLAYER_LOGIN) and used by every module, so a
-						-- previous user can leave it without a usable owner, after which Set*
-						-- silently fills nothing and Shift-Down reads out nothing at all.
-						_G["SkuScanningTooltip"]:SetOwner(WorldFrame, "ANCHOR_NONE")
+						SkuUtil:ResetScanningTooltip()
 						_G["SkuScanningTooltip"]:SetPetAction(v)
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
@@ -1410,12 +1405,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				self.companionID = nil
 				self.equipmentSetID = nil
 				if self.buttonObj.action then
-					_G["SkuScanningTooltip"]:ClearLines()
-					-- Re-own the shared scanning tooltip before populating it. It is created
-					-- once at login (SkuCore:PLAYER_LOGIN) and used by every module, so a
-					-- previous user can leave it without a usable owner, after which Set*
-					-- silently fills nothing and Shift-Down reads out nothing at all.
-					_G["SkuScanningTooltip"]:SetOwner(WorldFrame, "ANCHOR_NONE")
+					SkuUtil:ResetScanningTooltip()
 					_G["SkuScanningTooltip"]:SetAction(self.buttonObj.action)
 					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
@@ -1541,12 +1531,7 @@ local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				self.itemID = nil
 				self.macroID = nil
 				if self.buttonObj:GetID() and name then
-					_G["SkuScanningTooltip"]:ClearLines()
-					-- Re-own the shared scanning tooltip before populating it. It is created
-					-- once at login (SkuCore:PLAYER_LOGIN) and used by every module, so a
-					-- previous user can leave it without a usable owner, after which Set*
-					-- silently fills nothing and Shift-Down reads out nothing at all.
-					_G["SkuScanningTooltip"]:SetOwner(WorldFrame, "ANCHOR_NONE")
+					SkuUtil:ResetScanningTooltip()
 					_G["SkuScanningTooltip"]:SetPetAction(x)
 					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
@@ -2268,7 +2253,7 @@ function SkuCore.MailMenuBuilder(self)
 											if itemLink ~= L["Empty"] then
 												local name, itemID, texture, count, quality, canUse  = GetInboxItem(x, y)
 												if itemID then
-													_G["SkuScanningTooltip"]:ClearLines()
+													SkuUtil:ResetScanningTooltip()
 													_G["SkuScanningTooltip"]:SetItemByID(itemID)
 													if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 														if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then

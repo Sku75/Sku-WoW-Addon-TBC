@@ -1885,7 +1885,7 @@ function SkuOptions:CreateMainFrame()
 			SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 			if SkuOptions.nextRollFrameNumber then
 				if tItem.itemId then
-					SkuScanningTooltip:ClearLines()
+					SkuUtil:ResetScanningTooltip()
 					SkuScanningTooltip:SetHyperlink(tItem.itemId)--("linkString"
 					SkuScanningTooltip:Show()
 					if TooltipLines_helper(SkuScanningTooltip:GetRegions()) ~= "asd" then
@@ -3449,7 +3449,7 @@ function SkuOptions:CreateMenuFrame()
 						if tGetLink and TooltipLines_helper and SkuScanningTooltip then
 							local tLink = tGetLink(i)
 							if tLink then
-								SkuScanningTooltip:ClearLines()
+								SkuUtil:ResetScanningTooltip()
 								SkuScanningTooltip:SetHyperlink(tLink)
 								SkuScanningTooltip:Show()
 								local tt = SkuUtil:Unescape(TooltipLines_helper(SkuScanningTooltip:GetRegions()))

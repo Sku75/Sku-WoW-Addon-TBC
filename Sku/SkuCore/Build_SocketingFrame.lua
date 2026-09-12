@@ -107,7 +107,7 @@ local function tIsGem(aItemLink, aItemId)
    -- 4. Tooltip-Parsing über GetRegions() — funktioniert unabhängig
    --    von Cache und globalen FontString-Namen.
    if _G.SkuScanningTooltip then
-      pcall(function() _G.SkuScanningTooltip:ClearLines() end)
+      pcall(function() SkuUtil:ResetScanningTooltip() end)
       local ok = pcall(function() _G.SkuScanningTooltip:SetHyperlink(aItemLink) end)
       if ok then
          local regions = { _G.SkuScanningTooltip:GetRegions() }

@@ -376,3 +376,31 @@ function SkuEpochValueHelper(aValue)
 		return mfloor(aValue / 86400)..L[" Tage"]
 	end
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Re-own and clear the shared scanning tooltip before EVERY scan.
+--
+-- SkuScanningTooltip is one hidden GameTooltip created at login and used by
+-- every module. A GameTooltip only fills its lines while it has an owner, and
+-- it loses that owner on its own: "showing a tooltip without content causes it
+-- to hide and clear its owner" and Hide() clears the owner too (Warcraft Wiki,
+-- UIOBJECT GameTooltip). A Set* call on an empty action slot, an empty bag or
+-- equipment slot, or an uncached item is such a content-less show. From then
+-- on every Set* on the shared tooltip silently fills nothing -- until some
+-- other path happens to call SetOwner again. That is the "intermittently
+-- empty equipped-item comparison" and the "Shift-Down reads nothing": not a
+-- platform bug, a lost owner. ClearLines() alone keeps the owner but cannot
+-- restore one, so the reset re-owns first, exactly like the scanning-tooltip
+-- pattern every tooltip-scanning library uses. WorldFrame is the owner the
+-- tooltip is created with (SkuCore:PLAYER_LOGIN); ANCHOR_NONE keeps it off
+-- screen.
+---@return table|nil the tooltip, nil before it exists (before PLAYER_LOGIN)
+function SkuUtil:ResetScanningTooltip()
+	local tTooltip = _G["SkuScanningTooltip"]
+	if not tTooltip then
+		return nil
+	end
+	tTooltip:SetOwner(WorldFrame, "ANCHOR_NONE")
+	tTooltip:ClearLines()
+	return tTooltip
+end

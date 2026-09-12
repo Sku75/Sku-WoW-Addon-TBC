@@ -1823,7 +1823,7 @@ end
 function AuctionHouse:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)
    --print("AuctionBuildItemTooltip",aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)   
    local tTextFirstLine, tTextFull = "", ""
-   _G["SkuScanningTooltip"]:ClearLines()
+   SkuUtil:ResetScanningTooltip()
    local hsd, rc
    if aItemData[21] then
       hsd, rc = _G["SkuScanningTooltip"]:SetHyperlink(aItemData[21])

@@ -624,7 +624,7 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
             -- uncached items reach this code at all, a tooltip that yields nothing must
             -- leave the entry readable instead of silencing it.
             local tTextFirstLine, tTextFull = tItemName, ""
-            _G["SkuScanningTooltip"]:ClearLines()
+            SkuUtil:ResetScanningTooltip()
             _G["SkuScanningTooltip"]:SetItemByID(aId)
             local tScannedText = TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions())
             if SkuUtil:IsRetrievingItemInfo(tScannedText) then
@@ -755,7 +755,7 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
                end
       
                local tTextFirstLine, tTextFull = "", ""
-               _G["SkuScanningTooltip"]:ClearLines()
+               SkuUtil:ResetScanningTooltip()
                _G["SkuScanningTooltip"]:SetSpellByID(aId)
                if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
                   if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
@@ -1442,7 +1442,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                               -- the node already carries so a failed read cannot silence
                               -- it, and never let the placeholder become the name.
                               local tTextFirstLine, tTextFull = SkuOptions.currentMenuPosition.textFirstLine, ""
-                              _G["SkuScanningTooltip"]:ClearLines()
+                              SkuUtil:ResetScanningTooltip()
                               _G["SkuScanningTooltip"]:SetItemByID(aId)
                               local tScannedText = TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions())
                               if SkuUtil:IsRetrievingItemInfo(tScannedText) then
@@ -1526,7 +1526,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                      end
          
                      local tTextFirstLine, tTextFull = "", ""
-                     _G["SkuScanningTooltip"]:ClearLines()
+                     SkuUtil:ResetScanningTooltip()
                      _G["SkuScanningTooltip"]:SetItemByID(aId)
                      if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
                         if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
