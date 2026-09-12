@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.4 - notes de version</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Langue des notes de version">
+<ul class="langnav">
+<li><a href="../en/v43.4.html" lang="en" hreflang="en">English</a></li>
+<li><a href="../de/v43.4.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><span aria-current="page" lang="fr">Français</span></li>
+</ul>
+</nav>
+<h1>Sku v43.4 - notes de version</h1>
+<nav aria-label="Navigation dans les notes de version">
+<ul class="pagenav">
+<li><a href="index.html">Toutes les notes de version</a></li>
+<li><a href="v43.3.html">Version plus ancienne : v43.3</a></li>
+<li><a href="../../index-fr.html">Page de téléchargement de Sku</a></li>
+</ul>
+</nav>
+<main>
+<h2>Aperçu</h2>
+<h3>Nouveautés</h3>
+<ul>
+<li>Pawn : Addons &gt; Pawn regroupe les réglages d'infobulle de Pawn, et les infobulles Sku annoncent l'amélioration en pour cent, la différence par attribut et les attributs manquants. Par Yennesta.</li>
+<li>Nouvelle touche « ouvrir le compteur de dégâts » : accès direct aux rapports de Details ; les raccourcis ont désormais leur propre groupe « Extensions ».</li>
+</ul>
+<h3>Changements</h3>
+<ul>
+<li>Chat : à l'envoi ou à l'annulation, un écho clavier encore en cours est arrêté de façon fiable, sans jamais couper la lecture du message envoyé.</li>
+<li>Les annonces d'un menu ou d'une fenêtre s'arrêtent avec la fenêtre : ce qui attend encore à la fermeture est abandonné, ce qui est en cours est stoppé.</li>
+</ul>
+<h3>Corrections</h3>
+<ul>
+<li>Mac : les touches fléchées, de fonction et de page arrivaient deux fois - les emplacements vides de sacs et de barres étaient sautés, et le lecteur d'infobulle repartait du début à chaque Maj+Flèche bas.</li>
+<li>Moniteur de vie du raid : un rôle attribué à la main tombait sur le mauvais joueur, et sans détection de rôle le moniteur restait muet.</li>
+<li>Marchand : l'onglet Rachat lisait et achetait l'objet portant le même numéro dans le stock normal.</li>
+<li>La comparaison avec l'objet équipé manquait parfois dans les infobulles - l'infobulle de lecture avait perdu son propriétaire.</li>
+<li>Lecteur d'infobulle : en fin de texte, par exemple dans la liste d'amis, Maj+Flèche bas alternait entre silence et dernière ligne.</li>
+<li>Les annonces demandées par touche (vie de la cible, distance, cible ...) restaient muettes à une seconde pression dans la même seconde.</li>
+</ul>
+<h2>Mac : les touches fléchées et de fonction arrivaient deux fois</h2>
+<p><strong>Simple :</strong> Sur Mac, le défilement rapide sautait les emplacements vides de sacs et de barres d'action, et le lecteur d'infobulle recommençait au début à chaque Maj+Flèche bas. Les deux sont corrigés ; Windows n'a jamais été touché.</p>
+<p><strong>Technique :</strong> Pour les touches sans caractère - flèches, touches F, page haut et bas, début, fin, insertion, suppression - le client Mac transmet à OnChar les caractères de substitution du système, pris dans la zone Unicode à usage privé (U+F700 et suivants) ; Windows ne déclenche pas OnChar pour ces touches. Chaque pression de flèche atteignait donc le menu deux fois : comme touche liée et comme caractère fantôme transmis sans contrôle au gestionnaire de touches. Le compteur de double appui y comptait deux pressions par pression (chaque entrée « Vide » sautée), et la règle « toute autre touche ferme le lecteur » fermait le lecteur d'infobulle après chaque Maj+Flèche bas. Le menu ne transmet plus depuis OnChar que les caractères connus de la recherche par lettres (liste positive), les deux hooks d'écho clavier rejettent toute la zone à usage privé U+E000 à U+F8FF, et un double appui exige désormais deux fois la même touche. Les caractères rejetés vont dans l'anneau de débogage avec leurs octets, pour qu'un testeur puisse prouver le fantôme sur son client. Diagnostiqué et paré en premier par Yennesta (PR 19).</p>
+<h2>Moniteur de vie du raid : les rôles sur le bon joueur</h2>
+<p><strong>Simple :</strong> Attribuer un rôle à la main à un membre du raid touchait souvent un autre joueur dès que l'ordre des groupes différait de l'ordre d'arrivée. Et sans détection automatique de rôle, le moniteur restait complètement muet pour ce joueur.</p>
+<p><strong>Technique :</strong> Le menu d'attribution numérote les membres par leur numéro audible, trié par groupe, et enregistrait le rôle sous ce numéro ; l'évaluation de la vie le lisait via l'index réel raidN. Le menu garde sa numérotation et retient l'index réel par entrée, sous lequel il enregistre et lit. Sans rôle (SkuAuras désactivé, ou aucun détecté), l'identifiant restait nil et UNIT_HEALTH indexait la table de filtres avec - abandon de toute l'évaluation. La résolution du rôle est désormais une fonction : attribution, puis SkuAuras, sinon la catégorie « Sans rôle ». Par Yennesta.</p>
+<h2>Marchand : le rachat rachète bien ce qui a été vendu</h2>
+<p><strong>Simple :</strong> Dans l'onglet Rachat, Sku nommait le mauvais objet et, à la confirmation, achetait l'offre du marchand portant le même numéro au lieu de la pièce vendue.</p>
+<p><strong>Technique :</strong> L'onglet Rachat réutilise les boutons et numéros du stock normal. Sku les lisait avec SetMerchantItem et achetait avec BuyMerchantItem, tous deux relatifs au stock. Onglet Rachat actif, la lecture passe désormais par SetBuybackItem et l'achat par BuybackItem ; un rachat est une seule pile, il n'y a donc pas de sous-menu de quantité. Par Yennesta.</p>
+<h2>Pawn : amélioration et différences de caractéristiques dans l'infobulle</h2>
+<p><strong>Simple :</strong> Avec Pawn installé, l'infobulle Sku d'un objet annonce juste sous le nom l'amélioration en pour cent et l'échelle, ajoute à chaque ligne d'attribut la différence avec l'objet équipé (dite « plus » ou « moins », dégâts par seconde avec une décimale) et liste les attributs que l'objet équipé possède et que le nouveau n'a pas. Addons &gt; Pawn regroupe l'interrupteur « Pawn dans les infobulles Sku » et les réglages d'infobulle propres à Pawn ; sans Pawn, il n'y a qu'un rappel de son absence. Par Yennesta.</p>
+<p><strong>Technique :</strong> Nouveau fichier SkuCore/pawnIntegration.lua ; chaque appel à Pawn est protégé et le passage sur l'infobulle tourne dans pcall, sans Pawn rien n'est ajouté. Par rapport à la contribution : l'interrupteur est une valeur par défaut du schéma de réglages SkuCore (activé), la correspondance de ligne ignore la casse (sur les clients anglais la statistique s'appelle « Damage Per Second », la ligne d'infobulle « damage per second » - la différence de DPS y disparaissait en silence), et un passage en échec écrit son erreur dans l'anneau de débogage.</p>
+<h2>Touche « ouvrir le compteur de dégâts » et groupe de touches « Extensions »</h2>
+<p><strong>Simple :</strong> Une nouvelle touche, non attribuée par défaut, mène directement à Addons &gt; Damage Meter &gt; Rapports. Les raccourcis ont désormais un groupe « Extensions » avec les touches d'AtlasLoot et du compteur de dégâts.</p>
+<p><strong>Technique :</strong> Liée et évaluée comme la touche du navigateur de donjons ; le chemin de menu passe par des identifiants de noeuds (Addons, DamageMeter, Reports) et fonctionne donc dans chaque langue. Les entrées de rapport fournissent leur texte à la lecture (une fonction au lieu d'une table, comme les entrées de l'hôtel des ventes) : données Details fraîches, aucun coût pour les combats non lus, et cela marche aussi quand le curseur arrive sur une entrée par touche sans passer par OnEnter. Touche et identifiants par Yennesta.</p>
+<h2>La comparaison avec l'objet équipé manquait parfois</h2>
+<p><strong>Simple :</strong> Avec Maj+Flèche bas sur un objet, la section « objet actuellement équipé » manquait parfois, apparemment au hasard. Elle est désormais toujours là.</p>
+<p><strong>Technique :</strong> Sku lit les infobulles via un GameTooltip partagé et invisible. Un GameTooltip ne remplit ses lignes que tant qu'il a un propriétaire, et le perd tout seul : un appel sans contenu (emplacement de barre, de sac ou d'équipement vide, objet pas encore chargé) le masque et efface le propriétaire. Dès lors chaque lecture ne renvoyait rien en silence, jusqu'à ce qu'un autre chemin appelle SetOwner par hasard. Trois endroits l'avaient déjà corrigé pour eux-mêmes, ce qui donnait au défaut son air aléatoire. Les 18 points de lecture rétablissent désormais le propriétaire avant chaque lecture via une fonction commune.</p>
+<h2>Lecteur d'infobulle : la fin d'un texte</h2>
+<p><strong>Simple :</strong> Dans la liste d'amis (et partout ailleurs), le lecteur ne restait pas sur la dernière ligne avec Maj+Flèche bas mais alternait entre silence et dernière ligne - comme une boucle sans fin. Il relit désormais la dernière ligne à chaque pression.</p>
+<p><strong>Technique :</strong> En fin de texte, le lecteur retransmet la même ligne à la couche vocale. Son garde-fou anti-doublons de la v43.2 rejette une ligne identique dans la même seconde sauf si elle est marquée comme déclenchée par touche - et le lecteur ne marquait jamais. Chaque ligne du lecteur, liens compris, porte désormais la marque.</p>
+<h2>Les annonces demandées par touche ne restent plus muettes</h2>
+<p><strong>Simple :</strong> Vie de la cible, distance, annonce de cible, infos de jet, se tourner vers la balise, touches de points de passage et autres : une seconde pression dans la même seconde avec la même réponse restait muette. La réponse vient désormais à chaque pression.</p>
+<p><strong>Technique :</strong> Le même garde-fou ; seul le gestionnaire de touches du menu marquait jusqu'ici. Plutôt que de marquer chaque annonce une à une, les trois répartiteurs de touches (cadre principal, cadre de contrôle SkuCore, SkuNav) retiennent la frame de leur appel, et la couche vocale traite toute transmission dans les 0,1 seconde qui suivent comme déclenchée par touche. La ré-annonce d'une reconstruction de menu vient d'un minuteur, dans des frames ultérieures, hors de cette fenêtre ; le gestionnaire du menu continue de marquer explicitement.</p>
+<h2>Portées vocales : les annonces s'arrêtent avec leur fenêtre</h2>
+<p><strong>Simple :</strong> Deux cas avec des voix SAPI lentes : après envoi ou annulation dans le chat, la voix finissait de lire une ligne rappelée par Flèche haut, et après trois apprentissages chez le maître et Échap, le maître était encore annoncé trois fois. Les deux sont réglés : l'écho du chat est coupé à la fermeture - jamais la lecture du message envoyé - et ce qu'un menu ou une fenêtre avait encore à dire à la fermeture est abandonné ou stoppé. Les annonces de combat, de chat ou de navigation ne sont pas concernées.</p>
+<p><strong>Technique :</strong> Une pression de touche seule n'interrompt toujours rien (règle de la v43.2), et sur la passerelle du lecteur d'écran la fin d'un énoncé est indéterminable, car FINISHED arrive dans la frame de transmission - la comptabilité « quelque chose parle » y est toujours vide, raison pour laquelle même l'arrêt à la fermeture du menu était supprimé comme inutile. Ce qui est connu exactement, c'est ce qui a été transmis en dernier et pour qui. Une ligne peut désormais porter une portée (« menu » pour les annonces de menu, « echo » pour la voie de frappe), et SkuVoice:EndScope abandonne les lignes en attente de cette portée à sa fin et n'arrête la voix que si l'énoncé en cours lui appartient. C'est appelé à la fermeture du menu et dans le hook Hide de chaque fenêtre surveillée, donc aussi sur l'Échap du jeu. L'arrêt doux du champ de chat interroge désormais SkuVoice:IsEchoInFlight au lieu de la règle d'une seconde : l'écho est coupé quelle que soit sa durée ; si autre chose a été transmis depuis - avant tout la réponse du serveur au message envoyé - rien n'est arrêté. Yennesta avait proposé l'annulation inconditionnelle dans la PR 19 ; ceci en est la forme ciblée.</p>
+</main>
+<hr>
+<nav aria-label="Navigation dans les notes de version">
+<ul class="pagenav">
+<li><a href="index.html">Toutes les notes de version</a></li>
+<li><a href="v43.3.html">Version plus ancienne : v43.3</a></li>
+<li><a href="../../index-fr.html">Page de téléchargement de Sku</a></li>
+</ul>
+</nav>
+</body>
+</html>

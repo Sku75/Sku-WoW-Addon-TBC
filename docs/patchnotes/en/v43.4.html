@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.4 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v43.4.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/v43.4.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v43.4 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.3.html">Older version: v43.3</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Overview</h2>
+<h3>New</h3>
+<ul>
+<li>Pawn: Addons &gt; Pawn holds Pawn's tooltip switches, and Sku tooltips name the upgrade in percent, the difference per attribute and missing attributes. By Yennesta.</li>
+<li>New key "open damage meter" jumps straight to the Details reports; the key bindings gain their own "Addons" group.</li>
+</ul>
+<h3>Changes</h3>
+<ul>
+<li>Chat: on send or cancel a still-running typing echo is reliably stopped, while the readback of the sent message is never cut.</li>
+<li>A menu's or window's announcements end with the window: whatever is still waiting when it closes is dropped, whatever is playing is stopped.</li>
+</ul>
+<h3>Bugfixes</h3>
+<ul>
+<li>Mac: arrow, function and page keys arrived twice - empty bag and bar slots were skipped, and the tooltip reader restarted from the top on every Shift+Down.</li>
+<li>Raid health monitor: a manually assigned role landed on the wrong player, and without role detection the monitor stayed silent.</li>
+<li>Merchant: the buyback tab read and bought the item with the same number from the normal stock.</li>
+<li>The equipped-item comparison in tooltips was sometimes missing - the scanning tooltip had lost its owner.</li>
+<li>Tooltip reader: at the end of a text, for instance in the friends list, Shift+Down alternated between silence and the last line.</li>
+<li>Announcements requested by key (target health, distance, target ...) stayed silent on a second press within a second.</li>
+</ul>
+<h2>Mac: arrow and function keys arrived twice</h2>
+<p><strong>Simple:</strong> On the Mac, fast scrolling skipped empty bag and action-bar slots, and the tooltip reader started over on every Shift+Down. Both are fixed; Windows was never affected.</p>
+<p><strong>Technically:</strong> For keys without a character - arrows, F keys, page up and down, home, end, insert, delete - the Mac client passes the operating system's stand-in characters from the private-use Unicode area (U+F700 upwards) through OnChar; Windows fires no OnChar for those keys. Every arrow press therefore reached the menu twice: as the bound key and as a phantom character forwarded unchecked into the key handler. There the double-tap counter saw two presses per press (every "Empty" entry skipped), and the rule "any other key closes the reader" closed the tooltip reader after each Shift+Down. The menu now forwards from OnChar only characters that type-ahead knows (a positive list), the two typing-echo hooks drop the whole private-use area U+E000 to U+F8FF, and a double tap now requires the same key twice. Dropped characters go to the debug ring with their bytes so a tester can prove the phantom on their client. Diagnosed and first guarded by Yennesta (PR 19).</p>
+<h2>Raid health monitor: roles on the right player</h2>
+<p><strong>Simple:</strong> Assigning a role to a raid member by hand often hit a different player as soon as the subgroup order differed from the join order. And without automatic role detection the monitor stayed completely silent for that player.</p>
+<p><strong>Technically:</strong> The assignment menu numbers members by their audible, subgroup-sorted number and stored the role under that number; the health evaluation read it via the real raidN index. The menu keeps its numbering and retains the real index per entry, under which it stores and reads. Without a role (SkuAuras off, or none detected) the role id stayed nil, and UNIT_HEALTH indexed the filter table with it - aborting the whole evaluation. Role resolution is now one function: assignment, then SkuAuras, otherwise the "No role" bucket. By Yennesta.</p>
+<h2>Merchant: buyback buys back what was sold</h2>
+<p><strong>Simple:</strong> On the buyback tab Sku named the wrong item and, on confirmation, bought the merchant's offer with the same number instead of the sold piece.</p>
+<p><strong>Technically:</strong> The buyback tab reuses the buttons and numbers of the normal stock. Sku read them with SetMerchantItem and bought with BuyMerchantItem, both referring to the stock. With the buyback tab active the query now goes through SetBuybackItem and the purchase through BuybackItem; a buyback is one stack, so there is no quantity submenu there. By Yennesta.</p>
+<h2>Pawn: upgrade and stat differences in the tooltip</h2>
+<p><strong>Simple:</strong> With Pawn installed, an item's Sku tooltip names the upgrade in percent and the scale right below the name, appends to each attribute line the difference to the equipped item (spoken "plus" or "minus", damage per second with one decimal) and lists attributes the equipped item has and the new one lacks. Addons &gt; Pawn holds the switch "Pawn in Sku tooltips" plus Pawn's own tooltip settings; without Pawn it only says that Pawn is missing. By Yennesta.</p>
+<p><strong>Technically:</strong> New file SkuCore/pawnIntegration.lua; every Pawn call is guarded and the tooltip pass runs in pcall, without Pawn nothing is added. Compared with the contribution: the switch is a default in the SkuCore settings schema (on), the line match ignores case (on English clients the stat is "Damage Per Second", the tooltip line "damage per second" - the DPS difference was silently dropped there), and a failing pass logs its error to the debug ring.</p>
+<h2>Key "open damage meter" and key group "Addons"</h2>
+<p><strong>Simple:</strong> A new key, unbound by default, jumps straight to Addons &gt; Damage Meter &gt; Reports. The key bindings now have an "Addons" group holding the keys for AtlasLoot and the damage meter.</p>
+<p><strong>Technically:</strong> Bound and dispatched like the dungeon browser key; the menu path goes by node ids (Addons, DamageMeter, Reports) and thus works in every language. The report entries deliver their text when read (a function instead of a table, like the auction house entries): fresh Details data, no cost for unread fights, and it works when the cursor lands on an entry by key without passing through OnEnter. Key and ids by Yennesta.</p>
+<h2>Equipped-item comparison sometimes missing</h2>
+<p><strong>Simple:</strong> On Shift+Down over an item the section "currently equipped item" was sometimes missing, seemingly at random. It is always there now.</p>
+<p><strong>Technically:</strong> Sku reads tooltips through one shared, invisible GameTooltip. A GameTooltip only fills its lines while it has an owner, and loses it by itself: a call without content (an empty bar, bag or equipment slot, an item not yet loaded) hides it and clears the owner. From then on every query silently returned nothing until another path happened to call SetOwner. Three places had already fixed this for themselves, which made the fault look random. All 18 query sites now re-own before every read through one helper.</p>
+<h2>Tooltip reader: the end of a text</h2>
+<p><strong>Simple:</strong> In the friends list (and everywhere else) the reader did not stay on the last line with Shift+Down but alternated between silence and the last line - like an endless loop. It now reads the last line on every press.</p>
+<p><strong>Technically:</strong> At the end of a text the reader hands the same line to the voice layer again. Its v43.2 duplicate guard drops a line identical within one second unless it is marked as key-triggered - and the reader never marked. Every reader line, links included, carries the mark now.</p>
+<h2>Announcements requested by key no longer stay silent</h2>
+<p><strong>Simple:</strong> Target health, distance, target announcement, roll info, turn to beacon, waypoint keys and the like: a second press within a second with the same answer stayed silent. The answer now comes on every press.</p>
+<p><strong>Technically:</strong> The same duplicate guard; only the menu's key handler had marked so far. Rather than marking every announcement individually, the three key dispatchers (main frame, SkuCore control frame, SkuNav) remember the frame of their call, and the voice layer treats every handover within 0.1 seconds of it as key-triggered. A menu rebuild's re-announce comes from a timer in later frames and falls outside that window; the menu's key handler keeps marking explicitly.</p>
+<h2>Speech scopes: announcements end with their window</h2>
+<p><strong>Simple:</strong> Two cases with slow SAPI voices: after send or cancel in chat the voice finished reading a line recalled with arrow-up, and after learning three skills at a trainer and pressing Escape the trainer was announced three more times. Both are gone: the chat echo is cut on close - but never the readback of the sent message - and whatever a menu or window still had to say when it closed is dropped or stopped. Combat, chat and navigation announcements are not affected.</p>
+<p><strong>Technically:</strong> A keypress alone still cancels nothing (a v43.2 rule), and on the screen reader bridge the end of an utterance cannot be determined because FINISHED arrives in the handover frame - the "something is speaking" bookkeeping is always empty there, which is why even the stop on menu close was suppressed as pointless. What is known exactly is what was handed last and for whom. A line can now carry a scope ("menu" for menu announcements, "echo" for the typing lane), and SkuVoice:EndScope drops that scope's waiting lines when it ends and stops the voice only if the running utterance belongs to it. It is called on menu close and in the Hide hook of every tracked window, so also on the game's own Escape. The chat box's soft stop now asks SkuVoice:IsEchoInFlight instead of the one-second rule: echo is cut however long it has been running; if anything else has been handed since - above all the server's readback of the sent message - nothing is stopped. Yennesta proposed the unconditional cancel in PR 19; this is the targeted form of it.</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.3.html">Older version: v43.3</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>
