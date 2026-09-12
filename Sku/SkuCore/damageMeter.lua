@@ -199,7 +199,7 @@ function DamageMeter:DamageMeterMenuBuilder()
    tNewMenuEntry.BuildChildren = function(self)
       local tEmpty = true
       local tCombatId = -1
-      local Combat = Details:GetCombat(1) -- -1 all
+      local Combat = Details:GetCombat(-1) -- the overall segment; the loop starts at -1
       while Details:GetCombat(tCombatId) ~= nil do
          local tNewMenuEntry
          
@@ -215,13 +215,19 @@ function DamageMeter:DamageMeterMenuBuilder()
             tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Fight"].." "..tCombatId.. " "..(Combat.enemy or L["unknown"]).." "..tTime}, SkuGenericMenuItem)
          end
          tNewMenuEntry.combatID = tCombatId
-         tNewMenuEntry.OnEnter = function(self, aValue, aName)
-            local Combat = Details:GetCombat(self.combatID)
-            local body = L["no data"]
-            if Combat then
-               body = BuildCombatTooltip(Combat, self.name, tAll)
+         -- The report text is resolved when it is READ: the reader and
+         -- AddExtraTooltipData both accept a function for textFull (the auction
+         -- house entries use the same form). That gives fresh Details data at
+         -- read time, costs nothing for fights nobody opens, and works when the
+         -- cursor lands here through the SKU_KEY_OPENDAMAGEMETER path walk, which
+         -- does not pass through OnEnter, the previous fill point.
+         tNewMenuEntry.textFirstLine = tNewMenuEntry.name
+         tNewMenuEntry.textFull = function()
+            local tCombat = Details:GetCombat(tNewMenuEntry.combatID)
+            if not tCombat then
+               return {L["no data"]}
             end
-            SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = aName, body
+            return BuildCombatTooltip(tCombat, tNewMenuEntry.name, tAll)
          end
 
          tEmpty = false
