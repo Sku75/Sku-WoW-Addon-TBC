@@ -278,6 +278,30 @@ local function GetUnitsRaidSubgroup(aUnitID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Resolve every monitored raid unit to one of the five filter roles. Automatic
+-- role detection used to return nil when the optional SkuAuras module was
+-- disabled; UNIT_HEALTH then indexed eventOutputFilters[nil] and aborted the
+-- complete health update. "No role" is the monitor's explicit fallback bucket.
+local function GetRaidHealthRole(aUnitID)
+	local tUnitNumber = tUnitNumbersRaid[aUnitID]
+	local tAssignments = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments
+	local tAssignedRole = tUnitNumber and tAssignments[tUnitNumber]
+	if tAssignedRole and tAssignedRole ~= 0 and tRoles[tAssignedRole] then
+		return tAssignedRole
+	end
+
+	local tUnitGUID = UnitGUID(aUnitID)
+	if tUnitGUID and SkuAuras and SkuAuras.RoleCheckerGetUnitRole and (not SkuAuras.IsEnabled or SkuAuras:IsEnabled()) then
+		local tRole = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+		if tRole and tRoles[tRole] then
+			return tRole
+		end
+	end
+
+	return 4 -- No role
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local function ttimeMonRaid2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRole, aHealthAbsoluteValue, aIgnorePrio, aUnitID)
 	--check if subgroup is enabled
 	if GetUnitsRaidSubgroup(aUnitID) == nil or SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.unitsAndSubgroupsSelection[L["Subgroup"].." "..GetUnitsRaidSubgroup(aUnitID)] == false then
@@ -309,10 +333,7 @@ local function monitorRaidHealth2ContiOutput(aForce)
 				local tUnitID = i
 				local tUnitGUID = UnitGUID(tUnitID)
 				if tUnitGUID then
-					local tRoleID = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[tUnitNumbersRaid[tUnitID]]
-					if tRoleID == 0 then
-						tRoleID = (SkuAuras and SkuAuras.RoleCheckerGetUnitRole and (not SkuAuras.IsEnabled or SkuAuras:IsEnabled())) and SkuAuras:RoleCheckerGetUnitRole(tUnitGUID) or nil
-					end
+					local tRoleID = GetRaidHealthRole(tUnitID)
 					local tHealthAbsoluteValue = math.floor((UnitHealth(tUnitID) / UnitHealthMax(tUnitID)) * 100)
 					local tHealthStepsValue = math.floor(tHealthAbsoluteValue / (100 / 15))
 					if tHealthStepsValue > 14 then
@@ -1518,11 +1539,7 @@ function Aq:UNIT_HEALTH(eventName, aUnitID)
 	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet] then
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.enabled == true then
 			if string.sub(aUnitID, 1, 4) == "raid" and string.sub(aUnitID, 1, 7) ~= "raidpet" then
-				local tUnitGUID = UnitGUID(aUnitID)
-				local tRoleID = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[tUnitNumbersRaid[aUnitID]]
-				if tRoleID == 0 then
-					tRoleID = (SkuAuras and SkuAuras.RoleCheckerGetUnitRole and (not SkuAuras.IsEnabled or SkuAuras:IsEnabled())) and SkuAuras:RoleCheckerGetUnitRole(tUnitGUID) or nil
-				end
+				local tRoleID = GetRaidHealthRole(aUnitID)
 				
 				if not SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.prevHealth then
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.prevHealth = {}
@@ -3600,7 +3617,10 @@ function Aq:MonitorMenuBuilder()
 					if tDTRaidRoster["raid"..x] then
 						local tUnitName = UnitName("raid"..x)
 						local className = UnitClass("raid"..x)
-						traidMembers[tDTRaidRoster["raid"..x]] = tDTRaidRoster["raid"..x]..": "..className.." "..tUnitName
+						traidMembers[tDTRaidRoster["raid"..x]] = {
+							name = tDTRaidRoster["raid"..x]..": "..className.." "..tUnitName,
+							unitNumber = x,
+						}
 						tHasEntries = true
 					end
 				end
@@ -3610,22 +3630,25 @@ function Aq:MonitorMenuBuilder()
 				else
 					for x = 1, MAX_RAID_MEMBERS do
 						if traidMembers[x] then
-							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {traidMembers[x]}, SkuGenericMenuItem)
+							-- x is the audible, subgroup-sorted raid number. Settings are
+							-- consumed by raidN, so retain the actual unit number explicitly.
+							local tRaidUnitNumber = traidMembers[x].unitNumber
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {traidMembers[x].name}, SkuGenericMenuItem)
 							tNewMenuEntry.dynamic = true
 							tNewMenuEntry.isSelect = true
 							tNewMenuEntry.OnAction = function(self, aValue, aName)
-								SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[x] = 0
+								SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[tRaidUnitNumber] = 0
 								for w = 1, #tRoles do
 									if aName == tRoles[w] then
-										SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[x] = w
+										SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[tRaidUnitNumber] = w
 									end
 								end
 							end
 							tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-								if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[x] == 0 then
+								if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[tRaidUnitNumber] == 0 then
 									return L["Auto"]
 								else
-									return tRoles[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[x]]
+									return tRoles[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[tRaidUnitNumber]]
 								end
 							end
 							tNewMenuEntry.BuildChildren = function(self)
