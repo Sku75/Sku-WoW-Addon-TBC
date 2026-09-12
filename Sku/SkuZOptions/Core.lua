@@ -1546,6 +1546,8 @@ function SkuOptions:CreateMainFrame()
 	SkuOptions.InteractMove = false
 
 	tFrame:SetScript("OnClick", function(self, a, b)
+		-- Every line spoken from here is the direct result of this key (SkuVoice:MarkUserAction).
+		if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.MarkUserAction then SkuOptions.Voice:MarkUserAction() end
 		-- [v43.0] The four keys that were hardcoded onto SKU_KEY_MENUQUICK1..4 own
 		-- named consts now, but they are dispatched from exactly where they always
 		-- were: the TOP of this handler, one branch each, each ending in `return`.

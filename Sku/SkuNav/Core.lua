@@ -3138,6 +3138,8 @@ function SkuNav:CreateSkuNavMain()
 	tFrame:SetPoint("CENTER")
 
 	tFrame:SetScript("OnClick", function(self, a, b)
+		-- Every line spoken from here is the direct result of this key (SkuVoice:MarkUserAction).
+		if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.MarkUserAction then SkuOptions.Voice:MarkUserAction() end
 
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_TURNTOBEACON") then
 			SkuCore.GameWorldObjects:GameWorldObjectsTurnToWp()

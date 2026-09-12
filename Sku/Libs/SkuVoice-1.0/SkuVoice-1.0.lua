@@ -179,6 +179,25 @@ local tLastHandedText = nil
 local tLastHandedAt = 0
 local tLastHandedStarted = false
 local tBttsDupWindow = 1.0
+-- [v43.4] Key-triggered speech without per-call tagging. The v43.2 guard above
+-- was built for ONE case, the redundant re-announce after a menu rebuild, and
+-- exempts a line only when its caller says userAction = true. Only the menu's
+-- keypress funnel and the tooltip reader do. Every other key handler (target
+-- health, distance, hard/soft target, roll info, turn-to, waypoints, ...)
+-- speaks untagged, so pressing the same info key twice inside a second went
+-- silent the second time -- "the line just asked for again" that the note
+-- for the guard says must always get through. A key-dispatch handler now
+-- marks the frame it runs in, and every line handed over within
+-- tUserActionMarkWindow of that mark counts as key-triggered. The window is
+-- short enough that a rebuild's re-announce (timer-driven, later frames)
+-- never falls inside it; the menu's own navigation handler does not mark at
+-- all and keeps tagging explicitly, so the case the guard exists for is
+-- untouched. GetTime() is frame-constant, so "same frame" is the common case.
+local tUserActionMarkAt = -10
+local tUserActionMarkWindow = 0.1
+function SkuVoice:MarkUserAction()
+	tUserActionMarkAt = GetTime()
+end
 
 -- [v43.2] The pump's two holds, named so they sit in ONE place and can be read
 -- back by /skudebug tts.
@@ -1261,6 +1280,11 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		aVoice = aOverwrite.voice
 		aUserAction = aOverwrite.userAction
 		aOverwrite = aOverwrite.overwrite
+	end
+	-- Inside a key handler's mark window every line is key-triggered (see
+	-- SkuVoice:MarkUserAction above).
+	if not aUserAction and (GetTime() - tUserActionMarkAt) <= tUserActionMarkWindow then
+		aUserAction = true
 	end
 
 	--SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aString)

@@ -2197,6 +2197,8 @@ function SkuCore:OnEnable()
 	tFrame:SetText("SkuCoreControlOption1")
 	tFrame:SetPoint("TOP", _G["SkuCoreControl"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
+		-- Every line spoken from here is the direct result of this key (SkuVoice:MarkUserAction).
+		if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.MarkUserAction then SkuOptions.Voice:MarkUserAction() end
 		dprint("SkuCoreControlOption1", self, aKey, aB)
 
 		if SkuCore.MinimapScanner.IsMMScanning == true then

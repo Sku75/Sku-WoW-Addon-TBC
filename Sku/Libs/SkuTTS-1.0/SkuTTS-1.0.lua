@@ -192,7 +192,9 @@ function SkuTTS:ReadLinkNumber(aLinkNumber, aNoReset)
 	if SkuTTS.MainFrame:IsVisible() == true then
 		if (SkuOptions.currentMenuPosition.links) then
 			if SkuOptions.currentMenuPosition.links[aLinkNumber] then
-					SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.links[aLinkNumber], aNoReset, true, nil, nil, false, nil, 1)
+					-- Key-triggered like every reader line (see ReadLineNumber): a link
+					-- re-read at the end of the link list must not be eaten as a duplicate.
+					SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.links[aLinkNumber], {overwrite = aNoReset, wait = true, isMulti = false, engine = 1, userAction = true})
 			end
 		end
 	end
