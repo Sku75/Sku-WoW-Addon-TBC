@@ -4,6 +4,28 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v43.5
+
+    Overview
+
+        Bugfixes
+            Quest database: opening "All" (and "Starts in zone", "Nearby quests") froze the game for several seconds.
+
+    Quest database: opening the quest lists froze the game
+        Simple: Opening the "All" list under Quest > Quest database had caused a freeze of several
+            seconds since v43.2. The list opens instantly again; a quest's entries (accept, target,
+            turn-in ...) are built only when you enter that quest. The same applies to "Starts in
+            zone" and "Nearby quests".
+        Technically: "All" built the complete submenu (CreateQuestSubmenu) for every one of the
+            several thousand quests in the database up front. Since v43.2 that submenu's target
+            branch resolves the nearest route waypoint for quests with a trigger location
+            (triggerEnd) geometrically (GetTriggerEndWps) - a full scan of one continent's
+            waypoint cache - and since v43.3 for every such quest instead of only those without
+            other objectives. One open therefore cost around 170 continent scans in a single frame.
+            The quest entries are now dynamic nodes with their own BuildChildren, as "Current
+            Quests" always was.
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v43.4
 
     Overview

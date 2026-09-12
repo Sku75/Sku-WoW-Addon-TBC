@@ -4,6 +4,27 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.5
+
+    Ueberblick
+
+        Fehlerbehebungen
+            Questdatenbank: das Oeffnen von "Alle" (ebenso "Start in Zone" und "Quests in der Naehe") liess das Spiel sekundenlang einfrieren.
+
+    Questdatenbank: das Oeffnen der Questlisten liess das Spiel einfrieren
+        Einfach: Wer unter Quest > Questdatenbank die Liste "Alle" oeffnete, bekam seit v43.2 einen
+            Haenger von mehreren Sekunden. Die Liste oeffnet jetzt wieder sofort; die Eintraege einer
+            Quest (Annahme, Ziel, Abgabe ...) werden erst gebaut, wenn man die Quest betritt. Gleiches
+            gilt fuer "Start in Zone" und "Quests in der Naehe".
+        Technisch: "Alle" baute fuer jede der mehreren tausend Quests der Datenbank sofort das
+            komplette Untermenue (CreateQuestSubmenu). Seit v43.2 loest dessen Ziel-Zweig fuer Quests
+            mit einem Ausloese-Ort (triggerEnd) den naechsten Routen-Wegpunkt geometrisch auf
+            (GetTriggerEndWps) - ein kompletter Scan des Wegpunkt-Caches eines Kontinents - und seit
+            v43.3 fuer jede solche Quest statt nur fuer die ohne andere Ziele. Ein Oeffnen kostete so
+            rund 170 Kontinent-Scans in einem einzigen Frame. Die Quest-Eintraege sind jetzt dynamische
+            Knoten mit eigenem BuildChildren, wie in "Aktuelle Quests" schon immer.
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.4
 
     Ueberblick

@@ -7,6 +7,28 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.5
+
+    Aperçu
+
+        Corrections
+            Base de données des quêtes : ouvrir « Tout » (ainsi que « Commence dans la zone » et « Quêtes à proximité ») figeait le jeu plusieurs secondes.
+
+    Base de données des quêtes : ouvrir les listes de quêtes figeait le jeu
+        Simple : Ouvrir la liste « Tout » sous Quête > Base de données des quêtes provoquait depuis la v43.2 un
+            blocage de plusieurs secondes. La liste s'ouvre de nouveau instantanément ; les entrées
+            d'une quête (acceptation, objectif, remise ...) ne sont construites qu'en entrant dans la
+            quête. Il en va de même pour « Commence dans la zone » et « Quêtes à proximité ».
+        Technique : « Tout » construisait d'emblée le sous-menu complet (CreateQuestSubmenu) pour
+            chacune des plusieurs milliers de quêtes de la base. Depuis la v43.2, la branche objectif
+            de ce sous-menu résout géométriquement le point de route le plus proche pour les quêtes à
+            lieu déclencheur (triggerEnd) via GetTriggerEndWps - un balayage complet du cache de
+            points de route d'un continent - et depuis la v43.3 pour chacune de ces quêtes, et non plus
+            seulement celles sans autre objectif. Une ouverture coûtait ainsi environ 170 balayages de
+            continent dans une seule image. Les entrées de quête sont désormais des nœuds dynamiques
+            avec leur propre BuildChildren, comme « Quêtes actuelles » l'a toujours été.
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.4
 
     Aperçu
