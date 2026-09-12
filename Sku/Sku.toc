@@ -51,6 +51,7 @@ SkuCore\AudioDevice.lua
 SkuCore\DualSpecProbe.lua
 SkuCore\gameOptions.lua
 SkuCore\addonOptions.lua
+SkuCore\pawnIntegration.lua
 SkuCore\data.lua
 SkuCore\gameWorldObjects.lua
 SkuCore\minimapScanner.lua

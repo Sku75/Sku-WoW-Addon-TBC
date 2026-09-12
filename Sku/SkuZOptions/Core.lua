@@ -2825,6 +2825,12 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull, aItemId)
 		end
 	end
 
+	-- Pawn additions (upgrade verdict, signed stat deltas) on a COPY of the
+	-- sections; the node's own textFull stays untouched (SkuCore/pawnIntegration.lua).
+	if aItemId and SkuCore.PawnIntegration and SkuCore.PawnIntegration.AddTooltipData then
+		tNewTextFull = SkuCore.PawnIntegration:AddTooltipData(tNewTextFull, aItemId) or tNewTextFull
+	end
+
 	return tNewTextFull
 end
 

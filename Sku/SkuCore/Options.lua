@@ -692,6 +692,9 @@ SkuSettings:Register("SkuCore", {
 	-- and quest log WHILE IN COMBAT (headless capture + relaxed self-deactivation).
 	-- Default ON; toggle in the Kampf menu or via /skucombatmenu.
 	["combatMenuOpen"]                            = { scope = "profile", default = true, type = "boolean" },
+	-- Addons > Pawn: Pawn's upgrade verdict and signed stat deltas in Sku's item
+	-- tooltips. Default ON; adds nothing when Pawn is not loaded (SkuCore/pawnIntegration.lua).
+	["pawnIntegrationEnabled"]                    = { scope = "profile", default = true, type = "boolean" },
 	-- Taxi: announce the flight point you could land at early. Default ON; the
 	-- toggle is in Einstellungen -> Allgemein (SkuCore.Taxi.AnnounceMenuBuilder).
 	["taxiAnnounceLandingPoints"]                 = { scope = "profile", default = true, type = "boolean" },
@@ -1794,6 +1797,10 @@ function SkuCore:AddonsMenuBuilder(aParentEntry)
 	if _G.Questie and _G.Questie.db then
 		tSpecs[#tSpecs+1] = { kind = "list", label = "Questie", sorting = true,
 			build = SkuCore.QuestieMenuBuilder }
+	end
+	if SkuCore.PawnIntegration and SkuCore.PawnIntegration.MenuBuilder then
+		tSpecs[#tSpecs+1] = { kind = "list", id = "Pawn", label = "Pawn", sorting = true,
+			build = SkuCore.PawnIntegration.MenuBuilder }
 	end
 	-- Other addons' AceConfig settings (Questie, ECS, ...) rendered generically;
 	-- logic in SkuCore/addonOptions.lua. The Escape menu's "AddOns" button routes
