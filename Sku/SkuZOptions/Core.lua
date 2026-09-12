@@ -4275,6 +4275,13 @@ function SkuOptions:OnInitialize()
 	SkuOptions.AceConfigDialog = LibStub("AceConfigDialog-3.0")
 	SkuOptions.AceConfigDialog:AddToBlizOptions("Sku")
 	SkuOptions.db = LibStub("AceDB-3.0"):New("SkuOptionsDB", defaults, true)
+	-- [v43.5] The BTTS cache-buster counters live in the global section so a
+	-- /reload continues them: the client's TTS audio cache survives a reload,
+	-- and a counter that restarted let a revisited line land back on an
+	-- already-rendered (silent on the bridge) variant. See BttsCacheBust in
+	-- Libs/SkuVoice-1.0.
+	SkuOptions.db.global.bttsCacheBust = SkuOptions.db.global.bttsCacheBust or {}
+	LibStub("SkuVoice-1.0"):SetCacheBustStore(SkuOptions.db.global.bttsCacheBust)
 
 	-- Drop the retired game-sound mirror (five volume channels + the five Sound_*
 	-- toggles) out of EVERY stored profile, not just the active one: they are no

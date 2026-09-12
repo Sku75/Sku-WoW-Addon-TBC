@@ -14,6 +14,7 @@ Changements dans Sku v43.5
         Corrections
             Base de données des quêtes : ouvrir « Tout » (ainsi que « Commence dans la zone » et « Quêtes à proximité ») figeait le jeu plusieurs secondes.
             Chat : après ouverture de la ligne de chat avec « / », l'ancien canal était annoncé (par ex. « À Kai »), alors que seule la commande tapée ensuite décide du canal.
+            Voix : certaines lignes restaient muettes au hasard via le pont NVDA/SAPI (par ex. un objet de la liste d'équipement) alors que leurs voisines étaient lues.
 
     Base de données des quêtes : ouvrir les listes de quêtes figeait le jeu
         Simple : Ouvrir la liste « Tout » sous Quête > Base de données des quêtes provoquait depuis la v43.2 un
@@ -49,6 +50,24 @@ Changements dans Sku v43.5
             setText en attente compris (SkuChat:EditboxTextIsCommand), à chaque point d'annonce
             (hooks UpdateHeader, focus, parole différée) ; un nouveau hook OnTextChanged couvre
             l'effacement du slash, pour lequel Blizzard n'appelle aucun UpdateHeader.
+
+    Voix : certaines lignes restaient muettes au hasard
+        Simple : En parcourant rapidement une liste, une ligne isolée n'était parfois pas lue - par
+            ex. « Gants de combat naga » dans l'équipement, alors que ses voisines l'étaient - et elle
+            restait muette même en repassant dessus plusieurs fois. Cela concernait le pont NVDA/SAPI
+            et pouvait arriver partout dans Sku, surtout après un /reload. Chaque ligne est de nouveau
+            lue de façon fiable.
+        Technique : Le client WoW met en cache la voix rendue par texte et la rejoue lors d'une
+            répétition sans rappeler la voix - avec le pont, cette relecture est du silence. Sku
+            ajoute donc à chaque texte une suite d'espaces insécables comptée par texte (1..64) pour
+            que chaque répétition soit un texte nouveau. Mais le compteur ne vivait qu'en Lua et
+            repartait de zéro à chaque /reload, alors que le cache du client survit au reload (les
+            identifiants d'énoncés continuent sans rupture). Une ligne revue après le reload pouvait
+            ainsi retomber dans une plage déjà rendue et restait muette jusqu'à ce que le compteur en
+            sorte - six pressions d'affilée dans le journal, chacune avec un SpeakText + STARTED +
+            FINISHED propres. Les compteurs vivent maintenant dans SkuOptionsDB.global (bttsCacheBust)
+            et continuent au-delà du reload ; de plus l'espace par texte passe de 64 à 512 variantes
+            (des espaces insécables en tête, 1..8, portent la partie haute du compteur).
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.4

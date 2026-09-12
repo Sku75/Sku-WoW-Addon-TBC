@@ -11,6 +11,7 @@ Changes in Sku v43.5
         Bugfixes
             Quest database: opening "All" (and "Starts in zone", "Nearby quests") froze the game for several seconds.
             Chat: after opening the chat line with "/" the old channel was announced (e.g. "Tell Kai"), although only the command typed next decides the channel.
+            Speech: single lines randomly stayed silent over the NVDA/SAPI bridge (e.g. one item in the equipment list) while their neighbours were spoken.
 
     Quest database: opening the quest lists froze the game
         Simple: Opening the "All" list under Quest > Quest database had caused a freeze of several
@@ -45,6 +46,23 @@ Changes in Sku v43.5
             effective text, pending setText included (SkuChat:EditboxTextIsCommand), at every
             announce site (UpdateHeader hooks, focus, deferred speak); a new OnTextChanged edge
             covers deleting the slash, for which Blizzard calls no UpdateHeader.
+
+    Speech: single lines randomly stayed silent
+        Simple: Walking quickly through a list, now and then one single line was not spoken - e.g.
+            "Naga combat gloves" in the equipment list while its neighbours were - and it stayed
+            silent on repeated passes. This affected the NVDA/SAPI bridge and could happen anywhere
+            in Sku, mostly after a /reload. Every line is spoken reliably again.
+        Technically: The WoW client caches rendered speech per text and replays it on a repeat
+            without invoking the voice again - on the bridge that replay is silence. Sku therefore
+            appends a per-text counted run of no-break spaces (1..64) to every text so that each
+            repeat is a new text. But the counter lived in Lua only and restarted at every /reload,
+            while the client's cache survives a reload (the utterance IDs run straight across it).
+            A line seen again after the reload could thus land back inside an already rendered
+            range and stayed silent until the counter had walked out of it - six presses in a row in
+            the log, each with a clean SpeakText + STARTED + FINISHED. The counters now live in
+            SkuOptionsDB.global (bttsCacheBust) and continue across the reload; in addition the
+            per-text space is 512 variants instead of 64 (leading no-break spaces 1..8 carry the
+            high part of the counter).
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.4

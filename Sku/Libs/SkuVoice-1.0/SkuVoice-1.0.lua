@@ -361,26 +361,67 @@ local tLastHandoverWasEcho = false
 -- is not a corner case: measured over a 50-minute capture, 27 of 1307 handovers
 -- collided that way -- "menue geschlossen", "annehmen", "buffs" and single typed
 -- characters among them, i.e. exactly the short lines a user revisits all
--- evening. Keyed by text, a line only reuses a run after 64 repeats OF ITSELF;
--- in that same capture the most-repeated string occurred 36 times and NOTHING
--- collided. Same cap, same character, same maximum padding -- only the counter
--- moved.
-local BTTS_CACHEBUST_MAX = 64
+-- evening. Keyed by text, a line only reuses a variant after MAX repeats OF
+-- ITSELF; in that same capture the most-repeated string occurred 36 times and
+-- NOTHING collided.
+-- [v43.5] Two more things, both from one capture (2026-09-12, "nagakampf-
+-- handschuhe" silent for six presses in a row while every neighbour spoke, and
+-- Sku logged a clean SpeakText + STARTED + FINISHED for each):
+--  1) ★The counters must OUTLIVE a /reload. The client's audio cache lives in
+--     the engine, not in Lua -- utterance IDs run straight across a reload,
+--     and that line had last been rendered more than 44 minutes earlier. A
+--     reload used to reset this table, so a text seen again afterwards was
+--     re-seeded at the global rotation point and could land back INSIDE the
+--     run range it had already used before the reload; every press then
+--     replayed a cached (silent) variant until the counter walked out of that
+--     range. So the table and the seed now live in the host's SavedVariables
+--     (SkuVoice:SetCacheBustStore, called by SkuOptions once its DB is up) and
+--     a reload continues the count. A client restart continues it too, which
+--     is harmless: the cache is fresh then and the count merely runs on.
+--  2) The per-text space is 512 variants instead of 64: the trailing run still
+--     cycles 1..64, and every 64th wrap adds one more LEADING no-break space
+--     (1..8). The single leading one was already there and inaudible; a few
+--     more in the same place are the same character in the same place. A text
+--     now has to be spoken 512 times in one client run before it can collide
+--     with itself.
+local BTTS_CACHEBUST_TRAIL = 64
+local BTTS_CACHEBUST_LEAD = 8
+local BTTS_CACHEBUST_MAX = BTTS_CACHEBUST_TRAIL * BTTS_CACHEBUST_LEAD
 -- The table is bounded, not an LRU: a plain wipe once it grows past this. The
 -- wipe is harmless because a re-seen text does NOT restart at 1 -- see the
 -- seeding in the else branch below, which is what keeps a wipe from colliding
 -- every text with its own first use.
 local BTTS_CACHEBUST_KEYS_MAX = 512
-local mBttsCacheBustSeen = {}
-local mBttsCacheBustKeys = 0
--- Rotation point handed to a text the first time it is seen (see below).
-local mBttsCacheBustSeed = 0
-local function BttsCacheBust(aString)
-	if mBttsCacheBustKeys >= BTTS_CACHEBUST_KEYS_MAX then
-		mBttsCacheBustSeen = {}
-		mBttsCacheBustKeys = 0
+-- The store: {seen = {[text] = run}, keys = n, seed = n}. Starts as a plain
+-- local so speech before the host's DB exists still gets busted; the host
+-- hands in the persisted table via SetCacheBustStore and the counters carry on
+-- from where the previous session left them.
+local mBttsCacheBust = { seen = {}, keys = 0, seed = 0 }
+function SkuVoice:SetCacheBustStore(aStore)
+	if type(aStore) ~= "table" then return end
+	if type(aStore.seen) ~= "table" then aStore.seen = {} end
+	if type(aStore.keys) ~= "number" then aStore.keys = 0 end
+	if type(aStore.seed) ~= "number" then aStore.seed = 0 end
+	-- Runs already handed out this session (before the DB was up) are the ones
+	-- the client has rendered most recently; carry them into the store so the
+	-- stale local table cannot re-issue them. Where both know a text the store's
+	-- count wins -- it is the longer history.
+	for tText, tRun in pairs(mBttsCacheBust.seen) do
+		if aStore.seen[tText] == nil then
+			aStore.seen[tText] = tRun
+			aStore.keys = aStore.keys + 1
+		end
 	end
-	local tRun = mBttsCacheBustSeen[aString]
+	if mBttsCacheBust.seed > aStore.seed then aStore.seed = mBttsCacheBust.seed end
+	mBttsCacheBust = aStore
+end
+local function BttsCacheBust(aString)
+	local tStore = mBttsCacheBust
+	if tStore.keys >= BTTS_CACHEBUST_KEYS_MAX then
+		tStore.seen = {}
+		tStore.keys = 0
+	end
+	local tRun = tStore.seen[aString]
 	if tRun then
 		tRun = (tRun % BTTS_CACHEBUST_MAX) + 1
 	else
@@ -389,11 +430,15 @@ local function BttsCacheBust(aString)
 		-- table wipe collide each text with its own first use and scored WORSE
 		-- than the global counter this replaces (80 collisions vs 27). Seeded,
 		-- the capture collides ZERO times -- at 512 keys, at 2048, or unbounded.
-		mBttsCacheBustSeed = (mBttsCacheBustSeed % BTTS_CACHEBUST_MAX) + 1
-		tRun = mBttsCacheBustSeed
-		mBttsCacheBustKeys = mBttsCacheBustKeys + 1
+		tStore.seed = (tStore.seed % BTTS_CACHEBUST_MAX) + 1
+		tRun = tStore.seed
+		tStore.keys = tStore.keys + 1
 	end
-	mBttsCacheBustSeen[aString] = tRun
+	tStore.seen[aString] = tRun
+	-- run 1..MAX -> trailing 1..64 cycling fastest, leading 1..8 stepping on
+	-- every wrap of the trailing run.
+	local tTrail = ((tRun - 1) % BTTS_CACHEBUST_TRAIL) + 1
+	local tLead = math.floor((tRun - 1) / BTTS_CACHEBUST_TRAIL) + 1
 	-- Two things:
 	-- 1) Leading U+00A0 NO-BREAK SPACE (C2 A0): quest text is spoken as several
 	--    separate queued utterances; each is assembled with a LEADING space that
@@ -417,7 +462,8 @@ local function BttsCacheBust(aString)
 	--
 	--    So vary real character data again, but place it AFTER the last word where
 	--    it cannot colour the prosody of anything: a run of 1..64 U+00A0, counted
-	--    per text (see BTTS_CACHEBUST_MAX above). Trailing
+	--    per text (see BTTS_CACHEBUST_MAX above; since v43.5 the LEADING run
+	--    1..8 carries the high part of that count). Trailing
 	--    whitespace is inaudible, and U+00A0 is not XML whitespace -- the very
 	--    property point 1 already relies on -- so the client's XML normalization
 	--    cannot trim it back off and collapse the variants into one cache key.

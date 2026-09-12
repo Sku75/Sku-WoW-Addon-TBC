@@ -11,6 +11,7 @@ Aenderungen in Sku v43.5
         Fehlerbehebungen
             Questdatenbank: das Oeffnen von "Alle" (ebenso "Start in Zone" und "Quests in der Naehe") liess das Spiel sekundenlang einfrieren.
             Chat: nach dem Oeffnen der Chatzeile mit "/" wurde der alte Kanal angesagt (etwa "An Kai"), obwohl erst der Befehl danach den Kanal festlegt.
+            Sprachausgabe: einzelne Zeilen blieben ueber die NVDA/SAPI-Bruecke zufaellig stumm (etwa ein Ausruestungsteil in der Liste), waehrend die Nachbarn gesprochen wurden.
 
     Questdatenbank: das Oeffnen der Questlisten liess das Spiel einfrieren
         Einfach: Wer unter Quest > Questdatenbank die Liste "Alle" oeffnete, bekam seit v43.2 einen
@@ -45,6 +46,25 @@ Aenderungen in Sku v43.5
             (UpdateHeader-Haken, Fokus, verzoegertes Sprechen) den effektiven Text inklusive des
             ausstehenden setText (SkuChat:EditboxTextIsCommand); eine neue OnTextChanged-Kante
             deckt das Loeschen des Schraegstrichs ab, fuer das Blizzard kein UpdateHeader ruft.
+
+    Sprachausgabe: einzelne Zeilen blieben zufaellig stumm
+        Einfach: Wer schnell durch eine Liste ging, hoerte hin und wieder eine einzelne Zeile nicht -
+            etwa "Nagakampfhandschuhe" in der Ausruestung, waehrend die Nachbarn gesprochen wurden -
+            und sie blieb auch beim mehrfachen Darueberfahren stumm. Das betraf die NVDA/SAPI-Bruecke
+            und konnte ueberall in Sku passieren, meist nach einem /reload. Jede Zeile wird jetzt
+            wieder zuverlaessig gesprochen.
+        Technisch: Der WoW-Client speichert gerenderte Sprachausgabe pro Text und spielt sie bei
+            einer Wiederholung ab, ohne die Stimme erneut aufzurufen - bei der Bruecke ist diese
+            Wiederholung Stille. Sku haengt darum an jeden Text eine pro Text zaehlende Folge
+            geschuetzter Leerzeichen (1..64), damit jede Wiederholung ein neuer Text ist. Der Zaehler
+            lebte aber nur in Lua und begann bei jedem /reload von vorn, waehrend der Cache des
+            Clients den Reload ueberlebt (die Utterance-IDs laufen ueber den Reload hinweg durch).
+            Eine nach dem Reload erneut gesehene Zeile konnte so wieder in einen schon gerenderten
+            Bereich fallen und blieb stumm, bis der Zaehler diesen Bereich verlassen hatte - im
+            Protokoll sechs Anschlaege in Folge mit sauberem SpeakText + STARTED + FINISHED. Die
+            Zaehler liegen jetzt in SkuOptionsDB.global (bttsCacheBust) und laufen ueber den Reload
+            weiter; zudem ist der Raum pro Text 512 Varianten statt 64 (fuehrende geschuetzte
+            Leerzeichen 1..8 tragen den hohen Teil des Zaehlers).
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.4
