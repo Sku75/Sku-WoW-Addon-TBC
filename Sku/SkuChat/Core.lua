@@ -3503,6 +3503,11 @@ function SkuChat:PLAYER_LOGIN(...)
 				if not SkuChat:IsChannelAnnounceEnabled() then
 					return nil
 				end
+				-- Eine zurueckgeholte Befehlszeile ("/g hallo") geht nicht an den
+				-- Kanal der Kopfzeile, sondern dorthin, wohin der Befehl zeigt.
+				if SkuChat:EditboxTextIsCommand() then
+					return nil
+				end
 				return SkuChat:GetEditboxChannelLabel()
 			end,
 		})
@@ -3542,6 +3547,16 @@ function SkuChat:PLAYER_LOGIN(...)
 	end)
 	ChatFrame1EditBox:HookScript("OnEditFocusLost", function()
 		SkuChat:ResetEditboxChannelMemo()
+	end)
+
+	-- [v43.5] Der Schraegstrich loescht die Kopfzeile nicht -- er macht sie nur
+	-- BEDEUTUNGSLOS. Wer ihn wieder loescht, schreibt danach doch an den Kanal
+	-- der Kopfzeile, und dafuer ruft Blizzard KEIN UpdateHeader (ParseText
+	-- steigt bei leerem Text sofort aus). Deshalb haengt hier eine zweite Kante
+	-- an der Textaenderung; sie tut nur dann etwas, wenn fuer diesen Fokus noch
+	-- nichts angesagt wurde (siehe AnnounceEditboxChannelIfSilent).
+	ChatFrame1EditBox:HookScript("OnTextChanged", function()
+		SkuChat:AnnounceEditboxChannelIfSilent("textChanged")
 	end)
 
 	-- Unbekannte Slash-Befehle hoerbar machen (siehe AnnounceUnknownChatCommand).
@@ -3616,6 +3631,58 @@ function SkuChat:ResetEditboxChannelMemo()
 	tLastAnnouncedChatHeader = nil
 end
 
+-- [v43.5] Steht ein Schraegstrich-Befehl in der Zeile, ist die Kopfzeile
+-- VORLAEUFIG -- und damit die Ansage falsch.
+--
+-- Blizzards Mechanik dahinter (ChatFrameEditBox.lua, ChatFrameUtil.lua):
+--  * Die Kopfzeile zeigt IMMER den Kanal aus dem Attribut chatType. Beim
+--    Oeffnen ist das der sticky-Kanal der LETZTEN gesendeten Nachricht
+--    (OnEnterPressed merkt ihn in stickyType, ClearChat stellt ihn zurueck) --
+--    nach einem Fluestern also "An Kai", inklusive tellTarget.
+--  * Die Schraegstrich-Taste (OPENCHATSLASH) ruft ChatFrameUtil.OpenChat("/"):
+--    dieselbe Kopfzeile, nur mit einem "/" im Feld. Der Text selbst wird erst
+--    im naechsten OnUpdate gesetzt (editBox.text + editBox.setText = 1), die
+--    UpdateHeader-Aufrufe des Oeffnens laufen also noch mit LEEREM Feld.
+--  * Ein Text, der mit "/" beginnt, geht NIE an den Kanal der Kopfzeile:
+--    ParseText behandelt ihn als Befehl. Erst wenn der Befehl aufgeloest ist --
+--    "/g " beim Leerzeichen (OnSpacePressed/OnTextChanged), "/w Kai " beim
+--    Leerzeichen hinter dem Namen (ExtractTellTarget) -- setzt Blizzard
+--    chatType neu, SetText(Rest) und DANN UpdateHeader. Ein unbekannter
+--    Befehl wird beim Absenden verworfen (DisplayHelpTextSimple + ClearChat).
+-- Solange die Zeile mit "/" beginnt, sagt die Kopfzeile also nur, wohin es
+-- OHNE den Befehl ginge. Genau das wurde bisher angesagt: "An Kai" beim
+-- Oeffnen mit "/", und gleich darauf "Gilde", sobald "/g " aufgeloest war.
+--
+-- Wegen des verzoegerten SetText muss der noch ausstehende Text mitzaehlen:
+-- setText == 1 heisst, .text ist das, was im naechsten Frame im Feld steht.
+function SkuChat:EditboxTextIsCommand()
+	local tBox = ChatFrame1EditBox
+	if not tBox then
+		return false
+	end
+	local tText
+	if tBox.setText == 1 and type(tBox.text) == "string" then
+		tText = tBox.text
+	else
+		tText = tBox:GetText() or ""
+	end
+	return string.sub(tText, 1, 1) == "/"
+end
+
+-- Kante fuer das Loeschen des Schraegstrichs (OnTextChanged, siehe
+-- PLAYER_LOGIN): nur wenn fuer diesen Fokus noch NICHTS angesagt wurde. Jede
+-- echte Kanalaenderung kommt ohnehin ueber UpdateHeader; ohne diese Schranke
+-- liefe die Ansage bei jedem Tastendruck.
+function SkuChat:AnnounceEditboxChannelIfSilent(aWhy)
+	if tLastAnnouncedChatHeader ~= nil then
+		return
+	end
+	if SkuChat:EditboxTextIsCommand() then
+		return
+	end
+	SkuChat:AnnounceEditboxChannel(nil, aWhy)
+end
+
 -- Die Kanalansage laeuft VERZOEGERT und in EINEM Slot -- genau wie das
 -- Tastatur-Echo, und aus demselben Grund.
 --
@@ -3649,6 +3716,15 @@ local function tSpeakChannelSoon(aLabel)
 		-- Ansage nur noch eine Ansage ins Leere.
 		if not ChatFrame1EditBox or not ChatFrame1EditBox:IsShown() then
 			dprintv("chatChannel", "spricht nicht, Editbox zu", tostring(tChannelPendingLabel))
+			return
+		end
+		-- Inzwischen ein Befehl getippt (Enter-Oeffnen, dann sofort "/"): die
+		-- Kopfzeile ist damit vorlaeufig geworden, siehe EditboxTextIsCommand.
+		-- Der Merker geht zurueck auf "nichts angesagt", damit ein spaeteres
+		-- Loeschen des Schraegstrichs den Kanal doch noch sagt.
+		if SkuChat:EditboxTextIsCommand() then
+			dprint("chatChannel", "spricht nicht, Befehl in der Zeile", tostring(tChannelPendingLabel))
+			tLastAnnouncedChatHeader = nil
 			return
 		end
 		dprint("chatChannel", "spricht", tostring(tChannelPendingLabel))
@@ -3737,12 +3813,30 @@ function SkuChat:AnnounceEditboxChannel(aForce, aWhy)
 		return
 	end
 
+	-- [v43.5] Befehl in der Zeile: die Kopfzeile ist vorlaeufig (siehe
+	-- EditboxTextIsCommand). Nicht ansagen und den Merker NICHT anfassen --
+	-- die Zeile ist fuer diesen Fokus noch unangesagt, bis der Befehl
+	-- aufgeloest ist (dann kommt Blizzards UpdateHeader mit geleertem Feld)
+	-- oder der Schraegstrich wieder geloescht wird (textChanged-Kante).
+	if aForce ~= true and SkuChat:EditboxTextIsCommand() then
+		dprint("chatChannel", aWhy, "Befehl in der Zeile, Kopfzeile vorlaeufig", tLabel)
+		return
+	end
+
 	-- Leerer Merker = erste Ansage nach dem Fokuswechsel = das Oeffnen. Regel
 	-- dafuer siehe oben bei tLastAnnouncedChatHeader: nur "Sagen" schweigt.
 	-- Jeder spaetere WECHSEL laeuft ohnehin weiter unten durch, weil der Merker
 	-- dann nicht mehr leer ist.
+	--
+	-- [v43.5] "Sagen" schweigt nur, wenn es auch der Standard (stickyType) ist.
+	-- Seit die Ansage bei einem Befehl in der Zeile wartet, kann der Merker
+	-- auch nach "/s " noch leer sein -- das ist dann aber kein Oeffnen, sondern
+	-- ein bewusster Wechsel weg vom Standard (etwa vom Fluestern), und der wird
+	-- gesagt. Der bekannte Haken von chatType == stickyType (nummerierte Kanaele
+	-- sind beide "CHANNEL") greift hier nicht, verglichen wird nur "SAY".
 	if aForce ~= true and tLastAnnouncedChatHeader == nil then
-		if ChatFrame1EditBox:GetAttribute("chatType") == "SAY" then
+		if ChatFrame1EditBox:GetAttribute("chatType") == "SAY"
+		and ChatFrame1EditBox:GetAttribute("stickyType") == "SAY" then
 			tLastAnnouncedChatHeader = tLabel
 			dprint("chatChannel", aWhy, "Sagen beim Oeffnen, nicht angesagt", tLabel)
 			return

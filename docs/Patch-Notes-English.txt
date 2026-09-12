@@ -10,6 +10,7 @@ Changes in Sku v43.5
 
         Bugfixes
             Quest database: opening "All" (and "Starts in zone", "Nearby quests") froze the game for several seconds.
+            Chat: after opening the chat line with "/" the old channel was announced (e.g. "Tell Kai"), although only the command typed next decides the channel.
 
     Quest database: opening the quest lists froze the game
         Simple: Opening the "All" list under Quest > Quest database had caused a freeze of several
@@ -24,6 +25,26 @@ Changes in Sku v43.5
             other objectives. One open therefore cost around 170 continent scans in a single frame.
             The quest entries are now dynamic nodes with their own BuildChildren, as "Current
             Quests" always was.
+
+    Chat: wrong channel announcement after opening with the slash key
+        Simple: If you had last whispered someone and opened the chat line with "/", you heard
+            "Tell Kai" - and right after "/g " then "Guild". The first announcement was wrong: as
+            long as the line starts with a slash nothing goes to that channel, the command decides.
+            The announcement now stays silent while a command is in the line, and speaks the channel
+            once it is settled ("/g " becomes "Guild") or when the slash is deleted again. A
+            deliberate switch to "Say" ("/s ") is now announced as well, unless Say was the default
+            channel anyway. When recalling a sent line (arrow up), the channel prefix is omitted if
+            the line is a command.
+        Technically: Blizzard's header always shows the chatType attribute, and on open that is the
+            sticky channel of the last sent message (whisper is sticky too, tellTarget included).
+            The slash key calls ChatFrameUtil.OpenChat("/"): the same header plus a "/" in the box,
+            set only in the next OnUpdate (editBox.setText), so the UpdateHeader calls of the open
+            still run with an empty box. Text starting with "/" never goes to the header's channel:
+            only when ParseText resolves the command ("/g " at the space, "/w Name " after the
+            name) does Blizzard set chatType, SetText(rest) and then UpdateHeader. Sku now checks the
+            effective text, pending setText included (SkuChat:EditboxTextIsCommand), at every
+            announce site (UpdateHeader hooks, focus, deferred speak); a new OnTextChanged edge
+            covers deleting the slash, for which Blizzard calls no UpdateHeader.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.4

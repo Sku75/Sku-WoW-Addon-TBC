@@ -10,6 +10,7 @@ Aenderungen in Sku v43.5
 
         Fehlerbehebungen
             Questdatenbank: das Oeffnen von "Alle" (ebenso "Start in Zone" und "Quests in der Naehe") liess das Spiel sekundenlang einfrieren.
+            Chat: nach dem Oeffnen der Chatzeile mit "/" wurde der alte Kanal angesagt (etwa "An Kai"), obwohl erst der Befehl danach den Kanal festlegt.
 
     Questdatenbank: das Oeffnen der Questlisten liess das Spiel einfrieren
         Einfach: Wer unter Quest > Questdatenbank die Liste "Alle" oeffnete, bekam seit v43.2 einen
@@ -23,6 +24,27 @@ Aenderungen in Sku v43.5
             v43.3 fuer jede solche Quest statt nur fuer die ohne andere Ziele. Ein Oeffnen kostete so
             rund 170 Kontinent-Scans in einem einzigen Frame. Die Quest-Eintraege sind jetzt dynamische
             Knoten mit eigenem BuildChildren, wie in "Aktuelle Quests" schon immer.
+
+    Chat: falsche Kanalansage nach dem Oeffnen mit dem Schraegstrich
+        Einfach: Wer zuletzt jemandem gefluestert hatte und die Chatzeile mit "/" oeffnete, hoerte
+            "An Kai" - und nach "/g " gleich darauf "Gilde". Die erste Ansage war falsch: solange die
+            Zeile mit einem Schraegstrich beginnt, geht nichts an diesen Kanal, erst der Befehl
+            entscheidet. Die Ansage schweigt jetzt, solange ein Befehl in der Zeile steht, und sagt
+            den Kanal, sobald er feststeht ("/g " wird zu "Gilde") oder der Schraegstrich wieder
+            geloescht wird. Ein bewusster Wechsel auf "Sagen" ("/s ") wird jetzt ebenfalls gesagt,
+            wenn Sagen nicht ohnehin der Standardkanal war. Beim Zurueckholen einer gesendeten Zeile
+            (Pfeil hoch) entfaellt der Kanal-Vorspann, wenn die Zeile ein Befehl ist.
+        Technisch: Blizzard zeigt in der Kopfzeile immer das Attribut chatType, und das ist beim
+            Oeffnen der sticky-Kanal der zuletzt gesendeten Nachricht (auch Fluestern ist sticky,
+            samt tellTarget). Die Schraegstrich-Taste ruft ChatFrameUtil.OpenChat("/"): dieselbe
+            Kopfzeile plus ein "/" im Feld, gesetzt erst im naechsten OnUpdate (editBox.setText), die
+            UpdateHeader-Aufrufe des Oeffnens laufen also noch mit leerem Feld. Ein Text, der mit "/"
+            beginnt, geht nie an den Kanal der Kopfzeile: erst wenn ParseText den Befehl aufloest
+            ("/g " beim Leerzeichen, "/w Name " hinter dem Namen), setzt Blizzard chatType neu,
+            SetText(Rest) und dann UpdateHeader. Sku prueft jetzt an allen Ansage-Stellen
+            (UpdateHeader-Haken, Fokus, verzoegertes Sprechen) den effektiven Text inklusive des
+            ausstehenden setText (SkuChat:EditboxTextIsCommand); eine neue OnTextChanged-Kante
+            deckt das Loeschen des Schraegstrichs ab, fuer das Blizzard kein UpdateHeader ruft.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.4

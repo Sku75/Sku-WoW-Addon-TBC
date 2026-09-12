@@ -13,6 +13,7 @@ Changements dans Sku v43.5
 
         Corrections
             Base de données des quêtes : ouvrir « Tout » (ainsi que « Commence dans la zone » et « Quêtes à proximité ») figeait le jeu plusieurs secondes.
+            Chat : après ouverture de la ligne de chat avec « / », l'ancien canal était annoncé (par ex. « À Kai »), alors que seule la commande tapée ensuite décide du canal.
 
     Base de données des quêtes : ouvrir les listes de quêtes figeait le jeu
         Simple : Ouvrir la liste « Tout » sous Quête > Base de données des quêtes provoquait depuis la v43.2 un
@@ -27,6 +28,27 @@ Changements dans Sku v43.5
             seulement celles sans autre objectif. Une ouverture coûtait ainsi environ 170 balayages de
             continent dans une seule image. Les entrées de quête sont désormais des nœuds dynamiques
             avec leur propre BuildChildren, comme « Quêtes actuelles » l'a toujours été.
+
+    Chat : annonce de canal erronée après ouverture avec la touche slash
+        Simple : Si vous aviez chuchoté à quelqu'un en dernier et ouvriez la ligne de chat avec « / »,
+            vous entendiez « À Kai » - puis, juste après « /g », « Guilde ». La première annonce était
+            fausse : tant que la ligne commence par un slash, rien ne part vers ce canal, c'est la
+            commande qui décide. L'annonce reste désormais silencieuse tant qu'une commande est dans
+            la ligne, et dit le canal dès qu'il est fixé (« /g » devient « Guilde ») ou quand le slash
+            est effacé. Un passage volontaire à « Dire » (« /s ») est maintenant annoncé lui aussi,
+            sauf si Dire était de toute façon le canal par défaut. Au rappel d'une ligne envoyée
+            (flèche haut), le préfixe de canal est omis si la ligne est une commande.
+        Technique : L'en-tête de Blizzard affiche toujours l'attribut chatType, et à l'ouverture c'est
+            le canal « sticky » du dernier message envoyé (le chuchotement l'est aussi, tellTarget
+            compris). La touche slash appelle ChatFrameUtil.OpenChat("/") : le même en-tête plus un
+            « / » dans le champ, posé seulement au prochain OnUpdate (editBox.setText), si bien que
+            les appels UpdateHeader de l'ouverture tournent encore avec un champ vide. Un texte qui
+            commence par « / » ne part jamais vers le canal de l'en-tête : ce n'est que lorsque
+            ParseText résout la commande (« /g » à l'espace, « /w Nom » après le nom) que Blizzard
+            fixe chatType, SetText(reste) puis UpdateHeader. Sku vérifie désormais le texte effectif,
+            setText en attente compris (SkuChat:EditboxTextIsCommand), à chaque point d'annonce
+            (hooks UpdateHeader, focus, parole différée) ; un nouveau hook OnTextChanged couvre
+            l'effacement du slash, pour lequel Blizzard n'appelle aucun UpdateHeader.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.4
