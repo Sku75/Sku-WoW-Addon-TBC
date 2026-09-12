@@ -22,6 +22,47 @@ SkuOptions.currentMenuPosition = nil
 SkuOptions.MenuAccessKeysChars = {" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ö", "ü", "ä", "ß", "ù", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", "shift-,",}
 SkuOptions.MenuAccessKeysNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
 
+-- Keyboard input arrives on two roads: navigation keys as override-binding
+-- CLICKS (named "DOWN", "SHIFT-DOWN", ...) and typed characters through OnChar.
+-- On Windows OnChar carries printable characters only. The macOS client also
+-- passes the operating system's stand-in characters for non-printing keys
+-- through OnChar: Apple's private-use codepoints U+F700 (up), U+F701 (down),
+-- U+F702 (left), U+F703 (right), U+F704.. (F1..), U+F727.. (Insert, Delete,
+-- Home, End, PageUp, PageDown) up to U+F747. A modifier does not change the
+-- character, so Shift+Down sends the same U+F701. Every arrow press on a Mac
+-- therefore reaches a frame TWICE: once as the bound click, once as a phantom
+-- OnChar character. Anything that treats "any key" as a signal misfires on the
+-- phantom: the double-tap timer saw two presses per press (every Empty entry
+-- was skipped), the reader-close rule shut the tooltip reader after each
+-- Shift+Down, and the typing echo was handed an unspeakable character per
+-- arrow press. Diagnosed and first guarded by Yennesta (PR #19); the guards
+-- below are the positive-list form of that fix.
+--
+-- Whole Basic Multilingual Plane private-use area, U+E000..U+F8FF: in UTF-8
+-- that is lead byte 0xEE (U+E000..U+EFFF) or 0xEF with a second byte up to
+-- 0xA3 (U+F000..U+F8FF). Nothing a player can TYPE lives there.
+function SkuOptions:IsPrivateUseChar(aChar)
+	if type(aChar) ~= "string" then return false end
+	local b1, b2 = string.byte(aChar, 1, 2)
+	if b1 == 238 then return true end
+	if b1 == 239 and b2 and b2 <= 163 then return true end
+	return false
+end
+
+-- The menu's OnChar exists for ONE purpose: type-ahead. Only the characters the
+-- type-ahead tables know are forwarded into the key dispatcher; everything else
+-- is dropped before it can stamp the double-tap timer or close the reader.
+local tMenuTypeAheadChars
+function SkuOptions:IsMenuTypeAheadChar(aChar)
+	if type(aChar) ~= "string" then return false end
+	if not tMenuTypeAheadChars then
+		tMenuTypeAheadChars = {}
+		for _, v in ipairs(SkuOptions.MenuAccessKeysChars) do tMenuTypeAheadChars[v] = true end
+		for _, v in ipairs(SkuOptions.MenuAccessKeysNumbers) do tMenuTypeAheadChars[v] = true end
+	end
+	return tMenuTypeAheadChars[aChar] == true
+end
+
 local ssplit = string.split
 
 -- Explicit cursor-movement keys in the menu key dispatcher. Used to treat a
@@ -2916,9 +2957,18 @@ function SkuOptions:CreateMenuFrame()
 	tFrame:SetPoint("TOP", _G["OnSkuOptionsMain"], "BOTTOM", 0, 0)
 
 	local OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
+	local OnSkuOptionsMainLastKey
 
 	tFrame:SetScript("OnChar", function(self, aKey, aB)
 		--dprint("OnSkuOptionsMainOption1 OnChar", aKey)
+		-- Positive list: only type-ahead characters go on to the dispatcher. This
+		-- is what keeps the macOS phantom characters for arrow/F/Page keys out
+		-- (see SkuOptions:IsPrivateUseChar). The bytes of a dropped character go
+		-- to the debug ring so a tester can prove the phantom exists on their client.
+		if not SkuOptions:IsMenuTypeAheadChar(aKey) then
+			dprint("OnSkuOptionsMainOption1 OnChar dropped", string.byte(tostring(aKey), 1, 4))
+			return
+		end
 		OnSkuOptionsMainOption1:GetScript("OnClick")(self, aKey)
 	end)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
@@ -3002,10 +3052,13 @@ function SkuOptions:CreateMenuFrame()
 
 		local tIsDoubleDown = false
 		local tSecondTime = GetTimePreciseSec() - OnSkuOptionsMainOnKeyPressTimer
-		if tSecondTime < 0.25 then
+		-- A double tap is the SAME key twice within the window. Two different keys
+		-- in quick succession (Up then Down, a letter then an arrow) are not one.
+		if tSecondTime < 0.25 and aKey == OnSkuOptionsMainLastKey then
 			tIsDoubleDown = true
 		end
 		OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
+		OnSkuOptionsMainLastKey = aKey
 		-- Combat mirror lockstep: the double-tap "skip empty entries" jumps the cursor
 		-- several steps on one keypress, which would desync the secure bags mirror (it moves
 		-- one step per key). Disable it while the combat menu is active so 1 key = 1 move.
@@ -7930,6 +7983,10 @@ function SkuOptions:AttachInputEcho(aEditBox, aOptions)
 	tApplyArrowMode(aEditBox, "attach")
 
 	aEditBox:HookScript("OnChar", function(self, aChar)
+		-- macOS hands the arrow/F/Page stand-in characters to OnChar as well
+		-- (SkuOptions:IsPrivateUseChar). They are not input; the arrows are
+		-- announced by OnKeyDown below.
+		if SkuOptions:IsPrivateUseChar(aChar) then return end
 		tSpeakInput(aChar == " " and Sku.deEn("Leerzeichen", "Space", "Espace") or aChar, true)
 	end)
 
@@ -8080,6 +8137,8 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 		-- (SetScript weiter unten, tEditBoxOnKeyDownRead), weil dort ein etwaiger fremder
 		-- OnKeyDown-Handler geraeumt wird; ein HookScript hier wuerde davon mitgeloescht.
 		eb:HookScript("OnChar", function(self, aChar)
+			-- macOS phantom characters for non-printing keys, see SkuOptions:IsPrivateUseChar.
+			if SkuOptions:IsPrivateUseChar(aChar) then return end
 			tSpeakInput(aChar == " " and Sku.deEn("Leerzeichen", "Space", "Espace") or aChar, true)
 		end)
 
