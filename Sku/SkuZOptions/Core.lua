@@ -7760,8 +7760,20 @@ local function tEchoStop(aFinalText, aCancelOnlyIfRecent)
 	-- danach vom Server zurueckkommt. Einen Rueckstau GIBT es ohnehin nur, wenn
 	-- eben noch wirklich Echo lief -- daran wird der Abbruch hier gebunden.
 	local tDoCancel = not (SkuSettings and SkuSettings:Sub("SkuOptions") and SkuSettings:Sub("SkuOptions").keyboardEcho == false)
-	if tDoCancel and aCancelOnlyIfRecent == true and (GetTime() - tEchoLastAt) > 1.0 then
-		tDoCancel = false
+	-- [v43.4] The soft path no longer guesses by age. It asks the voice layer
+	-- whether the utterance in flight IS the echo (a typed character or the
+	-- whole-line readback of a recalled line): then it is cut however long ago
+	-- it started -- a slow voice still reading a recalled line two seconds
+	-- later was the hole in the one-second rule. If something else has been
+	-- handed since, above all the server's readback of the message just sent,
+	-- nothing is stopped: that readback can never be the one that gets cut.
+	if tDoCancel and aCancelOnlyIfRecent == true then
+		if SkuOptions.Voice.IsEchoInFlight then
+			local tOk, tInFlight = pcall(function() return SkuOptions.Voice:IsEchoInFlight() end)
+			tDoCancel = tOk and tInFlight == true
+		elseif (GetTime() - tEchoLastAt) > 1.0 then
+			tDoCancel = false
+		end
 	end
 	if tDoCancel then
 		if SkuOptions.Voice.CancelBttsOutput then
