@@ -4,6 +4,146 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.4
+
+    Ueberblick
+
+        Neu
+            Pawn: unter Addons > Pawn stehen Pawns Tooltip-Schalter, und Sku-Tooltips nennen die Verbesserung in Prozent, den Unterschied je Attribut und fehlende Attribute. Von Yennesta.
+            Neue Taste "damage meter oeffnen" springt direkt zu den Details-Berichten; die Tastenbelegung hat eine eigene Gruppe "Addons".
+
+        Aenderungen
+            Chat: beim Absenden oder Abbrechen wird ein noch laufendes Tastatur-Echo sicher beendet, die Ansage der gesendeten Nachricht aber nie angeschnitten.
+            Ansagen eines Menues oder Fensters enden mit dem Fenster: was beim Schliessen noch wartet, wird verworfen, was gerade laeuft, gestoppt.
+
+        Fehlerbehebungen
+            Mac: Pfeil-, Funktions- und Bild-Tasten kamen doppelt an - leere Taschen- und Leistenplaetze wurden uebersprungen, der Tooltip-Leser sprang bei jedem Umschalt+Pfeil runter an den Anfang.
+            Schlachtzug-Lebensmonitor: eine von Hand zugewiesene Rolle landete beim falschen Spieler, und ohne Rollenerkennung blieb der Monitor stumm.
+            Haendler: der Rueckkauf-Reiter las und kaufte den Gegenstand mit derselben Nummer aus dem normalen Angebot.
+            Ausruestungsvergleich in Tooltips fehlte manchmal - der Scan-Tooltip hatte seinen Besitzer verloren.
+            Tooltip-Leser: am Ende eines Textes, etwa in der Freundesliste, wechselte Umschalt+Pfeil runter zwischen Stille und der letzten Zeile.
+            Per Taste angeforderte Ansagen (Zielleben, Entfernung, Ziel ...) blieben beim zweiten Druck innerhalb einer Sekunde stumm.
+
+    Mac: Pfeil- und Funktionstasten kamen doppelt an
+        Einfach: Auf dem Mac wurden beim schnellen Blaettern leere Taschen- und Aktionsleistenplaetze
+            uebersprungen, und der Tooltip-Leser fing bei jedem Umschalt+Pfeil runter wieder von vorn
+            an. Beides ist behoben; Windows war nie betroffen.
+        Technisch: Der Mac-Client reicht fuer Tasten ohne Zeichen - Pfeile, F-Tasten, Bild auf und ab,
+            Pos1, Ende, Einfuegen, Entfernen - die Platzhalterzeichen des Betriebssystems aus dem
+            privaten Unicode-Bereich (U+F700 aufwaerts) an OnChar durch; Windows loest fuer diese
+            Tasten kein OnChar aus. Jeder Pfeildruck erreichte das Menue deshalb zweimal: als
+            gebundene Taste und als Phantomzeichen, das ungeprueft in die Tastenauswertung
+            weitergereicht wurde. Dort zaehlte der Doppeltipp-Zaehler zwei Anschlaege je Druck
+            (jeder Eintrag "Leer" uebersprungen), und die Regel "jede andere Taste schliesst den
+            Leser" schloss den Tooltip-Leser nach jedem Umschalt+Pfeil runter. Das Menue reicht aus
+            OnChar jetzt nur noch Zeichen weiter, die die Buchstabensuche kennt (Positivliste), die
+            beiden Tastatur-Echo-Hooks verwerfen den ganzen privaten Bereich U+E000 bis U+F8FF,
+            und ein Doppeltipp verlangt jetzt dieselbe Taste zweimal. Verworfene Zeichen landen
+            mit ihren Bytes im Debug-Ring, damit ein Tester das Phantom auf seinem Client belegen
+            kann. Ursache erkannt und zuerst abgefangen von Yennesta (PR 19).
+
+    Schlachtzug-Lebensmonitor: Rollen beim richtigen Spieler
+        Einfach: Wer im Schlachtzug einem Spieler von Hand eine Rolle zuwies, traf oft einen anderen,
+            sobald die Gruppenreihenfolge von der Beitrittsreihenfolge abwich. Und ohne
+            automatische Rollenerkennung blieb der Monitor fuer diesen Spieler ganz stumm.
+        Technisch: Das Zuweisungsmenue zaehlt die Mitglieder in hoerbarer, nach Gruppen sortierter
+            Nummer und speicherte die Rolle unter dieser Nummer; die Lebensauswertung las sie
+            ueber den echten raidN-Index. Das Menue behaelt seine Nummerierung und merkt sich je
+            Eintrag den echten Index, unter dem gespeichert und gelesen wird. Ohne Rolle (SkuAuras
+            aus, oder keine erkannt) blieb die Rollen-ID nil, und UNIT_HEALTH griff damit in die
+            Filtertabelle - Abbruch der ganzen Auswertung. Die Rollenaufloesung ist jetzt eine
+            Funktion: Zuweisung, dann SkuAuras, sonst der Korb "Keine Rolle". Von Yennesta.
+
+    Haendler: Rueckkauf kauft wieder das Verkaufte zurueck
+        Einfach: Im Rueckkauf-Reiter nannte Sku den falschen Gegenstand und kaufte beim Bestaetigen
+            das Angebot des Haendlers mit derselben Nummer statt des verkauften Stuecks.
+        Technisch: Der Rueckkauf-Reiter benutzt dieselben Schaltflaechen und Nummern wie das
+            normale Angebot. Sku las sie mit SetMerchantItem und kaufte mit BuyMerchantItem, beides
+            bezogen auf das Angebot. Bei aktivem Rueckkauf-Reiter laeuft die Abfrage jetzt ueber
+            SetBuybackItem und der Kauf ueber BuybackItem; ein Rueckkauf ist ein einzelner Stapel,
+            daher gibt es dort kein Mengenuntermenue. Von Yennesta.
+
+    Pawn: Verbesserung und Wertunterschiede im Tooltip
+        Einfach: Ist Pawn installiert, nennt der Sku-Tooltip eines Gegenstands direkt unter dem
+            Namen die Verbesserung in Prozent samt Skala, haengt an jede Attributzeile den
+            Unterschied zum angelegten Gegenstand an (gesprochen "plus" oder "minus", Schaden pro
+            Sekunde mit einer Nachkommastelle) und listet Attribute, die der angelegte Gegenstand
+            hat und der neue nicht. Unter Addons > Pawn stehen die Schalter "Pawn in
+            Sku-Tooltips" sowie Pawns eigene Tooltip-Einstellungen; ohne Pawn steht dort nur der
+            Hinweis, dass es fehlt. Von Yennesta.
+        Technisch: Neue Datei SkuCore/pawnIntegration.lua; alle Pawn-Aufrufe sind abgesichert und
+            der Tooltip-Durchlauf laeuft in pcall, ohne Pawn wird nichts angehaengt. Gegenueber dem
+            Beitrag: der Schalter ist eine Vorgabe im SkuCore-Einstellungsschema (an), der
+            Zeilenabgleich ist unabhaengig von Gross- und Kleinschreibung (auf englischen Clients
+            heisst die Statistik "Damage Per Second", die Tooltip-Zeile "damage per second" - die
+            DPS-Differenz fiel dort stumm weg), und ein Fehler im Durchlauf steht im Debug-Ring.
+
+    Taste "damage meter oeffnen" und Tastengruppe "Addons"
+        Einfach: Eine neue, standardmaessig unbelegte Taste springt direkt zu Addons > Damage Meter >
+            Berichte. In den Tastenbelegungen gibt es jetzt die Gruppe "Addons" mit den Tasten fuer
+            AtlasLoot und das Damage Meter.
+        Technisch: Gebunden und ausgewertet wie die Dungeon-Browser-Taste; der Menuepfad laeuft
+            ueber Knoten-IDs (Addons, DamageMeter, Reports) und damit in jeder Sprache. Die
+            Berichtseintraege liefern ihren Text erst beim Lesen (Funktion statt Tabelle, wie die
+            Auktionshaus-Eintraege): frische Details-Daten, keine Kosten fuer ungelesene Kaempfe,
+            und es funktioniert auch, wenn der Cursor per Taste auf einem Eintrag landet, ohne
+            OnEnter zu durchlaufen. Taste und IDs von Yennesta.
+
+    Ausruestungsvergleich fehlte manchmal
+        Einfach: Bei Umschalt+Pfeil runter auf einem Gegenstand fehlte gelegentlich der Abschnitt
+            "aktuell angelegter Gegenstand", scheinbar zufaellig. Er ist jetzt immer da.
+        Technisch: Sku liest Tooltips ueber einen gemeinsamen, unsichtbaren GameTooltip. Ein
+            GameTooltip fuellt seine Zeilen nur, solange er einen Besitzer hat, und verliert ihn von
+            selbst: ein Aufruf ohne Inhalt (leerer Leisten-, Taschen- oder Ausruestungsplatz, noch
+            nicht geladener Gegenstand) blendet ihn aus und loescht den Besitzer. Danach lieferte
+            jede Abfrage still nichts, bis ein anderer Weg zufaellig SetOwner rief. Drei Stellen
+            hatten das bereits fuer sich behoben, was den Fehler zufaellig wirken liess. Alle 18
+            Abfragestellen setzen den Besitzer jetzt vor jedem Lesen ueber eine Hilfsfunktion neu.
+
+    Tooltip-Leser: das Ende eines Textes
+        Einfach: In der Freundesliste (und ueberall sonst) blieb der Leser mit Umschalt+Pfeil runter
+            nicht auf der letzten Zeile stehen, sondern wechselte zwischen Stille und der letzten
+            Zeile - wie eine Endlosschleife. Er liest die letzte Zeile jetzt bei jedem Druck.
+        Technisch: Am Textende reicht der Leser dieselbe Zeile erneut an die Sprachebene. Deren
+            Dublettensperre aus v43.2 verwirft eine innerhalb einer Sekunde identische Zeile, sofern
+            sie nicht als tastenausgeloest markiert ist - und der Leser markierte nie. Jede Zeile
+            des Lesers, auch Links, traegt die Markierung jetzt.
+
+    Per Taste angeforderte Ansagen bleiben nicht mehr stumm
+        Einfach: Zielleben, Entfernung, Ziel-Ansage, Wuerfelinfo, Zum Beacon drehen, Wegpunkt-Tasten
+            und aehnliche: ein zweiter Druck innerhalb einer Sekunde mit derselben Antwort blieb
+            stumm. Jetzt kommt die Antwort bei jedem Druck.
+        Technisch: Dieselbe Dublettensperre; markiert hatte bisher nur die Tastenauswertung des
+            Menues. Statt jede Ansage einzeln zu markieren, merken sich die drei Tastenverteiler
+            (Hauptfenster, SkuCore-Steuerrahmen, SkuNav) den Frame ihres Aufrufs, und die
+            Sprachebene wertet jede Uebergabe innerhalb von 0,1 Sekunden danach als
+            tastenausgeloest. Der Nachschlag eines Menue-Neuaufbaus kommt aus einem Timer und
+            spaeteren Frames und faellt nicht in dieses Fenster; die Tastenauswertung des Menues
+            markiert weiter ausdruecklich.
+
+    Sprachbereiche: Ansagen enden mit ihrem Fenster
+        Einfach: Zwei Faelle mit langsamen SAPI-Stimmen: Nach Absenden oder Abbrechen im Chat las
+            die Stimme eine mit Pfeil hoch geholte Zeile zu Ende, und nach dreimal Lernen beim
+            Lehrer und Escape kam der Lehrer noch dreimal. Beides ist vorbei: das Chat-Echo wird
+            beim Schliessen abgebrochen - die Ansage der gesendeten Nachricht aber nie -, und was
+            ein Menue oder Fenster beim Schliessen noch zu sagen hatte, wird verworfen oder
+            gestoppt. Ansagen aus Kampf, Chat oder Navigation sind davon nicht betroffen.
+        Technisch: Ein Tastendruck allein bricht weiterhin nichts ab (Regel aus v43.2), und auf der
+            Screenreader-Bruecke ist das Ende einer Aeusserung nicht feststellbar, weil FINISHED im
+            Uebergabe-Frame kommt - die Buchfuehrung "spricht gerade etwas" ist dort immer leer,
+            weshalb selbst der Stop beim Menue-Schliessen als ueberfluessig unterdrueckt wurde.
+            Bekannt ist aber genau, was zuletzt uebergeben wurde und fuer wen. Eine Zeile kann jetzt
+            einen Bereich tragen ("menu" fuer Menueansagen, "echo" fuer die Tippspur), und
+            SkuVoice:EndScope verwirft beim Ende des Bereichs dessen wartende Zeilen und stoppt die
+            Stimme nur, wenn die laufende Aeusserung dazugehoert. Gerufen wird das beim
+            Menue-Schliessen und im Hide-Hook jedes beobachteten Fensters, also auch bei Escape im
+            Spiel. Der weiche Stop des Chatfelds fragt statt der Ein-Sekunden-Regel jetzt
+            SkuVoice:IsEchoInFlight: Echo wird abgebrochen, egal wie lange es laeuft; wurde seither
+            etwas anderes uebergeben - vor allem die Antwort des Servers auf die gesendete
+            Nachricht -, wird nichts gestoppt. Yennesta hatte in PR 19 den unbedingten Abbruch
+            vorgeschlagen; das hier ist die gezielte Fassung davon.
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.3
 
     Ueberblick
