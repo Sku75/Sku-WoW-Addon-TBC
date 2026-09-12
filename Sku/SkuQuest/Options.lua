@@ -2606,7 +2606,11 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
 						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(tQuestId)
 					end
-					CreateQuestSubmenu(tNewSubMenuEntry2, tQuestId)
+					-- [v43.5] lazy wie in "Alle" -- siehe den Kommentar dort
+					tNewSubMenuEntry2.dynamic = true
+					tNewSubMenuEntry2.BuildChildren = function(self)
+						CreateQuestSubmenu(self, tQuestId)
+					end
 				end
 			else
 				local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
@@ -2648,8 +2652,17 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
 						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(i, tZoneId)
 					end
-					if not CreateQuestSubmenu(tNewSubMenuEntry2, i) then
-						--self.dynamic = false
+					-- [v43.5] Das Quest-Untermenue LAZY bauen, wie in "Aktuelle Quests":
+					-- diese Liste hat mehrere tausend Eintraege, und CreateQuestSubmenu
+					-- loest seit v43.2 (GetTriggerEndWps, geometrischer Fallback) fuer
+					-- jede triggerEnd-Quest den naechsten Routen-Wegpunkt ueber einen
+					-- kompletten Kontinent-Scan des Wegpunkt-Caches auf. Eager gebaut
+					-- waren das ~170 Kontinent-Scans pro Oeffnen -- sekundenlanger
+					-- Haenger. Gebaut wird jetzt nur die EINE Quest, in die der Nutzer
+					-- wirklich hineingeht.
+					tNewSubMenuEntry2.dynamic = true
+					tNewSubMenuEntry2.BuildChildren = function(self)
+						CreateQuestSubmenu(self, i)
 					end
 				end
 			end
@@ -2781,7 +2794,11 @@ function SkuQuest:MenuBuilder(aParentEntry)
 				tEntry.OnEnter = function(self, aValue, aName)
 					SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(tQuestId)
 				end
-				CreateQuestSubmenu(tEntry, tQuestId)
+				-- [v43.5] lazy wie in "Questdatenbank, Alle" -- siehe den Kommentar dort
+				tEntry.dynamic = true
+				tEntry.BuildChildren = function(self)
+					CreateQuestSubmenu(self, tQuestId)
+				end
 			end
 			end }
 	end
