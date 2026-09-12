@@ -2569,6 +2569,13 @@ function SkuOptions:CreateMainFrame()
 				-- being spoken when the menu was closed) is stopped and cleared before
 				-- "menu closed" is spoken. Was false, which left the stale announcement
 				-- to play alongside/after the close line. Symmetric with the open branch.
+				-- [v43.4] End the "menu" speech scope: queued entry names are dropped and
+				-- an entry name in flight is stopped, by scope, not by the "is anything
+				-- speaking" bookkeeping the queuereset below relies on -- which on the
+				-- screen-reader bridge is always empty (FINISHED lands in the handover
+				-- frame), so the reset stop was suppressed there and a slow voice kept
+				-- announcing the closed menu.
+				if SkuOptions.Voice.EndScope then pcall(function() SkuOptions.Voice:EndScope("menu") end) end
 				SkuOptions.Voice:OutputStringBTtts(L["Menu;closed"], true, true, 0.3, true, nil, nil, 2)
 				pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarHide then SkuCore.VisualAids:VisualAidsLineBarHide() end end)
 				SkuCore.Debug("", L["Menu;closed"], true)
@@ -4952,7 +4959,10 @@ end
 ---              einer Taste, die der Nutzer GERADE gedrueckt hat. Nimmt sie von
 ---              der Dublettensperre der Sprachebene aus -- siehe
 ---              mSkuVoiceQueueBTTS_UserAction in SkuVoice-1.0.
-function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoNotOverride, engine, aVocalizeAsIs, aUserAction)
+---@param aScope string|nil [v43.4] Sprachbereich, dem die Zeile gehoert ("menu"):
+---              beim Ende des Bereichs (Menue zu) wird sie aus der Warteschlange
+---              genommen bzw. abgebrochen -- siehe SkuVoice:EndScope.
+function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoNotOverride, engine, aVocalizeAsIs, aUserAction, aScope)
 	--print("--VocalizeMultipartString", aStr, aReset, aWait, aDuration, aDoNotOverride, engine, aVocalizeAsIs)
 
 	-- don't vocalize object numbers
@@ -4964,7 +4974,7 @@ function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoN
 	-- und aVoice: aUserAction ist der 16. Parameter, und ausgeschrieben werden
 	-- statt in die Tabellenform gewechselt, damit an dieser einen Zeile -- durch
 	-- die JEDE Menueansage laeuft -- sonst nichts anders ist als vorher.
-	SkuOptions.Voice:OutputStringBTtts(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, true, 2, aVocalizeAsIs, nil, nil, nil, nil, nil, aUserAction)
+	SkuOptions.Voice:OutputStringBTtts(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, true, 2, aVocalizeAsIs, nil, nil, nil, nil, nil, aUserAction, aScope)
 	return
 	--end
 --[[
@@ -5173,7 +5183,11 @@ function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString, aUserAction
 		local tBagSuppressed = Sku and Sku.tBagAnnounceSuppress
 			and GetTime() < Sku.tBagAnnounceSuppress and not Sku.tBagAnnounceForce
 		if not tBagSuppressed then
-			SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, 2, SkuOptions.currentMenuPosition.vocalizeAsIs, aUserAction)
+			-- Scope "menu": an entry name still waiting when the menu closes is
+			-- dropped, and one in flight is stopped (SkuVoice:EndScope in the close
+			-- path). Three purchases at a trainer no longer play three window
+			-- announcements into a closed window on a slow voice.
+			SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, 2, SkuOptions.currentMenuPosition.vocalizeAsIs, aUserAction, "menu")
 			pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarSet then SkuCore.VisualAids:VisualAidsLineBarSet(tFinalString) end end)
 		end
 	end

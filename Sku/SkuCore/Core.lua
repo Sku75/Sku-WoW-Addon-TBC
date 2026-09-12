@@ -4360,6 +4360,12 @@ end
 local tGenericCloseBookkeepingFlag = false
 function SkuCore:GENERIC_OnClose(self)
 	if SkuCore._suppressGenericFrameHooks == true then return end
+	-- [v43.4] A tracked window just hid: its menu announcements are void. End the
+	-- "menu" speech scope (SkuVoice:EndScope) so announcements still queued are
+	-- dropped and one in flight is stopped -- "buy three skills, press Escape,
+	-- hear the trainer announced three more times" on a slow voice. Untagged
+	-- speech (combat, chat, navigation) is not touched.
+	if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.EndScope then pcall(function() SkuOptions.Voice:EndScope("menu") end) end
 	--print("GENERIC_OnClose", _G["AuctionFrame"]:IsShown())
 	-- [43.2] A tracked window just hid, so any menu descend still waiting to be
 	-- replayed (SkuCore.openMenuAfter*) is void. This MUST happen here, on the
