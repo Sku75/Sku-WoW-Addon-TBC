@@ -293,6 +293,32 @@ hier streichen. (Angelegt 2026-09-12; neueste zuerst.)
 
 ## Beobachtung (auf Anfrage nachprüfen)
 
+- **v43.5 Sprachausgabe: einzelne Zeilen über die NVDA/SAPI-Brücke zufällig
+  stumm — Ursache gefunden, Fix ausgeliefert, seither nicht wieder aufgetreten.**
+  Anfrage: "check the silent line monitor". Symptom: beim schnellen Gehen durch
+  eine Liste (z.B. Ausrüstung) blieb eine einzelne Zeile stumm — im Protokoll
+  vom 2026-09-12 "nagakampfhandschuhe (rar)" sechs Anschläge in Folge (IDs
+  4812..4823 lückenlos, queuereset + SpeakText + STARTED + FINISHED sauber,
+  kein DUP-SUPPRESS), während die Nachbarn sprachen; Ton kam, nur die
+  Sprachausgabe fehlte, überall in Sku möglich. Ursache: der Audio-Cache des
+  Clients überlebt `/reload` (Utterance-IDs laufen über den Reload durch), die
+  Lua-Zähler des Cache-Busters (`BttsCacheBust`, `Libs/SkuVoice-1.0`) nicht —
+  nach dem Reload wurde die Zeile neu geseedet (Läufe 56..61) und landete in
+  einem vor dem Reload schon gerenderten Bereich; jede Wiederholung spielte die
+  gecachte (stumme) Variante ab, bis der Zähler den Bereich verließ. Fix
+  `04dbdd6`: Zähler + Seed liegen in `SkuOptionsDB.global.bttsCacheBust`
+  (`SkuVoice:SetCacheBustStore` direkt nach `AceDB:New`), Raum pro Text 512
+  statt 64 (nachlaufende NBSP 1..64, führende NBSP 1..8 als hoher Teil).
+  Stand 2026-09-12 nach dem Fix: Reporter hat das Problem bisher nicht wieder
+  gehabt. Nachprüfen, falls es wieder auftritt: `py -3
+  dev/rework-docs/_dbgtail.py 300 BTTS` — eine saubere
+  SpeakText/STARTED/FINISHED-Kette bei Stille hieße, der Cache schlüsselt auf
+  etwas anderes als den gepolsterten Text; dann die Sonde `/run
+  C_VoiceChat.SpeakText(1,"probe kirsche",6,90)`, `/reload`, dieselbe Zeile
+  erneut (zweites Mal stumm = Cache überlebt den Reload). Nicht daran rütteln:
+  der Zustand gilt dem CLIENT-Cache (lebt mindestens 44 min, vermutlich den
+  ganzen Client-Lauf), nicht dem 1-s-Dublettenwächter von Sku.
+
 - **SkuMapper 5.0 Abgabe-Workflow — Tool-Seite verifiziert, Spiel-Seite
   UNGETESTET.** Anfrage: "check the mapper workflow monitor". Neu (2026-08-25):
   nummerierte Karten (`dev/mapper/seeds.json`, Karte 1 = v43.0-Stand),
