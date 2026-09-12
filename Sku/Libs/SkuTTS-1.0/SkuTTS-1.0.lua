@@ -362,7 +362,14 @@ function SkuTTS:ReadLineNumber(aSectionNumber, aLineNumber, aNoReset)
 				tCleanOutput = string.gsub(tCleanOutput, "|[^%]]+%]%]", "")
 				tCleanOutput = string.gsub(tCleanOutput, "%]%]", "")
 
-					SkuOptions.Voice:OutputStringBTtts(tCleanOutput, aNoReset, true, nil, nil, false, nil, 1)
+					-- Every line the reader speaks is the direct result of a key the user
+					-- just pressed, so it carries the user-action tag. Without it the
+					-- v43.2 back-to-back duplicate guard in SkuVoice swallowed the re-read
+					-- of the LAST line: at the end of a text NextLine stays on that line
+					-- and hands the identical string again, and every repeat inside the
+					-- one-second window went silent -- heard as "an empty line, then the
+					-- last line again", an endless loop at the end of a friend's entry.
+					SkuOptions.Voice:OutputStringBTtts(tCleanOutput, {overwrite = aNoReset, wait = true, isMulti = false, engine = 1, userAction = true})
 			end
 		end
 	end
