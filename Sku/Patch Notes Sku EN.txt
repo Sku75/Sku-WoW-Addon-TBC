@@ -13,6 +13,7 @@ Changes in Sku v43.5
             Chat: after opening the chat line with "/" the old channel was announced (e.g. "Tell Kai"), although only the command typed next decides the channel.
             Speech: single lines randomly stayed silent over the NVDA/SAPI bridge (e.g. one item in the equipment list) while their neighbours were spoken.
             Quest: "Raene's Cleansing" (Iron Pommel, Ashenvale) had no quest target; it now points at the Rusty Chest the Rotting Slimes leave behind.
+            Speech: typed characters and cancelled announcements were spoken late - letters from a long-closed chat line turned up seconds later in a different menu.
 
     Quest database: opening the quest lists froze the game
         Simple: Opening the "All" list under Quest > Quest database had caused a freeze of several
@@ -75,6 +76,30 @@ Changes in Sku v43.5
             (TBC and Era) now adds Wowhead's 44 chest positions in Ashenvale (zone 331, roughly
             68-78 / 68-80); that is the same patch as the spawns of the Rotting Slime (3928) that
             leaves the chest.
+
+    Speech: typed characters and cancelled announcements were spoken late
+        Simple: If you typed a longer message and then closed the chat line, you kept hearing the
+            letters afterwards - one by one, while you had long since moved on to another menu; in
+            one capture for almost a minute. The same applied to a cancelled announcement: after
+            "Cancelled" a remnant of the old line followed, for instance a distance readout from the
+            waypoint menu you had just closed. Whatever is still pending when you close or cancel is
+            now discarded. Typing echo stays complete - no letter is lost.
+        Technically: The client accepts every SpeakText without limit but plays them strictly one at
+            a time, and C_VoiceChat.StopSpeakingText only cancels the utterance that is PLAYING -
+            there is no queue purge like SAPI's PurgeBeforeSpeak. Anything already handed over is
+            therefore unrecallable. The typing lane used to hand over one utterance per keystroke,
+            three to four a second, while the client manages about one: a typed line of 104
+            characters parked around 80 utterances inside the client, which then dribbled out one
+            per second. For the same reason CancelBttsOutput and EndScope had no effect - they empty
+            Sku's own queue, which the characters were never in (85 of 93 EndScope calls in one
+            capture dropped nothing). The characters now wait inside Sku, only one goes to the
+            client at a time, and the next only on its PLAYBACK_FINISHED - the moment the client
+            will accept another utterance at all (every STARTED in the capture coincides with a
+            FINISHED). Nothing is ever handed over that is not yet playing, so a cancel reaches
+            everything. A short kill window covers the remainder: after a hard cancel nothing is
+            handed over and any utterance that starts regardless is stopped at once. This mirrors
+            NVDA's structure, which likewise keeps the queue itself and gives the voice one
+            utterance at a time.
 
 
 -------------------------------------------------------------------------------------------------------

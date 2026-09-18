@@ -328,19 +328,158 @@ local tBttsAuditLostAfter = 0.5
 -- queue cost it ~0.2s (batching + post-stop hold, serialized) and fed it to a
 -- dedup guard that swallowed every doubled letter.
 --
--- So it gets its own single slot, drained by the same OnUpdate:
---   * ONE slot, newest wins -- a held key or a paste coalesces at frame
---     resolution instead of producing hundreds of utterances;
+-- So it gets its own lane, drained by the same OnUpdate:
 --   * no queuereset, so consecutive characters never stop each other. The stop
 --     is issued ONCE, when typing starts and something else is still audible;
 --   * never writes tLastHandedText, so the duplicate guard cannot see it.
-local tEchoSlotText = nil
+--
+-- [v43.5] It is a QUEUE with ONE utterance outstanding -- NOT the single
+-- overwriting slot it was in v43.2/v43.4. Why, measured from a user capture on a
+-- real SAPI voice (Era, v43.4, reported as "TTS speaks random half sentences of
+-- closed stuff while I am in other menus"):
+--
+--   The client accepts every SpeakText without limit and plays them one at a
+--   time, and C_VoiceChat.StopSpeakingText() cancels only the utterance that is
+--   PLAYING -- it is NOT SAPI's PurgeBeforeSpeak. Anything already accepted can
+--   never be taken back. The old slot released a character on the NEXT FRAME, so
+--   typing at 3-4 chars/s handed the client 3-4 utterances a second while it
+--   could finish about one. Captured bursts of 104, 102 and 67 characters parked
+--   ~80 utterances INSIDE the client; they then started one per second for the
+--   next 50+ seconds, long after the chat box had closed, interleaved with menu
+--   announcements. The utterance ids prove it: ids handed at 15:20:17 STARTED at
+--   15:20:22, :28 and :30 -- after later ids had already come and gone -- and six
+--   StopSpeakingText calls in between removed none of them.
+--
+--   That is also why CancelBttsOutput and EndScope looked broken. They delete
+--   mSkuVoiceQueueBTTS correctly, but the characters were never in it: the old
+--   slot handed them straight over. 85 of 93 EndScope calls in that capture
+--   logged dropped=0, and the hard cancel on the send keypress removed 1 of ~28.
+--   The cleanup was always right; the HANDOVER POLICY defeated it.
+--
+-- This is NVDA's structure (checked against nvaccess/nvda, 2026-09-18):
+-- speakTypedCharacters -> speakSpelling at Spri.NORMAL with NO cancel in that
+-- path, so every letter is spoken and nothing is overwritten; speech/manager.py
+-- hands the synth driver exactly ONE utterance at a time and waits for its
+-- index/done callback; and because the backlog stays in NVDA's OWN queue,
+-- cancelSpeech can still throw it away (the SAPI5 driver's cancel is
+-- Speak(None, Async | PurgeBeforeSpeak) -- a real purge, which WoW does not give
+-- us). Hold the queue yourself, feed one at a time, keep the power to discard.
+-- ★Do NOT "simplify" this back to newest-wins: dropping letters was proposed and
+-- rejected, because NVDA speaks every letter even at fast typing and so must Sku.
+local mEchoQueue = {}
 local tEchoSlotDueAt = 0
 local tEchoSlotVoice = nil
--- Handover delay for the echo slot. Not pacing -- it is the same post-stop race
+-- Is an echo utterance handed over and not yet known to have finished?
+-- [v43.5b] ★The completion event MUST be matched to the utterance id, and the
+-- first cut of this got it wrong. Measured on the Anniversary client with a SAPI
+-- voice: the events lag the handover, so `FINISHED 75` arrives AFTER `[k]` was
+-- already handed over as id 76 -- an unmatched "anything finished" gate is
+-- re-opened by the PREVIOUS letter's event and leaks the next one straight into
+-- the client, which is the whole bug back again. Sku does not learn its own
+-- utterance id at handover time, so it takes the id from the next STARTED.
+--   outstanding  = a handover is in flight
+--   id           = its utterance id, once STARTED told us
+--   awaitingId   = handed over, STARTED not seen yet
+--   sawStart     = the matching "Start" bookmark arrived. ★Required before "End"
+--                  is believed: on this client End sometimes precedes Start for
+--                  the same id (seq 125806/125807), so a bare End is not an
+--                  audio-done signal.
+local mEchoGate = { outstanding = false, at = 0, id = nil, awaitingId = false, sawStart = false }
+-- ★The gate is PLAYBACK_FINISHED / FAILED. [v43.5e] It was the "End" bookmark for
+-- one round, on the theory that End marks the audio end (it does -- 0.45 s for a
+-- letter, with FINISHED another 0.53 s behind it) and that gating on FINISHED
+-- would bolt that lag onto every letter as dead air. Both halves were wrong:
+-- the client does not ACCEPT the next utterance until the previous one FINISHES
+-- (every STARTED in the capture lands in the same second as a FINISHED), so an
+-- early release bought no speed at all -- it only parked the letter in the client,
+-- unstarted, where no cancel can reach it. See the bookmark branch in OnEvent.
+-- This TTL is the last resort for when no event arrives at all (a cancelled
+-- utterance reports nothing), so typing can never wedge; it measures SILENCE, and
+-- every event for our id -- STARTED and either bookmark -- restarts it.
+local tEchoOutstandingTtl = 1.0
+-- Runaway guard for a paste or a stuck key, NOT a pacing device: beyond this many
+-- pending characters the OLDEST are dropped, bounding how far behind the lane can
+-- fall. Deliberately generous. Set it huge to disable.
+local tEchoQueueMax = 25
+-- Handover delay for the echo lane. Not pacing -- it is the same post-stop race
 -- as above, and only applies to the FIRST character of a burst (the one that
--- carries a stop). Subsequent characters go out on the next frame.
+-- carries a stop).
 local tEchoHandoverDelay = 0.02
+
+-- [v43.5] Drop everything the typing lane still holds. A character already handed
+-- to the client cannot be recalled; one still in here has not been spoken yet,
+-- which is the whole point of keeping it here. Returns how many were dropped.
+local function EchoQueueClear(aWhy)
+	local tN = #mEchoQueue
+	for x = tN, 1, -1 do
+		mEchoQueue[x] = nil
+	end
+	tEchoSlotVoice = nil
+	if tN > 0 and dprint then
+		dprint("BTTS echo purge", "dropped="..tN, "why="..tostring(aWhy))
+	end
+	return tN
+end
+
+-- [v43.5c] The kill window -- for the ONE utterance a hard cancel cannot reach.
+--
+-- StopSpeakingText cancels the utterance that is PLAYING. The most recently
+-- handed-over one has often not started yet, so the stop misses it entirely and
+-- the client plays it AFTER the confirmation. Proven from the ring, seq
+-- 127447-127460: the waypoint line went out as id 208, Escape ran
+-- EndScope("menu") stopped=true, "menue geschlossen" went out as 209 and STARTED
+-- first, and 208 then started behind it. Sku even logged
+-- "SUPERSEDED cancelled before playback" for 208 -- ★that audit line means "a stop
+-- was issued since this handover", NOT "this utterance died", and it misled the
+-- first two attempts at this bug.
+--
+-- The reporter's own observation is the mechanism: the cancel confirmation always
+-- speaks FIRST, so anything that starts after it is by definition stale. So on a
+-- hard cancel: arm a short window, refuse to hand ANYTHING over while it is armed,
+-- and stop every utterance that dares to start inside it. Because handovers are
+-- blocked, the only thing that CAN start is a pre-cancel utterance -- the window is
+-- safe by construction rather than by guessing ids.
+--
+-- ★Armed by the HARD cancels only (CancelBttsOutput, EndScope's stop) -- never by
+-- the pump's ordinary queuereset, which stops the old line precisely so the NEW
+-- one can follow at once. Arming that would add this delay to every menu keypress.
+-- Never by the echo burst start either: typing must stay snappy, and a leaked
+-- pre-typing announcement is not what this fixes.
+local tKillWindowUntil = 0
+local tKillWindowHits = 0
+local tKillWindowSpan = 0.30
+-- [v43.5d] Hard ceiling on the extending window. The extension is bounded in
+-- theory (a blocked lane can only be fed pre-cancel utterances), but nothing that
+-- can delay ALL speech may depend on a theory -- if the client ever starts
+-- utterances faster than this can drain, the window gives up rather than leave the
+-- user in silence.
+local tKillWindowHardUntil = 0
+local tKillWindowMaxSpan = 1.50
+
+local function ArmKillWindow(aWhy)
+	-- Only needed when a handover has NOT had its STARTED yet -- that is precisely
+	-- the utterance the stop will miss. If the last one already started, the stop
+	-- reached it and arming would just delay the caller's confirmation for nothing.
+	if not tAuditPendingHandover then
+		return
+	end
+	local tNow = GetTime()
+	tKillWindowUntil = tNow + tKillWindowSpan
+	tKillWindowHardUntil = tNow + tKillWindowMaxSpan
+	tKillWindowHits = 0
+	if dprint then dprint("BTTS kill window armed", "why="..tostring(aWhy)) end
+end
+
+-- [v43.5b] Forget the outstanding handover. Only for the paths that just issued a
+-- StopSpeakingText (burst start, hard cancel): whatever was in flight is gone, so
+-- the next character must not wait on an event that will never come.
+local function EchoGateReset()
+	mEchoGate.outstanding = false
+	mEchoGate.at = 0
+	mEchoGate.id = nil
+	mEchoGate.awaitingId = false
+	mEchoGate.sawStart = false
+end
 -- Was the last thing handed to the client a typed character? This is what "am I
 -- still inside the same typing burst?" is decided on -- and therefore whether a
 -- character has to stop anything at all.
@@ -496,6 +635,16 @@ end
 -- boundary words. overlap is omitted (defaults false) so Sku keeps driving its
 -- own sequencing without overlapping speech.
 local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
+	-- [v43.5] A real announcement supersedes typed characters that have not gone
+	-- out yet. Sku's announcements all carry a stop, i.e. they behave like NVDA's
+	-- Spri.NOW, so the consistent answer is NVDA's: purge the pending echo rather
+	-- than let it resume after the line that interrupted it. Without this the
+	-- leftovers bleed into the next menu -- the reported bug. Covered here rather
+	-- than only in the queuereset branch so a handover with aOverwrite false gets
+	-- it too.
+	if not aIsEcho then
+		EchoQueueClear("announce")
+	end
 	if tAuditPendingHandover and tAuditStopSinceHandover then
 		-- Deliberately cancelled before it played. Normal; counted for context
 		-- only. Without a stop in between nothing was cancelled -- the client just
@@ -529,6 +678,14 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	if aIsEcho then tLastHandedScope = "echo" end
 	tBttsStats.handed = tBttsStats.handed + 1
 	if aIsEcho then tBttsStats.echo = tBttsStats.echo + 1 end
+	-- [v43.5e] Diagnostic: how much of a hard cancel's kill window was still open
+	-- when this went out. A NEGATIVE value on the line right after a cancel means
+	-- the window had already expired and the span is the thing to raise; a POSITIVE
+	-- one means a handover slipped past the blockers and the bug is a code path,
+	-- not a duration. Guessing between those two cost a full test round.
+	if dprint and tKillWindowUntil > 0 then
+		dprint("BTTS handover", "killRemain="..string.format("%.2f", tKillWindowUntil - GetTime()))
+	end
 	if dprint then dprint("BTTS SpeakText", aIsEcho and "echo" or "queue",
 		"voice="..tostring(aVoiceIndex - 1), "speed="..tostring(ChatTts().WowTtsSpeed),
 		"vol="..tostring(ChatTts().WowTtsVolume), "text=["..tostring(aText).."]") end
@@ -556,6 +713,17 @@ function SkuVoice:Create()
 	f:SetScript("OnEvent", function(self, aEventName, ...)
 		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FINISHED" or aEventName == "VOICE_CHAT_TTS_PLAYBACK_FAILED" then
 			if dprint then dprint("BTTS event "..aEventName, ...) end
+			-- [v43.5e] ★THE gate for the typing lane (it was the fallback until the
+			-- bookmark branch below was demoted to proof-of-life). FINISHED is the
+			-- moment the client will accept another utterance, so releasing the next
+			-- character here -- and not one event earlier -- is what keeps it out of
+			-- the unstoppable handed-over-but-not-started state.
+			-- ★ONLY for our own utterance: an unmatched clear is re-opened by the
+			-- PREVIOUS letter's lagging event and leaks the next one (see mEchoGate).
+			local tDoneId = ...
+			if mEchoGate.outstanding and mEchoGate.id ~= nil and tDoneId == mEchoGate.id then
+				EchoGateReset()
+			end
 			-- [v43.2] A FAILED utterance never reached the voice, so the duplicate
 			-- guard must not treat it as "the user already heard this".
 			if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FAILED" then
@@ -573,6 +741,38 @@ function SkuVoice:Create()
 			end
 		elseif aEventName == "VOICE_CHAT_TTS_PLAYBACK_STARTED" then
 			if dprint then dprint("BTTS event STARTED", ...) end
+			-- [v43.5c] Inside a hard cancel's kill window nothing has been handed
+			-- over, so whatever just started was handed over BEFORE the cancel and
+			-- the cancel wanted it dead. Cut it off at its first millisecond. See
+			-- ArmKillWindow.
+			if GetTime() < tKillWindowUntil and GetTime() < tKillWindowHardUntil then
+				tKillWindowHits = tKillWindowHits + 1
+				if dprint then dprint("BTTS kill window stop", "id="..tostring((...)), "hits="..tKillWindowHits) end
+				pcall(function() C_VoiceChat.StopSpeakingText() end)
+				-- [v43.5d] ★Each kill EXTENDS the window: killing one parked utterance is
+				-- what lets the NEXT one start, and a second parked line cannot appear
+				-- until the first is out of the way -- which can be well past a fixed
+				-- 0.3 s. So the window closes on SILENCE (no STARTED for tKillWindowSpan),
+				-- not on a deadline set when it was armed. Self-terminating, because a
+				-- window with handovers blocked can only ever be fed pre-cancel
+				-- utterances, and there is a finite number of those.
+				tKillWindowUntil = GetTime() + tKillWindowSpan
+			end
+			-- [v43.5b] This is where the typing lane learns the id of the character
+			-- it just handed over -- the only way to tell its own completion event
+			-- from the previous letter's. See mEchoGate.
+			if mEchoGate.awaitingId then
+				mEchoGate.id = ...
+				mEchoGate.awaitingId = false
+				-- [v43.5d] ★Proof of life: restart the TTL clock. The TTL exists for
+				-- "no event ever came", so it must only measure SILENCE -- measured from
+				-- the handover it was pre-empting the real End bookmark and releasing
+				-- the next character while this one was still speaking (ring seq
+				-- 126825-126833: released, STARTED, Start, "gate ttl", next character,
+				-- and only THEN End). That put two utterances in the client, which is
+				-- what the kill window then could not catch in time.
+				mEchoGate.at = GetTime()
+			end
 			-- [v43.2] Playback of the line we last handed over really began. Only then
 			-- may a back-to-back repeat of it be dropped -- an utterance cancelled
 			-- BEFORE its STARTED (the async-stop race documented in the pump) must
@@ -589,6 +789,43 @@ function SkuVoice:Create()
 			if dprint then dprint("BTTS event SPEAK_TEXT_UPDATE", ...) end
 		elseif aEventName == "VOICE_CHAT_TTS_PLAYBACK_BOOKMARK" then
 			if dprint then dprint("BTTS event BOOKMARK", ...) end
+			-- [v43.5] ★The typing lane's real gate. The 12.0 engine wraps every
+			-- utterance in "Start"/"End" boundary bookmarks, and "End" marks the
+			-- moment the AUDIO ended -- 0.53 s before PLAYBACK_FINISHED reports it
+			-- (measured; constant, not length-dependent). Gating the next character
+			-- on this instead of on FINISHED is what keeps typing echo from growing
+			-- half a second of silence per letter.
+			-- [v43.5b] Only for OUR id, and only once the matching Start has been
+			-- seen: on the Anniversary/SAPI client End sometimes arrives BEFORE Start
+			-- for the same utterance, and believing that one releases the next letter
+			-- before this one has made a sound. FINISHED/FAILED above still backstop.
+			local tMarkId, tMark = ...
+			if mEchoGate.outstanding and mEchoGate.id ~= nil and tMarkId == mEchoGate.id then
+				-- [v43.5e] ★A bookmark is PROOF OF LIFE ONLY -- it must never open the
+				-- gate. Gating on "End" was wrong twice over, and it is what kept the
+				-- last letter leaking past every cancel:
+				--
+				--   1. It bought NO speed. Every single STARTED in the capture lands in
+				--      the same second as a FINISHED (seq 253/254, 269/270, ...): the
+				--      client does not accept the next utterance until the previous one
+				--      FINISHES, whatever the bookmarks say. Releasing at "End" only
+				--      moved the letter from Sku's queue into the client's, ~0.5 s early.
+				--   2. Those ~0.5 s are precisely the handed-over-but-NOT-STARTED state
+				--      that StopSpeakingText cannot touch and the kill window cannot
+				--      catch -- the engine will not start it (so nothing to kill) until
+				--      it is free, and by then the cancel is long over. Seq 257-270: [k]
+				--      released on 354's End, cancelled 0.2 s later, and still spoke a
+				--      full second afterwards, behind "abgebrochen".
+				--
+				-- So release on FINISHED/FAILED below -- the moment the engine is really
+				-- free. The letter then STARTS at once and is always in a state a cancel
+				-- can reach. This costs nothing in latency, because the engine was idle
+				-- between End and FINISHED either way.
+				mEchoGate.at = GetTime()
+				if tMark == "Start" then
+					mEchoGate.sawStart = true
+				end
+			end
 		end
 	end)
 	local fTime = 0
@@ -633,16 +870,30 @@ function SkuVoice:Create()
 
 		-- [v43.2] Typing fast lane, drained BEFORE the 0.01s pump gate and before
 		-- the queue below: a typed character has to reach the voice on the frame it
-		-- is due, not a pump tick later. One slot, so a character typed while the
-		-- previous one is still waiting simply replaces it -- that is the coalescing
-		-- a held key and a paste need, at frame resolution.
-		if tEchoSlotText then
+		-- is due, not a pump tick later.
+		-- [v43.5] ONE utterance outstanding at a time -- see mEchoQueue. The
+		-- characters wait HERE, where a cancel can still reach them, instead of in
+		-- the client's queue, where nothing can.
+		if #mEchoQueue > 0 then
 			local tNowEcho = GetTime()
-			if tNowEcho >= tEchoSlotDueAt then
-				local tText = tEchoSlotText
+			if mEchoGate.outstanding and (tNowEcho - mEchoGate.at) > tEchoOutstandingTtl then
+				-- No matching End, FINISHED or FAILED ever arrived (a cancelled
+				-- utterance reports none of them, and one that never got a STARTED has
+				-- no id to match). Never let typing wedge on a missing event.
+				if dprint then dprint("BTTS echo gate ttl", "id="..tostring(mEchoGate.id)) end
+				EchoGateReset()
+			end
+			-- [v43.5c] ...and never inside a hard cancel's kill window, or this
+			-- character would be the one the window stops. See ArmKillWindow.
+			if not mEchoGate.outstanding and tNowEcho >= tEchoSlotDueAt
+				and (tNowEcho >= tKillWindowUntil or tNowEcho >= tKillWindowHardUntil) then
+				local tText = table.remove(mEchoQueue, 1)
 				local tVoice = tEchoSlotVoice
-				tEchoSlotText = nil
-				tEchoSlotVoice = nil
+				mEchoGate.outstanding = true
+				mEchoGate.at = tNowEcho
+				mEchoGate.id = nil
+				mEchoGate.awaitingId = true
+				mEchoGate.sawStart = false
 				BttsHandOver(tText, tVoice or ChatTts().WowTtsVoice, true)
 			end
 		end
@@ -774,11 +1025,16 @@ function SkuVoice:Create()
 						-- [v43.2] A real announcement supersedes a typed character that has
 						-- not gone out yet -- otherwise the stale letter would be spoken
 						-- after the line that replaced it.
-						tEchoSlotText = nil
-						tEchoSlotVoice = nil
+						-- [v43.5] Now the whole pending queue, not one slot.
+						EchoQueueClear("queuereset")
 					end
 				else
-					if #mSkuVoiceQueueBTTS > 1 or tNow >= tNextSpeakAt then
+					-- [v43.5c] The kill window outranks BOTH the hold and its
+					-- `#queue > 1` bypass: while it is armed nothing may be handed over,
+					-- because that is what makes "anything that starts now is stale"
+					-- true. The line waits in the queue and goes out ~0.3 s later.
+					if (#mSkuVoiceQueueBTTS > 1 or tNow >= tNextSpeakAt)
+						and (tNow >= tKillWindowUntil or tNow >= tKillWindowHardUntil) then
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						local tIsAlreadySpeakingThat
 						for z = 1, #mSkuVoiceQueueBTTS_Speaking do
@@ -2010,8 +2266,15 @@ function SkuVoice:CancelBttsOutput()
 	end
 	mSkuVoiceQueueBTTS_Speaking = {}
 	-- [v43.2] A pending typed character must not survive a hard cancel either.
-	tEchoSlotText = nil
-	tEchoSlotVoice = nil
+	-- [v43.5] This is the call the chat box's send/close path relies on to kill the
+	-- typing backlog, and until v43.4 it could only reach ONE character because the
+	-- rest were already inside the client. Now they are all still here.
+	EchoQueueClear("CancelBttsOutput")
+	EchoGateReset()
+	-- [v43.5c] The last handover may not have started yet, so the stop below will
+	-- miss it and the client would play it after the caller's confirmation. Hold
+	-- everything back briefly and kill whatever starts. See ArmKillWindow.
+	ArmKillWindow("CancelBttsOutput")
 	tLastHandoverWasEcho = false
 	local tNow = GetTime()
 	tLastStopAt = tNow
@@ -2081,12 +2344,24 @@ function SkuVoice:SpeakEcho(aText, aVoice)
 		-- race tBttsPostStopHold covers, but the echo pays it once per burst
 		-- rather than once per keystroke.
 		tEchoSlotDueAt = tNow + tEchoHandoverDelay
+		-- [v43.5] A new burst never inherits the previous one's leftovers, and the
+		-- stop just above silenced whatever was playing -- so nothing is
+		-- outstanding any more and this character must not wait for it.
+		EchoQueueClear("burst start")
+		EchoGateReset()
 	else
-		-- Mid-burst: due now, i.e. the very next frame.
+		-- [v43.5] Mid-burst: due immediately, but the drain still releases it only
+		-- once the engine has reported the previous character done. That gate is
+		-- the whole fix -- see mEchoQueue.
 		tEchoSlotDueAt = 0
 	end
 	tLastHandoverWasEcho = true
-	tEchoSlotText = aText
+	mEchoQueue[#mEchoQueue + 1] = aText
+	-- Runaway guard only (paste, stuck key): keep the NEWEST tEchoQueueMax.
+	while #mEchoQueue > tEchoQueueMax do
+		table.remove(mEchoQueue, 1)
+		if dprint then dprint("BTTS echo cap", "depth="..#mEchoQueue, "max="..tEchoQueueMax) end
+	end
 	tEchoSlotVoice = aVoice
 end
 
@@ -2125,8 +2400,8 @@ function SkuVoice:EndScope(aScope)
 		end
 	end
 	if aScope == "echo" then
-		tEchoSlotText = nil
-		tEchoSlotVoice = nil
+		-- [v43.5] The whole pending queue, not one slot.
+		tDropped = tDropped + EchoQueueClear("EndScope echo")
 	end
 	local tStopped = false
 	if tLastHandedScope == aScope then
@@ -2141,14 +2416,23 @@ function SkuVoice:EndScope(aScope)
 		pcall(function() C_VoiceChat.StopSpeakingText() end)
 		tAuditStopSinceHandover = true
 		tStopped = true
+		-- [v43.5c] This branch only runs when the utterance in flight belongs to the
+		-- scope being ended -- so the one the stop above may MISS (handed over, not
+		-- started) is that same scope's line. It is exactly what the caller wants
+		-- dead, so the window can safely kill whatever starts next. This is the
+		-- waypoint "14 meter ..." that spoke after "menue geschlossen".
+		ArmKillWindow("EndScope "..tostring(aScope))
 	end
 	if dprint then dprint("BTTS EndScope", tostring(aScope), "dropped="..tDropped, "stopped="..tostring(tStopped)) end
 	return tStopped
 end
 
 function SkuVoice:CancelEcho()
-	tEchoSlotText = nil
-	tEchoSlotVoice = nil
+	-- [v43.5] The whole pending queue. The gate is reset too: with nothing left to
+	-- release there is no character that could go out early, and a caller that
+	-- disarms the echo must not leave the gate stuck shut.
+	EchoQueueClear("CancelEcho")
+	EchoGateReset()
 	tLastHandoverWasEcho = false
 end
 

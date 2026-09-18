@@ -16,6 +16,7 @@ Changements dans Sku v43.5
             Chat : après ouverture de la ligne de chat avec « / », l'ancien canal était annoncé (par ex. « À Kai »), alors que seule la commande tapée ensuite décide du canal.
             Voix : certaines lignes restaient muettes au hasard via le pont NVDA/SAPI (par ex. un objet de la liste d'équipement) alors que leurs voisines étaient lues.
             Quête : « Le nettoyage selon Raene » (Bâtonnet de Dartol, Orneval) n'avait pas de cible ; elle mène maintenant au Coffre rouillé laissé par les Gelées pourrissantes.
+            Voix : les caractères tapés et les annonces annulées arrivaient en retard - des lettres d'une ligne de chat fermée depuis longtemps surgissaient plus tard dans un autre menu.
 
     Base de données des quêtes : ouvrir les listes de quêtes figeait le jeu
         Simple : Ouvrir la liste « Tout » sous Quête > Base de données des quêtes provoquait depuis la v43.2 un
@@ -81,6 +82,31 @@ Changements dans Sku v43.5
             rien. objects_fixes.lua (TBC et Era) ajoute maintenant les 44 positions du coffre relevées
             par Wowhead en Orneval (zone 331, environ 68-78 / 68-80) ; c'est la même surface que les
             spawns de la Gelée pourrissante (3928) qui laisse le coffre.
+
+    Voix : les caractères tapés et les annonces annulées arrivaient en retard
+        Simple : Si vous tapiez un message un peu long puis fermiez la ligne de chat, vous
+            continuiez à entendre les lettres ensuite - une par une, alors que vous naviguiez depuis
+            longtemps dans un autre menu ; près d'une minute dans un enregistrement. Il en allait de
+            même pour une annonce annulée : après « Annulé » arrivait encore un reste de l'ancienne
+            ligne, par exemple une distance du menu des points de passage que vous veniez de fermer.
+            Tout ce qui reste en attente à la fermeture ou à l'annulation est désormais abandonné.
+            L'écho des touches reste complet - aucune lettre n'est perdue.
+        Techniquement : Le client accepte chaque SpeakText sans limite mais ne les joue qu'un à la
+            fois, et C_VoiceChat.StopSpeakingText n'annule que l'énoncé EN COURS - il n'existe pas
+            de vidage de file comme le PurgeBeforeSpeak de SAPI. Tout ce qui est déjà transmis est
+            donc irrécupérable. La voie de frappe transmettait un énoncé par touche, trois à quatre
+            par seconde, alors que le client en traite environ un : une ligne tapée de 104
+            caractères garait ainsi environ 80 énoncés dans le client, qui ressortaient ensuite un
+            par seconde. Pour la même raison CancelBttsOutput et EndScope restaient sans effet - ils
+            vident la file propre à Sku, où les caractères n'ont jamais été (85 des 93 appels à
+            EndScope d'un enregistrement n'ont rien abandonné). Les caractères attendent maintenant
+            dans Sku, un seul part vers le client à la fois, et le suivant seulement à son
+            PLAYBACK_FINISHED - le moment où le client accepte de nouveau un énoncé (chaque STARTED
+            de l'enregistrement coïncide avec un FINISHED). Rien n'est donc jamais transmis sans
+            être déjà en train de jouer, et une annulation atteint tout. Une courte fenêtre
+            d'annulation couvre le reste : après une annulation franche plus rien n'est transmis et
+            tout énoncé qui démarrerait malgré tout est stoppé aussitôt. Cela reprend la structure
+            de NVDA, qui garde lui aussi la file et ne donne à la voix qu'un énoncé à la fois.
 
 
 -------------------------------------------------------------------------------------------------------

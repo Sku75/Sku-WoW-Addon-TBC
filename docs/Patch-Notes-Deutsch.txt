@@ -13,6 +13,7 @@ Aenderungen in Sku v43.5
             Chat: nach dem Oeffnen der Chatzeile mit "/" wurde der alte Kanal angesagt (etwa "An Kai"), obwohl erst der Befehl danach den Kanal festlegt.
             Sprachausgabe: einzelne Zeilen blieben ueber die NVDA/SAPI-Bruecke zufaellig stumm (etwa ein Ausruestungsteil in der Liste), waehrend die Nachbarn gesprochen wurden.
             Quest: "Raenes Saeuberung" (Eisenknauf, Eschental) hatte kein Questziel; es fuehrt jetzt zur Rostigen Truhe der Faulenden Bruehschleimer.
+            Sprachausgabe: getippte Zeichen und abgebrochene Ansagen kamen verspaetet nach - Buchstaben einer laengst geschlossenen Chatzeile tauchten Sekunden spaeter in einem anderen Menue auf.
 
     Questdatenbank: das Oeffnen der Questlisten liess das Spiel einfrieren
         Einfach: Wer unter Quest > Questdatenbank die Liste "Alle" oeffnete, bekam seit v43.2 einen
@@ -77,6 +78,31 @@ Aenderungen in Sku v43.5
             objects_fixes.lua (TBC und Era) traegt jetzt die 44 Truhenpositionen von Wowhead im
             Eschental nach (Zone 331, etwa 68-78 / 68-80); das ist dieselbe Flaeche wie die Spawns
             des Faulenden Bruehschleimers (3928), der die Truhe hinterlaesst.
+
+    Sprachausgabe: getippte Zeichen und abgebrochene Ansagen kamen verspaetet nach
+        Einfach: Wer eine laengere Nachricht tippte und die Chatzeile dann schloss, hoerte die
+            Buchstaben danach weiter - Zeichen fuer Zeichen, waehrend man laengst in einem anderen
+            Menue navigierte, in einem Mitschnitt fast eine Minute lang. Dasselbe galt fuer eine
+            abgebrochene Ansage: nach "Abgebrochen" kam noch ein Rest der alten Zeile, etwa eine
+            Entfernungsangabe aus dem gerade geschlossenen Wegpunktmenue. Was beim Schliessen oder
+            Abbrechen noch aussteht, wird jetzt verworfen. Die Tastenansage bleibt dabei
+            vollstaendig - es geht kein Buchstabe verloren.
+        Technisch: Der Client nimmt jedes SpeakText ohne Begrenzung an, spielt aber nur eines nach
+            dem anderen ab, und C_VoiceChat.StopSpeakingText bricht nur die gerade LAUFENDE Ausgabe
+            ab - ein Leeren der Warteschlange wie SAPIs PurgeBeforeSpeak gibt es nicht. Alles
+            bereits Uebergebene ist damit unwiderruflich. Die Tastenansage gab bisher pro Anschlag
+            sofort eine Ausgabe ab, drei bis vier pro Sekunde, waehrend der Client etwa eine pro
+            Sekunde schafft: eine getippte Zeile von 104 Zeichen parkte so rund 80 Ausgaben im
+            Client, die danach einzeln nachliefen. Aus demselben Grund liefen CancelBttsOutput und
+            EndScope ins Leere - sie leeren Skus eigene Warteschlange, in der die Zeichen nie lagen
+            (85 von 93 EndScope-Aufrufen eines Mitschnitts verwarfen nichts). Die Zeichen warten
+            jetzt in Sku, es geht immer nur eines an den Client, und das naechste erst bei dessen
+            PLAYBACK_FINISHED - dem Moment, in dem der Client ueberhaupt wieder eine Ausgabe annimmt
+            (jedes STARTED des Mitschnitts faellt mit einem FINISHED zusammen). Damit ist nie etwas
+            uebergeben, das noch nicht laeuft, und ein Abbruch erreicht alles. Ein kurzes
+            Abbruchfenster sichert den Rest ab: nach einem harten Abbruch wird nichts uebergeben und
+            jede dennoch startende Ausgabe sofort gestoppt. Das entspricht dem Aufbau von NVDA, das
+            die Warteschlange ebenfalls selbst haelt und der Stimme nur eine Ausgabe auf einmal gibt.
 
 
 -------------------------------------------------------------------------------------------------------
