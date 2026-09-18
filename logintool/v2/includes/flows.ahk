@@ -225,11 +225,15 @@ InitLogin(s := "") {
     }
     ; Checks, not the helper's screen verdict: the verdict picks ONE screen and
     ; gets it wrong when the scene behind the UI is dark (see sense.ahk).
-    if SenseCheck(s, "contract") {
-        AcceptContract()
+    if SocialContractIsUp(s) {
+        ; Nothing calls InitLogin a second time once login mode is reached, so
+        ; the screen behind the contract is initialized from here - otherwise
+        ; the contract went away and the character list was never built.
+        if HandleSocialContract(s)
+            InitLogin(SenseQuick())
         return
     }
-    if SenseCheck(s, "hardcoreConfirm") {
+    if IsRealmWarningConfirm(s) {
         ; Arriving on the open hardcore warning (tool start or refocus while
         ; it is up): re-ask instead of treating the screen as unknown.
         AskHardcoreConfirm(Sense())
@@ -601,19 +605,149 @@ LoginSaveNameChecked() {
     return false
 }
 
-AcceptContract() {
-    MoveToWidget("AcceptContractTextCenter")
-    Sleep(2000)
-    loop 5
-        Click("WheelDown")
-    Sleep(1000)
-    ; The accept button position varies; sweep clicks like v1.
-    if gWidgets.Has("AcceptContractAcceptButton2") {
-        base := gWidgets["AcceptContractAcceptButton2"]
-        loop 34 {
-            ClickUi(base.x, (A_Index * 17) + base.y)
-            Sleep(100)
+; ---------- Blizzard's social contract ----------
+;
+; SocialContractFrame (Blizzard_GlueXML\SocialContract.xml/.lua) comes up over
+; character selection whenever the SERVER says so: CharacterSelect asks
+; C_SocialContractGlue.GetShouldShowSocialContract() on every show and the answer
+; arrives as SOCIAL_CONTRACT_STATUS_UPDATE. There is no CVar and no setting
+; behind it, so it can neither be provoked nor pre-answered - a brand-new account
+; always gets it, and everyone gets it again when Blizzard revises the text. It
+; is modal, its OnKeyDown is a nop (so it eats every key), Decline is QuitGame(),
+; and Accept stays DISABLED until the text was scrolled to 90 percent. For a
+; blind player that is a wall: nothing speaks, no key works.
+;
+; What v1 left here could not work on the Anniversary client. The helper's
+; "contract" check wants the dimmed YELLOW logo at the top left, which the BC
+; glue screen does not have, and its third probe sits in the middle of the
+; contract's text. With the check false, the dimmed character screen classified
+; as "unknown" and the tool never even entered login mode. The click half was a
+; blind sweep of 34 clicks down a column that ran off the bottom of the window.
+;
+; Everything below is derived from the frame's XML, because the dialog cannot be
+; reproduced on demand - see the comment block at the Sc* widgets in data.ini.
+; The frame is the structural twin of the hardcore rules dialog (same insets,
+; same two UIPanelButtonTemplate buttons), whose button colour WAS measured on a
+; live client: 84,0,0. It is NOT a DefaultScaleFrame like that one, so plain glue
+; units apply.
+
+; The red of a button inside a glue dialog. Wider than IsGlueTintedRedProbe
+; (75..100) on purpose: that window was measured on one frame at one scale, and
+; this one is unmeasured. It still excludes both reds that must not match - the
+; plain button at 140 and the dimmed one behind a modal frame at 35.
+IsScRedProbe(p) {
+    return p != "" && p["r"] >= 60 && p["r"] <= 125 && p["g"] <= 12 && p["b"] <= 12
+}
+
+; Two rows per button: upper third and centre line.
+ScButtonIsRed(s, name) {
+    return IsScRedProbe(SenseProbe(s, name)) || IsScRedProbe(SenseProbe(s, name "Mid"))
+}
+
+; Decline is the anchor - it is always enabled, so always red. Accept is grey
+; until the text was scrolled and says nothing about whether the dialog is up.
+IsSocialContract(s) {
+    if !SenseOk(s) || !ScButtonIsRed(s, "ScDecline")
+        return false
+    gap := SenseProbe(s, "ScGap")
+    if (gap = "" || IsScRedProbe(gap))
+        return false
+    return SenseProbeMatches(s, "ScBackdrop", "GenericBlack")
+}
+
+; The helper's verdict still counts where it can work (Classic has the logo), as
+; a net under probe colours nobody could measure. It is not trusted alone: it
+; asks for a dimmed character screen plus ONE black pixel over the 3D scene, and
+; any glue popup dims the screen while a night scene is black by itself.
+SocialContractIsUp(s) {
+    if IsSocialContract(s)
+        return true
+    return SenseCheck(s, "contract") && !AnyPopup(s) && !SenseCheck(s, "outdatedAddons")
+        && !IsRealmWarningConfirm(s) && !IsHardcoreCreateConfirm(s)
+}
+
+ScProbeDump(s) {
+    out := ""
+    for name in ["ScAccept", "ScAcceptMid", "ScDecline", "ScDeclineMid", "ScGap", "ScBackdrop",
+            "CharSelectionScreenLogo", "CharSelectionScreenAddons"] {
+        p := SenseProbe(s, name)
+        out .= (out = "" ? "" : " ") name "=" (p = "" ? "?" : p["r"] "," p["g"] "," p["b"])
+    }
+    return out
+}
+
+; The one entry point. A failed attempt is not repeated for a minute: the screen
+; watcher comes by every 2.5 s, and a dialog the tool cannot close would
+; otherwise be scrolled, clicked and apologized for without end.
+global gScFailedTick := 0
+
+HandleSocialContract(s) {
+    global gScFailedTick
+    if (gScFailedTick != 0 && A_TickCount - gScFailedTick < 60000)
+        return false
+    if AcceptContract(s) {
+        gScFailedTick := 0
+        return true
+    }
+    gScFailedTick := A_TickCount
+    return false
+}
+
+; Scroll the text to its end, press Accept, and check that the dialog went away.
+; Returns true when it did.
+;
+; One wheel notch is already enough on paper: the scroll box holds the whole text
+; as ONE frame, ScrollBoxLinearView takes that frame's extent as the pan step and
+; the wheel doubles it. The rounds are there because notches fired back to back
+; get swallowed (the realm list taught that), not because the distance needs them.
+;
+; Accept is pressed even when it never turned red. The colour of a DISABLED
+; button inside a glue dialog was never measured, a click on a disabled button
+; does nothing, and the click lands 69 units left of the frame's centre - Decline
+; starts 13 units to the RIGHT of it. What counts is the check afterwards.
+AcceptContract(s := "") {
+    global gBusy
+    wasBusy := gBusy
+    gBusy := true
+    try {
+        Log("SocialContract: dialog up (helper=" (SenseCheck(s, "contract") ? 1 : 0)
+            . " probes=" (IsSocialContract(s) ? 1 : 0) ") " ScProbeDump(s))
+        Say(T("Blizzard's social contract is open. Accepting it, please wait."))
+        loop 3 {
+            attempt := A_Index
+            enabled := false
+            loop 4 {
+                MoveToWidget("ScScrollCenter")
+                Sleep(60)
+                loop 8 {
+                    Click("WheelDown")
+                    Sleep(25)
+                }
+                Sleep(350)
+                s := SenseQuick()
+                if ScButtonIsRed(s, "ScAccept") {
+                    enabled := true
+                    break
+                }
+            }
+            Log("SocialContract: attempt " attempt ", accept button "
+                . (enabled ? "enabled" : "not seen enabled") " - clicking it. " ScProbeDump(s))
+            ClickWidget("ScAcceptClick")
+            Sleep(1200)
+            s := SenseQuick()
+            if (SenseOk(s) && !SocialContractIsUp(s)) {
+                Log("SocialContract: accepted, now on " s["screen"])
+                Say(T("Social contract accepted."))
+                return true
+            }
         }
+        Log("SocialContract: still up after 3 attempts. " ScProbeDump(s))
+        Say(T("The social contract could not be accepted. Sighted help is needed once: scroll the text to the end and press accept."))
+        return false
+    } finally {
+        ; Park the pointer: left over the character screen it hovers a button.
+        MoveToWidget("CharSelectionScreenSafeMousePos")
+        gBusy := wasBusy
     }
 }
 
@@ -2140,6 +2274,200 @@ CancelDelete() {
 
 ; ---------- realm switching via OCR ----------
 
+; ---------- pixel-sized glue dialogs, found at any scale ----------
+;
+; Every glue screen is 768 units high, so a probe in ui units lands on the same
+; spot at every resolution - with ONE exception. Frames inheriting Blizzard's
+; DefaultScaleFrame are scaled by GetDefaultScale() so they keep their size in
+; real PIXELS, which makes their size in ui units depend on the display. Two glue
+; frames do that, in four shapes, all 510 wide, all centred on the screen:
+;
+;   HardcorePopUpFrame      240 high  realm-list warning      (Era only)
+;   HardcorePopUpFrame      580 high  creation rules          (Era only)
+;   RealmWarningPopUpFrame  240 high  PvP realm-list warning
+;   RealmWarningPopUpFrame  360 high  PvP creation warning
+;
+; GetDefaultScale() is a client function with no Lua source. What is known: on a
+; 2880x1800 display it returns 0.64 (read in game with /wdeval 2026-09-18, and
+; the same figure falls out of three measurements of the 580 dialog), where
+; 768/height would be 0.43 - so there is a floor. If the rule is
+; max(0.64, 768/height), every display from 1200 px up gives 0.64 and the Hc*
+; probes in data.ini, measured at 0.64, are right; at 1080 px it is 0.71 and the
+; creation rules' button row moves from ui y 547..561 to 565..580, under a probe
+; standing at 551. A windowed client counts by its WINDOW height.
+;
+; So the scale is not assumed, it is found. Every shape has the same two buttons
+; in the same place relative to the frame (frame units from the centre: Accept
+; x -143..-7, Decline x 7..143, both y H/2-36 .. H/2-14), so at scale s they lie
+; on a straight line out of the screen centre and only the distance along it
+; depends on s. One screen grab, then s = 0.60..1.25 in steps of 0.01 per height:
+;   red    at x -125, +31, +127   (the first two are the MEASURED probe columns
+;                                  of the 580 dialog, converted back to frame
+;                                  units; all three lie clear of the labels)
+;   no red at x 0 (the slot between the buttons) and x -153, +153 (just outside)
+;   black  at the height's own backdrop point
+; on the row 29 percent down the button - again the measured one: the texture
+; brightens towards its middle (84 at that row, 102 two pixels lower).
+; The outside points are what keeps heights apart: the wrong height at the wrong
+; scale puts its row on the same y, but never its columns on the same edges.
+; Several neighbouring scales match (a button is 22 units high); the middle of
+; the run is taken.
+;
+; The fixed probes stay FIRST everywhere - they are proven at 0.64, and the
+; helper's hardcoreConfirm check has months of use. The scan is the second
+; opinion that makes the other displays work, and the only one for the 360 shape.
+global gGlueDlg := {tick: 0, hit: ""}
+global gGlueDlgLogged := ""
+global gGlueDlgHeights := [580, 360, 240]
+
+IsDlgRed(c) {
+    return c != "" && c.r >= 60 && c.r <= 125 && c.g <= 12 && c.b <= 12
+}
+
+; Any red button at all - the dialog's own tint or the plain 140.
+IsDlgAnyRed(c) {
+    return c != "" && c.r >= 60 && c.g <= 12 && c.b <= 12
+}
+
+GlueDlgBackdrop(h) {
+    ; 580: the measured HcCreateBackdrop (ui 10000,533). 240: the helper's
+    ; measured HcConfirmBackdrop (ui 10050,425). 360: the middle of the strip
+    ; between the scroll box (ends at frame y 290) and the inset edge (312).
+    if (h = 580)
+        return {dx: 0, dy: 233}
+    if (h = 360)
+        return {dx: 0, dy: 121}
+    return {dx: 78, dy: 64}
+}
+
+; Frame units from the frame's centre -> screen pixels.
+GlueDlgPx(geo, s, dx, dy) {
+    return {x: Round(geo.cx + dx * s * geo.k), y: Round(geo.top + (384 + dy * s) * geo.k)}
+}
+
+GlueDlgMatches(grab, geo, h, s) {
+    row := h / 2 - 29.6
+    p := GlueDlgPx(geo, s, -125, row)
+    if !IsDlgRed(grab.Pixel(p.x, p.y))
+        return false
+    for dx in [31, 127] {
+        p := GlueDlgPx(geo, s, dx, row)
+        if !IsDlgRed(grab.Pixel(p.x, p.y))
+            return false
+    }
+    for dx in [0, -153, 153] {
+        p := GlueDlgPx(geo, s, dx, row)
+        c := grab.Pixel(p.x, p.y)
+        if (c = "" || IsDlgAnyRed(c))
+            return false
+    }
+    b := GlueDlgBackdrop(h)
+    p := GlueDlgPx(geo, s, b.dx, b.dy)
+    c := grab.Pixel(p.x, p.y)
+    return c != "" && Max(c.r, c.g, c.b) <= 5
+}
+
+; The matching run is lopsided, so its middle is not the true scale. For a dialog
+; at scale S the row test holds while (H/2-29.6)*s stays inside the button
+; (H/2-36 .. H/2-14 times S) and the column tests while 153*s > 143*S and
+; 127*s < 143*S. That puts the run at S times lo..hi, with
+;   lo = max((H/2-36)/(H/2-29.6), 143/153),  hi = min((H/2-14)/(H/2-29.6), 143/127)
+; On the 580 dialog the backdrop point binds tighter still: it has to stay inside
+; the 12-unit black strip (230..242 from the centre, probed at 233). The middle
+; of the run is S times (lo+hi)/2 - 1.013 for 580, 1.030 for 360 and 240.
+GlueDlgRunBias(h) {
+    row := h / 2 - 29.6
+    lo := Max((h / 2 - 36) / row, 143 / 153)
+    hi := Min((h / 2 - 14) / row, 143 / 127)
+    if (h = 580)
+        lo := Max(lo, 230 / 233), hi := Min(hi, 242 / 233)
+    return (lo + hi) / 2
+}
+
+GlueDialogScanNow() {
+    client := WowClientRect()
+    if (client = "" || client.h < 200)
+        return ""
+    geo := {cx: client.x + client.w / 2, top: client.y, k: client.h / 768}
+    ; Everything probed lies below the screen's centre line and within 192 frame
+    ; units of the centre column (153 * 1.25).
+    grab := ScreenGrab(Round(geo.cx - 200 * geo.k), Round(geo.top + 384 * geo.k),
+        Round(400 * geo.k), Round(384 * geo.k) - 1)
+    if !grab.ok
+        return ""
+    for h in gGlueDlgHeights {
+        first := 0, last := 0
+        i := 60
+        while (i <= 125) {
+            if GlueDlgMatches(grab, geo, h, i / 100) {
+                if !first
+                    first := i
+                last := i
+            } else if first {
+                break
+            }
+            i++
+        }
+        if first
+            return {h: h, s: (first + last) / 200 / GlueDlgRunBias(h), geo: geo}
+    }
+    return ""
+}
+
+; Cached for a moment: one watcher tick asks for several heights in a row.
+GlueDialogScan(maxAgeMs := 400) {
+    global gGlueDlg, gGlueDlgLogged
+    if (A_TickCount - gGlueDlg.tick <= maxAgeMs)
+        return gGlueDlg.hit
+    hit := GlueDialogScanNow()
+    gGlueDlg := {tick: A_TickCount, hit: hit}
+    tag := (hit = "") ? "" : hit.h "@" Round(hit.s, 2)
+    if (tag != gGlueDlgLogged) {
+        gGlueDlgLogged := tag
+        if (hit != "") {
+            client := WowClientRect()
+            Log("GlueDialog: " hit.h "-high dialog at scale " Round(hit.s, 3)
+                . " (client " (client = "" ? "?" : client.w "x" client.h) ")")
+        }
+    }
+    return hit
+}
+
+GlueDialogOfHeight(h, maxAgeMs := 400) {
+    hit := GlueDialogScan(maxAgeMs)
+    return (hit != "" && hit.h = h) ? hit : ""
+}
+
+; Press Accept or Decline where the scan found them. False = no dialog was found
+; by the scan, and the caller falls back to its fixed widget.
+GlueDialogClick(h, accept) {
+    hit := GlueDialogOfHeight(h, 0)
+    if (hit = "")
+        return false
+    p := GlueDlgPx(hit.geo, hit.s, accept ? -75 : 75, h / 2 - 25)
+    Log("GlueDialog: clicking " (accept ? "accept" : "decline") " at scale " Round(hit.s, 3))
+    MouseMove(p.x, p.y, 0)
+    Sleep(30)
+    Click()
+    global gGlueDlg := {tick: 0, hit: ""}
+    return true
+}
+
+; The dialog's text band for OcrLinesInRegion, as fractions of the capture: from
+; just under the frame's top edge (the title counts) to the top of the bottom
+; inset, 234 frame units either side of the centre. At 580 / 0.64 this is the
+; band the creation rules were tuned on (ui y 205..543, 150 units either side).
+GlueDialogBand(s, h, scale) {
+    half := 234 * scale * (s["height"] / 768) / s["width"]
+    return {x1: 0.5 - half, x2: 0.5 + half,
+        y1: (384 - (h / 2 - 10) * scale) / 768, y2: (384 + (h / 2 - 42) * scale) / 768}
+}
+
+; The realm-list warning, hardcore or PvP - the two are the same 240-high shape.
+IsRealmWarningConfirm(s) {
+    return SenseCheck(s, "hardcoreConfirm") || GlueDialogOfHeight(240) != ""
+}
+
 ; ---------- hardcore confirmation ----------
 
 ; The hardcore "death is permanent" warning is up. Read it and hand the
@@ -2153,7 +2481,12 @@ AskHardcoreConfirm(s) {
     ; between the title bar and the buttons; the realm list visible around
     ; the dialog stays outside these bounds.
     text := ""
-    for line in OcrLinesInRegion(s, 0.36, 0.41, 0.63, 0.57) {
+    ; The fixed band is the dialog at scale 0.64 on a 16:10 display.
+    band := {x1: 0.36, y1: 0.41, x2: 0.63, y2: 0.57}
+    hit := GlueDialogOfHeight(240, 1500)
+    if (hit != "")
+        band := GlueDialogBand(s, 240, hit.s)
+    for line in OcrLinesInRegion(s, band.x1, band.y1, band.x2, band.y2) {
         if (line["h"] > s["height"] * 0.04)
             continue
         text .= (text = "" ? "" : ", ") line["text"]
@@ -2173,7 +2506,7 @@ HardcoreConfirmAnswer(accept) {
         HardcoreCreateAnswer(accept, SenseQuick())
         return
     }
-    if !SenseCheck(SenseQuick(), "hardcoreConfirm") {
+    if !IsRealmWarningConfirm(SenseQuick()) {
         ; The dialog is gone (answered in the game, or the client closed it).
         Say(T("Something went wrong. Please restart the game and try again."))
         return
@@ -2182,11 +2515,13 @@ HardcoreConfirmAnswer(accept) {
     try {
         if accept {
             Say(T("Agreed. Connecting to the server. Please wait."))
-            ClickWidget("HcConfirmAcceptButton")
+            if !GlueDialogClick(240, true)
+                ClickWidget("HcConfirmAcceptButton")
             WaitForHardcoreJoin()
         } else {
             Say(T("Declined."))
-            ClickWidget("HcConfirmDeclineButton")
+            if !GlueDialogClick(240, false)
+                ClickWidget("HcConfirmDeclineButton")
             Sleep(1000)
             s := SenseQuick()
             if SenseCheck(s, "realmselect")
@@ -2222,10 +2557,22 @@ IsHardcoreCreateConfirm(s) {
     decline := SenseProbe(s, "HcCreateDeclineButton")
     gap := SenseProbe(s, "HcCreateGap")
     if (accept = "" || decline = "" || gap = "")
-        return false
-    return IsGlueTintedRedProbe(accept) && IsGlueTintedRedProbe(decline)
-        && !IsGlueTintedRedProbe(gap)
-        && SenseProbeMatches(s, "HcCreateBackdrop", "GenericBlack")
+        return CreateWarningHeight() != 0
+    if (IsGlueTintedRedProbe(accept) && IsGlueTintedRedProbe(decline)
+            && !IsGlueTintedRedProbe(gap)
+            && SenseProbeMatches(s, "HcCreateBackdrop", "GenericBlack"))
+        return true
+    ; The probes above are measured at scale 0.64 and miss the dialog on a
+    ; display under 1200 px high - see "pixel-sized glue dialogs". The scan finds
+    ; it at any scale, and the PvP realm's creation warning (360 high) with it:
+    ; same buttons, same Enter/Escape, same CreateCharacter behind Accept.
+    return CreateWarningHeight() != 0
+}
+
+; 580 = hardcore rules, 360 = PvP warning, 0 = neither found by the scan.
+CreateWarningHeight() {
+    hit := GlueDialogScan()
+    return (hit != "" && (hit.h = 580 || hit.h = 360)) ? hit.h : 0
 }
 
 ; Port of the helper's IsGlueTintedRed: the glue dialog tint darkens the red
@@ -2245,7 +2592,13 @@ HcCreateLines(s) {
     halfW := 150 * (s["height"] / 768) / s["width"]
     ; y2 543, not 525: the buttons' top edge is at ui 547, so the extra units are
     ; free and a line sitting just under the old bound is no longer dropped.
-    for line in OcrLinesInRegion(s, 0.5 - halfW, 205 / 768, 0.5 + halfW, 543 / 768) {
+    band := {x1: 0.5 - halfW, y1: 205 / 768, x2: 0.5 + halfW, y2: 543 / 768}
+    ; Those figures are the 580 dialog at scale 0.64. Where the scan found the
+    ; dialog, its height and scale say where the text really is.
+    hit := GlueDialogScan(1500)
+    if (hit != "" && (hit.h = 580 || hit.h = 360))
+        band := GlueDialogBand(s, hit.h, hit.s)
+    for line in OcrLinesInRegion(s, band.x1, band.y1, band.x2, band.y2) {
         if (line["h"] > s["height"] * 0.04)   ; skip icons/big artifacts
             continue
         out.Push(line)
@@ -2325,7 +2678,8 @@ AskHardcoreCreateConfirm() {
     global gHardcoreConfirmFlag := true, gHardcoreConfirmKind := "create"
     if (gHcCreateRulesText != "" && HcCreateRulesAreTheSame()) {
         Log("HcCreateConfirm: same rules as before - repeating the choice only")
-        Say(T("The hardcore rules are still open."))
+        Say(CreateWarningHeight() = 360 ? T("The PvP realm warning is still open.")
+            : T("The hardcore rules are still open."))
         SayQueued(T("Press Enter to agree, or press Escape to decline."))
         return
     }
@@ -2382,12 +2736,14 @@ HardcoreCreateAnswer(accept, s) {
         if accept {
             Log("HcCreateConfirm: accepted")
             Say(T("Agreed. Please wait."))
-            ClickWidget("HcCreateAcceptButton")
+            if !GlueDialogClick(CreateWarningHeight() || 580, true)
+                ClickWidget("HcCreateAcceptButton")
             WaitForCharacterCreated()
         } else {
             Log("HcCreateConfirm: declined")
             Say(T("Declined."))
-            ClickWidget("HcCreateDeclineButton")
+            if !GlueDialogClick(CreateWarningHeight() || 580, false)
+                ClickWidget("HcCreateDeclineButton")
             Sleep(800)
             s2 := SenseQuick()
             if IsCharCreateScreen(s2) {
@@ -2534,7 +2890,7 @@ WaitForHardcoreJoin() {
             Say(text != "" ? text : T("Please wait."))
             return
         }
-        if SenseCheck(s, "hardcoreConfirm") {
+        if IsRealmWarningConfirm(s) {
             ; The accept click did not take, or a second warning came up. Never
             ; auto-answer it - hand it back to the user.
             Log("HardcoreJoin: hardcore warning still up - re-asking")
@@ -3379,7 +3735,7 @@ RealmSelectAction(row) {
             Say(text != "" ? text : T("Please wait."))
             return
         }
-        if SenseCheck(s, "hardcoreConfirm") {
+        if IsRealmWarningConfirm(s) {
             ; The hardcore warning: ask the user and end the flow - the
             ; Enter/Escape keybinds answer via HardcoreConfirmAnswer. No row is
             ; handed over: Blizzard's own accept button joins the realm itself

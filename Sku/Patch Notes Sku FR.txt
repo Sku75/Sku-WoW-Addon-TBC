@@ -7,6 +7,75 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.6
+
+    Aperçu
+
+        Nouveautés
+            Outil de connexion 3.4 : le contrat social de Blizzard est reconnu, défilé jusqu'à la fin et accepté - jusqu'ici, un nouveau joueur aveugle restait bloqué devant.
+            Outil de connexion 3.4 : l'avertissement JcJ affiché à la création d'un personnage sur un royaume JcJ est lu, et l'on répond avec Entrée ou Échap.
+
+        Changements
+            Outil de connexion 3.4 : les avertissements hardcore et JcJ sont trouvés à toutes les résolutions et tailles de fenêtre, et plus seulement sur les grands écrans.
+
+    Outil de connexion 3.4 : le contrat social de Blizzard est accepté automatiquement
+        Simple : Les nouveaux comptes - et tous les autres dès que Blizzard modifie le texte -
+            voient un « contrat social » sur l'écran de sélection du personnage. La fenêtre avale
+            toutes les touches, « Accepter » reste verrouillé tant que le texte n'a pas été défilé
+            jusqu'au bout à la souris, et « Refuser » quitte le jeu. L'outil restait muet devant,
+            ou disait au mieux « écran inconnu ». Il annonce maintenant que le contrat social est
+            ouvert, fait défiler le texte jusqu'à la fin, appuie sur Accepter, vérifie que la
+            fenêtre a disparu, puis construit la liste des personnages comme d'habitude. Il en va
+            de même si le contrat réapparaît en cours de session. En cas d'échec, l'outil dit ce
+            qu'une personne voyante doit faire une fois, et réessaie après une minute. Refuser
+            n'est jamais pressé.
+        Technique : La fenêtre est SocialContractFrame (Blizzard_GlueXML\SocialContract.xml/.lua),
+            déclenchée par le SERVEUR (C_SocialContractGlue.GetShouldShowSocialContract ->
+            SOCIAL_CONTRACT_STATUS_UPDATE) ; aucune CVar ni aucun réglage n'existe, on ne peut
+            donc ni la provoquer ni y répondre à l'avance. L'ancien code ne pouvait pas
+            fonctionner sur le client Anniversary : le test de l'assistant exige le logo jaune
+            assombri, que l'écran BC n'a pas, et son troisième point de mesure tombe au milieu du
+            texte du contrat - test faux, écran « unknown », l'outil n'entrait jamais en mode
+            connexion ; la partie clic était un balayage aveugle de 34 clics. Nouveau : huit
+            points Sc* dans data.ini (déduits du XML : cadre 510x632, boutons à ui y 706..728,
+            PAS un DefaultScaleFrame), plus IsSocialContract, AcceptContract et
+            HandleSocialContract dans flows.ahk et deux branches CheckMode dans menu.ahk - sans
+            recompiler l'assistant. Vérifié avec /validate, zéro faux positif sur toutes les
+            captures de référence et détection sur des images synthétiques du contrat à trois
+            résolutions. Pas encore testé sur la vraie fenêtre, qu'on ne peut pas faire
+            apparaître sur commande ; chaque tentative écrit ses mesures dans log.txt (lignes
+            « SocialContract: »).
+
+    Outil de connexion 3.4 : avertissements hardcore et JcJ à toutes les résolutions, avertissement JcJ de création nouveau
+        Simple : L'avertissement hardcore de la liste des royaumes, les règles hardcore à la
+            création d'un personnage et les avertissements JcJ sont des fenêtres que Blizzard
+            garde à la même taille en pixels réels. Leur position dépend donc de la résolution, et
+            les points de mesure fixes de l'outil n'étaient justes que sur les grands écrans (à
+            partir de 1200 pixels de haut). Sur un écran 1080p courant, ou dans une petite
+            fenêtre, l'outil serait resté muet devant les règles hardcore. Il cherche maintenant
+            ces fenêtres lui-même et les trouve à toutes les résolutions. S'y ajoute
+            l'avertissement JcJ à la création d'un personnage sur un royaume JcJ : il est lu,
+            Entrée accepte, Échap refuse. L'avertissement JcJ de la liste des royaumes a
+            exactement l'aspect de l'avertissement hardcore et était donc déjà lu.
+        Technique : HardcorePopUpFrame (240 et 580 de haut) et RealmWarningPopUpFrame (240 et 360
+            de haut) héritent de DefaultScaleFrame et sont mis à l'échelle par GetDefaultScale() -
+            une fonction du client sans source Lua. Mesuré en jeu avec /wdeval : 0,64 en
+            2880x1800, là où 768/hauteur donnerait 0,43 ; il existe donc un plancher, et le 1080p
+            donnerait sans doute 0,71. Au lieu de supposer l'échelle, GlueDialogScan (flows.ahk)
+            la trouve : dans les quatre formes, les deux boutons sont sur une droite partant du
+            centre de l'écran, et seule la distance dépend de l'échelle. Une capture (nouvelle
+            classe ScreenGrab dans ui.ahk, 1000 pixels en 16 ms), puis échelle 0,60..1,25 par
+            hauteur : rouge sur trois colonnes, pas de rouge dans l'interstice ni juste à
+            l'extérieur, noir au point de fond. Les points fixes restent le premier test, le
+            balayage le second. Les clics (GlueDialogClick) et les zones de texte OCR
+            (GlueDialogBand) suivent l'échelle trouvée. Vérifié avec un portage Python sur 66
+            fenêtres synthétiques (6 résolutions, 3 hauteurs, 4 échelles) : hauteur toujours
+            juste, échelle à 0,012 près, zéro faux positif. Pas encore testé sur de vraies
+            fenêtres ; chaque détection est consignée dans log.txt (ligne « GlueDialog: » avec
+            l'échelle).
+
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.5
 
     Aperçu

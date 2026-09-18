@@ -163,3 +163,7 @@ Change the server again before you play here.==Change the server again before yo
 Agreed. Please wait.==Agreed. Please wait.
 The game is starting. Please wait.==The game is starting. Please wait.
 The hardcore rules are still open.==The hardcore rules are still open.
+Blizzard's social contract is open. Accepting it, please wait.==Blizzard's social contract is open. Accepting it, please wait.
+Social contract accepted.==Social contract accepted.
+The social contract could not be accepted. Sighted help is needed once: scroll the text to the end and press accept.==The social contract could not be accepted. Sighted help is needed once: scroll the text to the end and press accept.
+The PvP realm warning is still open.==The PvP realm warning is still open.

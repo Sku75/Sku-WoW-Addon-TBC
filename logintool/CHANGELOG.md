@@ -1,6 +1,104 @@
 # WoW Logintool
 
-## 3.3 (unveröffentlicht)
+## 3.4 (unveröffentlicht)
+
+**Blizzards Sozialvertrag wird erkannt, zu Ende gescrollt und akzeptiert.**
+Der Dialog ist `SocialContractFrame` (`Blizzard_GlueXML\SocialContract.xml/.lua`,
+für alle Classic-Varianten dieselbe Datei). Er erscheint über der
+Charakterauswahl, sobald der SERVER es verlangt: `CharacterSelect` fragt bei
+jedem Anzeigen `C_SocialContractGlue.GetShouldShowSocialContract()`, die Antwort
+kommt als Event `SOCIAL_CONTRACT_STATUS_UPDATE`. Es gibt dafür keine CVar und
+keine Einstellung — man kann ihn weder hervorrufen noch vorab beantworten. Jeder
+neue Account bekommt ihn, alle anderen erneut, wenn Blizzard den Text ändert.
+Er ist modal, schluckt jede Taste (`OnKeyDown = nop`), Ablehnen ist `QuitGame()`,
+und Akzeptieren bleibt DEAKTIVIERT, bis der Text zu 90 % gescrollt wurde. Für
+blinde Neueinsteiger ist das eine Wand.
+
+Warum der alte v1-Code nicht funktionieren konnte: Die `contract`-Prüfung des
+Helpers verlangt das abgedunkelte GELBE Logo oben links — das hat der
+BC-Anniversary-Glue gar nicht — und ihr dritter Messpunkt (ui 9852,284) liegt
+mitten im Vertragstext. Prüfung falsch → abgedunkelte Charakterauswahl =
+`unknown` → das Tool kam nicht einmal in den Login-Modus. Der Klick-Teil war ein
+blinder Sweep aus 34 Klicks eine Spalte hinunter, über den unteren Fensterrand
+hinaus.
+
+Neu, ohne neu gebauten Helper (acht `Sc*`-Widgets in data.ini plus AHK):
+- `IsSocialContract` — Ablehnen-Button rot (immer aktiv, deshalb der Anker),
+  Lücke zwischen den Buttons nicht rot, schwarzer Streifen zwischen Scrollbox
+  und unterem Inset. `SocialContractIsUp` lässt das Helper-Urteil als Netz
+  darunter gelten, aber nur ohne Popup/Addon-Warnung/Hardcore-Dialog.
+- `AcceptContract` — Maus in die Mitte der Scrollbox, Rad-Runden mit 25 ms
+  Abstand, bis Akzeptieren rot wird; dann EIN Klick auf die Mitte des
+  Akzeptieren-Buttons (69 Einheiten links der Rahmenmitte; Ablehnen beginnt 13
+  rechts davon) und Kontrolle, ob der Dialog weg ist. Drei Versuche, jeder mit
+  allen Messwerten im Log (`SocialContract: …`). Ansage vorher und nachher.
+- Scheitert es, sagt das Tool, was eine sehende Person einmal tun muss, und
+  versucht es frühestens nach 60 s wieder (`HandleSocialContract`).
+- CheckMode: der Vertrag zählt beim Moduswechsel als erkannter Bildschirm, und
+  der Login-Modus-Wächter beantwortet ihn auch mitten in der Sitzung (Rückkehr
+  aus der Welt, Realmwechsel). Danach läuft `InitLogin` einmal nach, sonst wäre
+  die Charakterliste nie aufgebaut worden.
+
+Die Geometrie ist AUS DEM XML ABGELEITET, nicht gemessen, weil sich der Dialog
+nicht auf Bestellung erzeugen lässt: Rahmen 510x632, TOP x=6 y=-110, Buttons
+136x22 bei ui y 706..728. Wichtig: Der baugleiche Hardcore-Regeldialog ist ein
+`DefaultScaleFrame` (daher dort die gemessenen 0,64), der Sozialvertrag NICHT —
+hier gelten glatte Glue-Einheiten. Die Buttonfarbe (84,0,0) stammt von jenem
+live gemessenen Zwilling; das Fenster ist mit 60..125 bewusst weit. Geprüft:
+`/validate` sauber, 0 Fehlalarme auf allen 11 Referenz-Screenshots mit beiden
+Spieltypen, Treffer auf synthetischen Vertragsbildern in 1920x1080, 2880x1800
+und 1280x1024. Am echten Dialog UNGETESTET — das erste Nutzer-Log mit
+`SocialContract:`-Zeilen zeigt die echten Farben.
+
+**Hardcore- und PvP-Warnungen werden bei jeder Auflösung gefunden.**
+Alle Glue-Bildschirme sind 768 Einheiten hoch, deshalb trifft ein Messpunkt in
+UI-Einheiten bei jeder Auflösung dieselbe Stelle — mit EINER Ausnahme: Rahmen,
+die von Blizzards `DefaultScaleFrame` erben, werden per `GetDefaultScale()` so
+skaliert, dass sie in echten PIXELN gleich groß bleiben. Ihre Größe in
+UI-Einheiten hängt damit vom Bildschirm ab. Das betrifft genau zwei Glue-Rahmen
+in vier Formen, alle 510 breit und mittig:
+- `HardcorePopUpFrame` 240 hoch (Realmlisten-Warnung) und 580 hoch
+  (Erstellungsregeln), nur Era;
+- `RealmWarningPopUpFrame` 240 hoch (PvP-Warnung in der Realmliste) und 360 hoch
+  (PvP-Warnung bei der Charaktererstellung).
+
+`GetDefaultScale()` ist eine Client-Funktion ohne Lua-Quelltext. Gemessen: auf
+2880x1800 liefert sie 0,64 (im Spiel per `/wdeval` gelesen, 2026-09-18; derselbe
+Wert ergibt sich aus drei Messungen am 580er-Dialog), wo 768/Höhe 0,43 wäre —
+es gibt also eine Untergrenze. Gilt max(0,64; 768/Höhe), stimmen die bei 0,64
+gemessenen `Hc*`-Punkte ab 1200 Pixel Höhe; bei 1080p wäre der Faktor 0,71 und
+die Buttonreihe der Erstellungsregeln wandert von ui y 547..561 auf 565..580,
+unter einem Messpunkt bei 551 — das Tool stünde stumm davor. Ein Fensterclient
+zählt nach FENSTERhöhe.
+
+Deshalb wird der Faktor nicht mehr angenommen, sondern gefunden
+(`GlueDialogScan` in flows.ahk): Beide Buttons liegen in allen vier Formen an
+derselben Stelle relativ zum Rahmen, also auf einer Geraden aus der
+Bildschirmmitte; nur der Abstand darauf hängt vom Faktor ab. Ein Bildausschnitt
+(neue Klasse `ScreenGrab` in ui.ahk, DIB-Section, direkter Speicherzugriff),
+dann Faktor 0,60..1,25 in 0,01-Schritten je Höhe: rot an drei Spalten, nicht rot
+in der Lücke und knapp außerhalb beider Buttons, schwarz am Hintergrundpunkt der
+jeweiligen Höhe. Die Außenpunkte halten die Höhen auseinander. Der Mittelwert des
+Trefferbereichs wird um die berechnete Schieflage korrigiert
+(`GlueDlgRunBias`). Die festen Messpunkte bleiben überall die ERSTE Prüfung
+(bei 0,64 bewährt), der Scan ist die zweite — und die einzige für die 360er-Form.
+
+Umgestellt: `IsHardcoreCreateConfirm` (findet jetzt auch die PvP-Warnung bei der
+Erstellung; `CreateWarningHeight` sagt, welche), neues `IsRealmWarningConfirm`
+an allen sechs Stellen, die bisher `hardcoreConfirm` fragten; Klicks über
+`GlueDialogClick` (Fallback: die alten Widgets); OCR-Textbereiche über
+`GlueDialogBand`. Die PvP-Warnung in der Realmliste hat exakt die Geometrie der
+Hardcore-Warnung und lief deshalb bei 0,64 schon bisher über denselben Weg.
+Jeder Fund steht im Log: `GlueDialog: 580-high dialog at scale 0.64 (client …)`.
+
+Geprüft: `/validate` sauber; Python-Portierung des Scans auf 66 synthetischen
+Dialogen (6 Auflösungen von 1366x768 bis 3440x1440, 3 Höhen, Faktoren 0,64 /
+0,711 / 0,853 / 1,0) — Höhe immer richtig, Faktor auf ±0,012; 0 Fehlalarme auf
+allen Referenz-Screenshots und den Sozialvertrags-Bildern. `ScreenGrab` live
+gegen `ScreenColors` verglichen: 40/40 Pixel gleich, 1000 Lesevorgänge in 16 ms.
+An echten Dialogen UNGETESTET; bei 0,64 greift ohnehin zuerst die alte Prüfung.
+
+## 3.3 (2026-09-18)
 
 **Eine kaputte Windows-Stimme bringt das Tool nicht mehr zum Absturz.**
 Nutzermeldung vom 2026-09-18 (frische Installation mit dem neuesten

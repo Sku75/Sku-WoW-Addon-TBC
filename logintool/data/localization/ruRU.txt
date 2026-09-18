@@ -163,3 +163,7 @@ Change the server again before you play here.==Смените сервер, пр
 Agreed. Please wait.==Принято. Пожалуйста, подождите.
 The game is starting. Please wait.==Игра запускается. Пожалуйста, подождите.
 The hardcore rules are still open.==Правила хардкора всё ещё открыты.
+Blizzard's social contract is open. Accepting it, please wait.==Открыт социальный договор Blizzard. Принимаю его, пожалуйста, подождите.
+Social contract accepted.==Социальный договор принят.
+The social contract could not be accepted. Sighted help is needed once: scroll the text to the end and press accept.==Не удалось принять социальный договор. Один раз нужна помощь зрячего человека: прокрутить текст до конца и нажать «Принять».
+The PvP realm warning is still open.==Предупреждение о PvP-мире всё ещё открыто.

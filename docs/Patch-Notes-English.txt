@@ -4,6 +4,71 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v43.6
+
+    Overview
+
+        New
+            Login tool 3.4: Blizzard's social contract is recognized, scrolled to its end and accepted - until now a new blind player was stuck in front of it.
+            Login tool 3.4: the PvP warning shown when creating a character on a PvP realm is read out and answered with Enter or Escape.
+
+        Changes
+            Login tool 3.4: hardcore and PvP warnings are found at every screen resolution and window size, not only on large screens.
+
+    Login tool 3.4: Blizzard's social contract is accepted automatically
+        Simple: New accounts - and everyone else whenever Blizzard revises the text - are shown
+            a "social contract" on character selection. The window swallows every key, "Accept"
+            is locked until the text has been scrolled to the end with the mouse, and "Decline"
+            quits the game. The tool stood silent in front of it, or at best said "unknown
+            screen". It now says "Blizzard's social contract is open. Accepting it, please
+            wait.", scrolls the text to the end, presses Accept, checks that the window is gone
+            and then builds the character list as usual. The same happens when the contract
+            comes back in the middle of a session. If it does not work, the tool says what a
+            sighted person has to do once and tries again after a minute. Decline is never
+            pressed.
+        Technically: The dialog is SocialContractFrame (Blizzard_GlueXML\SocialContract.xml/.lua)
+            and is triggered by the SERVER (C_SocialContractGlue.GetShouldShowSocialContract ->
+            SOCIAL_CONTRACT_STATUS_UPDATE); no CVar or setting exists for it, so it can neither
+            be provoked nor answered in advance. The old code could not work on the Anniversary
+            client: the helper's check wants the dimmed yellow logo, which the BC glue screen
+            does not have, and its third probe sits in the middle of the contract's text - check
+            false, screen "unknown", the tool never entered login mode; the click half was a
+            blind sweep of 34 clicks. New: eight Sc* probe points in data.ini (derived from the
+            XML: frame 510x632, buttons at ui y 706..728, NOT a DefaultScaleFrame) plus
+            IsSocialContract, AcceptContract and HandleSocialContract in flows.ahk and two
+            CheckMode branches in menu.ahk - no rebuilt helper. Verified with /validate, zero
+            false positives on all reference screenshots and hits on synthetic contract images
+            at three resolutions. Still untested on the real dialog, because it cannot be
+            produced on demand; every attempt writes its probe values to log.txt as
+            "SocialContract:" lines.
+
+    Login tool 3.4: hardcore and PvP warnings at every resolution, PvP creation warning new
+        Simple: The hardcore warning on the realm list, the hardcore rules shown when creating a
+            character, and the PvP warnings are windows Blizzard keeps the same size in real
+            screen pixels. Their position therefore depends on the resolution, and the tool's
+            fixed probe points were only right on large screens (1200 pixels high and up). On a
+            common 1080p screen, or in a small window, the tool would have stood silent in front
+            of the hardcore rules. It now searches for these windows itself and finds them at any
+            resolution. New with it is the PvP warning shown when creating a character on a PvP
+            realm: it is read out, Enter agrees, Escape declines. The PvP warning on the realm
+            list looks exactly like the hardcore one and was therefore already being read out.
+        Technically: HardcorePopUpFrame (240 and 580 high) and RealmWarningPopUpFrame (240 and
+            360 high) inherit DefaultScaleFrame and are scaled by GetDefaultScale() - a client
+            function with no Lua source. Measured in game with /wdeval: 0.64 at 2880x1800, where
+            768/height would be 0.43; so there is a floor, and 1080p would presumably give 0.71.
+            Instead of assuming the scale, GlueDialogScan (flows.ahk) finds it: in all four
+            shapes both buttons lie on a straight line out of the screen centre and only the
+            distance depends on the scale. One screen grab (new class ScreenGrab in ui.ahk, 1000
+            pixels in 16 ms), then scale 0.60..1.25 per height: red at three columns, no red in
+            the gap and just outside, black at the backdrop point. The fixed probes remain the
+            first check, the scan the second. Clicks (GlueDialogClick) and OCR text bands
+            (GlueDialogBand) follow the found scale. Verified with a Python port on 66 synthetic
+            dialogs (6 resolutions, 3 heights, 4 scales): height always right, scale within
+            0.012, zero false positives. Still untested on real dialogs; every find is logged
+            to log.txt as a "GlueDialog:" line with its scale.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v43.5
 
     Overview

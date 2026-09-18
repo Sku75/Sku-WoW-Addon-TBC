@@ -163,3 +163,7 @@ Change the server again before you play here.==Changez de royaume avant de jouer
 Agreed. Please wait.==Accepte. Veuillez patienter.
 The game is starting. Please wait.==Le jeu démarre. Veuillez patienter.
 The hardcore rules are still open.==Les règles hardcore sont toujours ouvertes.
+Blizzard's social contract is open. Accepting it, please wait.==Le contrat social de Blizzard est ouvert. Acceptation en cours, veuillez patienter.
+Social contract accepted.==Contrat social accepté.
+The social contract could not be accepted. Sighted help is needed once: scroll the text to the end and press accept.==Le contrat social n'a pas pu être accepté. Il faut une fois l'aide d'une personne voyante : faire défiler le texte jusqu'à la fin et cliquer sur accepter.
+The PvP realm warning is still open.==L'avertissement du royaume JcJ est toujours ouvert.

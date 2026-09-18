@@ -172,6 +172,60 @@ ScreenColors(points) {
     return result
 }
 
+; One rectangle of the screen, held in memory for many pixel reads. ScreenColors
+; wants its points up front; a SCAN decides the next point from the last answer
+; and reads a thousand of them, so it needs the rectangle kept and direct access
+; to the bits (a DIB section - GetPixel per point would be the slow part).
+; Coordinates in and out are SCREEN coordinates. Pixel() returns {r,g,b} or "".
+class ScreenGrab {
+    __New(x, y, w, h) {
+        this.x := x, this.y := y, this.w := w, this.h := h
+        this.ok := false, this.dc := 0, this.bmp := 0, this.prev := 0, this.bits := 0
+        if (w < 1 || h < 1)
+            return
+        screenDC := DllCall("GetDC", "Ptr", 0, "Ptr")
+        if !screenDC
+            return
+        bi := Buffer(40, 0)                  ; BITMAPINFOHEADER, 32 bpp, top-down
+        NumPut("UInt", 40, bi, 0)
+        NumPut("Int", w, bi, 4)
+        NumPut("Int", -h, bi, 8)
+        NumPut("UShort", 1, bi, 12)
+        NumPut("UShort", 32, bi, 14)
+        bits := 0
+        this.dc := DllCall("gdi32\CreateCompatibleDC", "Ptr", screenDC, "Ptr")
+        this.bmp := DllCall("gdi32\CreateDIBSection", "Ptr", screenDC, "Ptr", bi, "UInt", 0,
+            "Ptr*", &bits, "Ptr", 0, "UInt", 0, "Ptr")
+        if (this.dc && this.bmp && bits) {
+            this.prev := DllCall("gdi32\SelectObject", "Ptr", this.dc, "Ptr", this.bmp, "Ptr")
+            copied := DllCall("gdi32\BitBlt", "Ptr", this.dc, "Int", 0, "Int", 0, "Int", w, "Int", h,
+                "Ptr", screenDC, "Int", x, "Int", y, "UInt", 0x00CC0020)  ; SRCCOPY
+            DllCall("gdi32\GdiFlush")
+            this.bits := bits
+            this.ok := copied != 0
+        }
+        DllCall("ReleaseDC", "Ptr", 0, "Ptr", screenDC)
+    }
+
+    Pixel(sx, sy) {
+        px := sx - this.x, py := sy - this.y
+        if (!this.ok || px < 0 || py < 0 || px >= this.w || py >= this.h)
+            return ""
+        c := NumGet(this.bits, (py * this.w + px) * 4, "UInt")   ; 0x00RRGGBB
+        return {r: (c >> 16) & 0xFF, g: (c >> 8) & 0xFF, b: c & 0xFF}
+    }
+
+    __Delete() {
+        if this.dc {
+            if this.prev
+                DllCall("gdi32\SelectObject", "Ptr", this.dc, "Ptr", this.prev)
+            DllCall("gdi32\DeleteDC", "Ptr", this.dc)
+        }
+        if this.bmp
+            DllCall("gdi32\DeleteObject", "Ptr", this.bmp)
+    }
+}
+
 ; Selected-row highlight, ported from v1 checks.ahk IsWhiteUI: legacy textures
 ; draw the selection flat white, the Phase 3 redesign draws it flat dark blue
 ; (0,40,121 in the texture). Accept both so counting works with either texture

@@ -163,3 +163,7 @@ Change the server again before you play here.==Wechsle den Server erneut, bevor 
 Agreed. Please wait.==Zugestimmt. Bitte warten.
 The game is starting. Please wait.==Das Spiel startet. Bitte warten.
 The hardcore rules are still open.==Die Hardcore-Regeln stehen noch offen.
+Blizzard's social contract is open. Accepting it, please wait.==Blizzards Sozialvertrag ist offen. Er wird akzeptiert, bitte warten.
+Social contract accepted.==Sozialvertrag akzeptiert.
+The social contract could not be accepted. Sighted help is needed once: scroll the text to the end and press accept.==Der Sozialvertrag konnte nicht akzeptiert werden. Dafür wird einmal sehende Hilfe gebraucht: den Text bis zum Ende scrollen und auf Akzeptieren klicken.
+The PvP realm warning is still open.==Die Warnung zum PvP-Realm steht noch offen.

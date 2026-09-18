@@ -4,6 +4,72 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.6
+
+    Ueberblick
+
+        Neu
+            Anmelde-Tool 3.4: Blizzards Sozialvertrag wird erkannt, zu Ende gescrollt und akzeptiert - bisher blieb ein neuer blinder Spieler davor haengen.
+            Anmelde-Tool 3.4: die PvP-Warnung beim Erstellen eines Charakters auf einem PvP-Realm wird vorgelesen und mit Enter oder Escape beantwortet.
+
+        Aenderungen
+            Anmelde-Tool 3.4: Hardcore- und PvP-Warnungen werden bei jeder Bildschirmaufloesung und Fenstergroesse gefunden, nicht nur auf grossen Bildschirmen.
+
+    Anmelde-Tool 3.4: Blizzards Sozialvertrag wird automatisch akzeptiert
+        Einfach: Neue Accounts - und alle anderen, sobald Blizzard den Text aendert - bekommen
+            auf der Charakterauswahl einen "Sozialvertrag" angezeigt. Das Fenster schluckt jede
+            Taste, "Akzeptieren" ist gesperrt, bis der Text mit der Maus zu Ende gescrollt wurde,
+            und "Ablehnen" beendet das Spiel. Das Tool blieb davor stumm und meldete hoechstens
+            "Unbekannter Bildschirm". Jetzt sagt es "Blizzards Sozialvertrag ist offen. Er wird
+            akzeptiert, bitte warten.", scrollt den Text zu Ende, drueckt Akzeptieren, prueft, ob
+            das Fenster weg ist, und baut danach wie gewohnt die Charakterliste auf. Das gilt
+            auch, wenn der Vertrag mitten in der Sitzung wieder auftaucht. Klappt es nicht, sagt
+            das Tool, was eine sehende Person einmal tun muss, und versucht es nach einer Minute
+            erneut. Ablehnen wird nie gedrueckt.
+        Technisch: Der Dialog ist SocialContractFrame (Blizzard_GlueXML\SocialContract.xml/.lua)
+            und wird vom SERVER ausgeloest (C_SocialContractGlue.GetShouldShowSocialContract ->
+            SOCIAL_CONTRACT_STATUS_UPDATE); es gibt keine CVar und keine Einstellung dafuer, man
+            kann ihn also weder hervorrufen noch vorab beantworten. Der alte Code konnte auf dem
+            Anniversary-Client nicht greifen: die Helper-Pruefung verlangt das abgedunkelte gelbe
+            Logo, das der BC-Glue nicht hat, und ihr dritter Messpunkt liegt mitten im
+            Vertragstext - Pruefung falsch, Bildschirm "unknown", das Tool kam nie in den
+            Login-Modus; der Klick-Teil war ein blinder Sweep aus 34 Klicks. Neu sind acht
+            Sc*-Messpunkte in data.ini (aus dem XML abgeleitet: Rahmen 510x632, Buttons bei ui y
+            706..728, KEIN DefaultScaleFrame) sowie IsSocialContract, AcceptContract und
+            HandleSocialContract in flows.ahk und zwei CheckMode-Zweige in menu.ahk - ohne neu
+            gebauten Helper. Geprueft mit /validate, 0 Fehlalarmen auf allen Referenz-Screenshots
+            und Treffern auf synthetischen Vertragsbildern in drei Aufloesungen. Am echten Dialog
+            noch ungetestet, weil er sich nicht auf Bestellung erzeugen laesst; jeder Versuch
+            schreibt seine Messwerte als "SocialContract:"-Zeilen nach log.txt.
+
+    Anmelde-Tool 3.4: Hardcore- und PvP-Warnungen bei jeder Aufloesung, PvP-Erstellungswarnung neu
+        Einfach: Die Hardcore-Warnung in der Realmliste, die Hardcore-Regeln beim Erstellen eines
+            Charakters und die PvP-Warnungen sind Fenster, die Blizzard in echten Bildschirmpixeln
+            gleich gross haelt. Ihre Lage haengt deshalb von der Aufloesung ab, und die festen
+            Messpunkte des Tools stimmten nur auf grossen Bildschirmen (ab 1200 Pixel Hoehe). Auf
+            einem ueblichen 1080p-Bildschirm oder im kleinen Fenster waere das Tool vor den
+            Hardcore-Regeln stumm geblieben. Jetzt sucht es diese Fenster selbst und findet sie
+            bei jeder Aufloesung. Neu dabei ist die PvP-Warnung beim Erstellen eines Charakters
+            auf einem PvP-Realm: sie wird vorgelesen, Enter stimmt zu, Escape lehnt ab. Die
+            PvP-Warnung in der Realmliste sieht genauso aus wie die Hardcore-Warnung und wurde
+            deshalb schon bisher vorgelesen.
+        Technisch: HardcorePopUpFrame (240 und 580 hoch) und RealmWarningPopUpFrame (240 und 360
+            hoch) erben von DefaultScaleFrame und werden per GetDefaultScale() skaliert - eine
+            Client-Funktion ohne Lua-Quelltext. Im Spiel per /wdeval gemessen: 0,64 auf 2880x1800,
+            wo 768/Hoehe 0,43 waere; es gibt also eine Untergrenze, und bei 1080p waeren es
+            vermutlich 0,71. Statt den Faktor anzunehmen, findet ihn GlueDialogScan (flows.ahk):
+            beide Buttons liegen in allen vier Formen auf einer Geraden aus der Bildschirmmitte,
+            nur der Abstand haengt vom Faktor ab. Ein Bildausschnitt (neue Klasse ScreenGrab in
+            ui.ahk, 1000 Pixel in 16 ms), dann Faktor 0,60..1,25 je Hoehe: rot an drei Spalten,
+            nicht rot in der Luecke und knapp ausserhalb, schwarz am Hintergrundpunkt. Die festen
+            Messpunkte bleiben die erste Pruefung, der Scan die zweite. Klicks (GlueDialogClick)
+            und OCR-Textbereiche (GlueDialogBand) folgen dem gefundenen Faktor. Geprueft mit einer
+            Python-Portierung auf 66 synthetischen Dialogen (6 Aufloesungen, 3 Hoehen, 4 Faktoren):
+            Hoehe immer richtig, Faktor auf 0,012 genau, 0 Fehlalarme. An echten Dialogen noch
+            ungetestet; jeder Fund steht als "GlueDialog:"-Zeile mit Faktor in log.txt.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.5
 
     Ueberblick

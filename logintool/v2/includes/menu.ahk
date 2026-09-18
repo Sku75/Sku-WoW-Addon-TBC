@@ -278,7 +278,12 @@ CheckMode() {
             if (A_TickCount - gLastGlueSense >= interval) {
                 gLastGlueSense := A_TickCount
                 s := SenseQuick()
-                if (SenseOk(s) && s["screen"] != "ingame" && s["screen"] != "unknown") {
+                ; The social contract dims the character screen behind it, so
+                ; every helper check goes false and the verdict is "unknown" -
+                ; on the one screen a new player cannot get past alone. It counts
+                ; as a recognized screen; InitLogin answers it.
+                if (SenseOk(s) && s["screen"] != "ingame"
+                        && (s["screen"] != "unknown" || IsSocialContract(s))) {
                     global gUnknownAnnounced := false
                     global gUnknownSince := 0
                     global gGlueWaitSince := 0
@@ -344,7 +349,7 @@ CheckMode() {
                     Log("CheckMode: login screen "
                         . (SenseCheck(s, "login") ? "reached" : "left") " - re-initializing")
                     InitLogin(s)
-                } else if SenseCheck(s, "hardcoreConfirm") {
+                } else if IsRealmWarningConfirm(s) {
                     ; The hardcore warning can surface outside the realm-join
                     ; flow (tab-away and back, or a flow that missed it).
                     if !gHardcoreConfirmFlag
@@ -357,6 +362,13 @@ CheckMode() {
                     ; Enter and Escape no longer reached the dialog at all.
                     if !gHardcoreConfirmFlag
                         AskHardcoreCreateConfirm()
+                } else if SocialContractIsUp(s) {
+                    ; The contract is not only a first-login thing: the server
+                    ; can ask for it on any return to character selection
+                    ; (logging out of the world, a realm change), long after
+                    ; InitLogin ran.
+                    if (HandleSocialContract(s) && !gLoginInitialized)
+                        InitLogin(SenseQuick())
                 } else if SenseCheck(s, "realmselect") {
                     gHardcoreConfirmFlag := false
                     if !gRealmMenuOffered {
