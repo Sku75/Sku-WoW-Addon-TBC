@@ -683,7 +683,10 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	-- the window had already expired and the span is the thing to raise; a POSITIVE
 	-- one means a handover slipped past the blockers and the bug is a code path,
 	-- not a duration. Guessing between those two cost a full test round.
-	if dprint and tKillWindowUntil > 0 then
+	-- Only around a window that is open or just closed: `tKillWindowUntil > 0`
+	-- alone stays true for the rest of the session after the first cancel, and
+	-- then logs a line per handover forever, for no information.
+	if dprint and (tKillWindowUntil - GetTime()) > -1.0 then
 		dprint("BTTS handover", "killRemain="..string.format("%.2f", tKillWindowUntil - GetTime()))
 	end
 	if dprint then dprint("BTTS SpeakText", aIsEcho and "echo" or "queue",
