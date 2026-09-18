@@ -1,7 +1,19 @@
 # SAPI2SR: speech that was stopped must also stop in the screen reader
 
-Status 2026-09-18: BUILT, UNTESTED in game, via an in-band marker instead of
-options A/B below. See "Chosen fix" directly under this paragraph.
+Status 2026-09-18: TESTED OK in game (bridge: fast scrolling cuts the old line
+after a fragment and speaks the settled one; typing echo instant; quest text
+complete; Hedda unchanged). Shipped via installer 5.1 (payload zip rebuilt).
+Built as an in-band marker instead of options A/B below, see "Chosen fix".
+
+WARNING about the section 3.1 probes: typed or pasted into the chat line, the
+probe's SpeakText fires within milliseconds of the StopSpeakingText Sku issues
+when Enter closes the chat line. Twice (10:27 and 17:39 on 2026-09-18) the
+client's whole TTS playback then stopped for EVERY voice until a client
+restart: no STARTED/FINISHED, real SAPI voices silent, typing echo at ~1 s per
+key (Sku's echo gate timing out). That is what earlier got blamed on the
+AlwaysInterrupt INI. Use the delayed form instead:
+
+    /run C_Timer.After(.5,function() C_VoiceChat.SpeakText(1,"eins zwei drei vier fuenf sechs sieben acht",6,90) C_Timer.After(1,function() C_VoiceChat.SpeakText(1,'neun zehn<bookmark mark="skuint"/>',6,90) end) end)
 
 ## Chosen fix: the interrupt travels inside the utterance (Patch C)
 
@@ -27,8 +39,9 @@ line. So:
 - Compatible in both directions: old engine + new Sku = mark silently skipped;
   new engine + old Sku = no mark, behaves as before. Real SAPI voices consume
   the bookmark silently. Not sent on the Mac client (its engine speaks markup).
-- Still open: `installer/SkuInstaller/payload/sapi2sr-payload.zip` not yet rebuilt with the new
-  DLL (do that after the in-game test passes).
+- Shipped: `installer/SkuInstaller/payload/sapi2sr-payload.zip` carries the new
+  DLL (unsigned; the install step signs it) and the script with the new pin.
+  Installer bumped to 5.1 so installed SkuUpdater copies self-update to it.
 
 Corrections to the analysis below: options A and B are not needed. Option B
 is not possible with SAPI anyway. The `AlwaysInterrupt`/`KeyDownInterrupt`
