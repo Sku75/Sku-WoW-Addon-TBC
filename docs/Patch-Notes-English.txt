@@ -15,6 +15,7 @@ Changes in Sku v43.5
             Quest: "Raene's Cleansing" (Iron Pommel, Ashenvale) had no quest target; it now points at the Rusty Chest the Rotting Slimes leave behind.
             Speech: typed characters and cancelled announcements were spoken late - letters from a long-closed chat line turned up seconds later in a different menu.
             Login tool 3.3: a damaged Windows voice on the PC made the tool quit with an error window (GetVoices, 0x80045039) right after announcing its version.
+            Speech: scrolling quickly through long entries over the NVDA/SAPI bridge read the previous entry to the end before the one you stopped on.
 
     Quest database: opening the quest lists froze the game
         Simple: Opening the "All" list under Quest > Quest database had caused a freeze of several
@@ -115,6 +116,25 @@ Changes in Sku v43.5
             which reads each voice by Item(i) in its own try; an unreadable one is skipped and
             logged, and if even the list fails it stays empty. SapiInit() reads the default
             voice under the same protection. Not yet tested on a PC with a broken voice.
+
+    Speech: fast scrolling over the NVDA bridge read the previous long entry to the end
+        Simple: With the NVDA/SAPI bridge voice, moving quickly through a list with long entries
+            (the waypoint list, quest texts, chat history) first read the previous entry to the end
+            and only then the one the cursor was on. Now the old entry is cut off after a moment and
+            the entry you stopped on is read, as with a Windows voice. Longer texts that come in
+            several parts are still read completely, and typing echo is unchanged. The fix needs the
+            updated NVDA bridge that the Sku installer 5.1 installs: update through the installer
+            (not only the addon zip) and restart WoW completely afterwards.
+        Technically: The game's StopSpeakingText only stops the client's own playback. On the
+            bridge the text is already in NVDA's queue at that point, and SAPI never passes "purge
+            before speak" on to an engine, so nothing on the path could interrupt NVDA. The only
+            thing that reaches the engine is the utterance itself, markup included - so the intent
+            now travels inside it, as with Prism's speak(text, interrupt): every stop sets a flag,
+            and the next line carries <bookmark mark="skuint"/>. The engine shipped with the
+            installer (SAPI2SR with Sku's patch C) calls nvdaController_cancelSpeech when it sees
+            that bookmark and then forwards the text. Lines handed over without a stop in front
+            carry no mark and keep queueing. Real SAPI voices consume the bookmark silently; an
+            older engine skips it.
 
 
 -------------------------------------------------------------------------------------------------------

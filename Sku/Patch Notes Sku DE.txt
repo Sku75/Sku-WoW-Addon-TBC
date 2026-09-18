@@ -15,6 +15,7 @@ Aenderungen in Sku v43.5
             Quest: "Raenes Saeuberung" (Eisenknauf, Eschental) hatte kein Questziel; es fuehrt jetzt zur Rostigen Truhe der Faulenden Bruehschleimer.
             Sprachausgabe: getippte Zeichen und abgebrochene Ansagen kamen verspaetet nach - Buchstaben einer laengst geschlossenen Chatzeile tauchten Sekunden spaeter in einem anderen Menue auf.
             Anmelde-Tool 3.3: eine beschaedigte Windows-Stimme auf dem Rechner liess das Tool gleich nach der Versionsansage mit einem Fehlerfenster (GetVoices, 0x80045039) abbrechen.
+            Sprachausgabe: schnelles Blaettern durch lange Eintraege las ueber die NVDA/SAPI-Bruecke erst den vorigen Eintrag zu Ende, bevor der gewaehlte kam.
 
     Questdatenbank: das Oeffnen der Questlisten liess das Spiel einfrieren
         Einfach: Wer unter Quest > Questdatenbank die Liste "Alle" oeffnete, bekam seit v43.2 einen
@@ -120,6 +121,26 @@ Aenderungen in Sku v43.5
             eine unlesbare wird uebersprungen und geloggt, scheitert schon die Liste, bleibt sie
             leer. SapiInit() liest die Standardstimme ebenfalls geschuetzt. Am Rechner mit
             kaputter Stimme noch ungetestet.
+
+    Sprachausgabe: schnelles Blaettern las ueber die NVDA-Bruecke den vorigen langen Eintrag zu Ende
+        Einfach: Mit der NVDA/SAPI-Bruecke als Stimme las Sku beim schnellen Blaettern durch eine
+            Liste mit langen Eintraegen (Wegpunktliste, Questtexte, Chatverlauf) erst den vorigen
+            Eintrag ganz zu Ende und dann den, auf dem der Cursor stand. Jetzt wird der alte Eintrag
+            nach einem kurzen Moment abgebrochen und der gewaehlte gelesen, wie bei einer
+            Windows-Stimme. Laengere Texte, die in mehreren Teilen kommen, werden weiter vollstaendig
+            gelesen, und das Tipp-Echo bleibt unveraendert. Die Behebung braucht die neue
+            NVDA-Bruecke aus dem Sku-Installer 5.1: ueber den Installer aktualisieren (nicht nur das
+            Addon-Zip) und WoW danach komplett neu starten.
+        Technisch: StopSpeakingText des Spiels stoppt nur die eigene Wiedergabe des Clients. Auf der
+            Bruecke steht der Text dann schon in NVDAs Warteschlange, und SAPI reicht "purge before
+            speak" nie an eine Engine weiter - nichts auf dem Weg konnte NVDA unterbrechen. Bei der
+            Engine kommt nur die Ausgabe selbst an, Markup eingeschlossen. Deshalb reist die Absicht
+            jetzt darin mit, wie bei Prisms speak(text, interrupt): jeder Stopp setzt ein Flag, und
+            die naechste Zeile traegt <bookmark mark="skuint"/>. Die mit dem Installer
+            ausgelieferte Engine (SAPI2SR mit Skus Patch C) ruft bei diesem Bookmark
+            nvdaController_cancelSpeech und reicht dann den Text weiter. Zeilen ohne Stopp davor
+            tragen keine Marke und reihen sich weiter ein. Echte SAPI-Stimmen verschlucken das
+            Bookmark lautlos; eine aeltere Engine ueberspringt es.
 
 
 -------------------------------------------------------------------------------------------------------

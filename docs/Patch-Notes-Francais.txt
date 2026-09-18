@@ -18,6 +18,7 @@ Changements dans Sku v43.5
             Quête : « Le nettoyage selon Raene » (Bâtonnet de Dartol, Orneval) n'avait pas de cible ; elle mène maintenant au Coffre rouillé laissé par les Gelées pourrissantes.
             Voix : les caractères tapés et les annonces annulées arrivaient en retard - des lettres d'une ligne de chat fermée depuis longtemps surgissaient plus tard dans un autre menu.
             Outil de connexion 3.3 : une voix Windows endommagée sur le PC faisait quitter l'outil avec une fenêtre d'erreur (GetVoices, 0x80045039) juste après l'annonce de sa version.
+            Voix : en parcourant vite des entrées longues via le pont NVDA/SAPI, l'entrée précédente était lue jusqu'au bout avant celle choisie.
 
     Base de données des quêtes : ouvrir les listes de quêtes figeait le jeu
         Simple : Ouvrir la liste « Tout » sous Quête > Base de données des quêtes provoquait depuis la v43.2 un
@@ -123,6 +124,26 @@ Changements dans Sku v43.5
             propre try ; une voix illisible est ignorée et journalisée, et si la liste elle-même
             échoue, elle reste vide. SapiInit() lit la voix par défaut avec la même protection.
             Pas encore testé sur un PC avec une voix cassée.
+
+    Voix : un défilement rapide via le pont NVDA lisait l'entrée longue précédente jusqu'au bout
+        Simple : Avec la voix du pont NVDA/SAPI, parcourir vite une liste aux entrées longues (liste
+            des points de passage, textes de quête, historique du chat) lisait d'abord l'entrée
+            précédente en entier, puis seulement celle sous le curseur. L'ancienne entrée est
+            maintenant coupée après un bref instant et celle choisie est lue, comme avec une voix
+            Windows. Les textes longs en plusieurs parties restent lus en entier, et l'écho de
+            frappe ne change pas. La correction nécessite le nouveau pont NVDA installé par
+            l'installateur Sku 5.1 : mettez à jour via l'installateur (pas seulement le zip de
+            l'addon) puis redémarrez complètement WoW.
+        Technique : StopSpeakingText du jeu n'arrête que la lecture du client. Sur le pont, le texte
+            est déjà dans la file de NVDA, et SAPI ne transmet jamais « purge before speak » à un
+            moteur : rien sur le chemin ne pouvait interrompre NVDA. Seul l'énoncé lui-même,
+            balisage compris, atteint le moteur - l'intention voyage donc à l'intérieur, comme avec
+            speak(text, interrupt) de Prism : chaque arrêt pose un drapeau, et la ligne suivante
+            porte <bookmark mark="skuint"/>. Le moteur livré par l'installateur (SAPI2SR avec le
+            patch C de Sku) appelle nvdaController_cancelSpeech en voyant ce signet, puis transmet
+            le texte. Les lignes transmises sans arrêt préalable ne portent pas de marque et
+            restent en file. Les vraies voix SAPI ignorent le signet ; un moteur plus ancien le
+            saute.
 
 
 -------------------------------------------------------------------------------------------------------
