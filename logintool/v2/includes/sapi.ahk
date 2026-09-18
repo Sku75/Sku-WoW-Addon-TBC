@@ -64,8 +64,13 @@ NvdaCancelSpeech() {
 
 SapiInit() {
     SetSapiAudioOutputBySubstring(gAudioOutputMatch)
-    if (gHasSetupVoice = "")
-        global gHasSetupVoice := sap.Voice.GetDescription()
+    ; A broken default voice token throws here too (same cause as in
+    ; ReadableVoiceTokens); the tool then just keeps SAPI's own default.
+    if (gHasSetupVoice = "") {
+        try global gHasSetupVoice := sap.Voice.GetDescription()
+        catch as e
+            Log("SapiInit: default voice unreadable: " e.Message)
+    }
     ApplyToolVoice()
     NvdaInit()
 }
@@ -80,24 +85,48 @@ ApplyToolVoice() {
     }
 }
 
+; Every installed voice token that can actually be read, as {desc, token}.
+; One broken registration under Speech\Voices\Tokens (a voice uninstalled but
+; left behind, OneCore voices copied in by a registry tweak, a half-registered
+; third-party voice) made the plain for-loop over sap.GetVoices() throw
+; SPERR_NO_MORE_ITEMS (0x80045039) and killed the tool at startup while it built
+; the voice menu. So: read the tokens one by one, skip and log the bad ones.
+ReadableVoiceTokens() {
+    result := []
+    try {
+        tokens := sap.GetVoices()
+        count := tokens.Count
+    } catch as e {
+        Log("GetVoices FAILED, voice list empty: " e.Message)
+        return result
+    }
+    loop count {
+        index := A_Index - 1
+        try {
+            token := tokens.Item(index)
+            result.Push({desc: token.GetDescription(), token: token})
+        } catch as e {
+            Log("GetVoices: skipping unreadable voice token " index " of " count ": " e.Message)
+        }
+    }
+    return result
+}
+
 GetVoices() {
     voices := []
-    for v in sap.GetVoices() {
-        desc := v.GetDescription()
-        if !InStr(desc, "Amazon")
-            voices.Push(desc)
+    for v in ReadableVoiceTokens() {
+        if !InStr(v.desc, "Amazon")
+            voices.Push(v.desc)
     }
     return voices
 }
 
 SetSapiVoiceByName(name) {
-    index := 0
-    for v in sap.GetVoices() {
-        if (v.GetDescription() = name) {
-            sap.Voice := sap.GetVoices().Item(index)
+    for v in ReadableVoiceTokens() {
+        if (v.desc = name) {
+            sap.Voice := v.token
             return
         }
-        index++
     }
 }
 

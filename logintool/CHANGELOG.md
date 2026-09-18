@@ -1,5 +1,28 @@
 # WoW Logintool
 
+## 3.3 (unveröffentlicht)
+
+**Eine kaputte Windows-Stimme bringt das Tool nicht mehr zum Absturz.**
+Nutzermeldung vom 2026-09-18 (frische Installation mit dem neuesten
+Installer): Das Tool sagte noch "Version 3.2" an und brach dann mit einem
+AutoHotkey-Fehler ab: `Error: (0x80045039) Specifically: GetVoices` in
+`includes\sapi.ahk` auf der Zeile `For v in sap.GetVoices()`. 0x80045039 ist
+`SPERR_NO_MORE_ITEMS` (sperror.h): SAPI meldet N Stimmen, eine davon lässt sich
+aber nicht lesen. Ursache ist ein kaputter Eintrag unter
+`HKLM\SOFTWARE\Microsoft\Speech\Voices\Tokens` auf dem Rechner des Nutzers
+(z. B. deinstallierte Stimme mit Registry-Resten, per Registry-Trick
+hineinkopierte OneCore-Stimmen, halb registrierte Fremdstimme). Gestorben ist
+das Tool beim Aufbau des Menüs "Stimme auswählen", das alle Stimmen aufzählt.
+
+`GetVoices()` und `SetSapiVoiceByName()` gehen jetzt über die gemeinsame
+Funktion `ReadableVoiceTokens()`: Sie liest die Stimmen einzeln per `Item(i)`,
+jede in einem eigenen try. Eine unlesbare Stimme wird übersprungen und in
+log.txt vermerkt (`GetVoices: skipping unreadable voice token …`). Scheitert
+schon das Holen der Liste, bleibt sie leer (`GetVoices FAILED …`), und das Tool
+startet trotzdem. `SapiInit()` liest die Standardstimme ebenfalls in einem try
+(`SapiInit: default voice unreadable …`), denn ist genau sie der kaputte
+Eintrag, wäre der Start dort gestorben. `/validate` sauber; am Rechner mit kaputter Stimme UNGETESTET.
+
 ## 3.2 (2026-08-26)
 
 **"Unbekannter Bildschirm" sagt jetzt, wenn die Erkennungs-Texturen fehlen.**

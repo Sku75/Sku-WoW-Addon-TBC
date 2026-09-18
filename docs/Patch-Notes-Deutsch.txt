@@ -14,6 +14,7 @@ Aenderungen in Sku v43.5
             Sprachausgabe: einzelne Zeilen blieben ueber die NVDA/SAPI-Bruecke zufaellig stumm (etwa ein Ausruestungsteil in der Liste), waehrend die Nachbarn gesprochen wurden.
             Quest: "Raenes Saeuberung" (Eisenknauf, Eschental) hatte kein Questziel; es fuehrt jetzt zur Rostigen Truhe der Faulenden Bruehschleimer.
             Sprachausgabe: getippte Zeichen und abgebrochene Ansagen kamen verspaetet nach - Buchstaben einer laengst geschlossenen Chatzeile tauchten Sekunden spaeter in einem anderen Menue auf.
+            Anmelde-Tool 3.3: eine beschaedigte Windows-Stimme auf dem Rechner liess das Tool gleich nach der Versionsansage mit einem Fehlerfenster (GetVoices, 0x80045039) abbrechen.
 
     Questdatenbank: das Oeffnen der Questlisten liess das Spiel einfrieren
         Einfach: Wer unter Quest > Questdatenbank die Liste "Alle" oeffnete, bekam seit v43.2 einen
@@ -103,6 +104,22 @@ Aenderungen in Sku v43.5
             Abbruchfenster sichert den Rest ab: nach einem harten Abbruch wird nichts uebergeben und
             jede dennoch startende Ausgabe sofort gestoppt. Das entspricht dem Aufbau von NVDA, das
             die Warteschlange ebenfalls selbst haelt und der Stimme nur eine Ausgabe auf einmal gibt.
+
+    Anmelde-Tool 3.3: Absturz beim Start durch eine beschaedigte Windows-Stimme
+        Einfach: Nach einer frischen Installation sagte das Tool noch "Version 3.2" an und
+            brach dann mit einem Fehlerfenster ab ("Error: (0x80045039) Specifically: GetVoices").
+            Schuld war nicht das Tool allein, sondern eine beschaedigte Stimme in Windows - etwa
+            eine deinstallierte Stimme, die Reste hinterlassen hat. Das Tool ueberspringt eine
+            solche Stimme jetzt, vermerkt sie in log.txt und startet normal; sie fehlt dann nur
+            im Menue "Stimme auswaehlen".
+        Technisch: 0x80045039 ist SPERR_NO_MORE_ITEMS: SAPI meldet N Stimmen, eine davon laesst
+            sich aber nicht lesen (kaputter Eintrag unter HKLM\SOFTWARE\Microsoft\Speech\Voices\
+            Tokens). Das Tool starb beim Aufbau des Stimmen-Menues an der for-Schleife ueber
+            sap.GetVoices(). GetVoices() und SetSapiVoiceByName() lesen jetzt ueber die neue
+            Funktion ReadableVoiceTokens() jede Stimme einzeln per Item(i) in einem eigenen try;
+            eine unlesbare wird uebersprungen und geloggt, scheitert schon die Liste, bleibt sie
+            leer. SapiInit() liest die Standardstimme ebenfalls geschuetzt. Am Rechner mit
+            kaputter Stimme noch ungetestet.
 
 
 -------------------------------------------------------------------------------------------------------

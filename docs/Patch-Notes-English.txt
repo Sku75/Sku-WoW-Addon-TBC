@@ -14,6 +14,7 @@ Changes in Sku v43.5
             Speech: single lines randomly stayed silent over the NVDA/SAPI bridge (e.g. one item in the equipment list) while their neighbours were spoken.
             Quest: "Raene's Cleansing" (Iron Pommel, Ashenvale) had no quest target; it now points at the Rusty Chest the Rotting Slimes leave behind.
             Speech: typed characters and cancelled announcements were spoken late - letters from a long-closed chat line turned up seconds later in a different menu.
+            Login tool 3.3: a damaged Windows voice on the PC made the tool quit with an error window (GetVoices, 0x80045039) right after announcing its version.
 
     Quest database: opening the quest lists froze the game
         Simple: Opening the "All" list under Quest > Quest database had caused a freeze of several
@@ -100,6 +101,20 @@ Changes in Sku v43.5
             handed over and any utterance that starts regardless is stopped at once. This mirrors
             NVDA's structure, which likewise keeps the queue itself and gives the voice one
             utterance at a time.
+
+    Login tool 3.3: crash at startup caused by a damaged Windows voice
+        Simple: After a fresh install the tool still announced "version 3.2" and then quit
+            with an error window ("Error: (0x80045039) Specifically: GetVoices"). The trigger was
+            a damaged voice in Windows - for example an uninstalled voice that left remnants
+            behind. The tool now skips such a voice, notes it in log.txt and starts normally;
+            the voice is just missing from the "select voice" menu.
+        Technically: 0x80045039 is SPERR_NO_MORE_ITEMS: SAPI reports N voices but one of them
+            cannot be read (a broken entry under HKLM\SOFTWARE\Microsoft\Speech\Voices\Tokens).
+            The tool died building the voice menu, in the for-loop over sap.GetVoices().
+            GetVoices() and SetSapiVoiceByName() now go through the new ReadableVoiceTokens(),
+            which reads each voice by Item(i) in its own try; an unreadable one is skipped and
+            logged, and if even the list fails it stays empty. SapiInit() reads the default
+            voice under the same protection. Not yet tested on a PC with a broken voice.
 
 
 -------------------------------------------------------------------------------------------------------
