@@ -14,6 +14,11 @@ Changes in Sku v43.6
 
         Changes
             Login tool 3.4: hardcore and PvP warnings are found at every screen resolution and window size, not only on large screens.
+            Login tool 3.4: every voice is tried out inaudibly before it is accepted - a broken voice can no longer mute the tool.
+            Installer: the log bundle now contains a list of all Windows voices (voices.txt).
+
+        Bugfixes
+            Login tool 3.4: "Select voice" was empty on some machines, and first-time setup could never get past it.
 
     Login tool 3.4: Blizzard's social contract is accepted automatically
         Simple: New accounts - and everyone else whenever Blizzard revises the text - are shown
@@ -66,6 +71,55 @@ Changes in Sku v43.6
             dialogs (6 resolutions, 3 heights, 4 scales): height always right, scale within
             0.012, zero false positives. Still untested on real dialogs; every find is logged
             to log.txt as a "GlueDialog:" line with its scale.
+
+    Login tool 3.4: empty voice selection fixed, first-time setup no longer gets stuck
+        Simple: On some machines Windows cannot deliver the list of installed voices although speech
+            itself works - for instance after a third-party voice was removed uncleanly or only half
+            installed. Since 3.3 the tool no longer crashes there, but "Select voice" was then
+            empty: right arrow did nothing, and because first-time setup only moves on to the
+            language after a voice was picked, there was no way through. The tool now reads the
+            voices from the Windows registry itself in that case. If that finds none either, the
+            menu holds the entry "No voices found, press Enter to keep the system voice" - Enter
+            keeps the voice the tool is speaking with and setup continues.
+        Technically: The user's log bundle showed "GetVoices FAILED, voice list empty: (0x80045039)"
+            four times, then "SwitchToSetup". Not a single token was unreadable (the 3.3 case) -
+            sap.GetVoices() or .Count itself throws SPERR_NO_MORE_ITEMS while
+            sap.Voice.GetDescription() works. New: RegistryVoiceTokens() in sapi.ahk builds one
+            SAPI.SpObjectToken per key under Speech\Voices\Tokens (HKLM and HKCU) via SetId - on the
+            failure path only. Only entries with a name and a CLSID are listed, because a broken
+            entry does not throw here, GetDescription() simply returns "". AddVoiceNodes() in
+            menu.ahk replaces the three identical loops and adds the fallback entry when the list is
+            empty. Checked with a harness that loads the real sapi.ahk and makes GetVoices throw
+            exactly this error: same voices as the normal path, all settable, two deliberately
+            broken entries skipped. The actual failure could not be reproduced; still untested on
+            the user's machine.
+
+    Login tool 3.4: a broken voice can no longer mute the tool
+        Simple: A voice whose program was removed but whose entry stayed behind in Windows still
+            shows up in the voice list. Picking it was accepted by Windows without any error - and
+            the tool was mute afterwards, from the main menu even permanently, because the choice is
+            saved. The tool now tries every voice inaudibly before accepting it. If it does not
+            work, everything stays as it was and the tool says "This voice does not work, choose
+            another one". At startup a saved voice that no longer speaks is not applied either; the
+            Windows default voice stays in place.
+        Technically: Measured with a registration that has a name and a CLSID but no engine:
+            sap.Voice := token is accepted, only Speak throws 0x80040154 (class not registered).
+            VoiceWorks() in sapi.ahk therefore speaks on a separate SpVoice into an SpMemoryStream,
+            16 to 31 ms, and never touches the live voice. SetSapiVoiceByName and SetToolVoiceByName
+            now return success, VoiceSelectAction and ApplyToolVoice act on it. SAPI2SR is exempt:
+            the bridge hands text to the screen reader whatever the output stream is, so the test
+            would be heard. A voice that loads but produces only silence is not caught by the test.
+
+    Installer: the log bundle lists all Windows voices
+        Simple: "Collect logs" in the installer now also puts a file voices.txt into the bundle. It
+            names every voice registered in Windows and whether the program behind it still exists.
+            With voice problems in the login tool or in the game this shows at once which entry is
+            broken. Takes effect with the next installer build.
+        Technically: LogCollector.WriteVoiceRegistrations reads Speech\Voices\Tokens,
+            Speech\Voices\TokenEnums and Speech_OneCore\Voices\Tokens in the 64-bit and the 32-bit
+            registry view (the login tool is 64-bit and cannot see 32-bit-only voices) and in HKCU,
+            plus DefaultTokenId. Per entry: name, CLSID, the InprocServer32 DLL with a check whether
+            it is registered and present on disk, VoicePath/LangDataPath and the attributes.
 
 
 -------------------------------------------------------------------------------------------------------

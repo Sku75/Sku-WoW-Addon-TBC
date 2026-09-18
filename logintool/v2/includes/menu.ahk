@@ -570,10 +570,7 @@ BuildMainMenu() {
     deleteItem.action := (item) => DeleteCharAction()
 
     voiceItem := MenuNode(T("select voice"), gMainMenu)
-    for index, voice in GetVoices() {
-        node := MenuNode(index ": " voice, voiceItem)
-        node.action := VoiceSelectClosure(voice, false)
-    }
+    AddVoiceNodes(voiceItem, false)
 
     langItem := MenuNode(T("select language"), gMainMenu)
     for index, lang in GetLanguages() {
@@ -633,10 +630,7 @@ BuildLoginScreenMenu() {
     ; strands the tool on this screen, so the settings have to stay reachable
     ; whether or not the login attempt ever succeeds.
     voiceItem := MenuNode(T("select voice"), gLoginMenu)
-    for index, voice in GetVoices() {
-        node := MenuNode(index ": " voice, voiceItem)
-        node.action := VoiceSelectClosure(voice, false)
-    }
+    AddVoiceNodes(voiceItem, false)
 
     langItem := MenuNode(T("select language"), gLoginMenu)
     for index, lang in GetLanguages() {
@@ -669,8 +663,38 @@ VoiceSelectClosure(voice, isSetup) {
     return (item) => VoiceSelectAction(voice, isSetup)
 }
 
+; The children of a "select voice" node. A machine whose voice list cannot be
+; read at all used to get a node with NO children: right arrow did nothing, and
+; in the first-start chain that was a dead end, because only picking a voice
+; moves on to the language step - the tool spoke but could never be set up.
+; Such a node now gets one entry that says so and carries on with the voice
+; SAPI already speaks with.
+AddVoiceNodes(parent, isSetup) {
+    voices := GetVoices()
+    for index, voice in voices {
+        node := MenuNode(index ": " voice, parent)
+        node.action := VoiceSelectClosure(voice, isSetup)
+    }
+    if (voices.Length = 0) {
+        Log("AddVoiceNodes: no selectable voices, offering 'keep system voice' (setup=" isSetup ")")
+        node := MenuNode(T("no voices found, press enter to keep the system voice"), parent)
+        node.action := (item) => KeepSystemVoiceAction(isSetup)
+    }
+}
+
+KeepSystemVoiceAction(isSetup) {
+    Say(T("keeping the system voice"))
+    Sleep(1200)
+    isSetup ? gMenuLanguage.Enter() : gMainMenu.Enter()
+}
+
 VoiceSelectAction(voice, isSetup) {
-    SetToolVoiceByName(voice)
+    ; Said in the voice that still works - the cursor stays on the entry, so
+    ; the next arrow key simply moves on to another voice.
+    if !SetToolVoiceByName(voice) {
+        Say(T("this voice does not work, choose another one"))
+        return
+    }
     if isSetup {
         Say(T("selected"))
         Sleep(600)
@@ -762,10 +786,7 @@ GametypeSelectAction(name) {
 
 BuildSetupMenus() {
     global gMenuVoice := MenuNode(T("go right to select a voice"))
-    for index, voice in GetVoices() {
-        node := MenuNode(index ": " voice, gMenuVoice)
-        node.action := VoiceSelectClosure(voice, true)
-    }
+    AddVoiceNodes(gMenuVoice, true)
 
     global gMenuLanguage := MenuNode(T("go right to select a language"))
     for index, lang in GetLanguages() {

@@ -77,9 +77,13 @@ SapiInit() {
 
 ApplyToolVoice() {
     try {
-        SetSapiVoiceByName(gHasSetupVoice)
+        ; A saved voice that no longer speaks (uninstalled since, or saved
+        ; before voices were tested) must not mute the tool: SAPI's own
+        ; default stays in place then.
+        applied := SetSapiVoiceByName(gHasSetupVoice)
         sap.Rate := 5
-        Log("ApplyToolVoice: voice='" gHasSetupVoice "' rate=5")
+        Log("ApplyToolVoice: voice='" gHasSetupVoice "' rate=5"
+            (applied ? "" : " - NOT applied (missing or cannot speak), keeping SAPI's default"))
     } catch as e {
         Log("ApplyToolVoice FAILED: " e.Message)
     }
@@ -97,8 +101,12 @@ ReadableVoiceTokens() {
         tokens := sap.GetVoices()
         count := tokens.Count
     } catch as e {
-        Log("GetVoices FAILED, voice list empty: " e.Message)
-        return result
+        ; Seen on a user machine after 3.3: not a single token but the list
+        ; call itself throws SPERR_NO_MORE_ITEMS, while the default voice still
+        ; reads and speaks fine. So single token objects work there and only
+        ; SAPI's enumeration is broken - build the list without it.
+        Log("GetVoices FAILED, falling back to the registry: " e.Message)
+        return RegistryVoiceTokens()
     }
     loop count {
         index := A_Index - 1
@@ -112,6 +120,45 @@ ReadableVoiceTokens() {
     return result
 }
 
+; The voice list without SAPI's enumerator: one SpObjectToken per key under
+; Speech\Voices\Tokens, which is where that enumerator reads from too. Measured
+; on a healthy machine: same voices as sap.GetVoices(), and every token built
+; this way can be set as the voice and synthesizes.
+;
+; A broken registration does NOT throw here - GetDescription() just returns ""
+; and the failure only surfaces at Speak ("class not registered"). Offering it
+; would let the user pick a voice that mutes the tool, so a token needs a name
+; AND an engine CLSID to be listed. Speech_OneCore is deliberately left out:
+; the normal path never offers those voices either.
+RegistryVoiceTokens() {
+    result := []
+    roots := ["HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens"
+            , "HKEY_CURRENT_USER\SOFTWARE\Microsoft\Speech\Voices\Tokens"]
+    for root in roots {
+        try {
+            loop reg, root, "K" {
+                id := root "\" A_LoopRegName
+                try {
+                    if (RegRead(id, "CLSID", "") = "")
+                        throw Error("no CLSID")
+                    token := ComObject("SAPI.SpObjectToken")
+                    token.SetId(id)
+                    desc := token.GetDescription()
+                    if (desc = "")
+                        throw Error("no description")
+                    result.Push({desc: desc, token: token})
+                } catch as e {
+                    Log("RegistryVoiceTokens: skipping " A_LoopRegName ": " e.Message)
+                }
+            }
+        } catch as e {
+            Log("RegistryVoiceTokens: cannot read " root ": " e.Message)
+        }
+    }
+    Log("RegistryVoiceTokens: " result.Length " usable voice(s)")
+    return result
+}
+
 GetVoices() {
     voices := []
     for v in ReadableVoiceTokens() {
@@ -121,19 +168,57 @@ GetVoices() {
     return voices
 }
 
-SetSapiVoiceByName(name) {
-    for v in ReadableVoiceTokens() {
-        if (v.desc = name) {
-            sap.Voice := v.token
-            return
-        }
+; Can this voice actually speak? Measured with a registration that has a name
+; and a CLSID but no engine behind it: `sap.Voice := token` is ACCEPTED without
+; any error and only Speak throws ("class not registered", 0x80040154). Picking
+; such a voice would mute the tool, and from the main menu the choice is saved,
+; so it would stay mute at every start - with no spoken way back. So a voice is
+; test-driven first, on a throwaway SpVoice that renders into memory: nothing
+; is heard and the live voice is never touched.
+;
+; SAPI2SR is exempt. It is no synthesizer - it hands the text to the screen
+; reader whatever the output stream is, so the test would be spoken aloud.
+VoiceWorks(token, desc) {
+    if InStr(desc, "SAPI2SR")
+        return true
+    try {
+        probe := ComObject("SAPI.SpVoice")
+        probe.Voice := token
+        probe.AudioOutputStream := ComObject("SAPI.SpMemoryStream")
+        probe.Speak("a", 0)
+        return true
+    } catch as e {
+        Log("VoiceWorks: '" desc "' cannot speak: " e.Message)
+        return false
     }
 }
 
+; True when the named voice is now the tool's voice. False when it does not
+; exist or cannot speak - the voice in use is then left exactly as it was.
+SetSapiVoiceByName(name) {
+    for v in ReadableVoiceTokens() {
+        if (v.desc = name) {
+            if !VoiceWorks(v.token, v.desc)
+                return false
+            sap.Voice := v.token
+            return true
+        }
+    }
+    return false
+}
+
+; False (and nothing changed, not even the remembered name) when the voice
+; turned out to be unusable, so the caller can say so instead of "selected".
 SetToolVoiceByName(name) {
+    if !SetSapiVoiceByName(name) {
+        Log("SetToolVoiceByName: '" name "' rejected, keeping '" gHasSetupVoice "'")
+        return false
+    }
     global gHasSetupVoice := name
-    ApplyToolVoice()
+    try sap.Rate := 5
+    Log("SetToolVoiceByName: voice='" name "' rate=5")
     NvdaInit()  ; switching to or away from SAPI2SR changes who has to be cancelled
+    return true
 }
 
 SetSapiAudioOutputBySubstring(substring) {

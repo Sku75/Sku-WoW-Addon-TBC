@@ -167,3 +167,6 @@ Blizzard's social contract is open. Accepting it, please wait.==Blizzards Sozial
 Social contract accepted.==Sozialvertrag akzeptiert.
 The social contract could not be accepted. Sighted help is needed once: scroll the text to the end and press accept.==Der Sozialvertrag konnte nicht akzeptiert werden. Dafür wird einmal sehende Hilfe gebraucht: den Text bis zum Ende scrollen und auf Akzeptieren klicken.
 The PvP realm warning is still open.==Die Warnung zum PvP-Realm steht noch offen.
+no voices found, press enter to keep the system voice==Keine Stimmen gefunden, Eingabe drücken, um die Systemstimme zu behalten
+keeping the system voice==Die Systemstimme bleibt
+this voice does not work, choose another one==Diese Stimme funktioniert nicht, bitte eine andere wählen

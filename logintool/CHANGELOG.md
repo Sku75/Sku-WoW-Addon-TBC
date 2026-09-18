@@ -98,6 +98,71 @@ allen Referenz-Screenshots und den Sozialvertrags-Bildern. `ScreenGrab` live
 gegen `ScreenColors` verglichen: 40/40 Pixel gleich, 1000 Lesevorgänge in 16 ms.
 An echten Dialogen UNGETESTET; bei 0,64 greift ohnehin zuerst die alte Prüfung.
 
+**Leere Stimmenliste: Ersatzweg über die Registry, und die Ersteinrichtung ist
+keine Sackgasse mehr.** Folgemeldung desselben Nutzers wie bei 3.3 (Log-Bündel
+vom 2026-09-18): Das Tool spricht jetzt, aber Pfeil rechts auf "Stimme
+auswählen" tut nichts. Im Log steht viermal `GetVoices FAILED, voice list
+empty: (0x80045039)`, danach `SwitchToSetup` — und dort endet es. Die Annahme
+von 3.3 stimmte auf diesem Rechner nicht: Nicht eine einzelne Stimme ist
+unlesbar, sondern schon der Listenaufruf (`sap.GetVoices()` bzw. `.Count`)
+wirft. 3.3 fing das ab und lieferte eine LEERE Liste. Folge: Der Knoten "Nach
+rechts gehen, um eine Stimme auszuwählen" hatte keine Kinder, und weil nur die
+Stimmenauswahl zum Sprachschritt weiterführt (`VoiceSelectAction`), kam der
+Nutzer nie durch die Ersteinrichtung. Das Tool sprach (Standardstimme
+"Blastbay Libby" las sich direkt problemlos), war aber unbenutzbar.
+
+- `RegistryVoiceTokens()` (sapi.ahk): Wirft der Listenaufruf, baut das Tool die
+  Liste selbst — ein `SAPI.SpObjectToken` je Schlüssel unter
+  `Speech\Voices\Tokens` (HKLM und HKCU), per `SetId`. Läuft NUR im Fehlerfall.
+  Gemessen auf gesundem Rechner: dieselben Stimmen wie `GetVoices()`, jede so
+  gebaute Stimme lässt sich setzen und synthetisiert. Falsche Annahme dabei
+  gefunden: Ein kaputter Eintrag wirft hier NICHT — `GetDescription()` liefert
+  einfach "", der Fehler käme erst beim Sprechen ("Klasse nicht registriert").
+  Deshalb wird nur gelistet, was einen Namen UND eine CLSID hat; sonst könnte
+  man eine Stimme wählen, die das Tool stumm macht. `Speech_OneCore` bleibt
+  bewusst draußen (bietet der normale Weg auch nicht an). Reihenfolge ist die
+  der Registry, nicht die von SAPI.
+- `AddVoiceNodes()` (menu.ahk) ersetzt die drei gleichen Schleifen
+  (Hauptmenü, Login-Menü, Ersteinrichtung). Bleibt die Liste trotzdem leer,
+  bekommt der Knoten EINEN Eintrag "Keine Stimmen gefunden, Eingabe drücken, um
+  die Systemstimme zu behalten"; Eingabe sagt "Die Systemstimme bleibt" und geht
+  in der Ersteinrichtung zum Sprachschritt weiter, sonst ins Hauptmenü. Zwei
+  neue Texte in allen fünf Sprachdateien.
+- `VoiceWorks()` (sapi.ahk): Jede Stimme wird vor der Übernahme probegefahren.
+  Anlass war die Frage, ob der Ersatzweg kaputte Stimmen anbietet und den
+  Nutzer damit strandet. Gemessen mit einer Registrierung, die Namen und CLSID
+  hat, aber keine Engine: `sap.Voice := token` wird OHNE Fehler angenommen,
+  erst `Speak` wirft (0x80040154 "Klasse nicht registriert"). Das Tool wäre
+  stumm, und aus dem Hauptmenü wird die Wahl gespeichert — stumm bei jedem
+  Start, ohne gesprochenen Rückweg. Das Loch hat auch der normale Weg, SAPI
+  listet aus denselben Schlüsseln. Jetzt: Probe auf einem Wegwerf-`SpVoice` in
+  einen `SpMemoryStream` (unhörbar, die laufende Stimme wird nie angefasst,
+  16-31 ms). Scheitert sie, bleibt alles wie es war, und das Tool sagt "Diese
+  Stimme funktioniert nicht, bitte eine andere wählen" — der Cursor bleibt auf
+  dem Eintrag. `ApplyToolVoice` prüft beim Start genauso: Eine gespeicherte
+  Stimme, die nicht mehr spricht, wird nicht gesetzt, SAPIs Standard bleibt.
+  SAPI2SR ist ausgenommen (reicht Text an den Screenreader durch, die Probe
+  wäre hörbar). Getestet mit eingepflanzter toter Stimme: abgelehnt, gemerkter
+  Name und laufende Stimme unverändert; Zira angenommen; Start mit toter
+  gespeicherter Stimme setzt sie nicht.
+- Installer-Log-Bündel: neue Datei `voices.txt` (`LogCollector.
+  WriteVoiceRegistrations`) mit jeder Stimmenregistrierung in beiden
+  Registry-Sichten (64/32 Bit; das Tool ist 64 Bit und sieht reine
+  32-Bit-Stimmen nicht), Standardstimme, CLSID, ob die Engine-DLL registriert
+  ist und auf der Platte liegt, VoicePath, Attribute. Das Bündel dieses Nutzers
+  konnte sagen, DASS die Liste kaputt ist, aber nicht, welcher Eintrag.
+
+Geprüft: `/validate` sauber. Testgerüst lädt die echte sapi.ahk, ersetzt `sap`
+durch ein Objekt, dessen `GetVoices()` genau 0x80045039 wirft: Ersatzweg liefert
+dieselben 3 Stimmen, alle setzbar; zwei absichtlich kaputte HKCU-Einträge (leerer
+Schlüssel, erfundene CLSID) werden übersprungen und geloggt. `voices.txt` per
+Reflection gegen diesen Rechner erzeugt. NICHT reproduzierbar war der
+eigentliche Fehler: kaputte HKCU-Einträge und ein erfundener TokenEnum lassen
+`GetVoices()` hier nicht werfen — die Ursache beim Nutzer ist also eine andere
+(vermutlich HKLM). Ob der Ersatzweg DORT Stimmen liefert, ist UNGETESTET; wenn
+nicht, greift der "Systemstimme behalten"-Eintrag, und `voices.txt` nennt dann
+den Schuldigen.
+
 ## 3.3 (2026-09-18)
 
 **Eine kaputte Windows-Stimme bringt das Tool nicht mehr zum Absturz.**

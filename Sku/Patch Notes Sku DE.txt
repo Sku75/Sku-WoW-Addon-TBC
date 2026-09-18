@@ -14,6 +14,11 @@ Aenderungen in Sku v43.6
 
         Aenderungen
             Anmelde-Tool 3.4: Hardcore- und PvP-Warnungen werden bei jeder Bildschirmaufloesung und Fenstergroesse gefunden, nicht nur auf grossen Bildschirmen.
+            Anmelde-Tool 3.4: jede Stimme wird vor der Uebernahme unhoerbar ausprobiert - eine kaputte Stimme kann das Tool nicht mehr stumm machen.
+            Installer: das Log-Buendel enthaelt jetzt eine Liste aller Windows-Stimmen (voices.txt).
+
+        Fehlerbehebungen
+            Anmelde-Tool 3.4: "Stimme auswaehlen" war auf manchen Rechnern leer, und die Ersteinrichtung kam dort nie weiter.
 
     Anmelde-Tool 3.4: Blizzards Sozialvertrag wird automatisch akzeptiert
         Einfach: Neue Accounts - und alle anderen, sobald Blizzard den Text aendert - bekommen
@@ -67,6 +72,60 @@ Aenderungen in Sku v43.6
             Python-Portierung auf 66 synthetischen Dialogen (6 Aufloesungen, 3 Hoehen, 4 Faktoren):
             Hoehe immer richtig, Faktor auf 0,012 genau, 0 Fehlalarme. An echten Dialogen noch
             ungetestet; jeder Fund steht als "GlueDialog:"-Zeile mit Faktor in log.txt.
+
+    Anmelde-Tool 3.4: leere Stimmenauswahl behoben, die Ersteinrichtung bleibt nicht mehr haengen
+        Einfach: Auf manchen Rechnern kann Windows die Liste der installierten Stimmen nicht
+            liefern, obwohl die Sprachausgabe selbst funktioniert - etwa nach einer unsauber
+            entfernten oder nur halb installierten Fremdstimme. Seit 3.3 stuerzt das Tool dabei
+            nicht mehr ab, aber "Stimme auswaehlen" war dann leer: Pfeil rechts tat nichts, und weil
+            die Ersteinrichtung erst nach der Stimmenwahl zur Sprache weitergeht, kam man nie
+            hindurch. Jetzt liest das Tool die Stimmen in diesem Fall selbst aus der
+            Windows-Registrierung. Findet es auch so keine, steht dort der Eintrag "Keine Stimmen
+            gefunden, Eingabe druecken, um die Systemstimme zu behalten" - Eingabe behaelt die
+            Stimme, mit der das Tool gerade spricht, und die Einrichtung geht weiter.
+        Technisch: Im Log-Buendel des Nutzers stand viermal "GetVoices FAILED, voice list empty:
+            (0x80045039)" und danach "SwitchToSetup". Nicht ein einzelnes Token war unlesbar (der
+            Fall von 3.3), sondern schon sap.GetVoices() bzw. .Count wirft SPERR_NO_MORE_ITEMS,
+            waehrend sap.Voice.GetDescription() funktioniert. Neu: RegistryVoiceTokens() in sapi.ahk
+            baut je Schluessel unter Speech\Voices\Tokens (HKLM und HKCU) ein SAPI.SpObjectToken per
+            SetId - nur im Fehlerfall. Gelistet wird nur, was einen Namen und eine CLSID hat, denn
+            ein kaputter Eintrag wirft hier nicht, GetDescription() liefert einfach "".
+            AddVoiceNodes() in menu.ahk ersetzt die drei gleichen Schleifen und haengt bei leerer
+            Liste den Ersatz-Eintrag an. Geprueft mit einem Testgeruest, das die echte sapi.ahk
+            laedt und GetVoices genau diesen Fehler werfen laesst: dieselben Stimmen wie auf dem
+            normalen Weg, alle setzbar, zwei absichtlich kaputte Eintraege uebersprungen. Der
+            eigentliche Fehler liess sich nicht nachstellen; auf dem Rechner des Nutzers noch
+            ungetestet.
+
+    Anmelde-Tool 3.4: eine kaputte Stimme kann das Tool nicht mehr stumm machen
+        Einfach: Eine Stimme, deren Programm entfernt wurde, deren Eintrag aber in Windows
+            zurueckblieb, steht weiter in der Stimmenliste. Waehlte man sie, nahm Windows die Wahl
+            ohne Fehler an - und das Tool war danach stumm, aus dem Hauptmenue heraus sogar
+            dauerhaft, weil die Wahl gespeichert wird. Jetzt probiert das Tool jede Stimme vor der
+            Uebernahme unhoerbar aus. Funktioniert sie nicht, bleibt alles, wie es war, und das Tool
+            sagt "Diese Stimme funktioniert nicht, bitte eine andere waehlen". Auch beim Start wird
+            eine gespeicherte Stimme, die nicht mehr spricht, nicht mehr gesetzt; es bleibt dann die
+            Windows-Standardstimme.
+        Technisch: Gemessen mit einer Registrierung mit Namen und CLSID, aber ohne Engine: sap.Voice
+            := token wird angenommen, erst Speak wirft 0x80040154 (Klasse nicht registriert).
+            VoiceWorks() in sapi.ahk spricht deshalb auf einem eigenen SpVoice in einen
+            SpMemoryStream, 16 bis 31 ms, die laufende Stimme wird nie angefasst. SetSapiVoiceByName
+            und SetToolVoiceByName geben jetzt Erfolg zurueck, VoiceSelectAction und ApplyToolVoice
+            werten ihn aus. SAPI2SR ist ausgenommen: die Bruecke reicht Text unabhaengig vom
+            Ausgabestrom an den Screenreader weiter, die Probe waere hoerbar. Eine Stimme, die
+            laedt, aber nur Stille erzeugt, erkennt die Probe nicht.
+
+    Installer: das Log-Buendel listet alle Windows-Stimmen auf
+        Einfach: "Logs sammeln" im Installer legt jetzt zusaetzlich die Datei voices.txt ins
+            Buendel. Sie nennt jede in Windows registrierte Stimme und ob das Programm dahinter noch
+            vorhanden ist. Bei Stimmenproblemen im Anmelde-Tool oder im Spiel laesst sich damit
+            sofort sehen, welcher Eintrag kaputt ist. Wirksam mit dem naechsten Installer-Build.
+        Technisch: LogCollector.WriteVoiceRegistrations liest Speech\Voices\Tokens,
+            Speech\Voices\TokenEnums und Speech_OneCore\Voices\Tokens in der 64- und der
+            32-Bit-Registry-Sicht (das Anmelde-Tool ist 64 Bit und sieht reine 32-Bit-Stimmen nicht)
+            sowie in HKCU, dazu DefaultTokenId. Je Eintrag: Name, CLSID, die InprocServer32-DLL samt
+            Pruefung, ob sie registriert ist und auf der Platte liegt, VoicePath/LangDataPath und
+            die Attribute.
 
 
 -------------------------------------------------------------------------------------------------------

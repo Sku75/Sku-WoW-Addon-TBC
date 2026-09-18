@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Microsoft.Win32;
 
 namespace SkuInstaller
 {
@@ -21,8 +22,9 @@ namespace SkuInstaller
     /// client's own <c>Logs\</c> and <c>Errors\</c> folders; <c>Config.wtf</c>;
     /// Sku's TOC; <c>.build.info</c>; and a listing of every installed addon with
     /// its version. Once globally: the WoW Login Tool's <c>log.txt</c>, this
-    /// installer's own log, and a <c>system-info.txt</c> describing the machine
-    /// and each client.</para>
+    /// installer's own log, a <c>voices.txt</c> listing every SAPI voice
+    /// registration, and a <c>system-info.txt</c> describing the machine and each
+    /// client.</para>
     ///
     /// <para>Every client rather than one: the screen that offers this has no
     /// client picker, and a user running Anniversary and Classic Era side by side
@@ -150,6 +152,7 @@ namespace SkuInstaller
 
                     CollectLoginToolLogs(sites, staging, result, notes);
                     CollectInstallerLog(staging, result, notes);
+                    WriteVoiceRegistrations(Path.Combine(staging, "voices.txt"), result, notes);
 
                     WriteSystemInfo(Path.Combine(staging, "system-info.txt"), sites, notes, result);
 
@@ -506,6 +509,161 @@ namespace SkuInstaller
             {
                 Logger.Warning($"[LogCollector] Could not include the installer log: {ex.Message}");
                 notes.Add($"installer log: NOT included ({ex.Message})");
+            }
+        }
+
+        // ── speech voices ────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Every SAPI voice registration on the machine, and whether the engine
+        /// behind it actually exists. The login tool and WoW's own TTS both speak
+        /// through SAPI, and a single half-removed voice can take the whole voice
+        /// LIST down while speech itself keeps working — the first bundle with
+        /// that symptom ("GetVoices FAILED 0x80045039") could say that it happened
+        /// but not which registration did it, because nothing looked at the
+        /// registry. Both registry views are walked: the login tool is 64-bit, and
+        /// a voice that only registered itself in the 32-bit view is invisible to
+        /// it, which reads as "my voice is missing" from the user's side.
+        /// </summary>
+        private static void WriteVoiceRegistrations(string path, Result result, List<string> notes)
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine("SAPI voice registrations");
+                sb.AppendLine();
+
+                using (var hkcu = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Default))
+                using (var voices = hkcu.OpenSubKey(@"SOFTWARE\Microsoft\Speech\Voices"))
+                    sb.AppendLine("Default voice (HKCU DefaultTokenId): " +
+                                  (voices?.GetValue("DefaultTokenId") as string ?? "(not set)"));
+                sb.AppendLine();
+
+                string[] subPaths =
+                {
+                    @"SOFTWARE\Microsoft\Speech\Voices\Tokens",
+                    @"SOFTWARE\Microsoft\Speech\Voices\TokenEnums",
+                    @"SOFTWARE\Microsoft\Speech_OneCore\Voices\Tokens",
+                };
+
+                foreach (var view in new[] { RegistryView.Registry64, RegistryView.Registry32 })
+                {
+                    if (view == RegistryView.Registry64 && !Environment.Is64BitOperatingSystem) continue;
+                    string viewName = view == RegistryView.Registry64 ? "64-bit" : "32-bit";
+
+                    foreach (var hive in new[] { RegistryHive.LocalMachine, RegistryHive.CurrentUser })
+                    {
+                        // HKCU\SOFTWARE is not split by bitness; listing it twice
+                        // would read as two sets of registrations.
+                        if (hive == RegistryHive.CurrentUser && view == RegistryView.Registry32) continue;
+                        string hiveName = hive == RegistryHive.LocalMachine ? "HKLM" : "HKCU";
+
+                        using (var baseKey = RegistryKey.OpenBaseKey(hive, view))
+                        using (var classes = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, view))
+                        {
+                            foreach (string subPath in subPaths)
+                                AppendVoiceKey(sb, baseKey, classes, subPath,
+                                               hive == RegistryHive.CurrentUser ? hiveName : $"{hiveName} {viewName}");
+                        }
+                    }
+                }
+
+                WriteGeneratedFile(path, sb.ToString(), result);
+            }
+            catch (Exception ex)
+            {
+                notes.Add($"voices.txt: NOT written ({ex.Message})");
+                Logger.Warning($"[LogCollector] Voice registrations failed: {ex.Message}");
+            }
+        }
+
+        private static void AppendVoiceKey(StringBuilder sb, RegistryKey baseKey, RegistryKey classes,
+                                           string subPath, string label)
+        {
+            using (var root = baseKey.OpenSubKey(subPath))
+            {
+                if (root == null)
+                {
+                    sb.AppendLine($"[{label}] {subPath}: (key not present)");
+                    sb.AppendLine();
+                    return;
+                }
+
+                string[] names = root.GetSubKeyNames();
+                sb.AppendLine($"[{label}] {subPath}: {names.Length} entr{(names.Length == 1 ? "y" : "ies")}");
+
+                foreach (string name in names)
+                {
+                    try
+                    {
+                        using (var token = root.OpenSubKey(name))
+                        {
+                            if (token == null) { sb.AppendLine($"  {name}: (cannot be opened)"); continue; }
+
+                            string description = token.GetValue(null) as string;
+                            string clsid = token.GetValue("CLSID") as string;
+
+                            sb.AppendLine($"  {name}");
+                            sb.AppendLine($"    name:    {(string.IsNullOrEmpty(description) ? "(EMPTY — token has no description)" : description)}");
+                            sb.AppendLine($"    CLSID:   {(string.IsNullOrEmpty(clsid) ? "(MISSING)" : clsid)}");
+                            if (!string.IsNullOrEmpty(clsid))
+                                sb.AppendLine($"    engine:  {DescribeComServer(classes, clsid)}");
+
+                            foreach (string valueName in new[] { "VoicePath", "LangDataPath", "VoiceData" })
+                            {
+                                string file = token.GetValue(valueName) as string;
+                                if (string.IsNullOrEmpty(file)) continue;
+                                string expanded = Environment.ExpandEnvironmentVariables(file);
+                                bool exists = File.Exists(expanded) || Directory.Exists(expanded) ||
+                                              File.Exists(expanded + ".APM") || File.Exists(expanded + ".INI");
+                                sb.AppendLine($"    {valueName}: {file}{(exists ? "" : "  (NOT FOUND on disk)")}");
+                            }
+
+                            using (var attributes = token.OpenSubKey("Attributes"))
+                            {
+                                if (attributes == null) sb.AppendLine("    attributes: (NO Attributes subkey)");
+                                else
+                                    sb.AppendLine("    attributes: " + string.Join(", ",
+                                        new[] { "Name", "Vendor", "Language", "Gender", "Version" }
+                                            .Select(a => new { a, v = attributes.GetValue(a) as string })
+                                            .Where(x => !string.IsNullOrEmpty(x.v))
+                                            .Select(x => x.a + "=" + x.v)));
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        sb.AppendLine($"  {name}: (unreadable: {ex.Message})");
+                    }
+                }
+                sb.AppendLine();
+            }
+        }
+
+        /// <summary>
+        /// The DLL behind a voice's CLSID, in the same registry view as the voice.
+        /// "Class not registered" is what SAPI answers for a voice whose engine
+        /// was uninstalled but whose token stayed behind.
+        /// </summary>
+        private static string DescribeComServer(RegistryKey classes, string clsid)
+        {
+            try
+            {
+                using (var server = classes.OpenSubKey(@"CLSID\" + clsid + @"\InprocServer32"))
+                {
+                    if (server == null) return "CLASS NOT REGISTERED in this registry view";
+                    string dll = server.GetValue(null) as string;
+                    if (string.IsNullOrEmpty(dll)) return "registered, but no DLL path";
+                    string expanded = Environment.ExpandEnvironmentVariables(dll).Trim('"');
+                    // A bare file name is resolved through the DLL search path by
+                    // COM; only a rooted path can be checked honestly.
+                    if (!Path.IsPathRooted(expanded)) return dll;
+                    return dll + (File.Exists(expanded) ? "" : "  (DLL NOT FOUND on disk)");
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"(check failed: {ex.Message})";
             }
         }
 

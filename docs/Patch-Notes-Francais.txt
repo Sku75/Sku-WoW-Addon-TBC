@@ -17,6 +17,11 @@ Changements dans Sku v43.6
 
         Changements
             Outil de connexion 3.4 : les avertissements hardcore et JcJ sont trouvés à toutes les résolutions et tailles de fenêtre, et plus seulement sur les grands écrans.
+            Outil de connexion 3.4 : chaque voix est essayée de façon inaudible avant d'être acceptée - une voix défectueuse ne peut plus rendre l'outil muet.
+            Installateur : le paquet de journaux contient désormais la liste de toutes les voix Windows (voices.txt).
+
+        Corrections
+            Outil de connexion 3.4 : « Séléctionner la voix » était vide sur certaines machines, et la première configuration n'allait jamais plus loin.
 
     Outil de connexion 3.4 : le contrat social de Blizzard est accepté automatiquement
         Simple : Les nouveaux comptes - et tous les autres dès que Blizzard modifie le texte -
@@ -73,6 +78,61 @@ Changements dans Sku v43.6
             juste, échelle à 0,012 près, zéro faux positif. Pas encore testé sur de vraies
             fenêtres ; chaque détection est consignée dans log.txt (ligne « GlueDialog: » avec
             l'échelle).
+
+    Outil de connexion 3.4 : sélection de voix vide corrigée, la première configuration ne reste plus bloquée
+        Simple : Sur certaines machines, Windows ne peut pas fournir la liste des voix installées
+            alors que la synthèse vocale elle-même fonctionne - par exemple après une voix tierce
+            mal désinstallée ou à moitié installée. Depuis la 3.3, l'outil ne plante plus dans ce
+            cas, mais « Séléctionner la voix » était alors vide : la flèche droite ne faisait rien,
+            et comme la première configuration ne passe à la langue qu'après le choix d'une voix, on
+            ne la traversait jamais. L'outil lit désormais lui-même les voix dans le registre
+            Windows dans ce cas. S'il n'en trouve pas non plus ainsi, le menu contient l'entrée «
+            Aucune voix trouvée, appuyez sur Entrée pour garder la voix du système » - Entrée
+            conserve la voix avec laquelle l'outil parle, et la configuration continue.
+        Technique : Le paquet de journaux de l'utilisateur contenait quatre fois « GetVoices FAILED,
+            voice list empty: (0x80045039) », puis « SwitchToSetup ». Ce n'est pas un jeton isolé
+            qui était illisible (le cas de la 3.3) : sap.GetVoices() ou .Count lève lui-même
+            SPERR_NO_MORE_ITEMS, alors que sap.Voice.GetDescription() fonctionne. Nouveau :
+            RegistryVoiceTokens() dans sapi.ahk construit un SAPI.SpObjectToken par clé sous
+            Speech\Voices\Tokens (HKLM et HKCU) via SetId - uniquement en cas d'échec. Seules les
+            entrées ayant un nom et un CLSID sont listées, car une entrée défectueuse ne lève rien
+            ici, GetDescription() renvoie simplement "". AddVoiceNodes() dans menu.ahk remplace les
+            trois boucles identiques et ajoute l'entrée de secours quand la liste est vide. Vérifié
+            avec un banc d'essai qui charge le vrai sapi.ahk et fait lever exactement cette erreur à
+            GetVoices : mêmes voix que par la voie normale, toutes utilisables, deux entrées
+            volontairement défectueuses ignorées. La panne réelle n'a pas pu être reproduite ; pas
+            encore testé sur la machine de l'utilisateur.
+
+    Outil de connexion 3.4 : une voix défectueuse ne peut plus rendre l'outil muet
+        Simple : Une voix dont le programme a été supprimé mais dont l'entrée est restée dans
+            Windows figure toujours dans la liste des voix. La choisir était accepté par Windows
+            sans aucune erreur - et l'outil était ensuite muet, et même définitivement depuis le
+            menu principal, car le choix est enregistré. L'outil essaie désormais chaque voix de
+            façon inaudible avant de l'accepter. Si elle ne fonctionne pas, tout reste en l'état et
+            l'outil dit « Cette voix ne fonctionne pas, choisissez-en une autre ». Au démarrage non
+            plus, une voix enregistrée qui ne parle plus n'est pas appliquée ; la voix par défaut de
+            Windows reste en place.
+        Technique : Mesuré avec un enregistrement ayant un nom et un CLSID mais pas de moteur :
+            sap.Voice := token est accepté, seul Speak lève 0x80040154 (classe non enregistrée).
+            VoiceWorks() dans sapi.ahk parle donc sur un SpVoice séparé dans un SpMemoryStream, 16 à
+            31 ms, sans jamais toucher à la voix en cours. SetSapiVoiceByName et SetToolVoiceByName
+            renvoient maintenant le succès, VoiceSelectAction et ApplyToolVoice en tiennent compte.
+            SAPI2SR est exempté : le pont transmet le texte au lecteur d'écran quel que soit le flux
+            de sortie, l'essai serait donc audible. Une voix qui se charge mais ne produit que du
+            silence n'est pas détectée.
+
+    Installateur : le paquet de journaux liste toutes les voix Windows
+        Simple : « Collecter les journaux » dans l'installateur ajoute désormais un fichier
+            voices.txt au paquet. Il nomme chaque voix enregistrée dans Windows et indique si le
+            programme correspondant existe encore. En cas de problème de voix dans l'outil de
+            connexion ou dans le jeu, on voit ainsi tout de suite quelle entrée est défectueuse.
+            Effectif avec la prochaine version de l'installateur.
+        Technique : LogCollector.WriteVoiceRegistrations lit Speech\Voices\Tokens,
+            Speech\Voices\TokenEnums et Speech_OneCore\Voices\Tokens dans les vues 64 bits et 32
+            bits du registre (l'outil de connexion est en 64 bits et ne voit pas les voix uniquement
+            32 bits) ainsi que dans HKCU, plus DefaultTokenId. Par entrée : nom, CLSID, la DLL
+            InprocServer32 avec vérification qu'elle est enregistrée et présente sur le disque,
+            VoicePath/LangDataPath et les attributs.
 
 
 -------------------------------------------------------------------------------------------------------
