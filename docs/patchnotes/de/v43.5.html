@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.5 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v43.5.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/v43.5.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v43.5 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v43.4.html">Aeltere Version: v43.4</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Ueberblick</h2>
+<h3>Fehlerbehebungen</h3>
+<ul>
+<li>Questdatenbank: das Oeffnen von "Alle" (ebenso "Start in Zone" und "Quests in der Naehe") liess das Spiel sekundenlang einfrieren.</li>
+<li>Chat: nach dem Oeffnen der Chatzeile mit "/" wurde der alte Kanal angesagt (etwa "An Kai"), obwohl erst der Befehl danach den Kanal festlegt.</li>
+<li>Sprachausgabe: einzelne Zeilen blieben ueber die NVDA/SAPI-Bruecke zufaellig stumm (etwa ein Ausruestungsteil in der Liste), waehrend die Nachbarn gesprochen wurden.</li>
+<li>Quest: "Raenes Saeuberung" (Eisenknauf, Eschental) hatte kein Questziel; es fuehrt jetzt zur Rostigen Truhe der Faulenden Bruehschleimer.</li>
+<li>Sprachausgabe: getippte Zeichen und abgebrochene Ansagen kamen verspaetet nach - Buchstaben einer laengst geschlossenen Chatzeile tauchten Sekunden spaeter in einem anderen Menue auf.</li>
+<li>Anmelde-Tool 3.3: eine beschaedigte Windows-Stimme auf dem Rechner liess das Tool gleich nach der Versionsansage mit einem Fehlerfenster (GetVoices, 0x80045039) abbrechen.</li>
+<li>Sprachausgabe: schnelles Blaettern durch lange Eintraege las ueber die NVDA/SAPI-Bruecke erst den vorigen Eintrag zu Ende, bevor der gewaehlte kam.</li>
+</ul>
+<h2>Questdatenbank: das Oeffnen der Questlisten liess das Spiel einfrieren</h2>
+<p><strong>Einfach:</strong> Wer unter Quest &gt; Questdatenbank die Liste "Alle" oeffnete, bekam seit v43.2 einen Haenger von mehreren Sekunden. Die Liste oeffnet jetzt wieder sofort; die Eintraege einer Quest (Annahme, Ziel, Abgabe ...) werden erst gebaut, wenn man die Quest betritt. Gleiches gilt fuer "Start in Zone" und "Quests in der Naehe".</p>
+<p><strong>Technisch:</strong> "Alle" baute fuer jede der mehreren tausend Quests der Datenbank sofort das komplette Untermenue (CreateQuestSubmenu). Seit v43.2 loest dessen Ziel-Zweig fuer Quests mit einem Ausloese-Ort (triggerEnd) den naechsten Routen-Wegpunkt geometrisch auf (GetTriggerEndWps) - ein kompletter Scan des Wegpunkt-Caches eines Kontinents - und seit v43.3 fuer jede solche Quest statt nur fuer die ohne andere Ziele. Ein Oeffnen kostete so rund 170 Kontinent-Scans in einem einzigen Frame. Die Quest-Eintraege sind jetzt dynamische Knoten mit eigenem BuildChildren, wie in "Aktuelle Quests" schon immer.</p>
+<h2>Chat: falsche Kanalansage nach dem Oeffnen mit dem Schraegstrich</h2>
+<p><strong>Einfach:</strong> Wer zuletzt jemandem gefluestert hatte und die Chatzeile mit "/" oeffnete, hoerte "An Kai" - und nach "/g " gleich darauf "Gilde". Die erste Ansage war falsch: solange die Zeile mit einem Schraegstrich beginnt, geht nichts an diesen Kanal, erst der Befehl entscheidet. Die Ansage schweigt jetzt, solange ein Befehl in der Zeile steht, und sagt den Kanal, sobald er feststeht ("/g " wird zu "Gilde") oder der Schraegstrich wieder geloescht wird. Ein bewusster Wechsel auf "Sagen" ("/s ") wird jetzt ebenfalls gesagt, wenn Sagen nicht ohnehin der Standardkanal war. Beim Zurueckholen einer gesendeten Zeile (Pfeil hoch) entfaellt der Kanal-Vorspann, wenn die Zeile ein Befehl ist.</p>
+<p><strong>Technisch:</strong> Blizzard zeigt in der Kopfzeile immer das Attribut chatType, und das ist beim Oeffnen der sticky-Kanal der zuletzt gesendeten Nachricht (auch Fluestern ist sticky, samt tellTarget). Die Schraegstrich-Taste ruft ChatFrameUtil.OpenChat("/"): dieselbe Kopfzeile plus ein "/" im Feld, gesetzt erst im naechsten OnUpdate (editBox.setText), die UpdateHeader-Aufrufe des Oeffnens laufen also noch mit leerem Feld. Ein Text, der mit "/" beginnt, geht nie an den Kanal der Kopfzeile: erst wenn ParseText den Befehl aufloest ("/g " beim Leerzeichen, "/w Name " hinter dem Namen), setzt Blizzard chatType neu, SetText(Rest) und dann UpdateHeader. Sku prueft jetzt an allen Ansage-Stellen (UpdateHeader-Haken, Fokus, verzoegertes Sprechen) den effektiven Text inklusive des ausstehenden setText (SkuChat:EditboxTextIsCommand); eine neue OnTextChanged-Kante deckt das Loeschen des Schraegstrichs ab, fuer das Blizzard kein UpdateHeader ruft.</p>
+<h2>Sprachausgabe: einzelne Zeilen blieben zufaellig stumm</h2>
+<p><strong>Einfach:</strong> Wer schnell durch eine Liste ging, hoerte hin und wieder eine einzelne Zeile nicht - etwa "Nagakampfhandschuhe" in der Ausruestung, waehrend die Nachbarn gesprochen wurden - und sie blieb auch beim mehrfachen Darueberfahren stumm. Das betraf die NVDA/SAPI-Bruecke und konnte ueberall in Sku passieren, meist nach einem /reload. Jede Zeile wird jetzt wieder zuverlaessig gesprochen.</p>
+<p><strong>Technisch:</strong> Der WoW-Client speichert gerenderte Sprachausgabe pro Text und spielt sie bei einer Wiederholung ab, ohne die Stimme erneut aufzurufen - bei der Bruecke ist diese Wiederholung Stille. Sku haengt darum an jeden Text eine pro Text zaehlende Folge geschuetzter Leerzeichen (1..64), damit jede Wiederholung ein neuer Text ist. Der Zaehler lebte aber nur in Lua und begann bei jedem /reload von vorn, waehrend der Cache des Clients den Reload ueberlebt (die Utterance-IDs laufen ueber den Reload hinweg durch). Eine nach dem Reload erneut gesehene Zeile konnte so wieder in einen schon gerenderten Bereich fallen und blieb stumm, bis der Zaehler diesen Bereich verlassen hatte - im Protokoll sechs Anschlaege in Folge mit sauberem SpeakText + STARTED + FINISHED. Die Zaehler liegen jetzt in SkuOptionsDB.global (bttsCacheBust) und laufen ueber den Reload weiter; zudem ist der Raum pro Text 512 Varianten statt 64 (fuehrende geschuetzte Leerzeichen 1..8 tragen den hohen Teil des Zaehlers).</p>
+<h2>Quest: "Raenes Saeuberung" (Eisenknauf) hatte kein Questziel</h2>
+<p><strong>Einfach:</strong> Die Quest 1027 "Raenes Saeuberung" im Eschental verlangt das letzte Teil von Dartols Rute, den Eisenknauf. Sku kannte dafuer keinen Ort, "Questziel" blieb leer. Jetzt fuehrt das Questziel in das Schleimgebiet suedoestlich von Raynewoods Zuflucht: Dort lassen die Faulenden Bruehschleimer beim Tod eine Rostige Truhe zurueck, in der der Knauf liegt.</p>
+<p><strong>Technisch:</strong> Der Gegenstand 5519 (Iron Pommel) verweist in der Datenbank korrekt auf das Objekt 19021 (Rusty Chest), doch dessen Datensatz hatte keine Spawn-Koordinaten, weder in objects.lua noch in objects_fixes.lua - der Item-Zweig von GetResultingWps fand nichts. objects_fixes.lua (TBC und Era) traegt jetzt die 44 Truhenpositionen von Wowhead im Eschental nach (Zone 331, etwa 68-78 / 68-80); das ist dieselbe Flaeche wie die Spawns des Faulenden Bruehschleimers (3928), der die Truhe hinterlaesst.</p>
+<h2>Sprachausgabe: getippte Zeichen und abgebrochene Ansagen kamen verspaetet nach</h2>
+<p><strong>Einfach:</strong> Wer eine laengere Nachricht tippte und die Chatzeile dann schloss, hoerte die Buchstaben danach weiter - Zeichen fuer Zeichen, waehrend man laengst in einem anderen Menue navigierte, in einem Mitschnitt fast eine Minute lang. Dasselbe galt fuer eine abgebrochene Ansage: nach "Abgebrochen" kam noch ein Rest der alten Zeile, etwa eine Entfernungsangabe aus dem gerade geschlossenen Wegpunktmenue. Was beim Schliessen oder Abbrechen noch aussteht, wird jetzt verworfen. Die Tastenansage bleibt dabei vollstaendig - es geht kein Buchstabe verloren.</p>
+<p><strong>Technisch:</strong> Der Client nimmt jedes SpeakText ohne Begrenzung an, spielt aber nur eines nach dem anderen ab, und C_VoiceChat.StopSpeakingText bricht nur die gerade LAUFENDE Ausgabe ab - ein Leeren der Warteschlange wie SAPIs PurgeBeforeSpeak gibt es nicht. Alles bereits Uebergebene ist damit unwiderruflich. Die Tastenansage gab bisher pro Anschlag sofort eine Ausgabe ab, drei bis vier pro Sekunde, waehrend der Client etwa eine pro Sekunde schafft: eine getippte Zeile von 104 Zeichen parkte so rund 80 Ausgaben im Client, die danach einzeln nachliefen. Aus demselben Grund liefen CancelBttsOutput und EndScope ins Leere - sie leeren Skus eigene Warteschlange, in der die Zeichen nie lagen (85 von 93 EndScope-Aufrufen eines Mitschnitts verwarfen nichts). Die Zeichen warten jetzt in Sku, es geht immer nur eines an den Client, und das naechste erst bei dessen PLAYBACK_FINISHED - dem Moment, in dem der Client ueberhaupt wieder eine Ausgabe annimmt (jedes STARTED des Mitschnitts faellt mit einem FINISHED zusammen). Damit ist nie etwas uebergeben, das noch nicht laeuft, und ein Abbruch erreicht alles. Ein kurzes Abbruchfenster sichert den Rest ab: nach einem harten Abbruch wird nichts uebergeben und jede dennoch startende Ausgabe sofort gestoppt. Das entspricht dem Aufbau von NVDA, das die Warteschlange ebenfalls selbst haelt und der Stimme nur eine Ausgabe auf einmal gibt.</p>
+<h2>Anmelde-Tool 3.3: Absturz beim Start durch eine beschaedigte Windows-Stimme</h2>
+<p><strong>Einfach:</strong> Nach einer frischen Installation sagte das Tool noch "Version 3.2" an und brach dann mit einem Fehlerfenster ab ("Error: (0x80045039) Specifically: GetVoices"). Schuld war nicht das Tool allein, sondern eine beschaedigte Stimme in Windows - etwa eine deinstallierte Stimme, die Reste hinterlassen hat. Das Tool ueberspringt eine solche Stimme jetzt, vermerkt sie in log.txt und startet normal; sie fehlt dann nur im Menue "Stimme auswaehlen".</p>
+<p><strong>Technisch:</strong> 0x80045039 ist SPERR_NO_MORE_ITEMS: SAPI meldet N Stimmen, eine davon laesst sich aber nicht lesen (kaputter Eintrag unter HKLM\SOFTWARE\Microsoft\Speech\Voices\ Tokens). Das Tool starb beim Aufbau des Stimmen-Menues an der for-Schleife ueber sap.GetVoices(). GetVoices() und SetSapiVoiceByName() lesen jetzt ueber die neue Funktion ReadableVoiceTokens() jede Stimme einzeln per Item(i) in einem eigenen try; eine unlesbare wird uebersprungen und geloggt, scheitert schon die Liste, bleibt sie leer. SapiInit() liest die Standardstimme ebenfalls geschuetzt. Am Rechner mit kaputter Stimme noch ungetestet.</p>
+<h2>Sprachausgabe: schnelles Blaettern las ueber die NVDA-Bruecke den vorigen langen Eintrag zu Ende</h2>
+<p><strong>Einfach:</strong> Mit der NVDA/SAPI-Bruecke als Stimme las Sku beim schnellen Blaettern durch eine Liste mit langen Eintraegen (Wegpunktliste, Questtexte, Chatverlauf) erst den vorigen Eintrag ganz zu Ende und dann den, auf dem der Cursor stand. Jetzt wird der alte Eintrag nach einem kurzen Moment abgebrochen und der gewaehlte gelesen, wie bei einer Windows-Stimme. Laengere Texte, die in mehreren Teilen kommen, werden weiter vollstaendig gelesen, und das Tipp-Echo bleibt unveraendert. Die Behebung braucht die neue NVDA-Bruecke aus dem Sku-Installer 5.1: ueber den Installer aktualisieren (nicht nur das Addon-Zip) und WoW danach komplett neu starten.</p>
+<p><strong>Technisch:</strong> StopSpeakingText des Spiels stoppt nur die eigene Wiedergabe des Clients. Auf der Bruecke steht der Text dann schon in NVDAs Warteschlange, und SAPI reicht "purge before speak" nie an eine Engine weiter - nichts auf dem Weg konnte NVDA unterbrechen. Bei der Engine kommt nur die Ausgabe selbst an, Markup eingeschlossen. Deshalb reist die Absicht jetzt darin mit, wie bei Prisms speak(text, interrupt): jeder Stopp setzt ein Flag, und die naechste Zeile traegt &lt;bookmark mark="skuint"/&gt;. Die mit dem Installer ausgelieferte Engine (SAPI2SR mit Skus Patch C) ruft bei diesem Bookmark nvdaController_cancelSpeech und reicht dann den Text weiter. Zeilen ohne Stopp davor tragen keine Marke und reihen sich weiter ein. Echte SAPI-Stimmen verschlucken das Bookmark lautlos; eine aeltere Engine ueberspringt es.</p>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v43.4.html">Aeltere Version: v43.4</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

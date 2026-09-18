@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.5 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v43.5.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/v43.5.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v43.5 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.4.html">Older version: v43.4</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Overview</h2>
+<h3>Bugfixes</h3>
+<ul>
+<li>Quest database: opening "All" (and "Starts in zone", "Nearby quests") froze the game for several seconds.</li>
+<li>Chat: after opening the chat line with "/" the old channel was announced (e.g. "Tell Kai"), although only the command typed next decides the channel.</li>
+<li>Speech: single lines randomly stayed silent over the NVDA/SAPI bridge (e.g. one item in the equipment list) while their neighbours were spoken.</li>
+<li>Quest: "Raene's Cleansing" (Iron Pommel, Ashenvale) had no quest target; it now points at the Rusty Chest the Rotting Slimes leave behind.</li>
+<li>Speech: typed characters and cancelled announcements were spoken late - letters from a long-closed chat line turned up seconds later in a different menu.</li>
+<li>Login tool 3.3: a damaged Windows voice on the PC made the tool quit with an error window (GetVoices, 0x80045039) right after announcing its version.</li>
+<li>Speech: scrolling quickly through long entries over the NVDA/SAPI bridge read the previous entry to the end before the one you stopped on.</li>
+</ul>
+<h2>Quest database: opening the quest lists froze the game</h2>
+<p><strong>Simple:</strong> Opening the "All" list under Quest &gt; Quest database had caused a freeze of several seconds since v43.2. The list opens instantly again; a quest's entries (accept, target, turn-in ...) are built only when you enter that quest. The same applies to "Starts in zone" and "Nearby quests".</p>
+<p><strong>Technically:</strong> "All" built the complete submenu (CreateQuestSubmenu) for every one of the several thousand quests in the database up front. Since v43.2 that submenu's target branch resolves the nearest route waypoint for quests with a trigger location (triggerEnd) geometrically (GetTriggerEndWps) - a full scan of one continent's waypoint cache - and since v43.3 for every such quest instead of only those without other objectives. One open therefore cost around 170 continent scans in a single frame. The quest entries are now dynamic nodes with their own BuildChildren, as "Current Quests" always was.</p>
+<h2>Chat: wrong channel announcement after opening with the slash key</h2>
+<p><strong>Simple:</strong> If you had last whispered someone and opened the chat line with "/", you heard "Tell Kai" - and right after "/g " then "Guild". The first announcement was wrong: as long as the line starts with a slash nothing goes to that channel, the command decides. The announcement now stays silent while a command is in the line, and speaks the channel once it is settled ("/g " becomes "Guild") or when the slash is deleted again. A deliberate switch to "Say" ("/s ") is now announced as well, unless Say was the default channel anyway. When recalling a sent line (arrow up), the channel prefix is omitted if the line is a command.</p>
+<p><strong>Technically:</strong> Blizzard's header always shows the chatType attribute, and on open that is the sticky channel of the last sent message (whisper is sticky too, tellTarget included). The slash key calls ChatFrameUtil.OpenChat("/"): the same header plus a "/" in the box, set only in the next OnUpdate (editBox.setText), so the UpdateHeader calls of the open still run with an empty box. Text starting with "/" never goes to the header's channel: only when ParseText resolves the command ("/g " at the space, "/w Name " after the name) does Blizzard set chatType, SetText(rest) and then UpdateHeader. Sku now checks the effective text, pending setText included (SkuChat:EditboxTextIsCommand), at every announce site (UpdateHeader hooks, focus, deferred speak); a new OnTextChanged edge covers deleting the slash, for which Blizzard calls no UpdateHeader.</p>
+<h2>Speech: single lines randomly stayed silent</h2>
+<p><strong>Simple:</strong> Walking quickly through a list, now and then one single line was not spoken - e.g. "Naga combat gloves" in the equipment list while its neighbours were - and it stayed silent on repeated passes. This affected the NVDA/SAPI bridge and could happen anywhere in Sku, mostly after a /reload. Every line is spoken reliably again.</p>
+<p><strong>Technically:</strong> The WoW client caches rendered speech per text and replays it on a repeat without invoking the voice again - on the bridge that replay is silence. Sku therefore appends a per-text counted run of no-break spaces (1..64) to every text so that each repeat is a new text. But the counter lived in Lua only and restarted at every /reload, while the client's cache survives a reload (the utterance IDs run straight across it). A line seen again after the reload could thus land back inside an already rendered range and stayed silent until the counter had walked out of it - six presses in a row in the log, each with a clean SpeakText + STARTED + FINISHED. The counters now live in SkuOptionsDB.global (bttsCacheBust) and continue across the reload; in addition the per-text space is 512 variants instead of 64 (leading no-break spaces 1..8 carry the high part of the counter).</p>
+<h2>Quest: "Raene's Cleansing" (Iron Pommel) had no quest target</h2>
+<p><strong>Simple:</strong> Quest 1027 "Raene's Cleansing" in Ashenvale asks for the last piece of Dartol's Rod, the Iron Pommel. Sku knew no place for it, so "Quest target" stayed empty. The quest target now leads into the slime area south-east of Raynewood Retreat: the Rotting Slimes there leave a Rusty Chest behind when killed, and the pommel is inside.</p>
+<p><strong>Technically:</strong> Item 5519 (Iron Pommel) correctly points at object 19021 (Rusty Chest) in the database, but that record carried no spawn coordinates, neither in objects.lua nor in objects_fixes.lua - the item branch of GetResultingWps found nothing. objects_fixes.lua (TBC and Era) now adds Wowhead's 44 chest positions in Ashenvale (zone 331, roughly 68-78 / 68-80); that is the same patch as the spawns of the Rotting Slime (3928) that leaves the chest.</p>
+<h2>Speech: typed characters and cancelled announcements were spoken late</h2>
+<p><strong>Simple:</strong> If you typed a longer message and then closed the chat line, you kept hearing the letters afterwards - one by one, while you had long since moved on to another menu; in one capture for almost a minute. The same applied to a cancelled announcement: after "Cancelled" a remnant of the old line followed, for instance a distance readout from the waypoint menu you had just closed. Whatever is still pending when you close or cancel is now discarded. Typing echo stays complete - no letter is lost.</p>
+<p><strong>Technically:</strong> The client accepts every SpeakText without limit but plays them strictly one at a time, and C_VoiceChat.StopSpeakingText only cancels the utterance that is PLAYING - there is no queue purge like SAPI's PurgeBeforeSpeak. Anything already handed over is therefore unrecallable. The typing lane used to hand over one utterance per keystroke, three to four a second, while the client manages about one: a typed line of 104 characters parked around 80 utterances inside the client, which then dribbled out one per second. For the same reason CancelBttsOutput and EndScope had no effect - they empty Sku's own queue, which the characters were never in (85 of 93 EndScope calls in one capture dropped nothing). The characters now wait inside Sku, only one goes to the client at a time, and the next only on its PLAYBACK_FINISHED - the moment the client will accept another utterance at all (every STARTED in the capture coincides with a FINISHED). Nothing is ever handed over that is not yet playing, so a cancel reaches everything. A short kill window covers the remainder: after a hard cancel nothing is handed over and any utterance that starts regardless is stopped at once. This mirrors NVDA's structure, which likewise keeps the queue itself and gives the voice one utterance at a time.</p>
+<h2>Login tool 3.3: crash at startup caused by a damaged Windows voice</h2>
+<p><strong>Simple:</strong> After a fresh install the tool still announced "version 3.2" and then quit with an error window ("Error: (0x80045039) Specifically: GetVoices"). The trigger was a damaged voice in Windows - for example an uninstalled voice that left remnants behind. The tool now skips such a voice, notes it in log.txt and starts normally; the voice is just missing from the "select voice" menu.</p>
+<p><strong>Technically:</strong> 0x80045039 is SPERR_NO_MORE_ITEMS: SAPI reports N voices but one of them cannot be read (a broken entry under HKLM\SOFTWARE\Microsoft\Speech\Voices\Tokens). The tool died building the voice menu, in the for-loop over sap.GetVoices(). GetVoices() and SetSapiVoiceByName() now go through the new ReadableVoiceTokens(), which reads each voice by Item(i) in its own try; an unreadable one is skipped and logged, and if even the list fails it stays empty. SapiInit() reads the default voice under the same protection. Not yet tested on a PC with a broken voice.</p>
+<h2>Speech: fast scrolling over the NVDA bridge read the previous long entry to the end</h2>
+<p><strong>Simple:</strong> With the NVDA/SAPI bridge voice, moving quickly through a list with long entries (the waypoint list, quest texts, chat history) first read the previous entry to the end and only then the one the cursor was on. Now the old entry is cut off after a moment and the entry you stopped on is read, as with a Windows voice. Longer texts that come in several parts are still read completely, and typing echo is unchanged. The fix needs the updated NVDA bridge that the Sku installer 5.1 installs: update through the installer (not only the addon zip) and restart WoW completely afterwards.</p>
+<p><strong>Technically:</strong> The game's StopSpeakingText only stops the client's own playback. On the bridge the text is already in NVDA's queue at that point, and SAPI never passes "purge before speak" on to an engine, so nothing on the path could interrupt NVDA. The only thing that reaches the engine is the utterance itself, markup included - so the intent now travels inside it, as with Prism's speak(text, interrupt): every stop sets a flag, and the next line carries &lt;bookmark mark="skuint"/&gt;. The engine shipped with the installer (SAPI2SR with Sku's patch C) calls nvdaController_cancelSpeech when it sees that bookmark and then forwards the text. Lines handed over without a stop in front carry no mark and keep queueing. Real SAPI voices consume the bookmark silently; an older engine skips it.</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.4.html">Older version: v43.4</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.5 - notes de version</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Langue des notes de version">
+<ul class="langnav">
+<li><a href="../en/v43.5.html" lang="en" hreflang="en">English</a></li>
+<li><a href="../de/v43.5.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><span aria-current="page" lang="fr">Français</span></li>
+</ul>
+</nav>
+<h1>Sku v43.5 - notes de version</h1>
+<nav aria-label="Navigation dans les notes de version">
+<ul class="pagenav">
+<li><a href="index.html">Toutes les notes de version</a></li>
+<li><a href="v43.4.html">Version plus ancienne : v43.4</a></li>
+<li><a href="../../index-fr.html">Page de téléchargement de Sku</a></li>
+</ul>
+</nav>
+<main>
+<h2>Aperçu</h2>
+<h3>Corrections</h3>
+<ul>
+<li>Base de données des quêtes : ouvrir « Tout » (ainsi que « Commence dans la zone » et « Quêtes à proximité ») figeait le jeu plusieurs secondes.</li>
+<li>Chat : après ouverture de la ligne de chat avec « / », l'ancien canal était annoncé (par ex. « À Kai »), alors que seule la commande tapée ensuite décide du canal.</li>
+<li>Voix : certaines lignes restaient muettes au hasard via le pont NVDA/SAPI (par ex. un objet de la liste d'équipement) alors que leurs voisines étaient lues.</li>
+<li>Quête : « Le nettoyage selon Raene » (Bâtonnet de Dartol, Orneval) n'avait pas de cible ; elle mène maintenant au Coffre rouillé laissé par les Gelées pourrissantes.</li>
+<li>Voix : les caractères tapés et les annonces annulées arrivaient en retard - des lettres d'une ligne de chat fermée depuis longtemps surgissaient plus tard dans un autre menu.</li>
+<li>Outil de connexion 3.3 : une voix Windows endommagée sur le PC faisait quitter l'outil avec une fenêtre d'erreur (GetVoices, 0x80045039) juste après l'annonce de sa version.</li>
+<li>Voix : en parcourant vite des entrées longues via le pont NVDA/SAPI, l'entrée précédente était lue jusqu'au bout avant celle choisie.</li>
+</ul>
+<h2>Base de données des quêtes : ouvrir les listes de quêtes figeait le jeu</h2>
+<p><strong>Simple :</strong> Ouvrir la liste « Tout » sous Quête &gt; Base de données des quêtes provoquait depuis la v43.2 un blocage de plusieurs secondes. La liste s'ouvre de nouveau instantanément ; les entrées d'une quête (acceptation, objectif, remise ...) ne sont construites qu'en entrant dans la quête. Il en va de même pour « Commence dans la zone » et « Quêtes à proximité ».</p>
+<p><strong>Technique :</strong> « Tout » construisait d'emblée le sous-menu complet (CreateQuestSubmenu) pour chacune des plusieurs milliers de quêtes de la base. Depuis la v43.2, la branche objectif de ce sous-menu résout géométriquement le point de route le plus proche pour les quêtes à lieu déclencheur (triggerEnd) via GetTriggerEndWps - un balayage complet du cache de points de route d'un continent - et depuis la v43.3 pour chacune de ces quêtes, et non plus seulement celles sans autre objectif. Une ouverture coûtait ainsi environ 170 balayages de continent dans une seule image. Les entrées de quête sont désormais des nœuds dynamiques avec leur propre BuildChildren, comme « Quêtes actuelles » l'a toujours été.</p>
+<h2>Chat : annonce de canal erronée après ouverture avec la touche slash</h2>
+<p><strong>Simple :</strong> Si vous aviez chuchoté à quelqu'un en dernier et ouvriez la ligne de chat avec « / », vous entendiez « À Kai » - puis, juste après « /g », « Guilde ». La première annonce était fausse : tant que la ligne commence par un slash, rien ne part vers ce canal, c'est la commande qui décide. L'annonce reste désormais silencieuse tant qu'une commande est dans la ligne, et dit le canal dès qu'il est fixé (« /g » devient « Guilde ») ou quand le slash est effacé. Un passage volontaire à « Dire » (« /s ») est maintenant annoncé lui aussi, sauf si Dire était de toute façon le canal par défaut. Au rappel d'une ligne envoyée (flèche haut), le préfixe de canal est omis si la ligne est une commande.</p>
+<p><strong>Technique :</strong> L'en-tête de Blizzard affiche toujours l'attribut chatType, et à l'ouverture c'est le canal « sticky » du dernier message envoyé (le chuchotement l'est aussi, tellTarget compris). La touche slash appelle ChatFrameUtil.OpenChat("/") : le même en-tête plus un « / » dans le champ, posé seulement au prochain OnUpdate (editBox.setText), si bien que les appels UpdateHeader de l'ouverture tournent encore avec un champ vide. Un texte qui commence par « / » ne part jamais vers le canal de l'en-tête : ce n'est que lorsque ParseText résout la commande (« /g » à l'espace, « /w Nom » après le nom) que Blizzard fixe chatType, SetText(reste) puis UpdateHeader. Sku vérifie désormais le texte effectif, setText en attente compris (SkuChat:EditboxTextIsCommand), à chaque point d'annonce (hooks UpdateHeader, focus, parole différée) ; un nouveau hook OnTextChanged couvre l'effacement du slash, pour lequel Blizzard n'appelle aucun UpdateHeader.</p>
+<h2>Voix : certaines lignes restaient muettes au hasard</h2>
+<p><strong>Simple :</strong> En parcourant rapidement une liste, une ligne isolée n'était parfois pas lue - par ex. « Gants de combat naga » dans l'équipement, alors que ses voisines l'étaient - et elle restait muette même en repassant dessus plusieurs fois. Cela concernait le pont NVDA/SAPI et pouvait arriver partout dans Sku, surtout après un /reload. Chaque ligne est de nouveau lue de façon fiable.</p>
+<p><strong>Technique :</strong> Le client WoW met en cache la voix rendue par texte et la rejoue lors d'une répétition sans rappeler la voix - avec le pont, cette relecture est du silence. Sku ajoute donc à chaque texte une suite d'espaces insécables comptée par texte (1..64) pour que chaque répétition soit un texte nouveau. Mais le compteur ne vivait qu'en Lua et repartait de zéro à chaque /reload, alors que le cache du client survit au reload (les identifiants d'énoncés continuent sans rupture). Une ligne revue après le reload pouvait ainsi retomber dans une plage déjà rendue et restait muette jusqu'à ce que le compteur en sorte - six pressions d'affilée dans le journal, chacune avec un SpeakText + STARTED + FINISHED propres. Les compteurs vivent maintenant dans SkuOptionsDB.global (bttsCacheBust) et continuent au-delà du reload ; de plus l'espace par texte passe de 64 à 512 variantes (des espaces insécables en tête, 1..8, portent la partie haute du compteur).</p>
+<h2>Quête : « Le nettoyage selon Raene » (Bâtonnet de Dartol) n'avait pas de cible</h2>
+<p><strong>Simple :</strong> La quête 1027 « Le nettoyage selon Raene » en Orneval demande le dernier morceau du Bâtonnet de Dartol, le pommeau de fer. Sku ne connaissait aucun lieu pour lui, « Cible de quête » restait vide. La cible mène maintenant dans la zone des gelées au sud-est de la Retraite de Raynewood : les Gelées pourrissantes y laissent un Coffre rouillé à leur mort, et le pommeau s'y trouve.</p>
+<p><strong>Technique :</strong> L'objet 5519 (Iron Pommel) renvoie correctement à l'objet de jeu 19021 (Rusty Chest) dans la base, mais cet enregistrement n'avait aucune coordonnée de spawn, ni dans objects.lua ni dans objects_fixes.lua - la branche « item » de GetResultingWps ne trouvait rien. objects_fixes.lua (TBC et Era) ajoute maintenant les 44 positions du coffre relevées par Wowhead en Orneval (zone 331, environ 68-78 / 68-80) ; c'est la même surface que les spawns de la Gelée pourrissante (3928) qui laisse le coffre.</p>
+<h2>Voix : les caractères tapés et les annonces annulées arrivaient en retard</h2>
+<p><strong>Simple :</strong> Si vous tapiez un message un peu long puis fermiez la ligne de chat, vous continuiez à entendre les lettres ensuite - une par une, alors que vous naviguiez depuis longtemps dans un autre menu ; près d'une minute dans un enregistrement. Il en allait de même pour une annonce annulée : après « Annulé » arrivait encore un reste de l'ancienne ligne, par exemple une distance du menu des points de passage que vous veniez de fermer. Tout ce qui reste en attente à la fermeture ou à l'annulation est désormais abandonné. L'écho des touches reste complet - aucune lettre n'est perdue.</p>
+<p><strong>Techniquement :</strong> Le client accepte chaque SpeakText sans limite mais ne les joue qu'un à la fois, et C_VoiceChat.StopSpeakingText n'annule que l'énoncé EN COURS - il n'existe pas de vidage de file comme le PurgeBeforeSpeak de SAPI. Tout ce qui est déjà transmis est donc irrécupérable. La voie de frappe transmettait un énoncé par touche, trois à quatre par seconde, alors que le client en traite environ un : une ligne tapée de 104 caractères garait ainsi environ 80 énoncés dans le client, qui ressortaient ensuite un par seconde. Pour la même raison CancelBttsOutput et EndScope restaient sans effet - ils vident la file propre à Sku, où les caractères n'ont jamais été (85 des 93 appels à EndScope d'un enregistrement n'ont rien abandonné). Les caractères attendent maintenant dans Sku, un seul part vers le client à la fois, et le suivant seulement à son PLAYBACK_FINISHED - le moment où le client accepte de nouveau un énoncé (chaque STARTED de l'enregistrement coïncide avec un FINISHED). Rien n'est donc jamais transmis sans être déjà en train de jouer, et une annulation atteint tout. Une courte fenêtre d'annulation couvre le reste : après une annulation franche plus rien n'est transmis et tout énoncé qui démarrerait malgré tout est stoppé aussitôt. Cela reprend la structure de NVDA, qui garde lui aussi la file et ne donne à la voix qu'un énoncé à la fois.</p>
+<h2>Outil de connexion 3.3 : plantage au démarrage à cause d'une voix Windows endommagée</h2>
+<p><strong>Simple :</strong> Après une installation neuve, l'outil annonçait encore « version 3.2 » puis s'arrêtait avec une fenêtre d'erreur (« Error: (0x80045039) Specifically: GetVoices »). En cause : une voix endommagée dans Windows - par exemple une voix désinstallée qui a laissé des restes. L'outil ignore désormais une telle voix, la note dans log.txt et démarre normalement ; elle manque seulement dans le menu « choisir la voix ».</p>
+<p><strong>Technique :</strong> 0x80045039 est SPERR_NO_MORE_ITEMS : SAPI annonce N voix, mais l'une d'elles est illisible (entrée cassée sous HKLM\SOFTWARE\Microsoft\Speech\Voices\Tokens). L'outil plantait en construisant le menu des voix, dans la boucle for sur sap.GetVoices(). GetVoices() et SetSapiVoiceByName() passent maintenant par la nouvelle fonction ReadableVoiceTokens(), qui lit chaque voix par Item(i) dans son propre try ; une voix illisible est ignorée et journalisée, et si la liste elle-même échoue, elle reste vide. SapiInit() lit la voix par défaut avec la même protection. Pas encore testé sur un PC avec une voix cassée.</p>
+<h2>Voix : un défilement rapide via le pont NVDA lisait l'entrée longue précédente jusqu'au bout</h2>
+<p><strong>Simple :</strong> Avec la voix du pont NVDA/SAPI, parcourir vite une liste aux entrées longues (liste des points de passage, textes de quête, historique du chat) lisait d'abord l'entrée précédente en entier, puis seulement celle sous le curseur. L'ancienne entrée est maintenant coupée après un bref instant et celle choisie est lue, comme avec une voix Windows. Les textes longs en plusieurs parties restent lus en entier, et l'écho de frappe ne change pas. La correction nécessite le nouveau pont NVDA installé par l'installateur Sku 5.1 : mettez à jour via l'installateur (pas seulement le zip de l'addon) puis redémarrez complètement WoW.</p>
+<p><strong>Technique :</strong> StopSpeakingText du jeu n'arrête que la lecture du client. Sur le pont, le texte est déjà dans la file de NVDA, et SAPI ne transmet jamais « purge before speak » à un moteur : rien sur le chemin ne pouvait interrompre NVDA. Seul l'énoncé lui-même, balisage compris, atteint le moteur - l'intention voyage donc à l'intérieur, comme avec speak(text, interrupt) de Prism : chaque arrêt pose un drapeau, et la ligne suivante porte &lt;bookmark mark="skuint"/&gt;. Le moteur livré par l'installateur (SAPI2SR avec le patch C de Sku) appelle nvdaController_cancelSpeech en voyant ce signet, puis transmet le texte. Les lignes transmises sans arrêt préalable ne portent pas de marque et restent en file. Les vraies voix SAPI ignorent le signet ; un moteur plus ancien le saute.</p>
+</main>
+<hr>
+<nav aria-label="Navigation dans les notes de version">
+<ul class="pagenav">
+<li><a href="index.html">Toutes les notes de version</a></li>
+<li><a href="v43.4.html">Version plus ancienne : v43.4</a></li>
+<li><a href="../../index-fr.html">Page de téléchargement de Sku</a></li>
+</ul>
+</nav>
+</body>
+</html>
