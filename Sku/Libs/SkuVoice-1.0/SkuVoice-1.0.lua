@@ -320,6 +320,23 @@ local tAuditPendingBucket = nil
 -- the bridge it arrives in the handover frame.
 local tBttsAuditLostAfter = 0.5
 
+-- [v43.6] In-band interrupt for the NVDA bridge voice (SAPI2SR).
+--
+-- StopSpeakingText only stops the client's own playback. On the bridge the text
+-- is already in NVDA's queue by then, and SAPI never forwards a purge to the
+-- engine, so a long line kept playing and the next one queued behind it (fast
+-- scrolling read the second-last entry to the end). The one thing that DOES
+-- reach the engine is the utterance itself, markup included -- so the intent
+-- travels inside it: every stop sets this flag, and the NEXT handover carries
+-- <bookmark mark="skuint"/>. Our patched engine (Patch C,
+-- dev/rework-docs/nvda-voice-signing/patch_sapi2sr_x64_interrupt.py) cancels
+-- NVDA on that mark and then forwards the text -- Prism's speak(text,
+-- interrupt) in one call. Lines handed WITHOUT a stop in front (quest text parts,
+-- typed characters inside a burst) carry no mark and keep queueing.
+-- Real SAPI voices consume the bookmark silently; an unpatched engine skips it.
+local tBttsInterruptNext = false
+local BTTS_INTERRUPT_MARK = '<bookmark mark="skuint"/>'
+
 -- [v43.2] Typing-echo fast lane.
 --
 -- A typed character has the opposite requirements to an announcement: it must be
@@ -692,7 +709,17 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	if dprint then dprint("BTTS SpeakText", aIsEcho and "echo" or "queue",
 		"voice="..tostring(aVoiceIndex - 1), "speed="..tostring(ChatTts().WowTtsSpeed),
 		"vol="..tostring(ChatTts().WowTtsVolume), "text=["..tostring(aText).."]") end
-	C_VoiceChat.SpeakText(aVoiceIndex - 1, BttsCacheBust(aText), ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
+	local tSpoken = BttsCacheBust(aText)
+	-- [v43.6] See tBttsInterruptNext. Never on the Mac client: its engine speaks
+	-- markup literally (same reason BttsCacheBust drops its bookmark there).
+	if tBttsInterruptNext then
+		tBttsInterruptNext = false
+		if not (IsMacClient and IsMacClient()) then
+			tSpoken = tSpoken .. BTTS_INTERRUPT_MARK
+			if dprint then dprint("BTTS interrupt mark") end
+		end
+	end
+	C_VoiceChat.SpeakText(aVoiceIndex - 1, tSpoken, ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
 end
 
 function SkuVoice:Create()
@@ -1019,6 +1046,10 @@ function SkuVoice:Create()
 							elseif dprint then
 								dprint("BTTS queuereset -> stop suppressed (nothing in flight)")
 							end
+							-- [v43.6] Even when the stop is suppressed: on the bridge
+							-- nothing is ever "in flight" client-side, the line lives in
+							-- NVDA, and this mark is the only thing that reaches it.
+							tBttsInterruptNext = true
 						end
 						mSkuVoiceQueueBTTS_Speaking = {}
 						tNextSpeakAt = tNow + tBttsPostStopHold
@@ -2202,6 +2233,7 @@ function SkuVoice:StopOutputEmptyQueue(aBlizz, aSku)
 	if aBlizz then
 		mSkuVoiceQueueBTTS_Speaking = {}
 		C_VoiceChat.StopSpeakingText()
+		tBttsInterruptNext = true
 	end
 end
 -- [W6-B #20] dead SkuVoice:StopAllOutputs removed (was entirely inside a
@@ -2288,6 +2320,7 @@ function SkuVoice:CancelBttsOutput()
 	tLastHandedScope = nil
 	if dprint then dprint("BTTS CancelBttsOutput -> StopSpeakingText") end
 	pcall(function() C_VoiceChat.StopSpeakingText() end)
+	tBttsInterruptNext = true
 	tAuditStopSinceHandover = true
 end
 
@@ -2342,6 +2375,7 @@ function SkuVoice:SpeakEcho(aText, aVoice)
 		tLastHandedText = nil
 		if dprint then dprint("BTTS echo burst start -> StopSpeakingText") end
 		pcall(function() C_VoiceChat.StopSpeakingText() end)
+		tBttsInterruptNext = true
 		tAuditStopSinceHandover = true
 		-- Only THIS character waits, and only for the stop to land -- the same
 		-- race tBttsPostStopHold covers, but the echo pays it once per burst
@@ -2417,6 +2451,7 @@ function SkuVoice:EndScope(aScope)
 		tLastHandedScope = nil
 		tLastHandoverWasEcho = false
 		pcall(function() C_VoiceChat.StopSpeakingText() end)
+		tBttsInterruptNext = true
 		tAuditStopSinceHandover = true
 		tStopped = true
 		-- [v43.5c] This branch only runs when the utterance in flight belongs to the

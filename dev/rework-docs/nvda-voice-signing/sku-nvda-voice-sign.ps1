@@ -56,6 +56,9 @@ $PinnedPeHashes = @{
 	# skip SPVA_Bookmark fragments (WoW 12.0.x emits boundary bookmarks named
 	# start/end; the stock engine spoke the mark names). See ../ bookmark-fix notes.
 	'A7F300BA5D0ABA24D33AA9F31617D98B1D620CC68ECC363A78D26E63AD1D3930' = 'sapi2sr_engine.dll x64 (1.0.0.0 + Sku bookmark fix + speakText route)'
+	# + Patch C: a bookmark named "skuint" cancels NVDA before the text is
+	# forwarded (patch_sapi2sr_x64_interrupt.py, sapi2sr-interrupt-spec.md).
+	'5A76A572057954B9B7BF2F2E6FBE7555F79D727760370D8423ADA6E59E4C951E' = 'sapi2sr_engine.dll x64 (1.0.0.0 + Sku bookmark fix + speakText route + skuint interrupt)'
 	'1281E2B96CD5CAC5672E8ECCD7406A3FB29F80EAA1AC3BFE99E13CBE0CFE9360' = 'sapi2sr_engine.dll x86 (1.0.0.0)'
 }
 
