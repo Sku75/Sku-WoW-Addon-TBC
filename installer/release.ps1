@@ -74,9 +74,10 @@ elease.ps1 -Dev -Version 43.0
                   be built on Windows). Verified locally (all three present,
                   metadata sha256 matches the zip), then attached wherever
                   installer assets are published: the main release and
-                  -PublishInstaller. Without it a release simply carries no
-                  macOS assets and the macOS download link stays on the
-                  previous release's files.
+                  -PublishInstaller. Without it a main release carries the
+                  previous Latest release's macOS set forward (re-verified),
+                  because releases/latest/download only sees the newest
+                  release - a release without the set 404s the macOS link.
 
   Discord webhooks are read from installer\.secrets\discord-webhooks.txt
   (gitignored - one URL per line, '#' comments allowed). A line may name that
@@ -608,8 +609,8 @@ function Do-MainRelease($ver) {
     if ($Notes) { $notesArg = $Notes } else { $notesArg = "Sku TBC v$ver. See the patch notes on the download page." }
     if ($insVer) { $notesArg = "$notesArg`n`nIncluded Sku Installer: $insVer" }
     if ($Prerelease) { $latestArg = '--prerelease' } else { $latestArg = '--latest' }
-    $macAssets = Get-MacAssets
-    $assetArgs = @($zip, $ExeDist, $verFile) + @($macAssets | Where-Object { $_ })
+    $macAssets = Get-MacAssets -CarryForward
+    $assetArgs =@($zip, $ExeDist, $verFile) + @($macAssets | Where-Object { $_ })
     $macNote = ''; if ($macAssets) { $macNote = ' + macOS assets' }
     Info "Creating GitHub release $tag with Sku-$ver.zip + SkuInstaller.exe + installer-version.txt$macNote..."
     Exec "gh release create $tag (zip + exe + version file$macNote) $latestArg --target main" {
@@ -766,19 +767,45 @@ function Do-PublishSkuMapper($ver) {
 # before anything is uploaded: a release carrying a zip whose published
 # checksum is wrong or stale would offer every installed macOS updater a
 # self-update whose hash check then fails, over and over.
-function Get-MacAssets {
-    if (-not $MacAssetsDir) { return $null }
-    $zip  = Join-Path $MacAssetsDir 'Sku-Installer-macOS.zip'
-    $meta = Join-Path $MacAssetsDir 'installer-version-macos.txt'
-    $boot = Join-Path $MacAssetsDir 'Install-SkuUpdater-macOS.zip'
+#
+# -CarryForward (the main release only): without -MacAssetsDir the set is
+# fetched from the release that holds the Latest badge RIGHT NOW - i.e. the one
+# this release is about to replace - and re-attached. The website links and the
+# macOS updater both resolve through releases/latest/download, which looks at
+# the newest release ONLY: a release without the macOS set does not "stay on the
+# previous files", it 404s the download and the update check (v43.4 and v43.5
+# went out that way). Must be called BEFORE gh release create moves the badge.
+function Get-MacAssets([switch]$CarryForward) {
+    $dir = $MacAssetsDir
+    $what = '-MacAssetsDir'
+    if (-not $dir) {
+        if (-not $CarryForward) { return $null }
+        if ($DryRun) { Dry "carry the macOS installer assets forward from the current Latest release"; return $null }
+        $prevTag = & gh release view --repo $Slug --json tagName --jq '.tagName'
+        if ($LASTEXITCODE -ne 0 -or -not $prevTag) { throw "Could not resolve the Latest release tag to carry the macOS assets forward." }
+        $what = "macOS assets of $prevTag"
+        $dir = Join-Path ([IO.Path]::GetTempPath()) "sku-mac-carry-$prevTag"
+        if (Test-Path $dir) { Remove-Item -Recurse -Force $dir -Confirm:$false }
+        New-Item -ItemType Directory -Force $dir | Out-Null
+        & gh release download $prevTag --repo $Slug -D $dir -p 'Sku-Installer-macOS.zip' -p 'installer-version-macos.txt' -p 'Install-SkuUpdater-macOS.zip'
+        if ($LASTEXITCODE -ne 0) {
+            Note "  WARNING: $prevTag carries no macOS installer assets - this release gets none either,"
+            Note "           and the macOS download link will 404. Re-run with -MacAssetsDir to fix that."
+            return $null
+        }
+        Info "  Carrying the macOS installer assets forward from $prevTag"
+    }
+    $zip  = Join-Path $dir 'Sku-Installer-macOS.zip'
+    $meta = Join-Path $dir 'installer-version-macos.txt'
+    $boot = Join-Path $dir 'Install-SkuUpdater-macOS.zip'
     foreach ($f in @($zip, $meta, $boot)) {
-        if (-not (Test-Path $f)) { throw "-MacAssetsDir: missing $(Split-Path $f -Leaf) in $MacAssetsDir" }
+        if (-not (Test-Path $f)) { throw "${what}: missing $(Split-Path $f -Leaf) in $dir" }
     }
     $shaLine = ((Get-Content $meta | Where-Object { $_ -match '^sha256=' } | Select-Object -First 1) -replace '^sha256=', '').Trim().ToLowerInvariant()
-    if ($shaLine -notmatch '^[0-9a-f]{64}$') { throw "-MacAssetsDir: installer-version-macos.txt carries no valid sha256= line." }
+    if ($shaLine -notmatch '^[0-9a-f]{64}$') { throw "${what}: installer-version-macos.txt carries no valid sha256= line." }
     $actual = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
-    if ($actual -ne $shaLine) { throw "-MacAssetsDir: sha256 in installer-version-macos.txt does not match Sku-Installer-macOS.zip." }
-    Info "  macOS installer assets verified in $MacAssetsDir"
+    if ($actual -ne $shaLine) { throw "${what}: sha256 in installer-version-macos.txt does not match Sku-Installer-macOS.zip." }
+    Info "  macOS installer assets verified in $dir"
     return @($zip, $meta, $boot)
 }
 
