@@ -39,6 +39,8 @@
     <Compile Include="..\SkuInstaller\PathMemory.cs"      Link="PathMemory.cs" />
     <Compile Include="..\SkuInstaller\SelfUpdater.cs"     Link="SelfUpdater.cs" />
     <Compile Include="..\SkuInstaller\LoginToolInstaller.cs" Link="LoginToolInstaller.cs" />
+    <Compile Include="..\SkuInstaller\ManagedAddons.cs"   Link="ManagedAddons.cs" />
+    <Compile Include="..\SkuInstaller\InstallTarget.cs"   Link="InstallTarget.cs" />
   </ItemGroup>
 
 </Project>

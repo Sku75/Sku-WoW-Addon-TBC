@@ -243,15 +243,6 @@ namespace SkuInstaller
             return idx >= 0 ? idx : 0;
         }
 
-        /// <summary>The primary managed addon (the main Sku addon).</summary>
-        internal static AddonSpec PrimarySpec() =>
-            Config.CoreAddons.Find(s => s.IsPrimary) ?? Config.CoreAddons[0];
-
-        /// <summary>True if the main Sku addon folder exists under this AddOns folder.</summary>
-        internal static bool SkuInstalled(string addonsFolder) =>
-            !string.IsNullOrEmpty(addonsFolder) &&
-            Directory.Exists(Path.Combine(addonsFolder, PrimarySpec().FolderName));
-
         private static bool IsAdmin()
         {
             try

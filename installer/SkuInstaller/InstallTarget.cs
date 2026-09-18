@@ -17,6 +17,17 @@ namespace SkuInstaller
     /// </summary>
     public class InstallTarget
     {
+        // Lived in Program until installer 5.1; moved here (their only user) so
+        // SkuSelfTest can link this file without the WinForms entry point.
+        /// <summary>The primary managed addon (the main Sku addon).</summary>
+        internal static AddonSpec PrimarySpec() =>
+            Config.CoreAddons.Find(s => s.IsPrimary) ?? Config.CoreAddons[0];
+
+        /// <summary>True if the main Sku addon folder exists under this AddOns folder.</summary>
+        internal static bool SkuInstalled(string addonsFolder) =>
+            !string.IsNullOrEmpty(addonsFolder) &&
+            Directory.Exists(Path.Combine(addonsFolder, PrimarySpec().FolderName));
+
         /// <summary>Flavor token, e.g. wow_anniversary / wow_classic_era.</summary>
         public string Product;
 
@@ -36,7 +47,7 @@ namespace SkuInstaller
         public string InstalledVersion;
 
         /// <summary>True when Sku is already installed in this client.</summary>
-        public bool HasSku => !string.IsNullOrEmpty(AddOnsPath) && Program.SkuInstalled(AddOnsPath);
+        public bool HasSku => !string.IsNullOrEmpty(AddOnsPath) && SkuInstalled(AddOnsPath);
 
         /// <summary>True when this client is present on the machine at all.</summary>
         public bool ClientFound => !string.IsNullOrEmpty(AddOnsPath);
@@ -51,7 +62,7 @@ namespace SkuInstaller
         /// <summary>True when Sku here is a symlink/junction to a folder we don't manage.</summary>
         public bool IsDevSymlink =>
             !string.IsNullOrEmpty(AddOnsPath) &&
-            AddonInstaller.IsSymlinked(AddOnsPath, Program.PrimarySpec().FolderName);
+            AddonInstaller.IsSymlinked(AddOnsPath, PrimarySpec().FolderName);
 
         /// <summary>
         /// Re-reads the installed Sku version for the current
@@ -74,7 +85,7 @@ namespace SkuInstaller
             InstalledVersion = null;
             if (string.IsNullOrEmpty(AddOnsPath)) return;
 
-            var primary = Program.PrimarySpec();
+            var primary = PrimarySpec();
             if (!Directory.Exists(Path.Combine(AddOnsPath, primary.FolderName))) return;
 
             string tocVersion = WowLocator.ReadTocVersion(AddOnsPath, primary.FolderName);
