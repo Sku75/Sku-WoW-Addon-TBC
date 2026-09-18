@@ -1,7 +1,7 @@
 ﻿## Interface: 20506, 11508, 11509
-## Title: Sku v43.5
+## Title: Sku v43.6
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData, SkuErrorLog, SkuDebugLog
-## Version: 43.5
+## Version: 43.6
 
 SkuPerfFileStamp.lua
 
