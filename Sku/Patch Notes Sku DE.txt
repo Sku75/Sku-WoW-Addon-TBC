@@ -4,7 +4,7 @@
 
 
 -------------------------------------------------------------------------------------------------------
-Aenderungen in Sku v43.6
+Aenderungen in Sku v43.5-tools - Installer 5.2 und Anmelde-Tool 3.4, keine neue Addon-Version
 
     Ueberblick
 
@@ -15,7 +15,8 @@ Aenderungen in Sku v43.6
         Aenderungen
             Anmelde-Tool 3.4: Hardcore- und PvP-Warnungen werden bei jeder Bildschirmaufloesung und Fenstergroesse gefunden, nicht nur auf grossen Bildschirmen.
             Anmelde-Tool 3.4: jede Stimme wird vor der Uebernahme unhoerbar ausprobiert - eine kaputte Stimme kann das Tool nicht mehr stumm machen.
-            Installer: das Log-Buendel enthaelt jetzt eine Liste aller Windows-Stimmen (voices.txt).
+            Installer 5.2: das Log-Buendel enthaelt jetzt eine Liste aller Windows-Stimmen (voices.txt).
+            Installer 5.2: Massnahmen gegen Fehlalarme von Windows Defender - die Installer-Datei nennt Produkt und Autor, und die mitgelieferte NVDA-Bruecken-Datei kommt ohne uebrig gebliebene Entwickler-Signatur.
 
         Fehlerbehebungen
             Anmelde-Tool 3.4: "Stimme auswaehlen" war auf manchen Rechnern leer, und die Ersteinrichtung kam dort nie weiter.
@@ -115,17 +116,51 @@ Aenderungen in Sku v43.6
             Ausgabestrom an den Screenreader weiter, die Probe waere hoerbar. Eine Stimme, die
             laedt, aber nur Stille erzeugt, erkennt die Probe nicht.
 
-    Installer: das Log-Buendel listet alle Windows-Stimmen auf
+    Installer 5.2: das Log-Buendel listet alle Windows-Stimmen auf
         Einfach: "Logs sammeln" im Installer legt jetzt zusaetzlich die Datei voices.txt ins
             Buendel. Sie nennt jede in Windows registrierte Stimme und ob das Programm dahinter noch
             vorhanden ist. Bei Stimmenproblemen im Anmelde-Tool oder im Spiel laesst sich damit
-            sofort sehen, welcher Eintrag kaputt ist. Wirksam mit dem naechsten Installer-Build.
+            sofort sehen, welcher Eintrag kaputt ist. Kommt mit dem Installer 5.2.
         Technisch: LogCollector.WriteVoiceRegistrations liest Speech\Voices\Tokens,
             Speech\Voices\TokenEnums und Speech_OneCore\Voices\Tokens in der 64- und der
             32-Bit-Registry-Sicht (das Anmelde-Tool ist 64 Bit und sieht reine 32-Bit-Stimmen nicht)
             sowie in HKCU, dazu DefaultTokenId. Je Eintrag: Name, CLSID, die InprocServer32-DLL samt
             Pruefung, ob sie registriert ist und auf der Platte liegt, VoicePath/LangDataPath und
             die Attribute.
+
+    Installer 5.2: Massnahmen gegen Fehlalarme von Windows Defender
+        Einfach: Einige Spieler haben gemeldet, dass Windows Defender den frisch heruntergeladenen
+            Installer als gefaehrlich entfernt hat. Der Installer ist nicht gefaehrlich; unser
+            eigener Defender-Scan mit aktuellen Signaturen findet nichts. Zwei Dinge, die die Datei
+            verdaechtiger aussehen liessen als noetig, sind behoben: Die Dateieigenschaften sagen
+            jetzt, was die Datei ist und von wem sie kommt (Produkt "Sku Installer", Firma "Sku",
+            Autor JeanStiletto, Link zum Projekt) statt leer zu sein, und eine Datei der
+            mitgelieferten NVDA-Bruecke traegt keine Signatur mehr, die vom PC des Entwicklers
+            stammte und auf jedem anderen Rechner nichts bedeutete. Ehrlich zur Grenze: Der
+            Installer ist weiterhin nicht mit einem gekauften Zertifikat signiert. Jeder neue Build
+            faengt deshalb ohne Download-Reputation an, und Defender kann ihn in den ersten Tagen
+            trotzdem zurueckhalten. Wenn das passiert: Windows-Sicherheit oeffnen, Schutzverlauf,
+            den Eintrag waehlen und die Datei zulassen oder wiederherstellen - und uns bitte den
+            Namen der Erkennung schicken.
+        Technisch: SkuInstaller.exe war und ist nicht Authenticode-signiert; release.ps1 hat keinen
+            Signierschritt, signiert werden nur die Bruecken-DLLs, auf dem Rechner des Nutzers,
+            durch sku-nvda-voice-sign.ps1. Eine unsignierte Exe hat nur Cloud-Reputation je Hash,
+            und die v43.5-Exe war bei den Meldungen einen Tag alt mit neun Downloads. Der lokale
+            Scan (Engine 1.1.26080.3, Signaturen 1.459.278.0) ist sauber fuer Exe, Bruecken-Payload
+            und das mitgelieferte AutoHotkey - das Urteil kommt also aus Cloud/ML oder
+            Verhaltenserkennung, nicht aus einer statischen Signatur. Geaendert: Company, Product,
+            AssemblyTitle, Description, Authors und Copyright in SkuInstaller.csproj (bisher stand
+            ueberall "SkuInstaller", Copyright leer). Und x86\sapi2sr_engine.dll in
+            payload\sapi2sr-payload.zip war aus dem Program-Files-Ordner des Entwicklers
+            zurueckkopiert worden und trug noch die Wegwerf-Signatur dieses Rechners (ueberall sonst
+            "signiert von nicht vertrauenswuerdiger Wurzel"); jetzt liegt die nackte DLL bei,
+            123320 -> 115712 Bytes. Der Authenticode-PE-Hash schliesst die Signatur aus, beide Pins
+            im Signierskript passen weiter (5A76A572... x64, 1281E2B9... x86), das Signieren auf dem
+            Nutzerrechner ist unveraendert. dev\rework-docs\nvda-voice-signing\
+            strip_payload_signature.py erledigt das Entfernen beim naechsten Payload-Update. Nicht
+            geaendert, und weiterhin das, was eine Verhaltenserkennung sieht: Start mit
+            Adminrechten, eingebettete Programme, regsvr32 /s, ein verstecktes PowerShell, das ein
+            Codesignatur-Zertifikat in den Root-Speicher des Rechners legt, Selbstaustausch.
 
 
 -------------------------------------------------------------------------------------------------------

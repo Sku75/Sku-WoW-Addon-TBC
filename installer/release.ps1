@@ -67,6 +67,12 @@ elease.ps1 -Dev -Version 43.0
     -NotesDe "..." the same highlights in German, used for a German-only
                   Discord channel (falls back to -Notes when not given). The
                   GitHub release body always uses -Notes.
+    -NotesPage <p> (-PublishInstaller) the patch-notes page this tools-only
+                  update is documented on, e.g. "43.5-tools" for the section
+                  "Changes in Sku v43.5-tools - ...". Giving it makes
+                  -PublishInstaller ANNOUNCE on Discord (a tools update, worded
+                  as such - the addon version is named as unchanged). Without
+                  it -PublishInstaller stays silent, as before.
     -MacAssetsDir <dir>  folder holding the macOS installer set: Sku-Installer-
                   macOS.zip + installer-version-macos.txt + Install-SkuUpdater-
                   macOS.zip (e.g. the extracted Sku-Installer-macOS artifact of
@@ -103,6 +109,7 @@ param(
     [switch]$SkipDiscord,
     [string]$Notes,
     [string]$NotesDe,
+    [string]$NotesPage,
     [switch]$DryRun
 )
 
@@ -488,6 +495,12 @@ function Get-NotesUrlFor($lang, $ver) {
 # A channel that speaks one language gets its title in that language; a mixed
 # channel gets the English one.
 function Build-AnnouncementTitle($ver, $langs) {
+    if ($script:ToolsUpdate) {
+        $t = $script:ToolsUpdate
+        if ($langs.Count -eq 1 -and $langs[0] -eq 'de') { return "Sku-Installer $($t.Installer) und Anmelde-Tool $($t.LoginTool) ver$($Uml.o)ffentlicht" }
+        if ($langs.Count -eq 1 -and $langs[0] -eq 'fr') { return "Installateur Sku $($t.Installer) et outil de connexion $($t.LoginTool) disponibles" }
+        return "Sku installer $($t.Installer) and login tool $($t.LoginTool) released"
+    }
     if ($langs.Count -eq 1) {
         if ($langs[0] -eq 'de') { return "Sku TBC v$ver ver$($Uml.o)ffentlicht" }
         if ($langs[0] -eq 'fr') { return "Sku TBC v$ver est disponible" }
@@ -500,6 +513,8 @@ function Build-AnnouncementTitle($ver, $langs) {
 # gets a single-line announcement with nothing to skip at all.
 function Build-AnnouncementBody($ver, $langs) {
     $u = $Uml.u; $o = $Uml.o; $c = $Uml.c; $e = $Uml.e; $a = $Uml.a
+    $a2 = [char]0x00E4   # a umlaut
+    $e2 = [char]0x00EA   # e circumflex
     $lines = @()
     foreach ($lang in @('en', 'de', 'fr')) {
         if ($langs -notcontains $lang) { continue }
@@ -508,6 +523,18 @@ function Build-AnnouncementBody($ver, $langs) {
         # text below would come out as a stray patch-notes URL instead.
         $siteLink  = Get-SiteUrlFor  $lang
         $notesLink = Get-NotesUrlFor $lang $ver
+        if ($script:ToolsUpdate) {
+            # A tools-only update: $ver is the notes PAGE here ("43.5-tools"),
+            # and the line says outright that the addon itself did not change,
+            # so nobody goes looking for a new Sku version that does not exist.
+            $t = $script:ToolsUpdate
+            switch ($lang) {
+                'en' { $lines += "**English** - New **installer $($t.Installer)** and **login tool $($t.LoginTool)**. The Sku addon itself is unchanged at v$($t.Addon). Start your Sku Updater and accept the update it offers, or [download the installer]($siteLink) - [What changed]($notesLink)" }
+                'de' { $lines += "**Deutsch** - Neuer **Installer $($t.Installer)** und neues **Anmelde-Tool $($t.LoginTool)**. Das Sku-Addon selbst bleibt unver${a2}ndert bei v$($t.Addon). Den Sku Updater starten und das angebotene Update annehmen, oder [den Installer herunterladen]($siteLink) - [Was sich ge${a2}ndert hat]($notesLink)" }
+                'fr' { $lines += "**Fran${c}ais** - Nouvel **installateur $($t.Installer)** et nouvel **outil de connexion $($t.LoginTool)**. L'addon Sku lui-m${e2}me reste en v$($t.Addon). Lancez votre Sku Updater et acceptez la mise ${a} jour propos${e}e, ou [t${e}l${e}chargez l'installateur]($siteLink) - [Ce qui a chang${e}]($notesLink)" }
+            }
+            continue
+        }
         switch ($lang) {
             'en' { $lines += "**English** - Sku for WoW TBC Anniversary is now **v$ver**. [Download or update]($siteLink) - [Patch notes]($notesLink)" }
             'de' { $lines += "**Deutsch** - Sku f${u}r WoW TBC Anniversary ist jetzt **v$ver**. [Herunterladen oder aktualisieren]($siteLink) - [Patchnotes]($notesLink)" }
@@ -829,7 +856,8 @@ function Do-PublishInstaller {
         Dry "gh release view (resolve Latest tag) + upload SkuInstaller.exe + installer-version.txt --clobber"
         Set-DocsInstallerLatest
         Set-DocsInstallerVersion
-        Dry "git add docs/index.html; git commit; git push"
+        Dry "sync patch notes to docs + rebuild HTML; git add docs pages + notes; git commit; git push"
+        if ($NotesPage) { Dry "announce the tools update on Discord (notes page v$NotesPage)" }
         return
     }
 
@@ -849,8 +877,23 @@ function Do-PublishInstaller {
 
     Set-DocsInstallerLatest
     Set-DocsInstallerVersion
+    # A tools-only update is documented in the same patch-note files as the
+    # addon (its own "vNN-tools" section), so the website copy and the generated
+    # pages have to move now - there is no main release to do it.
+    Sync-PatchNotesToDocs
+    Build-PatchNotesHtml
     if ($insVer) { $msg = "installer: publish v$insVer on $latestTag" } else { $msg = "installer: publish on $latestTag" }
-    Commit-Push @('docs/index.html', 'installer/SkuInstaller/SkuInstaller.csproj') $msg
+    # $DocsPages, not just index.html: Set-DocsInstallerVersion edits ALL
+    # language pages; committing only index.html left -de/-fr dirty.
+    Commit-Push ($DocsPages + @('installer/SkuInstaller/SkuInstaller.csproj', 'docs/Patch-Notes-English.txt', 'docs/Patch-Notes-Deutsch.txt', 'docs/Patch-Notes-Francais.txt', 'docs/patchnotes')) $msg
+
+    if ($NotesPage) {
+        $cfg = Read-Text $ConfigCs
+        $lt = ''; if ($cfg -match 'LoginToolVersion\s*=\s*"([^"]+)"') { $lt = $Matches[1] }
+        $script:ToolsUpdate = @{ Installer = $insVer; LoginTool = $lt; Addon = ($latestTag -replace '^v', '') }
+        Announce-Discord $NotesPage "https://github.com/$Slug/releases/tag/$latestTag"
+        $script:ToolsUpdate = $null
+    }
 
     Info "  Done. releases/latest/download/SkuInstaller.exe now serves $insVer (from $latestTag)."
     Note "  (Login tool + SkuMapper docs links migrate when you run -PublishLoginTool / -PublishSkuMapper.)"

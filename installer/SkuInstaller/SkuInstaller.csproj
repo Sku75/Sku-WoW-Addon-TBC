@@ -91,8 +91,26 @@
          SkuUpdater only replaces itself when a higher version is published.
          Every run (one-click included) already reinstalls + re-signs the
          bridge, so no new step was needed.
+         5.2 = less to make an antivirus suspicious, after Windows Defender
+         deleted the freshly downloaded 5.1 for some users: real file properties
+         (below), and payload\sapi2sr-payload.zip ships x86\sapi2sr_engine.dll
+         BARE instead of carrying the throwaway signature of the developer
+         machine it was copied back from (strip_payload_signature.py; the PE-hash
+         pins are unaffected). Also the first build to carry login tool 3.4 and
+         the log bundle's voices.txt (LogCollector.WriteVoiceRegistrations).
          -->
-    <Version>5.1</Version>
+    <Version>5.2</Version>
+    <!-- File properties (Explorer "Details", and what antivirus reputation
+         scoring reads). Left at the SDK defaults every field said just
+         "SkuInstaller" and the copyright was blank, which is what throwaway
+         droppers look like. The exe is NOT Authenticode-signed (no paid
+         certificate), so this is the only identity it carries. -->
+    <Company>Sku</Company>
+    <Product>Sku Installer</Product>
+    <AssemblyTitle>Sku Installer - World of Warcraft screen reader addon setup</AssemblyTitle>
+    <Description>Installs and updates the Sku accessibility addon for World of Warcraft. https://github.com/Sku75/Sku-WoW-Addon-TBC</Description>
+    <Authors>JeanStiletto</Authors>
+    <Copyright>Copyright (c) 2026 JeanStiletto and the Sku contributors</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
