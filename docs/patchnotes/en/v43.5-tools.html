@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.5-tools - patch notes - installer 5.2 and login tool 3.4, no new addon version</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v43.5-tools.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/v43.5-tools.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v43.5-tools - patch notes - installer 5.2 and login tool 3.4, no new addon version</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.5.html">Older version: v43.5</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Overview</h2>
+<h3>New</h3>
+<ul>
+<li>Login tool 3.4: Blizzard's social contract is recognized, scrolled to its end and accepted - until now a new blind player was stuck in front of it.</li>
+<li>Login tool 3.4: the PvP warning shown when creating a character on a PvP realm is read out and answered with Enter or Escape.</li>
+</ul>
+<h3>Changes</h3>
+<ul>
+<li>Login tool 3.4: hardcore and PvP warnings are found at every screen resolution and window size, not only on large screens.</li>
+<li>Login tool 3.4: every voice is tried out inaudibly before it is accepted - a broken voice can no longer mute the tool.</li>
+<li>Installer 5.2: the log bundle now contains a list of all Windows voices (voices.txt).</li>
+<li>Installer 5.2: steps against false alarms from Windows Defender - the installer file names its product and author, and the bundled NVDA bridge file ships without a leftover developer signature.</li>
+</ul>
+<h3>Bugfixes</h3>
+<ul>
+<li>Login tool 3.4: "Select voice" was empty on some machines, and first-time setup could never get past it.</li>
+</ul>
+<h2>Login tool 3.4: Blizzard's social contract is accepted automatically</h2>
+<p><strong>Simple:</strong> New accounts - and everyone else whenever Blizzard revises the text - are shown a "social contract" on character selection. The window swallows every key, "Accept" is locked until the text has been scrolled to the end with the mouse, and "Decline" quits the game. The tool stood silent in front of it, or at best said "unknown screen". It now says "Blizzard's social contract is open. Accepting it, please wait.", scrolls the text to the end, presses Accept, checks that the window is gone and then builds the character list as usual. The same happens when the contract comes back in the middle of a session. If it does not work, the tool says what a sighted person has to do once and tries again after a minute. Decline is never pressed.</p>
+<p><strong>Technically:</strong> The dialog is SocialContractFrame (Blizzard_GlueXML\SocialContract.xml/.lua) and is triggered by the SERVER (C_SocialContractGlue.GetShouldShowSocialContract -&gt; SOCIAL_CONTRACT_STATUS_UPDATE); no CVar or setting exists for it, so it can neither be provoked nor answered in advance. The old code could not work on the Anniversary client: the helper's check wants the dimmed yellow logo, which the BC glue screen does not have, and its third probe sits in the middle of the contract's text - check false, screen "unknown", the tool never entered login mode; the click half was a blind sweep of 34 clicks. New: eight Sc* probe points in data.ini (derived from the XML: frame 510x632, buttons at ui y 706..728, NOT a DefaultScaleFrame) plus IsSocialContract, AcceptContract and HandleSocialContract in flows.ahk and two CheckMode branches in menu.ahk - no rebuilt helper. Verified with /validate, zero false positives on all reference screenshots and hits on synthetic contract images at three resolutions. Still untested on the real dialog, because it cannot be produced on demand; every attempt writes its probe values to log.txt as "SocialContract:" lines.</p>
+<h2>Login tool 3.4: hardcore and PvP warnings at every resolution, PvP creation warning new</h2>
+<p><strong>Simple:</strong> The hardcore warning on the realm list, the hardcore rules shown when creating a character, and the PvP warnings are windows Blizzard keeps the same size in real screen pixels. Their position therefore depends on the resolution, and the tool's fixed probe points were only right on large screens (1200 pixels high and up). On a common 1080p screen, or in a small window, the tool would have stood silent in front of the hardcore rules. It now searches for these windows itself and finds them at any resolution. New with it is the PvP warning shown when creating a character on a PvP realm: it is read out, Enter agrees, Escape declines. The PvP warning on the realm list looks exactly like the hardcore one and was therefore already being read out.</p>
+<p><strong>Technically:</strong> HardcorePopUpFrame (240 and 580 high) and RealmWarningPopUpFrame (240 and 360 high) inherit DefaultScaleFrame and are scaled by GetDefaultScale() - a client function with no Lua source. Measured in game with /wdeval: 0.64 at 2880x1800, where 768/height would be 0.43; so there is a floor, and 1080p would presumably give 0.71. Instead of assuming the scale, GlueDialogScan (flows.ahk) finds it: in all four shapes both buttons lie on a straight line out of the screen centre and only the distance depends on the scale. One screen grab (new class ScreenGrab in ui.ahk, 1000 pixels in 16 ms), then scale 0.60..1.25 per height: red at three columns, no red in the gap and just outside, black at the backdrop point. The fixed probes remain the first check, the scan the second. Clicks (GlueDialogClick) and OCR text bands (GlueDialogBand) follow the found scale. Verified with a Python port on 66 synthetic dialogs (6 resolutions, 3 heights, 4 scales): height always right, scale within 0.012, zero false positives. Still untested on real dialogs; every find is logged to log.txt as a "GlueDialog:" line with its scale.</p>
+<h2>Login tool 3.4: empty voice selection fixed, first-time setup no longer gets stuck</h2>
+<p><strong>Simple:</strong> On some machines Windows cannot deliver the list of installed voices although speech itself works - for instance after a third-party voice was removed uncleanly or only half installed. Since 3.3 the tool no longer crashes there, but "Select voice" was then empty: right arrow did nothing, and because first-time setup only moves on to the language after a voice was picked, there was no way through. The tool now reads the voices from the Windows registry itself in that case. If that finds none either, the menu holds the entry "No voices found, press Enter to keep the system voice" - Enter keeps the voice the tool is speaking with and setup continues.</p>
+<p><strong>Technically:</strong> The user's log bundle showed "GetVoices FAILED, voice list empty: (0x80045039)" four times, then "SwitchToSetup". Not a single token was unreadable (the 3.3 case) - sap.GetVoices() or .Count itself throws SPERR_NO_MORE_ITEMS while</p>
+<p>sap.Voice.GetDescription() works. New: RegistryVoiceTokens() in sapi.ahk builds one SAPI.SpObjectToken per key under Speech\Voices\Tokens (HKLM and HKCU) via SetId - on the failure path only. Only entries with a name and a CLSID are listed, because a broken entry does not throw here, GetDescription() simply returns "". AddVoiceNodes() in menu.ahk replaces the three identical loops and adds the fallback entry when the list is empty. Checked with a harness that loads the real sapi.ahk and makes GetVoices throw exactly this error: same voices as the normal path, all settable, two deliberately broken entries skipped. The actual failure could not be reproduced; still untested on the user's machine.</p>
+<h2>Login tool 3.4: a broken voice can no longer mute the tool</h2>
+<p><strong>Simple:</strong> A voice whose program was removed but whose entry stayed behind in Windows still shows up in the voice list. Picking it was accepted by Windows without any error - and the tool was mute afterwards, from the main menu even permanently, because the choice is saved. The tool now tries every voice inaudibly before accepting it. If it does not work, everything stays as it was and the tool says "This voice does not work, choose another one". At startup a saved voice that no longer speaks is not applied either; the Windows default voice stays in place.</p>
+<p><strong>Technically:</strong> Measured with a registration that has a name and a CLSID but no engine: sap.Voice := token is accepted, only Speak throws 0x80040154 (class not registered). VoiceWorks() in sapi.ahk therefore speaks on a separate SpVoice into an SpMemoryStream, 16 to 31 ms, and never touches the live voice. SetSapiVoiceByName and SetToolVoiceByName now return success, VoiceSelectAction and ApplyToolVoice act on it. SAPI2SR is exempt: the bridge hands text to the screen reader whatever the output stream is, so the test would be heard. A voice that loads but produces only silence is not caught by the test.</p>
+<h2>Installer 5.2: the log bundle lists all Windows voices</h2>
+<p><strong>Simple:</strong> "Collect logs" in the installer now also puts a file voices.txt into the bundle. It names every voice registered in Windows and whether the program behind it still exists. With voice problems in the login tool or in the game this shows at once which entry is broken. Ships with installer 5.2.</p>
+<p><strong>Technically:</strong> LogCollector.WriteVoiceRegistrations reads Speech\Voices\Tokens, Speech\Voices\TokenEnums and Speech_OneCore\Voices\Tokens in the 64-bit and the 32-bit registry view (the login tool is 64-bit and cannot see 32-bit-only voices) and in HKCU, plus DefaultTokenId. Per entry: name, CLSID, the InprocServer32 DLL with a check whether it is registered and present on disk, VoicePath/LangDataPath and the attributes.</p>
+<h2>Installer 5.2: steps against false alarms from Windows Defender</h2>
+<p><strong>Simple:</strong> Some players reported that Windows Defender removed the freshly downloaded installer as dangerous. The installer is not dangerous; our own Defender scan with current signatures finds nothing in it. Two things that made the file look more suspicious than it has to are fixed: its file properties now say what it is and who makes it (product "Sku Installer", company "Sku", author JeanStiletto, a link to the project) instead of being blank, and one file of the bundled NVDA bridge no longer carries a signature that came from the developer's own PC and meant nothing on anyone else's. To be honest about the limit: the installer is still not signed with a bought certificate, so every new build starts with no download reputation and Defender can still hold it back in its first days. If that happens, open Windows Security, Protection history, choose the entry and allow or restore the file - and please send us the name of the detection.</p>
+<p><strong>Technically:</strong> SkuInstaller.exe was and is not Authenticode-signed; release.ps1 has no signing step, only the bridge DLLs are signed, on the user's machine, by</p>
+<p>sku-nvda-voice-sign.ps1. An unsigned exe has only per-hash cloud reputation, and the v43.5 exe was one day old with nine downloads when the reports came in; the local scan (engine 1.1.26080.3, signatures 1.459.278.0) is clean for the exe, the bridge payload and the bundled AutoHotkey, so the verdict is cloud/ML or behavioural, not a static signature. Changed: Company, Product, AssemblyTitle, Description, Authors and Copyright in SkuInstaller.csproj (every field used to read "SkuInstaller", copyright empty). And x86\sapi2sr_engine.dll inside payload\sapi2sr-payload.zip had been copied back out of the developer's Program Files and still carried that machine's throwaway signature ("signed by an untrusted root" everywhere else); it is now the bare DLL, 123320 -&gt; 115712 bytes. The Authenticode PE hash excludes the signature, so both pins in the signing script still match (5A76A572... x64, 1281E2B9... x86) and the on-machine signing is unchanged. dev\rework-docs\nvda-voice-signing\strip_payload_signature.py does the strip for the next payload refresh. Not changed, and still what a behaviour engine sees: elevated run, embedded executables, regsvr32 /s, a hidden PowerShell that adds a code-signing certificate to the machine's root store, self-replacement.</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.5.html">Older version: v43.5</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

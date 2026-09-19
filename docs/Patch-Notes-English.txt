@@ -4,7 +4,7 @@
 
 
 -------------------------------------------------------------------------------------------------------
-Changes in Sku v43.6
+Changes in Sku v43.5-tools - installer 5.2 and login tool 3.4, no new addon version
 
     Overview
 
@@ -15,7 +15,8 @@ Changes in Sku v43.6
         Changes
             Login tool 3.4: hardcore and PvP warnings are found at every screen resolution and window size, not only on large screens.
             Login tool 3.4: every voice is tried out inaudibly before it is accepted - a broken voice can no longer mute the tool.
-            Installer: the log bundle now contains a list of all Windows voices (voices.txt).
+            Installer 5.2: the log bundle now contains a list of all Windows voices (voices.txt).
+            Installer 5.2: steps against false alarms from Windows Defender - the installer file names its product and author, and the bundled NVDA bridge file ships without a leftover developer signature.
 
         Bugfixes
             Login tool 3.4: "Select voice" was empty on some machines, and first-time setup could never get past it.
@@ -110,16 +111,46 @@ Changes in Sku v43.6
             the bridge hands text to the screen reader whatever the output stream is, so the test
             would be heard. A voice that loads but produces only silence is not caught by the test.
 
-    Installer: the log bundle lists all Windows voices
+    Installer 5.2: the log bundle lists all Windows voices
         Simple: "Collect logs" in the installer now also puts a file voices.txt into the bundle. It
             names every voice registered in Windows and whether the program behind it still exists.
             With voice problems in the login tool or in the game this shows at once which entry is
-            broken. Takes effect with the next installer build.
+            broken. Ships with installer 5.2.
         Technically: LogCollector.WriteVoiceRegistrations reads Speech\Voices\Tokens,
             Speech\Voices\TokenEnums and Speech_OneCore\Voices\Tokens in the 64-bit and the 32-bit
             registry view (the login tool is 64-bit and cannot see 32-bit-only voices) and in HKCU,
             plus DefaultTokenId. Per entry: name, CLSID, the InprocServer32 DLL with a check whether
             it is registered and present on disk, VoicePath/LangDataPath and the attributes.
+
+    Installer 5.2: steps against false alarms from Windows Defender
+        Simple: Some players reported that Windows Defender removed the freshly downloaded installer
+            as dangerous. The installer is not dangerous; our own Defender scan with current
+            signatures finds nothing in it. Two things that made the file look more suspicious than
+            it has to are fixed: its file properties now say what it is and who makes it (product
+            "Sku Installer", company "Sku", author JeanStiletto, a link to the project) instead of
+            being blank, and one file of the bundled NVDA bridge no longer carries a signature that
+            came from the developer's own PC and meant nothing on anyone else's. To be honest about
+            the limit: the installer is still not signed with a bought certificate, so every new
+            build starts with no download reputation and Defender can still hold it back in its
+            first days. If that happens, open Windows Security, Protection history, choose the
+            entry and allow or restore the file - and please send us the name of the detection.
+        Technically: SkuInstaller.exe was and is not Authenticode-signed; release.ps1 has no signing
+            step, only the bridge DLLs are signed, on the user's machine, by
+            sku-nvda-voice-sign.ps1. An unsigned exe has only per-hash cloud reputation, and the
+            v43.5 exe was one day old with nine downloads when the reports came in; the local scan
+            (engine 1.1.26080.3, signatures 1.459.278.0) is clean for the exe, the bridge payload
+            and the bundled AutoHotkey, so the verdict is cloud/ML or behavioural, not a static
+            signature. Changed: Company, Product, AssemblyTitle, Description, Authors and Copyright
+            in SkuInstaller.csproj (every field used to read "SkuInstaller", copyright empty). And
+            x86\sapi2sr_engine.dll inside payload\sapi2sr-payload.zip had been copied back out of
+            the developer's Program Files and still carried that machine's throwaway signature
+            ("signed by an untrusted root" everywhere else); it is now the bare DLL, 123320 ->
+            115712 bytes. The Authenticode PE hash excludes the signature, so both pins in the
+            signing script still match (5A76A572... x64, 1281E2B9... x86) and the on-machine
+            signing is unchanged. dev\rework-docs\nvda-voice-signing\strip_payload_signature.py
+            does the strip for the next payload refresh. Not changed, and still what a behaviour
+            engine sees: elevated run, embedded executables, regsvr32 /s, a hidden PowerShell that
+            adds a code-signing certificate to the machine's root store, self-replacement.
 
 
 -------------------------------------------------------------------------------------------------------

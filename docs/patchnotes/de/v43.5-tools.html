@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.5-tools - Patchnotes - Installer 5.2 und Anmelde-Tool 3.4, keine neue Addon-Version</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v43.5-tools.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/v43.5-tools.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v43.5-tools - Patchnotes - Installer 5.2 und Anmelde-Tool 3.4, keine neue Addon-Version</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v43.5.html">Aeltere Version: v43.5</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Ueberblick</h2>
+<h3>Neu</h3>
+<ul>
+<li>Anmelde-Tool 3.4: Blizzards Sozialvertrag wird erkannt, zu Ende gescrollt und akzeptiert - bisher blieb ein neuer blinder Spieler davor haengen.</li>
+<li>Anmelde-Tool 3.4: die PvP-Warnung beim Erstellen eines Charakters auf einem PvP-Realm wird vorgelesen und mit Enter oder Escape beantwortet.</li>
+</ul>
+<h3>Aenderungen</h3>
+<ul>
+<li>Anmelde-Tool 3.4: Hardcore- und PvP-Warnungen werden bei jeder Bildschirmaufloesung und Fenstergroesse gefunden, nicht nur auf grossen Bildschirmen.</li>
+<li>Anmelde-Tool 3.4: jede Stimme wird vor der Uebernahme unhoerbar ausprobiert - eine kaputte Stimme kann das Tool nicht mehr stumm machen.</li>
+<li>Installer 5.2: das Log-Buendel enthaelt jetzt eine Liste aller Windows-Stimmen (voices.txt).</li>
+<li>Installer 5.2: Massnahmen gegen Fehlalarme von Windows Defender - die Installer-Datei nennt Produkt und Autor, und die mitgelieferte NVDA-Bruecken-Datei kommt ohne uebrig gebliebene Entwickler-Signatur.</li>
+</ul>
+<h3>Fehlerbehebungen</h3>
+<ul>
+<li>Anmelde-Tool 3.4: "Stimme auswaehlen" war auf manchen Rechnern leer, und die Ersteinrichtung kam dort nie weiter.</li>
+</ul>
+<h2>Anmelde-Tool 3.4: Blizzards Sozialvertrag wird automatisch akzeptiert</h2>
+<p><strong>Einfach:</strong> Neue Accounts - und alle anderen, sobald Blizzard den Text aendert - bekommen auf der Charakterauswahl einen "Sozialvertrag" angezeigt. Das Fenster schluckt jede Taste, "Akzeptieren" ist gesperrt, bis der Text mit der Maus zu Ende gescrollt wurde, und "Ablehnen" beendet das Spiel. Das Tool blieb davor stumm und meldete hoechstens "Unbekannter Bildschirm". Jetzt sagt es "Blizzards Sozialvertrag ist offen. Er wird akzeptiert, bitte warten.", scrollt den Text zu Ende, drueckt Akzeptieren, prueft, ob das Fenster weg ist, und baut danach wie gewohnt die Charakterliste auf. Das gilt auch, wenn der Vertrag mitten in der Sitzung wieder auftaucht. Klappt es nicht, sagt das Tool, was eine sehende Person einmal tun muss, und versucht es nach einer Minute erneut. Ablehnen wird nie gedrueckt.</p>
+<p><strong>Technisch:</strong> Der Dialog ist SocialContractFrame (Blizzard_GlueXML\SocialContract.xml/.lua) und wird vom SERVER ausgeloest (C_SocialContractGlue.GetShouldShowSocialContract -&gt; SOCIAL_CONTRACT_STATUS_UPDATE); es gibt keine CVar und keine Einstellung dafuer, man kann ihn also weder hervorrufen noch vorab beantworten. Der alte Code konnte auf dem Anniversary-Client nicht greifen: die Helper-Pruefung verlangt das abgedunkelte gelbe Logo, das der BC-Glue nicht hat, und ihr dritter Messpunkt liegt mitten im Vertragstext - Pruefung falsch, Bildschirm "unknown", das Tool kam nie in den Login-Modus; der Klick-Teil war ein blinder Sweep aus 34 Klicks. Neu sind acht Sc*-Messpunkte in data.ini (aus dem XML abgeleitet: Rahmen 510x632, Buttons bei ui y 706..728, KEIN DefaultScaleFrame) sowie IsSocialContract, AcceptContract und HandleSocialContract in flows.ahk und zwei CheckMode-Zweige in menu.ahk - ohne neu gebauten Helper. Geprueft mit /validate, 0 Fehlalarmen auf allen Referenz-Screenshots und Treffern auf synthetischen Vertragsbildern in drei Aufloesungen. Am echten Dialog noch ungetestet, weil er sich nicht auf Bestellung erzeugen laesst; jeder Versuch schreibt seine Messwerte als "SocialContract:"-Zeilen nach log.txt.</p>
+<h2>Anmelde-Tool 3.4: Hardcore- und PvP-Warnungen bei jeder Aufloesung, PvP-Erstellungswarnung neu</h2>
+<p><strong>Einfach:</strong> Die Hardcore-Warnung in der Realmliste, die Hardcore-Regeln beim Erstellen eines Charakters und die PvP-Warnungen sind Fenster, die Blizzard in echten Bildschirmpixeln gleich gross haelt. Ihre Lage haengt deshalb von der Aufloesung ab, und die festen Messpunkte des Tools stimmten nur auf grossen Bildschirmen (ab 1200 Pixel Hoehe). Auf einem ueblichen 1080p-Bildschirm oder im kleinen Fenster waere das Tool vor den Hardcore-Regeln stumm geblieben. Jetzt sucht es diese Fenster selbst und findet sie bei jeder Aufloesung. Neu dabei ist die PvP-Warnung beim Erstellen eines Charakters auf einem PvP-Realm: sie wird vorgelesen, Enter stimmt zu, Escape lehnt ab. Die PvP-Warnung in der Realmliste sieht genauso aus wie die Hardcore-Warnung und wurde deshalb schon bisher vorgelesen.</p>
+<p><strong>Technisch:</strong> HardcorePopUpFrame (240 und 580 hoch) und RealmWarningPopUpFrame (240 und 360 hoch) erben von DefaultScaleFrame und werden per GetDefaultScale() skaliert - eine Client-Funktion ohne Lua-Quelltext. Im Spiel per /wdeval gemessen: 0,64 auf 2880x1800, wo 768/Hoehe 0,43 waere; es gibt also eine Untergrenze, und bei 1080p waeren es vermutlich 0,71. Statt den Faktor anzunehmen, findet ihn GlueDialogScan (flows.ahk): beide Buttons liegen in allen vier Formen auf einer Geraden aus der Bildschirmmitte, nur der Abstand haengt vom Faktor ab. Ein Bildausschnitt (neue Klasse ScreenGrab in ui.ahk, 1000 Pixel in 16 ms), dann Faktor 0,60..1,25 je Hoehe: rot an drei Spalten, nicht rot in der Luecke und knapp ausserhalb, schwarz am Hintergrundpunkt. Die festen Messpunkte bleiben die erste Pruefung, der Scan die zweite. Klicks (GlueDialogClick) und OCR-Textbereiche (GlueDialogBand) folgen dem gefundenen Faktor. Geprueft mit einer Python-Portierung auf 66 synthetischen Dialogen (6 Aufloesungen, 3 Hoehen, 4 Faktoren): Hoehe immer richtig, Faktor auf 0,012 genau, 0 Fehlalarme. An echten Dialogen noch ungetestet; jeder Fund steht als "GlueDialog:"-Zeile mit Faktor in log.txt.</p>
+<h2>Anmelde-Tool 3.4: leere Stimmenauswahl behoben, die Ersteinrichtung bleibt nicht mehr haengen</h2>
+<p><strong>Einfach:</strong> Auf manchen Rechnern kann Windows die Liste der installierten Stimmen nicht liefern, obwohl die Sprachausgabe selbst funktioniert - etwa nach einer unsauber entfernten oder nur halb installierten Fremdstimme. Seit 3.3 stuerzt das Tool dabei nicht mehr ab, aber "Stimme auswaehlen" war dann leer: Pfeil rechts tat nichts, und weil die Ersteinrichtung erst nach der Stimmenwahl zur Sprache weitergeht, kam man nie hindurch. Jetzt liest das Tool die Stimmen in diesem Fall selbst aus der Windows-Registrierung. Findet es auch so keine, steht dort der Eintrag "Keine Stimmen gefunden, Eingabe druecken, um die Systemstimme zu behalten" - Eingabe behaelt die Stimme, mit der das Tool gerade spricht, und die Einrichtung geht weiter.</p>
+<p><strong>Technisch:</strong> Im Log-Buendel des Nutzers stand viermal "GetVoices FAILED, voice list empty: (0x80045039)" und danach "SwitchToSetup". Nicht ein einzelnes Token war unlesbar (der Fall von 3.3), sondern schon sap.GetVoices() bzw. .Count wirft SPERR_NO_MORE_ITEMS, waehrend sap.Voice.GetDescription() funktioniert. Neu: RegistryVoiceTokens() in sapi.ahk baut je Schluessel unter Speech\Voices\Tokens (HKLM und HKCU) ein SAPI.SpObjectToken per SetId - nur im Fehlerfall. Gelistet wird nur, was einen Namen und eine CLSID hat, denn ein kaputter Eintrag wirft hier nicht, GetDescription() liefert einfach "". AddVoiceNodes() in menu.ahk ersetzt die drei gleichen Schleifen und haengt bei leerer Liste den Ersatz-Eintrag an. Geprueft mit einem Testgeruest, das die echte sapi.ahk laedt und GetVoices genau diesen Fehler werfen laesst: dieselben Stimmen wie auf dem normalen Weg, alle setzbar, zwei absichtlich kaputte Eintraege uebersprungen. Der eigentliche Fehler liess sich nicht nachstellen; auf dem Rechner des Nutzers noch ungetestet.</p>
+<h2>Anmelde-Tool 3.4: eine kaputte Stimme kann das Tool nicht mehr stumm machen</h2>
+<p><strong>Einfach:</strong> Eine Stimme, deren Programm entfernt wurde, deren Eintrag aber in Windows zurueckblieb, steht weiter in der Stimmenliste. Waehlte man sie, nahm Windows die Wahl ohne Fehler an - und das Tool war danach stumm, aus dem Hauptmenue heraus sogar dauerhaft, weil die Wahl gespeichert wird. Jetzt probiert das Tool jede Stimme vor der Uebernahme unhoerbar aus. Funktioniert sie nicht, bleibt alles, wie es war, und das Tool sagt "Diese Stimme funktioniert nicht, bitte eine andere waehlen". Auch beim Start wird eine gespeicherte Stimme, die nicht mehr spricht, nicht mehr gesetzt; es bleibt dann die Windows-Standardstimme.</p>
+<p><strong>Technisch:</strong> Gemessen mit einer Registrierung mit Namen und CLSID, aber ohne Engine: sap.Voice := token wird angenommen, erst Speak wirft 0x80040154 (Klasse nicht registriert). VoiceWorks() in sapi.ahk spricht deshalb auf einem eigenen SpVoice in einen SpMemoryStream, 16 bis 31 ms, die laufende Stimme wird nie angefasst. SetSapiVoiceByName und SetToolVoiceByName geben jetzt Erfolg zurueck, VoiceSelectAction und ApplyToolVoice werten ihn aus. SAPI2SR ist ausgenommen: die Bruecke reicht Text unabhaengig vom Ausgabestrom an den Screenreader weiter, die Probe waere hoerbar. Eine Stimme, die laedt, aber nur Stille erzeugt, erkennt die Probe nicht.</p>
+<h2>Installer 5.2: das Log-Buendel listet alle Windows-Stimmen auf</h2>
+<p><strong>Einfach:</strong> "Logs sammeln" im Installer legt jetzt zusaetzlich die Datei voices.txt ins Buendel. Sie nennt jede in Windows registrierte Stimme und ob das Programm dahinter noch vorhanden ist. Bei Stimmenproblemen im Anmelde-Tool oder im Spiel laesst sich damit sofort sehen, welcher Eintrag kaputt ist. Kommt mit dem Installer 5.2.</p>
+<p><strong>Technisch:</strong> LogCollector.WriteVoiceRegistrations liest Speech\Voices\Tokens, Speech\Voices\TokenEnums und Speech_OneCore\Voices\Tokens in der 64- und der 32-Bit-Registry-Sicht (das Anmelde-Tool ist 64 Bit und sieht reine 32-Bit-Stimmen nicht) sowie in HKCU, dazu DefaultTokenId. Je Eintrag: Name, CLSID, die InprocServer32-DLL samt Pruefung, ob sie registriert ist und auf der Platte liegt, VoicePath/LangDataPath und die Attribute.</p>
+<h2>Installer 5.2: Massnahmen gegen Fehlalarme von Windows Defender</h2>
+<p><strong>Einfach:</strong> Einige Spieler haben gemeldet, dass Windows Defender den frisch heruntergeladenen Installer als gefaehrlich entfernt hat. Der Installer ist nicht gefaehrlich; unser eigener Defender-Scan mit aktuellen Signaturen findet nichts. Zwei Dinge, die die Datei verdaechtiger aussehen liessen als noetig, sind behoben: Die Dateieigenschaften sagen jetzt, was die Datei ist und von wem sie kommt (Produkt "Sku Installer", Firma "Sku", Autor JeanStiletto, Link zum Projekt) statt leer zu sein, und eine Datei der mitgelieferten NVDA-Bruecke traegt keine Signatur mehr, die vom PC des Entwicklers stammte und auf jedem anderen Rechner nichts bedeutete. Ehrlich zur Grenze: Der Installer ist weiterhin nicht mit einem gekauften Zertifikat signiert. Jeder neue Build faengt deshalb ohne Download-Reputation an, und Defender kann ihn in den ersten Tagen trotzdem zurueckhalten. Wenn das passiert: Windows-Sicherheit oeffnen, Schutzverlauf, den Eintrag waehlen und die Datei zulassen oder wiederherstellen - und uns bitte den Namen der Erkennung schicken.</p>
+<p><strong>Technisch:</strong> SkuInstaller.exe war und ist nicht Authenticode-signiert; release.ps1 hat keinen Signierschritt, signiert werden nur die Bruecken-DLLs, auf dem Rechner des Nutzers, durch sku-nvda-voice-sign.ps1. Eine unsignierte Exe hat nur Cloud-Reputation je Hash, und die v43.5-Exe war bei den Meldungen einen Tag alt mit neun Downloads. Der lokale Scan (Engine 1.1.26080.3, Signaturen 1.459.278.0) ist sauber fuer Exe, Bruecken-Payload und das mitgelieferte AutoHotkey - das Urteil kommt also aus Cloud/ML oder Verhaltenserkennung, nicht aus einer statischen Signatur. Geaendert: Company, Product, AssemblyTitle, Description, Authors und Copyright in SkuInstaller.csproj (bisher stand ueberall "SkuInstaller", Copyright leer). Und x86\sapi2sr_engine.dll in payload\sapi2sr-payload.zip war aus dem Program-Files-Ordner des Entwicklers zurueckkopiert worden und trug noch die Wegwerf-Signatur dieses Rechners (ueberall sonst "signiert von nicht vertrauenswuerdiger Wurzel"); jetzt liegt die nackte DLL bei, 123320 -&gt; 115712 Bytes. Der Authenticode-PE-Hash schliesst die Signatur aus, beide Pins im Signierskript passen weiter (5A76A572... x64, 1281E2B9... x86), das Signieren auf dem Nutzerrechner ist unveraendert. dev\rework-docs\nvda-voice-signing\ strip_payload_signature.py erledigt das Entfernen beim naechsten Payload-Update. Nicht geaendert, und weiterhin das, was eine Verhaltenserkennung sieht: Start mit Adminrechten, eingebettete Programme, regsvr32 /s, ein verstecktes PowerShell, das ein Codesignatur-Zertifikat in den Root-Speicher des Rechners legt, Selbstaustausch.</p>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v43.5.html">Aeltere Version: v43.5</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>
