@@ -4,6 +4,40 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.6
+
+    Ueberblick
+
+        Fehlerbehebungen
+            Chat: "absender anfluestern" und "nachricht an kanal senden" im Zeilenmenue (Strg+Enter auf einer Chatzeile) taten auf manchen Rechnern gar nichts - die Chatzeile oeffnete sich nicht.
+            Fluestern aus dem Zielmenue und aus dem Dungeonbrowser tat auf denselben Rechnern ebenfalls nichts.
+
+    Chat: "absender anfluestern" oeffnete keine Chatzeile
+        Einfach: Wer im Chat mit Strg+Enter das Zeilenmenue oeffnete und dort "absender anfluestern"
+            waehlte, bekam auf manchen Rechnern nichts: kein Ton, keine Chatzeile mit dem Namen des
+            Absenders. Dasselbe galt fuer "nachricht an kanal senden" und "gegenstandslink an kanal
+            senden". "Chatzeile kopieren" und "Absendername kopieren" gingen weiter, weil sie einen
+            anderen Weg nehmen. Alle drei Eintraege oeffnen die Chatzeile jetzt wieder, und der
+            Zielkanal wird wie gewohnt angesagt ("An Kai").
+        Technisch: SkuChat:SetEditboxToCustom rief den globalen ChatEdit_UpdateHeader auf und zeigte
+            die Editbox erst DANACH. Dieser Name ist auf dem 2.5.6-Client keine echte Funktion mehr,
+            sondern ein Alias aus Blizzard_DeprecatedChatInfo (Deprecated_ChatFrame.lua), und die
+            ganze Datei steigt sofort aus, wenn die CVar loadDeprecationFallbacks aus ist. Dann ist
+            der Name nil, der Aufruf wirft einen Fehler, und Show() und SetFocus() laufen nie. Neu:
+            SkuChat:UpdateEditboxHeader ruft die echte Frame-Methode ChatFrame1EditBox:UpdateHeader()
+            und nimmt den globalen Namen nur noch als Rueckfall. SkuChat_CanAddChannel liest
+            Constants.ChatFrameConstants.MaxChatChannels statt des veralteten MAX_WOW_CHAT_CHANNELS.
+
+    Fluestern aus dem Zielmenue und dem Dungeonbrowser tat nichts
+        Einfach: "Fluestern" im Menue zum aktuellen Ziel und beim Gruppenleiter im Dungeonbrowser
+            oeffnete auf denselben Rechnern keine Chatzeile - ohne jede Meldung. Beides geht wieder.
+        Technisch: Beide Stellen riefen ChatFrame_OpenChat hinter einer "wenn vorhanden"-Pruefung.
+            Auch das ist nur ein Alias aus Blizzard_DeprecatedChatInfo; fehlt er, passierte
+            stillschweigend nichts. Jetzt wird ChatFrameUtil.OpenChat benutzt, der alte Name nur
+            noch als Rueckfall (SkuMob/Options.lua, SkuCore/dungeonBrowser.lua).
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.5-tools - Installer 5.2 und Anmelde-Tool 3.4, keine neue Addon-Version
 
     Ueberblick

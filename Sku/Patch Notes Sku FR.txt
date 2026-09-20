@@ -7,6 +7,43 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.6
+
+    Aperçu
+
+        Corrections
+            Chat : « expéditeur du chuchotement » et « envoyer le message au canal » dans le menu de ligne (Ctrl+Entrée sur une ligne de chat) ne faisaient rien du tout sur certaines machines - la ligne de chat ne s'ouvrait pas.
+            Chuchoter depuis le menu de la cible et depuis le navigateur de donjons ne faisait rien non plus sur ces mêmes machines.
+
+    Chat : « expéditeur du chuchotement » n'ouvrait pas de ligne de chat
+        Simple : Si vous ouvriez le menu de ligne dans le chat avec Ctrl+Entrée et choisissiez
+            « expéditeur du chuchotement », il ne se passait rien sur certaines machines : aucun son,
+            aucune ligne de chat au nom de l'expéditeur. Il en allait de même pour « envoyer le
+            message au canal » et « envoyer le lien de l'objet au canal ». Copier la ligne de chat
+            et copier le nom de l'expéditeur fonctionnaient toujours, car ils passent par un autre
+            chemin. Les trois entrées ouvrent de nouveau la ligne de chat, et le canal cible est
+            annoncé comme d'habitude (« À Kai »).
+        Technique : SkuChat:SetEditboxToCustom appelait le global ChatEdit_UpdateHeader et n'affichait
+            la zone de saisie qu'APRÈS. Sur le client 2.5.6, ce nom n'est plus une vraie fonction
+            mais un alias de Blizzard_DeprecatedChatInfo (Deprecated_ChatFrame.lua), et tout ce
+            fichier s'arrête aussitôt quand la CVar loadDeprecationFallbacks est désactivée. Le nom
+            vaut alors nil, l'appel lève une erreur, et Show() et SetFocus() ne s'exécutent jamais.
+            Nouveau : SkuChat:UpdateEditboxHeader appelle la vraie méthode du cadre
+            ChatFrame1EditBox:UpdateHeader() et ne garde le nom global qu'en secours.
+            SkuChat_CanAddChannel lit Constants.ChatFrameConstants.MaxChatChannels au lieu de
+            l'ancien MAX_WOW_CHAT_CHANNELS.
+
+    Chuchoter depuis le menu de la cible et le navigateur de donjons ne faisait rien
+        Simple : « Chuchoter » dans le menu de la cible actuelle, et pour un chef de groupe dans le
+            navigateur de donjons, n'ouvrait aucune ligne de chat sur ces mêmes machines - sans le
+            moindre message. Les deux fonctionnent de nouveau.
+        Technique : Les deux endroits appelaient ChatFrame_OpenChat derrière un test « s'il existe ».
+            Ce n'est là aussi qu'un alias de Blizzard_DeprecatedChatInfo ; s'il manque, il ne se
+            passait rien, en silence. ChatFrameUtil.OpenChat est utilisé maintenant, l'ancien nom
+            seulement en secours (SkuMob/Options.lua, SkuCore/dungeonBrowser.lua).
+
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.5-tools - installateur 5.2 et outil de connexion 3.4, pas de nouvelle version de l'addon
 
     Aperçu

@@ -376,8 +376,10 @@ local function tBuildTargetMenu(aParent)
 
 		tAddAction(aParent, L["MOB_Whisper"], function()
 			local n = UnitName("target")
-			if n and _G.ChatFrame_OpenChat then
-				ChatFrame_OpenChat("/w " .. n .. " ")
+			-- ChatFrame_OpenChat is a deprecated alias (nil with loadDeprecationFallbacks off).
+			local tOpen = (_G.ChatFrameUtil and ChatFrameUtil.OpenChat) or _G.ChatFrame_OpenChat
+			if n and tOpen then
+				tOpen("/w " .. n .. " ")
 			end
 		end, L["MOB_WhisperTip"])
 

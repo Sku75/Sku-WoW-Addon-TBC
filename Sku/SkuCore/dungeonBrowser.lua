@@ -851,7 +851,9 @@ local function tBuildBrowseTab(aParent)
                tInv.macrotext = "/run SkuCore.DungeonBrowser:InviteLeader(\"" .. lName .. "\")"
                local tW = Inject(self, L.whisper)
                tW.OnAction = function()
-                  if _G.ChatFrame_OpenChat then ChatFrame_OpenChat("/w " .. lName .. " ") end
+                  -- ChatFrame_OpenChat is a deprecated alias (nil with loadDeprecationFallbacks off).
+                  local tOpen = (_G.ChatFrameUtil and ChatFrameUtil.OpenChat) or _G.ChatFrame_OpenChat
+                  if tOpen then tOpen("/w " .. lName .. " ") end
                end
             end
          end

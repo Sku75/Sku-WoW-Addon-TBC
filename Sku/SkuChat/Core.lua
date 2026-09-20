@@ -1405,7 +1405,9 @@ function SkuChat_ContainsChannel(chatFrame, channel)
 end
 
 function SkuChat_CanAddChannel()
-	return C_ChatInfo.GetNumActiveChannels() < MAX_WOW_CHAT_CHANNELS 
+	-- MAX_WOW_CHAT_CHANNELS is a deprecated alias (nil with loadDeprecationFallbacks off).
+	local tMax = (Constants and Constants.ChatFrameConstants and Constants.ChatFrameConstants.MaxChatChannels) or MAX_WOW_CHAT_CHANNELS or 20
+	return C_ChatInfo.GetNumActiveChannels() < tMax
 end
 
 function SkuChat_AddChannel(chatFrame, channel)
@@ -2434,13 +2436,30 @@ function SkuChat:OnDisable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- The global ChatEdit_UpdateHeader is only an alias from Blizzard_DeprecatedChatInfo,
+-- and that whole file returns early unless the CVar loadDeprecationFallbacks is on.
+-- With the CVar off the global is nil, the call throws, and everything after it in
+-- SetEditboxToCustom (Show + SetFocus) never runs: "whisper sender" and "send to
+-- channel" silently do nothing. The frame method is the real function, so use it
+-- and keep the global only for a client that has no mixin method.
+function SkuChat:UpdateEditboxHeader()
+	if ChatFrame1EditBox.UpdateHeader then
+		ChatFrame1EditBox:UpdateHeader()
+	elseif _G.ChatEdit_UpdateHeader then
+		ChatEdit_UpdateHeader(ChatFrame1EditBox)
+	else
+		dprint("chatChannel", "kein UpdateHeader auf diesem Client")
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:SetEditboxToSkuChat(aMsg)
 	SkuChatEditboxHookFlag = true
 	local channelNum, channelName = GetChannelName("SkuChat")
 	ChatFrame1EditBox:SetAttribute("channelTarget", channelNum)
 	ChatFrame1EditBox:SetAttribute("chatType", "CHANNEL")
 	ChatFrame1EditBox:SetText(aMsg)
-	ChatEdit_UpdateHeader(ChatFrame1EditBox)
+	SkuChat:UpdateEditboxHeader()
 	SkuChatEditboxHookFlag = false
 end
 
@@ -4320,7 +4339,7 @@ function SkuChat:SetEditboxToCustom(chatType, target, aMsg)
 		ChatFrame1EditBox:SetAttribute("stickyType", chatType)
 	end
 	
-	ChatEdit_UpdateHeader(ChatFrame1EditBox)
+	SkuChat:UpdateEditboxHeader()
 	ChatFrame1EditBox:Show()
 	ChatFrame1EditBox:SetFocus() 
 	if aMsg then
