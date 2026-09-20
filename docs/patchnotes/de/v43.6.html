@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.6 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v43.6.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/v43.6.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v43.6 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v43.5-tools.html">Aeltere Version: v43.5-tools</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Ueberblick</h2>
+<h3>Aenderungen</h3>
+<ul>
+<li>Berufefenster: Die Rezeptliste zeigt jetzt den ganzen Beruf mit auf- und zuklappbaren Kategorien statt einer Bildlaufliste mit 8 Eintraegen.</li>
+<li>Berufefenster: Bild auf und Bild ab springen von Kategorie zu Kategorie.</li>
+<li>Berufefenster: Der Filter "Ressourcen vorhanden" ist ein normaler Schalter und fuehrt nicht mehr auf leere Seiten.</li>
+</ul>
+<h3>Fehlerbehebungen</h3>
+<ul>
+<li>Chat: "absender anfluestern" und "nachricht an kanal senden" im Zeilenmenue (Strg+Enter auf einer Chatzeile) taten auf manchen Rechnern gar nichts - die Chatzeile oeffnete sich nicht.</li>
+<li>Fluestern aus dem Zielmenue und aus dem Dungeonbrowser tat auf denselben Rechnern ebenfalls nichts.</li>
+<li>Tasten: Wer einmal v43 gestartet, dann wieder v42 benutzt und dort Umschalt+F9 bis F12 neu belegt hatte, stand in v43 ohne Taste fuer Wegpunktliste, Routenziele, Aktionsleisten und "Route beenden" da - die Tasten werden jetzt nachtraeglich uebernommen.</li>
+<li>Classic Era: Die Liste der nicht unterbrechbaren Zauber brach beim Laden mit einem Fehler ab; sie laedt jetzt auf jedem Client.</li>
+<li>Berufefenster: Im Rezept-Tooltip (Umschalt+Pfeil runter) fehlte bei manchen Materialien der Name, man hoerte nur Zahlen wie "0 2".</li>
+</ul>
+<h2>Chat: "absender anfluestern" oeffnete keine Chatzeile</h2>
+<p><strong>Einfach:</strong> Wer im Chat mit Strg+Enter das Zeilenmenue oeffnete und dort "absender anfluestern" waehlte, bekam auf manchen Rechnern nichts: kein Ton, keine Chatzeile mit dem Namen des Absenders. Dasselbe galt fuer "nachricht an kanal senden" und "gegenstandslink an kanal senden". "Chatzeile kopieren" und "Absendername kopieren" gingen weiter, weil sie einen anderen Weg nehmen. Alle drei Eintraege oeffnen die Chatzeile jetzt wieder, und der Zielkanal wird wie gewohnt angesagt ("An Kai").</p>
+<p><strong>Technisch:</strong> SkuChat:SetEditboxToCustom rief den globalen ChatEdit_UpdateHeader auf und zeigte die Editbox erst DANACH. Dieser Name ist auf dem 2.5.6-Client keine echte Funktion mehr, sondern ein Alias aus Blizzard_DeprecatedChatInfo (Deprecated_ChatFrame.lua), und die ganze Datei steigt sofort aus, wenn die CVar loadDeprecationFallbacks aus ist. Dann ist der Name nil, der Aufruf wirft einen Fehler, und Show() und SetFocus() laufen nie. Neu: SkuChat:UpdateEditboxHeader ruft die echte Frame-Methode ChatFrame1EditBox:UpdateHeader() und nimmt den globalen Namen nur noch als Rueckfall. SkuChat_CanAddChannel liest Constants.ChatFrameConstants.MaxChatChannels statt des veralteten MAX_WOW_CHAT_CHANNELS.</p>
+<h2>Fluestern aus dem Zielmenue und dem Dungeonbrowser tat nichts</h2>
+<p><strong>Einfach:</strong> "Fluestern" im Menue zum aktuellen Ziel und beim Gruppenleiter im Dungeonbrowser oeffnete auf denselben Rechnern keine Chatzeile - ohne jede Meldung. Beides geht wieder.</p>
+<p><strong>Technisch:</strong> Beide Stellen riefen ChatFrame_OpenChat hinter einer "wenn vorhanden"-Pruefung. Auch das ist nur ein Alias aus Blizzard_DeprecatedChatInfo; fehlt er, passierte stillschweigend nichts. Jetzt wird ChatFrameUtil.OpenChat benutzt, der alte Name nur noch als Rueckfall (SkuMob/Options.lua, SkuCore/dungeonBrowser.lua).</p>
+<h2>Tasten: Umschalt+F9 bis F12 fuehrten nach einem Wechsel v43 - v42 - v43 ins Leere</h2>
+<p><strong>Einfach:</strong> Betroffen war, wer v43 einmal gestartet hatte, danach zu v42 zurueckging und dort die Schnellzugriffe 1 bis 4 wieder auf Umschalt+F9 bis F12 legte. Beim naechsten Start von v43 hatten die festen Aktionen (Wegpunktliste, Routenziele, Aktionsleisten, Route oder Wegpunkt beenden) keine Taste mehr, und die vier Tasten riefen stattdessen alte Schnellzugriff-Pfade auf. Einer davon zeigte auf einen Menueeintrag, den es nicht mehr gibt: das Menue ging auf, der Cursor blieb auf "Ziel Menue" stehen - es sah genauso aus wie der fruehere Haenger "Wegpunkte werden noch geladen". Sku erkennt diesen Zustand jetzt beim Start und legt die vier Tasten von selbst auf die festen Aktionen um. Eigene Tasten auf den Schnellzugriffen bleiben unangetastet. Danke an Kai fuer die genaue Analyse (Issue 7).</p>
+<p><strong>Technisch:</strong> tMigrateQuickKeys (SkuZOptions/SkuKeyBinds.lua) wertete allein das Vorhandensein von SKU_KEY_NAVWAYPOINTSQUICK als "schon migriert". v43 hatte den Eintrag beim ersten Start angelegt, v42 leerte ihn wieder, als es die Tasten fuer MENUQUICK1 bis 4 vergab - vorhanden, aber leer. Neu ist ein Rettungsdurchlauf: sind NAVWAYPOINTSQUICK, NAVROUTEDESTINATIONSQUICK und ACTIONBARSOPEN alle drei leer UND traegt mindestens ein MENUQUICK1 bis 4 eine der v42-Standardtasten SHIFT-F9 bis SHIFT-F12, laeuft die Uebernahme noch einmal - in diesem Durchlauf nur fuer die Plaetze, die eine solche Standardtaste tragen. Wer die neuen Tasten absichtlich geleert hat, behaelt so jede eigene Schnellzugriff-Taste. Der Durchlauf ist einmalig: danach sind die neuen Eintraege nicht mehr leer.</p>
+<h2>Classic Era: Liste der nicht unterbrechbaren Zauber lud nicht</h2>
+<p><strong>Einfach:</strong> Auf Classic Era brach eine Datendatei von Sku beim Anmelden mit einem Lua-Fehler ab. Dadurch fehlte die Liste, mit der "Nur unterbrechbare Zauber ansagen" arbeitet. Die Datei laedt jetzt auf jedem Client vollstaendig. Auf TBC Anniversary aendert sich nichts.</p>
+<p><strong>Technisch:</strong> SkuDB/uninterruptibleCasts.lua baut seine Namensschluessel mit GetSpellInfo(id) direkt im Tabellenkonstruktor. Die TBC-Zauber 29121 (Bogenschiessen) und 33808 (Schusswaffe abfeuern) kennt Era nicht, GetSpellInfo liefert nil, und "[nil] = true" wirft "table index is nil" - der Konstruktor bricht ab, SkuDB.uninterruptibleCasts.spells und .npcSpells bleiben nil. Die Datei benutzt jetzt einen lokalen Wrapper, der fuer eine unbekannte ID einen Platzhalter liefert, den kein Zaubername je treffen kann. Der Eintrag ist auf diesem Client wirkungslos, die Konstruktoren bleiben zeilengleich mit der Upstream-Quelle (ClassicCastbars), und dasselbe schuetzt die npcSpells-Zeilen, wo ein nil einen Verkettungsfehler ausgeloest haette.</p>
+<h2>Berufefenster ueberarbeitet: Kategorien zum Auf- und Zuklappen statt 8 Eintraege pro Seite</h2>
+<p><strong>Einfach:</strong> Die Berufefenster (alle Herstellungsberufe, Verzauberkunst und die Tierausbildung) verhalten sich jetzt einheitlich. Bisher zeigte das Menue immer nur die 8 Zeilen, die das Blizzard-Fenster gerade anzeigt, dazu "Hoch blaettern" und "Runter blaettern". Jetzt steht der ganze Beruf in einer Liste: jede Kategorie als Ueberschrift, darunter ihre Rezepte. Enter auf einer Kategorie klappt sie zu oder auf, der neue Zustand wird angesagt, und Sku merkt ihn sich pro Charakter und Beruf. Bild ab und Bild auf springen zur naechsten bzw. vorigen Kategorie. "Ausgewaehlt" und die Herstellen-Knoepfe stehen weiter am Ende des Fensters. Gibt es zwei Kategorien mit demselben Namen (Schneiderei hat "Stoff" zweimal), heisst die zweite "Stoff 2". Der Filter "Ressourcen vorhanden" ist jetzt ein normaler Schalter: Enter schaltet um, der Cursor bleibt stehen. Mit Filter verschwinden Rezepte ohne Material und Kategorien, in denen nichts herstellbar ist. Man landet nicht mehr auf leeren Seiten ohne Ausweg, und in der Verzauberkunst gibt es keine Seiten mehr, auf denen nur die Ueberschriften uebrig sind. Die Liste aktualisiert sich nach dem Herstellen von selbst und spricht nur, wenn der Eintrag unter dem Cursor verschwunden ist.</p>
+<p><strong>Technisch:</strong> Build_TradeSkillFrame und Build_CraftFrame (SkuCore/LocalMenu.lua) lesen die Liste aus GetTradeSkillInfo bzw. GetCraftInfo statt die Zeilen TradeSkillSkill1-8 und Craft1-8 abzulesen; ausgewaehlt wird ueber TradeSkillFrame_SetSelection bzw. CraftFrame_SetSelection. Blizzards TradeSkillOnlyShowMakeable wird nicht mehr benutzt: es setzt den Bildlauf nur zurueck, wenn der AUSWAHL-Index aus der verkuerzten Liste faellt - sonst stand der Offset hinter dem Listenende, alle 8 Zeilen und die Bildlaufleiste waren weg. Der Filter prueft jetzt in beiden Fenstern numAvailable; der alte Zwischenspeicher resFilterApplied (pro Beruf, obwohl Blizzards Schalter global ist) entfaellt. Neu: TRADE_SKILL_UPDATE und CRAFT_UPDATE bauen das Menue neu auf, entprellt und nur wenn sich die gezeigte Liste geaendert hat (SkuCore:RefreshProfessionMenu). Der Listen-Builder kennt zwei neue Felder: "toggle" (ein MakeToggleNode-Schalter in einem Fenster) und "isSectionHeader" (Sprungziel fuer Bild auf/ab). Der Filterzustand liegt jetzt unter dem Berufsnamen statt unter dem Fenstertitel; ein alter Wert wird uebernommen.</p>
+<h2>Berufefenster: Rezept-Tooltip nannte manche Materialien ohne Namen</h2>
+<p><strong>Einfach:</strong> Im Tooltip eines Rezepts (Umschalt+Pfeil runter) stand bei einzelnen Materialien nur die Anzahl, etwa "0 2" statt "Bleiche 0 von 2". Betroffen waren Gegenstaende, die der Spielclient noch nie gesehen hat - meist reine Haendlerware wie Bleiche, Farbstoffe oder Flussmittel. Stoffe und Leder kennt der Client fast immer schon, deshalb sah es zufaellig aus. Jetzt sagt Sku an dieser Stelle "wird abgerufen" und holt den Namen im Hintergrund. Tooltip schliessen und noch einmal Umschalt+Pfeil runter druecken: dann steht der Name da. Das passiert pro Gegenstand nur einmal, danach kennt ihn der Client dauerhaft.</p>
+<p><strong>Technisch:</strong> GetTradeSkillReagentInfo bzw. GetCraftReagentInfo liefern fuer einen Gegenstand, der nicht im Item-Cache liegt, keinen Namen, und der Reagenzien-Link traegt dann leere Klammern "[]". Der Rueckfall schrieb ein "?", das die Sprachausgabe nicht spricht. Dazu wurde der fertige Text in textFull des Menueknotens abgelegt und nie neu gebaut, der Fehler blieb also auch nach dem Nachladen. Neu (SkuZOptions/Core.lua, SHIFT-DOWN): fehlt der Name, wird die Item-ID aus dem Link gelesen und GetItemInfo(id) gerufen, was den Gegenstand zugleich beim Server anfordert. Ein unvollstaendiger Tooltip wird mit skuRecipeIncomplete markiert und beim naechsten Tastendruck neu gebaut. Jeder Fall schreibt eine Zeile "recipeTooltip" ins Debug-Log (Rezeptindex, Material, Link).</p>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v43.5-tools.html">Aeltere Version: v43.5-tools</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

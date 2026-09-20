@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.6 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v43.6.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/v43.6.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v43.6 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.5-tools.html">Older version: v43.5-tools</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Overview</h2>
+<h3>Changes</h3>
+<ul>
+<li>Profession windows: the recipe list now shows the whole profession with categories you can fold and unfold, instead of a scroll list of 8 entries.</li>
+<li>Profession windows: Page Up and Page Down jump from category to category.</li>
+<li>Profession windows: the "materials available" filter is a regular switch and no longer leads to empty pages.</li>
+</ul>
+<h3>Bugfixes</h3>
+<ul>
+<li>Chat: "whisper sender" and "send message to channel" in the line menu (Ctrl+Enter on a chat line) did nothing at all on some machines - the chat line never opened.</li>
+<li>Whispering from the target menu and from the dungeon browser did nothing on the same machines either.</li>
+<li>Keys: if you started v43 once, went back to v42 and re-bound Shift+F9 to F12 there, v43 left you without a key for the waypoint list, route destinations, action bars and "end route" - the keys are now carried over after the fact.</li>
+<li>Classic Era: the list of uninterruptible casts aborted with an error while loading; it now loads on every client.</li>
+<li>Profession windows: the recipe tooltip (Shift+Arrow-down) left out the name of some reagents, you only heard numbers like "0 2".</li>
+</ul>
+<h2>Chat: "whisper sender" did not open a chat line</h2>
+<p><strong>Simple:</strong> If you opened the line menu in the chat with Ctrl+Enter and chose "whisper sender", on some machines nothing happened: no sound, no chat line with the sender's name. The same went for "send message to channel" and "send item link to channel". "Copy chat line" and "copy sender name" kept working because they take a different path. All three entries open the chat line again, and the target channel is announced as usual ("Tell Kai").</p>
+<p><strong>Technically:</strong> SkuChat:SetEditboxToCustom called the global ChatEdit_UpdateHeader and only showed the edit box AFTER it. On the 2.5.6 client that name is no longer a real function but an alias from Blizzard_DeprecatedChatInfo (Deprecated_ChatFrame.lua), and that whole file returns immediately when the CVar loadDeprecationFallbacks is off. The name is then nil, the call throws, and Show() and SetFocus() never run. New: SkuChat:UpdateEditboxHeader calls the real frame method ChatFrame1EditBox:UpdateHeader() and keeps the global name only as a fallback. SkuChat_CanAddChannel reads Constants.ChatFrameConstants.MaxChatChannels instead of the deprecated MAX_WOW_CHAT_CHANNELS.</p>
+<h2>Whispering from the target menu and the dungeon browser did nothing</h2>
+<p><strong>Simple:</strong> "Whisper" in the menu for your current target, and for a group leader in the dungeon browser, opened no chat line on the same machines - without any message. Both work again.</p>
+<p><strong>Technically:</strong> Both places called ChatFrame_OpenChat behind an "if it exists" check. That too is only an alias from Blizzard_DeprecatedChatInfo; when it is missing, nothing happened, silently. ChatFrameUtil.OpenChat is used now, the old name only as a fallback (SkuMob/Options.lua, SkuCore/dungeonBrowser.lua).</p>
+<h2>Keys: Shift+F9 to F12 led nowhere after switching v43 - v42 - v43</h2>
+<p><strong>Simple:</strong> This hit anyone who had started v43 once, then went back to v42 and put quick access 1 to 4 on Shift+F9 to F12 again there. On the next v43 start the fixed actions (waypoint list, route destinations, action bars, end route or waypoint) had no key any more, and the four keys called old quick-access paths instead. One of those pointed at a menu entry that no longer exists: the menu opened and the cursor stayed on "Target menu" - it looked exactly like the earlier "waypoints are still loading" hang. Sku now recognises this state at startup and moves the four keys onto the fixed actions by itself. Your own keys on the quick-access slots are left alone. Thanks to Kai for the precise analysis (issue 7).</p>
+<p><strong>Technically:</strong> tMigrateQuickKeys (SkuZOptions/SkuKeyBinds.lua) took the mere presence of SKU_KEY_NAVWAYPOINTSQUICK as "already migrated". v43 had created the entry on its first start, v42 emptied it again when it assigned the keys to MENUQUICK1 to 4 - present, but empty. New is a rescue pass: if NAVWAYPOINTSQUICK, NAVROUTEDESTINATIONSQUICK and ACTIONBARSOPEN are all three empty AND at least one of MENUQUICK1 to 4 holds one of the v42 default keys SHIFT-F9 to SHIFT-F12, the carry-over runs once more - in that pass only for the slots that hold such a default key. Whoever cleared the new keys on purpose therefore keeps every quick-access key of their own. The pass runs once: afterwards the new entries are no longer empty.</p>
+<h2>Classic Era: the list of uninterruptible casts did not load</h2>
+<p><strong>Simple:</strong> On Classic Era one of Sku's data files aborted with a Lua error at login. That left Sku without the list "Announce interruptible casts only" works from. The file now loads completely on every client. Nothing changes on TBC Anniversary.</p>
+<p><strong>Technically:</strong> SkuDB/uninterruptibleCasts.lua builds its name keys with GetSpellInfo(id) right inside the table constructor. Era does not know the TBC spells 29121 (Shoot Bow) and 33808 (Shoot Gun), GetSpellInfo returns nil, and "[nil] = true" raises "table index is nil" - the constructor aborts, SkuDB.uninterruptibleCasts.spells and .npcSpells stay nil. The file now uses a local wrapper that returns a placeholder for an unknown id, one no cast name can ever equal. The entry is inert on that client, the constructors stay line-identical to the upstream source (ClassicCastbars), and the same guard covers the npcSpells lines, where a nil would have raised a concatenation error.</p>
+<h2>Profession windows reworked: foldable categories instead of 8 entries per page</h2>
+<p><strong>Simple:</strong> The profession windows (all crafting professions, enchanting and beast training) now behave consistently. Until now the menu only ever showed the 8 rows the Blizzard window was displaying, plus "scroll up" and "scroll down". Now the whole profession is one list: each category as a heading with its recipes below it. Enter on a category folds or unfolds it, the new state is spoken, and Sku remembers it per character and profession. Page Down and Page Up jump to the next or previous category. "Selected" and the create buttons are still at the end of the window. If two categories share a name (tailoring has "Cloth" twice), the second one is called "Cloth 2". The "materials available" filter is now a regular switch: Enter flips it and the cursor stays where it is. With the filter on, recipes without materials disappear, and so do categories with nothing to make. You no longer end up on empty pages with no way out, and enchanting no longer has pages with only the headings left. The list updates itself after crafting and only speaks when the entry under the cursor is gone.</p>
+<p><strong>Technically:</strong> Build_TradeSkillFrame and Build_CraftFrame (SkuCore/LocalMenu.lua) read the list from GetTradeSkillInfo / GetCraftInfo instead of scraping the rows TradeSkillSkill1-8 and Craft1-8; selection goes through TradeSkillFrame_SetSelection / CraftFrame_SetSelection. Blizzard's TradeSkillOnlyShowMakeable is no longer used: it only resets the scroll position when the SELECTION index falls off the shortened list - otherwise the offset stayed behind the end of the list, and all 8 rows and the scroll bar were gone. The filter now checks numAvailable in both windows; the old resFilterApplied cache (per profession, although Blizzard's switch is global) is gone. New: TRADE_SKILL_UPDATE and CRAFT_UPDATE rebuild the menu, debounced and only when the list shown has changed (SkuCore:RefreshProfessionMenu). The window list builder has two new fields: "toggle" (a MakeToggleNode switch inside a window) and "isSectionHeader" (jump target for Page Up/Down). The filter state is now stored under the profession name instead of the window title; an old value is carried over.</p>
+<h2>Profession windows: the recipe tooltip named some reagents without a name</h2>
+<p><strong>Simple:</strong> In a recipe's tooltip (Shift+Arrow-down) a few reagents showed only the count, for example "0 2" instead of "Bleach 0 of 2". It hit items the game client has never seen - mostly pure vendor goods such as bleach, dyes or flux. Cloth and leather are almost always known to the client already, which is why it looked random. Sku now says "loading" in that place and fetches the name in the background. Close the tooltip and press Shift+Arrow-down again: the name is there. This happens once per item, after that the client knows it for good.</p>
+<p><strong>Technically:</strong> GetTradeSkillReagentInfo / GetCraftReagentInfo return no name for an item that is not in the item cache, and the reagent link then carries empty brackets "[]". The fallback wrote a "?", which TTS does not speak. The finished text was also stored in the menu node's textFull and never rebuilt, so the fault stayed even after the item had loaded. New (SkuZOptions/Core.lua, SHIFT-DOWN): with no name, the item id is read from the link and GetItemInfo(id) is called, which also requests the item from the server. An incomplete tooltip is marked skuRecipeIncomplete and rebuilt on the next key press. Every case writes a "recipeTooltip" line to the debug log (recipe index, reagent, link).</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.5-tools.html">Older version: v43.5-tools</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

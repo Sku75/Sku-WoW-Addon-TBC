@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.6 - notes de version</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Langue des notes de version">
+<ul class="langnav">
+<li><a href="../en/v43.6.html" lang="en" hreflang="en">English</a></li>
+<li><a href="../de/v43.6.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><span aria-current="page" lang="fr">Français</span></li>
+</ul>
+</nav>
+<h1>Sku v43.6 - notes de version</h1>
+<nav aria-label="Navigation dans les notes de version">
+<ul class="pagenav">
+<li><a href="index.html">Toutes les notes de version</a></li>
+<li><a href="v43.5-tools.html">Version plus ancienne : v43.5-tools</a></li>
+<li><a href="../../index-fr.html">Page de téléchargement de Sku</a></li>
+</ul>
+</nav>
+<main>
+<h2>Aperçu</h2>
+<h3>Changements</h3>
+<ul>
+<li>Fenêtres de métier : la liste des recettes montre maintenant tout le métier avec des catégories à replier et déplier, au lieu d'une liste défilante de 8 entrées.</li>
+<li>Fenêtres de métier : Page précédente et Page suivante sautent de catégorie en catégorie.</li>
+<li>Fenêtres de métier : le filtre « matériaux disponibles » est un interrupteur normal et ne mène plus à des pages vides.</li>
+</ul>
+<h3>Corrections</h3>
+<ul>
+<li>Chat : « expéditeur du chuchotement » et « envoyer le message au canal » dans le menu de ligne (Ctrl+Entrée sur une ligne de chat) ne faisaient rien du tout sur certaines machines - la ligne de chat ne s'ouvrait pas.</li>
+<li>Chuchoter depuis le menu de la cible et depuis le navigateur de donjons ne faisait rien non plus sur ces mêmes machines.</li>
+<li>Touches : si vous aviez lancé la v43 une fois, étiez revenu à la v42 et y aviez réattribué Maj+F9 à F12, la v43 vous laissait sans touche pour la liste des points de passage, les destinations d'itinéraire, les barres d'action et « terminer l'itinéraire » - les touches sont maintenant reprises après coup.</li>
+<li>Classic Era : la liste des sorts non interruptibles s'arrêtait sur une erreur au chargement ; elle se charge maintenant sur tous les clients.</li>
+<li>Fenêtres de métier : l'infobulle d'une recette (Maj+Flèche bas) omettait le nom de certains composants, on n'entendait que des chiffres comme « 0 2 ».</li>
+</ul>
+<h2>Chat : « expéditeur du chuchotement » n'ouvrait pas de ligne de chat</h2>
+<p><strong>Simple :</strong> Si vous ouvriez le menu de ligne dans le chat avec Ctrl+Entrée et choisissiez « expéditeur du chuchotement », il ne se passait rien sur certaines machines : aucun son, aucune ligne de chat au nom de l'expéditeur. Il en allait de même pour « envoyer le message au canal » et « envoyer le lien de l'objet au canal ». Copier la ligne de chat et copier le nom de l'expéditeur fonctionnaient toujours, car ils passent par un autre chemin. Les trois entrées ouvrent de nouveau la ligne de chat, et le canal cible est annoncé comme d'habitude (« À Kai »).</p>
+<p><strong>Technique :</strong> SkuChat:SetEditboxToCustom appelait le global ChatEdit_UpdateHeader et n'affichait la zone de saisie qu'APRÈS. Sur le client 2.5.6, ce nom n'est plus une vraie fonction mais un alias de Blizzard_DeprecatedChatInfo (Deprecated_ChatFrame.lua), et tout ce fichier s'arrête aussitôt quand la CVar loadDeprecationFallbacks est désactivée. Le nom vaut alors nil, l'appel lève une erreur, et Show() et SetFocus() ne s'exécutent jamais. Nouveau : SkuChat:UpdateEditboxHeader appelle la vraie méthode du cadre ChatFrame1EditBox:UpdateHeader() et ne garde le nom global qu'en secours. SkuChat_CanAddChannel lit Constants.ChatFrameConstants.MaxChatChannels au lieu de l'ancien MAX_WOW_CHAT_CHANNELS.</p>
+<h2>Chuchoter depuis le menu de la cible et le navigateur de donjons ne faisait rien</h2>
+<p><strong>Simple :</strong> « Chuchoter » dans le menu de la cible actuelle, et pour un chef de groupe dans le navigateur de donjons, n'ouvrait aucune ligne de chat sur ces mêmes machines - sans le moindre message. Les deux fonctionnent de nouveau.</p>
+<p><strong>Technique :</strong> Les deux endroits appelaient ChatFrame_OpenChat derrière un test « s'il existe ». Ce n'est là aussi qu'un alias de Blizzard_DeprecatedChatInfo ; s'il manque, il ne se passait rien, en silence. ChatFrameUtil.OpenChat est utilisé maintenant, l'ancien nom seulement en secours (SkuMob/Options.lua, SkuCore/dungeonBrowser.lua).</p>
+<h2>Touches : Maj+F9 à F12 ne menaient nulle part après un passage v43 - v42 - v43</h2>
+<p><strong>Simple :</strong> Étaient concernés ceux qui avaient lancé la v43 une fois, étaient revenus à la v42 et y avaient remis les accès rapides 1 à 4 sur Maj+F9 à F12. Au lancement suivant de la v43, les actions fixes (liste des points de passage, destinations d'itinéraire, barres d'action, terminer l'itinéraire ou le point de passage) n'avaient plus de touche, et les quatre touches appelaient à la place d'anciens chemins d'accès rapide. L'un d'eux pointait vers une entrée de menu qui n'existe plus : le menu s'ouvrait et le curseur restait sur le premier élément - exactement comme l'ancien blocage « les points de passage sont encore en cours de chargement ». Sku reconnaît maintenant cet état au démarrage et reporte de lui-même les quatre touches sur les actions fixes. Vos propres touches sur les accès rapides ne sont pas touchées. Merci à Kai pour son analyse précise (issue 7).</p>
+<p><strong>Technique :</strong> tMigrateQuickKeys (SkuZOptions/SkuKeyBinds.lua) prenait la seule présence de SKU_KEY_NAVWAYPOINTSQUICK pour « déjà migré ». La v43 avait créé l'entrée à son premier lancement, la v42 l'a vidée en attribuant les touches à MENUQUICK1 à 4 - présente, mais vide. Nouveau : une passe de rattrapage. Si NAVWAYPOINTSQUICK, NAVROUTEDESTINATIONSQUICK et ACTIONBARSOPEN sont toutes les trois vides ET qu'au moins un MENUQUICK1 à 4 porte une des touches par défaut de la v42, SHIFT-F9 à SHIFT-F12, la reprise s'exécute encore une fois - dans cette passe uniquement pour les emplacements qui portent une telle touche par défaut. Qui a vidé exprès les nouvelles touches garde ainsi chacune de ses propres touches d'accès rapide. La passe ne s'exécute qu'une fois : ensuite les nouvelles entrées ne sont plus vides.</p>
+<h2>Classic Era : la liste des sorts non interruptibles ne se chargeait pas</h2>
+<p><strong>Simple :</strong> Sur Classic Era, un fichier de données de Sku s'arrêtait sur une erreur Lua à la connexion. Sku se retrouvait sans la liste dont se sert « N'annoncer que les sorts interruptibles ». Le fichier se charge maintenant entièrement sur tous les clients. Rien ne change sur TBC Anniversary.</p>
+<p><strong>Technique :</strong> SkuDB/uninterruptibleCasts.lua construit ses clés de nom avec GetSpellInfo(id) directement dans le constructeur de table. Era ne connaît pas les sorts TBC 29121 (Tir à l'arc) et 33808 (Tir avec une arme à feu), GetSpellInfo renvoie nil, et « [nil] = true » lève « table index is nil » - le constructeur s'interrompt,</p>
+<p>SkuDB.uninterruptibleCasts.spells et .npcSpells restent nil. Le fichier utilise maintenant</p>
+<p>une enveloppe locale qui renvoie, pour un identifiant inconnu, une valeur de remplacement</p>
+<p>qu'aucun nom de sort ne peut égaler. L'entrée est sans effet sur ce client, les constructeurs restent identiques ligne à ligne à la source amont (ClassicCastbars), et la</p>
+<p>même protection couvre les lignes npcSpells, où un nil aurait levé une erreur de concaténation.</p>
+<h2>Fenêtres de métier retravaillées : catégories repliables au lieu de 8 entrées par page</h2>
+<p><strong>Simple :</strong> Les fenêtres de métier (tous les métiers de fabrication, l'enchantement et le dressage des familiers) se comportent maintenant de façon cohérente. Jusqu'ici, le menu ne montrait que les 8 lignes affichées par la fenêtre de Blizzard, plus « défiler vers le haut » et « défiler vers le bas ». Désormais tout le métier tient dans une seule liste : chaque catégorie comme titre, ses recettes en dessous. Entrée sur une catégorie la replie ou la déplie, le nouvel état est annoncé, et Sku le mémorise par personnage et par métier. Page suivante et Page précédente sautent à la catégorie suivante ou précédente. « Sélectionné » et les boutons de création restent à la fin de la fenêtre. Si deux catégories portent le même nom (la couture a deux fois « Tissu »), la seconde s'appelle « Tissu 2 ». Le filtre « matériaux disponibles » est maintenant un interrupteur normal : Entrée le bascule et le curseur reste en place. Avec le filtre, les recettes sans matériaux disparaissent, ainsi que les catégories où rien n'est fabricable. On n'arrive plus sur des pages vides sans issue, et l'enchantement n'a plus de pages où il ne reste que les titres. La liste se met à jour toute seule après une fabrication et ne parle que si l'entrée sous le curseur a disparu.</p>
+<p><strong>Technique :</strong> Build_TradeSkillFrame et Build_CraftFrame (SkuCore/LocalMenu.lua) lisent la liste via GetTradeSkillInfo / GetCraftInfo au lieu de relever les lignes TradeSkillSkill1-8 et Craft1-8 ; la sélection passe par TradeSkillFrame_SetSelection /</p>
+<p>CraftFrame_SetSelection. TradeSkillOnlyShowMakeable de Blizzard n'est plus utilisé : il ne remet le défilement à zéro que si l'index de SÉLECTION sort de la liste raccourcie - sinon le décalage restait derrière la fin de la liste, et les 8 lignes ainsi que la barre</p>
+<p>de défilement avaient disparu. Le filtre vérifie maintenant numAvailable dans les deux fenêtres ; l'ancien cache resFilterApplied (par métier, alors que l'interrupteur de Blizzard est global) est supprimé. Nouveau : TRADE_SKILL_UPDATE et CRAFT_UPDATE reconstruisent le menu, avec anti-rebond et seulement si la liste affichée a changé (SkuCore:RefreshProfessionMenu). Le constructeur de listes de fenêtre connaît deux nouveaux champs : « toggle » (un interrupteur MakeToggleNode dans une fenêtre) et « isSectionHeader » (cible de saut pour Page précédente/suivante). L'état du filtre est maintenant stocké sous le nom du métier au lieu du titre de la fenêtre ; une ancienne valeur est reprise.</p>
+<h2>Fenêtres de métier : l'infobulle d'une recette citait certains composants sans nom</h2>
+<p><strong>Simple :</strong> Dans l'infobulle d'une recette (Maj+Flèche bas), quelques composants n'affichaient que la quantité, par exemple « 0 2 » au lieu de « Eau de Javel 0 sur 2 ». Cela touchait les objets que le client du jeu n'a encore jamais vus - surtout des articles vendus uniquement par les marchands, comme l'eau de Javel, les teintures ou le fondant. Les étoffes et les cuirs sont presque toujours déjà connus du client, d'où l'impression de hasard. Sku dit maintenant « chargement en cours » à cet endroit et récupère le nom en arrière-plan. Fermez l'infobulle et appuyez de nouveau sur Maj+Flèche bas : le nom est là. Cela n'arrive qu'une fois par objet, ensuite le client le connaît durablement.</p>
+<p><strong>Technique :</strong> GetTradeSkillReagentInfo / GetCraftReagentInfo ne renvoient aucun nom pour un objet absent du cache d'objets, et le lien du composant porte alors des crochets vides « [] ». Le repli écrivait un « ? », que la synthèse vocale ne prononce pas. De plus, le texte fini était rangé dans textFull du nœud de menu et jamais reconstruit : le défaut restait même après le chargement de l'objet. Nouveau (SkuZOptions/Core.lua, SHIFT-DOWN) : sans nom, l'identifiant est lu dans le lien et GetItemInfo(id) est appelé, ce qui demande aussi l'objet au serveur. Une infobulle incomplète est marquée skuRecipeIncomplete et reconstruite à la prochaine pression. Chaque cas écrit une ligne « recipeTooltip » dans le journal de débogage (index de recette, composant, lien).</p>
+</main>
+<hr>
+<nav aria-label="Navigation dans les notes de version">
+<ul class="pagenav">
+<li><a href="index.html">Toutes les notes de version</a></li>
+<li><a href="v43.5-tools.html">Version plus ancienne : v43.5-tools</a></li>
+<li><a href="../../index-fr.html">Page de téléchargement de Sku</a></li>
+</ul>
+</nav>
+</body>
+</html>
