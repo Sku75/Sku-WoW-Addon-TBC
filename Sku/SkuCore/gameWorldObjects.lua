@@ -399,13 +399,10 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
       degree = select(3, SkuNav.Geo:GetDirectionTo(fPlayerPosX, fPlayerPosY, aWorldX, aWorldY))
    end
    if degree then
-      -- Bis 43.2 hatte dieser Pfad KEINE einzige dprint-Zeile, der Tastendruck
-      -- war im Log unsichtbar. Blickrichtung vorher/nachher plus Schwimmen/
-      -- Fliegen protokollieren, damit ein Tauch-Report belegbar wird.
-      dprint("TurnToWp start", aLabel, "degree", degree,
-         "facing", GetPlayerFacing(), "hoehe", fPlayerPosZ,
-         "swim", tostring(IsSwimming()), "fly", tostring(IsFlying()),
-         "mounted", tostring(IsMounted()), "falling", tostring(IsFalling()))
+      -- Logging: EINE Zeile je Tastendruck - "TurnCal" (gedreht, mit allen
+      -- Messwerten), "TurnToWp skip" (schon ausgerichtet) oder "TurnToWp
+      -- ignoriert". Bis 2026-09-21 waren es vier (start, lead, TurnCal, +1s)
+      -- und damit beim Routenlaufen 57 Prozent aller Zeilen im Debug-Ring.
       -- Laeuft noch eine Drehung, den Tastendruck VERWERFEN statt neu zu
       -- starten: die laufende Drehung steuert eine keine Viertelsekunde alte
       -- Peilung an - sie abzubrechen wuerfe ihre halbe Arbeit weg (der
@@ -434,10 +431,16 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
       -- Blickrichtungsvektor in den Koordinaten von GetDirectionTo: aus
       -- dessen eigener Algebra folgt "geradeaus" = (cos f, sin f) - fuer
       -- afinal = 0 muss atan2(dy, dx) gleich der Blickrichtung sein.
+      local tRawDegree = degree
       local tSpeedNow = GetUnitSpeed("player")
       if tSpeedNow and tSpeedNow > 0 and GetPlayerFacing() then
          local _, tPlanDur = tTurnPlan(math.abs(degree))
-         local tDurEst = math.min(TURN_MAX_TIME, tPlanDur) + 0.15
+         -- Transferpuffer 0.05 s statt frueher 0.15: gemessen 2026-09-21 (65
+         -- Drehungen beritten, 14 m/s) zielte das Vorhalten im Median ~30
+         -- Prozent zu weit - die 0.15 stammten von der alten, langsamen
+         -- Drehung. Nutzen hat es nur unter ~5 m Abstand (Fehler beim Landen
+         -- 7 statt 16 Grad), darueber war es mit 0.15 eher leicht schaedlich.
+         local tDurEst = math.min(TURN_MAX_TIME, tPlanDur) + 0.05
          local tLeadDist = tSpeedNow * tDurEst
          local _, tDist = SkuNav:Distance(fPlayerPosX, fPlayerPosY, aWorldX, aWorldY)
          if tDist and tDist > 0 then
@@ -448,11 +451,6 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
          local tPredY = fPlayerPosY + math.sin(tFacingNow) * tLeadDist
          local _, _, tLeadDegree = SkuNav.Geo:GetDirectionTo(tPredX, tPredY, aWorldX, aWorldY)
          if tLeadDegree then
-            dprint("TurnToWp lead", "v", string.format("%.1f", tSpeedNow),
-               "leadDist", string.format("%.1f", tLeadDist),
-               "dist", tDist and string.format("%.1f", tDist) or "nil",
-               "degree alt", string.format("%.1f", degree),
-               "neu", string.format("%.1f", tLeadDegree))
             degree = tLeadDegree
          end
       end
@@ -483,26 +481,7 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
       -- Zeitstempel dazu: der Steig-/Sinktasten-Geradestell-Impuls (SkuCore/
       -- Core.lua) haelt sich zurueck, solange eine Drehung frisch ist.
       SkuCore.gameWorldObjectsTurnStartedAt = GetTime()
-      -- Objektive Tauchmessung statt Bauchgefuehl: die dritte Rueckgabe von
-      -- UnitPosition ist die Hoehe. Vorher, direkt nach dem Impuls und noch
-      -- einmal eine Sekunde spaeter -> das Tauchen wird eine Zahl im Log.
-      -- Ist die Hoehe nil oder konstant 0, gibt dieser Client sie nicht her
-      -- und wir brauchen einen anderen Messweg.
       local tFacingAtStart = GetPlayerFacing()
-      C_Timer.After(1.0, function()
-         -- Auch die Blickrichtung noch einmal, eine Sekunde spaeter. Im Log
-         -- vom 2026-08-30 war "facing nach impuls" IMMER identisch mit
-         -- "facing vor impuls", bei Startwinkeln bis 168 Grad. Entweder
-         -- dreht die Funktion gar nicht mehr, oder die Messung direkt nach
-         -- MouselookStop ist einen Frame zu frueh. Diese Zeile trennt die
-         -- beiden Faelle: aendert sich facing bis +1s, war es die Messung.
-         local tPx, tPy = UnitPosition("player")
-         local _, _, tRestLater = SkuNav.Geo:GetDirectionTo(tPx, tPy, aWorldX, aWorldY)
-         dprint("TurnToWp +1s", "facing start", tFacingAtStart, "jetzt", GetPlayerFacing(),
-            "startdegree", degree, "restdegree jetzt", tRestLater,
-            "swim", tostring(IsSwimming()), "fly", tostring(IsFlying()),
-            "smoothstyle", tostring(GetCVar("cameraSmoothStyle")))
-      end)
       -- Eine noch laufende Kamera-Drehung eines schnellen vorherigen
       -- Tastendrucks anhalten, BEVOR neu ausgerichtet wird - sonst dreht ihre
       -- Restbewegung nach dem Snap weiter und verfaelscht den Startpunkt.
@@ -568,7 +547,7 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
       local tSettle = math.min(0.3, math.max(0.1, 3 * tFrameAtStart))
       local tMovingAtStart = (GetUnitSpeed("player") or 0) > 0
       local tTurnBegin = GetTime()
-      local tElapsed1
+      local tElapsed1, tLandX, tLandY
       SkuCore.gameWorldObjectsTurnBusyUntil = tTurnBegin + tDuration + 0.1 + tSettle
 
       local function tMeasure()
@@ -605,16 +584,25 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
             "speed", string.format("%.0f", tSpeed),
             "dur_ms", string.format("%.1f", tDuration * 1000),
             "elapsed_ms", string.format("%.1f", tElapsed1 * 1000),
-            "cvar", string.format("%.0f", tPlanCVar),
-            "factor", string.format("%.2f", tPlanFactor),
-            "realspeed", string.format("%.0f", tTurned / tDuration),
             "fps", string.format("%.0f", 1 / tF),
             "moving", tostring(tMoving),
+            -- Braucht es das Vorhalten ueberhaupt? rest_land = Peilung zum Ziel
+            -- vom Ort des Transfer-Impulses aus, mit der gelandeten
+            -- Blickrichtung - also der echte Zielfehler beim Landen, nicht
+            -- erst eine Sekunde spaeter (da ist man am nahen Wegpunkt laengst
+            -- vorbei). lead_shift = um wie viel das Vorhalten das Ziel
+            -- verschoben hat; rest_land + lead_shift waere der Fehler OHNE.
+            "raw", string.format("%.1f", tRawDegree),
+            "lead_shift", string.format("%.1f", degree - tRawDegree),
+            "rest_land", string.format("%.1f", tLandX and (select(3, SkuNav.Geo:GetDirectionTo(tLandX, tLandY, aWorldX, aWorldY)) or 0) or 0),
+            "dist_land", string.format("%.1f", tLandX and (select(2, SkuNav:Distance(tLandX, tLandY, aWorldX, aWorldY)) or -1) or -1),
+            "v", string.format("%.1f", GetUnitSpeed("player") or 0),
             -- Log 2026-09-21 00:22:58: vier Druecke im Stand drehten 0 Grad,
             -- Ursache aus dem Log nicht ablesbar (Kampf? Kontrollverlust?).
             "combat", tostring(InCombatLockdown() == true),
             "control", tostring(HasFullControl == nil or HasFullControl() == true),
-            "mode", tPlanMode, "sample", tVerdict)
+            "swim", tostring(IsSwimming() == true), "fly", tostring(IsFlying() == true),
+            "mode", tPlanMode, "sample", tVerdict, "wp", tostring(aLabel))
       end
 
       local function tFinish()
@@ -628,6 +616,7 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
          -- memory/camera-pitch-api-gap.
          MouselookStart()
          MouselookStop()
+         tLandX, tLandY = UnitPosition("player")
          SkuCore.gameWorldObjectsTurnBusyUntil = GetTime() + tSettle
          C_Timer.After(tSettle, tMeasure)
          -- Nach JEDER Drehung im Wasser/in der Luft mit aktiver Sperre einmal
