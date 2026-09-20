@@ -3024,40 +3024,45 @@ function SkuOptions:CreateMenuFrame()
 		-- suppressed so a boundary press plays ONLY the boundary sound, not both.
 		SkuOptions.tBoundaryHitThisKey = false
 
-		-- PAGEDOWN/PAGEUP: Scroll-Buttons fuer Berufefenster klicken,
-		-- dann CheckFrames zum Aktualisieren. Kein Menue-Springen.
-		if aKey == "PAGEDOWN" then
-			if SkuOptions.currentMenuPosition then
-				if _G["ClassTrainerDetailScrollFrameScrollBarScrollDownButton"] then
-					_G["ClassTrainerDetailScrollFrameScrollBarScrollDownButton"]:Click()
-					_G["ClassTrainerDetailScrollFrameScrollBarScrollDownButton"]:Click()
+		-- PAGEDOWN/PAGEUP: in a level that has section headers (isSectionHeader, e.g.
+		-- the categories of a profession window) jump to the next/previous header.
+		-- Everywhere else they still scroll the class trainer's detail text. The
+		-- profession lists are no longer scrolled: they are rendered from the recipe
+		-- API, so Blizzard's scroll offset means nothing to the menu.
+		if aKey == "PAGEDOWN" or aKey == "PAGEUP" then
+			local tCur = SkuOptions.currentMenuPosition
+			if tCur then
+				local tSiblings = tCur.parent and tCur.parent.children
+				local tPos, tHasHeaders
+				if tSiblings then
+					for x = 1, #tSiblings do
+						if tSiblings[x] == tCur then tPos = x end
+						if tSiblings[x].isSectionHeader == true then tHasHeaders = true end
+					end
 				end
-				if _G["CraftListScrollFrameScrollBarScrollDownButton"] then
-					_G["CraftListScrollFrameScrollBarScrollDownButton"]:Click()
-					_G["CraftListScrollFrameScrollBarScrollDownButton"]:Click()
+				if tHasHeaders and tPos then
+					local tStep = (aKey == "PAGEDOWN") and 1 or -1
+					local tTarget
+					local x = tPos + tStep
+					while tSiblings[x] do
+						if tSiblings[x].isSectionHeader == true then tTarget = tSiblings[x] break end
+						x = x + tStep
+					end
+					if tTarget then
+						tCur:OnLeave()
+						SkuOptions.currentMenuPosition = tTarget
+						tTarget:OnEnter()
+						PlaySound(811)
+					else
+						PlaySound(681)
+					end
+					SkuOptions:VocalizeCurrentMenuName()
+					return
 				end
-				if _G["TradeSkillListScrollFrameScrollBarScrollDownButton"] then
-					_G["TradeSkillListScrollFrameScrollBarScrollDownButton"]:Click()
-					_G["TradeSkillListScrollFrameScrollBarScrollDownButton"]:Click()
-				end
-				SkuCore:CheckFrames()
-			end
-			return
-		end
-
-		if aKey == "PAGEUP" then
-			if SkuOptions.currentMenuPosition then
-				if _G["ClassTrainerDetailScrollFrameScrollBarScrollUpButton"] then
-					_G["ClassTrainerDetailScrollFrameScrollBarScrollUpButton"]:Click()
-					_G["ClassTrainerDetailScrollFrameScrollBarScrollUpButton"]:Click()
-				end
-				if _G["CraftListScrollFrameScrollBarScrollUpButton"] then
-					_G["CraftListScrollFrameScrollBarScrollUpButton"]:Click()
-					_G["CraftListScrollFrameScrollBarScrollUpButton"]:Click()
-				end
-				if _G["TradeSkillListScrollFrameScrollBarScrollUpButton"] then
-					_G["TradeSkillListScrollFrameScrollBarScrollUpButton"]:Click()
-					_G["TradeSkillListScrollFrameScrollBarScrollUpButton"]:Click()
+				local tBtn = _G["ClassTrainerDetailScrollFrameScrollBarScroll"..((aKey == "PAGEDOWN") and "Down" or "Up").."Button"]
+				if tBtn then
+					tBtn:Click()
+					tBtn:Click()
 				end
 				SkuCore:CheckFrames()
 			end
@@ -5872,6 +5877,18 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 						self.textFull = full
 					end
 				end
+			end
+
+			-- A two-value switch inside a window (`toggle` = a MakeToggleNode spec):
+			-- the same in-place toggle the settings use, so ENTER flips it, the
+			-- cursor stays put and the new state is spoken. The entry must carry
+			-- no func/click/directAction -- OnAction belongs to the toggle.
+			if aGossipListTable[index].toggle then
+				SkuOptions:MakeToggleNode(tNewMenuEntry, aGossipListTable[index].toggle)
+			end
+			-- Section header of a flat list: PAGEUP/PAGEDOWN jump between these.
+			if aGossipListTable[index].isSectionHeader then
+				tNewMenuEntry.isSectionHeader = true
 			end
 
 			-- Stable cursor identity for bag entries (see SkuRestoreSellPosition):

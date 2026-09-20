@@ -8,6 +8,11 @@ Aenderungen in Sku v43.6
 
     Ueberblick
 
+        Aenderungen
+            Berufefenster: Die Rezeptliste zeigt jetzt den ganzen Beruf mit auf- und zuklappbaren Kategorien statt einer Bildlaufliste mit 8 Eintraegen.
+            Berufefenster: Bild auf und Bild ab springen von Kategorie zu Kategorie.
+            Berufefenster: Der Filter "Ressourcen vorhanden" ist ein normaler Schalter und fuehrt nicht mehr auf leere Seiten.
+
         Fehlerbehebungen
             Chat: "absender anfluestern" und "nachricht an kanal senden" im Zeilenmenue (Strg+Enter auf einer Chatzeile) taten auf manchen Rechnern gar nichts - die Chatzeile oeffnete sich nicht.
             Fluestern aus dem Zielmenue und aus dem Dungeonbrowser tat auf denselben Rechnern ebenfalls nichts.
@@ -71,6 +76,35 @@ Aenderungen in Sku v43.6
             ist auf diesem Client wirkungslos, die Konstruktoren bleiben zeilengleich mit der
             Upstream-Quelle (ClassicCastbars), und dasselbe schuetzt die npcSpells-Zeilen, wo ein nil
             einen Verkettungsfehler ausgeloest haette.
+
+    Berufefenster ueberarbeitet: Kategorien zum Auf- und Zuklappen statt 8 Eintraege pro Seite
+        Einfach: Die Berufefenster (alle Herstellungsberufe, Verzauberkunst und die Tierausbildung)
+            verhalten sich jetzt einheitlich. Bisher zeigte das Menue immer nur die 8 Zeilen, die das
+            Blizzard-Fenster gerade anzeigt, dazu "Hoch blaettern" und "Runter blaettern". Jetzt steht
+            der ganze Beruf in einer Liste: jede Kategorie als Ueberschrift, darunter ihre Rezepte.
+            Enter auf einer Kategorie klappt sie zu oder auf, der neue Zustand wird angesagt, und Sku
+            merkt ihn sich pro Charakter und Beruf. Bild ab und Bild auf springen zur naechsten bzw.
+            vorigen Kategorie. "Ausgewaehlt" und die Herstellen-Knoepfe stehen weiter am Ende des
+            Fensters. Gibt es zwei Kategorien mit demselben Namen (Schneiderei hat "Stoff" zweimal),
+            heisst die zweite "Stoff 2". Der Filter "Ressourcen vorhanden" ist jetzt ein normaler
+            Schalter: Enter schaltet um, der Cursor bleibt stehen. Mit Filter verschwinden Rezepte
+            ohne Material und Kategorien, in denen nichts herstellbar ist. Man landet nicht mehr auf
+            leeren Seiten ohne Ausweg, und in der Verzauberkunst gibt es keine Seiten mehr, auf denen
+            nur die Ueberschriften uebrig sind. Die Liste aktualisiert sich nach dem Herstellen von
+            selbst und spricht nur, wenn der Eintrag unter dem Cursor verschwunden ist.
+        Technisch: Build_TradeSkillFrame und Build_CraftFrame (SkuCore/LocalMenu.lua) lesen die Liste
+            aus GetTradeSkillInfo bzw. GetCraftInfo statt die Zeilen TradeSkillSkill1-8 und Craft1-8
+            abzulesen; ausgewaehlt wird ueber TradeSkillFrame_SetSelection bzw.
+            CraftFrame_SetSelection. Blizzards TradeSkillOnlyShowMakeable wird nicht mehr benutzt: es
+            setzt den Bildlauf nur zurueck, wenn der AUSWAHL-Index aus der verkuerzten Liste faellt -
+            sonst stand der Offset hinter dem Listenende, alle 8 Zeilen und die Bildlaufleiste waren
+            weg. Der Filter prueft jetzt in beiden Fenstern numAvailable; der alte Zwischenspeicher
+            resFilterApplied (pro Beruf, obwohl Blizzards Schalter global ist) entfaellt. Neu:
+            TRADE_SKILL_UPDATE und CRAFT_UPDATE bauen das Menue neu auf, entprellt und nur wenn sich
+            die gezeigte Liste geaendert hat (SkuCore:RefreshProfessionMenu). Der Listen-Builder
+            kennt zwei neue Felder: "toggle" (ein MakeToggleNode-Schalter in einem Fenster) und
+            "isSectionHeader" (Sprungziel fuer Bild auf/ab). Der Filterzustand liegt jetzt unter dem
+            Berufsnamen statt unter dem Fenstertitel; ein alter Wert wird uebernommen.
 
 
 -------------------------------------------------------------------------------------------------------

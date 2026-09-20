@@ -3813,20 +3813,47 @@ function SkuCore:Build_TradeFrame(aParentChilds)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local tTradeSkillTypeColor = {
-	[L["optimal"]] = { r = 1.00, g = 0.50, b = 0.25},
-	[L["medium"]] = { r = 1.00, g = 1.00, b = 0.00},
-	[L["easy"]] = { r = 0.25, g = 0.75, b = 0.25},
-	[L["trivial"]] = { r = 0.50, g = 0.50, b = 0.50},
-	["header"] = { r = 1.00, g = 0.82, b = 0},
-	["subheader"] = { r = 1.00, g = 0.82, b = 0},
-	[L["nodifficulty"]] = { r = 0.96, g = 0.96, b = 0.96},
+-- Profession windows (TradeSkillFrame + CraftFrame): shared building blocks.
+--
+-- Both windows are rendered from the DATA API (GetNumTradeSkills/GetTradeSkillInfo,
+-- GetNumCrafts/GetCraftInfo), not from the 8 rows Blizzard happens to draw. The old
+-- row scrape produced "pages" whose borders were wherever the sighted scroll offset
+-- stood, and every filter made it worse: Blizzard's makeable filter left the offset
+-- behind the end of the shortened list (no rows, no scroll buttons -> a dead end), and
+-- the enchanting filter skipped rows INSIDE a page, so pages came out empty.
+-- Now: ONE flat list of the whole profession, category headers inline. ENTER on a
+-- header folds/unfolds it (our own state, Blizzard's list stays fully expanded),
+-- PAGEUP/PAGEDOWN jump from header to header. The resource
+-- filter is ours alone (numAvailable) for both windows, and Blizzard's own makeable
+-- switch is never touched -- so there is no scroll offset and no second filter state
+-- that could drift away from what the label says.
+local tRecipeDifficultyLabel = {
+	optimal = L["optimal"],
+	medium = L["medium"],
+	easy = L["easy"],
+	trivial = L["trivial"],
 }
--- [Filter] Zustand des Ressourcen-Filters pro Charakter und Beruf (Standard Aus).
-function SkuCore:GetResourceFilterState(aProf)
+local tRecipeApi = {
+	trade = { frame = "TradeSkillFrame" },
+	craft = { frame = "CraftFrame" },
+}
+-- Signature of the list the menu was last BUILT from, per api. The update events
+-- compare against it so a burst of TRADE_SKILL_UPDATE that changed nothing we show
+-- does not rebuild the menu under the user's cursor.
+SkuCore.recipeListSig = SkuCore.recipeListSig or {}
+
+-- [Filter] Resource filter state per character and profession (default off).
+-- aLegacyKey: the window TITLE keyed this setting before; adopt a value stored under it.
+function SkuCore:GetResourceFilterState(aProf, aLegacyKey)
 	local t = SkuSettings and SkuSettings:Sub("SkuCore", nil, "char")
 	if not t then return false end
 	t.resourceFilter = t.resourceFilter or {}
+	if aLegacyKey and aLegacyKey ~= aProf and t.resourceFilter[aLegacyKey] ~= nil then
+		if t.resourceFilter[aProf] == nil then
+			t.resourceFilter[aProf] = t.resourceFilter[aLegacyKey]
+		end
+		t.resourceFilter[aLegacyKey] = nil
+	end
 	return t.resourceFilter[aProf] == true
 end
 function SkuCore:SetResourceFilterState(aProf, aVal)
@@ -3836,15 +3863,14 @@ function SkuCore:SetResourceFilterState(aProf, aVal)
 	t.resourceFilter[aProf] = aVal and true or false
 end
 
--- [Filter] Fuegt oben im Berufefenster den Umschalter "Filter: Ressourcen vorhanden" ein.
--- Enter schaltet Ein/Aus und sagt den neuen Zustand. Standard Aus, gemerkt pro Beruf und
--- Charakter. TradeSkill nutzt Blizzards Makeable-Filter; Craft/Verzauberkunst filtert der
--- Builder selbst ueber numAvailable. Tierausbildung bekommt keinen Filter.
-function SkuCore:AddResourceFilterToggle(aParentChilds, aProf, aApi)
+-- [Filter] The switch "Filter Ressourcen vorhanden" at the top of a profession window.
+-- A regular in-place toggle (SkuOptions:MakeToggleNode via the `toggle` spec): ENTER
+-- flips it, the cursor stays on it and the new state is spoken by the key handler. The
+-- list below is then rebuilt quietly; the rebuilt toggle carries the same name, so
+-- CheckFrames' identity re-pin finds it again.
+function SkuCore:AddResourceFilterToggle(aParentChilds, aProf)
 	if not aParentChilds then return end
-	local tState = SkuCore:GetResourceFilterState(aProf)
-	local tBase = L["Filter Ressourcen vorhanden"]
-	local tLabel = tBase..": "..(tState and L["On"] or L["Off"])
+	local tLabel = L["Filter Ressourcen vorhanden"]
 	table.insert(aParentChilds, tLabel)
 	aParentChilds[tLabel] = {
 		frameName = "",
@@ -3854,19 +3880,242 @@ function SkuCore:AddResourceFilterToggle(aParentChilds, aProf, aApi)
 		textFirstLine = tLabel,
 		textFull = "",
 		childs = {},
-		directAction = true,
-		func = function()
-			local tNew = not SkuCore:GetResourceFilterState(aProf)
-			SkuCore:SetResourceFilterState(aProf, tNew)
-			if aApi == "trade" and _G.TradeSkillOnlyShowMakeable then
-				pcall(_G.TradeSkillOnlyShowMakeable, tNew)
-				SkuCore.resFilterApplied = SkuCore.resFilterApplied or {}
-				SkuCore.resFilterApplied["ts:"..aProf] = tNew
-			end
-			pcall(function() SkuOptions.Voice:OutputStringBTtts(tBase..": "..(tNew and L["On"] or L["Off"]), false, true, 0.2, true) end)
-			if _G.C_Timer then _G.C_Timer.After(0.15, function() pcall(function() SkuCore:CheckFrames() end) end) end
-		end,
+		toggle = {
+			label = tLabel,
+			get = function() return SkuCore:GetResourceFilterState(aProf) end,
+			set = function(_, aVal) SkuCore:SetResourceFilterState(aProf, aVal) end,
+			onChange = function() SkuCore:CheckFrames(nil, nil, true) end,
+		},
 	}
+end
+
+-- Reads the complete recipe list of a profession window from the API.
+-- Returns the list and whether any header is collapsed (its recipes are then missing
+-- from the API list altogether).
+function SkuCore:ReadRecipeList(aApi)
+	local tList, tCollapsed = {}, false
+	if aApi == "trade" then
+		for i = 1, (GetNumTradeSkills() or 0) do
+			local tName, tType, tAvail, tExpanded = GetTradeSkillInfo(i)
+			if tName then
+				tList[#tList + 1] = { index = i, name = tName, skillType = tType or "", avail = tAvail or 0 }
+				if (tType == "header" or tType == "subheader") and not tExpanded then tCollapsed = true end
+			end
+		end
+	else
+		for i = 1, (GetNumCrafts() or 0) do
+			local tName, tSub, tType, tAvail, tExpanded, tCost = GetCraftInfo(i)
+			if tName then
+				tList[#tList + 1] = { index = i, name = tName, sub = tSub, skillType = tType or "", avail = tAvail or 0, cost = tCost }
+				if (tType == "header" or tType == "subheader") and not tExpanded then tCollapsed = true end
+			end
+		end
+	end
+	return tList, tCollapsed
+end
+
+function SkuCore:RecipeListSignature(aApi, aList)
+	local tSel = 0
+	if aApi == "trade" then
+		tSel = (GetTradeSkillSelectionIndex and GetTradeSkillSelectionIndex()) or 0
+	else
+		tSel = (GetCraftSelectionIndex and GetCraftSelectionIndex()) or 0
+	end
+	local tParts = { tostring(tSel) }
+	for x = 1, #aList do
+		tParts[#tParts + 1] = aList[x].name.."#"..aList[x].skillType.."#"..aList[x].avail
+	end
+	return table.concat(tParts, "|")
+end
+
+-- [Kategorien] Fold state per character, profession and category (default unfolded).
+function SkuCore:IsRecipeCategoryCollapsed(aProf, aCat)
+	local t = SkuSettings and SkuSettings:Sub("SkuCore", nil, "char")
+	if not t or not t.recipeCollapsed or not t.recipeCollapsed[aProf] then return false end
+	return t.recipeCollapsed[aProf][aCat] == true
+end
+function SkuCore:SetRecipeCategoryCollapsed(aProf, aCat, aVal)
+	local t = SkuSettings and SkuSettings:Sub("SkuCore", nil, "char")
+	if not t then return end
+	t.recipeCollapsed = t.recipeCollapsed or {}
+	t.recipeCollapsed[aProf] = t.recipeCollapsed[aProf] or {}
+	t.recipeCollapsed[aProf][aCat] = aVal and true or nil
+end
+
+-- Appends the recipe list as ONE flat level: each category header followed by its
+-- recipes. A header is an in-place toggle (ENTER folds/unfolds, state spoken) and a
+-- section header for PAGEUP/PAGEDOWN. With aFilterOn only recipes the player has the
+-- materials for are listed, and a header is only listed if it has a recipe to show --
+-- folded or not, so a folded header never hides "nothing".
+function SkuCore:AddRecipeCategories(aParentChilds, aApi, aList, aFilterOn, aProf)
+	local tFrameName = tRecipeApi[aApi].frame
+	local tSelect = (aApi == "trade") and _G.TradeSkillFrame_SetSelection or _G.CraftFrame_SetSelection
+	aProf = aProf or tFrameName
+
+	-- Entry names are keys on this level; a second one of the same name gets an
+	-- ordinal ("Stoff 2": tailoring has a cloth ARMOUR and a cloth TRADE GOODS header).
+	local tSeen = {}
+	local function tUnique(aName)
+		tSeen[aName] = (tSeen[aName] or 0) + 1
+		if tSeen[aName] > 1 then return aName.." "..tSeen[aName] end
+		return aName
+	end
+
+	-- Pass 1: group, apply the filter.
+	local tGroups = { { recipes = {} } }
+	for x = 1, #aList do
+		local r = aList[x]
+		if r.skillType == "header" or r.skillType == "subheader" then
+			tGroups[#tGroups + 1] = { name = r.name, recipes = {} }
+		elseif not (aFilterOn and r.avail == 0) then
+			local g = tGroups[#tGroups].recipes
+			g[#g + 1] = r
+		end
+	end
+
+	-- Pass 2: emit.
+	local tShown = 0
+	for g = 1, #tGroups do
+		local tGroup = tGroups[g]
+		local tCollapsed = false
+		if tGroup.name and #tGroup.recipes > 0 then
+			local tCat = tUnique(tGroup.name)
+			local tKey = tCat.." ("..L["category"]..")"
+			tCollapsed = SkuCore:IsRecipeCategoryCollapsed(aProf, tCat)
+			table.insert(aParentChilds, tKey)
+			aParentChilds[tKey] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G[tFrameName],
+				textFirstLine = tKey,
+				textFull = "",
+				childs = {},
+				isSectionHeader = true,
+				toggle = {
+					label = tKey,
+					onLabel = L["eingeklappt"],
+					offLabel = L["ausgeklappt"],
+					get = function() return SkuCore:IsRecipeCategoryCollapsed(aProf, tCat) end,
+					set = function(_, aVal) SkuCore:SetRecipeCategoryCollapsed(aProf, tCat, aVal) end,
+					onChange = function() SkuCore:CheckFrames(nil, nil, true) end,
+				},
+			}
+			tShown = tShown + 1
+		end
+
+		if tCollapsed ~= true then
+			for x = 1, #tGroup.recipes do
+				local r = tGroup.recipes[x]
+				-- Same information the sighted row carries: name, (rank), training point
+				-- cost, [number makeable], plus the difficulty the row shows as a colour.
+				local tLabel = r.name
+				if r.sub and r.sub ~= "" then tLabel = tLabel.." ("..r.sub..")" end
+				if r.cost and r.cost > 0 then tLabel = tLabel.." "..string.format(_G.TRAINER_LIST_TP or "%d", r.cost) end
+				if r.avail > 0 then tLabel = tLabel.." ["..r.avail.."]" end
+				if tRecipeDifficultyLabel[r.skillType] then
+					tLabel = tLabel.." ("..tRecipeDifficultyLabel[r.skillType]..")"
+				end
+				tLabel = tUnique(tLabel)
+
+				local tIndex = r.index
+				table.insert(aParentChilds, tLabel)
+				aParentChilds[tLabel] = {
+					frameName = tFrameName,
+					RoC = "Child",
+					type = "Button",
+					obj = _G[tFrameName],
+					textFirstLine = tLabel,
+					textFull = "",
+					childs = {},
+					-- Blizzard's own selection function: fills the detail pane and arms the
+					-- create button exactly like a click on the row, without needing the
+					-- row to be scrolled into view.
+					func = function() if tSelect then pcall(tSelect, tIndex) end end,
+					click = true,
+					-- [Rezept-Tooltip] API index, so Shift Runter can read materials/result.
+					skuRecipeInfo = { api = aApi, index = tIndex },
+				}
+				tShown = tShown + 1
+			end
+		end
+	end
+
+	if tShown == 0 then
+		table.insert(aParentChilds, L["Empty"])
+		aParentChilds[L["Empty"]] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "FontString",
+			obj = _G[tFrameName],
+			textFirstLine = L["Empty"],
+			textFull = "",
+			childs = {},
+		}
+	end
+end
+
+-- TRADE_SKILL_UPDATE / CRAFT_UPDATE: the list behind an open profession window changed
+-- (crafted something, learned a recipe, materials moved). Debounced, and the rebuild
+-- only happens when what we SHOW changed -- an unconditional rebuild on a window's
+-- update event is what broke navigation at the merchant (see the event registration in
+-- Core.lua).
+local tRecipeRefreshPending = false
+local tRecipeExpandTried = {}
+local tMakeableReset = false
+local function tStripCount(aName)
+	return (string.gsub(aName or "", " %[%d+%]", ""))
+end
+function SkuCore:RefreshProfessionMenu()
+	local tChanged = false
+	for tApi, tDef in pairs(tRecipeApi) do
+		local tFrame = _G[tDef.frame]
+		if tFrame and tFrame:IsVisible() then
+			-- Blizzard's makeable filter is not ours any more; an "on" left over from an
+			-- earlier Sku version would filter the list behind our back. Once per session.
+			if tApi == "trade" and tMakeableReset ~= true and _G.TradeSkillOnlyShowMakeable then
+				tMakeableReset = true
+				pcall(_G.TradeSkillOnlyShowMakeable, false)
+			end
+			local tList, tCollapsed = SkuCore:ReadRecipeList(tApi)
+			local tSig = SkuCore:RecipeListSignature(tApi, tList)
+			-- A collapsed header hides its recipes from the API. Expand everything; that
+			-- fires the update event again and the next pass sees the full list. Tried
+			-- once per list state, so a header that refuses to open cannot loop.
+			if tCollapsed and tRecipeExpandTried[tApi] ~= tSig then
+				tRecipeExpandTried[tApi] = tSig
+				if tApi == "trade" then
+					if _G.ExpandTradeSkillSubClass then pcall(_G.ExpandTradeSkillSubClass, 0) end
+				else
+					if _G.ExpandCraftSkillLine then pcall(_G.ExpandCraftSkillLine, 0) end
+				end
+				return
+			end
+			if tSig ~= SkuCore.recipeListSig[tApi] then tChanged = true end
+		end
+	end
+	if tChanged ~= true or not (SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen()) then return end
+
+	-- Quiet rebuild: counts change with every craft and the cursor is put back on the
+	-- same entry. Only when the entry under the cursor is GONE (filter on, materials
+	-- used up) does the user need to hear where they ended up.
+	local tBefore = SkuOptions.currentMenuPosition and tStripCount(SkuOptions.currentMenuPosition.name)
+	SkuCore:CheckFrames(nil, nil, true)
+	C_Timer.After(0.15, function()
+		if not (SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen()) then return end
+		local tAfter = SkuOptions.currentMenuPosition and tStripCount(SkuOptions.currentMenuPosition.name)
+		if tBefore and tAfter and tBefore ~= tAfter then
+			pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
+		end
+	end)
+end
+function SkuCore.PROFESSION_LIST_UPDATE(aEvent)
+	if tRecipeRefreshPending == true then return end
+	tRecipeRefreshPending = true
+	C_Timer.After(0.1, function()
+		tRecipeRefreshPending = false
+		SkuCore:RefreshProfessionMenu()
+	end)
 end
 
 function SkuCore:Build_TradeSkillFrame(aParentChilds)
@@ -3884,120 +4133,20 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 		childs = {},
 	}
 
-	-- [Filter] Gespeicherten Zustand beim Oeffnen anwenden (schleifensicher ueber
-	-- resFilterApplied) und den Umschalter ganz oben einhaengen.
-	local tProf = (_G["TradeSkillFrameTitleText"] and _G["TradeSkillFrameTitleText"]:GetText()) or "TradeSkill"
-	SkuCore.resFilterApplied = SkuCore.resFilterApplied or {}
-	local tWant = SkuCore:GetResourceFilterState(tProf)
-	if _G.TradeSkillOnlyShowMakeable and SkuCore.resFilterApplied["ts:"..tProf] ~= tWant then
-		pcall(_G.TradeSkillOnlyShowMakeable, tWant)
-		SkuCore.resFilterApplied["ts:"..tProf] = tWant
+	-- Profession key: the skill line name. The window title keyed the filter before.
+	local tTitle = _G["TradeSkillFrameTitleText"] and _G["TradeSkillFrameTitleText"]:GetText()
+	local tProf = _G.GetTradeSkillLine and GetTradeSkillLine()
+	if type(tProf) ~= "string" or tProf == "" or tProf == "UNKNOWN" then
+		tProf = tTitle or "TradeSkill"
 	end
-	SkuCore:AddResourceFilterToggle(aParentChilds, tProf, "trade")
+	local tFilterOn = SkuCore:GetResourceFilterState(tProf, tTitle)
+	SkuCore:AddResourceFilterToggle(aParentChilds, tProf)
 
-
-
-	local tFrameName = "TradeSkillListScrollFrameScrollBarScrollUpButton"
-	if _G[tFrameName] then
-		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
-			local tFriendlyName = L["Hoch blättern"]
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = "",
-				childs = {},
-				func = function(self, aButton)
-					self:GetScript("OnClick")(self, aButton)             
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
-				click = true,
-			}   
-		end
-	end
-
-
-
-
-	for x = 1, 8 do
-		local tFrameName = "TradeSkillSkill"..x
-		if _G[tFrameName] and _G[tFrameName].text and _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then
-			if _G[tFrameName].text:GetText() then
-				local tDifficulty = ""
-				local r, g, b, a = _G[tFrameName].text:GetTextColor()
-				r, g, b, a = round(r), round(g), round(b), round(a)
-				if r == 1 and g == 1 and  b == 1 then
-					if _G["TradeSkillHighlightFrame"] and _G["TradeSkillHighlightFrame"]:GetRegions() then
-						r, g, b, a = _G["TradeSkillHighlightFrame"]:GetRegions():GetVertexColor()
-						if r then
-							r, g, b, a = round(r), round(g), round(b), round(a)
-						end
-					end
-				end
-
-				for i, v in pairs(tTradeSkillTypeColor) do
-					if v.r == r and v.g == g and  v.b == b then
-						tDifficulty = i
-					end
-				end
-
-				--local tCountText = _G[tFrameName.."Count"]:GetText()
-				local tFriendlyName = SkuUtil:Unescape(_G[tFrameName].text:GetText())
-
-				if tDifficulty == "subheader" or tDifficulty == "header" then
-					tFriendlyName = tFriendlyName.." ("..L["category"]..")"
-				end
-
-				local tText, tFullText = "", ""
-				if _G[tFrameName]:IsEnabled() == true then
-					table.insert(aParentChilds, tFriendlyName)
-					aParentChilds[tFriendlyName] = {
-						frameName = tFrameName,
-						RoC = "Child",
-						type = "Button",
-						obj = _G[tFrameName],
-						textFirstLine = tFriendlyName,
-						textFull = "",
-						childs = {},
-						func = _G[tFrameName]:GetScript("OnClick"),
-						click = true,
-					}   
-				end
-
-				if aParentChilds[tFriendlyName] and tDifficulty ~= "subheader" and tDifficulty ~= "header" then
-					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..(tDifficulty or "")..")"
-					-- [Rezept-Tooltip] echten Rezept-Index (GetID der sichtbaren Listenzeile)
-					-- merken, damit Shift Runter Materialien und Ergebnis per API lesen kann.
-					aParentChilds[tFriendlyName].skuRecipeInfo = { api = "trade", index = _G[tFrameName]:GetID() }
-				end
-			end
-		end
-	end
-
-	local tFrameName = "TradeSkillListScrollFrameScrollBarScrollDownButton"
-	if _G[tFrameName] then
-		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
-			local tFriendlyName = L["Runter blättern"]
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = "",
-				childs = {},
-				func = function(self, aButton)
-					self:GetScript("OnClick")(self, aButton)             
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
-				click = true,
-			}   
-		end
-	end
+	-- The list sits where the sighted list sits: selected recipe and the create buttons
+	-- follow below it, so "select, go down, create" works from the last category.
+	local tList = SkuCore:ReadRecipeList("trade")
+	SkuCore.recipeListSig.trade = SkuCore:RecipeListSignature("trade", tList)
+	SkuCore:AddRecipeCategories(aParentChilds, "trade", tList, tFilterOn, tProf)
 
 	local tName = ""
 	if _G["TradeSkillSkillName"] then
@@ -4137,7 +4286,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 		tIsBeast = (_G["CraftFramePointsText"] and _G["CraftFramePointsText"]:IsVisible() == true) and true or false
 	end)
 	if not tIsBeast then
-		pcall(function() SkuCore:AddResourceFilterToggle(aParentChilds, tCraftProf, "craft") end)
+		SkuCore:AddResourceFilterToggle(aParentChilds, tCraftProf)
 	end
 
 	if _G["CraftFramePointsText"] and _G["CraftFramePointsText"]:IsVisible() == true then
@@ -4156,113 +4305,10 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 		}  
 	end
 
-	local tFrameName = "CraftListScrollFrameScrollBarScrollUpButton"
-	if _G[tFrameName] then
-		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
-			local tFriendlyName = L["Hoch blättern"]
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = "",
-				childs = {},
-				func = function(self, aButton)
-					self:GetScript("OnClick")(self, aButton)             
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
-				click = true,
-			}   
-		end
-	end
-
-	for x = 1, 8 do
-		local tFrameName = "Craft"..x
-		if _G[tFrameName] then
-			-- [Filter] Bei aktivem Filter nicht-herstellbare Verzauberungen ueberspringen
-			-- (numAvailable == 0); Header/Kategorien bleiben. Nur ausserhalb Tierausbildung.
-			local tFilterSkip = false
-			if (not tIsBeast) and SkuCore:GetResourceFilterState(tCraftProf) then
-				local okc, _, _, cType, cAvail = pcall(_G.GetCraftInfo, _G[tFrameName]:GetID())
-				if okc and cType ~= "header" and cType ~= "subheader" and (cAvail == nil or cAvail == 0) then
-					tFilterSkip = true
-				end
-			end
-			if (not tFilterSkip) and _G[tFrameName.."Text"]:GetText() then
-				local tKnown = ""
-				local tDifficulty = ""
-				local r, g, b, a = _G[tFrameName].text:GetTextColor()
-				r, g, b, a = round(r), round(g), round(b), round(a)
-				if r == 1 and g == 1 and  b == 1 then
-					if _G["CraftHighlightFrame"] and _G["CraftHighlightFrame"]:GetRegions() then
-						r, g, b, a = _G["CraftHighlightFrame"]:GetRegions():GetVertexColor()
-						if r then
-							r, g, b, a = round(r), round(g), round(b), round(a)
-						end
-					end
-				end
-
-				for i, v in pairs(tTradeSkillTypeColor) do
-					if v.r == r and v.g == g and  v.b == b then
-						tDifficulty = i
-					end
-				end
-
-				local tFriendlyName = SkuUtil:Unescape(_G[tFrameName.."Text"]:GetText()).." ".. (SkuUtil:Unescape(_G[tFrameName.."SubText"]:GetText()) or "").." ".. (SkuUtil:Unescape(_G[tFrameName.."Cost"]:GetText()) or "").." "..tKnown
-				local tText, tFullText = "", ""
-				if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
-					table.insert(aParentChilds, tFriendlyName)
-					aParentChilds[tFriendlyName] = {
-						frameName = tFrameName,
-						RoC = "Child",
-						type = "Button",
-						obj = _G[tFrameName],
-						textFirstLine = tFriendlyName,
-						textFull = "",
-						childs = {},
-						func = _G[tFrameName]:GetScript("OnClick"),
-						click = true,
-					}   
-				end
-
-				if tDifficulty == "subheader" or tDifficulty == "header" then
-					aParentChilds[tFriendlyName].click = false
-					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..L["category"]..")"
-				else
-					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..(tDifficulty or "")..")"
-					-- [Rezept-Tooltip] echten Craft-Index (GetID der sichtbaren Zeile) merken,
-					-- damit Shift Runter Materialien und Ergebnis per API lesen kann.
-					if aParentChilds[tFriendlyName] then
-						aParentChilds[tFriendlyName].skuRecipeInfo = { api = "craft", index = _G[tFrameName]:GetID() }
-					end
-				end
-			end
-		end
-	end
-
-	local tFrameName = "CraftListScrollFrameScrollBarScrollDownButton"
-	if _G[tFrameName] then
-		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
-			local tFriendlyName = L["Runter blättern"]
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = "",
-				childs = {},
-				func = function(self, aButton)
-					self:GetScript("OnClick")(self, aButton)             
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
-				click = true,
-			}   
-		end
-	end
+	-- Recipe list, see Build_TradeSkillFrame. Beast training has no headers and no filter.
+	local tList = SkuCore:ReadRecipeList("craft")
+	SkuCore.recipeListSig.craft = SkuCore:RecipeListSignature("craft", tList)
+	SkuCore:AddRecipeCategories(aParentChilds, "craft", tList, (not tIsBeast) and SkuCore:GetResourceFilterState(tCraftProf), tCraftProf)
 
 	local tName = ""
 	if _G["CraftName"] then

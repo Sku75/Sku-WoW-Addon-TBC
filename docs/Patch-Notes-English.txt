@@ -8,6 +8,11 @@ Changes in Sku v43.6
 
     Overview
 
+        Changes
+            Profession windows: the recipe list now shows the whole profession with categories you can fold and unfold, instead of a scroll list of 8 entries.
+            Profession windows: Page Up and Page Down jump from category to category.
+            Profession windows: the "materials available" filter is a regular switch and no longer leads to empty pages.
+
         Bugfixes
             Chat: "whisper sender" and "send message to channel" in the line menu (Ctrl+Enter on a chat line) did nothing at all on some machines - the chat line never opened.
             Whispering from the target menu and from the dungeon browser did nothing on the same machines either.
@@ -70,6 +75,34 @@ Changes in Sku v43.6
             cast name can ever equal. The entry is inert on that client, the constructors stay
             line-identical to the upstream source (ClassicCastbars), and the same guard covers the
             npcSpells lines, where a nil would have raised a concatenation error.
+
+    Profession windows reworked: foldable categories instead of 8 entries per page
+        Simple: The profession windows (all crafting professions, enchanting and beast training) now
+            behave consistently. Until now the menu only ever showed the 8 rows the Blizzard window
+            was displaying, plus "scroll up" and "scroll down". Now the whole profession is one list:
+            each category as a heading with its recipes below it. Enter on a category folds or
+            unfolds it, the new state is spoken, and Sku remembers it per character and profession.
+            Page Down and Page Up jump to the next or previous category. "Selected" and the create
+            buttons are still at the end of the window. If two categories share a name (tailoring has
+            "Cloth" twice), the second one is called "Cloth 2". The "materials available" filter is
+            now a regular switch: Enter flips it and the cursor stays where it is. With the filter on,
+            recipes without materials disappear, and so do categories with nothing to make. You no
+            longer end up on empty pages with no way out, and enchanting no longer has pages with
+            only the headings left. The list updates itself after crafting and only speaks when the
+            entry under the cursor is gone.
+        Technically: Build_TradeSkillFrame and Build_CraftFrame (SkuCore/LocalMenu.lua) read the list
+            from GetTradeSkillInfo / GetCraftInfo instead of scraping the rows TradeSkillSkill1-8 and
+            Craft1-8; selection goes through TradeSkillFrame_SetSelection / CraftFrame_SetSelection.
+            Blizzard's TradeSkillOnlyShowMakeable is no longer used: it only resets the scroll
+            position when the SELECTION index falls off the shortened list - otherwise the offset
+            stayed behind the end of the list, and all 8 rows and the scroll bar were gone. The
+            filter now checks numAvailable in both windows; the old resFilterApplied cache (per
+            profession, although Blizzard's switch is global) is gone. New: TRADE_SKILL_UPDATE and
+            CRAFT_UPDATE rebuild the menu, debounced and only when the list shown has changed
+            (SkuCore:RefreshProfessionMenu). The window list builder has two new fields: "toggle" (a
+            MakeToggleNode switch inside a window) and "isSectionHeader" (jump target for Page
+            Up/Down). The filter state is now stored under the profession name instead of the window
+            title; an old value is carried over.
 
 
 -------------------------------------------------------------------------------------------------------

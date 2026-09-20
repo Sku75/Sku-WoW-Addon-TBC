@@ -11,6 +11,11 @@ Changements dans Sku v43.6
 
     Aperçu
 
+        Changements
+            Fenêtres de métier : la liste des recettes montre maintenant tout le métier avec des catégories à replier et déplier, au lieu d'une liste défilante de 8 entrées.
+            Fenêtres de métier : Page précédente et Page suivante sautent de catégorie en catégorie.
+            Fenêtres de métier : le filtre « matériaux disponibles » est un interrupteur normal et ne mène plus à des pages vides.
+
         Corrections
             Chat : « expéditeur du chuchotement » et « envoyer le message au canal » dans le menu de ligne (Ctrl+Entrée sur une ligne de chat) ne faisaient rien du tout sur certaines machines - la ligne de chat ne s'ouvrait pas.
             Chuchoter depuis le menu de la cible et depuis le navigateur de donjons ne faisait rien non plus sur ces mêmes machines.
@@ -81,6 +86,38 @@ Changements dans Sku v43.6
             constructeurs restent identiques ligne à ligne à la source amont (ClassicCastbars), et la
             même protection couvre les lignes npcSpells, où un nil aurait levé une erreur de
             concaténation.
+
+    Fenêtres de métier retravaillées : catégories repliables au lieu de 8 entrées par page
+        Simple : Les fenêtres de métier (tous les métiers de fabrication, l'enchantement et le
+            dressage des familiers) se comportent maintenant de façon cohérente. Jusqu'ici, le menu
+            ne montrait que les 8 lignes affichées par la fenêtre de Blizzard, plus « défiler vers le
+            haut » et « défiler vers le bas ». Désormais tout le métier tient dans une seule liste :
+            chaque catégorie comme titre, ses recettes en dessous. Entrée sur une catégorie la replie
+            ou la déplie, le nouvel état est annoncé, et Sku le mémorise par personnage et par
+            métier. Page suivante et Page précédente sautent à la catégorie suivante ou précédente.
+            « Sélectionné » et les boutons de création restent à la fin de la fenêtre. Si deux
+            catégories portent le même nom (la couture a deux fois « Tissu »), la seconde s'appelle
+            « Tissu 2 ». Le filtre « matériaux disponibles » est maintenant un interrupteur normal :
+            Entrée le bascule et le curseur reste en place. Avec le filtre, les recettes sans
+            matériaux disparaissent, ainsi que les catégories où rien n'est fabricable. On n'arrive
+            plus sur des pages vides sans issue, et l'enchantement n'a plus de pages où il ne reste
+            que les titres. La liste se met à jour toute seule après une fabrication et ne parle que
+            si l'entrée sous le curseur a disparu.
+        Technique : Build_TradeSkillFrame et Build_CraftFrame (SkuCore/LocalMenu.lua) lisent la liste
+            via GetTradeSkillInfo / GetCraftInfo au lieu de relever les lignes TradeSkillSkill1-8 et
+            Craft1-8 ; la sélection passe par TradeSkillFrame_SetSelection /
+            CraftFrame_SetSelection. TradeSkillOnlyShowMakeable de Blizzard n'est plus utilisé : il
+            ne remet le défilement à zéro que si l'index de SÉLECTION sort de la liste raccourcie -
+            sinon le décalage restait derrière la fin de la liste, et les 8 lignes ainsi que la barre
+            de défilement avaient disparu. Le filtre vérifie maintenant numAvailable dans les deux
+            fenêtres ; l'ancien cache resFilterApplied (par métier, alors que l'interrupteur de
+            Blizzard est global) est supprimé. Nouveau : TRADE_SKILL_UPDATE et CRAFT_UPDATE
+            reconstruisent le menu, avec anti-rebond et seulement si la liste affichée a changé
+            (SkuCore:RefreshProfessionMenu). Le constructeur de listes de fenêtre connaît deux
+            nouveaux champs : « toggle » (un interrupteur MakeToggleNode dans une fenêtre) et
+            « isSectionHeader » (cible de saut pour Page précédente/suivante). L'état du filtre est
+            maintenant stocké sous le nom du métier au lieu du titre de la fenêtre ; une ancienne
+            valeur est reprise.
 
 
 -------------------------------------------------------------------------------------------------------

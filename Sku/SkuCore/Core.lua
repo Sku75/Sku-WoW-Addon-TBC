@@ -584,6 +584,12 @@ function SkuCore:OnInitialize()
 	--SkuDispatcher:RegisterEventCallback("GLYPH_UPDATED", SkuCore.GLYPH_UPDATED)
 	--SkuDispatcher:RegisterEventCallback("LFG_LIST_SEARCH_RESULTS_RECEIVED", SkuCore.LFG_LIST_SEARCH_RESULTS_RECEIVED)
 	--SkuDispatcher:RegisterEventCallback("LFG_LIST_SEARCH_RESULT_UPDATED", SkuCore.LFG_LIST_SEARCH_RESULT_UPDATED)
+	-- Profession windows are rendered from the recipe API; these two are their "list
+	-- changed" signals. Safe against the rebuild-while-navigating problem noted above:
+	-- the handler is debounced and rebuilds only when the list it SHOWS changed
+	-- (SkuCore:RefreshProfessionMenu, LocalMenu.lua).
+	SkuDispatcher:RegisterEventCallback("TRADE_SKILL_UPDATE", SkuCore.PROFESSION_LIST_UPDATE)
+	SkuDispatcher:RegisterEventCallback("CRAFT_UPDATE", SkuCore.PROFESSION_LIST_UPDATE)
 	SkuDispatcher:RegisterEventCallback("TRADE_SHOW", SkuCore.TRADE_SHOW)
 	SkuDispatcher:RegisterEventCallback("TRADE_CLOSED", SkuCore.TRADE_CLOSED)
 	SkuDispatcher:RegisterEventCallback("TRADE_ACCEPT_UPDATE", SkuCore.TRADE_ACCEPT_UPDATE)
