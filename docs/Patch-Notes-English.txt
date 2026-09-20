@@ -4,6 +4,67 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v43.7
+
+    Overview
+
+        Changes
+            Turn to beacon (T), turn to unit and turn to target: big turns now land with ONE press. Until now every press got stuck at about 88 degrees, so an about-face always took two.
+            Turns are clearly faster: half a turn takes a good tenth of a second on a fast machine instead of a quarter second.
+            If you already face the beacon (within 3 degrees), you are no longer turned. This ends the swinging back and forth around the beacon ping.
+            The turn calibrates itself: after every turn Sku checks how far you really turned and adapts to your machine and your frame rate. The first few turns after the update may be imprecise.
+
+        Bugfixes
+            Swimming and flying: the pitch lock now engages in combat too. If you ran into water while fighting, the first turns used to make you dive.
+
+    Turning: faster, more precise, self-calibrated
+        Simple: "Turn to beacon" (T) and the two other turn commands were reworked based on
+            measurements in the game. Three things change noticeably. First: big turns arrive with
+            one press. Until now one press managed about 88 degrees at most, no matter how far it
+            was meant to go - an unnoticed bug since v43.2. Second: the turn is faster, an
+            about-face takes only a good tenth of a second. Third: if you are already aligned
+            within 3 degrees, another press does nothing. Before, every press turned at least 5
+            degrees, so you swung around the beacon ping and never came to rest. In water this
+            also saves needless dive nudges.
+            Sku learns your machine along the way: after every turn it measures how far the
+            character really turned and computes the next turn from that. At a high frame rate Sku
+            turns faster by itself, at a low one slower and precise instead. After the update the
+            first few turns are learning steps and may miss. Very big turns near 180 degrees land
+            within about 5 degrees; now and then a second press refines. A press during a running
+            turn is discarded as before.
+        Technically: GameWorldObjects:TurnToWorldPosition (SkuCore/gameWorldObjects.lua). Measured
+            2026-09-21: cameraYawMoveSpeed has no effect above 360 - higher values do not turn
+            faster (376, 453 and 731 all gave ~88 degrees in 0.25 s). The v43.2 rule
+            max(360, angle/0.25) therefore silently capped every press at ~88 degrees. More speed
+            only comes from the argument of MoveViewLeftStart/MoveViewRightStart, which multiplies
+            the CVar (technique from WowVision). Two gears: gear 1 = CVar alone up to 360 deg/s,
+            gear 2 = CVar 360 times a factor up to 1440 deg/s. Model per gear: turned = k * wanted
+            speed * (timer duration + L); k from the median from the first sample on, from 8
+            samples with spread durations a line fit for k and L. Speed by frame rate: the stop
+            scatter is half a frame time times speed, allowed are 3 degrees or 6 percent of the
+            angle; never slower than angle/0.25 s; slowed down when the timer would be shorter
+            than 2 frames. If the factor does not multiply on a client, Sku retires gear 2 for
+            good. Samples account-wide in SkuOptions.db.global.SkuCore.turnCal. The guard against
+            follow-up presses now also covers the measuring wait (a press in that gap computed
+            from the old facing). Every turn writes a "TurnCal" line to the debug log. /skuturn
+            shows the state, /skuturn reset discards the samples, /skuturn legacy switches to the
+            old behaviour. Built, tested and removed again: a correction within the same press -
+            the camera has momentum and glides on after the stop, a command into that glide cost
+            up to 35 degrees.
+
+    Swimming and flying: pitch lock engages in combat too
+        Simple: The automatic pitch lock that keeps you level while swimming and flying used to
+            wait for combat to end. If you entered water while fighting you were unprotected that
+            long, and every beacon turn pushed you deeper. The lock now engages at once. The
+            Ctrl+Shift+N key now works in combat as well.
+        Technically: The InCombatLockdown checks in SkuCore:TogglePitchLock and in the automatic
+            tick (SkuCore/Core.lua) rested on the untested assumption that pitchlimit is protected
+            in combat. It is a console command and can be set in combat (tested 2026-09-21). In
+            that day's log, 6 seconds with three unprotected turns lay between the start of
+            swimming and the lock.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v43.6
 
     Overview

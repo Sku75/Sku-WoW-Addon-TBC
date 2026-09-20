@@ -7,6 +7,72 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.7
+
+    Aperçu
+
+        Changements
+            Se tourner vers la balise (T), vers l'unité et vers la cible : les grandes rotations arrivent désormais en UN appui. Jusqu'ici chaque appui restait bloqué à environ 88 degrés, un demi-tour en demandait toujours deux.
+            Les rotations sont nettement plus rapides : un demi-tour prend un bon dixième de seconde sur une machine rapide au lieu d'un quart de seconde.
+            Si vous êtes déjà face à la balise (à 3 degrés près), vous n'êtes plus tourné. Cela met fin au va-et-vient autour du ping de la balise.
+            La rotation s'étalonne elle-même : après chaque rotation, Sku vérifie de combien vous avez réellement tourné et s'adapte à votre machine et à votre fréquence d'images. Les toutes premières rotations après la mise à jour peuvent être imprécises.
+
+        Corrections
+            Nage et vol : le verrou d'inclinaison s'active désormais aussi en combat. En entrant dans l'eau en plein combat, les premières rotations vous faisaient plonger.
+
+    Rotation : plus rapide, plus précise, auto-étalonnée
+        Simple : « Se tourner vers la balise » (T) et les deux autres commandes de rotation ont été
+            retravaillées à partir de mesures en jeu. Trois choses changent nettement. D'abord : les
+            grandes rotations arrivent en un appui. Jusqu'ici un appui faisait au mieux environ 88
+            degrés, quelle que soit la distance à parcourir - un bogue passé inaperçu depuis la
+            v43.2. Ensuite : la rotation est plus rapide, un demi-tour ne prend plus qu'un bon
+            dixième de seconde. Enfin : si vous êtes déjà aligné à 3 degrés près, un nouvel appui ne
+            fait plus rien. Avant, chaque appui tournait d'au moins 5 degrés, on oscillait donc
+            autour du ping de la balise sans jamais se stabiliser. Dans l'eau, cela évite aussi des
+            à-coups de plongée inutiles.
+            Sku apprend votre machine au passage : après chaque rotation, il mesure de combien le
+            personnage a réellement tourné et calcule la suivante d'après cela. À fréquence d'images
+            élevée, Sku tourne plus vite de lui-même ; à fréquence basse, plus lentement mais
+            précisément. Après la mise à jour, les premières rotations sont des étapes
+            d'apprentissage et peuvent manquer la cible. Les très grandes rotations proches de 180
+            degrés arrivent à environ 5 degrés près ; de temps en temps un second appui affine. Un
+            appui pendant une rotation en cours est ignoré comme avant.
+        Technique : GameWorldObjects:TurnToWorldPosition (SkuCore/gameWorldObjects.lua). Mesuré le
+            2026-09-21 : cameraYawMoveSpeed n'a plus d'effet au-delà de 360 - des valeurs plus hautes
+            ne tournent pas plus vite (376, 453 et 731 ont tous donné ~88 degrés en 0,25 s). La
+            règle max(360, angle/0,25) de la v43.2 plafonnait donc en silence chaque appui à ~88
+            degrés. La vitesse supplémentaire ne vient que de l'argument de
+            MoveViewLeftStart/MoveViewRightStart, qui multiplie la CVar (technique de WowVision).
+            Deux rapports : rapport 1 = CVar seule jusqu'à 360 deg/s, rapport 2 = CVar 360 fois un
+            facteur jusqu'à 1440 deg/s. Modèle par rapport : tourné = k * vitesse voulue * (durée du
+            minuteur + L) ; k par la médiane dès la première mesure, puis à partir de 8 mesures aux
+            durées variées une droite d'ajustement pour k et L. Vitesse selon la fréquence d'images :
+            la dispersion de l'arrêt vaut une demi-trame fois la vitesse, on autorise 3 degrés ou 6
+            pour cent de l'angle ; jamais plus lent qu'angle/0,25 s ; ralenti quand le minuteur
+            serait plus court que 2 trames. Si le facteur ne multiplie pas sur un client, Sku
+            abandonne définitivement le rapport 2. Mesures par compte dans
+            SkuOptions.db.global.SkuCore.turnCal. Le verrou contre les appuis suivants couvre
+            désormais aussi l'attente de mesure (un appui dans cet intervalle calculait avec
+            l'ancienne orientation). Chaque rotation écrit une ligne « TurnCal » dans le journal de
+            débogage. /skuturn affiche l'état, /skuturn reset efface les mesures, /skuturn legacy
+            revient à l'ancien comportement. Construit, testé puis retiré : une correction dans le
+            même appui - la caméra a de l'élan et continue de glisser après l'arrêt, une commande
+            dans ce glissement coûtait jusqu'à 35 degrés.
+
+    Nage et vol : le verrou d'inclinaison s'active aussi en combat
+        Simple : Le verrou d'inclinaison automatique, qui vous maintient à l'horizontale en nageant
+            et en volant, attendait jusqu'ici la fin du combat. En entrant dans l'eau en combattant,
+            vous restiez sans protection pendant ce temps, et chaque rotation vers la balise vous
+            enfonçait davantage. Le verrou s'active maintenant immédiatement. La touche Ctrl+Maj+N
+            fonctionne désormais aussi en combat.
+        Technique : Les tests InCombatLockdown dans SkuCore:TogglePitchLock et dans le tick
+            automatique (SkuCore/Core.lua) reposaient sur l'hypothèse non vérifiée que pitchlimit
+            est protégé en combat. C'est une commande de console, modifiable en combat (testé le
+            2026-09-21). Dans le journal de ce jour-là, 6 secondes avec trois rotations non
+            protégées séparaient le début de la nage et le verrou.
+
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.6
 
     Aperçu

@@ -4,6 +4,67 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.7
+
+    Ueberblick
+
+        Aenderungen
+            Zum Beacon drehen (T), Zu Einheit drehen und Zum Ziel drehen: grosse Drehungen landen jetzt mit EINEM Druck. Bisher blieb jeder Druck bei etwa 88 Grad haengen, eine Kehrtwende brauchte immer zwei.
+            Drehungen sind deutlich schneller: eine halbe Drehung dauert auf einem flotten Rechner gut eine Zehntelsekunde statt einer Viertelsekunde.
+            Wer schon auf den Beacon ausgerichtet ist (innerhalb von 3 Grad), wird nicht mehr gedreht. Das beendet das Hin-und-her-Pendeln um den Beacon-Ping.
+            Die Drehung misst sich selbst ein: Sku prueft nach jeder Drehung, wie weit du wirklich gedreht hast, und passt sich an deinen Rechner und deine Bildrate an. Die ersten paar Drehungen nach dem Update koennen ungenau sein.
+
+        Fehlerbehebungen
+            Schwimmen und Fliegen: Die Neigungssperre greift jetzt auch im Kampf. Wer kaempfend ins Wasser lief, tauchte bisher bei den ersten Drehungen ab.
+
+    Drehen: schneller, genauer, selbst eingemessen
+        Einfach: "Zum Beacon drehen" (T) und die beiden anderen Drehbefehle wurden anhand von
+            Messungen im Spiel ueberarbeitet. Drei Dinge aendern sich spuerbar. Erstens: grosse
+            Drehungen kommen mit einem Druck an. Bisher schaffte ein Druck hoechstens etwa 88 Grad,
+            egal wie weit es gehen sollte - das war ein unbemerkter Fehler seit v43.2. Zweitens: die
+            Drehung ist schneller, eine Kehrtwende dauert nur noch gut eine Zehntelsekunde. Drittens:
+            bist du schon auf 3 Grad genau ausgerichtet, passiert bei einem weiteren Druck nichts mehr.
+            Frueher drehte jeder Druck mindestens 5 Grad, darum pendelte man um den Beacon-Ping herum
+            und kam nie zur Ruhe. Im Wasser spart das ausserdem unnoetige Tauchstupser.
+            Sku lernt dabei deinen Rechner: nach jeder Drehung wird gemessen, wie weit der Charakter
+            wirklich gedreht hat, und die naechste Drehung wird danach berechnet. Bei hoher Bildrate
+            dreht Sku von selbst flotter, bei niedriger langsamer und dafuer genau. Nach dem Update
+            sind die ersten paar Drehungen Lernschritte und duerfen danebenliegen. Sehr grosse
+            Drehungen nahe 180 Grad landen auf etwa 5 Grad genau; ab und zu verfeinert ein zweiter
+            Druck. Ein Druck waehrend einer laufenden Drehung wird wie bisher verworfen.
+        Technisch: GameWorldObjects:TurnToWorldPosition (SkuCore/gameWorldObjects.lua). Gemessen
+            2026-09-21: cameraYawMoveSpeed wirkt nur bis 360 - Werte darueber drehen nicht schneller
+            (376, 453 und 731 ergaben in 0.25 s alle ~88 Grad). Die Regel max(360, Winkel/0.25) aus
+            v43.2 deckelte darum jeden Druck still bei ~88 Grad. Mehr Tempo kommt nur ueber das
+            Argument von MoveViewLeftStart/MoveViewRightStart, das die CVar multipliziert (Technik
+            aus WowVision). Zwei Gaenge: Gang 1 = CVar allein bis 360 Grad/s, Gang 2 = CVar 360 mal
+            Faktor bis 1440 Grad/s. Modell je Gang: gedreht = k * Sollgeschwindigkeit * (Timerdauer
+            + L); k ab der ersten Messung aus dem Median, ab 8 Messungen mit streuenden Dauern eine
+            Ausgleichsgerade fuer k und L. Geschwindigkeit nach Bildrate: die Stopp-Streuung ist
+            eine halbe Framedauer mal Tempo, erlaubt sind 3 Grad bzw. 6 Prozent des Winkels; nie
+            langsamer als Winkel/0.25 s; gebremst, wenn der Timer kuerzer als 2 Frames waere.
+            Multipliziert der Faktor auf einem Client nicht, legt Sku Gang 2 dauerhaft still.
+            Messwerte accountweit in SkuOptions.db.global.SkuCore.turnCal. Die Sperre gegen
+            Folgedruecke deckt jetzt auch die Nachmess-Wartezeit ab (ein Druck in dieser Luecke
+            rechnete mit der alten Blickrichtung). Jede Drehung schreibt eine Zeile "TurnCal" ins
+            Debug-Log. /skuturn zeigt den Stand, /skuturn reset verwirft die Messwerte, /skuturn
+            legacy schaltet auf das alte Verhalten. Gebaut, getestet und wieder ausgebaut: eine
+            Nachkorrektur im selben Druck - die Kamera hat Schwung und gleitet nach dem Stopp
+            weiter, ein Befehl in dieses Gleiten kostete bis zu 35 Grad.
+
+    Schwimmen und Fliegen: Neigungssperre greift auch im Kampf
+        Einfach: Die automatische Neigungssperre, die dich beim Schwimmen und Fliegen waagerecht
+            haelt, wartete bisher das Ende des Kampfes ab. Wer kaempfend ins Wasser ging, war
+            solange ungeschuetzt, und jede Beacon-Drehung drueckte ihn tiefer. Die Sperre greift
+            jetzt sofort. Auch die Taste Strg+Umschalt+N geht jetzt im Kampf.
+        Technisch: Die InCombatLockdown-Pruefungen in SkuCore:TogglePitchLock und im Automatik-
+            Tick (SkuCore/Core.lua) beruhten auf der ungeprueften Annahme, pitchlimit sei im Kampf
+            geschuetzt. Es ist ein Konsolenbefehl und im Kampf setzbar (getestet 2026-09-21). Im
+            Log desselben Tages lagen zwischen Schwimmbeginn und Sperre 6 Sekunden mit drei
+            ungeschuetzten Drehungen.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.6
 
     Ueberblick

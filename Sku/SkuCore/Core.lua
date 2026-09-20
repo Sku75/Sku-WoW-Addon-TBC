@@ -721,11 +721,11 @@ function SkuCore:PitchLockLevelPulse()
 end
 
 function SkuCore:TogglePitchLock()
-   -- CVars sind im Kampf geschuetzt; lieber ansagen als still nichts tun.
-   if InCombatLockdown() == true then
-      SkuOptions.Voice:OutputString(L["not available in combat"], true, true, 0.3, true)
-      return
-   end
+   -- [v43.7] Frueher im Kampf verweigert ("CVars sind im Kampf geschuetzt").
+   -- Das war eine ungepruefte Annahme: pitchlimit ist ein Konsolenbefehl,
+   -- keine geschuetzte CVar - im Kampf getestet 2026-09-21, kein Fehler.
+   -- Die Sperre kostete im Log desselben Tages 6 s ungeschuetztes Schwimmen
+   -- mit drei Beacon-Drehungen: genau der Taucher beim Reingehen.
    if SkuCore.pitchLocked ~= true then
       ConsoleExec("pitchlimit 0")
       SkuCore.pitchLocked = true
@@ -790,7 +790,7 @@ do
          tInteractPulsed = false
          -- Nur eine AUTOMATISCH gesetzte Sperre still loesen; eine manuell
          -- gesetzte gehoert dem Nutzer und bleibt.
-         if SkuCore.pitchLocked == true and SkuCore.pitchLockAutoEngaged == true and InCombatLockdown() ~= true then
+         if SkuCore.pitchLocked == true and SkuCore.pitchLockAutoEngaged == true then
             ConsoleExec("pitchlimit 88")
             SkuCore.pitchLocked = false
             SkuCore.pitchLockAutoEngaged = false
@@ -843,7 +843,7 @@ do
          end
       end
       if tPitchLockAutoEnabled() == true then
-         if SkuCore.pitchLocked ~= true and SkuCore.pitchLockManualOff ~= true and InCombatLockdown() ~= true then
+         if SkuCore.pitchLocked ~= true and SkuCore.pitchLockManualOff ~= true then
             ConsoleExec("pitchlimit 0")
             SkuCore.pitchLocked = true
             SkuCore.pitchLockAutoEngaged = true
@@ -856,7 +856,7 @@ do
       else
          -- Einstellung wurde bei aktiver Auto-Sperre ausgeschaltet: sofort
          -- freigeben (mit Ansage - der Nutzer schwimmt/fliegt ja gerade).
-         if SkuCore.pitchLocked == true and SkuCore.pitchLockAutoEngaged == true and InCombatLockdown() ~= true then
+         if SkuCore.pitchLocked == true and SkuCore.pitchLockAutoEngaged == true then
             ConsoleExec("pitchlimit 88")
             SkuCore.pitchLocked = false
             SkuCore.pitchLockAutoEngaged = false
