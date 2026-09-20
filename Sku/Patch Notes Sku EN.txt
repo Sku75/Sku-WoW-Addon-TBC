@@ -11,6 +11,8 @@ Changes in Sku v43.6
         Bugfixes
             Chat: "whisper sender" and "send message to channel" in the line menu (Ctrl+Enter on a chat line) did nothing at all on some machines - the chat line never opened.
             Whispering from the target menu and from the dungeon browser did nothing on the same machines either.
+            Keys: if you started v43 once, went back to v42 and re-bound Shift+F9 to F12 there, v43 left you without a key for the waypoint list, route destinations, action bars and "end route" - the keys are now carried over after the fact.
+            Classic Era: the list of uninterruptible casts aborted with an error while loading; it now loads on every client.
 
     Chat: "whisper sender" did not open a chat line
         Simple: If you opened the line menu in the chat with Ctrl+Enter and chose "whisper sender",
@@ -36,6 +38,38 @@ Changes in Sku v43.6
             is only an alias from Blizzard_DeprecatedChatInfo; when it is missing, nothing happened,
             silently. ChatFrameUtil.OpenChat is used now, the old name only as a fallback
             (SkuMob/Options.lua, SkuCore/dungeonBrowser.lua).
+
+    Keys: Shift+F9 to F12 led nowhere after switching v43 - v42 - v43
+        Simple: This hit anyone who had started v43 once, then went back to v42 and put quick access
+            1 to 4 on Shift+F9 to F12 again there. On the next v43 start the fixed actions (waypoint
+            list, route destinations, action bars, end route or waypoint) had no key any more, and the
+            four keys called old quick-access paths instead. One of those pointed at a menu entry that
+            no longer exists: the menu opened and the cursor stayed on "Target menu" - it looked
+            exactly like the earlier "waypoints are still loading" hang. Sku now recognises this state
+            at startup and moves the four keys onto the fixed actions by itself. Your own keys on the
+            quick-access slots are left alone. Thanks to Kai for the precise analysis (issue 7).
+        Technically: tMigrateQuickKeys (SkuZOptions/SkuKeyBinds.lua) took the mere presence of
+            SKU_KEY_NAVWAYPOINTSQUICK as "already migrated". v43 had created the entry on its first
+            start, v42 emptied it again when it assigned the keys to MENUQUICK1 to 4 - present, but
+            empty. New is a rescue pass: if NAVWAYPOINTSQUICK, NAVROUTEDESTINATIONSQUICK and
+            ACTIONBARSOPEN are all three empty AND at least one of MENUQUICK1 to 4 holds one of the
+            v42 default keys SHIFT-F9 to SHIFT-F12, the carry-over runs once more - in that pass only
+            for the slots that hold such a default key. Whoever cleared the new keys on purpose
+            therefore keeps every quick-access key of their own. The pass runs once: afterwards the
+            new entries are no longer empty.
+
+    Classic Era: the list of uninterruptible casts did not load
+        Simple: On Classic Era one of Sku's data files aborted with a Lua error at login. That left
+            Sku without the list "Announce interruptible casts only" works from. The file now loads
+            completely on every client. Nothing changes on TBC Anniversary.
+        Technically: SkuDB/uninterruptibleCasts.lua builds its name keys with GetSpellInfo(id) right
+            inside the table constructor. Era does not know the TBC spells 29121 (Shoot Bow) and
+            33808 (Shoot Gun), GetSpellInfo returns nil, and "[nil] = true" raises "table index is
+            nil" - the constructor aborts, SkuDB.uninterruptibleCasts.spells and .npcSpells stay nil.
+            The file now uses a local wrapper that returns a placeholder for an unknown id, one no
+            cast name can ever equal. The entry is inert on that client, the constructors stay
+            line-identical to the upstream source (ClassicCastbars), and the same guard covers the
+            npcSpells lines, where a nil would have raised a concatenation error.
 
 
 -------------------------------------------------------------------------------------------------------

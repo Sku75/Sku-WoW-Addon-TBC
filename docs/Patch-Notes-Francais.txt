@@ -14,6 +14,8 @@ Changements dans Sku v43.6
         Corrections
             Chat : « expéditeur du chuchotement » et « envoyer le message au canal » dans le menu de ligne (Ctrl+Entrée sur une ligne de chat) ne faisaient rien du tout sur certaines machines - la ligne de chat ne s'ouvrait pas.
             Chuchoter depuis le menu de la cible et depuis le navigateur de donjons ne faisait rien non plus sur ces mêmes machines.
+            Touches : si vous aviez lancé la v43 une fois, étiez revenu à la v42 et y aviez réattribué Maj+F9 à F12, la v43 vous laissait sans touche pour la liste des points de passage, les destinations d'itinéraire, les barres d'action et « terminer l'itinéraire » - les touches sont maintenant reprises après coup.
+            Classic Era : la liste des sorts non interruptibles s'arrêtait sur une erreur au chargement ; elle se charge maintenant sur tous les clients.
 
     Chat : « expéditeur du chuchotement » n'ouvrait pas de ligne de chat
         Simple : Si vous ouvriez le menu de ligne dans le chat avec Ctrl+Entrée et choisissiez
@@ -41,6 +43,44 @@ Changements dans Sku v43.6
             Ce n'est là aussi qu'un alias de Blizzard_DeprecatedChatInfo ; s'il manque, il ne se
             passait rien, en silence. ChatFrameUtil.OpenChat est utilisé maintenant, l'ancien nom
             seulement en secours (SkuMob/Options.lua, SkuCore/dungeonBrowser.lua).
+
+    Touches : Maj+F9 à F12 ne menaient nulle part après un passage v43 - v42 - v43
+        Simple : Étaient concernés ceux qui avaient lancé la v43 une fois, étaient revenus à la v42 et
+            y avaient remis les accès rapides 1 à 4 sur Maj+F9 à F12. Au lancement suivant de la v43,
+            les actions fixes (liste des points de passage, destinations d'itinéraire, barres
+            d'action, terminer l'itinéraire ou le point de passage) n'avaient plus de touche, et les
+            quatre touches appelaient à la place d'anciens chemins d'accès rapide. L'un d'eux pointait
+            vers une entrée de menu qui n'existe plus : le menu s'ouvrait et le curseur restait sur
+            le premier élément - exactement comme l'ancien blocage « les points de passage sont encore
+            en cours de chargement ». Sku reconnaît maintenant cet état au démarrage et reporte de
+            lui-même les quatre touches sur les actions fixes. Vos propres touches sur les accès
+            rapides ne sont pas touchées. Merci à Kai pour son analyse précise (issue 7).
+        Technique : tMigrateQuickKeys (SkuZOptions/SkuKeyBinds.lua) prenait la seule présence de
+            SKU_KEY_NAVWAYPOINTSQUICK pour « déjà migré ». La v43 avait créé l'entrée à son premier
+            lancement, la v42 l'a vidée en attribuant les touches à MENUQUICK1 à 4 - présente, mais
+            vide. Nouveau : une passe de rattrapage. Si NAVWAYPOINTSQUICK, NAVROUTEDESTINATIONSQUICK
+            et ACTIONBARSOPEN sont toutes les trois vides ET qu'au moins un MENUQUICK1 à 4 porte une
+            des touches par défaut de la v42, SHIFT-F9 à SHIFT-F12, la reprise s'exécute encore une
+            fois - dans cette passe uniquement pour les emplacements qui portent une telle touche par
+            défaut. Qui a vidé exprès les nouvelles touches garde ainsi chacune de ses propres touches
+            d'accès rapide. La passe ne s'exécute qu'une fois : ensuite les nouvelles entrées ne sont
+            plus vides.
+
+    Classic Era : la liste des sorts non interruptibles ne se chargeait pas
+        Simple : Sur Classic Era, un fichier de données de Sku s'arrêtait sur une erreur Lua à la
+            connexion. Sku se retrouvait sans la liste dont se sert « N'annoncer que les sorts
+            interruptibles ». Le fichier se charge maintenant entièrement sur tous les clients. Rien
+            ne change sur TBC Anniversary.
+        Technique : SkuDB/uninterruptibleCasts.lua construit ses clés de nom avec GetSpellInfo(id)
+            directement dans le constructeur de table. Era ne connaît pas les sorts TBC 29121 (Tir à
+            l'arc) et 33808 (Tir avec une arme à feu), GetSpellInfo renvoie nil, et « [nil] = true »
+            lève « table index is nil » - le constructeur s'interrompt,
+            SkuDB.uninterruptibleCasts.spells et .npcSpells restent nil. Le fichier utilise maintenant
+            une enveloppe locale qui renvoie, pour un identifiant inconnu, une valeur de remplacement
+            qu'aucun nom de sort ne peut égaler. L'entrée est sans effet sur ce client, les
+            constructeurs restent identiques ligne à ligne à la source amont (ClassicCastbars), et la
+            même protection couvre les lignes npcSpells, où un nil aurait levé une erreur de
+            concaténation.
 
 
 -------------------------------------------------------------------------------------------------------

@@ -21,7 +21,17 @@
 --              (name keys via GetSpellInfo for multi-rank/duplicate spells)
 --   npcSpells: [npcID .. localizedSpellName] = true  (npcID as STRING)
 
-local GetSpellInfo = _G.GetSpellInfo
+-- [v43.6] Every name key below is built inside a table constructor, where a nil
+-- result is fatal twice over: `[nil] = true` raises "table index is nil" and
+-- `"12264" .. nil` raises a concatenation error -- either one aborts the whole
+-- file, so the list never loads. That is what happened on Classic Era, which
+-- does not know the TBC spells 29121 / 33808. An unknown id therefore resolves
+-- to a placeholder no cast name can ever equal: the entry is inert on that
+-- client and the constructors stay line-identical to upstream.
+local tGetSpellInfo = _G.GetSpellInfo
+local function GetSpellInfo(aSpellId)
+	return tGetSpellInfo(aSpellId) or ("\1unknownSpell" .. aSpellId)
+end
 
 SkuDB.uninterruptibleCasts = {}
 

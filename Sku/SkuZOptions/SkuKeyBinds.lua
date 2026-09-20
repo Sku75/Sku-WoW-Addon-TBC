@@ -380,20 +380,49 @@ end
 -- BEFORE that loop.
 -- SKU_KEY_STOPROUTEORWAYPOINT is the one target that already existed: never
 -- overwrite a key the user set on it, only fill its free slots.
+--
+-- [v43.6] Rescue pass (issue #7). The sentinel alone misses a profile that ran
+-- v43 once, went back to v42 and re-bound Shift-F9..F12 there: v43 had already
+-- created the new entries, v42 emptied them again when it took the keys for
+-- MENUQUICK1..4, so the next v43 start finds the sentinel present but EMPTY --
+-- the fixed actions have no key and Shift-F9..F12 fire stale quick-access paths.
+-- Detected as: all three new entries empty AND a MENUQUICK slot holding one of
+-- the four v42 default keys. In that pass only slots holding such a key move, so
+-- a v43 user who cleared the new keys on purpose keeps every own quick-access key.
+local tV42QuickDefaults = {["SHIFT-F9"] = true, ["SHIFT-F10"] = true, ["SHIFT-F11"] = true, ["SHIFT-F12"] = true}
+
+local function tHoldsV42QuickDefault(aEntry)
+   return aEntry ~= nil and (tV42QuickDefaults[aEntry.key or ""] == true or tV42QuickDefaults[aEntry.key2 or ""] == true)
+end
+
+local function tIsUnbound(aEntry)
+   return aEntry ~= nil and (aEntry.key or "") == "" and (aEntry.key2 or "") == ""
+end
+
 local function tMigrateQuickKeys(aStore)
-   if aStore["SKU_KEY_NAVWAYPOINTSQUICK"] ~= nil then
-      return
-   end
    local tPairs = {
       {"SKU_KEY_MENUQUICK1", "SKU_KEY_NAVWAYPOINTSQUICK"},
       {"SKU_KEY_MENUQUICK2", "SKU_KEY_NAVROUTEDESTINATIONSQUICK"},
       {"SKU_KEY_MENUQUICK3", "SKU_KEY_ACTIONBARSOPEN"},
       {"SKU_KEY_MENUQUICK4", "SKU_KEY_STOPROUTEORWAYPOINT"},
    }
+   local tRescue = false
+   if aStore["SKU_KEY_NAVWAYPOINTSQUICK"] ~= nil then
+      if not (tIsUnbound(aStore["SKU_KEY_NAVWAYPOINTSQUICK"]) and tIsUnbound(aStore["SKU_KEY_NAVROUTEDESTINATIONSQUICK"]) and tIsUnbound(aStore["SKU_KEY_ACTIONBARSOPEN"])) then
+         return
+      end
+      for x = 1, #tPairs do
+         tRescue = tRescue or tHoldsV42QuickDefault(aStore[tPairs[x][1]])
+      end
+      if not tRescue then
+         return
+      end
+      dprint("keybind migration: rescue pass, new quick keys present but empty")
+   end
    for x = 1, #tPairs do
       local tOld, tNew = tPairs[x][1], tPairs[x][2]
       local tOldEntry = aStore[tOld]
-      if tOldEntry then
+      if tOldEntry and (not tRescue or tHoldsV42QuickDefault(tOldEntry)) then
          local tNewEntry = aStore[tNew]
          if not tNewEntry then
             aStore[tNew] = {key = tOldEntry.key or "", key2 = tOldEntry.key2 or ""}

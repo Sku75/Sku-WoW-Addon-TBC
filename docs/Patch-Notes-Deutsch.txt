@@ -11,6 +11,8 @@ Aenderungen in Sku v43.6
         Fehlerbehebungen
             Chat: "absender anfluestern" und "nachricht an kanal senden" im Zeilenmenue (Strg+Enter auf einer Chatzeile) taten auf manchen Rechnern gar nichts - die Chatzeile oeffnete sich nicht.
             Fluestern aus dem Zielmenue und aus dem Dungeonbrowser tat auf denselben Rechnern ebenfalls nichts.
+            Tasten: Wer einmal v43 gestartet, dann wieder v42 benutzt und dort Umschalt+F9 bis F12 neu belegt hatte, stand in v43 ohne Taste fuer Wegpunktliste, Routenziele, Aktionsleisten und "Route beenden" da - die Tasten werden jetzt nachtraeglich uebernommen.
+            Classic Era: Die Liste der nicht unterbrechbaren Zauber brach beim Laden mit einem Fehler ab; sie laedt jetzt auf jedem Client.
 
     Chat: "absender anfluestern" oeffnete keine Chatzeile
         Einfach: Wer im Chat mit Strg+Enter das Zeilenmenue oeffnete und dort "absender anfluestern"
@@ -35,6 +37,40 @@ Aenderungen in Sku v43.6
             Auch das ist nur ein Alias aus Blizzard_DeprecatedChatInfo; fehlt er, passierte
             stillschweigend nichts. Jetzt wird ChatFrameUtil.OpenChat benutzt, der alte Name nur
             noch als Rueckfall (SkuMob/Options.lua, SkuCore/dungeonBrowser.lua).
+
+    Tasten: Umschalt+F9 bis F12 fuehrten nach einem Wechsel v43 - v42 - v43 ins Leere
+        Einfach: Betroffen war, wer v43 einmal gestartet hatte, danach zu v42 zurueckging und dort die
+            Schnellzugriffe 1 bis 4 wieder auf Umschalt+F9 bis F12 legte. Beim naechsten Start von v43
+            hatten die festen Aktionen (Wegpunktliste, Routenziele, Aktionsleisten, Route oder Wegpunkt
+            beenden) keine Taste mehr, und die vier Tasten riefen stattdessen alte Schnellzugriff-Pfade
+            auf. Einer davon zeigte auf einen Menueeintrag, den es nicht mehr gibt: das Menue ging auf,
+            der Cursor blieb auf "Ziel Menue" stehen - es sah genauso aus wie der fruehere Haenger
+            "Wegpunkte werden noch geladen". Sku erkennt diesen Zustand jetzt beim Start und legt die
+            vier Tasten von selbst auf die festen Aktionen um. Eigene Tasten auf den Schnellzugriffen
+            bleiben unangetastet. Danke an Kai fuer die genaue Analyse (Issue 7).
+        Technisch: tMigrateQuickKeys (SkuZOptions/SkuKeyBinds.lua) wertete allein das Vorhandensein
+            von SKU_KEY_NAVWAYPOINTSQUICK als "schon migriert". v43 hatte den Eintrag beim ersten Start
+            angelegt, v42 leerte ihn wieder, als es die Tasten fuer MENUQUICK1 bis 4 vergab - vorhanden,
+            aber leer. Neu ist ein Rettungsdurchlauf: sind NAVWAYPOINTSQUICK, NAVROUTEDESTINATIONSQUICK
+            und ACTIONBARSOPEN alle drei leer UND traegt mindestens ein MENUQUICK1 bis 4 eine der
+            v42-Standardtasten SHIFT-F9 bis SHIFT-F12, laeuft die Uebernahme noch einmal - in diesem
+            Durchlauf nur fuer die Plaetze, die eine solche Standardtaste tragen. Wer die neuen Tasten
+            absichtlich geleert hat, behaelt so jede eigene Schnellzugriff-Taste. Der Durchlauf ist
+            einmalig: danach sind die neuen Eintraege nicht mehr leer.
+
+    Classic Era: Liste der nicht unterbrechbaren Zauber lud nicht
+        Einfach: Auf Classic Era brach eine Datendatei von Sku beim Anmelden mit einem Lua-Fehler ab.
+            Dadurch fehlte die Liste, mit der "Nur unterbrechbare Zauber ansagen" arbeitet. Die Datei
+            laedt jetzt auf jedem Client vollstaendig. Auf TBC Anniversary aendert sich nichts.
+        Technisch: SkuDB/uninterruptibleCasts.lua baut seine Namensschluessel mit GetSpellInfo(id)
+            direkt im Tabellenkonstruktor. Die TBC-Zauber 29121 (Bogenschiessen) und 33808
+            (Schusswaffe abfeuern) kennt Era nicht, GetSpellInfo liefert nil, und "[nil] = true"
+            wirft "table index is nil" - der Konstruktor bricht ab, SkuDB.uninterruptibleCasts.spells
+            und .npcSpells bleiben nil. Die Datei benutzt jetzt einen lokalen Wrapper, der fuer eine
+            unbekannte ID einen Platzhalter liefert, den kein Zaubername je treffen kann. Der Eintrag
+            ist auf diesem Client wirkungslos, die Konstruktoren bleiben zeilengleich mit der
+            Upstream-Quelle (ClassicCastbars), und dasselbe schuetzt die npcSpells-Zeilen, wo ein nil
+            einen Verkettungsfehler ausgeloest haette.
 
 
 -------------------------------------------------------------------------------------------------------
