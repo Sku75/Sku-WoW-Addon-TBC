@@ -545,7 +545,6 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
       -- rechnen und dieselbe Drehung noch einmal kommandieren.
       local tFrameAtStart = tTurnFrameTime()
       local tSettle = math.min(0.3, math.max(0.1, 3 * tFrameAtStart))
-      local tMovingAtStart = (GetUnitSpeed("player") or 0) > 0
       local tTurnBegin = GetTime()
       local tElapsed1, tLandX, tLandY
       SkuCore.gameWorldObjectsTurnBusyUntil = tTurnBegin + tDuration + 0.1 + tSettle
@@ -565,10 +564,10 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
          -- am naechsten liegt.
          if tTurned < tTarget - 180 then tTurned = tTurned + 360 end
          local tF = (tFrameAtStart + tTurnFrameTime()) / 2
-         -- Drehungen im Laufen zaehlen MIT: im Log 2026-09-21 lagen sie
-         -- deckungsgleich auf den Messungen im Stand (die Folgekamera stoert
-         -- die kurze Drehung nicht) - und auf Routen gibt es keine anderen.
-         local tMoving = tMovingAtStart or (GetUnitSpeed("player") or 0) > 0
+         -- Drehungen im Laufen zaehlen fuer die Kalibrierung MIT: im Log
+         -- 2026-09-21 lagen sie deckungsgleich auf den Messungen im Stand (die
+         -- Folgekamera stoert die kurze Drehung nicht) - und auf Routen gibt
+         -- es keine anderen.
          local tRatio = tTurned / (tSpeed * tDuration)
          local tVerdict = "ok"
          if tPlanMode == "legacy" then tVerdict = "legacy"
@@ -577,6 +576,10 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
          elseif tTurned < 1 then tVerdict = "not turned"
          elseif tRatio < 0.15 or tRatio > 4 then tVerdict = "out of range"
          end
+         local tFlags = (InCombatLockdown() == true and "combat," or "")
+            ..((HasFullControl ~= nil and HasFullControl() ~= true) and "nocontrol," or "")
+            ..(IsSwimming() == true and "swim," or "")..(IsFlying() == true and "fly," or "")
+         tFlags = tFlags == "" and "-" or string.sub(tFlags, 1, -2)
          if tVerdict == "ok" then tTurnCalAddSample(tTurned / tSpeed, tDuration, tGear, tSpeed) end
          dprint("TurnCal", "target", string.format("%.1f", tTarget),
             "turned", string.format("%.1f", tTurned),
@@ -585,7 +588,6 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
             "dur_ms", string.format("%.1f", tDuration * 1000),
             "elapsed_ms", string.format("%.1f", tElapsed1 * 1000),
             "fps", string.format("%.0f", 1 / tF),
-            "moving", tostring(tMoving),
             -- Braucht es das Vorhalten ueberhaupt? rest_land = Peilung zum Ziel
             -- vom Ort des Transfer-Impulses aus, mit der gelandeten
             -- Blickrichtung - also der echte Zielfehler beim Landen, nicht
@@ -597,11 +599,11 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
             "rest_land", string.format("%.1f", tLandX and (select(3, SkuNav.Geo:GetDirectionTo(tLandX, tLandY, aWorldX, aWorldY)) or 0) or 0),
             "dist_land", string.format("%.1f", tLandX and (select(2, SkuNav:Distance(tLandX, tLandY, aWorldX, aWorldY)) or -1) or -1),
             "v", string.format("%.1f", GetUnitSpeed("player") or 0),
-            -- Log 2026-09-21 00:22:58: vier Druecke im Stand drehten 0 Grad,
-            -- Ursache aus dem Log nicht ablesbar (Kampf? Kontrollverlust?).
-            "combat", tostring(InCombatLockdown() == true),
-            "control", tostring(HasFullControl == nil or HasFullControl() == true),
-            "swim", tostring(IsSwimming() == true), "fly", tostring(IsFlying() == true),
+            -- Zustaende nur nennen, wenn sie vom Normalfall abweichen (spart
+            -- ~80 Zeichen je Zeile): combat, nocontrol, swim, fly - sonst "-".
+            -- combat/nocontrol wegen der ungeklaerten Null-Drehungen im Stand
+            -- (Log 2026-09-21 00:22:58 und 00:42:46). Bewegung steht in v.
+            "flags", tFlags,
             "mode", tPlanMode, "sample", tVerdict, "wp", tostring(aLabel))
       end
 
