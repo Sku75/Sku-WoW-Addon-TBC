@@ -18,6 +18,7 @@ Aenderungen in Sku v43.6
             Fluestern aus dem Zielmenue und aus dem Dungeonbrowser tat auf denselben Rechnern ebenfalls nichts.
             Tasten: Wer einmal v43 gestartet, dann wieder v42 benutzt und dort Umschalt+F9 bis F12 neu belegt hatte, stand in v43 ohne Taste fuer Wegpunktliste, Routenziele, Aktionsleisten und "Route beenden" da - die Tasten werden jetzt nachtraeglich uebernommen.
             Classic Era: Die Liste der nicht unterbrechbaren Zauber brach beim Laden mit einem Fehler ab; sie laedt jetzt auf jedem Client.
+            Berufefenster: Im Rezept-Tooltip (Umschalt+Pfeil runter) fehlte bei manchen Materialien der Name, man hoerte nur Zahlen wie "0 2".
 
     Chat: "absender anfluestern" oeffnete keine Chatzeile
         Einfach: Wer im Chat mit Strg+Enter das Zeilenmenue oeffnete und dort "absender anfluestern"
@@ -105,6 +106,24 @@ Aenderungen in Sku v43.6
             kennt zwei neue Felder: "toggle" (ein MakeToggleNode-Schalter in einem Fenster) und
             "isSectionHeader" (Sprungziel fuer Bild auf/ab). Der Filterzustand liegt jetzt unter dem
             Berufsnamen statt unter dem Fenstertitel; ein alter Wert wird uebernommen.
+
+    Berufefenster: Rezept-Tooltip nannte manche Materialien ohne Namen
+        Einfach: Im Tooltip eines Rezepts (Umschalt+Pfeil runter) stand bei einzelnen Materialien nur
+            die Anzahl, etwa "0 2" statt "Bleiche 0 von 2". Betroffen waren Gegenstaende, die der
+            Spielclient noch nie gesehen hat - meist reine Haendlerware wie Bleiche, Farbstoffe oder
+            Flussmittel. Stoffe und Leder kennt der Client fast immer schon, deshalb sah es zufaellig
+            aus. Jetzt sagt Sku an dieser Stelle "wird abgerufen" und holt den Namen im Hintergrund.
+            Tooltip schliessen und noch einmal Umschalt+Pfeil runter druecken: dann steht der Name da.
+            Das passiert pro Gegenstand nur einmal, danach kennt ihn der Client dauerhaft.
+        Technisch: GetTradeSkillReagentInfo bzw. GetCraftReagentInfo liefern fuer einen Gegenstand, der
+            nicht im Item-Cache liegt, keinen Namen, und der Reagenzien-Link traegt dann leere
+            Klammern "[]". Der Rueckfall schrieb ein "?", das die Sprachausgabe nicht spricht. Dazu
+            wurde der fertige Text in textFull des Menueknotens abgelegt und nie neu gebaut, der
+            Fehler blieb also auch nach dem Nachladen. Neu (SkuZOptions/Core.lua, SHIFT-DOWN): fehlt
+            der Name, wird die Item-ID aus dem Link gelesen und GetItemInfo(id) gerufen, was den
+            Gegenstand zugleich beim Server anfordert. Ein unvollstaendiger Tooltip wird mit
+            skuRecipeIncomplete markiert und beim naechsten Tastendruck neu gebaut. Jeder Fall
+            schreibt eine Zeile "recipeTooltip" ins Debug-Log (Rezeptindex, Material, Link).
 
 
 -------------------------------------------------------------------------------------------------------

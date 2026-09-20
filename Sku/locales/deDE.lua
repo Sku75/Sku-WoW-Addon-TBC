@@ -3462,3 +3462,5 @@ L["Pfeiltasten bewegen den Textcursor in der Chateingabe"] = "Pfeiltasten bewege
 L["Kanal der Chateingabe ansagen"] = "Kanal der Chateingabe ansagen"
 L["SkuChatAnnounceChannelTip"] = "Sagt den Zielkanal an, sobald er vom Standardkanal abweicht, und bei jedem Wechsel. Der Standardkanal selbst wird beim Öffnen nicht angesagt."
 L["Unbekannter Befehl"] = "Unbekannter Befehl"
+-- Sku v43.6: recipe tooltip, reagent name not in the item cache yet (SkuZOptions/Core.lua)
+L["wird abgerufen"] = "wird abgerufen"

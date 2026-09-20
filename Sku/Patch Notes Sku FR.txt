@@ -21,6 +21,7 @@ Changements dans Sku v43.6
             Chuchoter depuis le menu de la cible et depuis le navigateur de donjons ne faisait rien non plus sur ces mêmes machines.
             Touches : si vous aviez lancé la v43 une fois, étiez revenu à la v42 et y aviez réattribué Maj+F9 à F12, la v43 vous laissait sans touche pour la liste des points de passage, les destinations d'itinéraire, les barres d'action et « terminer l'itinéraire » - les touches sont maintenant reprises après coup.
             Classic Era : la liste des sorts non interruptibles s'arrêtait sur une erreur au chargement ; elle se charge maintenant sur tous les clients.
+            Fenêtres de métier : l'infobulle d'une recette (Maj+Flèche bas) omettait le nom de certains composants, on n'entendait que des chiffres comme « 0 2 ».
 
     Chat : « expéditeur du chuchotement » n'ouvrait pas de ligne de chat
         Simple : Si vous ouvriez le menu de ligne dans le chat avec Ctrl+Entrée et choisissiez
@@ -118,6 +119,25 @@ Changements dans Sku v43.6
             « isSectionHeader » (cible de saut pour Page précédente/suivante). L'état du filtre est
             maintenant stocké sous le nom du métier au lieu du titre de la fenêtre ; une ancienne
             valeur est reprise.
+
+    Fenêtres de métier : l'infobulle d'une recette citait certains composants sans nom
+        Simple : Dans l'infobulle d'une recette (Maj+Flèche bas), quelques composants n'affichaient que
+            la quantité, par exemple « 0 2 » au lieu de « Eau de Javel 0 sur 2 ». Cela touchait les
+            objets que le client du jeu n'a encore jamais vus - surtout des articles vendus uniquement
+            par les marchands, comme l'eau de Javel, les teintures ou le fondant. Les étoffes et les
+            cuirs sont presque toujours déjà connus du client, d'où l'impression de hasard. Sku dit
+            maintenant « chargement en cours » à cet endroit et récupère le nom en arrière-plan.
+            Fermez l'infobulle et appuyez de nouveau sur Maj+Flèche bas : le nom est là. Cela n'arrive
+            qu'une fois par objet, ensuite le client le connaît durablement.
+        Technique : GetTradeSkillReagentInfo / GetCraftReagentInfo ne renvoient aucun nom pour un objet
+            absent du cache d'objets, et le lien du composant porte alors des crochets vides « [] ».
+            Le repli écrivait un « ? », que la synthèse vocale ne prononce pas. De plus, le texte
+            fini était rangé dans textFull du nœud de menu et jamais reconstruit : le défaut restait
+            même après le chargement de l'objet. Nouveau (SkuZOptions/Core.lua, SHIFT-DOWN) : sans
+            nom, l'identifiant est lu dans le lien et GetItemInfo(id) est appelé, ce qui demande aussi
+            l'objet au serveur. Une infobulle incomplète est marquée skuRecipeIncomplete et
+            reconstruite à la prochaine pression. Chaque cas écrit une ligne « recipeTooltip » dans
+            le journal de débogage (index de recette, composant, lien).
 
 
 -------------------------------------------------------------------------------------------------------

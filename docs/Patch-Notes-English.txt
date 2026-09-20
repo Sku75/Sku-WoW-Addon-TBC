@@ -18,6 +18,7 @@ Changes in Sku v43.6
             Whispering from the target menu and from the dungeon browser did nothing on the same machines either.
             Keys: if you started v43 once, went back to v42 and re-bound Shift+F9 to F12 there, v43 left you without a key for the waypoint list, route destinations, action bars and "end route" - the keys are now carried over after the fact.
             Classic Era: the list of uninterruptible casts aborted with an error while loading; it now loads on every client.
+            Profession windows: the recipe tooltip (Shift+Arrow-down) left out the name of some reagents, you only heard numbers like "0 2".
 
     Chat: "whisper sender" did not open a chat line
         Simple: If you opened the line menu in the chat with Ctrl+Enter and chose "whisper sender",
@@ -103,6 +104,23 @@ Changes in Sku v43.6
             MakeToggleNode switch inside a window) and "isSectionHeader" (jump target for Page
             Up/Down). The filter state is now stored under the profession name instead of the window
             title; an old value is carried over.
+
+    Profession windows: the recipe tooltip named some reagents without a name
+        Simple: In a recipe's tooltip (Shift+Arrow-down) a few reagents showed only the count, for
+            example "0 2" instead of "Bleach 0 of 2". It hit items the game client has never seen -
+            mostly pure vendor goods such as bleach, dyes or flux. Cloth and leather are almost always
+            known to the client already, which is why it looked random. Sku now says "loading" in that
+            place and fetches the name in the background. Close the tooltip and press Shift+Arrow-down
+            again: the name is there. This happens once per item, after that the client knows it for
+            good.
+        Technically: GetTradeSkillReagentInfo / GetCraftReagentInfo return no name for an item that is
+            not in the item cache, and the reagent link then carries empty brackets "[]". The
+            fallback wrote a "?", which TTS does not speak. The finished text was also stored in the
+            menu node's textFull and never rebuilt, so the fault stayed even after the item had
+            loaded. New (SkuZOptions/Core.lua, SHIFT-DOWN): with no name, the item id is read from the
+            link and GetItemInfo(id) is called, which also requests the item from the server. An
+            incomplete tooltip is marked skuRecipeIncomplete and rebuilt on the next key press. Every
+            case writes a "recipeTooltip" line to the debug log (recipe index, reagent, link).
 
 
 -------------------------------------------------------------------------------------------------------

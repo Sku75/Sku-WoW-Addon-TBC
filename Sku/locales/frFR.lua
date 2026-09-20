@@ -3406,6 +3406,7 @@ L["Pfeiltasten bewegen den Textcursor in der Chateingabe"] = "les touches fléch
 L["Kanal der Chateingabe ansagen"] = "annoncer le canal de la saisie du chat"
 L["SkuChatAnnounceChannelTip"] = "Annonce le canal cible dès qu'il diffère de votre canal par défaut, ainsi qu'à chaque changement. Le canal par défaut lui-même n'est pas annoncé à l'ouverture du chat."
 L["Unbekannter Befehl"] = "commande inconnue"
+L["wird abgerufen"] = "chargement en cours"
 
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the

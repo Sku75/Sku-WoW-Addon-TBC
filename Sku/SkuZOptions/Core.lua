@@ -3425,8 +3425,12 @@ function SkuOptions:CreateMenuFrame()
 				-- Tooltip aus dem Rezept-Index per API bauen und in textFull legen, damit
 				-- die normale Ausgabe unten ihn vorliest (wie beim Auren-Tooltip). Der
 				-- Index kommt vom sichtbaren Listenknopf, daher unabhaengig von der Auswahl.
-				if SkuOptions.currentMenuPosition.skuRecipeInfo and (not SkuOptions.currentMenuPosition.textFull or SkuOptions.currentMenuPosition.textFull == "") then
+				-- A tooltip built while a reagent was not in the item cache yet is NOT kept:
+				-- skuRecipeIncomplete forces a rebuild on the next press, by which time the
+				-- client has usually answered the item request.
+				if SkuOptions.currentMenuPosition.skuRecipeInfo and (not SkuOptions.currentMenuPosition.textFull or SkuOptions.currentMenuPosition.textFull == "" or SkuOptions.currentMenuPosition.skuRecipeIncomplete) then
 					local tInfo = SkuOptions.currentMenuPosition.skuRecipeInfo
+					local tIncomplete = false
 					local tOk, tText = pcall(function()
 						local i = tInfo.index
 						local tName, tNum, tGetReagent, tGetLink, tGetReagentLink
@@ -3455,9 +3459,23 @@ function SkuOptions:CreateMenuFrame()
 									if rlink then
 										local n = rlink:match("%[(.-)%]")
 										if n and n ~= "" then rn = n end
+										-- Still nameless: ask by item id. GetItemInfo also REQUESTS the
+										-- item from the server, so the next press has the name.
+										if not rn or rn == "" then
+											local rid = tonumber(rlink:match("item:(%d+)"))
+											if rid then
+												local gn = GetItemInfo(rid)
+												if gn and gn ~= "" then rn = gn end
+											end
+										end
 									end
 								end
-								tOut = tOut..((rn and rn ~= "") and rn or "?").." "..tostring(have or 0).."/"..tostring(req or 0).."\r\n"
+								if not rn or rn == "" then
+									tIncomplete = true
+									dprint("recipeTooltip", "reagent without name", tInfo.api, "recipe", i, "reagent", r, "link", tostring(tGetReagentLink and tGetReagentLink(i, r)))
+								end
+								-- A bare "?" is not spoken by TTS, which left only the numbers ("0 2").
+								tOut = tOut..((rn and rn ~= "") and rn or L["wird abgerufen"]).." "..tostring(have or 0).."/"..tostring(req or 0).."\r\n"
 							end
 						end
 						if tGetLink and TooltipLines_helper and SkuScanningTooltip then
@@ -3474,6 +3492,7 @@ function SkuOptions:CreateMenuFrame()
 					end)
 					if tOk and type(tText) == "string" and tText ~= "" then
 						SkuOptions.currentMenuPosition.textFull = tText
+						SkuOptions.currentMenuPosition.skuRecipeIncomplete = tIncomplete or nil
 					end
 				end
 				if SkuOptions.currentMenuPosition.textFull then
