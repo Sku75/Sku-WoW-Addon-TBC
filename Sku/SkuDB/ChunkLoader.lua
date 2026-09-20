@@ -87,6 +87,10 @@ local SkuDBStreamFrame = CreateFrame("Frame")
 SkuDBStreamFrame:Hide()
 local SkuDBStreamCo = nil
 local SkuDBFrameStart = 0
+-- [Load-perf 2026-09-20] What the stream is working on right now. Read by the
+-- OnUpdate driver below to label the longest single resume of a frame, which
+-- Core.lua's long-frame watch puts on the load timeline (Sku.perfStreamSlice).
+local SkuDBCurrentStep = "start"
 
 -- [W6-B #15] Post-login build frame budget: a fixed 150 ms/frame TOTAL
 -- (user-chosen ceiling; ~170 ms real frames keep menus usable) split evenly
@@ -180,6 +184,7 @@ local function SkuDBBuildFamilyChunks(aFamily)
 	if not tList then return true end -- pristine-format files on disk: nothing registered
 	for i = 1, #tList do
 		local tPath, tBody = tList[i][1], tList[i][2]
+		SkuDBCurrentStep = tPath
 		local tChunkLoc = SkuDBLocaleOfPath(tPath)
 		if not SkuDBChunkWanted(tPath, tChunkLoc) then
 			-- Skipped, but still drop the source string so the chunk text is
@@ -780,7 +785,8 @@ local function SkuDBMasterSequence()
 		if not Sku.DeferredData.ready[tKey] and not Sku.DeferredData.failed[tKey] then
 			if SkuDBBuildFamilyChunks(tFam) then
 				local tStepsOk = true
-				for _, tStep in ipairs(SkuDBFamilySteps[tFam]) do
+				for tStepIdx, tStep in ipairs(SkuDBFamilySteps[tFam]) do
+					SkuDBCurrentStep = "fixes/merge " .. tFam .. " #" .. tStepIdx
 					-- each sub-step is ATOMIC (no yields inside the pcall -
 					-- Lua 5.1 cannot yield across a pcall boundary)
 					local tOk, tErr = pcall(tStep)
@@ -803,6 +809,7 @@ local function SkuDBMasterSequence()
 		-- ready (e.g. SkuNav's waypoint-cache trigger the moment creatures+
 		-- objects are merged - it reads their names). The loader no longer
 		-- knows those modules' construction order or private pending-flags.
+		SkuDBCurrentStep = "ready steps after " .. tFam
 		SkuDBRunReadySteps()
 		SkuDBMaybeYield()
 	end
@@ -898,8 +905,17 @@ end
 SkuDBStreamFrame:SetScript("OnUpdate", function()
 	if not SkuDBStreamCo then SkuDBStreamFrame:Hide() return end
 	SkuDBFrameStart = debugprofilestop()
+	local tSlice = { ms = 0, stepMs = 0, step = SkuDBCurrentStep, at = 0 }
+	Sku.perfStreamSlice = tSlice
 	while debugprofilestop() - SkuDBFrameStart <= SkuDBBudgetMs() do
+		local tStepName, tStepT0 = SkuDBCurrentStep, debugprofilestop()
 		local tOk, tErr = coroutine.resume(SkuDBStreamCo)
+		tSlice.at = debugprofilestop()
+		tSlice.ms = tSlice.at - SkuDBFrameStart
+		if tSlice.at - tStepT0 > tSlice.stepMs then
+			tSlice.stepMs = tSlice.at - tStepT0
+			tSlice.step = tStepName
+		end
 		if not tOk then
 			SkuDBStreamCo = nil
 			SkuDBStreamFrame:Hide()

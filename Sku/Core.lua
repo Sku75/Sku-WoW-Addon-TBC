@@ -1433,6 +1433,7 @@ tPerfLoadFrame:SetScript("OnEvent", function(self, aEvent, aArg1)
 		if aArg1 == "Sku" and not self.tStampedSku then
 			self.tStampedSku = true
 			Sku:MetricPoint("ADDON_LOADED (Sku files compiled)")
+			pcall(Sku.PerfWrapLoginHandlers, Sku)
 		end
 	elseif aEvent == "PLAYER_LOGIN" then
 		Sku:MetricPoint("PLAYER_LOGIN")
@@ -1486,6 +1487,75 @@ tPerfLoadFrame:SetScript("OnEvent", function(self, aEvent, aArg1)
 			else
 				tCapture()
 			end
+			Sku:PerfStartLongFrameWatch()
 		end
 	end
 end)
+
+-- [Load-perf 2026-09-20] Post-load long-frame watch. The stopwatch addon can say
+-- THAT a 1.1 s frame happens ~3 s after PEW, but not what ran in it: its clock
+-- is not Sku's. This stamps every frame over 250 ms onto the MetricPoint
+-- timeline (same clock as the build milestones) together with how much of that
+-- frame the SkuDB stream used (Sku.perfStreamSlice, written by ChunkLoader), so
+-- a long frame reads as either "ours, and this label" or "not ours". After the
+-- watch window the whole timeline is stored a second time, eviction-proof, as
+-- SkuDebugLog.loadPerfLate - the first capture is taken at the first frame and
+-- cannot contain any of the post-load story (read with _readperf.py).
+local PERF_WATCH_SECONDS = 25
+local PERF_LONG_FRAME_MS = 250
+function Sku:PerfStartLongFrameWatch()
+	local tFrame = CreateFrame("Frame")
+	local tStart = debugprofilestop()
+	local tLast = tStart
+	tFrame:SetScript("OnUpdate", function(self)
+		local tNow = debugprofilestop()
+		local tGap = tNow - tLast
+		if tGap > PERF_LONG_FRAME_MS then
+			local tSlice = Sku.perfStreamSlice
+			local tOurs = ""
+			if tSlice and tSlice.at >= tLast and tSlice.at <= tNow then
+				tOurs = string.format(", skudb stream %.0f ms in it, longest step %.0f ms (%s)", tSlice.ms, tSlice.stepMs, tostring(tSlice.step))
+			end
+			Sku:MetricPoint(string.format("LONG FRAME %.0f ms%s", tGap, tOurs))
+		end
+		tLast = tNow
+		if tNow - tStart > PERF_WATCH_SECONDS * 1000 then
+			self:SetScript("OnUpdate", nil)
+			if type(SkuDebugLog) ~= "table" then SkuDebugLog = {} end
+			local tOut = { "=== late load perf capture  " .. date("%Y-%m-%d %H:%M:%S") .. " ===" }
+			Sku:PerformanceDumpLoad(function(aLine) tOut[#tOut + 1] = aLine end)
+			SkuDebugLog.loadPerfLate = tOut
+		end
+	end)
+end
+
+-- [Load-perf 2026-09-20] Per-module cost of the two login events. The AceAddon
+-- hooks above time OnInitialize/OnEnable, but a module's PLAYER_LOGIN and
+-- PLAYER_ENTERING_WORLD handlers ran unmeasured, and the gap between the PEW
+-- stamp and the first frame is ~1.6 s longer on a login with Sku than without.
+-- AceEvent resolves a method-name handler at CALL time (self[method]), so
+-- wrapping the methods once all files are loaded is enough. Only handlers over
+-- 20 ms are stamped.
+local PERF_TIMED_EVENTS = { "PLAYER_LOGIN", "PLAYER_ENTERING_WORLD" }
+function Sku:PerfWrapLoginHandlers()
+	local tAce = LibStub and LibStub("AceAddon-3.0", true)
+	if not tAce then return end
+	for tName, tAddon in pairs(tAce.addons) do
+		if type(tName) == "string" and string.sub(tName, 1, 3) == "Sku" then
+			for _, tEvent in ipairs(PERF_TIMED_EVENTS) do
+				local tOrig = rawget(tAddon, tEvent)
+				if type(tOrig) == "function" then
+					tAddon[tEvent] = function(...)
+						local tT0 = debugprofilestop()
+						local tA, tB, tC = tOrig(...)
+						local tMs = debugprofilestop() - tT0
+						if tMs > 20 then
+							Sku:MetricPoint(string.format("%s handler of %s = %.0f ms", tEvent, tName, tMs))
+						end
+						return tA, tB, tC
+					end
+				end
+			end
+		end
+	end
+end

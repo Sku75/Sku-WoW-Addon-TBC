@@ -96,3 +96,36 @@ Out-of-game:
 Gotcha: if `dprint` logging is ON (`/skudebug`), the 2000-line ring fills with
 spam and evicts `DebugLogMark` markers — prefer dedicated SavedVariable fields
 (like `wpcResult`) for post-frame results, or turn logging off before capturing.
+
+## 2026-09-20 - long-frame watch + English on demand
+
+Measured against WowVision with `!!LoadStopwatch` (now speaks through WV too and
+reports per-addon-family file time): Sku's loading-screen share is ~2 s; the
+felt problem is post-load - 26 frames over 100 ms (the deliberate 150 ms build
+budget), one ~1.15 s frame right at stream start, a 300 ms atomic stream GC.
+
+- **Long-frame watch** (`Sku:PerfStartLongFrameWatch`, Core.lua): stamps every
+  frame over 250 ms onto the MetricPoint timeline for 25 s after PEW, with the
+  SkuDB stream's share of that frame and its longest single step
+  (`Sku.perfStreamSlice`, labelled by ChunkLoader). Then stores the whole
+  timeline as `SkuDebugLog.loadPerfLate` - `_readperf.py` prints it, no
+  `/skuperf load` needed. `Sku:PerfWrapLoginHandlers` stamps any Sku module
+  whose PLAYER_LOGIN / PLAYER_ENTERING_WORLD handler takes over 20 ms.
+- **English on demand: tried and REVERTED the same day.** A deDE client skipped
+  the 279 enUS name chunks at login and built a table on its first lookup.
+  Proven identical offline, worked in game - and measured worthless: Lua memory
+  846 MB vs 852 MB, stream time unchanged (it is bound by the 150 ms frame
+  budget, not by chunk count), and the creature table was built on demand in
+  EVERY login anyway, because SkuQuest/QuestTarget.lua falls back to enUS for
+  creatures without a German name. So deDE does use English as a live fallback.
+  Not worth a second code path; the rule stays "active locale + enUS" for all.
+
+Findings of the long-frame watch (login 2026-09-20 14:07, Sku only):
+- The ~1.5 s frame right after the first frame is NOT the SkuDB stream (153 ms
+  of it). A WowVision-only login has a ~0.76 s frame at the same spot, so about
+  half is other addons/Blizzard; the rest is unattributed Sku first-frame work.
+- 420 ms frame = the atomic stream GC (294 ms). 274 ms frame = items merge step
+  #2 (191 ms, WotLK itemDataTBC merge, atomic). Two ~300-375 ms frames late in
+  the waypoint-cache link phase carry no stream share.
+- No Sku module's PLAYER_ENTERING_WORLD handler exceeds 20 ms; PLAYER_LOGIN of
+  SkuNav = 802 ms (the route build, known).

@@ -75,25 +75,30 @@ for blk in blocks:
 # Since 2026-07-05 the auto-capture at login lives in the eviction-proof
 # SkuDebugLog.loadPerf field (an array of plain strings, overwritten each
 # load) because ring flooding used to evict the in-ring capture.
-lp = block.find('["loadPerf"]')
-if lp >= 0:
-    lb = block.find("{", lp)
-    depth2 = 0
-    lend = lb
-    for j in range(lb, len(block)):
-        c = block[j]
-        if c == "{":
-            depth2 += 1
-        elif c == "}":
-            depth2 -= 1
-            if depth2 == 0:
-                lend = j
-                break
-    print("=" * 70)
-    print("SkuDebugLog.loadPerf (latest load):")
-    for raw in block[lb:lend].splitlines():
-        s = raw.strip().rstrip(",")
-        if len(s) >= 2 and s[0] == '"' and s[-1] == '"':
-            print(clean(s[1:-1].replace('\\"', '"')))
-else:
-    print("(no loadPerf capture yet - needs a Sku session with the 2026-07-05 build)")
+def dump_capture(field, title):
+    lp = block.find('["%s"]' % field)
+    if lp >= 0:
+        lb = block.find("{", lp)
+        depth2 = 0
+        lend = lb
+        for j in range(lb, len(block)):
+            c = block[j]
+            if c == "{":
+                depth2 += 1
+            elif c == "}":
+                depth2 -= 1
+                if depth2 == 0:
+                    lend = j
+                    break
+        print("=" * 70)
+        print(title)
+        for raw in block[lb:lend].splitlines():
+            s = raw.strip().rstrip(",")
+            if len(s) >= 2 and s[0] == '"' and s[-1] == '"':
+                print(clean(s[1:-1].replace('\\"', '"')))
+    else:
+        print("(no loadPerf capture yet - needs a Sku session with the 2026-07-05 build)")
+
+dump_capture("loadPerf", "SkuDebugLog.loadPerf (latest load, taken at the first frame):")
+if '["loadPerfLate"]' in block:
+    dump_capture("loadPerfLate", "SkuDebugLog.loadPerfLate (same load, 25 s later: post-load build + long frames):")
