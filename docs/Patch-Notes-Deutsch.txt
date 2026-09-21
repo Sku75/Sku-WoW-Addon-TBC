@@ -14,6 +14,7 @@ Aenderungen in Sku v43.7
             Wer schon auf den Beacon ausgerichtet ist (innerhalb von 3 Grad), wird nicht mehr gedreht. Das beendet das Hin-und-her-Pendeln um den Beacon-Ping.
             Die Drehung misst sich selbst ein: Sku prueft nach jeder Drehung, wie weit du wirklich gedreht hast, und passt sich an deinen Rechner und deine Bildrate an. Die ersten paar Drehungen nach dem Update koennen ungenau sein.
             Tastaturecho mit einer echten Windows-Stimme (nicht die NVDA-Bruecke): die lange Pause nach jedem getippten Buchstaben ist weg, die Buchstaben folgen dicht aufeinander.
+            Text in ein Eingabefeld einfuegen (Strg+V): Sku sagt jetzt einmal "Eingefuegt", statt den eingefuegten Text Buchstabe fuer Buchstabe vorzulesen.
 
         Fehlerbehebungen
             Schwimmen und Fliegen: Die Neigungssperre greift jetzt auch im Kampf. Wer kaempfend ins Wasser lief, tauchte bisher bei den ersten Drehungen ab.
@@ -122,6 +123,15 @@ Aenderungen in Sku v43.7
             3 Minuten Zufallslast, neuer Stand 0; Bruecken-Modell alt und neu identisch.
             Im Log: "stop deferred (handover not started)", "deferred stop fires", "client gate ttl",
             "queuereset kept", "STALE-DROP".
+            Folgefehler, im selben Zug behoben: die Taste "Audio Ausgabe beenden" (Strg+V) brach nur
+            noch die gerade gesprochene Zeile ab, die wartenden liefen danach weiter - man musste
+            je Zeile einmal druecken. Frueher lag der ganze Schwall schon im Client, und der eine
+            Stopp traf alles; seit dem Tor warten die Zeilen bei Sku, und StopOutputEmptyQueue
+            leerte diese Warteschlange nie. StopOutputEmptyQueue(true, true) ruft jetzt
+            CancelBttsOutput: wartende Zeilen und wartende Tippzeichen weg, dann der Stopp. Die
+            Aufrufer mit (true, nil) bleiben, wie sie sind - dort sollen wartende Chatzeilen
+            ueberleben. Harness-Szenario "stopkey": alter Stand vier hoerbare Zeilen, neuer Stand
+            eine (abgeschnitten).
 
     Menue: "Ziel Menue" wurde nach dem Inhalt nachgesprochen
         Einfach: Oeffnet sich das Menue nicht an der Wurzel, sondern gleich an einer bestimmten
@@ -190,6 +200,21 @@ Aenderungen in Sku v43.7
             FINISHED und muss zuerst gesehen werden. Harness-Szenario "foreign": alter Stand vier
             Buchstaben nach "abgebrochen", neuer Stand keiner. Im Log: "BTTS foreign utterance",
             "BTTS foreign cleared".
+
+    Einfuegen in ein Eingabefeld: "Eingefuegt" statt Buchstabensalat
+        Einfach: Wer mit Strg+V Text in die Chatzeile oder in ein Eingabefeld von Sku einfuegte,
+            bekam den ganzen eingefuegten Text Buchstabe fuer Buchstabe vorgelesen. Jetzt sagt Sku
+            einmal "Eingefuegt". Den Inhalt des Feldes liest du wie gewohnt mit Pfeil hoch oder
+            Pfeil runter. Normales Tippen ist unveraendert, auch schnelles. Fuegst du nur ein oder
+            zwei Zeichen ein, werden diese weiterhin als Zeichen gesprochen.
+        Technisch: Ein Einfuegen liefert die Zwischenablage als einzelne OnChar-Aufrufe, alle im
+            selben Frame. tSpeakTypedChar (SkuZOptions/Core.lua) zaehlt die Zeichen je Frame
+            (GetTime() ist innerhalb eines Frames konstant): ab dem dritten gilt die Folge als
+            Einfuegen - CancelEcho wirft die schon wartenden Zeichen weg (uebergeben ist im selben
+            Frame noch keines, die Pumpe laeuft im OnUpdate), dann einmal SpeakEcho("Eingefuegt"),
+            alle weiteren Zeichen des Frames werden ignoriert. Schwelle 3, weil zwei Anschlaege bei
+            niedriger Bildrate in einen Frame fallen koennen. Gilt fuer AttachInputEcho (Chat) und
+            das Sku-Eingabefeld. Im Log: "inputEcho paste erkannt".
 
 
 -------------------------------------------------------------------------------------------------------

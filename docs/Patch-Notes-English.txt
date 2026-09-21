@@ -14,6 +14,7 @@ Changes in Sku v43.7
             If you already face the beacon (within 3 degrees), you are no longer turned. This ends the swinging back and forth around the beacon ping.
             The turn calibrates itself: after every turn Sku checks how far you really turned and adapts to your machine and your frame rate. The first few turns after the update may be imprecise.
             Keyboard echo with a real Windows voice (not the NVDA bridge): the long pause after every typed letter is gone, the letters follow each other closely.
+            Pasting text into an input field (Ctrl+V): Sku now says "Pasted" once instead of reading the pasted text letter by letter.
 
         Bugfixes
             Swimming and flying: the pitch lock now engages in combat too. If you ran into water while fighting, the first turns used to make you dive.
@@ -119,6 +120,14 @@ Changes in Sku v43.7
             load, new code 0; bridge model identical old and new.
             In the log: "stop deferred (handover not started)", "deferred stop fires", "client gate ttl",
             "queuereset kept", "STALE-DROP".
+            Follow-up bug, fixed along the way: the "stop audio output" key (Ctrl+V) only cancelled
+            the line being spoken, the waiting ones carried on - one press per line. Before, the
+            whole burst already sat in the client and the one stop hit all of it; since the gate
+            the lines wait with Sku, and StopOutputEmptyQueue never emptied that queue.
+            StopOutputEmptyQueue(true, true) now calls CancelBttsOutput: waiting lines and waiting
+            typed characters dropped, then the stop. Callers with (true, nil) stay as they are -
+            waiting chat lines are meant to survive those. Harness scenario "stopkey": old build
+            four audible lines, new build one (cut short).
 
     Menu: "Target menu" was spoken after the content
         Simple: When the menu opens not at its root but straight at a certain place - opening a
@@ -182,6 +191,21 @@ Changes in Sku v43.7
             one starts on exactly that FINISHED and has to be seen first. Harness scenario
             "foreign": old build four letters after "cancelled", new build none. In the log:
             "BTTS foreign utterance", "BTTS foreign cleared".
+
+    Pasting into an input field: "Pasted" instead of a string of letters
+        Simple: If you pasted text with Ctrl+V into the chat line or into one of Sku's input
+            fields, the whole pasted text was read out letter by letter. Sku now says "Pasted"
+            once. Read the content of the field as usual with arrow up or arrow down. Normal
+            typing is unchanged, fast typing included. If you paste only one or two characters,
+            they are still spoken as characters.
+        Technically: A paste delivers the clipboard as individual OnChar calls, all in the same
+            frame. tSpeakTypedChar (SkuZOptions/Core.lua) counts characters per frame (GetTime()
+            is constant within a frame): from the third on the run counts as a paste - CancelEcho
+            drops the characters already waiting (none has been handed over in that frame, the
+            pump runs in OnUpdate), then one SpeakEcho("Pasted"), every further character of the
+            frame is ignored. Threshold 3 because two keystrokes can fall into one frame at a low
+            frame rate. Applies to AttachInputEcho (chat) and the Sku edit box. In the log:
+            "inputEcho paste erkannt".
 
 
 -------------------------------------------------------------------------------------------------------
