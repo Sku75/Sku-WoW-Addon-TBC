@@ -64,5 +64,16 @@ S.login = function()
 	say(0.08, "raena flinthammer", true)
 	H.run(20)
 end
+-- Speech that is not Sku's (another addon, a /run) lands in the client in the
+-- middle of a typing burst. Healthy: no typed letter is audible after
+-- "abgebrochen", and no out-of-order line.
+S.foreign = function()
+	say(0.0, "sagen eingabefeld", true)
+	local s = "hallo zusammen"
+	for i = 1, #s do at(0.4 + i * 0.25, function() V:SpeakEcho(s:sub(i, i)) end) end
+	at(1.0, function() C_VoiceChat.SpeakText(0, "FREMD test kirsche von einem anderen addon") end)
+	at(0.4 + (#s + 1) * 0.25, function() V:CancelBttsOutput(); V:OutputStringBTtts("abgebrochen", {overwrite=true, engine="blizz"}) end)
+	H.run(16)
+end
 S[name]()
 H.report(name)

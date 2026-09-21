@@ -522,6 +522,53 @@ local tClientGateBlindAfter = 3
 local tClientGateStopDelay = 0.10
 local tClientGateStrikes = 0
 
+-- [v43.8] Speech that is NOT ours: another addon's SpeakText, Blizzard's own chat
+-- TTS, a /run. The gate above only knows Sku's handovers, so a foreign utterance
+-- broke the one-in-the-client rule from outside. Capture (Anniversary, real SAPI):
+-- a /run utterance parked as id 403, started 11 s later under the first typed
+-- character; [r] was handed over behind it, got no STARTED, the 0.5 s start TTL
+-- gave up on it, [e] went in as well, [e] took [r]'s STARTED for its own -- and
+-- the [l] after them spoke behind "abgebrochen", past every cancel.
+-- Two rules:
+--   * a STARTED nobody is waiting for, or one whose id is OLDER than anything
+--     seen before our handover, is foreign. It is never taken for our id;
+--   * while it plays nothing of ours is handed over: the line waits in Sku's own
+--     queue, where a cancel still reaches it. One of OUR stops ends it (it kills
+--     whatever plays), so an announcement that carries a stop never waits.
+-- at = last event seen for it. A foreign utterance stopped by its owner reports
+-- nothing more, so this measures SILENCE and gives up after tForeignSilenceMax.
+local mForeign = { id = nil, at = 0 }
+local tForeignSilenceMax = 8
+-- Highest utterance id seen in a STARTED. The client counts up per SpeakText,
+-- so an id below it was handed over before ours. nil until the first STARTED.
+-- ★On the bridge every id is 0: "older" therefore also requires "not equal".
+local tMaxSeenId = nil
+-- GetTime() of the frame in which one of ours FINISHED. Nothing is handed over
+-- in that same frame: a parked foreign utterance starts on exactly that FINISHED,
+-- and its STARTED has to be seen (and recognised as foreign -- nobody is waiting
+-- for an id at that moment) BEFORE the next handover, or it is taken for ours.
+-- In the live capture the STARTED already arrives first; the offline model
+-- delivers it one frame later. One frame covers both.
+local tClientGateFreedAt = 0
+
+local function ForeignClear(aWhy)
+	if mForeign.id ~= nil then
+		if dprint then dprint("BTTS foreign cleared", "id="..tostring(mForeign.id), "why="..tostring(aWhy)) end
+		mForeign.id = nil
+	end
+end
+
+local function ForeignBusy(aNow)
+	if mForeign.id == nil then
+		return false
+	end
+	if (aNow - mForeign.at) > tForeignSilenceMax then
+		ForeignClear("silence")
+		return false
+	end
+	return true
+end
+
 local function ClientGateReset()
 	mClientGate.outstanding = false
 	mClientGate.at = 0
@@ -544,6 +591,13 @@ local function ClientGateBusy(aNow)
 	end
 	if tClientGateStrikes >= tClientGateBlindAfter then
 		return false
+	end
+	-- [v43.8] Ours was handed over behind a foreign utterance that is still
+	-- playing: it CANNOT start yet, so its start TTL must not run -- giving up on
+	-- it here is what let a second character into the client (see mForeign).
+	if not mClientGate.started and ForeignBusy(aNow) then
+		mClientGate.at = aNow
+		return true
 	end
 	local tTtl
 	if not mClientGate.started then
@@ -573,6 +627,7 @@ local function ClientGateBusy(aNow)
 		if mClientGate.stopOnStart then
 			local tHold = mClientGate.stopHold or tBttsPostStopHold
 			pcall(function() C_VoiceChat.StopSpeakingText() end)
+			ForeignClear("ttl stop")
 			tLastStopAt = aNow
 			tAuditStopSinceHandover = true
 			if tNextSpeakAt < aNow + tHold then
@@ -607,6 +662,9 @@ local function BttsStop(aWhy, aHold)
 	end
 	if dprint then dprint("BTTS "..tostring(aWhy).." -> StopSpeakingText") end
 	pcall(function() C_VoiceChat.StopSpeakingText() end)
+	-- A stop kills whatever plays, ours or not, and a killed utterance reports
+	-- nothing more.
+	ForeignClear("stop")
 	tLastStopAt = tNow
 	tAuditStopSinceHandover = true
 	if aHold then
@@ -833,6 +891,9 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	mClientGate.id = nil
 	mClientGate.awaitingId = true
 	mClientGate.sawStart = false
+	-- [v43.8] Anything that STARTs with an id below this was in the client before
+	-- this handover and cannot be it (see mForeign).
+	mClientGate.maxIdBefore = tMaxSeenId
 	-- Blind (no STARTED events at all, see tClientGateBlindAfter): nothing to wait
 	-- for, so treat it as playing -- a stop is then sent at once, never deferred.
 	mClientGate.started = (tClientGateStrikes >= tClientGateBlindAfter)
@@ -874,8 +935,13 @@ function SkuVoice:Create()
 			-- [v43.7] Same event, same rule, for every utterance now: this is what
 			-- lets the next waiting line -- typed or announced -- into the client.
 			local tDoneId = ...
+			-- [v43.8] Ours is checked FIRST: on the bridge every id is 0, and a
+			-- foreign 0 must not swallow the completion of our own 0.
 			if mClientGate.outstanding and mClientGate.id ~= nil and tDoneId == mClientGate.id then
 				ClientGateReset()
+				tClientGateFreedAt = GetTime()
+			elseif mForeign.id ~= nil and tDoneId == mForeign.id then
+				ForeignClear("finished")
 			end
 			-- [v43.2] A FAILED utterance never reached the voice, so the duplicate
 			-- guard must not treat it as "the user already heard this".
@@ -899,7 +965,28 @@ function SkuVoice:Create()
 			-- from the previous letter's. See mClientGate.
 			-- [v43.7] Any STARTED proves the client reports events: gate stays on.
 			tClientGateStrikes = 0
-			if mClientGate.awaitingId then
+			-- [v43.8] Ours or foreign? See mForeign. The bridge reports id 0 for
+			-- everything, so "older" is strictly-less and never fires there.
+			local tStartedId = ...
+			local tIsForeign = not mClientGate.awaitingId
+			if not tIsForeign and type(tStartedId) == "number" and type(mClientGate.maxIdBefore) == "number"
+				and tStartedId < mClientGate.maxIdBefore then
+				tIsForeign = true
+			end
+			if type(tStartedId) == "number" and (tMaxSeenId == nil or tStartedId > tMaxSeenId) then
+				tMaxSeenId = tStartedId
+			end
+			if tIsForeign then
+				-- An utterance of ours that STARTs proves the previous foreign one is
+				-- over; a foreign one that starts replaces it the same way.
+				mForeign.id = tStartedId
+				mForeign.at = GetTime()
+				if dprint then dprint("BTTS foreign utterance", "id="..tostring(tStartedId),
+					"gateOutstanding="..tostring(mClientGate.outstanding)) end
+			elseif mForeign.id ~= nil then
+				ForeignClear("ours started")
+			end
+			if mClientGate.awaitingId and not tIsForeign then
 				mClientGate.id = ...
 				mClientGate.awaitingId = false
 				mClientGate.started = true
@@ -979,6 +1066,9 @@ function SkuVoice:Create()
 				if tMark == "Start" then
 					mClientGate.sawStart = true
 				end
+			elseif mForeign.id ~= nil and tMarkId == mForeign.id then
+				-- [v43.8] Proof of life for a foreign utterance, same meaning.
+				mForeign.at = GetTime()
 			end
 		end
 	end)
@@ -1048,7 +1138,7 @@ function SkuVoice:Create()
 			-- missing event) is the shared one now: a character also waits for an
 			-- ANNOUNCEMENT that is still in the client, not only for the previous
 			-- character. See "The client gate".
-			if tNowEcho >= tEchoSlotDueAt and not ClientGateBusy(tNowEcho) then
+			if tNowEcho >= tEchoSlotDueAt and tNowEcho > tClientGateFreedAt and not ClientGateBusy(tNowEcho) and not ForeignBusy(tNowEcho) then
 				local tText = table.remove(mEchoQueue, 1)
 				local tVoice = tEchoSlotVoice
 				BttsHandOver(tText, tVoice or ChatTts().WowTtsVoice, true)
@@ -1238,7 +1328,8 @@ function SkuVoice:Create()
 							-- [v43.7] ...and an utterance the gate knows is in the client is
 							-- always something to cancel. The stop itself goes through
 							-- BttsStop, which defers it when that utterance has not started.
-							if mClientGate.outstanding or #mSkuVoiceQueueBTTS_Speaking > 0 or (tNow - tLastStopAt) > 0.15 then
+							-- [v43.8] ...and so is a foreign utterance that is playing.
+							if mClientGate.outstanding or mForeign.id ~= nil or #mSkuVoiceQueueBTTS_Speaking > 0 or (tNow - tLastStopAt) > 0.15 then
 								BttsStop("queuereset", tBttsPostStopHold)
 							elseif dprint then
 								dprint("BTTS queuereset -> stop suppressed (nothing in flight)")
@@ -1270,7 +1361,7 @@ function SkuVoice:Create()
 					-- get the post-stop hold a lone overwrite line always had, or the
 					-- bypass would hand it over under the async stop it was shielded from.
 					if (tNow >= tNextSpeakAt or (#mSkuVoiceQueueBTTS > 1 and not tBttsNoBypassOnce))
-						and not ClientGateBusy(tNow) then
+						and tNow > tClientGateFreedAt and not ClientGateBusy(tNow) and not ForeignBusy(tNow) then
 						tBttsNoBypassOnce = false
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						local tIsAlreadySpeakingThat
