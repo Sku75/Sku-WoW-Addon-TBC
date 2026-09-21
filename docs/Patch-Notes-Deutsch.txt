@@ -9,7 +9,7 @@ Aenderungen in Sku v43.8
     Ueberblick
 
         Aenderungen
-            Fehlermeldungen des Spiels (zum Beispiel "Ihr habt kein Ziel") werden beim Haemmern auf eine Taste nur noch einmal vorgelesen. Erst wenn du die Taste etwa zweieinhalb Sekunden in Ruhe gelassen hast, wird dieselbe Meldung wieder angesagt.
+            Fehlermeldungen des Spiels (zum Beispiel "Ihr habt kein Ziel") werden beim Haemmern auf eine Taste nur noch einmal vorgelesen. Dieselbe Meldung wird erst wieder angesagt, wenn du die Taste etwa zweieinhalb Sekunden in Ruhe gelassen hast oder wenn dazwischen eine andere Fehlermeldung kam.
 
         Fehlerbehebungen
             Sprachausgabe: dieselbe Zeile stellte sich seit v43.7 bei jedem Tastendruck erneut hinten an und wurde viele Male hintereinander vorgelesen, auch noch nach einer wichtigeren Ansage. Behoben.
@@ -42,10 +42,13 @@ Aenderungen in Sku v43.8
             Fehlermeldung wird immer sofort vorgelesen, und danach gilt auch die erste wieder als
             neu: Fehler A, Fehler B, Fehler A sind drei Ansagen. Betrifft nur vorgelesene Fehler,
             nicht die Ton- und Sprachhinweise.
-        Technisch: UIErrors:OutputError (SkuCore/UIErrors.lua), TTS-Zweig. tSpokenShownUntil[Text]
-            = GetTime() + 2.5 (displayDuration 2 + fadeDuration 0.5 aus UIErrorsFrame.xml); jede
-            Wiederholung setzt den Wert neu, wie ResetMessageFadeByID. Bewusst eine Zeitmarke und
-            kein Auslesen von UIErrorsFrame: Blizzard drosselt nur rund 20 Meldungstypen, bei den
+        Technisch: UIErrors:OutputError (SkuCore/UIErrors.lua), TTS-Zweig. Gemerkt wird nur der
+            ZULETZT gesprochene Fehler: tSpokenKey plus tSpokenShownUntil = GetTime() + 2.5
+            (displayDuration 2 + fadeDuration 0.5 aus UIErrorsFrame.xml). Jede Wiederholung setzt die
+            Zeit neu, wie ResetMessageFadeByID; jeder andere Fehler, auch ein Ton- oder
+            Sprachhinweis, ersetzt bzw. loescht tSpokenKey. Die erste Fassung fuehrte eine Zeitmarke
+            PRO Text - dadurch blieb Fehler A stumm, obwohl Fehler B dazwischen lag.
+            Bewusst eine Zeitmarke und kein Auslesen von UIErrorsFrame: Blizzard drosselt nur rund 20 Meldungstypen, bei den
             uebrigen kommt pro Druck eine neue Zeile dazu, und die Reihenfolge der beiden
             UI_ERROR_MESSAGE-Handler ist nicht festgelegt.
 

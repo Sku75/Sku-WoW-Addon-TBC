@@ -12,7 +12,7 @@ Changements dans Sku v43.8
     Aperçu
 
         Changements
-            Les messages d'erreur du jeu (par exemple « Vous n'avez pas de cible ») ne sont lus qu'une seule fois quand vous martelez une touche. Le même message n'est annoncé de nouveau qu'après avoir laissé la touche tranquille environ deux secondes et demie.
+            Les messages d'erreur du jeu (par exemple « Vous n'avez pas de cible ») ne sont lus qu'une seule fois quand vous martelez une touche. Le même message n'est annoncé de nouveau qu'après avoir laissé la touche tranquille environ deux secondes et demie, ou lorsqu'un autre message d'erreur est arrivé entre-temps.
 
         Corrections
             Synthèse vocale : depuis la v43.7, la même ligne se remettait en file à chaque appui et était lue de nombreuses fois de suite, même après une annonce plus importante. Corrigé.
@@ -45,9 +45,13 @@ Changements dans Sku v43.8
             et après lui le premier compte de nouveau comme nouveau : erreur A, erreur B, erreur A
             font trois annonces. Cela ne concerne que les erreurs prononcées, pas les indices
             sonores et vocaux.
-        Technique : UIErrors:OutputError (SkuCore/UIErrors.lua), branche TTS. tSpokenShownUntil[texte]
-            = GetTime() + 2.5 (displayDuration 2 + fadeDuration 0.5 de UIErrorsFrame.xml) ; chaque
-            répétition réécrit la valeur, comme ResetMessageFadeByID. Volontairement un horodatage
+        Technique : UIErrors:OutputError (SkuCore/UIErrors.lua), branche TTS. Seule la DERNIÈRE
+            erreur prononcée est retenue : tSpokenKey plus tSpokenShownUntil = GetTime() + 2.5
+            (displayDuration 2 + fadeDuration 0.5 de UIErrorsFrame.xml). Chaque répétition réécrit le
+            délai, comme ResetMessageFadeByID ; toute autre erreur, y compris un indice sonore ou
+            vocal, remplace ou efface tSpokenKey. La première version gardait un horodatage PAR
+            texte - l'erreur A restait donc muette alors que l'erreur B s'était intercalée.
+            Volontairement un horodatage
             et non une lecture de UIErrorsFrame : Blizzard ne limite qu'une vingtaine de types de
             messages, pour les autres une ligne s'ajoute à chaque appui, et l'ordre des deux
             gestionnaires UI_ERROR_MESSAGE n'est pas défini.

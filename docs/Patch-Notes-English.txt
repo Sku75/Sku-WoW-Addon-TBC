@@ -9,7 +9,7 @@ Changes in Sku v43.8
     Overview
 
         Changes
-            Game error messages (for example "You have no target") are read only once while you hammer a key. The same message is announced again only after you have left the key alone for about two and a half seconds.
+            Game error messages (for example "You have no target") are read only once while you hammer a key. The same message is announced again only after you have left the key alone for about two and a half seconds, or when a different error message came in between.
 
         Bugfixes
             Speech: since v43.7 the same line queued up again on every key press and was read many times in a row, even after a more important announcement. Fixed.
@@ -40,10 +40,13 @@ Changes in Sku v43.8
             again. A DIFFERENT error message is always read at once, and after it the first one
             counts as new again: error A, error B, error A are three announcements. This affects
             spoken errors only, not the sound and voice hints.
-        Technically: UIErrors:OutputError (SkuCore/UIErrors.lua), TTS branch. tSpokenShownUntil[text]
-            = GetTime() + 2.5 (displayDuration 2 + fadeDuration 0.5 from UIErrorsFrame.xml); every
-            repeat sets the value again, like ResetMessageFadeByID. Deliberately a time stamp and
-            not a read of UIErrorsFrame: Blizzard throttles only about 20 message types, for the
+        Technically: UIErrors:OutputError (SkuCore/UIErrors.lua), TTS branch. Only the LAST spoken
+            error is remembered: tSpokenKey plus tSpokenShownUntil = GetTime() + 2.5
+            (displayDuration 2 + fadeDuration 0.5 from UIErrorsFrame.xml). Every repeat sets the time
+            again, like ResetMessageFadeByID; any other error, including a sound or voice hint,
+            replaces or clears tSpokenKey. The first version kept one time stamp PER text - so
+            error A stayed silent although error B had come in between. Deliberately a time stamp
+            and not a read of UIErrorsFrame: Blizzard throttles only about 20 message types, for the
             rest a new line is added per press, and the order of the two UI_ERROR_MESSAGE handlers
             is not defined.
 
