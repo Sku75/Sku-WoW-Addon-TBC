@@ -52,6 +52,14 @@ S.stopkey = function()
 	at(0.8, function() V:StopOutputEmptyQueue(true, true) end)
 	H.run(15)
 end
+-- A spammed key that raises the same UI error on every press, then a priority
+-- line. Healthy = the error audible about once per its own duration (never one
+-- copy per press) and NOT again after the priority line.
+S.errspam = function()
+	for i = 0, 29 do say(i * 0.1, "ihr habt kein ziel.", false) end
+	say(3.2, "PRIO auktionator schildbuckel", true)
+	H.run(20)
+end
 S.arrows = function()
 	for i = 0, 9 do say(i * 0.12, "eintrag " .. i, true, {scope="menu"}) end
 	H.run(6)

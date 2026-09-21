@@ -2168,6 +2168,39 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	tFinalStringForBTts = string.gsub(tFinalStringForBTts, ";", " ")
 	tFinalStringForBTtsMac = string.gsub(tFinalStringForBTtsMac, ";", " ")
 
+	-- [v43.8] A line WITHOUT a reset never queues behind itself: if the identical
+	-- text is already waiting, or is the one being spoken right now, the new copy
+	-- is dropped HERE. The pump's "already speaking that" check used to do this at
+	-- handover, which worked while lines left for the client immediately. Since the
+	-- v43.7 client gate a copy only reaches the handover after its predecessor has
+	-- FINISHED, so the check never matched any more and a spammed key stacked one
+	-- copy per press (35 x "ihr habt kein ziel" in the log). This is also what the
+	-- game does for sighted players: UIErrorsFrame refreshes a message that is
+	-- still on display instead of adding it again. Overwrite lines are exempt --
+	-- the user asked for those again (see mSkuVoiceQueueBTTS_UserAction).
+	if not (aOverwrite == true and ChatTts().neverResetQueues ~= true) then
+		local tFinal = (IsMacClient() == true) and tFinalStringForBTtsMac or tFinalStringForBTts
+		local tPending = false
+		for z = 1, #mSkuVoiceQueueBTTS_Speaking do
+			if mSkuVoiceQueueBTTS_Speaking[z].text == tFinal then
+				tPending = true
+				break
+			end
+		end
+		if not tPending then
+			for z = 1, #mSkuVoiceQueueBTTS do
+				if mSkuVoiceQueueBTTS[z] == tFinal then
+					tPending = true
+					break
+				end
+			end
+		end
+		if tPending then
+			if dprint then dprint("BTTS ENQUEUE-DUP", "text=["..tostring(tFinal).."]") end
+			return
+		end
+	end
+
 	if IsMacClient() == true then
 		if aInstant then
 			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTtsMac
