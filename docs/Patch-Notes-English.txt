@@ -16,6 +16,7 @@ Changes in Sku v43.7
 
         Bugfixes
             Swimming and flying: the pitch lock now engages in combat too. If you ran into water while fighting, the first turns used to make you dive.
+            Items from an equipment set: the tooltip named the armor type (for example "Cloth") twice. Now only once.
 
     Turning: faster, more precise, self-calibrated
         Simple: "Turn to beacon" (T) and the two other turn commands were reworked based on
@@ -62,6 +63,21 @@ Changes in Sku v43.7
             in combat. It is a console command and can be set in combat (tested 2026-09-21). In
             that day's log, 6 seconds with three unprotected turns lay between the start of
             swimming and the lock.
+
+    Tooltip of set items: armor type was read twice
+        Simple: If an item belongs to one of your saved equipment sets, Sku inserts the line
+            "Belongs to set" into the tooltip. On exactly those items the armor type was then
+            heard twice, for example "Soulbound, Cloth, Head, Cloth". The first "Cloth" was a
+            leftover and did not belong there. It now comes only once, after the slot:
+            "Soulbound, Head, Cloth". On weapons the same happened to the weapon type and the
+            speed. Items that are in no set were never affected.
+        Technically: tInsertSetLineAtTop (SkuCore/equipmentSets.lua) shifts every tooltip line
+            from line 2 on down by one. The right column was only written when the source line
+            had one. The line that "Head | Cloth" moved away from got "Soulbound" on the left
+            and kept its old "Cloth" on the right. TooltipLines_helper reads every FontString
+            region on its own, so the leftover was audible. The right column is now always
+            written: set and shown, or cleared and hidden; the same for line 2. The bug had been
+            in the code since v42.00 and only showed up once sets were saved.
 
 
 -------------------------------------------------------------------------------------------------------

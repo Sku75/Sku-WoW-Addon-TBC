@@ -420,9 +420,24 @@ local function tInsertSetLineAtTop(tooltip, sets)
          target:SetTextColor(line.r, line.g, line.b)
       end
       local targetR = _G[tooltip:GetName() .. "TextRight" .. (i + 2)]
-      if targetR and line.rText then
-         targetR:SetText(line.rText)
+      -- Always write the right column, also when the source row had none:
+      -- otherwise the row a two-column line ("Kopf | Stoff") moved AWAY from
+      -- keeps its old right text, and the reader speaks "Stoff" twice.
+      if targetR then
+         if line.rText and line.rText ~= "" then
+            targetR:SetText(line.rText)
+            targetR:Show()
+         else
+            targetR:SetText(nil)
+            targetR:Hide()
+         end
       end
+   end
+   -- Row 2 now holds the set line, which has no right column.
+   local rf2 = _G[tooltip:GetName() .. "TextRight2"]
+   if rf2 then
+      rf2:SetText(nil)
+      rf2:Hide()
    end
 end
 

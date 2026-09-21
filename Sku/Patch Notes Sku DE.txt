@@ -16,6 +16,7 @@ Aenderungen in Sku v43.7
 
         Fehlerbehebungen
             Schwimmen und Fliegen: Die Neigungssperre greift jetzt auch im Kampf. Wer kaempfend ins Wasser lief, tauchte bisher bei den ersten Drehungen ab.
+            Gegenstaende aus einem Ausruestungsset: der Tooltip nannte die Ruestungsart (zum Beispiel "Stoff") zweimal. Jetzt nur noch einmal.
 
     Drehen: schneller, genauer, selbst eingemessen
         Einfach: "Zum Beacon drehen" (T) und die beiden anderen Drehbefehle wurden anhand von
@@ -62,6 +63,21 @@ Aenderungen in Sku v43.7
             geschuetzt. Es ist ein Konsolenbefehl und im Kampf setzbar (getestet 2026-09-21). Im
             Log desselben Tages lagen zwischen Schwimmbeginn und Sperre 6 Sekunden mit drei
             ungeschuetzten Drehungen.
+
+    Tooltip von Set-Gegenstaenden: Ruestungsart wurde doppelt vorgelesen
+        Einfach: Gehoert ein Gegenstand zu einem deiner gespeicherten Ausruestungssets, fuegt Sku
+            im Tooltip die Zeile "Gehoert zu Set" ein. Bei genau diesen Gegenstaenden war danach
+            die Ruestungsart zweimal zu hoeren, zum Beispiel "Seelengebunden, Stoff, Kopf, Stoff".
+            Das erste "Stoff" war ein Rest und gehoerte dort nicht hin. Jetzt kommt es nur noch
+            einmal, hinter dem Platz: "Seelengebunden, Kopf, Stoff". Bei Waffen betraf das genauso
+            die Waffenart und das Tempo. Gegenstaende ohne Set waren nie betroffen.
+        Technisch: tInsertSetLineAtTop (SkuCore/equipmentSets.lua) schiebt alle Tooltip-Zeilen ab
+            Zeile 2 um eine nach unten. Die rechte Spalte wurde dabei nur geschrieben, wenn die
+            Quellzeile eine hatte. Die Zeile, aus der "Kopf | Stoff" wegwanderte, bekam links
+            "Seelengebunden" und behielt rechts ihr altes "Stoff". TooltipLines_helper liest jede
+            FontString-Region einzeln, darum war der Rest hoerbar. Die rechte Spalte wird jetzt
+            immer geschrieben: gesetzt und gezeigt, oder geleert und versteckt; ebenso in Zeile 2.
+            Der Fehler steckte seit v42.00 im Code und fiel erst mit gespeicherten Sets auf.
 
 
 -------------------------------------------------------------------------------------------------------

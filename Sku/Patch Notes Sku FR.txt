@@ -19,6 +19,7 @@ Changements dans Sku v43.7
 
         Corrections
             Nage et vol : le verrou d'inclinaison s'active désormais aussi en combat. En entrant dans l'eau en plein combat, les premières rotations vous faisaient plonger.
+            Objets d'un ensemble d'équipement : l'infobulle annonçait deux fois le type d'armure (par exemple « Tissu »). Désormais une seule fois.
 
     Rotation : plus rapide, plus précise, auto-étalonnée
         Simple : « Se tourner vers la balise » (T) et les deux autres commandes de rotation ont été
@@ -70,6 +71,22 @@ Changements dans Sku v43.7
             est protégé en combat. C'est une commande de console, modifiable en combat (testé le
             2026-09-21). Dans le journal de ce jour-là, 6 secondes avec trois rotations non
             protégées séparaient le début de la nage et le verrou.
+
+    Infobulle des objets d'ensemble : le type d'armure était lu deux fois
+        Simple : Si un objet fait partie de l'un de vos ensembles d'équipement enregistrés, Sku
+            insère la ligne « Appartient à l'ensemble » dans l'infobulle. Sur ces objets précisément,
+            le type d'armure s'entendait ensuite deux fois, par exemple « Lié, Tissu, Tête, Tissu ».
+            Le premier « Tissu » était un reste qui n'avait rien à faire là. Il n'arrive plus
+            qu'une fois, après l'emplacement : « Lié, Tête, Tissu ». Sur les armes, il en allait de
+            même pour le type d'arme et la vitesse. Les objets hors ensemble n'étaient pas touchés.
+        Technique : tInsertSetLineAtTop (SkuCore/equipmentSets.lua) décale d'un cran vers le bas
+            toutes les lignes de l'infobulle à partir de la ligne 2. La colonne de droite n'était
+            écrite que si la ligne source en avait une. La ligne que « Tête | Tissu » quittait
+            recevait « Lié » à gauche et gardait son ancien « Tissu » à droite. TooltipLines_helper
+            lit chaque région FontString séparément, d'où le reste audible. La colonne de droite
+            est maintenant toujours écrite : renseignée et affichée, ou vidée et masquée ; de même
+            pour la ligne 2. Le défaut était dans le code depuis la v42.00 et n'est apparu
+            qu'avec des ensembles enregistrés.
 
 
 -------------------------------------------------------------------------------------------------------
