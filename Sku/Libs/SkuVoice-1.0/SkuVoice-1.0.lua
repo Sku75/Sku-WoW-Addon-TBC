@@ -151,6 +151,23 @@ local mSkuVoiceQueueBTTS_UserAction = {}
 -- one-second guesses could not do: on the bridge the end of an utterance is
 -- unknowable, but "what was handed last, and for whom" is known exactly.
 local mSkuVoiceQueueBTTS_Scope = {}
+-- [v43.7] Two more side maps, for the queuereset scan in the pump:
+--   _Overwrite[text] = true : this line came WITH a queuereset in front of it (an
+--       "overwrite" announce: menu line, target, filter string). When a newer
+--       queuereset arrives it is SUPERSEDED and dropped.
+--   _At[text] = GetTime() of the enqueue.
+-- A line WITHOUT the flag (chat, a queued status line, the rest of a spam burst)
+-- is not superseded by an overwrite -- it is only pushed back: the priority line
+-- speaks first, then the waiting lines go on. See the scan for why this had to
+-- become explicit.
+local mSkuVoiceQueueBTTS_Overwrite = {}
+local mSkuVoiceQueueBTTS_At = {}
+-- How old a waiting line may be when an overwrite pushes it back once more.
+-- Beyond this it is dropped: a chat line from half a minute ago, surfacing in
+-- the first quiet moment, is noise, not information.
+local tBttsKeptMaxAge = 30
+-- Set by the scan, consumed by the next handover; see the pump.
+local tBttsNoBypassOnce = false
 local tLastHandedScope = nil
 
 -- [v42.13] Pump pacing state, hoisted out of SkuVoice:Create's closure so
@@ -401,7 +418,16 @@ local tEchoSlotVoice = nil
 --                  is believed: on this client End sometimes precedes Start for
 --                  the same id (seq 125806/125807), so a bare End is not an
 --                  audio-done signal.
-local mEchoGate = { outstanding = false, at = 0, id = nil, awaitingId = false, sawStart = false }
+-- [v43.7] This gate is no longer the typing lane's own: EVERY handover arms it
+-- and BOTH lanes wait on it -- see "The client gate" below. The fields above
+-- kept their meaning; added:
+--   started      = STARTED arrived, the utterance is playing and a stop reaches it
+--   isEcho       = a typed character (short silence TTL) or an announcement
+--   stopOnStart  = a stop was asked for while it had not started; it is
+--                  delivered on its STARTED (see BttsStop)
+--   stopHold     = post-stop hold the asker wanted, applied when that stop fires
+local mClientGate = { outstanding = false, at = 0, id = nil, awaitingId = false, sawStart = false,
+	started = false, isEcho = false, stopOnStart = false, stopHold = nil, stopDueAt = nil }
 -- ★The gate is PLAYBACK_FINISHED / FAILED. [v43.5e] It was the "End" bookmark for
 -- one round, on the theory that End marks the audio end (it does -- 0.45 s for a
 -- letter, with FINISHED another 0.53 s behind it) and that gating on FINISHED
@@ -438,64 +464,155 @@ local function EchoQueueClear(aWhy)
 	return tN
 end
 
--- [v43.5c] The kill window -- for the ONE utterance a hard cancel cannot reach.
+-- [v43.7] The client gate -- ONE rule for every utterance and every stop.
 --
--- StopSpeakingText cancels the utterance that is PLAYING. The most recently
--- handed-over one has often not started yet, so the stop misses it entirely and
--- the client plays it AFTER the confirmation. Proven from the ring, seq
--- 127447-127460: the waypoint line went out as id 208, Escape ran
--- EndScope("menu") stopped=true, "menue geschlossen" went out as 209 and STARTED
--- first, and 208 then started behind it. Sku even logged
--- "SUPERSEDED cancelled before playback" for 208 -- ★that audit line means "a stop
--- was issued since this handover", NOT "this utterance died", and it misled the
--- first two attempts at this bug.
+-- The rule, learned five times over in v43.5..e for the typing lane and then
+-- found again in a field capture for everything else: ★the client holds at most
+-- ONE utterance of ours, and a stop aimed at an utterance that has not STARTED
+-- is delivered when it starts.
 --
--- The reporter's own observation is the mechanism: the cancel confirmation always
--- speaks FIRST, so anything that starts after it is by definition stale. So on a
--- hard cancel: arm a short window, refuse to hand ANYTHING over while it is armed,
--- and stop every utterance that dares to start inside it. Because handovers are
--- blocked, the only thing that CAN start is a pre-cancel utterance -- the window is
--- safe by construction rather than by guessing ids.
+-- Why. The client accepts every SpeakText without limit, StopSpeakingText
+-- cancels only the utterance that is PLAYING, and after a stop the NEWEST
+-- submission starts at once while older unstarted ones stay parked until the
+-- engine next goes idle by itself. So an utterance handed over while another
+-- one is still in the client can never be taken back, and it surfaces seconds
+-- or minutes later, out of order. Capture (Anniversary, real SAPI voice, v43.5
+-- release, 32 minutes): 24 of 524 handovers started 3-71 s late. Filter letters
+-- "g r", "g r e i f" spoke 5 s after "menue geschlossen"; five guild chat lines
+-- arrived 65-71 s late; Sku's own audit called them all SUPERSEDED. Two
+-- producers, one mechanism:
+--   * an overwrite line: its stop was issued before the PREVIOUS handover had
+--     started, missed it, that one then started, and the new line was handed
+--     over behind a live utterance -> parked;
+--   * a line without a stop in front (chat): handed over while something plays
+--     -> parked, and every later keypress jumps ahead of it.
 --
--- ★Armed by the HARD cancels only (CancelBttsOutput, EndScope's stop) -- never by
--- the pump's ordinary queuereset, which stops the old line precisely so the NEW
--- one can follow at once. Arming that would add this delay to every menu keypress.
--- Never by the echo burst start either: typing must stay snappy, and a leaked
--- pre-typing announcement is not what this fixes.
-local tKillWindowUntil = 0
-local tKillWindowHits = 0
-local tKillWindowSpan = 0.30
--- [v43.5d] Hard ceiling on the extending window. The extension is bounded in
--- theory (a blocked lane can only be fed pre-cancel utterances), but nothing that
--- can delay ALL speech may depend on a theory -- if the client ever starts
--- utterances faster than this can drain, the window gives up rather than leave the
--- user in silence.
-local tKillWindowHardUntil = 0
-local tKillWindowMaxSpan = 1.50
+-- So the policy moves to the ONE place every utterance passes (BttsHandOver
+-- arms the gate) and the ONE place every stop passes (BttsStop). Nothing about
+-- WHO may cancel WHOM changes: queuereset, scopes, the echo purge, the dup
+-- guards and neverResetQueues decide exactly as before. The gate only decides
+-- WHEN a decision already taken reaches the client -- a waiting line sits in
+-- Sku's own queue, where those rules can still see it, instead of in the
+-- client's, where nothing can.
+--
+-- On the NVDA bridge STARTED and FINISHED arrive in the handover frame, so the
+-- gate is open again before the pump's next pass and nothing here is ever
+-- waited on: that path behaves exactly as before. This is real-SAPI-path only.
+--
+-- This REPLACES the v43.5c kill window ("block handovers for 0.3 s after a hard
+-- cancel and stop whatever starts"). That was this same idea with a guessed
+-- time span and wired to two of the five stop sites; the deferred stop below is
+-- the exact version of it and covers all of them.
+--
+-- How long an utterance may sit handed-over without a STARTED before the gate
+-- gives up on it (the async-stop race really killed it, or the event is
+-- missing). Same figure as the `lost` audit, measured there: 0 of 358 stopped
+-- handovers took longer at the shipped hold.
+local tClientGateStartTtl = 0.5
+-- ★Escape hatch: nothing that can delay ALL speech may depend on events
+-- arriving. After this many handovers in a row without any STARTED the gate
+-- stands down completely until a STARTED is seen again: everything is handed
+-- over at once and stopped at once. A wedged client TTS pipeline looks like
+-- this; real voices are silent then whatever Sku does, but on the bridge the
+-- text still reaches NVDA, and waiting out a 1 s TTL per typed character there
+-- is what "the keyboard echo is very slow" was.
+local tClientGateBlindAfter = 3
+-- Distance between an utterance's STARTED and a deferred stop for it. ★Never 0
+-- and never from inside the event handler -- see the STARTED branch in OnEvent.
+local tClientGateStopDelay = 0.10
+local tClientGateStrikes = 0
 
-local function ArmKillWindow(aWhy)
-	-- Only needed when a handover has NOT had its STARTED yet -- that is precisely
-	-- the utterance the stop will miss. If the last one already started, the stop
-	-- reached it and arming would just delay the caller's confirmation for nothing.
-	if not tAuditPendingHandover then
-		return
-	end
-	local tNow = GetTime()
-	tKillWindowUntil = tNow + tKillWindowSpan
-	tKillWindowHardUntil = tNow + tKillWindowMaxSpan
-	tKillWindowHits = 0
-	if dprint then dprint("BTTS kill window armed", "why="..tostring(aWhy)) end
+local function ClientGateReset()
+	mClientGate.outstanding = false
+	mClientGate.at = 0
+	mClientGate.id = nil
+	mClientGate.awaitingId = false
+	mClientGate.sawStart = false
+	mClientGate.started = false
+	mClientGate.isEcho = false
+	mClientGate.stopOnStart = false
+	mClientGate.stopHold = nil
+	mClientGate.stopDueAt = nil
 end
 
--- [v43.5b] Forget the outstanding handover. Only for the paths that just issued a
--- StopSpeakingText (burst start, hard cancel): whatever was in flight is gone, so
--- the next character must not wait on an event that will never come.
-local function EchoGateReset()
-	mEchoGate.outstanding = false
-	mEchoGate.at = 0
-	mEchoGate.id = nil
-	mEchoGate.awaitingId = false
-	mEchoGate.sawStart = false
+-- Is an utterance of ours still inside the client? The TTLs measure SILENCE
+-- (every event for our id restarts the clock, see OnEvent), never age: a line
+-- that is audibly alive must not be given up on.
+local function ClientGateBusy(aNow)
+	if not mClientGate.outstanding then
+		return false
+	end
+	if tClientGateStrikes >= tClientGateBlindAfter then
+		return false
+	end
+	local tTtl
+	if not mClientGate.started then
+		tTtl = tClientGateStartTtl
+	elseif mClientGate.isEcho then
+		tTtl = tEchoOutstandingTtl
+	else
+		-- A playing announcement ends by FINISHED/FAILED or by our own stop. This
+		-- only covers a voice that drops the event; expiring early merely parks
+		-- the next line behind the playing one, which is the old behaviour.
+		tTtl = tBttsSpeakingTtl
+	end
+	if (aNow - mClientGate.at) > tTtl then
+		if not mClientGate.started then
+			tClientGateStrikes = tClientGateStrikes + 1
+			if tClientGateStrikes == tClientGateBlindAfter and dprint then
+				dprint("BTTS client gate BLIND", "no STARTED for "..tClientGateStrikes.." handovers in a row")
+			end
+		end
+		if dprint then dprint("BTTS client gate ttl", "id="..tostring(mClientGate.id),
+			"started="..tostring(mClientGate.started), "echo="..tostring(mClientGate.isEcho),
+			"stopOnStart="..tostring(mClientGate.stopOnStart)) end
+		-- A stop was waiting for a STARTED that never came. Either the utterance
+		-- is dead (then this stop hits nothing) or the client plays it without
+		-- telling us (then this is the only stop it will ever get). Send it, and
+		-- start the asker's hold from it so it cannot land on the next handover.
+		if mClientGate.stopOnStart then
+			local tHold = mClientGate.stopHold or tBttsPostStopHold
+			pcall(function() C_VoiceChat.StopSpeakingText() end)
+			tLastStopAt = aNow
+			tAuditStopSinceHandover = true
+			if tNextSpeakAt < aNow + tHold then
+				tNextSpeakAt = aNow + tHold
+			end
+		end
+		ClientGateReset()
+		return false
+	end
+	return true
+end
+
+-- THE one place a stop reaches the client. aHold = post-stop hold for the
+-- announcement lane (nil = leave tNextSpeakAt alone).
+--   * utterance playing, or nothing of ours known in the client: stop now, as
+--     every caller always did. A stopped utterance reports no FINISHED, so the
+--     gate is cleared here.
+--   * utterance handed over but not STARTED: a stop now would miss it. Mark it;
+--     OnEvent delivers the stop on its STARTED. Until then the gate stays shut,
+--     so nothing can be handed over in front of it or behind it.
+local function BttsStop(aWhy, aHold)
+	local tNow = GetTime()
+	-- The bridge mark rides on the next handover whatever happens to the stop.
+	tBttsInterruptNext = true
+	if ClientGateBusy(tNow) and not mClientGate.started then
+		mClientGate.stopOnStart = true
+		if aHold and (not mClientGate.stopHold or aHold > mClientGate.stopHold) then
+			mClientGate.stopHold = aHold
+		end
+		if dprint then dprint("BTTS "..tostring(aWhy).." -> stop deferred (handover not started)") end
+		return
+	end
+	if dprint then dprint("BTTS "..tostring(aWhy).." -> StopSpeakingText") end
+	pcall(function() C_VoiceChat.StopSpeakingText() end)
+	tLastStopAt = tNow
+	tAuditStopSinceHandover = true
+	if aHold then
+		tNextSpeakAt = tNow + aHold
+	end
+	ClientGateReset()
 end
 -- Was the last thing handed to the client a typed character? This is what "am I
 -- still inside the same typing burst?" is decided on -- and therefore whether a
@@ -695,17 +812,6 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	if aIsEcho then tLastHandedScope = "echo" end
 	tBttsStats.handed = tBttsStats.handed + 1
 	if aIsEcho then tBttsStats.echo = tBttsStats.echo + 1 end
-	-- [v43.5e] Diagnostic: how much of a hard cancel's kill window was still open
-	-- when this went out. A NEGATIVE value on the line right after a cancel means
-	-- the window had already expired and the span is the thing to raise; a POSITIVE
-	-- one means a handover slipped past the blockers and the bug is a code path,
-	-- not a duration. Guessing between those two cost a full test round.
-	-- Only around a window that is open or just closed: `tKillWindowUntil > 0`
-	-- alone stays true for the rest of the session after the first cancel, and
-	-- then logs a line per handover forever, for no information.
-	if dprint and (tKillWindowUntil - GetTime()) > -1.0 then
-		dprint("BTTS handover", "killRemain="..string.format("%.2f", tKillWindowUntil - GetTime()))
-	end
 	if dprint then dprint("BTTS SpeakText", aIsEcho and "echo" or "queue",
 		"voice="..tostring(aVoiceIndex - 1), "speed="..tostring(ChatTts().WowTtsSpeed),
 		"vol="..tostring(ChatTts().WowTtsVolume), "text=["..tostring(aText).."]") end
@@ -719,6 +825,21 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 			if dprint then dprint("BTTS interrupt mark") end
 		end
 	end
+	-- [v43.7] Arm the client gate BEFORE the call: on the bridge STARTED and
+	-- FINISHED can arrive inside it, and they must find the gate they belong to.
+	-- Sku never learns its own utterance id here -- the next STARTED tells it.
+	mClientGate.outstanding = true
+	mClientGate.at = GetTime()
+	mClientGate.id = nil
+	mClientGate.awaitingId = true
+	mClientGate.sawStart = false
+	-- Blind (no STARTED events at all, see tClientGateBlindAfter): nothing to wait
+	-- for, so treat it as playing -- a stop is then sent at once, never deferred.
+	mClientGate.started = (tClientGateStrikes >= tClientGateBlindAfter)
+	mClientGate.isEcho = (aIsEcho == true)
+	mClientGate.stopOnStart = false
+	mClientGate.stopHold = nil
+	mClientGate.stopDueAt = nil
 	C_VoiceChat.SpeakText(aVoiceIndex - 1, tSpoken, ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
 end
 
@@ -749,10 +870,12 @@ function SkuVoice:Create()
 			-- character here -- and not one event earlier -- is what keeps it out of
 			-- the unstoppable handed-over-but-not-started state.
 			-- ★ONLY for our own utterance: an unmatched clear is re-opened by the
-			-- PREVIOUS letter's lagging event and leaks the next one (see mEchoGate).
+			-- PREVIOUS letter's lagging event and leaks the next one (see mClientGate).
+			-- [v43.7] Same event, same rule, for every utterance now: this is what
+			-- lets the next waiting line -- typed or announced -- into the client.
 			local tDoneId = ...
-			if mEchoGate.outstanding and mEchoGate.id ~= nil and tDoneId == mEchoGate.id then
-				EchoGateReset()
+			if mClientGate.outstanding and mClientGate.id ~= nil and tDoneId == mClientGate.id then
+				ClientGateReset()
 			end
 			-- [v43.2] A FAILED utterance never reached the voice, so the duplicate
 			-- guard must not treat it as "the user already heard this".
@@ -771,29 +894,15 @@ function SkuVoice:Create()
 			end
 		elseif aEventName == "VOICE_CHAT_TTS_PLAYBACK_STARTED" then
 			if dprint then dprint("BTTS event STARTED", ...) end
-			-- [v43.5c] Inside a hard cancel's kill window nothing has been handed
-			-- over, so whatever just started was handed over BEFORE the cancel and
-			-- the cancel wanted it dead. Cut it off at its first millisecond. See
-			-- ArmKillWindow.
-			if GetTime() < tKillWindowUntil and GetTime() < tKillWindowHardUntil then
-				tKillWindowHits = tKillWindowHits + 1
-				if dprint then dprint("BTTS kill window stop", "id="..tostring((...)), "hits="..tKillWindowHits) end
-				pcall(function() C_VoiceChat.StopSpeakingText() end)
-				-- [v43.5d] ★Each kill EXTENDS the window: killing one parked utterance is
-				-- what lets the NEXT one start, and a second parked line cannot appear
-				-- until the first is out of the way -- which can be well past a fixed
-				-- 0.3 s. So the window closes on SILENCE (no STARTED for tKillWindowSpan),
-				-- not on a deadline set when it was armed. Self-terminating, because a
-				-- window with handovers blocked can only ever be fed pre-cancel
-				-- utterances, and there is a finite number of those.
-				tKillWindowUntil = GetTime() + tKillWindowSpan
-			end
 			-- [v43.5b] This is where the typing lane learns the id of the character
 			-- it just handed over -- the only way to tell its own completion event
-			-- from the previous letter's. See mEchoGate.
-			if mEchoGate.awaitingId then
-				mEchoGate.id = ...
-				mEchoGate.awaitingId = false
+			-- from the previous letter's. See mClientGate.
+			-- [v43.7] Any STARTED proves the client reports events: gate stays on.
+			tClientGateStrikes = 0
+			if mClientGate.awaitingId then
+				mClientGate.id = ...
+				mClientGate.awaitingId = false
+				mClientGate.started = true
 				-- [v43.5d] ★Proof of life: restart the TTL clock. The TTL exists for
 				-- "no event ever came", so it must only measure SILENCE -- measured from
 				-- the handover it was pre-empting the real End bookmark and releasing
@@ -801,7 +910,22 @@ function SkuVoice:Create()
 				-- 126825-126833: released, STARTED, Start, "gate ttl", next character,
 				-- and only THEN End). That put two utterances in the client, which is
 				-- what the kill window then could not catch in time.
-				mEchoGate.at = GetTime()
+				mClientGate.at = GetTime()
+				-- [v43.7] ★The deferred stop. Someone asked for this utterance to be
+				-- stopped while it could not be reached (see BttsStop). Now it can --
+				-- ★★but NOT from in here. The first build called StopSpeakingText right
+				-- in this handler, and the first utterance after login wedged the
+				-- client's whole TTS pipeline: `STARTED 0`, `deferred stop fires`, and
+				-- then not one STARTED/FINISHED for any voice until the client was
+				-- restarted -- real voices silent, the bridge crawling on TTLs. A stop
+				-- issued from inside the engine's own STARTED dispatch is the one thing
+				-- the ordinary pump never did in thousands of stops. So only note the
+				-- time here; OnUpdate sends the stop, tClientGateStopDelay later, from
+				-- the same context and at the same distance from the start as every
+				-- stop fast arrowing has always produced.
+				if mClientGate.stopOnStart then
+					mClientGate.stopDueAt = GetTime() + tClientGateStopDelay
+				end
 			end
 			-- [v43.2] Playback of the line we last handed over really began. Only then
 			-- may a back-to-back repeat of it be dropped -- an utterance cancelled
@@ -830,7 +954,7 @@ function SkuVoice:Create()
 			-- for the same utterance, and believing that one releases the next letter
 			-- before this one has made a sound. FINISHED/FAILED above still backstop.
 			local tMarkId, tMark = ...
-			if mEchoGate.outstanding and mEchoGate.id ~= nil and tMarkId == mEchoGate.id then
+			if mClientGate.outstanding and mClientGate.id ~= nil and tMarkId == mClientGate.id then
 				-- [v43.5e] ★A bookmark is PROOF OF LIFE ONLY -- it must never open the
 				-- gate. Gating on "End" was wrong twice over, and it is what kept the
 				-- last letter leaking past every cancel:
@@ -851,9 +975,9 @@ function SkuVoice:Create()
 				-- free. The letter then STARTS at once and is always in a state a cancel
 				-- can reach. This costs nothing in latency, because the engine was idle
 				-- between End and FINISHED either way.
-				mEchoGate.at = GetTime()
+				mClientGate.at = GetTime()
 				if tMark == "Start" then
-					mEchoGate.sawStart = true
+					mClientGate.sawStart = true
 				end
 			end
 		end
@@ -898,6 +1022,20 @@ function SkuVoice:Create()
 			tAuditPendingBucket = nil
 		end
 
+		-- [v43.7] A deferred stop whose target has started: send it now, from here
+		-- (never from the STARTED handler -- see there). If the utterance already
+		-- FINISHED in the meantime the gate was reset and there is nothing to do.
+		if mClientGate.stopDueAt and GetTime() >= mClientGate.stopDueAt then
+			local tHold = mClientGate.stopHold
+			if dprint then dprint("BTTS deferred stop fires", "id="..tostring(mClientGate.id)) end
+			-- started == true by now, so this takes BttsStop's immediate path.
+			BttsStop("deferred", tHold or tBttsPostStopHold)
+			local tStopNow = GetTime()
+			if tEchoSlotDueAt < tStopNow + tEchoHandoverDelay then
+				tEchoSlotDueAt = tStopNow + tEchoHandoverDelay
+			end
+		end
+
 		-- [v43.2] Typing fast lane, drained BEFORE the 0.01s pump gate and before
 		-- the queue below: a typed character has to reach the voice on the frame it
 		-- is due, not a pump tick later.
@@ -906,24 +1044,13 @@ function SkuVoice:Create()
 		-- the client's queue, where nothing can.
 		if #mEchoQueue > 0 then
 			local tNowEcho = GetTime()
-			if mEchoGate.outstanding and (tNowEcho - mEchoGate.at) > tEchoOutstandingTtl then
-				-- No matching End, FINISHED or FAILED ever arrived (a cancelled
-				-- utterance reports none of them, and one that never got a STARTED has
-				-- no id to match). Never let typing wedge on a missing event.
-				if dprint then dprint("BTTS echo gate ttl", "id="..tostring(mEchoGate.id)) end
-				EchoGateReset()
-			end
-			-- [v43.5c] ...and never inside a hard cancel's kill window, or this
-			-- character would be the one the window stops. See ArmKillWindow.
-			if not mEchoGate.outstanding and tNowEcho >= tEchoSlotDueAt
-				and (tNowEcho >= tKillWindowUntil or tNowEcho >= tKillWindowHardUntil) then
+			-- [v43.7] The gate (and its silence TTLs, so typing can never wedge on a
+			-- missing event) is the shared one now: a character also waits for an
+			-- ANNOUNCEMENT that is still in the client, not only for the previous
+			-- character. See "The client gate".
+			if tNowEcho >= tEchoSlotDueAt and not ClientGateBusy(tNowEcho) then
 				local tText = table.remove(mEchoQueue, 1)
 				local tVoice = tEchoSlotVoice
-				mEchoGate.outstanding = true
-				mEchoGate.at = tNowEcho
-				mEchoGate.id = nil
-				mEchoGate.awaitingId = true
-				mEchoGate.sawStart = false
 				BttsHandOver(tText, tVoice or ChatTts().WowTtsVoice, true)
 			end
 		end
@@ -958,18 +1085,86 @@ function SkuVoice:Create()
 					tLastReset = x
 				end
 			end
-			if tLastReset then
-				for x = 1, tLastReset - 1 do
-					--print("  Q R: ", x, mSkuVoiceQueueBTTS[1])
-					-- [v43.2] Drop the side-map entry with the string it belongs to, so
-					-- a superseded line cannot leave a stale user-action tag behind for
-					-- the next identical string to inherit.
-					local tDropped = mSkuVoiceQueueBTTS[1]
-					if tDropped and tDropped ~= "queuereset" then
-						mSkuVoiceQueueBTTS_UserAction[tDropped] = nil
-					end
-					table.remove(mSkuVoiceQueueBTTS, 1)
+			-- [v43.7] What a queuereset does to the lines waiting in front of it.
+			--
+			-- It used to delete all of them. That was never what the user HEARD,
+			-- though: thanks to the `#queue > 1` bypass almost every line had already
+			-- left for the client by then, and with a real voice the client parked
+			-- the ones without a stop of their own and resumed them after the
+			-- priority line. "Enemy spam, a cast warning cuts in, the spam goes on" is
+			-- that behaviour, and it is wanted. The client gate now keeps those lines
+			-- HERE, so the rule has to be stated instead of inherited by accident:
+			--   * a waiting OVERWRITE line is superseded -> dropped (this is the
+			--     filter string "g r" that must never surface later);
+			--   * a waiting line WITHOUT a reset is pushed back behind the newest
+			--     overwrite line and speaks after it, oldest first -- unless it has
+			--     grown older than tBttsKeptMaxAge.
+			-- The queue becomes: queuereset, its text, the kept lines, the rest.
+			if tLastReset and tLastReset > 1 then
+				-- ★The side maps are keyed by TEXT, so a dropped line must not wipe the
+				-- tags of an identical line that stays. First live test of this scan: the
+				-- soft-target announce was queued twice with the same text, dropping the
+				-- older copy cleared the newer copy's overwrite tag, and the announce was
+				-- sorted BEHIND the chat lines it should have cut in front of. Hence:
+				-- the reset's own text is taken by POSITION (OutputStringBTtts enqueues
+				-- reset and text in one call), and tags are only cleared for texts that
+				-- are gone from the queue entirely.
+				local tOwn = mSkuVoiceQueueBTTS[tLastReset + 1]
+				if tOwn == "queuereset" then tOwn = nil end
+				local tStays = {}
+				for x = tLastReset + 1, #mSkuVoiceQueueBTTS do
+					tStays[mSkuVoiceQueueBTTS[x]] = true
 				end
+				local tKept, tGone = {}, {}
+				for x = 1, tLastReset - 1 do
+					local tOld = mSkuVoiceQueueBTTS[x]
+					if tOld ~= "queuereset" then
+						local tIsOverwrite = mSkuVoiceQueueBTTS_Overwrite[tOld] and true or false
+						-- An identical text that also follows the reset is an overwrite
+						-- line by definition of where it sits; never keep a second copy.
+						if tStays[tOld] then
+							tIsOverwrite = true
+						end
+						if not tIsOverwrite
+							and (tNow - (mSkuVoiceQueueBTTS_At[tOld] or tNow)) <= tBttsKeptMaxAge then
+							tKept[#tKept + 1] = tOld
+							tStays[tOld] = true
+						else
+							if dprint and not tIsOverwrite then
+								dprint("BTTS STALE-DROP", "age="..string.format("%.1f", tNow - (mSkuVoiceQueueBTTS_At[tOld] or tNow)), "text=["..tostring(tOld).."]")
+							end
+							tGone[#tGone + 1] = tOld
+						end
+					end
+				end
+				-- [v43.2] Drop the side-map entries with the string they belong to, so
+				-- a superseded line cannot leave a stale tag behind for the next
+				-- identical string to inherit -- but only when no copy of it stays.
+				for x = 1, #tGone do
+					local tOld = tGone[x]
+					if not tStays[tOld] then
+						mSkuVoiceQueueBTTS_Voice[tOld] = nil
+						mSkuVoiceQueueBTTS_UserAction[tOld] = nil
+						mSkuVoiceQueueBTTS_Scope[tOld] = nil
+						mSkuVoiceQueueBTTS_Overwrite[tOld] = nil
+						mSkuVoiceQueueBTTS_At[tOld] = nil
+					end
+				end
+				local tNew = {"queuereset"}
+				local tRestFrom = tLastReset + 1
+				if tOwn then
+					tNew[#tNew + 1] = tOwn
+					tRestFrom = tRestFrom + 1
+				end
+				for x = 1, #tKept do
+					tNew[#tNew + 1] = tKept[x]
+				end
+				for x = tRestFrom, #mSkuVoiceQueueBTTS do
+					tNew[#tNew + 1] = mSkuVoiceQueueBTTS[x]
+				end
+				if #tKept > 0 then tBttsNoBypassOnce = true end
+				if dprint and #tKept > 0 then dprint("BTTS queuereset kept", #tKept, "waiting line(s) behind the overwrite", "own=["..tostring(tOwn).."]") end
+				mSkuVoiceQueueBTTS = tNew
 			end
 			-- BTTS diag (lag/stall hunt): surface a growing backlog. If the queue
 			-- or the "currently speaking" dedup set climbs, the dequeue is stalling
@@ -1001,6 +1196,8 @@ function SkuVoice:Create()
 						mSkuVoiceQueueBTTS_Voice[tPeek] = nil
 						mSkuVoiceQueueBTTS_UserAction[tPeek] = nil
 						mSkuVoiceQueueBTTS_Scope[tPeek] = nil
+						mSkuVoiceQueueBTTS_Overwrite[tPeek] = nil
+						mSkuVoiceQueueBTTS_At[tPeek] = nil
 						tBttsStats.dupSuppressed = tBttsStats.dupSuppressed + 1
 						if dprint then dprint("BTTS DUP-SUPPRESS", "reset+text", "age="..string.format("%.2f", tNow - tLastHandedAt), "text=["..tostring(tPeek).."]") end
 					else
@@ -1038,11 +1235,11 @@ function SkuVoice:Create()
 							-- to cancel is NEVER skipped -- combat cancellation semantics are
 							-- unchanged. An isolated announce also still stops exactly as
 							-- before; only the redundant repeats inside a burst are dropped.
-							if #mSkuVoiceQueueBTTS_Speaking > 0 or (tNow - tLastStopAt) > 0.15 then
-								if dprint then dprint("BTTS queuereset -> StopSpeakingText") end
-								C_VoiceChat.StopSpeakingText()
-								tLastStopAt = tNow
-								tAuditStopSinceHandover = true
+							-- [v43.7] ...and an utterance the gate knows is in the client is
+							-- always something to cancel. The stop itself goes through
+							-- BttsStop, which defers it when that utterance has not started.
+							if mClientGate.outstanding or #mSkuVoiceQueueBTTS_Speaking > 0 or (tNow - tLastStopAt) > 0.15 then
+								BttsStop("queuereset", tBttsPostStopHold)
 							elseif dprint then
 								dprint("BTTS queuereset -> stop suppressed (nothing in flight)")
 							end
@@ -1063,12 +1260,18 @@ function SkuVoice:Create()
 						EchoQueueClear("queuereset")
 					end
 				else
-					-- [v43.5c] The kill window outranks BOTH the hold and its
-					-- `#queue > 1` bypass: while it is armed nothing may be handed over,
-					-- because that is what makes "anything that starts now is stale"
-					-- true. The line waits in the queue and goes out ~0.3 s later.
-					if (#mSkuVoiceQueueBTTS > 1 or tNow >= tNextSpeakAt)
-						and (tNow >= tKillWindowUntil or tNow >= tKillWindowHardUntil) then
+					-- [v43.7] The client gate outranks BOTH the hold and its `#queue > 1`
+					-- bypass: while an utterance of ours is still in the client, the
+					-- line waits HERE, where a later queuereset, EndScope or cancel can
+					-- still reach it. It goes out on that utterance's FINISHED -- which
+					-- is when the client would have started it anyway.
+					-- tBttsNoBypassOnce: the scan pushed waiting lines behind this overwrite
+					-- line, so it is not alone in the queue any more -- but it must still
+					-- get the post-stop hold a lone overwrite line always had, or the
+					-- bypass would hand it over under the async stop it was shielded from.
+					if (tNow >= tNextSpeakAt or (#mSkuVoiceQueueBTTS > 1 and not tBttsNoBypassOnce))
+						and not ClientGateBusy(tNow) then
+						tBttsNoBypassOnce = false
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						local tIsAlreadySpeakingThat
 						for z = 1, #mSkuVoiceQueueBTTS_Speaking do
@@ -1121,6 +1324,8 @@ function SkuVoice:Create()
 						mSkuVoiceQueueBTTS_Voice[tValue] = nil
 						mSkuVoiceQueueBTTS_UserAction[tValue] = nil
 						mSkuVoiceQueueBTTS_Scope[tValue] = nil
+						mSkuVoiceQueueBTTS_Overwrite[tValue] = nil
+						mSkuVoiceQueueBTTS_At[tValue] = nil
 						tNextSpeakAt = tNow + tBttsPostSpeakHold
 					end
 				end
@@ -1839,6 +2044,10 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		if aScope then
 			mSkuVoiceQueueBTTS_Scope[tFinalStringForBTtsMac] = aScope
 		end
+		-- [v43.7] See mSkuVoiceQueueBTTS_Overwrite. Written unconditionally so a
+		-- stale flag from an identical earlier string can never be inherited.
+		mSkuVoiceQueueBTTS_Overwrite[tFinalStringForBTtsMac] = (aOverwrite == true and ChatTts().neverResetQueues ~= true) or nil
+		mSkuVoiceQueueBTTS_At[tFinalStringForBTtsMac] = GetTime()
 		if not aIgnoreLinks then
 			SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTtsMac, "")
 		end
@@ -1857,6 +2066,10 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		if aScope then
 			mSkuVoiceQueueBTTS_Scope[tFinalStringForBTts] = aScope
 		end
+		-- [v43.7] See mSkuVoiceQueueBTTS_Overwrite. Written unconditionally so a
+		-- stale flag from an identical earlier string can never be inherited.
+		mSkuVoiceQueueBTTS_Overwrite[tFinalStringForBTts] = (aOverwrite == true and ChatTts().neverResetQueues ~= true) or nil
+		mSkuVoiceQueueBTTS_At[tFinalStringForBTts] = GetTime()
 
 		if not aIgnoreLinks then
 			SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTts, "")
@@ -2232,8 +2445,7 @@ function SkuVoice:StopOutputEmptyQueue(aBlizz, aSku)
 	end
 	if aBlizz then
 		mSkuVoiceQueueBTTS_Speaking = {}
-		C_VoiceChat.StopSpeakingText()
-		tBttsInterruptNext = true
+		BttsStop("StopOutputEmptyQueue")
 	end
 end
 -- [W6-B #20] dead SkuVoice:StopAllOutputs removed (was entirely inside a
@@ -2263,6 +2475,8 @@ function SkuVoice:TrimBttsQueue(aKeep)
 		local tValue = mSkuVoiceQueueBTTS[1]
 		if tValue then
 			mSkuVoiceQueueBTTS_Voice[tValue] = nil
+			mSkuVoiceQueueBTTS_Overwrite[tValue] = nil
+			mSkuVoiceQueueBTTS_At[tValue] = nil
 		end
 		table.remove(mSkuVoiceQueueBTTS, 1)
 	end
@@ -2296,6 +2510,8 @@ function SkuVoice:CancelBttsOutput()
 			mSkuVoiceQueueBTTS_Voice[tValue] = nil
 			mSkuVoiceQueueBTTS_UserAction[tValue] = nil
 						mSkuVoiceQueueBTTS_Scope[tValue] = nil
+						mSkuVoiceQueueBTTS_Overwrite[tValue] = nil
+						mSkuVoiceQueueBTTS_At[tValue] = nil
 		end
 		mSkuVoiceQueueBTTS[x] = nil
 	end
@@ -2305,11 +2521,6 @@ function SkuVoice:CancelBttsOutput()
 	-- typing backlog, and until v43.4 it could only reach ONE character because the
 	-- rest were already inside the client. Now they are all still here.
 	EchoQueueClear("CancelBttsOutput")
-	EchoGateReset()
-	-- [v43.5c] The last handover may not have started yet, so the stop below will
-	-- miss it and the client would play it after the caller's confirmation. Hold
-	-- everything back briefly and kill whatever starts. See ArmKillWindow.
-	ArmKillWindow("CancelBttsOutput")
 	tLastHandoverWasEcho = false
 	local tNow = GetTime()
 	tLastStopAt = tNow
@@ -2318,10 +2529,11 @@ function SkuVoice:CancelBttsOutput()
 	-- speaks right after must never be swallowed as a back-to-back duplicate of it.
 	tLastHandedText = nil
 	tLastHandedScope = nil
-	if dprint then dprint("BTTS CancelBttsOutput -> StopSpeakingText") end
-	pcall(function() C_VoiceChat.StopSpeakingText() end)
-	tBttsInterruptNext = true
-	tAuditStopSinceHandover = true
+	-- [v43.7] The last handover may not have started yet; a stop now would miss it
+	-- and the client would play it after the caller's confirmation. BttsStop
+	-- delivers the stop on its STARTED instead and keeps the confirmation waiting
+	-- in the queue until then (this replaces the v43.5c kill window).
+	BttsStop("CancelBttsOutput", 0.15)
 end
 
 ---------------------------------------------------------------------------------------------------------
@@ -2365,6 +2577,8 @@ function SkuVoice:SpeakEcho(aText, aVoice)
 				mSkuVoiceQueueBTTS_Voice[tValue] = nil
 				mSkuVoiceQueueBTTS_UserAction[tValue] = nil
 						mSkuVoiceQueueBTTS_Scope[tValue] = nil
+						mSkuVoiceQueueBTTS_Overwrite[tValue] = nil
+						mSkuVoiceQueueBTTS_At[tValue] = nil
 			end
 			mSkuVoiceQueueBTTS[x] = nil
 		end
@@ -2373,19 +2587,18 @@ function SkuVoice:SpeakEcho(aText, aVoice)
 		-- The stop really silenced that line, so an identical one arriving later
 		-- must be allowed through again.
 		tLastHandedText = nil
-		if dprint then dprint("BTTS echo burst start -> StopSpeakingText") end
-		pcall(function() C_VoiceChat.StopSpeakingText() end)
-		tBttsInterruptNext = true
-		tAuditStopSinceHandover = true
+		-- [v43.7] Through BttsStop: if the announce being typed over has not even
+		-- started, the stop waits for it and this character waits with it, instead
+		-- of being handed over behind a line nothing could cancel any more.
+		BttsStop("echo burst start")
 		-- Only THIS character waits, and only for the stop to land -- the same
 		-- race tBttsPostStopHold covers, but the echo pays it once per burst
 		-- rather than once per keystroke.
 		tEchoSlotDueAt = tNow + tEchoHandoverDelay
-		-- [v43.5] A new burst never inherits the previous one's leftovers, and the
-		-- stop just above silenced whatever was playing -- so nothing is
-		-- outstanding any more and this character must not wait for it.
+		-- [v43.5] A new burst never inherits the previous one's leftovers. (The gate
+		-- is BttsStop's business: cleared when the stop landed, kept shut while it
+		-- is still waiting for its target to start.)
 		EchoQueueClear("burst start")
-		EchoGateReset()
 	else
 		-- [v43.5] Mid-burst: due immediately, but the drain still releases it only
 		-- once the engine has reported the previous character done. That gate is
@@ -2433,6 +2646,8 @@ function SkuVoice:EndScope(aScope)
 			mSkuVoiceQueueBTTS_Voice[tValue] = nil
 			mSkuVoiceQueueBTTS_UserAction[tValue] = nil
 			mSkuVoiceQueueBTTS_Scope[tValue] = nil
+			mSkuVoiceQueueBTTS_Overwrite[tValue] = nil
+			mSkuVoiceQueueBTTS_At[tValue] = nil
 			tDropped = tDropped + 1
 		end
 	end
@@ -2450,16 +2665,12 @@ function SkuVoice:EndScope(aScope)
 		tLastHandedText = nil
 		tLastHandedScope = nil
 		tLastHandoverWasEcho = false
-		pcall(function() C_VoiceChat.StopSpeakingText() end)
-		tBttsInterruptNext = true
-		tAuditStopSinceHandover = true
+		BttsStop("EndScope "..tostring(aScope), 0.15)
 		tStopped = true
-		-- [v43.5c] This branch only runs when the utterance in flight belongs to the
-		-- scope being ended -- so the one the stop above may MISS (handed over, not
-		-- started) is that same scope's line. It is exactly what the caller wants
-		-- dead, so the window can safely kill whatever starts next. This is the
-		-- waypoint "14 meter ..." that spoke after "menue geschlossen".
-		ArmKillWindow("EndScope "..tostring(aScope))
+		-- [v43.7] The utterance in flight belongs to the scope being ended, so it is
+		-- exactly what the caller wants dead -- including when it has not started
+		-- yet (the waypoint "14 meter ..." that spoke after "menue geschlossen").
+		-- BttsStop covers that case; see "The client gate".
 	end
 	if dprint then dprint("BTTS EndScope", tostring(aScope), "dropped="..tDropped, "stopped="..tostring(tStopped)) end
 	return tStopped
@@ -2469,8 +2680,10 @@ function SkuVoice:CancelEcho()
 	-- [v43.5] The whole pending queue. The gate is reset too: with nothing left to
 	-- release there is no character that could go out early, and a caller that
 	-- disarms the echo must not leave the gate stuck shut.
+	-- [v43.7] It no longer touches the gate: nothing is stopped here, so a
+	-- character already in the client is still there, and the shared gate must
+	-- keep saying so. Its silence TTL is what guarantees it never sticks shut.
 	EchoQueueClear("CancelEcho")
-	EchoGateReset()
 	tLastHandoverWasEcho = false
 end
 

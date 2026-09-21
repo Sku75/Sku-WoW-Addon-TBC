@@ -17,6 +17,7 @@ Aenderungen in Sku v43.7
         Fehlerbehebungen
             Schwimmen und Fliegen: Die Neigungssperre greift jetzt auch im Kampf. Wer kaempfend ins Wasser lief, tauchte bisher bei den ersten Drehungen ab.
             Gegenstaende aus einem Ausruestungsset: der Tooltip nannte die Ruestungsart (zum Beispiel "Stoff") zweimal. Jetzt nur noch einmal.
+            Sprachausgabe mit einer echten Windows-Stimme (nicht die NVDA-Bruecke): Zeilen, die laengst ueberholt waren, kamen Sekunden bis Minuten spaeter doch noch - getippte Filterbuchstaben nach "Menue geschlossen", uebersprungene Listeneintraege nach dem Loslassen der Pfeiltaste, Gildenchat eine Minute zu spaet. Behoben.
 
     Drehen: schneller, genauer, selbst eingemessen
         Einfach: "Zum Beacon drehen" (T) und die beiden anderen Drehbefehle wurden anhand von
@@ -78,6 +79,46 @@ Aenderungen in Sku v43.7
             FontString-Region einzeln, darum war der Rest hoerbar. Die rechte Spalte wird jetzt
             immer geschrieben: gesetzt und gezeigt, oder geleert und versteckt; ebenso in Zeile 2.
             Der Fehler steckte seit v42.00 im Code und fiel erst mit gespeicherten Sets auf.
+
+    Sprachausgabe: ueberholte Zeilen kamen verspaetet doch noch (echte Windows-Stimmen)
+        Einfach: Betrifft nur Spieler, die Sku ueber eine echte Windows-Stimme sprechen lassen,
+            nicht ueber die NVDA-Bruecke. Dort konnte eine Zeile, die Sku laengst durch eine neuere
+            ersetzt hatte, im Spiel haengen bleiben und viel spaeter doch noch gesprochen werden:
+            Wer im Menue schnell einen Filter tippte, hoerte "g r" oder "g r e i f" erst nach
+            "Menue geschlossen". Wer die Pfeiltaste hielt, hoerte nach dem letzten Eintrag noch
+            zwei, drei uebersprungene. Und Chatzeilen, die waehrend des Blaetterns eintrafen, kamen
+            bis zu 70 Sekunden zu spaet und ausser der Reihe. In einem eingeschickten Log waren
+            das 24 von 524 Ansagen in einer halben Stunde. Das ist behoben: was Sku ersetzt oder
+            abgebrochen hat, bleibt stumm. An den Regeln, was was unterbrechen darf, aendert sich
+            nichts. Auch das Mischen bleibt: schiebt sich eine wichtige Ansage in eine Reihe
+            wartender Zeilen (Chat, Statusmeldungen), spricht sie zuerst, danach geht die Reihe
+            weiter, die aelteste Zeile zuerst. Nur was dabei aelter als 30 Sekunden geworden ist,
+            wird verworfen.
+        Technisch: Libs/SkuVoice-1.0. C_VoiceChat.StopSpeakingText beendet nur die Aeusserung, die
+            gerade SPIELT. Eine uebergebene, aber noch nicht gestartete erreicht es nicht, und alles,
+            was uebergeben wird, waehrend eine andere noch im Client ist, wird dort geparkt und
+            startet erst beim naechsten natuerlichen PLAYBACK_FINISHED - egal wie viele Stopps
+            dazwischen liegen. Neu: ein gemeinsames Tor (mClientGate) fuer ALLE Uebergaben. Sku
+            uebergibt dem Client hoechstens EINE Aeusserung; die naechste Zeile wartet in Skus
+            eigener Warteschlange auf FINISHED/FAILED mit passender ID, wo queuereset, EndScope und
+            CancelBttsOutput sie noch erreichen. Weil die Zeilen jetzt bei Sku warten, musste die
+            queuereset-Regel ausgesprochen werden, die bisher der Client nebenbei erledigte: eine
+            wartende Overwrite-Zeile ist ueberholt und faellt weg (mSkuVoiceQueueBTTS_Overwrite);
+            eine wartende Zeile ohne queuereset wird hinter die neue Overwrite-Zeile gestellt,
+            solange sie juenger als tBttsKeptMaxAge (30 s) ist. Alle fuenf Stopp-Stellen laufen ueber BttsStop:
+            hat die Aeusserung im Client noch nicht gestartet, wird der Stopp vorgemerkt und 0.1 s
+            nach ihrem STARTED aus OnUpdate zugestellt - nie aus dem STARTED-Handler selbst: ein
+            StopSpeakingText von dort legte im Test die gesamte Sprachausgabe des Clients bis zum
+            Neustart lahm (das alte Kill-Fenster tat genau das). Das ersetzt das Kill-Fenster aus v43.5 (dieselbe Idee mit
+            geschaetzter Zeitspanne, nur an zwei Stellen) und das eigene Tor der Tipp-Echo-Spur.
+            Sicherungen: 0.5 s ohne STARTED gibt das Tor frei (und schickt einen vorgemerkten Stopp
+            trotzdem), nach drei Uebergaben ohne jedes STARTED schaltet das Tor ab, bis wieder eines
+            kommt. Auf der NVDA-Bruecke kommen STARTED und FINISHED im Uebergabe-Frame, das Tor ist
+            dort nie geschlossen - Verhalten unveraendert. Geprueft mit einem Offline-Nachbau des
+            Clients (dev/rework-docs/voice-harness): alter Stand 27-33 verspaetete Aeusserungen in
+            3 Minuten Zufallslast, neuer Stand 0; Bruecken-Modell alt und neu identisch.
+            Im Log: "stop deferred (handover not started)", "deferred stop fires", "client gate ttl",
+            "queuereset kept", "STALE-DROP".
 
 
 -------------------------------------------------------------------------------------------------------

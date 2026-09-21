@@ -20,6 +20,7 @@ Changements dans Sku v43.7
         Corrections
             Nage et vol : le verrou d'inclinaison s'active désormais aussi en combat. En entrant dans l'eau en plein combat, les premières rotations vous faisaient plonger.
             Objets d'un ensemble d'équipement : l'infobulle annonçait deux fois le type d'armure (par exemple « Tissu »). Désormais une seule fois.
+            Synthèse vocale avec une vraie voix Windows (pas le pont NVDA) : des lignes remplacées depuis longtemps étaient quand même prononcées des secondes ou des minutes plus tard - lettres de filtre tapées après « Menu fermé », entrées de liste sautées après avoir relâché la flèche, discussion de guilde avec une minute de retard. Corrigé.
 
     Rotation : plus rapide, plus précise, auto-étalonnée
         Simple : « Se tourner vers la balise » (T) et les deux autres commandes de rotation ont été
@@ -87,6 +88,46 @@ Changements dans Sku v43.7
             est maintenant toujours écrite : renseignée et affichée, ou vidée et masquée ; de même
             pour la ligne 2. Le défaut était dans le code depuis la v42.00 et n'est apparu
             qu'avec des ensembles enregistrés.
+
+    Synthèse vocale : des lignes remplacées étaient prononcées plus tard (vraies voix Windows)
+        Simple : Cela ne concerne que les joueurs qui font parler Sku avec une vraie voix Windows,
+            pas avec le pont NVDA. Là, une ligne que Sku avait remplacée depuis longtemps pouvait
+            rester coincée dans le jeu et être prononcée bien plus tard : en tapant vite un filtre
+            dans un menu, on entendait « g r » ou « g r e i f » seulement après « Menu fermé ». En
+            maintenant la flèche, on entendait deux ou trois entrées sautées après la dernière. Et
+            les lignes de discussion arrivées pendant le défilement venaient jusqu'à 70 secondes
+            trop tard et dans le désordre. Dans un journal envoyé par un joueur, cela faisait 24
+            annonces sur 524 en une demi-heure. C'est corrigé : ce que Sku a remplacé ou annulé
+            reste muet. Les règles sur ce qui peut interrompre quoi ne changent pas. Le mélange
+            reste aussi : quand une annonce importante s'insère dans une série de lignes en attente
+            (discussion, messages d'état), elle est prononcée d'abord, puis la série continue, la
+            plus ancienne d'abord. Seul ce qui a alors plus de 30 secondes est abandonné.
+        Technique : Libs/SkuVoice-1.0. C_VoiceChat.StopSpeakingText n'arrête que l'énoncé EN COURS
+            de lecture. Il n'atteint pas un énoncé transmis mais pas encore démarré, et tout ce qui
+            est transmis pendant qu'un autre énoncé est encore dans le client y est mis en attente
+            et ne démarre qu'au prochain PLAYBACK_FINISHED naturel - quel que soit le nombre
+            d'arrêts entre-temps. Nouveau : une porte commune (mClientGate) pour TOUTES les
+            transmissions. Sku ne donne au client qu'UN énoncé à la fois ; la ligne suivante attend
+            dans la file de Sku le FINISHED/FAILED de l'identifiant correspondant, là où queuereset,
+            EndScope et CancelBttsOutput peuvent encore l'atteindre. Comme les lignes attendent
+            désormais dans Sku, la règle du queuereset que le client fournissait par hasard a dû
+            être énoncée : une ligne d'écrasement en attente est dépassée et supprimée
+            (mSkuVoiceQueueBTTS_Overwrite) ; une ligne en attente sans queuereset est placée
+            derrière la nouvelle ligne d'écrasement tant qu'elle a moins de tBttsKeptMaxAge
+            (30 s). Les cinq points d'arrêt passent
+            par BttsStop : si l'énoncé dans le client n'a pas démarré, l'arrêt est noté et délivré
+            0,1 s après son STARTED, depuis OnUpdate - jamais depuis le gestionnaire STARTED
+            lui-même : un StopSpeakingText émis de là a bloqué toute la synthèse vocale du client
+            jusqu'au redémarrage lors des tests (l'ancienne fenêtre d'élimination faisait cela). Cela remplace la fenêtre d'élimination de la v43.5 (la même idée avec une
+            durée estimée, câblée à deux endroits seulement) et la porte propre à l'écho de frappe.
+            Garde-fous : 0,5 s sans STARTED ouvre la porte (et envoie quand même un arrêt noté) ;
+            après trois transmissions sans aucun STARTED, la porte se désactive jusqu'au prochain.
+            Avec le pont NVDA, STARTED et FINISHED arrivent dans l'image de la transmission : la
+            porte n'y est jamais fermée - comportement inchangé. Vérifié avec un modèle hors ligne
+            du client (dev/rework-docs/voice-harness) : ancien code 27-33 énoncés en retard en
+            3 minutes de charge aléatoire, nouveau code 0 ; modèle du pont identique avant et après.
+            Dans le journal : "stop deferred (handover not started)", "deferred stop fires",
+            "client gate ttl", "queuereset kept", "STALE-DROP".
 
 
 -------------------------------------------------------------------------------------------------------

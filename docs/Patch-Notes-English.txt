@@ -17,6 +17,7 @@ Changes in Sku v43.7
         Bugfixes
             Swimming and flying: the pitch lock now engages in combat too. If you ran into water while fighting, the first turns used to make you dive.
             Items from an equipment set: the tooltip named the armor type (for example "Cloth") twice. Now only once.
+            Speech through a real Windows voice (not the NVDA bridge): lines that had long been replaced were still spoken seconds or minutes later - typed filter letters after "Menu closed", skipped list entries after releasing the arrow key, guild chat a minute late. Fixed.
 
     Turning: faster, more precise, self-calibrated
         Simple: "Turn to beacon" (T) and the two other turn commands were reworked based on
@@ -78,6 +79,43 @@ Changes in Sku v43.7
             region on its own, so the leftover was audible. The right column is now always
             written: set and shown, or cleared and hidden; the same for line 2. The bug had been
             in the code since v42.00 and only showed up once sets were saved.
+
+    Speech: replaced lines were still spoken later (real Windows voices)
+        Simple: This only affects players who let Sku speak through a real Windows voice, not
+            through the NVDA bridge. There, a line that Sku had long replaced with a newer one could
+            get stuck inside the game and be spoken much later after all: typing a filter quickly
+            in a menu, you heard "g r" or "g r e i f" only after "Menu closed". Holding the arrow
+            key, you heard two or three skipped entries after the last one. And chat lines that
+            arrived while you were scrolling came up to 70 seconds late and out of order. In a log
+            a player sent in, that was 24 of 524 announcements in half an hour. This is fixed: what
+            Sku has replaced or cancelled stays silent. The rules about what may interrupt what do
+            not change. Mixing stays too: when an important announcement cuts into a row of
+            waiting lines (chat, status messages), it speaks first and the row then goes on, oldest
+            line first. Only what has grown older than 30 seconds by then is dropped.
+        Technically: Libs/SkuVoice-1.0. C_VoiceChat.StopSpeakingText only ends the utterance that
+            is PLAYING. It cannot reach one that was handed over but has not started, and anything
+            handed over while another utterance is still in the client is parked there and only
+            starts at the next natural PLAYBACK_FINISHED - however many stops happen in between.
+            New: one shared gate (mClientGate) for ALL handovers. Sku gives the client at most ONE
+            utterance; the next line waits in Sku's own queue for FINISHED/FAILED with the matching
+            id, where queuereset, EndScope and CancelBttsOutput can still reach it. Because the
+            lines now wait inside Sku, the queuereset rule the client used to provide by accident
+            had to be stated: a waiting overwrite line is superseded and dropped
+            (mSkuVoiceQueueBTTS_Overwrite); a waiting line without a queuereset is moved behind the
+            new overwrite line as long as it is younger than tBttsKeptMaxAge (30 s). All five stop
+            sites go through BttsStop: if the utterance in the client has not started, the stop is
+            noted and delivered 0.1 s after its STARTED, from OnUpdate - never from the STARTED
+            handler itself: a StopSpeakingText from there wedged the client's whole speech output
+            until a restart in testing (the old kill window did exactly that). This replaces the v43.5 kill window (the same idea
+            with a guessed time span, wired to two sites only) and the typing echo lane's own gate.
+            Safeguards: 0.5 s without STARTED opens the gate (and still sends a noted stop); after
+            three handovers without any STARTED the gate stands down until one arrives again. On the
+            NVDA bridge STARTED and FINISHED arrive in the handover frame, so the gate is never
+            shut there - behaviour unchanged. Verified with an offline model of the client
+            (dev/rework-docs/voice-harness): old code 27-33 late utterances in 3 minutes of random
+            load, new code 0; bridge model identical old and new.
+            In the log: "stop deferred (handover not started)", "deferred stop fires", "client gate ttl",
+            "queuereset kept", "STALE-DROP".
 
 
 -------------------------------------------------------------------------------------------------------
