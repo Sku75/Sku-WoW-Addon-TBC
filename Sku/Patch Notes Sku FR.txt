@@ -21,6 +21,7 @@ Changements dans Sku v43.7
             Nage et vol : le verrou d'inclinaison s'active désormais aussi en combat. En entrant dans l'eau en plein combat, les premières rotations vous faisaient plonger.
             Objets d'un ensemble d'équipement : l'infobulle annonçait deux fois le type d'armure (par exemple « Tissu »). Désormais une seule fois.
             Synthèse vocale avec une vraie voix Windows (pas le pont NVDA) : des lignes remplacées depuis longtemps étaient quand même prononcées des secondes ou des minutes plus tard - lettres de filtre tapées après « Menu fermé », entrées de liste sautées après avoir relâché la flèche, discussion de guilde avec une minute de retard. Corrigé.
+            Menu : quand le menu s'ouvrait directement dans une fenêtre ou une liste (sac, marchand, Maj+F10), « Menu de la cible » était encore annoncé après le contenu. Corrigé.
 
     Rotation : plus rapide, plus précise, auto-étalonnée
         Simple : « Se tourner vers la balise » (T) et les deux autres commandes de rotation ont été
@@ -128,6 +129,29 @@ Changements dans Sku v43.7
             3 minutes de charge aléatoire, nouveau code 0 ; modèle du pont identique avant et après.
             Dans le journal : "stop deferred (handover not started)", "deferred stop fires",
             "client gate ttl", "queuereset kept", "STALE-DROP".
+
+    Menu : « Menu de la cible » était annoncé après le contenu
+        Simple : Quand le menu ne s'ouvre pas à sa racine mais directement à un endroit précis -
+            ouverture d'un sac, d'un marchand ou d'une boîte aux lettres, Maj+F9 et Maj+F10, les
+            touches de sélection rapide -, on entendait encore, après le contenu, le premier
+            élément de la racine du menu, « Menu de la cible ». Par exemple « Sac 1, Menu de la
+            cible ». C'est corrigé : vous n'entendez plus que l'endroit où vous arrivez. « Menu
+            ouvert » n'est plus prononcé pour ces ouvertures ; il était de toute façon coupé
+            aussitôt, et le son d'ouverture reste. L'ouverture normale du menu est inchangée :
+            « menu ouvert », puis « Menu de la cible ».
+        Technique : SkuOptions:SlashFunc (SkuZOptions/Core.lua) ouvre un menu fermé via le OnClick
+            de OnSkuOptionsMain puis parcourt le chemin. La branche d'ouverture prononçait « Menu
+            ouvert » en overwrite et plaçait Menu[1].name derrière comme ligne en attente.
+            L'annonce du parcours posait un queuereset, et depuis la porte client de cette version
+            un queuereset conserve les lignes en attente sans overwrite derrière la nouvelle ligne
+            - prévu pour le chat, ici cela touchait l'élément racine (journal : "queuereset kept 1
+            waiting line(s)"). Corrigé à la source plutôt que par suppression : avec un chemin (au
+            moins deux champs), SlashFunc pose SkuOptions.tOpeningForPathWalk autour de l'appel
+            d'ouverture, et la branche d'ouverture ne dit alors rien. Le drapeau est effacé juste
+            après l'appel, même en cas d'erreur (pcall, erreur relancée). Si le chemin ne trouve
+            rien et que le menu reste à la racine, SlashFunc rattrape l'annonce et écrit "menu:
+            path walk found nothing" dans le journal de débogage. Les étapes intermédiaires du
+            chemin étaient déjà muettes auparavant.
 
 
 -------------------------------------------------------------------------------------------------------

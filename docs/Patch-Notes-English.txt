@@ -18,6 +18,7 @@ Changes in Sku v43.7
             Swimming and flying: the pitch lock now engages in combat too. If you ran into water while fighting, the first turns used to make you dive.
             Items from an equipment set: the tooltip named the armor type (for example "Cloth") twice. Now only once.
             Speech through a real Windows voice (not the NVDA bridge): lines that had long been replaced were still spoken seconds or minutes later - typed filter letters after "Menu closed", skipped list entries after releasing the arrow key, guild chat a minute late. Fixed.
+            Menu: when the menu opened straight into a window or a list (bag, vendor, Shift+F10), "Target menu" was spoken after the content. Fixed.
 
     Turning: faster, more precise, self-calibrated
         Simple: "Turn to beacon" (T) and the two other turn commands were reworked based on
@@ -116,6 +117,26 @@ Changes in Sku v43.7
             load, new code 0; bridge model identical old and new.
             In the log: "stop deferred (handover not started)", "deferred stop fires", "client gate ttl",
             "queuereset kept", "STALE-DROP".
+
+    Menu: "Target menu" was spoken after the content
+        Simple: When the menu opens not at its root but straight at a certain place - opening a
+            bag, a vendor or a mailbox, Shift+F9 and Shift+F10, the quick-select keys - you heard
+            "Target menu", the first entry of the menu root, after the actual content. For example
+            "Bag 1, Target menu". That is fixed: you only hear where you landed. "Menu open" is
+            no longer spoken for these opens; it was cut off at once anyway, and the open sound
+            stays. Opening the menu normally is unchanged: "Menu open", then "Target menu".
+        Technically: SkuOptions:SlashFunc (SkuZOptions/Core.lua) opens a closed menu through the
+            OnClick of OnSkuOptionsMain and then walks the path. The open branch spoke "Menu open"
+            as an overwrite and queued Menu[1].name as a waiting line behind it. The path walk's
+            announcement set a queuereset, and since this version's client gate a queuereset keeps
+            waiting non-overwrite lines behind the new line - meant for chat, here it caught the
+            root entry (log: "queuereset kept 1 waiting line(s)"). Fixed at the source instead of
+            by suppression: with a path (at least two fields) SlashFunc sets
+            SkuOptions.tOpeningForPathWalk around the open call, and the open branch then says
+            nothing. The flag is cleared right after the call, also on an error (pcall, error
+            re-raised). If the path matches nothing and the menu sits on the root, SlashFunc
+            delivers the announcement afterwards and writes "menu: path walk found nothing" to the
+            debug log. Intermediate stops of the path were silent before already.
 
 
 -------------------------------------------------------------------------------------------------------

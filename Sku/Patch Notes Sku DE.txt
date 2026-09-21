@@ -18,6 +18,7 @@ Aenderungen in Sku v43.7
             Schwimmen und Fliegen: Die Neigungssperre greift jetzt auch im Kampf. Wer kaempfend ins Wasser lief, tauchte bisher bei den ersten Drehungen ab.
             Gegenstaende aus einem Ausruestungsset: der Tooltip nannte die Ruestungsart (zum Beispiel "Stoff") zweimal. Jetzt nur noch einmal.
             Sprachausgabe mit einer echten Windows-Stimme (nicht die NVDA-Bruecke): Zeilen, die laengst ueberholt waren, kamen Sekunden bis Minuten spaeter doch noch - getippte Filterbuchstaben nach "Menue geschlossen", uebersprungene Listeneintraege nach dem Loslassen der Pfeiltaste, Gildenchat eine Minute zu spaet. Behoben.
+            Menue: Oeffnete sich das Menue direkt in ein Fenster oder eine Liste (Tasche, Haendler, Umschalt+F10), kam nach dem Inhalt noch "Ziel Menue" hinterher. Behoben.
 
     Drehen: schneller, genauer, selbst eingemessen
         Einfach: "Zum Beacon drehen" (T) und die beiden anderen Drehbefehle wurden anhand von
@@ -119,6 +120,28 @@ Aenderungen in Sku v43.7
             3 Minuten Zufallslast, neuer Stand 0; Bruecken-Modell alt und neu identisch.
             Im Log: "stop deferred (handover not started)", "deferred stop fires", "client gate ttl",
             "queuereset kept", "STALE-DROP".
+
+    Menue: "Ziel Menue" wurde nach dem Inhalt nachgesprochen
+        Einfach: Oeffnet sich das Menue nicht an der Wurzel, sondern gleich an einer bestimmten
+            Stelle - beim Oeffnen einer Tasche, eines Haendlers oder Briefkastens, bei Umschalt+F9
+            und Umschalt+F10, bei den Schnellwahltasten -, dann war nach dem eigentlichen Inhalt
+            noch "Ziel Menue" zu hoeren, der erste Eintrag der Menuewurzel. Also etwa "Tasche 1,
+            Ziel Menue". Das ist behoben: du hoerst nur noch, wo du gelandet bist. "Menue
+            geoeffnet" entfaellt bei diesen Oeffnungen; es wurde ohnehin sofort abgeschnitten, und
+            der Oeffnen-Ton bleibt. Das normale Oeffnen des Menues ist unveraendert: "Menue
+            geoeffnet", dann "Ziel Menue".
+        Technisch: SkuOptions:SlashFunc (SkuZOptions/Core.lua) oeffnet ein geschlossenes Menue
+            ueber den OnClick von OnSkuOptionsMain und laeuft danach den Pfad ab. Der Oeffnen-Zweig
+            sprach "Menue geoeffnet" als Overwrite und stellte Menu[1].name als wartende Zeile
+            dahinter. Die Ansage des Pfadlaufs setzte ein queuereset, und seit dem Client-Tor
+            dieser Version behaelt queuereset wartende Zeilen ohne Overwrite hinter der neuen Zeile
+            - gedacht fuer Chat, hier traf es den Wurzeleintrag (Log: "queuereset kept 1 waiting
+            line(s)"). Behoben an der Quelle statt durch Unterdruecken: mit einem Pfad (mindestens
+            zwei Felder) setzt SlashFunc SkuOptions.tOpeningForPathWalk um den Oeffnen-Aufruf, der
+            Oeffnen-Zweig spricht dann nichts. Das Flag wird direkt nach dem Aufruf geloescht, auch
+            bei einem Fehler (pcall, Fehler wird weitergereicht). Findet der Pfad nichts und das
+            Menue steht an der Wurzel, holt SlashFunc die Ansage nach und schreibt "menu: path walk
+            found nothing" ins Debug-Log. Zwischenstationen des Pfads waren schon vorher stumm.
 
 
 -------------------------------------------------------------------------------------------------------

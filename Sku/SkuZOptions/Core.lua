@@ -339,8 +339,16 @@ function SkuOptions:SlashFunc(input, aSilent)
 				SkuCore:SetOpenMenuAfterPath(input)
 				return
 			end
+			-- With a path to walk, the open itself stays silent: the walk speaks where it
+			-- lands (see the open branch of OnSkuOptionsMain). Cleared right after the
+			-- call, error or not, so a plain menu open can never inherit the silence.
+			local tOpenedSilently = false
 			if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
-				_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_OPENMENU"].key)
+				tOpenedSilently = #fields >= 2
+				SkuOptions.tOpeningForPathWalk = tOpenedSilently
+				local tOk, tErr = pcall(_G["OnSkuOptionsMain"]:GetScript("OnClick"), _G["OnSkuOptionsMain"], SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_OPENMENU"].key)
+				SkuOptions.tOpeningForPathWalk = nil
+				if not tOk then error(tErr, 0) end
 			end
 
 			-- W7: ensure the dynamic root entries ("Local" / "Spielmenü") are present
@@ -463,6 +471,12 @@ function SkuOptions:SlashFunc(input, aSilent)
 						SkuOptions:CloseMenu()
 					end
 				end
+			elseif tOpenedSilently and SkuOptions:IsMenuOpen() and SkuOptions.Menu[1] then
+				-- The path matched nothing, so the menu sits on the root: give the
+				-- announcement the silent open skipped.
+				dprint("menu: path walk found nothing, announcing root", "path", tostring(input))
+				SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true, nil, nil, 2)
+				SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3, nil, nil, nil, 2)
 			end
 		elseif fields[1] == "mmreset" then
 			SkuNavMMMainFrame:SetSize(200, 200) 
@@ -2602,8 +2616,14 @@ function SkuOptions:CreateMainFrame()
 				-- single canonical open sound, symmetric with OnHide's PlaySound(89)
 				-- on close. This 811 was a redundant second open sound (the
 				-- per-keystroke nav click at the OnClick handler still uses 811).
-				SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true, nil, nil, 2)
-				SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3, nil, nil, nil, 2)
+				-- A path walk (SlashFunc: window auto-descend, Shift-F10, quick keys) opens
+				-- the menu only to land somewhere else, so it announces its destination
+				-- itself. Speaking here as well queued the first root entry as a WAITING
+				-- line, which the walk's overwrite then kept and played after the content.
+				if SkuOptions.tOpeningForPathWalk ~= true then
+					SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true, nil, nil, 2)
+					SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3, nil, nil, nil, 2)
+				end
 				pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarSet then SkuCore.VisualAids:VisualAidsLineBarSet(SkuOptions.Menu[1].name) end end)
 				SkuCore.Debug("", SkuOptions.currentMenuPosition.name, true)
 			end
