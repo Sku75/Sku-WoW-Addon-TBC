@@ -83,7 +83,7 @@ function C_VoiceChat.StopSpeakingText()
 	if dispatching and not wedged then wedged = true; wedgedAt = now end
 	if mode == "bridge" then return end
 	if playing then
-		playing.rec.cut = now
+		if playing.ended then playing.rec.tailCut = true else playing.rec.cut = now end
 		playing = nil
 		-- engine idle; parked queue is NOT pumped by a stop
 	end

@@ -551,6 +551,25 @@ local tMaxSeenId = nil
 -- delivers it one frame later. One frame covers both.
 local tClientGateFreedAt = 0
 
+-- [v43.8] The tail cut. On a real SAPI voice the client reports FINISHED a fixed
+-- ~0.5-1 s AFTER the audio ended ("End" bookmark), whatever the voice speed, and
+-- starts nothing before it: 1 typed letter per second at speed 6 (capture
+-- 2026-09-21), and the same dead air between the parts of a quest text or two
+-- chat lines. Handing the next utterance over earlier buys nothing (v43.5e: it
+-- only parks). What DOES free the engine at once is a stop -- fast arrowing
+-- starts four lines a second. So when the audio of ours is over and something
+-- is WAITING, stop the silent tail and hand over after the usual post-stop gap.
+--   * only after "Start" AND then "End" for our id: this client sometimes sends
+--     End BEFORE Start (first utterance after a stop), and that one proves nothing;
+--   * only when something waits -- a lone line ends by itself, as before;
+--   * sent from OnUpdate, NEVER from the bookmark handler (the wedge);
+--   * the bridge reports FINISHED in the handover frame and never gets here.
+-- tTailCutDelay = distance kept from "End" in case a voice marks it a little
+-- early; tTailCutHold = stop-to-handover gap (the async-stop race: losses were
+-- only ever measured below 20 ms). /skudebug tts tail <delay> <hold>, delay < 0 = off.
+local tTailCutDelay = 0.03
+local tTailCutHold = 0.06
+
 local function ForeignClear(aWhy)
 	if mForeign.id ~= nil then
 		if dprint then dprint("BTTS foreign cleared", "id="..tostring(mForeign.id), "why="..tostring(aWhy)) end
@@ -580,6 +599,7 @@ local function ClientGateReset()
 	mClientGate.stopOnStart = false
 	mClientGate.stopHold = nil
 	mClientGate.stopDueAt = nil
+	mClientGate.endAt = nil
 end
 
 -- Is an utterance of ours still inside the client? The TTLs measure SILENCE
@@ -894,6 +914,7 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	-- [v43.8] Anything that STARTs with an id below this was in the client before
 	-- this handover and cannot be it (see mForeign).
 	mClientGate.maxIdBefore = tMaxSeenId
+	mClientGate.endAt = nil
 	-- Blind (no STARTED events at all, see tClientGateBlindAfter): nothing to wait
 	-- for, so treat it as playing -- a stop is then sent at once, never deferred.
 	mClientGate.started = (tClientGateStrikes >= tClientGateBlindAfter)
@@ -1065,6 +1086,9 @@ function SkuVoice:Create()
 				mClientGate.at = GetTime()
 				if tMark == "Start" then
 					mClientGate.sawStart = true
+				elseif tMark == "End" and mClientGate.sawStart then
+					-- [v43.8] Audio over; OnUpdate may cut the silent tail (tTailCutDelay).
+					mClientGate.endAt = GetTime()
 				end
 			elseif mForeign.id ~= nil and tMarkId == mForeign.id then
 				-- [v43.8] Proof of life for a foreign utterance, same meaning.
@@ -1123,6 +1147,30 @@ function SkuVoice:Create()
 			local tStopNow = GetTime()
 			if tEchoSlotDueAt < tStopNow + tEchoHandoverDelay then
 				tEchoSlotDueAt = tStopNow + tEchoHandoverDelay
+			end
+		end
+
+		-- [v43.8] The tail cut -- see tTailCutDelay.
+		if mClientGate.endAt and tTailCutDelay >= 0 and mClientGate.outstanding and not mClientGate.stopDueAt
+			and (#mEchoQueue > 0 or #mSkuVoiceQueueBTTS > 0) then
+			local tNowCut = GetTime()
+			if tNowCut >= mClientGate.endAt + tTailCutDelay then
+				local tWasEcho = mClientGate.isEcho
+				-- Not an interruption: nothing audible is cut, so the bridge mark a
+				-- stop normally arms must not ride on the next handover.
+				local tKeepInterrupt = tBttsInterruptNext
+				BttsStop("tail cut", tTailCutHold)
+				tBttsInterruptNext = tKeepInterrupt
+				-- The pump's `#queue > 1` bypass ignores the hold; the stop is async.
+				tBttsNoBypassOnce = true
+				if tEchoSlotDueAt < tNowCut + tTailCutHold then
+					tEchoSlotDueAt = tNowCut + tTailCutHold
+				end
+				-- A stopped utterance reports no FINISHED, which is what drains the
+				-- dedup guard's entry for an announcement.
+				if not tWasEcho and mSkuVoiceQueueBTTS_Speaking[1] then
+					table.remove(mSkuVoiceQueueBTTS_Speaking, 1)
+				end
 			end
 		end
 
@@ -2824,6 +2872,21 @@ function SkuVoice:SetBttsHolds(aPostStop, aPostSpeak)
 	if type(aPostSpeak) == "number" and aPostSpeak >= 0 and aPostSpeak <= 1 then
 		tBttsPostSpeakHold = aPostSpeak
 	end
+end
+
+---------------------------------------------------------------------------------------------------------
+-- [v43.8] Session-only override of the tail cut (see tTailCutDelay). aDelay < 0
+-- switches it off. Returns the values now in force.
+---@param aDelay number|nil seconds kept between the "End" bookmark and the stop; negative = off
+---@param aHold number|nil seconds between that stop and the next handover
+function SkuVoice:SetBttsTailCut(aDelay, aHold)
+	if type(aDelay) == "number" and aDelay <= 1 then
+		tTailCutDelay = aDelay
+	end
+	if type(aHold) == "number" and aHold >= 0 and aHold <= 1 then
+		tTailCutHold = aHold
+	end
+	return tTailCutDelay, tTailCutHold
 end
 
 ---------------------------------------------------------------------------------------------------------
