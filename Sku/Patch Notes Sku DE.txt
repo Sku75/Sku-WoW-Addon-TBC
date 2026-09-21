@@ -4,6 +4,52 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.8
+
+    Ueberblick
+
+        Aenderungen
+            Fehlermeldungen des Spiels (zum Beispiel "Ihr habt kein Ziel") werden beim Haemmern auf eine Taste nur noch einmal vorgelesen. Erst wenn du die Taste etwa zweieinhalb Sekunden in Ruhe gelassen hast, wird dieselbe Meldung wieder angesagt.
+
+        Fehlerbehebungen
+            Sprachausgabe: dieselbe Zeile stellte sich seit v43.7 bei jedem Tastendruck erneut hinten an und wurde viele Male hintereinander vorgelesen, auch noch nach einer wichtigeren Ansage. Behoben.
+
+    Sprachausgabe: dieselbe Zeile stellt sich nicht mehr hinter sich selbst an
+        Einfach: Seit v43.7 konnte eine Meldung, die mehrfach kurz hintereinander ausgeloest wurde,
+            sich beliebig oft in die Warteschlange stellen. Wer eine Taste haemmerte, die einen
+            Fehler ausloest, hoerte "Ihr habt kein Ziel" danach zehn- oder zwanzigmal, und nach einer
+            dazwischengehenden Zielansage kam die Meldung noch einmal. Jetzt gilt: wartet derselbe
+            Text schon oder wird er gerade gesprochen, wird die neue Kopie verworfen. Menuezeilen
+            und andere Ansagen, die du per Taste ausdruecklich noch einmal anforderst, sind nicht
+            betroffen.
+        Technisch: SkuVoice:OutputStringBTtts (Libs/SkuVoice-1.0). Die Pruefung "wird genau das
+            gerade gesprochen" lief bisher bei der Uebergabe an den Client. Seit dem Client-Gate aus
+            v43.7 erreicht eine Kopie die Uebergabe erst, wenn ihr Vorgaenger FINISHED ist - die
+            Pruefung traf nie mehr (Log: Warteschlange 35 x dieselbe Zeile). Zeilen ohne queuereset
+            werden darum jetzt beim EINREIHEN gegen mSkuVoiceQueueBTTS und
+            mSkuVoiceQueueBTTS_Speaking geprueft; Log-Marke "BTTS ENQUEUE-DUP". Neues
+            Harness-Szenario "errspam" (dev/rework-docs/voice-harness).
+
+    Fehlermeldungen: nur ansagen, wenn sie neu erscheinen
+        Einfach: Sku richtet sich jetzt nach der Regel, die das Spiel fuer Sehende anwendet. Dort
+            steht eine Fehlermeldung etwa zweieinhalb Sekunden auf dem Bildschirm; kommt dieselbe
+            Meldung in dieser Zeit noch einmal, blitzt sie nur kurz auf und bleibt laenger stehen,
+            statt neu zu erscheinen. Entsprechend liest Sku eine Fehlermeldung vor, wenn sie
+            erscheint, und schweigt, solange sie noch "auf dem Bildschirm steht". Jeder weitere
+            Tastendruck verlaengert diese Zeit. Das Klickgeraeusch des Spiels sagt dir weiterhin bei
+            jedem Druck, dass es noch nicht geht. Laesst du die Taste etwa zweieinhalb Sekunden in
+            Ruhe und drueckst dann wieder, wird die Meldung erneut angesagt. Eine ANDERE
+            Fehlermeldung wird immer sofort vorgelesen. Betrifft nur vorgelesene Fehler, nicht die
+            Ton- und Sprachhinweise.
+        Technisch: UIErrors:OutputError (SkuCore/UIErrors.lua), TTS-Zweig. tSpokenShownUntil[Text]
+            = GetTime() + 2.5 (displayDuration 2 + fadeDuration 0.5 aus UIErrorsFrame.xml); jede
+            Wiederholung setzt den Wert neu, wie ResetMessageFadeByID. Bewusst eine Zeitmarke und
+            kein Auslesen von UIErrorsFrame: Blizzard drosselt nur rund 20 Meldungstypen, bei den
+            uebrigen kommt pro Druck eine neue Zeile dazu, und die Reihenfolge der beiden
+            UI_ERROR_MESSAGE-Handler ist nicht festgelegt.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.7
 
     Ueberblick

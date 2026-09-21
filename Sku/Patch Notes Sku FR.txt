@@ -7,6 +7,51 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.8
+
+    Aperçu
+
+        Changements
+            Les messages d'erreur du jeu (par exemple « Vous n'avez pas de cible ») ne sont lus qu'une seule fois quand vous martelez une touche. Le même message n'est annoncé de nouveau qu'après avoir laissé la touche tranquille environ deux secondes et demie.
+
+        Corrections
+            Synthèse vocale : depuis la v43.7, la même ligne se remettait en file à chaque appui et était lue de nombreuses fois de suite, même après une annonce plus importante. Corrigé.
+
+    Synthèse vocale : une ligne ne se met plus en file derrière elle-même
+        Simple : Depuis la v43.7, un message déclenché plusieurs fois de suite pouvait entrer dans
+            la file autant de fois que l'on voulait. En martelant une touche qui provoque une
+            erreur, on entendait ensuite « Vous n'avez pas de cible » dix ou vingt fois, et après
+            une annonce de cible intercalée, le message revenait encore une fois. Désormais : si le
+            même texte attend déjà ou est en train d'être prononcé, la nouvelle copie est écartée.
+            Les lignes de menu et les autres annonces que vous redemandez expressément avec une
+            touche ne sont pas concernées.
+        Technique : SkuVoice:OutputStringBTtts (Libs/SkuVoice-1.0). Le contrôle « est-ce exactement
+            cela qui est prononcé » s'exécutait à la remise au client. Depuis le verrou client de la
+            v43.7, une copie n'atteint la remise qu'une fois son prédécesseur FINISHED - le contrôle
+            ne correspondait plus jamais (journal : file de 35 x la même ligne). Les lignes sans
+            queuereset sont donc vérifiées à la MISE EN FILE, contre mSkuVoiceQueueBTTS et
+            mSkuVoiceQueueBTTS_Speaking ; marque de journal « BTTS ENQUEUE-DUP ». Nouveau scénario
+            de banc d'essai « errspam » (dev/rework-docs/voice-harness).
+
+    Messages d'erreur : annoncés seulement quand ils apparaissent
+        Simple : Sku suit désormais la règle que le jeu applique pour les voyants. Un message
+            d'erreur y reste à l'écran environ deux secondes et demie ; si le même message revient
+            pendant ce temps, il clignote brièvement et reste plus longtemps au lieu d'apparaître
+            de nouveau. De même, Sku lit un message d'erreur quand il apparaît et se tait tant
+            qu'il est encore « à l'écran ». Chaque nouvel appui prolonge ce délai. Le clic du jeu
+            vous indique toujours à chaque appui que cela ne fonctionne pas encore. Si vous laissez
+            la touche tranquille environ deux secondes et demie puis appuyez de nouveau, le message
+            est annoncé de nouveau. Un message d'erreur DIFFÉRENT est toujours lu immédiatement.
+            Cela ne concerne que les erreurs prononcées, pas les indices sonores et vocaux.
+        Technique : UIErrors:OutputError (SkuCore/UIErrors.lua), branche TTS. tSpokenShownUntil[texte]
+            = GetTime() + 2.5 (displayDuration 2 + fadeDuration 0.5 de UIErrorsFrame.xml) ; chaque
+            répétition réécrit la valeur, comme ResetMessageFadeByID. Volontairement un horodatage
+            et non une lecture de UIErrorsFrame : Blizzard ne limite qu'une vingtaine de types de
+            messages, pour les autres une ligne s'ajoute à chaque appui, et l'ordre des deux
+            gestionnaires UI_ERROR_MESSAGE n'est pas défini.
+
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.7
 
     Aperçu
