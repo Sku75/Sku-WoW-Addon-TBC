@@ -39,8 +39,9 @@ Aenderungen in Sku v43.8
             Tastendruck verlaengert diese Zeit. Das Klickgeraeusch des Spiels sagt dir weiterhin bei
             jedem Druck, dass es noch nicht geht. Laesst du die Taste etwa zweieinhalb Sekunden in
             Ruhe und drueckst dann wieder, wird die Meldung erneut angesagt. Eine ANDERE
-            Fehlermeldung wird immer sofort vorgelesen. Betrifft nur vorgelesene Fehler, nicht die
-            Ton- und Sprachhinweise.
+            Fehlermeldung wird immer sofort vorgelesen, und danach gilt auch die erste wieder als
+            neu: Fehler A, Fehler B, Fehler A sind drei Ansagen. Betrifft nur vorgelesene Fehler,
+            nicht die Ton- und Sprachhinweise.
         Technisch: UIErrors:OutputError (SkuCore/UIErrors.lua), TTS-Zweig. tSpokenShownUntil[Text]
             = GetTime() + 2.5 (displayDuration 2 + fadeDuration 0.5 aus UIErrorsFrame.xml); jede
             Wiederholung setzt den Wert neu, wie ResetMessageFadeByID. Bewusst eine Zeitmarke und

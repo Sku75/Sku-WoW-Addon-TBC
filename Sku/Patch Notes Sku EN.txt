@@ -37,8 +37,9 @@ Changes in Sku v43.8
             is still "on screen". Every further key press extends that time. The game's click
             sound still tells you on every press that it is not working yet. If you leave the key
             alone for about two and a half seconds and then press again, the message is announced
-            again. A DIFFERENT error message is always read at once. This affects spoken errors
-            only, not the sound and voice hints.
+            again. A DIFFERENT error message is always read at once, and after it the first one
+            counts as new again: error A, error B, error A are three announcements. This affects
+            spoken errors only, not the sound and voice hints.
         Technically: UIErrors:OutputError (SkuCore/UIErrors.lua), TTS branch. tSpokenShownUntil[text]
             = GetTime() + 2.5 (displayDuration 2 + fadeDuration 0.5 from UIErrorsFrame.xml); every
             repeat sets the value again, like ResetMessageFadeByID. Deliberately a time stamp and

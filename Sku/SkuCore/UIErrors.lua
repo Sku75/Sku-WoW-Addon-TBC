@@ -225,11 +225,15 @@ end
 -- stay silent and push the fade-out back. It is spoken again once it has faded,
 -- i.e. after the key was left alone for UIERR_DISPLAY_SEC. Blizzard applies this
 -- to ~20 throttled types only; here it covers every spoken error, because speech
--- has no three-line window that old copies scroll out of. The rule cannot be read
+-- has no three-line window that old copies scroll out of. Only the LAST spoken
+-- error is remembered: any other error in between (spoken or a sound hint) counts
+-- as "did something else", so the first one is spoken again right away -- A, B, A
+-- is three announcements, A, A, A is one. The rule cannot be read
 -- from UIErrorsFrame itself: for unthrottled types the frame adds a line per
 -- press, and the order of the two UI_ERROR_MESSAGE handlers is not defined.
 local UIERR_DISPLAY_SEC = 2.5
-local tSpokenShownUntil = {}
+local tSpokenKey
+local tSpokenShownUntil = 0
 function UIErrors:OutputError(aSound, aChannel, aMessage)
    --print(aSound, aChannel, aMessage)
 
@@ -258,18 +262,15 @@ function UIErrors:OutputError(aSound, aChannel, aMessage)
 
       PlaySoundFile(aSound, aChannel)
 
+      tSpokenKey = nil
       tPrevError = aSound
       tPrevErrorTime = time()
    else
       local tNow = GetTime()
       local tKey = tostring(aMessage)..":"..tostring(tVoiceIndex)
-      local tStillShown = tNow < (tSpokenShownUntil[tKey] or 0)
-      if not tStillShown then
-         for k, v in pairs(tSpokenShownUntil) do
-            if tNow >= v then tSpokenShownUntil[k] = nil end
-         end
-      end
-      tSpokenShownUntil[tKey] = tNow + UIERR_DISPLAY_SEC
+      local tStillShown = (tKey == tSpokenKey) and tNow < tSpokenShownUntil
+      tSpokenKey = tKey
+      tSpokenShownUntil = tNow + UIERR_DISPLAY_SEC
       if tStillShown then
          dprintv("UIErrors", "still shown, not spoken again", aMessage)
          return

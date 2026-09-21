@@ -41,8 +41,10 @@ Changements dans Sku v43.8
             qu'il est encore « à l'écran ». Chaque nouvel appui prolonge ce délai. Le clic du jeu
             vous indique toujours à chaque appui que cela ne fonctionne pas encore. Si vous laissez
             la touche tranquille environ deux secondes et demie puis appuyez de nouveau, le message
-            est annoncé de nouveau. Un message d'erreur DIFFÉRENT est toujours lu immédiatement.
-            Cela ne concerne que les erreurs prononcées, pas les indices sonores et vocaux.
+            est annoncé de nouveau. Un message d'erreur DIFFÉRENT est toujours lu immédiatement,
+            et après lui le premier compte de nouveau comme nouveau : erreur A, erreur B, erreur A
+            font trois annonces. Cela ne concerne que les erreurs prononcées, pas les indices
+            sonores et vocaux.
         Technique : UIErrors:OutputError (SkuCore/UIErrors.lua), branche TTS. tSpokenShownUntil[texte]
             = GetTime() + 2.5 (displayDuration 2 + fadeDuration 0.5 de UIErrorsFrame.xml) ; chaque
             répétition réécrit la valeur, comme ResetMessageFadeByID. Volontairement un horodatage
