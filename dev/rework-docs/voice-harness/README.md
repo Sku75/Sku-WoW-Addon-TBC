@@ -20,7 +20,8 @@ Run from THIS directory (the scripts `dofile("harness.lua")`):
     LAT=0.35 luajit stress.lua ../../../Sku/Libs/SkuVoice-1.0/SkuVoice-1.0.lua sapi 1
 
 Scenarios in `scen.lua`: filter, chatnav, chatidle, endscope, echo, multi, mix, mixq, login,
-arrows, foreign (speech that is not Sku's lands in the client mid-typing). `stress.lua <lib> <model> <seed>` is three minutes of random load;
+arrows, foreign (speech that is not Sku's lands in the client mid-typing), stopkey (one press
+of the stop-output key must also drop every waiting line; healthy = only the first line audible). `stress.lua <lib> <model> <seed>` is three minutes of random load;
 `LAT` sets the client's start latency in seconds. `HLOG=1` also prints Sku's
 own dprint lines. To compare against an older build:
 `git show <rev>:Sku/Libs/SkuVoice-1.0/SkuVoice-1.0.lua > old.lua`.

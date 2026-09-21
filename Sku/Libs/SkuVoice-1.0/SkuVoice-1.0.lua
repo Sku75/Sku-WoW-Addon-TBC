@@ -2582,7 +2582,18 @@ function SkuVoice:StopOutputEmptyQueue(aBlizz, aSku)
 		end
 		mSkuVoiceQueue = {}
 	end
-	if aBlizz then
+	if aBlizz and aSku then
+		-- [v43.7] "Stop everything" (the stop-output key, and the few callers that
+		-- pass both lanes). Until the client gate the pump pushed a whole burst into
+		-- the client within a few frames, so the one StopSpeakingText below killed
+		-- all of it. Now the lines wait in Sku's own queue, one at a time in the
+		-- client, and a bare stop only reached the one playing: every press of the
+		-- key cancelled one line and the next one started. So drop the waiting
+		-- lines as well -- CancelBttsOutput is exactly that, stop included.
+		-- The (true, nil) callers deliberately stay as they are: they are overwrite
+		-- announcements, and waiting chat lines are meant to survive those.
+		self:CancelBttsOutput()
+	elseif aBlizz then
 		mSkuVoiceQueueBTTS_Speaking = {}
 		BttsStop("StopOutputEmptyQueue")
 	end

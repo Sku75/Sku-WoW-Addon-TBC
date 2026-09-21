@@ -17,6 +17,7 @@ Changements dans Sku v43.7
             Si vous êtes déjà face à la balise (à 3 degrés près), vous n'êtes plus tourné. Cela met fin au va-et-vient autour du ping de la balise.
             La rotation s'étalonne elle-même : après chaque rotation, Sku vérifie de combien vous avez réellement tourné et s'adapte à votre machine et à votre fréquence d'images. Les toutes premières rotations après la mise à jour peuvent être imprécises.
             Écho clavier avec une vraie voix Windows (pas le pont NVDA) : la longue pause après chaque lettre tapée a disparu, les lettres se suivent de près.
+            Coller du texte dans un champ de saisie (Ctrl+V) : Sku dit désormais une seule fois « Collé » au lieu de lire le texte collé lettre par lettre.
 
         Corrections
             Nage et vol : le verrou d'inclinaison s'active désormais aussi en combat. En entrant dans l'eau en plein combat, les premières rotations vous faisaient plonger.
@@ -131,6 +132,15 @@ Changements dans Sku v43.7
             3 minutes de charge aléatoire, nouveau code 0 ; modèle du pont identique avant et après.
             Dans le journal : "stop deferred (handover not started)", "deferred stop fires",
             "client gate ttl", "queuereset kept", "STALE-DROP".
+            Bogue induit, corrigé au passage : la touche « arrêter la sortie audio » (Ctrl+V)
+            n'annulait plus que la ligne en cours, les lignes en attente continuaient - un appui
+            par ligne. Avant, toute la rafale se trouvait déjà dans le client et l'unique arrêt
+            touchait tout ; depuis la porte, les lignes attendent chez Sku, et
+            StopOutputEmptyQueue ne vidait jamais cette file. StopOutputEmptyQueue(true, true)
+            appelle maintenant CancelBttsOutput : lignes et caractères tapés en attente supprimés,
+            puis l'arrêt. Les appelants avec (true, nil) restent tels quels - les lignes de chat
+            en attente doivent y survivre. Scénario du banc d'essai « stopkey » : ancienne version
+            quatre lignes audibles, nouvelle version une seule (coupée).
 
     Menu : « Menu de la cible » était annoncé après le contenu
         Simple : Quand le menu ne s'ouvre pas à sa racine mais directement à un endroit précis -
@@ -202,6 +212,22 @@ Changements dans Sku v43.7
             être vu d'abord. Scénario du banc d'essai « foreign » : ancienne version quatre
             lettres après « annulé », nouvelle version aucune. Dans le journal : « BTTS foreign
             utterance », « BTTS foreign cleared ».
+
+    Coller dans un champ de saisie : « Collé » au lieu d'une suite de lettres
+        Simple : Si vous colliez du texte avec Ctrl+V dans la ligne de chat ou dans un champ de
+            saisie de Sku, tout le texte collé était lu lettre par lettre. Sku dit maintenant une
+            seule fois « Collé ». Lisez le contenu du champ comme d'habitude avec flèche haut ou
+            flèche bas. La frappe normale est inchangée, même rapide. Si vous ne collez qu'un ou
+            deux caractères, ils sont toujours prononcés comme des caractères.
+        Technique : Un collage livre le presse-papiers sous forme d'appels OnChar individuels,
+            tous dans la même image. tSpeakTypedChar (SkuZOptions/Core.lua) compte les caractères
+            par image (GetTime() est constant dans une image) : à partir du troisième, la suite
+            compte comme un collage - CancelEcho supprime les caractères déjà en attente (aucun
+            n'a encore été transmis dans cette image, la pompe tourne dans OnUpdate), puis un seul
+            SpeakEcho(« Collé »), tout autre caractère de l'image est ignoré. Seuil 3, car deux
+            frappes peuvent tomber dans une même image à faible fréquence d'images. Vaut pour
+            AttachInputEcho (chat) et le champ de saisie de Sku. Dans le journal : « inputEcho
+            paste erkannt ».
 
 
 -------------------------------------------------------------------------------------------------------

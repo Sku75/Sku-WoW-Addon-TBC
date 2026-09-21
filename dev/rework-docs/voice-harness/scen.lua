@@ -42,6 +42,16 @@ S.multi = function()
 	say(0.0, "questtext teil drei", false)
 	H.run(15)
 end
+-- The stop-output key: ONE press must silence the playing line AND everything
+-- still waiting behind it. Healthy: only "teil eins" is audible (cut short).
+S.stopkey = function()
+	say(0.0, "questtext teil eins ist ein laengerer satz", true)
+	say(0.0, "questtext teil zwei ist auch laenger", false)
+	say(0.0, "questtext teil drei", false)
+	say(0.0, "questtext teil vier", false)
+	at(0.8, function() V:StopOutputEmptyQueue(true, true) end)
+	H.run(15)
+end
 S.arrows = function()
 	for i = 0, 9 do say(i * 0.12, "eintrag " .. i, true, {scope="menu"}) end
 	H.run(6)

@@ -7807,6 +7807,38 @@ local function tSpeakInput(aText, aChar)
 	end
 end
 
+-- [v43.7] Ein getipptes Zeichen -- oder ein Einfuegen. Strg+V (Cmd+V) liefert den
+-- ganzen Text der Zwischenablage als EINZELNE OnChar-Aufrufe, alle im selben
+-- Frame; zeichenweise vorgelesen buchstabiert das Echo den eingefuegten Text.
+-- Tasten kommen dagegen nie zu dritt in einem Frame an (zwei sind bei niedriger
+-- Bildrate und schnellem Tippen denkbar, deshalb die Schwelle 3). Ab dem dritten
+-- Zeichen desselben Frames gilt die Folge als Einfuegen: die schon wartenden
+-- Zeichen fliegen raus -- uebergeben ist im selben Frame noch keines, die Pumpe
+-- laeuft erst im OnUpdate -- und es wird EINMAL "Eingefügt" gesagt.
+local tEchoCharFrameAt = -1
+local tEchoCharFrameCount = 0
+local tEchoPasteThreshold = 3
+local function tSpeakTypedChar(aChar)
+	local tNow = GetTime()
+	if tNow ~= tEchoCharFrameAt then
+		tEchoCharFrameAt = tNow
+		tEchoCharFrameCount = 0
+	end
+	tEchoCharFrameCount = tEchoCharFrameCount + 1
+	if tEchoCharFrameCount > tEchoPasteThreshold then
+		return
+	end
+	if tEchoCharFrameCount == tEchoPasteThreshold then
+		if dprint then dprint("inputEcho", "paste erkannt") end
+		if SkuOptions.Voice.CancelEcho then
+			pcall(function() SkuOptions.Voice:CancelEcho() end)
+		end
+		tSpeakInput(Sku.deEn("Eingefügt", "Pasted", "Collé"))
+		return
+	end
+	tSpeakInput(aChar == " " and Sku.deEn("Leerzeichen", "Space", "Espace") or aChar, true)
+end
+
 -- Echo beenden: Wartendes verwerfen UND Laufendes abbrechen. Ohne den Abbruch
 -- bleibt das, was schon an C_VoiceChat.SpeakText uebergeben wurde, hoerbar --
 -- genau die Buchstaben, die "noch kommen, wenn das Eingabefeld laengst zu ist".
@@ -8109,7 +8141,7 @@ function SkuOptions:AttachInputEcho(aEditBox, aOptions)
 		-- (SkuOptions:IsPrivateUseChar). They are not input; the arrows are
 		-- announced by OnKeyDown below.
 		if SkuOptions:IsPrivateUseChar(aChar) then return end
-		tSpeakInput(aChar == " " and Sku.deEn("Leerzeichen", "Space", "Espace") or aChar, true)
+		tSpeakTypedChar(aChar)
 	end)
 
 	aEditBox:HookScript("OnKeyDown", function(self, aKey)
@@ -8261,7 +8293,7 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 		eb:HookScript("OnChar", function(self, aChar)
 			-- macOS phantom characters for non-printing keys, see SkuOptions:IsPrivateUseChar.
 			if SkuOptions:IsPrivateUseChar(aChar) then return end
-			tSpeakInput(aChar == " " and Sku.deEn("Leerzeichen", "Space", "Espace") or aChar, true)
+			tSpeakTypedChar(aChar)
 		end)
 
 		sf:SetScrollChild(eb)
