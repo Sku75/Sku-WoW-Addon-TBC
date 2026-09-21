@@ -13,12 +13,14 @@ Aenderungen in Sku v43.7
             Drehungen sind deutlich schneller: eine halbe Drehung dauert auf einem flotten Rechner gut eine Zehntelsekunde statt einer Viertelsekunde.
             Wer schon auf den Beacon ausgerichtet ist (innerhalb von 3 Grad), wird nicht mehr gedreht. Das beendet das Hin-und-her-Pendeln um den Beacon-Ping.
             Die Drehung misst sich selbst ein: Sku prueft nach jeder Drehung, wie weit du wirklich gedreht hast, und passt sich an deinen Rechner und deine Bildrate an. Die ersten paar Drehungen nach dem Update koennen ungenau sein.
+            Tastaturecho mit einer echten Windows-Stimme (nicht die NVDA-Bruecke): die lange Pause nach jedem getippten Buchstaben ist weg, die Buchstaben folgen dicht aufeinander.
 
         Fehlerbehebungen
             Schwimmen und Fliegen: Die Neigungssperre greift jetzt auch im Kampf. Wer kaempfend ins Wasser lief, tauchte bisher bei den ersten Drehungen ab.
             Gegenstaende aus einem Ausruestungsset: der Tooltip nannte die Ruestungsart (zum Beispiel "Stoff") zweimal. Jetzt nur noch einmal.
             Sprachausgabe mit einer echten Windows-Stimme (nicht die NVDA-Bruecke): Zeilen, die laengst ueberholt waren, kamen Sekunden bis Minuten spaeter doch noch - getippte Filterbuchstaben nach "Menue geschlossen", uebersprungene Listeneintraege nach dem Loslassen der Pfeiltaste, Gildenchat eine Minute zu spaet. Behoben.
             Menue: Oeffnete sich das Menue direkt in ein Fenster oder eine Liste (Tasche, Haendler, Umschalt+F10), kam nach dem Inhalt noch "Ziel Menue" hinterher. Behoben.
+            Echte Windows-Stimme: sprach ein anderes Addon waehrend des Tippens, konnte ein Buchstabe nach "abgebrochen" nachkommen. Behoben.
 
     Drehen: schneller, genauer, selbst eingemessen
         Einfach: "Zum Beacon drehen" (T) und die beiden anderen Drehbefehle wurden anhand von
@@ -142,6 +144,52 @@ Aenderungen in Sku v43.7
             bei einem Fehler (pcall, Fehler wird weitergereicht). Findet der Pfad nichts und das
             Menue steht an der Wurzel, holt SlashFunc die Ansage nach und schreibt "menu: path walk
             found nothing" ins Debug-Log. Zwischenstationen des Pfads waren schon vorher stumm.
+
+    Tastaturecho mit einer echten Windows-Stimme: die lange Pause zwischen den Buchstaben ist weg
+        Einfach: Wer Sku mit einer echten Windows-Stimme nutzt (nicht mit der NVDA-Bruecke), hoerte
+            beim Tippen im Chat nach jedem Buchstaben eine Pause von einer halben bis ganzen Sekunde -
+            etwa ein Buchstabe pro Sekunde, egal wie schnell die Stimme eingestellt war. Eine
+            langsamere Stimme machte nur den Buchstaben laenger, die Pause blieb gleich. Diese Pause
+            ist jetzt weg, die Buchstaben folgen dicht aufeinander. Es wird weiterhin jeder Buchstabe
+            gesprochen, auch doppelte, und nach Escape kommt kein Buchstabe mehr nach. Dieselbe
+            Pause steckte auch zwischen Zeilen, die hintereinander warten (Teile eines Questtexts,
+            mehrere Chatzeilen); dort faellt sie kaum auf, ist aber ebenfalls verkuerzt. Auf der
+            NVDA-Bruecke aendert sich nichts.
+        Technisch: Der Client meldet VOICE_CHAT_TTS_PLAYBACK_FINISHED fest 0.5 bis 1 s NACH dem Ende
+            des Tons (Bookmark "End") und startet vorher nichts Neues. Frueher uebergeben hilft
+            nicht (v43.5e: die Aeusserung wird nur geparkt und ist dann nicht mehr abbrechbar). Was
+            den Client sofort freigibt, ist ein Stopp. Neu in Libs/SkuVoice-1.0: kam fuer unsere
+            Aeusserung erst "Start" und dann "End" und wartet etwas (Echo-Spur oder Queue), schickt
+            OnUpdate nach tTailCutDelay (0.03 s) ein StopSpeakingText und uebergibt nach
+            tTailCutHold (0.06 s). Nie aus dem Bookmark-Handler. Ein "End" vor "Start" (kommt bei
+            der ersten Aeusserung nach einem Stopp vor) zaehlt nicht. Wartet nichts, endet die
+            Zeile wie bisher von selbst. Der Schnitt setzt die Bruecken-Marke nicht, sperrt den
+            "#queue > 1"-Bypass einmal und raeumt den Dubletten-Eintrag selbst ab (eine gestoppte
+            Aeusserung meldet kein FINISHED). Gemessen im Nachbau: Buchstabentakt 1.15 s -> 0.73 s.
+            Zum Probieren, nur fuer die Sitzung: /skudebug tts tail <delay> <hold>, /skudebug tts
+            tail off. Im Log: "tail cut -> StopSpeakingText".
+
+    Sprache anderer Addons brachte das Tastaturecho durcheinander
+        Einfach: Sprach ein anderes Addon (oder ein /run-Befehl) ueber die Sprachausgabe des
+            Spiels, waehrend du getippt hast, konnte danach ein Buchstabe nach "abgebrochen"
+            nachkommen, also nach dem Schliessen des Chatfelds. Nur mit einer echten
+            Windows-Stimme. Das ist behoben: solange fremde Sprache laeuft, wartet Sku mit seinen
+            Buchstaben und Chatzeilen; schliesst du das Feld, werden die wartenden Buchstaben
+            verworfen. Ansagen, die ohnehin alles unterbrechen (Menue, "abgebrochen",
+            Prioritaetszeilen), unterbrechen auch die fremde Sprache wie bisher sofort.
+        Technisch: Das Client-Tor kannte nur Skus eigene Uebergaben. Eine fremde Aeusserung
+            (Mitschnitt: id 403, geparkt, 11 s spaeter unter dem ersten Buchstaben gestartet)
+            liess den naechsten Buchstaben ohne STARTED stehen, die 0.5-s-TTL gab ihn auf, ein
+            zweiter ging in den Client und uebernahm das STARTED des ersten. Neu (mForeign,
+            tMaxSeenId, tClientGateFreedAt): ein STARTED, auf das niemand wartet, oder eines mit
+            einer id unter der hoechsten vor unserer Uebergabe gesehenen, ist fremd - wird nie als
+            unsere id uebernommen, und solange es laeuft, wird nichts uebergeben (Stille-Grenze
+            8 s; unsere eigenen Stopps beenden es). Auf der Bruecke sind alle ids 0, "aelter" ist
+            deshalb echt-kleiner und greift dort nie. Im Frame, in dem eine unserer Aeusserungen
+            FINISHED meldet, wird nichts uebergeben: eine geparkte fremde startet genau auf dieses
+            FINISHED und muss zuerst gesehen werden. Harness-Szenario "foreign": alter Stand vier
+            Buchstaben nach "abgebrochen", neuer Stand keiner. Im Log: "BTTS foreign utterance",
+            "BTTS foreign cleared".
 
 
 -------------------------------------------------------------------------------------------------------

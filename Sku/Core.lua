@@ -625,7 +625,7 @@ SlashCmdList["SKUDEBUG"] = function(aMsg)
 				tNowStop, tNowSpeak))
 			return
 		end
-		-- [v43.8] /skudebug tts tail <delay> <hold> -- der Nachlauf-Schnitt (SkuVoice
+		-- [v43.7] /skudebug tts tail <delay> <hold> -- der Nachlauf-Schnitt (SkuVoice
 		-- tTailCutDelay). "tail off" schaltet ihn ab. Nur diese Sitzung.
 		local tTailDelay, tTailHold = tArg:match("^tail%s+([%d%.]+)%s+([%d%.]+)$")
 		if tArg == "tail off" then tTailDelay, tTailHold = "-1", nil end

@@ -13,12 +13,14 @@ Changes in Sku v43.7
             Turns are clearly faster: half a turn takes a good tenth of a second on a fast machine instead of a quarter second.
             If you already face the beacon (within 3 degrees), you are no longer turned. This ends the swinging back and forth around the beacon ping.
             The turn calibrates itself: after every turn Sku checks how far you really turned and adapts to your machine and your frame rate. The first few turns after the update may be imprecise.
+            Keyboard echo with a real Windows voice (not the NVDA bridge): the long pause after every typed letter is gone, the letters follow each other closely.
 
         Bugfixes
             Swimming and flying: the pitch lock now engages in combat too. If you ran into water while fighting, the first turns used to make you dive.
             Items from an equipment set: the tooltip named the armor type (for example "Cloth") twice. Now only once.
             Speech through a real Windows voice (not the NVDA bridge): lines that had long been replaced were still spoken seconds or minutes later - typed filter letters after "Menu closed", skipped list entries after releasing the arrow key, guild chat a minute late. Fixed.
             Menu: when the menu opened straight into a window or a list (bag, vendor, Shift+F10), "Target menu" was spoken after the content. Fixed.
+            Real Windows voice: if another addon spoke while you were typing, a letter could follow after "cancelled". Fixed.
 
     Turning: faster, more precise, self-calibrated
         Simple: "Turn to beacon" (T) and the two other turn commands were reworked based on
@@ -137,6 +139,49 @@ Changes in Sku v43.7
             re-raised). If the path matches nothing and the menu sits on the root, SlashFunc
             delivers the announcement afterwards and writes "menu: path walk found nothing" to the
             debug log. Intermediate stops of the path were silent before already.
+
+    Keyboard echo with a real Windows voice: the long pause between letters is gone
+        Simple: If you use Sku with a real Windows voice (not the NVDA bridge), typing in chat
+            left a pause of half a second to a full second after every letter - about one letter
+            per second, no matter how fast the voice was set. A slower voice only made the letter
+            longer, the pause stayed the same. That pause is gone now, the letters follow each
+            other closely. Every letter is still spoken, doubled ones included, and no letter
+            follows after Escape. The same pause sat between lines waiting behind each other
+            (parts of a quest text, several chat lines); it is hardly noticeable there, but it is
+            shortened as well. Nothing changes on the NVDA bridge.
+        Technically: The client reports VOICE_CHAT_TTS_PLAYBACK_FINISHED a fixed 0.5 to 1 s AFTER
+            the audio ended ("End" bookmark) and starts nothing new before it. Handing over earlier
+            does not help (v43.5e: the utterance is only parked and can then no longer be
+            cancelled). What frees the client at once is a stop. New in Libs/SkuVoice-1.0: once
+            "Start" and then "End" arrived for our utterance and something is waiting (echo lane or
+            queue), OnUpdate sends a StopSpeakingText after tTailCutDelay (0.03 s) and hands over
+            after tTailCutHold (0.06 s). Never from the bookmark handler. An "End" before "Start"
+            (happens on the first utterance after a stop) does not count. If nothing waits, the
+            line ends by itself as before. The cut does not set the bridge mark, blocks the
+            "#queue > 1" bypass once and drains the duplicate-guard entry itself (a stopped
+            utterance reports no FINISHED). Measured in the offline model: letter cycle 1.15 s ->
+            0.73 s. For trying, session only: /skudebug tts tail <delay> <hold>, /skudebug tts
+            tail off. In the log: "tail cut -> StopSpeakingText".
+
+    Speech from other addons confused the keyboard echo
+        Simple: If another addon (or a /run command) spoke through the game's text-to-speech while
+            you were typing, a letter could follow after "cancelled", that is after closing the
+            chat box. Only with a real Windows voice. Fixed: while foreign speech is playing, Sku
+            holds back its letters and chat lines; if you close the box, the waiting letters are
+            dropped. Announcements that interrupt everything anyway (menu, "cancelled", priority
+            lines) still interrupt the foreign speech at once, as before.
+        Technically: The client gate only knew Sku's own handovers. A foreign utterance (capture:
+            id 403, parked, started 11 s later under the first typed character) left the next
+            character without a STARTED, the 0.5 s TTL gave up on it, a second one went into the
+            client and took the first one's STARTED for its own. New (mForeign, tMaxSeenId,
+            tClientGateFreedAt): a STARTED nobody is waiting for, or one with an id below the
+            highest seen before our handover, is foreign - never adopted as our id, and nothing is
+            handed over while it plays (silence ceiling 8 s; our own stops end it). On the bridge
+            every id is 0, so "older" is strictly-less and never fires there. In the frame in
+            which one of our utterances reports FINISHED nothing is handed over: a parked foreign
+            one starts on exactly that FINISHED and has to be seen first. Harness scenario
+            "foreign": old build four letters after "cancelled", new build none. In the log:
+            "BTTS foreign utterance", "BTTS foreign cleared".
 
 
 -------------------------------------------------------------------------------------------------------

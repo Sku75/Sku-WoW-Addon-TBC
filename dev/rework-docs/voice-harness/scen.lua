@@ -66,7 +66,7 @@ S.login = function()
 end
 -- Speech that is not Sku's (another addon, a /run) lands in the client in the
 -- middle of a typing burst. Healthy: no typed letter is audible after
--- "abgebrochen". Since the v43.8 tail cut the FREMD line itself is flagged
+-- "abgebrochen". Since the v43.7 tail cut the FREMD line itself is flagged
 -- OUT-OF-ORDER LATE: tail cuts leave no natural FINISHED during the burst, so
 -- the client keeps it parked until Sku goes idle. That one flag is expected.
 S.foreign = function()

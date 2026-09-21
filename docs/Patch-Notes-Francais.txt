@@ -16,12 +16,14 @@ Changements dans Sku v43.7
             Les rotations sont nettement plus rapides : un demi-tour prend un bon dixième de seconde sur une machine rapide au lieu d'un quart de seconde.
             Si vous êtes déjà face à la balise (à 3 degrés près), vous n'êtes plus tourné. Cela met fin au va-et-vient autour du ping de la balise.
             La rotation s'étalonne elle-même : après chaque rotation, Sku vérifie de combien vous avez réellement tourné et s'adapte à votre machine et à votre fréquence d'images. Les toutes premières rotations après la mise à jour peuvent être imprécises.
+            Écho clavier avec une vraie voix Windows (pas le pont NVDA) : la longue pause après chaque lettre tapée a disparu, les lettres se suivent de près.
 
         Corrections
             Nage et vol : le verrou d'inclinaison s'active désormais aussi en combat. En entrant dans l'eau en plein combat, les premières rotations vous faisaient plonger.
             Objets d'un ensemble d'équipement : l'infobulle annonçait deux fois le type d'armure (par exemple « Tissu »). Désormais une seule fois.
             Synthèse vocale avec une vraie voix Windows (pas le pont NVDA) : des lignes remplacées depuis longtemps étaient quand même prononcées des secondes ou des minutes plus tard - lettres de filtre tapées après « Menu fermé », entrées de liste sautées après avoir relâché la flèche, discussion de guilde avec une minute de retard. Corrigé.
             Menu : quand le menu s'ouvrait directement dans une fenêtre ou une liste (sac, marchand, Maj+F10), « Menu de la cible » était encore annoncé après le contenu. Corrigé.
+            Vraie voix Windows : si un autre addon parlait pendant la saisie, une lettre pouvait suivre après « annulé ». Corrigé.
 
     Rotation : plus rapide, plus précise, auto-étalonnée
         Simple : « Se tourner vers la balise » (T) et les deux autres commandes de rotation ont été
@@ -152,6 +154,54 @@ Changements dans Sku v43.7
             rien et que le menu reste à la racine, SlashFunc rattrape l'annonce et écrit "menu:
             path walk found nothing" dans le journal de débogage. Les étapes intermédiaires du
             chemin étaient déjà muettes auparavant.
+
+    Écho clavier avec une vraie voix Windows : la longue pause entre les lettres a disparu
+        Simple : Avec une vraie voix Windows (pas le pont NVDA), la saisie dans le chat laissait une
+            pause d'une demi-seconde à une seconde après chaque lettre - environ une lettre par
+            seconde, quelle que soit la vitesse de la voix. Une voix plus lente allongeait
+            seulement la lettre, la pause restait la même. Cette pause a disparu, les lettres se
+            suivent de près. Chaque lettre est toujours prononcée, y compris les lettres doublées,
+            et plus aucune lettre ne suit après Échap. La même pause existait entre des lignes en
+            attente l'une derrière l'autre (parties d'un texte de quête, plusieurs lignes de
+            chat) ; elle s'y remarque à peine, mais elle est raccourcie elle aussi. Rien ne change
+            avec le pont NVDA.
+        Technique : Le client signale VOICE_CHAT_TTS_PLAYBACK_FINISHED de façon fixe 0,5 à 1 s APRÈS
+            la fin du son (signet « End ») et ne démarre rien avant. Transmettre plus tôt n'aide pas
+            (v43.5e : l'énoncé est seulement mis en attente et ne peut plus être annulé). Ce qui
+            libère le client immédiatement, c'est un arrêt. Nouveau dans Libs/SkuVoice-1.0 : dès
+            que « Start » puis « End » sont arrivés pour notre énoncé et que quelque chose attend
+            (voie d'écho ou file), OnUpdate envoie un StopSpeakingText après tTailCutDelay (0,03 s)
+            et transmet après tTailCutHold (0,06 s). Jamais depuis le gestionnaire de signets. Un
+            « End » avant « Start » (arrive sur le premier énoncé après un arrêt) ne compte pas. Si
+            rien n'attend, la ligne se termine d'elle-même comme avant. La coupe ne pose pas la
+            marque du pont, bloque une fois le contournement « #queue > 1 » et vide elle-même
+            l'entrée du garde anti-doublon (un énoncé arrêté ne signale pas FINISHED). Mesuré dans
+            le modèle hors ligne : cycle par lettre 1,15 s -> 0,73 s. Pour essayer, session
+            uniquement : /skudebug tts tail <delay> <hold>, /skudebug tts tail off. Dans le
+            journal : « tail cut -> StopSpeakingText ».
+
+    La parole d'autres addons perturbait l'écho clavier
+        Simple : Si un autre addon (ou une commande /run) parlait via la synthèse vocale du jeu
+            pendant que vous tapiez, une lettre pouvait encore suivre après « annulé », donc après
+            la fermeture du champ de chat. Uniquement avec une vraie voix Windows. Corrigé : tant
+            qu'une parole étrangère est en cours, Sku retient ses lettres et ses lignes de chat ;
+            si vous fermez le champ, les lettres en attente sont abandonnées. Les annonces qui
+            interrompent tout de toute façon (menu, « annulé », lignes prioritaires) interrompent
+            aussi la parole étrangère immédiatement, comme avant.
+        Technique : La porte du client ne connaissait que les transmissions de Sku. Un énoncé
+            étranger (capture : id 403, en attente, démarré 11 s plus tard sous le premier
+            caractère tapé) laissait le caractère suivant sans STARTED, le TTL de 0,5 s
+            l'abandonnait, un deuxième entrait dans le client et prenait le STARTED du premier
+            pour le sien. Nouveau (mForeign, tMaxSeenId, tClientGateFreedAt) : un STARTED que
+            personne n'attend, ou dont l'id est inférieur au plus élevé vu avant notre
+            transmission, est étranger - jamais adopté comme notre id, et rien n'est transmis tant
+            qu'il joue (plafond de silence 8 s ; nos propres arrêts y mettent fin). Sur le pont
+            tous les id valent 0, « plus ancien » est donc strictement inférieur et ne s'y
+            déclenche jamais. Dans l'image où l'un de nos énoncés signale FINISHED, rien n'est
+            transmis : un énoncé étranger en attente démarre exactement sur ce FINISHED et doit
+            être vu d'abord. Scénario du banc d'essai « foreign » : ancienne version quatre
+            lettres après « annulé », nouvelle version aucune. Dans le journal : « BTTS foreign
+            utterance », « BTTS foreign cleared ».
 
 
 -------------------------------------------------------------------------------------------------------

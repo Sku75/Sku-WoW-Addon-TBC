@@ -522,7 +522,7 @@ local tClientGateBlindAfter = 3
 local tClientGateStopDelay = 0.10
 local tClientGateStrikes = 0
 
--- [v43.8] Speech that is NOT ours: another addon's SpeakText, Blizzard's own chat
+-- [v43.7] Speech that is NOT ours: another addon's SpeakText, Blizzard's own chat
 -- TTS, a /run. The gate above only knows Sku's handovers, so a foreign utterance
 -- broke the one-in-the-client rule from outside. Capture (Anniversary, real SAPI):
 -- a /run utterance parked as id 403, started 11 s later under the first typed
@@ -551,7 +551,7 @@ local tMaxSeenId = nil
 -- delivers it one frame later. One frame covers both.
 local tClientGateFreedAt = 0
 
--- [v43.8] The tail cut. On a real SAPI voice the client reports FINISHED a fixed
+-- [v43.7] The tail cut. On a real SAPI voice the client reports FINISHED a fixed
 -- ~0.5-1 s AFTER the audio ended ("End" bookmark), whatever the voice speed, and
 -- starts nothing before it: 1 typed letter per second at speed 6 (capture
 -- 2026-09-21), and the same dead air between the parts of a quest text or two
@@ -612,7 +612,7 @@ local function ClientGateBusy(aNow)
 	if tClientGateStrikes >= tClientGateBlindAfter then
 		return false
 	end
-	-- [v43.8] Ours was handed over behind a foreign utterance that is still
+	-- [v43.7] Ours was handed over behind a foreign utterance that is still
 	-- playing: it CANNOT start yet, so its start TTL must not run -- giving up on
 	-- it here is what let a second character into the client (see mForeign).
 	if not mClientGate.started and ForeignBusy(aNow) then
@@ -911,7 +911,7 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	mClientGate.id = nil
 	mClientGate.awaitingId = true
 	mClientGate.sawStart = false
-	-- [v43.8] Anything that STARTs with an id below this was in the client before
+	-- [v43.7] Anything that STARTs with an id below this was in the client before
 	-- this handover and cannot be it (see mForeign).
 	mClientGate.maxIdBefore = tMaxSeenId
 	mClientGate.endAt = nil
@@ -956,7 +956,7 @@ function SkuVoice:Create()
 			-- [v43.7] Same event, same rule, for every utterance now: this is what
 			-- lets the next waiting line -- typed or announced -- into the client.
 			local tDoneId = ...
-			-- [v43.8] Ours is checked FIRST: on the bridge every id is 0, and a
+			-- [v43.7] Ours is checked FIRST: on the bridge every id is 0, and a
 			-- foreign 0 must not swallow the completion of our own 0.
 			if mClientGate.outstanding and mClientGate.id ~= nil and tDoneId == mClientGate.id then
 				ClientGateReset()
@@ -986,7 +986,7 @@ function SkuVoice:Create()
 			-- from the previous letter's. See mClientGate.
 			-- [v43.7] Any STARTED proves the client reports events: gate stays on.
 			tClientGateStrikes = 0
-			-- [v43.8] Ours or foreign? See mForeign. The bridge reports id 0 for
+			-- [v43.7] Ours or foreign? See mForeign. The bridge reports id 0 for
 			-- everything, so "older" is strictly-less and never fires there.
 			local tStartedId = ...
 			local tIsForeign = not mClientGate.awaitingId
@@ -1087,11 +1087,11 @@ function SkuVoice:Create()
 				if tMark == "Start" then
 					mClientGate.sawStart = true
 				elseif tMark == "End" and mClientGate.sawStart then
-					-- [v43.8] Audio over; OnUpdate may cut the silent tail (tTailCutDelay).
+					-- [v43.7] Audio over; OnUpdate may cut the silent tail (tTailCutDelay).
 					mClientGate.endAt = GetTime()
 				end
 			elseif mForeign.id ~= nil and tMarkId == mForeign.id then
-				-- [v43.8] Proof of life for a foreign utterance, same meaning.
+				-- [v43.7] Proof of life for a foreign utterance, same meaning.
 				mForeign.at = GetTime()
 			end
 		end
@@ -1150,7 +1150,7 @@ function SkuVoice:Create()
 			end
 		end
 
-		-- [v43.8] The tail cut -- see tTailCutDelay.
+		-- [v43.7] The tail cut -- see tTailCutDelay.
 		if mClientGate.endAt and tTailCutDelay >= 0 and mClientGate.outstanding and not mClientGate.stopDueAt
 			and (#mEchoQueue > 0 or #mSkuVoiceQueueBTTS > 0) then
 			local tNowCut = GetTime()
@@ -1376,7 +1376,7 @@ function SkuVoice:Create()
 							-- [v43.7] ...and an utterance the gate knows is in the client is
 							-- always something to cancel. The stop itself goes through
 							-- BttsStop, which defers it when that utterance has not started.
-							-- [v43.8] ...and so is a foreign utterance that is playing.
+							-- [v43.7] ...and so is a foreign utterance that is playing.
 							if mClientGate.outstanding or mForeign.id ~= nil or #mSkuVoiceQueueBTTS_Speaking > 0 or (tNow - tLastStopAt) > 0.15 then
 								BttsStop("queuereset", tBttsPostStopHold)
 							elseif dprint then
@@ -2875,7 +2875,7 @@ function SkuVoice:SetBttsHolds(aPostStop, aPostSpeak)
 end
 
 ---------------------------------------------------------------------------------------------------------
--- [v43.8] Session-only override of the tail cut (see tTailCutDelay). aDelay < 0
+-- [v43.7] Session-only override of the tail cut (see tTailCutDelay). aDelay < 0
 -- switches it off. Returns the values now in force.
 ---@param aDelay number|nil seconds kept between the "End" bookmark and the stop; negative = off
 ---@param aHold number|nil seconds between that stop and the next handover
