@@ -13,6 +13,69 @@ pitch lock in `Sku/SkuCore/Core.lua` (`SkuCore:TogglePitchLock`,
 `SkuCore:PitchLockLevelPulse`, the automatic tick below them). Commits
 `62e6b62` and `ccb4c00` and the one carrying this file.
 
+## Update 2026-09-22: the engine is frame-stepped, and that makes everything simpler
+
+Measured on another 400 turns, at a limited 20 fps and at a free 77 to 125
+fps, with every frame duration of every sweep logged. This section supersedes
+facts 3, 4 and 6 below and the whole "What Sku does now" design: the
+calibration, the millisecond model and the timer are gone. Commit after
+`df764b8`.
+
+The rule, exact to half a millisecond over 400 turns:
+
+1. The camera moves once per frame, by speed times the REAL duration of that
+   frame. Nothing happens between frames. At 120 degrees per second and 20
+   fps the only reachable positions are 6, 12, 18, 24 degrees.
+2. Every frame after the key press moves the camera, except the frame whose
+   OnUpdate issues `MoveViewXStop`: that frame does nothing. So a stop issued
+   in OnUpdate number m yields m minus 1 steps.
+3. The `elapsed` value an OnUpdate receives is exactly the duration the NEXT
+   step will use. The stop decision is therefore fully informed.
+4. `cameraYawMoveSpeed` is read every frame, even mid-sweep with a factor.
+   Lowering it in OnUpdate i scales step i.
+
+What was wrong before: the "momentum" of fact 3 was this one idle frame, not
+inertia. The "stop scatter" of fact 4 is not random: it is the timer landing
+on a frame boundary, and `C_Timer.After` slips a whole frame at 2 percent
+frame jitter. The "start and stop lag" of fact 6 was the idle frame measured
+in milliseconds, so it looked like minus 12 ms at 80 fps and minus 50 ms at
+20 fps and no single constant could fit both. A calibration that learns
+milliseconds gets poisoned every time the frame rate changes.
+
+What Sku does now, complete:
+
+- Plan: f = 1 / GetFramerate(), n = ceil(angle / (1440 * f)) steps,
+  speed = angle / (n * f). CVar at most 360, the rest as the MoveView factor.
+  The angle is a whole number of steps, so at a stable frame rate the turn
+  is exact whatever the speed.
+- Stop: an OnUpdate on a private frame counts only real frame advances
+  (GetTime is frozen within a frame). It accumulates the real deltas as
+  "motion time already committed". When the next delta would carry the sum
+  past angle / speed, that step is the last one: set the CVar to
+  cvar * (remaining / delta) for this one frame, stop in the next OnUpdate.
+  If the remaining part is under 5 percent of a step, stop now.
+- Release: two frames after the stop (at least 50 ms) the mouselook pulse
+  has been applied, measure and accept the next press.
+- No calibration. k and the idle frame were 1.00 on both gears with a
+  spread of 0.01. One safety remains: if six or more fast turns show the
+  factor delivering under 70 percent of the asked speed, the fast gear is
+  switched off for good.
+- Lead compensation stays: on 139 moving turns the landing error under 5
+  yards was 4.2 degrees with lead and 8.7 without.
+
+Results. 20 fps: big turns usable in 258 ms (was 451), every turn within 2
+degrees, dropped presses 2 to 4 percent (was 25), no orbiting mounted.
+77 to 125 fps free: small turns 0.2 degrees mean error, mid 0.5, big 1.1,
+worst 2.6, all 59 within 3, 5 hitched frames absorbed without effect.
+Trimmed turns landed with 0.5 degrees mean error where a CVar that is not
+read per frame would have produced 5.3 of overshoot.
+
+For a WowVision port this replaces its timer, its calibration and its
+settle guesswork with about 40 lines: plan n and speed, accumulate real
+deltas in OnUpdate, trim the last step, stop, pulse, release. Test at
+`/console maxfps 20` and with the limiter off; log the frame deltas of every
+sweep once, and the rule above shows up in the first ten turns.
+
 ## The shared mechanism
 
 Addons cannot turn the character (`TurnLeftStart`, `TurnRightStart` and
