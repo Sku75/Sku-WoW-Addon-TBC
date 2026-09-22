@@ -15,6 +15,7 @@ Changes in Sku v43.8
 
         Changes
             Game error messages (for example "You have no target") are read only once while you hammer a key. The same message is announced again only after you have left the key alone for about two and a half seconds, or when a different error message came in between.
+            Turn to beacon, waypoint or unit: the turn now lands equally precisely on every machine and is much faster. At 20 frames per second a half turn took almost half a second and every fourth key press was lost; now a quarter of a second, and hardly any press is lost. On fast machines big turns land within about one degree instead of three to five. The self-calibration from v43.7 is gone.
 
         Bugfixes
             Speech: since v43.7 the same line queued up again on every key press and was read many times in a row, even after a more important announcement. Fixed.
@@ -100,6 +101,39 @@ Changes in Sku v43.8
             offline harness against fake Setting objects passed; verified in game: the FPS switch
             and value (log: PROXY_FOREGROUND_FPS = 20, TurnCal fps 20).
 
+
+    Turn to beacon: frame-exact instead of time-based
+        Simple: Until now Sku rotated the camera for a computed time and then stopped it. The game
+            only moves the camera once per frame, and a timer hits the frame boundary only roughly -
+            at low frame rates it misses. On a slow machine (20 frames per second, reproduced in the
+            test with the FPS limit) every turn over 15 degrees therefore took almost half a second,
+            small turns fell a third short, every fourth key press hit the busy window and was lost,
+            and mounted you circled close waypoints again. Now Sku counts the frames and uses their
+            real duration: the turn speed is chosen so the angle is a whole number of frame steps,
+            and if the last step would overshoot, it is shortened. Result at 20 frames per second: a
+            half turn in a quarter of a second, every turn within two degrees, hardly any lost
+            presses, no circling. At 80 to 120 frames: big turns with about one degree of error
+            instead of three to five, small ones under half a degree. The self-calibration from
+            v43.7 is gone - it learned values that are the same on every machine. /skuturn now only
+            shows whether the fast gear works on this machine; /skuturn reset clears that check.
+        Technically: GameWorldObjects:TurnToWorldPosition (SkuCore/gameWorldObjects.lua). Measured on
+            about 400 turns at 20 and 77 to 125 fps (residual 0.5 ms): the camera steps once per
+            frame by speed times the REAL frame duration; the frame whose OnUpdate issues the stop
+            no longer steps; the frame duration measured in an OnUpdate is exactly the next step's.
+            Planner: n = ceil(angle / (1440 * f)) steps, v = angle / (n * f), CVar at most 360, the
+            rest as the MoveView factor. The stop comes from an OnUpdate counter that accumulates the
+            real frame durations and stops as soon as the sum reaches the motion time angle/v; if
+            the last step would overshoot, cameraYawMoveSpeed is scaled to the remainder for that one
+            frame and the stop follows in the next - the CVar takes effect at once (54 trimmed turns:
+            error 0.5 degrees instead of the 5.3 a dead CVar would have given). C_Timer was the cause
+            of the old scatter: it only fires on frame boundaries and slips a whole frame at 2
+            percent frame jitter. The camera "glide" of v43.7 was this one idle frame, not momentum.
+            The calibration (scale and latency per gear, store v4/v5) learned 1.00 and one frame with
+            a spread of 0.01 and was removed; store turnCal v6 only keeps noGear2 (factor has no
+            effect: median real/asked speed under 0.7 over 6+ fast turns). Busy window after the
+            stop 2 frames or 50 ms instead of 3 or 100. Log "TurnCal" per press with n, m, mt, trim,
+            dts (all frame durations), fest/fact/fmax, rest_land, lead_shift; analysis script pattern
+            an4.py in the scratchpad. Lessons for WowVision: dev/rework-docs/TURN-TO-BEACON-LESSONS.md.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.7
