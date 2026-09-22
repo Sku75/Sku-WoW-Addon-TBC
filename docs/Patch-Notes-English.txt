@@ -8,11 +8,17 @@ Changes in Sku v43.8
 
     Overview
 
+        New
+            Game settings: checkboxes with a slider or a dropdown (for example "Max foreground FPS"), buttons, the "Graphics quality" block and the colorblind settings can now be operated; they used to read "not supported".
+            Game settings: number values start with an "Enter value" entry (text box), digits filter the value list, and the values carry the game's own labels ("60 FPS", "150%").
+            Game settings: dropdowns say "(recommended)" and "(not available)" like the game, greyed-out rows say "(disabled)", and subcategories of addon settings are shown.
+
         Changes
             Game error messages (for example "You have no target") are read only once while you hammer a key. The same message is announced again only after you have left the key alone for about two and a half seconds, or when a different error message came in between.
 
         Bugfixes
             Speech: since v43.7 the same line queued up again on every key press and was read many times in a row, even after a more important announcement. Fixed.
+            Menu: pressing a key (End, Home, arrow) right after "menu open" still got you the first main-menu entry ("Target menu") read out after the new entry. Fixed.
 
     Speech: a line no longer queues up behind itself
         Simple: Since v43.7 a message that was triggered several times in quick succession could
@@ -28,6 +34,23 @@ Changes in Sku v43.8
             checked when they are ENQUEUED, against mSkuVoiceQueueBTTS and
             mSkuVoiceQueueBTTS_Speaking; log tag "BTTS ENQUEUE-DUP". New harness scenario
             "errspam" (dev/rework-docs/voice-harness).
+
+    Menu: the first entry was still spoken late after a quick key press
+        Simple: When the menu opens, Sku says "menu open" and then the first entry. If you
+            pressed a key while "menu open" was still speaking, you heard the new entry - and
+            after it "Target menu", the first entry, which was no longer the current one. It
+            depended only on how fast you pressed, not on the key or the menu. Now the old first
+            entry is dropped as soon as another menu entry is announced.
+        Technically: Two causes. (1) The v43.7 rule "keep a waiting line without a reset behind
+            the new overwrite line" (meant for chat that a warning cuts into) also applied to menu
+            lines. The keep loop in SkuVoice (queuereset scan, Libs/SkuVoice-1.0) now drops a
+            waiting line whose scope equals the scope of the new overwrite line: a scope is one
+            position in one UI, only its newest line is true. (2) The two lines spoken at open
+            ("Menu;open" and SkuOptions.Menu[1].name, SkuZOptions/Core.lua) called
+            OutputStringBTtts directly WITHOUT the "menu" scope that VocalizeCurrentMenuName gives
+            every other menu line - so the scope comparison had nothing to compare. Both carry
+            "menu" now; as a side effect EndScope("menu") drops both when the menu is closed again
+            at once. Log before: "BTTS queuereset kept 1 waiting line(s) behind the overwrite".
 
     Error messages: announced only when they newly appear
         Simple: Sku now follows the rule the game applies for sighted players. There an error
@@ -49,6 +72,33 @@ Changes in Sku v43.8
             and not a read of UIErrorsFrame: Blizzard throttles only about 20 message types, for the
             rest a new line is added per press, and the order of the two UI_ERROR_MESSAGE handlers
             is not defined.
+
+    Game settings: every control of the Blizzard settings
+        Simple: In the menu Settings, Game settings many entries only read "(not supported)", for
+            example "Max foreground FPS". They can be operated now. A checkbox with a slider becomes
+            two entries: the switch and "... value". Number values are a value list with the game's
+            own labels ("60 FPS", "150%"); digits filter the list, and the first entry "Enter value"
+            opens the text box. Dropdowns mark the recommendation with "(recommended)" and values
+            this machine cannot run with "(not available)". Buttons such as "Reset chat position"
+            run their action. The "Graphics quality" block is a submenu with "Raid and
+            battleground". Key bindings link to Sku's own menu. A setting the game currently greys
+            out says "(disabled)". Also, graphics, display and UI scale settings used to be staged
+            only and never applied - they take effect immediately now.
+        Technically: SkuCore/gameOptions.lua now dispatches on the initializer's frame template
+            (Blizzard_SettingControls.lua) instead of the value type: Checkbox, Slider, Dropdown,
+            CheckboxSlider (cbSetting/sliderSetting), CheckboxDropdown, CheckboxWithButton, Button,
+            AdvancedQualitySection (its option lists are closures inside the frame; Sku derives them
+            from a table per cvar and asks IsGraphicsSettingValueSupported), ColorblindSelector,
+            keybinding sections. setting:SetValue(v) without the second argument only stores a
+            pendingValue on settings carrying CommitFlag.Apply, which only the panel's Apply button
+            writes - Sku never opens the panel, hence SetValue(v, true) now, plus RestartGx /
+            UpdateWindow / SaveBindings by commit flag. GetAllCategories returns top-level
+            categories only; GetSubcategories is walked recursively. ShouldShow false = row skipped,
+            GetModifyPredicates false = suffix "(disabled)". Value labels come from
+            options.formatters[Label.Right]; typed input is mapped back linearly through the
+            formatter (percent, quality slider 1..10). Every write logs "gameOptions: set". An
+            offline harness against fake Setting objects passed; verified in game: the FPS switch
+            and value (log: PROXY_FOREGROUND_FPS = 20, TurnCal fps 20).
 
 
 -------------------------------------------------------------------------------------------------------

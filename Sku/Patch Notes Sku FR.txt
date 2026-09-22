@@ -11,6 +11,11 @@ Changements dans Sku v43.8
 
     Aperçu
 
+        Nouveautés
+            Réglages du jeu : les cases à cocher avec curseur ou liste déroulante (par exemple « FPS max au premier plan »), les boutons, le bloc « Qualité graphique » et les réglages daltonisme sont maintenant utilisables ; ils disaient jusqu'ici « non pris en charge ».
+            Réglages du jeu : les valeurs numériques commencent par une entrée « Saisir une valeur » (zone de texte), les chiffres filtrent la liste des valeurs, et les valeurs portent les libellés du jeu (« 60 FPS », « 150% »).
+            Réglages du jeu : les listes déroulantes disent « (recommandé) » et « (non disponible) » comme le jeu, les lignes grisées « (désactivé) », et les sous-catégories des réglages d'extensions sont affichées.
+
         Changements
             Les messages d'erreur du jeu (par exemple « Vous n'avez pas de cible ») ne sont lus qu'une seule fois quand vous martelez une touche. Le même message n'est annoncé de nouveau qu'après avoir laissé la touche tranquille environ deux secondes et demie, ou lorsqu'un autre message d'erreur est arrivé entre-temps.
 
@@ -76,6 +81,38 @@ Changements dans Sku v43.8
             et non une lecture de UIErrorsFrame : Blizzard ne limite qu'une vingtaine de types de
             messages, pour les autres une ligne s'ajoute à chaque appui, et l'ordre des deux
             gestionnaires UI_ERROR_MESSAGE n'est pas défini.
+
+    Réglages du jeu : tous les contrôles des réglages Blizzard
+        Simple : Dans le menu Réglages, Réglages du jeu, beaucoup d'entrées ne disaient que « (non
+            pris en charge) », par exemple « FPS max au premier plan ». Elles sont maintenant
+            utilisables. Une case à cocher avec curseur devient deux entrées : l'interrupteur et
+            « ... valeur ». Les valeurs numériques sont une liste avec les libellés du jeu
+            (« 60 FPS », « 150% ») ; les chiffres filtrent la liste, et la première entrée « Saisir
+            une valeur » ouvre la zone de texte. Les listes déroulantes marquent la recommandation
+            par « (recommandé) » et les valeurs que cette machine ne peut pas exécuter par « (non
+            disponible) ». Les boutons comme « Réinitialiser la position du chat » exécutent leur
+            action. Le bloc « Qualité graphique » est un sous-menu avec « Raid et champ de
+            bataille ». Les raccourcis clavier renvoient au menu propre de Sku. Un réglage que le
+            jeu grise en ce moment dit « (désactivé) ». De plus, les réglages graphiques, d'affichage
+            et d'échelle de l'interface n'étaient jusqu'ici que mis en attente et jamais appliqués -
+            ils prennent effet immédiatement maintenant.
+        Technique : SkuCore/gameOptions.lua aiguille maintenant selon le frame template de
+            l'initializer (Blizzard_SettingControls.lua) au lieu du type de valeur : Checkbox,
+            Slider, Dropdown, CheckboxSlider (cbSetting/sliderSetting), CheckboxDropdown,
+            CheckboxWithButton, Button, AdvancedQualitySection (ses listes d'options sont des
+            closures dans le frame ; Sku les dérive d'une table par cvar et interroge
+            IsGraphicsSettingValueSupported), ColorblindSelector, sections de raccourcis.
+            setting:SetValue(v) sans second argument ne stocke qu'un pendingValue sur les réglages
+            portant CommitFlag.Apply, que seul le bouton Appliquer du panneau écrit - Sku n'ouvre
+            jamais le panneau, d'où SetValue(v, true) maintenant, plus RestartGx / UpdateWindow /
+            SaveBindings selon le commit flag. GetAllCategories ne renvoie que les catégories de
+            premier niveau ; GetSubcategories est parcouru récursivement. ShouldShow false = ligne
+            omise, GetModifyPredicates false = suffixe « (désactivé) ». Les libellés des valeurs
+            viennent de options.formatters[Label.Right] ; une saisie est reconvertie linéairement
+            via le formatter (pourcentage, curseur de qualité 1..10). Chaque écriture journalise
+            « gameOptions: set ». Un harnais hors ligne contre de faux objets Setting a réussi ;
+            vérifié en jeu : l'interrupteur et la valeur FPS (journal : PROXY_FOREGROUND_FPS = 20,
+            TurnCal fps 20).
 
 
 -------------------------------------------------------------------------------------------------------

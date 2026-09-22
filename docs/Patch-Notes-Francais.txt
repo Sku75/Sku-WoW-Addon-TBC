@@ -11,11 +11,17 @@ Changements dans Sku v43.8
 
     Aperçu
 
+        Nouveautés
+            Réglages du jeu : les cases à cocher avec curseur ou liste déroulante (par exemple « FPS max au premier plan »), les boutons, le bloc « Qualité graphique » et les réglages daltonisme sont maintenant utilisables ; ils disaient jusqu'ici « non pris en charge ».
+            Réglages du jeu : les valeurs numériques commencent par une entrée « Saisir une valeur » (zone de texte), les chiffres filtrent la liste des valeurs, et les valeurs portent les libellés du jeu (« 60 FPS », « 150% »).
+            Réglages du jeu : les listes déroulantes disent « (recommandé) » et « (non disponible) » comme le jeu, les lignes grisées « (désactivé) », et les sous-catégories des réglages d'extensions sont affichées.
+
         Changements
             Les messages d'erreur du jeu (par exemple « Vous n'avez pas de cible ») ne sont lus qu'une seule fois quand vous martelez une touche. Le même message n'est annoncé de nouveau qu'après avoir laissé la touche tranquille environ deux secondes et demie, ou lorsqu'un autre message d'erreur est arrivé entre-temps.
 
         Corrections
             Synthèse vocale : depuis la v43.7, la même ligne se remettait en file à chaque appui et était lue de nombreuses fois de suite, même après une annonce plus importante. Corrigé.
+            Menu : appuyer sur une touche (Fin, Début, flèche) juste après « menu ouvert » faisait encore lire la première entrée du menu principal (« Menu cible ») après la nouvelle entrée. Corrigé.
 
     Synthèse vocale : une ligne ne se met plus en file derrière elle-même
         Simple : Depuis la v43.7, un message déclenché plusieurs fois de suite pouvait entrer dans
@@ -32,6 +38,26 @@ Changements dans Sku v43.8
             queuereset sont donc vérifiées à la MISE EN FILE, contre mSkuVoiceQueueBTTS et
             mSkuVoiceQueueBTTS_Speaking ; marque de journal « BTTS ENQUEUE-DUP ». Nouveau scénario
             de banc d'essai « errspam » (dev/rework-docs/voice-harness).
+
+    Menu : la première entrée était encore prononcée en retard après un appui rapide
+        Simple : À l'ouverture du menu, Sku dit « menu ouvert » puis la première entrée. Si vous
+            appuyiez sur une touche pendant que « menu ouvert » parlait encore, vous entendiez la
+            nouvelle entrée - puis quand même « Menu cible », la première entrée, qui n'était plus
+            la bonne. Cela ne dépendait que de la vitesse de l'appui, pas de la touche ni du menu.
+            Désormais l'ancienne première entrée est écartée dès qu'une autre entrée de menu est
+            annoncée.
+        Technique : Deux causes. (1) La règle de la v43.7 « conserver une ligne en attente sans
+            réinitialisation derrière la nouvelle ligne d'écrasement » (prévue pour le chat dans
+            lequel un avertissement s'intercale) s'appliquait aussi aux lignes de menu. La boucle de
+            conservation de SkuVoice (balayage queuereset, Libs/SkuVoice-1.0) écarte maintenant une
+            ligne en attente dont la portée est celle de la nouvelle ligne d'écrasement : une
+            portée est une position dans une interface, seule sa ligne la plus récente est vraie.
+            (2) Les deux lignes prononcées à l'ouverture (« Menu;open » et SkuOptions.Menu[1].name,
+            SkuZOptions/Core.lua) appelaient OutputStringBTtts directement SANS la portée « menu »
+            que VocalizeCurrentMenuName donne à toute autre ligne de menu - la comparaison des
+            portées n'avait donc rien à comparer. Les deux portent maintenant « menu » ; par
+            ricochet, EndScope("menu") écarte les deux si le menu est refermé aussitôt. Journal
+            avant : « BTTS queuereset kept 1 waiting line(s) behind the overwrite ».
 
     Messages d'erreur : annoncés seulement quand ils apparaissent
         Simple : Sku suit désormais la règle que le jeu applique pour les voyants. Un message
@@ -55,6 +81,38 @@ Changements dans Sku v43.8
             et non une lecture de UIErrorsFrame : Blizzard ne limite qu'une vingtaine de types de
             messages, pour les autres une ligne s'ajoute à chaque appui, et l'ordre des deux
             gestionnaires UI_ERROR_MESSAGE n'est pas défini.
+
+    Réglages du jeu : tous les contrôles des réglages Blizzard
+        Simple : Dans le menu Réglages, Réglages du jeu, beaucoup d'entrées ne disaient que « (non
+            pris en charge) », par exemple « FPS max au premier plan ». Elles sont maintenant
+            utilisables. Une case à cocher avec curseur devient deux entrées : l'interrupteur et
+            « ... valeur ». Les valeurs numériques sont une liste avec les libellés du jeu
+            (« 60 FPS », « 150% ») ; les chiffres filtrent la liste, et la première entrée « Saisir
+            une valeur » ouvre la zone de texte. Les listes déroulantes marquent la recommandation
+            par « (recommandé) » et les valeurs que cette machine ne peut pas exécuter par « (non
+            disponible) ». Les boutons comme « Réinitialiser la position du chat » exécutent leur
+            action. Le bloc « Qualité graphique » est un sous-menu avec « Raid et champ de
+            bataille ». Les raccourcis clavier renvoient au menu propre de Sku. Un réglage que le
+            jeu grise en ce moment dit « (désactivé) ». De plus, les réglages graphiques, d'affichage
+            et d'échelle de l'interface n'étaient jusqu'ici que mis en attente et jamais appliqués -
+            ils prennent effet immédiatement maintenant.
+        Technique : SkuCore/gameOptions.lua aiguille maintenant selon le frame template de
+            l'initializer (Blizzard_SettingControls.lua) au lieu du type de valeur : Checkbox,
+            Slider, Dropdown, CheckboxSlider (cbSetting/sliderSetting), CheckboxDropdown,
+            CheckboxWithButton, Button, AdvancedQualitySection (ses listes d'options sont des
+            closures dans le frame ; Sku les dérive d'une table par cvar et interroge
+            IsGraphicsSettingValueSupported), ColorblindSelector, sections de raccourcis.
+            setting:SetValue(v) sans second argument ne stocke qu'un pendingValue sur les réglages
+            portant CommitFlag.Apply, que seul le bouton Appliquer du panneau écrit - Sku n'ouvre
+            jamais le panneau, d'où SetValue(v, true) maintenant, plus RestartGx / UpdateWindow /
+            SaveBindings selon le commit flag. GetAllCategories ne renvoie que les catégories de
+            premier niveau ; GetSubcategories est parcouru récursivement. ShouldShow false = ligne
+            omise, GetModifyPredicates false = suffixe « (désactivé) ». Les libellés des valeurs
+            viennent de options.formatters[Label.Right] ; une saisie est reconvertie linéairement
+            via le formatter (pourcentage, curseur de qualité 1..10). Chaque écriture journalise
+            « gameOptions: set ». Un harnais hors ligne contre de faux objets Setting a réussi ;
+            vérifié en jeu : l'interrupteur et la valeur FPS (journal : PROXY_FOREGROUND_FPS = 20,
+            TurnCal fps 20).
 
 
 -------------------------------------------------------------------------------------------------------

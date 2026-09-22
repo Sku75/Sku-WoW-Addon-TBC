@@ -8,6 +8,11 @@ Aenderungen in Sku v43.8
 
     Ueberblick
 
+        Neu
+            Spieleinstellungen: Kontrollkaestchen mit Regler oder Auswahlliste (zum Beispiel "Maximale Vordergrund-FPS"), Schaltflaechen, der Block "Grafikqualitaet" und die Farbenblindheits-Einstellungen sind jetzt bedienbar; bisher hiess es dort "nicht unterstuetzt".
+            Spieleinstellungen: Zahlenwerte haben als ersten Eintrag "Wert eingeben" (Textfeld), Ziffern filtern die Werteliste, und die Werte tragen die Beschriftung des Spiels ("60 FPS", "150%").
+            Spieleinstellungen: Auswahllisten sagen "(empfohlen)" und "(nicht verfuegbar)" wie das Spiel, ausgegraute Eintraege "(deaktiviert)", und Untermenues von AddOn-Einstellungen werden angezeigt.
+
         Aenderungen
             Fehlermeldungen des Spiels (zum Beispiel "Ihr habt kein Ziel") werden beim Haemmern auf eine Taste nur noch einmal vorgelesen. Dieselbe Meldung wird erst wieder angesagt, wenn du die Taste etwa zweieinhalb Sekunden in Ruhe gelassen hast oder wenn dazwischen eine andere Fehlermeldung kam.
 
@@ -71,6 +76,35 @@ Aenderungen in Sku v43.8
             Bewusst eine Zeitmarke und kein Auslesen von UIErrorsFrame: Blizzard drosselt nur rund 20 Meldungstypen, bei den
             uebrigen kommt pro Druck eine neue Zeile dazu, und die Reihenfolge der beiden
             UI_ERROR_MESSAGE-Handler ist nicht festgelegt.
+
+    Spieleinstellungen: alle Bedienelemente der Blizzard-Einstellungen
+        Einfach: Im Menue Einstellungen, Spieleinstellungen waren viele Eintraege nur mit "(nicht
+            unterstuetzt)" zu hoeren, zum Beispiel "Maximale Vordergrund-FPS". Jetzt sind sie
+            bedienbar. Ein Kontrollkaestchen mit Regler wird zu zwei Eintraegen: dem Schalter und
+            "... Wert". Zahlenwerte sind eine Werteliste mit den Beschriftungen des Spiels ("60 FPS",
+            "150%"); Ziffern filtern die Liste, und der erste Eintrag "Wert eingeben" oeffnet das
+            Textfeld. Auswahllisten markieren die Empfehlung mit "(empfohlen)" und Werte, die dieser
+            Rechner nicht kann, mit "(nicht verfuegbar)". Schaltflaechen wie "Chatposition
+            zuruecksetzen" fuehren ihre Aktion aus. Der Block "Grafikqualitaet" ist ein Untermenue mit
+            "Schlachtzug und Schlachtfeld". Die Tastenbelegung verweist auf Skus eigenes Menue. Eine
+            Einstellung, die vom Spiel gerade ausgegraut ist, sagt "(deaktiviert)". Ausserdem wurden
+            Grafik-, Anzeige- und UI-Skalierungs-Einstellungen bisher nur vorgemerkt und nie
+            angewendet - sie greifen jetzt sofort.
+        Technisch: SkuCore/gameOptions.lua verzweigt jetzt nach dem Frame-Template des Initializers
+            (Blizzard_SettingControls.lua) statt nach dem Werttyp: Checkbox, Slider, Dropdown,
+            CheckboxSlider (cbSetting/sliderSetting), CheckboxDropdown, CheckboxWithButton, Button,
+            AdvancedQualitySection (die Optionslisten sind dort Closures im Frame; Sku leitet sie aus
+            einer Tabelle je CVar ab und fragt IsGraphicsSettingValueSupported), ColorblindSelector,
+            Keybinding-Sektionen. setting:SetValue(v) ohne zweites Argument legt bei Settings mit
+            CommitFlag.Apply nur einen pendingValue an, den erst der Apply-Knopf des Panels schreibt -
+            Sku oeffnet das Panel nie, darum jetzt SetValue(v, true) plus RestartGx / UpdateWindow /
+            SaveBindings je nach Commit-Flag. GetAllCategories liefert nur Top-Level-Kategorien,
+            GetSubcategories wird rekursiv gelaufen. ShouldShow false = Zeile entfaellt,
+            GetModifyPredicates false = Suffix "(deaktiviert)". Beschriftung der Zahlenwerte ueber
+            options.formatters[Label.Right]; eine Tippeingabe wird linear durch den Formatter
+            zurueckgerechnet (Prozent, Qualitaetsregler 1..10). Jeder Schreibzugriff loggt
+            "gameOptions: set". Ein Offline-Harness gegen gefakte Setting-Objekte lief durch; im Spiel
+            geprueft: FPS-Schalter und -Wert (Log: PROXY_FOREGROUND_FPS = 20, TurnCal fps 20).
 
 
 -------------------------------------------------------------------------------------------------------

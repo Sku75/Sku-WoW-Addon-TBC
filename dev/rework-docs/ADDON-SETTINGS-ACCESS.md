@@ -83,8 +83,19 @@ investigation adds:
   categories — verify in-game, then use `GetCategorySet()` to split them out
   into a dedicated "AddOns" menu.
 - Subcategories exist (`category:GetSubcategories()`,
-  `Blizzard_Category.lua:84`) and gameOptions.lua does NOT walk them yet —
-  needed for addons that use `RegisterCanvasLayoutSubcategory` etc.
+  `Blizzard_Category.lua:84`); `GetAllCategories()` returns TOP-level
+  categories only. gameOptions.lua walks them since 2026-09-22 (nested
+  submenus) — needed for addons that use `RegisterCanvasLayoutSubcategory` etc.
+- Since 2026-09-22 gameOptions.lua dispatches on the initializer's frame
+  TEMPLATE (checkbox / slider / dropdown / checkbox+slider / checkbox+dropdown /
+  checkbox+button / button / graphics-quality section / colorblind panel /
+  keybinding sections → link to Sku's key-bind menu) instead of guessing from
+  the value type, and writes with `setting:SetValue(v, true)`: without the
+  `immediate` flag a setting carrying `Settings.CommitFlag.Apply` (all
+  graphics/display/UI-scale settings) only STAGES a pending value that the
+  panel's Apply button would commit — Sku never opens the panel, so those
+  writes silently never applied before. Number entries get a first child
+  "Wert eingeben" (Sku text box) on top of the stepped value list.
 - **Canvas** categories expose only `layout:GetFrame()`
   (`Blizzard_SettingsLayouts.lua:69`) → a raw frame. No data model. Options:
   the generic widget-walk (Sku's make-a-Blizzard-window-accessible recipe) on
