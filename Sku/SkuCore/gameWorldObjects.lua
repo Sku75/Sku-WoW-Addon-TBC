@@ -189,34 +189,58 @@ local tTurnYawSpeedSaved
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- [v43.7] SELBSTKALIBRIERUNG der Drehung (Idee aus WowVision uebernommen, Modell
 -- eigenes). Bisher: fester Zuschlag von 5 Grad und feste 360 Grad/s als
--- Untergrenze - beides auf EINEM Rechner eingemessen. Der Fehler einer Drehung
--- ist aber Drehgeschwindigkeit mal ZEIT (Timer feuert erst im Frame nach
--- Ablauf, Kamera startet/gleitet frameweise), und diese Zeit haengt an der
--- Framerate: 8 ms bei 120 fps, 33 ms bei 30 fps. Darum wird jetzt nach jeder
--- Drehung gemessen, wie weit der Charakter WIRKLICH gedreht hat.
--- Modell je Gang:  gedreht = k * Sollgeschwindigkeit * (Timerdauer + L).
--- k = Massstab (dreht die Kamera wirklich so schnell wie verlangt?), L =
--- Zusatzzeit (Start-/Stoppverzug). Ab der ERSTEN Messung wird k aus dem
--- Median der Verhaeltnisse geschaetzt, ab 8 Messungen mit streuenden Dauern
--- eine Gerade fuer k UND L gelegt. Die erste Fassung (ein gemeinsames r ueber
--- alle Geschwindigkeiten) scheiterte am Log vom 2026-09-21: die CVar wirkt
--- nur bis 360, alles darueber war Einbildung - siehe TURN_CVAR_MAX.
--- Das alte Verhalten (+5 Grad, max(360, Winkel/0.25)) gibt es nur noch ueber
--- /skuturn legacy. Messwerte liegen accountweit in SkuOptions.db.global.SkuCore.turnCal
--- (die Kalibrierung gehoert zum Rechner, nicht zum Charakter).
--- /skuturn zeigt den Stand, /skuturn reset verwirft ihn, /skuturn legacy
--- schaltet die Kalibrierung ab bzw. wieder an.
+-- Untergrenze - beides auf EINEM Rechner eingemessen.
+--
+-- [v43.8] Drehung in FRAMES statt in Millisekunden. Das Log vom 2026-09-22
+-- (20 fps, 132 Drehungen, plus 29 bei 80 fps als Vergleich) zeigt, wie die
+-- Engine wirklich arbeitet: die Kamera bewegt sich EINMAL JE FRAME um
+-- Geschwindigkeit mal Framedauer (bei 120 Grad/s und 20 fps: 6 Grad je
+-- Frame, gedreht wurde 6, 12, 18, 24), ein Stopp greift nur an einer
+-- Framegrenze, und der erste Frame nach dem Startbefehl bewegt NICHTS
+-- (Latenz der Engine, bei 80 wie bei 20 fps, bis 700 Grad/s gemessen).
+-- Modell je Gang:  gedreht = k * v * f * (m - c)
+--   m = Frames vom Tastendruck bis zum Stoppbefehl, c = verlorene Frames
+--   (~1), k = Gier-Massstab (dreht die Kamera so schnell wie verlangt?),
+--   f = Framedauer. Gemessen wird y = gedreht / (v * f) = Bewegungsframes.
+-- Der Planer waehlt darum ERST die Bewegungsframes n (so wenige, dass die
+-- Geschwindigkeit unter dem Deckel bleibt) und DANN v = Winkel / (k*n*f):
+-- der Winkel ist ein Vielfaches des Frame-Schritts, der Stopp trifft exakt,
+-- bei jeder Framerate. Die alte Regel (Streuung = halbe Framedauer mal
+-- Tempo, also langsam bei wenig fps, dann per 0.25-s-Deckel gestreckt)
+-- machte langsame Rechner kuenstlich langsam (20 fps: 300 ms je Drehung
+-- ueber 15 Grad, 25 Prozent aller Druecke im Sperrfenster verworfen, beritten
+-- wieder das Kreisen um nahe Wegpunkte) und lernte die Latenz als
+-- Millisekunden: -12 ms bei 80 fps, -50 bei 20 - kleine Drehungen verloren
+-- bei 20 fps darum 35-40 Prozent. Der Stopp kommt aus einem OnUpdate-
+-- ZAEHLER, nicht aus C_Timer: gezaehlte Frames stimmen auch, wenn ein Frame
+-- haengt oder die Framezeit streut, ein Timer hingegen faellt bei 2 Prozent
+-- Streuung um einen ganzen Frame (Log 12:12:08: 94 verlangt, 57 gedreht).
+-- Kalibrierung: ab der ersten Messung k aus dem Median von y/(m-c) mit c = 1,
+-- ab 8 Messungen mit mindestens 2 Frames Spreizung in m eine Gerade fuer k
+-- UND c. Messwerte liegen accountweit in SkuOptions.db.global.SkuCore.turnCal
+-- (die Kalibrierung gehoert zum Rechner, nicht zum Charakter). /skuturn zeigt
+-- den Stand, /skuturn reset verwirft ihn, /skuturn legacy schaltet auf das
+-- alte Tempo (+5 Grad, max(360, Winkel/0.25 s)), ebenfalls frameweise.
+-- Log je Druck: "TurnCal" mit n (geplante Bewegungsframes), mp/m (erwarteter
+-- und tatsaechlicher Stoppframe), steps (gemessene Bewegungsframes), lost =
+-- m - steps (gemessen 2026-09-22: 1.01 bei 20 fps, 1.02 bei 80 fps, bei jedem
+-- Tempo), fest/fact (angenommene/echte Framedauer), fmax (laengster Frame der
+-- Drehung = Haenger), mt (Bewegungszeit beim Stopp), dts (alle Framedauern).
+-- Der Stopp selbst faellt nicht blind im Frame m, sondern wo die Summe der
+-- echten Framedauern die Bewegungszeit Winkel/(k*v) am besten trifft - siehe
+-- Stoppregel in TurnToWorldPosition.
 local TURN_TOLERANCE = 3          -- Grad: schon ausgerichtet -> gar nicht drehen
-local TURN_MAX_TIME = 0.25        -- keine Drehung dauert laenger (Log 2026-08-31 16:08)
-local TURN_JITTER_SMALL = 3       -- Grad erlaubte Frame-Streuung bei kleinen Drehungen
-local TURN_JITTER_SHARE = 0.06    -- ... bei grossen: Anteil des Winkels (180 Grad -> ~11)
 local TURN_SPEED_MIN = 60
-local TURN_SPEED_MAX = 1440       -- der alte feste Wert, mehr lief nie
+local TURN_SPEED_MAX = 1440       -- CVar 360 mal Faktor 4; real ~1300-1400 (gemessen 2026-09-21)
+local TURN_CVAR_MAX = 360         -- darueber dreht die Kamera NICHT schneller (gemessen 2026-09-21)
+local TURN_MIN_STEPS = 1          -- Bewegungsframes je Drehung mindestens
+local TURN_LOST_DEFAULT = 1       -- verlorene Frames (Start-/Stopplatenz), gemessen 2026-09-22
+local TURN_LOST_MIN, TURN_LOST_MAX = 0, 3
+local TURN_SETTLE_MIN_FRAMES = 2  -- nach dem Stopp: der Transfer-Impuls wirkt erst im Folgeframe
+local TURN_SETTLE_MIN_TIME = 0.05
+local TURN_LEGACY_MAX_TIME = 0.25 -- nur noch /skuturn legacy
 local TURN_CAL_MIN_SAMPLES = 8
 local TURN_CAL_MAX_SAMPLES = 80
-local TURN_CVAR_MAX = 360         -- darueber dreht die Kamera NICHT schneller (gemessen 2026-09-21)
-local TURN_L_DEFAULT = -0.005
-local TURN_L_MIN, TURN_L_MAX = -0.05, 0.08
 -- Zwei "Gaenge": 1 = CVar allein (bis 360 Grad/s), 2 = CVar 360 mal Faktor im
 -- MoveView-Argument. Jeder Gang misst seinen eigenen Massstab k, weil der
 -- Faktor auf diesem Client nie eingemessen wurde.
@@ -229,14 +253,20 @@ hooksecurefunc("TurnLeftStop", function() tManualTurnLeft = false end)
 hooksecurefunc("TurnRightStart", function() tManualTurnRight = true tManualTurnAt = GetTime() end)
 hooksecurefunc("TurnRightStop", function() tManualTurnRight = false end)
 
-local tTurnCalFit       -- {[1] = {k=, L=, n=, how=}, [2] = ...} oder false = legacy
+-- Der Frame-Zaehler der laufenden Drehung (OnUpdate nur waehrend einer Drehung).
+local tTurnFrame = CreateFrame("Frame")
+
+local tTurnCalFit       -- {[1] = {k=, c=, n=, how=}, [2] = ...} oder false = legacy
 local function tTurnCalStore()
    if not (SkuSettings and SkuSettings.Sub and SkuOptions and SkuOptions.db) then return nil end
    local tOk, tStore = pcall(SkuSettings.Sub, SkuSettings, "SkuCore", "turnCal", "global")
    if not tOk or type(tStore) ~= "table" then return nil end
-   if tStore.v ~= 4 or type(tStore.samples) ~= "table" then
-      tStore.v = 4
+   -- v5 = Frame-Einheiten (y Bewegungsframes, m Frames bis Stopp); aeltere
+   -- Millisekunden-Messungen sind unbrauchbar und werden verworfen.
+   if tStore.v ~= 5 or type(tStore.samples) ~= "table" then
+      tStore.v = 5
       tStore.samples = {}
+      tStore.noGear2 = nil
    end
    return tStore
 end
@@ -246,42 +276,75 @@ local function tMedianOf(aList)
    return aList[math.floor((#aList + 1) / 2)]
 end
 
--- Modell je Gang: gedreht = k * Sollgeschwindigkeit * (Timerdauer + L).
--- y = gedreht / Sollgeschwindigkeit, also y = k * d + k * L.
-local function tTurnCalFitGear(aSamples, aGear, aL0)
+-- Modell je Gang: y = k * (m - c). Solange die Messungen nicht in m streuen,
+-- ist c nicht bestimmbar: dann c = 1 (gemessen) und k aus dem Median von
+-- y/(m-c). Ab 8 Messungen mit mindestens 2 Frames Spreizung in m wird erst
+-- das c gesucht, unter dem die Verhaeltnisse y/(m-c) am wenigsten streuen
+-- (0, 0.5, ... 3; bei Gleichstand bleibt 1), dann eine Gerade y = k*m + b
+-- durch die Messungen nahe diesem Median gelegt (c = -b/k).
+local function tTurnCalFitGear(aSamples, aGear)
    local tRange = TURN_K_RANGE[aGear]
-   local tRatios = {}
+   local tList, mMin, mMax = {}, nil, nil
    for x = 1, #aSamples do
       local tS = aSamples[x]
-      if tS.g == aGear and tS.d + aL0 > 0.005 then tRatios[#tRatios + 1] = tS.y / (tS.d + aL0) end
-   end
-   if #tRatios == 0 then return {k = 1, L = aL0, n = 0, how = "default"} end
-   local tCount = #tRatios
-   local tKMed = math.max(tRange[1], math.min(tRange[2], tMedianOf(tRatios)))
-   local tFit = {k = tKMed, L = aL0, n = tCount, how = "ratio"}
-   -- Gerade durch die Messpunkte, sobald genug da sind und die Dauern streuen.
-   local n, sd, sy, sdd, sdy, dMin, dMax = 0, 0, 0, 0, 0, nil, nil
-   for x = 1, #aSamples do
-      local tS = aSamples[x]
-      if tS.g == aGear and tS.d + aL0 > 0.005 and math.abs(tS.y / (tS.d + aL0) - tKMed) <= 0.3 * tKMed then
-         n = n + 1
-         sd, sy, sdd, sdy = sd + tS.d, sy + tS.y, sdd + tS.d * tS.d, sdy + tS.d * tS.y
-         if not dMin or tS.d < dMin then dMin = tS.d end
-         if not dMax or tS.d > dMax then dMax = tS.d end
+      if tS.g == aGear and tS.m and tS.y then
+         tList[#tList + 1] = tS
+         if not mMin or tS.m < mMin then mMin = tS.m end
+         if not mMax or tS.m > mMax then mMax = tS.m end
       end
    end
-   if n >= TURN_CAL_MIN_SAMPLES and dMax / dMin >= 2 then
-      local tDenom = n * sdd - sd * sd
+   if #tList == 0 then return {k = 1, c = TURN_LOST_DEFAULT, n = 0, how = "default"} end
+   local function tRatioFit(aC)
+      local tRatios = {}
+      for x = 1, #tList do
+         local tS = tList[x]
+         if tS.m - aC >= 0.5 then tRatios[#tRatios + 1] = tS.y / (tS.m - aC) end
+      end
+      if #tRatios == 0 then return nil end
+      local tKMed = math.max(tRange[1], math.min(tRange[2], tMedianOf(tRatios)))
+      -- Streuung als MITTLERE Abweichung: der Median waere 0, sobald mehr
+      -- als die Haelfte der Messungen dasselbe m hat, und truege dann jeden
+      -- c-Kandidaten gleich gut.
+      local tDev = 0
+      for x = 1, #tRatios do tDev = tDev + math.abs(tRatios[x] - tKMed) / tKMed end
+      return {k = tKMed, c = aC, n = #tRatios, how = "ratio", disp = tDev / #tRatios}
+   end
+   local tFit = tRatioFit(TURN_LOST_DEFAULT) or {k = 1, c = TURN_LOST_DEFAULT, n = 0, how = "default", disp = 1}
+   -- Schon EIN Frame Spreizung trennt die c-Kandidaten (bei m = 2 und 3
+   -- streut nur das falsche c); die Gerade unten will zwei.
+   if #tList < TURN_CAL_MIN_SAMPLES or mMax - mMin < 1 then
+      tFit.disp = nil
+      return tFit
+   end
+   local tBest = tFit
+   for tC = TURN_LOST_MIN, TURN_LOST_MAX, 0.5 do
+      local tTry = tRatioFit(tC)
+      if tTry and tTry.disp < tBest.disp - 0.01 then tBest = tTry end
+   end
+   tFit = tBest
+   local n, sm, sy, smm, smy, lMin, lMax = 0, 0, 0, 0, 0, nil, nil
+   for x = 1, #tList do
+      local tS = tList[x]
+      if tS.m - tBest.c >= 0.5 and math.abs(tS.y / (tS.m - tBest.c) - tBest.k) <= 0.3 * tBest.k then
+         n = n + 1
+         sm, sy, smm, smy = sm + tS.m, sy + tS.y, smm + tS.m * tS.m, smy + tS.m * tS.y
+         if not lMin or tS.m < lMin then lMin = tS.m end
+         if not lMax or tS.m > lMax then lMax = tS.m end
+      end
+   end
+   if n >= TURN_CAL_MIN_SAMPLES and lMax - lMin >= 2 then
+      local tDenom = n * smm - sm * sm
       if tDenom > 1e-12 then
-         local k = (n * sdy - sd * sy) / tDenom
+         local k = (n * smy - sm * sy) / tDenom
          if k >= tRange[1] and k <= tRange[2] then
-            local tL = ((sy - k * sd) / n) / k
-            if tL >= TURN_L_MIN and tL <= TURN_L_MAX then
-               tFit = {k = k, L = tL, n = n, how = "line"}
+            local c = -((sy - k * sm) / n) / k
+            if c >= TURN_LOST_MIN and c <= TURN_LOST_MAX then
+               tFit = {k = k, c = c, n = n, how = "line"}
             end
          end
       end
    end
+   tFit.disp = nil
    return tFit
 end
 
@@ -289,17 +352,17 @@ local function tTurnCalRefit()
    tTurnCalFit = false
    local tStore = tTurnCalStore()
    if not tStore or tStore.legacy == true then return end
-   local tG1 = tTurnCalFitGear(tStore.samples, 1, TURN_L_DEFAULT)
-   tTurnCalFit = {[1] = tG1, [2] = tTurnCalFitGear(tStore.samples, 2, tG1.L)}
+   tTurnCalFit = {[1] = tTurnCalFitGear(tStore.samples, 1), [2] = tTurnCalFitGear(tStore.samples, 2)}
    -- Sicherung: multipliziert das MoveView-Argument auf diesem Client NICHT,
    -- drehen Gang-2-Drehungen trotz verlangter 540+ Grad/s weiter mit ~360.
-   -- Dann Gang 2 stilllegen - lieber ehrlich 360 Grad/s und laengere Drehung
-   -- als ein Massstab, der fuer jeden Faktor ein anderer waere.
+   -- Dann Gang 2 stilllegen - lieber ehrlich 360 Grad/s und mehr Frames als
+   -- ein Massstab, der fuer jeden Faktor ein anderer waere.
    local tReal = {}
+   local tC = tTurnCalFit[2].c
    for x = 1, #tStore.samples do
       local tS = tStore.samples[x]
-      if tS.g == 2 and tS.s and tS.s >= 540 and tS.d + tG1.L > 0.005 then
-         tReal[#tReal + 1] = tS.y * tS.s / (tS.d + tG1.L)
+      if tS.g == 2 and tS.s and tS.s >= 540 and tS.m - tC >= 1 then
+         tReal[#tReal + 1] = tS.y * tS.s / (tS.m - tC)   -- reale Grad/s
       end
    end
    -- Der Befund bleibt gespeichert (bis /skuturn reset): sonst probiert Gang 2
@@ -315,45 +378,41 @@ local function tTurnFrameTime()
 end
 
 -- Plant eine Drehung um aAngle Grad (Betrag). Rueckgabe: Sollgeschwindigkeit,
--- Timerdauer, Modus, CVar-Wert, MoveView-Faktor.
+-- Bewegungsframes n, Frames bis zum Stoppbefehl m (Erwartung), Modus,
+-- CVar-Wert, MoveView-Faktor, angenommene Framedauer, Massstab k.
 local function tTurnPlan(aAngle)
    if tTurnCalFit == nil then tTurnCalRefit() end
+   local tF = tTurnFrameTime()
    if not tTurnCalFit then
       local tSweep = aAngle + 5
-      local tSpeed = math.max(360, tSweep / TURN_MAX_TIME)
-      return tSpeed, tSweep / tSpeed, "legacy", tSpeed, 1
+      local tSpeed = math.max(360, tSweep / TURN_LEGACY_MAX_TIME)
+      local n = math.max(1, math.floor(tSweep / (tSpeed * tF) + 0.5))
+      return tSpeed, n, n + TURN_LOST_DEFAULT, "legacy", tSpeed, 1, tF, 1
    end
-   local tF = tTurnFrameTime()
-   -- Der Stopp trifft nur Framegrenzen: Streuung = +-halbe Framedauer mal
-   -- Geschwindigkeit. Geschwindigkeit so waehlen, dass die Streuung im
-   -- erlaubten Band bleibt - hohe Framerate dreht also von selbst flotter,
-   -- niedrige genauer. Nie langsamer als das bisherige Zeitlimit.
-   local tJitter = math.max(TURN_JITTER_SMALL, TURN_JITTER_SHARE * aAngle)
-   local tSpeed = math.min(TURN_SPEED_MAX, 2 * tJitter / tF)
-   tSpeed = math.max(tSpeed, aAngle / TURN_MAX_TIME)
-   if tTurnCalFit.noGear2 then tSpeed = math.min(tSpeed, TURN_CVAR_MAX) end
-   -- Eine Drehung ist mindestens ~2 Frames lang. Waere die Timerdauer kuerzer,
-   -- ist der Winkel bei dieser Geschwindigkeit gar nicht treffbar -> langsamer.
-   local tMinDur = 2 * tF
-   local tGear, tCal
+   local tCap = tTurnCalFit.noGear2 and TURN_CVAR_MAX or TURN_SPEED_MAX
+   -- Erst die Frames: so wenige, dass das Tempo unter dem Deckel bleibt. Dann
+   -- das Tempo, das den Winkel genau trifft. Der Gang folgt aus dem Tempo;
+   -- wechselt er, gilt dessen Massstab und die Rechnung laeuft einmal nach.
+   local tGear = tCap > TURN_CVAR_MAX and 2 or 1
+   local tSpeed, n
    for _ = 1, 2 do
-      tGear = tSpeed > TURN_CVAR_MAX and 2 or 1
-      tCal = tTurnCalFit[tGear]
-      if aAngle / (tCal.k * tSpeed) - tCal.L < tMinDur and (tMinDur + tCal.L) > 0 then
-         tSpeed = aAngle / (tCal.k * (tMinDur + tCal.L))
-      end
-      tSpeed = math.max(TURN_SPEED_MIN, math.min(tTurnCalFit.noGear2 and TURN_CVAR_MAX or TURN_SPEED_MAX, tSpeed))
+      local tK = tTurnCalFit[tGear].k
+      n = math.max(TURN_MIN_STEPS, math.ceil(aAngle / (tK * tCap * tF) - 1e-9))
+      tSpeed = math.max(TURN_SPEED_MIN, math.min(tCap, aAngle / (tK * n * tF)))
+      local tNewGear = tSpeed > TURN_CVAR_MAX and 2 or 1
+      if tNewGear == tGear then break end
+      tGear = tNewGear
    end
    tGear = tSpeed > TURN_CVAR_MAX and 2 or 1
-   tCal = tTurnCalFit[tGear]
+   local m = math.max(1, math.floor(n + tTurnCalFit[tGear].c + 0.5))
    local tCVar = math.min(tSpeed, TURN_CVAR_MAX)
-   return tSpeed, math.max(0.005, aAngle / (tCal.k * tSpeed) - tCal.L), "g"..tGear, tCVar, tSpeed / tCVar
+   return tSpeed, n, m, "g"..tGear, tCVar, tSpeed / tCVar, tF, tTurnCalFit[tGear].k
 end
 
-local function tTurnCalAddSample(aY, aD, aGear, aSpeed)
+local function tTurnCalAddSample(aY, aM, aGear, aSpeed)
    local tStore = tTurnCalStore()
    if not tStore then return end
-   tStore.samples[#tStore.samples + 1] = {y = aY, d = aD, g = aGear, s = aSpeed}
+   tStore.samples[#tStore.samples + 1] = {y = aY, m = aM, g = aGear, s = aSpeed}
    while #tStore.samples > TURN_CAL_MAX_SAMPLES do table.remove(tStore.samples, 1) end
    tTurnCalRefit()
 end
@@ -374,7 +433,7 @@ SlashCmdList["SKUTURN"] = function(aMsg)
    if tTurnCalFit then
       for tGear = 1, 2 do
          local tCal = tTurnCalFit[tGear]
-         tText = tText..string.format("gear %d: k %.3f, L %.1f ms, n %d, %s; ", tGear, tCal.k, tCal.L * 1000, tCal.n, tCal.how)
+         tText = tText..string.format("gear %d: k %.3f, lost %.2f frames, n %d, %s; ", tGear, tCal.k, tCal.c, tCal.n, tCal.how)
       end
       if tTurnCalFit.noGear2 then tText = tText.."gear 2 OFF (speed factor has no effect here)" end
    else
@@ -434,13 +493,16 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
       local tRawDegree = degree
       local tSpeedNow = GetUnitSpeed("player")
       if tSpeedNow and tSpeedNow > 0 and GetPlayerFacing() then
-         local _, tPlanDur = tTurnPlan(math.abs(degree))
+         local _, _, tPlanFrames, _, _, _, tPlanF = tTurnPlan(math.abs(degree))
          -- Transferpuffer 0.05 s statt frueher 0.15: gemessen 2026-09-21 (65
          -- Drehungen beritten, 14 m/s) zielte das Vorhalten im Median ~30
          -- Prozent zu weit - die 0.15 stammten von der alten, langsamen
          -- Drehung. Nutzen hat es nur unter ~5 m Abstand (Fehler beim Landen
          -- 7 statt 16 Grad), darueber war es mit 0.15 eher leicht schaedlich.
-         local tDurEst = math.min(TURN_MAX_TIME, tPlanDur) + 0.05
+         -- [v43.8] In Frames: m Frames bis zum Stopp plus einer fuer den
+         -- Transfer, plus 0.03 s (bei 80 fps wie bisher ~0.16 s fuer 180 Grad,
+         -- bei 20 fps ~0.28 statt 0.31).
+         local tDurEst = (tPlanFrames + 1) * tPlanF + 0.03
          local tLeadDist = tSpeedNow * tDurEst
          local _, tDist = SkuNav:Distance(fPlayerPosX, fPlayerPosY, aWorldX, aWorldY)
          if tDist and tDist > 0 then
@@ -527,32 +589,46 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
       local tTarget = math.abs(degree)
       -- [v43.7] Gemessen 2026-09-21: cameraYawMoveSpeed wirkt nur bis 360.
       -- Werte darueber drehen NICHT schneller (376, 453 und 731 ergaben in
-      -- 0.25 s alle ~88 Grad) - die "schnellen" grossen Drehungen seit 43.2
-      -- blieben darum still bei ~88 Grad pro Druck haengen. Mehr Tempo kommt
-      -- nur ueber das Argument von MoveViewXStart, das die CVar multipliziert
-      -- (so macht es WowVision). Also: CVar hoechstens 360, Rest als Faktor.
-      local tSpeed, tDuration, tPlanMode, tPlanCVar, tPlanFactor = tTurnPlan(tTarget)
+      -- 0.25 s alle ~88 Grad). Mehr Tempo kommt nur ueber das Argument von
+      -- MoveViewXStart, das die CVar multipliziert (so macht es WowVision).
+      -- Also: CVar hoechstens 360, Rest als Faktor.
+      -- [v43.8] Plan in Frames: n Bewegungsframes, Stoppbefehl im Frame m
+      -- (Herleitung oben bei der Kalibrierung).
+      local tSpeed, tSteps, tStopFrame, tPlanMode, tPlanCVar, tPlanFactor, tFrameEst, tPlanK = tTurnPlan(tTarget)
+      -- Bewegungszeit, die die Kamera bei diesem Tempo braucht. Der Stopp
+      -- unten faellt nicht blind im Frame m, sondern dort, wo die ECHTE
+      -- Summe der Framezeiten dem am naechsten kommt: gemessen 2026-09-22
+      -- (146 Drehungen, ~80 fps ohne Begrenzer) wich die echte Framedauer
+      -- waehrend einer Drehung bis zu 70 Prozent von GetFramerate ab, und
+      -- blindes Zaehlen machte daraus bis zu 54 Grad Fehler (Tempo mal
+      -- Summe der Abweichungen). Bei begrenzter, stabiler Framerate (20 fps:
+      -- Fehler 0.0 bis 1.4 Grad) sind beide Regeln identisch.
+      local tMotionTarget = tTarget / (tPlanK * tSpeed)
       local tGear = tPlanMode == "g2" and 2 or 1
       local tDirection = degree < 0 and -1 or 1
-      local function tSweepStart(aDirection, aCVar, aFactor)
-         SetCVar("cameraYawMoveSpeed", aCVar)
-         if aDirection < 0 then MoveViewRightStart(aFactor) else MoveViewLeftStart(aFactor) end
-      end
-      tSweepStart(tDirection, tPlanCVar, tPlanFactor)
-      -- Nachmessen: der Impuls wirkt erst einen Frame spaeter, also etwas
-      -- warten. Die Sperre gegen Folgedruecke deckt diese Wartezeit MIT ab -
-      -- ein Druck in dieser Luecke wuerde sonst mit der ALTEN Blickrichtung
-      -- rechnen und dieselbe Drehung noch einmal kommandieren.
-      local tFrameAtStart = tTurnFrameTime()
-      local tSettle = math.min(0.3, math.max(0.1, 3 * tFrameAtStart))
+      SetCVar("cameraYawMoveSpeed", tPlanCVar)
+      if tDirection < 0 then MoveViewRightStart(tPlanFactor) else MoveViewLeftStart(tPlanFactor) end
+      -- Nach dem Stopp noch ein paar Frames warten, bevor gemessen und der
+      -- naechste Druck zugelassen wird: der Transfer-Impuls wirkt erst im
+      -- Folgeframe - ein Druck davor rechnete mit der ALTEN Blickrichtung und
+      -- kommandierte dieselbe Drehung noch einmal. Frueher 3 Frames bzw.
+      -- 0.1 s; jetzt 2 Frames bzw. 0.05 s (Messung und Freigabe im selben
+      -- Frame, dann geht keine Messung an einen schnellen Folgedruck
+      -- verloren).
+      local tSettleFrames = math.max(TURN_SETTLE_MIN_FRAMES, math.ceil(TURN_SETTLE_MIN_TIME / tFrameEst - 1e-9))
       local tTurnBegin = GetTime()
-      local tElapsed1, tLandX, tLandY
-      SkuCore.gameWorldObjectsTurnBusyUntil = tTurnBegin + tDuration + 0.1 + tSettle
+      -- Schaetzung fuer den Sperr-Guard oben; der Zaehler unten gibt frueher
+      -- frei, der Wachhund unten spaetestens.
+      SkuCore.gameWorldObjectsTurnBusyUntil = tTurnBegin + (tStopFrame + tSettleFrames) * tFrameEst + 0.25
+      local tFrames, tLastFrameTime, tFrameMax = 0, tTurnBegin, 0
+      local tMotionAcc, tDts = 0, {}
+      local tStopAt, tStopAtFrame, tLandX, tLandY, tDone
+      -- Notbremse: nie mehr als das Doppelte der erwarteten Frames.
+      local tStopFrameMax = tStopFrame * 2 + 2
 
       local function tMeasure()
-         if SkuCore.gameWorldObjectsTurnSeq ~= tMyTurnSeq then return end
          local tFacingEnd = GetPlayerFacing()
-         if not tFacingAtStart or not tFacingEnd or not tElapsed1 or tElapsed1 <= 0 then return end
+         if not tFacingAtStart or not tFacingEnd or not tStopAt or not tStopAtFrame or tStopAtFrame < 1 then return end
          -- Peilung positiv = Blickrichtung muss SINKEN (afinal = facing - Zielwinkel).
          local tTurned = math.deg(tFacingAtStart - tFacingEnd)
          while tTurned > 180 do tTurned = tTurned - 360 end
@@ -563,12 +639,13 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
          -- 00:59:05). Darum die Vollkreis-Entsprechung waehlen, die dem Ziel
          -- am naechsten liegt.
          if tTurned < tTarget - 180 then tTurned = tTurned + 360 end
-         local tF = (tFrameAtStart + tTurnFrameTime()) / 2
-         -- Drehungen im Laufen zaehlen fuer die Kalibrierung MIT: im Log
-         -- 2026-09-21 lagen sie deckungsgleich auf den Messungen im Stand (die
-         -- Folgekamera stoert die kurze Drehung nicht) - und auf Routen gibt
-         -- es keine anderen.
-         local tRatio = tTurned / (tSpeed * tDuration)
+         -- Echte mittlere Framedauer der Drehung: der Stopp fiel genau m
+         -- Frames nach dem Druck (GetTime steht je Frame fest, der Zaehler
+         -- zaehlt nur Fortschritte). Daraus die gemessenen Bewegungsframes.
+         local tElapsed = tStopAt - tTurnBegin
+         local tFrameAct = tElapsed / tStopAtFrame
+         local tYSteps = (tFrameAct > 0) and tTurned / (tSpeed * tFrameAct) or 0
+         local tRatio = tYSteps / tSteps
          local tVerdict = "ok"
          if tPlanMode == "legacy" then tVerdict = "legacy"
          elseif not tSnapped then tVerdict = "no snap"
@@ -580,14 +657,28 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
             ..((HasFullControl ~= nil and HasFullControl() ~= true) and "nocontrol," or "")
             ..(IsSwimming() == true and "swim," or "")..(IsFlying() == true and "fly," or "")
          tFlags = tFlags == "" and "-" or string.sub(tFlags, 1, -2)
-         if tVerdict == "ok" then tTurnCalAddSample(tTurned / tSpeed, tDuration, tGear, tSpeed) end
+         if tVerdict == "ok" then tTurnCalAddSample(tYSteps, tStopAtFrame, tGear, tSpeed) end
          dprint("TurnCal", "target", string.format("%.1f", tTarget),
             "turned", string.format("%.1f", tTurned),
             "err", string.format("%.1f", tTurned - tTarget),
             "speed", string.format("%.0f", tSpeed),
-            "dur_ms", string.format("%.1f", tDuration * 1000),
-            "elapsed_ms", string.format("%.1f", tElapsed1 * 1000),
-            "fps", string.format("%.0f", 1 / tF),
+            -- n geplante Bewegungsframes, m Frames bis Stoppbefehl, steps
+            -- gemessene Bewegungsframes, lost = m - steps (Hypothese: ~1 bei
+            -- jedem Tempo und jeder Framerate), fest/fact angenommene/echte
+            -- Framedauer, fmax laengster Frame der Drehung (Haenger).
+            -- mp = erwartetes m aus dem Plan, m = tatsaechlicher Stoppframe,
+            -- mt = angesammelte Bewegungszeit beim Stopp (Hypothese: Frames
+            -- 1..m-1 schreiten), dts = alle Framedauern der Drehung.
+            "n", tSteps, "mp", tStopFrame, "m", tStopAtFrame,
+            "steps", string.format("%.2f", tYSteps),
+            "lost", string.format("%.2f", tStopAtFrame - tYSteps),
+            "mt", string.format("%.1f", tMotionAcc * 1000),
+            "dts", table.concat(tDts, "/"),
+            "fest", string.format("%.1f", tFrameEst * 1000),
+            "fact", string.format("%.1f", tFrameAct * 1000),
+            "fmax", string.format("%.1f", tFrameMax * 1000),
+            "elapsed_ms", string.format("%.1f", tElapsed * 1000),
+            "fps", string.format("%.0f", tFrameAct > 0 and 1 / tFrameAct or 0),
             -- Braucht es das Vorhalten ueberhaupt? rest_land = Peilung zum Ziel
             -- vom Ort des Transfer-Impulses aus, mit der gelandeten
             -- Blickrichtung - also der echte Zielfehler beim Landen, nicht
@@ -607,9 +698,19 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
             "mode", tPlanMode, "sample", tVerdict, "wp", tostring(aLabel))
       end
 
-      local function tFinish()
-         SetCVar("cameraYawMoveSpeed", tTurnYawSpeedSaved)
-         tTurnYawSpeedSaved = nil
+      local function tRestoreYawSpeed()
+         if tTurnYawSpeedSaved ~= nil then
+            SetCVar("cameraYawMoveSpeed", tTurnYawSpeedSaved)
+            tTurnYawSpeedSaved = nil
+         end
+      end
+
+      local function tStopSweep()
+         MoveViewRightStop()
+         MoveViewLeftStop()
+         tStopAt = GetTime()
+         tStopAtFrame = tFrames
+         tRestoreYawSpeed()
          -- Der Impuls uebertraegt die Kamera-Gierung auf die Blickrichtung des
          -- Charakters - er IST die Drehung und muss bleiben. Beim Schwimmen/
          -- Fliegen nimmt er auch die Kamera-Neigung mit (der Tauchstups);
@@ -619,8 +720,6 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
          MouselookStart()
          MouselookStop()
          tLandX, tLandY = UnitPosition("player")
-         SkuCore.gameWorldObjectsTurnBusyUntil = GetTime() + tSettle
-         C_Timer.After(tSettle, tMeasure)
          -- Nach JEDER Drehung im Wasser/in der Luft mit aktiver Sperre einmal
          -- aktiv geradestellen (PitchLockLevelPulse: Kamera auf die bekannte
          -- fast-waagerechte Voreinstellung, Transfer-Impuls, Sperre deckelt
@@ -644,27 +743,65 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
          end
       end
 
-      C_Timer.After(tDuration, function()
-         -- Nur die NEUESTE Drehung stoppt und raeumt auf. Laeuft schon eine
-         -- neuere, hat DEREN Tastendruck oben unsere Bewegung bereits
-         -- angehalten und neu gestartet - ein Stop hier wuerde sie mitten in
-         -- der Fahrt abwuergen, und der Impuls wuerde ihre halbe Drehung
-         -- vorzeitig auf den Charakter uebertragen.
-         if SkuCore.gameWorldObjectsTurnSeq ~= tMyTurnSeq then return end
-         MoveViewRightStop()
-         MoveViewLeftStop()
-         tElapsed1 = GetTime() - tTurnBegin
-         -- [v43.7] Eine NACHKORREKTUR im selben Tastendruck (Rest langsam
-         -- nachfahren, vor oder zurueck) wurde 2026-09-21 gebaut, im Spiel
-         -- getestet und wieder AUSGEBAUT: die Kamera hat Schwung und gleitet
-         -- nach dem Stopp weiter (~30 Grad bei vollem Tempo, in der
-         -- Kalibrierung still mitgelernt). Ein Gegenbefehl in dieses Gleiten
-         -- kostete ~35 statt 4 Grad, ein Vorwaertsbefehl schoss 7-21 Grad
-         -- drueber, die Drehung wurde laenger und hoerbar unruhig, und die
-         -- falsch zugerechneten Messungen vergifteten die Kalibrierung.
-         -- Nicht wieder einbauen, ohne das Gleiten erst abzuwarten (+100 ms -
-         -- vom Nutzer als zu teuer abgelehnt).
-         tFinish()
+      local function tRelease()
+         tDone = true
+         tTurnFrame:SetScript("OnUpdate", nil)
+         SkuCore.gameWorldObjectsTurnBusyUntil = GetTime()
+      end
+
+      -- Der Frame-Zaehler: zaehlt nur echte Frame-Fortschritte (GetTime steht
+      -- innerhalb eines Frames fest; ein OnUpdate noch im Druck-Frame zaehlt
+      -- nicht). Im Frame m Stopp + Transfer, tSettleFrames spaeter Messung
+      -- und Freigabe. Nur die NEUESTE Drehung zaehlt: laeuft schon eine
+      -- neuere, hat DEREN Tastendruck oben unsere Bewegung bereits angehalten
+      -- und neu gestartet - ein Stopp hier wuerde sie mitten in der Fahrt
+      -- abwuergen, und der Impuls wuerde ihre halbe Drehung vorzeitig auf den
+      -- Charakter uebertragen. (Der Guard oben laesst das nicht zu, der
+      -- Wachhund unten aber schon.)
+      -- [v43.7] Eine NACHKORREKTUR im selben Tastendruck (Rest langsam
+      -- nachfahren, vor oder zurueck) wurde 2026-09-21 gebaut, im Spiel
+      -- getestet und wieder AUSGEBAUT: die Kamera bewegt sich nach dem Stopp
+      -- noch einen Frame weiter (die verlorene Latenz, in c mitgelernt). Ein
+      -- Gegenbefehl in diesen Frame kostete ~35 statt 4 Grad, ein Vorwaerts-
+      -- befehl schoss 7-21 Grad drueber, und die falsch zugerechneten
+      -- Messungen vergifteten die Kalibrierung. Nicht wieder einbauen.
+      tTurnFrame:SetScript("OnUpdate", function()
+         if SkuCore.gameWorldObjectsTurnSeq ~= tMyTurnSeq then tTurnFrame:SetScript("OnUpdate", nil) return end
+         local tNow = GetTime()
+         if tNow <= tLastFrameTime then return end
+         local tDelta = tNow - tLastFrameTime
+         tLastFrameTime = tNow
+         tFrames = tFrames + 1
+         if not tStopAt then
+            if tDelta > tFrameMax then tFrameMax = tDelta end
+            if #tDts < 24 then tDts[#tDts + 1] = string.format("%.0f", tDelta * 1000) end
+            -- Stoppregel: die Schritte der Frames 1..i-1 sind gelaufen
+            -- (tMotionAcc); der naechste Schritt, nach diesem OnUpdate,
+            -- braechte die eben gemessene Framedauer dazu. Stoppen, sobald
+            -- das Ziel JETZT naeher liegt als nach einem weiteren Schritt -
+            -- aber nie vor dem ersten Schritt.
+            if (tFrames >= 2 and math.abs(tMotionAcc - tMotionTarget) <= math.abs(tMotionAcc + tDelta - tMotionTarget))
+               or tFrames >= tStopFrameMax then
+               tStopSweep()
+            else
+               tMotionAcc = tMotionAcc + tDelta
+            end
+         elseif tFrames >= tStopAtFrame + tSettleFrames then
+            tRelease()
+            tMeasure()
+         end
+      end)
+      -- Wachhund: bleibt der Zaehler aus (Frame verborgen, Fehler im Handler),
+      -- darf weder die Kamera weiterdrehen noch der Sperr-Guard haengen.
+      C_Timer.After((tStopFrame + tSettleFrames) * tFrameEst * 4 + 1, function()
+         if tDone or SkuCore.gameWorldObjectsTurnSeq ~= tMyTurnSeq then return end
+         if not tStopAt then
+            MoveViewRightStop()
+            MoveViewLeftStop()
+         end
+         tRestoreYawSpeed()
+         tRelease()
+         dprint("TurnCal watchdog", "frames", tFrames, "stopped", tostring(tStopAt ~= nil), "wp", tostring(aLabel))
       end)
       return true
    end
