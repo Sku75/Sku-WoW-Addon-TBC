@@ -13,6 +13,7 @@ Aenderungen in Sku v43.8
 
         Fehlerbehebungen
             Sprachausgabe: dieselbe Zeile stellte sich seit v43.7 bei jedem Tastendruck erneut hinten an und wurde viele Male hintereinander vorgelesen, auch noch nach einer wichtigeren Ansage. Behoben.
+            Menue: wer direkt nach "Menue geoeffnet" schon eine Taste drueckte (Ende, Pos1, Pfeil), bekam nach dem neuen Eintrag noch den ersten Hauptmenue-Eintrag ("Ziel Menue") nachgesprochen. Behoben.
 
     Sprachausgabe: dieselbe Zeile stellt sich nicht mehr hinter sich selbst an
         Einfach: Seit v43.7 konnte eine Meldung, die mehrfach kurz hintereinander ausgeloest wurde,
@@ -29,6 +30,25 @@ Aenderungen in Sku v43.8
             werden darum jetzt beim EINREIHEN gegen mSkuVoiceQueueBTTS und
             mSkuVoiceQueueBTTS_Speaking geprueft; Log-Marke "BTTS ENQUEUE-DUP". Neues
             Harness-Szenario "errspam" (dev/rework-docs/voice-harness).
+
+    Menue: erster Eintrag kam nach einem schnellen Tastendruck verspaetet doch noch
+        Einfach: Beim Oeffnen des Menues sagt Sku "Menue geoeffnet" und danach den ersten
+            Eintrag. Wer schon waehrend "Menue geoeffnet" eine Taste drueckte, hoerte den neuen
+            Eintrag - und danach trotzdem noch "Ziel Menue", den ersten Eintrag, der gar nicht mehr
+            dran war. Es hing nur davon ab, wie schnell man drueckte, nicht von der Taste oder dem
+            Menue. Jetzt faellt der alte erste Eintrag weg, sobald ein anderer Menueeintrag angesagt
+            wird.
+        Technisch: Zwei Ursachen. (1) Die Regel "wartende Zeile ohne Reset hinter der neuen
+            Ueberschreibzeile aufheben" aus v43.7 (gedacht fuer Chat, in den eine Warnung
+            hineinschneidet) galt auch fuer Menuezeilen. Die Keep-Schleife in SkuVoice
+            (queuereset-Scan, Libs/SkuVoice-1.0) verwirft jetzt eine wartende Zeile, deren Scope mit
+            dem der neuen Ueberschreibzeile uebereinstimmt: ein Scope ist eine Position in einer
+            Oberflaeche, nur seine juengste Zeile ist wahr. (2) Die beiden Zeilen beim Oeffnen
+            ("Menu;open" und SkuOptions.Menu[1].name, SkuZOptions/Core.lua) riefen OutputStringBTtts
+            direkt und OHNE den Scope "menu" auf, den VocalizeCurrentMenuName jeder anderen Menuezeile
+            gibt - der Scope-Vergleich hatte also nichts zu vergleichen. Beide tragen jetzt "menu";
+            damit verwirft auch EndScope("menu") beide, wenn das Menue sofort wieder geschlossen wird.
+            Log vorher: "BTTS queuereset kept 1 waiting line(s) behind the overwrite".
 
     Fehlermeldungen: nur ansagen, wenn sie neu erscheinen
         Einfach: Sku richtet sich jetzt nach der Regel, die das Spiel fuer Sehende anwendet. Dort

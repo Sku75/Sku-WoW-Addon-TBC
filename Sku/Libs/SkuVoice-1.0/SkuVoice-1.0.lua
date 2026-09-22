@@ -1263,6 +1263,16 @@ function SkuVoice:Create()
 						if tStays[tOld] then
 							tIsOverwrite = true
 						end
+						-- [v43.8] A waiting line of the SAME scope as the new overwrite
+						-- line is superseded too. The first entry name after "menu opened"
+						-- is enqueued without a reset; pressing End/Home/arrow while
+						-- "menu opened" was still speaking kept that entry name and spoke
+						-- it AFTER the entry the user had moved to. A scope is one
+						-- position in one UI -- only its newest line is true.
+						local tOwnScope = tOwn and mSkuVoiceQueueBTTS_Scope[tOwn]
+						if tOwnScope and mSkuVoiceQueueBTTS_Scope[tOld] == tOwnScope then
+							tIsOverwrite = true
+						end
 						if not tIsOverwrite
 							and (tNow - (mSkuVoiceQueueBTTS_At[tOld] or tNow)) <= tBttsKeptMaxAge then
 							tKept[#tKept + 1] = tOld

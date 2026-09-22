@@ -475,8 +475,8 @@ function SkuOptions:SlashFunc(input, aSilent)
 				-- The path matched nothing, so the menu sits on the root: give the
 				-- announcement the silent open skipped.
 				dprint("menu: path walk found nothing, announcing root", "path", tostring(input))
-				SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true, nil, nil, 2)
-				SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3, nil, nil, nil, 2)
+				SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true, nil, nil, 2, nil, nil, nil, nil, nil, nil, nil, nil, "menu")
+				SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3, nil, nil, nil, 2, nil, nil, nil, nil, nil, nil, nil, nil, "menu")
 			end
 		elseif fields[1] == "mmreset" then
 			SkuNavMMMainFrame:SetSize(200, 200) 
@@ -2620,9 +2620,15 @@ function SkuOptions:CreateMainFrame()
 				-- the menu only to land somewhere else, so it announces its destination
 				-- itself. Speaking here as well queued the first root entry as a WAITING
 				-- line, which the walk's overwrite then kept and played after the content.
+				-- [v43.8] Both lines carry scope "menu" like every other menu line
+				-- (VocalizeCurrentMenuName). The same "kept waiting line" happened
+				-- on a plain key press: End/Home/arrow while "menu opened" was still
+				-- speaking left the root entry name waiting, the overwrite kept it,
+				-- and it spoke AFTER the entry the user had moved to. With the scope
+				-- set the queuereset drops it as superseded (SkuVoice kept-lines scan).
 				if SkuOptions.tOpeningForPathWalk ~= true then
-					SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true, nil, nil, 2)
-					SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3, nil, nil, nil, 2)
+					SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true, nil, nil, 2, nil, nil, nil, nil, nil, nil, nil, nil, "menu")
+					SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3, nil, nil, nil, 2, nil, nil, nil, nil, nil, nil, nil, nil, "menu")
 				end
 				pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarSet then SkuCore.VisualAids:VisualAidsLineBarSet(SkuOptions.Menu[1].name) end end)
 				SkuCore.Debug("", SkuOptions.currentMenuPosition.name, true)

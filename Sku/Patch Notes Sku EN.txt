@@ -13,6 +13,7 @@ Changes in Sku v43.8
 
         Bugfixes
             Speech: since v43.7 the same line queued up again on every key press and was read many times in a row, even after a more important announcement. Fixed.
+            Menu: pressing a key (End, Home, arrow) right after "menu open" still got you the first main-menu entry ("Target menu") read out after the new entry. Fixed.
 
     Speech: a line no longer queues up behind itself
         Simple: Since v43.7 a message that was triggered several times in quick succession could
@@ -28,6 +29,23 @@ Changes in Sku v43.8
             checked when they are ENQUEUED, against mSkuVoiceQueueBTTS and
             mSkuVoiceQueueBTTS_Speaking; log tag "BTTS ENQUEUE-DUP". New harness scenario
             "errspam" (dev/rework-docs/voice-harness).
+
+    Menu: the first entry was still spoken late after a quick key press
+        Simple: When the menu opens, Sku says "menu open" and then the first entry. If you
+            pressed a key while "menu open" was still speaking, you heard the new entry - and
+            after it "Target menu", the first entry, which was no longer the current one. It
+            depended only on how fast you pressed, not on the key or the menu. Now the old first
+            entry is dropped as soon as another menu entry is announced.
+        Technically: Two causes. (1) The v43.7 rule "keep a waiting line without a reset behind
+            the new overwrite line" (meant for chat that a warning cuts into) also applied to menu
+            lines. The keep loop in SkuVoice (queuereset scan, Libs/SkuVoice-1.0) now drops a
+            waiting line whose scope equals the scope of the new overwrite line: a scope is one
+            position in one UI, only its newest line is true. (2) The two lines spoken at open
+            ("Menu;open" and SkuOptions.Menu[1].name, SkuZOptions/Core.lua) called
+            OutputStringBTtts directly WITHOUT the "menu" scope that VocalizeCurrentMenuName gives
+            every other menu line - so the scope comparison had nothing to compare. Both carry
+            "menu" now; as a side effect EndScope("menu") drops both when the menu is closed again
+            at once. Log before: "BTTS queuereset kept 1 waiting line(s) behind the overwrite".
 
     Error messages: announced only when they newly appear
         Simple: Sku now follows the rule the game applies for sighted players. There an error
