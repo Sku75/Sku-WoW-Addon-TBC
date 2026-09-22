@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.8 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v43.8.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/v43.8.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v43.8 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v43.7.html">Aeltere Version: v43.7</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Ueberblick</h2>
+<h3>Neu</h3>
+<ul>
+<li>Spieleinstellungen: Kontrollkaestchen mit Regler oder Auswahlliste (zum Beispiel "Maximale Vordergrund-FPS"), Schaltflaechen, der Block "Grafikqualitaet" und die Farbenblindheits-Einstellungen sind jetzt bedienbar; bisher hiess es dort "nicht unterstuetzt".</li>
+<li>Spieleinstellungen: Zahlenwerte haben als ersten Eintrag "Wert eingeben" (Textfeld), Ziffern filtern die Werteliste, und die Werte tragen die Beschriftung des Spiels ("60 FPS", "150%").</li>
+<li>Spieleinstellungen: Auswahllisten sagen "(empfohlen)" und "(nicht verfuegbar)" wie das Spiel, ausgegraute Eintraege "(deaktiviert)", und Untermenues von AddOn-Einstellungen werden angezeigt.</li>
+</ul>
+<h3>Aenderungen</h3>
+<ul>
+<li>Fehlermeldungen des Spiels (zum Beispiel "Ihr habt kein Ziel") werden beim Haemmern auf eine Taste nur noch einmal vorgelesen. Dieselbe Meldung wird erst wieder angesagt, wenn du die Taste etwa zweieinhalb Sekunden in Ruhe gelassen hast oder wenn dazwischen eine andere Fehlermeldung kam.</li>
+<li>Zum Beacon, Wegpunkt oder zur Einheit drehen: die Drehung landet jetzt auf jedem Rechner gleich genau und ist deutlich schneller. Bei 20 Bildern pro Sekunde dauerte eine halbe Drehung fast eine halbe Sekunde und jeder vierte Tastendruck ging verloren; jetzt eine Viertelsekunde, und kaum ein Druck geht verloren. Auf schnellen Rechnern treffen grosse Drehungen auf etwa ein Grad statt drei bis fuenf. Die Selbstkalibrierung aus v43.7 entfaellt.</li>
+</ul>
+<h3>Fehlerbehebungen</h3>
+<ul>
+<li>Sprachausgabe: dieselbe Zeile stellte sich seit v43.7 bei jedem Tastendruck erneut hinten an und wurde viele Male hintereinander vorgelesen, auch noch nach einer wichtigeren Ansage. Behoben.</li>
+<li>Menue: wer direkt nach "Menue geoeffnet" schon eine Taste drueckte (Ende, Pos1, Pfeil), bekam nach dem neuen Eintrag noch den ersten Hauptmenue-Eintrag ("Ziel Menue") nachgesprochen. Behoben.</li>
+</ul>
+<h2>Sprachausgabe: dieselbe Zeile stellt sich nicht mehr hinter sich selbst an</h2>
+<p><strong>Einfach:</strong> Seit v43.7 konnte eine Meldung, die mehrfach kurz hintereinander ausgeloest wurde, sich beliebig oft in die Warteschlange stellen. Wer eine Taste haemmerte, die einen Fehler ausloest, hoerte "Ihr habt kein Ziel" danach zehn- oder zwanzigmal, und nach einer dazwischengehenden Zielansage kam die Meldung noch einmal. Jetzt gilt: wartet derselbe Text schon oder wird er gerade gesprochen, wird die neue Kopie verworfen. Menuezeilen und andere Ansagen, die du per Taste ausdruecklich noch einmal anforderst, sind nicht betroffen.</p>
+<p><strong>Technisch:</strong> SkuVoice:OutputStringBTtts (Libs/SkuVoice-1.0). Die Pruefung "wird genau das gerade gesprochen" lief bisher bei der Uebergabe an den Client. Seit dem Client-Gate aus v43.7 erreicht eine Kopie die Uebergabe erst, wenn ihr Vorgaenger FINISHED ist - die Pruefung traf nie mehr (Log: Warteschlange 35 x dieselbe Zeile). Zeilen ohne queuereset werden darum jetzt beim EINREIHEN gegen mSkuVoiceQueueBTTS und</p>
+<p>mSkuVoiceQueueBTTS_Speaking geprueft; Log-Marke "BTTS ENQUEUE-DUP". Neues Harness-Szenario "errspam" (dev/rework-docs/voice-harness).</p>
+<h2>Menue: erster Eintrag kam nach einem schnellen Tastendruck verspaetet doch noch</h2>
+<p><strong>Einfach:</strong> Beim Oeffnen des Menues sagt Sku "Menue geoeffnet" und danach den ersten Eintrag. Wer schon waehrend "Menue geoeffnet" eine Taste drueckte, hoerte den neuen Eintrag - und danach trotzdem noch "Ziel Menue", den ersten Eintrag, der gar nicht mehr dran war. Es hing nur davon ab, wie schnell man drueckte, nicht von der Taste oder dem Menue. Jetzt faellt der alte erste Eintrag weg, sobald ein anderer Menueeintrag angesagt wird.</p>
+<p><strong>Technisch:</strong> Zwei Ursachen. (1) Die Regel "wartende Zeile ohne Reset hinter der neuen Ueberschreibzeile aufheben" aus v43.7 (gedacht fuer Chat, in den eine Warnung hineinschneidet) galt auch fuer Menuezeilen. Die Keep-Schleife in SkuVoice (queuereset-Scan, Libs/SkuVoice-1.0) verwirft jetzt eine wartende Zeile, deren Scope mit dem der neuen Ueberschreibzeile uebereinstimmt: ein Scope ist eine Position in einer Oberflaeche, nur seine juengste Zeile ist wahr. (2) Die beiden Zeilen beim Oeffnen ("Menu;open" und SkuOptions.Menu[1].name, SkuZOptions/Core.lua) riefen OutputStringBTtts direkt und OHNE den Scope "menu" auf, den VocalizeCurrentMenuName jeder anderen Menuezeile gibt - der Scope-Vergleich hatte also nichts zu vergleichen. Beide tragen jetzt "menu"; damit verwirft auch EndScope("menu") beide, wenn das Menue sofort wieder geschlossen wird. Log vorher: "BTTS queuereset kept 1 waiting line(s) behind the overwrite".</p>
+<h2>Fehlermeldungen: nur ansagen, wenn sie neu erscheinen</h2>
+<p><strong>Einfach:</strong> Sku richtet sich jetzt nach der Regel, die das Spiel fuer Sehende anwendet. Dort steht eine Fehlermeldung etwa zweieinhalb Sekunden auf dem Bildschirm; kommt dieselbe Meldung in dieser Zeit noch einmal, blitzt sie nur kurz auf und bleibt laenger stehen, statt neu zu erscheinen. Entsprechend liest Sku eine Fehlermeldung vor, wenn sie erscheint, und schweigt, solange sie noch "auf dem Bildschirm steht". Jeder weitere Tastendruck verlaengert diese Zeit. Das Klickgeraeusch des Spiels sagt dir weiterhin bei jedem Druck, dass es noch nicht geht. Laesst du die Taste etwa zweieinhalb Sekunden in Ruhe und drueckst dann wieder, wird die Meldung erneut angesagt. Eine ANDERE Fehlermeldung wird immer sofort vorgelesen, und danach gilt auch die erste wieder als neu: Fehler A, Fehler B, Fehler A sind drei Ansagen. Betrifft nur vorgelesene Fehler, nicht die Ton- und Sprachhinweise.</p>
+<p><strong>Technisch:</strong> UIErrors:OutputError (SkuCore/UIErrors.lua), TTS-Zweig. Gemerkt wird nur der ZULETZT gesprochene Fehler: tSpokenKey plus tSpokenShownUntil = GetTime() + 2.5 (displayDuration 2 + fadeDuration 0.5 aus UIErrorsFrame.xml). Jede Wiederholung setzt die Zeit neu, wie ResetMessageFadeByID; jeder andere Fehler, auch ein Ton- oder Sprachhinweis, ersetzt bzw. loescht tSpokenKey. Die erste Fassung fuehrte eine Zeitmarke PRO Text - dadurch blieb Fehler A stumm, obwohl Fehler B dazwischen lag. Bewusst eine Zeitmarke und kein Auslesen von UIErrorsFrame: Blizzard drosselt nur rund 20 Meldungstypen, bei den uebrigen kommt pro Druck eine neue Zeile dazu, und die Reihenfolge der beiden UI_ERROR_MESSAGE-Handler ist nicht festgelegt.</p>
+<h2>Spieleinstellungen: alle Bedienelemente der Blizzard-Einstellungen</h2>
+<p><strong>Einfach:</strong> Im Menue Einstellungen, Spieleinstellungen waren viele Eintraege nur mit "(nicht unterstuetzt)" zu hoeren, zum Beispiel "Maximale Vordergrund-FPS". Jetzt sind sie bedienbar. Ein Kontrollkaestchen mit Regler wird zu zwei Eintraegen: dem Schalter und "... Wert". Zahlenwerte sind eine Werteliste mit den Beschriftungen des Spiels ("60 FPS", "150%"); Ziffern filtern die Liste, und der erste Eintrag "Wert eingeben" oeffnet das Textfeld. Auswahllisten markieren die Empfehlung mit "(empfohlen)" und Werte, die dieser Rechner nicht kann, mit "(nicht verfuegbar)". Schaltflaechen wie "Chatposition zuruecksetzen" fuehren ihre Aktion aus. Der Block "Grafikqualitaet" ist ein Untermenue mit "Schlachtzug und Schlachtfeld". Die Tastenbelegung verweist auf Skus eigenes Menue. Eine Einstellung, die vom Spiel gerade ausgegraut ist, sagt "(deaktiviert)". Ausserdem wurden Grafik-, Anzeige- und UI-Skalierungs-Einstellungen bisher nur vorgemerkt und nie angewendet - sie greifen jetzt sofort.</p>
+<p><strong>Technisch:</strong> SkuCore/gameOptions.lua verzweigt jetzt nach dem Frame-Template des Initializers (Blizzard_SettingControls.lua) statt nach dem Werttyp: Checkbox, Slider, Dropdown, CheckboxSlider (cbSetting/sliderSetting), CheckboxDropdown, CheckboxWithButton, Button, AdvancedQualitySection (die Optionslisten sind dort Closures im Frame; Sku leitet sie aus einer Tabelle je CVar ab und fragt IsGraphicsSettingValueSupported), ColorblindSelector, Keybinding-Sektionen. setting:SetValue(v) ohne zweites Argument legt bei Settings mit CommitFlag.Apply nur einen pendingValue an, den erst der Apply-Knopf des Panels schreibt - Sku oeffnet das Panel nie, darum jetzt SetValue(v, true) plus RestartGx / UpdateWindow / SaveBindings je nach Commit-Flag. GetAllCategories liefert nur Top-Level-Kategorien, GetSubcategories wird rekursiv gelaufen. ShouldShow false = Zeile entfaellt, GetModifyPredicates false = Suffix "(deaktiviert)". Beschriftung der Zahlenwerte ueber options.formatters[Label.Right]; eine Tippeingabe wird linear durch den Formatter zurueckgerechnet (Prozent, Qualitaetsregler 1..10). Jeder Schreibzugriff loggt "gameOptions: set". Ein Offline-Harness gegen gefakte Setting-Objekte lief durch; im Spiel geprueft: FPS-Schalter und -Wert (Log: PROXY_FOREGROUND_FPS = 20, TurnCal fps 20).</p>
+<h2>Drehen zum Beacon: bildgenau statt zeitgenau</h2>
+<p><strong>Einfach:</strong> Bisher drehte Sku die Kamera fuer eine berechnete Zeit und hielt sie dann an. Das Spiel bewegt die Kamera aber nur einmal je Bild, und ein Zeitgeber trifft die Bildgrenze nur ungefaehr - bei wenig Bildern pro Sekunde daneben. Auf einem langsamen Rechner (20 Bilder pro Sekunde, im Test per FPS-Begrenzung nachgestellt) dauerte darum jede Drehung ueber 15 Grad fast eine halbe Sekunde, kleine Drehungen blieben ein Drittel zu kurz, jeder vierte Tastendruck fiel in die Sperrzeit und ging verloren, und beritten kreiste man wieder um nahe Wegpunkte. Jetzt zaehlt Sku die Bilder und rechnet mit ihrer echten Dauer: die Drehgeschwindigkeit wird so gewaehlt, dass der Winkel in ganzen Bild-Schritten aufgeht, und wuerde der letzte Schritt ueber das Ziel hinausschiessen, wird er verkuerzt. Ergebnis bei 20 Bildern pro Sekunde: halbe Drehung in einer Viertelsekunde, alle Drehungen innerhalb von zwei Grad, kaum verlorene Druecke, kein Kreisen. Bei 80 bis 120 Bildern: grosse Drehungen mit etwa einem Grad Fehler statt drei bis fuenf, kleine unter einem halben Grad. Die Selbstkalibrierung aus v43.7 ist weg - sie lernte Werte, die auf jedem Rechner gleich sind. /skuturn zeigt nur noch, ob der schnelle Gang auf diesem Rechner funktioniert; /skuturn reset setzt diese Pruefung zurueck.</p>
+<p><strong>Technisch:</strong> GameWorldObjects:TurnToWorldPosition (SkuCore/gameWorldObjects.lua). Gemessen an rund 400 Drehungen bei 20 und 77 bis 125 fps (Restfehler 0.5 ms): die Kamera schreitet einmal je Frame um Tempo mal ECHTE Framedauer; der Frame, in dessen OnUpdate der Stopp faellt, schreitet nicht mehr; die im OnUpdate gemessene Framedauer ist genau die des naechsten Schritts. Planer: n = ceil(Winkel / (1440 * f)) Schritte, v = Winkel / (n * f), CVar hoechstens 360, Rest als MoveView-Faktor. Stopp aus einem OnUpdate-Zaehler, der die echten Framedauern aufsummiert und stoppt, sobald die Summe die Bewegungszeit Winkel/v erreicht; wuerde der letzte Schritt ueberschiessen, wird cameraYawMoveSpeed fuer diesen einen Frame auf den Rest skaliert und im Folgeframe gestoppt - die CVar wirkt sofort (54 getrimmte Drehungen: Fehler 0.5 Grad statt der 5.3, die eine tote CVar ergeben haette). C_Timer war die Ursache der alten Streuung: er feuert nur an Framegrenzen und faellt bei 2 Prozent Frame-Streuung um einen ganzen Frame. Das "Nachgleiten" der Kamera aus v43.7 war dieser eine Leerframe, keine Traegheit. Die Kalibrierung (Massstab und Latenz je Gang, Store v4/v5) lernte 1.00 und einen Frame mit Streuung 0.01 und wurde entfernt; Store turnCal v6 haelt nur noch noGear2 (Faktor wirkt nicht: Median echtes/verlangtes Tempo unter 0.7 bei 6+ schnellen Drehungen). Sperrzeit nach dem Stopp 2 Frames bzw. 50 ms statt 3 bzw. 100. Log "TurnCal" je Druck mit n, m, mt, trim, dts (alle Framedauern), fest/fact/fmax, rest_land, lead_shift; Analyse-Skripte im Scratchpad-Muster an4.py. Lehren fuer WowVision: dev/rework-docs/TURN-TO-BEACON-LESSONS.md.</p>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v43.7.html">Aeltere Version: v43.7</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

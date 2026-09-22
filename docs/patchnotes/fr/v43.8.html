@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.8 - notes de version</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Langue des notes de version">
+<ul class="langnav">
+<li><a href="../en/v43.8.html" lang="en" hreflang="en">English</a></li>
+<li><a href="../de/v43.8.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><span aria-current="page" lang="fr">Français</span></li>
+</ul>
+</nav>
+<h1>Sku v43.8 - notes de version</h1>
+<nav aria-label="Navigation dans les notes de version">
+<ul class="pagenav">
+<li><a href="index.html">Toutes les notes de version</a></li>
+<li><a href="v43.7.html">Version plus ancienne : v43.7</a></li>
+<li><a href="../../index-fr.html">Page de téléchargement de Sku</a></li>
+</ul>
+</nav>
+<main>
+<h2>Aperçu</h2>
+<h3>Nouveautés</h3>
+<ul>
+<li>Réglages du jeu : les cases à cocher avec curseur ou liste déroulante (par exemple « FPS max au premier plan »), les boutons, le bloc « Qualité graphique » et les réglages daltonisme sont maintenant utilisables ; ils disaient jusqu'ici « non pris en charge ».</li>
+<li>Réglages du jeu : les valeurs numériques commencent par une entrée « Saisir une valeur » (zone de texte), les chiffres filtrent la liste des valeurs, et les valeurs portent les libellés du jeu (« 60 FPS », « 150% »).</li>
+<li>Réglages du jeu : les listes déroulantes disent « (recommandé) » et « (non disponible) » comme le jeu, les lignes grisées « (désactivé) », et les sous-catégories des réglages d'extensions sont affichées.</li>
+</ul>
+<h3>Changements</h3>
+<ul>
+<li>Les messages d'erreur du jeu (par exemple « Vous n'avez pas de cible ») ne sont lus qu'une seule fois quand vous martelez une touche. Le même message n'est annoncé de nouveau qu'après avoir laissé la touche tranquille environ deux secondes et demie, ou lorsqu'un autre message d'erreur est arrivé entre-temps.</li>
+<li>Se tourner vers la balise, le point de passage ou l'unité : la rotation atterrit désormais avec la même précision sur toutes les machines et est nettement plus rapide. À 20 images par seconde, un demi-tour prenait presque une demi-seconde et un appui sur quatre était perdu ; maintenant un quart de seconde, et presque aucun appui n'est perdu. Sur les machines rapides, les grandes rotations atterrissent à environ un degré au lieu de trois à cinq. L'auto-étalonnage de la v43.7 disparaît.</li>
+</ul>
+<h3>Corrections</h3>
+<ul>
+<li>Synthèse vocale : depuis la v43.7, la même ligne se remettait en file à chaque appui et était lue de nombreuses fois de suite, même après une annonce plus importante. Corrigé.</li>
+<li>Menu : appuyer sur une touche (Fin, Début, flèche) juste après « menu ouvert » faisait encore lire la première entrée du menu principal (« Menu cible ») après la nouvelle entrée. Corrigé.</li>
+</ul>
+<h2>Synthèse vocale : une ligne ne se met plus en file derrière elle-même</h2>
+<p><strong>Simple :</strong> Depuis la v43.7, un message déclenché plusieurs fois de suite pouvait entrer dans la file autant de fois que l'on voulait. En martelant une touche qui provoque une erreur, on entendait ensuite « Vous n'avez pas de cible » dix ou vingt fois, et après une annonce de cible intercalée, le message revenait encore une fois. Désormais : si le même texte attend déjà ou est en train d'être prononcé, la nouvelle copie est écartée. Les lignes de menu et les autres annonces que vous redemandez expressément avec une touche ne sont pas concernées.</p>
+<p><strong>Technique :</strong> SkuVoice:OutputStringBTtts (Libs/SkuVoice-1.0). Le contrôle « est-ce exactement cela qui est prononcé » s'exécutait à la remise au client. Depuis le verrou client de la v43.7, une copie n'atteint la remise qu'une fois son prédécesseur FINISHED - le contrôle ne correspondait plus jamais (journal : file de 35 x la même ligne). Les lignes sans queuereset sont donc vérifiées à la MISE EN FILE, contre mSkuVoiceQueueBTTS et mSkuVoiceQueueBTTS_Speaking ; marque de journal « BTTS ENQUEUE-DUP ». Nouveau scénario de banc d'essai « errspam » (dev/rework-docs/voice-harness).</p>
+<h2>Menu : la première entrée était encore prononcée en retard après un appui rapide</h2>
+<p><strong>Simple :</strong> À l'ouverture du menu, Sku dit « menu ouvert » puis la première entrée. Si vous appuyiez sur une touche pendant que « menu ouvert » parlait encore, vous entendiez la nouvelle entrée - puis quand même « Menu cible », la première entrée, qui n'était plus la bonne. Cela ne dépendait que de la vitesse de l'appui, pas de la touche ni du menu. Désormais l'ancienne première entrée est écartée dès qu'une autre entrée de menu est annoncée.</p>
+<p><strong>Technique :</strong> Deux causes. (1) La règle de la v43.7 « conserver une ligne en attente sans réinitialisation derrière la nouvelle ligne d'écrasement » (prévue pour le chat dans lequel un avertissement s'intercale) s'appliquait aussi aux lignes de menu. La boucle de conservation de SkuVoice (balayage queuereset, Libs/SkuVoice-1.0) écarte maintenant une ligne en attente dont la portée est celle de la nouvelle ligne d'écrasement : une portée est une position dans une interface, seule sa ligne la plus récente est vraie. (2) Les deux lignes prononcées à l'ouverture (« Menu;open » et SkuOptions.Menu[1].name, SkuZOptions/Core.lua) appelaient OutputStringBTtts directement SANS la portée « menu » que VocalizeCurrentMenuName donne à toute autre ligne de menu - la comparaison des portées n'avait donc rien à comparer. Les deux portent maintenant « menu » ; par ricochet, EndScope("menu") écarte les deux si le menu est refermé aussitôt. Journal avant : « BTTS queuereset kept 1 waiting line(s) behind the overwrite ».</p>
+<h2>Messages d'erreur : annoncés seulement quand ils apparaissent</h2>
+<p><strong>Simple :</strong> Sku suit désormais la règle que le jeu applique pour les voyants. Un message d'erreur y reste à l'écran environ deux secondes et demie ; si le même message revient pendant ce temps, il clignote brièvement et reste plus longtemps au lieu d'apparaître de nouveau. De même, Sku lit un message d'erreur quand il apparaît et se tait tant qu'il est encore « à l'écran ». Chaque nouvel appui prolonge ce délai. Le clic du jeu vous indique toujours à chaque appui que cela ne fonctionne pas encore. Si vous laissez la touche tranquille environ deux secondes et demie puis appuyez de nouveau, le message est annoncé de nouveau. Un message d'erreur DIFFÉRENT est toujours lu immédiatement, et après lui le premier compte de nouveau comme nouveau : erreur A, erreur B, erreur A font trois annonces. Cela ne concerne que les erreurs prononcées, pas les indices sonores et vocaux.</p>
+<p><strong>Technique :</strong> UIErrors:OutputError (SkuCore/UIErrors.lua), branche TTS. Seule la DERNIÈRE erreur prononcée est retenue : tSpokenKey plus tSpokenShownUntil = GetTime() + 2.5 (displayDuration 2 + fadeDuration 0.5 de UIErrorsFrame.xml). Chaque répétition réécrit le délai, comme ResetMessageFadeByID ; toute autre erreur, y compris un indice sonore ou vocal, remplace ou efface tSpokenKey. La première version gardait un horodatage PAR texte - l'erreur A restait donc muette alors que l'erreur B s'était intercalée. Volontairement un horodatage</p>
+<p>et non une lecture de UIErrorsFrame : Blizzard ne limite qu'une vingtaine de types de messages, pour les autres une ligne s'ajoute à chaque appui, et l'ordre des deux gestionnaires UI_ERROR_MESSAGE n'est pas défini.</p>
+<h2>Réglages du jeu : tous les contrôles des réglages Blizzard</h2>
+<p><strong>Simple :</strong> Dans le menu Réglages, Réglages du jeu, beaucoup d'entrées ne disaient que « (non pris en charge) », par exemple « FPS max au premier plan ». Elles sont maintenant utilisables. Une case à cocher avec curseur devient deux entrées : l'interrupteur et « ... valeur ». Les valeurs numériques sont une liste avec les libellés du jeu (« 60 FPS », « 150% ») ; les chiffres filtrent la liste, et la première entrée « Saisir une valeur » ouvre la zone de texte. Les listes déroulantes marquent la recommandation par « (recommandé) » et les valeurs que cette machine ne peut pas exécuter par « (non disponible) ». Les boutons comme « Réinitialiser la position du chat » exécutent leur action. Le bloc « Qualité graphique » est un sous-menu avec « Raid et champ de bataille ». Les raccourcis clavier renvoient au menu propre de Sku. Un réglage que le jeu grise en ce moment dit « (désactivé) ». De plus, les réglages graphiques, d'affichage et d'échelle de l'interface n'étaient jusqu'ici que mis en attente et jamais appliqués - ils prennent effet immédiatement maintenant.</p>
+<p><strong>Technique :</strong> SkuCore/gameOptions.lua aiguille maintenant selon le frame template de l'initializer (Blizzard_SettingControls.lua) au lieu du type de valeur : Checkbox, Slider, Dropdown, CheckboxSlider (cbSetting/sliderSetting), CheckboxDropdown, CheckboxWithButton, Button, AdvancedQualitySection (ses listes d'options sont des closures dans le frame ; Sku les dérive d'une table par cvar et interroge IsGraphicsSettingValueSupported), ColorblindSelector, sections de raccourcis. setting:SetValue(v) sans second argument ne stocke qu'un pendingValue sur les réglages portant CommitFlag.Apply, que seul le bouton Appliquer du panneau écrit - Sku n'ouvre jamais le panneau, d'où SetValue(v, true) maintenant, plus RestartGx / UpdateWindow / SaveBindings selon le commit flag. GetAllCategories ne renvoie que les catégories de premier niveau ; GetSubcategories est parcouru récursivement. ShouldShow false = ligne omise, GetModifyPredicates false = suffixe « (désactivé) ». Les libellés des valeurs viennent de options.formatters[Label.Right] ; une saisie est reconvertie linéairement via le formatter (pourcentage, curseur de qualité 1..10). Chaque écriture journalise « gameOptions: set ». Un harnais hors ligne contre de faux objets Setting a réussi ; vérifié en jeu : l'interrupteur et la valeur FPS (journal : PROXY_FOREGROUND_FPS = 20, TurnCal fps 20).</p>
+<h2>Se tourner vers la balise : exact à l'image près au lieu d'être basé sur le temps</h2>
+<p><strong>Simple :</strong> Jusqu'ici Sku faisait tourner la caméra pendant une durée calculée, puis l'arrêtait. Or le jeu ne déplace la caméra qu'une fois par image, et un minuteur ne tombe sur la limite d'image qu'approximativement - à faible cadence, il la rate. Sur une machine lente (20 images par seconde, reproduit dans le test avec la limite de FPS), chaque rotation de plus de 15 degrés prenait donc presque une demi-seconde, les petites rotations restaient trop courtes d'un tiers, un appui sur quatre tombait dans le délai de verrouillage et était perdu, et à monture on tournait de nouveau autour des points de passage proches. Désormais Sku compte les images et utilise leur durée réelle : la vitesse de rotation est choisie pour que l'angle soit un nombre entier de pas d'image, et si le dernier pas dépassait la cible, il est raccourci. Résultat à 20 images par seconde : un demi-tour en un quart de seconde, toutes les rotations à moins de deux degrés, presque aucun appui perdu, plus de cercles. À 80 à 120 images : grandes rotations avec environ un degré d'erreur au lieu de trois à cinq, petites sous un demi-degré. L'auto-étalonnage de la v43.7 disparaît - il apprenait des valeurs identiques sur toutes les machines. /skuturn n'indique plus que si la vitesse rapide fonctionne sur cette machine ; /skuturn reset réinitialise ce contrôle.</p>
+<p><strong>Technique :</strong> GameWorldObjects:TurnToWorldPosition (SkuCore/gameWorldObjects.lua). Mesuré sur environ 400 rotations à 20 et 77 à 125 fps (résidu 0,5 ms) : la caméra avance une fois par image de vitesse fois la durée RÉELLE de l'image ; l'image dont l'OnUpdate émet l'arrêt n'avance plus ; la durée d'image mesurée dans un OnUpdate est exactement celle du pas suivant. Planificateur : n = ceil(angle / (1440 * f)) pas, v = angle / (n * f), CVar au plus 360, le reste en facteur MoveView. L'arrêt vient d'un compteur OnUpdate qui additionne les durées d'image réelles et s'arrête dès que la somme atteint le temps de mouvement angle/v ; si le dernier pas dépassait, cameraYawMoveSpeed est mis à l'échelle du reste pour cette seule image et l'arrêt suit à l'image suivante - la CVar agit immédiatement (54 rotations ajustées : erreur 0,5 degré au lieu des 5,3 qu'une CVar inerte aurait donnés). C_Timer était la cause de l'ancienne dispersion : il ne se déclenche qu'aux limites d'image et glisse d'une image entière à 2 pour cent de gigue. Le « glissement » de la caméra de la v43.7 était cette unique image inerte, pas de l'inertie. L'étalonnage (échelle et latence par vitesse, store v4/v5) apprenait 1,00 et une image avec une dispersion de 0,01 et a été retiré ; le store turnCal v6 ne garde que noGear2 (le facteur n'agit pas : médiane vitesse réelle/demandée sous 0,7 sur 6+ rotations rapides). Verrouillage après l'arrêt 2 images ou 50 ms au lieu de 3 ou 100. Journal « TurnCal » par appui avec n, m, mt, trim, dts (toutes les durées d'image), fest/fact/fmax, rest_land, lead_shift ; modèle de script d'analyse an4.py dans le scratchpad. Leçons pour WowVision : dev/rework-docs/TURN-TO-BEACON-LESSONS.md.</p>
+</main>
+<hr>
+<nav aria-label="Navigation dans les notes de version">
+<ul class="pagenav">
+<li><a href="index.html">Toutes les notes de version</a></li>
+<li><a href="v43.7.html">Version plus ancienne : v43.7</a></li>
+<li><a href="../../index-fr.html">Page de téléchargement de Sku</a></li>
+</ul>
+</nav>
+</body>
+</html>
