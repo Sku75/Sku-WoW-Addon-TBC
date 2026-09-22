@@ -236,7 +236,7 @@ reproduces a slow machine for testing.
 4. No lead compensation, while turning on the move is allowed. Expect stable
    orbits around close waypoints, worst when mounted or flying.
 5. Moving turns are excluded from calibration (see fact 7): on routes it
-   never learns.
+   never learns. Moot once the calibration is dropped for the frame model.
 6. Slow tier is fixed at CVar 400 (really about 355, see fact 2): a 129
    degree turn takes about 0.3 seconds plus 0.1 settle plus two waits of
    0.05, about half a second in all. Sku measured that a habitual second
@@ -245,13 +245,53 @@ reproduces a slow machine for testing.
    degrees; a speed that follows the angle (factor between 1 and 4) removes
    the gap between the tiers.
 7. Fixed speeds ignore the frame rate. At 30 fps the fast tier scatters by
-   about plus or minus 27 degrees.
+   about plus or minus 27 degrees. The frame plan (update section at the
+   top) removes this entirely: n steps, speed = angle / (n * f).
 8. The 180 degree wrap (fact 8) is not handled in the `turned` measurement.
 
-## What Sku took from WowVision
+## What Sku took from WowVision, and what it threw away again
 
-The MoveView factor for real speed, and the idea of measuring every turn and
-fitting the result. Both were right, and Sku's own 1440 had never been real.
+Kept for good: the MoveView factor as the way to real speed above 360 (Sku's
+own 1440 had never been real), and the habit of MEASURING every turn and
+logging it. That log line is what exposed the frame model; it stays as a
+diagnostic.
+
+Tried and removed: the self-calibration (fit k and a latency per gear from
+the measurements). It was the right tool while the engine was unknown, and
+it was what made the measurements exist. Once the frame model was measured,
+its two learned values turned out to be constants (1.00 and one frame,
+spread 0.01), and its millisecond latency was actively harmful: it changed
+with the frame rate and poisoned the store whenever the frame rate changed.
+Recommendation for WowVision: do not port a calibration, port the frame
+model and the measurement line.
+
+Also removed on the way, all Sku's own: the fixed 5 degree overshoot, the
+"speed follows allowed scatter" rule, the 0.25 second time floor, C_Timer as
+the stop, and the belief in camera momentum.
+
+## History of the Sku turn, so nobody optimises in a circle
+
+1. v43.6 and before: fixed 5 degree overshoot, speed max(360, angle / 0.25 s),
+   a timer stop. Silently capped at about 88 degrees per press because the
+   CVar does nothing above 360, so half turns took two presses; slow enough
+   that moving players orbited close waypoints.
+2. v43.7 first pass (from WowVision): MoveView factor for real speed, measure
+   every turn, self-calibration with k and latency per gear. Sku's own: the
+   3 degree rest zone, one pulse per turn with a camera snap, the pitch lock
+   against diving. Big improvement on the test machine at 80 to 100 fps.
+3. v43.7 second pass: lead compensation while moving, buffer 0.15 to 0.05 s.
+   Orbiting mostly gone at high fps.
+4. v43.8, the 20 fps test: precision held but turns took 450 ms, a quarter of
+   the presses were dropped, orbiting was back mounted, and the calibration
+   had learned a latency that only fitted one frame rate. Cause: the engine
+   works in frames, the model worked in milliseconds.
+5. v43.8 final: plan whole frame steps, stop on accumulated real deltas, trim
+   the last step through the CVar, calibration removed, settle 2 frames.
+   Exact at 20 fps and at free 77 to 125 fps.
+
+Each step removed a measured error source; nothing from an earlier step was
+reintroduced. Steps 2 and 3 were not detours: the measurement line from step
+2 and the lead from step 3 are both still in.
 
 ## Suggested test plan for a WowVision port
 
