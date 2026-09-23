@@ -289,7 +289,7 @@ CheckMode() {
                 ; on the one screen a new player cannot get past alone. It counts
                 ; as a recognized screen; InitLogin answers it.
                 if (SenseOk(s) && s["screen"] != "ingame"
-                        && (s["screen"] != "unknown" || IsSocialContract(s))) {
+                        && (s["screen"] != "unknown" || IsSocialContract(s) || ContractOcrCheck(s))) {
                     global gUnknownAnnounced := false
                     global gUnknownSince := 0
                     global gGlueWaitSince := 0
@@ -368,7 +368,7 @@ CheckMode() {
                     ; Enter and Escape no longer reached the dialog at all.
                     if !gHardcoreConfirmFlag
                         AskHardcoreCreateConfirm()
-                } else if SocialContractIsUp(s) {
+                } else if (SocialContractIsUp(s) || ContractOcrCheck(s)) {
                     ; The contract is not only a first-login thing: the server
                     ; can ask for it on any return to character selection
                     ; (logging out of the world, a realm change), long after

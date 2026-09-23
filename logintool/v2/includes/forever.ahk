@@ -1206,15 +1206,21 @@ FvContractAutoScroll() {
     }
     if (scroll = "")
         return
-    p := PxToScreen(scroll.x, scroll.y)
-    MouseMove(p.x, p.y, 0)
-    Sleep(50)
-    loop 40 {
-        Send("{WheelDown}")
-        Sleep(25)
+    co := ContractOcr(gFv.s)
+    loop 3 {
+        p := PxToScreen(scroll.x, scroll.y)
+        MouseMove(p.x, p.y, 0)
+        Sleep(50)
+        loop 40 {
+            Send("{WheelDown}")
+            Sleep(25)
+        }
+        Sleep(300)
+        red := (co != "" && co.accept != "") ? ContractButtonRed(co.accept) : true
+        Log("Forever: contract scrolled, accept " (red ? "enabled" : "still disabled") " (round " A_Index ")")
+        if red
+            break
     }
-    Log("Forever: contract scrolled to the end")
-    Sleep(300)
     if (accept) {
         gFv.index := accept
         FvHover(gFv.targets[accept])

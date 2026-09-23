@@ -89,8 +89,23 @@ hier gelten glatte Glue-Einheiten. Die Buttonfarbe (84,0,0) stammt von jenem
 live gemessenen Zwilling; das Fenster ist mit 60..125 bewusst weit. Geprüft:
 `/validate` sauber, 0 Fehlalarme auf allen 11 Referenz-Screenshots mit beiden
 Spieltypen, Treffer auf synthetischen Vertragsbildern in 1920x1080, 2880x1800
-und 1280x1024. Am echten Dialog UNGETESTET — das erste Nutzer-Log mit
-`SocialContract:`-Zeilen zeigt die echten Farben.
+und 1280x1024. Am echten Dialog der Classic-Clients UNGETESTET — das erste
+Nutzer-Log mit `SocialContract:`-Zeilen zeigt die echten Farben.
+
+Nachtrag vom Forever-Test (2026-09-23, dieselbe Dialog-Grafik, dort am Client
+durchgespielt): Ablehnen im Dialog misst 73,0,0 (im Fenster 60..125), das
+deaktivierte Annehmen 97,96,97 (grau), das Scrollen per Mausrad in der Mitte
+der Textbox schaltet Annehmen frei. Aus diesem Test stammt ein ZWEITER Weg,
+der ohne die ungemessenen Messpunkte auskommt und jetzt zuerst versucht
+wird: Titel ("Verhaltenskodex"), Annehmen und "Spiel verlassen" werden als
+OCR-Text mit Rechteck gefunden (`ContractOcr`), gescrollt wird zwischen Titel
+und Buttons, ob Annehmen frei ist, sagen die Pixel neben seinem Text
+(`ContractButtonRed`), geklickt wird das Textrechteck. Der Wächter fragt auf
+einem unbenannten Bildschirm alle 5 s per OCR nach dem Titel
+(`ContractOcrCheck`). Die Messpunkte bleiben als Rückfall, wenn OCR keinen
+Titel sieht. Achtung: auf Forever ist der Rahmen ein `DefaultScaleFrame` mit
+`ignoreParentScale` (gemessen 745 px breit bei 2880x1800), auf den
+Classic-Clients laut XML NICHT — dort gelten glatte Glue-Einheiten.
 
 **Hardcore- und PvP-Warnungen werden bei jeder Auflösung gefunden.**
 Alle Glue-Bildschirme sind 768 Einheiten hoch, deshalb trifft ein Messpunkt in

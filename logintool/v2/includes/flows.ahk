@@ -644,6 +644,46 @@ ScButtonIsRed(s, name) {
     return IsScRedProbe(SenseProbe(s, name)) || IsScRedProbe(SenseProbe(s, name "Mid"))
 }
 
+; ---- the contract as OCR sees it (needs a full sense) ----
+; Proven on the Forever client (2026-09-23, same dialog art): title text at the
+; top, "Accept" and "Exit Game" at the bottom, the scroll box in between; a
+; disabled Accept is grey (97,96,97), an enabled dialog button red (73,0,0).
+; Localized anchor strings come from forever.ahk's table (same GlobalStrings
+; keys on every client). Returns "" or {title, accept, decline}.
+ContractOcr(s) {
+    if !(SenseOk(s) && s.Has("lines"))
+        return ""
+    title := FvFind(s, "contract_title")
+    if (title = "")
+        return ""
+    return {title: title, accept: FvFind(s, "contract_accept"), decline: FvFind(s, "contract_decline")}
+}
+
+; Button state read LIVE from the pixels just outside the button's text, on
+; both sides: red = enabled.
+ContractButtonRed(line) {
+    if (line = "")
+        return false
+    for dx in [-14, line["w"] + 14] {
+        c := FvPixel(line["x"] + dx, FvCy(line))
+        if (c != "" && c.r >= 60 && c.r <= 125 && c.g <= 12 && c.b <= 12)
+            return true
+    }
+    return false
+}
+
+; The watcher works on no-OCR senses; on a screen it cannot name, one full
+; sense per 5 s looks for the contract's title.
+ContractOcrCheck(s) {
+    static lastAt := 0
+    if !(SenseOk(s) && s["screen"] = "unknown")
+        return false
+    if (A_TickCount - lastAt < 5000)
+        return false
+    lastAt := A_TickCount
+    return ContractOcr(Sense()) != ""
+}
+
 ; Decline is the anchor - it is always enabled, so always red. Accept is grey
 ; until the text was scrolled and says nothing about whether the dialog is up.
 IsSocialContract(s) {
@@ -661,6 +701,8 @@ IsSocialContract(s) {
 ; any glue popup dims the screen while a night scene is black by itself.
 SocialContractIsUp(s) {
     if IsSocialContract(s)
+        return true
+    if (ContractOcr(s) != "")
         return true
     return SenseCheck(s, "contract") && !AnyPopup(s) && !SenseCheck(s, "outdatedAddons")
         && !IsRealmWarningConfirm(s) && !IsHardcoreCreateConfirm(s)
@@ -713,33 +755,56 @@ AcceptContract(s := "") {
         Log("SocialContract: dialog up (helper=" (SenseCheck(s, "contract") ? 1 : 0)
             . " probes=" (IsSocialContract(s) ? 1 : 0) ") " ScProbeDump(s))
         Say(T("Blizzard's social contract is open. Accepting it, please wait."))
+        ; The OCR view (title, Accept, Exit Game as text with rectangles) is
+        ; the tested path: independent of probe positions and of the frame's
+        ; scale. The probe widgets remain the fallback when OCR sees no title.
+        co := ContractOcr(s)
+        if (co = "")
+            co := ContractOcr(Sense())
         loop 3 {
             attempt := A_Index
             enabled := false
             loop 4 {
-                MoveToWidget("ScScrollCenter")
+                if (co != "" && co.accept != "") {
+                    p := PxToScreen(FvCx(co.title), (FvCy(co.title) + FvCy(co.accept)) / 2)
+                    MouseMove(p.x, p.y, 0)
+                } else {
+                    MoveToWidget("ScScrollCenter")
+                }
                 Sleep(60)
                 loop 8 {
                     Click("WheelDown")
                     Sleep(25)
                 }
                 Sleep(350)
-                s := SenseQuick()
-                if ScButtonIsRed(s, "ScAccept") {
-                    enabled := true
-                    break
+                if (co != "" && co.accept != "") {
+                    if ContractButtonRed(co.accept) {
+                        enabled := true
+                        break
+                    }
+                } else {
+                    s := SenseQuick()
+                    if ScButtonIsRed(s, "ScAccept") {
+                        enabled := true
+                        break
+                    }
                 }
             }
-            Log("SocialContract: attempt " attempt ", accept button "
+            Log("SocialContract: attempt " attempt " (" (co != "" ? "ocr" : "probes") "), accept button "
                 . (enabled ? "enabled" : "not seen enabled") " - clicking it. " ScProbeDump(s))
-            ClickWidget("ScAcceptClick")
+            if (co != "" && co.accept != "")
+                ClickOcrRect(co.accept)
+            else
+                ClickWidget("ScAcceptClick")
             Sleep(1200)
-            s := SenseQuick()
+            s := (co != "") ? Sense() : SenseQuick()
             if (SenseOk(s) && !SocialContractIsUp(s)) {
                 Log("SocialContract: accepted, now on " s["screen"])
                 Say(T("Social contract accepted."))
                 return true
             }
+            if (co != "")
+                co := ContractOcr(s)
         }
         Log("SocialContract: still up after 3 attempts. " ScProbeDump(s))
         Say(T("The social contract could not be accepted. Sighted help is needed once: scroll the text to the end and press accept."))
