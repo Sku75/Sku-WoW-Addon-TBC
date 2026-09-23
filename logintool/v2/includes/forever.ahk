@@ -309,9 +309,38 @@ FvTyping() {
     return gHasSetupGametype = "Forever" && gFv.typing
 }
 
-; Pixels per glue unit (see the header).
+; Pixels per glue unit. Measured 2.0 at 2880x1800 (900 units of height); other
+; resolutions are unverified, so whenever a page shows a button whose frame
+; position is known from the XML, the factor is taken from that button's text
+; instead: "Back" on the creation screen (250x66 at BOTTOMLEFT 46,28: centre 61
+; units above the bottom edge), "Enter World" on the character list (250x66 at
+; BOTTOM 0,45: centre 78 units above the bottom edge). Measured against the
+; captures: 2.05 and 2.03 for a true 2.0.
+global gFvKCal := 0
+
 FvK(s) {
+    if (gFvKCal > 0)
+        return gFvKCal
     return s["height"] / 900.0
+}
+
+FvCalibrateK(s) {
+    global gFvKCal
+    H := s["height"]
+    for key, units in Map("enter_world", 78, "back", 61) {
+        l := FvFind(s, key)
+        if (l = "")
+            continue
+        if (key = "back" && FvFind(s, "enter_world") != "")
+            continue   ; the list's Back button sits elsewhere; only use it on the creation screen
+        k := (H - FvCy(l)) / units
+        if (k > 0.8 && k < 5) {
+            if (Abs(k - gFvKCal) > 0.02)
+                Log("Forever: scale " Round(k, 3) " px/unit from '" l["text"] "' (" Round(H / k) " units high)")
+            gFvKCal := k
+            return
+        }
+    }
 }
 
 FvCx(line) {
@@ -675,6 +704,8 @@ FvBuild(s, screen) {
     t := []
     if !SenseOk(s)
         return t
+    if (screen = "charselect" || screen = "charcreate1" || screen = "charcreate2")
+        FvCalibrateK(s)
     W := s["width"], H := s["height"], k := FvK(s)
     FvAddPopupButtons(s, t)
     switch screen {
@@ -806,37 +837,36 @@ FvBuild(s, screen) {
             }
             if (l = "")
                 continue
-            names := []
+            ; The icons sit on a fixed grid under the header (79 units, 18
+            ; apart = 97 pitch; first centre 49.5 units under the header
+            ; text). Targets go on that grid; the printed names are only
+            ; snapped to their rows as labels, so a wobbly or dropped name
+            ; neither moves nor removes a row.
+            y0 := l["y"] + l["h"] + 10 * k + 39.5 * k
+            pitch := 97 * k
+            rows := Map()
             for line in s["lines"] {
-                ; a name belongs to the column when it is centred on it or
-                ; spans it (the long Skyborne names overflow the column)
                 spans := (line["x"] <= FvCx(l) && line["x"] + line["w"] >= FvCx(l))
-                if ((spans || Abs(FvCx(line) - FvCx(l)) < 70 * k) && FvCy(line) > FvCy(l) + 30 * k
-                        && FvCy(line) < bottom && line["h"] < H * 0.03)
-                    names.Push(line)
+                if (!(spans || Abs(FvCx(line) - FvCx(l)) < 70 * k) || FvCy(line) <= FvCy(l) + 30 * k
+                        || FvCy(line) >= bottom || line["h"] >= H * 0.03)
+                    continue
+                ; the name sits ~47 units under the icon centre
+                r := Round((line["y"] + line["h"] / 2 - 47 * k - y0) / pitch) + 1
+                if (r >= 1 && r <= 8 && !rows.Has(r))
+                    rows[r] := line["text"]
             }
-            if (names.Length >= 2) {
-                n := names.Length
-                loop n - 1 {
-                    i := A_Index
-                    loop n - i {
-                        j := A_Index
-                        if (FvCy(names[j]) > FvCy(names[j + 1])) {
-                            tmp := names[j], names[j] := names[j + 1], names[j + 1] := tmp
-                        }
-                    }
-                }
-                for i, line in names
-                    FvT(t, line["text"], FvCx(l), line["y"] - 36 * k, "race", "",
-                        line["text"] ", " l["text"] ", " i FvIndexText(i, names.Length) names.Length)
-                continue
+            count := 0
+            for r in rows
+                count := Max(count, r)
+            if (count = 0) {
+                ; no names read (not beginner mode): step the column blind
+                count := Floor((bottom - y0) / pitch) + 1
             }
-            y := l["y"] + l["h"] + 10 * k + 39.5 * k
-            n := 0
-            while (y < bottom && n < 8) {
-                n++
-                FvT(t, FvS(key) " " n, FvCx(l), y, "race")
-                y += 97 * k
+            loop count {
+                r := A_Index
+                name := rows.Has(r) ? rows[r] : FvS(key) " " r
+                FvT(t, name, FvCx(l), y0 + (r - 1) * pitch, "race", "",
+                    name ", " l["text"] ", " r FvIndexText(r, count) count)
             }
         }
         ; Body types: two 55-unit buttons in a row at the top centre.
