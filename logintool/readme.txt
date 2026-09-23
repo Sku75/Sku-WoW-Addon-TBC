@@ -11,9 +11,21 @@ The tool never reads or writes the game's memory and never injects into
 the game process. It looks at the screen and presses keys/clicks - the
 same things a sighted player does.
 
-Primary tested game versions: WoW Classic Anniversary (Burning Crusade) and
-Classic Era (1.15.x). Cataclysm/Retail remain selectable as an untested
-baseline - testers and contributors welcome.
+Primary tested game versions: WoW Classic Anniversary (Burning Crusade),
+Classic Era (1.15.x) and, since 4.0, WoW Forever. Cataclysm/Retail remain
+selectable as an untested baseline - testers and contributors welcome.
+
+WOW FOREVER (since 4.0):
+The Forever client narrates its own login, character and creation screens
+with the game's text-to-speech voice. The tool therefore does not read the
+screen to you there; it moves the mouse for you. Up/Down walk the elements of
+the current screen (the game speaks each one), Page Up/Down jump five, Enter
+clicks, Left/Right change an appearance option, Enter on a text field hands
+you the keyboard (Enter or Escape gives it back), Enter World switches to play
+mode and Alt+F1 back. The tool switches the narration on and sets its voice
+and rate when it starts (edit data/forever.ini to change the voice number or
+the rate). Character creation is fully covered, including every appearance
+option; colours are named by the tool because the game has no words for them.
 
 IMPORTANT:
 Carefully follow the instructions below to set up the tool, otherwise it won't work.

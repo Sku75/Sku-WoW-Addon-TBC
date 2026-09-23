@@ -1,6 +1,6 @@
 # WoW Logintool
 
-## 3.4 (unveröffentlicht)
+## 4.0 (2026-09-23)
 
 **WoW Forever (Beta-Client `_classic_beta_`, WowB.exe, Build 1.60) wird
 unterstützt — als neuer Spieltyp `Forever` mit eigener Arbeitsweise.** Der
@@ -43,6 +43,8 @@ lässt (Patch D), ändert daran NICHTS (Versuch 2026-09-23, Engine wieder auf
 A+B+C). Darum ist `voice=0` die Voreinstellung: eine echte Stimme wird aus
 dem Cache hörbar wiederholt. `repeatecho=1` in `forever.ini` lässt das Tool
 Wiederholungen stattdessen selbst kurz benennen (für die Brücke).
+
+## 3.4 (2026-09-19)
 
 **Blizzards Sozialvertrag wird erkannt, zu Ende gescrollt und akzeptiert.**
 Der Dialog ist `SocialContractFrame` (`Blizzard_GlueXML\SocialContract.xml/.lua`,

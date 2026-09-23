@@ -27,7 +27,7 @@ SetWorkingDir A_ScriptDir "\.."  ; tool root: data\ and log.txt live here
 ; carry this number and are bumped together at publish time: this constant,
 ; the CHANGELOG heading, and Config.LoginToolVersion in the installer (which
 ; also writes it into installed-release.txt on deploy).
-global gToolVersion := "3.4"
+global gToolVersion := "4.0"
 
 global gSettingsVersion := "3.0"
 

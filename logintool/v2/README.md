@@ -23,6 +23,19 @@ classification + Windows OCR), OCR-driven features:
 - Alt+F1 — toggle pause <-> login mode, Alt+Esc — exit
 - Ctrl+Alt+F2 — PrintScreen
 
+## WoW Forever (game type `Forever`, `includes/forever.ahk`)
+
+The Forever client narrates its glue screens itself (Blizzard_Narration, mouse
+dwell), so the driver moves the cursor instead of reading: the screen is
+mapped by OCR in the background (thumbnail change detection, OCR only on
+change/click), targets are text rectangles plus XML-derived positions for
+text-less elements. Keys in login mode: Up/Down = next/previous target,
+PgUp/PgDn = five, Enter = click (typing mode on edit fields), Left/Right =
+mouse wheel on an appearance option / re-read / repeat, Escape = close popout
+or Escape to the game, Ctrl+Alt+F3 = calibration capture. Config.wtf of the
+Forever client is seeded at start from `data/forever.ini` (voice, rate). Plan
+and facts: `dev/rework-docs/LOGINTOOL-FOREVER-PLAN.md`.
+
 ## Files
 
 - `START.ahk` — main script (AutoHotkey v2, run with AutoHotkey64.exe)
