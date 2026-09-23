@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.IO;
 using System.Text;
 
@@ -189,7 +191,7 @@ namespace SkuLoginSense
                 opt.TryGetValue("window", out var title) ? title : null,
                 out string desc);
             if (hwnd == IntPtr.Zero)
-                throw new InvalidOperationException("WoW window not found (looked for WowClassic/Wow/WowT; use --exe or --window)");
+                throw new InvalidOperationException("WoW window not found (looked for WowClassic/Wow/WowT/WowB; use --exe or --window)");
 
             var bmp = WindowCapture.CaptureClientArea(hwnd, out string method);
             return (bmp, method, desc);
@@ -207,6 +209,9 @@ namespace SkuLoginSense
             sb.Append(",\"gametype\":").Append(Quote(data.Gametype));
             sb.Append(",\"dataRegion\":").Append(Quote(data.Region));
             sb.Append(",\"dataLanguage\":").Append(Quote(data.Language));
+            // Coarse 32x18 luminance thumbnail: lets a caller tell a changed screen
+            // from an unchanged one without paying for OCR (WoW Forever driver).
+            sb.Append(",\"thumb\":").Append(Quote(Thumb(frame)));
 
             sb.Append(",\"checks\":{");
             bool first = true;
@@ -269,6 +274,41 @@ namespace SkuLoginSense
                 opt[key] = args[++i];
             }
             return opt;
+        }
+
+        static string Thumb(Bitmap bmp)
+        {
+            const int cw = 32, ch = 18;
+            var sb = new StringBuilder(cw * ch * 2);
+            var rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            var bd = bmp.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            try
+            {
+                for (int cy = 0; cy < ch; cy++)
+                {
+                    for (int cx = 0; cx < cw; cx++)
+                    {
+                        int sum = 0, n = 0;
+                        for (int sy = 0; sy < 3; sy++)
+                        {
+                            int y = (int)((cy + 0.25 + 0.25 * sy) * bmp.Height / ch);
+                            if (y >= bmp.Height) y = bmp.Height - 1;
+                            for (int sx = 0; sx < 3; sx++)
+                            {
+                                int x = (int)((cx + 0.25 + 0.25 * sx) * bmp.Width / cw);
+                                if (x >= bmp.Width) x = bmp.Width - 1;
+                                int px = Marshal.ReadInt32(bd.Scan0, y * bd.Stride + x * 4);
+                                int b = px & 0xFF, g = (px >> 8) & 0xFF, r = (px >> 16) & 0xFF;
+                                sum += (r * 3 + g * 6 + b) / 10;
+                                n++;
+                            }
+                        }
+                        sb.Append((sum / n).ToString("x2"));
+                    }
+                }
+            }
+            finally { bmp.UnlockBits(bd); }
+            return sb.ToString();
         }
 
         static string Quote(string s)

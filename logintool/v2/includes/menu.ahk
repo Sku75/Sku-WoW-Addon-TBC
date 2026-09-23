@@ -230,6 +230,8 @@ Main() {
     Log("START: WoW Login Tool " gToolVersion)
     Say(T("Login tool version") " " gToolVersion)
     LoadGameData()
+    ; Forever clients get their narration CVars seeded before they start.
+    ForeverSeedAll()
     BuildMainMenu()
     BuildLoginScreenMenu()
     BuildSetupMenus()
@@ -266,6 +268,10 @@ CheckMode() {
         } else if (IsIngameNative()) {
             if (gMode != 0)
                 SwitchToPlay()
+        } else if (gHasSetupGametype = "Forever") {
+            ; No fiducials, no in-game marker, no InitLogin: forever.ahk
+            ; decides between login and play mode on its own.
+            FvCheckMode()
         } else if (gMode != 1) {
             ; Not in-game, focused, nothing recognized yet - the client is
             ; booting, or it is sitting on a screen the tool cannot name. This

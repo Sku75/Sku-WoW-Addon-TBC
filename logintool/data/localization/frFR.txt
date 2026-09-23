@@ -170,3 +170,9 @@ The PvP realm warning is still open.==L'avertissement du royaume JcJ est toujour
 no voices found, press enter to keep the system voice==Aucune voix trouvée, appuyez sur Entrée pour garder la voix du système
 keeping the system voice==La voix du système est conservée
 this voice does not work, choose another one==Cette voix ne fonctionne pas, choisissez-en une autre
+Forever==WoW Forever
+Forever mode: the game reads the screen itself. Press Control Alt F3 to save a screenshot for calibration.==Mode Forever : le jeu lit l'écran lui-même. Ctrl Alt F3 enregistre une capture d'écran pour le calibrage.
+screenshot saved==capture enregistrée
+narration settings written for Forever==réglages de lecture écrits pour Forever
+nothing to select on this screen==Rien à sélectionner sur cet écran
+typing mode, Enter or Escape to leave==Mode saisie. Entrée ou Échap pour quitter

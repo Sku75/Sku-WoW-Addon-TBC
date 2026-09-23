@@ -22,7 +22,7 @@ namespace SkuLoginSense
     {
         // ---------- window lookup ----------
 
-        static readonly string[] DefaultExeNames = { "WowClassic", "Wow", "WowT" };
+        static readonly string[] DefaultExeNames = { "WowClassic", "Wow", "WowT", "WowB" };
 
         public static IntPtr FindWowWindow(string exeName, string titleSubstring, out string foundDescription)
         {

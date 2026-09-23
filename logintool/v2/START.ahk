@@ -38,6 +38,7 @@ global gSettingsVersion := "3.0"
 #Include includes\sense.ahk
 #Include includes\ui.ahk
 #Include includes\detect.ahk
+#Include includes\forever.ahk
 #Include includes\menu.ahk
 #Include includes\flows.ahk
 #Include includes\keybinds.ahk

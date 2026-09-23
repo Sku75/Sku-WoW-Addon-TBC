@@ -58,3 +58,16 @@ miss. **Works but hacky** — the zero-width spaces perturb NVDA prosody. TODO:
 find the exact WoW cache mechanism / a CVar to disable it, or a
 prosody-neutral unique token (word-joiner U+2060? trailing spaces if WoW doesn't
 trim them for the cache key).
+
+## Patch D experiment (2026-09-23): a failing Speak does NOT stop the cache
+
+Tried for WoW Forever's glue narration, whose text cannot be varied from Lua:
+`patch_sapi2sr_x64_nocache.py` makes the engine's Speak return E_FAIL after
+forwarding the text (single normal exit at `0x180009d65`, cave at
+`0x180016970`). SAPI passes the failure to the caller (SpVoice.Speak throws
+E_FAIL), NVDA still speaks, Sku still works - but the client still caches:
+the raw probe `SpeakText(1,"probe alpha",6,90)` twice spoke ONCE, and repeated
+hovers in the Forever glue stayed silent. So the client stores the entry
+regardless of the engine's return code (most likely before/independent of
+the engine call). Engine restored to the A+B+C build the same day. Do not
+retry return-code variants (S_FALSE is a success code and cannot do better).

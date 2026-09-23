@@ -37,8 +37,16 @@ global gLoadingAnnounced := false ; "the game is starting" is said once per clie
 ; The first component of the client version maps onto the data.ini sections.
 ; Versions the tool has no section for return "" - that has to be SAID, never
 ; quietly rounded to the nearest section.
-GametypeFromVersion(version) {
-    major := Integer(StrSplit(version, ".")[1])
+GametypeFromVersion(version, flavor := "") {
+    ; Forever first: its flavor pins it regardless of the build, and its
+    ; build (1.60+) would otherwise be mistaken for Era.
+    if IsForeverFlavor(flavor)
+        return "Forever"
+    parts := StrSplit(version, ".")
+    major := Integer(parts[1])
+    minor := parts.Length >= 2 ? Integer(parts[2]) : 0
+    if (major = 1 && minor >= 60)
+        return "Forever"
     switch major {
         case 1: return "Classic"
         case 2: return "BurningCrusade"
@@ -113,11 +121,13 @@ DetectGameVersion() {
     SplitPath(dir, , &root)
     flavor := ReadFlavor(dir)
     version := ReadBuildVersion(root, flavor)
-    gametype := (version != "") ? GametypeFromVersion(version) : ""
-    ; Fallback for an install whose .build.info we could not read: Era is the
-    ; only flavor whose name pins the version on its own.
+    gametype := (version != "") ? GametypeFromVersion(version, flavor) : ""
+    ; Fallback for an install whose .build.info we could not read: Era and
+    ; Forever are the flavors whose name pins the version on its own.
     if (gametype = "" && version = "" && flavor = "wow_classic_era")
         gametype := "Classic"
+    if (gametype = "" && version = "" && IsForeverFlavor(flavor))
+        gametype := "Forever"
     return {pid: pid, exe: exe, flavor: flavor, version: version, gametype: gametype}
 }
 
@@ -194,6 +204,12 @@ FiducialTexturesMissing() {
 ; missing textures are an install problem with a known repair, and telling the
 ; user to close a dialog would send them chasing a dialog that does not exist.
 SayUnknownScreenHint() {
+    if (gHasSetupGametype = "Forever") {
+        ; No textures to repair on Forever: the screen is simply not mapped
+        ; yet. The client narrates it anyway; the capture is for the mapping.
+        Say(T("Forever mode: the game reads the screen itself. Press Control Alt F3 to save a screenshot for calibration."))
+        return
+    }
     if FiducialTexturesMissing() {
         Log("unknown screen and Interface\BUTTONS\128RedButton.BLP is missing - announcing the texture repair")
         Say(T("The screen recognition textures are missing from the game folder. Please run the Sku installer to reinstall the login tool."))

@@ -170,3 +170,9 @@ The PvP realm warning is still open.==Die Warnung zum PvP-Realm steht noch offen
 no voices found, press enter to keep the system voice==Keine Stimmen gefunden, Eingabe drücken, um die Systemstimme zu behalten
 keeping the system voice==Die Systemstimme bleibt
 this voice does not work, choose another one==Diese Stimme funktioniert nicht, bitte eine andere wählen
+Forever==WoW Forever
+Forever mode: the game reads the screen itself. Press Control Alt F3 to save a screenshot for calibration.==Forever-Modus: Das Spiel liest den Bildschirm selbst vor. Strg Alt F3 speichert einen Screenshot zur Kalibrierung.
+screenshot saved==Screenshot gespeichert
+narration settings written for Forever==Vorlese-Einstellungen für Forever geschrieben
+nothing to select on this screen==Auf diesem Bildschirm gibt es nichts anzufahren
+typing mode, Enter or Escape to leave==Eingabemodus. Enter oder Escape beendet ihn

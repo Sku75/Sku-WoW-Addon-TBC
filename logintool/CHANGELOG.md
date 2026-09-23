@@ -2,6 +2,48 @@
 
 ## 3.4 (unveröffentlicht)
 
+**WoW Forever (Beta-Client `_classic_beta_`, WowB.exe, Build 1.60) wird
+unterstützt — als neuer Spieltyp `Forever` mit eigener Arbeitsweise.** Der
+Forever-Client liest seine Glue-Bildschirme selbst vor (`Blizzard_Narration`:
+alles, worauf die Maus 50 ms ruht, spricht der Client mit seiner TTS-Stimme;
+Bildschirmwechsel und Dialoge melden sich beim Öffnen). Das Tool liest auf
+Forever deshalb nichts mehr vor, es FÜHRT den Mauszeiger: Auf/Ab springt von
+Ziel zu Ziel, Enter klickt, Links/Rechts stellt eine Aussehens-Option per
+Mausrad um, Enter auf einem Eingabefeld gibt die Tastatur frei (Enter/Escape
+beenden das wieder), "Welt betreten" schaltet in den Spielmodus, Alt+F1
+zurück. Die Ziele kommen aus einer OCR-Karte des Bildschirms (Texte und ihre
+Rechtecke), ergänzt um Geometrie aus Blizzards XML für Elemente ohne Text
+(Rassen-Icons, Körpertyp, Dropdown-Kästen, Namensprüfung). Die Karte wird im
+Hintergrund gepflegt: alle 250 ms eine Aufnahme ohne OCR, deren grobes
+Helligkeitsbild mit dem zuletzt kartierten Bild verglichen wird; OCR (~600 ms)
+läuft nur bei Bildänderung, nach einem Klick, eine Sekunde nach einem
+Seitenwechsel (Nachzügler-Text) und als Sicherheitsnetz alle fünf Sekunden.
+Tasten warten nie auf eine Aufnahme. Bildschirme: Bildschirmleser-Dialog,
+Login, Spielstil (Karten), Erfahrungsvoreinstellung, Charakterauswahl mit
+Löschen-Dialog, Verhaltenskodex (wird beim Erscheinen selbst zu Ende gescrollt,
+Cursor ruht auf Annehmen), Charaktererstellung Modus 1 (Rassen per gedrucktem
+Namen, Klassen beide Reihen, Körpertyp) und Modus 2 (Haupt-/Zweitname,
+Namensprüfung, Würfel, Optionen mit Wert, Popout-Raster), sonst alle
+Textzeilen als Rückfall. Farb-Optionen haben in Blizzards Daten keinen Namen
+(nur ein Farbfeld): das Tool liest das Pixel und nennt die Farbe grob
+("hell braun") mit derselben SAPI-Stimme und Rate wie die Narration.
+Einrichtung: beim Toolstart (Client nicht aktiv) werden in `WTF\Config.wtf`
+des Forever-Clients Narration ein, Erststart-Dialog aus, Stimme und Rate aus
+`data\forever.ini` gesetzt (`voice=0` = echte SAPI-Stimme über die Boxen,
+`voice=1` = NVDA-Brücke; `rate=5`). Erkennung über Flavor `wow_classic_beta`
+bzw. Build 1.60+, der Helper kennt `WowB`. Strg+Alt+F3 speichert eine
+Kalibrier-Aufnahme nach `data\captures\`.
+
+Gelernt dabei, festgehalten in `dev/rework-docs/LOGINTOOL-FOREVER-PLAN.md`
+und `dev/rework-docs/nvda-voice-signing/sapi2sr-bookmark-patch.md`: der
+12.0-Client cacht gerenderte Sprache pro Text und spielt sie ohne
+Stimmenaufruf wieder ab; über die NVDA-Brücke ist damit jeder exakt
+wiederholte Narrationstext stumm. Ein Brücken-Patch, der Speak scheitern
+lässt (Patch D), ändert daran NICHTS (Versuch 2026-09-23, Engine wieder auf
+A+B+C). Darum ist `voice=0` die Voreinstellung: eine echte Stimme wird aus
+dem Cache hörbar wiederholt. `repeatecho=1` in `forever.ini` lässt das Tool
+Wiederholungen stattdessen selbst kurz benennen (für die Brücke).
+
 **Blizzards Sozialvertrag wird erkannt, zu Ende gescrollt und akzeptiert.**
 Der Dialog ist `SocialContractFrame` (`Blizzard_GlueXML\SocialContract.xml/.lua`,
 für alle Classic-Varianten dieselbe Datei). Er erscheint über der

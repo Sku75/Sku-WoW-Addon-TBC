@@ -17,6 +17,19 @@
     ; Always signal any running flow to stop, so this key is a reliable
     ; "get me out" even while a flow is clicking.
     gAbortFlow := true
+    if (gHasSetupGametype = "Forever") {
+        ; Forever has no InitLogin: the hover driver reads the screen on
+        ; the next key. Alt+F1 is also the only way back from play mode.
+        if (gMode = 1 || gMode = -1) {
+            gFv.playing := true
+            SwitchToPlay()
+        } else if (gMode = 0) {
+            gFv.playing := false
+            gFv.typing := false
+            SwitchToLogin()
+        }
+        return
+    }
     if (gMode = 1 || gMode = -1) {
         SwitchToPlay()
     } else if (gMode = 0) {
@@ -34,18 +47,55 @@
 ; field. An edit box whose arrow keys move a menu instead of the caret is not a
 ; usable edit box - you cannot correct a typo you cannot navigate to. Enter and
 ; Escape stay captured below, because they are how the field is left.
-#HotIf (gMode = 1 || gMode = -2) && gLoginFieldFlag = ""
+#HotIf (gMode = 1 || gMode = -2) && gLoginFieldFlag = "" && !FvTyping()
 
-Right:: MenuRight()
-Left:: MenuLeft()
-Up:: MenuUp()
-Down:: MenuDown()
-PgUp:: MenuBigUp()
-PgDn:: MenuBigDown()
+Right:: {
+    if FvActive()
+        FvStep(1)
+    else
+        MenuRight()
+}
+Left:: {
+    if FvActive()
+        FvStep(-1)
+    else
+        MenuLeft()
+}
+Up:: {
+    if FvActive()
+        FvMove(-1)
+    else
+        MenuUp()
+}
+Down:: {
+    if FvActive()
+        FvMove(1)
+    else
+        MenuDown()
+}
+PgUp:: {
+    if FvActive()
+        FvMove(-5)
+    else
+        MenuBigUp()
+}
+PgDn:: {
+    if FvActive()
+        FvMove(5)
+    else
+        MenuBigDown()
+}
 
 #HotIf (gMode = 1 || gMode = -2)
 
 Enter:: {
+    if FvActive() {
+        if FvTyping()
+            FvTypingEnter()
+        else
+            FvEnter()
+        return
+    }
     if (gLoginFieldFlag != "") {
         ; Not forwarded to the game: Enter in WoW's account box submits the
         ; login, and submitting by accident on the way out of a text field is
@@ -64,6 +114,13 @@ Enter:: {
 }
 
 Escape:: {
+    if FvActive() {
+        if FvTyping()
+            FvTypingEscape()
+        else
+            FvEscape()
+        return
+    }
     if (gLoginFieldFlag != "") {
         LoginFieldFinish(false)
     } else if gEnterCharacterNameFlag {
