@@ -202,10 +202,17 @@ braucht weder Texturen noch Schriften. Sku wird dort NICHT installiert.
 
 Am Client durchgespielt: Spielstil, Voreinstellung, Charakterliste,
 Verhaltenskodex (scrollt selbst), Erstellung Modus 1+2 mit Namen,
-Namensprüfung, Optionen per Mausrad, Farbnamen. Details und alle Regeln im
-CHANGELOG-Eintrag (Abschnitt 3.4). Brücken-Experiment Patch D negativ, darum
-`voice=0` (echte Stimme) als Standard. Offen: Farbnamen im Popout, feinere
-Farbpaletten, Rassenspalte bei OCR-Ausfällen der langen Skyborne-Namen.
+Namensprüfung, Optionen per Mausrad, Farbnamen, Löschen-Dialog. Details und
+alle Regeln im CHANGELOG-Eintrag (Abschnitt 4.0). Brücken-Experiment Patch D
+negativ, darum `voice=0` (echte Stimme) als Standard. Veröffentlicht als
+Login-Tool 4.0 am 2026-09-23 (rollendes Asset, Installer 5.3 mit dem Pin).
+Das Popout ist fertig, wie es ist (Enter öffnet, Ab läuft, Enter wählt,
+Escape schließt): Farbnamen dort brächten nichts, die Zeilen zeigen dieselben
+Farbfelder wie der Kasten, und Links/Rechts erreichen dieselben Auswahlen.
+Bewusst nicht weiter verfolgt: feinere Farbpaletten (Blizzard hat keine
+Namen, die Grobnamen sind ausreichend). Rassenspalte liegt seit dem
+Icon-Raster fest. Offen bleibt nur der Test an einer zweiten Auflösung und
+je ein Durchlauf in Englisch und Französisch.
 
 ## Offene Punkte
 
