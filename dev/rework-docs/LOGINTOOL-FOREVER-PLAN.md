@@ -198,6 +198,15 @@ braucht weder Texturen noch Schriften. Sku wird dort NICHT installiert.
   Rassenspalten, Kategoriezeile, Dropdown-Versatz 146/24 Einheiten) sind
   XML-Schätzungen, die an Aufnahmen von Modus 1/2 zu prüfen sind.
 
+## Stand 2026-09-23 (spät): Fahrer läuft, Commit f018f84
+
+Am Client durchgespielt: Spielstil, Voreinstellung, Charakterliste,
+Verhaltenskodex (scrollt selbst), Erstellung Modus 1+2 mit Namen,
+Namensprüfung, Optionen per Mausrad, Farbnamen. Details und alle Regeln im
+CHANGELOG-Eintrag (Abschnitt 3.4). Brücken-Experiment Patch D negativ, darum
+`voice=0` (echte Stimme) als Standard. Offen: Farbnamen im Popout, feinere
+Farbpaletten, Rassenspalte bei OCR-Ausfällen der langen Skyborne-Namen.
+
 ## Offene Punkte
 
 - Fenstertitel des Beta-Clients (Annahme "World of Warcraft", Tool sucht nur
