@@ -99,7 +99,7 @@
          pins are unaffected). Also the first build to carry login tool 3.4 and
          the log bundle's voices.txt (LogCollector.WriteVoiceRegistrations).
          -->
-    <Version>5.2</Version>
+    <Version>5.3</Version>
     <!-- File properties (Explorer "Details", and what antivirus reputation
          scoring reads). Left at the SDK defaults every field said just
          "SkuInstaller" and the copyright was blank, which is what throwaway
