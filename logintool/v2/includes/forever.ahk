@@ -18,7 +18,8 @@
 ; high there (not 768 as on the classic clients). FvK() is that factor.
 
 global gFv := {screen: "", targets: [], index: 0, sensedAt: 0, s: "", typing: false,
-               playing: false, lastScreen: "", openOption: "", spoken: Map(), spokenPid: 0, lastClick: 0}
+               playing: false, lastScreen: "", openOption: "", spoken: Map(), spokenPid: 0, lastClick: 0,
+               lastHover: ""}
 
 ; ---------- client folders / flavor ----------
 
@@ -267,7 +268,10 @@ FvS(key) {
 ; OCR-tolerant comparison: case-folded, everything but letters and digits
 ; dropped (so "E-Mail oder Telefon" and "EMail oder Telefon" are one string).
 FvNorm(text) {
-    return RegExReplace(StrLower(text), "[^\p{L}\p{N}]", "")
+    text := StrLower(text)
+    text := StrReplace(StrReplace(StrReplace(StrReplace(text, "ä", "a"), "ö", "o"), "ü", "u"), "ß", "ss")
+    text := StrReplace(StrReplace(StrReplace(StrReplace(text, "é", "e"), "è", "e"), "ê", "e"), "à", "a")
+    return RegExReplace(text, "[^\p{L}\p{N}]", "")
 }
 
 ; First OCR line whose text is the START of the anchor string (at least 8
@@ -517,7 +521,7 @@ FvClassify(s) {
 ; ---------- target lists ----------
 
 FvT(list, name, x, y, kind := "button", data := "", say := "") {
-    list.Push({name: name, x: Round(x), y: Round(y), kind: kind, data: data, say: say, color: ""})
+    list.Push({name: name, x: Round(x), y: Round(y), kind: kind, data: data, say: say, color: "", clearFirst: false})
 }
 
 ; The narration voice, as a SAPI voice object of the tool's own: the same
@@ -563,12 +567,30 @@ FvGameSay(text) {
 }
 
 ; A colour swatch has no text the game could narrate: the tool names the
-; colour itself, shortly after the hover, whenever such an option is reached.
-FvEchoColor(t) {
-    if (t.kind = "option" && t.color != "") {
-        text := t.color
-        SetTimer(() => FvGameSay(text), -500)
+; colour itself, AFTER the client's own narration of the option ("Skin
+; colour, dropdown, 3 of 10" takes a good second and a half) plus a short
+; pause. One pending echo at a time: moving on cancels the old one, so a
+; colour is never spoken for an option the cursor already left.
+global gFvEchoTimer := ""
+
+FvCancelEcho() {
+    global gFvEchoTimer
+    if (gFvEchoTimer != "") {
+        SetTimer(gFvEchoTimer, 0)
+        gFvEchoTimer := ""
     }
+}
+
+FvEchoLater(text, delayMs) {
+    global gFvEchoTimer
+    FvCancelEcho()
+    gFvEchoTimer := () => FvGameSay(text)
+    SetTimer(gFvEchoTimer, -delayMs)
+}
+
+FvEchoColor(t) {
+    if (t.kind = "option" && t.color != "")
+        FvEchoLater(t.color, 1800)
 }
 
 ; " von " for "i von n" on list-like targets, in the client's own words.
@@ -602,22 +624,46 @@ FvColorName(r, g, b) {
     else
         h := 60 * (((r - g) / (mx - mn)) + 4)
     brown := Map("de", "braun", "en", "brown", "fr", "brun")[L]
-    if (h < 15 || h >= 345)
+    if (h < 12 || h >= 340)
         hue := Map("de", "rot", "en", "red", "fr", "rouge")[L]
-    else if (h < 40)
-        hue := (light < 0.5 || sat < 0.5) ? brown : Map("de", "orange", "en", "orange", "fr", "orange")[L]
-    else if (h < 70)
+    else if (h < 42)
+        hue := (light < 0.55 || sat < 0.55) ? brown : Map("de", "orange", "en", "orange", "fr", "orange")[L]
+    else if (h < 68)
         hue := (light < 0.45) ? brown : Map("de", "gelb", "en", "yellow", "fr", "jaune")[L]
-    else if (h < 170)
+    else if (h < 95)
+        hue := Map("de", "gelbgrün", "en", "yellow-green", "fr", "vert-jaune")[L]
+    else if (h < 160)
         hue := Map("de", "grün", "en", "green", "fr", "vert")[L]
-    else if (h < 260)
+    else if (h < 190)
+        hue := Map("de", "türkis", "en", "turquoise", "fr", "turquoise")[L]
+    else if (h < 215)
+        hue := Map("de", "himmelblau", "en", "sky blue", "fr", "bleu ciel")[L]
+    else if (h < 255)
         hue := Map("de", "blau", "en", "blue", "fr", "bleu")[L]
-    else if (h < 300)
+    else if (h < 290)
         hue := Map("de", "violett", "en", "purple", "fr", "violet")[L]
+    else if (h < 320)
+        hue := Map("de", "magenta", "en", "magenta", "fr", "magenta")[L]
     else
         hue := Map("de", "rosa", "en", "pink", "fr", "rose")[L]
-    shade := light > 0.65 ? lightWord " " : light < 0.3 ? darkWord " " : ""
-    return shade hue
+    ; five lightness steps and a saturation word, so a palette of eight blues
+    ; does not come out as three identical names
+    if (light > 0.78)
+        shade := Map("de", "sehr hell", "en", "very light", "fr", "très clair")[L]
+    else if (light > 0.6)
+        shade := lightWord
+    else if (light > 0.4)
+        shade := Map("de", "mittel", "en", "medium", "fr", "moyen")[L]
+    else if (light > 0.22)
+        shade := darkWord
+    else
+        shade := Map("de", "sehr dunkel", "en", "very dark", "fr", "très foncé")[L]
+    tone := ""
+    if (sat < 0.35)
+        tone := Map("de", "blass", "en", "pale", "fr", "pâle")[L] " "
+    else if (sat > 0.75)
+        tone := Map("de", "kräftig", "en", "strong", "fr", "vif")[L] " "
+    return shade " " tone hue
 }
 
 ; Colour of a capture pixel, read from the screen (same client pixels).
@@ -756,7 +802,9 @@ FvBuild(s, screen) {
         ; Delete dialog up: its typing box and its two buttons only.
         l := FvFind(s, "delete_word", true)
         if (l != "") {
+            t := []
             FvT(t, "delete keyword", W / 2, l["y"] + l["h"] + 21 * k, "edit")
+            t[t.Length].clearFirst := true
             FvAddLine(s, t, "ok")
             FvAddLine(s, t, "cancel")
             return t
@@ -962,8 +1010,21 @@ FvBuild(s, screen) {
             options.Push(line)
         }
         if (options.Length > 0 && FvCy(options[1]) > 250 * k) {
-            loop 4
-                FvT(t, "category " A_Index, W - 349 * k + 92 * k + (A_Index - 1) * 88 * k, 209 * k)
+            loop 4 {
+                cx := W - 349 * k + 92 * k + (A_Index - 1) * 88 * k, cy := 209 * k
+                if (cx > W - 30 * k)
+                    break
+                ; an icon is a bright ring on the dark panel; sample a few
+                ; points on the ring radius (~48 units) around the centre
+                bright := 0
+                for d in [[-48, 0], [48, 0], [0, -48], [0, 48], [0, 0]] {
+                    c := FvPixel(cx + d[1] * k, cy + d[2] * k)
+                    if (c != "" && c.r + c.g + c.b > 240)
+                        bright++
+                }
+                if (bright >= 2)
+                    FvT(t, "category " A_Index, cx, cy)
+            }
         }
         for line in options {
             ox := line["x"] + 146 * k, oy := line["y"] + line["h"] + 24 * k
@@ -1054,6 +1115,8 @@ FvRebuild() {
 ; Park the cursor on a target. A tiny detour first, so re-hovering the same
 ; spot counts as new movement for the client's dwell timer.
 FvHover(t) {
+    FvCancelEcho()
+    gFv.lastHover := t
     p := PxToScreen(t.x, t.y)
     MouseMove(p.x + 3, p.y, 0)
     Sleep(30)
@@ -1115,13 +1178,13 @@ FvCurrent() {
 }
 
 FvEnter() {
-    if (gFv.index = 0) {
+    tg := FvCurrent()
+    if (tg = "" && gFv.lastHover != "")
+        tg := gFv.lastHover       ; a re-read moved the index, not the cursor
+    if (tg = "") {
         FvMove(1)
         return
     }
-    tg := FvCurrent()
-    if (tg = "")
-        return
     p := PxToScreen(tg.x, tg.y)
     MouseMove(p.x, p.y, 0)
     Sleep(30)
@@ -1132,8 +1195,13 @@ FvEnter() {
     FvTouch()
     switch tg.kind {
     case "edit":
+        if tg.clearFirst {
+            ; the delete keyword box may still hold an earlier attempt
+            Sleep(80)
+            Send("^a{BackSpace}")
+        }
         gFv.typing := true
-        SayQueued(T("typing mode, Enter or Escape to leave"))
+        FvEchoLater(T("typing mode, Enter or Escape to leave"), 300)
     case "enterworld":
         Sleep(800)
         gFv.playing := true
@@ -1215,6 +1283,10 @@ FvEscape() {
 FvTypingEnter() {
     gFv.typing := false
     FvTouch()
+    if (gFv.index >= 1 && gFv.index < gFv.targets.Length) {
+        Sleep(150)
+        FvMove(1)
+    }
 }
 
 FvTypingEscape() {
