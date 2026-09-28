@@ -4,6 +4,46 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.9
+
+    Ueberblick
+
+        Fehlerbehebungen
+            Quest-Menue: "Route" unter einer Kreatur war immer leer, wenn ihr Name einen Bindestrich oder eine Klammer enthaelt (zum Beispiel "Un'Goro-Gorilla", "Goblin-Ingenieur"). Behoben.
+            Nahe Route: die Suche nach verbundenen Wegpunkten in der Naehe eines Ziels lieferte oft weniger als die zehn naechsten. Hat sehr wahrscheinlich nie jemanden getroffen, reine Korrektheit.
+
+    Quest-Menue: "Route" findet Kreaturen mit Bindestrich im Namen
+        Einfach: Im Quest-Menue (Annahme, Ziel, Abgabe) bietet eine Kreatur "Route", "Nahe Route"
+            und "Wegpunkt". "Route" sagte "Liste leer", sobald der Name der Kreatur einen
+            Bindestrich, eine Klammer oder ein aehnliches Zeichen enthielt, auch wenn die Kreatur
+            gut an das Wegenetz angebunden ist. Im deutschen Client betraf das 249 Kreaturen,
+            darunter alle drei Affenarten im Krater von Un'Goro. "Nahe Route" und "Wegpunkt" waren
+            nicht betroffen.
+        Technisch: SkuQuest/Options.lua, CreateRtWpSubmenu, Zweig "Route": string.find(i, wpName)
+            ohne plain-Argument las den Wegpunktnamen als Lua-Muster. Dort ist "-" ein Quantor
+            ("o-" = beliebig viele o), der Name fand sich also nie selbst. Jetzt
+            string.find(i, wpName, 1, true) an beiden Stellen. Die Routendaten im Krater waren in
+            Ordnung (geprueft: Links, Spawn-Indizes und Anbindung an das Wegenetz).
+
+    Nahe Route: die zehn naechsten verbundenen Wegpunkte werden wirklich gefunden
+        Einfach: Die meisten Kreaturen sind nicht selbst an das Wegenetz angebunden. Fuer "Nahe
+            Route" sucht Sku darum bis zu zehn verbundene Wegpunkte im Umkreis von 500 Metern um das
+            Ziel und nimmt den besten erreichbaren davon. Diese Suche lieferte oft weniger als zehn.
+            Der naechste Wegpunkt war aber immer dabei, und das Wegenetz ist fast ueberall
+            zusammenhaengend. Das hat sehr wahrscheinlich nie jemanden getroffen; die Korrektur ist
+            nur der Korrektheit wegen da. Sichtbar geworden waere der Fehler nur, wenn der naechste
+            Wegpunkt auf einem abgetrennten Stueck des Wegenetzes liegt: dann "Liste leer" oder ein
+            kleiner Umweg.
+        Technisch: SkuNav:GetNearestWpsWithLinksToWp (SkuNav/Core.lua). Das sortierte Einfuegen
+            kannte keinen Anhaenge-Fall: ein Kandidat, der weiter weg war als alle Eintraege, fiel
+            weg, obwohl die Liste noch Platz hatte. Der erste Treffer von pairs() setzte damit die
+            Obergrenze. Das Kuerzen bei mehr als N Eintraegen entfernte schon immer den
+            entferntesten und bleibt. Offline gegen "die N naechsten" geprueft (20000 Zufallsfaelle):
+            alt 9059 zu kurz, neu alle richtig. Alle fuenf Aufrufer werten die ganze Liste aus und
+            nehmen den besten erreichbaren Eintrag, mehr Kandidaten koennen also nur gleich gute oder
+            bessere Routen ergeben.
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.8
 
     Ueberblick

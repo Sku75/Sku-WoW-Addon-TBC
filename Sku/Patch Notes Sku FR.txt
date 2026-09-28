@@ -7,6 +7,48 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.9
+
+    Aperçu
+
+        Corrections
+            Menu des quêtes : « Itinéraire » sous une créature était toujours vide quand son nom contient un trait d'union ou une parenthèse (par exemple « Gorille Crins-de-ciel »). Corrigé.
+            Fermer l'itinéraire : la recherche des points de passage reliés près d'une cible renvoyait souvent moins que les dix plus proches. N'a très probablement jamais touché personne, correction de pure exactitude.
+
+    Menu des quêtes : « Itinéraire » trouve les créatures avec un trait d'union dans leur nom
+        Simple : Dans le menu des quêtes (Début de quête, Cible de quête, Livraison), une créature
+            propose « Itinéraire », « Fermer l'itinéraire » et « Point de passage ». « Itinéraire »
+            disait « liste vide » dès que le nom de la créature contenait un trait d'union, une
+            parenthèse ou un caractère semblable, même quand la créature est bien reliée au réseau
+            de chemins. Sur un client allemand, cela touchait 249 créatures, dont les trois espèces
+            de singes du cratère d'Un'Goro. « Fermer l'itinéraire » et « Point de passage »
+            n'étaient pas concernés.
+        Technique : SkuQuest/Options.lua, CreateRtWpSubmenu, branche « Itinéraire » :
+            string.find(i, wpName) sans l'argument plain lisait le nom du point de passage comme un
+            motif Lua. Là, « - » est un quantificateur (« o- » = un nombre quelconque de o), le nom
+            ne se trouvait donc jamais lui-même. Désormais string.find(i, wpName, 1, true) aux deux
+            endroits. Les données d'itinéraire du cratère étaient correctes (vérifié : liens,
+            indices d'apparition et raccordement au réseau).
+
+    Fermer l'itinéraire : les dix points de passage reliés les plus proches sont vraiment trouvés
+        Simple : La plupart des créatures ne sont pas elles-mêmes reliées au réseau de chemins.
+            Pour « Fermer l'itinéraire », Sku cherche donc jusqu'à dix points de passage reliés dans
+            un rayon de 500 mètres autour de la cible et prend le meilleur qui soit accessible.
+            Cette recherche en renvoyait souvent moins de dix. Le point le plus proche en faisait
+            pourtant toujours partie, et le réseau de chemins est connexe presque partout. Cela n'a
+            très probablement jamais touché personne ; la correction n'est là que pour l'exactitude.
+            Le défaut n'aurait pu se voir que si le point le plus proche se trouve sur un morceau
+            détaché du réseau : alors « liste vide » ou un petit détour.
+        Technique : SkuNav:GetNearestWpsWithLinksToWp (SkuNav/Core.lua). L'insertion triée n'avait
+            pas de cas d'ajout en fin de liste : un candidat plus éloigné que toutes les entrées
+            était écarté alors que la liste avait encore de la place, et le premier résultat de
+            pairs() fixait ainsi le plafond. La coupe au-delà de N entrées retirait déjà toujours la
+            plus éloignée et reste en place. Vérifié hors jeu contre « les N plus proches » (20000
+            cas aléatoires) : ancien 9059 trop courts, nouveau tous corrects. Les cinq appelants
+            parcourent toute la liste et prennent la meilleure entrée accessible ; davantage de
+            candidats ne peut donc donner que des itinéraires aussi bons ou meilleurs.
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.8
 
     Aperçu

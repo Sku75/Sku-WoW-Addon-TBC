@@ -4,6 +4,43 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v43.9
+
+    Overview
+
+        Bugfixes
+            Quest menu: "Route" under a creature was always empty when its name contains a hyphen or a bracket (for example "Un'Goro-Gorilla" on German clients). Fixed.
+            Close route: the search for linked waypoints near a target often returned fewer than the ten nearest. Most probably never affected anyone, a pure correctness fix.
+
+    Quest menu: "Route" finds creatures with a hyphen in their name
+        Simple: In the quest menu (Quest start, Quest target, Delivery) a creature offers "Route",
+            "Close route" and "Waypoint". "Route" said "list empty" whenever the creature's name
+            contained a hyphen, a bracket or a similar character, even when the creature is well
+            connected to the route network. On German clients that was 249 creatures, among them
+            all three ape kinds in Un'Goro Crater. "Close route" and "Waypoint" were not affected.
+        Technically: SkuQuest/Options.lua, CreateRtWpSubmenu, "Route" branch: string.find(i, wpName)
+            without the plain argument read the waypoint name as a Lua pattern. There "-" is a
+            quantifier ("o-" = any number of o), so the name never found itself. Now
+            string.find(i, wpName, 1, true) at both call sites. The route data in the crater was
+            fine (checked: links, spawn indices and connection to the route network).
+
+    Close route: the ten nearest linked waypoints are really found
+        Simple: Most creatures are not linked to the route network themselves. For "Close route"
+            Sku therefore looks for up to ten linked waypoints within 500 yards of the target and
+            takes the best reachable one. That search often returned fewer than ten. The nearest
+            waypoint was always among them, though, and the route network is connected almost
+            everywhere. This most probably never affected anyone; the fix is there for correctness
+            only. The bug could only have shown when the nearest waypoint lies on a detached piece
+            of the network: then "list empty" or a small detour.
+        Technically: SkuNav:GetNearestWpsWithLinksToWp (SkuNav/Core.lua). The sorted insert had no
+            append case: a candidate farther away than every entry was dropped although the list
+            still had room, so the first hit of pairs() set the ceiling. The trim above N entries
+            always removed the farthest one and stays. Checked offline against "the N nearest"
+            (20000 random cases): old 9059 too short, new all correct. All five callers evaluate the
+            whole list and take the best reachable entry, so more candidates can only give equally
+            good or better routes.
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v43.8
 
     Overview

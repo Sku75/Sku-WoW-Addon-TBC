@@ -1359,7 +1359,11 @@ local function CreateRtWpSubmenu(aParent, aGroups, aQuestID)
 											local tData = {}
 											for i, v in pairs(tMetapaths) do
 												for wpIndex, wpName in pairs(wpTable) do
-													if string.find(i, wpName) then
+													-- [v43.9] plain find: a waypoint name is text, not a Lua
+													-- pattern. The "-" in "Un'Goro-Gorilla" is a quantifier,
+													-- so 249 German creature names never matched themselves
+													-- and this list stayed empty for them.
+													if string.find(i, wpName, 1, true) then
 														tData[i] = tMetapaths[i].distance
 													end
 												end
@@ -1373,7 +1377,7 @@ local function CreateRtWpSubmenu(aParent, aGroups, aQuestID)
 											else
 												for tK, tV in ipairs(tSortedList) do
 													for wpIndex, wpName in pairs(wpTable) do
-														if string.find(tV, wpName) then
+														if string.find(tV, wpName, 1, true) then
 															local tDistText = tMetapaths[tV].distance..L[";Meter"]
 															if tMetapaths[tV].distance >= SkuOptions.db.profile["SkuNav"].routesMaxDistance then
 																--tDistText = L["weit"]

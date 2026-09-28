@@ -1921,16 +1921,20 @@ function SkuNav:GetNearestWpsWithLinksToWp(aWpName, aNumberOfWpsToReturn, aMaxDi
 		if WaypointCache[tWpIndex].links.byId then
 			local tDistance = SkuNav:Distance(WaypointCache[tWpIndex].worldX, WaypointCache[tWpIndex].worldY, taWpNameX, taWpNameY)
 			if tDistance < tMaxDistanceFound and tDistance < aMaxDistance then
-				if #tFoundWpList > 0 then
-					for x = 1, #tFoundWpList do
-						if tFoundWpList[x].distance > tDistance then
-							tinsert(tFoundWpList, x, {wpIndex = tWpIndex, wpName = tWpName, distance = tDistance})
-							break
-						end
+				-- [v43.9] sorted insert WITH the append case. The old loop only
+				-- inserted in front of a farther entry, so a candidate farther than
+				-- everything listed was dropped even with room left: the first hit
+				-- of pairs() capped the list, and it held that hit plus whatever
+				-- was closer instead of the N nearest. The overflow trim below
+				-- always removed the farthest and was already right.
+				local tPos = #tFoundWpList + 1
+				for x = 1, #tFoundWpList do
+					if tFoundWpList[x].distance > tDistance then
+						tPos = x
+						break
 					end
-				else
-					tinsert(tFoundWpList, {wpIndex = tWpIndex, wpName = tWpName, distance = tDistance})
 				end
+				tinsert(tFoundWpList, tPos, {wpIndex = tWpIndex, wpName = tWpName, distance = tDistance})
 			end
 			if #tFoundWpList > aNumberOfWpsToReturn then
 				table.remove(tFoundWpList, #tFoundWpList)
