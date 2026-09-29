@@ -8,9 +8,13 @@ Changes in Sku v43.9
 
     Overview
 
+        Changes
+            Auras: basic auras now offer the same output list under "Output" as custom auras, meaning every sound and every data output (for example spell name or target unit), several at once. Before, there was only a single sound.
+
         Bugfixes
             Quest menu: "Route" under a creature was always empty when its name contains a hyphen or a bracket (for example "Un'Goro-Gorilla" on German clients). Fixed.
             Close route: the search for linked waypoints near a target often returned fewer than the ten nearest. Most probably never affected anyone, a pure correctness fix.
+            Auras: "Delete all auras" deleted every aura on a single key press without asking. Now it asks "Really delete?" first, like deleting a single aura does.
 
     Quest menu: "Route" finds creatures with a hyphen in their name
         Simple: In the quest menu (Quest start, Quest target, Delivery) a creature offers "Route",
@@ -39,6 +43,30 @@ Changes in Sku v43.9
             (20000 random cases): old 9059 too short, new all correct. All five callers evaluate the
             whole list and take the best reachable entry, so more candidates can only give equally
             good or better routes.
+
+    Auras: basic auras get the full output list
+        Simple: Under "New aura", "Basic auras" every template had a "Sound" entry where you could
+            pick exactly one sound and nothing else. That entry is now called "Output", followed by
+            the number of outputs switched on, and it opens the same list a custom aura has: every
+            sound and every data output, for example spell name or target unit. Each entry is a
+            switch, Enter turns it on or off, and several may be on at once. What the template used
+            to set (its sound, plus spell name and target unit for "Your buff on a group member
+            expired") is already switched on when the form opens, and can now be switched off too.
+        Technically: SkuAuras/Options.lua. tBuildOutputsLevel takes an optional context (outputs,
+            ownerLabel, tooltip); without it the list edits the aura builder's draft as before, with
+            it the basic-aura form's list. The form (tBaseForm) holds a list outputs instead of a
+            single sound value, seeded from defaultSound and defaultOutputs (formerly fixedOutputs,
+            which were appended unconditionally on create). The summary and tBaseFormCommit read
+            that list; with no output on it still says "No output set".
+
+    Auras: "Delete all auras" asks first
+        Simple: "Delete all auras" in the Auras menu had no level below it: one Enter or Right
+            arrow and every aura of the character was gone. Now the entry leads to "Really
+            delete?", like deleting a single aura. Only Enter there deletes, Left arrow backs out.
+        Technically: SkuAuras/Options.lua, MenuBuilder: the entry is now dynamic and its
+            BuildChildren injects the single child "Really delete?". On entering, selectTarget
+            points at the entry itself, so Enter on the child calls its OnAction. Before it was
+            dynamic = false with no children, so OnPostSelect went straight to the OnAction branch.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.8

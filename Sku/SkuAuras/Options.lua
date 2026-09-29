@@ -1942,14 +1942,22 @@ local function tBuildConditionsLevel(aLevel)
 	tBuildAttributeList(aLevel)
 end
 
-local function tBuildOutputsLevel(aLevel)
+-- aCtx (optional) lets a caller other than the custom builder use the same
+-- list: {outputs = function() return <stored output list> end,
+--        ownerLabel = function() return <label of the level's entry> end,
+--        tooltip = function(aNode) end}. Without it the list edits the draft.
+-- The base-aura form passes its own, so both paths offer every output.
+local function tBuildOutputsLevel(aLevel, aCtx)
+	local tGetOutputs = (aCtx and aCtx.outputs) or function() return tDraft().outputs end
+	local tGetOwnerLabel = (aCtx and aCtx.ownerLabel) or tOutputsLabel
+	local tTooltip = (aCtx and aCtx.tooltip) or function(aNode) tSetDraftTooltip(aNode) end
 	aLevel.sorting = true
 	local tSorted = TableSortByIndex(SkuAuras.outputs)
 	for x = 1, #tSorted do
 		local tKey = tSorted[x]
 		local tStored = "output:"..tKey
 		local tFriendly = SkuAuras.outputs[tKey].friendlyName
-		local tNode = SkuOptions:InjectMenuItems(aLevel, {tToggleLabel(tFriendly, tIndexOfValue(tDraft().outputs, tStored) ~= nil)}, SkuGenericMenuItem)
+		local tNode = SkuOptions:InjectMenuItems(aLevel, {tToggleLabel(tFriendly, tIndexOfValue(tGetOutputs(), tStored) ~= nil)}, SkuGenericMenuItem)
 		tNode.internalName = tStored
 		-- Lets the generic OnEnter audition the beep even though the node name
 		-- now carries a state suffix (SkuZOptions/templates.lua).
@@ -1962,10 +1970,10 @@ local function tBuildOutputsLevel(aLevel)
 		-- overriding it outright would silence the preview.
 		tNode.OnEnter = function(self, aValue, aName)
 			SkuGenericMenuItem.OnEnter(self, aValue, aName)
-			tSetDraftTooltip(self)
+			tTooltip(self)
 		end
 		tNode.OnAction = function(self)
-			local tOutputs = tDraft().outputs
+			local tOutputs = tGetOutputs()
 			local tIndex = tIndexOfValue(tOutputs, self.internalName)
 			if tIndex then
 				table.remove(tOutputs, tIndex)
@@ -1974,7 +1982,7 @@ local function tBuildOutputsLevel(aLevel)
 			end
 			self.name = tToggleLabel(tFriendly, tIndex == nil)
 			if self.parent then
-				self.parent.name = tOutputsLabel()
+				self.parent.name = tGetOwnerLabel()
 			end
 		end
 	end
@@ -2179,7 +2187,7 @@ local tBaseAuraRecipes = {
 		attribute = "spellName",
 		operator = "is",
 		defaultSound = "sound-glass1",
-		fixedOutputs = {},
+		defaultOutputs = {},
 		fixed = {
 			sourceUnitId = {{"contains", "player"}},
 			event = {{"is", "SPELL_AURA_REMOVED"}},
@@ -2192,7 +2200,7 @@ local tBaseAuraRecipes = {
 		attribute = "spellName",
 		operator = "is",
 		defaultSound = "sound-glass2",
-		fixedOutputs = {},
+		defaultOutputs = {},
 		fixed = {
 			sourceUnitId = {{"contains", "player"}},
 			event = {{"is", "SPELL_AURA_REMOVED"}},
@@ -2205,7 +2213,7 @@ local tBaseAuraRecipes = {
 		attribute = "spellName",
 		operator = "is",
 		defaultSound = "sound-glass5",
-		fixedOutputs = {},
+		defaultOutputs = {},
 		fixed = {
 			sourceUnitId = {{"contains", "player"}},
 			event = {{"is", "SPELL_COOLDOWN_END"}},
@@ -2219,15 +2227,17 @@ local tBaseAuraRecipes = {
 		-- off a stranger you happened to have buffed.
 		-- `party` includes the player (see the destUnitId evaluate) - you want to
 		-- hear your own Fortitude drop too.
-		-- The two data outputs are FIXED rather than optional: "which buff, on
-		-- whom" is the entire point of this one, and a beep alone would not say
-		-- either. `sourceUnitId contains player` is why the label says "Dein".
+		-- The two data outputs are pre-selected: "which buff, on whom" is the
+		-- entire point of this one, and a beep alone would not say either. They
+		-- are defaults, not locks - the form's output list can turn them off
+		-- like any other output. `sourceUnitId contains player` is why the label
+		-- says "Dein".
 		id = "groupBuffExpired",
 		label = L["Dein Buff auf Gruppenmitglied ausgelaufen"],
 		attribute = "spellName",
 		operator = "is",
 		defaultSound = "sound-error_dang",
-		fixedOutputs = {"output:spellName", "output:destUnitId"},
+		defaultOutputs = {"output:spellName", "output:destUnitId"},
 		fixed = {
 			sourceUnitId = {{"contains", "player"}},
 			event = {{"is", "SPELL_AURA_REMOVED"}},
@@ -2240,7 +2250,7 @@ local tBaseAuraRecipes = {
 		attribute = "debuffListTarget",
 		operator = "contains",
 		defaultSound = "sound-notification12",
-		fixedOutputs = {},
+		defaultOutputs = {},
 		fixed = {
 			listsOwnOnly = {{"is", "true"}},
 			event = {{"is", "UNIT_TARGETCHANGE"}},
@@ -2255,10 +2265,20 @@ SkuAuras.baseForm = nil
 local function tBaseForm(aRecipe)
 	local tF = SkuAuras.baseForm
 	if not tF or tF.recipe ~= aRecipe.id then
+		-- The recipe's sound and data outputs are only the starting selection;
+		-- the form edits the full output list, the same one the custom builder
+		-- offers (tBuildOutputsLevel).
+		local tOutputs = {}
+		if aRecipe.defaultSound then
+			tOutputs[#tOutputs + 1] = "output:"..aRecipe.defaultSound
+		end
+		for _, tOutput in ipairs(aRecipe.defaultOutputs or {}) do
+			tOutputs[#tOutputs + 1] = tOutput
+		end
 		tF = {
 			recipe = aRecipe.id,
 			cond = {att = aRecipe.attribute, op = aRecipe.operator, values = {}},
-			sound = aRecipe.defaultSound,
+			outputs = tOutputs,
 			name = nil,
 		}
 		SkuAuras.baseForm = tF
@@ -2286,24 +2306,8 @@ local function tBaseSpellLabel(aRecipe)
 	return L["Zauber"]..";"..tBaseValuesText(aRecipe)
 end
 
--- The sound outputs' friendlyName is "<tag>#<name>" - the tag is what the
--- generic OnEnter keys the audition off, and it belongs on the list ENTRIES,
--- not in a settings label that merely reports which sound is chosen.
-local function tSoundDisplayName(aKey)
-	local tName = tFriendlyName(SkuAuras.outputs, aKey)
-	local tPos = string.find(tName, "#", 1, true)
-	if tPos then
-		return string.sub(tName, tPos + 1)
-	end
-	return tName
-end
-
-local function tBaseSoundLabel(aRecipe)
-	local tF = tBaseForm(aRecipe)
-	if not tF.sound then
-		return L["Ton"]..";"..L["kein Ton"]
-	end
-	return L["Ton"]..";"..tSoundDisplayName(tF.sound)
+local function tBaseOutputsLabel(aRecipe)
+	return L["Ausgabe"].." ("..#tBaseForm(aRecipe).outputs..")"
 end
 
 local function tBaseNameLabel(aRecipe)
@@ -2348,16 +2352,10 @@ local function tBaseFormSummary(aRecipe)
 	tSections[#tSections + 1] = tText
 
 	tText = L["Ausgabe"]..":\r\n"
-	local tCount = 0
-	if tF.sound then
-		tCount = tCount + 1
-		tText = tText..tCount..": "..tOutputText("output:"..tF.sound).."\r\n"
+	for x = 1, #tF.outputs do
+		tText = tText..x..": "..tOutputText(tF.outputs[x]).."\r\n"
 	end
-	for _, tOutput in ipairs(aRecipe.fixedOutputs) do
-		tCount = tCount + 1
-		tText = tText..tCount..": "..tOutputText(tOutput).."\r\n"
-	end
-	if tCount == 0 then
+	if #tF.outputs == 0 then
 		tText = tText..L["nicht festgelegt"].."\r\n"
 	end
 	tSections[#tSections + 1] = tText
@@ -2379,13 +2377,7 @@ local function tBaseFormCommit(aNode, aRecipe)
 		return
 	end
 
-	local tOutputs = {}
-	if tF.sound then
-		tOutputs[#tOutputs + 1] = "output:"..tF.sound
-	end
-	for _, tOutput in ipairs(aRecipe.fixedOutputs) do
-		tOutputs[#tOutputs + 1] = tOutput
-	end
+	local tOutputs = TableCopy(tF.outputs, true)
 	if #tOutputs == 0 then
 		SkuOptions.Voice:OutputStringBTtts(L["Keine Ausgabe festgelegt"], false, true, 0.2, true)
 		return
@@ -2440,49 +2432,22 @@ local function tBuildBaseRecipeForm(aLevel, aRecipe)
 		})
 	end
 
-	local tSoundEntry = SkuOptions:InjectMenuItems(aLevel, {tBaseSoundLabel(aRecipe)}, SkuGenericMenuItem)
-	tSoundEntry.dynamic = true
-	tSoundEntry.isSelect = true
-	tSoundEntry.sorting = true
-	tSoundEntry.vocalizeAsIs = true
-	tSoundEntry.OnEnter = function(self)
+	-- The output entry is THE output list the custom builder uses: every sound
+	-- and every data output (spell name, unit, ...), each an in-place toggle,
+	-- several at once. It used to be a single-pick "Ton" list of the sounds
+	-- only, so anything a base aura should SAY meant rebuilding it by hand.
+	local tOutputsEntry = SkuOptions:InjectMenuItems(aLevel, {tBaseOutputsLabel(aRecipe)}, SkuGenericMenuItem)
+	tOutputsEntry.dynamic = true
+	tOutputsEntry.vocalizeAsIs = true
+	tOutputsEntry.OnEnter = function(self)
 		tSetBaseTooltip(self, aRecipe)
 	end
-	tSoundEntry.GetCurrentValue = function(self)
-		local tF = tBaseForm(aRecipe)
-		if not tF.sound then
-			return L["kein Ton"]
-		end
-		return tFriendlyName(SkuAuras.outputs, tF.sound)
-	end
-	tSoundEntry.OnAction = function(self, aNode)
-		if type(aNode) ~= "table" then
-			return
-		end
-		local tF = tBaseForm(aRecipe)
-		tF.sound = aNode.auraOutputKey
-		self.name = tBaseSoundLabel(aRecipe)
-	end
-	tSoundEntry.BuildChildren = function(self)
-		local tNoSound = SkuOptions:InjectMenuItems(self, {L["kein Ton"]}, SkuGenericMenuItem)
-		tNoSound.sorting = true
-		tNoSound.vocalizeAsIs = true
-		local tSorted = TableSortByIndex(SkuAuras.outputs)
-		for x = 1, #tSorted do
-			local tKey = tSorted[x]
-			if SkuAuras.outputs[tKey].outputString then
-				local tNode = SkuOptions:InjectMenuItems(self, {SkuAuras.outputs[tKey].friendlyName}, SkuGenericMenuItem)
-				tNode.auraOutputKey = tKey
-				tNode.internalName = tKey
-				tNode.sorting = true
-				tNode.vocalizeAsIs = true
-				-- the GENERIC OnEnter auditions the beep, so it has to run
-				tNode.OnEnter = function(self, aValue, aName)
-					SkuGenericMenuItem.OnEnter(self, aValue, aName)
-					tSetBaseTooltip(self, aRecipe)
-				end
-			end
-		end
+	tOutputsEntry.BuildChildren = function(self)
+		tBuildOutputsLevel(self, {
+			outputs = function() return tBaseForm(aRecipe).outputs end,
+			ownerLabel = function() return tBaseOutputsLabel(aRecipe) end,
+			tooltip = function(aNode) tSetBaseTooltip(aNode, aRecipe) end,
+		})
 	end
 
 	local tNameEntry = SkuOptions:InjectMenuItems(aLevel, {tBaseNameLabel(aRecipe)}, SkuGenericMenuItem)
@@ -2998,13 +2963,20 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			SkuAuras:UpdateAttributesListWithCurrentAuras()
 		end		
 
+		-- Asks first, the same gate single-aura "Löschen" has (BuildManageSubMenu):
+		-- the entry is a select level of its own and only ENTER on "Wirklich
+		-- löschen?" below it wipes the list. It used to be a childless leaf, so
+		-- one ENTER or RIGHT while walking this level deleted every aura.
 		local tdel = SkuOptions:InjectMenuItems(self, {L["Alle Auren löschen"]}, SkuGenericMenuItem)
-		tdel.dynamic = false
+		tdel.dynamic = true
 		tdel.isSelect = true
 		tdel.OnAction = function(self, aValue, aName)
 			SkuSettings:Sub("SkuAuras", nil, "char").Auras = {}
 			SkuOptions.Voice:OutputStringBTtts(L["Alle auren gelöscht"], true, true, 0.1, true)
 			SkuAuras:UpdateAttributesListWithCurrentAuras()
+		end
+		tdel.BuildChildren = function(self)
+			SkuOptions:InjectMenuItems(self, {L["Wirklich löschen?"]}, SkuGenericMenuItem)
 		end
 
 		local tdel = SkuOptions:InjectMenuItems(self, {L["Alle Auren exportieren"]}, SkuGenericMenuItem)

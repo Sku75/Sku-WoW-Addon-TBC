@@ -8,9 +8,13 @@ Aenderungen in Sku v43.9
 
     Ueberblick
 
+        Aenderungen
+            Auren: Basis-Auren bieten unter "Ausgabe" jetzt dieselbe Ausgabeliste wie eigene Auren, also alle Toene und alle Datenausgaben (zum Beispiel Zaubername oder Zieleinheit), auch mehrere gleichzeitig. Bisher gab es dort nur einen einzelnen Ton.
+
         Fehlerbehebungen
             Quest-Menue: "Route" unter einer Kreatur war immer leer, wenn ihr Name einen Bindestrich oder eine Klammer enthaelt (zum Beispiel "Un'Goro-Gorilla", "Goblin-Ingenieur"). Behoben.
             Nahe Route: die Suche nach verbundenen Wegpunkten in der Naehe eines Ziels lieferte oft weniger als die zehn naechsten. Hat sehr wahrscheinlich nie jemanden getroffen, reine Korrektheit.
+            Auren: "Alle Auren loeschen" loeschte mit einem einzigen Tastendruck alle Auren, ohne nachzufragen. Jetzt kommt wie beim Loeschen einer einzelnen Aura zuerst "Wirklich loeschen?".
 
     Quest-Menue: "Route" findet Kreaturen mit Bindestrich im Namen
         Einfach: Im Quest-Menue (Annahme, Ziel, Abgabe) bietet eine Kreatur "Route", "Nahe Route"
@@ -42,6 +46,33 @@ Aenderungen in Sku v43.9
             alt 9059 zu kurz, neu alle richtig. Alle fuenf Aufrufer werten die ganze Liste aus und
             nehmen den besten erreichbaren Eintrag, mehr Kandidaten koennen also nur gleich gute oder
             bessere Routen ergeben.
+
+    Auren: Basis-Auren haben die volle Ausgabeliste
+        Einfach: Unter "Neue aura", "Basis-Auren" hatte jede Vorlage einen Eintrag "Ton", in dem
+            man genau einen Ton auswaehlen konnte, sonst nichts. Dieser Eintrag heisst jetzt
+            "Ausgabe", mit der Anzahl der eingeschalteten Ausgaben dahinter, und oeffnet dieselbe
+            Liste wie bei einer eigenen Aura: alle Toene und alle Datenausgaben, zum Beispiel
+            Zaubername oder Zieleinheit. Jeder Eintrag ist ein Schalter, Enter schaltet ihn ein oder
+            aus, und mehrere duerfen gleichzeitig an sein. Was die Vorlage bisher vorgab (ihr Ton,
+            bei "Dein Buff auf Gruppenmitglied ausgelaufen" zusaetzlich Zaubername und Zieleinheit),
+            ist beim Oeffnen schon eingeschaltet und laesst sich jetzt auch abschalten.
+        Technisch: SkuAuras/Options.lua. tBuildOutputsLevel nimmt einen optionalen Kontext
+            (outputs, ownerLabel, tooltip); ohne ihn bearbeitet die Liste wie bisher den Entwurf
+            des Aura-Baukastens, mit ihm die Liste des Basis-Formulars. Das Formular (tBaseForm)
+            fuehrt statt eines einzelnen sound-Werts eine Liste outputs, vorbelegt aus defaultSound
+            und defaultOutputs (vorher fixedOutputs, die beim Erstellen fest angehaengt wurden).
+            Zusammenfassung und tBaseFormCommit lesen diese Liste; ist keine Ausgabe an, bleibt es
+            bei "Keine Ausgabe festgelegt".
+
+    Auren: "Alle Auren loeschen" fragt nach
+        Einfach: "Alle Auren loeschen" im Auren-Menue hatte keine Unterebene: ein Enter oder Pfeil
+            rechts, und alle Auren des Charakters waren weg. Jetzt fuehrt der Eintrag, wie beim
+            Loeschen einer einzelnen Aura, auf "Wirklich loeschen?". Erst Enter dort loescht, Pfeil
+            links bricht ab.
+        Technisch: SkuAuras/Options.lua, MenuBuilder: der Eintrag ist jetzt dynamic und legt per
+            BuildChildren den einen Kindeintrag "Wirklich loeschen?" an. Beim Betreten zeigt
+            selectTarget auf den Eintrag selbst, Enter auf dem Kind ruft dessen OnAction. Vorher
+            dynamic = false ohne Kinder, OnPostSelect lief also direkt in den OnAction-Zweig.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.8

@@ -11,9 +11,13 @@ Changements dans Sku v43.9
 
     Aperçu
 
+        Changements
+            Auras : les auras de base proposent désormais sous « Sortie » la même liste de sorties que les auras personnalisées, c'est-à-dire tous les sons et toutes les sorties de données (par exemple le nom du sort ou l'unité cible), plusieurs à la fois. Avant, il n'y avait qu'un seul son.
+
         Corrections
             Menu des quêtes : « Itinéraire » sous une créature était toujours vide quand son nom contient un trait d'union ou une parenthèse (par exemple « Gorille Crins-de-ciel »). Corrigé.
             Fermer l'itinéraire : la recherche des points de passage reliés près d'une cible renvoyait souvent moins que les dix plus proches. N'a très probablement jamais touché personne, correction de pure exactitude.
+            Auras : « Supprimer toutes les auras » supprimait toutes les auras d'une seule touche, sans demander. Désormais « Vraiment supprimer ? » est demandé d'abord, comme pour la suppression d'une seule aura.
 
     Menu des quêtes : « Itinéraire » trouve les créatures avec un trait d'union dans leur nom
         Simple : Dans le menu des quêtes (Début de quête, Cible de quête, Livraison), une créature
@@ -47,6 +51,34 @@ Changements dans Sku v43.9
             cas aléatoires) : ancien 9059 trop courts, nouveau tous corrects. Les cinq appelants
             parcourent toute la liste et prennent la meilleure entrée accessible ; davantage de
             candidats ne peut donc donner que des itinéraires aussi bons ou meilleurs.
+
+    Auras : les auras de base ont la liste de sorties complète
+        Simple : Sous « Nouvelle aura », « Auras de base », chaque modèle avait une entrée « Son »
+            où l'on pouvait choisir exactement un son, rien d'autre. Cette entrée s'appelle
+            désormais « Sortie », suivie du nombre de sorties activées, et ouvre la même liste
+            qu'une aura personnalisée : tous les sons et toutes les sorties de données, par exemple
+            le nom du sort ou l'unité cible. Chaque entrée est un interrupteur, Entrée l'active ou
+            le désactive, et plusieurs peuvent être actives à la fois. Ce que le modèle imposait
+            jusqu'ici (son son, plus le nom du sort et l'unité cible pour « Votre amélioration sur
+            un membre du groupe a expiré ») est déjà activé à l'ouverture et peut maintenant aussi
+            être désactivé.
+        Technique : SkuAuras/Options.lua. tBuildOutputsLevel accepte un contexte optionnel
+            (outputs, ownerLabel, tooltip) ; sans lui, la liste modifie comme avant le brouillon du
+            constructeur d'auras, avec lui la liste du formulaire de base. Le formulaire
+            (tBaseForm) tient une liste outputs au lieu d'une seule valeur sound, préremplie à
+            partir de defaultSound et defaultOutputs (auparavant fixedOutputs, ajoutées d'office à
+            la création). Le résumé et tBaseFormCommit lisent cette liste ; sans aucune sortie
+            active, le message reste « Aucune sortie définie ».
+
+    Auras : « Supprimer toutes les auras » demande confirmation
+        Simple : « Supprimer toutes les auras » dans le menu Auras n'avait pas de niveau en
+            dessous : une touche Entrée ou Flèche droite, et toutes les auras du personnage
+            avaient disparu. Désormais l'entrée mène à « Vraiment supprimer ? », comme la
+            suppression d'une seule aura. Seul Entrée à cet endroit supprime, Flèche gauche annule.
+        Technique : SkuAuras/Options.lua, MenuBuilder : l'entrée est désormais dynamic et son
+            BuildChildren crée l'unique enfant « Vraiment supprimer ? ». En y entrant, selectTarget
+            pointe sur l'entrée elle-même, Entrée sur l'enfant appelle donc son OnAction. Avant,
+            dynamic = false sans enfants, OnPostSelect passait directement dans la branche OnAction.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.8
