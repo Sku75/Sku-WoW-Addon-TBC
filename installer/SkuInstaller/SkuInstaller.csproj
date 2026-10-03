@@ -98,8 +98,12 @@
          machine it was copied back from (strip_payload_signature.py; the PE-hash
          pins are unaffected). Also the first build to carry login tool 3.4 and
          the log bundle's voices.txt (LogCollector.WriteVoiceRegistrations).
+         5.4 = new option "Make all Windows voices available to WoW": copies the
+         Windows OneCore voices (Katja, Stefan, ...) into the SAPI voice list
+         the game reads (WindowsVoicesInstaller; same step as NVDA Voice for
+         WoW 1.1). On by default, runs on every install after the bridge.
          -->
-    <Version>5.3</Version>
+    <Version>5.4</Version>
     <!-- File properties (Explorer "Details", and what antivirus reputation
          scoring reads). Left at the SDK defaults every field said just
          "SkuInstaller" and the copyright was blank, which is what throwaway

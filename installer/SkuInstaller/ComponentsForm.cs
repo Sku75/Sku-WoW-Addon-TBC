@@ -6,7 +6,7 @@ namespace SkuInstaller
 {
     /// <summary>
     /// "What should be installed alongside Sku?" — the voice pack, the installer's
-    /// own language, and the four optional components.
+    /// own language, and the five optional components.
     ///
     /// The important change here is not the layout, it is the accessible names.
     /// The old form had visible labels that explained things and acc.* strings
@@ -21,8 +21,8 @@ namespace SkuInstaller
     {
         private Label _installerLangLabel, _voiceLangLabel;
         private ComboBox _installerLangCombo, _voiceCombo;
-        private CheckBox _forceCheck, _shortcutCheck, _sapi2srCheck, _loginToolCheck;
-        private Label _forceDesc, _shortcutDesc, _sapi2srDesc, _loginToolDesc;
+        private CheckBox _forceCheck, _shortcutCheck, _sapi2srCheck, _windowsVoicesCheck, _loginToolCheck;
+        private Label _forceDesc, _shortcutDesc, _sapi2srDesc, _windowsVoicesDesc, _loginToolDesc;
         private Label _managedLabel;
         private CheckedListBox _managedList;
 
@@ -98,6 +98,7 @@ namespace SkuInstaller
 
             AddOption(ref _shortcutCheck, ref _shortcutDesc, ref y, Options.DesktopShortcut);
             AddOption(ref _sapi2srCheck, ref _sapi2srDesc, ref y, Options.InstallSapi2Sr);
+            AddOption(ref _windowsVoicesCheck, ref _windowsVoicesDesc, ref y, Options.InstallWindowsVoices);
             AddOption(ref _loginToolCheck, ref _loginToolDesc, ref y, Options.InstallLoginTool);
             AddOption(ref _forceCheck, ref _forceDesc, ref y, Options.Force);
 
@@ -203,6 +204,7 @@ namespace SkuInstaller
 
             SetOptionText(_shortcutCheck, _shortcutDesc, "shortcut");
             SetOptionText(_sapi2srCheck, _sapi2srDesc, "sapi2sr");
+            SetOptionText(_windowsVoicesCheck, _windowsVoicesDesc, "windowsVoices");
             SetOptionText(_loginToolCheck, _loginToolDesc, "loginTool");
             SetOptionText(_forceCheck, _forceDesc, "force");
 
@@ -236,6 +238,7 @@ namespace SkuInstaller
                 LanguagePackIndex = Math.Max(0, _voiceCombo.SelectedIndex),
                 DesktopShortcut = _shortcutCheck.Checked,
                 InstallSapi2Sr = _sapi2srCheck.Checked,
+                InstallWindowsVoices = _windowsVoicesCheck.Checked,
                 InstallLoginTool = _loginToolCheck.Checked,
                 Force = _forceCheck.Checked,
                 ManagedEnabled = managed,

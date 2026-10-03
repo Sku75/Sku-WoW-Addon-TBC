@@ -13,6 +13,7 @@ namespace SkuInstaller
 
         public bool DesktopShortcut = true;
         public bool InstallSapi2Sr = true;
+        public bool InstallWindowsVoices = true;
         public bool InstallLoginTool = true;
 
         /// <summary>
@@ -297,6 +298,12 @@ namespace SkuInstaller
                 Say(Loc.Get("status.sapi2sr"), true);
                 try { Sapi2SrInstaller.Install(m => Say(m)); }
                 catch (Exception ex) { Logger.Error("SAPI2SR install failed", ex); Say(ex.Message); }
+            }
+            if (_options.InstallWindowsVoices)
+            {
+                Say(Loc.Get("status.windowsVoices"), true);
+                try { WindowsVoicesInstaller.Install(m => Say(m)); }
+                catch (Exception ex) { Logger.Error("Windows voices failed", ex); Say(ex.Message); }
             }
 
             try

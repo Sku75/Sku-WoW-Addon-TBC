@@ -177,6 +177,8 @@ namespace SkuInstaller
             ["opt.shortcut.desc"]    = "Puts a shortcut on the desktop and in the Start menu, so you can run this updater again later without downloading it.",
             ["opt.sapi2sr.label"]    = "Enable NVDA as a voice in WoW (recommended)",
             ["opt.sapi2sr.desc"]     = "Installs and signs the NVDA-SAPI bridge so the game's speech goes through NVDA. Without it, Sku falls back to a Windows voice.",
+            ["opt.windowsVoices.label"] = "Make all Windows voices available to WoW (recommended)",
+            ["opt.windowsVoices.desc"]  = "Windows keeps its newer voices (for example Katja and Stefan) in a list the game cannot see. Copies them into the game's voice list, backed up first. The game's voice numbers can shift.",
             ["opt.loginTool.label"]  = "Install the WoW Login Tool (recommended)",
             ["opt.loginTool.desc"]   = "A separate program giving the login, server and character screens an audio menu. Those screens are not accessible on their own.",
             ["opt.force.label"]      = "Reinstall everything (repair)",
@@ -210,6 +212,7 @@ namespace SkuInstaller
             ["status.syncingToc"]      = "Matching addon versions to your game client (interface {0})…",
             ["status.loginTool"]       = "Installing the WoW Login Tool for {0}…",
             ["status.sapi2sr"]         = "Installing the NVDA voice bridge…",
+            ["status.windowsVoices"]   = "Making the Windows voices available to WoW…",
             ["status.clientOk"]        = "Successful — {0} is done.",
             ["status.clientFailed"]    = "Failed — {0}: {1}",
             ["status.done"]            = "Done.",
@@ -279,6 +282,14 @@ namespace SkuInstaller
             ["sapi2sr.signFailed"]   = "NVDA voice: signing did not finish (code {0}); the voice may stay silent until repaired.",
             ["sapi2sr.done"]         = "NVDA voice: ready. Start WoW fresh to use it.",
             ["sapi2sr.failed"]       = "NVDA voice install failed: {0}",
+
+            // ── Windows voices into WoW's list (WindowsVoicesInstaller progress) ──
+            ["voices.none"]          = "Windows voices: all were already available to WoW.",
+            ["voices.added"]         = "Windows voices: added {0}.",
+            ["voices.count"]         = "Windows voices: {0} added. Start WoW fresh to use them; if a voice sounds different than before, choose it again.",
+            ["voices.backupFailed"]  = "Windows voices: the voice list could not be backed up, so nothing was changed.",
+            ["voices.failedOne"]     = "Windows voices: {0} could not be added ({1}).",
+            ["voices.failed"]        = "Windows voices failed: {0}",
         };
 
         private static readonly Dictionary<string, string> De = new Dictionary<string, string>
@@ -397,6 +408,8 @@ namespace SkuInstaller
             ["opt.shortcut.desc"]    = "Legt eine Verknüpfung auf dem Desktop und im Startmenü an, damit du diesen Updater später erneut starten kannst, ohne ihn neu herunterzuladen.",
             ["opt.sapi2sr.label"]    = "NVDA als Stimme in WoW aktivieren (empfohlen)",
             ["opt.sapi2sr.desc"]     = "Installiert und signiert die NVDA-SAPI-Brücke, damit die Sprachausgabe des Spiels über NVDA läuft. Ohne sie nutzt Sku eine Windows-Stimme.",
+            ["opt.windowsVoices.label"] = "Alle Windows-Stimmen für WoW verfügbar machen (empfohlen)",
+            ["opt.windowsVoices.desc"]  = "Windows führt neuere Stimmen (z. B. Katja, Stefan) in einer Liste, die das Spiel nicht sieht. Kopiert sie nach einer Sicherung in die Liste des Spiels. Stimmnummern können sich verschieben.",
             ["opt.loginTool.label"]  = "WoW Login Tool installieren (empfohlen)",
             ["opt.loginTool.desc"]   = "Ein eigenes Programm, das Login-, Server- und Charakterbildschirm ein Audiomenü gibt. Diese Bildschirme sind von sich aus nicht zugänglich.",
             ["opt.force.label"]      = "Alles neu installieren (Reparatur)",
@@ -430,6 +443,7 @@ namespace SkuInstaller
             ["status.syncingToc"]      = "Passe AddOn-Versionen an deinen Spielclient an (Interface {0})…",
             ["status.loginTool"]       = "Installiere das WoW Login Tool für {0}…",
             ["status.sapi2sr"]         = "Installiere die NVDA-Sprachbrücke…",
+            ["status.windowsVoices"]   = "Mache die Windows-Stimmen für WoW verfügbar…",
             ["status.clientOk"]        = "Erfolgreich – {0} ist fertig.",
             ["status.clientFailed"]    = "Fehlgeschlagen – {0}: {1}",
             ["status.done"]            = "Fertig.",
@@ -499,6 +513,14 @@ namespace SkuInstaller
             ["sapi2sr.signFailed"]   = "NVDA-Stimme: Signierung nicht abgeschlossen (Code {0}); die Stimme bleibt evtl. stumm, bis das behoben ist.",
             ["sapi2sr.done"]         = "NVDA-Stimme: bereit. Starte WoW neu, um sie zu nutzen.",
             ["sapi2sr.failed"]       = "NVDA-Stimme-Installation fehlgeschlagen: {0}",
+
+            // ── Windows-Stimmen in die Liste von WoW ─────────────────────────
+            ["voices.none"]          = "Windows-Stimmen: alle waren schon für WoW verfügbar.",
+            ["voices.added"]         = "Windows-Stimmen: {0} hinzugefügt.",
+            ["voices.count"]         = "Windows-Stimmen: {0} hinzugefügt. Starte WoW neu, um sie zu nutzen; klingt eine Stimme anders als vorher, wähle sie neu.",
+            ["voices.backupFailed"]  = "Windows-Stimmen: die Stimmenliste konnte nicht gesichert werden, deshalb wurde nichts geändert.",
+            ["voices.failedOne"]     = "Windows-Stimmen: {0} konnte nicht hinzugefügt werden ({1}).",
+            ["voices.failed"]        = "Windows-Stimmen fehlgeschlagen: {0}",
         };
 
         // ── French ───────────────────────────────────────────────────────────
@@ -623,6 +645,8 @@ namespace SkuInstaller
             ["opt.shortcut.desc"]    = "Place un raccourci sur le bureau et dans le menu Démarrer, pour relancer cet updater plus tard sans le retélécharger.",
             ["opt.sapi2sr.label"]    = "Activer NVDA comme voix dans WoW (recommandé)",
             ["opt.sapi2sr.desc"]     = "Installe et signe la passerelle NVDA-SAPI afin que la parole du jeu passe par NVDA. Sans elle, Sku se rabat sur une voix Windows.",
+            ["opt.windowsVoices.label"] = "Rendre toutes les voix Windows disponibles dans WoW (recommandé)",
+            ["opt.windowsVoices.desc"]  = "Windows range ses voix récentes (ex. Hortense, Paul) dans une liste que le jeu ne voit pas. Les copie dans la liste du jeu après sauvegarde. Les numéros des voix peuvent changer.",
             ["opt.loginTool.label"]  = "Installer le WoW Login Tool (recommandé)",
             ["opt.loginTool.desc"]   = "Un programme séparé qui donne un menu audio aux écrans de connexion, de serveur et de personnage. Ces écrans ne sont pas accessibles par eux-mêmes.",
             ["opt.force.label"]      = "Tout réinstaller (réparation)",
@@ -656,6 +680,7 @@ namespace SkuInstaller
             ["status.syncingToc"]      = "Adaptation des versions des addons à votre client de jeu (interface {0})…",
             ["status.loginTool"]       = "Installation du WoW Login Tool pour {0}…",
             ["status.sapi2sr"]         = "Installation de la passerelle vocale NVDA…",
+            ["status.windowsVoices"]   = "Mise à disposition des voix Windows pour WoW…",
             ["status.clientOk"]        = "Réussi — {0} est terminé.",
             ["status.clientFailed"]    = "Échec — {0} : {1}",
             ["status.done"]            = "Terminé.",
@@ -725,6 +750,14 @@ namespace SkuInstaller
             ["sapi2sr.signFailed"]   = "Voix NVDA : la signature ne s'est pas terminée (code {0}) ; la voix peut rester muette jusqu'à réparation.",
             ["sapi2sr.done"]         = "Voix NVDA : prête. Relancez WoW pour l'utiliser.",
             ["sapi2sr.failed"]       = "Échec de l'installation de la voix NVDA : {0}",
+
+            // ── voix Windows dans la liste de WoW ────────────────────────────
+            ["voices.none"]          = "Voix Windows : toutes étaient déjà disponibles pour WoW.",
+            ["voices.added"]         = "Voix Windows : {0} ajoutée.",
+            ["voices.count"]         = "Voix Windows : {0} ajoutée(s). Relancez WoW pour les utiliser ; si une voix sonne autrement qu'avant, choisissez-la de nouveau.",
+            ["voices.backupFailed"]  = "Voix Windows : la liste des voix n'a pas pu être sauvegardée ; rien n'a été modifié.",
+            ["voices.failedOne"]     = "Voix Windows : {0} n'a pas pu être ajoutée ({1}).",
+            ["voices.failed"]        = "Échec des voix Windows : {0}",
         };
     }
 }
