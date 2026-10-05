@@ -2404,41 +2404,33 @@ function SkuCore:OnEnable()
 			return
 		end
 		ClearOverrideBindings(self)
-		if SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TARGETDISTANCE"].key ~= "" then
-			SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TARGETDISTANCE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TARGETDISTANCE"].key)
-		end
-
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DOMONITORPARTYHEALTH2CONTI"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DOMONITORPARTYHEALTH2CONTI"].key)
-
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_PANICMODE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_PANICMODE"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANWIDE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANWIDE"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANNARROW"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANNARROW"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key)
-		-- Taxi early landing: guarded because this binding is new (a profile saved
-		-- before it existed has no entry until SkuKeyBindsUpdate fills the defaults in).
-		if SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TAXICANCEL"] and SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TAXICANCEL"].key ~= "" then
-			SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TAXICANCEL"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TAXICANCEL"].key)
-			local tTaxiKey2 = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TAXICANCEL"].key2
-			if tTaxiKey2 and tTaxiKey2 ~= "" then
-				SetOverrideBindingClick(tFrame, true, tTaxiKey2, "SkuCoreControlOption1", tTaxiKey2)
+		-- Every binding on this frame gets BOTH of its keys. The lines this replaces
+		-- armed .key only (taxi cancel was the lone exception), so a second key set
+		-- through "Sekundaere Taste neu belegen" was stored and announced as
+		-- "Taste 2" but never bound -- the key did nothing. SkuKeyBindsGetKeys skips
+		-- empty slots, and a binding a saved profile does not know yet (new const
+		-- before SkuKeyBindsUpdate fills the default in) simply arms nothing.
+		local function tArm(aConst)
+			for _, tKey in ipairs(SkuOptions:SkuKeyBindsGetKeys(aConst)) do
+				SetOverrideBindingClick(tFrame, true, tKey, "SkuCoreControlOption1", tKey)
 			end
 		end
+		tArm("SKU_KEY_TARGETDISTANCE")
+		tArm("SKU_KEY_DOMONITORPARTYHEALTH2CONTI")
+		tArm("SKU_KEY_PANICMODE")
+		tArm("SKU_KEY_MMSCANWIDE")
+		tArm("SKU_KEY_MMSCANNARROW")
+		tArm("SKU_KEY_GROUPMEMBERSRANGECHECK")
+		tArm("SKU_KEY_TAXICANCEL")
 		for x = 1, 6 do
-			SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key)
+			tArm("SKU_KEY_TURNTOUNIT"..x)
 		end
-		
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNITTURN180"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNITTURN180"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCANCONTINUE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCANCONTINUE"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN1"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN1"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN2"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN2"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN3"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN3"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN4"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN4"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN5"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN5"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN6"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN6"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN7"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN7"].key)
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN8"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN8"].key)
-
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_NOTIFYONRESOURCES"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_NOTIFYONRESOURCES"].key)
+		tArm("SKU_KEY_TURNTOUNITTURN180")
+		tArm("SKU_KEY_SCANCONTINUE")
+		for x = 1, 8 do
+			tArm("SKU_KEY_SCAN"..x)
+		end
+		tArm("SKU_KEY_NOTIFYONRESOURCES")
 
 	end)
 	
