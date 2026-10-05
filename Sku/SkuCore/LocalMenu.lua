@@ -3277,6 +3277,41 @@ local tTradeSkillTypeColor = {
 	[L["nodifficulty"]] = { r = 0.96, g = 0.96, b = 0.96},
 	[L["selected"]] = { r = 1, g = 1, b = 1},
 }
+-- [43.9] Final pass over a window's entry list, for the windows whose buttons act on
+-- the window itself (professions, trainer). Two things:
+--  1) Stable cursor identity (skuIdentity) for every entry that has none and is the
+--     only entry rendered from its frame: Train/Create buttons, the "Ausgewählt"
+--     detail line, the filter switch. Entries that SHARE a frame (recipe rows all
+--     come from TradeSkillFrame, trainer rows from the scrolling
+--     ClassTrainerSkill1..10 buttons) get nothing here -- their builders set an
+--     identity from the game data. The restore in SkuCore:CheckFrames uses
+--     skuIdentity before the display name, see SkuIterateGossipList.
+--  2) quietClick on every plain click button: ENTER runs it and then the shared
+--     quiet refresh (SkuCore:RefreshWindowMenuQuietly) instead of the classic
+--     "CheckFrames + OnUpdate" pair, which announced the entry twice more. Buttons
+--     routed through a secure "/click" (containerFrameName) keep the classic path.
+function SkuCore:PrepareWindowEntries(aParentChilds)
+	if type(aParentChilds) ~= "table" then return end
+	local tCount = {}
+	for x = 1, #aParentChilds do
+		local e = aParentChilds[aParentChilds[x]]
+		if type(e) == "table" and e.frameName and e.frameName ~= "" then
+			tCount[e.frameName] = (tCount[e.frameName] or 0) + 1
+		end
+	end
+	for x = 1, #aParentChilds do
+		local e = aParentChilds[aParentChilds[x]]
+		if type(e) == "table" then
+			if e.skuIdentity == nil and e.frameName and tCount[e.frameName] == 1 then
+				e.skuIdentity = "frame:"..e.frameName
+			end
+			if e.click == true and e.func and not e.containerFrameName and e.directAction ~= true then
+				e.quietClick = true
+			end
+		end
+	end
+end
+
 function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 
 	local tFrameName = "ClassTrainerFrame"
@@ -3353,6 +3388,9 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 						childs = {},
 						func = _G[tFrameName]:GetScript("OnClick"),
 						click = true,
+						-- The row button (ClassTrainerSkillN) depends on the scroll position;
+						-- the skill name is what identifies the entry across a refresh.
+						skuIdentity = "skill:"..tFriendlyName,
 					}   
 				end
 
@@ -3451,7 +3489,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 						_G["ClassTrainerTrainButton"]:Click()
 						pcall(function() SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true) end)
 						-- [43.2] Both steps below only make sense while THIS window is still
-						-- open. Each click queues a 0.5 s rescan and a 0.85 s announce, and
+						-- open. Each click queues a 0.5 s rescan and an announce shortly after, and
 						-- neither can be cancelled -- so learning several spells in quick
 						-- succession and then closing the trainer left announcements in flight
 						-- that outlived it. The closed-menu guard in VocalizeCurrentMenuName
@@ -3462,41 +3500,10 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 						end
 						C_Timer.After(0.5, function()
 							if not tTrainerStillOpen() then return end
-							-- aQuiet: the index-based re-anchor inside CheckFrames may land
-							-- anywhere after the skill list changed; only the identity re-pin
-							-- below is spoken.
-							pcall(function() SkuCore:CheckFrames(nil, nil, true) end)
-							C_Timer.After(0.35, function()
-								if not tTrainerStillOpen() then return end
-								pcall(function()
-									local tTarget = _G["ClassTrainerTrainButton"]
-										and _G["ClassTrainerTrainButton"]:IsVisible()
-										and _G["ClassTrainerTrainButton"]:IsEnabled()
-										and _G["ClassTrainerTrainButton"]:GetText()
-									if tTarget and SkuOptions.currentMenuPosition then
-										tTarget = SkuUtil:Unescape(tTarget)
-										-- CheckFrames re-anchors by INDEX, so after training the
-										-- cursor can sit on any entry of the trainer window level
-										-- (or on the window node itself). Search the level the
-										-- cursor is on (siblings) AND its children, by name.
-										local function tFindIn(aList)
-											if type(aList) ~= "table" then return nil end
-											for _, child in ipairs(aList) do
-												if child.name == tTarget then
-													return child
-												end
-											end
-										end
-										local tPos = SkuOptions.currentMenuPosition
-										local tHit = (tPos.parent and tFindIn(tPos.parent.children))
-											or tFindIn(tPos.children)
-										if tHit then
-											SkuOptions.currentMenuPosition = tHit
-										end
-									end
-									SkuOptions:VocalizeCurrentMenuName()
-								end)
-							end)
+							-- [43.9] Quiet rebuild + identity re-pin + "speak only if the
+							-- entry under the cursor is gone" live in one place now, shared
+							-- with the profession windows.
+							SkuCore:RefreshWindowMenuQuietly(tTrainerStillOpen)
 						end)
 					end,
 				}
@@ -3508,6 +3515,8 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 	-- Close button intentionally not listed: Escape already closes the window, so a
 	-- redundant Close entry is just noise for a screen-reader user (matches the other
 	-- windows -- gossip/quest/bags/... -- which never listed one).
+
+	SkuCore:PrepareWindowEntries(aParentChilds)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3954,10 +3963,11 @@ function SkuCore:AddRecipeCategories(aParentChilds, aApi, aList, aFilterOn, aPro
 
 	-- Entry names are keys on this level; a second one of the same name gets an
 	-- ordinal ("Stoff 2": tailoring has a cloth ARMOUR and a cloth TRADE GOODS header).
-	local tSeen = {}
-	local function tUnique(aName)
-		tSeen[aName] = (tSeen[aName] or 0) + 1
-		if tSeen[aName] > 1 then return aName.." "..tSeen[aName] end
+	local tSeen, tSeenIdent = {}, {}
+	local function tUnique(aName, aSeen)
+		aSeen = aSeen or tSeen
+		aSeen[aName] = (aSeen[aName] or 0) + 1
+		if aSeen[aName] > 1 then return aName.." "..aSeen[aName] end
 		return aName
 	end
 
@@ -3992,6 +4002,7 @@ function SkuCore:AddRecipeCategories(aParentChilds, aApi, aList, aFilterOn, aPro
 				textFull = "",
 				childs = {},
 				isSectionHeader = true,
+				skuIdentity = "cat:"..tCat,
 				toggle = {
 					label = tKey,
 					onLabel = L["eingeklappt"],
@@ -4017,6 +4028,11 @@ function SkuCore:AddRecipeCategories(aParentChilds, aApi, aList, aFilterOn, aPro
 					tLabel = tLabel.." ("..tRecipeDifficultyLabel[r.skillType]..")"
 				end
 				tLabel = tUnique(tLabel)
+				-- Identity without the volatile parts (makeable count, difficulty):
+				-- name plus rank, made unique the same way the label is.
+				local tIdent = r.name
+				if r.sub and r.sub ~= "" then tIdent = tIdent.." ("..r.sub..")" end
+				tIdent = "recipe:"..tUnique(tIdent, tSeenIdent)
 
 				local tIndex = r.index
 				table.insert(aParentChilds, tLabel)
@@ -4035,6 +4051,7 @@ function SkuCore:AddRecipeCategories(aParentChilds, aApi, aList, aFilterOn, aPro
 					click = true,
 					-- [Rezept-Tooltip] API index, so Shift Runter can read materials/result.
 					skuRecipeInfo = { api = aApi, index = tIndex },
+					skuIdentity = tIdent,
 				}
 				tShown = tShown + 1
 			end
@@ -4066,6 +4083,32 @@ local tMakeableReset = false
 local function tStripCount(aName)
 	return (string.gsub(aName or "", " %[%d+%]", ""))
 end
+-- [43.9] Quiet refresh of an open window's menu after an action changed what it
+-- lists (a craft, a learned skill). CheckFrames rebuilds silently and its restore
+-- re-pins the cursor by identity (see there); afterwards the user hears something
+-- ONLY when the entry under the cursor is a different one -- the same recipe with
+-- a new makeable count stays silent, a vanished skill or a disabled button speaks
+-- where the cursor ended up. aStillOpen: optional predicate, the announce is
+-- dropped when the window has gone meanwhile.
+function SkuCore:RefreshWindowMenuQuietly(aStillOpen)
+	if not (SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen()) then return end
+	local tPos = SkuOptions.currentMenuPosition
+	local tIdent = tPos and tPos.skuIdentity
+	local tBefore = tPos and tStripCount(tPos.name)
+	SkuCore:CheckFrames(nil, nil, true)
+	C_Timer.After(0.15, function()
+		if aStillOpen and not aStillOpen() then return end
+		if not (SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen()) then return end
+		local tNow = SkuOptions.currentMenuPosition
+		if not tNow then return end
+		local tSame = (tIdent ~= nil and tNow.skuIdentity == tIdent)
+			or (tBefore ~= nil and tStripCount(tNow.name) == tBefore)
+		if not tSame then
+			pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
+		end
+	end)
+end
+
 function SkuCore:RefreshProfessionMenu()
 	local tChanged = false
 	for tApi, tDef in pairs(tRecipeApi) do
@@ -4094,21 +4137,10 @@ function SkuCore:RefreshProfessionMenu()
 			if tSig ~= SkuCore.recipeListSig[tApi] then tChanged = true end
 		end
 	end
-	if tChanged ~= true or not (SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen()) then return end
-
-	-- Quiet rebuild: counts change with every craft and the cursor is put back on the
-	-- same entry. Only when the entry under the cursor is GONE (filter on, materials
-	-- used up) does the user need to hear where they ended up.
-	local tBefore = SkuOptions.currentMenuPosition and tStripCount(SkuOptions.currentMenuPosition.name)
-	SkuCore:CheckFrames(nil, nil, true)
-	C_Timer.After(0.15, function()
-		if not (SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen()) then return end
-		local tAfter = SkuOptions.currentMenuPosition and tStripCount(SkuOptions.currentMenuPosition.name)
-		if tBefore and tAfter and tBefore ~= tAfter then
-			pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
-		end
-	end)
+	if tChanged ~= true then return end
+	SkuCore:RefreshWindowMenuQuietly()
 end
+
 function SkuCore.PROFESSION_LIST_UPDATE(aEvent)
 	if tRecipeRefreshPending == true then return end
 	tRecipeRefreshPending = true
@@ -4251,6 +4283,8 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 	-- Close ("Schließen") button intentionally not listed: Escape already closes
 	-- the window, so a redundant Close entry is just noise for a screen-reader user
 	-- (matches the other windows -- gossip/quest/bags/... -- which never listed one).
+
+	SkuCore:PrepareWindowEntries(aParentChilds)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -4399,6 +4433,8 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 	-- Close ("Schließen") button intentionally not listed: Escape already closes
 	-- the window, so a redundant Close entry is just noise for a screen-reader user
 	-- (matches the other windows -- gossip/quest/bags/... -- which never listed one).
+
+	SkuCore:PrepareWindowEntries(aParentChilds)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

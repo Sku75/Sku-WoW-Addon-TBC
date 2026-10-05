@@ -156,6 +156,67 @@ function SkuOptions:SlashFuncPquit(input)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [43.9] Resolve a menu path against the live tree WITHOUT selecting anything on
+-- the way. aFields is the split path, aFrom the first segment to match (2 for a
+-- "short,..." path). Each segment matches a node's stable `id` first, then its
+-- localized `name`, case-insensitively. Levels are lazy, so every level that is
+-- passed THROUGH is made real first: a `dynamic` level is rebuilt (its children
+-- are a snapshot of game state, e.g. the open windows under "Lokal"), any other
+-- empty level gets its one lazy build. The destination itself is returned as is;
+-- the caller decides whether to select, speak or just park the cursor on it.
+--
+-- This replaces the old "walk": SlashFunc used to call OnSelect on every node
+-- along the path, as if the user had pressed ENTER on each one. Nothing needed
+-- that -- the match never depended on it -- but it had side effects: it fired
+-- the action of any actionOnEnter node it passed, needed a special case for
+-- two-value settings (ENTER flips them), pre-built every sibling before the
+-- match, and the restore in SkuCore:CheckFrames had to issue TWO walks that each
+-- spoke where they landed ("Lokal", then the window name) on every window
+-- refresh. See [[menu-path-walk-lazy-levels]] for the lazy-level rule kept here.
+function SkuOptions:ResolveMenuPath(aFields, aFrom)
+	local tMenu = SkuOptions.Menu
+	local tNode = nil
+	for x = (aFrom or 1), #aFields do
+		local tSeg = slower(tostring(aFields[x]))
+		tNode = nil
+		for y = 1, #tMenu do
+			local tCand = tMenu[y]
+			local tNodeId = tCand.id and slower(tostring(tCand.id))
+			if tSeg == tNodeId or (tCand.name and tSeg == slower(tCand.name)) then
+				tNode = tCand
+				break
+			end
+		end
+		if not tNode then
+			return nil
+		end
+		if x < #aFields then
+			SkuOptions:EnsureLevelBuilt(tNode)
+			tMenu = tNode.children or {}
+		end
+	end
+	return tNode
+end
+
+-- Make a level's children real before descending into them. Dynamic levels are
+-- always rebuilt (through RebuildNodeChildren, so the selectTarget wiring is
+-- identical to an ENTER on them, see [[menu-rebuild-selecttarget]]); a lazy level
+-- is built once when it is empty. A failing builder is recorded on the node and
+-- logged, the same way the bag path lookup does it.
+function SkuOptions:EnsureLevelBuilt(aNode)
+	if type(aNode) ~= "table" then return end
+	if aNode.dynamic == true then
+		SkuOptions:RebuildNodeChildren(aNode)
+	elseif aNode.children and #aNode.children == 0 and aNode.BuildChildren then
+		local tOk, tErr = pcall(function() aNode:BuildChildren(aNode) end)
+		if not tOk then
+			aNode.buildChildrenFailed = tostring(tErr)
+			dprint("BuildChildren FAILED (path resolve) for menu node", tostring(aNode.name), "->", tostring(tErr))
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 ---@param input string
 function SkuOptions:SlashFunc(input, aSilent)
 	--print("++SkuOptions:SlashFunc(input)", input, aSilent)
@@ -359,58 +420,23 @@ function SkuOptions:SlashFunc(input, aSilent)
 			pcall(function() if SkuCore and SkuCore.UpdateActionBarsRootEntry then SkuCore:UpdateActionBarsRootEntry() end end)
 			pcall(function() if SkuNav and SkuNav.UpdateQuickRootEntry then SkuNav:UpdateQuickRootEntry() end end)
 
-			local tMenu = SkuOptions.Menu
-			local tFoundMenuPos = nil
-			-- tSelectedInLoop: the node this walk last handed to OnSelect. The tail below
-			-- uses it to avoid selecting the same node twice (see the note there).
+			-- [43.9] Resolve the path, then treat the destination exactly as the old
+			-- walk did: a lazy non-dynamic level is pre-built (an EMPTY destination is
+			-- taken for a leaf below and CLOSES the menu -- and closing the menu
+			-- closes every open interact window, the flightmaster lesson), then ONE
+			-- select with the enter flag. A two-value setting is never selected: ENTER
+			-- would flip it, "navigate me there" must not. Intermediate levels are no
+			-- longer selected at all, see SkuOptions:ResolveMenuPath.
+			local tFoundMenuPos = SkuOptions:ResolveMenuPath(fields, 2)
+			-- tSelectedInLoop: the node that already received its select here. The
+			-- tail below uses it to avoid selecting the same node twice (see there).
 			local tSelectedInLoop = nil
-			for x = 2, #fields do
-				for y = 1, #tMenu do
-					-- Match a path segment against the node's stable `id` first, then
-					-- fall back to its localized display `name` (W6-B #14). This is a
-					-- pure superset: existing label paths keep working unchanged, and
-					-- id paths are locale-independent and survive menu renames.
-					-- [v43.0] The match is decided BEFORE the children are built: a node we
-					-- are about to select needs no pre-build, because OnSelect rebuilds a
-					-- dynamic node's children anyway. Only nodes we walk PAST still get the
-					-- pre-build they always had. Neither the id nor the name depends on the
-					-- children, so the match itself is unaffected.
-					local tNodeId = tMenu[y].id and slower(tostring(tMenu[y].id))
-					local tIsMatch = (fields[x] == tNodeId or fields[x] == slower(tMenu[y].name))
-
-					-- ★A MATCHED node still needs the pre-build unless it is `dynamic`.
-					-- The optimisation above rests on "OnSelect rebuilds a dynamic node's
-					-- children anyway" -- and OnPostSelect does, but ONLY for
-					-- `dynamic == true`. Every window node under Local (Dialog, Haendler,
-					-- Quest, Flugmeister, ...) carries a lazy BuildChildren and NO dynamic
-					-- flag, so it reached the tail below with an EMPTY child list, was
-					-- taken for a childless leaf, and the walk "selected" it and CLOSED
-					-- the menu -- and closing the menu clicks the close button of every
-					-- open interact window (~2340). Talking to a flightmaster therefore
-					-- shut its own gossip frame a frame after opening it, so the flight
-					-- map never appeared at all. Building only when the list is EMPTY
-					-- keeps the triple build away from the big dynamic lists the guard
-					-- was written for (a dynamic node is rebuilt by OnSelect regardless).
-					if tMenu[y].children and #tMenu[y].children == 0 then
-						if not tIsMatch or tMenu[y].dynamic ~= true then
-							tMenu[y]:BuildChildren()
-						end
-					end
-
-					if tIsMatch then
-						tFoundMenuPos = tMenu[y]
-						tSelectedInLoop = tMenu[y]
-						-- [v43.0] A two-value setting (SkuOptions:MakeToggleNode) acts on
-						-- ENTER, and this walk selects with aEnterFlag = true -- so naming
-						-- one in a path would FLIP it. "Navigate me to this setting" must
-						-- not change it; park the cursor and let the user press ENTER.
-						if tMenu[y].isSkuToggle ~= true then
-							tMenu[y].OnSelect(tMenu[y], true)
-						end
-						tMenu = tMenu[y].children
-						break
-					end
+			if tFoundMenuPos and tFoundMenuPos.isSkuToggle ~= true then
+				if tFoundMenuPos.dynamic ~= true and tFoundMenuPos.children and #tFoundMenuPos.children == 0 then
+					tFoundMenuPos:BuildChildren()
 				end
+				tFoundMenuPos.OnSelect(tFoundMenuPos, true)
+				tSelectedInLoop = tFoundMenuPos
 			end
 
 			if tFoundMenuPos then
@@ -433,18 +459,18 @@ function SkuOptions:SlashFunc(input, aSilent)
 					-- level to descend into and not an action to run. Speak it in its
 					-- current state and leave the menu open.
 					SkuOptions.currentMenuPosition = tFoundMenuPos
-					SkuOptions:VocalizeCurrentMenuName()
+					if not aSilent then SkuOptions:VocalizeCurrentMenuName() end
 				elseif tFoundMenuPos == tSelectedInLoop
 					and tFoundMenuPos.actionOnEnter ~= true
 					and tFoundMenuPos.children and #tFoundMenuPos.children > 0
 				then
-					SkuOptions:VocalizeCurrentMenuName()
+					if not aSilent then SkuOptions:VocalizeCurrentMenuName() end
 				else
 					SkuOptions.currentMenuPosition = tFoundMenuPos
 					if SkuOptions.currentMenuPosition.children then
 						if #SkuOptions.currentMenuPosition.children > 0 then
 							SkuOptions.currentMenuPosition:OnSelect()
-							SkuOptions:VocalizeCurrentMenuName()
+							if not aSilent then SkuOptions:VocalizeCurrentMenuName() end
 						else
 							-- Tripwire for the pre-build rule above: a node that HAS a
 							-- BuildChildren but arrives here EMPTY is a walk about to close
@@ -471,7 +497,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 						SkuOptions:CloseMenu()
 					end
 				end
-			elseif tOpenedSilently and SkuOptions:IsMenuOpen() and SkuOptions.Menu[1] then
+			elseif tOpenedSilently and not aSilent and SkuOptions:IsMenuOpen() and SkuOptions.Menu[1] then
 				-- The path matched nothing, so the menu sits on the root: give the
 				-- announcement the silent open skipped.
 				dprint("menu: path walk found nothing, announcing root", "path", tostring(input))
@@ -5935,6 +5961,13 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			if aGossipListTable[index].isSectionHeader then
 				tNewMenuEntry.isSectionHeader = true
 			end
+			-- [43.9] Stable cursor identity of a window entry (recipe, trainer skill,
+			-- a specific button). The restore in SkuCore:CheckFrames prefers it over
+			-- the display name, which changes with the very action that triggered the
+			-- refresh ("[3]" makeable becomes "[2]", a learned skill leaves the list).
+			if aGossipListTable[index].skuIdentity ~= nil then
+				tNewMenuEntry.skuIdentity = aGossipListTable[index].skuIdentity
+			end
 
 			-- Stable cursor identity for bag entries (see SkuRestoreSellPosition):
 			-- per-bag entries carry their physical bagSlot ("bagId:slotId"); all
@@ -6328,6 +6361,18 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 											pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
 										end
 									end)
+								end
+							elseif aGossipListTable[index].quietClick == true then
+								-- [43.9] A button whose click only changes the window it sits in
+								-- (recipe row, trainer skill, Create/Train): run it, then the
+								-- shared quiet refresh. The classic path below did CheckFrames
+								-- (spoken) + OnUpdate 0.35 s later (spoken again), on top of the
+								-- key handler's own ENTER announce -- the same entry three times,
+								-- two of them audible. The quiet refresh re-pins by identity and
+								-- speaks only when the cursor ends up on a different entry.
+								aGossipListTable[index].func(aGossipListTable[index].obj, "LeftButton")
+								if SkuCore.RefreshWindowMenuQuietly then
+									SkuCore:RefreshWindowMenuQuietly()
 								end
 							else
 								-- Klassischer Pfad — unverändert.
@@ -6922,6 +6967,10 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 			if aGossipListTable[index].onEnter then
 				tNewMenuEntry.OnEnter = aGossipListTable[index].onEnter
+			end
+
+			if aGossipListTable[index].skuIdentity ~= nil then
+				tNewMenuEntry.skuIdentity = aGossipListTable[index].skuIdentity
 			end
 
 			tNewMenuEntry.BuildChildren = function(self)

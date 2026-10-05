@@ -5396,6 +5396,7 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			-- Matching the name in the rebuilt list first makes the restore mean "put me
 			-- back on the same entry" instead of "put me back on the same row number".
 			local tName = nil
+			local tIdent = nil
 			local tBread = nil
 			local tFirstFrame = nil
 			if SkuOptions.currentMenuPosition then
@@ -5403,6 +5404,7 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 					local tTable = SkuOptions.currentMenuPosition.parent
 
 					tName = SkuOptions.currentMenuPosition.name
+					tIdent = SkuOptions.currentMenuPosition.skuIdentity
 					if tTable.children then
 						for x = 1, #tTable.children do
 							if tTable.children[x].name == SkuOptions.currentMenuPosition.name then
@@ -5431,35 +5433,51 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			-- pending prompt reachable -> never navigate/open the menu (see above).
 			-- An explicit aForceLocalRoot is a deliberate caller request and still wins.
 			if tBread and aForceLocalRoot ~= true and tFlag == false and tPendingOnly ~= true then
-				SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"])
 				for i, v in pairs(friendlyFrameNames) do
 					if v == tFirstFrame then
 						if _G[i] then
 							if _G[i]:IsVisible() then
-								SkuOptions:SlashFunc(Sku.MENU_ROOT..","..tBread)
+								-- [43.9] ONE silent resolve to the remembered level. This used to
+								-- be two path walks ("Lokal", then the window), and SlashFunc
+								-- announced where each landed -- its silent flag was never wired
+								-- -- so every quiet window refresh (a craft, a learned skill)
+								-- spoke the window name and nothing else. The resolve rebuilds
+								-- the dynamic Local level on its way through, which is all the
+								-- extra walk to "Lokal" ever did.
+								SkuOptions:SlashFunc(Sku.MENU_ROOT..","..tBread, true)
 								if tIndex then
-									-- Identity first: if the remembered name is still in the rebuilt
-									-- list, step to THAT row. Purely additive -- when the name is gone
-									-- (item sold, consumed, renamed) tSteps stays tIndex and this
-									-- behaves exactly as before, i.e. packed-list semantics: land on
-									-- whatever filled the gap.
-									local tSteps = tIndex
-									local tNewParent = SkuOptions.currentMenuPosition
-										and SkuOptions.currentMenuPosition.parent
-									if tName and tNewParent and tNewParent.children then
-										for x = 1, #tNewParent.children do
-											if tNewParent.children[x].name == tName then
-												tSteps = x
-												break
+									-- Put the cursor back by direct assignment, no stepping. The
+									-- old code stepped OnNext tIndex-1 times from the first entry,
+									-- i.e. it restored a ROW NUMBER into a list that had just been
+									-- reshaped. Pick the entry, in this order:
+									--  1) same stable identity (skuIdentity: recipe, skill, button),
+									--  2) same display name,
+									--  3) the row now at the old index -- packed-list semantics,
+									--     "whatever filled the gap", clamped to the new length.
+									local tLevel = SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.parent
+									local tKids = tLevel and tLevel.children
+									if tKids and #tKids > 0 then
+										local tHit = nil
+										if tIdent ~= nil then
+											for x = 1, #tKids do
+												if tKids[x].skuIdentity == tIdent then tHit = tKids[x] break end
 											end
 										end
+										if not tHit and tName then
+											for x = 1, #tKids do
+												if tKids[x].name == tName then tHit = tKids[x] break end
+											end
+										end
+										if not tHit then
+											tHit = tKids[math.min(tIndex, #tKids)]
+										end
+										if tHit then
+											SkuOptions.currentMenuPosition = tHit
+											if tHit.OnEnter then pcall(function() tHit:OnEnter() end) end
+										end
 									end
-									for x = 1, tSteps - 1 do
-										SkuOptions.currentMenuPosition:OnNext()
-									end
-									--SkuOptions.currentMenuPosition.parent.children[tIndex]:OnSelect()
 									-- Suppress the re-anchor announce when (a) called
-									-- quietly, or (b) a bag-action confirm window is open —
+									-- quietly, or (b) a bag-action confirm window is open --
 									-- so the only thing spoken is the identity land, with
 									-- no brief "wrong item" blip from the action's own
 									-- re-anchor before the cursor settles.

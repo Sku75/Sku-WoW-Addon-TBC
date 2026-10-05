@@ -10,11 +10,15 @@ Changes in Sku v43.9
 
         Changes
             Auras: basic auras now offer the same output list under "Output" as custom auras, meaning every sound and every data output (for example spell name or target unit), several at once. Before, there was only a single sound.
+            Profession and trainer windows: after crafting, learning or selecting, the menu refreshes quietly, the cursor stays on the same entry, and only a genuinely different entry is announced.
 
         Bugfixes
             Quest menu: "Route" under a creature was always empty when its name contains a hyphen or a bracket (for example "Un'Goro-Gorilla" on German clients). Fixed.
             Close route: the search for linked waypoints near a target often returned fewer than the ten nearest. Most probably never affected anyone, a pure correctness fix.
             Auras: "Delete all auras" deleted every aura on a single key press without asking. Now it asks "Really delete?" first, like deleting a single aura does.
+            Profession and trainer windows: after every craft or learn the window name was announced, and the cursor sometimes jumped to another entry. Fixed.
+            Profession windows: Enter on a recipe or on "Create" announced the entry twice. Fixed.
+            Mailbox: on opening, "Target" was announced before "New mail". Fixed.
 
     Quest menu: "Route" finds creatures with a hyphen in their name
         Simple: In the quest menu (Quest start, Quest target, Delivery) a creature offers "Route",
@@ -67,6 +71,54 @@ Changes in Sku v43.9
             BuildChildren injects the single child "Really delete?". On entering, selectTarget
             points at the entry itself, so Enter on the child calls its OnAction. Before it was
             dynamic = false with no children, so OnPostSelect went straight to the OnAction branch.
+
+    Menu: paths are resolved instead of walked
+        Simple: Whenever Sku itself puts the menu at a certain place (a window opens, a quick key
+            like Shift-F10, or a window changed and its menu is rebuilt), it used to walk the path
+            there as if Enter were pressed on every level, announcing every stop on the way. During
+            the quiet rebuild of a profession or trainer window after a craft or a learn you
+            therefore heard the window name ("Trade skill", "Class Trainer"), and the cursor was
+            restored by row number into a list that had just changed. Now the target path is
+            resolved directly, without announcing the stops, and the cursor returns to the same
+            entry: the same recipe (even with a new count), the same skill, the same button. Only
+            when that entry is gone is the place the cursor landed announced.
+        Technically: SkuOptions:ResolveMenuPath and EnsureLevelBuilt (SkuZOptions/Core.lua) replace
+            the loop in SlashFunc that called OnSelect(true) on every path segment. Levels on the way
+            are only built (dynamic: RebuildNodeChildren, otherwise one BuildChildren when empty),
+            never selected; only the destination gets its OnSelect as before (pre-build of an empty,
+            non-dynamic level, never on isSkuToggle). The side effects of the walk are gone with it:
+            actionOnEnter nodes along the path fired, every sibling before the match was pre-built.
+            SlashFunc's aSilent parameter is effective now. The restore in SkuCore:CheckFrames makes
+            one silent call instead of two speaking ones and sets the cursor directly: skuIdentity,
+            then name, then the row at the old index (clamped to the new length). Window entries
+            carry skuIdentity (copied by SkuIterateGossipList): recipes "recipe:Name (rank)",
+            categories "cat:", trainer skills "skill:", otherwise "frame:<frame>" for every entry
+            that is alone on its frame (SkuCore:PrepareWindowEntries at the end of the three
+            builders). SkuCore:RefreshWindowMenuQuietly (LocalMenu.lua) is the shared quiet rebuild
+            for TRADE_SKILL_UPDATE/CRAFT_UPDATE and the Train button; it speaks only when the
+            identity (or the count-stripped name) is a different one afterwards. The bags keep their
+            own path (tFindMenuNodeByPath, tBagAnnounceSuppress).
+
+    Profession windows: Enter on a recipe or "Create" announced the entry twice
+        Simple: After Enter on a recipe or a Create button the entry was spoken twice. Now once.
+        Technically: The classic click path in SkuIterateGossipList called a speaking CheckFrames
+            after func and OnUpdate 0.35 s later, on top of the key handler's own announce. The
+            third announce was usually caught by the duplicate guard (1 s), the second one came
+            0.9 s later and was not. Entries with quietClick (set by PrepareWindowEntries for every
+            click button without containerFrameName) now run func plus RefreshWindowMenuQuietly;
+            buttons with a secure /click keep the old path.
+
+    Mailbox: "Target" before "New mail"
+        Simple: On opening a mailbox, "Target" was announced first and only then "New mail". Now
+            only "New mail".
+        Technically: Mail:MAIL_SHOW opened the path "Local, Mail" before the MailFrame was visible,
+            but the mail entry under Local exists only while its frame is visible. The path found
+            nothing, and the silent open announced the first root entry instead ("Target", the
+            target menu); the bags pulled the menu into the mail a moment later via CheckFrames. The
+            debug log showed "path walk found nothing ... short,lokal,post" on every mailbox since
+            at least v43.6; it was only noticed once the intermediate announcements were gone. Now
+            MAIL_SHOW opens one frame later (C_Timer.After(0)), only with a visible MailFrame and
+            only if the cursor is not already in the mail branch.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.8

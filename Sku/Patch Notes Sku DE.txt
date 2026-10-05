@@ -10,11 +10,15 @@ Aenderungen in Sku v43.9
 
         Aenderungen
             Auren: Basis-Auren bieten unter "Ausgabe" jetzt dieselbe Ausgabeliste wie eigene Auren, also alle Toene und alle Datenausgaben (zum Beispiel Zaubername oder Zieleinheit), auch mehrere gleichzeitig. Bisher gab es dort nur einen einzelnen Ton.
+            Berufs- und Lehrerfenster: nach Herstellen, Lernen oder Auswaehlen wird das Menue leise aufgefrischt, der Cursor bleibt auf demselben Eintrag, und nur ein wirklich anderer Eintrag wird angesagt.
 
         Fehlerbehebungen
             Quest-Menue: "Route" unter einer Kreatur war immer leer, wenn ihr Name einen Bindestrich oder eine Klammer enthaelt (zum Beispiel "Un'Goro-Gorilla", "Goblin-Ingenieur"). Behoben.
             Nahe Route: die Suche nach verbundenen Wegpunkten in der Naehe eines Ziels lieferte oft weniger als die zehn naechsten. Hat sehr wahrscheinlich nie jemanden getroffen, reine Korrektheit.
             Auren: "Alle Auren loeschen" loeschte mit einem einzigen Tastendruck alle Auren, ohne nachzufragen. Jetzt kommt wie beim Loeschen einer einzelnen Aura zuerst "Wirklich loeschen?".
+            Berufs- und Lehrerfenster: nach jedem Herstellen oder Lernen wurde der Fenstername angesagt, und der Cursor sprang manchmal auf einen anderen Eintrag. Behoben.
+            Berufsfenster: Enter auf einem Rezept oder auf "Erstellen" sagte den Eintrag zweimal an. Behoben.
+            Briefkasten: beim Oeffnen wurde zuerst "Ziel" angesagt, bevor "Neuer Brief" kam. Behoben.
 
     Quest-Menue: "Route" findet Kreaturen mit Bindestrich im Namen
         Einfach: Im Quest-Menue (Annahme, Ziel, Abgabe) bietet eine Kreatur "Route", "Nahe Route"
@@ -73,6 +77,58 @@ Aenderungen in Sku v43.9
             BuildChildren den einen Kindeintrag "Wirklich loeschen?" an. Beim Betreten zeigt
             selectTarget auf den Eintrag selbst, Enter auf dem Kind ruft dessen OnAction. Vorher
             dynamic = false ohne Kinder, OnPostSelect lief also direkt in den OnAction-Zweig.
+
+    Menue: Pfade werden aufgeloest statt durchlaufen
+        Einfach: Immer wenn Sku das Menue selbst an eine bestimmte Stelle setzt (ein Fenster geht
+            auf, eine Schnelltaste wie Umschalt-F10, oder ein Fenster hat sich geaendert und sein
+            Menue wird neu aufgebaut), lief es bisher den Pfad dorthin ab, als wuerde auf jeder
+            Ebene Enter gedrueckt, und sagte jede Zwischenstation an. Beim leisen Neuaufbau eines
+            Berufs- oder Lehrerfensters nach Herstellen oder Lernen hoerte man darum den
+            Fensternamen ("Beruf", "Lehrer"), und der Cursor wurde nach Zeilennummer
+            zurueckgesetzt, in einer Liste, die sich gerade veraendert hatte. Jetzt wird der
+            Zielpfad direkt aufgeloest, ohne Ansage der Zwischenstationen, und der Cursor kehrt zu
+            demselben Eintrag zurueck: dasselbe Rezept (auch mit neuer Anzahl), dieselbe
+            Faehigkeit, derselbe Knopf. Nur wenn dieser Eintrag weg ist, wird angesagt, wo der
+            Cursor gelandet ist.
+        Technisch: SkuOptions:ResolveMenuPath und EnsureLevelBuilt (SkuZOptions/Core.lua) ersetzen
+            die Schleife in SlashFunc, die auf jedem Pfadsegment OnSelect(true) aufrief. Ebenen auf
+            dem Weg werden nur gebaut (dynamic: RebuildNodeChildren, sonst einmal BuildChildren,
+            wenn leer), nie selektiert; nur das Ziel bekommt sein OnSelect wie bisher (Vorbau bei
+            leerer, nicht dynamischer Ebene, nie auf isSkuToggle). Damit entfallen die
+            Nebenwirkungen des Durchlaufs: actionOnEnter-Knoten auf dem Weg wurden ausgeloest, alle
+            Geschwister vor dem Treffer vorgebaut. Der aSilent-Parameter von SlashFunc wirkt jetzt.
+            Die Wiederherstellung in SkuCore:CheckFrames macht einen stillen Aufruf statt zwei
+            sprechender und setzt den Cursor direkt: skuIdentity, dann Name, dann die Zeile am
+            alten Index (begrenzt auf die neue Laenge). Fenster-Eintraege tragen skuIdentity
+            (SkuIterateGossipList kopiert es): Rezepte "recipe:Name (Rang)", Kategorien "cat:",
+            Lehrer-Faehigkeiten "skill:", sonst "frame:<Frame>" fuer jeden Eintrag, der allein auf
+            seinem Frame steht (SkuCore:PrepareWindowEntries am Ende der drei Builder).
+            SkuCore:RefreshWindowMenuQuietly (LocalMenu.lua) ist der gemeinsame leise Neuaufbau
+            fuer TRADE_SKILL_UPDATE/CRAFT_UPDATE und den Lehrer-Knopf; er spricht nur, wenn
+            Identitaet (oder der Name ohne Anzahl) hinterher eine andere ist. Die Taschen behalten
+            ihren eigenen Pfad (tFindMenuNodeByPath, tBagAnnounceSuppress).
+
+    Berufsfenster: Enter auf Rezept oder "Erstellen" sagte den Eintrag doppelt an
+        Einfach: Nach Enter auf einem Rezept oder einem Erstellen-Knopf wurde der Eintrag zweimal
+            gesprochen. Jetzt einmal.
+        Technisch: Der klassische Klickpfad in SkuIterateGossipList rief nach func ein sprechendes
+            CheckFrames und 0,35 s spaeter OnUpdate auf, zusaetzlich zur Ansage des Tastenhandlers.
+            Die dritte Ansage fing meist die Dubletten-Sperre (1 s) ab, die zweite kam 0,9 s spaeter
+            und nicht. Eintraege mit quietClick (gesetzt von PrepareWindowEntries fuer alle
+            Klick-Knoepfe ohne containerFrameName) laufen jetzt ueber func plus
+            RefreshWindowMenuQuietly; Knoepfe mit sicherem /click behalten den alten Pfad.
+
+    Briefkasten: "Ziel" vor "Neuer Brief"
+        Einfach: Beim Oeffnen eines Briefkastens wurde zuerst "Ziel" angesagt und dann erst "Neuer
+            Brief". Jetzt nur noch "Neuer Brief".
+        Technisch: Mail:MAIL_SHOW oeffnete den Pfad "Lokal, Post", bevor der MailFrame sichtbar war;
+            der Post-Eintrag unter Lokal existiert aber nur bei sichtbarem Frame. Der Pfad fand
+            nichts, und das stille Oeffnen sagte ersatzweise den ersten Wurzeleintrag an ("Ziel",
+            das Zielmenue); die Taschen holten das Menue kurz darauf ueber CheckFrames in die Post.
+            Das Debug-Log zeigte "path walk found nothing ... short,lokal,post" bei jedem
+            Briefkasten seit mindestens v43.6; aufgefallen ist es erst, als die Zwischenansagen weg
+            waren. Jetzt oeffnet MAIL_SHOW einen Frame spaeter (C_Timer.After(0)), nur bei
+            sichtbarem MailFrame und nur, wenn der Cursor nicht schon in der Post steht.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.8

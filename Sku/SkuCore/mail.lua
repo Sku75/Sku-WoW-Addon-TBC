@@ -83,8 +83,20 @@ end
 
 function Mail:MAIL_SHOW(...)
    --print("MAIL_SHOW", ...)
-   SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"]..","..L["Mail"])
    MailboxOpenFlag = true
+   -- [43.9] When MAIL_SHOW reaches us the MailFrame is not shown yet, and the mail
+   -- entry under "Lokal" exists only while its frame is visible -- so the path
+   -- "Lokal, Post" found nothing, and the silent menu open fell back to announcing
+   -- the ROOT entry ("Ziel"); the bags opening a moment later then descended into
+   -- the mail via CheckFrames. The debug ring shows "path walk found nothing ...
+   -- short,lokal,post" on every mailbox since at least v43.6. Open one frame later,
+   -- when the frame is visible, and only if nothing has put the cursor into the
+   -- mail branch meanwhile.
+   C_Timer.After(0, function()
+      if not (_G.MailFrame and MailFrame:IsVisible()) then return end
+      if (SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen()) and tCursorIsInMailMenu() then return end
+      SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"]..","..L["Mail"])
+   end)
    pcall(function() if SkuCore and SkuCore.ScheduleMenuFlashRecheck then SkuCore:ScheduleMenuFlashRecheck() end end)
 end
 

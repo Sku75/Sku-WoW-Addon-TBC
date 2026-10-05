@@ -13,11 +13,15 @@ Changements dans Sku v43.9
 
         Changements
             Auras : les auras de base proposent désormais sous « Sortie » la même liste de sorties que les auras personnalisées, c'est-à-dire tous les sons et toutes les sorties de données (par exemple le nom du sort ou l'unité cible), plusieurs à la fois. Avant, il n'y avait qu'un seul son.
+            Fenêtres de métier et de maître : après fabrication, apprentissage ou sélection, le menu se rafraîchit en silence, le curseur reste sur la même entrée, et seule une entrée vraiment différente est annoncée.
 
         Corrections
             Menu des quêtes : « Itinéraire » sous une créature était toujours vide quand son nom contient un trait d'union ou une parenthèse (par exemple « Gorille Crins-de-ciel »). Corrigé.
             Fermer l'itinéraire : la recherche des points de passage reliés près d'une cible renvoyait souvent moins que les dix plus proches. N'a très probablement jamais touché personne, correction de pure exactitude.
             Auras : « Supprimer toutes les auras » supprimait toutes les auras d'une seule touche, sans demander. Désormais « Vraiment supprimer ? » est demandé d'abord, comme pour la suppression d'une seule aura.
+            Fenêtres de métier et de maître : après chaque fabrication ou apprentissage, le nom de la fenêtre était annoncé et le curseur sautait parfois sur une autre entrée. Corrigé.
+            Fenêtres de métier : Entrée sur une recette ou sur « Créer » annonçait l'entrée deux fois. Corrigé.
+            Boîte aux lettres : à l'ouverture, « Cible » était annoncé avant « Nouveau courrier ». Corrigé.
 
     Menu des quêtes : « Itinéraire » trouve les créatures avec un trait d'union dans leur nom
         Simple : Dans le menu des quêtes (Début de quête, Cible de quête, Livraison), une créature
@@ -79,6 +83,60 @@ Changements dans Sku v43.9
             BuildChildren crée l'unique enfant « Vraiment supprimer ? ». En y entrant, selectTarget
             pointe sur l'entrée elle-même, Entrée sur l'enfant appelle donc son OnAction. Avant,
             dynamic = false sans enfants, OnPostSelect passait directement dans la branche OnAction.
+
+    Menu : les chemins sont résolus au lieu d'être parcourus
+        Simple : Chaque fois que Sku place lui-même le menu à un endroit donné (une fenêtre s'ouvre,
+            une touche rapide comme Maj-F10, ou une fenêtre a changé et son menu est reconstruit),
+            il parcourait jusqu'ici le chemin comme si Entrée était pressée à chaque niveau, en
+            annonçant chaque étape. Lors de la reconstruction silencieuse d'une fenêtre de métier
+            ou de maître après une fabrication ou un apprentissage, on entendait donc le nom de la
+            fenêtre (« Métier », « Maître »), et le curseur était remis par numéro de ligne dans
+            une liste qui venait de changer. Désormais le chemin cible est résolu directement, sans
+            annonce des étapes, et le curseur revient sur la même entrée : la même recette (même
+            avec un nouveau nombre), la même compétence, le même bouton. Ce n'est que si cette
+            entrée a disparu que l'endroit où le curseur a atterri est annoncé.
+        Technique : SkuOptions:ResolveMenuPath et EnsureLevelBuilt (SkuZOptions/Core.lua)
+            remplacent la boucle de SlashFunc qui appelait OnSelect(true) sur chaque segment du
+            chemin. Les niveaux traversés sont seulement construits (dynamic : RebuildNodeChildren,
+            sinon un BuildChildren s'ils sont vides), jamais sélectionnés ; seule la destination
+            reçoit son OnSelect comme avant (préconstruction d'un niveau vide non dynamique, jamais
+            sur isSkuToggle). Les effets de bord du parcours disparaissent avec lui : les nœuds
+            actionOnEnter sur le chemin se déclenchaient, tous les frères avant la correspondance
+            étaient préconstruits. Le paramètre aSilent de SlashFunc est désormais effectif. La
+            restauration dans SkuCore:CheckFrames fait un appel silencieux au lieu de deux
+            parlants et place le curseur directement : skuIdentity, puis nom, puis la ligne à
+            l'ancien index (bornée à la nouvelle longueur). Les entrées de fenêtre portent
+            skuIdentity (copié par SkuIterateGossipList) : recettes « recipe:Nom (rang) »,
+            catégories « cat: », compétences du maître « skill: », sinon « frame:<frame> » pour
+            toute entrée seule sur son frame (SkuCore:PrepareWindowEntries à la fin des trois
+            constructeurs). SkuCore:RefreshWindowMenuQuietly (LocalMenu.lua) est la reconstruction
+            silencieuse commune pour TRADE_SKILL_UPDATE/CRAFT_UPDATE et le bouton Apprendre ; elle
+            ne parle que si l'identité (ou le nom sans le nombre) est différente ensuite. Les sacs
+            gardent leur propre chemin (tFindMenuNodeByPath, tBagAnnounceSuppress).
+
+    Fenêtres de métier : Entrée sur une recette ou « Créer » annonçait l'entrée deux fois
+        Simple : Après Entrée sur une recette ou un bouton Créer, l'entrée était dite deux fois.
+            Désormais une fois.
+        Technique : Le chemin de clic classique dans SkuIterateGossipList appelait après func un
+            CheckFrames parlant puis OnUpdate 0,35 s plus tard, en plus de l'annonce du gestionnaire
+            de touches. La troisième annonce était le plus souvent absorbée par le garde-doublon
+            (1 s), la deuxième arrivait 0,9 s plus tard et ne l'était pas. Les entrées avec
+            quietClick (posé par PrepareWindowEntries pour tout bouton cliquable sans
+            containerFrameName) passent désormais par func plus RefreshWindowMenuQuietly ; les
+            boutons à /click sécurisé gardent l'ancien chemin.
+
+    Boîte aux lettres : « Cible » avant « Nouveau courrier »
+        Simple : À l'ouverture d'une boîte aux lettres, « Cible » était annoncé d'abord, puis
+            seulement « Nouveau courrier ». Désormais seulement « Nouveau courrier ».
+        Technique : Mail:MAIL_SHOW ouvrait le chemin « Local, Courrier » avant que le MailFrame soit
+            visible, or l'entrée Courrier sous Local n'existe que lorsque son frame est visible. Le
+            chemin ne trouvait rien, et l'ouverture silencieuse annonçait à la place la première
+            entrée racine (« Cible », le menu de cible) ; les sacs ramenaient le menu dans le
+            courrier un instant plus tard via CheckFrames. Le journal de débogage montrait « path
+            walk found nothing ... short,lokal,post » à chaque boîte aux lettres depuis au moins la
+            v43.6 ; cela ne s'est remarqué qu'une fois les annonces intermédiaires disparues.
+            Désormais MAIL_SHOW ouvre une image plus tard (C_Timer.After(0)), seulement avec un
+            MailFrame visible et seulement si le curseur n'est pas déjà dans le courrier.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.8
