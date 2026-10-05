@@ -19,6 +19,7 @@ Aenderungen in Sku v43.9
             Berufs- und Lehrerfenster: nach jedem Herstellen oder Lernen wurde der Fenstername angesagt, und der Cursor sprang manchmal auf einen anderen Eintrag. Behoben.
             Berufsfenster: Enter auf einem Rezept oder auf "Erstellen" sagte den Eintrag zweimal an. Behoben.
             Briefkasten: beim Oeffnen wurde zuerst "Ziel" angesagt, bevor "Neuer Brief" kam. Behoben.
+            Tastenbelegung: die zweite Taste ("Sekundaere Taste neu belegen") war fuer eine Reihe von Tasten wirkungslos, darunter "Monitor Gruppe fortlaufende Ausgabe ausloesen", Zielentfernung, Panikmodus, Minimap-Scan, Reichweitenpruefung der Gruppe, "Zu Einheit drehen" und die Scan-Tasten. Behoben.
 
     Quest-Menue: "Route" findet Kreaturen mit Bindestrich im Namen
         Einfach: Im Quest-Menue (Annahme, Ziel, Abgabe) bietet eine Kreatur "Route", "Nahe Route"
@@ -129,6 +130,23 @@ Aenderungen in Sku v43.9
             Briefkasten seit mindestens v43.6; aufgefallen ist es erst, als die Zwischenansagen weg
             waren. Jetzt oeffnet MAIL_SHOW einen Frame spaeter (C_Timer.After(0)), nur bei
             sichtbarem MailFrame und nur, wenn der Cursor nicht schon in der Post steht.
+
+    Tastenbelegung: zweite Taste fuer Monitor, Scan, Drehen und Co.
+        Einfach: Unter "Sku Tastenbelegung" hat jede Taste eine erste und eine zweite Belegung.
+            Fuer eine Reihe von Tasten liess sich die zweite zwar setzen und wurde auch als
+            "Taste 2" angesagt, tat aber nichts. Betroffen waren "Monitor Gruppe fortlaufende
+            Ausgabe ausloesen", Zielentfernung, Panikmodus, Minimap-Scan weit und eng,
+            Reichweitenpruefung der Gruppenmitglieder, "Zu Einheit drehen" 1 bis 6 und 180 Grad,
+            "Scan fortsetzen", Scan 1 bis 8 und die Ressourcen-Benachrichtigung. Jetzt wirkt die
+            zweite Taste ueberall. Ausserdem heisst die Monitor-Taste jetzt richtig "fortlaufende"
+            statt "forlaufende".
+        Technisch: SkuCore/Core.lua, OnHide-Script von SkuCoreControlOption1: die Bindungen dieses
+            Frames wurden mit SetOverrideBindingClick nur fuer .key gesetzt (einzige Ausnahme war
+            SKU_KEY_TAXICANCEL), der Click-Dispatcher prueft per SkuKeyBindsMatchKey aber beide
+            Felder. Die Tastenbelegungs-Menues in SkuZOptions/Core.lua setzen key2 seit jeher, daher
+            funktionierte die zweite Taste bei anderen Aktionen. Ein lokaler tArm(aConst)-Helfer
+            bindet jetzt jede Taste, die SkuKeyBindsGetKeys liefert; die zwanzig handgeschriebenen
+            Einzelzeilen sind weg.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.8

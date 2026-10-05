@@ -19,6 +19,7 @@ Changes in Sku v43.9
             Profession and trainer windows: after every craft or learn the window name was announced, and the cursor sometimes jumped to another entry. Fixed.
             Profession windows: Enter on a recipe or on "Create" announced the entry twice. Fixed.
             Mailbox: on opening, "Target" was announced before "New mail". Fixed.
+            Key bindings: the second key ("Rebind secondary key") had no effect for a number of keys, among them "Trigger monitor party continuous output", target distance, panic mode, minimap scan, group range check, "Turn to unit" and the scan keys. Fixed.
 
     Quest menu: "Route" finds creatures with a hyphen in their name
         Simple: In the quest menu (Quest start, Quest target, Delivery) a creature offers "Route",
@@ -119,6 +120,21 @@ Changes in Sku v43.9
             at least v43.6; it was only noticed once the intermediate announcements were gone. Now
             MAIL_SHOW opens one frame later (C_Timer.After(0)), only with a visible MailFrame and
             only if the cursor is not already in the mail branch.
+
+    Key bindings: second key for monitor, scan, turn and friends
+        Simple: Under "Sku key bindings" every key has a first and a second binding. For a number
+            of keys the second one could be set and was announced as "Key 2", but did nothing.
+            Affected were "Trigger monitor party continuous output", target distance, panic mode,
+            minimap scan wide and narrow, group member range check, "Turn to unit" 1 to 6 and 180
+            degrees, "Scan continue", scan 1 to 8 and the resource notification. The second key now
+            works everywhere. The monitor key's English name also loses the typo "continous".
+        Technically: SkuCore/Core.lua, OnHide script of SkuCoreControlOption1: the bindings owned by
+            this frame were armed with SetOverrideBindingClick for .key only (SKU_KEY_TAXICANCEL
+            was the lone exception), while the click dispatcher checks both fields through
+            SkuKeyBindsMatchKey. The binding menus in SkuZOptions/Core.lua have always armed key2,
+            which is why the second key worked for other actions. A local tArm(aConst) helper now
+            binds every key SkuKeyBindsGetKeys returns; the twenty hand-written single lines are
+            gone.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.8

@@ -22,6 +22,7 @@ Changements dans Sku v43.9
             Fenêtres de métier et de maître : après chaque fabrication ou apprentissage, le nom de la fenêtre était annoncé et le curseur sautait parfois sur une autre entrée. Corrigé.
             Fenêtres de métier : Entrée sur une recette ou sur « Créer » annonçait l'entrée deux fois. Corrigé.
             Boîte aux lettres : à l'ouverture, « Cible » était annoncé avant « Nouveau courrier ». Corrigé.
+            Raccourcis clavier : la seconde touche (« Réassigner la touche secondaire ») restait sans effet pour plusieurs touches, dont « Déclencher la sortie continue du moniteur de groupe », distance de la cible, mode panique, scan de la minicarte, vérification de portée du groupe, « Tourner vers l'unité » et les touches de scan. Corrigé.
 
     Menu des quêtes : « Itinéraire » trouve les créatures avec un trait d'union dans leur nom
         Simple : Dans le menu des quêtes (Début de quête, Cible de quête, Livraison), une créature
@@ -137,6 +138,22 @@ Changements dans Sku v43.9
             v43.6 ; cela ne s'est remarqué qu'une fois les annonces intermédiaires disparues.
             Désormais MAIL_SHOW ouvre une image plus tard (C_Timer.After(0)), seulement avec un
             MailFrame visible et seulement si le curseur n'est pas déjà dans le courrier.
+
+    Raccourcis clavier : seconde touche pour le moniteur, le scan, la rotation et les autres
+        Simple : Sous « Raccourcis clavier Sku », chaque touche a une première et une seconde
+            assignation. Pour plusieurs touches, la seconde pouvait être définie et était annoncée
+            comme « Touche 2 », mais ne faisait rien. Étaient concernées « Déclencher la sortie
+            continue du moniteur de groupe », distance de la cible, mode panique, scan de la
+            minicarte large et étroit, vérification de portée des membres du groupe, « Tourner vers
+            l'unité » 1 à 6 et 180 degrés, « Continuer le scan », scan 1 à 8 et la notification de
+            ressources. La seconde touche fonctionne désormais partout.
+        Technique : SkuCore/Core.lua, script OnHide de SkuCoreControlOption1 : les assignations de
+            ce frame étaient armées avec SetOverrideBindingClick pour .key seulement (seule
+            exception SKU_KEY_TAXICANCEL), alors que le dispatcher de clic vérifie les deux champs
+            via SkuKeyBindsMatchKey. Les menus d'assignation dans SkuZOptions/Core.lua armaient
+            key2 depuis toujours, d'où le bon fonctionnement de la seconde touche pour d'autres
+            actions. Un helper local tArm(aConst) lie désormais chaque touche renvoyée par
+            SkuKeyBindsGetKeys ; les vingt lignes individuelles écrites à la main disparaissent.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.8
