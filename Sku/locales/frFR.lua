@@ -2583,6 +2583,7 @@ L["Scan Tasten"] = "Touches d'analyse"
 L["Audio Menü Schnellzugriff"] = "Accès rapide au menu audio"
 L["Schnellwegpunkte"] = "Points de passage rapides"
 L["Fokus Tasten"] = "Touches de focalisation Sku"
+L["Raid Untergruppen Tasten"] = "Touches de sous-groupe de raid"
 L["Ziel Markierungen"] = "Symboles de cible"
 L["Zu Einheit und Drehen"] = "Se tourner vers une unité et rotation"
 L["Kampfmenü Steuerung"] = "Commandes du menu de combat"
@@ -3010,6 +3011,9 @@ L["Source"] = "Source"
 L["current filter"] = "filtre actuel"
 L["Delete this filter"] = "Supprimer ce filtre"
 L["focus"] = "Focalisation Sku "
+for x = 1, 8 do
+	L["SKU_KEY_SUBGROUPTARGET"..x] = "Cibler le premier membre du sous-groupe de raid "..x
+end
 L[" set to nothing"] = " réglé sur rien"
 L[" set to "] = " réglé sur "
 L["Game focus set to "] = "Focalisation réglée sur "

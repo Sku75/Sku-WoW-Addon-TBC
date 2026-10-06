@@ -239,6 +239,13 @@ for x = 1, 8 do
    SkuOptions.skuDefaultKeyBindings["SKU_KEY_FOCUSSET"..x] = {key = tKey and ("CTRL-"..tKey) or "", object = "SkuCoreSkuFocusControl", script = "OnHide",}
 end
 
+-- [v43.9] Raid subgroup keys: ALT-NUMPAD1..8 target the first member of raid
+-- subgroup 1..8 (SkuCore/subgroupTargeting.lua, own "Raid Untergruppen Tasten"
+-- sub-menu). The control frame arms both keys of every const.
+for x = 1, 8 do
+   SkuOptions.skuDefaultKeyBindings["SKU_KEY_SUBGROUPTARGET"..x] = {key = "ALT-NUMPAD"..x, object = "SkuCoreSubgroupControl", script = "OnHide",}
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsResetBindings()
    SkuSettings:Sub("SkuOptions").SkuKeyBinds = {}

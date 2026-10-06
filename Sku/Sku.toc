@@ -76,6 +76,7 @@ SkuCore\Options.lua
 SkuCore\visualAids.lua
 SkuCore\Macro.lua
 SkuCore\skuFocus.lua
+SkuCore\subgroupTargeting.lua
 SkuCore\Build_SocketingFrame.lua
 SkuCore\dungeonBrowser.lua
 SkuCore\equipmentSets.lua

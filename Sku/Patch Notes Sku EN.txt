@@ -8,6 +8,9 @@ Changes in Sku v43.9
 
     Overview
 
+        New
+            Raid subgroup keys: Alt+Numpad 1 to 8 target the first member of raid subgroup 1 to 8. With an empty group Sku says "Group N empty" and nothing happens; outside a raid "No raid". Own sub-menu "Raid subgroup keys" in the Sku key bindings, can be switched off under Features.
+
         Changes
             Auras: basic auras now offer the same output list under "Output" as custom auras, meaning every sound and every data output (for example spell name or target unit), several at once. Before, there was only a single sound.
             Profession and trainer windows: after crafting, learning or selecting, the menu refreshes quietly, the cursor stays on the same entry, and only a genuinely different entry is announced.
@@ -233,6 +236,28 @@ Changes in Sku v43.9
             do not exist as words in the combat voices, SkuCoreAqCombatGetVoiceString splits them
             into "party", "pet", "5". SkuAuras/data.lua: tUnitIdToSpokenName says party N as N+1
             and raid N as the dial number.
+
+    Raid subgroup keys: jump into a raid group with one key
+        Simple: Whoever only heals their own group in a raid needs a quick way into a group
+            without the two-digit dial entry. Alt+Numpad 1 to 8 target the first member of raid
+            subgroup 1 to 8 (the member numbered 1 in that group, the same order dial targeting
+            and the monitors use). The target is announced like any target. If the group is
+            empty, Sku says "Group N empty" and nothing happens; outside a raid "No raid". The
+            eight keys have their own sub-menu "Raid subgroup keys" in the Sku key bindings, the
+            second key works too. The feature can be switched off under Features.
+            As with every targeting key: group changes during a fight are picked up after the
+            fight, until then the key jumps to the previous first member.
+        Technically: New file SkuCore/subgroupTargeting.lua (submodule SubgroupTargeting, in the
+            TOC after skuFocus.lua). Eight SecureActionButtons SkuSubgroupTarget1-8 with
+            type1=macro, macrotext1="/tar <name>", bound via SetOverrideBindingClick WITHOUT a
+            fifth argument (LeftButton, so type1/macrotext1 is read); the names come from
+            GetRaidRosterInfo (first name per subgroup in roster order) on GROUP_ROSTER_UPDATE,
+            GROUP_FORMED/JOINED/LEFT and PLAYER_ENTERING_WORLD out of combat, deferred to
+            PLAYER_REGEN_ENABLED in combat. PreClick (insecure, runs in combat too) speaks the
+            empty / no-raid line. Control frame SkuCoreSubgroupControl, script OnHide, arms both
+            keys of every const via SkuOptions:SkuKeyBindsGetKeys. Consts
+            SKU_KEY_SUBGROUPTARGET1-8, default ALT-NUMPAD1-8 (SkuZOptions/SkuKeyBinds.lua), group
+            "Raid Untergruppen Tasten" in SkuCore/Options.lua.
 
 Changes in Sku v43.8
 

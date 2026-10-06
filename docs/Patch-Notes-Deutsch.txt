@@ -8,6 +8,9 @@ Aenderungen in Sku v43.9
 
     Ueberblick
 
+        Neu
+            Raid-Untergruppen-Tasten: Alt+Numblock 1 bis 8 nimmt das erste Mitglied der Raid-Gruppe 1 bis 8 ins Ziel. Bei leerer Gruppe heisst es "Gruppe N leer" und nichts passiert; ausserhalb eines Raids "Kein Schlachtzug". Eigenes Untermenue "Raid-Untergruppen Tasten" in der Sku-Tastenbelegung, abschaltbar unter Funktionen.
+
         Aenderungen
             Auren: Basis-Auren bieten unter "Ausgabe" jetzt dieselbe Ausgabeliste wie eigene Auren, also alle Toene und alle Datenausgaben (zum Beispiel Zaubername oder Zieleinheit), auch mehrere gleichzeitig. Bisher gab es dort nur einen einzelnen Ton.
             Berufs- und Lehrerfenster: nach Herstellen, Lernen oder Auswaehlen wird das Menue leise aufgefrischt, der Cursor bleibt auf demselben Eintrag, und nur ein wirklich anderer Eintrag wird angesagt.
@@ -250,6 +253,30 @@ Aenderungen in Sku v43.9
             Ansagen. "party5"/"partypet5" gibt es in den Kampfstimmen nicht als Wort,
             SkuCoreAqCombatGetVoiceString zerlegt sie in "party", "pet", "5". SkuAuras/data.lua:
             tUnitIdToSpokenName sagt party N als N+1 und raid N als Dial-Nummer.
+
+    Raid-Untergruppen-Tasten: mit einer Taste in eine Raid-Gruppe springen
+        Einfach: Wer im Raid nur seine eigene Gruppe versorgt, braucht einen schnellen Einstieg in
+            eine Gruppe, ohne die zweistellige Dial-Eingabe. Alt+Numblock 1 bis 8 nimmt das erste
+            Mitglied der Raid-Gruppe 1 bis 8 ins Ziel (das Mitglied mit Nummer 1 in dieser Gruppe,
+            dieselbe Reihenfolge wie Dial Targeting und die Monitore). Das Ziel wird wie jedes
+            Ziel angesagt. Ist die Gruppe leer, sagt Sku "Gruppe N leer" und nichts passiert;
+            ausserhalb eines Raids "Kein Schlachtzug". Die acht Tasten haben ein eigenes
+            Untermenue "Raid-Untergruppen Tasten" in der Sku-Tastenbelegung, auch die zweite
+            Taste funktioniert. Die Funktion laesst sich unter Funktionen abschalten.
+            Wie bei allen Zieltasten gilt: Gruppenwechsel waehrend eines Kampfes werden erst nach
+            dem Kampf uebernommen, bis dahin springt die Taste zum alten ersten Mitglied.
+        Technisch: Neue Datei SkuCore/subgroupTargeting.lua (Untermodul SubgroupTargeting, in
+            der TOC nach skuFocus.lua). Acht SecureActionButtons SkuSubgroupTarget1-8 mit
+            type1=macro, macrotext1="/tar <Name>", gebunden per SetOverrideBindingClick OHNE
+            fuenftes Argument (LeftButton, damit type1/macrotext1 gelesen wird); die Namen werden
+            aus GetRaidRosterInfo (erster Name je Untergruppe in Roster-Reihenfolge) bei
+            GROUP_ROSTER_UPDATE, GROUP_FORMED/JOINED/LEFT und PLAYER_ENTERING_WORLD ausserhalb
+            des Kampfes geschrieben, im Kampf auf PLAYER_REGEN_ENABLED verschoben. PreClick
+            (unsicher, laeuft auch im Kampf) spricht die Leer-/Kein-Raid-Meldung. Kontroll-Frame
+            SkuCoreSubgroupControl, Script OnHide, bewaffnet beide Tasten jeder Konstante ueber
+            SkuOptions:SkuKeyBindsGetKeys. Konstanten SKU_KEY_SUBGROUPTARGET1-8, Standard
+            ALT-NUMPAD1-8 (SkuZOptions/SkuKeyBinds.lua), Gruppe "Raid Untergruppen Tasten" in
+            SkuCore/Options.lua.
 
 Aenderungen in Sku v43.8
 

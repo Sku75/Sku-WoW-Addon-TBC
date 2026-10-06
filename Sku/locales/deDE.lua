@@ -2580,6 +2580,7 @@ L["Scan Tasten"] = "Scan Tasten"
 L["Audio Menü Schnellzugriff"] = "Audio Menü Schnellzugriff"
 L["Schnellwegpunkte"] = "Schnellwegpunkte"
 L["Fokus Tasten"] = "Sku Fokus Tasten"
+L["Raid Untergruppen Tasten"] = "Raid-Untergruppen Tasten"
 L["Ziel Markierungen"] = "Ziel Markierungen"
 L["Zu Einheit und Drehen"] = "Zu Einheit und Drehen"
 L["Kampfmenü Steuerung"] = "Kampfmenü Steuerung"
@@ -3008,6 +3009,9 @@ L["Delete this filter"] = "Diesen Filter löschen"
 for x = 1, 8 do
 	L["SKU_KEY_FOCUSGET"..x] = "Sku Fokus "..x.." ins Ziel nehmen"
 	L["SKU_KEY_FOCUSSET"..x] = "Sku Fokus "..x.." auf Name des aktuellen Ziel festlegen"
+end
+for x = 1, 8 do
+	L["SKU_KEY_SUBGROUPTARGET"..x] = "Erstes Mitglied von Raid-Gruppe "..x.." ins Ziel nehmen"
 end
 L["focus"] = "Sku Fokus "
 L[" set to nothing"] = " auf nichts festgelegt"

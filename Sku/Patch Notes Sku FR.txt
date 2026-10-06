@@ -11,6 +11,9 @@ Changements dans Sku v43.9
 
     Aperçu
 
+        Nouveautés
+            Touches de sous-groupe de raid : Alt+pavé 1 à 8 cible le premier membre du sous-groupe de raid 1 à 8. Si le groupe est vide, Sku dit « Groupe N vide » et rien ne se passe ; hors raid « Pas de raid ». Sous-menu propre « Touches de sous-groupe de raid » dans les raccourcis Sku, désactivable sous Fonctions.
+
         Changements
             Auras : les auras de base proposent désormais sous « Sortie » la même liste de sorties que les auras personnalisées, c'est-à-dire tous les sons et toutes les sorties de données (par exemple le nom du sort ou l'unité cible), plusieurs à la fois. Avant, il n'y avait qu'un seul son.
             Fenêtres de métier et de maître : après fabrication, apprentissage ou sélection, le menu se rafraîchit en silence, le curseur reste sur la même entrée, et seule une entrée vraiment différente est annoncée.
@@ -259,6 +262,30 @@ Changements dans Sku v43.9
             n'existent pas comme mots dans les voix de combat, SkuCoreAqCombatGetVoiceString les
             découpe en « party », « pet », « 5 ». SkuAuras/data.lua : tUnitIdToSpokenName dit
             party N comme N+1 et raid N comme numéro du cadran.
+
+    Touches de sous-groupe de raid : sauter dans un groupe de raid d'une seule touche
+        Simple : Qui ne soigne que son propre groupe en raid a besoin d'un accès rapide à un groupe
+            sans la saisie à deux chiffres du cadran. Alt+pavé 1 à 8 cible le premier membre du
+            sous-groupe de raid 1 à 8 (le membre numéro 1 de ce groupe, le même ordre que le
+            ciblage au cadran et les moniteurs). La cible est annoncée comme toute cible. Si le
+            groupe est vide, Sku dit « Groupe N vide » et rien ne se passe ; hors raid « Pas de
+            raid ». Les huit touches ont leur propre sous-menu « Touches de sous-groupe de raid »
+            dans les raccourcis Sku, la seconde touche fonctionne aussi. La fonction peut être
+            désactivée sous Fonctions.
+            Comme pour toute touche de ciblage : les changements de groupe pendant un combat sont
+            pris en compte après le combat, d'ici là la touche saute vers l'ancien premier membre.
+        Technique : Nouveau fichier SkuCore/subgroupTargeting.lua (sous-module SubgroupTargeting,
+            dans la TOC après skuFocus.lua). Huit SecureActionButtons SkuSubgroupTarget1-8 avec
+            type1=macro, macrotext1="/tar <nom>", liés par SetOverrideBindingClick SANS cinquième
+            argument (LeftButton, pour que type1/macrotext1 soit lu) ; les noms viennent de
+            GetRaidRosterInfo (premier nom par sous-groupe dans l'ordre du roster) sur
+            GROUP_ROSTER_UPDATE, GROUP_FORMED/JOINED/LEFT et PLAYER_ENTERING_WORLD hors combat,
+            reporté à PLAYER_REGEN_ENABLED en combat. PreClick (non sécurisé, s'exécute aussi en
+            combat) prononce la ligne vide / pas de raid. Cadre de contrôle SkuCoreSubgroupControl,
+            script OnHide, arme les deux touches de chaque constante via
+            SkuOptions:SkuKeyBindsGetKeys. Constantes SKU_KEY_SUBGROUPTARGET1-8, défaut
+            ALT-NUMPAD1-8 (SkuZOptions/SkuKeyBinds.lua), groupe « Raid Untergruppen Tasten » dans
+            SkuCore/Options.lua.
 
 Changements dans Sku v43.8
 
