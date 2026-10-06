@@ -133,8 +133,6 @@ SkuCore.inOutCombatQueue = {
    combatOut = {},
 }
 
-SkuCore.partyDeadCountCounter = 0
-
 local aqCombatIsPartyOrRaidMemberCache = {}
 
 local tCurrentUpdateRate = 1
@@ -1315,13 +1313,10 @@ function aqCombat:aqCombatOnLogin()
          }
          SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.partyDead.voiceOutput = "${sound};${unit1};dead"
 
-         --
-         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.partyDeadCount = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.partyDeadCount or
-         {
-            value = false,
-            sound = "vocalized",
-         }
-         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.partyDeadCount.voiceOutput = "${sound};${number1};dead"
+         --"Count deaths up" (partyDeadCount) was removed 2026-10-05: in number-only
+         --mode its "3 dead" was indistinguishable from "party3 dead" above, and the
+         --counter never went down on a resurrection. Drop the stored setting.
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.partyDeadCount = nil
 
          --
          SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.outOfRangeEnabled = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.outOfRangeEnabled or
@@ -1332,7 +1327,11 @@ function aqCombat:aqCombatOnLogin()
          SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.outOfRangeEnabled.voiceOutput = "${sound};${unit1};leaving"
 
          --
-         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.ignoreDeadPartyPets = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.ignoreDeadPartyPets or true
+         --nil-fill only: the former "x or true" turned a stored false back into true
+         --at every load, so "Tote Gruppenbegleiter ignorieren = Nein" never survived a reload
+         if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.ignoreDeadPartyPets == nil then
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.ignoreDeadPartyPets = true
+         end
 
          --
          SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.oorAt = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.oorAt or 10
@@ -1774,6 +1773,100 @@ function aqCombat:aqCombat_SKU_SPELL_INTERRUPT(aEvent, aEventData)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- The number dial targeting currently has a raid member on, read from the SAME
+-- slot grid the numpad decodes (SkuSecureTargetingFrame unitNameSlotGG-SS, key
+-- number = (GG - 1) * 5 + SS). Reading attributes of a secure frame is allowed
+-- from insecure code. In the two-digit raid mode the grid is filled by real
+-- subgroup and position; in the single-key raid10 mode it is filled flattened
+-- (members in subgroup order numbered 1-10, so keys stay usable when someone
+-- sits in group 3 of a 10-man). Reading the grid instead of recomputing means
+-- the spoken number is the key, whichever mode is active. nil when dial
+-- targeting is not in a raid mode or the name is not in the grid.
+local function tDialNumberForName(aName)
+   local tFrame = _G["SkuSecureTargetingFrame"]
+   if not aName or not tFrame then
+      return nil
+   end
+   local tGroupType = tFrame:GetAttribute("groupType")
+   if tGroupType ~= "raid" and tGroupType ~= "raid10" then
+      return nil
+   end
+   for tG = 1, 8 do
+      for tS = 1, 5 do
+         if tFrame:GetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS)) == aName then
+            return ((tG - 1) * 5) + tS
+         end
+      end
+   end
+   return nil
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Which token a dead group member is announced with, and which real unit id to
+-- query for it. Returns nil when the GUID is not a group member.
+--
+-- Outside a raid the spoken token is the numpad key (party1 -> "party2", see
+-- below) and the real id the WoW token. Inside a raid the
+-- members of the player's own subgroup ALSO answer to party1-4, and the generic
+-- GUID lookup scans those tokens first, so a raid used to announce "party2 dead"
+-- for subgroup mates and "raid17 dead" for everyone else -- two numbering
+-- schemes in one fight, neither matching the numpad. The spoken number is the
+-- dial-targeting number (tDialNumberForName), falling back to the health
+-- monitor's roster map (tDTRaidRoster in aq.lua) and finally to a live
+-- (subgroup - 1) * 5 + position; the latter two equal the two-digit dial mode.
+-- "raid7 dead" therefore means numpad 7. The real unit id stays the raw slot
+-- (raid23), because that is what the UnitIsDeadOrGhost / pet checks need. The
+-- grid and the roster map are rebuilt out of combat only, so they go stale
+-- together with the numpad. Self and own pet keep "player"/"pet". All
+-- MAX_RAID_MEMBERS slots are scanned, not the 25 in tAllPartyRaidUnits, so
+-- slots 26-40 are announced too.
+local function tDeathUnitToken(aUnitGUID)
+   if aUnitGUID == UnitGUID("player") then
+      return "player", "player"
+   end
+   if aUnitGUID == UnitGUID("pet") then
+      return "pet", "pet"
+   end
+
+   if UnitInRaid("player") then
+      local tSubgroupCounter = {}
+      for x = 1, MAX_RAID_MEMBERS do
+         local tName, _, tSubgroup = GetRaidRosterInfo(x)
+         if tName and tSubgroup then
+            tSubgroupCounter[tSubgroup] = (tSubgroupCounter[tSubgroup] or 0) + 1
+            local tMemberGuid = UnitGUID("raid"..x)
+            local tPetGuid = UnitGUID("raidpet"..x)
+            if tMemberGuid == aUnitGUID or (tPetGuid and tPetGuid == aUnitGUID) then
+               local tNumber = tDialNumberForName(tName)
+                  or (tDTRaidRoster and tDTRaidRoster["raid"..x])
+                  or (((tSubgroup - 1) * 5) + tSubgroupCounter[tSubgroup])
+               if tMemberGuid == aUnitGUID then
+                  return "raid"..tNumber, "raid"..x
+               else
+                  return "raidpet"..tNumber, "raidpet"..x
+               end
+            end
+         end
+      end
+      return nil
+   end
+
+   local tUnitId = aqCombat:aqCombatGroupGuidToUnitId(aUnitGUID)
+   if tUnitId then
+      -- Party: Sku's default keys (SkuDefaultBindings, data.lua) put the player on
+      -- NUMPAD1 and party1-4 on NUMPAD2-5; the health monitor and the overview
+      -- count the same way. So party1 is announced as "party2" -- the key, not
+      -- the WoW token. Same for partypet1 -> partypet2.
+      local tKind, tNo = string.match(tUnitId, "^(%a+)(%d+)$")
+      if tKind and tNo then
+         return tKind..(tonumber(tNo) + 1), tUnitId
+      end
+      return tUnitId, tUnitId
+   end
+   return nil
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function aqCombat:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
    local tCurrentSettings = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
 
@@ -1814,7 +1907,8 @@ function aqCombat:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
    end
 
    if tCurrentSettings.combat.enabled == true then
-      if aqCombat:aqCombatIsPartyOrRaidMember(nil, aUnitGUID) == nil then
+      local tSpokenUnit, tRealUnitId = tDeathUnitToken(aUnitGUID)
+      if tSpokenUnit == nil and aqCombat:aqCombatIsPartyOrRaidMember(nil, aUnitGUID) == nil then
          if sfind(aUnitGUID, "Creature-") then
             -- Mark the death BEFORE the removal, and drop any add for this mob that
             -- is still sitting in the coalescing window: combat-log lines from the
@@ -1825,31 +1919,23 @@ function aqCombat:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
             aqCombat:aqCombat_CREATURE_REMOVED_FROM_COMBAT(aUnitGUID, nil, aUnitName)
          end
       else
-         local tPartyUnitId = aqCombat:aqCombatGroupGuidToUnitId(aUnitGUID)
-         if tPartyUnitId == nil then
-            tPartyUnitId = ""
-         end
-         
-         if 
+         tSpokenUnit = tSpokenUnit or ""
+         tRealUnitId = tRealUnitId or ""
+
+         if
             tCurrentSettings.combat.friendly.ignoreDeadPartyPets == false or
-            tPartyUnitId == "" or
+            tRealUnitId == "" or
             (
                tCurrentSettings.combat.friendly.ignoreDeadPartyPets == true and
-               sfind(tPartyUnitId, "pet") == nil and
-               UnitIsOtherPlayersPet(tPartyUnitId) == false and
+               sfind(tRealUnitId, "pet") == nil and
+               UnitIsOtherPlayersPet(tRealUnitId) == false and
                aUnitGUID ~= UnitGUID("pet")
             )
          then
-            if tPartyUnitId == "" or UnitIsDeadOrGhost(tPartyUnitId) == true then
-               SkuCore.partyDeadCountCounter = SkuCore.partyDeadCountCounter + 1
-               if tCurrentSettings.combat.friendly.partyDeadCount.value == true then
-                  local tSetting = tCurrentSettings.combat.friendly.partyDeadCount
-                  SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = SkuCore.partyDeadCountCounter,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
-               end
-
+            if tRealUnitId == "" or UnitIsDeadOrGhost(tRealUnitId) == true then
                if tCurrentSettings.combat.friendly.partyDead.value == true then
                   local tSetting = tCurrentSettings.combat.friendly.partyDead
-                  SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tPartyUnitId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                  SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tSpokenUnit,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                end
             end
          end
@@ -1900,7 +1986,6 @@ function aqCombat:aqCombat_PLAYER_REGEN_ENABLED()
       return
    end
 
-   SkuCore.partyDeadCountCounter = 0
    SkuCore.aqCombatCheckThreat = nil
    aqCombat:aqCombatClearSkuRaidTargets()
 
@@ -2788,30 +2873,6 @@ function aqCombat:aqCombatMenuBuilder()
          end
          SkuOptions:MakeInPlaceToggle(tNewMenuEntry)
          tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDead)
-      end
-
-      ----
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Count deaths up"]}, SkuGenericMenuItem)
-      tNewMenuEntry.dynamic = true
-      tNewMenuEntry.sorting = true
-      tNewMenuEntry.BuildChildren = function(self)
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
-         tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value == false then
-               return L["Off"]
-            elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value == true then
-               return L["On"]
-            end
-         end
-         tNewMenuEntry.OnAction = function(self, aValue, aName)
-            if aName == L["Off"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value = false
-            elseif aName == L["On"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value = true
-            end
-         end
-         SkuOptions:MakeInPlaceToggle(tNewMenuEntry)
-         tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDeadCount)
       end
 
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Ignore dead party pets"]}, SkuGenericMenuItem)

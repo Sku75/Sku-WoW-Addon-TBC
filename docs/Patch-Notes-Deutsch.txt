@@ -11,6 +11,12 @@ Aenderungen in Sku v43.9
         Aenderungen
             Auren: Basis-Auren bieten unter "Ausgabe" jetzt dieselbe Ausgabeliste wie eigene Auren, also alle Toene und alle Datenausgaben (zum Beispiel Zaubername oder Zieleinheit), auch mehrere gleichzeitig. Bisher gab es dort nur einen einzelnen Ton.
             Berufs- und Lehrerfenster: nach Herstellen, Lernen oder Auswaehlen wird das Menue leise aufgefrischt, der Cursor bleibt auf demselben Eintrag, und nur ein wirklich anderer Eintrag wird angesagt.
+            Monitor Kampf: "Tode ansagen" nennt in einer Gruppe jetzt die Numblock-Taste des Gestorbenen: "party 5, dead" heisst, Numblock 5 ist tot. Das aendert einen sehr alten Standard, bisher wurde das vierte Gruppenmitglied als "party 4" angesagt.
+            Monitor Kampf: im Raid sagt "Tode ansagen" die Dial-Targeting-Nummer des Gestorbenen, also die Taste oder Ziffernfolge, die ihn anwaehlt. Bisher hiess es "party 2" fuer die eigene Untergruppe und "raid 17" fuer alle anderen. Raid-Plaetze 26 bis 40 werden jetzt auch angesagt.
+            Monitor Kampf: "Tode hochzaehlen" ist entfernt.
+            Monitor Gesundheit: "Tot bei 0 Prozent anhaengen" ist jetzt standardmaessig aus, fuer Gruppe und Raid, auch bei bestehenden Charakteren.
+            Dial Targeting: nur noch im Raid. "Aktiviert" ist ein Ein/Aus-Schalter; in einer Gruppe bleiben Numblock 1 bis 5 die normalen Zieltasten (1 = selbst, 2 bis 5 = die anderen).
+            Dial Targeting: in Raids bis 10 Spieler immer eine Taste pro Mitglied (0 = Mitglied 10), ab 11 Spielern zweistellig. Die Option "Nur ein Tastendruck in Raids bis 10 Spieler" ist weg, das ist jetzt die Regel.
 
         Fehlerbehebungen
             Quest-Menue: "Route" unter einer Kreatur war immer leer, wenn ihr Name einen Bindestrich oder eine Klammer enthaelt (zum Beispiel "Un'Goro-Gorilla", "Goblin-Ingenieur"). Behoben.
@@ -20,6 +26,7 @@ Aenderungen in Sku v43.9
             Berufsfenster: Enter auf einem Rezept oder auf "Erstellen" sagte den Eintrag zweimal an. Behoben.
             Briefkasten: beim Oeffnen wurde zuerst "Ziel" angesagt, bevor "Neuer Brief" kam. Behoben.
             Tastenbelegung: die zweite Taste ("Sekundaere Taste neu belegen") war fuer eine Reihe von Tasten wirkungslos, darunter "Monitor Gruppe fortlaufende Ausgabe ausloesen", Zielentfernung, Panikmodus, Minimap-Scan, Reichweitenpruefung der Gruppe, "Zu Einheit drehen" und die Scan-Tasten. Behoben.
+            Monitor Kampf: "Tote Gruppenbegleiter ignorieren" sprang nach jedem Neuladen auf "Ja" zurueck. Behoben.
 
     Quest-Menue: "Route" findet Kreaturen mit Bindestrich im Namen
         Einfach: Im Quest-Menue (Annahme, Ziel, Abgabe) bietet eine Kreatur "Route", "Nahe Route"
@@ -147,6 +154,63 @@ Aenderungen in Sku v43.9
             funktionierte die zweite Taste bei anderen Aktionen. Ein lokaler tArm(aConst)-Helfer
             bindet jetzt jede Taste, die SkuKeyBindsGetKeys liefert; die zwanzig handgeschriebenen
             Einzelzeilen sind weg.
+
+    Monitor Kampf: Todesansage nennt die Numblock-Taste
+        Einfach: Unter Monitor, Kampf, Freundlich, "Tode ansagen" wird ein gestorbenes
+            Gruppenmitglied angesagt. Die Nummer darin ist jetzt immer die Taste, die das Mitglied
+            anwaehlt. In einer Gruppe sind das Skus Standardtasten: Numblock 1 = selbst, 2 bis 5 =
+            die vier anderen. Das vierte Gruppenmitglied heisst darum jetzt "party 5, dead", nicht
+            mehr "party 4". So zaehlen der Gesundheitsmonitor und die Uebersicht seit jeher. Im Raid
+            wird die Dial-Targeting-Nummer angesagt: bis 10 Spieler die eine Taste, ab 11 die
+            zweistellige Folge. Bisher hiess es dort "party 2" fuer Mitglieder der eigenen
+            Untergruppe und "raid 17" (der rohe Raid-Platz) fuer alle anderen, zwei Zaehlungen in
+            einem Kampf, keine davon passte zum Numblock. Raid-Plaetze 26 bis 40 wurden gar nicht
+            angesagt. "Tode hochzaehlen" ist entfernt: im Modus "nur Nummer" war sein "3, dead"
+            nicht von "party 3, dead" zu unterscheiden, und der Zaehler ging bei einer
+            Wiederbelebung nie zurueck.
+        Technisch: SkuCore/aqCombat.lua, aqCombat_SKU_UNIT_DIED. Neuer Helfer tDeathUnitToken(GUID)
+            liefert gesprochenes Token und echte Unit-ID getrennt, die Pruefungen UnitIsDeadOrGhost
+            und Begleiter brauchen den rohen Platz. Gruppe: Token aus aqCombatGroupGuidToUnitId,
+            Ziffer plus 1. Raid: alle MAX_RAID_MEMBERS Plaetze per GUID durchsucht (die 25 in
+            tAllPartyRaidUnits reichten nicht), Nummer aus dem Dial-Targeting-Raster gelesen
+            (SkuSecureTargetingFrame, unitNameSlotGG-SS, Taste = (GG-1)*5+SS; Attribute eines
+            Secure-Frames darf unsicherer Code lesen), sonst tDTRaidRoster aus aq.lua, sonst live
+            (Untergruppe-1)*5+Position. Raster und Roster werden nur ausserhalb des Kampfes neu
+            gebaut, veralten also gemeinsam mit dem Numblock. partyDeadCount samt Zaehler, Menue
+            und Locale-Schluessel entfernt, der gespeicherte Wert wird beim Login geloescht.
+
+    Monitor Kampf: "Tote Gruppenbegleiter ignorieren" bleibt auf Nein
+        Einfach: Die Einstellung liess sich auf "Nein" stellen, stand nach dem naechsten Neuladen
+            aber wieder auf "Ja". Behoben.
+        Technisch: aqCombatOnLogin setzte den Wert mit "x or true"; ein gespeichertes false ist in
+            Lua falsch und wurde so bei jedem Laden durch true ersetzt. Jetzt nur noch bei nil.
+
+    Monitor Gesundheit: "Tot bei 0 Prozent anhaengen" standardmaessig aus
+        Einfach: Der Tonhoehen-Stil des Gruppen- und Raid-Gesundheitsmonitors haengt an den Ton
+            eines Mitglieds mit 0 Prozent einen "dead"-Clip an. Das war fuer Gruppe und Raid
+            eingeschaltet und ist jetzt aus, auch bei bestehenden Charakteren. Wer es will, schaltet
+            es unter Monitor, Gruppe beziehungsweise Raid, Gesundheit wieder ein. Die Todesansage
+            des Kampfmonitors (oben) ist damit die einzige Todesmeldung, die von sich aus laeuft.
+        Technisch: SkuCore/aq.lua, AqOnLogin: Vorgabe false statt true, einmalige Umstellung
+            bestehender Charaktere ueber addDeadOn0PercentDefaultOff (Muster wie *DefaultOff in
+            aqCombat).
+
+    Dial Targeting: nur noch im Raid, eine Taste bis 10 Spieler
+        Einfach: "Aktiviert" unter Dial Targeting ist jetzt ein Ein/Aus-Schalter und wirkt nur im
+            Raid. Die Auswahl "Gruppe" und "Gruppe und Raid" ist weg: in einer Gruppe erreichen
+            Skus Standardtasten Numblock 1 bis 5 ohnehin jeden, und der Gruppenmodus legte eine
+            verschobene Zaehlung (0 = selbst, 1 bis 4 = die anderen) darueber und verdeckte die
+            Standardtasten, solange er aktiv war. Gespeichertes "Gruppe" wird zu Aus, "Raid" und
+            "Gruppe und Raid" zu Ein. In Raids bis 10 Spieler ist jetzt immer eine Taste pro
+            Mitglied aktiv (Numblock 1 bis 9, 0 = Mitglied 10, Reihenfolge nach Untergruppen), ab
+            11 Spielern die zweistellige Eingabe. Die Option "Nur ein Tastendruck in Raids bis 10
+            Spieler" ist weg, das ist jetzt die Regel.
+        Technisch: SkuCore/DialTargeting.lua. enabled wird beim Login einmalig auf Aus/Ein
+            abgebildet, singleKeyinRaid10 geloescht. DialTargetingRosterUpdate und
+            DialTargeting_EndableDisable pruefen nur noch UnitInRaid und enabled == Ein; der
+            Gruppenzweig (unitNameSlot01-0x = partyx) und der tote "party"-Zweig im Secure-Snippet
+            sind entfernt. Raid-Modus: tNumCurMembers > 10 heisst zweistellig, sonst raid10. Drei
+            Locale-Schluessel entfernt. Alles ungetestet im Spiel.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.8

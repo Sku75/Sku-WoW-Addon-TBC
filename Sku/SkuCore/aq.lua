@@ -977,7 +977,13 @@ function Aq:AqOnLogin()
 			SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.health2.silentOn100and0 = true
 		end
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.health2.addDeadOn0Percent == nil then
-			SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.health2.addDeadOn0Percent = true
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.health2.addDeadOn0Percent = false
+		end
+		--default was ON until 2026-10-05; the nil-fill above keeps the old value forever,
+		--so switch existing characters off exactly once (same pattern as *DefaultOff in aqCombat)
+		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.health2.addDeadOn0PercentDefaultOff ~= true then
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.health2.addDeadOn0Percent = false
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.health2.addDeadOn0PercentDefaultOff = true
 		end
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.health2.addSoundOn100Percent == nil then
 			SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.health2.addSoundOn100Percent = true
@@ -1044,7 +1050,13 @@ function Aq:AqOnLogin()
 			SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.silentOn100and0 = true
 		end
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.addDeadOn0Percent == nil then
-			SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.addDeadOn0Percent = true
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.addDeadOn0Percent = false
+		end
+		--default was ON until 2026-10-05; the nil-fill above keeps the old value forever,
+		--so switch existing characters off exactly once (same pattern as *DefaultOff in aqCombat)
+		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.addDeadOn0PercentDefaultOff ~= true then
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.addDeadOn0Percent = false
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.addDeadOn0PercentDefaultOff = true
 		end
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.addSoundOn100Percent == nil then
 			SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.addSoundOn100Percent = true

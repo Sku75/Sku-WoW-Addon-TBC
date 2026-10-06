@@ -11,6 +11,12 @@ Changes in Sku v43.9
         Changes
             Auras: basic auras now offer the same output list under "Output" as custom auras, meaning every sound and every data output (for example spell name or target unit), several at once. Before, there was only a single sound.
             Profession and trainer windows: after crafting, learning or selecting, the menu refreshes quietly, the cursor stays on the same entry, and only a genuinely different entry is announced.
+            Monitor combat: "Announce deaths" now names the numpad key of the dead member in a party: "party 5, dead" means numpad 5 is dead. This changes a very old standard; the fourth party member used to be announced as "party 4".
+            Monitor combat: in a raid "Announce deaths" says the dead member's dial-targeting number, the key or digit pair that targets them. It used to say "party 2" for your own subgroup and "raid 17" for everyone else. Raid slots 26 to 40 are now announced too.
+            Monitor combat: "Count deaths up" is removed.
+            Monitor health: "Add Dead on 0 percent" is now off by default, for party and raid, for existing characters as well.
+            Dial Targeting: raids only now. "Enabled" is an On/Off toggle; in a party numpad 1 to 5 stay the normal target keys (1 = self, 2 to 5 = the others).
+            Dial Targeting: in raids of up to 10 players always one key per member (0 = member 10), two digits from 11 players on. The option "Single key action in raids up to 10 players" is gone, that is the rule now.
 
         Bugfixes
             Quest menu: "Route" under a creature was always empty when its name contains a hyphen or a bracket (for example "Un'Goro-Gorilla" on German clients). Fixed.
@@ -20,6 +26,7 @@ Changes in Sku v43.9
             Profession windows: Enter on a recipe or on "Create" announced the entry twice. Fixed.
             Mailbox: on opening, "Target" was announced before "New mail". Fixed.
             Key bindings: the second key ("Rebind secondary key") had no effect for a number of keys, among them "Trigger monitor party continuous output", target distance, panic mode, minimap scan, group range check, "Turn to unit" and the scan keys. Fixed.
+            Monitor combat: "Ignore dead party pets" jumped back to "Yes" after every reload. Fixed.
 
     Quest menu: "Route" finds creatures with a hyphen in their name
         Simple: In the quest menu (Quest start, Quest target, Delivery) a creature offers "Route",
@@ -135,6 +142,60 @@ Changes in Sku v43.9
             which is why the second key worked for other actions. A local tArm(aConst) helper now
             binds every key SkuKeyBindsGetKeys returns; the twenty hand-written single lines are
             gone.
+
+    Monitor combat: the death announcement names the numpad key
+        Simple: Under Monitor, Combat, Friendly, "Announce deaths" announces a dead group member.
+            The number in it is now always the key that targets that member. In a party those are
+            Sku's default keys: numpad 1 = self, 2 to 5 = the four others. The fourth party member
+            is therefore now "party 5, dead", no longer "party 4". The health monitor and the
+            overview have always counted this way. In a raid the dial-targeting number is spoken:
+            the single key up to 10 players, the two-digit sequence from 11 on. It used to say
+            "party 2" for members of your own subgroup and "raid 17" (the raw raid slot) for
+            everyone else, two numberings in one fight, neither matching the numpad. Raid slots 26
+            to 40 were not announced at all. "Count deaths up" is removed: in "number only" mode
+            its "3, dead" could not be told from "party 3, dead", and the counter never went down
+            on a resurrection.
+        Technically: SkuCore/aqCombat.lua, aqCombat_SKU_UNIT_DIED. New helper tDeathUnitToken(GUID)
+            returns the spoken token and the real unit id separately, the UnitIsDeadOrGhost and pet
+            checks need the raw slot. Party: token from aqCombatGroupGuidToUnitId, digit plus 1.
+            Raid: all MAX_RAID_MEMBERS slots scanned by GUID (the 25 in tAllPartyRaidUnits were not
+            enough), number read from the dial-targeting grid (SkuSecureTargetingFrame,
+            unitNameSlotGG-SS, key = (GG-1)*5+SS; insecure code may read a secure frame's
+            attributes), else tDTRaidRoster from aq.lua, else live (subgroup-1)*5+position. Grid
+            and roster are rebuilt out of combat only, so they go stale together with the numpad.
+            partyDeadCount with its counter, menu and locale key removed, the stored value is
+            cleared at login.
+
+    Monitor combat: "Ignore dead party pets" stays on No
+        Simple: The setting could be set to "No" but was back on "Yes" after the next reload. Fixed.
+        Technically: aqCombatOnLogin set the value with "x or true"; a stored false is falsy in Lua
+            and was replaced by true at every load. Now only when nil.
+
+    Monitor health: "Add Dead on 0 percent" off by default
+        Simple: The pitch style of the party and raid health monitor appends a "dead" clip to the
+            tone of a member at 0 percent. That was on for party and raid and is now off, for
+            existing characters as well. Switch it back on under Monitor, Party or Raid, Health if
+            you want it. The combat monitor's death announcement (above) is thereby the only death
+            message that runs on its own.
+        Technically: SkuCore/aq.lua, AqOnLogin: default false instead of true, one-time switch of
+            existing characters via addDeadOn0PercentDefaultOff (same pattern as *DefaultOff in
+            aqCombat).
+
+    Dial Targeting: raids only, one key up to 10 players
+        Simple: "Enabled" under Dial Targeting is now an On/Off toggle and only acts in a raid. The
+            choices "Party" and "Party and Raid" are gone: in a party Sku's default keys numpad 1
+            to 5 reach everyone anyway, and the party mode laid a shifted numbering (0 = self, 1 to
+            4 = the others) over them and hid the default keys while it was active. A stored
+            "Party" becomes Off, "Raid" and "Party and Raid" become On. In raids of up to 10
+            players one key per member is now always active (numpad 1 to 9, 0 = member 10, in
+            subgroup order), from 11 players on the two-digit input. The option "Single key action
+            in raids up to 10 players" is gone, that is the rule now.
+        Technically: SkuCore/DialTargeting.lua. enabled is mapped once at login to Off/On,
+            singleKeyinRaid10 cleared. DialTargetingRosterUpdate and DialTargeting_EndableDisable
+            only check UnitInRaid and enabled == On; the party branch (unitNameSlot01-0x = partyx)
+            and the dead "party" branch in the secure snippet are removed. Raid mode:
+            tNumCurMembers > 10 means two digits, else raid10. Three locale keys removed. All of
+            it untested in game.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.8

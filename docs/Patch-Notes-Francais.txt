@@ -14,6 +14,12 @@ Changements dans Sku v43.9
         Changements
             Auras : les auras de base proposent désormais sous « Sortie » la même liste de sorties que les auras personnalisées, c'est-à-dire tous les sons et toutes les sorties de données (par exemple le nom du sort ou l'unité cible), plusieurs à la fois. Avant, il n'y avait qu'un seul son.
             Fenêtres de métier et de maître : après fabrication, apprentissage ou sélection, le menu se rafraîchit en silence, le curseur reste sur la même entrée, et seule une entrée vraiment différente est annoncée.
+            Moniteur combat : « Annoncer les morts » nomme désormais, en groupe, la touche du pavé numérique du membre mort : « party 5, dead » signifie que le pavé 5 est mort. Cela change un très vieux standard ; le quatrième membre du groupe était annoncé « party 4 ».
+            Moniteur combat : en raid, « Annoncer les morts » dit le numéro de ciblage au cadran du membre mort, c'est-à-dire la touche ou les deux chiffres qui le ciblent. Avant : « party 2 » pour son propre sous-groupe et « raid 17 » pour tous les autres. Les places de raid 26 à 40 sont désormais annoncées aussi.
+            Moniteur combat : « Compter les morts » est supprimé.
+            Moniteur santé : « Ajouter Mort à 0 pour cent » est désormais désactivé par défaut, pour le groupe et le raid, y compris pour les personnages existants.
+            Ciblage au cadran : uniquement en raid désormais. « Activé » est un interrupteur Activé/Désactivé ; en groupe, les touches 1 à 5 du pavé numérique restent les touches de ciblage normales (1 = soi, 2 à 5 = les autres).
+            Ciblage au cadran : dans les raids jusqu'à 10 joueurs, toujours une touche par membre (0 = membre 10), deux chiffres à partir de 11 joueurs. L'option « Action à touche unique dans les raids jusqu'à 10 joueurs » disparaît, c'est la règle désormais.
 
         Corrections
             Menu des quêtes : « Itinéraire » sous une créature était toujours vide quand son nom contient un trait d'union ou une parenthèse (par exemple « Gorille Crins-de-ciel »). Corrigé.
@@ -23,6 +29,7 @@ Changements dans Sku v43.9
             Fenêtres de métier : Entrée sur une recette ou sur « Créer » annonçait l'entrée deux fois. Corrigé.
             Boîte aux lettres : à l'ouverture, « Cible » était annoncé avant « Nouveau courrier ». Corrigé.
             Raccourcis clavier : la seconde touche (« Réassigner la touche secondaire ») restait sans effet pour plusieurs touches, dont « Déclencher la sortie continue du moniteur de groupe », distance de la cible, mode panique, scan de la minicarte, vérification de portée du groupe, « Tourner vers l'unité » et les touches de scan. Corrigé.
+            Moniteur combat : « Ignorer les familiers morts du groupe » revenait sur « Oui » après chaque rechargement. Corrigé.
 
     Menu des quêtes : « Itinéraire » trouve les créatures avec un trait d'union dans leur nom
         Simple : Dans le menu des quêtes (Début de quête, Cible de quête, Livraison), une créature
@@ -154,6 +161,65 @@ Changements dans Sku v43.9
             key2 depuis toujours, d'où le bon fonctionnement de la seconde touche pour d'autres
             actions. Un helper local tArm(aConst) lie désormais chaque touche renvoyée par
             SkuKeyBindsGetKeys ; les vingt lignes individuelles écrites à la main disparaissent.
+
+    Moniteur combat : l'annonce de mort nomme la touche du pavé numérique
+        Simple : Sous Moniteur, Combat, Amical, « Annoncer les morts » annonce un membre du groupe
+            mort. Le numéro qu'elle contient est désormais toujours la touche qui cible ce membre.
+            En groupe, ce sont les touches par défaut de Sku : pavé 1 = soi, 2 à 5 = les quatre
+            autres. Le quatrième membre du groupe devient donc « party 5, dead », et non plus
+            « party 4 ». Le moniteur de santé et l'aperçu ont toujours compté ainsi. En raid, c'est
+            le numéro de ciblage au cadran qui est dit : la touche unique jusqu'à 10 joueurs, la
+            séquence à deux chiffres à partir de 11. Avant, on entendait « party 2 » pour les
+            membres de son propre sous-groupe et « raid 17 » (la place brute du raid) pour tous les
+            autres, deux numérotations dans un même combat, aucune ne correspondant au pavé. Les
+            places de raid 26 à 40 n'étaient pas annoncées du tout. « Compter les morts » est
+            supprimé : en mode « numéro seul », son « 3, dead » ne se distinguait pas de « party 3,
+            dead », et le compteur ne redescendait jamais lors d'une résurrection.
+        Technique : SkuCore/aqCombat.lua, aqCombat_SKU_UNIT_DIED. Nouveau helper
+            tDeathUnitToken(GUID) renvoyant séparément le jeton parlé et l'id d'unité réel, les
+            vérifications UnitIsDeadOrGhost et familier ont besoin de la place brute. Groupe : jeton
+            de aqCombatGroupGuidToUnitId, chiffre plus 1. Raid : toutes les places MAX_RAID_MEMBERS
+            parcourues par GUID (les 25 de tAllPartyRaidUnits ne suffisaient pas), numéro lu dans
+            la grille du ciblage au cadran (SkuSecureTargetingFrame, unitNameSlotGG-SS, touche =
+            (GG-1)*5+SS ; du code non sécurisé peut lire les attributs d'un cadre sécurisé), sinon
+            tDTRaidRoster de aq.lua, sinon calcul direct (sous-groupe-1)*5+position. Grille et
+            roster ne sont reconstruits qu'hors combat, ils vieillissent donc avec le pavé.
+            partyDeadCount, son compteur, son menu et sa clé de locale supprimés, la valeur
+            enregistrée est effacée à la connexion.
+
+    Moniteur combat : « Ignorer les familiers morts du groupe » reste sur Non
+        Simple : Le réglage pouvait être mis sur « Non » mais revenait sur « Oui » après le
+            rechargement suivant. Corrigé.
+        Technique : aqCombatOnLogin fixait la valeur avec « x or true » ; un false enregistré est
+            faux en Lua et était remplacé par true à chaque chargement. Désormais seulement si nil.
+
+    Moniteur santé : « Ajouter Mort à 0 pour cent » désactivé par défaut
+        Simple : Le style hauteur de son du moniteur de santé de groupe et de raid ajoute un clip
+            « dead » au son d'un membre à 0 pour cent. C'était activé pour le groupe et le raid et
+            c'est désormais désactivé, y compris pour les personnages existants. Pour le réactiver :
+            Moniteur, Groupe ou Raid, Santé. L'annonce de mort du moniteur de combat (ci-dessus)
+            devient ainsi le seul message de mort actif par lui-même.
+        Technique : SkuCore/aq.lua, AqOnLogin : valeur par défaut false au lieu de true, bascule
+            unique des personnages existants via addDeadOn0PercentDefaultOff (même schéma que
+            *DefaultOff dans aqCombat).
+
+    Ciblage au cadran : uniquement en raid, une touche jusqu'à 10 joueurs
+        Simple : « Activé » sous Ciblage au cadran est désormais un interrupteur Activé/Désactivé
+            et n'agit qu'en raid. Les choix « Groupe » et « Groupe et raid » disparaissent : en
+            groupe, les touches par défaut de Sku, pavé 1 à 5, atteignent déjà tout le monde, et le
+            mode groupe posait par-dessus une numérotation décalée (0 = soi, 1 à 4 = les autres) et
+            masquait les touches par défaut tant qu'il était actif. Un « Groupe » enregistré devient
+            Désactivé, « Raid » et « Groupe et raid » deviennent Activé. Dans les raids jusqu'à 10
+            joueurs, une touche par membre est désormais toujours active (pavé 1 à 9, 0 = membre
+            10, dans l'ordre des sous-groupes), à partir de 11 joueurs la saisie à deux chiffres.
+            L'option « Action à touche unique dans les raids jusqu'à 10 joueurs » disparaît, c'est
+            la règle désormais.
+        Technique : SkuCore/DialTargeting.lua. enabled est converti une fois à la connexion en
+            Désactivé/Activé, singleKeyinRaid10 effacé. DialTargetingRosterUpdate et
+            DialTargeting_EndableDisable ne vérifient plus que UnitInRaid et enabled == Activé ; la
+            branche groupe (unitNameSlot01-0x = partyx) et la branche « party » morte du snippet
+            sécurisé sont supprimées. Mode raid : tNumCurMembers > 10 signifie deux chiffres, sinon
+            raid10. Trois clés de locale supprimées. Rien de tout cela n'est testé en jeu.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.8

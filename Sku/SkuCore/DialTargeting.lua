@@ -38,8 +38,20 @@ end)
 function DialTargeting:DialTargetingOnLogin()
    SkuSettings:Sub("SkuCore").dialTargeting = SkuSettings:Sub("SkuCore").dialTargeting or {}
    SkuSettings:Sub("SkuCore").dialTargeting.enabled = SkuSettings:Sub("SkuCore").dialTargeting.enabled or L["Off"]
+   -- 2026-10-06: the dial is raid-only now. "Enabled" used to be Off / Party / Raid /
+   -- "Party and Raid"; the party mode was dropped (Sku's default numpad keys already
+   -- target self + party1-4 as 1-5, the dial laid a shifted 0-4 over them). Map the
+   -- old labels once: Party -> Off, everything else that is not Off -> On.
+   if SkuSettings:Sub("SkuCore").dialTargeting.enabled ~= L["Off"] and SkuSettings:Sub("SkuCore").dialTargeting.enabled ~= L["On"] then
+      if SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party"] then
+         SkuSettings:Sub("SkuCore").dialTargeting.enabled = L["Off"]
+      else
+         SkuSettings:Sub("SkuCore").dialTargeting.enabled = L["On"]
+      end
+   end
    SkuSettings:Sub("SkuCore").dialTargeting.keySound = SkuSettings:Sub("SkuCore").dialTargeting.keySound or L["On first and second key"]
-   SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 = SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 or L["Off"]
+   -- single-key dialing in raids of up to 10 is the rule now, not an option
+   SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 = nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -125,11 +137,6 @@ function DialTargeting:DialTargetingOnInitialize()
                      local tS = tId - ((tG - 1) * 5)
                      self:SetAttribute("unit", self:GetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS)))
                   end
-               elseif self:GetAttribute("groupType") == "party" then
-                  local tId = tonumber(string.sub(self:GetFrameRef("SkuSecureTargetingToggleHandler"):GetAttribute("lastButton"), 7)..string.sub(button, 7))
-                  local tG = math.ceil(tId / 5)
-                  local tS = tId - ((tG - 1) * 5)
-                  self:SetAttribute("unit", self:GetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS)))
                end
             end
          end
@@ -257,9 +264,7 @@ local function tLogRosterGrid()
          if tName then
             tNames = tNames or {}
             local tKey
-            if tGroupType == "party" then
-               tKey = tostring(tS)
-            elseif tGroupType == "raid10" then
+            if tGroupType == "raid10" then
                local tNo = (tG - 1) * 5 + tS
                tKey = tostring(tNo == 10 and 0 or tNo)
             else
@@ -282,11 +287,7 @@ local function tLogRosterGrid()
 end
 
 function DialTargeting:DialTargetingRosterUpdate()
-   if 
-      ((UnitInRaid("player") and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Raid"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))) 
-      or 
-      (UnitInParty("player") == true  and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))  
-   then
+   if UnitInRaid("player") and SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["On"] then
 
       dprint("DialTargetingRosterUpdate")
 
@@ -313,7 +314,10 @@ function DialTargeting:DialTargetingRosterUpdate()
             end
          end
 
-         if SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 == L["Off"] or tNumCurMembers > 10 then
+         -- up to 10 members: one key per member (NUMPAD1-9, NUMPAD0 = 10); from 11 on the
+         -- two-digit dial. Was an option ("Single key action in raids up to 10 players",
+         -- default Off) until 2026-10-06; now it is the rule.
+         if tNumCurMembers > 10 then
             _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "raid")
             
             tClearUnitNameSlots()
@@ -355,23 +359,6 @@ function DialTargeting:DialTargetingRosterUpdate()
             tApplyNumpadBindings("SkuSecureTargetingFrame")
          end
 
-      elseif UnitInParty("player") == true then
-         _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "party")
-
-         tClearUnitNameSlots()
-         -- GetRaidRosterInfo returns nil outside raids, so build the slots from the
-         -- party unit tokens instead (party1..party4 never include the player; NUMPAD0
-         -- targets self via the Button0 branch). Key N = partyN, matching the party
-         -- frames, and the token dodges the "Pet..." name rewriting in
-         -- SecureButton_GetModifiedUnit.
-         for x = 1, 4 do
-            if UnitExists("party"..x) then
-               _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot01-"..string.format("%02d", x), "party"..x)
-            end
-         end
-
-         tApplyNumpadBindings("SkuSecureTargetingFrame")
-      
       else
          _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", nil)
       end
@@ -471,11 +458,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function DialTargeting:DialTargeting_EndableDisable()
    if not DialTargeting:IsEnabled() then return end
-   if
-      ((UnitInRaid("player") and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Raid"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))) 
-      or 
-      (UnitInParty("player") == true  and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))  
-   then
+   if UnitInRaid("player") and SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["On"] then
       DialTargeting:DialTargetingEnable()
    else
       DialTargeting:DialTargetingDisable()
@@ -484,10 +467,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function DialTargeting:DialTargetingMenuBuilder()
+   -- raid-only since 2026-10-06 (see DialTargetingOnLogin), so On/Off is enough
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-   tNewMenuEntry.dynamic = true
    tNewMenuEntry.sorting = true
-   tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       return SkuSettings:Sub("SkuCore").dialTargeting.enabled
    end
@@ -495,12 +477,7 @@ function DialTargeting:DialTargetingMenuBuilder()
       SkuSettings:Sub("SkuCore").dialTargeting.enabled = aName
       DialTargeting:DialTargeting_EndableDisable()
    end
-   tNewMenuEntry.BuildChildren = function(self)
-      SkuOptions:InjectMenuItems(self, {L["Party"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["Raid"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["Party and Raid"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
-   end
+   SkuOptions:MakeInPlaceToggle(tNewMenuEntry)
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Key Sound"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
@@ -518,20 +495,6 @@ function DialTargeting:DialTargetingMenuBuilder()
       SkuOptions:InjectMenuItems(self, {L["On second key"]}, SkuGenericMenuItem)
       SkuOptions:InjectMenuItems(self, {L["On first and second key"]}, SkuGenericMenuItem)
    end
-
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Single key action in raids up to 10 players"]}, SkuGenericMenuItem)
-   tNewMenuEntry.sorting = true
-   tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-      return SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10
-   end
-   tNewMenuEntry.OnAction = function(self, aValue, aName)
-      SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 = aName
-      DialTargeting:DialTargeting_EndableDisable()
-   end
-   -- Two values, so it is one entry: reads "<name>;<state>", ENTER flips it.
-   -- The stored value stays the localized label the old On/Off children wrote.
-   SkuOptions:MakeInPlaceToggle(tNewMenuEntry)
-
 
 end
 
