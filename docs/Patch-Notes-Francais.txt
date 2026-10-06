@@ -20,6 +20,11 @@ Changements dans Sku v43.9
             Moniteur santé : « Ajouter Mort à 0 pour cent » est désormais désactivé par défaut, pour le groupe et le raid, y compris pour les personnages existants.
             Ciblage au cadran : uniquement en raid désormais. « Activé » est un interrupteur Activé/Désactivé ; en groupe, les touches 1 à 5 du pavé numérique restent les touches de ciblage normales (1 = soi, 2 à 5 = les autres).
             Ciblage au cadran : dans les raids jusqu'à 10 joueurs, toujours une touche par membre (0 = membre 10), deux chiffres à partir de 11 joueurs. L'option « Action à touche unique dans les raids jusqu'à 10 joueurs » disparaît, c'est la règle désormais.
+            Moniteur santé, raid : les numéros sont les numéros du ciblage au cadran, donc 1 à 10 dans l'ordre des sous-groupes pour les raids jusqu'à 10 joueurs. Avant, toujours le schéma à deux chiffres ; dans un raid de 10 avec quelqu'un dans le groupe 3, la touche 7 s'appelait « 11 ».
+            Moniteur santé, raid : les membres numérotés 26 à 40 sont désormais prononcés (numéro, puis santé par dizaines) avec le nouveau réglage « Voix pour les membres au-delà de 25 ». Les fichiers de hauteur n'existent que jusqu'à 25, ces membres restaient muets.
+            Moniteur debuffs, raid : les numéros sont également ceux du ciblage au cadran.
+            Moniteur combat : les avertissements de menace, « cible de la cible » et « hors de portée » nomment les membres comme l'annonce de mort, avec la touche du pavé numérique en groupe (« party 2 » pour le premier membre) et le numéro du cadran en raid. Avant : la place de raid brute et « party 1 » pour la touche 2 ; les places de raid 26 à 40 manquaient entièrement.
+            Auras : les sorties « unité source » et « unité cible » nomment aussi les membres du groupe par numéro de touche et les membres du raid par numéro du cadran.
 
         Corrections
             Menu des quêtes : « Itinéraire » sous une créature était toujours vide quand son nom contient un trait d'union ou une parenthèse (par exemple « Gorille Crins-de-ciel »). Corrigé.
@@ -30,6 +35,8 @@ Changements dans Sku v43.9
             Boîte aux lettres : à l'ouverture, « Cible » était annoncé avant « Nouveau courrier ». Corrigé.
             Raccourcis clavier : la seconde touche (« Réassigner la touche secondaire ») restait sans effet pour plusieurs touches, dont « Déclencher la sortie continue du moniteur de groupe », distance de la cible, mode panique, scan de la minicarte, vérification de portée du groupe, « Tourner vers l'unité » et les touches de scan. Corrigé.
             Moniteur combat : « Ignorer les familiers morts du groupe » revenait sur « Oui » après chaque rechargement. Corrigé.
+            Moniteur debuffs, raid : la sortie continue disait la place de raid plus un, un numéro qui n'appartenait à personne. Corrigé.
+            Moniteur combat : « party 5, dead » (quatrième membre du groupe, nouveau dans cette version) bipait avec « Numéros seulement » désactivé, car il n'existe pas de mot vocal « party5 ». Désormais « party » puis « 5 » sont dits.
 
     Menu des quêtes : « Itinéraire » trouve les créatures avec un trait d'union dans leur nom
         Simple : Dans le menu des quêtes (Début de quête, Cible de quête, Livraison), une créature
@@ -222,6 +229,37 @@ Changements dans Sku v43.9
             raid10. Trois clés de locale supprimées. Rien de tout cela n'est testé en jeu.
 
 -------------------------------------------------------------------------------------------------------
+    Numéros de groupe : un seul comptage pour tous les moniteurs
+        Simple : Chaque numéro que Sku dit pour un membre du groupe doit être la touche qui le cible.
+            En groupe, c'est le pavé numérique 1 pour vous et 2 à 5 pour les autres ; en raid, le
+            numéro du ciblage au cadran, une touche 1 à 10 jusqu'à 10 joueurs et deux chiffres à
+            partir de 11. L'annonce de mort compte ainsi depuis cette version. Désormais le moniteur
+            de santé et le moniteur de debuffs en raid, les avertissements de menace, « cible de la
+            cible » et « hors de portée » du moniteur de combat ainsi que les sorties d'aura
+            « unité source » et « unité cible » le font aussi. Les moniteurs de santé et de debuffs
+            du groupe gardent le comptage de groupe en raid, car qui ne surveille que son
+            sous-groupe le cible là avec le pavé 2 à 5.
+            Le moniteur de santé en raid n'a des fichiers de hauteur que pour les numéros 1 à 25,
+            les membres 26 à 40 restaient donc muets. Ils sont désormais prononcés, le numéro
+            d'abord, puis la santé par dizaines, avec la voix du nouveau réglage « Voix pour les
+            membres au-delà de 25 » (Moniteur, Raid, Santé ; Justin par défaut).
+        Technique : SkuCore/aq.lua : SkuCore.Monitor.RaidMemberNumbersByName() construit la table
+            nom -> numéro selon la règle du cadran (jusqu'à 10 membres à plat 1-10 dans l'ordre des
+            sous-groupes, à partir de 11 (sous-groupe-1)*5+position) ; tDTRaidRoster et la grille
+            du ciblage au cadran (DialTargeting.lua) en sont remplis, tDTRaidRoster calculait
+            toujours à deux chiffres. SkuCore.Monitor.GroupMemberNumber(unitId) renvoie le numéro
+            de touche des jetons party/raid. La sortie continue des debuffs en raid disait
+            string.sub(unitId, 5)+1. MonitorOutputRaidPercent2 prononce les numéros au-delà de 25
+            via MonitorOutputPlayerStatus (raid.health2.voice, 1 par défaut) et renvoie la durée à
+            la file ; les entrées de la file portent pour cela la santé absolue.
+            SkuCore/aqCombat.lua : tAllPartyRaidUnits et tUnitsToTestOnGameRaidTargets contenaient
+            raid1-25 en dur ; ils sont désormais regarnis sur place d'après la taille réelle du
+            raid à chaque événement de roster. tSpokenGroupUnit(unitId) applique la correspondance
+            de l'annonce de mort à toutes les annonces amicales. « party5 »/« partypet5 »
+            n'existent pas comme mots dans les voix de combat, SkuCoreAqCombatGetVoiceString les
+            découpe en « party », « pet », « 5 ». SkuAuras/data.lua : tUnitIdToSpokenName dit
+            party N comme N+1 et raid N comme numéro du cadran.
+
 Changements dans Sku v43.8
 
     Aperçu

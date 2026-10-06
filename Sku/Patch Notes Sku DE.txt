@@ -17,6 +17,11 @@ Aenderungen in Sku v43.9
             Monitor Gesundheit: "Tot bei 0 Prozent anhaengen" ist jetzt standardmaessig aus, fuer Gruppe und Raid, auch bei bestehenden Charakteren.
             Dial Targeting: nur noch im Raid. "Aktiviert" ist ein Ein/Aus-Schalter; in einer Gruppe bleiben Numblock 1 bis 5 die normalen Zieltasten (1 = selbst, 2 bis 5 = die anderen).
             Dial Targeting: in Raids bis 10 Spieler immer eine Taste pro Mitglied (0 = Mitglied 10), ab 11 Spielern zweistellig. Die Option "Nur ein Tastendruck in Raids bis 10 Spieler" ist weg, das ist jetzt die Regel.
+            Monitor Gesundheit, Raid: die Nummern sind die Dial-Targeting-Nummern, in Raids bis 10 Spieler also 1 bis 10 in Untergruppenreihenfolge. Bisher immer zweistellig gezaehlt, in einem 10er-Raid mit jemandem in Gruppe 3 hiess Taste 7 darum "11".
+            Monitor Gesundheit, Raid: Mitglieder mit Nummer 26 bis 40 werden jetzt gesprochen (Nummer, dann Prozent in Zehnern) mit der neuen Einstellung "Stimme fuer Mitglieder ab 26". Tonhoehen-Dateien gibt es nur bis 25, diese Mitglieder waren bisher stumm.
+            Monitor Debuffs, Raid: die Nummern sind ebenfalls die Dial-Targeting-Nummern.
+            Monitor Kampf: Bedrohungswarnungen, "Ziel des Ziels" und "ausser Reichweite" nennen Gruppenmitglieder wie die Todesansage, mit der Numblock-Taste in der Gruppe ("party 2" fuer das erste Mitglied) und der Dial-Nummer im Raid. Bisher der rohe Raid-Platz und "party 1" fuer Taste 2; Raid-Plaetze 26 bis 40 fehlten ganz.
+            Auren: die Ausgaben "Quelleinheit" und "Zieleinheit" nennen Gruppenmitglieder ebenso mit der Tastennummer und Raid-Mitglieder mit der Dial-Nummer.
 
         Fehlerbehebungen
             Quest-Menue: "Route" unter einer Kreatur war immer leer, wenn ihr Name einen Bindestrich oder eine Klammer enthaelt (zum Beispiel "Un'Goro-Gorilla", "Goblin-Ingenieur"). Behoben.
@@ -27,6 +32,8 @@ Aenderungen in Sku v43.9
             Briefkasten: beim Oeffnen wurde zuerst "Ziel" angesagt, bevor "Neuer Brief" kam. Behoben.
             Tastenbelegung: die zweite Taste ("Sekundaere Taste neu belegen") war fuer eine Reihe von Tasten wirkungslos, darunter "Monitor Gruppe fortlaufende Ausgabe ausloesen", Zielentfernung, Panikmodus, Minimap-Scan, Reichweitenpruefung der Gruppe, "Zu Einheit drehen" und die Scan-Tasten. Behoben.
             Monitor Kampf: "Tote Gruppenbegleiter ignorieren" sprang nach jedem Neuladen auf "Ja" zurueck. Behoben.
+            Monitor Debuffs, Raid: die fortlaufende Ausgabe sagte Raid-Platz plus eins, eine Nummer, die niemandem gehoerte. Behoben.
+            Monitor Kampf: "party 5, dead" (viertes Gruppenmitglied, neu in dieser Version) piepte bei "Nur Nummern" aus, weil es kein Sprachwort "party5" gibt. Es wird jetzt "party" und "5" gesagt.
 
     Quest-Menue: "Route" findet Kreaturen mit Bindestrich im Namen
         Einfach: Im Quest-Menue (Annahme, Ziel, Abgabe) bietet eine Kreatur "Route", "Nahe Route"
@@ -213,6 +220,37 @@ Aenderungen in Sku v43.9
             Locale-Schluessel entfernt. Alles ungetestet im Spiel.
 
 -------------------------------------------------------------------------------------------------------
+    Gruppennummern: eine Zaehlung fuer alle Monitore
+        Einfach: Jede Nummer, die Sku fuer ein Gruppenmitglied sagt, soll die Taste sein, die es
+            anwaehlt. In der Gruppe ist das Numblock 1 fuer dich und 2 bis 5 fuer die anderen; im
+            Raid die Dial-Targeting-Nummer, also eine Taste 1 bis 10 bei bis zu 10 Spielern und
+            zwei Ziffern ab 11. Die Todesansage zaehlt seit dieser Version so. Jetzt tun es auch der
+            Gesundheitsmonitor und der Debuff-Monitor im Raid, die Bedrohungswarnungen, "Ziel des
+            Ziels" und "ausser Reichweite" im Kampfmonitor sowie die Auren-Ausgaben "Quelleinheit"
+            und "Zieleinheit". Der Gesundheits- und der Debuff-Monitor fuer die Gruppe laufen im
+            Raid weiter mit der Gruppenzaehlung, denn wer im Raid nur seine Untergruppe im Blick
+            hat, waehlt sie dort mit Numblock 2 bis 5 an.
+            Der Gesundheitsmonitor im Raid hat Tonhoehen-Dateien nur fuer die Nummern 1 bis 25.
+            Mitglieder 26 bis 40 waren darum stumm; sie werden jetzt gesprochen, erst die Nummer,
+            dann die Gesundheit in Zehnerschritten, mit der Stimme aus der neuen Einstellung
+            "Stimme fuer Mitglieder ab 26" (Monitor, Raid, Gesundheit; Standard Justin).
+        Technisch: SkuCore/aq.lua: SkuCore.Monitor.RaidMemberNumbersByName() baut die Name-zu-
+            Nummer-Tabelle nach der Dial-Regel (bis 10 Mitglieder flach 1-10 in
+            Untergruppenreihenfolge, ab 11 (Untergruppe-1)*5+Position); tDTRaidRoster und das
+            Dial-Targeting-Raster (DialTargeting.lua) werden daraus gefuellt, bisher rechnete
+            tDTRaidRoster immer zweistellig. SkuCore.Monitor.GroupMemberNumber(unitId) liefert
+            die Tastennummer fuer party-/raid-Tokens. Die fortlaufende Debuff-Ausgabe im Raid
+            sagte string.sub(unitId, 5)+1. MonitorOutputRaidPercent2 spricht Nummern ueber 25
+            per MonitorOutputPlayerStatus (raid.health2.voice, Standard 1) und gibt die Dauer an
+            die Warteschlange zurueck; die Warteschlangen-Eintraege tragen dafuer die absolute
+            Gesundheit. SkuCore/aqCombat.lua: tAllPartyRaidUnits und
+            tUnitsToTestOnGameRaidTargets enthielten raid1-25 fest; sie werden jetzt bei jedem
+            Roster-Ereignis an Ort und Stelle aus der echten Raidgroesse neu gefuellt.
+            tSpokenGroupUnit(unitId) nutzt die Todesansage-Zuordnung fuer alle freundlichen
+            Ansagen. "party5"/"partypet5" gibt es in den Kampfstimmen nicht als Wort,
+            SkuCoreAqCombatGetVoiceString zerlegt sie in "party", "pet", "5". SkuAuras/data.lua:
+            tUnitIdToSpokenName sagt party N als N+1 und raid N als Dial-Nummer.
+
 Aenderungen in Sku v43.8
 
     Ueberblick

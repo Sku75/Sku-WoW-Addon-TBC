@@ -2810,6 +2810,7 @@ L["Voice chat"] = "Voice chat"
 L["Voice output"] = "Voice output"
 L["Voice volume"] = "Voice volume"
 L["Voice"] = "Voice"
+L["Voice for members above 25"] = "Voice for members above 25"
 L["Volume"] = "Volume"
 L["W"] = "W"
 L["Waffen"]  = "Arms" --

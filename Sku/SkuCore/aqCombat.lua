@@ -79,48 +79,55 @@ SkuCore.SkuRaidTargetIndex = {
 	[8] = 5,
 }
 
-local tAllPartyRaidUnits = {
-   "player",
-   "pet",
-}
+local tAllPartyRaidUnits = {}
+local tUnitsToTestOnGameRaidTargets = {}
 
-local tUnitsToTestOnGameRaidTargets = {
-   "player",
-   "pet",
-   "focus",
-   "target",
-   "pettarget",
-   "focustarget",
-   "playertargettarget",
-   "pettargettarget",
-   "focustargettarget",
-   "targettarget",
-}
-for x = 1, 4 do
-   table.insert(tAllPartyRaidUnits, "party"..x)
-   table.insert(tAllPartyRaidUnits, "partypet"..x)
-   
-   table.insert(tUnitsToTestOnGameRaidTargets, "party"..x)
-   table.insert(tUnitsToTestOnGameRaidTargets, "partypet"..x)
-   table.insert(tUnitsToTestOnGameRaidTargets, "party"..x.."target")
-   table.insert(tUnitsToTestOnGameRaidTargets, "partypet"..x.."target")
-   table.insert(tUnitsToTestOnGameRaidTargets, "party"..x.."targettarget")
-   table.insert(tUnitsToTestOnGameRaidTargets, "partypet"..x.."targettarget")
-end
-for x = 1, 25 do
-   table.insert(tAllPartyRaidUnits, "raid"..x)
-   table.insert(tAllPartyRaidUnits, "raidpet"..x)
+-- Both unit lists used to be built once at load with raid1-25 hard-wired, so raid
+-- slots 26-40 never got threat warnings, out-of-range checks or target-of-target
+-- announcements and did not count for "enemies in combat". They are rebuilt IN
+-- PLACE (the per-tick loops and tCombatInCounts hold references to these tables)
+-- at load and on every roster event, with exactly the raid slots that exist: a
+-- 40-man scans 40 slots, a 10-man 10, a party none.
+local function tRebuildGroupUnitLists()
+   wipe(tAllPartyRaidUnits)
+   wipe(tUnitsToTestOnGameRaidTargets)
+   for _, tUnit in ipairs({"player", "pet",}) do
+      table.insert(tAllPartyRaidUnits, tUnit)
+   end
+   for _, tUnit in ipairs({"player", "pet", "focus", "target", "pettarget", "focustarget", "playertargettarget", "pettargettarget", "focustargettarget", "targettarget",}) do
+      table.insert(tUnitsToTestOnGameRaidTargets, tUnit)
+   end
+   for x = 1, 4 do
+      table.insert(tAllPartyRaidUnits, "party"..x)
+      table.insert(tAllPartyRaidUnits, "partypet"..x)
 
-   table.insert(tUnitsToTestOnGameRaidTargets, "raid"..x)
-   table.insert(tUnitsToTestOnGameRaidTargets, "raidpet"..x)
-   table.insert(tUnitsToTestOnGameRaidTargets, "raid"..x.."target")
-   table.insert(tUnitsToTestOnGameRaidTargets, "raidpet"..x.."target")
-   table.insert(tUnitsToTestOnGameRaidTargets, "raid"..x.."targettarget")
-   table.insert(tUnitsToTestOnGameRaidTargets, "raidpet"..x.."targettarget")
+      table.insert(tUnitsToTestOnGameRaidTargets, "party"..x)
+      table.insert(tUnitsToTestOnGameRaidTargets, "partypet"..x)
+      table.insert(tUnitsToTestOnGameRaidTargets, "party"..x.."target")
+      table.insert(tUnitsToTestOnGameRaidTargets, "partypet"..x.."target")
+      table.insert(tUnitsToTestOnGameRaidTargets, "party"..x.."targettarget")
+      table.insert(tUnitsToTestOnGameRaidTargets, "partypet"..x.."targettarget")
+   end
+   local tRaidSlots = 0
+   if UnitInRaid("player") then
+      tRaidSlots = GetNumGroupMembers() or 0
+   end
+   for x = 1, tRaidSlots do
+      table.insert(tAllPartyRaidUnits, "raid"..x)
+      table.insert(tAllPartyRaidUnits, "raidpet"..x)
+
+      table.insert(tUnitsToTestOnGameRaidTargets, "raid"..x)
+      table.insert(tUnitsToTestOnGameRaidTargets, "raidpet"..x)
+      table.insert(tUnitsToTestOnGameRaidTargets, "raid"..x.."target")
+      table.insert(tUnitsToTestOnGameRaidTargets, "raidpet"..x.."target")
+      table.insert(tUnitsToTestOnGameRaidTargets, "raid"..x.."targettarget")
+      table.insert(tUnitsToTestOnGameRaidTargets, "raidpet"..x.."targettarget")
+   end
+   for x = 1, 40 do
+      table.insert(tUnitsToTestOnGameRaidTargets, "nameplate"..x)
+   end
 end
-for x = 1, 40 do
-   table.insert(tUnitsToTestOnGameRaidTargets, "nameplate"..x)
-end
+tRebuildGroupUnitLists()
 
 SkuCore.SkuRaidTargetRepo = {} --[unitGUID] = SkuRaidTargetIndex,
 SkuCore.SkuRaidTargetRepoDead = {} --[unitGUID] = SkuRaidTargetIndex,
@@ -150,6 +157,27 @@ function SkuCoreAqCombatGetVoiceString(aString, aTable)
             tFinalString = string.gsub(tFinalString, "partypet", "")
          elseif sfind(tFinalString, "party") then
             tFinalString = string.gsub(tFinalString, "party", "")
+         end
+      end
+
+      -- Party deaths are announced by numpad key, so party4 arrives as "party5"
+      -- and partypet4 as "partypet5". The combat voices ship single words for
+      -- party1-4 / partypet1-4 only, so say the words "party" (+ "pet") + "5"
+      -- instead of beeping on a missing word. The low-volume suffix sits BEHIND
+      -- the placeholder in the pattern, so the extra words carry their own.
+      local tKind, tNo = string.match(tFinalString, "^(party)(%d+)$")
+      if not tKind then
+         tKind, tNo = string.match(tFinalString, "^(partypet)(%d+)$")
+      end
+      if tKind and tonumber(tNo) > 4 and aTable.voice then
+         local tLow = ""
+         if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.voiceVolume == 1 then
+            tLow = "-low"
+         end
+         if tKind == "partypet" then
+            tFinalString = "party"..tLow..";"..aTable.voice.."-pet"..tLow..";"..aTable.voice.."-"..tNo
+         else
+            tFinalString = "party"..tLow..";"..aTable.voice.."-"..tNo
          end
       end
 
@@ -248,6 +276,109 @@ function aqCombat:aqCombatGroupNameToUnitId(aName)
          end
       end
    end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- The number dial targeting currently has a raid member on, read from the SAME
+-- slot grid the numpad decodes (SkuSecureTargetingFrame unitNameSlotGG-SS, key
+-- number = (GG - 1) * 5 + SS). Reading attributes of a secure frame is allowed
+-- from insecure code. In the two-digit raid mode the grid is filled by real
+-- subgroup and position; in the single-key raid10 mode it is filled flattened
+-- (members in subgroup order numbered 1-10, so keys stay usable when someone
+-- sits in group 3 of a 10-man). Reading the grid instead of recomputing means
+-- the spoken number is the key, whichever mode is active. nil when dial
+-- targeting is not in a raid mode or the name is not in the grid.
+local function tDialNumberForName(aName)
+   local tFrame = _G["SkuSecureTargetingFrame"]
+   if not aName or not tFrame then
+      return nil
+   end
+   local tGroupType = tFrame:GetAttribute("groupType")
+   if tGroupType ~= "raid" and tGroupType ~= "raid10" then
+      return nil
+   end
+   for tG = 1, 8 do
+      for tS = 1, 5 do
+         if tFrame:GetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS)) == aName then
+            return ((tG - 1) * 5) + tS
+         end
+      end
+   end
+   return nil
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Which token a dead group member is announced with, and which real unit id to
+-- query for it. Returns nil when the GUID is not a group member.
+--
+-- Outside a raid the spoken token is the numpad key (party1 -> "party2", see
+-- below) and the real id the WoW token. Inside a raid the
+-- members of the player's own subgroup ALSO answer to party1-4, and the generic
+-- GUID lookup scans those tokens first, so a raid used to announce "party2 dead"
+-- for subgroup mates and "raid17 dead" for everyone else -- two numbering
+-- schemes in one fight, neither matching the numpad. The spoken number is the
+-- dial-targeting number (tDialNumberForName), falling back to the health
+-- monitor's roster map (tDTRaidRoster in aq.lua) and finally to a live
+-- (subgroup - 1) * 5 + position; the latter two equal the two-digit dial mode.
+-- "raid7 dead" therefore means numpad 7. The real unit id stays the raw slot
+-- (raid23), because that is what the UnitIsDeadOrGhost / pet checks need. The
+-- grid and the roster map are rebuilt out of combat only, so they go stale
+-- together with the numpad. Self and own pet keep "player"/"pet". All
+-- MAX_RAID_MEMBERS slots are scanned, so slots 26-40 are announced too. The
+-- same spoken token serves every friendly announcement via tSpokenGroupUnit.
+local function tDeathUnitToken(aUnitGUID)
+   if aUnitGUID == UnitGUID("player") then
+      return "player", "player"
+   end
+   if aUnitGUID == UnitGUID("pet") then
+      return "pet", "pet"
+   end
+
+   if UnitInRaid("player") then
+      local tSubgroupCounter = {}
+      for x = 1, MAX_RAID_MEMBERS do
+         local tName, _, tSubgroup = GetRaidRosterInfo(x)
+         if tName and tSubgroup then
+            tSubgroupCounter[tSubgroup] = (tSubgroupCounter[tSubgroup] or 0) + 1
+            local tMemberGuid = UnitGUID("raid"..x)
+            local tPetGuid = UnitGUID("raidpet"..x)
+            if tMemberGuid == aUnitGUID or (tPetGuid and tPetGuid == aUnitGUID) then
+               local tNumber = tDialNumberForName(tName)
+                  or (tDTRaidRoster and tDTRaidRoster["raid"..x])
+                  or (((tSubgroup - 1) * 5) + tSubgroupCounter[tSubgroup])
+               if tMemberGuid == aUnitGUID then
+                  return "raid"..tNumber, "raid"..x
+               else
+                  return "raidpet"..tNumber, "raidpet"..x
+               end
+            end
+         end
+      end
+      return nil
+   end
+
+   local tUnitId = aqCombat:aqCombatGroupGuidToUnitId(aUnitGUID)
+   if tUnitId then
+      -- Party: Sku's default keys (SkuDefaultBindings, data.lua) put the player on
+      -- NUMPAD1 and party1-4 on NUMPAD2-5; the health monitor and the overview
+      -- count the same way. So party1 is announced as "party2" -- the key, not
+      -- the WoW token. Same for partypet1 -> partypet2.
+      local tKind, tNo = string.match(tUnitId, "^(%a+)(%d+)$")
+      if tKind and tNo then
+         return tKind..(tonumber(tNo) + 1), tUnitId
+      end
+      return tUnitId, tUnitId
+   end
+   return nil
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- The spoken token for any group unit id the combat monitor announces (threat
+-- warnings, target-of-target, out-of-range): the same numbering as the death
+-- announcement, see tDeathUnitToken. The raw id when it is not a group member.
+local function tSpokenGroupUnit(aUnitId)
+   local tSpoken = tDeathUnitToken(UnitGUID(aUnitId))
+   return tSpoken or aUnitId
 end
 
 
@@ -655,7 +786,7 @@ local function aqCombatCreateControlFrame()
                   end
                   if tDoOutput == true then
                      local tSetting = tCurrentSettings.combat.friendly.outOfRangeEnabled
-                     SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tUniId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                     SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tSpokenGroupUnit(tUniId),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                   end
                else
                   tOorIntervalTime = -2
@@ -796,12 +927,12 @@ local function aqCombatCreateControlFrame()
                                     if tthreatWarningIsFirstSecondHigherThanLastWarning == -1 or GetTimePreciseSec() - tthreatWarningIsFirstSecondHigherThanLastWarning > tCurrentSettings.combat.hostile.threatWarningInterval then
                                        tthreatWarningIsFirstSecondHigherThanLastWarning = GetTimePreciseSec() 
                                        local tSetting = tCurrentSettings.combat.hostile.threatWarningIsFirstSecondHigherThan
-                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                     end
                                  else
                                     if tthreatWarningIsFirstSecondHigherThanLastWarning > -1  then
                                        local tSetting = tCurrentSettings.combat.hostile.threatWarningIsFirstSecondHigherThan
-                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                        tthreatWarningIsFirstSecondHigherThanLastWarning = -1
                                     end
                                  end
@@ -820,12 +951,12 @@ local function aqCombatCreateControlFrame()
                                     if tthreatWarningNotFirstHigherThanLastWarning == -1 or GetTimePreciseSec() - tthreatWarningNotFirstHigherThanLastWarning > tCurrentSettings.combat.hostile.threatWarningInterval then
                                        tthreatWarningNotFirstHigherThanLastWarning = GetTimePreciseSec() 
                                        local tSetting = tCurrentSettings.combat.hostile.threatWarningNotFirstHigherThan
-                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                     end
                                  else
                                     if tthreatWarningNotFirstHigherThanLastWarning > -1  then
                                        local tSetting = tCurrentSettings.combat.hostile.threatWarningNotFirstHigherThan
-                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                        tthreatWarningNotFirstHigherThanLastWarning = -1
                                     end
                                  end
@@ -1078,6 +1209,7 @@ function aqCombat:aqCombatOnInitialize()
    tKeysRank = SkuDB.NpcData.Keys.rank
 
 	aqCombatCreateControlFrame()
+   tRebuildGroupUnitLists()
 
    SkuDispatcher:RegisterEventCallback("COMBAT_LOG_EVENT_UNFILTERED", aqCombat.aqCombat_COMBAT_LOG_EVENT_UNFILTERED)
    SkuDispatcher:RegisterEventCallback("SKU_UNIT_DIED", aqCombat.aqCombat_SKU_UNIT_DIED)
@@ -1391,6 +1523,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function aqCombat:aqCombat_GROUP_ROSTER_UPDATE()
    aqCombatIsPartyOrRaidMemberCache = {}
+   tRebuildGroupUnitLists()
    
    if UnitGUID("player") then
       aqCombatIsPartyOrRaidMemberCache[UnitGUID("player")] = "player"
@@ -1430,10 +1563,10 @@ function aqCombat:aqCombatPLAYER_TARGET_CHANGED(aEvent, a, b, c, d)
                if UnitGUID(tAllPartyRaidUnits[x]) == UnitGUID("playertargettarget") then
                   if aqCombatCheckElite(UnitGUID("playertargettarget")) == true then
                      if tCurrentSettings.combat.hostile.threatOutputTot.value == 2 then
-                        SkuCoreAqCombatOutput(tOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tCurrentSettings.combat.hostile.threatOutputTot)
+                        SkuCoreAqCombatOutput(tOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tCurrentSettings.combat.hostile.threatOutputTot)
                      elseif tCurrentSettings.combat.hostile.threatOutputTot.value == 3 then
                         if UnitGUID(tAllPartyRaidUnits[x]) ~= UnitGUID("player") then
-                           SkuCoreAqCombatOutput(tOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tCurrentSettings.combat.hostile.threatOutputTot)
+                           SkuCoreAqCombatOutput(tOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tCurrentSettings.combat.hostile.threatOutputTot)
                         end
                      end
                      break
@@ -1770,100 +1903,6 @@ function aqCombat:aqCombat_SKU_SPELL_INTERRUPT(aEvent, aEventData)
    else
       SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Zauber unterbrochen", "Spell interrupted", "Sort interrompu"), false, true, 0.2, true)
    end
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
--- The number dial targeting currently has a raid member on, read from the SAME
--- slot grid the numpad decodes (SkuSecureTargetingFrame unitNameSlotGG-SS, key
--- number = (GG - 1) * 5 + SS). Reading attributes of a secure frame is allowed
--- from insecure code. In the two-digit raid mode the grid is filled by real
--- subgroup and position; in the single-key raid10 mode it is filled flattened
--- (members in subgroup order numbered 1-10, so keys stay usable when someone
--- sits in group 3 of a 10-man). Reading the grid instead of recomputing means
--- the spoken number is the key, whichever mode is active. nil when dial
--- targeting is not in a raid mode or the name is not in the grid.
-local function tDialNumberForName(aName)
-   local tFrame = _G["SkuSecureTargetingFrame"]
-   if not aName or not tFrame then
-      return nil
-   end
-   local tGroupType = tFrame:GetAttribute("groupType")
-   if tGroupType ~= "raid" and tGroupType ~= "raid10" then
-      return nil
-   end
-   for tG = 1, 8 do
-      for tS = 1, 5 do
-         if tFrame:GetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS)) == aName then
-            return ((tG - 1) * 5) + tS
-         end
-      end
-   end
-   return nil
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
--- Which token a dead group member is announced with, and which real unit id to
--- query for it. Returns nil when the GUID is not a group member.
---
--- Outside a raid the spoken token is the numpad key (party1 -> "party2", see
--- below) and the real id the WoW token. Inside a raid the
--- members of the player's own subgroup ALSO answer to party1-4, and the generic
--- GUID lookup scans those tokens first, so a raid used to announce "party2 dead"
--- for subgroup mates and "raid17 dead" for everyone else -- two numbering
--- schemes in one fight, neither matching the numpad. The spoken number is the
--- dial-targeting number (tDialNumberForName), falling back to the health
--- monitor's roster map (tDTRaidRoster in aq.lua) and finally to a live
--- (subgroup - 1) * 5 + position; the latter two equal the two-digit dial mode.
--- "raid7 dead" therefore means numpad 7. The real unit id stays the raw slot
--- (raid23), because that is what the UnitIsDeadOrGhost / pet checks need. The
--- grid and the roster map are rebuilt out of combat only, so they go stale
--- together with the numpad. Self and own pet keep "player"/"pet". All
--- MAX_RAID_MEMBERS slots are scanned, not the 25 in tAllPartyRaidUnits, so
--- slots 26-40 are announced too.
-local function tDeathUnitToken(aUnitGUID)
-   if aUnitGUID == UnitGUID("player") then
-      return "player", "player"
-   end
-   if aUnitGUID == UnitGUID("pet") then
-      return "pet", "pet"
-   end
-
-   if UnitInRaid("player") then
-      local tSubgroupCounter = {}
-      for x = 1, MAX_RAID_MEMBERS do
-         local tName, _, tSubgroup = GetRaidRosterInfo(x)
-         if tName and tSubgroup then
-            tSubgroupCounter[tSubgroup] = (tSubgroupCounter[tSubgroup] or 0) + 1
-            local tMemberGuid = UnitGUID("raid"..x)
-            local tPetGuid = UnitGUID("raidpet"..x)
-            if tMemberGuid == aUnitGUID or (tPetGuid and tPetGuid == aUnitGUID) then
-               local tNumber = tDialNumberForName(tName)
-                  or (tDTRaidRoster and tDTRaidRoster["raid"..x])
-                  or (((tSubgroup - 1) * 5) + tSubgroupCounter[tSubgroup])
-               if tMemberGuid == aUnitGUID then
-                  return "raid"..tNumber, "raid"..x
-               else
-                  return "raidpet"..tNumber, "raidpet"..x
-               end
-            end
-         end
-      end
-      return nil
-   end
-
-   local tUnitId = aqCombat:aqCombatGroupGuidToUnitId(aUnitGUID)
-   if tUnitId then
-      -- Party: Sku's default keys (SkuDefaultBindings, data.lua) put the player on
-      -- NUMPAD1 and party1-4 on NUMPAD2-5; the health monitor and the overview
-      -- count the same way. So party1 is announced as "party2" -- the key, not
-      -- the WoW token. Same for partypet1 -> partypet2.
-      local tKind, tNo = string.match(tUnitId, "^(%a+)(%d+)$")
-      if tKind and tNo then
-         return tKind..(tonumber(tNo) + 1), tUnitId
-      end
-      return tUnitId, tUnitId
-   end
-   return nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

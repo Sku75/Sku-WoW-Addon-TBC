@@ -138,6 +138,67 @@ end
 
 tDTRaidRoster = {}
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- ONE numbering for raid members, shared by the health and debuff monitors, the
+-- raid role-assignment labels, the combat monitor's friendly announcements
+-- (via tDTRaidRoster) and the aura outputs: the dial-targeting number, i.e. the
+-- key that targets the member. Up to 10 members the dial is single-key and
+-- flattens the members in subgroup order to 1-10 (DialTargeting.lua, groupType
+-- "raid10"); from 11 on it is two digits, (subgroup - 1) * 5 + position.
+-- tDTRaidRoster used to apply the two-digit formula regardless of size, so in a
+-- 10-man with someone in group 3 the monitors said "11" for key 7.
+-- Returns name -> number from the live roster.
+function SkuCore.Monitor.RaidMemberNumbersByName()
+	local tBySubgroup = {}
+	local tCount = 0
+	for x = 1, MAX_RAID_MEMBERS do
+		local name, _, subgroup = GetRaidRosterInfo(x)
+		if name and subgroup then
+			tBySubgroup[subgroup] = tBySubgroup[subgroup] or {}
+			table.insert(tBySubgroup[subgroup], name)
+			tCount = tCount + 1
+		end
+	end
+	local tNumbers = {}
+	local tMemberNo = 0
+	for tSubgroup = 1, 8 do
+		for tPos, tName in ipairs(tBySubgroup[tSubgroup] or {}) do
+			tMemberNo = tMemberNo + 1
+			if tCount > 10 then
+				tNumbers[tName] = ((tSubgroup - 1) * 5) + tPos
+			else
+				tNumbers[tName] = tMemberNo
+			end
+		end
+	end
+	return tNumbers
+end
+
+-- The spoken number for a group unit id: the numpad key that targets it.
+-- player/pet = 1, party1-4 and partypet1-4 = 2-5 (Sku's default bindings; this
+-- is the party numbering, which the party monitors keep using inside a raid too
+-- because numpad 2-5 still target the subgroup there while the dial is off).
+-- raidN/raidpetN = the dial number from tDTRaidRoster (rebuilt out of combat on
+-- every roster change, so stale in combat together with the dial grid). nil
+-- for anything else.
+function SkuCore.Monitor.GroupMemberNumber(aUnitId)
+	if not aUnitId then
+		return nil
+	end
+	if aUnitId == "player" or aUnitId == "pet" then
+		return 1
+	end
+	local tNo = string.match(aUnitId, "^partypet(%d)$") or string.match(aUnitId, "^party(%d)$")
+	if tNo then
+		return tonumber(tNo) + 1
+	end
+	tNo = string.match(aUnitId, "^raidpet(%d+)$") or string.match(aUnitId, "^raid(%d+)$")
+	if tNo then
+		return tDTRaidRoster["raid"..tNo]
+	end
+	return nil
+end
+
 local tEventOutputFilters = {
 	minAbsoluteSincePrevEvent = {name = L["minimum percent difference since previous event"], values = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,20,22,25,30}, defaults = {5, 10, 20, 30, 5}, id = 1, },
 	minStepsSincePrevEvent = {name = L["minimum steps difference since previous event"], values = {0,1,2,3,4,5,6,7,}, defaults = {0, 1, 2, 3, 0}, id = 2, },
@@ -177,7 +238,7 @@ local function tHealth2QueueAdd(aQueue, aBranch, aDefaultLen, aUnitNumber, aVolu
 			elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
 				table.insert(aQueue, 1, {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,})
 			end
-			table.insert(aQueue, 1, {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,})
+			table.insert(aQueue, 1, {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength, health = aHealthAbsoluteValue,})
 			return
 		else
 			for x = 1, #aQueue do
@@ -187,6 +248,7 @@ local function tHealth2QueueAdd(aQueue, aBranch, aDefaultLen, aUnitNumber, aVolu
 						aQueue[x].tVolume = aVolume
 					end
 					aQueue[x].lenght = aLength
+					aQueue[x].health = aHealthAbsoluteValue
 					if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
 						table.insert(aQueue, x + 1, {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,})
 					elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
@@ -199,7 +261,7 @@ local function tHealth2QueueAdd(aQueue, aBranch, aDefaultLen, aUnitNumber, aVolu
 		end
 	end
 
-	aQueue[#aQueue + 1] = {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,}
+	aQueue[#aQueue + 1] = {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength, health = aHealthAbsoluteValue,}
 	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
 		aQueue[#aQueue + 1] = {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,}
 	elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
@@ -443,25 +505,14 @@ function Aq:MonitorRaidRosterUpdate()
    SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", Aq.MonitorRaidRosterUpdate)
 
    if UnitInRaid("player") then
-		local tRaidRoster = {}
-      local tsubgroupcounter = {}
-      for x = 1, MAX_RAID_MEMBERS do
-         local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
-         if name and subgroup then
-            tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] or 0
-            tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] + 1
-            tRaidRoster[name] = ((subgroup - 1) * 5) + tsubgroupcounter[subgroup]
-         end
-      end
-
 		tDTRaidRoster = {}
-
-      for x = 1, MAX_RAID_MEMBERS do
+		local tNumbers = SkuCore.Monitor.RaidMemberNumbersByName()
+		for x = 1, MAX_RAID_MEMBERS do
 			local trN = UnitName("raid"..x)
-			if trN and tRaidRoster[trN] then
-				tDTRaidRoster["raid"..x] = tRaidRoster[trN]
+			if trN and tNumbers[trN] then
+				tDTRaidRoster["raid"..x] = tNumbers[trN]
 			end
-      end
+		end
 
 		--[[
 		C_Timer.After(1, function()
@@ -544,9 +595,9 @@ local beginTime = debugprofilestop()
 		--raid health 2 queue manager
 		if #ttimeMonRaid2Queue > 0 then
 			if ttimeMonRaid2QueueCurrentTime <= 0 then
-				local tUnitNumber, tVolume, tPitch, tLength = ttimeMonRaid2Queue[1].tUnitNumber , ttimeMonRaid2Queue[1].tVolume , ttimeMonRaid2Queue[1].tPitch , ttimeMonRaid2Queue[1].lenght
-				ttimeMonRaid2QueueCurrentTime = tLength
-				Aq:MonitorOutputRaidPercent2(tUnitNumber, tVolume, tPitch)
+				local tUnitNumber, tVolume, tPitch, tLength, tHealth = ttimeMonRaid2Queue[1].tUnitNumber , ttimeMonRaid2Queue[1].tVolume , ttimeMonRaid2Queue[1].tPitch , ttimeMonRaid2Queue[1].lenght, ttimeMonRaid2Queue[1].health
+				local tSpokenLength = Aq:MonitorOutputRaidPercent2(tUnitNumber, tVolume, tPitch, tHealth)
+				ttimeMonRaid2QueueCurrentTime = math.max(tLength, tSpokenLength or 0)
 				table.remove(ttimeMonRaid2Queue, 1)
 			else
 				ttimeMonRaid2QueueCurrentTime = ttimeMonRaid2QueueCurrentTime - time
@@ -767,10 +818,7 @@ local beginTime = debugprofilestop()
 														tNumber = tNumber + 1
 													end
 												elseif string.sub(tUnitID, 1, 4) == "raid" then
-													tNumber = tonumber(string.sub(tUnitID, 5))
-													if tNumber then
-														tNumber = tNumber + 1
-													end
+													tNumber = tDTRaidRoster[tUnitID]
 												end
 												if tNumber then
 													local tTypeString = tDebuffTypesShort[i]
@@ -821,10 +869,7 @@ local beginTime = debugprofilestop()
 											if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.types[i] == true then		
 												local tNumber
 												if string.sub(tUnitID, 1, 4) == "raid" then
-													tNumber = tonumber(string.sub(tUnitID, 5))
-													if tNumber then
-														tNumber = tNumber + 1
-													end
+													tNumber = tDTRaidRoster[tUnitID]
 												end
 												if tNumber then
 													local tTypeString = tDebuffTypesShort[i]
@@ -1013,6 +1058,10 @@ function Aq:AqOnLogin()
 		end
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.factorInIncomingHeals == nil then
 			SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.factorInIncomingHeals = false
+		end
+		-- [v43.9] spoken voice for dial numbers 26-40 (no pitch files above 25)
+		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.voice == nil then
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.voice = 1
 		end
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.roleAssigments == nil then
 			SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.health2.roleAssigments = {}
@@ -1959,13 +2008,25 @@ function Aq:MonitorOutputPartyPercent2(aUnitNumber, aVolume, aPitch)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function Aq:MonitorOutputRaidPercent2(aUnitNumber, aVolume, aPitch)
+-- aUnitNumber is the raw raid slot (raidN) the queue was filled with; the
+-- spoken/pitched number is the dial number from tDTRaidRoster. The pitch files
+-- (jus_<number>_<volume>_<pitch>) exist for numbers 1-25 only, so members 26-40
+-- used to be silent. They are spoken instead: number, then health in tens, with
+-- the voice from "Voice for members above 25". Returns the length of that
+-- spoken output so the queue waits for it; nil for the one-blip pitch output.
+function Aq:MonitorOutputRaidPercent2(aUnitNumber, aVolume, aPitch, aHealth)
 	if aUnitNumber ~= "full" and aUnitNumber ~= "dead" then
 		aUnitNumber = tDTRaidRoster["raid"..aUnitNumber]
 	else
 		aPitch = 0
 	end
 	if aUnitNumber then
+		if type(aUnitNumber) == "number" and aUnitNumber > 25 then
+			local tVoice = tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.voice or 1].path
+			local tPercent = math.floor(((aHealth or 100) + 5) / 10) * 10
+			Aq:MonitorOutputPlayerStatus({[1] = aUnitNumber, [2] = tPercent,}, aVolume, false, tVoice)
+			return ((string.len(tostring(aUnitNumber)) + string.len(tostring(tPercent))) * 0.03) + 0.8
+		end
 		PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\jus\\pitch\\jus_"..aUnitNumber.."_"..aVolume.."_"..aPitch..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
 	end
 end
@@ -3618,6 +3679,29 @@ function Aq:MonitorMenuBuilder()
 				end
 			end
 			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice for members above 25"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.sorting = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.voice or 1].name
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				for x = 1, #tVoices do
+					if aName == tVoices[x].name then
+						SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.voice = x
+					end
+				end
+				C_Timer.After(0.001, function()
+					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
+				end)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tVoices do
+					SkuOptions:InjectMenuItems(self, {tVoices[x].name}, SkuGenericMenuItem)
+				end
+			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Role assignment"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true

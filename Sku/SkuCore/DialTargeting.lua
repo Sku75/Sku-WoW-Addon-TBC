@@ -317,45 +317,24 @@ function DialTargeting:DialTargetingRosterUpdate()
          -- up to 10 members: one key per member (NUMPAD1-9, NUMPAD0 = 10); from 11 on the
          -- two-digit dial. Was an option ("Single key action in raids up to 10 players",
          -- default Off) until 2026-10-06; now it is the rule.
+         -- The member -> number map is the ONE shared source (aq.lua,
+         -- SkuCore.Monitor.RaidMemberNumbersByName): single-key mode flattens the
+         -- members in subgroup order to 1-10, two-digit mode is (subgroup - 1) * 5
+         -- + position. Both land in the same 8x5 slot grid, G = ceil(n / 5),
+         -- S = n - (G - 1) * 5. Single-key mode reads only slots 01-01..02-05; filling
+         -- by actual subgroup there left keys dead whenever anyone sat outside
+         -- groups 1-2. The health/debuff/combat monitors speak these numbers.
+         tClearUnitNameSlots()
+         for tName, tNumber in pairs(SkuCore.Monitor.RaidMemberNumbersByName()) do
+            local tG = math.ceil(tNumber / 5)
+            local tS = tNumber - ((tG - 1) * 5)
+            _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS), tName)
+         end
          if tNumCurMembers > 10 then
             _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "raid")
-            
-            tClearUnitNameSlots()
-            local tsubgroupcounter = {}
-            for x = 1, MAX_RAID_MEMBERS do
-               local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
-               if name and subgroup then
-                  tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] or 0
-                  tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] + 1
-                  _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", subgroup).."-"..string.format("%02d", tsubgroupcounter[subgroup]), name)
-               end
-            end
             tApplyNumpadBindings("SkuSecureTargetingToggleHandler")
          else
             _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "raid10")
-
-            tClearUnitNameSlots()
-            -- single-key mode reads only slots 01-01..02-05 (member number 1-10), so
-            -- flatten the members in subgroup order into those linear slots; filling
-            -- by actual subgroup left keys dead whenever anyone sat outside groups 1-2
-            local tBySubgroup = {}
-            for x = 1, MAX_RAID_MEMBERS do
-               local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
-               if name and subgroup then
-                  tBySubgroup[subgroup] = tBySubgroup[subgroup] or {}
-                  table.insert(tBySubgroup[subgroup], name)
-               end
-            end
-            local tMemberNo = 0
-            for tSubgroup = 1, 8 do
-               for _, tName in ipairs(tBySubgroup[tSubgroup] or {}) do
-                  tMemberNo = tMemberNo + 1
-                  local tG = math.ceil(tMemberNo / 5)
-                  local tS = tMemberNo - ((tG - 1) * 5)
-                  _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS), tName)
-               end
-            end
-
             tApplyNumpadBindings("SkuSecureTargetingFrame")
          end
 

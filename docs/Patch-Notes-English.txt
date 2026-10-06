@@ -17,6 +17,11 @@ Changes in Sku v43.9
             Monitor health: "Add Dead on 0 percent" is now off by default, for party and raid, for existing characters as well.
             Dial Targeting: raids only now. "Enabled" is an On/Off toggle; in a party numpad 1 to 5 stay the normal target keys (1 = self, 2 to 5 = the others).
             Dial Targeting: in raids of up to 10 players always one key per member (0 = member 10), two digits from 11 players on. The option "Single key action in raids up to 10 players" is gone, that is the rule now.
+            Monitor health, raid: the numbers are the dial-targeting numbers, so in raids of up to 10 players 1 to 10 in subgroup order. They always used the two-digit scheme before, so in a 10-man with someone in group 3 key 7 was called "11".
+            Monitor health, raid: members numbered 26 to 40 are now spoken (number, then health in tens) with the new setting "Voice for members above 25". Pitch files exist up to 25 only, those members used to be silent.
+            Monitor debuffs, raid: the numbers are the dial-targeting numbers as well.
+            Monitor combat: threat warnings, "target of target" and "out of range" name group members like the death announcement does, with the numpad key in a party ("party 2" for the first member) and the dial number in a raid. Before it was the raw raid slot and "party 1" for key 2; raid slots 26 to 40 were missing entirely.
+            Auras: the outputs "source unit" and "target unit" name party members by key number and raid members by dial number as well.
 
         Bugfixes
             Quest menu: "Route" under a creature was always empty when its name contains a hyphen or a bracket (for example "Un'Goro-Gorilla" on German clients). Fixed.
@@ -27,6 +32,8 @@ Changes in Sku v43.9
             Mailbox: on opening, "Target" was announced before "New mail". Fixed.
             Key bindings: the second key ("Rebind secondary key") had no effect for a number of keys, among them "Trigger monitor party continuous output", target distance, panic mode, minimap scan, group range check, "Turn to unit" and the scan keys. Fixed.
             Monitor combat: "Ignore dead party pets" jumped back to "Yes" after every reload. Fixed.
+            Monitor debuffs, raid: the continuous output said raid slot plus one, a number that belonged to nobody. Fixed.
+            Monitor combat: "party 5, dead" (fourth party member, new in this version) beeped with "Numbers only" off because there is no voice word "party5". It now says "party" and "5".
 
     Quest menu: "Route" finds creatures with a hyphen in their name
         Simple: In the quest menu (Quest start, Quest target, Delivery) a creature offers "Route",
@@ -198,6 +205,35 @@ Changes in Sku v43.9
             it untested in game.
 
 -------------------------------------------------------------------------------------------------------
+    Group numbers: one count for every monitor
+        Simple: Every number Sku says for a group member should be the key that targets them. In a
+            party that is numpad 1 for you and 2 to 5 for the others; in a raid the dial-targeting
+            number, a single key 1 to 10 with up to 10 players and two digits from 11 on. The death
+            announcement counts that way since this version. Now the raid health monitor and the
+            raid debuff monitor, the threat warnings, "target of target" and "out of range" in the
+            combat monitor, and the aura outputs "source unit" and "target unit" do too. The party
+            health and debuff monitors keep the party count inside a raid, because whoever watches
+            only their own subgroup there targets it with numpad 2 to 5.
+            The raid health monitor has pitch files for numbers 1 to 25 only, so members 26 to 40
+            were silent. They are spoken now, the number first, then health in steps of ten, with
+            the voice from the new setting "Voice for members above 25" (Monitor, Raid, Health;
+            default Justin).
+        Technically: SkuCore/aq.lua: SkuCore.Monitor.RaidMemberNumbersByName() builds the name-to-
+            number table by the dial rule (up to 10 members flat 1-10 in subgroup order, from 11
+            (subgroup-1)*5+position); tDTRaidRoster and the dial-targeting grid
+            (DialTargeting.lua) are filled from it, tDTRaidRoster always used the two-digit formula
+            before. SkuCore.Monitor.GroupMemberNumber(unitId) returns the key number for party/raid
+            tokens. The continuous raid debuff output said string.sub(unitId, 5)+1.
+            MonitorOutputRaidPercent2 speaks numbers above 25 via MonitorOutputPlayerStatus
+            (raid.health2.voice, default 1) and returns the duration to the queue; the queue
+            entries carry the absolute health for that. SkuCore/aqCombat.lua: tAllPartyRaidUnits
+            and tUnitsToTestOnGameRaidTargets had raid1-25 hard-wired; they are now refilled in
+            place from the real raid size on every roster event. tSpokenGroupUnit(unitId) applies
+            the death-announcement mapping to every friendly announcement. "party5"/"partypet5"
+            do not exist as words in the combat voices, SkuCoreAqCombatGetVoiceString splits them
+            into "party", "pet", "5". SkuAuras/data.lua: tUnitIdToSpokenName says party N as N+1
+            and raid N as the dial number.
+
 Changes in Sku v43.8
 
     Overview

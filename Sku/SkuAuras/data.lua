@@ -230,17 +230,33 @@ end
 -- digit + "ziel"), so every slot speaks the same short way; other tokens fall
 -- back to their localized friendlyName from the value lists, then to the raw
 -- token.
+-- [v43.9] The number is the numpad KEY, not the token number: party1 is numpad 2
+-- ("party 2"), raidN is the dial-targeting number (SkuCore.Monitor
+-- .GroupMemberNumber, the same numbering the health/debuff/combat monitors
+-- speak). "party", "raid", "ziel" and the digits are words every pack ships.
 local function tUnitIdToSpokenName(aUnitId)
    if not aUnitId then
       return aUnitId
    end
-   local tNr = string.match(aUnitId, "^party(%d)$")
-   if tNr then
-      return "party "..tNr
+   local tKind, tNr = string.match(aUnitId, "^(party)(%d)$")
+   if not tKind then
+      tKind, tNr = string.match(aUnitId, "^(raid)(%d+)$")
    end
-   tNr = string.match(aUnitId, "^party(%d)target$")
-   if tNr then
-      return Sku.deEn("ziel", "target", "cible").." party "..tNr
+   local tTarget = false
+   if not tKind then
+      tKind, tNr = string.match(aUnitId, "^(party)(%d)target$")
+      if not tKind then
+         tKind, tNr = string.match(aUnitId, "^(raid)(%d+)target$")
+      end
+      tTarget = tKind ~= nil
+   end
+   if tKind then
+      local tNumber = SkuCore.Monitor and SkuCore.Monitor.GroupMemberNumber and SkuCore.Monitor.GroupMemberNumber(tKind..tNr)
+      local tSpoken = tKind.." "..(tNumber or tNr)
+      if tTarget then
+         return Sku.deEn("ziel", "target", "cible").." "..tSpoken
+      end
+      return tSpoken
    end
    local tEntry = (SkuAuras.values and SkuAuras.values[aUnitId]) or SkuAuras.valuesDefault[aUnitId]
    if tEntry and tEntry.friendlyName then
