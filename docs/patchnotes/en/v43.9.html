@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.9 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v43.9.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/v43.9.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v43.9 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.8.html">Older version: v43.8</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Overview</h2>
+<h3>New</h3>
+<ul>
+<li>Raid subgroup keys: Alt+Numpad 1 to 8 target the first member of raid subgroup 1 to 8. With an empty group Sku says "Group N empty" and nothing happens; outside a raid "No raid". Own sub-menu "Raid subgroup keys" in the Sku key bindings, can be switched off under Features.</li>
+</ul>
+<h3>Changes</h3>
+<ul>
+<li>Auras: basic auras now offer the same output list under "Output" as custom auras, meaning every sound and every data output (for example spell name or target unit), several at once. Before, there was only a single sound.</li>
+<li>Profession and trainer windows: after crafting, learning or selecting, the menu refreshes quietly, the cursor stays on the same entry, and only a genuinely different entry is announced.</li>
+<li>Monitor combat: "Announce deaths" now names the numpad key of the dead member in a party: "party 5, dead" means numpad 5 is dead. This changes a very old standard; the fourth party member used to be announced as "party 4".</li>
+<li>Monitor combat: in a raid "Announce deaths" says the dead member's dial-targeting number, the key or digit pair that targets them. It used to say "party 2" for your own subgroup and "raid 17" for everyone else. Raid slots 26 to 40 are now announced too.</li>
+<li>Monitor combat: "Count deaths up" is removed.</li>
+<li>Monitor health: "Add Dead on 0 percent" is now off by default, for party and raid, for existing characters as well.</li>
+<li>Dial Targeting: raids only now. "Enabled" is an On/Off toggle; in a party numpad 1 to 5 stay the normal target keys (1 = self, 2 to 5 = the others).</li>
+<li>Dial Targeting: in raids of up to 10 players always one key per member (0 = member 10), two digits from 11 players on. The option "Single key action in raids up to 10 players" is gone, that is the rule now.</li>
+<li>Monitor health, raid: the numbers are the dial-targeting numbers, so in raids of up to 10 players 1 to 10 in subgroup order. They always used the two-digit scheme before, so in a 10-man with someone in group 3 key 7 was called "11".</li>
+<li>Monitor health, raid: members numbered 26 to 40 are now spoken (number, then health in tens) with the new setting "Voice for members above 25". Pitch files exist up to 25 only, those members used to be silent.</li>
+<li>Monitor debuffs, raid: the numbers are the dial-targeting numbers as well.</li>
+<li>Monitor combat: threat warnings, "target of target" and "out of range" name group members like the death announcement does, with the numpad key in a party ("party 2" for the first member) and the dial number in a raid. Before it was the raw raid slot and "party 1" for key 2; raid slots 26 to 40 were missing entirely.</li>
+<li>Auras: the outputs "source unit" and "target unit" name party members by key number and raid members by dial number as well.</li>
+</ul>
+<h3>Bugfixes</h3>
+<ul>
+<li>Quest menu: "Route" under a creature was always empty when its name contains a hyphen or a bracket (for example "Un'Goro-Gorilla" on German clients). Fixed.</li>
+<li>Close route: the search for linked waypoints near a target often returned fewer than the ten nearest. Most probably never affected anyone, a pure correctness fix.</li>
+<li>Auras: "Delete all auras" deleted every aura on a single key press without asking. Now it asks "Really delete?" first, like deleting a single aura does.</li>
+<li>Profession and trainer windows: after every craft or learn the window name was announced, and the cursor sometimes jumped to another entry. Fixed.</li>
+<li>Profession windows: Enter on a recipe or on "Create" announced the entry twice. Fixed.</li>
+<li>Mailbox: on opening, "Target" was announced before "New mail". Fixed.</li>
+<li>Key bindings: the second key ("Rebind secondary key") had no effect for a number of keys, among them "Trigger monitor party continuous output", target distance, panic mode, minimap scan, group range check, "Turn to unit" and the scan keys. Fixed.</li>
+<li>Monitor combat: "Ignore dead party pets" jumped back to "Yes" after every reload. Fixed.</li>
+<li>Monitor debuffs, raid: the continuous output said raid slot plus one, a number that belonged to nobody. Fixed.</li>
+<li>Monitor combat: "party 5, dead" (fourth party member, new in this version) beeped with "Numbers only" off because there is no voice word "party5". It now says "party" and "5".</li>
+</ul>
+<h2>Quest menu: "Route" finds creatures with a hyphen in their name</h2>
+<p><strong>Simple:</strong> In the quest menu (Quest start, Quest target, Delivery) a creature offers "Route", "Close route" and "Waypoint". "Route" said "list empty" whenever the creature's name contained a hyphen, a bracket or a similar character, even when the creature is well connected to the route network. On German clients that was 249 creatures, among them all three ape kinds in Un'Goro Crater. "Close route" and "Waypoint" were not affected.</p>
+<p><strong>Technically:</strong> SkuQuest/Options.lua, CreateRtWpSubmenu, "Route" branch: string.find(i, wpName) without the plain argument read the waypoint name as a Lua pattern. There "-" is a quantifier ("o-" = any number of o), so the name never found itself. Now string.find(i, wpName, 1, true) at both call sites. The route data in the crater was fine (checked: links, spawn indices and connection to the route network).</p>
+<h2>Close route: the ten nearest linked waypoints are really found</h2>
+<p><strong>Simple:</strong> Most creatures are not linked to the route network themselves. For "Close route" Sku therefore looks for up to ten linked waypoints within 500 yards of the target and takes the best reachable one. That search often returned fewer than ten. The nearest waypoint was always among them, though, and the route network is connected almost everywhere. This most probably never affected anyone; the fix is there for correctness only. The bug could only have shown when the nearest waypoint lies on a detached piece of the network: then "list empty" or a small detour.</p>
+<p><strong>Technically:</strong> SkuNav:GetNearestWpsWithLinksToWp (SkuNav/Core.lua). The sorted insert had no append case: a candidate farther away than every entry was dropped although the list still had room, so the first hit of pairs() set the ceiling. The trim above N entries always removed the farthest one and stays. Checked offline against "the N nearest" (20000 random cases): old 9059 too short, new all correct. All five callers evaluate the whole list and take the best reachable entry, so more candidates can only give equally good or better routes.</p>
+<h2>Auras: basic auras get the full output list</h2>
+<p><strong>Simple:</strong> Under "New aura", "Basic auras" every template had a "Sound" entry where you could pick exactly one sound and nothing else. That entry is now called "Output", followed by the number of outputs switched on, and it opens the same list a custom aura has: every sound and every data output, for example spell name or target unit. Each entry is a switch, Enter turns it on or off, and several may be on at once. What the template used to set (its sound, plus spell name and target unit for "Your buff on a group member expired") is already switched on when the form opens, and can now be switched off too.</p>
+<p><strong>Technically:</strong> SkuAuras/Options.lua. tBuildOutputsLevel takes an optional context (outputs, ownerLabel, tooltip); without it the list edits the aura builder's draft as before, with it the basic-aura form's list. The form (tBaseForm) holds a list outputs instead of a single sound value, seeded from defaultSound and defaultOutputs (formerly fixedOutputs, which were appended unconditionally on create). The summary and tBaseFormCommit read that list; with no output on it still says "No output set".</p>
+<h2>Auras: "Delete all auras" asks first</h2>
+<p><strong>Simple:</strong> "Delete all auras" in the Auras menu had no level below it: one Enter or Right arrow and every aura of the character was gone. Now the entry leads to "Really delete?", like deleting a single aura. Only Enter there deletes, Left arrow backs out.</p>
+<p><strong>Technically:</strong> SkuAuras/Options.lua, MenuBuilder: the entry is now dynamic and its BuildChildren injects the single child "Really delete?". On entering, selectTarget points at the entry itself, so Enter on the child calls its OnAction. Before it was dynamic = false with no children, so OnPostSelect went straight to the OnAction branch.</p>
+<h2>Menu: paths are resolved instead of walked</h2>
+<p><strong>Simple:</strong> Whenever Sku itself puts the menu at a certain place (a window opens, a quick key like Shift-F10, or a window changed and its menu is rebuilt), it used to walk the path there as if Enter were pressed on every level, announcing every stop on the way. During the quiet rebuild of a profession or trainer window after a craft or a learn you therefore heard the window name ("Trade skill", "Class Trainer"), and the cursor was restored by row number into a list that had just changed. Now the target path is resolved directly, without announcing the stops, and the cursor returns to the same entry: the same recipe (even with a new count), the same skill, the same button. Only when that entry is gone is the place the cursor landed announced.</p>
+<p><strong>Technically:</strong> SkuOptions:ResolveMenuPath and EnsureLevelBuilt (SkuZOptions/Core.lua) replace the loop in SlashFunc that called OnSelect(true) on every path segment. Levels on the way are only built (dynamic: RebuildNodeChildren, otherwise one BuildChildren when empty), never selected; only the destination gets its OnSelect as before (pre-build of an empty, non-dynamic level, never on isSkuToggle). The side effects of the walk are gone with it: actionOnEnter nodes along the path fired, every sibling before the match was pre-built. SlashFunc's aSilent parameter is effective now. The restore in SkuCore:CheckFrames makes one silent call instead of two speaking ones and sets the cursor directly: skuIdentity, then name, then the row at the old index (clamped to the new length). Window entries carry skuIdentity (copied by SkuIterateGossipList): recipes "recipe:Name (rank)", categories "cat:", trainer skills "skill:", otherwise "frame:&lt;frame&gt;" for every entry that is alone on its frame (SkuCore:PrepareWindowEntries at the end of the three builders). SkuCore:RefreshWindowMenuQuietly (LocalMenu.lua) is the shared quiet rebuild for TRADE_SKILL_UPDATE/CRAFT_UPDATE and the Train button; it speaks only when the identity (or the count-stripped name) is a different one afterwards. The bags keep their own path (tFindMenuNodeByPath, tBagAnnounceSuppress).</p>
+<h2>Profession windows: Enter on a recipe or "Create" announced the entry twice</h2>
+<p><strong>Simple:</strong> After Enter on a recipe or a Create button the entry was spoken twice. Now once.</p>
+<p><strong>Technically:</strong> The classic click path in SkuIterateGossipList called a speaking CheckFrames after func and OnUpdate 0.35 s later, on top of the key handler's own announce. The third announce was usually caught by the duplicate guard (1 s), the second one came 0.9 s later and was not. Entries with quietClick (set by PrepareWindowEntries for every click button without containerFrameName) now run func plus RefreshWindowMenuQuietly; buttons with a secure /click keep the old path.</p>
+<h2>Mailbox: "Target" before "New mail"</h2>
+<p><strong>Simple:</strong> On opening a mailbox, "Target" was announced first and only then "New mail". Now only "New mail".</p>
+<p><strong>Technically:</strong> Mail:MAIL_SHOW opened the path "Local, Mail" before the MailFrame was visible, but the mail entry under Local exists only while its frame is visible. The path found nothing, and the silent open announced the first root entry instead ("Target", the target menu); the bags pulled the menu into the mail a moment later via CheckFrames. The debug log showed "path walk found nothing ... short,lokal,post" on every mailbox since at least v43.6; it was only noticed once the intermediate announcements were gone. Now MAIL_SHOW opens one frame later (C_Timer.After(0)), only with a visible MailFrame and only if the cursor is not already in the mail branch.</p>
+<h2>Key bindings: second key for monitor, scan, turn and friends</h2>
+<p><strong>Simple:</strong> Under "Sku key bindings" every key has a first and a second binding. For a number of keys the second one could be set and was announced as "Key 2", but did nothing. Affected were "Trigger monitor party continuous output", target distance, panic mode, minimap scan wide and narrow, group member range check, "Turn to unit" 1 to 6 and 180 degrees, "Scan continue", scan 1 to 8 and the resource notification. The second key now works everywhere. The monitor key's English name also loses the typo "continous".</p>
+<p><strong>Technically:</strong> SkuCore/Core.lua, OnHide script of SkuCoreControlOption1: the bindings owned by this frame were armed with SetOverrideBindingClick for .key only (SKU_KEY_TAXICANCEL was the lone exception), while the click dispatcher checks both fields through SkuKeyBindsMatchKey. The binding menus in SkuZOptions/Core.lua have always armed key2, which is why the second key worked for other actions. A local tArm(aConst) helper now binds every key SkuKeyBindsGetKeys returns; the twenty hand-written single lines are gone.</p>
+<h2>Monitor combat: the death announcement names the numpad key</h2>
+<p><strong>Simple:</strong> Under Monitor, Combat, Friendly, "Announce deaths" announces a dead group member. The number in it is now always the key that targets that member. In a party those are Sku's default keys: numpad 1 = self, 2 to 5 = the four others. The fourth party member is therefore now "party 5, dead", no longer "party 4". The health monitor and the overview have always counted this way. In a raid the dial-targeting number is spoken: the single key up to 10 players, the two-digit sequence from 11 on. It used to say "party 2" for members of your own subgroup and "raid 17" (the raw raid slot) for everyone else, two numberings in one fight, neither matching the numpad. Raid slots 26 to 40 were not announced at all. "Count deaths up" is removed: in "number only" mode its "3, dead" could not be told from "party 3, dead", and the counter never went down on a resurrection.</p>
+<p><strong>Technically:</strong> SkuCore/aqCombat.lua, aqCombat_SKU_UNIT_DIED. New helper tDeathUnitToken(GUID) returns the spoken token and the real unit id separately, the UnitIsDeadOrGhost and pet checks need the raw slot. Party: token from aqCombatGroupGuidToUnitId, digit plus 1. Raid: all MAX_RAID_MEMBERS slots scanned by GUID (the 25 in tAllPartyRaidUnits were not enough), number read from the dial-targeting grid (SkuSecureTargetingFrame, unitNameSlotGG-SS, key = (GG-1)*5+SS; insecure code may read a secure frame's attributes), else tDTRaidRoster from aq.lua, else live (subgroup-1)*5+position. Grid and roster are rebuilt out of combat only, so they go stale together with the numpad. partyDeadCount with its counter, menu and locale key removed, the stored value is cleared at login.</p>
+<h2>Monitor combat: "Ignore dead party pets" stays on No</h2>
+<p><strong>Simple:</strong> The setting could be set to "No" but was back on "Yes" after the next reload. Fixed.</p>
+<p><strong>Technically:</strong> aqCombatOnLogin set the value with "x or true"; a stored false is falsy in Lua and was replaced by true at every load. Now only when nil.</p>
+<h2>Monitor health: "Add Dead on 0 percent" off by default</h2>
+<p><strong>Simple:</strong> The pitch style of the party and raid health monitor appends a "dead" clip to the tone of a member at 0 percent. That was on for party and raid and is now off, for existing characters as well. Switch it back on under Monitor, Party or Raid, Health if you want it. The combat monitor's death announcement (above) is thereby the only death message that runs on its own.</p>
+<p><strong>Technically:</strong> SkuCore/aq.lua, AqOnLogin: default false instead of true, one-time switch of existing characters via addDeadOn0PercentDefaultOff (same pattern as *DefaultOff in aqCombat).</p>
+<h2>Dial Targeting: raids only, one key up to 10 players</h2>
+<p><strong>Simple:</strong> "Enabled" under Dial Targeting is now an On/Off toggle and only acts in a raid. The choices "Party" and "Party and Raid" are gone: in a party Sku's default keys numpad 1 to 5 reach everyone anyway, and the party mode laid a shifted numbering (0 = self, 1 to 4 = the others) over them and hid the default keys while it was active. A stored "Party" becomes Off, "Raid" and "Party and Raid" become On. In raids of up to 10 players one key per member is now always active (numpad 1 to 9, 0 = member 10, in subgroup order), from 11 players on the two-digit input. The option "Single key action in raids up to 10 players" is gone, that is the rule now.</p>
+<p><strong>Technically:</strong> SkuCore/DialTargeting.lua. enabled is mapped once at login to Off/On, singleKeyinRaid10 cleared. DialTargetingRosterUpdate and DialTargeting_EndableDisable only check UnitInRaid and enabled == On; the party branch (unitNameSlot01-0x = partyx) and the dead "party" branch in the secure snippet are removed. Raid mode: tNumCurMembers &gt; 10 means two digits, else raid10. Three locale keys removed. All of it untested in game.</p>
+<h2>Group numbers: one count for every monitor</h2>
+<p><strong>Simple:</strong> Every number Sku says for a group member should be the key that targets them. In a party that is numpad 1 for you and 2 to 5 for the others; in a raid the dial-targeting number, a single key 1 to 10 with up to 10 players and two digits from 11 on. The death announcement counts that way since this version. Now the raid health monitor and the raid debuff monitor, the threat warnings, "target of target" and "out of range" in the combat monitor, and the aura outputs "source unit" and "target unit" do too. The party health and debuff monitors keep the party count inside a raid, because whoever watches only their own subgroup there targets it with numpad 2 to 5.</p>
+<p>The raid health monitor has pitch files for numbers 1 to 25 only, so members 26 to 40 were silent. They are spoken now, the number first, then health in steps of ten, with the voice from the new setting "Voice for members above 25" (Monitor, Raid, Health;</p>
+<p>default Justin).</p>
+<p><strong>Technically:</strong> SkuCore/aq.lua: SkuCore.Monitor.RaidMemberNumbersByName() builds the name-to- number table by the dial rule (up to 10 members flat 1-10 in subgroup order, from 11 (subgroup-1)*5+position); tDTRaidRoster and the dial-targeting grid (DialTargeting.lua) are filled from it, tDTRaidRoster always used the two-digit formula before. SkuCore.Monitor.GroupMemberNumber(unitId) returns the key number for party/raid tokens. The continuous raid debuff output said string.sub(unitId, 5)+1. MonitorOutputRaidPercent2 speaks numbers above 25 via MonitorOutputPlayerStatus (raid.health2.voice, default 1) and returns the duration to the queue; the queue entries carry the absolute health for that. SkuCore/aqCombat.lua: tAllPartyRaidUnits and tUnitsToTestOnGameRaidTargets had raid1-25 hard-wired; they are now refilled in place from the real raid size on every roster event. tSpokenGroupUnit(unitId) applies the death-announcement mapping to every friendly announcement. "party5"/"partypet5" do not exist as words in the combat voices, SkuCoreAqCombatGetVoiceString splits them into "party", "pet", "5". SkuAuras/data.lua: tUnitIdToSpokenName says party N as N+1 and raid N as the dial number.</p>
+<h2>Raid subgroup keys: jump into a raid group with one key</h2>
+<p><strong>Simple:</strong> Whoever only heals their own group in a raid needs a quick way into a group without the two-digit dial entry. Alt+Numpad 1 to 8 target the first member of raid subgroup 1 to 8 (the member numbered 1 in that group, the same order dial targeting and the monitors use). The target is announced like any target. If the group is empty, Sku says "Group N empty" and nothing happens; outside a raid "No raid". The eight keys have their own sub-menu "Raid subgroup keys" in the Sku key bindings, the second key works too. The feature can be switched off under Features. As with every targeting key: group changes during a fight are picked up after the fight, until then the key jumps to the previous first member.</p>
+<p><strong>Technically:</strong> New file SkuCore/subgroupTargeting.lua (submodule SubgroupTargeting, in the TOC after skuFocus.lua). Eight SecureActionButtons SkuSubgroupTarget1-8 with type1=macro, macrotext1="/tar &lt;name&gt;", bound via SetOverrideBindingClick WITHOUT a fifth argument (LeftButton, so type1/macrotext1 is read); the names come from GetRaidRosterInfo (first name per subgroup in roster order) on GROUP_ROSTER_UPDATE, GROUP_FORMED/JOINED/LEFT and PLAYER_ENTERING_WORLD out of combat, deferred to PLAYER_REGEN_ENABLED in combat. PreClick (insecure, runs in combat too) speaks the empty / no-raid line. Control frame SkuCoreSubgroupControl, script OnHide, arms both keys of every const via SkuOptions:SkuKeyBindsGetKeys. Consts</p>
+<p>SKU_KEY_SUBGROUPTARGET1-8, default ALT-NUMPAD1-8 (SkuZOptions/SkuKeyBinds.lua), group "Raid Untergruppen Tasten" in SkuCore/Options.lua.</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.8.html">Older version: v43.8</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>
