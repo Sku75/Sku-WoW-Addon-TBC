@@ -157,8 +157,7 @@ local tLastAuraCleuEvalTime = {}
 -- rebuilt lazily after any of the four roster events (all funnel through
 -- RoleCheckerUpdateRoster) staled them. VOLATILE tokens (target, focus, pet,
 -- every *target) deliberately stay live UnitGUID compares — they change outside
--- roster events. Values are INDEX NUMBERS, not tokens, so RoleChecker can keep
--- its historical raid1..25 horizon exactly.
+-- roster events. Values are INDEX NUMBERS, not tokens.
 local tRaidGuidIndex = {}
 local tPartyGuidIndex = {}
 local tGroupGuidMapValid = false
@@ -3443,8 +3442,11 @@ function SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(aUnitGUID)
 		return
 	end
 	-- [v43.0] Map lookups instead of per-event UnitGUID sweeps (see
-	-- tRaidGuidIndex). The historical raid horizon of raid1..25 is preserved via
-	-- the stored index: raid26..40 stay unknown here, exactly as before.
+	-- tRaidGuidIndex).
+	-- [v43.10] All 40 raid slots. The old raid1..25 horizon left members 26-40
+	-- without automatic role detection, and since v43.9 the raid health monitor
+	-- speaks them; it also let a tracked member who moved past slot 25 be pruned
+	-- inside RoleCheckerGetUnitRole while it was the one being asked about.
 	if not UnitInRaid("player") then
 		if aUnitGUID == UnitGUID("player") then
 			return "player"
@@ -3458,7 +3460,7 @@ function SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(aUnitGUID)
 	if UnitInRaid("player") then
 		tEnsureGroupGuidMap()
 		local tIdx = tRaidGuidIndex[aUnitGUID]
-		if tIdx and tIdx <= 25 then
+		if tIdx then
 			return "raid"..tIdx
 		end
 	end
@@ -3591,7 +3593,9 @@ function SkuAuras:RoleCheckerGetUnitRole(aUnitGUID)
 			end
 		end
 
-		if tGroupMemberCount > 0 then
+		-- The asked unit itself can have been pruned above (it left the group),
+		-- and then tUnitRoles[aUnitGUID] is nil and tUnitID unset.
+		if tUnitID and tGroupMemberCount > 0 then
 			tDmgAvg = tDmgAvg / tGroupMemberCount
 			tHealAvg = tHealAvg / tGroupMemberCount
 			if tUnitRoles[aUnitGUID].heal > 0 and (tUnitRoles[aUnitGUID].heal) >= (tHealAvg * 2) then --if the healing done is > the groups average healing done we assume the unit is a healer
@@ -3605,7 +3609,7 @@ function SkuAuras:RoleCheckerGetUnitRole(aUnitGUID)
 	end
 
 	--found nothing, must be non-group or no action so far
-	return 4, tUnitID
+	return 4, nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

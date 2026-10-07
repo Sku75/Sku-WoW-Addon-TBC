@@ -373,10 +373,15 @@ local function tDeathUnitToken(aUnitGUID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- The spoken token for any group unit id the combat monitor announces (threat
--- warnings, target-of-target, out-of-range): the same numbering as the death
+-- The spoken token for any group unit id the combat monitor announces
+-- (target-of-target, out-of-range): the same numbering as the death
 -- announcement, see tDeathUnitToken. The raw id when it is not a group member.
+-- nil passes through: UnitGUID(nil) throws, and v43.9 shipped exactly that from
+-- the threat warnings, whose unit1 had always been nil (they speak no unit).
 local function tSpokenGroupUnit(aUnitId)
+   if aUnitId == nil then
+      return nil
+   end
    local tSpoken = tDeathUnitToken(UnitGUID(aUnitId))
    return tSpoken or aUnitId
 end
@@ -927,12 +932,12 @@ local function aqCombatCreateControlFrame()
                                     if tthreatWarningIsFirstSecondHigherThanLastWarning == -1 or GetTimePreciseSec() - tthreatWarningIsFirstSecondHigherThanLastWarning > tCurrentSettings.combat.hostile.threatWarningInterval then
                                        tthreatWarningIsFirstSecondHigherThanLastWarning = GetTimePreciseSec() 
                                        local tSetting = tCurrentSettings.combat.hostile.threatWarningIsFirstSecondHigherThan
-                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                     end
                                  else
                                     if tthreatWarningIsFirstSecondHigherThanLastWarning > -1  then
                                        local tSetting = tCurrentSettings.combat.hostile.threatWarningIsFirstSecondHigherThan
-                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                        tthreatWarningIsFirstSecondHigherThanLastWarning = -1
                                     end
                                  end
@@ -951,12 +956,12 @@ local function aqCombatCreateControlFrame()
                                     if tthreatWarningNotFirstHigherThanLastWarning == -1 or GetTimePreciseSec() - tthreatWarningNotFirstHigherThanLastWarning > tCurrentSettings.combat.hostile.threatWarningInterval then
                                        tthreatWarningNotFirstHigherThanLastWarning = GetTimePreciseSec() 
                                        local tSetting = tCurrentSettings.combat.hostile.threatWarningNotFirstHigherThan
-                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                     end
                                  else
                                     if tthreatWarningNotFirstHigherThanLastWarning > -1  then
                                        local tSetting = tCurrentSettings.combat.hostile.threatWarningNotFirstHigherThan
-                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                                       SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                        tthreatWarningNotFirstHigherThanLastWarning = -1
                                     end
                                  end

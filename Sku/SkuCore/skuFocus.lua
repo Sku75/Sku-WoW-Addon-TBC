@@ -49,7 +49,7 @@ for x = 1, 4 do
    tFocusUnitIds["party"..x.."targettarget"] = true
    tFocusUnitIds["partypet"..x.."targettarget"] = true
 end
-for x = 1, 25 do
+for x = 1, MAX_RAID_MEMBERS do
    tFocusUnitIds["raid"..x] = true
    tFocusUnitIds["raidpet"..x] = true
    tFocusUnitIds["raid"..x.."target"] = true
