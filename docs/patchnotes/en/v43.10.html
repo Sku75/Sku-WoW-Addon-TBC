@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v43.10 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v43.10.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/v43.10.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v43.10 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.9.html">Older version: v43.9</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Overview</h2>
+<h3>New</h3>
+<ul>
+<li>Auras: new base aura "Your target switches to a group member". When the enemy you have targeted turns to another member, a sound plays and the member is named by their key number, in party and raid.</li>
+</ul>
+<h3>Changes</h3>
+<ul>
+<li>Role detection: the health monitor now detects tank, healer and damage automatically for raid members 26 to 40 too. Before only up to slot 25.</li>
+<li>Focus: /focus1 to /focus8 now accept every raid slot (raid1 to raid40), before only up to raid25.</li>
+<li>Auras: new unit values "party or raid members" and "... excluding yourself". They cover the whole raid; the existing party values only cover your own subgroup in a raid.</li>
+</ul>
+<h3>Bugfixes</h3>
+<ul>
+<li>Monitor combat: since v43.9 the threat warnings raised a Lua error (aqCombat.lua:380, UnitGUID) and stayed silent, for example when you pulled aggro in a group. Fixed.</li>
+</ul>
+<h2>Monitor combat: threat warnings audible again</h2>
+<p><strong>Simple:</strong> Pulling aggro in a group, or coming close to it, gave an error instead of the warning since v43.9. The "threat high" and "threat low" warnings play again. They do not name a player and never did; the v43.9 notes described that wrongly.</p>
+<p><strong>Technically:</strong> the four outputs of the two warnings passed unit1 = tAllPartyRaidUnits[x] with no x in scope, so always nil; their templates contain no ${unit1}. v43.9 sent the value through tSpokenGroupUnit, which called UnitGUID(nil). The argument is gone, and tSpokenGroupUnit now returns nil for nil.</p>
+<h2>Role detection: raid slots 26 to 40</h2>
+<p><strong>Simple:</strong> Since v43.9 the raid health monitor speaks members 26 to 40 too, but their role was not detected automatically. Now it is.</p>
+<p><strong>Technically:</strong> RoleCheckerIsUnitGUIDInPartyOrRaid only knew raid1 to raid25; the limit is gone. RoleCheckerGetUnitRole crashed when the member it was asked about got pruned as no longer in the group while cleaning up the role data, and its last line read a variable out of scope. Both fixed.</p>
+<h2>Focus: all 40 raid slots</h2>
+<p><strong>Simple:</strong> "/focus3 raid30" used to store the text "raid30" as the name, and the focus key then found nobody. Now the member's name is stored, as for raid1 to raid25.</p>
+<p><strong>Technically:</strong> tFocusUnitIds (skuFocus.lua) knew raid, raidpet and their target chains only for 1 to 25, now up to MAX_RAID_MEMBERS.</p>
+<h2>Auras: base aura "Your target switches to a group member"</h2>
+<p><strong>Simple:</strong> For tanks. Under New aura, Base auras. When the enemy you have targeted switches to another party or raid member, a sound plays and Sku says who: "party 3" in a party (the numpad key), the dial number in a raid. When it comes back to you, it stays quiet. "Who" narrows down which members are watched. This is the aura from the old protection warrior set, which could not be loaded for a long time, with a tighter condition.</p>
+<p><strong>Technically:</strong> event UNIT_TARGETCHANGE, source contains target and is attackable, dest = the chosen value (preset raidWoPlayer), outputs sound plus dest unit. The old set only checked "source is not a party member"; since Sku tracks the targets of all 40 raid slots, a healer in another subgroup selecting someone fired it too. Base auras can now ask for a value other than a spell (valueLabel, emptyValueMessage, defaultValues).</p>
+<h2>Auras: values for the whole raid</h2>
+<p><strong>Simple:</strong> Source, target and "target of your target" have two new values: "party or raid members" (with you) and "party or raid members excluding yourself". In a party they behave like the party values, in a raid they cover every member. The old party values stay as they are: only your own subgroup in a raid.</p>
+<p><strong>Technically:</strong> tEvaluateRaidValue (data.lua) checks the unit set for party1-4 and raid1-40. "Excluding yourself" means no "player" in the set, because in a raid GetBestUnitId also returns your own raidN slot for you.</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v43.9.html">Older version: v43.9</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>
