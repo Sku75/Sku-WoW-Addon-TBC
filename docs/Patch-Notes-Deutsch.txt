@@ -4,6 +4,71 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.10
+
+    Ueberblick
+
+        Neu
+            Auren: neue Basis-Aura "Dein Ziel wechselt auf ein Gruppenmitglied". Wendet sich der Gegner, den du im Ziel hast, einem anderen Mitglied zu, gibt es einen Ton und das Mitglied wird mit seiner Tastennummer genannt, in Gruppe und Raid.
+
+        Aenderungen
+            Rollenerkennung: der Gesundheitsmonitor erkennt Tank, Heiler und Schaden jetzt auch fuer Raid-Mitglieder 26 bis 40 automatisch. Bisher nur bis Platz 25.
+            Fokus: /focus1 bis /focus8 nehmen jetzt alle Raid-Plaetze an (raid1 bis raid40), bisher nur bis raid25.
+            Auren: neue Einheiten-Werte "gruppen- oder raidmitglieder" und "... ohne dich". Sie gelten fuer den ganzen Raid; die bisherigen Gruppen-Werte erfassen im Raid nur die eigene Untergruppe.
+
+        Fehlerbehebungen
+            Monitor Kampf: die Bedrohungswarnungen loesten seit v43.9 einen Lua-Fehler aus (aqCombat.lua:380, UnitGUID) und blieben stumm, zum Beispiel wenn man in einer Gruppe Aggro zog. Behoben.
+
+    Monitor Kampf: Bedrohungswarnungen wieder hoerbar
+        Einfach: Wer in einer Gruppe Aggro zog oder kurz davor war, bekam seit v43.9 statt der
+            Warnung einen Fehler. Die Warnungen "Bedrohung hoch" und "Bedrohung niedrig" kommen
+            wieder. Sie nennen keinen Spieler, das haben sie nie getan; die Notizen zu v43.9
+            hatten das falsch beschrieben.
+        Technisch: die vier Ausgaben der beiden Warnungen gaben unit1 = tAllPartyRaidUnits[x] mit,
+            ohne dass es dort ein x gibt, also immer nil; ihre Vorlagen enthalten kein ${unit1}.
+            v43.9 schickte den Wert durch tSpokenGroupUnit, und das rief UnitGUID(nil) auf. Das
+            Argument ist entfernt, tSpokenGroupUnit gibt bei nil jetzt nil zurueck.
+
+    Rollenerkennung: Raid-Plaetze 26 bis 40
+        Einfach: Der Gesundheitsmonitor im Raid spricht seit v43.9 auch die Mitglieder 26 bis 40.
+            Ihre Rolle wurde aber nicht automatisch erkannt. Das geht jetzt.
+        Technisch: RoleCheckerIsUnitGUIDInPartyOrRaid kannte nur raid1 bis raid25, die Grenze ist
+            weg. RoleCheckerGetUnitRole stuerzte ab, wenn das gefragte Mitglied beim Aufraeumen
+            der Rollendaten als nicht mehr in der Gruppe entfernt wurde, und las am Ende eine
+            Variable ausserhalb ihres Gueltigkeitsbereichs. Beides behoben.
+
+    Fokus: alle 40 Raid-Plaetze
+        Einfach: "/focus3 raid30" speicherte bisher den Text "raid30" als Namen, die Fokustaste
+            fand dann niemanden. Jetzt wird wie bei raid1 bis raid25 der Name des Mitglieds
+            gespeichert.
+        Technisch: tFocusUnitIds (skuFocus.lua) kannte raid, raidpet und ihre target-Ketten nur
+            fuer 1 bis 25, jetzt bis MAX_RAID_MEMBERS.
+
+    Auren: Basis-Aura "Dein Ziel wechselt auf ein Gruppenmitglied"
+        Einfach: Fuer Tanks. Unter Neue Aura, Basis-Auren. Wechselt der Gegner, den du im Ziel
+            hast, auf ein anderes Gruppen- oder Raidmitglied, gibt es einen Ton und Sku sagt, wer
+            es ist: "party 3" in der Gruppe (die Numblock-Taste), die Dial-Nummer im Raid. Kommt
+            er zu dir zurueck, bleibt es still. Unter "Wer" laesst sich einschraenken, wer
+            beobachtet wird. Das ist die Aura aus dem alten Krieger-Schutz-Set, das man seit
+            Langem nicht mehr laden kann, mit einer genaueren Bedingung.
+        Technisch: Ereignis UNIT_TARGETCHANGE, Quelle enthaelt target und ist angreifbar, Ziel =
+            der gewaehlte Wert (vorbelegt raidWoPlayer), Ausgabe Ton plus Zieleinheit. Das alte
+            Set pruefte nur "Quelle ist kein Gruppenmitglied"; weil Sku die Ziele aller 40
+            Raid-Plaetze verfolgt, loeste dort auch ein Heiler aus einer anderen Untergruppe aus,
+            der jemanden anwaehlte. Basis-Auren koennen jetzt einen anderen Wert als einen
+            Zauber abfragen (valueLabel, emptyValueMessage, defaultValues).
+
+    Auren: Werte fuer den ganzen Raid
+        Einfach: Bei Quelle, Ziel und "Ziel deines Ziels" gibt es zwei neue Werte:
+            "gruppen- oder raidmitglieder" (mit dir) und "gruppen- oder raidmitglieder ohne
+            dich". In einer Gruppe verhalten sie sich wie die Gruppen-Werte, im Raid gelten sie
+            fuer alle Mitglieder. Die alten Gruppen-Werte bleiben wie sie sind: im Raid nur die
+            eigene Untergruppe.
+        Technisch: tEvaluateRaidValue (data.lua) prueft die Einheitenmenge auf party1-4 und
+            raid1-40. "Ohne dich" heisst: kein "player" in der Menge, weil GetBestUnitId fuer
+            dich im Raid auch deinen raidN-Platz liefert.
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.9
 
     Ueberblick

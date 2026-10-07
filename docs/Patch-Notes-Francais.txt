@@ -7,6 +7,72 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.10
+
+    Aperçu
+
+        Nouveautés
+            Auras : nouvelle aura de base « Votre cible passe sur un membre du groupe ». Quand l'ennemi que vous ciblez se tourne vers un autre membre, un son est joué et le membre est nommé par son numéro de touche, en groupe comme en raid.
+
+        Changements
+            Détection des rôles : le moniteur de santé détecte maintenant automatiquement tank, soigneur et dégâts aussi pour les membres de raid 26 à 40. Avant, seulement jusqu'à la place 25.
+            Focalisation : /focus1 à /focus8 acceptent maintenant toutes les places de raid (raid1 à raid40), avant seulement jusqu'à raid25.
+            Auras : nouvelles valeurs d'unité « membres du groupe ou du raid » et « ... sauf vous ». Elles couvrent tout le raid ; les valeurs de groupe existantes ne couvrent en raid que votre propre sous-groupe.
+
+        Corrections
+            Moniteur de combat : depuis la v43.9, les alertes de menace déclenchaient une erreur Lua (aqCombat.lua:380, UnitGUID) et restaient muettes, par exemple quand on prenait l'aggro en groupe. Corrigé.
+
+    Moniteur de combat : les alertes de menace s'entendent à nouveau
+        Simple : Prendre l'aggro en groupe, ou en être proche, donnait une erreur au lieu de
+            l'alerte depuis la v43.9. Les alertes « menace haute » et « menace basse » reviennent.
+            Elles ne nomment aucun joueur et ne l'ont jamais fait ; les notes de la v43.9 le
+            décrivaient à tort.
+        Technique : les quatre sorties des deux alertes passaient unit1 = tAllPartyRaidUnits[x]
+            sans x défini à cet endroit, donc toujours nil ; leurs modèles ne contiennent pas
+            ${unit1}. La v43.9 faisait passer la valeur par tSpokenGroupUnit, qui appelait
+            UnitGUID(nil). L'argument est retiré, et tSpokenGroupUnit renvoie nil pour nil.
+
+    Détection des rôles : places de raid 26 à 40
+        Simple : Depuis la v43.9 le moniteur de santé du raid annonce aussi les membres 26 à 40,
+            mais leur rôle n'était pas détecté automatiquement. C'est fait maintenant.
+        Technique : RoleCheckerIsUnitGUIDInPartyOrRaid ne connaissait que raid1 à raid25 ; la
+            limite est supprimée. RoleCheckerGetUnitRole plantait quand le membre demandé était
+            retiré des données de rôle comme ne faisant plus partie du groupe, et sa dernière
+            ligne lisait une variable hors de portée. Les deux sont corrigés.
+
+    Focalisation : les 40 places de raid
+        Simple : « /focus3 raid30 » enregistrait le texte « raid30 » comme nom, et la touche de
+            focalisation ne trouvait alors personne. Maintenant c'est le nom du membre qui est
+            enregistré, comme pour raid1 à raid25.
+        Technique : tFocusUnitIds (skuFocus.lua) ne connaissait raid, raidpet et leurs chaînes
+            target que de 1 à 25, maintenant jusqu'à MAX_RAID_MEMBERS.
+
+    Auras : aura de base « Votre cible passe sur un membre du groupe »
+        Simple : Pour les tanks. Sous Nouvelle aura, Auras de base. Quand l'ennemi que vous
+            ciblez passe sur un autre membre du groupe ou du raid, un son est joué et Sku dit
+            qui : « party 3 » en groupe (la touche du pavé numérique), le numéro de dial en raid.
+            Quand il revient sur vous, rien n'est dit. « Qui » permet de restreindre les membres
+            surveillés. C'est l'aura de l'ancien set du guerrier protection, qu'on ne pouvait
+            plus charger depuis longtemps, avec une condition plus précise.
+        Technique : événement UNIT_TARGETCHANGE, source contient target et est attaquable,
+            destination = la valeur choisie (préréglée raidWoPlayer), sorties son plus unité
+            cible. L'ancien set ne vérifiait que « la source n'est pas un membre du groupe » ;
+            comme Sku suit les cibles des 40 places de raid, un soigneur d'un autre sous-groupe
+            qui sélectionnait quelqu'un la déclenchait aussi. Les auras de base peuvent
+            maintenant demander autre chose qu'un sort (valueLabel, emptyValueMessage,
+            defaultValues).
+
+    Auras : valeurs pour tout le raid
+        Simple : Source, cible et « cible de votre cible » ont deux nouvelles valeurs :
+            « membres du groupe ou du raid » (vous compris) et « membres du groupe ou du raid
+            sauf vous ». En groupe elles se comportent comme les valeurs de groupe, en raid
+            elles couvrent tous les membres. Les anciennes valeurs de groupe restent telles
+            quelles : en raid, seulement votre sous-groupe.
+        Technique : tEvaluateRaidValue (data.lua) cherche party1-4 et raid1-40 dans l'ensemble
+            d'unités. « Sauf vous » veut dire : pas de « player » dans l'ensemble, car en raid
+            GetBestUnitId renvoie aussi votre propre place raidN.
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.9
 
     Aperçu
