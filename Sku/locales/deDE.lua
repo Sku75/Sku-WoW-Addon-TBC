@@ -3452,6 +3452,13 @@ L["Wirklich löschen?"] = "Wirklich löschen?"
 -- Sku v43.0: Aura-Referenzen in einem Untermenue (SkuAuras/Options.lua)
 L["AURA_AuraRefGroup"] = "Selbsterstellte Auren"
 L["AURA_AuraRefGroupTip"] = "Ob eine andere deiner Auren gerade zutrifft. Hier stehen nur Auren, denen du selbst einen Namen gegeben hast"
+L["AURA_RaidMembers"] = "gruppen- oder raidmitglieder"
+L["AURA_RaidMembersTip"] = "ein beliebiges Mitglied deiner Gruppe oder deines Schlachtzugs, du eingeschlossen. Im Raid alle Mitglieder, nicht nur deine Untergruppe"
+L["AURA_RaidMembersWoPlayer"] = "gruppen- oder raidmitglieder ohne dich"
+L["AURA_RaidMembersWoPlayerTip"] = "ein beliebiges Mitglied deiner Gruppe oder deines Schlachtzugs ausser dir. Im Raid alle Mitglieder, nicht nur deine Untergruppe"
+L["AURA_RecipeTargetSwitchesToMember"] = "Dein Ziel wechselt auf ein Gruppenmitglied"
+L["AURA_RecipeWhoLabel"] = "Wer"
+L["AURA_RecipeNoUnitSet"] = "Keine Einheit festgelegt"
 
 -- Sku v43.2: "Quests in der Nähe" -- Questlog nach Entfernung (SkuQuest/Options.lua)
 L["Quests in der Nähe"] = "Quests in der Nähe"

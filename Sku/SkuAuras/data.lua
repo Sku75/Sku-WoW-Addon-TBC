@@ -1010,6 +1010,14 @@ SkuAuras.valuesDefault = {
          tooltip = L["ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist"],
          friendlyName = L["gruppenmitglieder"],
       },
+      ["raid"] = {
+         tooltip = L["AURA_RaidMembersTip"],
+         friendlyName = L["AURA_RaidMembers"],
+      },
+      ["raidWoPlayer"] = {
+         tooltip = L["AURA_RaidMembersWoPlayerTip"],
+         friendlyName = L["AURA_RaidMembersWoPlayer"],
+      },
       ["party0"] = {
          tooltip = L["Gruppenmitglied 0 (du)."],
          friendlyName = L["gruppenmitglied 0"],
@@ -1417,6 +1425,8 @@ local unitIDValues = {
    "pet",
    "party",
    "partyWoPlayer",
+   "raid",
+   "raidWoPlayer",
    "all",
    "focus",
    "party0",
@@ -1432,6 +1442,47 @@ local unitIDValues = {
    "party3target",
    "party4target",
 }
+
+-- [v43.10] "raid" / "raidWoPlayer": any group member, in a party AND in a raid.
+-- "party" / "partyWoPlayer" test party1-4, which inside a raid are only the
+-- player's own subgroup, so an aura on them went deaf to the rest of the raid.
+-- The unit sets come from GetBestUnitId, which lists the player's own raid slot
+-- (raidN) next to "player"; "without you" therefore means "no player token in
+-- the set", not "a non-player token in the set". Returns nil for any other
+-- value, so the callers fall through to their own branches.
+local tGroupMemberUnitIds = {}
+for x = 1, 4 do
+   tGroupMemberUnitIds["party"..x] = true
+end
+for x = 1, MAX_RAID_MEMBERS do
+   tGroupMemberUnitIds["raid"..x] = true
+end
+
+local function tEvaluateRaidValue(aUnitIds, aOperator, aValue)
+   if aValue ~= "raid" and aValue ~= "raidWoPlayer" then
+      return nil
+   end
+   local tHasPlayer, tHasMember = false, false
+   if type(aUnitIds) == "table" then
+      for _, tUnitId in pairs(aUnitIds) do
+         if tUnitId == "player" then
+            tHasPlayer = true
+         elseif tGroupMemberUnitIds[tUnitId] then
+            tHasMember = true
+         end
+      end
+   end
+   local tMatch
+   if aValue == "raid" then
+      tMatch = tHasPlayer or tHasMember
+   else
+      tMatch = tHasMember and not tHasPlayer
+   end
+   if aOperator == "containsNot" then
+      return not tMatch
+   end
+   return tMatch
+end
 
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.attributes = {
@@ -1472,7 +1523,10 @@ SkuAuras.attributes = {
 
             if aOperator == "containsNot" or aOperator == "contains" then
                
-               if aValue == "party" then
+               local tRaidMatch = tEvaluateRaidValue(aEventData.destUnitId, aOperator, aValue)
+               if tRaidMatch ~= nil then
+                  tEvaluation = tRaidMatch
+               elseif aValue == "party" then
                   tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.destUnitId, {"player", "party0", "party1", "party2", "party3", "party4"})
                elseif aValue == "partyWoPlayer" then
                   tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.destUnitId, {"party1", "party2", "party3", "party4"})
@@ -1535,7 +1589,10 @@ SkuAuras.attributes = {
 
             if aOperator == "containsNot" or aOperator == "contains" then
                
-               if aValue == "party" then
+               local tRaidMatch = tEvaluateRaidValue(aEventData.targetTargetUnitId, aOperator, aValue)
+               if tRaidMatch ~= nil then
+                  tEvaluation = tRaidMatch
+               elseif aValue == "party" then
                   tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.targetTargetUnitId, {"player", "party0", "party1", "party2", "party3", "party4"})
                elseif aValue == "partyWoPlayer" then
                   tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.targetTargetUnitId, {"party1", "party2", "party3", "party4"})
@@ -1707,7 +1764,10 @@ SkuAuras.attributes = {
             local tEvaluation = false
 
             if aOperator == "containsNot" or aOperator == "contains" then
-               if aValue == "party" then
+               local tRaidMatch = tEvaluateRaidValue(aEventData.sourceUnitId, aOperator, aValue)
+               if tRaidMatch ~= nil then
+                  tEvaluation = tRaidMatch
+               elseif aValue == "party" then
                   tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.sourceUnitId, {"player", "party0", "party1", "party2", "party3", "party4"})
 
                elseif aValue == "partyWoPlayer" then

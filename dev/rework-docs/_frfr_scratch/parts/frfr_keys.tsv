@@ -613,7 +613,6 @@ CorpseLootable	cadavre pillable
 CorpseNotLootable	cadavre non pillable
 CorpseSkinnable	cadavre dépeçable
 Cost	Coût
-Count deaths up	Compter les morts
 Crafting	Artisanat
 Create	Créer
 Create Group	Créer un groupe
@@ -1750,7 +1749,6 @@ Panel	Sous-volet
 Parent quest	Pré-quête
 Pariert	Paré
 Party	Groupe
-Party and Raid	Groupe et raid
 Party health monitor enabled	Moniteur de santé du groupe activé
 Pass	Correspond
 Pass rolled	a lancé Adapté
@@ -2219,7 +2217,6 @@ Silber	Argent
 Silent on 100 and 0 percent	Silence continu à 100 et 0 pour cent
 Silent on all at 100 percent	Silence continu sur tout à 100 pour cent
 Silver	Argent
-Single key action in raids up to 10 players	Action à touche unique dans les raids jusqu'à 10 joueurs
 Size	Taille
 Skeptical	Sceptique
 Skill	Compétence
@@ -2737,6 +2734,7 @@ aura stapel	cumul d'aura
 aura verloren	aura perdue
 aura;sound	aura;son
 aus	désactivé
+ausgeklappt	développé
 ausgeschaltet	désactivé
 auto	auto
 auto play Settings	lecture automatique
@@ -2822,6 +2820,7 @@ eigene gesundheit	Santé personnelle
 ein	activé
 ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist	n'importe quel membre du groupe. exemple : un buff qui a expiré sur un membre du groupe
 eine beliebige Einheit. Beispiel: Irgendein Mob stirbt	n'importe quelle unité. Exemple : n'importe quelle créature meurt
+eingeklappt	réduit
 einheit tot	unité morte
 einheit zerstört	unité détruite
 empty	vide
@@ -3174,6 +3173,7 @@ wide beacon sound set	Son pour les grandes balises
 wiederbeleben	ressusciter
 winzig	minuscule
 wipe	wipe
+wird abgerufen	chargement en cours
 word	mot
 world boss	Boss de monde
 your role	votre rôle
@@ -3221,6 +3221,12 @@ zurückziehen	retirer
 Überleben	Survie
 Übernehmen hinzufügen	Appliquer en ajoutant
 Übernehmen überschreiben	Appliquer en écrasant
-wird abgerufen	chargement en cours
-eingeklappt	réduit
-ausgeklappt	développé
+AURA_RaidMembers	membres du groupe ou du raid
+AURA_RaidMembersTip	n'importe quel membre de votre groupe ou raid, vous compris. En raid, tous les membres, pas seulement votre sous-groupe
+AURA_RaidMembersWoPlayer	membres du groupe ou du raid sauf vous
+AURA_RaidMembersWoPlayerTip	n'importe quel membre de votre groupe ou raid sauf vous. En raid, tous les membres, pas seulement votre sous-groupe
+AURA_RecipeTargetSwitchesToMember	Votre cible passe sur un membre du groupe
+AURA_RecipeWhoLabel	Qui
+AURA_RecipeNoUnitSet	Aucune unité définie
+Raid Untergruppen Tasten	Touches de sous-groupe de raid
+Voice for members above 25	Voix pour les membres au-delà de 25

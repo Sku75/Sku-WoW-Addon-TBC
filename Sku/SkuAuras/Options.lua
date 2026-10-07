@@ -2177,6 +2177,10 @@ end
 --   fixed     - the conditions the recipe pins down itself
 --   attribute - the one the user fills in
 --   operator  - how that attribute is compared
+--   [v43.10] optional, for a slot that is not a spell:
+--   valueLabel        - L key naming the slot (default "Zauber")
+--   emptyValueMessage - L key spoken when it is empty (default "Kein Zauber festgelegt")
+--   defaultValues     - values the slot starts with
 -- so the filled attribute is an ordinary condition group and the form can hand
 -- it straight to the SAME value list the custom builder uses. That is what lets
 -- a recipe take SEVERAL spells ("Mondfeuer oder Insektenschwarm") for free.
@@ -2256,6 +2260,36 @@ local tBaseAuraRecipes = {
 			event = {{"is", "UNIT_TARGETCHANGE"}},
 		},
 	},
+	{
+		-- [v43.10] The tank aura of the old warrior set ("Dein Ziel greift ein
+		-- Gruppenmitglied an", defaultAuras.lua), which nobody can load since the
+		-- set menu was retired. UNIT_TARGETCHANGE fires when a tracked unit's
+		-- target changes: source = that unit, dest = its new target. The old set
+		-- said "source is not a party member", and Sku tracks the targets of all
+		-- 40 raid slots, so in a raid a healer outside your subgroup selecting
+		-- one of your subgroup mates fired it too. Here the source is your target
+		-- and attackable: the mob you hold turned to someone else. The value slot
+		-- is WHO to watch, preset to every group member but you (raidWoPlayer, so
+		-- it works in a raid as in a party; the mob coming back to you stays
+		-- quiet). The dest unit output names the new target by its key: party N
+		-- in a party, the dial number in a raid. Switching your own target onto a
+		-- mob that already attacks a member announces it as well - which is the
+		-- same news.
+		id = "targetSwitchesToGroupMember",
+		label = L["AURA_RecipeTargetSwitchesToMember"],
+		valueLabel = "AURA_RecipeWhoLabel",
+		emptyValueMessage = "AURA_RecipeNoUnitSet",
+		attribute = "destUnitId",
+		operator = "is",
+		defaultValues = {"raidWoPlayer"},
+		defaultSound = "sound-notification12",
+		defaultOutputs = {"output:destUnitId"},
+		fixed = {
+			event = {{"is", "UNIT_TARGETCHANGE"}},
+			sourceUnitId = {{"contains", "target"}},
+			tSourceUnitIDCannAttack = {{"is", "true"}},
+		},
+	},
 }
 
 SkuAuras.baseForm = nil
@@ -2277,7 +2311,7 @@ local function tBaseForm(aRecipe)
 		end
 		tF = {
 			recipe = aRecipe.id,
-			cond = {att = aRecipe.attribute, op = aRecipe.operator, values = {}},
+			cond = {att = aRecipe.attribute, op = aRecipe.operator, values = TableCopy(aRecipe.defaultValues or {}, true)},
 			outputs = tOutputs,
 			name = nil,
 		}
@@ -2303,7 +2337,7 @@ local function tBaseValuesText(aRecipe)
 end
 
 local function tBaseSpellLabel(aRecipe)
-	return L["Zauber"]..";"..tBaseValuesText(aRecipe)
+	return L[aRecipe.valueLabel or "Zauber"]..";"..tBaseValuesText(aRecipe)
 end
 
 local function tBaseOutputsLabel(aRecipe)
@@ -2373,7 +2407,7 @@ end
 local function tBaseFormCommit(aNode, aRecipe)
 	local tF = tBaseForm(aRecipe)
 	if #tF.cond.values == 0 then
-		SkuOptions.Voice:OutputStringBTtts(L["Kein Zauber festgelegt"], false, true, 0.2, true)
+		SkuOptions.Voice:OutputStringBTtts(L[aRecipe.emptyValueMessage or "Kein Zauber festgelegt"], false, true, 0.2, true)
 		return
 	end
 

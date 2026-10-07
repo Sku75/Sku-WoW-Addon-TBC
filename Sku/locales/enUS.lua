@@ -3442,6 +3442,13 @@ L["Wirklich löschen?"] = "Really delete?"
 -- Sku v43.0: aura references in one submenu (SkuAuras/Options.lua)
 L["AURA_AuraRefGroup"] = "Your own auras"
 L["AURA_AuraRefGroupTip"] = "Whether another one of your auras currently applies. Only auras you have named yourself appear here"
+L["AURA_RaidMembers"] = "party or raid members"
+L["AURA_RaidMembersTip"] = "any member of your party or raid, yourself included. In a raid every member, not just your subgroup"
+L["AURA_RaidMembersWoPlayer"] = "party or raid members excluding yourself"
+L["AURA_RaidMembersWoPlayerTip"] = "any member of your party or raid except yourself. In a raid every member, not just your subgroup"
+L["AURA_RecipeTargetSwitchesToMember"] = "Your target switches to a group member"
+L["AURA_RecipeWhoLabel"] = "Who"
+L["AURA_RecipeNoUnitSet"] = "No unit set"
 
 -- Sku v43.2: "nearby quests" -- the quest log sorted by distance (SkuQuest/Options.lua)
 L["Quests in der Nähe"] = "Nearby quests"
