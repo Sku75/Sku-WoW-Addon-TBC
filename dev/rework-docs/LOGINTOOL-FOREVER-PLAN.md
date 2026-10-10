@@ -2,7 +2,7 @@
 
 Status: Plan vom 2026-09-23, Umsetzung läuft. Beta-Fenster des Clients:
 2026-09-17 bis 2026-10-21 (Wowhead). Quelle für alles Folgende:
-`C:\Users\fabia\Dev\wow-ui-source-forever` (Branch `forever` von
+`C:\Users\fabia\Dev\WowVision\wow-ui-source\forever` (Branch `forever` von
 Gethe/wow-ui-source, Stand 1.60.1 Build 69977) plus die GlobalStrings des
 Builds in `globalstrings\` daneben (de/en/fr, von wago.tools).
 

@@ -7,7 +7,7 @@ they can be ported into Sku (which has a different middleware: Sku uses Ace3,
 WV uses middleclass/InfoClass).
 
 All file paths below are absolute and refer to the WowVision source tree at
-`C:\Users\fabia\Dev\WowVision\tbc\auction\`.
+`C:\Users\fabia\Dev\WowVision\WowVision\tbc\auction\`.
 
 Files covered:
 
