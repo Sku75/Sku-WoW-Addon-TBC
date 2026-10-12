@@ -45,6 +45,16 @@ function Sku.SafeName(aUnit)
 	if tName ~= nil and Sku.IsSecret(tName) then return nil end
 	return tName
 end
+-- Whether this client knows a WoW event. RegisterEvent throws on an unknown one (WoW Forever
+-- dropped several, e.g. TRADE_SKILL_UPDATE and the old AUCTION_* list events), and the throw
+-- aborts the rest of the calling function. A skipped event leaves a line in SkuDebugLog.
+function Sku.IsEventValid(aEventName)
+	if not (C_EventUtils and C_EventUtils.IsEventValid) or C_EventUtils.IsEventValid(aEventName) then
+		return true
+	end
+	dprint("event unknown on this client, skipped:", aEventName)
+	return false
+end
 Sku.ns = ns
 Sku.L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 Sku.Loc = Sku.L["locale"]

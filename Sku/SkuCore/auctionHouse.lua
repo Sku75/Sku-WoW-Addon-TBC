@@ -342,19 +342,14 @@ local tSortComparators = {
 -- saved price history. AUCTION_HOUSE_SHOW/CLOSED handle entering/leaving an AH.
 -- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Several AH events from the old auction API (AUCTION_OWNED_LIST_UPDATE,
--- AUCTION_BIDDER_LIST_UPDATE, ...) don't exist on WoW Forever/Camelot anymore ->
--- RegisterEvent would throw "Attempt to register unknown event", which (unlike a
--- pcall'd callback) aborts the REST of the calling function too, so one bad event
--- silently skips every RegisterEvent call after it. Guard each one individually.
--- Same IsEventValid pattern as SkuDispatcher:RegisterEventCallback.
+-- The old auction API's list events do not exist on WoW Forever (see Sku.IsEventValid).
 local function SkuAHRegisterEvent(aEventName)
-   if not C_EventUtils or C_EventUtils.IsEventValid(aEventName) then
+   if Sku.IsEventValid(aEventName) then
       AuctionHouse:RegisterEvent(aEventName)
    end
 end
 local function SkuAHUnregisterEvent(aEventName)
-   if not C_EventUtils or C_EventUtils.IsEventValid(aEventName) then
+   if Sku.IsEventValid(aEventName) then
       AuctionHouse:UnregisterEvent(aEventName)
    end
 end
