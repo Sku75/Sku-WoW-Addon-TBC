@@ -297,9 +297,7 @@ end
 -- WoW Forever/Camelot: old global item helpers now live in C_Item. Alias every one
 -- that is missing so the hundreds of call sites keep working unchanged.
 if _G.C_Item then
-	for _, tName in ipairs({"GetItemInfo", "IsEquippableItem", "GetItemInfoInstant", "GetItemCount", "GetItemQualityColor",
-		"GetItemIcon", "IsConsumableItem", "IsUsableItem", "GetDetailedItemLevelInfo", "IsItemInRange",
-		"GetItemSpell", "GetItemFamily", "GetItemInventoryTypeByID", "IsCurrentItem"}) do
+	for _, tName in ipairs({"GetItemInfo", "IsEquippableItem", "GetItemInfoInstant", "GetDetailedItemLevelInfo"}) do
 		if not _G[tName] and type(_G.C_Item[tName]) == "function" then
 			_G[tName] = _G.C_Item[tName]
 		end
@@ -326,25 +324,13 @@ if not _G.GetSpellCooldown and _G.C_Spell and _G.C_Spell.GetSpellCooldown then
 		return t.startTime, t.duration, (t.isEnabled == false) and 0 or 1, t.modRate
 	end
 end
-if not _G.GetLootMethod and _G.C_PartyInfo and _G.C_PartyInfo.GetLootMethod then
-	-- old: "freeforall" / "roundrobin" / "master" / "group" / "needbeforegreed" / "personalloot"
-	_G.GetLootMethod = function()
-		local tOk, tMethod = pcall(C_PartyInfo.GetLootMethod)
-		local tNames = { [0] = "freeforall", [1] = "roundrobin", [2] = "master", [3] = "group", [4] = "needbeforegreed", [5] = "personalloot" }
-		return tOk and tNames[tMethod] or "personalloot"
-	end
-end
 if not _G.GuildRoster then
 	_G.GuildRoster = (_G.C_GuildInfo and _G.C_GuildInfo.GuildRoster) or function() end
-end
-if not _G.SetGuildRosterShowOffline then
-	_G.SetGuildRosterShowOffline = function() end
 end
 if not _G.GetInventoryAlertStatus then
 	_G.GetInventoryAlertStatus = function() return 0 end
 end
 if not _G.GetNumSkillLines then
-	_G.SkuShimSkillLines = true
 	_G.GetNumSkillLines = function() return 0 end
 	_G.GetSkillLineInfo = function() return nil end
 end
@@ -485,10 +471,9 @@ end
 -- WoW Forever/Camelot: cursor/pickup helpers moved into C_* namespaces. Alias whichever
 -- are missing so the action bar assignment code keeps working unchanged.
 for _, tPair in ipairs({
-	{"PickupSpell", "C_Spell"}, {"PickupSpellBookItem", "C_SpellBook"}, {"PickupItem", "C_Item"},
-	{"PickupMacro", "C_Macro"}, {"PickupAction", "C_ActionBar"}, {"PlaceAction", "C_ActionBar"},
+	{"PickupSpell", "C_Spell"}, {"PickupItem", "C_Item"}, {"PickupMacro", "C_Macro"},
+	{"PickupAction", "C_ActionBar"}, {"PlaceAction", "C_ActionBar"},
 	{"PickupPetAction", "C_ActionBar"}, {"PickupPetSpell", "C_SpellBook"},
-	{"PickupCompanion", "C_MountJournal"}, {"GetMacroSpell", "C_Macro"},
 }) do
 	local tNs = _G[tPair[2]]
 	if not _G[tPair[1]] and type(tNs) == "table" and type(tNs[tPair[1]]) == "function" then
