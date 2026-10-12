@@ -1716,11 +1716,13 @@ function GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, a
 	return arg2 
 end
 
-function RemoveExtraSpaces(str)
+-- Local on purpose: Blizzard's chat code defines global functions with these names,
+-- and a global redefinition from here would replace (and taint) Blizzard's own.
+local function RemoveExtraSpaces(str)
 	return string.gsub(str, "     +", "    ") 	--Replace all instances of 5+ spaces with only 4 spaces.
 end
 
-function RemoveNewlines(str)
+local function RemoveNewlines(str)
 	return string.gsub(str, "\n", "") 
 end
 
