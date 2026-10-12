@@ -1286,7 +1286,10 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	end
 
 	if not tItemHook then
-		hooksecurefunc("UseContainerItem", function(aBagID, aSlot, aTarget, aReagentBankAccessible)
+		-- Hook the client's own function. The global UseContainerItem only existed because
+		-- Sku used to create it, so hooking it by name caught Sku's own calls (selling junk,
+		-- moving items to the bank) instead of real item uses.
+		local tOnUseContainerItem = function(aBagID, aSlot, aTarget, aReagentBankAccessible)
 			if not SkuAuras:IsEnabled() then return end
 			dprint("UseContainerItem", aBagID, aSlot, aTarget, aReagentBankAccessible)
 			local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(aBagID, aSlot)
@@ -1310,7 +1313,12 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 				aEventData[40] = itemID
 				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
 			end
-		end)
+		end
+		if C_Container and C_Container.UseContainerItem then
+			hooksecurefunc(C_Container, "UseContainerItem", tOnUseContainerItem)
+		elseif _G.UseContainerItem then
+			hooksecurefunc("UseContainerItem", tOnUseContainerItem)
+		end
 		hooksecurefunc("UseAction", function(aSlot, aCheckCursor, aOnSelf)
 			if not SkuAuras:IsEnabled() then return end
 			local actionType, id, subType = GetActionInfo(aSlot)
