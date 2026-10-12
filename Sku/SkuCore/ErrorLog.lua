@@ -43,6 +43,7 @@ local COMBAT_MAX_PER_SEC = 5
 local tCombatErrorCount  = 0
 local tCombatLastReset   = 0
 local tInCombat          = false
+local tCombatBlockedSeen = {} -- ADDON_ACTION_* messages already recorded during combat
 local tBugGrabberPaused  = false
 
 -- Localization (safe access — works before Sku.L is loaded)
@@ -372,14 +373,22 @@ f:SetScript("OnEvent", function(self, event, arg1, arg2, arg3)
          and Sku and Sku.NoteScriptExecutionLimit then
          pcall(function() Sku:NoteScriptExecutionLimit() end)
       end
-   elseif event == "ADDON_ACTION_FORBIDDEN" then
-      tAppend("addon_action_forbidden",
-              "addon=" .. tostring(arg1) .. " action=" .. tostring(arg2),
-              debugstack(2, 6, 2) or "")
-   elseif event == "ADDON_ACTION_BLOCKED" then
-      tAppend("addon_action_blocked",
-              "addon=" .. tostring(arg1) .. " action=" .. tostring(arg2),
-              debugstack(2, 6, 2) or "")
+   elseif event == "ADDON_ACTION_FORBIDDEN" or event == "ADDON_ACTION_BLOCKED" then
+      -- In combat these arrive in bursts (pet bar: 27-80 per second) and debugstack plus the
+      -- append are expensive. Record the same message only once per combat.
+      local tMsg = "addon=" .. tostring(arg1) .. " action=" .. tostring(arg2)
+      if Sku.isForever and tInCombat then
+         if tCombatBlockedSeen[tMsg] then
+            local tLog = _G.SkuErrorLog
+            if type(tLog) == "table" and type(tLog.counters) == "table" then
+               tLog.counters.dropped = (tLog.counters.dropped or 0) + 1
+            end
+            return
+         end
+         tCombatBlockedSeen[tMsg] = true
+      end
+      tAppend(event == "ADDON_ACTION_FORBIDDEN" and "addon_action_forbidden" or "addon_action_blocked",
+              tMsg, debugstack(2, 6, 2) or "")
    elseif event == "PLAYER_REGEN_DISABLED" then
       -- Kampfbeginn: Throttle aktivieren, BugGrabber-Bridge pausieren
       tInCombat = true

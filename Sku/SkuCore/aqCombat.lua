@@ -1929,7 +1929,8 @@ function aqCombat:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
                   SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tCreateUnitId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                elseif tCurrentSettings.combat.hostile.outputDeadUnits.value == 3 then
                   if SkuCore.threatTable[aUnitGUID] and SkuCore.threatTable[aUnitGUID][UnitGUID("player")] then
-                     if SkuCore.threatTable[aUnitGUID][UnitGUID("player")].scaledPercentage >= 100 then
+                     -- scaledPercentage can be nil where Forever hides the threat numbers
+                     if (SkuCore.threatTable[aUnitGUID][UnitGUID("player")].scaledPercentage or 0) >= 100 then
                         local tSetting = tCurrentSettings.combat.hostile.outputDeadUnits
                         SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tCreateUnitId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                      end

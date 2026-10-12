@@ -2291,32 +2291,32 @@ function SkuChat_DisplayLevelUp(self, level, ...)
 	end
 	self:AddMessage(tMessagetype, string, info.r, info.g, info.b, info.id) 
 
-	if ( arg4 > 0 ) then
+	if ( (arg4 or 0) > 0 ) then
 		string = format(GetText("LEVEL_UP_CHAR_POINTS", nil, arg4), arg4) 
 		self:AddMessage(tMessagetype, string, info.r, info.g, info.b, info.id) 
 	end
 
-	if ( arg5 > 0 ) then
+	if ( (arg5 or 0) > 0 ) then
 		string = format(LEVEL_UP_STAT, SPELL_STAT1_NAME, arg5) 
 		self:AddMessage(tMessagetype, string, info.r, info.g, info.b, info.id) 
 	end
 
-	if ( arg6 > 0 ) then
+	if ( (arg6 or 0) > 0 ) then
 		string = format(LEVEL_UP_STAT, SPELL_STAT2_NAME, arg6) 
 		self:AddMessage(tMessagetype, string, info.r, info.g, info.b, info.id) 
 	end
 
-	if ( arg7 > 0 ) then
+	if ( (arg7 or 0) > 0 ) then
 		string = format(LEVEL_UP_STAT, SPELL_STAT3_NAME, arg7) 
 		self:AddMessage(tMessagetype, string, info.r, info.g, info.b, info.id) 
 	end
 
-	if ( arg8 > 0 ) then
+	if ( (arg8 or 0) > 0 ) then
 		string = format(LEVEL_UP_STAT, SPELL_STAT4_NAME, arg8) 
 		self:AddMessage(tMessagetype, string, info.r, info.g, info.b, info.id) 
 	end
 
-	if ( arg9 > 0 ) then
+	if ( (arg9 or 0) > 0 ) then
 		string = format(LEVEL_UP_STAT, SPELL_STAT5_NAME, arg9) 
 		self:AddMessage(tMessagetype, string, info.r, info.g, info.b, info.id) 
 	end
@@ -2548,7 +2548,7 @@ function SkuChat:OnInitialize()
 	a:SetScript("OnUpdate", function(self, atime)
 		self.timeCounter = self.timeCounter + atime
 		if self.timeCounter > 5 then
-			if SkuSettings:Sub("SkuChat").tabs and SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter > 1 then
+			if SkuSettings:Sub("SkuChat").tabs and SkuSettings:Sub("SkuChat").chatSettings and SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter and SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter > 1 then
 				for x = 1, #SkuSettings:Sub("SkuChat").tabs do
 					if SkuSettings:Sub("SkuChat").tabs[x] then
 						if SkuSettings:Sub("SkuChat").tabs[x].privateMessages and #SkuSettings:Sub("SkuChat").tabs[x].privateMessages > 0 then
@@ -4230,7 +4230,11 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 	end
 
 	Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
-	Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
+	-- Blizzard_CombatLog_ApplyFilters doesn't exist on every client (WoW Forever); when it threw
+	-- here, everything below (default tabs, audio log, TTS voice list) never ran.
+	if Blizzard_CombatLog_ApplyFilters then
+		Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
+	end
 	
 
 	--init audio log stuff
@@ -4241,12 +4245,16 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 
 	--remove aws polly dev voices on my system
 	SkuChat.WowTtsVoices = {}
-	for i, v in pairs(C_VoiceChat.GetTtsVoices()) do
+	local tTtsVoicesOk, tTtsVoicesList = pcall(C_VoiceChat.GetTtsVoices)
+	if not tTtsVoicesOk or type(tTtsVoicesList) ~= "table" then tTtsVoicesList = {} end
+	for i, v in pairs(tTtsVoicesList) do
 		if not string.find(v.name, "Polly") then
 			SkuChat.WowTtsVoices[i] = v.name
 		end
 	end
-	SkuChat.options.args.WowTtsVoice.values = SkuChat.WowTtsVoices
+	if SkuChat.options and SkuChat.options.args and SkuChat.options.args.WowTtsVoice then
+		SkuChat.options.args.WowTtsVoice.values = SkuChat.WowTtsVoices
+	end
 
 	--create default tabs
 	if not SkuSettings:Sub("SkuChat").tabs or #SkuSettings:Sub("SkuChat").tabs == 0 then

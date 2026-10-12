@@ -5671,6 +5671,24 @@ function SkuCore:DeleteBinding(aCommand)
 end
 
 -------------------------------------------------------------------------------------------------
+-- Read the keys of a command AFTER binding it. On WoW Forever the binding list shifts while
+-- binding, so GetBinding(index) can return the neighbouring command and the announcement
+-- would name the wrong key. The command name is authoritative there (GetBindingKey).
+-- Returns what GetBinding returns: command, category, key1, key2.
+function SkuCore:GetBindingByCommand(aCommand, aIndexHint)
+	if not Sku.isForever or not aCommand then
+		return GetBinding(aIndexHint, GetCurrentBindingSet())
+	end
+	local tKey1, tKey2 = GetBindingKey(aCommand)
+	local tCategory
+	if aIndexHint then
+		local tIdxCommand, tIdxCategory = GetBinding(aIndexHint, GetCurrentBindingSet())
+		if tIdxCommand == aCommand then tCategory = tIdxCategory end
+	end
+	return aCommand, tCategory, tKey1, tKey2
+end
+
+-------------------------------------------------------------------------------------------------
 function SkuCore:SetBinding(aKey, aCommand)
 	local aBindingSet = GetCurrentBindingSet()
 	local tCommand, _, tKey1, tKey2, tKey3, tKey4
