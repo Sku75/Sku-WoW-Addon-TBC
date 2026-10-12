@@ -4246,15 +4246,16 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 	--remove aws polly dev voices on my system
 	SkuChat.WowTtsVoices = {}
 	local tTtsVoicesOk, tTtsVoicesList = pcall(C_VoiceChat.GetTtsVoices)
-	if not tTtsVoicesOk or type(tTtsVoicesList) ~= "table" then tTtsVoicesList = {} end
+	if not tTtsVoicesOk or type(tTtsVoicesList) ~= "table" then
+		dprint("SkuChat: GetTtsVoices failed, empty voice list:", tTtsVoicesList)
+		tTtsVoicesList = {}
+	end
 	for i, v in pairs(tTtsVoicesList) do
 		if not string.find(v.name, "Polly") then
 			SkuChat.WowTtsVoices[i] = v.name
 		end
 	end
-	if SkuChat.options and SkuChat.options.args and SkuChat.options.args.WowTtsVoice then
-		SkuChat.options.args.WowTtsVoice.values = SkuChat.WowTtsVoices
-	end
+	SkuChat.options.args.WowTtsVoice.values = SkuChat.WowTtsVoices
 
 	--create default tabs
 	if not SkuSettings:Sub("SkuChat").tabs or #SkuSettings:Sub("SkuChat").tabs == 0 then
