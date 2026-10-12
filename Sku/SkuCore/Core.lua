@@ -7,6 +7,7 @@ skudebuglevel = 1
 local MODULE_NAME = "SkuCore"
 local _G = _G
 local L = Sku.L
+local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
 
 local tStartDebugTimestamp = GetTime() or 0
 

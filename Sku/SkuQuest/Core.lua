@@ -4,6 +4,10 @@ local _G = _G
 
 SkuQuest = LibStub("AceAddon-3.0"):NewAddon("SkuQuest", "AceConsole-3.0", "AceEvent-3.0")
 local L = Sku.L
+local GetCoinText = Sku.Compat.GetCoinText
+local GetItemInfo = Sku.Compat.GetItemInfo
+local GetNumQuestLogEntries = Sku.Compat.GetNumQuestLogEntries
+local GetQuestLogTitle = Sku.Compat.GetQuestLogTitle
 
 local PLAYER_ENTERING_WORLD_flag = true
 

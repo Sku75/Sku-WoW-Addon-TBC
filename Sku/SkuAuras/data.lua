@@ -1,6 +1,7 @@
 ﻿local MODULE_NAME = "SkuAuras"
 local _G = _G
 local L = Sku.L
+local GetSpellInfo = Sku.Compat.GetSpellInfo
 
 local tonumber = tonumber
 local sgsub = string.gsub

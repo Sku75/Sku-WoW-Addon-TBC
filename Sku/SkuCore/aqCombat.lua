@@ -1,6 +1,7 @@
 ﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "aqCombat"
 local L = Sku.L
+local GetSpellInfo = Sku.Compat.GetSpellInfo
 local _G = _G
 
 local sfind = string.find

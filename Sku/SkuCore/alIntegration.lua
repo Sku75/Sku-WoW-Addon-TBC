@@ -1,5 +1,8 @@
 ﻿local MODULE_NAME, MODULE_PART = "SkuCore", "alIntegration"
 local L = Sku.L
+local GetItemInfo = Sku.Compat.GetItemInfo
+local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
+local GetSpellInfo = Sku.Compat.GetSpellInfo
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
@@ -258,7 +261,7 @@ function AtlasLootIntegration:RebuildWishlistCache()
          local list = tFavs[invType]
          if type(list) == "table" then
             for _, favLink in ipairs(list) do
-               local favID = _G.GetItemInfoInstant and _G.GetItemInfoInstant(favLink)
+               local favID = GetItemInfoInstant and GetItemInfoInstant(favLink)
                if favID then tCache[favID] = true end
             end
          end
@@ -297,8 +300,8 @@ function AtlasLootIntegration:RemoveItemFromWishlist(itemID)
       if type(list) == "table" then
          for q = #list, 1, -1 do
             local favLink = list[q]
-            local favID = _G.GetItemInfoInstant
-               and _G.GetItemInfoInstant(favLink)
+            local favID = GetItemInfoInstant
+               and GetItemInfoInstant(favLink)
             local matches = (favID == itemID)
             if not matches and type(favLink) == "string"
                and favLink:find(tIdStr, 1, true) then
@@ -1314,7 +1317,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
          for invType = 1, #AtlasLootIntegration.favoriteSlots do
             local list = tFavs[invType] or {}
             for _, itemLink in ipairs(list) do
-               local itemID = _G.GetItemInfoInstant and _G.GetItemInfoInstant(itemLink)
+               local itemID = GetItemInfoInstant and GetItemInfoInstant(itemLink)
                if itemID and tItemDropTable and tItemDropTable[itemID] then
                   for _, src in ipairs(tItemDropTable[itemID]) do
                      -- src hat Format "Dungeon - Boss (Difficulty)"

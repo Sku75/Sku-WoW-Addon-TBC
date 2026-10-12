@@ -2,6 +2,9 @@
 local MODULE_NAME = "SkuAuras"
 local _G = _G
 local L = Sku.L
+local GetSpellCooldown = Sku.Compat.GetSpellCooldown
+local GetSpellInfo = Sku.Compat.GetSpellInfo
+local UnitAura = Sku.Compat.UnitAura
 
 local sgsub = string.gsub
 local sfind = string.find

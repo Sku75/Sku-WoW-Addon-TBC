@@ -5,6 +5,7 @@
 -- Set: ..." erweitert.
 ---------------------------------------------------------------------------------------------------------------------------------------
 local L = Sku.L
+local GetItemInfo = Sku.Compat.GetItemInfo
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
@@ -300,7 +301,7 @@ function M:Equip(aName)
    local function isTwoHandWeapon(itemString)
       if not itemString then return false end
       local _, _, _, _, _, _, subType, _, equipLoc =
-         _G.GetItemInfo and _G.GetItemInfo(itemString)
+         GetItemInfo and GetItemInfo(itemString)
       if equipLoc == "INVTYPE_2HWEAPON"
          or equipLoc == "INVTYPE_RANGED"
          or equipLoc == "INVTYPE_RANGEDRIGHT" then

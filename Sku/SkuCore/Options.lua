@@ -1,5 +1,19 @@
 ﻿local MODULE_NAME = "SkuCore"
 local L = Sku.L
+local BOOKTYPE_PET = Sku.Compat.BOOKTYPE_PET
+local BOOKTYPE_SPELL = Sku.Compat.BOOKTYPE_SPELL
+local CursorHasSpell = Sku.Compat.CursorHasSpell
+local GetItemInfo = Sku.Compat.GetItemInfo
+local GetNumSpellTabs = Sku.Compat.GetNumSpellTabs
+local GetSpellBookItemInfo = Sku.Compat.GetSpellBookItemInfo
+local GetSpellBookItemName = Sku.Compat.GetSpellBookItemName
+local GetSpellInfo = Sku.Compat.GetSpellInfo
+local GetSpellTabInfo = Sku.Compat.GetSpellTabInfo
+local HasPetSpells = Sku.Compat.HasPetSpells
+local IsPassiveSpell = Sku.Compat.IsPassiveSpell
+local IsSpellKnown = Sku.Compat.IsSpellKnown
+local PickupItem = Sku.Compat.PickupItem
+local PickupSpell = Sku.Compat.PickupSpell
 
 local tAdditionalTotemBarNameParts = {
 	["MULTICASTACTIONBUTTON1"] = " ("..L["Set"].." 1) ",
@@ -2331,8 +2345,8 @@ function SkuCore.ActionBarsMenuBuilder(self)
 	if not tHasPet and _G.HasPetUI then
 		local ok, v = pcall(_G.HasPetUI); if ok and v then tHasPet = true end
 	end
-	if not tHasPet and _G.HasPetSpells then
-		local ok, v = pcall(_G.HasPetSpells); if ok and v then tHasPet = true end
+	if not tHasPet and HasPetSpells then
+		local ok, v = pcall(HasPetSpells); if ok and v then tHasPet = true end
 	end
 	if not tHasPet and _G.PetHasActionBar then
 		local ok, v = pcall(_G.PetHasActionBar); if ok and v then tHasPet = true end

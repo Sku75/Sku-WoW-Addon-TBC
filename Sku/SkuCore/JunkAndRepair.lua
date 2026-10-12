@@ -1,5 +1,7 @@
 ﻿local MODULE_PART = "JunkAndRepair"
 local L = Sku.L
+local GetCoinText = Sku.Compat.GetCoinText
+local GetItemInfo = Sku.Compat.GetItemInfo
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")

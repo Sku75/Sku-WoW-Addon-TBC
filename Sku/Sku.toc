@@ -27,6 +27,7 @@ routedata_global_wotlk.lua
 _psB_postWotlkRoutes.lua
 
 Core.lua
+Compat.lua
 SkuDeferredData.lua
 SkuDBTools.lua
 

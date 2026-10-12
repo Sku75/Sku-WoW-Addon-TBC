@@ -29,6 +29,8 @@
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+local GetSpellBookItemName = Sku.Compat.GetSpellBookItemName
+
 local DualSpecProbe = SkuCore:NewModule("DualSpecProbe")
 SkuCore.DualSpecProbe = DualSpecProbe   -- keep the published handle
 
@@ -68,8 +70,8 @@ end
 -- Returns a list of { name, rank, bookIndex, bookType }.
 local function tScanSpellbook()
    local tHits = {}
-   if not _G.GetSpellName and not _G.GetSpellBookItemName then return tHits end
-   local tBookFn = _G.GetSpellBookItemName or _G.GetSpellName
+   if not _G.GetSpellName and not GetSpellBookItemName then return tHits end
+   local tBookFn = GetSpellBookItemName or _G.GetSpellName
    local tPatterns = {
       "talent",     -- en/de partial
       "spezial",    -- Spezialisierung

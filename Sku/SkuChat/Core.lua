@@ -1,6 +1,9 @@
 ﻿local MODULE_NAME = "SkuChat"
 local _G = _G
 local L = Sku.L
+local BetterDate = Sku.Compat.BetterDate
+local GetNumQuestLogEntries = Sku.Compat.GetNumQuestLogEntries
+local GetQuestLogTitle = Sku.Compat.GetQuestLogTitle
 
 SkuChat = LibStub("AceAddon-3.0"):NewAddon("SkuChat", "AceConsole-3.0", "AceEvent-3.0")
 
@@ -2652,10 +2655,10 @@ function SkuChat:OnInitialize()
 		local title
 		local logIdx -- Quest-Log-Index, falls im Log
 		-- 1) eigenes Log: finde Index zur Quest-ID
-		if _G.GetNumQuestLogEntries and _G.GetQuestLogTitle then
-			local tNum = _G.GetNumQuestLogEntries() or 0
+		if GetNumQuestLogEntries and GetQuestLogTitle then
+			local tNum = GetNumQuestLogEntries() or 0
 			for i = 1, tNum do
-				local t, lvl, _, isHeader, _, _, _, qid = _G.GetQuestLogTitle(i)
+				local t, lvl, _, isHeader, _, _, _, qid = GetQuestLogTitle(i)
 				if not isHeader and qid == questID then
 					title = t
 					if lvl then level = lvl end

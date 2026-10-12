@@ -33,6 +33,8 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 local _G = _G
+local GetNumQuestLogEntries = Sku.Compat.GetNumQuestLogEntries
+local GetQuestLogTitle = Sku.Compat.GetQuestLogTitle
 
 SkuQuest = SkuQuest or LibStub("AceAddon-3.0"):NewAddon("SkuQuest", "AceConsole-3.0", "AceEvent-3.0")
 

@@ -25,6 +25,8 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_PART = "Socketing"
 local L = Sku.L
+local GetItemInfo = Sku.Compat.GetItemInfo
+local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
@@ -94,15 +96,15 @@ local function tIsGem(aItemLink, aItemId)
    -- Bevorzugt: GetItemInfoInstant — liefert auch bei Cache-Miss
    -- sofort die Klasse/Subklasse zurück (z. B. nach frisch gekauften
    -- Items aus dem AH, deren GetItemInfo noch nicht geladen ist).
-   if _G.GetItemInfoInstant then
+   if GetItemInfoInstant then
       local _, itemType, itemSubType, itemEquipLoc, _, classID, subClassID =
-         tSafe(_G.GetItemInfoInstant, aItemId or aItemLink)
+         tSafe(GetItemInfoInstant, aItemId or aItemLink)
       if tClassifyGem(itemType, itemSubType, itemEquipLoc, classID, subClassID) then return true end
    end
 
    -- Fallback auf GetItemInfo (gleiche Checks, falls Instant fehlt).
    local itemName, _, _, _, _, itemType, itemSubType, _, itemEquipLoc, _, _, classId, subClassId =
-      tSafe(_G.GetItemInfo, aItemLink)
+      tSafe(GetItemInfo, aItemLink)
    if tClassifyGem(itemType, itemSubType, itemEquipLoc, classId, subClassId) then return true end
    -- 4. Tooltip-Parsing über GetRegions() — funktioniert unabhängig
    --    von Cache und globalen FontString-Namen.
@@ -182,7 +184,7 @@ local function tCollectBagGems()
          local link, id = tBagSlotLink(bag, slot)
          if link then
             id = id or (link:match("item:(%d+)") and tonumber(link:match("item:(%d+)")))
-            local name = (_G.GetItemInfo and tSafe(_G.GetItemInfo, link)) or link
+            local name = (GetItemInfo and tSafe(GetItemInfo, link)) or link
             local isGem = tIsGem(link, id)
             if isGem then
                -- id mit aufnehmen, damit der Menü-Eintrag den Sku-
@@ -196,8 +198,8 @@ local function tCollectBagGems()
             if Sku.debug and (Sku.debug.log or Sku.debug.print) then
                pcall(function()
                   local classID, subClassID, equipLoc, iSubType
-                  if _G.GetItemInfoInstant then
-                     local _, t, st, el, _, c, sc = _G.GetItemInfoInstant(id or link)
+                  if GetItemInfoInstant then
+                     local _, t, st, el, _, c, sc = GetItemInfoInstant(id or link)
                      classID, subClassID, equipLoc, iSubType = c, sc, el, st
                   end
                   dprint("socket.gems", "slot scan", {
@@ -468,11 +470,11 @@ local function tSocketCurrentGemText(aIdx)
    local newLink = _G.GetNewSocketLink   and tSafe(_G.GetNewSocketLink, aIdx)
    local existLink = _G.GetExistingSocketLink and tSafe(_G.GetExistingSocketLink, aIdx)
    if newLink then
-      local name = (_G.GetItemInfo and tSafe(_G.GetItemInfo, newLink)) or newLink
+      local name = (GetItemInfo and tSafe(GetItemInfo, newLink)) or newLink
       return string.format(L["neu: %s"], name)
    end
    if existLink then
-      local name = (_G.GetItemInfo and tSafe(_G.GetItemInfo, existLink)) or existLink
+      local name = (GetItemInfo and tSafe(GetItemInfo, existLink)) or existLink
       return name
    end
    return L["leer"]

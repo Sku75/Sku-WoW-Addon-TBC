@@ -7,6 +7,7 @@
 SkuCore.PawnIntegration = SkuCore.PawnIntegration or {}
 local PawnIntegration = SkuCore.PawnIntegration
 local L = Sku.L
+local GetItemInfo = Sku.Compat.GetItemInfo
 
 local function IsPawnAvailable()
 	return _G.PawnCommon and _G.PawnGetItemData

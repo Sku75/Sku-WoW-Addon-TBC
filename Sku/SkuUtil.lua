@@ -10,6 +10,10 @@
 local ADDON_NAME, ns = ...
 ns = ns or {}
 
+local GetCoinText = Sku.Compat.GetCoinText
+local GetDetailedItemLevelInfo = Sku.Compat.GetDetailedItemLevelInfo
+local GetItemInfo = Sku.Compat.GetItemInfo
+
 -- SkuUtil is the first resident of the addon-private namespace (W4 Phase A): the
 -- canonical helpers live on `ns.Util`, and the global `SkuUtil` is a thin
 -- published alias so existing call sites keep working unchanged. Future

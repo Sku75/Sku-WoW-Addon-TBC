@@ -1,6 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "LocalMenu"
 local L = Sku.L
+local GetItemInfo = Sku.Compat.GetItemInfo
+local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
+local GetNumSkillLines = Sku.Compat.GetNumSkillLines
+local GetSkillLineInfo = Sku.Compat.GetSkillLineInfo
+local IsEquippableItem = Sku.Compat.IsEquippableItem
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
@@ -2932,7 +2937,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 			pcall(_G.ExpandSkillHeader, 0)
 		end
 		local tProfs = {}
-		if _G.GetNumSkillLines and _G.GetSkillLineInfo then
+		if GetNumSkillLines and GetSkillLineInfo then
 			local n = GetNumSkillLines() or 0
 			for i = 1, n do
 				local skillName, isHeader, _, skillRank, _, _, skillMaxRank,
@@ -3064,15 +3069,15 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 										-- Liste (Reihenfolge kann sich
 										-- zwischen Menü-Aufbau und Bestätigung
 										-- verschieben).
-										if _G.AbandonSkill and _G.GetNumSkillLines
-											and _G.GetSkillLineInfo then
+										if _G.AbandonSkill and GetNumSkillLines
+											and GetSkillLineInfo then
 											if _G.ExpandSkillHeader then
 												pcall(_G.ExpandSkillHeader, 0)
 											end
 											local tIdx
-											local n = _G.GetNumSkillLines() or 0
+											local n = GetNumSkillLines() or 0
 											for i = 1, n do
-												local sName, sHeader = _G.GetSkillLineInfo(i)
+												local sName, sHeader = GetSkillLineInfo(i)
 												if not sHeader and sName == lProfName then
 													tIdx = i
 													break

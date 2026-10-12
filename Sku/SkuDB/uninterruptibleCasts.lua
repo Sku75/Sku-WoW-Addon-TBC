@@ -28,7 +28,7 @@
 -- does not know the TBC spells 29121 / 33808. An unknown id therefore resolves
 -- to a placeholder no cast name can ever equal: the entry is inert on that
 -- client and the constructors stay line-identical to upstream.
-local tGetSpellInfo = _G.GetSpellInfo
+local tGetSpellInfo = Sku.Compat.GetSpellInfo
 local function GetSpellInfo(aSpellId)
 	return tGetSpellInfo(aSpellId) or ("\1unknownSpell" .. aSpellId)
 end

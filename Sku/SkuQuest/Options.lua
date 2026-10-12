@@ -1,5 +1,7 @@
 ﻿local MODULE_NAME = "SkuQuest"
 local L = Sku.L
+local GetNumQuestLogEntries = Sku.Compat.GetNumQuestLogEntries
+local GetQuestLogTitle = Sku.Compat.GetQuestLogTitle
 local function BuildSortedUniqueRouteWps(tRoutesInRange)
 	local tSortedWaypointList = {}
 	for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do
@@ -1767,10 +1769,10 @@ end
 local function tGetQuestTitleAndLevel(aQuestID)
 	-- Prefer the live quest log — gibt den korrekten Level/Titel
 	-- für die Quest des Spielers zurück.
-	if _G.GetNumQuestLogEntries and _G.GetQuestLogTitle then
-		local tNum = _G.GetNumQuestLogEntries() or 0
+	if GetNumQuestLogEntries and GetQuestLogTitle then
+		local tNum = GetNumQuestLogEntries() or 0
 		for i = 1, tNum do
-			local title, level, _, isHeader, _, _, _, qid = _G.GetQuestLogTitle(i)
+			local title, level, _, isHeader, _, _, _, qid = GetQuestLogTitle(i)
 			if not isHeader and qid == aQuestID then
 				return title, level
 			end
@@ -1817,10 +1819,10 @@ local function SkuPostQuestToChat(aQuestID)
 	-- sieht dann nur den Klartext-Titel ohne Hyperlink.
 	local link
 	local tFromLog = false
-	if _G.GetQuestLink and _G.GetNumQuestLogEntries and _G.GetQuestLogTitle then
-		local tNum = _G.GetNumQuestLogEntries() or 0
+	if _G.GetQuestLink and GetNumQuestLogEntries and GetQuestLogTitle then
+		local tNum = GetNumQuestLogEntries() or 0
 		for i = 1, tNum do
-			local _, _, _, isHeader, _, _, _, qid = _G.GetQuestLogTitle(i)
+			local _, _, _, isHeader, _, _, _, qid = GetQuestLogTitle(i)
 			if not isHeader and qid == aQuestID then
 				local ok, l = pcall(_G.GetQuestLink, i)
 				if ok and l and l ~= "" then
@@ -1899,14 +1901,14 @@ local function tGetQuestLogIndexForQuestID(aQuestID)
 	if not aQuestID or aQuestID == 0 then
 		return nil
 	end
-	if not _G.GetNumQuestLogEntries or not _G.GetQuestLogTitle then
+	if not GetNumQuestLogEntries or not GetQuestLogTitle then
 		return nil
 	end
 
 	local tCache = SkuQuest.tQuestLogIndexCache
 	local tIndex = tCache[aQuestID]
 	if tIndex then
-		local _, _, _, tIsHeader, _, _, _, tQid = _G.GetQuestLogTitle(tIndex)
+		local _, _, _, tIsHeader, _, _, _, tQid = GetQuestLogTitle(tIndex)
 		if not tIsHeader and tQid == aQuestID then
 			return tIndex
 		end
@@ -1921,9 +1923,9 @@ local function tGetQuestLogIndexForQuestID(aQuestID)
 	end
 
 	wipe(tCache)
-	local tNum = _G.GetNumQuestLogEntries() or 0
+	local tNum = GetNumQuestLogEntries() or 0
 	for i = 1, tNum do
-		local _, _, _, tIsHeader, _, _, _, tQid = _G.GetQuestLogTitle(i)
+		local _, _, _, tIsHeader, _, _, _, tQid = GetQuestLogTitle(i)
 		if not tIsHeader and tQid and tQid ~= 0 then
 			tCache[tQid] = i
 		end

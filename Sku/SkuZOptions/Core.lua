@@ -3,6 +3,24 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME = "SkuOptions"
 local L = Sku.L
+local BOOKTYPE_SPELL = Sku.Compat.BOOKTYPE_SPELL
+local ExpandAllFactionHeaders = Sku.Compat.ExpandAllFactionHeaders
+local GetCoinText = Sku.Compat.GetCoinText
+local GetFactionInfo = Sku.Compat.GetFactionInfo
+local GetInventoryAlertStatus = Sku.Compat.GetInventoryAlertStatus
+local GetItemInfo = Sku.Compat.GetItemInfo
+local GetNumFactions = Sku.Compat.GetNumFactions
+local GetNumSkillLines = Sku.Compat.GetNumSkillLines
+local GetNumSpellTabs = Sku.Compat.GetNumSpellTabs
+local GetSkillLineInfo = Sku.Compat.GetSkillLineInfo
+local GetSpellBookItemName = Sku.Compat.GetSpellBookItemName
+local GetSpellCooldown = Sku.Compat.GetSpellCooldown
+local GetSpellTabInfo = Sku.Compat.GetSpellTabInfo
+local GuildRoster = Sku.Compat.GuildRoster
+local IsPassiveSpell = Sku.Compat.IsPassiveSpell
+local IsSpellKnown = Sku.Compat.IsSpellKnown
+local UnitBuff = Sku.Compat.UnitBuff
+local UnitDebuff = Sku.Compat.UnitDebuff
 local _G = _G
 local slower = string.lower
 
@@ -1242,8 +1260,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		if _G.SetGuildRosterShowOffline then _G.SetGuildRosterShowOffline(false) end
 		if _G.C_GuildInfo and type(_G.C_GuildInfo.GuildRoster) == "function" then
 			_G.C_GuildInfo.GuildRoster()
-		elseif type(_G.GuildRoster) == "function" then
-			_G.GuildRoster()
+		elseif type(GuildRoster) == "function" then
+			GuildRoster()
 		end
 	end)
 
