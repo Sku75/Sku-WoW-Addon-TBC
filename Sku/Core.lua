@@ -471,9 +471,7 @@ end
 -- WoW Forever/Camelot: cursor/pickup helpers moved into C_* namespaces. Alias whichever
 -- are missing so the action bar assignment code keeps working unchanged.
 for _, tPair in ipairs({
-	{"PickupSpell", "C_Spell"}, {"PickupItem", "C_Item"}, {"PickupMacro", "C_Macro"},
-	{"PickupAction", "C_ActionBar"}, {"PlaceAction", "C_ActionBar"},
-	{"PickupPetAction", "C_ActionBar"}, {"PickupPetSpell", "C_SpellBook"},
+	{"PickupSpell", "C_Spell"}, {"PickupItem", "C_Item"},
 }) do
 	local tNs = _G[tPair[2]]
 	if not _G[tPair[1]] and type(tNs) == "table" and type(tNs[tPair[1]]) == "function" then
