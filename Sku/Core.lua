@@ -427,7 +427,7 @@ if not GetQuestLogTitle and C_QuestLog and C_QuestLog.GetInfo then
 		-- suggestedGroup = 0 ("no group") is truthy in Lua and was spoken as "(0) " before the title.
 		local tSuggestedGroup = t.suggestedGroup
 		if not tSuggestedGroup or tSuggestedGroup <= 0 then tSuggestedGroup = nil end
-		return t.title, t.level, tSuggestedGroup, t.isHeader, t.isCollapsed, tIsComplete, t.frequency, t.questID, t.startEvent, nil, t.isOnMap, t.hasLocalPOI, t.isTask, t.isStory
+		return t.title, t.level, tSuggestedGroup, t.isHeader, t.isCollapsed, tIsComplete, t.frequency, t.questID, t.startEvent, nil, t.isOnMap, t.hasLocalPOI, t.isTask, t.isBounty, t.isStory, t.isHidden, t.isScaling
 	end
 end
 
