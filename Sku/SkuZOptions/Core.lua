@@ -6726,7 +6726,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										-- navigiert. KEIN Wrapper, KEINE Suppression — das
 										-- hatte gestern einwandfrei funktioniert (kein
 										-- MapPing, Edelsteine setzbar).
-										tNewSubMenuEntrySocket.macrotext = "/script SkuCore.Socketing:SuppressMinimapMapPingBriefly() SocketContainerItem(".._G[aGossipListTable[index].containerFrameName]:GetBag()..", ".._G[aGossipListTable[index].containerFrameName]:GetID()..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() SkuCore.Socketing:OpenSocketingMenuFollowUp() end)"
+										tNewSubMenuEntrySocket.macrotext = "/script SkuCore.Socketing:SuppressMinimapMapPingBriefly() C_Container.SocketContainerItem(".._G[aGossipListTable[index].containerFrameName]:GetBag()..", ".._G[aGossipListTable[index].containerFrameName]:GetID()..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() SkuCore.Socketing:OpenSocketingMenuFollowUp() end)"
 									end
 								else
 									local tContainerSlotIDs = {
