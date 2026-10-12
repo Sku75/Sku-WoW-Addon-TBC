@@ -116,8 +116,29 @@ hast. Diese Stellen besonders sorgfältig auflösen:
    bestehenden Dateien; neue Forever-Dateien dürfen größer sein.
 2. **Keine Verhaltensänderung auf Anniversary und Era.** Jede Forever-Änderung
    steht hinter `if Sku.isForever then` oder hinter einer Prüfung „nur wenn die
-   Funktion fehlt“ (`if not _G.UnitBuff then ...`). Wer Anniversary oder Era
-   spielt, darf von deinem PR nichts merken.
+   Funktion fehlt“. Wer Anniversary oder Era spielt, darf von deinem PR nichts
+   merken. Welche der beiden Prüfungen:
+   - Eine Funktion **fehlt** oder ist umgezogen: auf die Funktion prüfen, nicht
+     auf die Version. Era bekommt nach und nach dieselben neuen Funktionen.
+   - Eine Funktion **gibt es**, sie verhält sich auf Forever aber anders
+     (geheime Werte, Tastenbelegungsliste): `Sku.isForever`.
+   - Gibt es den modernen Aufruf auf **allen** Clients, nimm ihn überall, ohne
+     Abzweigung (Beispiel: `GetBindingKey(befehl)`).
+2a. **Nie in `_G` schreiben.** Ersatz für fehlende Spielfunktionen kommt in
+   `Sku/Compat.lua` (`Sku.Compat.Name`), nie als globale Funktion. `_G` teilen
+   sich alle Addons; ein halber Sku-Ersatz dort lenkt andere Addons (auch
+   WowVision auf Forever) auf falsche Wege. Eine Sku-Datei holt sich, was sie
+   braucht, oben in der Datei:
+   `local GetSpellInfo = Sku.Compat.GetSpellInfo`. Neue Einträge nur für
+   Namen, die Sku wirklich aufruft (vorher suchen), und nur nach Abgleich mit
+   der Forever-API (Gethe/wow-ui-source, Zweig `forever`,
+   `Blizzard_APIDocumentationGenerated`).
+2b. **Vorhandene Bausteine benutzen, nicht nachbauen:** `Sku.IsSecret(wert)`
+   (nie direkt `issecretvalue`), `Sku.SafeGUID`, `Sku.SafeName`,
+   `Sku.IsEventValid(ereignis)` vor jedem eigenen `RegisterEvent`, `dprint`
+   für Spuren. Geheime Texte sprechen geht **nur über SkuVoice**, nie mit
+   eigenem `C_VoiceChat.SpeakText`/`StopSpeakingText` daneben; der erste PR,
+   der das braucht, baut dafür einen Eingang in `SkuVoice-1.0` (Regel 12).
 3. **Echte Fehlerbehebungen, die alle Clients betreffen**, kommen in einen
    **eigenen PR** und stehen in der Beschreibung als „betrifft alle Clients“.
    Nie versteckt in einem Forever-PR.
@@ -151,6 +172,9 @@ hast. Diese Stellen besonders sorgfältig auflösen:
    verschwinden; ein verschluckter Fehler ist für blinde Spieler nur Stille.
    Wo ein Fehler abgefangen werden muss: `xpcall(f, geterrorhandler())`, damit
    er trotzdem in `SkuErrorLog` landet (so wie dein `tTalentSafe`).
+   **Besser als jedes `pcall`: vorher prüfen**, was bekannt kaputtgeht (z.B.
+   `if Sku.IsSecret(UnitGUID("target")) then return end`). Ein `pcall`, das
+   bleibt, steht hinter `Sku.isForever`.
 
 ### Form
 
@@ -250,7 +274,8 @@ Grundlage für diese Aufteilung ist ein Vergleich deines Stands 1.8 mit Sku 43.8
 Stück für Stück. Jeder PR nennt, was hineingehört, wovon er abhängt und wie
 riskant er für Anniversary/Era ist. Wenn ein Stück nirgends hinpasst: fragen.
 
-1. **Forever-Grundlage** (Risiko mittel, hängt von nichts ab)
+1. **Forever-Grundlage** (Risiko mittel, hängt von nichts ab) **Erledigt: PR #21**,
+   mit Nacharbeiten des Maintainers (siehe Regeln 2a, 2b, 8)
    - `Sku/Sku.toc`: `16001` an die Interface-Zeile **anhängen**. `11508` bleibt
      drin. `## Title` und `## Version` bleiben unverändert.
    - `Sku/Core.lua`: `Sku.isForever`, die Helfer für geheime Werte
@@ -269,7 +294,8 @@ riskant er für Anniversary/Era ist. Wenn ein Stück nirgends hinpasst: fragen.
      **unveränderte** Ace3-Version das AceDB-Problem, schreib das in den PR;
      den Tausch der Bibliothek macht der Maintainer.
 
-2. **Allgemeine Fehlerbehebungen** (Risiko niedrig, hängt von nichts ab,
+2. **Allgemeine Fehlerbehebungen** **Erledigt: PR #22**; Einladungs-Ansage,
+   RIGHT-Taste und `ProcessPlayerDead` kommen mit PR 3, 13 und 14 (Risiko niedrig, hängt von nichts ab,
    „betrifft alle Clients“)
    - Tastenansage über `GetBindingByCommand` statt über den Index
      (`SkuCore/Core.lua`, `SkuCore/Options.lua`).
