@@ -3323,16 +3323,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 			C_Timer.After(15, function()
 				if InCombatLockdown() ~= true then
-					TRAINER_FILTER_AVAILABLE = 1 
-					TRAINER_FILTER_UNAVAILABLE = 0 
-					TRAINER_FILTER_USED = 0
 					SetActionBarToggles(1,1,1,1,1) 
-					--[[
-					SHOW_MULTI_ACTIONBAR_1 = 1 
-					SHOW_MULTI_ACTIONBAR_2 = 1 
-					SHOW_MULTI_ACTIONBAR_3 = 1 
-					SHOW_MULTI_ACTIONBAR_4 = 1 
-					]]
 					MultiActionBar_Update() 
 					UIParent_ManageFramePositions() 
 
@@ -3381,17 +3372,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			
 			C_Timer.After(10, function()
 				if InCombatLockdown() ~= true then
-					TRAINER_FILTER_AVAILABLE = 1 
-					TRAINER_FILTER_UNAVAILABLE = 0 
-					TRAINER_FILTER_USED = 0
 					SetActionBarToggles(1,1,1,1,1) 
-					
-					
-					SHOW_MULTI_ACTIONBAR_1 = 1 
-					SHOW_MULTI_ACTIONBAR_2 = 1 
-					SHOW_MULTI_ACTIONBAR_3 = 1 
-					SHOW_MULTI_ACTIONBAR_4 = 1 
-					
 					MultiActionBar_Update() 
 					UIParent_ManageFramePositions() 
 					C_CVar.SetCVar("instantQuestText", "1")
@@ -3523,17 +3504,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 	C_Timer.After(6, function()
 		if InCombatLockdown() ~= true then
-			TRAINER_FILTER_AVAILABLE = 1 
-			TRAINER_FILTER_UNAVAILABLE = 0 
-			TRAINER_FILTER_USED = 0
 			SetActionBarToggles(1,1,1,1,1) 
-			
-			--[[
-			SHOW_MULTI_ACTIONBAR_1 = 1 
-			SHOW_MULTI_ACTIONBAR_2 = 1 
-			SHOW_MULTI_ACTIONBAR_3 = 1 
-			SHOW_MULTI_ACTIONBAR_4 = 1 
-			]]
 			MultiActionBar_Update() 
 			UIParent_ManageFramePositions() 
 			C_CVar.SetCVar("instantQuestText", "1")
