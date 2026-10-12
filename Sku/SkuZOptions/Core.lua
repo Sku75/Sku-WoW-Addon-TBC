@@ -5038,7 +5038,7 @@ function SkuOptions:GetCurrentRollItem()
 						if SkuCore.AtlasLootIntegration.favoriteSlots[invType] and SkuCore.AtlasLootIntegration.favoriteSlots[invType][1] and #SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType] > 0 then
 							for q = 1, #SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType] do
 								if SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType][q] == itemLink then
-									tAlFavoriteString = L["Prio"].." "..q.." "..L["in AtlasLoot favorites for"].." ".._G[SkuCore.AtlasLootIntegration.favoriteSlots[invType][1]]
+									tAlFavoriteString = L["Prio"].." "..q.." "..L["in AtlasLoot favorites for"].." "..SkuCore.AtlasLootIntegration.GetSlotLabel(SkuCore.AtlasLootIntegration.favoriteSlots[invType][1])
 								end
 							end
 						end

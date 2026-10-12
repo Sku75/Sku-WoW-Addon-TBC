@@ -563,8 +563,16 @@ local function BuildOutputModeNode(aTypeNode, aTabIndex, aBaseName, aReadVal, aW
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
+-- Display name of a chat type: the client's global string of that name. BN_WHISPER has
+-- none on the classic clients, so it gets Sku's own text (never written into _G).
+local function tChatTypeName(aType)
+	if aType == "BN_WHISPER" then
+		return L["Battle Net whisper"]
+	end
+	return _G[aType]
+end
+
 function SkuChat:MenuBuilder(aParentEntry)
-	BN_WHISPER = L["Battle Net whisper"]
 
 	local tSpecs = {}
 
@@ -652,14 +660,14 @@ function SkuChat:MenuBuilder(aParentEntry)
 					tNewMenuSubEntry.BuildChildren = function(self)
 						for i, v in pairs(SkuChat.ChatFrameMessageTypes) do
 							if i ~= "SKU" then
-								local tCatEntry = SkuOptions:InjectMenuItems(self, {_G[i]}, SkuGenericMenuItem)
+								local tCatEntry = SkuOptions:InjectMenuItems(self, {tChatTypeName(i)}, SkuGenericMenuItem)
 								tCatEntry.dynamic = true
 								tCatEntry.sorting = true
 								tCatEntry.catType = i
 								tCatEntry.tabIndex = x
 								tCatEntry.BuildChildren = function(self)
 									for w = 1, #v do
-										local tBaseName = _G[v[w].type]
+										local tBaseName = tChatTypeName(v[w].type)
 										if v[w].text then
 											tBaseName = v[w].text
 										end

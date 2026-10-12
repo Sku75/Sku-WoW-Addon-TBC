@@ -74,7 +74,6 @@ local tExpansions = {
    [2] = "The Burning Crusade",
 }
 
-INVTYPE_RANGEDRIGHT = RANGED
 AtlasLootIntegration.favoriteSlots = {
    [1] = {"INVTYPE_HEAD", {1},},
    [2] = {"INVTYPE_NECK", {2},},
@@ -104,6 +103,14 @@ AtlasLootIntegration.favoriteSlots = {
    [26] = {"INVTYPE_RANGEDRIGHT", {16},},
    [27] = {"INVTYPE_OTHER", {0},},
 }
+
+-- Spoken name of a favourite slot: the client's INVTYPE_* string, except the right-hand
+-- ranged slot, which Sku calls plain "Ranged". Never written to _G: those strings are
+-- Blizzard's and every addon and tooltip reads them.
+local tSlotLabelOverrides = { INVTYPE_RANGEDRIGHT = RANGED }
+function AtlasLootIntegration.GetSlotLabel(aInvType)
+   return tSlotLabelOverrides[aInvType] or _G[aInvType] or L[aInvType] or aInvType
+end
 
 -- [v42.13] Both start as EMPTY TABLES, not nil, and a separate boolean records
 -- whether the index has been built. The nil-as-sentinel these used to be was only
@@ -1370,7 +1377,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
       tBySlot.BuildChildren = function(self)
          for x = 1, #AtlasLootIntegration.favoriteSlots do
             if AtlasLootIntegration.favoriteSlots[x][1] then
-               local tSlotLabel = _G[AtlasLootIntegration.favoriteSlots[x][1]] or L[AtlasLootIntegration.favoriteSlots[x][1]] or AtlasLootIntegration.favoriteSlots[x][1]
+               local tSlotLabel = AtlasLootIntegration.GetSlotLabel(AtlasLootIntegration.favoriteSlots[x][1])
                local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tSlotLabel}, SkuGenericMenuItem)
                tNewMenuEntry.dynamic = true
                tNewMenuEntry.sorting = true
