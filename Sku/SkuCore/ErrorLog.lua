@@ -377,7 +377,7 @@ f:SetScript("OnEvent", function(self, event, arg1, arg2, arg3)
       -- In combat these arrive in bursts (pet bar: 27-80 per second) and debugstack plus the
       -- append are expensive. Record the same message only once per combat.
       local tMsg = "addon=" .. tostring(arg1) .. " action=" .. tostring(arg2)
-      if Sku.isForever and tInCombat then
+      if tInCombat then
          if tCombatBlockedSeen[tMsg] then
             local tLog = _G.SkuErrorLog
             if type(tLog) == "table" and type(tLog.counters) == "table" then
@@ -393,12 +393,14 @@ f:SetScript("OnEvent", function(self, event, arg1, arg2, arg3)
       -- Kampfbeginn: Throttle aktivieren, BugGrabber-Bridge pausieren
       tInCombat = true
       tCombatErrorCount = 0
+      wipe(tCombatBlockedSeen)
       tCombatLastReset = _G.GetTime and _G.GetTime() or 0
       tBugGrabberPaused = true
    elseif event == "PLAYER_REGEN_ENABLED" then
       -- Kampfende: Throttle deaktivieren, BugGrabber-Bridge reaktivieren
       tInCombat = false
       tCombatErrorCount = 0
+      wipe(tCombatBlockedSeen)
       tBugGrabberPaused = false
    end
 end)
