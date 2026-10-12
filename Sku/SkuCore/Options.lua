@@ -855,8 +855,9 @@ local function tRebindCaptureCommand(self, aSecondary)
 
 					dprint("CmdBind after SetBinding", "command=", self.command, "aKey=", aKey,
 						"GetBindingKey=", GetBindingKey(self.command), "bindingSet=", GetCurrentBindingSet())
-					local tCommand, tCategory, tKey1, tKey2 = SkuCore:GetBindingByCommand(self.command, self.index)
-					dprint("CmdBind readback", "idx=", self.index, "gotCommand=", tCommand, "tKey1=", tKey1, "tKey2=", tKey2, "matchesTarget=", tCommand == self.command)
+					-- Read back by command name: the binding index can point at another command once the
+					-- list has changed (seen on WoW Forever), and GetBindingKey is the same call on every client.
+					local tCommand, tKey1, tKey2 = self.command, GetBindingKey(self.command)
 					local aFriendlyKey1, tFriendlyKey2 = tKey1 or L["nichts"], tKey2 or L["nichts"]
 					for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
 						aFriendlyKey1 = gsub(aFriendlyKey1, kLocKey, vLocKey)
@@ -1035,7 +1036,7 @@ local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 	elseif aName == L["Belegung löschen"] then
 		if not self.command or not self.category or not self.index then return end
 		SkuCore:DeleteBinding(self.command)
-		local tCommand, tCategory, tKey1, tKey2 = SkuCore:GetBindingByCommand(self.command, self.index)
+		local tCommand = self.command
 		local aFriendlyKey1, tFriendlyKey2
 		self.name = _G["BINDING_NAME_" .. tCommand]..L[" Taste 1: "]..(aFriendlyKey1 or L["nichts"])..L[" Taste 2: "]..(tFriendlyKey2 or L["nichts"])
 		_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
@@ -1044,7 +1045,7 @@ local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 	elseif aName == L["Sekundäre Belegung löschen"] then
 		if not self.command or not self.category or not self.index then return end
 		SkuCore:DeleteBinding2(self.command)
-		local tCommand, tCategory, tKey1, tKey2 = SkuCore:GetBindingByCommand(self.command, self.index)
+		local tCommand, tKey1, tKey2 = self.command, GetBindingKey(self.command)
 		local aFriendlyKey1, tFriendlyKey2 = tKey1 or L["nichts"], tKey2 or L["nichts"]
 		for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
 			aFriendlyKey1 = gsub(aFriendlyKey1, kLocKey, vLocKey)
