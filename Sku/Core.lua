@@ -45,31 +45,6 @@ function Sku.SafeName(aUnit)
 	if tName ~= nil and Sku.IsSecret(tName) then return nil end
 	return tName
 end
--- Secret text (e.g. an enemy name inside an instance): Sku cannot concatenate or reformat it, but
--- C_VoiceChat.SpeakText accepts it from insecure code (SecretArguments = AllowedWhenTainted).
--- Voice, speed and volume are the ones of Sku's Blizzard TTS.
-function Sku.SpeakSecretText(aText, aNoStop)
-	if aText == nil or not (C_VoiceChat and C_VoiceChat.SpeakText) then return false end
-	local tChat = (SkuSettings and SkuSettings:Sub("SkuChat")) or {}
-	local tVoice = (tChat.WowTtsVoice or 1) - 1
-	if not aNoStop then pcall(C_VoiceChat.StopSpeakingText) end
-	local tOk = pcall(C_VoiceChat.SpeakText, tVoice, aText, tChat.WowTtsSpeed or 3, tChat.WowTtsVolume or 50)
-	return tOk
-end
--- Plain text straight to the Blizzard TTS without stopping it (it queues behind what is already spoken).
-function Sku.SpeakPlainQueued(aText, aStopFirst)
-	if type(aText) ~= "string" or aText == "" or not (C_VoiceChat and C_VoiceChat.SpeakText) then return false end
-	local tChat = (SkuSettings and SkuSettings:Sub("SkuChat")) or {}
-	local tVoice = (tChat.WowTtsVoice or 1) - 1
-	local tText = aText
-	if aStopFirst then pcall(C_VoiceChat.StopSpeakingText) end
-	local tLib = LibStub and LibStub("SkuVoice-1.0", true)
-	if tLib and tLib.CacheBustText then
-		local tOk, tBusted = pcall(tLib.CacheBustText, tLib, aText)
-		if tOk and tBusted then tText = tBusted end
-	end
-	return (pcall(C_VoiceChat.SpeakText, tVoice, tText, tChat.WowTtsSpeed or 3, tChat.WowTtsVolume or 50))
-end
 Sku.ns = ns
 Sku.L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 Sku.Loc = Sku.L["locale"]
