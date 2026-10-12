@@ -1511,7 +1511,7 @@ function SkuSwitchDataToLK()
 	end			
 end
 
---/script getlocdata()
+--/script Sku.DevTools.getlocdata()
 local tServerQuery
 local tCurrentQueryCount = 0
 --SkuOptions.db.profile["SkuNav"].tNames = {["deDE"] = {},["enUS"] = {},}
@@ -1631,7 +1631,7 @@ local tCurrentQueryCount = 0
 --SkuOptions.db.profile["SkuNav"].tNames = {["deDE"] = {},["enUS"] = {},}
 tcount = 0
 local toutp = 50
---/script getlocdataEN()
+--/script Sku.DevTools.getlocdataEN()
 local tServerQuery = false
 function getlocdataEN()
 	for i, v in pairs(SkuDB.WotLK.itemDataTBC) do
@@ -1683,7 +1683,7 @@ function getlocdataEN()
 	--print("fin")
 end
 
---/script buildennames()
+--/script Sku.DevTools.buildennames()
 function buildennames()
 	--SkuOptions.db.profile["SkuNav"].tNames = {["deDE"] = {},["enUS"] = {},} 
 	for i, v in pairs(SkuDB.itemDataTBC) do
@@ -1693,6 +1693,10 @@ function buildennames()
 	end
 	print("don")
 end
+
+-- Developer data tools above are file-local; they are run by hand, through this table.
+Sku.DevTools = Sku.DevTools or {}
+Sku.DevTools.getlocdata, Sku.DevTools.getlocdataEN, Sku.DevTools.buildennames = getlocdata, getlocdataEN, buildennames
 
 function comparenames()
 	GameTooltip_SetDefaultAnchor(GameTooltip, UIParent) 
