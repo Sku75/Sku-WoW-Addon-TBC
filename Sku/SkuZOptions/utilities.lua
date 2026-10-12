@@ -2,6 +2,10 @@
 local L = Sku.L
 local _G = _G
 
+-- File-level state that used to leak into _G through a missing "local".
+local GTT_CreatureInspect, GTT_CreatureInspectHooked, GetElTime, buildennames, comparenames,
+	getlocdata, getlocdataEN, tcount
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- bit shifts for 64 bit; lua don't has them; why? :D
 ---------------------------------------------------------------------------------------------------------------------------------------

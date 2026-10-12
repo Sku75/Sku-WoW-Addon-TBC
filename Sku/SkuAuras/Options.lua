@@ -1,6 +1,9 @@
 ﻿local MODULE_NAME = "SkuAuras"
 local L = Sku.L
 
+-- File-level state that used to leak into _G through a missing "local".
+local tSetData
+
 SkuAuras.options = {
 	name = MODULE_NAME,
 	type = "group",

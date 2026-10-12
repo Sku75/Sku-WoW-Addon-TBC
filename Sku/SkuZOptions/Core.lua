@@ -33,6 +33,9 @@ local UnitBuff = Sku.Compat.UnitBuff
 local UnitDebuff = Sku.Compat.UnitDebuff
 local UseContainerItem = Sku.Compat.UseContainerItem
 local _G = _G
+
+-- File-level state that used to leak into _G through a missing "local".
+local nDCFAddMessage, tFrame, tItem, tPowerString
 local slower = string.lower
 
 

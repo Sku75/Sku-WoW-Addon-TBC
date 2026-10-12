@@ -8,6 +8,9 @@
 -- migrate onto. Loaded right after SkuNav/Core.lua (SkuNav already created there).
 
 local L = Sku.L
+
+-- File-level state that used to leak into _G through a missing "local".
+local aP1x, aP1y, aP2x, aP2y
 local floor = math.floor
 local sqrt = math.sqrt
 

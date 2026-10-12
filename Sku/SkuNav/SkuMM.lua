@@ -4,6 +4,9 @@ local MODULE_NAME = "SkuNav"
 local L = Sku.L
 local _G = _G
 
+-- File-level state that used to leak into _G through a missing "local".
+local fs, tOldMMScale, tOldMMZoom, tWP
+
 SkuNav = SkuNav or LibStub("AceAddon-3.0"):NewAddon("SkuNav", "AceConsole-3.0", "AceEvent-3.0")
 
 local SkuLineRepo

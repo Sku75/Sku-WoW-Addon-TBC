@@ -2,6 +2,9 @@
 local L = Sku.L
 local GetNumQuestLogEntries = Sku.Compat.GetNumQuestLogEntries
 local GetQuestLogTitle = Sku.Compat.GetQuestLogTitle
+
+-- File-level state that used to leak into _G through a missing "local".
+local tCurrentQuestLogQuestsTable
 local function BuildSortedUniqueRouteWps(tRoutesInRange)
 	local tSortedWaypointList = {}
 	for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do

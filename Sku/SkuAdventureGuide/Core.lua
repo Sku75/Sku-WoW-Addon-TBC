@@ -2,6 +2,9 @@
 local _G = _G
 local L = Sku.L
 
+-- File-level state that used to leak into _G through a missing "local".
+local tFrame
+
 SkuAdventureGuide = LibStub("AceAddon-3.0"):NewAddon("SkuAdventureGuide", "AceConsole-3.0", "AceEvent-3.0")
 
 local slower = string.lower

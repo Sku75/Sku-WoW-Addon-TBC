@@ -1,5 +1,8 @@
 ﻿local MODULE_NAME = "SkuNav"
 local L = Sku.L
+
+-- File-level state that used to leak into _G through a missing "local".
+local tUnitDbWaypointData
 local function BuildSortedUniqueRouteWps(tRoutesInRange)
 	local tSortedWaypointList = {}
 	for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do

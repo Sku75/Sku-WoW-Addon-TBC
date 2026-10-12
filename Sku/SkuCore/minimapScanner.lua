@@ -6,6 +6,9 @@ local GetTrackingInfo = Sku.Compat.GetTrackingInfo
 local SetTracking = Sku.Compat.SetTracking
 local _G = _G
 
+-- File-level state that used to leak into _G through a missing "local".
+local tRessourceTypes, toptionTypes
+
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
 -- W4 Phase D: MinimapScanner is a real AceAddon SUBMODULE of SkuCore so it can be

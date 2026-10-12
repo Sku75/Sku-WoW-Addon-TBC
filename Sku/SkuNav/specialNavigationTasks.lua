@@ -3,6 +3,9 @@
 local _G = _G
 local L = Sku.L
 
+-- File-level state that used to leak into _G through a missing "local".
+local NavigationModeWoCoordinatesGetDirection
+
 SkuNav = SkuNav or LibStub("AceAddon-3.0"):NewAddon("SkuNav", "AceConsole-3.0", "AceEvent-3.0")
 
 --------------------------------------------------------------------------------------------------------------------------------------

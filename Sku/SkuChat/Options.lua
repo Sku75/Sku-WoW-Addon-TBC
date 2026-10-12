@@ -3,6 +3,9 @@
 local L = Sku.L
 local BetterDate = Sku.Compat.BetterDate
 
+-- File-level state that used to leak into _G through a missing "local".
+local CleanStringHelper
+
 local play = 2	--this is just a local constant for output type (play, true, false)
 local skuTts = 3	--audio via Sku's own TTS (see SkuChat/Core.lua for the full state list)
 

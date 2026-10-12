@@ -35,6 +35,12 @@ local GetItemInfo = Sku.Compat.GetItemInfo
 local PickupContainerItem = Sku.Compat.PickupContainerItem
 local _G = _G
 
+-- File-level state that used to leak into _G through a missing "local".
+local AuctionDBHistory, FullScanResultsDB, FullScanResultsDBHistory, PriceDropdown, QueryResultsDB,
+	filterData, tCurrentDBClean, tCurrentDBCleanSorted, tNewMenuEntry1, tNewMenuEntryCategory,
+	tNewMenuEntryCategorySub, tNewMenuEntryCategorySubItem, tNewMenuEntryCategorySubSub,
+	tNewMenuEntryCategorySubSubItem, tNewMenuEntryFaS, tNewMenuEntryFilterOption, tNewMenuEntrysearch
+
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
 -- 2.5.6-Fix (ported from v41.09 hotfix): Blizzards eigener Auktionshaus-Code

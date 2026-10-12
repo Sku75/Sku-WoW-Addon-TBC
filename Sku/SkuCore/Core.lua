@@ -9,6 +9,9 @@ local _G = _G
 local L = Sku.L
 local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
 
+-- File-level state that used to leak into _G through a missing "local".
+local CLASS_IDS, tLastFallSoundNum, tdiold, tdisold
+
 local tStartDebugTimestamp = GetTime() or 0
 
 SkuCoreDB = {}

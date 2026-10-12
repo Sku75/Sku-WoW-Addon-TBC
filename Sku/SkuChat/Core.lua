@@ -7,6 +7,10 @@ local GetContainerNumSlots = Sku.Compat.GetContainerNumSlots
 local GetNumQuestLogEntries = Sku.Compat.GetNumQuestLogEntries
 local GetQuestLogTitle = Sku.Compat.GetQuestLogTitle
 
+-- File-level state that used to leak into _G through a missing "local".
+local GetColoredName, MaskBattleNetNames, _, tSkuCurrentLineDatalinktItemId,
+	tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull
+
 SkuChat = LibStub("AceAddon-3.0"):NewAddon("SkuChat", "AceConsole-3.0", "AceEvent-3.0")
 
 local function tClearLinkReadoutIfNoLinks(self)

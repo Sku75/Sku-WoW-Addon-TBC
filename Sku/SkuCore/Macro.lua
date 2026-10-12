@@ -2,6 +2,10 @@
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 local L = Sku.L
 
+-- File-level state that used to leak into _G through a missing "local".
+local CreateTextBox, MacroMenuBuilderCharList, MacroMenuBuilderEntryButtons,
+	MacroMenuBuilderGlobalList, MacroMenuBuilderList, MacroMenuBuilderNew
+
 -- W4 Phase D: Macro is a real AceAddon SUBMODULE of SkuCore so it can be turned
 -- on/off at runtime via the Features menu. This feature is a pure menu-builder
 -- (SkuCore:MacroMenuBuilder, referenced by Options.lua) with no events, hooks, or

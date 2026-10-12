@@ -13,6 +13,9 @@ local IsEquippableItem = Sku.Compat.IsEquippableItem
 local PickupContainerItem = Sku.Compat.PickupContainerItem
 local _G = _G
 
+-- File-level state that used to leak into _G through a missing "local".
+local isEmpty
+
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
 local tBagSlotListSorted = {
