@@ -259,7 +259,7 @@ function SkuUtil:TooltipFirstLine(...)
 		local region = select(i, ...)
 		if region and region.GetObjectType and region:GetObjectType() == "FontString" then
 			local text = region.GetText and region:GetText()
-			if text and text ~= "" then
+			if text and not Sku.IsSecret(text) and text ~= "" then
 				return text
 			end
 		end
@@ -399,6 +399,14 @@ function SkuUtil:ResetScanningTooltip()
 	local tTooltip = _G["SkuScanningTooltip"]
 	if not tTooltip then
 		return nil
+	end
+	-- WoW Forever/Camelot: the scanning tooltip lacks SetItemByID/SetSpellByID; give this
+	-- one tooltip object its own versions via hyperlink (no shared metatable touched).
+	if not tTooltip.SetItemByID and tTooltip.SetHyperlink then
+		tTooltip.SetItemByID = function(aSelf, aId) return aSelf:SetHyperlink("item:" .. tostring(aId)) end
+	end
+	if not tTooltip.SetSpellByID and tTooltip.SetHyperlink then
+		tTooltip.SetSpellByID = function(aSelf, aId) return aSelf:SetHyperlink("spell:" .. tostring(aId)) end
 	end
 	tTooltip:SetOwner(WorldFrame, "ANCHOR_NONE")
 	tTooltip:ClearLines()

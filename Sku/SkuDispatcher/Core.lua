@@ -49,7 +49,11 @@ function SkuDispatcher:UnregisterEventCallback(aEventName, aCallbackFunc)
 
 	-- no callbacks left > unregister event
 	if string.sub(aEventName, 1, 4) ~= "SKU_" then
-		SkuDispatcher:UnregisterEvent(aEventName)
+		-- Mirror the IsEventValid guard from RegisterEventCallback: an event skipped
+		-- there was never registered on the frame, so don't try to unregister it either.
+		if not C_EventUtils or C_EventUtils.IsEventValid(aEventName) then
+			SkuDispatcher:UnregisterEvent(aEventName)
+		end
 	end
 	SkuDispatcher[aEventName] = nil
 	SkuDispatcher.Registered[aEventName] = nil
@@ -87,7 +91,14 @@ function SkuDispatcher:RegisterEventCallback(aEventName, aCallbackFunc, aOnlyOne
 		}
 
 		if string.sub(aEventName, 1, 4) ~= "SKU_" then
-			SkuDispatcher:RegisterEvent(aEventName)
+			-- Some events Sku has always registered (e.g. TRADE_SKILL_UPDATE) don't
+			-- exist on WoW Forever/Camelot anymore -> RegisterEvent would throw
+			-- "Attempt to register unknown event". C_EventUtils.IsEventValid lets us
+			-- skip just those, everywhere a callback comes through here, without a
+			-- per-callsite isForever check for every renamed/removed event.
+			if not C_EventUtils or C_EventUtils.IsEventValid(aEventName) then
+				SkuDispatcher:RegisterEvent(aEventName)
+			end
 		end
 	end
 

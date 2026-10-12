@@ -341,12 +341,29 @@ local tSortComparators = {
 -- saved price history. AUCTION_HOUSE_SHOW/CLOSED handle entering/leaving an AH.
 -- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Several AH events from the old auction API (AUCTION_OWNED_LIST_UPDATE,
+-- AUCTION_BIDDER_LIST_UPDATE, ...) don't exist on WoW Forever/Camelot anymore ->
+-- RegisterEvent would throw "Attempt to register unknown event", which (unlike a
+-- pcall'd callback) aborts the REST of the calling function too, so one bad event
+-- silently skips every RegisterEvent call after it. Guard each one individually.
+-- Same IsEventValid pattern as SkuDispatcher:RegisterEventCallback.
+local function SkuAHRegisterEvent(aEventName)
+   if not C_EventUtils or C_EventUtils.IsEventValid(aEventName) then
+      AuctionHouse:RegisterEvent(aEventName)
+   end
+end
+local function SkuAHUnregisterEvent(aEventName)
+   if not C_EventUtils or C_EventUtils.IsEventValid(aEventName) then
+      AuctionHouse:UnregisterEvent(aEventName)
+   end
+end
+
 function AuctionHouse:AuctionHouseOnInitialize()
-   AuctionHouse:RegisterEvent("AUCTION_HOUSE_SHOW")
-   AuctionHouse:RegisterEvent("AUCTION_HOUSE_CLOSED")
-   AuctionHouse:RegisterEvent("AUCTION_OWNED_LIST_UPDATE")
-   AuctionHouse:RegisterEvent("AUCTION_BIDDER_LIST_UPDATE")
-   AuctionHouse:RegisterEvent("AUCTION_ITEM_LIST_UPDATE")
+   SkuAHRegisterEvent("AUCTION_HOUSE_SHOW")
+   SkuAHRegisterEvent("AUCTION_HOUSE_CLOSED")
+   SkuAHRegisterEvent("AUCTION_OWNED_LIST_UPDATE")
+   SkuAHRegisterEvent("AUCTION_BIDDER_LIST_UPDATE")
+   SkuAHRegisterEvent("AUCTION_ITEM_LIST_UPDATE")
 
    local tTime = 0
    local tFullScanElapsed = 0
@@ -584,11 +601,11 @@ function AuctionHouse:OnDisable()
    if tTicker then
       tTicker:SetScript("OnUpdate", nil)
    end
-   AuctionHouse:UnregisterEvent("AUCTION_HOUSE_SHOW")
-   AuctionHouse:UnregisterEvent("AUCTION_HOUSE_CLOSED")
-   AuctionHouse:UnregisterEvent("AUCTION_OWNED_LIST_UPDATE")
-   AuctionHouse:UnregisterEvent("AUCTION_BIDDER_LIST_UPDATE")
-   AuctionHouse:UnregisterEvent("AUCTION_ITEM_LIST_UPDATE")
+   SkuAHUnregisterEvent("AUCTION_HOUSE_SHOW")
+   SkuAHUnregisterEvent("AUCTION_HOUSE_CLOSED")
+   SkuAHUnregisterEvent("AUCTION_OWNED_LIST_UPDATE")
+   SkuAHUnregisterEvent("AUCTION_BIDDER_LIST_UPDATE")
+   SkuAHUnregisterEvent("AUCTION_ITEM_LIST_UPDATE")
    -- Secure-buy teardown: release any active Enter/Escape override bindings + safety
    -- timer + server-message capture left by the hardware-event PlaceAuctionBid path.
    if AuctionHouse.AuctionSecureBuyTeardown then

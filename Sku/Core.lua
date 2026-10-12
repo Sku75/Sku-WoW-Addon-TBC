@@ -1,12 +1,18 @@
 ﻿---@diagnostic disable: undefined-field, undefined-doc-name, undefined-doc-param
 
 
-local oIsInventorySlotEngravable = C_Engraving.IsInventorySlotEngravable
-C_Engraving.IsInventorySlotEngravable = function(containerIndex, slotIndex)
-	if containerIndex >= 0 then
-		return oIsInventorySlotEngravable(containerIndex, slotIndex) --bool
-	else
-		return false
+-- C_Engraving (Season of Discovery rune sockets) does not exist on every
+-- client (e.g. WoW Forever/Camelot). Without this guard the override below
+-- throws at file scope, before Sku = {} runs, which leaves the Sku global
+-- nil for every other file in the addon.
+if C_Engraving and C_Engraving.IsInventorySlotEngravable then
+	local oIsInventorySlotEngravable = C_Engraving.IsInventorySlotEngravable
+	C_Engraving.IsInventorySlotEngravable = function(containerIndex, slotIndex)
+		if containerIndex >= 0 then
+			return oIsInventorySlotEngravable(containerIndex, slotIndex) --bool
+		else
+			return false
+		end
 	end
 end
 
@@ -23,6 +29,47 @@ local ADDON_NAME, ns = ...
 ns = ns or {}
 
 Sku = {}
+
+-- WoW Forever: inside instances UnitGUID/UnitName return "secret" values for other units. Comparing
+-- them, using them as table keys or concatenating them throws an error. These helpers return nil instead.
+function Sku.IsSecret(aValue)
+	return _G.issecretvalue ~= nil and _G.issecretvalue(aValue) == true
+end
+function Sku.SafeGUID(aUnit)
+	local tGuid = UnitGUID(aUnit)
+	if tGuid ~= nil and Sku.IsSecret(tGuid) then return nil end
+	return tGuid
+end
+function Sku.SafeName(aUnit)
+	local tName = UnitName(aUnit)
+	if tName ~= nil and Sku.IsSecret(tName) then return nil end
+	return tName
+end
+-- Secret text (e.g. an enemy name inside an instance): Sku cannot concatenate or reformat it, but
+-- C_VoiceChat.SpeakText accepts it from insecure code (SecretArguments = AllowedWhenTainted).
+-- Voice, speed and volume are the ones of Sku's Blizzard TTS.
+function Sku.SpeakSecretText(aText, aNoStop)
+	if aText == nil or not (C_VoiceChat and C_VoiceChat.SpeakText) then return false end
+	local tChat = (SkuSettings and SkuSettings:Sub("SkuChat")) or {}
+	local tVoice = (tChat.WowTtsVoice or 1) - 1
+	if not aNoStop then pcall(C_VoiceChat.StopSpeakingText) end
+	local tOk = pcall(C_VoiceChat.SpeakText, tVoice, aText, tChat.WowTtsSpeed or 3, tChat.WowTtsVolume or 50)
+	return tOk
+end
+-- Plain text straight to the Blizzard TTS without stopping it (it queues behind what is already spoken).
+function Sku.SpeakPlainQueued(aText, aStopFirst)
+	if type(aText) ~= "string" or aText == "" or not (C_VoiceChat and C_VoiceChat.SpeakText) then return false end
+	local tChat = (SkuSettings and SkuSettings:Sub("SkuChat")) or {}
+	local tVoice = (tChat.WowTtsVoice or 1) - 1
+	local tText = aText
+	if aStopFirst then pcall(C_VoiceChat.StopSpeakingText) end
+	local tLib = LibStub and LibStub("SkuVoice-1.0", true)
+	if tLib and tLib.CacheBustText then
+		local tOk, tBusted = pcall(tLib.CacheBustText, tLib, aText)
+		if tOk and tBusted then tText = tBusted end
+	end
+	return (pcall(C_VoiceChat.SpeakText, tVoice, tText, tChat.WowTtsSpeed or 3, tChat.WowTtsVolume or 50))
+end
 Sku.ns = ns
 Sku.L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 Sku.Loc = Sku.L["locale"]
@@ -205,6 +252,8 @@ Sku.testMode = false
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- tmp fixes for 11404 ptr
 Sku.toc = select(4, GetBuildInfo())
+-- WoW Forever ("Camelot", Blizzard's own new Classic client): Interface 16xxx.
+Sku.isForever = (Sku.toc >= 16000 and Sku.toc < 17000)
 if Sku.toc >= 20505 then
 	Sku.isTBC = true
 end
@@ -244,10 +293,293 @@ if Sku.toc > 11403 then
 	GetTrackingInfo = C_Minimap.GetTrackingInfo
 	GetNumTrackingTypes = C_Minimap.GetNumTrackingTypes
 end
+
+-- WoW Forever/Camelot: old global item helpers now live in C_Item. Alias every one
+-- that is missing so the hundreds of call sites keep working unchanged.
+if _G.C_Item then
+	for _, tName in ipairs({"GetItemInfo", "IsEquippableItem", "GetItemInfoInstant", "GetItemCount", "GetItemQualityColor",
+		"GetItemIcon", "IsConsumableItem", "IsUsableItem", "GetDetailedItemLevelInfo", "IsItemInRange",
+		"GetItemSpell", "GetItemFamily", "GetItemInventoryTypeByID", "IsCurrentItem"}) do
+		if not _G[tName] and type(_G.C_Item[tName]) == "function" then
+			_G[tName] = _G.C_Item[tName]
+		end
+	end
+end
+
+-- WoW Forever/Camelot: legacy helpers the overview page (Ctrl-Shift-Down: buffs, skills,
+-- reputation, guild, loot) still calls. Each is rebuilt only when missing.
+if not _G.UnitBuff then
+	_G.UnitBuff = function(aUnit, aIndex, aFilter)
+		return UnitAura(aUnit, aIndex, "HELPFUL" .. (aFilter and ("|" .. aFilter) or ""))
+	end
+end
+if not _G.UnitDebuff then
+	_G.UnitDebuff = function(aUnit, aIndex, aFilter)
+		return UnitAura(aUnit, aIndex, "HARMFUL" .. (aFilter and ("|" .. aFilter) or ""))
+	end
+end
+if not _G.GetSpellCooldown and _G.C_Spell and _G.C_Spell.GetSpellCooldown then
+	-- old: start, duration, enabled, modRate
+	_G.GetSpellCooldown = function(aSpell)
+		local t = C_Spell.GetSpellCooldown(aSpell)
+		if not t then return 0, 0, 1, 1 end
+		return t.startTime, t.duration, (t.isEnabled == false) and 0 or 1, t.modRate
+	end
+end
+if not _G.GetLootMethod and _G.C_PartyInfo and _G.C_PartyInfo.GetLootMethod then
+	-- old: "freeforall" / "roundrobin" / "master" / "group" / "needbeforegreed" / "personalloot"
+	_G.GetLootMethod = function()
+		local tOk, tMethod = pcall(C_PartyInfo.GetLootMethod)
+		local tNames = { [0] = "freeforall", [1] = "roundrobin", [2] = "master", [3] = "group", [4] = "needbeforegreed", [5] = "personalloot" }
+		return tOk and tNames[tMethod] or "personalloot"
+	end
+end
+if not _G.GuildRoster then
+	_G.GuildRoster = (_G.C_GuildInfo and _G.C_GuildInfo.GuildRoster) or function() end
+end
+if not _G.SetGuildRosterShowOffline then
+	_G.SetGuildRosterShowOffline = function() end
+end
+if not _G.GetInventoryAlertStatus then
+	_G.GetInventoryAlertStatus = function() return 0 end
+end
+if not _G.GetNumSkillLines then
+	_G.SkuShimSkillLines = true
+	_G.GetNumSkillLines = function() return 0 end
+	_G.GetSkillLineInfo = function() return nil end
+end
+if _G.C_Reputation then
+	if not _G.GetNumFactions and C_Reputation.GetNumFactions then
+		_G.GetNumFactions = C_Reputation.GetNumFactions
+	end
+	if not _G.ExpandAllFactionHeaders and C_Reputation.ExpandAllFactionHeaders then
+		_G.ExpandAllFactionHeaders = C_Reputation.ExpandAllFactionHeaders
+	end
+	if not _G.GetFactionInfo and C_Reputation.GetFactionDataByIndex then
+		-- old: name, description, standingID, bottomValue, topValue, earnedValue, atWarWith,
+		-- canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID
+		_G.GetFactionInfo = function(aIndex)
+			local t = C_Reputation.GetFactionDataByIndex(aIndex)
+			if not t then return nil end
+			return t.name, t.description, t.reaction, t.currentReactionThreshold, t.nextReactionThreshold,
+				t.currentStanding, t.atWarWith, t.canToggleAtWar, t.isHeader, t.isCollapsed,
+				t.isHeaderWithRep, t.isWatched, t.isChild, t.factionID
+		end
+	end
+end
+
+-- WoW Forever/Camelot: BetterDate (a thin wrapper over date()) is gone. The chat line
+-- reader and the timestamp setting call it, so a missing global broke reading chat back.
+if not _G.BetterDate then
+	_G.BetterDate = function(aFormat, aTime)
+		local tOk, tRes = pcall(date, aFormat or "%H:%M:%S ", aTime or time())
+		return tOk and tRes or ""
+	end
+end
+
+-- WoW Forever/Camelot: GetCoinText moved to C_CurrencyInfo; fall back to a plain
+-- gold/silver/copper string if neither exists.
+if not _G.GetCoinText then
+	_G.GetCoinText = function(aCopper, aSep)
+		if _G.C_CurrencyInfo and _G.C_CurrencyInfo.GetCoinText then
+			local tOk, tText = pcall(_G.C_CurrencyInfo.GetCoinText, aCopper, aSep)
+			if tOk and type(tText) == "string" then return tText end
+		end
+		aCopper = math.floor(tonumber(aCopper) or 0)
+		local tParts = {}
+		local g, s, c = math.floor(aCopper / 10000), math.floor((aCopper % 10000) / 100), aCopper % 100
+		if g > 0 then tParts[#tParts + 1] = string.format(GOLD_AMOUNT or "%d g", g) end
+		if s > 0 then tParts[#tParts + 1] = string.format(SILVER_AMOUNT or "%d s", s) end
+		if c > 0 or #tParts == 0 then tParts[#tParts + 1] = string.format(COPPER_AMOUNT or "%d c", c) end
+		return table.concat(tParts, aSep or " ")
+	end
+end
+
+-- WoW Forever/Camelot removes the global GetSpellInfo/GetSpellBookItemName in
+-- favour of C_Spell/C_SpellBook, whose returns are shaped differently (a
+-- table instead of positional values; a spellBank Enum instead of the old
+-- BOOKTYPE_* strings). Rather than touch every call site across Sku, these
+-- globals are reconstructed here in the old shape, guarded so a client that
+-- still has the old globals is untouched.
+-- UnitAura itself is missing on some clients (WoW Forever/Camelot) -- elsewhere
+-- Blizzard ships it as a compatibility shim over C_UnitAuras.GetAuraDataByIndex
+-- (see the comment in SkuAuras/Core.lua), but not here. Old positional shape:
+-- name, icon, count, dispelType, duration, expirationTime, caster, isStealable,
+-- nameplateShowPersonal, spellId, canApplyAura, isBossAura, castByPlayer,
+-- nameplateShowAll, timeMod.
+if not UnitAura and C_UnitAuras and C_UnitAuras.GetAuraDataByIndex then
+	-- WoW Forever/Camelot: in combat the client can mark a unit's aura data "secret"; the
+	-- call then throws ("Auras cannot be accessed when secret while tainted") or hands
+	-- back secret values that blow up at the next compare. Treat a throwing call as "no
+	-- more auras" and blank out any secret field, so the aura code never sees one.
+	UnitAura = function(aUnit, aIndex, aFilter)
+		local tOk, t = pcall(C_UnitAuras.GetAuraDataByIndex, aUnit, aIndex, aFilter)
+		if not tOk or type(t) ~= "table" then return nil end
+		local tSecret = _G.issecretvalue
+		local function tClean(aValue)
+			if tSecret and tSecret(aValue) then return nil end
+			return aValue
+		end
+		local tName = tClean(t.name)
+		if tName == nil then tName = "?" end
+		return tName, tClean(t.icon), tClean(t.applications), tClean(t.dispelName), tClean(t.duration), tClean(t.expirationTime), tClean(t.sourceUnit), tClean(t.isStealable), tClean(t.nameplateShowPersonal), tClean(t.spellId), tClean(t.canApplyAura), tClean(t.isBossAura), tClean(t.isFromPlayerOrPlayerPet), tClean(t.nameplateShowAll), tClean(t.timeMod)
+	end
+end
+
+if not GetSpellInfo and C_Spell and C_Spell.GetSpellInfo then
+	-- Old shape: name, rank, icon, castTime, minRange, maxRange, spellId.
+	-- "rank" has had no data since ranks were removed from retail (already
+	-- nil there); the modern SpellInfo table has no rank field either way.
+	GetSpellInfo = function(aSpell)
+		local t = C_Spell.GetSpellInfo(aSpell)
+		if not t then return nil end
+		return t.name, nil, t.iconID, t.castTime, t.minRange, t.maxRange, t.spellID
+	end
+end
+
+-- Same story for the quest log: GetNumQuestLogEntries/GetQuestLogTitle move to
+-- C_QuestLog on some clients (WoW Forever/Camelot). GetNumQuestLogEntries is a
+-- straight rename (same two return values); GetQuestLogTitle's replacement
+-- returns a table instead of positional values, and drops isComplete/
+-- displayQuestID, so isComplete is recovered with a second call and
+-- displayQuestID comes back nil (no Sku call site we found reads it).
+if not GetNumQuestLogEntries and C_QuestLog and C_QuestLog.GetNumQuestLogEntries then
+	GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
+end
+if not GetQuestLogTitle and C_QuestLog and C_QuestLog.GetInfo then
+	GetQuestLogTitle = function(aIndex)
+		local t = C_QuestLog.GetInfo(aIndex)
+		if not t then return nil end
+		-- Old isComplete semantics: 1 = complete, -1 = failed, nil = open. The C_QuestLog replacements
+		-- return booleans, but every caller compares with 1/-1, so "true" silently dropped "(Complete)".
+		local tIsComplete = nil
+		if t.questID and not t.isHeader then
+			if C_QuestLog.IsFailed then
+				local tOkF, tFailed = pcall(C_QuestLog.IsFailed, t.questID)
+				if tOkF and tFailed == true then tIsComplete = -1 end
+			end
+			if tIsComplete == nil and C_QuestLog.IsComplete then
+				local tOk, tRes = pcall(C_QuestLog.IsComplete, t.questID)
+				if tOk and tRes == true then tIsComplete = 1 end
+			end
+		end
+		-- suggestedGroup = 0 ("no group") is truthy in Lua and was spoken as "(0) " before the title.
+		local tSuggestedGroup = t.suggestedGroup
+		if not tSuggestedGroup or tSuggestedGroup <= 0 then tSuggestedGroup = nil end
+		return t.title, t.level, tSuggestedGroup, t.isHeader, t.isCollapsed, tIsComplete, t.frequency, t.questID, t.startEvent, nil, t.isOnMap, t.hasLocalPOI, t.isTask, t.isStory
+	end
+end
+
+-- QuestLogFrame is a standalone window on old clients; on this one the quest
+-- log lives inside the world map (QuestMapFrame) instead, and the old global
+-- doesn't exist at all. Aliased here so the many unguarded QuestLogFrame:
+-- IsVisible()/ShowUIPanel(QuestLogFrame)/HideUIPanel(QuestLogFrame) call
+-- sites across SkuQuest/SkuZOptions/SkuCore keep working without touching
+-- each one individually. QuestMapFrame is a real Frame (IsVisible works);
+-- ShowUIPanel/HideUIPanel may or may not manage it the exact old way, but
+-- that is strictly better than the hard crash this replaces.
+if not _G.QuestLogFrame and _G.QuestMapFrame then
+	_G.QuestLogFrame = _G.QuestMapFrame
+end
+
+-- WoW Forever/Camelot: cursor/pickup helpers moved into C_* namespaces. Alias whichever
+-- are missing so the action bar assignment code keeps working unchanged.
+for _, tPair in ipairs({
+	{"PickupSpell", "C_Spell"}, {"PickupSpellBookItem", "C_SpellBook"}, {"PickupItem", "C_Item"},
+	{"PickupMacro", "C_Macro"}, {"PickupAction", "C_ActionBar"}, {"PlaceAction", "C_ActionBar"},
+	{"PickupPetAction", "C_ActionBar"}, {"PickupPetSpell", "C_SpellBook"},
+	{"PickupCompanion", "C_MountJournal"}, {"GetMacroSpell", "C_Macro"},
+}) do
+	local tNs = _G[tPair[2]]
+	if not _G[tPair[1]] and type(tNs) == "table" and type(tNs[tPair[1]]) == "function" then
+		_G[tPair[1]] = tNs[tPair[1]]
+	end
+end
+if not _G.CursorHasSpell then
+	_G.CursorHasSpell = function() return (GetCursorInfo()) == "spell" end
+end
+
+-- WoW Forever/Camelot no longer defines the spellbook type constants. Without them the
+-- action bar menus passed nil and skipped the spellbook list entirely.
+if _G.BOOKTYPE_SPELL == nil then _G.BOOKTYPE_SPELL = "spell" end
+if _G.BOOKTYPE_PET == nil then _G.BOOKTYPE_PET = "pet" end
+
+if not GetSpellBookItemName and C_SpellBook and C_SpellBook.GetSpellBookItemName and Enum and Enum.SpellBookSpellBank then
+	-- Old shape: name, subName, spellID (3rd value not offered by the
+	-- replacement here, so it comes back nil - no Sku call site we found
+	-- reads it). BOOKTYPE_PET's real value selects the pet bank; anything
+	-- else (including a caller accidentally passing the identifier text
+	-- "BOOKTYPE_SPELL" instead of its value, as one Sku call site does)
+	-- falls back to the player bank, matching the old API's tolerant default.
+	GetSpellBookItemName = function(aIndex, aBookType)
+		local tBank = (aBookType == BOOKTYPE_PET) and Enum.SpellBookSpellBank.Pet or Enum.SpellBookSpellBank.Player
+		local tName, tSubName = C_SpellBook.GetSpellBookItemName(aIndex, tBank)
+		return tName, tSubName, nil
+	end
+end
+
+-- Spellbook tab/item helpers (WoW Forever/Camelot): rebuilt in the old positional shape
+-- on top of C_SpellBook / C_Spell, each guarded so an old client is untouched.
+if C_SpellBook then
+	local function tBank(aBookType)
+		if Enum and Enum.SpellBookSpellBank then
+			return (aBookType == BOOKTYPE_PET or aBookType == "pet") and Enum.SpellBookSpellBank.Pet or Enum.SpellBookSpellBank.Player
+		end
+		return aBookType
+	end
+	if not GetNumSpellTabs and C_SpellBook.GetNumSpellBookSkillLines then
+		GetNumSpellTabs = C_SpellBook.GetNumSpellBookSkillLines
+	end
+	if not GetSpellTabInfo and C_SpellBook.GetSpellBookSkillLineInfo then
+		-- old: name, texture, offset, numEntries, isGuild, offspecID
+		GetSpellTabInfo = function(aIndex)
+			local t = C_SpellBook.GetSpellBookSkillLineInfo(aIndex)
+			if not t then return nil end
+			return t.name, t.iconID, t.itemIndexOffset, t.numSpellBookItems, t.isGuild, t.offSpecID
+		end
+	end
+	if not GetSpellBookItemInfo and C_SpellBook.GetSpellBookItemInfo then
+		-- old: typeString, id  (id = spellID)
+		GetSpellBookItemInfo = function(aIndex, aBookType)
+			local t = C_SpellBook.GetSpellBookItemInfo(aIndex, tBank(aBookType))
+			if not t then return nil end
+			local tType = "SPELL"
+			if Enum and Enum.SpellBookItemType then
+				if t.itemType == Enum.SpellBookItemType.Flyout then tType = "FLYOUT"
+				elseif t.itemType == Enum.SpellBookItemType.FutureSpell then tType = "FUTURESPELL" end
+			end
+			return tType, t.spellID or t.actionID
+		end
+	end
+	if not IsPassiveSpell then
+		IsPassiveSpell = function(aSpellId, aBookType)
+			if not aSpellId then return false end
+			if C_Spell and C_Spell.IsSpellPassive then
+				local tOk, tRes = pcall(C_Spell.IsSpellPassive, aSpellId)
+				if tOk then return tRes and true or false end
+			end
+			if C_SpellBook.IsSpellPassive then
+				local tOk, tRes = pcall(C_SpellBook.IsSpellPassive, aSpellId)
+				if tOk then return tRes and true or false end
+			end
+			return false
+		end
+	end
+	if not IsSpellKnown and C_SpellBook.IsSpellKnown then
+		IsSpellKnown = function(aSpellId, aIsPet)
+			if not aSpellId then return false end
+			local tOk, tRes = pcall(C_SpellBook.IsSpellKnown, aSpellId, aIsPet and Enum.SpellBookSpellBank.Pet or Enum.SpellBookSpellBank.Player)
+			return tOk and tRes and true or false
+		end
+	end
+	if not HasPetSpells and C_SpellBook.HasPetSpells then
+		HasPetSpells = C_SpellBook.HasPetSpells
+	end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 Sku.IsEraSoD = false
-if C_Engraving.IsEngravingEnabled() == true then
+if C_Engraving and C_Engraving.IsEngravingEnabled and C_Engraving.IsEngravingEnabled() == true then
 	Sku.IsEraSoD = true
 end
 
@@ -306,6 +638,7 @@ local DEBUGLOG_FORMAT = 2          -- 1 = {seq=,t=,msg=} tables, 2 = "seq|t|msg"
 -- serialised one level deep (k=v, ...) so the log stays informative without
 -- the cost/size of a deep walk; nested tables collapse to "{...}".
 local function tDebugArg(aVal)
+	if Sku.IsSecret(aVal) then return "<secret>" end
 	if type(aVal) ~= "table" then
 		return tostring(aVal)
 	end
@@ -316,6 +649,7 @@ local function tDebugArg(aVal)
 			tParts[#tParts + 1] = "..."
 			break
 		end
+		if Sku.IsSecret(v) then v = "<secret>" end
 		local tv = type(v)
 		if tv == "table" then
 			v = "{...}"
@@ -324,7 +658,7 @@ local function tDebugArg(aVal)
 		else
 			v = tostring(v)
 		end
-		tParts[#tParts + 1] = tostring(k) .. "=" .. v
+		tParts[#tParts + 1] = (Sku.IsSecret(k) and "<secret>" or tostring(k)) .. "=" .. tostring(v)
 	end
 	return "{" .. table.concat(tParts, ", ") .. "}"
 end

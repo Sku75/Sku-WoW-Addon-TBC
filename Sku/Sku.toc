@@ -1,4 +1,4 @@
-﻿## Interface: 20506, 11508, 11509
+﻿## Interface: 20506, 11508, 11509, 16001
 ## Title: Sku v43.11
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData, SkuErrorLog, SkuDebugLog
 ## Version: 43.11

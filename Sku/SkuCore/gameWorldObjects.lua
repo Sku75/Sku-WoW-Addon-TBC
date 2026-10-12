@@ -220,6 +220,15 @@ local TURN_SETTLE_MIN_TIME = 0.05
 local TURN_TRIM_MIN = 0.05        -- kleinerer Rest-Schritt: lieber hier stoppen
 local TURN_GEAR2_MIN_REAL = 0.7   -- Gang 2 liefert unter 70 Prozent des verlangten Tempos -> abschalten
 
+-- WoW Forever: GetUnitSpeed is a secret value in combat (SecretWhenUnitStatsRestricted). Comparing or
+-- doing arithmetic with it throws, which aborted the turn completely in combat. Secret -> 0 (no lead)
+-- so the turn itself still runs normally.
+local function tPlayerSpeed()
+   local tSpeed = GetUnitSpeed("player")
+   if tSpeed == nil or (issecretvalue and issecretvalue(tSpeed)) then return 0 end
+   return tSpeed
+end
+
 local tTurnFrame = CreateFrame("Frame")   -- OnUpdate nur waehrend einer Drehung
 local tGear2Ratios = {}                   -- letzte Gang-2-Messungen: echtes/verlangtes Tempo
 
@@ -305,7 +314,7 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
    -- Blickrichtungsvektor in den Koordinaten von GetDirectionTo: "geradeaus"
    -- = (cos f, sin f).
    local tRawDegree = degree
-   local tSpeedNow = GetUnitSpeed("player")
+   local tSpeedNow = tPlayerSpeed()
    if tSpeedNow and tSpeedNow > 0 and GetPlayerFacing() then
       local _, tPlanN, tPlanF = tTurnPlan(math.abs(degree))
       -- n Schritte + Leerframe + Transferframe, plus 0.03 s.
@@ -477,7 +486,7 @@ function GameWorldObjects:TurnToWorldPosition(aWorldX, aWorldY, aLabel)
          "lead_shift", string.format("%.1f", degree - tRawDegree),
          "rest_land", string.format("%.1f", tLandX and (select(3, SkuNav.Geo:GetDirectionTo(tLandX, tLandY, aWorldX, aWorldY)) or 0) or 0),
          "dist_land", string.format("%.1f", tLandX and (select(2, SkuNav:Distance(tLandX, tLandY, aWorldX, aWorldY)) or -1) or -1),
-         "v", string.format("%.1f", GetUnitSpeed("player") or 0),
+         "v", string.format("%.1f", tPlayerSpeed()),
          "flags", tFlags, "mode", "g"..tGear, "wp", tostring(aLabel))
    end
 
