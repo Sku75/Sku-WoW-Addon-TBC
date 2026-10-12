@@ -212,6 +212,18 @@ hast. Diese Stellen besonders sorgfältig auflösen:
 
 ### Prüfen vor dem PR
 
+14a. **Keine neuen globalen Variablen.** Jede Variable und jede Hilfsfunktion
+    bekommt `local`. Prüfen mit:
+
+    ```
+    luajit dev/rework-docs/_globals_scan.lua Sku/SkuCore/Core.lua
+    ```
+
+    Das listet jede globale Variable, die die Datei schreibt, mit Zeile. Erlaubt
+    sind nur die Modultabellen (`SkuCore`, `SkuChat` ...), `SLASH_*`- und
+    `BINDING_*`-Namen. Nie Blizzards eigene globale Namen überschreiben
+    (Funktionen, Texte aus GlobalStrings, Konstanten).
+
 14. **Syntax jeder geänderten Lua-Datei** prüfen (fängt auch offene Strings, die
     andere Prüfer übersehen):
 
