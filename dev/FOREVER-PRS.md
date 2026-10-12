@@ -24,9 +24,10 @@ Link: <https://github.com/Sku75/Sku-WoW-Addon-TBC/blob/main/dev/FOREVER-PRS.md>
   Versionsnummern, schreibt die Patch-Notes und macht die Releases.
 - **Du lieferst Code als Pull Requests** gegen `main`, in der Reihenfolge unten.
   Der Maintainer kann dir auch einzelne Aufgaben geben; die laufen genauso als PR.
-- Dein Repo `gitana83/wow-forever` mit der eigenen Linie 1.x ist ein
-  **Übergang**. Sobald eine Sku-Version mit Forever-Unterstützung veröffentlicht
-  ist, wird es eingestellt (keine neuen 1.x-Releases mehr, README verweist hierher).
+- **Ab sofort keine eigenen Releases mehr.** Keine neuen ZIP-Dateien und keine
+  neuen 1.x-Versionen in `gitana83/wow-forever`. Gebraucht wird nur Code, als
+  PR gegen dieses Repo. Releases macht ausschließlich der Maintainer. Die README
+  deines alten Repos soll auf dieses Repo verweisen.
 - PR #20 (Installer mit zweitem Repo) ist geschlossen. Der Installer kommt als
   **letzter** PR, siehe unten.
 
