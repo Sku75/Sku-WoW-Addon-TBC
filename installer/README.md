@@ -480,6 +480,13 @@ It also takes single-word commands for the pieces that have no other test:
   store via `PathMemory.DirOverride`. The real user's memory is never touched.
 - `toctest` — build-version → interface-number math, no network.
 - `resolve` — the live "latest release" discovery, no download.
+- `forevertest` — WoW Forever support, no network: a throwaway WoW base dir with
+  all three clients; checks client detection, the per-client interface list
+  (Forever gets `16001` only), the Forever main-addon source (own repo, tag `v1.x`)
+  and the update decision.
+- `foreverinstall [languagePackIndex]` — the same Forever client end to end
+  with the REAL release assets (needs network, a few hundred MB): Sku for Forever,
+  the companions and one language pack, then the TOC interface sync.
 - `selfupdate [poseAsVersion]` — the real self-update check end to end except
   the window and the restart: fetch the version file, compare, download,
   verify. **Run this after every release** — it is what proves `release.ps1`
@@ -510,3 +517,38 @@ readable by ear and usable from a script.
 - `Sku/SkuCore/updateCheck.lua` — wired into `Sku.toc`; speaks through
   `SkuOptions.Voice:OutputStringBTtts`. Real logic; cadence constants are
   tunable and a user toggle is still TODO.
+
+## WoW Forever (Blizzard's new Classic client)
+
+WoW Forever (internally "Camelot": flavor `wow_classic_beta`, folder
+`_classic_beta_`, game exe `WowB.exe`, interface `16001`) is a third supported
+client next to Anniversary and Classic Era. Sku for Forever is a **separate
+version line (1.x)** with its own release repo — not the 43.x build — so the main
+addon of a Forever client comes from there:
+
+| What | Source |
+|---|---|
+| Main addon `Sku` | `gitana83/wow-forever`, tag `v1.x`, asset `Sku-1.x.zip` (root folder `Sku`), newest version discovered like the other main addon via `/releases/latest`, pin `Config.ForeverPinVersion` |
+| Companions, language packs | the normal ones from this repo (same pinned tag) |
+| Third-party addons (Questie, AtlasLoot, ...) | not managed on Forever |
+| WoW Login Tool | not installed on Forever |
+
+How it plugs into the existing flow (no separate code path):
+
+- `Config.CoreAddonsFor(product)` returns the normal core set, with the primary
+  spec swapped for the Forever one (`AddonSpec.RepoOwner/RepoName` override the
+  default repo for that spec only). `Config.MainVersionFor(product)` gives the
+  version a client of that product is compared against.
+- `WowLocator` detects the client (`.flavor.info` product, `WowB.exe`), lists it in the
+  version picker and accepts a hand-picked Forever folder.
+- `WowLocator.InterfaceVersionList(addonsFolder)` returns **only the numbers of the
+  client family the folder belongs to**: `16001` for a Forever folder, `20506, 11509`
+  for Anniversary/Era. Without that split, `TocSync` would write the Anniversary
+  numbers into a Forever install and the addons would stop loading.
+- `IsGameRunning()` also looks for `WowB.exe`.
+
+Version rule for Sku for Forever: tag `v<digits.dots>`, `## Version:` in `Sku.toc`
+equal to the tag without `v`, release without `--prerelease` and with the "Latest"
+badge — the same rules as for the main addon above.
+
+macOS: Forever is a Windows client, nothing changes there.

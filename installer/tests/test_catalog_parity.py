@@ -25,6 +25,13 @@ require(windows_config, catalog["repository"].split("/", 1)[0], "Windows Config.
 require(windows_config, catalog["repository"].split("/", 1)[1], "Windows Config.cs")
 require(windows_config, catalog["companionTag"], "Windows Config.cs")
 
+# WoW Forever main addon: own repo, flavor token, game process
+forever = catalog["foreverMainAddon"]
+require(windows_config, forever["repository"].split("/", 1)[0], "Windows Config.cs")
+require(windows_config, forever["repository"].split("/", 1)[1], "Windows Config.cs")
+require(windows_config, forever["product"], "Windows Config.cs")
+require(windows_config, forever["gameProcess"], "Windows Config.cs")
+
 for section in ("companions", "languagePacks"):
     for package in catalog[section]:
         for value in (package["key"], package["asset"]):

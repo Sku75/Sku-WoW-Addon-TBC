@@ -57,7 +57,7 @@ namespace SkuInstaller
         /// A client without Sku is a fresh install, not an update.
         /// </summary>
         public bool UpdateAvailable =>
-            HasSku && AddonInstaller.CompareVersions(InstalledVersion, Config.MainVersion) < 0;
+            HasSku && AddonInstaller.CompareVersions(InstalledVersion, Config.MainVersionFor(Product)) < 0;
 
         /// <summary>True when Sku here is a symlink/junction to a folder we don't manage.</summary>
         public bool IsDevSymlink =>
@@ -121,7 +121,7 @@ namespace SkuInstaller
                 return Loc.Get("target.notFound");
 
             if (!HasSku)
-                return Loc.Format("target.freshInstall", Config.MainVersion);
+                return Loc.Format("target.freshInstall", Config.MainVersionFor(Product));
 
             string installed = string.IsNullOrEmpty(InstalledVersion)
                 ? Loc.Get("target.versionUnknown")
@@ -134,7 +134,7 @@ namespace SkuInstaller
                 return Loc.Format("target.devSymlink", installed);
 
             return UpdateAvailable
-                ? Loc.Format("target.updateAvailable", installed, Config.MainVersion)
+                ? Loc.Format("target.updateAvailable", installed, Config.MainVersionFor(Product))
                 : Loc.Format("target.upToDate", installed);
         }
 

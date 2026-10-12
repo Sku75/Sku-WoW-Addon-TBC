@@ -46,6 +46,7 @@ namespace SkuInstaller
         {
             Config.AnniversaryFlavor,   // wow_anniversary
             "wow_classic_era",
+            Config.ForeverFlavor,       // wow_classic_beta (WoW Forever)
         };
 
         /// <summary>
@@ -62,6 +63,7 @@ namespace SkuInstaller
             {
                 case "wow_anniversary": return "TBC";
                 case "wow_classic_era": return "Era";
+                case "wow_classic_beta": return "Forever";
                 case "wow_classic":     return "Classic";
                 case "wow_sod":         return "SoD";
                 default:                return product;
@@ -75,6 +77,7 @@ namespace SkuInstaller
             {
                 case "wow_anniversary": return "Anniversary (TBC)";
                 case "wow_classic_era": return "Classic Era";
+                case "wow_classic_beta": return "WoW Forever";
                 case "wow_classic":     return "Classic";
                 case "wow_sod":         return "Season of Discovery";
                 default:                return product;
@@ -152,14 +155,16 @@ namespace SkuInstaller
                 foreach (var flavorDir in flavorDirs)
                 {
                     bool hasExe = File.Exists(Path.Combine(flavorDir, "WowClassic.exe"))
-                               || File.Exists(Path.Combine(flavorDir, "Wow.exe"));
+                               || File.Exists(Path.Combine(flavorDir, "Wow.exe"))
+                               || File.Exists(Path.Combine(flavorDir, Config.ForeverProcessName + ".exe"));
                     if (!hasExe) continue;
 
                     string product = ReadFlavorProduct(flavorDir) ?? Path.GetFileName(flavorDir);
 
-                    // Only Anniversary and Classic Era are supported by this Sku
-                    // build — skip Classic (wow_classic), retail, SoD, etc.
-                    if (product != Config.AnniversaryFlavor && product != "wow_classic_era")
+                    // Only Anniversary, Classic Era and WoW Forever are supported by this
+                    // Sku build — skip Classic (wow_classic), retail, SoD, etc.
+                    if (product != Config.AnniversaryFlavor && product != "wow_classic_era"
+                        && product != Config.ForeverFlavor)
                         continue;
 
                     string addons = Path.Combine(flavorDir, "Interface", "AddOns");
@@ -283,6 +288,18 @@ namespace SkuInstaller
         }
 
         /// <summary>
+        /// True if the flavor folder is a WoW Forever client: its .flavor.info names
+        /// wow_classic_beta, and WowB.exe is present.
+        /// </summary>
+        private static bool IsForeverFlavor(string flavorDir)
+        {
+            if (string.IsNullOrEmpty(flavorDir) || !Directory.Exists(flavorDir))
+                return false;
+            return File.Exists(Path.Combine(flavorDir, Config.ForeverProcessName + ".exe"))
+                && string.Equals(ReadFlavorProduct(flavorDir), Config.ForeverFlavor, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// Validates a user-picked folder. Accepts either the AddOns folder itself
         /// or a flavor/base folder we can resolve down to AddOns. Returns the
         /// resolved AddOns path or null.
@@ -297,7 +314,7 @@ namespace SkuInstaller
                 return picked;
 
             // Picked a flavor folder.
-            if (IsAnniversaryFlavor(picked))
+            if (IsAnniversaryFlavor(picked) || IsForeverFlavor(picked))
                 return AddOnsInFlavor(picked);
 
             // Picked a base folder.
@@ -319,7 +336,8 @@ namespace SkuInstaller
         // first-install updates and to decide the end-of-run message.
 
         public static bool IsGameRunning() =>
-            Process.GetProcessesByName(Config.GameProcessName).Length > 0;
+            Process.GetProcessesByName(Config.GameProcessName).Length > 0 ||
+            Process.GetProcessesByName(Config.ForeverProcessName).Length > 0;
 
         /// <summary>
         /// Reads the "## Version:" line from an addon's TOC, e.g. "41.06" from
@@ -375,13 +393,18 @@ namespace SkuInstaller
         {
             var versions = new System.Collections.Generic.List<int>();
 
+            // A WoW Forever client has its own interface line (16001); the list for
+            // Anniversary/Era must never carry it and vice versa, so each AddOns folder
+            // gets only the numbers of its own client family.
+            bool forever = ProductForAddOnsFolder(addonsFolder) == Config.ForeverFlavor;
+
             string baseDir = BaseDirOf(addonsFolder);
             if (baseDir != null)
-                CollectInterfaceVersions(baseDir, versions);
+                CollectInterfaceVersions(baseDir, versions, forever);
 
             if (versions.Count == 0)
                 foreach (var bd in CandidateBaseDirs())
-                    CollectInterfaceVersions(bd, versions);
+                    CollectInterfaceVersions(bd, versions, forever);
 
             var ordered = versions.Distinct().OrderByDescending(v => v);
             return string.Join(", ", ordered);
@@ -405,7 +428,7 @@ namespace SkuInstaller
         /// &lt;baseDir&gt;\.build.info (Anniversary + Classic Era only — never
         /// wow_classic/retail, which run different interface numbers).
         /// </summary>
-        private static void CollectInterfaceVersions(string baseDir, System.Collections.Generic.List<int> into)
+        private static void CollectInterfaceVersions(string baseDir, System.Collections.Generic.List<int> into, bool forever)
         {
             if (string.IsNullOrEmpty(baseDir)) return;
             string buildInfo = Path.Combine(baseDir, ".build.info");
@@ -434,7 +457,10 @@ namespace SkuInstaller
                     if (verCol >= cols.Length || prodCol >= cols.Length) continue;
 
                     string product = cols[prodCol].Trim();
-                    if (product != Config.AnniversaryFlavor && product != "wow_classic_era")
+                    bool wanted = forever
+                        ? product == Config.ForeverFlavor
+                        : (product == Config.AnniversaryFlavor || product == "wow_classic_era");
+                    if (!wanted)
                         continue;
 
                     int iface = InterfaceFromBuildVersion(cols[verCol].Trim());

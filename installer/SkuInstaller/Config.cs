@@ -42,6 +42,16 @@ namespace SkuInstaller
         /// which can be swapped live and picked up with /reload.
         /// </summary>
         public bool IsMedia;
+
+        /// <summary>
+        /// GitHub repo this asset is downloaded from. Null = the default repo
+        /// (<see cref="Config.RepoOwner"/> / <see cref="Config.RepoName"/>). Only the
+        /// WoW Forever main addon sets it: Sku for Forever is published as its own
+        /// version line (1.x) in a separate repo, the companions and language packs
+        /// stay in the default repo.
+        /// </summary>
+        public string RepoOwner;
+        public string RepoName;
     }
 
     /// <summary>
@@ -140,6 +150,74 @@ namespace SkuInstaller
 
         /// <summary>Classic Era flavor token in .flavor.info / .build.info Product column.</summary>
         public const string EraFlavor = "wow_classic_era";
+
+        // ── WoW Forever (Blizzard's new Classic client, internally "Camelot") ──
+        // Interface 16xxx (build 1.60.1 -> 16001), flavor folder _classic_beta_,
+        // game exe WowB.exe. Sku for Forever is a separate version line (1.x, not
+        // 43.x) published in its own repo, so the main addon of a Forever target
+        // comes from there; companions and language packs are the normal ones.
+        // The tag/asset scheme is the same: tag "v1.8", asset "Sku-1.8.zip", root
+        // folder "Sku".
+
+        /// <summary>WoW Forever flavor token in .flavor.info / .build.info Product column.</summary>
+        public const string ForeverFlavor = "wow_classic_beta";
+
+        /// <summary>Game process name (no extension) of the WoW Forever client.</summary>
+        public const string ForeverProcessName = "WowB";
+
+        /// <summary>Conventional flavor folder name of WoW Forever.</summary>
+        public const string ForeverFolder = "_classic_beta_";
+
+        /// <summary>GitHub repo that hosts the Sku-for-Forever release zips.</summary>
+        public const string ForeverRepoOwner = "gitana83";
+        public const string ForeverRepoName = "wow-forever";
+
+        /// <summary>Build-time pin of the newest Sku-for-Forever version (see <see cref="FallbackMainVersion"/>).</summary>
+        public const string ForeverPinVersion = "1.8";
+        public static string ForeverMainVersion { get; private set; } = ForeverPinVersion;
+
+        /// <summary>Adopt a live-resolved Sku-for-Forever version (see <see cref="OverrideMainVersion"/>).</summary>
+        public static void OverrideForeverMainVersion(string version)
+        {
+            ForeverMainVersion = version;
+            var primary = ForeverPrimary;
+            primary.Tag = "v" + version;
+            primary.AssetName = "Sku-" + version + ".zip";
+        }
+
+        /// <summary>The main addon version a client of this product gets.</summary>
+        public static string MainVersionFor(string product) =>
+            product == ForeverFlavor ? ForeverMainVersion : MainVersion;
+
+        /// <summary>Game process name of a client of this product.</summary>
+        public static string ProcessNameFor(string product) =>
+            product == ForeverFlavor ? ForeverProcessName : GameProcessName;
+
+        private static readonly AddonSpec ForeverPrimary = new AddonSpec
+        {
+            FolderName = "Sku",
+            AssetName = "Sku-" + ForeverPinVersion + ".zip",
+            Tag = "v" + ForeverPinVersion,
+            DisplayName = "Sku for WoW Forever (main addon)",
+            Required = true,
+            IsPrimary = true,
+            RepoOwner = ForeverRepoOwner,
+            RepoName = ForeverRepoName,
+        };
+
+        /// <summary>
+        /// The addons installed on every run for a client of this product (besides the
+        /// chosen language pack). For WoW Forever the main addon is the Forever build
+        /// from its own repo; the companions are the same as everywhere else.
+        /// </summary>
+        public static List<AddonSpec> CoreAddonsFor(string product)
+        {
+            if (product != ForeverFlavor) return CoreAddons;
+            var list = new List<AddonSpec>();
+            foreach (var spec in CoreAddons)
+                list.Add(spec.IsPrimary ? ForeverPrimary : spec);
+            return list;
+        }
 
         /// <summary>
         /// The addons installed on every run (besides the chosen language pack).

@@ -246,7 +246,8 @@ namespace SkuInstaller
                                                       r.Plan.DesiredInterface, m => SayScoped(m));
                     }
 
-                    if (_options.InstallLoginTool)
+                    // The WoW Login Tool is built for the Anniversary client; not installed into WoW Forever.
+                    if (_options.InstallLoginTool && r.Target.Product != Config.ForeverFlavor)
                     {
                         SayScoped(Loc.Format("status.loginTool", r.Target.DisplayName), true);
                         LoginToolInstaller.Install(r.Target.AddOnsPath, _github,
@@ -355,7 +356,7 @@ namespace SkuInstaller
         {
             string addonsFolder = target.AddOnsPath;
             int langIdx = Math.Max(0, _options.LanguagePackIndex);
-            var work = new List<AddonSpec>(Config.CoreAddons) { Config.LanguagePacks[langIdx] };
+            var work = new List<AddonSpec>(Config.CoreAddonsFor(target.Product)) { Config.LanguagePacks[langIdx] };
 
             var plan = new InstallPlan();
             foreach (var spec in work)
@@ -500,7 +501,7 @@ namespace SkuInstaller
                         lines.Add(Loc.Get("summary.settings"));
                     if (r.Plan.TocInterfaceNeedsSync && !string.IsNullOrEmpty(r.Plan.DesiredInterface))
                         lines.Add(Loc.Format("summary.client", r.Plan.DesiredInterface));
-                    if (_options.InstallLoginTool && LoginToolInstaller.IsInstalled(r.Target.AddOnsPath))
+                    if (_options.InstallLoginTool && r.Target.Product != Config.ForeverFlavor && LoginToolInstaller.IsInstalled(r.Target.AddOnsPath))
                         lines.Add(Loc.Get("summary.loginTool"));
                 }
 

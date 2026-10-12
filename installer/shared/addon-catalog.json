@@ -8,6 +8,17 @@
     "assetPattern": "Sku-{version}.zip",
     "rootFolders": ["Sku"]
   },
+  "foreverMainAddon": {
+    "key": "Sku",
+    "displayName": "Sku for WoW Forever",
+    "provider": "github-latest",
+    "repository": "gitana83/wow-forever",
+    "assetPattern": "Sku-{version}.zip",
+    "rootFolders": ["Sku"],
+    "product": "wow_classic_beta",
+    "gameProcess": "WowB",
+    "interface": "16001"
+  },
   "companionTag": "v41.02.05",
   "companions": [
     {

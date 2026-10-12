@@ -47,6 +47,18 @@ namespace SkuInstaller
                 return;
             }
 
+            if (args.Length > 0 && args[0] == "forevertest")
+            {
+                RunForeverTest();
+                return;
+            }
+
+            if (args.Length > 0 && args[0] == "foreverinstall")
+            {
+                RunForeverInstall(args.Length > 1 && int.TryParse(args[1], out var fl) ? fl : 0);
+                return;
+            }
+
             if (args.Length > 0 && args[0] == "texturesweep")
             {
                 RunTextureSweepTest();
@@ -90,6 +102,15 @@ namespace SkuInstaller
                 bool consistent = primarySpec.Tag == Config.MainTag && primarySpec.AssetName == Config.MainAssetName;
                 Console.WriteLine(consistent ? "    PASS: spec matches effective version" : "    FAIL: spec out of step with effective version");
                 if (!consistent) Environment.ExitCode = 1;
+
+                // WoW Forever: own repo, own version line.
+                var foreverSpec = Config.CoreAddonsFor(Config.ForeverFlavor).Find(s => s.IsPrimary);
+                Console.WriteLine($"    Forever pin  : {Config.ForeverPinVersion}, effective {Config.ForeverMainVersion} " +
+                                  $"(tag {foreverSpec.Tag}, asset {foreverSpec.AssetName}, repo {foreverSpec.RepoOwner}/{foreverSpec.RepoName})");
+                bool foreverConsistent = foreverSpec.Tag == "v" + Config.ForeverMainVersion
+                                         && foreverSpec.AssetName == "Sku-" + Config.ForeverMainVersion + ".zip";
+                Console.WriteLine(foreverConsistent ? "    PASS: Forever spec matches effective version" : "    FAIL: Forever spec out of step");
+                if (!foreverConsistent) Environment.ExitCode = 1;
                 return;
             }
 
@@ -556,6 +577,178 @@ namespace SkuInstaller
 
             Console.WriteLine();
             Console.WriteLine(fails == 0 ? "RESULT: PASS" : $"RESULT: FAIL ({fails})");
+            if (fails > 0) Environment.ExitCode = 1;
+        }
+
+        /// <summary>
+        /// WoW Forever support, headless: builds a throwaway WoW base dir with all
+        /// three clients (.build.info, .flavor.info, exes) and checks client
+        /// detection, the per-client interface list, the Forever main-addon source
+        /// (own repo, tag v1.x, same companions) and the update decision.
+        /// Usage: SkuSelfTest.exe forevertest
+        /// </summary>
+        private static void RunForeverTest()
+        {
+            int fails = 0;
+            void Check(string label, bool ok)
+            {
+                Console.WriteLine($"    [{(ok ? "PASS" : "FAIL")}] {label}");
+                if (!ok) fails++;
+            }
+
+            Console.WriteLine("=== build version -> interface number ===");
+            Check("1.60.1.67001 -> 16001", WowLocator.InterfaceFromBuildVersion("1.60.1.67001") == 16001);
+
+            string root = Path.Combine(Path.GetTempPath(), "SkuForeverTest");
+            if (Directory.Exists(root)) Directory.Delete(root, true);
+            string wow = Path.Combine(root, "World of Warcraft");
+            string ann = Path.Combine(wow, "_anniversary_");
+            string era = Path.Combine(wow, "_classic_era_");
+            string fwd = Path.Combine(wow, "_classic_beta_");
+            void Flavor(string dir, string product, string exe)
+            {
+                Directory.CreateDirectory(Path.Combine(dir, "Interface", "AddOns"));
+                File.WriteAllText(Path.Combine(dir, ".flavor.info"), "Product Flavor!STRING:0\r\n" + product + "\r\n");
+                File.WriteAllText(Path.Combine(dir, exe), "x");
+            }
+            Flavor(ann, "wow_anniversary", "WowClassic.exe");
+            Flavor(era, "wow_classic_era", "WowClassic.exe");
+            Flavor(fwd, "wow_classic_beta", "WowB.exe");
+            File.WriteAllText(Path.Combine(wow, ".build.info"),
+                "Branch!STRING:0|Active!DEC:1|Product!STRING:0|Version!STRING:0\r\n" +
+                "us|1|wow_anniversary|2.5.6.68502\r\n" +
+                "us|1|wow_classic_era|1.15.9.67156\r\n" +
+                "us|1|wow_classic_beta|1.60.1.67001\r\n");
+
+            Console.WriteLine("=== interface list per client ===");
+            string annAddons = Path.Combine(ann, "Interface", "AddOns");
+            string fwdAddons = Path.Combine(fwd, "Interface", "AddOns");
+            Check("Forever folder -> 16001 only", WowLocator.InterfaceVersionList(fwdAddons) == "16001");
+            Check("Anniversary folder -> 20506, 11509 (no Forever number)",
+                  WowLocator.InterfaceVersionList(annAddons) == "20506, 11509");
+            Check("product of the Forever AddOns folder", WowLocator.ProductForAddOnsFolder(fwdAddons) == Config.ForeverFlavor);
+            Check("picking the Forever flavor folder resolves to its AddOns",
+                  WowLocator.ResolveUserPickedFolder(fwd) == fwdAddons);
+            Check("Forever is a supported product", Array.IndexOf(WowLocator.SupportedProducts, Config.ForeverFlavor) >= 0);
+
+            Console.WriteLine("=== main addon source ===");
+            var fwdAddonsList = Config.CoreAddonsFor(Config.ForeverFlavor);
+            var annAddonsList = Config.CoreAddonsFor(Config.AnniversaryFlavor);
+            var fwdPrimary = fwdAddonsList.Find(s => s.IsPrimary);
+            var annPrimary = annAddonsList.Find(s => s.IsPrimary);
+            Check("same number of addons for both families", fwdAddonsList.Count == annAddonsList.Count);
+            Check("Forever primary comes from its own repo",
+                  fwdPrimary.RepoOwner == Config.ForeverRepoOwner && fwdPrimary.RepoName == Config.ForeverRepoName);
+            Check("Forever primary tag/asset follow the Forever version",
+                  fwdPrimary.Tag == "v" + Config.ForeverMainVersion && fwdPrimary.AssetName == "Sku-" + Config.ForeverMainVersion + ".zip");
+            Check("Anniversary primary still from the default repo", annPrimary.RepoOwner == null && annPrimary.RepoName == null);
+            Check("Forever primary URL",
+                  GitHubClient.BuildDownloadUrl(fwdPrimary.Tag, fwdPrimary.AssetName, fwdPrimary.RepoOwner, fwdPrimary.RepoName)
+                  == $"https://github.com/gitana83/wow-forever/releases/download/v{Config.ForeverMainVersion}/Sku-{Config.ForeverMainVersion}.zip");
+            Check("companion URL unchanged (default repo)",
+                  GitHubClient.BuildDownloadUrl("v41.02.05", "SkuBeaconSoundsets.zip")
+                  == "https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuBeaconSoundsets.zip");
+            bool sameCompanions = true;
+            foreach (var s in annAddonsList)
+                if (!s.IsPrimary && !fwdAddonsList.Contains(s)) sameCompanions = false;
+            Check("Forever gets the same companions", sameCompanions);
+            Check("per-client main version", Config.MainVersionFor(Config.ForeverFlavor) == Config.ForeverMainVersion
+                  && Config.MainVersionFor(Config.AnniversaryFlavor) == Config.MainVersion);
+
+            Console.WriteLine("=== update decision (manifest) ===");
+            var manifest = InstallManifest.Load(fwdAddons);
+            Directory.CreateDirectory(Path.Combine(fwdAddons, "Sku"));
+            var inst = new AddonInstaller(fwdAddons, new GitHubClient(), manifest, _ => { });
+            var resolved = new AssetRef { Tag = "v1.8", AssetName = "Sku-1.8.zip" };
+            manifest.SetTag("Sku", "v1.7");
+            Check("1.7 installed -> update to 1.8", inst.NeedsWork(fwdPrimary, resolved, out _));
+            manifest.SetTag("Sku", "v1.8");
+            Check("1.8 installed -> up to date", !inst.NeedsWork(fwdPrimary, resolved, out _));
+            manifest.SetTag("Sku", "v43.10");
+            Check("never a downgrade", !inst.NeedsWork(fwdPrimary, resolved, out _));
+
+            try { Directory.Delete(root, true); } catch { }
+            Console.WriteLine();
+            Console.WriteLine(fails == 0 ? "FOREVERTEST: ALL PASS" : $"FOREVERTEST: {fails} FAILURE(S)");
+            if (fails > 0) Environment.ExitCode = 1;
+        }
+
+        /// <summary>
+        /// End-to-end install of a WoW Forever client into a throwaway fake WoW base
+        /// dir (needs network, downloads the real release assets): Sku for Forever
+        /// from its own repo plus the companions and one language pack, then the TOC
+        /// interface sync for that client. Checks the result on disk.
+        /// Usage: SkuSelfTest.exe foreverinstall [languagePackIndex]
+        /// </summary>
+        private static void RunForeverInstall(int lang)
+        {
+            int fails = 0;
+            void Check(string label, bool ok)
+            {
+                Console.WriteLine($"    [{(ok ? "PASS" : "FAIL")}] {label}");
+                if (!ok) fails++;
+            }
+
+            string root = Path.Combine(Path.GetTempPath(), "SkuForeverInstall");
+            if (Directory.Exists(root)) Directory.Delete(root, true);
+            string wow = Path.Combine(root, "World of Warcraft");
+            string fwd = Path.Combine(wow, "_classic_beta_");
+            string addons = Path.Combine(fwd, "Interface", "AddOns");
+            Directory.CreateDirectory(addons);
+            File.WriteAllText(Path.Combine(fwd, ".flavor.info"), "Product Flavor!STRING:0\r\nwow_classic_beta\r\n");
+            File.WriteAllText(Path.Combine(fwd, "WowB.exe"), "x");
+            File.WriteAllText(Path.Combine(wow, ".build.info"),
+                "Branch!STRING:0|Active!DEC:1|Product!STRING:0|Version!STRING:0\r\n" +
+                "us|1|wow_classic_beta|1.60.1.67001\r\n");
+
+            GitHubClient.ResolveAndAdoptLatestMainVersion();
+            var github = new GitHubClient();
+            var manifest = InstallManifest.Load(addons);
+            var installer = new AddonInstaller(addons, github, manifest, p => Console.WriteLine("    " + p.Message));
+            var work = new List<AddonSpec>(Config.CoreAddonsFor(Config.ForeverFlavor)) { Config.LanguagePacks[lang] };
+
+            Console.WriteLine("=== install into a fake WoW Forever client ===");
+            foreach (var spec in work)
+            {
+                AssetRef resolved = github.ResolveAsset(spec);
+                Console.WriteLine($"[{spec.FolderName}] {resolved.DownloadUrl}");
+                bool needs = installer.NeedsWork(spec, resolved, out bool first);
+                Check(spec.FolderName + " needs a first install", needs && first);
+                installer.InstallAddonAsync(spec, resolved, force: false).GetAwaiter().GetResult();
+            }
+            manifest.Save(addons);
+            github.Dispose();
+
+            Console.WriteLine("=== result on disk ===");
+            foreach (var spec in work)
+                Check(spec.FolderName + " folder with TOC",
+                      File.Exists(Path.Combine(addons, spec.FolderName, spec.FolderName + ".toc")));
+            string tocVersion = WowLocator.ReadTocVersion(addons, "Sku");
+            Console.WriteLine($"    Sku.toc version: {tocVersion}");
+            Check("Sku TOC version = Forever version", tocVersion == Config.ForeverMainVersion);
+            Check("manifest tag for Sku = v" + Config.ForeverMainVersion,
+                  InstallManifest.Load(addons).GetTag("Sku") == "v" + Config.ForeverMainVersion);
+
+            Console.WriteLine("=== TOC interface sync for this client ===");
+            string desired = WowLocator.InterfaceVersionList(addons);
+            Check("desired interface is 16001", desired == "16001");
+            foreach (var spec in work)
+                TocSync.SyncInterface(addons, spec.FolderName, desired, m => Console.WriteLine("    " + m));
+            foreach (var spec in work)
+                Check(spec.FolderName + " interface = 16001", TocSync.ReadInterface(addons, spec.FolderName) == "16001");
+
+            // the second run must find nothing to do
+            var again = InstallManifest.Load(addons);
+            var installer2 = new AddonInstaller(addons, new GitHubClient(), again, _ => { });
+            foreach (var spec in work)
+            {
+                var resolved = new GitHubClient().ResolveAsset(spec);
+                Check(spec.FolderName + " up to date on the second run", !installer2.NeedsWork(spec, resolved, out _));
+            }
+
+            try { Directory.Delete(root, true); } catch { }
+            Console.WriteLine();
+            Console.WriteLine(fails == 0 ? "FOREVERINSTALL: ALL PASS" : $"FOREVERINSTALL: {fails} FAILURE(S)");
             if (fails > 0) Environment.ExitCode = 1;
         }
 

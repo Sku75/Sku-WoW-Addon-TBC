@@ -75,6 +75,18 @@ namespace SkuInstaller
                 {
                     Logger.Info($"Newest release online: {resolved}; built-in pin {Config.MainVersion} is current.");
                 }
+
+                // Sku for WoW Forever is its own version line in its own repo. Resolved
+                // the same way, with its own pin; a failure here never affects the
+                // Anniversary/Era versions above.
+                string forever = github.ResolveLatestMainVersionAsync(Config.ForeverRepoOwner, Config.ForeverRepoName)
+                                       .GetAwaiter().GetResult();
+                if (!string.IsNullOrEmpty(forever) &&
+                    AddonInstaller.CompareVersions(forever, Config.ForeverMainVersion) > 0)
+                {
+                    Logger.Info($"Newest Forever release online: {forever} (built-in pin {Config.ForeverMainVersion}) — adopting it.");
+                    Config.OverrideForeverMainVersion(forever);
+                }
             }
         }
 
@@ -85,9 +97,13 @@ namespace SkuInstaller
         /// "Latest" tag that doesn't look like a main-addon version tag
         /// (v&lt;digits&gt;…) — and the caller falls back to the build-time pin.
         /// </summary>
-        public async Task<string> ResolveLatestMainVersionAsync()
+        public Task<string> ResolveLatestMainVersionAsync() =>
+            ResolveLatestMainVersionAsync(Config.RepoOwner, Config.RepoName);
+
+        /// <summary>Same as above for any repo that publishes main-addon tags (v&lt;digits&gt;…).</summary>
+        public async Task<string> ResolveLatestMainVersionAsync(string owner, string repo)
         {
-            string url = $"https://github.com/{Config.RepoOwner}/{Config.RepoName}/releases/latest";
+            string url = $"https://github.com/{owner}/{repo}/releases/latest";
             try
             {
                 // Own short timeout: _http.Timeout is sized for multi-hundred-MB
@@ -161,7 +177,7 @@ namespace SkuInstaller
         {
             AssetName = spec.AssetName,
             Tag = spec.Tag,
-            DownloadUrl = BuildDownloadUrl(spec.Tag, spec.AssetName),
+            DownloadUrl = BuildDownloadUrl(spec.Tag, spec.AssetName, spec.RepoOwner, spec.RepoName),
         };
 
         /// <summary>
@@ -170,8 +186,9 @@ namespace SkuInstaller
         /// It 302-redirects to the storage backend and is NOT the rate-limited
         /// api.github.com host.
         /// </summary>
-        public static string BuildDownloadUrl(string tag, string assetName) =>
-            $"https://github.com/{Config.RepoOwner}/{Config.RepoName}/releases/download/" +
+        public static string BuildDownloadUrl(string tag, string assetName,
+                                              string owner = null, string repo = null) =>
+            $"https://github.com/{owner ?? Config.RepoOwner}/{repo ?? Config.RepoName}/releases/download/" +
             $"{Uri.EscapeDataString(tag)}/{Uri.EscapeDataString(assetName)}";
 
         /// <summary>
