@@ -246,9 +246,23 @@ function RangeCheck:DoRangeCheck(aForceFlag)
    end
 
    local tCheckRequired = false
-   local tMaxRange, tMinRange = SkuOptions.RangeCheck:GetRange("target")
-   if tRangeCheckLastTarget ~= UnitGUID("target") then
-      tRangeCheckLastTarget = UnitGUID("target")
+   -- WoW Forever: LibRangeCheck builds its cache key from the target GUID, which is secret for
+   -- foreign targets in instances and then errors inside the library. Libs stay untouched, so the
+   -- failure is caught here: no range reading means no announcement for this call.
+   local tRangeOk, tMaxRange, tMinRange = pcall(SkuOptions.RangeCheck.GetRange, SkuOptions.RangeCheck, "target")
+   if not tRangeOk then
+      return
+   end
+   -- The GUID of foreign targets can also be secret; comparing it would throw. Without a readable
+   -- GUID only a change of the range band counts.
+   local tGuidNow
+   if Sku.isForever then
+      tGuidNow = Sku.SafeGUID("target")
+   else
+      tGuidNow = UnitGUID("target")
+   end
+   if (tGuidNow ~= nil or not Sku.isForever) and tRangeCheckLastTarget ~= tGuidNow then
+      tRangeCheckLastTarget = tGuidNow
       tRangeCheckLastTargetminRange = tMinRange
       tCheckRequired = true
    else
