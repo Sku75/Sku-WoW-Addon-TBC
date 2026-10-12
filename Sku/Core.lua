@@ -450,28 +450,23 @@ end
 if _G.BOOKTYPE_SPELL == nil then _G.BOOKTYPE_SPELL = "spell" end
 if _G.BOOKTYPE_PET == nil then _G.BOOKTYPE_PET = "pet" end
 
-if not GetSpellBookItemName and C_SpellBook and C_SpellBook.GetSpellBookItemName and Enum and Enum.SpellBookSpellBank then
-	-- Old shape: name, subName, spellID (3rd value not offered by the
-	-- replacement here, so it comes back nil - no Sku call site we found
-	-- reads it). BOOKTYPE_PET's real value selects the pet bank; anything
-	-- else (including a caller accidentally passing the identifier text
-	-- "BOOKTYPE_SPELL" instead of its value, as one Sku call site does)
-	-- falls back to the player bank, matching the old API's tolerant default.
-	GetSpellBookItemName = function(aIndex, aBookType)
-		local tBank = (aBookType == BOOKTYPE_PET) and Enum.SpellBookSpellBank.Pet or Enum.SpellBookSpellBank.Player
-		local tName, tSubName = C_SpellBook.GetSpellBookItemName(aIndex, tBank)
-		return tName, tSubName, nil
-	end
-end
-
--- Spellbook tab/item helpers (WoW Forever/Camelot): rebuilt in the old positional shape
--- on top of C_SpellBook / C_Spell, each guarded so an old client is untouched.
-if C_SpellBook then
+-- Spellbook (WoW Forever): the old globals rebuilt in their positional shape on top
+-- of C_SpellBook / C_Spell. C_SpellBook takes an Enum spell bank where the old API
+-- took a BOOKTYPE_* string.
+if C_SpellBook and Enum and Enum.SpellBookSpellBank then
 	local function tBank(aBookType)
-		if Enum and Enum.SpellBookSpellBank then
-			return (aBookType == BOOKTYPE_PET or aBookType == "pet") and Enum.SpellBookSpellBank.Pet or Enum.SpellBookSpellBank.Player
+		if aBookType == BOOKTYPE_PET then
+			return Enum.SpellBookSpellBank.Pet
 		end
-		return aBookType
+		return Enum.SpellBookSpellBank.Player
+	end
+	if not GetSpellBookItemName and C_SpellBook.GetSpellBookItemInfo then
+		-- old: name, subName, spellID
+		GetSpellBookItemName = function(aIndex, aBookType)
+			local t = C_SpellBook.GetSpellBookItemInfo(aIndex, tBank(aBookType))
+			if not t then return nil end
+			return t.name, t.subName, t.spellID
+		end
 	end
 	if not GetNumSpellTabs and C_SpellBook.GetNumSpellBookSkillLines then
 		GetNumSpellTabs = C_SpellBook.GetNumSpellBookSkillLines
@@ -485,37 +480,30 @@ if C_SpellBook then
 		end
 	end
 	if not GetSpellBookItemInfo and C_SpellBook.GetSpellBookItemInfo then
-		-- old: typeString, id  (id = spellID)
+		local tTypeNames = {}
+		if Enum.SpellBookItemType then
+			tTypeNames[Enum.SpellBookItemType.Flyout] = "FLYOUT"
+			tTypeNames[Enum.SpellBookItemType.FutureSpell] = "FUTURESPELL"
+			tTypeNames[Enum.SpellBookItemType.PetAction] = "PETACTION"
+		end
+		-- old: typeString, id (spellID; flyoutID / petActionID for those types)
 		GetSpellBookItemInfo = function(aIndex, aBookType)
 			local t = C_SpellBook.GetSpellBookItemInfo(aIndex, tBank(aBookType))
 			if not t then return nil end
-			local tType = "SPELL"
-			if Enum and Enum.SpellBookItemType then
-				if t.itemType == Enum.SpellBookItemType.Flyout then tType = "FLYOUT"
-				elseif t.itemType == Enum.SpellBookItemType.FutureSpell then tType = "FUTURESPELL" end
-			end
-			return tType, t.spellID or t.actionID
+			return tTypeNames[t.itemType] or "SPELL", t.spellID or t.actionID
 		end
 	end
-	if not IsPassiveSpell then
-		IsPassiveSpell = function(aSpellId, aBookType)
+	if not IsPassiveSpell and C_Spell and C_Spell.IsSpellPassive then
+		IsPassiveSpell = function(aSpellId)
 			if not aSpellId then return false end
-			if C_Spell and C_Spell.IsSpellPassive then
-				local tOk, tRes = pcall(C_Spell.IsSpellPassive, aSpellId)
-				if tOk then return tRes and true or false end
-			end
-			if C_SpellBook.IsSpellPassive then
-				local tOk, tRes = pcall(C_SpellBook.IsSpellPassive, aSpellId)
-				if tOk then return tRes and true or false end
-			end
-			return false
+			return C_Spell.IsSpellPassive(aSpellId) == true
 		end
 	end
 	if not IsSpellKnown and C_SpellBook.IsSpellKnown then
+		-- old second argument: isPetSpell (boolean)
 		IsSpellKnown = function(aSpellId, aIsPet)
 			if not aSpellId then return false end
-			local tOk, tRes = pcall(C_SpellBook.IsSpellKnown, aSpellId, aIsPet and Enum.SpellBookSpellBank.Pet or Enum.SpellBookSpellBank.Player)
-			return tOk and tRes and true or false
+			return C_SpellBook.IsSpellKnown(aSpellId, aIsPet and Enum.SpellBookSpellBank.Pet or Enum.SpellBookSpellBank.Player) == true
 		end
 	end
 	if not HasPetSpells and C_SpellBook.HasPetSpells then
