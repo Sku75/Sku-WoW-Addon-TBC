@@ -3902,7 +3902,7 @@ function SkuOptions:CreateMenuFrame()
 		SkuOptions.TTS:Output("", -1)
 		SkuOptions:StartStopBackgroundSound(false)
 		SkuOptions:HideVisualMenu()
-		if QuestLogFrame:IsVisible() == true then
+		if QuestLogFrame and QuestLogFrame:IsVisible() == true then
 			ToggleQuestLog()
 		end
 	end)

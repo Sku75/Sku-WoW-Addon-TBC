@@ -456,18 +456,6 @@ if not GetQuestLogTitle and C_QuestLog and C_QuestLog.GetInfo then
 	end
 end
 
--- QuestLogFrame is a standalone window on old clients; on this one the quest
--- log lives inside the world map (QuestMapFrame) instead, and the old global
--- doesn't exist at all. Aliased here so the many unguarded QuestLogFrame:
--- IsVisible()/ShowUIPanel(QuestLogFrame)/HideUIPanel(QuestLogFrame) call
--- sites across SkuQuest/SkuZOptions/SkuCore keep working without touching
--- each one individually. QuestMapFrame is a real Frame (IsVisible works);
--- ShowUIPanel/HideUIPanel may or may not manage it the exact old way, but
--- that is strictly better than the hard crash this replaces.
-if not _G.QuestLogFrame and _G.QuestMapFrame then
-	_G.QuestLogFrame = _G.QuestMapFrame
-end
-
 -- WoW Forever/Camelot: cursor/pickup helpers moved into C_* namespaces. Alias whichever
 -- are missing so the action bar assignment code keeps working unchanged.
 for _, tPair in ipairs({
