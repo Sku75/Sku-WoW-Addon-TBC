@@ -2337,15 +2337,15 @@ function SkuChat:ShortenChannelName(aChannelName)
 	end
 
 	local tDefaultNames = {
-		["WorldDefense".."\]"] = "WD".."]",
-		["GuildRecruitment".."\]"] = "GR".."]",
-		["LookingForGroup".."\]"] = "LFG".."]",
-		["Guild".."\]"] = "G".."]",
-		["Party".."\]"] = "P".."]",
-		["Raid".."\]"] = "R".."]",
-		["\. ".."General".." \- .*"] = ". ".."GEN",
-		["\. ".."Trade".." \- .*"] = ". ".."TRADE",
-		["\. ".."LocalDefense".." \- .*"] = ". ".."LD",
+		["WorldDefense]"] = "WD]",
+		["GuildRecruitment]"] = "GR]",
+		["LookingForGroup]"] = "LFG]",
+		["Guild]"] = "G]",
+		["Party]"] = "P]",
+		["Raid]"] = "R]",
+		["%. General %- .*"] = ". GEN",
+		["%. Trade %- .*"] = ". TRADE",
+		["%. LocalDefense %- .*"] = ". LD",
 	}	
 	
 	for i, v in pairs(tDefaultNames) do
