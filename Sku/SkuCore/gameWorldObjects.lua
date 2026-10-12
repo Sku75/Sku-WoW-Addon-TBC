@@ -225,7 +225,7 @@ local TURN_GEAR2_MIN_REAL = 0.7   -- Gang 2 liefert unter 70 Prozent des verlang
 -- so the turn itself still runs normally.
 local function tPlayerSpeed()
    local tSpeed = GetUnitSpeed("player")
-   if tSpeed == nil or (issecretvalue and issecretvalue(tSpeed)) then return 0 end
+   if tSpeed == nil or Sku.IsSecret(tSpeed) then return 0 end
    return tSpeed
 end
 
