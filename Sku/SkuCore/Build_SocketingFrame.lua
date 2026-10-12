@@ -25,8 +25,11 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_PART = "Socketing"
 local L = Sku.L
+local GetContainerItemInfo = Sku.Compat.GetContainerItemInfo
+local GetContainerNumSlots = Sku.Compat.GetContainerNumSlots
 local GetItemInfo = Sku.Compat.GetItemInfo
 local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
+local PickupContainerItem = Sku.Compat.PickupContainerItem
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
@@ -146,8 +149,8 @@ local function tBagSlotLink(bag, slot)
          return info.hyperlink, info.itemID
       end
    end
-   if _G.GetContainerItemInfo then
-      local ok, a, b, c, d, e, f, g, h, i, j = pcall(_G.GetContainerItemInfo, bag, slot)
+   if GetContainerItemInfo then
+      local ok, a, b, c, d, e, f, g, h, i, j = pcall(GetContainerItemInfo, bag, slot)
       if ok then
          -- Wenn 'a' eine Tabelle ist, war die alte API auf eine
          -- Wrapper-Variante umgestellt — Tabelle auswerten.
@@ -176,8 +179,8 @@ local function tCollectBagGems()
       local tNumSlots = 0
       if _G.C_Container and _G.C_Container.GetContainerNumSlots then
          tNumSlots = tSafe(_G.C_Container.GetContainerNumSlots, bag) or 0
-      elseif _G.GetContainerNumSlots then
-         tNumSlots = tSafe(_G.GetContainerNumSlots, bag) or 0
+      elseif GetContainerNumSlots then
+         tNumSlots = tSafe(GetContainerNumSlots, bag) or 0
       end
       tDiag[#tDiag + 1] = "bag" .. bag .. "=" .. tNumSlots
       for slot = 1, tNumSlots do
@@ -299,8 +302,8 @@ local function tBagSlotFrame(aBag, aSlot)
    local tNumSlots = 0
    if _G.C_Container and _G.C_Container.GetContainerNumSlots then
       tNumSlots = tSafe(_G.C_Container.GetContainerNumSlots, aBag) or 0
-   elseif _G.GetContainerNumSlots then
-      tNumSlots = tSafe(_G.GetContainerNumSlots, aBag) or 0
+   elseif GetContainerNumSlots then
+      tNumSlots = tSafe(GetContainerNumSlots, aBag) or 0
    end
    if tNumSlots <= 0 then return nil end
    local tName = "ContainerFrame" .. tContainerNum .. "Item" .. (tNumSlots - aSlot + 1)
@@ -410,8 +413,8 @@ local function tBuildPlaceGemMenu(aParent, aSocketIdx)
                   pcall(tSlotFrame.Click, tSlotFrame, "LeftButton")
                   pcall(tSocketFrame.Click, tSocketFrame, "LeftButton")
                else
-                  if _G.PickupContainerItem then
-                     _G.PickupContainerItem(tGem.bag, tGem.slot)
+                  if PickupContainerItem then
+                     PickupContainerItem(tGem.bag, tGem.slot)
                   end
                   if _G.ClickSocketButton then
                      _G.ClickSocketButton(aSocketIdx)

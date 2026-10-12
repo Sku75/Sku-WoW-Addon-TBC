@@ -34,6 +34,41 @@ local function tPick(aName, aNamespace, aNsName)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Bags and minimap tracking moved into C_Container / C_Minimap with client 1.14.4, and
+-- every client Sku supports has them. These names prefer the namespaced version (what
+-- Sku has called since then) and fall back to an old global.
+local function tPickNamespaced(aNamespace, aName)
+	local tNs = _G[aNamespace]
+	if type(tNs) == "table" and tNs[aName] ~= nil then
+		return tNs[aName]
+	end
+	return _G[aName]
+end
+C.PickupContainerItem = tPickNamespaced("C_Container", "PickupContainerItem")
+C.GetContainerNumSlots = tPickNamespaced("C_Container", "GetContainerNumSlots")
+C.GetContainerNumFreeSlots = tPickNamespaced("C_Container", "GetContainerNumFreeSlots")
+C.UseContainerItem = tPickNamespaced("C_Container", "UseContainerItem")
+C.GetContainerItemID = tPickNamespaced("C_Container", "GetContainerItemID")
+C.GetItemCooldown = tPickNamespaced("C_Container", "GetItemCooldown")
+C.SocketContainerItem = tPickNamespaced("C_Container", "SocketContainerItem")
+C.SplitContainerItem = tPickNamespaced("C_Container", "SplitContainerItem")
+C.GetContainerItemLink = tPickNamespaced("C_Container", "GetContainerItemLink")
+C.GetContainerItemCooldown = tPickNamespaced("C_Container", "GetContainerItemCooldown")
+C.SetTracking = tPickNamespaced("C_Minimap", "SetTracking")
+C.GetTrackingInfo = tPickNamespaced("C_Minimap", "GetTrackingInfo")
+C.GetNumTrackingTypes = tPickNamespaced("C_Minimap", "GetNumTrackingTypes")
+
+C.GetContainerItemInfo = _G.GetContainerItemInfo
+if C_Container then
+	-- old: icon, count, locked, quality, readable, lootable, link, isFiltered, noValue, itemID, isBound
+	C.GetContainerItemInfo = function(aBag, aSlot)
+		local t = C_Container.GetContainerItemInfo(aBag, aSlot or 0)
+		if not t then return nil end
+		return t.iconFileID, t.stackCount, t.isLocked, t.quality, t.isReadable, t.hasLoot, t.hyperlink, t.isFiltered, t.hasNoValue, t.itemID, t.isBound
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- Straight renames: same arguments, same returns.
 C.GetItemInfo = tPick("GetItemInfo", "C_Item")
 C.GetItemInfoInstant = tPick("GetItemInfoInstant", "C_Item")

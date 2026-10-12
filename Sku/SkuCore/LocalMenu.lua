@@ -1,11 +1,16 @@
 ﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "LocalMenu"
 local L = Sku.L
+local GetContainerItemID = Sku.Compat.GetContainerItemID
+local GetContainerItemInfo = Sku.Compat.GetContainerItemInfo
+local GetContainerItemLink = Sku.Compat.GetContainerItemLink
+local GetContainerNumSlots = Sku.Compat.GetContainerNumSlots
 local GetItemInfo = Sku.Compat.GetItemInfo
 local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
 local GetNumSkillLines = Sku.Compat.GetNumSkillLines
 local GetSkillLineInfo = Sku.Compat.GetSkillLineInfo
 local IsEquippableItem = Sku.Compat.IsEquippableItem
+local PickupContainerItem = Sku.Compat.PickupContainerItem
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
@@ -1036,8 +1041,8 @@ local function tSortReadEntry(bag, slot)
 			end
 		end
 	end
-	if not link and _G.GetContainerItemInfo then
-		local ok, a, b, c, d, e, f, g, h, i2, j = pcall(_G.GetContainerItemInfo, bag, slot)
+	if not link and GetContainerItemInfo then
+		local ok, a, b, c, d, e, f, g, h, i2, j = pcall(GetContainerItemInfo, bag, slot)
 		if ok then
 			if type(a) == "table" then
 				id, link, quality, locked = a.itemID, a.hyperlink, a.quality, a.isLocked
@@ -1084,15 +1089,15 @@ local function tSortNumSlots(bag)
 		local ok, n = pcall(_G.C_Container.GetContainerNumSlots, bag)
 		if ok and n then return n end
 	end
-	if _G.GetContainerNumSlots then
-		local ok, n = pcall(_G.GetContainerNumSlots, bag)
+	if GetContainerNumSlots then
+		local ok, n = pcall(GetContainerNumSlots, bag)
 		if ok and n then return n end
 	end
 	return 0
 end
 
 local function tSortPickup(bag, slot)
-	if _G.PickupContainerItem then return pcall(_G.PickupContainerItem, bag, slot) end
+	if PickupContainerItem then return pcall(PickupContainerItem, bag, slot) end
 	if _G.C_Container and _G.C_Container.PickupContainerItem then
 		return pcall(_G.C_Container.PickupContainerItem, bag, slot)
 	end

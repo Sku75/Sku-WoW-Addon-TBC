@@ -5,7 +5,10 @@
 -- Set: ..." erweitert.
 ---------------------------------------------------------------------------------------------------------------------------------------
 local L = Sku.L
+local GetContainerItemLink = Sku.Compat.GetContainerItemLink
+local GetContainerNumSlots = Sku.Compat.GetContainerNumSlots
 local GetItemInfo = Sku.Compat.GetItemInfo
+local PickupContainerItem = Sku.Compat.PickupContainerItem
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
@@ -92,10 +95,10 @@ local function tFindItemByString(aTargetItemString, aSkipBag, aSkipSlot)
    if not aTargetItemString then return nil end
    -- Zuerst Taschen
    for bag = 0, 4 do
-      local n = _G.GetContainerNumSlots and _G.GetContainerNumSlots(bag) or 0
+      local n = GetContainerNumSlots and GetContainerNumSlots(bag) or 0
       for slot = 1, n do
          if not (aSkipBag == bag and aSkipSlot == slot) then
-            local link = _G.GetContainerItemLink and _G.GetContainerItemLink(bag, slot)
+            local link = GetContainerItemLink and GetContainerItemLink(bag, slot)
             local cs = tCanonicalItemString(link)
             if cs == aTargetItemString then
                return { kind = "bag", bag = bag, slot = slot }
@@ -209,8 +212,8 @@ local function tClearCursor()
 end
 
 local function tPickupBag(bag, slot)
-   if _G.PickupContainerItem then
-      pcall(_G.PickupContainerItem, bag, slot)
+   if PickupContainerItem then
+      pcall(PickupContainerItem, bag, slot)
    elseif _G.C_Container and _G.C_Container.PickupContainerItem then
       pcall(_G.C_Container.PickupContainerItem, bag, slot)
    end
@@ -330,9 +333,9 @@ function M:Equip(aName)
             tPickupInv(17)
             -- ablegen in erstem freien Tasche-Slot
             for bag = 0, 4 do
-               local n = _G.GetContainerNumSlots and _G.GetContainerNumSlots(bag) or 0
+               local n = GetContainerNumSlots and GetContainerNumSlots(bag) or 0
                for slot = 1, n do
-                  local link = _G.GetContainerItemLink and _G.GetContainerItemLink(bag, slot)
+                  local link = GetContainerItemLink and GetContainerItemLink(bag, slot)
                   if not link then
                      tPickupBag(bag, slot)
                      break

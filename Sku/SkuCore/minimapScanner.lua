@@ -1,6 +1,9 @@
 ﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "minimapScanner"
 local L = Sku.L
+local GetNumTrackingTypes = Sku.Compat.GetNumTrackingTypes
+local GetTrackingInfo = Sku.Compat.GetTrackingInfo
+local SetTracking = Sku.Compat.SetTracking
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")

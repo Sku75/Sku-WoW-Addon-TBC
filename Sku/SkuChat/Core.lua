@@ -2,6 +2,8 @@
 local _G = _G
 local L = Sku.L
 local BetterDate = Sku.Compat.BetterDate
+local GetContainerItemInfo = Sku.Compat.GetContainerItemInfo
+local GetContainerNumSlots = Sku.Compat.GetContainerNumSlots
 local GetNumQuestLogEntries = Sku.Compat.GetNumQuestLogEntries
 local GetQuestLogTitle = Sku.Compat.GetQuestLogTitle
 

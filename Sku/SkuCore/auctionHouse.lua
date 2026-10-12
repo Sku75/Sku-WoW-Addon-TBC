@@ -29,7 +29,10 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "AuctionHouse"  
 local L = Sku.L
+local GetContainerItemInfo = Sku.Compat.GetContainerItemInfo
+local GetContainerNumSlots = Sku.Compat.GetContainerNumSlots
 local GetItemInfo = Sku.Compat.GetItemInfo
+local PickupContainerItem = Sku.Compat.PickupContainerItem
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
@@ -113,8 +116,8 @@ local function _ASBagNumSlots(aBag)
       local tOk, tNum = pcall(_G.C_Container.GetContainerNumSlots, aBag)
       if tOk and tNum then return tNum end
    end
-   if _G.GetContainerNumSlots then
-      local tOk, tNum = pcall(_G.GetContainerNumSlots, aBag)
+   if GetContainerNumSlots then
+      local tOk, tNum = pcall(GetContainerNumSlots, aBag)
       if tOk and tNum then return tNum end
    end
    return 0
@@ -131,8 +134,8 @@ local function _ASBagSlotInfo(aBag, aSlot)
          end
       end
    end
-   if _G.GetContainerItemInfo then
-      local tOk, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 = pcall(_G.GetContainerItemInfo, aBag, aSlot)
+   if GetContainerItemInfo then
+      local tOk, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 = pcall(GetContainerItemInfo, aBag, aSlot)
       if tOk then
          if type(a1) == "table" then
             return a1.itemID, a1.stackCount, a1.isLocked
@@ -180,8 +183,8 @@ local function _ASFindBagSlot(aItemId, aAmount, aHintBag, aHintSlot)
 end
 
 local function _ASPickupBagItem(aBag, aSlot)
-   if _G.PickupContainerItem then
-      return (pcall(_G.PickupContainerItem, aBag, aSlot))
+   if PickupContainerItem then
+      return (pcall(PickupContainerItem, aBag, aSlot))
    end
    if _G.C_Container and _G.C_Container.PickupContainerItem then
       return (pcall(_G.C_Container.PickupContainerItem, aBag, aSlot))

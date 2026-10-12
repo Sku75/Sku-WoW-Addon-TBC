@@ -89,6 +89,8 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "gatherRoute"
 local L = Sku.L
+local GetNumTrackingTypes = Sku.Compat.GetNumTrackingTypes
+local GetTrackingInfo = Sku.Compat.GetTrackingInfo
 local _G = _G
 local slower = string.lower
 local sfind = string.find

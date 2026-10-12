@@ -3,6 +3,9 @@ local L = Sku.L
 local BOOKTYPE_PET = Sku.Compat.BOOKTYPE_PET
 local BOOKTYPE_SPELL = Sku.Compat.BOOKTYPE_SPELL
 local CursorHasSpell = Sku.Compat.CursorHasSpell
+local GetContainerItemInfo = Sku.Compat.GetContainerItemInfo
+local GetContainerItemLink = Sku.Compat.GetContainerItemLink
+local GetContainerNumSlots = Sku.Compat.GetContainerNumSlots
 local GetItemInfo = Sku.Compat.GetItemInfo
 local GetNumSpellTabs = Sku.Compat.GetNumSpellTabs
 local GetSpellBookItemInfo = Sku.Compat.GetSpellBookItemInfo
@@ -12,6 +15,7 @@ local GetSpellTabInfo = Sku.Compat.GetSpellTabInfo
 local HasPetSpells = Sku.Compat.HasPetSpells
 local IsPassiveSpell = Sku.Compat.IsPassiveSpell
 local IsSpellKnown = Sku.Compat.IsSpellKnown
+local PickupContainerItem = Sku.Compat.PickupContainerItem
 local PickupItem = Sku.Compat.PickupItem
 local PickupSpell = Sku.Compat.PickupSpell
 

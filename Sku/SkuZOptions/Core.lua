@@ -6,21 +6,32 @@ local L = Sku.L
 local BOOKTYPE_SPELL = Sku.Compat.BOOKTYPE_SPELL
 local ExpandAllFactionHeaders = Sku.Compat.ExpandAllFactionHeaders
 local GetCoinText = Sku.Compat.GetCoinText
+local GetContainerItemInfo = Sku.Compat.GetContainerItemInfo
+local GetContainerItemLink = Sku.Compat.GetContainerItemLink
+local GetContainerNumFreeSlots = Sku.Compat.GetContainerNumFreeSlots
+local GetContainerNumSlots = Sku.Compat.GetContainerNumSlots
 local GetFactionInfo = Sku.Compat.GetFactionInfo
 local GetInventoryAlertStatus = Sku.Compat.GetInventoryAlertStatus
+local GetItemCooldown = Sku.Compat.GetItemCooldown
 local GetItemInfo = Sku.Compat.GetItemInfo
 local GetNumFactions = Sku.Compat.GetNumFactions
 local GetNumSkillLines = Sku.Compat.GetNumSkillLines
 local GetNumSpellTabs = Sku.Compat.GetNumSpellTabs
+local GetNumTrackingTypes = Sku.Compat.GetNumTrackingTypes
 local GetSkillLineInfo = Sku.Compat.GetSkillLineInfo
 local GetSpellBookItemName = Sku.Compat.GetSpellBookItemName
 local GetSpellCooldown = Sku.Compat.GetSpellCooldown
 local GetSpellTabInfo = Sku.Compat.GetSpellTabInfo
+local GetTrackingInfo = Sku.Compat.GetTrackingInfo
 local GuildRoster = Sku.Compat.GuildRoster
 local IsPassiveSpell = Sku.Compat.IsPassiveSpell
 local IsSpellKnown = Sku.Compat.IsSpellKnown
+local PickupContainerItem = Sku.Compat.PickupContainerItem
+local SocketContainerItem = Sku.Compat.SocketContainerItem
+local SplitContainerItem = Sku.Compat.SplitContainerItem
 local UnitBuff = Sku.Compat.UnitBuff
 local UnitDebuff = Sku.Compat.UnitDebuff
+local UseContainerItem = Sku.Compat.UseContainerItem
 local _G = _G
 local slower = string.lower
 
@@ -1016,10 +1027,10 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	-- Tracking-Zauber (Kräutersuche / Mineraliensuche) als Buffs auflisten,
 	-- wenn aktiv. Diese Spells erscheinen normalerweise nicht in UnitBuff,
 	-- sind aber für Berufssucher faktisch dauerhaft aktive Effekte.
-	if _G.GetNumTrackingTypes and _G.GetTrackingInfo then
-		local tNumTracking = _G.GetNumTrackingTypes()
+	if GetNumTrackingTypes and GetTrackingInfo then
+		local tNumTracking = GetNumTrackingTypes()
 		for i = 1, tNumTracking do
-			local n, _, active = _G.GetTrackingInfo(i)
+			local n, _, active = GetTrackingInfo(i)
 			-- Auf neueren Builds liefert C_Minimap.GetTrackingInfo eine
 			-- Tabelle mit name/active als Felder.
 			local trackName, trackActive
@@ -6211,7 +6222,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								end
 								return
 							end
-							if _G.PickupContainerItem then pcall(_G.PickupContainerItem, lBag, lSlot) end
+							if PickupContainerItem then pcall(PickupContainerItem, lBag, lSlot) end
 							if _G.C_Timer and _G.C_Timer.After then
 								_G.C_Timer.After(0.1, function()
 									pcall(function() SkuCore:CheckFrames() end)
@@ -6482,13 +6493,13 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								pcall(_G.PickupInventoryItem, lSlotID)
 							end
 							local tPlaced = false
-							if _G.GetContainerNumSlots and _G.PickupContainerItem then
+							if GetContainerNumSlots and PickupContainerItem then
 								for bag = 0, NUM_BAG_SLOTS or 4 do
-									local nSlots = _G.GetContainerNumSlots(bag) or 0
+									local nSlots = GetContainerNumSlots(bag) or 0
 									for slot = 1, nSlots do
-										local tLink = _G.GetContainerItemLink and _G.GetContainerItemLink(bag, slot)
+										local tLink = GetContainerItemLink and GetContainerItemLink(bag, slot)
 										if not tLink then
-											pcall(_G.PickupContainerItem, bag, slot)
+											pcall(PickupContainerItem, bag, slot)
 											tPlaced = true
 											break
 										end
@@ -6541,7 +6552,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								-- slot by bagSlot and force-announces it exactly once.
 								if _G.SkuCaptureSellState then pcall(_G.SkuCaptureSellState) end
 								if Sku then Sku.tBagAnnounceSuppress = GetTime() + 1.5 end
-								if _G.UseContainerItem then pcall(_G.UseContainerItem, lBag, lSlot) end
+								if UseContainerItem then pcall(UseContainerItem, lBag, lSlot) end
 							end
 						else
 							-- Real bags (0..4): right click = "use" (consume, equip, or
@@ -6681,12 +6692,12 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 							if aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
 								-- Bag/bank socket (container-API migration): SocketContainerItem(bag,
 								-- slot) directly, no rendered frame. Mirrors the old macrotext path.
-								if _G.SocketContainerItem and not Sku.isEra then
+								if SocketContainerItem and not Sku.isEra then
 									local tNewSubMenuEntrySocket = SkuOptions:InjectMenuItems(self, {L["Sockeln"]}, SkuGenericMenuItem)
 									local lBagS, lSlotS = aGossipListTable[index].bag, aGossipListTable[index].slot
 									tNewSubMenuEntrySocket.OnAction = function()
 										pcall(function() SkuCore.Socketing:SuppressMinimapMapPingBriefly() end)
-										pcall(_G.SocketContainerItem, lBagS, lSlotS)
+										pcall(SocketContainerItem, lBagS, lSlotS)
 										pcall(function() SkuCore:CheckFrames() end)
 										if _G.C_Timer and _G.C_Timer.After then
 											_G.C_Timer.After(0.35, function()
@@ -6701,7 +6712,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									-- Sockeln (Bag-Item) — exakt wie in der WotLK-Vorlage:
 									-- nur ein macrotext, der SocketContainerItem aufruft und
 									-- danach das Sku-Menü neu aufbaut. Kein eigener Step-Back.
-									if _G.SocketContainerItem and not Sku.isEra then
+									if SocketContainerItem and not Sku.isEra then
 										local tNewSubMenuEntrySocket = SkuOptions:InjectMenuItems(self, {L["Sockeln"]}, SkuGenericMenuItem)
 										-- Bag-Item-Sockeln: bewährter Macrotext-Pfad von
 										-- gestern (direkter SocketContainerItem-Aufruf,
@@ -6839,7 +6850,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 											if tHasBagSlot then
 												-- Container-API destroy: pick the item to the cursor and
 												-- delete it (mirrors the old OnDragStart+DeleteCursorItem).
-												if _G.PickupContainerItem then pcall(_G.PickupContainerItem, aGossipListTable[index].bag, aGossipListTable[index].slot) end
+												if PickupContainerItem then pcall(PickupContainerItem, aGossipListTable[index].bag, aGossipListTable[index].slot) end
 												DeleteCursorItem()
 											elseif aGossipListTable[index].obj and aGossipListTable[index].obj.GetScript then
 												aGossipListTable[index].obj:GetScript("OnDragStart")(aGossipListTable[index].obj, "LeftButton")

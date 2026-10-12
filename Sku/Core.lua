@@ -250,34 +250,6 @@ end
 -- is ever absent. Gate any TBC-content-only feature (e.g. gem socketing) on this.
 Sku.isEra = ((WOW_PROJECT_ID ~= nil and WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) or (Sku.toc > 0 and Sku.toc < 20000)) and true or false
 
-if Sku.toc > 11403 then
-	PickupContainerItem = C_Container.PickupContainerItem
-	GetContainerNumSlots = C_Container.GetContainerNumSlots
-	GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots
-	UseContainerItem = C_Container.UseContainerItem
-	GetContainerItemID = C_Container.GetContainerItemID
-	GetItemCooldown = C_Container.GetItemCooldown
-	GetContainerItemQuestInfo = function(bag, slot)
-		local t = C_Container.GetContainerItemQuestInfo(bag, slot)
-		return t.isQuestItem
-	end
-	GetContainerItemInfo = function(bag, slot)
-		slot = slot or 0
-		local t = C_Container.GetContainerItemInfo(bag, slot)
-		if not t then
-			return
-		end		
-		return t.iconFileID, t.stackCount, t.isLocked, t.quality, t.isReadable, t.hasLoot, t.hyperlink, t.isFiltered, t.hasNoValue, t.itemID, t.isBound
-	end
-	SocketContainerItem = C_Container.SocketContainerItem
-	SplitContainerItem = C_Container.SplitContainerItem
-	GetContainerItemLink = C_Container.GetContainerItemLink
-	GetContainerItemCooldown = C_Container.GetContainerItemCooldown
-
-	SetTracking = C_Minimap.SetTracking
-	GetTrackingInfo = C_Minimap.GetTrackingInfo
-	GetNumTrackingTypes = C_Minimap.GetNumTrackingTypes
-end
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 Sku.IsEraSoD = false

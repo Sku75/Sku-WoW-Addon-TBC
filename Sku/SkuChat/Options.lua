@@ -1,6 +1,7 @@
 ﻿local MODULE_NAME = "SkuChat"
 
 local L = Sku.L
+local BetterDate = Sku.Compat.BetterDate
 
 local play = 2	--this is just a local constant for output type (play, true, false)
 local skuTts = 3	--audio via Sku's own TTS (see SkuChat/Core.lua for the full state list)
