@@ -3927,8 +3927,11 @@ function SkuOptions:CreateMenuFrame()
 		end
 		if _G["TaxiFrame"]:IsVisible() == true then
 			-- Forever's TaxiFrame has no TaxiCloseButton, only the template's .CloseButton
-			local tTaxiClose = _G["TaxiCloseButton"] or _G["TaxiFrame"].CloseButton
-			tTaxiClose:Click()
+			if _G["TaxiCloseButton"] then
+				_G["TaxiCloseButton"]:GetScript("OnClick")(_G["TaxiCloseButton"])
+			else
+				_G["TaxiFrame"].CloseButton:Click()
+			end
 			--_G["TaxiFrame"]:Hide()
 		end
 		if _G["StaticPopup1"]:IsVisible() == true then
