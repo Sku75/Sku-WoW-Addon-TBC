@@ -968,7 +968,11 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	tGeneral = tGeneral.."\r\n"..L["XP: "]..(math.floor(tPlayercurrXP / (tPlayernextXP / 100)))..L[" Prozent ("]..tPlayercurrXP..L[" von "]..tPlayernextXP..L[" für "]..(UnitLevel("player") + 1)..L[")\r\nRuhebonus: "]..tPlayerXPExhaustion
 
 	--gs
-	local guid, gearScore = SkuOptions.LGS:GetScore("player")
+	-- LibGearScore does not run on Forever (GetScore is missing there): no gear score line
+	local guid, gearScore
+	if SkuOptions.LGS and SkuOptions.LGS.GetScore then
+		guid, gearScore = SkuOptions.LGS:GetScore("player")
+	end
 	if gearScore and gearScore.Description then
 		tGeneral = tGeneral.."\r\n"..L["Gearscore: "]..gearScore.GearScore.." ("..gearScore.Description..L[", average item level "]..gearScore.AvgItemLevel..")"
 	end
@@ -1321,7 +1325,10 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	--pet
 	if UnitName("playerpet") and SkuCore:PlayerIsHunter() then
 		local petSection = L["Pet"]
-		local tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
+		local tPetcurrXP, tPetnextXP
+		if GetPetExperience then
+			tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
+		end
 		if tPetcurrXP then
 			petSection = petSection .. "\r\n" .. L["Tier XP: "] .. tPetcurrXP .. L[" von "] .. tPetnextXP .. L[" für "] .. UnitLevel("playerpet") + 1
 		end
@@ -1337,7 +1344,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 			local tTotal, tSpent = GetPetTrainingPoints()
 			local tUnspent = (tTotal or 0) - (tSpent or 0)
 			petSection = petSection .. "\r\n" .. L["Unspent pet training points"]..": "..tUnspent
-		elseif UnitCharacterPoints("pet") then
+		elseif UnitCharacterPoints and UnitCharacterPoints("pet") then
 			petSection = petSection .. "\r\n" .. L["Unspent pet talent points"]..": "..UnitCharacterPoints("pet")
 		end
 
@@ -1364,7 +1371,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 						if not tFound[spellName] then
 							tFound[spellName] = true
 							local start, duration, enabled, modRate = GetSpellCooldown(spellID)
-							if (start > 0 and duration > 1.5) then
+							if not Sku.IsSecret(start) and not Sku.IsSecret(duration) and (start > 0 and duration > 1.5) then
 								tTmpText = tTmpText..spellName.." "..SkuEpochValueHelper(GetServerTime() - math.floor(start + duration - GetTime())).."\r\n"
 							end
 						end
