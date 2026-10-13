@@ -8,6 +8,7 @@ local MODULE_NAME = "SkuCore"
 local _G = _G
 local L = Sku.L
 local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
+local GetPetHappiness = Sku.Compat.GetPetHappiness
 
 -- File-level state that used to leak into _G through a missing "local".
 local CLASS_IDS, tLastFallSoundNum, tdiold, tdisold
@@ -243,14 +244,6 @@ SkuStatus = {
 	["casting"] = 0,
 }
 
--- Parallel-Ansage-Helfer für Drinnen/Draußen. Greift den SkuVoice-
--- Queue NICHT an: weder Abschneiden noch Anstellen — stattdessen
--- holt er die Audio-Datei via SkuVoice:GetAudiodata (Pfad + Datei +
--- Locale-aware) und spielt sie direkt per PlaySoundFile auf dem
--- konfigurierten Sku-Sound-Channel ab. Damit überlagert die Drinnen/
--- Draußen-Ansage eine eventuell parallel laufende TTS, ohne sie zu
--- unterbrechen — der User hört im Zweifel beides gleichzeitig, aber
--- die Zonen-Ansage geht garantiert raus.
 -- UnitHealth(unit) ~= 0 ("alive and present"); Forever hides the number, then the dead flag decides
 local function tUnitHasHealth(aUnit)
 	local tHealth = UnitHealth(aUnit)
@@ -260,6 +253,14 @@ local function tUnitHasHealth(aUnit)
 	return tHealth ~= 0
 end
 
+-- Parallel-Ansage-Helfer für Drinnen/Draußen. Greift den SkuVoice-
+-- Queue NICHT an: weder Abschneiden noch Anstellen — stattdessen
+-- holt er die Audio-Datei via SkuVoice:GetAudiodata (Pfad + Datei +
+-- Locale-aware) und spielt sie direkt per PlaySoundFile auf dem
+-- konfigurierten Sku-Sound-Channel ab. Damit überlagert die Drinnen/
+-- Draußen-Ansage eine eventuell parallel laufende TTS, ohne sie zu
+-- unterbrechen — der User hört im Zweifel beides gleichzeitig, aber
+-- die Zonen-Ansage geht garantiert raus.
 local function tPlayZoneAudio(aKey)
 	if not (SkuOptions and SkuOptions.Voice and SkuOptions.Voice.GetAudiodata) then
 		return
