@@ -3355,7 +3355,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 					C_CVar.SetCVar("instantQuestText", "1")
 					C_CVar.SetCVar("autoLootDefault", "1")
 					dprint("autoLootDefault", C_CVar.GetCVar("autoLootDefault", "1"))
-					C_CVar.SetCVar("alwaysShowActionBars", "1")
+					if not Sku.isForever then C_CVar.SetCVar("alwaysShowActionBars", "1") end
 					C_CVar.SetCVar("cameraSmoothStyle", "2")
 					C_CVar.SetCVar("removeChatDelay", "1")
 
@@ -3400,7 +3400,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 					SkuCoreRefreshActionBars()
 					C_CVar.SetCVar("instantQuestText", "1")
 					C_CVar.SetCVar("autoLootDefault", "1")
-					C_CVar.SetCVar("alwaysShowActionBars", "1")
+					if not Sku.isForever then C_CVar.SetCVar("alwaysShowActionBars", "1") end
 					C_CVar.SetCVar("cameraSmoothStyle", "2")
 					C_CVar.SetCVar("removeChatDelay", "1")
 				end
@@ -3530,7 +3530,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			SkuCoreRefreshActionBars()
 			C_CVar.SetCVar("instantQuestText", "1")
 			C_CVar.SetCVar("autoLootDefault", "1")
-			C_CVar.SetCVar("alwaysShowActionBars", "1")
+			if not Sku.isForever then C_CVar.SetCVar("alwaysShowActionBars", "1") end
 			C_CVar.SetCVar("cameraSmoothStyle", "2")
 			C_CVar.SetCVar("removeChatDelay", "1")
 
