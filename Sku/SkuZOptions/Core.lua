@@ -8498,9 +8498,15 @@ function SkuOptions:ShowVisualMenu()
 			SkuOptions.SkuOptionsVisualMenuContainer.tree:EnableButtonTooltips(false)
 			SkuOptions.SkuOptionsVisualMenuContainer.tree:SetWidth(600)
 			SkuOptions.SkuOptionsVisualMenuContainer.tree:SetLayout("Fill")
-			SkuOptions.SkuOptionsVisualMenuContainer.tree:SetCallback("OnClick", function(self, event, value, unknownbool, skuFFunction, b) 
-				--dprint(self, event, value, unknownbool, skuFFunction, b)
-				skuFFunction()
+			-- value = the clicked row's path (TreeGroup uniquevalue: values joined by "\001"); the
+			-- row's menu action is looked up by that path (see AddItem below)
+			SkuOptions.SkuOptionsVisualMenuContainer.tree:SetCallback("OnClick", function(self, event, value)
+				local tAction = SkuOptions.visualMenuActions and SkuOptions.visualMenuActions[value]
+				if not tAction then
+					dprint("visual menu: no action for the clicked row", tostring(value))
+					return
+				end
+				tAction()
 				SkuOptions:ShowVisualMenu()
 				local tTable = SkuOptions.currentMenuPosition
 				local tBread = SkuOptions.currentMenuPosition.name
@@ -8532,45 +8538,37 @@ function SkuOptions:ShowVisualMenu()
 			return tNumber
 		end
 
-		local function AddItem(aTable, aResult, aPad)
+		-- aPath: the row's TreeGroup uniquevalue, the key its action is stored under
+		local function AddItem(aTable, aResult, aPath)
 			for i, v in pairs(aTable) do
-				--dprint(i, v)
-				--if i < 20 then
-					if NumberOfChildren(v.children) > 0 then
-						local tChilds = {}
-						AddItem(v.children, tChilds, aPad.."  ")
-						table.insert(aResult, {
-							skuFunction = function()
-								--dprint("vname", v.name)
-								v:BuildChildren()
-								SkuOptions.currentMenuPosition = v
-								SkuOptions.currentMenuPosition:OnSelect()
-								SkuOptions:VocalizeCurrentMenuName()
-							end,
-							value = v.name,
-							text = v.name,
-							children = tChilds,
-						})
-					else
-						table.insert(aResult, {
-							skuFunction = function()
-								--dprint("vname", v.name)
-								v:BuildChildren()
-								SkuOptions.currentMenuPosition = v
-								SkuOptions.currentMenuPosition:OnSelect()
-								SkuOptions:VocalizeCurrentMenuName()
-							end,
-							value = v.name,
-							text = v.name,
-						})
-					end
-				--end
+				local tPath = aPath and (aPath .. "\001" .. v.name) or v.name
+				SkuOptions.visualMenuActions[tPath] = function()
+					v:BuildChildren()
+					SkuOptions.currentMenuPosition = v
+					SkuOptions.currentMenuPosition:OnSelect()
+					SkuOptions:VocalizeCurrentMenuName()
+				end
+				if NumberOfChildren(v.children) > 0 then
+					local tChilds = {}
+					AddItem(v.children, tChilds, tPath)
+					table.insert(aResult, {
+						value = v.name,
+						text = v.name,
+						children = tChilds,
+					})
+				else
+					table.insert(aResult, {
+						value = v.name,
+						text = v.name,
+					})
+				end
 			end
 			return aResult
 		end
 
 		local treeData = {}
-		AddItem(SkuOptions.Menu, treeData, "")
+		SkuOptions.visualMenuActions = {}
+		AddItem(SkuOptions.Menu, treeData, nil)
 		SkuOptions.SkuOptionsVisualMenuContainer.tree:SetTree(treeData)
 
 		SkuOptions.SkuOptionsVisualMenuContainer:Show()
