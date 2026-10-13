@@ -27,9 +27,7 @@ f:SetScript("OnEvent", function(self, aEvent, arg1, arg2)
 		tPitch = arg1
 		SkuOptions.Voice:OutputStringBTtts(tPitch, true, true, 0.2, nil, nil, nil, 2, nil, true)						
 	elseif aEvent == "UNIT_POWER_FREQUENT" and arg1 == "vehicle" then
-		local tVehiclePower, tVehiclePowerMax = UnitPower("vehicle"), UnitPowerMax("vehicle")
-		if Sku.IsSecret(tVehiclePower) or Sku.IsSecret(tVehiclePowerMax) then return end
-		local tCP = math.floor((tVehiclePower / tVehiclePowerMax) * 100)
+		local tCP = math.floor((UnitPower("vehicle") / UnitPowerMax("vehicle")) * 100)
 		if tVPower then
 			if tVPower - tCP > 10 or tVPower - tCP < -10 then
 				tVPower = tCP
@@ -39,9 +37,7 @@ f:SetScript("OnEvent", function(self, aEvent, arg1, arg2)
 			tVPower = tCP
 		end
 	elseif aEvent == "UNIT_HEALTH_FREQUENT" and arg1 == "vehicle" then
-		local tVehicleHealth, tVehicleHealthMax = UnitHealth("vehicle"), UnitHealthMax("vehicle")
-		if Sku.IsSecret(tVehicleHealth) or Sku.IsSecret(tVehicleHealthMax) then return end
-		local tCP = math.floor((tVehicleHealth / tVehicleHealthMax) * 100)
+		local tCP = math.floor((UnitHealth("vehicle") / UnitHealthMax("vehicle")) * 100)
 		if tVHealth then
 			if tVHealth - tCP > 5 or tVHealth - tCP < -5 then
 				tVHealth = tCP
@@ -54,7 +50,7 @@ f:SetScript("OnEvent", function(self, aEvent, arg1, arg2)
 
 	SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aEvent, arg1, arg2)
 end)
--- an event the client does not know (Forever has no UNIT_*_FREQUENT) must not abort the rest of this file
+-- an event the client does not know (Forever has no UNIT_HEALTH_FREQUENT) must not abort the rest of this file
 for _, tEventName in ipairs({"LOADING_SCREEN_ENABLED", "VEHICLE_ANGLE_UPDATE", "UNIT_POWER_FREQUENT", "UNIT_HEALTH_FREQUENT", "UNIT_EXITED_VEHICLE"}) do
 	if Sku.IsEventValid(tEventName) then
 		f:RegisterEvent(tEventName)
