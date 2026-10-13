@@ -5950,7 +5950,8 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 	for x = 1, #aGossipListTable do
 		local index = aGossipListTable[x]
 
-		-- lazyChilds: an entry with a submenu whose children are computed only when it opens.
+		-- lazyChilds: an entry with a submenu whose children are computed late, by the node's
+		-- BuildChildren - the first time the cursor lands on the entry, once (not on every open).
 		-- childs stays empty, so without this check the entry would count as a leaf.
 		if #aGossipListTable[index].childs == 0 and not aGossipListTable[index].lazyChilds then
 			--dprint(aTab, x, "ENTRIY: "..aGossipListTable[index].textFirstLine)
