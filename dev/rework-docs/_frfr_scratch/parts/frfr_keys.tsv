@@ -2026,6 +2026,7 @@ SKU_KEY_QUESTABANDON	abandonner la quête
 SKU_KEY_QUESTSHARE	afficher l'infobulle de l'objet de butin actuel
 SKU_KEY_QUESTTARGET	cibler la créature de quête la plus proche
 SKU_KEY_FEEDPET	nourrir le familier
+SKU_KEY_PETHEALTH	annoncer la santé du familier
 SKU_KEY_QUICKWP1	sélectionner le point de passage rapide 1
 SKU_KEY_QUICKWP1SET	définir le point de passage rapide 1
 SKU_KEY_QUICKWP2	sélectionner le point de passage rapide 2
