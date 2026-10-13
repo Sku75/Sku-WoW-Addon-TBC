@@ -2885,9 +2885,12 @@ function SkuCore:PLAYER_LOGIN(...)
 	f:AddFontStrings(f:CreateFontString( "$parentTextLeft1", nil, "GameTooltipText" ), f:CreateFontString( "$parentTextRight1", nil, "GameTooltipText" ))
 
 	--we need to do that to have all craftframe elementes available on first use; otherwise it won't be complete on first open, as the data from the server take a few ms
-	UIParentLoadAddOn("Blizzard_CraftUI")
-	CraftFrame:Show()
-	CraftFrame:Hide()
+	-- Forever has no craft window and no UIParentLoadAddOn
+	if UIParentLoadAddOn then
+		UIParentLoadAddOn("Blizzard_CraftUI")
+		CraftFrame:Show()
+		CraftFrame:Hide()
+	end
 
 	SkuSettings:Sub("SkuCore").trainerSkillsUnavailableDisabled = false
 end
