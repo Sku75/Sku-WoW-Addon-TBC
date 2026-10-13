@@ -244,13 +244,10 @@ SkuStatus = {
 	["casting"] = 0,
 }
 
--- UnitHealth(unit) ~= 0 ("alive and present"); Forever hides the number, then the dead flag decides
-local function tUnitHasHealth(aUnit)
-	local tHealth = UnitHealth(aUnit)
-	if Sku.IsSecret(tHealth) then
-		return UnitExists(aUnit) and not UnitIsDead(aUnit)
-	end
-	return tHealth ~= 0
+-- "alive and present" without reading the health number: UnitHealth is always a secret value on
+-- WoW Forever (SecretReturns in its API docs), and these two flags answer the same on every client
+local function tUnitAlive(aUnit)
+	return UnitExists(aUnit) and not UnitIsDead(aUnit)
 end
 
 -- Parallel-Ansage-Helfer für Drinnen/Draußen. Greift den SkuVoice-
@@ -1764,8 +1761,8 @@ function SkuCore:OnEnable()
 		if SkuCore:PlayerIsHunter()
 			and SkuSettings:Sub("SkuCore").classes.hunter.petHappyness == true
 			-- make sure player isn't dead and pet exists
-			and tUnitHasHealth("player")
-			and tUnitHasHealth("pet")
+			and tUnitAlive("player")
+			and tUnitAlive("pet")
 		then
 			SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
 			if SkuCoreOldPetHappinessCounter > 2 then
