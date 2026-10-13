@@ -40,6 +40,11 @@ function Sku.SafeGUID(aUnit)
 	if tGuid ~= nil and Sku.IsSecret(tGuid) then return nil end
 	return tGuid
 end
+-- Clients without secret values (Anniversary, Era) call the plain API: SafeGUID runs on the per-tick
+-- combat paths (aqCombat). Not done for SafeName: UnitName returns a second value (realm).
+if not _G.issecretvalue then
+	Sku.SafeGUID = UnitGUID
+end
 function Sku.SafeName(aUnit)
 	local tName = UnitName(aUnit)
 	if tName ~= nil and Sku.IsSecret(tName) then return nil end
