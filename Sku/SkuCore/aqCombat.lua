@@ -845,14 +845,15 @@ local function aqCombatCreateControlFrame()
                               if Sku.IsSecret(status) then status = true end
                               isTanking, scaledPercentage, rawPercentage, threatValue = nil, nil, nil, nil
                            end
-                           if status then
-                              local tPartyGuid = Sku.SafeGUID(tPartyUnitToTest)
+                           -- the party member's GUID is the threat table key: no readable GUID, no entry
+                           local tPartyGuid = status and Sku.SafeGUID(tPartyUnitToTest)
+                           if tPartyGuid then
                               -- Hostility is asked at the admission point only, so
                               -- the verdict (and the tKnownHostile bookkeeping) is
                               -- not paid for every unit slot polled every tick.
                               if UnitIsDeadOrGhost(tPartyUnitToTest) ~= true
                                  and tShouldAdmitAsEnemy(tCreatureGUID, tTargetUnitIdToTest, nil) then
-                                 aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tTargetUnitIdToTest, UnitName(tTargetUnitIdToTest), Sku.SafeGUID(tPartyUnitToTest), tPartyUnitToTest, UnitName(tPartyUnitToTest))
+                                 aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tTargetUnitIdToTest, UnitName(tTargetUnitIdToTest), tPartyGuid, tPartyUnitToTest, UnitName(tPartyUnitToTest))
 
                                  local tPlayerGUID = Sku.SafeGUID("player")
                                  if tCreatureGUID == Sku.SafeGUID("target") and tPartyGuid == tPlayerGUID then
