@@ -446,7 +446,7 @@ function VisualAids:VisualAidsColorOnePlate(aUnit)
 	local tex = tGetPlateTex(np)
 	if not tex then return end
 
-	-- Forever can hide these answers (secret values): an unreadable answer shows the plate
+	-- Forever can hide this answer (UnitIsUnit is SecretWhenUnitComparisonRestricted): an unreadable answer shows the plate
 	local tIsTarget = UnitIsUnit(aUnit, "target")
 	if va.plateColors.mode == "target" and not Sku.IsSecret(tIsTarget) and tIsTarget ~= true then
 		tex:Hide()
@@ -455,17 +455,7 @@ function VisualAids:VisualAidsColorOnePlate(aUnit)
 
 	local r = UnitReaction("player", aUnit)
 	local key
-	if Sku.IsSecret(r) then
-		-- reaction hidden: attackable = enemy, otherwise friend; neutral if that is hidden too
-		local tCanAttack = UnitCanAttack("player", aUnit)
-		if Sku.IsSecret(tCanAttack) then
-			key = va.plateColors.colorNeutral
-		elseif tCanAttack then
-			key = va.plateColors.colorEnemy
-		else
-			key = va.plateColors.colorFriend
-		end
-	elseif not r then
+	if not r then
 		key = va.plateColors.colorNeutral
 	elseif r <= 3 then
 		key = va.plateColors.colorEnemy
