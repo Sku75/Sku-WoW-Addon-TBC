@@ -19,6 +19,7 @@ local GetNumSkillLines = Sku.Compat.GetNumSkillLines
 local GetNumSpellTabs = Sku.Compat.GetNumSpellTabs
 local GetNumTrackingTypes = Sku.Compat.GetNumTrackingTypes
 local GetPetHappiness = Sku.Compat.GetPetHappiness
+local GetPetTrainingPoints = Sku.Compat.GetPetTrainingPoints
 local GetSkillLineInfo = Sku.Compat.GetSkillLineInfo
 local GetSpellBookItemName = Sku.Compat.GetSpellBookItemName
 local GetSpellCooldown = Sku.Compat.GetSpellCooldown
