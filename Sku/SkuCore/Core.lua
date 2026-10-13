@@ -822,7 +822,7 @@ do
       end
       tGaugeY, tGaugeX, tGaugeT = tPosY, tPosX, tNow
       local tSpeed = GetUnitSpeed("player")
-      if tGaugeSamples[4] and tSpeed and tSpeed > 1 then
+      if tGaugeSamples[4] and tSpeed and not Sku.IsSecret(tSpeed) and tSpeed > 1 then
          local tSum = tGaugeSamples[1] + tGaugeSamples[2] + tGaugeSamples[3] + tGaugeSamples[4]
          local tRatio = math.min((tSum / 4) / tSpeed, 1)
          local tAngle = math.deg(math.acos(tRatio))
@@ -2054,10 +2054,15 @@ function SkuCore:OnEnable()
 						if SkuCoreMovement.Flags.MoveForward == true or SkuCoreMovement.Flags.StrafeLeft == true or SkuCoreMovement.Flags.StrafeRight == true or SkuCoreMovement.Flags.MoveBackward == true or SkuCoreMovement.Flags.AutoRun == true or tEngineWalkArm == true then
 							local _, tDistance = SkuCore:Distance(tNewX, tNewY, SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y)
 							local currentSpeed, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed("player")
-							local tMod = currentSpeed / 7
+							-- GetUnitSpeed is secret on Forever while stats are restricted (combat, instances).
+							-- tMod 0 gives no verdict: every distance test below fails and the counter resets.
+							local tMod = 0
+							if not Sku.IsSecret(currentSpeed) then
+								tMod = currentSpeed / 7
 
-							if IsSwimming() then
-								tMod = (currentSpeed / swimSpeed) / runSpeed
+								if IsSwimming() then
+									tMod = (currentSpeed / swimSpeed) / runSpeed
+								end
 							end
 
 							local tSound = 0
