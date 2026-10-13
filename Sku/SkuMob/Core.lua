@@ -369,7 +369,8 @@ end
 local tLastSoftEnemyGuid
 function SkuMob:PLAYER_SOFT_ENEMY_CHANGED(arg1, arg2, arg3)
 	tSoftTrace("enemy", "softenemy", arg2, arg3)
-	if not Sku.SafeGUID("softenemy") then
+	-- UnitExists, not the GUID: a GUID Forever hides is nil too, and that is not "no target"
+	if not UnitExists("softenemy") then
 		if SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.soundNoTarget ~= " " then
 			if Sku.SafeGUID("softenemy") ~= tLastSoftEnemyGuid then
 				SkuOptions.Voice:OutputString(SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.soundNoTarget, true, true, 0.3, true)
