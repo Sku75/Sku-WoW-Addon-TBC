@@ -25,29 +25,43 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 -- file (e.g. JunkAndRepair) so adding a feature needs no edit here.
 SkuCore.toggleableModules = SkuCore.toggleableModules or {}
 
-local function registerToggleable(aName, aLabel, aExternal)
+-- aAvailable (optional): function returning false where the feature cannot work on this client
+-- (e.g. WoW Forever, where the data it is built on is hidden). Such a module stays off and is left
+-- out of the Features menu; the player's saved on/off choice is not touched.
+local function registerToggleable(aName, aLabel, aExternal, aAvailable)
 	if type(aName) ~= "string" then return end
 	-- guard against double registration (e.g. a /reload re-running file scope)
 	for _, m in ipairs(SkuCore.toggleableModules) do
 		if m.name == aName then
 			m.label = aLabel
 			m.external = aExternal and true or false
+			m.available = aAvailable
 			return
 		end
 	end
-	table.insert(SkuCore.toggleableModules, { name = aName, label = aLabel, external = aExternal and true or false })
+	table.insert(SkuCore.toggleableModules, { name = aName, label = aLabel, external = aExternal and true or false, available = aAvailable })
 end
 
 -- Register a SkuCore AceAddon SUBMODULE (JunkAndRepair, Mail, AuctionHouse, ...).
-function SkuCore:RegisterToggleableModule(aName, aLabel)
-	registerToggleable(aName, aLabel, false)
+function SkuCore:RegisterToggleableModule(aName, aLabel, aAvailable)
+	registerToggleable(aName, aLabel, false, aAvailable)
 end
 
 -- Register a STANDALONE top-level AceAddon (SkuChat, SkuNav, SkuQuest, SkuMob,
 -- SkuAuras). Same on/off UX, but resolved via LibStub("AceAddon-3.0"):GetAddon
 -- instead of SkuCore:GetModule (W4 Rework B).
-function SkuCore:RegisterToggleableAddon(aName, aLabel)
-	registerToggleable(aName, aLabel, true)
+function SkuCore:RegisterToggleableAddon(aName, aLabel, aAvailable)
+	registerToggleable(aName, aLabel, true, aAvailable)
+end
+
+-- Whether a registered feature can work on this client at all (see aAvailable above).
+function SkuCore:IsModuleAvailable(aName)
+	for _, m in ipairs(SkuCore.toggleableModules) do
+		if m.name == aName then
+			return m.available == nil or m.available() == true
+		end
+	end
+	return true
 end
 
 -- Resolve a registered entry's live AceAddon object (submodule OR top-level addon).
@@ -67,6 +81,9 @@ end
 -- Persisted enable state. Stored as SkuSettings:Sub("SkuCore").moduleEnabled[name];
 -- absent = enabled (so existing installs default every feature ON).
 function SkuCore:IsModuleEnabled(aName)
+	if not SkuCore:IsModuleAvailable(aName) then
+		return false
+	end
 	local tEnabled = SkuSettings:Sub("SkuCore").moduleEnabled
 	if tEnabled and tEnabled[aName] ~= nil then
 		return tEnabled[aName]
@@ -76,6 +93,10 @@ end
 
 -- Flip a feature live AND persist the choice. Called by the Features menu toggle.
 function SkuCore:SetModuleEnabled(aName, aEnabled)
+	if not SkuCore:IsModuleAvailable(aName) then
+		dprint("module not available on this client, toggle ignored:", aName)
+		return
+	end
 	local tSub = SkuSettings:Sub("SkuCore")
 	tSub.moduleEnabled = tSub.moduleEnabled or {}
 	tSub.moduleEnabled[aName] = aEnabled
@@ -138,7 +159,9 @@ end
 
 function SkuCore:FeaturesMenuBuilder(aEntry)
 	for _, m in ipairs(SkuCore.toggleableModules) do
-		buildModuleToggle(aEntry, m.name, resolveLabel(m))
+		if SkuCore:IsModuleAvailable(m.name) then
+			buildModuleToggle(aEntry, m.name, resolveLabel(m))
+		end
 	end
 end
 
@@ -167,4 +190,6 @@ SkuCore:RegisterToggleableAddon("SkuChat",  deEn("Chat", "Chat"))
 SkuCore:RegisterToggleableAddon("SkuNav",   deEn("Navigation", "Navigation"))
 SkuCore:RegisterToggleableAddon("SkuQuest", deEn("Quests", "Quests"))
 SkuCore:RegisterToggleableAddon("SkuMob",   deEn("Ziele & Gegner", "Targets & mobs"))
-SkuCore:RegisterToggleableAddon("SkuAuras", deEn("Auren", "Auras"))
+-- Not on WoW Forever: the combat log does not reach addons there and aura data, health and power
+-- can be secret values, so the aura engine cannot work. Auras on Forever are a separate project.
+SkuCore:RegisterToggleableAddon("SkuAuras", deEn("Auren", "Auras"), function() return not Sku.isForever end)

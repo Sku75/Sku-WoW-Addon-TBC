@@ -50,11 +50,12 @@ f:SetScript("OnEvent", function(self, aEvent, arg1, arg2)
 
 	SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aEvent, arg1, arg2)
 end)
-f:RegisterEvent("LOADING_SCREEN_ENABLED")
-f:RegisterEvent("VEHICLE_ANGLE_UPDATE")
-f:RegisterEvent("UNIT_POWER_FREQUENT")
-f:RegisterEvent("UNIT_HEALTH_FREQUENT")
-f:RegisterEvent("UNIT_EXITED_VEHICLE")
+-- an event the client does not know (Forever has no UNIT_HEALTH_FREQUENT) must not abort the rest of this file
+for _, tEventName in ipairs({"LOADING_SCREEN_ENABLED", "VEHICLE_ANGLE_UPDATE", "UNIT_POWER_FREQUENT", "UNIT_HEALTH_FREQUENT", "UNIT_EXITED_VEHICLE"}) do
+	if Sku.IsEventValid(tEventName) then
+		f:RegisterEvent(tEventName)
+	end
+end
 
 --------------------------------------------------------------------------------------------------------------------------------------
 --helper to get the direction in degrees

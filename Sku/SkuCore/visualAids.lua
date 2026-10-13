@@ -446,7 +446,9 @@ function VisualAids:VisualAidsColorOnePlate(aUnit)
 	local tex = tGetPlateTex(np)
 	if not tex then return end
 
-	if va.plateColors.mode == "target" and UnitIsUnit(aUnit, "target") ~= true then
+	-- Forever can hide this answer (UnitIsUnit is SecretWhenUnitComparisonRestricted): an unreadable answer shows the plate
+	local tIsTarget = UnitIsUnit(aUnit, "target")
+	if va.plateColors.mode == "target" and not Sku.IsSecret(tIsTarget) and tIsTarget ~= true then
 		tex:Hide()
 		return
 	end
@@ -939,7 +941,7 @@ local function tNextEnemyPlateSeen(aEvent, aUnit, aWantRange)
 	if not UnitCanAttack("player", aUnit) then return end
 	if UnitIsDead(aUnit) then return end
 	local tName = UnitName(aUnit)
-	if not tName or tName == "" then return end
+	if not tName or Sku.IsSecret(tName) or tName == "" then return end
 	local tRange
 	if aWantRange then
 		pcall(function()
@@ -1092,7 +1094,7 @@ local function tEnsureNextEnemyButton()
 	-- "die Taste kommt gar nicht an" zu unterscheiden -- genau daran ging beim
 	-- Questziel-Knopf eine ganze Testrunde verloren.
 	b:SetScript("PreClick", function(self)
-		self.tPrevTarget = UnitExists("target") and UnitGUID("target") or nil
+		self.tPrevTarget = UnitExists("target") and Sku.SafeGUID("target") or nil
 		-- [43.3] siehe QuestTarget: bewusster Zielwechsel -> Interact-Guard sperren.
 		SkuCore.tDeliberateTargetTime = GetTime()
 		dprint("nextEnemy: KEY pressed", "combat", tostring(InCombatLockdown() == true))
@@ -1110,7 +1112,7 @@ local function tEnsureNextEnemyButton()
 				if UnitExists(u) and UnitIsUnit(u, "target") then tPlate = true break end
 			end
 			dprint("nextEnemy: target now", tostring(UnitName("target")),
-				UnitGUID("target") == self.tPrevTarget and "(unchanged)" or "(new)",
+				Sku.SafeGUID("target") == self.tPrevTarget and "(unchanged)" or "(new)",
 				tPlate and "via nameplate/cone" or "via remembered name (no plate)")
 		else
 			dprint("nextEnemy: still no target -- neither /targetenemy nor any remembered /tar name matched")

@@ -18,6 +18,7 @@ local GetNumFactions = Sku.Compat.GetNumFactions
 local GetNumSkillLines = Sku.Compat.GetNumSkillLines
 local GetNumSpellTabs = Sku.Compat.GetNumSpellTabs
 local GetNumTrackingTypes = Sku.Compat.GetNumTrackingTypes
+local GetPetHappiness = Sku.Compat.GetPetHappiness
 local GetSkillLineInfo = Sku.Compat.GetSkillLineInfo
 local GetSpellBookItemName = Sku.Compat.GetSpellBookItemName
 local GetSpellCooldown = Sku.Compat.GetSpellCooldown
@@ -601,6 +602,19 @@ function SkuOptions:SlashFunc(input, aSilent)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Re-arm the modules against the new profile's settings. SkuCore first: its OnEnable applies the
+-- profile's Features on/off states (ApplyModuleEnabledStates), so the IsEnabled checks after it see
+-- the new profile. A module the player switched off (or one not available on this client) is not
+-- re-armed. One failing module does not stop the others, and its error is reported, not swallowed.
+local function tReArmModules()
+	for _, tModule in ipairs({SkuCore, SkuChat, SkuMob, SkuNav, SkuQuest, SkuAuras, SkuAdventureGuide, SkuOptions}) do
+		if tModule and (tModule == SkuCore or tModule == SkuOptions or tModule:IsEnabled()) then
+			xpcall(tModule.OnEnable, geterrorhandler(), tModule)
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnProfileChanged()
 	-- No SkuCore.AutoChange guard any more: nothing switches the profile behind
 	-- the player's back now that the standard profiles are created as bare keys
@@ -612,14 +626,7 @@ function SkuOptions:OnProfileChanged()
 	SkuOptions:SkuKeyBindsUpdate(true)
 	SkuCore.GameWorldObjects:GameWorldObjectsOnLogin()
 	
-  	if SkuCore then pcall(function() SkuCore:OnEnable() end) end
-	if SkuChat then pcall(function() SkuChat:OnEnable() end) end
-	if SkuMob then pcall(function() SkuMob:OnEnable() end) end
-	if SkuNav then pcall(function() SkuNav:OnEnable() end) end
-	if SkuQuest then pcall(function() SkuQuest:OnEnable() end) end
-	if SkuAuras then pcall(function() SkuAuras:OnEnable() end) end
-	if SkuAdventureGuide then pcall(function() SkuAdventureGuide:OnEnable() end) end
-	if SkuOptions then pcall(function() SkuOptions:OnEnable() end) end
+	tReArmModules()
 
 	SkuOptions:SkuKeyBindsUpdate()
 
@@ -635,14 +642,7 @@ function SkuOptions:OnProfileCopied()
 	SkuOptions:SkuKeyBindsUpdate(true)
 	SkuCore.GameWorldObjects:GameWorldObjectsOnLogin()
 
-  	if SkuCore then pcall(function() SkuCore:OnEnable() end) end
-	if SkuChat then pcall(function() SkuChat:OnEnable() end) end
-	if SkuMob then pcall(function() SkuMob:OnEnable() end) end
-	if SkuNav then pcall(function() SkuNav:OnEnable() end) end
-	if SkuQuest then pcall(function() SkuQuest:OnEnable() end) end
-	if SkuAuras then pcall(function() SkuAuras:OnEnable() end) end
-	if SkuAdventureGuide then pcall(function() SkuAdventureGuide:OnEnable() end) end
-	if SkuOptions then pcall(function() SkuOptions:OnEnable() end) end
+	tReArmModules()
 
 	SkuOptions:SkuKeyBindsUpdate()
 
@@ -677,14 +677,7 @@ function SkuOptions:OnProfileReset()
 	SkuCore.Aq:AqOnLogin()
 	SkuCore.DamageMeter:DamageMeterOnLogin()
 	
-  	if SkuCore then pcall(function() SkuCore:OnEnable() end) end
-	if SkuChat then pcall(function() SkuChat:OnEnable() end) end
-	if SkuMob then pcall(function() SkuMob:OnEnable() end) end
-	if SkuNav then pcall(function() SkuNav:OnEnable() end) end
-	if SkuQuest then pcall(function() SkuQuest:OnEnable() end) end
-	if SkuAuras then pcall(function() SkuAuras:OnEnable() end) end
-	if SkuAdventureGuide then pcall(function() SkuAdventureGuide:OnEnable() end) end
-	if SkuOptions then pcall(function() SkuOptions:OnEnable() end) end
+	tReArmModules()
 
 	SkuOptions:SkuKeyBindsUpdate()
 

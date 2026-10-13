@@ -8,6 +8,7 @@ local MODULE_NAME = "SkuCore"
 local _G = _G
 local L = Sku.L
 local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
+local GetPetHappiness = Sku.Compat.GetPetHappiness
 
 -- File-level state that used to leak into _G through a missing "local".
 local CLASS_IDS, tLastFallSoundNum, tdiold, tdisold
@@ -242,6 +243,12 @@ SkuStatus = {
 	["looting"] = 0,
 	["casting"] = 0,
 }
+
+-- "alive and present" without reading the health number: UnitHealth is always a secret value on
+-- WoW Forever (SecretReturns in its API docs), and these two flags answer the same on every client
+local function tUnitAlive(aUnit)
+	return UnitExists(aUnit) and not UnitIsDead(aUnit)
+end
 
 -- Parallel-Ansage-Helfer für Drinnen/Draußen. Greift den SkuVoice-
 -- Queue NICHT an: weder Abschneiden noch Anstellen — stattdessen
@@ -1754,8 +1761,8 @@ function SkuCore:OnEnable()
 		if SkuCore:PlayerIsHunter()
 			and SkuSettings:Sub("SkuCore").classes.hunter.petHappyness == true
 			-- make sure player isn't dead and pet exists
-			and UnitHealth("player") ~= 0
-			and UnitHealth("pet") ~= 0
+			and tUnitAlive("player")
+			and tUnitAlive("pet")
 		then
 			SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
 			if SkuCoreOldPetHappinessCounter > 2 then
@@ -2226,7 +2233,7 @@ function SkuCore:OnEnable()
 			SkuCore.TurnToUnit:TurnToUnitTurn180()
 		end
 
-		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_DOMONITORPARTYHEALTH2CONTI") then
+		if not Sku.isForever and SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_DOMONITORPARTYHEALTH2CONTI") then
 			SkuCore.Aq:MonitorPartyHealth2Conti()
 		end
 
@@ -2239,7 +2246,7 @@ function SkuCore:OnEnable()
 			SkuCore:DoGroupRangeCheck()
 		end
 
-		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_DOMONITORPARTYHEALTH2CONTI") then
+		if not Sku.isForever and SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_DOMONITORPARTYHEALTH2CONTI") then
 			if UnitInRaid("player") ~= nil then
 				SkuCore.Aq:MonitorRaidHealth2Conti(true)
 			elseif UnitInParty("player") == true then
