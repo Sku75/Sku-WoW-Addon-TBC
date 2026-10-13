@@ -2598,6 +2598,8 @@ function SkuOptions:CreateMainFrame()
 									-- either being false is a silent no-op that leaves the
 									-- window -- and its server-side interaction -- open.
 									local tBtn = _G[tExclude[v]]
+									-- Forever's TaxiFrame has no TaxiCloseButton; its close button is the frame's .CloseButton
+									if not tBtn and _G[v].CloseButton then tBtn = _G[v].CloseButton end
 									dprint("menuClose click", v, "->", tostring(tExclude[v]),
 										"exists", tBtn and 1 or 0,
 										"enabled", ((tBtn and tBtn.IsEnabled and tBtn:IsEnabled()) and 1 or 0))
@@ -2629,6 +2631,20 @@ function SkuOptions:CreateMainFrame()
 				if AuctionFrame then
 					if (AuctionFrame:IsShown() ) then
 						_G["AuctionFrameCloseButton"]:Click()
+					end
+				end
+
+				-- Forever's own windows are not in SkuCore.interactFramesList; left open they
+				-- bring the menu straight back after Escape.
+				for _, tForeverFrameName in ipairs({"AuctionHouseFrame", "ProfessionsFrame", "SocialUIFrame"}) do
+					local tForeverFrame = _G[tForeverFrameName]
+					if tForeverFrame and tForeverFrame:IsShown() then
+						dprint("menuClose close", tForeverFrameName)
+						if tForeverFrame.CloseButton then
+							tForeverFrame.CloseButton:Click()
+						else
+							HideUIPanel(tForeverFrame)
+						end
 					end
 				end
 
@@ -2991,7 +3007,12 @@ function SkuOptions:StageClickMacros(aNode)
 		if aNode.applyMacrotext and SpellIsTargeting and SpellIsTargeting() then
 			tMacrotext = aNode.applyMacrotext
 		end
-		if tMacrotext and tClickGateOk then
+		if aNode.secureClickFrame and tClickGateOk then
+			-- unnamed Blizzard button: secure "click" action with the frame object (no name lookup)
+			_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","click")
+			_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("clickbutton", aNode.secureClickFrame)
+			_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext","")
+		elseif tMacrotext and tClickGateOk then
 			--dprint("macrotext", tMacrotext)
 			_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","macro")
 			_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext", tMacrotext)
@@ -3905,7 +3926,9 @@ function SkuOptions:CreateMenuFrame()
 			_G["QuestFrameGoodbyeButton"]:GetScript("OnClick")(_G["QuestFrameGoodbyeButton"])
 		end
 		if _G["TaxiFrame"]:IsVisible() == true then
-			_G["TaxiCloseButton"]:GetScript("OnClick")(_G["TaxiCloseButton"])
+			-- Forever's TaxiFrame has no TaxiCloseButton, only the template's .CloseButton
+			local tTaxiClose = _G["TaxiCloseButton"] or _G["TaxiFrame"].CloseButton
+			tTaxiClose:Click()
 			--_G["TaxiFrame"]:Hide()
 		end
 		if _G["StaticPopup1"]:IsVisible() == true then
@@ -5924,7 +5947,9 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 	for x = 1, #aGossipListTable do
 		local index = aGossipListTable[x]
 
-		if #aGossipListTable[index].childs == 0 then
+		-- lazyChilds: an entry with a submenu whose children are computed only when it opens.
+		-- childs stays empty, so without this check the entry would count as a leaf.
+		if #aGossipListTable[index].childs == 0 and not aGossipListTable[index].lazyChilds then
 			--dprint(aTab, x, "ENTRIY: "..aGossipListTable[index].textFirstLine)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenuTable, {aGossipListTable[index].textFirstLine}, SkuGenericMenuItem)
 			if aGossipListTable[index].noMenuNumbers then
@@ -6029,6 +6054,11 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			-- and OnEnter never sees it.
 			if aGossipListTable[index].directClickButton then
 				tNewMenuEntry.directClickButton = aGossipListTable[index].directClickButton
+			end
+			-- secureClickFrame: the frame OBJECT of an unnamed Blizzard button, clicked by the
+			-- secure menu button with type="click" (see StageClickMacros).
+			if aGossipListTable[index].secureClickFrame then
+				tNewMenuEntry.secureClickFrame = aGossipListTable[index].secureClickFrame
 			end
 			-- [Rezept-Tooltip] skuRecipeInfo (api + Rezeptindex) auf den Knoten uebertragen,
 			-- damit Shift Runter den Rezept-Tooltip per API bauen kann. Ohne diese Kopie
@@ -7007,7 +7037,22 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 			tNewMenuEntry.BuildChildren = function(self)
 				self.children = {}
-				SkuIterateGossipList(aGossipListTable[index].childs, self, aTab.."  ")
+				local tChilds = aGossipListTable[index].childs
+				if aGossipListTable[index].lazyChilds then
+					tChilds = aGossipListTable[index].lazyChilds() or tChilds
+				end
+				SkuIterateGossipList(tChilds, self, aTab.."  ")
+			end
+
+			-- Forever: an entry with a submenu AND its own action (click + func). ENTER runs the
+			-- action, the RIGHT arrow opens the submenu, as on a bag item (isClickItem ->
+			-- OnLeftAction). Other clients keep ENTER opening the submenu.
+			if Sku.isForever and aGossipListTable[index].click == true and aGossipListTable[index].func then
+				tNewMenuEntry.isClickItem = true
+				tNewMenuEntry.OnLeftAction = function()
+					xpcall(aGossipListTable[index].func, geterrorhandler(), aGossipListTable[index].obj, "LeftButton")
+					SkuCore:RefreshWindowMenuQuietly()
+				end
 			end
 		end
 
