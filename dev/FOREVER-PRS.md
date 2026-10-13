@@ -139,6 +139,19 @@ hast. Diese Stellen besonders sorgfältig auflösen:
    für Spuren. Geheime Texte sprechen geht **nur über SkuVoice**, nie mit
    eigenem `C_VoiceChat.SpeakText`/`StopSpeakingText` daneben; der erste PR,
    der das braucht, baut dafür einen Eingang in `SkuVoice-1.0` (Regel 12).
+2c. **Was auf Forever nicht verlässlich gehen kann, wird sauber abgeschaltet,**
+   nicht halb nachgebaut. Ob eine Funktion geheime Werte liefert, steht in
+   Blizzards API-Dokumentation für Forever (`Gethe/wow-ui-source`, Zweig
+   `forever`, `Blizzard_APIDocumentationGenerated`, Felder `SecretReturns`,
+   `SecretWhen...`). Eine Sku-Funktion, die darauf aufbaut, kommt auf Forever
+   nicht in Gang, steht nicht im Menü und darf keine Fehler werfen. Für ganze
+   Module gibt es dafür den Schalter in `SkuCore/ModuleManager.lua`: der
+   dritte Wert bei `RegisterToggleableModule`/`RegisterToggleableAddon`, zum
+   Beispiel `function() return not Sku.isForever end`. Das Modul bleibt dann
+   aus, fehlt unter „Funktionen an/aus“, und die gespeicherte Wahl des
+   Spielers bleibt unberührt. Für einen Eintrag im Hauptmenü gibt es dazu
+   `available` in `SkuZOptions/SkuMenu.lua`. Beispiel: SkuAuras (PR 4).
+
 3. **Echte Fehlerbehebungen, die alle Clients betreffen**, kommen in einen
    **eigenen PR** und stehen in der Beschreibung als „betrifft alle Clients“.
    Nie versteckt in einem Forever-PR.
@@ -149,6 +162,11 @@ hast. Diese Stellen besonders sorgfältig auflösen:
    im Sku-Code abgefangen (vor dem Aufruf prüfen, Ereignis nur registrieren, wenn
    es existiert). Ausnahme: Sku-eigene Bibliotheken (`SkuVoice-1.0`,
    `SkuTTS-1.0`, `SkuBeacon-1.0`), dazu Regel 12.
+   Die Ace3-Bibliotheken in Sku sind seit dem 13.10.2026 unverändert von
+   Upstream (`WoWUIDev/Ace3`, Commit `40f4cc1`, AceDB Minor 39). Die alten
+   lokalen Patches (AceDB-Regionen, AceConfigDialog, AceGUI TreeGroup) sind
+   entfernt. Ein Update macht nur der Maintainer, immer als ganze Kopie von
+   Upstream.
 5. **Nicht anfassen**, das macht nur der Maintainer:
    - `## Version` in `Sku/Sku.toc`
    - Patch-Notes, `docs/` (Download-Seite), Release-ZIPs
@@ -304,7 +322,8 @@ riskant er für Anniversary/Era ist. Wenn ein Stück nirgends hinpasst: fragen.
    - **Nicht** hinein: Änderungen an `AceDB-3.0` und `AceEvent-3.0`. Das
      AceEvent-Problem löst schon die Dispatcher-Prüfung. Löst eine neuere,
      **unveränderte** Ace3-Version das AceDB-Problem, schreib das in den PR;
-     den Tausch der Bibliothek macht der Maintainer.
+     den Tausch der Bibliothek macht der Maintainer. **Erledigt:** Ace3 ist
+     auf Upstream aktualisiert (siehe Regel 4).
 
 2. **Allgemeine Fehlerbehebungen** **Erledigt: PR #22**; Einladungs-Ansage,
    RIGHT-Taste und `ProcessPlayerDead` kommen mit PR 3, 13 und 14 (Risiko niedrig, hängt von nichts ab,
@@ -319,7 +338,11 @@ riskant er für Anniversary/Era ist. Wenn ein Stück nirgends hinpasst: fragen.
      `aqCombat` (fehlender Prozentwert).
    - `ErrorLog.lua`: blockierte Aktion nur einmal pro Kampf melden.
 
-3. **Menü-Grundlagen** (Risiko hoch, hängt von 1 ab)
+3. **Menü-Grundlagen** (Risiko hoch, hängt von 1 ab) **Erledigt: PR #23**.
+   `stayInPlace` und `.id` sind entfallen: `quietClick`, `skuIdentity` und
+   `SkuCore:RefreshWindowMenuQuietly()` können das schon. `lazyChilds` wird
+   beim ersten Fokus gebaut, einmal; wer bei jedem Öffnen frische Daten
+   braucht, setzt den Knoten `dynamic`.
    - Neue Menüknoten-Felder in `SkuZOptions/Core.lua`: `stayInPlace`,
      `secureClickFrame`, `lazyChilds`, `.id`.
    - „Klick mit Kindern“ nur auf Forever, Enter auf normalen Einträgen bleibt.
@@ -327,7 +350,11 @@ riskant er für Anniversary/Era ist. Wenn ein Stück nirgends hinpasst: fragen.
      und ohne die `[WoW Forever diag]`-Ausgaben.
    - Fenster-Schließer für die Forever-Fenster.
 
-4. **Geheime Werte im Kampf** (Risiko hoch, hängt von 1 ab)
+4. **Geheime Werte im Kampf** (Risiko hoch, hängt von 1 ab) **Erledigt: PR #24**,
+   mit Nacharbeiten. Zusätzlich ist **SkuAuras auf Forever ganz aus**
+   (Regel 2c): Das Kampflog erreicht dort keine Addons, und Auren-Daten,
+   Gesundheit und Ressourcen sind geheim. Ein Nachbau der Aura-Ereignisse aus
+   `UNIT_AURA` kommt **nicht**, siehe „Spätere eigene Projekte“ unten.
    - `aqCombat.lua`, `SkuAuras/Core.lua`, `SkuMob/Core.lua` (Pfade für geheime
      Werte), `visualAids.lua`, `RangeCheck.lua`.
    - **`aq.lua` kommt vollständig von `main`.** Deine Kopie ist eine alte
@@ -341,7 +368,20 @@ riskant er für Anniversary/Era ist. Wenn ein Stück nirgends hinpasst: fragen.
    - Gesundheits- und Ressourcen-Rechnung in `SkuAuras` nur auf Forever in
      `pcall`, nicht für alle.
 
+4a. **Kampfmonitor auf Forever prüfen** (Risiko mittel, hängt von 4 ab)
+   - `aqCombat.lua` bekommt seine Eingaben großteils aus dem Kampflog
+     (Gegner im Kampf, Unterbrechungen, Tode), das auf Forever nicht ankommt.
+     Für jede Ansage festhalten: geht sie auf Forever verlässlich (Test im
+     Spiel, mit Ergebnis im PR), oder wird sie nach Regel 2c abgeschaltet?
+   - Dazu die Frage aus #24: Zählt der Gegnerzähler auf Forever auch Gegner,
+     die gar nicht kämpfen, solange die Bedrohungswerte geheim sind?
+
 5. **Login und Charakter-Schlüssel** (Risiko hoch, hängt von 1 ab)
+   - **Zuerst prüfen**, ob das Problem mit der neuen AceDB (Minor 39) noch
+     besteht. Sie bildet den Charakter-Schlüssel auf Forever aus Name und
+     Nachname (`RegionalUniqueNamesEnabled()`). Nur wenn die Einstellungen
+     dann immer noch beim falschen Charakter landen, kommt ein eigener
+     Schlüssel, und dann so:
    - Menüaufbau nach dem Login (`WarmUpMenuTree`), nur auf Forever.
    - Stabiler Charakter-Schlüssel nur auf Forever, und über die **GUID**, nicht
      über den zuletzt eingeloggten Namen (sonst landen auf Konten mit mehreren
@@ -449,6 +489,13 @@ riskant er für Anniversary/Era ist. Wenn ein Stück nirgends hinpasst: fragen.
   der deutsche Schlüssel `L["Auswahl:"]`. Texte gehen über `L[]` mit englischem
   Schlüssel, in allen drei Sprachdateien.
 - Kommentare mit Tester-Datum oder persönlichen Pfaden.
+
+## Spätere eigene Projekte (nicht Teil dieser Reihe)
+
+- **Auren auf Forever:** eine neue Auren-Funktion auf `C_UnitAuras`, die nur
+  benutzt, was nicht geheim ist, und Zugänglichkeit für Blizzards eigenen
+  Cooldown-Manager (`Blizzard_CooldownViewer`, gibt es auf Forever). Erst
+  planen, dann bauen; vorher mit dem Maintainer absprechen.
 
 ## Installer (letzter PR)
 
