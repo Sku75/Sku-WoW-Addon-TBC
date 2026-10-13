@@ -2556,7 +2556,7 @@ function SkuChat:OnInitialize()
 	a:SetScript("OnUpdate", function(self, atime)
 		self.timeCounter = self.timeCounter + atime
 		if self.timeCounter > 5 then
-			if SkuSettings:Sub("SkuChat").tabs and SkuSettings:Sub("SkuChat").chatSettings and SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter and SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter > 1 then
+			if SkuSettings:Sub("SkuChat").tabs and SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter > 1 then
 				for x = 1, #SkuSettings:Sub("SkuChat").tabs do
 					if SkuSettings:Sub("SkuChat").tabs[x] then
 						if SkuSettings:Sub("SkuChat").tabs[x].privateMessages and #SkuSettings:Sub("SkuChat").tabs[x].privateMessages > 0 then
