@@ -15,6 +15,15 @@ local CLASS_IDS, tLastFallSoundNum, tdiold, tdisold
 
 local tStartDebugTimestamp = GetTime() or 0
 
+-- Forever: Sku calling these taints Blizzard's own action bars (blocked SetPointBase, secret
+-- SetCooldown errors in Blizzard_ActionBar), so the refresh is skipped there.
+local function SkuCoreRefreshActionBars()
+	if Sku.isForever then return end
+	SetActionBarToggles(1,1,1,1,1)
+	MultiActionBar_Update()
+	UIParent_ManageFramePositions()
+end
+
 SkuCoreDB = {}
 SkuCore = LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 SkuCore.maxItemNameLength = 1000
@@ -3338,9 +3347,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 			C_Timer.After(15, function()
 				if InCombatLockdown() ~= true then
-					SetActionBarToggles(1,1,1,1,1) 
-					MultiActionBar_Update() 
-					UIParent_ManageFramePositions() 
+					SkuCoreRefreshActionBars()
 
 					C_CVar.SetCVar("instantQuestText", "1")
 					C_CVar.SetCVar("autoLootDefault", "1")
@@ -3387,9 +3394,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			
 			C_Timer.After(10, function()
 				if InCombatLockdown() ~= true then
-					SetActionBarToggles(1,1,1,1,1) 
-					MultiActionBar_Update() 
-					UIParent_ManageFramePositions() 
+					SkuCoreRefreshActionBars()
 					C_CVar.SetCVar("instantQuestText", "1")
 					C_CVar.SetCVar("autoLootDefault", "1")
 					C_CVar.SetCVar("alwaysShowActionBars", "1")
@@ -3519,9 +3524,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 	C_Timer.After(6, function()
 		if InCombatLockdown() ~= true then
-			SetActionBarToggles(1,1,1,1,1) 
-			MultiActionBar_Update() 
-			UIParent_ManageFramePositions() 
+			SkuCoreRefreshActionBars()
 			C_CVar.SetCVar("instantQuestText", "1")
 			C_CVar.SetCVar("autoLootDefault", "1")
 			C_CVar.SetCVar("alwaysShowActionBars", "1")
