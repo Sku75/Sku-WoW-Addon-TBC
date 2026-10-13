@@ -14,7 +14,6 @@ local sfind = string.find
 local smatch = string.match
 local ssub = string.sub
 local GetTime = GetTime
-local UnitGUID = UnitGUID
 local UnitName = UnitName
 local mfloor = math.floor
 
@@ -176,7 +175,7 @@ local function tEnsureGroupGuidMap()
 	for k in pairs(tPartyGuidIndex) do tPartyGuidIndex[k] = nil end
 	if IsInRaid() then
 		for x = 1, 40 do
-			local tGuid = UnitGUID("raid" .. x)
+			local tGuid = Sku.SafeGUID("raid" .. x)
 			if tGuid and tRaidGuidIndex[tGuid] == nil then
 				tRaidGuidIndex[tGuid] = x
 			end
@@ -184,7 +183,7 @@ local function tEnsureGroupGuidMap()
 	end
 	if IsInGroup() then
 		for x = 1, 4 do
-			local tGuid = UnitGUID("party" .. x)
+			local tGuid = Sku.SafeGUID("party" .. x)
 			if tGuid and tPartyGuidIndex[tGuid] == nil then
 				tPartyGuidIndex[tGuid] = x
 			end
@@ -312,11 +311,11 @@ function SkuAuras:OnEnable()
 			GetTime(),
 			"KEY_PRESS",
 			nil,
-			UnitGUID("player"),
+			Sku.SafeGUID("player"),
 			UnitName("player"),
 			nil,
 			nil,
-			UnitGUID("playertarget"),
+			Sku.SafeGUID("playertarget"),
 			UnitName("playertarget"),
 			nil,
 			nil,
@@ -494,7 +493,7 @@ function SkuAuras:GetBestUnitId(aUnitGUID)
 	local tUnitIds = {}
 
 	local function checkUnit(unit)
-		if aUnitGUID == UnitGUID(unit) then
+		if aUnitGUID == Sku.SafeGUID(unit) then
 			tUnitIds[#tUnitIds + 1] = unit
 		end
 	end
@@ -1298,7 +1297,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 					GetTime(),
 					"ITEM_USE",
 					nil,
-					UnitGUID("player"),
+					Sku.SafeGUID("player"),
 					UnitName("player"),
 					nil,
 					nil,
@@ -1328,7 +1327,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 					GetTime(),
 					"ITEM_USE",
 					nil,
-					UnitGUID("player"),
+					Sku.SafeGUID("player"),
 					UnitName("player"),
 					nil,
 					nil,
@@ -1577,15 +1576,11 @@ end
 function SkuAuras:UNIT_TICKER(aUnitId)
 	local tUnitId = aUnitId
 
-	if tUnitId and UnitHealthMax(tUnitId) > 0 then
-		local tHealth
-		if UnitHealthMax(tUnitId) and UnitHealthMax(tUnitId) > 0 then
-			tHealth = mfloor(UnitHealth(tUnitId) / (UnitHealthMax(tUnitId) / 100))
-		end
-		local tPower
-		if UnitPowerMax(tUnitId) and UnitPowerMax(tUnitId) > 0 then
-			tPower = mfloor(UnitPower(tUnitId) / (UnitPowerMax(tUnitId) / 100))
-		end
+	-- a secret max health (Forever) still means "the unit exists"; only its percent is unknown (nil)
+	local tMaxHealth = tUnitId and UnitHealthMax(tUnitId)
+	if tMaxHealth and (Sku.IsSecret(tMaxHealth) or tMaxHealth > 0) then
+		local tHealth = Sku.UnitHealthPercent(tUnitId)
+		local tPower = Sku.UnitPowerPercent(tUnitId)
 
 		if not SkuAuras.UnitRepo[tUnitId] then
 			SkuAuras.UnitRepo[tUnitId] = {unitPower = 0, unitHealth = 0, unitTargetName = nil}
@@ -1593,7 +1588,7 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			SkuAuras.UnitRepo[tUnitId].unitPower = tPower
 		end
 
-		local unitTargetGUID = UnitGUID(tUnitId.."target")
+		local unitTargetGUID = Sku.SafeGUID(tUnitId.."target")
 		if SkuAuras.UnitRepo[tUnitId].unitTargetName ~= unitTargetGUID then
 			SkuAuras.UnitRepo[tUnitId].unitTargetName = unitTargetGUID
 
@@ -1602,7 +1597,7 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 					GetTime(),
 					"UNIT_TARGETCHANGE",
 					nil,
-					UnitGUID(tUnitId),
+					Sku.SafeGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
@@ -1626,11 +1621,11 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 				GetTime(),
 				"UNIT_HEALTH",
 				nil,
-				UnitGUID(tUnitId),
+				Sku.SafeGUID(tUnitId),
 				UnitName(tUnitId),
 				nil,
 				nil,
-				UnitGUID(tUnitId),
+				Sku.SafeGUID(tUnitId),
 				UnitName(tUnitId),
 				nil,
 				nil,
@@ -1641,18 +1636,18 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			tEventData[35] = SkuAuras.UnitRepo[tUnitId].unitHealth
 			SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEventData)
 		end
-		if UnitPowerMax(tUnitId) > 0 then
+		if tPower then
 			if SkuAuras.UnitRepo[tUnitId].unitPower ~= tPower then
 				SkuAuras.UnitRepo[tUnitId].unitPower = tPower
 				local tEventData = {
 					GetTime(),
 					"UNIT_POWER",
 					nil,
-					UnitGUID(tUnitId),
+					Sku.SafeGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
-					UnitGUID(tUnitId),
+					Sku.SafeGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
@@ -1667,17 +1662,18 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 		end
 
 		if tUnitId == "player" then
-			if SkuAuras.UnitRepo[tUnitId].unitCombo ~= GetComboPoints("player", "target") then
-				SkuAuras.UnitRepo[tUnitId].unitCombo = GetComboPoints("player", "target") or 0
+			local tComboPoints = GetComboPoints("player", "target")
+			if not Sku.IsSecret(tComboPoints) and SkuAuras.UnitRepo[tUnitId].unitCombo ~= tComboPoints then
+				SkuAuras.UnitRepo[tUnitId].unitCombo = tComboPoints or 0
 				local tEventData = {
 					GetTime(),
 					"UNIT_POWER",
 					nil,
-					UnitGUID(tUnitId),
+					Sku.SafeGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
-					UnitGUID(tUnitId),
+					Sku.SafeGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
@@ -1740,8 +1736,8 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			-- moves to slot 52 and keeps its own attribute + output.
 			local function tFireEnchantEvent(aSubevent, aHandToken, aEnchantId)
 				local tEvent = {
-					GetTime(), aSubevent, nil, UnitGUID(tUnitId), UnitName(tUnitId),
-					nil, nil, UnitGUID(tUnitId), UnitName(tUnitId), nil, nil,
+					GetTime(), aSubevent, nil, Sku.SafeGUID(tUnitId), UnitName(tUnitId),
+					nil, nil, Sku.SafeGUID(tUnitId), UnitName(tUnitId), nil, nil,
 					tEnchantSpellId(aEnchantId),
 					SkuAuras:ResolveWeaponEnchantName(aEnchantId),
 					nil,
@@ -1846,7 +1842,7 @@ local tAddFunc = function(itemID, startTime, duration, isEnabled, event)
 				GetTime(),
 				event,
 				nil,
-				UnitGUID("player"),
+				Sku.SafeGUID("player"),
 				UnitName("player"),
 				nil,
 				nil,
@@ -1939,11 +1935,11 @@ function SkuAuras:DURATION_DEADLINE()
 		GetTime(),
 		"DURATION_DEADLINE",
 		nil,
-		UnitGUID("player"),
+		Sku.SafeGUID("player"),
 		UnitName("player"),
 		nil,
 		nil,
-		UnitGUID("playertarget"),
+		Sku.SafeGUID("playertarget"),
 		UnitName("playertarget"),
 		nil,
 		nil,
@@ -2118,11 +2114,7 @@ local tEvaluateDataMT = {
 -- a warrior's mana, and dividing by it would be the bug, while reporting 0%
 -- would make "Mana kleiner 20" true for every warrior alive.
 local function tPlayerPowerPercent(aPowerIndex)
-	local tMax = UnitPowerMax("player", aPowerIndex)
-	if not tMax or tMax <= 0 then
-		return nil
-	end
-	return mfloor(UnitPower("player", aPowerIndex) / (tMax / 100))
+	return Sku.UnitPowerPercent("player", aPowerIndex)
 end
 
 tLazyEvaluateFields = {
@@ -2190,7 +2182,7 @@ tLazyEvaluateFields = {
 	-- then INDEXES it, so a cached `false` would crash the reader.
 	targetTargetUnitId = function()
 		if UnitName("playertargettarget") then
-			return SkuAuras:GetBestUnitId(UnitGUID("playertargettarget"))
+			return SkuAuras:GetBestUnitId(Sku.SafeGUID("playertargettarget"))
 		end
 		return {}
 	end,
@@ -2424,11 +2416,11 @@ function SkuAuras:AuraMembershipCheck(aUnit)
 			GetTime(),
 			"UNIT_AURA_CHANGED",
 			nil,
-			UnitGUID(aUnit),
+			Sku.SafeGUID(aUnit),
 			UnitName(aUnit),
 			nil,
 			nil,
-			UnitGUID(aUnit),
+			Sku.SafeGUID(aUnit),
 			UnitName(aUnit),
 			nil,
 			nil,
@@ -2575,11 +2567,11 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 			-- [v43.0] Stamp the frame time per unit: the membership-diff drain uses
 			-- it to skip its extra evaluation when an _AURA_ combat-log pass already
 			-- ran for that unit this same frame (see tLastAuraCleuEvalTime).
-			if tDestGuid == UnitGUID("player") then
+			if tDestGuid == Sku.SafeGUID("player") then
 				SkuAuras:InvalidateAuraListCache("player")
 				tLastAuraCleuEvalTime.player = GetTime()
 			end
-			if tDestGuid == UnitGUID("target") then
+			if tDestGuid == Sku.SafeGUID("target") then
 				SkuAuras:InvalidateAuraListCache("target")
 				tLastAuraCleuEvalTime.target = GetTime()
 			end
@@ -2864,10 +2856,10 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		event = subevent,
 		spellId = tEventData[CleuBase.spellId],
 		spellName = tEventData[CleuBase.spellName],
-		unitHealthPlayer = mfloor(UnitHealth("player") / (UnitHealthMax("player") / 100)),
-		unitPowerPlayer = mfloor(UnitPower("player") / (UnitPowerMax("player") / 100)),
+		unitHealthPlayer = Sku.UnitHealthPercent("player"),
+		unitPowerPlayer = Sku.UnitPowerPercent("player"),
 		unitComboPlayer = tEventData[51],
-		unitHealthTarget = UnitName("target") and mfloor(UnitHealth("target") / (UnitHealthMax("target") / 100)),
+		unitHealthTarget = UnitName("target") and Sku.UnitHealthPercent("target"),
 		unitHealthOrPowerUpdate = tEventData[35] or tEventData[36],
 		buffListTarget = tBuffListTargetFull,
 		debuffListTarget = tDebuffListTargetFull,
@@ -2886,9 +2878,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		-- spellNameUsable + itemCount are LAZY now -- see tLazyEvaluateFields.
 	}
 	setmetatable(tEvaluateData, tEvaluateDataMT)
-	if UnitPowerMax("target") > 0 then
-		tEvaluateData.unitPowerTarget = UnitName("target") and mfloor(UnitPower("target") / (UnitPowerMax("target") / 100))
-	end	
+	tEvaluateData.unitPowerTarget = UnitName("target") and Sku.UnitPowerPercent("target") or nil
 	tEvaluateData.spellId = tEventData[CleuBase.spellId]
 	tEvaluateData.spellName = tEventData[CleuBase.spellName]
 
@@ -3462,7 +3452,7 @@ function SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(aUnitGUID)
 	-- speaks them; it also let a tracked member who moved past slot 25 be pruned
 	-- inside RoleCheckerGetUnitRole while it was the one being asked about.
 	if not UnitInRaid("player") then
-		if aUnitGUID == UnitGUID("player") then
+		if aUnitGUID == Sku.SafeGUID("player") then
 			return "player"
 		end
 		tEnsureGroupGuidMap()
@@ -3541,7 +3531,7 @@ end
 
 function SkuAuras:RoleCheckerGetRoster()
 	for x = 1, #SkuCore.Monitor.UnitNumbersIndexedRaid do
-		local tUnitGUID = UnitGUID(SkuCore.Monitor.UnitNumbersIndexedRaid[x])
+		local tUnitGUID = Sku.SafeGUID(SkuCore.Monitor.UnitNumbersIndexedRaid[x])
 		if tUnitGUID then
 			local tRoleId, tUnitId = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
 			print(x, tRoleId, tUnitId, UnitName(tUnitId))
@@ -3560,7 +3550,7 @@ function SkuAuras:RoleCheckerGetUnitRole(aUnitGUID)
 	if UnitInRaid("player") or UnitInParty("player") then
 		for x = 1, MAX_RAID_MEMBERS do
 			local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x) 
-			local tUnitGUID = UnitGUID("raid"..x)
+			local tUnitGUID = Sku.SafeGUID("raid"..x)
 			if tUnitGUID and tUnitGUID == aUnitGUID then
 				for y = 1, #SkuCore.Monitor.UnitNumbersIndexedRaid do
 					if SkuCore.Monitor.UnitNumbersIndexedRaid[y] ~= nil and SkuCore.Monitor.UnitNumbersIndexedRaid[y] == "raid"..x then

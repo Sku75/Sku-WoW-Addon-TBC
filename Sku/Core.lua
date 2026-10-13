@@ -45,6 +45,22 @@ function Sku.SafeName(aUnit)
 	if tName ~= nil and Sku.IsSecret(tName) then return nil end
 	return tName
 end
+-- Health or power of a unit as a whole percent. nil when the unit has no such pool or the client
+-- hides the numbers (WoW Forever: secret values cannot be compared or divided).
+function Sku.UnitHealthPercent(aUnit)
+	local tMax = UnitHealthMax(aUnit)
+	if not tMax or Sku.IsSecret(tMax) or tMax <= 0 then return nil end
+	local tCur = UnitHealth(aUnit)
+	if Sku.IsSecret(tCur) then return nil end
+	return math.floor(tCur / (tMax / 100))
+end
+function Sku.UnitPowerPercent(aUnit, aPowerIndex)
+	local tMax = UnitPowerMax(aUnit, aPowerIndex)
+	if not tMax or Sku.IsSecret(tMax) or tMax <= 0 then return nil end
+	local tCur = UnitPower(aUnit, aPowerIndex)
+	if Sku.IsSecret(tCur) then return nil end
+	return math.floor(tCur / (tMax / 100))
+end
 -- Whether this client knows a WoW event. RegisterEvent throws on an unknown one (WoW Forever
 -- dropped several, e.g. TRADE_SKILL_UPDATE and the old AUCTION_* list events), and the throw
 -- aborts the rest of the calling function. A skipped event leaves a line in SkuDebugLog.

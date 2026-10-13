@@ -1382,7 +1382,11 @@ end
 -- (at SkuCore enable, on every /reload, and whenever the user toggles it back on).
 -- Mirrors the old Core.lua AqOnInitialize + AqOnLogin calls.
 function Aq:OnEnable()
-	Aq:AqOnInitialize()
+	-- Forever: UnitHealth/UnitPower are secret values there, the monitors cannot work and stay
+	-- unarmed. The settings defaults are still seeded: aqCombat reads them.
+	if not Sku.isForever then
+		Aq:AqOnInitialize()
+	end
 	Aq:AqOnLogin()
 end
 
@@ -1717,6 +1721,10 @@ function Aq:UNIT_POWER_UPDATE(eventName, unitTarget, powerType)
 	-- an off monitor genuinely says nothing; the tPrevPwrPer guard below already
 	-- swallows the duplicate dispatch.
 	if Aq.IsEnabled and not Aq:IsEnabled() then
+		return
+	end
+	-- Forever: the monitor is not armed (Aq:OnEnable), but the dispatcher still delivers this event
+	if Sku.isForever then
 		return
 	end
 	if unitTarget == "player" then
@@ -2234,7 +2242,9 @@ function Aq:MonitorMenuBuilder()
 	--debuff menus (per-monitor setting), "Only unit numbers" in the Combat menu
 
 	--Gesundheit und Status: container for the player/pet/party/raid unit monitors
-	local tHealthStatusEntry = SkuOptions:InjectMenuItems(self, {L["Gesundheit und Status"]}, SkuGenericMenuItem)
+	-- Forever: the unit monitors are not armed (see Aq:OnEnable); the section is built into a detached
+	-- parent so it does not show up in the menu.
+	local tHealthStatusEntry = SkuOptions:InjectMenuItems(Sku.isForever and {children = {}} or self, {L["Gesundheit und Status"]}, SkuGenericMenuItem)
 	tHealthStatusEntry.dynamic = true
 	tHealthStatusEntry.BuildChildren = function(self)
 

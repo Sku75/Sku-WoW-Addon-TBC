@@ -68,20 +68,22 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:OutputTargetHealth(aForce)
-	if UnitGUID("target") then
+	if Sku.SafeGUID("target") then
 		if UnitCanAttack("player","target") ~= false then
 			if aForce then
 				SkuMobDB.lastAudioQ = ""
 			end
 
-			local hp = math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100))
+			-- Forever hides the target's health: nothing to announce then
+			local hp = Sku.UnitHealthPercent("target")
+			if not hp then return end
 			local hpPer = math.floor(((hp / 10)) + 1) * 10
 			if (hpPer < 100 and hpPer > 0) or aForce then
 				if hpPer > 100 then hpPer = 100 end
 				if hpPer < 10 then hpPer = 0 end
 				if hp == 0 then hpPer = 0 end
 
-				if (UnitGUID("target") ~= SkuMobDB.lastTargetGuid) then
+				if (Sku.SafeGUID("target") ~= SkuMobDB.lastTargetGuid) then
 					SkuMobDB.nextAudioQ = hpPer--SkuMobDB.soundFiles[hpPer]
 				end
 				
@@ -90,7 +92,7 @@ function SkuMob:OutputTargetHealth(aForce)
 				end
 				
 				if SkuMobDB.nextAudioQ ~= "" then
-					if (SkuMobDB.nextAudioQ ~= SkuMobDB.lastAudioQ) or (UnitGUID("target") ~= SkuMobDB.lastTargetGuid) then
+					if (SkuMobDB.nextAudioQ ~= SkuMobDB.lastAudioQ) or (Sku.SafeGUID("target") ~= SkuMobDB.lastTargetGuid) then
 						SkuOptions.Voice:OutputString(SkuMobDB.nextAudioQ, false, false, 0.3)
 						SkuMobDB.lastAudioQ = SkuMobDB.nextAudioQ
 						SkuMobDB.nextAudioQ = ""
@@ -98,7 +100,7 @@ function SkuMob:OutputTargetHealth(aForce)
 				end
 			end
 				
-			SkuMobDB.lastTargetGuid = UnitGUID("target")
+			SkuMobDB.lastTargetGuid = Sku.SafeGUID("target")
 		end
 	else
 		SkuMobDB.lastTargetGuid = 0
@@ -367,20 +369,20 @@ end
 local tLastSoftEnemyGuid
 function SkuMob:PLAYER_SOFT_ENEMY_CHANGED(arg1, arg2, arg3)
 	tSoftTrace("enemy", "softenemy", arg2, arg3)
-	if not UnitGUID("softenemy") then
+	if not Sku.SafeGUID("softenemy") then
 		if SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.soundNoTarget ~= " " then
-			if UnitGUID("softenemy") ~= tLastSoftEnemyGuid then
+			if Sku.SafeGUID("softenemy") ~= tLastSoftEnemyGuid then
 				SkuOptions.Voice:OutputString(SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.soundNoTarget, true, true, 0.3, true)
 			end
 		end
-		tLastSoftEnemyGuid = UnitGUID("softenemy")
+		tLastSoftEnemyGuid = Sku.SafeGUID("softenemy")
 		return
 	end
 	if SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.enabled ~= true then
 		return
 	end
 
-	if UnitGUID("softenemy") ~= UnitGUID("target") then
+	if Sku.SafeGUID("softenemy") ~= Sku.SafeGUID("target") then
 		if SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.forPlayers == false and (UnitIsPlayer("softenemy") == true and UnitIsEnemy("player", "softenemy") == true) then
 			return
 		end
@@ -400,16 +402,16 @@ function SkuMob:PLAYER_SOFT_ENEMY_CHANGED(arg1, arg2, arg3)
 			end
 		end
 	end
-	tLastSoftEnemyGuid = UnitGUID("softenemy")
+	tLastSoftEnemyGuid = Sku.SafeGUID("softenemy")
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:PLAYER_SOFT_FRIEND_CHANGED(aEvent, aGuid, aNewGuid)
 	tSoftTrace("friend", "softfriend", aGuid, aNewGuid)
-	if not UnitGUID("softfriend") then
+	if not Sku.SafeGUID("softfriend") then
 		return
 	end
 
-	if UnitGUID("softfriend") ~= UnitGUID("target") then
+	if Sku.SafeGUID("softfriend") ~= Sku.SafeGUID("target") then
 		if SkuOptions.db.profile["SkuOptions"].softTargeting.friend.forPlayers == false and (UnitIsPlayer("softfriend") == true and UnitIsFriend("player", "softfriend") == true) then
 			return
 		end
@@ -427,14 +429,14 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:PLAYER_SOFT_INTERACT_CHANGED(aEvent, aGuid, aNewGuid)
 	tSoftTrace("interact", "softinteract", aGuid, aNewGuid)
-	if not UnitGUID("softinteract") then
+	if not Sku.SafeGUID("softinteract") then
 		return
 	end
 
 	if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled ~= true then
 		return
 	end
-	if UnitGUID("softinteract") ~= UnitGUID("target") then
+	if Sku.SafeGUID("softinteract") ~= Sku.SafeGUID("target") then
 		--print("SkuMob:PLAYER_SOFT_INTERACT_CHANGED(aEvent, ", aGuid, UnitGUID("softinteract"))
 		if ((SkuOptions.db.profile["SkuOptions"].softTargeting.interact.soundfor == 2 and UnitExists("softinteract") == false) 
 			or (
@@ -456,10 +458,8 @@ function SkuMob:PLAYER_SOFT_INTERACT_CHANGED(aEvent, aGuid, aNewGuid)
 				local tName = UnitName("softinteract")
 				if tName then
 					C_Timer.After(0.1, function()
-						local hp = math.floor(UnitHealth("softinteract") / (UnitHealthMax("softinteract") / 100))
-						if UnitHealthMax("softinteract") == 0 then
-							hp = 100
-						end
+						-- no readable health (no pool, or hidden on Forever): dead only by its flag, else alive
+						local hp = Sku.UnitHealthPercent("softinteract") or (UnitIsDead("softinteract") and 0 or 100)
 						if hp == 0 then
 							SkuOptions.Voice:OutputStringBTtts(L["dead"].." "..tName, true, true, 0.2, true, nil, nil, 2)
 						else
@@ -658,7 +658,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			end
 		end
 		
-		local tUnitGUID = UnitGUID(aUnitId)
+		local tUnitGUID = Sku.SafeGUID(aUnitId)
 		--sku raid target
 		if tRaidtarget == nil or tRaidtarget == "" then
 			if SkuCore.aqCombat:aqCombatGetSkuRaidTarget(tUnitGUID) ~= nil then
@@ -694,7 +694,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			end
 		end
 
-		local hp = math.floor(UnitHealth(aUnitId) / (UnitHealthMax(aUnitId) / 100))
+		local hp = Sku.UnitHealthPercent(aUnitId) or (UnitIsDead(aUnitId) and 0 or nil)
 
 		if aUnitId == "softinteract" then
 			if UnitExists("softinteract") == false then

@@ -2226,7 +2226,7 @@ function SkuCore:OnEnable()
 			SkuCore.TurnToUnit:TurnToUnitTurn180()
 		end
 
-		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_DOMONITORPARTYHEALTH2CONTI") then
+		if not Sku.isForever and SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_DOMONITORPARTYHEALTH2CONTI") then
 			SkuCore.Aq:MonitorPartyHealth2Conti()
 		end
 
@@ -2239,7 +2239,7 @@ function SkuCore:OnEnable()
 			SkuCore:DoGroupRangeCheck()
 		end
 
-		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_DOMONITORPARTYHEALTH2CONTI") then
+		if not Sku.isForever and SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_DOMONITORPARTYHEALTH2CONTI") then
 			if UnitInRaid("player") ~= nil then
 				SkuCore.Aq:MonitorRaidHealth2Conti(true)
 			elseif UnitInParty("player") == true then

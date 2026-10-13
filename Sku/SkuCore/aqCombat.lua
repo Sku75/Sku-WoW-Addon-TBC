@@ -240,7 +240,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function aqCombat:aqCombatCreatureGuidToUnitId(aUnitGUID)
    for i = 1, #tUnitsToTestOnGameRaidTargets do
-      local tCreatureGUID = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
+      local tCreatureGUID = Sku.SafeGUID(tUnitsToTestOnGameRaidTargets[i])
       if tCreatureGUID then
          if tCreatureGUID == aUnitGUID then
             return tUnitsToTestOnGameRaidTargets[i]
@@ -257,7 +257,7 @@ function aqCombat:aqCombatGroupGuidToUnitId(aUnitGUID)
 
    for i = 1, #tAllPartyRaidUnits do
       local tTargetUnitIdToTest = tAllPartyRaidUnits[i]
-      local tCreatureGUID = UnitGUID(tTargetUnitIdToTest)
+      local tCreatureGUID = Sku.SafeGUID(tTargetUnitIdToTest)
       if tCreatureGUID then
          if tCreatureGUID == aUnitGUID then
             return tTargetUnitIdToTest
@@ -328,10 +328,10 @@ end
 -- MAX_RAID_MEMBERS slots are scanned, so slots 26-40 are announced too. The
 -- same spoken token serves every friendly announcement via tSpokenGroupUnit.
 local function tDeathUnitToken(aUnitGUID)
-   if aUnitGUID == UnitGUID("player") then
+   if aUnitGUID == Sku.SafeGUID("player") then
       return "player", "player"
    end
-   if aUnitGUID == UnitGUID("pet") then
+   if aUnitGUID == Sku.SafeGUID("pet") then
       return "pet", "pet"
    end
 
@@ -341,8 +341,8 @@ local function tDeathUnitToken(aUnitGUID)
          local tName, _, tSubgroup = GetRaidRosterInfo(x)
          if tName and tSubgroup then
             tSubgroupCounter[tSubgroup] = (tSubgroupCounter[tSubgroup] or 0) + 1
-            local tMemberGuid = UnitGUID("raid"..x)
-            local tPetGuid = UnitGUID("raidpet"..x)
+            local tMemberGuid = Sku.SafeGUID("raid"..x)
+            local tPetGuid = Sku.SafeGUID("raidpet"..x)
             if tMemberGuid == aUnitGUID or (tPetGuid and tPetGuid == aUnitGUID) then
                local tNumber = tDialNumberForName(tName)
                   or (tDTRaidRoster and tDTRaidRoster["raid"..x])
@@ -383,7 +383,7 @@ local function tSpokenGroupUnit(aUnitId)
    if aUnitId == nil then
       return nil
    end
-   local tSpoken = tDeathUnitToken(UnitGUID(aUnitId))
+   local tSpoken = tDeathUnitToken(Sku.SafeGUID(aUnitId))
    return tSpoken or aUnitId
 end
 
@@ -432,7 +432,7 @@ local function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
       end
 
       if aTargetUnitIdToTest ~= nil  then
-         aUnitGUID = UnitGUID(aTargetUnitIdToTest)
+         aUnitGUID = Sku.SafeGUID(aTargetUnitIdToTest)
          local tUnitClassification = UnitClassification(aTargetUnitIdToTest)
          Sku.PerformanceData["aqCombatCheckElite"] = ((Sku.PerformanceData["aqCombatCheckElite"] or 0) + (debugprofilestop() - beginTime6)) / 2
 
@@ -468,7 +468,7 @@ local function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
 
       local tUnitId = aqCombat:aqCombatCreatureGuidToUnitId(aUnitGUID)
       if tUnitId then
-         aUnitGUID = UnitGUID(aTargetUnitIdToTest)
+         aUnitGUID = Sku.SafeGUID(aTargetUnitIdToTest)
          local t = UnitClassification(tUnitId)
          if aUnitGUID and t then
             Sku.PerformanceData["aqCombatCheckElite2"] = ((Sku.PerformanceData["aqCombatCheckElite2"] or 0) + (debugprofilestop() - beginTime6)) / 2
@@ -491,7 +491,7 @@ function aqCombat:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
    local beginTime2 = debugprofilestop()   
 
    if aUnitId then
-      local aUnitIdGuid = UnitGUID(aUnitId)
+      local aUnitIdGuid = Sku.SafeGUID(aUnitId)
 
       if not aUnitIdGuid then
          return
@@ -501,35 +501,35 @@ function aqCombat:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
          return aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid]
       end
       
-      if UnitGUID("player") == aUnitIdGuid then
+      if Sku.SafeGUID("player") == aUnitIdGuid then
          aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "player"
          Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return "player"
       end
-      if UnitGUID("pet") == aUnitIdGuid then
+      if Sku.SafeGUID("pet") == aUnitIdGuid then
          aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "pet"
          Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return "pet"
       end
       for x = 1, 4 do
-         if UnitGUID("party"..x) == aUnitIdGuid then
+         if Sku.SafeGUID("party"..x) == aUnitIdGuid then
             aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "party"..x
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "party"..x
          end
-         if UnitGUID("partypet"..x) == aUnitIdGuid then
+         if Sku.SafeGUID("partypet"..x) == aUnitIdGuid then
             aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "partypet"..x
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "partypet"..x
          end
       end
       for x = 1, 40 do
-         if UnitGUID("raid"..x) == aUnitIdGuid then
+         if Sku.SafeGUID("raid"..x) == aUnitIdGuid then
             aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "raid"..x
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "raid"..x
          end
-         if UnitGUID("raidpet"..x) == aUnitIdGuid then
+         if Sku.SafeGUID("raidpet"..x) == aUnitIdGuid then
             aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "raidpet"..x
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "raidpet"..x
@@ -546,7 +546,7 @@ function aqCombat:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
    elseif aUnitGUID then
       for q = 1, #tAllPartyRaidUnits do
          local tPartyUnitToTest = tAllPartyRaidUnits[q]
-         local tPartyGuid = UnitGUID(tPartyUnitToTest)
+         local tPartyGuid = Sku.SafeGUID(tPartyUnitToTest)
          if tPartyGuid == aUnitGUID then
             aqCombatIsPartyOrRaidMemberCache[aUnitGUID] = tPartyUnitToTest
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember2"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember2"] or 0) + (debugprofilestop() - beginTime2)) / 2                     
@@ -740,7 +740,7 @@ local function tCombatInCounts(value, creatureGUID, tPlayerGUID, tAllPartyRaidUn
          -- Threat path: a party/raid member holds actual aggro. Covers mobs the
          -- periodic threat scan surfaced where no combatIn attacker was recorded.
          for q = 1, #tAllPartyRaidUnits do
-            local tPartyGuid = UnitGUID(tAllPartyRaidUnits[q])
+            local tPartyGuid = Sku.SafeGUID(tAllPartyRaidUnits[q])
             local tEntry = tt[tPartyGuid]
             if tEntry and tEntry.status and tEntry.isTanking == true then
                return true
@@ -810,7 +810,7 @@ local function aqCombatCreateControlFrame()
 
          for i = 1, #tUnitsToTestOnGameRaidTargets do
             local tTargetUnitIdToTest = tUnitsToTestOnGameRaidTargets[i]
-            local tCreatureGUID = UnitGUID(tTargetUnitIdToTest)
+            local tCreatureGUID = Sku.SafeGUID(tTargetUnitIdToTest)
             if tCreatureGUID then
                -- LIVENESS: a tracked mob that is visible in one of the polled unit
                -- slots (nameplate, someone's target, ...) AND still carries the
@@ -839,17 +839,23 @@ local function aqCombatCreateControlFrame()
                         for q = 1, #tAllPartyRaidUnits do
                            local tPartyUnitToTest = tAllPartyRaidUnits[q]
                            local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation(tPartyUnitToTest, tTargetUnitIdToTest)
+                           -- Forever returns these as secret values in combat. Only the fact "this unit has a
+                           -- threat entry" is kept; without the numbers the threat warnings stay silent.
+                           if Sku.IsSecret(isTanking) or Sku.IsSecret(status) or Sku.IsSecret(scaledPercentage) or Sku.IsSecret(rawPercentage) or Sku.IsSecret(threatValue) then
+                              if Sku.IsSecret(status) then status = true end
+                              isTanking, scaledPercentage, rawPercentage, threatValue = nil, nil, nil, nil
+                           end
                            if status then
-                              local tPartyGuid = UnitGUID(tPartyUnitToTest)
+                              local tPartyGuid = Sku.SafeGUID(tPartyUnitToTest)
                               -- Hostility is asked at the admission point only, so
                               -- the verdict (and the tKnownHostile bookkeeping) is
                               -- not paid for every unit slot polled every tick.
                               if UnitIsDeadOrGhost(tPartyUnitToTest) ~= true
                                  and tShouldAdmitAsEnemy(tCreatureGUID, tTargetUnitIdToTest, nil) then
-                                 aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tTargetUnitIdToTest, UnitName(tTargetUnitIdToTest), UnitGUID(tPartyUnitToTest), tPartyUnitToTest, UnitName(tPartyUnitToTest))
+                                 aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tTargetUnitIdToTest, UnitName(tTargetUnitIdToTest), Sku.SafeGUID(tPartyUnitToTest), tPartyUnitToTest, UnitName(tPartyUnitToTest))
 
-                                 local tPlayerGUID = UnitGUID("player")
-                                 if tCreatureGUID == UnitGUID("target") and tPartyGuid == tPlayerGUID then
+                                 local tPlayerGUID = Sku.SafeGUID("player")
+                                 if tCreatureGUID == Sku.SafeGUID("target") and tPartyGuid == tPlayerGUID then
                                     if SkuCore.threatTable[tCreatureGUID] then
                                        if SkuCore.threatTable[tCreatureGUID][tPartyGuid] then
                                           if SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking == true and SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking ~= true then
@@ -899,8 +905,8 @@ local function aqCombatCreateControlFrame()
          if tCurrentSettings.combat.enabled == true then
             local beginTime3 = debugprofilestop()
 
-            local tPlayerGUID = UnitGUID("player")
-            local tTargetGUID = UnitGUID("target")
+            local tPlayerGUID = Sku.SafeGUID("player")
+            local tTargetGUID = Sku.SafeGUID("target")
 
             if tTargetGUID then
                if aqCombatCheckElite(tTargetGUID, "target") == true then               
@@ -982,7 +988,7 @@ local function aqCombatCreateControlFrame()
          --[[
          for q = 1, #tAllPartyRaidUnits do
             local tPartyUnitToTest = tAllPartyRaidUnits[q]
-            local tPartyGuid = UnitGUID(tPartyUnitToTest)
+            local tPartyGuid = Sku.SafeGUID(tPartyUnitToTest)
             if tPartyGuid then
                --print(tPartyUnitToTest)
                for tCreatureGUID, tvalue in pairs(SkuCore.threatTable) do
@@ -1064,7 +1070,7 @@ local function aqCombatCreateControlFrame()
                -- applying the SAME filter to every candidate here removes that
                -- asymmetry, so modes 3/4 can no longer collapse to 0 while
                -- enemies remain.
-               local tPlayerGUID = UnitGUID("player")
+               local tPlayerGUID = Sku.SafeGUID("player")
                local tCount = 0
                for creatureGUID, tEntry in pairs(SkuCore.threatTable) do
                   if type(tEntry) == "table" then
@@ -1135,7 +1141,7 @@ local function aqCombatCreateControlFrame()
 
                local tCountIn = 0
 
-               local tPlayerGUID = UnitGUID("player")
+               local tPlayerGUID = Sku.SafeGUID("player")
                local tChanged = false
 
                for creatureGUID, value in pairs(SkuCore.inOutCombatQueue.combatIn) do
@@ -1240,7 +1246,7 @@ function aqCombat:aqCombatOnInitialize()
       hooksecurefunc("SetRaidTarget", function(aUnit, aIconIndex)
          if not aqCombat:IsEnabled() then return end
          if aIconIndex == 0 then
-            local tGUID = UnitGUID(aUnit)
+            local tGUID = Sku.SafeGUID(aUnit)
             if tGUID then
                aqCombat:aqCombatSetSkuRaidTarget(tGUID)
             end
@@ -1531,29 +1537,29 @@ function aqCombat:aqCombat_GROUP_ROSTER_UPDATE()
    aqCombatIsPartyOrRaidMemberCache = {}
    tRebuildGroupUnitLists()
    
-   if UnitGUID("player") then
-      aqCombatIsPartyOrRaidMemberCache[UnitGUID("player")] = "player"
+   if Sku.SafeGUID("player") then
+      aqCombatIsPartyOrRaidMemberCache[Sku.SafeGUID("player")] = "player"
    end
 
-   if UnitGUID("pet") then
-      aqCombatIsPartyOrRaidMemberCache[UnitGUID("pet")] = "pet"
+   if Sku.SafeGUID("pet") then
+      aqCombatIsPartyOrRaidMemberCache[Sku.SafeGUID("pet")] = "pet"
    end
 
    for x = 1, 4 do
-      if UnitGUID("party"..x) then
-         aqCombatIsPartyOrRaidMemberCache[UnitGUID("party"..x)] = "party"..x
+      if Sku.SafeGUID("party"..x) then
+         aqCombatIsPartyOrRaidMemberCache[Sku.SafeGUID("party"..x)] = "party"..x
       end
-      if UnitGUID("partypet"..x) then
-         aqCombatIsPartyOrRaidMemberCache[UnitGUID("partypet"..x)] = "partypet"..x
+      if Sku.SafeGUID("partypet"..x) then
+         aqCombatIsPartyOrRaidMemberCache[Sku.SafeGUID("partypet"..x)] = "partypet"..x
       end
    end
 
    for x = 1, 40 do
-      if UnitGUID("raid"..x) then
-         aqCombatIsPartyOrRaidMemberCache[UnitGUID("raid"..x)] = "raid"..x
+      if Sku.SafeGUID("raid"..x) then
+         aqCombatIsPartyOrRaidMemberCache[Sku.SafeGUID("raid"..x)] = "raid"..x
       end
-      if UnitGUID("raidpet"..x) then
-         aqCombatIsPartyOrRaidMemberCache[UnitGUID("raidpet"..x)] = "raidpet"..x
+      if Sku.SafeGUID("raidpet"..x) then
+         aqCombatIsPartyOrRaidMemberCache[Sku.SafeGUID("raidpet"..x)] = "raidpet"..x
       end
    end
 end
@@ -1566,12 +1572,12 @@ function aqCombat:aqCombatPLAYER_TARGET_CHANGED(aEvent, a, b, c, d)
          if UnitExists("playertargettarget") then
             local tOutput = tCurrentSettings.combat.hostile.threatOutputTot.voiceOutput
             for x = 1, #tAllPartyRaidUnits do
-               if UnitGUID(tAllPartyRaidUnits[x]) == UnitGUID("playertargettarget") then
-                  if aqCombatCheckElite(UnitGUID("playertargettarget")) == true then
+               if Sku.SafeGUID(tAllPartyRaidUnits[x]) == Sku.SafeGUID("playertargettarget") then
+                  if aqCombatCheckElite(Sku.SafeGUID("playertargettarget")) == true then
                      if tCurrentSettings.combat.hostile.threatOutputTot.value == 2 then
                         SkuCoreAqCombatOutput(tOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tCurrentSettings.combat.hostile.threatOutputTot)
                      elseif tCurrentSettings.combat.hostile.threatOutputTot.value == 3 then
-                        if UnitGUID(tAllPartyRaidUnits[x]) ~= UnitGUID("player") then
+                        if Sku.SafeGUID(tAllPartyRaidUnits[x]) ~= Sku.SafeGUID("player") then
                            SkuCoreAqCombatOutput(tOutput, {unit1 = tSpokenGroupUnit(tAllPartyRaidUnits[x]),}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tCurrentSettings.combat.hostile.threatOutputTot)
                         end
                      end
@@ -1829,8 +1835,8 @@ function aqCombat:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
       if aqCombatCheckElite(aEventData[4]) == true then
          if tCurrentSettings.combat.hostile.yourTargetCasting.value > 1 then
             local tUnitGUID = aEventData[4]
-            if tUnitGUID and tUnitGUID == UnitGUID("target") then
-               local tTargetTargetGuid = UnitGUID("targettarget")
+            if tUnitGUID and tUnitGUID == Sku.SafeGUID("target") then
+               local tTargetTargetGuid = Sku.SafeGUID("targettarget")
                if tTargetTargetGuid then
                   local name, rank, icon, castTime
                   if aEventData[12] then
@@ -1838,7 +1844,7 @@ function aqCombat:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
                   end
                   if castTime == nil or (castTime > (tCurrentSettings.combat.hostile.minimumCastDuration * 1000)) then
                      if tCurrentSettings.combat.hostile.yourTargetCasting.value == 2 then
-                        if tTargetTargetGuid == UnitGUID("player") then
+                        if tTargetTargetGuid == Sku.SafeGUID("player") then
                            local tSetting = tCurrentSettings.combat.hostile.yourTargetCasting
                            SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                         end
@@ -1901,7 +1907,7 @@ function aqCombat:aqCombat_SKU_SPELL_INTERRUPT(aEvent, aEventData)
    --current target gets announced (destGUID = who was interrupted)
    if tAllEnemies == false then
       local tDestGUID = aEventData[8]
-      if not tDestGUID or tDestGUID ~= UnitGUID("target") then return end
+      if not tDestGUID or tDestGUID ~= Sku.SafeGUID("target") then return end
    end
 
    if tByYou == true then
@@ -1928,9 +1934,9 @@ function aqCombat:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
                   local tSetting = tCurrentSettings.combat.hostile.outputDeadUnits
                   SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tCreateUnitId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                elseif tCurrentSettings.combat.hostile.outputDeadUnits.value == 3 then
-                  if SkuCore.threatTable[aUnitGUID] and SkuCore.threatTable[aUnitGUID][UnitGUID("player")] then
+                  if SkuCore.threatTable[aUnitGUID] and SkuCore.threatTable[aUnitGUID][Sku.SafeGUID("player")] then
                      -- scaledPercentage can be nil where Forever hides the threat numbers
-                     if (SkuCore.threatTable[aUnitGUID][UnitGUID("player")].scaledPercentage or 0) >= 100 then
+                     if (SkuCore.threatTable[aUnitGUID][Sku.SafeGUID("player")].scaledPercentage or 0) >= 100 then
                         local tSetting = tCurrentSettings.combat.hostile.outputDeadUnits
                         SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tCreateUnitId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                      end
@@ -1975,7 +1981,7 @@ function aqCombat:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
                tCurrentSettings.combat.friendly.ignoreDeadPartyPets == true and
                sfind(tRealUnitId, "pet") == nil and
                UnitIsOtherPlayersPet(tRealUnitId) == false and
-               aUnitGUID ~= UnitGUID("pet")
+               aUnitGUID ~= Sku.SafeGUID("pet")
             )
          then
             if tRealUnitId == "" or UnitIsDeadOrGhost(tRealUnitId) == true then
@@ -2158,7 +2164,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function aqCombat:aqCombatCheckGameRaidTargets()
    for i = 1, #tUnitsToTestOnGameRaidTargets do
-      local tguid = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
+      local tguid = Sku.SafeGUID(tUnitsToTestOnGameRaidTargets[i])
       if tguid then
          local tRti = GetRaidTargetIndex(tUnitsToTestOnGameRaidTargets[i])
          if tRti then
