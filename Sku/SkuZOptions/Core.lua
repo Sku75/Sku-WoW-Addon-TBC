@@ -1364,7 +1364,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		if numEntries > 0 then
 			for y = offset + 1, offset + numEntries do
 				local spellName, spellSubName, spellID = GetSpellBookItemName(y, BOOKTYPE_SPELL)
-				if spellName then
+				-- entries without a spell id (flyouts, future spells) cannot be asked for passive/known/cooldown
+				if spellName and spellID then
 					local tIsPassive = IsPassiveSpell(spellID)
 					local isKnown = IsSpellKnown(spellID, aIsPet)
 					if not tIsPassive and isKnown then
