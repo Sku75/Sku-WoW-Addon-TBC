@@ -117,9 +117,14 @@ end
 -- Assemble the registered root entries, in layout order, into aRootMenu.
 -- Injecting one at a time into the same parent reproduces the original prev/next
 -- sibling chain exactly (InjectMenuItems links each new item to the previous).
+-- A spec with `available` returning false (the feature cannot work on this client,
+-- see SkuCore:IsModuleAvailable) gets no root entry.
 function SkuMenu:AssembleRoot(aRootMenu)
 	for i = 1, #self.rootLayout do
-		self:InjectModuleEntry(aRootMenu, self.rootLayout[i])
+		local spec = self.registry[self.rootLayout[i]]
+		if not (spec and spec.available and spec.available() ~= true) then
+			self:InjectModuleEntry(aRootMenu, self.rootLayout[i])
+		end
 	end
 	return self
 end
@@ -306,7 +311,8 @@ SkuMenu:RegisterModule("SkuQuest", { label = function() return L()["SkuQuestMenu
 -- W7: "Core" grab-bag is gone; SkuCore:MenuBuilder now builds the aggregated
 -- "Einstellungen" (Settings) tree.
 SkuMenu:RegisterModule("Einstellungen", { label = function() return Sku.deEn("Einstellungen", "Settings", "Réglages") end, build = function(entry) SkuCore:MenuBuilder(entry)  end })
-SkuMenu:RegisterModule("SkuAuras", { label = function() return L()["SkuAurasMenuEntry"] end, build = function(entry) SkuAuras:MenuBuilder(entry) end })
+SkuMenu:RegisterModule("SkuAuras", { label = function() return L()["SkuAurasMenuEntry"] end, build = function(entry) SkuAuras:MenuBuilder(entry) end,
+	available = function() return SkuCore:IsModuleAvailable("SkuAuras") end })
 
 -- Game Options: Blizzard's built-in game options (modern Settings system, else
 -- only reachable via the Escape menu) made accessible through Sku's menu. Logic
