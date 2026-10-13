@@ -1617,6 +1617,7 @@ L["nahkampf verfehlt"]  = "melee missed" --
 L["nahkampf zusatz angriff"]  = "melee extra attack" --
 L["name already exists"]  = "name already exists" --
 L["name already taken"] = "name already taken"
+L["profile name too long"] = "name too long, at most 50 characters"
 L["name eingeben und Enter drücken"] = "enter name and press enter"
 L["Name output via Blizzard TTS"] = "Name output via Blizzard TTS"
 L["name schon vorhanden"]  = "name already exists" --

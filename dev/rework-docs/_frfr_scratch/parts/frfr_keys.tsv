@@ -2976,6 +2976,7 @@ nahkampf zusatz angriff	attaque de mêlée supplémentaire
 name	nom
 name already exists	ce nom existe déjà
 name already taken	nom déjà pris
+profile name too long	nom trop long, 50 caractères maximum
 name eingeben und Enter drücken	saisissez le nom et appuyez sur Entrée
 name schon vorhanden	ce nom existe déjà
 narrow beacon sound set	Son pour les petites balises

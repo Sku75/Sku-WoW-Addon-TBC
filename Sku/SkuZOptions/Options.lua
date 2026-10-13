@@ -923,7 +923,14 @@ function SkuOptions:MenuBuilder(aParentEntry)
 			"",
 			function(self)
 				local tText = SkuOptionsEditBoxEditBox:GetText()
-				if tText and tText ~= "" then
+				-- AceDB refuses (throws on) a profile name that is only spaces or longer than 50 characters
+				if tText and strlenutf8(tText) > 50 then
+					C_Timer.After(0.1, function()
+						SkuOptions.Voice:OutputStringBTtts(L["profile name too long"], true, true, 1, true)
+					end)
+					return
+				end
+				if tText and tText ~= "" and not tText:find("^ +$") then
 					for i, v in pairs(SkuOptions.db:GetProfiles()) do
 						if v == tText then
 							C_Timer.After(0.1, function()

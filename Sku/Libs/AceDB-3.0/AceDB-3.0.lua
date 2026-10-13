@@ -40,8 +40,8 @@
 -- end
 -- @class file
 -- @name AceDB-3.0.lua
--- @release $Id: AceDB-3.0.lua 1193 2018-08-02 12:24:37Z funkydude $
-local ACEDB_MAJOR, ACEDB_MINOR = "AceDB-3.0", 26
+-- @release $Id$
+local ACEDB_MAJOR, ACEDB_MINOR = "AceDB-3.0", 39
 local AceDB = LibStub:NewLibrary(ACEDB_MAJOR, ACEDB_MINOR)
 
 if not AceDB then return end -- No upgrade needed
@@ -49,13 +49,10 @@ if not AceDB then return end -- No upgrade needed
 -- Lua APIs
 local type, pairs, next, error = type, pairs, next, error
 local setmetatable, rawset, rawget = setmetatable, rawset, rawget
+local strlenutf8 = strlenutf8
 
 -- WoW APIs
 local _G = _G
-
--- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
--- List them here for Mikk's FindGlobals script
--- GLOBALS: LibStub
 
 AceDB.db_registry = AceDB.db_registry or {}
 AceDB.frame = AceDB.frame or CreateFrame("Frame")
@@ -98,11 +95,11 @@ local function copyDefaults(dest, src)
 				-- This is a metatable used for table defaults
 				local mt = {
 					-- This handles the lookup and creation of new subtables
-					__index = function(t,k)
-							if k == nil then return nil end
+					__index = function(t,k2)
+							if k2 == nil then return nil end
 							local tbl = {}
 							copyDefaults(tbl, v)
-							rawset(t, k, tbl)
+							rawset(t, k2, tbl)
 							return tbl
 						end,
 				}
@@ -115,7 +112,7 @@ local function copyDefaults(dest, src)
 				end
 			else
 				-- Values are not tables, so this is just a simple return
-				local mt = {__index = function(t,k) return k~=nil and v or nil end}
+				local mt = {__index = function(t,k2) return k2~=nil and v or nil end}
 				setmetatable(dest, mt)
 			end
 		elseif type(v) == "table" then
@@ -255,17 +252,43 @@ local preserve_keys = {
 	["children"] = true,
 }
 
-local realmKey = GetRealmName()
-local charKey = UnitName("player") .. " - " .. realmKey
-local _, classKey = UnitClass("player")
-local _, raceKey = UnitRace("player")
 local factionKey = UnitFactionGroup("player")
-local factionrealmKey = factionKey .. " - " .. realmKey
 local localeKey = GetLocale():lower()
+local charKey, realmKey, classKey, raceKey, factionrealmKey, factionrealmregionKey
+do
+	local _
+	_, classKey = UnitClass("player")
+	_, raceKey = UnitRace("player")
 
-local regionTable = { "US", "KR", "EU", "TW", "CN", [72] = "US", [90] = "EU"  }
-local regionKey = regionTable[GetCurrentRegion()]
-local factionrealmregionKey = factionrealmKey .. " - " .. regionKey
+	if RegionalUniqueNamesEnabled and RegionalUniqueNamesEnabled() then
+		if C_GameRules.IsGameRuleActive(Enum.GameRule.HardcoreRuleset) then
+			realmKey = "Hardcore"
+		elseif C_GameRules.IsGameRuleActive(Enum.GameRule.RPRuleset) then
+			realmKey = "RP"
+		elseif C_GameRules.IsGameRuleActive(Enum.GameRule.PvPRuleset) then
+			realmKey = "PvP"
+		else
+			realmKey = "PvE"
+		end
+		local name, surname = UnitNameUnmodified("player")
+		if surname then
+			charKey = name .. " " .. tostring(surname)
+		else
+			charKey = name
+		end
+	else
+		realmKey = GetRealmName()
+		charKey = UnitNameUnmodified("player") .. " - " .. realmKey
+	end
+
+	local regionTable = { "US", "KR", "EU", "TW", "CN" }
+	local regionName = GetCurrentRegionName()
+	if regionName and regionName == "" then regionName = nil end -- PTR/Beta tends to be ""
+	local regionKey = regionTable[GetCurrentRegion()] or regionName or "TR"
+
+	factionrealmKey = factionKey .. " - " .. realmKey
+	factionrealmregionKey = factionrealmKey .. " - " .. regionKey
+end
 
 -- Actual database initialization function
 local function initdb(sv, defaults, defaultProfile, olddb, parent)
@@ -278,6 +301,18 @@ local function initdb(sv, defaults, defaultProfile, olddb, parent)
 	if not parent then
 		-- Make a container for profile keys
 		if not sv.profileKeys then sv.profileKeys = {} end
+
+		-- Validate any existing profile name
+		if sv.profileKeys[charKey] then
+			if type(sv.profileKeys[charKey]) ~= "string" then
+				sv.profileKeys[charKey] = defaultProfile or charKey
+			else
+				local profileNameLength = strlenutf8(sv.profileKeys[charKey])
+				if profileNameLength == 0 or profileNameLength > 50 or sv.profileKeys[charKey]:find("^ +$") then
+					sv.profileKeys[charKey] = defaultProfile or charKey
+				end
+			end
+		end
 
 		-- Try to get the profile selected from the char db
 		profileKey = sv.profileKeys[charKey] or defaultProfile or charKey
@@ -364,7 +399,7 @@ local function logoutHandler(frame, event)
 
 			-- cleanup sections that are empty without defaults
 			local sv = rawget(db, "sv")
-			for section in pairs(db.keys) do
+			for section in pairs(rawget(db, "keys")) do
 				if rawget(sv, section) then
 					-- global is special, all other sections have sub-entrys
 					-- also don't delete empty profiles on main dbs, only on namespaces
@@ -377,6 +412,26 @@ local function logoutHandler(frame, event)
 					end
 					if not next(sv[section]) then
 						sv[section] = nil
+					end
+				end
+			end
+		end
+
+		-- second pass after everything else is cleaned up to remove empty namespaces
+		-- can't be run in-loop above since there is no guaranteed order
+		for db in pairs(AceDB.db_registry) do
+			local sv = rawget(db, "sv")
+			local namespaces = rawget(sv, "namespaces")
+			if namespaces then
+				for name in pairs(namespaces) do
+					-- cleanout empty profiles table, if still present
+					if namespaces[name].profiles and not next(namespaces[name].profiles) then
+						namespaces[name].profiles = nil
+					end
+
+					-- remove entire namespace, if needed
+					if not next(namespaces[name]) then
+						namespaces[name] = nil
 					end
 				end
 			end
@@ -397,7 +452,7 @@ AceDB.frame:SetScript("OnEvent", logoutHandler)
 -- @param defaults A table of defaults for this database
 function DBObjectLib:RegisterDefaults(defaults)
 	if defaults and type(defaults) ~= "table" then
-		error("Usage: AceDBObject:RegisterDefaults(defaults): 'defaults' - table or nil expected.", 2)
+		error(("Usage: AceDBObject:RegisterDefaults(defaults): 'defaults' - table or nil expected, got %q."):format(type(defaults)), 2)
 	end
 
 	validateDefaults(defaults, self.keys)
@@ -429,7 +484,12 @@ end
 -- @param name The name of the profile to set as the current profile
 function DBObjectLib:SetProfile(name)
 	if type(name) ~= "string" then
-		error("Usage: AceDBObject:SetProfile(name): 'name' - string expected.", 2)
+		error(("Usage: AceDBObject:SetProfile(name): 'name' - string expected, got %q."):format(type(name)), 2)
+	else
+		local profileNameLength = strlenutf8(name)
+		if profileNameLength == 0 or profileNameLength > 50 or name:find("^ +$") then
+			error("Usage: AceDBObject:SetProfile(name): 'name' - string length must be between 1 and 50 characters.", 2)
+		end
 	end
 
 	-- changing to the same profile, dont do anything
@@ -471,7 +531,7 @@ end
 -- @param tbl A table to store the profile names in (optional)
 function DBObjectLib:GetProfiles(tbl)
 	if tbl and type(tbl) ~= "table" then
-		error("Usage: AceDBObject:GetProfiles(tbl): 'tbl' - table or nil expected.", 2)
+		error(("Usage: AceDBObject:GetProfiles(tbl): 'tbl' - table or nil expected, got %q."):format(type(tbl)), 2)
 	end
 
 	-- Clear the container table
@@ -509,15 +569,15 @@ end
 -- @param silent If true, do not raise an error when the profile does not exist
 function DBObjectLib:DeleteProfile(name, silent)
 	if type(name) ~= "string" then
-		error("Usage: AceDBObject:DeleteProfile(name): 'name' - string expected.", 2)
+		error(("Usage: AceDBObject:DeleteProfile(name): 'name' - string expected, got %q."):format(type(name)), 2)
 	end
 
 	if self.keys.profile == name then
-		error("Cannot delete the active profile in an AceDBObject.", 2)
+		error(("Cannot delete the active profile (%q) in an AceDBObject."):format(name), 2)
 	end
 
 	if not rawget(self.profiles, name) and not silent then
-		error("Cannot delete profile '" .. name .. "'. It does not exist.", 2)
+		error(("Cannot delete profile %q as it does not exist."):format(name), 2)
 	end
 
 	self.profiles[name] = nil
@@ -526,6 +586,17 @@ function DBObjectLib:DeleteProfile(name, silent)
 	if self.children then
 		for _, db in pairs(self.children) do
 			DBObjectLib.DeleteProfile(db, name, true)
+		end
+	end
+
+	-- remove from unloaded namespaces
+	if self.sv.namespaces then
+		for nsname, data in pairs(self.sv.namespaces) do
+			if self.children and self.children[nsname] then
+				-- already a mapped namespace
+			elseif data.profiles then
+				data.profiles[name] = nil
+			end
 		end
 	end
 
@@ -548,15 +619,15 @@ end
 -- @param silent If true, do not raise an error when the profile does not exist
 function DBObjectLib:CopyProfile(name, silent)
 	if type(name) ~= "string" then
-		error("Usage: AceDBObject:CopyProfile(name): 'name' - string expected.", 2)
+		error(("Usage: AceDBObject:CopyProfile(name): 'name' - string expected, got %q."):format(type(name)), 2)
 	end
 
 	if name == self.keys.profile then
-		error("Cannot have the same source and destination profiles.", 2)
+		error(("Cannot have the same source and destination profiles (%q)."):format(name), 2)
 	end
 
 	if not rawget(self.profiles, name) and not silent then
-		error("Cannot copy profile '" .. name .. "'. It does not exist.", 2)
+		error(("Cannot copy profile %q as it does not exist."):format(name), 2)
 	end
 
 	-- Reset the profile before copying
@@ -571,6 +642,20 @@ function DBObjectLib:CopyProfile(name, silent)
 	if self.children then
 		for _, db in pairs(self.children) do
 			DBObjectLib.CopyProfile(db, name, true)
+		end
+	end
+
+	-- copy unloaded namespaces
+	if self.sv.namespaces then
+		for nsname, data in pairs(self.sv.namespaces) do
+			if self.children and self.children[nsname] then
+				-- already a mapped namespace
+			elseif data.profiles then
+				-- reset the current profile
+				data.profiles[self.keys.profile] = {}
+				-- copy data
+				copyTable(data.profiles[name], data.profiles[self.keys.profile])
+			end
 		end
 	end
 
@@ -600,6 +685,18 @@ function DBObjectLib:ResetProfile(noChildren, noCallbacks)
 		end
 	end
 
+	-- reset unloaded namespaces
+	if self.sv.namespaces and not noChildren then
+		for nsname, data in pairs(self.sv.namespaces) do
+			if self.children and self.children[nsname] then
+				-- already a mapped namespace
+			elseif data.profiles then
+				-- reset the current profile
+				data.profiles[self.keys.profile] = nil
+			end
+		end
+	end
+
 	-- Callback: OnProfileReset, database
 	if not noCallbacks then
 		self.callbacks:Fire("OnProfileReset", self)
@@ -610,8 +707,8 @@ end
 -- profile.
 -- @param defaultProfile The profile name to use as the default
 function DBObjectLib:ResetDB(defaultProfile)
-	if defaultProfile and type(defaultProfile) ~= "string" then
-		error("Usage: AceDBObject:ResetDB(defaultProfile): 'defaultProfile' - string or nil expected.", 2)
+	if defaultProfile and type(defaultProfile) ~= "string" and defaultProfile ~= true then
+		error(("Usage: AceDBObject:ResetDB(defaultProfile): 'defaultProfile' - string or true expected, got %q."):format(type(defaultProfile)), 2)
 	end
 
 	local sv = self.sv
@@ -645,13 +742,13 @@ end
 -- @param defaults A table of values to use as defaults
 function DBObjectLib:RegisterNamespace(name, defaults)
 	if type(name) ~= "string" then
-		error("Usage: AceDBObject:RegisterNamespace(name, defaults): 'name' - string expected.", 2)
+		error(("Usage: AceDBObject:RegisterNamespace(name, defaults): 'name' - string expected, got %q."):format(type(name)), 2)
 	end
 	if defaults and type(defaults) ~= "table" then
-		error("Usage: AceDBObject:RegisterNamespace(name, defaults): 'defaults' - table or nil expected.", 2)
+		error(("Usage: AceDBObject:RegisterNamespace(name, defaults): 'defaults' - table or nil expected, got %q."):format(type(defaults)), 2)
 	end
 	if self.children and self.children[name] then
-		error ("Usage: AceDBObject:RegisterNamespace(name, defaults): 'name' - a namespace with that name already exists.", 2)
+		error(("Usage: AceDBObject:RegisterNamespace(name, defaults): 'name' - a namespace called %q already exists."):format(name), 2)
 	end
 
 	local sv = self.sv
@@ -675,10 +772,10 @@ end
 -- @return the namespace object if found
 function DBObjectLib:GetNamespace(name, silent)
 	if type(name) ~= "string" then
-		error("Usage: AceDBObject:GetNamespace(name): 'name' - string expected.", 2)
+		error(("Usage: AceDBObject:GetNamespace(name): 'name' - string expected, got %q."):format(type(name)), 2)
 	end
 	if not silent and not (self.children and self.children[name]) then
-		error ("Usage: AceDBObject:GetNamespace(name): 'name' - namespace does not exist.", 2)
+		error(("Usage: AceDBObject:GetNamespace(name): 'name' - namespace %q does not exist."):format(name), 2)
 	end
 	if not self.children then self.children = {} end
 	return self.children[name]
@@ -717,15 +814,22 @@ function AceDB:New(tbl, defaults, defaultProfile)
 	end
 
 	if type(tbl) ~= "table" then
-		error("Usage: AceDB:New(tbl, defaults, defaultProfile): 'tbl' - table expected.", 2)
+		error(("Usage: AceDB:New(tbl, defaults, defaultProfile): 'tbl' - table expected, got %q."):format(type(tbl)), 2)
 	end
 
 	if defaults and type(defaults) ~= "table" then
-		error("Usage: AceDB:New(tbl, defaults, defaultProfile): 'defaults' - table expected.", 2)
+		error(("Usage: AceDB:New(tbl, defaults, defaultProfile): 'defaults' - table expected, got %q."):format(type(defaults)), 2)
 	end
 
-	if defaultProfile and type(defaultProfile) ~= "string" and defaultProfile ~= true then
-		error("Usage: AceDB:New(tbl, defaults, defaultProfile): 'defaultProfile' - string or true expected.", 2)
+	if defaultProfile then
+		if type(defaultProfile) == "string" then
+			local profileNameLength = strlenutf8(defaultProfile)
+			if profileNameLength == 0 or profileNameLength > 50 or defaultProfile:find("^ +$") then
+				error("Usage: AceDB:New(tbl, defaults, defaultProfile): 'defaultProfile' - string length must be between 1 and 50 characters.", 2)
+			end
+		elseif defaultProfile ~= true then
+			error(("Usage: AceDB:New(tbl, defaults, defaultProfile): 'defaultProfile' - string or true expected, got %q."):format(type(defaultProfile)), 2)
+		end
 	end
 
 	return initdb(tbl, defaults, defaultProfile)
