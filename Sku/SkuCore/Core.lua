@@ -251,6 +251,15 @@ SkuStatus = {
 -- Draußen-Ansage eine eventuell parallel laufende TTS, ohne sie zu
 -- unterbrechen — der User hört im Zweifel beides gleichzeitig, aber
 -- die Zonen-Ansage geht garantiert raus.
+-- UnitHealth(unit) ~= 0 ("alive and present"); Forever hides the number, then the dead flag decides
+local function tUnitHasHealth(aUnit)
+	local tHealth = UnitHealth(aUnit)
+	if Sku.IsSecret(tHealth) then
+		return UnitExists(aUnit) and not UnitIsDead(aUnit)
+	end
+	return tHealth ~= 0
+end
+
 local function tPlayZoneAudio(aKey)
 	if not (SkuOptions and SkuOptions.Voice and SkuOptions.Voice.GetAudiodata) then
 		return
@@ -1754,8 +1763,8 @@ function SkuCore:OnEnable()
 		if SkuCore:PlayerIsHunter()
 			and SkuSettings:Sub("SkuCore").classes.hunter.petHappyness == true
 			-- make sure player isn't dead and pet exists
-			and UnitHealth("player") ~= 0
-			and UnitHealth("pet") ~= 0
+			and tUnitHasHealth("player")
+			and tUnitHasHealth("pet")
 		then
 			SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
 			if SkuCoreOldPetHappinessCounter > 2 then
