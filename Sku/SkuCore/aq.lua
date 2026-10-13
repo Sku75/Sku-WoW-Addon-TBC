@@ -2242,9 +2242,9 @@ function Aq:MonitorMenuBuilder()
 	--debuff menus (per-monitor setting), "Only unit numbers" in the Combat menu
 
 	--Gesundheit und Status: container for the player/pet/party/raid unit monitors
-	-- Forever: the unit monitors are not armed (see Aq:OnEnable); the section is built into a detached
-	-- parent so it does not show up in the menu.
-	local tHealthStatusEntry = SkuOptions:InjectMenuItems(Sku.isForever and {children = {}} or self, {L["Gesundheit und Status"]}, SkuGenericMenuItem)
+	-- Not on Forever: the unit monitors are not armed there (see Aq:OnEnable).
+	if not Sku.isForever then
+	local tHealthStatusEntry = SkuOptions:InjectMenuItems(self, {L["Gesundheit und Status"]}, SkuGenericMenuItem)
 	tHealthStatusEntry.dynamic = true
 	tHealthStatusEntry.BuildChildren = function(self)
 
@@ -4293,6 +4293,7 @@ function Aq:MonitorMenuBuilder()
 	end
 
 	end --Gesundheit und Status container (player/pet/party/raid moved inside)
+	end -- not Sku.isForever
 
 	--combat
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Combat"]}, SkuGenericMenuItem)
