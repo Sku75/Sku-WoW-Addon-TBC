@@ -866,19 +866,30 @@ function SkuOptions:UpdateOverviewText(aPageId)
 
 	--general
 	local tGeneral = L["Allgemeines"]
+	-- Forever hides health and power from addons (secret values): such a line is left out
 	local function formatPercentage(current, max)
+		if Sku.IsSecret(current) or Sku.IsSecret(max) then return nil end
 		return (math.floor(current / max * 100)) .. "% (" .. current .. ")"
 	end
 	if UnitHealth("player") then
-		tGeneral = tGeneral .. "\r\n" .. L["Gesundheit: "] .. formatPercentage(UnitHealth("player"), UnitHealthMax("player"))
+		local tText = formatPercentage(UnitHealth("player"), UnitHealthMax("player"))
+		if tText then
+			tGeneral = tGeneral .. "\r\n" .. L["Gesundheit: "] .. tText
+		end
 	end
 	if UnitPower("player") then
 		local powerType, powerToken = UnitPowerType("player")
 		tPowerString = _G[powerToken]
-		tGeneral = tGeneral .. "\r\n" .. tPowerString .. ": " .. formatPercentage(UnitPower("player"), UnitPowerMax("player"))
+		local tText = formatPercentage(UnitPower("player"), UnitPowerMax("player"))
+		if tText then
+			tGeneral = tGeneral .. "\r\n" .. tPowerString .. ": " .. tText
+		end
 	end
 	if UnitName("playerpet") then
-		tGeneral = tGeneral .. "\r\n" .. L["Pet"] .. " " .. L["Gesundheit: "] .. formatPercentage(UnitHealth("pet"), UnitHealthMax("pet"))
+		local tText = formatPercentage(UnitHealth("pet"), UnitHealthMax("pet"))
+		if tText then
+			tGeneral = tGeneral .. "\r\n" .. L["Pet"] .. " " .. L["Gesundheit: "] .. tText
+		end
 	end
 
 	--pvp
