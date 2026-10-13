@@ -111,9 +111,14 @@ hast. Diese Stellen besonders sorgfältig auflösen:
 
 ### Inhalt
 
-1. **Ein Thema pro PR.** Ein PR, der fünf Dinge tut, wird nicht gereviewt,
-   sondern zurückgegeben. Richtwert: unter etwa 800 geänderten Zeilen in
-   bestehenden Dateien; neue Forever-Dateien dürfen größer sein.
+1. **Ein Thema pro Commit, ein Paket pro PR.** Ab Punkt 4a kommen die Punkte
+   gebündelt als Pakete (siehe „Pakete“ unten), damit du nicht so viele
+   einzelne PRs schicken musst. Innerhalb eines Pakets bekommt **jeder Punkt
+   seine eigenen Commits**, und jeder Commit gehört zu genau einem Punkt.
+   Die Commit-Nachricht nennt den Punkt vorne, zum Beispiel
+   `forever(7): merchant window built from the merchant API`. So kann das
+   Review Punkt für Punkt gehen, und Nacharbeiten treffen nur den einen Punkt.
+   Ein Commit, der mehrere Punkte mischt, wird zurückgegeben.
 2. **Keine Verhaltensänderung auf Anniversary und Era.** Jede Forever-Änderung
    steht hinter `if Sku.isForever then` oder hinter einer Prüfung „nur wenn die
    Funktion fehlt“. Wer Anniversary oder Era spielt, darf von deinem PR nichts
@@ -153,8 +158,9 @@ hast. Diese Stellen besonders sorgfältig auflösen:
    `available` in `SkuZOptions/SkuMenu.lua`. Beispiel: SkuAuras (PR 4).
 
 3. **Echte Fehlerbehebungen, die alle Clients betreffen**, kommen in einen
-   **eigenen PR** und stehen in der Beschreibung als „betrifft alle Clients“.
-   Nie versteckt in einem Forever-PR.
+   **eigenen Commit** mit „(all clients)“ in der Commit-Nachricht und stehen in
+   der PR-Beschreibung unter „Betrifft alle Clients“. Nie versteckt in einem
+   Forever-Commit. (Ausnahme: Punkt 17 bleibt ein eigener PR.)
 4. **Keine Änderungen an fremden Bibliotheken unter `Sku/Libs/`** (Ace3,
    LibStub, LibRangeCheck, LibGearScore). Diese Bibliotheken teilen sich alle
    Addons über LibStub; die neueste Kopie gewinnt. Ein Patch darin ist entweder
@@ -266,9 +272,9 @@ hast. Diese Stellen besonders sorgfältig auflösen:
 
 ### Ablauf
 
-17. **Höchstens zwei PRs gleichzeitig offen**, in der Reihenfolge unten. Hängt
-    ein PR von einem noch offenen ab, steht das in der ersten Zeile der
-    Beschreibung.
+17. **Höchstens zwei PRs gleichzeitig offen**, in der Reihenfolge der Pakete
+    unten. Hängt ein PR von einem noch offenen ab, steht das in der ersten
+    Zeile der Beschreibung.
 18. **Änderungswünsche aus dem Review** kommen als neue Commits in **denselben**
     Zweig (`git push`), nicht als neuer PR.
 19. **Wenn `main` sich während deiner Arbeit ändert**, setzt du deinen Zweig neu
@@ -276,33 +282,54 @@ hast. Diese Stellen besonders sorgfältig auflösen:
 
 ### Vorlage für die PR-Beschreibung
 
+Ein Abschnitt pro Punkt des Pakets, in der Reihenfolge der Commits:
+
 ```
-## Was dieser PR tut
-(2-5 Sätze: welches Forever-Problem, welche Lösung)
+Paket X: (Name). Hängt ab von: PR #... (oder: nichts)
 
-## Geänderte Dateien
-- Datei: was und warum
+## Punkt N: (Name)
+Was: (2-5 Sätze: welches Forever-Problem, welche Lösung)
+Commits: (Kurz-Hashes)
+Geänderte Dateien: Datei - was und warum
+Wirkung auf Anniversary/Era: Keine, alles hinter Sku.isForever / „nur wenn
+fehlt“ (oder: genau beschreiben, was sich dort ändert und warum)
+Getestet: Forever - was genau, mit welchem Ergebnis; Anniversary oder Era -
+lädt fehlerfrei, /skulog leer, geprüft: ...
+Nicht getestet: ...
 
-## Wirkung auf Anniversary/Era
-Keine. Alle Änderungen hinter Sku.isForever / „nur wenn fehlt“.
-(oder: genau beschreiben, was sich dort ändert und warum)
+## Punkt M: ...
 
-## Getestet
-- Forever: was genau, mit welchem Ergebnis
-- Anniversary oder Era: lädt fehlerfrei, /skulog leer, geprüft: ...
-
-## Nicht getestet
-- ...
-
-## Hängt ab von
-- PR #... (oder: nichts)
+## Betrifft alle Clients
+(Commits mit „(all clients)“, je ein Satz warum; oder: keine)
 ```
 
-## Reihenfolge der PRs
+## Pakete (ab jetzt)
+
+Die Punkte 1 bis 4 kamen als einzelne PRs (#21 bis #24). Ab jetzt kommen die
+übrigen Punkte **gebündelt**: ein PR pro Paket, darin ein Commit oder mehrere
+pro Punkt (Regel 1). Was jeder Punkt enthält, steht unten unter „Punkte“.
+
+- **Paket A: Kampf, Login, Begleiter** = Punkte 4a, 5, 15.
+- **Paket B: Fenster I** = Punkte 6, 7, 8 (Taschen und Bank, Händler, Lehrer
+  und Stall).
+- **Paket C: Fenster II** = Punkte 9, 10, 11, 12 (Talente und Zauberbuch,
+  Vermächtnis, Berufe, Auktionshaus).
+- **Paket D: Quests und Dungeonbrowser** = Punkte 13, 14.
+- **Paket E: Kleinkram** = Punkt 16.
+- **Einzeln, zuletzt:** Punkt 17 (SkuVoice, ändert die Sprachausgabe für alle
+  Spieler) und danach der Installer.
+
+A und B hängen nicht voneinander ab und dürfen gleichzeitig offen sein
+(Regel 17). Die Reihenfolge danach: C, D, E. Ein Paket wird im Spiel als
+Ganzes getestet, auf Forever und auf Anniversary oder Era (Regel 15); in der
+Beschreibung steht das Ergebnis pro Punkt. Passt ein Stück in kein Paket:
+fragen.
+
+## Punkte
 
 Grundlage für diese Aufteilung ist ein Vergleich deines Stands 1.8 mit Sku 43.8,
-Stück für Stück. Jeder PR nennt, was hineingehört, wovon er abhängt und wie
-riskant er für Anniversary/Era ist. Wenn ein Stück nirgends hinpasst: fragen.
+Stück für Stück. Jeder Punkt nennt, was hineingehört, wovon er abhängt und wie
+riskant er für Anniversary/Era ist.
 
 1. **Forever-Grundlage** (Risiko mittel, hängt von nichts ab) **Erledigt: PR #21**,
    mit Nacharbeiten des Maintainers (siehe Regeln 2a, 2b, 8)
@@ -449,7 +476,7 @@ riskant er für Anniversary/Era ist. Wenn ein Stück nirgends hinpasst: fragen.
     - Tasten `SKU_KEY_FEEDPET`, `SKU_KEY_PETHEALTH` nur auf Forever anlegen
       (auf Anniversary wären es tote Tasten). Stumm-Option in `SkuMob`.
 
-16. **Kleinkram Forever** (je nach Teil; darf in mehrere PRs geteilt werden)
+16. **Kleinkram Forever** (je nach Teil; ein Commit pro Teil)
     - `actionPageForever.lua`: die Schleife beheben (`UPDATE_BINDINGS` löst
       eine Neubelegung aus, die wieder `UPDATE_BINDINGS` auslöst).
     - `buffAnnounce.lua`: Menüeintrag nur auf Forever; Totem-Namen nicht fest
