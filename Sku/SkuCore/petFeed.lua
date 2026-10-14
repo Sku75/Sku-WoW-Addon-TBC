@@ -9,8 +9,6 @@ if not Sku.isForever then return end
 
 local _G = _G
 
-SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
-
 local PetFeed = {}
 SkuCore.PetFeed = PetFeed
 
