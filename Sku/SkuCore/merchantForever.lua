@@ -397,3 +397,27 @@ function SkuCore:Build_MerchantFrame(aParentChilds)
 		end))
 	end
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Sometimes the bags do not open with the merchant window (Blizzard's MerchantFrame_OnShow asks for OpenAllBags and gets
+-- nothing, last seen at the first merchant after the game start), and the menu then holds only the merchant part.
+-- SkuCore:MERCHANT_SHOW is not registered as an event on purpose (the menu is built through ShowUIPanel), so this frame
+-- listens on its own. If the bags are still closed shortly after the window opened, open them (not in combat).
+local tBagsFrame = CreateFrame("Frame")
+tBagsFrame:RegisterEvent("MERCHANT_SHOW")
+tBagsFrame:SetScript("OnEvent", function()
+	C_Timer.After(0.4, function()
+		if InCombatLockdown() or not MerchantFrame:IsVisible() then return end
+		local tBags = _G["ContainerFrame1"]
+		if tBags:IsVisible() then return end
+		dprint("merchantBags", "bags closed, opening them")
+		OpenAllBags()
+		if not tBags:IsVisible() then
+			for tBag = 0, NUM_BAG_SLOTS do
+				if Sku.Compat.GetContainerNumSlots(tBag) > 0 then OpenBag(tBag) end
+			end
+		end
+		if not tBags:IsVisible() then OpenBackpack() end
+		SkuCore:CheckFrames()
+	end)
+end)
