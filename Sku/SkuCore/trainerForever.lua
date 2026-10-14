@@ -91,38 +91,6 @@ local tOpenAt            -- when the window was first built, to tell Blizzard's 
 local tLearnLabel        -- label of the "Learn" entry of the last build
 local tSelectionHooked
 
--- Quiet rebuild of the menu. It parks the focus on the first entry (the trainer's name) and reads it out; the
--- announce block swallows that, then the remembered row is put back.
-local function tRebuildKeepFocus()
-	local tCur = SkuOptions.currentMenuPosition
-	local tParent = tCur and tCur.parent
-	local tParentKey, tIndex
-	if tParent and tParent.children then
-		tParentKey = tParent.skuIdentity or tParent.name
-		for x = 1, #tParent.children do
-			if tParent.children[x] == tCur then tIndex = x break end
-		end
-	end
-	Sku.tBagAnnounceSuppress = GetTime() + 0.9
-	SkuCore:CheckFrames(nil, nil, true)
-	-- Only put it back if the focus jumped to the first entry and we still stand in the same list.
-	if tIndex and tIndex > 1 then
-		local function tRestore()
-			local tNow = SkuOptions.currentMenuPosition
-			local tNowParent = tNow and tNow.parent
-			if tNowParent and tNowParent.children and (tNowParent.skuIdentity or tNowParent.name) == tParentKey then
-				local tTarget = tNowParent.children[tIndex]
-				if tTarget and tTarget ~= tNow and tNow == tNowParent.children[1] then
-					SkuOptions.currentMenuPosition = tTarget
-				end
-			end
-		end
-		C_Timer.After(0.1, tRestore)
-		C_Timer.After(0.3, tRestore)
-		C_Timer.After(0.8, tRestore)
-	end
-end
-
 -- Enter on an entry is bound straight to Blizzard's row, so Sku does not run along. A post hook on
 -- ClassTrainer_SetSelection announces the choice and rebuilds the menu.
 local function tHookSelection()
@@ -134,7 +102,7 @@ local function tHookSelection()
 			local tIdx = tSelectedIndex()
 			-- Only a real choice after the first build counts; Blizzard's preselection on opening stays silent.
 			local tChanged = tIdx and tOpenAt and GetTime() - tOpenAt > 1.5
-			tRebuildKeepFocus()
+			SkuCore:RefreshWindowMenuQuietly()
 			if not tChanged then return end
 			-- After a choice the focus goes to the "Learn: <skill>" entry and reads it. Without one (not
 			-- learnable) the choice only announces the name.
@@ -152,7 +120,6 @@ local function tHookSelection()
 					SkuOptions.currentMenuPosition = tHit
 					-- OnEnter sets up the secure Enter binding of the entry (otherwise Enter does nothing)
 					if tHit.OnEnter then tHit:OnEnter() end
-					Sku.tBagAnnounceSuppress = nil
 					SkuOptions:VocalizeCurrentMenuName()
 				elseif not aLast then
 					C_Timer.After(0.4, function() tFocusLearn(true) end)
@@ -206,7 +173,7 @@ local function tVerify(aIndex, aName, aIsPet, aCost, aPointsBefore, aMoneyBefore
 			tSay(tText)
 		end
 		dprint("trainerBuy", "result", tostring(aLearned), tostring(tLastError))
-		if ClassTrainerFrame:IsVisible() then tRebuildKeepFocus() end
+		if ClassTrainerFrame:IsVisible() then SkuCore:RefreshWindowMenuQuietly() end
 	end
 
 	local function tCheck(aFinal)
@@ -260,6 +227,7 @@ function SkuCore:Build_ClassTrainerFrameForever(aParentChilds)
 		RoC = "Child",
 		type = "FontString",
 		obj = ClassTrainerFrame,
+		skuIdentity = "frame:ClassTrainerFrame",
 		textFirstLine = tTitle,
 		textFull = "",
 		childs = {},
@@ -341,6 +309,8 @@ function SkuCore:Build_ClassTrainerFrameForever(aParentChilds)
 				RoC = "Child",
 				type = "Button",
 				obj = tRow,
+				-- The label changes with the state (", selected"); the identity keeps the cursor on the row.
+				skuIdentity = "skill:" .. tName .. " " .. (tRankText or ""),
 				textFirstLine = tLabel,
 				textFull = table.concat(tParts, "\r\n"),
 				childs = {},
@@ -392,6 +362,7 @@ function SkuCore:Build_ClassTrainerFrameForever(aParentChilds)
 				RoC = "Child",
 				type = "Button",
 				obj = tTrainButton,
+				skuIdentity = "frame:ClassTrainerTrainButton",
 				textFirstLine = tLabel,
 				textFull = "",
 				noMenuNumbers = true,
