@@ -327,7 +327,8 @@ function SkuCore:Build_ClassTrainerFrameForever(aParentChilds)
 				if not (tProxy and tProxy.skuTrainerProxy) then
 					tProxy = CreateFrame("Button", tAlias, UIParent, "SecureActionButtonTemplate")
 					tProxy.skuTrainerProxy = true
-					tProxy:RegisterForClicks("AnyUp", "AnyDown")
+					-- Key down only: with "AnyUp" too, one press clicked the row twice (two selections, two rebuilds).
+					tProxy:RegisterForClicks("AnyDown")
 					tProxy:SetAttribute("type", "click")
 				end
 				if not InCombatLockdown() then
