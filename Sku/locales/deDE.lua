@@ -3588,3 +3588,6 @@ L["Damage meter not available"] = "Schadensmesser nicht verfügbar"
 L["was blocked by the game"] = "wurde vom Spiel blockiert"
 L["remove friend"] = "Freund entfernen"
 L["player search"] = "Spielersuche"
+-- forever(16): recent allies
+L["Recent allies"] = "Zuletzt getroffen"
+L["nobody saved"] = "niemand gespeichert"

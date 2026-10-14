@@ -3541,6 +3541,10 @@ L["was blocked by the game"] = "a été bloqué par le jeu"
 L["remove friend"] = "retirer l'ami"
 L["player search"] = "recherche de joueur"
 
+-- forever(16): recent allies
+L["Recent allies"] = "Alliés récents"
+L["nobody saved"] = "personne d'enregistré"
+
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a

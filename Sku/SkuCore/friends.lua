@@ -713,6 +713,72 @@ function Friends:FriendsMenuBuilder()
          end      
       end
       
+      -- Forever: recently met players (Blizzard's "Recent Allies" tab, C_RecentAllies).
+      -- Not asked for the data here: TryRequestRecentAlliesData is locked for addons (HasRestrictions).
+      if Sku.isForever and C_RecentAllies.IsSystemEnabled() then
+         local tRecent = SkuOptions:InjectMenuItems(self, {L["Recent allies"]}, SkuGenericMenuItem)
+         tRecent.dynamic = true
+         tRecent.sorting = true
+         tRecent.id = "recentAllies"
+         tRecent.BuildChildren = function(self)
+            local tList = C_RecentAllies.IsRecentAllyDataReady() and C_RecentAllies.GetRecentAllies() or {}
+            if #tList == 0 then
+               SkuOptions:InjectMenuItems(self, {L["nobody saved"]}, SkuGenericMenuItem)
+               return
+            end
+            -- online players first
+            table.sort(tList, function(a, b)
+               local ao = a.stateData.isOnline and 1 or 0
+               local bo = b.stateData.isOnline and 1 or 0
+               if ao ~= bo then return ao > bo end
+               return a.characterData.fullName < b.characterData.fullName
+            end)
+            for _, tAlly in ipairs(tList) do
+               local tChar, tState, tInter = tAlly.characterData, tAlly.stateData, tAlly.interactionData
+               local tName = tChar.fullName
+               local tClass = GetClassInfo(tChar.classID)
+               local tLabel = tName.." - "..L["level"].." "..tChar.level..(tClass and (" "..tClass) or "")
+                  .." - "..(tState.isOnline and L["online"] or L["offline"])
+               local tEntry = SkuOptions:InjectMenuItems(self, {tLabel}, SkuGenericMenuItem)
+               tEntry.dynamic = true
+               local tText = tName.."\r\n"
+               if tState.isDND then tText = tText.."DND\r\n" elseif tState.isAFK then tText = tText.."AFK\r\n" end
+               if tState.isOnline and tState.currentLocation and tState.currentLocation ~= "" then
+                  tText = tText..tState.currentLocation.."\r\n"
+               end
+               for i = 1, math.min(#tInter.interactions, 3) do
+                  tText = tText..tInter.interactions[i].description.."\r\n"
+               end
+               if tInter.note and tInter.note ~= "" then tText = tText..L["note"]..": "..tInter.note.."\r\n" end
+               tEntry.textFull = tText
+               tEntry.BuildChildren = function(self2)
+                  local tWhisper = SkuOptions:InjectMenuItems(self2, {L["whisper"]}, SkuGenericMenuItem)
+                  tWhisper.isSelect = true
+                  tWhisper.OnAction = function() SkuChat:SetEditboxToCustom("WHISPER", tName, "") end
+                  local tInv = SkuOptions:InjectMenuItems(self2, {L["invite"]}, SkuGenericMenuItem)
+                  tInv.isSelect = true
+                  tInv.OnAction = function() tInviteByName(tName) end
+                  if C_RecentAllies.CanSetRecentAllyNote(tChar.guid) then
+                     local tNote = SkuOptions:InjectMenuItems(self2, {L["edit note"]}, SkuGenericMenuItem)
+                     tNote.isSelect = true
+                     tNote.OnAction = function()
+                        SkuOptions:EditBoxShow("", function(self3)
+                           C_RecentAllies.SetRecentAllyNote(tChar.guid, self3:GetText() or "")
+                           C_Timer.After(0.5, function()
+                              local tAnchor = SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition:FindAncestorById("recentAllies")
+                              if tAnchor then tAnchor:OnSelect(); SkuOptions:VocalizeCurrentMenuName() end
+                           end)
+                        end, nil)
+                        C_Timer.After(0.1, function()
+                           SkuOptions.Voice:OutputStringBTtts(L["Notiz eingeben und Enter drücken"], true, true, 0.1, nil, nil, nil, 1)
+                        end)
+                     end
+                  end
+               end
+            end
+         end
+      end
+
       local tNewMenuEntryIgnore = SkuOptions:InjectMenuItems(self, {L["Ignore List"]}, SkuGenericMenuItem)
       tNewMenuEntryIgnore.dynamic = true
       tNewMenuEntryIgnore.sorting = true
