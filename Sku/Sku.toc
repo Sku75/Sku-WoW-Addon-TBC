@@ -63,6 +63,7 @@ SkuCore\professionsForever.lua
 SkuCore\talentsForever.lua
 SkuCore\achievementsForever.lua
 SkuCore\characterForever.lua
+SkuCore\actionPageForever.lua
 SkuCore\pendingPrompts.lua
 SkuCore\JunkAndRepair.lua
 SkuCore\UIErrors.lua
