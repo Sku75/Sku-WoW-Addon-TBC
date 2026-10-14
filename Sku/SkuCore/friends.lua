@@ -779,6 +779,73 @@ function Friends:FriendsMenuBuilder()
          end
       end
 
+      -- Forever: quick join, groups of friends and guild members that are queued right now (C_SocialQueue).
+      if Sku.isForever and C_SocialQueue.IsSystemEnabled() then
+         local tQuick = SkuOptions:InjectMenuItems(self, {L["Quick join"]}, SkuGenericMenuItem)
+         tQuick.dynamic = true
+         tQuick.id = "quickJoin"
+         tQuick.BuildChildren = function(self)
+            local tGroups = C_SocialQueue.GetAllGroups()
+            if #tGroups == 0 then
+               SkuOptions:InjectMenuItems(self, {L["no groups"]}, SkuGenericMenuItem)
+               return
+            end
+            -- strips colour codes, hyperlinks and line breaks from Blizzard's formatted names
+            local function tClean(aText)
+               local tText = tostring(aText or "")
+               tText = tText:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):gsub("|H.-|h(.-)|h", "%1"):gsub("\n", ", ")
+               return tText
+            end
+            for _, tGuid in ipairs(tGroups) do
+               local tHeader = tClean(SocialQueueUtil_GetHeaderName(tGuid))
+               if tHeader == "" then tHeader = L["group"] end
+               local tQueues = C_SocialQueue.GetGroupQueues(tGuid) or {}
+               local tQueueNames = {}
+               for _, tQueue in ipairs(tQueues) do
+                  local tName = SocialQueueUtil_GetQueueName(tQueue.queueData)
+                  if tName and tName ~= "" then tQueueNames[#tQueueNames + 1] = tClean(tName) end
+               end
+               local tCanJoin, _, tNeedTank, tNeedHealer, tNeedDamage = C_SocialQueue.GetGroupInfo(tGuid)
+               local tLabel = tHeader..": "..((#tQueueNames > 0) and table.concat(tQueueNames, ", ") or L["queue"])
+               local tEntry = SkuOptions:InjectMenuItems(self, {tLabel}, SkuGenericMenuItem)
+               tEntry.dynamic = true
+               local tText = tLabel.."\r\n"
+               for _, tMember in ipairs(C_SocialQueue.GetGroupMembers(tGuid) or {}) do
+                  local tMemberName = SocialQueueUtil_GetRelationshipInfo(tMember.guid, nil, tMember.clubId)
+                  if tMemberName and tMemberName ~= "" then tText = tText..tClean(tMemberName).."\r\n" end
+               end
+               local tNeeds = {}
+               if tNeedTank then tNeeds[#tNeeds + 1] = L["Tank"] end
+               if tNeedHealer then tNeeds[#tNeeds + 1] = L["Healer"] end
+               if tNeedDamage then tNeeds[#tNeeds + 1] = L["Damage"] end
+               if #tNeeds > 0 then tText = tText..L["needed"]..": "..table.concat(tNeeds, ", ").."\r\n" end
+               if not tCanJoin then tText = tText..L["cannot join right now"].."\r\n" end
+               tEntry.textFull = tText
+               tEntry.BuildChildren = function(self2)
+                  if not tCanJoin then
+                     SkuOptions:InjectMenuItems(self2, {L["cannot join right now"]}, SkuGenericMenuItem)
+                     return
+                  end
+                  if tQueues[1] and tQueues[1].queueData.queueType == "lfglist" then
+                     SkuOptions:InjectMenuItems(self2, {L["Group finder listing: please apply through the group finder"]}, SkuGenericMenuItem)
+                     return
+                  end
+                  local function tAddJoin(aTank, aHealer, aDamage, aLabel)
+                     local tJoin = SkuOptions:InjectMenuItems(self2, {aLabel}, SkuGenericMenuItem)
+                     tJoin.isSelect = true
+                     tJoin.OnAction = function()
+                        local tSent = C_SocialQueue.RequestToJoin(tGuid, aTank, aHealer, aDamage)
+                        SkuOptions.Voice:OutputStringBTtts(tSent and L["join request sent"] or L["join request failed"], true, true, 0.1, nil, nil, nil, 1)
+                     end
+                  end
+                  tAddJoin(true, false, false, L["apply as tank"])
+                  tAddJoin(false, true, false, L["apply as healer"])
+                  tAddJoin(false, false, true, L["apply as damage dealer"])
+               end
+            end
+         end
+      end
+
       local tNewMenuEntryIgnore = SkuOptions:InjectMenuItems(self, {L["Ignore List"]}, SkuGenericMenuItem)
       tNewMenuEntryIgnore.dynamic = true
       tNewMenuEntryIgnore.sorting = true

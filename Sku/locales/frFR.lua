@@ -3545,6 +3545,20 @@ L["player search"] = "recherche de joueur"
 L["Recent allies"] = "Alliés récents"
 L["nobody saved"] = "personne d'enregistré"
 
+-- forever(16): quick join
+L["Quick join"] = "Rejoindre vite"
+L["no groups"] = "aucun groupe"
+L["group"] = "groupe"
+L["queue"] = "file"
+L["Healer"] = "Soigneur"
+L["cannot join right now"] = "impossible de rejoindre"
+L["Group finder listing: please apply through the group finder"] = "Annonce de recherche de groupe: postulez via la recherche de groupe"
+L["apply as tank"] = "postuler comme tank"
+L["apply as healer"] = "postuler comme soigneur"
+L["apply as damage dealer"] = "postuler comme dégâts"
+L["join request sent"] = "demande envoyée"
+L["join request failed"] = "demande échouée"
+
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a
