@@ -112,8 +112,8 @@ hast. Diese Stellen besonders sorgfältig auflösen:
 ### Inhalt
 
 1. **Ein Thema pro Commit, ein Paket pro PR.** Ab Punkt 4a kommen die Punkte
-   gebündelt als Pakete (siehe „Pakete“ unten), damit du nicht so viele
-   einzelne PRs schicken musst. Innerhalb eines Pakets bekommt **jeder Punkt
+   gebündelt (siehe „Pakete“ unten), damit du nicht so viele einzelne PRs
+   schicken musst. Innerhalb eines Pakets bekommt **jeder Punkt
    seine eigenen Commits**, und jeder Commit gehört zu genau einem Punkt.
    Die Commit-Nachricht nennt den Punkt vorne, zum Beispiel
    `forever(7): merchant window built from the merchant API`. So kann das
@@ -305,25 +305,29 @@ Nicht getestet: ...
 
 ## Pakete (ab jetzt)
 
-Die Punkte 1 bis 4 kamen als einzelne PRs (#21 bis #24). Ab jetzt kommen die
-übrigen Punkte **gebündelt**: ein PR pro Paket, darin ein Commit oder mehrere
-pro Punkt (Regel 1). Was jeder Punkt enthält, steht unten unter „Punkte“.
+Die Punkte 1 bis 4 kamen als einzelne PRs (#21 bis #24), die Pakete A und B
+als #25 und #26. Weil das gut funktioniert hat, kommt der **Rest jetzt in
+drei PRs**, in dieser Reihenfolge. Innerhalb eines PRs gilt weiter Regel 1:
+ein Commit oder mehrere pro Punkt, die Punktnummer vorne.
 
-- **Paket A: Kampf, Login, Begleiter** = Punkte 4a, 5, 15.
-- **Paket B: Fenster I** = Punkte 6, 7, 8 (Taschen und Bank, Händler, Lehrer
-  und Stall).
-- **Paket C: Fenster II** = Punkte 9, 10, 11, 12 (Talente und Zauberbuch,
-  Vermächtnis, Berufe, Auktionshaus).
-- **Paket D: Quests und Dungeonbrowser** = Punkte 13, 14.
-- **Paket E: Kleinkram** = Punkt 16.
-- **Einzeln, zuletzt:** Punkt 17 (SkuVoice, ändert die Sprachausgabe für alle
-  Spieler) und danach der Installer.
+- **Erledigt:** Paket A (4a, 5, 15 Füttern) = #25, Paket B (6, 7, 8) = #26.
+- **PR „Rest“** = Punkte 9 bis 14 und 16 in einem PR:
+  - 9, 10, 11, 12: Talente und Zauberbuch, Vermächtnis, Berufe, Auktionshaus
+  - 13, 14: Questbuch und Quest-Links, Dungeonbrowser
+  - 16: Kleinkram, dazu die Nachträge aus #25: `Sku.Compat.GetNumSkillLines`/
+    `GetSkillLineInfo` über `C_SkillInfo`, `PetAbandon`/`PetRename` über
+    `Sku.Compat`
+- **PR „SkuVoice“** = der Eingang für geheimen Text in `SkuVoice-1.0` mit der
+  Pet-Gesundheits-Taste (Punkt 15, zweiter Teil) **und** Punkt 17. Beides
+  ändert die Sprachausgabe für alle Spieler und braucht den Offline-Test
+  (Regel 12). Darf gleichzeitig mit dem PR „Rest“ offen sein (Regel 17).
+- **Installer**, zuletzt.
 
-A und B hängen nicht voneinander ab und dürfen gleichzeitig offen sein
-(Regel 17). Die Reihenfolge danach: C, D, E. Ein Paket wird im Spiel als
-Ganzes getestet, auf Forever und auf Anniversary oder Era (Regel 15); in der
-Beschreibung steht das Ergebnis pro Punkt. Passt ein Stück in kein Paket:
-fragen.
+Die PR-Beschreibung hat wie bisher einen Abschnitt pro Punkt mit dem
+Testergebnis. Getestet wird der PR als Ganzes, auf Forever und auf
+Anniversary oder Era (Regel 15). Die Punkte 13 und 14 berühren Wege, die
+Anniversary-Spieler täglich benutzen; dort steht ausdrücklich, was auf
+Anniversary geprüft wurde. Passt ein Stück in keinen Punkt: fragen.
 
 ## Punkte
 
@@ -478,7 +482,8 @@ riskant er für Anniversary/Era ist.
       den Wert (auf Forever geheim), `C_VoiceChat.SpeakText` nimmt geheimen
       Text von Addons an. Dafür kommt der Eingang für geheimen Text in
       `SkuVoice-1.0` (Regel 2b, Regel 12). Vorher auf Forever ausprobieren,
-      ob und wie die geheime Zahl gesprochen wird.
+      ob und wie die geheime Zahl gesprochen wird. Kommt mit dem PR
+      „SkuVoice“ (siehe „Pakete“).
     - **Keine Stumm-Option** für Blizzards Ziel-Gesundheits-Ansage: Sku
       stellt Blizzards Einstellungen vorerst nicht selbst um.
 
@@ -505,7 +510,7 @@ riskant er für Anniversary/Era ist.
       Anniversary.
 
 17. **SkuVoice: Zeile über Blizzard-TTS, wenn ein Wort keine Aufnahme hat**
-    (Risiko hoch, eigener PR, zuletzt)
+    (Risiko hoch, im PR „SkuVoice“)
     - Ändert die Sprachausgabe für **alle** Spieler und kostet bis zu vier
       Nachschläge pro Wort. Nur als Einstellung, die standardmäßig **aus** ist,
       mit Ergebnis des Offline-Tests (Regel 12).
