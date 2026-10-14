@@ -350,6 +350,9 @@ SkuCore.interactFramesListManual = {
 	-- menu opens the ItemSocketingFrame via macrotext (Vorlage-Stil),
 	-- and this builder produces the accessible per-socket / gem menu.
 	["ItemSocketingFrame"] = function(...) if SkuCore.Socketing and SkuCore.Socketing.Build_SocketingFrame then SkuCore.Socketing:Build_SocketingFrame(...) end end,
+	-- Forever: merchant window built from the merchant API, see merchantForever.lua.
+	-- Elsewhere the generic frame scan keeps building it.
+	["MerchantFrame"] = Sku.isForever and function(...) SkuCore:Build_MerchantFrame(...) end or nil,
 
 }
 
