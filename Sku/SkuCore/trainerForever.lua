@@ -42,7 +42,7 @@ local function tKnownStore()
 end
 
 local function tKnownKey(aName, aRankText)
-	return tostring(UnitGUID("pet") or "?") .. "|" .. tostring(aName) .. "|" .. tRankNumber(aRankText)
+	return tostring(Sku.SafeGUID("pet") or "?") .. "|" .. tostring(aName) .. "|" .. tRankNumber(aRankText)
 end
 
 local function tPetSpellbookRank(aName)
