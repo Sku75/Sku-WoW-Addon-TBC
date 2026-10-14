@@ -59,6 +59,7 @@ SkuCore\minimapScanner.lua
 SkuCore\LocalMenu.lua
 SkuCore\merchantForever.lua
 SkuCore\trainerForever.lua
+SkuCore\professionsForever.lua
 SkuCore\pendingPrompts.lua
 SkuCore\JunkAndRepair.lua
 SkuCore\UIErrors.lua

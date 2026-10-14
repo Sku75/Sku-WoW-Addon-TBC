@@ -3480,6 +3480,17 @@ L["cannot be selected, reopen the window"] = "non sélectionnable, rouvrez la fe
 L["Learn"] = "Apprendre"
 L["not possible right now"] = "impossible pour le moment"
 
+-- Forever: professions window (SkuCore/professionsForever.lua)
+L["Professions"] = "Métiers"
+L["Item no longer available"] = "Objet indisponible"
+L["in bags"] = "dans les sacs"
+L["equipped"] = "équipé"
+L["No suitable item"] = "Aucun objet approprié"
+L["Salvage"] = "Recycler"
+L["Salvage all"] = "Tout recycler"
+L["Recrafting is not supported here yet"] = "Refaire n'est pas encore pris en charge"
+L["Create all"] = "Tout fabriquer"
+
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a

@@ -341,6 +341,8 @@ SkuCore.interactFramesListManual = {
 	["GuildBankFrame"] = function(...) SkuCore:Build_GuildBankFrame(...) end,
 	["CraftFrame"] = function(...) SkuCore:Build_CraftFrame(...) end,
 	["TradeSkillFrame"] = function(...) SkuCore:Build_TradeSkillFrame(...) end,
+	-- Forever: the one crafting window for all professions, see professionsForever.lua.
+	["ProfessionsFrame"] = Sku.isForever and function(...) SkuCore:Build_ProfessionsFrame(...) end or nil,
 	["PetStableFrame"] = function(...) SkuCore:Build_PetStableFrame(...) end,
 	["GossipFrame"] = function(...) SkuCore:GossipFrame(...) end,
 	["QuestFrame"] = function(...) SkuCore:QuestFrame(...) end,
@@ -399,6 +401,7 @@ SkuCore.interactFramesList = {
 	--"GroupLootContainer",
 	"TradeFrame",
 	"TradeSkillFrame",
+	"ProfessionsFrame",
 	--"DropDownList2",
 	--"FriendsFrame",
 	--"GameMenuFrame",
@@ -614,6 +617,12 @@ function SkuCore:OnInitialize()
 	-- (SkuCore:RefreshProfessionMenu, LocalMenu.lua).
 	SkuDispatcher:RegisterEventCallback("TRADE_SKILL_UPDATE", SkuCore.PROFESSION_LIST_UPDATE)
 	SkuDispatcher:RegisterEventCallback("CRAFT_UPDATE", SkuCore.PROFESSION_LIST_UPDATE)
+	-- Forever: the same signals for the crafting window (professionsForever.lua)
+	if Sku.isForever then
+		SkuDispatcher:RegisterEventCallback("TRADE_SKILL_LIST_UPDATE", SkuCore.PROFESSIONS_LIST_UPDATE)
+		SkuDispatcher:RegisterEventCallback("TRADE_SKILL_DATA_SOURCE_CHANGED", SkuCore.PROFESSIONS_LIST_UPDATE)
+		SkuDispatcher:RegisterEventCallback("TRADE_SKILL_ITEM_CRAFTED_RESULT", SkuCore.PROFESSIONS_LIST_UPDATE)
+	end
 	SkuDispatcher:RegisterEventCallback("TRADE_SHOW", SkuCore.TRADE_SHOW)
 	SkuDispatcher:RegisterEventCallback("TRADE_CLOSED", SkuCore.TRADE_CLOSED)
 	SkuDispatcher:RegisterEventCallback("TRADE_ACCEPT_UPDATE", SkuCore.TRADE_ACCEPT_UPDATE)
@@ -4734,6 +4743,7 @@ local friendlyFrameNames = {
 	["BankFrame"] = L["Bank"],
 	["GuildBankFrame"] = L["Guild Bank"],
 	["TradeSkillFrame"] = L["Trade skill"],
+	["ProfessionsFrame"] = L["Trade skill"],
 	["ReadyCheckFrame"] = L["Bereitschaft check"],
 	[""] = "",
 }
