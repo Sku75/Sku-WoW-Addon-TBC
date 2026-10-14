@@ -430,22 +430,17 @@ local function tSetTooltipContainerItem(tooltip, bag, slot)
 	tooltip:SetBagItem(bag, slot)
 end
 
--- Forever: the scanning tooltip stays empty for SetBagItem, but the visible GameTooltip
--- fills as it does for Blizzard's own bag buttons, so read that one. Container ids
--- follow the retail layout there (SkuCore:IsBankContainerId), and the beta appends a
--- "Open Issue Report" notice to every tooltip, which is dropped here.
+-- Forever: the scanning tooltip stays empty for SetBagItem. The tooltip data API gives the
+-- same lines without any tooltip frame, as for equipped items (getEquippedItemTooltipText)
+-- and merchant wares. Container ids follow the retail layout there (SkuCore:IsBankContainerId).
 local function tForeverBagTooltipText(bag, slot)
-	GameTooltip:SetOwner(UIParent, "ANCHOR_NONE")
-	GameTooltip:ClearLines()
-	GameTooltip:SetBagItem(bag, slot)
-	local tRaw = TooltipLines_helper(GameTooltip:GetRegions())
-	GameTooltip:Hide()
-	if SkuUtil:IsRetrievingItemInfo(tRaw) then
+	local tLines = SkuCore:TooltipDataLines(C_TooltipInfo.GetBagItem(bag, slot))
+	if not tLines then return nil end
+	local tText = table.concat(tLines, "\r\n")
+	if SkuUtil:IsRetrievingItemInfo(tText) then
 		return nil, true
 	end
-	if tRaw ~= "asd" and tRaw ~= "" then
-		return SkuUtil:Unescape((string.gsub(tRaw, "[^\r\n]*Open Issue Report[^\r\n]*[\r\n]*", "")))
-	end
+	return SkuUtil:Unescape(tText)
 end
 
 local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
