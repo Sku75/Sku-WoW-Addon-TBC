@@ -847,8 +847,6 @@ end
 -- boundary words. overlap is omitted (defaults false) so Sku keeps driving its
 -- own sequencing without overlapping speech.
 local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
-	-- aVoiceIndex can come back nil when WowTtsVoice was never seeded in the saved profile; without
-	-- this fallback the SpeakText call throws on `aVoiceIndex - 1` and no speech goes out. 1 is the default voice.
 	-- [v43.5] A real announcement supersedes typed characters that have not gone
 	-- out yet. Sku's announcements all carry a stop, i.e. they behave like NVDA's
 	-- Spri.NOW, so the consistent answer is NVDA's: purge the pending echo rather
@@ -924,7 +922,6 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	mClientGate.stopOnStart = false
 	mClientGate.stopHold = nil
 	mClientGate.stopDueAt = nil
-	-- Speed and volume can be nil from an unseeded profile too, and SpeakText rejects non-numbers.
 	C_VoiceChat.SpeakText(aVoiceIndex - 1, tSpoken, ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
 end
 
