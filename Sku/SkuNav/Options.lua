@@ -739,8 +739,7 @@ function SkuNav.RouteFollowOnAction(self, aValue, aName)
 				--create tmp wps
 				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 				local isUiMap = SkuNav:GetUiMapIdFromAreaId(tCurrentAreaId)
-				local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][1] / 100, SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][2] / 100))
-				local tX, tY = worldPosition:GetXY()
+				local tX, tY = SkuNav:WorldFromMap(isUiMap, SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][1] / 100, SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][2] / 100)
 				local tNameOfNewWp = SkuNav:CreateWaypoint(L["Einheiten;Route;"]..x, tX, tY, 1, true, true)
 				if tNameOfNewWp then
 					--add to mt rt
