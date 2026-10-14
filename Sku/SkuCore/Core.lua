@@ -4589,8 +4589,10 @@ function SkuCore:PrimeCombatMirrors()
 		pcall(function()
 			if not tWasShown then tCf:Show() end
 			SkuCore:Build_CharacterFrame({})
-			if not tWasShown then tCf:Hide() end
 		end)
+		-- Outside the pcall: when the build throws (it does on Forever, see the resistances), the frame must
+		-- still be hidden, otherwise it stays open as a ghost window and the menu asks which window to read.
+		if not tWasShown then tCf:Hide() end
 		SkuCore._suppressGenericFrameHooks = false
 	else
 		pcall(function() SkuCore:Build_CharacterFrame({}) end)
