@@ -1270,6 +1270,20 @@ local function ItemsMenuBuilder(aParentEntry)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Tooltip text of an action bar slot. Forever has no SetAction on the scanning tooltip; the tooltip data gives it.
+local function tActionTooltipText(aAction)
+	if Sku.isForever then
+		local tLines = SkuCore:TooltipDataLines(C_TooltipInfo.GetAction(aAction))
+		return tLines and SkuUtil:Unescape(table.concat(tLines, "\r\n")) or nil
+	end
+	SkuUtil:ResetScanningTooltip()
+	_G["SkuScanningTooltip"]:SetAction(aAction)
+	local tLines = TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions())
+	if tLines ~= "asd" and tLines ~= "" then
+		return SkuUtil:Unescape(tLines)
+	end
+end
+
 -- Pet bar. Forever has no SetPetAction on the scanning tooltip, so the tooltip text comes from the tooltip data
 -- (C_TooltipInfo.GetPetAction); the bar's buttons have no global names, only the list PetActionBar.actionButtons.
 local function tPetActionTooltipText(aSlot)
@@ -1448,13 +1462,9 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				self.companionID = nil
 				self.equipmentSetID = nil
 				if self.buttonObj.action then
-					SkuUtil:ResetScanningTooltip()
-					_G["SkuScanningTooltip"]:SetAction(self.buttonObj.action)
-					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-							local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
-						end
+					local tText = tActionTooltipText(self.buttonObj.action)
+					if tText then
+						SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 					end
 				end
 			end
