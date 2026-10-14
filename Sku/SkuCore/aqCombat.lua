@@ -2545,215 +2545,220 @@ function aqCombat:aqCombatMenuBuilder()
          end         
       end
 
-      ----
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Casting"]}, SkuGenericMenuItem)
-      tNewMenuEntry.dynamic = true
-      tNewMenuEntry.BuildChildren = function(self)
-         ---
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output your target casting"]}, SkuGenericMenuItem)
-         tNewMenuEntry.dynamic = true
-         tNewMenuEntry.sorting = true
-         tNewMenuEntry.BuildChildren = function(self)
-            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
-            tNewMenuEntry.dynamic = true
-            tNewMenuEntry.isSelect = true
-            tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 1 then
-                  return L["Off"]
-               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 2 then
-                  return L["If cast target is you"]
-               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 3 then
-                  return L["If cast target is any party member"]
-               end
-            end
-            tNewMenuEntry.OnAction = function(self, aValue, aName)
-               if aName == L["Off"] then
-                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 1
-               elseif aName == L["If cast target is you"] then
-                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 2
-               elseif aName == L["If cast target is any party member"] then
-                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 3
-               end
-            end
-            tNewMenuEntry.BuildChildren = function(self)
-               SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
-               SkuOptions:InjectMenuItems(self, {L["If cast target is you"]}, SkuGenericMenuItem)
-               SkuOptions:InjectMenuItems(self, {L["If cast target is any party member"]}, SkuGenericMenuItem)
-            end     
-            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting)
-         end
-         
-         ---
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output all enemies casting"]}, SkuGenericMenuItem)
-         tNewMenuEntry.dynamic = true
-         tNewMenuEntry.sorting = true
-         tNewMenuEntry.BuildChildren = function(self)
-            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
-            tNewMenuEntry.dynamic = true
-            tNewMenuEntry.isSelect = true
-            tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 1 then
-                  return L["Off"]
-               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 2 then
-                  return L["Only in combat"]
-               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 3 then
-                  return L["All"]
-               end
-            end
-            tNewMenuEntry.OnAction = function(self, aValue, aName)
-               if aName == L["Off"] then
-                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 1
-               elseif aName == L["Only in combat"] then
-                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 2
-               elseif aName == L["All"] then
-                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 3
-               end
-            end
-            tNewMenuEntry.BuildChildren = function(self)
-               SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
-               SkuOptions:InjectMenuItems(self, {L["Only in combat"]}, SkuGenericMenuItem)
-               SkuOptions:InjectMenuItems(self, {L["All"]}, SkuGenericMenuItem)
-            end     
-            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting)
-         end
-
-         ---
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Minimum cast time"]}, SkuGenericMenuItem)
-         tNewMenuEntry.dynamic = true
-         tNewMenuEntry.sorting = true
-         tNewMenuEntry.isSelect = true
-         tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.minimumCastDuration
-         end
-         tNewMenuEntry.OnAction = function(self, aValue, aName)
-            SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.minimumCastDuration = tonumber(aName)
-         end
-         tNewMenuEntry.BuildChildren = function(self)
-            for x = 0, 30 do
-               SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
-            end
-         end
-
-         ---
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Nur unterbrechbare Zauber ansagen"]}, SkuGenericMenuItem)
-         tNewMenuEntry.sorting = true
-         tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.onlyInterruptibleCasts == true then
-               return L["On"]
-            else
-               return L["Off"]
-            end
-         end
-         tNewMenuEntry.OnAction = function(self, aValue, aName)
-            if aName == L["Off"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.onlyInterruptibleCasts = false
-            elseif aName == L["On"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.onlyInterruptibleCasts = true
-            end
-         end
-         SkuOptions:MakeInPlaceToggle(tNewMenuEntry)
-
-         ---
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unterbrechungen bei deinem Ziel ansagen"]}, SkuGenericMenuItem)
-         tNewMenuEntry.sorting = true
-         tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetInterrupts == true then
-               return L["On"]
-            else
-               return L["Off"]
-            end
-         end
-         tNewMenuEntry.OnAction = function(self, aValue, aName)
-            if aName == L["Off"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetInterrupts = false
-            elseif aName == L["On"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetInterrupts = true
-            end
-         end
-         SkuOptions:MakeInPlaceToggle(tNewMenuEntry)
-
-         ---
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unterbrechungen bei allen Gegnern ansagen"]}, SkuGenericMenuItem)
-         tNewMenuEntry.sorting = true
-         tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesInterrupts == true then
-               return L["On"]
-            else
-               return L["Off"]
-            end
-         end
-         tNewMenuEntry.OnAction = function(self, aValue, aName)
-            if aName == L["Off"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesInterrupts = false
-            elseif aName == L["On"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesInterrupts = true
-            end
-         end
-         SkuOptions:MakeInPlaceToggle(tNewMenuEntry)
-      end
-
-      ----
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Deaths"]}, SkuGenericMenuItem)
-      tNewMenuEntry.dynamic = true
-      tNewMenuEntry.BuildChildren = function(self)
+      -- Casts, interrupts and deaths reach aqCombat only as SKU_* events from SkuAuras'
+      -- combat-log parser. SkuAuras is off on WoW Forever (no combat log for addons there),
+      -- so these settings could never do anything: not offered (guide rule 2c).
+      if not Sku.isForever then
          ----
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["ignore dead units not in combat"]}, SkuGenericMenuItem)
-         tNewMenuEntry.sorting = true
-         tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat == true then
-               return L["Yes"]
-            else
-               return L["No"]
-            end
-         end
-         tNewMenuEntry.OnAction = function(self, aValue, aName)
-            if aName == L["No"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat = false
-            elseif aName == L["Yes"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat = true
-            end
-         end
-         SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["No"], L["Yes"])
-
-         ---
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output dead units"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Casting"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.sorting = true
          tNewMenuEntry.BuildChildren = function(self)
-            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
+            ---
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output your target casting"]}, SkuGenericMenuItem)
             tNewMenuEntry.dynamic = true
+            tNewMenuEntry.sorting = true
+            tNewMenuEntry.BuildChildren = function(self)
+               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
+               tNewMenuEntry.dynamic = true
+               tNewMenuEntry.isSelect = true
+               tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                  if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 1 then
+                     return L["Off"]
+                  elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 2 then
+                     return L["If cast target is you"]
+                  elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 3 then
+                     return L["If cast target is any party member"]
+                  end
+               end
+               tNewMenuEntry.OnAction = function(self, aValue, aName)
+                  if aName == L["Off"] then
+                     SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 1
+                  elseif aName == L["If cast target is you"] then
+                     SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 2
+                  elseif aName == L["If cast target is any party member"] then
+                     SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 3
+                  end
+               end
+               tNewMenuEntry.BuildChildren = function(self)
+                  SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+                  SkuOptions:InjectMenuItems(self, {L["If cast target is you"]}, SkuGenericMenuItem)
+                  SkuOptions:InjectMenuItems(self, {L["If cast target is any party member"]}, SkuGenericMenuItem)
+               end     
+               tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting)
+            end
+         
+            ---
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output all enemies casting"]}, SkuGenericMenuItem)
+            tNewMenuEntry.dynamic = true
+            tNewMenuEntry.sorting = true
+            tNewMenuEntry.BuildChildren = function(self)
+               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
+               tNewMenuEntry.dynamic = true
+               tNewMenuEntry.isSelect = true
+               tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                  if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 1 then
+                     return L["Off"]
+                  elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 2 then
+                     return L["Only in combat"]
+                  elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 3 then
+                     return L["All"]
+                  end
+               end
+               tNewMenuEntry.OnAction = function(self, aValue, aName)
+                  if aName == L["Off"] then
+                     SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 1
+                  elseif aName == L["Only in combat"] then
+                     SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 2
+                  elseif aName == L["All"] then
+                     SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 3
+                  end
+               end
+               tNewMenuEntry.BuildChildren = function(self)
+                  SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+                  SkuOptions:InjectMenuItems(self, {L["Only in combat"]}, SkuGenericMenuItem)
+                  SkuOptions:InjectMenuItems(self, {L["All"]}, SkuGenericMenuItem)
+               end     
+               tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting)
+            end
+
+            ---
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Minimum cast time"]}, SkuGenericMenuItem)
+            tNewMenuEntry.dynamic = true
+            tNewMenuEntry.sorting = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 1 then
-                  return L["Never"]
-               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 2 then
-                  return L["Always"]
-               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 3 then
-                  return L["If unit was attacking you"]
-               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 4 then
-                  return L["If unit was attacking any party member"]
+               return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.minimumCastDuration
+            end
+            tNewMenuEntry.OnAction = function(self, aValue, aName)
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.minimumCastDuration = tonumber(aName)
+            end
+            tNewMenuEntry.BuildChildren = function(self)
+               for x = 0, 30 do
+                  SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+               end
+            end
+
+            ---
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Nur unterbrechbare Zauber ansagen"]}, SkuGenericMenuItem)
+            tNewMenuEntry.sorting = true
+            tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.onlyInterruptibleCasts == true then
+                  return L["On"]
+               else
+                  return L["Off"]
                end
             end
             tNewMenuEntry.OnAction = function(self, aValue, aName)
-               if aName == L["Never"] then
-                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 1
-               elseif aName == L["Always"] then
-                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 2
-               elseif aName == L["If unit was attacking you"] then
-                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 3
-               elseif aName == L["If unit was attacking any party member"] then
-                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 4
+               if aName == L["Off"] then
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.onlyInterruptibleCasts = false
+               elseif aName == L["On"] then
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.onlyInterruptibleCasts = true
                end
             end
+            SkuOptions:MakeInPlaceToggle(tNewMenuEntry)
+
+            ---
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unterbrechungen bei deinem Ziel ansagen"]}, SkuGenericMenuItem)
+            tNewMenuEntry.sorting = true
+            tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetInterrupts == true then
+                  return L["On"]
+               else
+                  return L["Off"]
+               end
+            end
+            tNewMenuEntry.OnAction = function(self, aValue, aName)
+               if aName == L["Off"] then
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetInterrupts = false
+               elseif aName == L["On"] then
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetInterrupts = true
+               end
+            end
+            SkuOptions:MakeInPlaceToggle(tNewMenuEntry)
+
+            ---
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unterbrechungen bei allen Gegnern ansagen"]}, SkuGenericMenuItem)
+            tNewMenuEntry.sorting = true
+            tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesInterrupts == true then
+                  return L["On"]
+               else
+                  return L["Off"]
+               end
+            end
+            tNewMenuEntry.OnAction = function(self, aValue, aName)
+               if aName == L["Off"] then
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesInterrupts = false
+               elseif aName == L["On"] then
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesInterrupts = true
+               end
+            end
+            SkuOptions:MakeInPlaceToggle(tNewMenuEntry)
+         end
+
+         ----
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Deaths"]}, SkuGenericMenuItem)
+         tNewMenuEntry.dynamic = true
+         tNewMenuEntry.BuildChildren = function(self)
+            ----
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["ignore dead units not in combat"]}, SkuGenericMenuItem)
+            tNewMenuEntry.sorting = true
+            tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat == true then
+                  return L["Yes"]
+               else
+                  return L["No"]
+               end
+            end
+            tNewMenuEntry.OnAction = function(self, aValue, aName)
+               if aName == L["No"] then
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat = false
+               elseif aName == L["Yes"] then
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat = true
+               end
+            end
+            SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["No"], L["Yes"])
+
+            ---
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output dead units"]}, SkuGenericMenuItem)
+            tNewMenuEntry.dynamic = true
+            tNewMenuEntry.sorting = true
             tNewMenuEntry.BuildChildren = function(self)
-               SkuOptions:InjectMenuItems(self, {L["Never"]}, SkuGenericMenuItem)
-               SkuOptions:InjectMenuItems(self, {L["Always"]}, SkuGenericMenuItem)
-               SkuOptions:InjectMenuItems(self, {L["If unit was attacking you"]}, SkuGenericMenuItem)
-               SkuOptions:InjectMenuItems(self, {L["If unit was attacking any party member"]}, SkuGenericMenuItem)
-            end     
-            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits)
+               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
+               tNewMenuEntry.dynamic = true
+               tNewMenuEntry.isSelect = true
+               tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                  if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 1 then
+                     return L["Never"]
+                  elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 2 then
+                     return L["Always"]
+                  elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 3 then
+                     return L["If unit was attacking you"]
+                  elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 4 then
+                     return L["If unit was attacking any party member"]
+                  end
+               end
+               tNewMenuEntry.OnAction = function(self, aValue, aName)
+                  if aName == L["Never"] then
+                     SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 1
+                  elseif aName == L["Always"] then
+                     SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 2
+                  elseif aName == L["If unit was attacking you"] then
+                     SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 3
+                  elseif aName == L["If unit was attacking any party member"] then
+                     SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 4
+                  end
+               end
+               tNewMenuEntry.BuildChildren = function(self)
+                  SkuOptions:InjectMenuItems(self, {L["Never"]}, SkuGenericMenuItem)
+                  SkuOptions:InjectMenuItems(self, {L["Always"]}, SkuGenericMenuItem)
+                  SkuOptions:InjectMenuItems(self, {L["If unit was attacking you"]}, SkuGenericMenuItem)
+                  SkuOptions:InjectMenuItems(self, {L["If unit was attacking any party member"]}, SkuGenericMenuItem)
+               end     
+               tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits)
+            end         
          end         
-      end         
+      end
 
       ----
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Units in combat"]}, SkuGenericMenuItem)
