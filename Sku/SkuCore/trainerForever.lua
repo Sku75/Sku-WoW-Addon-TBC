@@ -165,7 +165,7 @@ local function tVerify(aIndex, aName, aIsPet, aCost, aPointsBefore, aMoneyBefore
 				-- "already known": remember it, so the skill is not in the list next time
 				if aIsPet and tIsAlreadyKnownMessage(tLastError) then
 					tKnownStore()[tKnownKey(aName, aRankText)] = true
-					tText = tText .. " " .. L["Will be hidden."]
+					tText = tText .. " " .. L["Will be listed as learned."]
 				end
 			elseif aIsPet and tFree and tonumber(aCost) and aCost > tFree then
 				tText = tText .. ". " .. L["Not enough training points"] .. ": " .. aCost .. " " .. L["needed"] .. ", " .. tFree .. " " .. L["free"]
