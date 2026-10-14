@@ -437,7 +437,7 @@ SkuCore.localWindowContributors = {
 	  build = function(self) if SkuCore.MailMenuBuilder then SkuCore.MailMenuBuilder(self) end end },
 	{ frame = "AuctionFrame", label = function() return Sku.L["Auktionshaus"] end,
 	  build = function(self) if SkuCore.AuctionHouse and SkuCore.AuctionHouse.AuctionHouseMenuBuilder then SkuCore.AuctionHouse.AuctionHouseMenuBuilder(self) end end },
-	{ frame = "FriendsFrame", label = function() return Sku.L["Social"] end,
+	{ frame = Sku.isForever and "SocialUIFrame" or "FriendsFrame", label = function() return Sku.L["Social"] end,
 	  build = function(self) if SkuCore.Friends and SkuCore.Friends.FriendsMenuBuilder then SkuCore.Friends.FriendsMenuBuilder(self) end end },
 	{ frame = "QuestLogFrame", label = function() return Sku.L["SkuQuestMenuEntry"] end,
 	  build = function(self) if SkuQuest and SkuQuest.MenuBuilder then SkuQuest:MenuBuilder(self) end end },
@@ -4743,6 +4743,7 @@ local friendlyFrameNames = {
 	-- ["PVEFrame"]/["LFGParentFrame"] entfernt (Dungeon-Browser wird neu aufgebaut)
 	["ItemSocketingFrame"] = L["Sockeln"],
 	["FriendsFrame"] = L["Social"],
+	["SocialUIFrame"] = L["Social"],
 	["TradeFrame"] = L["Trade"],
 	--["GameMenuFrame"] = L["Game Menu"],
 	--["MainMenuBar"] = "",
