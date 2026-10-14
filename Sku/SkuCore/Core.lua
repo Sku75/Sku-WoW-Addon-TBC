@@ -439,7 +439,7 @@ SkuCore.localWindowContributors = {
 	  build = function(self) if SkuCore.AuctionHouse and SkuCore.AuctionHouse.AuctionHouseMenuBuilder then SkuCore.AuctionHouse.AuctionHouseMenuBuilder(self) end end },
 	{ frame = Sku.isForever and "SocialUIFrame" or "FriendsFrame", label = function() return Sku.L["Social"] end,
 	  build = function(self) if SkuCore.Friends and SkuCore.Friends.FriendsMenuBuilder then SkuCore.Friends.FriendsMenuBuilder(self) end end },
-	{ frame = "QuestLogFrame", label = function() return Sku.L["SkuQuestMenuEntry"] end,
+	{ frame = Sku.isForever and "QuestMapFrame" or "QuestLogFrame", label = function() return Sku.L["SkuQuestMenuEntry"] end,
 	  build = function(self) if SkuQuest and SkuQuest.MenuBuilder then SkuQuest:MenuBuilder(self) end end },
 }
 

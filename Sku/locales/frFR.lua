@@ -3559,6 +3559,11 @@ L["apply as damage dealer"] = "postuler comme dégâts"
 L["join request sent"] = "demande envoyée"
 L["join request failed"] = "demande échouée"
 
+-- forever(13): quest text
+L["Experience"] = "Expérience"
+L["Reward"] = "Récompense"
+L["Choice"] = "Choix"
+
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a

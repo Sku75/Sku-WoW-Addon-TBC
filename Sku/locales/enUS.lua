@@ -3594,3 +3594,7 @@ L["apply as healer"] = "apply as healer"
 L["apply as damage dealer"] = "apply as damage dealer"
 L["join request sent"] = "join request sent"
 L["join request failed"] = "join request failed"
+-- forever(13): quest text
+L["Experience"] = "Experience"
+L["Reward"] = "Reward"
+L["Choice"] = "Choice"

@@ -3604,3 +3604,7 @@ L["apply as healer"] = "als Heiler anmelden"
 L["apply as damage dealer"] = "als Schaden anmelden"
 L["join request sent"] = "Beitrittsanfrage gesendet"
 L["join request failed"] = "Beitrittsanfrage fehlgeschlagen"
+-- forever(13): quest text
+L["Experience"] = "Erfahrung"
+L["Reward"] = "Belohnung"
+L["Choice"] = "Auswahl"

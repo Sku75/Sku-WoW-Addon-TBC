@@ -2,6 +2,7 @@
 local L = Sku.L
 local GetNumQuestLogEntries = Sku.Compat.GetNumQuestLogEntries
 local GetQuestLogTitle = Sku.Compat.GetQuestLogTitle
+local GetQuestLogFrame = Sku.Compat.GetQuestLogFrame
 
 -- File-level state that used to leak into _G through a missing "local".
 local tCurrentQuestLogQuestsTable
@@ -2477,10 +2478,10 @@ function SkuQuest:MenuBuilder(aParentEntry)
 
 		end,
 		build = function(self)
-		if QuestLogFrame:IsVisible() ~= true then
+		if GetQuestLogFrame():IsVisible() ~= true then
 			ToggleQuestLog()
 		end
-		if (QuestLogFrame:IsVisible()) then
+		if (GetQuestLogFrame():IsVisible()) then
 			ExpandQuestHeader(0)
 		end
 
@@ -2516,7 +2517,8 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					tAddTitle = tAddTitle..L["(Daily) "]
 				end
 				if isHeader == false then
-					tQuestsByHeader[tHeader][tAddTitle..title..tDifficultyTitle] = questLogID
+					-- Forever reads the quest by its quest ID, the other clients by the index in the quest log
+					tQuestsByHeader[tHeader][tAddTitle..title..tDifficultyTitle] = Sku.isForever and questID or questLogID
 				else
 					tQuestsByHeader[title] = {}
 					tHeader = title
@@ -2535,7 +2537,10 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					tNewMenuEntry1.OnEnter = function(self, aValue, aName)
 						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId)
 					end
-					local questLogTitleText, level, questTag, isHeader, isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(vq)
+					local questID = vq
+					if not Sku.isForever then
+						questID = select(8, GetQuestLogTitle(vq))
+					end
 					tNewMenuEntry1.BuildChildren = function(self)
 						CreateQuestSubmenu(self, questID)
 					end
@@ -2554,7 +2559,10 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					tNewMenuEntry1.OnEnter = function(self, aValue, aName)
 						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId)
 					end
-					local questLogTitleText, level, questTag, isHeader, isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(vq)
+					local questID = vq
+					if not Sku.isForever then
+						questID = select(8, GetQuestLogTitle(vq))
+					end
 					tNewMenuEntry1.BuildChildren = function(self)
 						CreateQuestSubmenu(self, questID)
 					end
@@ -2694,10 +2702,10 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			build = function(self)
 			-- Gleiche Vorbereitung wie "Aktuelle Quests": Quests unter einer
 			-- zugeklappten Überschrift sind gar nicht aufzählbar.
-			if QuestLogFrame:IsVisible() ~= true then
+			if GetQuestLogFrame():IsVisible() ~= true then
 				ToggleQuestLog()
 			end
-			if (QuestLogFrame:IsVisible()) then
+			if (GetQuestLogFrame():IsVisible()) then
 				ExpandQuestHeader(0)
 			end
 

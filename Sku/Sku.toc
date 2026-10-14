@@ -172,6 +172,7 @@ SkuNav\importExport.lua
 SkuNav\waypointComments_frFR.lua
 
 SkuQuest\Core.lua
+SkuQuest\questTextForever.lua
 SkuQuest\Options.lua
 SkuQuest\Proximity.lua
 SkuQuest\QuestTarget.lua

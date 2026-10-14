@@ -264,6 +264,21 @@ if not C.GetQuestLogTitle and C_QuestLog and C_QuestLog.GetInfo then
 	end
 end
 
+-- The quest log window is a standalone QuestLogFrame on the other clients; on Forever the quest log
+-- lives in the world map (QuestMapFrame).
+C.GetQuestLogFrame = function() return _G.QuestLogFrame or _G.QuestMapFrame end
+-- SelectQuestLogEntry(index) does not exist on Forever, the selection goes by quest ID there.
+C.SelectQuestLogEntry = _G.SelectQuestLogEntry
+if not C.SelectQuestLogEntry and C_QuestLog and C_QuestLog.SetSelectedQuest then
+	C.SelectQuestLogEntry = function(aIndex)
+		local t = C_QuestLog.GetInfo(aIndex)
+		if t and t.questID then C_QuestLog.SetSelectedQuest(t.questID) end
+	end
+end
+-- SetAbandonQuest/AbandonQuest moved into C_QuestLog on Forever; both act on the selected quest.
+C.SetAbandonQuest = _G.SetAbandonQuest or (C_QuestLog and C_QuestLog.SetAbandonQuest)
+C.AbandonQuest = _G.AbandonQuest or (C_QuestLog and C_QuestLog.AbandonQuest)
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Reputation
 C.GetFactionInfo = _G.GetFactionInfo
