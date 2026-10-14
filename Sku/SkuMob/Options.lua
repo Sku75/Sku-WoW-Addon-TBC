@@ -1,5 +1,7 @@
 ﻿local MODULE_NAME = "SkuMob"
 local L = Sku.L
+local PetAbandon = Sku.Compat.PetAbandon
+local PetRename = Sku.Compat.PetRename
 
 SkuMob.InCombatSounds = {
 	["Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"] = L["Default beep sound"],
@@ -472,7 +474,7 @@ local function tBuildTargetMenu(aParent)
 				SkuCore:ConfirmButtonShow(
 					tPrompt,
 					function()
-						if _G.PetAbandon then pcall(_G.PetAbandon) end
+						PetAbandon()
 						tSay(L["MOB_PetReleased"])
 					end,
 					function()
@@ -523,7 +525,8 @@ local function tBuildTargetMenu(aParent)
 				local tEntry = SkuOptions:InjectMenuItems(aParent, {tConfirmLabel}, SkuGenericMenuItem)
 				tEntry.sorting = true
 				tEntry.textFull = L["MOB_PetRenameTip"]
-				tEntry.macrotext = '/run PetRename("' .. tSafeName .. '")'
+				-- the macro runs in the global environment, where Forever has only C_PetInfo.PetRename
+				tEntry.macrotext = (Sku.isForever and '/run C_PetInfo.PetRename("' or '/run PetRename("') .. tSafeName .. '")'
 				tEntry.secureMacro = true
 				tEntry.OnAction = function()
 					tSay(L["MOB_PetRenamed"] .. tSafeName)

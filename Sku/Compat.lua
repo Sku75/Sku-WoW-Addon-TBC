@@ -77,6 +77,8 @@ C.GetDetailedItemLevelInfo = tPick("GetDetailedItemLevelInfo", "C_Item")
 C.PickupItem = tPick("PickupItem", "C_Item")
 C.PickupSpell = tPick("PickupSpell", "C_Spell")
 C.GetPetHappiness = tPick("GetPetHappiness", "C_PetInfo")
+C.PetAbandon = tPick("PetAbandon", "C_PetInfo")
+C.PetRename = tPick("PetRename", "C_PetInfo")
 C.GetSpellSubtext = tPick("GetSpellSubtext", "C_Spell")
 C.GetPetTrainingPoints = tPick("GetPetTrainingPoints", "C_PetInfo")
 C.GetNumQuestLogEntries = tPick("GetNumQuestLogEntries", "C_QuestLog")
@@ -91,11 +93,37 @@ C.BOOKTYPE_SPELL = _G.BOOKTYPE_SPELL or "spell"
 C.BOOKTYPE_PET = _G.BOOKTYPE_PET or "pet"
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Skill lines. Forever has them in C_SkillInfo; GetSkillLineInfo answers with a table there. Every profession is listed
+-- twice: its own line, and a line of the same name below it for the current expansion (parentSkillLineID ~= 0). The
+-- old API knew only the first, so the lines below others are left out of the numbering here.
+C.GetNumSkillLines = _G.GetNumSkillLines
+C.GetSkillLineInfo = _G.GetSkillLineInfo
+if not C.GetSkillLineInfo and C_SkillInfo and C_SkillInfo.GetSkillLineInfo then
+	local function tTopLevelLines()
+		local tIndexes = {}
+		for i = 1, C_SkillInfo.GetNumSkillLines() do
+			local t = C_SkillInfo.GetSkillLineInfo(i)
+			if t and (t.parentSkillLineID or 0) == 0 then tIndexes[#tIndexes + 1] = i end
+		end
+		return tIndexes
+	end
+	C.GetNumSkillLines = function() return #tTopLevelLines() end
+	-- old: name, header, isExpanded, rank, numTempPoints, modifier, maxRank, isAbandonable, stepCost, rankCost,
+	-- minLevel, costType, description
+	C.GetSkillLineInfo = function(aIndex)
+		local tRaw = tTopLevelLines()[aIndex]
+		local t = tRaw and C_SkillInfo.GetSkillLineInfo(tRaw)
+		if not t then return nil end
+		return t.name, t.isHeader, not t.isCollapsed, t.rank, t.tempPoints, t.modifier, t.maxRank, t.isAbandonable,
+			t.stepCost, t.rankCost, t.minLevel, t.costType, t.description
+	end
+end
+C.GetNumSkillLines = C.GetNumSkillLines or function() return 0 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- Gone without a replacement on Forever: neutral answers so the overview page
 -- (Ctrl+Shift+Down) skips those sections instead of failing.
 C.GetInventoryAlertStatus = _G.GetInventoryAlertStatus or function() return 0 end
-C.GetNumSkillLines = _G.GetNumSkillLines or function() return 0 end
-C.GetSkillLineInfo = _G.GetSkillLineInfo or function() return nil end
 C.CursorHasSpell = _G.CursorHasSpell or function() return (GetCursorInfo()) == "spell" end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
