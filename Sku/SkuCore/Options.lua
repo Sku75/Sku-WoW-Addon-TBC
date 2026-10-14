@@ -11,6 +11,7 @@ local GetNumSpellTabs = Sku.Compat.GetNumSpellTabs
 local GetSpellBookItemInfo = Sku.Compat.GetSpellBookItemInfo
 local GetSpellBookItemName = Sku.Compat.GetSpellBookItemName
 local GetSpellInfo = Sku.Compat.GetSpellInfo
+local GetSpellSubtext = Sku.Compat.GetSpellSubtext
 local GetSpellTabInfo = Sku.Compat.GetSpellTabInfo
 local HasPetSpells = Sku.Compat.HasPetSpells
 local IsPassiveSpell = Sku.Compat.IsPassiveSpell
