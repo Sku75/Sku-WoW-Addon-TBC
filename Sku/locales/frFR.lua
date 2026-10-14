@@ -3526,6 +3526,16 @@ L["Buff gained"] = "Buff obtenu"
 -- Forever: trainer (SkuCore/trainerForever.lua)
 L["Already learned"] = "Déjà appris"
 
+-- forever(16): native damage meter
+L["not readable in combat"] = "illisible en combat"
+L["Damage"] = "Dégâts"
+L["Healing"] = "Soins"
+L["per second"] = "par seconde"
+L["Interrupts"] = "Interruptions"
+L["Turn on damage meter"] = "Activer le compteur de dégâts"
+L["Damage meter on"] = "Compteur activé"
+L["Damage meter not available"] = "Compteur de dégâts indisponible"
+
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a

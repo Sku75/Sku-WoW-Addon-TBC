@@ -186,9 +186,118 @@ local function BuildCombatTooltip(aCombat, aName, aAll)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Forever: the game's built-in damage meter (C_DamageMeter), used when the Details addon is not installed.
+-- In combat the API returns secret values that Sku must not read; a hint is spoken instead of the numbers.
+local function RoundedAmount(aNumber)
+   if type(aNumber) ~= "number" or Sku.IsSecret(aNumber) then return nil end
+   return tostring(math.floor(aNumber + 0.5))
+end
+
+-- aFetch(aMeterType) returns the session table; builds the ranking of one meter type.
+local function BuildNativeRanking(aHeader, aMeterType, aFetch, aRateLabel)
+   local tSession = aFetch(aMeterType)
+   if type(tSession) ~= "table" or Sku.IsSecret(tSession) then
+      return aHeader..": "..L["not readable in combat"]
+   end
+   local tSources = tSession.combatSources
+   if type(tSources) ~= "table" or Sku.IsSecret(tSources) or #tSources == 0 then
+      return aHeader..": "..L["no data"]
+   end
+   local tText = aHeader..":"
+   local tRank = 0
+   for _, tSource in ipairs(tSources) do
+      if tSource.sourceDisplayType ~= Enum.DamageMeterSourceDisplayType.Enemy then
+         local tName = tSource.name
+         local tTotal = RoundedAmount(tSource.totalAmount)
+         if type(tName) ~= "string" or Sku.IsSecret(tName) or not tTotal then
+            return aHeader..": "..L["not readable in combat"]
+         end
+         tRank = tRank + 1
+         -- classFilename can be secret in combat and must not be used as a table key
+         local tClassKey = tSource.classFilename
+         if Sku.IsSecret(tClassKey) then tClassKey = nil end
+         local tClass = (tClassKey ~= nil and SkuQuest and SkuQuest.classesFriendly and SkuQuest.classesFriendly[tClassKey]) or ""
+         tText = tText.."\r\n"..tRank.." "..tName.." "..tClass.." "..tTotal
+         if aRateLabel then
+            local tRate = RoundedAmount(tSource.amountPerSecond)
+            if tRate then tText = tText.." ("..tRate.." "..aRateLabel..")" end
+         end
+      end
+   end
+   if tRank == 0 then return aHeader..": "..L["no data"] end
+   return tText
+end
+
+local function BuildNativeReport(aTitle, aFetch)
+   local tType = Enum.DamageMeterType
+   return {
+      aTitle,
+      BuildNativeRanking(L["Damage"], tType.DamageDone, aFetch, L["per second"]),
+      BuildNativeRanking(L["Healing"], tType.HealingDone, aFetch, L["per second"]),
+      BuildNativeRanking(L["Damage taken"], tType.DamageTaken, aFetch),
+      BuildNativeRanking(L["Interrupts"], tType.Interrupts, aFetch),
+   }
+end
+
+local function FormatDuration(aSeconds)
+   if type(aSeconds) ~= "number" or Sku.IsSecret(aSeconds) or aSeconds <= 0 then return "" end
+   return " "..math.floor(aSeconds / 60)..":"..string.format("%02d", math.floor(aSeconds % 60))
+end
+
+function DamageMeter:NativeMenuBuilder()
+   -- The built-in meter only records while its setting is on.
+   if GetCVar("damageMeterEnabled") == "0" then
+      local tOn = SkuOptions:InjectMenuItems(self, {L["Turn on damage meter"]}, SkuGenericMenuItem)
+      tOn.isSelect = true
+      tOn.OnAction = function()
+         SetCVar("damageMeterEnabled", "1")
+         SkuOptions.Voice:OutputStringBTtts(L["Damage meter on"], false, true, 0.2)
+      end
+   end
+   local tAvailable, tReason = C_DamageMeter.IsDamageMeterAvailable()
+   if tAvailable ~= true then
+      SkuOptions:InjectMenuItems(self, {L["Damage meter not available"]..": "..tostring(tReason or "")}, SkuGenericMenuItem)
+      return
+   end
+
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Reports"]}, SkuGenericMenuItem)
+   tNewMenuEntry.id = "Reports"  -- stable anchor for the SKU_KEY_OPENDAMAGEMETER path walk
+   tNewMenuEntry.dynamic = true
+   tNewMenuEntry.BuildChildren = function(self)
+      local function AddReport(aName, aFetch)
+         local tEntry = SkuOptions:InjectMenuItems(self, {aName}, SkuGenericMenuItem)
+         tEntry.textFirstLine = aName
+         tEntry.textFull = function() return BuildNativeReport(aName, aFetch) end
+      end
+      AddReport(L["All fights"], function(aType) return C_DamageMeter.GetCombatSessionFromType(Enum.DamageMeterSessionType.Overall, aType) end)
+      AddReport(L["Current fight"], function(aType) return C_DamageMeter.GetCombatSessionFromType(Enum.DamageMeterSessionType.Current, aType) end)
+      local tSessions = C_DamageMeter.GetAvailableCombatSessions()
+      if type(tSessions) == "table" and not Sku.IsSecret(tSessions) then
+         for x = #tSessions, 1, -1 do
+            local tSession = tSessions[x]
+            local tName = type(tSession.name) == "string" and not Sku.IsSecret(tSession.name) and tSession.name or L["unknown"]
+            local tID = tSession.sessionID
+            AddReport(L["Fight"].." "..x.." "..tName..FormatDuration(tSession.durationSeconds), function(aType)
+               return C_DamageMeter.GetCombatSessionFromID(tID, aType)
+            end)
+         end
+      end
+   end
+
+   local tClear = SkuOptions:InjectMenuItems(self, {L["Clear data"]}, SkuGenericMenuItem)
+   tClear.isSelect = true
+   tClear.OnAction = function()
+      C_DamageMeter.ResetAllCombatSessions()
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function DamageMeter:DamageMeterMenuBuilder()
    if SkuCore.DamageMeter and not SkuCore.DamageMeter:IsEnabled() then return end
    if Details == nil then
+      if Sku.isForever and C_DamageMeter then
+         return DamageMeter.NativeMenuBuilder(self)
+      end
       SkuOptions:InjectMenuItems(self, {L["Details addon not installed"]}, SkuGenericMenuItem)
       return
    end

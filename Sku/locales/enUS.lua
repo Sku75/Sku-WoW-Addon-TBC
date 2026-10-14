@@ -3565,3 +3565,12 @@ L["Buff announcements"] = "Buff announcements"
 L["Buff gained"] = "Buff gained"
 -- Forever: trainer (SkuCore/trainerForever.lua)
 L["Already learned"] = "Already learned"
+-- forever(16): native damage meter
+L["not readable in combat"] = "not readable in combat"
+L["Damage"] = "Damage"
+L["Healing"] = "Healing"
+L["per second"] = "per second"
+L["Interrupts"] = "Interrupts"
+L["Turn on damage meter"] = "Turn on damage meter"
+L["Damage meter on"] = "Damage meter on"
+L["Damage meter not available"] = "Damage meter not available"
