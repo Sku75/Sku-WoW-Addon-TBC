@@ -810,6 +810,17 @@ end
 -- Render one Blizzard settings category as Sku children, then its
 -- subcategories (addon categories use them) as submenus.
 -- ---------------------------------------------------------------------
+-- The Discord rows of the Social page ask C_Discord.IsUserOAuthed for their label and their
+-- greyed-out state. That function is protected: called from Sku it raises an "action
+-- blocked" popup, which closed the menu. Sku cannot sign in to Discord anyway, so those two
+-- rows are left out (Blizzard_SettingsDefinitions_Frame/Social.lua, "Discord").
+local function IsDiscordInit(init)
+   local data, _, setting = InitInfo(init)
+   if setting and tCall(setting, "GetVariable") == "discordDisplayName" then return true end
+   local name = type(data) == "table" and tResolve(data.name) or nil
+   return type(name) == "string" and string.find(name, "Discord", 1, true) ~= nil
+end
+
 local function BuildCategory(aSelf, aCat)
    local inits = GetInitializers(aCat)
    local subs = GetSubcategories(aCat)
@@ -825,7 +836,8 @@ local function BuildCategory(aSelf, aCat)
       for _, init in ipairs(inits) do
          -- One broken row must not empty the whole category (a swallowed
          -- BuildChildren error reads as "leer").
-         local ok, err = pcall(BuildInitializer, aSelf, init)
+         local ok, err = true, nil
+         if not IsDiscordInit(init) then ok, err = pcall(BuildInitializer, aSelf, init) end
          if not ok then
             if dprint then dprint("gameOptions: initializer failed", tostring(err)) end
             local data = InitInfo(init)
