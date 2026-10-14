@@ -32,6 +32,9 @@
 -- frame does not exist on this build) so the Sku menu opens/closes with
 -- the Group-Finder window regardless of how it was toggled.
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Forever has its own dungeon browser (dungeonBrowserForever.lua); this file is for the other clients.
+if Sku.isForever then return end
+
 local MODULE_NAME, MODULE_PART = "SkuCore", "dungeonBrowser"
 local _G = _G
 
