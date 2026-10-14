@@ -38,7 +38,25 @@ function Friends:OnEnable()
    -- they land (only while a user-initiated search is pending — see gWhoPending).
    Friends:RegisterEvent("WHO_LIST_UPDATE", "WHO_LIST_UPDATE")
 
-   if not gShowHookInstalled then
+   Friends:TryInstallShowHook()
+   if Sku.isForever and not gShowHookInstalled then
+      -- Blizzard_SocialUI can load later: install the hook once it is there.
+      Friends:RegisterEvent("ADDON_LOADED", function(_, aAddon)
+         if aAddon == "Blizzard_SocialUI" then Friends:TryInstallShowHook() end
+      end)
+   end
+end
+
+-- Forever: the social window is SocialUIFrame (Blizzard_SocialUI, O key), not FriendsFrame. A hook on
+-- FriendsFrame:Show never fires there, so the window opened without Sku offering its menu.
+function Friends:TryInstallShowHook()
+   if gShowHookInstalled then return end
+   if Sku.isForever then
+      local tFrame = _G.SocialUIFrame
+      if not tFrame then return end
+      tFrame:HookScript("OnShow", function() Friends:ONSHOW() end)
+      gShowHookInstalled = true
+   else
       hooksecurefunc(FriendsFrame, "Show", Friends.ONSHOW)
       gShowHookInstalled = true
    end
