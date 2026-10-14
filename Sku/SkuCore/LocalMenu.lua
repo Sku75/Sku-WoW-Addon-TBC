@@ -3221,7 +3221,17 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 										-- Liste (Reihenfolge kann sich
 										-- zwischen Menü-Aufbau und Bestätigung
 										-- verschieben).
-										if _G.AbandonSkill and GetNumSkillLines
+										if Sku.isForever then
+											-- Forever: C_SkillInfo.AbandonSkill takes the skill line id of the profession's own
+											-- line (the one without a parent), found by name in the current list.
+											for i = 1, C_SkillInfo.GetNumSkillLines() do
+												local tInfo = C_SkillInfo.GetSkillLineInfo(i)
+												if tInfo and not tInfo.isHeader and (tInfo.parentSkillLineID or 0) == 0 and tInfo.name == lProfName then
+													C_SkillInfo.AbandonSkill(tInfo.skillID)
+													break
+												end
+											end
+										elseif _G.AbandonSkill and GetNumSkillLines
 											and GetSkillLineInfo then
 											if _G.ExpandSkillHeader then
 												pcall(_G.ExpandSkillHeader, 0)
