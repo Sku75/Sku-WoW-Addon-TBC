@@ -204,14 +204,6 @@ local function tPrewarmContainer(aBagId)
 	end
 end
 
--- Bank open/closed is tracked from the SERVER-side events, not from
--- BankFrame:IsVisible(). BANKFRAME_OPENED/BANKFRAME_CLOSED are fired by the
--- banker interaction itself, independent of which addon draws the window, so
--- the flag stays honest when a bag-replacement addon reparents or hides
--- Blizzard's BankFrame -- that made IsVisible() answer "closed" while the bank
--- was very much open, and silently dropped every bank container out of the
--- bags menu. The frame check is kept as an OR, so this can only ever ADD a
--- true case, never take away one that already worked.
 -- Which container ids belong to the bank. Classic: -1 (bank), -3 (reagent bank), 5..11
 -- (bank bags). Forever uses the retail layout (Enum.BagIndex): 5 is the player's reagent
 -- bag, 6..14 are the character bank tabs, 15..23 the warband bank tabs and -1 the keyring.
@@ -237,6 +229,14 @@ function SkuCore:GetBankPurchaseButton(aBankType)
 	return tBankPurchaseButtons[aBankType]
 end
 
+-- Bank open/closed is tracked from the SERVER-side events, not from
+-- BankFrame:IsVisible(). BANKFRAME_OPENED/BANKFRAME_CLOSED are fired by the
+-- banker interaction itself, independent of which addon draws the window, so
+-- the flag stays honest when a bag-replacement addon reparents or hides
+-- Blizzard's BankFrame -- that made IsVisible() answer "closed" while the bank
+-- was very much open, and silently dropped every bank container out of the
+-- bags menu. The frame check is kept as an OR, so this can only ever ADD a
+-- true case, never take away one that already worked.
 local tBankFrameOpen = false
 function SkuCore:BankIsOpen()
 	if tBankFrameOpen == true then return true end
