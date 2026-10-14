@@ -468,13 +468,19 @@ riskant er für Anniversary/Era ist.
       Der Stufenfilter darf nicht an einer CVar hängen, die es nicht überall
       gibt. Texte über `L[]`, mit Französisch.
 
-15. **Begleiter (Pet)** (Risiko niedrig, hängt von 4 ab)
-    - `petFeed.lua` (ohne den doppelten Eintrag in `SkuZOptions`),
-      `petHealthForever.lua`.
-    - **Kein** automatisch angelegtes Makro „Pet HP“, kein Zielwechsel per
-      `/targetexact`, ohne dass der Spieler das auslöst.
-    - Tasten `SKU_KEY_FEEDPET`, `SKU_KEY_PETHEALTH` nur auf Forever anlegen
-      (auf Anniversary wären es tote Tasten). Stumm-Option in `SkuMob`.
+15. **Begleiter (Pet)** (Risiko niedrig, hängt von 4 ab) **Füttern erledigt:
+    PR #25.**
+    - Taste `SKU_KEY_FEEDPET` nur auf Forever anlegen (auf Anniversary wäre es
+      eine tote Taste).
+    - **Pet-Gesundheit: noch offen, neu zu bauen.** Nicht über einen
+      Zielwechsel (die Version aus #25 ist zurückgenommen, siehe Commit
+      b2b2166), sondern direkt gesprochen: `UnitHealthPercent("pet")` liefert
+      den Wert (auf Forever geheim), `C_VoiceChat.SpeakText` nimmt geheimen
+      Text von Addons an. Dafür kommt der Eingang für geheimen Text in
+      `SkuVoice-1.0` (Regel 2b, Regel 12). Vorher auf Forever ausprobieren,
+      ob und wie die geheime Zahl gesprochen wird.
+    - **Keine Stumm-Option** für Blizzards Ziel-Gesundheits-Ansage: Sku
+      stellt Blizzards Einstellungen vorerst nicht selbst um.
 
 16. **Kleinkram Forever** (je nach Teil; ein Commit pro Teil)
     - `actionPageForever.lua`: die Schleife beheben (`UPDATE_BINDINGS` löst
@@ -483,8 +489,17 @@ riskant er für Anniversary/Era ist.
       deutsch/englisch.
     - `damageMeter.lua`, Freunde/SocialUI (`friends.lua`, ohne `pcall` um den
       ganzen Listenaufbau), Duplikat-Filter im Chat.
-    - „Blizzard Ansagen“ und CAA-Abgleich (`gameOptions.lua`) nur auf Forever,
-      samt Frame und Timer.
+    - **Kein** eigenes Menü „Blizzard Ansagen“ und **kein** CAA-Abgleich:
+      Sku stellt Blizzards Kampf-Sprachansagen (Combat Audio Alerts) vorerst
+      nicht selbst um. Zugänglich sind sie schon über Skus allgemeines
+      Spieleinstellungs-Menü (`SkuCore/gameOptions.lua`, liest Blizzards
+      Einstellungsfenster aus): Die Seite steht in
+      `Blizzard_SettingsDefinitions_Shared/AudioAssist.lua` und besteht nur
+      aus Schaltern, Auswahllisten, Schiebereglern und Überschriften, die
+      `gameOptions.lua` alle kennt. Aufgabe hier: auf Forever prüfen, dass
+      jede Zeile dieser Seite im Sku-Menü erscheint und sich ändern lässt.
+      Nur was dabei fehlt oder falsch ist, wird in `gameOptions.lua`
+      behoben, für alle Clients gleich.
     - Würfeln um Beute (`RollOnLoot`, im Laufen, Bestätigung): nur auf Forever,
       oder als eigener PR für alle Clients mit Begründung und Test auf
       Anniversary.
