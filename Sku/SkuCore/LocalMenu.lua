@@ -2806,7 +2806,10 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 			return SkuUtil:Unescape(table.concat(tLines, "\r\n"))
 		end
 
-		if not Sku.isTBC then
+		if Sku.isForever then
+			-- Forever: the stats come from Blizzard's PAPERDOLL tables, see characterForever.lua
+			SkuCore:BuildForeverCharacterStats(tParentStats, tReadStatFrameTooltip)
+		elseif not Sku.isTBC then
 			local tStatFrames = {
 				"CharacterStatFrame1",
 				"CharacterStatFrame2",
@@ -3002,7 +3005,11 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		}
 		local tParentStatsValues = tParentStats[tFriendlyName].childs
 
-		for x = 1, NUM_RESISTANCE_TYPES do
+		if Sku.isForever then
+			SkuCore:BuildForeverResistances(tParentStats[tFriendlyName], tReadStatFrameTooltip)
+		end
+		-- Forever has no NUM_RESISTANCE_TYPES (the resistances are built above)
+		for x = 1, (NUM_RESISTANCE_TYPES or 0) do
 			local text = getglobal("MagicResText"..x);
 			local frame = getglobal("MagicResFrame"..x);
 			frame.type = "stat"
