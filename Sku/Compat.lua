@@ -250,6 +250,20 @@ if not C.GetFactionInfo and C_Reputation and C_Reputation.GetFactionDataByIndex 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Pet stable. Forever only offers C_StableInfo; slot 1 is the current pet, 2 and up the stabled ones.
+C.GetStablePetInfo = _G.GetStablePetInfo
+if not C.GetStablePetInfo and C_StableInfo and C_StableInfo.GetStablePetInfo then
+	-- old: icon, name, level, family, loyalty
+	C.GetStablePetInfo = function(aSlot)
+		local t = C_StableInfo.GetStablePetInfo(aSlot)
+		if not t then return nil end
+		return t.icon, t.name, t.level, t.familyName, t.loyaltyName
+	end
+end
+-- Forever has two stabled-pet slots (Constants.PetConsts.MAX_STABLE_SLOTS) and no global for it.
+C.NUM_PET_STABLE_SLOTS = _G.NUM_PET_STABLE_SLOTS or (Constants and Constants.PetConsts and Constants.PetConsts.MAX_STABLE_SLOTS)
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- Text helpers from Blizzard's UI code that Forever's UI no longer has.
 C.BetterDate = _G.BetterDate or function(aFormat, aTime)
 	return date(aFormat or "%H:%M:%S ", aTime or time())

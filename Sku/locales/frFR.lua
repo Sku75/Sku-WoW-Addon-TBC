@@ -3460,6 +3460,25 @@ L["Buyback"] = "Rachat"
 L["Repair"] = "Réparer"
 L["Repair all"] = "Tout réparer"
 
+-- Forever: trainer and stable (SkuCore/trainerForever.lua, SkuCore/LocalMenu.lua)
+L["Enter stables the pet"] = "Entrée met le familier à l'écurie"
+L["Pet stabled"] = "Familier mis à l'écurie"
+L["Pet could not be stabled"] = "Le familier n'a pas pu être mis à l'écurie"
+L["learnable"] = "apprenable"
+L["not learnable"] = "non apprenable"
+L["learned"] = "appris"
+L["not learned"] = "non appris"
+L["not enough points"] = "pas assez de points"
+L["Training points left"] = "Points de dressage restants"
+L["Training points unknown"] = "Points de dressage inconnus"
+L["Will be hidden."] = "Sera masqué."
+L["Not enough training points"] = "Pas assez de points de dressage"
+L["needed"] = "nécessaires"
+L["free"] = "libres"
+L["cannot be selected, reopen the window"] = "non sélectionnable, rouvrez la fenêtre"
+L["Learn"] = "Apprendre"
+L["not possible right now"] = "impossible pour le moment"
+
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a

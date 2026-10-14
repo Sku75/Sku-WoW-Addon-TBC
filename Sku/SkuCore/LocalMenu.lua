@@ -9,7 +9,9 @@ local GetItemInfo = Sku.Compat.GetItemInfo
 local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
 local GetNumSkillLines = Sku.Compat.GetNumSkillLines
 local GetSkillLineInfo = Sku.Compat.GetSkillLineInfo
+local GetStablePetInfo = Sku.Compat.GetStablePetInfo
 local IsEquippableItem = Sku.Compat.IsEquippableItem
+local NUM_PET_STABLE_SLOTS = Sku.Compat.NUM_PET_STABLE_SLOTS
 local PickupContainerItem = Sku.Compat.PickupContainerItem
 local _G = _G
 
@@ -3466,6 +3468,12 @@ end
 
 function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 
+	-- Forever: the window is a scroll box without the old skill buttons, see trainerForever.lua
+	if Sku.isForever then
+		SkuCore:Build_ClassTrainerFrameForever(aParentChilds)
+		return
+	end
+
 	local tFrameName = "ClassTrainerFrame"
 	local tFriendlyName = _G["ClassTrainerNameText"]:GetText()
 	if _G["ClassTrainerGreetingText"] and _G["ClassTrainerGreetingText"].GetText and _G["ClassTrainerGreetingText"]:GetText() then
@@ -4605,6 +4613,11 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 	end
 
 	local function tCurrentPetInfo()
+		-- Forever: slot 1 is the current pet, with its loyalty.
+		if Sku.isForever then
+			local tSlot1 = tPetInfo(1)
+			if tSlot1.exists then return tSlot1 end
+		end
 		local tName = UnitName("pet")
 		if not tName then
 			-- A pet selected at the stable can be current but dismissed. Blizzard's
@@ -4650,20 +4663,41 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 		if _G["PetStableStabledPet"..x] and _G["PetStableStabledPet"..x]:IsEnabled() == true then
 			local tFrame = _G["PetStableStabledPet"..x]
 			local tText, tFullText = tPetText(tPet)
+			-- Forever: an empty stall takes the current pet (Blizzard: drag slot 1 onto it, which is
+			-- C_StableInfo.SetPetSlot(1, stall)); a filled one swaps with the current pet.
+			local tCanStable = Sku.isForever and not tPet.exists and tCurrentPet.exists
+			local tStableHint = tCanStable and (", " .. L["Enter stables the pet"]) or ""
+			local tMacro
+			if tCanStable then
+				tMacro = "/run if GetCursorInfo() then ClearCursor() end; C_StableInfo.SetPetSlot(1, "..(x + 1)..")"
+			elseif tPet.exists and Sku.isForever then
+				tMacro = "/run if GetCursorInfo() then ClearCursor() end; C_StableInfo.SetPetSlot("..(x + 1)..", 1)"
+			elseif tPet.exists then
+				-- Same pickup/drop sequence as Blizzard's stable UI.
+				tMacro = "/run if GetCursorInfo() then ClearCursor() end; PickupStablePet("..(x + 1).."); ClickStablePet(1)"
+			end
 			table.insert(aParentChilds, L["Stall "..x])
 			aParentChilds[L["Stall "..x]] = {
 				frameName = "PetStableStabledPet"..x,
 				RoC = "Child",
 				type = "Button",
 				obj = tFrame,
-				textFirstLine = L["Stall "..x].." "..tText,
-				textFull = L["Stall "..x].." "..tFullText,
+				textFirstLine = L["Stall "..x].." "..tText..tStableHint,
+				textFull = L["Stall "..x].." "..tFullText..tStableHint,
 				childs = {},
-				directAction = tPet.exists,
-				-- Same pickup/drop sequence as Blizzard's stable UI.
-				macrotext = tPet.exists and ("/run if GetCursorInfo() then ClearCursor() end; PickupStablePet("..(x + 1).."); ClickStablePet(1)") or nil,
-				func = tPet.exists and function()
+				directAction = tPet.exists or tCanStable or nil,
+				macrotext = tMacro,
+				func = (tPet.exists or tCanStable) and function()
 					if not _G.PetStableFrame or not _G.PetStableFrame:IsShown() then return end
+					if tCanStable then
+						local tPetName = tCurrentPet.name
+						C_Timer.After(0.8, function()
+							SkuOptions.Voice:OutputStringBTtts(GetStablePetInfo(x + 1)
+								and (L["Pet stabled"]..": "..tostring(tPetName))
+								or L["Pet could not be stabled"], false, false, 0.2)
+						end)
+						return
+					end
 					SkuCore.petStablePendingSwap = {
 						name = tPet.name,
 						level = tPet.level,
@@ -4675,8 +4709,9 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 		end
 	end
 
-	local tFrame = _G["PetStablePurchaseButton"]
-	if tFrame:IsEnabled() == true then --IsMouseClickEnabled()
+	-- Forever: the purchase button has no global name, only the child key purchaseButton.
+	local tFrame = _G["PetStablePurchaseButton"] or _G.PetStableFrame.purchaseButton
+	if tFrame and tFrame:IsEnabled() == true then --IsMouseClickEnabled()
 		if tFrame:IsShown() == true then --IsMouseClickEnabled()
 			table.insert(aParentChilds, L["Weiteren Platz kaufen"])
 			aParentChilds[L["Weiteren Platz kaufen"]] = {

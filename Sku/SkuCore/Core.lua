@@ -9,6 +9,7 @@ local _G = _G
 local L = Sku.L
 local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
 local GetPetHappiness = Sku.Compat.GetPetHappiness
+local GetStablePetInfo = Sku.Compat.GetStablePetInfo
 
 -- File-level state that used to leak into _G through a missing "local".
 local CLASS_IDS, tLastFallSoundNum, tdiold, tdisold
@@ -1624,6 +1625,23 @@ local SkuCoreOldPetHappinessCounter = 0
 
 ---@type integer|nil
 local SkuCoreOldPetHappiness = nil
+-- Trainer window filters. A class trainer shows only what can be learned. Beast training on
+-- Forever shows everything, so that skills the pet already knows stand in the list as learned
+-- and the list does not look empty when nothing new can be learned.
+function SkuCore:ApplyTrainerFilters()
+	local tAll = Sku.isForever == true and C_Trainer.GetTrainerType() == Enum.TrainerType.Pet
+	SetTrainerServiceTypeFilter("available", true)
+	SetTrainerServiceTypeFilter("unavailable", tAll)
+	SetTrainerServiceTypeFilter("used", tAll)
+	if tAll then
+		C_Timer.After(0.3, function()
+			if _G["ClassTrainerFrame"]:IsVisible() == true then
+				SkuCore:CheckFrames(nil, nil, true)
+			end
+		end)
+	end
+end
+
 function SkuCore:OnEnable()
 	--dprint("SkuCore OnEnable")
 	-- Apply persisted per-feature on/off BEFORE AceAddon auto-enables our modules
@@ -1722,18 +1740,14 @@ function SkuCore:OnEnable()
 	f:SetScript("OnUpdate", function(self, time)
 		if ClassTrainerFrame and tClassTrainerFrameHooked == false then
 			tClassTrainerFrameHooked = true
-			SetTrainerServiceTypeFilter("available", true)
-			SetTrainerServiceTypeFilter("unavailable", false)
-			SetTrainerServiceTypeFilter("used", false)
+			SkuCore:ApplyTrainerFilters()
 			if _G["ClassTrainerSkill2"] then
 				C_Timer.After(0.1, function()
 					_G["ClassTrainerSkill2"]:Click("LeftMouse")
 				end)
 			end
 			ClassTrainerFrame:HookScript("OnShow", function()
-				SetTrainerServiceTypeFilter("available", true)
-				SetTrainerServiceTypeFilter("unavailable", false)
-				SetTrainerServiceTypeFilter("used", false)
+				SkuCore:ApplyTrainerFilters()
 				if _G["ClassTrainerSkill2"] then
 					C_Timer.After(0.1, function()
 						_G["ClassTrainerSkill2"]:Click("LeftMouse")
