@@ -15,8 +15,6 @@ if not Sku.isForever then return end
 local L = Sku.L
 local GetContainerNumFreeSlots = Sku.Compat.GetContainerNumFreeSlots
 
-SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
-
 -- Same threshold as Blizzard's MERCHANT_HIGH_PRICE_COST: from 150 gold the window asks first.
 local HIGH_PRICE_COST = 1500000
 
