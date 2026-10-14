@@ -3560,3 +3560,6 @@ L["Legacy: challenges %d of %d earned"] = "Legacy: challenges %d of %d earned"
 L[" of %d"] = " of %d"
 L["Achievements not available"] = "Achievements not available"
 L["No achievements"] = "No achievements"
+-- Forever: buff announcement (SkuCore/buffAnnounce.lua)
+L["Buff announcements"] = "Buff announcements"
+L["Buff gained"] = "Buff gained"

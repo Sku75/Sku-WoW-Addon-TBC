@@ -3519,6 +3519,10 @@ L[" of %d"] = " sur %d"
 L["Achievements not available"] = "Hauts faits indisponibles"
 L["No achievements"] = "Aucun haut fait"
 
+-- Forever: buff announcement (SkuCore/buffAnnounce.lua)
+L["Buff announcements"] = "Annonce des buffs"
+L["Buff gained"] = "Buff obtenu"
+
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a
