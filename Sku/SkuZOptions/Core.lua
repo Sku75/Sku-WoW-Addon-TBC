@@ -6588,7 +6588,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 						-- The plain UseContainerItem moves the item fine but does NOT refresh
 						-- our menu, so drive CheckFrames()/OnUpdate() after the bag settles
 						-- (that was the "item still showed in the bank list" symptom).
-						local tIsBankContainer = (lBag == -1 or lBag == -3 or (lBag >= 5 and lBag <= 11))
+						local tIsBankContainer = SkuCore:IsBankContainerId(lBag)
 						if tIsBankContainer then
 							tNewMenuEntry.OnRightAction = function()
 								-- Drive the SAME event-driven confirm the normal-bag "/use"

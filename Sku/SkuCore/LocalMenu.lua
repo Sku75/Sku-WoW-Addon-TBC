@@ -9,7 +9,9 @@ local GetItemInfo = Sku.Compat.GetItemInfo
 local GetItemInfoInstant = Sku.Compat.GetItemInfoInstant
 local GetNumSkillLines = Sku.Compat.GetNumSkillLines
 local GetSkillLineInfo = Sku.Compat.GetSkillLineInfo
+local GetStablePetInfo = Sku.Compat.GetStablePetInfo
 local IsEquippableItem = Sku.Compat.IsEquippableItem
+local NUM_PET_STABLE_SLOTS = Sku.Compat.NUM_PET_STABLE_SLOTS
 local PickupContainerItem = Sku.Compat.PickupContainerItem
 local _G = _G
 
@@ -202,6 +204,31 @@ local function tPrewarmContainer(aBagId)
 	end
 end
 
+-- Which container ids belong to the bank. Classic: -1 (bank), -3 (reagent bank), 5..11
+-- (bank bags). Forever uses the retail layout (Enum.BagIndex): 5 is the player's reagent
+-- bag, 6..14 are the character bank tabs, 15..23 the warband bank tabs and -1 the keyring.
+function SkuCore:IsBankContainerId(aBagId)
+	if not aBagId then return false end
+	if Sku.isForever then
+		return aBagId >= 6 and aBagId <= 23
+	end
+	return aBagId == -1 or aBagId == -3 or (aBagId >= 5 and aBagId <= 11)
+end
+
+-- One hidden purchase button per bank type, made from Blizzard's own template so that
+-- its OnClick opens Blizzard's purchase prompt. The bank type sits in the
+-- "overrideBankType" attribute, so the purchase does not depend on the active bank tab.
+local tBankPurchaseButtons = {}
+function SkuCore:GetBankPurchaseButton(aBankType)
+	if not tBankPurchaseButtons[aBankType] then
+		local tButton = CreateFrame("Button", "SkuBankPurchaseButton" .. aBankType, UIParent, "BankPanelPurchaseButtonScriptTemplate")
+		tButton:SetAttribute("overrideBankType", aBankType)
+		tButton:Hide()
+		tBankPurchaseButtons[aBankType] = tButton
+	end
+	return tBankPurchaseButtons[aBankType]
+end
+
 -- Bank open/closed is tracked from the SERVER-side events, not from
 -- BankFrame:IsVisible(). BANKFRAME_OPENED/BANKFRAME_CLOSED are fired by the
 -- banker interaction itself, independent of which addon draws the window, so
@@ -227,8 +254,12 @@ tItemDataDriver:SetScript("OnEvent", function(self, aEvent, arg1)
 		end
 	elseif aEvent == "BANKFRAME_OPENED" then
 		tBankFrameOpen = true
-		tPrewarmContainer(-1)
-		for tBagId = 5, 11 do tPrewarmContainer(tBagId) end
+		if Sku.isForever then
+			for tBagId = 6, 23 do tPrewarmContainer(tBagId) end
+		else
+			tPrewarmContainer(-1)
+			for tBagId = 5, 11 do tPrewarmContainer(tBagId) end
+		end
 		dprint("itemdata", "prewarm bank")
 	elseif aEvent == "PLAYERBANKSLOTS_CHANGED" then
 		local tItemId = arg1 and GetContainerItemID(-1, arg1)
@@ -399,7 +430,23 @@ local function tSetTooltipContainerItem(tooltip, bag, slot)
 	tooltip:SetBagItem(bag, slot)
 end
 
+-- Forever: the scanning tooltip stays empty for SetBagItem. The tooltip data API gives the
+-- same lines without any tooltip frame, as for equipped items (getEquippedItemTooltipText)
+-- and merchant wares. Container ids follow the retail layout there (SkuCore:IsBankContainerId).
+local function tForeverBagTooltipText(bag, slot)
+	local tLines = SkuCore:TooltipDataLines(C_TooltipInfo.GetBagItem(bag, slot))
+	if not tLines then return nil end
+	local tText = table.concat(tLines, "\r\n")
+	if SkuUtil:IsRetrievingItemInfo(tText) then
+		return nil, true
+	end
+	return SkuUtil:Unescape(tText)
+end
+
 local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
+	if Sku.isForever and not button and not itemId then
+		return tForeverBagTooltipText(bag, slot)
+	end
 	if button then
 		if button:GetScript("OnEnter") then
 			button:GetScript("OnEnter")(button)
@@ -437,10 +484,46 @@ function SkuCore:IsItemSoulbound(bag, slot)
 	return result and true or false
 end
 
+-- Forever: the lines of a C_TooltipInfo result (left text, then right text if any) as a
+-- list of strings, or nil when there are none. The beta appends an "Open Issue Report"
+-- notice to every tooltip, which is dropped here.
+function SkuCore:TooltipDataLines(aData)
+	if not aData or type(aData.lines) ~= "table" then return nil end
+	local tLines = {}
+	for _, tLine in ipairs(aData.lines) do
+		local tLeft, tRight = tLine.leftText, tLine.rightText
+		if type(tLeft) == "string" and tLeft ~= "" and not string.find(tLeft, "Open Issue Report", 1, true) then
+			if type(tRight) == "string" and tRight ~= "" then tLeft = tLeft .. " " .. tRight end
+			tLines[#tLines + 1] = tLeft
+		end
+	end
+	if #tLines == 0 then return nil end
+	return tLines
+end
+
 ---Gets tooltip text for given equipped item
 ---@param invSlot InvSlot
 ---@return string|nil
 local function getEquippedItemTooltipText(invSlot)
+	if Sku.isForever then
+		-- The scanning tooltip has no SetInventoryItem on Forever (calling it aborted the
+		-- whole bag build), so read the tooltip data instead. It carries neither quality
+		-- nor item level, which the item link gives.
+		local tLines = SkuCore:TooltipDataLines(C_TooltipInfo.GetInventoryItem("player", invSlot))
+		if not tLines then return nil end
+		local tLink = GetInventoryItemLink("player", invSlot)
+		if tLink then
+			local tQuality = SkuUtil:ItemQualityString(tLink)
+			if tQuality and SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality == true then
+				tLines[1] = tLines[1] .. " (" .. tQuality .. ")"
+			end
+			local tILvl = SkuUtil:ItemLevel(tLink)
+			if tILvl then
+				table.insert(tLines, 2, L["Item Level"] .. ": " .. tILvl)
+			end
+		end
+		return SkuUtil:Unescape(table.concat(tLines, "\r\n"))
+	end
 	return getItemTooltipTextHelper(function(tooltip)
 		tooltip:SetInventoryItem("player", invSlot)
 	end)
@@ -548,6 +631,20 @@ local tBagSlotList = {
 	[-2] = L["keyring"],
 	[-3] = L["Reagent bank"],
 }
+
+-- Forever: retail container layout, see SkuCore:IsBankContainerId.
+if Sku.isForever then
+	for k in pairs(tBagSlotList) do tBagSlotList[k] = nil end
+	for i = 0, 4 do tBagSlotList[i] = L["Bag"] .. " " .. (i + 1) end
+	tBagSlotList[5] = L["Reagent bag"]
+	for i = 6, 14 do tBagSlotList[i] = L["Bank tab"] .. " " .. (i - 5) end
+	for i = 15, 23 do tBagSlotList[i] = L["Warband bank tab"] .. " " .. (i - 14) end
+	tBagSlotList[-1] = L["keyring"]
+	for k in pairs(tBagSlotListSorted) do tBagSlotListSorted[k] = nil end
+	for i = 0, 23 do tBagSlotListSorted[#tBagSlotListSorted + 1] = i end
+	tBagSlotListSorted[#tBagSlotListSorted + 1] = -1
+end
+
 local function OpenAllBagsHelper()
 	-- OpenBag force-opens a container frame (protected in combat). In combat we
 	-- only READ what the player already opened via Blizzard's own B key, so skip
@@ -1300,7 +1397,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local ContainerFrame1Hook
 function SkuCore:Build_BagsFrame(aParentChilds)
-	if not ContainerFrame1Hook then
+	-- Forever: no hide hook. It ran Blizzard's bag window code from Sku code and tainted
+	-- ContainerFrame1.size/Items, which blocked buying a bank tab. Forever closes its own windows.
+	if not ContainerFrame1Hook and not Sku.isForever then
 		hooksecurefunc(_G["ContainerFrame1"], "Hide", function()
 			for x = 2, 15 do
 				if _G["ContainerFrame"..x] then
@@ -1330,12 +1429,12 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 	-- reachable with its frame already up).
 	for q = 1, #tBagSlotListSorted do
 		local bagId = tBagSlotListSorted[q]
-		local tIsBankSlot = (bagId == -1 and SkuCore:BankIsOpen() == true)
+		local tIsBankSlot = (not Sku.isForever and bagId == -1 and SkuCore:BankIsOpen() == true)
 		local tNumSlots = GetContainerNumSlots(bagId) or 0
 		-- BUGFIX: the bank container (-1) reports its 28 slots even when the bank UI is
 		-- closed, producing a phantom "Bank" view in the bags menu. Only include it while the
 		-- bank frame is actually open (0 slots -> the slot loop skips it, no bag node created).
-		if bagId == -1 and not SkuCore:BankIsOpen() then
+		if (Sku.isForever and SkuCore:IsBankContainerId(bagId) or not Sku.isForever and bagId == -1) and not SkuCore:BankIsOpen() then
 			tNumSlots = 0
 		end
 		-- [v43.0] The keyring container reports its MAXIMUM (32) here, but most of
@@ -1457,7 +1556,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 
 			tBagResultsByBag[bagId].childs[#tBagResultsByBag[bagId].childs + 1] = bagItemButton
 			-- non-empty items in the real bags also go into the flat "all items" list
-			if not isEmpty and bagId >= 0 and bagId <= 4 then
+			if not isEmpty and (bagId >= 0 and bagId <= 4 or Sku.isForever and bagId == 5) then
 				local copy = {}
 				for k, v in pairs(bagItemButton) do
 					copy[k] = v
@@ -1473,7 +1572,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 			-- menu actions key on, so a row here behaves exactly like the same row inside
 			-- its bank bag: ENTER reads it, CTRL-ENTER moves it out to the bags via the
 			-- tIsBankContainer branch in SkuZOptions/Core.lua.
-			elseif not isEmpty and (bagId == -1 or bagId == -3 or (bagId >= 5 and bagId <= 11)) then
+			elseif not isEmpty and SkuCore:IsBankContainerId(bagId) then
 				local copy = {}
 				for k, v in pairs(bagItemButton) do
 					copy[k] = v
@@ -1600,6 +1699,43 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 			noMenuNumbers = true,
 			childs = allBankResults,
 		}
+	end
+
+	-- Forever: buy bank tabs, for the character bank and the warband bank. Buying is
+	-- protected and must run from Blizzard's own untainted code, so the entry does not
+	-- call the API: its secure click presses a purchase button made from Blizzard's own
+	-- template (SkuCore:GetBankPurchaseButton), which opens Blizzard's confirmation
+	-- prompt with the price. Nothing is bought until the player confirms there.
+	if Sku.isForever and SkuCore:BankIsOpen() == true then
+		local tBankTypes = {
+			{ bankType = Enum.BankType.Character, name = L["Character bank"] },
+			{ bankType = Enum.BankType.Account, name = L["Warband bank"] },
+		}
+		for _, tInfo in ipairs(tBankTypes) do
+			if C_Bank.CanViewBank(tInfo.bankType) and C_Bank.CanPurchaseBankTab(tInfo.bankType) then
+				local tTabData = C_Bank.FetchNextPurchasableBankTabData(tInfo.bankType)
+				local tCost = L["free of charge"]
+				if tTabData and tTabData.tabCost and tTabData.tabCost > 0 then
+					tCost = SkuGetCoinText(tTabData.tabCost)
+					if tTabData.canAfford == false then
+						tCost = tCost .. " " .. L["not enough gold"]
+					end
+				end
+				local tBuyName = L["Buy bank tab"] .. " " .. tInfo.name .. " " .. tCost
+				table.insert(aParentChilds, tBuyName)
+				aParentChilds[tBuyName] = {
+					frameName = "",
+					RoC = "Child",
+					type = "Button",
+					textFirstLine = tBuyName,
+					textFull = L["Opens Blizzard's purchase prompt. Nothing is bought until you confirm with Yes."],
+					noMenuNumbers = true,
+					childs = {},
+					directAction = true,
+					secureClickFrame = SkuCore:GetBankPurchaseButton(tInfo.bankType),
+				}
+			end
+		end
 	end
 
 	local tFriendlyName = L["Bags"]
@@ -3327,6 +3463,12 @@ end
 
 function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 
+	-- Forever: the window is a scroll box without the old skill buttons, see trainerForever.lua
+	if Sku.isForever then
+		SkuCore:Build_ClassTrainerFrameForever(aParentChilds)
+		return
+	end
+
 	local tFrameName = "ClassTrainerFrame"
 	local tFriendlyName = _G["ClassTrainerNameText"]:GetText()
 	if _G["ClassTrainerGreetingText"] and _G["ClassTrainerGreetingText"].GetText and _G["ClassTrainerGreetingText"]:GetText() then
@@ -4466,6 +4608,11 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 	end
 
 	local function tCurrentPetInfo()
+		-- Forever: slot 1 is the current pet, with its loyalty.
+		if Sku.isForever then
+			local tSlot1 = tPetInfo(1)
+			if tSlot1.exists then return tSlot1 end
+		end
 		local tName = UnitName("pet")
 		if not tName then
 			-- A pet selected at the stable can be current but dismissed. Blizzard's
@@ -4511,20 +4658,41 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 		if _G["PetStableStabledPet"..x] and _G["PetStableStabledPet"..x]:IsEnabled() == true then
 			local tFrame = _G["PetStableStabledPet"..x]
 			local tText, tFullText = tPetText(tPet)
+			-- Forever: an empty stall takes the current pet (Blizzard: drag slot 1 onto it, which is
+			-- C_StableInfo.SetPetSlot(1, stall)); a filled one swaps with the current pet.
+			local tCanStable = Sku.isForever and not tPet.exists and tCurrentPet.exists
+			local tStableHint = tCanStable and (", " .. L["Enter stables the pet"]) or ""
+			local tMacro
+			if tCanStable then
+				tMacro = "/run if GetCursorInfo() then ClearCursor() end; C_StableInfo.SetPetSlot(1, "..(x + 1)..")"
+			elseif tPet.exists and Sku.isForever then
+				tMacro = "/run if GetCursorInfo() then ClearCursor() end; C_StableInfo.SetPetSlot("..(x + 1)..", 1)"
+			elseif tPet.exists then
+				-- Same pickup/drop sequence as Blizzard's stable UI.
+				tMacro = "/run if GetCursorInfo() then ClearCursor() end; PickupStablePet("..(x + 1).."); ClickStablePet(1)"
+			end
 			table.insert(aParentChilds, L["Stall "..x])
 			aParentChilds[L["Stall "..x]] = {
 				frameName = "PetStableStabledPet"..x,
 				RoC = "Child",
 				type = "Button",
 				obj = tFrame,
-				textFirstLine = L["Stall "..x].." "..tText,
-				textFull = L["Stall "..x].." "..tFullText,
+				textFirstLine = L["Stall "..x].." "..tText..tStableHint,
+				textFull = L["Stall "..x].." "..tFullText..tStableHint,
 				childs = {},
-				directAction = tPet.exists,
-				-- Same pickup/drop sequence as Blizzard's stable UI.
-				macrotext = tPet.exists and ("/run if GetCursorInfo() then ClearCursor() end; PickupStablePet("..(x + 1).."); ClickStablePet(1)") or nil,
-				func = tPet.exists and function()
+				directAction = tPet.exists or tCanStable or nil,
+				macrotext = tMacro,
+				func = (tPet.exists or tCanStable) and function()
 					if not _G.PetStableFrame or not _G.PetStableFrame:IsShown() then return end
+					if tCanStable then
+						local tPetName = tCurrentPet.name
+						C_Timer.After(0.8, function()
+							SkuOptions.Voice:OutputStringBTtts(GetStablePetInfo(x + 1)
+								and (L["Pet stabled"]..": "..tostring(tPetName))
+								or L["Pet could not be stabled"], false, false, 0.2)
+						end)
+						return
+					end
 					SkuCore.petStablePendingSwap = {
 						name = tPet.name,
 						level = tPet.level,
@@ -4536,8 +4704,9 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 		end
 	end
 
-	local tFrame = _G["PetStablePurchaseButton"]
-	if tFrame:IsEnabled() == true then --IsMouseClickEnabled()
+	-- Forever: the purchase button has no global name, only the child key purchaseButton.
+	local tFrame = _G["PetStablePurchaseButton"] or _G.PetStableFrame.purchaseButton
+	if tFrame and tFrame:IsEnabled() == true then --IsMouseClickEnabled()
 		if tFrame:IsShown() == true then --IsMouseClickEnabled()
 			table.insert(aParentChilds, L["Weiteren Platz kaufen"])
 			aParentChilds[L["Weiteren Platz kaufen"]] = {

@@ -464,12 +464,25 @@ local function tAppendSetLine(tooltip)
    -- mitten im Item"). AddLine resized den Tooltip selbst.
 end
 
+local tPostCallAdded = false
 local function tHookTooltips()
    local function hook(tt)
       if not tt or tt._skuSetHooked then return end
       tt._skuSetHooked = true
-      tt:HookScript("OnTooltipSetItem", function(self) tAppendSetLine(self) end)
+      -- Forever has no OnTooltipSetItem script (HookScript throws); item tooltips
+      -- reach the post call below instead.
+      if not Sku.isForever then
+         tt:HookScript("OnTooltipSetItem", function(self) tAppendSetLine(self) end)
+      end
       tt:HookScript("OnTooltipCleared", function(self) self._skuSetLineAdded = nil end)
+   end
+   if Sku.isForever and not tPostCallAdded then
+      tPostCallAdded = true
+      TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tt)
+         if tt == _G.GameTooltip or tt == _G.ItemRefTooltip or tt == _G.ShoppingTooltip1 or tt == _G.ShoppingTooltip2 then
+            tAppendSetLine(tt)
+         end
+      end)
    end
    hook(_G.GameTooltip)
    hook(_G.ItemRefTooltip)

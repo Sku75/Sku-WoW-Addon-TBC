@@ -3232,3 +3232,58 @@ AURA_RecipeWhoLabel	Qui
 AURA_RecipeNoUnitSet	Aucune unité définie
 Raid Untergruppen Tasten	Touches de sous-groupe de raid
 Voice for members above 25	Voix pour les membres au-delà de 25
+Reagent bag	Sac de composants
+Bank tab	Onglet de banque
+Warband bank tab	Onglet de la banque de bataillon
+Character bank	Banque du personnage
+Warband bank	Banque de bataillon
+Buy bank tab	Acheter un onglet de banque
+free of charge	gratuit
+not enough gold	pas assez d'or
+Opens Blizzard's purchase prompt. Nothing is bought until you confirm with Yes.	Ouvre la demande d'achat de Blizzard. Rien n'est acheté tant que vous ne confirmez pas par Oui.
+This item is no longer for sale.	Cet article n'est plus en vente.
+not enough bag space	pas assez de place dans les sacs
+sold out	épuisé
+not enough materials	pas assez de marchandises d'échange
+not enough money	pas assez d'argent
+Only this many fit in your bags: 	Seulement ceci tient dans les sacs : 
+Only this many possible: 	Seulement possible : 
+Only %d of %d x %s bought	Seulement %d sur %d x %s acheté
+nothing bought	rien acheté
+Really buy? 	Vraiment acheter ? 
+. Enter Yes, Escape for No.	. Entrée pour Oui, Échap pour Non.
+ packs of %d	 lots de %d
+Enter amount	Saisir la quantité
+, press Enter to buy	, Entrée pour acheter
+, currently 	, actuellement 
+buy amount reset to 	quantité remise à 
+Buy amount	Quantité d'achat
+extended cost	coût d'échange
+available	disponible
+not usable	inutilisable
+Price	Prix
+Enter amount and buy	Saisir la quantité et acheter
+Remember buy amount	Mémoriser la quantité
+Buy a full stack: 	Acheter une pile entière : 
+Buy as many as I can afford and fit: 	Acheter autant que possible : 
+Wares	Marchandises
+Buyback	Rachat
+Repair	Réparer
+Repair all	Tout réparer
+Enter stables the pet	Entrée met le familier à l'écurie
+Pet stabled	Familier mis à l'écurie
+Pet could not be stabled	Le familier n'a pas pu être mis à l'écurie
+learnable	apprenable
+not learnable	non apprenable
+learned	appris
+not learned	non appris
+not enough points	pas assez de points
+Training points left	Points de dressage restants
+Training points unknown	Points de dressage inconnus
+Will be listed as learned.	Sera désormais indiqué comme appris.
+Not enough training points	Pas assez de points de dressage
+needed	nécessaires
+free	libres
+cannot be selected, reopen the window	non sélectionnable, rouvrez la fenêtre
+Learn	Apprendre
+not possible right now	impossible pour le moment
