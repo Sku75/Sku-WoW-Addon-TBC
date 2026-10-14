@@ -11,8 +11,6 @@ if not Sku.isForever then return end
 
 local L = Sku.L
 
-SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
-
 local function tSay(aText)
 	SkuOptions.Voice:OutputStringBTtts(aText, false, true, 0.2)
 end
