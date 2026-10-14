@@ -880,16 +880,39 @@ end
 -- The "Optionen" target: one submenu per Blizzard settings category that
 -- actually has settings (addon "canvas" categories without initializers
 -- are skipped — most have their own Sku menus anyway).
+-- Name of the group (Gameplay, Accessibility, System, ...) a category stands in, as Blizzard's list shows it.
+local function GroupTextOf(aCat)
+   local tList = tCall(_G.SettingsPanel, "GetCategoryList")
+   for _, tGroup in ipairs(type(tList) == "table" and tList.groups or {}) do
+      for _, tCat in ipairs(tGroup.categories) do
+         if tCat == aCat then return tGroup.groupText end
+      end
+   end
+end
+
 local function BuildCategoryList(aSelf)
    local any = false
+   -- Blizzard leaves out the categories that only redirect to another one (the fake "NoDisplayKB" categories of the
+   -- key binding search). Two categories of the same name (Interface exists in two groups) get their group behind it.
+   local tShown, tNameCount = {}, {}
    for _, cat in ipairs(GetCategories()) do
-      if CategoryHasContent(cat) then
-         any = true
-         local entry = Inject(aSelf, tostring(CategoryName(cat)))
-         entry.dynamic = true
-         entry.sorting = true
-         entry.BuildChildren = function(self) BuildCategory(self, cat) end
+      if not cat.redirectCategory and CategoryHasContent(cat) then
+         tShown[#tShown + 1] = cat
+         local tName = tostring(CategoryName(cat))
+         tNameCount[tName] = (tNameCount[tName] or 0) + 1
       end
+   end
+   for _, cat in ipairs(tShown) do
+      any = true
+      local tLabel = tostring(CategoryName(cat))
+      if tNameCount[tLabel] > 1 then
+         local tGroup = GroupTextOf(cat)
+         if tGroup then tLabel = tLabel .. " (" .. tGroup .. ")" end
+      end
+      local entry = Inject(aSelf, tLabel)
+      entry.dynamic = true
+      entry.sorting = true
+      entry.BuildChildren = function(self) BuildCategory(self, cat) end
    end
    if not any then Inject(aSelf, _L.empty) end
 end
