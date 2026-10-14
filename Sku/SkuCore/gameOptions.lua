@@ -92,6 +92,9 @@ local _L = {
    raid        = deEn("Schlachtzug und Schlachtfeld", "Raid and battleground", "Raid et champ de bataille"),
    keybinds    = deEn("Tastenbelegung im Sku-Menü öffnen", "Open key bindings in the Sku menu",
                       "Ouvrir les raccourcis clavier dans le menu Sku"),
+   discordLogin = deEn("Die Discord-Anmeldung ist über das Sku-Menü noch nicht möglich",
+                       "Signing in to Discord is not possible through the Sku menu yet",
+                       "La connexion à Discord n'est pas encore possible via le menu Sku"),
 }
 
 -- ---------------------------------------------------------------------
@@ -195,9 +198,27 @@ local function IsInitShown(init)
    return tCall(init, "ShouldShow") ~= false
 end
 
+-- Rows whose predicates or labels end in C_Discord.IsUserOAuthed. That function is protected: Sku calling it only
+-- raises an "action blocked" popup (and pcall does not help), which closed the menu. So Sku calls nothing that leads there
+-- for these rows. "login" is the sign-in row of the Social page, found by its new-tag ID; "predicates" are the rows
+-- whose modify predicate reaches IsUserOAuthed: the Discord display name, and on the audio page the setting
+-- voiceUseDiscordSettings and every row that is locked while the settings are synced from Discord (they carry that
+-- setting as an evaluate-state CVar). Blizzard_SettingsDefinitions_Frame/Social.lua, Blizzard_SettingsDefinitions_Shared/Audio.lua.
+local function DiscordRowKind(init)
+   local data, _, setting = InitInfo(init)
+   if type(data) == "table" and data.newTagID == "SOCIAL_ENABLE_DISCORD_FUNCTIONALITY" then return "login" end
+   local tVariable = setting and tCall(setting, "GetVariable")
+   if tVariable == "discordDisplayName" or tVariable == "voiceUseDiscordSettings" then return "predicates" end
+   local tCVars = tCall(init, "GetEvaluateStateCVars")
+   for _, tCVar in ipairs(type(tCVars) == "table" and tCVars or {}) do
+      if tCVar == "voiceUseDiscordSettings" then return "predicates" end
+   end
+end
+
 -- Greyed out right now (a parent setting turns it off)? Blizzard evaluates
--- every modify predicate and disables the control when any is falsy.
+-- every modify predicate and disables the control when any is falsy. The Discord rows count as editable.
 local function IsInitEnabled(init)
+   if DiscordRowKind(init) then return true end
    local preds = tCall(init, "GetModifyPredicates")
    if type(preds) ~= "table" then return true end
    for _, p in ipairs(preds) do
@@ -701,6 +722,17 @@ local function BuildInitializer(aSelf, init)
    local name = StripColor(tResolve(data.name) or tCall(setting, "GetName") or "")
    local dis = DisabledSuffix(init)
 
+   if DiscordRowKind(init) == "login" then
+      -- Name from the data (without the icon markup), tooltip as in Blizzard's text. Signing in is a click that
+      -- must come from Blizzard's own code, so Enter only says that.
+      local tLogin = tostring(tResolve(data.name) or ""):gsub("|A.-|a", ""):gsub("^%s+", ""):gsub("%s+$", "")
+      local e = Inject(aSelf, StripColor(tLogin))
+      e.dynamic = false
+      e.textFull = OPTION_TOOLTIP_SOCIAL_ENABLE_DISCORD_FUNCTIONALITY or ""
+      e.OnAction = function() tSay(_L.discordLogin) end
+      return
+   end
+
    if template:find("SectionHeader") or template:find("SearchCategory") then
       if name ~= "" then MakeLabel(aSelf, name) end
 
@@ -810,17 +842,6 @@ end
 -- Render one Blizzard settings category as Sku children, then its
 -- subcategories (addon categories use them) as submenus.
 -- ---------------------------------------------------------------------
--- The Discord rows of the Social page ask C_Discord.IsUserOAuthed for their label and their
--- greyed-out state. That function is protected: called from Sku it raises an "action
--- blocked" popup, which closed the menu. Sku cannot sign in to Discord anyway, so those two
--- rows are left out (Blizzard_SettingsDefinitions_Frame/Social.lua, "Discord").
-local function IsDiscordInit(init)
-   local data, _, setting = InitInfo(init)
-   if setting and tCall(setting, "GetVariable") == "discordDisplayName" then return true end
-   local name = type(data) == "table" and tResolve(data.name) or nil
-   return type(name) == "string" and string.find(name, "Discord", 1, true) ~= nil
-end
-
 local function BuildCategory(aSelf, aCat)
    local inits = GetInitializers(aCat)
    local subs = GetSubcategories(aCat)
@@ -836,8 +857,7 @@ local function BuildCategory(aSelf, aCat)
       for _, init in ipairs(inits) do
          -- One broken row must not empty the whole category (a swallowed
          -- BuildChildren error reads as "leer").
-         local ok, err = true, nil
-         if not IsDiscordInit(init) then ok, err = pcall(BuildInitializer, aSelf, init) end
+         local ok, err = pcall(BuildInitializer, aSelf, init)
          if not ok then
             if dprint then dprint("gameOptions: initializer failed", tostring(err)) end
             local data = InitInfo(init)
@@ -880,41 +900,64 @@ end
 -- The "Optionen" target: one submenu per Blizzard settings category that
 -- actually has settings (addon "canvas" categories without initializers
 -- are skipped — most have their own Sku menus anyway).
--- Name of the group (Gameplay, Accessibility, System, ...) a category stands in, as Blizzard's list shows it.
-local function GroupTextOf(aCat)
-   local tList = tCall(_G.SettingsPanel, "GetCategoryList")
-   for _, tGroup in ipairs(type(tList) == "table" and tList.groups or {}) do
-      for _, tCat in ipairs(tGroup.categories) do
-         if tCat == aCat then return tGroup.groupText end
-      end
+-- The categories of a list that have something to show. Blizzard's own list skips every category that only redirects to
+-- another one (the hidden "NoDisplayKB" category of the key binding search), so Sku does too.
+local function CategoriesWithContent(aCategories)
+   local tOut = {}
+   for _, cat in ipairs(aCategories) do
+      if not cat.redirectCategory and CategoryHasContent(cat) then tOut[#tOut + 1] = cat end
+   end
+   return tOut
+end
+
+local function InjectCategory(aParent, aCat)
+   local entry = Inject(aParent, tostring(CategoryName(aCat)))
+   entry.dynamic = true
+   entry.sorting = true
+   entry.BuildChildren = function(self) BuildCategory(self, aCat) end
+end
+
+local function InjectGroup(aParent, aText, aCategories)
+   local entry = Inject(aParent, tostring(aText))
+   entry.dynamic = true
+   entry.sorting = true
+   entry.BuildChildren = function(self)
+      for _, cat in ipairs(aCategories) do InjectCategory(self, cat) end
    end
 end
 
+-- The top level are Blizzard's groups in Blizzard's order (Gameplay, Accessibility, System), as in Blizzard's own
+-- settings window, where two categories of the same name (Interface) are told apart by their group. The categories of
+-- the addons stand in one last group, sorted by name as Blizzard does it. Without the group list the categories stand
+-- flat as before.
 local function BuildCategoryList(aSelf)
-   local any = false
-   -- Blizzard leaves out the categories that only redirect to another one (the fake "NoDisplayKB" categories of the
-   -- key binding search). Two categories of the same name (Interface exists in two groups) get their group behind it.
-   local tShown, tNameCount = {}, {}
-   for _, cat in ipairs(GetCategories()) do
-      if not cat.redirectCategory and CategoryHasContent(cat) then
-         tShown[#tShown + 1] = cat
-         local tName = tostring(CategoryName(cat))
-         tNameCount[tName] = (tNameCount[tName] or 0) + 1
+   local tList = tCall(_G.SettingsPanel, "GetCategoryList")
+   local tGroups = type(tList) == "table" and type(tList.groups) == "table" and tList.groups or nil
+   if not tGroups then
+      local tCats = CategoriesWithContent(GetCategories())
+      for _, cat in ipairs(tCats) do InjectCategory(aSelf, cat) end
+      if #tCats == 0 then Inject(aSelf, _L.empty) end
+      return
+   end
+
+   local tAddOnCategories, tAddOnText = {}, nil
+   local tAny = false
+   for _, tGroup in ipairs(tGroups) do
+      local tCats = CategoriesWithContent(tGroup.categories or {})
+      if tGroup.categorySet == Settings.CategorySet.AddOns then
+         tAddOnText = tAddOnText or tGroup.groupText
+         for _, cat in ipairs(tCats) do tAddOnCategories[#tAddOnCategories + 1] = cat end
+      elseif #tCats > 0 then
+         tAny = true
+         InjectGroup(aSelf, tGroup.groupText, tCats)
       end
    end
-   for _, cat in ipairs(tShown) do
-      any = true
-      local tLabel = tostring(CategoryName(cat))
-      if tNameCount[tLabel] > 1 then
-         local tGroup = GroupTextOf(cat)
-         if tGroup then tLabel = tLabel .. " (" .. tGroup .. ")" end
-      end
-      local entry = Inject(aSelf, tLabel)
-      entry.dynamic = true
-      entry.sorting = true
-      entry.BuildChildren = function(self) BuildCategory(self, cat) end
+   if #tAddOnCategories > 0 then
+      tAny = true
+      table.sort(tAddOnCategories, function(a, b) return tostring(CategoryName(a)) < tostring(CategoryName(b)) end)
+      InjectGroup(aSelf, tAddOnText or ADDONS, tAddOnCategories)
    end
-   if not any then Inject(aSelf, _L.empty) end
+   if not tAny then Inject(aSelf, _L.empty) end
 end
 
 -- Recognise the game-menu button that opens the settings panel, so we can
