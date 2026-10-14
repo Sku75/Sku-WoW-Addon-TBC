@@ -30,6 +30,34 @@ end)
 -- hook is permanent; install it only once across enable/disable cycles).
 local gShowHookInstalled = false
 
+-- Forever: some C_ functions are locked for addons (HasRestrictions in Blizzard's API docs, e.g. SendWho,
+-- AddFriend, AddOrRemoveFriend). A locked call does nothing and only fires ADDON_ACTION_FORBIDDEN.
+-- CallAndReportBlocked makes the call and speaks a hint when the game blocked it, so a silent no-op
+-- is not mistaken for success.
+local gForbiddenFrame
+local gForbiddenFunc
+local function CallAndReportBlocked(aFn, aLabel, ...)
+   if not Sku.isForever then
+      return aFn(...)
+   end
+   if not gForbiddenFrame then
+      gForbiddenFrame = CreateFrame("Frame")
+      gForbiddenFrame:SetScript("OnEvent", function(_, _, aAddon, aFunc)
+         if aAddon == "Sku" then gForbiddenFunc = tostring(aFunc or "?") end
+      end)
+      gForbiddenFrame:RegisterEvent("ADDON_ACTION_FORBIDDEN")
+   end
+   gForbiddenFunc = nil
+   local tResult = aFn(...)
+   C_Timer.After(0.3, function()
+      if gForbiddenFunc then
+         gForbiddenFunc = nil
+         SkuOptions.Voice:OutputStringBTtts(aLabel.." "..L["was blocked by the game"], true, true, 0.1, nil, nil, nil, 1)
+      end
+   end)
+   return tResult
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Arm the feature. Called automatically by AceAddon when the module is enabled.
 function Friends:OnEnable()
@@ -203,7 +231,7 @@ local function tAddFriendSubmenu(aParent, aIndex, aOnline, aIsBnet)
          BNRemoveFriend(accountInfo.bnetAccountID)
       else
          local info = C_FriendList.GetFriendInfoByIndex(aIndex)
-         C_FriendList.AddOrRemoveFriend(info.name, "")
+         CallAndReportBlocked(C_FriendList.AddOrRemoveFriend, L["remove friend"], info.name, "")
       end
       C_Timer.After(0.65, function()
          local tAnchor = SkuOptions.currentMenuPosition:FindAncestorById("friendsList")
@@ -506,7 +534,7 @@ local function tAddWhoResult(aParent, aInfo)
       local tAdd = SkuOptions:InjectMenuItems(self, {L["add friend"]}, SkuGenericMenuItem)
       tAdd.isSelect = true
       tAdd.OnAction = function(self)
-         C_FriendList.AddFriend(tName)
+         CallAndReportBlocked(C_FriendList.AddFriend, L["add friend"], tName)
          pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Freund hinzugefügt", "friend added", "ami ajouté"), true, true, 0.1, nil, nil, nil, 1) end)
       end
 
@@ -658,7 +686,7 @@ function Friends:FriendsMenuBuilder()
          tNewMenuEntry.OnAction = function(self)
             SkuOptions:EditBoxShow("", function(self)
                if self:GetText() and self:GetText() ~= "" then
-                  C_FriendList.AddFriend(self:GetText())
+                  CallAndReportBlocked(C_FriendList.AddFriend, L["add friend"], self:GetText())
                end
                PlaySound(89)
                C_Timer.After(0.65, function()
@@ -743,7 +771,7 @@ function Friends:FriendsMenuBuilder()
             local q = self:GetText()
             if q and q ~= "" then
                Friends.gWhoPending = true
-               C_FriendList.SendWho(q, Enum and Enum.SocialWhoOrigin and Enum.SocialWhoOrigin.Social)
+               CallAndReportBlocked(C_FriendList.SendWho, L["player search"], q, Enum and Enum.SocialWhoOrigin and Enum.SocialWhoOrigin.Social)
                -- Fallback re-pin if WHO_LIST_UPDATE never arrives (empty result).
                C_Timer.After(2.0, function()
                   if Friends.gWhoPending then

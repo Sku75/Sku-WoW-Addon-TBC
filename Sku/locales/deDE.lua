@@ -3584,3 +3584,7 @@ L["Interrupts"] = "Unterbrechungen"
 L["Turn on damage meter"] = "Schadensmesser einschalten"
 L["Damage meter on"] = "Schadensmesser eingeschaltet"
 L["Damage meter not available"] = "Schadensmesser nicht verfügbar"
+-- forever(16): friends
+L["was blocked by the game"] = "wurde vom Spiel blockiert"
+L["remove friend"] = "Freund entfernen"
+L["player search"] = "Spielersuche"

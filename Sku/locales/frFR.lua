@@ -3536,6 +3536,11 @@ L["Turn on damage meter"] = "Activer le compteur de dégâts"
 L["Damage meter on"] = "Compteur activé"
 L["Damage meter not available"] = "Compteur de dégâts indisponible"
 
+-- forever(16): friends
+L["was blocked by the game"] = "a été bloqué par le jeu"
+L["remove friend"] = "retirer l'ami"
+L["player search"] = "recherche de joueur"
+
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a

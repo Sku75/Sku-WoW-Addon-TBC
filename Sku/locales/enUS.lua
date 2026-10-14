@@ -3574,3 +3574,7 @@ L["Interrupts"] = "Interrupts"
 L["Turn on damage meter"] = "Turn on damage meter"
 L["Damage meter on"] = "Damage meter on"
 L["Damage meter not available"] = "Damage meter not available"
+-- forever(16): friends
+L["was blocked by the game"] = "was blocked by the game"
+L["remove friend"] = "remove friend"
+L["player search"] = "player search"
