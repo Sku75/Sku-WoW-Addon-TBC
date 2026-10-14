@@ -3296,3 +3296,29 @@ Salvage	Recycler
 Salvage all	Tout recycler
 Recrafting is not supported here yet	Refaire n'est pas encore pris en charge
 Create all	Tout fabriquer
+done	fait
+open	ouvert
+earned	obtenu
+Earned on	Obtenu le
+Legacy points	Points d'héritage
+%d of %d open	%d sur %d ouverts
+%d of %d earned	%d sur %d obtenus
+next reward	prochaine récompense
+not yet earned	pas encore obtenu
+Reward track, level %d of %d	Piste de récompenses, niveau %d sur %d
+Reward track, level %d	Piste de récompenses, niveau %d
+Reset tree	Réinitialiser l'arbre
+Really reset all points in the %s tree? Enter Yes, Escape for No.	Réinitialiser vraiment tous les points de l'arbre %s ? Entrée pour Oui, Échap pour Non.
+Resets the whole tree. A confirmation prompt appears. The reset only takes effect with Apply.	Réinitialise tout l'arbre. Une confirmation s'affiche. Effectif seulement avec Appliquer.
+%s reset. Confirm with Apply, or Undo.	%s réinitialisé. Confirmez avec Appliquer, ou Annuler.
+Canceled, not reset	Annulé, non réinitialisé
+Legacy tree	Arbre d'héritage
+Open the legacy tree page	Ouvrir la page de l'arbre d'héritage
+Legacy tree opened	Arbre d'héritage ouvert
+Show this tree	Afficher cet arbre
+Tree	Arbre
+Legacy	Héritage
+Legacy: challenges %d of %d earned	Héritage : défis %d sur %d obtenus
+ of %d	 sur %d
+Achievements not available	Hauts faits indisponibles
+No achievements	Aucun haut fait

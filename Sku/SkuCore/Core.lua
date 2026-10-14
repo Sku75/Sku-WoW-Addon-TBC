@@ -352,6 +352,8 @@ SkuCore.interactFramesListManual = {
 	["PlayerTalentFrame"] = function(...) SkuCore:Build_TalentFrame(...) end,
 	-- Forever: the N key opens PlayerSpellsFrame, see talentsForever.lua.
 	["PlayerSpellsFrame"] = Sku.isForever and function(...) SkuCore:Build_PlayerSpellsFrame(...) end or nil,
+	-- Forever: achievements and legacy, see achievementsForever.lua.
+	["LegacySystemFrame"] = Sku.isForever and function(...) SkuCore:Build_LegacySystemFrame(...) end or nil,
 	["RolePollPopup"] = function(...) SkuCore:Build_RolePollPopup(...) end,
 	-- ReadyCheckFrame is only a wrapper around ReadyCheckListenerFrame; walked
 	-- generically that wrapper becomes an extra menu level and the Yes/No buttons
@@ -397,6 +399,7 @@ SkuCore.interactFramesList = {
 	"HonorFrame",
 	"PlayerTalentFrame",
 	"PlayerSpellsFrame",
+	"LegacySystemFrame",
 	"InspectFrame",
 	"GuildBankFrame",
 	--"BankFrame",
@@ -4735,6 +4738,7 @@ local friendlyFrameNames = {
 	["SpellBookFrame"] = L["Spellbook"],
 	["PlayerTalentFrame"] = L["Talents"],
 	["PlayerSpellsFrame"] = L["Talents"],
+	["LegacySystemFrame"] = L["Legacy"],
 	["RolePollPopup"] = L["Role Poll"],
 	-- ["PVEFrame"]/["LFGParentFrame"] entfernt (Dungeon-Browser wird neu aufgebaut)
 	["ItemSocketingFrame"] = L["Sockeln"],

@@ -61,6 +61,7 @@ SkuCore\merchantForever.lua
 SkuCore\trainerForever.lua
 SkuCore\professionsForever.lua
 SkuCore\talentsForever.lua
+SkuCore\achievementsForever.lua
 SkuCore\pendingPrompts.lua
 SkuCore\JunkAndRepair.lua
 SkuCore\UIErrors.lua
