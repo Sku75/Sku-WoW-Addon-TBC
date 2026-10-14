@@ -173,7 +173,13 @@ local function tVerify(aIndex, aName, aIsPet, aCost, aPointsBefore, aMoneyBefore
 			tSay(tText)
 		end
 		dprint("trainerBuy", "result", tostring(aLearned), tostring(tLastError))
-		if ClassTrainerFrame:IsVisible() then SkuCore:RefreshWindowMenuQuietly() end
+		if ClassTrainerFrame:IsVisible() then
+			-- The "Learn" entry under the cursor is gone after learning. Its identity becomes the skill's, so the
+			-- refresh puts the cursor on the skill's row in the list instead of at the top.
+			local tPos = SkuOptions.currentMenuPosition
+			if aLearned and tPos then tPos.skuIdentity = "skill:" .. aName .. " " .. (aRankText or "") end
+			SkuCore:RefreshWindowMenuQuietly()
+		end
 	end
 
 	local function tCheck(aFinal)
@@ -336,6 +342,11 @@ function SkuCore:Build_ClassTrainerFrameForever(aParentChilds)
 				end
 				tEntry.directClickButton = tAlias
 				tEntry.func = function() end
+			elseif tKnownSkill or tState == "used" then
+				-- Enter says so and leaves the cursor on the row (a quiet click keeps it there).
+				tEntry.click = true
+				tEntry.quietClick = true
+				tEntry.func = function() tSay(L["Already learned"]) end
 			end
 			aParentChilds[tLabel] = tEntry
 		end

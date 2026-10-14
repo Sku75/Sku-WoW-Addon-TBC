@@ -3573,3 +3573,5 @@ L["No achievements"] = "Keine Erfolge"
 -- Forever: buff announcement (SkuCore/buffAnnounce.lua)
 L["Buff announcements"] = "Buff-Ansage"
 L["Buff gained"] = "Buff erhalten"
+-- Forever: trainer (SkuCore/trainerForever.lua)
+L["Already learned"] = "Bereits gelernt"

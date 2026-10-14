@@ -3523,6 +3523,9 @@ L["No achievements"] = "Aucun haut fait"
 L["Buff announcements"] = "Annonce des buffs"
 L["Buff gained"] = "Buff obtenu"
 
+-- Forever: trainer (SkuCore/trainerForever.lua)
+L["Already learned"] = "Déjà appris"
+
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a
