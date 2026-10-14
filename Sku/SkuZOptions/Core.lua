@@ -19,6 +19,7 @@ local GetNumSkillLines = Sku.Compat.GetNumSkillLines
 local GetNumSpellTabs = Sku.Compat.GetNumSpellTabs
 local GetNumTrackingTypes = Sku.Compat.GetNumTrackingTypes
 local GetPetHappiness = Sku.Compat.GetPetHappiness
+local GetPetTrainingPoints = Sku.Compat.GetPetTrainingPoints
 local GetSkillLineInfo = Sku.Compat.GetSkillLineInfo
 local GetSpellBookItemName = Sku.Compat.GetSpellBookItemName
 local GetSpellCooldown = Sku.Compat.GetSpellCooldown
@@ -866,19 +867,30 @@ function SkuOptions:UpdateOverviewText(aPageId)
 
 	--general
 	local tGeneral = L["Allgemeines"]
+	-- Forever hides health and power from addons (secret values): such a line is left out
 	local function formatPercentage(current, max)
+		if Sku.IsSecret(current) or Sku.IsSecret(max) then return nil end
 		return (math.floor(current / max * 100)) .. "% (" .. current .. ")"
 	end
 	if UnitHealth("player") then
-		tGeneral = tGeneral .. "\r\n" .. L["Gesundheit: "] .. formatPercentage(UnitHealth("player"), UnitHealthMax("player"))
+		local tText = formatPercentage(UnitHealth("player"), UnitHealthMax("player"))
+		if tText then
+			tGeneral = tGeneral .. "\r\n" .. L["Gesundheit: "] .. tText
+		end
 	end
 	if UnitPower("player") then
 		local powerType, powerToken = UnitPowerType("player")
 		tPowerString = _G[powerToken]
-		tGeneral = tGeneral .. "\r\n" .. tPowerString .. ": " .. formatPercentage(UnitPower("player"), UnitPowerMax("player"))
+		local tText = formatPercentage(UnitPower("player"), UnitPowerMax("player"))
+		if tText then
+			tGeneral = tGeneral .. "\r\n" .. tPowerString .. ": " .. tText
+		end
 	end
 	if UnitName("playerpet") then
-		tGeneral = tGeneral .. "\r\n" .. L["Pet"] .. " " .. L["Gesundheit: "] .. formatPercentage(UnitHealth("pet"), UnitHealthMax("pet"))
+		local tText = formatPercentage(UnitHealth("pet"), UnitHealthMax("pet"))
+		if tText then
+			tGeneral = tGeneral .. "\r\n" .. L["Pet"] .. " " .. L["Gesundheit: "] .. tText
+		end
 	end
 
 	--pvp
@@ -957,7 +969,11 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	tGeneral = tGeneral.."\r\n"..L["XP: "]..(math.floor(tPlayercurrXP / (tPlayernextXP / 100)))..L[" Prozent ("]..tPlayercurrXP..L[" von "]..tPlayernextXP..L[" für "]..(UnitLevel("player") + 1)..L[")\r\nRuhebonus: "]..tPlayerXPExhaustion
 
 	--gs
-	local guid, gearScore = SkuOptions.LGS:GetScore("player")
+	-- LibGearScore does not run on Forever (GetScore is missing there): no gear score line
+	local guid, gearScore
+	if SkuOptions.LGS and SkuOptions.LGS.GetScore then
+		guid, gearScore = SkuOptions.LGS:GetScore("player")
+	end
 	if gearScore and gearScore.Description then
 		tGeneral = tGeneral.."\r\n"..L["Gearscore: "]..gearScore.GearScore.." ("..gearScore.Description..L[", average item level "]..gearScore.AvgItemLevel..")"
 	end
@@ -1310,7 +1326,10 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	--pet
 	if UnitName("playerpet") and SkuCore:PlayerIsHunter() then
 		local petSection = L["Pet"]
-		local tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
+		local tPetcurrXP, tPetnextXP
+		if GetPetExperience then
+			tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
+		end
 		if tPetcurrXP then
 			petSection = petSection .. "\r\n" .. L["Tier XP: "] .. tPetcurrXP .. L[" von "] .. tPetnextXP .. L[" für "] .. UnitLevel("playerpet") + 1
 		end
@@ -1326,7 +1345,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 			local tTotal, tSpent = GetPetTrainingPoints()
 			local tUnspent = (tTotal or 0) - (tSpent or 0)
 			petSection = petSection .. "\r\n" .. L["Unspent pet training points"]..": "..tUnspent
-		elseif UnitCharacterPoints("pet") then
+		elseif UnitCharacterPoints and UnitCharacterPoints("pet") then
 			petSection = petSection .. "\r\n" .. L["Unspent pet talent points"]..": "..UnitCharacterPoints("pet")
 		end
 
@@ -1346,14 +1365,15 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		if numEntries > 0 then
 			for y = offset + 1, offset + numEntries do
 				local spellName, spellSubName, spellID = GetSpellBookItemName(y, BOOKTYPE_SPELL)
-				if spellName then
+				-- entries without a spell id (flyouts, future spells) cannot be asked for passive/known/cooldown
+				if spellName and spellID then
 					local tIsPassive = IsPassiveSpell(spellID)
 					local isKnown = IsSpellKnown(spellID, aIsPet)
 					if not tIsPassive and isKnown then
 						if not tFound[spellName] then
 							tFound[spellName] = true
 							local start, duration, enabled, modRate = GetSpellCooldown(spellID)
-							if (start > 0 and duration > 1.5) then
+							if not Sku.IsSecret(start) and not Sku.IsSecret(duration) and (start > 0 and duration > 1.5) then
 								tTmpText = tTmpText..spellName.." "..SkuEpochValueHelper(GetServerTime() - math.floor(start + duration - GetTime())).."\r\n"
 							end
 						end

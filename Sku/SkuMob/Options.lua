@@ -512,6 +512,11 @@ local function tBuildTargetMenu(aParent)
 				end)
 			end, L["MOB_PetRenameTip"])
 
+			-- Forever: feed the pet with one key (choose food + key), SkuCore/petFeed.lua
+			if Sku.isForever then
+				SkuCore.PetFeed:MenuBuilder(aParent)
+			end
+
 			if SkuMob.pendingPetRename then
 				local tSafeName = SkuMob.pendingPetRename:gsub('["\\\r\n]', '')
 				local tConfirmLabel = L["MOB_PetRenameConfirm"] .. tSafeName

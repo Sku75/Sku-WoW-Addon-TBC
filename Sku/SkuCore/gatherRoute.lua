@@ -817,7 +817,7 @@ function GatherRoute:Tick()
       -- Only self-scan when the ambient notifier is NOT producing results: it is
       -- gated on notifyOnRessources AND on the player actually moving.
       local tAmbient = (SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources == true)
-         and ((GetUnitSpeed("player") or 0) > 0)
+         and ((Sku.UnitSpeed("player") or 0) > 0)
       if not tAmbient and GetTime() - gLastSelfScan >= SELF_SCAN_INTERVAL then
          gLastSelfScan = GetTime()
          GatherRoute:RequestScan()

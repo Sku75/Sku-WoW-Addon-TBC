@@ -15,6 +15,15 @@ local CLASS_IDS, tLastFallSoundNum, tdiold, tdisold
 
 local tStartDebugTimestamp = GetTime() or 0
 
+-- Forever: Sku calling these taints Blizzard's own action bars (blocked SetPointBase, secret
+-- SetCooldown errors in Blizzard_ActionBar), so the refresh is skipped there.
+local function SkuCoreRefreshActionBars()
+	if Sku.isForever then return end
+	SetActionBarToggles(1,1,1,1,1)
+	MultiActionBar_Update()
+	UIParent_ManageFramePositions()
+end
+
 SkuCoreDB = {}
 SkuCore = LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 SkuCore.maxItemNameLength = 1000
@@ -821,7 +830,7 @@ do
          tGaugeSamples[tGaugeIdx] = tHTick
       end
       tGaugeY, tGaugeX, tGaugeT = tPosY, tPosX, tNow
-      local tSpeed = GetUnitSpeed("player")
+      local tSpeed = Sku.UnitSpeed("player")
       if tGaugeSamples[4] and tSpeed and tSpeed > 1 then
          local tSum = tGaugeSamples[1] + tGaugeSamples[2] + tGaugeSamples[3] + tGaugeSamples[4]
          local tRatio = math.min((tSum / 4) / tSpeed, 1)
@@ -2053,11 +2062,16 @@ function SkuCore:OnEnable()
 							and (not SkuStatus or SkuStatus.follow == 0)
 						if SkuCoreMovement.Flags.MoveForward == true or SkuCoreMovement.Flags.StrafeLeft == true or SkuCoreMovement.Flags.StrafeRight == true or SkuCoreMovement.Flags.MoveBackward == true or SkuCoreMovement.Flags.AutoRun == true or tEngineWalkArm == true then
 							local _, tDistance = SkuCore:Distance(tNewX, tNewY, SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y)
-							local currentSpeed, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed("player")
-							local tMod = currentSpeed / 7
+							local currentSpeed, runSpeed, flightSpeed, swimSpeed = Sku.UnitSpeed("player")
+							-- Speed hidden (WoW Forever in combat): tMod 0 gives no verdict, every
+							-- distance test below fails and the counter resets.
+							local tMod = 0
+							if currentSpeed then
+								tMod = currentSpeed / 7
 
-							if IsSwimming() then
-								tMod = (currentSpeed / swimSpeed) / runSpeed
+								if IsSwimming() then
+									tMod = (currentSpeed / swimSpeed) / runSpeed
+								end
 							end
 
 							local tSound = 0
@@ -2176,9 +2190,13 @@ function SkuCore:OnEnable()
 							-- fallback mode (instances): positions are dead, so use the
 							-- LibRangeCheck lower bracket vs the keep-up baseline (refreshed
 							-- each moving tick) as a coarse "how far behind" proxy.
-							local moving = (GetUnitSpeed("player") or 0) > 0.5
+							-- Speed hidden (WoW Forever in combat): no baseline and no verdict.
+							local tSpeed = Sku.UnitSpeed("player")
+							local moving = (tSpeed or 0) > 0.5
 							local tLibMin
-							if SkuOptions and SkuOptions.RangeCheck and SkuOptions.RangeCheck.GetRange then
+							if not tSpeed then
+								fs.baseLibMin = nil
+							elseif SkuOptions and SkuOptions.RangeCheck and SkuOptions.RangeCheck.GetRange then
 								local ok, a = pcall(function() return SkuOptions.RangeCheck:GetRange(tLeader) end)
 								if ok then tLibMin = a end
 							end
@@ -2871,9 +2889,12 @@ function SkuCore:PLAYER_LOGIN(...)
 	f:AddFontStrings(f:CreateFontString( "$parentTextLeft1", nil, "GameTooltipText" ), f:CreateFontString( "$parentTextRight1", nil, "GameTooltipText" ))
 
 	--we need to do that to have all craftframe elementes available on first use; otherwise it won't be complete on first open, as the data from the server take a few ms
-	UIParentLoadAddOn("Blizzard_CraftUI")
-	CraftFrame:Show()
-	CraftFrame:Hide()
+	-- Forever has no craft window and no UIParentLoadAddOn
+	if UIParentLoadAddOn then
+		UIParentLoadAddOn("Blizzard_CraftUI")
+		CraftFrame:Show()
+		CraftFrame:Hide()
+	end
 
 	SkuSettings:Sub("SkuCore").trainerSkillsUnavailableDisabled = false
 end
@@ -3333,14 +3354,12 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 			C_Timer.After(15, function()
 				if InCombatLockdown() ~= true then
-					SetActionBarToggles(1,1,1,1,1) 
-					MultiActionBar_Update() 
-					UIParent_ManageFramePositions() 
+					SkuCoreRefreshActionBars()
 
 					C_CVar.SetCVar("instantQuestText", "1")
 					C_CVar.SetCVar("autoLootDefault", "1")
 					dprint("autoLootDefault", C_CVar.GetCVar("autoLootDefault", "1"))
-					C_CVar.SetCVar("alwaysShowActionBars", "1")
+					if not Sku.isForever then C_CVar.SetCVar("alwaysShowActionBars", "1") end
 					C_CVar.SetCVar("cameraSmoothStyle", "2")
 					C_CVar.SetCVar("removeChatDelay", "1")
 
@@ -3382,12 +3401,10 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			
 			C_Timer.After(10, function()
 				if InCombatLockdown() ~= true then
-					SetActionBarToggles(1,1,1,1,1) 
-					MultiActionBar_Update() 
-					UIParent_ManageFramePositions() 
+					SkuCoreRefreshActionBars()
 					C_CVar.SetCVar("instantQuestText", "1")
 					C_CVar.SetCVar("autoLootDefault", "1")
-					C_CVar.SetCVar("alwaysShowActionBars", "1")
+					if not Sku.isForever then C_CVar.SetCVar("alwaysShowActionBars", "1") end
 					C_CVar.SetCVar("cameraSmoothStyle", "2")
 					C_CVar.SetCVar("removeChatDelay", "1")
 				end
@@ -3514,12 +3531,10 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 	C_Timer.After(6, function()
 		if InCombatLockdown() ~= true then
-			SetActionBarToggles(1,1,1,1,1) 
-			MultiActionBar_Update() 
-			UIParent_ManageFramePositions() 
+			SkuCoreRefreshActionBars()
 			C_CVar.SetCVar("instantQuestText", "1")
 			C_CVar.SetCVar("autoLootDefault", "1")
-			C_CVar.SetCVar("alwaysShowActionBars", "1")
+			if not Sku.isForever then C_CVar.SetCVar("alwaysShowActionBars", "1") end
 			C_CVar.SetCVar("cameraSmoothStyle", "2")
 			C_CVar.SetCVar("removeChatDelay", "1")
 
