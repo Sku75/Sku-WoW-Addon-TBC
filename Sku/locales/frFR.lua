@@ -3418,6 +3418,17 @@ L["SkuChatAnnounceChannelTip"] = "Annonce le canal cible dès qu'il diffère de 
 L["Unbekannter Befehl"] = "commande inconnue"
 L["wird abgerufen"] = "chargement en cours"
 
+-- Forever: bags and bank (SkuCore/LocalMenu.lua)
+L["Reagent bag"] = "Sac de composants"
+L["Bank tab"] = "Onglet de banque"
+L["Warband bank tab"] = "Onglet de la banque de bataillon"
+L["Character bank"] = "Banque du personnage"
+L["Warband bank"] = "Banque de bataillon"
+L["Buy bank tab"] = "Acheter un onglet de banque"
+L["free of charge"] = "gratuit"
+L["not enough gold"] = "pas assez d'or"
+L["Opens Blizzard's purchase prompt. Nothing is bought until you confirm with Yes."] = "Ouvre la demande d'achat de Blizzard. Rien n'est acheté tant que vous ne confirmez pas par Oui."
+
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a

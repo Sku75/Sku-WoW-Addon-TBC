@@ -3474,3 +3474,13 @@ L["SkuChatAnnounceChannelTip"] = "Sagt den Zielkanal an, sobald er vom Standardk
 L["Unbekannter Befehl"] = "Unbekannter Befehl"
 -- Sku v43.6: recipe tooltip, reagent name not in the item cache yet (SkuZOptions/Core.lua)
 L["wird abgerufen"] = "wird abgerufen"
+-- Forever: bags and bank (SkuCore/LocalMenu.lua)
+L["Reagent bag"] = "Reagenzientasche"
+L["Bank tab"] = "Bankfach"
+L["Warband bank tab"] = "Kriegsmeute-Bankfach"
+L["Character bank"] = "Charakter-Bank"
+L["Warband bank"] = "Kriegsmeute-Bank"
+L["Buy bank tab"] = "Bankfach kaufen"
+L["free of charge"] = "kostenlos"
+L["not enough gold"] = "zu wenig Gold"
+L["Opens Blizzard's purchase prompt. Nothing is bought until you confirm with Yes."] = "Öffnet Blizzards Kaufabfrage. Gekauft wird erst, wenn du mit Ja bestätigst."
