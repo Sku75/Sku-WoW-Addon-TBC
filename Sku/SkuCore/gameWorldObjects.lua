@@ -220,13 +220,9 @@ local TURN_SETTLE_MIN_TIME = 0.05
 local TURN_TRIM_MIN = 0.05        -- kleinerer Rest-Schritt: lieber hier stoppen
 local TURN_GEAR2_MIN_REAL = 0.7   -- Gang 2 liefert unter 70 Prozent des verlangten Tempos -> abschalten
 
--- WoW Forever: GetUnitSpeed is a secret value in combat (SecretWhenUnitStatsRestricted). Comparing or
--- doing arithmetic with it throws, which aborted the turn completely in combat. Secret -> 0 (no lead)
--- so the turn itself still runs normally.
+-- Speed hidden (WoW Forever in combat) -> 0 (no lead), so the turn itself still runs normally.
 local function tPlayerSpeed()
-   local tSpeed = GetUnitSpeed("player")
-   if tSpeed == nil or Sku.IsSecret(tSpeed) then return 0 end
-   return tSpeed
+   return Sku.UnitSpeed("player") or 0
 end
 
 local tTurnFrame = CreateFrame("Frame")   -- OnUpdate nur waehrend einer Drehung

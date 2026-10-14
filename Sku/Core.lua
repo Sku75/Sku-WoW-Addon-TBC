@@ -66,6 +66,16 @@ function Sku.UnitPowerPercent(aUnit, aPowerIndex)
 	if Sku.IsSecret(tCur) then return nil end
 	return math.floor(tCur / (tMax / 100))
 end
+-- GetUnitSpeed, or nil while the client hides it (WoW Forever: secret while unit stats are
+-- restricted, e.g. in combat). Every caller decides what "speed unknown" means for it.
+function Sku.UnitSpeed(aUnit)
+	local tCurrent, tRun, tFlight, tSwim = GetUnitSpeed(aUnit)
+	if Sku.IsSecret(tCurrent) then return nil end
+	return tCurrent, tRun, tFlight, tSwim
+end
+if not _G.issecretvalue then
+	Sku.UnitSpeed = GetUnitSpeed
+end
 -- Whether this client knows a WoW event. RegisterEvent throws on an unknown one (WoW Forever
 -- dropped several, e.g. TRADE_SKILL_UPDATE and the old AUCTION_* list events), and the throw
 -- aborts the rest of the calling function. A skipped event leaves a line in SkuDebugLog.
@@ -1402,7 +1412,7 @@ local function tSkuCollisionProbeStart(aSeconds)
 	if tDuration < 3 then tDuration = 3 elseif tDuration > 30 then tDuration = 30 end
 
 	local _, tInstType = IsInInstance()
-	local cur, run = GetUnitSpeed("player")
+	local cur, run = Sku.UnitSpeed("player")
 	local pa, pb = tSkuFollowProbePos("player")   -- reuse the follow probe's UnitPosition helper
 
 	dprint("=== SkuCollisionProbe START ===")
@@ -1429,7 +1439,7 @@ local function tSkuCollisionProbeStart(aSeconds)
 		if tAcc < 0.15 then return end
 		tAcc = 0
 		tN = tN + 1
-		local ccur, crun = GetUnitSpeed("player")
+		local ccur, crun = Sku.UnitSpeed("player")
 		local tRatio = (crun and crun > 0) and (ccur / crun) or nil
 		local tIntent, tKeys = tSkuCollisionProbeIntent()
 		local cpa, cpb = tSkuFollowProbePos("player")

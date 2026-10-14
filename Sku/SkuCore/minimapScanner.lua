@@ -1030,7 +1030,7 @@ function MinimapScanner:MinimapScannerOnLogin()
       if SkuCore.inCombat == true then
          return
       end
-      if (GetUnitSpeed("player") or 0) <= 0 then
+      if (Sku.UnitSpeed("player") or 0) <= 0 then
          self.timeCounter = 0   -- Zähler beim Stehenbleiben zurücksetzen
          return
       end
