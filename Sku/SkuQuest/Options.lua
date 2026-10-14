@@ -1821,7 +1821,15 @@ local function SkuPostQuestToChat(aQuestID)
 	-- sieht dann nur den Klartext-Titel ohne Hyperlink.
 	local link
 	local tFromLog = false
-	if _G.GetQuestLink and GetNumQuestLogEntries and GetQuestLogTitle then
+	if Sku.isForever and _G.GetQuestLink then
+		-- Forever: GetQuestLink takes the quest ID (Blizzard's QuestMapFrame calls it that way), not the
+		-- index in the quest log
+		local tQuestLink = GetQuestLink(aQuestID)
+		if tQuestLink and tQuestLink ~= "" then
+			link = tQuestLink
+			tFromLog = true
+		end
+	elseif _G.GetQuestLink and GetNumQuestLogEntries and GetQuestLogTitle then
 		local tNum = GetNumQuestLogEntries() or 0
 		for i = 1, tNum do
 			local _, _, _, isHeader, _, _, _, qid = GetQuestLogTitle(i)
