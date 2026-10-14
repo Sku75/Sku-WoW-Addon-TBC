@@ -1381,16 +1381,23 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 								-- here would break menu navigation itself, not just the
 								-- description. TooltipLines_helper is also called once
 								-- now rather than three times per move.
+								-- Forever: SetSpellBookItem wants a spell bank Enum instead of the "spell" string and
+								-- fills nothing, and the scanning tooltip has no SetSpellByID. The tooltip data of the
+								-- spell gives the text.
+								if Sku.isForever then
+									local tLines = spellID and SkuCore:TooltipDataLines(C_TooltipInfo.GetSpellByID(spellID))
+									if tLines then
+										local tText = SkuUtil:Unescape(table.concat(tLines, "\r\n"))
+										SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
+									end
+									return
+								end
 								local tTip = _G["SkuScanningTooltip"]
 								if not tTip then return end
 								local tOk = pcall(function()
 									tTip:ClearLines()
 									tTip:SetOwner(WorldFrame, "ANCHOR_NONE")
-									if Sku.isForever and spellID then
-										-- Forever: SetSpellBookItem wants a spell bank Enum, not the "spell"
-										-- string, and fills nothing without an error.
-										tTip:SetSpellByID(spellID)
-									elseif tTip.SetSpellBookItem then
+									if tTip.SetSpellBookItem then
 										tTip:SetSpellBookItem(y, aBooktype)
 									elseif spellID then
 										tTip:SetSpellByID(spellID)
