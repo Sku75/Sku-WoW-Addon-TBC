@@ -247,7 +247,7 @@ local function tAddResetEntry(aList, aPanel, aTreeName, aIndex)
 				SkuCore:ConfirmButtonShow(tAsk,
 					function()
 						PlaySound(89)
-						if tButton.OnClick then tButton:OnClick("LeftButton") else tButton:GetScript("OnClick")(tButton, "LeftButton") end
+						tButton:Click()
 						tSay(string.format(L["%s reset. Confirm with Apply, or Undo."], aTreeName))
 					end,
 					function()

@@ -4,8 +4,9 @@
 -- tree (.TalentsFrame, nodes through C_Traits) and spellbook (.SpellBookFrame). Source: Blizzard_PlayerSpells (Camelot) /
 -- Blizzard_SharedTalentUI.
 -- The tree is a graph; for the menu it is sorted flat by row (posY) and column (posX), and grouped by the branches the
--- game knows (C_Traits.GetGroupDisplayInfoByTreeID). What is operated are the window's REAL buttons (OnClick), so
--- Blizzard's own checks (cost, locks, confirmations) apply. Changes stay pending until "Apply" is pressed.
+-- game knows (C_Traits.GetGroupDisplayInfoByTreeID). What is operated are the window's REAL buttons, through the same
+-- calls as Blizzard's gamepad path (PurchaseRank, RefundRank, Click; not OnClick, which reacts to held modifier keys),
+-- so Blizzard's own checks (cost, locks, confirmations) apply. Changes stay pending until "Apply" is pressed.
 -- Not in the menu yet: hero talents and loadouts, and the spellbook tab (the spellbook is in the action bar menus).
 -- SkuCore.BuildTalentTreeSection is also used by the legacy window (achievementsForever.lua): the legacy tree is a
 -- TalentFrameBase like the class talent tree.
@@ -58,16 +59,6 @@ local function tEntryInfo(aConfigID, aEntryID)
 		tDesc = tSub and tSub.description
 	end
 	return tName, tDesc, tEntry.isAvailable
-end
-
-local function tClick(aButton, aMouseButton)
-	return function()
-		if aButton.OnClick then
-			aButton:OnClick(aMouseButton or "LeftButton")
-		else
-			aButton:GetScript("OnClick")(aButton, aMouseButton or "LeftButton")
-		end
-	end
 end
 
 -- A click entry. aIdentity pins the cursor to the entry across the quiet refresh that follows the click, because
@@ -135,7 +126,7 @@ local function tNodeEntry(aParentChilds, aConfigID, aButton, aNodeInfo)
 		end
 		-- take back
 		if aButton.CanRefundRank and aButton:CanRefundRank() and tSelectedID then
-			tAction(tNode.childs, L["Refund"], tClick(aButton, "RightButton"), nil, nil, tIdent .. ":refund")
+			tAction(tNode.childs, L["Refund"], function() aButton:SetSelectedEntryID(nil) end, nil, nil, tIdent .. ":refund")
 		end
 		return
 	end
@@ -152,9 +143,9 @@ local function tNodeEntry(aParentChilds, aConfigID, aButton, aNodeInfo)
 	elseif tIsLocked or not tCanBuy then
 		tLabel = tLabel .. " (" .. L["disabled"] .. ")"
 	end
-	tAction(aParentChilds, tLabel, tClick(aButton, "LeftButton"), tDesc or "", tCanBuy and true or false, tIdent)
+	tAction(aParentChilds, tLabel, function() if aButton:CanPurchaseRank() then aButton:PurchaseRank() end end, tDesc or "", tCanBuy and true or false, tIdent)
 	if aButton.CanRefundRank and aButton:CanRefundRank() then
-		tAction(aParentChilds, L["Refund"] .. ": " .. tName, tClick(aButton, "RightButton"), nil, nil, tIdent .. ":refund")
+		tAction(aParentChilds, L["Refund"] .. ": " .. tName, function() if aButton:CanRefundRank() then aButton:RefundRank() end end, nil, nil, tIdent .. ":refund")
 	end
 end
 
@@ -201,11 +192,11 @@ local function tTalentsSection(aParentChilds, aTalentsFrame)
 	if tApply and tApply:IsShown() then
 		local tLabel = tApply:GetText() or TALENT_FRAME_APPLY_BUTTON_TEXT
 		if not tApply:IsEnabled() then tLabel = tLabel .. " (" .. L["disabled"] .. ")" end
-		tAction(aParentChilds, tLabel, tApply:IsEnabled() and tClick(tApply) or nil)
+		tAction(aParentChilds, tLabel, tApply:IsEnabled() and function() tApply:Click() end or nil)
 	end
 	local tUndo = aTalentsFrame.UndoButton
 	if tUndo and tUndo:IsShown() and tUndo:IsEnabled() then
-		tAction(aParentChilds, L["Undo"], tClick(tUndo))
+		tAction(aParentChilds, L["Undo"], function() tUndo:Click() end)
 	end
 
 	-- collect the nodes, order by row and column
