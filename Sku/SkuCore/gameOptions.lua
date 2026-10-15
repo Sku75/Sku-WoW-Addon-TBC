@@ -917,6 +917,14 @@ local function InjectCategory(aParent, aCat)
    entry.BuildChildren = function(self) BuildCategory(self, aCat) end
 end
 
+-- Blizzard sorts the addon categories with strcmputf8i (case-insensitive, SortCategoriesByName in
+-- Blizzard_CategoryList.lua); lower() on a client without it.
+local function CategoryNameLess(a, b)
+   local tA, tB = tostring(CategoryName(a)), tostring(CategoryName(b))
+   if strcmputf8i then return strcmputf8i(tA, tB) < 0 end
+   return tA:lower() < tB:lower()
+end
+
 local function InjectGroup(aParent, aText, aCategories)
    local entry = Inject(aParent, tostring(aText))
    entry.dynamic = true
@@ -953,7 +961,7 @@ local function BuildCategoryList(aSelf)
    end
    if #tAddOnCategories > 0 then
       tAny = true
-      table.sort(tAddOnCategories, function(a, b) return tostring(CategoryName(a)) < tostring(CategoryName(b)) end)
+      table.sort(tAddOnCategories, CategoryNameLess)
       -- the addon group's groupText is Blizzard's untranslated key "AddOns" (Blizzard_CategoryList.lua)
       InjectGroup(aSelf, ADDONS, tAddOnCategories)
    end
