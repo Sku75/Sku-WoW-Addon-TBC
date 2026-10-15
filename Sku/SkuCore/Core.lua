@@ -436,13 +436,15 @@ SkuCore.localWindowContributors = {
 	{ frame = "MailFrame",    label = function() return Sku.L["Mail"] end,
 	  build = function(self) if SkuCore.MailMenuBuilder then SkuCore.MailMenuBuilder(self) end end },
 	-- Forever has Blizzard's new auction house window (AuctionHouseFrame, auctionHouseForever.lua); AuctionFrame is nil there.
+	-- SkuCore.AuctionHouseForever exists only on Forever. On Forever the menu is still opened by the old module's
+	-- AUCTION_HOUSE_SHOW handler (auctionHouse.lua), which opens Local > Auktionshaus on every client.
 	{ frame = Sku.isForever and "AuctionHouseFrame" or "AuctionFrame", label = function() return Sku.L["Auktionshaus"] end,
 	  build = function(self)
-	     if Sku.isForever then
-	        if SkuCore.AuctionHouseForever then SkuCore.AuctionHouseForever:MenuBuilder(self) end
-	     elseif SkuCore.AuctionHouse and SkuCore.AuctionHouse.AuctionHouseMenuBuilder then
-	        SkuCore.AuctionHouse.AuctionHouseMenuBuilder(self)
-	     end
+		if SkuCore.AuctionHouseForever then
+			SkuCore.AuctionHouseForever:MenuBuilder(self)
+		elseif SkuCore.AuctionHouse and SkuCore.AuctionHouse.AuctionHouseMenuBuilder then
+			SkuCore.AuctionHouse.AuctionHouseMenuBuilder(self)
+		end
 	  end },
 	{ frame = Sku.isForever and "SocialUIFrame" or "FriendsFrame", label = function() return Sku.L["Social"] end,
 	  build = function(self) if SkuCore.Friends and SkuCore.Friends.FriendsMenuBuilder then SkuCore.Friends.FriendsMenuBuilder(self) end end },
