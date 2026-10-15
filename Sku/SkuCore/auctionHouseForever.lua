@@ -270,9 +270,10 @@ end
 -- Throttled queries. Auction house queries go through the client's throttled message system;
 -- one sent while IsThrottledMessageSystemReady is false is queued or dropped by the client
 -- (AUCTION_HOUSE_THROTTLED_MESSAGE_QUEUED / _DROPPED). So a query is parked in
--- aState.pendingSend and sent on AUCTION_HOUSE_THROTTLED_SYSTEM_READY, oldest first.
--- aState: any query state table (gBrowse, gDetail, ...). Only for queries that are not
--- protected: a parked call runs from an event, not from a key press.
+-- aState.pendingSend and sent on AUCTION_HOUSE_THROTTLED_SYSTEM_READY, oldest first, one per
+-- ready signal (a sent query uses up the throttle again).
+-- aState: the query's state table (gBrowse, gDetail, gOwned, gBids, the sell draft for its market
+-- lookup). Only for queries that are not protected: a parked call runs from an event, not from a key press.
 -- ---------------------------------------------------------------------
 local gThrottleWaiting = {}
 
@@ -1425,38 +1426,17 @@ function AHF:StartMarketQuery()
 	gSell.marketState = "waiting"
 	gSell.marketLowest = nil
 	gSell.marketKey = tKey
-	gSell.marketEquipment = tEquipment
-	AHF:SendMarketQuery()
+	local tSorts = gSell.isCommodity and { { sortOrder = Enum.AuctionHouseSortOrder.Price, reverseSort = false } } or AHF_ITEM_SORTS
+	tSendThrottled(gSell, tEquipment and C_AuctionHouse.SendSellSearchQuery or C_AuctionHouse.SendSearchQuery, tKey, tSorts, false)
 	-- No answer is not "no offers": the lookup is reported as failed.
 	local tDraft = gSell
 	C_Timer.After(6, function()
 		if gSell == tDraft and gSell.marketState == "waiting" then
-			gSell.marketState, gSell.marketQueued = "failed", nil
+			gSell.marketState, gSell.pendingSend = "failed", nil
 			tRefreshSellLabels()
 			tSay(tMarketLabel())
 		end
 	end)
-end
-
--- A query sent while the throttled message system is not ready is dropped without an answer, so it waits for
--- AUCTION_HOUSE_THROTTLED_SYSTEM_READY (sell event frame below).
-function AHF:SendMarketQuery()
-	if not C_AuctionHouse.IsThrottledMessageSystemReady() then
-		gSell.marketQueued = true
-		return
-	end
-	gSell.marketQueued = nil
-	local tSorts
-	if gSell.isCommodity then
-		tSorts = { { sortOrder = Enum.AuctionHouseSortOrder.Price, reverseSort = false } }
-	else
-		tSorts = { { sortOrder = Enum.AuctionHouseSortOrder.Buyout, reverseSort = false }, { sortOrder = Enum.AuctionHouseSortOrder.Bid, reverseSort = false } }
-	end
-	if gSell.marketEquipment then
-		C_AuctionHouse.SendSellSearchQuery(gSell.marketKey, tSorts, false)
-	else
-		C_AuctionHouse.SendSearchQuery(gSell.marketKey, tSorts, false)
-	end
 end
 
 -- Called from the search result events (see the event frame above).
@@ -1765,7 +1745,6 @@ local function tShowList(aList)
 end
 
 local function tSendListQuery(aList)
-	aList.pendingSend = nil
 	aList.send()
 	local tGen = aList.generation
 	C_Timer.After(6, function()
@@ -1778,19 +1757,14 @@ local function tSendListQuery(aList)
 end
 
 -- The old rows go at once: until the answer is in, the list says "Warten", never shows rows of an earlier query.
--- The game drops a query sent while its throttled message system is not ready, without any answer; such a query is
--- sent on AUCTION_HOUSE_THROTTLED_SYSTEM_READY. No answer within 6 seconds of sending = failed.
+-- The query goes out through tSendThrottled. No answer within 6 seconds of sending = failed.
 local function tStartListQuery(aList, aEntry)
 	aList.state = "waiting"
 	aList.entry = aEntry
 	aList.rows = {}
 	aList.namePending = nil
 	aList.generation = aList.generation + 1
-	if C_AuctionHouse.IsThrottledMessageSystemReady() then
-		tSendListQuery(aList)
-	else
-		aList.pendingSend = true
-	end
+	tSendThrottled(aList, tSendListQuery, aList)
 end
 
 -- Item name of an owned auction or a bid: from its link, else from its item key. Not cached yet: Blizzard's
@@ -2002,7 +1976,6 @@ end
 local gListEventFrame = CreateFrame("Frame")
 gListEventFrame:RegisterEvent("BIDS_UPDATED")
 gListEventFrame:RegisterEvent("BID_ADDED")
-gListEventFrame:RegisterEvent("AUCTION_HOUSE_THROTTLED_SYSTEM_READY")
 gListEventFrame:RegisterEvent("ITEM_KEY_ITEM_INFO_RECEIVED")
 gListEventFrame:RegisterEvent("AUCTION_HOUSE_CLOSED")
 gListEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
@@ -2015,14 +1988,6 @@ gListEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 		if AuctionHouseFrame and AuctionHouseFrame:IsShown() then
 			tSay(L["Gebot abgegeben"])
 			AHF:RefreshBids()
-		end
-	elseif aEvent == "AUCTION_HOUSE_THROTTLED_SYSTEM_READY" then
-		-- one query per ready signal: a sent query uses up the throttle again
-		for _, tList in ipairs({ gOwned, gBids }) do
-			if tList.pendingSend and tList.state == "waiting" then
-				tSendListQuery(tList)
-				break
-			end
 		end
 	elseif aEvent == "ITEM_KEY_ITEM_INFO_RECEIVED" then
 		if gOwned.namePending then AHF:RefreshOwned() end
@@ -2048,7 +2013,7 @@ function AHF:BuildSalesChildren(aSelf)
 end
 
 local gSellEventFrame = CreateFrame("Frame")
-for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_POST_ERROR", "AUCTION_HOUSE_SHOW_ERROR", "AUCTION_HOUSE_THROTTLED_SYSTEM_READY", "AUCTION_MULTISELL_START", "AUCTION_MULTISELL_UPDATE", "AUCTION_MULTISELL_FAILURE", "BAG_UPDATE_DELAYED", "AUCTION_HOUSE_CLOSED" }) do
+for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_POST_ERROR", "AUCTION_HOUSE_SHOW_ERROR", "AUCTION_MULTISELL_START", "AUCTION_MULTISELL_UPDATE", "AUCTION_MULTISELL_FAILURE", "BAG_UPDATE_DELAYED", "AUCTION_HOUSE_CLOSED" }) do
 	if Sku.IsEventValid(tEvent) then gSellEventFrame:RegisterEvent(tEvent) end
 end
 -- Blizzard's AuctionHouseFrame answers AUCTION_HOUSE_POST_WARNING / _ERROR with its own popup. Its Accept confirms
@@ -2094,8 +2059,6 @@ gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	elseif aEvent == "AUCTION_HOUSE_SHOW_ERROR" then
 		-- A post the server refuses is no longer pending.
 		gSell.pending, gSell.posting = nil, nil
-	elseif aEvent == "AUCTION_HOUSE_THROTTLED_SYSTEM_READY" then
-		if gSell.marketQueued and gSell.marketState == "waiting" then AHF:SendMarketQuery() end
 	elseif aEvent == "AUCTION_MULTISELL_FAILURE" then
 		if not gSell.multisell and not gSell.multisellExpected then return end
 		local tM = gSell.multisell
