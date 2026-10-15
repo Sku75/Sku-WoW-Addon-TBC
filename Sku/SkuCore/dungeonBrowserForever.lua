@@ -113,8 +113,8 @@ local function tActivityInfo(activityID)
    local t = C_LFGList.GetActivityInfoTable(activityID)
    if type(t) ~= "table" then return nil end
    local info = { id = activityID }
-   info.name       = t.shortName or t.fullName or (L["Activity #"] .. activityID)
-   info.fullName   = t.fullName or t.shortName
+   -- shortName is never nil but often empty (LFGUtil_GetActivityInfoName)
+   info.name       = (t.shortName ~= "" and t.shortName) or t.fullName
    -- Like Blizzard's window (LFGUtil_GetFilteredActivities) only the *Suggestion* fields count. minLevel/maxLevel carry
    -- the real minimum levels on Forever, so a level 11 character was left without a single dungeon when they were used.
    info.minLevel   = (type(t.minLevelSuggestion) == "number" and t.minLevelSuggestion > 0 and t.minLevelSuggestion) or nil
