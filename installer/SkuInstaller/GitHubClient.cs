@@ -126,7 +126,7 @@ namespace SkuInstaller
         /// validation. Returns null on any failure; the caller falls back to the
         /// package's pin.
         /// </summary>
-        public async Task<string> ResolveLatestTagAsync(string ownerRepo)
+        public async Task<string> ResolveLatestTagAsync(string ownerRepo, string tagPrefix = null)
         {
             string url = $"https://github.com/{ownerRepo}/releases/latest";
             try
@@ -136,7 +136,14 @@ namespace SkuInstaller
                 {
                     resp.EnsureSuccessStatusCode();
                     string finalPath = resp.RequestMessage?.RequestUri?.AbsolutePath ?? string.Empty;
-                    var m = Regex.Match(finalPath, @"/releases/tag/([A-Za-z0-9._\-]+)$");
+                    // A tag prefix opts one package into tags of the form
+                    // "bundle/v12.1.0+v1.0.6" (Questie since v12): the prefix may
+                    // carry a "/", the rest also "+" (or its %2B escape). Every
+                    // other package keeps the strict plain-tag pattern.
+                    string pattern = tagPrefix == null
+                        ? @"/releases/tag/([A-Za-z0-9._\-]+)$"
+                        : @"/releases/tag/(" + Regex.Escape(tagPrefix) + @"[A-Za-z0-9._\-+%]+)$";
+                    var m = Regex.Match(finalPath, pattern);
                     if (!m.Success)
                     {
                         Logger.Warning($"{ownerRepo}/releases/latest resolved to '{finalPath}' — no usable tag.");

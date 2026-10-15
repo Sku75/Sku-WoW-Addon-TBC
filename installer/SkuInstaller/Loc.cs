@@ -142,12 +142,14 @@ namespace SkuInstaller
             ["target.updateAvailable"] = "Update available — Sku {0} is installed, {1} is available.",
             ["target.versionUnknown"]  = "(version unknown)",
             ["target.devSymlink"]      = "Developer symlink — Sku {0}, managed outside the installer and left untouched.",
+            ["target.foreverNotYet"]   = "Sku for WoW Forever comes with Sku {0}. The newest release is {1}, so nothing is installed into this client yet. The installer offers it as soon as Sku {0} is out.",
 
             // ── version selection ────────────────────────────────────────────
             ["versions.heading"]        = "Which game versions should Sku be installed into?",
             ["versions.body"]           = "Tick every World of Warcraft version you play — both can be done in one run. The next step confirms where each one lives.",
             ["versions.needOne.title"]  = "Nothing selected",
             ["versions.needOne.text"]   = "Tick at least one game version before continuing, or use Back to leave the installer.",
+            ["versions.foreverNotYet"] = "WoW Forever cannot be installed yet: Sku for WoW Forever comes with Sku {0}, and the newest release is {1}. Untick WoW Forever to continue with the other game versions.",
 
             // ── per-version folders ──────────────────────────────────────────
             ["folders.heading"]         = "Where is each version installed?",
@@ -184,8 +186,8 @@ namespace SkuInstaller
             ["opt.force.label"]      = "Reinstall everything (repair)",
             ["opt.force.desc"]       = "Downloads and replaces every addon even when it is already current. Use this to repair a broken install — it takes considerably longer.",
 
-            ["managed.label"]        = "Additional recommended addons (Anniversary and Classic Era)",
-            ["managed.acc"]          = "Additional recommended addons. These well-known addons are installed and kept up to date together with Sku, in the Anniversary and Classic Era clients; each client gets the build that matches it. Space toggles the highlighted addon.",
+            ["managed.label"]        = "Additional recommended addons (Anniversary, Classic Era and WoW Forever)",
+            ["managed.acc"]          = "Additional recommended addons. These well-known addons are installed and kept up to date together with Sku, in the Anniversary, Classic Era and WoW Forever clients; each client gets the build that matches it. Space toggles the highlighted addon.",
             ["update.managedUpdates"]  = "{0}: updates available for additional addons: {1}.",
             ["update.managedInstalls"] = "{0}: additional addons that will be installed: {1}.",
             ["managed.badHash"]      = "{0}: the download failed its integrity check and was not installed.",
@@ -221,7 +223,7 @@ namespace SkuInstaller
 
             // ── dialogs ──────────────────────────────────────────────────────
             ["dlg.browse.desc"]        = "Select your World of Warcraft folder, a game version folder, or the Interface\\AddOns folder.",
-            ["dlg.notRecognized.text"] = "That folder doesn't look like a World of Warcraft install. Pick the World of Warcraft folder, a game version folder (for example _anniversary_ or _classic_era_), or its Interface\\AddOns folder.",
+            ["dlg.notRecognized.text"] = "That folder doesn't look like a World of Warcraft install. Pick the World of Warcraft folder, a game version folder (for example _anniversary_, _classic_era_ or _classic_beta_ for WoW Forever), or its Interface\\AddOns folder.",
             ["dlg.notRecognized.title"]= "Folder not recognized",
             ["dlg.closeGame.text"]     = "World of Warcraft must be fully closed for this update (it installs a new addon, changes large sound files, or fixes required game settings).\n\nClose the game completely (all the way to the desktop), then choose Retry. Or Cancel to stop.",
             ["dlg.closeGame.title"]    = "Please close World of Warcraft",
@@ -373,12 +375,14 @@ namespace SkuInstaller
             ["target.updateAvailable"] = "Aktualisierung verfügbar – Sku {0} ist installiert, {1} ist verfügbar.",
             ["target.versionUnknown"]  = "(Version unbekannt)",
             ["target.devSymlink"]      = "Entwickler-Symlink – Sku {0}, wird außerhalb des Installers verwaltet und bleibt unverändert.",
+            ["target.foreverNotYet"]   = "Sku für WoW Forever kommt mit Sku {0}. Die neueste Version ist {1}, darum wird in diesen Client noch nichts installiert. Der Installer bietet ihn an, sobald Sku {0} erschienen ist.",
 
             // ── Auswahl der Spielversionen ───────────────────────────────────
             ["versions.heading"]        = "In welche Spielversionen soll Sku installiert werden?",
             ["versions.body"]           = "Kreuze jede World-of-Warcraft-Version an, die du spielst – beide lassen sich in einem Durchgang erledigen. Im nächsten Schritt wird bestätigt, wo sie jeweils liegen.",
             ["versions.needOne.title"]  = "Nichts ausgewählt",
             ["versions.needOne.text"]   = "Kreuze mindestens eine Spielversion an, um fortzufahren, oder verlasse den Installer über „Zurück“.",
+            ["versions.foreverNotYet"] = "WoW Forever kann noch nicht installiert werden: Sku für WoW Forever kommt mit Sku {0}, die neueste Version ist {1}. Entferne den Haken bei WoW Forever, um mit den anderen Spielversionen fortzufahren.",
 
             // ── Ordner je Spielversion ───────────────────────────────────────
             ["folders.heading"]         = "Wo ist welche Version installiert?",
@@ -415,8 +419,8 @@ namespace SkuInstaller
             ["opt.force.label"]      = "Alles neu installieren (Reparatur)",
             ["opt.force.desc"]       = "Lädt jedes AddOn erneut herunter und ersetzt es, auch wenn es bereits aktuell ist. Für die Reparatur einer defekten Installation – dauert deutlich länger.",
 
-            ["managed.label"]        = "Zusätzliche empfohlene AddOns (Anniversary und Classic Era)",
-            ["managed.acc"]          = "Zusätzliche empfohlene AddOns. Diese bekannten AddOns werden zusammen mit Sku installiert und aktuell gehalten, im Anniversary- und im Classic-Era-Client; jeder Client erhält die zu ihm passende Fassung. Die Leertaste schaltet das markierte AddOn um.",
+            ["managed.label"]        = "Zusätzliche empfohlene AddOns (Anniversary, Classic Era und WoW Forever)",
+            ["managed.acc"]          = "Zusätzliche empfohlene AddOns. Diese bekannten AddOns werden zusammen mit Sku installiert und aktuell gehalten, im Anniversary-, im Classic-Era- und im WoW-Forever-Client; jeder Client erhält die zu ihm passende Fassung. Die Leertaste schaltet das markierte AddOn um.",
             ["update.managedUpdates"]  = "{0}: Updates für zusätzliche AddOns verfügbar: {1}.",
             ["update.managedInstalls"] = "{0}: Zusätzliche AddOns, die neu installiert werden: {1}.",
             ["managed.badHash"]      = "{0}: Der Download hat die Integritätsprüfung nicht bestanden und wurde nicht installiert.",
@@ -452,7 +456,7 @@ namespace SkuInstaller
 
             // ── Dialoge ──────────────────────────────────────────────────────
             ["dlg.browse.desc"]        = "Wähle deinen World-of-Warcraft-Ordner, einen Spielversions-Ordner oder den Ordner Interface\\AddOns.",
-            ["dlg.notRecognized.text"] = "Dieser Ordner sieht nicht nach einer World-of-Warcraft-Installation aus. Wähle den World-of-Warcraft-Ordner, einen Spielversions-Ordner (zum Beispiel _anniversary_ oder _classic_era_) oder dessen Ordner Interface\\AddOns.",
+            ["dlg.notRecognized.text"] = "Dieser Ordner sieht nicht nach einer World-of-Warcraft-Installation aus. Wähle den World-of-Warcraft-Ordner, einen Spielversions-Ordner (zum Beispiel _anniversary_, _classic_era_ oder _classic_beta_ für WoW Forever) oder dessen Ordner Interface\\AddOns.",
             ["dlg.notRecognized.title"]= "Ordner nicht erkannt",
             ["dlg.closeGame.text"]     = "World of Warcraft muss für diese Aktualisierung vollständig geschlossen sein (es wird ein neues AddOn installiert, große Sounddateien geändert oder erforderliche Spieleinstellungen korrigiert).\n\nSchließe das Spiel vollständig (bis zum Desktop) und wähle dann „Wiederholen“. Oder „Abbrechen“ zum Beenden.",
             ["dlg.closeGame.title"]    = "Bitte World of Warcraft schließen",
@@ -610,12 +614,14 @@ namespace SkuInstaller
             ["target.updateAvailable"] = "Mise à jour disponible — Sku {0} est installé, {1} est disponible.",
             ["target.versionUnknown"]  = "(version inconnue)",
             ["target.devSymlink"]      = "Lien symbolique de développement — Sku {0}, géré en dehors de l'installateur et laissé intact.",
+            ["target.foreverNotYet"]   = "Sku pour WoW Forever arrive avec Sku {0}. La dernière version est la {1}, donc rien n'est encore installé dans ce client. L'installateur le proposera dès la sortie de Sku {0}.",
 
             // ── choix des versions du jeu ────────────────────────────────────
             ["versions.heading"]        = "Dans quelles versions du jeu faut-il installer Sku ?",
             ["versions.body"]           = "Cochez chaque version de World of Warcraft à laquelle vous jouez — les deux peuvent être faites en une seule fois. L'étape suivante confirme où chacune se trouve.",
             ["versions.needOne.title"]  = "Aucune sélection",
             ["versions.needOne.text"]   = "Cochez au moins une version du jeu pour continuer, ou utilisez « Retour » pour quitter l'installateur.",
+            ["versions.foreverNotYet"] = "WoW Forever ne peut pas encore être installé : Sku pour WoW Forever arrive avec Sku {0}, et la dernière version est la {1}. Décochez WoW Forever pour continuer avec les autres versions du jeu.",
 
             // ── dossiers par version ─────────────────────────────────────────
             ["folders.heading"]         = "Où chaque version est-elle installée ?",
@@ -652,8 +658,8 @@ namespace SkuInstaller
             ["opt.force.label"]      = "Tout réinstaller (réparation)",
             ["opt.force.desc"]       = "Télécharge et remplace chaque addon même s'il est déjà à jour. À utiliser pour réparer une installation défectueuse — c'est nettement plus long.",
 
-            ["managed.label"]        = "Addons supplémentaires recommandés (Anniversary et Classic Era)",
-            ["managed.acc"]          = "Addons supplémentaires recommandés. Ces addons connus sont installés et maintenus à jour avec Sku, dans les clients Anniversary et Classic Era ; chaque client reçoit la version qui lui correspond. La barre d'espace bascule l'addon en surbrillance.",
+            ["managed.label"]        = "Addons supplémentaires recommandés (Anniversary, Classic Era et WoW Forever)",
+            ["managed.acc"]          = "Addons supplémentaires recommandés. Ces addons connus sont installés et maintenus à jour avec Sku, dans les clients Anniversary, Classic Era et WoW Forever ; chaque client reçoit la version qui lui correspond. La barre d'espace bascule l'addon en surbrillance.",
             ["update.managedUpdates"]  = "{0} : mises à jour disponibles pour les addons supplémentaires : {1}.",
             ["update.managedInstalls"] = "{0} : addons supplémentaires qui seront installés : {1}.",
             ["managed.badHash"]      = "{0} : le téléchargement a échoué au contrôle d'intégrité et n'a pas été installé.",
@@ -689,7 +695,7 @@ namespace SkuInstaller
 
             // ── boîtes de dialogue ───────────────────────────────────────────
             ["dlg.browse.desc"]        = "Sélectionnez votre dossier World of Warcraft, un dossier de version du jeu, ou le dossier Interface\\AddOns.",
-            ["dlg.notRecognized.text"] = "Ce dossier ne ressemble pas à une installation de World of Warcraft. Choisissez le dossier World of Warcraft, un dossier de version du jeu (par exemple _anniversary_ ou _classic_era_), ou son dossier Interface\\AddOns.",
+            ["dlg.notRecognized.text"] = "Ce dossier ne ressemble pas à une installation de World of Warcraft. Choisissez le dossier World of Warcraft, un dossier de version du jeu (par exemple _anniversary_, _classic_era_ ou _classic_beta_ pour WoW Forever), ou son dossier Interface\\AddOns.",
             ["dlg.notRecognized.title"]= "Dossier non reconnu",
             ["dlg.closeGame.text"]     = "World of Warcraft doit être entièrement fermé pour cette mise à jour (elle installe un nouvel addon, modifie de gros fichiers son, ou corrige des réglages du jeu nécessaires).\n\nFermez complètement le jeu (jusqu'au bureau), puis choisissez « Réessayer ». Ou « Annuler » pour arrêter.",
             ["dlg.closeGame.title"]    = "Veuillez fermer World of Warcraft",

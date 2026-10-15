@@ -21,9 +21,11 @@ namespace SkuInstaller
     /// file-driven: under each WoW base dir, each "_*_" folder is a flavor; its
     /// .flavor.info names the product (wow_anniversary, wow_classic_era, …) and a
     /// WowClassic.exe / Wow.exe confirms it's a real client. Sku is installed into
-    /// the chosen flavor's Interface\AddOns. The same Sku build serves both
-    /// Anniversary and Classic Era; what makes it load on each is TocSync writing
-    /// that flavor's EXACT interface build into every TOC (see InterfaceVersionList).
+    /// the chosen flavor's Interface\AddOns. The same Sku build serves
+    /// Anniversary, Classic Era and WoW Forever; what makes it load on each is
+    /// TocSync writing that flavor's EXACT interface build into every TOC (see
+    /// InterfaceVersionList). WoW Forever runs its own exe (WowB.exe) and its own
+    /// interface family (16001), so its TOCs never carry the Anniversary numbers.
     /// These Anniversary-family clients gate on the exact build number — a near
     /// number is silently refused, and "Load out of date AddOns" (checkAddonVersion
     /// 0) does NOT cover a mismatched interface. Learned on Classic Era 11509 when
@@ -34,8 +36,8 @@ namespace SkuInstaller
         /// <summary>
         /// The clients this Sku build supports, in the order the wizard offers
         /// them. Anniversary is the primary target; the same Sku build serves
-        /// Classic Era (what makes it load there is TocSync writing that client's
-        /// exact interface build — see the class remarks).
+        /// Classic Era and WoW Forever (what makes it load there is TocSync
+        /// writing that client's exact interface build — see the class remarks).
         ///
         /// This is deliberately the SUPPORTED list, not the detected list: the
         /// version-selection page shows every entry so a user whose client sits
@@ -45,16 +47,33 @@ namespace SkuInstaller
         public static readonly string[] SupportedProducts =
         {
             Config.AnniversaryFlavor,   // wow_anniversary
-            "wow_classic_era",
+            Config.EraFlavor,           // wow_classic_era
+            Config.ForeverFlavor,       // wow_classic_beta (WoW Forever)
         };
+
+        /// <summary>True for a client this Sku build installs into.</summary>
+        public static bool IsSupportedProduct(string product) =>
+            Array.IndexOf(SupportedProducts, product) >= 0;
+
+        /// <summary>
+        /// The game exe names (without extension) a flavor folder may hold: the
+        /// classic clients run WowClassic.exe (Wow.exe on some installs), WoW
+        /// Forever runs WowB.exe.
+        /// </summary>
+        private static readonly string[] ClientExeNames =
+            { Config.GameProcessName, "Wow", Config.ForeverProcessName };
+
+        private static bool HasClientExe(string flavorDir) =>
+            ClientExeNames.Any(n => File.Exists(Path.Combine(flavorDir, n + ".exe")));
 
         /// <summary>
         /// Very short tag for a client, used to prefix progress rows so a
         /// multi-client run can be told apart at a glance ("TBC:", "Era:").
         ///
-        /// Deliberately two or three characters. These prefix every line of the
-        /// event log, and anything longer pushes the actual message off to the
-        /// right and makes the log tiring to read back.
+        /// Deliberately one short word. These prefix every line of the event log,
+        /// and anything longer pushes the actual message off to the right and
+        /// makes the log tiring to read back. Forever stays a whole word: an
+        /// abbreviation like "FE" means nothing when it is read aloud.
         /// </summary>
         public static string ShortLabel(string product)
         {
@@ -62,6 +81,7 @@ namespace SkuInstaller
             {
                 case "wow_anniversary": return "TBC";
                 case "wow_classic_era": return "Era";
+                case "wow_classic_beta": return "Forever";
                 case "wow_classic":     return "Classic";
                 case "wow_sod":         return "SoD";
                 default:                return product;
@@ -75,6 +95,7 @@ namespace SkuInstaller
             {
                 case "wow_anniversary": return "Anniversary (TBC)";
                 case "wow_classic_era": return "Classic Era";
+                case "wow_classic_beta": return "WoW Forever";
                 case "wow_classic":     return "Classic";
                 case "wow_sod":         return "Season of Discovery";
                 default:                return product;
@@ -151,15 +172,13 @@ namespace SkuInstaller
 
                 foreach (var flavorDir in flavorDirs)
                 {
-                    bool hasExe = File.Exists(Path.Combine(flavorDir, "WowClassic.exe"))
-                               || File.Exists(Path.Combine(flavorDir, "Wow.exe"));
-                    if (!hasExe) continue;
+                    if (!HasClientExe(flavorDir)) continue;
 
                     string product = ReadFlavorProduct(flavorDir) ?? Path.GetFileName(flavorDir);
 
-                    // Only Anniversary and Classic Era are supported by this Sku
-                    // build — skip Classic (wow_classic), retail, SoD, etc.
-                    if (product != Config.AnniversaryFlavor && product != "wow_classic_era")
+                    // Only Anniversary, Classic Era and WoW Forever are supported
+                    // by this Sku build — skip Classic (wow_classic), retail, SoD, etc.
+                    if (!IsSupportedProduct(product))
                         continue;
 
                     string addons = Path.Combine(flavorDir, "Interface", "AddOns");
@@ -283,6 +302,18 @@ namespace SkuInstaller
         }
 
         /// <summary>
+        /// True if the flavor folder is any client this Sku build supports
+        /// (Anniversary, Classic Era, WoW Forever): it holds a client exe and its
+        /// .flavor.info names a supported product.
+        /// </summary>
+        private static bool IsSupportedFlavor(string flavorDir)
+        {
+            if (string.IsNullOrEmpty(flavorDir) || !Directory.Exists(flavorDir))
+                return false;
+            return HasClientExe(flavorDir) && IsSupportedProduct(ReadFlavorProduct(flavorDir));
+        }
+
+        /// <summary>
         /// Validates a user-picked folder. Accepts either the AddOns folder itself
         /// or a flavor/base folder we can resolve down to AddOns. Returns the
         /// resolved AddOns path or null.
@@ -296,8 +327,9 @@ namespace SkuInstaller
             if (picked.TrimEnd('\\').EndsWith("AddOns", StringComparison.OrdinalIgnoreCase))
                 return picked;
 
-            // Picked a flavor folder.
-            if (IsAnniversaryFlavor(picked))
+            // Picked a flavor folder: Anniversary (tolerates a missing
+            // .flavor.info) or any other supported client.
+            if (IsAnniversaryFlavor(picked) || IsSupportedFlavor(picked))
                 return AddOnsInFlavor(picked);
 
             // Picked a base folder.
@@ -319,7 +351,7 @@ namespace SkuInstaller
         // first-install updates and to decide the end-of-run message.
 
         public static bool IsGameRunning() =>
-            Process.GetProcessesByName(Config.GameProcessName).Length > 0;
+            Config.GameProcessNames.Any(n => Process.GetProcessesByName(n).Length > 0);
 
         /// <summary>
         /// Reads the "## Version:" line from an addon's TOC, e.g. "41.06" from
@@ -364,24 +396,30 @@ namespace SkuInstaller
         // major*10000 + minor*100 + patch  (2.5.6 -> 20506, 1.15.8 -> 11508).
 
         /// <summary>
-        /// The Interface version(s) of the installed, Sku-supported client(s)
-        /// (Anniversary + Classic Era), formatted as a TOC "## Interface:" list —
-        /// highest first, e.g. "20506, 11508". Empty string if none can be read.
-        /// The .build.info at a base dir lists every product, so reading the base
-        /// that owns <paramref name="addonsFolder"/> already yields both clients;
-        /// if that fails (e.g. a custom/throwaway path) we scan the machine.
+        /// The Interface version(s) of the installed, Sku-supported client(s) of
+        /// the family <paramref name="addonsFolder"/> belongs to, formatted as a
+        /// TOC "## Interface:" list — highest first, e.g. "20506, 11508". Empty
+        /// string if none can be read. The .build.info at a base dir lists every
+        /// product, so reading the base that owns the folder already yields both
+        /// Anniversary and Classic Era; if that fails (e.g. a custom/throwaway
+        /// path) we scan the machine.
+        ///
+        /// Two families, never mixed: a WoW Forever folder gets only Forever's
+        /// number (16001), an Anniversary or Era folder only theirs. Each client
+        /// has its own AddOns folder, so its TOCs only need to name that client.
         /// </summary>
         public static string InterfaceVersionList(string addonsFolder)
         {
             var versions = new System.Collections.Generic.List<int>();
+            bool forever = ProductForAddOnsFolder(addonsFolder) == Config.ForeverFlavor;
 
             string baseDir = BaseDirOf(addonsFolder);
             if (baseDir != null)
-                CollectInterfaceVersions(baseDir, versions);
+                CollectInterfaceVersions(baseDir, versions, forever);
 
             if (versions.Count == 0)
                 foreach (var bd in CandidateBaseDirs())
-                    CollectInterfaceVersions(bd, versions);
+                    CollectInterfaceVersions(bd, versions, forever);
 
             var ordered = versions.Distinct().OrderByDescending(v => v);
             return string.Join(", ", ordered);
@@ -401,11 +439,13 @@ namespace SkuInstaller
         }
 
         /// <summary>
-        /// Adds the interface number of each Sku-supported product found in
-        /// &lt;baseDir&gt;\.build.info (Anniversary + Classic Era only — never
-        /// wow_classic/retail, which run different interface numbers).
+        /// Adds the interface number of each Sku-supported product of one family
+        /// found in &lt;baseDir&gt;\.build.info: Anniversary + Classic Era, or WoW
+        /// Forever alone when <paramref name="forever"/> is set — never
+        /// wow_classic/retail, which run different interface numbers.
         /// </summary>
-        private static void CollectInterfaceVersions(string baseDir, System.Collections.Generic.List<int> into)
+        private static void CollectInterfaceVersions(string baseDir, System.Collections.Generic.List<int> into,
+                                                     bool forever)
         {
             if (string.IsNullOrEmpty(baseDir)) return;
             string buildInfo = Path.Combine(baseDir, ".build.info");
@@ -434,8 +474,10 @@ namespace SkuInstaller
                     if (verCol >= cols.Length || prodCol >= cols.Length) continue;
 
                     string product = cols[prodCol].Trim();
-                    if (product != Config.AnniversaryFlavor && product != "wow_classic_era")
-                        continue;
+                    bool wanted = forever
+                        ? product == Config.ForeverFlavor
+                        : (product == Config.AnniversaryFlavor || product == Config.EraFlavor);
+                    if (!wanted) continue;
 
                     int iface = InterfaceFromBuildVersion(cols[verCol].Trim());
                     if (iface > 0) into.Add(iface);

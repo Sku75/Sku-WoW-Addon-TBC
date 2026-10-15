@@ -23,9 +23,11 @@ namespace SkuInstaller
 
         /// <summary>
         /// WoW product tokens this package applies to. Most zips are multi-flavor
-        /// (one download serves Anniversary and Classic Era); the exceptions are
-        /// per-flavor release assets like Pawn's -BurningCrusade/-Classic zips and
-        /// DBM's per-era raid packages. Null = every managed client.
+        /// (one download serves Anniversary, Classic Era and WoW Forever); the
+        /// exceptions are per-flavor release assets like Pawn's
+        /// -BurningCrusade/-Classic/-Forever zips, DBM's per-era raid packages,
+        /// and the Forever-only Questie/AtlasLoot packages. Null = every managed
+        /// client.
         /// </summary>
         public string[] Products;
 
@@ -45,8 +47,18 @@ namespace SkuInstaller
         /// <summary>"owner/repo" whose /releases/latest is tracked, or null for pinned.</summary>
         public string GitHubRepo;
 
-        /// <summary>Asset filename with the release tag substituted, e.g. "Questie-{tag}.zip".</summary>
+        /// <summary>
+        /// Asset filename with the release tag substituted, e.g. "BugSack-{tag}.zip".
+        /// "{name}" is the tag without <see cref="TagPrefix"/>.
+        /// </summary>
         public string AssetTemplate;
+
+        /// <summary>
+        /// Set for a repo whose release tags carry a path prefix, e.g. Questie's
+        /// "bundle/v12.1.0+v1.0.6" (asset "Questie-v12.1.0+v1.0.6.zip"). Only such
+        /// a package accepts tags with "/" and "+"; null = plain tags.
+        /// </summary>
+        public string TagPrefix;
 
         /// <summary>Pinned/fallback version label, download URL, and its SHA-256.</summary>
         public string PinVersion;
@@ -74,11 +86,12 @@ namespace SkuInstaller
     }
 
     /// <summary>
-    /// The well-known non-Sku addons the installer manages for the Anniversary
-    /// and Classic Era clients — mirror of installer/shared/addon-catalog.json
-    /// "managedAnniversaryAddons" (test_catalog_parity.py holds the two in step).
-    /// Most zips are multi-flavor and serve both clients from one download; the
-    /// per-flavor exceptions carry a Products list. GitHub is used for every
+    /// The well-known non-Sku addons the installer manages for the Anniversary,
+    /// Classic Era and WoW Forever clients — mirror of
+    /// installer/shared/addon-catalog.json "managedAnniversaryAddons"
+    /// (test_catalog_parity.py holds the two in step). Most zips are multi-flavor
+    /// and serve every client from one download; the per-flavor exceptions carry
+    /// a Products list. GitHub is used for every
     /// addon that publishes releases there; the CurseForge CDN pins remain only
     /// for addons without GitHub releases (AtlasLoot, Details, GTFO, BugGrabber)
     /// until we hold a CurseForge API key.
@@ -94,11 +107,17 @@ namespace SkuInstaller
                 {
                     new ManagedPackage
                     {
-                        Key = "CurseQuestie", RequiredRoots = new[] { "Questie" },
-                        GitHubRepo = "Questie/Questie", AssetTemplate = "Questie-{tag}.zip",
-                        PinVersion = "v11.37.1",
-                        PinUrl = "https://edge.forgecdn.net/files/8742/429/Questie-v11.37.1.zip",
-                        PinSha256 = "450e09bd795ff25d5529abdb4b431d360e76d1097bb59992098bb39a907b8926",
+                        // Questie 12 (2026-09-23) is one multi-flavor bundle for
+                        // every client, WoW Forever included: tags read
+                        // "bundle/v12.x+v1.y", the asset "Questie-v12.x+v1.y.zip",
+                        // and the quest data moved to a second required folder,
+                        // QuestieDB. Until installer 5.5 the plain-tag pattern
+                        // rejected those tags and kept every client on 11.37.1.
+                        Key = "CurseQuestie", RequiredRoots = new[] { "Questie", "QuestieDB" },
+                        GitHubRepo = "Questie/Questie", TagPrefix = "bundle/", AssetTemplate = "Questie-{name}.zip",
+                        PinVersion = "bundle/v12.1.0+v1.0.6",
+                        PinUrl = "https://github.com/Questie/Questie/releases/download/bundle%2Fv12.1.0%2Bv1.0.6/Questie-v12.1.0%2Bv1.0.6.zip",
+                        PinSha256 = "4ca2fbcbd03e050e8b8295f86bc29c6fe6044ef2db298e724f581c8c5a9a6d68",
                     },
                 },
             },
@@ -111,19 +130,38 @@ namespace SkuInstaller
                 {
                     new ManagedPackage
                     {
+                        // Sku's AtlasLoot support (alIntegration.lua) is written
+                        // against these AtlasLootClassic_* module names.
                         Key = "CurseAtlasLootAnniversary",
                         RequiredRoots = new[] { "AtlasLootClassic", "AtlasLootClassic_Data" },
                         RootPrefix = "AtlasLootClassic",
+                        Products = new[] { Config.AnniversaryFlavor, Config.EraFlavor },
                         PinVersion = "2.5.6.12334",
                         PinUrl = "https://edge.forgecdn.net/files/8721/161/AtlasLootClassic-Master_12334.zip",
                         PinSha256 = "e286fa10bfe2a5ae15d405ebe65071caab386d1eb61cf9b25bad3ab6a9e1ad0d",
+                    },
+                    new ManagedPackage
+                    {
+                        // Same CurseForge project, renamed: since 2026-09 it ships
+                        // "AtlasLootClassic-Continued" with AtlasLootContinued*
+                        // folders and _Camelot TOCs. Forever only, so it never
+                        // lands beside the AtlasLootClassic* set (both claim the
+                        // global AtlasLoot and collide).
+                        Key = "CurseAtlasLootForever",
+                        RequiredRoots = new[] { "AtlasLootContinued", "AtlasLootContinued_Data" },
+                        RootPrefix = "AtlasLootContinued",
+                        Products = new[] { Config.ForeverFlavor },
+                        PinVersion = "12488",
+                        PinUrl = "https://edge.forgecdn.net/files/9187/862/AtlasLootClassic-Continued_12488.zip",
+                        PinSha256 = "8eaee376a19b26da4a50f4f7f7304f9f41b3eadfd0bd38c4fd98f67495fa82bd",
                     },
                 },
             },
             new ManagedEntry
             {
                 // Details releases are multi-flavor since mid-2026 (one zip carries
-                // Details_TBC.toc AND Details_Classic.toc), so one pin serves both.
+                // Details_TBC.toc, Details_Classic.toc AND Details_Camelot.toc), so
+                // one pin serves all three clients.
                 PrefKey = "ManageDetails", DisplayName = "Details Damage Meter",
                 Packages = new[]
                 {
@@ -132,9 +170,9 @@ namespace SkuInstaller
                         Key = "CurseDetails",
                         RequiredRoots = new[] { "Details", "Details_DataStorage" },
                         RootPrefix = "Details",
-                        PinVersion = "20260811.15275.172",
-                        PinUrl = "https://edge.forgecdn.net/files/8680/856/Details-Details.20260811.15275.172.zip",
-                        PinSha256 = "3a1f83db2ec4cebde18f36ac496e3fd15134351aae9cde2ead62a233a64c751e",
+                        PinVersion = "20261014.15330.172",
+                        PinUrl = "https://edge.forgecdn.net/files/9177/176/Details-Details.20261014.15330.172.zip",
+                        PinSha256 = "67c4fe6c81e7bc331098e67bce00ee049735d278a7c9d04c9d749930233e5086",
                     },
                 },
             },
@@ -152,18 +190,29 @@ namespace SkuInstaller
                         Key = "CursePawnTBC", RequiredRoots = new[] { "Pawn" },
                         Products = new[] { Config.AnniversaryFlavor },
                         GitHubRepo = "VgerMods/Pawn", AssetTemplate = "{tag}-BurningCrusade.zip",
-                        PinVersion = "Pawn-2.13.15",
-                        PinUrl = "https://edge.forgecdn.net/files/8671/944/Pawn-2.13.15-BurningCrusade.zip",
-                        PinSha256 = "412a77ae5007aa00cf50ae91272f0af84262c63c0b70144906dedc0ab8d39750",
+                        PinVersion = "Pawn-2.13.17",
+                        PinUrl = "https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.17/Pawn-2.13.17-BurningCrusade.zip",
+                        PinSha256 = "e0a597b5387001b30278d21817c162c74b84cd26c77ec3d969d65b4aea8c1fd2",
                     },
                     new ManagedPackage
                     {
                         Key = "CursePawnVanilla", RequiredRoots = new[] { "Pawn" },
                         Products = new[] { Config.EraFlavor },
                         GitHubRepo = "VgerMods/Pawn", AssetTemplate = "{tag}-Classic.zip",
-                        PinVersion = "Pawn-2.13.15",
-                        PinUrl = "https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.15/Pawn-2.13.15-Classic.zip",
-                        PinSha256 = "2b182e663fa4f3c0a60efa82f31a0623cbf11bc7d48d7e4f8faea203e93f6325",
+                        PinVersion = "Pawn-2.13.17",
+                        PinUrl = "https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.17/Pawn-2.13.17-Classic.zip",
+                        PinSha256 = "26ae9f704953417b0898c6950cd64a3cd25f994108e2d052f9929417c0f82cbe",
+                    },
+                    new ManagedPackage
+                    {
+                        // First published with 2.13.17. Not the plain Pawn zip:
+                        // that one is the retail build.
+                        Key = "CursePawnForever", RequiredRoots = new[] { "Pawn" },
+                        Products = new[] { Config.ForeverFlavor },
+                        GitHubRepo = "VgerMods/Pawn", AssetTemplate = "{tag}-Forever.zip",
+                        PinVersion = "Pawn-2.13.17",
+                        PinUrl = "https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.17/Pawn-2.13.17-Forever.zip",
+                        PinSha256 = "5b23160af66be3d70a46075eb7073dd43d398a3aea9d8ad29974f4063c30a216",
                     },
                 },
             },
@@ -179,9 +228,9 @@ namespace SkuInstaller
                         RequiredRoots = new[] { "DBM-Core", "DBM-GUI", "DBM-StatusBarTimers" },
                         RootPrefix = "DBM-",
                         GitHubRepo = "DeadlyBossMods/DeadlyBossMods", AssetTemplate = "DBM-Core-{tag}.zip",
-                        PinVersion = "12.1.8",
-                        PinUrl = "https://github.com/DeadlyBossMods/DeadlyBossMods/releases/download/12.1.8/DBM-Core-12.1.8.zip",
-                        PinSha256 = "980e833949071ba6359e6d5f326a5d51c1134010299cb7b7a6f9599c9df3e755",
+                        PinVersion = "12.1.14",
+                        PinUrl = "https://github.com/DeadlyBossMods/DeadlyBossMods/releases/download/12.1.14/DBM-Core-12.1.14.zip",
+                        PinSha256 = "d073b8b6e37efa877e4bb18d4dc736206f64868eabd91674c356d0313c21a2e8",
                     },
                     new ManagedPackage
                     {
@@ -189,28 +238,29 @@ namespace SkuInstaller
                         Key = "DBMRaidsBC", RequiredRoots = new[] { "DBM-Raids-BC" }, RootPrefix = "DBM-",
                         Products = new[] { Config.AnniversaryFlavor },
                         GitHubRepo = "DeadlyBossMods/DBM-BurningCrusade", AssetTemplate = "DBM-Raids-BC-{tag}.zip",
-                        PinVersion = "r19",
-                        PinUrl = "https://github.com/DeadlyBossMods/DBM-BurningCrusade/releases/download/r19/DBM-Raids-BC-r19.zip",
-                        PinSha256 = "5c6d3567018c0770653c8c9b82e3393411d0eea4405dd41445b7ff2e2406a32a",
+                        PinVersion = "r21",
+                        PinUrl = "https://github.com/DeadlyBossMods/DBM-BurningCrusade/releases/download/r21/DBM-Raids-BC-r21.zip",
+                        PinSha256 = "27f58b47e56d7372de8c99c1f3181b6c1a9d5db7644ff09c4bc2aafbf9d6bff0",
                     },
                     new ManagedPackage
                     {
                         // Vanilla/SoD raid mods - the Era counterpart of Raids-BC.
+                        // WoW Forever's raids are the vanilla ones (its TOC lists 16001).
                         Key = "DBMRaidsVanilla", RequiredRoots = new[] { "DBM-Raids-Vanilla" }, RootPrefix = "DBM-",
-                        Products = new[] { Config.EraFlavor },
+                        Products = new[] { Config.EraFlavor, Config.ForeverFlavor },
                         GitHubRepo = "DeadlyBossMods/DBM-Vanilla", AssetTemplate = "DBM-Vanilla_SoD-{tag}.zip",
-                        PinVersion = "r826",
-                        PinUrl = "https://github.com/DeadlyBossMods/DBM-Vanilla/releases/download/r826/DBM-Vanilla_SoD-r826.zip",
-                        PinSha256 = "0a68a1a21ee73a1f8da40117f3c244c363677fd36cf0fb6ae5b9885c5ff3116c",
+                        PinVersion = "r832",
+                        PinUrl = "https://github.com/DeadlyBossMods/DBM-Vanilla/releases/download/r832/DBM-Vanilla_SoD-r832.zip",
+                        PinSha256 = "1c02e96a45de723dce1c56c2f9428f767447496434d81dc191d2e8e9a63ed61d",
                     },
                     new ManagedPackage
                     {
-                        // One zip carries the BC and Vanilla dungeon folders.
+                        // One zip carries the BC, Vanilla and Forever dungeon folders.
                         Key = "DBMDungeons", RequiredRoots = new[] { "DBM-Party-BC", "DBM-Party-Vanilla" }, RootPrefix = "DBM-",
                         GitHubRepo = "DeadlyBossMods/DBM-Dungeons", AssetTemplate = "DBM-Dungeons-{tag}.zip",
-                        PinVersion = "r261",
-                        PinUrl = "https://github.com/DeadlyBossMods/DBM-Dungeons/releases/download/r261/DBM-Dungeons-r261.zip",
-                        PinSha256 = "4cdf4afa9d058da384a170095381041e7925730aba8b731d3e89ea5087afee09",
+                        PinVersion = "r266",
+                        PinUrl = "https://github.com/DeadlyBossMods/DBM-Dungeons/releases/download/r266/DBM-Dungeons-r266.zip",
+                        PinSha256 = "e1684a59a31940af9bf6dfde8a920e8feaf7ba90f439b5916c975d8b64fff96c",
                     },
                 },
             },
@@ -222,9 +272,11 @@ namespace SkuInstaller
                     new ManagedPackage
                     {
                         Key = "CurseGTFO", RequiredRoots = new[] { "GTFO" },
-                        PinVersion = "6.9.1",
-                        PinUrl = "https://edge.forgecdn.net/files/8729/407/GTFO-6.9.1.zip",
-                        PinSha256 = "a82d14b214f3a423ef99f5e7d9edbd7a186c552d9c5aa5ee1c75e92bf4aa18ae",
+                        // 6.11+ ships GTFO_Camelot.toc; older pins would load the
+                        // retail GTFO_Mainline.toc on WoW Forever.
+                        PinVersion = "6.12.1",
+                        PinUrl = "https://edge.forgecdn.net/files/9187/115/GTFO-6.12.1.zip",
+                        PinSha256 = "a2dd43bd4c61cc19ba5fb8efbf5953380f9905d3e2cc0a97260eccf5e63ec5d2",
                     },
                 },
             },
@@ -238,16 +290,16 @@ namespace SkuInstaller
                     {
                         Key = "BugSack", RequiredRoots = new[] { "BugSack" },
                         GitHubRepo = "funkydude/BugSack", AssetTemplate = "BugSack-{tag}.zip",
-                        PinVersion = "v12.0.13",
-                        PinUrl = "https://github.com/funkydude/BugSack/releases/download/v12.0.13/BugSack-v12.0.13.zip",
-                        PinSha256 = "e62c9a35bbfdca89dd4b66016e7828d3dd145ad9b7cdde2a62acdec1fc7bbb9b",
+                        PinVersion = "v12.1.7",
+                        PinUrl = "https://github.com/funkydude/BugSack/releases/download/v12.1.7/BugSack-v12.1.7.zip",
+                        PinSha256 = "ff93f1a141c889bdc6da604bae547d1b03e8c9b8fbbea27bf26fdc8c6c735308",
                     },
                     new ManagedPackage
                     {
                         Key = "CurseBugGrabber", RequiredRoots = new[] { "!BugGrabber" },
-                        PinVersion = "12.0.21",
-                        PinUrl = "https://edge.forgecdn.net/files/8619/054/%21BugGrabber-v12.0.21.zip",
-                        PinSha256 = "f031635ad509b8597b9f35bc94ae032ecf6f3292aaa9baa80b56bde3d8738520",
+                        PinVersion = "12.1.0",
+                        PinUrl = "https://edge.forgecdn.net/files/8907/587/%21BugGrabber-v12.1.0.zip",
+                        PinSha256 = "248fe28b39a9e85bb7ddd23b02ef335715b82fb6d93dd7a3ce568dc51967c1df",
                     },
                 },
             },
@@ -282,9 +334,11 @@ namespace SkuInstaller
                     var p = pkg;
                     tasks.Add(Task.Run(async () =>
                     {
-                        string tag = await github.ResolveLatestTagAsync(p.GitHubRepo);
+                        string tag = await github.ResolveLatestTagAsync(p.GitHubRepo, p.TagPrefix);
                         if (string.IsNullOrEmpty(tag)) return;
-                        string asset = p.AssetTemplate.Replace("{tag}", tag);
+                        string name = p.TagPrefix != null && tag.StartsWith(p.TagPrefix, StringComparison.Ordinal)
+                            ? tag.Substring(p.TagPrefix.Length) : tag;
+                        string asset = p.AssetTemplate.Replace("{tag}", tag).Replace("{name}", name);
                         var r = new ResolvedManagedPackage
                         {
                             Package = p, Version = tag, Sha256 = null,
@@ -327,10 +381,11 @@ namespace SkuInstaller
             return version.Substring(i);
         }
 
-        /// <summary>The clients this feature manages: Anniversary and Classic Era.</summary>
+        /// <summary>The clients this feature manages: Anniversary, Classic Era and WoW Forever.</summary>
         public static bool AppliesTo(InstallTarget target) =>
-            target != null && target.ClientFound &&
-            (target.Product == Config.AnniversaryFlavor || target.Product == Config.EraFlavor);
+            target != null && target.ClientFound && target.Installable &&
+            (target.Product == Config.AnniversaryFlavor || target.Product == Config.EraFlavor ||
+             target.Product == Config.ForeverFlavor);
 
         /// <summary>The entry's packages that apply to one client.</summary>
         public static IEnumerable<ManagedPackage> PackagesFor(ManagedEntry entry, string product) =>

@@ -47,6 +47,18 @@ namespace SkuInstaller
                 return;
             }
 
+            if (args.Length > 0 && args[0] == "forevertest")
+            {
+                RunForeverTest();
+                return;
+            }
+
+            if (args.Length > 0 && args[0] == "managedinstall")
+            {
+                RunManagedInstallTest(args.Length > 1 ? args[1] : Config.ForeverFlavor);
+                return;
+            }
+
             if (args.Length > 0 && args[0] == "texturesweep")
             {
                 RunTextureSweepTest();
@@ -556,6 +568,281 @@ namespace SkuInstaller
 
             Console.WriteLine();
             Console.WriteLine(fails == 0 ? "RESULT: PASS" : $"RESULT: FAIL ({fails})");
+            if (fails > 0) Environment.ExitCode = 1;
+        }
+
+        /// <summary>
+        /// WoW Forever support, headless and network-free: a throwaway WoW base
+        /// with Anniversary, Classic Era, WoW Forever and an unsupported client
+        /// (MoP), each with its .flavor.info, exe and WTF. Checks detection, folder
+        /// picking, the per-family interface list, the TOC rewrite on a Forever
+        /// install, the game settings, the login tool's per-client texture rule
+        /// and which managed addons apply. The real machine is never touched:
+        /// PathMemory is pointed at a throwaway store, which is also how the fake
+        /// base becomes visible to detection.
+        /// Usage: SkuSelfTest.exe forevertest
+        /// </summary>
+        private static void RunForeverTest()
+        {
+            int fails = 0;
+            void Check(string label, bool ok)
+            {
+                Console.WriteLine($"    [{(ok ? "PASS" : "FAIL")}] {label}");
+                if (!ok) fails++;
+            }
+
+            Console.WriteLine("=== build version -> interface number ===");
+            Check("1.60.1.70374 -> 16001", WowLocator.InterfaceFromBuildVersion("1.60.1.70374") == 16001);
+
+            string root = Path.Combine(Path.GetTempPath(), "SkuForeverTest");
+            if (Directory.Exists(root)) Directory.Delete(root, true);
+            string wow = Path.Combine(root, "World of Warcraft");
+            string ann = Path.Combine(wow, "_anniversary_");
+            string era = Path.Combine(wow, "_classic_era_");
+            string fwd = Path.Combine(wow, Config.ForeverFolder);
+            string mop = Path.Combine(wow, "_classic_");
+            void Flavor(string dir, string product, string exe)
+            {
+                Directory.CreateDirectory(Path.Combine(dir, "Interface", "AddOns"));
+                Directory.CreateDirectory(Path.Combine(dir, "WTF", "Account", "TESTACCOUNT"));
+                File.WriteAllText(Path.Combine(dir, ".flavor.info"), "Product Flavor!STRING:0\r\n" + product + "\r\n");
+                File.WriteAllText(Path.Combine(dir, exe), "x");
+            }
+            Flavor(ann, Config.AnniversaryFlavor, "WowClassic.exe");
+            Flavor(era, Config.EraFlavor, "WowClassic.exe");
+            Flavor(fwd, Config.ForeverFlavor, "WowB.exe");
+            Flavor(mop, "wow_classic", "WowClassic.exe");
+            // Same column layout as a real .build.info: Version and Product near the end.
+            File.WriteAllText(Path.Combine(wow, ".build.info"),
+                "Branch!STRING:0|Active!DEC:1|Build Key!HEX:16|Version!STRING:0|KeyRing!HEX:16|Product!STRING:0\r\n" +
+                "eu|1|aa|1.15.9.70003||wow_classic_era\r\n" +
+                "eu|1|bb|5.5.4.70268||wow_classic\r\n" +
+                "eu|1|cc|2.5.6.70006||wow_anniversary\r\n" +
+                "us|1|dd|1.60.1.70374||wow_classic_beta\r\n");
+
+            string annAddons = Path.Combine(ann, "Interface", "AddOns");
+            string eraAddons = Path.Combine(era, "Interface", "AddOns");
+            string fwdAddons = Path.Combine(fwd, "Interface", "AddOns");
+
+            string store = Path.Combine(root, "store");
+            Directory.CreateDirectory(store);
+            PathMemory.DirOverride = store;
+            try
+            {
+                // Remembering one client makes its BASE a detection candidate,
+                // which is how a fake base under %TEMP% gets probed at all.
+                PathMemory.Remember(Config.AnniversaryFlavor, annAddons);
+
+                Console.WriteLine("=== detection ===");
+                var flavors = WowLocator.DetectFlavors()
+                    .FindAll(f => f.AddOnsPath.StartsWith(wow, StringComparison.OrdinalIgnoreCase));
+                foreach (var f in flavors)
+                    Console.WriteLine($"    {f.Product,-18} {f.DisplayName}");
+                Check("Forever found by its WowB.exe + .flavor.info",
+                      flavors.Exists(f => f.Product == Config.ForeverFlavor && f.AddOnsPath == fwdAddons));
+                Check("Anniversary and Era still found",
+                      flavors.Exists(f => f.Product == Config.AnniversaryFlavor) &&
+                      flavors.Exists(f => f.Product == Config.EraFlavor));
+                Check("unsupported client (wow_classic) skipped", !flavors.Exists(f => f.Product == "wow_classic"));
+                Check("Anniversary listed first", flavors.Count > 0 && flavors[0].Product == Config.AnniversaryFlavor);
+                Check("Forever is a supported product, last in the picker",
+                      WowLocator.SupportedProducts[WowLocator.SupportedProducts.Length - 1] == Config.ForeverFlavor);
+                Check("labels", WowLocator.ShortLabel(Config.ForeverFlavor) == "Forever" &&
+                                WowLocator.ProductLabel(Config.ForeverFlavor) == "WoW Forever");
+
+                var targets = InstallTarget.BuildAll();
+                var fwdTarget = targets.Find(t => t.Product == Config.ForeverFlavor);
+                Check("a Forever install target exists, located, without Sku",
+                      fwdTarget != null && fwdTarget.AddOnsPath == fwdAddons && !fwdTarget.HasSku);
+
+                Console.WriteLine("=== minimum Sku version for Forever ===");
+                string pin = Config.MainVersion;
+                try
+                {
+                    Config.OverrideMainVersion("43.10");
+                    Console.WriteLine($"    43.10: {fwdTarget.StatusLine()}");
+                    Check("43.10 is not installable on Forever", !fwdTarget.Installable && !fwdTarget.UpdateAvailable);
+                    Check("43.10 still installable on Anniversary and Era",
+                          targets.TrueForAll(t => t.Product == Config.ForeverFlavor || t.Installable));
+                    Config.OverrideMainVersion(Config.ForeverMinMainVersion);
+                    Console.WriteLine($"    {Config.ForeverMinMainVersion}: {fwdTarget.StatusLine()}");
+                    Check(Config.ForeverMinMainVersion + " unlocks Forever", fwdTarget.Installable);
+                    Config.OverrideMainVersion("44.10");
+                    Check("44.10 too (numeric compare, not text)", fwdTarget.Installable);
+                }
+                finally { Config.OverrideMainVersion(pin); }
+
+                Console.WriteLine("=== picking a folder by hand ===");
+                Check("product of the Forever AddOns folder", WowLocator.ProductForAddOnsFolder(fwdAddons) == Config.ForeverFlavor);
+                Check("Forever flavor folder resolves to its AddOns", WowLocator.ResolveUserPickedFolder(fwd) == fwdAddons);
+                Check("Era flavor folder resolves to its AddOns", WowLocator.ResolveUserPickedFolder(era) == eraAddons);
+                Check("Forever AddOns folder accepted as is", WowLocator.ResolveUserPickedFolder(fwdAddons) == fwdAddons);
+                Check("base folder still resolves to Anniversary", WowLocator.ResolveUserPickedFolder(wow) == annAddons);
+
+                Console.WriteLine("=== interface list per client family ===");
+                string fwdList = WowLocator.InterfaceVersionList(fwdAddons);
+                string annList = WowLocator.InterfaceVersionList(annAddons);
+                string eraList = WowLocator.InterfaceVersionList(eraAddons);
+                Console.WriteLine($"    Forever: {fwdList}   Anniversary: {annList}   Era: {eraList}");
+                Check("Forever folder -> 16001 only", fwdList == "16001");
+                Check("Anniversary folder -> 20506, 11509 (no Forever, no MoP)", annList == "20506, 11509");
+                Check("Era folder -> same list as Anniversary", eraList == annList);
+
+                Console.WriteLine("=== TOC rewrite on a Forever install ===");
+                string skuDir = Path.Combine(fwdAddons, "Sku");
+                Directory.CreateDirectory(skuDir);
+                var bom = new byte[] { 0xEF, 0xBB, 0xBF };
+                byte[] body = System.Text.Encoding.UTF8.GetBytes(
+                    "## Interface: 20506, 11508, 11509, 16001\n## Title: Sku v44.0\n## Version: 44.0\n");
+                using (var fs = new FileStream(Path.Combine(skuDir, "Sku.toc"), FileMode.Create))
+                {
+                    fs.Write(bom, 0, bom.Length);
+                    fs.Write(body, 0, body.Length);
+                }
+                Check("shipped Sku.toc rewritten to the Forever number",
+                      TocSync.SyncInterface(fwdAddons, "Sku", fwdList, m => Console.WriteLine("    " + m)) &&
+                      TocSync.ReadInterface(fwdAddons, "Sku") == "16001");
+                Check("Forever target now reports Sku 44.0",
+                      InstallTarget.SkuInstalled(fwdAddons) &&
+                      WowLocator.ReadTocVersion(fwdAddons, "Sku") == "44.0");
+
+                Console.WriteLine("=== game settings (Config.wtf + config-cache.wtf) ===");
+                var issues = GameSettings.CheckNeeded(fwdAddons);
+                Check("both blockers reported for a fresh Forever WTF", issues.Count == GameSettings.Required.Length);
+                GameSettings.Apply(fwdAddons, m => Console.WriteLine("    " + m));
+                Check("written into the Forever client's own WTF",
+                      File.ReadAllText(Path.Combine(fwd, "WTF", "Config.wtf")).Contains("SET checkAddonVersion \"0\"") &&
+                      File.ReadAllText(Path.Combine(fwd, "WTF", "Account", "TESTACCOUNT", "config-cache.wtf"))
+                          .Contains("SET AllowDangerousScripts \"1\""));
+                Check("nothing left to fix afterwards", GameSettings.CheckNeeded(fwdAddons).Count == 0);
+                Check("other clients untouched", !File.Exists(Path.Combine(ann, "WTF", "Config.wtf")));
+
+                Console.WriteLine("=== login tool ===");
+                Check("Forever needs no recognition textures or fonts", !LoginToolInstaller.ClientNeedsTextures(Config.ForeverFlavor));
+                Check("Anniversary and Era still do",
+                      LoginToolInstaller.ClientNeedsTextures(Config.AnniversaryFlavor) &&
+                      LoginToolInstaller.ClientNeedsTextures(Config.EraFlavor));
+                Check("one shared tool folder at the WoW base",
+                      LoginToolInstaller.ResolveToolDir(fwdAddons) == LoginToolInstaller.ResolveToolDir(annAddons));
+
+                Console.WriteLine("=== managed third-party addons ===");
+                string Keys(string product)
+                {
+                    var pk = new List<string>();
+                    foreach (var entry in ManagedAddons.Entries)
+                        foreach (var p in ManagedAddons.PackagesFor(entry, product)) pk.Add(p.Key);
+                    return string.Join(", ", pk);
+                }
+                Console.WriteLine($"    Forever    : {Keys(Config.ForeverFlavor)}");
+                Console.WriteLine($"    Anniversary: {Keys(Config.AnniversaryFlavor)}");
+                Console.WriteLine($"    Era        : {Keys(Config.EraFlavor)}");
+                Check("Forever packages",
+                      Keys(Config.ForeverFlavor) ==
+                      "CurseQuestie, CurseAtlasLootForever, CurseDetails, CursePawnForever, " +
+                      "DBMCore, DBMRaidsVanilla, DBMDungeons, CurseGTFO, BugSack, CurseBugGrabber");
+                Check("Anniversary packages unchanged",
+                      Keys(Config.AnniversaryFlavor) ==
+                      "CurseQuestie, CurseAtlasLootAnniversary, CurseDetails, CursePawnTBC, " +
+                      "DBMCore, DBMRaidsBC, DBMDungeons, CurseGTFO, BugSack, CurseBugGrabber");
+                Check("Era packages unchanged",
+                      Keys(Config.EraFlavor) ==
+                      "CurseQuestie, CurseAtlasLootAnniversary, CurseDetails, CursePawnVanilla, " +
+                      "DBMCore, DBMRaidsVanilla, DBMDungeons, CurseGTFO, BugSack, CurseBugGrabber");
+                Check("every entry has a package for every client",
+                      ManagedAddons.Entries.TrueForAll(en =>
+                          Array.TrueForAll(WowLocator.SupportedProducts,
+                              pr => System.Linq.Enumerable.Any(ManagedAddons.PackagesFor(en, pr)))));
+                Config.OverrideMainVersion(Config.ForeverMinMainVersion);
+                Check("managed addons offered for the Forever target once Sku 44 is out",
+                      ManagedAddons.AppliesTo(fwdTarget));
+                Config.OverrideMainVersion("43.10");
+                Check("... and not before", !ManagedAddons.AppliesTo(fwdTarget));
+                Config.OverrideMainVersion(pin);
+            }
+            finally
+            {
+                PathMemory.DirOverride = null;
+                try { Directory.Delete(root, true); } catch { }
+            }
+
+            Console.WriteLine();
+            Console.WriteLine(fails == 0 ? "FOREVERTEST: ALL PASS" : $"FOREVERTEST: {fails} FAILURE(S)");
+            if (fails > 0) Environment.ExitCode = 1;
+        }
+
+        /// <summary>
+        /// Every managed third-party package of one client, end to end with the
+        /// REAL downloads (needs network, a few hundred MB): live release
+        /// resolution, download, hash/shape validation, install into a throwaway
+        /// AddOns folder, then a second pass that must find nothing to do. Each
+        /// installed root must carry a TOC that names the client's interface
+        /// (its suffix TOC, or the plain TOC's list).
+        /// Usage: SkuSelfTest.exe managedinstall [wow_classic_beta|wow_anniversary|wow_classic_era]
+        /// </summary>
+        private static void RunManagedInstallTest(string product)
+        {
+            int fails = 0;
+            void Check(string label, bool ok)
+            {
+                Console.WriteLine($"    [{(ok ? "PASS" : "FAIL")}] {label}");
+                if (!ok) fails++;
+            }
+
+            string root = Path.Combine(Path.GetTempPath(), "SkuManagedInstallTest");
+            if (Directory.Exists(root)) Directory.Delete(root, true);
+            string addons = Path.Combine(root, "AddOns");
+            Directory.CreateDirectory(addons);
+
+            var github = new GitHubClient();
+            Console.WriteLine($"=== resolving live releases ({product}) ===");
+            ManagedAddons.ResolveAll(github, TimeSpan.FromSeconds(30));
+            var manifest = InstallManifest.Load(addons);
+
+            foreach (var entry in ManagedAddons.Entries)
+            {
+                foreach (var p in ManagedAddons.PackagesFor(entry, product))
+                {
+                    var r = ManagedAddons.Resolved(p);
+                    Console.WriteLine($"    {p.Key,-26} {r.Version,-24} {(r.Sha256 == null ? "live" : "pin")}  {r.Url}");
+                }
+                bool ok = ManagedAddonInstaller.InstallEntryAsync(addons, product, entry, github, manifest,
+                        pr => { if (pr.Phase != "download") Console.WriteLine("      " + pr.Message); }, force: false)
+                    .GetAwaiter().GetResult();
+                Check(entry.DisplayName + " installed", ok && ManagedAddons.EntryInstalled(addons, product, entry));
+            }
+            manifest.Save(addons);
+
+            Console.WriteLine("=== TOCs name the client ===");
+            string iface = product == Config.ForeverFlavor ? "16001" : product == Config.EraFlavor ? "11509" : "20506";
+            // Per package, not per folder: a multi-era zip (DBM-Dungeons) carries
+            // folders for other eras that rightly do not name this client.
+            foreach (var entry in ManagedAddons.Entries)
+                foreach (var p in ManagedAddons.PackagesFor(entry, product))
+                {
+                    bool any = false;
+                    // Suffix spellings vary by addon and age (_TBC, -BCC, _Classic,
+                    // _Vanilla, _Camelot), so every TOC of the folder is read.
+                    foreach (var rootName in p.RequiredRoots)
+                        foreach (string toc in Directory.GetFiles(Path.Combine(addons, rootName), "*.toc"))
+                        {
+                            string line = Array.Find(File.ReadAllLines(toc),
+                                l => l.TrimStart('﻿', ' ').StartsWith("## Interface:")) ?? "";
+                            if (!line.Contains(iface)) continue;
+                            Console.WriteLine($"    {Path.GetFileName(toc),-40} {line}");
+                            any = true;
+                        }
+                    Check(p.Key + " has a TOC for " + iface, any);
+                }
+
+            Console.WriteLine("=== second pass ===");
+            var again = InstallManifest.Load(addons);
+            foreach (var entry in ManagedAddons.Entries)
+                Check(entry.DisplayName + " up to date", !ManagedAddons.EntryNeedsWork(addons, product, again, entry));
+
+            github.Dispose();
+            try { Directory.Delete(root, true); } catch { }
+            Console.WriteLine();
+            Console.WriteLine(fails == 0 ? "MANAGEDINSTALL: ALL PASS" : $"MANAGEDINSTALL: {fails} FAILURE(S)");
             if (fails > 0) Environment.ExitCode = 1;
         }
 

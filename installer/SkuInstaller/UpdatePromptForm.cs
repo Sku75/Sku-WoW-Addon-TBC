@@ -60,15 +60,16 @@ namespace SkuInstaller
         /// <summary>Clients we found on disk (Sku installed or not).</summary>
         private List<InstallTarget> Found => _targets.FindAll(t => t.ClientFound);
 
-        /// <summary>Clients that already have Sku.</summary>
-        private List<InstallTarget> WithSku => _targets.FindAll(t => t.HasSku);
+        /// <summary>Clients that already have Sku (and that the newest release can serve).</summary>
+        private List<InstallTarget> WithSku => _targets.FindAll(t => t.HasSku && t.Installable);
 
         /// <summary>
         /// What "Update now" acts on: the clients that already have Sku, or — on a
-        /// machine where Sku is new — every client we found.
+        /// machine where Sku is new — every client we found. A client the newest
+        /// release cannot serve yet (WoW Forever before 44.0) is never included.
         /// </summary>
         public List<InstallTarget> OneClickTargets =>
-            WithSku.Count > 0 ? WithSku : Found;
+            WithSku.Count > 0 ? WithSku : Found.FindAll(t => t.Installable);
 
         private void BuildUi()
         {
@@ -146,7 +147,10 @@ namespace SkuInstaller
         private void RefreshTexts()
         {
             bool anySku = WithSku.Count > 0;
-            bool anyClient = Found.Count > 0;
+            // A machine whose only client cannot take the newest release yet (WoW
+            // Forever before 44.0) has nothing to act on: it gets the no-client
+            // buttons, while the body still names that client and says why.
+            bool anyClient = OneClickTargets.Count > 0;
             bool anyUpdate = _targets.Exists(t => t.UpdateAvailable);
 
             if (!anyClient)
@@ -168,7 +172,7 @@ namespace SkuInstaller
             // a client whose Sku install failed or was removed is exactly the case
             // where the logs are worth having, and there is still a WoW Logs folder
             // and possibly a login-tool log to collect either way.
-            _collectLogsButton.Visible = anyClient;
+            _collectLogsButton.Visible = Found.Count > 0;
 
             _browseButton.Text = Loc.Get("update.browseBtn");
             _primaryButton.Text = anySku ? Loc.Get("update.updateBtn") : Loc.Get("update.installBtn");
@@ -214,6 +218,10 @@ namespace SkuInstaller
             if (!anyClient)
             {
                 sb.AppendLine(Loc.Get("update.noClientBody"));
+                // A found client that cannot take the newest release yet still
+                // gets its line, or the user would be told nothing was found.
+                foreach (var t in Found)
+                    sb.AppendLine($"{t.DisplayName}: {t.StatusLine()}");
                 return sb.ToString();
             }
 

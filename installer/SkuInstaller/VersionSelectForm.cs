@@ -50,7 +50,9 @@ namespace SkuInstaller
                     // Default: tick the clients that already have Sku. If none do,
                     // this is a first install and we pre-tick every client we
                     // actually found, which is the overwhelmingly common intent.
-                    Checked = t.HasSku || (!AnyTargetHasSku() && t.ClientFound),
+                    // A client the newest release cannot serve yet (WoW Forever
+                    // before 44.0) stays unticked; its status line says why.
+                    Checked = t.Installable && (t.HasSku || (!AnyTargetHasSku() && t.ClientFound)),
                 };
                 check.CheckedChanged += (s, e) => RefreshAccessibleNames();
                 Controls.Add(check);
@@ -112,6 +114,17 @@ namespace SkuInstaller
             if (picked.Count == 0)
             {
                 MessageBox.Show(this, Loc.Get("versions.needOne.text"),
+                    Loc.Get("versions.needOne.title"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Ticked, but the newest release cannot serve it yet: explain, like
+            // the empty selection above, instead of disabling the checkbox.
+            if (picked.Exists(t => !t.Installable))
+            {
+                MessageBox.Show(this,
+                    Loc.Format("versions.foreverNotYet", Config.ForeverMinMainVersion, Config.MainVersion),
                     Loc.Get("versions.needOne.title"),
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;

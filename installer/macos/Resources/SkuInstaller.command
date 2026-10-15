@@ -137,7 +137,7 @@ T_de() {
         pkg.replace.failed) printf '%s' '%s: Installation fehlgeschlagen; vorherige Fassung wird wiederhergestellt.' ;;
         zip.unsafe) printf '%s' 'Unsicherer Pfad im ZIP-Archiv erkannt.' ;;
         zip.dup) printf '%s' 'Doppelter Pfad nach ZIP-Normalisierung: %s' ;;
-        curated.only) printf '%s' 'Kuratierte AddOns werden nur fuer Anniversary und Classic Era verwaltet.' ;;
+        curated.only) printf '%s' 'Kuratierte AddOns werden nur fuer Anniversary, Classic Era und WoW Forever verwaltet.' ;;
         curated.downloading) printf '%s' '%s wird von der offiziellen Quelle heruntergeladen.' ;;
         curated.dl.failed) printf '%s' '%s: Download fehlgeschlagen: %s' ;;
         curated.sha) printf '%s' '%s: SHA-256-Pruefsumme stimmt nicht. Erwartet %s, erhalten %s.' ;;
@@ -246,7 +246,7 @@ T_en() {
         pkg.replace.failed) printf '%s' '%s: installation failed; the previous version is being restored.' ;;
         zip.unsafe) printf '%s' 'Unsafe path detected in the ZIP archive.' ;;
         zip.dup) printf '%s' 'Duplicate path after ZIP normalization: %s' ;;
-        curated.only) printf '%s' 'Curated AddOns are managed only for Anniversary and Classic Era.' ;;
+        curated.only) printf '%s' 'Curated AddOns are managed only for Anniversary, Classic Era and WoW Forever.' ;;
         curated.downloading) printf '%s' 'Downloading %s from the official source.' ;;
         curated.dl.failed) printf '%s' '%s: download failed: %s' ;;
         curated.sha) printf '%s' '%s: SHA-256 checksum does not match. Expected %s, got %s.' ;;
@@ -355,7 +355,7 @@ T_fr() {
         pkg.replace.failed) printf '%s' "%s : échec de l'installation ; la version précédente est restaurée." ;;
         zip.unsafe) printf '%s' "Chemin dangereux détecté dans l'archive ZIP." ;;
         zip.dup) printf '%s' 'Chemin en double après la normalisation du ZIP : %s' ;;
-        curated.only) printf '%s' "Les AddOns gérés ne le sont que pour Anniversary et Classic Era." ;;
+        curated.only) printf '%s' "Les AddOns gérés ne le sont que pour Anniversary, Classic Era et WoW Forever." ;;
         curated.downloading) printf '%s' 'Téléchargement de %s depuis la source officielle.' ;;
         curated.dl.failed) printf '%s' '%s : échec du téléchargement : %s' ;;
         curated.sha) printf '%s' '%s : la somme SHA-256 ne correspond pas. Attendu %s, obtenu %s.' ;;
@@ -518,11 +518,14 @@ normalize_addons_folder() {
         */Interface) candidate="$picked/AddOns" ;;
         */_anniversary_) candidate="$picked/Interface/AddOns" ;;
         */_classic_era_) candidate="$picked/Interface/AddOns" ;;
+        */_classic_beta_) candidate="$picked/Interface/AddOns" ;;
         *)
             if [ -d "$picked/_anniversary_" ]; then
                 candidate="$picked/_anniversary_/Interface/AddOns"
             elif [ -d "$picked/_classic_era_" ]; then
                 candidate="$picked/_classic_era_/Interface/AddOns"
+            elif [ -d "$picked/_classic_beta_" ]; then
+                candidate="$picked/_classic_beta_/Interface/AddOns"
             fi
             ;;
     esac
@@ -537,10 +540,12 @@ detect_addons_folders() {
     local candidates="
 /Applications/World of Warcraft/_anniversary_/Interface/AddOns
 /Applications/World of Warcraft/_classic_era_/Interface/AddOns
+/Applications/World of Warcraft/_classic_beta_/Interface/AddOns
 /Applications/World of Warcraft/_classic_/Interface/AddOns
 /Applications/World of Warcraft/_retail_/Interface/AddOns
 $HOME/Applications/World of Warcraft/_anniversary_/Interface/AddOns
 $HOME/Applications/World of Warcraft/_classic_era_/Interface/AddOns
+$HOME/Applications/World of Warcraft/_classic_beta_/Interface/AddOns
 $HOME/Applications/World of Warcraft/_classic_/Interface/AddOns
 $HOME/Applications/World of Warcraft/_retail_/Interface/AddOns"
     while IFS= read -r path; do
@@ -557,6 +562,7 @@ flavor_name() {
     case "$1" in
         */_anniversary_/*) printf '%s\n' "Anniversary" ;;
         */_classic_era_/*) printf '%s\n' "Classic Era" ;;
+        */_classic_beta_/*) printf '%s\n' "WoW Forever" ;;
         */_classic_/*) printf '%s\n' "Classic" ;;
         */_retail_/*) printf '%s\n' "Retail" ;;
         *) printf '%s\n' "$(T flavor.manual)" ;;
@@ -586,6 +592,8 @@ on run argv
             set end of labels to "Anniversary — " & p
         else if p contains "/_classic_era_/" then
             set end of labels to "Classic Era — " & p
+        else if p contains "/_classic_beta_/" then
+            set end of labels to "WoW Forever — " & p
         else if p contains "/_classic_/" then
             set end of labels to "Classic — " & p
         else if p contains "/_retail_/" then
@@ -993,33 +1001,46 @@ JXA
     version="$(printf '%s\n' "$result" | /usr/bin/sed -n '1p')"
     url="$(printf '%s\n' "$result" | /usr/bin/sed -n '2p')"
     digest="$(printf '%s\n' "$result" | /usr/bin/sed -n '3p' | tr 'A-F' 'a-f')"
-    printf '%s\n' "$version" | /usr/bin/grep -Eq '^[0-9]+([.][0-9A-Za-z_-]+)*$' || return 1
+    printf '%s\n' "$version" | /usr/bin/grep -Eq '^[0-9]+([.+][0-9A-Za-z_-]+)*$' || return 1
     case "$url" in "https://github.com/$repo/releases/download/"*) ;; *) return 1 ;; esac
     printf '%s\n' "$digest" | /usr/bin/grep -Eq '^[0-9a-f]{64}$' || return 1
     printf '%s\n%s\n%s\n' "$version" "$url" "$digest"
 }
 
 install_anniversary_addons() {
-    # Despite the historical name this covers BOTH managed clients: Anniversary
-    # (TBC) and Classic Era. Most zips are multi-flavor and serve both; Pawn and
-    # the DBM raid mods are per-flavor and switch on $client below.
+    # Despite the historical name this covers ALL managed clients: Anniversary
+    # (TBC), Classic Era and WoW Forever. Most zips are multi-flavor and serve
+    # every client; Pawn, the DBM raid mods and the Forever builds of Questie
+    # and AtlasLoot are per-flavor and switch on $client below.
     local failures=0 release version url sha client=""
     case "$ADDONS_FOLDER" in
         */_anniversary_/Interface/AddOns) client="anniversary" ;;
         */_classic_era_/Interface/AddOns) client="era" ;;
+        */_classic_beta_/Interface/AddOns) client="forever" ;;
         *) log "$(T curated.only)"; return 0 ;;
     esac
 
     if preference_enabled "ManageQuestie"; then
+        # Questie 12 is one bundle for every client (tags "bundle/v12.x+v1.y",
+        # version "12.x+v1.y"); the quest data sits in a second required
+        # folder, QuestieDB.
         release="$(github_release_asset "Questie/Questie" "Questie-v" || true)"
         version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
         url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
         sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
-        [ -n "$version" ] || { version="11.37.1"; url="https://edge.forgecdn.net/files/8742/429/Questie-v11.37.1.zip"; sha="450e09bd795ff25d5529abdb4b431d360e76d1097bb59992098bb39a907b8926"; }
+        [ -n "$version" ] || { version="12.1.0+v1.0.6"; url="https://github.com/Questie/Questie/releases/download/bundle%2Fv12.1.0%2Bv1.0.6/Questie-v12.1.0%2Bv1.0.6.zip"; sha="4ca2fbcbd03e050e8b8295f86bc29c6fe6044ef2db298e724f581c8c5a9a6d68"; }
         install_curated_package "CurseQuestie" "Questie" "$version" "$url" "$sha" \
-            "Questie" || failures=$((failures + 1))
+            "Questie QuestieDB" || failures=$((failures + 1))
     fi
-    if preference_enabled "ManageAtlasLoot"; then
+    if preference_enabled "ManageAtlasLoot" && [ "$client" = "forever" ]; then
+        # Same CurseForge project, renamed "Continued" (AtlasLootContinued*
+        # folders, _Camelot TOCs). Forever only: Sku's AtlasLoot support on
+        # Anniversary/Era is written against the AtlasLootClassic* set.
+        install_curated_package "CurseAtlasLootForever" "AtlasLootClassic" "12488" \
+            "https://edge.forgecdn.net/files/9187/862/AtlasLootClassic-Continued_12488.zip" \
+            "8eaee376a19b26da4a50f4f7f7304f9f41b3eadfd0bd38c4fd98f67495fa82bd" \
+            "AtlasLootContinued AtlasLootContinued_Data AtlasLootContinued_*" || failures=$((failures + 1))
+    elif preference_enabled "ManageAtlasLoot"; then
         # The "Anniversary" build ships Vanilla, TBC and Wrath TOCs in one zip.
         install_curated_package "CurseAtlasLootAnniversary" "AtlasLootClassic" "2.5.6.12334" \
             "https://edge.forgecdn.net/files/8721/161/AtlasLootClassic-Master_12334.zip" \
@@ -1027,20 +1048,30 @@ install_anniversary_addons() {
             "AtlasLootClassic AtlasLootClassic_BiS AtlasLootClassic_Collections AtlasLootClassic_Crafting AtlasLootClassic_Data AtlasLootClassic_DungeonsAndRaids AtlasLootClassic_Factions AtlasLootClassic_Options AtlasLootClassic_PvP" || failures=$((failures + 1))
     fi
     if preference_enabled "ManageDetails"; then
-        # Multi-flavor upload: one zip carries Details_TBC.toc AND Details_Classic.toc.
-        install_curated_package "CurseDetails" "Details Damage Meter" "20260811.15275.172" \
-            "https://edge.forgecdn.net/files/8680/856/Details-Details.20260811.15275.172.zip" \
-            "3a1f83db2ec4cebde18f36ac496e3fd15134351aae9cde2ead62a233a64c751e" \
+        # Multi-flavor upload: one zip carries Details_TBC.toc, Details_Classic.toc
+        # AND Details_Camelot.toc.
+        install_curated_package "CurseDetails" "Details Damage Meter" "20261014.15330.172" \
+            "https://edge.forgecdn.net/files/9177/176/Details-Details.20261014.15330.172.zip" \
+            "67c4fe6c81e7bc331098e67bce00ee049735d278a7c9d04c9d749930233e5086" \
             "Details Details_DataStorage Details_*" || failures=$((failures + 1))
     fi
     if preference_enabled "ManagePawn"; then
         # Pawn publishes one asset PER flavor under a "Pawn-x.y.z" tag.
-        if [ "$client" = "era" ]; then
+        if [ "$client" = "forever" ]; then
+            # First published with 2.13.17; the plain Pawn zip is the retail build.
+            release="$(github_release_asset "VgerMods/Pawn" "-Forever.zip" || true)"
+            version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
+            url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
+            sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
+            [ -n "$version" ] || { version="2.13.17"; url="https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.17/Pawn-2.13.17-Forever.zip"; sha="5b23160af66be3d70a46075eb7073dd43d398a3aea9d8ad29974f4063c30a216"; }
+            install_curated_package "CursePawnForever" "Pawn" "$version" "$url" "$sha" \
+                "Pawn" || failures=$((failures + 1))
+        elif [ "$client" = "era" ]; then
             release="$(github_release_asset "VgerMods/Pawn" "-Classic.zip" || true)"
             version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
             url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
             sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
-            [ -n "$version" ] || { version="2.13.15"; url="https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.15/Pawn-2.13.15-Classic.zip"; sha="2b182e663fa4f3c0a60efa82f31a0623cbf11bc7d48d7e4f8faea203e93f6325"; }
+            [ -n "$version" ] || { version="2.13.17"; url="https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.17/Pawn-2.13.17-Classic.zip"; sha="26ae9f704953417b0898c6950cd64a3cd25f994108e2d052f9929417c0f82cbe"; }
             install_curated_package "CursePawnVanilla" "Pawn" "$version" "$url" "$sha" \
                 "Pawn" || failures=$((failures + 1))
         else
@@ -1048,7 +1079,7 @@ install_anniversary_addons() {
             version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
             url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
             sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
-            [ -n "$version" ] || { version="2.13.15"; url="https://edge.forgecdn.net/files/8671/944/Pawn-2.13.15-BurningCrusade.zip"; sha="412a77ae5007aa00cf50ae91272f0af84262c63c0b70144906dedc0ab8d39750"; }
+            [ -n "$version" ] || { version="2.13.17"; url="https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.17/Pawn-2.13.17-BurningCrusade.zip"; sha="e0a597b5387001b30278d21817c162c74b84cd26c77ec3d969d65b4aea8c1fd2"; }
             install_curated_package "CursePawnTBC" "Pawn" "$version" "$url" "$sha" \
                 "Pawn" || failures=$((failures + 1))
         fi
@@ -1060,16 +1091,17 @@ install_anniversary_addons() {
         version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
         url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
         sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
-        [ -n "$version" ] || { version="12.1.8"; url="https://github.com/DeadlyBossMods/DeadlyBossMods/releases/download/12.1.8/DBM-Core-12.1.8.zip"; sha="980e833949071ba6359e6d5f326a5d51c1134010299cb7b7a6f9599c9df3e755"; }
+        [ -n "$version" ] || { version="12.1.14"; url="https://github.com/DeadlyBossMods/DeadlyBossMods/releases/download/12.1.14/DBM-Core-12.1.14.zip"; sha="d073b8b6e37efa877e4bb18d4dc736206f64868eabd91674c356d0313c21a2e8"; }
         install_curated_package "DBMCore" "Deadly Boss Mods" "$version" "$url" "$sha" \
             "DBM-Core DBM-GUI DBM-StatusBarTimers DBM-*" || failures=$((failures + 1))
-        if [ "$client" = "era" ]; then
-            # Era raid mods live in the DBM-Vanilla repository (Vanilla + SoD).
+        if [ "$client" = "era" ] || [ "$client" = "forever" ]; then
+            # Era raid mods live in the DBM-Vanilla repository (Vanilla + SoD);
+            # WoW Forever's raids are the vanilla ones too.
             release="$(github_release_asset "DeadlyBossMods/DBM-Vanilla" "DBM-Vanilla_SoD-" || true)"
             version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
             url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
             sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
-            [ -n "$version" ] || { version="826"; url="https://github.com/DeadlyBossMods/DBM-Vanilla/releases/download/r826/DBM-Vanilla_SoD-r826.zip"; sha="0a68a1a21ee73a1f8da40117f3c244c363677fd36cf0fb6ae5b9885c5ff3116c"; }
+            [ -n "$version" ] || { version="832"; url="https://github.com/DeadlyBossMods/DBM-Vanilla/releases/download/r832/DBM-Vanilla_SoD-r832.zip"; sha="1c02e96a45de723dce1c56c2f9428f767447496434d81dc191d2e8e9a63ed61d"; }
             install_curated_package "DBMRaidsVanilla" "$(T label.dbm.raids)" "$version" "$url" "$sha" \
                 "DBM-Raids-Vanilla DBM-*" || failures=$((failures + 1))
         else
@@ -1077,7 +1109,7 @@ install_anniversary_addons() {
             version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
             url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
             sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
-            [ -n "$version" ] || { version="19"; url="https://github.com/DeadlyBossMods/DBM-BurningCrusade/releases/download/r19/DBM-Raids-BC-r19.zip"; sha="5c6d3567018c0770653c8c9b82e3393411d0eea4405dd41445b7ff2e2406a32a"; }
+            [ -n "$version" ] || { version="21"; url="https://github.com/DeadlyBossMods/DBM-BurningCrusade/releases/download/r21/DBM-Raids-BC-r21.zip"; sha="27f58b47e56d7372de8c99c1f3181b6c1a9d5db7644ff09c4bc2aafbf9d6bff0"; }
             install_curated_package "DBMRaidsBC" "$(T label.dbm.raids)" "$version" "$url" "$sha" \
                 "DBM-Raids-BC DBM-*" || failures=$((failures + 1))
         fi
@@ -1085,14 +1117,15 @@ install_anniversary_addons() {
         version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
         url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
         sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
-        [ -n "$version" ] || { version="261"; url="https://github.com/DeadlyBossMods/DBM-Dungeons/releases/download/r261/DBM-Dungeons-r261.zip"; sha="4cdf4afa9d058da384a170095381041e7925730aba8b731d3e89ea5087afee09"; }
+        [ -n "$version" ] || { version="266"; url="https://github.com/DeadlyBossMods/DBM-Dungeons/releases/download/r266/DBM-Dungeons-r266.zip"; sha="e1684a59a31940af9bf6dfde8a920e8feaf7ba90f439b5916c975d8b64fff96c"; }
         install_curated_package "DBMDungeons" "$(T label.dbm.dungeons)" "$version" "$url" "$sha" \
             "DBM-Party-BC DBM-Party-Vanilla DBM-*" || failures=$((failures + 1))
     fi
     if preference_enabled "ManageGTFO"; then
-        install_curated_package "CurseGTFO" "GTFO" "6.9.1" \
-            "https://edge.forgecdn.net/files/8729/407/GTFO-6.9.1.zip" \
-            "a82d14b214f3a423ef99f5e7d9edbd7a186c552d9c5aa5ee1c75e92bf4aa18ae" \
+        # 6.11+ ships GTFO_Camelot.toc; older pins load the retail TOC on Forever.
+        install_curated_package "CurseGTFO" "GTFO" "6.12.1" \
+            "https://edge.forgecdn.net/files/9187/115/GTFO-6.12.1.zip" \
+            "a2dd43bd4c61cc19ba5fb8efbf5953380f9905d3e2cc0a97260eccf5e63ec5d2" \
             "GTFO" || failures=$((failures + 1))
     fi
     if preference_enabled "ManageBugSack"; then
@@ -1101,12 +1134,12 @@ install_anniversary_addons() {
         version="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"
         url="$(printf '%s\n' "$release" | /usr/bin/sed -n '2p')"
         sha="$(printf '%s\n' "$release" | /usr/bin/sed -n '3p')"
-        [ -n "$version" ] || { version="12.0.13"; url="https://github.com/funkydude/BugSack/releases/download/v12.0.13/BugSack-v12.0.13.zip"; sha="e62c9a35bbfdca89dd4b66016e7828d3dd145ad9b7cdde2a62acdec1fc7bbb9b"; }
+        [ -n "$version" ] || { version="12.1.7"; url="https://github.com/funkydude/BugSack/releases/download/v12.1.7/BugSack-v12.1.7.zip"; sha="ff93f1a141c889bdc6da604bae547d1b03e8c9b8fbbea27bf26fdc8c6c735308"; }
         install_curated_package "BugSack" "BugSack" "$version" "$url" "$sha" \
             "BugSack" || failures=$((failures + 1))
-        install_curated_package "CurseBugGrabber" "BugGrabber" "12.0.21" \
-            "https://edge.forgecdn.net/files/8619/054/%21BugGrabber-v12.0.21.zip" \
-            "f031635ad509b8597b9f35bc94ae032ecf6f3292aaa9baa80b56bde3d8738520" \
+        install_curated_package "CurseBugGrabber" "BugGrabber" "12.1.0" \
+            "https://edge.forgecdn.net/files/8907/587/%21BugGrabber-v12.1.0.zip" \
+            "248fe28b39a9e85bb7ddd23b02ef335715b82fb6d93dd7a3ce568dc51967c1df" \
             "!BugGrabber" || failures=$((failures + 1))
     fi
     return "$failures"
@@ -1282,26 +1315,38 @@ addon_inventory() {
 }
 
 addon_update_status_json() {
-    local selected release questie pawn dbm bugsack
+    local selected release questie pawn dbm bugsack atlas atlas_key pawn_marker pawn_key
     selected="${SKU_ADDONS_FOLDER_OVERRIDE:-$(read_preference "SelectedAddonsFolder")}"
     ADDONS_FOLDER="$(normalize_addons_folder "$selected" || true)"
     [ -n "$ADDONS_FOLDER" ] && [ -d "$ADDONS_FOLDER" ] || return 1
+    # Per client: the same keys and versions install_anniversary_addons uses.
+    case "$ADDONS_FOLDER" in
+        */_classic_beta_/Interface/AddOns)
+            atlas="12488"; atlas_key="CurseAtlasLootForever"
+            pawn_marker="-Forever.zip"; pawn_key="CursePawnForever" ;;
+        */_classic_era_/Interface/AddOns)
+            atlas="2.5.6.12334"; atlas_key="CurseAtlasLootAnniversary"
+            pawn_marker="-Classic.zip"; pawn_key="CursePawnVanilla" ;;
+        *)
+            atlas="2.5.6.12334"; atlas_key="CurseAtlasLootAnniversary"
+            pawn_marker="-BurningCrusade.zip"; pawn_key="CursePawnTBC" ;;
+    esac
     release="$(github_release_asset "Questie/Questie" "Questie-v" || true)"
-    questie="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$questie" ] || questie="11.37.1"
-    release="$(github_release_asset "VgerMods/Pawn" "BurningCrusade" || true)"
-    pawn="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$pawn" ] || pawn="2.13.15"
+    questie="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$questie" ] || questie="12.1.0+v1.0.6"
+    release="$(github_release_asset "VgerMods/Pawn" "$pawn_marker" || true)"
+    pawn="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$pawn" ] || pawn="2.13.17"
     release="$(github_release_asset "DeadlyBossMods/DeadlyBossMods" "DBM-Core-" || true)"
-    dbm="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$dbm" ] || dbm="12.1.8"
+    dbm="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$dbm" ] || dbm="12.1.14"
     release="$(github_release_asset "funkydude/BugSack" "BugSack-v" || true)"
-    bugsack="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$bugsack" ] || bugsack="12.0.13"
+    bugsack="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$bugsack" ] || bugsack="12.1.7"
     printf '{"Questie":{"latest":"%s","installed":"%s"},' "$(json_escape "$questie")" "$(json_escape "$(manifest_tag "CurseQuestie")")"
-    printf '"AtlasLoot":{"latest":"2.5.6.12334","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseAtlasLootAnniversary")")"
-    printf '"Details":{"latest":"20260811.15275.172","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseDetails")")"
-    printf '"Pawn":{"latest":"%s","installed":"%s"},' "$(json_escape "$pawn")" "$(json_escape "$(manifest_tag "CursePawnTBC")")"
+    printf '"AtlasLoot":{"latest":"%s","installed":"%s"},' "$(json_escape "$atlas")" "$(json_escape "$(manifest_tag "$atlas_key")")"
+    printf '"Details":{"latest":"20261014.15330.172","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseDetails")")"
+    printf '"Pawn":{"latest":"%s","installed":"%s"},' "$(json_escape "$pawn")" "$(json_escape "$(manifest_tag "$pawn_key")")"
     printf '"DBM":{"latest":"%s","installed":"%s"},' "$(json_escape "$dbm")" "$(json_escape "$(manifest_tag "DBMCore")")"
-    printf '"GTFO":{"latest":"6.9.1","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseGTFO")")"
+    printf '"GTFO":{"latest":"6.12.1","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseGTFO")")"
     printf '"BugSack":{"latest":"%s","installed":"%s"},' "$(json_escape "$bugsack")" "$(json_escape "$(manifest_tag "BugSack")")"
-    printf '"BugGrabber":{"latest":"12.0.21","installed":"%s"}}\n' "$(json_escape "$(manifest_tag "CurseBugGrabber")")"
+    printf '"BugGrabber":{"latest":"12.1.0","installed":"%s"}}\n' "$(json_escape "$(manifest_tag "CurseBugGrabber")")"
 }
 
 collect_logs() {

@@ -790,7 +790,12 @@ namespace SkuInstaller
                 sb.AppendLine($"Login tool folder:    {toolDir ?? "(unresolved)"}{(toolPresent ? "" : "  (not present)")}");
                 if (toolPresent) AppendFileListing(sb, toolDir, "  login tool folder");
 
-                AppendFiducialTextureInfo(sb, site);
+                // WoW Forever narrates its own glue screens; the login tool needs
+                // no recognition textures there, so "missing" would be a false alarm.
+                if (LoginToolInstaller.ClientNeedsTextures(site.Product))
+                    AppendFiducialTextureInfo(sb, site);
+                else
+                    sb.AppendLine("Recognition textures: not used on this client (it narrates its own login screens)");
 
                 // The full SavedVariables listing, INCLUDING the files that were not
                 // copied. This is the index that makes an omission visible.

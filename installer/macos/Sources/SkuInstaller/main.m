@@ -23,8 +23,8 @@ static NSDictionary<NSString*,NSDictionary<NSString*,NSString*>*> *LocTables(voi
   @"name.gtfo": @"GTFO Gefahrenwarnung",
   @"name.bugsack": @"BugSack und BugGrabber",
   @"help.questie": @"Installiert und aktualisiert die Anniversary-Version von Questie über CurseForge.",
-  @"help.atlas": @"Installiert und aktualisiert AtlasLootClassic über CurseForge; die eine Fassung deckt Anniversary und Classic Era ab.",
-  @"help.details": @"Installiert und aktualisiert Details Damage Meter über CurseForge; die eine Fassung deckt Anniversary und Classic Era ab.",
+  @"help.atlas": @"Installiert und aktualisiert AtlasLootClassic über CurseForge; eine Fassung deckt Anniversary und Classic Era ab, WoW Forever erhält die neue Fassung AtlasLoot Continued.",
+  @"help.details": @"Installiert und aktualisiert Details Damage Meter über CurseForge; die eine Fassung deckt Anniversary, Classic Era und WoW Forever ab.",
   @"help.pawn": @"Installiert und aktualisiert Pawn über GitHub; jeder Client erhält die passende Fassung. Standardmäßig abgewählt.",
   @"help.dbm": @"Installiert und aktualisiert DBM über GitHub; jeder Client erhält die passenden Schlachtzugs- und Dungeon-Module.",
   @"help.gtfo": @"Installiert und aktualisiert GTFO, die akustische Warnung vor Bodeneffekten, über CurseForge.",
@@ -43,12 +43,12 @@ static NSDictionary<NSString*,NSDictionary<NSString*,NSString*>*> *LocTables(voi
   @"acc.output": @"Installationsdetails",
   @"label.wow": @"WoW-Version",
   @"label.pack": @"Sprachpaket",
-  @"label.managed": @"Verwaltete AddOns für Anniversary und Classic Era",
+  @"label.managed": @"Verwaltete AddOns für Anniversary, Classic Era und WoW Forever",
   @"label.details": @"Details",
   @"flavor.manual": @"Manueller AddOns-Ordner",
   @"suffix.sku": @" – Sku installiert",
   @"help.managed.on": @"Die ausgewählten AddOns werden zusammen mit Sku aktualisiert; jeder Client erhält die zu ihm passende Fassung.",
-  @"help.managed.off": @"Die zusätzliche AddOn-Verwaltung ist für Anniversary und Classic Era verfügbar.",
+  @"help.managed.off": @"Die zusätzliche AddOn-Verwaltung ist für Anniversary, Classic Era und WoW Forever verfügbar.",
   @"summary.uptodate": @"Alle AddOns sind auf dem neuesten Stand.",
   @"summary.one": @"Für %@ ist ein Update verfügbar.",
   @"summary.many": @"Für %@ sind Updates verfügbar.",
@@ -110,8 +110,8 @@ static NSDictionary<NSString*,NSDictionary<NSString*,NSString*>*> *LocTables(voi
   @"name.gtfo": @"GTFO danger warning",
   @"name.bugsack": @"BugSack and BugGrabber",
   @"help.questie": @"Installs and updates the Anniversary version of Questie via CurseForge.",
-  @"help.atlas": @"Installs and updates AtlasLootClassic via CurseForge; the one build covers Anniversary and Classic Era.",
-  @"help.details": @"Installs and updates Details Damage Meter via CurseForge; the one build covers Anniversary and Classic Era.",
+  @"help.atlas": @"Installs and updates AtlasLootClassic via CurseForge; one build covers Anniversary and Classic Era, WoW Forever gets the newer AtlasLoot Continued build.",
+  @"help.details": @"Installs and updates Details Damage Meter via CurseForge; the one build covers Anniversary, Classic Era and WoW Forever.",
   @"help.pawn": @"Installs and updates Pawn via GitHub; each client gets the matching build. Deselected by default.",
   @"help.dbm": @"Installs and updates DBM via GitHub; each client gets the matching raid and dungeon modules.",
   @"help.gtfo": @"Installs and updates GTFO, the audible warning for ground effects, via CurseForge.",
@@ -130,12 +130,12 @@ static NSDictionary<NSString*,NSDictionary<NSString*,NSString*>*> *LocTables(voi
   @"acc.output": @"Installation details",
   @"label.wow": @"WoW version",
   @"label.pack": @"Voice pack",
-  @"label.managed": @"Managed AddOns for Anniversary and Classic Era",
+  @"label.managed": @"Managed AddOns for Anniversary, Classic Era and WoW Forever",
   @"label.details": @"Details",
   @"flavor.manual": @"Manual AddOns folder",
   @"suffix.sku": @" – Sku installed",
   @"help.managed.on": @"The selected AddOns are updated together with Sku; each client gets the build that matches it.",
-  @"help.managed.off": @"The additional AddOn management is available for Anniversary and Classic Era.",
+  @"help.managed.off": @"The additional AddOn management is available for Anniversary, Classic Era and WoW Forever.",
   @"summary.uptodate": @"All AddOns are up to date.",
   @"summary.one": @"An update is available for %@.",
   @"summary.many": @"Updates are available for %@.",
@@ -197,8 +197,8 @@ static NSDictionary<NSString*,NSDictionary<NSString*,NSString*>*> *LocTables(voi
   @"name.gtfo": @"GTFO alerte de danger",
   @"name.bugsack": @"BugSack et BugGrabber",
   @"help.questie": @"Installe et met à jour la version Anniversary de Questie via CurseForge.",
-  @"help.atlas": @"Installe et met à jour AtlasLootClassic via CurseForge ; la même version couvre Anniversary et Classic Era.",
-  @"help.details": @"Installe et met à jour Details Damage Meter via CurseForge ; la même version couvre Anniversary et Classic Era.",
+  @"help.atlas": @"Installe et met à jour AtlasLootClassic via CurseForge ; une même version couvre Anniversary et Classic Era, WoW Forever reçoit la version plus récente AtlasLoot Continued.",
+  @"help.details": @"Installe et met à jour Details Damage Meter via CurseForge ; la même version couvre Anniversary, Classic Era et WoW Forever.",
   @"help.pawn": @"Installe et met à jour Pawn via GitHub ; chaque client reçoit la version adaptée. Désélectionné par défaut.",
   @"help.dbm": @"Installe et met à jour DBM via GitHub ; chaque client reçoit les modules de raids et de donjons adaptés.",
   @"help.gtfo": @"Installe et met à jour GTFO, l'alerte sonore des effets au sol, via CurseForge.",
@@ -217,12 +217,12 @@ static NSDictionary<NSString*,NSDictionary<NSString*,NSString*>*> *LocTables(voi
   @"acc.output": @"Détails de l'installation",
   @"label.wow": @"Version de WoW",
   @"label.pack": @"Pack vocal",
-  @"label.managed": @"AddOns gérés pour Anniversary et Classic Era",
+  @"label.managed": @"AddOns gérés pour Anniversary, Classic Era et WoW Forever",
   @"label.details": @"Détails",
   @"flavor.manual": @"Dossier AddOns manuel",
   @"suffix.sku": @" – Sku installé",
   @"help.managed.on": @"Les AddOns sélectionnés sont mis à jour avec Sku ; chaque client reçoit la version qui lui correspond.",
-  @"help.managed.off": @"La gestion supplémentaire des AddOns est disponible pour Anniversary et Classic Era.",
+  @"help.managed.off": @"La gestion supplémentaire des AddOns est disponible pour Anniversary, Classic Era et WoW Forever.",
   @"summary.uptodate": @"Tous les AddOns sont à jour.",
   @"summary.one": @"Une mise à jour est disponible pour %@.",
   @"summary.many": @"Des mises à jour sont disponibles pour %@.",
@@ -344,23 +344,23 @@ static NSArray<NSString*> *UILangCodes(void) { return @[@"de", @"en", @"fr"]; }
  [self setLabel:self.wowLabel text:L(@"label.wow")]; [self setLabel:self.packLabel text:L(@"label.pack")]; [self setLabel:self.uiLangLabel text:L(@"label.uilang")]; [self setLabel:self.managedLabel text:L(@"label.managed")]; [self setLabel:self.detailsLabel text:L(@"label.details")];
  [self applyLatestCuratedLabels]; [self updatePath];
 }
-- (NSArray*)detected { NSString*h=NSHomeDirectory(); NSArray*r=@[@"/Applications/World of Warcraft",[h stringByAppendingPathComponent:@"Applications/World of Warcraft"]],*f=@[@"_anniversary_",@"_classic_era_",@"_classic_",@"_retail_"]; NSMutableArray*x=[NSMutableArray array]; for(NSString*root in r)for(NSString*fl in f){NSString*p=[root stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/Interface/AddOns",fl]]; BOOL d=NO;if([[NSFileManager defaultManager]fileExistsAtPath:p isDirectory:&d]&&d)[x addObject:p];}return x; }
-- (NSString*)flavor:(NSString*)p { if([p containsString:@"/_anniversary_/"])return @"Anniversary";if([p containsString:@"/_classic_era_/"])return @"Classic Era";if([p containsString:@"/_classic_/"])return @"Classic";if([p containsString:@"/_retail_/"])return @"Retail";return L(@"flavor.manual"); }
+- (NSArray*)detected { NSString*h=NSHomeDirectory(); NSArray*r=@[@"/Applications/World of Warcraft",[h stringByAppendingPathComponent:@"Applications/World of Warcraft"]],*f=@[@"_anniversary_",@"_classic_era_",@"_classic_beta_",@"_classic_",@"_retail_"]; NSMutableArray*x=[NSMutableArray array]; for(NSString*root in r)for(NSString*fl in f){NSString*p=[root stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/Interface/AddOns",fl]]; BOOL d=NO;if([[NSFileManager defaultManager]fileExistsAtPath:p isDirectory:&d]&&d)[x addObject:p];}return x; }
+- (NSString*)flavor:(NSString*)p { if([p containsString:@"/_anniversary_/"])return @"Anniversary";if([p containsString:@"/_classic_era_/"])return @"Classic Era";if([p containsString:@"/_classic_beta_/"])return @"WoW Forever";if([p containsString:@"/_classic_/"])return @"Classic";if([p containsString:@"/_retail_/"])return @"Retail";return L(@"flavor.manual"); }
 - (NSString*)selected { NSInteger i=self.games.indexOfSelectedItem; return i>=0&&i<(NSInteger)self.paths.count?self.paths[i]:nil; }
 - (void)reload:(NSString*)selected { [self.games removeAllItems];for(NSString*p in self.paths){BOOL sku=[[NSFileManager defaultManager]fileExistsAtPath:[p stringByAppendingPathComponent:@"Sku"]];[self.games addItemWithTitle:[NSString stringWithFormat:@"%@%@",[self flavor:p],sku?L(@"suffix.sku"):@""]];}NSUInteger i=[self.paths indexOfObject:selected];if(i!=NSNotFound)[self.games selectItemAtIndex:i];else if(self.paths.count)[self.games selectItemAtIndex:0];[self updatePath]; }
 - (NSControlStateValue)managedState:(NSString*)key { NSString*v=[self.prefs stringForKey:key];if(!v.length)return [key isEqualToString:@"ManagePawn"]?NSControlStateValueOff:NSControlStateValueOn;return[v isEqualToString:@"Nein"]?NSControlStateValueOff:NSControlStateValueOn; }
 - (void)loadConfiguration { [self.paths addObjectsFromArray:self.detected];NSString*p=[self.prefs stringForKey:@"SelectedAddonsFolder"]?:@"";if(p.length&&![self.paths containsObject:p])[self.paths addObject:p];[self reload:p];NSUInteger packIndex=[CanonicalPacks() indexOfObject:[self.prefs stringForKey:@"LanguagePack"]?:@"Deutsch"];[self.languages selectItemAtIndex:packIndex==NSNotFound?0:(NSInteger)packIndex];self.login.state=[[self.prefs stringForKey:@"LoginTool"]isEqualToString:@"Ja"]?NSControlStateValueOn:NSControlStateValueOff;self.questie.state=[self managedState:@"ManageQuestie"];self.atlas.state=[self managedState:@"ManageAtlasLoot"];self.details.state=[self managedState:@"ManageDetails"];self.pawn.state=[self managedState:@"ManagePawn"];self.dbm.state=[self managedState:@"ManageDBM"];self.gtfo.state=[self managedState:@"ManageGTFO"];self.bugsack.state=[self managedState:@"ManageBugSack"];[self updateManagedAvailability];[self save]; }
 - (void)saveManaged:(NSButton*)button key:(NSString*)key { [self.prefs setObject:button.state==NSControlStateValueOn?@"Ja":@"Nein" forKey:key]; }
 - (void)save { if(self.selected)[self.prefs setObject:self.selected forKey:@"SelectedAddonsFolder"];NSInteger packIndex=self.languages.indexOfSelectedItem;[self.prefs setObject:(packIndex>=0&&packIndex<3?CanonicalPacks()[packIndex]:@"Deutsch") forKey:@"LanguagePack"];[self.prefs setObject:self.login.state==NSControlStateValueOn?@"Ja":@"Nein" forKey:@"LoginTool"];[self.prefs setObject:UILang forKey:@"UILanguage"];[self saveManaged:self.questie key:@"ManageQuestie"];[self saveManaged:self.atlas key:@"ManageAtlasLoot"];[self saveManaged:self.details key:@"ManageDetails"];[self saveManaged:self.pawn key:@"ManagePawn"];[self saveManaged:self.dbm key:@"ManageDBM"];[self saveManaged:self.gtfo key:@"ManageGTFO"];[self saveManaged:self.bugsack key:@"ManageBugSack"];[self.prefs synchronize]; }
-- (BOOL)managedClientSelected { return [self.selected containsString:@"/_anniversary_/"]||[self.selected containsString:@"/_classic_era_/"]; }
+- (BOOL)managedClientSelected { return [self.selected containsString:@"/_anniversary_/"]||[self.selected containsString:@"/_classic_era_/"]||[self.selected containsString:@"/_classic_beta_/"]; }
 - (void)updateManagedAvailability { BOOL managed=[self managedClientSelected];for(NSButton*b in @[self.questie,self.atlas,self.details,self.dbm,self.gtfo,self.bugsack,self.pawn]){b.enabled=managed;b.accessibilityEnabled=managed;}NSString*help=managed?L(@"help.managed.on"):L(@"help.managed.off");for(NSButton*b in @[self.questie,self.atlas,self.details,self.dbm,self.gtfo,self.bugsack,self.pawn])b.accessibilityHelp=help; }
 - (void)updatePath { self.path.stringValue=self.selected?:L(@"path.none");self.path.accessibilityLabel=self.path.stringValue;[self updateManagedAvailability]; }
 - (NSString*)installed { NSString*t=[self.selected stringByAppendingPathComponent:@"Sku/Sku.toc"];NSString*x=t?[NSString stringWithContentsOfFile:t encoding:NSUTF8StringEncoding error:nil]:nil;NSRegularExpression*r=[NSRegularExpression regularExpressionWithPattern:@"(?im)^##\\s*Version:\\s*([^\\r\\n]+)" options:0 error:nil];NSTextCheckingResult*m=[r firstMatchInString:x?:@"" options:0 range:NSMakeRange(0,x.length)];return m?[[x substringWithRange:[m rangeAtIndex:1]]stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet]:nil; }
 - (NSDictionary*)addonManifest { NSString*p=[self.selected stringByAppendingPathComponent:@"SkuInstall.json"];NSData*d=p?[NSData dataWithContentsOfFile:p]:nil;if(!d)return @{};NSDictionary*j=[NSJSONSerialization JSONObjectWithData:d options:0 error:nil];NSDictionary*a=[j isKindOfClass:NSDictionary.class]?j[@"addons"]:nil;return[a isKindOfClass:NSDictionary.class]?a:@{}; }
 - (BOOL)managedAddonCurrent:(NSDictionary*)manifest key:(NSString*)key version:(NSString*)version roots:(NSArray*)roots { if(![manifest[key] isEqualToString:version])return NO;for(NSString*r in roots)if(![[NSFileManager defaultManager]fileExistsAtPath:[self.selected stringByAppendingPathComponent:r]])return NO;return YES; }
 - (NSString*)latestFor:(NSString*)key fallback:(NSString*)fallback { id entry=self.latestCurated[key];id value=[entry isKindOfClass:NSDictionary.class]?entry[@"latest"]:nil;return[value isKindOfClass:NSString.class]&&[value length]?value:fallback; }
-- (void)applyLatestCuratedLabels { NSString*fmt=L(@"managed.fmt");[self setButton:self.questie title:[NSString stringWithFormat:fmt,@"Questie",[self latestFor:@"Questie" fallback:@"11.37.1"]]];[self setButton:self.atlas title:[NSString stringWithFormat:fmt,@"AtlasLootClassic",[self latestFor:@"AtlasLoot" fallback:@"2.5.6.12334"]]];[self setButton:self.details title:[NSString stringWithFormat:fmt,@"Details Damage Meter",[self latestFor:@"Details" fallback:@"20260811.15275.172"]]];[self setButton:self.dbm title:[NSString stringWithFormat:fmt,@"Deadly Boss Mods",[self latestFor:@"DBM" fallback:@"12.1.8"]]];[self setButton:self.gtfo title:[NSString stringWithFormat:fmt,L(@"name.gtfo"),[self latestFor:@"GTFO" fallback:@"6.9.1"]]];[self setButton:self.bugsack title:[NSString stringWithFormat:fmt,L(@"name.bugsack"),[self latestFor:@"BugSack" fallback:@"12.0.13"]]];[self setButton:self.pawn title:[NSString stringWithFormat:fmt,L(@"name.pawn"),[self latestFor:@"Pawn" fallback:@"2.13.15"]]]; }
-- (NSArray*)curatedUpdates { if(![self managedClientSelected])return @[];BOOL era=[self.selected containsString:@"/_classic_era_/"];NSDictionary*m=self.addonManifest;NSMutableArray*u=[NSMutableArray array];if(self.questie.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:@"CurseQuestie" version:[self latestFor:@"Questie" fallback:@"11.37.1"] roots:@[@"Questie"]])[u addObject:@"Questie"];if(self.atlas.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:@"CurseAtlasLootAnniversary" version:[self latestFor:@"AtlasLoot" fallback:@"2.5.6.12334"] roots:@[@"AtlasLootClassic",@"AtlasLootClassic_Data"]])[u addObject:@"AtlasLootClassic"];if(self.details.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:@"CurseDetails" version:[self latestFor:@"Details" fallback:@"20260811.15275.172"] roots:@[@"Details",@"Details_DataStorage"]])[u addObject:@"Details Damage Meter"];if(self.pawn.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:(era?@"CursePawnVanilla":@"CursePawnTBC") version:[self latestFor:@"Pawn" fallback:@"2.13.15"] roots:@[@"Pawn"]])[u addObject:@"Pawn"];if(self.dbm.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:@"DBMCore" version:[self latestFor:@"DBM" fallback:@"12.1.8"] roots:(era?@[@"DBM-Core",@"DBM-Raids-Vanilla",@"DBM-Party-Vanilla"]:@[@"DBM-Core",@"DBM-Raids-BC",@"DBM-Party-BC"])])[u addObject:@"Deadly Boss Mods"];if(self.gtfo.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:@"CurseGTFO" version:[self latestFor:@"GTFO" fallback:@"6.9.1"] roots:@[@"GTFO"]])[u addObject:@"GTFO"];if(self.bugsack.state==NSControlStateValueOn&&(![self managedAddonCurrent:m key:@"BugSack" version:[self latestFor:@"BugSack" fallback:@"12.0.13"] roots:@[@"BugSack"]]||![self managedAddonCurrent:m key:@"CurseBugGrabber" version:@"12.0.21" roots:@[@"!BugGrabber"]]))[u addObject:L(@"name.bugsack")];return u; }
+- (void)applyLatestCuratedLabels { NSString*fmt=L(@"managed.fmt");[self setButton:self.questie title:[NSString stringWithFormat:fmt,@"Questie",[self latestFor:@"Questie" fallback:@"12.1.0+v1.0.6"]]];[self setButton:self.atlas title:[NSString stringWithFormat:fmt,@"AtlasLootClassic",[self latestFor:@"AtlasLoot" fallback:@"2.5.6.12334"]]];[self setButton:self.details title:[NSString stringWithFormat:fmt,@"Details Damage Meter",[self latestFor:@"Details" fallback:@"20261014.15330.172"]]];[self setButton:self.dbm title:[NSString stringWithFormat:fmt,@"Deadly Boss Mods",[self latestFor:@"DBM" fallback:@"12.1.14"]]];[self setButton:self.gtfo title:[NSString stringWithFormat:fmt,L(@"name.gtfo"),[self latestFor:@"GTFO" fallback:@"6.12.1"]]];[self setButton:self.bugsack title:[NSString stringWithFormat:fmt,L(@"name.bugsack"),[self latestFor:@"BugSack" fallback:@"12.1.7"]]];[self setButton:self.pawn title:[NSString stringWithFormat:fmt,L(@"name.pawn"),[self latestFor:@"Pawn" fallback:@"2.13.17"]]]; }
+- (NSArray*)curatedUpdates { if(![self managedClientSelected])return @[];BOOL era=[self.selected containsString:@"/_classic_era_/"],forever=[self.selected containsString:@"/_classic_beta_/"];NSDictionary*m=self.addonManifest;NSMutableArray*u=[NSMutableArray array];if(self.questie.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:@"CurseQuestie" version:[self latestFor:@"Questie" fallback:@"12.1.0+v1.0.6"] roots:@[@"Questie",@"QuestieDB"]])[u addObject:@"Questie"];if(self.atlas.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:(forever?@"CurseAtlasLootForever":@"CurseAtlasLootAnniversary") version:[self latestFor:@"AtlasLoot" fallback:(forever?@"12488":@"2.5.6.12334")] roots:(forever?@[@"AtlasLootContinued",@"AtlasLootContinued_Data"]:@[@"AtlasLootClassic",@"AtlasLootClassic_Data"])])[u addObject:@"AtlasLootClassic"];if(self.details.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:@"CurseDetails" version:[self latestFor:@"Details" fallback:@"20261014.15330.172"] roots:@[@"Details",@"Details_DataStorage"]])[u addObject:@"Details Damage Meter"];if(self.pawn.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:(forever?@"CursePawnForever":era?@"CursePawnVanilla":@"CursePawnTBC") version:[self latestFor:@"Pawn" fallback:@"2.13.17"] roots:@[@"Pawn"]])[u addObject:@"Pawn"];if(self.dbm.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:@"DBMCore" version:[self latestFor:@"DBM" fallback:@"12.1.14"] roots:((era||forever)?@[@"DBM-Core",@"DBM-Raids-Vanilla",@"DBM-Party-Vanilla"]:@[@"DBM-Core",@"DBM-Raids-BC",@"DBM-Party-BC"])])[u addObject:@"Deadly Boss Mods"];if(self.gtfo.state==NSControlStateValueOn&&![self managedAddonCurrent:m key:@"CurseGTFO" version:[self latestFor:@"GTFO" fallback:@"6.12.1"] roots:@[@"GTFO"]])[u addObject:@"GTFO"];if(self.bugsack.state==NSControlStateValueOn&&(![self managedAddonCurrent:m key:@"BugSack" version:[self latestFor:@"BugSack" fallback:@"12.1.7"] roots:@[@"BugSack"]]||![self managedAddonCurrent:m key:@"CurseBugGrabber" version:@"12.1.0" roots:@[@"!BugGrabber"]]))[u addObject:L(@"name.bugsack")];return u; }
 - (NSString*)updateSummaryWithLatestSku:(NSString*)latest { NSMutableArray*u=[NSMutableArray array];NSString*have=self.installed;if(!have||![have isEqualToString:latest])[u addObject:@"Sku"];[u addObjectsFromArray:self.curatedUpdates];if(!u.count)return L(@"summary.uptodate");NSString*names=u.count==1?u.firstObject:[[u subarrayWithRange:NSMakeRange(0,u.count-1)]componentsJoinedByString:@", "];if(u.count>1)names=[NSString stringWithFormat:@"%@ %@ %@",names,L(@"word.and"),u.lastObject];return u.count==1?[NSString stringWithFormat:L(@"summary.one"),names]:[NSString stringWithFormat:L(@"summary.many"),names]; }
 - (NSString*)spoken:(NSString*)v{return[v stringByReplacingOccurrencesOfString:@"." withString:L(@"word.dot")];}
 - (void)setStatus:(NSString*)s announce:(BOOL)a { self.status.stringValue=s;self.status.accessibilityLabel=s;if(a)NSAccessibilityPostNotificationWithUserInfo(self.status,NSAccessibilityAnnouncementRequestedNotification,@{NSAccessibilityAnnouncementKey:s,NSAccessibilityPriorityKey:@(NSAccessibilityPriorityHigh)}); }

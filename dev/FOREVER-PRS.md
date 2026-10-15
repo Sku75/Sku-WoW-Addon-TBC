@@ -588,16 +588,25 @@ jemand baut.
 
 Die Forever-Unterstützung im Installer baut der Maintainer selbst, er kennt das
 Werkzeug am besten. Von dir kommt dazu kein PR; Fragen zum Forever-Client
-(Pfade, Dateien) beantwortest du gern im Issue. Zur Orientierung, was er
-vorhat (aus PR #20 übernommen, aber **einfacher**):
+(Pfade, Dateien) beantwortest du gern im Issue. Stand (Installer 5.5, Details
+in `installer/README.md`, Abschnitt "WoW Forever support"):
 
-- Forever-Client erkennen (`_classic_beta_`, `WowB.exe`, `.flavor.info`).
-- **Dasselbe Sku-ZIP** wie für Anniversary und Era installieren. Kein zweites
-  Repo, keine eigene Versionsnummer, kein `ForeverPinVersion`.
-- Beim TOC-Abgleich auf einem Forever-Client nur `16001` schreiben, nie die
-  Anniversary-Nummern (dieser Teil aus PR #20 wird übernommen, ebenso die
-  Erkennung in `WowLocator.cs` und die Selbsttests).
-- Questie, AtlasLoot und das Login-Tool wie in PR #20 nicht auf Forever.
+- Forever-Client wird erkannt (`_classic_beta_`, `WowB.exe`, `.flavor.info`),
+  auch beim Durchsuchen; die Prüfung "Spiel läuft" kennt `WowB.exe`.
+- **Dasselbe Sku-ZIP** wie für Anniversary und Era. Kein zweites Repo, keine
+  eigene Versionsnummer. Forever wird aber erst ab **Sku 44.0** installiert
+  (`Config.ForeverMinMainVersion`): ältere Versionen haben keinen Forever-Code.
+  Bis dahin steht Forever mit dieser Begründung in der Liste und bleibt leer.
+- Der TOC-Abgleich schreibt auf Forever nur `16001`, nie die
+  Anniversary-Nummern, und umgekehrt.
+- Spieleinstellungen (`checkAddonVersion`, `AllowDangerousScripts`) wie bei
+  den anderen Clients.
+- Login-Tool: wird mit installiert (es hat seit 4.0 einen Forever-Modus), aber
+  ohne Texturen und Schriften im Forever-Ordner.
+- Alle sieben verwalteten AddOns gibt es für Forever: Questie 12 (jetzt für
+  alle Clients), AtlasLoot Continued und Pawn-Forever als eigene
+  Forever-Pakete, DBM mit den Vanilla-Raids, Details/GTFO/BugSack/BugGrabber in
+  neueren Fassungen.
 
 ## Wenn etwas unklar ist
 

@@ -102,8 +102,12 @@
          Windows OneCore voices (Katja, Stefan, ...) into the SAPI voice list
          the game reads (WindowsVoicesInstaller; same step as NVDA Voice for
          WoW 1.1). On by default, runs on every install after the bridge.
+         5.5 = WoW Forever as a third client (_classic_beta_, WowB.exe): same
+         Sku zip, TOCs synced to 16001 only, installable once the newest release
+         is at least Config.ForeverMinMainVersion (44.0); login tool folder
+         without textures/fonts there.
          -->
-    <Version>5.4</Version>
+    <Version>5.5</Version>
     <!-- File properties (Explorer "Details", and what antivirus reputation
          scoring reads). Left at the SDK defaults every field said just
          "SkuInstaller" and the copyright was blank, which is what throwaway

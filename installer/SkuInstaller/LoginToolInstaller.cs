@@ -117,20 +117,45 @@ namespace SkuInstaller
             catch { return null; }
         }
 
-        public static void Install(string addonsFolder, GitHubClient github, Action<string> announce, bool force)
+        /// <summary>
+        /// True when the tool needs its recognition textures and font override in
+        /// this client. WoW Forever narrates its own login screens (the tool only
+        /// moves the mouse there, see the tool's Forever mode) and draws its UI
+        /// from atlases, so nothing is copied into a Forever client folder.
+        /// </summary>
+        internal static bool ClientNeedsTextures(string product) =>
+            product != Config.ForeverFlavor;
+
+        public static void Install(string addonsFolder, GitHubClient github, Action<string> announce, bool force,
+                                   string product = null)
         {
             announce = announce ?? (_ => { });
             try
             {
-                // Program folder at the WoW base; textures into …\Interface.
-                string interfaceDir = Directory.GetParent(addonsFolder)?.FullName;   // …\Interface
+                // Program folder at the WoW base; textures into …\Interface
+                // (left null for a client that needs none, which skips steps 4 and 5).
+                string interfaceDir = ClientNeedsTextures(product)
+                    ? Directory.GetParent(addonsFolder)?.FullName   // …\Interface
+                    : null;
                 string toolDir = ResolveToolDir(addonsFolder);
 
                 string startScript = Path.Combine(toolDir, "v2", "START.ahk");
                 if (File.Exists(startScript) && !force)
                 {
                     string installed = InstalledVersion(toolDir);
-                    if (string.Equals(installed, Config.LoginToolVersion, StringComparison.OrdinalIgnoreCase))
+
+                    // The tool folder is shared by every client under one WoW base,
+                    // but the textures belong to each client. A current tool can
+                    // still be missing them here (installed for WoW Forever first,
+                    // or for another client), so only a client that has its marker
+                    // texture counts as done.
+                    bool texturesOk = interfaceDir == null ||
+                                      File.Exists(Path.Combine(interfaceDir, FiducialMarkerRelPath));
+                    if (!texturesOk)
+                        Logger.Info($"WoW Login Tool {installed} present, but {interfaceDir} has no recognition textures; reinstalling.");
+
+                    if (texturesOk &&
+                        string.Equals(installed, Config.LoginToolVersion, StringComparison.OrdinalIgnoreCase))
                     {
                         announce(Loc.Get("lt.present"));
                         Logger.Info($"WoW Login Tool {installed} already present at {toolDir}; skipping (use force to reinstall).");
@@ -190,6 +215,10 @@ namespace SkuInstaller
                         announce(Loc.Get("lt.textures"));
                         RemoveStaleFiducialTextures(interfacePayload, interfaceDir);
                         CopyTree(interfacePayload, interfaceDir, skipInterfacePayload: false);
+                    }
+                    else if (!ClientNeedsTextures(product))
+                    {
+                        Logger.Info($"WoW Login Tool: {product} needs no textures or fonts; tool folder only.");
                     }
                     else
                     {

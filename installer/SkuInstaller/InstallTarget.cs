@@ -53,11 +53,25 @@ namespace SkuInstaller
         public bool ClientFound => !string.IsNullOrEmpty(AddOnsPath);
 
         /// <summary>
+        /// True when the newest Sku release can run in this client. WoW Forever
+        /// needs at least <see cref="Config.ForeverMinMainVersion"/>: an older
+        /// release has no Forever code, and the TOC sync would still make the
+        /// client load it. Until such a release is out, the Forever client is
+        /// listed with that explanation and nothing is installed into it; the
+        /// first release that qualifies unlocks it without a new installer.
+        /// </summary>
+        public bool Installable => IsInstallable(Product);
+
+        internal static bool IsInstallable(string product) =>
+            product != Config.ForeverFlavor ||
+            AddonInstaller.CompareVersions(Config.MainVersion, Config.ForeverMinMainVersion) >= 0;
+
+        /// <summary>
         /// True when an update is available for the Sku install in this client.
         /// A client without Sku is a fresh install, not an update.
         /// </summary>
         public bool UpdateAvailable =>
-            HasSku && AddonInstaller.CompareVersions(InstalledVersion, Config.MainVersion) < 0;
+            Installable && HasSku && AddonInstaller.CompareVersions(InstalledVersion, Config.MainVersion) < 0;
 
         /// <summary>True when Sku here is a symlink/junction to a folder we don't manage.</summary>
         public bool IsDevSymlink =>
@@ -119,6 +133,9 @@ namespace SkuInstaller
         {
             if (!ClientFound)
                 return Loc.Get("target.notFound");
+
+            if (!Installable)
+                return Loc.Format("target.foreverNotYet", Config.ForeverMinMainVersion, Config.MainVersion);
 
             if (!HasSku)
                 return Loc.Format("target.freshInstall", Config.MainVersion);

@@ -177,15 +177,16 @@ Downloads silently downgraded the shortcut. It now leaves a newer copy alone.
 instance is launched with (it drives the `.old` cleanup and the "the installer
 updated itself to 4.3" line on the opening screen).
 
-## WoW path detection + flavors (Anniversary AND Classic Era)
+## WoW path detection + flavors (Anniversary, Classic Era, WoW Forever)
 
 Arena had one fixed install path. WoW has multiple "flavors" side by side and,
 on modern Battle.net, **no registry key**. `WowLocator.DetectFlavors()`:
 
 1. Find WoW base dirs (default `C:\Program Files (x86)\World of Warcraft`, plus
    any saved location).
-2. Under each, every `_*_` folder with a `WowClassic.exe`/`Wow.exe` is a flavor;
-   `.flavor.info` names the product (`wow_anniversary`, `wow_classic_era`, …).
+2. Under each, every `_*_` folder with a `WowClassic.exe`/`Wow.exe`/`WowB.exe` is a
+   flavor; `.flavor.info` names the product (`wow_anniversary`,
+   `wow_classic_era`, `wow_classic_beta`, …).
 3. AddOns = `<flavor>\Interface\AddOns`. The UI shows a **game-version dropdown**
    of all detected flavors (Anniversary listed first); picking one sets the
    install target. Browse is still there for a custom path.
@@ -224,6 +225,56 @@ Era asset. Per project decision, the **same Sku 41.x build is used for Era too**
 `_classic_era_\Interface\AddOns` and `GameSettings` targets `_classic_era_\WTF`.
 Because the version lines differ (32.x vs 41.x), the normal version compare
 treats the old Era build as "older" and updates it — the desired unification.
+
+**WoW Forever support.** Blizzard's new Classic client (game type `camelot`,
+product `wow_classic_beta`, folder `_classic_beta_`, exe **`WowB.exe`**,
+build 1.60.x = interface `16001`) is the third supported client, last in the
+picker. It gets the **same Sku zip** as Anniversary and Era (Sku gates its
+Forever code on `Sku.isForever`) and the same companions and language packs.
+What differs:
+
+- Detection accepts `WowB.exe` next to `WowClassic.exe`/`Wow.exe`, and the
+  game-running check (`IsGameRunning`) looks for both processes.
+- The TOC sync writes **only `16001`** into a Forever client and never `16001`
+  into Anniversary/Era (`InterfaceVersionList` works per client family).
+- **Minimum release `Config.ForeverMinMainVersion` (44.0).** Older releases have
+  no Forever code, but the TOC sync would still make the client load them. While
+  the newest release (live-resolved) is older, the Forever client is listed with
+  that explanation, stays unticked, is left out of "Update now", and the run
+  refuses it as a backstop. The first qualifying release unlocks it with no new
+  installer build.
+- Login tool: the tool folder is shared at the WoW base and has a Forever mode
+  (the client narrates its own login screens), so a Forever client gets **no**
+  recognition textures and no font override. Because the folder is shared, a
+  current tool still reinstalls once for a client whose recognition marker
+  texture is missing (e.g. Forever was installed first, Anniversary later).
+- `GameSettings` works unchanged: `checkAddonVersion` and `AllowDangerousScripts`
+  exist in `WowB.exe` and land in `_classic_beta_\WTF`.
+- Managed third-party addons: all seven entries serve Forever (checked
+  2026-10-15 against the real zips; every one ships its own 16001 TOC, so the
+  TOC sync is not needed for them). Shared multi-flavor packages (Details, DBM
+  core + dungeons, GTFO, BugSack, BugGrabber) were bumped to their first
+  Forever-capable builds for every client; the old GTFO pin would even load its
+  retail TOC on Forever.
+  - `CurseQuestie` — Questie 12 for every client: tags `bundle/v12.x+v1.y`
+    (`TagPrefix = "bundle/"`, asset `Questie-{name}.zip`), required roots
+    `Questie` + `QuestieDB`. Before 5.5 the plain-tag pattern rejected the
+    bundle tags and silently kept every client on the 11.37.1 pin from Questie
+    12's release (2026-09-23) on. Everything Sku calls in Questie (QuestieLoader
+    modules, QuestieDB.GetQuest/IsDoableVerbose/DoableStates, QuestieEvent,
+    `Questie.started`, the announce profile fields) exists unchanged in 12.
+
+  Forever-only packages:
+  - `CurseAtlasLootForever` — the same CurseForge project renamed
+    "AtlasLootClassic-Continued" with `AtlasLootContinued*` folders. Anniversary/
+    Era keep the `AtlasLootClassic*` pin, because Sku's `alIntegration.lua`
+    names those modules, and the two sets must never sit side by side (both
+    claim the global `AtlasLoot`).
+  - `CursePawnForever` — `{tag}-Forever.zip` (first in 2.13.17; the plain Pawn
+    zip is retail).
+  - DBM raids on Forever = `DBMRaidsVanilla`; DBM-Dungeons r266+ carries the
+    Forever-only `DBM-Party-Forever` folder (accepted by the `DBM-` prefix).
+  The macOS installer has the same packages.
 
 Caveat: on a first Era install the old companions get *adopted* (kept), not
 refreshed. Tick **"Reinstall everything"** (the force checkbox) to pull fresh
@@ -323,7 +374,9 @@ Mechanics:
 - **Multi-client by design.** `.build.info` lists every product, so we write the
   union of the Sku-supported clients present (Anniversary + Classic Era), highest
   first — e.g. `## Interface: 20506, 11508` — so one TOC loads on both. Other
-  products (retail/MoP `wow_classic`) are filtered out.
+  products (retail/MoP `wow_classic`) are filtered out. WoW Forever is its own
+  family: a Forever AddOns folder gets `16001` alone, and that number never
+  enters an Anniversary/Era TOC.
 - **Drift counts as work but stays live.** If a TOC is out of step the run isn't
   reported "up to date"; but a TOC is a tiny text file, so the sync never forces
   the game closed — it's rewritten in place and picked up on the next `/reload`.
@@ -394,7 +447,7 @@ installer/
     app.manifest             ← UAC elevation (writing under Program Files)
     Program.cs               ← entry point, CLI args, flow selection
     Config.cs                ← repo URL + the Sku addon/companion catalog
-    ManagedAddons.cs         ← managed third-party addons (Anniversary + Era):
+    ManagedAddons.cs         ← managed third-party addons (Anniversary + Era + Forever):
                                specs, prefs store, GitHub-latest resolution,
                                per-client packages, installer.
                                Mirror of installer/shared/addon-catalog.json
@@ -479,6 +532,15 @@ It also takes single-word commands for the pieces that have no other test:
   stores), then round-trips write/read/stale-memory cases against a throwaway
   store via `PathMemory.DirOverride`. The real user's memory is never touched.
 - `toctest` — build-version → interface-number math, no network.
+- `forevertest` — WoW Forever support, no network: a throwaway WoW base with
+  Anniversary, Era, Forever and MoP; checks detection, folder picking, the
+  per-family interface list, the minimum-version gate, the TOC rewrite, game
+  settings, the login tool's texture rule and the managed-addon packages.
+- `managedinstall [product]` — every managed third-party package of one client
+  (`wow_classic_beta` default, `wow_anniversary`, `wow_classic_era`) with the
+  REAL downloads into a throwaway folder: live resolution, hash/shape checks,
+  a TOC naming the client per package, and a second pass with nothing to do.
+  Run it whenever a pin or template changes.
 - `resolve` — the live "latest release" discovery, no download.
 - `selfupdate [poseAsVersion]` — the real self-update check end to end except
   the window and the restart: fetch the version file, compare, download,

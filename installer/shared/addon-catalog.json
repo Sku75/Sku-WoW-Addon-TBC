@@ -50,13 +50,14 @@
           "key": "CurseQuestie",
           "provider": "github",
           "project": "Questie/Questie",
+          "tagPrefix": "bundle/",
           "assetContains": "Questie-v",
-          "assetTemplate": "Questie-{tag}.zip",
-          "clients": ["anniversary", "era"],
-          "fallbackVersion": "11.37.1",
-          "fallbackUrl": "https://edge.forgecdn.net/files/8742/429/Questie-v11.37.1.zip",
-          "fallbackSha256": "450e09bd795ff25d5529abdb4b431d360e76d1097bb59992098bb39a907b8926",
-          "requiredRoots": ["Questie"]
+          "assetTemplate": "Questie-{name}.zip",
+          "clients": ["anniversary", "era", "forever"],
+          "fallbackVersion": "bundle/v12.1.0+v1.0.6",
+          "fallbackUrl": "https://github.com/Questie/Questie/releases/download/bundle%2Fv12.1.0%2Bv1.0.6/Questie-v12.1.0%2Bv1.0.6.zip",
+          "fallbackSha256": "4ca2fbcbd03e050e8b8295f86bc29c6fe6044ef2db298e724f581c8c5a9a6d68",
+          "requiredRoots": ["Questie", "QuestieDB"]
         }
       ]
     },
@@ -74,6 +75,16 @@
           "fallbackSha256": "e286fa10bfe2a5ae15d405ebe65071caab386d1eb61cf9b25bad3ab6a9e1ad0d",
           "requiredRoots": ["AtlasLootClassic", "AtlasLootClassic_Data"],
           "rootPrefix": "AtlasLootClassic"
+        },
+        {
+          "key": "CurseAtlasLootForever",
+          "provider": "pinned",
+          "clients": ["forever"],
+          "fallbackVersion": "12488",
+          "fallbackUrl": "https://edge.forgecdn.net/files/9187/862/AtlasLootClassic-Continued_12488.zip",
+          "fallbackSha256": "8eaee376a19b26da4a50f4f7f7304f9f41b3eadfd0bd38c4fd98f67495fa82bd",
+          "requiredRoots": ["AtlasLootContinued", "AtlasLootContinued_Data"],
+          "rootPrefix": "AtlasLootContinued"
         }
       ]
     },
@@ -85,10 +96,10 @@
         {
           "key": "CurseDetails",
           "provider": "pinned",
-          "clients": ["anniversary", "era"],
-          "fallbackVersion": "20260811.15275.172",
-          "fallbackUrl": "https://edge.forgecdn.net/files/8680/856/Details-Details.20260811.15275.172.zip",
-          "fallbackSha256": "3a1f83db2ec4cebde18f36ac496e3fd15134351aae9cde2ead62a233a64c751e",
+          "clients": ["anniversary", "era", "forever"],
+          "fallbackVersion": "20261014.15330.172",
+          "fallbackUrl": "https://edge.forgecdn.net/files/9177/176/Details-Details.20261014.15330.172.zip",
+          "fallbackSha256": "67c4fe6c81e7bc331098e67bce00ee049735d278a7c9d04c9d749930233e5086",
           "requiredRoots": ["Details", "Details_DataStorage"],
           "rootPrefix": "Details"
         }
@@ -106,9 +117,9 @@
           "assetContains": "-BurningCrusade.zip",
           "assetTemplate": "{tag}-BurningCrusade.zip",
           "clients": ["anniversary"],
-          "fallbackVersion": "2.13.15",
-          "fallbackUrl": "https://edge.forgecdn.net/files/8671/944/Pawn-2.13.15-BurningCrusade.zip",
-          "fallbackSha256": "412a77ae5007aa00cf50ae91272f0af84262c63c0b70144906dedc0ab8d39750",
+          "fallbackVersion": "2.13.17",
+          "fallbackUrl": "https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.17/Pawn-2.13.17-BurningCrusade.zip",
+          "fallbackSha256": "e0a597b5387001b30278d21817c162c74b84cd26c77ec3d969d65b4aea8c1fd2",
           "requiredRoots": ["Pawn"]
         },
         {
@@ -118,9 +129,21 @@
           "assetContains": "-Classic.zip",
           "assetTemplate": "{tag}-Classic.zip",
           "clients": ["era"],
-          "fallbackVersion": "2.13.15",
-          "fallbackUrl": "https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.15/Pawn-2.13.15-Classic.zip",
-          "fallbackSha256": "2b182e663fa4f3c0a60efa82f31a0623cbf11bc7d48d7e4f8faea203e93f6325",
+          "fallbackVersion": "2.13.17",
+          "fallbackUrl": "https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.17/Pawn-2.13.17-Classic.zip",
+          "fallbackSha256": "26ae9f704953417b0898c6950cd64a3cd25f994108e2d052f9929417c0f82cbe",
+          "requiredRoots": ["Pawn"]
+        },
+        {
+          "key": "CursePawnForever",
+          "provider": "github",
+          "project": "VgerMods/Pawn",
+          "assetContains": "-Forever.zip",
+          "assetTemplate": "{tag}-Forever.zip",
+          "clients": ["forever"],
+          "fallbackVersion": "2.13.17",
+          "fallbackUrl": "https://github.com/VgerMods/Pawn/releases/download/Pawn-2.13.17/Pawn-2.13.17-Forever.zip",
+          "fallbackSha256": "5b23160af66be3d70a46075eb7073dd43d398a3aea9d8ad29974f4063c30a216",
           "requiredRoots": ["Pawn"]
         }
       ]
@@ -136,10 +159,10 @@
           "project": "DeadlyBossMods/DeadlyBossMods",
           "assetContains": "DBM-Core-",
           "assetTemplate": "DBM-Core-{tag}.zip",
-          "clients": ["anniversary", "era"],
-          "fallbackVersion": "12.1.8",
-          "fallbackUrl": "https://github.com/DeadlyBossMods/DeadlyBossMods/releases/download/12.1.8/DBM-Core-12.1.8.zip",
-          "fallbackSha256": "980e833949071ba6359e6d5f326a5d51c1134010299cb7b7a6f9599c9df3e755",
+          "clients": ["anniversary", "era", "forever"],
+          "fallbackVersion": "12.1.14",
+          "fallbackUrl": "https://github.com/DeadlyBossMods/DeadlyBossMods/releases/download/12.1.14/DBM-Core-12.1.14.zip",
+          "fallbackSha256": "d073b8b6e37efa877e4bb18d4dc736206f64868eabd91674c356d0313c21a2e8",
           "requiredRoots": ["DBM-Core", "DBM-GUI", "DBM-StatusBarTimers"],
           "rootPrefix": "DBM-"
         },
@@ -150,9 +173,9 @@
           "assetContains": "DBM-Raids-BC-",
           "assetTemplate": "DBM-Raids-BC-{tag}.zip",
           "clients": ["anniversary"],
-          "fallbackVersion": "r19",
-          "fallbackUrl": "https://github.com/DeadlyBossMods/DBM-BurningCrusade/releases/download/r19/DBM-Raids-BC-r19.zip",
-          "fallbackSha256": "5c6d3567018c0770653c8c9b82e3393411d0eea4405dd41445b7ff2e2406a32a",
+          "fallbackVersion": "r21",
+          "fallbackUrl": "https://github.com/DeadlyBossMods/DBM-BurningCrusade/releases/download/r21/DBM-Raids-BC-r21.zip",
+          "fallbackSha256": "27f58b47e56d7372de8c99c1f3181b6c1a9d5db7644ff09c4bc2aafbf9d6bff0",
           "requiredRoots": ["DBM-Raids-BC"],
           "rootPrefix": "DBM-"
         },
@@ -162,10 +185,10 @@
           "project": "DeadlyBossMods/DBM-Vanilla",
           "assetContains": "DBM-Vanilla_SoD-",
           "assetTemplate": "DBM-Vanilla_SoD-{tag}.zip",
-          "clients": ["era"],
-          "fallbackVersion": "r826",
-          "fallbackUrl": "https://github.com/DeadlyBossMods/DBM-Vanilla/releases/download/r826/DBM-Vanilla_SoD-r826.zip",
-          "fallbackSha256": "0a68a1a21ee73a1f8da40117f3c244c363677fd36cf0fb6ae5b9885c5ff3116c",
+          "clients": ["era", "forever"],
+          "fallbackVersion": "r832",
+          "fallbackUrl": "https://github.com/DeadlyBossMods/DBM-Vanilla/releases/download/r832/DBM-Vanilla_SoD-r832.zip",
+          "fallbackSha256": "1c02e96a45de723dce1c56c2f9428f767447496434d81dc191d2e8e9a63ed61d",
           "requiredRoots": ["DBM-Raids-Vanilla"],
           "rootPrefix": "DBM-"
         },
@@ -175,10 +198,10 @@
           "project": "DeadlyBossMods/DBM-Dungeons",
           "assetContains": "DBM-Dungeons-",
           "assetTemplate": "DBM-Dungeons-{tag}.zip",
-          "clients": ["anniversary", "era"],
-          "fallbackVersion": "r261",
-          "fallbackUrl": "https://github.com/DeadlyBossMods/DBM-Dungeons/releases/download/r261/DBM-Dungeons-r261.zip",
-          "fallbackSha256": "4cdf4afa9d058da384a170095381041e7925730aba8b731d3e89ea5087afee09",
+          "clients": ["anniversary", "era", "forever"],
+          "fallbackVersion": "r266",
+          "fallbackUrl": "https://github.com/DeadlyBossMods/DBM-Dungeons/releases/download/r266/DBM-Dungeons-r266.zip",
+          "fallbackSha256": "e1684a59a31940af9bf6dfde8a920e8feaf7ba90f439b5916c975d8b64fff96c",
           "requiredRoots": ["DBM-Party-BC", "DBM-Party-Vanilla"],
           "rootPrefix": "DBM-"
         }
@@ -192,10 +215,10 @@
         {
           "key": "CurseGTFO",
           "provider": "pinned",
-          "clients": ["anniversary", "era"],
-          "fallbackVersion": "6.9.1",
-          "fallbackUrl": "https://edge.forgecdn.net/files/8729/407/GTFO-6.9.1.zip",
-          "fallbackSha256": "a82d14b214f3a423ef99f5e7d9edbd7a186c552d9c5aa5ee1c75e92bf4aa18ae",
+          "clients": ["anniversary", "era", "forever"],
+          "fallbackVersion": "6.12.1",
+          "fallbackUrl": "https://edge.forgecdn.net/files/9187/115/GTFO-6.12.1.zip",
+          "fallbackSha256": "a2dd43bd4c61cc19ba5fb8efbf5953380f9905d3e2cc0a97260eccf5e63ec5d2",
           "requiredRoots": ["GTFO"]
         }
       ]
@@ -211,19 +234,19 @@
           "project": "funkydude/BugSack",
           "assetContains": "BugSack-v",
           "assetTemplate": "BugSack-{tag}.zip",
-          "clients": ["anniversary", "era"],
-          "fallbackVersion": "12.0.13",
-          "fallbackUrl": "https://github.com/funkydude/BugSack/releases/download/v12.0.13/BugSack-v12.0.13.zip",
-          "fallbackSha256": "e62c9a35bbfdca89dd4b66016e7828d3dd145ad9b7cdde2a62acdec1fc7bbb9b",
+          "clients": ["anniversary", "era", "forever"],
+          "fallbackVersion": "12.1.7",
+          "fallbackUrl": "https://github.com/funkydude/BugSack/releases/download/v12.1.7/BugSack-v12.1.7.zip",
+          "fallbackSha256": "ff93f1a141c889bdc6da604bae547d1b03e8c9b8fbbea27bf26fdc8c6c735308",
           "requiredRoots": ["BugSack"]
         },
         {
           "key": "CurseBugGrabber",
           "provider": "pinned",
-          "clients": ["anniversary", "era"],
-          "fallbackVersion": "12.0.21",
-          "fallbackUrl": "https://edge.forgecdn.net/files/8619/054/%21BugGrabber-v12.0.21.zip",
-          "fallbackSha256": "f031635ad509b8597b9f35bc94ae032ecf6f3292aaa9baa80b56bde3d8738520",
+          "clients": ["anniversary", "era", "forever"],
+          "fallbackVersion": "12.1.0",
+          "fallbackUrl": "https://edge.forgecdn.net/files/8907/587/%21BugGrabber-v12.1.0.zip",
+          "fallbackSha256": "248fe28b39a9e85bb7ddd23b02ef335715b82fb6d93dd7a3ce568dc51967c1df",
           "requiredRoots": ["!BugGrabber"]
         }
       ]

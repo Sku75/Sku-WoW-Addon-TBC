@@ -141,6 +141,32 @@ namespace SkuInstaller
         /// <summary>Classic Era flavor token in .flavor.info / .build.info Product column.</summary>
         public const string EraFlavor = "wow_classic_era";
 
+        // ── WoW Forever (Blizzard's new Classic client, game type "camelot") ──
+        // Build 1.60.x, interface 16001. It gets the SAME Sku zip as Anniversary
+        // and Era (Sku gates its Forever code on Sku.isForever); what differs is
+        // the folder, the exe, and that its TOCs carry only its own interface
+        // number (WowLocator.InterfaceVersionList).
+
+        /// <summary>WoW Forever flavor token in .flavor.info / .build.info Product column.</summary>
+        public const string ForeverFlavor = "wow_classic_beta";
+
+        /// <summary>Conventional flavor folder name of WoW Forever.</summary>
+        public const string ForeverFolder = "_classic_beta_";
+
+        /// <summary>Game process name (no extension) of the WoW Forever client.</summary>
+        public const string ForeverProcessName = "WowB";
+
+        /// <summary>
+        /// The first Sku release with WoW Forever support. Older releases have no
+        /// Forever code, so a Forever client is only installed into once the
+        /// newest release (live-resolved <see cref="MainVersion"/>) is at least
+        /// this; until then it is listed with an explanation (InstallTarget.Installable).
+        /// </summary>
+        public const string ForeverMinMainVersion = "44.0";
+
+        /// <summary>Every game process this installer cares about (Anniversary/Era share one exe name).</summary>
+        public static readonly string[] GameProcessNames = { GameProcessName, ForeverProcessName };
+
         /// <summary>
         /// The addons installed on every run (besides the chosen language pack).
         /// The main Sku addon is primary; SkuBeaconSoundsets is a hard dependency;

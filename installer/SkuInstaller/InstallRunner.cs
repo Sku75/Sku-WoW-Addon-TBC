@@ -143,6 +143,16 @@ namespace SkuInstaller
                 Say(Loc.Format("status.checkingClient", target.DisplayName), true);
 
                 var result = new TargetResult { Target = target };
+
+                // The pages never hand over such a client; this is the backstop
+                // that keeps an older release out of WoW Forever whatever the path.
+                if (!target.Installable)
+                {
+                    result.Error = new InvalidOperationException(target.StatusLine());
+                    results.Add(result);
+                    continue;
+                }
+
                 try
                 {
                     var manifest = InstallManifest.Load(target.AddOnsPath);
@@ -250,7 +260,7 @@ namespace SkuInstaller
                     {
                         SayScoped(Loc.Format("status.loginTool", r.Target.DisplayName), true);
                         LoginToolInstaller.Install(r.Target.AddOnsPath, _github,
-                                                   m => SayScoped(m), _options.Force);
+                                                   m => SayScoped(m), _options.Force, r.Target.Product);
                     }
 
                     manifest.Save(r.Target.AddOnsPath);
