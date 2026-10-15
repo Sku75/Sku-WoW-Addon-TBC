@@ -288,7 +288,7 @@ local function tGetSearchResults()
          local e = {
             resultID    = rid,
             leaderName  = info.leaderName,
-            comment     = (type(info.comment) == "string" and info.comment ~= "" and info.comment) or nil,
+            comment     = (info.comment ~= "" and info.comment) or nil,
             numMembers  = info.numMembers or 0,
             age         = info.age,
             npf         = info.newPlayerFriendly,
@@ -298,6 +298,11 @@ local function tGetSearchResults()
             guildmates  = info.numGuildMates or 0,
             activityIDs = info.activityIDs or {},
          }
+         -- The comment is a kstringLfgListSearch: a protected "|K...|k" string only Blizzard's widgets can render.
+         if e.comment and e.comment:find("|K", 1, true) then
+            e.comment = nil
+            e.commentHidden = true
+         end
          -- activities: those matching my own listing first (like the window)
          local matching = {}
          for _, aid in ipairs(e.activityIDs) do if activeSet[aid] then matching[#matching + 1] = aid end end
@@ -928,6 +933,7 @@ local function tBuildBrowseTab(aParent)
                if res.roleText then line(res.roleText) end
                if res.needText then line(res.needText) end
                if res.comment then line(L["Comment"] .. ": " .. res.comment) end
+               if res.commentHidden then line(L["Comment hidden"]) end
                if res.friends > 0 then line(L["friends"] .. ": " .. res.friends) end
                if res.guildmates > 0 then line(L["guild members"] .. ": " .. res.guildmates) end
                for i = 1, math.min(res.numMembers, 40) do
