@@ -3333,9 +3333,6 @@ Interrupts	Interruptions
 Turn on damage meter	Activer le compteur de dégâts
 Damage meter on	Compteur activé
 Damage meter not available	Compteur de dégâts indisponible
-was blocked by the game	a été bloqué par le jeu
-remove friend	retirer l'ami
-player search	recherche de joueur
 Recent allies	Alliés récents
 nobody saved	personne d'enregistré
 Quick join	Rejoindre vite
@@ -3414,3 +3411,5 @@ needs 	recherche
 new-player friendly	adapté aux nouveaux joueurs
 no active listing	aucune annonce active
 rejected	refusé
+Confirm add friend: 	Confirmer l'ajout de l'ami : 
+Confirm search: 	Confirmer la recherche : 

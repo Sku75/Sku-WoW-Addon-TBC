@@ -3536,11 +3536,6 @@ L["Turn on damage meter"] = "Activer le compteur de dégâts"
 L["Damage meter on"] = "Compteur activé"
 L["Damage meter not available"] = "Compteur de dégâts indisponible"
 
--- forever(16): friends
-L["was blocked by the game"] = "a été bloqué par le jeu"
-L["remove friend"] = "retirer l'ami"
-L["player search"] = "recherche de joueur"
-
 -- forever(16): recent allies
 L["Recent allies"] = "Alliés récents"
 L["nobody saved"] = "personne d'enregistré"
@@ -3626,6 +3621,8 @@ L["needs "] = "recherche "
 L["new-player friendly"] = "adapté aux nouveaux joueurs"
 L["no active listing"] = "aucune annonce active"
 L["rejected"] = "refusé"
+L["Confirm add friend: "] = "Confirmer l'ajout de l'ami : "
+L["Confirm search: "] = "Confirmer la recherche : "
 
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
