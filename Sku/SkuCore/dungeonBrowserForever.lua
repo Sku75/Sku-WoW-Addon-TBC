@@ -89,7 +89,7 @@ end
 -- LFG state helpers.
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function tRequestActivities()
-   if C_LFGList.RequestAvailableActivities then C_LFGList.RequestAvailableActivities() end
+   C_LFGList.RequestAvailableActivities()
 end
 
 -- The active entry. In chat messaging lockdown its fields are secret, except activityIDs (NeverSecret in the API
@@ -127,12 +127,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 DungeonBrowser.tFilterStats = { total = 0, shown = 0 }
 
-local function tRawActivityIDs(categoryID)
-   if not C_LFGList.GetAvailableActivities then return nil end
-   local list = C_LFGList.GetAvailableActivities(categoryID)
-   if type(list) == "table" then return list end
-end
-
 local function tLevelOk(info, lvl)
    if not lvl or lvl <= 0 then return true end
    if info.minLevel and lvl < info.minLevel then return false end
@@ -144,11 +138,7 @@ end
 local function tGetCategoryActivities(categoryID)
    tRequestActivities()
    local infos = {}
-   local all = tRawActivityIDs(categoryID)
-   if not all then
-      DungeonBrowser.tFilterStats = { total = 0, shown = 0 }
-      return infos
-   end
+   local all = C_LFGList.GetAvailableActivities(categoryID)
 
    local d = tDB()
    local filterOn = not d.ignoreLevel
@@ -236,7 +226,7 @@ local function tSearchActivityIDs(categoryID)
       for _, info in ipairs(tGetCategoryActivities(categoryID)) do ids[#ids + 1] = info.id end
    end
    if #ids == 0 then
-      for _, id in ipairs(tRawActivityIDs(categoryID) or {}) do ids[#ids + 1] = id end
+      for _, id in ipairs(C_LFGList.GetAvailableActivities(categoryID)) do ids[#ids + 1] = id end
    end
    table.sort(ids)
    return ids
@@ -326,7 +316,7 @@ local function tGetSearchResults()
             e.activity = #shown .. " " .. L["activities"] .. ((#matching > 0) and (" (" .. L["matching"] .. ")") or "")
          end
          -- roles
-         local mc = C_LFGList.GetSearchResultMemberCounts and C_LFGList.GetSearchResultMemberCounts(rid)
+         local mc = C_LFGList.GetSearchResultMemberCounts(rid)
          if type(mc) == "table" then
             e.roleText = string.format("%s %d, %s %d, %s %d", L["Tank"], mc.TANK or 0, L["Healer"], mc.HEALER or 0, L["Damage"], mc.DAMAGER or 0)
             local need = tRoleList((mc.TANK_REMAINING or 0) > 0, (mc.HEALER_REMAINING or 0) > 0, (mc.DAMAGER_REMAINING or 0) > 0)
@@ -397,9 +387,7 @@ end
 
 local function tListCategories()
    local out = {}
-   if C_LFGList.GetAvailableCategories then
-      for _, id in ipairs(C_LFGList.GetAvailableCategories()) do out[#out + 1] = { id = id, name = tCategoryName(id) } end
-   end
+   for _, id in ipairs(C_LFGList.GetAvailableCategories()) do out[#out + 1] = { id = id, name = tCategoryName(id) } end
    if #out == 0 then out[1] = { id = LFG_CATEGORY_DUNGEON, name = tCategoryName(LFG_CATEGORY_DUNGEON) } end
    return out
 end
@@ -466,8 +454,8 @@ function DungeonBrowser:DoEnroll()
    table.sort(ids)
    -- The saved selection can hold activities this character is not offered (old state, other level). The game then
    -- rejects the whole listing, so only offered activities are sent.
-   local tOffered = tRawActivityIDs(d.listCategory)
-   if tOffered and #tOffered > 0 then
+   local tOffered = C_LFGList.GetAvailableActivities(d.listCategory)
+   if #tOffered > 0 then
       local tSet, tKept, tDropped = {}, {}, 0
       for _, oid in ipairs(tOffered) do tSet[oid] = true end
       for _, id in ipairs(ids) do
@@ -531,7 +519,6 @@ function DungeonBrowser:DoEnroll()
 end
 
 function DungeonBrowser:DoUnenroll()
-   if not C_LFGList.RemoveListing then tSay(L["Group finder unavailable"]); return end
    C_LFGList.RemoveListing()
    DungeonBrowser.tEditSeeded = false
    -- really gone? Only then say "removed"
@@ -1159,7 +1146,7 @@ end
 -- LFG events: refresh the menu when results / the active entry change.
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tLFGEvents = { "LFG_LIST_SEARCH_RESULTS_RECEIVED", "LFG_LIST_ACTIVE_ENTRY_UPDATE", "LFG_LIST_SEARCH_FAILED",
-   "LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED" }
+   "LFG_LIST_AVAILABILITY_UPDATE" }
 local tLFGEventsFrame
 local function tHookLFGEvents()
    if not tLFGEventsFrame then
@@ -1183,7 +1170,6 @@ local function tHookLFGEvents()
       end)
    end
    for _, tEvent in ipairs(tLFGEvents) do
-      -- LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED is not in the API docs; not every client knows every name
       if Sku.IsEventValid(tEvent) then tLFGEventsFrame:RegisterEvent(tEvent) end
    end
 end
