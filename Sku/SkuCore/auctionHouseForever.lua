@@ -200,12 +200,14 @@ end
 -- tRebuildAndFocus pulls the cursor into that entry's children. Entering goes
 -- through OnPostSelect, so mark the node as "entering" only during that call;
 -- query-starting builders check ahfEntering and stay passive otherwise.
+-- An error in the original OnPostSelect propagates to the key handler unchanged; the
+-- next-frame clear removes the flag in that case too.
 local function tMarkEntering(aNode)
 	local tOrig = aNode.OnPostSelect or SkuGenericMenuItem.OnPostSelect
 	aNode.OnPostSelect = function(self, ...)
 		self.ahfEntering = true
-		local tArgs = { n = select("#", ...), ... }
-		xpcall(function() tOrig(self, unpack(tArgs, 1, tArgs.n)) end, geterrorhandler())
+		C_Timer.After(0, function() self.ahfEntering = nil end)
+		tOrig(self, ...)
 		self.ahfEntering = nil
 	end
 end
