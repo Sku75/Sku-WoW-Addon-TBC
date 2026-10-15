@@ -39,10 +39,10 @@ local function tText(aParentChilds, aLabel, aFrame)
 	})
 end
 
--- Name and description of a talent entry (a spell talent or a subtree).
+-- Name, description and availability of a talent entry (a spell talent or a subtree).
 local function tEntryInfo(aConfigID, aEntryID)
 	local tEntry = C_Traits.GetEntryInfo(aConfigID, aEntryID)
-	if not tEntry then return nil, nil end
+	if not tEntry then return nil, nil, false end
 	local tName, tDesc
 	if tEntry.definitionID then
 		local tDef = C_Traits.GetDefinitionInfo(tEntry.definitionID)
@@ -57,7 +57,7 @@ local function tEntryInfo(aConfigID, aEntryID)
 		tName = tSub and tSub.name
 		tDesc = tSub and tSub.description
 	end
-	return tName, tDesc
+	return tName, tDesc, tEntry.isAvailable
 end
 
 local function tClick(aButton, aMouseButton)
@@ -101,6 +101,9 @@ local function tNodeEntry(aParentChilds, aConfigID, aButton, aNodeInfo)
 	-- in the entries.
 	if type(tChoices) == "table" and #tChoices > 0 and aButton.SetSelectedEntryID then
 		local tSelectedID = aButton.GetSelectedEntryID and aButton:GetSelectedEntryID() or nil
+		-- Blizzard's own check (TalentSelectionChoiceMixin:IsChoiceAvailable): cost, refund state and the tree's lock, not
+		-- only the node's lock.
+		local tCanChoose = aButton:CanSelectChoice() and not aButton:GetTalentFrame():IsLocked()
 		local tNames = {}
 		for _, tEntryID in ipairs(tChoices) do
 			tNames[#tNames + 1] = tEntryInfo(aConfigID, tEntryID) or "?"
@@ -108,7 +111,7 @@ local function tNodeEntry(aParentChilds, aConfigID, aButton, aNodeInfo)
 		local tState = ""
 		if tSelectedID then
 			tState = (tEntryInfo(aConfigID, tSelectedID) or "?") .. " (" .. L["selected"] .. ")"
-		elseif tIsLocked then
+		elseif not tCanChoose then
 			tState = L["disabled"]
 		end
 		local tNode = tAdd(aParentChilds, table.concat(tNames, " / "), {
@@ -121,11 +124,11 @@ local function tNodeEntry(aParentChilds, aConfigID, aButton, aNodeInfo)
 			childs = {},
 		})
 		for _, tEntryID in ipairs(tChoices) do
-			local tName, tDesc = tEntryInfo(aConfigID, tEntryID)
+			local tName, tDesc, tAvailable = tEntryInfo(aConfigID, tEntryID)
 			local tSub = tName or "?"
 			if tEntryID == tSelectedID then tSub = tSub .. " (" .. L["selected"] .. ")" end
 			local tEntryFunc
-			if tEntryID ~= tSelectedID and not tIsLocked then
+			if tEntryID ~= tSelectedID and tCanChoose and tAvailable then
 				tEntryFunc = function() aButton:SetSelectedEntryID(tEntryID) end
 			end
 			tAction(tNode.childs, tSub, tEntryFunc, tDesc or "", nil, tIdent .. ":" .. tEntryID)
