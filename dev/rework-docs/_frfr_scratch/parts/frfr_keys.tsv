@@ -3416,8 +3416,6 @@ Comment hidden	Commentaire masqué
 Play style	Style de jeu
 Open the group finder with its key once, then the comment can be typed here.	Ouvrez une fois la recherche de groupe avec sa touche, ensuite le commentaire peut être saisi ici.
 Type the comment, then press Escape.	Tapez le commentaire, puis appuyez sur Échap.
-hours	heures
-minutes	minutes
 under 30 minutes	moins de 30 minutes
 under 2 hours	moins de 2 heures
 under 12 hours	moins de 12 heures
@@ -3432,7 +3430,6 @@ quality from 	qualité à partir de
 from level 	à partir du niveau 
 up to level 	jusqu'au niveau 
 Filters active: 	Filtres actifs : 
-Not enough money	Pas assez d'argent
 Purchase failed	Achat échoué
 No price confirmation from the game. Please try again.	Pas de confirmation de prix. Réessayez.
 Confirm or cancel?	Confirmer ou annuler ?
@@ -3450,7 +3447,6 @@ No tooltip available	Aucune infobulle disponible
 from 	à partir de 
 for sale	en vente
 Confirm: 	Confirmer : 
-Cancel	Annuler
 That is your own auction	C'est votre propre enchère
 The bid is too low, at least 	L'enchère est trop basse, au moins 
 Bid failed	Échec de l'enchère
@@ -3469,7 +3465,6 @@ left: 	reste
 your own auction	votre propre enchère
 Quantity: 	Quantité : 
  of at most 	 sur au plus 
- pieces	 pièces
 Quantity not understood	Quantité non comprise
 Enter quantity, at most 	Saisir la quantité, au plus 
 Neither buyout nor bid possible	Ni achat immédiat ni enchère possible
@@ -3478,7 +3473,6 @@ Loading more auctions	Chargement d'autres offres
 Load more results, so far 	Charger plus de résultats, jusqu'ici 
 Loading more results	Chargement d'autres résultats
 Everything in 	Tout dans 
-not set	non défini
 at most 	au plus 
 Duration: 	Durée : 
 Price per unit: 	Prix par unité : 
@@ -3499,7 +3493,6 @@ Set a price first	Fixez d'abord un prix
 The starting bid must be below the buyout price	La mise de départ doit être inférieure au prix d'achat immédiat
 Not enough money for the deposit	Pas assez d'argent pour le dépôt
 Please wait a moment and try again	Veuillez patienter un instant
-Enter quantity	Entrez la quantité
 Enter price, for example 12g 5s 3k	Entrez le prix, par exemple 12g 5s 3k
 Price not understood	Prix non compris
 Enter the total price for the chosen quantity, for example 5g	Entrez le prix total pour la quantité choisie, par exemple 5g
@@ -3508,20 +3501,17 @@ Item data still loading, please open again in a moment	Données de l'objet en co
 No sellable items in your bags	Aucun objet vendable dans vos sacs
 sold	vendu
 buyout 	achat immédiat 
-bid 	enchère 
 by 	par 
 No current sales	Aucune vente en cours
 Sold, the money arrives by mail	Vendu, l'argent arrive par courrier
 Cancel auction	Annuler l'enchère
 Really cancel? Press Enter again	Vraiment annuler ? Appuyez encore sur Entrée
-cost 	coût 
 Cancel sent	Annulation envoyée
 outbid	surenchéri
 No bids	Aucune enchère
 No answer from the server, open the list again	Pas de réponse du serveur, rouvrez la liste
 You are the highest bidder, nothing to do	Vous êtes le meilleur enchérisseur, rien à faire
 No bid possible	Aucune enchère possible
-Bid placed	Enchère placée
 Current sales	Ventes en cours
 Auction canceled	Enchère annulée
 Auction posted	Enchère mise en vente
@@ -3533,15 +3523,11 @@ Auction %d of %d posted	Enchère %d sur %d mise en vente
 Could not get the market price. Enter asks again	Impossible d'obtenir le prix du marché. Entrée redemande
 The item has moved or is gone, open the list again	L'objet a été déplacé ou n'est plus là, rouvrez la liste
 Auctions by category	Enchères par catégorie
-yes	oui
-no	non
-Usable only	Utilisable seulement
 Upgrades only	Améliorations seulement
 Uncollected only	Non collecté seulement
 Current expansion only	Extension actuelle seulement
 Exact name for name searches	Nom exact pour la recherche par nom
 Minimum quality: 	Qualité minimale : 
-any	toutes
 Number not understood	Nombre non compris
 Enter level, empty or 0 for any	Saisir le niveau, vide ou 0 pour tous
 Level from	Niveau de

@@ -53,7 +53,7 @@ local function tSay(aText)
 end
 
 local function tHours(aN)
-	return aN.." "..L["hours"]
+	return aN..L[" Stunden"]
 end
 
 -- Time left of an auction: exact seconds when the server sends them, else Blizzard's band
@@ -62,7 +62,7 @@ local function tTimeLeftText(aInfo)
 	local tSec = aInfo.timeLeftSeconds
 	if tSec and tSec > 0 then
 		if tSec >= 3600 then return tHours(math.floor(tSec / 3600 + 0.5)) end
-		return math.max(1, math.floor(tSec / 60 + 0.5)).." "..L["minutes"]
+		return math.max(1, math.floor(tSec / 60 + 0.5))..L[" Minuten"]
 	end
 	local tBand = aInfo.timeLeft
 	if tBand ~= nil then
@@ -580,7 +580,7 @@ end
 -- aLeaf: the menu leaf whose key press runs this (see tRefuse).
 function AHF:BuyItemAuction(aAuctionID, aBuyoutAmount, aName, aLeaf)
 	if GetMoney() < aBuyoutAmount then
-		tRefuse(aLeaf, aName, L["Not enough money"])
+		tRefuse(aLeaf, aName, L["Nicht genug Geld"])
 		return
 	end
 	gItemPurchase.auctionID, gItemPurchase.name, gItemPurchase.isBuyout = aAuctionID, aName, true
@@ -673,7 +673,7 @@ function AHF:StartCommodityBuy(aItemID, aQuantity, aEntry, aName, aLeaf)
 		return false
 	end
 	if GetMoney() < tCost then
-		tRefuse(aLeaf, aName, L["Not enough money"])
+		tRefuse(aLeaf, aName, L["Nicht genug Geld"])
 		return false
 	end
 	-- One quote at a time: the server refuses a second one (ItemHasQuote) while the first is open.
@@ -742,7 +742,7 @@ function AHF:OnCommodityPriceUpdated(aUnitPrice, aTotalPrice)
 		tParts[#tParts + 1] = string.format(L["The price changed since it was listed: expected %s, now %s."],
 			tMoneyText(tPreview.total), tMoneyText(aTotalPrice))
 	end
-	if GetMoney() < aTotalPrice then tParts[#tParts + 1] = L["Not enough money"] end
+	if GetMoney() < aTotalPrice then tParts[#tParts + 1] = L["Nicht genug Geld"] end
 	tParts[#tParts + 1] = L["Confirm or cancel?"]
 	gCommodityBuy.summary = table.concat(tParts, ";")
 	tRebuildAndFocus(gCommodityBuy.entry, true)
@@ -762,7 +762,7 @@ function AHF:ConfirmCommodityBuy(aLeaf, aGeneration)
 		return
 	end
 	if GetMoney() < gCommodityBuy.totalPrice then
-		tRefuse(aLeaf, nil, L["Not enough money"])
+		tRefuse(aLeaf, nil, L["Nicht genug Geld"])
 		return
 	end
 	gCommodityBuy.confirming = true
@@ -908,7 +908,7 @@ local function tBuildCommodityConfirmChildren(aParentEntry)
 		end)
 	end
 	-- Cancel is there while waiting for the quote too: leaving must never keep a quote open.
-	tSettingLeaf(aParentEntry, L["Cancel"], function(aLeaf)
+	tSettingLeaf(aParentEntry, L["Abbrechen"], function(aLeaf)
 		if not gCommodityBuy.itemID or gCommodityBuy.generation ~= tGen then
 			tRefuse(aLeaf, nil, L["No purchase is waiting for confirmation"])
 			return
@@ -942,7 +942,7 @@ function AHF:PlaceItemBid(aRow, aAmount, aName, aLeaf)
 		return
 	end
 	if GetMoney() < aAmount then
-		tRefuse(aLeaf, aName, L["Not enough money"])
+		tRefuse(aLeaf, aName, L["Nicht genug Geld"])
 		return
 	end
 	gItemPurchase.auctionID, gItemPurchase.name, gItemPurchase.isBuyout = aRow.auctionID, aName, false
@@ -994,8 +994,8 @@ local function tAddFavoriteLeaf(aParent, aItemKey)
 	if not C_AuctionHouse.FavoritesAreAvailable() then return end
 	local tLeaf = SkuOptions:InjectMenuItems(aParent, {L["Favorites"]}, SkuGenericMenuItem)
 	SkuOptions:MakeToggleNode(tLeaf, {
-		onLabel = L["yes"],
-		offLabel = L["no"],
+		onLabel = L["Yes"],
+		offLabel = L["No"],
 		get = function() return C_AuctionHouse.IsFavoriteItem(aItemKey) end,
 		set = function(_, aNew)
 			C_AuctionHouse.SetFavoriteItem(aItemKey, aNew)
@@ -1117,7 +1117,7 @@ local function tBuildDetailChildren(aParentEntry)
 				local tMaxQty = math.max(1, (select(5, tCommodityPreview(tData.itemID, 1))))
 				tData.buyQty = math.max(1, math.min(tData.buyQty or tData.quantity or 1, tMaxQty))
 				local function tQtyName() return L["Quantity: "]..tData.buyQty..L[" of at most "]..tMaxQty end
-				local function tBuyName() return L["Kaufen"]..": "..tData.buyQty..L[" pieces"] end
+				local function tBuyName() return L["Kaufen"]..": "..tData.buyQty.." "..L["STRAT_Pieces"] end
 				local tBuyEntry
 				-- The first leaf carries the reason a purchase just ended (AHF:EndCommodityBuy).
 				tSettingLeaf(self, (gCommodityBuy.notice and (gCommodityBuy.notice..";") or "")..tQtyName(), function(aLeaf)
@@ -1331,7 +1331,7 @@ end
 
 local function tMoneyOrNone(aAmount)
 	if aAmount and aAmount > 0 then return tMoneyText(aAmount) end
-	return L["not set"]
+	return L["STRAT_NotSet"]
 end
 
 local function tQuantityLabel()
@@ -1619,7 +1619,7 @@ local function tBuildSellItemChildren(aParent)
 	gSell.leaves = tLeaves
 	if (gSell.maxQuantity or 1) > 1 then
 		tLeaves.quantity = tSettingLeaf(aParent, tQuantityLabel(), function()
-			tAskSell(L["Enter quantity"], tParseQuantity, L["Quantity not understood"], function(aN)
+			tAskSell(L["Enter amount"], tParseQuantity, L["Quantity not understood"], function(aN)
 				gSell.quantity = math.min(aN, gSell.maxQuantity or 1)
 			end)
 		end)
@@ -1889,7 +1889,7 @@ local function tOwnedRowLabel(aRow)
 			tParts[#tParts + 1] = L["buyout "]..tMoneyText(tI.buyoutAmount)
 		end
 		if tI.bidAmount and tI.bidAmount > 0 then
-			tParts[#tParts + 1] = L["bid "]..tMoneyText(tI.bidAmount)
+			tParts[#tParts + 1] = L["Gebot "]..tMoneyText(tI.bidAmount)
 			if tI.bidder then tParts[#tParts + 1] = L["by "]..tI.bidder end
 		end
 		local tLeft = tTimeLeftText(tI)
@@ -1922,7 +1922,7 @@ local function tAddOwnedRow(aParent, aRow)
 				tArmed = true
 				local tCost = C_AuctionHouse.GetCancelCost(tI.auctionID)
 				aLeaf.name = L["Really cancel? Press Enter again"]
-					..(tCost > 0 and (", "..L["cost "]..tMoneyText(tCost)) or "")
+					..(tCost > 0 and (", "..L["Cost"].." "..tMoneyText(tCost)) or "")
 			else
 				tData.cancelSent = true
 				C_AuctionHouse.CancelAuction(tI.auctionID)
@@ -1965,7 +1965,7 @@ local function tBidRowLabel(aRow)
 		tParts[#tParts + 1] = L["outbid"]
 	end
 	if aRow.bidAmount and aRow.bidAmount > 0 then
-		tParts[#tParts + 1] = L["bid "]..tMoneyText(aRow.bidAmount)
+		tParts[#tParts + 1] = L["Gebot "]..tMoneyText(aRow.bidAmount)
 	end
 	if aRow.buyoutAmount and aRow.buyoutAmount > 0 then
 		tParts[#tParts + 1] = L["buyout "]..tMoneyText(aRow.buyoutAmount)
@@ -2019,7 +2019,7 @@ gListEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 		-- to BID_ADDED only then. The bid list already holds the new bid, so it is read again, not asked for again
 		-- (Blizzard: AuctionHouseAuctionsFrameMixin, BidsList:DirtyScrollFrame).
 		if AuctionHouseFrame and AuctionHouseFrame:IsShown() then
-			tSay(L["Bid placed"])
+			tSay(L["Gebot abgegeben"])
 			AHF:RefreshBids()
 		end
 	elseif aEvent == "AUCTION_HOUSE_THROTTLED_SYSTEM_READY" then
@@ -2173,20 +2173,20 @@ function AHF:BuildSearchEntries(aSelf)
 		local function tToggle(aLabel, aKey)
 			local tLeaf = SkuOptions:InjectMenuItems(self, {aLabel}, SkuGenericMenuItem)
 			SkuOptions:MakeToggleNode(tLeaf, {
-				onLabel = L["yes"],
-				offLabel = L["no"],
+				onLabel = L["Yes"],
+				offLabel = L["No"],
 				get = function() return tF[aKey] end,
 				set = function(_, aNew) tF[aKey] = aNew or nil end,
 			})
 		end
-		tToggle(L["Usable only"], "usable")
+		tToggle(L["Nur benutzbare"], "usable")
 		tToggle(L["Upgrades only"], "upgrades")
 		tToggle(L["Uncollected only"], "uncollected")
 		tToggle(L["Current expansion only"], "currentExp")
 		tToggle(L["Exact name for name searches"], "exact")
 		local function tQualName()
 			return L["Minimum quality: "]
-				..(((tF.minQuality or 1) > 1) and tQualityName(tF.minQuality) or L["any"])
+				..(((tF.minQuality or 1) > 1) and tQualityName(tF.minQuality) or L["Any"])
 		end
 		tSettingLeaf(self, tQualName(), function(aLeaf)
 			local tQ = (tF.minQuality or 1) + 1
@@ -2195,7 +2195,7 @@ function AHF:BuildSearchEntries(aSelf)
 			aLeaf.name = tQualName()
 		end)
 		local function tLevelLeaf(aLabel, aKey)
-			local function tName() return aLabel..": "..(tF[aKey] or L["any"]) end
+			local function tName() return aLabel..": "..(tF[aKey] or L["Any"]) end
 			tSettingLeaf(self, tName(), function(aLeaf)
 				SkuOptions:EditBoxShow("", function()
 					local tText = SkuOptionsEditBoxEditBox:GetText() or ""
