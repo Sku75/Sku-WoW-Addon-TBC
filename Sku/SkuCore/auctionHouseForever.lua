@@ -300,6 +300,7 @@ function AHF:StartBrowseQuery(aQuery, aEntry, aSend)
 	gBrowse.seenBefore = nil
 	gBrowse.entry = aEntry
 	gBrowse.failText = nil
+	gBrowse.filterSummary = nil
 	gBrowse.generation = (gBrowse.generation or 0) + 1
 	tSendThrottled(gBrowse, aSend or C_AuctionHouse.SendBrowseQuery, aQuery)
 	tFailOnTimeout(gBrowse, 10)
@@ -375,9 +376,8 @@ end
 function AHF:StartBrowse(aSearchText, aEntry)
 	local tQuery = { searchString = aSearchText, sorts = AHF_BROWSE_SORTS, itemClassFilters = {} }
 	AHF:ApplyFilterToQuery(tQuery, true)
-	local tSummary = AHF:FilterSummary()
-	if tSummary then tSay(L["Filters active: "]..tSummary) end
 	AHF:StartBrowseQuery(tQuery, aEntry)
+	gBrowse.filterSummary = AHF:FilterSummary()
 end
 
 -- The player's favourite items (Blizzard: the star in the search bar). Same result shape as a
@@ -392,9 +392,8 @@ end
 function AHF:StartCategoryBrowse(aFilters, aEntry)
 	local tQuery = { searchString = "", itemClassFilters = aFilters, sorts = AHF_BROWSE_SORTS }
 	AHF:ApplyFilterToQuery(tQuery, false)
-	local tSummary = AHF:FilterSummary()
-	if tSummary then tSay(L["Filters active: "]..tSummary) end
 	AHF:StartBrowseQuery(tQuery, aEntry)
+	gBrowse.filterSummary = AHF:FilterSummary()
 end
 
 -- Re-reads the full current browse result set. GetBrowseResults returns the whole set, so
@@ -1094,7 +1093,11 @@ local function tAppendBrowseResultChildren(aParentEntry)
 	-- there and not to the name search's own "enter search string" leaf. After "load more" it is
 	-- the first row that was not listed before.
 	if gBrowse.state == "waiting" then
-		local tW = SkuOptions:InjectMenuItems(aParentEntry, {L["Warten"]}, SkuGenericMenuItem)
+		-- The active filters are part of the waiting leaf: a separate announcement would be cut off
+		-- by the vocalization of this leaf.
+		local tName = L["Warten"]
+		if gBrowse.filterSummary then tName = tName..";"..L["Filters active: "]..gBrowse.filterSummary end
+		local tW = SkuOptions:InjectMenuItems(aParentEntry, {tName}, SkuGenericMenuItem)
 		tW.dynamic = false
 		tW.ahfPrimary = true
 	elseif gBrowse.state == "failed" then
