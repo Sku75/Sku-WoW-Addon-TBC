@@ -133,7 +133,11 @@ S.missingword = function()
 	at(2.0, function() V:OutputString("hallo xyzname welt", true, true, 0.5) end)
 	-- punctuation must reach Blizzard's voice as written, not as the recording keys ";doppelpunkt;" / ";punkt;"
 	at(5.0, function() V:OutputString("hallo: xyzname.", true, true, 0.5) end)
-	H.run(10)
+	-- a recorded overwrite line right behind a Blizzard-voiced one: the Blizzard line must be cut (sapi: cut@), not
+	-- talk on underneath the recordings
+	at(7.0, function() V:OutputString("hallo xyzname welt hallo xyzname welt hallo xyzname welt", true, true, 0.5) end)
+	at(7.6, function() V:OutputString("hallo welt", true, true, 0.5) end)
+	H.run(14)
 end
 S[name]()
 H.report(name)

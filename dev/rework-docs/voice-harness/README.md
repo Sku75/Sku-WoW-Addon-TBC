@@ -21,7 +21,7 @@ Run from THIS directory (the scripts `dofile("harness.lua")`):
 
 Scenarios in `scen.lua`: filter, chatnav, chatidle, endscope, echo, multi, mix, mixq, login,
 arrows, foreign (speech that is not Sku's lands in the client mid-typing), stopkey (one press
-of the stop-output key must also drop every waiting line; healthy = only the first line audible), errspam (a spammed key raising the same UI error per press, then a priority line; healthy = no copy per press and no repeat after the priority line). `stress.lua <lib> <model> <seed>` is three minutes of random load;
+of the stop-output key must also drop every waiting line; healthy = only the first line audible), errspam (a spammed key raising the same UI error per press, then a priority line; healthy = no copy per press and no repeat after the priority line), secret and secretstale (SkuVoice:SpeakSecretText; healthy = the number arrives, the marker word never, only the newest of two quick calls, a stale slot is dropped and the next call still speaks), missingword (blizzTtsForMissingWords; `MW=1` turns it on; healthy = only lines with a missing word reach the client, punctuation as written, a recorded overwrite line cuts the Blizzard-voiced one on sapi). `stress.lua <lib> <model> <seed>` is three minutes of random load;
 `LAT` sets the client's start latency in seconds. `SECRETMARKS=1` makes every
 bookmark name secret, as Forever reports it for an utterance with secret text. `HLOG=1` also prints Sku's
 own dprint lines. To compare against an older build:

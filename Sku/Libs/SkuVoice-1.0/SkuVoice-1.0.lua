@@ -2551,6 +2551,15 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 					return
 				end
 			end
+			-- This line stays on the recordings. Its overwrite cleared the audio queue above, but a line the option sent to
+			-- Blizzard's voice may still be speaking: the two queues know nothing of each other (see the voice-pack fallback
+			-- comment above), so both would talk at once. Give the Blizzard queue the same reset an overwrite line of its
+			-- own brings; the pump sends the stop from OnUpdate. Only while Sku's Blizzard voice is busy, so arrowing
+			-- through recorded lines does not stop other speech in the client.
+			if aOverwrite == true and ChatTts().neverResetQueues ~= true
+				and (#mSkuVoiceQueueBTTS > 0 or #mSkuVoiceQueueBTTS_Speaking > 0 or mClientGate.outstanding) then
+				mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = "queuereset"
+			end
 		end
 
 		for x = 1, #tStrings do
