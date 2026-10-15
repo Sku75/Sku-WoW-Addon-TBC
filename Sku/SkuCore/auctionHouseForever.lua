@@ -1512,8 +1512,20 @@ end
 
 -- Rebuilds the entry showing aList, unless the cursor stands inside one of its rows: that row's entries would be
 -- replaced under the cursor. A cursor on a row stays on that auction (skuIdentity), wherever the new list puts it.
+-- aList.notice (set by an event before the list was asked again) is spoken here, joined with the entry the cursor
+-- lands on: spoken before, the rebuild would cut it off.
 local function tShowList(aList)
-	if not tCursorDeeperThan(aList.entry) then tRebuildAndFocus(aList.entry) end
+	local tNotice = aList.notice
+	aList.notice = nil
+	if tCursorDeeperThan(aList.entry) then
+		if tNotice then tSay(tNotice) end
+		return
+	end
+	tRebuildAndFocus(aList.entry, false, tNotice ~= nil)
+	if tNotice then
+		local tPos = SkuOptions.currentMenuPosition
+		tSay((tPos and tPos.parent == aList.entry) and (tNotice..";"..tPos.name) or tNotice)
+	end
 end
 
 local function tSendListQuery(aList)
@@ -1586,6 +1598,19 @@ function AHF:StartOwnedQuery(aEntry)
 	tStartListQuery(gOwned, aEntry)
 end
 
+-- AUCTION_CANCELED: the list is asked again, as Blizzard's auctions tab does. A cursor on the cancel entry goes up to
+-- its row, which the new list no longer has.
+function AHF:OnAuctionCanceled()
+	if not gOwned.entry then
+		tSay(L["Auction canceled"])
+		return
+	end
+	local tPos = SkuOptions.currentMenuPosition
+	if tPos and tPos.parent and tPos.parent.parent == gOwned.entry then SkuOptions.currentMenuPosition = tPos.parent end
+	gOwned.notice = L["Auction canceled"]
+	tStartListQuery(gOwned, gOwned.entry)
+end
+
 function AHF:RefreshOwned()
 	tReadList(gOwned, C_AuctionHouse.GetNumOwnedAuctions(), function(i)
 		local tInfo = C_AuctionHouse.GetOwnedAuctionInfo(i)
@@ -1635,18 +1660,20 @@ local function tAddOwnedRow(aParent, aRow)
 			tS.dynamic = false
 			return
 		end
+		-- ENTER asks first (with the cost, like Blizzard's CANCEL_AUCTION popup), ENTER again cancels. A row cancels
+		-- once: the server's answer (AUCTION_CANCELED) asks for the list again.
 		local tArmed = false
-		tSettingLeaf(self, L["Cancel auction"], function(aLeaf)
-			if not tArmed then
+		local tData = self.data
+		tSettingLeaf(self, tData.cancelSent and L["Cancel sent"] or L["Cancel auction"], function(aLeaf)
+			if tData.cancelSent then
+				aLeaf.name = L["Cancel sent"]
+			elseif not tArmed then
 				tArmed = true
-				local tText = L["Really cancel? Press Enter again"]
 				local tCost = C_AuctionHouse.GetCancelCost(tI.auctionID)
-				if tonumber(tCost) and tCost > 0 then
-					tText = tText..", "..L["cost "]..tMoneyText(tCost)
-				end
-				aLeaf.name = tText
+				aLeaf.name = L["Really cancel? Press Enter again"]
+					..(tCost > 0 and (", "..L["cost "]..tMoneyText(tCost)) or "")
 			else
-				tArmed = false
+				tData.cancelSent = true
 				C_AuctionHouse.CancelAuction(tI.auctionID)
 				aLeaf.name = L["Cancel sent"]
 			end
@@ -1755,7 +1782,7 @@ gListEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 		end
 	elseif aEvent == "AUCTION_HOUSE_CLOSED" then
 		gBids.state, gBids.entry, gBids.rows, gBids.pendingSend = "idle", nil, {}, nil
-		gOwned.pendingSend = nil
+		gOwned.pendingSend, gOwned.notice = nil, nil
 	end
 end)
 
@@ -1781,14 +1808,7 @@ gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	if aEvent == "OWNED_AUCTIONS_UPDATED" then
 		AHF:RefreshOwned()
 	elseif aEvent == "AUCTION_CANCELED" then
-		tSay(L["Auction canceled"])
-		if gOwned.entry then
-			local tPos = SkuOptions.currentMenuPosition
-			if tPos and tPos.parent and tPos.parent.parent == gOwned.entry then
-				SkuOptions.currentMenuPosition = gOwned.entry
-			end
-			AHF:StartOwnedQuery(gOwned.entry)
-		end
+		AHF:OnAuctionCanceled()
 	elseif aEvent == "AUCTION_HOUSE_AUCTION_CREATED" then
 		local tName = gSell.name or ""
 		gSell.pending = nil
