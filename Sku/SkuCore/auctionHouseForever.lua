@@ -1307,43 +1307,26 @@ local gSell = { duration = nil }
 local gSellList = nil
 local gOwned = { state = "idle", rows = {}, entry = nil, generation = 0 }
 
-local function tPack(...)
-	return { n = select("#", ...), ... }
-end
-
-local function tDurationText(aIndex)
-	local tG = ({ _G.AUCTION_DURATION_ONE, _G.AUCTION_DURATION_TWO, _G.AUCTION_DURATION_THREE })[aIndex]
-	if type(tG) == "string" and tG ~= "" then return tG end
-	return ({ tHours(12), tHours(24), tHours(48) })[aIndex] or "?"
-end
-
+-- Blizzard's sell frame: duration index 1..3, kept in the CVar its dropdown uses.
 local function tGetDuration()
-	if not gSell.duration then
-		local tV = tonumber(GetCVar and GetCVar("auctionHouseDurationDropdown") or nil) or 3
-		gSell.duration = math.max(1, math.min(3, tV))
-	end
+	gSell.duration = gSell.duration or tonumber(GetCVar("auctionHouseDurationDropdown"))
 	return gSell.duration
 end
 
-local function tItemNameFor(aItemID, aLink)
-	local tName
-	if aItemID and C_Item and C_Item.GetItemNameByID then
-		local tN = C_Item.GetItemNameByID(aItemID)
-		if type(tN) == "string" and tN ~= "" then tName = tN end
-	end
-	if not tName and type(aLink) == "string" then tName = aLink:match("%[(.-)%]") end
-	return tName or ("Item "..tostring(aItemID))
+local function tDurationText(aIndex)
+	return ({ AUCTION_DURATION_ONE, AUCTION_DURATION_TWO, AUCTION_DURATION_THREE })[aIndex]
 end
 
 local function tDepositAmount()
 	if not gSell.loc then return 0 end
-	local tD
+	local tDeposit
 	if gSell.isCommodity then
-		tD = C_AuctionHouse.CalculateCommodityDeposit(gSell.itemID, tGetDuration(), gSell.quantity or 1)
+		tDeposit = C_AuctionHouse.CalculateCommodityDeposit(gSell.itemID, tGetDuration(), gSell.quantity)
 	else
-		tD = C_AuctionHouse.CalculateItemDeposit(gSell.loc, tGetDuration(), gSell.quantity or 1)
+		tDeposit = C_AuctionHouse.CalculateItemDeposit(gSell.loc, tGetDuration(), gSell.quantity)
 	end
-	return (tonumber(tD)) or 0
+	-- depositCost is documented as nilable.
+	return tDeposit or 0
 end
 
 local function tMoneyOrNone(aAmount)
@@ -1418,10 +1401,6 @@ end
 function AHF:StartMarketQuery()
 	if not gSell.loc or gSell.marketState == "waiting" then return end
 	local tKey = C_AuctionHouse.GetItemKeyFromItem(gSell.loc)
-	if type(tKey) ~= "table" then
-		gSell.marketState = "done"
-		return
-	end
 	gSell.marketState = "waiting"
 	gSell.marketLowest = nil
 	gSell.marketKey = tKey
@@ -1468,22 +1447,17 @@ function AHF:SelectSellItem(aBag, aSlot)
 	if gSell.bag == aBag and gSell.slot == aSlot and gSell.loc then return true end
 	local tLoc = ItemLocation:CreateFromBagAndSlot(aBag, aSlot)
 	local tStatus = C_AuctionHouse.GetItemCommodityStatus(tLoc)
-	local tUnknown = (Enum.ItemCommodityStatus and Enum.ItemCommodityStatus.Unknown) or 0
-	local tCommodity = (Enum.ItemCommodityStatus and Enum.ItemCommodityStatus.Commodity) or 2
-	if tStatus == nil or tStatus == tUnknown then return false end
+	if tStatus == Enum.ItemCommodityStatus.Unknown then return false end
 	local tInfo = C_Container.GetContainerItemInfo(aBag, aSlot)
-	local tItemID = tInfo and tInfo.itemID
-	local tMax = 1
-	local tM = C_AuctionHouse.GetAvailablePostCount(tLoc)
-	if tonumber(tM) and tM > 0 then tMax = tM end
+	local tMax = math.max(1, C_AuctionHouse.GetAvailablePostCount(tLoc))
 	local tKeepDuration = gSell.duration
 	gSell = {
-		bag = aBag, slot = aSlot, loc = tLoc, itemID = tItemID,
-		name = tItemNameFor(tItemID, tInfo and tInfo.hyperlink),
-		isCommodity = (tStatus == tCommodity), maxQuantity = tMax,
+		bag = aBag, slot = aSlot, loc = tLoc, itemID = tInfo.itemID, name = tInfo.itemName,
+		isCommodity = (tStatus == Enum.ItemCommodityStatus.Commodity), maxQuantity = tMax,
 		quantity = 1, duration = tKeepDuration,
 	}
-	if gSell.isCommodity then gSell.quantity = math.min(tMax, (tInfo and tInfo.stackCount) or 1) end
+	-- Blizzard's commodity sell frame starts with the whole stack.
+	if gSell.isCommodity then gSell.quantity = math.min(tMax, tInfo.stackCount) end
 	return true
 end
 
@@ -1519,9 +1493,9 @@ function AHF:PostDraft()
 		local tP = gSell.pending
 		gSell.pending = nil
 		if gSell.isCommodity then
-			C_AuctionHouse.ConfirmPostCommodity(unpack(tP, 1, tP.n))
+			C_AuctionHouse.ConfirmPostCommodity(SafeUnpack(tP))
 		else
-			C_AuctionHouse.ConfirmPostItem(unpack(tP, 1, tP.n))
+			C_AuctionHouse.ConfirmPostItem(SafeUnpack(tP))
 		end
 		tRefreshSellLabels()
 		tSay(gSell.name..": "..L["Confirmed, posting"])
@@ -1535,23 +1509,22 @@ function AHF:PostDraft()
 		tSay(L["The starting bid must be below the buyout price"])
 		return
 	end
-	if (GetMoney() or 0) < tDepositAmount() then
+	if GetMoney() < tDepositAmount() then
 		tSay(L["Not enough money for the deposit"])
 		return
 	end
-	local tReady = C_AuctionHouse.IsThrottledMessageSystemReady()
-	if tReady == false then
+	if not C_AuctionHouse.IsThrottledMessageSystemReady() then
 		tSay(L["Please wait a moment and try again"])
 		return
 	end
-	local tDuration, tQuantity = tGetDuration(), gSell.quantity or 1
+	local tDuration, tQuantity = tGetDuration(), gSell.quantity
 	local tOk, tNeeds, tArgs
 	if gSell.isCommodity then
-		tArgs = tPack(gSell.loc, tDuration, tQuantity, gSell.buyout)
-		tOk, tNeeds = pcall(C_AuctionHouse.PostCommodity, unpack(tArgs, 1, tArgs.n))
+		tArgs = SafePack(gSell.loc, tDuration, tQuantity, gSell.buyout)
+		tOk, tNeeds = pcall(C_AuctionHouse.PostCommodity, SafeUnpack(tArgs))
 	else
-		tArgs = tPack(gSell.loc, tDuration, tQuantity, gSell.bid, gSell.buyout)
-		tOk, tNeeds = pcall(C_AuctionHouse.PostItem, unpack(tArgs, 1, tArgs.n))
+		tArgs = SafePack(gSell.loc, tDuration, tQuantity, gSell.bid, gSell.buyout)
+		tOk, tNeeds = pcall(C_AuctionHouse.PostItem, SafeUnpack(tArgs))
 	end
 	if not tOk then
 		tSay(gSell.name..": "..L["Posting failed"])
@@ -1622,16 +1595,15 @@ local function tBuildSellList(aSelf)
 	aSelf.children = {}
 	gSellList = aSelf
 	local tAny = false
-	for tBag = 0, (NUM_BAG_SLOTS or 4) do
-		local tNum = C_Container.GetContainerNumSlots(tBag) or 0
-		for tSlot = 1, tNum do
+	for tBag = BACKPACK_CONTAINER, NUM_TOTAL_EQUIPPED_BAG_SLOTS do
+		for tSlot = 1, C_Container.GetContainerNumSlots(tBag) do
 			local tInfo = C_Container.GetContainerItemInfo(tBag, tSlot)
 			if tInfo and tInfo.itemID then
 				local tValid = C_AuctionHouse.IsSellItemValid(ItemLocation:CreateFromBagAndSlot(tBag, tSlot), false)
 				if tValid then
 					tAny = true
-					local tName = tItemNameFor(tInfo.itemID, tInfo.hyperlink)
-					if (tInfo.stackCount or 1) > 1 then tName = tName.." x"..tInfo.stackCount end
+					local tName = tInfo.itemName
+					if tInfo.stackCount > 1 then tName = tName.." x"..tInfo.stackCount end
 					local tE = SkuOptions:InjectMenuItems(aSelf, {tName}, SkuGenericMenuItem)
 					tE.dynamic = true
 					tMarkEntering(tE)
@@ -1998,8 +1970,7 @@ gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 			end
 		end)
 	elseif aEvent == "AUCTION_HOUSE_POST_WARNING" then
-		local tText = _G.CONFIRM_AUCTION_POSTING_TEXT
-		if type(tText) == "string" and tText ~= "" then tSay(tText) end
+		tSay(CONFIRM_AUCTION_POSTING_TEXT)
 	elseif aEvent == "AUCTION_HOUSE_POST_ERROR" then
 		gSell.pending = nil
 		tRefreshSellLabels()
