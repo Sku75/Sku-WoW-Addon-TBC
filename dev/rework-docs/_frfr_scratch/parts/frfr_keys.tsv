@@ -3359,13 +3359,10 @@ Choice	Choix
  min	 min
 %d unavailable dungeons removed from the selection.	%d donjons indisponibles retirés de la sélection.
 Activities to search	Donjons recherchés
-Activity #	Activité n°
 Cannot invite: only your group's leader or assistant can invite.	Invitation impossible : seuls le chef ou un assistant de votre groupe peuvent inviter.
 Cannot invite: this is a group. Whisper the leader.	Invitation impossible : il s'agit d'un groupe. Chuchotez au chef.
 Comment	Commentaire
 Create entry	Créer une annonce
-Dungeon browser: 	Navigateur de donjons : 
-Group finder unavailable	Recherche de groupe indisponible
 Heroic dungeons	Donjons héroïques
 Ignore suggested level	Ignorer le niveau suggéré
 Invite to group	Inviter dans le groupe
@@ -3415,3 +3412,4 @@ no active listing	aucune annonce active
 rejected	refusé
 Confirm add friend: 	Confirmer l'ajout de l'ami : 
 Confirm search: 	Confirmer la recherche : 
+Comment hidden	Commentaire masqué
