@@ -595,8 +595,9 @@ end
 -- StartCommoditiesPurchase is HasRestrictions and runs from a key press;
 -- ConfirmCommoditiesPurchase has no restriction and runs from the Confirm key press.
 -- ---------------------------------------------------------------------
-function AHF:StartCommodityBuy(aItemID, aQuantity, aEntry, aName, aIndex)
-	gCommodityBuy.index = aIndex
+function AHF:StartCommodityBuy(aItemID, aQuantity, aEntry, aName)
+	-- One quote at a time: the server refuses a second one (ItemHasQuote) while the first is open.
+	if gCommodityBuy.itemID then C_AuctionHouse.CancelCommoditiesPurchase() end
 	gCommodityBuy.itemID = aItemID
 	gCommodityBuy.quantity = aQuantity
 	gCommodityBuy.unitPrice = nil
@@ -816,12 +817,13 @@ local function tBuildCommodityConfirmChildren(aParentEntry)
 	if not gCommodityBuy.unitPrice then
 		local tW = SkuOptions:InjectMenuItems(aParentEntry, {L["Warten"]}, SkuGenericMenuItem)
 		tW.dynamic = false
-		return
+	else
+		local tConfirm = SkuOptions:InjectMenuItems(aParentEntry, {L["Confirm: "]..tMoneyText(gCommodityBuy.totalPrice)..(gCommodityBuy.warning and (", "..L["price rises"]) or "")}, SkuGenericMenuItem)
+		tConfirm.dynamic = false
+		tConfirm.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
+		tConfirm.OnAction = function() AHF:ConfirmCommodityBuy(tConfirm) end
 	end
-	local tConfirm = SkuOptions:InjectMenuItems(aParentEntry, {L["Confirm: "]..tMoneyText(gCommodityBuy.totalPrice)..(gCommodityBuy.warning and (", "..L["price rises"]) or "")}, SkuGenericMenuItem)
-	tConfirm.dynamic = false
-	tConfirm.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
-	tConfirm.OnAction = function() AHF:ConfirmCommodityBuy(tConfirm) end
+	-- Cancel is there while waiting for the quote too: leaving must never keep a quote open.
 	local tCancel = SkuOptions:InjectMenuItems(aParentEntry, {L["Cancel"]}, SkuGenericMenuItem)
 	tCancel.dynamic = false
 	tCancel.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
@@ -1012,7 +1014,9 @@ local function tBuildDetailChildren(aParentEntry)
 			-- Post-quote confirm step takes over THIS row's children until the
 			-- purchase is confirmed or cancelled (mirrors Blizzard's own modal
 			-- buy dialog covering the screen after StartCommoditiesPurchase).
-			if self.data.isCommodity and gCommodityBuy.itemID == self.data.itemID and gCommodityBuy.index == self.data.index then
+			-- Keyed on the item: the game buys the cheapest pieces whichever row started it, and a detail refresh
+			-- replaces the rows.
+			if self.data.isCommodity and gCommodityBuy.itemID == self.data.itemID then
 				tBuildCommodityConfirmChildren(self)
 				return
 			end
@@ -1048,8 +1052,8 @@ local function tBuildDetailChildren(aParentEntry)
 				tBuyEntry.dynamic = false
 				tBuyEntry.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
 				tBuyEntry.OnAction = function()
-					AHF:StartCommodityBuy(tData.itemID, tData.buyQty, self, gDetail.name, tData.index)
-					tRebuildAndFocus(self, true)
+					AHF:StartCommodityBuy(tData.itemID, tData.buyQty, self, gDetail.name)
+					tRebuildAndFocus(self, true, true)
 				end
 			elseif self.data.isOwn then
 				local tOwn = SkuOptions:InjectMenuItems(self, {L["That is your own auction"]}, SkuGenericMenuItem)
