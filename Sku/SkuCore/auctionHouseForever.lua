@@ -790,75 +790,6 @@ function AHF:ConfirmCommodityBuy(aLeaf, aGeneration)
 end
 
 -- ---------------------------------------------------------------------
--- Event plumbing. Own frame, independent of SkuCore.AuctionHouse's AceEvent
--- mixin, so the legacy module's event set (auctionHouse.lua) stays untouched.
--- ---------------------------------------------------------------------
-local gEventFrame = CreateFrame("Frame")
-for _, tEvent in ipairs({
-	"AUCTION_HOUSE_BROWSE_RESULTS_UPDATED", "AUCTION_HOUSE_BROWSE_RESULTS_ADDED", "AUCTION_HOUSE_BROWSE_FAILURE",
-	"AUCTION_HOUSE_THROTTLED_SYSTEM_READY", "ITEM_KEY_ITEM_INFO_RECEIVED",
-	"ITEM_SEARCH_RESULTS_UPDATED", "ITEM_SEARCH_RESULTS_ADDED", "COMMODITY_SEARCH_RESULTS_UPDATED", "COMMODITY_SEARCH_RESULTS_ADDED",
-	"COMMODITY_PRICE_UPDATED", "COMMODITY_PRICE_UNAVAILABLE", "COMMODITY_PURCHASE_SUCCEEDED", "COMMODITY_PURCHASE_FAILED",
-	"AUCTION_HOUSE_SHOW_ERROR", "AUCTION_HOUSE_PURCHASE_COMPLETED", "BID_ADDED", "AUCTION_HOUSE_CLOSED",
-}) do
-	if Sku.IsEventValid(tEvent) then gEventFrame:RegisterEvent(tEvent) end
-end
-gEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
-	if aEvent == "AUCTION_HOUSE_BROWSE_RESULTS_UPDATED" or aEvent == "AUCTION_HOUSE_BROWSE_RESULTS_ADDED" then
-		AHF:RefreshBrowseResults()
-	elseif aEvent == "AUCTION_HOUSE_THROTTLED_SYSTEM_READY" then
-		tSendParked()
-	elseif aEvent == "AUCTION_HOUSE_BROWSE_FAILURE" then
-		-- The server could not run the query. Blizzard's result list shows ERR_AUCTION_DATABASE_ERROR
-		-- for it; an empty result is a results event with no rows, not this.
-		if gBrowse.state == "waiting" and not gBrowse.pendingSend then
-			gBrowse.state = "failed"
-			gBrowse.failText = ERR_AUCTION_DATABASE_ERROR
-			tRebuildAndFocus(gBrowse.entry)
-		end
-	elseif aEvent == "ITEM_KEY_ITEM_INFO_RECEIVED" then
-		-- Fires once per item name, hundreds of times for a big result: one refresh per frame.
-		if gBrowse.state == "waiting" and gBrowse.answered and not gBrowse.refreshQueued then
-			gBrowse.refreshQueued = true
-			C_Timer.After(0, function()
-				gBrowse.refreshQueued = nil
-				AHF:RefreshBrowseResults()
-			end)
-		end
-	elseif aEvent == "ITEM_SEARCH_RESULTS_UPDATED" or aEvent == "ITEM_SEARCH_RESULTS_ADDED" then
-		local tKey = ...
-		local tItemID = type(tKey) == "table" and tKey.itemID or nil
-		AHF:RefreshDetailResults(tItemID)
-		if AHF.OnSellMarketResult then AHF:OnSellMarketResult(false, tItemID) end
-	elseif aEvent == "COMMODITY_SEARCH_RESULTS_UPDATED" or aEvent == "COMMODITY_SEARCH_RESULTS_ADDED" then
-		AHF:RefreshDetailResults((...))
-		if AHF.OnSellMarketResult then AHF:OnSellMarketResult(true, (...)) end
-	elseif aEvent == "COMMODITY_PRICE_UPDATED" then
-		AHF:OnCommodityPriceUpdated(...)
-	elseif aEvent == "COMMODITY_PRICE_UNAVAILABLE" then
-		AHF:EndCommodityBuy(L["Price unavailable"])
-	elseif aEvent == "COMMODITY_PURCHASE_SUCCEEDED" then
-		AHF:EndCommodityBuy(L["Purchase complete"])
-	elseif aEvent == "COMMODITY_PURCHASE_FAILED" then
-		AHF:EndCommodityBuy(L["Purchase failed"])
-	elseif aEvent == "AUCTION_HOUSE_SHOW_ERROR" then
-		AHF:OnShowError(...)
-	elseif aEvent == "AUCTION_HOUSE_PURCHASE_COMPLETED" then
-		AHF:OnItemPurchaseCompleted(...)
-	elseif aEvent == "BID_ADDED" then
-		-- The bid went through; the bids list announces it.
-		if not gItemPurchase.isBuyout then gItemPurchase.auctionID = nil end
-	elseif aEvent == "AUCTION_HOUSE_CLOSED" then
-		if gCommodityBuy.itemID then C_AuctionHouse.CancelCommoditiesPurchase() end
-		gBrowse.state, gDetail.state, gCommodityBuy.itemID = "idle", "idle", nil
-		gItemPurchase.auctionID = nil
-		gBrowse.entry, gBrowse.results, gDetail.entry, gDetail.itemKey, gDetail.results = nil, {}, nil, nil, {}
-		gBrowse.pendingSend, gDetail.pendingSend = nil, nil
-		wipe(gThrottleWaiting)
-	end
-end)
-
--- ---------------------------------------------------------------------
 -- Menu
 -- ---------------------------------------------------------------------
 -- Tooltip text of an auction house item (read with Shift+Down etc.). The same source as Blizzard's
@@ -1034,16 +965,6 @@ local function tAddFavoriteLeaf(aParent, aItemKey)
 		end
 	end
 end
-
--- After a favourite was added or removed here, an open favourites list asks the server again once the server has
--- stored the change, so going back to the list shows it as it is now.
-local gFavEventFrame = CreateFrame("Frame")
-gFavEventFrame:RegisterEvent("AUCTION_HOUSE_FAVORITES_UPDATED")
-gFavEventFrame:SetScript("OnEvent", function()
-	if not gFavoritesChanged then return end
-	gFavoritesChanged = nil
-	if gBrowse.entry and gBrowse.entry.ahfFavorites then AHF:StartFavorites(gBrowse.entry) end
-end)
 
 -- "Load more": the server hands out results in pages (HasFull*Results is false until all are in).
 local function tDetailIsComplete()
@@ -1451,7 +1372,7 @@ function AHF:StartMarketQuery()
 	end)
 end
 
--- Called from the search result events (see the event frame above).
+-- Called from the search result events (see Events at the end of the file).
 function AHF:OnSellMarketResult(aIsCommodity, aItemID)
 	if gSell.marketState ~= "waiting" or not gSell.marketKey then return end
 	if aItemID and aItemID ~= gSell.marketKey.itemID then return end
@@ -1996,31 +1917,6 @@ function AHF:BuildBidsChildren(aSelf)
 	tBuildListEntry(gBids, aSelf, L["No bids"], tAddBidRow)
 end
 
-local gListEventFrame = CreateFrame("Frame")
-gListEventFrame:RegisterEvent("BIDS_UPDATED")
-gListEventFrame:RegisterEvent("BID_ADDED")
-gListEventFrame:RegisterEvent("ITEM_KEY_ITEM_INFO_RECEIVED")
-gListEventFrame:RegisterEvent("AUCTION_HOUSE_CLOSED")
-gListEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
-	if aEvent == "BIDS_UPDATED" then
-		AHF:RefreshBids()
-	elseif aEvent == "BID_ADDED" then
-		-- The one confirmation of a bid. Only while the auction house window is shown: Blizzard's own frames listen
-		-- to BID_ADDED only then. The bid list already holds the new bid, so it is read again, not asked for again
-		-- (Blizzard: AuctionHouseAuctionsFrameMixin, BidsList:DirtyScrollFrame).
-		if AuctionHouseFrame and AuctionHouseFrame:IsShown() then
-			tSay(L["Gebot abgegeben"])
-			AHF:RefreshBids()
-		end
-	elseif aEvent == "ITEM_KEY_ITEM_INFO_RECEIVED" then
-		if gOwned.namePending then AHF:RefreshOwned() end
-		if gBids.namePending then AHF:RefreshBids() end
-	elseif aEvent == "AUCTION_HOUSE_CLOSED" then
-		gBids.state, gBids.entry, gBids.rows, gBids.pendingSend = "idle", nil, {}, nil
-		gOwned.pendingSend, gOwned.notice = nil, nil
-	end
-end)
-
 function AHF:BuildSalesChildren(aSelf)
 	aSelf.children = {}
 	local tNew = SkuOptions:InjectMenuItems(aSelf, {L["Neue Auktion"]}, SkuGenericMenuItem)
@@ -2035,10 +1931,6 @@ function AHF:BuildSalesChildren(aSelf)
 	end
 end
 
-local gSellEventFrame = CreateFrame("Frame")
-for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_POST_ERROR", "AUCTION_MULTISELL_START", "AUCTION_MULTISELL_UPDATE", "AUCTION_MULTISELL_FAILURE", "BAG_UPDATE_DELAYED", "AUCTION_HOUSE_CLOSED" }) do
-	if Sku.IsEventValid(tEvent) then gSellEventFrame:RegisterEvent(tEvent) end
-end
 -- Blizzard's AuctionHouseFrame answers AUCTION_HOUSE_POST_WARNING / _ERROR with its own popup. Its Accept confirms
 -- only a post made in Blizzard's sell frame, so for a Sku post it would do nothing: the popup is closed again.
 -- Only for Sku's own post: while Sku owns it (gSell.posting, also while its confirmation is pending), or in the
@@ -2047,49 +1939,6 @@ end
 hooksecurefunc("StaticPopup_Show", function(aWhich)
 	if (gSell.posting or gSell.refusedAt == GetTime()) and (aWhich == "AUCTION_HOUSE_POST_WARNING" or aWhich == "AUCTION_HOUSE_POST_ERROR") then
 		StaticPopup_Hide(aWhich)
-	end
-end)
-gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
-	if aEvent == "OWNED_AUCTIONS_UPDATED" then
-		AHF:RefreshOwned()
-	elseif aEvent == "AUCTION_CANCELED" then
-		AHF:OnAuctionCanceled()
-	elseif aEvent == "AUCTION_HOUSE_AUCTION_CREATED" then
-		-- Fires once per auction, also for posts made in Blizzard's own window; a multisell ends with its own events.
-		if not tPostInFlight() or gSell.multisellExpected then return end
-		tPostFinished(gSell.name..": "..L["Auction posted"])
-	elseif aEvent == "AUCTION_MULTISELL_START" then
-		if tPostInFlight() then gSell.multisell = { created = 0, total = (...), spokenAt = GetTime() } end
-	elseif aEvent == "AUCTION_MULTISELL_UPDATE" then
-		local tM = gSell.multisell
-		if not tM then return end
-		tM.created, tM.total = ...
-		if tM.created >= tM.total then
-			tPostFinished(gSell.name..": "..L["Auction %d of %d posted"]:format(tM.total, tM.total))
-		elseif GetTime() - tM.spokenAt >= 3 then
-			-- Progress at most every 3 seconds, a long multisell would talk without pause otherwise.
-			tM.spokenAt = GetTime()
-			tSay(L["Auction %d of %d posted"]:format(tM.created, tM.total))
-		end
-	elseif aEvent == "BAG_UPDATE_DELAYED" then
-		tFollowBags()
-	elseif aEvent == "AUCTION_HOUSE_POST_ERROR" then
-		-- Blizzard's error popup has only OK: the post cannot be confirmed.
-		if not tPostInFlight() then return end
-		AHF:OnPostRefused(AUCTION_POSTING_ERROR_TEXT)
-	elseif aEvent == "AUCTION_MULTISELL_FAILURE" then
-		if not gSell.multisell and not gSell.multisellExpected then return end
-		local tM = gSell.multisell
-		local tText = gSell.name..": "..L["Multi-posting failed"]
-		if tM and tM.created > 0 then tText = tText..";"..L["Auction %d of %d posted"]:format(tM.created, tM.total) end
-		tPostFinished(tText)
-	elseif aEvent == "AUCTION_HOUSE_CLOSED" then
-		-- As Blizzard's sell frame on hide: a running multisell is stopped.
-		if gSell.multisell then C_AuctionHouse.CancelSell() end
-		local tKeep = gSell.duration
-		gSell = { duration = tKeep }
-		gSellList = nil
-		gOwned.state, gOwned.entry, gOwned.rows = "idle", nil, {}
 	end
 end)
 
@@ -2234,3 +2083,135 @@ function AHF:MenuBuilder(aSelf)
 	tMarkEntering(tBidsEntry)
 	tBidsEntry.BuildChildren = function(selfBids) AHF:BuildBidsChildren(selfBids) end
 end
+
+-- ---------------------------------------------------------------------
+-- Events. One own frame, independent of SkuCore.AuctionHouse's AceEvent mixin, so the legacy module's event set
+-- (auctionHouse.lua) stays untouched.
+-- ---------------------------------------------------------------------
+-- ITEM_KEY_ITEM_INFO_RECEIVED fires once per item name, hundreds of times for a big result: the lists still
+-- waiting for names are read again once per frame.
+local gNamesQueued = false
+local function tNamesWanted()
+	return (gBrowse.state == "waiting" and gBrowse.answered) or gOwned.namePending or gBids.namePending
+end
+local function tReadNamedLists()
+	gNamesQueued = false
+	if gBrowse.state == "waiting" and gBrowse.answered then AHF:RefreshBrowseResults() end
+	if gOwned.namePending then AHF:RefreshOwned() end
+	if gBids.namePending then AHF:RefreshBids() end
+end
+
+local function tOnItemSearchResults(aItemKey)
+	AHF:RefreshDetailResults(aItemKey.itemID)
+	AHF:OnSellMarketResult(false, aItemKey.itemID)
+end
+
+local function tOnCommoditySearchResults(aItemID)
+	AHF:RefreshDetailResults(aItemID)
+	AHF:OnSellMarketResult(true, aItemID)
+end
+
+local gEventHandlers = {
+	AUCTION_HOUSE_THROTTLED_SYSTEM_READY = tSendParked,
+	AUCTION_HOUSE_BROWSE_RESULTS_UPDATED = function() AHF:RefreshBrowseResults() end,
+	AUCTION_HOUSE_BROWSE_RESULTS_ADDED = function() AHF:RefreshBrowseResults() end,
+	AUCTION_HOUSE_BROWSE_FAILURE = function()
+		-- The server could not run the query. Blizzard's result list shows ERR_AUCTION_DATABASE_ERROR
+		-- for it; an empty result is a results event with no rows, not this.
+		if gBrowse.state == "waiting" and not gBrowse.pendingSend then
+			gBrowse.state = "failed"
+			gBrowse.failText = ERR_AUCTION_DATABASE_ERROR
+			tRebuildAndFocus(gBrowse.entry)
+		end
+	end,
+	ITEM_KEY_ITEM_INFO_RECEIVED = function()
+		if gNamesQueued or not tNamesWanted() then return end
+		gNamesQueued = true
+		C_Timer.After(0, tReadNamedLists)
+	end,
+	ITEM_SEARCH_RESULTS_UPDATED = tOnItemSearchResults,
+	ITEM_SEARCH_RESULTS_ADDED = tOnItemSearchResults,
+	COMMODITY_SEARCH_RESULTS_UPDATED = tOnCommoditySearchResults,
+	COMMODITY_SEARCH_RESULTS_ADDED = tOnCommoditySearchResults,
+	COMMODITY_PRICE_UPDATED = function(aUnitPrice, aTotalPrice) AHF:OnCommodityPriceUpdated(aUnitPrice, aTotalPrice) end,
+	COMMODITY_PRICE_UNAVAILABLE = function() AHF:EndCommodityBuy(L["Price unavailable"]) end,
+	COMMODITY_PURCHASE_SUCCEEDED = function() AHF:EndCommodityBuy(L["Purchase complete"]) end,
+	COMMODITY_PURCHASE_FAILED = function() AHF:EndCommodityBuy(L["Purchase failed"]) end,
+	AUCTION_HOUSE_SHOW_ERROR = function(aError) AHF:OnShowError(aError) end,
+	AUCTION_HOUSE_PURCHASE_COMPLETED = function(aAuctionID) AHF:OnItemPurchaseCompleted(aAuctionID) end,
+	BID_ADDED = function()
+		-- The one confirmation of a bid. Only while the auction house window is shown: Blizzard's own frames listen
+		-- to BID_ADDED only then. The bid list already holds the new bid, so it is read again, not asked for again
+		-- (Blizzard: AuctionHouseAuctionsFrameMixin, BidsList:DirtyScrollFrame).
+		if not gItemPurchase.isBuyout then gItemPurchase.auctionID = nil end
+		if AuctionHouseFrame and AuctionHouseFrame:IsShown() then
+			tSay(L["Gebot abgegeben"])
+			AHF:RefreshBids()
+		end
+	end,
+	BIDS_UPDATED = function() AHF:RefreshBids() end,
+	-- After a favourite was added or removed here, an open favourites list asks the server again once the server
+	-- has stored the change, so going back to the list shows it as it is now.
+	AUCTION_HOUSE_FAVORITES_UPDATED = function()
+		if not gFavoritesChanged then return end
+		gFavoritesChanged = nil
+		if gBrowse.entry and gBrowse.entry.ahfFavorites then AHF:StartFavorites(gBrowse.entry) end
+	end,
+	OWNED_AUCTIONS_UPDATED = function() AHF:RefreshOwned() end,
+	AUCTION_CANCELED = function() AHF:OnAuctionCanceled() end,
+	AUCTION_HOUSE_AUCTION_CREATED = function()
+		-- Fires once per auction, also for posts made in Blizzard's own window; a multisell ends with its own events.
+		if not tPostInFlight() or gSell.multisellExpected then return end
+		tPostFinished(gSell.name..": "..L["Auction posted"])
+	end,
+	AUCTION_MULTISELL_START = function(aTotal)
+		if tPostInFlight() then gSell.multisell = { created = 0, total = aTotal, spokenAt = GetTime() } end
+	end,
+	AUCTION_MULTISELL_UPDATE = function(aCreated, aTotal)
+		local tM = gSell.multisell
+		if not tM then return end
+		tM.created, tM.total = aCreated, aTotal
+		if tM.created >= tM.total then
+			tPostFinished(gSell.name..": "..L["Auction %d of %d posted"]:format(tM.total, tM.total))
+		elseif GetTime() - tM.spokenAt >= 3 then
+			-- Progress at most every 3 seconds, a long multisell would talk without pause otherwise.
+			tM.spokenAt = GetTime()
+			tSay(L["Auction %d of %d posted"]:format(tM.created, tM.total))
+		end
+	end,
+	AUCTION_MULTISELL_FAILURE = function()
+		if not gSell.multisell and not gSell.multisellExpected then return end
+		local tM = gSell.multisell
+		local tText = gSell.name..": "..L["Multi-posting failed"]
+		if tM and tM.created > 0 then tText = tText..";"..L["Auction %d of %d posted"]:format(tM.created, tM.total) end
+		tPostFinished(tText)
+	end,
+	AUCTION_HOUSE_POST_ERROR = function()
+		-- Blizzard's error popup has only OK: the post cannot be confirmed.
+		if not tPostInFlight() then return end
+		AHF:OnPostRefused(AUCTION_POSTING_ERROR_TEXT)
+	end,
+	BAG_UPDATE_DELAYED = function() tFollowBags() end,
+	AUCTION_HOUSE_CLOSED = function()
+		-- As Blizzard's buy dialog and sell frame on hide: an open quote is dropped, a running multisell stopped.
+		if gCommodityBuy.itemID then C_AuctionHouse.CancelCommoditiesPurchase() end
+		if gSell.multisell then C_AuctionHouse.CancelSell() end
+		gCommodityBuy.itemID, gItemPurchase.auctionID = nil, nil
+		for _, tState in ipairs({ gBrowse, gDetail, gOwned, gBids }) do
+			tState.state, tState.entry, tState.pendingSend = "idle", nil, nil
+		end
+		gBrowse.results, gDetail.results, gDetail.itemKey = {}, {}, nil
+		gOwned.rows, gOwned.notice, gBids.rows = {}, nil, {}
+		gSell = { duration = gSell.duration }
+		gSellList = nil
+		wipe(gThrottleWaiting)
+	end,
+}
+
+local gEventFrame = CreateFrame("Frame")
+for tEvent in pairs(gEventHandlers) do
+	if Sku.IsEventValid(tEvent) then gEventFrame:RegisterEvent(tEvent) end
+end
+gEventFrame:SetScript("OnEvent", function(_, aEvent, ...)
+	gEventHandlers[aEvent](...)
+end)
