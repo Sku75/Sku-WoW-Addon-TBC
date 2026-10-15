@@ -1217,7 +1217,11 @@ local function tAppendBrowseResultChildren(aParentEntry)
 		tFail.ahfPrimary = true
 	elseif gBrowse.state == "done" then
 		if #gBrowse.results == 0 then
-			local tNone = SkuOptions:InjectMenuItems(aParentEntry, {L["AH_NoResults"]}, SkuGenericMenuItem)
+			-- The filters are saved per character, as Blizzard's (g_auctionHouseFilters): one set in an earlier session
+			-- empties every search, so an empty list names them.
+			local tName = L["AH_NoResults"]
+			if gBrowse.filterSummary then tName = tName..";"..L["Filters active: "]..gBrowse.filterSummary end
+			local tNone = SkuOptions:InjectMenuItems(aParentEntry, {tName}, SkuGenericMenuItem)
 			tNone.dynamic = false
 			tNone.ahfPrimary = true
 		else
@@ -2037,7 +2041,14 @@ function AHF:BuildSearchEntries(aSelf)
 	end
 
 	-- Filters (Blizzard: the filter menu next to the search bar): apply to name search and categories, saved settings.
-	local tFilterEntry = SkuOptions:InjectMenuItems(aSelf, {L["Filters"]}, SkuGenericMenuItem)
+	-- The entry names the active ones, as Blizzard shows its clear-filters button whenever they differ from the default.
+	-- Never "Filter;..." (the German L["Filters"]): the menu treats a name with that start as its type-ahead filter row.
+	local function tFilterEntryName()
+		local tSummary = AHF:FilterSummary()
+		return tSummary and (L["Filters active: "]..tSummary) or L["Filters"]
+	end
+	local tFilterEntry = SkuOptions:InjectMenuItems(aSelf, {tFilterEntryName()}, SkuGenericMenuItem)
+	tFilterEntry.RefreshLiveName = function(self) self.name = tFilterEntryName() end
 	tFilterEntry.dynamic = true
 	tFilterEntry.BuildChildren = function(self)
 		self.children = {}
