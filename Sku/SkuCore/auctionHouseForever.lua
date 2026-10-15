@@ -383,8 +383,11 @@ end
 
 -- Re-reads the full current browse result set. GetBrowseResults returns the whole set, so
 -- "…UPDATED" (full refresh) and "…ADDED" (next page) both funnel here.
+-- While Sku's own query is still parked (pendingSend), every browse answer belongs to someone
+-- else's query, e.g. the favorites query Blizzard's AuctionHouseFrame sends on show.
 function AHF:RefreshBrowseResults()
 	if gBrowse.state ~= "waiting" and gBrowse.state ~= "done" then return end
+	if gBrowse.pendingSend then return end
 	local tRaw = C_AuctionHouse.GetBrowseResults()
 	-- Blizzard's list: no rows and HasFullBrowseResults = "no results"; no rows and not full = still pending.
 	if #tRaw == 0 and not C_AuctionHouse.HasFullBrowseResults() then return end
@@ -433,6 +436,8 @@ end
 
 function AHF:RefreshDetailResults(aItemID)
 	if (gDetail.state ~= "waiting" and gDetail.state ~= "done") or not gDetail.itemKey then return end
+	-- Not sent yet: an answer now belongs to another query for the same item.
+	if gDetail.pendingSend then return end
 	if aItemID and aItemID ~= gDetail.itemKey.itemID then return end
 	local tRows = {}
 	if gDetail.isCommodity then
@@ -630,7 +635,7 @@ gEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	elseif aEvent == "AUCTION_HOUSE_BROWSE_FAILURE" then
 		-- The server could not run the query. Blizzard's result list shows ERR_AUCTION_DATABASE_ERROR
 		-- for it; an empty result is a results event with no rows, not this.
-		if gBrowse.state == "waiting" then
+		if gBrowse.state == "waiting" and not gBrowse.pendingSend then
 			gBrowse.state = "failed"
 			gBrowse.failText = ERR_AUCTION_DATABASE_ERROR
 			tRebuildAndFocus(gBrowse.entry)
