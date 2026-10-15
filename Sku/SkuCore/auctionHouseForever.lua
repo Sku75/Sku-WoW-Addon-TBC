@@ -291,7 +291,7 @@ function AHF:StartBrowseQuery(aQuery, aEntry, aSend)
 	gBrowse.state = "waiting"
 	gBrowse.answered = nil
 	gBrowse.results = {}
-	gBrowse.focusIndex = nil
+	gBrowse.seenBefore = nil
 	gBrowse.entry = aEntry
 	gBrowse.failText = nil
 	gBrowse.generation = (gBrowse.generation or 0) + 1
@@ -428,7 +428,7 @@ function AHF:RefreshBrowseResults()
 	end
 	gBrowse.state = "done"
 	tRebuildAndFocus(gBrowse.entry)
-	gBrowse.focusIndex = nil
+	gBrowse.seenBefore = nil
 end
 
 -- ---------------------------------------------------------------------
@@ -437,7 +437,7 @@ end
 function AHF:StartDetail(aRow, aEntry)
 	gDetail.state = "waiting"
 	gDetail.itemKey = aRow.itemKey
-	gDetail.focusIndex = nil
+	gDetail.seenBefore = nil
 	gDetail.isCommodity = aRow.isCommodity
 	gDetail.name = aRow.name
 	gDetail.results = {}
@@ -504,7 +504,7 @@ function AHF:RefreshDetailResults(aItemID)
 	gDetail.results = tRows
 	gDetail.state = "done"
 	tRebuildAndFocus(gDetail.entry)
-	gDetail.focusIndex = nil
+	gDetail.seenBefore = nil
 end
 
 -- ---------------------------------------------------------------------
@@ -917,6 +917,22 @@ local function tDetailIsComplete()
 	return tFull ~= false
 end
 
+-- Stable row identities for tRebuildAndFocus's re-pin and for "load more".
+local function tListingIdentity(aRow)
+	return aRow.isCommodity and ("commodity:"..aRow.unitPrice) or ("auction:"..aRow.auctionID)
+end
+
+local function tBrowseIdentity(aItemKey)
+	return "browse:"..aItemKey.itemID..":"..aItemKey.itemLevel..":"..aItemKey.itemSuffix..":"..aItemKey.battlePetSpeciesID
+end
+
+-- Before "load more": the identities already listed, so the first new row gets the cursor.
+local function tIdentitySet(aRows, aIdentity)
+	local tSet = {}
+	for _, tRow in ipairs(aRows) do tSet[aIdentity(tRow)] = true end
+	return tSet
+end
+
 local function tBuildDetailChildren(aParentEntry)
 	aParentEntry.children = {}
 	if gDetail.state == "waiting" then
@@ -941,8 +957,8 @@ local function tBuildDetailChildren(aParentEntry)
 	-- away and back, or the first time you land here at all. Confirmed live
 	-- Seen live: players heard exactly that and could not tell what it referred to.
 	local tNamePrefix = (gDetail.name or "?")..": "
-	local tPrimaryIndex = gDetail.focusIndex or 1
-	for i, tRow in ipairs(gDetail.results) do
+	local tPrimarySet = false
+	for _, tRow in ipairs(gDetail.results) do
 		local tBody
 		if tRow.isCommodity then
 			tBody = tRow.quantity.." "..L["for "]..tMoneyText(tRow.unitPrice)
@@ -961,9 +977,12 @@ local function tBuildDetailChildren(aParentEntry)
 		local tRowEntry = SkuOptions:InjectMenuItems(aParentEntry, {tLabel}, SkuGenericMenuItem)
 		tRowEntry.dynamic = true
 		tRowEntry.data = tRow
-		tRowEntry.skuIdentity = tRow.isCommodity and ("commodity:"..tRow.unitPrice) or ("auction:"..tRow.auctionID)
+		tRowEntry.skuIdentity = tListingIdentity(tRow)
 		tSetAhTooltip(tRowEntry, gDetail.itemKey, tRow.itemLink)
-		if i == tPrimaryIndex then tRowEntry.ahfPrimary = true end
+		if not tPrimarySet and not (gDetail.seenBefore and gDetail.seenBefore[tRowEntry.skuIdentity]) then
+			tRowEntry.ahfPrimary = true
+			tPrimarySet = true
+		end
 		tRowEntry.BuildChildren = function(self)
 			self.children = {}
 			-- Post-quote confirm step takes over THIS row's children until the
@@ -1031,12 +1050,18 @@ local function tBuildDetailChildren(aParentEntry)
 	end
 	if not tDetailIsComplete() then
 		tSettingLeaf(aParentEntry, L["Load more auctions, so far "]..#gDetail.results, function(aLeaf)
-			gDetail.focusIndex = #gDetail.results + 1
+			local tHasFull
 			if gDetail.isCommodity then
-				C_AuctionHouse.RequestMoreCommoditySearchResults(gDetail.itemKey.itemID)
+				tHasFull = C_AuctionHouse.RequestMoreCommoditySearchResults(gDetail.itemKey.itemID)
 			else
-				C_AuctionHouse.RequestMoreItemSearchResults(gDetail.itemKey)
+				tHasFull = C_AuctionHouse.RequestMoreItemSearchResults(gDetail.itemKey)
 			end
+			-- true: the result is complete, nothing more will arrive.
+			if tHasFull then
+				aLeaf.name = L["Keine weiteren passenden Auktionen verfügbar"]
+				return
+			end
+			gDetail.seenBefore = tIdentitySet(gDetail.results, tListingIdentity)
 			aLeaf.name = L["Loading more auctions"]
 		end)
 	end
@@ -1048,8 +1073,7 @@ local function tInjectItemRow(aParentEntry, aRow)
 	local tRowEntry = SkuOptions:InjectMenuItems(aParentEntry, {tBrowseRowLabel(aRow)}, SkuGenericMenuItem)
 	tRowEntry.dynamic = true
 	tRowEntry.data = aRow
-	local tKey = aRow.itemKey
-	tRowEntry.skuIdentity = "browse:"..tKey.itemID..":"..tKey.itemLevel..":"..tKey.itemSuffix..":"..tKey.battlePetSpeciesID
+	tRowEntry.skuIdentity = tBrowseIdentity(aRow.itemKey)
 	tSetAhTooltip(tRowEntry, aRow.itemKey, nil)
 	tMarkEntering(tRowEntry)
 	tRowEntry.BuildChildren = function(selfRow)
@@ -1070,26 +1094,35 @@ local function tAppendBrowseResultChildren(aParentEntry)
 	-- node. Only the node that started the current query may show it, else the
 	-- search list shows category results and vice versa.
 	if gBrowse.entry ~= aParentEntry then return end
+	-- The first state leaf or result row is ahfPrimary: when an answer arrives, the cursor goes
+	-- there and not to the name search's own "enter search string" leaf. After "load more" it is
+	-- the first row that was not listed before.
 	if gBrowse.state == "waiting" then
 		local tW = SkuOptions:InjectMenuItems(aParentEntry, {L["Warten"]}, SkuGenericMenuItem)
 		tW.dynamic = false
+		tW.ahfPrimary = true
 	elseif gBrowse.state == "failed" then
 		local tFail = SkuOptions:InjectMenuItems(aParentEntry, {gBrowse.failText}, SkuGenericMenuItem)
 		tFail.dynamic = false
+		tFail.ahfPrimary = true
 	elseif gBrowse.state == "done" then
 		if #gBrowse.results == 0 then
 			local tNone = SkuOptions:InjectMenuItems(aParentEntry, {L["AH_NoResults"]}, SkuGenericMenuItem)
 			tNone.dynamic = false
+			tNone.ahfPrimary = true
 		else
-			for i, tRow in ipairs(gBrowse.results) do
+			local tPrimarySet = false
+			for _, tRow in ipairs(gBrowse.results) do
 				local tRowEntry = tInjectItemRow(aParentEntry, tRow)
-				if gBrowse.focusIndex and i == gBrowse.focusIndex then tRowEntry.ahfPrimary = true end
+				if not tPrimarySet and not (gBrowse.seenBefore and gBrowse.seenBefore[tRowEntry.skuIdentity]) then
+					tRowEntry.ahfPrimary = true
+					tPrimarySet = true
+				end
 			end
 			-- More results on the server (HasFullBrowseResults is false until all pages are in).
-			local tFull = C_AuctionHouse.HasFullBrowseResults()
-			if tFull == false then
+			if not C_AuctionHouse.HasFullBrowseResults() then
 				tSettingLeaf(aParentEntry, L["Load more results, so far "]..#gBrowse.results, function(aLeaf)
-					gBrowse.focusIndex = #gBrowse.results + 1
+					gBrowse.seenBefore = tIdentitySet(gBrowse.results, function(aRow) return tBrowseIdentity(aRow.itemKey) end)
 					C_AuctionHouse.RequestMoreBrowseResults()
 					aLeaf.name = L["Loading more results"]
 				end)
