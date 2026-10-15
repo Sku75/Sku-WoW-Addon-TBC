@@ -1069,14 +1069,8 @@ end
 function DungeonBrowser:Rebuild()
    if not SkuOptions:IsMenuOpen() then return end
    if not tCursorInBrowser() then return end
-   local top = tEnsureEntry()
-   if type(top.childs) == "table" then for k in pairs(top.childs) do top.childs[k] = nil end end
-   if type(top.childsByName) == "table" then for k in pairs(top.childsByName) do top.childsByName[k] = nil end end
-   for i = #top, 1, -1 do
-      local v = top[i]
-      if type(v) == "table" and v.name then top[i] = nil; if top[v.name] == v then top[v.name] = nil end end
-   end
-   DungeonBrowser:BuildMenu(top)
+   tEnsureEntry()
+   -- The top entry is dynamic: descending into it rebuilds its children through SkuOptions:RebuildNodeChildren.
    SkuOptions:SlashFunc(Sku.MENU_ROOT .. "," .. string.lower(MENU_LABEL))
 end
 
