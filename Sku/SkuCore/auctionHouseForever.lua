@@ -638,10 +638,8 @@ function AHF:OnCommodityPurchaseDone(aSucceeded)
 end
 
 -- ---------------------------------------------------------------------
--- Event plumbing. Own frame, independent of SkuCore.AuctionHouse's
--- AceEvent mixin - these events only exist on Forever, so this whole
--- frame only ever fires there anyway, but keeping it separate means the
--- legacy module's event set (auctionHouse.lua, Classic API) is untouched.
+-- Event plumbing. Own frame, independent of SkuCore.AuctionHouse's AceEvent
+-- mixin, so the legacy module's event set (auctionHouse.lua) stays untouched.
 -- ---------------------------------------------------------------------
 local gEventFrame = CreateFrame("Frame")
 for _, tEvent in ipairs({
@@ -913,14 +911,10 @@ end
 
 -- "Load more": the server hands out results in pages (HasFull*Results is false until all are in).
 local function tDetailIsComplete()
-	if not gDetail.itemKey then return true end
-	local tFull
 	if gDetail.isCommodity then
-		tFull = C_AuctionHouse.HasFullCommoditySearchResults(gDetail.itemKey.itemID)
-	else
-		tFull = C_AuctionHouse.HasFullItemSearchResults(gDetail.itemKey)
+		return C_AuctionHouse.HasFullCommoditySearchResults(gDetail.itemKey.itemID)
 	end
-	return tFull ~= false
+	return C_AuctionHouse.HasFullItemSearchResults(gDetail.itemKey)
 end
 
 -- Stable row identities for tRebuildAndFocus's re-pin and for "load more".
@@ -958,11 +952,9 @@ local function tBuildDetailChildren(aParentEntry)
 		tNone.ahfPrimary = true
 		return
 	end
-	-- Every row repeats the item name (gDetail.name) - without it, a line like
-	-- "2x zu je 24 Kupfer" is meaningless out of context, e.g. after navigating
-	-- away and back, or the first time you land here at all. Confirmed live
-	-- Seen live: players heard exactly that and could not tell what it referred to.
-	local tNamePrefix = (gDetail.name or "?")..": "
+	-- Every row starts with the item name: "2 for 24 Copper" alone does not say which item
+	-- it is. gDetail.name is the browse row's name, which exists for every row.
+	local tNamePrefix = gDetail.name..": "
 	local tPrimarySet = false
 	for _, tRow in ipairs(gDetail.results) do
 		local tBody
@@ -1092,7 +1084,7 @@ end
 
 -- Appends the current gBrowse state (waiting / no results / result rows)
 -- to aParentEntry - does NOT clear children first, so the caller can put its
--- own leaves (e.g. the name search's "Suchbegriff eingeben") before it.
+-- own leaves (e.g. the name search's "enter search string") before it.
 local function tAppendBrowseResultChildren(aParentEntry)
 	-- gBrowse holds ONE result set shared by name search and every category
 	-- node. Only the node that started the current query may show it, else the
@@ -1135,18 +1127,10 @@ local function tAppendBrowseResultChildren(aParentEntry)
 	end
 end
 
--- Builds one menu level of Blizzard's own AuctionCategories tree (see
--- Shared/Blizzard_AuctionData.lua - real client data, not something Sku invents). Self-recursive, so
--- declared as an upvalue first (a bare "local function X() ... X() ... end"
--- can call itself, but this needs the pre-declaration for the OnAction/
--- BuildChildren closures below to resolve it correctly either way - kept
--- explicit to avoid the exact lexical-scoping trap fixed earlier in this file).
--- Does NOT clear aParentEntry.children itself (same "append" contract as
--- tAppendBrowseResultChildren) - the "Alles in X" leaf below needs to sit
--- BEFORE the subcategories it's called to add, and clearing here would wipe
--- it back out. Every call site clears first if it needs to.
-local tBuildCategoryChildren
-tBuildCategoryChildren = function(aParentEntry, aCategoryList)
+-- Builds one menu level of Blizzard's own AuctionCategories tree (Camelot/Blizzard_AuctionData.lua).
+-- Appends to aParentEntry.children without clearing them; the callers clear first. A category with
+-- subcategories lists them and then "Everything in <category>".
+local function tBuildCategoryChildren(aParentEntry, aCategoryList)
 	for _, tCat in ipairs(aCategoryList) do
 		-- The WoW Token category is no item search: Blizzard opens its token frame there or hides it.
 		if not tCat:HasFlag("WOW_TOKEN_FLAG") then
@@ -1157,13 +1141,11 @@ tBuildCategoryChildren = function(aParentEntry, aCategoryList)
 			tCatEntry.BuildChildren = function(self)
 				if self.data.subCategories and #self.data.subCategories > 0 then
 					self.children = {}
-					-- Subcategories first, "Alles in X" last: going right into Waffen must
-					-- land on Einhand/Zweihand/..., not straight on a result list.
+					-- Subcategories first, "Everything in" last: going right into Weapons lands on
+					-- One-Handed/Two-Handed/..., not on a result list.
 					tBuildCategoryChildren(self, self.data.subCategories)
-					-- Every node (not just leaves) accumulates its descendants' filters
-					-- (AuctionCategoryMixin:AddFilter walks up to self.parent), so "Alles
-					-- in Waffen" is a real, meaningful browse even though Waffen itself
-					-- has subcategories.
+					-- A category holds the filters of all its descendants (AuctionCategoryMixin:AddFilter
+					-- adds each filter to the parents too), so "Everything in Weapons" is one browse.
 					if self.data.filters and #self.data.filters > 0 then
 						local tAll = SkuOptions:InjectMenuItems(self, {L["Everything in "]..self.data.name}, SkuGenericMenuItem)
 						tAll.dynamic = true
