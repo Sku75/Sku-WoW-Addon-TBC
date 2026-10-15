@@ -212,6 +212,72 @@ local function tMarkEntering(aNode)
 	end
 end
 
+-- For a node that shows the answer of a query in aState (gBrowse or gDetail): entering it runs
+-- aStart unless the node's own query is current; a failed query runs again. Returns true when
+-- the node has something to show, false when it was only landed on.
+local function tQueryOnEnter(aNode, aState, aStart)
+	local tMine = aState.entry == aNode and aState.state ~= "idle"
+	if aNode.ahfEntering and (not tMine or aState.state == "failed") then
+		aStart()
+		return true
+	end
+	return tMine
+end
+
+-- ---------------------------------------------------------------------
+-- Throttled queries. Auction house queries go through the client's throttled message system;
+-- one sent while IsThrottledMessageSystemReady is false is queued or dropped by the client
+-- (AUCTION_HOUSE_THROTTLED_MESSAGE_QUEUED / _DROPPED). So a query is parked in
+-- aState.pendingSend and sent on AUCTION_HOUSE_THROTTLED_SYSTEM_READY, oldest first.
+-- aState: any query state table (gBrowse, gDetail, ...). Only for queries that are not
+-- protected: a parked call runs from an event, not from a key press.
+-- ---------------------------------------------------------------------
+local gThrottleWaiting = {}
+
+local function tSendThrottled(aState, aSend, ...)
+	if C_AuctionHouse.IsThrottledMessageSystemReady() then
+		aState.pendingSend = nil
+		aSend(...)
+		return
+	end
+	dprint("ahf", "query parked until the throttle is ready")
+	aState.pendingSend = { send = aSend, args = { n = select("#", ...), ... } }
+	for _, tState in ipairs(gThrottleWaiting) do
+		if tState == aState then return end
+	end
+	gThrottleWaiting[#gThrottleWaiting + 1] = aState
+end
+
+local function tSendParked()
+	while gThrottleWaiting[1] and C_AuctionHouse.IsThrottledMessageSystemReady() do
+		local tState = table.remove(gThrottleWaiting, 1)
+		local tPending = tState.pendingSend
+		if tPending then
+			tState.pendingSend = nil
+			tPending.send(unpack(tPending.args, 1, tPending.args.n))
+		end
+	end
+end
+
+-- No answer in time: the list says the query was never sent (throttle busy) or never answered,
+-- instead of staying on "Warten" or claiming "no results". aState.answered (results arrived, item
+-- names still loading) shows what is known. A newer query (generation) cancels the timeout.
+local function tFailOnTimeout(aState, aSeconds)
+	local tGen = aState.generation
+	C_Timer.After(aSeconds, function()
+		if aState.generation ~= tGen or aState.state ~= "waiting" then return end
+		if aState.answered then
+			aState.state = "done"
+		else
+			aState.failText = aState.pendingSend and L["AH_QueryBusy"] or L["STRAT_SearchTimeout"]
+			aState.state = "failed"
+			dprint("ahf", "query timeout:", aState.failText)
+		end
+		aState.pendingSend = nil
+		tRebuildAndFocus(aState.entry)
+	end)
+end
+
 -- ---------------------------------------------------------------------
 -- BROWSE (search by name OR by category - both are just a browse query with
 -- different fields set: a name search sets searchString, a category browse
@@ -222,31 +288,14 @@ end
 -- answer arrives through the same browse events and is read the same way.
 function AHF:StartBrowseQuery(aQuery, aEntry, aSend)
 	gBrowse.state = "waiting"
+	gBrowse.answered = nil
 	gBrowse.results = {}
 	gBrowse.focusIndex = nil
 	gBrowse.entry = aEntry
 	gBrowse.failText = nil
 	gBrowse.generation = (gBrowse.generation or 0) + 1
-	local tGen = gBrowse.generation
-	-- The game throttles auction house queries: a query sent while the system is not ready vanishes without any
-	-- feedback. Such a query is kept and sent on AUCTION_HOUSE_THROTTLED_SYSTEM_READY.
-	local tReady = C_AuctionHouse.IsThrottledMessageSystemReady()
-	if tReady == false then
-		gBrowse.pendingSend = { aQuery, aSend }
-	else
-		gBrowse.pendingSend = nil
-		local tSend = aSend or C_AuctionHouse.SendBrowseQuery
-		tSend(aQuery)
-	end
-	-- No answer at all (no results event, no failure): the list must not stay on "Warten".
-	-- The generation check ignores a timeout of a query a newer one has replaced.
-	C_Timer.After(10, function()
-		if gBrowse.generation == tGen and gBrowse.state == "waiting" then
-			gBrowse.pendingSend = nil
-			gBrowse.state = "done"
-			tRebuildAndFocus(gBrowse.entry)
-		end
-	end)
+	tSendThrottled(gBrowse, aSend or C_AuctionHouse.SendBrowseQuery, aQuery)
+	tFailOnTimeout(gBrowse, 10)
 end
 
 -- ---------------------------------------------------------------------
@@ -339,6 +388,7 @@ function AHF:RefreshBrowseResults()
 	local tRaw = C_AuctionHouse.GetBrowseResults()
 	-- Blizzard's list: no rows and HasFullBrowseResults = "no results"; no rows and not full = still pending.
 	if #tRaw == 0 and not C_AuctionHouse.HasFullBrowseResults() then return end
+	gBrowse.answered = true
 	local tRows, tStillPending = {}, false
 	for i = 1, #tRaw do
 		local tItem = tRaw[i]
@@ -375,20 +425,14 @@ function AHF:StartDetail(aRow, aEntry)
 	gDetail.name = aRow.name
 	gDetail.results = {}
 	gDetail.entry = aEntry
+	gDetail.failText = nil
 	gDetail.generation = (gDetail.generation or 0) + 1
-	local tGen = gDetail.generation
-	C_AuctionHouse.SendSearchQuery(aRow.itemKey, {}, false)
-	-- Same stuck-on-"Warten" safety net as StartBrowse - see there for why.
-	C_Timer.After(6, function()
-		if gDetail.generation == tGen and gDetail.state == "waiting" then
-			gDetail.state = "done"
-			tRebuildAndFocus(gDetail.entry)
-		end
-	end)
+	tSendThrottled(gDetail, C_AuctionHouse.SendSearchQuery, aRow.itemKey, {}, false)
+	tFailOnTimeout(gDetail, 6)
 end
 
 function AHF:RefreshDetailResults(aItemID)
-	if gDetail.state == "idle" or not gDetail.itemKey then return end
+	if (gDetail.state ~= "waiting" and gDetail.state ~= "done") or not gDetail.itemKey then return end
 	if aItemID and aItemID ~= gDetail.itemKey.itemID then return end
 	local tRows = {}
 	if gDetail.isCommodity then
@@ -582,12 +626,7 @@ gEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	if aEvent == "AUCTION_HOUSE_BROWSE_RESULTS_UPDATED" or aEvent == "AUCTION_HOUSE_BROWSE_RESULTS_ADDED" then
 		AHF:RefreshBrowseResults()
 	elseif aEvent == "AUCTION_HOUSE_THROTTLED_SYSTEM_READY" then
-		local tPending = gBrowse.pendingSend
-		if tPending and gBrowse.state == "waiting" then
-			gBrowse.pendingSend = nil
-			local tSend = tPending[2] or C_AuctionHouse.SendBrowseQuery
-			tSend(tPending[1])
-		end
+		tSendParked()
 	elseif aEvent == "AUCTION_HOUSE_BROWSE_FAILURE" then
 		-- The server could not run the query. Blizzard's result list shows ERR_AUCTION_DATABASE_ERROR
 		-- for it; an empty result is a results event with no rows, not this.
@@ -623,6 +662,8 @@ gEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 		if gCommodityBuy.itemID then C_AuctionHouse.CancelCommoditiesPurchase() end
 		gBrowse.state, gDetail.state, gCommodityBuy.itemID = "idle", "idle", nil
 		gBrowse.entry, gBrowse.results, gDetail.entry, gDetail.itemKey, gDetail.results = nil, {}, nil, nil, {}
+		gBrowse.pendingSend, gDetail.pendingSend = nil, nil
+		wipe(gThrottleWaiting)
 	end
 end)
 
@@ -851,6 +892,11 @@ local function tBuildDetailChildren(aParentEntry)
 		tW.dynamic = false
 		return
 	end
+	if gDetail.state == "failed" then
+		local tFail = SkuOptions:InjectMenuItems(aParentEntry, {gDetail.failText}, SkuGenericMenuItem)
+		tFail.dynamic = false
+		return
+	end
 	tAddFavoriteLeaf(aParentEntry, gDetail.itemKey)
 	if #gDetail.results == 0 then
 		local tNone = SkuOptions:InjectMenuItems(aParentEntry, {L["AH_NoResults"]}, SkuGenericMenuItem)
@@ -975,9 +1021,9 @@ local function tInjectItemRow(aParentEntry, aRow)
 	tSetAhTooltip(tRowEntry, aRow.itemKey, nil)
 	tMarkEntering(tRowEntry)
 	tRowEntry.BuildChildren = function(selfRow)
-		if gDetail.entry ~= selfRow or gDetail.state == "idle" then
-			if not selfRow.ahfEntering then selfRow.children = {} return end
-			AHF:StartDetail(selfRow.data, selfRow)
+		if not tQueryOnEnter(selfRow, gDetail, function() AHF:StartDetail(selfRow.data, selfRow) end) then
+			selfRow.children = {}
+			return
 		end
 		tBuildDetailChildren(selfRow)
 	end
@@ -1052,21 +1098,17 @@ tBuildCategoryChildren = function(aParentEntry, aCategoryList)
 					tAll.dynamic = true
 					tMarkEntering(tAll)
 					tAll.BuildChildren = function(selfAll)
-						if gBrowse.entry ~= selfAll then
-							if not selfAll.ahfEntering then selfAll.children = {} return end
-							AHF:StartCategoryBrowse(self.data.filters, selfAll)
-						end
 						selfAll.children = {}
-						tAppendBrowseResultChildren(selfAll)
+						if tQueryOnEnter(selfAll, gBrowse, function() AHF:StartCategoryBrowse(self.data.filters, selfAll) end) then
+							tAppendBrowseResultChildren(selfAll)
+						end
 					end
 				end
 			else
-				if gBrowse.entry ~= self then
-					if not self.ahfEntering then self.children = {} return end
-					AHF:StartCategoryBrowse(self.data.filters or {}, self)
-				end
 				self.children = {}
-				tAppendBrowseResultChildren(self)
+				if tQueryOnEnter(self, gBrowse, function() AHF:StartCategoryBrowse(self.data.filters or {}, self) end) then
+					tAppendBrowseResultChildren(self)
+				end
 			end
 		end
 	end
@@ -1865,12 +1907,10 @@ function AHF:BuildSearchEntries(aSelf)
 		tFavEntry.dynamic = true
 		tMarkEntering(tFavEntry)
 		tFavEntry.BuildChildren = function(self)
-			if gBrowse.entry ~= self then
-				if not self.ahfEntering then self.children = {} return end
-				AHF:StartFavorites(self)
-			end
 			self.children = {}
-			tAppendBrowseResultChildren(self)
+			if tQueryOnEnter(self, gBrowse, function() AHF:StartFavorites(self) end) then
+				tAppendBrowseResultChildren(self)
+			end
 		end
 	end
 end
