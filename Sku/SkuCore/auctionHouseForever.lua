@@ -17,7 +17,7 @@
 -- Calls documented as HasRestrictions (PlaceBid, StartCommoditiesPurchase, PostItem, PostCommodity, ConfirmPostItem,
 -- ConfirmPostCommodity, CancelAuction) run directly from a menu action, i.e. from a real key press.
 -- ConfirmCommoditiesPurchase has no restriction; it runs from a key press as well, like Blizzard's Buy Now button.
--- Full scan (ReplicateItems) feeds Sku's auction price history (see FULL SCAN).
+-- Full scan (ReplicateItems) and the prices of browse results feed Sku's auction price history (see FULL SCAN).
 -- =====================================================================
 
 if not Sku or not Sku.isForever then return end
@@ -458,6 +458,7 @@ function AHF:RefreshBrowseResults()
 	-- Blizzard's list: no rows and HasFullBrowseResults = "no results"; no rows and not full = still pending.
 	if #tRaw == 0 and not C_AuctionHouse.HasFullBrowseResults() then return end
 	gBrowse.answered = true
+	AHF:FeedBrowsePrices(tRaw)
 	local tRows, tStillPending = {}, false
 	for i = 1, #tRaw do
 		local tItem = tRaw[i]
@@ -2155,7 +2156,8 @@ end
 -- The legacy full scan (QueryAuctionItems getAll) does not exist on Forever. C_AuctionHouse.ReplicateItems asks the
 -- server for every auction of the realm; REPLICATE_ITEM_LIST_UPDATE says the list is in; GetNumReplicateItems and
 -- GetReplicateItemInfo(i) read it. The prices go into the price store of SkuCore/auctionHouse.lua
--- (AuctionIngestPriceData), the one every price reader uses.
+-- (AuctionIngestPriceData), the one every price reader uses. A browse result feeds the current prices of its items
+-- the same way (AHF:FeedBrowsePrices).
 -- ReplicateItems sends the whole auction list in one answer; on a busy server that answer can disconnect the client.
 -- The server answers it once per 15 minutes; the menu entry uses the legacy full scan's cooldown
 -- (AuctionLastFullScanTime, AuctionFullScanCooldownRemaining).
@@ -2330,6 +2332,16 @@ end
 function AHF:BuildFullScanEntry(aParent)
 	local tLeaf = tSettingLeaf(aParent, tFullScanLabel(), function(aLeaf) AHF:StartFullScan(aLeaf) end)
 	tLeaf.OnEnter = function(self) self.name = tFullScanLabel() end
+end
+
+-- A browse result's cheapest price per item (minPrice: per unit for commodities, the cheapest listing otherwise)
+-- replaces the current prices of those items. Rows of one item with different item levels give several prices.
+function AHF:FeedBrowsePrices(aRows)
+	local tPriceData = {}
+	for i = 1, #aRows do
+		tAddPrices(tPriceData, aRows[i].itemKey.itemID, 1, 0, aRows[i].minPrice)
+	end
+	SkuCore.AuctionHouse:AuctionIngestPriceData(tPriceData, false)
 end
 
 -- ---------------------------------------------------------------------
