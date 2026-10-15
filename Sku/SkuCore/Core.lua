@@ -4739,7 +4739,7 @@ local friendlyFrameNames = {
 	--["BagnonInventoryFrame1"] = L["Bagnon Taschen"],
 	["SpellBookFrame"] = L["Spellbook"],
 	["PlayerTalentFrame"] = L["Talents"],
-	["PlayerSpellsFrame"] = L["Talents"],
+	["PlayerSpellsFrame"] = Sku.isForever and function() return SkuCore:PlayerSpellsFrameName() end or L["Talents"],
 	["LegacySystemFrame"] = L["Legacy"],
 	["RolePollPopup"] = L["Role Poll"],
 	-- ["PVEFrame"]/["LFGParentFrame"] entfernt (Dungeon-Browser wird neu aufgebaut)
@@ -4760,6 +4760,13 @@ local friendlyFrameNames = {
 	["ReadyCheckFrame"] = L["Bereitschaft check"],
 	[""] = "",
 }
+-- A window whose name follows its content has a function as its name (PlayerSpellsFrame on Forever: talent window and
+-- spellbook in one frame).
+local function tFriendlyFrameName(aFrameName)
+	local tName = friendlyFrameNames[aFrameName]
+	if type(tName) == "function" then return tName() end
+	return tName
+end
 --[[
 local containerFrames = {
 	["BagnonInventoryFrame1"] = "BagnonInventoryFrame1",
@@ -5141,7 +5148,7 @@ function SkuCore:IterateChildren(t, tab)
 									end
 									--if there are childs but no text > try to find the best/friendly name via the frame name
 									if tResults[fName].textFirstLine == "" and tResults[fName].textFull == "" and #tResults[fName].childs > 0 then
-										local tText = friendlyFrameNames[fName] or ""
+										local tText = tFriendlyFrameName(fName) or ""
 										if tText == "" then
 											for i, v in pairs(friendlyFrameNamesParts) do
 												if string.find(fName, i) then
@@ -5400,7 +5407,7 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 					RoC = "Child",
 					type = "Frame",
 					obj = _G[tOpenFrames[x]],
-					textFirstLine = friendlyFrameNames[tOpenFrames[x]] or tOpenFrames[x],
+					textFirstLine = tFriendlyFrameName(tOpenFrames[x]) or tOpenFrames[x],
 					textFull = "",
 					childs = {},
 					}
@@ -5462,8 +5469,8 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			-- pending prompt reachable -> never navigate/open the menu (see above).
 			-- An explicit aForceLocalRoot is a deliberate caller request and still wins.
 			if tBread and aForceLocalRoot ~= true and tFlag == false and tPendingOnly ~= true then
-				for i, v in pairs(friendlyFrameNames) do
-					if v == tFirstFrame then
+				for i in pairs(friendlyFrameNames) do
+					if tFriendlyFrameName(i) == tFirstFrame then
 						if _G[i] then
 							if _G[i]:IsVisible() then
 								-- [43.9] ONE silent resolve to the remembered level. This used to

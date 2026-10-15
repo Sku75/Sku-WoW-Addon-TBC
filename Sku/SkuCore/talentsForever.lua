@@ -279,6 +279,15 @@ EventRegistry:RegisterCallback("TalentFrameBase.ButtonsUpdated", function()
 	end)
 end)
 
+-- The window's name in the menu (friendlyFrameNames in Core.lua) follows the shown tab, as Blizzard's frame title does
+-- (PlayerSpellsFrameMixin:UpdateFrameTitle): the spellbook key opens this same frame on its spellbook tab.
+function SkuCore:PlayerSpellsFrameName()
+	local tTab = PlayerSpellsFrame and PlayerSpellsFrame:GetTab()
+	if tTab and tTab == PlayerSpellsFrame.spellBookTabID then return L["Spellbook"] end
+	if tTab and tTab == PlayerSpellsFrame.specTabID then return SPECIALIZATION end
+	return L["Talents"]
+end
+
 function SkuCore:Build_PlayerSpellsFrame(aParentChilds)
 	local tFrame = PlayerSpellsFrame
 
@@ -304,6 +313,6 @@ function SkuCore:Build_PlayerSpellsFrame(aParentChilds)
 
 	-- never leave the window silent
 	if #aParentChilds == 0 then
-		tText(aParentChilds, "Text: " .. L["Talents"], tFrame)
+		tText(aParentChilds, "Text: " .. SkuCore:PlayerSpellsFrameName(), tFrame)
 	end
 end
