@@ -795,9 +795,10 @@ function AHF:EndCommodityBuy(aReason, aFromKey)
 	end)
 end
 
--- The quote. Checked like Blizzard's buy dialog: more than 5% above the preview ends the purchase. Otherwise the item
--- shows one summary leaf (price and every warning) with the cursor on it, and Confirm second, so a second Enter
--- pressed too early only repeats the summary.
+-- The quote. Checked like Blizzard's buy dialog: more than 5% above the preview ends the purchase. Otherwise the
+-- summary (price and every warning) goes into the Confirm leaf and the cursor lands there, as Blizzard's dialog
+-- enables its Buy Now button: the next Enter confirms. An Enter pressed while the quote was on its way hit the
+-- waiting leaf, which does nothing.
 function AHF:OnCommodityPriceUpdated(aUnitPrice, aTotalPrice)
 	if not gCommodityBuy.itemID or gCommodityBuy.confirming then return end
 	local tPreview = gCommodityBuy.preview
@@ -818,7 +819,6 @@ function AHF:OnCommodityPriceUpdated(aUnitPrice, aTotalPrice)
 			tMoneyText(tPreview.total), tMoneyText(aTotalPrice))
 	end
 	if GetMoney() < aTotalPrice then tParts[#tParts + 1] = L["Nicht genug Geld"] end
-	tParts[#tParts + 1] = L["Confirm or cancel?"]
 	gCommodityBuy.summary = table.concat(tParts, ";")
 	tRebuildAndFocus(gCommodityBuy.entry, true)
 end
@@ -894,21 +894,21 @@ local function tBrowseRowLabel(aRow)
 end
 
 -- The commodity confirm step: replaces the item's level while a quote is open (Blizzard's buy dialog covers its window
--- the same way), so the cursor lands on the quote summary, then Confirm and Cancel. Declared before
+-- the same way): first waiting, then Confirm with the quote summary in front, then Cancel. Declared before
 -- tBuildDetailChildren, which calls it: a local function is only visible below its declaration.
 local function tBuildCommodityConfirmChildren(aParentEntry)
 	aParentEntry.children = {}
-	-- The first leaf (waiting, or the summary) does nothing on ENTER but read itself again: an Enter pressed while the
-	-- quote arrives must not land on Confirm.
+	-- Waiting does nothing on ENTER but read itself again, so an Enter pressed before the quote arrives buys nothing.
 	-- Confirm and Cancel act only on the purchase they were built for, never on a newer one.
 	local tGen = gCommodityBuy.generation
 	if not gCommodityBuy.unitPrice then
 		tSettingLeaf(aParentEntry, L["Warten"], function() end)
 	else
-		tSettingLeaf(aParentEntry, gCommodityBuy.summary, function() end)
-		tSettingLeaf(aParentEntry, gCommodityBuy.confirming and L["Purchasing"] or (L["Confirm: "]..tMoneyText(gCommodityBuy.totalPrice)), function(aLeaf)
+		local tConfirm = tSettingLeaf(aParentEntry, gCommodityBuy.confirming and L["Purchasing"]
+			or (gCommodityBuy.summary..";"..L["Confirm: "]..tMoneyText(gCommodityBuy.totalPrice)), function(aLeaf)
 			AHF:ConfirmCommodityBuy(aLeaf, tGen)
 		end)
+		tConfirm.ahfPrimary = true
 	end
 	-- Cancel is there while waiting for the quote too: leaving must never keep a quote open.
 	tSettingLeaf(aParentEntry, L["Abbrechen"], function(aLeaf)
