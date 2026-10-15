@@ -143,25 +143,31 @@ local function tParseMoney(aText)
 	return tTotal
 end
 
--- Asks for a money amount in the edit box ("12g 5s 3k", "1.5" = 1 gold 50 silver) and hands the
--- parsed copper value to aApply. Only the answer is read here - anything protected (bids,
--- buying, posting) happens afterwards in a separate menu action from a real key press.
-local function tAskMoney(aPrompt, aApply)
+-- Asks for a value in the edit box, reads it with aParse and hands the result to aApply, then reads the menu
+-- position again. aParse returns nil for input it does not understand: then only aFailText is said. Only the
+-- answer is read here - anything protected (bids, buying, posting) happens afterwards in a separate menu action
+-- from a real key press.
+local function tAskValue(aPrompt, aParse, aFailText, aApply)
 	SkuOptions:EditBoxShow("", function()
 		local tText = SkuOptionsEditBoxEditBox:GetText()
-		if tText and tText ~= "" then
-			local tAmount = tParseMoney(tText)
-			if tAmount then
-				aApply(tAmount)
-			else
-				tSay(L["Amount not understood"])
+		if tText ~= "" then
+			local tValue = aParse(tText)
+			if tValue == nil then
+				tSay(aFailText)
+				return
 			end
+			aApply(tValue)
 		end
 		tVocalize()
 	end, nil)
 	C_Timer.After(0.1, function()
 		SkuOptions.Voice:OutputStringBTtts(aPrompt, true, true, 0.1, nil, nil, nil, 1)
 	end)
+end
+
+-- A money amount ("12g 5s 3k", "1.5" = 1 gold 50 silver), handed to aApply in copper.
+local function tAskMoney(aPrompt, aApply)
+	tAskValue(aPrompt, tParseMoney, L["Amount not understood"], aApply)
 end
 
 -- ---------------------------------------------------------------------
@@ -1481,16 +1487,23 @@ function AHF:SelectSellItem(aBag, aSlot)
 	return true
 end
 
-local function tAskAmount(aPrompt, aApply)
-	SkuOptions:EditBoxShow("", function()
-		local tText = SkuOptionsEditBoxEditBox:GetText()
-		if tText and tText ~= "" then aApply(tText) end
+-- tAskValue for a draft value: the sell leaves are relabelled before the cursor's leaf is read again.
+local function tAskSell(aPrompt, aParse, aFailText, aApply)
+	tAskValue(aPrompt, aParse, aFailText, function(aValue)
+		aApply(aValue)
 		tRefreshSellLabels()
-		tVocalize()
-	end, nil)
-	C_Timer.After(0.1, function()
-		SkuOptions.Voice:OutputStringBTtts(aPrompt, true, true, 0.1, nil, nil, nil, 1)
 	end)
+end
+
+local function tParseQuantity(aText)
+	local tN = tonumber(aText:match("^%s*(%d+)%s*$"))
+	if tN and tN >= 1 then return tN end
+end
+
+-- "0" clears the starting bid.
+local function tParseBid(aText)
+	if aText:match("^%s*0+%s*$") then return 0 end
+	return tParseMoney(aText)
 end
 
 function AHF:PostDraft()
@@ -1552,13 +1565,8 @@ local function tBuildSellItemChildren(aParent)
 	gSell.leaves = tLeaves
 	if (gSell.maxQuantity or 1) > 1 then
 		tLeaves.quantity = tSettingLeaf(aParent, tQuantityLabel(), function()
-			tAskAmount(L["Enter quantity"], function(aText)
-				local tN = tonumber(aText:match("^%s*(%d+)%s*$"))
-				if tN and tN >= 1 then
-					gSell.quantity = math.min(tN, gSell.maxQuantity or 1)
-				else
-					tSay(L["Quantity not understood"])
-				end
+			tAskSell(L["Enter quantity"], tParseQuantity, L["Quantity not understood"], function(aN)
+				gSell.quantity = math.min(aN, gSell.maxQuantity or 1)
 			end)
 		end)
 	end
@@ -1568,9 +1576,8 @@ local function tBuildSellItemChildren(aParent)
 		tRefreshSellLabels()
 	end)
 	tLeaves.price = tSettingLeaf(aParent, tPriceLabel(), function()
-		tAskAmount(L["Enter price, for example 12g 5s 3k"], function(aText)
-			local tP = tParseMoney(aText)
-			if tP then gSell.buyout = tP else tSay(L["Price not understood"]) end
+		tAskSell(L["Enter price, for example 12g 5s 3k"], tParseMoney, L["Price not understood"], function(aCopper)
+			gSell.buyout = aCopper
 		end)
 	end)
 	tLeaves.market = tSettingLeaf(aParent, tMarketLabel(), function()
@@ -1584,27 +1591,17 @@ local function tBuildSellItemChildren(aParent)
 	end)
 	if (gSell.maxQuantity or 1) > 1 then
 		tLeaves.total = tSettingLeaf(aParent, tTotalLabel(), function()
-			tAskAmount(L["Enter the total price for the chosen quantity, for example 5g"], function(aText)
-				local tTotal = tParseMoney(aText)
-				if not tTotal then
-					tSay(L["Price not understood"])
-					return
-				end
-				local tQty = gSell.quantity or 1
-				local tPer = math.max(1, math.floor(tTotal / tQty + 0.5))
-				local tCopper = C_AuctionHouse.SupportsCopperValues()
-				if not tCopper then tPer = math.max(100, math.floor(tPer / 100 + 0.5) * 100) end
+			tAskSell(L["Enter the total price for the chosen quantity, for example 5g"], tParseMoney, L["Price not understood"], function(aTotal)
+				local tPer = math.max(1, math.floor(aTotal / (gSell.quantity or 1) + 0.5))
+				if not C_AuctionHouse.SupportsCopperValues() then tPer = math.max(100, math.floor(tPer / 100 + 0.5) * 100) end
 				gSell.buyout = tPer
-				tSay(tPriceLabel()..", "..L["total "]..tMoneyText(tPer * tQty))
 			end)
 		end)
 	end
 	if not gSell.isCommodity then
 		tLeaves.bid = tSettingLeaf(aParent, tBidLabel(), function()
-			tAskAmount(L["Enter starting bid, or 0 to clear"], function(aText)
-				if tonumber(aText) == 0 then gSell.bid = nil return end
-				local tP = tParseMoney(aText)
-				if tP then gSell.bid = tP else tSay(L["Amount not understood"]) end
+			tAskSell(L["Enter starting bid, or 0 to clear"], tParseBid, L["Amount not understood"], function(aCopper)
+				gSell.bid = aCopper > 0 and aCopper or nil
 			end)
 		end)
 	end
