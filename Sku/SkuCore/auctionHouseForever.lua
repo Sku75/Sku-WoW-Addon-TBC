@@ -39,6 +39,9 @@ local gDetail = { state = "idle", itemKey = nil, isCommodity = false, results = 
 -- CommodityBuy = the two-step quote/confirm dance StartCommoditiesPurchase
 -- requires (see Blizzard's own Blizzard_AuctionHouseBuyDialog.lua).
 local gCommodityBuy = { itemID = nil, quantity = nil, unitPrice = nil, totalPrice = nil, entry = nil }
+-- Sell = the draft of the item being put up for auction (see SELL below). Replaced as a whole for another item;
+-- the chosen duration carries over.
+local gSell = { duration = nil }
 -- NOTE: there is no full-market scan. C_AuctionHouse.ReplicateItems is documented, but Blizzard's own new auction
 -- house UI never calls ReplicateItems/GetReplicateItemInfo, it only has name search and category browse. Sku does
 -- not pretend to have more.
@@ -608,7 +611,8 @@ end
 
 -- AUCTION_HOUSE_SHOW_ERROR carries only the error code, and Blizzard shows it only in UIErrorsFrame (no
 -- UI_ERROR_MESSAGE, so Sku never hears it there). It answers Sku's own buyout or bid in flight first, then a
--- commodity purchase, else a browse or detail query still waiting.
+-- commodity purchase, then a post sent to the server (a post waiting for its confirmation sent nothing), else a
+-- browse or detail query still waiting.
 function AHF:OnShowError(aError)
 	local tText = AuctionHouseUtil.GetErrorText(aError)
 	dprint("ahf", "SHOW_ERROR", aError, tText)
@@ -620,6 +624,10 @@ function AHF:OnShowError(aError)
 	end
 	if gCommodityBuy.itemID then
 		AHF:EndCommodityBuy(tText ~= "" and tText or L["Purchase failed"])
+		return
+	end
+	if gSell.posting and not gSell.pending then
+		AHF:OnPostRefused(tText ~= "" and tText or AUCTION_POSTING_ERROR_TEXT)
 		return
 	end
 	-- A rejected browse/detail query: the error becomes the waiting leaf, so the rebuild reads it out.
@@ -1308,7 +1316,6 @@ end
 -- (Blizzard's GetTotalPrice multiplies by quantity). Max quantity =
 -- C_AuctionHouse.GetAvailablePostCount(itemLocation).
 -- ---------------------------------------------------------------------
-local gSell = { duration = nil }
 local gSellList = nil
 local gOwned = { state = "idle", rows = {}, entry = nil, generation = 0 }
 
@@ -1513,6 +1520,15 @@ end
 local function tPostNote(aText)
 	gSell.postNote = aText
 	tRefreshSellLabels()
+end
+
+-- The server refused Sku's post (AUCTION_HOUSE_POST_ERROR, or AUCTION_HOUSE_SHOW_ERROR through AHF:OnShowError).
+-- The reason goes into the post leaf; inside the key press the key handler reads that leaf again, otherwise it is
+-- spoken here.
+function AHF:OnPostRefused(aText)
+	gSell.pending, gSell.posting, gSell.postError = nil, nil, true
+	tPostNote(gSell.name..": "..aText)
+	if not gSell.inPostCall then tSay(gSell.postNote) end
 end
 
 -- tAskValue for a draft value: the sell leaves are relabelled before the cursor's leaf is read again.
@@ -2013,7 +2029,7 @@ function AHF:BuildSalesChildren(aSelf)
 end
 
 local gSellEventFrame = CreateFrame("Frame")
-for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_POST_ERROR", "AUCTION_HOUSE_SHOW_ERROR", "AUCTION_MULTISELL_START", "AUCTION_MULTISELL_UPDATE", "AUCTION_MULTISELL_FAILURE", "BAG_UPDATE_DELAYED", "AUCTION_HOUSE_CLOSED" }) do
+for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_POST_ERROR", "AUCTION_MULTISELL_START", "AUCTION_MULTISELL_UPDATE", "AUCTION_MULTISELL_FAILURE", "BAG_UPDATE_DELAYED", "AUCTION_HOUSE_CLOSED" }) do
 	if Sku.IsEventValid(tEvent) then gSellEventFrame:RegisterEvent(tEvent) end
 end
 -- Blizzard's AuctionHouseFrame answers AUCTION_HOUSE_POST_WARNING / _ERROR with its own popup. Its Accept confirms
@@ -2052,13 +2068,7 @@ gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	elseif aEvent == "AUCTION_HOUSE_POST_ERROR" then
 		-- Blizzard's error popup has only OK: the post cannot be confirmed.
 		if not gSell.posting then return end
-		gSell.pending, gSell.posting, gSell.postError = nil, nil, true
-		tPostNote(gSell.name..": "..AUCTION_POSTING_ERROR_TEXT)
-		-- Inside the key press the post leaf is read again with this note.
-		if not gSell.inPostCall then tSay(gSell.postNote) end
-	elseif aEvent == "AUCTION_HOUSE_SHOW_ERROR" then
-		-- A post the server refuses is no longer pending.
-		gSell.pending, gSell.posting = nil, nil
+		AHF:OnPostRefused(AUCTION_POSTING_ERROR_TEXT)
 	elseif aEvent == "AUCTION_MULTISELL_FAILURE" then
 		if not gSell.multisell and not gSell.multisellExpected then return end
 		local tM = gSell.multisell
