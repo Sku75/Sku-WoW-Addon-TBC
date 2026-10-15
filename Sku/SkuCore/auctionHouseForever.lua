@@ -1479,7 +1479,7 @@ end
 -- Every change to the draft drops a pending confirmation: it was given for the old values, and confirming it
 -- would post those.
 local function tDraftChanged()
-	gSell.pending = nil
+	gSell.pending, gSell.postError = nil, nil
 	gSell.postNote = nil
 	tRefreshSellLabels()
 end
@@ -1518,6 +1518,7 @@ function AHF:PostDraft()
 	if gSell.pending then
 		local tP = gSell.pending
 		gSell.pending = nil
+		gSell.posting = true
 		if gSell.isCommodity then
 			C_AuctionHouse.ConfirmPostCommodity(SafeUnpack(tP))
 		else
@@ -1544,9 +1545,12 @@ function AHF:PostDraft()
 		return
 	end
 	-- Protected: called straight from the key press. Without a needed confirmation the auction is on its way;
-	-- AUCTION_HOUSE_AUCTION_CREATED or an error event reports the outcome.
+	-- AUCTION_HOUSE_AUCTION_CREATED or an error event reports the outcome. A needed confirmation is what
+	-- Blizzard's AUCTION_HOUSE_POST_WARNING popup asks for; the next Enter on this leaf gives it.
+	-- gSell.posting: Sku owns this post (see the StaticPopup_Show hook below).
 	local tDuration, tQuantity = tGetDuration(), gSell.quantity
 	local tNeeds, tArgs
+	gSell.posting, gSell.postError, gSell.inPostCall = true, nil, true
 	if gSell.isCommodity then
 		tArgs = SafePack(gSell.loc, tDuration, tQuantity, gSell.buyout)
 		tNeeds = C_AuctionHouse.PostCommodity(SafeUnpack(tArgs))
@@ -1554,9 +1558,11 @@ function AHF:PostDraft()
 		tArgs = SafePack(gSell.loc, tDuration, tQuantity, gSell.bid, gSell.buyout)
 		tNeeds = C_AuctionHouse.PostItem(SafeUnpack(tArgs))
 	end
+	gSell.inPostCall = nil
+	if gSell.postError then return end
 	if tNeeds then
 		gSell.pending = tArgs
-		tPostNote(gSell.name..": "..L["Confirmation needed. Press Enter again to confirm."])
+		tPostNote(gSell.name..": "..CONFIRM_AUCTION_POSTING_TEXT)
 	else
 		tPostNote(nil)
 	end
@@ -1970,9 +1976,18 @@ function AHF:BuildSalesChildren(aSelf)
 end
 
 local gSellEventFrame = CreateFrame("Frame")
-for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_POST_WARNING", "AUCTION_HOUSE_POST_ERROR", "AUCTION_MULTISELL_FAILURE", "AUCTION_HOUSE_CLOSED" }) do
+for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_POST_ERROR", "AUCTION_HOUSE_SHOW_ERROR", "AUCTION_MULTISELL_FAILURE", "AUCTION_HOUSE_CLOSED" }) do
 	if Sku.IsEventValid(tEvent) then gSellEventFrame:RegisterEvent(tEvent) end
 end
+-- Blizzard's AuctionHouseFrame answers AUCTION_HOUSE_POST_WARNING / _ERROR with its own popup. Its Accept confirms
+-- only a post made in Blizzard's sell frame, so for a Sku post it would do nothing: the popup is closed again
+-- (the frame registers later than this file, so the popup only exists after its StaticPopup_Show). The error
+-- handler below has already ended the post by then, gSell.postError marks it.
+hooksecurefunc("StaticPopup_Show", function(aWhich)
+	if (gSell.posting or gSell.postError) and (aWhich == "AUCTION_HOUSE_POST_WARNING" or aWhich == "AUCTION_HOUSE_POST_ERROR") then
+		StaticPopup_Hide(aWhich)
+	end
+end)
 gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	if aEvent == "OWNED_AUCTIONS_UPDATED" then
 		AHF:RefreshOwned()
@@ -1980,7 +1995,7 @@ gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 		AHF:OnAuctionCanceled()
 	elseif aEvent == "AUCTION_HOUSE_AUCTION_CREATED" then
 		local tName = gSell.name or ""
-		gSell.pending = nil
+		gSell.pending, gSell.posting = nil, nil
 		tSay(tName..": "..L["Auction posted"])
 		C_Timer.After(0.7, function()
 			local tKeep = gSell.duration
@@ -1997,12 +2012,16 @@ gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 				end
 			end
 		end)
-	elseif aEvent == "AUCTION_HOUSE_POST_WARNING" then
-		tSay(CONFIRM_AUCTION_POSTING_TEXT)
 	elseif aEvent == "AUCTION_HOUSE_POST_ERROR" then
-		gSell.pending = nil
-		tRefreshSellLabels()
-		tSay(L["Posting not possible"])
+		-- Blizzard's error popup has only OK: the post cannot be confirmed.
+		if not gSell.posting then return end
+		gSell.pending, gSell.posting, gSell.postError = nil, nil, true
+		tPostNote(gSell.name..": "..AUCTION_POSTING_ERROR_TEXT)
+		-- Inside the key press the post leaf is read again with this note.
+		if not gSell.inPostCall then tSay(gSell.postNote) end
+	elseif aEvent == "AUCTION_HOUSE_SHOW_ERROR" then
+		-- A post the server refuses is no longer pending.
+		gSell.pending, gSell.posting = nil, nil
 	elseif aEvent == "AUCTION_MULTISELL_FAILURE" then
 		tSay(L["Multi-posting failed"])
 	elseif aEvent == "AUCTION_HOUSE_CLOSED" then
