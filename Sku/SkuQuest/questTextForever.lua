@@ -72,12 +72,8 @@ function SkuQuest:GetTTSTextForever(aQuestID, aNode)
 	-- rewards
 	local tItemSections = {}
 	local tRewardLines = {}
-	-- Blizzard's quest window asks for the gold of the selected log entry WITHOUT a quest ID; with the ID
-	-- a quest with an item reward answered 0. So the quest is selected above and asked without it first.
+	-- asked like Blizzard's quest log (QuestInfo_ShowRewards): the money of the selected quest (selected above)
 	local tMoney = GetQuestLogRewardMoney()
-	if not (type(tMoney) == "number" and tMoney > 0) then
-		tMoney = GetQuestLogRewardMoney(questID)
-	end
 	if type(tMoney) == "number" and tMoney > 0 then
 		table.insert(tRewardLines, GetCoinText(tMoney, " "))
 	end
@@ -94,12 +90,8 @@ function SkuQuest:GetTTSTextForever(aQuestID, aNode)
 			end
 		end
 	end
-	-- Blizzard's own quest UI asks for the choices with a second argument; without it the count can come
-	-- back 0 although the quest has a choice.
-	local tChoiceCount = GetNumQuestLogChoices(questID)
-	if not (tChoiceCount and tChoiceCount > 0) then
-		tChoiceCount = GetNumQuestLogChoices(questID, true)
-	end
+	-- asked like Blizzard's quest log: by quest ID with the second argument true
+	local tChoiceCount = GetNumQuestLogChoices(questID, true)
 	local tChoiceLines = {}
 	for i = 1, tChoiceCount or 0 do
 		local tName, _, tCount = GetQuestLogChoiceInfo(i, questID)
