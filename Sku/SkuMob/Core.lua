@@ -461,7 +461,12 @@ function SkuMob:PLAYER_SOFT_INTERACT_CHANGED(aEvent, aGuid, aNewGuid)
 					C_Timer.After(0.1, function()
 						-- no readable health (no pool, or hidden on Forever): dead only by its flag, else alive
 						local hp = Sku.UnitHealthPercent("softinteract") or (UnitIsDead("softinteract") and 0 or 100)
-						if hp == 0 then
+						-- An enemy's name is a secret value in a Forever instance (e.g. a corpse to loot); its GUID is a
+						-- different restriction and can stay readable, so this point is reached. A secret cannot be
+						-- concatenated or queued, it goes through SpeakSecretText.
+						if Sku.IsSecret(tName) then
+							SkuOptions.Voice:SpeakSecretText(hp == 0 and (L["dead"].." %s") or "%s", tName)
+						elseif hp == 0 then
 							SkuOptions.Voice:OutputStringBTtts(L["dead"].." "..tName, true, true, 0.2, true, nil, nil, 2)
 						else
 							SkuOptions.Voice:OutputStringBTtts(tName, true, true, 0.2, true, nil, nil, 2)
@@ -537,12 +542,13 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			tIsPlayerControled = true
 			noSubText = true
 		end
-		if UnitExists("pet") and (GetUnitName("pet", false) == GetUnitName(aUnitId, false)) then
+		-- UnitIsUnit instead of comparing names: an enemy's name is a secret value in a Forever instance.
+		if UnitIsUnit("pet", aUnitId) then
 			tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)--L["dein begleiter"]
 			tIsPlayerControled = true
 			noSubText = true
 		end
-		if GetUnitName(aUnitId, false) == GetUnitName("player", false) then
+		if UnitIsUnit("player", aUnitId) then
 			tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)--L["du selbst"]
 			tIsPlayerControled = true
 			noSubText = true
@@ -632,7 +638,9 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		-- no target at all, or a stranger -- comes back as "", which used to match
 		-- the "" key in tRosterNames and flag EVERY target as in combat.
 		local name, realm = SkuMob:GetTtsAwareUnitName("targettarget")
-		if name and name ~= "" then
+		-- An enemy's name is a secret value in a Forever instance: it cannot be compared or used as a key. Skipping it
+		-- loses nothing: group members' names stay readable, so a secret name is never one of tRosterNames.
+		if name and not Sku.IsSecret(name) and name ~= "" then
 			if tRosterNames[name] then
 				status = true
 			end
@@ -711,13 +719,17 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		local tOutputString = ""
 		local tOutputStringB = ""
 
+		-- An enemy's name is a secret value in a Forever instance. It cannot go into the recorded-words path, so the
+		-- line is built with a marker in its place and spoken at the end through SkuVoice:SpeakSecretText.
+		local tNameSecret = tUnitName ~= nil and Sku.IsSecret(tUnitName)
+		local tNameOut = tNameSecret and "\1" or tUnitName
 
 		if tUnitName then
 			if hp == 0 then
 				if tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
-					tOutputString = tRaidTargetString.." "..L["dead"].." "..tUnitName
+					tOutputString = tRaidTargetString.." "..L["dead"].." "..tNameOut
 				else
-					tOutputStringB = tRaidTargetString.." "..L["dead"].." "..tUnitName
+					tOutputStringB = tRaidTargetString.." "..L["dead"].." "..tNameOut
 				end
 			else
 				if tRaidTargetString ~= "" and SkuSettings:Sub("SkuMob").vocalizeRaidTargetOnly == true then
@@ -728,9 +740,9 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 					end
 				else
 					if tIsPlayerControled == false  or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
-						tOutputString = tOutputString.." "..tRaidTargetString..tReactionText..tCombatText..tUnitName
+						tOutputString = tOutputString.." "..tRaidTargetString..tReactionText..tCombatText..tNameOut
 					else
-						tOutputStringB = tOutputStringB.." "..tRaidTargetString..tReactionText..tCombatText..tUnitName
+						tOutputStringB = tOutputStringB.." "..tRaidTargetString..tReactionText..tCombatText..tNameOut
 					end
 				end
 			end
@@ -783,7 +795,10 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 				local left = _G["GameTooltipTextLeft" .. 2]
 				if left then
 					local tLineTwoText = left:GetText()
-					if tLineTwoText then
+					-- An enemy's tooltip text is a secret value in a Forever instance: it cannot be compared or searched.
+					if tLineTwoText and Sku.IsSecret(tLineTwoText) then
+						dprint("SkuMob PTC: tooltip line two is secret, not spoken")
+					elseif tLineTwoText then
 						if tLineTwoText ~= "" then
 							if not string.find(tLineTwoText, L["level"]) then
 								--SkuOptions.Voice:OutputString(tLineTwoText, false, true, 0.3)
@@ -806,12 +821,28 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		-- "target announce was silent" report can be checked against the ring:
 		-- entry logged but nothing audible -> voice/queue layer; no entry at all ->
 		-- the event never fired (e.g. key press on the already-current target).
+		-- A line with the secret-name marker is plain text around it; the secret name only meets it inside
+		-- string.format. Either line can carry it, so both voice paths check (a raid-marker-only line has none).
+		local function tSpeakSecretLine(aLine)
+			local tFormat = string.gsub(aLine, "%%", "%%%%")
+			tFormat = string.gsub(tFormat, "\1", "%%s")
+			dprint("SkuMob PTC speak (secret name):", tFormat)
+			SkuOptions.Voice:SpeakSecretText(tFormat, tUnitName)
+		end
 		if tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
-			dprint("SkuMob PTC speak (audio):", tOutputString)
-			SkuOptions.Voice:OutputString(tOutputString, true, true, 0.3)
+			if tNameSecret and string.find(tOutputString, "\1", 1, true) then
+				tSpeakSecretLine(tOutputString)
+			else
+				dprint("SkuMob PTC speak (audio):", tOutputString)
+				SkuOptions.Voice:OutputString(tOutputString, true, true, 0.3)
+			end
 		else
-			dprint("SkuMob PTC speak (btts):", tOutputStringB)
-			SkuOptions.Voice:OutputStringBTtts(tOutputStringB, true, true, 0.3, nil, nil, nil, 1)
+			if tNameSecret and string.find(tOutputStringB, "\1", 1, true) then
+				tSpeakSecretLine(tOutputStringB)
+			else
+				dprint("SkuMob PTC speak (btts):", tOutputStringB)
+				SkuOptions.Voice:OutputStringBTtts(tOutputStringB, true, true, 0.3, nil, nil, nil, 1)
+			end
 		end
 
 	end)

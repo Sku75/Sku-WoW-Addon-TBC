@@ -957,6 +957,9 @@ end
 -- what is queued, exactly as OutputStringBTtts(text, true, true, 0.2) does. aFormat is a plain string for
 -- string.format, the arguments after it may be secret. Only the Blizzard TTS path can carry it.
 function SkuVoice:SpeakSecretText(aFormat, ...)
+	-- Sku's ";" separator becomes a space, as in OutputStringBTtts: this text skips that path's preparation, and a
+	-- screen-reader bridge voice would otherwise read the semicolons aloud.
+	aFormat = string.gsub(aFormat, ";", " ")
 	-- format twice: the cache-buster is a format string around one %s, so the secret is never concatenated
 	local tText = string.format(BttsCacheBust("%s"), string.format(aFormat, ...))
 	mSecretSlot = { text = tText, at = GetTime() }
