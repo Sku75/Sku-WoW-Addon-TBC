@@ -131,7 +131,9 @@ S.missingword = function()
 	V.GetAudiodata = function(self, w) if w == "hallo" or w == "welt" then return "a.mp3", "p/", 0.5 end end
 	at(0.5, function() V:OutputString("hallo welt", true, true, 0.5) end)
 	at(2.0, function() V:OutputString("hallo xyzname welt", true, true, 0.5) end)
-	H.run(8)
+	-- punctuation must reach Blizzard's voice as written, not as the recording keys ";doppelpunkt;" / ";punkt;"
+	at(5.0, function() V:OutputString("hallo: xyzname.", true, true, 0.5) end)
+	H.run(10)
 end
 S[name]()
 H.report(name)

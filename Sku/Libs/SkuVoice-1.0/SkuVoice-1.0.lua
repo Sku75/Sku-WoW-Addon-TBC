@@ -2338,7 +2338,10 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		aAuraSound = aOverwrite.auraSound
 		aOverwrite = aOverwrite.overwrite
 	end
-	
+	-- The line as the caller wrote it, for blizzTtsForMissingWords below: by then aString is split into recording keys
+	-- (";punkt;", ";doppelpunkt;", ";klammer;" ...) that Blizzard's voice would read out as words.
+	local tLineIn = aString
+
 	--we need to skip checks, etc. for sounds to get better performance on aura output
 	local tIsSound
 	if string.sub(aString, 1, 6) == "sound-" then
@@ -2543,7 +2546,8 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 						SkuOptions.db.realm.missingAudio[tWord] = (SkuOptions.db.realm.missingAudio[tWord] or 0) + 1
 					end
 					dprint("OutputString: no recording, speaking the line with Blizzard TTS:", tWord)
-					SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, 2, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
+					-- aIgnoreLinks true: the links of this line were collected above already
+					SkuVoice:OutputStringBTtts(tLineIn, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, 2, aSpell, aVocalizeAsIs, aInstant, aDnQ, true)
 					return
 				end
 			end
