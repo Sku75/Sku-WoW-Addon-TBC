@@ -419,6 +419,11 @@ SkuCore.interactFramesList = {
 	--"MainMenuBar",
 	"ReadyCheckFrame",
 	"RolePollPopup",
+	-- Guild invitation on Forever: its own window (StaticPopupSpecial_Show), not one of StaticPopup1-3.
+	-- Anniversary and Era never load it (GuildInviteFrame.lua is cata/mists/mainline only); they show the
+	-- "GUILD_INVITE" StaticPopup instead. Its OnHide declines the invitation, so closing the Sku menu
+	-- declines it too, exactly like Escape in Blizzard's own UI (hideOnEscape).
+	"GuildInviteFrame",
 	-- "PVEFrame", "LFGParentFrame" entfernt (Dungeon-Browser wird neu aufgebaut)
 	"ItemSocketingFrame",
 }
@@ -4732,6 +4737,9 @@ local friendlyFrameNames = {
 	["TradeSkillFrame"] = L["Trade skill"],
 	["ProfessionsFrame"] = L["Trade skill"],
 	["ReadyCheckFrame"] = L["Bereitschaft check"],
+	-- Not GUILD_INVITATION: on Forever that is the window's middle line ("lädt Euch in die Gilde ein:"),
+	-- which the frame scrape reads anyway.
+	["GuildInviteFrame"] = L["Guild invitation"],
 	[""] = "",
 }
 -- A window whose name follows its content has a function as its name (PlayerSpellsFrame on Forever: talent window and
