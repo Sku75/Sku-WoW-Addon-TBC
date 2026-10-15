@@ -1143,36 +1143,39 @@ end
 -- it back out. Every call site clears first if it needs to.
 local tBuildCategoryChildren
 tBuildCategoryChildren = function(aParentEntry, aCategoryList)
-	for i, tCat in ipairs(aCategoryList) do
-		local tCatEntry = SkuOptions:InjectMenuItems(aParentEntry, {tCat.name}, SkuGenericMenuItem)
-		tCatEntry.dynamic = true
-		tCatEntry.data = tCat
-		tMarkEntering(tCatEntry)
-		tCatEntry.BuildChildren = function(self)
-			if self.data.subCategories and #self.data.subCategories > 0 then
-				self.children = {}
-				-- Subcategories first, "Alles in X" last: going right into Waffen must
-				-- land on Einhand/Zweihand/..., not straight on a result list.
-				tBuildCategoryChildren(self, self.data.subCategories)
-				-- Every node (not just leaves) accumulates its descendants' filters
-				-- (AuctionCategoryMixin:AddFilter walks up to self.parent), so "Alles
-				-- in Waffen" is a real, meaningful browse even though Waffen itself
-				-- has subcategories.
-				if self.data.filters and #self.data.filters > 0 then
-					local tAll = SkuOptions:InjectMenuItems(self, {L["Everything in "]..self.data.name}, SkuGenericMenuItem)
-					tAll.dynamic = true
-					tMarkEntering(tAll)
-					tAll.BuildChildren = function(selfAll)
-						selfAll.children = {}
-						if tQueryOnEnter(selfAll, gBrowse, function() AHF:StartCategoryBrowse(self.data.filters, selfAll) end) then
-							tAppendBrowseResultChildren(selfAll)
+	for _, tCat in ipairs(aCategoryList) do
+		-- The WoW Token category is no item search: Blizzard opens its token frame there or hides it.
+		if not tCat:HasFlag("WOW_TOKEN_FLAG") then
+			local tCatEntry = SkuOptions:InjectMenuItems(aParentEntry, {tCat.name}, SkuGenericMenuItem)
+			tCatEntry.dynamic = true
+			tCatEntry.data = tCat
+			tMarkEntering(tCatEntry)
+			tCatEntry.BuildChildren = function(self)
+				if self.data.subCategories and #self.data.subCategories > 0 then
+					self.children = {}
+					-- Subcategories first, "Alles in X" last: going right into Waffen must
+					-- land on Einhand/Zweihand/..., not straight on a result list.
+					tBuildCategoryChildren(self, self.data.subCategories)
+					-- Every node (not just leaves) accumulates its descendants' filters
+					-- (AuctionCategoryMixin:AddFilter walks up to self.parent), so "Alles
+					-- in Waffen" is a real, meaningful browse even though Waffen itself
+					-- has subcategories.
+					if self.data.filters and #self.data.filters > 0 then
+						local tAll = SkuOptions:InjectMenuItems(self, {L["Everything in "]..self.data.name}, SkuGenericMenuItem)
+						tAll.dynamic = true
+						tMarkEntering(tAll)
+						tAll.BuildChildren = function(selfAll)
+							selfAll.children = {}
+							if tQueryOnEnter(selfAll, gBrowse, function() AHF:StartCategoryBrowse(self.data.filters, selfAll) end) then
+								tAppendBrowseResultChildren(selfAll)
+							end
 						end
 					end
-				end
-			else
-				self.children = {}
-				if tQueryOnEnter(self, gBrowse, function() AHF:StartCategoryBrowse(self.data.filters or {}, self) end) then
-					tAppendBrowseResultChildren(self)
+				else
+					self.children = {}
+					if tQueryOnEnter(self, gBrowse, function() AHF:StartCategoryBrowse(self.data.filters or {}, self) end) then
+						tAppendBrowseResultChildren(self)
+					end
 				end
 			end
 		end
