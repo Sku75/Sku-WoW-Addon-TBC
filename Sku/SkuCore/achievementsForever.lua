@@ -201,17 +201,8 @@ end
 -- LegacyTreeTraitPanel is a TalentFrameBase; the same builder as for the class talent tree builds the tree
 -- (SkuCore.BuildTalentTreeSection), operating the REAL buttons of the window. The panel has its nodes only while the tree
 -- page is visible; otherwise there is an entry that opens the page.
--- Selecting a tree makes the panel load the new tree and build its nodes over the next frames, so the menu is rebuilt
--- twice: once when the buttons have followed, once when the nodes are there.
-local function tRebuildSoon()
-	local function tRebuild()
-		if LegacySystemFrame and LegacySystemFrame:IsVisible() then
-			SkuCore:CheckFrames(nil, nil, true)
-		end
-	end
-	C_Timer.After(0.4, tRebuild)
-	C_Timer.After(1.2, tRebuild)
-end
+-- Opening the page, selecting a tree and every point spent make the panel fire "TalentFrameBase.ButtonsUpdated" once its
+-- buttons are current; the menu is rebuilt on that event (talentsForever.lua).
 
 -- A click entry. The cursor stays on it across the quiet refresh that follows (quietClick, pinned by aIdentity).
 local function tAction(aList, aLabel, aFunc, aIdentity)
@@ -253,7 +244,6 @@ local function tAddResetEntry(aList, aPanel, aTreeName, aIndex)
 						PlaySound(89)
 						if tButton.OnClick then tButton:OnClick("LeftButton") else tButton:GetScript("OnClick")(tButton, "LeftButton") end
 						tSay(string.format(L["%s reset. Confirm with Apply, or Undo."], aTreeName))
-						tRebuildSoon()
 					end,
 					function()
 						tSay(L["Canceled, not reset"])
@@ -291,7 +281,6 @@ local function tBuildTree(aList)
 		tAction(tChilds, L["Open the legacy tree page"], function()
 			EventRegistry:TriggerEvent("Legacy.SelectPage", LEGACY_TREE_PAGE)
 			tSay(L["Legacy tree opened"])
-			tRebuildSoon()
 		end, "legacyopen")
 		tAdd(aList, tHead, { type = "Button", obj = nil, textFull = "", childs = tChilds })
 		return
@@ -325,7 +314,6 @@ local function tBuildTree(aList)
 					-- the event Blizzard's own tree button triggers: the panel selects the tree and the buttons follow
 					EventRegistry:TriggerEvent("Legacy.SelectTree", i)
 					tSay(tName .. " " .. L["selected"])
-					tRebuildSoon()
 				end,
 			})
 		end

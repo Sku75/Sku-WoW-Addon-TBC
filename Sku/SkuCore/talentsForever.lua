@@ -287,6 +287,21 @@ end
 
 SkuCore.BuildTalentTreeSection = tTalentsSection
 
+-- A click only stages the change: Blizzard updates the buttons' nodeInfo in the tree's next OnUpdate and then fires
+-- "TalentFrameBase.ButtonsUpdated" (Blizzard_SharedTalentFrame.lua); loading a tree fires it too. One quiet rebuild on
+-- that event keeps the labels current, in the talent window and in the legacy tree. Run a frame later: the class talent
+-- frame updates its Apply and Undo buttons only after firing the event.
+local tRefreshPending = false
+EventRegistry:RegisterCallback("TalentFrameBase.ButtonsUpdated", function()
+	if tRefreshPending then return end
+	if not ((PlayerSpellsFrame and PlayerSpellsFrame:IsVisible()) or (LegacySystemFrame and LegacySystemFrame:IsVisible())) then return end
+	tRefreshPending = true
+	C_Timer.After(0, function()
+		tRefreshPending = false
+		SkuCore:RefreshWindowMenuQuietly()
+	end)
+end)
+
 function SkuCore:Build_PlayerSpellsFrame(aParentChilds)
 	local tFrame = PlayerSpellsFrame
 
