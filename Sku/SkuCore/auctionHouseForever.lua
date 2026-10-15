@@ -453,45 +453,46 @@ function AHF:RefreshDetailResults(aItemID)
 	-- Not sent yet: an answer now belongs to another query for the same item.
 	if gDetail.pendingSend then return end
 	if aItemID and aItemID ~= gDetail.itemKey.itemID then return end
+	-- One row per result (GetNum*SearchResults), not per piece: the *Quantity functions count
+	-- the pieces for sale, thousands for a common herb.
 	local tRows = {}
 	if gDetail.isCommodity then
-		local tQty = C_AuctionHouse.GetCommoditySearchResultsQuantity(gDetail.itemKey.itemID)
-		if tQty then
-			for i = 1, tQty do
-				local tResult = C_AuctionHouse.GetCommoditySearchResultInfo(gDetail.itemKey.itemID, i)
-				if tResult then
-					tRows[#tRows + 1] = {
-						isCommodity = true,
-						index = i,
-						itemID = gDetail.itemKey.itemID,
-						unitPrice = tResult.unitPrice,
-						quantity = tResult.quantity,
-						timeLeftSeconds = tResult.timeLeftSeconds,
-						isOwn = tResult.containsOwnerItem,
-					}
-				end
+		local tItemID = gDetail.itemKey.itemID
+		local tNum = C_AuctionHouse.GetNumCommoditySearchResults(tItemID)
+		if tNum == 0 and not C_AuctionHouse.HasFullCommoditySearchResults(tItemID) then return end
+		for i = 1, tNum do
+			local tResult = C_AuctionHouse.GetCommoditySearchResultInfo(tItemID, i)
+			if tResult then
+				tRows[#tRows + 1] = {
+					isCommodity = true,
+					index = i,
+					itemID = tItemID,
+					unitPrice = tResult.unitPrice,
+					quantity = tResult.quantity,
+					timeLeftSeconds = tResult.timeLeftSeconds,
+					isOwn = tResult.containsOwnerItem,
+				}
 			end
 		end
 	else
-		local tQty = C_AuctionHouse.GetItemSearchResultsQuantity(gDetail.itemKey)
-		if tQty then
-			for i = 1, tQty do
-				local tResult = C_AuctionHouse.GetItemSearchResultInfo(gDetail.itemKey, i)
-				if tResult then
-					tRows[#tRows + 1] = {
-						isCommodity = false,
-						auctionID = tResult.auctionID,
-						quantity = tResult.quantity,
-						buyoutAmount = tResult.buyoutAmount,
-						bidAmount = tResult.bidAmount,
-						minBid = tResult.minBid,
-						timeLeft = tResult.timeLeft,
-						timeLeftSeconds = tResult.timeLeftSeconds,
-						bidder = tResult.bidder,
-						itemLink = tResult.itemLink,
-						isOwn = tResult.containsOwnerItem,
-					}
-				end
+		local tNum = C_AuctionHouse.GetNumItemSearchResults(gDetail.itemKey)
+		if tNum == 0 and not C_AuctionHouse.HasFullItemSearchResults(gDetail.itemKey) then return end
+		for i = 1, tNum do
+			local tResult = C_AuctionHouse.GetItemSearchResultInfo(gDetail.itemKey, i)
+			if tResult then
+				tRows[#tRows + 1] = {
+					isCommodity = false,
+					auctionID = tResult.auctionID,
+					quantity = tResult.quantity,
+					buyoutAmount = tResult.buyoutAmount,
+					bidAmount = tResult.bidAmount,
+					minBid = tResult.minBid,
+					timeLeft = tResult.timeLeft,
+					timeLeftSeconds = tResult.timeLeftSeconds,
+					bidder = tResult.bidder,
+					itemLink = tResult.itemLink,
+					isOwn = tResult.containsOwnerItem,
+				}
 			end
 		end
 	end
