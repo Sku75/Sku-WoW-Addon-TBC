@@ -459,6 +459,18 @@ function AHF:StartDetail(aRow, aEntry)
 	tFailOnTimeout(gDetail, 6)
 end
 
+-- After a purchase: the open listings again, through the throttle and with the same sorts, as Blizzard's
+-- RefreshSearchResults. The answer updates the list in place (state stays "done"); the identities keep the cursor.
+function AHF:RequeryDetail(aItemID)
+	if gDetail.state ~= "done" or not gDetail.itemKey or gDetail.itemKey.itemID ~= aItemID then return end
+	if gDetail.isCommodity then
+		tSendThrottled(gDetail, C_AuctionHouse.SendSearchQuery, gDetail.itemKey, {}, false)
+	else
+		local f = AHF:GetFilter()
+		tSendThrottled(gDetail, C_AuctionHouse.SendSearchQuery, gDetail.itemKey, AHF_ITEM_SORTS, false, f.minLevel or 0, f.maxLevel or 0)
+	end
+end
+
 function AHF:RefreshDetailResults(aItemID)
 	if (gDetail.state ~= "waiting" and gDetail.state ~= "done") or not gDetail.itemKey then return end
 	-- Not sent yet: an answer now belongs to another query for the same item.
@@ -550,10 +562,9 @@ function AHF:OnItemPurchaseCompleted(aAuctionID)
 	gItemPurchase.auctionID = nil
 	tSay((gItemPurchase.name and (gItemPurchase.name..": ") or "")..L["Purchase complete"])
 	-- The bought auction leaves the detail list: fresh listings, as Blizzard's RefreshSearchResults after a purchase.
-	if gDetail.state == "idle" or not gDetail.itemKey then return end
 	for _, tRow in ipairs(gDetail.results) do
 		if tRow.auctionID == aAuctionID then
-			C_AuctionHouse.SendSearchQuery(gDetail.itemKey, {}, false)
+			AHF:RequeryDetail(gDetail.itemKey.itemID)
 			return
 		end
 	end
@@ -672,7 +683,7 @@ function AHF:EndCommodityBuy(aReason, aFromKey)
 	gCommodityBuy.notice = aReason
 	tRebuildAndFocus(tEntry, true, aFromKey)
 	gCommodityBuy.notice = nil
-	C_AuctionHouse.SendSearchQuery(C_AuctionHouse.MakeItemKey(tItemID), {}, false)
+	AHF:RequeryDetail(tItemID)
 end
 
 -- The quote. Checked like Blizzard's buy dialog: more than 5% above the preview ends the purchase. Otherwise the row
@@ -1859,7 +1870,7 @@ local function tAddBidRow(aParent, aRow)
 			local tBuy = SkuOptions:InjectMenuItems(self, {L["Kaufen"]..": "..tMoneyText(tData.buyoutAmount)}, SkuGenericMenuItem)
 			tBuy.dynamic = false
 			tBuy.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
-			tBuy.OnAction = function() AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, tData.name) end
+			tBuy.OnAction = function() AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, tData.name, tBuy) end
 		end
 		-- Raising a bid you already lead is pointless; offer it only after being outbid.
 		local tCanBid = false
