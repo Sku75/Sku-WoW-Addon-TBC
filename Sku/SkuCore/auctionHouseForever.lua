@@ -984,7 +984,7 @@ local function tBuildDetailChildren(aParentEntry)
 	for _, tRow in ipairs(gDetail.results) do
 		local tBody
 		if tRow.isCommodity then
-			tBody = tRow.quantity.." "..L["for "]..tMoneyText(tRow.unitPrice)
+			tBody = string.format(L["%s pieces at %s each"], tRow.quantity, tMoneyText(tRow.unitPrice))
 		else
 			tBody = tRow.buyoutAmount and (L["Buyout "]..tMoneyText(tRow.buyoutAmount))
 				or (L["Bid from "]..tMoneyText(tRow.minBid or tRow.bidAmount or 0))
