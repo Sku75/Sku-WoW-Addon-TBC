@@ -1685,7 +1685,9 @@ end
 -- Auctions the player has bid on. QueryBids -> BIDS_UPDATED -> GetBidInfo(i). A row says whether
 -- the player is still the highest bidder or was outbid, and offers buyout / raising the bid.
 local gBids = { name = "bids", state = "idle", rows = {}, entry = nil, generation = 0 }
-gBids.send = function() C_AuctionHouse.QueryBids({}, {}) end
+-- Like Blizzard's QueryAll(AllBids): the auctions in g_activeBidAuctionIDs (Blizzard_AuctionHouseUI's saved bid
+-- list, kept up to date on BIDS_UPDATED) are sent along, so auctions the player was outbid on come back as well.
+gBids.send = function() C_AuctionHouse.QueryBids({}, g_activeBidAuctionIDs) end
 
 function AHF:RefreshBids()
 	tReadList(gBids, C_AuctionHouse.GetNumBids(), function(i)
