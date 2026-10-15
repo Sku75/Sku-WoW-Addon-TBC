@@ -138,6 +138,7 @@ T_de() {
         zip.unsafe) printf '%s' 'Unsicherer Pfad im ZIP-Archiv erkannt.' ;;
         zip.dup) printf '%s' 'Doppelter Pfad nach ZIP-Normalisierung: %s' ;;
         curated.only) printf '%s' 'Kuratierte AddOns werden nur fuer Anniversary, Classic Era und WoW Forever verwaltet.' ;;
+        curated.obsolete.removed) printf '%s' '%s: alter Ordner %s entfernt, er wuerde mit der neuen Fassung kollidieren.' ;;
         curated.downloading) printf '%s' '%s wird von der offiziellen Quelle heruntergeladen.' ;;
         curated.dl.failed) printf '%s' '%s: Download fehlgeschlagen: %s' ;;
         curated.sha) printf '%s' '%s: SHA-256-Pruefsumme stimmt nicht. Erwartet %s, erhalten %s.' ;;
@@ -247,6 +248,7 @@ T_en() {
         zip.unsafe) printf '%s' 'Unsafe path detected in the ZIP archive.' ;;
         zip.dup) printf '%s' 'Duplicate path after ZIP normalization: %s' ;;
         curated.only) printf '%s' 'Curated AddOns are managed only for Anniversary, Classic Era and WoW Forever.' ;;
+        curated.obsolete.removed) printf '%s' '%s: removed the old folder %s, which would clash with the new version.' ;;
         curated.downloading) printf '%s' 'Downloading %s from the official source.' ;;
         curated.dl.failed) printf '%s' '%s: download failed: %s' ;;
         curated.sha) printf '%s' '%s: SHA-256 checksum does not match. Expected %s, got %s.' ;;
@@ -356,6 +358,7 @@ T_fr() {
         zip.unsafe) printf '%s' "Chemin dangereux détecté dans l'archive ZIP." ;;
         zip.dup) printf '%s' 'Chemin en double après la normalisation du ZIP : %s' ;;
         curated.only) printf '%s' "Les AddOns gérés ne le sont que pour Anniversary, Classic Era et WoW Forever." ;;
+        curated.obsolete.removed) printf '%s' "%s : ancien dossier %s supprimé, il entrerait en conflit avec la nouvelle version." ;;
         curated.downloading) printf '%s' 'Téléchargement de %s depuis la source officielle.' ;;
         curated.dl.failed) printf '%s' '%s : échec du téléchargement : %s' ;;
         curated.sha) printf '%s' '%s : la somme SHA-256 ne correspond pas. Attendu %s, obtenu %s.' ;;
@@ -975,6 +978,22 @@ EOF
     log "$(printf "$(T pkg.installed)" "$label" "$version")"
 }
 
+remove_obsolete_roots() {
+    # Exact folder names of an older package that clashes with the new one;
+    # never a symlink. Only called after the new package is in place.
+    local label="$1" roots="$2" root failed=0
+    for root in $roots; do
+        [ -d "$ADDONS_FOLDER/$root" ] || continue
+        [ ! -L "$ADDONS_FOLDER/$root" ] || continue
+        if /bin/rm -rf "$ADDONS_FOLDER/$root"; then
+            log "$(printf "$(T curated.obsolete.removed)" "$label" "$root")"
+        else
+            failed=1
+        fi
+    done
+    return "$failed"
+}
+
 github_release_asset() {
     local repo="$1" marker="$2" json="$TEMP_ROOT/github-${repo//\//-}.json" result version url digest
     local api_base="${SKU_GITHUB_API_BASE:-https://api.github.com}"
@@ -1032,20 +1051,19 @@ install_anniversary_addons() {
         install_curated_package "CurseQuestie" "Questie" "$version" "$url" "$sha" \
             "Questie QuestieDB" || failures=$((failures + 1))
     fi
-    if preference_enabled "ManageAtlasLoot" && [ "$client" = "forever" ]; then
-        # Same CurseForge project, renamed "Continued" (AtlasLootContinued*
-        # folders, _Camelot TOCs). Forever only: Sku's AtlasLoot support on
-        # Anniversary/Era is written against the AtlasLootClassic* set.
-        install_curated_package "CurseAtlasLootForever" "AtlasLootClassic" "12488" \
+    if preference_enabled "ManageAtlasLoot"; then
+        # The CurseForge project left the AtlasLootClassic line on 2026-09-17:
+        # "Continued" is one zip with TBC, Vanilla and Camelot TOCs. Older
+        # folder sets (AtlasLootClassic*, then briefly AtlasLoot*) collide with
+        # it, so they go once the new one is in place.
+        if install_curated_package "CurseAtlasLootContinued" "AtlasLoot Continued" "12488" \
             "https://edge.forgecdn.net/files/9187/862/AtlasLootClassic-Continued_12488.zip" \
             "8eaee376a19b26da4a50f4f7f7304f9f41b3eadfd0bd38c4fd98f67495fa82bd" \
-            "AtlasLootContinued AtlasLootContinued_Data AtlasLootContinued_*" || failures=$((failures + 1))
-    elif preference_enabled "ManageAtlasLoot"; then
-        # The "Anniversary" build ships Vanilla, TBC and Wrath TOCs in one zip.
-        install_curated_package "CurseAtlasLootAnniversary" "AtlasLootClassic" "2.5.6.12334" \
-            "https://edge.forgecdn.net/files/8721/161/AtlasLootClassic-Master_12334.zip" \
-            "e286fa10bfe2a5ae15d405ebe65071caab386d1eb61cf9b25bad3ab6a9e1ad0d" \
-            "AtlasLootClassic AtlasLootClassic_BiS AtlasLootClassic_Collections AtlasLootClassic_Crafting AtlasLootClassic_Data AtlasLootClassic_DungeonsAndRaids AtlasLootClassic_Factions AtlasLootClassic_Options AtlasLootClassic_PvP" || failures=$((failures + 1))
+            "AtlasLootContinued AtlasLootContinued_Data AtlasLootContinued_*"; then
+            remove_obsolete_roots "AtlasLoot Continued" "AtlasLootClassic AtlasLootClassic_BiS AtlasLootClassic_Collections AtlasLootClassic_Crafting AtlasLootClassic_Data AtlasLootClassic_DungeonsAndRaids AtlasLootClassic_Factions AtlasLootClassic_Options AtlasLootClassic_PvP AtlasLoot AtlasLoot_BiS AtlasLoot_Collections AtlasLoot_Crafting AtlasLoot_Data AtlasLoot_DungeonsAndRaids AtlasLoot_Factions AtlasLoot_Favourites AtlasLoot_Options AtlasLoot_PvP" || failures=$((failures + 1))
+        else
+            failures=$((failures + 1))
+        fi
     fi
     if preference_enabled "ManageDetails"; then
         # Multi-flavor upload: one zip carries Details_TBC.toc, Details_Classic.toc
@@ -1263,7 +1281,7 @@ EOF
         Questie|Pawn|"Deadly Boss Mods"|"BugSack + BugGrabber")
             [ -n "$source" ] || source="GitHub"
             ;;
-        AtlasLootClassic|"Details Damage Meter"|GTFO)
+        "AtlasLoot Continued"|AtlasLootClassic|"Details Damage Meter"|GTFO)
             [ -n "$source" ] || source="CurseForge"
             ;;
     esac
@@ -1290,7 +1308,9 @@ addon_inventory() {
             !BugGrabber|BugSack) roots="$(/usr/bin/find "$ADDONS_FOLDER" -mindepth 1 -maxdepth 1 -type d \( -name 'BugSack' -o -name '!BugGrabber' \) -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"; name="BugSack + BugGrabber" ;;
             DBM-*) roots="$(/usr/bin/find "$ADDONS_FOLDER" -mindepth 1 -maxdepth 1 -type d -name 'DBM-*' -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"; name="Deadly Boss Mods" ;;
             Details|Details_*) roots="$(/usr/bin/find "$ADDONS_FOLDER" -mindepth 1 -maxdepth 1 -type d -name 'Details*' -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"; name="Details Damage Meter" ;;
+            AtlasLootContinued|AtlasLootContinued_*) roots="$(/usr/bin/find "$ADDONS_FOLDER" -mindepth 1 -maxdepth 1 -type d -name 'AtlasLootContinued*' -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"; name="AtlasLoot Continued" ;;
             AtlasLootClassic|AtlasLootClassic_*) roots="$(/usr/bin/find "$ADDONS_FOLDER" -mindepth 1 -maxdepth 1 -type d -name 'AtlasLootClassic*' -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"; name="AtlasLootClassic" ;;
+            Questie|QuestieDB) roots="$(/usr/bin/find "$ADDONS_FOLDER" -mindepth 1 -maxdepth 1 -type d \( -name 'Questie' -o -name 'QuestieDB' \) -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"; name="Questie" ;;
             SkuCustomBeaconsEssential|SkuCustomBeaconsAdditional) roots="$(printf '%s\n' SkuCustomBeaconsEssential SkuCustomBeaconsAdditional)"; name="Sku Custom Beacons" ;;
             Sku) roots="$(/usr/bin/find "$ADDONS_FOLDER" -mindepth 1 -maxdepth 1 -type d \( -name 'Sku' -o -name 'SkuAudioData*' \) -print | /usr/bin/sed 's#.*/##' | /usr/bin/sort)"; name="Sku" ;;
             SkuAudioData|SkuAudioData_en|SkuAudioData_fast_de) continue ;;
@@ -1315,20 +1335,17 @@ addon_inventory() {
 }
 
 addon_update_status_json() {
-    local selected release questie pawn dbm bugsack atlas atlas_key pawn_marker pawn_key
+    local selected release questie pawn dbm bugsack pawn_marker pawn_key
     selected="${SKU_ADDONS_FOLDER_OVERRIDE:-$(read_preference "SelectedAddonsFolder")}"
     ADDONS_FOLDER="$(normalize_addons_folder "$selected" || true)"
     [ -n "$ADDONS_FOLDER" ] && [ -d "$ADDONS_FOLDER" ] || return 1
     # Per client: the same keys and versions install_anniversary_addons uses.
     case "$ADDONS_FOLDER" in
         */_classic_beta_/Interface/AddOns)
-            atlas="12488"; atlas_key="CurseAtlasLootForever"
             pawn_marker="-Forever.zip"; pawn_key="CursePawnForever" ;;
         */_classic_era_/Interface/AddOns)
-            atlas="2.5.6.12334"; atlas_key="CurseAtlasLootAnniversary"
             pawn_marker="-Classic.zip"; pawn_key="CursePawnVanilla" ;;
         *)
-            atlas="2.5.6.12334"; atlas_key="CurseAtlasLootAnniversary"
             pawn_marker="-BurningCrusade.zip"; pawn_key="CursePawnTBC" ;;
     esac
     release="$(github_release_asset "Questie/Questie" "Questie-v" || true)"
@@ -1340,7 +1357,7 @@ addon_update_status_json() {
     release="$(github_release_asset "funkydude/BugSack" "BugSack-v" || true)"
     bugsack="$(printf '%s\n' "$release" | /usr/bin/sed -n '1p')"; [ -n "$bugsack" ] || bugsack="12.1.7"
     printf '{"Questie":{"latest":"%s","installed":"%s"},' "$(json_escape "$questie")" "$(json_escape "$(manifest_tag "CurseQuestie")")"
-    printf '"AtlasLoot":{"latest":"%s","installed":"%s"},' "$(json_escape "$atlas")" "$(json_escape "$(manifest_tag "$atlas_key")")"
+    printf '"AtlasLoot":{"latest":"12488","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseAtlasLootContinued")")"
     printf '"Details":{"latest":"20261014.15330.172","installed":"%s"},' "$(json_escape "$(manifest_tag "CurseDetails")")"
     printf '"Pawn":{"latest":"%s","installed":"%s"},' "$(json_escape "$pawn")" "$(json_escape "$(manifest_tag "$pawn_key")")"
     printf '"DBM":{"latest":"%s","installed":"%s"},' "$(json_escape "$dbm")" "$(json_escape "$(manifest_tag "DBMCore")")"

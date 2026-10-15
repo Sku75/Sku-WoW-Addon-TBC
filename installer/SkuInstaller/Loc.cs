@@ -191,6 +191,7 @@ namespace SkuInstaller
             ["update.managedUpdates"]  = "{0}: updates available for additional addons: {1}.",
             ["update.managedInstalls"] = "{0}: additional addons that will be installed: {1}.",
             ["managed.badHash"]      = "{0}: the download failed its integrity check and was not installed.",
+            ["managed.obsoleteRemoved"] = "{0}: removed the old folder {1}, which would clash with the new version.",
 
             // ── progress ─────────────────────────────────────────────────────
             ["progress.heading"]          = "Installing Sku",
@@ -424,6 +425,7 @@ namespace SkuInstaller
             ["update.managedUpdates"]  = "{0}: Updates für zusätzliche AddOns verfügbar: {1}.",
             ["update.managedInstalls"] = "{0}: Zusätzliche AddOns, die neu installiert werden: {1}.",
             ["managed.badHash"]      = "{0}: Der Download hat die Integritätsprüfung nicht bestanden und wurde nicht installiert.",
+            ["managed.obsoleteRemoved"] = "{0}: alten Ordner {1} entfernt, er würde mit der neuen Fassung kollidieren.",
 
             // ── Fortschritt ──────────────────────────────────────────────────
             ["progress.heading"]          = "Sku wird installiert",
@@ -663,6 +665,7 @@ namespace SkuInstaller
             ["update.managedUpdates"]  = "{0} : mises à jour disponibles pour les addons supplémentaires : {1}.",
             ["update.managedInstalls"] = "{0} : addons supplémentaires qui seront installés : {1}.",
             ["managed.badHash"]      = "{0} : le téléchargement a échoué au contrôle d'intégrité et n'a pas été installé.",
+            ["managed.obsoleteRemoved"] = "{0} : ancien dossier {1} supprimé, il entrerait en conflit avec la nouvelle version.",
 
             // ── progression ──────────────────────────────────────────────────
             ["progress.heading"]          = "Installation de Sku",

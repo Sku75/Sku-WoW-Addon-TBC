@@ -63,28 +63,19 @@
     },
     {
       "prefKey": "ManageAtlasLoot",
-      "displayName": "AtlasLootClassic",
+      "displayName": "AtlasLoot Continued",
       "defaultEnabled": true,
       "packages": [
         {
-          "key": "CurseAtlasLootAnniversary",
+          "key": "CurseAtlasLootContinued",
           "provider": "pinned",
-          "clients": ["anniversary", "era"],
-          "fallbackVersion": "2.5.6.12334",
-          "fallbackUrl": "https://edge.forgecdn.net/files/8721/161/AtlasLootClassic-Master_12334.zip",
-          "fallbackSha256": "e286fa10bfe2a5ae15d405ebe65071caab386d1eb61cf9b25bad3ab6a9e1ad0d",
-          "requiredRoots": ["AtlasLootClassic", "AtlasLootClassic_Data"],
-          "rootPrefix": "AtlasLootClassic"
-        },
-        {
-          "key": "CurseAtlasLootForever",
-          "provider": "pinned",
-          "clients": ["forever"],
+          "clients": ["anniversary", "era", "forever"],
           "fallbackVersion": "12488",
           "fallbackUrl": "https://edge.forgecdn.net/files/9187/862/AtlasLootClassic-Continued_12488.zip",
           "fallbackSha256": "8eaee376a19b26da4a50f4f7f7304f9f41b3eadfd0bd38c4fd98f67495fa82bd",
           "requiredRoots": ["AtlasLootContinued", "AtlasLootContinued_Data"],
-          "rootPrefix": "AtlasLootContinued"
+          "rootPrefix": "AtlasLootContinued",
+          "obsoleteRoots": ["AtlasLootClassic", "AtlasLootClassic_BiS", "AtlasLootClassic_Collections", "AtlasLootClassic_Crafting", "AtlasLootClassic_Data", "AtlasLootClassic_DungeonsAndRaids", "AtlasLootClassic_Factions", "AtlasLootClassic_Options", "AtlasLootClassic_PvP", "AtlasLoot", "AtlasLoot_BiS", "AtlasLoot_Collections", "AtlasLoot_Crafting", "AtlasLoot_Data", "AtlasLoot_DungeonsAndRaids", "AtlasLoot_Factions", "AtlasLoot_Favourites", "AtlasLoot_Options", "AtlasLoot_PvP"]
         }
       ]
     },

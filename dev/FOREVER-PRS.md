@@ -603,10 +603,10 @@ in `installer/README.md`, Abschnitt "WoW Forever support"):
   den anderen Clients.
 - Login-Tool: wird mit installiert (es hat seit 4.0 einen Forever-Modus), aber
   ohne Texturen und Schriften im Forever-Ordner.
-- Alle sieben verwalteten AddOns gibt es für Forever: Questie 12 (jetzt für
-  alle Clients), AtlasLoot Continued und Pawn-Forever als eigene
-  Forever-Pakete, DBM mit den Vanilla-Raids, Details/GTFO/BugSack/BugGrabber in
-  neueren Fassungen.
+- Alle sieben verwalteten AddOns gibt es für Forever: Questie 12 und AtlasLoot
+  Continued (beide jetzt für alle Clients; alte AtlasLootClassic-Ordner werden
+  entfernt), Pawn-Forever als eigenes Paket, DBM mit den Vanilla-Raids,
+  Details/GTFO/BugSack/BugGrabber in neueren Fassungen.
 
 ## Wenn etwas unklar ist
 

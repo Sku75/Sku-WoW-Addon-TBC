@@ -30,9 +30,8 @@ assert [e["prefKey"] for e in entries] == [
     "ManageDBM", "ManageGTFO", "ManageBugSack",
 ]
 # DBM is ONE entry bundling four release packages (BC and Vanilla raids are
-# per-client); Pawn has one package per client; the BugSack pair two;
-# AtlasLoot has a separate WoW Forever package.
-assert len([p for e in entries for p in e["packages"]]) == 14
+# per-client); Pawn has one package per client; the BugSack pair two.
+assert len([p for e in entries for p in e["packages"]]) == 13
 for entry in entries:
     clients = set()
     for package in entry["packages"]:

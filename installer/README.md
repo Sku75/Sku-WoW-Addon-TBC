@@ -263,13 +263,20 @@ What differs:
     12's release (2026-09-23) on. Everything Sku calls in Questie (QuestieLoader
     modules, QuestieDB.GetQuest/IsDoableVerbose/DoableStates, QuestieEvent,
     `Questie.started`, the announce profile fields) exists unchanged in 12.
+  - `CurseAtlasLootContinued` — for every client. Not a CurseForge glitch: the
+    AtlasLoot project (1270310) itself left the AtlasLootClassic line on
+    2026-09-17 (last "Master" file 12386); every file since is
+    "AtlasLootClassic-Continued", one zip with TBC/Vanilla/Camelot TOCs. Its
+    folders were renamed twice (`AtlasLoot_*` around 09-20, `AtlasLootContinued_*`
+    now), and an older set beside the new one collides (both claim the global
+    `AtlasLoot`). `ObsoleteRoots` lists both older sets by exact name; they are
+    deleted once the new package is installed and current (never a symlink, and
+    look-alikes such as `AtlasLootClassic_TBC_Phase_*` stay). AtlasLoot's own
+    settings move from `AtlasLootClassicDB` to `AtlasLootDB`, so they start
+    fresh; Sku's wishlist is separate. Sku finds the module names at runtime
+    (`alIntegration.lua`, `addonOptions.lua`).
 
   Forever-only packages:
-  - `CurseAtlasLootForever` — the same CurseForge project renamed
-    "AtlasLootClassic-Continued" with `AtlasLootContinued*` folders. Anniversary/
-    Era keep the `AtlasLootClassic*` pin, because Sku's `alIntegration.lua`
-    names those modules, and the two sets must never sit side by side (both
-    claim the global `AtlasLoot`).
   - `CursePawnForever` — `{tag}-Forever.zip` (first in 2.13.17; the plain Pawn
     zip is retail).
   - DBM raids on Forever = `DBMRaidsVanilla`; DBM-Dungeons r266+ carries the

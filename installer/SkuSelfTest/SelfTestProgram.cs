@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace SkuInstaller
@@ -738,15 +739,15 @@ namespace SkuInstaller
                 Console.WriteLine($"    Era        : {Keys(Config.EraFlavor)}");
                 Check("Forever packages",
                       Keys(Config.ForeverFlavor) ==
-                      "CurseQuestie, CurseAtlasLootForever, CurseDetails, CursePawnForever, " +
+                      "CurseQuestie, CurseAtlasLootContinued, CurseDetails, CursePawnForever, " +
                       "DBMCore, DBMRaidsVanilla, DBMDungeons, CurseGTFO, BugSack, CurseBugGrabber");
                 Check("Anniversary packages unchanged",
                       Keys(Config.AnniversaryFlavor) ==
-                      "CurseQuestie, CurseAtlasLootAnniversary, CurseDetails, CursePawnTBC, " +
+                      "CurseQuestie, CurseAtlasLootContinued, CurseDetails, CursePawnTBC, " +
                       "DBMCore, DBMRaidsBC, DBMDungeons, CurseGTFO, BugSack, CurseBugGrabber");
                 Check("Era packages unchanged",
                       Keys(Config.EraFlavor) ==
-                      "CurseQuestie, CurseAtlasLootAnniversary, CurseDetails, CursePawnVanilla, " +
+                      "CurseQuestie, CurseAtlasLootContinued, CurseDetails, CursePawnVanilla, " +
                       "DBMCore, DBMRaidsVanilla, DBMDungeons, CurseGTFO, BugSack, CurseBugGrabber");
                 Check("every entry has a package for every client",
                       ManagedAddons.Entries.TrueForAll(en =>
@@ -793,6 +794,15 @@ namespace SkuInstaller
             string addons = Path.Combine(root, "AddOns");
             Directory.CreateDirectory(addons);
 
+            // Old AtlasLoot sets that must go, and look-alikes that must stay.
+            string[] obsolete = { "AtlasLootClassic", "AtlasLootClassic_Options", "AtlasLoot", "AtlasLoot_Favourites" };
+            string[] keep = { "AtlasLootClassic_TBC_Phase_1_Karazhan", "AtlasBIStooltips" };
+            foreach (var name in obsolete.Concat(keep))
+            {
+                Directory.CreateDirectory(Path.Combine(addons, name));
+                File.WriteAllText(Path.Combine(addons, name, name + ".toc"), "## Interface: 20506\n");
+            }
+
             var github = new GitHubClient();
             Console.WriteLine($"=== resolving live releases ({product}) ===");
             ManagedAddons.ResolveAll(github, TimeSpan.FromSeconds(30));
@@ -833,6 +843,11 @@ namespace SkuInstaller
                         }
                     Check(p.Key + " has a TOC for " + iface, any);
                 }
+
+            Console.WriteLine("=== obsolete AtlasLoot folders ===");
+            Check("old AtlasLootClassic / AtlasLoot sets removed",
+                  obsolete.All(n => !Directory.Exists(Path.Combine(addons, n))));
+            Check("look-alike folders kept", keep.All(n => Directory.Exists(Path.Combine(addons, n))));
 
             Console.WriteLine("=== second pass ===");
             var again = InstallManifest.Load(addons);

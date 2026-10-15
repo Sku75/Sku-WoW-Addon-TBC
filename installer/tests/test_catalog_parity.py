@@ -48,6 +48,9 @@ for entry in catalog["managedAnniversaryAddons"]:
             require(macos, package["assetContains"], "macOS")
         if package.get("assetTemplate"):
             require(windows_managed, package["assetTemplate"], "Windows ManagedAddons.cs")
+        for root in package.get("obsoleteRoots", []):
+            require(windows_managed, '"%s"' % root, "Windows ManagedAddons.cs")
+            require(macos, root, "macOS")
 
 # Pawn is the one entry that defaults OFF; both platforms encode that default.
 defaults_off = [e["prefKey"] for e in catalog["managedAnniversaryAddons"]

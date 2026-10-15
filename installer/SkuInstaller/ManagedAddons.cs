@@ -60,6 +60,13 @@ namespace SkuInstaller
         /// </summary>
         public string TagPrefix;
 
+        /// <summary>
+        /// Folders of an older package of the same addon that clash with this
+        /// one (both claim the same globals). Removed by exact name once this
+        /// package is installed and current; symlinks are never touched.
+        /// </summary>
+        public string[] ObsoleteRoots;
+
         /// <summary>Pinned/fallback version label, download URL, and its SHA-256.</summary>
         public string PinVersion;
         public string PinUrl;
@@ -123,34 +130,44 @@ namespace SkuInstaller
             },
             new ManagedEntry
             {
-                // The pinned "Anniversary" build ships Vanilla, TBC and Wrath TOCs
-                // in one zip, so the same pin serves Classic Era too.
-                PrefKey = "ManageAtlasLoot", DisplayName = "AtlasLootClassic",
+                // The AtlasLoot CurseForge project (1270310) left the
+                // AtlasLootClassic line on 2026-09-17: every file since is
+                // "AtlasLootClassic-Continued", one zip with TBC, Vanilla and
+                // Camelot TOCs for all three clients. Its folders were renamed on
+                // the way (AtlasLoot_* for a few days, AtlasLootContinued_* now),
+                // and any older set left beside it collides (both claim the global
+                // AtlasLoot), so both older sets are removed after the install.
+                // Sku's AtlasLoot support finds the module names at runtime.
+                PrefKey = "ManageAtlasLoot", DisplayName = "AtlasLoot Continued",
                 Packages = new[]
                 {
                     new ManagedPackage
                     {
-                        // Sku's AtlasLoot support (alIntegration.lua) is written
-                        // against these AtlasLootClassic_* module names.
-                        Key = "CurseAtlasLootAnniversary",
-                        RequiredRoots = new[] { "AtlasLootClassic", "AtlasLootClassic_Data" },
-                        RootPrefix = "AtlasLootClassic",
-                        Products = new[] { Config.AnniversaryFlavor, Config.EraFlavor },
-                        PinVersion = "2.5.6.12334",
-                        PinUrl = "https://edge.forgecdn.net/files/8721/161/AtlasLootClassic-Master_12334.zip",
-                        PinSha256 = "e286fa10bfe2a5ae15d405ebe65071caab386d1eb61cf9b25bad3ab6a9e1ad0d",
-                    },
-                    new ManagedPackage
-                    {
-                        // Same CurseForge project, renamed: since 2026-09 it ships
-                        // "AtlasLootClassic-Continued" with AtlasLootContinued*
-                        // folders and _Camelot TOCs. Forever only, so it never
-                        // lands beside the AtlasLootClassic* set (both claim the
-                        // global AtlasLoot and collide).
-                        Key = "CurseAtlasLootForever",
+                        Key = "CurseAtlasLootContinued",
                         RequiredRoots = new[] { "AtlasLootContinued", "AtlasLootContinued_Data" },
                         RootPrefix = "AtlasLootContinued",
-                        Products = new[] { Config.ForeverFlavor },
+                        ObsoleteRoots = new[]
+                        {
+                            "AtlasLootClassic",
+                            "AtlasLootClassic_BiS",
+                            "AtlasLootClassic_Collections",
+                            "AtlasLootClassic_Crafting",
+                            "AtlasLootClassic_Data",
+                            "AtlasLootClassic_DungeonsAndRaids",
+                            "AtlasLootClassic_Factions",
+                            "AtlasLootClassic_Options",
+                            "AtlasLootClassic_PvP",
+                            "AtlasLoot",
+                            "AtlasLoot_BiS",
+                            "AtlasLoot_Collections",
+                            "AtlasLoot_Crafting",
+                            "AtlasLoot_Data",
+                            "AtlasLoot_DungeonsAndRaids",
+                            "AtlasLoot_Factions",
+                            "AtlasLoot_Favourites",
+                            "AtlasLoot_Options",
+                            "AtlasLoot_PvP",
+                        },
                         PinVersion = "12488",
                         PinUrl = "https://edge.forgecdn.net/files/9187/862/AtlasLootClassic-Continued_12488.zip",
                         PinSha256 = "8eaee376a19b26da4a50f4f7f7304f9f41b3eadfd0bd38c4fd98f67495fa82bd",
@@ -412,9 +429,16 @@ namespace SkuInstaller
                     return true;
                 if (pkg.RequiredRoots.Any(r => !Directory.Exists(Path.Combine(addonsFolder, r))))
                     return true;
+                if (ObsoleteRootsPresent(addonsFolder, pkg).Any())
+                    return true;
             }
             return false;
         }
+
+        /// <summary>The package's obsolete folders that exist and are real folders (not symlinks).</summary>
+        internal static IEnumerable<string> ObsoleteRootsPresent(string addonsFolder, ManagedPackage pkg) =>
+            (pkg.ObsoleteRoots ?? new string[0]).Where(r =>
+                Directory.Exists(Path.Combine(addonsFolder, r)) && !AddonInstaller.IsSymlinked(addonsFolder, r));
 
         /// <summary>
         /// Display names for the opening screen: (updates, freshInstalls) among the
@@ -545,7 +569,7 @@ namespace SkuInstaller
             {
                 report(new InstallProgress { Addon = entry.DisplayName, Phase = "skip",
                     Percent = 100, Message = Loc.Format("ai.upToDate", entry.DisplayName, resolved.Version) });
-                return true;
+                return RemoveObsoleteRoots(addonsFolder, entry, pkg, report);
             }
 
             // Never write through a developer's symlink/junction.
@@ -659,13 +683,41 @@ namespace SkuInstaller
                     Phase = "done", Percent = 100,
                     Message = Loc.Format("ai.installed", entry.DisplayName, resolved.Version) });
                 Logger.Info($"{pkg.Key}: installed {resolved.Version}.");
-                return true;
+                return RemoveObsoleteRoots(addonsFolder, entry, pkg, report);
             }
             finally
             {
                 try { if (File.Exists(tempZip)) File.Delete(tempZip); } catch { }
                 try { if (Directory.Exists(staging)) Directory.Delete(staging, true); } catch { }
             }
+        }
+
+        /// <summary>
+        /// Deletes the package's obsolete folders (exact names, never a symlink),
+        /// only ever after the new package is in place. Returns false when one
+        /// could not be removed (e.g. locked); the next run retries.
+        /// </summary>
+        private static bool RemoveObsoleteRoots(string addonsFolder, ManagedEntry entry,
+                                                ManagedPackage pkg, Action<InstallProgress> report)
+        {
+            bool ok = true;
+            foreach (var root in ManagedAddons.ObsoleteRootsPresent(addonsFolder, pkg).ToList())
+            {
+                try
+                {
+                    Directory.Delete(Path.Combine(addonsFolder, root), true);
+                    Logger.Info($"{pkg.Key}: removed obsolete folder {root}.");
+                    report(new InstallProgress { Addon = entry.DisplayName + " (" + pkg.Key + ")",
+                        Phase = "cleanup:" + root, Percent = 100,
+                        Message = Loc.Format("managed.obsoleteRemoved", entry.DisplayName, root) });
+                }
+                catch (Exception ex)
+                {
+                    ok = false;
+                    Logger.Warning($"{pkg.Key}: could not remove obsolete folder {root}: {ex.Message}");
+                }
+            }
+            return ok;
         }
 
         private static bool VerifySha256(string file, string expected)
