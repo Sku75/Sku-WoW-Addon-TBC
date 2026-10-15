@@ -272,7 +272,7 @@ local function tCountTreeHead(aList, aPanel)
 	for _, tEntryLabel in ipairs(aList) do
 		local tIsHead = tEntryLabel:find("^Text:")
 			or (tApplyLabel and tEntryLabel:sub(1, #tApplyLabel) == tApplyLabel)
-			or tEntryLabel == UNDO
+			or tEntryLabel == L["Undo"]
 		if not tIsHead then break end
 		tCount = tCount + 1
 	end

@@ -158,7 +158,7 @@ local function tNodeEntry(aParentChilds, aConfigID, aButton, aNodeInfo)
 		end
 		-- take back
 		if aButton.CanRefundRank and aButton:CanRefundRank() and tSelectedID then
-			tAction(tNode.childs, TALENT_FRAME_REFUND, tClick(aButton, "RightButton"), nil, nil, tIdent .. ":refund")
+			tAction(tNode.childs, L["Refund"], tClick(aButton, "RightButton"), nil, nil, tIdent .. ":refund")
 		end
 		return
 	end
@@ -177,7 +177,7 @@ local function tNodeEntry(aParentChilds, aConfigID, aButton, aNodeInfo)
 	end
 	tAction(aParentChilds, tLabel, tClick(aButton, "LeftButton"), tDesc or "", tCanBuy and true or false, tIdent)
 	if aButton.CanRefundRank and aButton:CanRefundRank() then
-		tAction(aParentChilds, TALENT_FRAME_REFUND .. ": " .. tName, tClick(aButton, "RightButton"), nil, nil, tIdent .. ":refund")
+		tAction(aParentChilds, L["Refund"] .. ": " .. tName, tClick(aButton, "RightButton"), nil, nil, tIdent .. ":refund")
 	end
 end
 
@@ -222,7 +222,7 @@ local function tTalentsSection(aParentChilds, aTalentsFrame)
 	end
 	local tUndo = aTalentsFrame.UndoButton
 	if tUndo and tUndo:IsShown() and tUndo:IsEnabled() then
-		tAction(aParentChilds, UNDO, tClick(tUndo))
+		tAction(aParentChilds, L["Undo"], tClick(tUndo))
 	end
 
 	-- collect the nodes, order by row and column
