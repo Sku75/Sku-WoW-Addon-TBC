@@ -9,11 +9,36 @@ kommt. Es richtet sich an dich (gitana83) **und an deinen Claude**.
 Gib deinem Claude diesen Satz, mehr braucht er nicht:
 
 > Lies `dev/FOREVER-PRS.md` im Repository `Sku75/Sku-WoW-Addon-TBC` (Zweig
-> `main`) vollständig und arbeite strikt danach. Halte dich an die Reihenfolge
-> der PRs und an alle Regeln. Wenn eine Regel nicht passt, frag mich, statt sie
-> zu umgehen.
+> `main`) vollständig und arbeite strikt danach. Die geplante PR-Reihe ist
+> abgeschlossen; es geht mit Folge-PRs weiter (Abschnitt „Stand und wie es
+> weitergeht“), für die alle Regeln weiter gelten. Wenn eine Regel nicht passt,
+> frag mich, statt sie zu umgehen.
 
 Link: <https://github.com/Sku75/Sku-WoW-Addon-TBC/blob/main/dev/FOREVER-PRS.md>
+
+## Stand und wie es weitergeht
+
+**Stand 15.10.2026: Die geplante PR-Reihe ist vollständig auf `main`.** Alle
+17 Punkte sind gemergt (#21 bis #29, Übersicht unter „Pakete“), dazu die
+Nacharbeiten des Maintainers. Danke!
+
+Was jetzt noch kommt:
+
+- **Folge-PRs aus deinen Tests auf Forever.** Was beim Testen auffällt, kommt
+  als kleiner PR, **jeweils frisch von `main`**, ein Thema pro PR (oder mehrere
+  kleine Funde als je ein Commit). Fehler, die alle Clients betreffen, als
+  eigener Commit mit „(all clients)“ vorne (Regel 3). Wenn du einen Fund nur
+  meldest statt ihn zu bauen, gern im letzten offenen PR oder in einem Issue.
+- **Tests, die noch ausstehen**, stehen jeweils im letzten Kommentar des
+  Maintainers zu einem PR (zuletzt #28 und #29). Dort steht auch, was offen
+  ist.
+- **Der Installer** (Forever-Unterstützung) kommt vom Maintainer, siehe
+  „Installer“ unten.
+- **Das Release** mit Forever-Unterstützung ist Sku 44.0, sobald Installer und
+  Tests so weit sind. Versionsnummer, Patch-Notes und Release macht der
+  Maintainer.
+- **Größere Themen** sind eigene Projekte, nicht Teil dieser Reihe, und werden
+  vorher abgesprochen (Abschnitt „Spätere eigene Projekte“).
 
 ## Entscheidung und Rollen
 
@@ -22,7 +47,7 @@ Link: <https://github.com/Sku75/Sku-WoW-Addon-TBC/blob/main/dev/FOREVER-PRS.md>
   gesteuert über `Sku.isForever` zur Laufzeit.
 - **Maintainer ist JeanStiletto.** Er entscheidet, was gemergt wird, vergibt die
   Versionsnummern, schreibt die Patch-Notes und macht die Releases.
-- **Du lieferst Code als Pull Requests** gegen `main`, in der Reihenfolge unten.
+- **Du lieferst Code als Pull Requests** gegen `main`.
   Der Maintainer kann dir auch einzelne Aufgaben geben; die laufen genauso als PR.
 - **Ab sofort keine eigenen Releases mehr.** Keine neuen ZIP-Dateien und keine
   neuen 1.x-Versionen in `gitana83/wow-forever`. Gebraucht wird nur Code, als
@@ -272,9 +297,8 @@ hast. Diese Stellen besonders sorgfältig auflösen:
 
 ### Ablauf
 
-17. **Höchstens zwei PRs gleichzeitig offen**, in der Reihenfolge der Pakete
-    unten. Hängt ein PR von einem noch offenen ab, steht das in der ersten
-    Zeile der Beschreibung.
+17. **Höchstens zwei PRs gleichzeitig offen.** Hängt ein PR von einem noch
+    offenen ab, steht das in der ersten Zeile der Beschreibung.
 18. **Änderungswünsche aus dem Review** kommen als neue Commits in **denselben**
     Zweig (`git push`), nicht als neuer PR.
 19. **Wenn `main` sich während deiner Arbeit ändert**, setzt du deinen Zweig neu
@@ -305,12 +329,16 @@ Nicht getestet: ...
 
 ## Pakete (ab jetzt)
 
-Die Punkte 1 bis 4 kamen als einzelne PRs (#21 bis #24), die Pakete A und B
-als #25 und #26. Weil das gut funktioniert hat, kommt der **Rest jetzt in
-drei PRs**, in dieser Reihenfolge. Innerhalb eines PRs gilt weiter Regel 1:
-ein Commit oder mehrere pro Punkt, die Punktnummer vorne.
+**Alle Pakete sind erledigt.** Zum Nachschlagen, was wo gelandet ist:
 
-- **Erledigt:** Paket A (4a, 5, 15 Füttern) = #25, Paket B (6, 7, 8) = #26.
+- Punkte 1 bis 4 = #21 bis #24.
+- Paket A (4a, 5, 15 Füttern) = #25, Paket B (6, 7, 8) = #26.
+- PR „Rest“ (9, 10, 11, 13, 14, 16) = #27, das Auktionshaus (12) als eigener
+  PR = #28.
+- PR „SkuVoice“ (15 Pet-Gesundheit, 17) = #29.
+
+So war die Aufteilung der letzten drei PRs:
+
 - **PR „Rest“** = Punkte 9 bis 14 und 16 in einem PR:
   - 9, 10, 11, 12: Talente und Zauberbuch, Vermächtnis, Berufe, Auktionshaus
   - 13, 14: Questbuch und Quest-Links, Dungeonbrowser
@@ -322,12 +350,6 @@ ein Commit oder mehrere pro Punkt, die Punktnummer vorne.
   ändert die Sprachausgabe für alle Spieler und braucht den Offline-Test
   (Regel 12). Darf gleichzeitig mit dem PR „Rest“ offen sein (Regel 17).
 - **Installer**: kein PR von dir, den baut der Maintainer (siehe unten).
-
-Die PR-Beschreibung hat wie bisher einen Abschnitt pro Punkt mit dem
-Testergebnis. Getestet wird der PR als Ganzes, auf Forever und auf
-Anniversary oder Era (Regel 15). Die Punkte 13 und 14 berühren Wege, die
-Anniversary-Spieler täglich benutzen; dort steht ausdrücklich, was auf
-Anniversary geprüft wurde. Passt ein Stück in keinen Punkt: fragen.
 
 ## Punkte
 
@@ -400,6 +422,8 @@ riskant er für Anniversary/Era ist.
      `pcall`, nicht für alle.
 
 4a. **Kampfmonitor auf Forever prüfen** (Risiko mittel, hängt von 4 ab)
+    **Erledigt: PR #25.** Auf Forever ausgeblendet: die Untermenüs „Zauber“ und
+    „Tode“ (ihre Ereignisse kommen nur aus dem Kampflog).
    - `aqCombat.lua` bekommt seine Eingaben großteils aus dem Kampflog
      (Gegner im Kampf, Unterbrechungen, Tode), das auf Forever nicht ankommt.
      Für jede Ansage festhalten: geht sie auf Forever verlässlich (Test im
@@ -408,6 +432,7 @@ riskant er für Anniversary/Era ist.
      die gar nicht kämpfen, solange die Bedrohungswerte geheim sind?
 
 5. **Login und Charakter-Schlüssel** (Risiko hoch, hängt von 1 ab)
+   **Erledigt: PR #25**, ohne eigenen Code: AceDB 39 löst den Schlüssel.
    - **Zuerst prüfen**, ob das Problem mit der neuen AceDB (Minor 39) noch
      besteht. Sie bildet den Charakter-Schlüssel auf Forever aus Name und
      Nachname (`RegionalUniqueNamesEnabled()`). Nur wenn die Einstellungen
@@ -418,45 +443,45 @@ riskant er für Anniversary/Era ist.
      über den zuletzt eingeloggten Namen (sonst landen auf Konten mit mehreren
      Charakteren die Einstellungen beim falschen).
 
-6. **Taschen und Bank** (Risiko mittel, hängt von 3 ab)
+6. **Taschen und Bank** (Risiko mittel, hängt von 3 ab) **Erledigt: PR #26.**
    - Bank-Teile aus `LocalMenu.lua`, `IsBankContainerId`, Bank-Teile aus
      `SkuZOptions/Core.lua`, `equipmentSets.lua` (Tooltip-Hook nur auf
      Forever; auf Anniversary feuern sonst beide Hooks).
    - Tooltips von Taschen-Gegenständen: das sichtbare GameTooltip nur auf
      Forever ansteuern. Auf Anniversary bleibt der bisherige Weg.
 
-7. **Händler** (Risiko hoch, hängt von 3 ab)
+7. **Händler** (Risiko hoch, hängt von 3 ab) **Erledigt: PR #26.**
    - `Build_MerchantFrame` und Kaufen mit Mengenabfrage, Registrierung in
      `SkuCore/Core.lua` **nur auf Forever**. Auf Anniversary bleibt das
      bisherige Händlermenü (dort kauft Enter heute nicht sofort).
 
-8. **Lehrer und Stall** (Risiko mittel, hängt von 3 ab)
+8. **Lehrer und Stall** (Risiko mittel, hängt von 3 ab) **Erledigt: PR #26.**
    - Lehrer und Tierausbilder, Stall, Shim `GetStablePetInfo`.
    - Anzahl der Stallplätze weiter aus `NUM_PET_STABLE_SLOTS`, nicht fest 2.
    - „lernbar“/„nicht lernbar“ über `L[]`.
 
-9. **Talente und Zauberbuch** (Risiko mittel, hängt von 3 ab)
+9. **Talente und Zauberbuch** (Risiko mittel, hängt von 3 ab) **Erledigt: PR #27.**
    - `PlayerSpellsFrame`, neue Talentoberfläche, `BuildTalentTreeSection`.
    - Zauberbuch-Tooltip über `SetSpellByID` nur auf Forever (die
      Rang-Anzeige auf TBC bleibt).
    - Tooltips der Pet-Leiste: auf Anniversary bleibt der alte Weg über
      `SetPetAction`. Sonst sind sie dort stumm.
 
-10. **Vermächtnis/Erfolge** (Risiko niedrig, hängt von 9 ab)
+10. **Vermächtnis/Erfolge** (Risiko niedrig, hängt von 9 ab) **Erledigt: PR #27.**
     - `achievementsForever.lua`. Slash-Befehle englisch und mit `sku`-Präfix
       (z.B. `/skulegacy`) statt `/erfolge`, `/vermaechtnis`.
 
-11. **Berufe** (Risiko niedrig, hängt von 3 ab)
+11. **Berufe** (Risiko niedrig, hängt von 3 ab) **Erledigt: PR #27.**
     - `professionsForever.lua`, die Aufrufe in `SkuCore/Core.lua` mit
       Existenzprüfung, `L["Professions"]`. Doppelte Deklaration von
       `recipeListSig` raus.
 
-12. **Auktionshaus** (Risiko niedrig, hängt von 3 ab)
+12. **Auktionshaus** (Risiko niedrig, hängt von 3 ab) **Erledigt: PR #28.**
     - `auctionHouseForever.lua`. Die `ahfDiag`-Ausgaben raus, der veraltete
       Dateikopf aktualisiert, der Ereignis-Handler meldet Fehler statt sie in
       einem `pcall` nur zu protokollieren.
 
-13. **Questbuch und Quest-Links** (Risiko hoch, hängt von 1 ab)
+13. **Questbuch und Quest-Links** (Risiko hoch, hängt von 1 ab) **Erledigt: PR #27.**
     - `SkuNav:WorldFromMap` mit den Karten-Umrechnungen (`SkuNav/Core.lua`),
       dann `SkuQuest/Core.lua`, `SkuQuest/Options.lua`, Quest-Links in
       `SkuChat`; `Proximity.lua`, `QuestTarget.lua`, `SkuNav/Options.lua`,
@@ -466,28 +491,24 @@ riskant er für Anniversary/Era ist.
       Abschnitt „Ziele“).
     - BOM in `SkuQuest/Core.lua` wiederherstellen, Diagnose-Ausgaben raus.
 
-14. **Dungeonbrowser** (Risiko hoch, hängt von 1 ab)
+14. **Dungeonbrowser** (Risiko hoch, hängt von 1 ab) **Erledigt: PR #27.**
     - Die Neufassung nur auf Forever, oder auf Anniversary (20506) mit allen
       bisherigen Funktionen getestet. Das Kommentarfeld der Anmeldung bleibt.
       Der Stufenfilter darf nicht an einer CVar hängen, die es nicht überall
       gibt. Texte über `L[]`, mit Französisch.
 
-15. **Begleiter (Pet)** (Risiko niedrig, hängt von 4 ab) **Füttern erledigt:
-    PR #25.**
+15. **Begleiter (Pet)** (Risiko niedrig, hängt von 4 ab) **Erledigt: Füttern
+    PR #25, Pet-Gesundheit PR #29.**
     - Taste `SKU_KEY_FEEDPET` nur auf Forever anlegen (auf Anniversary wäre es
       eine tote Taste).
-    - **Pet-Gesundheit: noch offen, neu zu bauen.** Nicht über einen
-      Zielwechsel (die Version aus #25 ist zurückgenommen, siehe Commit
-      b2b2166), sondern direkt gesprochen: `UnitHealthPercent("pet")` liefert
-      den Wert (auf Forever geheim), `C_VoiceChat.SpeakText` nimmt geheimen
-      Text von Addons an. Dafür kommt der Eingang für geheimen Text in
-      `SkuVoice-1.0` (Regel 2b, Regel 12). Vorher auf Forever ausprobieren,
-      ob und wie die geheime Zahl gesprochen wird. Kommt mit dem PR
-      „SkuVoice“ (siehe „Pakete“).
+    - **Pet-Gesundheit** (PR #29): Taste `SKU_KEY_PETHEALTH` auf **allen**
+      Clients (`SkuCore/petHealth.lua`), aufgerundet wie Blizzards
+      Audiounterstützung. Wo der Wert lesbar ist, rechnet Sku selbst; auf
+      Forever läuft der geheime Wert über `SkuVoice:SpeakSecretText`.
     - **Keine Stumm-Option** für Blizzards Ziel-Gesundheits-Ansage: Sku
       stellt Blizzards Einstellungen vorerst nicht selbst um.
 
-16. **Kleinkram Forever** (je nach Teil; ein Commit pro Teil)
+16. **Kleinkram Forever** (je nach Teil; ein Commit pro Teil) **Erledigt: PR #27.**
     - `actionPageForever.lua`: die Schleife beheben (`UPDATE_BINDINGS` löst
       eine Neubelegung aus, die wieder `UPDATE_BINDINGS` auslöst).
     - `buffAnnounce.lua`: Menüeintrag nur auf Forever; Totem-Namen nicht fest
@@ -510,7 +531,7 @@ riskant er für Anniversary/Era ist.
       Anniversary.
 
 17. **SkuVoice: Zeile über Blizzard-TTS, wenn ein Wort keine Aufnahme hat**
-    (Risiko hoch, im PR „SkuVoice“)
+    (Risiko hoch, im PR „SkuVoice“) **Erledigt: PR #29.**
     - Ändert die Sprachausgabe für **alle** Spieler und kostet bis zu vier
       Nachschläge pro Wort. Nur als Einstellung, die standardmäßig **aus** ist,
       mit Ergebnis des Offline-Tests (Regel 12).
@@ -539,6 +560,19 @@ riskant er für Anniversary/Era ist.
 
 ## Spätere eigene Projekte (nicht Teil dieser Reihe)
 
+Jedes davon wird erst geplant und mit dem Maintainer abgesprochen, bevor
+jemand baut.
+
+- **Kampf-Bedienung auf Forever:** Skus sichere Kampfmenüs (Taschen, Handel,
+  Charakter im Kampf) hängen an geschützten Aufrufen und geheimen Werten. Dort
+  bricht vermutlich noch einiges; das ist ein eigenes Thema, nicht nebenbei.
+  Funde gern notieren, aber nicht gezielt danach suchen.
+- **Kampfmonitor-Lücken auf Forever:** Der Gesundheitsmonitor ist dort aus,
+  „Zauber“ und „Tode“ sind ausgeblendet (Kampflog gesperrt). Ein Ersatz
+  bräuchte andere Quellen.
+- **Aktionsleisten-Taint** in `MainActionBar:SetPointBase` (aus #27): Sku-Taint
+  beim Seitenwechsel, Ursache noch offen.
+- **Discord-Anmeldung** in den Spieleinstellungen: macht der Maintainer.
 - **Auren auf Forever:** eine neue Auren-Funktion auf `C_UnitAuras`, die nur
   benutzt, was nicht geheim ist, und Zugänglichkeit für Blizzards eigenen
   Cooldown-Manager (`Blizzard_CooldownViewer`, gibt es auf Forever). Erst
