@@ -152,6 +152,12 @@ local function tParseMoney(aText)
 	return tTotal
 end
 
+-- A whole number of pieces, at least 1; nil = not understood.
+local function tParseQuantity(aText)
+	local tN = tonumber(aText:match("^%s*(%d+)%s*$"))
+	if tN and tN >= 1 then return tN end
+end
+
 -- Asks for a value in the edit box, reads it with aParse and hands the result to aApply, then reads the menu
 -- position again. aParse returns nil for input it does not understand: then only aFailText is said. Only the
 -- answer is read here - anything protected (bids, buying, posting) happens afterwards in a separate menu action
@@ -1057,19 +1063,10 @@ local function tBuildDetailChildren(aParentEntry)
 				local tBuyEntry
 				-- The first leaf carries the reason a purchase just ended (AHF:EndCommodityBuy).
 				tSettingLeaf(self, (gCommodityBuy.notice and (gCommodityBuy.notice..";") or "")..tQtyName(), function(aLeaf)
-					SkuOptions:EditBoxShow("", function()
-						local tN = tonumber((SkuOptionsEditBoxEditBox:GetText() or ""):match("%d+"))
-						if tN and tN >= 1 then
-							tData.buyQty = math.min(math.floor(tN), tMaxQty)
-							aLeaf.name = tQtyName()
-							if tBuyEntry then tBuyEntry.name = tBuyName() end
-						else
-							aLeaf.name = tQtyName()..";"..L["Quantity not understood"]
-						end
-						tVocalize()
-					end, nil)
-					C_Timer.After(0.1, function()
-						SkuOptions.Voice:OutputStringBTtts(L["Enter quantity, at most "]..tMaxQty, true, true, 0.1, nil, nil, nil, 1)
+					tAskValue(L["Enter quantity, at most "]..tMaxQty, tParseQuantity, L["Quantity not understood"], function(aN)
+						tData.buyQty = math.min(aN, tMaxQty)
+						aLeaf.name = tQtyName()
+						tBuyEntry.name = tBuyName()
 					end)
 				end)
 				tBuyEntry = tSettingLeaf(self, tBuyName(), function(aLeaf)
@@ -1456,11 +1453,6 @@ local function tAskSell(aPrompt, aParse, aFailText, aApply)
 		aApply(aValue)
 		tDraftChanged()
 	end)
-end
-
-local function tParseQuantity(aText)
-	local tN = tonumber(aText:match("^%s*(%d+)%s*$"))
-	if tN and tN >= 1 then return tN end
 end
 
 -- "0" clears the starting bid.
