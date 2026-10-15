@@ -716,14 +716,12 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function tOnLFGEvent(event)
    if event == "LFG_LIST_ACTIVE_ENTRY_UPDATE" then
-      if SkuOptions and SkuOptions:IsMenuOpen() then pcall(function() DungeonBrowser:Rebuild() end) end
+      DungeonBrowser:Rebuild()
       return
    end
-   -- results / activity list updated: refresh the current node in place if open
-   if SkuOptions and SkuOptions:IsMenuOpen() and SkuOptions.currentMenuPosition
-      and SkuOptions.currentMenuPosition.OnUpdate then
-      pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
-   end
+   -- results / activity list updated: refresh the current node in place, but only inside the browser
+   local cmp = SkuOptions.currentMenuPosition
+   if SkuOptions:IsMenuOpen() and Shared.CursorInBrowser() and cmp and cmp.OnUpdate then cmp:OnUpdate() end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -736,8 +734,6 @@ Shared.client = {
    BuildBrowseTab = tBuildBrowseTab,
    frames = { "LFGParentFrame", "PVEFrame", "GroupFinderFrame" },
    toggles = { "ToggleLFDParentFrame", "TogglePVEFrame" },
-   -- LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED is in no API documentation; the core registers through
-   -- Sku.IsEventValid, which skips an unknown name.
-   events = { "LFG_LIST_SEARCH_RESULTS_RECEIVED", "LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED", "LFG_LIST_ACTIVE_ENTRY_UPDATE" },
+   events = { "LFG_LIST_SEARCH_RESULTS_RECEIVED", "LFG_LIST_AVAILABILITY_UPDATE", "LFG_LIST_ACTIVE_ENTRY_UPDATE" },
    OnLFGEvent = tOnLFGEvent,
 }
