@@ -1386,6 +1386,9 @@ local function tMarketLabel()
 		end
 		return L["No offers on the market, you set the price. Enter asks again"]
 	end
+	if gSell.marketState == "failed" then
+		return L["Could not get the market price. Enter asks again"]
+	end
 	return L["Look up the market price"]
 end
 
@@ -1418,25 +1421,38 @@ function AHF:StartMarketQuery()
 	gSell.marketState = "waiting"
 	gSell.marketLowest = nil
 	gSell.marketKey = tKey
+	gSell.marketEquipment = tEquipment
+	AHF:SendMarketQuery()
+	-- No answer is not "no offers": the lookup is reported as failed.
+	local tDraft = gSell
+	C_Timer.After(6, function()
+		if gSell == tDraft and gSell.marketState == "waiting" then
+			gSell.marketState, gSell.marketQueued = "failed", nil
+			tRefreshSellLabels()
+			tSay(tMarketLabel())
+		end
+	end)
+end
+
+-- A query sent while the throttled message system is not ready is dropped without an answer, so it waits for
+-- AUCTION_HOUSE_THROTTLED_SYSTEM_READY (sell event frame below).
+function AHF:SendMarketQuery()
+	if not C_AuctionHouse.IsThrottledMessageSystemReady() then
+		gSell.marketQueued = true
+		return
+	end
+	gSell.marketQueued = nil
 	local tSorts
 	if gSell.isCommodity then
 		tSorts = { { sortOrder = Enum.AuctionHouseSortOrder.Price, reverseSort = false } }
 	else
 		tSorts = { { sortOrder = Enum.AuctionHouseSortOrder.Buyout, reverseSort = false }, { sortOrder = Enum.AuctionHouseSortOrder.Bid, reverseSort = false } }
 	end
-	if tEquipment then
-		C_AuctionHouse.SendSellSearchQuery(tKey, tSorts, false)
+	if gSell.marketEquipment then
+		C_AuctionHouse.SendSellSearchQuery(gSell.marketKey, tSorts, false)
 	else
-		C_AuctionHouse.SendSearchQuery(tKey, tSorts, false)
+		C_AuctionHouse.SendSearchQuery(gSell.marketKey, tSorts, false)
 	end
-	local tDraft = gSell
-	C_Timer.After(6, function()
-		if gSell == tDraft and gSell.marketState == "waiting" then
-			gSell.marketState = "done"
-			tRefreshSellLabels()
-			tSay(tMarketLabel())
-		end
-	end)
 end
 
 -- Called from the search result events (see the event frame above).
@@ -2002,7 +2018,7 @@ function AHF:BuildSalesChildren(aSelf)
 end
 
 local gSellEventFrame = CreateFrame("Frame")
-for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_POST_ERROR", "AUCTION_HOUSE_SHOW_ERROR", "AUCTION_MULTISELL_FAILURE", "AUCTION_HOUSE_CLOSED" }) do
+for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_POST_ERROR", "AUCTION_HOUSE_SHOW_ERROR", "AUCTION_HOUSE_THROTTLED_SYSTEM_READY", "AUCTION_MULTISELL_FAILURE", "AUCTION_HOUSE_CLOSED" }) do
 	if Sku.IsEventValid(tEvent) then gSellEventFrame:RegisterEvent(tEvent) end
 end
 -- Blizzard's AuctionHouseFrame answers AUCTION_HOUSE_POST_WARNING / _ERROR with its own popup. Its Accept confirms
@@ -2048,6 +2064,8 @@ gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	elseif aEvent == "AUCTION_HOUSE_SHOW_ERROR" then
 		-- A post the server refuses is no longer pending.
 		gSell.pending, gSell.posting = nil, nil
+	elseif aEvent == "AUCTION_HOUSE_THROTTLED_SYSTEM_READY" then
+		if gSell.marketQueued and gSell.marketState == "waiting" then AHF:SendMarketQuery() end
 	elseif aEvent == "AUCTION_MULTISELL_FAILURE" then
 		tSay(L["Multi-posting failed"])
 	elseif aEvent == "AUCTION_HOUSE_CLOSED" then
