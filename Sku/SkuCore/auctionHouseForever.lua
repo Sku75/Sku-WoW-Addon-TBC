@@ -214,14 +214,20 @@ end
 
 -- For a node that shows the answer of a query in aState (gBrowse or gDetail): entering it runs
 -- aStart unless the node's own query is current; a failed query runs again. Returns true when
--- the node has something to show, false when it was only landed on.
+-- the node has something to show. When it was only landed on, the node gets one placeholder
+-- child and false comes back: the menu announces "plus" only for a node with children, and
+-- entering rebuilds the children through OnPostSelect, which replaces the placeholder.
 local function tQueryOnEnter(aNode, aState, aStart)
 	local tMine = aState.entry == aNode and aState.state ~= "idle"
 	if aNode.ahfEntering and (not tMine or aState.state == "failed") then
 		aStart()
 		return true
 	end
-	return tMine
+	if tMine then return true end
+	aNode.children = {}
+	local tPlaceholder = SkuOptions:InjectMenuItems(aNode, {L["Warten"]}, SkuGenericMenuItem)
+	tPlaceholder.dynamic = false
+	return false
 end
 
 -- ---------------------------------------------------------------------
@@ -1077,11 +1083,9 @@ local function tInjectItemRow(aParentEntry, aRow)
 	tSetAhTooltip(tRowEntry, aRow.itemKey, nil)
 	tMarkEntering(tRowEntry)
 	tRowEntry.BuildChildren = function(selfRow)
-		if not tQueryOnEnter(selfRow, gDetail, function() AHF:StartDetail(selfRow.data, selfRow) end) then
-			selfRow.children = {}
-			return
+		if tQueryOnEnter(selfRow, gDetail, function() AHF:StartDetail(selfRow.data, selfRow) end) then
+			tBuildDetailChildren(selfRow)
 		end
-		tBuildDetailChildren(selfRow)
 	end
 	return tRowEntry
 end
