@@ -841,7 +841,7 @@ end
 
 local function tBrowseRowLabel(aRow)
 	local tPriceText = tMoneyText(aRow.minPrice)
-	if aRow.totalQuantity and aRow.totalQuantity > 1 then
+	if aRow.totalQuantity > 1 then
 		return aRow.name.." - "..L["from "]..tPriceText..", "
 			..aRow.totalQuantity.." "..L["for sale"]
 	end
@@ -925,10 +925,8 @@ local function tAddBidLeaves(aParent, aData, aName)
 	tSettingLeaf(aParent, L["Set your own bid"], function()
 		tAskMoney(L["Enter bid, for example 12g 5s 3k"], function(aAmount)
 			aData.customBid = aAmount
-			if tCustomPlace then
-				tCustomPlace.name = L["Place your bid: "]..tMoneyText(aAmount)
-				tCustomPlace.ahfBaseName = nil
-			end
+			tCustomPlace.name = L["Place your bid: "]..tMoneyText(aAmount)
+			tCustomPlace.ahfBaseName = nil
 		end)
 	end)
 	tCustomPlace = tSettingLeaf(aParent, aData.customBid
@@ -1029,7 +1027,7 @@ local function tBuildDetailChildren(aParentEntry)
 		else
 			tBody = tRow.buyoutAmount and (L["Buyout "]..tMoneyText(tRow.buyoutAmount))
 				or (L["Bid from "]..tMoneyText(tRow.minBid or tRow.bidAmount or 0))
-			if tRow.quantity and tRow.quantity > 1 then tBody = tRow.quantity.."x "..tBody end
+			if tRow.quantity > 1 then tBody = tRow.quantity.."x "..tBody end
 			if tIsOwnGuid(tRow.bidder) then
 				tBody = tBody..", "..L["your bid is highest"]
 			end
@@ -1063,7 +1061,7 @@ local function tBuildDetailChildren(aParentEntry)
 				-- at most what other players offer in total (own pieces are never bought). Default: the quantity of this listing.
 				local tData = self.data
 				local tMaxQty = math.max(1, (select(5, tCommodityPreview(tData.itemID, 1))))
-				tData.buyQty = math.max(1, math.min(tData.buyQty or tData.quantity or 1, tMaxQty))
+				tData.buyQty = math.min(tData.buyQty or tData.quantity, tMaxQty)
 				local function tQtyName() return L["Quantity: "]..tData.buyQty..L[" of at most "]..tMaxQty end
 				local function tBuyName() return L["Kaufen"]..": "..tData.buyQty.." "..L["STRAT_Pieces"] end
 				local tBuyEntry
@@ -1267,8 +1265,7 @@ local function tMoneyOrNone(aAmount)
 end
 
 local function tQuantityLabel()
-	return L["Quantity: "]..(gSell.quantity or 1)
-		.." ("..L["at most "]..(gSell.maxQuantity or 1)..")"
+	return L["Quantity: "]..gSell.quantity.." ("..L["at most "]..gSell.maxQuantity..")"
 end
 local function tDurationLabel()
 	return L["Duration: "]..tDurationText(tGetDuration())
@@ -1280,7 +1277,7 @@ local function tPriceLabel()
 	return L["Buyout price: "]..tMoneyOrNone(gSell.buyout)
 end
 local function tTotalLabel()
-	local tTotal = gSell.buyout and gSell.buyout > 0 and (gSell.buyout * (gSell.quantity or 1)) or nil
+	local tTotal = gSell.buyout and gSell.buyout > 0 and (gSell.buyout * gSell.quantity) or nil
 	return L["Total price for the quantity: "]..tMoneyOrNone(tTotal)
 end
 local function tBidLabel()
@@ -1291,7 +1288,7 @@ local function tDepositLabel()
 	local tDeposit = tDepositAmount()
 	if not C_AuctionHouse.SupportsCopperValues() then tDeposit = math.ceil(tDeposit / COPPER_PER_SILVER) * COPPER_PER_SILVER end
 	local tText = L["Deposit: "]..tMoneyText(tDeposit)
-	if gSell.buyout and gSell.buyout > 0 and (gSell.quantity or 1) > 1 then
+	if gSell.buyout and gSell.buyout > 0 and gSell.quantity > 1 then
 		tText = tText..", "..L["total price "]..tMoneyText(gSell.buyout * gSell.quantity)
 	end
 	return tText
@@ -1534,7 +1531,7 @@ local function tBuildSellItemChildren(aParent)
 	aParent.children = {}
 	local tLeaves = {}
 	gSell.leaves = tLeaves
-	if (gSell.maxQuantity or 1) > 1 then
+	if gSell.maxQuantity > 1 then
 		tLeaves.quantity = tSettingLeaf(aParent, tQuantityLabel(), function()
 			tAskSell(L["Enter amount"], tParseQuantity, L["Quantity not understood"], function(aN)
 				gSell.quantity = math.min(aN, gSell.maxQuantity or 1)
@@ -1560,7 +1557,7 @@ local function tBuildSellItemChildren(aParent)
 		AHF:StartMarketQuery()
 		tRefreshSellLabels()
 	end)
-	if (gSell.maxQuantity or 1) > 1 then
+	if gSell.maxQuantity > 1 then
 		tLeaves.total = tSettingLeaf(aParent, tTotalLabel(), function()
 			tAskSell(L["Enter the total price for the chosen quantity, for example 5g"], tParseMoney, L["Price not understood"], function(aTotal)
 				local tPer = math.max(1, math.floor(aTotal / (gSell.quantity or 1) + 0.5))
@@ -1943,7 +1940,7 @@ function AHF:BuildSearchEntries(aSelf)
 	tSearchEntry.OnAction = function()
 		SkuOptions:EditBoxShow("", function()
 			local tText = SkuOptionsEditBoxEditBox:GetText()
-			if not tText or tText == "" then return end
+			if tText == "" then return end
 			AHF:StartBrowse(tText, tSearchEntry)
 			tRebuildAndFocus(tSearchEntry, true)
 		end, nil)
@@ -1958,23 +1955,15 @@ function AHF:BuildSearchEntries(aSelf)
 		tAppendBrowseResultChildren(self)
 	end
 
-	-- Category browse ("Auktionen nach Kategorie") - reuses Blizzard's OWN
-	-- AuctionCategories tree (built by Blizzard_AuctionData.lua when the AH
-	-- addon loads: Waffen/Ruestung/Handelswaren/... with real, localized
-	-- names and classID/subClassID/inventoryType filters per node), rather
-	-- than maintaining a separate category list. Every node (not just leaves)
-	-- carries its own accumulated .filters, so browsing works at any depth
-	-- ("all weapons" as well as "one-handed swords only").
+	-- Category browse: Blizzard's own AuctionCategories tree, with localized names and classID/subClassID/inventoryType
+	-- filters per node. Blizzard_AuctionData.lua fills it when Blizzard_AuctionHouseUI loads, and this menu exists only
+	-- while AuctionHouseFrame is shown, so the tree is always complete here. Every node (not just leaves) carries its
+	-- own accumulated .filters, so browsing works at any depth ("all weapons" as well as "one-handed swords only").
 	local tCategoryEntry = SkuOptions:InjectMenuItems(aSelf, {L["Auctions by category"]}, SkuGenericMenuItem)
 	tCategoryEntry.dynamic = true
 	tCategoryEntry.BuildChildren = function(self)
 		self.children = {}
-		if type(AuctionCategories) == "table" and #AuctionCategories > 0 then
-			tBuildCategoryChildren(self, AuctionCategories)
-		else
-			local tNone = SkuOptions:InjectMenuItems(self, {L["AH_CategoriesLoading"]}, SkuGenericMenuItem)
-			tNone.dynamic = false
-		end
+		tBuildCategoryChildren(self, AuctionCategories)
 	end
 
 	-- Filters (Blizzard: the filter menu next to the search bar): apply to name search and categories, saved settings.
@@ -2011,7 +2000,7 @@ function AHF:BuildSearchEntries(aSelf)
 			local function tName() return aLabel..": "..(tF[aKey] or L["Any"]) end
 			tSettingLeaf(self, tName(), function(aLeaf)
 				SkuOptions:EditBoxShow("", function()
-					local tText = SkuOptionsEditBoxEditBox:GetText() or ""
+					local tText = SkuOptionsEditBoxEditBox:GetText()
 					local tN = tonumber(tText:match("%d+"))
 					if tN and tN >= 1 then
 						tF[aKey] = math.floor(tN)
