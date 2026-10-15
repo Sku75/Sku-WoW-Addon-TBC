@@ -526,7 +526,7 @@ local function tBuildTargetMenu(aParent)
 				tEntry.sorting = true
 				tEntry.textFull = L["MOB_PetRenameTip"]
 				-- the macro runs in the global environment, where Forever has only C_PetInfo.PetRename
-				tEntry.macrotext = (Sku.isForever and '/run C_PetInfo.PetRename("' or '/run PetRename("') .. tSafeName .. '")'
+				tEntry.macrotext = (_G.PetRename and '/run PetRename("' or '/run C_PetInfo.PetRename("') .. tSafeName .. '")'
 				tEntry.secureMacro = true
 				tEntry.OnAction = function()
 					tSay(L["MOB_PetRenamed"] .. tSafeName)
