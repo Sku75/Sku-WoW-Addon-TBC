@@ -3009,28 +3009,29 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		local tParentStatsValues = tParentStats[tFriendlyName].childs
 
 		if Sku.isForever then
+			-- Forever has no NUM_RESISTANCE_TYPES and no MagicResFrame widgets
 			SkuCore:BuildForeverResistances(tParentStats[tFriendlyName], tReadStatFrameTooltip)
-		end
-		-- Forever has no NUM_RESISTANCE_TYPES (the resistances are built above)
-		for x = 1, (NUM_RESISTANCE_TYPES or 0) do
-			local text = getglobal("MagicResText"..x);
-			local frame = getglobal("MagicResFrame"..x);
-			frame.type = "stat"
-			local tName, tFullText = GetButtonTooltipLines(frame)
+		else
+			for x = 1, NUM_RESISTANCE_TYPES do
+				local text = getglobal("MagicResText"..x);
+				local frame = getglobal("MagicResFrame"..x);
+				frame.type = "stat"
+				local tName, tFullText = GetButtonTooltipLines(frame)
 
-			local tFrameName = ""
-			local tFriendlyName = SkuUtil:Unescape(tName)
-			table.insert(tParentStatsValues, tFriendlyName)
-			tParentStatsValues[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = SkuUtil:Unescape(tFullText),
-				childs = {},
-				--click = true,
-			}
+				local tFrameName = ""
+				local tFriendlyName = SkuUtil:Unescape(tName)
+				table.insert(tParentStatsValues, tFriendlyName)
+				tParentStatsValues[tFriendlyName] = {
+					frameName = tFrameName,
+					RoC = "Child",
+					type = "Button",
+					obj = _G[tFrameName],
+					textFirstLine = tFriendlyName,
+					textFull = SkuUtil:Unescape(tFullText),
+					childs = {},
+					--click = true,
+				}
+			end
 		end
 	end
 
