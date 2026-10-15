@@ -940,12 +940,11 @@ local function BuildCategoryList(aSelf)
       return
    end
 
-   local tAddOnCategories, tAddOnText = {}, nil
+   local tAddOnCategories = {}
    local tAny = false
    for _, tGroup in ipairs(tGroups) do
       local tCats = CategoriesWithContent(tGroup.categories or {})
       if tGroup.categorySet == Settings.CategorySet.AddOns then
-         tAddOnText = tAddOnText or tGroup.groupText
          for _, cat in ipairs(tCats) do tAddOnCategories[#tAddOnCategories + 1] = cat end
       elseif #tCats > 0 then
          tAny = true
@@ -955,7 +954,8 @@ local function BuildCategoryList(aSelf)
    if #tAddOnCategories > 0 then
       tAny = true
       table.sort(tAddOnCategories, function(a, b) return tostring(CategoryName(a)) < tostring(CategoryName(b)) end)
-      InjectGroup(aSelf, tAddOnText or ADDONS, tAddOnCategories)
+      -- the addon group's groupText is Blizzard's untranslated key "AddOns" (Blizzard_CategoryList.lua)
+      InjectGroup(aSelf, ADDONS, tAddOnCategories)
    end
    if not tAny then Inject(aSelf, _L.empty) end
 end
