@@ -68,7 +68,7 @@ local function tBuildAchievement(aList, aCat, aIndex)
 	local tPoints = tonumber((C_Traits.GetTraitCurrencyForAchievement(Constants.LegacyConsts.LEGACY_POINTS_TRAIT_CURRENCY_ID, tId)))
 
 	local tNumCrit = GetAchievementNumCriteria(tId) or 0
-	local tLabel = tName .. ", " .. (tCompleted and L["earned"] or L["open"])
+	local tState = tCompleted and L["earned"] or L["open"]
 
 	local tParts = { tName }
 	if tDesc and tDesc ~= "" then tParts[#tParts + 1] = tDesc end
@@ -81,7 +81,7 @@ local function tBuildAchievement(aList, aCat, aIndex)
 		local _, _, tDone, tQty, tReq, _, _, _, tQtyString = GetAchievementCriteriaInfo(tId, 1)
 		if not tDone and type(tReq) == "number" and tReq > 1 then
 			local tProgress = tQtyString and tostring(tQtyString) or (tostring(tQty or 0) .. " / " .. tostring(tReq))
-			tLabel = tLabel .. ", " .. tProgress
+			tState = tState .. ", " .. tProgress
 			tParts[#tParts + 1] = L["Progress"] .. ": " .. tProgress
 		end
 	end
@@ -95,16 +95,19 @@ local function tBuildAchievement(aList, aCat, aIndex)
 		local tOpen
 		tChilds, tOpen = tCriteriaChildren(tId, tNumCrit)
 		if not tCompleted then
-			tLabel = tLabel .. ", " .. string.format(L["%d of %d open"], tOpen, tNumCrit)
+			tState = tState .. ", " .. string.format(L["%d of %d open"], tOpen, tNumCrit)
 		end
 	end
 
-	tAdd(aList, tLabel, {
-		type = (tChilds and #tChilds > 0) and "Button" or "FontString",
-		obj = nil,
-		textFull = table.concat(tParts, "\r\n"),
-		childs = tChilds or {},
-	})
+	-- With criteria the achievement is a level of its own: its label is the bare name, so that it does not change with
+	-- the state (after a rebuild the menu finds the cursor again by the labels of the levels above it), and the state is
+	-- the first line inside.
+	if tChilds and #tChilds > 0 then
+		tAdd(tChilds, tState, { type = "FontString", obj = nil }, 1)
+		tAdd(aList, tName, { type = "Button", obj = nil, textFull = table.concat(tParts, "\r\n"), childs = tChilds, skuIdentity = "ach:" .. tId })
+	else
+		tAdd(aList, tName .. ", " .. tState, { type = "FontString", obj = nil, textFull = table.concat(tParts, "\r\n") })
+	end
 	return true
 end
 
@@ -124,7 +127,8 @@ local function tBuildCategory(aList, aCat, aChildrenOf, aDepth)
 	end
 	if tCount == 0 then return false end
 
-	-- counter "x of y earned" over all achievements below this category
+	-- counter "x of y earned" over all achievements below this category, as the first line inside (not in the label, see
+	-- tBuildAchievement)
 	local function tTotals(aId, aD)
 		local tN, tC = GetCategoryNumAchievements(aId)
 		local tTotal, tDoneCount = tonumber(tN) or 0, tonumber(tC) or 0
@@ -137,9 +141,9 @@ local function tBuildCategory(aList, aCat, aChildrenOf, aDepth)
 		return tTotal, tDoneCount
 	end
 	local tAll, tDoneAll = tTotals(aCat, aDepth)
-	local tLabel = tTitle .. ", " .. string.format(L["%d of %d earned"], tDoneAll, tAll)
+	tAdd(tChilds, string.format(L["%d of %d earned"], tDoneAll, tAll), { type = "FontString", obj = nil }, 1)
 
-	tAdd(aList, tLabel, { type = "Button", obj = nil, textFull = tTitle, childs = tChilds })
+	tAdd(aList, tTitle, { type = "Button", obj = nil, textFull = tTitle, childs = tChilds, skuIdentity = "achcat:" .. aCat })
 	return true
 end
 
@@ -187,13 +191,14 @@ local function tBuildRewardTrack(aList)
 	end
 	if #tChilds == 0 then return end
 
-	local tHead
+	local tLevelLine
 	if tData.maxLevel and tData.maxLevel > 0 then
-		tHead = string.format(L["Reward track, level %d of %d"], tCurrent, tData.maxLevel)
+		tLevelLine = string.format(L["Reward track, level %d of %d"], tCurrent, tData.maxLevel)
 	else
-		tHead = string.format(L["Reward track, level %d"], tCurrent)
+		tLevelLine = string.format(L["Reward track, level %d"], tCurrent)
 	end
-	tAdd(aList, tHead, { type = "Button", obj = nil, textFull = tData.name or "", childs = tChilds })
+	tAdd(tChilds, tLevelLine, { type = "FontString", obj = nil }, 1)
+	tAdd(aList, L["Reward track"], { type = "Button", obj = nil, textFull = tData.name or "", childs = tChilds, skuIdentity = "legacyrewards" })
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -301,7 +306,7 @@ local function tBuildTree(aList)
 				SkuCore.BuildTalentTreeSection(tTreeChilds, tPanel)
 				tAddResetEntry(tTreeChilds, tPanel, tName, tCountTreeHead(tTreeChilds, tPanel) + 1)
 			end
-			tAdd(tChilds, tName .. ", " .. L["selected"], { type = "Button", obj = nil, textFull = "", childs = tTreeChilds, skuIdentity = "legacytree" .. i })
+			tAdd(tChilds, tName .. " (" .. L["selected"] .. ")", { type = "Button", obj = nil, textFull = "", childs = tTreeChilds, skuIdentity = "legacytree" .. i })
 		else
 			tAdd(tChilds, tName, {
 				type = "Button",

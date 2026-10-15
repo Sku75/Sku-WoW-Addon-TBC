@@ -124,26 +124,28 @@ local function tNodeEntry(aParentChilds, aConfigID, aButton, aNodeInfo)
 	local tIsLocked = aButton.IsLocked and aButton:IsLocked()
 	local tIdent = "trait:" .. tostring(aNodeInfo.ID)
 
-	-- choice node (either-or): a submenu with the entries
+	-- Choice node (either-or): a submenu with the entries. Its label is the same whatever is chosen, because the menu
+	-- finds the way back to the cursor after a rebuild by the labels of the levels above it; the state is in the text and
+	-- in the entries.
 	if type(tChoices) == "table" and #tChoices > 0 and aButton.SetSelectedEntryID then
 		local tSelectedID = aButton.GetSelectedEntryID and aButton:GetSelectedEntryID() or nil
 		local tNames = {}
 		for _, tEntryID in ipairs(tChoices) do
 			tNames[#tNames + 1] = tEntryInfo(aConfigID, tEntryID) or "?"
 		end
-		local tLabel = table.concat(tNames, " / ")
+		local tState = ""
 		if tSelectedID then
-			tLabel = (tEntryInfo(aConfigID, tSelectedID) or tLabel) .. " (" .. L["selected"] .. ")"
+			tState = (tEntryInfo(aConfigID, tSelectedID) or "?") .. " (" .. L["selected"] .. ")"
 		elseif tIsLocked then
-			tLabel = tLabel .. " (" .. L["disabled"] .. ")"
+			tState = L["disabled"]
 		end
-		local tNode = tAdd(aParentChilds, tLabel, {
+		local tNode = tAdd(aParentChilds, table.concat(tNames, " / "), {
 			skuIdentity = tIdent,
 			frameName = "PlayerSpellsFrameChoice",
 			RoC = "Child",
 			type = "Button",
 			obj = PlayerSpellsFrame,
-			textFull = "",
+			textFull = tState,
 			childs = {},
 		})
 		for _, tEntryID in ipairs(tChoices) do
@@ -264,9 +266,11 @@ local function tTalentsSection(aParentChilds, aTalentsFrame)
 			tLoose[#tLoose + 1] = tNode
 		end
 	end
+	-- The points of a branch are its first line, not part of its label: spending a point inside must not rename the level
+	-- the cursor is in.
 	for _, tBranch in ipairs(tBranches) do
 		if #tBranch.nodes > 0 then
-			local tBranchEntry = tAdd(aParentChilds, tBranch.name .. " (" .. tBranch.points .. ")", {
+			local tBranchEntry = tAdd(aParentChilds, tBranch.name, {
 				skuIdentity = "branch:" .. tBranch.name,
 				frameName = "PlayerSpellsFrameBranch",
 				RoC = "Child",
@@ -275,6 +279,7 @@ local function tTalentsSection(aParentChilds, aTalentsFrame)
 				textFull = "",
 				childs = {},
 			})
+			tText(tBranchEntry.childs, "Text: " .. string.format(L["Points spent: %d"], tBranch.points), nil)
 			for _, tNode in ipairs(tBranch.nodes) do
 				tNodeEntry(tBranchEntry.childs, tConfigID, tNode.button, tNode.info)
 			end
