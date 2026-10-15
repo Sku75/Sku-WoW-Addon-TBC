@@ -3493,8 +3493,20 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		end
 		
 		C_Timer.NewTimer(1, function()
+			-- The second click closes what the first one opened, so it only runs while the talent
+			-- window is still shown. A blind toggle reopened it whenever something else had closed it
+			-- in between: on Forever the character prime above (ShowUIPanel(CharacterFrame) at 0.5 s)
+			-- closes the talent tab, because the panel manager hides a native "center" panel that
+			-- allows other panels when a "left" panel opens, and the click then opened it for good.
+			-- PlayerSpellsFrame is the window TalentMicroButton toggles on Forever, PlayerTalentFrame
+			-- elsewhere.
 			if SkuCore.TalentTempFlag == true then
-				_G["TalentMicroButton"]:Click()
+				local tTalentFrame = _G["PlayerSpellsFrame"] or _G["PlayerTalentFrame"]
+				if tTalentFrame and tTalentFrame:IsShown() then
+					_G["TalentMicroButton"]:Click()
+				else
+					dprint("talent prime: window already closed, second click skipped")
+				end
 			end
 			
 			-- [43.2] Identical to the lazy installer in the SkuCoreControl ticker (~1658).
