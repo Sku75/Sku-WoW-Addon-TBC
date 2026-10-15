@@ -9,7 +9,7 @@ if not Sku.isForever then return end
 
 local L = Sku.L
 
-local BuffAnnounce = SkuCore:NewModule("BuffAnnounce", "AceEvent-3.0")
+local BuffAnnounce = SkuCore:NewModule("BuffAnnounce")
 SkuCore.BuffAnnounce = BuffAnnounce
 
 SkuCore:RegisterToggleableModule("BuffAnnounce", function()
@@ -41,12 +41,17 @@ for _, tSpellId in ipairs({
 	tTotemAuras[tSpellId] = true
 end
 
+-- a plain frame: RegisterUnitEvent lets the game send only the player's UNIT_AURA, AceEvent would get every unit's
+local tEventFrame = CreateFrame("Frame")
+
 function BuffAnnounce:OnEnable()
-	BuffAnnounce:RegisterEvent("UNIT_AURA", "UNIT_AURA")
+	if Sku.IsEventValid("UNIT_AURA") then
+		tEventFrame:RegisterUnitEvent("UNIT_AURA", "player")
+	end
 end
 
 function BuffAnnounce:OnDisable()
-	BuffAnnounce:UnregisterAllEvents()
+	tEventFrame:UnregisterAllEvents()
 end
 
 local function tDurationText(aDuration)
@@ -59,8 +64,8 @@ local function tDurationText(aDuration)
 	return ", " .. math.floor(aDuration + 0.5) .. L[" Sekunden"]
 end
 
-function BuffAnnounce:UNIT_AURA(aEvent, aUnit, aInfo)
-	if aUnit ~= "player" or type(aInfo) ~= "table" then return end
+local function tOnUnitAura(aFrame, aEvent, aUnit, aInfo)
+	if type(aInfo) ~= "table" then return end
 	-- In combat even isFullUpdate can be secret; testing it would throw.
 	if Sku.IsSecret(aInfo.isFullUpdate) or aInfo.isFullUpdate then return end
 	local tAdded = aInfo.addedAuras
@@ -88,3 +93,4 @@ function BuffAnnounce:UNIT_AURA(aEvent, aUnit, aInfo)
 		end
 	end
 end
+tEventFrame:SetScript("OnEvent", tOnUnitAura)
