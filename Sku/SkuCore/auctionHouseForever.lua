@@ -84,7 +84,8 @@ local function tTimeLeftText(aInfo)
 	return ""
 end
 
--- A menu leaf that changes something in place (value toggles, "load more", ...).
+-- A menu leaf whose ENTER runs aOnAction(leaf) in place (buy, bid, value toggles, "load more", ...). actionInPlace:
+-- otherwise an isSelect ancestor (the name search) takes ENTER over for its own action.
 local function tSettingLeaf(aParent, aName, aOnAction)
 	local tE = SkuOptions:InjectMenuItems(aParent, {aName}, SkuGenericMenuItem)
 	tE.dynamic = false
@@ -532,7 +533,6 @@ function AHF:RefreshDetailResults(aItemID)
 			if tResult then
 				tRows[#tRows + 1] = {
 					isCommodity = true,
-					index = i,
 					itemID = tItemID,
 					unitPrice = tResult.unitPrice,
 					quantity = tResult.quantity,
@@ -906,12 +906,9 @@ end
 -- highest bid (Blizzard's AuctionHouseBidFrameMixin:SetPrice disables bidding then).
 local function tAddBidLeaves(aParent, aData, aName)
 	if not (aData.minBid and aData.minBid > 0) or tIsOwnGuid(aData.bidder) then return false end
-	local tBidMin = SkuOptions:InjectMenuItems(aParent, {L["Bid the minimum: "]..tMoneyText(aData.minBid)}, SkuGenericMenuItem)
-	tBidMin.dynamic = false
-	tBidMin.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
-	tBidMin.OnAction = function()
-		AHF:PlaceItemBid(aData, aData.minBid, aName, tBidMin)
-	end
+	tSettingLeaf(aParent, L["Bid the minimum: "]..tMoneyText(aData.minBid), function(aLeaf)
+		AHF:PlaceItemBid(aData, aData.minBid, aName, aLeaf)
+	end)
 	local tCustomPlace
 	tSettingLeaf(aParent, L["Set your own bid"], function()
 		tAskMoney(L["Enter bid, for example 12g 5s 3k"], function(aAmount)
@@ -1075,26 +1072,20 @@ local function tBuildDetailChildren(aParentEntry)
 						SkuOptions.Voice:OutputStringBTtts(L["Enter quantity, at most "]..tMaxQty, true, true, 0.1, nil, nil, nil, 1)
 					end)
 				end)
-				tBuyEntry = SkuOptions:InjectMenuItems(self, {tBuyName()}, SkuGenericMenuItem)
-				tBuyEntry.dynamic = false
-				tBuyEntry.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
-				tBuyEntry.OnAction = function()
-					if AHF:StartCommodityBuy(tData.itemID, tData.buyQty, self, gDetail.name, tBuyEntry) then
+				tBuyEntry = tSettingLeaf(self, tBuyName(), function(aLeaf)
+					if AHF:StartCommodityBuy(tData.itemID, tData.buyQty, self, gDetail.name, aLeaf) then
 						tRebuildAndFocus(self, true, true)
 					end
-				end
+				end)
 			elseif self.data.isOwn then
 				local tOwn = SkuOptions:InjectMenuItems(self, {L["That is your own auction"]}, SkuGenericMenuItem)
 				tOwn.dynamic = false
 			else
 				local tData = self.data
 				if tData.buyoutAmount then
-					local tBuyEntry = SkuOptions:InjectMenuItems(self, {L["Kaufen"]..": "..tMoneyText(tData.buyoutAmount)}, SkuGenericMenuItem)
-					tBuyEntry.dynamic = false
-					tBuyEntry.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
-					tBuyEntry.OnAction = function()
-						AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, gDetail.name, tBuyEntry)
-					end
+					tSettingLeaf(self, L["Kaufen"]..": "..tMoneyText(tData.buyoutAmount), function(aLeaf)
+						AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, gDetail.name, aLeaf)
+					end)
 				end
 				-- Bidding below the buyout (Blizzard: the bid box next to the buyout button).
 				local tHasBid = tAddBidLeaves(self, tData, gDetail.name)
@@ -1896,10 +1887,9 @@ local function tAddBidRow(aParent, aRow)
 		self.children = {}
 		local tData = self.data
 		if tData.buyoutAmount and tData.buyoutAmount > 0 then
-			local tBuy = SkuOptions:InjectMenuItems(self, {L["Kaufen"]..": "..tMoneyText(tData.buyoutAmount)}, SkuGenericMenuItem)
-			tBuy.dynamic = false
-			tBuy.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
-			tBuy.OnAction = function() AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, tData.name, tBuy) end
+			tSettingLeaf(self, L["Kaufen"]..": "..tMoneyText(tData.buyoutAmount), function(aLeaf)
+				AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, tData.name, aLeaf)
+			end)
 		end
 		-- Raising a bid you already lead is pointless; offer it only after being outbid.
 		local tCanBid = false
