@@ -508,14 +508,14 @@ function DungeonBrowser:DoEnroll()
       end
    end
    local listed = tIsListed()
-   if #ids == 0 then tSay(L["No dungeons selected"]); tSay(L["No dungeons selected"], true); return end
+   if #ids == 0 then tSay(L["No dungeons selected"], true); return end
 
    -- Categories that demand a free text (custom, quests): the comment sits in a protected edit box of Blizzard's window.
    local catInfo = C_LFGList.GetLfgCategoryInfo(d.listCategory)
-   if catInfo and catInfo.autoChooseActivity then tSay(L["This category needs a free text that only the Blizzard window can send. Please post there."]); tSay(L["This category needs a free text that only the Blizzard window can send. Please post there."], true); return end
+   if catInfo and catInfo.autoChooseActivity then tSay(L["This category needs a free text that only the Blizzard window can send. Please post there."], true); return end
 
    local why = tCheckPostable(ids)
-   if why then tSay(why); tSay(why, true); return end
+   if why then tSay(why, true); return end
 
    -- Exactly the fields Blizzard's own window sends (LFGListingMixin:CreateOrUpdateListing): activityIDs, newPlayerFriendly.
    local data = { activityIDs = ids, newPlayerFriendly = d.newPlayerFriendly and true or false }
@@ -535,7 +535,6 @@ function DungeonBrowser:DoEnroll()
       end
    end
    if res == false then
-      tSay(L["Listing failed: "] .. L["rejected"])
       tSay(L["Listing failed: "] .. L["rejected"], true)
       return
    end
@@ -553,7 +552,6 @@ function DungeonBrowser:DoEnroll()
          tSay(listed and L["Listing updated"] or L["Listed"], true)
       elseif final then
          announced = true
-         tSay(L["Listing failed: "] .. L["no active listing"])
          tSay(L["Listing failed: "] .. L["no active listing"], true)
       end
    end
