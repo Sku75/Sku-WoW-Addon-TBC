@@ -117,6 +117,12 @@ S.secretstale = function()
 	at(9.0, function() V:SpeakSecretText("%d percent", 33) end)
 	H.run(14)
 end
+-- A secret line built from Sku's ";"-separated parts (the target announce: raid marker, name, level). Healthy = the
+-- client gets spaces, never a ";" (a bridge voice would read it aloud), and the secret argument arrives untouched.
+S.secretsep = function()
+	at(0.5, function() V:SpeakSecretText("totenkopf;im kampf;%s stufe 13 elite", "gegner;name") end)
+	H.run(6)
+end
 -- Point 17: a line with a word that has no recording. MW=1 turns the option on: the whole line must reach the client
 -- (spoken by Blizzard's voice); MW=0 (the default): nothing reaches the client, the sound path takes it. A line whose
 -- words all have a recording never reaches the client. The harness has no audio index, so GetAudiodata is stubbed.
