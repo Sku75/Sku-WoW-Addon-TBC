@@ -1767,11 +1767,13 @@ gListEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	if aEvent == "BIDS_UPDATED" then
 		AHF:RefreshBids()
 	elseif aEvent == "BID_ADDED" then
-		-- only while the auction house is open (the event is also sent for the login bid list)
-		if _G.AuctionHouseFrame and _G.AuctionHouseFrame.IsShown and _G.AuctionHouseFrame:IsShown() then
+		-- The one confirmation of a bid. Only while the auction house window is shown: Blizzard's own frames listen
+		-- to BID_ADDED only then. The bid list already holds the new bid, so it is read again, not asked for again
+		-- (Blizzard: AuctionHouseAuctionsFrameMixin, BidsList:DirtyScrollFrame).
+		if AuctionHouseFrame and AuctionHouseFrame:IsShown() then
 			tSay(L["Bid placed"])
+			AHF:RefreshBids()
 		end
-		if gBids.entry and gBids.state ~= "idle" then tStartListQuery(gBids, gBids.entry) end
 	elseif aEvent == "AUCTION_HOUSE_THROTTLED_SYSTEM_READY" then
 		-- one query per ready signal: a sent query uses up the throttle again
 		for _, tList in ipairs({ gOwned, gBids }) do
