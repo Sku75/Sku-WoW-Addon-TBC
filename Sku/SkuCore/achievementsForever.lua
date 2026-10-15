@@ -24,7 +24,7 @@ local function tAdd(aList, aLabel, aEntry, aIndex)
 	local tLabel, tN = aLabel, 1
 	while aList[tLabel] ~= nil do
 		tN = tN + 1
-		tLabel = aLabel .. " " .. tN
+		tLabel = aLabel .. " #" .. tN
 	end
 	aEntry.textFirstLine = tLabel
 	aEntry.frameName = "LegacySystemFrame"
@@ -222,8 +222,7 @@ end
 -- moment later, otherwise the menu refresh after the entry takes the focus away from the input.
 local function tAddResetEntry(aList, aPanel, aTreeName, aIndex)
 	local tButton = aPanel.ResetButton
-	if not tButton then return end
-	local tUsable = tButton:IsShown() and (not tButton.IsEnabled or tButton:IsEnabled())
+	local tUsable = tButton:IsShown() and tButton:IsEnabled()
 	local tLabel = L["Reset tree"]
 	if not tUsable then
 		tLabel = tLabel .. " (" .. L["not possible right now"] .. ")"
@@ -258,7 +257,7 @@ end
 -- Number of head entries of a tree (points, apply, undo): "Reset tree" belongs behind them, as in Blizzard's window
 -- where the reset button sits next to Apply.
 local function tCountTreeHead(aList, aPanel)
-	local tApplyLabel = aPanel.ApplyButton and aPanel.ApplyButton.GetText and aPanel.ApplyButton:GetText()
+	local tApplyLabel = aPanel.ApplyButton:GetText()
 	local tCount = 0
 	for _, tEntryLabel in ipairs(aList) do
 		local tIsHead = tEntryLabel:find("^Text:")
@@ -271,10 +270,7 @@ local function tCountTreeHead(aList, aPanel)
 end
 
 local function tBuildTree(aList)
-	local tFrame = LegacySystemFrame
-	local tPage = tFrame and tFrame.TreePage
-	if not tPage then return end
-
+	local tPage = LegacySystemFrame.TreePage
 	local tChilds = {}
 	local tHead = L["Legacy tree"]
 
@@ -283,25 +279,20 @@ local function tBuildTree(aList)
 			EventRegistry:TriggerEvent("Legacy.SelectPage", LEGACY_TREE_PAGE)
 			tSay(L["Legacy tree opened"])
 		end, "legacyopen")
-		tAdd(aList, tHead, { type = "Button", obj = nil, textFull = "", childs = tChilds })
+		tAdd(aList, tHead, { type = "Button", obj = nil, textFull = "", childs = tChilds, skuIdentity = "legacytreepage" })
 		return
 	end
 
 	-- Every tree is an entry of its own (like the branches in the class talent menu). The selected tree holds its nodes
 	-- (right arrow to go in); a tree that is not selected is an entry that selects it with Enter. The identity of the
 	-- entry stays the same, so the cursor stays on it when the menu is rebuilt and the tree has its nodes.
-	local tButtons = tPage.LegacyTreeSelectionPanel and tPage.LegacyTreeSelectionPanel.treeButtons
 	local tPanel = tPage.LegacyTreeTraitPanel
-	for i, tButton in ipairs(type(tButtons) == "table" and tButtons or {}) do
-		local tData = LegacyTreeData and LegacyTreeData[i]
-		local tName = (tData and tData.name) or (L["Tree"] .. " " .. i)
-		local tSelected = tButton.GetChecked and tButton:GetChecked()
-		if tSelected then
+	for i, tButton in ipairs(tPage.LegacyTreeSelectionPanel.treeButtons) do
+		local tName = LegacyTreeData[i].name
+		if tButton:GetChecked() then
 			local tTreeChilds = {}
-			if tPanel then
-				SkuCore.BuildTalentTreeSection(tTreeChilds, tPanel)
-				tAddResetEntry(tTreeChilds, tPanel, tName, tCountTreeHead(tTreeChilds, tPanel) + 1)
-			end
+			SkuCore.BuildTalentTreeSection(tTreeChilds, tPanel)
+			tAddResetEntry(tTreeChilds, tPanel, tName, tCountTreeHead(tTreeChilds, tPanel) + 1)
 			tAdd(tChilds, tName .. " (" .. L["selected"] .. ")", { type = "Button", obj = nil, textFull = "", childs = tTreeChilds, skuIdentity = "legacytree" .. i })
 		else
 			tAdd(tChilds, tName, {
