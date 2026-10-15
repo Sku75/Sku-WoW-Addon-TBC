@@ -2516,6 +2516,25 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 			end
 		end
 
+		-- Optional (off by default): if any word of the line has no recording, the WHOLE line goes to Blizzard's voice instead of
+		-- a beep for the missing word (player names, unknown terms). engine=2 keeps OutputStringBTtts from handing it back here.
+		-- Costs up to four lookups per word.
+		if ChatTts().blizzTtsForMissingWords == true and not tIsSound and aAudioFile == nil and not aAuraSound then
+			for x = 1, #tStrings do
+				local tWord = tostring(tStrings[x])
+				if tWord ~= "§01" and not string.find(tWord, "sound%-") and not string.find(tWord, "male%-")
+					and not string.find(tWord, "brian%-") and not string.find(tWord, "emma%-") and not SkuVoice:WordHasAudio(tWord) then
+					if SkuOptions.db then
+						SkuOptions.db.realm.missingAudio = SkuOptions.db.realm.missingAudio or {}
+						SkuOptions.db.realm.missingAudio[tWord] = (SkuOptions.db.realm.missingAudio[tWord] or 0) + 1
+					end
+					dprint("OutputString: no recording, speaking the line with Blizzard TTS:", tWord)
+					SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, 2, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
+					return
+				end
+			end
+		end
+
 		for x = 1, #tStrings do
 			local tFile, tPath, tLength
 
@@ -2977,7 +2996,7 @@ function SkuVoice:Release()
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuVoice:GetAudiodata(aString)
+function SkuVoice:GetAudiodata(aString, aQuiet)
 	-- [v43.0] These three were assigned WITHOUT `local`, so every call wrote three
 	-- globals (and left them set for the next caller to trip over). Verified safe to
 	-- localise: OutputString captures the return values into its own locals, and
@@ -3026,10 +3045,26 @@ function SkuVoice:GetAudiodata(aString)
 		end
 	end
 
-	if tFile == nil then
+	if tFile == nil and not aQuiet then
 		dprint("GetAudiodata: no audio file for:", aString)
 	end
 
 	return tFile, tPath, tLen
+end
+
+-- Is there a recording for this word? Same search order as OutputString (exact, lower case, capital first letter, gender
+-- ending), without the log line for a miss.
+function SkuVoice:WordHasAudio(aWord)
+	aWord = tostring(aWord)
+	if SkuVoice:GetAudiodata(aWord, true) then return true end
+	local tLower = string.lower(aWord)
+	if SkuVoice:GetAudiodata(tLower, true) then return true end
+	if SkuVoice:GetAudiodata(string.upper(string.sub(aWord, 1, 1))..string.sub(aWord, 2), true) then return true end
+	for i, v in pairs(tGenderSuffixes) do
+		if string.sub(tLower, string.len(tLower) - string.len(i) + 1) == i then
+			if SkuVoice:GetAudiodata(string.sub(tLower, 1, string.len(tLower) - string.len(i))..v, true) then return true end
+		end
+	end
+	return false
 end
 

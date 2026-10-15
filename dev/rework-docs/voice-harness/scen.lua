@@ -107,5 +107,21 @@ S.secret = function()
 	say(8.0, "ende", true)
 	H.run(14)
 end
+-- Point 17: a line with a word that has no recording. MW=1 turns the option on: the whole line must reach the client
+-- (spoken by Blizzard's voice); MW=0 (the default): nothing reaches the client, the sound path takes it. A line whose
+-- words all have a recording never reaches the client. The harness has no audio index, so GetAudiodata is stubbed.
+S.missingword = function()
+	SkuOptions.db.profile.SkuOptions.useBlizzTtsInMenu = false
+	Sku.AudiodataPath = "x"
+	SkuOptions.db.profile.SkuOptions.soundChannels = { SkuChannel = "Talking Head" }
+	SkuAudioDataLenIndex, SkuAudioFileIndex = {}, {}
+	SkuOptions.db.realm = {}
+	local tOn = (os.getenv("MW") == "1")
+	V:SetChatTtsProvider(function() return { WowTtsVoice = 1, WowTtsSpeed = 3, WowTtsVolume = 50, blizzTtsForMissingWords = tOn } end)
+	V.GetAudiodata = function(self, w) if w == "hallo" or w == "welt" then return "a.mp3", "p/", 0.5 end end
+	at(0.5, function() V:OutputString("hallo welt", true, true, 0.5) end)
+	at(2.0, function() V:OutputString("hallo xyzname welt", true, true, 0.5) end)
+	H.run(8)
+end
 S[name]()
 H.report(name)
