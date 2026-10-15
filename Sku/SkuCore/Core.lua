@@ -419,6 +419,8 @@ SkuCore.interactFramesList = {
 	--"MainMenuBar",
 	"ReadyCheckFrame",
 	"RolePollPopup",
+	-- Guild invitation: its own window (StaticPopupSpecial_Show), not one of StaticPopup1-3.
+	"GuildInviteFrame",
 	-- "PVEFrame", "LFGParentFrame" entfernt (Dungeon-Browser wird neu aufgebaut)
 	"ItemSocketingFrame",
 }
@@ -4732,6 +4734,8 @@ local friendlyFrameNames = {
 	["TradeSkillFrame"] = L["Trade skill"],
 	["ProfessionsFrame"] = L["Trade skill"],
 	["ReadyCheckFrame"] = L["Bereitschaft check"],
+	-- The title Blizzard's own window shows (GuildInviteFrame.xml: text="GUILD_INVITATION").
+	["GuildInviteFrame"] = GUILD_INVITATION,
 	[""] = "",
 }
 -- A window whose name follows its content has a function as its name (PlayerSpellsFrame on Forever: talent window and
