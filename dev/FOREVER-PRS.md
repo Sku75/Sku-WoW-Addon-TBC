@@ -28,8 +28,8 @@ Link: <https://github.com/Sku75/Sku-WoW-Addon-TBC/blob/main/dev/FOREVER-PRS.md>
   neuen 1.x-Versionen in `gitana83/wow-forever`. Gebraucht wird nur Code, als
   PR gegen dieses Repo. Releases macht ausschließlich der Maintainer. Die README
   deines alten Repos soll auf dieses Repo verweisen.
-- PR #20 (Installer mit zweitem Repo) ist geschlossen. Der Installer kommt als
-  **letzter** PR, siehe unten.
+- PR #20 (Installer mit zweitem Repo) ist geschlossen. Die Forever-Unterstützung
+  im Installer baut der Maintainer selbst, siehe unten.
 
 ## Schritt 1: Ein echter Fork, auf dem aktuellen Stand
 
@@ -176,7 +176,7 @@ hast. Diese Stellen besonders sorgfältig auflösen:
 5. **Nicht anfassen**, das macht nur der Maintainer:
    - `## Version` in `Sku/Sku.toc`
    - Patch-Notes, `docs/` (Download-Seite), Release-ZIPs
-   - `installer/` (bis zum Installer-PR am Ende)
+   - `installer/` (die Forever-Unterstützung baut der Maintainer)
    - die erzeugten Datentabellen `Sku/SkuDB/assets/*.lua` und
      `Sku/routedata_global_wotlk.lua`
 6. **Kein Umbau von fremdem Code „nebenbei“**: kein Umformatieren, keine
@@ -321,7 +321,7 @@ ein Commit oder mehrere pro Punkt, die Punktnummer vorne.
   Pet-Gesundheits-Taste (Punkt 15, zweiter Teil) **und** Punkt 17. Beides
   ändert die Sprachausgabe für alle Spieler und braucht den Offline-Test
   (Regel 12). Darf gleichzeitig mit dem PR „Rest“ offen sein (Regel 17).
-- **Installer**, zuletzt.
+- **Installer**: kein PR von dir, den baut der Maintainer (siehe unten).
 
 Die PR-Beschreibung hat wie bisher einen Abschnitt pro Punkt mit dem
 Testergebnis. Getestet wird der PR als Ganzes, auf Forever und auf
@@ -544,16 +544,18 @@ riskant er für Anniversary/Era ist.
   Cooldown-Manager (`Blizzard_CooldownViewer`, gibt es auf Forever). Erst
   planen, dann bauen; vorher mit dem Maintainer absprechen.
 
-## Installer (letzter PR)
+## Installer (macht der Maintainer)
 
-Erst wenn das Addon auf `main` unter Forever läuft. Der Installer wird dann
-**einfacher** als in PR #20:
+Die Forever-Unterstützung im Installer baut der Maintainer selbst, er kennt das
+Werkzeug am besten. Von dir kommt dazu kein PR; Fragen zum Forever-Client
+(Pfade, Dateien) beantwortest du gern im Issue. Zur Orientierung, was er
+vorhat (aus PR #20 übernommen, aber **einfacher**):
 
 - Forever-Client erkennen (`_classic_beta_`, `WowB.exe`, `.flavor.info`).
 - **Dasselbe Sku-ZIP** wie für Anniversary und Era installieren. Kein zweites
   Repo, keine eigene Versionsnummer, kein `ForeverPinVersion`.
 - Beim TOC-Abgleich auf einem Forever-Client nur `16001` schreiben, nie die
-  Anniversary-Nummern (diesen Teil aus PR #20 kannst du übernehmen, ebenso die
+  Anniversary-Nummern (dieser Teil aus PR #20 wird übernommen, ebenso die
   Erkennung in `WowLocator.cs` und die Selbsttests).
 - Questie, AtlasLoot und das Login-Tool wie in PR #20 nicht auf Forever.
 
