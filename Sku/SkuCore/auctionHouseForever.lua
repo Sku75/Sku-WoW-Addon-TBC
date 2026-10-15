@@ -8,12 +8,12 @@
 -- This file is the Forever-only replacement and a no-op on every other client (early return below). It has its own
 -- frame and does not use the AceEvent mixin of SkuCore.AuctionHouse.
 --
--- Menu: Auctions > [search by name, by category, favorites, filters]; Sales > [new auction, my auctions]; My bids.
+-- Menu: Auctions > [search by name, by category, filters, favorites]; Sales > [new auction, current sales]; Bids.
 -- Browse: name search or category tree (Blizzard's own AuctionCategories), cheapest price and quantity per item.
 -- Detail: the individual listings of one item with tooltip; buy at buyout (items), two-step price quote (commodities),
 --   bid below buyout, favorites.
 -- Sell: pick an item from the bags, quantity, duration, price, deposit, market price hint, post (with the posting warning).
--- Own auctions and own bids: list, cancel.
+-- Own auctions: list, cancel. Own bids: list, buy out, bid again after being outbid.
 -- Calls documented as HasRestrictions (PlaceBid, StartCommoditiesPurchase, PostItem, PostCommodity, ConfirmPostItem,
 -- ConfirmPostCommodity, CancelAuction) run directly from a menu action, i.e. from a real key press.
 -- ConfirmCommoditiesPurchase has no restriction; it runs from a key press as well, like Blizzard's Buy Now button.
@@ -31,7 +31,7 @@ local AHF = SkuCore.AuctionHouseForever
 -- ---------------------------------------------------------------------
 -- State
 -- ---------------------------------------------------------------------
--- Browse = the name search's result list (one row per distinct item).
+-- Browse = the result list of a name search, a category or the favorites (one row per distinct item).
 local gBrowse = { state = "idle", results = {}, entry = nil }
 -- Detail = the individual listings of ONE item, opened by drilling into a
 -- browse row.
@@ -47,9 +47,6 @@ local gSell = { duration = nil }
 local function tPostInFlight()
 	return gSell.posting and not gSell.pending
 end
--- NOTE: there is no full-market scan. C_AuctionHouse.ReplicateItems is documented, but Blizzard's own new auction
--- house UI never calls ReplicateItems/GetReplicateItemInfo, it only has name search and category browse. Sku does
--- not pretend to have more.
 
 local function tMoneyText(aCopper)
 	return GetCoinText(aCopper, " ")
@@ -582,9 +579,8 @@ function AHF:RefreshDetailResults(aItemID)
 end
 
 -- ---------------------------------------------------------------------
--- BUY - regular (non-commodity) item: buyout is a single protected call.
--- Must run directly inside a real keypress handler (OnAction), same
--- requirement the legacy module's buy path already relies on elsewhere.
+-- BUY - regular (non-commodity) item: buyout is a single protected call (PlaceBid with the buyout amount),
+-- made directly from the key press (OnAction).
 -- ---------------------------------------------------------------------
 -- Sku's own buyout or bid in flight. The server answers a buyout with AUCTION_HOUSE_PURCHASE_COMPLETED(auctionID),
 -- a bid with BID_ADDED, a refusal of either with AUCTION_HOUSE_SHOW_ERROR (the events Blizzard's BUYOUT_AUCTION
@@ -662,7 +658,7 @@ end
 
 -- ---------------------------------------------------------------------
 -- BUY - commodity: StartCommoditiesPurchase (quote) -> COMMODITY_PRICE_UPDATED
--- (announce the confirmed price) -> ConfirmCommoditiesPurchase (second real
+-- (the quoted price becomes the row's summary leaf) -> ConfirmCommoditiesPurchase (second real
 -- keypress). Mirrors Blizzard's own Blizzard_AuctionHouseBuyDialog.lua flow.
 -- StartCommoditiesPurchase is HasRestrictions and runs from a key press;
 -- ConfirmCommoditiesPurchase has no restriction and runs from the Confirm key press.
@@ -1118,7 +1114,7 @@ local function tBuildDetailChildren(aParentEntry)
 	end
 end
 
--- One row for one item found by name search: {itemKey, name, isCommodity,
+-- One browse row (name search, category or favorites): {itemKey, name, isCommodity,
 -- minPrice, totalQuantity} -> drills into the live detail/buy step.
 local function tInjectItemRow(aParentEntry, aRow)
 	local tRowEntry = SkuOptions:InjectMenuItems(aParentEntry, {tBrowseRowLabel(aRow)}, SkuGenericMenuItem)
@@ -1226,7 +1222,7 @@ local function tBuildCategoryChildren(aParentEntry, aCategoryList)
 end
 
 -- ---------------------------------------------------------------------
--- SELL + OWN AUCTIONS (Auktionen > Verkaeufe). Mirrors Blizzard's own
+-- SELL + OWN AUCTIONS (the Sales entry). Mirrors Blizzard's own
 -- ItemSellFrame/CommoditiesSellFrame flow: PostItem/PostCommodity (protected,
 -- must run from a real keypress) returns needsConfirmation; then
 -- AUCTION_HOUSE_POST_WARNING -> ConfirmPostItem/ConfirmPostCommodity with the
@@ -1724,8 +1720,8 @@ local function tReadList(aList, aNum, aRead)
 	tShowList(aList)
 end
 
--- BuildChildren of the entry showing aList: entering it sends the query, merely landing on another list's entry
--- leaves the placeholder.
+-- BuildChildren of the entry showing aList: entering it sends the query; merely landing on it leaves the
+-- placeholder, unless it is the entry already showing the list.
 -- aAddRow(aParent, aRow) adds the entry of one row.
 local function tBuildListEntry(aList, aSelf, aEmptyText, aAddRow)
 	if aSelf.ahfEntering then
@@ -1929,9 +1925,9 @@ hooksecurefunc("StaticPopup_Show", function(aWhich)
 end)
 
 function AHF:BuildSearchEntries(aSelf)
-	-- Mirrors SkuCore/auctionHouse.lua's tNewMenuEntrysearch as closely as possible (same flags, same
-	-- OnAction/BuildChildren shape), only the data underneath is the new API. That legacy search entry is proven
-	-- for this "type a name, browse results, drill into one, buy" flow.
+	-- Same flags and OnAction/BuildChildren shape as the search entry in SkuCore/auctionHouse.lua (tNewMenuEntrysearch):
+	-- ENTER on its "enter search string" leaf runs the entry's OnAction (isSelect), which opens the edit box; the
+	-- results follow that leaf.
 	local tSearchEntry = SkuOptions:InjectMenuItems(aSelf, {L["auctions by seach string"]}, SkuGenericMenuItem)
 	tSearchEntry.dynamic = true
 	tSearchEntry.isSelect = true
@@ -2042,7 +2038,7 @@ function AHF:BuildSearchEntries(aSelf)
 	end
 end
 
--- Root: Auctions > [search, category]; below it (same level) Sales > [new auction, current sales]
+-- Root: Auctions > [search, category, filters, favorites]; Sales > [new auction, current sales]; Bids.
 function AHF:MenuBuilder(aSelf)
 	local tAuctionsEntry = SkuOptions:InjectMenuItems(aSelf, {L["Auktionen"]}, SkuGenericMenuItem)
 	tAuctionsEntry.dynamic = true
