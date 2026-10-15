@@ -35,6 +35,9 @@ local function tEnsureButton(aCmd, aAction)
 	if not b then
 		b = CreateFrame("Button", tName, UIParent, "SecureActionButtonTemplate")
 		b:RegisterForClicks("AnyDown")
+		-- only the down click arrives; without this SecureActionButton_OnClick acts on the up click
+		-- when the CVar ActionButtonUseKeyDown is 0 and the key does nothing
+		b:SetAttribute("useOnKeyDown", true)
 		b:SetAttribute("type1", "actionbar")
 		b:SetAttribute("action1", aAction)
 		b:SetSize(1, 1)
