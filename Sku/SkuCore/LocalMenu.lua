@@ -2786,7 +2786,10 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				local tRight = _G["GameTooltipTextRight"..i]
 				local tLeftText = tLeft and tLeft:GetText()
 				local tRightText = tRight and tRight:IsShown() and tRight:GetText()
-				if tLeftText and tLeftText ~= "" and tRightText and tRightText ~= "" then
+				-- Forever: a line built from a secret stat cannot be compared or joined
+				if Sku.IsSecret(tLeftText) or Sku.IsSecret(tRightText) then
+					dprint("charstats", "secret tooltip line skipped", i)
+				elseif tLeftText and tLeftText ~= "" and tRightText and tRightText ~= "" then
 					tLines[#tLines + 1] = tLeftText..": "..tRightText
 				elseif tLeftText and tLeftText ~= "" then
 					tLines[#tLines + 1] = tLeftText
