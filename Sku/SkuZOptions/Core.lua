@@ -187,7 +187,12 @@ end
 ---@param input string
 function SkuOptions:SlashFuncPquit(input)
 	--print("SlashFuncPquit", input)
-	LeaveParty()
+	-- The global LeaveParty does not exist on WoW Forever; C_PartyInfo.LeaveParty is its replacement.
+	if C_PartyInfo and C_PartyInfo.LeaveParty then
+		C_PartyInfo.LeaveParty()
+	else
+		LeaveParty()
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
