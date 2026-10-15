@@ -491,7 +491,7 @@ function AHF:BuyItemAuction(aAuctionID, aBuyoutAmount, aName)
 		tSay(tNamePrefix..L["Not enough money"])
 		return
 	end
-	local tOk, tErr = pcall(C_AuctionHouse.PlaceBid, aAuctionID, aBuyoutAmount)
+	local tOk = pcall(C_AuctionHouse.PlaceBid, aAuctionID, aBuyoutAmount)
 	if tOk then
 		SkuOptions.Voice:OutputStringBTtts(tNamePrefix..L["Purchase started"], false, true, 0.2)
 	else
@@ -517,7 +517,7 @@ function AHF:StartCommodityBuy(aItemID, aQuantity, aEntry, aName, aIndex)
 	gCommodityBuy.name = aName
 	gCommodityBuy.startedAt = GetTime()
 	local tReady = C_AuctionHouse.IsThrottledMessageSystemReady()
-	local tOk, tErr = pcall(C_AuctionHouse.StartCommoditiesPurchase, aItemID, aQuantity)
+	local tOk = pcall(C_AuctionHouse.StartCommoditiesPurchase, aItemID, aQuantity)
 	if not tOk then
 		gCommodityBuy.itemID = nil
 		SkuOptions.Voice:OutputStringBTtts(L["Purchase could not be started"], false, true, 0.2)
