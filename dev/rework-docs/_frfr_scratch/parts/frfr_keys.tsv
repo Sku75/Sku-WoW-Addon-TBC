@@ -3445,6 +3445,8 @@ The price changed since it was listed: expected 	Le prix a changé depuis l'affi
 , now 	, maintenant 
 Total price 	Prix total 
 Confirm or cancel?	Confirmer ou annuler ?
+Note: the unit price rises from %s to %s, because only %s pieces are offered at the lowest price.	Attention : le prix unitaire passe de %s à %s, car seulement %s pièces sont proposées au prix le plus bas.
+The price changed since it was listed: expected %s, now %s.	Le prix a changé depuis l'affichage : attendu %s, maintenant %s.
 Purchase complete	Achat terminé
 Price unavailable	Prix indisponible
 No tooltip available	Aucune infobulle disponible

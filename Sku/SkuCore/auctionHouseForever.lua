@@ -648,13 +648,12 @@ function AHF:OnCommodityPriceUpdated(aUnitPrice, aTotalPrice)
 	local tLow, tHigh, tLowQty, tExpected = tCommodityPriceSpread(gCommodityBuy.quantity)
 	local tWarn = ""
 	if tLow and tHigh and tHigh > tLow then
-		tWarn = L["Note: the unit price rises from "]
-			..tMoneyText(tLow)..L[" to "]..tMoneyText(tHigh)..L[", because only "]
-			..tLowQty..L[" pieces are offered at the lowest price. "]
+		tWarn = string.format(L["Note: the unit price rises from %s to %s, because only %s pieces are offered at the lowest price."],
+			tMoneyText(tLow), tMoneyText(tHigh), tLowQty).." "
 	end
 	if tExpected and aTotalPrice and aTotalPrice ~= tExpected then
-		tWarn = tWarn..L["The price changed since it was listed: expected "]
-			..tMoneyText(tExpected)..L[", now "]..tMoneyText(aTotalPrice)..". "
+		tWarn = tWarn..string.format(L["The price changed since it was listed: expected %s, now %s."],
+			tMoneyText(tExpected), tMoneyText(aTotalPrice)).." "
 	end
 	gCommodityBuy.warning = (tWarn ~= "") and tWarn or nil
 	SkuOptions.Voice:OutputStringBTtts(
