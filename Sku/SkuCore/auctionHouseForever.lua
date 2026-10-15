@@ -834,41 +834,46 @@ local function tAddBidLeaves(aParent, aData, aName)
 	return true
 end
 
--- Favourites (Blizzard: the star next to an item). Only offered where the server supports them.
-local function tFavoritesAvailable()
-	local tAvail = C_AuctionHouse.FavoritesAreAvailable()
-	return tAvail == true
-end
-
-local function tIsFavorite(aItemKey)
-	local tIs = C_AuctionHouse.IsFavoriteItem(aItemKey)
-	return tIs == true
-end
-
-local function tFavoriteLabel(aItemKey)
-	if tIsFavorite(aItemKey) then
-		return L["Remove from favorites"]
-	end
-	return L["Add to favorites"]
-end
-
+-- Favourites (Blizzard: the star next to an item, AuctionHouseFavoriteButtonBaseMixin). Only offered where the
+-- server supports them. Like the star, a full list takes no new favourite; the refusal is said with the entry the
+-- key handler reads back after ENTER.
+local gFavoritesChanged = nil
 local function tAddFavoriteLeaf(aParent, aItemKey)
-	if not aItemKey or not tFavoritesAvailable() then return end
-	tSettingLeaf(aParent, tFavoriteLabel(aItemKey), function(aLeaf)
-		local tFav = tIsFavorite(aItemKey)
-		if not tFav then
-			local tMax = C_AuctionHouse.HasMaxFavorites()
-			if tMax then
-				aLeaf.name = L["Your favorites list is full"]
-				return
-			end
+	if not C_AuctionHouse.FavoritesAreAvailable() then return end
+	local tLeaf = SkuOptions:InjectMenuItems(aParent, {L["Favorites"]}, SkuGenericMenuItem)
+	SkuOptions:MakeToggleNode(tLeaf, {
+		onLabel = L["yes"],
+		offLabel = L["no"],
+		get = function() return C_AuctionHouse.IsFavoriteItem(aItemKey) end,
+		set = function(_, aNew)
+			C_AuctionHouse.SetFavoriteItem(aItemKey, aNew)
+			gFavoritesChanged = true
+		end,
+		canChange = function(self)
+			if C_AuctionHouse.IsFavoriteItem(aItemKey) or not C_AuctionHouse.HasMaxFavorites() then return true end
+			self.ahfFull = true
+			return false
+		end,
+	})
+	local tRefresh = tLeaf.RefreshLiveName
+	tLeaf.RefreshLiveName = function(self)
+		tRefresh(self)
+		if self.ahfFull then
+			self.ahfFull = nil
+			self.name = self.name..";"..L["Your favorites list is full"]
 		end
-		C_AuctionHouse.SetFavoriteItem(aItemKey, not tFav)
-		-- the server confirms with AUCTION_HOUSE_FAVORITES_UPDATED; show the expected state right away
-		aLeaf.name = (not tFav) and L["Added to favorites"]
-			or L["Removed from favorites"]
-	end)
+	end
 end
+
+-- After a favourite was added or removed here, an open favourites list asks the server again once the server has
+-- stored the change, so going back to the list shows it as it is now.
+local gFavEventFrame = CreateFrame("Frame")
+gFavEventFrame:RegisterEvent("AUCTION_HOUSE_FAVORITES_UPDATED")
+gFavEventFrame:SetScript("OnEvent", function()
+	if not gFavoritesChanged then return end
+	gFavoritesChanged = nil
+	if gBrowse.entry and gBrowse.entry.ahfFavorites then AHF:StartFavorites(gBrowse.entry) end
+end)
 
 -- "Load more": the server hands out results in pages (HasFull*Results is false until all are in).
 local function tDetailIsComplete()
@@ -1866,13 +1871,14 @@ function AHF:BuildSearchEntries(aSelf)
 	tFilterEntry.BuildChildren = function(self)
 		self.children = {}
 		local tF = AHF:GetFilter()
-		local tYes, tNo = L["yes"], L["no"]
 		local function tToggle(aLabel, aKey)
-			local function tName() return aLabel..": "..(tF[aKey] and tYes or tNo) end
-			tSettingLeaf(self, tName(), function(aLeaf)
-				tF[aKey] = (not tF[aKey]) or nil
-				aLeaf.name = tName()
-			end)
+			local tLeaf = SkuOptions:InjectMenuItems(self, {aLabel}, SkuGenericMenuItem)
+			SkuOptions:MakeToggleNode(tLeaf, {
+				onLabel = L["yes"],
+				offLabel = L["no"],
+				get = function() return tF[aKey] end,
+				set = function(_, aNew) tF[aKey] = aNew or nil end,
+			})
 		end
 		tToggle(L["Usable only"], "usable")
 		tToggle(L["Upgrades only"], "upgrades")
@@ -1921,9 +1927,10 @@ function AHF:BuildSearchEntries(aSelf)
 	end
 
 	-- Favourite items (Blizzard: the star in the search bar); only where the server supports them.
-	if tFavoritesAvailable() then
+	if C_AuctionHouse.FavoritesAreAvailable() then
 		local tFavEntry = SkuOptions:InjectMenuItems(aSelf, {L["Favorites"]}, SkuGenericMenuItem)
 		tFavEntry.dynamic = true
+		tFavEntry.ahfFavorites = true
 		tMarkEntering(tFavEntry)
 		tFavEntry.BuildChildren = function(self)
 			self.children = {}
