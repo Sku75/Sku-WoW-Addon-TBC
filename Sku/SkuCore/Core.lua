@@ -5333,24 +5333,18 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 		SkuCore.GossipList = {}
 		local tOpenFrames = {}
 
-		-- Combat character mirror (C key): CharacterFrame is UIPanel-managed, so
-		-- ToggleCharacter/ShowUIPanel SILENTLY DEFERS in combat (never shows). The CSYNC route
-		-- instead does a direct CharacterFrame:Show() (not panel-managed -> works in combat,
-		-- same as the login PrimeCombatMirrors), which makes the slot buttons visible so the
-		-- visibility-gated IterateChildren (below, ~3218) can read them. But once we LEAVE the
-		-- char mirror (combatCharForceOpen cleared on SYNC/ANCHOR/ESC/leave), that manually
-		-- shown frame must be hidden again -- otherwise it counts as a second open window and
-		-- forces the "pick one" Local-root branch, breaking bag/trade auto-descend. Hide it
-		-- here, before collecting, so this is the single chokepoint for both directions.
-		if InCombatLockdown() and Sku then
-			local tCf = _G["CharacterFrame"]
-			if not Sku.combatCharForceOpen and tCf and tCf:IsShown() then
-				pcall(function() tCf:Hide() end)
-			end
-		end
+		-- Combat character mirror (C key, combatMenuKeys.lua CSYNC): the pane stays open for the
+		-- rest of the fight once the mirror opened it. Once we LEAVE the char mirror
+		-- (combatCharForceOpen cleared on SYNC/ANCHOR/ESC/leave) it must not count as an open
+		-- window -- otherwise it forces the "pick one" Local-root branch, breaking bag/trade
+		-- auto-descend. It is skipped here instead of hidden: in combat only secure code may
+		-- hide a UI panel, and a direct :Hide() runs its OnHide as Sku code (taints the player
+		-- frame bars on Forever, see SkuCore:PrimeCombatMirrors). CombatMenuKeysClear closes it
+		-- at combat end.
+		local tSkipChar = InCombatLockdown() and Sku and not Sku.combatCharForceOpen
 
 		for i, v in pairs(SkuCore.interactFramesList) do
-			if _G[v] then
+			if _G[v] and not (tSkipChar and v == "CharacterFrame") then
 				if _G[v]:IsVisible() == true then
 					table.insert(tOpenFrames, v)
 				end
