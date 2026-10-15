@@ -138,10 +138,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Category selector, used by both tabs. aCategories = { { id =, name = } ... }, aCurrentName() names the current
 -- category, aOnPick(category) stores the pick. Only data changes here: the search itself is restricted and runs from
--- the browse tab's "Refresh" macrotext.
+-- the browse tab's "Refresh" macrotext. aLabel names a selector of other choices of the same shape (default Category).
 ---------------------------------------------------------------------------------------------------------------------------------------
-function Shared.AddCategorySelect(aParent, aCategories, aCurrentName, aOnPick)
-   local tCat = Inject(aParent, L["Category"])
+function Shared.AddCategorySelect(aParent, aCategories, aCurrentName, aOnPick, aLabel)
+   local tCat = Inject(aParent, aLabel or L["Category"])
    tCat.dynamic = true
    tCat.isSelect = true
    tCat.noStepUpAfterSelect = true

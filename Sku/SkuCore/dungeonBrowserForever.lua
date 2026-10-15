@@ -327,6 +327,54 @@ local function tApplyRoles()
    })
 end
 
+-- Play style and voice chat are plain fields of Sku's own listing data. Picks made in Blizzard's dropdowns would count
+-- as addon code and block the window's own later Search, so Sku never opens those menus.
+local PLAYSTYLE_ORDER = {
+   Enum.LFGEntryGeneralPlaystyle.Learning,
+   Enum.LFGEntryGeneralPlaystyle.FunRelaxed,
+   Enum.LFGEntryGeneralPlaystyle.FunSerious,
+   Enum.LFGEntryGeneralPlaystyle.Expert,
+}
+local PLAYSTYLE_NAMES = {
+   [Enum.LFGEntryGeneralPlaystyle.Learning] = GROUP_FINDER_GENERAL_PLAYSTYLE1,
+   [Enum.LFGEntryGeneralPlaystyle.FunRelaxed] = GROUP_FINDER_GENERAL_PLAYSTYLE2,
+   [Enum.LFGEntryGeneralPlaystyle.FunSerious] = GROUP_FINDER_GENERAL_PLAYSTYLE3,
+   [Enum.LFGEntryGeneralPlaystyle.Expert] = GROUP_FINDER_GENERAL_PLAYSTYLE4,
+}
+-- Order and labels of Blizzard's voice chat dropdown (Blizzard_LFGVanilla_Listing.lua, LFGVanilla_VoiceChat.lua)
+local VOICE_MODE_ORDER = {
+   Enum.LFGEntryVoiceMode.None,
+   Enum.LFGEntryVoiceMode.Discord,
+   Enum.LFGEntryVoiceMode.Legacy,
+   Enum.LFGEntryVoiceMode.Custom,
+}
+local VOICE_MODE_NAMES = {
+   [Enum.LFGEntryVoiceMode.None] = VOICE_CHAT_MODE_NONE,
+   [Enum.LFGEntryVoiceMode.Legacy] = VOICE_CHAT_MODE_LEGACY,
+   [Enum.LFGEntryVoiceMode.Discord] = VOICE_CHAT_MODE_DISCORD,
+   [Enum.LFGEntryVoiceMode.Custom] = VOICE_CHAT_MODE_CUSTOM,
+}
+
+local function tPlaystyle()
+   local tStyle = tDB().generalPlaystyle
+   return PLAYSTYLE_NAMES[tStyle] and tStyle or nil
+end
+
+-- Without an own pick: Blizzard's default for a new listing, the voice chat the player is in right now.
+local function tVoiceMode()
+   local tMode = tDB().voiceMode
+   if VOICE_MODE_NAMES[tMode] then return tMode end
+   if not C_VoiceChat.GetActiveChannelID() then return Enum.LFGEntryVoiceMode.None end
+   return C_VoiceChat.GetActiveVoiceProviderID() == Enum.VoiceProviderID.Discord and Enum.LFGEntryVoiceMode.Discord or Enum.LFGEntryVoiceMode.Legacy
+end
+
+-- The fields Blizzard's own window sends (LFGListingMixin:CreateOrUpdateListing); the play style only on create.
+local function tListingData(aIDs, aCreate)
+   local tData = { activityIDs = aIDs, newPlayerFriendly = tDB().newPlayerFriendly and true or false, voiceMode = tVoiceMode() }
+   if aCreate then tData.generalPlaystyle = tPlaystyle() end
+   return tData
+end
+
 -- Check before posting what Blizzard's window checks too (LFGListingMixin:UpdatePostButtonEnableState) and say the
 -- reason instead of failing silently. Returns nil when everything is fine.
 local function tCheckPostable(aIDs)
@@ -364,6 +412,7 @@ local function tSeedFromActive()
    local ai = active.activityIDs[1] and tActivityInfo(active.activityIDs[1])
    if ai and ai.categoryID then d.listCategory = ai.categoryID end
    if not Sku.IsSecret(active.newPlayerFriendly) then d.newPlayerFriendly = active.newPlayerFriendly == true end
+   if not Sku.IsSecret(active.voiceMode) and VOICE_MODE_NAMES[active.voiceMode] then d.voiceMode = active.voiceMode end
 end
 
 -- Create the listing OR (when already listed) update it. Runs from macrotext (hardware event).
@@ -396,18 +445,18 @@ function DungeonBrowser:DoEnroll()
 
    local why = tCheckPostable(ids)
    if why then tSay(why, true); return end
+   -- Blizzard's Post button stays disabled until a play style is picked
+   if not listed and not tPlaystyle() then tSay(GROUP_FINDER_PLAYSTYLE_REQUIRED, true); return end
 
-   -- Exactly the fields Blizzard's own window sends (LFGListingMixin:CreateOrUpdateListing): activityIDs, newPlayerFriendly.
-   local data = { activityIDs = ids, newPlayerFriendly = d.newPlayerFriendly and true or false }
    local fn = listed and C_LFGList.UpdateListing or C_LFGList.CreateListing
-   local res = fn(data)
+   local res = fn(tListingData(ids, not listed))
    dprint("dungeonBrowser", listed and "UpdateListing" or "CreateListing", { count = #ids, res = tostring(res) })
    -- If the selection is rejected as a whole, try the activities one by one (a single unsuitable dungeon makes the
    -- game reject everything). All in the same key press (hardware event); the first one the game accepts is used
    -- and announced.
    if res == false and #ids > 1 then
       for _, id in ipairs(ids) do
-         if fn({ activityIDs = { id }, newPlayerFriendly = data.newPlayerFriendly }) ~= false then
+         if fn(tListingData({ id }, not listed)) ~= false then
             dprint("dungeonBrowser", "listing accepted for one activity", id)
             local ai = tActivityInfo(id)
             tSay(string.format(L["Only %s was accepted, the other dungeons were not."], (ai and ai.name) or tostring(id)))
@@ -664,6 +713,26 @@ local function tBuildCreateTab(aParent)
       local e = Inject(aParent, L["New player friendly"] .. (d.newPlayerFriendly == true and L[" (active)"] or ""))
       DungeonBrowser.tNpfEntry = e
       e.OnAction = function() DungeonBrowser:OnToggleNPF() end
+   end
+
+   -- Play style (needed to create; an update keeps the listing's play style, like Blizzard's window)
+   if not listed then
+      local tStyles = {}
+      for _, tStyle in ipairs(PLAYSTYLE_ORDER) do tStyles[#tStyles + 1] = { id = tStyle, name = PLAYSTYLE_NAMES[tStyle] } end
+      Shared.AddCategorySelect(aParent, tStyles, function() return PLAYSTYLE_NAMES[tPlaystyle()] or GROUP_FINDER_PLAYSTYLE_REQUIRED end, function(c)
+         tDB().generalPlaystyle = c.id
+         tSay(c.name, true)
+      end, L["Play style"])
+   end
+
+   -- Voice chat
+   do
+      local tModes = {}
+      for _, tMode in ipairs(VOICE_MODE_ORDER) do tModes[#tModes + 1] = { id = tMode, name = VOICE_MODE_NAMES[tMode] } end
+      Shared.AddCategorySelect(aParent, tModes, function() return VOICE_MODE_NAMES[tVoiceMode()] end, function(c)
+         tDB().voiceMode = c.id
+         tSay(c.name, true)
+      end, VOICE_CHAT)
    end
 
    -- Activities of the chosen category, as submenus per activity group. Built before the level filter entry so that
