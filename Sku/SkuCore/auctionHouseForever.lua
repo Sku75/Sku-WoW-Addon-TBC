@@ -731,7 +731,7 @@ end
 
 -- Sets the tooltip text on the menu entry (built on reading) and the item reference for the comparison with the equipped item.
 local function tSetAhTooltip(aEntry, aItemKey, aLink)
-	aEntry.itemId = aLink or (aItemKey and aItemKey.itemID)
+	aEntry.itemId = aLink or aItemKey.itemID
 	aEntry.textFirstLine = aEntry.name
 	aEntry.textFull = function()
 		local tText = tAhItemTooltipText(aItemKey, aLink)
@@ -1502,7 +1502,7 @@ end
 -- A list (gOwned, gBids) has a state (idle, waiting, done, failed), its rows, the menu entry showing it and the
 -- function sending its query.
 local function tCursorDeeperThan(aEntry)
-	local tDepth, tPos = 0, SkuOptions and SkuOptions.currentMenuPosition
+	local tDepth, tPos = 0, SkuOptions.currentMenuPosition
 	while tPos and tPos ~= aEntry and tDepth < 10 do
 		tPos = tPos.parent
 		tDepth = tDepth + 1
@@ -1636,9 +1636,9 @@ end
 
 local function tOwnedRowLabel(aRow)
 	local tI = aRow.info
-	local tSold = Enum.AuctionStatus and tI.status == Enum.AuctionStatus.Sold
+	local tSold = tI.status == Enum.AuctionStatus.Sold
 	local tParts = { aRow.name }
-	if (tI.quantity or 1) > 1 then tParts[#tParts + 1] = tI.quantity.."x" end
+	if tI.quantity > 1 then tParts[#tParts + 1] = tI.quantity.."x" end
 	if tSold then
 		tParts[#tParts + 1] = L["sold"]
 		if tI.buyoutAmount and tI.buyoutAmount > 0 then tParts[#tParts + 1] = tMoneyText(tI.buyoutAmount) end
@@ -1664,7 +1664,7 @@ local function tAddOwnedRow(aParent, aRow)
 	tE.BuildChildren = function(self)
 		self.children = {}
 		local tI = self.data.info
-		if Enum.AuctionStatus and tI.status == Enum.AuctionStatus.Sold then
+		if tI.status == Enum.AuctionStatus.Sold then
 			local tS = SkuOptions:InjectMenuItems(self, {L["Sold, the money arrives by mail"]}, SkuGenericMenuItem)
 			tS.dynamic = false
 			return
