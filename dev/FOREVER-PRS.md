@@ -34,9 +34,11 @@ Was jetzt noch kommt:
   ist.
 - **Der Installer** (Forever-Unterstützung) kommt vom Maintainer, siehe
   „Installer“ unten.
-- **Das Release** mit Forever-Unterstützung ist Sku 44.0, sobald Installer und
-  Tests so weit sind. Versionsnummer, Patch-Notes und Release macht der
-  Maintainer.
+- **Das Release** mit Forever-Unterstützung ist Sku 44.0. Es kommt erst, wenn
+  auch die **Spieldaten für Forever** da sind (Routen, Objekte, NPCs, Quests,
+  siehe „Spätere eigene Projekte“): Ohne sie ist selbstständiges Spielen auf
+  Forever nicht möglich. Dazu Installer und Tests. Versionsnummer, Patch-Notes
+  und Release macht der Maintainer.
 - **Größere Themen** sind eigene Projekte, nicht Teil dieser Reihe, und werden
   vorher abgesprochen (Abschnitt „Spätere eigene Projekte“).
 
@@ -563,6 +565,10 @@ riskant er für Anniversary/Era ist.
 Jedes davon wird erst geplant und mit dem Maintainer abgesprochen, bevor
 jemand baut.
 
+- **Spieldaten für Forever:** Routendaten und aktuelle Objekt-, NPC- und
+  Questdaten für Forever, großteils aus der Umsetzung in WowVision. Ohne diese
+  Daten ist selbstständiges Spielen auf Forever nicht möglich; deshalb kommt
+  das Release 44.0 erst danach. Kommt irgendwann, Zeitpunkt offen.
 - **Kampf-Bedienung auf Forever:** Skus sichere Kampfmenüs (Taschen, Handel,
   Charakter im Kampf) hängen an geschützten Aufrufen und geheimen Werten. Dort
   bricht vermutlich noch einiges; das ist ein eigenes Thema, nicht nebenbei.
