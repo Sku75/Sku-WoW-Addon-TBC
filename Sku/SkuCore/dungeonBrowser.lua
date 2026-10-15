@@ -144,7 +144,8 @@ local function tActivityInfo(activityID)
    local ok, t = pcall(_G.C_LFGList.GetActivityInfoTable, activityID)
    if not ok or type(t) ~= "table" then return nil end
    local info = { id = activityID }
-   info.name       = t.shortName or t.fullName or (deEn("Aktivität #", "Activity #") .. activityID)
+   -- shortName is often empty, not nil (LFGUtil_GetActivityInfoName)
+   info.name       = (t.shortName ~= "" and t.shortName) or (t.fullName ~= "" and t.fullName) or (deEn("Aktivität #", "Activity #") .. activityID)
    info.fullName   = t.fullName or t.shortName
    info.minLevel   = (type(t.minLevelSuggestion) == "number" and t.minLevelSuggestion > 0 and t.minLevelSuggestion)
                      or (type(t.minLevel) == "number" and t.minLevel > 0 and t.minLevel) or nil
