@@ -26,8 +26,6 @@ local DIFFICULTY_LABEL = {
 	trivial = L["trivial"],
 }
 
-SkuCore.recipeListSig = SkuCore.recipeListSig or {}
-
 local function tSpeak(aText)
 	SkuOptions.Voice:OutputStringBTtts(aText, false, true, 0.1)
 end
