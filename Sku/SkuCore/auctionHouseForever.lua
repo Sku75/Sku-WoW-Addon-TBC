@@ -518,14 +518,63 @@ end
 -- Must run directly inside a real keypress handler (OnAction), same
 -- requirement the legacy module's buy path already relies on elsewhere.
 -- ---------------------------------------------------------------------
+-- Sku's own buyout or bid in flight. The server answers a buyout with AUCTION_HOUSE_PURCHASE_COMPLETED(auctionID),
+-- a bid with BID_ADDED, a refusal of either with AUCTION_HOUSE_SHOW_ERROR (the events Blizzard's BUYOUT_AUCTION
+-- popup waits for). Nothing is spoken when the call goes out: the answer is the result.
+local gItemPurchase = { auctionID = nil, name = nil, isBuyout = false }
+
 function AHF:BuyItemAuction(aAuctionID, aBuyoutAmount, aName)
 	local tNamePrefix = aName and (aName..": ") or ""
-	if (GetMoney() or 0) < (aBuyoutAmount or 0) then
+	if GetMoney() < aBuyoutAmount then
 		tSay(tNamePrefix..L["Not enough money"])
 		return
 	end
+	gItemPurchase.auctionID, gItemPurchase.name, gItemPurchase.isBuyout = aAuctionID, aName, true
+	dprint("ahf", "buyout", aAuctionID, aBuyoutAmount)
 	C_AuctionHouse.PlaceBid(aAuctionID, aBuyoutAmount)
-	tSay(tNamePrefix..L["Purchase started"])
+end
+
+function AHF:OnItemPurchaseCompleted(aAuctionID)
+	if aAuctionID ~= gItemPurchase.auctionID then return end
+	gItemPurchase.auctionID = nil
+	tSay((gItemPurchase.name and (gItemPurchase.name..": ") or "")..L["Purchase complete"])
+	-- The bought auction leaves the detail list: fresh listings, as Blizzard's RefreshSearchResults after a purchase.
+	if gDetail.state == "idle" or not gDetail.itemKey then return end
+	for _, tRow in ipairs(gDetail.results) do
+		if tRow.auctionID == aAuctionID then
+			C_AuctionHouse.SendSearchQuery(gDetail.itemKey, {}, false)
+			return
+		end
+	end
+end
+
+-- AUCTION_HOUSE_SHOW_ERROR carries only the error code, and Blizzard shows it only in UIErrorsFrame (no
+-- UI_ERROR_MESSAGE, so Sku never hears it there). It answers Sku's own buyout or bid in flight first, then a
+-- commodity purchase, else a browse or detail query still waiting.
+function AHF:OnShowError(aError)
+	local tText = AuctionHouseUtil.GetErrorText(aError)
+	dprint("ahf", "SHOW_ERROR", aError, tText)
+	if gItemPurchase.auctionID then
+		gItemPurchase.auctionID = nil
+		if tText == "" then tText = gItemPurchase.isBuyout and L["Purchase failed"] or L["Bid failed"] end
+		tSay((gItemPurchase.name and (gItemPurchase.name..": ") or "")..tText)
+		return
+	end
+	if gCommodityBuy.itemID then
+		tSay(tText ~= "" and tText or L["Purchase failed"])
+		return
+	end
+	-- A rejected browse/detail query: the error becomes the waiting leaf, so the rebuild reads it out.
+	local tFailed = false
+	for _, tState in ipairs({ gBrowse, gDetail }) do
+		if tState.state == "waiting" and not tState.pendingSend then
+			tState.state = "failed"
+			tState.failText = tText ~= "" and tText or ERR_AUCTION_DATABASE_ERROR
+			tRebuildAndFocus(tState.entry)
+			tFailed = true
+		end
+	end
+	if not tFailed and tText ~= "" then tSay(tText) end
 end
 
 -- ---------------------------------------------------------------------
@@ -637,7 +686,7 @@ for _, tEvent in ipairs({
 	"AUCTION_HOUSE_THROTTLED_SYSTEM_READY", "ITEM_KEY_ITEM_INFO_RECEIVED",
 	"ITEM_SEARCH_RESULTS_UPDATED", "ITEM_SEARCH_RESULTS_ADDED", "COMMODITY_SEARCH_RESULTS_UPDATED", "COMMODITY_SEARCH_RESULTS_ADDED",
 	"COMMODITY_PRICE_UPDATED", "COMMODITY_PRICE_UNAVAILABLE", "COMMODITY_PURCHASE_SUCCEEDED", "COMMODITY_PURCHASE_FAILED",
-	"AUCTION_HOUSE_SHOW_ERROR", "AUCTION_HOUSE_CLOSED",
+	"AUCTION_HOUSE_SHOW_ERROR", "AUCTION_HOUSE_PURCHASE_COMPLETED", "BID_ADDED", "AUCTION_HOUSE_CLOSED",
 }) do
 	if Sku.IsEventValid(tEvent) then gEventFrame:RegisterEvent(tEvent) end
 end
@@ -681,12 +730,16 @@ gEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	elseif aEvent == "COMMODITY_PURCHASE_FAILED" then
 		AHF:OnCommodityPurchaseDone(false)
 	elseif aEvent == "AUCTION_HOUSE_SHOW_ERROR" then
-		-- Never leave "Warten" stuck on a rejected browse/detail query.
-		if gBrowse.state == "waiting" then gBrowse.state = "done"; tRebuildAndFocus(gBrowse.entry) end
-		if gDetail.state == "waiting" then gDetail.state = "done"; tRebuildAndFocus(gDetail.entry) end
+		AHF:OnShowError(...)
+	elseif aEvent == "AUCTION_HOUSE_PURCHASE_COMPLETED" then
+		AHF:OnItemPurchaseCompleted(...)
+	elseif aEvent == "BID_ADDED" then
+		-- The bid went through; the bids list announces it.
+		if not gItemPurchase.isBuyout then gItemPurchase.auctionID = nil end
 	elseif aEvent == "AUCTION_HOUSE_CLOSED" then
 		if gCommodityBuy.itemID then C_AuctionHouse.CancelCommoditiesPurchase() end
 		gBrowse.state, gDetail.state, gCommodityBuy.itemID = "idle", "idle", nil
+		gItemPurchase.auctionID = nil
 		gBrowse.entry, gBrowse.results, gDetail.entry, gDetail.itemKey, gDetail.results = nil, {}, nil, nil, {}
 		gBrowse.pendingSend, gDetail.pendingSend = nil, nil
 		wipe(gThrottleWaiting)
@@ -782,12 +835,13 @@ function AHF:PlaceItemBid(aRow, aAmount, aName)
 		tSay(tPrefix..L["The bid is too low, at least "]..tMoneyText(aRow.minBid))
 		return
 	end
-	if (GetMoney() or 0) < aAmount then
+	if GetMoney() < aAmount then
 		tSay(tPrefix..L["Not enough money"])
 		return
 	end
+	gItemPurchase.auctionID, gItemPurchase.name, gItemPurchase.isBuyout = aRow.auctionID, aName, false
+	dprint("ahf", "bid", aRow.auctionID, aAmount)
 	C_AuctionHouse.PlaceBid(aRow.auctionID, aAmount)
-	tSay(tPrefix..L["Bid sent: "]..tMoneyText(aAmount))
 end
 
 -- The three bid leaves shared by the item detail and "My bids": bid the minimum, set an
