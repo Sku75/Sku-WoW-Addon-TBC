@@ -31,7 +31,9 @@ function IsMacClient() return false end
 function PlaySoundFile() return false end
 function StopSound() end
 SkuOptions = { TTS = { GetLinksTableFromString = function() end }, db = { profile = { SkuOptions = { useBlizzTtsInMenu = true } } } }
-Sku = { AudiodataPath = "", L = {} }
+-- SECRETMARKS=1: every bookmark name counts as secret, as on Forever for an utterance with secret text.
+local secretMarks = os.getenv("SECRETMARKS") == "1"
+Sku = { AudiodataPath = "", L = {}, IsSecret = function(v) return secretMarks and (v == "Start" or v == "End") end }
 gsub, strfind, strsub, strlen, strlower, strupper, format, tinsert, tremove, strtrim = string.gsub, string.find, string.sub, string.len, string.lower, string.upper, string.format, table.insert, table.remove, function(s) return (s:gsub('^%s+',''):gsub('%s+$','')) end
 wipe = function(t) for k in pairs(t) do t[k] = nil end end
 

@@ -1101,12 +1101,10 @@ function SkuVoice:Create()
 			-- for the same utterance, and believing that one releases the next letter
 			-- before this one has made a sound. FINISHED/FAILED above still backstop.
 			local tMarkId, tMark = ...
-			-- An utterance with secret text (SkuVoice:SpeakSecretText) reports secret bookmarks: they cannot be compared.
-			-- The utterance in the client is ours then, so it counts as proof of life, nothing more.
-			if issecretvalue and (issecretvalue(tMarkId) or issecretvalue(tMark)) then
-				if mClientGate.outstanding then mClientGate.at = GetTime() end
-				tMarkId, tMark = nil, nil
-			end
+			-- Secret text (SkuVoice:SpeakSecretText, or Blizzard's own combat audio alerts) gets a secret bookmark NAME
+			-- (VoiceChatDocumentation: bookmarkName ConditionalSecret, utteranceID never secret). The name cannot be
+			-- compared; the id still says whose utterance it is, so the proof of life below stays.
+			if Sku.IsSecret(tMark) then tMark = nil end
 			if mClientGate.outstanding and mClientGate.id ~= nil and tMarkId == mClientGate.id then
 				-- [v43.5e] ★A bookmark is PROOF OF LIFE ONLY -- it must never open the
 				-- gate. Gating on "End" was wrong twice over, and it is what kept the
