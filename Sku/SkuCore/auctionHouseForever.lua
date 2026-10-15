@@ -421,7 +421,12 @@ function AHF:RefreshBrowseResults()
 		end
 	end
 	gBrowse.results = tRows
-	gBrowse.state = tStillPending and "waiting" or "done"
+	-- Names still loading: the list is rebuilt once, when the last one is in.
+	if tStillPending then
+		gBrowse.state = "waiting"
+		return
+	end
+	gBrowse.state = "done"
 	tRebuildAndFocus(gBrowse.entry)
 	gBrowse.focusIndex = nil
 end
@@ -656,7 +661,14 @@ gEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 			tRebuildAndFocus(gBrowse.entry)
 		end
 	elseif aEvent == "ITEM_KEY_ITEM_INFO_RECEIVED" then
-		if gBrowse.state == "waiting" then AHF:RefreshBrowseResults() end
+		-- Fires once per item name, hundreds of times for a big result: one refresh per frame.
+		if gBrowse.state == "waiting" and gBrowse.answered and not gBrowse.refreshQueued then
+			gBrowse.refreshQueued = true
+			C_Timer.After(0, function()
+				gBrowse.refreshQueued = nil
+				AHF:RefreshBrowseResults()
+			end)
+		end
 	elseif aEvent == "ITEM_SEARCH_RESULTS_UPDATED" or aEvent == "ITEM_SEARCH_RESULTS_ADDED" then
 		local tKey = ...
 		local tItemID = type(tKey) == "table" and tKey.itemID or nil
