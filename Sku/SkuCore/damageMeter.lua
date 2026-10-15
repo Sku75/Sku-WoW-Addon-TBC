@@ -186,7 +186,7 @@ local function BuildCombatTooltip(aCombat, aName, aAll)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Forever: the game's built-in damage meter (C_DamageMeter), used when the Details addon is not installed.
+-- Forever: the game's built-in damage meter (C_DamageMeter).
 -- In combat the API returns secret values that Sku must not read; a hint is spoken instead of the numbers.
 local function RoundedAmount(aNumber)
    if type(aNumber) ~= "number" or Sku.IsSecret(aNumber) then return nil end
@@ -300,10 +300,12 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function DamageMeter:DamageMeterMenuBuilder()
    if SkuCore.DamageMeter and not SkuCore.DamageMeter:IsEnabled() then return end
+   -- Forever restricts COMBAT_LOG_EVENT_UNFILTERED for addons, the combat log Details
+   -- reads; the game's own meter is the data source there even with Details installed.
+   if Sku.isForever and C_DamageMeter then
+      return NativeMenuBuilder(self)
+   end
    if Details == nil then
-      if Sku.isForever and C_DamageMeter then
-         return NativeMenuBuilder(self)
-      end
       SkuOptions:InjectMenuItems(self, {L["Details addon not installed"]}, SkuGenericMenuItem)
       return
    end
