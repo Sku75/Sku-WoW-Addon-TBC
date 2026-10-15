@@ -6834,14 +6834,6 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								end
 							end							
 
-							if SkuCore.AuctionHouseOpen == true and aGossipListTable[index].obj then
-								if aGossipListTable[index].obj:GetParent() then
-									if string.find(aGossipListTable[index].obj:GetName() or "", "ContainerFrame") or string.find(aGossipListTable[index].obj:GetParent():GetName() or "", "ContainerFrame") then
-										SkuCore:AuctionHouseBuildItemSellMenu(tNewMenuEntry, aGossipListTable[index])
-									end
-								end
-							end
-
 							-- Container-API migration: migrated bag/bank items carry no rendered
 							-- button, so `.obj` is nil -- read the item id from the entry's own
 							-- .itemId (set in Build_BagsFrame) and only fall back to the old
