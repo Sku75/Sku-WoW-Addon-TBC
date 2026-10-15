@@ -1548,6 +1548,7 @@ local function tStartListQuery(aList, aEntry)
 	aList.state = "waiting"
 	aList.entry = aEntry
 	aList.rows = {}
+	aList.namePending = nil
 	aList.generation = aList.generation + 1
 	if C_AuctionHouse.IsThrottledMessageSystemReady() then
 		tSendListQuery(aList)
@@ -1556,9 +1557,23 @@ local function tStartListQuery(aList, aEntry)
 	end
 end
 
+-- Item name of an owned auction or a bid: from its link, else from its item key. Not cached yet: Blizzard's
+-- "Retrieving item information", and the list is read again on ITEM_KEY_ITEM_INFO_RECEIVED.
+local function tListItemName(aList, aInfo)
+	local tName = aInfo.itemLink and aInfo.itemLink:match("%[(.-)%]")
+	if not tName then
+		local tKeyInfo = C_AuctionHouse.GetItemKeyInfo(aInfo.itemKey)
+		tName = tKeyInfo and tKeyInfo.itemName
+	end
+	if tName then return tName end
+	aList.namePending = true
+	return RETRIEVING_ITEM_INFO
+end
+
 -- Reads a list after its update event. aRead(i) returns the row for entry i, or nil.
 local function tReadList(aList, aNum, aRead)
 	if aList.state == "idle" or not aList.entry then return end
+	aList.namePending = nil
 	local tRows = {}
 	for i = 1, aNum do
 		local tRow = aRead(i)
@@ -1615,13 +1630,7 @@ function AHF:RefreshOwned()
 	tReadList(gOwned, C_AuctionHouse.GetNumOwnedAuctions(), function(i)
 		local tInfo = C_AuctionHouse.GetOwnedAuctionInfo(i)
 		if not tInfo then return nil end
-		local tName
-		if tInfo.itemLink then tName = tInfo.itemLink:match("%[(.-)%]") end
-		if not tName and tInfo.itemKey then
-			local tK = C_AuctionHouse.GetItemKeyInfo(tInfo.itemKey, false)
-			if tK then tName = tK.itemName end
-		end
-		return { info = tInfo, name = tName or ("Item "..tostring(tInfo.itemKey and tInfo.itemKey.itemID)) }
+		return { info = tInfo, name = tListItemName(gOwned, tInfo) }
 	end)
 end
 
@@ -1693,14 +1702,8 @@ function AHF:RefreshBids()
 	tReadList(gBids, C_AuctionHouse.GetNumBids(), function(i)
 		local tInfo = C_AuctionHouse.GetBidInfo(i)
 		if not tInfo then return nil end
-		local tName
-		if tInfo.itemLink then tName = tInfo.itemLink:match("%[(.-)%]") end
-		if not tName and tInfo.itemKey then
-			local tK = C_AuctionHouse.GetItemKeyInfo(tInfo.itemKey, false)
-			if tK then tName = tK.itemName end
-		end
 		return {
-			name = tName or ("Item "..tostring(tInfo.itemKey and tInfo.itemKey.itemID)),
+			name = tListItemName(gBids, tInfo),
 			auctionID = tInfo.auctionID,
 			bidAmount = tInfo.bidAmount,
 			minBid = tInfo.minBid,
@@ -1764,6 +1767,7 @@ local gListEventFrame = CreateFrame("Frame")
 gListEventFrame:RegisterEvent("BIDS_UPDATED")
 gListEventFrame:RegisterEvent("BID_ADDED")
 gListEventFrame:RegisterEvent("AUCTION_HOUSE_THROTTLED_SYSTEM_READY")
+gListEventFrame:RegisterEvent("ITEM_KEY_ITEM_INFO_RECEIVED")
 gListEventFrame:RegisterEvent("AUCTION_HOUSE_CLOSED")
 gListEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	if aEvent == "BIDS_UPDATED" then
@@ -1784,6 +1788,9 @@ gListEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 				break
 			end
 		end
+	elseif aEvent == "ITEM_KEY_ITEM_INFO_RECEIVED" then
+		if gOwned.namePending then AHF:RefreshOwned() end
+		if gBids.namePending then AHF:RefreshBids() end
 	elseif aEvent == "AUCTION_HOUSE_CLOSED" then
 		gBids.state, gBids.entry, gBids.rows, gBids.pendingSend = "idle", nil, {}, nil
 		gOwned.pendingSend, gOwned.notice = nil, nil
