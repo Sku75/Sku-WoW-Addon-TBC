@@ -259,7 +259,9 @@ function DamageMeter:NativeMenuBuilder()
    end
    local tAvailable, tReason = C_DamageMeter.IsDamageMeterAvailable()
    if tAvailable ~= true then
-      SkuOptions:InjectMenuItems(self, {L["Damage meter not available"]..": "..tostring(tReason or "")}, SkuGenericMenuItem)
+      local tText = L["Damage meter not available"]
+      if tReason ~= "" then tText = tText..": "..tReason end
+      SkuOptions:InjectMenuItems(self, {tText}, SkuGenericMenuItem)
       return
    end
 
