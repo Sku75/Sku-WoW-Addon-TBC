@@ -395,9 +395,14 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Access: Forever redirects "Achievements" (ToggleAchievementFrame) to the legacy window; it has a key of its own
--- (TOGGLELEGACYSYSTEM). The command /skulegacy opens it regardless of the key binding.
+-- (TOGGLELEGACYSYSTEM). The command /skulegacy opens it regardless of the key binding. ToggleLegacySystemUI does nothing
+-- while the legacy system is locked (renown level 0, Blizzard_LegacySystem_Bootstrap.lua); then the command says why,
+-- with the text of Blizzard's disabled micro button.
 SLASH_SKULEGACY1 = "/skulegacy"
 SlashCmdList["SKULEGACY"] = function()
-	local tToggle = ToggleLegacySystemUI or ToggleAchievementFrame
-	if tToggle then tToggle() end
+	if C_MajorFactions.GetCurrentRenownLevel(Constants.LegacyConsts.LEGACY_REWARD_TRACK_FACTION_ID) <= 0 then
+		tSay(LEGACY_MICRO_BUTTON_LOCKED_TOOLTIP)
+		return
+	end
+	ToggleLegacySystemUI()
 end
