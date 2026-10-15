@@ -1497,7 +1497,10 @@ local function tBuildSellList(aSelf)
 	end
 end
 
--- ---- Own auctions ---------------------------------------------------
+-- ---- Own auctions and own bids ----------------------------------------
+-- Both are lists the server sends on request: QueryOwnedAuctions -> OWNED_AUCTIONS_UPDATED, QueryBids -> BIDS_UPDATED.
+-- A list (gOwned, gBids) has a state (idle, waiting, done, failed), its rows, the menu entry showing it and the
+-- function sending its query.
 local function tCursorDeeperThan(aEntry)
 	local tDepth, tPos = 0, SkuOptions and SkuOptions.currentMenuPosition
 	while tPos and tPos ~= aEntry and tDepth < 10 do
@@ -1507,41 +1510,94 @@ local function tCursorDeeperThan(aEntry)
 	return tPos == aEntry and tDepth >= 2
 end
 
-function AHF:StartOwnedQuery(aEntry)
-	gOwned.state = "waiting"
-	gOwned.entry = aEntry
-	gOwned.generation = gOwned.generation + 1
-	local tGen = gOwned.generation
-	C_AuctionHouse.QueryOwnedAuctions({})
+-- Rebuilds the entry showing aList, unless the cursor stands inside one of its rows: that row's entries would be
+-- replaced under the cursor.
+local function tShowList(aList)
+	if not tCursorDeeperThan(aList.entry) then tRebuildAndFocus(aList.entry) end
+end
+
+local function tSendListQuery(aList)
+	aList.pendingSend = nil
+	aList.send()
+	local tGen = aList.generation
 	C_Timer.After(6, function()
-		if gOwned.generation == tGen and gOwned.state == "waiting" then
-			gOwned.state = "done"
-			tRebuildAndFocus(gOwned.entry)
+		if aList.generation == tGen and aList.state == "waiting" then
+			dprint("ahf", "list query unanswered", aList.name)
+			aList.state = "failed"
+			tShowList(aList)
 		end
 	end)
 end
 
-function AHF:RefreshOwned()
-	if gOwned.state == "idle" or not gOwned.entry then return end
-	local tRows = {}
-	local tNum = C_AuctionHouse.GetNumOwnedAuctions()
-	if tNum then
-		for i = 1, tNum do
-			local tInfo = C_AuctionHouse.GetOwnedAuctionInfo(i)
-			if tInfo then
-				local tName
-				if tInfo.itemLink then tName = tInfo.itemLink:match("%[(.-)%]") end
-				if not tName and tInfo.itemKey then
-					local tK = C_AuctionHouse.GetItemKeyInfo(tInfo.itemKey, false)
-					if tK then tName = tK.itemName end
-				end
-				tRows[#tRows + 1] = { info = tInfo, name = tName or ("Item "..tostring(tInfo.itemKey and tInfo.itemKey.itemID)) }
-			end
-		end
+-- The old rows go at once: until the answer is in, the list says "Warten", never shows rows of an earlier query.
+-- The game drops a query sent while its throttled message system is not ready, without any answer; such a query is
+-- sent on AUCTION_HOUSE_THROTTLED_SYSTEM_READY. No answer within 6 seconds of sending = failed.
+local function tStartListQuery(aList, aEntry)
+	aList.state = "waiting"
+	aList.entry = aEntry
+	aList.rows = {}
+	aList.generation = aList.generation + 1
+	if C_AuctionHouse.IsThrottledMessageSystemReady() then
+		tSendListQuery(aList)
+	else
+		aList.pendingSend = true
 	end
-	gOwned.rows = tRows
-	gOwned.state = "done"
-	if not tCursorDeeperThan(gOwned.entry) then tRebuildAndFocus(gOwned.entry) end
+end
+
+-- Reads a list after its update event. aRead(i) returns the row for entry i, or nil.
+local function tReadList(aList, aNum, aRead)
+	if aList.state == "idle" or not aList.entry then return end
+	local tRows = {}
+	for i = 1, aNum do
+		local tRow = aRead(i)
+		if tRow then tRows[#tRows + 1] = tRow end
+	end
+	aList.rows = tRows
+	aList.state = "done"
+	tShowList(aList)
+end
+
+-- BuildChildren of the entry showing aList: entering it sends the query, merely landing on it builds nothing.
+-- aAddRow(aParent, aRow) adds the entry of one row.
+local function tBuildListEntry(aList, aSelf, aEmptyText, aAddRow)
+	if aSelf.ahfEntering then
+		tStartListQuery(aList, aSelf)
+	elseif aList.entry ~= aSelf then
+		aSelf.children = {}
+		return
+	end
+	aSelf.children = {}
+	local tText = (aList.state == "waiting" and L["Warten"])
+		or (aList.state == "failed" and L["No answer from the server, open the list again"])
+		or (#aList.rows == 0 and aEmptyText)
+	if tText then
+		local tE = SkuOptions:InjectMenuItems(aSelf, {tText}, SkuGenericMenuItem)
+		tE.dynamic = false
+		return
+	end
+	for _, tRow in ipairs(aList.rows) do aAddRow(aSelf, tRow) end
+end
+
+-- ---- Own auctions ---------------------------------------------------
+gOwned.name = "owned"
+gOwned.send = function() C_AuctionHouse.QueryOwnedAuctions({}) end
+
+function AHF:StartOwnedQuery(aEntry)
+	tStartListQuery(gOwned, aEntry)
+end
+
+function AHF:RefreshOwned()
+	tReadList(gOwned, C_AuctionHouse.GetNumOwnedAuctions(), function(i)
+		local tInfo = C_AuctionHouse.GetOwnedAuctionInfo(i)
+		if not tInfo then return nil end
+		local tName
+		if tInfo.itemLink then tName = tInfo.itemLink:match("%[(.-)%]") end
+		if not tName and tInfo.itemKey then
+			local tK = C_AuctionHouse.GetItemKeyInfo(tInfo.itemKey, false)
+			if tK then tName = tK.itemName end
+		end
+		return { info = tInfo, name = tName or ("Item "..tostring(tInfo.itemKey and tInfo.itemKey.itemID)) }
+	end)
 end
 
 local function tOwnedRowLabel(aRow)
@@ -1566,99 +1622,64 @@ local function tOwnedRowLabel(aRow)
 	return table.concat(tParts, ", ")
 end
 
-local function tAppendOwnedChildren(aParent)
-	if gOwned.entry ~= aParent then return end
-	if gOwned.state == "waiting" then
-		local tW = SkuOptions:InjectMenuItems(aParent, {L["Warten"]}, SkuGenericMenuItem)
-		tW.dynamic = false
-		return
-	end
-	if #gOwned.rows == 0 then
-		local tNone = SkuOptions:InjectMenuItems(aParent, {L["No current sales"]}, SkuGenericMenuItem)
-		tNone.dynamic = false
-		return
-	end
-	for _, tRow in ipairs(gOwned.rows) do
-		local tE = SkuOptions:InjectMenuItems(aParent, {tOwnedRowLabel(tRow)}, SkuGenericMenuItem)
-		tE.dynamic = true
-		tE.data = tRow
-		tE.BuildChildren = function(self)
-			self.children = {}
-			local tI = self.data.info
-			if Enum.AuctionStatus and tI.status == Enum.AuctionStatus.Sold then
-				local tS = SkuOptions:InjectMenuItems(self, {L["Sold, the money arrives by mail"]}, SkuGenericMenuItem)
-				tS.dynamic = false
-				return
-			end
-			local tArmed = false
-			tSettingLeaf(self, L["Cancel auction"], function(aLeaf)
-				if not tArmed then
-					tArmed = true
-					local tText = L["Really cancel? Press Enter again"]
-					local tCost = C_AuctionHouse.GetCancelCost(tI.auctionID)
-					if tonumber(tCost) and tCost > 0 then
-						tText = tText..", "..L["cost "]..tMoneyText(tCost)
-					end
-					aLeaf.name = tText
-				else
-					tArmed = false
-					C_AuctionHouse.CancelAuction(tI.auctionID)
-					aLeaf.name = L["Cancel sent"]
-				end
-			end)
+local function tAddOwnedRow(aParent, aRow)
+	local tE = SkuOptions:InjectMenuItems(aParent, {tOwnedRowLabel(aRow)}, SkuGenericMenuItem)
+	tE.dynamic = true
+	tE.data = aRow
+	tE.BuildChildren = function(self)
+		self.children = {}
+		local tI = self.data.info
+		if Enum.AuctionStatus and tI.status == Enum.AuctionStatus.Sold then
+			local tS = SkuOptions:InjectMenuItems(self, {L["Sold, the money arrives by mail"]}, SkuGenericMenuItem)
+			tS.dynamic = false
+			return
 		end
+		local tArmed = false
+		tSettingLeaf(self, L["Cancel auction"], function(aLeaf)
+			if not tArmed then
+				tArmed = true
+				local tText = L["Really cancel? Press Enter again"]
+				local tCost = C_AuctionHouse.GetCancelCost(tI.auctionID)
+				if tonumber(tCost) and tCost > 0 then
+					tText = tText..", "..L["cost "]..tMoneyText(tCost)
+				end
+				aLeaf.name = tText
+			else
+				tArmed = false
+				C_AuctionHouse.CancelAuction(tI.auctionID)
+				aLeaf.name = L["Cancel sent"]
+			end
+		end)
 	end
 end
 
 -- ---- My bids (Blizzard: Auctions tab > Bids) -------------------------------
 -- Auctions the player has bid on. QueryBids -> BIDS_UPDATED -> GetBidInfo(i). A row says whether
 -- the player is still the highest bidder or was outbid, and offers buyout / raising the bid.
-local gBids = { state = "idle", rows = {}, entry = nil, generation = 0 }
-
-function AHF:StartBidsQuery(aEntry)
-	gBids.state = "waiting"
-	gBids.entry = aEntry
-	gBids.generation = gBids.generation + 1
-	local tGen = gBids.generation
-	C_AuctionHouse.QueryBids({}, {})
-	C_Timer.After(6, function()
-		if gBids.generation == tGen and gBids.state == "waiting" then
-			gBids.state = "done"
-			tRebuildAndFocus(gBids.entry)
-		end
-	end)
-end
+local gBids = { name = "bids", state = "idle", rows = {}, entry = nil, generation = 0 }
+gBids.send = function() C_AuctionHouse.QueryBids({}, {}) end
 
 function AHF:RefreshBids()
-	if gBids.state == "idle" or not gBids.entry then return end
-	local tRows = {}
-	local tNum = C_AuctionHouse.GetNumBids()
-	if tNum then
-		for i = 1, tNum do
-			local tInfo = C_AuctionHouse.GetBidInfo(i)
-			if tInfo then
-				local tName
-				if tInfo.itemLink then tName = tInfo.itemLink:match("%[(.-)%]") end
-				if not tName and tInfo.itemKey then
-					local tK = C_AuctionHouse.GetItemKeyInfo(tInfo.itemKey, false)
-					if tK then tName = tK.itemName end
-				end
-				tRows[#tRows + 1] = {
-					name = tName or ("Item "..tostring(tInfo.itemKey and tInfo.itemKey.itemID)),
-					auctionID = tInfo.auctionID,
-					bidAmount = tInfo.bidAmount,
-					minBid = tInfo.minBid,
-					buyoutAmount = tInfo.buyoutAmount,
-					bidder = tInfo.bidder,
-					timeLeft = tInfo.timeLeft,
-					leading = tIsOwnGuid(tInfo.bidder),
-				}
-			end
+	tReadList(gBids, C_AuctionHouse.GetNumBids(), function(i)
+		local tInfo = C_AuctionHouse.GetBidInfo(i)
+		if not tInfo then return nil end
+		local tName
+		if tInfo.itemLink then tName = tInfo.itemLink:match("%[(.-)%]") end
+		if not tName and tInfo.itemKey then
+			local tK = C_AuctionHouse.GetItemKeyInfo(tInfo.itemKey, false)
+			if tK then tName = tK.itemName end
 		end
-	end
-	gBids.rows = tRows
-	gBids.state = "done"
-	if not tCursorDeeperThan(gBids.entry) then tRebuildAndFocus(gBids.entry) end
+		return {
+			name = tName or ("Item "..tostring(tInfo.itemKey and tInfo.itemKey.itemID)),
+			auctionID = tInfo.auctionID,
+			bidAmount = tInfo.bidAmount,
+			minBid = tInfo.minBid,
+			buyoutAmount = tInfo.buyoutAmount,
+			bidder = tInfo.bidder,
+			timeLeft = tInfo.timeLeft,
+			leading = tIsOwnGuid(tInfo.bidder),
+		}
+	end)
 end
 
 local function tBidRowLabel(aRow)
@@ -1679,60 +1700,41 @@ local function tBidRowLabel(aRow)
 	return table.concat(tParts, ", ")
 end
 
-local function tAppendBidsChildren(aParent)
-	if gBids.entry ~= aParent then return end
-	if gBids.state == "waiting" then
-		local tW = SkuOptions:InjectMenuItems(aParent, {L["Warten"]}, SkuGenericMenuItem)
-		tW.dynamic = false
-		return
-	end
-	if #gBids.rows == 0 then
-		local tNone = SkuOptions:InjectMenuItems(aParent, {L["No bids"]}, SkuGenericMenuItem)
-		tNone.dynamic = false
-		return
-	end
-	for _, tRow in ipairs(gBids.rows) do
-		local tE = SkuOptions:InjectMenuItems(aParent, {tBidRowLabel(tRow)}, SkuGenericMenuItem)
-		tE.dynamic = true
-		tE.data = tRow
-		tE.BuildChildren = function(self)
-			self.children = {}
-			local tData = self.data
-			if tData.buyoutAmount and tData.buyoutAmount > 0 then
-				local tBuy = SkuOptions:InjectMenuItems(self, {L["Kaufen"]..": "..tMoneyText(tData.buyoutAmount)}, SkuGenericMenuItem)
-				tBuy.dynamic = false
-				tBuy.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
-				tBuy.OnAction = function() AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, tData.name) end
-			end
-			-- Raising a bid you already lead is pointless; offer it only after being outbid.
-			local tCanBid = false
-			if not tData.leading then tCanBid = tAddBidLeaves(self, tData, tData.name) end
-			if not tCanBid and not (tData.buyoutAmount and tData.buyoutAmount > 0) then
-				local tNothing = SkuOptions:InjectMenuItems(self, {tData.leading
-					and L["You are the highest bidder, nothing to do"]
-					or L["No bid possible"]}, SkuGenericMenuItem)
-				tNothing.dynamic = false
-			end
+local function tAddBidRow(aParent, aRow)
+	local tE = SkuOptions:InjectMenuItems(aParent, {tBidRowLabel(aRow)}, SkuGenericMenuItem)
+	tE.dynamic = true
+	tE.data = aRow
+	tE.BuildChildren = function(self)
+		self.children = {}
+		local tData = self.data
+		if tData.buyoutAmount and tData.buyoutAmount > 0 then
+			local tBuy = SkuOptions:InjectMenuItems(self, {L["Kaufen"]..": "..tMoneyText(tData.buyoutAmount)}, SkuGenericMenuItem)
+			tBuy.dynamic = false
+			tBuy.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
+			tBuy.OnAction = function() AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, tData.name) end
+		end
+		-- Raising a bid you already lead is pointless; offer it only after being outbid.
+		local tCanBid = false
+		if not tData.leading then tCanBid = tAddBidLeaves(self, tData, tData.name) end
+		if not tCanBid and not (tData.buyoutAmount and tData.buyoutAmount > 0) then
+			local tNothing = SkuOptions:InjectMenuItems(self, {tData.leading
+				and L["You are the highest bidder, nothing to do"]
+				or L["No bid possible"]}, SkuGenericMenuItem)
+			tNothing.dynamic = false
 		end
 	end
 end
 
 function AHF:BuildBidsChildren(aSelf)
-	if aSelf.ahfEntering then
-		AHF:StartBidsQuery(aSelf)
-	elseif gBids.entry ~= aSelf then
-		aSelf.children = {}
-		return
-	end
-	aSelf.children = {}
-	tAppendBidsChildren(aSelf)
+	tBuildListEntry(gBids, aSelf, L["No bids"], tAddBidRow)
 end
 
-local gBidEventFrame = CreateFrame("Frame")
-for _, tEvent in ipairs({ "BIDS_UPDATED", "BID_ADDED", "AUCTION_HOUSE_CLOSED" }) do
-	if Sku.IsEventValid(tEvent) then gBidEventFrame:RegisterEvent(tEvent) end
-end
-gBidEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
+local gListEventFrame = CreateFrame("Frame")
+gListEventFrame:RegisterEvent("BIDS_UPDATED")
+gListEventFrame:RegisterEvent("BID_ADDED")
+gListEventFrame:RegisterEvent("AUCTION_HOUSE_THROTTLED_SYSTEM_READY")
+gListEventFrame:RegisterEvent("AUCTION_HOUSE_CLOSED")
+gListEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	if aEvent == "BIDS_UPDATED" then
 		AHF:RefreshBids()
 	elseif aEvent == "BID_ADDED" then
@@ -1740,9 +1742,18 @@ gBidEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 		if _G.AuctionHouseFrame and _G.AuctionHouseFrame.IsShown and _G.AuctionHouseFrame:IsShown() then
 			tSay(L["Bid placed"])
 		end
-		if gBids.entry and gBids.state ~= "idle" then AHF:StartBidsQuery(gBids.entry) end
+		if gBids.entry and gBids.state ~= "idle" then tStartListQuery(gBids, gBids.entry) end
+	elseif aEvent == "AUCTION_HOUSE_THROTTLED_SYSTEM_READY" then
+		-- one query per ready signal: a sent query uses up the throttle again
+		for _, tList in ipairs({ gOwned, gBids }) do
+			if tList.pendingSend and tList.state == "waiting" then
+				tSendListQuery(tList)
+				break
+			end
+		end
 	elseif aEvent == "AUCTION_HOUSE_CLOSED" then
-		gBids.state, gBids.entry, gBids.rows = "idle", nil, {}
+		gBids.state, gBids.entry, gBids.rows, gBids.pendingSend = "idle", nil, {}, nil
+		gOwned.pendingSend = nil
 	end
 end)
 
@@ -1756,14 +1767,7 @@ function AHF:BuildSalesChildren(aSelf)
 	tOwned.dynamic = true
 	tMarkEntering(tOwned)
 	tOwned.BuildChildren = function(self)
-		if self.ahfEntering then
-			AHF:StartOwnedQuery(self)
-		elseif gOwned.entry ~= self then
-			self.children = {}
-			return
-		end
-		self.children = {}
-		tAppendOwnedChildren(self)
+		tBuildListEntry(gOwned, self, L["No current sales"], tAddOwnedRow)
 	end
 end
 
