@@ -87,6 +87,7 @@ SkuCore\Macro.lua
 SkuCore\skuFocus.lua
 SkuCore\subgroupTargeting.lua
 SkuCore\Build_SocketingFrame.lua
+SkuCore\dungeonBrowserCore.lua
 SkuCore\dungeonBrowser.lua
 SkuCore\dungeonBrowserForever.lua
 SkuCore\equipmentSets.lua
