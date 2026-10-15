@@ -17,7 +17,7 @@
 -- Calls documented as HasRestrictions (PlaceBid, StartCommoditiesPurchase, PostItem, PostCommodity, ConfirmPostItem,
 -- ConfirmPostCommodity, CancelAuction) run directly from a menu action, i.e. from a real key press.
 -- ConfirmCommoditiesPurchase has no restriction; it runs from a key press as well, like Blizzard's Buy Now button.
--- Not built: a full-market scan. Blizzard's own auction house does not call ReplicateItems either.
+-- Full scan (ReplicateItems) feeds Sku's auction price history (see FULL SCAN).
 -- =====================================================================
 
 if not Sku or not Sku.isForever then return end
@@ -2071,6 +2071,8 @@ function AHF:BuildSearchEntries(aSelf)
 			end
 		end
 	end
+
+	AHF:BuildFullScanEntry(aSelf)
 end
 
 -- Root: Auctions > [search, category, filters, favorites]; Sales > [new auction, current sales]; Bids.
@@ -2146,6 +2148,188 @@ function AHF:OnShowError(aError)
 		tFailed = true
 	end
 	if not tFailed and tText ~= "" then tSay(tText) end
+end
+
+-- ---------------------------------------------------------------------
+-- FULL SCAN and price feed (the price lines of bag tooltips and chat item links, the sell price suggestion).
+-- The legacy full scan (QueryAuctionItems getAll) does not exist on Forever. C_AuctionHouse.ReplicateItems asks the
+-- server for every auction of the realm; REPLICATE_ITEM_LIST_UPDATE says the list is in; GetNumReplicateItems and
+-- GetReplicateItemInfo(i) read it. The prices go into the price store of SkuCore/auctionHouse.lua
+-- (AuctionIngestPriceData), the one every price reader uses.
+-- ReplicateItems sends the whole auction list in one answer; on a busy server that answer can disconnect the client.
+-- The server answers it once per 15 minutes; the menu entry uses the legacy full scan's cooldown
+-- (AuctionLastFullScanTime, AuctionFullScanCooldownRemaining).
+-- The list is read from an OnUpdate within a time budget per frame and the position is kept per row, so a frame the
+-- client's script limit cuts short loses nothing and the next frame goes on.
+-- A row without hasAllInfo waits for its item data (C_Item.RequestLoadItemDataByID -> ITEM_DATA_LOAD_RESULT) and is
+-- read again then. FULLSCAN_ITEM_GRACE seconds after the last load the waiting rows are read as they are, so the scan
+-- always ends.
+-- ---------------------------------------------------------------------
+local FULLSCAN_FRAME_MS = 15
+local FULLSCAN_ANSWER_TIMEOUT = 120
+local FULLSCAN_ITEM_GRACE = 10
+local FULLSCAN_SPEAK_EVERY = 10
+
+-- state: idle, waiting (for the server's list), reading (the rows), loading (rows waiting for their item data).
+local gScan = { state = "idle" }
+local gScanFrame = CreateFrame("Frame")
+gScanFrame:Hide()
+
+-- Adds one price point per kind (bid, buyout) in copper per unit to aPriceData, AuctionBuildPriceData's shape
+-- ([itemID] = { [1] = bids, [2] = buyouts }). A price of 0 is no price (no buyout, or no bid on a commodity).
+local function tAddPrices(aPriceData, aItemID, aCount, aMinBid, aBuyout)
+	if aCount == 0 or aItemID == 0 or (aMinBid == 0 and aBuyout == 0) then return end
+	local tBucket = aPriceData[aItemID]
+	if not tBucket then
+		tBucket = { [1] = {}, [2] = {} }
+		aPriceData[aItemID] = tBucket
+	end
+	if aMinBid > 0 then tBucket[1][#tBucket[1] + 1] = math.max(1, math.floor(aMinBid / aCount)) end
+	if aBuyout > 0 then tBucket[2][#tBucket[2] + 1] = math.max(1, math.floor(aBuyout / aCount)) end
+end
+
+-- Reads row i of the replicate list into the scan. aDefer: a row whose item data is not loaded yet is not read but
+-- returned as its item ID.
+local function tReadReplicateRow(i, aDefer)
+	local _, _, tCount, _, _, _, _, tMinBid, _, tBuyout, _, _, _, _, _, _, tItemID, tHasAllInfo = C_AuctionHouse.GetReplicateItemInfo(i)
+	if aDefer and not tHasAllInfo then return tItemID end
+	tAddPrices(gScan.priceData, tItemID, tCount, tMinBid, tBuyout)
+end
+
+local function tReadDeferred(aItemID)
+	local tRows = gScan.deferred[aItemID]
+	if not tRows then return end
+	gScan.deferred[aItemID] = nil
+	for _, i in ipairs(tRows) do tReadReplicateRow(i) end
+	gScan.deferredRows = gScan.deferredRows - #tRows
+end
+
+local function tScanPercent()
+	return math.floor((gScan.index - gScan.deferredRows) * 100 / gScan.total)
+end
+
+-- The menu entry's name carries the scan's state.
+local function tFullScanLabel()
+	if gScan.state == "waiting" then return L["Full scan started"] end
+	if gScan.state ~= "idle" then return L["full scan"]..", "..tScanPercent()..L[" Prozent"] end
+	local tRemain = SkuCore.AuctionHouse:AuctionFullScanCooldownRemaining()
+	if tRemain > 0 then return L["full scan"].." "..L["Ready in"].." "..tRemain..L[" Minuten"] end
+	return L["start full scan"]
+end
+
+local function tStopScan()
+	gScan.pendingSend = nil
+	gScanFrame:Hide()
+	gScan = { state = "idle" }
+end
+
+local function tFinishScan()
+	local tPriceData, tAuctions = gScan.priceData, gScan.total
+	tStopScan()
+	local tItems = 0
+	for _ in pairs(tPriceData) do tItems = tItems + 1 end
+	SkuCore.AuctionHouse:AuctionIngestPriceData(tPriceData, true)
+	dprint("ahf", "full scan done:", tAuctions, "auctions,", tItems, "items")
+	tSay(L["Full scan completed"]..";"..tAuctions.." "..L["Auktionen"]..";"..L["AHF_FullScanItems"]:format(tItems))
+end
+
+gScanFrame:SetScript("OnUpdate", function(_, aElapsed)
+	local tScan = gScan
+	tScan.elapsed = tScan.elapsed + aElapsed
+	if tScan.state == "waiting" then
+		if tScan.elapsed >= FULLSCAN_ANSWER_TIMEOUT then
+			dprint("ahf", "full scan: no answer")
+			tStopScan()
+			tSay(L["full scan"]..";"..L["STRAT_SearchTimeout"])
+			return
+		end
+	else
+		local tStart = debugprofilestop()
+		while tScan.index < tScan.total and debugprofilestop() - tStart < FULLSCAN_FRAME_MS do
+			local i = tScan.index + 1
+			local tWaitFor = tReadReplicateRow(i, true)
+			if tWaitFor then
+				local tRows = tScan.deferred[tWaitFor]
+				if not tRows then
+					tRows = {}
+					tScan.deferred[tWaitFor] = tRows
+					C_Item.RequestLoadItemDataByID(tWaitFor)
+				end
+				tRows[#tRows + 1] = i
+				tScan.deferredRows = tScan.deferredRows + 1
+			end
+			tScan.index = i
+		end
+		while tScan.loaded[1] and debugprofilestop() - tStart < FULLSCAN_FRAME_MS do
+			tReadDeferred(table.remove(tScan.loaded))
+		end
+		if tScan.index >= tScan.total then
+			if tScan.state == "reading" then
+				tScan.state = "loading"
+				tScan.lastLoad = tScan.elapsed
+			end
+			if tScan.deferredRows == 0 then
+				tFinishScan()
+				return
+			end
+			if not tScan.givenUp and tScan.elapsed - tScan.lastLoad >= FULLSCAN_ITEM_GRACE then
+				tScan.givenUp = true
+				dprint("ahf", "full scan: item data missing, read as it is:", tScan.deferredRows, "rows")
+				for tItemID in pairs(tScan.deferred) do tScan.loaded[#tScan.loaded + 1] = tItemID end
+			end
+		end
+	end
+	if tScan.elapsed - tScan.spokenAt >= FULLSCAN_SPEAK_EVERY then
+		tScan.spokenAt = tScan.elapsed
+		if tScan.state == "waiting" then
+			tSay(L["full scan"]..", "..math.floor(tScan.elapsed)..L[" Sekunden"])
+		else
+			tSay(tFullScanLabel())
+		end
+	end
+end)
+
+-- From the menu entry's key press. The key handler reads the entry right after, so its name says what happened.
+function AHF:StartFullScan(aLeaf)
+	if gScan.state == "idle" and SkuCore.AuctionHouse:AuctionFullScanCooldownRemaining() == 0 then
+		gScan = {
+			state = "waiting", elapsed = 0, spokenAt = 0, index = 0, total = 0, priceData = {},
+			deferred = {}, deferredRows = 0, loaded = {}, lastLoad = 0,
+		}
+		SkuSettings:Sub("SkuCore", nil, "char").AuctionLastFullScanTime = GetServerTime()
+		tSendThrottled(gScan, C_AuctionHouse.ReplicateItems)
+		gScanFrame:Show()
+		dprint("ahf", "full scan started")
+	end
+	aLeaf.name = tFullScanLabel()
+end
+
+function AHF:OnReplicateListUpdate()
+	if gScan.state ~= "waiting" then return end
+	gScan.total = C_AuctionHouse.GetNumReplicateItems()
+	-- An empty answer: the list is not in yet; the next update or the answer timeout ends the wait.
+	if gScan.total == 0 then return end
+	gScan.state = "reading"
+	dprint("ahf", "full scan: list in,", gScan.total, "auctions")
+end
+
+function AHF:OnItemDataLoaded(aItemID)
+	if gScan.state == "idle" or not gScan.deferred[aItemID] then return end
+	gScan.loaded[#gScan.loaded + 1] = aItemID
+	gScan.lastLoad = gScan.elapsed
+end
+
+-- Closing the auction house ends the scan; what was read so far is dropped.
+function AHF:AbortFullScan()
+	if gScan.state == "idle" then return end
+	dprint("ahf", "full scan aborted: auction house closed")
+	tStopScan()
+	tSay(L["full scan"]..";"..L["Abgebrochen"])
+end
+
+function AHF:BuildFullScanEntry(aParent)
+	local tLeaf = tSettingLeaf(aParent, tFullScanLabel(), function(aLeaf) AHF:StartFullScan(aLeaf) end)
+	tLeaf.OnEnter = function(self) self.name = tFullScanLabel() end
 end
 
 -- ---------------------------------------------------------------------
@@ -2257,10 +2441,13 @@ local gEventHandlers = {
 		AHF:OnPostRefused(AUCTION_POSTING_ERROR_TEXT)
 	end,
 	BAG_UPDATE_DELAYED = function() tFollowBags() end,
+	REPLICATE_ITEM_LIST_UPDATE = function() AHF:OnReplicateListUpdate() end,
+	ITEM_DATA_LOAD_RESULT = function(aItemID) AHF:OnItemDataLoaded(aItemID) end,
 	AUCTION_HOUSE_CLOSED = function()
 		-- As Blizzard's buy dialog and sell frame on hide: an open quote is dropped, a running multisell stopped.
 		if gCommodityBuy.itemID then C_AuctionHouse.CancelCommoditiesPurchase() end
 		if gSell.multisell then C_AuctionHouse.CancelSell() end
+		AHF:AbortFullScan()
 		gCommodityBuy.itemID, gItemPurchase.auctionID, gCancel = nil, nil, nil
 		for _, tState in ipairs({ gBrowse, gDetail, gOwned, gBids }) do
 			tState.state, tState.entry, tState.pendingSend = "idle", nil, nil

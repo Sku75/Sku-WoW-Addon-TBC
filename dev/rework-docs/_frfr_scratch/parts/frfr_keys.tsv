@@ -3532,5 +3532,9 @@ Level from	Niveau de
 Level up to	Niveau jusqu'à
 Reset all filters	Réinitialiser tous les filtres
 Filters reset	Filtres réinitialisés
+<<<<<<< HEAD
 up to %s each	jusqu'à %s chacune
 %s more pieces at the same or higher prices	%s pièces de plus au même prix ou plus cher
+=======
+AHF_FullScanItems	prix pour %d objets
+>>>>>>> cecca5b (forever(12): a full scan fills the auction price history)

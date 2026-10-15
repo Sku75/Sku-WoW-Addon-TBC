@@ -3747,6 +3747,7 @@ L["Level from"] = "Niveau de"
 L["Level up to"] = "Niveau jusqu'à"
 L["Reset all filters"] = "Réinitialiser tous les filtres"
 L["Filters reset"] = "Filtres réinitialisés"
+L["AHF_FullScanItems"] = "prix pour %d objets"
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a
 -- regeneration can no longer re-import it - check with _locale_dupes.py, which
 -- fails on a duplicate here.
