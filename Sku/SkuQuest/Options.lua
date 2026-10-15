@@ -2543,7 +2543,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					tNewMenuEntry1.OnAction = function(self, aValue, aName)
 					end
 					tNewMenuEntry1.OnEnter = function(self, aValue, aName)
-						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId)
+						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId, self)
 					end
 					local questID = vq
 					if not Sku.isForever then
@@ -2565,7 +2565,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					tNewMenuEntry1.OnAction = function(self, aValue, aName)
 					end
 					tNewMenuEntry1.OnEnter = function(self, aValue, aName)
-						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId)
+						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId, self)
 					end
 					local questID = vq
 					if not Sku.isForever then

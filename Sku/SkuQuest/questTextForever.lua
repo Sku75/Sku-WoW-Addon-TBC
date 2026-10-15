@@ -22,7 +22,7 @@ local function AddItemSection(aSections, aLabel, aLink, aName)
 	return true
 end
 
-function SkuQuest:GetTTSTextForever(aQuestID, aIsRetry)
+function SkuQuest:GetTTSTextForever(aQuestID, aNode)
 	local questID = aQuestID
 	if not questID then return {} end
 
@@ -129,24 +129,17 @@ function SkuQuest:GetTTSTextForever(aQuestID, aIsRetry)
 		table.insert(tSections, tItemSection)
 	end
 
-	-- If objectives or rewards were still empty, read once more shortly after and patch the text
-	-- that is already shown (and still being read) in place. LastReadQuestID makes a late retry
-	-- of an earlier quest harmless.
-	if not aIsRetry then
-		SkuQuest.LastReadQuestID = aQuestID
-		local tReadNode = SkuOptions.currentMenuPosition
-		if tObjectiveCount == 0 or #tRewardLines == 0 then
-			C_Timer.After(0.6, function()
-				if SkuQuest.LastReadQuestID ~= aQuestID then return end
-				local tLateSections = SkuQuest:GetTTSTextForever(aQuestID, true)
-				if #tLateSections > #tSections and tReadNode and SkuOptions.currentMenuPosition == tReadNode then
-					SkuOptions.currentMenuPosition.textFull = tLateSections
-					if SkuOptions.TTS and SkuOptions.TTS.IsVisible and SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(tLateSections, 1000)
-					end
-				end
-			end)
-		end
+	-- Objectives or rewards still empty: the quest data may not have arrived yet. For a quest menu entry
+	-- (aNode) read once more shortly after and give the entry the fuller text, unless it shows another
+	-- text by then. An open reading frame keeps its place and loads the new text the next time it opens.
+	if aNode and (tObjectiveCount == 0 or #tRewardLines == 0) then
+		C_Timer.After(0.6, function()
+			if aNode.textFull ~= tSections then return end
+			local tLateSections = SkuQuest:GetTTSTextForever(aQuestID)
+			if tLateSections and #tLateSections > #tSections then
+				aNode.textFull = tLateSections
+			end
+		end)
 	end
 
 	return tSections

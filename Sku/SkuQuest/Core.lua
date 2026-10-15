@@ -495,11 +495,12 @@ function SkuQuest:CheckQuestProgress(aSilent)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuQuest:GetTTSText(aQuestID)
+function SkuQuest:GetTTSText(aQuestID, aNode)
 	-- Forever: aQuestID is the quest ID and the text comes from the quest data (questTextForever.lua);
 	-- on the other clients it is the index in the quest log and the log window is read.
+	-- aNode: the quest menu entry the text is for (Forever completes it once the quest data arrives).
 	if Sku.isForever then
-		return SkuQuest:GetTTSTextForever(aQuestID)
+		return SkuQuest:GetTTSTextForever(aQuestID, aNode)
 	end
 
 --dprint("============================")
