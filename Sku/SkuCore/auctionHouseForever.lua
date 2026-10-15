@@ -285,7 +285,8 @@ end
 -- state, same result-list UI either way.)
 -- ---------------------------------------------------------------------
 -- aSend (optional): replaces the plain SendBrowseQuery call, e.g. SearchForFavorites - the
--- answer arrives through the same browse events and is read the same way.
+-- answer arrives through the same browse events and is read the same way. aQuery is aSend's
+-- argument: the query table for SendBrowseQuery, the sorts for SearchForFavorites.
 function AHF:StartBrowseQuery(aQuery, aEntry, aSend)
 	gBrowse.state = "waiting"
 	gBrowse.answered = nil
@@ -310,27 +311,39 @@ end
 
 local AHF_QUALITY_FILTERS = { "PoorQuality", "CommonQuality", "UncommonQuality", "RareQuality", "EpicQuality", "LegendaryQuality", "ArtifactQuality" }
 
--- Adds the filters to the query table. aIsName: name search ("filters" is always set there, the search needs the empty field).
+-- Blizzard's default sort orders (Blizzard_AuctionHouseFrame.lua, InitAuctionHouseSortsBySearchContext):
+-- browse and favorites by price, then name; an item's listings by buyout, then bid; commodities unsorted.
+local AHF_BROWSE_SORTS = {
+	{ sortOrder = Enum.AuctionHouseSortOrder.Price, reverseSort = false },
+	{ sortOrder = Enum.AuctionHouseSortOrder.Name, reverseSort = false },
+}
+local AHF_ITEM_SORTS = {
+	{ sortOrder = Enum.AuctionHouseSortOrder.Buyout, reverseSort = false },
+	{ sortOrder = Enum.AuctionHouseSortOrder.Bid, reverseSort = false },
+}
+
+-- Sets filters and level range like Blizzard's search bar: AUCTION_HOUSE_DEFAULT_FILTERS (all item
+-- qualities on) with the player's choices applied, every active filter in the array, level 0 = any.
+-- aIsName: name search (the exact-name filter only applies there).
 function AHF:ApplyFilterToQuery(aQuery, aIsName)
 	local f = AHF:GetFilter()
-	local E = _G.Enum and Enum.AuctionHouseFilter
-	local tList = {}
-	if E then
-		if f.usable and E.UsableOnly then tList[#tList + 1] = E.UsableOnly end
-		if f.upgrades and E.UpgradesOnly then tList[#tList + 1] = E.UpgradesOnly end
-		if f.uncollected and E.UncollectedOnly then tList[#tList + 1] = E.UncollectedOnly end
-		if f.currentExp and E.CurrentExpansionOnly then tList[#tList + 1] = E.CurrentExpansionOnly end
-		if f.exact and aIsName and E.ExactMatch then tList[#tList + 1] = E.ExactMatch end
-		if (f.minQuality or 1) > 1 then
-			for i = f.minQuality, #AHF_QUALITY_FILTERS do
-				local tV = E[AHF_QUALITY_FILTERS[i]]
-				if tV then tList[#tList + 1] = tV end
-			end
-		end
+	local E = Enum.AuctionHouseFilter
+	local tOn = CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS)
+	if f.usable then tOn[E.UsableOnly] = true end
+	if f.upgrades then tOn[E.UpgradesOnly] = true end
+	if f.uncollected then tOn[E.UncollectedOnly] = true end
+	if f.currentExp then tOn[E.CurrentExpansionOnly] = true end
+	if f.exact and aIsName then tOn[E.ExactMatch] = true end
+	for i = 1, (f.minQuality or 1) - 1 do
+		tOn[E[AHF_QUALITY_FILTERS[i]]] = false
 	end
-	if aIsName or #tList > 0 then aQuery.filters = tList end
-	if f.minLevel then aQuery.minLevel = f.minLevel end
-	if f.maxLevel then aQuery.maxLevel = f.maxLevel end
+	local tList = {}
+	for tFilter, tActive in pairs(tOn) do
+		if tActive then tList[#tList + 1] = tFilter end
+	end
+	aQuery.filters = tList
+	aQuery.minLevel = f.minLevel or 0
+	aQuery.maxLevel = f.maxLevel or 0
 end
 
 local function tQualityName(aIndex)
@@ -354,8 +367,7 @@ function AHF:FilterSummary()
 end
 
 function AHF:StartBrowse(aSearchText, aEntry)
-	-- itemClassFilters/filters explicitly empty: without these fields the name search always returned 0 results on Forever.
-	local tQuery = { searchString = aSearchText, sorts = {}, itemClassFilters = {}, filters = {} }
+	local tQuery = { searchString = aSearchText, sorts = AHF_BROWSE_SORTS, itemClassFilters = {} }
 	AHF:ApplyFilterToQuery(tQuery, true)
 	local tSummary = AHF:FilterSummary()
 	if tSummary then tSay(L["Filters active: "]..tSummary) end
@@ -365,16 +377,14 @@ end
 -- The player's favourite items (Blizzard: the star in the search bar). Same result shape as a
 -- name search, so it feeds the same list.
 function AHF:StartFavorites(aEntry)
-	AHF:StartBrowseQuery({ sorts = {} }, aEntry, function(aQuery)
-		return C_AuctionHouse.SearchForFavorites(aQuery.sorts)
-	end)
+	AHF:StartBrowseQuery(AHF_BROWSE_SORTS, aEntry, C_AuctionHouse.SearchForFavorites)
 end
 
 -- aFilters: one category's accumulated {classID, subClassID, inventoryType}
 -- list (see AuctionCategories in the menu section below) - every level of
 -- the category tree carries its own, from the leaf up to the top category.
 function AHF:StartCategoryBrowse(aFilters, aEntry)
-	local tQuery = { searchString = "", itemClassFilters = aFilters, sorts = {} }
+	local tQuery = { searchString = "", itemClassFilters = aFilters, sorts = AHF_BROWSE_SORTS }
 	AHF:ApplyFilterToQuery(tQuery, false)
 	local tSummary = AHF:FilterSummary()
 	if tSummary then tSay(L["Filters active: "]..tSummary) end
@@ -410,7 +420,6 @@ function AHF:RefreshBrowseResults()
 			tStillPending = true
 		end
 	end
-	table.sort(tRows, function(a, b) return (a.minPrice or 0) < (b.minPrice or 0) end)
 	gBrowse.results = tRows
 	gBrowse.state = tStillPending and "waiting" or "done"
 	tRebuildAndFocus(gBrowse.entry)
@@ -430,7 +439,12 @@ function AHF:StartDetail(aRow, aEntry)
 	gDetail.entry = aEntry
 	gDetail.failText = nil
 	gDetail.generation = (gDetail.generation or 0) + 1
-	tSendThrottled(gDetail, C_AuctionHouse.SendSearchQuery, aRow.itemKey, {}, false)
+	if aRow.isCommodity then
+		tSendThrottled(gDetail, C_AuctionHouse.SendSearchQuery, aRow.itemKey, {}, false)
+	else
+		local f = AHF:GetFilter()
+		tSendThrottled(gDetail, C_AuctionHouse.SendSearchQuery, aRow.itemKey, AHF_ITEM_SORTS, false, f.minLevel or 0, f.maxLevel or 0)
+	end
 	tFailOnTimeout(gDetail, 6)
 end
 
