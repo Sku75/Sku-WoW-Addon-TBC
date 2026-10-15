@@ -651,6 +651,20 @@ function SkuNav:WorldFromMap(aUiMapId, aRelX, aRelY)
 	if tPos then return tPos:GetXY() end
 end
 
+-- The player's map position (0..1) in the same frame as the database percentages, for comparing
+-- the two directly. On the zones Forever draws differently it is derived from the world position
+-- through the classic rect; everywhere else it is the client's own map position.
+function SkuNav:PlayerDbMapPosition(aUiMapId)
+	local tRect = Sku.isForever and aUiMapId and tForeverClassicMapRect[aUiMapId]
+	if tRect then
+		local tX, tY = UnitPosition("player")
+		if not tX then return nil end
+		return (tY - tRect[4]) / (tRect[2] - tRect[4]), (tX - tRect[3]) / (tRect[1] - tRect[3])
+	end
+	local tPos = aUiMapId and C_Map.GetPlayerMapPosition(aUiMapId, "player")
+	if tPos then return tPos:GetXY() end
+end
+
 function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	--print("CreateWaypointCache")
 

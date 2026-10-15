@@ -112,10 +112,8 @@ function P:ZoneDistanceFromSpawns(aCtx, aSpawns)
 	local tHere = aSpawns[aCtx.areaId]
 	if not tHere then return nil end
 
-	local tOkPos, tPlayerMapPos = pcall(C_Map.GetPlayerMapPosition, aCtx.uiMapId, "player")
-	if not tOkPos or not tPlayerMapPos then return nil end
-	local tPx, tPy = tPlayerMapPos:GetXY()
-	if not tPx then return nil end
+	local tOkPos, tPx, tPy = pcall(SkuNav.PlayerDbMapPosition, SkuNav, aCtx.uiMapId)
+	if not tOkPos or not tPx then return nil end
 
 	local tBestX, tBestY, tBestSq
 	for x = 1, #tHere do
