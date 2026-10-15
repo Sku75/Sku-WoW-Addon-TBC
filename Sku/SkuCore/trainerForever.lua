@@ -136,6 +136,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Says whether the skill was learned, after checking the result (the server answers asynchronously).
 local tErrorFrame, tLastError
+local LEARN_IDENTITY = "frame:ClassTrainerTrainButton"
 
 local function tVerify(aIndex, aName, aIsPet, aCost, aPointsBefore, aMoneyBefore, aRankText)
 	if not tErrorFrame then
@@ -174,10 +175,13 @@ local function tVerify(aIndex, aName, aIsPet, aCost, aPointsBefore, aMoneyBefore
 		end
 		dprint("trainerBuy", "result", tostring(aLearned), tostring(tLastError))
 		if ClassTrainerFrame:IsVisible() then
-			-- The "Learn" entry under the cursor is gone after learning. Its identity becomes the skill's, so the
-			-- refresh puts the cursor on the skill's row in the list instead of at the top.
+			-- The "Learn" entry is gone after learning. If the cursor is still on it (checked by identity, a quiet
+			-- refresh may have replaced the node meanwhile), its identity becomes the skill's, so the refresh puts the
+			-- cursor on the skill's row instead of at the top. A cursor the player moved on stays where it is.
 			local tPos = SkuOptions.currentMenuPosition
-			if aLearned and tPos then tPos.skuIdentity = "skill:" .. aName .. " " .. (aRankText or "") end
+			if aLearned and tPos and tPos.skuIdentity == LEARN_IDENTITY then
+				tPos.skuIdentity = "skill:" .. aName .. " " .. (aRankText or "")
+			end
 			SkuCore:RefreshWindowMenuQuietly()
 		end
 	end
@@ -374,7 +378,7 @@ function SkuCore:Build_ClassTrainerFrameForever(aParentChilds)
 				RoC = "Child",
 				type = "Button",
 				obj = tTrainButton,
-				skuIdentity = "frame:ClassTrainerTrainButton",
+				skuIdentity = LEARN_IDENTITY,
 				textFirstLine = tLabel,
 				textFull = "",
 				noMenuNumbers = true,
