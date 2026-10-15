@@ -163,12 +163,10 @@ local function tGetNpcDistance(aCtx, aNpcId)
 				local tOkUiMap, tUiMapId = pcall(SkuNav.Geo.GetUiMapIdFromAreaId, SkuNav.Geo, tAreaId)
 				if tOkUiMap and tUiMapId then
 					local tOkPos, tX, tY = pcall(SkuNav.WorldFromMap, SkuNav, tUiMapId, tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100)
-					if tOkPos and tX then
-						if tX and tY then
-							local tOkDist, tDist = pcall(SkuNav.Geo.Distance, SkuNav.Geo, aCtx.playerX, aCtx.playerY, tX, tY)
-							if tOkDist and tDist and (not tBest or tDist < tBest) then
-								tBest = tDist
-							end
+					if tOkPos and tX and tY then
+						local tOkDist, tDist = pcall(SkuNav.Geo.Distance, SkuNav.Geo, aCtx.playerX, aCtx.playerY, tX, tY)
+						if tOkDist and tDist and (not tBest or tDist < tBest) then
+							tBest = tDist
 						end
 					end
 				end
