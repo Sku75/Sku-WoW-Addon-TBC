@@ -572,7 +572,7 @@ function AHF:OnShowError(aError)
 		return
 	end
 	if gCommodityBuy.itemID then
-		tSay(tText ~= "" and tText or L["Purchase failed"])
+		AHF:EndCommodityBuy(tText ~= "" and tText or L["Purchase failed"])
 		return
 	end
 	-- A rejected browse/detail query: the error becomes the waiting leaf, so the rebuild reads it out.
@@ -610,9 +610,25 @@ function AHF:StartCommodityBuy(aItemID, aQuantity, aEntry, aName, aIndex)
 	local tStartedAt = gCommodityBuy.startedAt
 	C_Timer.After(4, function()
 		if gCommodityBuy.itemID == aItemID and gCommodityBuy.startedAt == tStartedAt and not gCommodityBuy.unitPrice then
-			SkuOptions.Voice:OutputStringBTtts(L["No price confirmation from the game. Please try again."], false, true, 0.2)
+			AHF:EndCommodityBuy(L["No price confirmation from the game. Please try again."])
 		end
 	end)
+end
+
+-- Ends Sku's commodity purchase the way Blizzard's buy dialog closes (AuctionHouseBuyDialogMixin:OnHide): drops the
+-- quote, rebuilds the row with aReason in front of its first leaf, and sends the item's search again so the
+-- quantities are current. Does nothing when no purchase of Sku's is running. aFromKey: called from a key press,
+-- whose handler vocalizes the cursor itself.
+function AHF:EndCommodityBuy(aReason, aFromKey)
+	if not gCommodityBuy.itemID then return end
+	local tItemID, tEntry = gCommodityBuy.itemID, gCommodityBuy.entry
+	dprint("ahf", "commodity buy end", tItemID, aReason)
+	C_AuctionHouse.CancelCommoditiesPurchase()
+	gCommodityBuy.itemID = nil
+	gCommodityBuy.notice = aReason
+	tRebuildAndFocus(tEntry, true, aFromKey)
+	gCommodityBuy.notice = nil
+	C_AuctionHouse.SendSearchQuery(C_AuctionHouse.MakeItemKey(tItemID), {}, false)
 end
 
 -- Price preview from the listings shown: the game always buys the cheapest first. If the cheapest listing does not
@@ -665,25 +681,12 @@ function AHF:OnCommodityPriceUpdated(aUnitPrice, aTotalPrice)
 	tRebuildAndFocus(gCommodityBuy.entry)
 end
 
-function AHF:ConfirmCommodityBuy()
-	if not gCommodityBuy.itemID then return end
+function AHF:ConfirmCommodityBuy(aLeaf)
+	if not gCommodityBuy.itemID then
+		tRefuse(aLeaf, nil, L["No purchase is waiting for confirmation"])
+		return
+	end
 	C_AuctionHouse.ConfirmCommoditiesPurchase(gCommodityBuy.itemID, gCommodityBuy.quantity)
-end
-
-function AHF:CancelCommodityBuy()
-	if not gCommodityBuy.itemID then return end
-	C_AuctionHouse.CancelCommoditiesPurchase()
-	gCommodityBuy.itemID = nil
-end
-
-function AHF:OnCommodityPurchaseDone(aSucceeded)
-	local tNamePrefix = gCommodityBuy.name and (gCommodityBuy.name..": ") or ""
-	gCommodityBuy.itemID = nil
-	-- interrupts the running speech: the result must not get lost behind a chat line
-	SkuOptions.Voice:OutputStringBTtts(
-		tNamePrefix..(aSucceeded and L["Purchase complete"]
-			or L["Purchase failed"]),
-		true, true, 0.2, nil, nil, nil, 1)
 end
 
 -- ---------------------------------------------------------------------
@@ -733,12 +736,11 @@ gEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	elseif aEvent == "COMMODITY_PRICE_UPDATED" then
 		AHF:OnCommodityPriceUpdated(...)
 	elseif aEvent == "COMMODITY_PRICE_UNAVAILABLE" then
-		gCommodityBuy.itemID = nil
-		SkuOptions.Voice:OutputStringBTtts(L["Price unavailable"], false, true, 0.2)
+		AHF:EndCommodityBuy(L["Price unavailable"])
 	elseif aEvent == "COMMODITY_PURCHASE_SUCCEEDED" then
-		AHF:OnCommodityPurchaseDone(true)
+		AHF:EndCommodityBuy(L["Purchase complete"])
 	elseif aEvent == "COMMODITY_PURCHASE_FAILED" then
-		AHF:OnCommodityPurchaseDone(false)
+		AHF:EndCommodityBuy(L["Purchase failed"])
 	elseif aEvent == "AUCTION_HOUSE_SHOW_ERROR" then
 		AHF:OnShowError(...)
 	elseif aEvent == "AUCTION_HOUSE_PURCHASE_COMPLETED" then
@@ -819,13 +821,12 @@ local function tBuildCommodityConfirmChildren(aParentEntry)
 	local tConfirm = SkuOptions:InjectMenuItems(aParentEntry, {L["Confirm: "]..tMoneyText(gCommodityBuy.totalPrice)..(gCommodityBuy.warning and (", "..L["price rises"]) or "")}, SkuGenericMenuItem)
 	tConfirm.dynamic = false
 	tConfirm.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
-	tConfirm.OnAction = function() AHF:ConfirmCommodityBuy() end
+	tConfirm.OnAction = function() AHF:ConfirmCommodityBuy(tConfirm) end
 	local tCancel = SkuOptions:InjectMenuItems(aParentEntry, {L["Cancel"]}, SkuGenericMenuItem)
 	tCancel.dynamic = false
 	tCancel.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
 	tCancel.OnAction = function()
-		AHF:CancelCommodityBuy()
-		tRebuildAndFocus(aParentEntry, true)
+		AHF:EndCommodityBuy(L["Abgebrochen"], true)
 	end
 end
 
@@ -1026,7 +1027,8 @@ local function tBuildDetailChildren(aParentEntry)
 				local function tQtyName() return L["Quantity: "]..tData.buyQty..L[" of at most "]..tMaxQty end
 				local function tBuyName() return L["Kaufen"]..": "..tData.buyQty..L[" pieces"] end
 				local tBuyEntry
-				local tQtyLeaf = tSettingLeaf(self, tQtyName(), function(aLeaf)
+				-- The first leaf carries the reason a purchase just ended (AHF:EndCommodityBuy).
+				tSettingLeaf(self, (gCommodityBuy.notice and (gCommodityBuy.notice..";") or "")..tQtyName(), function(aLeaf)
 					SkuOptions:EditBoxShow("", function()
 						local tN = tonumber((SkuOptionsEditBoxEditBox:GetText() or ""):match("%d+"))
 						if tN and tN >= 1 then

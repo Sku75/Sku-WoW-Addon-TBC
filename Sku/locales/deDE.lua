@@ -3700,6 +3700,7 @@ L["The price changed since it was listed: expected "] = "Der Preis hat sich seit
 L[", now "] = ", jetzt "
 L["Total price "] = "Gesamtpreis "
 L["Confirm or cancel?"] = "Bestätigen oder abbrechen?"
+L["No purchase is waiting for confirmation"] = "Kein Kauf wartet auf Bestätigung"
 L["Note: the unit price rises from %s to %s, because only %s pieces are offered at the lowest price."] = "Achtung: Der Stückpreis steigt von %s auf %s, weil nur %s Stück zum niedrigsten Preis angeboten werden."
 L["The price changed since it was listed: expected %s, now %s."] = "Der Preis hat sich seit der Anzeige geändert: erwartet %s, jetzt %s."
 L["Purchase complete"] = "Kauf abgeschlossen"

@@ -3690,6 +3690,7 @@ L["The price changed since it was listed: expected "] = "The price changed since
 L[", now "] = ", now "
 L["Total price "] = "Total price "
 L["Confirm or cancel?"] = "Confirm or cancel?"
+L["No purchase is waiting for confirmation"] = "No purchase is waiting for confirmation"
 L["Note: the unit price rises from %s to %s, because only %s pieces are offered at the lowest price."] = "Note: the unit price rises from %s to %s, because only %s pieces are offered at the lowest price."
 L["The price changed since it was listed: expected %s, now %s."] = "The price changed since it was listed: expected %s, now %s."
 L["Purchase complete"] = "Purchase complete"
