@@ -1511,7 +1511,7 @@ local function tCursorDeeperThan(aEntry)
 end
 
 -- Rebuilds the entry showing aList, unless the cursor stands inside one of its rows: that row's entries would be
--- replaced under the cursor.
+-- replaced under the cursor. A cursor on a row stays on that auction (skuIdentity), wherever the new list puts it.
 local function tShowList(aList)
 	if not tCursorDeeperThan(aList.entry) then tRebuildAndFocus(aList.entry) end
 end
@@ -1626,6 +1626,7 @@ local function tAddOwnedRow(aParent, aRow)
 	local tE = SkuOptions:InjectMenuItems(aParent, {tOwnedRowLabel(aRow)}, SkuGenericMenuItem)
 	tE.dynamic = true
 	tE.data = aRow
+	tE.skuIdentity = "auction:"..aRow.info.auctionID
 	tE.BuildChildren = function(self)
 		self.children = {}
 		local tI = self.data.info
@@ -1704,6 +1705,7 @@ local function tAddBidRow(aParent, aRow)
 	local tE = SkuOptions:InjectMenuItems(aParent, {tBidRowLabel(aRow)}, SkuGenericMenuItem)
 	tE.dynamic = true
 	tE.data = aRow
+	tE.skuIdentity = "auction:"..aRow.auctionID
 	tE.BuildChildren = function(self)
 		self.children = {}
 		local tData = self.data
