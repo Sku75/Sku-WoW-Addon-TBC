@@ -24,7 +24,7 @@ end
 
 function SkuQuest:GetTTSTextForever(aQuestID, aNode)
 	local questID = aQuestID
-	if not questID then return {} end
+	if not questID then return end
 
 	-- quest text and rewards load asynchronously; ask for them and read the quest as the selected one
 	C_QuestLog.RequestLoadQuestByID(questID)
@@ -34,7 +34,7 @@ function SkuQuest:GetTTSTextForever(aQuestID, aNode)
 	local tLogIndex = C_QuestLog.GetLogIndexForQuestID(questID)
 	local tInfo = tLogIndex and C_QuestLog.GetInfo(tLogIndex)
 	if tInfo then tTitle = tTitle or tInfo.title end
-	if not tTitle then return {} end
+	if not tTitle then return end
 	local tLevel = tInfo and tInfo.level
 
 	local tSections = {}
