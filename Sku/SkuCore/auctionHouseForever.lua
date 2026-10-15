@@ -524,12 +524,8 @@ function AHF:BuyItemAuction(aAuctionID, aBuyoutAmount, aName)
 		tSay(tNamePrefix..L["Not enough money"])
 		return
 	end
-	local tOk = pcall(C_AuctionHouse.PlaceBid, aAuctionID, aBuyoutAmount)
-	if tOk then
-		SkuOptions.Voice:OutputStringBTtts(tNamePrefix..L["Purchase started"], false, true, 0.2)
-	else
-		SkuOptions.Voice:OutputStringBTtts(tNamePrefix..L["Purchase failed"], false, true, 0.2)
-	end
+	C_AuctionHouse.PlaceBid(aAuctionID, aBuyoutAmount)
+	tSay(tNamePrefix..L["Purchase started"])
 end
 
 -- ---------------------------------------------------------------------
@@ -549,13 +545,7 @@ function AHF:StartCommodityBuy(aItemID, aQuantity, aEntry, aName, aIndex)
 	gCommodityBuy.entry = aEntry
 	gCommodityBuy.name = aName
 	gCommodityBuy.startedAt = GetTime()
-	local tReady = C_AuctionHouse.IsThrottledMessageSystemReady()
-	local tOk = pcall(C_AuctionHouse.StartCommoditiesPurchase, aItemID, aQuantity)
-	if not tOk then
-		gCommodityBuy.itemID = nil
-		SkuOptions.Voice:OutputStringBTtts(L["Purchase could not be started"], false, true, 0.2)
-		return
-	end
+	C_AuctionHouse.StartCommoditiesPurchase(aItemID, aQuantity)
 	-- If the game does not answer with a price, do not hang silently.
 	local tStartedAt = gCommodityBuy.startedAt
 	C_Timer.After(4, function()
@@ -796,9 +786,8 @@ function AHF:PlaceItemBid(aRow, aAmount, aName)
 		tSay(tPrefix..L["Not enough money"])
 		return
 	end
-	local tOk = pcall(C_AuctionHouse.PlaceBid, aRow.auctionID, aAmount)
-	tSay(tPrefix..(tOk and (L["Bid sent: "]..tMoneyText(aAmount))
-		or L["Bid failed"]))
+	C_AuctionHouse.PlaceBid(aRow.auctionID, aAmount)
+	tSay(tPrefix..L["Bid sent: "]..tMoneyText(aAmount))
 end
 
 -- The three bid leaves shared by the item detail and "My bids": bid the minimum, set an
