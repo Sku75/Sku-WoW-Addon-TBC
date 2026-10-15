@@ -1539,24 +1539,22 @@ function AHF:PostDraft()
 		tPostNote(L["Please wait a moment and try again"])
 		return
 	end
+	-- Protected: called straight from the key press. Without a needed confirmation the auction is on its way;
+	-- AUCTION_HOUSE_AUCTION_CREATED or an error event reports the outcome.
 	local tDuration, tQuantity = tGetDuration(), gSell.quantity
-	local tOk, tNeeds, tArgs
+	local tNeeds, tArgs
 	if gSell.isCommodity then
 		tArgs = SafePack(gSell.loc, tDuration, tQuantity, gSell.buyout)
-		tOk, tNeeds = pcall(C_AuctionHouse.PostCommodity, SafeUnpack(tArgs))
+		tNeeds = C_AuctionHouse.PostCommodity(SafeUnpack(tArgs))
 	else
 		tArgs = SafePack(gSell.loc, tDuration, tQuantity, gSell.bid, gSell.buyout)
-		tOk, tNeeds = pcall(C_AuctionHouse.PostItem, SafeUnpack(tArgs))
-	end
-	if not tOk then
-		tPostNote(gSell.name..": "..L["Posting failed"])
-		return
+		tNeeds = C_AuctionHouse.PostItem(SafeUnpack(tArgs))
 	end
 	if tNeeds then
 		gSell.pending = tArgs
 		tPostNote(gSell.name..": "..L["Confirmation needed. Press Enter again to confirm."])
 	else
-		tPostNote(gSell.name..": "..L["Posting"])
+		tPostNote(nil)
 	end
 end
 
