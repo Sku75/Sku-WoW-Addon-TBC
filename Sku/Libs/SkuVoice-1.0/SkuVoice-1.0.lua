@@ -857,11 +857,22 @@ local mSecretSlot
 
 local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	local tSecretText
-	if not aIsEcho and mSecretSlot and string.find(aText, SECRET_MARKER, 1, true) then
-		if GetTime() - mSecretSlot.at <= SECRET_SLOT_MAX_AGE then tSecretText = mSecretSlot.text end
+	if not aIsEcho and string.find(aText, SECRET_MARKER, 1, true) then
+		if mSecretSlot and GetTime() - mSecretSlot.at <= SECRET_SLOT_MAX_AGE then tSecretText = mSecretSlot.text end
 		mSecretSlot = nil
-		-- Stale: nothing to say, and the marker word must never be spoken.
-		if not tSecretText then return end
+		if not tSecretText then
+			-- Stale or already collected: nothing to say, and the marker word itself is never spoken. The pump has
+			-- already listed it as speaking; no FINISHED will come for it, so take it off again, or the next marker
+			-- would be skipped as "already speaking that" until the speaking TTL.
+			for z = #mSkuVoiceQueueBTTS_Speaking, 1, -1 do
+				if mSkuVoiceQueueBTTS_Speaking[z].text == aText then
+					table.remove(mSkuVoiceQueueBTTS_Speaking, z)
+					break
+				end
+			end
+			if dprint then dprint("BTTS secret slot empty or stale, marker dropped") end
+			return
+		end
 	end
 	-- [v43.5] A real announcement supersedes typed characters that have not gone
 	-- out yet. Sku's announcements all carry a stop, i.e. they behave like NVDA's

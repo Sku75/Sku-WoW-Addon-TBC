@@ -107,6 +107,16 @@ S.secret = function()
 	say(8.0, "ende", true)
 	H.run(14)
 end
+-- A secret line that waits longer than its slot lives. With "never reset queues" the marker queues behind a line of
+-- about 7 s, so its slot is stale when it comes up: nothing may be spoken for it (the marker word never), and the next
+-- call after that must be spoken at once ("33 percent"), not be skipped as "already speaking that".
+S.secretstale = function()
+	V:SetChatTtsProvider(function() return { WowTtsVoice = 1, WowTtsSpeed = 3, WowTtsVolume = 50, neverResetQueues = true } end)
+	say(0.0, "eine sehr lange zeile die laenger als fuenf sekunden dauert damit der geheime platz veraltet ist", false)
+	at(0.5, function() V:SpeakSecretText("%d percent", 77) end)
+	at(9.0, function() V:SpeakSecretText("%d percent", 33) end)
+	H.run(14)
+end
 -- Point 17: a line with a word that has no recording. MW=1 turns the option on: the whole line must reach the client
 -- (spoken by Blizzard's voice); MW=0 (the default): nothing reaches the client, the sound path takes it. A line whose
 -- words all have a recording never reaches the client. The harness has no audio index, so GetAudiodata is stubbed.
