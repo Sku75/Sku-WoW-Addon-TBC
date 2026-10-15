@@ -1372,9 +1372,9 @@ local function tPostLabel()
 	return tLabel
 end
 
--- Market price hint while selling (Blizzard's sell frame lists the current offers and fills the
--- price from the cheapest one). SendSellSearchQuery -> the usual search result events; the
--- cheapest buyout / unit price is offered as the new price on the next Enter.
+-- Market price hint while selling: Blizzard's sell frames query the item (AuctionHouseFrame:QueryItem) and fill
+-- the price from the cheapest listing; here the cheapest buyout / unit price is offered as the new price on the
+-- next Enter.
 local function tMarketLabel()
 	if gSell.marketState == "waiting" then
 		return L["Looking up the market price"]
@@ -1402,16 +1402,36 @@ local function tRefreshSellLabels()
 	if tL.post then tL.post.name = tPostLabel() end
 end
 
+-- As Blizzard's sell frames: equipment is searched without item level and suffix (ConvertItemSellItemKey) through
+-- SendSellSearchQuery, everything else through SendSearchQuery, sorted cheapest first, owner items not separated.
+-- The results are read with the same key.
 function AHF:StartMarketQuery()
 	if not gSell.loc or gSell.marketState == "waiting" then return end
 	local tKey = C_AuctionHouse.GetItemKeyFromItem(gSell.loc)
+	local tKeyInfo = C_AuctionHouse.GetItemKeyInfo(tKey)
+	local tEquipment = tKeyInfo and tKeyInfo.isEquipment
+	if tEquipment then tKey.itemLevel, tKey.itemSuffix = 0, 0 end
+	-- Blizzard's GetBestEntry compares equipment by item level, except green items and pets.
+	gSell.marketItemLevel = tEquipment and not tKeyInfo.isPet
+		and C_Item.GetItemQuality(gSell.loc) ~= Enum.ItemQuality.Uncommon
+		and C_Item.GetCurrentItemLevel(gSell.loc) or nil
 	gSell.marketState = "waiting"
 	gSell.marketLowest = nil
 	gSell.marketKey = tKey
-	local tItem = gSell.loc
-	C_AuctionHouse.SendSellSearchQuery(tKey, {}, true)
+	local tSorts
+	if gSell.isCommodity then
+		tSorts = { { sortOrder = Enum.AuctionHouseSortOrder.Price, reverseSort = false } }
+	else
+		tSorts = { { sortOrder = Enum.AuctionHouseSortOrder.Buyout, reverseSort = false }, { sortOrder = Enum.AuctionHouseSortOrder.Bid, reverseSort = false } }
+	end
+	if tEquipment then
+		C_AuctionHouse.SendSellSearchQuery(tKey, tSorts, false)
+	else
+		C_AuctionHouse.SendSearchQuery(tKey, tSorts, false)
+	end
+	local tDraft = gSell
 	C_Timer.After(6, function()
-		if gSell.marketState == "waiting" and gSell.loc == tItem then
+		if gSell == tDraft and gSell.marketState == "waiting" then
 			gSell.marketState = "done"
 			tRefreshSellLabels()
 			tSay(tMarketLabel())
@@ -1423,21 +1443,27 @@ end
 function AHF:OnSellMarketResult(aIsCommodity, aItemID)
 	if gSell.marketState ~= "waiting" or not gSell.marketKey then return end
 	if aItemID and aItemID ~= gSell.marketKey.itemID then return end
+	if aIsCommodity ~= gSell.isCommodity then return end
 	local tLowest
 	if aIsCommodity then
-		local tNum = C_AuctionHouse.GetNumCommoditySearchResults(gSell.marketKey.itemID)
-		for i = 1, math.min((tonumber(tNum)) or 0, 20) do
-			local tR = C_AuctionHouse.GetCommoditySearchResultInfo(gSell.marketKey.itemID, i)
-			if tR and tR.unitPrice and (not tLowest or tR.unitPrice < tLowest) then tLowest = tR.unitPrice end
-		end
+		-- Commodity results always come cheapest first (Blizzard reads row 1).
+		local tR = C_AuctionHouse.GetCommoditySearchResultInfo(gSell.marketKey.itemID, 1)
+		tLowest = tR and tR.unitPrice
 	else
-		local tNum = C_AuctionHouse.GetNumItemSearchResults(gSell.marketKey)
-		for i = 1, math.min((tonumber(tNum)) or 0, 20) do
-			local tR = C_AuctionHouse.GetItemSearchResultInfo(gSell.marketKey, i)
-			if tR and tR.buyoutAmount and tR.buyoutAmount > 0 then
-				local tEach = math.floor(tR.buyoutAmount / math.max(1, tR.quantity or 1))
-				if not tLowest or tEach < tLowest then tLowest = tEach end
+		-- Bid-only listings have no buyout; for equipment only the draft's item level counts. All loaded rows are
+		-- read, a matching row can sit behind cheaper rows of other item levels.
+		local tKey, tLevel = gSell.marketKey, gSell.marketItemLevel
+		for i = 1, C_AuctionHouse.GetNumItemSearchResults(tKey) do
+			local tR = C_AuctionHouse.GetItemSearchResultInfo(tKey, i)
+			if tR.buyoutAmount and (not tLevel or tR.itemKey.itemLevel == tLevel)
+				and (not tLowest or tR.buyoutAmount < tLowest) then
+				tLowest = tR.buyoutAmount
 			end
+		end
+		if not tLowest and not C_AuctionHouse.HasFullItemSearchResults(tKey) then
+			-- More listings arrive with ITEM_SEARCH_RESULTS_ADDED.
+			C_AuctionHouse.RequestMoreItemSearchResults(tKey)
+			return
 		end
 	end
 	gSell.marketState = "done"
