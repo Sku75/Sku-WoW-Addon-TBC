@@ -1443,23 +1443,34 @@ function AHF:OnSellMarketResult(aIsCommodity, aItemID)
 	tSay(tMarketLabel())
 end
 
--- Returns true when the draft is ready, false when item data is not loaded yet.
-function AHF:SelectSellItem(aBag, aSlot)
-	if gSell.bag == aBag and gSell.slot == aSlot and gSell.loc then return true end
+-- True while aLoc still holds the item with aGuid. Bag slots change under the menu (sorting, looting, moving), so
+-- the draft is tied to the item's GUID and checked before every use.
+local function tSameItem(aLoc, aGuid)
+	return C_Item.DoesItemExist(aLoc) and C_Item.GetItemGUID(aLoc) == aGuid
+end
+
+-- Makes the item aGuid in aBag/aSlot the draft. Returns "ready", "loading" (item data not loaded yet) or "moved"
+-- (the slot no longer holds that item). The draft of the same item is kept.
+function AHF:SelectSellItem(aBag, aSlot, aGuid)
 	local tLoc = ItemLocation:CreateFromBagAndSlot(aBag, aSlot)
+	if not tSameItem(tLoc, aGuid) then
+		if gSell.guid == aGuid then gSell = { duration = gSell.duration } end
+		return "moved"
+	end
+	if gSell.guid == aGuid and gSell.bag == aBag and gSell.slot == aSlot then return "ready" end
 	local tStatus = C_AuctionHouse.GetItemCommodityStatus(tLoc)
-	if tStatus == Enum.ItemCommodityStatus.Unknown then return false end
+	if tStatus == Enum.ItemCommodityStatus.Unknown then return "loading" end
 	local tInfo = C_Container.GetContainerItemInfo(aBag, aSlot)
 	local tMax = math.max(1, C_AuctionHouse.GetAvailablePostCount(tLoc))
 	local tKeepDuration = gSell.duration
 	gSell = {
-		bag = aBag, slot = aSlot, loc = tLoc, itemID = tInfo.itemID, name = tInfo.itemName,
+		guid = aGuid, bag = aBag, slot = aSlot, loc = tLoc, itemID = tInfo.itemID, name = tInfo.itemName,
 		isCommodity = (tStatus == Enum.ItemCommodityStatus.Commodity), maxQuantity = tMax,
 		quantity = 1, duration = tKeepDuration,
 	}
 	-- Blizzard's commodity sell frame starts with the whole stack.
 	if gSell.isCommodity then gSell.quantity = math.min(tMax, tInfo.stackCount) end
-	return true
+	return "ready"
 end
 
 -- Every change to the draft drops a pending confirmation: it was given for the old values, and confirming it
@@ -1496,6 +1507,11 @@ end
 
 function AHF:PostDraft()
 	if not gSell.loc then return end
+	if not tSameItem(gSell.loc, gSell.guid) then
+		tPostNote(gSell.name..": "..L["The item has moved or is gone, open the list again"])
+		gSell = { duration = gSell.duration }
+		return
+	end
 	if gSell.pending then
 		local tP = gSell.pending
 		gSell.pending = nil
@@ -1603,20 +1619,25 @@ local function tBuildSellList(aSelf)
 	for tBag = BACKPACK_CONTAINER, NUM_TOTAL_EQUIPPED_BAG_SLOTS do
 		for tSlot = 1, C_Container.GetContainerNumSlots(tBag) do
 			local tInfo = C_Container.GetContainerItemInfo(tBag, tSlot)
-			if tInfo and tInfo.itemID then
-				local tValid = C_AuctionHouse.IsSellItemValid(ItemLocation:CreateFromBagAndSlot(tBag, tSlot), false)
-				if tValid then
+			if tInfo then
+				local tLoc = ItemLocation:CreateFromBagAndSlot(tBag, tSlot)
+				if C_AuctionHouse.IsSellItemValid(tLoc, false) then
+					local tGuid = C_Item.GetItemGUID(tLoc)
 					tAny = true
 					local tName = tInfo.itemName
 					if tInfo.stackCount > 1 then tName = tName.." x"..tInfo.stackCount end
 					local tE = SkuOptions:InjectMenuItems(aSelf, {tName}, SkuGenericMenuItem)
 					tE.dynamic = true
+					tE.skuIdentity = "sellitem:"..tGuid
 					tMarkEntering(tE)
 					tE.BuildChildren = function(self)
 						if not self.ahfEntering then self.children = {} return end
-						if not AHF:SelectSellItem(tBag, tSlot) then
+						local tState = AHF:SelectSellItem(tBag, tSlot, tGuid)
+						if tState ~= "ready" then
 							self.children = {}
-							local tW = SkuOptions:InjectMenuItems(self, {L["Item data still loading, please open again in a moment"]}, SkuGenericMenuItem)
+							local tW = SkuOptions:InjectMenuItems(self, {tState == "moved"
+								and L["The item has moved or is gone, open the list again"]
+								or L["Item data still loading, please open again in a moment"]}, SkuGenericMenuItem)
 							tW.dynamic = false
 							return
 						end
