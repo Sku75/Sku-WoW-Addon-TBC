@@ -501,6 +501,8 @@ function AHF:StartDetail(aRow, aEntry)
 	-- A commodity's quantity to buy; Blizzard's buy display starts at 1 as well.
 	gDetail.buyQty = 1
 	gDetail.buyLoading = nil
+	gDetail.buyRefreshing = nil
+	gCommodityBuy.notice = nil
 	gDetail.entry = aEntry
 	gDetail.failText = nil
 	gDetail.generation = (gDetail.generation or 0) + 1
@@ -515,14 +517,16 @@ end
 
 -- After a purchase: the open listings again, through the throttle and with the same sorts, as Blizzard's
 -- RefreshSearchResults. The answer updates the list in place (state stays "done"); the identities keep the cursor.
+-- Returns true when the query went out (or waits for the throttle).
 function AHF:RequeryDetail(aItemID)
-	if gDetail.state ~= "done" or not gDetail.itemKey or gDetail.itemKey.itemID ~= aItemID then return end
+	if gDetail.state ~= "done" or not gDetail.itemKey or gDetail.itemKey.itemID ~= aItemID then return false end
 	if gDetail.isCommodity then
 		tSendThrottled(gDetail, C_AuctionHouse.SendSearchQuery, gDetail.itemKey, {}, false)
 	else
 		local f = AHF:GetFilter()
 		tSendThrottled(gDetail, C_AuctionHouse.SendSearchQuery, gDetail.itemKey, AHF_ITEM_SORTS, false, f.minLevel or 0, f.maxLevel or 0)
 	end
+	return true
 end
 
 function AHF:RefreshDetailResults(aItemID)
@@ -570,7 +574,13 @@ function AHF:RefreshDetailResults(aItemID)
 	end
 	gDetail.results = tRows
 	gDetail.state = "done"
-	local tWasLoading = gDetail.buyLoading
+	local tWasLoading = gDetail.buyLoading or gDetail.buyRefreshing
+	-- The fresh offers after an ended purchase (AHF:EndCommodityBuy): its reason was spoken, the Buy leaf now
+	-- carries the current price instead.
+	if gDetail.buyRefreshing then
+		gDetail.buyRefreshing = nil
+		gCommodityBuy.notice = nil
+	end
 	tRebuildAndFocus(gDetail.entry)
 	gDetail.seenBefore = nil
 	-- The rows a commodity's Buy leaf waited for are in: a cursor on that leaf hears its price now.
@@ -642,6 +652,8 @@ local MAXIMUM_PREVIEW_PRICE_DIFFERENTIAL = 1.05
 -- rebuilds the detail and this runs again. With every row loaded the quantity is cut to what other players offer.
 -- Returns the quantity, the total price and the highest unit price paid; 0 when other players offer nothing.
 local function tCommodityPreview()
+	-- The offers are being reloaded after an ended purchase: the loaded rows are the old ones.
+	if gDetail.buyRefreshing then return nil end
 	local tItemID = gDetail.itemKey.itemID
 	local tQty, tTotal, tNum = AuctionHouseUtil.AggregateSearchResultsByQuantity(tItemID, gDetail.buyQty)
 	gDetail.buyLoading = nil
@@ -685,7 +697,9 @@ end
 -- aQty, aTotal, aHigh: tCommodityPreview's answer.
 local function tCommodityBuyLabel(aQty, aTotal, aHigh)
 	local tText = L["Kaufen"]..": "
-	if not aQty then return tText..gDetail.buyQty.." "..L["STRAT_Pieces"]..";"..L["Loading more auctions"] end
+	if not aQty then
+		return tText..gDetail.buyQty.." "..L["STRAT_Pieces"]..";"..(gDetail.buyRefreshing and L["Reloading the offers"] or L["Loading more auctions"])
+	end
 	if aQty == 0 then return tText..AUCTION_HOUSE_TOOLTIP_TITLE_NONE_AVAILABLE end
 	return tText..aQty.." "..L["STRAT_Pieces"]..", "..tMoneyText(aTotal)..tUpToText(aQty, aTotal, aHigh)
 end
@@ -723,6 +737,7 @@ function AHF:StartCommodityBuy(aItemID, aQuantity, aTotal, aHigh, aEntry, aName,
 	gCommodityBuy.unitPrice = nil
 	gCommodityBuy.totalPrice = nil
 	gCommodityBuy.summary = nil
+	gCommodityBuy.notice = nil
 	gCommodityBuy.confirming = false
 	gCommodityBuy.preview = { total = aTotal, high = aHigh }
 	gCommodityBuy.entry = aEntry
@@ -731,6 +746,8 @@ function AHF:StartCommodityBuy(aItemID, aQuantity, aTotal, aHigh, aEntry, aName,
 	local tGen = gCommodityBuy.generation
 	dprint("ahf", "commodity quote", aItemID, aQuantity, aTotal)
 	C_AuctionHouse.StartCommoditiesPurchase(aItemID, aQuantity)
+	-- Ended already (an answer during the call): the Buy leaf is in place and carries the reason.
+	if not gCommodityBuy.itemID then return false end
 	-- If the game does not answer with a price, do not hang silently.
 	C_Timer.After(4, function()
 		if gCommodityBuy.itemID and gCommodityBuy.generation == tGen and not gCommodityBuy.unitPrice then
@@ -741,9 +758,12 @@ function AHF:StartCommodityBuy(aItemID, aQuantity, aTotal, aHigh, aEntry, aName,
 end
 
 -- Ends Sku's commodity purchase the way Blizzard's buy dialog closes (AuctionHouseBuyDialogMixin:OnHide): drops the
--- quote, rebuilds the item's level with the cursor on its Buy leaf and aReason in front of it, and sends the item's
--- search again so the quantities are current. Does nothing when no purchase of Sku's is running. aFromKey: called
--- from a key press, whose handler vocalizes the cursor itself.
+-- quote and sends the item's search again so the prices are current. The cursor goes to the Buy leaf, which reads
+-- aReason and "reloading the offers" and is spoken right away: most ends arrive as server events, not after a key
+-- press, and the cursor may sit on a leaf of the same identity, which a rebuild re-pins silently. When the fresh
+-- offers are in (AHF:RefreshDetailResults) the leaf drops the reason and is spoken again with the current price, so
+-- Enter buys at that price. Does nothing when no purchase of Sku's is running. aFromKey: called from a key press,
+-- whose handler vocalizes the cursor itself.
 function AHF:EndCommodityBuy(aReason, aFromKey)
 	if not gCommodityBuy.itemID then return end
 	local tItemID, tEntry = gCommodityBuy.itemID, gCommodityBuy.entry
@@ -752,9 +772,27 @@ function AHF:EndCommodityBuy(aReason, aFromKey)
 	gCommodityBuy.itemID = nil
 	gCommodityBuy.confirming = false
 	gCommodityBuy.notice = aReason
-	tRebuildAndFocus(tEntry, true, aFromKey)
-	gCommodityBuy.notice = nil
-	AHF:RequeryDetail(tItemID)
+	-- Set before the query: its answer clears it.
+	local tToken = {}
+	gDetail.buyRefreshing = tToken
+	if not AHF:RequeryDetail(tItemID) then gDetail.buyRefreshing = nil end
+	tRebuildAndFocus(tEntry, true, true)
+	local tBuy = tEntry == gDetail.entry and tDetailChild("commodity:buy")
+	if tBuy then SkuOptions.currentMenuPosition = tBuy end
+	if not aFromKey then tVocalize() end
+	if not gDetail.buyRefreshing then
+		gCommodityBuy.notice = nil
+		return
+	end
+	-- No answer: the leaf must not stay on "reloading" (tFailOnTimeout's span for a detail query).
+	C_Timer.After(6, function()
+		if gDetail.buyRefreshing ~= tToken then return end
+		gDetail.buyRefreshing = nil
+		gCommodityBuy.notice = nil
+		tRebuildAndFocus(gDetail.entry)
+		local tPos = SkuOptions.currentMenuPosition
+		if tPos and tPos.skuIdentity == "commodity:buy" then tSay(tPos.name) end
+	end)
 end
 
 -- The quote. Checked like Blizzard's buy dialog: more than 5% above the preview ends the purchase. Otherwise the item
