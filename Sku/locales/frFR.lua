@@ -3752,6 +3752,7 @@ L["SKU_KEY_PETHEALTH"] = "Annoncer la santé du familier"
 L["Pet %d"] = "Familier %d"
 L["No pet"] = "Pas de familier"
 L["Speak lines with a missing recording with the Blizzard voice"] = "Dire les lignes dont un enregistrement manque avec la voix de Blizzard"
+L["Guild invitation"] = "Invitation de guilde"
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a
 -- regeneration can no longer re-import it - check with _locale_dupes.py, which
 -- fails on a duplicate here.
