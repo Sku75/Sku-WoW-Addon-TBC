@@ -1090,11 +1090,11 @@ function DungeonBrowser:Rebuild()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Auto-open: hook LFGParentFrame OnShow/OnHide (+ the toggle function) so the Sku menu follows the Group Finder window.
+-- Auto-open: hook LFGParentFrame OnShow/OnHide so the Sku menu follows the Group Finder window, whichever way it was
+-- toggled (key binding LFGVanilla_ToggleFrame, micro button, slash command).
 -- Party invite popups suppress the auto-open so the invite dialog keeps focus.
 ---------------------------------------------------------------------------------------------------------------------------------------
 DungeonBrowser.tFrameHooked = false
-DungeonBrowser.tToggleHooked = false
 DungeonBrowser.tInOpen = false
 DungeonBrowser.tPartyInviteActive = false
 -- State sampled when the invite ARRIVES, so the post-invite re-evaluation can restore what was there instead of
@@ -1192,14 +1192,6 @@ local function tHookGroupFinder()
       f:HookScript("OnHide", function() tFireClose() end)
       DungeonBrowser.tFrameHooked = true
    end
-   if not DungeonBrowser.tToggleHooked and type(_G.ToggleLFDParentFrame) == "function" then
-      hooksecurefunc("ToggleLFDParentFrame", function()
-         C_Timer.After(0, function()
-            if tIsContainerShown() then tFireOpen() end
-         end)
-      end)
-      DungeonBrowser.tToggleHooked = true
-   end
 end
 
 function DungeonBrowser:DungeonBrowserInit()
@@ -1252,7 +1244,8 @@ tInitFrame:SetScript("OnEvent", function(self, event)
       end)
    elseif event == "ADDON_LOADED" then
       tHookGroupFinder()
-      if DungeonBrowser.tFrameHooked and DungeonBrowser.tToggleHooked then self:UnregisterEvent("ADDON_LOADED") end
+      -- LFGParentFrame comes with the load-on-demand Blizzard_GroupFinder_VanillaStyle
+      if DungeonBrowser.tFrameHooked then self:UnregisterEvent("ADDON_LOADED") end
    end
 end)
 
