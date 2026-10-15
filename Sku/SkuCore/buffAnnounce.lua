@@ -20,6 +20,27 @@ end, nil, true)
 local MIN_REPEAT_SECONDS = 20
 local gLastSpoken = {}
 
+-- Buffs a shaman totem puts on the party come and go with every totem set and every step in or out of its range and
+-- were too much, so they are left out. Aura spell ids of all vanilla ranks: SkuDB/assets/Era/spells.lua (the "<X>"
+-- aura next to each "<X> Totem" rank); Grace of Air, Windwall, Tranquil Air and Mana Tide ranks 2-3 are missing
+-- there and are taken from Wowhead Classic.
+local tTotemAuras = {}
+for _, tSpellId in ipairs({
+	8076, 8162, 8163, 10441, 25362,         -- Strength of Earth
+	8072, 8156, 8157, 10403, 10404, 10405,  -- Stoneskin
+	8836, 10626, 25360,                     -- Grace of Air
+	15108, 15109, 15110,                    -- Windwall
+	25909,                                  -- Tranquil Air
+	5672, 6371, 6372, 10460, 10461,         -- Healing Stream
+	5677, 10491, 10493, 10494,              -- Mana Spring
+	16191, 17355, 17360,                    -- Mana Tide
+	8185, 10534, 10535,                     -- Fire Resistance
+	8182, 10476, 10477,                     -- Frost Resistance
+	10596, 10598, 10599,                    -- Nature Resistance
+}) do
+	tTotemAuras[tSpellId] = true
+end
+
 function BuffAnnounce:OnEnable()
 	BuffAnnounce:RegisterEvent("UNIT_AURA", "UNIT_AURA")
 end
@@ -52,9 +73,7 @@ function BuffAnnounce:UNIT_AURA(aEvent, aUnit, aInfo)
 			-- Improved Rested bonus (1229451): the game marks it as harmful, but it is a buff.
 			local tIsBuff = tAura.isHelpful == true or tAura.spellId == 1229451
 			local tName = tAura.name
-			-- Buffs that a shaman totem gives come and go with every totem set and every step in or out of its range and
-			-- were too much; every aura with "Totem" in its name is left out (the same word in German, English, French).
-			if tIsBuff and type(tName) == "string" and tName ~= "" and not string.find(tName, "Totem", 1, true) then
+			if tIsBuff and not tTotemAuras[tAura.spellId] and type(tName) == "string" and tName ~= "" then
 				local tKey = tAura.spellId or tName
 				if not (gLastSpoken[tKey] and (tNow - gLastSpoken[tKey]) < MIN_REPEAT_SECONDS) then
 					gLastSpoken[tKey] = tNow
