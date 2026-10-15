@@ -621,44 +621,6 @@ function AHF:OnItemPurchaseCompleted(aAuctionID)
 	end
 end
 
--- AUCTION_HOUSE_SHOW_ERROR carries only the error code, and Blizzard shows it only in UIErrorsFrame (no
--- UI_ERROR_MESSAGE, so Sku never hears it there). It answers Sku's own buyout or bid in flight first, then a
--- commodity purchase, then a post sent to the server (a post waiting for its confirmation sent nothing), then a
--- cancel, else a browse or detail query still waiting.
-function AHF:OnShowError(aError)
-	local tText = AuctionHouseUtil.GetErrorText(aError)
-	dprint("ahf", "SHOW_ERROR", aError, tText)
-	if gItemPurchase.auctionID then
-		gItemPurchase.auctionID = nil
-		if tText == "" then tText = gItemPurchase.isBuyout and L["Purchase failed"] or L["Bid failed"] end
-		tSay((gItemPurchase.name and (gItemPurchase.name..": ") or "")..tText)
-		return
-	end
-	if gCommodityBuy.itemID then
-		AHF:EndCommodityBuy(tText ~= "" and tText or L["Purchase failed"])
-		return
-	end
-	if tPostInFlight() then
-		AHF:OnPostRefused(tText ~= "" and tText or AUCTION_POSTING_ERROR_TEXT)
-		return
-	end
-	if gCancel then
-		AHF:OnCancelRefused(tText ~= "" and tText or ERR_AUCTION_DATABASE_ERROR)
-		return
-	end
-	-- A rejected browse/detail query: the error becomes the waiting leaf, so the rebuild reads it out.
-	local tFailed = false
-	for _, tState in ipairs({ gBrowse, gDetail }) do
-		if tState.state == "waiting" and not tState.pendingSend then
-			tState.state = "failed"
-			tState.failText = tText ~= "" and tText or ERR_AUCTION_DATABASE_ERROR
-			tRebuildAndFocus(tState.entry)
-			tFailed = true
-		end
-	end
-	if not tFailed and tText ~= "" then tSay(tText) end
-end
-
 -- ---------------------------------------------------------------------
 -- BUY - commodity: StartCommoditiesPurchase (quote) -> COMMODITY_PRICE_UPDATED
 -- (the quoted price becomes the row's summary leaf) -> ConfirmCommoditiesPurchase (second real
@@ -1315,7 +1277,7 @@ local function tMarketLabel()
 		return L["No offers on the market, you set the price. Enter asks again"]
 	end
 	if gSell.marketState == "failed" then
-		return L["Could not get the market price. Enter asks again"]
+		return (gSell.marketFailText and (gSell.marketFailText..";") or "")..L["Could not get the market price. Enter asks again"]
 	end
 	return L["Look up the market price"]
 end
@@ -1347,7 +1309,7 @@ function AHF:StartMarketQuery()
 		and C_Item.GetItemQuality(gSell.loc) ~= Enum.ItemQuality.Uncommon
 		and C_Item.GetCurrentItemLevel(gSell.loc) or nil
 	gSell.marketState = "waiting"
-	gSell.marketLowest = nil
+	gSell.marketLowest, gSell.marketFailText = nil, nil
 	gSell.marketKey = tKey
 	local tSorts = gSell.isCommodity and { { sortOrder = Enum.AuctionHouseSortOrder.Price, reverseSort = false } } or AHF_ITEM_SORTS
 	tSendThrottled(gSell, tEquipment and C_AuctionHouse.SendSellSearchQuery or C_AuctionHouse.SendSearchQuery, tKey, tSorts, false)
@@ -1689,6 +1651,7 @@ end
 -- The query goes out through tSendThrottled. No answer within 6 seconds of sending = failed.
 local function tStartListQuery(aList, aEntry)
 	aList.state = "waiting"
+	aList.failText = nil
 	aList.entry = aEntry
 	aList.rows = {}
 	aList.namePending = nil
@@ -1735,7 +1698,7 @@ local function tBuildListEntry(aList, aSelf, aEmptyText, aAddRow)
 	end
 	aSelf.children = {}
 	local tText = (aList.state == "waiting" and L["Warten"])
-		or (aList.state == "failed" and L["No answer from the server, open the list again"])
+		or (aList.state == "failed" and (aList.failText or L["No answer from the server, open the list again"]))
 		or (#aList.rows == 0 and aEmptyText)
 	if tText then
 		local tE = SkuOptions:InjectMenuItems(aSelf, {tText}, SkuGenericMenuItem)
@@ -2071,6 +2034,61 @@ function AHF:MenuBuilder(aSelf)
 	tBidsEntry.dynamic = true
 	tMarkEntering(tBidsEntry)
 	tBidsEntry.BuildChildren = function(selfBids) AHF:BuildBidsChildren(selfBids) end
+end
+
+-- AUCTION_HOUSE_SHOW_ERROR carries only the error code, and Blizzard shows it only in UIErrorsFrame (no
+-- UI_ERROR_MESSAGE, so Sku never hears it there). It answers Sku's own buyout or bid in flight first, then a
+-- commodity purchase, then a post sent to the server (a post waiting for its confirmation sent nothing), then a
+-- cancel, else a query still waiting: browse, detail, own auctions, bids or the sell draft's market price.
+function AHF:OnShowError(aError)
+	local tText = AuctionHouseUtil.GetErrorText(aError)
+	dprint("ahf", "SHOW_ERROR", aError, tText)
+	if gItemPurchase.auctionID then
+		gItemPurchase.auctionID = nil
+		if tText == "" then tText = gItemPurchase.isBuyout and L["Purchase failed"] or L["Bid failed"] end
+		tSay((gItemPurchase.name and (gItemPurchase.name..": ") or "")..tText)
+		return
+	end
+	if gCommodityBuy.itemID then
+		AHF:EndCommodityBuy(tText ~= "" and tText or L["Purchase failed"])
+		return
+	end
+	if tPostInFlight() then
+		AHF:OnPostRefused(tText ~= "" and tText or AUCTION_POSTING_ERROR_TEXT)
+		return
+	end
+	if gCancel then
+		AHF:OnCancelRefused(tText ~= "" and tText or ERR_AUCTION_DATABASE_ERROR)
+		return
+	end
+	-- A rejected query: the error becomes the waiting leaf, so the rebuild reads it out. A query still parked
+	-- (pendingSend) was not sent, the error is not its answer.
+	local tFailText = tText ~= "" and tText or ERR_AUCTION_DATABASE_ERROR
+	local tFailed = false
+	for _, tState in ipairs({ gBrowse, gDetail }) do
+		if tState.state == "waiting" and not tState.pendingSend then
+			tState.state = "failed"
+			tState.failText = tFailText
+			tRebuildAndFocus(tState.entry)
+			tFailed = true
+		end
+	end
+	for _, tList in ipairs({ gOwned, gBids }) do
+		if tList.state == "waiting" and not tList.pendingSend then
+			tList.state = "failed"
+			tList.failText = tFailText
+			tShowList(tList)
+			tFailed = true
+		end
+	end
+	if gSell.marketState == "waiting" and not gSell.pendingSend then
+		gSell.marketState = "failed"
+		gSell.marketFailText = tFailText
+		tRefreshSellLabels()
+		tSay(tMarketLabel())
+		tFailed = true
+	end
+	if not tFailed and tText ~= "" then tSay(tText) end
 end
 
 -- ---------------------------------------------------------------------
