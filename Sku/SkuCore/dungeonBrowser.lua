@@ -1159,19 +1159,22 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- LFG events: refresh the menu when results / active-entry change.
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED is in no API documentation: RegisterEvent throws on an unknown event, so
+-- every name goes through Sku.IsEventValid.
+local LFG_EVENTS = { "LFG_LIST_SEARCH_RESULTS_RECEIVED", "LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED", "LFG_LIST_ACTIVE_ENTRY_UPDATE" }
 local tLFGEventsFrame
 local function tHookLFGEvents()
    if tLFGEventsFrame then
-      tLFGEventsFrame:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
-      tLFGEventsFrame:RegisterEvent("LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED")
-      tLFGEventsFrame:RegisterEvent("LFG_LIST_ACTIVE_ENTRY_UPDATE")
+      for _, tEvent in ipairs(LFG_EVENTS) do
+         if Sku.IsEventValid(tEvent) then tLFGEventsFrame:RegisterEvent(tEvent) end
+      end
       return
    end
    local f = CreateFrame("Frame")
    tLFGEventsFrame = f
-   f:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
-   f:RegisterEvent("LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED")
-   f:RegisterEvent("LFG_LIST_ACTIVE_ENTRY_UPDATE")
+   for _, tEvent in ipairs(LFG_EVENTS) do
+      if Sku.IsEventValid(tEvent) then f:RegisterEvent(tEvent) end
+   end
    f:SetScript("OnEvent", function(self, event)
       if not DungeonBrowser:IsEnabled() then return end
       if event == "LFG_LIST_ACTIVE_ENTRY_UPDATE" then
@@ -1234,8 +1237,6 @@ function DungeonBrowser:OnDisable()
    tInviteWatchFrame:UnregisterEvent("PARTY_INVITE_REQUEST")
    tInviteWatchFrame:UnregisterEvent("PARTY_INVITE_CANCEL")
    if tLFGEventsFrame then
-      tLFGEventsFrame:UnregisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
-      tLFGEventsFrame:UnregisterEvent("LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED")
-      tLFGEventsFrame:UnregisterEvent("LFG_LIST_ACTIVE_ENTRY_UPDATE")
+      tLFGEventsFrame:UnregisterAllEvents()
    end
 end
