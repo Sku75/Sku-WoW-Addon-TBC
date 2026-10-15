@@ -3624,6 +3624,8 @@ L["Confirm add friend: "] = "Confirmer l'ajout de l'ami : "
 L["Confirm search: "] = "Confirmer la recherche : "
 L["Comment hidden"] = "Commentaire masqué"
 L["Play style"] = "Style de jeu"
+L["Open the group finder with its key once, then the comment can be typed here."] = "Ouvrez une fois la recherche de groupe avec sa touche, ensuite le commentaire peut être saisi ici."
+L["Type the comment, then press Escape."] = "Tapez le commentaire, puis appuyez sur Échap."
 
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the

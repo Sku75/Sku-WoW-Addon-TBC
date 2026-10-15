@@ -375,6 +375,19 @@ local function tListingData(aIDs, aCreate)
    return tData
 end
 
+-- The comment is no field of the listing data on Forever: the game reads Blizzard's protected comment box
+-- (StoreSecureReference "LFGListingComment", SetText disabled for addons). The player types into that box; Sku only
+-- moves the keyboard focus there. Sku never opens Blizzard's window itself, for the same reason as above.
+local function tCommentBox()
+   return _G.LFGListingComment and _G.LFGListingComment.EditBox
+end
+
+local function tCommentLabel()
+   local tBox = tCommentBox()
+   local tText = tBox and tBox:GetText() or ""
+   return tText ~= "" and (L["Comment"] .. ": " .. tText) or L["Comment"]
+end
+
 -- Check before posting what Blizzard's window checks too (LFGListingMixin:UpdatePostButtonEnableState) and say the
 -- reason instead of failing silently. Returns nil when everything is fine.
 local function tCheckPostable(aIDs)
@@ -585,6 +598,29 @@ function DungeonBrowser:OnToggleNPF()
    end
 end
 
+function DungeonBrowser:OnEditComment()
+   local tBox = tCommentBox()
+   if tBox and not tBox:IsEnabled() then tSay(LFG_AUTHENTICATOR_DESCRIPTION_BOX, true); return end
+   if tBox then tBox:SetFocus() end
+   if not (tBox and tBox:HasFocus()) then
+      tSay(L["Open the group finder with its key once, then the comment can be typed here."], true)
+      return
+   end
+   if not DungeonBrowser.tCommentHooked then
+      DungeonBrowser.tCommentHooked = true
+      -- HookScript keeps Blizzard's own handlers untouched
+      tBox:HookScript("OnEditFocusLost", function()
+         local ref = DungeonBrowser.tCommentEntry
+         if ref and Shared.CursorInBrowser() then
+            local lbl = tCommentLabel()
+            tRelabel(ref, lbl)
+            tPin(ref, lbl)
+         end
+      end)
+   end
+   tSay(L["Type the comment, then press Escape."], true)
+end
+
 function DungeonBrowser:OnDeselectAll()
    tDB().selection = {}
    for _, ref in pairs(DungeonBrowser.tDungeonEntries) do
@@ -635,6 +671,7 @@ local function tBuildCreateTab(aParent)
    DungeonBrowser.tDungeonEntries = {}
    DungeonBrowser.tRoleEntries = {}
    DungeonBrowser.tNpfEntry = nil
+   DungeonBrowser.tCommentEntry = nil
 
    local listed = tIsListed()
    local d = tDB()
@@ -733,6 +770,13 @@ local function tBuildCreateTab(aParent)
          tDB().voiceMode = c.id
          tSay(c.name, true)
       end, VOICE_CHAT)
+   end
+
+   -- Comment (typed into Blizzard's protected box)
+   do
+      local e = Inject(aParent, tCommentLabel())
+      DungeonBrowser.tCommentEntry = e
+      e.OnAction = function() DungeonBrowser:OnEditComment() end
    end
 
    -- Activities of the chosen category, as submenus per activity group. Built before the level filter entry so that
