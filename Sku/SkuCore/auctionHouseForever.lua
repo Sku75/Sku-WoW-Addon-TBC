@@ -93,28 +93,53 @@ local function tVocalize()
 	SkuOptions:VocalizeCurrentMenuName()
 end
 
--- "12g 5s 3k", "12 gold 5 silber", "1.5" (= 1g 50s), plain number = gold
+-- Coin unit words: L["AHF_MoneyUnitsGold"], ...Silver, ...Copper hold a comma-separated word list per language
+-- ("g,gold"), each list also carries the letters of the example in the prompts ("12g 5s 3k").
+local gMoneyUnits
+local function tMoneyUnit(aWord)
+	if not gMoneyUnits then
+		gMoneyUnits = {}
+		for tKey, tCopper in pairs({ AHF_MoneyUnitsGold = 10000, AHF_MoneyUnitsSilver = 100, AHF_MoneyUnitsCopper = 1 }) do
+			for tUnit in L[tKey]:lower():gmatch("[^,%s]+") do gMoneyUnits[tUnit] = tCopper end
+		end
+	end
+	return gMoneyUnits[aWord]
+end
+
+-- "1.5" or "1,5" times aMult as whole copper; nil when that is not a whole copper amount.
+local function tNumberTimes(aNum, aMult)
+	local tInt, tFrac = aNum:match("^(%d+)%.?(%d*)$")
+	if not tInt then return nil end
+	local tScale = 10 ^ #tFrac
+	local tFracCopper = (tonumber(tFrac) or 0) * aMult
+	if tFracCopper % tScale ~= 0 then return nil end
+	return tonumber(tInt) * aMult + tFracCopper / tScale
+end
+
+-- Money typed by the player, in copper; nil = not understood. A bare number is gold ("75", "1.5" = 1 gold
+-- 50 silver). Otherwise number+unit groups: "12g 5s 3k", "1,5 g", "2 gold 50 silver". "." and "," are decimal
+-- marks. Refused: a number without its unit ("2g50", "12 gold 5"), a unit given twice, exponents ("1e3"),
+-- fractions of a copper, zero. Without copper values on the server the amount is rounded to whole silver.
 local function tParseMoney(aText)
-	if type(aText) ~= "string" then return nil end
-	local tS = aText:lower():gsub(",", "."):gsub("^%s+", ""):gsub("%s+$", "")
-	if tS == "" then return nil end
-	local tPlain = tonumber(tS)
+	local tS = aText:lower():gsub(",", "."):match("^%s*(.-)%s*$")
 	local tTotal
-	if tPlain then
-		tTotal = math.floor(tPlain * 10000 + 0.5)
+	if tS:find("^%d+%.?%d*$") then
+		tTotal = tNumberTimes(tS, 10000)
 	else
 		tTotal = 0
-		for tNum, tUnit in tS:gmatch("(%d+)%s*(%a*)") do
-			local tC = tUnit:sub(1, 1)
-			local tN = tonumber(tNum)
-			if tC == "g" then tTotal = tTotal + tN * 10000
-			elseif tC == "s" then tTotal = tTotal + tN * 100
-			elseif tC == "k" or tC == "c" then tTotal = tTotal + tN end
+		local tPos, tSeen = 1, {}
+		while tTotal and tPos <= #tS do
+			local tNum, tWord, tNext = tS:match("^(%d+%.?%d*)%s*(%a+)%s*()", tPos)
+			local tMult = tWord and tMoneyUnit(tWord)
+			if not tMult or tSeen[tMult] then return nil end
+			tSeen[tMult] = true
+			local tPart = tNumberTimes(tNum, tMult)
+			tTotal = tPart and (tTotal + tPart)
+			tPos = tNext
 		end
 	end
 	if not tTotal or tTotal <= 0 then return nil end
-	local tCopper = C_AuctionHouse.SupportsCopperValues()
-	if not tCopper then tTotal = math.max(100, math.floor(tTotal / 100 + 0.5) * 100) end
+	if not C_AuctionHouse.SupportsCopperValues() then tTotal = math.max(100, math.floor(tTotal / 100 + 0.5) * 100) end
 	return tTotal
 end
 

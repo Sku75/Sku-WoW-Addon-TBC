@@ -3546,6 +3546,9 @@ Auction canceled	Enchère annulée
 Auction posted	Enchère mise en vente
 Posting not possible	Mise en vente impossible
 Multi-posting failed	Échec de la mise en vente multiple
+AHF_MoneyUnitsGold	g,o,po,or,gold
+AHF_MoneyUnitsSilver	s,a,pa,argent,silver
+AHF_MoneyUnitsCopper	c,k,pc,cuivre,copper
 Auctions by category	Enchères par catégorie
 yes	oui
 no	non
