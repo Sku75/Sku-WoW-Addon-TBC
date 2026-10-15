@@ -4,10 +4,10 @@
 -- the world map), so GetTTSText cannot read its widgets there. This reads the C_QuestLog data and the
 -- quest reward functions instead; Blizzard's own quest UI (Mainline/QuestInfo.lua) uses the same ones.
 ---------------------------------------------------------------------------------------------------------------------------------------
+if not Sku.isForever then return end
+
 local L = Sku.L
 local GetCoinText = Sku.Compat.GetCoinText
-
-SkuQuest = SkuQuest or LibStub("AceAddon-3.0"):NewAddon("SkuQuest", "AceConsole-3.0", "AceEvent-3.0")
 
 -- Full item tooltip (stats, armour, slot, requirements) from the tooltip data. One section per item, so
 -- CTRL-SHIFT-UP/DOWN steps from item to item and SHIFT-UP/DOWN reads its lines.
