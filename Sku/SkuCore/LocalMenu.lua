@@ -4018,6 +4018,9 @@ local tRecipeDifficultyLabel = {
 local tRecipeApi = {
 	trade = { frame = "TradeSkillFrame" },
 	craft = { frame = "CraftFrame" },
+	-- Forever's crafting window (professionsForever.lua) builds through AddRecipeCategories too, but reads its
+	-- list from C_TradeSkillUI and refreshes on its own events (SkuCore.PROFESSIONS_LIST_UPDATE).
+	prof = { frame = "ProfessionsFrame", ownRefresh = true },
 }
 -- Signature of the list the menu was last BUILT from, per api. The update events
 -- compare against it so a burst of TRADE_SKILL_UPDATE that changed nothing we show
@@ -4100,7 +4103,7 @@ function SkuCore:RecipeListSignature(aApi, aList)
 	local tSel = 0
 	if aApi == "trade" then
 		tSel = (GetTradeSkillSelectionIndex and GetTradeSkillSelectionIndex()) or 0
-	else
+	elseif aApi == "craft" then
 		tSel = (GetCraftSelectionIndex and GetCraftSelectionIndex()) or 0
 	end
 	local tParts = { tostring(tSel) }
@@ -4129,7 +4132,8 @@ end
 -- section header for PAGEUP/PAGEDOWN. With aFilterOn only recipes the player has the
 -- materials for are listed, and a header is only listed if it has a recipe to show --
 -- folded or not, so a folded header never hides "nothing".
-function SkuCore:AddRecipeCategories(aParentChilds, aApi, aList, aFilterOn, aProf)
+-- aDecorate(aNode, aRecipe): optional, called for every recipe node after it is built.
+function SkuCore:AddRecipeCategories(aParentChilds, aApi, aList, aFilterOn, aProf, aDecorate)
 	local tFrameName = tRecipeApi[aApi].frame
 	local tSelect = (aApi == "trade") and _G.TradeSkillFrame_SetSelection or _G.CraftFrame_SetSelection
 	aProf = aProf or tFrameName
@@ -4226,6 +4230,7 @@ function SkuCore:AddRecipeCategories(aParentChilds, aApi, aList, aFilterOn, aPro
 					skuRecipeInfo = { api = aApi, index = tIndex },
 					skuIdentity = tIdent,
 				}
+				if aDecorate then aDecorate(aParentChilds[tLabel], r) end
 				tShown = tShown + 1
 			end
 		end
@@ -4286,7 +4291,7 @@ function SkuCore:RefreshProfessionMenu()
 	local tChanged = false
 	for tApi, tDef in pairs(tRecipeApi) do
 		local tFrame = _G[tDef.frame]
-		if tFrame and tFrame:IsVisible() then
+		if tFrame and not tDef.ownRefresh and tFrame:IsVisible() then
 			-- Blizzard's makeable filter is not ours any more; an "on" left over from an
 			-- earlier Sku version would filter the list behind our back. Once per session.
 			if tApi == "trade" and tMakeableReset ~= true and _G.TradeSkillOnlyShowMakeable then

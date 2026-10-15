@@ -8,10 +8,10 @@
 --   GetCraftableCount, GetRecipeSchematic                  how often a recipe can be made, reagents
 --   GetRecipeRequirements, GetRecipeDescription            requirements and description
 --   CraftRecipe, CraftEnchant, CraftSalvage                crafting
--- The layout is that of the old windows (SkuCore:GetResourceFilterState, AddResourceFilterToggle and the fold state of
--- the categories come from LocalMenu.lua): the filter "resources available", then the categories (foldable) with their
--- recipes. Every recipe has a submenu (create / create all); Shift-Down reads reagents, requirements, description and
--- the tooltip of the result item.
+-- The layout is that of the old windows (SkuCore:AddResourceFilterToggle, AddRecipeCategories and RecipeListSignature
+-- come from LocalMenu.lua): the filter "resources available", then the categories (foldable) with their recipes.
+-- Every recipe has a submenu (create / create all); Shift-Down reads reagents, requirements, description and the
+-- tooltip of the result item.
 -- Not covered: recrafting and recipes with selectable reagent qualities.
 ---------------------------------------------------------------------------------------------------------------------------------------
 if not Sku.isForever then return end
@@ -23,12 +23,6 @@ local DIFFICULTY = {
 	[Enum.TradeskillRelativeDifficulty.Medium] = "medium",
 	[Enum.TradeskillRelativeDifficulty.Easy] = "easy",
 	[Enum.TradeskillRelativeDifficulty.Trivial] = "trivial",
-}
-local DIFFICULTY_LABEL = {
-	optimal = L["optimal"],
-	medium = L["medium"],
-	easy = L["easy"],
-	trivial = L["trivial"],
 }
 
 local function tSpeak(aText)
@@ -138,14 +132,6 @@ function SkuCore:ReadProfessionsList()
 		end
 	end
 	return tList
-end
-
-local function tSignature(aList)
-	local tParts = {}
-	for x = 1, #aList do
-		tParts[#tParts + 1] = aList[x].name .. "#" .. aList[x].skillType .. "#" .. aList[x].avail
-	end
-	return table.concat(tParts, "|")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -414,88 +400,18 @@ function SkuCore:Build_ProfessionsFrame(aParentChilds)
 	local tFilterOn = SkuCore:GetResourceFilterState(tProf)
 	SkuCore:AddResourceFilterToggle(aParentChilds, tProf)
 
+	-- the categories and recipes are built like those of the old windows (LocalMenu.lua); the recipes get the craft
+	-- actions below them instead of Blizzard's selection function
 	local tList = SkuCore:ReadProfessionsList()
-	SkuCore.recipeListSig.prof = tSignature(tList)
-
-	-- names are keys on this level: a second one of the same name gets an ordinal
-	local tSeen = {}
-	local function tUnique(aName)
-		tSeen[aName] = (tSeen[aName] or 0) + 1
-		if tSeen[aName] > 1 then return aName .. " " .. tSeen[aName] end
-		return aName
-	end
-
-	-- pass 1: group, apply the filter
-	local tGroups = { { recipes = {} } }
-	for x = 1, #tList do
-		local r = tList[x]
-		if r.skillType == "header" then
-			tGroups[#tGroups + 1] = { name = r.name, recipes = {} }
-		elseif not (tFilterOn and r.avail == 0) then
-			local g = tGroups[#tGroups].recipes
-			g[#g + 1] = r
-		end
-	end
-
-	-- pass 2: output
-	local tShown = 0
+	SkuCore.recipeListSig.prof = SkuCore:RecipeListSignature("prof", tList)
 	local tWarmIds = {}
-	for g = 1, #tGroups do
-		local tGroup = tGroups[g]
-		local tCollapsed = false
-		if tGroup.name and #tGroup.recipes > 0 then
-			local tCat = tUnique(tGroup.name)
-			local tKey = tCat .. " (" .. L["category"] .. ")"
-			tCollapsed = SkuCore:IsRecipeCategoryCollapsed(tProf, tCat)
-			table.insert(aParentChilds, tKey)
-			aParentChilds[tKey] = {
-				frameName = tFrameName, RoC = "Child", type = "Button", obj = _G[tFrameName],
-				textFirstLine = tKey, textFull = "", childs = {},
-				isSectionHeader = true,
-				toggle = {
-					label = tKey,
-					onLabel = L["eingeklappt"],
-					offLabel = L["ausgeklappt"],
-					get = function() return SkuCore:IsRecipeCategoryCollapsed(tProf, tCat) end,
-					set = function(_, aVal) SkuCore:SetRecipeCategoryCollapsed(tProf, tCat, aVal) end,
-					onChange = function() SkuCore:CheckFrames(nil, nil, true) end,
-				},
-			}
-			tShown = tShown + 1
-		end
-
-		if tCollapsed ~= true then
-			for x = 1, #tGroup.recipes do
-				local r = tGroup.recipes[x]
-				local tLabel = r.name
-				if r.avail > 0 then tLabel = tLabel .. " [" .. r.avail .. "]" end
-				if DIFFICULTY_LABEL[r.skillType] then tLabel = tLabel .. " (" .. DIFFICULTY_LABEL[r.skillType] .. ")" end
-				tLabel = tUnique(tLabel)
-
-				local tNode = {
-					frameName = tFrameName, RoC = "Child", type = "Button", obj = _G[tFrameName],
-					textFirstLine = tLabel, textFull = "", childs = {},
-					-- Shift-Down builds the text from the API (SkuZOptions/Core.lua, SHIFT-DOWN)
-					skuRecipeInfo = { api = "prof", index = r.index },
-					-- the label carries the count and changes with it, so pin the cursor by recipe
-					skuIdentity = "recipe:" .. r.index,
-				}
-				tNode.lazyChilds = tAddCraftActions(tNode.childs, r)
-				table.insert(aParentChilds, tLabel)
-				aParentChilds[tLabel] = tNode
-				tWarmIds[#tWarmIds + 1] = r.index
-				tShown = tShown + 1
-			end
-		end
-	end
-
-	if tShown == 0 then
-		table.insert(aParentChilds, L["Empty"])
-		aParentChilds[L["Empty"]] = {
-			frameName = tFrameName, RoC = "Child", type = "FontString", obj = _G[tFrameName],
-			textFirstLine = L["Empty"], textFull = "", childs = {},
-		}
-	end
+	SkuCore:AddRecipeCategories(aParentChilds, "prof", tList, tFilterOn, tProf, function(aNode, aRecipe)
+		aNode.func, aNode.click = nil, nil
+		-- the label carries the count and changes with it, so pin the cursor by recipe
+		aNode.skuIdentity = "recipe:" .. aRecipe.index
+		aNode.lazyChilds = tAddCraftActions(aNode.childs, aRecipe)
+		tWarmIds[#tWarmIds + 1] = aRecipe.index
+	end)
 
 	-- names and tooltips are preloaded in the background (see tWarmUp)
 	if #tWarmIds > 0 then
@@ -509,7 +425,7 @@ end
 -- Core.lua).
 function SkuCore:RefreshProfessionsMenu()
 	if not (ProfessionsFrame and ProfessionsFrame:IsVisible()) then return end
-	if tSignature(SkuCore:ReadProfessionsList()) == SkuCore.recipeListSig.prof then return end
+	if SkuCore:RecipeListSignature("prof", SkuCore:ReadProfessionsList()) == SkuCore.recipeListSig.prof then return end
 	if not SkuOptions:IsMenuOpen() then return end
 	SkuCore:RefreshWindowMenuQuietly()
 end
