@@ -1101,7 +1101,7 @@ Gebot  	Enchère
 Gebot abgegeben	Enchère placée
 Gebot akzeptiert	Enchère acceptée
 Gebot akzeptiert.	Enchère acceptée.
-Gebote	Enchères
+Gebote	Offres
 Gebotspreis für 1 Gegenstand aufsteigend	prix d'enchère pour 1 objet croissant
 Gebotspreis für Auktionsmenge aufsteigend	Prix d'enchère pour la quantité de l'enchère croissant
 Gebrechen	Affliction
@@ -3416,3 +3416,125 @@ Comment hidden	Commentaire masqué
 Play style	Style de jeu
 Open the group finder with its key once, then the comment can be typed here.	Ouvrez une fois la recherche de groupe avec sa touche, ensuite le commentaire peut être saisi ici.
 Type the comment, then press Escape.	Tapez le commentaire, puis appuyez sur Échap.
+under 30 minutes	moins de 30 minutes
+under 2 hours	moins de 2 heures
+under 12 hours	moins de 12 heures
+over 12 hours	plus de 12 heures
+Amount not understood	Montant non compris
+usable only	utilisable seulement
+upgrades only	améliorations seulement
+uncollected only	non collecté seulement
+current expansion only	extension actuelle seulement
+exact name	nom exact
+quality from 	qualité à partir de 
+from level 	à partir du niveau 
+up to level 	jusqu'au niveau 
+Filters active: 	Filtres actifs : 
+Purchase failed	Achat échoué
+No price confirmation from the game. Please try again.	Pas de confirmation de prix. Réessayez.
+Confirm or cancel?	Confirmer ou annuler ?
+%s: %s pieces, total price %s	%s : %s pièces, prix total %s
+Purchase cancelled: the unit price is now %s instead of %s, more than 5 percent above the listings	Achat annulé : le prix unitaire est maintenant de %s au lieu de %s, plus de 5 pour cent au-dessus des offres
+Purchase cancelled: the price quote has expired	Achat annulé : l'offre de prix a expiré
+Purchasing	Achat en cours
+No purchase is waiting for confirmation	Aucun achat n'attend de confirmation
+The price changed since it was listed: expected %s, now %s.	Le prix a changé depuis l'affichage : attendu %s, maintenant %s.
+Purchase complete	Achat terminé
+Price unavailable	Prix indisponible
+No tooltip available	Aucune infobulle disponible
+from 	à partir de 
+for sale	en vente
+Confirm: 	Confirmer : 
+That is your own auction	C'est votre propre enchère
+The bid is too low, at least 	L'enchère est trop basse, au moins 
+Bid failed	Échec de l'enchère
+Bid the minimum: 	Enchérir le minimum : 
+Set your own bid	Fixer votre propre enchère
+Enter bid, for example 12g 5s 3k	Entrez l'enchère, par exemple 12g 5s 3k
+Place your bid: 	Placer votre enchère : 
+Place your bid, set it first	Placer votre enchère, d'abord la fixer
+Set a bid first	Fixez d'abord une enchère
+Your favorites list is full	Votre liste de favoris est pleine
+%s pieces at %s each	%s pièces à %s chacune
+Buyout 	Achat immédiat 
+Bid from 	Enchère à partir de 
+your bid is highest	votre enchère est la plus haute
+left: 	reste 
+your own auction	votre propre enchère
+Quantity: 	Quantité : 
+ of at most 	 sur au plus 
+Quantity not understood	Quantité non comprise
+Enter quantity, at most 	Saisir la quantité, au plus 
+Neither buyout nor bid possible	Ni achat immédiat ni enchère possible
+Load more auctions, so far 	Charger plus d'offres, jusqu'ici 
+Loading more auctions	Chargement d'autres offres
+Load more results, so far 	Charger plus de résultats, jusqu'ici 
+Loading more results	Chargement d'autres résultats
+Everything in 	Tout dans 
+at most 	au plus 
+Duration: 	Durée : 
+Price per unit: 	Prix par unité : 
+Buyout price: 	Prix d'achat immédiat : 
+Total price for the quantity: 	Prix total pour la quantité : 
+Starting bid, optional: 	Mise de départ, facultative : 
+Deposit: 	Dépôt : 
+total price 	prix total 
+Confirm: post with warning	Confirmer : mise en vente avec avertissement
+Post auction	Mettre en vente
+Looking up the market price	Recherche du prix du marché
+Cheapest price on the market: 	Prix le plus bas du marché : 
+Enter uses it as your price	Entrée l'utilise comme prix
+No offers on the market, you set the price. Enter asks again	Aucune offre sur le marché, vous fixez le prix. Entrée redemande
+Look up the market price	Consulter le prix du marché
+Confirmed, posting	Confirmé, mise en vente
+Set a price first	Fixez d'abord un prix
+The starting bid must be below the buyout price	La mise de départ doit être inférieure au prix d'achat immédiat
+Not enough money for the deposit	Pas assez d'argent pour le dépôt
+Please wait a moment and try again	Veuillez patienter un instant
+Enter price, for example 12g 5s 3k	Entrez le prix, par exemple 12g 5s 3k
+Price not understood	Prix non compris
+Enter the total price for the chosen quantity, for example 5g	Entrez le prix total pour la quantité choisie, par exemple 5g
+Enter starting bid, or 0 to clear	Entrez la mise de départ, ou 0 pour effacer
+Item data still loading, please open again in a moment	Données de l'objet en cours de chargement, réessayez
+No sellable items in your bags	Aucun objet vendable dans vos sacs
+sold	vendu
+buyout 	achat immédiat 
+by 	par 
+No current sales	Aucune vente en cours
+Sold, the money arrives by mail	Vendu, l'argent arrive par courrier
+Cancel auction	Annuler l'enchère
+Really cancel? Press Enter again	Vraiment annuler ? Appuyez encore sur Entrée
+Cancel sent	Annulation envoyée
+outbid	surenchéri
+No bids	Aucune enchère
+No answer from the server, open the list again	Pas de réponse du serveur, rouvrez la liste
+You are the highest bidder, nothing to do	Vous êtes le meilleur enchérisseur, rien à faire
+No bid possible	Aucune enchère possible
+Current sales	Ventes en cours
+Auction canceled	Enchère annulée
+Auction posted	Enchère mise en vente
+Multi-posting failed	Échec de la mise en vente multiple
+AHF_MoneyUnitsGold	g,o,po,or,gold
+AHF_MoneyUnitsSilver	s,a,pa,argent,silver
+AHF_MoneyUnitsCopper	c,k,pc,cuivre,copper
+Auction %d of %d posted	Enchère %d sur %d mise en vente
+Could not get the market price. Enter asks again	Impossible d'obtenir le prix du marché. Entrée redemande
+The item has moved or is gone, open the list again	L'objet a été déplacé ou n'est plus là, rouvrez la liste
+Auctions by category	Enchères par catégorie
+Upgrades only	Améliorations seulement
+Uncollected only	Non collecté seulement
+Current expansion only	Extension actuelle seulement
+Exact name for name searches	Nom exact pour la recherche par nom
+Minimum quality: 	Qualité minimale : 
+Number not understood	Nombre non compris
+Enter level, empty or 0 for any	Saisir le niveau, vide ou 0 pour tous
+Level from	Niveau de
+Level up to	Niveau jusqu'à
+Reset all filters	Réinitialiser tous les filtres
+Filters reset	Filtres réinitialisés
+<<<<<<< HEAD
+up to %s each	jusqu'à %s chacune
+%s more pieces at the same or higher prices	%s pièces de plus au même prix ou plus cher
+=======
+AHF_FullScanItems	prix pour %d objets
+>>>>>>> cecca5b (forever(12): a full scan fills the auction price history)

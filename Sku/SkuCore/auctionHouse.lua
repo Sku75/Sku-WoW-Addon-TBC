@@ -4638,9 +4638,8 @@ function AuctionHouse:AuctionFullScanFinishIngest()
    AuctionHouse:AuctionUpdateAuctionDBHistory(FullScanResultsDB, FullScanResultsDBHistory, tPrecomputedPriceData)
    AuctionHouse:AuctionUpdateAuctionDBHistory(FullScanResultsDB, AuctionDBHistory, tPrecomputedPriceData)
    SkuCore.QuerySerializeRunning = true
-   SkuTableToString(AuctionDBHistory, function(aString)
+   AuctionHouse:AuctionSaveDBHistory(function()
       SkuCore.QuerySerializeRunning = false
-      SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = aString
       C_Timer.After(1, function()
          for q, w in pairs(FullScanResultsDB) do
             if w[1] ~= "" and w[4] == -1 then
@@ -5180,7 +5179,9 @@ function AuctionHouse:AuctionBuildPriceData(aSourceDB)
    return tPriceData
 end
 
-function AuctionHouse:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable, aPrecomputedPriceData)
+-- aKeepMissing: an item whose new data has only bids (or only buyouts) keeps its stored tuple of the other kind.
+-- Without it the entry is replaced whole and that tuple is dropped, as the legacy full scan has always done.
+function AuctionHouse:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable, aPrecomputedPriceData, aKeepMissing)
    --dprint("AuctionUpdateAuctionDBHistory", aSourceDB, aTargetTable)
    if not aSourceDB then
       return
@@ -5271,23 +5272,70 @@ function AuctionHouse:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable, aPr
       end
       
       if tBidNewLow or tBuyNewLow then
+         local tOld = aTargetTable[tItemId]
          aTargetTable[tItemId] = {
             [1] = {},
             [2] = {},
          }
          if tBidNewLow then
             aTargetTable[tItemId][1] = {tBidNewLow, tBidNewMedian, tBidNewHigh, tBidNewPoints}
+         elseif aKeepMissing then
+            aTargetTable[tItemId][1] = tOld[1]
          end
          if tBuyNewLow then
             aTargetTable[tItemId][2] = {tBuyNewLow, tBuyNewMedian, tBuyNewHigh, tBuyNewPoints}
+         elseif aKeepMissing then
+            aTargetTable[tItemId][2] = tOld[2]
          end
       end
    end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Writes AuctionDBHistory into the saved variables (factionrealm AuctionDBHistory, read back by AuctionHouseOnLogin).
+-- SkuTableToString writes the keys unquoted, so the table may hold numeric keys only. aOnSaved runs once the string
+-- is stored; a failed serialization keeps the old saved string and does not call it.
+function AuctionHouse:AuctionSaveDBHistory(aOnSaved)
+   SkuTableToString(AuctionDBHistory, function(aString)
+      SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = aString
+      if aOnSaved then aOnSaved() end
+   end)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Price data from a source other than the legacy getAll scan (SkuCore/auctionHouseForever.lua: ReplicateItems and the
+-- browse results). aPriceData has AuctionBuildPriceData's shape, keyed by numeric item ID.
+-- aFullScan: the data covers the whole auction house. It replaces the current prices, is folded into the price
+--   history and saved.
+-- Otherwise (a search result): each item in it gets its current prices replaced; the price history is left alone,
+--   one search's single lowest prices would pull its blended median.
+-- In both cases an item keeps its stored bid or buyout tuple when the new data has none of that kind.
+function AuctionHouse:AuctionIngestPriceData(aPriceData, aFullScan)
+   if aFullScan then
+      FullScanResultsDBHistory = {}
+      AuctionHouse:AuctionUpdateAuctionDBHistory(aPriceData, FullScanResultsDBHistory, aPriceData)
+      AuctionHouse:AuctionUpdateAuctionDBHistory(aPriceData, AuctionDBHistory, aPriceData, true)
+      AuctionHouse:AuctionSaveDBHistory()
+      return
+   end
+   local tFresh = {}
+   AuctionHouse:AuctionUpdateAuctionDBHistory(aPriceData, tFresh, aPriceData)
+   for tItemId, tEntry in pairs(tFresh) do
+      local tOld = FullScanResultsDBHistory[tItemId]
+      if tOld then
+         if not tEntry[1][1] then tEntry[1] = tOld[1] end
+         if not tEntry[2][1] then tEntry[2] = tOld[2] end
+      end
+      FullScanResultsDBHistory[tItemId] = tEntry
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDataDB, aHistoryPriceDataDB)
    --dprint("AuctionPriceHistoryData")
+   -- The price tables are keyed by the numeric item ID. Item IDs cut from a link (SkuGetItemIdFromItemLink, the chat
+   -- links) arrive as strings and would never find their entry.
+   aItemID = tonumber(aItemID)
    if not aItemID then
       return
    end
