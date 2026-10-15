@@ -582,6 +582,9 @@ end
 -- a bid with BID_ADDED, a refusal of either with AUCTION_HOUSE_SHOW_ERROR (the events Blizzard's BUYOUT_AUCTION
 -- popup waits for). Nothing is spoken when the call goes out: the answer is the result.
 local gItemPurchase = { auctionID = nil, name = nil, isBuyout = false }
+-- Sku's cancel on its way to the server: {data = the row's data, leaf = its cancel leaf}. The server
+-- answers with AUCTION_CANCELED or refuses with AUCTION_HOUSE_SHOW_ERROR (see AHF:OnShowError).
+local gCancel = nil
 
 -- A refusal from a key press. The key handler vocalizes the focused leaf right after its OnAction and cuts off any
 -- line spoken before, so the reason goes into the leaf's name. Without a leaf the reason is spoken, named by aName.
@@ -620,8 +623,8 @@ end
 
 -- AUCTION_HOUSE_SHOW_ERROR carries only the error code, and Blizzard shows it only in UIErrorsFrame (no
 -- UI_ERROR_MESSAGE, so Sku never hears it there). It answers Sku's own buyout or bid in flight first, then a
--- commodity purchase, then a post sent to the server (a post waiting for its confirmation sent nothing), else a
--- browse or detail query still waiting.
+-- commodity purchase, then a post sent to the server (a post waiting for its confirmation sent nothing), then a
+-- cancel, else a browse or detail query still waiting.
 function AHF:OnShowError(aError)
 	local tText = AuctionHouseUtil.GetErrorText(aError)
 	dprint("ahf", "SHOW_ERROR", aError, tText)
@@ -637,6 +640,10 @@ function AHF:OnShowError(aError)
 	end
 	if tPostInFlight() then
 		AHF:OnPostRefused(tText ~= "" and tText or AUCTION_POSTING_ERROR_TEXT)
+		return
+	end
+	if gCancel then
+		AHF:OnCancelRefused(tText ~= "" and tText or ERR_AUCTION_DATABASE_ERROR)
 		return
 	end
 	-- A rejected browse/detail query: the error becomes the waiting leaf, so the rebuild reads it out.
@@ -1745,6 +1752,7 @@ gOwned.send = function() C_AuctionHouse.QueryOwnedAuctions({}) end
 -- AUCTION_CANCELED: the list is asked again, as Blizzard's auctions tab does. A cursor on the cancel entry goes up to
 -- its row, which the new list no longer has.
 function AHF:OnAuctionCanceled()
+	gCancel = nil
 	if not gOwned.entry then
 		tSay(L["Auction canceled"])
 		return
@@ -1785,6 +1793,17 @@ local function tOwnedRowLabel(aRow)
 	return table.concat(tParts, ", ")
 end
 
+-- The server refused Sku's cancel: the reason goes in front of the row's cancel leaf, which offers the cancel again.
+-- An event without a key press behind it, so the reason is spoken as well.
+function AHF:OnCancelRefused(aText)
+	local tC = gCancel
+	gCancel = nil
+	tC.data.cancelSent, tC.data.cancelArmed = nil, nil
+	tC.data.cancelNote = aText
+	tC.leaf.name = aText..";"..L["Cancel auction"]
+	tSay(tC.data.name..": "..aText)
+end
+
 local function tAddOwnedRow(aParent, aRow)
 	local tE = SkuOptions:InjectMenuItems(aParent, {tOwnedRowLabel(aRow)}, SkuGenericMenuItem)
 	tE.dynamic = true
@@ -1799,19 +1818,23 @@ local function tAddOwnedRow(aParent, aRow)
 			return
 		end
 		-- ENTER asks first (with the cost, like Blizzard's CANCEL_AUCTION popup), ENTER again cancels. A row cancels
-		-- once: the server's answer (AUCTION_CANCELED) asks for the list again.
-		local tArmed = false
+		-- once: the server's answer (AUCTION_CANCELED) asks for the list again; a refusal (AHF:OnCancelRefused) puts
+		-- its reason in front of this leaf and the cancel can be asked for again.
 		local tData = self.data
-		tSettingLeaf(self, tData.cancelSent and L["Cancel sent"] or L["Cancel auction"], function(aLeaf)
+		tData.cancelArmed = nil
+		tSettingLeaf(self, tData.cancelSent and L["Cancel sent"]
+			or ((tData.cancelNote and (tData.cancelNote..";") or "")..L["Cancel auction"]), function(aLeaf)
 			if tData.cancelSent then
 				aLeaf.name = L["Cancel sent"]
-			elseif not tArmed then
-				tArmed = true
+			elseif not tData.cancelArmed then
+				tData.cancelArmed = true
+				tData.cancelNote = nil
 				local tCost = C_AuctionHouse.GetCancelCost(tI.auctionID)
 				aLeaf.name = L["Really cancel? Press Enter again"]
 					..(tCost > 0 and (", "..L["Cost"].." "..tMoneyText(tCost)) or "")
 			else
 				tData.cancelSent = true
+				gCancel = { data = tData, leaf = aLeaf }
 				C_AuctionHouse.CancelAuction(tI.auctionID)
 				aLeaf.name = L["Cancel sent"]
 			end
@@ -2159,7 +2182,7 @@ local gEventHandlers = {
 		-- As Blizzard's buy dialog and sell frame on hide: an open quote is dropped, a running multisell stopped.
 		if gCommodityBuy.itemID then C_AuctionHouse.CancelCommoditiesPurchase() end
 		if gSell.multisell then C_AuctionHouse.CancelSell() end
-		gCommodityBuy.itemID, gItemPurchase.auctionID = nil, nil
+		gCommodityBuy.itemID, gItemPurchase.auctionID, gCancel = nil, nil, nil
 		for _, tState in ipairs({ gBrowse, gDetail, gOwned, gBids }) do
 			tState.state, tState.entry, tState.pendingSend = "idle", nil, nil
 		end
