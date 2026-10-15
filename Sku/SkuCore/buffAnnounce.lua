@@ -2,7 +2,8 @@
 -- Announcement when the player gains a buff (campfire, food, progress buffs ...), on WoW Forever.
 -- No addon may register COMBAT_LOG_EVENT_UNFILTERED there, so the combat log route (SkuChat, SPELL_AURA_APPLIED) never
 -- arrives and there was no announcement when a buff was gained. UNIT_AURA is evaluated instead (addedAuras). The
--- feature can be switched on and off in the features menu.
+-- feature is off until the player switches it on in the features menu: it speaks every buff gained out of combat,
+-- mounts, forms and aspects included.
 ---------------------------------------------------------------------------------------------------------------------------------------
 if not Sku.isForever then return end
 
@@ -13,7 +14,7 @@ SkuCore.BuffAnnounce = BuffAnnounce
 
 SkuCore:RegisterToggleableModule("BuffAnnounce", function()
 	return L["Buff announcements"]
-end)
+end, nil, true)
 
 -- The same buff is not announced more often than every 20 seconds (standing near a campfire switches it on repeatedly).
 local MIN_REPEAT_SECONDS = 20
