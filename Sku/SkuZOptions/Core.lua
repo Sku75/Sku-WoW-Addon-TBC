@@ -18,6 +18,7 @@ local GetNumFactions = Sku.Compat.GetNumFactions
 local GetNumSkillLines = Sku.Compat.GetNumSkillLines
 local GetNumSpellTabs = Sku.Compat.GetNumSpellTabs
 local GetNumTrackingTypes = Sku.Compat.GetNumTrackingTypes
+local GetQuestLogFrame = Sku.Compat.GetQuestLogFrame
 local GetPetHappiness = Sku.Compat.GetPetHappiness
 local GetPetTrainingPoints = Sku.Compat.GetPetTrainingPoints
 local GetSkillLineInfo = Sku.Compat.GetSkillLineInfo
@@ -3979,7 +3980,7 @@ function SkuOptions:CreateMenuFrame()
 		SkuOptions.TTS:Output("", -1)
 		SkuOptions:StartStopBackgroundSound(false)
 		SkuOptions:HideVisualMenu()
-		if QuestLogFrame and QuestLogFrame:IsVisible() == true then
+		if GetQuestLogFrame():IsVisible() == true then
 			ToggleQuestLog()
 		end
 	end)
