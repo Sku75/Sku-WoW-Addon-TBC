@@ -9,6 +9,8 @@ local GetItemInfo = Sku.Compat.GetItemInfo
 local GetNumQuestLogEntries = Sku.Compat.GetNumQuestLogEntries
 local GetQuestLogTitle = Sku.Compat.GetQuestLogTitle
 local GetQuestLogFrame = Sku.Compat.GetQuestLogFrame
+local ShowQuestLog = Sku.Compat.ShowQuestLog
+local HideQuestLog = Sku.Compat.HideQuestLog
 local SelectQuestLogEntry = Sku.Compat.SelectQuestLogEntry
 local SetAbandonQuest = Sku.Compat.SetAbandonQuest
 local AbandonQuest = Sku.Compat.AbandonQuest
@@ -183,10 +185,10 @@ function SkuQuest:OnEnable()
 	tFrame:SetScript("OnClick", function(self, a, b) 
 		--dprint("SkuQuestMain OnClick", a, b)
 		if _G["SkuQuestMainOption1"]:IsVisible() then
-			HideUIPanel(GetQuestLogFrame())
+			HideQuestLog()
 			--_G["SkuQuestMainOption1"]:Hide()
 		else
-			ShowUIPanel(GetQuestLogFrame())
+			ShowQuestLog()
 			--_G["SkuQuestMainOption1"]:Show()
 			--SkuQuest.currentMenuPosition = tMenu[1]
 			PlaySound(811)	
@@ -248,7 +250,7 @@ function SkuQuest:OnEnable()
 			--_G["QuestLogFrame"]:Hide()
 			--SkuOptions.TTS:Output("", -1)--HideUIPanel(QuestLogFrame)
 			--SkuQuest:ToggleQuestLogHook()
-			HideUIPanel(GetQuestLogFrame())
+			HideQuestLog()
 			--self:GetScript("OnHide")(self)
 		end
 		if  SkuQuest.MenuAccessKeysNumbers[aKey] then
@@ -361,7 +363,7 @@ function SkuQuest:OnSkuQuestAbandon()
 	SetAbandonQuest() --Sets the currently selected quest to be abandoned.
 	AbandonQuest()
 	--SkuQuest:ToggleQuestLogHook()
-	HideUIPanel(GetQuestLogFrame())
+	HideQuestLog()
 	--SkuOptions.TTS:Output("", -1)
 	SkuOptions.Voice:OutputStringBTtts(L["quest;abgebrochen"], true, true, 0.2, true)
 	SkuOptions:CloseMenu()
@@ -379,7 +381,7 @@ function SkuQuest:OnSkuQuestUP()
 
 	--dprint("q up")
 	if ( not GetQuestLogFrame():IsVisible() ) then
-		ShowUIPanel(GetQuestLogFrame())
+		ShowQuestLog()
 		ExpandQuestHeader(0)
 		SelectQuestLogEntry(SkuQuest.SelectedQuest)
 	end
@@ -403,7 +405,7 @@ function SkuQuest:OnSkuQuestDOWN()
 	SkuQuest.SelectedQuest = SkuQuest.SelectedQuest or 0
 	--dprint("q down")
 	if ( not GetQuestLogFrame():IsVisible() ) then
-		ShowUIPanel(GetQuestLogFrame())
+		ShowQuestLog()
 		ExpandQuestHeader(0)
 		SelectQuestLogEntry(SkuQuest.SelectedQuest)
 	end
@@ -902,7 +904,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:VARIABLES_LOADED(...)
 	--dprint(...)
-	HideUIPanel(GetQuestLogFrame())
+	HideQuestLog()
 	--hooksecurefunc("QuestLog_Update", SkuQuest.OnQuestLog_OnEvent)
 	-- The ToggleQuestLog hook is now installed in OnEnable (once, IsEnabled-guarded)
 	-- so it survives a mid-session enable; it used to be installed here.

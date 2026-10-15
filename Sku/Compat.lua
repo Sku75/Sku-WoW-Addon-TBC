@@ -267,6 +267,23 @@ end
 -- The quest log window is a standalone QuestLogFrame on the other clients; on Forever the quest log
 -- lives in the world map (QuestMapFrame).
 C.GetQuestLogFrame = function() return _G.QuestLogFrame or _G.QuestMapFrame end
+-- Open and close the quest log the way Blizzard's ToggleQuestLog does. On Forever only the world map
+-- is a UI panel: Show/HideUIPanel(QuestMapFrame) would skip the quest log's own show/hide handling
+-- and leave the map open.
+C.ShowQuestLog = function()
+	if _G.QuestLogFrame then
+		ShowUIPanel(_G.QuestLogFrame)
+	else
+		OpenQuestLog()
+	end
+end
+C.HideQuestLog = function()
+	if _G.QuestLogFrame then
+		HideUIPanel(_G.QuestLogFrame)
+	elseif _G.QuestMapFrame:IsVisible() then
+		HideUIPanel(_G.QuestMapFrame:GetParent())
+	end
+end
 -- SelectQuestLogEntry(index) does not exist on Forever, the selection goes by quest ID there.
 C.SelectQuestLogEntry = _G.SelectQuestLogEntry
 if not C.SelectQuestLogEntry and C_QuestLog and C_QuestLog.SetSelectedQuest then
