@@ -57,9 +57,6 @@ local CLASS_ROLES = {
 local ROLE_NAMES = { TANK = L["Tank"], HEALER = L["Healer"], DAMAGER = L["Damage"] }
 local LFG_CATEGORY_DUNGEON = 2
 
--- Blizzard's own "level-appropriate" activity filter (Enum.LFGListFilter.Recommended).
-local LFG_FILTER_RECOMMENDED = Enum.LFGListFilter.Recommended
-
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Small helpers.
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -124,24 +121,15 @@ end
 -- Level filtering.
 --
 -- GetAvailableActivities(categoryID) returns EVERY activity of the category at every level, the window never shows
--- that raw list, it narrows it first. Same here, two layers that are AND-ed:
---   1. Blizzard's own "recommended" (= level-appropriate) subset, by passing the filters argument. Only trusted when
---      it is non-empty AND a real subset of the unfiltered list.
---   2. The player's level against the activity's min/max suggestion. Missing data passes.
--- An activity the player has already SELECTED is never hidden, so a selection cannot go invisible while it is still
--- posted by "Post entry".
+-- that raw list, it narrows it first: LFGUtil_GetFilteredActivities drops what does not fit the player's level by the
+-- activity's min/max level suggestion. Same here; missing data passes. An activity the player has already SELECTED
+-- is never hidden, so a selection cannot go invisible while it is still posted by "Post entry".
 ---------------------------------------------------------------------------------------------------------------------------------------
 DungeonBrowser.tFilterStats = { total = 0, shown = 0 }
 
-local function tRawActivityIDs(categoryID, filters)
+local function tRawActivityIDs(categoryID)
    if not C_LFGList.GetAvailableActivities then return nil end
-   local list
-   if filters then
-      -- (categoryID, groupID, filters), the signature the listing frame uses
-      list = C_LFGList.GetAvailableActivities(categoryID, nil, filters)
-   else
-      list = C_LFGList.GetAvailableActivities(categoryID)
-   end
+   local list = C_LFGList.GetAvailableActivities(categoryID)
    if type(list) == "table" then return list end
 end
 
@@ -166,30 +154,12 @@ local function tGetCategoryActivities(categoryID)
    local filterOn = not d.ignoreLevel
    local lvl = UnitLevel("player")
 
-   -- Layer 1: Blizzard's recommended subset, validated against the raw list.
-   local recSet
-   if filterOn then
-      local rec = tRawActivityIDs(categoryID, LFG_FILTER_RECOMMENDED)
-      if rec and #rec > 0 and #rec < #all then
-         local inAll = {}
-         for _, id in ipairs(all) do inAll[id] = true end
-         local subset = true
-         for _, id in ipairs(rec) do
-            if not inAll[id] then subset = false; break end
-         end
-         if subset then
-            recSet = {}
-            for _, id in ipairs(rec) do recSet[id] = true end
-         end
-      end
-   end
-
    for _, id in ipairs(all) do
       local info = tActivityInfo(id)
       if info then
          local keep = true
          if filterOn and d.selection[id] ~= true then
-            keep = tLevelOk(info, lvl) and (recSet == nil or recSet[id] == true)
+            keep = tLevelOk(info, lvl)
          end
          if keep then infos[#infos + 1] = info end
       end
