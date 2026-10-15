@@ -856,6 +856,24 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		end
 	end
 
+	-- GetRaidRosterInfo lists nobody in a plain group on WoW Forever (it only knows raids): fill the group from the party units.
+	if tCount == 1 and IsInGroup() and not IsInRaid() then
+		for q = 1, 4 do
+			local tUnit = "party"..q
+			if UnitExists(tUnit) then
+				local tName = UnitName(tUnit)
+				local tClass = UnitClass(tUnit)
+				local tZone = ""
+				local tMapID = C_Map.GetBestMapForUnit(tUnit)
+				local tMapInfo = tMapID and C_Map.GetMapInfo(tMapID)
+				if tMapInfo and tMapInfo.name then tZone = tMapInfo.name end
+				tCount = tCount + 1
+				tTmpText = tTmpText..tCount.." "..tName..", "..(tClass or "")..", "..(UnitLevel(tUnit) or "")..", "..(tPartyRoles[tName] or "")..", "..tZone..", "
+					..(UnitIsConnected(tUnit) and L["online"] or L["offline"])..", "..(UnitIsDeadOrGhost(tUnit) and L["tot"] or L["lebt"]).."\r\n"
+			end
+		end
+	end
+
 	--loot
 	local lootStrings = 	{
 		[0] = L["Jeder gegen jeden"],
