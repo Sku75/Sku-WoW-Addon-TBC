@@ -2688,16 +2688,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:Build_CharacterFrame(aParentChilds)
-	-- GearManagerToggleButton:Click() is a protected click (blocked in combat).
-	-- Skip it in combat; the stat/equipment reads below use non-protected APIs and
-	-- the always-present PaperDoll widgets, so they still populate. Out of combat
-	-- this is unchanged.
-	if _G["GearManagerToggleButton"] and not (InCombatLockdown and InCombatLockdown()) then
-		_G["GearManagerToggleButton"]:Click("LeftMouse")
-	elseif _G["GearManagerToggleButton"] and SkuLogCombat then
-		SkuLogCombat("Build_CharacterFrame", "skip GearManagerToggleButton:Click in combat")
-	end
-
 	local tFrameName = "CharacterLevelText"
 	local tFriendlyName = _G["CharacterLevelText"]:GetText()
 	table.insert(aParentChilds, tFriendlyName)
@@ -2731,13 +2721,6 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 	}
 	local tParentEquipment = aParentChilds[tFriendlyName]
 	tParentEquipment.childs = SkuCore:IterateChildren(_G["PaperDollItemsFrame"], 2)
-
-	for x = 1, #tParentEquipment.childs do
-		if tParentEquipment.childs[x] == "GearManagerToggleButton" then
-			tParentEquipment.childs[x] = nil
-			tParentEquipment.childs["GearManagerToggleButton"] = nil
-		end
-	end
 
 		-- (The in-combat character mirror is captured as a FULL tree at the very end of this
 		-- function, once every branch -- Equipment, Stats, Professions, Sets -- has been built.
