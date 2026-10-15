@@ -461,7 +461,12 @@ function SkuMob:PLAYER_SOFT_INTERACT_CHANGED(aEvent, aGuid, aNewGuid)
 					C_Timer.After(0.1, function()
 						-- no readable health (no pool, or hidden on Forever): dead only by its flag, else alive
 						local hp = Sku.UnitHealthPercent("softinteract") or (UnitIsDead("softinteract") and 0 or 100)
-						if hp == 0 then
+						-- An enemy's name is a secret value in a Forever instance (e.g. a corpse to loot); its GUID is a
+						-- different restriction and can stay readable, so this point is reached. A secret cannot be
+						-- concatenated or queued, it goes through SpeakSecretText.
+						if Sku.IsSecret(tName) then
+							SkuOptions.Voice:SpeakSecretText(hp == 0 and (L["dead"].." %s") or "%s", tName)
+						elseif hp == 0 then
 							SkuOptions.Voice:OutputStringBTtts(L["dead"].." "..tName, true, true, 0.2, true, nil, nil, 2)
 						else
 							SkuOptions.Voice:OutputStringBTtts(tName, true, true, 0.2, true, nil, nil, 2)
