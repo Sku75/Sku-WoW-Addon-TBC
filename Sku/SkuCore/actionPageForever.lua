@@ -1,12 +1,13 @@
 ﻿---------------------------------------------------------------------------------------------------------------------------------------
 -- Action bar page switching in combat on WoW Forever.
--- Shift+1 / Shift+2 (ACTIONPAGE1/2) did not switch the bar page in combat. Blizzard's key binding calls
--- C_ActionBar.SetActionBarPage from normal Lua, and Blizzard's bar code already runs "tainted by Sku" there
--- (ADDON_ACTION_BLOCKED MainActionBar:SetPointBase and others), so in combat the switch stays put.
+-- Shift+1 / Shift+2 (ACTIONPAGE1/2) did not switch the bar page in combat. Blizzard's bindings
+-- (Bindings_Camelot.xml) call C_ActionBar.SetActionBarPage in their binding snippet, which is fine
+-- by itself; the switch failed because Blizzard's bar code was tainted by Sku (ADDON_ACTION_BLOCKED
+-- MainActionBar:SetPointBase and others). That taint source is not found yet.
 --
--- The same keys run through secure buttons (SecureActionButtonTemplate, type "actionbar", which Blizzard provides for
--- exactly this). Out of combat the keys are put on the buttons by override bindings and then also work in combat. The
--- keys themselves stay the ones the player set in Blizzard's key bindings.
+-- WORKAROUND until it is: the same keys run through secure buttons (SecureActionButtonTemplate, type
+-- "actionbar"). Out of combat the keys are put on the buttons by override bindings and then also work
+-- in combat. The keys themselves stay the ones the player set in Blizzard's key bindings.
 ---------------------------------------------------------------------------------------------------------------------------------------
 if not Sku.isForever then return end
 
