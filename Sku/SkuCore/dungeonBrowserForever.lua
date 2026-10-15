@@ -457,19 +457,18 @@ function DungeonBrowser:DoEnroll()
    -- The saved selection can hold activities this character is not offered (old state, other level). The game then
    -- rejects the whole listing, so only offered activities are sent.
    local tOffered = C_LFGList.GetAvailableActivities(d.listCategory)
+   local tDropped = 0
    if #tOffered > 0 then
-      local tSet, tKept, tDropped = {}, {}, 0
+      local tSet, tKept = {}, {}
       for _, oid in ipairs(tOffered) do tSet[oid] = true end
       for _, id in ipairs(ids) do
          if tSet[id] then tKept[#tKept + 1] = id else tDropped = tDropped + 1; d.selection[id] = nil end
       end
-      if tDropped > 0 and #tKept > 0 then
-         tSay(string.format(L["%d unavailable dungeons removed from the selection."], tDropped))
-         ids = tKept
-      end
+      ids = tKept
+      if tDropped > 0 then tSay(string.format(L["%d unavailable dungeons removed from the selection."], tDropped), true) end
    end
    local listed = tIsListed()
-   if #ids == 0 then tSay(L["No dungeons selected"], true); return end
+   if #ids == 0 then tSay(L["No dungeons selected"], tDropped == 0); return end
 
    -- Categories that demand a free text (custom, quests): the comment sits in a protected edit box of Blizzard's window.
    local catInfo = C_LFGList.GetLfgCategoryInfo(d.listCategory)
