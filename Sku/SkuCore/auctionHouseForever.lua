@@ -86,7 +86,7 @@ local function tSettingLeaf(aParent, aName, aOnAction)
 end
 
 local function tIsOwnGuid(aGuid)
-	return aGuid ~= nil and aGuid == UnitGUID("player")
+	return aGuid ~= nil and aGuid == Sku.SafeGUID("player")
 end
 
 local function tVocalize()
@@ -841,6 +841,10 @@ function AHF:PlaceItemBid(aRow, aAmount, aName, aLeaf)
 		AHF:BuyItemAuction(aRow.auctionID, aRow.buyoutAmount, aName, aLeaf)
 		return
 	end
+	if tIsOwnGuid(aRow.bidder) then
+		tRefuse(aLeaf, aName, L["your bid is highest"])
+		return
+	end
 	if aRow.minBid and aAmount < aRow.minBid then
 		tRefuse(aLeaf, aName, L["The bid is too low, at least "]..tMoneyText(aRow.minBid))
 		return
@@ -857,9 +861,10 @@ end
 -- The three bid leaves shared by the item detail and "My bids": bid the minimum, set an
 -- own amount, place that amount. Setting and placing are separate leaves so the protected
 -- PlaceBid always runs from its own real key press. aData: {auctionID, minBid, buyoutAmount,
--- isOwn, customBid}. Returns true when bidding is possible at all.
+-- isOwn, bidder, customBid}. Returns true when bidding is possible at all: not while the player holds the
+-- highest bid (Blizzard's AuctionHouseBidFrameMixin:SetPrice disables bidding then).
 local function tAddBidLeaves(aParent, aData, aName)
-	if not (aData.minBid and aData.minBid > 0) then return false end
+	if not (aData.minBid and aData.minBid > 0) or tIsOwnGuid(aData.bidder) then return false end
 	local tBidMin = SkuOptions:InjectMenuItems(aParent, {L["Bid the minimum: "]..tMoneyText(aData.minBid)}, SkuGenericMenuItem)
 	tBidMin.dynamic = false
 	tBidMin.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
@@ -1061,7 +1066,9 @@ local function tBuildDetailChildren(aParentEntry)
 				-- Bidding below the buyout (Blizzard: the bid box next to the buyout button).
 				local tHasBid = tAddBidLeaves(self, tData, gDetail.name)
 				if not tData.buyoutAmount and not tHasBid then
-					local tNoBuyout = SkuOptions:InjectMenuItems(self, {L["Neither buyout nor bid possible"]}, SkuGenericMenuItem)
+					local tNoBuyout = SkuOptions:InjectMenuItems(self, {tIsOwnGuid(tData.bidder)
+						and L["You are the highest bidder, nothing to do"]
+						or L["Neither buyout nor bid possible"]}, SkuGenericMenuItem)
 					tNoBuyout.dynamic = false
 				end
 			end
