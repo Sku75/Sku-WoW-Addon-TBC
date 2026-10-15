@@ -1553,8 +1553,12 @@ local function tBuildSellItemChildren(aParent)
 	if (gSell.maxQuantity or 1) > 1 then
 		tLeaves.quantity = tSettingLeaf(aParent, tQuantityLabel(), function()
 			tAskAmount(L["Enter quantity"], function(aText)
-				local tN = math.floor(tonumber(aText) or 0)
-				if tN >= 1 then gSell.quantity = math.min(tN, gSell.maxQuantity or 1) end
+				local tN = tonumber(aText:match("^%s*(%d+)%s*$"))
+				if tN and tN >= 1 then
+					gSell.quantity = math.min(tN, gSell.maxQuantity or 1)
+				else
+					tSay(L["Quantity not understood"])
+				end
 			end)
 		end)
 	end
