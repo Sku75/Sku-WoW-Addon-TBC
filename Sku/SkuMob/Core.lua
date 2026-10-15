@@ -537,12 +537,13 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			tIsPlayerControled = true
 			noSubText = true
 		end
-		if UnitExists("pet") and (GetUnitName("pet", false) == GetUnitName(aUnitId, false)) then
+		-- UnitIsUnit instead of comparing names: an enemy's name is a secret value in a Forever instance.
+		if UnitIsUnit("pet", aUnitId) then
 			tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)--L["dein begleiter"]
 			tIsPlayerControled = true
 			noSubText = true
 		end
-		if GetUnitName(aUnitId, false) == GetUnitName("player", false) then
+		if UnitIsUnit("player", aUnitId) then
 			tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)--L["du selbst"]
 			tIsPlayerControled = true
 			noSubText = true
