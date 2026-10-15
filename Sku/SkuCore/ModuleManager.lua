@@ -28,7 +28,8 @@ SkuCore.toggleableModules = SkuCore.toggleableModules or {}
 -- aAvailable (optional): function returning false where the feature cannot work on this client
 -- (e.g. WoW Forever, where the data it is built on is hidden). Such a module stays off and is left
 -- out of the Features menu; the player's saved on/off choice is not touched.
-local function registerToggleable(aName, aLabel, aExternal, aAvailable)
+-- aDefaultOff (optional): true = the feature stays off until the player switches it on.
+local function registerToggleable(aName, aLabel, aExternal, aAvailable, aDefaultOff)
 	if type(aName) ~= "string" then return end
 	-- guard against double registration (e.g. a /reload re-running file scope)
 	for _, m in ipairs(SkuCore.toggleableModules) do
@@ -36,15 +37,16 @@ local function registerToggleable(aName, aLabel, aExternal, aAvailable)
 			m.label = aLabel
 			m.external = aExternal and true or false
 			m.available = aAvailable
+			m.defaultOff = aDefaultOff == true
 			return
 		end
 	end
-	table.insert(SkuCore.toggleableModules, { name = aName, label = aLabel, external = aExternal and true or false, available = aAvailable })
+	table.insert(SkuCore.toggleableModules, { name = aName, label = aLabel, external = aExternal and true or false, available = aAvailable, defaultOff = aDefaultOff == true })
 end
 
 -- Register a SkuCore AceAddon SUBMODULE (JunkAndRepair, Mail, AuctionHouse, ...).
-function SkuCore:RegisterToggleableModule(aName, aLabel, aAvailable)
-	registerToggleable(aName, aLabel, false, aAvailable)
+function SkuCore:RegisterToggleableModule(aName, aLabel, aAvailable, aDefaultOff)
+	registerToggleable(aName, aLabel, false, aAvailable, aDefaultOff)
 end
 
 -- Register a STANDALONE top-level AceAddon (SkuChat, SkuNav, SkuQuest, SkuMob,
@@ -79,7 +81,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Persisted enable state. Stored as SkuSettings:Sub("SkuCore").moduleEnabled[name];
--- absent = enabled (so existing installs default every feature ON).
+-- absent = enabled (so existing installs default every feature ON), unless the module
+-- was registered with aDefaultOff.
 function SkuCore:IsModuleEnabled(aName)
 	if not SkuCore:IsModuleAvailable(aName) then
 		return false
@@ -87,6 +90,11 @@ function SkuCore:IsModuleEnabled(aName)
 	local tEnabled = SkuSettings:Sub("SkuCore").moduleEnabled
 	if tEnabled and tEnabled[aName] ~= nil then
 		return tEnabled[aName]
+	end
+	for _, m in ipairs(SkuCore.toggleableModules) do
+		if m.name == aName then
+			return m.defaultOff ~= true
+		end
 	end
 	return true
 end
