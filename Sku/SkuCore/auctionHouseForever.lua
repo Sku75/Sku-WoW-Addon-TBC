@@ -626,21 +626,15 @@ end
 -- legacy module's event set (auctionHouse.lua, Classic API) is untouched.
 -- ---------------------------------------------------------------------
 local gEventFrame = CreateFrame("Frame")
-gEventFrame:RegisterEvent("AUCTION_HOUSE_BROWSE_RESULTS_UPDATED")
-gEventFrame:RegisterEvent("AUCTION_HOUSE_BROWSE_RESULTS_ADDED")
-gEventFrame:RegisterEvent("AUCTION_HOUSE_BROWSE_FAILURE")
-gEventFrame:RegisterEvent("AUCTION_HOUSE_THROTTLED_SYSTEM_READY")
-gEventFrame:RegisterEvent("ITEM_KEY_ITEM_INFO_RECEIVED")
-gEventFrame:RegisterEvent("ITEM_SEARCH_RESULTS_UPDATED")
-gEventFrame:RegisterEvent("ITEM_SEARCH_RESULTS_ADDED")
-gEventFrame:RegisterEvent("COMMODITY_SEARCH_RESULTS_UPDATED")
-gEventFrame:RegisterEvent("COMMODITY_SEARCH_RESULTS_ADDED")
-gEventFrame:RegisterEvent("COMMODITY_PRICE_UPDATED")
-gEventFrame:RegisterEvent("COMMODITY_PRICE_UNAVAILABLE")
-gEventFrame:RegisterEvent("COMMODITY_PURCHASE_SUCCEEDED")
-gEventFrame:RegisterEvent("COMMODITY_PURCHASE_FAILED")
-gEventFrame:RegisterEvent("AUCTION_HOUSE_SHOW_ERROR")
-gEventFrame:RegisterEvent("AUCTION_HOUSE_CLOSED")
+for _, tEvent in ipairs({
+	"AUCTION_HOUSE_BROWSE_RESULTS_UPDATED", "AUCTION_HOUSE_BROWSE_RESULTS_ADDED", "AUCTION_HOUSE_BROWSE_FAILURE",
+	"AUCTION_HOUSE_THROTTLED_SYSTEM_READY", "ITEM_KEY_ITEM_INFO_RECEIVED",
+	"ITEM_SEARCH_RESULTS_UPDATED", "ITEM_SEARCH_RESULTS_ADDED", "COMMODITY_SEARCH_RESULTS_UPDATED", "COMMODITY_SEARCH_RESULTS_ADDED",
+	"COMMODITY_PRICE_UPDATED", "COMMODITY_PRICE_UNAVAILABLE", "COMMODITY_PURCHASE_SUCCEEDED", "COMMODITY_PURCHASE_FAILED",
+	"AUCTION_HOUSE_SHOW_ERROR", "AUCTION_HOUSE_CLOSED",
+}) do
+	if Sku.IsEventValid(tEvent) then gEventFrame:RegisterEvent(tEvent) end
+end
 gEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	if aEvent == "AUCTION_HOUSE_BROWSE_RESULTS_UPDATED" or aEvent == "AUCTION_HOUSE_BROWSE_RESULTS_ADDED" then
 		AHF:RefreshBrowseResults()
