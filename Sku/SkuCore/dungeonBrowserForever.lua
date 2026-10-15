@@ -59,18 +59,11 @@ local LFG_CATEGORY_DUNGEON = 2
 -- Blizzard's own "level-appropriate" activity filter (Enum.LFGListFilter.Recommended).
 local LFG_FILTER_RECOMMENDED = Enum.LFGListFilter.Recommended
 
-local WARNING_COLOR = "ff8800"
-
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Small helpers.
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function tSay(aText, aOverwrite)
    SkuOptions.Voice:OutputStringBTtts(aText, aOverwrite and true or false, true, 0.1, nil, nil, nil, 1)
-end
-
-local function tSayChat(aText, aColor)
-   print("|cff" .. (aColor or "ffffff") .. L["Dungeon browser: "] .. "|r" .. aText)
-   tSay(aText)
 end
 
 local function Inject(aParent, aName)
@@ -510,19 +503,19 @@ function DungeonBrowser:DoEnroll()
          if tSet[id] then tKept[#tKept + 1] = id else tDropped = tDropped + 1; d.selection[id] = nil end
       end
       if tDropped > 0 and #tKept > 0 then
-         tSayChat(string.format(L["%d unavailable dungeons removed from the selection."], tDropped), WARNING_COLOR)
+         tSay(string.format(L["%d unavailable dungeons removed from the selection."], tDropped))
          ids = tKept
       end
    end
    local listed = tIsListed()
-   if #ids == 0 then tSayChat(L["No dungeons selected"], WARNING_COLOR); tSay(L["No dungeons selected"], true); return end
+   if #ids == 0 then tSay(L["No dungeons selected"]); tSay(L["No dungeons selected"], true); return end
 
    -- Categories that demand a free text (custom, quests): the comment sits in a protected edit box of Blizzard's window.
    local catInfo = C_LFGList.GetLfgCategoryInfo(d.listCategory)
-   if catInfo and catInfo.autoChooseActivity then tSayChat(L["This category needs a free text that only the Blizzard window can send. Please post there."], WARNING_COLOR); tSay(L["This category needs a free text that only the Blizzard window can send. Please post there."], true); return end
+   if catInfo and catInfo.autoChooseActivity then tSay(L["This category needs a free text that only the Blizzard window can send. Please post there."]); tSay(L["This category needs a free text that only the Blizzard window can send. Please post there."], true); return end
 
    local why = tCheckPostable(ids)
-   if why then tSayChat(why, WARNING_COLOR); tSay(why, true); return end
+   if why then tSay(why); tSay(why, true); return end
 
    -- Exactly the fields Blizzard's own window sends (LFGListingMixin:CreateOrUpdateListing): activityIDs, newPlayerFriendly.
    local data = { activityIDs = ids, newPlayerFriendly = d.newPlayerFriendly and true or false }
@@ -535,19 +528,19 @@ function DungeonBrowser:DoEnroll()
       for _, id in ipairs(ids) do
          if fn({ activityIDs = { id }, newPlayerFriendly = data.newPlayerFriendly }) ~= false then
             local ai = tActivityInfo(id)
-            tSayChat(string.format(L["Only %s was accepted, the other dungeons were not."], (ai and ai.name) or tostring(id)), WARNING_COLOR)
+            tSay(string.format(L["Only %s was accepted, the other dungeons were not."], (ai and ai.name) or tostring(id)))
             res = true
             break
          end
       end
    end
    if res == false then
-      tSayChat(L["Listing failed: "] .. L["rejected"], WARNING_COLOR)
+      tSay(L["Listing failed: "] .. L["rejected"])
       tSay(L["Listing failed: "] .. L["rejected"], true)
       return
    end
    tApplyRoles()
-   tSayChat(listed and L["Updating listing"] or L["Listing started"])
+   tSay(listed and L["Updating listing"] or L["Listing started"])
 
    -- Check the result and announce the real one ("started" is not yet "listed").
    local announced = false
@@ -560,7 +553,7 @@ function DungeonBrowser:DoEnroll()
          tSay(listed and L["Listing updated"] or L["Listed"], true)
       elseif final then
          announced = true
-         tSayChat(L["Listing failed: "] .. L["no active listing"], WARNING_COLOR)
+         tSay(L["Listing failed: "] .. L["no active listing"])
          tSay(L["Listing failed: "] .. L["no active listing"], true)
       end
    end
@@ -569,7 +562,7 @@ function DungeonBrowser:DoEnroll()
 end
 
 function DungeonBrowser:DoUnenroll()
-   if not C_LFGList.RemoveListing then tSayChat(L["Group finder unavailable"], WARNING_COLOR); return end
+   if not C_LFGList.RemoveListing then tSay(L["Group finder unavailable"]); return end
    C_LFGList.RemoveListing()
    DungeonBrowser.tEditSeeded = false
    -- really gone? Only then say "removed"
@@ -586,7 +579,7 @@ end
 function DungeonBrowser:InviteLeader(name)
    if not name or name == "" then return end
    C_PartyInfo.InviteUnit(name)
-   tSayChat(name .. L[" invited"], "00ff00")
+   tSay(name .. L[" invited"])
 end
 
 -- Group search. C_LFGList.Search is restricted (HasRestrictions in the API docs) and therefore only runs from the
