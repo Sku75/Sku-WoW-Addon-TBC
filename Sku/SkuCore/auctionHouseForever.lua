@@ -1523,11 +1523,12 @@ function AHF:PostDraft()
 		tPostNote(gSell.name..": "..L["Confirmed, posting"])
 		return
 	end
-	if not gSell.buyout or gSell.buyout <= 0 then
+	-- Blizzard's CanPostItem: an item needs a starting bid or a buyout, a commodity its unit price (it has no bid).
+	if not gSell.buyout and not gSell.bid then
 		tPostNote(L["Set a price first"])
 		return
 	end
-	if gSell.bid and gSell.bid >= gSell.buyout and not gSell.isCommodity then
+	if gSell.bid and gSell.buyout and gSell.bid >= gSell.buyout then
 		tPostNote(L["The starting bid must be below the buyout price"])
 		return
 	end
