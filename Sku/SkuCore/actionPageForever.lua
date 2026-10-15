@@ -91,10 +91,9 @@ local function tUpdateBindings()
 end
 
 local gFrame = CreateFrame("Frame")
-gFrame:RegisterEvent("PLAYER_LOGIN")
-gFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-gFrame:RegisterEvent("UPDATE_BINDINGS")
-gFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+for _, tEvent in ipairs({ "PLAYER_LOGIN", "PLAYER_ENTERING_WORLD", "UPDATE_BINDINGS", "PLAYER_REGEN_ENABLED" }) do
+	if Sku.IsEventValid(tEvent) then gFrame:RegisterEvent(tEvent) end
+end
 gFrame:SetScript("OnEvent", function(_, aEvent)
 	if aEvent == "PLAYER_REGEN_ENABLED" and not tRebindAfterCombat then return end
 	if tUpdatePending then return end
