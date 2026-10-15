@@ -98,7 +98,7 @@ SkuCore\companionPacks.lua
 SkuCore\taxi.lua
 SkuCore\gatherRoute.lua
 SkuCore\petFeed.lua
-SkuCore\petHealthForever.lua
+SkuCore\petHealth.lua
 
 
 _psC_preSkuDB.lua
