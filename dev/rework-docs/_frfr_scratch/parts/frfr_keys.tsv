@@ -3433,17 +3433,8 @@ from level 	à partir du niveau
 up to level 	jusqu'au niveau 
 Filters active: 	Filtres actifs : 
 Not enough money	Pas assez d'argent
-Purchase started	Achat lancé
 Purchase failed	Achat échoué
-Purchase could not be started	Impossible de lancer l'achat
 No price confirmation from the game. Please try again.	Pas de confirmation de prix. Réessayez.
-Note: the unit price rises from 	Attention : le prix unitaire passe de 
- to 	 à 
-, because only 	, car seulement 
- pieces are offered at the lowest price. 	 pièces sont proposées au prix le plus bas. 
-The price changed since it was listed: expected 	Le prix a changé depuis l'affichage : attendu 
-, now 	, maintenant 
-Total price 	Prix total 
 Confirm or cancel?	Confirmer ou annuler ?
 %s: %s pieces, total price %s	%s : %s pièces, prix total %s
 Only %s pieces are offered by other players	Seulement %s pièces sont proposées par d'autres joueurs
@@ -3459,11 +3450,9 @@ No tooltip available	Aucune infobulle disponible
 from 	à partir de 
 for sale	en vente
 Confirm: 	Confirmer : 
-price rises	prix en hausse
 Cancel	Annuler
 That is your own auction	C'est votre propre enchère
 The bid is too low, at least 	L'enchère est trop basse, au moins 
-Bid sent: 	Enchère envoyée : 
 Bid failed	Échec de l'enchère
 Bid the minimum: 	Enchérir le minimum : 
 Set your own bid	Fixer votre propre enchère
@@ -3472,9 +3461,6 @@ Place your bid: 	Placer votre enchère :
 Place your bid, set it first	Placer votre enchère, d'abord la fixer
 Set a bid first	Fixez d'abord une enchère
 Your favorites list is full	Votre liste de favoris est pleine
-Added to favorites	Ajouté aux favoris
-Removed from favorites	Retiré des favoris
-for 	pour 
 %s pieces at %s each	%s pièces à %s chacune
 Buyout 	Achat immédiat 
 Bid from 	Enchère à partir de 
@@ -3513,14 +3499,10 @@ Set a price first	Fixez d'abord un prix
 The starting bid must be below the buyout price	La mise de départ doit être inférieure au prix d'achat immédiat
 Not enough money for the deposit	Pas assez d'argent pour le dépôt
 Please wait a moment and try again	Veuillez patienter un instant
-Posting failed	Échec de la mise en vente
-Confirmation needed. Press Enter again to confirm.	Confirmation requise. Appuyez encore sur Entrée.
-Posting	Mise en vente
 Enter quantity	Entrez la quantité
 Enter price, for example 12g 5s 3k	Entrez le prix, par exemple 12g 5s 3k
 Price not understood	Prix non compris
 Enter the total price for the chosen quantity, for example 5g	Entrez le prix total pour la quantité choisie, par exemple 5g
-total 	total 
 Enter starting bid, or 0 to clear	Entrez la mise de départ, ou 0 pour effacer
 Item data still loading, please open again in a moment	Données de l'objet en cours de chargement, réessayez
 No sellable items in your bags	Aucun objet vendable dans vos sacs
@@ -3540,11 +3522,9 @@ No answer from the server, open the list again	Pas de réponse du serveur, rouvr
 You are the highest bidder, nothing to do	Vous êtes le meilleur enchérisseur, rien à faire
 No bid possible	Aucune enchère possible
 Bid placed	Enchère placée
-Create new auction	Créer une nouvelle enchère
 Current sales	Ventes en cours
 Auction canceled	Enchère annulée
 Auction posted	Enchère mise en vente
-Posting not possible	Mise en vente impossible
 Multi-posting failed	Échec de la mise en vente multiple
 AHF_MoneyUnitsGold	g,o,po,or,gold
 AHF_MoneyUnitsSilver	s,a,pa,argent,silver
@@ -3568,6 +3548,3 @@ Level from	Niveau de
 Level up to	Niveau jusqu'à
 Reset all filters	Réinitialiser tous les filtres
 Filters reset	Filtres réinitialisés
-Auctions	Enchères
-Sales	Ventes
-My bids	Mes enchères
