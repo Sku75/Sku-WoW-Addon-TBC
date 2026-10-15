@@ -13,6 +13,8 @@ if not Sku.isForever then return end
 local tOwner
 local tButtons = {}
 local tLastSignature
+local tRebindAfterCombat
+local tUpdatePending
 
 -- command of Blizzard's key binding -> attribute "action" of the secure button
 local tCommands = {
@@ -30,10 +32,10 @@ local tCommands = {
 local tSkuReserved = { ["SHIFT-UP"] = true, ["SHIFT-DOWN"] = true, ["CTRL-SHIFT-UP"] = true, ["CTRL-SHIFT-DOWN"] = true }
 
 local function tEnsureButton(aCmd, aAction)
-	local tName = "SkuActionPage_" .. aCmd
-	local b = tButtons[aCmd] or _G[tName]
+	local b = tButtons[aCmd]
 	if not b then
-		b = CreateFrame("Button", tName, UIParent, "SecureActionButtonTemplate")
+		-- named: SetOverrideBindingClick takes the button by name
+		b = CreateFrame("Button", "SkuActionPage_" .. aCmd, UIParent, "SecureActionButtonTemplate")
 		b:RegisterForClicks("AnyDown")
 		-- only the down click arrives; without this SecureActionButton_OnClick acts on the up click
 		-- when the CVar ActionButtonUseKeyDown is 0 and the key does nothing
@@ -61,17 +63,17 @@ local function tKeySignature()
 	return table.concat(tParts, ";")
 end
 
-function SkuCore:UpdateActionPageBindings()
+local function tUpdateBindings()
 	if InCombatLockdown() then
-		SkuCore.actionPageRebindAfterCombat = true
+		tRebindAfterCombat = true
 		return
 	end
-	SkuCore.actionPageRebindAfterCombat = nil
+	tRebindAfterCombat = nil
 	local tSignature = tKeySignature()
 	if tSignature == tLastSignature then return end
 	tLastSignature = tSignature
 
-	tOwner = tOwner or CreateFrame("Frame", "SkuActionPageOwner", UIParent)
+	tOwner = tOwner or CreateFrame("Frame")
 	ClearOverrideBindings(tOwner)
 	local tBound = 0
 	for _, c in ipairs(tCommands) do
@@ -93,6 +95,11 @@ gFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 gFrame:RegisterEvent("UPDATE_BINDINGS")
 gFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 gFrame:SetScript("OnEvent", function(_, aEvent)
-	if aEvent == "PLAYER_REGEN_ENABLED" and not SkuCore.actionPageRebindAfterCombat then return end
-	C_Timer.After(1, function() SkuCore:UpdateActionPageBindings() end)
+	if aEvent == "PLAYER_REGEN_ENABLED" and not tRebindAfterCombat then return end
+	if tUpdatePending then return end
+	tUpdatePending = true
+	C_Timer.After(1, function()
+		tUpdatePending = nil
+		tUpdateBindings()
+	end)
 end)
