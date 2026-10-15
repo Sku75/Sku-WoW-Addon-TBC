@@ -213,8 +213,7 @@ function DungeonBrowser:DungeonBrowserOpen()
    C_Timer.After(0, function()
       if not DungeonBrowser:IsEnabled() then return end
       if not SkuOptions:IsMenuOpen() then
-         _G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"],
-            SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
+         _G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_OPENMENU"].key)
       end
       tEnsureEntry()
       SkuOptions:SlashFunc(Sku.MENU_ROOT .. "," .. string.lower(MENU_LABEL))
