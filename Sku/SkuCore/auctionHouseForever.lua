@@ -263,11 +263,19 @@ local function tMarkEntering(aNode)
 	end
 end
 
+-- The only child of a node that builds its children on entering only (see tMarkEntering) and was merely landed
+-- on: the menu announces "plus" only for a node with children, and entering rebuilds the children through
+-- OnPostSelect, which replaces the placeholder.
+local function tPlaceholderChild(aNode)
+	aNode.children = {}
+	local tPlaceholder = SkuOptions:InjectMenuItems(aNode, {L["Warten"]}, SkuGenericMenuItem)
+	tPlaceholder.dynamic = false
+end
+
 -- For a node that shows the answer of a query in aState (gBrowse or gDetail): entering it runs
 -- aStart unless the node's own query is current; a failed query runs again. Returns true when
--- the node has something to show. When it was only landed on, the node gets one placeholder
--- child and false comes back: the menu announces "plus" only for a node with children, and
--- entering rebuilds the children through OnPostSelect, which replaces the placeholder.
+-- the node has something to show. When it was only landed on, the node gets the placeholder
+-- child and false comes back.
 local function tQueryOnEnter(aNode, aState, aStart)
 	local tMine = aState.entry == aNode and aState.state ~= "idle"
 	if aNode.ahfEntering and (not tMine or aState.state == "failed") then
@@ -275,9 +283,7 @@ local function tQueryOnEnter(aNode, aState, aStart)
 		return true
 	end
 	if tMine then return true end
-	aNode.children = {}
-	local tPlaceholder = SkuOptions:InjectMenuItems(aNode, {L["Warten"]}, SkuGenericMenuItem)
-	tPlaceholder.dynamic = false
+	tPlaceholderChild(aNode)
 	return false
 end
 
@@ -1595,7 +1601,7 @@ local function tBuildSellList(aSelf)
 					tE.skuIdentity = "sellitem:"..tGuid
 					tMarkEntering(tE)
 					tE.BuildChildren = function(self)
-						if not self.ahfEntering then self.children = {} return end
+						if not self.ahfEntering then tPlaceholderChild(self) return end
 						local tState = AHF:SelectSellItem(tBag, tSlot, tGuid)
 						if tState ~= "ready" then
 							self.children = {}
@@ -1721,13 +1727,14 @@ local function tReadList(aList, aNum, aRead)
 	tShowList(aList)
 end
 
--- BuildChildren of the entry showing aList: entering it sends the query, merely landing on it builds nothing.
+-- BuildChildren of the entry showing aList: entering it sends the query, merely landing on another list's entry
+-- leaves the placeholder.
 -- aAddRow(aParent, aRow) adds the entry of one row.
 local function tBuildListEntry(aList, aSelf, aEmptyText, aAddRow)
 	if aSelf.ahfEntering then
 		tStartListQuery(aList, aSelf)
 	elseif aList.entry ~= aSelf then
-		aSelf.children = {}
+		tPlaceholderChild(aSelf)
 		return
 	end
 	aSelf.children = {}
