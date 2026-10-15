@@ -609,95 +609,26 @@ local function tWpcDeriveTransform(aUiMapId)
 	end
 	return t
 end
--- Forever: known map -> world transforms (Era/TBC data, regression fit from the TBC map data, error < 3 m).
--- Forever's client maps return DIFFERENT world coordinates for many zones (e.g. Stormwind 1453), so every
--- waypoint computed from map percentages (NPCs, quest spawns) lands offset from the fixed route waypoints.
--- Format: worldX = t1 + t2*relX + t3*relY ; worldY = t4 + t5*relX + t6*relY
-local tWpcKnownTransform = {
-	[1411]={1808.587,0,-3525.396,-1962.619,-5287.296,0}, -- n=1846 rmse 2.9/0.7
-	[1412]={-272.924,0,-3424.896,2047.950,-5137.514,0}, -- n=1899 rmse 2.1/1.5
-	[1413]={1612.500,0,-6756.250,2622.917,-10133.333,0}, -- n=3496 rmse 0.0/0.0
-	[1416]={1499.996,0,-1866.656,783.326,-2800.049,0}, -- n=732 rmse 0.2/0.6
-	[1417]={-133.333,0,-2400.001,-866.666,-3600.002,0}, -- n=1292 rmse 0.0/0.0
-	[1418]={-5889.562,0,-1658.354,-2079.185,-2487.475,0}, -- n=639 rmse 0.3/0.2
-	[1419]={-10566.666,0,-2233.334,-1241.643,-3350.036,0}, -- n=696 rmse 0.0/0.1
-	[1420]={3837.500,0,-3012.500,3033.333,-4518.750,0}, -- n=1977 rmse 0.0/0.0
-	[1421]={1666.667,0,-2800.000,3450.000,-4200.000,0}, -- n=1213 rmse 0.0/0.0
-	[1422]={3366.667,0,-2866.667,416.667,-4300.000,0}, -- n=1075 rmse 0.0/0.0
-	[1423]={3800.000,0,-2581.250,-2185.417,-3870.833,0}, -- n=1541 rmse 0.0/0.0
-	[1424]={400.001,0,-2133.353,1066.683,-3200.009,0}, -- n=1220 rmse 0.3/0.5
-	[1425]={1466.651,0,-2566.640,-1574.894,-3850.174,0}, -- n=988 rmse 0.2/0.5
-	[1427]={-6099.987,0,-1487.557,-322.947,-2231.151,0}, -- n=488 rmse 0.3/0.3
-	[1428]={-7031.250,0,-1952.083,-266.667,-2929.167,0}, -- n=546 rmse 0.0/0.0
-	[1429]={-7939.639,0,-2314.539,1535.466,-3470.944,0}, -- n=2720 rmse 1.1/1.2
-	[1430]={-9866.604,0,-1666.845,-833.027,-2500.462,0}, -- n=120 rmse 0.7/0.8
-	[1431]={-9716.666,0,-1800.000,833.333,-2700.000,0}, -- n=1022 rmse 0.0/0.0
-	[1432]={-4487.468,0,-1839.530,-1993.719,-2758.462,0}, -- n=981 rmse 2.1/2.3
-	[1433]={-8575.000,0,-1447.916,-1570.833,-2170.833,0}, -- n=909 rmse 0.0/0.0
-	[1434]={-11168.984,0,-4253.787,2220.835,-6381.158,0}, -- n=1723 rmse 1.8/1.8
-	[1435]={-9620.833,0,-1529.167,-2222.916,-2293.750,0}, -- n=720 rmse 0.0/0.0
-	[1436]={-9400.249,0,-2333.005,3016.667,-3500.005,0}, -- n=1467 rmse 1.7/0.7
-	[1437]={-2147.916,0,-2756.250,-389.583,-4135.417,0}, -- n=1450 rmse 0.0/0.0
-	[1438]={11831.262,0,-3393.765,3814.573,-5091.640,0}, -- n=1238 rmse 0.1/0.1
-	[1439]={8333.333,0,-4366.667,2941.667,-6550.000,0}, -- n=1681 rmse 0.0/0.0
-	[1440]={4672.916,0,-3843.750,1700.000,-5766.666,0}, -- n=2017 rmse 0.0/0.0
-	[1441]={-3966.667,0,-2933.330,-433.333,-4400.001,0}, -- n=834 rmse 0.0/0.0
-	[1442]={2916.666,0,-3256.250,3245.833,-4883.333,0}, -- n=987 rmse 0.0/0.0
-	[1444]={-2366.704,0,-4633.225,5441.648,-6949.999,0}, -- n=1639 rmse 0.4/0.5
-	[1445]={-2033.344,0,-3499.962,-975.000,-5250.000,0}, -- n=2084 rmse 0.2/0.0
-	[1446]={-5874.953,0,-4600.078,-218.731,-6900.047,0}, -- n=1982 rmse 0.3/0.2
-	[1447]={5341.665,0,-3381.248,-3277.086,-5070.828,0}, -- n=1435 rmse 0.0/0.0
-	[1448]={7133.287,0,-3833.287,1641.701,-5750.027,0}, -- n=978 rmse 0.7/0.7
-	[1449]={-5966.652,0,-2466.587,533.324,-3699.907,0}, -- n=936 rmse 1.7/1.2
-	[1450]={8491.666,0,-1539.583,-1381.250,-2308.333,0}, -- n=323 rmse 0.0/0.0
-	[1451]={-5958.333,0,-2322.917,2537.501,-3483.339,0}, -- n=1499 rmse 0.0/0.1
-	[1452]={8533.333,0,-4733.334,-316.587,-7100.190,0}, -- n=1063 rmse 0.2/0.6
-	[1453]={-8278.893,0,-896.335,1381.189,-1344.677,0}, -- n=519 rmse 0.8/1.2
-	[1454]={2273.746,0,-935.243,-3680.672,-1402.409,0}, -- n=449 rmse 0.6/0.5
-	[1455]={-4569.237,0,-527.587,-713.617,-790.590,0}, -- n=384 rmse 0.3/0.2
-	[1456]={-850.021,0,-695.807,516.680,-1043.796,0}, -- n=307 rmse 0.1/0.2
-	[1457]={10238.307,0,-705.716,2938.381,-1058.355,0}, -- n=424 rmse 0.1/0.1
-	[1458]={1877.945,0,-640.104,873.193,-959.375,0}, -- n=461 rmse 0.0/0.0
-	[1941]={11041.662,0,-3283.329,-4487.495,-4925.021,0}, -- n=1560 rmse 0.1/0.1
-	[1942]={8266.666,0,-2199.999,-5283.333,-3300.000,0}, -- n=1469 rmse 0.0/0.0
-	[1943]={-2793.750,0,-2714.583,-10500.000,-4070.833,0}, -- n=1801 rmse 0.0/0.0
-	[1944]={1481.250,0,-3443.750,5539.585,-5164.586,0}, -- n=3235 rmse 0.0/0.0
-	[1946]={1935.417,0,-3352.083,9475.000,-5027.083,0}, -- n=2988 rmse 0.0/0.0
-	[1947]={-3609.683,0,-704.688,-11066.367,-1056.770,0}, -- n=438 rmse 0.0/0.0
-	[1948]={-1947.917,0,-3666.666,4225.000,-5500.000,0}, -- n=3950 rmse 0.0/0.0
-	[1949]={4408.335,0,-3616.664,8845.831,-5424.994,0}, -- n=3028 rmse 0.2/0.1
-	[1950]={-758.333,0,-2175.000,-10075.000,-3262.499,0}, -- n=1348 rmse 0.0/0.0
-	[1951]={41.667,0,-3683.333,10295.833,-5525.000,0}, -- n=3009 rmse 0.0/0.0
-	[1952]={-1000.000,0,-3600.000,7083.336,-5400.023,0}, -- n=2921 rmse 0.0/0.5
-	[1953]={5456.250,0,-3716.667,5483.333,-5575.000,0}, -- n=2939 rmse 0.0/0.0
-	[1954]={10153.707,0,-806.760,-6400.706,-1211.531,0}, -- n=384 rmse 0.1/0.2
-	[1955]={-1473.954,0,-870.833,6135.259,-1306.250,0}, -- n=797 rmse 0.0/0.0
-	[1957]={13568.749,0,-2218.749,-5302.083,-3327.083,0}, -- n=1165 rmse 0.0/0.0
+-- Sku's database stores positions as percentages on the CLASSIC zone maps. Forever draws a few
+-- zones differently (its own UiMapAssignment), so there the client conversion puts database positions
+-- off by 100 to 1000 yards. These are the classic rects {minX, minY, maxX, maxY} of exactly those zones,
+-- generated from Blizzard's data by dev/rework-docs/_forever_map_rects.py (rerun after a Forever patch).
+-- Forever 1.60.1.70374 vs classic 2.5.6.70006:
+local tForeverClassicMapRect = {
+	[1412] = {-3697.917, -3089.583, -272.917, 2047.917}, -- Mulgore
+	[1423] = {1218.750, -6056.250, 3800.000, -2185.417}, -- Eastern Plaguelands
+	[1433] = {-10022.916, -3741.667, -8575.000, -1570.833}, -- Redridge Mountains
+	[1453] = {-9175.205, 36.701, -8278.851, 1380.971}, -- Stormwind City
 }
 local function tWpcWorldFromMap(aUiMapId, aRelX, aRelY)
 	local t = tWpcMapTransform[aUiMapId]
 	if t == nil then
-		t = tWpcDeriveTransform(aUiMapId)
-		local tKnown = Sku.isForever and tWpcKnownTransform[aUiMapId]
-		if tKnown then
-			-- Check the centre AND the four corners: a matching centre with a deviating scale
-			-- would otherwise go unnoticed.
-			local tDeviates, tInfo = false, "nil"
-			for _, tP in ipairs({{0.5, 0.5}, {0, 0}, {1, 0}, {0, 1}, {1, 1}}) do
-				local tKx = tKnown[1] + tKnown[2] * tP[1] + tKnown[3] * tP[2]
-				local tKy = tKnown[4] + tKnown[5] * tP[1] + tKnown[6] * tP[2]
-				local tCx, tCy = tWpcProbe(aUiMapId, tP[1], tP[2])
-				if not tCx or math.abs(tCx - tKx) > 2 or math.abs(tCy - tKy) > 2 then
-					tDeviates = true
-					tInfo = string.format("%.2f/%.2f client %s known %.1f/%.1f", tP[1], tP[2],
-						tCx and string.format("%.1f/%.1f", tCx, tCy) or "nil", tKx, tKy)
-					break
-				end
-			end
-			if tDeviates then
-				dprint("WpcTransform: client map", aUiMapId, "deviates,", tInfo, "-> known transform")
-				t = tKnown
-			end
+		local tRect = Sku.isForever and tForeverClassicMapRect[aUiMapId]
+		if tRect then
+			-- same transform shape as tWpcDeriveTransform: world x runs down the map, world y right to left
+			t = {tRect[3], 0, tRect[1] - tRect[3], tRect[4], tRect[2] - tRect[4], 0}
+		else
+			t = tWpcDeriveTransform(aUiMapId)
 		end
 		tWpcMapTransform[aUiMapId] = t
 	end
@@ -707,10 +638,10 @@ local function tWpcWorldFromMap(aUiMapId, aRelX, aRelY)
 	return t[1] + t[2] * aRelX + t[3] * aRelY, t[4] + t[5] * aRelX + t[6] * aRelY
 end
 
--- Map position (0..1) -> world (x, y). Every place that turns percent coordinates into world
--- coordinates goes through here, not through C_Map.GetWorldPosFromMapPos directly: on Forever it
--- applies the correction above, on the other clients it is the plain engine call. nil when the map
--- has no world position.
+-- Database map position (0..1) -> world (x, y). Every place that turns Sku DATABASE percentages into
+-- world coordinates goes through here: on Forever it uses the classic rects above, on the other clients
+-- it is the plain engine call. Positions the client itself reports on its own map (corpse, map pins)
+-- go through C_Map.GetWorldPosFromMapPos directly. nil when the map has no world position.
 function SkuNav:WorldFromMap(aUiMapId, aRelX, aRelY)
 	if not (aUiMapId and aRelX and aRelY) then return nil end
 	if Sku.isForever then
