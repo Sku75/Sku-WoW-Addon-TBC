@@ -225,6 +225,8 @@ SkuOptions.skuDefaultKeyBindings = {
 -- Forever only: the functions behind these two keys exist only there (SkuCore/petFeed.lua, petHealthForever.lua).
 if Sku.isForever then
    SkuOptions.skuDefaultKeyBindings["SKU_KEY_FEEDPET"] = {key = "", object = "SkuCore", func = "UpdateFeedPetBinding",}
+   -- Pet health: spoken through SkuVoice:SpeakSecretText (SkuCore/petHealthForever.lua); the key is dispatched like SKU_KEY_TARGETHEALTH.
+   SkuOptions.skuDefaultKeyBindings["SKU_KEY_PETHEALTH"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",}
 end
 -- Default keys for the first five Sku focus slots (numeric keypad). The bare key
 -- CALLS the focus (FOCUSGET), CTRL + the same key SETS/captures it (FOCUSSET), so a
