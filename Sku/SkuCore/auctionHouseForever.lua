@@ -1361,11 +1361,12 @@ local function tDepositLabel()
 	end
 	return tText
 end
+-- The post leaf is read again right after Enter, so what the last post attempt has to say (gSell.postNote) is
+-- part of its name until the draft changes.
 local function tPostLabel()
-	if gSell.pending then
-		return L["Confirm: post with warning"]
-	end
-	return L["Post auction"]
+	local tLabel = gSell.pending and L["Confirm: post with warning"] or L["Post auction"]
+	if gSell.postNote then return gSell.postNote..";"..tLabel end
+	return tLabel
 end
 
 -- Market price hint while selling (Blizzard's sell frame lists the current offers and fills the
@@ -1465,6 +1466,12 @@ end
 -- would post those.
 local function tDraftChanged()
 	gSell.pending = nil
+	gSell.postNote = nil
+	tRefreshSellLabels()
+end
+
+local function tPostNote(aText)
+	gSell.postNote = aText
 	tRefreshSellLabels()
 end
 
@@ -1497,24 +1504,23 @@ function AHF:PostDraft()
 		else
 			C_AuctionHouse.ConfirmPostItem(SafeUnpack(tP))
 		end
-		tRefreshSellLabels()
-		tSay(gSell.name..": "..L["Confirmed, posting"])
+		tPostNote(gSell.name..": "..L["Confirmed, posting"])
 		return
 	end
 	if not gSell.buyout or gSell.buyout <= 0 then
-		tSay(L["Set a price first"])
+		tPostNote(L["Set a price first"])
 		return
 	end
 	if gSell.bid and gSell.bid >= gSell.buyout and not gSell.isCommodity then
-		tSay(L["The starting bid must be below the buyout price"])
+		tPostNote(L["The starting bid must be below the buyout price"])
 		return
 	end
 	if GetMoney() < tDepositAmount() then
-		tSay(L["Not enough money for the deposit"])
+		tPostNote(L["Not enough money for the deposit"])
 		return
 	end
 	if not C_AuctionHouse.IsThrottledMessageSystemReady() then
-		tSay(L["Please wait a moment and try again"])
+		tPostNote(L["Please wait a moment and try again"])
 		return
 	end
 	local tDuration, tQuantity = tGetDuration(), gSell.quantity
@@ -1527,15 +1533,14 @@ function AHF:PostDraft()
 		tOk, tNeeds = pcall(C_AuctionHouse.PostItem, SafeUnpack(tArgs))
 	end
 	if not tOk then
-		tSay(gSell.name..": "..L["Posting failed"])
+		tPostNote(gSell.name..": "..L["Posting failed"])
 		return
 	end
 	if tNeeds then
 		gSell.pending = tArgs
-		tRefreshSellLabels()
-		tSay(gSell.name..": "..L["Confirmation needed. Press Enter again to confirm."])
+		tPostNote(gSell.name..": "..L["Confirmation needed. Press Enter again to confirm."])
 	else
-		tSay(gSell.name..": "..L["Posting"])
+		tPostNote(gSell.name..": "..L["Posting"])
 	end
 end
 
