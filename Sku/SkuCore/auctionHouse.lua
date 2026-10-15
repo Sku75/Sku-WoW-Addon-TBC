@@ -5288,6 +5288,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDataDB, aHistoryPriceDataDB)
    --dprint("AuctionPriceHistoryData")
+   -- The price tables are keyed by the numeric item ID. Item IDs cut from a link (SkuGetItemIdFromItemLink, the chat
+   -- links) arrive as strings and would never find their entry.
+   aItemID = tonumber(aItemID)
    if not aItemID then
       return
    end
