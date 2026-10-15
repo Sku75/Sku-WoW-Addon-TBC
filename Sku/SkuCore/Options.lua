@@ -3335,6 +3335,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 						WowTtsVolume          = a.WowTtsVolume,
 						neverResetQueues      = a.neverResetQueues,
 						allChatViaBlizzardTts = a.allChatViaBlizzardTts,
+						blizzTtsForMissingWords = a.blizzTtsForMissingWords,
 						doNotReadoutEmojis    = a.doNotReadoutEmojis,
 					}
 					SkuOptions:IterateOptionsArgs(tArgs, self, SkuSettings:Sub("SkuChat"), "SkuChat", "")
