@@ -2072,118 +2072,109 @@ function SkuCore:OnEnable()
 		if SkuCoreMovement then
 			if UnitOnTaxi("player") ~= true then
 
-				local tTest = UnitPosition("player")
-				if tTest and WorldMapFrame:GetMapID() ~= 947 then
-					--due to unknown reasons with tbc WorldMapFrame:GetMapID does not return any value after taxi transfer before the world map was openend at least once
-					if C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player") == nil then
-						if not WorldMapFrame:IsShown() then
-							WorldMapFrame:Show()
-							WorldMapFrame:Hide()
+				-- World position in yards straight from UnitPosition. This used to go through the world
+				-- map's map ID, which after a taxi flight stayed empty until the map was opened, so the
+				-- map was shown and hidden from here, mid-movement. Only distances are taken from it.
+				local tNewY, tNewX = UnitPosition("player")
+				if tNewX and tNewY then
+
+					-- Walk-to-interact arming: the native "Interact With Target" key (G,
+					-- INTERACTTARGET) auto-walks the character via the engine's own movement
+					-- controller -- no movement key is held, so none of the intent flags
+					-- below are set and getting wedged on the way to the target used to stay
+					-- silent. EngineMoving (PLAYER_STARTED_MOVING/PLAYER_STOPPED_MOVING)
+					-- keeps reporting true while pushing against an obstacle, so it arms the
+					-- warning for any engine-driven walk. Excluded: pure turning (turning in
+					-- place is not a collision -- and the flag conflates strafing, which the
+					-- intent flags already cover), falling (a straight-down fall has no
+					-- horizontal displacement and would false-beep), and autofollow (that
+					-- case belongs to the follow-collision block below).
+					local tEngineWalkArm = SkuCoreMovement.Flags.EngineMoving == true
+						and SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing ~= true
+						and IsFalling() ~= true
+						and (not SkuStatus or SkuStatus.follow == 0)
+					if SkuCoreMovement.Flags.MoveForward == true or SkuCoreMovement.Flags.StrafeLeft == true or SkuCoreMovement.Flags.StrafeRight == true or SkuCoreMovement.Flags.MoveBackward == true or SkuCoreMovement.Flags.AutoRun == true or tEngineWalkArm == true then
+						local _, tDistance = SkuCore:Distance(tNewX, tNewY, SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y)
+						local currentSpeed, runSpeed, flightSpeed, swimSpeed = Sku.UnitSpeed("player")
+						-- Speed hidden (WoW Forever in combat): tMod 0 gives no verdict, every
+						-- distance test below fails and the counter resets.
+						local tMod = 0
+						if currentSpeed then
+							tMod = currentSpeed / 7
+
+							if IsSwimming() then
+								tMod = (currentSpeed / swimSpeed) / runSpeed
+							end
 						end
-					end
-					--dprint(WorldMapFrame:GetMapID())
-					if C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player") then
-						local _, worldPosition = C_Map.GetWorldPosFromMapPos(WorldMapFrame:GetMapID(), C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player"))
-						local tNewX, tNewY = worldPosition:GetXY()
 
-						-- Walk-to-interact arming: the native "Interact With Target" key (G,
-						-- INTERACTTARGET) auto-walks the character via the engine's own movement
-						-- controller -- no movement key is held, so none of the intent flags
-						-- below are set and getting wedged on the way to the target used to stay
-						-- silent. EngineMoving (PLAYER_STARTED_MOVING/PLAYER_STOPPED_MOVING)
-						-- keeps reporting true while pushing against an obstacle, so it arms the
-						-- warning for any engine-driven walk. Excluded: pure turning (turning in
-						-- place is not a collision -- and the flag conflates strafing, which the
-						-- intent flags already cover), falling (a straight-down fall has no
-						-- horizontal displacement and would false-beep), and autofollow (that
-						-- case belongs to the follow-collision block below).
-						local tEngineWalkArm = SkuCoreMovement.Flags.EngineMoving == true
-							and SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing ~= true
-							and IsFalling() ~= true
-							and (not SkuStatus or SkuStatus.follow == 0)
-						if SkuCoreMovement.Flags.MoveForward == true or SkuCoreMovement.Flags.StrafeLeft == true or SkuCoreMovement.Flags.StrafeRight == true or SkuCoreMovement.Flags.MoveBackward == true or SkuCoreMovement.Flags.AutoRun == true or tEngineWalkArm == true then
-							local _, tDistance = SkuCore:Distance(tNewX, tNewY, SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y)
-							local currentSpeed, runSpeed, flightSpeed, swimSpeed = Sku.UnitSpeed("player")
-							-- Speed hidden (WoW Forever in combat): tMod 0 gives no verdict, every
-							-- distance test below fails and the counter resets.
-							local tMod = 0
-							if currentSpeed then
-								tMod = currentSpeed / 7
+						local tSound = 0
+						if tDistance < 0.25 * tMod then
+							tSound = 1
+						elseif tDistance < 0.45 * tMod then
+							tSound = 2
+						elseif tDistance < 0.60 * tMod then
+							tSound = 3
+						elseif tDistance < 0.85 * tMod then
+							tSound = 4
+						elseif tDistance < 1.00 * tMod then
+							tSound = 5
+						end
 
-								if IsSwimming() then
-									tMod = (currentSpeed / swimSpeed) / runSpeed
-								end
-							end
-
-							local tSound = 0
-							if tDistance < 0.25 * tMod then
-								tSound = 1
-							elseif tDistance < 0.45 * tMod then
-								tSound = 2
-							elseif tDistance < 0.60 * tMod then
-								tSound = 3
-							elseif tDistance < 0.85 * tMod then
-								tSound = 4
-							elseif tDistance < 1.00 * tMod then
-								tSound = 5
-							end
-
-							-- The counter must count CONSECUTIVE slow ticks -- it used to have no
-							-- reset at all except when it fired, which made it a lifetime
-							-- accumulator: the first tick after every PLAYER_STARTED_MOVING
-							-- samples a partial window (we were standing at the previous sample)
-							-- and scores as "too slow", so ~every 6th movement START produced a
-							-- phantom warning with nothing in the way, minutes apart. Harmless-ish
-							-- while only held movement keys armed this; the engine-walk arm above
-							-- added every auto-interact walk (NPC to NPC) as another source. Reset
-							-- on any good tick, exactly like the follow-collision block below.
-							if tSound ~= 0 then
-								SkuCoreMovement.counter = SkuCoreMovement.counter + 1
-								if SkuCoreMovement.counter > 5 and tSound > 0 then
-									SkuCoreMovement.counter = 0
-									dprint("selfCollision fire", "tier", tSound, "dist", tostring(math.floor(tDistance * 100) / 100), "mod", tostring(math.floor(tMod * 100) / 100), "engineArm", tostring(tEngineWalkArm))
-									SkuOptions.Voice:OutputString("sound-stuck"..tSound, false, false, 0.8)
-								end
-							else
+						-- The counter must count CONSECUTIVE slow ticks -- it used to have no
+						-- reset at all except when it fired, which made it a lifetime
+						-- accumulator: the first tick after every PLAYER_STARTED_MOVING
+						-- samples a partial window (we were standing at the previous sample)
+						-- and scores as "too slow", so ~every 6th movement START produced a
+						-- phantom warning with nothing in the way, minutes apart. Harmless-ish
+						-- while only held movement keys armed this; the engine-walk arm above
+						-- added every auto-interact walk (NPC to NPC) as another source. Reset
+						-- on any good tick, exactly like the follow-collision block below.
+						if tSound ~= 0 then
+							SkuCoreMovement.counter = SkuCoreMovement.counter + 1
+							if SkuCoreMovement.counter > 5 and tSound > 0 then
 								SkuCoreMovement.counter = 0
+								dprint("selfCollision fire", "tier", tSound, "dist", tostring(math.floor(tDistance * 100) / 100), "mod", tostring(math.floor(tMod * 100) / 100), "engineArm", tostring(tEngineWalkArm))
+								SkuOptions.Voice:OutputString("sound-stuck"..tSound, false, false, 0.8)
 							end
-
-
-							--collect terrain data test
-							--[[
-							local tExtMap = SkuNav.Geo:GetBestMapForUnit("player")
-							if not SkuCoreDB.TerrainData then
-								SkuCoreDB.TerrainData = {}
-							end
-							if not SkuCoreDB.TerrainData[tExtMap] then
-								SkuCoreDB.TerrainData[tExtMap] = {}
-							end
-							local function round(val, decimal)
-								if (decimal) then
-									return math.floor( (val * 10^decimal) + 0.5) / (10^decimal)
-								else
-									return math.floor(val+0.5)
-								end
-							end
-							local tIntX, tIntY = round(tNewX, 0), round(tNewY, 0)
-							if not SkuCoreDB.TerrainData[tExtMap][tIntX] then
-								SkuCoreDB.TerrainData[tExtMap][tIntX] = {}
-							end
-							if tSound ~= 0 then
-								SkuCoreDB.TerrainData[tExtMap][tIntX][tIntY] = true
-							else
-								SkuCoreDB.TerrainData[tExtMap][tIntX][tIntY] = false
-							end
-							]]
-
-
 						else
-							-- disarmed (standing, turning, falling, following): the run of slow
-							-- ticks is over, so it must not carry into the next movement episode
 							SkuCoreMovement.counter = 0
 						end
-						SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y = tNewX, tNewY
+
+
+						--collect terrain data test
+						--[[
+						local tExtMap = SkuNav.Geo:GetBestMapForUnit("player")
+						if not SkuCoreDB.TerrainData then
+							SkuCoreDB.TerrainData = {}
+						end
+						if not SkuCoreDB.TerrainData[tExtMap] then
+							SkuCoreDB.TerrainData[tExtMap] = {}
+						end
+						local function round(val, decimal)
+							if (decimal) then
+								return math.floor( (val * 10^decimal) + 0.5) / (10^decimal)
+							else
+								return math.floor(val+0.5)
+							end
+						end
+						local tIntX, tIntY = round(tNewX, 0), round(tNewY, 0)
+						if not SkuCoreDB.TerrainData[tExtMap][tIntX] then
+							SkuCoreDB.TerrainData[tExtMap][tIntX] = {}
+						end
+						if tSound ~= 0 then
+							SkuCoreDB.TerrainData[tExtMap][tIntX][tIntY] = true
+						else
+							SkuCoreDB.TerrainData[tExtMap][tIntX][tIntY] = false
+						end
+						]]
+
+
+					else
+						-- disarmed (standing, turning, falling, following): the run of slow
+						-- ticks is over, so it must not carry into the next movement episode
+						SkuCoreMovement.counter = 0
 					end
+					SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y = tNewX, tNewY
 				end
 
 				-- Follow-collision: warn (reusing the sound-stuck tiers) when we are
@@ -2922,20 +2913,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_LOGIN(...)
 	--dprint("PLAYER_LOGIN", ...)
-	SkuCore.TalentTempFlag = true
-
 	local f = CreateFrame("GameTooltip", "SkuScanningTooltip"); -- Tooltip name cannot be nil
 	SkuScanningTooltip = f
 	f:SetOwner(WorldFrame, "ANCHOR_NONE");
 	f:AddFontStrings(f:CreateFontString( "$parentTextLeft1", nil, "GameTooltipText" ), f:CreateFontString( "$parentTextRight1", nil, "GameTooltipText" ))
-
-	--we need to do that to have all craftframe elementes available on first use; otherwise it won't be complete on first open, as the data from the server take a few ms
-	-- Forever has no craft window and no UIParentLoadAddOn
-	if UIParentLoadAddOn then
-		UIParentLoadAddOn("Blizzard_CraftUI")
-		CraftFrame:Show()
-		CraftFrame:Hide()
-	end
 
 	SkuSettings:Sub("SkuCore").trainerSkillsUnavailableDisabled = false
 end
@@ -3471,44 +3452,26 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		end
 		--
 
-		WorldMapFrame:Show()
-		WorldMapFrame:Hide()
+		-- No silent window opens at login. Sku used to show and hide the world map, click the
+		-- backpack button twice and toggle the talent window here, so those frames existed before
+		-- the hooks below. That ran Blizzard's window code as Sku code: on Forever the talent
+		-- window's OnShow/OnHide re-laid out the action bars tainted, and in combat Blizzard's
+		-- next bar layout was blocked (ADDON_ACTION_BLOCKED MainActionBar:SetPointBase). Nothing
+		-- needs them: the SkuCoreControl ticker hooks a load-on-demand window when it appears,
+		-- the collision check reads UnitPosition, the bag menu reads the Container API.
 
 		hooksecurefunc(TaxiFrame, "Show", SkuCore.TaxiFrame_OnShow)
 		hooksecurefunc(TaxiFrame, "Hide", SkuCore.TaxiFrame_OnHide)
-		
-		MainMenuBarBackpackButton:Click()
-		MainMenuBarBackpackButton:Click()
 
 		-- Prime the in-combat item-use mirrors (bag tree + character-slot tree) at login so
 		-- the very FIRST combat of a session can /use bag items and on-use gear even if the
 		-- player never manually opened the bags or character sheet. Silent -- no menu, no
 		-- voice (see SkuCore:PrimeCombatMirrors). Deferred a moment so the Blizzard bag /
-		-- character data (which can lag login by a few ms) are fully populated first, and so
-		-- the just-issued backpack toggles above have settled closed.
+		-- character data (which can lag login by a few ms) are fully populated first.
 		C_Timer.After(0.5, function() pcall(function() SkuCore:PrimeCombatMirrors() end) end)
 
-		if SkuCore.TalentTempFlag == true then
-			_G["TalentMicroButton"]:Click()
-		end
-		
 		C_Timer.NewTimer(1, function()
-			-- The second click closes what the first one opened, so it only runs while the talent
-			-- window is still shown. A blind toggle reopened it whenever something else had closed it
-			-- in between: on Forever the character prime above (ShowUIPanel(CharacterFrame) at 0.5 s)
-			-- closes the talent tab, because the panel manager hides a native "center" panel that
-			-- allows other panels when a "left" panel opens, and the click then opened it for good.
-			-- PlayerSpellsFrame is the window TalentMicroButton toggles on Forever, PlayerTalentFrame
-			-- elsewhere.
-			if SkuCore.TalentTempFlag == true then
-				local tTalentFrame = _G["PlayerSpellsFrame"] or _G["PlayerTalentFrame"]
-				if tTalentFrame and tTalentFrame:IsShown() then
-					_G["TalentMicroButton"]:Click()
-				else
-					dprint("talent prime: window already closed, second click skipped")
-				end
-			end
-			
+
 			-- [43.2] Identical to the lazy installer in the SkuCoreControl ticker (~1658).
 			-- It used to wrap both hooks around ONE shared boolean
 			-- (SkuDropdownlistGenericFlag): any Show set it, and only the FIRST Hide after
@@ -3522,13 +3485,12 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			-- plus tGenericCloseBookkeepingFlag), which is what the flag was standing in
 			-- for, so dropping it costs nothing and makes both installers behave the same.
 			for x = 1, #SkuCore.interactFramesList do
-				if _G[SkuCore.interactFramesList[x]] then
+				if _G[SkuCore.interactFramesList[x]] and not SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] then
 					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Show", SkuCore.GENERIC_OnOpen)
 					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Hide", SkuCore.GENERIC_OnClose)
 					SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] = true
 				end
 			end
-			SkuCore.TalentTempFlag = false
 		end)
 
 
@@ -4581,10 +4543,9 @@ end
 -- historically the in-combat mirror worked only AFTER the player had manually opened the
 -- bags / character sheet once that session -- the first combat had nothing to /use. These
 -- primers build the trees up front so the FIRST combat already works. They read live data
--- (bags via the Container API, gear via the always-present PaperDoll widgets) -- no menu,
+-- (bags via the Container API, gear via the PaperDoll widgets) -- no menu,
 -- no voice -- and are out-of-combat only (combat staging is the separate REGEN_DISABLED
--- step). This is the same "warm the data on load" convention as the CraftFrame /
--- WorldMapFrame Show()/Hide() primes in PLAYER_LOGIN / PLAYER_ENTERING_WORLD.
+-- step).
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Bag tree only: Build_BagsFrame is fully Container-API driven (no bag needs to be open),
 -- so this is a cheap, side-effect-free refresh of combatBagTree/combatBagOrder. Used both
@@ -4597,10 +4558,10 @@ end
 
 -- Both trees. The character-slot map is fixed for the whole session (gear order can't
 -- reshuffle the menu), so it only needs priming once, at login. Build_CharacterFrame reads
--- the always-present PaperDoll widgets and captures the slot list in exact menu order;
--- realise the CharacterFrame for a single frame first (matching the WorldMapFrame/CraftFrame
--- login-prime convention) so its widgets and the gear-manager toggle initialise cleanly,
--- then hide it again. Show/HideUIPanel, not :Show()/:Hide(): the panel manager hands the
+-- the PaperDoll widgets and captures the slot list in exact menu order; IterateChildren
+-- takes only VISIBLE widgets, so the CharacterFrame is shown for that one build and hidden
+-- again. This is the only window Sku still opens silently at login. Show/HideUIPanel,
+-- not :Show()/:Hide(): the panel manager hands the
 -- job to Blizzard's forbidden FramePositionDelegate, so the frame's own OnShow/OnHide run as
 -- Blizzard code. A direct :Show() runs them as Sku code; on Forever that OnShow compares the
 -- secret health/mana maxima of the player frame bars (TextStatusBar error) and writes their
@@ -4629,19 +4590,6 @@ function SkuCore:PrimeCombatMirrors()
 		if not tOk then dprint("PrimeCombatMirrors: character frame build failed", tErr) end
 	end
 	dprint("PrimeCombatMirrors", SkuCore.combatBagTree and #SkuCore.combatBagTree or -1, SkuCore.combatCharTree and #SkuCore.combatCharTree or -1)
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:TALENTFRAME_OnOpen(self)
-	--dprint("TALENTFRAME_OnOpen", self)
-	SkuCore:CheckFrames()
-	SkuOptions:StopSounds(5)
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:TALENTFRAME_OnClose(self)
-	SkuCore:CheckFrames()
-	SkuOptions:StopSounds(5)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
