@@ -3445,6 +3445,11 @@ The price changed since it was listed: expected 	Le prix a changé depuis l'affi
 , now 	, maintenant 
 Total price 	Prix total 
 Confirm or cancel?	Confirmer ou annuler ?
+%s: %s pieces, total price %s	%s : %s pièces, prix total %s
+Only %s pieces are offered by other players	Seulement %s pièces sont proposées par d'autres joueurs
+Purchase cancelled: the unit price is now %s instead of %s, more than 5 percent above the listings	Achat annulé : le prix unitaire est maintenant de %s au lieu de %s, plus de 5 pour cent au-dessus des offres
+Purchase cancelled: the price quote has expired	Achat annulé : l'offre de prix a expiré
+Purchasing	Achat en cours
 No purchase is waiting for confirmation	Aucun achat n'attend de confirmation
 Note: the unit price rises from %s to %s, because only %s pieces are offered at the lowest price.	Attention : le prix unitaire passe de %s à %s, car seulement %s pièces sont proposées au prix le plus bas.
 The price changed since it was listed: expected %s, now %s.	Le prix a changé depuis l'affichage : attendu %s, maintenant %s.
