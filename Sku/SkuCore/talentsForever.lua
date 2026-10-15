@@ -114,6 +114,8 @@ local function tNodeEntry(aParentChilds, aConfigID, aButton, aNodeInfo)
 			textFull = tState,
 			childs = {},
 		})
+		-- The choice is the first line inside, like the points of a branch: arrowing past the node only reads "A / B".
+		if tState ~= "" then tText(tNode.childs, "Text: " .. tState, nil) end
 		for _, tEntryID in ipairs(tChoices) do
 			local tName, tDesc, tAvailable = tEntryInfo(aConfigID, tEntryID)
 			local tSub = tName or "?"
