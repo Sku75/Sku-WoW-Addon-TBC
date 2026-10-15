@@ -9,7 +9,7 @@ if not SkuVoice then return end -- No upgrade needed
 -- Blizzard-TTS params provider (W6-B #12): the audio engine no longer reaches
 -- into SkuChat's saved-settings schema by string key. SkuChat registers a
 -- provider via SkuVoice:SetChatTtsProvider that returns the current param table
--- (fields WowTtsVoice/WowTtsSpeed/WowTtsVolume/neverResetQueues/
+-- (fields WowTtsVoice/WowTtsSpeed/WowTtsVolume/neverResetQueues/blizzTtsForMissingWords/
 -- allChatViaBlizzardTts); the engine only ever calls that. Falls back to sane
 -- defaults if no provider is registered yet.
 local mChatTtsProvider
@@ -2314,6 +2314,27 @@ end
 -- TTSSepPause hold while no other aura sound is playing (see the pump). Only the
 -- generated aura sound outputs in SkuAuras/data.lua set it; word/text outputs
 -- must NOT, or a multi-word aura output would play its words on top of itself.
+-- The recording for one word: exact, lower case, capital first letter, then the gender endings (tGenderSuffixes).
+-- aQuiet: no log line per miss. Returns file, path, length, or nil.
+local function FindWordAudio(aWord, aQuiet)
+	local tFile, tPath, tLength = SkuVoice:GetAudiodata(aWord, aQuiet)
+	if tFile == nil then
+		tFile, tPath, tLength = SkuVoice:GetAudiodata(string.lower(aWord), aQuiet)
+	end
+	if tFile == nil then
+		tFile, tPath, tLength = SkuVoice:GetAudiodata(string.upper(string.sub(aWord, 1, 1))..string.sub(aWord, 2), aQuiet)
+	end
+	if tFile == nil then
+		local tModString = string.lower(aWord)
+		for i, v in pairs(tGenderSuffixes) do
+			if string.sub(tModString, string.len(tModString) - string.len(i) + 1) == i then
+				tFile, tPath, tLength = SkuVoice:GetAudiodata(string.sub(tModString, 1, string.len(tModString) - string.len(i))..v, aQuiet)
+			end
+		end
+	end
+	return tFile, tPath, tLength
+end
+
 function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aAudioFile, aAuraSound) -- for strings with lookup in string index
 	if not aString then
 		return
@@ -2535,12 +2556,12 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 
 		-- Optional (off by default): if any word of the line has no recording, the WHOLE line goes to Blizzard's voice instead of
 		-- a beep for the missing word (player names, unknown terms). engine=2 keeps OutputStringBTtts from handing it back here.
-		-- Costs up to four lookups per word.
+		-- Costs up to four lookups per word (FindWordAudio), only while the option is on.
 		if ChatTts().blizzTtsForMissingWords == true and not tIsSound and aAudioFile == nil and not aAuraSound then
 			for x = 1, #tStrings do
 				local tWord = tostring(tStrings[x])
 				if tWord ~= "§01" and not string.find(tWord, "sound%-") and not string.find(tWord, "male%-")
-					and not string.find(tWord, "brian%-") and not string.find(tWord, "emma%-") and not SkuVoice:WordHasAudio(tWord) then
+					and not string.find(tWord, "brian%-") and not string.find(tWord, "emma%-") and FindWordAudio(tWord, true) == nil then
 					if SkuOptions.db then
 						SkuOptions.db.realm.missingAudio = SkuOptions.db.realm.missingAudio or {}
 						SkuOptions.db.realm.missingAudio[tWord] = (SkuOptions.db.realm.missingAudio[tWord] or 0) + 1
@@ -2569,26 +2590,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 				if tStrings[x] == "§01" then
 					tStrings[x] = "sound-silence0.1"
 				end
-				tFile, tPath, tLength = SkuVoice:GetAudiodata(tostring(tStrings[x]))
-
-				if tFile == nil then
-					local tModString = string.lower(tostring(tStrings[x]))
-					tFile, tPath, tLength = SkuVoice:GetAudiodata(tModString)
-				end
-				if tFile == nil then
-					local tModString = string.upper(string.sub(tostring(tStrings[x]),1,1))..string.sub(tostring(tStrings[x]),2)
-					tFile, tPath, tLength = SkuVoice:GetAudiodata(tModString)
-				end
-				--dprint(tStrings[x], "tFile", tFile)
-
-				if tFile == nil then
-					local tModString = string.lower(tostring(tStrings[x]))
-					for i, v in pairs(tGenderSuffixes) do
-						if string.sub(tModString, string.len(tModString) - string.len(i) + 1) == i then
-							tFile, tPath, tLength = SkuVoice:GetAudiodata(string.sub(tModString, 1, string.len(tModString) - string.len(i))..v)
-						end
-					end
-				end
+				tFile, tPath, tLength = FindWordAudio(tostring(tStrings[x]))
 
 				if tFile == nil then
 					tFile, tPath, tLength = SkuVoice:GetAudiodata("sound-audiofehltbeep")
@@ -3077,21 +3079,5 @@ function SkuVoice:GetAudiodata(aString, aQuiet)
 	end
 
 	return tFile, tPath, tLen
-end
-
--- Is there a recording for this word? Same search order as OutputString (exact, lower case, capital first letter, gender
--- ending), without the log line for a miss.
-function SkuVoice:WordHasAudio(aWord)
-	aWord = tostring(aWord)
-	if SkuVoice:GetAudiodata(aWord, true) then return true end
-	local tLower = string.lower(aWord)
-	if SkuVoice:GetAudiodata(tLower, true) then return true end
-	if SkuVoice:GetAudiodata(string.upper(string.sub(aWord, 1, 1))..string.sub(aWord, 2), true) then return true end
-	for i, v in pairs(tGenderSuffixes) do
-		if string.sub(tLower, string.len(tLower) - string.len(i) + 1) == i then
-			if SkuVoice:GetAudiodata(string.sub(tLower, 1, string.len(tLower) - string.len(i))..v, true) then return true end
-		end
-	end
-	return false
 end
 
