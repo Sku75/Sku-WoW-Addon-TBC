@@ -4589,16 +4589,18 @@ function SkuCore:PrimeCombatMirrors()
 	if tCf then
 		local tWasShown = tCf:IsShown()
 		SkuCore._suppressGenericFrameHooks = true
-		pcall(function()
+		local tOk, tErr = pcall(function()
 			if not tWasShown then tCf:Show() end
 			SkuCore:Build_CharacterFrame({})
 		end)
-		-- Outside the pcall: when the build throws (it does on Forever, see the resistances), the frame must
-		-- still be hidden, otherwise it stays open as a ghost window and the menu asks which window to read.
+		if not tOk then dprint("PrimeCombatMirrors: character frame build failed", tErr) end
+		-- Outside the pcall: when the build throws, the frame must still be hidden, otherwise it stays open as a
+		-- ghost window and the menu asks which window to read.
 		if not tWasShown then tCf:Hide() end
 		SkuCore._suppressGenericFrameHooks = false
 	else
-		pcall(function() SkuCore:Build_CharacterFrame({}) end)
+		local tOk, tErr = pcall(function() SkuCore:Build_CharacterFrame({}) end)
+		if not tOk then dprint("PrimeCombatMirrors: character frame build failed", tErr) end
 	end
 	dprint("PrimeCombatMirrors", SkuCore.combatBagTree and #SkuCore.combatBagTree or -1, SkuCore.combatCharTree and #SkuCore.combatCharTree or -1)
 end
