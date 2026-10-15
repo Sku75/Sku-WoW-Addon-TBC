@@ -16,7 +16,9 @@ function SkuCore:SpeakPetHealth()
 		return
 	end
 	local tMax = UnitHealthMax("pet")
-	if Sku.IsSecret(tMax) then
+	local tHealth = UnitHealth("pet")
+	-- Either value can be secret on its own: the max can be readable while the current health is not.
+	if Sku.IsSecret(tMax) or Sku.IsSecret(tHealth) then
 		if not tCeilTo100 then
 			tCeilTo100 = C_CurveUtil.CreateCurve()
 			tCeilTo100:SetType(Enum.LuaCurveType.Linear)
@@ -26,6 +28,6 @@ function SkuCore:SpeakPetHealth()
 		SkuOptions.Voice:SpeakSecretText(L["Pet %d"], UnitHealthPercent("pet", true, tCeilTo100))
 		return
 	end
-	local tPercent = tMax > 0 and math.ceil(UnitHealth("pet") / tMax * 100) or 0
+	local tPercent = tMax > 0 and math.ceil(tHealth / tMax * 100) or 0
 	SkuOptions.Voice:OutputStringBTtts(string.format(L["Pet %d"], tPercent), true, true, 0.2)
 end
