@@ -15,5 +15,5 @@ function SkuCore:SpeakPetHealth()
 		SkuOptions.Voice:OutputStringBTtts(L["No pet"], true, true, 0.2)
 		return
 	end
-	SkuOptions.Voice:SpeakSecretText(L["Pet health: %d percent"], UnitHealthPercent("pet", true, CurveConstants.ScaleTo100))
+	SkuOptions.Voice:SpeakSecretText(L["Pet %d"], UnitHealthPercent("pet", true, CurveConstants.ScaleTo100))
 end

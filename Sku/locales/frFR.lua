@@ -3749,7 +3749,7 @@ L["Reset all filters"] = "Réinitialiser tous les filtres"
 L["Filters reset"] = "Filtres réinitialisés"
 L["AHF_FullScanItems"] = "prix pour %d objets"
 L["SKU_KEY_PETHEALTH"] = "santé du familier"
-L["Pet health: %d percent"] = "Santé du familier : %d pour cent"
+L["Pet %d"] = "Familier %d"
 L["No pet"] = "Pas de familier"
 -- locale CODE. assemble skips the enUS 'locale' row and writes this line, so a
 -- regeneration can no longer re-import it - check with _locale_dupes.py, which

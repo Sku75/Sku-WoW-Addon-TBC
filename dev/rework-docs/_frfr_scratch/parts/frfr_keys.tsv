@@ -3539,5 +3539,5 @@ up to %s each	jusqu'à %s chacune
 AHF_FullScanItems	prix pour %d objets
 >>>>>>> cecca5b (forever(12): a full scan fills the auction price history)
 SKU_KEY_PETHEALTH	santé du familier
-Pet health: %d percent	Santé du familier : %d pour cent
+Pet %d	Familier %d
 No pet	Pas de familier
