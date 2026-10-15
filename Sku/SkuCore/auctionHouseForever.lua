@@ -14,8 +14,9 @@
 --   bid below buyout, favorites.
 -- Sell: pick an item from the bags, quantity, duration, price, deposit, market price hint, post (with the posting warning).
 -- Own auctions and own bids: list, cancel.
--- Protected calls (PlaceBid, StartCommoditiesPurchase, PostItem, PostCommodity, ConfirmCommoditiesPurchase, ...)
--- only run from a menu action, i.e. from a real key press.
+-- Calls documented as HasRestrictions (PlaceBid, StartCommoditiesPurchase, PostItem, PostCommodity, ConfirmPostItem,
+-- ConfirmPostCommodity, CancelAuction) run directly from a menu action, i.e. from a real key press.
+-- ConfirmCommoditiesPurchase has no restriction; it runs from a key press as well, like Blizzard's Buy Now button.
 -- Not built: a full-market scan. Blizzard's own auction house does not call ReplicateItems either.
 -- =====================================================================
 
@@ -534,9 +535,9 @@ end
 -- ---------------------------------------------------------------------
 -- BUY - commodity: StartCommoditiesPurchase (quote) -> COMMODITY_PRICE_UPDATED
 -- (announce the confirmed price) -> ConfirmCommoditiesPurchase (second real
--- keypress). Mirrors Blizzard's own Blizzard_AuctionHouseBuyDialog.lua flow;
--- both calls are HasRestrictions=true (protected), so both must originate
--- from a real key press, never a timer callback.
+-- keypress). Mirrors Blizzard's own Blizzard_AuctionHouseBuyDialog.lua flow.
+-- StartCommoditiesPurchase is HasRestrictions and runs from a key press;
+-- ConfirmCommoditiesPurchase has no restriction and runs from the Confirm key press.
 -- ---------------------------------------------------------------------
 function AHF:StartCommodityBuy(aItemID, aQuantity, aEntry, aName, aIndex)
 	gCommodityBuy.index = aIndex
