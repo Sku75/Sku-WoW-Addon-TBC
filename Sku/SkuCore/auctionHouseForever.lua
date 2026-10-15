@@ -22,6 +22,7 @@
 if not Sku or not Sku.isForever then return end
 
 local L = Sku.L
+local GetCoinText = Sku.Compat.GetCoinText
 
 SkuCore.AuctionHouseForever = SkuCore.AuctionHouseForever or {}
 local AHF = SkuCore.AuctionHouseForever
@@ -42,9 +43,7 @@ local gCommodityBuy = { itemID = nil, quantity = nil, unitPrice = nil, totalPric
 -- not pretend to have more.
 
 local function tMoneyText(aCopper)
-	local tText = GetCoinText(aCopper, " ")
-	if type(tText) == "string" and tText ~= "" then return tText end
-	return tostring(aCopper).." Kupfer"
+	return GetCoinText(aCopper, " ")
 end
 
 -- Shared small helpers (used by browse, detail, bids, sell and own auctions below).
@@ -688,7 +687,9 @@ local function tAhItemTooltipText(aItemKey, aLink)
 		end
 	end
 	if aItemKey and aItemKey.itemID then
-		tConsider(C_TooltipInfo.GetItemKey(aItemKey.itemID, aItemKey.itemLevel or 0, aItemKey.itemSuffix or 0))
+		if C_TooltipInfo.GetItemKey then
+			tConsider(C_TooltipInfo.GetItemKey(aItemKey.itemID, aItemKey.itemLevel or 0, aItemKey.itemSuffix or 0))
+		end
 		tConsider(C_TooltipInfo.GetItemByID(aItemKey.itemID))
 	end
 	if aLink then tConsider(C_TooltipInfo.GetHyperlink(aLink)) end
