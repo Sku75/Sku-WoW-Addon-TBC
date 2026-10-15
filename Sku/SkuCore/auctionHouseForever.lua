@@ -42,6 +42,11 @@ local gCommodityBuy = { itemID = nil, quantity = nil, unitPrice = nil, totalPric
 -- Sell = the draft of the item being put up for auction (see SELL below). Replaced as a whole for another item;
 -- the chosen duration carries over.
 local gSell = { duration = nil }
+-- A Sku post on its way to the server. gSell.posting alone also covers a post waiting for its confirmation
+-- (gSell.pending), which has sent nothing yet.
+local function tPostInFlight()
+	return gSell.posting and not gSell.pending
+end
 -- NOTE: there is no full-market scan. C_AuctionHouse.ReplicateItems is documented, but Blizzard's own new auction
 -- house UI never calls ReplicateItems/GetReplicateItemInfo, it only has name search and category browse. Sku does
 -- not pretend to have more.
@@ -626,7 +631,7 @@ function AHF:OnShowError(aError)
 		AHF:EndCommodityBuy(tText ~= "" and tText or L["Purchase failed"])
 		return
 	end
-	if gSell.posting and not gSell.pending then
+	if tPostInFlight() then
 		AHF:OnPostRefused(tText ~= "" and tText or AUCTION_POSTING_ERROR_TEXT)
 		return
 	end
@@ -1510,8 +1515,9 @@ function AHF:SelectSellItem(aBag, aSlot, aGuid)
 end
 
 -- Every change to the draft drops a pending confirmation: it was given for the old values, and confirming it
--- would post those.
+-- would post those. Its post sent nothing, so Sku owns no post any more.
 local function tDraftChanged()
+	if gSell.pending then gSell.posting = nil end
 	gSell.pending, gSell.postError = nil, nil
 	gSell.postNote = nil
 	tRefreshSellLabels()
@@ -1527,6 +1533,7 @@ end
 -- spoken here.
 function AHF:OnPostRefused(aText)
 	gSell.pending, gSell.posting, gSell.postError = nil, nil, true
+	gSell.refusedAt = GetTime()
 	tPostNote(gSell.name..": "..aText)
 	if not gSell.inPostCall then tSay(gSell.postNote) end
 end
@@ -2033,11 +2040,12 @@ for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION
 	if Sku.IsEventValid(tEvent) then gSellEventFrame:RegisterEvent(tEvent) end
 end
 -- Blizzard's AuctionHouseFrame answers AUCTION_HOUSE_POST_WARNING / _ERROR with its own popup. Its Accept confirms
--- only a post made in Blizzard's sell frame, so for a Sku post it would do nothing: the popup is closed again
--- (the frame registers later than this file, so the popup only exists after its StaticPopup_Show). The error
--- handler below has already ended the post by then, gSell.postError marks it.
+-- only a post made in Blizzard's sell frame, so for a Sku post it would do nothing: the popup is closed again.
+-- Only for Sku's own post: while Sku owns it (gSell.posting, also while its confirmation is pending), or in the
+-- frame in which AHF:OnPostRefused ended it (GetTime() is the same for every handler of one event, whichever of
+-- Sku's and Blizzard's runs first). A post made in Blizzard's window keeps its popups.
 hooksecurefunc("StaticPopup_Show", function(aWhich)
-	if (gSell.posting or gSell.postError) and (aWhich == "AUCTION_HOUSE_POST_WARNING" or aWhich == "AUCTION_HOUSE_POST_ERROR") then
+	if (gSell.posting or gSell.refusedAt == GetTime()) and (aWhich == "AUCTION_HOUSE_POST_WARNING" or aWhich == "AUCTION_HOUSE_POST_ERROR") then
 		StaticPopup_Hide(aWhich)
 	end
 end)
@@ -2048,10 +2056,10 @@ gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 		AHF:OnAuctionCanceled()
 	elseif aEvent == "AUCTION_HOUSE_AUCTION_CREATED" then
 		-- Fires once per auction, also for posts made in Blizzard's own window; a multisell ends with its own events.
-		if not gSell.posting or gSell.multisellExpected then return end
+		if not tPostInFlight() or gSell.multisellExpected then return end
 		tPostFinished(gSell.name..": "..L["Auction posted"])
 	elseif aEvent == "AUCTION_MULTISELL_START" then
-		if gSell.posting then gSell.multisell = { created = 0, total = (...), spokenAt = GetTime() } end
+		if tPostInFlight() then gSell.multisell = { created = 0, total = (...), spokenAt = GetTime() } end
 	elseif aEvent == "AUCTION_MULTISELL_UPDATE" then
 		local tM = gSell.multisell
 		if not tM then return end
@@ -2067,7 +2075,7 @@ gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 		tFollowBags()
 	elseif aEvent == "AUCTION_HOUSE_POST_ERROR" then
 		-- Blizzard's error popup has only OK: the post cannot be confirmed.
-		if not gSell.posting then return end
+		if not tPostInFlight() then return end
 		AHF:OnPostRefused(AUCTION_POSTING_ERROR_TEXT)
 	elseif aEvent == "AUCTION_MULTISELL_FAILURE" then
 		if not gSell.multisell and not gSell.multisellExpected then return end
