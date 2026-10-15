@@ -145,6 +145,38 @@ local function EnsureAtlasLoot()
    return tAL
 end
 
+-- The dungeon/raid loot module's addon name follows the package: the old
+-- Classic line ships AtlasLootClassic_DungeonsAndRaids, AtlasLoot Continued
+-- (same CurseForge project since 2026-09-17, also on WoW Forever) first
+-- AtlasLoot_DungeonsAndRaids, now AtlasLootContinued_DungeonsAndRaids. Ask
+-- AtlasLoot's own module list instead of naming one; if the module is not
+-- listed (disabled), take the first such addon that is installed.
+local DUNGEONS_MODULE_CANDIDATES = {
+   "AtlasLootContinued_DungeonsAndRaids", "AtlasLoot_DungeonsAndRaids", "AtlasLootClassic_DungeonsAndRaids",
+}
+local tDungeonsModuleName
+local function DungeonsModuleName(aAL)
+   if tDungeonsModuleName then return tDungeonsModuleName end
+   local ok, tList = pcall(aAL.Loader.GetLootModuleList, aAL.Loader)
+   if ok and type(tList) == "table" and type(tList.module) == "table" then
+      for _, tModule in ipairs(tList.module) do
+         if type(tModule.addonName) == "string" and tModule.addonName:find("_DungeonsAndRaids$") then
+            tDungeonsModuleName = tModule.addonName
+            return tDungeonsModuleName
+         end
+      end
+   end
+   local tGetInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
+   for _, tName in ipairs(DUNGEONS_MODULE_CANDIDATES) do
+      local okInfo, tFound = pcall(tGetInfo, tName)
+      if okInfo and tFound then
+         tDungeonsModuleName = tName
+         return tName
+      end
+   end
+   return DUNGEONS_MODULE_CANDIDATES[#DUNGEONS_MODULE_CANDIDATES]
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function AtlasLootIntegration:alItegrationGetItemDropTable(aId)
    if not aId then
@@ -451,12 +483,13 @@ local function BuildSource(ini, boss, typ, item, diffID)
        end
    end
    if ini then
-      local iniName, bossName = AtlasLoot.ItemDB:GetNameData_UNSAFE("AtlasLootClassic_DungeonsAndRaids", ini, boss)
+      local tDungeonsModule = DungeonsModuleName(tAL)
+      local iniName, bossName = AtlasLoot.ItemDB:GetNameData_UNSAFE(tDungeonsModule, ini, boss)
       iniName = stripColorCodes(iniName)
       bossName = stripColorCodes(bossName)
       --print("iniName, bossName", iniName, bossName)
 
-      local npcID = AtlasLoot.ItemDB:GetNpcID_UNSAFE("AtlasLootClassic_DungeonsAndRaids", ini, boss)
+      local npcID = AtlasLoot.ItemDB:GetNpcID_UNSAFE(tDungeonsModule, ini, boss)
       if type(npcID) == "table" then npcID = npcID[1] end
       local dropRate = AtlasLoot.Data.Droprate:GetData(npcID, item)
       if bossName and diffID then

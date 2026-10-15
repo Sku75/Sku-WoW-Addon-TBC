@@ -1015,7 +1015,11 @@ end
 -- discoverable without a code change.
 -- ---------------------------------------------------------------------
 local KNOWN_APPS = {
-   { app = "AtlasLoot", label = "Atlas Loot", lodAddon = "AtlasLootClassic_Options" },
+   -- lodAddon may list several names: the first one installed is used. AtlasLoot's
+   -- options folder follows its package (Continued since 2026-09-17, the old
+   -- Classic line before); the AceConfig app stays "AtlasLoot" in all of them.
+   { app = "AtlasLoot", label = "Atlas Loot",
+     lodAddon = { "AtlasLootContinued_Options", "AtlasLoot_Options", "AtlasLootClassic_Options" } },
    { app = "ECS",       label = "Extended Character Stats" },
    { app = "Questie",   label = "Questie" },
 }
@@ -1047,11 +1051,20 @@ function AddonOptions:AddonOptionsMenuBuilder(aParentEntry)
    local tEntries = {}
    local tListed = {}
    for _, k in ipairs(KNOWN_APPS) do
-      local tAvailable = reg:GetOptionsTable(k.app) ~= nil
-         or (k.lodAddon and tAddonInstalled(k.lodAddon))
+      local tLod = k.lodAddon
+      if type(tLod) == "table" then
+         local tFound
+         for _, tName in ipairs(tLod) do
+            if tAddonInstalled(tName) then tFound = tName break end
+         end
+         tLod = tFound
+      elseif tLod and not tAddonInstalled(tLod) then
+         tLod = nil
+      end
+      local tAvailable = reg:GetOptionsTable(k.app) ~= nil or tLod ~= nil
       if tAvailable then
          tListed[k.app] = true
-         local tApp, tLod = k.app, k.lodAddon
+         local tApp = k.app
          tEntries[#tEntries + 1] = { label = k.label, build = function(self)
             if tLod then tEnsureLoaded(tLod) end
             BuildGroup(self, tApp, {})
