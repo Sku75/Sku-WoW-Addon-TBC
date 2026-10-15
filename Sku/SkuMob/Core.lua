@@ -633,7 +633,8 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		-- no target at all, or a stranger -- comes back as "", which used to match
 		-- the "" key in tRosterNames and flag EVERY target as in combat.
 		local name, realm = SkuMob:GetTtsAwareUnitName("targettarget")
-		-- An enemy's name is a secret value in a Forever instance: it cannot be compared or used as a key.
+		-- An enemy's name is a secret value in a Forever instance: it cannot be compared or used as a key. Skipping it
+		-- loses nothing: group members' names stay readable, so a secret name is never one of tRosterNames.
 		if name and not Sku.IsSecret(name) and name ~= "" then
 			if tRosterNames[name] then
 				status = true
@@ -790,7 +791,9 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 				if left then
 					local tLineTwoText = left:GetText()
 					-- An enemy's tooltip text is a secret value in a Forever instance: it cannot be compared or searched.
-					if tLineTwoText and not Sku.IsSecret(tLineTwoText) then
+					if tLineTwoText and Sku.IsSecret(tLineTwoText) then
+						dprint("SkuMob PTC: tooltip line two is secret, not spoken")
+					elseif tLineTwoText then
 						if tLineTwoText ~= "" then
 							if not string.find(tLineTwoText, L["level"]) then
 								--SkuOptions.Voice:OutputString(tLineTwoText, false, true, 0.3)
