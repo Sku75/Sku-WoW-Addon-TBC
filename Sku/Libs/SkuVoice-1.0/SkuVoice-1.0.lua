@@ -955,9 +955,8 @@ end
 
 -- Speaks a line that contains a secret value, as a priority announcement (like a key press result): it replaces
 -- what is queued, exactly as OutputStringBTtts(text, true, true, 0.2) does. aFormat is a plain string for
--- string.format, the arguments after it may be secret. Returns nothing. Only the Blizzard TTS path can carry it.
+-- string.format, the arguments after it may be secret. Only the Blizzard TTS path can carry it.
 function SkuVoice:SpeakSecretText(aFormat, ...)
-	if type(aFormat) ~= "string" or not C_VoiceChat or not C_VoiceChat.SpeakText then return end
 	-- format twice: the cache-buster is a format string around one %s, so the secret is never concatenated
 	local tText = string.format(BttsCacheBust("%s"), string.format(aFormat, ...))
 	mSecretSlot = { text = tText, at = GetTime() }
