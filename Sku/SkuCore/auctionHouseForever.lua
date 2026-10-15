@@ -1487,11 +1487,18 @@ function AHF:SelectSellItem(aBag, aSlot)
 	return true
 end
 
+-- Every change to the draft drops a pending confirmation: it was given for the old values, and confirming it
+-- would post those.
+local function tDraftChanged()
+	gSell.pending = nil
+	tRefreshSellLabels()
+end
+
 -- tAskValue for a draft value: the sell leaves are relabelled before the cursor's leaf is read again.
 local function tAskSell(aPrompt, aParse, aFailText, aApply)
 	tAskValue(aPrompt, aParse, aFailText, function(aValue)
 		aApply(aValue)
-		tRefreshSellLabels()
+		tDraftChanged()
 	end)
 end
 
@@ -1573,7 +1580,7 @@ local function tBuildSellItemChildren(aParent)
 	tLeaves.duration = tSettingLeaf(aParent, tDurationLabel(), function()
 		gSell.duration = (tGetDuration() % 3) + 1
 		SetCVar("auctionHouseDurationDropdown", gSell.duration)
-		tRefreshSellLabels()
+		tDraftChanged()
 	end)
 	tLeaves.price = tSettingLeaf(aParent, tPriceLabel(), function()
 		tAskSell(L["Enter price, for example 12g 5s 3k"], tParseMoney, L["Price not understood"], function(aCopper)
@@ -1583,7 +1590,7 @@ local function tBuildSellItemChildren(aParent)
 	tLeaves.market = tSettingLeaf(aParent, tMarketLabel(), function()
 		if gSell.marketState == "done" and gSell.marketLowest then
 			gSell.buyout = gSell.marketLowest
-			tRefreshSellLabels()
+			tDraftChanged()
 			return
 		end
 		AHF:StartMarketQuery()
