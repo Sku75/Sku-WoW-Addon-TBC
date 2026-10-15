@@ -1502,7 +1502,7 @@ function AHF:SelectSellItem(aBag, aSlot, aGuid)
 		if gSell.guid == aGuid then gSell = { duration = gSell.duration } end
 		return "moved"
 	end
-	if gSell.guid == aGuid and gSell.bag == aBag and gSell.slot == aSlot then return "ready" end
+	if gSell.guid == aGuid and gSell.bag == aBag and gSell.slot == aSlot and not gSell.posted then return "ready" end
 	local tStatus = C_AuctionHouse.GetItemCommodityStatus(tLoc)
 	if tStatus == Enum.ItemCommodityStatus.Unknown then return "loading" end
 	local tInfo = C_Container.GetContainerItemInfo(aBag, aSlot)
@@ -1561,6 +1561,7 @@ function AHF:PostDraft()
 		local tP = gSell.pending
 		gSell.pending = nil
 		gSell.posting = true
+		gSell.multisellExpected = not gSell.isCommodity and tP[3] > 1
 		if gSell.isCommodity then
 			C_AuctionHouse.ConfirmPostCommodity(SafeUnpack(tP))
 		else
@@ -1593,6 +1594,8 @@ function AHF:PostDraft()
 	local tDuration, tQuantity = tGetDuration(), gSell.quantity
 	local tNeeds, tArgs
 	gSell.posting, gSell.postError, gSell.inPostCall = true, nil, true
+	-- Several items (not commodities) are posted one auction each: AUCTION_MULTISELL_* report that.
+	gSell.multisellExpected = not gSell.isCommodity and tQuantity > 1
 	if gSell.isCommodity then
 		tArgs = SafePack(gSell.loc, tDuration, tQuantity, gSell.buyout)
 		tNeeds = C_AuctionHouse.PostCommodity(SafeUnpack(tArgs))
@@ -1700,6 +1703,39 @@ local function tBuildSellList(aSelf)
 	if not tAny then
 		local tNone = SkuOptions:InjectMenuItems(aSelf, {L["No sellable items in your bags"]}, SkuGenericMenuItem)
 		tNone.dynamic = false
+	end
+end
+
+-- The sell list follows the bags (BAG_UPDATE_DELAYED); a cursor on a row stays on its item (skuIdentity). Inside a
+-- draft the list is left alone, except after that draft's item was posted: then the cursor goes back to the
+-- item's row (row 1 when the whole stack is gone). Returns true when it moved the cursor out of the draft.
+local function tFollowBags()
+	if not gSellList then return false end
+	local tDepth, tRow, tPos = 0, nil, SkuOptions.currentMenuPosition
+	while tPos and tPos ~= gSellList do
+		tRow, tPos, tDepth = tPos, tPos.parent, tDepth + 1
+	end
+	if not tPos or tDepth == 0 then return false end
+	local tMoved = false
+	if tDepth >= 2 then
+		if not (gSell.posted and tRow.skuIdentity == "sellitem:"..gSell.guid) then return false end
+		SkuOptions.currentMenuPosition = tRow
+		tMoved = true
+	end
+	if gSell.posted then gSell = { duration = gSell.duration } end
+	tRebuildAndFocus(gSellList, false, true)
+	return tMoved
+end
+
+-- End of a Sku post (created, multisell done or failed): one utterance, with the new cursor position when the
+-- cursor had to leave the posted draft.
+local function tPostFinished(aText)
+	gSell.posting, gSell.pending, gSell.multisell, gSell.multisellExpected = nil, nil, nil, nil
+	gSell.posted = true
+	if tFollowBags() then
+		tSay(aText..";"..SkuOptions.currentMenuPosition.name)
+	else
+		tSay(aText)
 	end
 end
 
@@ -2018,7 +2054,7 @@ function AHF:BuildSalesChildren(aSelf)
 end
 
 local gSellEventFrame = CreateFrame("Frame")
-for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_POST_ERROR", "AUCTION_HOUSE_SHOW_ERROR", "AUCTION_HOUSE_THROTTLED_SYSTEM_READY", "AUCTION_MULTISELL_FAILURE", "AUCTION_HOUSE_CLOSED" }) do
+for _, tEvent in ipairs({ "OWNED_AUCTIONS_UPDATED", "AUCTION_CANCELED", "AUCTION_HOUSE_AUCTION_CREATED", "AUCTION_HOUSE_POST_ERROR", "AUCTION_HOUSE_SHOW_ERROR", "AUCTION_HOUSE_THROTTLED_SYSTEM_READY", "AUCTION_MULTISELL_START", "AUCTION_MULTISELL_UPDATE", "AUCTION_MULTISELL_FAILURE", "BAG_UPDATE_DELAYED", "AUCTION_HOUSE_CLOSED" }) do
 	if Sku.IsEventValid(tEvent) then gSellEventFrame:RegisterEvent(tEvent) end
 end
 -- Blizzard's AuctionHouseFrame answers AUCTION_HOUSE_POST_WARNING / _ERROR with its own popup. Its Accept confirms
@@ -2036,24 +2072,24 @@ gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	elseif aEvent == "AUCTION_CANCELED" then
 		AHF:OnAuctionCanceled()
 	elseif aEvent == "AUCTION_HOUSE_AUCTION_CREATED" then
-		local tName = gSell.name or ""
-		gSell.pending, gSell.posting = nil, nil
-		tSay(tName..": "..L["Auction posted"])
-		C_Timer.After(0.7, function()
-			local tKeep = gSell.duration
-			gSell = { duration = tKeep }
-			if gSellList and SkuOptions.currentMenuPosition then
-				local tPos, tDepth = SkuOptions.currentMenuPosition, 0
-				while tPos and tPos ~= gSellList and tDepth < 10 do tPos = tPos.parent tDepth = tDepth + 1 end
-				if tPos == gSellList then
-					SkuOptions:RebuildNodeChildren(gSellList, true)
-					if gSellList.children and gSellList.children[1] then
-						SkuOptions.currentMenuPosition = gSellList.children[1]
-						tVocalize()
-					end
-				end
-			end
-		end)
+		-- Fires once per auction, also for posts made in Blizzard's own window; a multisell ends with its own events.
+		if not gSell.posting or gSell.multisellExpected then return end
+		tPostFinished(gSell.name..": "..L["Auction posted"])
+	elseif aEvent == "AUCTION_MULTISELL_START" then
+		if gSell.posting then gSell.multisell = { created = 0, total = (...), spokenAt = GetTime() } end
+	elseif aEvent == "AUCTION_MULTISELL_UPDATE" then
+		local tM = gSell.multisell
+		if not tM then return end
+		tM.created, tM.total = ...
+		if tM.created >= tM.total then
+			tPostFinished(gSell.name..": "..L["Auction %d of %d posted"]:format(tM.total, tM.total))
+		elseif GetTime() - tM.spokenAt >= 3 then
+			-- Progress at most every 3 seconds, a long multisell would talk without pause otherwise.
+			tM.spokenAt = GetTime()
+			tSay(L["Auction %d of %d posted"]:format(tM.created, tM.total))
+		end
+	elseif aEvent == "BAG_UPDATE_DELAYED" then
+		tFollowBags()
 	elseif aEvent == "AUCTION_HOUSE_POST_ERROR" then
 		-- Blizzard's error popup has only OK: the post cannot be confirmed.
 		if not gSell.posting then return end
@@ -2067,8 +2103,14 @@ gSellEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	elseif aEvent == "AUCTION_HOUSE_THROTTLED_SYSTEM_READY" then
 		if gSell.marketQueued and gSell.marketState == "waiting" then AHF:SendMarketQuery() end
 	elseif aEvent == "AUCTION_MULTISELL_FAILURE" then
-		tSay(L["Multi-posting failed"])
+		if not gSell.multisell and not gSell.multisellExpected then return end
+		local tM = gSell.multisell
+		local tText = gSell.name..": "..L["Multi-posting failed"]
+		if tM and tM.created > 0 then tText = tText..";"..L["Auction %d of %d posted"]:format(tM.created, tM.total) end
+		tPostFinished(tText)
 	elseif aEvent == "AUCTION_HOUSE_CLOSED" then
+		-- As Blizzard's sell frame on hide: a running multisell is stopped.
+		if gSell.multisell then C_AuctionHouse.CancelSell() end
 		local tKeep = gSell.duration
 		gSell = { duration = tKeep }
 		gSellList = nil

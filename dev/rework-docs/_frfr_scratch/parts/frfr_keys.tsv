@@ -3549,6 +3549,7 @@ Multi-posting failed	Échec de la mise en vente multiple
 AHF_MoneyUnitsGold	g,o,po,or,gold
 AHF_MoneyUnitsSilver	s,a,pa,argent,silver
 AHF_MoneyUnitsCopper	c,k,pc,cuivre,copper
+Auction %d of %d posted	Enchère %d sur %d mise en vente
 Could not get the market price. Enter asks again	Impossible d'obtenir le prix du marché. Entrée redemande
 The item has moved or is gone, open the list again	L'objet a été déplacé ou n'est plus là, rouvrez la liste
 Auctions by category	Enchères par catégorie
