@@ -2516,10 +2516,12 @@ function SkuNav:ProcessPlayerDead()
 		return
 	end
 	local cX, cY = tCorpse:GetXY()
-	local tX, tY = SkuNav:WorldFromMap(SkuNav:GetBestMapForUnit("player"), cX, cY)
-	if not tX then
+	-- the corpse position is on the client's own map, so the client's own conversion applies
+	local _, tWorldPos = C_Map.GetWorldPosFromMapPos(tUiMap, CreateVector2D(cX, cY))
+	if not tWorldPos then
 		return
 	end
+	local tX, tY = tWorldPos:GetXY()
 
 	local tPlayerx, tPlayery = UnitPosition("player")
 	local distance = SkuNav:Distance(tPlayerx, tPlayery, tX, tY)
