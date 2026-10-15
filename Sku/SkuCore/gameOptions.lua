@@ -897,9 +897,6 @@ local function CollectGameMenuButtons()
    return buttons
 end
 
--- The "Optionen" target: one submenu per Blizzard settings category that
--- actually has settings (addon "canvas" categories without initializers
--- are skipped — most have their own Sku menus anyway).
 -- The categories of a list that have something to show. Blizzard's own list skips every category that only redirects to
 -- another one (the hidden "NoDisplayKB" category of the key binding search), so Sku does too.
 local function CategoriesWithContent(aCategories)
@@ -934,6 +931,8 @@ local function InjectGroup(aParent, aText, aCategories)
    end
 end
 
+-- The "Optionen" target. Only categories that actually have settings are listed (addon "canvas" categories without
+-- initializers are skipped — most have their own Sku menus anyway).
 -- The top level are Blizzard's groups in Blizzard's order (Gameplay, Accessibility, System), as in Blizzard's own
 -- settings window, where two categories of the same name (Interface) are told apart by their group. The categories of
 -- the addons stand in one last group, sorted by name as Blizzard does it. Without the group list the categories stand
