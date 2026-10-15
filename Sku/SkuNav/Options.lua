@@ -720,6 +720,13 @@ function SkuNav.RouteFollowOnAction(self, aValue, aName)
 			if #SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData < 2 then
 				return
 			end
+			-- without a world position every route point would silently fall back to the player's position
+			local tUiMap = SkuNav:GetUiMapIdFromAreaId(SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player")))
+			if not SkuNav:WorldFromMap(tUiMap, 0.5, 0.5) then
+				dprint("RouteFollowOnAction: no world position for map", tUiMap)
+				SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
+				return
+			end
 
 			if string.find(aName, ";") then
 				SkuSettings:Sub("SkuNav").metapathFollowingTargetName = ssub(aName, 1, string.find(aName, ";") - 1)
