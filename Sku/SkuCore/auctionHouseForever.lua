@@ -139,38 +139,57 @@ local function tAskMoney(aPrompt, aApply)
 end
 
 -- ---------------------------------------------------------------------
--- Rebuild-in-place helper for an async server response arriving while the
--- user is sitting inside a dynamic node (search results, item detail).
--- Uses SkuOptions:RebuildNodeChildren - NOT a raw "aEntry.children = {};
--- aEntry:BuildChildren(aEntry)" - because that raw pattern is a documented,
--- previously-fixed footgun (SkuZOptions/templates.lua, 2026-08-19 comment):
--- fresh children rebuilt outside of OnPostSelect never get their
--- .selectTarget wiring, which can leave ENTER on them silently dead.
--- aForce = true: reposition regardless of where the cursor currently sits.
--- Rebuilding replaces aEntry.children with BRAND NEW node tables (RebuildNodeChildren
--- always starts "aEntry.children = {}"), so if the cursor was sitting on the OLD
--- "Warten" placeholder (a direct child of aEntry) when this runs, that node is now
--- an orphan: still displayed, but no longer reachable by navigating aEntry's fresh
--- children. Seen live: repeatedly re-heard "Warten" for 20+ seconds
--- after the 6s timeout should have already flipped it to "keine Ergebnisse", because
--- the cursor was parked on the child, not aEntry itself, and only an EXACT match on
--- aEntry re-focused. So: refocus not just for an exact match on aEntry, but whenever
--- the cursor is sitting on aEntry OR one of the children being replaced - the two
--- realistic "waiting here for a result" positions - regardless of aForce.
-local function tRebuildAndFocus(aEntry, aForce)
+-- Rebuilds aEntry's children after a server answer and keeps the cursor sensible.
+-- SkuOptions:RebuildNodeChildren gives the fresh children their selectTarget wiring; a raw
+-- "children = {}; BuildChildren" does not, and ENTER on such children does nothing.
+-- The rebuild replaces every child with a new node, so a cursor on an old child would sit on an
+-- orphan. Therefore:
+-- - The cursor is on a child (or deeper) whose node has a skuIdentity, and the new list has a child
+--   with the same identity: the old node takes the new node's place and gets its fields, keeping
+--   its own children. The cursor does not move and nothing is spoken.
+-- - Otherwise, when the cursor is on aEntry, below it, or aForce is set: the cursor goes to the
+--   child flagged ahfPrimary (else the first child) and that child is spoken. A cursor that was
+--   deeper than a child lands there silently: the row it was inside is gone.
+-- aQuiet: never speak (a key press caller, whose key handler speaks the position anyway).
+local function tAdoptNode(aOld, aNew, aParent, aIndex)
+	for tKey in pairs(aOld) do
+		if tKey ~= "children" and rawget(aNew, tKey) == nil then aOld[tKey] = nil end
+	end
+	for tKey, tValue in pairs(aNew) do
+		if tKey ~= "children" then aOld[tKey] = tValue end
+	end
+	aParent.children[aIndex] = aOld
+	if aOld.prev then aOld.prev.next = aOld end
+	if aOld.next then aOld.next.prev = aOld end
+end
+
+local function tRebuildAndFocus(aEntry, aForce, aQuiet)
 	if not aEntry then return end
-	local tCursorWasHere = SkuOptions and SkuOptions.currentMenuPosition
-		and (SkuOptions.currentMenuPosition == aEntry or SkuOptions.currentMenuPosition.parent == aEntry)
+	local tPos = SkuOptions.currentMenuPosition
+	-- The child of aEntry on the cursor's path (nil when the cursor is not below aEntry).
+	local tChild, tDepth = tPos, 0
+	while tChild and tChild.parent ~= aEntry and tDepth < 12 do
+		tChild = tChild.parent
+		tDepth = tDepth + 1
+	end
+	if tChild and tChild.parent ~= aEntry then tChild = nil end
+	local tIdentity = tChild and tChild.skuIdentity
 	SkuOptions:RebuildNodeChildren(aEntry, true)
-	if aEntry.children and aEntry.children[1] and SkuOptions
-		and (aForce or tCursorWasHere) then
-		-- A child flagged ahfPrimary (e.g. the first listing, behind a favourite toggle) gets the
-		-- cursor instead of children[1].
-		local tTarget = aEntry.children[1]
-		for _, tChild in ipairs(aEntry.children) do
-			if tChild.ahfPrimary then tTarget = tChild break end
+	if tIdentity then
+		for i, tNew in ipairs(aEntry.children) do
+			if tNew.skuIdentity == tIdentity then
+				tAdoptNode(tChild, tNew, aEntry, i)
+				return
+			end
 		end
-		SkuOptions.currentMenuPosition = tTarget
+	end
+	if not (aForce or tPos == aEntry or tChild) or not aEntry.children[1] then return end
+	local tTarget = aEntry.children[1]
+	for _, tNew in ipairs(aEntry.children) do
+		if tNew.ahfPrimary then tTarget = tNew break end
+	end
+	SkuOptions.currentMenuPosition = tTarget
+	if not aQuiet and not (tChild and tPos ~= tChild) then
 		SkuOptions:VocalizeCurrentMenuName()
 	end
 end
@@ -381,13 +400,7 @@ function AHF:RefreshBrowseResults()
 	gBrowse.results = tRows
 	gBrowse.state = (tStillPending or tNotFull) and "waiting" or "done"
 	if gBrowse.state == "done" and #tRows == 0 and AHF:BrowseFallback() then return end
-	-- Rebuilding would orphan a detail node the user is currently inside.
-	local tDepth, tPos = 0, SkuOptions and SkuOptions.currentMenuPosition
-	while tPos and tPos ~= gBrowse.entry and tDepth < 10 do
-		tPos = tPos.parent
-		tDepth = tDepth + 1
-	end
-	if not (tPos and tPos == gBrowse.entry and tDepth >= 2) then tRebuildAndFocus(gBrowse.entry) end
+	tRebuildAndFocus(gBrowse.entry)
 	gBrowse.focusIndex = nil
 end
 
@@ -931,6 +944,7 @@ local function tBuildDetailChildren(aParentEntry)
 		local tRowEntry = SkuOptions:InjectMenuItems(aParentEntry, {tLabel}, SkuGenericMenuItem)
 		tRowEntry.dynamic = true
 		tRowEntry.data = tRow
+		tRowEntry.skuIdentity = tRow.isCommodity and ("commodity:"..tRow.unitPrice) or ("auction:"..tRow.auctionID)
 		tSetAhTooltip(tRowEntry, gDetail.itemKey, tRow.itemLink)
 		if i == tPrimaryIndex then tRowEntry.ahfPrimary = true end
 		tRowEntry.BuildChildren = function(self)
@@ -1017,6 +1031,8 @@ local function tInjectItemRow(aParentEntry, aRow)
 	local tRowEntry = SkuOptions:InjectMenuItems(aParentEntry, {tBrowseRowLabel(aRow)}, SkuGenericMenuItem)
 	tRowEntry.dynamic = true
 	tRowEntry.data = aRow
+	local tKey = aRow.itemKey
+	tRowEntry.skuIdentity = "browse:"..tKey.itemID..":"..tKey.itemLevel..":"..tKey.itemSuffix..":"..tKey.battlePetSpeciesID
 	tSetAhTooltip(tRowEntry, aRow.itemKey, nil)
 	tMarkEntering(tRowEntry)
 	tRowEntry.BuildChildren = function(selfRow)
