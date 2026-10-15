@@ -1164,9 +1164,9 @@ local function tHookLFGEvents()
          elseif event == "LFG_LIST_SEARCH_RESULTS_RECEIVED" then
             DungeonBrowser.tSearchFailed = false
          end
-         -- results / activity list updated: refresh the current node in place if open
+         -- results / activity list updated: refresh the current node in place, only inside the dungeon browser
          local cmp = SkuOptions.currentMenuPosition
-         if SkuOptions:IsMenuOpen() and cmp and cmp.OnUpdate then cmp:OnUpdate() end
+         if SkuOptions:IsMenuOpen() and tCursorInBrowser() and cmp.OnUpdate then cmp:OnUpdate() end
       end)
    end
    for _, tEvent in ipairs(tLFGEvents) do
