@@ -705,66 +705,28 @@ end)
 -- ---------------------------------------------------------------------
 -- Menu
 -- ---------------------------------------------------------------------
--- Tooltip text of an auction house item (read with Shift+Down etc.). No tooltip frame: Blizzard's tooltip data
--- (C_TooltipInfo) reads the item by key, link or ID; the source with the most lines wins.
+-- Tooltip text of an auction house item (read with Shift+Down etc.). The same source as Blizzard's
+-- AuctionHouseUtil.SetAuctionHouseTooltip: the listing's link when it has one (without the vendor price), else the
+-- item key with its required level. nil while the item is not cached; the data is requested then.
 local function tAhItemTooltipText(aItemKey, aLink)
-	local tBest
-	local function tConsider(aData)
-		if type(aData) == "table" and type(aData.lines) == "table" then
-			if not tBest or #aData.lines > #tBest.lines then tBest = aData end
-		end
+	local tLines = SkuCore:TooltipDataLines(aLink and C_TooltipInfo.GetHyperlink(aLink, nil, nil, true)
+		or C_TooltipInfo.GetItemKey(aItemKey.itemID, aItemKey.itemLevel, aItemKey.itemSuffix, C_AuctionHouse.GetItemKeyRequiredLevel(aItemKey)))
+	if not tLines or SkuUtil:IsRetrievingItemInfo(tLines[1]) then
+		C_Item.RequestLoadItemDataByID(aItemKey.itemID)
+		return nil
 	end
-	if aItemKey and aItemKey.itemID then
-		if C_TooltipInfo.GetItemKey then
-			tConsider(C_TooltipInfo.GetItemKey(aItemKey.itemID, aItemKey.itemLevel or 0, aItemKey.itemSuffix or 0))
-		end
-		tConsider(C_TooltipInfo.GetItemByID(aItemKey.itemID))
+	-- The tooltip data carries neither quality nor item level. Like the other tooltips in Sku: the quality behind the
+	-- name (per setting) and, for equipment, the item level as the second line.
+	local tKeyInfo = C_AuctionHouse.GetItemKeyInfo(aItemKey)
+	if SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality == true then
+		local tQualityText = aLink and SkuUtil:ItemQualityString(aLink) or (tKeyInfo and _G["ITEM_QUALITY"..tKeyInfo.quality.."_DESC"])
+		if tQualityText then tLines[1] = tLines[1].." ("..tQualityText..")" end
 	end
-	if aLink then tConsider(C_TooltipInfo.GetHyperlink(aLink)) end
-	if not tBest then return nil end
-	local tOut = {}
-	for _, tLine in ipairs(tBest.lines) do
-		local tLeft, tRight = tLine.leftText, tLine.rightText
-		if type(tLeft) == "string" and not Sku.IsSecret(tLeft) and tLeft ~= "" and not string.find(tLeft, "Open Issue Report", 1, true) then
-			if type(tRight) == "string" and not Sku.IsSecret(tRight) and tRight ~= "" then tLeft = tLeft.." "..tRight end
-			tOut[#tOut + 1] = tLeft
-		end
+	if tKeyInfo and tKeyInfo.isEquipment then
+		local tLevel = aLink and SkuUtil:ItemLevel(aLink) or aItemKey.itemLevel
+		if tLevel then table.insert(tLines, 2, L["Item Level"]..": "..tLevel) end
 	end
-	-- Like the other tooltips in Sku: quality behind the name (per setting) and the item level as the second line.
-	local tQualityText, tLevel
-	if aLink then
-		tQualityText = SkuUtil:ItemQualityString(aLink)
-		tLevel = SkuUtil:ItemLevel(aLink)
-	elseif aItemKey then
-		local tKeyInfo = C_AuctionHouse.GetItemKeyInfo(aItemKey, false)
-		if type(tKeyInfo) == "table" and tKeyInfo.quality then tQualityText = _G["ITEM_QUALITY"..tKeyInfo.quality.."_DESC"] end
-		if aItemKey.itemLevel and aItemKey.itemLevel > 1 then tLevel = aItemKey.itemLevel end
-	end
-	local tShowQuality = false
-	tShowQuality = SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true
-	if tQualityText and tShowQuality and tOut[1] then tOut[1] = tOut[1].." ("..tQualityText..")" end
-	if tLevel and #tOut > 0 then table.insert(tOut, 2, L["Item Level"]..": "..tLevel) end
-	-- Required level: missing in the auction's tooltip data, so it is added from the item data (unless a line has it).
-	if #tOut > 0 then
-		local tItemRef = aLink or (aItemKey and aItemKey.itemID)
-		local tMinLevel
-		if tItemRef then
-			local _, _, _, _, tMin = C_Item.GetItemInfo(tItemRef)
-			if type(tMin) == "number" and not Sku.IsSecret(tMin) then tMinLevel = tMin end
-		end
-		if tMinLevel and tMinLevel > 1 then
-			local tFormat = _G.ITEM_MIN_LEVEL or "Requires Level %d"
-			local tPattern = string.gsub(tFormat, "[%^%$%(%)%.%[%]%*%+%-%?]", "%%%0")
-			tPattern = "^"..string.gsub(tPattern, "%%d", "%%d+")
-			local tFound = false
-			for _, tLineText in ipairs(tOut) do
-				if string.find(tLineText, tPattern) then tFound = true break end
-			end
-			if not tFound then table.insert(tOut, (tLevel and 3) or 2, string.format(tFormat, tMinLevel)) end
-		end
-	end
-	if #tOut == 0 then return nil end
-	return SkuUtil:Unescape(table.concat(tOut, "\r\n"))
+	return SkuUtil:Unescape(table.concat(tLines, "\r\n"))
 end
 
 -- Sets the tooltip text on the menu entry (built on reading) and the item reference for the comparison with the equipped item.
