@@ -523,10 +523,21 @@ end
 -- popup waits for). Nothing is spoken when the call goes out: the answer is the result.
 local gItemPurchase = { auctionID = nil, name = nil, isBuyout = false }
 
-function AHF:BuyItemAuction(aAuctionID, aBuyoutAmount, aName)
-	local tNamePrefix = aName and (aName..": ") or ""
+-- A refusal from a key press. The key handler vocalizes the focused leaf right after its OnAction and cuts off any
+-- line spoken before, so the reason goes into the leaf's name. Without a leaf the reason is spoken, named by aName.
+local function tRefuse(aLeaf, aName, aText)
+	if aLeaf then
+		aLeaf.ahfBaseName = aLeaf.ahfBaseName or aLeaf.name
+		aLeaf.name = aLeaf.ahfBaseName..";"..aText
+	else
+		tSay((aName and (aName..": ") or "")..aText)
+	end
+end
+
+-- aLeaf: the menu leaf whose key press runs this (see tRefuse).
+function AHF:BuyItemAuction(aAuctionID, aBuyoutAmount, aName, aLeaf)
 	if GetMoney() < aBuyoutAmount then
-		tSay(tNamePrefix..L["Not enough money"])
+		tRefuse(aLeaf, aName, L["Not enough money"])
 		return
 	end
 	gItemPurchase.auctionID, gItemPurchase.name, gItemPurchase.isBuyout = aAuctionID, aName, true
@@ -821,22 +832,21 @@ end
 
 -- Bid on a regular auction. A bid at or above the buyout price is a buyout (Blizzard's own
 -- bid dialog does the same). Runs inside a menu action, i.e. from a real key press.
-function AHF:PlaceItemBid(aRow, aAmount, aName)
-	local tPrefix = aName and (aName..": ") or ""
+function AHF:PlaceItemBid(aRow, aAmount, aName, aLeaf)
 	if aRow.isOwn then
-		tSay(tPrefix..L["That is your own auction"])
+		tRefuse(aLeaf, aName, L["That is your own auction"])
 		return
 	end
 	if aRow.buyoutAmount and aRow.buyoutAmount > 0 and aAmount >= aRow.buyoutAmount then
-		AHF:BuyItemAuction(aRow.auctionID, aRow.buyoutAmount, aName)
+		AHF:BuyItemAuction(aRow.auctionID, aRow.buyoutAmount, aName, aLeaf)
 		return
 	end
 	if aRow.minBid and aAmount < aRow.minBid then
-		tSay(tPrefix..L["The bid is too low, at least "]..tMoneyText(aRow.minBid))
+		tRefuse(aLeaf, aName, L["The bid is too low, at least "]..tMoneyText(aRow.minBid))
 		return
 	end
 	if GetMoney() < aAmount then
-		tSay(tPrefix..L["Not enough money"])
+		tRefuse(aLeaf, aName, L["Not enough money"])
 		return
 	end
 	gItemPurchase.auctionID, gItemPurchase.name, gItemPurchase.isBuyout = aRow.auctionID, aName, false
@@ -854,7 +864,7 @@ local function tAddBidLeaves(aParent, aData, aName)
 	tBidMin.dynamic = false
 	tBidMin.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
 	tBidMin.OnAction = function()
-		AHF:PlaceItemBid(aData, aData.minBid, aName)
+		AHF:PlaceItemBid(aData, aData.minBid, aName, tBidMin)
 	end
 	local tCustomPlace
 	tSettingLeaf(aParent, L["Set your own bid"], function()
@@ -862,18 +872,19 @@ local function tAddBidLeaves(aParent, aData, aName)
 			aData.customBid = aAmount
 			if tCustomPlace then
 				tCustomPlace.name = L["Place your bid: "]..tMoneyText(aAmount)
+				tCustomPlace.ahfBaseName = nil
 			end
 		end)
 	end)
 	tCustomPlace = tSettingLeaf(aParent, aData.customBid
 		and (L["Place your bid: "]..tMoneyText(aData.customBid))
 		or L["Place your bid, set it first"],
-		function()
+		function(aLeaf)
 			if not aData.customBid then
-				tSay(L["Set a bid first"])
+				tRefuse(aLeaf, aName, L["Set a bid first"])
 				return
 			end
-			AHF:PlaceItemBid(aData, aData.customBid, aName)
+			AHF:PlaceItemBid(aData, aData.customBid, aName, aLeaf)
 		end)
 	return true
 end
@@ -1019,7 +1030,7 @@ local function tBuildDetailChildren(aParentEntry)
 							aLeaf.name = tQtyName()
 							if tBuyEntry then tBuyEntry.name = tBuyName() end
 						else
-							tSay(L["Quantity not understood"])
+							aLeaf.name = tQtyName()..";"..L["Quantity not understood"]
 						end
 						tVocalize()
 					end, nil)
@@ -1044,7 +1055,7 @@ local function tBuildDetailChildren(aParentEntry)
 					tBuyEntry.dynamic = false
 					tBuyEntry.actionInPlace = true   -- ENTER runs the own action; otherwise an isSelect ancestor (search) redirects ENTER to the search
 					tBuyEntry.OnAction = function()
-						AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, gDetail.name)
+						AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, gDetail.name, tBuyEntry)
 					end
 				end
 				-- Bidding below the buyout (Blizzard: the bid box next to the buyout button).
