@@ -247,7 +247,8 @@ local function FormatDuration(aSeconds)
    return " "..math.floor(aSeconds / 60)..":"..string.format("%02d", math.floor(aSeconds % 60))
 end
 
-function DamageMeter:NativeMenuBuilder()
+-- self is the menu entry the report list is built under
+local function NativeMenuBuilder(self)
    -- The built-in meter only records while its setting is on.
    if GetCVar("damageMeterEnabled") == "0" then
       local tOn = SkuOptions:InjectMenuItems(self, {L["Turn on damage meter"]}, SkuGenericMenuItem)
@@ -301,7 +302,7 @@ function DamageMeter:DamageMeterMenuBuilder()
    if SkuCore.DamageMeter and not SkuCore.DamageMeter:IsEnabled() then return end
    if Details == nil then
       if Sku.isForever and C_DamageMeter then
-         return DamageMeter.NativeMenuBuilder(self)
+         return NativeMenuBuilder(self)
       end
       SkuOptions:InjectMenuItems(self, {L["Details addon not installed"]}, SkuGenericMenuItem)
       return
