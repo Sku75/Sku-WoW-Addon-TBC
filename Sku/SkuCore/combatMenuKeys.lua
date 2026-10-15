@@ -44,9 +44,9 @@ end
 -- the physical key the user assigned and bind it as a secure override click whose "button"
 -- string is the logical action -- so BOTH the secure snippet AND the insecure menu handler
 -- keep seeing the same action name no matter which key drives it. Rebinding a key never
--- changes behaviour, only which key triggers it. ESCAPE (default) closes the combat menu;
--- while bound (whole combat) it loses its normal game function -- an accepted cost of the
--- dedicated-combat-keys model.
+-- changes behaviour, only which key triggers it. The close key (SKU_KEY_COMBATMENU_CLOSE,
+-- default ESCAPE) is not in this list: it is bound only while a combat menu is open (see
+-- _escopen in tEnsureKeyFrame), so with no menu Escape keeps its game function.
 -- The two CLICK keys are intentionally NOT in this list -- they are bound separately in
 -- CombatMenuKeysBindNow, and to different targets: the left key (SKU_KEY_MENULEFTCLICK) is
 -- routed here as the logical action "ENTER" (its actions are insecure), the right key
@@ -60,7 +60,6 @@ local NAV_BINDS = {
    { const = "SKU_KEY_COMBATMENU_BACK",  action = "BACKSPACE" },
    { const = "SKU_KEY_COMBATMENU_HOME",  action = "HOME" },
    { const = "SKU_KEY_COMBATMENU_END",   action = "END" },
-   { const = "SKU_KEY_COMBATMENU_CLOSE", action = "ESCAPE" },
 }
 
 -- READING keys (tooltip / reading-frame line navigation). Not user-configurable -- they are
@@ -189,6 +188,32 @@ local function tEnsureKeyFrame()
    end)
    b:SetFrameRef("use", u)
 
+   -- The close key (SKU_KEY_COMBATMENU_CLOSE, default ESCAPE) is bound ONLY while a combat menu
+   -- is open, so with no menu Escape stays the game's own key (stop casting, close windows,
+   -- clear the target, game menu). Bound for the whole combat it was eaten by this button even
+   -- with nothing open, and the target could not be cleared until combat ended. Insecure code
+   -- cannot change bindings in combat, so the snippet does it on its own frame: "mopen" is the
+   -- secure-side open state, esck1/esck2 the staged keys (CombatMenuKeysBindNow). Opening
+   -- signals are the keys that pass through here (B, C, the open-menu key, HOME, the nav keys);
+   -- a menu opened by some other insecure path is covered by the first nav key. A menu closed
+   -- without Escape (a window closing) leaves the key bound until the next Escape, which closes
+   -- nothing and unbinds it: one Escape lost at worst, as before for every Escape.
+   b:SetAttribute("_escopen", [=[
+      if (self:GetAttribute("mopen") or 0) == 1 then return end
+      self:SetAttribute("mopen", 1)
+      local k1 = self:GetAttribute("esck1") or ""
+      local k2 = self:GetAttribute("esck2") or ""
+      if k1 ~= "" then self:SetBindingClick(true, k1, self, "ESCAPE") end
+      if k2 ~= "" then self:SetBindingClick(true, k2, self, "ESCAPE") end
+   ]=])
+   b:SetAttribute("_escclose", [=[
+      self:SetAttribute("mopen", 0)
+      local k1 = self:GetAttribute("esck1") or ""
+      local k2 = self:GetAttribute("esck2") or ""
+      if k1 ~= "" then self:ClearBinding(k1) end
+      if k2 ~= "" then self:ClearBinding(k2) end
+   ]=])
+
    -- C (character key): enter the FULL character-tree mirror. Seed the walker at the first
    -- top-level node (the level text) so it lands exactly where opening the pane lands out of
    -- combat; from there Down/Up/Right/Left walk the whole tree. Arm that node's /use (empty for
@@ -203,6 +228,7 @@ local function tEnsureKeyFrame()
       local u = self:GetFrameRef("use")
       if u then u:SetAttribute("macrotext", m) end
       self:SetAttribute("mlog", "C sync -> char tree start=" .. cstart .. " m=" .. m)
+      self:RunAttribute("_escopen")
    ]=])
 
    -- Opening the character pane in combat. Blizzard's panel manager refuses insecure callers in
@@ -265,6 +291,22 @@ local function tEnsureKeyFrame()
       local ma = self:GetAttribute("ma") or 0
       local anchor = self:GetAttribute("manchor") or 0
       local TRADE = "/click TradeFrameTradeButton"
+
+      -- Escape binding follows the open state (see _escopen). The click and reading keys
+      -- also work with no menu open (reading = the overview), so they are no open signal.
+      if key == "ESCAPE" then
+         self:RunAttribute("_escclose")
+      elseif key ~= "ENTER" and key ~= "RCLICK" and key ~= "SHIFT-UP" and key ~= "SHIFT-DOWN"
+         and key ~= "CTRL-SHIFT-UP" and key ~= "CTRL-SHIFT-DOWN" then
+         self:RunAttribute("_escopen")
+      end
+
+      if key == "OPEN" then
+         -- the open-menu key: route only, the menu handler opens the menu headlessly. The
+         -- mirror is left as it is, exactly as when this key went straight to the menu.
+         self:SetAttribute("kroute", c .. "|OPEN")
+         return
+      end
 
       local routeKey = key
       if key == "SYNC" then
@@ -619,6 +661,18 @@ local function tEnsureKeyFrame()
             if SkuLogCombat then SkuLogCombat("secureKeys", "read " .. key .. " -> " .. (tCombatMenuActive() and "menu tooltip" or "overview")) end
             return
          end
+         if key == "OPEN" then
+            -- The open-menu key, bound here in combat only so the snippet sees the menu open
+            -- and binds Escape (_escopen). Same call its own binding makes out of combat.
+            local tMain = _G["OnSkuOptionsMain"]
+            local tKey = tKeyBindKeys("SKU_KEY_OPENMENU")
+            local tOk, tErr = true, nil
+            if tMain and tMain:GetScript("OnClick") then
+               tOk, tErr = pcall(tMain:GetScript("OnClick"), tMain, tKey)
+            end
+            if SkuLogCombat then SkuLogCombat("secureKeys", "OPEN -> menu open key " .. tKey .. (tOk and "" or (" FAILED " .. tostring(tErr)))) end
+            return
+         end
          if not tCombatMenuActive() then return end        -- no menu logically open -> ignore
          if key == "ESCAPE" then
             SkuOptions.combatMenuActive = false             -- logical close (visual hidden in combat)
@@ -680,6 +734,26 @@ function SkuCore:CombatMenuKeysBindNow()
       if k1 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, k1, "SkuCombatMenuKey", b.action) end
       if k2 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, k2, "SkuCombatMenuKey", b.action) end
    end
+   -- CLOSE KEY -- staged, not bound: the snippet binds it on its own frame while a menu is open
+   -- (_escopen / _escclose in tEnsureKeyFrame). A menu handed off into combat open (the
+   -- visual menu was open at combat start) gets it bound right away. The frame's own
+   -- overrides from the last combat are cleared first.
+   local tH = _G["SkuCombatMenuKey"]
+   if tH then
+      local tEsc1, tEsc2 = tKeyBindKeys("SKU_KEY_COMBATMENU_CLOSE")
+      pcall(ClearOverrideBindings, tH)
+      pcall(function()
+         tH:SetAttribute("esck1", tEsc1)
+         tH:SetAttribute("esck2", tEsc2)
+         tH:SetAttribute("mopen", 0)
+         if SkuOptions:IsMenuOpen() == true then SecureHandlerExecute(tH, [[ self:RunAttribute("_escopen") ]]) end
+      end)
+   end
+   -- OPEN-MENU KEY -- routed through the receiver in combat so the snippet sees the menu open
+   -- (OPEN branch); the route then makes the same call the key's own binding makes.
+   local tOpen1, tOpen2 = tKeyBindKeys("SKU_KEY_OPENMENU")
+   if tOpen1 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tOpen1, "SkuCombatMenuKey", "OPEN") end
+   if tOpen2 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tOpen2, "SkuCombatMenuKey", "OPEN") end
    -- CLICK KEYS -- the same two the menu uses out of combat, kept SEMANTICALLY SPLIT here.
    -- Before, the separate SKU_KEY_COMBATMENU_USE bind (which defaulted to ENTER, the left
    -- key) AND SKU_KEY_MENURIGHTCLICK were BOTH bound to SkuCombatUse, so the two keys were
@@ -763,7 +837,6 @@ function SkuCore:CombatMenuKeysBindNow()
    -- (SetAttribute on a secure frame is allowed while InCombatLockdown() is still false --
    -- verified). Reset the mirror to neutral; B re-syncs bags / HOME arms the trade anchor. If
    -- the tree wasn't captured yet (bags never opened), vc=0 and bag nav is inert until opened.
-   local tH = _G["SkuCombatMenuKey"]
    local tTree = SkuCore and SkuCore.combatBagTree
    local tVC, tItems = 0, 0
    if tH then
@@ -829,6 +902,12 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:CombatMenuKeysClear()
    if tKeyOwner then pcall(ClearOverrideBindings, tKeyOwner) end
+   -- the close key the snippet bound on its own frame (_escopen), if a menu was still open
+   local tH = _G["SkuCombatMenuKey"]
+   if tH then
+      pcall(ClearOverrideBindings, tH)
+      pcall(function() tH:SetAttribute("mopen", 0) end)
+   end
    Sku.combatSecureKeysBound = false
    if Sku then Sku.combatCharForceOpen = false end   -- out of combat: no phantom char window
    -- If the combat char mirror left CharacterFrame open, hide it so the out-of-combat state is
