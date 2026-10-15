@@ -206,17 +206,20 @@ local function BuildNativeRanking(aHeader, aMeterType, aFetch, aRateLabel)
    local tText = aHeader..":"
    local tRank = 0
    for _, tSource in ipairs(tSources) do
-      if tSource.sourceDisplayType ~= Enum.DamageMeterSourceDisplayType.Enemy then
+      -- the session is SecretWhenInCombat: every field the API does not mark NeverSecret
+      -- (classFilename is) can be secret, and comparing a secret value throws
+      local tDisplayType = tSource.sourceDisplayType
+      if Sku.IsSecret(tDisplayType) then
+         return aHeader..": "..L["not readable in combat"]
+      end
+      if tDisplayType ~= Enum.DamageMeterSourceDisplayType.Enemy then
          local tName = tSource.name
          local tTotal = RoundedAmount(tSource.totalAmount)
          if type(tName) ~= "string" or Sku.IsSecret(tName) or not tTotal then
             return aHeader..": "..L["not readable in combat"]
          end
          tRank = tRank + 1
-         -- classFilename can be secret in combat and must not be used as a table key
-         local tClassKey = tSource.classFilename
-         if Sku.IsSecret(tClassKey) then tClassKey = nil end
-         local tClass = (tClassKey ~= nil and SkuQuest and SkuQuest.classesFriendly and SkuQuest.classesFriendly[tClassKey]) or ""
+         local tClass = SkuQuest.classesFriendly[tSource.classFilename] or ""
          tText = tText.."\r\n"..tRank.." "..tName.." "..tClass.." "..tTotal
          if aRateLabel then
             local tRate = RoundedAmount(tSource.amountPerSecond)
