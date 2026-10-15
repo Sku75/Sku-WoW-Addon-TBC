@@ -813,20 +813,28 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		-- "target announce was silent" report can be checked against the ring:
 		-- entry logged but nothing audible -> voice/queue layer; no entry at all ->
 		-- the event never fired (e.g. key press on the already-current target).
+		-- A line with the secret-name marker is plain text around it; the secret name only meets it inside
+		-- string.format. Either line can carry it, so both voice paths check (a raid-marker-only line has none).
+		local function tSpeakSecretLine(aLine)
+			local tFormat = string.gsub(aLine, "%%", "%%%%")
+			tFormat = string.gsub(tFormat, "\1", "%%s")
+			dprint("SkuMob PTC speak (secret name):", tFormat)
+			SkuOptions.Voice:SpeakSecretText(tFormat, tUnitName)
+		end
 		if tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
-			if tNameSecret then
-				-- the line is plain text around one marker; the secret name only meets it inside string.format
-				local tFormat = string.gsub(tOutputString, "%%", "%%%%")
-				tFormat = string.gsub(tFormat, "\1", "%%s")
-				dprint("SkuMob PTC speak (secret name):", tFormat)
-				SkuOptions.Voice:SpeakSecretText(tFormat, tUnitName)
-				return
+			if tNameSecret and string.find(tOutputString, "\1", 1, true) then
+				tSpeakSecretLine(tOutputString)
+			else
+				dprint("SkuMob PTC speak (audio):", tOutputString)
+				SkuOptions.Voice:OutputString(tOutputString, true, true, 0.3)
 			end
-			dprint("SkuMob PTC speak (audio):", tOutputString)
-			SkuOptions.Voice:OutputString(tOutputString, true, true, 0.3)
 		else
-			dprint("SkuMob PTC speak (btts):", tOutputStringB)
-			SkuOptions.Voice:OutputStringBTtts(tOutputStringB, true, true, 0.3, nil, nil, nil, 1)
+			if tNameSecret and string.find(tOutputStringB, "\1", 1, true) then
+				tSpeakSecretLine(tOutputStringB)
+			else
+				dprint("SkuMob PTC speak (btts):", tOutputStringB)
+				SkuOptions.Voice:OutputStringBTtts(tOutputStringB, true, true, 0.3, nil, nil, nil, 1)
+			end
 		end
 
 	end)
