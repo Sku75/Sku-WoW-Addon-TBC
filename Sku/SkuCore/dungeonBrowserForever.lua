@@ -101,16 +101,17 @@ local function tRequestActivities()
    if C_LFGList.RequestAvailableActivities then C_LFGList.RequestAvailableActivities() end
 end
 
+-- The active entry. In chat messaging lockdown its fields are secret, except activityIDs (NeverSecret in the API
+-- docs): read any other field only after a Sku.IsSecret check.
 local function tGetActiveEntry()
-   local tEntry = C_LFGList.GetActiveEntryInfo()
-   if type(tEntry) == "table" and not Sku.IsSecret(tEntry) then return tEntry end
+   if C_LFGList.HasActiveEntryInfo() then return C_LFGList.GetActiveEntryInfo() end
 end
-local function tIsListed() return tGetActiveEntry() ~= nil end
+local function tIsListed() return C_LFGList.HasActiveEntryInfo() end
 
 -- One activity's display info (the same data the window shows).
 local function tActivityInfo(activityID)
    local t = C_LFGList.GetActivityInfoTable(activityID)
-   if type(t) ~= "table" or Sku.IsSecret(t) then return nil end
+   if type(t) ~= "table" then return nil end
    local info = { id = activityID }
    info.name       = t.shortName or t.fullName or (L["Activity #"] .. activityID)
    info.fullName   = t.fullName or t.shortName
@@ -321,10 +322,13 @@ local function tGetSearchResults()
    end
    local myRoles = tOwnRoles()
 
+   local tSecretCount = 0
    for _, rid in ipairs(ids) do
       local info = C_LFGList.GetSearchResultInfo(rid)
-      -- the listing data can be secret (chat messaging lockdown); such a listing cannot be shown
-      if type(info) == "table" and not Sku.IsSecret(info) and not Sku.IsSecret(info.leaderName) and not Sku.IsSecret(info.comment) then
+      -- the listing data is secret in chat messaging lockdown; such a listing cannot be shown
+      if Sku.IsSecretTable(info) then
+         tSecretCount = tSecretCount + 1
+      elseif type(info) == "table" then
          local e = {
             resultID    = rid,
             leaderName  = info.leaderName,
@@ -371,7 +375,7 @@ local function tGetSearchResults()
          -- single player: level, class and roles of the player
          if e.numMembers == 1 then
             local p = C_LFGList.GetSearchResultPlayerInfo(rid, 1)
-            if type(p) == "table" and not Sku.IsSecret(p) then
+            if type(p) == "table" and not Sku.IsSecretTable(p) then
                e.soloLevel, e.soloClass = p.level, p.className
                local rl = tRoleList(p.lfgRoles.tank, p.lfgRoles.healer, p.lfgRoles.dps)
                if #rl > 0 then e.soloRoles = table.concat(rl, "/") end
@@ -380,6 +384,7 @@ local function tGetSearchResults()
          out[#out + 1] = e
       end
    end
+   if tSecretCount > 0 then dprint("dungeonBrowser", "search results left out, secret", tSecretCount) end
    -- own entries first, then those that fit my listing, then the newest
    table.sort(out, function(a, b)
       if a.isSelf ~= b.isSelf then return a.isSelf end
@@ -484,7 +489,7 @@ local function tSeedFromActive()
    for _, aid in ipairs(active.activityIDs) do d.selection[aid] = true end
    local ai = active.activityIDs[1] and tActivityInfo(active.activityIDs[1])
    if ai and ai.categoryID then d.listCategory = ai.categoryID end
-   d.newPlayerFriendly = active.newPlayerFriendly == true
+   if not Sku.IsSecret(active.newPlayerFriendly) then d.newPlayerFriendly = active.newPlayerFriendly == true end
 end
 
 -- Create the listing OR (when already listed) update it. Runs from macrotext (hardware event).
@@ -971,7 +976,7 @@ local function tBuildBrowseTab(aParent)
                if res.guildmates > 0 then line(L["guild members"] .. ": " .. res.guildmates) end
                for i = 1, math.min(res.numMembers, 40) do
                   local p = C_LFGList.GetSearchResultPlayerInfo(res.resultID, i)
-                  if type(p) == "table" and not Sku.IsSecret(p) and p.name then
+                  if type(p) == "table" and not Sku.IsSecretTable(p) and p.name then
                      local bits = { p.name }
                      if p.level then bits[#bits + 1] = L["Level "] .. p.level end
                      if p.className and p.className ~= "" then bits[#bits + 1] = p.className end

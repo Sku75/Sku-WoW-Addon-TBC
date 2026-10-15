@@ -35,6 +35,11 @@ Sku = {}
 function Sku.IsSecret(aValue)
 	return _G.issecretvalue ~= nil and _G.issecretvalue(aValue) == true
 end
+-- A table whose CONTENTS are secret is not a secret value itself (issecretvalue says false), but
+-- reading its fields yields secrets, e.g. C_LFGList.GetSearchResultInfo in chat messaging lockdown.
+function Sku.IsSecretTable(aTable)
+	return _G.issecrettable ~= nil and _G.issecrettable(aTable) == true
+end
 function Sku.SafeGUID(aUnit)
 	local tGuid = UnitGUID(aUnit)
 	if tGuid ~= nil and Sku.IsSecret(tGuid) then return nil end
