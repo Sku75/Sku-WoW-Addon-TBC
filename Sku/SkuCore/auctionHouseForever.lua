@@ -170,6 +170,16 @@ local function tAskMoney(aPrompt, aApply)
 	tAskValue(aPrompt, tParseMoney, L["Amount not understood"], aApply)
 end
 
+-- The child of aEntry on the way down to the cursor, and how many levels below aEntry the cursor stands (1 = on
+-- that child). nil when the cursor is not below aEntry.
+local function tCursorChildOf(aEntry)
+	local tChild, tDepth = SkuOptions.currentMenuPosition, 1
+	while tChild and tChild.parent ~= aEntry do
+		tChild, tDepth = tChild.parent, tDepth + 1
+	end
+	return tChild, tDepth
+end
+
 -- ---------------------------------------------------------------------
 -- Rebuilds aEntry's children after a server answer and keeps the cursor sensible.
 -- SkuOptions:RebuildNodeChildren gives the fresh children their selectTarget wiring; a raw
@@ -198,13 +208,7 @@ end
 local function tRebuildAndFocus(aEntry, aForce, aQuiet)
 	if not aEntry then return end
 	local tPos = SkuOptions.currentMenuPosition
-	-- The child of aEntry on the cursor's path (nil when the cursor is not below aEntry).
-	local tChild, tDepth = tPos, 0
-	while tChild and tChild.parent ~= aEntry and tDepth < 12 do
-		tChild = tChild.parent
-		tDepth = tDepth + 1
-	end
-	if tChild and tChild.parent ~= aEntry then tChild = nil end
+	local tChild = tCursorChildOf(aEntry)
 	local tIdentity = tChild and tChild.skuIdentity
 	SkuOptions:RebuildNodeChildren(aEntry, true)
 	if tIdentity then
@@ -1711,11 +1715,8 @@ end
 -- item's row (row 1 when the whole stack is gone). Returns true when it moved the cursor out of the draft.
 local function tFollowBags()
 	if not gSellList then return false end
-	local tDepth, tRow, tPos = 0, nil, SkuOptions.currentMenuPosition
-	while tPos and tPos ~= gSellList do
-		tRow, tPos, tDepth = tPos, tPos.parent, tDepth + 1
-	end
-	if not tPos or tDepth == 0 then return false end
+	local tRow, tDepth = tCursorChildOf(gSellList)
+	if not tRow then return false end
 	local tMoved = false
 	if tDepth >= 2 then
 		if not (gSell.posted and tRow.skuIdentity == "sellitem:"..gSell.guid) then return false end
@@ -1743,14 +1744,6 @@ end
 -- Both are lists the server sends on request: QueryOwnedAuctions -> OWNED_AUCTIONS_UPDATED, QueryBids -> BIDS_UPDATED.
 -- A list (gOwned, gBids) has a state (idle, waiting, done, failed), its rows, the menu entry showing it and the
 -- function sending its query.
-local function tCursorDeeperThan(aEntry)
-	local tDepth, tPos = 0, SkuOptions.currentMenuPosition
-	while tPos and tPos ~= aEntry and tDepth < 10 do
-		tPos = tPos.parent
-		tDepth = tDepth + 1
-	end
-	return tPos == aEntry and tDepth >= 2
-end
 
 -- Rebuilds the entry showing aList, unless the cursor stands inside one of its rows: that row's entries would be
 -- replaced under the cursor. A cursor on a row stays on that auction (skuIdentity), wherever the new list puts it.
@@ -1759,7 +1752,8 @@ end
 local function tShowList(aList)
 	local tNotice = aList.notice
 	aList.notice = nil
-	if tCursorDeeperThan(aList.entry) then
+	local tRow, tDepth = tCursorChildOf(aList.entry)
+	if tRow and tDepth >= 2 then
 		if tNotice then tSay(tNotice) end
 		return
 	end
@@ -1862,8 +1856,8 @@ function AHF:OnAuctionCanceled()
 		tSay(L["Auction canceled"])
 		return
 	end
-	local tPos = SkuOptions.currentMenuPosition
-	if tPos and tPos.parent and tPos.parent.parent == gOwned.entry then SkuOptions.currentMenuPosition = tPos.parent end
+	local tRow, tDepth = tCursorChildOf(gOwned.entry)
+	if tRow and tDepth >= 2 then SkuOptions.currentMenuPosition = tRow end
 	gOwned.notice = L["Auction canceled"]
 	tStartListQuery(gOwned, gOwned.entry)
 end
