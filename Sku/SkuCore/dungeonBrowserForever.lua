@@ -156,6 +156,7 @@ local function tGetCategoryActivities(categoryID)
    end
 
    DungeonBrowser.tFilterStats = { total = #all, shown = #infos }
+   dprint("dungeonBrowser", "activity filter", { category = categoryID, level = lvl, total = #all, shown = #infos, on = filterOn })
 
    table.sort(infos, function(a, b)
       local am, bm = a.minLevel or 0, b.minLevel or 0
@@ -236,6 +237,7 @@ end
 local function tStartSearch(categoryID)
    categoryID = categoryID or tDB().browseCategory
    local tActivityIDs = tSearchActivityIDs(categoryID)
+   dprint("dungeonBrowser", "Search", { categoryID = categoryID, activities = #tActivityIDs })
    C_LFGList.Search(categoryID, 0, 0, nil, false, nil, (#tActivityIDs > 0) and tActivityIDs or nil)
    DungeonBrowser.tSearchTime = GetTime()
    DungeonBrowser.tSearchFailed = false
@@ -480,12 +482,14 @@ function DungeonBrowser:DoEnroll()
    local data = { activityIDs = ids, newPlayerFriendly = d.newPlayerFriendly and true or false }
    local fn = listed and C_LFGList.UpdateListing or C_LFGList.CreateListing
    local res = fn(data)
+   dprint("dungeonBrowser", listed and "UpdateListing" or "CreateListing", { count = #ids, res = tostring(res) })
    -- If the selection is rejected as a whole, try the activities one by one (a single unsuitable dungeon makes the
    -- game reject everything). All in the same key press (hardware event); the first one the game accepts is used
    -- and announced.
    if res == false and #ids > 1 then
       for _, id in ipairs(ids) do
          if fn({ activityIDs = { id }, newPlayerFriendly = data.newPlayerFriendly }) ~= false then
+            dprint("dungeonBrowser", "listing accepted for one activity", id)
             local ai = tActivityInfo(id)
             tSay(string.format(L["Only %s was accepted, the other dungeons were not."], (ai and ai.name) or tostring(id)))
             res = true
@@ -504,6 +508,7 @@ function DungeonBrowser:DoEnroll()
    local announced = false
    local function check(final)
       if announced then return end
+      dprint("dungeonBrowser", "enroll check", { listed = tIsListed(), final = final })
       if tIsListed() then
          announced = true
          DungeonBrowser.tEditSeeded = false
@@ -519,10 +524,12 @@ function DungeonBrowser:DoEnroll()
 end
 
 function DungeonBrowser:DoUnenroll()
+   dprint("dungeonBrowser", "RemoveListing")
    C_LFGList.RemoveListing()
    DungeonBrowser.tEditSeeded = false
    -- really gone? Only then say "removed"
    C_Timer.After(0.7, function()
+      dprint("dungeonBrowser", "unenroll check", { listed = tIsListed() })
       if not tIsListed() then
          DungeonBrowser:Rebuild()
          tSay(L["Listing removed"], true)
@@ -1026,8 +1033,14 @@ end
 -- which would park the user on "Not listed" after accepting an invite. Skipping costs nothing: the top entry is
 -- `dynamic`, so the next descend rebuilds its children anyway.
 function DungeonBrowser:Rebuild()
-   if not SkuOptions:IsMenuOpen() then return end
-   if not tCursorInBrowser() then return end
+   if not SkuOptions:IsMenuOpen() then
+      dprint("dungeonBrowser", "Rebuild skipped", { reason = "menu closed" })
+      return
+   end
+   if not tCursorInBrowser() then
+      dprint("dungeonBrowser", "Rebuild skipped", { reason = "cursor outside browser" })
+      return
+   end
    tEnsureEntry()
    -- The top entry is dynamic: descending into it rebuilds its children through SkuOptions:RebuildNodeChildren.
    SkuOptions:SlashFunc(Sku.MENU_ROOT .. "," .. string.lower(MENU_LABEL))
@@ -1089,11 +1102,19 @@ local function tReevaluateAfterInvite()
    DungeonBrowser.tContainerBeforeInvite = false
    DungeonBrowser.tInGroupBeforeInvite = false
 
-   if (not tWasInGroup) and IsInGroup() then return end
-   if not tHadContainer then return end
+   if (not tWasInGroup) and IsInGroup() then
+      dprint("dungeonBrowser", "invite reevaluate", { action = "none", reason = "joined group" })
+      return
+   end
+   if not tHadContainer then
+      dprint("dungeonBrowser", "invite reevaluate", { action = "none", reason = "no window before invite" })
+      return
+   end
    if tIsContainerShown() then
+      dprint("dungeonBrowser", "invite reevaluate", { action = "reopen" })
       tFireOpen()
    elseif SkuOptions:IsMenuOpen() then
+      dprint("dungeonBrowser", "invite reevaluate", { action = "close" })
       SkuOptions:CloseMenu()
    end
 end
@@ -1151,7 +1172,7 @@ local tLFGEventsFrame
 local function tHookLFGEvents()
    if not tLFGEventsFrame then
       tLFGEventsFrame = CreateFrame("Frame")
-      tLFGEventsFrame:SetScript("OnEvent", function(self, event)
+      tLFGEventsFrame:SetScript("OnEvent", function(self, event, ...)
          if not DungeonBrowser:IsEnabled() then return end
          if event == "LFG_LIST_ACTIVE_ENTRY_UPDATE" then
             if not tIsListed() then DungeonBrowser.tEditSeeded = false end
@@ -1159,6 +1180,7 @@ local function tHookLFGEvents()
             return
          end
          if event == "LFG_LIST_SEARCH_FAILED" then
+            dprint("dungeonBrowser", "search failed", ...)
             DungeonBrowser.tSearchFailed = true
             if SkuOptions:IsMenuOpen() and tCursorInBrowser() then tSay(L["Search failed"], true) end
          elseif event == "LFG_LIST_SEARCH_RESULTS_RECEIVED" then
