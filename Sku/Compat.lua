@@ -265,20 +265,22 @@ if not C.GetQuestLogTitle and C_QuestLog and C_QuestLog.GetInfo then
 end
 
 -- The quest log window is a standalone QuestLogFrame on the other clients; on Forever the quest log
--- lives in the world map (QuestMapFrame).
-C.GetQuestLogFrame = function() return _G.QuestLogFrame or _G.QuestMapFrame end
+-- lives in the world map (QuestMapFrame). The name is the one place that decides it; the Local menu's
+-- window list (SkuCore/Core.lua) looks the frame up by this name.
+C.QuestLogFrameName = (_G.QuestLogFrame or not _G.QuestMapFrame) and "QuestLogFrame" or "QuestMapFrame"
+C.GetQuestLogFrame = function() return _G[C.QuestLogFrameName] end
 -- Open and close the quest log the way Blizzard's ToggleQuestLog does. On Forever only the world map
 -- is a UI panel: Show/HideUIPanel(QuestMapFrame) would skip the quest log's own show/hide handling
 -- and leave the map open.
 C.ShowQuestLog = function()
-	if _G.QuestLogFrame then
+	if C.QuestLogFrameName == "QuestLogFrame" then
 		ShowUIPanel(_G.QuestLogFrame)
 	else
 		OpenQuestLog()
 	end
 end
 C.HideQuestLog = function()
-	if _G.QuestLogFrame then
+	if C.QuestLogFrameName == "QuestLogFrame" then
 		HideUIPanel(_G.QuestLogFrame)
 	elseif _G.QuestMapFrame:IsVisible() then
 		HideUIPanel(_G.QuestMapFrame:GetParent())
