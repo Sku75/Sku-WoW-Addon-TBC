@@ -189,6 +189,53 @@ local function tEnsureKeyFrame()
    end)
    b:SetFrameRef("use", u)
 
+   -- C (character key): enter the FULL character-tree mirror. Seed the walker at the first
+   -- top-level node (the level text) so it lands exactly where opening the pane lands out of
+   -- combat; from there Down/Up/Right/Left walk the whole tree. Arm that node's /use (empty for
+   -- the text). The insecure side lands the menu on the same node. See the ma==3 walker in
+   -- _onclick + Build_CharacterFrame. Run by _onclick (CSYNC) and by SkuCombatCharOpen's wrap.
+   b:SetAttribute("_csyncstate", [=[
+      local cstart = self:GetAttribute("cstart") or 0
+      self:SetAttribute("ma", 3)
+      self:SetAttribute("ccur", cstart)
+      self:SetAttribute("manchor", 0)
+      local m = self:GetAttribute("cm" .. cstart) or ""
+      local u = self:GetFrameRef("use")
+      if u then u:SetAttribute("macrotext", m) end
+      self:SetAttribute("mlog", "C sync -> char tree start=" .. cstart .. " m=" .. m)
+   ]=])
+
+   -- Opening the character pane in combat. Blizzard's panel manager refuses insecure callers in
+   -- combat (CheckProtectedFunctionsAllowed: InCombatLockdown() and not issecure()), and a
+   -- direct CharacterFrame:Show() runs the pane's OnShow as Sku code, which on Forever compares
+   -- secret health values and taints the player frame bars. A secure "click" action on the
+   -- character micro button runs ToggleCharacter in secure execution, as the game's own C key
+   -- does. Only where that button has an OnClick (Forever's mixin); Anniversary's micro button
+   -- acts on OnMouseDown, so there C keeps the CSYNC route with the direct Show (no secret
+   -- values on that client). The wrap runs the mirror sync first; it skips the click while
+   -- the pane is already open, because the click toggles. The restricted environment cannot
+   -- read an unprotected frame's state in combat, so "charshown" is staged at combat start
+   -- (CombatMenuKeysBindNow) and set here when the click opens the pane; Sku never hides
+   -- the pane in combat (CheckFrames skips it instead).
+   local tMicro = _G["CharacterMicroButton"]
+   if tMicro and tMicro:GetScript("OnClick") then
+      local o = CreateFrame("Button", "SkuCombatCharOpen", UIParent, "SecureActionButtonTemplate")
+      o:RegisterForClicks("AnyDown")
+      -- only the down click arrives; without this SecureActionButton_OnClick waits for the up
+      -- click when the CVar ActionButtonUseKeyDown is 0
+      o:SetAttribute("useOnKeyDown", true)
+      o:SetAttribute("type", "click")
+      o:SetAttribute("clickbutton", tMicro)
+      b:WrapScript(o, "OnClick", [=[
+         local c = (owner:GetAttribute("mc") or 0) + 1
+         owner:SetAttribute("mc", c)
+         owner:SetAttribute("kroute", c .. "|CSYNC")
+         owner:RunAttribute("_csyncstate")
+         if owner:GetAttribute("charshown") == 1 then return false end
+         owner:SetAttribute("charshown", 1)
+      ]=])
+   end
+
    -- MIRROR snippet -- tracks the bags menu in lockstep (Part A capture in LocalMenu.lua ->
    -- SkuCore.combatBagTree, pre-staged as vc / v<v>_c / v<v>_s<i>) AND holds the in-combat
    -- TRADE state:
@@ -280,18 +327,7 @@ local function tEnsureKeyFrame()
       end
 
       if key == "CSYNC" then
-         -- C (character key): enter the FULL character-tree mirror. Seed the walker at the
-         -- first top-level node (the level text) so it lands exactly where opening the pane
-         -- lands out of combat; from there Down/Up/Right/Left walk the whole tree. Arm that
-         -- node's /use (empty for the text). The insecure side opens the char pane and lands
-         -- the menu on the same node. See the ma==3 walker below + Build_CharacterFrame.
-         local cstart = self:GetAttribute("cstart") or 0
-         self:SetAttribute("ma", 3)
-         self:SetAttribute("ccur", cstart)
-         self:SetAttribute("manchor", 0)
-         local m = self:GetAttribute("cm" .. cstart) or ""
-         if u then u:SetAttribute("macrotext", m) end
-         self:SetAttribute("mlog", "C sync -> char tree start=" .. cstart .. " m=" .. m)
+         self:RunAttribute("_csyncstate")
          return
       end
 
@@ -516,23 +552,24 @@ local function tEnsureKeyFrame()
             -- builds on a 0.01 timer, so the deep SlashFunc + descend runs slightly deferred;
             -- the endpoint (slot 1) is fixed, so lockstep holds regardless of exact timing.
             --
-            -- Opening the char pane in combat: ToggleCharacter/ShowUIPanel is UIPanel-managed
-            -- and SILENTLY DEFERS in combat (never shows -- verified: CheckFrames only ever saw
-            -- bags, so C landed on whatever else was open). A DIRECT CharacterFrame:Show() is
-            -- NOT panel-managed and works in combat (CharacterFrame isn't a protected frame) --
-            -- this is exactly what the login PrimeCombatMirrors uses to read the slots. It makes
-            -- the slot buttons visible, which matters because IterateChildren is visibility-gated
-            -- (Core.lua ~3218): a hidden frame yields NO slots. The user is blind, so the
-            -- unmanaged on-screen placement is irrelevant. combatCharForceOpen is a belt-and-
-            -- suspenders fallback so CheckFrames still treats it as open even if the Show is ever
-            -- refused; cleared on SYNC/ANCHOR/ESC/combat-end so no phantom char window shadows
-            -- the bags/trade views.
+            -- Opening the char pane in combat: ToggleCharacter/ShowUIPanel refuse insecure callers
+            -- in combat (CheckProtectedFunctionsAllowed). The pane must be shown because
+            -- IterateChildren is visibility-gated (Core.lua ~3218): a hidden frame yields NO slots.
+            -- Where SkuCombatCharOpen exists (Forever), its secure click on the character micro
+            -- button opens the pane right after this route, as the game's C key does
+            -- (tEnsureKeyFrame). Elsewhere a DIRECT CharacterFrame:Show() opens it (not
+            -- panel-managed, CharacterFrame isn't protected; its OnShow then runs as Sku code,
+            -- harmless only without secret values). combatCharForceOpen is a fallback so
+            -- CheckFrames still treats it as open even if the open is ever refused; cleared on
+            -- SYNC/ANCHOR/ESC/combat-end so no phantom char window shadows the bags/trade views.
             SkuOptions.combatMenuActive = true
             if Sku then Sku.combatCharForceOpen = true end
-            pcall(function()
-               local tCf = _G["CharacterFrame"]
-               if tCf and not tCf:IsShown() then tCf:Show() end
-            end)
+            if not _G["SkuCombatCharOpen"] then
+               pcall(function()
+                  local tCf = _G["CharacterFrame"]
+                  if tCf and not tCf:IsShown() then tCf:Show() end
+               end)
+            end
             if SkuClearBagPostAction then pcall(SkuClearBagPostAction) end
             tResetMenuToRoot()
             pcall(function() SkuCore:CheckFrames() end)
@@ -708,10 +745,14 @@ function SkuCore:CombatMenuKeysBindNow()
    -- returns nil and CSYNC was NEVER bound (verified in the combat trace: CSYNC absent, and
    -- ENTER on an equipped item fired a STALE bag macro like "/use 0 3" instead of "/use <slotID>").
    -- Bind the real command TOGGLECHARACTER0. (data.lua: TOGGLECHARACTER1..4 are the other tabs.)
+   -- Where the secure pane opener exists (tEnsureKeyFrame), C clicks it; its wrap runs the
+   -- same CSYNC sync and route.
    local function tBindCharKey(aBinding)
       local k1, k2 = GetBindingKey(aBinding)
-      if k1 then pcall(SetOverrideBindingClick, tKeyOwner, true, k1, "SkuCombatMenuKey", "CSYNC") end
-      if k2 then pcall(SetOverrideBindingClick, tKeyOwner, true, k2, "SkuCombatMenuKey", "CSYNC") end
+      local tButton, tClick = "SkuCombatMenuKey", "CSYNC"
+      if _G["SkuCombatCharOpen"] then tButton, tClick = "SkuCombatCharOpen", "LeftButton" end
+      if k1 then pcall(SetOverrideBindingClick, tKeyOwner, true, k1, tButton, tClick) end
+      if k2 then pcall(SetOverrideBindingClick, tKeyOwner, true, k2, tButton, tClick) end
    end
    tBindCharKey("TOGGLECHARACTER0")
 
@@ -773,6 +814,8 @@ function SkuCore:CombatMenuKeysBindNow()
          tH:SetAttribute("ccnt", tCC)
          tH:SetAttribute("cstart", (SkuCore and SkuCore.combatCharStart) or 0)
          tH:SetAttribute("ccur", 0)
+         -- whether the pane is open, for SkuCombatCharOpen's toggle guard (see tEnsureKeyFrame)
+         tH:SetAttribute("charshown", (_G["CharacterFrame"] and _G["CharacterFrame"]:IsShown()) and 1 or 0)
       end)
    end
 
