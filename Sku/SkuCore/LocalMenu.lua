@@ -493,8 +493,8 @@ function SkuCore:TooltipDataLines(aData)
 	for _, tLine in ipairs(aData.lines) do
 		local tLeft, tRight = tLine.leftText, tLine.rightText
 		-- a line can be secret (combat); it cannot be joined or compared, so it is left out
-		if type(tLeft) == "string" and tLeft ~= "" and not Sku.IsSecret(tLeft) and not string.find(tLeft, "Open Issue Report", 1, true) then
-			if type(tRight) == "string" and tRight ~= "" and not Sku.IsSecret(tRight) then tLeft = tLeft .. " " .. tRight end
+		if type(tLeft) == "string" and not Sku.IsSecret(tLeft) and tLeft ~= "" and not string.find(tLeft, "Open Issue Report", 1, true) then
+			if type(tRight) == "string" and not Sku.IsSecret(tRight) and tRight ~= "" then tLeft = tLeft .. " " .. tRight end
 			tLines[#tLines + 1] = tLeft
 		end
 	end
