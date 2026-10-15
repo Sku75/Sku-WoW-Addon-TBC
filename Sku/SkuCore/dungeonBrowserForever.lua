@@ -14,7 +14,8 @@
 -- Design:
 --   * READ everything from the C_LFGList data APIs the window itself is built from.
 --   * WRITE the restricted actions (CreateListing / UpdateListing / RemoveListing / Search) from Sku macrotext
---     ("/run ..."), i.e. from a hardware event. The window's own widgets are never driven: calling them from
+--     ("/run ..."), i.e. from a hardware event. Plain data changes (roles, selections, filters) and InviteUnit
+--     (no restrictions in the API docs) are ordinary OnAction handlers. The window's own widgets are never driven: calling them from
 --     insecure code would taint CreateListing and the post would be blocked.
 --   * There is no comment field: LfgListingCreateData has none, the comment lives in a protected edit box of
 --     Blizzard's window that addons cannot fill.
@@ -434,7 +435,7 @@ local function tListCategories()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Selection state (plain data changes) and the actions the menu entries call through macrotext.
+-- Selection state (plain data changes) and the restricted actions the menu entries call through macrotext.
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Hand the chosen roles to Blizzard's role store (like LFGListingMixin:SaveSoloRoles after create/update).
 local function tApplyRoles()
@@ -675,7 +676,8 @@ function DungeonBrowser:OnToggleIgnoreLevel()
    local d = tDB()
    d.ignoreLevel = not d.ignoreLevel
    tSay(L["Ignore suggested level"] .. (d.ignoreLevel and L[" (active)"] or ""), true)
-   DungeonBrowser:Rebuild()
+   -- next frame: the ENTER that called this still moves the cursor to the entry's parent when it returns
+   C_Timer.After(0, function() DungeonBrowser:Rebuild() end)
 end
 
 -- Search filter: single activities for the group search on/off (empty = everything in the category).
@@ -799,7 +801,7 @@ local function tBuildCreateTab(aParent)
          local checked = d.roles[r] == true
          local e = Inject(self, roleName .. (checked and L[" (active)"] or ""))
          DungeonBrowser.tRoleEntries[r] = { entry = e, roleName = roleName }
-         e.macrotext = "/run SkuCore.DungeonBrowser:OnToggleRole(\"" .. r .. "\")"
+         e.OnAction = function() DungeonBrowser:OnToggleRole(r) end
       end
    end
 
@@ -807,7 +809,7 @@ local function tBuildCreateTab(aParent)
    do
       local e = Inject(aParent, L["New player friendly"] .. (d.newPlayerFriendly == true and L[" (active)"] or ""))
       DungeonBrowser.tNpfEntry = e
-      e.macrotext = "/run SkuCore.DungeonBrowser:OnToggleNPF()"
+      e.OnAction = function() DungeonBrowser:OnToggleNPF() end
    end
 
    -- Activities of the chosen category, as submenus per activity group. Built before the level filter entry so that
@@ -821,7 +823,7 @@ local function tBuildCreateTab(aParent)
       local hidden = stats.total - stats.shown
       if on and hidden > 0 then lbl = lbl .. ", " .. hidden .. L[" hidden"] end
       local e = Inject(aParent, lbl)
-      e.macrotext = "/run SkuCore.DungeonBrowser:OnToggleIgnoreLevel()"
+      e.OnAction = function() DungeonBrowser:OnToggleIgnoreLevel() end
    end
 
    if #groups == 0 then
@@ -836,14 +838,14 @@ local function tBuildCreateTab(aParent)
                local base = info.name .. tLevelStr(info)
                local e = Inject(self, tSelMark(tDB().selection[info.id] == true) .. base)
                DungeonBrowser.tDungeonEntries[info.id] = { entry = e, baseLabel = base }
-               e.macrotext = "/run SkuCore.DungeonBrowser:OnToggleSelect(" .. tostring(info.id) .. ")"
+               e.OnAction = function() DungeonBrowser:OnToggleSelect(info.id) end
             end
          end
       end
    end
 
    local tDes = Inject(aParent, L["Deselect all"])
-   tDes.macrotext = "/run SkuCore.DungeonBrowser:OnDeselectAll()"
+   tDes.OnAction = function() DungeonBrowser:OnDeselectAll() end
 
    -- Macrotext only: CreateListing/UpdateListing are restricted (hardware event). An OnAction would run insecure.
    local tEnroll = Inject(aParent, listed and L["Update listing"] or L["Post entry"])
@@ -891,13 +893,13 @@ local function tBuildBrowseTab(aParent)
       tFilter.BuildChildren = function(self)
          DungeonBrowser.tSearchEntries = {}
          local tClear = Inject(self, L["all"])
-         tClear.macrotext = "/run SkuCore.DungeonBrowser:OnClearSearchActivities()"
+         tClear.OnAction = function() DungeonBrowser:OnClearSearchActivities() end
          for _, grp in ipairs(tGetActivityGroups(tDB().browseCategory)) do
             for _, info in ipairs(grp.activities) do
                local base = info.name .. tLevelStr(info)
                local e = Inject(self, tSelMark(tDB().searchSelection[info.id] == true) .. base)
                DungeonBrowser.tSearchEntries[info.id] = { entry = e, baseLabel = base }
-               e.macrotext = "/run SkuCore.DungeonBrowser:OnToggleSearchActivity(" .. tostring(info.id) .. ")"
+               e.OnAction = function() DungeonBrowser:OnToggleSearchActivity(info.id) end
             end
          end
       end
@@ -916,7 +918,7 @@ local function tBuildBrowseTab(aParent)
 
    do
       local e = Inject(aParent, L["Ignore suggested level"] .. (tDB().ignoreLevel and L[" (active)"] or ""))
-      e.macrotext = "/run SkuCore.DungeonBrowser:OnToggleIgnoreLevel()"
+      e.OnAction = function() DungeonBrowser:OnToggleIgnoreLevel() end
    end
 
    -- Results
@@ -941,7 +943,7 @@ local function tBuildBrowseTab(aParent)
                local canInvite, why = tInviteState(res)
                if canInvite then
                   local tInv = Inject(self, L["Invite to group"])
-                  tInv.macrotext = "/run SkuCore.DungeonBrowser:InviteLeader(\"" .. lName .. "\")"
+                  tInv.OnAction = function() DungeonBrowser:InviteLeader(lName) end
                else
                   local tWhy = Inject(self, why); tWhy.dynamic = false
                end
