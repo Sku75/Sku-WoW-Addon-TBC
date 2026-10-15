@@ -1355,7 +1355,10 @@ local function tBidLabel()
 	return L["Starting bid, optional: "]..tMoneyOrNone(gSell.bid)
 end
 local function tDepositLabel()
-	local tText = L["Deposit: "]..tMoneyText(tDepositAmount())
+	-- Blizzard's UpdateDeposit: without copper values the deposit is shown rounded up to whole silver.
+	local tDeposit = tDepositAmount()
+	if not C_AuctionHouse.SupportsCopperValues() then tDeposit = math.ceil(tDeposit / COPPER_PER_SILVER) * COPPER_PER_SILVER end
+	local tText = L["Deposit: "]..tMoneyText(tDeposit)
 	if gSell.buyout and gSell.buyout > 0 and (gSell.quantity or 1) > 1 then
 		tText = tText..", "..L["total price "]..tMoneyText(gSell.buyout * gSell.quantity)
 	end
