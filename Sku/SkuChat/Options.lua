@@ -403,6 +403,12 @@ SkuChat.options = {
 			desc = "",
 			type = "toggle",
 		},
+		blizzTtsForMissingWords = {
+			order = 10,
+			name = L["Speak lines with a missing recording with the Blizzard voice"],
+			desc = "",
+			type = "toggle",
+		},
 		doNotReadoutEmojis = {
 			order = 20,
 			name = L["Do not read out emojis"] ,
@@ -438,6 +444,7 @@ SkuChat.defaults = {
 	joinSkuChannel = true,
 	neverResetQueues = false,
 	allChatViaBlizzardTts = false,
+	blizzTtsForMissingWords = false,
 	doNotReadoutEmojis = false,
 }
 
@@ -467,6 +474,7 @@ SkuSettings:Register("SkuChat", {
 	["joinSkuChannel"]                    = { scope = "profile", default = true,  type = "boolean" },
 	["neverResetQueues"]                  = { scope = "profile", default = false, type = "boolean" },
 	["allChatViaBlizzardTts"]             = { scope = "profile", default = false, type = "boolean" },
+	["blizzTtsForMissingWords"]           = { scope = "profile", default = false, type = "boolean" },
 	["doNotReadoutEmojis"]                = { scope = "profile", default = false, type = "boolean" },
 })
 

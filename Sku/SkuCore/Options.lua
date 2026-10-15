@@ -2926,7 +2926,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 			{ label = L["Menü Klick Tasten"], members = {
 				"SKU_KEY_MENULEFTCLICK", "SKU_KEY_MENURIGHTCLICK", }, },
 			{ label = L["Ziel und Soft Targeting"], members = {
-				"SKU_KEY_TARGETDISTANCE", "SKU_KEY_TARGETHEALTH", "SKU_KEY_OUTPUTHARDTARGET", "SKU_KEY_OUTPUTSOFTTARGET",
+				"SKU_KEY_TARGETDISTANCE", "SKU_KEY_TARGETHEALTH", "SKU_KEY_PETHEALTH", "SKU_KEY_OUTPUTHARDTARGET", "SKU_KEY_OUTPUTSOFTTARGET",
 				"SKU_KEY_OUTPUTTARGETTOOLTIP",
 				"SKU_KEY_ENABLESOFTTARGETINGENEMY", "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY", "SKU_KEY_ENABLESOFTTARGETINGINTERACT",
 				"SKU_KEY_QUESTTARGET", }, },
@@ -3335,6 +3335,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 						WowTtsVolume          = a.WowTtsVolume,
 						neverResetQueues      = a.neverResetQueues,
 						allChatViaBlizzardTts = a.allChatViaBlizzardTts,
+						blizzTtsForMissingWords = a.blizzTtsForMissingWords,
 						doNotReadoutEmojis    = a.doNotReadoutEmojis,
 					}
 					SkuOptions:IterateOptionsArgs(tArgs, self, SkuSettings:Sub("SkuChat"), "SkuChat", "")

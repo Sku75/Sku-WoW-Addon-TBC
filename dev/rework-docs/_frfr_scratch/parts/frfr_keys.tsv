@@ -3532,9 +3532,10 @@ Level from	Niveau de
 Level up to	Niveau jusqu'à
 Reset all filters	Réinitialiser tous les filtres
 Filters reset	Filtres réinitialisés
-<<<<<<< HEAD
 up to %s each	jusqu'à %s chacune
 %s more pieces at the same or higher prices	%s pièces de plus au même prix ou plus cher
-=======
 AHF_FullScanItems	prix pour %d objets
->>>>>>> cecca5b (forever(12): a full scan fills the auction price history)
+SKU_KEY_PETHEALTH	Annoncer la santé du familier
+Pet %d	Familier %d
+No pet	Pas de familier
+Speak lines with a missing recording with the Blizzard voice	Dire les lignes dont un enregistrement manque avec la voix de Blizzard

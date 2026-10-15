@@ -95,5 +95,49 @@ S.foreign = function()
 	at(0.4 + (#s + 1) * 0.25, function() V:CancelBttsOutput(); V:OutputStringBTtts("abgebrochen", {overwrite=true, engine="blizz"}) end)
 	H.run(16)
 end
+-- A secret value (a pet's health) spoken through SkuVoice:SpeakSecretText. Healthy = the text reaches the client
+-- (here "77 percent" / "12 percent"), the queue marker word never does, a menu line before it is cut, a line after it
+-- is audible, and only the newest of two quick calls is spoken. The harness has no secret values: plain strings
+-- stand in, which exercises the same hand-over.
+S.secret = function()
+	say(0.0, "menue zeile nummer eins mit etwas text", true, {scope="menu"})
+	at(0.6, function() V:SpeakSecretText("%d percent", 77) end)
+	say(3.0, "menue zeile nummer zwei", true, {scope="menu"})
+	at(5.0, function() V:SpeakSecretText("%d percent", 41) V:SpeakSecretText("%d percent", 12) end)
+	say(8.0, "ende", true)
+	H.run(14)
+end
+-- A secret line that waits longer than its slot lives. With "never reset queues" the marker queues behind a line of
+-- about 7 s, so its slot is stale when it comes up: nothing may be spoken for it (the marker word never), and the next
+-- call after that must be spoken at once ("33 percent"), not be skipped as "already speaking that".
+S.secretstale = function()
+	V:SetChatTtsProvider(function() return { WowTtsVoice = 1, WowTtsSpeed = 3, WowTtsVolume = 50, neverResetQueues = true } end)
+	say(0.0, "eine sehr lange zeile die laenger als fuenf sekunden dauert damit der geheime platz veraltet ist", false)
+	at(0.5, function() V:SpeakSecretText("%d percent", 77) end)
+	at(9.0, function() V:SpeakSecretText("%d percent", 33) end)
+	H.run(14)
+end
+-- Point 17: a line with a word that has no recording. MW=1 turns the option on: the whole line must reach the client
+-- (spoken by Blizzard's voice); MW=0 (the default): nothing reaches the client, the sound path takes it. A line whose
+-- words all have a recording never reaches the client. The harness has no audio index, so GetAudiodata is stubbed.
+S.missingword = function()
+	SkuOptions.db.profile.SkuOptions.useBlizzTtsInMenu = false
+	Sku.AudiodataPath = "x"
+	SkuOptions.db.profile.SkuOptions.soundChannels = { SkuChannel = "Talking Head" }
+	SkuAudioDataLenIndex, SkuAudioFileIndex = {}, {}
+	SkuOptions.db.realm = {}
+	local tOn = (os.getenv("MW") == "1")
+	V:SetChatTtsProvider(function() return { WowTtsVoice = 1, WowTtsSpeed = 3, WowTtsVolume = 50, blizzTtsForMissingWords = tOn } end)
+	V.GetAudiodata = function(self, w) if w == "hallo" or w == "welt" then return "a.mp3", "p/", 0.5 end end
+	at(0.5, function() V:OutputString("hallo welt", true, true, 0.5) end)
+	at(2.0, function() V:OutputString("hallo xyzname welt", true, true, 0.5) end)
+	-- punctuation must reach Blizzard's voice as written, not as the recording keys ";doppelpunkt;" / ";punkt;"
+	at(5.0, function() V:OutputString("hallo: xyzname.", true, true, 0.5) end)
+	-- a recorded overwrite line right behind a Blizzard-voiced one: the Blizzard line must be cut (sapi: cut@), not
+	-- talk on underneath the recordings
+	at(7.0, function() V:OutputString("hallo xyzname welt hallo xyzname welt hallo xyzname welt", true, true, 0.5) end)
+	at(7.6, function() V:OutputString("hallo welt", true, true, 0.5) end)
+	H.run(14)
+end
 S[name]()
 H.report(name)

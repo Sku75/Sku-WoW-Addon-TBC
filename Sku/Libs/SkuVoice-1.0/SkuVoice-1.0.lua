@@ -9,7 +9,7 @@ if not SkuVoice then return end -- No upgrade needed
 -- Blizzard-TTS params provider (W6-B #12): the audio engine no longer reaches
 -- into SkuChat's saved-settings schema by string key. SkuChat registers a
 -- provider via SkuVoice:SetChatTtsProvider that returns the current param table
--- (fields WowTtsVoice/WowTtsSpeed/WowTtsVolume/neverResetQueues/
+-- (fields WowTtsVoice/WowTtsSpeed/WowTtsVolume/neverResetQueues/blizzTtsForMissingWords/
 -- allChatViaBlizzardTts); the engine only ever calls that. Falls back to sane
 -- defaults if no provider is registered yet.
 local mChatTtsProvider
@@ -846,7 +846,34 @@ end
 -- Enum.VoiceTtsDestination is now nil and a clean 4-arg call speaks with no
 -- boundary words. overlap is omitted (defaults false) so Sku keeps driving its
 -- own sequencing without overlapping speech.
+-- Secret text (WoW Forever): a value the game hides from addons (a pet's health) can be handed to
+-- C_VoiceChat.SpeakText (the text argument accepts secrets from tainted code) but must never be read,
+-- compared, concatenated or used as a table key. The text therefore never enters the queue: the queue carries
+-- the plain marker word below, which keeps its place, its stops and its client gate, and BttsHandOver swaps the
+-- real text in at the last moment. One slot, the newest call wins; a slot nobody collected goes stale.
+local SECRET_MARKER = "skusecrettext"
+local SECRET_SLOT_MAX_AGE = 5
+local mSecretSlot
+
 local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
+	local tSecretText
+	if not aIsEcho and string.find(aText, SECRET_MARKER, 1, true) then
+		if mSecretSlot and GetTime() - mSecretSlot.at <= SECRET_SLOT_MAX_AGE then tSecretText = mSecretSlot.text end
+		mSecretSlot = nil
+		if not tSecretText then
+			-- Stale or already collected: nothing to say, and the marker word itself is never spoken. The pump has
+			-- already listed it as speaking; no FINISHED will come for it, so take it off again, or the next marker
+			-- would be skipped as "already speaking that" until the speaking TTL.
+			for z = #mSkuVoiceQueueBTTS_Speaking, 1, -1 do
+				if mSkuVoiceQueueBTTS_Speaking[z].text == aText then
+					table.remove(mSkuVoiceQueueBTTS_Speaking, z)
+					break
+				end
+			end
+			if dprint then dprint("BTTS secret slot empty or stale, marker dropped") end
+			return
+		end
+	end
 	-- [v43.5] A real announcement supersedes typed characters that have not gone
 	-- out yet. Sku's announcements all carry a stop, i.e. they behave like NVDA's
 	-- Spri.NOW, so the consistent answer is NVDA's: purge the pending echo rather
@@ -893,13 +920,14 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	if dprint then dprint("BTTS SpeakText", aIsEcho and "echo" or "queue",
 		"voice="..tostring(aVoiceIndex - 1), "speed="..tostring(ChatTts().WowTtsSpeed),
 		"vol="..tostring(ChatTts().WowTtsVolume), "text=["..tostring(aText).."]") end
-	local tSpoken = BttsCacheBust(aText)
+	local tSpoken = tSecretText or BttsCacheBust(aText)
 	-- [v43.6] See tBttsInterruptNext. Never on the Mac client: its engine speaks
 	-- markup literally (same reason BttsCacheBust drops its bookmark there).
 	if tBttsInterruptNext then
 		tBttsInterruptNext = false
 		if not (IsMacClient and IsMacClient()) then
-			tSpoken = tSpoken .. BTTS_INTERRUPT_MARK
+			-- format, not "..": the text may be secret
+			tSpoken = string.format("%s%s", tSpoken, BTTS_INTERRUPT_MARK)
 			if dprint then dprint("BTTS interrupt mark") end
 		end
 	end
@@ -923,6 +951,16 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	mClientGate.stopHold = nil
 	mClientGate.stopDueAt = nil
 	C_VoiceChat.SpeakText(aVoiceIndex - 1, tSpoken, ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
+end
+
+-- Speaks a line that contains a secret value, as a priority announcement (like a key press result): it replaces
+-- what is queued, exactly as OutputStringBTtts(text, true, true, 0.2) does. aFormat is a plain string for
+-- string.format, the arguments after it may be secret. Only the Blizzard TTS path can carry it.
+function SkuVoice:SpeakSecretText(aFormat, ...)
+	-- format twice: the cache-buster is a format string around one %s, so the secret is never concatenated
+	local tText = string.format(BttsCacheBust("%s"), string.format(aFormat, ...))
+	mSecretSlot = { text = tText, at = GetTime() }
+	SkuVoice:OutputStringBTtts(SECRET_MARKER, true, true, 0.2, nil, nil, nil, 2)
 end
 
 function SkuVoice:Create()
@@ -1062,6 +1100,10 @@ function SkuVoice:Create()
 			-- for the same utterance, and believing that one releases the next letter
 			-- before this one has made a sound. FINISHED/FAILED above still backstop.
 			local tMarkId, tMark = ...
+			-- Secret text (SkuVoice:SpeakSecretText, or Blizzard's own combat audio alerts) gets a secret bookmark NAME
+			-- (VoiceChatDocumentation: bookmarkName ConditionalSecret, utteranceID never secret). The name cannot be
+			-- compared; the id still says whose utterance it is, so the proof of life below stays.
+			if Sku.IsSecret(tMark) then tMark = nil end
 			if mClientGate.outstanding and mClientGate.id ~= nil and tMarkId == mClientGate.id then
 				-- [v43.5e] ★A bookmark is PROOF OF LIFE ONLY -- it must never open the
 				-- gate. Gating on "End" was wrong twice over, and it is what kept the
@@ -2272,6 +2314,27 @@ end
 -- TTSSepPause hold while no other aura sound is playing (see the pump). Only the
 -- generated aura sound outputs in SkuAuras/data.lua set it; word/text outputs
 -- must NOT, or a multi-word aura output would play its words on top of itself.
+-- The recording for one word: exact, lower case, capital first letter, then the gender endings (tGenderSuffixes).
+-- aQuiet: no log line per miss. Returns file, path, length, or nil.
+local function FindWordAudio(aWord, aQuiet)
+	local tFile, tPath, tLength = SkuVoice:GetAudiodata(aWord, aQuiet)
+	if tFile == nil then
+		tFile, tPath, tLength = SkuVoice:GetAudiodata(string.lower(aWord), aQuiet)
+	end
+	if tFile == nil then
+		tFile, tPath, tLength = SkuVoice:GetAudiodata(string.upper(string.sub(aWord, 1, 1))..string.sub(aWord, 2), aQuiet)
+	end
+	if tFile == nil then
+		local tModString = string.lower(aWord)
+		for i, v in pairs(tGenderSuffixes) do
+			if string.sub(tModString, string.len(tModString) - string.len(i) + 1) == i then
+				tFile, tPath, tLength = SkuVoice:GetAudiodata(string.sub(tModString, 1, string.len(tModString) - string.len(i))..v, aQuiet)
+			end
+		end
+	end
+	return tFile, tPath, tLength
+end
+
 function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aAudioFile, aAuraSound) -- for strings with lookup in string index
 	if not aString then
 		return
@@ -2296,7 +2359,10 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		aAuraSound = aOverwrite.auraSound
 		aOverwrite = aOverwrite.overwrite
 	end
-	
+	-- The line as the caller wrote it, for blizzTtsForMissingWords below: by then aString is split into recording keys
+	-- (";punkt;", ";doppelpunkt;", ";klammer;" ...) that Blizzard's voice would read out as words.
+	local tLineIn = aString
+
 	--we need to skip checks, etc. for sounds to get better performance on aura output
 	local tIsSound
 	if string.sub(aString, 1, 6) == "sound-" then
@@ -2488,6 +2554,35 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 			end
 		end
 
+		-- Optional (off by default): if any word of the line has no recording, the WHOLE line goes to Blizzard's voice instead of
+		-- a beep for the missing word (player names, unknown terms). engine=2 keeps OutputStringBTtts from handing it back here.
+		-- Costs up to four lookups per word (FindWordAudio), only while the option is on.
+		if ChatTts().blizzTtsForMissingWords == true and not tIsSound and aAudioFile == nil and not aAuraSound then
+			for x = 1, #tStrings do
+				local tWord = tostring(tStrings[x])
+				if tWord ~= "§01" and not string.find(tWord, "sound%-") and not string.find(tWord, "male%-")
+					and not string.find(tWord, "brian%-") and not string.find(tWord, "emma%-") and FindWordAudio(tWord, true) == nil then
+					if SkuOptions.db then
+						SkuOptions.db.realm.missingAudio = SkuOptions.db.realm.missingAudio or {}
+						SkuOptions.db.realm.missingAudio[tWord] = (SkuOptions.db.realm.missingAudio[tWord] or 0) + 1
+					end
+					dprint("OutputString: no recording, speaking the line with Blizzard TTS:", tWord)
+					-- aIgnoreLinks true: the links of this line were collected above already
+					SkuVoice:OutputStringBTtts(tLineIn, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, 2, aSpell, aVocalizeAsIs, aInstant, aDnQ, true)
+					return
+				end
+			end
+			-- This line stays on the recordings. Its overwrite cleared the audio queue above, but a line the option sent to
+			-- Blizzard's voice may still be speaking: the two queues know nothing of each other (see the voice-pack fallback
+			-- comment above), so both would talk at once. Give the Blizzard queue the same reset an overwrite line of its
+			-- own brings; the pump sends the stop from OnUpdate. Only while Sku's Blizzard voice is busy, so arrowing
+			-- through recorded lines does not stop other speech in the client.
+			if aOverwrite == true and ChatTts().neverResetQueues ~= true
+				and (#mSkuVoiceQueueBTTS > 0 or #mSkuVoiceQueueBTTS_Speaking > 0 or mClientGate.outstanding) then
+				mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = "queuereset"
+			end
+		end
+
 		for x = 1, #tStrings do
 			local tFile, tPath, tLength
 
@@ -2495,26 +2590,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 				if tStrings[x] == "§01" then
 					tStrings[x] = "sound-silence0.1"
 				end
-				tFile, tPath, tLength = SkuVoice:GetAudiodata(tostring(tStrings[x]))
-
-				if tFile == nil then
-					local tModString = string.lower(tostring(tStrings[x]))
-					tFile, tPath, tLength = SkuVoice:GetAudiodata(tModString)
-				end
-				if tFile == nil then
-					local tModString = string.upper(string.sub(tostring(tStrings[x]),1,1))..string.sub(tostring(tStrings[x]),2)
-					tFile, tPath, tLength = SkuVoice:GetAudiodata(tModString)
-				end
-				--dprint(tStrings[x], "tFile", tFile)
-
-				if tFile == nil then
-					local tModString = string.lower(tostring(tStrings[x]))
-					for i, v in pairs(tGenderSuffixes) do
-						if string.sub(tModString, string.len(tModString) - string.len(i) + 1) == i then
-							tFile, tPath, tLength = SkuVoice:GetAudiodata(string.sub(tModString, 1, string.len(tModString) - string.len(i))..v)
-						end
-					end
-				end
+				tFile, tPath, tLength = FindWordAudio(tostring(tStrings[x]))
 
 				if tFile == nil then
 					tFile, tPath, tLength = SkuVoice:GetAudiodata("sound-audiofehltbeep")
@@ -2949,7 +3025,7 @@ function SkuVoice:Release()
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuVoice:GetAudiodata(aString)
+function SkuVoice:GetAudiodata(aString, aQuiet)
 	-- [v43.0] These three were assigned WITHOUT `local`, so every call wrote three
 	-- globals (and left them set for the next caller to trip over). Verified safe to
 	-- localise: OutputString captures the return values into its own locals, and
@@ -2998,7 +3074,7 @@ function SkuVoice:GetAudiodata(aString)
 		end
 	end
 
-	if tFile == nil then
+	if tFile == nil and not aQuiet then
 		dprint("GetAudiodata: no audio file for:", aString)
 	end
 

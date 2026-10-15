@@ -1709,6 +1709,10 @@ function SkuOptions:CreateMainFrame()
 			SkuMob:OutputTargetHealth(true)
 		end
 
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_PETHEALTH") then
+			SkuCore:SpeakPetHealth()
+		end
+
 		local tTargetGUID = UnitGUID("target")
 		if tTargetGUID then
 			local tRaidtarget = GetRaidTargetIndex("target")
@@ -2834,6 +2838,8 @@ function SkuOptions:CreateMainFrame()
 	if tKbds["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"].key2 and tKbds["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"].key2, tFrame:GetName(), tKbds["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_TARGETHEALTH"].key, tFrame:GetName(), tKbds["SKU_KEY_TARGETHEALTH"].key)
 	if tKbds["SKU_KEY_TARGETHEALTH"].key2 and tKbds["SKU_KEY_TARGETHEALTH"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_TARGETHEALTH"].key2, tFrame:GetName(), tKbds["SKU_KEY_TARGETHEALTH"].key2) end
+	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_PETHEALTH"].key, tFrame:GetName(), tKbds["SKU_KEY_PETHEALTH"].key)
+	if tKbds["SKU_KEY_PETHEALTH"].key2 and tKbds["SKU_KEY_PETHEALTH"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_PETHEALTH"].key2, tFrame:GetName(), tKbds["SKU_KEY_PETHEALTH"].key2) end
 	
 	SetOverrideBindingClick(tFrame, true, "SHIFT-UP", tFrame:GetName(), "SHIFT-UP")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-DOWN", tFrame:GetName(), "SHIFT-DOWN")
