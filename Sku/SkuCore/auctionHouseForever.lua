@@ -1799,7 +1799,7 @@ end)
 
 function AHF:BuildSalesChildren(aSelf)
 	aSelf.children = {}
-	local tNew = SkuOptions:InjectMenuItems(aSelf, {L["Create new auction"]}, SkuGenericMenuItem)
+	local tNew = SkuOptions:InjectMenuItems(aSelf, {L["Neue Auktion"]}, SkuGenericMenuItem)
 	tNew.dynamic = true
 	tNew.BuildChildren = tBuildSellList
 
@@ -1980,19 +1980,19 @@ end
 
 -- Root: Auctions > [search, category]; below it (same level) Sales > [new auction, current sales]
 function AHF:MenuBuilder(aSelf)
-	local tAuctionsEntry = SkuOptions:InjectMenuItems(aSelf, {L["Auctions"]}, SkuGenericMenuItem)
+	local tAuctionsEntry = SkuOptions:InjectMenuItems(aSelf, {L["Auktionen"]}, SkuGenericMenuItem)
 	tAuctionsEntry.dynamic = true
 	tAuctionsEntry.BuildChildren = function(self)
 		self.children = {}
 		AHF:BuildSearchEntries(self)
 	end
 
-	local tSales = SkuOptions:InjectMenuItems(aSelf, {L["Sales"]}, SkuGenericMenuItem)
+	local tSales = SkuOptions:InjectMenuItems(aSelf, {L["Verkäufe"]}, SkuGenericMenuItem)
 	tSales.dynamic = true
 	tSales.BuildChildren = function(selfSales) AHF:BuildSalesChildren(selfSales) end
 
 	-- Auctions the player has bid on (Blizzard: Auctions tab > Bids).
-	local tBidsEntry = SkuOptions:InjectMenuItems(aSelf, {L["My bids"]}, SkuGenericMenuItem)
+	local tBidsEntry = SkuOptions:InjectMenuItems(aSelf, {L["Gebote"]}, SkuGenericMenuItem)
 	tBidsEntry.dynamic = true
 	tMarkEntering(tBidsEntry)
 	tBidsEntry.BuildChildren = function(selfBids) AHF:BuildBidsChildren(selfBids) end
