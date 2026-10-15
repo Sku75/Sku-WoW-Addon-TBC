@@ -8,6 +8,12 @@ local GetCoinText = Sku.Compat.GetCoinText
 local GetItemInfo = Sku.Compat.GetItemInfo
 local GetNumQuestLogEntries = Sku.Compat.GetNumQuestLogEntries
 local GetQuestLogTitle = Sku.Compat.GetQuestLogTitle
+local GetQuestLogFrame = Sku.Compat.GetQuestLogFrame
+local ShowQuestLog = Sku.Compat.ShowQuestLog
+local HideQuestLog = Sku.Compat.HideQuestLog
+local SelectQuestLogEntry = Sku.Compat.SelectQuestLogEntry
+local SetAbandonQuest = Sku.Compat.SetAbandonQuest
+local AbandonQuest = Sku.Compat.AbandonQuest
 
 local PLAYER_ENTERING_WORLD_flag = true
 
@@ -179,10 +185,10 @@ function SkuQuest:OnEnable()
 	tFrame:SetScript("OnClick", function(self, a, b) 
 		--dprint("SkuQuestMain OnClick", a, b)
 		if _G["SkuQuestMainOption1"]:IsVisible() then
-			HideUIPanel(QuestLogFrame)
+			HideQuestLog()
 			--_G["SkuQuestMainOption1"]:Hide()
 		else
-			ShowUIPanel(QuestLogFrame)
+			ShowQuestLog()
 			--_G["SkuQuestMainOption1"]:Show()
 			--SkuQuest.currentMenuPosition = tMenu[1]
 			PlaySound(811)	
@@ -244,7 +250,7 @@ function SkuQuest:OnEnable()
 			--_G["QuestLogFrame"]:Hide()
 			--SkuOptions.TTS:Output("", -1)--HideUIPanel(QuestLogFrame)
 			--SkuQuest:ToggleQuestLogHook()
-			HideUIPanel(QuestLogFrame)
+			HideQuestLog()
 			--self:GetScript("OnHide")(self)
 		end
 		if  SkuQuest.MenuAccessKeysNumbers[aKey] then
@@ -357,7 +363,7 @@ function SkuQuest:OnSkuQuestAbandon()
 	SetAbandonQuest() --Sets the currently selected quest to be abandoned.
 	AbandonQuest()
 	--SkuQuest:ToggleQuestLogHook()
-	HideUIPanel(QuestLogFrame)
+	HideQuestLog()
 	--SkuOptions.TTS:Output("", -1)
 	SkuOptions.Voice:OutputStringBTtts(L["quest;abgebrochen"], true, true, 0.2, true)
 	SkuOptions:CloseMenu()
@@ -366,7 +372,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:OnSkuQuestUP()
-	if ( not QuestLogFrame:IsVisible() ) then
+	if ( not GetQuestLogFrame():IsVisible() ) then
 		return
 	end
 
@@ -374,8 +380,8 @@ function SkuQuest:OnSkuQuestUP()
 	SkuQuest.SelectedQuest = SkuQuest.SelectedQuest or 1
 
 	--dprint("q up")
-	if ( not QuestLogFrame:IsVisible() ) then
-		ShowUIPanel(QuestLogFrame)
+	if ( not GetQuestLogFrame():IsVisible() ) then
+		ShowQuestLog()
 		ExpandQuestHeader(0)
 		SelectQuestLogEntry(SkuQuest.SelectedQuest)
 	end
@@ -392,14 +398,14 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:OnSkuQuestDOWN()
-	if ( not QuestLogFrame:IsVisible() ) then
+	if ( not GetQuestLogFrame():IsVisible() ) then
 		return
 	end
 
 	SkuQuest.SelectedQuest = SkuQuest.SelectedQuest or 0
 	--dprint("q down")
-	if ( not QuestLogFrame:IsVisible() ) then
-		ShowUIPanel(QuestLogFrame)
+	if ( not GetQuestLogFrame():IsVisible() ) then
+		ShowQuestLog()
 		ExpandQuestHeader(0)
 		SelectQuestLogEntry(SkuQuest.SelectedQuest)
 	end
@@ -489,7 +495,13 @@ function SkuQuest:CheckQuestProgress(aSilent)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuQuest:GetTTSText(aQuestID)
+function SkuQuest:GetTTSText(aQuestID, aNode)
+	-- Forever: aQuestID is the quest ID and the text comes from the quest data (questTextForever.lua);
+	-- on the other clients it is the index in the quest log and the log window is read.
+	-- aNode: the quest menu entry the text is for (Forever completes it once the quest data arrives).
+	if Sku.isForever then
+		return SkuQuest:GetTTSTextForever(aQuestID, aNode)
+	end
 
 --dprint("============================")
 	--if 1 == 1 then return end
@@ -509,7 +521,7 @@ function SkuQuest:GetTTSText(aQuestID)
 	local titleButton = _G["QuestLogTitle"..id]
 	local titleButtonTag = _G["QuestLogTitle"..id.."Tag"]
 	aQuestID = aQuestID or questID
-	QuestLogFrame.selectedButtonID = aQuestID
+	GetQuestLogFrame().selectedButtonID = aQuestID
 	local scrollFrameOffset = FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
 	if (questID > scrollFrameOffset and questID <= (scrollFrameOffset + QUESTS_DISPLAYED) and questID <= GetNumQuestLogEntries()) then
 		titleButton:LockHighlight()
@@ -749,7 +761,7 @@ function SkuQuest:ToggleQuestLogHook(...)
 	-- hooksecurefunc can't be removed; no-op when the addon is disabled so a
 	-- disabled SkuQuest does not intercept the quest log.
 	if not SkuQuest:IsEnabled() then return end
-	if ( QuestLogFrame:IsVisible() ) then
+	if ( GetQuestLogFrame():IsVisible() ) then
 		ExpandQuestHeader(0)
 	end
 	--if 1 == 1 then return end
@@ -762,7 +774,7 @@ function SkuQuest:ToggleQuestLogHook(...)
 		return
 	end
 
-	if ( QuestLogFrame:IsVisible() ) then
+	if ( GetQuestLogFrame():IsVisible() ) then
 		--SkuOptions.TTS:Output("", 10000)--HideUIPanel(QuestLogFrame)
 		C_Timer.NewTimer(0.1, function()
 			SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"]..","..L["SkuQuestMenuEntry"])
@@ -893,7 +905,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:VARIABLES_LOADED(...)
 	--dprint(...)
-	HideUIPanel(QuestLogFrame)
+	HideQuestLog()
 	--hooksecurefunc("QuestLog_Update", SkuQuest.OnQuestLog_OnEvent)
 	-- The ToggleQuestLog hook is now installed in OnEnable (once, IsEnabled-guarded)
 	-- so it survives a mid-session enable; it used to be installed here.

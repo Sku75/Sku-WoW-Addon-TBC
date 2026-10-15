@@ -52,7 +52,10 @@ def decode(lit):
     out, i = [], 0
     while i < len(body):
         if body[i] == "\\" and i + 1 < len(body):
-            out.append({"n": "\n", "t": "\t"}.get(body[i + 1], body[i + 1]))
+            # "\r" must decode to CR: it fell through to a bare "r", so every key with
+            # "\r\n" (30 of them, e.g. L["Fortschritt\r\n"]) came out of assemble as
+            # L["Fortschrittr\n"] and the French text never matched its enUS key.
+            out.append({"n": "\n", "r": "\r", "t": "\t"}.get(body[i + 1], body[i + 1]))
             i += 2
         else:
             out.append(body[i])
@@ -61,7 +64,8 @@ def decode(lit):
 
 
 def encode(s):
-    return s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("\t", "\\t")
+    return (s.replace("\\", "\\\\").replace('"', '\\"').replace("\r", "\\r")
+             .replace("\n", "\\n").replace("\t", "\\t"))
 
 
 def parse(path):

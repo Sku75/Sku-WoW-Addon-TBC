@@ -1,9 +1,11 @@
 ﻿---------------------------------------------------------------------------------------------------------------------------------------
--- Sku Dungeon Browser  (rework: widget-faithful mirror of LFGParentFrame)
+-- Sku Dungeon Browser: Anniversary / Era part  (widget-faithful mirror of LFGParentFrame)
 --
 -- Mirrors Blizzard's Group-Finder window (LFGParentFrame) through Sku's
--- menu, following the "make a Blizzard window accessible" recipe. The
--- two Sku submenus map 1:1 to the window's two tabs:
+-- menu, following the "make a Blizzard window accessible" recipe. The shared
+-- core (dungeonBrowserCore.lua) owns the module, the top-level entry, open /
+-- rebuild and the auto-open; this file fills Shared.client for Anniversary and
+-- Era. The two Sku submenus map 1:1 to the window's two tabs:
 --
 --   "Eintrag erstellen"  (LFGParentFrameTab1 / LFGListingFrame)
 --        Rolle, Anfängerfreundlich, Kommentar, Dungeon-Auswahl
@@ -28,47 +30,34 @@
 --     the post blocked. Read-API + macrotext-write covers every part of
 --     the window without touching the protected frame state.
 --
--- Auto-open: hooks LFGParentFrame OnShow/OnHide (NOT PVEFrame — that
--- frame does not exist on this build) so the Sku menu opens/closes with
--- the Group-Finder window regardless of how it was toggled.
+-- Auto-open: the core hooks LFGParentFrame OnShow/OnHide (the frame names
+-- are in Shared.client.frames below) so the Sku menu opens/closes with the
+-- Group-Finder window regardless of how it was toggled.
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Forever has its own client part (dungeonBrowserForever.lua); this file is for the other clients.
+if Sku.isForever then return end
+
 local MODULE_NAME, MODULE_PART = "SkuCore", "dungeonBrowser"
 local _G = _G
 
-SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
-
--- Real AceAddon SUBMODULE of SkuCore so it can be toggled on/off at runtime.
-local DungeonBrowser = SkuCore:NewModule("DungeonBrowser")
-SkuCore.DungeonBrowser = DungeonBrowser   -- published handle (keybind + hooks use it)
-
-SkuCore:RegisterToggleableModule("DungeonBrowser", function()
-   return Sku.deEn("Dungeonbrowser", "Dungeon browser", "Navigateur de donjons")
-end)
+local DungeonBrowser = SkuCore.DungeonBrowser
+local Shared = Sku.ns.DungeonBrowser
+local tSay, Inject, tPin = Shared.Say, Shared.Inject, Shared.Pin
+local tLevelOk, tLevelStr = Shared.LevelOk, Shared.LevelStr
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Self-contained localisation (deEn — no locale-file edits needed).
 ---------------------------------------------------------------------------------------------------------------------------------------
 local deEn = Sku.deEn
 local L = {
-   label          = deEn("Dungeonbrowser", "Dungeon browser"),
-   short          = Sku.MENU_ROOT,
    chatPrefix     = deEn("Dungeonbrowser: ", "Dungeon browser: "),
-   -- top level
-   tabCreate      = deEn("Eintrag erstellen", "Create entry"),
-   tabBrowse      = deEn("Gruppensuche", "Search groups"),
    -- create tab
-   statusNotListed= deEn("Nicht angemeldet", "Not listed"),
    statusListed   = deEn("Angemeldet", "Listed"),
    role           = deEn("Rolle", "Role"),
-   roleTank       = deEn("Tank", "Tank"),
-   roleHealer     = deEn("Heiler", "Healer"),
-   roleDamager    = deEn("Schaden", "Damage"),
    active         = deEn(" (aktiv)", " (active)"),
    npf            = deEn("Anfängerfreundlich", "New player friendly"),
    comment        = deEn("Kommentar", "Comment"),
    commentPrompt  = deEn("Kommentar eingeben, dann EINGABE drücken", "Type a comment, then press ENTER"),
-   sectionNormal  = deEn("Normale Dungeons", "Normal dungeons"),
-   sectionHeroic  = deEn("Heroische Dungeons", "Heroic dungeons"),
    noDungeons     = deEn("Keine Dungeons verfügbar", "No dungeons available"),
    noDungeonsLvl  = deEn("Keine Dungeons für deine Stufe", "No dungeons for your level", "Aucun donjon pour votre niveau"),
    levelFilter    = deEn("Nur passende Dungeons", "Only matching dungeons", "Donjons adaptés uniquement"),
@@ -77,9 +66,7 @@ local L = {
    deselectAll    = deEn("Alle abwählen", "Deselect all"),
    enroll         = deEn("Selbst anmelden", "Post entry"),
    unenroll       = deEn("Anmeldung zurückziehen", "Remove listing"),
-   levelFrom      = deEn("ab Stufe ", "level "),
    -- browse tab
-   category       = deEn("Kategorie", "Category"),
    refresh        = deEn("Aktualisieren", "Refresh"),
    searching      = deEn("Suche läuft …", "Searching …"),
    noGroups       = deEn("Keine Gruppen gefunden", "No groups found"),
@@ -97,54 +84,20 @@ local L = {
    unavailable    = deEn("Gruppen-Finder nicht verfügbar", "Group finder unavailable"),
 }
 
----------------------------------------------------------------------------------------------------------------------------------------
--- Role model (only offer roles the class can fill).
----------------------------------------------------------------------------------------------------------------------------------------
-local CLASS_ROLES = {
-   WARRIOR = { "TANK", "DAMAGER" },
-   PALADIN = { "TANK", "HEALER", "DAMAGER" },
-   DRUID   = { "TANK", "HEALER", "DAMAGER" },
-   PRIEST  = { "HEALER", "DAMAGER" },
-   SHAMAN  = { "HEALER", "DAMAGER" },
-   HUNTER  = { "DAMAGER" },
-   MAGE    = { "DAMAGER" },
-   WARLOCK = { "DAMAGER" },
-   ROGUE   = { "DAMAGER" },
-}
-local ROLE_NAMES = { TANK = L.roleTank, HEALER = L.roleHealer, DAMAGER = L.roleDamager }
-local LFG_CATEGORY_DUNGEON = 2
+local CLASS_ROLES = Shared.CLASS_ROLES
+local ROLE_NAMES = Shared.ROLE_NAMES
+local LFG_CATEGORY_DUNGEON = Shared.LFG_CATEGORY_DUNGEON
 
 -- Blizzard's own "level-appropriate" activity filter (Enum.LFGListFilter.Recommended).
 local LFG_FILTER_RECOMMENDED = (_G.Enum and _G.Enum.LFGListFilter and _G.Enum.LFGListFilter.Recommended) or 1
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Small safe helpers.
+-- Feedback: spoken, and echoed into the chat frame.
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function tCall(obj, method, ...)
-   if type(obj) ~= "table" and type(obj) ~= "userdata" then return nil end
-   local fn = obj[method]
-   if type(fn) ~= "function" then return nil end
-   local ok, a, b, c = pcall(fn, obj, ...)
-   if ok then return a, b, c end
-   return nil
-end
-
-local function tSay(aText, aOverwrite)
-   if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
-      pcall(function()
-         SkuOptions.Voice:OutputStringBTtts(aText, aOverwrite and true or false, true, 0.1, nil, nil, nil, 1)
-      end)
-   end
-end
-
 local function tSayChat(aText, aColor)
    aColor = aColor or "ffffff"
    if _G.print then print("|cff" .. aColor .. L.chatPrefix .. "|r" .. aText) end
    tSay(aText)
-end
-
-local function Inject(aParent, aName)
-   return SkuOptions:InjectMenuItems(aParent, { aName }, SkuGenericMenuItem)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -191,7 +144,8 @@ local function tActivityInfo(activityID)
    local ok, t = pcall(_G.C_LFGList.GetActivityInfoTable, activityID)
    if not ok or type(t) ~= "table" then return nil end
    local info = { id = activityID }
-   info.name       = t.shortName or t.fullName or (deEn("Aktivität #", "Activity #") .. activityID)
+   -- shortName is often empty, not nil (LFGUtil_GetActivityInfoName)
+   info.name       = (t.shortName ~= "" and t.shortName) or (t.fullName ~= "" and t.fullName) or (deEn("Aktivität #", "Activity #") .. activityID)
    info.fullName   = t.fullName or t.shortName
    info.minLevel   = (type(t.minLevelSuggestion) == "number" and t.minLevelSuggestion > 0 and t.minLevelSuggestion)
                      or (type(t.minLevel) == "number" and t.minLevel > 0 and t.minLevel) or nil
@@ -241,14 +195,7 @@ local function tRawActivityIDs(categoryID, filters)
    return nil
 end
 
-local function tLevelOk(info, lvl)
-   if not lvl or lvl <= 0 then return true end
-   if info.minLevel and lvl < info.minLevel then return false end
-   if info.maxLevel and lvl > info.maxLevel then return false end
-   return true
-end
-
--- The activities of a category the player can actually sign up for (flat, sorted).
+-- The activities of a category the player can actually sign up for (flat; Shared.GroupActivities sorts them).
 local function tGetCategoryActivities(categoryID)
    tRequestActivities()
    local infos = {}
@@ -306,60 +253,12 @@ local function tGetCategoryActivities(categoryID)
       recCount = recCount, levelCount = levelCount,
       source = DungeonBrowser.tFilterStats.source,
    })
-
-   table.sort(infos, function(a, b)
-      local am, bm = a.minLevel or 0, b.minLevel or 0
-      if am ~= bm then return am < bm end
-      return (a.name or "") < (b.name or "")
-   end)
    return infos
-end
-
--- Name (+ order) of an activity group, e.g. 380 -> "Heroic Dungeons".
-local function tGroupInfo(groupID, sampleInfo)
-   local name, order
-   if groupID and _G.C_LFGList and _G.C_LFGList.GetActivityGroupInfo then
-      local ok, a, b = pcall(_G.C_LFGList.GetActivityGroupInfo, groupID)
-      if ok then
-         if type(a) == "table" then name = a.name or a.fullName; order = a.orderIndex
-         elseif type(a) == "string" and a ~= "" then name = a; order = (type(b) == "number") and b or nil end
-      end
-   end
-   if not name or name == "" then
-      name = (sampleInfo and sampleInfo.isHeroic) and L.sectionHeroic or L.sectionNormal
-   end
-   return name, order or 0
 end
 
 -- Category activities bucketed into ordered activity groups.
 local function tGetActivityGroups(categoryID)
-   local infos = tGetCategoryActivities(categoryID)
-   local buckets, order = {}, {}
-   for _, info in ipairs(infos) do
-      local gid = info.groupID or 0
-      local b = buckets[gid]
-      if not b then
-         local gname, gorder = tGroupInfo(gid, info)
-         b = { groupID = gid, name = gname, orderIndex = gorder, activities = {} }
-         buckets[gid] = b
-         order[#order + 1] = b
-      end
-      b.activities[#b.activities + 1] = info
-   end
-   table.sort(order, function(a, b)
-      if a.orderIndex ~= b.orderIndex then return a.orderIndex < b.orderIndex end
-      return (a.name or "") < (b.name or "")
-   end)
-   return order
-end
-
-local function tLevelStr(info)
-   if info.minLevel and info.maxLevel then
-      return " (" .. info.minLevel .. "-" .. info.maxLevel .. ")"
-   elseif info.minLevel then
-      return " (" .. L.levelFrom .. info.minLevel .. ")"
-   end
-   return ""
+   return Shared.GroupActivities(tGetCategoryActivities(categoryID))
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -588,17 +487,6 @@ DungeonBrowser.tDungeonEntries = DungeonBrowser.tDungeonEntries or {}   -- [acti
 DungeonBrowser.tRoleEntries    = DungeonBrowser.tRoleEntries    or {}   -- [role] = {entry=, roleName=}
 DungeonBrowser.tNpfEntry       = DungeonBrowser.tNpfEntry       or nil
 
-local function tPin(entry, label)
-   if not (entry and SkuOptions and _G.C_Timer and _G.C_Timer.After) then return end
-   local function set(speak)
-      SkuOptions.currentMenuPosition = entry
-      if speak then tSay(label, true) end
-   end
-   _G.C_Timer.After(0.05, function() set(false) end)
-   _G.C_Timer.After(0.20, function() set(false) end)
-   _G.C_Timer.After(0.40, function() set(true) end)
-end
-
 local function tSelMark(checked) return checked and (L.selMark .. " ") or "" end
 
 function SkuCoreDungeonToggleSelect(activityID)
@@ -646,23 +534,13 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Menu builder: "Eintrag erstellen" (Tab 1).
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Re-descend into the create tab (rebuilds its children) after a category change.
-local function tNavCreate()
-   if not (SkuOptions and SkuOptions.SlashFunc and _G.C_Timer and _G.C_Timer.After) then return end
-   _G.C_Timer.After(0.02, function()
-      pcall(function()
-         SkuOptions:SlashFunc(L.short .. "," .. string.lower(L.label) .. "," .. string.lower(L.tabCreate))
-      end)
-   end)
-end
-
 -- Flipping the level filter changes WHICH children exist, so it cannot be a
 -- relabel-in-place like the other toggles — the create tab has to be rebuilt.
 function SkuCoreDungeonToggleShowAll()
    DungeonBrowser:ToggleShowAll()
    local on = not tDB().showAllActivities
    tSay(L.levelFilter .. (on and L.active or ""), true)
-   tNavCreate()
+   Shared.NavCreate()
 end
 
 local function tBuildCreateTab(aParent)
@@ -693,23 +571,11 @@ local function tBuildCreateTab(aParent)
 
    -- Kategorie (same category system as Gruppensuche; changing it rebuilds the
    -- activity groups below). Read-only enumeration APIs, so no macrotext needed.
-   local cats = tListCategories()
-   local tCat = Inject(aParent, L.category)
-   tCat.dynamic = true; tCat.isSelect = true; tCat.noStepUpAfterSelect = true
-   tCat.GetCurrentValue = function() return tCategoryName(tDB().listCategory) end
-   tCat.OnAction = function(self, aValue, aSelName)
-      for _, c in ipairs(cats) do
-         if c.name == aSelName then
-            tDB().listCategory = c.id
-            tSay(c.name, true)
-            tNavCreate()
-            return
-         end
-      end
-   end
-   tCat.BuildChildren = function(self)
-      for _, c in ipairs(cats) do Inject(self, c.name) end
-   end
+   Shared.AddCategorySelect(aParent, tListCategories(), function() return tCategoryName(tDB().listCategory) end, function(c)
+      tDB().listCategory = c.id
+      tSay(c.name, true)
+      Shared.NavCreate()
+   end)
 
    -- Rolle (multi-select toggles, class-filtered)
    local _, classToken = UnitClass("player")
@@ -807,27 +673,12 @@ end
 local function tBuildBrowseTab(aParent)
    local d = tDB()
 
-   -- Kategorie (select)
-   local cats = tListCategories()
-   local tCat = Inject(aParent, L.category)
-   tCat.dynamic = true
-   tCat.isSelect = true
-   tCat.noStepUpAfterSelect = true
-   tCat.GetCurrentValue = function() return tCategoryName(tDB().browseCategory) end
-   tCat.OnAction = function(self, aValue, aSelName)
-      -- Only set the category here; the actual C_LFGList.Search is protected and
-      -- must run via the "Aktualisieren" macrotext (HW context), not from here.
-      for _, c in ipairs(cats) do
-         if c.name == aSelName then
-            tDB().browseCategory = c.id
-            tSay(c.name, true)
-            return
-         end
-      end
-   end
-   tCat.BuildChildren = function(self)
-      for _, c in ipairs(cats) do Inject(self, c.name) end
-   end
+   -- Kategorie (select). Only sets the category; the actual C_LFGList.Search is
+   -- protected and must run via the "Aktualisieren" macrotext (HW context).
+   Shared.AddCategorySelect(aParent, tListCategories(), function() return tCategoryName(tDB().browseCategory) end, function(c)
+      tDB().browseCategory = c.id
+      tSay(c.name, true)
+   end)
 
    -- Aktualisieren — C_LFGList.Search is protected, so drive it via macrotext
    -- (hardware/secure context), same as CreateListing. DoSearch schedules the
@@ -862,377 +713,28 @@ local function tBuildBrowseTab(aParent)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Top-level builder: status + two tabs.
----------------------------------------------------------------------------------------------------------------------------------------
-function DungeonBrowser:BuildMenu(aParent)
-   if not DungeonBrowser:IsEnabled() then return end
-
-   local tStatus = Inject(aParent, tIsListed() and L.statusListed or L.statusNotListed)
-   tStatus.dynamic = false
-
-   local tCreate = Inject(aParent, L.tabCreate)
-   tCreate.dynamic = true; tCreate.sorting = true
-   tCreate.BuildChildren = function(self) tBuildCreateTab(self) end
-
-   local tBrowse = Inject(aParent, L.tabBrowse)
-   tBrowse.dynamic = true; tBrowse.sorting = true
-   -- No auto-search on entry: C_LFGList.Search is protected and can only run from
-   -- the "Aktualisieren" macrotext. We show whatever results the last search left,
-   -- with Aktualisieren right at the top.
-   tBrowse.BuildChildren = function(self) tBuildBrowseTab(self) end
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
--- Top-level menu entry (lazy inject — see note) + open/toggle/rebuild.
----------------------------------------------------------------------------------------------------------------------------------------
-local function tEnsureEntry()
-   if not (SkuOptions and SkuOptions.Menu) then return end
-   for i = 1, #SkuOptions.Menu do
-      local e = SkuOptions.Menu[i]
-      if e and e.name == L.label then return e end
-   end
-   -- Lazy: injecting before the first menu-open would make #SkuOptions.Menu ~= 0
-   -- and suppress Sku's default top-level build (Lokal/SkuNav/...).
-   local e = Inject(SkuOptions.Menu, L.label)
-   e.dynamic = true; e.sorting = true
-   e.BuildChildren = function(self) DungeonBrowser:BuildMenu(self) end
-   return e
-end
-
-function DungeonBrowser:DungeonBrowserOpen()
-   if not DungeonBrowser:IsEnabled() or not SkuOptions then return end
-   tRequestActivities()
-
-   -- Open on the NEXT frame, not synchronously inside the keybind's OnKeyDown.
-   -- If we open here, that same OnKeyDown keeps falling through to the menu
-   -- type-ahead handler and stashes the hotkey's own letter into
-   -- SkuOptions.Filterstring (the "hotkey letter becomes a filter" bug). Other
-   -- windows avoid this because they open on their frame's OnShow (a later frame).
-   -- Deferring one frame puts the open outside that keypress entirely.
-   local function doOpen()
-      if not (DungeonBrowser:IsEnabled() and SkuOptions) then return end
-      if not SkuOptions:IsMenuOpen() then
-         _G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"],
-            SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
-      end
-      tEnsureEntry()
-      SkuOptions:SlashFunc(L.short .. "," .. string.lower(L.label))
-      SkuOptions.Filterstring = ""   -- belt-and-braces in case anything leaked
-   end
-   if _G.C_Timer and _G.C_Timer.After then _G.C_Timer.After(0, doOpen) else doOpen() end
-   -- Deliberately does NOT open Blizzard's LFGParentFrame: a screen-reader user
-   -- drives everything from this menu, and force-opening the real window provokes
-   -- its taint-prone auto-search (ADDON_ACTION_BLOCKED). The OnShow hook still
-   -- mirrors the window if the user opens it manually.
-end
-
-function DungeonBrowser:DungeonBrowserToggle()
-   if not DungeonBrowser:IsEnabled() then return end
-   if SkuOptions and SkuOptions:IsMenuOpen() then SkuOptions:CloseMenu(); return end
-   DungeonBrowser:DungeonBrowserOpen()
-end
-
--- Is the menu cursor standing inside our subtree? Rebuild wipes the top entry's
--- children, so it may only re-seat the cursor when the cursor was actually on
--- one of the nodes it just freed.
-local function tCursorInBrowser()
-   local n = SkuOptions and SkuOptions.currentMenuPosition
-   local guard = 0
-   while type(n) == "table" and guard < 64 do
-      if n.name == L.label then return true end
-      n = n.parent
-      guard = guard + 1
-   end
-   return false
-end
-
--- In-place rebuild of our top entry's children (keeps the menu open).
---
--- ★[v43.2] Rebuild NEVER opens the menu and never drags the cursor into the browser.
--- Most of its callers are events the user did not cause -- above all
--- LFG_LIST_ACTIVE_ENTRY_UPDATE, which fires when the SERVER drops your listing,
--- e.g. the instant you accept a party invite while listed. Its tail SlashFunc
--- re-opens a CLOSED menu (SkuZOptions/Core.lua ~300) and descends into us, which
--- is how "accept invite" ended with the user parked on "Nicht angemeldet"
--- (capture 2026-08-27 22:24:57). Skipping costs nothing: the top entry is
--- `dynamic`, so the next descend rebuilds its children anyway.
-function DungeonBrowser:Rebuild()
-   if not (SkuOptions and SkuOptions.Menu) then return end
-   if not (SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen()) then
-      dprint("dungeonBrowser", "Rebuild skipped", { reason = "menu closed" })
-      return
-   end
-   if not tCursorInBrowser() then
-      dprint("dungeonBrowser", "Rebuild skipped", { reason = "cursor outside browser" })
-      return
-   end
-   local top = tEnsureEntry()
-   if not top then return end
-   if type(top.childs) == "table" then for k in pairs(top.childs) do top.childs[k] = nil end end
-   if type(top.childsByName) == "table" then for k in pairs(top.childsByName) do top.childsByName[k] = nil end end
-   for i = #top, 1, -1 do
-      local v = top[i]
-      if type(v) == "table" and v.name then top[i] = nil; if top[v.name] == v then top[v.name] = nil end end
-   end
-   pcall(function() DungeonBrowser:BuildMenu(top) end)
-   if SkuOptions.SlashFunc then
-      pcall(function() SkuOptions:SlashFunc(L.short .. "," .. string.lower(L.label)) end)
-   end
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
--- Auto-open: hook LFGParentFrame OnShow/OnHide (+ toggle fns) so the Sku menu
--- follows the Group-Finder window. Party-invite popups suppress the auto-open
--- so the invite dialog keeps focus.
----------------------------------------------------------------------------------------------------------------------------------------
-DungeonBrowser.tHookedFrames = DungeonBrowser.tHookedFrames or {}
-DungeonBrowser.tHookedToggles = DungeonBrowser.tHookedToggles or false
-DungeonBrowser.tInOpen = DungeonBrowser.tInOpen or false
-DungeonBrowser.tPartyInviteActive = false
--- State sampled when the invite ARRIVES, so the post-invite re-evaluation can
--- restore what was there instead of inventing something new (see
--- tReevaluateAfterInvite).
-DungeonBrowser.tContainerBeforeInvite = false
-DungeonBrowser.tInGroupBeforeInvite = false
-
-local DUNGEON_FRAME_CANDIDATES = { "LFGParentFrame", "PVEFrame", "GroupFinderFrame" }
-
-local tIsPartyInviteOpen
-local function tIsAnyContainerShown()
-   for _, n in ipairs(DUNGEON_FRAME_CANDIDATES) do
-      local f = _G[n]
-      if f and f.IsShown and f:IsShown() then return true end
-   end
-   return false
-end
-
-local function tIsInGroup()
-   if _G.IsInGroup then return _G.IsInGroup() and true or false end
-   if _G.GetNumGroupMembers then return (_G.GetNumGroupMembers() or 0) > 0 end
-   return false
-end
-
-tIsPartyInviteOpen = function()
-   for i = 1, 4 do
-      local p = _G["StaticPopup" .. i]
-      if p and p.IsShown and p:IsShown() and p.which then
-         local w = tostring(p.which)
-         if w == "PARTY_INVITE" or w == "PARTY_INVITE_XREALM" or w == "GUILD_INVITE" then return true end
-      end
-   end
-   return false
-end
-
-local function tFireOpen()
-   if not DungeonBrowser:IsEnabled() then return end
-   if DungeonBrowser.tPartyInviteActive == true or tIsPartyInviteOpen() then return end
-   if DungeonBrowser.tInOpen == true then return end
-   DungeonBrowser.tInOpen = true
-   pcall(function() DungeonBrowser:DungeonBrowserOpen() end)
-   DungeonBrowser.tInOpen = false
-end
-
-local function tFireClose()
-   if not DungeonBrowser:IsEnabled() then return end
-   if DungeonBrowser.tPartyInviteActive == true or tIsPartyInviteOpen() then return end
-   if SkuOptions and SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen() then
-      pcall(function() SkuOptions:CloseMenu() end)
-   end
-end
-
--- After the invite popup is gone: RESTORE the state the invite interrupted --
--- never create a new one.
---
--- ★[v43.2] The old version asked only "is a container shown NOW?" and opened the browser
--- if so. That turns any pre-existing window state into a forced open the user
--- never asked for, and it fires on the accept path too, where the browser is the
--- last place the player wants to land: they just joined a group. Two rules now:
---   * joined a group through this invite -> do nothing at all (neither open nor
---     close). The listing is gone, the search is over.
---   * otherwise only put back what was there BEFORE the invite: re-open if a
---     container was shown then and still is, close our menu if that container
---     has meanwhile gone away. If nothing was shown before, nothing happens.
-local function tReevaluateAfterInvite()
-   if DungeonBrowser.tPartyInviteActive == true or tIsPartyInviteOpen() then return end
-   local tHadContainer = DungeonBrowser.tContainerBeforeInvite == true
-   local tWasInGroup = DungeonBrowser.tInGroupBeforeInvite == true
-   DungeonBrowser.tContainerBeforeInvite = false
-   DungeonBrowser.tInGroupBeforeInvite = false
-
-   if (not tWasInGroup) and tIsInGroup() then
-      dprint("dungeonBrowser", "invite reevaluate", { action = "none", reason = "joined group" })
-      return
-   end
-   if not tHadContainer then
-      dprint("dungeonBrowser", "invite reevaluate", { action = "none", reason = "no window before invite" })
-      return
-   end
-   if tIsAnyContainerShown() then
-      dprint("dungeonBrowser", "invite reevaluate", { action = "reopen" })
-      tFireOpen()
-   elseif SkuOptions and SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen() then
-      dprint("dungeonBrowser", "invite reevaluate", { action = "close" })
-      pcall(function() SkuOptions:CloseMenu() end)
-   end
-end
-
-local tInvitePopupHookSet = false
-local function tEnsureInvitePopupHooks()
-   if tInvitePopupHookSet then return end
-   for i = 1, 4 do
-      local p = _G["StaticPopup" .. i]
-      if p and p.HookScript then
-         p:HookScript("OnHide", function(self)
-            local w = tostring(self.which or "")
-            if not (w == "PARTY_INVITE" or w == "PARTY_INVITE_XREALM" or w == "GUILD_INVITE") then return end
-            if not tIsPartyInviteOpen() then DungeonBrowser.tPartyInviteActive = false end
-            if _G.C_Timer and _G.C_Timer.After then _G.C_Timer.After(0.3, function() pcall(tReevaluateAfterInvite) end) end
-         end)
-      end
-   end
-   tInvitePopupHookSet = true
-end
-
-local tInviteWatchFrame = CreateFrame("Frame")
-tInviteWatchFrame:SetScript("OnEvent", function(self, event)
-   if event == "PARTY_INVITE_REQUEST" then
-      DungeonBrowser.tPartyInviteActive = true
-      -- Sample BEFORE the popup steals the menu: this is the state
-      -- tReevaluateAfterInvite is allowed to restore, and nothing else.
-      DungeonBrowser.tContainerBeforeInvite = tIsAnyContainerShown()
-      DungeonBrowser.tInGroupBeforeInvite = tIsInGroup()
-      tEnsureInvitePopupHooks()
-   elseif event == "PARTY_INVITE_CANCEL" then
-      if not tIsPartyInviteOpen() then DungeonBrowser.tPartyInviteActive = false end
-      if _G.C_Timer and _G.C_Timer.After then _G.C_Timer.After(0.3, function() pcall(tReevaluateAfterInvite) end) end
-   end
-end)
-
-local function tHookPVEFrame()
-   local any = false
-   for _, n in ipairs(DUNGEON_FRAME_CANDIDATES) do
-      if not DungeonBrowser.tHookedFrames[n] then
-         local f = _G[n]
-         if f and f.HookScript then
-            f:HookScript("OnShow", function() tFireOpen() end)
-            f:HookScript("OnHide", function() tFireClose() end)
-            DungeonBrowser.tHookedFrames[n] = true
-            any = true
-         end
-      end
-   end
-   if not DungeonBrowser.tHookedToggles and _G.hooksecurefunc then
-      local hooked = false
-      local function checkThenOpen()
-         if _G.C_Timer and _G.C_Timer.After then
-            _G.C_Timer.After(0, function()
-               if tIsAnyContainerShown() then tFireOpen() end
-            end)
-         end
-      end
-      if type(_G.ToggleLFDParentFrame) == "function" then
-         pcall(_G.hooksecurefunc, "ToggleLFDParentFrame", checkThenOpen); hooked = true
-      end
-      if type(_G.TogglePVEFrame) == "function" then
-         pcall(_G.hooksecurefunc, "TogglePVEFrame", checkThenOpen); hooked = true
-      end
-      if hooked then DungeonBrowser.tHookedToggles = true; any = true end
-   end
-   return any
-end
-
-local function tAllHooksDone()
-   if not DungeonBrowser.tHookedToggles then return false end
-   for _, n in ipairs(DUNGEON_FRAME_CANDIDATES) do
-      if _G[n] and not DungeonBrowser.tHookedFrames[n] then return false end
-   end
-   return true
-end
-
-function DungeonBrowser:DungeonBrowserInit()
-   tHookPVEFrame()
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
 -- LFG events: refresh the menu when results / active-entry change.
 ---------------------------------------------------------------------------------------------------------------------------------------
-local tLFGEventsFrame
-local function tHookLFGEvents()
-   if tLFGEventsFrame then
-      tLFGEventsFrame:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
-      tLFGEventsFrame:RegisterEvent("LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED")
-      tLFGEventsFrame:RegisterEvent("LFG_LIST_ACTIVE_ENTRY_UPDATE")
+local function tOnLFGEvent(event)
+   if event == "LFG_LIST_ACTIVE_ENTRY_UPDATE" then
+      DungeonBrowser:Rebuild()
       return
    end
-   local f = CreateFrame("Frame")
-   tLFGEventsFrame = f
-   f:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
-   f:RegisterEvent("LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED")
-   f:RegisterEvent("LFG_LIST_ACTIVE_ENTRY_UPDATE")
-   f:SetScript("OnEvent", function(self, event)
-      if not DungeonBrowser:IsEnabled() then return end
-      if event == "LFG_LIST_ACTIVE_ENTRY_UPDATE" then
-         if SkuOptions and SkuOptions:IsMenuOpen() then pcall(function() DungeonBrowser:Rebuild() end) end
-         return
-      end
-      -- results / activity list updated: refresh the current node in place if open
-      if SkuOptions and SkuOptions:IsMenuOpen() and SkuOptions.currentMenuPosition
-         and SkuOptions.currentMenuPosition.OnUpdate then
-         pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
-      end
-   end)
+   -- results / activity list updated: refresh the current node in place, but only inside the browser
+   local cmp = SkuOptions.currentMenuPosition
+   if SkuOptions:IsMenuOpen() and Shared.CursorInBrowser() and cmp and cmp.OnUpdate then cmp:OnUpdate() end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Login / on-demand UI-load driver.
+-- What the shared core needs from this client.
 ---------------------------------------------------------------------------------------------------------------------------------------
-local tInitFrame = CreateFrame("Frame")
-tInitFrame:SetScript("OnEvent", function(self, event)
-   if event == "PLAYER_ENTERING_WORLD" then
-      self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-      if _G.C_Timer and _G.C_Timer.After then
-         _G.C_Timer.After(2, function()
-            pcall(function() DungeonBrowser:DungeonBrowserInit() end)
-            pcall(tHookLFGEvents)
-         end)
-      end
-      return
-   end
-   if event == "ADDON_LOADED" then
-      pcall(function() tHookPVEFrame() end)
-      if tAllHooksDone() then self:UnregisterEvent("ADDON_LOADED") end
-      return
-   end
-end)
-
----------------------------------------------------------------------------------------------------------------------------------------
--- Lifecycle: arm/disarm.
----------------------------------------------------------------------------------------------------------------------------------------
-function DungeonBrowser:OnEnable()
-   tInitFrame:RegisterEvent("ADDON_LOADED")
-   tInitFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-   tInviteWatchFrame:RegisterEvent("PARTY_INVITE_REQUEST")
-   tInviteWatchFrame:RegisterEvent("PARTY_INVITE_CANCEL")
-   if _G.C_Timer and _G.C_Timer.After then
-      _G.C_Timer.After(2, function()
-         if not DungeonBrowser:IsEnabled() then return end
-         pcall(function() DungeonBrowser:DungeonBrowserInit() end)
-         pcall(tHookLFGEvents)
-      end)
-   else
-      pcall(function() DungeonBrowser:DungeonBrowserInit() end)
-      pcall(tHookLFGEvents)
-   end
-end
-
-function DungeonBrowser:OnDisable()
-   tInitFrame:UnregisterEvent("ADDON_LOADED")
-   tInitFrame:UnregisterEvent("PLAYER_ENTERING_WORLD")
-   tInviteWatchFrame:UnregisterEvent("PARTY_INVITE_REQUEST")
-   tInviteWatchFrame:UnregisterEvent("PARTY_INVITE_CANCEL")
-   if tLFGEventsFrame then
-      tLFGEventsFrame:UnregisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
-      tLFGEventsFrame:UnregisterEvent("LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED")
-      tLFGEventsFrame:UnregisterEvent("LFG_LIST_ACTIVE_ENTRY_UPDATE")
-   end
-end
+Shared.client = {
+   IsListed = tIsListed,
+   RequestActivities = tRequestActivities,
+   BuildCreateTab = tBuildCreateTab,
+   BuildBrowseTab = tBuildBrowseTab,
+   frames = { "LFGParentFrame", "PVEFrame", "GroupFinderFrame" },
+   toggles = { "ToggleLFDParentFrame", "TogglePVEFrame" },
+   events = { "LFG_LIST_SEARCH_RESULTS_RECEIVED", "LFG_LIST_AVAILABILITY_UPDATE", "LFG_LIST_ACTIVE_ENTRY_UPDATE" },
+   OnLFGEvent = tOnLFGEvent,
+}

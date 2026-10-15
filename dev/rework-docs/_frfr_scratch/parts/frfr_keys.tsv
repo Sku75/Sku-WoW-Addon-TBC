@@ -55,7 +55,7 @@
 (Daily) 	(Quotidien) 
 (Fehlgeschlagen) 	(Échoué) 
 (Fertig) 	(Terminé) 
-)r\nRuhebonus: 	)r\nbonus de repos : 
+)\r\nRuhebonus: 	)\r\nbonus de repos : 
 ,	Virgule
 , average item level 	, niveau d'objet moyen 
 ,SkuAuras,Auren,Auren verwalten,	,Auras,Auras,Gérer les auras,
@@ -337,9 +337,9 @@ Auktionen	Enchères
 Auktionshaus	Hôtel des ventes
 Aura	Aura
 Aura Aktion: 	Action de l'aura : 
-Aura Ausgaben:r\n	Sorties de l'aura :r\n
-Aura Bedingungen:r\n	Conditions de l'aura :r\n
-Aura Elementer\n	Éléments de l'aurar\n
+Aura Ausgaben:\r\n	Sorties de l'aura :\r\n
+Aura Bedingungen:\r\n	Conditions de l'aura :\r\n
+Aura Elemente\r\n	Éléments de l'aura\r\n
 Aura Set importieren	Importer un jeu d'auras
 Aura Sets verwalten	Gérer les jeux d'auras
 Aura Typ	Type d'aura
@@ -423,8 +423,8 @@ Begleiter konnte nicht gewechselt werden	Le familier n'a pas pu être changé
 Bei Interagieren zum Ziel laufen	Se déplacer vers la cible lors de l'interaction
 Belegung gelöscht	Assignation supprimée
 Belegung löschen	Supprimer l'assignation
-Belohnungen:r\n	Récompenses :r\n
-Belohnungenr\n	Récompensesr\n
+Belohnungen:\r\n	Récompenses :\r\n
+Belohnungen\r\n	Récompenses\r\n
 Benny Hill	Benny Hill
 Bereits höheres Gebot vorhanden	Une enchère supérieure existe
 Bereitschaft check	vérification de préparation
@@ -437,7 +437,7 @@ Bewerbung zurückgezogen	Candidature retirée
 Bieten	Enchère
 Bind key	Assignation de touche
 Binding canceled	Assignation annulée
-Bisherige Aura Elementer\n	Éléments actuels de l'aurar\n
+Bisherige Aura Elemente\r\n	Éléments actuels de l'aura\r\n
 Bitte eine Zahl angeben. Beispiel: /skuaudio set 2	Veuillez indiquer un numéro. Exemple : /skuaudio set 2
 Blacklisted	Sur liste noire
 Blau	Bleue
@@ -1034,7 +1034,7 @@ Feral dps	Farouche dps
 Feral tank	Farouche tank
 Fertig. Alle geboten	Terminé. Toutes les enchères
 Fertig. Alle gekauft	Terminé. Tous achetés
-Fertigkeiten:r\n	Compétences :r\n
+Fertigkeiten:\r\n	Compétences :\r\n
 Feuer	Feu
 Fight	Combat
 Filter	Filtre
@@ -1064,8 +1064,8 @@ Following metaroute	Suivi du méta-itinéraire
 For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it.	Pour vous en tant que (%race%) (%class%), un tutoriel est disponible. Utilisez la flèche bas pour apprendre comment le lancer.
 Form	Forme
 Format	Disposition
-Fortschritt:r\n	Progression :r\n
-Fortschrittr\n	Progressionr\n
+Fortschritt:\r\n	Progression :\r\n
+Fortschritt\r\n	Progression\r\n
 Freie Taschenplätze: 	Emplacements de sac vides : 
 Freund hinzufügen	Ajouter un ami
 Freundlich	Amical
@@ -1127,7 +1127,7 @@ Gewähltes Attribut entspricht dem gewählten Wert	L'attribut correspond à la v
 Gewähltes Attribut entspricht nicht dem gewählten Wert	L'attribut sélectionné ne correspond pas à la valeur
 Gewähltes Attribut ist größer als der gewählte Wert	L'attribut sélectionné est supérieur à la valeur sélectionnée
 Gewähltes Attribut ist kleiner als der gewählte Wert	L'attribut sélectionné est inférieur à la valeur sélectionnée
-Gilde:r\n	Guilde :r\n
+Gilde:\r\n	Guilde :\r\n
 Gilden Chat automatisch lesen	Lire automatiquement le chat de guilde
 Glancing Damage: 	Dégâts de biais : 
 Glancing hits: 	Coups de biais : 
@@ -1843,8 +1843,8 @@ Questie not installed	Questie n'est pas installé
 Quests	Quêtes
 Quests group	Groupe de quêtes
 Quests in der Nähe	Quêtes à proximité
-Questtext:r\n	Description de la quête :r\n
-Questtextr\n	Description de la quête :r\n
+Questtext:\r\n	Description de la quête :\r\n
+Questtext\r\n	Description de la quête :\r\n
 Questziel	objectif de quête
 Quick waypoint	point de passage rapide
 Quick waypoint 4 set to corpse	Point de passage rapide 4 placé sur le cadavre
@@ -1950,7 +1950,7 @@ Route folgen läuft	Suivi d'itinéraire en cours
 Routen Umwandlung 	Conversion des itinéraires 
 Routen Umwandlung abgeschlossen	Conversion des itinéraires terminée
 Routen Umwandlung auf neue Version gestartet	Conversion des itinéraires vers la nouvelle version démarrée
-Ruf:r\n	Réputation :r\n
+Ruf:\r\n	Réputation :\r\n
 Ruhestein: 	Pierre de foyer : 
 Runes	Runes
 Runter blättern	Faire défiler vers le bas
@@ -2680,8 +2680,8 @@ Ziel hervorheben	Mettre la cible en évidence
 Ziel und Soft Targeting	Cible et ciblage souple
 Ziel änderung	changement de cible
 Ziele Entfernung	Destinations par distance
-Ziele:r\n	Objectifs :r\n
-Zieler\n	Objectifsr\n
+Ziele:\r\n	Objectifs :\r\n
+Ziele\r\n	Objectifs\r\n
 Zone	Zone
 Zone Music No Delay	Musique de zone sans délai
 Zone: 	Zone : 
@@ -3041,20 +3041,20 @@ quest;geteilt	quête;partagée
 quest;nicht;teilbar	quête;non;partageable
 question;mark	point d'interrogation
 quick waypoint	point de passage rapide
-r\nAuswählter Wert: 	r\nValeur sélectionnée : 
-r\nDurchschnitt 	r\nMoyenne 
-r\nFeste Gegenständer\n	r\nObjets fixesr\n
-r\nGebotsdaten: r\nDatenpunkte 	r\nDonnées d'enchère : r\nPoints de données 
-r\nGegenstände zur Auswahlr\n	r\nObjets au choixr\n
-r\nHöchster 	r\nPlus haut 
-r\nHöchstes 	r\nPlus haut 
-r\nKeine Gebotsdaten vorhanden	r\nAucune donnée d'enchère disponible
-r\nKeine Sofortkaufdaten vorhanden	r\nAucune donnée d'achat disponible
-r\nNiedrigster 	r\nPlus bas 
-r\nNiedrigstes 	r\nPlus bas 
-r\nPlündern: 	r\nButin : 
-r\nSofortkaufdaten: r\nDatenpunkte 	r\nDonnées d'achat : r\nPoints de données 
-r\nZuletzt vor 	r\nVu pour la dernière fois à 
+\r\nAuswählter Wert: 	\r\nValeur sélectionnée : 
+\r\nDurchschnitt 	\r\nMoyenne 
+\r\nFeste Gegenstände\r\n	\r\nObjets fixes\r\n
+\r\nGebotsdaten: \r\nDatenpunkte 	\r\nDonnées d'enchère : \r\nPoints de données 
+\r\nGegenstände zur Auswahl\r\n	\r\nObjets au choix\r\n
+\r\nHöchster 	\r\nPlus haut 
+\r\nHöchstes 	\r\nPlus haut 
+\r\nKeine Gebotsdaten vorhanden	\r\nAucune donnée d'enchère disponible
+\r\nKeine Sofortkaufdaten vorhanden	\r\nAucune donnée d'achat disponible
+\r\nNiedrigster 	\r\nPlus bas 
+\r\nNiedrigstes 	\r\nPlus bas 
+\r\nPlündern: 	\r\nButin : 
+\r\nSofortkaufdaten: \r\nDatenpunkte 	\r\nDonnées d'achat : \r\nPoints de données 
+\r\nZuletzt vor 	\r\nVu pour la dernière fois à 
 raid member	membre du raid
 ranges still loading	portées en cours de chargement
 read only	lecture seule
@@ -3287,3 +3287,132 @@ free	libres
 cannot be selected, reopen the window	non sélectionnable, rouvrez la fenêtre
 Learn	Apprendre
 not possible right now	impossible pour le moment
+Professions	Métiers
+Item no longer available	Objet indisponible
+in bags	dans les sacs
+equipped	équipé
+No suitable item	Aucun objet approprié
+Salvage	Recycler
+Salvage all	Tout recycler
+Recrafting is not supported here yet	Refaire n'est pas encore pris en charge
+Create all	Tout fabriquer
+done	fait
+open	ouvert
+earned	obtenu
+Earned on	Obtenu le
+Legacy points	Points d'héritage
+%d of %d open	%d sur %d ouverts
+%d of %d earned	%d sur %d obtenus
+next reward	prochaine récompense
+not yet earned	pas encore obtenu
+Reward track, level %d of %d	Piste de récompenses, niveau %d sur %d
+Reward track, level %d	Piste de récompenses, niveau %d
+Reset tree	Réinitialiser l'arbre
+Really reset all points in the %s tree? Enter Yes, Escape for No.	Réinitialiser vraiment tous les points de l'arbre %s ? Entrée pour Oui, Échap pour Non.
+Resets the whole tree. A confirmation prompt appears. The reset only takes effect with Apply.	Réinitialise tout l'arbre. Une confirmation s'affiche. Effectif seulement avec Appliquer.
+%s reset. Confirm with Apply, or Undo.	%s réinitialisé. Confirmez avec Appliquer, ou Annuler.
+Canceled, not reset	Annulé, non réinitialisé
+Legacy tree	Arbre d'héritage
+Open the legacy tree page	Ouvrir la page de l'arbre d'héritage
+Legacy tree opened	Arbre d'héritage ouvert
+Show this tree	Afficher cet arbre
+Legacy	Héritage
+Legacy: challenges %d of %d earned	Héritage : défis %d sur %d obtenus
+Achievements not available	Hauts faits indisponibles
+No achievements	Aucun haut fait
+Refund	Retirer
+Undo	Annuler
+Points spent: %d	Points dépensés : %d
+Reward track	Piste de récompenses
+Buff announcements	Annonce des buffs
+Buff gained	Buff obtenu
+Already learned	Déjà appris
+not readable in combat	illisible en combat
+Damage	Dégâts
+Healing	Soins
+per second	par seconde
+Interrupts	Interruptions
+Turn on damage meter	Activer le compteur de dégâts
+Damage meter on	Compteur activé
+Damage meter not available	Compteur de dégâts indisponible
+Recent allies	Alliés récents
+nobody saved	personne d'enregistré
+Quick join	Rejoindre vite
+no groups	aucun groupe
+group	groupe
+queue	file
+Healer	Soigneur
+cannot join right now	impossible de rejoindre
+Group finder listing: please apply through the group finder	Annonce de recherche de groupe: postulez via la recherche de groupe
+apply as tank	postuler comme tank
+apply as healer	postuler comme soigneur
+apply as damage dealer	postuler comme dégâts
+join request sent	demande envoyée
+join request failed	demande échouée
+Experience	Expérience
+Reward	Récompense
+Choice	Choix
+ (active)	 (actif)
+ groups found	 groupes trouvés
+ hidden	 masqués
+ invited	 invité
+ min	 min
+%d unavailable dungeons removed from the selection.	%d donjons indisponibles retirés de la sélection.
+Activities to search	Donjons recherchés
+Cannot invite: only your group's leader or assistant can invite.	Invitation impossible : seuls le chef ou un assistant de votre groupe peuvent inviter.
+Cannot invite: this is a group. Whisper the leader.	Invitation impossible : il s'agit d'un groupe. Chuchotez au chef.
+Comment	Commentaire
+Create entry	Créer une annonce
+Heroic dungeons	Donjons héroïques
+Ignore suggested level	Ignorer le niveau suggéré
+Invite to group	Inviter dans le groupe
+Listed	Inscrit
+Listing failed: 	Échec de l'inscription : 
+Listing removed	Inscription retirée
+Listing started	Inscription lancée
+Listing still active	L'inscription est toujours active
+Listing updated	Inscription mise à jour
+New player friendly	Adapté aux nouveaux joueurs
+No dungeons available	Aucun donjon disponible
+No dungeons for your level	Aucun donjon pour votre niveau
+No dungeons selected	Aucun donjon sélectionné
+No groups found	Aucun groupe trouvé
+Normal dungeons	Donjons normaux
+Not listed	Non inscrit
+Only %s was accepted, the other dungeons were not.	Seul %s a été accepté, les autres donjons non.
+Only matching dungeons	Donjons adaptés uniquement
+Only the group leader can create or change a listing.	Seul le chef de groupe peut créer ou modifier une annonce.
+Post entry	S'inscrire
+Refresh	Actualiser
+Remove listing	Retirer l'inscription
+Remove my listing	Retirer mon annonce
+Role	Rôle
+Search failed	Échec de la recherche
+Search for my listing	Rechercher mon annonce
+Search groups	Recherche de groupe
+Searching …	Recherche en cours …
+This category needs a free text that only the Blizzard window can send. Please post there.	Cette catégorie exige un texte libre que seule la fenêtre de Blizzard peut envoyer. Inscrivez-vous là-bas.
+Too many activities selected, at most %d.	Trop d'activités sélectionnées, au maximum %d.
+Update listing	Mettre à jour l'annonce
+Updating listing	Mise à jour de l'annonce
+Whisper	Chuchoter
+Your group is too large for one of the activities, at most %d players.	Votre groupe est trop grand pour l'une des activités, au maximum %d joueurs.
+Your own listing	Votre propre annonce
+all	tous
+delisted	retiré
+fits your role	convient à votre rôle
+friends	amis
+guild members	membres de la guilde
+level 	à partir du niveau 
+matching	correspondantes
+members	membres
+needs 	recherche 
+new-player friendly	adapté aux nouveaux joueurs
+no active listing	aucune annonce active
+rejected	refusé
+Confirm add friend: 	Confirmer l'ajout de l'ami : 
+Confirm search: 	Confirmer la recherche : 
+Comment hidden	Commentaire masqué
+Play style	Style de jeu
+Open the group finder with its key once, then the comment can be typed here.	Ouvrez une fois la recherche de groupe avec sa touche, ensuite le commentaire peut être saisi ici.
+Type the comment, then press Escape.	Tapez le commentaire, puis appuyez sur Échap.

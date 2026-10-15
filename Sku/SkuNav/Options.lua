@@ -720,6 +720,13 @@ function SkuNav.RouteFollowOnAction(self, aValue, aName)
 			if #SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData < 2 then
 				return
 			end
+			-- without a world position every route point would silently fall back to the player's position
+			local tUiMap = SkuNav:GetUiMapIdFromAreaId(SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player")))
+			if not SkuNav:WorldFromMap(tUiMap, 0.5, 0.5) then
+				dprint("RouteFollowOnAction: no world position for map", tUiMap)
+				SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
+				return
+			end
 
 			if string.find(aName, ";") then
 				SkuSettings:Sub("SkuNav").metapathFollowingTargetName = ssub(aName, 1, string.find(aName, ";") - 1)
@@ -739,8 +746,7 @@ function SkuNav.RouteFollowOnAction(self, aValue, aName)
 				--create tmp wps
 				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 				local isUiMap = SkuNav:GetUiMapIdFromAreaId(tCurrentAreaId)
-				local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][1] / 100, SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][2] / 100))
-				local tX, tY = worldPosition:GetXY()
+				local tX, tY = SkuNav:WorldFromMap(isUiMap, SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][1] / 100, SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][2] / 100)
 				local tNameOfNewWp = SkuNav:CreateWaypoint(L["Einheiten;Route;"]..x, tX, tY, 1, true, true)
 				if tNameOfNewWp then
 					--add to mt rt

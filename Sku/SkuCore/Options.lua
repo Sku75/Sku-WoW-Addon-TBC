@@ -11,6 +11,7 @@ local GetNumSpellTabs = Sku.Compat.GetNumSpellTabs
 local GetSpellBookItemInfo = Sku.Compat.GetSpellBookItemInfo
 local GetSpellBookItemName = Sku.Compat.GetSpellBookItemName
 local GetSpellInfo = Sku.Compat.GetSpellInfo
+local GetSpellSubtext = Sku.Compat.GetSpellSubtext
 local GetSpellTabInfo = Sku.Compat.GetSpellTabInfo
 local HasPetSpells = Sku.Compat.HasPetSpells
 local IsPassiveSpell = Sku.Compat.IsPassiveSpell
@@ -1269,6 +1270,43 @@ local function ItemsMenuBuilder(aParentEntry)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Tooltip text of an action bar slot. Forever has no SetAction on the scanning tooltip; the tooltip data gives it.
+local function tActionTooltipText(aAction)
+	if Sku.isForever then
+		local tLines = SkuCore:TooltipDataLines(C_TooltipInfo.GetAction(aAction))
+		return tLines and SkuUtil:Unescape(table.concat(tLines, "\r\n")) or nil
+	end
+	SkuUtil:ResetScanningTooltip()
+	_G["SkuScanningTooltip"]:SetAction(aAction)
+	local tLines = TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions())
+	if tLines ~= "asd" and tLines ~= "" then
+		return SkuUtil:Unescape(tLines)
+	end
+end
+
+-- Pet bar. Forever has no SetPetAction on the scanning tooltip, so the tooltip text comes from the tooltip data
+-- (C_TooltipInfo.GetPetAction); the bar's buttons have no global names, only the list PetActionBar.actionButtons.
+local function tPetActionTooltipText(aSlot)
+	if Sku.isForever then
+		local tLines = SkuCore:TooltipDataLines(C_TooltipInfo.GetPetAction(aSlot))
+		return tLines and SkuUtil:Unescape(table.concat(tLines, "\r\n")) or nil
+	end
+	SkuUtil:ResetScanningTooltip()
+	_G["SkuScanningTooltip"]:SetPetAction(aSlot)
+	local tLines = TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions())
+	if tLines ~= "asd" and tLines ~= "" then
+		return SkuUtil:Unescape(tLines)
+	end
+end
+
+local function tPetBarButton(aActionBarName, aSlot)
+	local tObj = _G[tActionBarData[aActionBarName].buttonName..aSlot]
+	if not tObj and Sku.isForever then
+		tObj = PetActionBar.actionButtons[aSlot]
+	end
+	return tObj
+end
+
 local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWithCurrentPetControlAction)
 	aIsPet = aIsPet or false
 	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Assign nothing"]}, SkuGenericMenuItem)
@@ -1343,6 +1381,17 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 								-- here would break menu navigation itself, not just the
 								-- description. TooltipLines_helper is also called once
 								-- now rather than three times per move.
+								-- Forever: SetSpellBookItem wants a spell bank Enum instead of the "spell" string and
+								-- fills nothing, and the scanning tooltip has no SetSpellByID. The tooltip data of the
+								-- spell gives the text.
+								if Sku.isForever then
+									local tLines = spellID and SkuCore:TooltipDataLines(C_TooltipInfo.GetSpellByID(spellID))
+									if tLines then
+										local tText = SkuUtil:Unescape(table.concat(tLines, "\r\n"))
+										SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
+									end
+									return
+								end
 								local tTip = _G["SkuScanningTooltip"]
 								if not tTip then return end
 								local tOk = pcall(function()
@@ -1372,14 +1421,10 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.spellID = nil
 						self.selectTarget.petDefaultControlId = v
-						SkuUtil:ResetScanningTooltip()
-						_G["SkuScanningTooltip"]:SetPetAction(v)
-						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-								local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
-							end
-						end						
+						local tText = tPetActionTooltipText(v)
+						if tText then
+							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
+						end
 					end
 					tHasEntries = true
 
@@ -1424,13 +1469,9 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				self.companionID = nil
 				self.equipmentSetID = nil
 				if self.buttonObj.action then
-					SkuUtil:ResetScanningTooltip()
-					_G["SkuScanningTooltip"]:SetAction(self.buttonObj.action)
-					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-							local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
-						end
+					local tText = tActionTooltipText(self.buttonObj.action)
+					if tText then
+						SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 					end
 				end
 			end
@@ -1526,7 +1567,7 @@ local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 	}
 
 	for x = 1, NUM_PET_ACTION_SLOTS do
-		local tButtonObj = _G[tActionBarData[aActionBarName].buttonName..x]
+		local tButtonObj = tPetBarButton(aActionBarName, x)
 		if tButtonObj then
 			local name = GetPetActionInfo(x)
 			if name and tButtonsWithCurrentPetControlAction[name] then
@@ -1536,27 +1577,23 @@ local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 	end
 
 	for x = 1, NUM_PET_ACTION_SLOTS do
-		local tButtonObj = _G[tActionBarData[aActionBarName].buttonName..x]
+		local tButtonObj = tPetBarButton(aActionBarName, x)
 		if tButtonObj then
 			local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(x);
 			local tButtonName = ButtonContentNameHelper("pet", x, subType, aActionBarName, x) --_G[name] or name or L["empty"] 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Button"].." "..x..";"..tButtonName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.isSelect = true
-			tNewMenuEntry.buttonObj = _G[tActionBarData[aActionBarName].buttonName..x]
+			tNewMenuEntry.buttonObj = tButtonObj
 			tNewMenuEntry.id = x
 			tNewMenuEntry.OnEnter = function(self, aValue, aName)
 				self.spellID = nil
 				self.itemID = nil
 				self.macroID = nil
 				if self.buttonObj:GetID() and name then
-					SkuUtil:ResetScanningTooltip()
-					_G["SkuScanningTooltip"]:SetPetAction(x)
-					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-							local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
-						end
+					local tText = tPetActionTooltipText(x)
+					if tText then
+						SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 					end
 				end
 			end

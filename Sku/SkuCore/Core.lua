@@ -341,6 +341,8 @@ SkuCore.interactFramesListManual = {
 	["GuildBankFrame"] = function(...) SkuCore:Build_GuildBankFrame(...) end,
 	["CraftFrame"] = function(...) SkuCore:Build_CraftFrame(...) end,
 	["TradeSkillFrame"] = function(...) SkuCore:Build_TradeSkillFrame(...) end,
+	-- Forever: the one crafting window for all professions, see professionsForever.lua.
+	["ProfessionsFrame"] = Sku.isForever and function(...) SkuCore:Build_ProfessionsFrame(...) end or nil,
 	["PetStableFrame"] = function(...) SkuCore:Build_PetStableFrame(...) end,
 	["GossipFrame"] = function(...) SkuCore:GossipFrame(...) end,
 	["QuestFrame"] = function(...) SkuCore:QuestFrame(...) end,
@@ -348,6 +350,10 @@ SkuCore.interactFramesListManual = {
 	["ClassTrainerFrame"] = function(...) SkuCore:Build_ClassTrainerFrame(...) end,
 	["CharacterFrame"] = function(...) SkuCore:Build_CharacterFrame(...) end,
 	["PlayerTalentFrame"] = function(...) SkuCore:Build_TalentFrame(...) end,
+	-- Forever: the N key opens PlayerSpellsFrame, see talentsForever.lua.
+	["PlayerSpellsFrame"] = Sku.isForever and function(...) SkuCore:Build_PlayerSpellsFrame(...) end or nil,
+	-- Forever: achievements and legacy, see achievementsForever.lua.
+	["LegacySystemFrame"] = Sku.isForever and function(...) SkuCore:Build_LegacySystemFrame(...) end or nil,
 	["RolePollPopup"] = function(...) SkuCore:Build_RolePollPopup(...) end,
 	-- ReadyCheckFrame is only a wrapper around ReadyCheckListenerFrame; walked
 	-- generically that wrapper becomes an extra menu level and the Yes/No buttons
@@ -392,6 +398,8 @@ SkuCore.interactFramesList = {
 	"SkillFrame",
 	"HonorFrame",
 	"PlayerTalentFrame",
+	"PlayerSpellsFrame",
+	"LegacySystemFrame",
 	"InspectFrame",
 	"GuildBankFrame",
 	--"BankFrame",
@@ -399,6 +407,7 @@ SkuCore.interactFramesList = {
 	--"GroupLootContainer",
 	"TradeFrame",
 	"TradeSkillFrame",
+	"ProfessionsFrame",
 	--"DropDownList2",
 	--"FriendsFrame",
 	--"GameMenuFrame",
@@ -428,9 +437,9 @@ SkuCore.localWindowContributors = {
 	  build = function(self) if SkuCore.MailMenuBuilder then SkuCore.MailMenuBuilder(self) end end },
 	{ frame = "AuctionFrame", label = function() return Sku.L["Auktionshaus"] end,
 	  build = function(self) if SkuCore.AuctionHouse and SkuCore.AuctionHouse.AuctionHouseMenuBuilder then SkuCore.AuctionHouse.AuctionHouseMenuBuilder(self) end end },
-	{ frame = "FriendsFrame", label = function() return Sku.L["Social"] end,
+	{ frame = Sku.isForever and "SocialUIFrame" or "FriendsFrame", label = function() return Sku.L["Social"] end,
 	  build = function(self) if SkuCore.Friends and SkuCore.Friends.FriendsMenuBuilder then SkuCore.Friends.FriendsMenuBuilder(self) end end },
-	{ frame = "QuestLogFrame", label = function() return Sku.L["SkuQuestMenuEntry"] end,
+	{ frame = Sku.Compat.QuestLogFrameName, label = function() return Sku.L["SkuQuestMenuEntry"] end,
 	  build = function(self) if SkuQuest and SkuQuest.MenuBuilder then SkuQuest:MenuBuilder(self) end end },
 }
 
@@ -614,6 +623,12 @@ function SkuCore:OnInitialize()
 	-- (SkuCore:RefreshProfessionMenu, LocalMenu.lua).
 	SkuDispatcher:RegisterEventCallback("TRADE_SKILL_UPDATE", SkuCore.PROFESSION_LIST_UPDATE)
 	SkuDispatcher:RegisterEventCallback("CRAFT_UPDATE", SkuCore.PROFESSION_LIST_UPDATE)
+	-- Forever: the same signals for the crafting window (professionsForever.lua)
+	if Sku.isForever then
+		SkuDispatcher:RegisterEventCallback("TRADE_SKILL_LIST_UPDATE", SkuCore.PROFESSIONS_LIST_UPDATE)
+		SkuDispatcher:RegisterEventCallback("TRADE_SKILL_DATA_SOURCE_CHANGED", SkuCore.PROFESSIONS_LIST_UPDATE)
+		SkuDispatcher:RegisterEventCallback("TRADE_SKILL_ITEM_CRAFTED_RESULT", SkuCore.PROFESSIONS_LIST_UPDATE)
+	end
 	SkuDispatcher:RegisterEventCallback("TRADE_SHOW", SkuCore.TRADE_SHOW)
 	SkuDispatcher:RegisterEventCallback("TRADE_CLOSED", SkuCore.TRADE_CLOSED)
 	SkuDispatcher:RegisterEventCallback("TRADE_ACCEPT_UPDATE", SkuCore.TRADE_ACCEPT_UPDATE)
@@ -4574,14 +4589,18 @@ function SkuCore:PrimeCombatMirrors()
 	if tCf then
 		local tWasShown = tCf:IsShown()
 		SkuCore._suppressGenericFrameHooks = true
-		pcall(function()
+		local tOk, tErr = pcall(function()
 			if not tWasShown then tCf:Show() end
 			SkuCore:Build_CharacterFrame({})
-			if not tWasShown then tCf:Hide() end
 		end)
+		if not tOk then dprint("PrimeCombatMirrors: character frame build failed", tErr) end
+		-- Outside the pcall: when the build throws, the frame must still be hidden, otherwise it stays open as a
+		-- ghost window and the menu asks which window to read.
+		if not tWasShown then tCf:Hide() end
 		SkuCore._suppressGenericFrameHooks = false
 	else
-		pcall(function() SkuCore:Build_CharacterFrame({}) end)
+		local tOk, tErr = pcall(function() SkuCore:Build_CharacterFrame({}) end)
+		if not tOk then dprint("PrimeCombatMirrors: character frame build failed", tErr) end
 	end
 	dprint("PrimeCombatMirrors", SkuCore.combatBagTree and #SkuCore.combatBagTree or -1, SkuCore.combatCharTree and #SkuCore.combatCharTree or -1)
 end
@@ -4720,10 +4739,13 @@ local friendlyFrameNames = {
 	--["BagnonInventoryFrame1"] = L["Bagnon Taschen"],
 	["SpellBookFrame"] = L["Spellbook"],
 	["PlayerTalentFrame"] = L["Talents"],
+	["PlayerSpellsFrame"] = Sku.isForever and function() return SkuCore:PlayerSpellsFrameName() end or L["Talents"],
+	["LegacySystemFrame"] = L["Legacy"],
 	["RolePollPopup"] = L["Role Poll"],
 	-- ["PVEFrame"]/["LFGParentFrame"] entfernt (Dungeon-Browser wird neu aufgebaut)
 	["ItemSocketingFrame"] = L["Sockeln"],
 	["FriendsFrame"] = L["Social"],
+	["SocialUIFrame"] = L["Social"],
 	["TradeFrame"] = L["Trade"],
 	--["GameMenuFrame"] = L["Game Menu"],
 	--["MainMenuBar"] = "",
@@ -4734,9 +4756,17 @@ local friendlyFrameNames = {
 	["BankFrame"] = L["Bank"],
 	["GuildBankFrame"] = L["Guild Bank"],
 	["TradeSkillFrame"] = L["Trade skill"],
+	["ProfessionsFrame"] = L["Trade skill"],
 	["ReadyCheckFrame"] = L["Bereitschaft check"],
 	[""] = "",
 }
+-- A window whose name follows its content has a function as its name (PlayerSpellsFrame on Forever: talent window and
+-- spellbook in one frame).
+local function tFriendlyFrameName(aFrameName)
+	local tName = friendlyFrameNames[aFrameName]
+	if type(tName) == "function" then return tName() end
+	return tName
+end
 --[[
 local containerFrames = {
 	["BagnonInventoryFrame1"] = "BagnonInventoryFrame1",
@@ -5118,7 +5148,7 @@ function SkuCore:IterateChildren(t, tab)
 									end
 									--if there are childs but no text > try to find the best/friendly name via the frame name
 									if tResults[fName].textFirstLine == "" and tResults[fName].textFull == "" and #tResults[fName].childs > 0 then
-										local tText = friendlyFrameNames[fName] or ""
+										local tText = tFriendlyFrameName(fName) or ""
 										if tText == "" then
 											for i, v in pairs(friendlyFrameNamesParts) do
 												if string.find(fName, i) then
@@ -5377,7 +5407,7 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 					RoC = "Child",
 					type = "Frame",
 					obj = _G[tOpenFrames[x]],
-					textFirstLine = friendlyFrameNames[tOpenFrames[x]] or tOpenFrames[x],
+					textFirstLine = tFriendlyFrameName(tOpenFrames[x]) or tOpenFrames[x],
 					textFull = "",
 					childs = {},
 					}
@@ -5439,8 +5469,8 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			-- pending prompt reachable -> never navigate/open the menu (see above).
 			-- An explicit aForceLocalRoot is a deliberate caller request and still wins.
 			if tBread and aForceLocalRoot ~= true and tFlag == false and tPendingOnly ~= true then
-				for i, v in pairs(friendlyFrameNames) do
-					if v == tFirstFrame then
+				for i in pairs(friendlyFrameNames) do
+					if tFriendlyFrameName(i) == tFirstFrame then
 						if _G[i] then
 							if _G[i]:IsVisible() then
 								-- [43.9] ONE silent resolve to the remembered level. This used to

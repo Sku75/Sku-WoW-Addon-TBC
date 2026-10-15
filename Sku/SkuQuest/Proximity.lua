@@ -98,11 +98,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Rueckgabe: Entfernung, Welt-X, Welt-Y des Zielpunktes.
 local function tWorldDistance(aCtx, aUiMapId, aMapX, aMapY)
-	local tOkWorld, _, tWorldPos = pcall(C_Map.GetWorldPosFromMapPos, aUiMapId,
-		CreateVector2D(tonumber(aMapX) / 100, tonumber(aMapY) / 100))
-	if not tOkWorld or not tWorldPos then return nil end
-	local tX, tY = tWorldPos:GetXY()
-	if not tX then return nil end
+	local tOkWorld, tX, tY = pcall(SkuNav.WorldFromMap, SkuNav, aUiMapId, tonumber(aMapX) / 100, tonumber(aMapY) / 100)
+	if not tOkWorld or not tX then return nil end
 	local tOkDist, tDist = pcall(SkuNav.Geo.Distance, SkuNav.Geo, aCtx.playerX, aCtx.playerY, tX, tY)
 	if not tOkDist or not tDist then return nil end
 	return tDist, tX, tY
@@ -115,10 +112,8 @@ function P:ZoneDistanceFromSpawns(aCtx, aSpawns)
 	local tHere = aSpawns[aCtx.areaId]
 	if not tHere then return nil end
 
-	local tOkPos, tPlayerMapPos = pcall(C_Map.GetPlayerMapPosition, aCtx.uiMapId, "player")
-	if not tOkPos or not tPlayerMapPos then return nil end
-	local tPx, tPy = tPlayerMapPos:GetXY()
-	if not tPx then return nil end
+	local tOkPos, tPx, tPy = pcall(SkuNav.PlayerDbMapPosition, SkuNav, aCtx.uiMapId)
+	if not tOkPos or not tPx then return nil end
 
 	local tBestX, tBestY, tBestSq
 	for x = 1, #tHere do

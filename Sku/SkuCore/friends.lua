@@ -30,6 +30,18 @@ end)
 -- hook is permanent; install it only once across enable/disable cycles).
 local gShowHookInstalled = false
 
+-- Forever: C_FriendList.AddFriend, AddOrRemoveFriend and SendWho have HasRestrictions there, an addon's call is
+-- refused with ADDON_ACTION_FORBIDDEN. Blizzard's own /friend and /who (SlashCommands.lua) make these calls, so Sku
+-- runs them as a secure macro from the menu's ENTER key press. A name or query typed into the edit box first is kept
+-- here and offered as a confirm entry on top of its list; the macro text is staged when that entry gets focus.
+local gPendingFriendName
+local gPendingWhoQuery
+
+-- a line break in macro text would start a second macro command
+local function tMacroArg(aText)
+   return (aText:gsub("[\r\n]", ""))
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Arm the feature. Called automatically by AceAddon when the module is enabled.
 function Friends:OnEnable()
@@ -38,7 +50,25 @@ function Friends:OnEnable()
    -- they land (only while a user-initiated search is pending — see gWhoPending).
    Friends:RegisterEvent("WHO_LIST_UPDATE", "WHO_LIST_UPDATE")
 
-   if not gShowHookInstalled then
+   Friends:TryInstallShowHook()
+   if Sku.isForever and not gShowHookInstalled then
+      -- Blizzard_SocialUI can load later: install the hook once it is there.
+      Friends:RegisterEvent("ADDON_LOADED", function(_, aAddon)
+         if aAddon == "Blizzard_SocialUI" then Friends:TryInstallShowHook() end
+      end)
+   end
+end
+
+-- Forever: the social window is SocialUIFrame (Blizzard_SocialUI, O key), not FriendsFrame. A hook on
+-- FriendsFrame:Show never fires there, so the window opened without Sku offering its menu.
+function Friends:TryInstallShowHook()
+   if gShowHookInstalled then return end
+   if Sku.isForever then
+      local tFrame = _G.SocialUIFrame
+      if not tFrame then return end
+      tFrame:HookScript("OnShow", function() Friends:ONSHOW() end)
+      gShowHookInstalled = true
+   else
       hooksecurefunc(FriendsFrame, "Show", Friends.ONSHOW)
       gShowHookInstalled = true
    end
@@ -81,14 +111,34 @@ function Friends:RepinWhoSearch()
    SkuOptions:VocalizeCurrentMenuName()
 end
 
+-- The search the user started is answered or timed out: show the results.
+local function tWhoSearchDone()
+   Friends.gWhoPending = nil
+   if Sku.isForever then
+      -- back to the default, so a /who the player types in the chat answers in the chat again
+      C_FriendList.SetWhoToUi(false)
+   end
+   Friends:RepinWhoSearch()
+end
+
+-- A search was sent from the Who menu: WHO_LIST_UPDATE ends the wait, the fallback
+-- re-pins when it never arrives (empty result).
+local function tAwaitWhoResults()
+   Friends.gWhoPending = true
+   C_Timer.After(2.0, function()
+      if Friends.gWhoPending then
+         tWhoSearchDone()
+      end
+   end)
+end
+
 -- Fires when /who results are ready. Only act when the user just triggered a
 -- search from the Who menu (gWhoPending) so unrelated who traffic never yanks
 -- the cursor.
 function Friends:WHO_LIST_UPDATE()
    if not Friends:IsEnabled() then return end
    if not Friends.gWhoPending then return end
-   Friends.gWhoPending = nil
-   Friends:RepinWhoSearch()
+   tWhoSearchDone()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -185,7 +235,12 @@ local function tAddFriendSubmenu(aParent, aIndex, aOnline, aIsBnet)
          BNRemoveFriend(accountInfo.bnetAccountID)
       else
          local info = C_FriendList.GetFriendInfoByIndex(aIndex)
-         C_FriendList.AddOrRemoveFriend(info.name, "")
+         if Sku.isForever then
+            -- not restricted on Forever, unlike AddOrRemoveFriend
+            C_FriendList.RemoveFriend(info.name)
+         else
+            C_FriendList.AddOrRemoveFriend(info.name, "")
+         end
       end
       C_Timer.After(0.65, function()
          local tAnchor = SkuOptions.currentMenuPosition:FindAncestorById("friendsList")
@@ -485,11 +540,20 @@ local function tAddWhoResult(aParent, aInfo)
    tNewMenuEntry.textFull = tText
 
    tNewMenuEntry.BuildChildren = function(self)
-      local tAdd = SkuOptions:InjectMenuItems(self, {L["add friend"]}, SkuGenericMenuItem)
-      tAdd.isSelect = true
-      tAdd.OnAction = function(self)
-         C_FriendList.AddFriend(tName)
-         pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Freund hinzugefügt", "friend added", "ami ajouté"), true, true, 0.1, nil, nil, nil, 1) end)
+      -- /friend toggles: on a name that already is a friend it removes them, so Forever leaves the entry out then
+      if not (Sku.isForever and C_FriendList.GetFriendInfo(tName)) then
+         local tAdd = SkuOptions:InjectMenuItems(self, {L["add friend"]}, SkuGenericMenuItem)
+         tAdd.isSelect = true
+         if Sku.isForever then
+            tAdd.macrotext = "/friend "..tMacroArg(tName)
+            tAdd.secureMacro = true
+         end
+         tAdd.OnAction = function(self)
+            if not Sku.isForever then
+               C_FriendList.AddFriend(tName)
+            end
+            pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Freund hinzugefügt", "friend added", "ami ajouté"), true, true, 0.1, nil, nil, nil, 1) end)
+         end
       end
 
       local tInv = SkuOptions:InjectMenuItems(self, {L["invite"]}, SkuGenericMenuItem)
@@ -635,16 +699,40 @@ function Friends:FriendsMenuBuilder()
          C_FriendList.ShowFriends()
       end
       tNewMenuEntryContacts.BuildChildren = function(self)
+         if Sku.isForever and gPendingFriendName then
+            local tName = gPendingFriendName
+            local tConfirm = SkuOptions:InjectMenuItems(self, {L["Confirm add friend: "]..tName}, SkuGenericMenuItem)
+            tConfirm.macrotext = "/friend "..tName
+            tConfirm.secureMacro = true
+            tConfirm.OnAction = function()
+               gPendingFriendName = nil
+               SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Freund hinzugefügt", "friend added", "ami ajouté"), true, true, 0.1, nil, nil, nil, 1)
+            end
+         end
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["add friend"]}, SkuGenericMenuItem)
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.OnAction = function(self)
             SkuOptions:EditBoxShow("", function(self)
-               if self:GetText() and self:GetText() ~= "" then
-                  C_FriendList.AddFriend(self:GetText())
+               local tText = self:GetText()
+               if Sku.isForever then
+                  -- /friend reads the first word as the name and the rest as a note
+                  gPendingFriendName = tText and tMacroArg(tText):match("^%s*(%S+)")
+                  if gPendingFriendName and C_FriendList.GetFriendInfo(gPendingFriendName) then
+                     SkuOptions.Voice:OutputStringBTtts(ERR_FRIEND_ALREADY_S:format(gPendingFriendName), true, true, 0.1, nil, nil, nil, 1)
+                     gPendingFriendName = nil
+                  end
+               elseif tText and tText ~= "" then
+                  C_FriendList.AddFriend(tText)
                end
                PlaySound(89)
                C_Timer.After(0.65, function()
-                  SkuOptions.currentMenuPosition.parent:OnSelect()
+                  if Sku.isForever then
+                     -- lands on the confirm entry, the first child of the friend list
+                     local tAnchor = SkuOptions.currentMenuPosition:FindAncestorById("friendsList")
+                     if tAnchor then tAnchor:OnSelect() end
+                  else
+                     SkuOptions.currentMenuPosition.parent:OnSelect()
+                  end
                   SkuOptions:VocalizeCurrentMenuName()
                end)
             end)					
@@ -667,6 +755,139 @@ function Friends:FriendsMenuBuilder()
          end      
       end
       
+      -- Forever: recently met players (Blizzard's "Recent Allies" tab, C_RecentAllies).
+      -- Not asked for the data here: TryRequestRecentAlliesData is locked for addons (HasRestrictions).
+      if Sku.isForever and C_RecentAllies.IsSystemEnabled() then
+         local tRecent = SkuOptions:InjectMenuItems(self, {L["Recent allies"]}, SkuGenericMenuItem)
+         tRecent.dynamic = true
+         tRecent.sorting = true
+         tRecent.id = "recentAllies"
+         tRecent.BuildChildren = function(self)
+            local tList = C_RecentAllies.IsRecentAllyDataReady() and C_RecentAllies.GetRecentAllies() or {}
+            if #tList == 0 then
+               SkuOptions:InjectMenuItems(self, {L["nobody saved"]}, SkuGenericMenuItem)
+               return
+            end
+            -- online players first
+            table.sort(tList, function(a, b)
+               local ao = a.stateData.isOnline and 1 or 0
+               local bo = b.stateData.isOnline and 1 or 0
+               if ao ~= bo then return ao > bo end
+               return a.characterData.fullName < b.characterData.fullName
+            end)
+            for _, tAlly in ipairs(tList) do
+               local tChar, tState, tInter = tAlly.characterData, tAlly.stateData, tAlly.interactionData
+               local tName = tChar.fullName
+               local tClass = GetClassInfo(tChar.classID)
+               local tLabel = tName.." - "..L["level"].." "..tChar.level..(tClass and (" "..tClass) or "")
+                  .." - "..(tState.isOnline and L["online"] or L["offline"])
+               local tEntry = SkuOptions:InjectMenuItems(self, {tLabel}, SkuGenericMenuItem)
+               tEntry.dynamic = true
+               local tText = tName.."\r\n"
+               if tState.isDND then tText = tText.."DND\r\n" elseif tState.isAFK then tText = tText.."AFK\r\n" end
+               if tState.isOnline and tState.currentLocation and tState.currentLocation ~= "" then
+                  tText = tText..tState.currentLocation.."\r\n"
+               end
+               for i = 1, math.min(#tInter.interactions, 3) do
+                  tText = tText..tInter.interactions[i].description.."\r\n"
+               end
+               if tInter.note and tInter.note ~= "" then tText = tText..L["note"]..": "..tInter.note.."\r\n" end
+               tEntry.textFull = tText
+               tEntry.BuildChildren = function(self2)
+                  local tWhisper = SkuOptions:InjectMenuItems(self2, {L["whisper"]}, SkuGenericMenuItem)
+                  tWhisper.isSelect = true
+                  tWhisper.OnAction = function() SkuChat:SetEditboxToCustom("WHISPER", tName, "") end
+                  local tInv = SkuOptions:InjectMenuItems(self2, {L["invite"]}, SkuGenericMenuItem)
+                  tInv.isSelect = true
+                  tInv.OnAction = function() tInviteByName(tName) end
+                  if C_RecentAllies.CanSetRecentAllyNote(tChar.guid) then
+                     local tNote = SkuOptions:InjectMenuItems(self2, {L["edit note"]}, SkuGenericMenuItem)
+                     tNote.isSelect = true
+                     tNote.OnAction = function()
+                        SkuOptions:EditBoxShow("", function(self3)
+                           C_RecentAllies.SetRecentAllyNote(tChar.guid, self3:GetText() or "")
+                           C_Timer.After(0.5, function()
+                              local tAnchor = SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition:FindAncestorById("recentAllies")
+                              if tAnchor then tAnchor:OnSelect(); SkuOptions:VocalizeCurrentMenuName() end
+                           end)
+                        end, nil)
+                        C_Timer.After(0.1, function()
+                           SkuOptions.Voice:OutputStringBTtts(L["Notiz eingeben und Enter drücken"], true, true, 0.1, nil, nil, nil, 1)
+                        end)
+                     end
+                  end
+               end
+            end
+         end
+      end
+
+      -- Forever: quick join, groups of friends and guild members that are queued right now (C_SocialQueue).
+      if Sku.isForever and C_SocialQueue.IsSystemEnabled() then
+         local tQuick = SkuOptions:InjectMenuItems(self, {L["Quick join"]}, SkuGenericMenuItem)
+         tQuick.dynamic = true
+         tQuick.id = "quickJoin"
+         tQuick.BuildChildren = function(self)
+            local tGroups = C_SocialQueue.GetAllGroups()
+            if #tGroups == 0 then
+               SkuOptions:InjectMenuItems(self, {L["no groups"]}, SkuGenericMenuItem)
+               return
+            end
+            -- strips colour codes, hyperlinks and line breaks from Blizzard's formatted names
+            local function tClean(aText)
+               local tText = tostring(aText or "")
+               tText = tText:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):gsub("|H.-|h(.-)|h", "%1"):gsub("\n", ", ")
+               return tText
+            end
+            for _, tGuid in ipairs(tGroups) do
+               local tHeader = tClean(SocialQueueUtil_GetHeaderName(tGuid))
+               if tHeader == "" then tHeader = L["group"] end
+               local tQueues = C_SocialQueue.GetGroupQueues(tGuid) or {}
+               local tQueueNames = {}
+               for _, tQueue in ipairs(tQueues) do
+                  local tName = SocialQueueUtil_GetQueueName(tQueue.queueData)
+                  if tName and tName ~= "" then tQueueNames[#tQueueNames + 1] = tClean(tName) end
+               end
+               local tCanJoin, _, tNeedTank, tNeedHealer, tNeedDamage = C_SocialQueue.GetGroupInfo(tGuid)
+               local tLabel = tHeader..": "..((#tQueueNames > 0) and table.concat(tQueueNames, ", ") or L["queue"])
+               local tEntry = SkuOptions:InjectMenuItems(self, {tLabel}, SkuGenericMenuItem)
+               tEntry.dynamic = true
+               local tText = tLabel.."\r\n"
+               for _, tMember in ipairs(C_SocialQueue.GetGroupMembers(tGuid) or {}) do
+                  local tMemberName = SocialQueueUtil_GetRelationshipInfo(tMember.guid, nil, tMember.clubId)
+                  if tMemberName and tMemberName ~= "" then tText = tText..tClean(tMemberName).."\r\n" end
+               end
+               local tNeeds = {}
+               if tNeedTank then tNeeds[#tNeeds + 1] = L["Tank"] end
+               if tNeedHealer then tNeeds[#tNeeds + 1] = L["Healer"] end
+               if tNeedDamage then tNeeds[#tNeeds + 1] = L["Damage"] end
+               if #tNeeds > 0 then tText = tText..L["needed"]..": "..table.concat(tNeeds, ", ").."\r\n" end
+               if not tCanJoin then tText = tText..L["cannot join right now"].."\r\n" end
+               tEntry.textFull = tText
+               tEntry.BuildChildren = function(self2)
+                  if not tCanJoin then
+                     SkuOptions:InjectMenuItems(self2, {L["cannot join right now"]}, SkuGenericMenuItem)
+                     return
+                  end
+                  if tQueues[1] and tQueues[1].queueData.queueType == "lfglist" then
+                     SkuOptions:InjectMenuItems(self2, {L["Group finder listing: please apply through the group finder"]}, SkuGenericMenuItem)
+                     return
+                  end
+                  local function tAddJoin(aTank, aHealer, aDamage, aLabel)
+                     local tJoin = SkuOptions:InjectMenuItems(self2, {aLabel}, SkuGenericMenuItem)
+                     tJoin.isSelect = true
+                     tJoin.OnAction = function()
+                        local tSent = C_SocialQueue.RequestToJoin(tGuid, aTank, aHealer, aDamage)
+                        SkuOptions.Voice:OutputStringBTtts(tSent and L["join request sent"] or L["join request failed"], true, true, 0.1, nil, nil, nil, 1)
+                     end
+                  end
+                  tAddJoin(true, false, false, L["apply as tank"])
+                  tAddJoin(false, true, false, L["apply as healer"])
+                  tAddJoin(false, false, true, L["apply as damage dealer"])
+               end
+            end
+         end
+      end
+
       local tNewMenuEntryIgnore = SkuOptions:InjectMenuItems(self, {L["Ignore List"]}, SkuGenericMenuItem)
       tNewMenuEntryIgnore.dynamic = true
       tNewMenuEntryIgnore.sorting = true
@@ -713,6 +934,18 @@ function Friends:FriendsMenuBuilder()
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.id = "whoList"  -- stable anchor: WHO_LIST_UPDATE + sort re-pin here
    tNewMenuEntry.BuildChildren = function(self)
+      if Sku.isForever and gPendingWhoQuery then
+         local tQuery = gPendingWhoQuery
+         local tConfirm = SkuOptions:InjectMenuItems(self, {L["Confirm search: "]..tQuery}, SkuGenericMenuItem)
+         tConfirm.macrotext = "/who "..tQuery
+         tConfirm.secureMacro = true
+         tConfirm.OnAction = function()
+            gPendingWhoQuery = nil
+            -- /who sends with the chat origin; this keeps the results in the who list instead of the chat
+            C_FriendList.SetWhoToUi(true)
+            tAwaitWhoResults()
+         end
+      end
       -- Search box. The server query supports the full /who filter syntax the
       -- user types (name, z-"zone", g-"guild", r-"race", c-"class", "N-M" level
       -- range), so one text field covers everything the real panel's filters do.
@@ -724,15 +957,17 @@ function Friends:FriendsMenuBuilder()
          SkuOptions:EditBoxShow("", function(self)
             local q = self:GetText()
             if q and q ~= "" then
-               Friends.gWhoPending = true
-               C_FriendList.SendWho(q, Enum and Enum.SocialWhoOrigin and Enum.SocialWhoOrigin.Social)
-               -- Fallback re-pin if WHO_LIST_UPDATE never arrives (empty result).
-               C_Timer.After(2.0, function()
-                  if Friends.gWhoPending then
-                     Friends.gWhoPending = nil
-                     Friends:RepinWhoSearch()
-                  end
-               end)
+               if Sku.isForever then
+                  gPendingWhoQuery = tMacroArg(q)
+                  C_Timer.After(0.65, function()
+                     -- lands on the confirm entry, the first child of the who list
+                     local tAnchor = SkuOptions.currentMenuPosition:FindAncestorById("whoList")
+                     if tAnchor then tAnchor:OnSelect(); SkuOptions:VocalizeCurrentMenuName() end
+                  end)
+               else
+                  C_FriendList.SendWho(q, Enum and Enum.SocialWhoOrigin and Enum.SocialWhoOrigin.Social)
+                  tAwaitWhoResults()
+               end
             end
          end)
          SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Suchbegriff eingeben und Enter drücken", "enter a query and press Enter", "saisissez une requête et appuyez sur Entrée"), true, true, 0.2, nil, nil, nil, 2)

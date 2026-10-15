@@ -609,16 +609,60 @@ local function tWpcDeriveTransform(aUiMapId)
 	end
 	return t
 end
+-- Sku's database stores positions as percentages on the CLASSIC zone maps. Forever draws a few
+-- zones differently (its own UiMapAssignment), so there the client conversion puts database positions
+-- off by 100 to 1000 yards. These are the classic rects {minX, minY, maxX, maxY} of exactly those zones,
+-- generated from Blizzard's data by dev/rework-docs/_forever_map_rects.py (rerun after a Forever patch).
+-- Forever 1.60.1.70374 vs classic 2.5.6.70006:
+local tForeverClassicMapRect = {
+	[1412] = {-3697.917, -3089.583, -272.917, 2047.917}, -- Mulgore
+	[1423] = {1218.750, -6056.250, 3800.000, -2185.417}, -- Eastern Plaguelands
+	[1433] = {-10022.916, -3741.667, -8575.000, -1570.833}, -- Redridge Mountains
+	[1453] = {-9175.205, 36.701, -8278.851, 1380.971}, -- Stormwind City
+}
 local function tWpcWorldFromMap(aUiMapId, aRelX, aRelY)
 	local t = tWpcMapTransform[aUiMapId]
 	if t == nil then
-		t = tWpcDeriveTransform(aUiMapId)
+		local tRect = Sku.isForever and tForeverClassicMapRect[aUiMapId]
+		if tRect then
+			-- same transform shape as tWpcDeriveTransform: world x runs down the map, world y right to left
+			t = {tRect[3], 0, tRect[1] - tRect[3], tRect[4], tRect[2] - tRect[4], 0}
+		else
+			t = tWpcDeriveTransform(aUiMapId)
+		end
 		tWpcMapTransform[aUiMapId] = t
 	end
 	if t == false then
 		return tWpcProbe(aUiMapId, aRelX, aRelY)
 	end
 	return t[1] + t[2] * aRelX + t[3] * aRelY, t[4] + t[5] * aRelX + t[6] * aRelY
+end
+
+-- Database map position (0..1) -> world (x, y). Every place that turns Sku DATABASE percentages into
+-- world coordinates goes through here: on Forever it uses the classic rects above, on the other clients
+-- it is the plain engine call. Positions the client itself reports on its own map (corpse, map pins)
+-- go through C_Map.GetWorldPosFromMapPos directly. nil when the map has no world position.
+function SkuNav:WorldFromMap(aUiMapId, aRelX, aRelY)
+	if not (aUiMapId and aRelX and aRelY) then return nil end
+	if Sku.isForever then
+		return tWpcWorldFromMap(aUiMapId, aRelX, aRelY)
+	end
+	local _, tPos = C_Map.GetWorldPosFromMapPos(aUiMapId, CreateVector2D(aRelX, aRelY))
+	if tPos then return tPos:GetXY() end
+end
+
+-- The player's map position (0..1) in the same frame as the database percentages, for comparing
+-- the two directly. On the zones Forever draws differently it is derived from the world position
+-- through the classic rect; everywhere else it is the client's own map position.
+function SkuNav:PlayerDbMapPosition(aUiMapId)
+	local tRect = Sku.isForever and aUiMapId and tForeverClassicMapRect[aUiMapId]
+	if tRect then
+		local tX, tY = UnitPosition("player")
+		if not tX then return nil end
+		return (tY - tRect[4]) / (tRect[2] - tRect[4]), (tX - tRect[3]) / (tRect[1] - tRect[3])
+	end
+	local tPos = aUiMapId and C_Map.GetPlayerMapPosition(aUiMapId, "player")
+	if tPos then return tPos:GetXY() end
 end
 
 function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
@@ -2486,9 +2530,12 @@ function SkuNav:ProcessPlayerDead()
 		return
 	end
 	local cX, cY = tCorpse:GetXY()
-	local tmapPos = CreateVector2D(cX, cY)
-	local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetBestMapForUnit("player"), tmapPos)
-	local tX, tY = worldPosition:GetXY()
+	-- the corpse position is on the client's own map, so the client's own conversion applies
+	local _, tWorldPos = C_Map.GetWorldPosFromMapPos(tUiMap, CreateVector2D(cX, cY))
+	if not tWorldPos then
+		return
+	end
+	local tX, tY = tWorldPos:GetXY()
 
 	local tPlayerx, tPlayery = UnitPosition("player")
 	local distance = SkuNav:Distance(tPlayerx, tPlayery, tX, tY)

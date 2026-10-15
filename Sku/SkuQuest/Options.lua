@@ -2,6 +2,7 @@
 local L = Sku.L
 local GetNumQuestLogEntries = Sku.Compat.GetNumQuestLogEntries
 local GetQuestLogTitle = Sku.Compat.GetQuestLogTitle
+local GetQuestLogFrame = Sku.Compat.GetQuestLogFrame
 
 -- File-level state that used to leak into _G through a missing "local".
 local tCurrentQuestLogQuestsTable
@@ -974,9 +975,8 @@ local function GetInstanceEntranceWps(aAreaId)
 			local _, tParentName, tContinentID = SkuNav.Geo:GetAreaData(tE[1])
 			local tUiMapId = SkuNav.Geo:GetUiMapIdFromAreaId(tE[1])
 			if tParentName and tUiMapId and tContinentID then
-				local _, tWorldPos = C_Map.GetWorldPosFromMapPos(tUiMapId, CreateVector2D(tE[2] / 100, tE[3] / 100))
-				if tWorldPos then
-					local tWorldX, tWorldY = tWorldPos:GetXY()
+				local tWorldX, tWorldY = SkuNav:WorldFromMap(tUiMapId, tE[2] / 100, tE[3] / 100)
+				if tWorldX then
 					local tWp = SkuNav:GetNearestWpToCoords2(tWorldX, tWorldY, tContinentID, 1)
 					if tWp then
 						tOut[#tOut + 1] = {wp = tWp, dungeonName = tDungeonName, parentName = tParentName, continentId = tContinentID, uiMapId = tUiMapId}
@@ -1745,9 +1745,8 @@ function SkuQuest:GetTriggerEndWps(aQuestId)
 				if not SkuNav:GetWaypointData2(tName) then
 					tName = nil
 					if tUiMapId and tContinentID then
-						local _, tWorldPos = C_Map.GetWorldPosFromMapPos(tUiMapId, CreateVector2D(tX / 100, tY / 100))
-						if tWorldPos then
-							local tWorldX, tWorldY = tWorldPos:GetXY()
+						local tWorldX, tWorldY = SkuNav:WorldFromMap(tUiMapId, tX / 100, tY / 100)
+						if tWorldX then
 							tName = SkuNav:GetNearestWpToCoords2(tWorldX, tWorldY, tContinentID, 1)
 						end
 					end
@@ -1822,7 +1821,15 @@ local function SkuPostQuestToChat(aQuestID)
 	-- sieht dann nur den Klartext-Titel ohne Hyperlink.
 	local link
 	local tFromLog = false
-	if _G.GetQuestLink and GetNumQuestLogEntries and GetQuestLogTitle then
+	if Sku.isForever and _G.GetQuestLink then
+		-- Forever: GetQuestLink takes the quest ID (Blizzard's QuestMapFrame calls it that way), not the
+		-- index in the quest log
+		local tQuestLink = GetQuestLink(aQuestID)
+		if tQuestLink and tQuestLink ~= "" then
+			link = tQuestLink
+			tFromLog = true
+		end
+	elseif _G.GetQuestLink and GetNumQuestLogEntries and GetQuestLogTitle then
 		local tNum = GetNumQuestLogEntries() or 0
 		for i = 1, tNum do
 			local _, _, _, isHeader, _, _, _, qid = GetQuestLogTitle(i)
@@ -2414,8 +2421,7 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 				if SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap] then
 					local tSpawnX, tSpawnY = SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap][1][1], SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap][1][2]
 					if tSpawnX ~= -1 and tSpawnY ~= -1 then
-						local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav.Geo:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
-						local tX, tY = worldPosition:GetXY()
+						local tX, tY = SkuNav:WorldFromMap(SkuNav.Geo:GetUiMapIdFromAreaId(tUiMap), tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100)
 						local tDistance, _  = SkuNav.Geo:Distance(tPlayX, tPlayY, tX, tY)
 						-- UnitPosition("player") is nil in instances/raids/BGs, so Distance()
 						-- returns nil there; keep listing the quest, sorted to the end.
@@ -2433,8 +2439,7 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 				if tObjectSpawns[tUiMap] then
 					local tSpawnX, tSpawnY = tObjectSpawns[tUiMap][1][1], tObjectSpawns[tUiMap][1][2]
 					if tSpawnX ~= -1 and tSpawnY ~= -1 then
-						local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav.Geo:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
-						local tX, tY = worldPosition:GetXY()
+						local tX, tY = SkuNav:WorldFromMap(SkuNav.Geo:GetUiMapIdFromAreaId(tUiMap), tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100)
 						local tDistance, _  = SkuNav.Geo:Distance(tPlayX, tPlayY, tX, tY)
 						-- UnitPosition("player") is nil in instances/raids/BGs, so Distance()
 						-- returns nil there; keep listing the quest, sorted to the end.
@@ -2481,10 +2486,10 @@ function SkuQuest:MenuBuilder(aParentEntry)
 
 		end,
 		build = function(self)
-		if QuestLogFrame:IsVisible() ~= true then
+		if GetQuestLogFrame():IsVisible() ~= true then
 			ToggleQuestLog()
 		end
-		if (QuestLogFrame:IsVisible()) then
+		if (GetQuestLogFrame():IsVisible()) then
 			ExpandQuestHeader(0)
 		end
 
@@ -2520,7 +2525,8 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					tAddTitle = tAddTitle..L["(Daily) "]
 				end
 				if isHeader == false then
-					tQuestsByHeader[tHeader][tAddTitle..title..tDifficultyTitle] = questLogID
+					-- Forever reads the quest by its quest ID, the other clients by the index in the quest log
+					tQuestsByHeader[tHeader][tAddTitle..title..tDifficultyTitle] = Sku.isForever and questID or questLogID
 				else
 					tQuestsByHeader[title] = {}
 					tHeader = title
@@ -2537,9 +2543,12 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					tNewMenuEntry1.OnAction = function(self, aValue, aName)
 					end
 					tNewMenuEntry1.OnEnter = function(self, aValue, aName)
-						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId)
+						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId, self)
 					end
-					local questLogTitleText, level, questTag, isHeader, isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(vq)
+					local questID = vq
+					if not Sku.isForever then
+						questID = select(8, GetQuestLogTitle(vq))
+					end
 					tNewMenuEntry1.BuildChildren = function(self)
 						CreateQuestSubmenu(self, questID)
 					end
@@ -2556,9 +2565,12 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					tNewMenuEntry1.OnAction = function(self, aValue, aName)
 					end
 					tNewMenuEntry1.OnEnter = function(self, aValue, aName)
-						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId)
+						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId, self)
 					end
-					local questLogTitleText, level, questTag, isHeader, isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(vq)
+					local questID = vq
+					if not Sku.isForever then
+						questID = select(8, GetQuestLogTitle(vq))
+					end
 					tNewMenuEntry1.BuildChildren = function(self)
 						CreateQuestSubmenu(self, questID)
 					end
@@ -2698,10 +2710,10 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			build = function(self)
 			-- Gleiche Vorbereitung wie "Aktuelle Quests": Quests unter einer
 			-- zugeklappten Überschrift sind gar nicht aufzählbar.
-			if QuestLogFrame:IsVisible() ~= true then
+			if GetQuestLogFrame():IsVisible() ~= true then
 				ToggleQuestLog()
 			end
-			if (QuestLogFrame:IsVisible()) then
+			if (GetQuestLogFrame():IsVisible()) then
 				ExpandQuestHeader(0)
 			end
 

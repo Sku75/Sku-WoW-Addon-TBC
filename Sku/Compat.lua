@@ -77,6 +77,9 @@ C.GetDetailedItemLevelInfo = tPick("GetDetailedItemLevelInfo", "C_Item")
 C.PickupItem = tPick("PickupItem", "C_Item")
 C.PickupSpell = tPick("PickupSpell", "C_Spell")
 C.GetPetHappiness = tPick("GetPetHappiness", "C_PetInfo")
+C.PetAbandon = tPick("PetAbandon", "C_PetInfo")
+C.PetRename = tPick("PetRename", "C_PetInfo")
+C.GetSpellSubtext = tPick("GetSpellSubtext", "C_Spell")
 C.GetPetTrainingPoints = tPick("GetPetTrainingPoints", "C_PetInfo")
 C.GetNumQuestLogEntries = tPick("GetNumQuestLogEntries", "C_QuestLog")
 C.GetNumFactions = tPick("GetNumFactions", "C_Reputation")
@@ -90,11 +93,37 @@ C.BOOKTYPE_SPELL = _G.BOOKTYPE_SPELL or "spell"
 C.BOOKTYPE_PET = _G.BOOKTYPE_PET or "pet"
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Skill lines. Forever has them in C_SkillInfo; GetSkillLineInfo answers with a table there. Every profession is listed
+-- twice: its own line, and a line of the same name below it for the current expansion (parentSkillLineID ~= 0). The
+-- old API knew only the first, so the lines below others are left out of the numbering here.
+C.GetNumSkillLines = _G.GetNumSkillLines
+C.GetSkillLineInfo = _G.GetSkillLineInfo
+if not C.GetSkillLineInfo and C_SkillInfo and C_SkillInfo.GetSkillLineInfo then
+	local function tTopLevelLines()
+		local tIndexes = {}
+		for i = 1, C_SkillInfo.GetNumSkillLines() do
+			local t = C_SkillInfo.GetSkillLineInfo(i)
+			if t and (t.parentSkillLineID or 0) == 0 then tIndexes[#tIndexes + 1] = i end
+		end
+		return tIndexes
+	end
+	C.GetNumSkillLines = function() return #tTopLevelLines() end
+	-- old: name, header, isExpanded, rank, numTempPoints, modifier, maxRank, isAbandonable, stepCost, rankCost,
+	-- minLevel, costType, description
+	C.GetSkillLineInfo = function(aIndex)
+		local tRaw = tTopLevelLines()[aIndex]
+		local t = tRaw and C_SkillInfo.GetSkillLineInfo(tRaw)
+		if not t then return nil end
+		return t.name, t.isHeader, not t.isCollapsed, t.rank, t.tempPoints, t.modifier, t.maxRank, t.isAbandonable,
+			t.stepCost, t.rankCost, t.minLevel, t.costType, t.description
+	end
+end
+C.GetNumSkillLines = C.GetNumSkillLines or function() return 0 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- Gone without a replacement on Forever: neutral answers so the overview page
 -- (Ctrl+Shift+Down) skips those sections instead of failing.
 C.GetInventoryAlertStatus = _G.GetInventoryAlertStatus or function() return 0 end
-C.GetNumSkillLines = _G.GetNumSkillLines or function() return 0 end
-C.GetSkillLineInfo = _G.GetSkillLineInfo or function() return nil end
 C.CursorHasSpell = _G.CursorHasSpell or function() return (GetCursorInfo()) == "spell" end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -234,6 +263,40 @@ if not C.GetQuestLogTitle and C_QuestLog and C_QuestLog.GetInfo then
 		return t.title, t.level, tSuggestedGroup, t.isHeader, t.isCollapsed, tIsComplete, t.frequency, t.questID, t.startEvent, nil, t.isOnMap, t.hasLocalPOI, t.isTask, t.isBounty, t.isStory, t.isHidden, t.isScaling
 	end
 end
+
+-- The quest log window is a standalone QuestLogFrame on the other clients; on Forever the quest log
+-- lives in the world map (QuestMapFrame). The name is the one place that decides it; the Local menu's
+-- window list (SkuCore/Core.lua) looks the frame up by this name.
+C.QuestLogFrameName = (_G.QuestLogFrame or not _G.QuestMapFrame) and "QuestLogFrame" or "QuestMapFrame"
+C.GetQuestLogFrame = function() return _G[C.QuestLogFrameName] end
+-- Open and close the quest log the way Blizzard's ToggleQuestLog does. On Forever only the world map
+-- is a UI panel: Show/HideUIPanel(QuestMapFrame) would skip the quest log's own show/hide handling
+-- and leave the map open.
+C.ShowQuestLog = function()
+	if C.QuestLogFrameName == "QuestLogFrame" then
+		ShowUIPanel(_G.QuestLogFrame)
+	else
+		OpenQuestLog()
+	end
+end
+C.HideQuestLog = function()
+	if C.QuestLogFrameName == "QuestLogFrame" then
+		HideUIPanel(_G.QuestLogFrame)
+	elseif _G.QuestMapFrame:IsVisible() then
+		HideUIPanel(_G.QuestMapFrame:GetParent())
+	end
+end
+-- SelectQuestLogEntry(index) does not exist on Forever, the selection goes by quest ID there.
+C.SelectQuestLogEntry = _G.SelectQuestLogEntry
+if not C.SelectQuestLogEntry and C_QuestLog and C_QuestLog.SetSelectedQuest then
+	C.SelectQuestLogEntry = function(aIndex)
+		local t = C_QuestLog.GetInfo(aIndex)
+		if t and t.questID then C_QuestLog.SetSelectedQuest(t.questID) end
+	end
+end
+-- SetAbandonQuest/AbandonQuest moved into C_QuestLog on Forever; both act on the selected quest.
+C.SetAbandonQuest = _G.SetAbandonQuest or (C_QuestLog and C_QuestLog.SetAbandonQuest)
+C.AbandonQuest = _G.AbandonQuest or (C_QuestLog and C_QuestLog.AbandonQuest)
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Reputation

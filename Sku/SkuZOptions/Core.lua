@@ -18,6 +18,7 @@ local GetNumFactions = Sku.Compat.GetNumFactions
 local GetNumSkillLines = Sku.Compat.GetNumSkillLines
 local GetNumSpellTabs = Sku.Compat.GetNumSpellTabs
 local GetNumTrackingTypes = Sku.Compat.GetNumTrackingTypes
+local GetQuestLogFrame = Sku.Compat.GetQuestLogFrame
 local GetPetHappiness = Sku.Compat.GetPetHappiness
 local GetPetTrainingPoints = Sku.Compat.GetPetTrainingPoints
 local GetSkillLineInfo = Sku.Compat.GetSkillLineInfo
@@ -3551,6 +3552,12 @@ function SkuOptions:CreateMenuFrame()
 					local tIncomplete = false
 					local tOk, tText = pcall(function()
 						local i = tInfo.index
+						if tInfo.api == "prof" then
+							-- Forever: the text comes from the crafting API (SkuCore/professionsForever.lua)
+							local tProfText, tProfIncomplete = SkuCore:ProfessionRecipeText(i)
+							tIncomplete = tProfIncomplete
+							return tProfText
+						end
 						local tName, tNum, tGetReagent, tGetLink, tGetReagentLink
 						if tInfo.api == "craft" then
 							tName = _G.GetCraftInfo and _G.GetCraftInfo(i)
@@ -3973,7 +3980,7 @@ function SkuOptions:CreateMenuFrame()
 		SkuOptions.TTS:Output("", -1)
 		SkuOptions:StartStopBackgroundSound(false)
 		SkuOptions:HideVisualMenu()
-		if QuestLogFrame and QuestLogFrame:IsVisible() == true then
+		if GetQuestLogFrame():IsVisible() == true then
 			ToggleQuestLog()
 		end
 	end)
@@ -7050,6 +7057,12 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 			if aGossipListTable[index].skuIdentity ~= nil then
 				tNewMenuEntry.skuIdentity = aGossipListTable[index].skuIdentity
+			end
+
+			-- A recipe with a submenu (Forever: create / create all) carries its recipe info too,
+			-- so Shift-Down can build the recipe text (see the leaf branch above).
+			if aGossipListTable[index].skuRecipeInfo then
+				tNewMenuEntry.skuRecipeInfo = aGossipListTable[index].skuRecipeInfo
 			end
 
 			tNewMenuEntry.BuildChildren = function(self)

@@ -59,6 +59,12 @@ SkuCore\minimapScanner.lua
 SkuCore\LocalMenu.lua
 SkuCore\merchantForever.lua
 SkuCore\trainerForever.lua
+SkuCore\professionsForever.lua
+SkuCore\talentsForever.lua
+SkuCore\achievementsForever.lua
+SkuCore\characterForever.lua
+SkuCore\actionPageForever.lua
+SkuCore\buffAnnounce.lua
 SkuCore\pendingPrompts.lua
 SkuCore\JunkAndRepair.lua
 SkuCore\UIErrors.lua
@@ -81,7 +87,9 @@ SkuCore\Macro.lua
 SkuCore\skuFocus.lua
 SkuCore\subgroupTargeting.lua
 SkuCore\Build_SocketingFrame.lua
+SkuCore\dungeonBrowserCore.lua
 SkuCore\dungeonBrowser.lua
+SkuCore\dungeonBrowserForever.lua
 SkuCore\equipmentSets.lua
 SkuCore\combatMenuKeys.lua
 SkuCore\updateCheck.lua
@@ -166,6 +174,7 @@ SkuNav\importExport.lua
 SkuNav\waypointComments_frFR.lua
 
 SkuQuest\Core.lua
+SkuQuest\questTextForever.lua
 SkuQuest\Options.lua
 SkuQuest\Proximity.lua
 SkuQuest\QuestTarget.lua

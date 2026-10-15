@@ -485,15 +485,21 @@ function SkuCore:IsItemSoulbound(bag, slot)
 end
 
 -- Forever: the lines of a C_TooltipInfo result (left text, then right text if any) as a
--- list of strings, or nil when there are none. The beta appends an "Open Issue Report"
--- notice to every tooltip, which is dropped here.
+-- list of strings, or nil when there are none. The beta's issue reporter
+-- (Blizzard_PTRFeedback, English only, no GlobalStrings) adds a line to tooltips, which is
+-- dropped here: "Press <key> to submit an issue for this <type>", or with its key unbound
+-- "The 'Open Issue Report' keybind is not bound."
+local function IsIssueReporterLine(aText)
+	return string.find(aText, "to submit an issue for this", 1, true) or string.find(aText, "Open Issue Report", 1, true)
+end
 function SkuCore:TooltipDataLines(aData)
 	if not aData or type(aData.lines) ~= "table" then return nil end
 	local tLines = {}
 	for _, tLine in ipairs(aData.lines) do
 		local tLeft, tRight = tLine.leftText, tLine.rightText
-		if type(tLeft) == "string" and tLeft ~= "" and not string.find(tLeft, "Open Issue Report", 1, true) then
-			if type(tRight) == "string" and tRight ~= "" then tLeft = tLeft .. " " .. tRight end
+		-- a line can be secret (combat); it cannot be joined or compared, so it is left out
+		if type(tLeft) == "string" and not Sku.IsSecret(tLeft) and tLeft ~= "" and not IsIssueReporterLine(tLeft) then
+			if type(tRight) == "string" and not Sku.IsSecret(tRight) and tRight ~= "" then tLeft = tLeft .. " " .. tRight end
 			tLines[#tLines + 1] = tLeft
 		end
 	end
@@ -2785,7 +2791,10 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				local tRight = _G["GameTooltipTextRight"..i]
 				local tLeftText = tLeft and tLeft:GetText()
 				local tRightText = tRight and tRight:IsShown() and tRight:GetText()
-				if tLeftText and tLeftText ~= "" and tRightText and tRightText ~= "" then
+				-- Forever: a line built from a secret stat cannot be compared or joined
+				if Sku.IsSecret(tLeftText) or Sku.IsSecret(tRightText) then
+					dprint("charstats", "secret tooltip line skipped", i)
+				elseif tLeftText and tLeftText ~= "" and tRightText and tRightText ~= "" then
 					tLines[#tLines + 1] = tLeftText..": "..tRightText
 				elseif tLeftText and tLeftText ~= "" then
 					tLines[#tLines + 1] = tLeftText
@@ -2805,7 +2814,10 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 			return SkuUtil:Unescape(table.concat(tLines, "\r\n"))
 		end
 
-		if not Sku.isTBC then
+		if Sku.isForever then
+			-- Forever: the stats come from Blizzard's PAPERDOLL tables, see characterForever.lua
+			SkuCore:BuildForeverCharacterStats(tParentStats, tReadStatFrameTooltip)
+		elseif not Sku.isTBC then
 			local tStatFrames = {
 				"CharacterStatFrame1",
 				"CharacterStatFrame2",
@@ -3001,25 +3013,30 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		}
 		local tParentStatsValues = tParentStats[tFriendlyName].childs
 
-		for x = 1, NUM_RESISTANCE_TYPES do
-			local text = getglobal("MagicResText"..x);
-			local frame = getglobal("MagicResFrame"..x);
-			frame.type = "stat"
-			local tName, tFullText = GetButtonTooltipLines(frame)
+		if Sku.isForever then
+			-- Forever has no NUM_RESISTANCE_TYPES and no MagicResFrame widgets
+			SkuCore:BuildForeverResistances(tParentStats[tFriendlyName], tReadStatFrameTooltip)
+		else
+			for x = 1, NUM_RESISTANCE_TYPES do
+				local text = getglobal("MagicResText"..x);
+				local frame = getglobal("MagicResFrame"..x);
+				frame.type = "stat"
+				local tName, tFullText = GetButtonTooltipLines(frame)
 
-			local tFrameName = ""
-			local tFriendlyName = SkuUtil:Unescape(tName)
-			table.insert(tParentStatsValues, tFriendlyName)
-			tParentStatsValues[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = SkuUtil:Unescape(tFullText),
-				childs = {},
-				--click = true,
-			}
+				local tFrameName = ""
+				local tFriendlyName = SkuUtil:Unescape(tName)
+				table.insert(tParentStatsValues, tFriendlyName)
+				tParentStatsValues[tFriendlyName] = {
+					frameName = tFrameName,
+					RoC = "Child",
+					type = "Button",
+					obj = _G[tFrameName],
+					textFirstLine = tFriendlyName,
+					textFull = SkuUtil:Unescape(tFullText),
+					childs = {},
+					--click = true,
+				}
+			end
 		end
 	end
 
@@ -3213,7 +3230,17 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 										-- Liste (Reihenfolge kann sich
 										-- zwischen Menü-Aufbau und Bestätigung
 										-- verschieben).
-										if _G.AbandonSkill and GetNumSkillLines
+										if not _G.AbandonSkill and C_SkillInfo then
+											-- Forever: C_SkillInfo.AbandonSkill takes the skill line id of the profession's own
+											-- line (the one without a parent), found by name in the current list.
+											for i = 1, C_SkillInfo.GetNumSkillLines() do
+												local tInfo = C_SkillInfo.GetSkillLineInfo(i)
+												if tInfo and not tInfo.isHeader and (tInfo.parentSkillLineID or 0) == 0 and tInfo.name == lProfName then
+													C_SkillInfo.AbandonSkill(tInfo.skillID)
+													break
+												end
+											end
+										elseif _G.AbandonSkill and GetNumSkillLines
 											and GetSkillLineInfo then
 											if _G.ExpandSkillHeader then
 												pcall(_G.ExpandSkillHeader, 0)
@@ -4000,6 +4027,9 @@ local tRecipeDifficultyLabel = {
 local tRecipeApi = {
 	trade = { frame = "TradeSkillFrame" },
 	craft = { frame = "CraftFrame" },
+	-- Forever's crafting window (professionsForever.lua) builds through AddRecipeCategories too, but reads its
+	-- list from C_TradeSkillUI and refreshes on its own events (SkuCore.PROFESSIONS_LIST_UPDATE).
+	prof = { frame = "ProfessionsFrame", ownRefresh = true },
 }
 -- Signature of the list the menu was last BUILT from, per api. The update events
 -- compare against it so a burst of TRADE_SKILL_UPDATE that changed nothing we show
@@ -4082,7 +4112,7 @@ function SkuCore:RecipeListSignature(aApi, aList)
 	local tSel = 0
 	if aApi == "trade" then
 		tSel = (GetTradeSkillSelectionIndex and GetTradeSkillSelectionIndex()) or 0
-	else
+	elseif aApi == "craft" then
 		tSel = (GetCraftSelectionIndex and GetCraftSelectionIndex()) or 0
 	end
 	local tParts = { tostring(tSel) }
@@ -4111,7 +4141,8 @@ end
 -- section header for PAGEUP/PAGEDOWN. With aFilterOn only recipes the player has the
 -- materials for are listed, and a header is only listed if it has a recipe to show --
 -- folded or not, so a folded header never hides "nothing".
-function SkuCore:AddRecipeCategories(aParentChilds, aApi, aList, aFilterOn, aProf)
+-- aDecorate(aNode, aRecipe): optional, called for every recipe node after it is built.
+function SkuCore:AddRecipeCategories(aParentChilds, aApi, aList, aFilterOn, aProf, aDecorate)
 	local tFrameName = tRecipeApi[aApi].frame
 	local tSelect = (aApi == "trade") and _G.TradeSkillFrame_SetSelection or _G.CraftFrame_SetSelection
 	aProf = aProf or tFrameName
@@ -4208,6 +4239,7 @@ function SkuCore:AddRecipeCategories(aParentChilds, aApi, aList, aFilterOn, aPro
 					skuRecipeInfo = { api = aApi, index = tIndex },
 					skuIdentity = tIdent,
 				}
+				if aDecorate then aDecorate(aParentChilds[tLabel], r) end
 				tShown = tShown + 1
 			end
 		end
@@ -4268,7 +4300,7 @@ function SkuCore:RefreshProfessionMenu()
 	local tChanged = false
 	for tApi, tDef in pairs(tRecipeApi) do
 		local tFrame = _G[tDef.frame]
-		if tFrame and tFrame:IsVisible() then
+		if tFrame and not tDef.ownRefresh and tFrame:IsVisible() then
 			-- Blizzard's makeable filter is not ours any more; an "on" left over from an
 			-- earlier Sku version would filter the list behind our back. Once per session.
 			if tApi == "trade" and tMakeableReset ~= true and _G.TradeSkillOnlyShowMakeable then
