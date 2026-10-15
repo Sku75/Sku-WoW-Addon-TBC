@@ -59,6 +59,7 @@ local function tCriteriaChildren(aId, aNum)
 end
 
 -- One achievement: description, state, progress; criteria as sub entries (for example areas not explored yet).
+-- Returns whether it was listed, and whether it counts as earned.
 local function tBuildAchievement(aList, aCat, aIndex)
 	local tId, tName, _, tCompleted, tMonth, tDay, tYear, tDesc, _, _, tReward, _, tEarnedByMe = GetAchievementInfo(aCat, aIndex)
 	if not (tId and tName and tName ~= "") then return false end
@@ -108,43 +109,38 @@ local function tBuildAchievement(aList, aCat, aIndex)
 	else
 		tAdd(aList, tName .. ", " .. tState, { type = "FontString", obj = nil, textFull = table.concat(tParts, "\r\n") })
 	end
-	return true
+	return true, tCompleted
 end
 
 -- A category, recursively: subcategories first, then the achievements of the category itself. Empty ones are left out.
+-- Returns the number of achievements below it and how many of them are earned, counted from the entries themselves:
+-- earned means earned by this character, as in Blizzard's legacy window (AchievementFrame_ShowAsComplete; its challenge
+-- list treats achievements earned by other characters of the account as open, while GetCategoryNumAchievements and
+-- GetNumCompletedAchievements count them as completed).
 local function tBuildCategory(aList, aCat, aChildrenOf, aDepth)
-	if aDepth > MAX_DEPTH then return false end
+	if aDepth > MAX_DEPTH then return end
 	local tTitle = GetCategoryInfo(aCat)
-	if not tTitle or tTitle == "" then return false end
+	if not tTitle or tTitle == "" then return end
 
 	local tChilds = {}
-	local tCount = 0
+	local tTotal, tEarned = 0, 0
 	for _, tSub in ipairs(aChildrenOf[aCat] or {}) do
-		if tBuildCategory(tChilds, tSub, aChildrenOf, aDepth + 1) then tCount = tCount + 1 end
+		local tSubTotal, tSubEarned = tBuildCategory(tChilds, tSub, aChildrenOf, aDepth + 1)
+		if tSubTotal then tTotal, tEarned = tTotal + tSubTotal, tEarned + tSubEarned end
 	end
 	for i = 1, GetCategoryNumAchievements(aCat) or 0 do
-		if tBuildAchievement(tChilds, aCat, i) then tCount = tCount + 1 end
-	end
-	if tCount == 0 then return false end
-
-	-- counter "x of y earned" over all achievements below this category, as the first line inside (not in the label, see
-	-- tBuildAchievement)
-	local function tTotals(aId, aD)
-		local tN, tC = GetCategoryNumAchievements(aId)
-		local tTotal, tDoneCount = tonumber(tN) or 0, tonumber(tC) or 0
-		if aD < MAX_DEPTH then
-			for _, tSub in ipairs(aChildrenOf[aId] or {}) do
-				local a, b = tTotals(tSub, aD + 1)
-				tTotal, tDoneCount = tTotal + a, tDoneCount + b
-			end
+		local tListed, tCompleted = tBuildAchievement(tChilds, aCat, i)
+		if tListed then
+			tTotal = tTotal + 1
+			if tCompleted then tEarned = tEarned + 1 end
 		end
-		return tTotal, tDoneCount
 	end
-	local tAll, tDoneAll = tTotals(aCat, aDepth)
-	tAdd(tChilds, string.format(L["%d of %d earned"], tDoneAll, tAll), { type = "FontString", obj = nil }, 1)
+	if #tChilds == 0 then return end
 
+	-- the counter is the first line inside, not part of the label (see tBuildAchievement)
+	tAdd(tChilds, string.format(L["%d of %d earned"], tEarned, tTotal), { type = "FontString", obj = nil }, 1)
 	tAdd(aList, tTitle, { type = "Button", obj = nil, textFull = tTitle, childs = tChilds, skuIdentity = "achcat:" .. aCat })
-	return true
+	return tTotal, tEarned
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -329,25 +325,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:Build_LegacySystemFrame(aParentChilds)
-	local tTitle = L["Legacy"]
-	local tTotal, tCompleted = GetNumCompletedAchievements()
-	tTotal, tCompleted = tonumber(tTotal), tonumber(tCompleted)
-
-	local tSummary = tTitle
-	if tTotal and tCompleted then
-		tSummary = string.format(L["Legacy: challenges %d of %d earned"], tCompleted, tTotal)
-	end
-	table.insert(aParentChilds, tSummary)
-	aParentChilds[tSummary] = {
-		frameName = "LegacySystemFrame",
-		RoC = "Child",
-		type = "FontString",
-		obj = LegacySystemFrame,
-		textFirstLine = tSummary,
-		textFull = "",
-		childs = {},
-	}
-
 	-- Legacy points (like LegacySystem.UpdateCurrencyInfo / ChallengePointBarMixin:Update): current of maximum
 	local tLegacy = Constants.LegacyConsts
 	local tTreeID = LegacyTreeData[1].treeID
@@ -382,13 +359,17 @@ function SkuCore:Build_LegacySystemFrame(aParentChilds)
 		end
 	end
 
-	local tAny = false
+	local tTotal, tEarned = 0, 0
 	for _, tCat in ipairs(tRoots) do
-		if tBuildCategory(aParentChilds, tCat, tChildrenOf, 1) then tAny = true end
+		local tCatTotal, tCatEarned = tBuildCategory(aParentChilds, tCat, tChildrenOf, 1)
+		if tCatTotal then tTotal, tEarned = tTotal + tCatTotal, tEarned + tCatEarned end
 	end
-	if not tAny then
+	if tTotal == 0 then
 		tAdd(aParentChilds, L["No achievements"], { type = "FontString", obj = nil })
+		return
 	end
+	-- the summary leads the window, counted like the categories
+	tAdd(aParentChilds, string.format(L["Legacy: challenges %d of %d earned"], tEarned, tTotal), { type = "FontString", obj = LegacySystemFrame }, 1)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
