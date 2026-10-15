@@ -846,7 +846,23 @@ end
 -- Enum.VoiceTtsDestination is now nil and a clean 4-arg call speaks with no
 -- boundary words. overlap is omitted (defaults false) so Sku keeps driving its
 -- own sequencing without overlapping speech.
+-- Secret text (WoW Forever): a value the game hides from addons (a pet's health) can be handed to
+-- C_VoiceChat.SpeakText (the text argument accepts secrets from tainted code) but must never be read,
+-- compared, concatenated or used as a table key. The text therefore never enters the queue: the queue carries
+-- the plain marker word below, which keeps its place, its stops and its client gate, and BttsHandOver swaps the
+-- real text in at the last moment. One slot, the newest call wins; a slot nobody collected goes stale.
+local SECRET_MARKER = "skusecrettext"
+local SECRET_SLOT_MAX_AGE = 5
+local mSecretSlot
+
 local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
+	local tSecretText
+	if not aIsEcho and mSecretSlot and string.find(aText, SECRET_MARKER, 1, true) then
+		if GetTime() - mSecretSlot.at <= SECRET_SLOT_MAX_AGE then tSecretText = mSecretSlot.text end
+		mSecretSlot = nil
+		-- Stale: nothing to say, and the marker word must never be spoken.
+		if not tSecretText then return end
+	end
 	-- [v43.5] A real announcement supersedes typed characters that have not gone
 	-- out yet. Sku's announcements all carry a stop, i.e. they behave like NVDA's
 	-- Spri.NOW, so the consistent answer is NVDA's: purge the pending echo rather
@@ -893,13 +909,14 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	if dprint then dprint("BTTS SpeakText", aIsEcho and "echo" or "queue",
 		"voice="..tostring(aVoiceIndex - 1), "speed="..tostring(ChatTts().WowTtsSpeed),
 		"vol="..tostring(ChatTts().WowTtsVolume), "text=["..tostring(aText).."]") end
-	local tSpoken = BttsCacheBust(aText)
+	local tSpoken = tSecretText or BttsCacheBust(aText)
 	-- [v43.6] See tBttsInterruptNext. Never on the Mac client: its engine speaks
 	-- markup literally (same reason BttsCacheBust drops its bookmark there).
 	if tBttsInterruptNext then
 		tBttsInterruptNext = false
 		if not (IsMacClient and IsMacClient()) then
-			tSpoken = tSpoken .. BTTS_INTERRUPT_MARK
+			-- format, not "..": the text may be secret
+			tSpoken = string.format("%s%s", tSpoken, BTTS_INTERRUPT_MARK)
 			if dprint then dprint("BTTS interrupt mark") end
 		end
 	end
@@ -923,6 +940,17 @@ local function BttsHandOver(aText, aVoiceIndex, aIsEcho)
 	mClientGate.stopHold = nil
 	mClientGate.stopDueAt = nil
 	C_VoiceChat.SpeakText(aVoiceIndex - 1, tSpoken, ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
+end
+
+-- Speaks a line that contains a secret value, as a priority announcement (like a key press result): it replaces
+-- what is queued, exactly as OutputStringBTtts(text, true, true, 0.2) does. aFormat is a plain string for
+-- string.format, the arguments after it may be secret. Returns nothing. Only the Blizzard TTS path can carry it.
+function SkuVoice:SpeakSecretText(aFormat, ...)
+	if type(aFormat) ~= "string" or not C_VoiceChat or not C_VoiceChat.SpeakText then return end
+	-- format twice: the cache-buster is a format string around one %s, so the secret is never concatenated
+	local tText = string.format(BttsCacheBust("%s"), string.format(aFormat, ...))
+	mSecretSlot = { text = tText, at = GetTime() }
+	SkuVoice:OutputStringBTtts(SECRET_MARKER, true, true, 0.2, nil, nil, nil, 2)
 end
 
 function SkuVoice:Create()

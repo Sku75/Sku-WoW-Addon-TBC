@@ -95,5 +95,17 @@ S.foreign = function()
 	at(0.4 + (#s + 1) * 0.25, function() V:CancelBttsOutput(); V:OutputStringBTtts("abgebrochen", {overwrite=true, engine="blizz"}) end)
 	H.run(16)
 end
+-- A secret value (a pet's health) spoken through SkuVoice:SpeakSecretText. Healthy = the text reaches the client
+-- (here "77 percent" / "12 percent"), the queue marker word never does, a menu line before it is cut, a line after it
+-- is audible, and only the newest of two quick calls is spoken. The harness has no secret values: plain strings
+-- stand in, which exercises the same hand-over.
+S.secret = function()
+	say(0.0, "menue zeile nummer eins mit etwas text", true, {scope="menu"})
+	at(0.6, function() V:SpeakSecretText("%d percent", 77) end)
+	say(3.0, "menue zeile nummer zwei", true, {scope="menu"})
+	at(5.0, function() V:SpeakSecretText("%d percent", 41) V:SpeakSecretText("%d percent", 12) end)
+	say(8.0, "ende", true)
+	H.run(14)
+end
 S[name]()
 H.report(name)
