@@ -4588,7 +4588,12 @@ end
 -- the always-present PaperDoll widgets and captures the slot list in exact menu order;
 -- realise the CharacterFrame for a single frame first (matching the WorldMapFrame/CraftFrame
 -- login-prime convention) so its widgets and the gear-manager toggle initialise cleanly,
--- then hide it again. _suppressGenericFrameHooks keeps that silent Show/Hide from running
+-- then hide it again. Show/HideUIPanel, not :Show()/:Hide(): the panel manager hands the
+-- job to Blizzard's forbidden FramePositionDelegate, so the frame's own OnShow/OnHide run as
+-- Blizzard code. A direct :Show() runs them as Sku code; on Forever that OnShow compares the
+-- secret health/mana maxima of the player frame bars (TextStatusBar error) and writes their
+-- showNumeric/lockShow fields, which taints every later player frame update.
+-- _suppressGenericFrameHooks keeps that silent Show/Hide from running
 -- GENERIC_OnOpen/OnClose (no CheckFrames, no menu pop, no voice); it is always cleared,
 -- even if the build errors, so a hiccup can never wedge the frame hooks off.
 function SkuCore:PrimeCombatMirrors()
@@ -4599,13 +4604,13 @@ function SkuCore:PrimeCombatMirrors()
 		local tWasShown = tCf:IsShown()
 		SkuCore._suppressGenericFrameHooks = true
 		local tOk, tErr = pcall(function()
-			if not tWasShown then tCf:Show() end
+			if not tWasShown then ShowUIPanel(tCf) end
 			SkuCore:Build_CharacterFrame({})
 		end)
 		if not tOk then dprint("PrimeCombatMirrors: character frame build failed", tErr) end
 		-- Outside the pcall: when the build throws, the frame must still be hidden, otherwise it stays open as a
 		-- ghost window and the menu asks which window to read.
-		if not tWasShown then tCf:Hide() end
+		if not tWasShown then HideUIPanel(tCf) end
 		SkuCore._suppressGenericFrameHooks = false
 	else
 		local tOk, tErr = pcall(function() SkuCore:Build_CharacterFrame({}) end)
