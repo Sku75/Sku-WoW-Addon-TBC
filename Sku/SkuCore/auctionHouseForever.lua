@@ -2131,18 +2131,15 @@ local gEventHandlers = {
 		tPostFinished(gSell.name..": "..L["Auction posted"])
 	end,
 	AUCTION_MULTISELL_START = function(aTotal)
-		if tPostInFlight() then gSell.multisell = { created = 0, total = aTotal, spokenAt = GetTime() } end
+		if tPostInFlight() then gSell.multisell = { created = 0, total = aTotal } end
 	end,
+	-- Only the end of a multisell is spoken: progress lines would talk over the menu for as long as it runs.
 	AUCTION_MULTISELL_UPDATE = function(aCreated, aTotal)
 		local tM = gSell.multisell
 		if not tM then return end
 		tM.created, tM.total = aCreated, aTotal
 		if tM.created >= tM.total then
 			tPostFinished(gSell.name..": "..L["Auction %d of %d posted"]:format(tM.total, tM.total))
-		elseif GetTime() - tM.spokenAt >= 3 then
-			-- Progress at most every 3 seconds, a long multisell would talk without pause otherwise.
-			tM.spokenAt = GetTime()
-			tSay(L["Auction %d of %d posted"]:format(tM.created, tM.total))
 		end
 	end,
 	AUCTION_MULTISELL_FAILURE = function()
