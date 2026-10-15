@@ -485,15 +485,20 @@ function SkuCore:IsItemSoulbound(bag, slot)
 end
 
 -- Forever: the lines of a C_TooltipInfo result (left text, then right text if any) as a
--- list of strings, or nil when there are none. The beta appends an "Open Issue Report"
--- notice to every tooltip, which is dropped here.
+-- list of strings, or nil when there are none. The beta's issue reporter
+-- (Blizzard_PTRFeedback, English only, no GlobalStrings) adds a line to tooltips, which is
+-- dropped here: "Press <key> to submit an issue for this <type>", or with its key unbound
+-- "The 'Open Issue Report' keybind is not bound."
+local function IsIssueReporterLine(aText)
+	return string.find(aText, "to submit an issue for this", 1, true) or string.find(aText, "Open Issue Report", 1, true)
+end
 function SkuCore:TooltipDataLines(aData)
 	if not aData or type(aData.lines) ~= "table" then return nil end
 	local tLines = {}
 	for _, tLine in ipairs(aData.lines) do
 		local tLeft, tRight = tLine.leftText, tLine.rightText
 		-- a line can be secret (combat); it cannot be joined or compared, so it is left out
-		if type(tLeft) == "string" and not Sku.IsSecret(tLeft) and tLeft ~= "" and not string.find(tLeft, "Open Issue Report", 1, true) then
+		if type(tLeft) == "string" and not Sku.IsSecret(tLeft) and tLeft ~= "" and not IsIssueReporterLine(tLeft) then
 			if type(tRight) == "string" and not Sku.IsSecret(tRight) and tRight ~= "" then tLeft = tLeft .. " " .. tRight end
 			tLines[#tLines + 1] = tLeft
 		end
