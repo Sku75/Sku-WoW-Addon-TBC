@@ -31,7 +31,7 @@ local AHF = SkuCore.AuctionHouseForever
 -- State
 -- ---------------------------------------------------------------------
 -- Browse = the name search's result list (one row per distinct item).
-local gBrowse = { state = "idle", results = {}, searchText = nil, entry = nil }
+local gBrowse = { state = "idle", results = {}, entry = nil }
 -- Detail = the individual listings of ONE item, opened by drilling into a
 -- browse row.
 local gDetail = { state = "idle", itemKey = nil, isCommodity = false, results = {}, entry = nil }
@@ -225,8 +225,7 @@ function AHF:StartBrowseQuery(aQuery, aEntry, aSend)
 	gBrowse.results = {}
 	gBrowse.focusIndex = nil
 	gBrowse.entry = aEntry
-	gBrowse.searchText = (type(aQuery.searchString) == "string" and aQuery.searchString ~= "") and aQuery.searchString or nil
-	gBrowse.localFilter = nil
+	gBrowse.failText = nil
 	gBrowse.generation = (gBrowse.generation or 0) + 1
 	local tGen = gBrowse.generation
 	-- The game throttles auction house queries: a query sent while the system is not ready vanishes without any
@@ -239,27 +238,11 @@ function AHF:StartBrowseQuery(aQuery, aEntry, aSend)
 		local tSend = aSend or C_AuctionHouse.SendBrowseQuery
 		tSend(aQuery)
 	end
-	-- Safety net: AUCTION_HOUSE_BROWSE_FAILURE (no matches, or the query is
-	-- refused for some other server-side reason) is not always guaranteed to
-	-- fire, and there is no positive "zero results" signal distinct from
-	-- "no signal at all yet". Without this, a failed/empty query left the
-	-- menu stuck on "Warten" forever (seen live: a typed
-	-- a search and it never resolved). aGeneration guards against a LATE
-	-- timeout firing after a newer search already replaced this one.
-	-- Results sometimes arrive without an event: read what the game holds after the query anyway.
-	C_Timer.After(3, function()
-		if gBrowse.generation ~= tGen then return end
-		local tRaw = C_AuctionHouse.GetBrowseResults()
-		local tFull = C_AuctionHouse.HasFullBrowseResults()
-		-- Treffer ohne Ereignis trotzdem lesen
-		if type(tRaw) == "table" and #tRaw > 0 and gBrowse.state == "waiting" then
-			AHF:RefreshBrowseResults()
-		end
-	end)
+	-- No answer at all (no results event, no failure): the list must not stay on "Warten".
+	-- The generation check ignores a timeout of a query a newer one has replaced.
 	C_Timer.After(10, function()
 		if gBrowse.generation == tGen and gBrowse.state == "waiting" then
 			gBrowse.pendingSend = nil
-			if AHF:BrowseFallback() then return end
 			gBrowse.state = "done"
 			tRebuildAndFocus(gBrowse.entry)
 		end
@@ -349,29 +332,13 @@ function AHF:StartCategoryBrowse(aFilters, aEntry)
 	AHF:StartBrowseQuery(tQuery, aEntry)
 end
 
--- Re-reads the full current browse result set. The new API always hands
--- back the complete set on GetBrowseResults() (not a delta), so both the
--- "…UPDATED" (full refresh) and "…ADDED" (incremental) events funnel here.
+-- Re-reads the full current browse result set. GetBrowseResults returns the whole set, so
+-- "…UPDATED" (full refresh) and "…ADDED" (next page) both funnel here.
 function AHF:RefreshBrowseResults()
-	if gBrowse.state == "idle" then return end
+	if gBrowse.state ~= "waiting" and gBrowse.state ~= "done" then return end
 	local tRaw = C_AuctionHouse.GetBrowseResults()
-	if type(tRaw) ~= "table" then
-		gBrowse.state = "done"
-		tRebuildAndFocus(gBrowse.entry)
-		return
-	end
-	-- An empty UPDATED right after sending only resets the old list, it is not an answer yet: keep waiting for results
-	-- (ADDED), BROWSE_FAILURE or the timeout.
-	if #tRaw == 0 and gBrowse.state == "waiting" then return end
-	-- Fallback search: the list comes in pages; request more until it is complete (the timeout ends it otherwise).
-	local tNotFull = false
-	if gBrowse.localFilter and C_AuctionHouse.HasFullBrowseResults then
-		local tFull = C_AuctionHouse.HasFullBrowseResults()
-		if tFull == false then
-			tNotFull = true
-			C_AuctionHouse.RequestMoreBrowseResults()
-		end
-	end
+	-- Blizzard's list: no rows and HasFullBrowseResults = "no results"; no rows and not full = still pending.
+	if #tRaw == 0 and not C_AuctionHouse.HasFullBrowseResults() then return end
 	local tRows, tStillPending = {}, false
 	for i = 1, #tRaw do
 		local tItem = tRaw[i]
@@ -385,40 +352,16 @@ function AHF:RefreshBrowseResults()
 				totalQuantity = tItem.totalQuantity,
 			}
 		else
-			-- Name not cached yet - ITEM_KEY_ITEM_INFO_RECEIVED will fire once the
-			-- server answers; re-run this same refresh then.
+			-- Name not cached yet: ITEM_KEY_ITEM_INFO_RECEIVED fires once the server answers
+			-- and runs this refresh again.
 			tStillPending = true
 		end
 	end
 	table.sort(tRows, function(a, b) return (a.minPrice or 0) < (b.minPrice or 0) end)
-	-- Fallback search (see AHF:BrowseFallback): check the names against the typed text ourselves.
-	if gBrowse.localFilter then
-		local tKept = {}
-		for _, tRow in ipairs(tRows) do
-			if type(tRow.name) == "string" and string.find(string.lower(tRow.name), gBrowse.localFilter, 1, true) then tKept[#tKept + 1] = tRow end
-		end
-		tRows = tKept
-	end
 	gBrowse.results = tRows
-	gBrowse.state = (tStillPending or tNotFull) and "waiting" or "done"
-	if gBrowse.state == "done" and #tRows == 0 and AHF:BrowseFallback() then return end
+	gBrowse.state = tStillPending and "waiting" or "done"
 	tRebuildAndFocus(gBrowse.entry)
 	gBrowse.focusIndex = nil
-end
-
--- Fallback search: when the game answers a name search with nothing although the item is for sale (seen live: a
--- category listed it with 1355 pieces, the name search stayed empty), Sku asks for the whole list and filters the
--- names itself (case-insensitive, partial word). Once per search; true = the fallback is running, the caller does
--- nothing more.
-function AHF:BrowseFallback()
-	if not gBrowse.searchText or gBrowse.localFilter then return false end
-	-- No fallback with an active filter: it would bypass the filters and show items they exclude.
-	if AHF:FilterSummary() then return false end
-	local tText, tEntry = gBrowse.searchText, gBrowse.entry
-	AHF:StartBrowseQuery({ searchString = "", sorts = {} }, tEntry)
-	gBrowse.searchText = tText
-	gBrowse.localFilter = string.lower(tText)
-	return true
 end
 
 -- ---------------------------------------------------------------------
@@ -646,13 +589,13 @@ gEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 			tSend(tPending[1])
 		end
 	elseif aEvent == "AUCTION_HOUSE_BROWSE_FAILURE" then
-		-- No positive "zero results" event exists separately from this - a
-		-- search with no matches (or a refused query) fires ONLY this, never
-		-- the …UPDATED/…ADDED pair. Without handling it, the menu was stuck
-		-- on "Warten" forever (seen live).
-		if AHF:BrowseFallback() then return end
-		gBrowse.state = "done"
-		tRebuildAndFocus(gBrowse.entry)
+		-- The server could not run the query. Blizzard's result list shows ERR_AUCTION_DATABASE_ERROR
+		-- for it; an empty result is a results event with no rows, not this.
+		if gBrowse.state == "waiting" then
+			gBrowse.state = "failed"
+			gBrowse.failText = ERR_AUCTION_DATABASE_ERROR
+			tRebuildAndFocus(gBrowse.entry)
+		end
 	elseif aEvent == "ITEM_KEY_ITEM_INFO_RECEIVED" then
 		if gBrowse.state == "waiting" then AHF:RefreshBrowseResults() end
 	elseif aEvent == "ITEM_SEARCH_RESULTS_UPDATED" or aEvent == "ITEM_SEARCH_RESULTS_ADDED" then
@@ -674,7 +617,7 @@ gEventFrame:SetScript("OnEvent", function(self, aEvent, ...)
 		AHF:OnCommodityPurchaseDone(false)
 	elseif aEvent == "AUCTION_HOUSE_SHOW_ERROR" then
 		-- Never leave "Warten" stuck on a rejected browse/detail query.
-		if gBrowse.state == "waiting" and not AHF:BrowseFallback() then gBrowse.state = "done"; tRebuildAndFocus(gBrowse.entry) end
+		if gBrowse.state == "waiting" then gBrowse.state = "done"; tRebuildAndFocus(gBrowse.entry) end
 		if gDetail.state == "waiting" then gDetail.state = "done"; tRebuildAndFocus(gDetail.entry) end
 	elseif aEvent == "AUCTION_HOUSE_CLOSED" then
 		if gCommodityBuy.itemID then C_AuctionHouse.CancelCommoditiesPurchase() end
@@ -1052,6 +995,9 @@ local function tAppendBrowseResultChildren(aParentEntry)
 	if gBrowse.state == "waiting" then
 		local tW = SkuOptions:InjectMenuItems(aParentEntry, {L["Warten"]}, SkuGenericMenuItem)
 		tW.dynamic = false
+	elseif gBrowse.state == "failed" then
+		local tFail = SkuOptions:InjectMenuItems(aParentEntry, {gBrowse.failText}, SkuGenericMenuItem)
+		tFail.dynamic = false
 	elseif gBrowse.state == "done" then
 		if #gBrowse.results == 0 then
 			local tNone = SkuOptions:InjectMenuItems(aParentEntry, {L["AH_NoResults"]}, SkuGenericMenuItem)
