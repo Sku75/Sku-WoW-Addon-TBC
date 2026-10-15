@@ -74,7 +74,7 @@ local function tBuildAchievement(aList, aCat, aIndex)
 	if tDesc and tDesc ~= "" then tParts[#tParts + 1] = tDesc end
 	if tCompleted then
 		if tDay and tMonth and tYear and tDay > 0 then
-			tParts[#tParts + 1] = L["Earned on"] .. " " .. string.format("%02d.%02d.%04d", tDay, tMonth, 2000 + tYear)
+			tParts[#tParts + 1] = L["Earned on"] .. " " .. FormatShortDate(tDay, tMonth, tYear)
 		end
 	elseif tNumCrit == 1 then
 		-- a single criterion with a counter (for example skill 13 / 150): in the text and in the line
@@ -355,11 +355,9 @@ function SkuCore:Build_LegacySystemFrame(aParentChilds)
 	local tCurrencies = tConfigID and C_Traits.GetTreeCurrencyInfo(tConfigID, tTreeID, true)
 	local tCurrency = tCurrencies and tCurrencies[1]
 	local tLevel = C_MajorFactions.GetCurrentRenownLevel(tLegacy.LEGACY_REWARD_TRACK_FACTION_ID)
-	if tCurrency and tLevel then
+	if tCurrency then
 		local tMax = C_Traits.GetMaxAvailableTraitCurrency(tCurrency.traitCurrencyID, false)
-		local tText = L["Legacy points"] .. ": " .. tLevel
-		if tMax and tMax > 0 then tText = tText .. " " .. string.format(L[" of %d"], tMax) end
-		tAdd(aParentChilds, tText, { type = "FontString", obj = nil })
+		tAdd(aParentChilds, LEGACY_POINTS_CURR_MAX:format(tLevel, tMax), { type = "FontString", obj = nil })
 	end
 
 	tBuildRewardTrack(aParentChilds)
