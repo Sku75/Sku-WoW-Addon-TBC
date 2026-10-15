@@ -57,16 +57,12 @@ local function tSay(aText)
 	SkuOptions.Voice:OutputStringBTtts(aText, false, true, 0.2)
 end
 
-local function tHours(aN)
-	return aN..L[" Stunden"]
-end
-
 -- Time left of an auction: exact seconds when the server sends them, else Blizzard's band
 -- (AuctionHouseTimeLeftBand 0..3: short .. very long).
 local function tTimeLeftText(aInfo)
 	local tSec = aInfo.timeLeftSeconds
 	if tSec and tSec > 0 then
-		if tSec >= 3600 then return tHours(math.floor(tSec / 3600 + 0.5)) end
+		if tSec >= 3600 then return math.floor(tSec / 3600 + 0.5)..L[" Stunden"] end
 		return math.max(1, math.floor(tSec / 60 + 0.5))..L[" Minuten"]
 	end
 	local tBand = aInfo.timeLeft
@@ -1745,10 +1741,6 @@ end
 -- ---- Own auctions ---------------------------------------------------
 gOwned.name = "owned"
 gOwned.send = function() C_AuctionHouse.QueryOwnedAuctions({}) end
-
-function AHF:StartOwnedQuery(aEntry)
-	tStartListQuery(gOwned, aEntry)
-end
 
 -- AUCTION_CANCELED: the list is asked again, as Blizzard's auctions tab does. A cursor on the cancel entry goes up to
 -- its row, which the new list no longer has.
