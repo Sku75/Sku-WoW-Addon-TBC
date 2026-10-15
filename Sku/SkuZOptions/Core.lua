@@ -188,10 +188,14 @@ end
 function SkuOptions:SlashFuncPquit(input)
 	--print("SlashFuncPquit", input)
 	-- The global LeaveParty does not exist on WoW Forever; C_PartyInfo.LeaveParty is its replacement.
+	local tInGroup = IsInGroup()
 	if C_PartyInfo and C_PartyInfo.LeaveParty then
 		C_PartyInfo.LeaveParty()
 	else
 		LeaveParty()
+	end
+	if tInGroup then
+		SkuOptions.Voice:OutputStringBTtts(L["MOB_GroupLeft"], true, true, 0.2, nil, nil, nil, 2)
 	end
 end
 
