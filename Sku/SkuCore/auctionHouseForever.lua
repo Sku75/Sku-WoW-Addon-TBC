@@ -10,8 +10,8 @@
 --
 -- Menu: Auctions > [search by name, by category, filters, favorites]; Sales > [new auction, current sales]; Bids.
 -- Browse: name search or category tree (Blizzard's own AuctionCategories), cheapest price and quantity per item.
--- Detail: the individual listings of one item with tooltip; buy at buyout (items), two-step price quote (commodities),
---   bid below buyout, favorites.
+-- Detail: an item's auctions with tooltip, buyout and bid below buyout; a commodity has one quantity and one Buy for the
+--   cheapest pieces (two-step price quote), its price steps only inform; favorites.
 -- Sell: pick an item from the bags, quantity, duration, price, deposit, market price hint, post (with the posting warning).
 -- Own auctions: list, cancel. Own bids: list, buy out, bid again after being outbid.
 -- Calls documented as HasRestrictions (PlaceBid, StartCommoditiesPurchase, PostItem, PostCommodity, ConfirmPostItem,
@@ -497,6 +497,9 @@ function AHF:StartDetail(aRow, aEntry)
 	gDetail.isCommodity = aRow.isCommodity
 	gDetail.name = aRow.name
 	gDetail.results = {}
+	-- A commodity's quantity to buy; Blizzard's buy display starts at 1 as well.
+	gDetail.buyQty = 1
+	gDetail.buyLoading = nil
 	gDetail.entry = aEntry
 	gDetail.failText = nil
 	gDetail.generation = (gDetail.generation or 0) + 1
@@ -537,11 +540,8 @@ function AHF:RefreshDetailResults(aItemID)
 			local tResult = C_AuctionHouse.GetCommoditySearchResultInfo(tItemID, i)
 			if tResult then
 				tRows[#tRows + 1] = {
-					isCommodity = true,
-					itemID = tItemID,
 					unitPrice = tResult.unitPrice,
 					quantity = tResult.quantity,
-					timeLeftSeconds = tResult.timeLeftSeconds,
 					isOwn = tResult.containsOwnerItem,
 				}
 			end
@@ -553,7 +553,6 @@ function AHF:RefreshDetailResults(aItemID)
 			local tResult = C_AuctionHouse.GetItemSearchResultInfo(gDetail.itemKey, i)
 			if tResult then
 				tRows[#tRows + 1] = {
-					isCommodity = false,
 					auctionID = tResult.auctionID,
 					quantity = tResult.quantity,
 					buyoutAmount = tResult.buyoutAmount,
@@ -570,8 +569,12 @@ function AHF:RefreshDetailResults(aItemID)
 	end
 	gDetail.results = tRows
 	gDetail.state = "done"
+	local tWasLoading = gDetail.buyLoading
 	tRebuildAndFocus(gDetail.entry)
 	gDetail.seenBefore = nil
+	-- The rows a commodity's Buy leaf waited for are in: a cursor on that leaf hears its price now.
+	local tPos = SkuOptions.currentMenuPosition
+	if tWasLoading and not gDetail.buyLoading and tPos and tPos.skuIdentity == "commodity:buy" then tSay(tPos.name) end
 end
 
 -- ---------------------------------------------------------------------
@@ -623,7 +626,7 @@ end
 
 -- ---------------------------------------------------------------------
 -- BUY - commodity: StartCommoditiesPurchase (quote) -> COMMODITY_PRICE_UPDATED
--- (the quoted price becomes the row's summary leaf) -> ConfirmCommoditiesPurchase (second real
+-- (the quoted price becomes the item's summary leaf) -> ConfirmCommoditiesPurchase (second real
 -- keypress). Mirrors Blizzard's own Blizzard_AuctionHouseBuyDialog.lua flow.
 -- StartCommoditiesPurchase is HasRestrictions and runs from a key press;
 -- ConfirmCommoditiesPurchase has no restriction and runs from the Confirm key press.
@@ -631,39 +634,84 @@ end
 -- Blizzard_AuctionHouseBuyDialog.lua: a quoted unit price above preview * 1.05 counts as "price unavailable".
 local MAXIMUM_PREVIEW_PRICE_DIFFERENTIAL = 1.05
 
--- Price preview from the live listings, built like AuctionHouseUtil.AggregateSearchResultsByQuantity: the game buys
--- the cheapest pieces first and never the player's own. Returns the lowest unit price, the highest unit price used,
--- the pieces taken at the lowest price, the total cost (nil when the listings do not cover aQuantity) and the
--- pieces other players offer in all.
-local function tCommodityPreview(aItemID, aQuantity)
-	local tLow, tHigh, tLowQty, tCost, tLeft, tAvail = nil, nil, 0, 0, aQuantity, 0
-	for i = 1, C_AuctionHouse.GetNumCommoditySearchResults(aItemID) do
-		local tR = C_AuctionHouse.GetCommoditySearchResultInfo(aItemID, i)
-		local tQty = tR and (tR.quantity - tR.numOwnerItems) or 0
-		if tQty > 0 then
-			tAvail = tAvail + tQty
-			if tLeft > 0 then
-				local tTake = math.min(tLeft, tQty)
-				tLow = tLow or tR.unitPrice
-				tHigh = tR.unitPrice
-				if tR.unitPrice == tLow then tLowQty = tLowQty + tTake end
-				tCost = tCost + tTake * tR.unitPrice
-				tLeft = tLeft - tTake
-			end
+-- What the commodity's Buy leaf buys: gDetail.buyQty pieces, priced by Blizzard's
+-- AuctionHouseUtil.AggregateSearchResultsByQuantity over the rows loaded so far (cheapest first, never the player's own
+-- pieces). When those rows do not cover the quantity and the server has more, the next rows are asked for, as
+-- Blizzard's list does while the selection reaches its end, and nil comes back: COMMODITY_SEARCH_RESULTS_ADDED
+-- rebuilds the detail and this runs again. With every row loaded the quantity is cut to what other players offer.
+-- Returns the quantity, the total price and the highest unit price paid; 0 when other players offer nothing.
+local function tCommodityPreview()
+	local tItemID = gDetail.itemKey.itemID
+	local tQty, tTotal, tNum = AuctionHouseUtil.AggregateSearchResultsByQuantity(tItemID, gDetail.buyQty)
+	gDetail.buyLoading = nil
+	if tQty < gDetail.buyQty then
+		-- RequestMoreCommoditySearchResults returns true when the result is already complete.
+		if not C_AuctionHouse.HasFullCommoditySearchResults(tItemID) and not C_AuctionHouse.RequestMoreCommoditySearchResults(tItemID) then
+			gDetail.buyLoading = true
+			return nil
 		end
+		if tQty == 0 then
+			gDetail.buyQty = 1
+			return 0
+		end
+		gDetail.buyQty = tQty
+		tQty, tTotal, tNum = AuctionHouseUtil.AggregateSearchResultsByQuantity(tItemID, tQty)
 	end
-	if tLeft > 0 then tCost = nil end
-	return tLow, tHigh, tLowQty, tCost, tAvail
+	-- The last row the aggregation reached is the last one it took pieces from.
+	return tQty, tTotal, C_AuctionHouse.GetCommoditySearchResultInfo(tItemID, tNum).unitPrice
 end
 
--- aLeaf: the Buy leaf whose key press runs this (see tRefuse). Returns true when the quote was requested.
-function AHF:StartCommodityBuy(aItemID, aQuantity, aEntry, aName, aLeaf)
-	local tLow, tHigh, tLowQty, tCost, tAvail = tCommodityPreview(aItemID, aQuantity)
-	if not tCost then
-		tRefuse(aLeaf, aName, string.format(L["Only %s pieces are offered by other players"], tAvail))
-		return false
+-- The most the quantity can be: what other players offer once every row is loaded, before that the server's piece
+-- count (GetCommoditySearchResultsQuantity, the cap of Blizzard's list).
+local function tCommodityOffered()
+	local tItemID = gDetail.itemKey.itemID
+	if C_AuctionHouse.HasFullCommoditySearchResults(tItemID) then
+		return (AuctionHouseUtil.AggregateSearchResultsByQuantity(tItemID, math.huge))
 	end
-	if GetMoney() < tCost then
+	return C_AuctionHouse.GetCommoditySearchResultsQuantity(tItemID)
+end
+
+local function tCommodityQuantityLabel()
+	return L["Quantity: "]..gDetail.buyQty..L[" of at most "]..tCommodityOffered()
+end
+
+-- ", up to <price> each" when the pieces do not all cost the same.
+local function tUpToText(aQty, aTotal, aHigh)
+	if aTotal < aHigh * aQty then return ", "..string.format(L["up to %s each"], tMoneyText(aHigh)) end
+	return ""
+end
+
+-- aQty, aTotal, aHigh: tCommodityPreview's answer.
+local function tCommodityBuyLabel(aQty, aTotal, aHigh)
+	local tText = L["Kaufen"]..": "
+	if not aQty then return tText..gDetail.buyQty.." "..L["STRAT_Pieces"]..";"..L["Loading more auctions"] end
+	if aQty == 0 then return tText..AUCTION_HOUSE_TOOLTIP_TITLE_NONE_AVAILABLE end
+	return tText..aQty.." "..L["STRAT_Pieces"]..", "..tMoneyText(aTotal)..tUpToText(aQty, aTotal, aHigh)
+end
+
+-- The child of the detail entry with aIdentity. Looked up, not kept: tRebuildAndFocus's re-pin keeps the old node of
+-- the cursor's leaf in place of the new one.
+local function tDetailChild(aIdentity)
+	for _, tChild in ipairs(gDetail.entry.children) do
+		if tChild.skuIdentity == aIdentity then return tChild end
+	end
+end
+
+-- New names for the Quantity and Buy leaves after the quantity changed. Returns the Buy leaf and tCommodityPreview's
+-- answer.
+local function tCommodityRelabel()
+	local tQty, tTotal, tHigh = tCommodityPreview()
+	local tBuy = tDetailChild("commodity:buy")
+	tBuy.name = tCommodityBuyLabel(tQty, tTotal, tHigh)
+	tBuy.ahfBaseName = nil
+	tDetailChild("commodity:quantity").name = tCommodityQuantityLabel()
+	return tBuy, tQty, tTotal, tHigh
+end
+
+-- aTotal, aHigh: the preview (tCommodityPreview). aLeaf: the Buy leaf whose key press runs this (see tRefuse).
+-- Returns true when the quote was requested.
+function AHF:StartCommodityBuy(aItemID, aQuantity, aTotal, aHigh, aEntry, aName, aLeaf)
+	if GetMoney() < aTotal then
 		tRefuse(aLeaf, aName, L["Nicht genug Geld"])
 		return false
 	end
@@ -675,12 +723,12 @@ function AHF:StartCommodityBuy(aItemID, aQuantity, aEntry, aName, aLeaf)
 	gCommodityBuy.totalPrice = nil
 	gCommodityBuy.summary = nil
 	gCommodityBuy.confirming = false
-	gCommodityBuy.preview = { low = tLow, high = tHigh, lowQty = tLowQty, total = tCost }
+	gCommodityBuy.preview = { total = aTotal, high = aHigh }
 	gCommodityBuy.entry = aEntry
 	gCommodityBuy.name = aName
 	gCommodityBuy.generation = (gCommodityBuy.generation or 0) + 1
 	local tGen = gCommodityBuy.generation
-	dprint("ahf", "commodity quote", aItemID, aQuantity, tCost)
+	dprint("ahf", "commodity quote", aItemID, aQuantity, aTotal)
 	C_AuctionHouse.StartCommoditiesPurchase(aItemID, aQuantity)
 	-- If the game does not answer with a price, do not hang silently.
 	C_Timer.After(4, function()
@@ -692,9 +740,9 @@ function AHF:StartCommodityBuy(aItemID, aQuantity, aEntry, aName, aLeaf)
 end
 
 -- Ends Sku's commodity purchase the way Blizzard's buy dialog closes (AuctionHouseBuyDialogMixin:OnHide): drops the
--- quote, rebuilds the row with aReason in front of its first leaf, and sends the item's search again so the
--- quantities are current. Does nothing when no purchase of Sku's is running. aFromKey: called from a key press,
--- whose handler vocalizes the cursor itself.
+-- quote, rebuilds the item's level with the cursor on its Buy leaf and aReason in front of it, and sends the item's
+-- search again so the quantities are current. Does nothing when no purchase of Sku's is running. aFromKey: called
+-- from a key press, whose handler vocalizes the cursor itself.
 function AHF:EndCommodityBuy(aReason, aFromKey)
 	if not gCommodityBuy.itemID then return end
 	local tItemID, tEntry = gCommodityBuy.itemID, gCommodityBuy.entry
@@ -708,7 +756,7 @@ function AHF:EndCommodityBuy(aReason, aFromKey)
 	AHF:RequeryDetail(tItemID)
 end
 
--- The quote. Checked like Blizzard's buy dialog: more than 5% above the preview ends the purchase. Otherwise the row
+-- The quote. Checked like Blizzard's buy dialog: more than 5% above the preview ends the purchase. Otherwise the item
 -- shows one summary leaf (price and every warning) with the cursor on it, and Confirm second, so a second Enter
 -- pressed too early only repeats the summary.
 function AHF:OnCommodityPriceUpdated(aUnitPrice, aTotalPrice)
@@ -722,12 +770,9 @@ function AHF:OnCommodityPriceUpdated(aUnitPrice, aTotalPrice)
 	end
 	gCommodityBuy.unitPrice = aUnitPrice
 	gCommodityBuy.totalPrice = aTotalPrice
-	local tParts = { string.format(L["%s: %s pieces, total price %s"], gCommodityBuy.name or "", gCommodityBuy.quantity, tMoneyText(aTotalPrice)) }
-	-- Several price levels (e.g. only 1 piece at 19, the second costs 21).
-	if tPreview.high > tPreview.low then
-		tParts[#tParts + 1] = string.format(L["Note: the unit price rises from %s to %s, because only %s pieces are offered at the lowest price."],
-			tMoneyText(tPreview.low), tMoneyText(tPreview.high), tPreview.lowQty)
-	end
+	-- Several price levels (e.g. only 1 piece at 19, the second costs 21): the highest unit price of the preview.
+	local tParts = { string.format(L["%s: %s pieces, total price %s"], gCommodityBuy.name or "", gCommodityBuy.quantity, tMoneyText(aTotalPrice))
+		..tUpToText(gCommodityBuy.quantity, tPreview.total, tPreview.high) }
 	-- Someone bought or posted since the listings were read.
 	if aTotalPrice ~= tPreview.total then
 		tParts[#tParts + 1] = string.format(L["The price changed since it was listed: expected %s, now %s."],
@@ -809,12 +854,9 @@ local function tBrowseRowLabel(aRow)
 	return aRow.name.." - "..tPriceText
 end
 
--- Special children for the post-quote commodity confirm step: replaces the
--- item's normal listing children while a quote is pending, so going right
--- lands on the quote summary, then Confirm and Cancel. Declared
--- BEFORE tBuildDetailChildren, which references it - Lua resolves a local
--- function name lexically, so a forward reference here would silently
--- resolve to a global (nil) instead of this function.
+-- The commodity confirm step: replaces the item's level while a quote is open (Blizzard's buy dialog covers its window
+-- the same way), so the cursor lands on the quote summary, then Confirm and Cancel. Declared before
+-- tBuildDetailChildren, which calls it: a local function is only visible below its declaration.
 local function tBuildCommodityConfirmChildren(aParentEntry)
 	aParentEntry.children = {}
 	-- The first leaf (waiting, or the summary) does nothing on ENTER but read itself again: an Enter pressed while the
@@ -910,6 +952,7 @@ local gFavoritesChanged = nil
 local function tAddFavoriteLeaf(aParent, aItemKey)
 	if not C_AuctionHouse.FavoritesAreAvailable() then return end
 	local tLeaf = SkuOptions:InjectMenuItems(aParent, {L["Favorites"]}, SkuGenericMenuItem)
+	tLeaf.skuIdentity = "favorite"
 	SkuOptions:MakeToggleNode(tLeaf, {
 		onLabel = L["Yes"],
 		offLabel = L["No"],
@@ -934,17 +977,9 @@ local function tAddFavoriteLeaf(aParent, aItemKey)
 	end
 end
 
--- "Load more": the server hands out results in pages (HasFull*Results is false until all are in).
-local function tDetailIsComplete()
-	if gDetail.isCommodity then
-		return C_AuctionHouse.HasFullCommoditySearchResults(gDetail.itemKey.itemID)
-	end
-	return C_AuctionHouse.HasFullItemSearchResults(gDetail.itemKey)
-end
-
 -- Stable row identities for tRebuildAndFocus's re-pin and for "load more".
 local function tListingIdentity(aRow)
-	return aRow.isCommodity and ("commodity:"..aRow.unitPrice) or ("auction:"..aRow.auctionID)
+	return "auction:"..aRow.auctionID
 end
 
 local function tBrowseIdentity(aItemKey)
@@ -956,6 +991,61 @@ local function tIdentitySet(aRows, aIdentity)
 	local tSet = {}
 	for _, tRow in ipairs(aRows) do tSet[aIdentity(tRow)] = true end
 	return tSet
+end
+
+-- A commodity's level: Quantity, Buy (the game buys the cheapest pieces of other players, whichever price one is on),
+-- then the price steps as information. Every leaf has an identity, so a refresh of the rows keeps the cursor.
+local function tBuildCommodityChildren(aParent)
+	local tItemID = gDetail.itemKey.itemID
+	-- The Buy label first: the preview can cut the quantity the Quantity label shows.
+	local tQty, tTotal, tHigh = tCommodityPreview()
+	-- The Buy leaf carries the reason a purchase just ended (AHF:EndCommodityBuy).
+	local tBuyName = (gCommodityBuy.notice and (gCommodityBuy.notice..";") or "")..tCommodityBuyLabel(tQty, tTotal, tHigh)
+	local tQuantity = tSettingLeaf(aParent, tCommodityQuantityLabel(), function()
+		local tMax = tCommodityOffered()
+		tAskValue(L["Enter quantity, at most "]..tMax, tParseQuantity, L["Quantity not understood"], function(aN)
+			gDetail.buyQty = math.min(aN, tMax)
+			tCommodityRelabel()
+		end)
+	end)
+	tQuantity.skuIdentity = "commodity:quantity"
+	-- Loading or nothing offered: the leaf, read again after Enter, says so; Enter while loading asks for the rows again.
+	local tBuy = tSettingLeaf(aParent, tBuyName, function(aLeaf)
+		local _, tQ, tT, tH = tCommodityRelabel()
+		if tQ and tQ > 0 and AHF:StartCommodityBuy(tItemID, tQ, tT, tH, aParent, gDetail.name, aLeaf) then
+			tRebuildAndFocus(aParent, true, true)
+		end
+	end)
+	tBuy.skuIdentity = "commodity:buy"
+	tBuy.ahfPrimary = true
+	tSetAhTooltip(tBuy, gDetail.itemKey, nil)
+	local tListed = 0
+	for _, tRow in ipairs(gDetail.results) do
+		tListed = tListed + tRow.quantity
+		local tLabel = string.format(L["%s pieces at %s each"], tRow.quantity, tMoneyText(tRow.unitPrice))
+		if tRow.isOwn then tLabel = tLabel..", "..L["your own auction"] end
+		-- Enter = Blizzard's click on a price row: every piece of other players up to this price, then the Buy leaf.
+		local tRowLeaf = tSettingLeaf(aParent, tLabel, function(aLeaf)
+			local tUpTo = AuctionHouseUtil.AggregateCommoditySearchResultsByMaxPrice(tItemID, tRow.unitPrice)
+			if tUpTo == 0 then
+				tRefuse(aLeaf, nil, L["That is your own auction"])
+				return
+			end
+			gDetail.buyQty = tUpTo
+			SkuOptions.currentMenuPosition = tCommodityRelabel()
+		end)
+		tRowLeaf.skuIdentity = "commodity:"..tRow.unitPrice
+		tSetAhTooltip(tRowLeaf, gDetail.itemKey, nil)
+	end
+	-- The rows come cheapest first; the ones not loaded yet are only counted.
+	if not C_AuctionHouse.HasFullCommoditySearchResults(tItemID) then
+		local tMore = C_AuctionHouse.GetCommoditySearchResultsQuantity(tItemID) - tListed
+		if tMore > 0 then
+			local tE = SkuOptions:InjectMenuItems(aParent, {string.format(L["%s more pieces at the same or higher prices"], tMore)}, SkuGenericMenuItem)
+			tE.dynamic = false
+			tE.skuIdentity = "commodity:more"
+		end
+	end
 end
 
 local function tBuildDetailChildren(aParentEntry)
@@ -970,6 +1060,10 @@ local function tBuildDetailChildren(aParentEntry)
 		tFail.dynamic = false
 		return
 	end
+	if gDetail.isCommodity and gCommodityBuy.itemID == gDetail.itemKey.itemID then
+		tBuildCommodityConfirmChildren(aParentEntry)
+		return
+	end
 	tAddFavoriteLeaf(aParentEntry, gDetail.itemKey)
 	if #gDetail.results == 0 then
 		local tNone = SkuOptions:InjectMenuItems(aParentEntry, {L["AH_NoResults"]}, SkuGenericMenuItem)
@@ -977,21 +1071,20 @@ local function tBuildDetailChildren(aParentEntry)
 		tNone.ahfPrimary = true
 		return
 	end
-	-- Every row starts with the item name: "2 for 24 Copper" alone does not say which item
+	if gDetail.isCommodity then
+		tBuildCommodityChildren(aParentEntry)
+		return
+	end
+	-- Every row starts with the item name: "2x Buyout 24 Copper" alone does not say which item
 	-- it is. gDetail.name is the browse row's name, which exists for every row.
 	local tNamePrefix = gDetail.name..": "
 	local tPrimarySet = false
 	for _, tRow in ipairs(gDetail.results) do
-		local tBody
-		if tRow.isCommodity then
-			tBody = string.format(L["%s pieces at %s each"], tRow.quantity, tMoneyText(tRow.unitPrice))
-		else
-			tBody = tRow.buyoutAmount and (L["Buyout "]..tMoneyText(tRow.buyoutAmount))
-				or (L["Bid from "]..tMoneyText(tRow.minBid or tRow.bidAmount or 0))
-			if tRow.quantity > 1 then tBody = tRow.quantity.."x "..tBody end
-			if tIsOwnGuid(tRow.bidder) then
-				tBody = tBody..", "..L["your bid is highest"]
-			end
+		local tBody = tRow.buyoutAmount and (L["Buyout "]..tMoneyText(tRow.buyoutAmount))
+			or (L["Bid from "]..tMoneyText(tRow.minBid or tRow.bidAmount or 0))
+		if tRow.quantity > 1 then tBody = tRow.quantity.."x "..tBody end
+		if tIsOwnGuid(tRow.bidder) then
+			tBody = tBody..", "..L["your bid is highest"]
 		end
 		local tLeft = tTimeLeftText(tRow)
 		if tLeft ~= "" then tBody = tBody..", "..L["left: "]..tLeft end
@@ -1008,68 +1101,32 @@ local function tBuildDetailChildren(aParentEntry)
 		end
 		tRowEntry.BuildChildren = function(self)
 			self.children = {}
-			-- Post-quote confirm step takes over THIS row's children until the
-			-- purchase is confirmed or cancelled (mirrors Blizzard's own modal
-			-- buy dialog covering the screen after StartCommoditiesPurchase).
-			-- Keyed on the item: the game buys the cheapest pieces whichever row started it, and a detail refresh
-			-- replaces the rows.
-			if self.data.isCommodity and gCommodityBuy.itemID == self.data.itemID then
-				tBuildCommodityConfirmChildren(self)
-				return
-			end
-			if self.data.isCommodity then
-				-- Pick the quantity before buying. The game always buys the cheapest listings first, whichever row one is on;
-				-- at most what other players offer in total (own pieces are never bought). Default: the quantity of this listing.
-				local tData = self.data
-				local tMaxQty = math.max(1, (select(5, tCommodityPreview(tData.itemID, 1))))
-				tData.buyQty = math.min(tData.buyQty or tData.quantity, tMaxQty)
-				local function tQtyName() return L["Quantity: "]..tData.buyQty..L[" of at most "]..tMaxQty end
-				local function tBuyName() return L["Kaufen"]..": "..tData.buyQty.." "..L["STRAT_Pieces"] end
-				local tBuyEntry
-				-- The first leaf carries the reason a purchase just ended (AHF:EndCommodityBuy).
-				tSettingLeaf(self, (gCommodityBuy.notice and (gCommodityBuy.notice..";") or "")..tQtyName(), function(aLeaf)
-					tAskValue(L["Enter quantity, at most "]..tMaxQty, tParseQuantity, L["Quantity not understood"], function(aN)
-						tData.buyQty = math.min(aN, tMaxQty)
-						aLeaf.name = tQtyName()
-						tBuyEntry.name = tBuyName()
-					end)
-				end)
-				tBuyEntry = tSettingLeaf(self, tBuyName(), function(aLeaf)
-					if AHF:StartCommodityBuy(tData.itemID, tData.buyQty, self, gDetail.name, aLeaf) then
-						tRebuildAndFocus(self, true, true)
-					end
-				end)
-			elseif self.data.isOwn then
+			local tData = self.data
+			if tData.isOwn then
 				local tOwn = SkuOptions:InjectMenuItems(self, {L["That is your own auction"]}, SkuGenericMenuItem)
 				tOwn.dynamic = false
-			else
-				local tData = self.data
-				if tData.buyoutAmount then
-					tSettingLeaf(self, L["Kaufen"]..": "..tMoneyText(tData.buyoutAmount), function(aLeaf)
-						AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, gDetail.name, aLeaf)
-					end)
-				end
-				-- Bidding below the buyout (Blizzard: the bid box next to the buyout button).
-				local tHasBid = tAddBidLeaves(self, tData, gDetail.name)
-				if not tData.buyoutAmount and not tHasBid then
-					local tNoBuyout = SkuOptions:InjectMenuItems(self, {tIsOwnGuid(tData.bidder)
-						and L["You are the highest bidder, nothing to do"]
-						or L["Neither buyout nor bid possible"]}, SkuGenericMenuItem)
-					tNoBuyout.dynamic = false
-				end
+				return
+			end
+			if tData.buyoutAmount then
+				tSettingLeaf(self, L["Kaufen"]..": "..tMoneyText(tData.buyoutAmount), function(aLeaf)
+					AHF:BuyItemAuction(tData.auctionID, tData.buyoutAmount, gDetail.name, aLeaf)
+				end)
+			end
+			-- Bidding below the buyout (Blizzard: the bid box next to the buyout button).
+			local tHasBid = tAddBidLeaves(self, tData, gDetail.name)
+			if not tData.buyoutAmount and not tHasBid then
+				local tNoBuyout = SkuOptions:InjectMenuItems(self, {tIsOwnGuid(tData.bidder)
+					and L["You are the highest bidder, nothing to do"]
+					or L["Neither buyout nor bid possible"]}, SkuGenericMenuItem)
+				tNoBuyout.dynamic = false
 			end
 		end
 	end
-	if not tDetailIsComplete() then
+	-- "Load more": the server hands out results in pages (HasFullItemSearchResults is false until all are in).
+	if not C_AuctionHouse.HasFullItemSearchResults(gDetail.itemKey) then
 		tSettingLeaf(aParentEntry, L["Load more auctions, so far "]..#gDetail.results, function(aLeaf)
-			local tHasFull
-			if gDetail.isCommodity then
-				tHasFull = C_AuctionHouse.RequestMoreCommoditySearchResults(gDetail.itemKey.itemID)
-			else
-				tHasFull = C_AuctionHouse.RequestMoreItemSearchResults(gDetail.itemKey)
-			end
 			-- true: the result is complete, nothing more will arrive.
-			if tHasFull then
+			if C_AuctionHouse.RequestMoreItemSearchResults(gDetail.itemKey) then
 				aLeaf.name = L["Keine weiteren passenden Auktionen verfügbar"]
 				return
 			end
@@ -2142,7 +2199,11 @@ local gEventHandlers = {
 	COMMODITY_SEARCH_RESULTS_ADDED = tOnCommoditySearchResults,
 	COMMODITY_PRICE_UPDATED = function(aUnitPrice, aTotalPrice) AHF:OnCommodityPriceUpdated(aUnitPrice, aTotalPrice) end,
 	COMMODITY_PRICE_UNAVAILABLE = function() AHF:EndCommodityBuy(L["Price unavailable"]) end,
-	COMMODITY_PURCHASE_SUCCEEDED = function() AHF:EndCommodityBuy(L["Purchase complete"]) end,
+	COMMODITY_PURCHASE_SUCCEEDED = function()
+		-- Blizzard's buy display goes back to quantity 1 after a purchase.
+		if gCommodityBuy.itemID then gDetail.buyQty = 1 end
+		AHF:EndCommodityBuy(L["Purchase complete"])
+	end,
 	COMMODITY_PURCHASE_FAILED = function() AHF:EndCommodityBuy(L["Purchase failed"]) end,
 	AUCTION_HOUSE_SHOW_ERROR = function(aError) AHF:OnShowError(aError) end,
 	AUCTION_HOUSE_PURCHASE_COMPLETED = function(aAuctionID) AHF:OnItemPurchaseCompleted(aAuctionID) end,
