@@ -18,7 +18,12 @@ if not Sku.isForever then return end
 
 local L = Sku.L
 
-local DIFFICULTY = { [0] = "optimal", [1] = "medium", [2] = "easy", [3] = "trivial" }
+local DIFFICULTY = {
+	[Enum.TradeskillRelativeDifficulty.Optimal] = "optimal",
+	[Enum.TradeskillRelativeDifficulty.Medium] = "medium",
+	[Enum.TradeskillRelativeDifficulty.Easy] = "easy",
+	[Enum.TradeskillRelativeDifficulty.Trivial] = "trivial",
+}
 local DIFFICULTY_LABEL = {
 	optimal = L["optimal"],
 	medium = L["medium"],
