@@ -55,7 +55,7 @@
 (Daily) 	(Quotidien) 
 (Fehlgeschlagen) 	(Échoué) 
 (Fertig) 	(Terminé) 
-)r\nRuhebonus: 	)r\nbonus de repos : 
+)\r\nRuhebonus: 	)\r\nbonus de repos : 
 ,	Virgule
 , average item level 	, niveau d'objet moyen 
 ,SkuAuras,Auren,Auren verwalten,	,Auras,Auras,Gérer les auras,
@@ -337,9 +337,9 @@ Auktionen	Enchères
 Auktionshaus	Hôtel des ventes
 Aura	Aura
 Aura Aktion: 	Action de l'aura : 
-Aura Ausgaben:r\n	Sorties de l'aura :r\n
-Aura Bedingungen:r\n	Conditions de l'aura :r\n
-Aura Elementer\n	Éléments de l'aurar\n
+Aura Ausgaben:\r\n	Sorties de l'aura :\r\n
+Aura Bedingungen:\r\n	Conditions de l'aura :\r\n
+Aura Elemente\r\n	Éléments de l'aura\r\n
 Aura Set importieren	Importer un jeu d'auras
 Aura Sets verwalten	Gérer les jeux d'auras
 Aura Typ	Type d'aura
@@ -423,8 +423,8 @@ Begleiter konnte nicht gewechselt werden	Le familier n'a pas pu être changé
 Bei Interagieren zum Ziel laufen	Se déplacer vers la cible lors de l'interaction
 Belegung gelöscht	Assignation supprimée
 Belegung löschen	Supprimer l'assignation
-Belohnungen:r\n	Récompenses :r\n
-Belohnungenr\n	Récompensesr\n
+Belohnungen:\r\n	Récompenses :\r\n
+Belohnungen\r\n	Récompenses\r\n
 Benny Hill	Benny Hill
 Bereits höheres Gebot vorhanden	Une enchère supérieure existe
 Bereitschaft check	vérification de préparation
@@ -437,7 +437,7 @@ Bewerbung zurückgezogen	Candidature retirée
 Bieten	Enchère
 Bind key	Assignation de touche
 Binding canceled	Assignation annulée
-Bisherige Aura Elementer\n	Éléments actuels de l'aurar\n
+Bisherige Aura Elemente\r\n	Éléments actuels de l'aura\r\n
 Bitte eine Zahl angeben. Beispiel: /skuaudio set 2	Veuillez indiquer un numéro. Exemple : /skuaudio set 2
 Blacklisted	Sur liste noire
 Blau	Bleue
@@ -1034,7 +1034,7 @@ Feral dps	Farouche dps
 Feral tank	Farouche tank
 Fertig. Alle geboten	Terminé. Toutes les enchères
 Fertig. Alle gekauft	Terminé. Tous achetés
-Fertigkeiten:r\n	Compétences :r\n
+Fertigkeiten:\r\n	Compétences :\r\n
 Feuer	Feu
 Fight	Combat
 Filter	Filtre
@@ -1064,8 +1064,8 @@ Following metaroute	Suivi du méta-itinéraire
 For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it.	Pour vous en tant que (%race%) (%class%), un tutoriel est disponible. Utilisez la flèche bas pour apprendre comment le lancer.
 Form	Forme
 Format	Disposition
-Fortschritt:r\n	Progression :r\n
-Fortschrittr\n	Progressionr\n
+Fortschritt:\r\n	Progression :\r\n
+Fortschritt\r\n	Progression\r\n
 Freie Taschenplätze: 	Emplacements de sac vides : 
 Freund hinzufügen	Ajouter un ami
 Freundlich	Amical
@@ -1127,7 +1127,7 @@ Gewähltes Attribut entspricht dem gewählten Wert	L'attribut correspond à la v
 Gewähltes Attribut entspricht nicht dem gewählten Wert	L'attribut sélectionné ne correspond pas à la valeur
 Gewähltes Attribut ist größer als der gewählte Wert	L'attribut sélectionné est supérieur à la valeur sélectionnée
 Gewähltes Attribut ist kleiner als der gewählte Wert	L'attribut sélectionné est inférieur à la valeur sélectionnée
-Gilde:r\n	Guilde :r\n
+Gilde:\r\n	Guilde :\r\n
 Gilden Chat automatisch lesen	Lire automatiquement le chat de guilde
 Glancing Damage: 	Dégâts de biais : 
 Glancing hits: 	Coups de biais : 
@@ -1843,8 +1843,8 @@ Questie not installed	Questie n'est pas installé
 Quests	Quêtes
 Quests group	Groupe de quêtes
 Quests in der Nähe	Quêtes à proximité
-Questtext:r\n	Description de la quête :r\n
-Questtextr\n	Description de la quête :r\n
+Questtext:\r\n	Description de la quête :\r\n
+Questtext\r\n	Description de la quête :\r\n
 Questziel	objectif de quête
 Quick waypoint	point de passage rapide
 Quick waypoint 4 set to corpse	Point de passage rapide 4 placé sur le cadavre
@@ -1950,7 +1950,7 @@ Route folgen läuft	Suivi d'itinéraire en cours
 Routen Umwandlung 	Conversion des itinéraires 
 Routen Umwandlung abgeschlossen	Conversion des itinéraires terminée
 Routen Umwandlung auf neue Version gestartet	Conversion des itinéraires vers la nouvelle version démarrée
-Ruf:r\n	Réputation :r\n
+Ruf:\r\n	Réputation :\r\n
 Ruhestein: 	Pierre de foyer : 
 Runes	Runes
 Runter blättern	Faire défiler vers le bas
@@ -2680,8 +2680,8 @@ Ziel hervorheben	Mettre la cible en évidence
 Ziel und Soft Targeting	Cible et ciblage souple
 Ziel änderung	changement de cible
 Ziele Entfernung	Destinations par distance
-Ziele:r\n	Objectifs :r\n
-Zieler\n	Objectifsr\n
+Ziele:\r\n	Objectifs :\r\n
+Ziele\r\n	Objectifs\r\n
 Zone	Zone
 Zone Music No Delay	Musique de zone sans délai
 Zone: 	Zone : 
@@ -3041,20 +3041,20 @@ quest;geteilt	quête;partagée
 quest;nicht;teilbar	quête;non;partageable
 question;mark	point d'interrogation
 quick waypoint	point de passage rapide
-r\nAuswählter Wert: 	r\nValeur sélectionnée : 
-r\nDurchschnitt 	r\nMoyenne 
-r\nFeste Gegenständer\n	r\nObjets fixesr\n
-r\nGebotsdaten: r\nDatenpunkte 	r\nDonnées d'enchère : r\nPoints de données 
-r\nGegenstände zur Auswahlr\n	r\nObjets au choixr\n
-r\nHöchster 	r\nPlus haut 
-r\nHöchstes 	r\nPlus haut 
-r\nKeine Gebotsdaten vorhanden	r\nAucune donnée d'enchère disponible
-r\nKeine Sofortkaufdaten vorhanden	r\nAucune donnée d'achat disponible
-r\nNiedrigster 	r\nPlus bas 
-r\nNiedrigstes 	r\nPlus bas 
-r\nPlündern: 	r\nButin : 
-r\nSofortkaufdaten: r\nDatenpunkte 	r\nDonnées d'achat : r\nPoints de données 
-r\nZuletzt vor 	r\nVu pour la dernière fois à 
+\r\nAuswählter Wert: 	\r\nValeur sélectionnée : 
+\r\nDurchschnitt 	\r\nMoyenne 
+\r\nFeste Gegenstände\r\n	\r\nObjets fixes\r\n
+\r\nGebotsdaten: \r\nDatenpunkte 	\r\nDonnées d'enchère : \r\nPoints de données 
+\r\nGegenstände zur Auswahl\r\n	\r\nObjets au choix\r\n
+\r\nHöchster 	\r\nPlus haut 
+\r\nHöchstes 	\r\nPlus haut 
+\r\nKeine Gebotsdaten vorhanden	\r\nAucune donnée d'enchère disponible
+\r\nKeine Sofortkaufdaten vorhanden	\r\nAucune donnée d'achat disponible
+\r\nNiedrigster 	\r\nPlus bas 
+\r\nNiedrigstes 	\r\nPlus bas 
+\r\nPlündern: 	\r\nButin : 
+\r\nSofortkaufdaten: \r\nDatenpunkte 	\r\nDonnées d'achat : \r\nPoints de données 
+\r\nZuletzt vor 	\r\nVu pour la dernière fois à 
 raid member	membre du raid
 ranges still loading	portées en cours de chargement
 read only	lecture seule
