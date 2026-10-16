@@ -568,6 +568,104 @@ local tOorIntervalTime = -2
 -- is still announced once threatTable is cleared.
 local tRelativeLastAnnounced = 0
 
+-- WoW Forever: the number of enemies in the fight, counted from enemy nameplates (the counter WowVision uses there,
+-- tested in its Forever instances). The GUID-based recount below cannot work on Forever: an enemy's GUID is secret in an
+-- instance, so threatTable stays empty and the count silent. The other clients keep that recount and its known behaviour.
+-- Nothing is remembered between counts: each recount starts from the plates that exist right now, and one enemy has at
+-- most one plate, so no unit identity is needed. The plate's reaction, death and combat flag are never secret;
+-- UnitThreatSituation between a group member and a plate was not secret in 500 answers measured on Forever 1.60.1,
+-- and a secret answer is handled anyway.
+local tPlateUnits = {}
+for i = 1, 40 do tPlateUnits[i] = "nameplate"..i end
+local tPlateGroupSolo = { "player", "pet" }
+local tPlateGroupParty = { "player", "pet" }
+for i = 1, 4 do
+   tPlateGroupParty[#tPlateGroupParty + 1] = "party"..i
+   tPlateGroupParty[#tPlateGroupParty + 1] = "partypet"..i
+end
+local tPlateGroupRaid = { "player", "pet" }
+for i = 1, 40 do
+   tPlateGroupRaid[#tPlateGroupRaid + 1] = "raid"..i
+   tPlateGroupRaid[#tPlateGroupRaid + 1] = "raidpet"..i
+end
+local tPlateElite = { elite = true, rareelite = true, worldboss = true }
+
+-- Hostile by reaction (4 or lower: hated to neutral), not UnitCanAttack: bosses and adds are often flagged not
+-- attackable mid-fight while still in it.
+local function tPlateIsHostile(aUnit)
+   local tReaction = UnitReaction("player", aUnit)
+   return tReaction ~= nil and not Sku.IsSecret(tReaction) and tReaction <= 4
+end
+
+-- A group member, you or a pet is on the enemy's threat list. A secret answer is not nil, so it still means "on the list".
+local function tPlateGroupFights(aUnit, aGroup)
+   for _, tMember in ipairs(aGroup) do
+      if UnitExists(tMember) and UnitThreatSituation(tMember, aUnit) ~= nil then
+         return true
+      end
+   end
+   return false
+end
+
+-- You hold the enemy's aggro (threat status 2 or 3). A secret status cannot be compared; it counts, like a secret
+-- "on the list" does.
+local function tPlateAttacksPlayer(aUnit)
+   local tStatus = UnitThreatSituation("player", aUnit)
+   if tStatus == nil then return false end
+   if Sku.IsSecret(tStatus) then return true end
+   return tStatus >= 2
+end
+
+-- aMode is the relativeNumberUnitsInCombat value: 4 = attacking you, 3 = attacking you or your group, 2 = all enemies
+-- in combat.
+local function tPlateCount(aMode, aEliteOnly)
+   local tGroup = (IsInRaid() and tPlateGroupRaid) or (IsInGroup() and tPlateGroupParty) or tPlateGroupSolo
+   local tCount = 0
+   for _, tUnit in ipairs(tPlateUnits) do
+      -- An enemy out of combat has an empty threat list: checking that first spares the walk over a raid for every idle plate.
+      if UnitExists(tUnit) and tPlateIsHostile(tUnit) and not UnitIsDead(tUnit) and UnitAffectingCombat(tUnit) then
+         local tCounts
+         if aMode == 4 then
+            tCounts = tPlateAttacksPlayer(tUnit)
+         elseif aMode == 3 then
+            tCounts = tPlateGroupFights(tUnit, tGroup)
+         else
+            tCounts = true
+         end
+         if tCounts and aEliteOnly then
+            tCounts = tPlateElite[UnitClassification(tUnit)] == true
+         end
+         if tCounts then
+            tCount = tCount + 1
+         end
+      end
+   end
+   return tCount
+end
+
+-- A new count is spoken once it held for this long, so a plate that blinks out and back is not spoken twice.
+local tPlateSettleTime = 0.5
+local tPlateSaid, tPlatePending, tPlatePendingSince = 0, nil, nil
+
+local function tPlateRecount(aSetting, aEliteOnly)
+   local tCount = tPlateCount(aSetting.value, aEliteOnly)
+   SkuCore.inOutCombatQueue.current = tCount
+   if tCount == tPlateSaid then
+      tPlatePending = nil
+      return
+   end
+   local tNow = GetTime()
+   if tCount ~= tPlatePending then
+      tPlatePending, tPlatePendingSince = tCount, tNow
+      return
+   end
+   if tNow - tPlatePendingSince >= tPlateSettleTime then
+      dprint("aqCombat plate count:", tCount, "prev", tPlateSaid, "mode", aSetting.value)
+      tPlateSaid, tPlatePending = tCount, nil
+      SkuCoreAqCombatOutput(aSetting.voiceOutput, {number1 = tCount,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, aSetting)
+   end
+end
+
 -- Crowd-control tracking (INVESTIGATION / diagnostic instrumentation, 2026-07-18).
 -- Goal: know when a tracked enemy is under a CC that pulls it OUT of active combat
 -- (polymorph/banish/sap/shackle/hibernate/trap/repentance/sleep/blind), because
@@ -1052,7 +1150,12 @@ local function aqCombatCreateControlFrame()
          local beginTime = debugprofilestop()
          if tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value > 1 then
             ttime2 = ttime2 + time
-            if ttime2 > (0.1 * tCurrentUpdateRate) then
+            if ttime2 > (0.1 * tCurrentUpdateRate) and Sku.isForever then
+               -- WoW Forever: counted from enemy nameplates, see tPlateRecount
+               tCurrentUpdateRate = (21 - tCurrentSettings.combat.updateRate)
+               tPlateRecount(tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat, tCurrentSettings.combat.hostile.ignoreNonElite == true)
+               ttime2 = 0
+            elseif ttime2 > (0.1 * tCurrentUpdateRate) then
                tCurrentUpdateRate = (21 - tCurrentSettings.combat.updateRate)
 
                -- Sweep entries that silently left combat (evade/leash/despawn
