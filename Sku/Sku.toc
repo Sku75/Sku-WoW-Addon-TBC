@@ -99,6 +99,7 @@ SkuCore\taxi.lua
 SkuCore\gatherRoute.lua
 SkuCore\petFeed.lua
 SkuCore\petHealth.lua
+SkuCore\rollForever.lua
 
 
 _psC_preSkuDB.lua

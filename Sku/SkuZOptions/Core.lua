@@ -1906,6 +1906,7 @@ function SkuOptions:CreateMainFrame()
 		end
 	
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ROLLNEED") then
+			if Sku.isForever then SkuCore.RollForever.Roll("need") return end
 			if SkuOptions.nextRollFrameNumber then
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
@@ -1922,6 +1923,7 @@ function SkuOptions:CreateMainFrame()
 			return
 		end
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ROLLGREED") then
+			if Sku.isForever then SkuCore.RollForever.Roll("greed") return end
 			if SkuOptions.nextRollFrameNumber then
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
@@ -1938,6 +1940,7 @@ function SkuOptions:CreateMainFrame()
 			return
 		end
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ROLLPASS") then
+			if Sku.isForever then SkuCore.RollForever.Roll("pass") return end
 			if SkuOptions.nextRollFrameNumber then
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
@@ -1959,6 +1962,15 @@ function SkuOptions:CreateMainFrame()
 
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_QUESTSHARE") then
 			SkuOptions.TooltipReaderText = ""
+			-- Forever: an open roll belongs to this key (the scanning tooltip cannot read the item there)
+			if Sku.isForever then
+				local tRollID, tRollItem = SkuOptions:GetCurrentRollItem()
+				if tRollID then
+					SkuOptions.nextRollFrameNumber = tRollID
+					SkuCore.RollForever.ReadTooltip(tRollID, tRollItem)
+					return
+				end
+			end
 
 			if GameTooltip:IsVisible() == true then
 				if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
@@ -4478,6 +4490,7 @@ function SkuOptions:OnInitialize()
 	SkuOptions:RegisterEvent("START_LOOT_ROLL")
 	SkuOptions:RegisterEvent("CANCEL_LOOT_ROLL")
 	SkuOptions:RegisterEvent("LOOT_SLOT_CHANGED")
+	if Sku.isForever and Sku.IsEventValid("CONFIRM_LOOT_ROLL") then SkuOptions:RegisterEvent("CONFIRM_LOOT_ROLL", function(aEvent, aRollID, aRollType) SkuCore.RollForever.OnConfirm(aRollID, aRollType) end) end
 
 	SkuOptions:CreateControlFrame()
 	SkuOptions:CreateMainFrame()
@@ -5047,6 +5060,8 @@ end
 
 SkuOptions.nextRollFrameNumber = 0
 function SkuOptions:START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b)
+	-- Forever: AceEvent hands the event name over first, the roll ID is the second parameter (see SkuCore/rollForever.lua)
+	if Sku.isForever then SkuCore.RollForever.OnStart(rollTime) return end
 	--print("START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b", rollID, rollTime, lootHandle, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
@@ -5057,6 +5072,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:CANCEL_LOOT_ROLL(rollID, a, b)
+	if Sku.isForever then SkuCore.RollForever.OnCancel(a) return end
 	--print("CANCEL_LOOT_ROLL(rollID, a, b", rollID, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
@@ -5067,6 +5083,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:LOOT_SLOT_CHANGED(lootSlot, a, b)
+	-- Forever: belongs to the normal loot window, not to a roll
+	if Sku.isForever then return end
 	--print("OT_CHANGED(lootSlot, a, b", lootSlot, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
@@ -5078,6 +5096,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:GetCurrentRollItem()
+	if Sku.isForever then return SkuCore.RollForever.Current() end
 	--print("GetCurrentRollItem()")
 	local tLootFrameNumber = nil
 	local tLootItem = nil
