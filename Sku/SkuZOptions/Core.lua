@@ -840,36 +840,28 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		end
 	end
 
+	local function tAddMember(aName, aClass, aLevel, aZone, aOnline, aIsDead)
+		tCount = tCount + 1
+		tTmpText = tTmpText..tCount.." "..aName..", "..(aClass or "")..", "..(aLevel or "")..", "..(tPartyRoles[aName] or "")..", "..(aZone or "")..", "
+			..(aOnline and L["online"] or L["offline"])..", "..(aIsDead and L["tot"] or L["lebt"]).."\r\n"
+	end
+
+	local tPlayerName = UnitName("player")
 	for x = 1, 40 do
-		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
-		if online then online = L["online"] else online = L["offline"] end
-		if isDead then isDead = L["tot"] else isDead = L["lebt"] end
-		
-		if name then
-			if subgroup == tPlayersSubgroup then
-				local tPlayerName = UnitName("player")
-				if name ~= tPlayerName then
-					tCount = tCount + 1
-					tTmpText = tTmpText..tCount.." "..name..", "..class..", "..level..", "..(tPartyRoles[name] or "")..", "..zone..", "..online..", "..isDead.."\r\n"
-				end
-			end
+		local name, rank, subgroup, level, class, fileName, zone, online, isDead = GetRaidRosterInfo(x)
+		if name and subgroup == tPlayersSubgroup and name ~= tPlayerName then
+			tAddMember(name, class, level, zone, online, isDead)
 		end
 	end
 
-	-- GetRaidRosterInfo lists nobody in a plain group on WoW Forever (it only knows raids): fill the group from the party units.
+	-- GetRaidRosterInfo lists nobody in a plain group on WoW Forever (it only knows raids): then the party units fill the group.
 	if tCount == 1 and IsInGroup() and not IsInRaid() then
 		for q = 1, 4 do
 			local tUnit = "party"..q
 			if UnitExists(tUnit) then
-				local tName = UnitName(tUnit)
-				local tClass = UnitClass(tUnit)
-				local tZone = ""
 				local tMapID = C_Map.GetBestMapForUnit(tUnit)
 				local tMapInfo = tMapID and C_Map.GetMapInfo(tMapID)
-				if tMapInfo and tMapInfo.name then tZone = tMapInfo.name end
-				tCount = tCount + 1
-				tTmpText = tTmpText..tCount.." "..tName..", "..(tClass or "")..", "..(UnitLevel(tUnit) or "")..", "..(tPartyRoles[tName] or "")..", "..tZone..", "
-					..(UnitIsConnected(tUnit) and L["online"] or L["offline"])..", "..(UnitIsDeadOrGhost(tUnit) and L["tot"] or L["lebt"]).."\r\n"
+				tAddMember(UnitName(tUnit), UnitClass(tUnit), UnitLevel(tUnit), tMapInfo and tMapInfo.name, UnitIsConnected(tUnit), UnitIsDeadOrGhost(tUnit))
 			end
 		end
 	end
