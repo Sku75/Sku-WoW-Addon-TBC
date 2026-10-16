@@ -2,6 +2,7 @@
 local L = Sku.L
 local PetAbandon = Sku.Compat.PetAbandon
 local PetRename = Sku.Compat.PetRename
+local LeaveParty = Sku.Compat.LeaveParty
 
 SkuMob.InCombatSounds = {
 	["Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"] = L["Default beep sound"],
@@ -574,11 +575,7 @@ local function tBuildTargetMenu(aParent)
 
 		if tInGroup() then
 			tAddAction(aParent, L["MOB_LeaveGroup"], function()
-				if _G.C_PartyInfo and _G.C_PartyInfo.LeaveParty then
-					_G.C_PartyInfo.LeaveParty()
-				elseif _G.LeaveParty then
-					LeaveParty()
-				end
+				LeaveParty()
 				tSay(L["MOB_GroupLeft"])
 			end, L["MOB_LeaveGroupTip"])
 

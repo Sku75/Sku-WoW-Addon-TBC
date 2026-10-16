@@ -1959,13 +1959,17 @@ function SkuCore:OnEnable()
 			SkuStatus.falling = 0
 		end
 ]]		
-		if UnitIsAFK("player") == true then
-			if SkuStatus.afk == 0 then
-				SkuStatus.afk = GetTime()
-				SkuOptions.Voice:OutputString("male-Fallen", false, true, 0.2)
+		-- UnitIsAFK is a secret value during a chat messaging lockdown (Forever instance encounters): the state stays as it was.
+		local tIsAfk = UnitIsAFK("player")
+		if not Sku.IsSecret(tIsAfk) then
+			if tIsAfk == true then
+				if SkuStatus.afk == 0 then
+					SkuStatus.afk = GetTime()
+					SkuOptions.Voice:OutputString("male-Fallen", false, true, 0.2)
+				end
+			else
+				SkuStatus.afk = 0
 			end
-		else
-			SkuStatus.afk = 0
 		end
 		if UnitIsDead("player") == true then
 			if SkuStatus.dead == 0 then

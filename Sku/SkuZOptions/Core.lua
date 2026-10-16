@@ -29,6 +29,7 @@ local GetTrackingInfo = Sku.Compat.GetTrackingInfo
 local GuildRoster = Sku.Compat.GuildRoster
 local IsPassiveSpell = Sku.Compat.IsPassiveSpell
 local IsSpellKnown = Sku.Compat.IsSpellKnown
+local LeaveParty = Sku.Compat.LeaveParty
 local PickupContainerItem = Sku.Compat.PickupContainerItem
 local SocketContainerItem = Sku.Compat.SocketContainerItem
 local SplitContainerItem = Sku.Compat.SplitContainerItem
@@ -187,7 +188,11 @@ end
 ---@param input string
 function SkuOptions:SlashFuncPquit(input)
 	--print("SlashFuncPquit", input)
+	local tInGroup = IsInGroup()
 	LeaveParty()
+	if tInGroup then
+		SkuOptions.Voice:OutputStringBTtts(L["MOB_GroupLeft"], true, true, 0.2, nil, nil, nil, 2)
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -835,18 +840,28 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		end
 	end
 
+	local function tAddMember(aName, aClass, aLevel, aZone, aOnline, aIsDead)
+		tCount = tCount + 1
+		tTmpText = tTmpText..tCount.." "..aName..", "..(aClass or "")..", "..(aLevel or "")..", "..(tPartyRoles[aName] or "")..", "..(aZone or "")..", "
+			..(aOnline and L["online"] or L["offline"])..", "..(aIsDead and L["tot"] or L["lebt"]).."\r\n"
+	end
+
+	local tPlayerName = UnitName("player")
 	for x = 1, 40 do
-		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
-		if online then online = L["online"] else online = L["offline"] end
-		if isDead then isDead = L["tot"] else isDead = L["lebt"] end
-		
-		if name then
-			if subgroup == tPlayersSubgroup then
-				local tPlayerName = UnitName("player")
-				if name ~= tPlayerName then
-					tCount = tCount + 1
-					tTmpText = tTmpText..tCount.." "..name..", "..class..", "..level..", "..(tPartyRoles[name] or "")..", "..zone..", "..online..", "..isDead.."\r\n"
-				end
+		local name, rank, subgroup, level, class, fileName, zone, online, isDead = GetRaidRosterInfo(x)
+		if name and subgroup == tPlayersSubgroup and name ~= tPlayerName then
+			tAddMember(name, class, level, zone, online, isDead)
+		end
+	end
+
+	-- GetRaidRosterInfo lists nobody in a plain group on WoW Forever (it only knows raids): then the party units fill the group.
+	if tCount == 1 and IsInGroup() and not IsInRaid() then
+		for q = 1, 4 do
+			local tUnit = "party"..q
+			if UnitExists(tUnit) then
+				local tMapID = C_Map.GetBestMapForUnit(tUnit)
+				local tMapInfo = tMapID and C_Map.GetMapInfo(tMapID)
+				tAddMember(UnitName(tUnit), UnitClass(tUnit), UnitLevel(tUnit), tMapInfo and tMapInfo.name, UnitIsConnected(tUnit), UnitIsDeadOrGhost(tUnit))
 			end
 		end
 	end
@@ -1906,59 +1921,26 @@ function SkuOptions:CreateMainFrame()
 		end
 	
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ROLLNEED") then
-			if SkuOptions.nextRollFrameNumber then
-				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
-					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
-						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].NeedButton:Click()
-						SkuOptions.Voice:OutputString(L["Need rolled"], true, true, 0.3, true)
-						C_Timer.NewTimer(0.5, function()
-							if _G["StaticPopup1"]:IsVisible() then
-								_G["StaticPopup1Button1"]:Click()
-							end
-						end)
-					end
-				end
-			end
+			SkuCore.LootRoll.Roll("need")
 			return
 		end
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ROLLGREED") then
-			if SkuOptions.nextRollFrameNumber then
-				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
-					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
-						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].GreedButton:Click()
-						SkuOptions.Voice:OutputString(L["Greed rolled"], true, true, 0.3, true)
-						C_Timer.NewTimer(0.5, function()
-							if _G["StaticPopup1"]:IsVisible() then
-								_G["StaticPopup1Button1"]:Click()
-							end
-						end)
-					end
-				end
-			end
+			SkuCore.LootRoll.Roll("greed")
 			return
 		end
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ROLLPASS") then
-			if SkuOptions.nextRollFrameNumber then
-				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
-					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
-						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].PassButton:Click()
-						SkuOptions.Voice:OutputString(L["Pass rolled"], true, true, 0.3, true)
-					end
-				end
-			end
+			SkuCore.LootRoll.Roll("pass")
 			return
 		end
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ROLLINFO") then
-			local tItem
-			SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
-			if SkuOptions.nextRollFrameNumber then
-				SkuOptions.Voice:OutputStringBTtts(L["Roll on"].." "..tItem.name..", "..tItem.alFavoriteString..", "..tItem.quality..", "..tItem.bind..", "..tItem.type..", "..tItem.subtype, true, true, 0.3, true, nil, nil, 2)
-			end
+			SkuCore.LootRoll.SpeakInfo()
 			return
 		end
 
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_QUESTSHARE") then
 			SkuOptions.TooltipReaderText = ""
+			-- an open roll belongs to this key: the item's tooltip and the equipped items to compare
+			if SkuCore.LootRoll.ReadTooltip() then return end
 
 			if GameTooltip:IsVisible() == true then
 				if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
@@ -1974,36 +1956,6 @@ function SkuOptions:CreateMainFrame()
 					end
 				end
 			end
-			SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
-			if SkuOptions.nextRollFrameNumber then
-				if tItem.itemId then
-					SkuUtil:ResetScanningTooltip()
-					SkuScanningTooltip:SetHyperlink(tItem.itemId)--("linkString"
-					SkuScanningTooltip:Show()
-					if TooltipLines_helper(SkuScanningTooltip:GetRegions()) ~= "asd" then
-						if TooltipLines_helper(SkuScanningTooltip:GetRegions()) ~= "" then
-							local tText = SkuUtil:Unescape(TooltipLines_helper(SkuScanningTooltip:GetRegions()))
-							if tText then
-								if string.len(tText) > 0 then
-									SkuOptions.TooltipReaderText =  {tText}
-									local t = {}
-									local comparisnSections = SkuCore:getItemComparisnSections(tItem.itemId, t)
-									if comparisnSections then
-										for i, section in ipairs(comparisnSections) do
-											local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
-											table.insert(SkuOptions.TooltipReaderText, i + 1, sectionHeader .. section)
-										end
-									end
-
-									SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
-									SkuOptions.TTS:PreviousLine()
-								end
-							end
-						end
-					end
-					--SkuScanningTooltip:Hide()
-				end
-			end			
 			return
 		end
 
@@ -4477,7 +4429,7 @@ function SkuOptions:OnInitialize()
 	SkuOptions:RegisterEvent("GUILD_ROSTER_UPDATE")
 	SkuOptions:RegisterEvent("START_LOOT_ROLL")
 	SkuOptions:RegisterEvent("CANCEL_LOOT_ROLL")
-	SkuOptions:RegisterEvent("LOOT_SLOT_CHANGED")
+	SkuOptions:RegisterEvent("CONFIRM_LOOT_ROLL")
 
 	SkuOptions:CreateControlFrame()
 	SkuOptions:CreateMainFrame()
@@ -5045,75 +4997,15 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-SkuOptions.nextRollFrameNumber = 0
-function SkuOptions:START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b)
-	--print("START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b", rollID, rollTime, lootHandle, a, b)
-	local tItem
-	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
-	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputStringBTtts(L["Roll on"].." "..tItem.name..", "..tItem.alFavoriteString..", "..tItem.quality..", "..tItem.bind..", "..tItem.type..", "..tItem.subtype, true, true, 0.3, true, nil, nil, 2)
-	end
+-- Group loot rolls: see SkuCore/lootRoll.lua. AceEvent hands the event name over first.
+function SkuOptions:START_LOOT_ROLL(aEvent, aRollID)
+	SkuCore.LootRoll.OnStart(aRollID)
 end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuOptions:CANCEL_LOOT_ROLL(rollID, a, b)
-	--print("CANCEL_LOOT_ROLL(rollID, a, b", rollID, a, b)
-	local tItem
-	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
-	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputStringBTtts(L["Roll on"].." "..tItem.name..", "..tItem.alFavoriteString..", "..tItem.quality..", "..tItem.bind..", "..tItem.type..", "..tItem.subtype, true, true, 0.3, true, nil, nil, 2)
-	end
+function SkuOptions:CANCEL_LOOT_ROLL(aEvent, aRollID)
+	SkuCore.LootRoll.OnCancel(aRollID)
 end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuOptions:LOOT_SLOT_CHANGED(lootSlot, a, b)
-	--print("OT_CHANGED(lootSlot, a, b", lootSlot, a, b)
-	local tItem
-	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
-	if SkuOptions.nextRollFrameNumber then
-		print("SkuOptions.nextRollFrameNumber", SkuOptions.nextRollFrameNumber, tItem, tItem.name)
-		SkuOptions.Voice:OutputStringBTtts(L["Roll on"].." "..tItem.name..", "..tItem.alFavoriteString..", "..tItem.quality..", "..tItem.bind..", "..tItem.type..", "..tItem.subtype, true, true, 0.3, true, nil, nil, 2)
-	end
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuOptions:GetCurrentRollItem()
-	--print("GetCurrentRollItem()")
-	local tLootFrameNumber = nil
-	local tLootItem = nil
-	for x = 1, 6 do
-		if _G["GroupLootFrame"..x] then
-			if _G["GroupLootFrame"..x]:IsVisible() then
-				tLootFrameNumber = x
-				local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(GetLootRollItemLink(_G["GroupLootFrame"..x].rollID))
-				local tAlFavoriteString = ""
-				local invType = C_Item.GetItemInventoryTypeByID(itemLink)
-				if SkuCore.AtlasLootIntegration and SkuCore.AtlasLootIntegration.favoriteSlots then
-					if invType and itemLink then
-						if SkuCore.AtlasLootIntegration.favoriteSlots[invType] and SkuCore.AtlasLootIntegration.favoriteSlots[invType][1] and #SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType] > 0 then
-							for q = 1, #SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType] do
-								if SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType][q] == itemLink then
-									tAlFavoriteString = L["Prio"].." "..q.." "..L["in AtlasLoot favorites for"].." "..SkuCore.AtlasLootIntegration.GetSlotLabel(SkuCore.AtlasLootIntegration.favoriteSlots[invType][1])
-								end
-							end
-						end
-					end
-				end
-
-				tLootItem = {
-					name = _G["GroupLootFrame"..x.."Name"]:GetText(), 
-					quality = _G["ITEM_QUALITY"..itemQuality.."_DESC"], 
-					type = itemType, 
-					subtype = itemSubType, 
-					bind = SkuOptions.BindTypeStrings[bindType], 
-					itemId = GetLootRollItemLink(_G["GroupLootFrame"..x].rollID), 
-					rollId = _G["GroupLootFrame"..x].rollID, 
-					alFavoriteString = tAlFavoriteString
-				}
-			end
-		end
-	end
-	return tLootFrameNumber, tLootItem
+function SkuOptions:CONFIRM_LOOT_ROLL(aEvent, aRollID, aRollType)
+	SkuCore.LootRoll.OnConfirm(aRollID, aRollType)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
