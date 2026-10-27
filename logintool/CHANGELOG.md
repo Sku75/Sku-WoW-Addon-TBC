@@ -88,6 +88,50 @@ Felder ("Gesicht") zeigen ihre Nummer im Feld: weicht die gezählte ab
 Erster Stand dieses Eintrags stürzte bei Rechts ab (fehlende
 global-Deklaration), behoben. UNGETESTET.
 
+**Kein Sprung an den Seitenanfang, kein Spiel-Hineinreden bei lesbaren
+Namen.** Zwei Fehler der schnellen Feldlesung: (1) Die Sicherheitsfreigabe
+nach 3 s konnte mitten in eine Feldlesung fallen; der Hintergrundleser nahm
+deren Antwort dann als ganze Bildschirmlesung ("read 1 lines", Seite
+"unknown") und setzte den Cursor an den Anfang. Jetzt hat eine synchrone
+Lesung den Helfer exklusiv (sync), und eine einzelne Lesung "unbekannte
+Seite" mit unter 5 Zeilen wird ignoriert, bis die nächste sie bestätigt.
+(2) 200 ms nach dem Schritt ist der Feldtext oft noch nicht gezeichnet
+(laut Blizzard-Quelle wird die Wahl erst im nächsten Frame angewandt und
+das Modell neu gebaut, beim ersten Anzeigen einer Frisur dauert das); die
+leere Lesung schickte das Tool zum Spiel, das dann über die Zahl redete.
+Jetzt bis zu vier Feldlesungen im Abstand von 200 ms, erst dann fragt das
+Tool das Spiel. UNGETESTET.
+
+**Neue Auswahlnamen wieder schnell.** Das Warten auf eine ganze
+Bildschirmlesung ab 500 ms nach dem Schritt machte das erste Hören eines
+Namens 1,1 bis 1,7 s langsam. Jetzt hält ein Schritt die Hintergrundlesungen
+an und liest 200 ms danach nur das Feld (SkuLoginSense --region; am
+Screenshot: ganze Seite ~520 ms, nur das Feld ~170 ms samt Programmstart,
+im laufenden Helfer deutlich weniger). Gesprochen wird aus der ersten
+Lesung; gemerkt wird ein Name und korrigiert wird die Zählung erst, wenn eine
+zweite Feldlesung 150 ms später dasselbe zeigt. UNGETESTET.
+
+**Aussehen: Liste einmal lernen, dann aus dem Gedächtnis sprechen.** Der
+erste Versuch (Lesung ab 250 ms, Vergleich mit dem Text vor dem Schritt)
+griff bei schnellen Mehrfachschritten nicht und machte alles langsamer. Jetzt
+merkt sich das Tool jeden Auswahlnamen mit seiner Position - aus der Ansage
+des Spiels und aus Bildschirmlesungen, die frühestens 500 ms nach dem
+Schritt beginnen. Ist der Name einer Position bekannt, sagt der Schritt ihn
+sofort zusammen mit "x von n", ohne auf den Bildschirm zu warten. Die
+Lesung danach prüft nur noch: zeigt sie einen Namen, der zu einer anderen
+Position gehört, hat sich die Zählung verschoben (gesperrte Auswahl) und
+wird korrigiert - aber nur, wenn zwei Lesungen übereinstimmen. Gesagt wird
+sie nur, wenn sie etwas Neues bringt. UNGETESTET.
+
+**Keine alten Namen mehr nach einem Schritt.** Die Zählung stimmte, aber die
+Bildschirmlesung kam zu früh: Das Spiel baut nach einem Wechsel erst das
+Modell um und zeichnet den Feldtext etwas später, die Lesung zeigte noch den
+vorigen Namen (Log: "Mit Kamm" bei 18 = "Widerspenstig"). Jetzt zählt eine
+Lesung erst ab 250 ms nach dem Schritt, und zeigt sie trotz weitergezählter
+Position noch denselben Text wie vor dem Schritt, liest das Tool noch einmal;
+bleibt es alt, sagt es lieber nichts als den falschen Namen. Schützt auch die
+Nummernkorrektur. UNGETESTET.
+
 **Frisuren mit langen Namen.** Frisur 7, 14 und 18 blieben ohne Namen: Die
 Texterkennung sieht im Feld gar nichts (Diagnose im Log), das Spiel nennt sie
 aber ("Frisur, Drop-down, Gescheitelt und lang, 7 von 21", aus dem

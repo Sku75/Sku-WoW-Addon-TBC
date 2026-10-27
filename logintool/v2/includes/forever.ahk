@@ -427,7 +427,7 @@ FvCy(line) {
 ; when a key changed the screen arrives after the key but shows the old
 ; picture; waiting on frameAt read stale values after a Left/Right step.
 global gFvAsync := {pending: false, pendingOcr: false, reqAt: 0, lastAt: 0, frameAt: 0, frameReqAt: 0,
-                    wantOcr: true, refThumb: "", lastProbe: "", settleDue: 0, hold: false}
+                    wantOcr: true, refThumb: "", lastProbe: "", settleDue: 0, hold: false, sync: false}
 
 ; Ask for a fresh OCR read at the next opportunity.
 FvTouch() {
@@ -451,8 +451,8 @@ FvThumbDiff(a, b) {
 
 FvSenseTick() {
     global gFvAsync
-    if !FvActive()
-        return
+    if (!FvActive() || gFvAsync.sync)
+        return   ; a synchronous read owns the helper (FvSenseSync)
     Critical
     if (gFvAsync.pending && !(gSense.pid && ProcessExist(gSense.pid)))
         gFvAsync.pending := false
@@ -554,6 +554,23 @@ FvWaitIdle(maxMs := 3000) {
 
 FvRelease() {
     gFvAsync.hold := false
+}
+
+; A synchronous helper request (Sense) with the helper to itself. `hold`
+; alone was not enough: a release meanwhile (the 3 s safety timer of a value
+; step) let the background reader send its own request and then take the
+; synchronous answer for its frame - a one-line "full read" that mapped the
+; page as unknown and threw the cursor to the top (2026-10-28). `sync` makes
+; FvSenseTick keep its hands off until the answer is in.
+FvSenseSync(extra) {
+    FvWaitIdle(2500)
+    gFvAsync.sync := true
+    try {
+        s := Sense(extra)
+    } finally {
+        gFvAsync.sync := false
+    }
+    return s
 }
 
 FvClassify(s) {
@@ -671,6 +688,9 @@ global gFvOptState := Map()   ; option name -> {i, n}
 ; narration always carries it.
 global gFvOptNames := Map()
 global gFvStepSeq := 0
+; option name -> {i, v}: count and dropdown text after the last step's read
+; (FvStepFollowUp tells a still-old picture from a new one with it)
+global gFvStepLast := Map()
 
 FvIndexRegex() {
     return "(\d+)\Q" FvIndexText(1, 2) "\E(\d+)\s*$"
@@ -689,19 +709,37 @@ FvOptLearn(name, text) {
     gFvOptState[name] := {i: i, n: Integer(m[2])}
     head := RTrim(SubStr(text, 1, m.Pos[0] - 1), ", ")
     lead := name ", " FvDropWord()
-    if (SubStr(head, 1, StrLen(lead)) = lead) {
-        if !gFvOptNames.Has(name)
-            gFvOptNames[name] := Map()
-        gFvOptNames[name][i] := LTrim(SubStr(head, StrLen(lead) + 1), ", ")
-    }
+    if (SubStr(head, 1, StrLen(lead)) = lead)
+        FvOptRemember(name, i, LTrim(SubStr(head, StrLen(lead) + 1), ", "))
 }
 
-; The choice name the client gave the current index, "?" when not learned.
+; The choice name learned for the current index, "?" when not learned.
 FvOptKnownName(name) {
     if !(gFvOptState.Has(name) && gFvOptNames.Has(name))
         return "?"
     i := gFvOptState[name].i
     return gFvOptNames[name].Has(i) ? gFvOptNames[name][i] : "?"
+}
+
+; The index a choice name was learned at, 0 when unknown or not unique.
+FvOptNameIndex(name, choice) {
+    if (choice = "" || !gFvOptNames.Has(name))
+        return 0
+    found := 0
+    for i, n in gFvOptNames[name] {
+        if (n = choice) {
+            if found
+                return 0
+            found := i
+        }
+    }
+    return found
+}
+
+FvOptRemember(name, i, choice) {
+    if !gFvOptNames.Has(name)
+        gFvOptNames[name] := Map()
+    gFvOptNames[name][i] := choice
 }
 
 ; The current choice's name (not a number, not a colour swatch), else "":
@@ -1411,10 +1449,24 @@ FvRefresh(force := false) {
 
 ; Classify the latest frame and rebuild the target list from it, keeping the
 ; current target by identity.
+global gFvOddReads := 0
+
 FvRebuild() {
-    global gFvOptState, gFvOptNames, gFvListScrolled
+    global gFvOptState, gFvOptNames, gFvStepLast, gFvListScrolled, gFvOddReads
     s := gFv.s
     screen := FvClassify(s)
+    ; A known page that suddenly reads as "unknown" with next to no text is
+    ; one bad read (a half-drawn frame, a stray answer), not a new page: it
+    ; reset the cursor to the top. It counts when the next read agrees.
+    if (screen = "unknown" && gFv.screen != "" && gFv.screen != "unknown"
+            && SenseOk(s) && s.Has("lines") && s["lines"].Length < 5) {
+        gFvOddReads += 1
+        if (gFvOddReads < 2) {
+            Log("Forever: ignoring one " s["lines"].Length "-line read on " gFv.screen)
+            return
+        }
+    }
+    gFvOddReads := 0
     targets := FvBuild(s, screen)
     if (screen = gFv.screen && targets.Length < gFv.targets.Length
             && A_TickCount - gFv.lastClick > 2500) {
@@ -1455,7 +1507,7 @@ FvRebuild() {
         SetTimer(FvContractAutoScroll, -100)
     ; another race or body brings other choice counts, and a list at the top
     if (screen = "charcreate2" && gFv.screen != "charcreate2")
-        gFvOptState := Map(), gFvOptNames := Map(), gFvListScrolled := 0
+        gFvOptState := Map(), gFvOptNames := Map(), gFvStepLast := Map(), gFvListScrolled := 0
     gFv.screen := screen
     gFv.targets := targets
     gFv.lastScreen := screen
@@ -1950,6 +2002,12 @@ FvStepOnce(dir) {
         MouseMove(p.x, p.y, 0)
         Sleep(20)
     }
+    ; no full-screen read may be running when the follow-up wants the new
+    ; value: it reads just the dropdown (FvReadDropdown), and a full read in
+    ; flight would make it wait ~0.6 s. Released by the follow-up, at the
+    ; latest after 3 s.
+    gFvAsync.hold := true
+    SetTimer(FvRelease, -3000)
     nextIsDown := (ForeverIni("wheelnext") != "up")
     Send((dir > 0) = nextIsDown ? "{WheelDown}" : "{WheelUp}")
     clickAt := A_TickCount
@@ -1957,8 +2015,13 @@ FvStepOnce(dir) {
     ; Only the new value, said at once (see gFvOptState): the colour of a
     ; swatch and "4 of 10". Say() purges, so quick steps keep only the newest.
     st := gFvOptState.Has(t.name) ? gFvOptState[t.name] : ""
-    if IsObject(st)
+    if IsObject(st) {
+        ; what the screen showed before this step: a read after it that still
+        ; shows this is the old picture (FvStepFollowUp)
+        if (FvOptValue(t) != "")
+            gFvStepLast[t.name] := {i: st.i, v: FvOptValue(t)}
         st.i := Max(1, Min(st.n, st.i + (dir > 0 ? 1 : -1)))
+    }
     said := ""
     if (t.color != "") {
         ; the swatch redraws within a few frames - read it once it changed
@@ -1976,6 +2039,11 @@ FvStepOnce(dir) {
             Log("Forever: colour '" t.name "' rgb " c.r "," c.g "," c.b " -> " t.color)
         }
     }
+    ; a choice name learned for this index (the client's narration, or a
+    ; settled read) is said right away - no waiting for the screen
+    known := (t.color = "") ? FvOptKnownName(t.name) : "?"
+    if (known != "?" && known != "")
+        said .= (said = "" ? "" : ", ") known
     if IsObject(st)
         said .= (said = "" ? "" : ", ") st.i FvIndexText(st.i, st.n) st.n
     if (nav != gFvNavSeq)
@@ -1985,7 +2053,7 @@ FvStepOnce(dir) {
     global gFvStepSeq
     gFvStepSeq += 1
     seq := gFvStepSeq, name := t.name, quiet := (said = "")
-    SetTimer(() => FvStepFollowUp(name, seq, nav, clickAt, quiet), -10)
+    SetTimer(() => FvStepFollowUp(name, seq, nav, clickAt, quiet, known), -10)
 }
 
 ; The dropdown's own text as OCR read it ("" when none): a choice name, a
@@ -1995,72 +2063,145 @@ FvOptValue(t) {
     return p ? Trim(SubStr(t.say, p + 2)) : ""
 }
 
-; After a value step: once a read REQUESTED after the step shows the new
-; value, say a choice NAME (the dropdown prints it; index and colour were
-; said already), or correct a drifted count from a printed number. Nothing
-; known at all: the name if there is one, else hover again (the client
-; narrates in full). Silent when a newer step or Up/Down came meanwhile.
-FvStepFollowUp(name, seq, nav, clickAt, quiet) {
-    FvWaitFrame(clickAt, 2500)   ; FvSenseTick has mapped it by the time this returns
-    Critical   ; from here to the speech: no step may slip in between
-    if (seq != gFvStepSeq || nav != gFvNavSeq)
-        return
-    t := FvCurrent()
-    if (t = "" || t.name != name)
-        return
-    choice := FvOptChoice(t)
-    ; nothing readable in the dropdown and the client's name for this choice
-    ; not learned yet: only the client can say it
-    unread := (t.color = "" && FvOptValue(t) = "" && FvOptKnownName(name) = "?")
-    if (t.color = "") {
-        Log("Forever: '" name "' after the step shows '" FvOptValue(t) "'"
-            (gFvOptState.Has(name) ? " (counted " gFvOptState[name].i ")" : "")
-            (FvOptValue(t) = "" && choice != "" ? ", the client called it '" choice "'" : ""))
-        if unread {
-            ; nothing read in the dropdown: what did OCR see around it?
-            k := FvK(gFv.s), seen := ""
-            for v in gFv.s["lines"]
-                if (Abs(FvCy(v) - t.y) < 40 * k && FvCx(v) > t.x - 250 * k)
-                    seen .= " | '" v["text"] "' @" Round(FvCx(v)) "," Round(FvCy(v)) " h" v["h"]
-            Log("Forever:   OCR near " t.x "," t.y ":" (seen = "" ? " nothing" : seen))
-        }
+; The text in an option's dropdown, from an OCR of the dropdown box ALONE
+; (SkuLoginSense --region; it returns frame coordinates): a fraction of a
+; full-screen read, so a new choice name comes about as fast as the old
+; full read did before the stale-picture fixes, without their waiting.
+; "" = nothing readable, "?" = the read failed.
+FvReadDropdown(t) {
+    k := FvK(gFv.s)
+    region := Round(t.x - 130 * k) "," Round(t.y - 20 * k) "," Round(260 * k) "," Round(40 * k)
+    s := FvSenseSync("--region " region)
+    if !(SenseOk(s) && s.Has("lines"))
+        return "?"
+    text := ""
+    for line in s["lines"]
+        text .= (text = "" ? "" : " ") Trim(line["text"])
+    return text
+}
+
+; After a value step the tool has said at once what it knew (colour, a
+; learned name, "4 of 10"). This checks against the screen and LEARNS:
+;  - the dropdown alone is read 200 ms after the step (the client redraws
+;    its text after rebuilding the model; reads right after the step still
+;    showed the previous choice - seen 2026-10-27, "Mit Kamm" at 18 =
+;    "Widerspenstig"). A read that still shows the pre-step text although
+;    the count moved is read again; still old = nothing is said.
+;  - a name on screen is spoken when it adds something, and remembered for
+;    the counted index once a second read shows the same. A name learned at
+;    ANOTHER index means the count slipped (a locked choice was skipped):
+;    the count is corrected by the name, also only on two agreeing reads.
+;  - a number on screen (numbered choices) corrects the count the same way.
+;  - nothing readable and no name learned for the index: the client
+;    narrates the option once (FvOptLearn keeps the name from its text).
+; Silent when a newer step or Up/Down came meanwhile. Releases the
+; background reader that FvStepOnce held.
+FvStepFollowUp(name, seq, nav, clickAt, quiet, saidName) {
+    try FvStepCheck(name, seq, nav, clickAt, quiet, saidName)
+    finally {
+        if (seq = gFvStepSeq)
+            FvRelease()
     }
-    if quiet {
-        if (choice != "") {
-            Say(choice)
+}
+
+FvStepCheck(name, seq, nav, clickAt, quiet, saidName) {
+    while (A_TickCount - clickAt < 200)
+        Sleep(20)
+    ; up to four reads 200 ms apart: the text is often not drawn yet at the
+    ; first one (an empty read sent the tool to ask the client - which talked
+    ; over the count - for names OCR reads fine a moment later), or still the
+    ; previous choice's. Empty with a learned name for the index is enough.
+    loop 4 {
+        if (A_Index > 1)
+            Sleep(200)
+        if (seq != gFvStepSeq || nav != gFvNavSeq)
             return
+        t := FvCurrent()
+        if (t = "" || t.name != name || t.color != "")
+            return   ; a swatch: colour and count were said, no text to learn
+        v := FvReadDropdown(t)
+        if (v = "?")
+            return
+        last := gFvStepLast.Has(name) ? gFvStepLast[name] : ""
+        stale := (v != "" && IsObject(last) && last.v = v && gFvOptState.Has(name)
+                  && last.i != gFvOptState[name].i)
+        if stale {
+            Log("Forever: '" name "' still shows '" v "' - reading again")
+            continue
         }
-        Critical "Off"
-        FvHover(t)
-        FvEchoIfRepeat(t)
-        FvEchoColor(t)
-        return
+        if (v != "" || FvOptKnownName(name) != "?")
+            break
     }
-    if (choice != "") {
-        SayQueued(choice)
+    Critical   ; from here to the speech: no step may slip in between
+    if (seq != gFvStepSeq || nav != gFvNavSeq || stale)
         return
-    }
-    if unread {
-        ; let the client narrate the option once: its text carries the name
-        ; (FvOptLearn keeps it for this index from then on)
-        Log("Forever: '" name "' unread - the client narrates it")
-        Critical "Off"
-        FvHover(t)
-        FvEchoIfRepeat(t)
-        return
-    }
-    ; A numbered choice prints its number in the dropdown (seen: "Gesicht"
-    ; shows "3"): that is the truth on screen. When the count drifted (a
-    ; locked choice skipped) correct it and say the right number.
-    v := FvOptValue(t)
-    if (t.color = "" && FvIsInteger(v) && gFvOptState.Has(name)) {
-        st := gFvOptState[name]
-        if (Integer(v) != st.i && Integer(v) >= 1 && Integer(v) <= st.n) {
+    st := gFvOptState.Has(name) ? gFvOptState[name] : ""
+    if IsObject(st)
+        gFvStepLast[name] := {i: st.i, v: v}
+    Log("Forever: '" name "' after the step shows '" v "'" (IsObject(st) ? " (counted " st.i ")" : ""))
+    if FvIsInteger(v) {
+        ; a numbered choice prints its number (seen: "Gesicht" shows "3")
+        if !IsObject(st) {
+            Say(v)
+        } else if (Integer(v) != st.i && Integer(v) >= 1 && Integer(v) <= st.n
+                && FvStepConfirm(name, seq, nav, v)) {
             Log("Forever: '" name "' shows " v ", tool had counted " st.i " - corrected")
             st.i := Integer(v)
             SayQueued(st.i FvIndexText(st.i, st.n) st.n)
         }
+        return
     }
+    if (v != "") {
+        if IsObject(st) {
+            j := FvOptNameIndex(name, v)
+            if (j && j != st.i) {
+                if FvStepConfirm(name, seq, nav, v) {
+                    Log("Forever: '" name "' shows '" v "', learned at " j ", tool had counted " st.i " - corrected")
+                    st.i := j
+                    SayQueued(v ", " j FvIndexText(j, st.n) st.n)
+                }
+                return
+            }
+        }
+        if (v != saidName) {
+            if quiet
+                Say(v)
+            else
+                SayQueued(v)
+        }
+        if (IsObject(st) && !j && FvStepConfirm(name, seq, nav, v))
+            FvOptRemember(name, st.i, v)
+        return
+    }
+    ; nothing readable in the dropdown (long names: OCR sees nothing at all)
+    known := FvOptKnownName(name)
+    if (known != "?") {
+        if (known != "" && known != saidName) {
+            Log("Forever:   the client called it '" known "'")
+            SayQueued(known)
+        }
+        return
+    }
+    Log("Forever: '" name "' unread - the client narrates it")
+    Critical "Off"
+    FvRelease()
+    FvHover(t)
+    FvEchoIfRepeat(t)
+}
+
+; A count correction or a remembered name rests on two reads, never on one:
+; read the dropdown once more and check it still shows `v` and nothing moved.
+FvStepConfirm(name, seq, nav, v) {
+    Critical "Off"
+    Sleep(150)
+    if (seq != gFvStepSeq || nav != gFvNavSeq)
+        return false
+    t := FvCurrent()
+    if (t = "" || t.name != name)
+        return false
+    v2 := FvReadDropdown(t)
+    Critical
+    return (v2 = v && seq = gFvStepSeq && nav = gFvNavSeq)
 }
 
 FvEscape() {
