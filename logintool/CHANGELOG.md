@@ -41,6 +41,79 @@ Clients in de/en/fr - der Bildschirm zeigt die Classic-Beschreibung nur mit
 "preset 1/2". Am Client getestet: die Erkennung "Client stumm" trifft auf
 beiden Seiten (27.10., Log); der Text der Erfahrungs-Karten ist UNGETESTET.
 
+**Wiederholungen mit dem Wortlaut des Spiels, auf jeder Seite.** Mit dem
+Sprachverlauf der Brücke (SAPI2SR mit unserer `nvdaControllerClient.dll`,
+`dev/rework-docs/nvda-voice-signing/speech-history`) liest das Tool mit, was
+WoW beim ersten Besuch eines Eintrags an die Brücke gibt, und sagt genau das
+wieder, wenn der Client bei einer Wiederholung stumm bleibt. Kein Wissen über
+einzelne Seiten nötig; "alliance 4" und andere Platzhalter bekommen so den
+Text des Spiels. Gesammelt wird bis 1,2 s nach dem Hover (Name und Tooltip
+kommen getrennt), ein Klick beendet das Sammeln. Ohne Sprachverlauf (ältere
+Brücke) bleibt die Erkennung über den Ordner `Speech` mit dem Seitentext bzw.
+dem Namen. Offline gegen den echten Verlauf geprüft; im Spiel UNGETESTET.
+
+**Pfeiltaste bricht die Sprache ab.** Die Brücke reicht jeden Text an NVDA
+weiter, und NVDA reiht ihn ein: Eine lange Beschreibung lief über den
+nächsten Eintrag weiter, nur Strg half. Jetzt stoppt jeder Wechsel zuerst
+NVDA und die eigene Warteschlange des Tools, dann erst bewegt sich die Maus.
+Mit Sprachverlauf gilt der Client schon nach 350 ms als stumm (statt 500;
+gemessen kommt sein Text nach höchstens 220 ms). UNGETESTET.
+
+**Leere Rassen-Plätze fallen weg.** Forever hat 5 Rassen je Fraktion, das
+Raster des Tools 7 Plätze: Auf Platz 6 und 7 sagte das Spiel nichts und das
+Tool "Horde 6". Das Tool vergleicht jetzt die Bildunruhe jedes Platzes mit
+Platz 1 (ein Bildschirmabzug je Spalte) und lässt leere Plätze am Spaltenende
+weg; das Log zeigt die Messwerte ("race column … spread"). Die Namensfelder
+und Rassen-Plätze behalten ihre Identität, auch wenn die Texterkennung ihren
+Text mal liest und mal nicht (vorher ging dabei das Mitgeschnittene
+verloren). UNGETESTET.
+
+**Aussehen: Links/Rechts sagt nur noch den neuen Wert.** Nach jedem Schritt
+fuhr das Tool die Maus neu auf das Feld, damit das Spiel den Wert ansagt; das
+Spiel sagte dann jedes Mal "Hautfarbe, Drop-down, 4 von 10". Jetzt bleibt die
+Maus liegen und das Tool sagt sofort nur Farbe und "4 von 10", einen
+Auswahlnamen (z. B. eine Frisur) kurz danach, sobald der Bildschirm ihn
+zeigt. Index und Anzahl lernt das Tool aus der eigenen Ansage des Spiels
+(Sprachverlauf) und zählt sie mit; das Rad springt am Ende nicht um. Neu
+gesperrte Auswahlen überspringt das Spiel, die nächste Ansage gleicht ab.
+Bei einer stummen Wiederholung auf einem Feld sagt das Tool den aktuellen
+Wert statt des mitgeschnittenen älteren - das war der Fehler "mehrfach
+derselbe Eintrag, dann Sprung zum richtigen". Französisch: "2 de 30" wie im
+Spiel (stand "sur"). Farbnamen: helle Rottöne heißen "rosa"; dunkle bleiben
+"rot" - Himmelsgeborenen-Haut ist wirklich karmesinrot (am Bildschirm
+geprüft, Farbfeld 77,29,41, das Tool misst die Mitte des Farbstrichs
+richtig). Das Log zeigt bei jedem Schritt die gemessene Farbe. Nummerierte
+Felder ("Gesicht") zeigen ihre Nummer im Feld: weicht die gezählte ab
+(gesperrte Auswahl übersprungen), korrigiert das Tool und sagt die richtige.
+Erster Stand dieses Eintrags stürzte bei Rechts ab (fehlende
+global-Deklaration), behoben. UNGETESTET.
+
+**Links/Rechts zuverlässig: fünf kleine Fehler, die zusammenspielten.**
+- Las die Texterkennung einmal weniger Zeilen, behielt das Tool zu Recht die
+  vollere Liste, hatte seine Position aber schon auf die verworfene Liste
+  umgestellt: sie zeigte danach auf einen falschen Eintrag oder auf keinen
+  (Links sprang dann an den Anfang). Jetzt bleibt beides zusammen; wird ein
+  Eintrag auf derselben Seite nicht wiedergefunden, bleibt die Position, wo
+  sie war, statt auf "keiner" zu fallen.
+- "Auf eine neue Bildschirmlesung warten" nahm auch eine Lesung, die vor dem
+  Tastendruck gestartet war und das alte Bild zeigte: daher alte Werte nach
+  einem Schritt. Jetzt zählt nur eine Lesung, die nach dem Schritt angefordert
+  wurde.
+- Die Farbe wurde starr nach 120 ms gelesen, manchmal vor dem Neuzeichnen.
+  Jetzt wird gelesen, sobald sich das Farbfeld geändert hat (höchstens
+  400 ms; keine Änderung = Listenende).
+- Ein Schritt direkt nach dem Ankommen brach das Mithören ab, bevor das Spiel
+  "x von n" gesagt hatte: Die Zählung fehlte dann. Jetzt wartet der erste
+  Schritt diese Ansage ab.
+- Links und Rechts konnten sich mitten im Schritt unterbrechen, ein schneller
+  zweiter Druck ging verloren, und die verspätete Namensansage eines älteren
+  Schritts kam nach einem neueren. Jetzt laufen Schritte strikt nacheinander
+  (Drücke werden gesammelt), und nichts von einem älteren Schritt oder einem
+  verlassenen Feld wird noch gesagt. Das Menü behält sein altes Verhalten.
+Stumme Wiederholung auf einem Feld: nur noch aus aktuellem Wissen (Zählung,
+Name oder Nummer im Feld), nie ein älterer Mitschnitt. Offline geprüft
+(Position, Ansage), im Spiel UNGETESTET.
+
 **Kartenseiten robuster erkannt.** Die Seiten wurden nur am Titel erkannt;
 einmal las die Texterkennung "WähleEure" statt "Wählt Eure", und die
 Erfahrungs-Seite fiel auf "alle Textzeilen" zurück (35 Ziele, Auf/Ab sprang

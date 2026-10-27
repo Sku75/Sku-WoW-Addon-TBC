@@ -49,18 +49,32 @@
 ; Escape stay captured below, because they are how the field is left.
 #HotIf (gMode = 1 || gMode = -2) && gLoginFieldFlag = "" && !FvTyping()
 
+; On Forever a value step takes up to half a second; a quick second press
+; must reach FvStep (which queues it) instead of being dropped by the
+; default one-thread-per-hotkey limit.
+; The menu keeps the old one-at-a-time behaviour through `busy`.
+#MaxThreadsPerHotkey 3
 Right:: {
-    if FvActive()
+    static busy := false
+    if FvActive() {
         FvStep(1)
-    else
-        MenuRight()
+    } else if !busy {
+        busy := true
+        try MenuRight()
+        finally busy := false
+    }
 }
 Left:: {
-    if FvActive()
+    static busy := false
+    if FvActive() {
         FvStep(-1)
-    else
-        MenuLeft()
+    } else if !busy {
+        busy := true
+        try MenuLeft()
+        finally busy := false
+    }
 }
+#MaxThreadsPerHotkey 1
 Up:: {
     if FvActive()
         FvMove(-1)

@@ -1,0 +1,9 @@
+LIBRARY nvdaControllerClient
+EXPORTS
+    nvdaController_brailleMessage                 @1
+    nvdaController_cancelSpeech                   @2
+    nvdaController_getProcessId                   @3
+    nvdaController_setOnSsmlMarkReachedCallback   @4
+    nvdaController_speakSsml                      @5
+    nvdaController_speakText                      @6
+    nvdaController_testIfRunning                  @7

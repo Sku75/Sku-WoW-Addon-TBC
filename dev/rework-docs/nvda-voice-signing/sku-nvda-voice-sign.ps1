@@ -60,6 +60,11 @@ $PinnedPeHashes = @{
 	# forwarded (patch_sapi2sr_x64_interrupt.py, sapi2sr-interrupt-spec.md).
 	'5A76A572057954B9B7BF2F2E6FBE7555F79D727760370D8423ADA6E59E4C951E' = 'sapi2sr_engine.dll x64 (1.0.0.0 + Sku bookmark fix + speakText route + skuint interrupt)'
 	'1281E2B96CD5CAC5672E8ECCD7406A3FB29F80EAA1AC3BFE99E13CBE0CFE9360' = 'sapi2sr_engine.dll x86 (1.0.0.0)'
+	# Speech history (speech-history/): our nvdaControllerClient.dll in the
+	# SAPI2SR folder, forwarding to NV Access's original (renamed
+	# nvdaControllerClient.nvaccess.dll, signed by NV Access) and publishing
+	# every spoken text in a shared ring for other programs.
+	'2FA42D8D44C2850FAF28E14B191F59D566F80E420E55CC92EBFC3C897C435451' = 'nvdaControllerClient.dll x64 (Sku speech history 1)'
 }
 
 $CertSubject = 'CN=Sku NVDA voice signing (local, throwaway)'
