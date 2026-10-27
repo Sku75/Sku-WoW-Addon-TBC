@@ -88,6 +88,30 @@ Felder ("Gesicht") zeigen ihre Nummer im Feld: weicht die gezählte ab
 Erster Stand dieses Eintrags stürzte bei Rechts ab (fehlende
 global-Deklaration), behoben. UNGETESTET.
 
+**Frisuren mit langen Namen.** Frisur 7, 14 und 18 blieben ohne Namen: Die
+Texterkennung sieht im Feld gar nichts (Diagnose im Log), das Spiel nennt sie
+aber ("Frisur, Drop-down, Gescheitelt und lang, 7 von 21", aus dem
+Sprachverlauf). Das Tool merkt sich jetzt aus jeder Ansage des Spiels den
+Namen je Position und sagt ihn bei späteren Schritten. Ist das Feld leer und
+der Name noch unbekannt, lässt das Tool das Spiel das Feld einmal ansagen
+(danach kennt es ihn). Augenfarben mit dem Rollen der Liste: am Client
+GETESTET. Namen: UNGETESTET.
+
+**Aussehen: die Liste rollt jetzt nur noch absichtlich.** Die Optionen
+stehen in einer rollbaren Liste; ganz unten war von "Augenfarbe" nur die
+Beschriftung sichtbar, das Feld abgeschnitten. Das Tool maß dort den
+dunklen Rahmen ("schwarz"), und das Rad rollte die Liste statt den Wert zu
+ändern - Hautfarbe und Gesicht verschwanden oben. Jetzt erkennt das Tool
+abgeschnittene Felder (Listenende ~30 Einheiten über "Hohe Auflösung für
+Modelle"), rollt mit dem Rad über der Beschriftung (dort rollt es, nur das
+Feld selbst ändert den Wert) und geht erst danach auf das Feld. Auf vom
+obersten sichtbaren Feld rollt zurück, wenn das Tool vorher hinunter gerollt
+hat. Neue Kategorie oder Seite = Liste oben. Farbnamen haben jetzt fünf
+Sättigungsstufen (blass, matt, -, kräftig, leuchtend): zwei Hauttöne hießen
+beide "hell orange", jetzt "hell orange" und "hell kräftig orange". Ein leeres
+Feld nach einem Schritt protokolliert, was die Texterkennung dort sah
+(Frisur 7, 14, 18). UNGETESTET.
+
 **Links/Rechts zuverlässig: fünf kleine Fehler, die zusammenspielten.**
 - Las die Texterkennung einmal weniger Zeilen, behielt das Tool zu Recht die
   vollere Liste, hatte seine Position aber schon auf die verworfene Liste

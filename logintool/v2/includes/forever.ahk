@@ -590,7 +590,7 @@ FvClassify(s) {
 ; ---------- target lists ----------
 
 FvT(list, name, x, y, kind := "button", data := "", say := "") {
-    list.Push({name: name, x: Round(x), y: Round(y), kind: kind, data: data, say: say, color: "", clearFirst: false, id: ""})
+    list.Push({name: name, x: Round(x), y: Round(y), kind: kind, data: data, say: say, color: "", clearFirst: false, id: "", clipped: false})
 }
 
 ; The narration voice, as a SAPI voice object of the tool's own: the same
@@ -665,24 +665,55 @@ FvEchoLater(text, delayMs) {
 ; picks the next/previous SELECTABLE choice, nil at the ends); a locked
 ; choice in between is skipped by the client - the next narration resyncs.
 global gFvOptState := Map()   ; option name -> {i, n}
+; option name -> Map(index -> choice name, "" = the client names none), from
+; the client's narration. OCR cannot read every name in the dropdown (seen:
+; hairstyle 7 "Gescheitelt und lang" - nothing read at all), the client's
+; narration always carries it.
+global gFvOptNames := Map()
 global gFvStepSeq := 0
 
 FvIndexRegex() {
     return "(\d+)\Q" FvIndexText(1, 2) "\E(\d+)\s*$"
 }
 
-FvOptLearn(name, text) {
-    if RegExMatch(text, FvIndexRegex(), &m)
-        gFvOptState[name] := {i: Integer(m[1]), n: Integer(m[2])}
+FvDropWord() {
+    return Map("de", "Drop-down", "en", "Dropdown", "fr", "Menu déroulant")[FvLangKey()]
 }
 
-; The dropdown's own text when it is a choice name (not a number, not a
-; colour swatch), else "".
+; "Frisur, Drop-down, Gescheitelt und lang, 7 von 21": index, count and the
+; choice name (NarrationUtil joins with ", "; the name may hold commas).
+FvOptLearn(name, text) {
+    if !RegExMatch(text, FvIndexRegex(), &m)
+        return
+    i := Integer(m[1])
+    gFvOptState[name] := {i: i, n: Integer(m[2])}
+    head := RTrim(SubStr(text, 1, m.Pos[0] - 1), ", ")
+    lead := name ", " FvDropWord()
+    if (SubStr(head, 1, StrLen(lead)) = lead) {
+        if !gFvOptNames.Has(name)
+            gFvOptNames[name] := Map()
+        gFvOptNames[name][i] := LTrim(SubStr(head, StrLen(lead) + 1), ", ")
+    }
+}
+
+; The choice name the client gave the current index, "?" when not learned.
+FvOptKnownName(name) {
+    if !(gFvOptState.Has(name) && gFvOptNames.Has(name))
+        return "?"
+    i := gFvOptState[name].i
+    return gFvOptNames[name].Has(i) ? gFvOptNames[name][i] : "?"
+}
+
+; The current choice's name (not a number, not a colour swatch), else "":
+; what the dropdown shows, or what the client said for this index.
 FvOptChoice(t) {
     if (t.kind != "option" || t.color != "")
         return ""
     v := FvOptValue(t)
-    return FvIsInteger(v) ? "" : v
+    if (v != "")
+        return FvIsInteger(v) ? "" : v
+    known := FvOptKnownName(t.name)
+    return (known = "?") ? "" : known
 }
 
 ; The client's narration of an option, rebuilt from the tracked state (for a
@@ -699,8 +730,7 @@ FvOptNarration(t) {
         index := ""
     if (index = "" && choice = "")
         return ""
-    drop := Map("de", "Drop-down", "en", "Dropdown", "fr", "Menu déroulant")[FvLangKey()]
-    return t.name ", " drop (choice != "" ? ", " choice : "") (index != "" ? ", " index : "")
+    return t.name ", " FvDropWord() (choice != "" ? ", " choice : "") (index != "" ? ", " index : "")
 }
 
 FvEchoColor(t) {
@@ -778,10 +808,16 @@ FvColorName(r, g, b) {
         shade := darkWord
     else
         shade := Map("de", "sehr dunkel", "en", "very dark", "fr", "très foncé")[L]
+    ; five saturation steps, the middle one unnamed (two skin swatches,
+    ; saturation 0.58 and 0.74, were both just "light orange")
     tone := ""
-    if (sat < 0.35)
+    if (sat < 0.25)
         tone := Map("de", "blass", "en", "pale", "fr", "pâle")[L] " "
-    else if (sat > 0.75)
+    else if (sat < 0.45)
+        tone := Map("de", "matt", "en", "muted", "fr", "terne")[L] " "
+    else if (sat >= 0.85)
+        tone := Map("de", "leuchtend", "en", "vivid", "fr", "éclatant")[L] " "
+    else if (sat >= 0.65)
         tone := Map("de", "kräftig", "en", "strong", "fr", "vif")[L] " "
     return shade " " tone hue
 }
@@ -1317,6 +1353,16 @@ FvBuild(s, screen) {
                     FvT(t, "category " A_Index, cx, cy)
             }
         }
+        ; The option list scrolls. Its visible part ends ~30 units above the
+        ; "High definition models" checkbox (seen live 2026-10-27: Augenfarbe's
+        ; label at the bottom edge, its dropdown cut off - the tool measured
+        ; the frame as "black" and the wheel scrolled the list instead of
+        ; changing the value). A dropdown reaching below that is "clipped":
+        ; the driver scrolls it into view before using it (FvOptionIntoView).
+        hd := FvFind(s, "hd_models")
+        if (hd = "")
+            hd := FvFindStart(s, "hd_models")
+        listBottom := (hd != "") ? hd["y"] - 30 * k : H - 155 * k
         for line in options {
             ox := line["x"] + 146 * k, oy := line["y"] + line["h"] + 24 * k
             ; the dropdown's own text (a name or a number), if it has one
@@ -1327,9 +1373,10 @@ FvBuild(s, screen) {
                     value := Trim(v["text"])
             }
             color := ""
+            clipped := (oy + 18 * k > listBottom)
             lbl := FvNorm(line["text"])
             isColor := InStr(lbl, "farbe") || InStr(lbl, "color") || InStr(lbl, "colour") || InStr(lbl, "couleur")
-            if (value = "" && isColor) {
+            if (value = "" && isColor && !clipped) {
                 ; a colour swatch: read its pixel
                 c := FvPixel(ox, oy)
                 if (c != "")
@@ -1337,6 +1384,7 @@ FvBuild(s, screen) {
             }
             FvT(t, line["text"], ox, oy, "option", line, line["text"] (value != "" ? ": " value : ""))
             t[t.Length].color := color
+            t[t.Length].clipped := clipped
         }
         FvAddLine(s, t, "finish")
         FvAddLine(s, t, "next")
@@ -1364,7 +1412,7 @@ FvRefresh(force := false) {
 ; Classify the latest frame and rebuild the target list from it, keeping the
 ; current target by identity.
 FvRebuild() {
-    global gFvOptState
+    global gFvOptState, gFvOptNames, gFvListScrolled
     s := gFv.s
     screen := FvClassify(s)
     targets := FvBuild(s, screen)
@@ -1405,9 +1453,9 @@ FvRebuild() {
         Log("Forever: map " screen " with " targets.Length " targets")
     if (screen = "contract" && gFv.screen != "contract")
         SetTimer(FvContractAutoScroll, -100)
-    ; another race or body brings other choice counts
+    ; another race or body brings other choice counts, and a list at the top
     if (screen = "charcreate2" && gFv.screen != "charcreate2")
-        gFvOptState := Map()
+        gFvOptState := Map(), gFvOptNames := Map(), gFvListScrolled := 0
     gFv.screen := screen
     gFv.targets := targets
     gFv.lastScreen := screen
@@ -1445,15 +1493,92 @@ FvMove(delta) {
         Say(T("nothing to select on this screen"))
         return
     }
+    cur := FvCurrent()
+    ; Up from the topmost option of a list the tool scrolled down: scroll it
+    ; back so the options above come into reach again
+    if (delta = -1 && cur != "" && cur.kind = "option" && gFvListScrolled > 0
+            && !(gFv.index > 1 && gFv.targets[gFv.index - 1].kind = "option")) {
+        name := cur.name
+        FvScrollOptions(cur, -1)
+        j := FvTargetIndex("option", name)
+        if (j > 1 && gFv.targets[j - 1].kind = "option") {
+            gFv.index := j
+            FvMoveTo(j - 1)
+            return
+        }
+        if j
+            gFv.index := j
+    }
     i := gFv.index + delta
     if (i < 1)
         i := n
     if (i > n)
         i := 1
+    FvMoveTo(i)
+}
+
+FvMoveTo(i) {
+    t := gFv.targets[i]
+    if (t.kind = "option" && t.clipped) {
+        t := FvOptionIntoView(t)
+        if (t = "")
+            return
+        i := gFv.index
+    }
     gFv.index := i
-    FvHover(gFv.targets[i])
-    FvEchoIfRepeat(gFv.targets[i])
-    FvEchoColor(gFv.targets[i])
+    FvHover(t)
+    FvEchoIfRepeat(t)
+    FvEchoColor(t)
+}
+
+; ---------- the scrolling option list (appearance panel) ----------
+; The wheel over an option's LABEL scrolls the list (only the dropdown takes
+; the wheel as a value change). The tool counts its own downward scrolls so
+; Up knows when there is something above to scroll back to.
+global gFvListScrolled := 0
+
+FvTargetIndex(kind, name) {
+    for i, t in gFv.targets
+        if (t.kind = kind && t.name = name)
+            return i
+    return 0
+}
+
+; One wheel notch over the option's label, then wait for a read of the moved
+; list (FvSenseTick rebuilds the map when it lands).
+FvScrollOptions(t, dir) {
+    global gFvListScrolled
+    if !IsObject(t.data)
+        return
+    NvdaCancelSpeech()
+    p := PxToScreen(FvCx(t.data), FvCy(t.data))
+    MouseMove(p.x, p.y, 0)
+    Sleep(30)
+    Send(dir > 0 ? "{WheelDown}" : "{WheelUp}")
+    at := A_TickCount
+    gFv.lastClick := at
+    gFvListScrolled := Max(gFvListScrolled + (dir > 0 ? 1 : -1), 0)
+    Sleep(150)
+    FvWaitFrame(at, 2500)
+    Log("Forever: scrolled the option list " (dir > 0 ? "down" : "up") " at '" t.name "'")
+}
+
+; Scroll until the option's dropdown is fully visible (at most 4 notches).
+; Returns the option's target from the fresh map (gFv.index on it), or ""
+; when it vanished.
+FvOptionIntoView(t) {
+    name := t.name
+    loop 4 {
+        FvScrollOptions(t, 1)
+        j := FvTargetIndex("option", name)
+        if !j
+            return ""
+        gFv.index := j
+        t := gFv.targets[j]
+        if !t.clipped
+            return t
+    }
+    return t
 }
 
 ; The 12.0 client caches rendered speech BY TEXT and replays the audio
@@ -1708,6 +1833,7 @@ FvCurrent() {
 }
 
 FvEnter() {
+    global gFvListScrolled
     tg := FvCurrent()
     if (tg = "" && gFv.lastHover != "")
         tg := gFv.lastHover       ; a re-read moved the index, not the cursor
@@ -1723,6 +1849,8 @@ FvEnter() {
     Sleep(30)
     Click()
     Log("Forever: click " tg.kind " '" tg.name "'")
+    if (gFv.screen = "charcreate2" && InStr(tg.name, "category ") = 1)
+        gFvListScrolled := 0   ; another category: its list starts at the top
     clickAt := A_TickCount
     gFv.lastClick := clickAt
     FvTouch()
@@ -1798,6 +1926,12 @@ FvStepOnce(dir) {
     ; wheel does not make the client narrate the stepper buttons on the way.
     ; forever.ini "wheelnext=up" flips the direction if the client's is the
     ; other way round.
+    ; a cut-off dropdown: the wheel would scroll the list, not the value -
+    ; bring it into view and onto it first (the next press steps)
+    if t.clipped {
+        FvMoveTo(gFv.index)
+        return
+    }
     ; Right after arriving on the option the client's narration of it (it
     ; carries "3 of 10") may still be on its way: let it land first, or the
     ; count is never learned. FvRepeatTick runs during the Sleep.
@@ -1875,6 +2009,22 @@ FvStepFollowUp(name, seq, nav, clickAt, quiet) {
     if (t = "" || t.name != name)
         return
     choice := FvOptChoice(t)
+    ; nothing readable in the dropdown and the client's name for this choice
+    ; not learned yet: only the client can say it
+    unread := (t.color = "" && FvOptValue(t) = "" && FvOptKnownName(name) = "?")
+    if (t.color = "") {
+        Log("Forever: '" name "' after the step shows '" FvOptValue(t) "'"
+            (gFvOptState.Has(name) ? " (counted " gFvOptState[name].i ")" : "")
+            (FvOptValue(t) = "" && choice != "" ? ", the client called it '" choice "'" : ""))
+        if unread {
+            ; nothing read in the dropdown: what did OCR see around it?
+            k := FvK(gFv.s), seen := ""
+            for v in gFv.s["lines"]
+                if (Abs(FvCy(v) - t.y) < 40 * k && FvCx(v) > t.x - 250 * k)
+                    seen .= " | '" v["text"] "' @" Round(FvCx(v)) "," Round(FvCy(v)) " h" v["h"]
+            Log("Forever:   OCR near " t.x "," t.y ":" (seen = "" ? " nothing" : seen))
+        }
+    }
     if quiet {
         if (choice != "") {
             Say(choice)
@@ -1888,6 +2038,15 @@ FvStepFollowUp(name, seq, nav, clickAt, quiet) {
     }
     if (choice != "") {
         SayQueued(choice)
+        return
+    }
+    if unread {
+        ; let the client narrate the option once: its text carries the name
+        ; (FvOptLearn keeps it for this index from then on)
+        Log("Forever: '" name "' unread - the client narrates it")
+        Critical "Off"
+        FvHover(t)
+        FvEchoIfRepeat(t)
         return
     }
     ; A numbered choice prints its number in the dropdown (seen: "Gesicht"
