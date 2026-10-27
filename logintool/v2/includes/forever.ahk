@@ -23,11 +23,29 @@ global gFv := {screen: "", targets: [], index: 0, sensedAt: 0, s: "", typing: fa
 
 ; ---------- client folders / flavor ----------
 
-; Flavor strings that mean Forever. wow_classic_beta is the beta product;
-; the release product name is a guess until a .flavor.info of the live
-; client has been seen - detect.ahk also accepts build 1.60+.
+; Flavor strings that mean Forever. wow_classic_beta is the beta product
+; (_classic_beta_\WowB.exe); the live client is _forever_\Wow.exe with the
+; flavor "wowf" (seen 2026-10-27, build 1.60.1.70634). wow_forever stays as a
+; guess; detect.ahk also accepts build 1.60+.
 IsForeverFlavor(flavor) {
-    return flavor = "wow_classic_beta" || flavor = "wow_forever"
+    return flavor = "wow_classic_beta" || flavor = "wowf" || flavor = "wow_forever"
+}
+
+; Is a WoW client running out of this folder? The live Forever exe is plain
+; Wow.exe, the same name other clients may use, so the name alone says
+; nothing - the process path does.
+ForeverClientRunning(dir) {
+    want := StrLower(dir) "\"
+    try {
+        for p in ComObjGet("winmgmts:").ExecQuery("SELECT ExecutablePath FROM Win32_Process WHERE Name LIKE 'Wow%.exe'") {
+            path := p.ExecutablePath
+            if (path != "" && SubStr(StrLower(path), 1, StrLen(want)) = want)
+                return true
+        }
+    } catch {
+        return ProcessExist("WowB.exe") || ProcessExist("Wow.exe")
+    }
+    return false
 }
 
 ; Every client folder whose .flavor.info says Forever. The tool is deployed to
@@ -72,31 +90,59 @@ ForeverIni(key) {
     return ""
 }
 
-; Guess for the bridge voice's ID when forever.ini does not say. Measured on
-; this machine: registry order Zira, Hedda, SAPI2SR, but the client spoke
-; Zira for ID 2 and Sku (which passes table index - 1) reaches the bridge with
-; ID 1. So the registry position is NOT the client's ID; until a better rule
-; is known the guess is "one less than the registry position", logged for
-; checking against C_VoiceChat.GetTtsVoices() in game.
-ForeverNarrationVoiceIndex() {
+; The narration voice the client is given: forever.ini "voice=" when set,
+; otherwise the voice the user picked in the tool's own setup, so Forever
+; speaks like the tool does on the other clients. The client's voice ID is
+; taken as the position in SAPI's voice enumeration (SpVoice.GetVoices) -
+; the order the beta measurements pointed to, NOT verified against
+; C_VoiceChat.GetTtsVoices() on the live client; the log line lists the
+; whole enumeration so a wrong voice can be traced. -1 = leave the CVar alone.
+global gFvNarration := ""
+
+ForeverNarrationVoice() {
+    global gFvNarration
+    if IsObject(gFvNarration)
+        return gFvNarration
     override := ForeverIni("voice")
-    if (override != "" && IsInteger(override))
-        return Integer(override)
-    idx := -1
-    n := 0
-    names := ""
+    fixed := (override != "" && IsInteger(override)) ? Integer(override) : -1
+    id := fixed, name := "", names := ""
     try {
-        loop reg, "HKLM\SOFTWARE\Microsoft\Speech\Voices\Tokens", "K" {
-            name := A_LoopRegName
-            if (idx < 0 && InStr(name, "SAPI2SR"))
-                idx := n
-            names .= (names = "" ? "" : ", ") n ":" name
-            n++
+        voices := ComObject("SAPI.SpVoice").GetVoices()
+        loop voices.Count {
+            i := A_Index - 1
+            desc := ""
+            try desc := voices.Item(i).GetDescription()
+            names .= (names = "" ? "" : ", ") i ":" desc
+            if (fixed >= 0 ? i = fixed : (id < 0 && desc != "" && desc = gHasSetupVoice))
+                id := i, name := desc
         }
+    } catch as e {
+        Log("Forever: SAPI voice list unreadable: " e.Message)
     }
-    guess := idx > 0 ? idx - 1 : idx
-    Log("Forever: SAPI voices [" names "] -> bridge at registry position " idx ", guessed client ID " guess)
-    return guess
+    Log("Forever: SAPI voices [" names "] -> narration voice " id " '" name "' from "
+        (fixed >= 0 ? "forever.ini" : "the tool voice '" gHasSetupVoice "'"))
+    gFvNarration := {id: id, name: name}
+    return gFvNarration
+}
+
+; The bridge hands the text to the screen reader and renders no audio.
+ForeverNarrationIsBridge() {
+    return InStr(ForeverNarrationVoice().name, "SAPI2SR") > 0
+}
+
+; The client's speech cache: <client>\Speech\
+; VoiceSpeak_Utterance_<voice>_<volume>_<rate>_<hash>.wav on disk, and the
+; same keys in memory. The bridge leaves 44-byte files (WAV header, no data).
+; Deleting them does NOT bring repeats back - tested 2026-10-27: after the
+; delete the client wrote no new file on any repeat hover and stayed silent, so
+; it remembers the text in memory for the whole client run (Sku saw the same:
+; the cache outlives a /reload). That is why the bridge gets the repeat echo.
+
+; forever.ini "rate=" when set, otherwise the tool's own rate (sapi.ahk
+; speaks at 5; the client's -10..10 scale is SAPI's).
+ForeverNarrationRate() {
+    rate := ForeverIni("rate")
+    return (rate != "" && IsInteger(rate)) ? rate : "5"
 }
 
 ; Make sure the Forever client starts with narration on, the first-start
@@ -104,7 +150,7 @@ ForeverNarrationVoiceIndex() {
 ; rewritten by the client on exit, so this is only done while it is not
 ; running; the client keeps whatever it finds there on the next start.
 ForeverSeedConfig(dir) {
-    if ProcessExist("WowB.exe") {
+    if ForeverClientRunning(dir) {
         Log("Forever: client running, Config.wtf left alone (" dir ")")
         return false
     }
@@ -112,12 +158,10 @@ ForeverSeedConfig(dir) {
     wanted := Map()
     wanted["accessibilityScreenNarrationEnabled"] := "1"
     wanted["showScreenNarrationDialog"] := "0"
-    voice := ForeverNarrationVoiceIndex()
+    voice := ForeverNarrationVoice().id
     if (voice >= 0)
         wanted["accessibilityScreenNarrationVoice"] := String(voice)
-    rate := ForeverIni("rate")
-    if (rate != "")
-        wanted["accessibilityScreenNarrationSpeechRate"] := rate
+    wanted["accessibilityScreenNarrationSpeechRate"] := ForeverNarrationRate()
     volume := ForeverIni("volume")
     if (volume != "")
         wanted["accessibilityScreenNarrationSpeechVolume"] := volume
@@ -217,7 +261,9 @@ global gFvStrings := Map(
     "menu", Map("de", "Menü", "en", "Menu", "fr", "Menu"),
     "create_account", Map("de", "Account erstellen", "en", "Create Account", "fr", "Créer un compte"),
     "quit", Map("de", "Beenden", "en", "Quit", "fr", "Quitter"),
-    "ruleset_title", Map("de", "Wählt Euren Spielstil", "en", "Choose Your Gameplay Style", "fr", "Choix du style de jeu"),
+    ; SUPER_DISTRICT_TITLE at launch (build 70634); the beta said "Spielstil"
+    "ruleset_title", Map("de", "Wählt Euren Gameplay-Regelsatz", "en", "Choose Your Gameplay Ruleset", "fr", "Choisir votre ensemble de règles"),
+    "ruleset_desc", Map("de", "Ihr könnt nur mit Spielern interagieren, die denselben Regelsatz wählen.", "en", "You will only be able to interact with players who choose the same ruleset.", "fr", "Vous ne pouvez interagir qu’avec les personnages-joueurs qui ont choisi le même ensemble de règles."),
     "preset_title", Map("de", "Wählt Eure Erfahrungsvoreinstellung", "en", "Choose Your Experience Preset", "fr", "Choisir le préréglage de votre expérience"),
     "preset_settings", Map("de", "Starteinstellungen:", "en", "Starting Settings:", "fr", "Réglages de départ :"),
     "select", Map("de", "Auswählen", "en", "Select", "fr", "Sélectionner"),
@@ -254,6 +300,17 @@ global gFvStrings := Map(
     "change_realm", Map("de", "Realm wechseln", "en", "Change Realm", "fr", "Autre Royaume"),
     "done", Map("de", "Fertig", "en", "Done", "fr", "Terminé"),
     "continue", Map("de", "Fortfahren", "en", "Continue", "fr", "Continuer"),
+    ; the game menu Escape opens (GlueMenuFrame), its buttons in menu order
+    "gamemenu_title", Map("de", "Spielmenü", "en", "Game Menu", "fr", "Menu de jeu"),
+    "gm_options", Map("de", "Optionen", "en", "Options", "fr", "Options"),
+    "gm_store", Map("de", "Shop", "en", "Shop", "fr", "Boutique"),
+    "gm_addons", Map("de", "Addons", "en", "AddOns", "fr", "Add-ons"),
+    "gm_credits", Map("de", "Das Team", "en", "Credits", "fr", "Générique"),
+    "gm_cinematics", Map("de", "Videosequenzen", "en", "Cinematics", "fr", "Cinématiques"),
+    "gm_account", Map("de", "Mein Account", "en", "My Account", "fr", "Mon compte"),
+    "gm_community", Map("de", "Offizielle Webseite", "en", "Community Site", "fr", "Site officiel"),
+    "gm_exit", Map("de", "Spiel verlassen", "en", "Exit Game", "fr", "Quitter"),
+    "gm_close", Map("de", "Schließen", "en", "Close", "fr", "Fermer"),
 )
 
 FvLangKey() {
@@ -498,11 +555,17 @@ FvClassify(s) {
         return "none"
     if (FvFind(s, "narrator_enable") && FvFind(s, "narrator_disable"))
         return "narrator"
+    ; the game menu sits over whatever page opened it, so it goes first
+    if (FvFind(s, "gamemenu_title") && FvFind(s, "gm_exit"))
+        return "gamemenu"
     if FvFind(s, "contract_title")
         return "contract"
-    if FvFind(s, "ruleset_title", true)
+    ; Each card page has a second anchor: OCR misreading one letter of the
+    ; title ("WähleEure" for "Wählt Eure", 2026-10-27) dropped the whole page
+    ; to the all-text-lines fallback.
+    if (FvFind(s, "ruleset_title", true) || FvFindStart(s, "ruleset_desc"))
         return "ruleset"
-    if FvFind(s, "preset_title", true)
+    if (FvFind(s, "preset_title", true) || FvFind(s, "preset_settings"))
         return "preset"
     if FvFind(s, "zone_title", true)
         return "charcreate3"
@@ -537,14 +600,11 @@ FvGameVoice() {
         return gFvGameVoice
     try {
         v := ComObject("SAPI.SpVoice")
-        idx := ForeverIni("voice")
-        idx := (idx != "" && IsInteger(idx)) ? Integer(idx) : 0
+        idx := Max(ForeverNarrationVoice().id, 0)
         voices := v.GetVoices()
-        if (idx >= 0 && idx < voices.Count)
+        if (idx < voices.Count)
             v.Voice := voices.Item(idx)
-        rate := ForeverIni("rate")
-        if (rate != "" && IsInteger(rate))
-            v.Rate := Integer(rate)
+        v.Rate := Integer(ForeverNarrationRate())
         v.Volume := 100
         gFvGameVoice := v
         Log("Forever: colour voice = " v.Voice.GetDescription() " rate " v.Rate)
@@ -682,6 +742,69 @@ FvSayText(t) {
     return (t.say != "") ? t.say : t.name
 }
 
+; A ruleset card's title plus its description, as read from the screen - what
+; the tool says when the client replays a card silently. SuperDistrict.xml:
+; the card is 260 units wide; under the title sit the icon (25 + 64) and,
+; 40 further down, the description, 180 wide, centred, up to 260 tall. So:
+; lines centred within 100 units of the title, from just under it to the
+; card's bottom edge, top to bottom.
+FvRulesetCardText(s, title, k) {
+    desc := FvCardLines(s, FvCx(title), 100 * k, FvCy(title) + 20 * k, FvCy(title) + 440 * k)
+    if (desc.Length = 0)
+        return ""
+    text := title["text"] "."
+    for line in desc
+        text .= " " line["text"]
+    return text
+}
+
+; The experience preset cards are fixed text (ExperiencePreset.lua OnLoad):
+; the client narrates the name, NARRATION_OBJECT_BUTTON, then the
+; description, "Starting Settings:" and the six bullet points, all joined by
+; NARRATION_SEPARATOR ", ". The screen cannot give that back - the Classic
+; description is cut off there with "..." - so on a silent repeat the tool
+; says the same strings, taken from the client's GlobalStrings (build
+; 1.60.1.70634, wago.tools). Per language [Classic, Enhanced], each
+; [title, description, bullet 1..6].
+global gFvPresetCards := Map(
+    "de", [["Classic", "Eine traditionellere Darstellung mit vereinfachter Optik, Standardcharaktermodellen und weniger aktivierten modernen Anzeigefunktionen für eine klarere, mehr dem ursprünglichen Stil entsprechende Erfahrung mit weniger automatischer Führung.", "Standardauflösung für Charaktermodelle", "Markierungen für Questknotenpunkte und -ziele aus", "Eine Tasche aus", "Transmogrifizierungen aus", "Standard: Mit Tasten Kamera drehen", "Klassisches Layout der Benutzeroberfläche"],
+           ["Erweitert", "Eine aktualisierte Darstellung mit mehr visuellen Effekten und standardmäßig aktivierten zusätzlichen Anzeigefunktionen.", "Hohe Auflösung für Charaktermodelle", "Markierungen für Questknotenpunkte und -ziele an", "Eine Tasche an", "Transmogrifizierungen an", "Standard: Mit Tasten seitwärts bewegen", "Zentralisiertes Layout der Benutzeroberfläche"]],
+    "de_button", "Knopf",
+    "en", [["Classic", "A more traditional presentation with simpler visuals, standard character models, and fewer modern interface features enabled by default for a cleaner, more original-style experience with less automatic guidance.", "Standard Definition character models", "Quest points of interest and objective blobs off", "One-bag off", "Transmog off", "Defaulted to camera turning keyboard binds", "Classic screen UI layout"],
+           ["Enhanced", "An updated presentation with higher visual fidelity and additional interface features enabled by default.", "High Definition character models", "Quest points of interest and objective blobs on", "One-bag on", "Transmog on", "Defaulted to strafe movement keyboard binds", "Centralized screen UI layout"]],
+    "en_button", "Button",
+    "fr", [["Classique", "Une présentation plus classique offrant des graphismes simplifiés, des modèles de personnages standard et moins de fonctionnalités d’interface modernes activées par défaut. Vous bénéficiez ainsi d’une expérience plus épurée et plus fidèle à l’esprit du jeu d’origine, avec moins d’aide automatique.", "Modèles de personnages en définition standard", "Affichage des points d’intérêt et objectifs désactivé", "Sac unique désactivé", "Transmogrifications désactivées", "Par défaut, lié aux raccourcis de la caméra.", "Configuration de l’IU classique"],
+           ["Améliorée", "Une présentation mise à jour offrant une qualité visuelle améliorée et des fonctionnalités d’interface supplémentaires activées par défaut.", "Modèles de personnages en haute définition", "Affichage des points d’intérêt et objectifs activé", "Sac unique activé", "Transmogrifications activées", "Par défaut, lié aux raccourcis de déplacement latéral.", "Configuration de l’IU centralisée"]],
+    "fr_button", "Bouton"
+)
+
+; An experience preset card: {name, say}. The tool finds the card by its
+; "Starting Settings:" line; ExperiencePreset.xml puts Classic 225 units left
+; of the centre and Enhanced 225 right of it.
+FvPresetCard(settings, W) {
+    L := FvLangKey()
+    card := gFvPresetCards[L][FvCx(settings) < W / 2 ? 1 : 2]
+    say := card[1] ", " gFvPresetCards[L "_button"] ", " card[2] ", " FvS("preset_settings")
+    loop 6
+        say .= ", " card[A_Index + 2]
+    return {name: card[1], say: say}
+}
+
+; OCR lines whose centre lies in a card's box, top to bottom.
+FvCardLines(s, cx, halfW, yTop, yBottom) {
+    found := []
+    for line in s["lines"] {
+        y := FvCy(line)
+        if (y < yTop || y > yBottom || Abs(FvCx(line) - cx) > halfW)
+            continue
+        i := found.Length + 1
+        while (i > 1 && FvCy(found[i - 1]) > y)
+            i--
+        found.InsertAt(i, line)
+    }
+    return found
+}
+
 FvAddLine(s, list, key, kind := "button") {
     l := FvFind(s, key)
     if (l != "")
@@ -758,6 +881,23 @@ FvBuild(s, screen) {
     case "narrator":
         FvAddLine(s, t, "narrator_enable")
         FvAddLine(s, t, "narrator_disable")
+    case "gamemenu":
+        ; GlueMenuFrame: a centred column of text buttons under its header.
+        ; Only lines in that column count - the page behind it has its own
+        ; "Shop" (nav bar) and "Spiel verlassen" (social contract).
+        t := []
+        title := FvFind(s, "gamemenu_title")
+        for key in ["gm_options", "gm_store", "gm_addons", "gm_credits", "gm_cinematics",
+                    "gm_account", "gm_community", "gm_exit", "gm_close"] {
+            want := FvNorm(FvS(key))
+            for line in s["lines"] {
+                if (FvNorm(line["text"]) = want && Abs(FvCx(line) - W / 2) < W * 0.12
+                        && FvCy(line) > FvCy(title)) {
+                    FvT(t, line["text"], FvCx(line), FvCy(line))
+                    break
+                }
+            }
+        }
     case "login":
         ; The edit boxes have no text of their own; the label FontString is
         ; 64 units tall with its bottom 6 units above the box, so the box
@@ -784,7 +924,7 @@ FvBuild(s, screen) {
         yTitle := H / 2 - 166 * k
         for line in s["lines"] {
             if (Abs(FvCy(line) - yTitle) < 30 * k && line["h"] < H * 0.04)
-                FvT(t, line["text"], FvCx(line), FvCy(line), "card")
+                FvT(t, line["text"], FvCx(line), FvCy(line), "card", "", FvRulesetCardText(s, line, k))
         }
         FvAddLine(s, t, "select")
         FvAddLine(s, t, "cancel")
@@ -793,8 +933,10 @@ FvBuild(s, screen) {
         ; position is the card.
         want := FvNorm(FvS("preset_settings"))
         for line in s["lines"] {
-            if (FvNorm(line["text"]) = want)
-                FvT(t, (FvCx(line) < W / 2 ? "preset 1" : "preset 2"), FvCx(line), FvCy(line), "card")
+            if (FvNorm(line["text"]) = want) {
+                card := FvPresetCard(line, W)
+                FvT(t, card.name, FvCx(line), FvCy(line), "card", "", card.say)
+            }
         }
         FvAddLine(s, t, "select")
         FvAddLine(s, t, "cancel")
@@ -1116,6 +1258,7 @@ FvRebuild() {
 ; spot counts as new movement for the client's dwell timer.
 FvHover(t) {
     FvCancelEcho()
+    FvCancelRepeat()
     gFv.lastHover := t
     p := PxToScreen(t.x, t.y)
     MouseMove(p.x + 3, p.y, 0)
@@ -1144,31 +1287,99 @@ FvMove(delta) {
 
 ; The 12.0 client caches rendered speech BY TEXT and replays the audio
 ; without calling the voice again. The screen-reader bridge voice renders no
-; audio, so every text the client has narrated once is SILENT on repeat (Sku
+; audio, so every text the client has narrated once was SILENT on repeat (Sku
 ; busts that from Lua by varying the text; the glue narration text is
-; Blizzard's and out of reach). The tool therefore remembers what the client
-; has narrated in this client session and speaks the target name itself on a
-; repeat - queued, 250 ms after the hover, so the client's own stop call
-; (which reaches NVDA through the bridge) has already passed. First hover of
-; anything: the client's full narration. Repeats: the tool's short echo.
-; forever.ini echo=1 echoes always (debug aid).
+; Blizzard's and out of reach). So the tool speaks the target itself
+; (FvSayText: on ruleset cards title plus description) - but only when the
+; client really stayed silent. The client's speech folder tells: a narration
+; that reached the voice writes a Speech\VoiceSpeak_Utterance_*.wav within
+; ~300 ms of the hover (measured 2026-10-27: 80-290 ms); no file written within
+; FV_REPEAT_WAIT ms means the client replayed its silent copy. The folder is
+; only read, never touched. Without a speech folder it falls back to
+; remembering what was narrated this client run (queued 250 ms after the
+; hover, so the client's own stop call through the bridge has passed). On by
+; default for the bridge voice, off for a real voice (its repeats are
+; audible); forever.ini repeatecho=1 / repeatecho=0 overrides. forever.ini
+; echo=1 echoes always (debug aid).
+global FV_REPEAT_WAIT := 500
+global gFvRepeat := {active: false, files: "", due: 0, text: "", name: ""}
+
+; name -> last write time (100 ns FILETIME; "loop files" only has seconds,
+; and a file the client rewrites under the same name must count as new too).
+FvSpeechFiles() {
+    dir := gDetectedClientDir "\Speech"
+    if (gDetectedClientDir = "" || !DirExist(dir))
+        return ""
+    files := Map()
+    fd := Buffer(592, 0)   ; WIN32_FIND_DATAW
+    h := DllCall("FindFirstFileW", "Str", dir "\VoiceSpeak_Utterance_*.wav", "Ptr", fd, "Ptr")
+    if (h = -1)
+        return files
+    loop
+        files[StrGet(fd.Ptr + 44, "UTF-16")] := NumGet(fd, 20, "Int64")
+    until !DllCall("FindNextFileW", "Ptr", h, "Ptr", fd)
+    DllCall("FindClose", "Ptr", h)
+    return files
+}
+
+FvCancelRepeat() {
+    if gFvRepeat.active {
+        SetTimer(FvRepeatTick, 0)
+        gFvRepeat.active := false
+    }
+}
+
+FvRepeatTick() {
+    files := FvSpeechFiles()
+    if !IsObject(files) {
+        FvCancelRepeat()
+        return
+    }
+    for name, written in files {
+        if (!gFvRepeat.files.Has(name) || gFvRepeat.files[name] != written) {
+            FvCancelRepeat()
+            Log("Forever: client narrated '" gFvRepeat.name "' itself")
+            return
+        }
+    }
+    if (A_TickCount >= gFvRepeat.due) {
+        FvCancelRepeat()
+        Log("Forever: client stayed silent on '" gFvRepeat.name "' - the tool says it")
+        SayQueued(gFvRepeat.text)
+    }
+}
+
 FvEchoIfRepeat(t) {
     if (gFv.spokenPid != gDetectedPid) {
         gFv.spoken := Map()
         gFv.spokenPid := gDetectedPid
     }
     key := gFv.screen "|" t.kind "|" t.name
-    always := (ForeverIni("echo") = "1")
-    ; repeatecho=0 switches the repeat echo off once the bridge itself keeps
-    ; the client from caching (Patch D experiment).
-    if (!always && ForeverIni("repeatecho") = "0")
-        return
-    if (gFv.spoken.Has(key) || always) {
-        text := FvSayText(t)
+    text := FvSayText(t)
+    if (ForeverIni("echo") = "1") {
         SetTimer(() => SayQueued(text), -250)
-    } else {
-        gFv.spoken[key] := true
+        return
     }
+    repeat := ForeverIni("repeatecho")
+    if (repeat = "")
+        repeat := ForeverNarrationIsBridge() ? "1" : "0"
+    if (repeat != "1")
+        return
+    files := FvSpeechFiles()
+    if IsObject(files) {
+        FvCancelRepeat()
+        gFvRepeat.files := files
+        gFvRepeat.due := A_TickCount + FV_REPEAT_WAIT
+        gFvRepeat.text := text
+        gFvRepeat.name := t.name
+        gFvRepeat.active := true
+        SetTimer(FvRepeatTick, 50)
+        return
+    }
+    if gFv.spoken.Has(key)
+        SetTimer(() => SayQueued(text), -250)
+    else
+        gFv.spoken[key] := true
 }
 
 FvCurrent() {

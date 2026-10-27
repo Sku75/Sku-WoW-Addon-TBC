@@ -1,5 +1,73 @@
 # WoW Logintool
 
+## 4.1 (in Arbeit, nicht veröffentlicht)
+
+**WoW Forever Live-Client.** Der Live-Client liegt in `_forever_\Wow.exe`
+und meldet in `.flavor.info` den Flavor `wowf` (Build 1.60.1.70634). Das Tool
+kannte nur `wow_classic_beta`, hat den Ordner deshalb nie gefunden und die
+Narrations-Einstellungen (Stimme, Rate, Lautstärke aus `data\forever.ini`)
+nur in den alten Beta-Ordner `_classic_beta_` geschrieben — der Live-Client
+sprach darum immer mit Blizzards Standardstimme und -rate. Jetzt wird
+`_forever_\WTF\Config.wtf` beschrieben. Ob der Client läuft, prüft das Tool
+über den Prozesspfad statt über den Namen `WowB.exe` (der Live-Client heißt
+`Wow.exe` wie andere Clients auch). UNGETESTET am Client.
+
+**Forever übernimmt die Stimme des Tools.** Ohne `voice=`-Zeile in
+`data\forever.ini` bekommt der Client die Stimme, die im Tool-Setup gewählt
+wurde, und die Rate des Tools (5) — Forever klingt damit wie das Tool auf den
+anderen Clients. Die Stimmen-ID ist die Position in der Windows-Stimmenliste
+(SpVoice.GetVoices); dass der Live-Client genauso zählt, ist NICHT geprüft,
+die Logzeile "narration voice" nennt die ganze Liste (GETESTET am Client:
+SAPI2SR kam richtig an). `voice=`, `rate=` in `forever.ini` gehen weiterhin
+vor; die mitgelieferte Datei setzt sie nicht mehr.
+
+**SAPI2SR: Echo bei Wiederholungen.** Der Client spricht jeden Text pro
+Spielstart nur einmal über die Brücke; danach spielt er seinen Sprach-Cache
+ab, und der ist bei der Brücke leer (44-Byte-Dateien in `Speech\` ohne
+Audio). Eine echte Stimme ist davon nicht betroffen, ihr Cache enthält Ton.
+Ausprobiert und verworfen: die leeren Dateien löschen. Am Client getestet
+(27.10.): Der Client schrieb danach bei keiner Wiederholung eine neue Datei
+und blieb stumm, er merkt sich die Texte also im Speicher. Mit der Brücke
+springt darum das Tool ein, aber nur wenn der Client wirklich stumm blieb:
+Das Tool liest nach jedem Hover den Ordner `Speech` (nur lesen, nie
+ändern). Schreibt der Client binnen 500 ms keine Sprachdatei (gemessen:
+eine echte Ansage schreibt nach 80 bis 290 ms), spricht das Tool den Eintrag
+selbst. Regelsatz-Karten: Titel plus Beschreibung, vom Bildschirm gelesen
+(Kartenmaße aus SuperDistrict.xml). Erfahrungs-Karten: genau der Wortlaut des
+Spiels (Name, "Knopf", Beschreibung, "Starteinstellungen:", sechs
+Stichpunkte, mit ", " verbunden wie NarrationUtil), aus den GlobalStrings des
+Clients in de/en/fr - der Bildschirm zeigt die Classic-Beschreibung nur mit
+"..." gekürzt. Die Erfahrungs-Karten heißen im Tool jetzt wie im Spiel statt
+"preset 1/2". Am Client getestet: die Erkennung "Client stumm" trifft auf
+beiden Seiten (27.10., Log); der Text der Erfahrungs-Karten ist UNGETESTET.
+
+**Kartenseiten robuster erkannt.** Die Seiten wurden nur am Titel erkannt;
+einmal las die Texterkennung "WähleEure" statt "Wählt Eure", und die
+Erfahrungs-Seite fiel auf "alle Textzeilen" zurück (35 Ziele, Auf/Ab sprang
+zwischen den Zeilen beider Karten hin und her). Jetzt reicht auch ein
+zweiter Anker: auf der Regelsatz-Seite die Seitenbeschreibung, auf der
+Erfahrungs-Seite die Zeile "Starteinstellungen:". UNGETESTET. Das Log zeigt
+"client narrated … itself" bzw. "client stayed silent on …". Standard: an
+bei SAPI2SR, aus bei einer echten Stimme; `repeatecho=1`/`0` in
+`forever.ini` übersteuert. Offline geprüft (Dateierkennung inkl.
+überschriebener Datei, Kartentext), am Client UNGETESTET.
+
+**Regelsatz-Seite wieder erkannt.** Blizzard hat den Titel zum Start
+umbenannt ("Wählt Euren Gameplay-Regelsatz" statt "Wählt Euren Spielstil").
+Die Seite fiel dadurch auf "alle Textzeilen" zurück: Auf/Ab lief über Titel,
+Untertitel und jedes Bruchstück der Kartenbeschreibungen (34 Ziele), über
+denen der Client meist nichts Neues sagt. Jetzt wieder nur die Karten,
+Auswählen und Abbrechen. Texte de/en/fr aus den GlobalStrings des Builds.
+UNGETESTET am Client.
+
+**Spielmenü (Escape).** Das Menü, das Escape auf den Glue-Seiten öffnet
+(`GlueMenuFrame`), ist eine eigene Seite: Auf/Ab geht die Knöpfe in Menü-
+Reihenfolge durch (Optionen, Shop, Addons, Das Team, Videosequenzen, Mein
+Account, Offizielle Webseite, Spiel verlassen, Schließen — je nach Seite nur
+die vorhandenen), Enter klickt, Escape schließt. Nur Zeilen in der
+Menüspalte zählen, damit "Shop" der Navigationsleiste und "Spiel verlassen"
+des Verhaltenskodex nicht mitkommen. UNGETESTET am Client.
+
 ## 4.0 (2026-09-23)
 
 **WoW Forever (Beta-Client `_classic_beta_`, WowB.exe, Build 1.60) wird
