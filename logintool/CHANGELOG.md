@@ -2,6 +2,79 @@
 
 ## 4.1 (2026-10-28)
 
+Die ersten vier Einträge kamen am selben Tag als stiller Nachtrag dazu: das
+4.1-Paket wurde ersetzt, die Versionsnummer blieb 4.1 (kein Update für
+bestehende Installationen).
+
+**Forever, Aussehen: Pfeil runter erreicht die Optionen unter dem sichtbaren
+Teil der Liste.** Die Optionsliste scrollt. Das Tool kannte bisher nur
+Optionen, deren Beschriftung wenigstens halb zu sehen war. In einem
+niedrigeren Fenster (854 statt 889 Einheiten hoch, 28.10.) endete die Liste
+der Nachtelfe sichtbar bei "Ohren", und "Augenfarbe" und "Augenbrauen" waren
+nie erreichbar: Pfeil runter ging von "Ohren" direkt auf "Beenden". Jetzt
+scrollt Pfeil runter auf der untersten Option die Liste eine Raste weiter und
+springt auf die erste neue Option. Bewegt sich die Liste nicht, ist sie zu
+Ende; das merkt sich das Tool, bis die Liste wieder nach oben scrollt oder
+eine andere Kategorie gewählt wird, damit Pfeil runter danach ohne Wartezeit
+auf "Beenden" geht. GETESTET am Client (28.10.): das Listenende wird erkannt
+("option list ends at 'Augenbrauen'"), Pfeil runter geht danach auf
+"Beenden". Der Fall ganz verdeckter Zeilen trat im Test nicht auf (das
+Fenster war wieder 889 Einheiten hoch) und ist UNGETESTET.
+
+**Forever, Aussehen: eine angeschnittene Option wird nicht mehr
+übersprungen.** Eine unten halb verdeckte Beschriftung liest die
+Texterkennung oft falsch ("Gesichtstätowierunøsfarbe") und nach dem
+Hineinscrollen richtig. Das Tool fand die Option unter dem alten Namen nicht
+wieder, blieb stumm, und der nächste Pfeil landete woanders: die Farbe der
+Gesichtstätowierung war nicht erreichbar (28.10.). Jetzt nimmt es in dem Fall
+die erste Option, die nach dem Scrollen neu dazugekommen ist. UNGETESTET am
+Client.
+
+**Forever, Aussehen: die Seite fällt beim Hover auf "Zurück" nicht mehr auf
+"unbekannt".** Mit dem Mauszeiger auf "Zurück" las die Texterkennung den
+Knopf als ". Zurück—n", die Seite galt dann als unbekannt (7-mal in einer
+Sitzung): Der Cursor sprang in die Liste aller Textzeilen, und beim Rückweg
+auf die Seite wurde alles Gelernte verworfen (Zähler wie "3 von 10",
+Wertnamen, Scrollstand der Liste). Jetzt reicht "Voller Name" allein, um die
+Seite zu erkennen. Außerdem setzt nur noch ein echter Seitenwechsel diese
+Daten zurück; eine falsch gelesene Seite oder das Spielmenü darüber nicht.
+GETESTET am Client (28.10.): "Zurück" wurde wieder falsch gelesen, die Seite
+blieb erkannt. Dasselbe passierte auf der Rassen-Seite (Cursor sprang auf
+[0/42]); dort zählen jetzt auch die Spaltenköpfe "ALLIANZ"/"HORDE" statt
+"Zurück". Das ist UNGETESTET.
+
+**Forever: die Namensprüfung sagt den aktuellen Stand.** Neben dem Namensfeld
+zeigt der Client ein Symbol: grüner Haken (Name verfügbar), rotes X (der
+Grund als Tooltip) oder nichts, solange die Prüfung läuft oder das Feld leer
+ist. Der Client sagt jeden Text nur einmal; bei einem stummen Besuch
+wiederholte das Tool den zuletzt gehörten Text, egal was das Symbol inzwischen
+zeigte ("verfügbar" nach einem neuen, vergebenen Namen). Jetzt liest das Tool
+die Farbe des Symbols: grün sagt den Verfügbar-Text, rot den zuletzt gehörten
+Grund, aber nur wenn seitdem nicht in ein Namensfeld geklickt wurde (sonst
+"Name nicht verfügbar"), kein Symbol sagt "Noch kein Ergebnis der
+Namensprüfung". Kann das Tool die Farbe nicht sicher erkennen, bleibt es beim
+alten Verhalten. Die Logzeile "name check icon green .. red .." zeigt die
+gezählten Pixel. Am Client gemessen (28.10.): rotes X 23 rot / 0 grün, Haken
+13 grün / 0 rot, kein Symbol 0 / 0. Der erste Stand prüfte zusätzlich eine
+Stelle 40 Einheiten rechts als Hintergrund und verwarf rot und grün darum
+jedes Mal: dort steht der Tooltip mit dem Grund in derselben Farbe (der obere
+Bildschirmrand drückt ihn neben das Symbol). Diese Prüfung ist entfernt; "kein
+Symbol" (0 / 0) wurde schon richtig gesagt. GETESTET am Client (28.10.): rot
+und grün werden jetzt erkannt und richtig gesagt.
+
+Zweiter Test: Der erste Besuch nach dem Tippen sagte jedes Mal "Noch kein
+Ergebnis". Der Client blendet das Symbol vom letzten Tastendruck bis zur
+Antwort des Servers aus (1 s Wartezeit, dann die Anfrage). Jetzt wartet das
+Tool bei "kein Symbol" bis zu 2,4 s, solange der Cursor dort bleibt; erscheint
+das Symbol, beginnt der Besuch neu (der Client spricht es, oder das Tool sagt
+die Farbe). Erst wenn keins kommt, sagt das Tool "Noch kein Ergebnis". Der
+Grund bei rot (Blizzards Tooltip, z. B. Name vergeben oder unzulässig) kam
+fast nie, weil jeder Klick ins Namensfeld ihn verwarf. Jetzt sagt das Tool ihn
+auch dann, wenn der Client in diesem Spielstart erst einen einzigen Grund
+genannt hat - stumm bleibt der Client nur bei einem Text, den er schon gesagt
+hat. Gelernte Texte stehen im Log ("name check red text learned").
+UNGETESTET am Client.
+
 **WoW Forever Live-Client.** Der Live-Client liegt in `_forever_\Wow.exe`
 und meldet in `.flavor.info` den Flavor `wowf` (Build 1.60.1.70634). Das Tool
 kannte nur `wow_classic_beta`, hat den Ordner deshalb nie gefunden und die

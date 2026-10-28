@@ -19,7 +19,7 @@
 
 global gFv := {screen: "", targets: [], index: 0, s: "", typing: false,
                playing: false, openOption: "", spoken: Map(), spokenPid: 0, lastClick: 0,
-               lastHover: ""}
+               lastHover: "", page: ""}
 
 ; ---------- client folders / flavor ----------
 
@@ -648,10 +648,15 @@ FvClassify(s) {
         return "preset"
     if FvFind(s, "zone_title", true)
         return "charcreate3"
-    if ((FvFind(s, "full_name") || FvFind(s, "main_name_hint") || FvFind(s, "finish") || FvFind(s, "next"))
-            && FvFind(s, "back") && !FvFind(s, "customize") && !FvFind(s, "preview"))
+    ; "Voller Name" is on this page only, so it is enough by itself: with the
+    ; cursor on Back, OCR read the button as ". Zurück—n" and the page dropped
+    ; to "unknown" (7 times in one session, 2026-10-28)
+    if ((FvFind(s, "full_name") || ((FvFind(s, "main_name_hint") || FvFind(s, "finish") || FvFind(s, "next")) && FvFind(s, "back")))
+            && !FvFind(s, "customize") && !FvFind(s, "preview"))
         return "charcreate2"
-    if ((FvFind(s, "customize") || FvFind(s, "preview")) && FvFind(s, "back"))
+    ; the race column headers stand in for a misread Back here as well
+    if ((FvFind(s, "customize") || FvFind(s, "preview"))
+            && (FvFind(s, "back") || FvFind(s, "alliance") || FvFind(s, "horde")))
         return "charcreate1"
     if (FvFind(s, "enter_world") || FvFind(s, "create_character"))
         return "charselect"
@@ -927,10 +932,28 @@ FvPixel(x, y) {
 }
 
 ; Luminance spread (standard deviation, 0..~128) of a 7x7 sample grid of
-; half-width r around each centre - from ONE screen grab of their bounding
-; box, so a whole column costs one BitBlt instead of hundreds of
-; PixelGetColor calls. centres: [{x, y}] in capture pixels. "" on failure.
+; half-width r around each centre. "" on failure.
 FvSpread(centres, r) {
+    grids := FvGrabGrid(centres, r, 7)
+    if !IsObject(grids)
+        return ""
+    out := []
+    for cols in grids {
+        n := 0, s := 0, s2 := 0
+        for c in cols {
+            lum := 0.299 * c.r + 0.587 * c.g + 0.114 * c.b
+            n++, s += lum, s2 += lum * lum
+        }
+        out.Push(n ? Sqrt(Max(s2 / n - (s / n) ** 2, 0)) : 0)
+    }
+    return out
+}
+
+; The colours ({r, g, b}) of an n x n sample grid of half-width r around each
+; centre - from ONE screen grab of their bounding box, so a whole column costs
+; one BitBlt instead of hundreds of PixelGetColor calls. centres: [{x, y}] in
+; capture pixels. One array of colours per centre, "" on failure.
+FvGrabGrid(centres, r, n) {
     pts := []
     x1 := 1e9, y1 := 1e9, x2 := -1e9, y2 := -1e9
     for c in centres {
@@ -953,20 +976,20 @@ FvSpread(centres, r) {
         old := DllCall("SelectObject", "Ptr", mdc, "Ptr", hbm, "Ptr")
         if DllCall("BitBlt", "Ptr", mdc, "Int", 0, "Int", 0, "Int", w, "Int", h, "Ptr", sdc, "Int", x1, "Int", y1, "UInt", 0x00CC0020) {
             out := []
+            step := 2 * r / (n - 1), mid := (n + 1) / 2
             for p in pts {
-                n := 0, s := 0, s2 := 0
-                loop 7 {
-                    py := Round(p.y + (A_Index - 4) * r / 3) - y1
-                    loop 7 {
-                        px := Round(p.x + (A_Index - 4) * r / 3) - x1
+                cols := []
+                loop n {
+                    py := Round(p.y + (A_Index - mid) * step) - y1
+                    loop n {
+                        px := Round(p.x + (A_Index - mid) * step) - x1
                         if (px < 0 || py < 0 || px >= w || py >= h)
                             continue
                         c := NumGet(bits, (py * w + px) * 4, "UInt")
-                        lum := 0.299 * ((c >> 16) & 255) + 0.587 * ((c >> 8) & 255) + 0.114 * (c & 255)
-                        n++, s += lum, s2 += lum * lum
+                        cols.Push({r: (c >> 16) & 255, g: (c >> 8) & 255, b: c & 255})
                     }
                 }
-                out.Push(n ? Sqrt(Max(s2 / n - (s / n) ** 2, 0)) : 0)
+                out.Push(cols)
             }
         }
         DllCall("SelectObject", "Ptr", mdc, "Ptr", old)
@@ -1488,7 +1511,7 @@ FvRefresh(force := false) {
 ; Classify the latest frame and rebuild the target list from it, keeping the
 ; current target by identity.
 FvRebuild() {
-    global gFvOptState, gFvOptNames, gFvStepLast, gFvListScrolled, gFvOddReads
+    global gFvOptState, gFvOptNames, gFvStepLast, gFvListScrolled, gFvListEnd, gFvOddReads
     s := gFv.s
     screen := FvClassify(s)
     ; A known page that suddenly reads as "unknown" with next to no text is
@@ -1541,11 +1564,18 @@ FvRebuild() {
         Log("Forever: map " screen " with " targets.Length " targets")
     if (screen = "contract" && gFv.screen != "contract")
         SetTimer(FvContractAutoScroll, -100)
-    ; another race or body brings other choice counts, and a list at the top
-    if (screen = "charcreate2" && gFv.screen != "charcreate2")
-        gFvOptState := Map(), gFvOptNames := Map(), gFvStepLast := Map(), gFvListScrolled := 0
-    ; a popout belongs to the appearance page: off it, it is gone
-    if (screen != "charcreate2")
+    ; another race or body brings other choice counts, and a list at the top.
+    ; Only a real page change: a misread frame ("unknown") or the game menu
+    ; over the page leaves the page as it was - the reset on every such blip
+    ; threw away the learned counts and the scroll position (2026-10-28).
+    overlay := (screen = "unknown" || screen = "none" || screen = "gamemenu")
+    if (screen = "charcreate2" && gFv.page != "charcreate2")
+        gFvOptState := Map(), gFvOptNames := Map(), gFvStepLast := Map(), gFvListScrolled := 0, gFvListEnd := false
+    if !overlay
+        gFv.page := screen
+    ; a popout belongs to the appearance page: off it, it is gone (a misread
+    ; frame is not off it; the game menu is - Escape shut the popout first)
+    if (screen != "charcreate2" && screen != "unknown" && screen != "none")
         gFv.openOption := ""
     gFv.screen := screen
     gFv.targets := targets
@@ -1577,6 +1607,7 @@ FvHover(t) {
 }
 
 FvMove(delta) {
+    global gFvListEnd, gFvListScrolled
     ; Left/Right presses still queued were meant for the option being left
     ; (FvStepOnce takes the CURRENT target - they would step the next one)
     gFvStepQueue.Length := 0
@@ -1593,6 +1624,7 @@ FvMove(delta) {
             && !(gFv.index > 1 && gFv.targets[gFv.index - 1].kind = "option")) {
         name := cur.name
         FvScrollOptions(cur, -1)
+        gFvListEnd := false
         j := FvTargetIndex("option", name)
         if (j > 1 && gFv.targets[j - 1].kind = "option") {
             gFv.index := j
@@ -1601,6 +1633,35 @@ FvMove(delta) {
         }
         if j
             gFv.index := j
+    }
+    ; Down from the bottommost option: the list may go on with no row even
+    ; partly in view (a shorter window, 2026-10-28: Augenfarbe and Augenbrauen
+    ; under Ohren were never reached). One notch down, then the first option
+    ; that was not there before. A list that did not move is at its end; that
+    ; is remembered until it scrolls up or the category changes.
+    if (delta = 1 && cur != "" && cur.kind = "option" && IsObject(cur.data) && !gFvListEnd
+            && !(gFv.index < n && gFv.targets[gFv.index + 1].kind = "option")) {
+        seen := Map()
+        for t in gFv.targets
+            if (t.kind = "option")
+                seen[t.name] := true
+        name := cur.name, y0 := cur.y
+        FvScrollOptions(cur, 1)
+        for i, t in gFv.targets {
+            if (t.kind = "option" && !seen.Has(t.name)) {
+                FvMoveTo(i)
+                return
+            }
+        }
+        j := FvTargetIndex("option", name)
+        if (j && Abs(gFv.targets[j].y - y0) <= 10) {
+            gFvListScrolled := Max(gFvListScrolled - 1, 0)
+            gFvListEnd := true
+            Log("Forever: option list ends at '" name "'")
+        }
+        if j
+            gFv.index := j
+        n := gFv.targets.Length
     }
     ; Up/Down wrap around; PgUp/PgDn stop at the first/last target (wrapping
     ; by five made PgDn near the end land at the top)
@@ -1633,6 +1694,8 @@ FvMoveTo(i) {
 ; the wheel as a value change). The tool counts its own downward scrolls so
 ; Up knows when there is something above to scroll back to.
 global gFvListScrolled := 0
+; Down found nothing new below the last option: the list's end (FvMove)
+global gFvListEnd := false
 
 FvTargetIndex(kind, name) {
     for i, t in gFv.targets
@@ -1663,11 +1726,26 @@ FvScrollOptions(t, dir) {
 ; Scroll until the option's dropdown is fully visible (at most 4 notches).
 ; Returns the option's target from the fresh map (gFv.index on it), or ""
 ; when it vanished.
+; A cut-off label is often misread ("Gesichtstätowierunøsfarbe", 2026-10-28)
+; and read right once in view: then the name is not found again, and the first
+; option that was not there before the notch is the one that came up.
 FvOptionIntoView(t) {
     name := t.name
     loop 4 {
+        seen := Map()
+        for o in gFv.targets
+            if (o.kind = "option")
+                seen[o.name] := true
         FvScrollOptions(t, 1)
         j := FvTargetIndex("option", name)
+        if !j {
+            for i, o in gFv.targets {
+                if (o.kind = "option" && !seen.Has(o.name)) {
+                    j := i, name := o.name
+                    break
+                }
+            }
+        }
         if !j
             return ""
         gFv.index := j
@@ -1819,9 +1897,126 @@ FvCancelRepeat() {
     if gFvRepeat.active {
         SetTimer(FvRepeatTick, 0)
         gFvRepeat.active := false
-        if (gFvRepeat.heard && gFvRepeat.mode = "history")
+        if (gFvRepeat.heard && gFvRepeat.mode = "history") {
             Log("Forever: kept " gFvCaptured[gFvRepeat.key].Length " text(s) the client said for '" gFvRepeat.name "'")
+            if FvIsNameCheck(gFvRepeat.t)
+                FvNameCheckLearn(gFvRepeat.t, gFvCaptured[gFvRepeat.key])
+        }
     }
+}
+
+; ---------- the name check icon (charcreate2) ----------
+; NameAvailabilityState (Camelot Blizzard_CharacterCreate): a 20x20 unit icon
+; 10 units right of the secondary name box - a green checkmark ("name
+; available"), a red X (the reason as its tooltip), or hidden while a check
+; runs and while the box is empty. The client narrates the tooltip. A silent
+; visit used to replay the last text heard there, whatever the icon showed by
+; then (the client stays silent on any text it said before, so "available ->
+; taken -> available" replayed "taken"). Now the icon says which: the texts
+; heard are filed under its colour. A red reason is said when it is certain:
+; the only reason the client gave this run (a silent client means a text it
+; said before), or the latest one with no click into a name box since
+; (gFvNameEdits); otherwise the tool's own "not available".
+; The icon is hidden from the last key typed until the server answers (a 1 s
+; delay, then the request): the first visit after typing found no icon every
+; time (2026-10-28). So "no icon" waits for one (FvNameCheckWait).
+global gFvNameCheck := {green: "", red: "", redEdit: -1, reds: Map()}
+global gFvNameEdits := 0
+global gFvNameCheckLog := ""
+
+; "green", "red", "none" (no icon), or "" when the reading proves nothing.
+; Counts clearly green and clearly red samples on a 9x9 grid over the icon.
+; Measured live 2026-10-28: red X 23 red / 0 green, checkmark 13 green / 0
+; red, no icon 0 / 0. (A backdrop check 40 units to the right was dropped:
+; the hover tooltip, clamped down by the screen's top edge, sits there in the
+; same colour - its red reason gave 9, its green "available" 7.)
+FvNameCheckState(t) {
+    global gFvNameCheckLog
+    if (gFv.s = "")
+        return ""
+    grids := FvGrabGrid([{x: t.x, y: t.y}], 8 * FvK(gFv.s), 9)
+    if !IsObject(grids)
+        return ""
+    green := 0, red := 0
+    for c in grids[1] {
+        if (c.g > 110 && c.g > c.r + 20 && c.g > c.b + 30)
+            green++
+        else if (c.r > 110 && c.r > c.g + 50 && c.r > c.b + 40)
+            red++
+    }
+    state := (green >= 6 && green > 2 * red) ? "green"
+           : (red >= 6 && red > 2 * green) ? "red"
+           : (green + red <= 2) ? "none" : ""
+    note := "green " green " red " red " -> " (state = "" ? "unsure" : state)
+    if (note != gFvNameCheckLog) {
+        gFvNameCheckLog := note
+        Log("Forever: name check icon " note)
+    }
+    return state
+}
+
+; After the client narrated the icon: file what it said under its colour.
+FvNameCheckLearn(t, texts) {
+    text := ""
+    for x in texts
+        text .= (text = "" ? "" : ", ") x
+    if (text = "")
+        return
+    state := FvNameCheckState(t)
+    switch state {
+    case "green":
+        gFvNameCheck.green := text
+    case "red":
+        gFvNameCheck.red := text, gFvNameCheck.redEdit := gFvNameEdits
+        gFvNameCheck.reds[text] := true
+    }
+    if (state = "green" || state = "red")
+        Log("Forever: name check " state " text learned: '" text "'")
+}
+
+; What to say on a silent visit for an icon state; "" when it cannot tell.
+FvNameCheckSay(state) {
+    L := FvLangKey()
+    switch state {
+    case "green":
+        return (gFvNameCheck.green != "") ? gFvNameCheck.green
+             : Map("de", "Name verfügbar", "en", "Name available", "fr", "Nom disponible")[L]
+    case "red":
+        if (gFvNameCheck.reds.Count = 1 || (gFvNameCheck.red != "" && gFvNameCheck.redEdit = gFvNameEdits))
+            return gFvNameCheck.red
+        return Map("de", "Name nicht verfügbar", "en", "Name not available", "fr", "Nom indisponible")[L]
+    case "none":
+        return Map("de", "Noch kein Ergebnis der Namensprüfung", "en", "No name check result yet", "fr", "Pas encore de résultat pour le nom")[L]
+    }
+    return ""
+}
+
+; No icon on a silent visit: the check may still be on its way. Look again
+; every 200 ms for up to 2.4 s while the cursor stays on the spot. When the
+; icon shows, the visit starts over (FvEchoIfRepeat): the client narrates it,
+; or stays silent and the tool says the colour. Still none: "no result yet".
+; The history is read on from `seq` (where the silent visit stopped), so a
+; narration in the 200 ms before the icon was seen is not missed.
+FvNameCheckWait(t, nav, seq, tries := 0) {
+    if (nav != gFvNavSeq || !FvIsNameCheck(t))
+        return
+    state := FvNameCheckState(t)
+    if (state = "green" || state = "red") {
+        Log("Forever: name check icon came up after " (tries * 200) " ms")
+        FvEchoIfRepeat(t)
+        if (gFvRepeat.active && gFvRepeat.mode = "history")
+            gFvRepeat.seq := seq
+        return
+    }
+    if (tries >= 12) {
+        SayQueued(FvNameCheckSay("none"))
+        return
+    }
+    SetTimer(() => FvNameCheckWait(t, nav, seq, tries + 1), -200)
+}
+
+FvIsNameCheck(t) {
+    return IsObject(t) && t.kind = "button" && t.name = "name check" && gFv.screen = "charcreate2"
 }
 
 ; The client stayed silent: its own words from the first visit, else the
@@ -1832,6 +2027,20 @@ FvSaySilent() {
     ; it. Rebuilt from what is known now, else the tool's own reading
     ; ("label: value").
     t := gFvRepeat.t
+    if FvIsNameCheck(t) {
+        state := FvNameCheckState(t)
+        if (state = "none") {
+            Log("Forever: client stayed silent on 'name check' - no icon yet, waiting for one")
+            FvNameCheckWait(t, gFvNavSeq, gFvRepeat.seq)
+            return
+        }
+        text := FvNameCheckSay(state)
+        if (text != "") {
+            Log("Forever: client stayed silent on 'name check' - the tool says what the icon shows")
+            SayQueued(text)
+            return
+        }
+    }
     if (IsObject(t) && t.kind = "option") {
         text := FvOptNarration(t)
         Log("Forever: client stayed silent on '" gFvRepeat.name "' - the tool says its current value")
@@ -1894,7 +2103,7 @@ FvRepeatTick() {
 }
 
 FvEchoIfRepeat(t) {
-    global gFvCaptured, gFvCapturedPid
+    global gFvCaptured, gFvCapturedPid, gFvNameCheck
     if (gFv.spokenPid != gDetectedPid) {
         gFv.spoken := Map()
         gFv.spokenPid := gDetectedPid
@@ -1902,6 +2111,7 @@ FvEchoIfRepeat(t) {
     if (gFvCapturedPid != gDetectedPid) {
         gFvCaptured := Map()
         gFvCapturedPid := gDetectedPid
+        gFvNameCheck := {green: "", red: "", redEdit: -1, reds: Map()}
     }
     ; a target with an id (name boxes, race slots) stays one target when OCR
     ; reads its label one time and not the next
@@ -1956,7 +2166,7 @@ FvCurrent() {
 }
 
 FvEnter() {
-    global gFvListScrolled
+    global gFvListScrolled, gFvListEnd, gFvNameEdits
     tg := FvCurrent()
     if (tg = "" && gFv.lastHover != "")
         tg := gFv.lastHover       ; a re-read moved the index, not the cursor
@@ -1973,7 +2183,7 @@ FvEnter() {
     Click()
     Log("Forever: click " tg.kind " '" tg.name "'")
     if (gFv.screen = "charcreate2" && InStr(tg.name, "category ") = 1)
-        gFvListScrolled := 0   ; another category: its list starts at the top
+        gFvListScrolled := 0, gFvListEnd := false   ; another category: its list starts at the top
     ; Which popout is open. A click on its own dropdown toggles it shut, a
     ; click on another dropdown opens that one's, a click on anything else
     ; closes it (a dropdown menu closes on an outside click). A stale popout
@@ -1988,6 +2198,8 @@ FvEnter() {
     FvTouch()
     switch tg.kind {
     case "edit":
+        if (gFv.screen = "charcreate2")
+            gFvNameEdits += 1   ; a name check reason heard before no longer counts
         if tg.clearFirst {
             ; the delete keyword box may still hold an earlier attempt
             Sleep(80)
