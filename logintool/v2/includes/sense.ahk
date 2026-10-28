@@ -4,7 +4,10 @@
 ; anonymous pipes via CreateProcess with CREATE_NO_WINDOW - no console
 ; window, no focus steal from the game.
 
-global gSense := {pid: 0, hProcess: 0, hIn: 0, hOut: 0}
+; buf: answer bytes read but not yet returned. It belongs to ONE helper run - a
+; partial line left by a helper that timed out and was restarted would prefix
+; the new helper's first answer (one unparsable read), so SenseStop empties it.
+global gSense := {pid: 0, hProcess: 0, hIn: 0, hOut: 0, buf: ""}
 
 SenseExePath() {
     for candidate in ["helper\SkuLoginSense.exe",
@@ -94,7 +97,7 @@ SenseStop() {
     }
     if (gSense.pid && ProcessExist(gSense.pid))
         try ProcessClose(gSense.pid)
-    gSense.pid := 0, gSense.hProcess := 0, gSense.hIn := 0, gSense.hOut := 0
+    gSense.pid := 0, gSense.hProcess := 0, gSense.hIn := 0, gSense.hOut := 0, gSense.buf := ""
 }
 
 SenseWriteLine(line) {
@@ -108,13 +111,12 @@ SenseWriteLine(line) {
 
 SenseReadLine(timeoutMs := 15000) {
     global gSense
-    static pending := ""
     start := A_TickCount
     loop {
-        nl := InStr(pending, "`n")
+        nl := InStr(gSense.buf, "`n")
         if nl {
-            line := SubStr(pending, 1, nl - 1)
-            pending := SubStr(pending, nl + 1)
+            line := SubStr(gSense.buf, 1, nl - 1)
+            gSense.buf := SubStr(gSense.buf, nl + 1)
             return RTrim(line, "`r")
         }
         if (A_TickCount - start > timeoutMs)
@@ -129,7 +131,7 @@ SenseReadLine(timeoutMs := 15000) {
         buf := Buffer(65536)
         if !DllCall("ReadFile", "Ptr", gSense.hOut, "Ptr", buf, "UInt", buf.Size, "UInt*", &read := 0, "Ptr", 0)
             return ""
-        pending .= StrGet(buf, read, "UTF-8")
+        gSense.buf .= StrGet(buf, read, "UTF-8")
     }
 }
 

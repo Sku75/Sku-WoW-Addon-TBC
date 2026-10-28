@@ -242,6 +242,66 @@ die vorhandenen), Enter klickt, Escape schließt. Nur Zeilen in der
 Menüspalte zählen, damit "Shop" der Navigationsleiste und "Spiel verlassen"
 des Verhaltenskodex nicht mitkommen. UNGETESTET am Client.
 
+**Aufräumen nach den Forever-Runden (28.10.).** Durchsicht des ganzen
+Forever-Treibers; Verhalten, das funktioniert, bleibt gleich. Behoben:
+- Eine einzelne schlechte Lesung (fast leere Seite) wurde zwar verworfen,
+  aber der nächste Pfeil-Druck baute die Karte aus genau dieser Lesung neu und
+  nahm sie doch. Tasten bauen jetzt nicht mehr selbst neu; die Karte kommt
+  nur noch vom Hintergrund-Leser, der jede neue Lesung ohnehin abbildet.
+- Eine "kaputte" Aufnahme (dunkel, kaum Text, Bild stark verändert) wurde
+  JEDES Mal verworfen: Eine Seite, die wirklich so aussieht (Laden,
+  Verbinden), wäre endlos neu gelesen und nie abgebildet worden. Jetzt zählt
+  die zweite solche Aufnahme in Folge, wie bei den fast leeren Lesungen.
+- Popout mit Escape geschlossen: Die Zellen blieben als Ziele in der Liste,
+  weil eine kürzere Liste nur kurz nach einem Klick angenommen wird und das
+  Schließen nicht als Klick zählte. Jetzt zählt es.
+- Popout auf anderem Weg zu (Klick auf etwas anderes, dasselbe Feld noch
+  einmal, Seite verlassen): Das Tool hielt es für offen, und Zahlen in
+  tieferen Feldern ("Gesicht" 3) konnten als Popout-Zellen gelten. Jetzt
+  folgt der Zustand dem Klick.
+- Gesammelte Links/Rechts-Drücke liefen nach Auf/Ab auf dem NÄCHSTEN Feld
+  weiter. Auf/Ab verwirft sie jetzt.
+- Bild auf/ab sprangen am Listenende auf den Anfang; jetzt bleiben sie am
+  ersten/letzten Ziel stehen. Auf/Ab laufen weiter im Kreis.
+- Das Halten des Hintergrund-Lesers während eines Schritts endete über einen
+  3-s-Timer, der auch fremde Halte-Anforderungen aufhob. Jetzt ist es eine
+  Frist. Der Screenshot (Strg+Alt+F3) nutzt denselben Weg wie die Feldlesung
+  (Helfer exklusiv), nicht mehr einen eigenen.
+- Kam die Antwort einer laufenden Hintergrund-Lesung nicht, konnte die
+  nächste synchrone Anfrage sie später für ihre eigene halten. Jetzt wird der
+  Helfer dann neu gestartet.
+- Helfer (alle Clients): Ein halb gelesener Antwortrest eines abgebrochenen
+  Helfers blieb im Puffer und verdarb die erste Antwort des neuen. Der Puffer
+  gehört jetzt zum Helferlauf und wird beim Stopp geleert.
+Entfernt: nie gelesene Felder (`sensedAt`, `lastScreen`, `pendingOcr`),
+`FvWaitIdle`, vier handgeschriebene Sortierungen (jetzt eine), doppelte und
+veraltete Kommentare. `forever.ini` wird einmal pro Tool-Start gelesen statt
+bei jedem Hover und jedem Schritt. Syntaxprüfung und Sortier-Test offline
+OK, am Client GETESTET (28.10.: Seiten in Ordnung; sehr schnelles Blättern
+in der Frisurenliste gab manchmal kurz falsche Ansagen, die sich selbst
+korrigierten - Ursache siehe nächster Eintrag).
+
+**Sprachverlauf nur auf den Login-Seiten.** Die SAPI2SR-Brücke (Build 2 der
+Sprachverlauf-DLL) zeichnet die Texte eines Programms nur noch auf, solange
+ein anderes Programm genau danach fragt. Das Tool fragt nach WoW nur, solange
+es die Forever-Login-Seiten steuert (Login-Modus); im Spiel, mit WoW im
+Hintergrund oder ohne laufendes Tool wird nichts von WoW aufgezeichnet, auch
+nicht Sku oder der Chat. Endet das Tool (auch durch Absturz), endet die
+Anfrage mit ihm. Log: "speech history asked for WoW pid …" / "request
+dropped". DLL und Anfrage-Name offline geprüft, mit echter SAPI2SR-Stimme
+geprüft, im Spiel GETESTET (28.10.).
+
+**Schnelles Blättern: Antworten des Helfers vertauscht.** Nach jedem Schritt
+liest das Tool das Feld in einem eigenen Thread nach. Bei schnellen Schritten
+unterbrach die Nachlesung eines neueren Schritts die eines älteren, die
+noch auf ihre Antwort wartete: Zwei Anfragen liefen gleichzeitig, die neuere
+nahm die Antwort der älteren, und die nächsten Antworten gingen ebenfalls an
+die falschen Leser (Log 28.10.: der Hintergrund-Leser "las 0 Zeilen" - die
+leere Feldlesung -, und die Feldlesung bekam den Text des ganzen
+Bildschirms als Frisurnamen). Jetzt startet keine zweite Anfrage, solange
+eine läuft; die unterbrechende Nachlesung gilt als "noch nichts gelesen" und
+versucht es 200 ms später wieder. UNGETESTET.
+
 ## 4.0 (2026-09-23)
 
 **WoW Forever (Beta-Client `_classic_beta_`, WowB.exe, Build 1.60) wird

@@ -1,6 +1,6 @@
-; WoW Forever support ("camelot" game type in Blizzard's source; during the
-; beta the folder is _classic_beta_ with WowB.exe). Plan and the facts behind
-; every number here: dev/rework-docs/LOGINTOOL-FOREVER-PLAN.md.
+; WoW Forever support ("camelot" game type in Blizzard's source; the live
+; client is _forever_\Wow.exe, the beta was _classic_beta_\WowB.exe). Plan and
+; the facts behind every number here: dev/rework-docs/LOGINTOOL-FOREVER-PLAN.md.
 ;
 ; The Forever client narrates its own glue screens: Blizzard_Narration speaks
 ; whatever the mouse rests on for 50 ms through the client's TTS voice, plus
@@ -17,8 +17,8 @@
 ; ruleset page at 2880x1800: one unit = 2.0 px, i.e. the glue is 900 units
 ; high there (not 768 as on the classic clients). FvK() is that factor.
 
-global gFv := {screen: "", targets: [], index: 0, sensedAt: 0, s: "", typing: false,
-               playing: false, lastScreen: "", openOption: "", spoken: Map(), spokenPid: 0, lastClick: 0,
+global gFv := {screen: "", targets: [], index: 0, s: "", typing: false,
+               playing: false, openOption: "", spoken: Map(), spokenPid: 0, lastClick: 0,
                lastHover: ""}
 
 ; ---------- client folders / flavor ----------
@@ -74,20 +74,30 @@ ForeverClientDirs() {
 ; ---------- narration CVars ----------
 
 ; data\forever.ini: optional overrides "voice=", "rate=", "volume=" for the
-; narration CVars. Kept out of settings.ini because WriteSettings() rewrites
-; that file with its known keys only.
+; narration CVars, plus the switches echo=, repeatecho=, wheelnext=. Kept out
+; of settings.ini because WriteSettings() rewrites that file with its known
+; keys only. Read once per tool run (it was read from disk on every hover and
+; every value step); a changed file needs a tool restart, like a deploy does.
+global gFvIni := ""
+
 ForeverIni(key) {
-    try {
-        loop read, "data\forever.ini" {
-            line := Trim(A_LoopReadLine)
-            if (line = "" || SubStr(line, 1, 1) = ";" || SubStr(line, 1, 2) = "--")
-                continue
-            eq := InStr(line, "=")
-            if (eq && Trim(SubStr(line, 1, eq - 1)) = key)
-                return Trim(SubStr(line, eq + 1))
+    global gFvIni
+    if !IsObject(gFvIni) {
+        gFvIni := Map()
+        gFvIni.CaseSense := "Off"   ; "Voice=" worked with the old "=" compare too
+        try {
+            loop read, "data\forever.ini" {
+                line := Trim(A_LoopReadLine)
+                if (line = "" || SubStr(line, 1, 1) = ";" || SubStr(line, 1, 2) = "--")
+                    continue
+                eq := InStr(line, "=")
+                k := eq ? Trim(SubStr(line, 1, eq - 1)) : ""
+                if (k != "" && !gFvIni.Has(k))
+                    gFvIni[k] := Trim(SubStr(line, eq + 1))
+            }
         }
     }
-    return ""
+    return gFvIni.Has(key) ? gFvIni[key] : ""
 }
 
 ; The narration voice the client is given: forever.ini "voice=" when set,
@@ -210,7 +220,9 @@ ForeverSeedConfig(dir) {
     return true
 }
 
-; Called once at start-up. Silent when there is no Forever client.
+; Called once at start-up: starts the background reader (idle unless the
+; Forever driver is active) and seeds every Forever client's Config.wtf.
+; Silent when there is no Forever client.
 ForeverSeedAll() {
     SetTimer(FvSenseTick, 50)
     wrote := false
@@ -234,12 +246,7 @@ ForeverCapture() {
     DirCreate(dir)
     gForeverCaptureCount++
     path := dir "\capture-" FormatTime(, "yyyyMMdd-HHmmss") "-" gForeverCaptureCount ".png"
-    FvWaitIdle()
-    Critical
-    ok := SenseSave(path)
-    Critical "Off"
-    FvRelease()
-    if ok {
+    if FvHelperOwn(() => SenseSave(path), false) {
         Log("Forever: capture saved " path)
         Say(T("screenshot saved") " " gForeverCaptureCount)
     } else {
@@ -426,8 +433,17 @@ FvCy(line) {
 ; REQUESTED (the picture is from then). A read that was already under way
 ; when a key changed the screen arrives after the key but shows the old
 ; picture; waiting on frameAt read stale values after a Left/Right step.
-global gFvAsync := {pending: false, pendingOcr: false, reqAt: 0, lastAt: 0, frameAt: 0, frameReqAt: 0,
-                    wantOcr: true, refThumb: "", lastProbe: "", settleDue: 0, hold: false, sync: false}
+; holdUntil: no new background request before this tick (a value step keeps
+; the helper free for its dropdown read). A deadline and not a flag plus a
+; release timer: that timer, armed by one step, also released holds that
+; somebody else had set meanwhile.
+; sync: a synchronous request owns the helper (FvHelperOwn).
+global gFvAsync := {pending: false, reqAt: 0, lastAt: 0, frameAt: 0, frameReqAt: 0,
+                    wantOcr: true, refThumb: "", lastProbe: "", settleDue: 0, holdUntil: 0, sync: false}
+; Suspect reads in a row (a black/half-drawn capture, a known page suddenly
+; read as an almost empty "unknown"). One is ignored; the second in a row is
+; taken - a page that really IS that sparse must not be refused forever.
+global gFvOddReads := 0
 
 ; Ask for a fresh OCR read at the next opportunity.
 FvTouch() {
@@ -450,7 +466,8 @@ FvThumbDiff(a, b) {
 }
 
 FvSenseTick() {
-    global gFvAsync
+    global gFvAsync, gFvOddReads
+    FvHistWant()
     if (!FvActive() || gFvAsync.sync)
         return   ; a synchronous read owns the helper (FvSenseSync)
     Critical
@@ -473,17 +490,24 @@ FvSenseTick() {
                     if (gFvAsync.refThumb != "" && d > 0.4 && r["lines"].Length < 5) {
                         ; a black/half-drawn capture (the client rebuilding the
                         ; model): neither the new map nor the new reference
-                        ; picture - the next read decides
-                        Log("Forever: broken capture (" r["lines"].Length " lines, picture " Round(d * 100) "% off) - ignored")
-                        gFvAsync.wantOcr := true
-                        return
+                        ; picture - the next read decides. Only once: it
+                        ; used to be refused every time, so a page that really
+                        ; is dark and nearly text-less (a loading or a
+                        ; connecting screen) was OCR'd back to back and never
+                        ; mapped.
+                        gFvOddReads += 1
+                        if (gFvOddReads < 2) {
+                            Log("Forever: broken capture (" r["lines"].Length " lines, picture " Round(d * 100) "% off) - ignored")
+                            gFvAsync.wantOcr := true
+                            return
+                        }
+                        Log("Forever: second sparse capture in a row - taken")
                     }
                     Log("Forever: read " r["lines"].Length " lines, picture changed " Round(d * 100) "%")
                     if (d > 0.06)
                         gFvAsync.settleDue := A_TickCount + 1000
                     gFvAsync.refThumb := newThumb
                     gFv.s := r
-                    gFv.sensedAt := A_TickCount
                     gFvAsync.frameAt := A_TickCount
                     gFvAsync.frameReqAt := gFvAsync.reqAt
                     FvRebuild()
@@ -527,7 +551,7 @@ FvSenseTick() {
         gFvAsync.settleDue := 0
         gFvAsync.wantOcr := true
     }
-    if gFvAsync.hold
+    if (A_TickCount < gFvAsync.holdUntil)
         return
     if (!gFvAsync.wantOcr && A_TickCount - gFvAsync.lastAt < 250)
         return
@@ -535,7 +559,6 @@ FvSenseTick() {
         return
     if SenseWriteLine(gFvAsync.wantOcr ? "sense" : "sense --no-ocr") {
         gFvAsync.pending := true
-        gFvAsync.pendingOcr := gFvAsync.wantOcr
         gFvAsync.reqAt := A_TickCount
     }
 }
@@ -546,7 +569,7 @@ FvWaitFrame(since, maxMs := 2500) {
     ; whoever waits for a frame needs the background reader running: a value
     ; step's hold left the map unrefreshed after a scroll (old dropdown
     ; positions - the dropdown read then caught the next option's label)
-    gFvAsync.hold := false
+    FvRelease()
     FvTouch()
     start := A_TickCount
     while (gFvAsync.frameReqAt <= since && A_TickCount - start < maxMs)
@@ -554,43 +577,56 @@ FvWaitFrame(since, maxMs := 2500) {
     return gFvAsync.frameReqAt > since
 }
 
-; Hold the background reader and wait until no request is in flight, so a
-; synchronous helper command (the capture) gets its own answer and not the
-; reader's. Release with FvRelease().
-FvWaitIdle(maxMs := 3000) {
-    gFvAsync.hold := true
-    start := A_TickCount
-    while (gFvAsync.pending && A_TickCount - start < maxMs)
-        Sleep(30)
+; Wait for a fresh map; when none comes in time, rebuild from the frame there
+; is (FvSenseTick rebuilds every frame it maps, so normally nothing is left
+; to do here).
+FvAwaitMap(since, maxMs) {
+    if !FvWaitFrame(since, maxMs)
+        FvRebuild()
 }
 
 FvRelease() {
-    gFvAsync.hold := false
+    gFvAsync.holdUntil := 0
 }
 
-; A synchronous helper request (Sense) with the helper to itself. `hold`
-; alone was not enough: a release meanwhile (the 3 s safety timer of a value
-; step) let the background reader send its own request and then take the
-; synchronous answer for its frame - a one-line "full read" that mapped the
-; page as unknown and threw the cursor to the top (2026-10-28). `sync` makes
-; FvSenseTick keep its hands off until the answer is in.
-; `sync` is set FIRST and an answer still on its way to the background
-; reader is taken off the pipe here: waiting for it with FvWaitIdle left a
-; gap in which the reader sent one more probe, and this request then read
-; that probe's text-less answer as its own (empty dropdown reads for names
-; OCR reads fine, 9 in one session) while the reader got this one.
-FvSenseSync(extra) {
+; Run fn (a synchronous helper request: Sense, SenseSave) with the helper to
+; itself. `sync` is set FIRST, so FvSenseTick sends nothing from here on, and
+; an answer still on its way to the background reader is taken off the pipe:
+; a plain "hold and wait until idle" left a gap in which the reader sent one
+; more probe, and the request then read that probe's text-less answer as its
+; own (empty dropdown reads for names OCR reads fine, 9 in one session) while
+; the reader got this one - a one-line "full read" that mapped the page as
+; unknown and threw the cursor to the top (2026-10-28). When that answer does
+; not come at all, the helper is restarted: a late answer would be taken for
+; fn's.
+; Never two at once: on fast steps a newer step's dropdown read interrupted
+; an older one still waiting for its answer, sent its own request and took
+; the older one's answer; its finally then let the background reader in, and
+; the two answers after that went to the wrong readers too ("read 0 lines",
+; then a whole-screen text as the dropdown value - log 2026-10-28). An
+; interrupting caller cannot wait for the one it interrupted (that one only
+; resumes after it), so it gets `busy` at once; the step check counts that as
+; "no read yet" and tries again 200 ms later.
+FvHelperOwn(fn, busy := "") {
+    if gFvAsync.sync
+        return busy
     gFvAsync.sync := true
     try {
         if gFvAsync.pending {
-            SenseReadLine(3000)
+            if (SenseReadLine(3000) = "") {
+                Log("Forever: background read never answered - restarting the helper")
+                SenseStop()
+            }
             gFvAsync.pending := false
         }
-        s := Sense(extra)
+        return fn()
     } finally {
         gFvAsync.sync := false
     }
-    return s
+}
+
+FvSenseSync(extra) {
+    return FvHelperOwn(() => Sense(extra), Map())
 }
 
 FvClassify(s) {
@@ -1024,19 +1060,30 @@ FvPresetCard(settings, W) {
     return {name: card[1], say: say}
 }
 
+; Sort list in place (stable insertion sort; the lists are a few dozen items)
+; and return it. before(a, b): a belongs in front of b.
+FvSort(list, before) {
+    loop list.Length - 1 {
+        j := A_Index + 1
+        item := list[j]
+        while (j > 1 && before(item, list[j - 1])) {
+            list[j] := list[j - 1]
+            j--
+        }
+        list[j] := item
+    }
+    return list
+}
+
 ; OCR lines whose centre lies in a card's box, top to bottom.
 FvCardLines(s, cx, halfW, yTop, yBottom) {
     found := []
     for line in s["lines"] {
         y := FvCy(line)
-        if (y < yTop || y > yBottom || Abs(FvCx(line) - cx) > halfW)
-            continue
-        i := found.Length + 1
-        while (i > 1 && FvCy(found[i - 1]) > y)
-            i--
-        found.InsertAt(i, line)
+        if (y >= yTop && y <= yBottom && Abs(FvCx(line) - cx) <= halfW)
+            found.Push(line)
     }
-    return found
+    return FvSort(found, (a, b) => FvCy(a) < FvCy(b))
 }
 
 FvAddLine(s, list, key, kind := "button") {
@@ -1087,18 +1134,8 @@ FvAddAllLines(s, list) {
         if (line["h"] < H * 0.05 && Trim(line["text"]) != "")
             lines.Push(line)
     }
-    ; reading order: top to bottom, left to right
-    n := lines.Length
-    loop n - 1 {
-        i := A_Index
-        loop n - i {
-            j := A_Index
-            a := lines[j], b := lines[j + 1]
-            if (FvCy(a) > FvCy(b) + 8 || (Abs(FvCy(a) - FvCy(b)) <= 8 && FvCx(a) > FvCx(b))) {
-                lines[j] := b, lines[j + 1] := a
-            }
-        }
-    }
+    ; reading order: top to bottom, left to right (lines within 8 px are a row)
+    FvSort(lines, (a, b) => FvCy(a) < FvCy(b) - 8 || (Abs(FvCy(a) - FvCy(b)) <= 8 && FvCx(a) < FvCx(b)))
     for line in lines
         FvT(list, line["text"], FvCx(line), FvCy(line), "text")
 }
@@ -1204,17 +1241,7 @@ FvBuild(s, screen) {
                 name := line
             cards.Push({line: name, label: (name = line ? "" : name["text"] ", ") line["text"]})
         }
-        ; top to bottom
-        n := cards.Length
-        loop n - 1 {
-            i := A_Index
-            loop n - i {
-                j := A_Index
-                if (FvCy(cards[j].line) > FvCy(cards[j + 1].line)) {
-                    tmp := cards[j], cards[j] := cards[j + 1], cards[j + 1] := tmp
-                }
-            }
-        }
+        FvSort(cards, (a, b) => FvCy(a.line) < FvCy(b.line))   ; top to bottom
         for i, c in cards
             FvT(t, c.label, FvCx(c.line), FvCy(c.line), "char", "", c.label ", " i FvIndexText(i, cards.Length) cards.Length)
         FvAddLine(s, t, "enter_world", "enterworld")
@@ -1340,22 +1367,14 @@ FvBuild(s, screen) {
         }
         if (cells.Length >= 2) {
             n := cells.Length
-            loop n - 1 {
-                i := A_Index
-                loop n - i {
-                    j := A_Index
-                    if (FvLeadingInt(cells[j]["text"]) > FvLeadingInt(cells[j + 1]["text"])) {
-                        tmp := cells[j], cells[j] := cells[j + 1], cells[j + 1] := tmp
-                    }
-                }
-            }
+            FvSort(cells, (a, b) => FvLeadingInt(a["text"]) < FvLeadingInt(b["text"]))
             for i, c in cells
                 FvT(t, c["text"], FvCx(c), FvCy(c), "choice", "", c["text"] ", " i FvIndexText(i, n) n)
         }
         ; Name boxes: 343x48 units side by side in the 800x90 frame at the
-        ; top centre; the placeholder texts are OCR'able while empty.
-        ; the name comes from the placeholder text while OCR reads it; the id
-        ; keeps the box one target for the narration capture either way
+        ; top centre. The name comes from the placeholder text while OCR
+        ; reads it (empty box); the id keeps the box one target for the
+        ; narration capture either way.
         l := FvFind(s, "main_name_hint")
         if (l != "")
             FvT(t, l["text"], FvCx(l), FvCy(l), "edit")
@@ -1369,9 +1388,6 @@ FvBuild(s, screen) {
             FvT(t, "secondary name", W / 2 + 172 * k, 55 * k, "edit")
         t[t.Length].id := "secondary name"
         FvT(t, "name check", W / 2 + 172 * k + 191.5 * k, 55 * k)
-        ; Appearance panel: 360 (+50 padding) units wide at the top right,
-        ; y -137. Dice (randomize) at its top left, category icons in a row
-        ; below, then the option rows: label text, dropdown under it.
         ; Appearance panel at the top right (seen live: left edge 349 units
         ; from the right edge, dice at 325 units / y 173). Option labels are
         ; text, the dropdown sits 24 units under the label, centred 146
@@ -1447,9 +1463,8 @@ FvBuild(s, screen) {
         FvAddLine(s, t, "finish")
         FvAddLine(s, t, "next")
         FvAddLine(s, t, "back")
-    case "charcreate3":
-        FvAddAllLines(s, t)
     default:
+        ; charcreate3 (starting zone), unknown: every text line
         FvAddAllLines(s, t)
     }
     if (t.Length = 0)
@@ -1457,20 +1472,21 @@ FvBuild(s, screen) {
     return t
 }
 
+; Before a key acts: the map is whatever FvSenseTick last built - it rebuilds
+; on every frame it maps. Rebuilding here as well, from that same frame, undid
+; the "one bad read is ignored" rule: the read FvRebuild had just refused was
+; taken by the next arrow key.
 FvRefresh(force := false) {
     if (force) {
         gFv.targets := []
-        FvWaitFrame(A_TickCount - 1, 2500)
+        FvAwaitMap(A_TickCount - 1, 2500)
     }
     else if (gFv.s = "")
-        FvWaitFrame(0, 1500)
-    FvRebuild()
+        FvAwaitMap(0, 1500)
 }
 
 ; Classify the latest frame and rebuild the target list from it, keeping the
 ; current target by identity.
-global gFvOddReads := 0
-
 FvRebuild() {
     global gFvOptState, gFvOptNames, gFvStepLast, gFvListScrolled, gFvOddReads
     s := gFv.s
@@ -1528,9 +1544,11 @@ FvRebuild() {
     ; another race or body brings other choice counts, and a list at the top
     if (screen = "charcreate2" && gFv.screen != "charcreate2")
         gFvOptState := Map(), gFvOptNames := Map(), gFvStepLast := Map(), gFvListScrolled := 0
+    ; a popout belongs to the appearance page: off it, it is gone
+    if (screen != "charcreate2")
+        gFv.openOption := ""
     gFv.screen := screen
     gFv.targets := targets
-    gFv.lastScreen := screen
 }
 
 ; Counts hovers: anything still about to speak for an earlier target (a value
@@ -1559,6 +1577,9 @@ FvHover(t) {
 }
 
 FvMove(delta) {
+    ; Left/Right presses still queued were meant for the option being left
+    ; (FvStepOnce takes the CURRENT target - they would step the next one)
+    gFvStepQueue.Length := 0
     FvRefresh()
     n := gFv.targets.Length
     if (n = 0) {
@@ -1581,10 +1602,14 @@ FvMove(delta) {
         if j
             gFv.index := j
     }
+    ; Up/Down wrap around; PgUp/PgDn stop at the first/last target (wrapping
+    ; by five made PgDn near the end land at the top)
     i := gFv.index + delta
-    if (i < 1)
+    if (Abs(delta) > 1)
+        i := Max(1, Min(n, i))
+    else if (i < 1)
         i := n
-    if (i > n)
+    else if (i > n)
         i := 1
     FvMoveTo(i)
 }
@@ -1662,8 +1687,8 @@ FvOptionIntoView(t) {
 ; when it has them:
 ;  - The bridge's speech history (SAPI2SR with the Sku speech-history
 ;    nvdaControllerClient.dll, dev/rework-docs/nvda-voice-signing/
-;    speech-history): every text the client hands the bridge, in order, with
-;    its process. Texts from WoW's process after a hover = the client
+;    speech-history): every text the client hands the bridge while the tool
+;    asks for it (FvHistWant), in order. Texts from WoW's process after a hover = the client
 ;    narrated; they are kept for that target (FvCaptured) and spoken again on
 ;    a silent repeat, exactly as the client said them. Nothing from WoW within
 ;    FV_REPEAT_WAIT ms = silent.
@@ -1714,6 +1739,32 @@ FvHistOpen() {
     gFvHist.map := map, gFvHist.view := view, gFvHist.lock := lock
     Log("Forever: speech history open")
     return true
+}
+
+; The bridge records a process's speech only while a reader asks for that
+; process (a named event per pid, s2sh_shared.h). The tool asks for WoW only
+; while it drives the Forever glue screens: in the world, with WoW in the
+; background or with the tool closed, nothing WoW says is recorded. Windows
+; drops the request with the handle, so a crashed tool cannot leave it on.
+; Kept in step by FvSenseTick (every 50 ms).
+global gFvWant := {pid: 0, h: 0}
+
+FvHistWant() {
+    global gFvWant
+    pid := FvActive() ? gDetectedPid : 0
+    if (pid = gFvWant.pid)
+        return
+    if gFvWant.h
+        DllCall("CloseHandle", "Ptr", gFvWant.h)
+    gFvWant.h := 0
+    if pid {
+        gFvWant.h := DllCall("CreateEventW", "Ptr", 0, "Int", 1, "Int", 0,
+                             "Str", "Local\SAPI2SR.SpeechHistory.1.Want." pid, "Ptr")
+        Log("Forever: speech history " (gFvWant.h ? "asked for WoW pid " pid : "request FAILED (" A_LastError ")"))
+    } else if gFvWant.pid {
+        Log("Forever: speech history request dropped (pid " gFvWant.pid ")")
+    }
+    gFvWant.pid := pid
 }
 
 ; Texts from process pid newer than since: {last, texts}. "" when the lock
@@ -1923,6 +1974,15 @@ FvEnter() {
     Log("Forever: click " tg.kind " '" tg.name "'")
     if (gFv.screen = "charcreate2" && InStr(tg.name, "category ") = 1)
         gFvListScrolled := 0   ; another category: its list starts at the top
+    ; Which popout is open. A click on its own dropdown toggles it shut, a
+    ; click on another dropdown opens that one's, a click on anything else
+    ; closes it (a dropdown menu closes on an outside click). A stale popout
+    ; made the numbers printed in lower dropdowns ("Gesicht" 3) count as
+    ; popout cells.
+    if (tg.kind = "option")
+        gFv.openOption := (gFv.openOption != "" && gFv.openOption.name = tg.name) ? "" : tg
+    else if (tg.kind != "choice")
+        gFv.openOption := ""
     clickAt := A_TickCount
     gFv.lastClick := clickAt
     FvTouch()
@@ -1945,21 +2005,19 @@ FvEnter() {
             Sleep(25)
         }
     case "option":
-        gFv.openOption := tg
         Sleep(300)
-        FvWaitFrame(A_TickCount - 1, 2500)   ; the popout is drawn by now: a read from here on
-        FvRebuild()
+        FvAwaitMap(A_TickCount - 1, 2500)   ; the popout is open/shut by now: a read from here on
     case "choice":
         Sleep(300)
         gFv.openOption := ""
-        FvWaitFrame(A_TickCount - 1, 2500)   ; the popout is closed by now: a read from here on
-        FvRebuild()
+        FvAwaitMap(A_TickCount - 1, 2500)   ; the popout is closed by now: a read from here on
     }
 }
 
-; Left/Right on an appearance option: click its stepper, then rest on the
-; dropdown again so the client speaks the new value. Elsewhere Left re-reads
-; the screen and Right repeats the current target.
+; Left/Right on an appearance option: one wheel notch on its dropdown, and the
+; tool says the new value itself (the client says nothing on a step - see
+; gFvOptState). Elsewhere Left re-reads the screen and Right repeats the
+; current target.
 ; Left/Right run strictly one after the other: a press during a running step
 ; is queued (keybinds allow the hotkey a few threads for this) and done by
 ; the running one. Left and Right used to interrupt each other mid-step and
@@ -1994,10 +2052,6 @@ FvStepOnce(dir) {
         }
         return
     }
-    ; The dropdown reacts to the mouse wheel like its steppers do, and the
-    ; wheel does not make the client narrate the stepper buttons on the way.
-    ; forever.ini "wheelnext=up" flips the direction if the client's is the
-    ; other way round.
     ; a cut-off dropdown: the wheel would scroll the list, not the value -
     ; bring it into view and onto it first (the next press steps)
     if t.clipped {
@@ -2026,8 +2080,11 @@ FvStepOnce(dir) {
     ; value: it reads just the dropdown (FvReadDropdown), and a full read in
     ; flight would make it wait ~0.6 s. Released by the follow-up, at the
     ; latest after 3 s.
-    gFvAsync.hold := true
-    SetTimer(FvRelease, -3000)
+    gFvAsync.holdUntil := A_TickCount + 3000
+    ; The dropdown takes the mouse wheel like its steppers, and the wheel does
+    ; not make the client narrate the stepper buttons on the way.
+    ; forever.ini "wheelnext=up" flips the direction if the client's is the
+    ; other way round.
     nextIsDown := (ForeverIni("wheelnext") != "up")
     Send((dir > 0) = nextIsDown ? "{WheelDown}" : "{WheelUp}")
     clickAt := A_TickCount
@@ -2191,6 +2248,7 @@ FvStepCheck(name, seq, nav, clickAt, quiet, saidName) {
         return
     }
     if (v != "") {
+        j := 0
         if IsObject(st) {
             j := FvOptNameIndex(name, v)
             if (j && j != st.i) {
@@ -2253,6 +2311,10 @@ FvEscape() {
         MouseMove(p.x, p.y, 0)
         Sleep(30)
         Click()
+        ; a click: the map without the popout's cells is thinner, and FvRebuild
+        ; keeps the fuller one unless a click came shortly before - the cells
+        ; stayed in the list for good
+        gFv.lastClick := A_TickCount
         FvTouch()
         return
     }
