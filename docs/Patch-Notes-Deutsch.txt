@@ -4,6 +4,16 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.10-tools - Installer 5.6 und Anmelde-Tool 4.1, keine neue Addon-Version
+
+    Ueberblick
+
+        Aenderungen
+            Anmelde-Tool 4.1: verbessert, und arbeitet viel besser mit der Charaktererstellung von WoW Forever zusammen.
+            Installer 5.6: bringt das Anmelde-Tool 4.1 mit.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.10
 
     Ueberblick
