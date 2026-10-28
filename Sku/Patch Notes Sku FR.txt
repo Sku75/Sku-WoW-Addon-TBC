@@ -7,6 +7,16 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.10-tools - installateur 5.6 et outil de connexion 4.1, pas de nouvelle version de l'addon
+
+    Aperçu
+
+        Changements
+            Outil de connexion 4.1 : amélioré, il fonctionne beaucoup mieux avec la création de personnage de WoW Forever.
+            Installateur 5.6 : apporte l'outil de connexion 4.1.
+
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.10
 
     Aperçu

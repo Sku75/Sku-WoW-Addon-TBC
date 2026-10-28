@@ -4,6 +4,16 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v43.10-tools - installer 5.6 and login tool 4.1, no new addon version
+
+    Overview
+
+        Changes
+            Login tool 4.1: improved, and works much better with the character creation of WoW Forever.
+            Installer 5.6: brings login tool 4.1.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v43.10
 
     Overview

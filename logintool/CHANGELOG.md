@@ -1,6 +1,6 @@
 # WoW Logintool
 
-## 4.1 (in Arbeit, nicht veröffentlicht)
+## 4.1 (2026-10-28)
 
 **WoW Forever Live-Client.** Der Live-Client liegt in `_forever_\Wow.exe`
 und meldet in `.flavor.info` den Flavor `wowf` (Build 1.60.1.70634). Das Tool
