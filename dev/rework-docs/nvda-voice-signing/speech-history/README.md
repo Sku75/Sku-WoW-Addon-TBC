@@ -65,6 +65,14 @@ aloud there stays out of the ring.
 - `test/` - silent NVDA stand-in and a writer for offline tests
 - `build.bat` - builds everything into `out/` (VS 2022 Build Tools, x64)
 - `install-local.ps1` - install / uninstall on this machine (admin)
+- `add_to_payload.py` - puts the built proxy and the signing script into a
+  `sapi2sr-payload.zip` (NV Access's original kept as
+  `x64/nvdaControllerClient.nvaccess.dll`)
+
+Shipped: Sku installer 5.6 and the WowVision installer (PR #60) carry it in
+their bridge payload; the signing script signs it as an optional third
+target (skipped when absent or when it is NV Access's own file). NVDA Voice
+for WoW (the standalone setup) does not carry it yet.
 
 ## Tests (2026-10-27, offline)
 
@@ -89,5 +97,5 @@ aloud there stays out of the ring.
   real SAPI2SR voice through PowerShell: "eins" without a request is not in
   the ring, "zwei" with one is.
 
-Not yet tested: inside WoW (does the loader gate accept ours), x86 (no x86
+Tested inside WoW 2026-10-28 (the loader gate accepts ours). Not yet: x86 (no x86
 build yet; the x86 SAPI2SR keeps NV Access's original).

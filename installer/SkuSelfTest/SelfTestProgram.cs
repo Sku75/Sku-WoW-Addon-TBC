@@ -601,6 +601,8 @@ namespace SkuInstaller
             string ann = Path.Combine(wow, "_anniversary_");
             string era = Path.Combine(wow, "_classic_era_");
             string fwd = Path.Combine(wow, Config.ForeverFolder);
+            // a leftover beta folder next to the live client (sorts BEFORE _forever_)
+            string fwdBeta = Path.Combine(wow, Config.ForeverBetaFolder);
             string mop = Path.Combine(wow, "_classic_");
             void Flavor(string dir, string product, string exe)
             {
@@ -611,7 +613,8 @@ namespace SkuInstaller
             }
             Flavor(ann, Config.AnniversaryFlavor, "WowClassic.exe");
             Flavor(era, Config.EraFlavor, "WowClassic.exe");
-            Flavor(fwd, Config.ForeverFlavor, "WowB.exe");
+            Flavor(fwd, Config.ForeverLiveFlavor, "Wow.exe");
+            Flavor(fwdBeta, Config.ForeverFlavor, "WowB.exe");
             Flavor(mop, "wow_classic", "WowClassic.exe");
             // Same column layout as a real .build.info: Version and Product near the end.
             File.WriteAllText(Path.Combine(wow, ".build.info"),
@@ -619,7 +622,8 @@ namespace SkuInstaller
                 "eu|1|aa|1.15.9.70003||wow_classic_era\r\n" +
                 "eu|1|bb|5.5.4.70268||wow_classic\r\n" +
                 "eu|1|cc|2.5.6.70006||wow_anniversary\r\n" +
-                "us|1|dd|1.60.1.70374||wow_classic_beta\r\n");
+                "us|1|dd|1.60.1.70374||wow_classic_beta\r\n" +
+                "eu|1|ee|1.60.1.70634||wowf\r\n");
 
             string annAddons = Path.Combine(ann, "Interface", "AddOns");
             string eraAddons = Path.Combine(era, "Interface", "AddOns");
@@ -639,8 +643,15 @@ namespace SkuInstaller
                     .FindAll(f => f.AddOnsPath.StartsWith(wow, StringComparison.OrdinalIgnoreCase));
                 foreach (var f in flavors)
                     Console.WriteLine($"    {f.Product,-18} {f.DisplayName}");
-                Check("Forever found by its WowB.exe + .flavor.info",
+                Check("live Forever found by its Wow.exe + .flavor.info \"wowf\"",
                       flavors.Exists(f => f.Product == Config.ForeverFlavor && f.AddOnsPath == fwdAddons));
+                Check("the beta folder is found too, as WoW Forever",
+                      flavors.Exists(f => f.Product == Config.ForeverFlavor && f.Beta));
+                Check("the live Forever client comes before the beta folder",
+                      flavors.Find(f => f.Product == Config.ForeverFlavor).AddOnsPath == fwdAddons);
+                Check("\"wowf\" reads as the Forever product token",
+                      Config.NormalizeProduct("wowf") == Config.ForeverFlavor &&
+                      Config.NormalizeProduct("wow_anniversary") == Config.AnniversaryFlavor);
                 Check("Anniversary and Era still found",
                       flavors.Exists(f => f.Product == Config.AnniversaryFlavor) &&
                       flavors.Exists(f => f.Product == Config.EraFlavor));

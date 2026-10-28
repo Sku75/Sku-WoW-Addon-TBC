@@ -106,8 +106,18 @@
          Sku zip, TOCs synced to 16001 only, installable once the newest release
          is at least Config.ForeverMinMainVersion (44.0); login tool folder
          without textures/fonts there.
+         5.6 = the live WoW Forever client: _forever_\Wow.exe whose .flavor.info
+         says "wowf" (Config.NormalizeProduct maps it onto the one Forever
+         token; a leftover _classic_beta_ folder comes second; a running
+         Wow.exe only counts when it lives in a supported flavor folder, so
+         Retail does not hold up an install). The bridge payload gains the
+         speech history: our nvdaControllerClient.dll forwards to NV Access's
+         original (x64\nvdaControllerClient.nvaccess.dll) and publishes the
+         texts of the processes a reader asks for (the login tool asks for WoW
+         on the Forever login screens only); the signing run signs it as an
+         optional third target. Login tool 4.1.
          -->
-    <Version>5.5</Version>
+    <Version>5.6</Version>
     <!-- File properties (Explorer "Details", and what antivirus reputation
          scoring reads). Left at the SDK defaults every field said just
          "SkuInstaller" and the copyright was blank, which is what throwaway

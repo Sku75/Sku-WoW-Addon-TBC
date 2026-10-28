@@ -122,7 +122,7 @@ namespace SkuInstaller
         // whenever a newer tool build is published, and LoginToolInstaller upgrades
         // in place any user whose recorded marker predates it.
         public const string LoginToolTag = "login-tool";
-        public const string LoginToolVersion = "4.0";
+        public const string LoginToolVersion = "4.1";
         public const string LoginToolAsset = "WoW-Login-Tool.zip";
         public const string LoginToolFolderName = "WoW Login Tool";
 
@@ -147,13 +147,32 @@ namespace SkuInstaller
         // the folder, the exe, and that its TOCs carry only its own interface
         // number (WowLocator.InterfaceVersionList).
 
-        /// <summary>WoW Forever flavor token in .flavor.info / .build.info Product column.</summary>
+        /// <summary>
+        /// The installer's ONE product token for WoW Forever (targets, managed
+        /// addons, path memory, TOC sync all key on it). It is what the beta
+        /// client (_classic_beta_\WowB.exe) writes into .flavor.info /
+        /// .build.info; the live client (_forever_\Wow.exe, since 2026-10) writes
+        /// <see cref="ForeverLiveFlavor"/>, which <see cref="NormalizeProduct"/>
+        /// maps onto this token wherever a token is read from disk.
+        /// </summary>
         public const string ForeverFlavor = "wow_classic_beta";
 
-        /// <summary>Conventional flavor folder name of WoW Forever.</summary>
-        public const string ForeverFolder = "_classic_beta_";
+        /// <summary>The live WoW Forever client's token (build 1.60.1.70634).</summary>
+        public const string ForeverLiveFlavor = "wowf";
 
-        /// <summary>Game process name (no extension) of the WoW Forever client.</summary>
+        /// <summary>A product token as read from disk, as the installer uses it.</summary>
+        public static string NormalizeProduct(string token) =>
+            token == ForeverLiveFlavor ? ForeverFlavor : token;
+
+        /// <summary>Conventional flavor folder name of the live WoW Forever client.</summary>
+        public const string ForeverFolder = "_forever_";
+
+        /// <summary>Flavor folder of the WoW Forever beta (ended 2026-10-21).</summary>
+        public const string ForeverBetaFolder = "_classic_beta_";
+
+        /// <summary>Game process name (no extension) of the WoW Forever BETA
+        /// client. The live client runs plain Wow.exe, like Retail - see
+        /// WowLocator.IsGameRunning.</summary>
         public const string ForeverProcessName = "WowB";
 
         /// <summary>

@@ -224,7 +224,7 @@ namespace SkuInstaller
 
             // ── dialogs ──────────────────────────────────────────────────────
             ["dlg.browse.desc"]        = "Select your World of Warcraft folder, a game version folder, or the Interface\\AddOns folder.",
-            ["dlg.notRecognized.text"] = "That folder doesn't look like a World of Warcraft install. Pick the World of Warcraft folder, a game version folder (for example _anniversary_, _classic_era_ or _classic_beta_ for WoW Forever), or its Interface\\AddOns folder.",
+            ["dlg.notRecognized.text"] = "That folder doesn't look like a World of Warcraft install. Pick the World of Warcraft folder, a game version folder (for example _anniversary_, _classic_era_ or _forever_ for WoW Forever), or its Interface\\AddOns folder.",
             ["dlg.notRecognized.title"]= "Folder not recognized",
             ["dlg.closeGame.text"]     = "World of Warcraft must be fully closed for this update (it installs a new addon, changes large sound files, or fixes required game settings).\n\nClose the game completely (all the way to the desktop), then choose Retry. Or Cancel to stop.",
             ["dlg.closeGame.title"]    = "Please close World of Warcraft",
@@ -458,7 +458,7 @@ namespace SkuInstaller
 
             // ── Dialoge ──────────────────────────────────────────────────────
             ["dlg.browse.desc"]        = "Wähle deinen World-of-Warcraft-Ordner, einen Spielversions-Ordner oder den Ordner Interface\\AddOns.",
-            ["dlg.notRecognized.text"] = "Dieser Ordner sieht nicht nach einer World-of-Warcraft-Installation aus. Wähle den World-of-Warcraft-Ordner, einen Spielversions-Ordner (zum Beispiel _anniversary_, _classic_era_ oder _classic_beta_ für WoW Forever) oder dessen Ordner Interface\\AddOns.",
+            ["dlg.notRecognized.text"] = "Dieser Ordner sieht nicht nach einer World-of-Warcraft-Installation aus. Wähle den World-of-Warcraft-Ordner, einen Spielversions-Ordner (zum Beispiel _anniversary_, _classic_era_ oder _forever_ für WoW Forever) oder dessen Ordner Interface\\AddOns.",
             ["dlg.notRecognized.title"]= "Ordner nicht erkannt",
             ["dlg.closeGame.text"]     = "World of Warcraft muss für diese Aktualisierung vollständig geschlossen sein (es wird ein neues AddOn installiert, große Sounddateien geändert oder erforderliche Spieleinstellungen korrigiert).\n\nSchließe das Spiel vollständig (bis zum Desktop) und wähle dann „Wiederholen“. Oder „Abbrechen“ zum Beenden.",
             ["dlg.closeGame.title"]    = "Bitte World of Warcraft schließen",
@@ -698,7 +698,7 @@ namespace SkuInstaller
 
             // ── boîtes de dialogue ───────────────────────────────────────────
             ["dlg.browse.desc"]        = "Sélectionnez votre dossier World of Warcraft, un dossier de version du jeu, ou le dossier Interface\\AddOns.",
-            ["dlg.notRecognized.text"] = "Ce dossier ne ressemble pas à une installation de World of Warcraft. Choisissez le dossier World of Warcraft, un dossier de version du jeu (par exemple _anniversary_, _classic_era_ ou _classic_beta_ pour WoW Forever), ou son dossier Interface\\AddOns.",
+            ["dlg.notRecognized.text"] = "Ce dossier ne ressemble pas à une installation de World of Warcraft. Choisissez le dossier World of Warcraft, un dossier de version du jeu (par exemple _anniversary_, _classic_era_ ou _forever_ pour WoW Forever), ou son dossier Interface\\AddOns.",
             ["dlg.notRecognized.title"]= "Dossier non reconnu",
             ["dlg.closeGame.text"]     = "World of Warcraft doit être entièrement fermé pour cette mise à jour (elle installe un nouvel addon, modifie de gros fichiers son, ou corrige des réglages du jeu nécessaires).\n\nFermez complètement le jeu (jusqu'au bureau), puis choisissez « Réessayer ». Ou « Annuler » pour arrêter.",
             ["dlg.closeGame.title"]    = "Veuillez fermer World of Warcraft",

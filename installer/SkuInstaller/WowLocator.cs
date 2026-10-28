@@ -11,6 +11,7 @@ namespace SkuInstaller
         public string Product;      // e.g. wow_anniversary, wow_classic_era
         public string AddOnsPath;   // <flavor>\Interface\AddOns
         public string DisplayName;  // friendly label for the dropdown
+        public bool Beta;           // the WoW Forever beta folder (a live client wins over it)
     }
 
     /// <summary>
@@ -24,8 +25,9 @@ namespace SkuInstaller
     /// the chosen flavor's Interface\AddOns. The same Sku build serves
     /// Anniversary, Classic Era and WoW Forever; what makes it load on each is
     /// TocSync writing that flavor's EXACT interface build into every TOC (see
-    /// InterfaceVersionList). WoW Forever runs its own exe (WowB.exe) and its own
-    /// interface family (16001), so its TOCs never carry the Anniversary numbers.
+    /// InterfaceVersionList). WoW Forever runs its own exe (_forever_\Wow.exe; the
+    /// beta was _classic_beta_\WowB.exe) and its own interface family (16001), so
+    /// its TOCs never carry the Anniversary numbers.
     /// These Anniversary-family clients gate on the exact build number — a near
     /// number is silently refused, and "Load out of date AddOns" (checkAddonVersion
     /// 0) does NOT cover a mismatched interface. Learned on Classic Era 11509 when
@@ -48,7 +50,7 @@ namespace SkuInstaller
         {
             Config.AnniversaryFlavor,   // wow_anniversary
             Config.EraFlavor,           // wow_classic_era
-            Config.ForeverFlavor,       // wow_classic_beta (WoW Forever)
+            Config.ForeverFlavor,       // WoW Forever (the live "wowf" is normalized onto it)
         };
 
         /// <summary>True for a client this Sku build installs into.</summary>
@@ -58,7 +60,7 @@ namespace SkuInstaller
         /// <summary>
         /// The game exe names (without extension) a flavor folder may hold: the
         /// classic clients run WowClassic.exe (Wow.exe on some installs), WoW
-        /// Forever runs WowB.exe.
+        /// Forever runs Wow.exe (live) or WowB.exe (beta).
         /// </summary>
         private static readonly string[] ClientExeNames =
             { Config.GameProcessName, "Wow", Config.ForeverProcessName };
@@ -189,18 +191,21 @@ namespace SkuInstaller
                         Product = product,
                         AddOnsPath = addons,
                         DisplayName = FriendlyFlavorName(product, flavorDir),
+                        Beta = Path.GetFileName(flavorDir).Equals(Config.ForeverBetaFolder,
+                                                                  StringComparison.OrdinalIgnoreCase),
                     });
                 }
             }
 
-            // Anniversary first (the primary target), then the rest as found.
-            found.Sort((a, b) =>
-            {
-                bool aAnn = a.Product == Config.AnniversaryFlavor;
-                bool bAnn = b.Product == Config.AnniversaryFlavor;
-                return aAnn == bAnn ? 0 : (aAnn ? -1 : 1);
-            });
-            return found;
+            // Anniversary first (the primary target), then the rest as found -
+            // except that a leftover Forever BETA folder goes behind the live
+            // one: InstallTarget takes the FIRST flavor of a product, and
+            // "_classic_beta_" sorts before "_forever_". OrderBy is stable
+            // (List.Sort is not), so "as found" really stays as found.
+            return found
+                .OrderBy(f => f.Product == Config.AnniversaryFlavor ? 0 : 1)
+                .ThenBy(f => f.Beta ? 1 : 0)
+                .ToList();
         }
 
         /// <summary>
@@ -232,7 +237,7 @@ namespace SkuInstaller
                 if (!File.Exists(info)) return null;
                 // line 1 = header, line 2 = the product token (e.g. "wow_anniversary")
                 var lines = File.ReadAllLines(info);
-                return lines.Length >= 2 ? lines[1].Trim() : null;
+                return lines.Length >= 2 ? Config.NormalizeProduct(lines[1].Trim()) : null;
             }
             catch { return null; }
         }
@@ -351,7 +356,53 @@ namespace SkuInstaller
         // first-install updates and to decide the end-of-run message.
 
         public static bool IsGameRunning() =>
-            Config.GameProcessNames.Any(n => Process.GetProcessesByName(n).Length > 0);
+            Config.GameProcessNames.Any(n => Process.GetProcessesByName(n).Length > 0)
+            || Process.GetProcessesByName("Wow").Any(IsSupportedClientProcess);
+
+        /// <summary>
+        /// Wow.exe is WoW Forever's live exe AND Retail's. Only one running out of
+        /// a supported flavor folder counts - a Retail session must not hold up a
+        /// Sku install. A process whose path cannot be read counts (the safe
+        /// side: wait rather than write under a running client).
+        /// </summary>
+        private static bool IsSupportedClientProcess(Process p)
+        {
+            try
+            {
+                string exe = ProcessImagePath(p.Id);
+                if (exe == null) return true;
+                string product = ReadFlavorProduct(Path.GetDirectoryName(exe));
+                return product != null && IsSupportedProduct(product);
+            }
+            catch { return true; }
+            finally { p.Dispose(); }
+        }
+
+        // QueryFullProcessImageName needs only PROCESS_QUERY_LIMITED_INFORMATION
+        // and works across bitness (Process.MainModule does neither).
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr OpenProcess(uint access, bool inherit, int pid);
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true,
+            CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+        private static extern bool QueryFullProcessImageName(IntPtr process, int flags,
+            System.Text.StringBuilder name, ref int size);
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern bool CloseHandle(IntPtr handle);
+
+        private static string ProcessImagePath(int pid)
+        {
+            IntPtr h = OpenProcess(0x1000, false, pid);   // PROCESS_QUERY_LIMITED_INFORMATION
+            if (h == IntPtr.Zero) return null;
+            try
+            {
+                var sb = new System.Text.StringBuilder(1024);
+                int size = sb.Capacity;
+                return QueryFullProcessImageName(h, 0, sb, ref size) ? sb.ToString() : null;
+            }
+            finally { CloseHandle(h); }
+        }
 
         /// <summary>
         /// Reads the "## Version:" line from an addon's TOC, e.g. "41.06" from
@@ -473,7 +524,7 @@ namespace SkuInstaller
                     var cols = lines[r].Split('|');
                     if (verCol >= cols.Length || prodCol >= cols.Length) continue;
 
-                    string product = cols[prodCol].Trim();
+                    string product = Config.NormalizeProduct(cols[prodCol].Trim());
                     bool wanted = forever
                         ? product == Config.ForeverFlavor
                         : (product == Config.AnniversaryFlavor || product == Config.EraFlavor);

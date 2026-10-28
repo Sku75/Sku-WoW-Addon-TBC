@@ -42,9 +42,18 @@ param(
 	[string]$Mode = 'Install',
 	[string[]]$DllPaths = @(
 		'C:\Program Files\SAPI2SR\sapi2sr_engine.dll',
-		'C:\Program Files (x86)\SAPI2SR\sapi2sr_engine.dll'
+		'C:\Program Files (x86)\SAPI2SR\sapi2sr_engine.dll',
+		'C:\Program Files\SAPI2SR\nvdaControllerClient.dll'
 	)
 )
+
+# Targets that may be absent or not ours: the speech-history
+# nvdaControllerClient.dll (speech-history/). The engine loads it, so once it
+# is ours it must be signed like the engine. Missing, or NV Access's own
+# signed file (an older payload, or a bridge setup that copied it back): it is
+# skipped - never a reason to leave the engine unsigned.
+$OptionalTargets = @('nvdaControllerClient.dll')
+function Test-Optional([string]$dll) { $OptionalTargets -contains (Split-Path $dll -Leaf) }
 
 # --------------------------------------------------------------- pinned manifest
 # Authenticode PE hashes (SHA256 of the PE image excluding the signature) of
@@ -151,6 +160,7 @@ if ($Mode -eq 'Pin') {
 if ($Mode -eq 'Verify') {
 	$healthy = $true
 	foreach ($dll in $DllPaths) {
+		if (-not (Test-Path $dll) -and (Test-Optional $dll)) { Write-Output "ABSENT    $dll (optional)"; continue }
 		if (-not (Test-Path $dll)) { Write-Output "MISSING   $dll"; $healthy = $false; continue }
 		$pe = [SkuPeHash]::Sha256($dll)
 		$pinned = $PinnedPeHashes.ContainsKey($pe)
@@ -199,11 +209,17 @@ if (Get-Process -Name 'WowClassic', 'Wow', 'WowT' -ErrorAction SilentlyContinue)
 # 1) validate all targets BEFORE touching anything
 $targets = @()   # entries: @{ Path; PeHash; NeedsSigning }
 foreach ($dll in $DllPaths) {
+	$optional = Test-Optional $dll
 	if (-not (Test-Path $dll)) {
+		if ($optional) { Write-Log "optional target absent, skipping: $dll"; continue }
 		Write-Log "ERROR: target DLL missing: $dll (install the NVDA-SAPI voice first)."
 		exit 6
 	}
 	$pe = [SkuPeHash]::Sha256($dll)
+	if (-not $PinnedPeHashes.ContainsKey($pe) -and $optional) {
+		Write-Log "optional target is not the speech-history build (PE hash $pe), left as it is: $dll"
+		continue
+	}
 	if (-not $PinnedPeHashes.ContainsKey($pe)) {
 		Write-Log "ERROR: PIN MISMATCH for $dll"
 		Write-Log "  PE hash $pe is not in the manifest. This file is NOT the version this installer was built for - refusing to sign it."
