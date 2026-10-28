@@ -470,6 +470,14 @@ FvSenseTick() {
                     gFvAsync.wantOcr := false
                     newThumb := r.Has("thumb") ? r["thumb"] : ""
                     d := (gFvAsync.refThumb = "") ? 1.0 : FvThumbDiff(newThumb, gFvAsync.refThumb)
+                    if (gFvAsync.refThumb != "" && d > 0.4 && r["lines"].Length < 5) {
+                        ; a black/half-drawn capture (the client rebuilding the
+                        ; model): neither the new map nor the new reference
+                        ; picture - the next read decides
+                        Log("Forever: broken capture (" r["lines"].Length " lines, picture " Round(d * 100) "% off) - ignored")
+                        gFvAsync.wantOcr := true
+                        return
+                    }
                     Log("Forever: read " r["lines"].Length " lines, picture changed " Round(d * 100) "%")
                     if (d > 0.06)
                         gFvAsync.settleDue := A_TickCount + 1000
@@ -535,6 +543,10 @@ FvSenseTick() {
 ; Wait (letting timers run) until a frame REQUESTED after `since` has arrived
 ; (and been mapped: FvSenseTick rebuilds before it lets go).
 FvWaitFrame(since, maxMs := 2500) {
+    ; whoever waits for a frame needs the background reader running: a value
+    ; step's hold left the map unrefreshed after a scroll (old dropdown
+    ; positions - the dropdown read then caught the next option's label)
+    gFvAsync.hold := false
     FvTouch()
     start := A_TickCount
     while (gFvAsync.frameReqAt <= since && A_TickCount - start < maxMs)
@@ -562,10 +574,18 @@ FvRelease() {
 ; synchronous answer for its frame - a one-line "full read" that mapped the
 ; page as unknown and threw the cursor to the top (2026-10-28). `sync` makes
 ; FvSenseTick keep its hands off until the answer is in.
+; `sync` is set FIRST and an answer still on its way to the background
+; reader is taken off the pipe here: waiting for it with FvWaitIdle left a
+; gap in which the reader sent one more probe, and this request then read
+; that probe's text-less answer as its own (empty dropdown reads for names
+; OCR reads fine, 9 in one session) while the reader got this one.
 FvSenseSync(extra) {
-    FvWaitIdle(2500)
     gFvAsync.sync := true
     try {
+        if gFvAsync.pending {
+            SenseReadLine(3000)
+            gFvAsync.pending := false
+        }
         s := Sense(extra)
     } finally {
         gFvAsync.sync := false
@@ -2016,10 +2036,15 @@ FvStepOnce(dir) {
     ; swatch and "4 of 10". Say() purges, so quick steps keep only the newest.
     st := gFvOptState.Has(t.name) ? gFvOptState[t.name] : ""
     if IsObject(st) {
-        ; what the screen showed before this step: a read after it that still
-        ; shows this is the old picture (FvStepFollowUp)
-        if (FvOptValue(t) != "")
-            gFvStepLast[t.name] := {i: st.i, v: FvOptValue(t)}
+        ; what the screen showed before this step - a read after it that still
+        ; shows this is the old picture (FvStepFollowUp): the name learned for
+        ; the index, else the follow-up's own last read stays. Never the page
+        ; map's text: while steps hold the background reader it lags behind (a
+        ; stale "Befiedert" from index 9 made the real "Befiedert" at 9 count
+        ; as old picture six reads in a row - 2026-10-28).
+        prev := FvOptKnownName(t.name)
+        if (prev != "?" && prev != "")
+            gFvStepLast[t.name] := {i: st.i, v: prev}
         st.i := Max(1, Min(st.n, st.i + (dir > 0 ? 1 : -1)))
     }
     said := ""
@@ -2074,6 +2099,17 @@ FvReadDropdown(t) {
     s := FvSenseSync("--region " region)
     if !(SenseOk(s) && s.Has("lines"))
         return "?"
+    ; A guard: a window capture that comes back black or half-drawn (while
+    ; the client rebuilds the model) differs wildly from the last good full
+    ; read - it is "no answer", not "an empty dropdown". Not seen in a log
+    ; yet (2026-10-28: empty reads were names OCR cannot read).
+    if (s.Has("thumb") && gFvAsync.refThumb != "") {
+        d := FvThumbDiff(s["thumb"], gFvAsync.refThumb)
+        if (d > 0.4) {
+            Log("Forever: dropdown read on a broken capture (picture " Round(d * 100) "% off) - ignored")
+            return "?"
+        }
+    }
     text := ""
     for line in s["lines"]
         text .= (text = "" ? "" : " ") Trim(line["text"])
@@ -2107,11 +2143,13 @@ FvStepFollowUp(name, seq, nav, clickAt, quiet, saidName) {
 FvStepCheck(name, seq, nav, clickAt, quiet, saidName) {
     while (A_TickCount - clickAt < 200)
         Sleep(20)
-    ; up to four reads 200 ms apart: the text is often not drawn yet at the
-    ; first one (an empty read sent the tool to ask the client - which talked
-    ; over the count - for names OCR reads fine a moment later), or still the
-    ; previous choice's. Empty with a learned name for the index is enough.
-    loop 4 {
+    ; up to six reads 200 ms apart while the text is still the previous
+    ; choice's or the capture is broken ("?"); an empty read only three times
+    ; (the text is sometimes not drawn yet at the first one, but names OCR
+    ; cannot read at all stay empty - six reads made those a second slower,
+    ; 2026-10-28). Empty with a learned name for the index is enough.
+    v := "?"
+    loop 6 {
         if (A_Index > 1)
             Sleep(200)
         if (seq != gFvStepSeq || nav != gFvNavSeq)
@@ -2120,8 +2158,9 @@ FvStepCheck(name, seq, nav, clickAt, quiet, saidName) {
         if (t = "" || t.name != name || t.color != "")
             return   ; a swatch: colour and count were said, no text to learn
         v := FvReadDropdown(t)
+        stale := false
         if (v = "?")
-            return
+            continue
         last := gFvStepLast.Has(name) ? gFvStepLast[name] : ""
         stale := (v != "" && IsObject(last) && last.v = v && gFvOptState.Has(name)
                   && last.i != gFvOptState[name].i)
@@ -2129,12 +2168,12 @@ FvStepCheck(name, seq, nav, clickAt, quiet, saidName) {
             Log("Forever: '" name "' still shows '" v "' - reading again")
             continue
         }
-        if (v != "" || FvOptKnownName(name) != "?")
+        if (v != "" || FvOptKnownName(name) != "?" || A_Index >= 3)
             break
     }
     Critical   ; from here to the speech: no step may slip in between
-    if (seq != gFvStepSeq || nav != gFvNavSeq || stale)
-        return
+    if (seq != gFvStepSeq || nav != gFvNavSeq || stale || v = "?")
+        return   ; still old, or no usable capture at all: say nothing wrong
     st := gFvOptState.Has(name) ? gFvOptState[name] : ""
     if IsObject(st)
         gFvStepLast[name] := {i: st.i, v: v}

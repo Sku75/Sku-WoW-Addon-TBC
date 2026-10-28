@@ -88,6 +88,39 @@ Felder ("Gesicht") zeigen ihre Nummer im Feld: weicht die gezählte ab
 Erster Stand dieses Eintrags stürzte bei Rechts ab (fehlende
 global-Deklaration), behoben. UNGETESTET.
 
+**Kaputte Bildschirmabzüge erkennen.** Auch mit richtiger Zuordnung kamen
+Feldlesungen leer und ganze Lesungen mit 0-2 Zeilen, immer kurz nach einem
+Frisurwechsel. Der Helfer selbst arbeitet korrekt (direkt geprüft: jede
+Anfrage genau eine Antwort, Feldlesung ~76 ms, "Prinz" sicher erkannt).
+Vermutung: Während das Spiel das Modell neu baut, kommt der Fensterabzug
+manchmal schwarz oder halb gezeichnet. Jede Antwort trägt ein grobes
+Vorschaubild; weicht es um mehr als 40 % vom letzten guten Bild ab, gilt die
+Lesung als "keine Antwort" (nicht als "leeres Feld"), die Feldlesung wird
+wiederholt (bis zu sechs Versuche) und eine ganze Lesung wird weder Karte
+noch Vergleichsbild. Außerdem: Warten auf eine frische Lesung hebt die Pause
+der Hintergrundlesungen auf - nach einem Rollen in der Pause blieben alte
+Positionen, die Feldlesung traf die Beschriftung des nächsten Feldes
+("Igenbrauen" bei Ohren). Getestet: Die Vermutung stimmt nicht, kein
+einziges "broken capture" im Log - die leeren Lesungen sind Namen, die die
+Texterkennung gar nicht lesen kann (hier 5, 7, 10, 13). Die Prüfung bleibt
+als billige Absicherung, aber eine leere Lesung wird nur noch dreimal
+versucht statt sechsmal (das war eine Sekunde langsamer). Und der eigentliche
+Fehler hinter "9 wird erst nach zwei, drei Versuchen erkannt": Als "Bild vor
+dem Schritt" merkte sich das Tool den Text aus der Seitenkarte, und die hängt
+während der Schritte hinterher. Bei Index 10 stand dort noch "Befiedert" von
+Index 9 - zurück auf 9 galt das echte "Befiedert" sechsmal als altes Bild und
+wurde verschwiegen. Jetzt gilt als "vorher" nur der gelernte Name des Index
+oder die eigene letzte Feldlesung. UNGETESTET.
+
+**Feldlesung bekommt immer ihre eigene Antwort.** In einer Sitzung kam die
+Feldlesung 9-mal leer zurück, auch bei gut lesbaren Namen ("Prinz", "Mit
+Kamm"), und zur selben Zeit erhielt der Hintergrundleser Lesungen mit 0 oder 1
+Zeile: Die Antworten waren vertauscht. Zwischen "Hintergrundleser ist fertig"
+und dem Sperren konnte er noch eine schnelle Prüfanfrage (ohne Texterkennung)
+schicken; die Feldlesung las deren textlose Antwort als eigene. Jetzt wird
+zuerst gesperrt und eine noch unterwegs befindliche Antwort abgeholt, erst
+dann gefragt. UNGETESTET.
+
 **Kein Sprung an den Seitenanfang, kein Spiel-Hineinreden bei lesbaren
 Namen.** Zwei Fehler der schnellen Feldlesung: (1) Die Sicherheitsfreigabe
 nach 3 s konnte mitten in eine Feldlesung fallen; der Hintergrundleser nahm
