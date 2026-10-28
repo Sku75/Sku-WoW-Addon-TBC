@@ -302,6 +302,17 @@ Bildschirms als Frisurnamen). Jetzt startet keine zweite Anfrage, solange
 eine läuft; die unterbrechende Nachlesung gilt als "noch nichts gelesen" und
 versucht es 200 ms später wieder. UNGETESTET.
 
+**Charakterwahl (Anniversary, Era): Name unter dem Modell schneller.** Wenn
+die Liste rechts den Namen des gewählten Charakters nicht hergibt, las das
+Tool den ganzen Bildschirm, nur um die eine Zeile unter dem Modell zu
+finden. Jetzt liest es nur ein großzügiges Band um diese Zeile; findet es
+dort nichts, liest es wie bisher den ganzen Bildschirm. Offline gegen den
+gespeicherten Screenshot der Charakterauswahl geprüft (derselbe Name wie
+beim vollen Lesen), am Client UNGETESTET.
+
+**Tool-Version 4.1.** Das Tool nennt beim Start 4.1; der Installer 5.6
+erwartet 4.1.
+
 ## 4.0 (2026-09-23)
 
 **WoW Forever (Beta-Client `_classic_beta_`, WowB.exe, Build 1.60) wird

@@ -1141,10 +1141,25 @@ SenseCharPanel() {
 }
 
 ; The selected character's name, as printed under the character model
-; (measured at ~0.46w / 0.845h on a live client). Reads a full frame, so only
-; worth it when the list panel did not yield the name.
+; (measured at ~0.46w / 0.845h on a live client). Only worth it when the list
+; panel did not yield the name. OCR of a generous band around it (a fraction of
+; a full-frame read; lines come back in frame coordinates, so the same band
+; filter applies), the full frame when the crop finds nothing - as with
+; SenseCharPanel, "nothing there" is never taken on the crop's word.
 SelectedCharNameOnScreen() {
-    s := Sense()
+    client := WowClientRect()
+    s := (client = "") ? "" : Sense("--region " Round(client.w * 0.30) "," Round(client.h * 0.79) ","
+        Round(client.w * 0.40) "," Round(client.h * 0.12))
+    name := SelectedCharNameIn(s)
+    if (name = "") {
+        if (client != "")
+            Log("SelectedCharNameOnScreen: cropped read found no name - reading the full frame")
+        name := SelectedCharNameIn(Sense())
+    }
+    return name
+}
+
+SelectedCharNameIn(s) {
     if !SenseOk(s)
         return ""
     for line in OcrLinesInRegion(s, 0.36, 0.83, 0.64, 0.87) {
