@@ -63,8 +63,10 @@ $PinnedPeHashes = @{
 	# Speech history (speech-history/): our nvdaControllerClient.dll in the
 	# SAPI2SR folder, forwarding to NV Access's original (renamed
 	# nvdaControllerClient.nvaccess.dll, signed by NV Access) and publishing
-	# every spoken text in a shared ring for other programs.
-	'2FA42D8D44C2850FAF28E14B191F59D566F80E420E55CC92EBFC3C897C435451' = 'nvdaControllerClient.dll x64 (Sku speech history 1)'
+	# the texts of the processes a reader asks for in a shared ring for other
+	# programs (opt-in per process; build 1 published every process and is no
+	# longer pinned).
+	'091E988AB1ECF95FD37BA2EA420622047F1F8FE72E153AAF50C68A5C613C6679' = 'nvdaControllerClient.dll x64 (Sku speech history 2, opt-in per process)'
 }
 
 $CertSubject = 'CN=Sku NVDA voice signing (local, throwaway)'

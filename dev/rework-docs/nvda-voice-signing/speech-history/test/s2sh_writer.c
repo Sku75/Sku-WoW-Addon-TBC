@@ -1,10 +1,14 @@
 /* s2sh_writer <dir> <tag> <count> [long] - load <dir>\nvdaControllerClient.dll
  * (the proxy) and speak "<tag> <n>" count times; with "long" also one text of
  * 5000 characters and one SSML string. Prints the forwarded results and the
- * stub's call count (proves every call reached the "real" DLL). */
+ * stub's call count (proves every call reached the "real" DLL).
+ * Environment S2SH_TEST_WANT=1: the writer asks for its own texts first (the
+ * request a reader normally makes, s2sh_shared.h); without it nothing of
+ * this writer may appear in the ring. */
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../s2sh_shared.h"
 typedef unsigned long (__stdcall *FnText)(const wchar_t *);
 typedef unsigned long (__stdcall *FnSsml)(const wchar_t *, int, int, unsigned char);
 typedef unsigned long (__stdcall *FnPid)(unsigned long *);
@@ -19,6 +23,10 @@ int wmain(int argc, wchar_t **argv)
     unsigned long p = 0;
     if (argc < 4) return 9;
     count = _wtoi(argv[3]);
+    if (GetEnvironmentVariableW(L"S2SH_TEST_WANT", text, 64) && text[0] == L'1') {
+        swprintf(path, MAX_PATH, L"%s%lu", S2SH_WANT_PREFIX, GetCurrentProcessId());
+        if (!CreateEventW(NULL, TRUE, FALSE, path)) { printf("want failed %lu\n", GetLastError()); return 1; }
+    }
     swprintf(path, MAX_PATH, L"%s\\nvdaControllerClient.dll", argv[1]);
     m = LoadLibraryW(path);
     if (!m) { printf("load failed %lu\n", GetLastError()); return 1; }

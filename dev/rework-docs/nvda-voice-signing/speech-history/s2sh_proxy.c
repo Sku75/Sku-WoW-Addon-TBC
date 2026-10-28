@@ -8,6 +8,9 @@
  *    the entry is dropped) and never fails a call.
  *  - The ring is readable only by the current user, and not by processes
  *    below medium integrity (sandboxed browsers and the like).
+ *  - Nothing is published unless a reader asked for this process
+ *    (S2SH_WANT_PREFIX, see s2sh_shared.h). Which program's speech is
+ *    recorded, and when, is the reader's decision; this file knows no program.
  */
 #include <windows.h>
 #include <sddl.h>
@@ -123,6 +126,20 @@ fail:
     return TRUE;
 }
 
+/* Does a reader ask for this process right now? One kernel call per text,
+ * because the request comes and goes while the process runs. */
+static BOOL Wanted(void)
+{
+    WCHAR name[96];
+    HANDLE h;
+    wsprintfW(name, L"%s%lu", S2SH_WANT_PREFIX, GetCurrentProcessId());
+    h = OpenEventW(SYNCHRONIZE, FALSE, name);
+    if (!h)
+        return FALSE;
+    CloseHandle(h);
+    return TRUE;
+}
+
 static void Publish(const wchar_t *text, DWORD kind)
 {
     DWORD wait, len, i;
@@ -131,8 +148,10 @@ static void Publish(const wchar_t *text, DWORD kind)
     FILETIME now;
     if (!text)
         return;
+    /* the ring is created even when nobody asks, so a reader can open it
+     * before its program first speaks */
     InitOnceExecuteOnce(&g_ringOnce, OpenRing, NULL, NULL);
-    if (!g_ring)
+    if (!g_ring || !Wanted())
         return;
     wait = WaitForSingleObject(g_lock, 20);
     if (wait != WAIT_OBJECT_0 && wait != WAIT_ABANDONED)

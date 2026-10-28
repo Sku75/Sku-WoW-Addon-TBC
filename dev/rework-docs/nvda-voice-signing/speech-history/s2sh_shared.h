@@ -13,6 +13,15 @@
  * Nothing is ever written to disk; the ring disappears when the last process
  * holding it closes. Turn publishing off with
  * %LOCALAPPDATA%\SAPI2SR\SpeechHistory.ini:  [SpeechHistory]  Publish=0
+ *
+ * Opt-in per process: a process's texts are published ONLY while some reader
+ * asks for that process, by holding a named EVENT (CreateEventW; another
+ * object type is not seen) called S2SH_WANT_PREFIX followed by the process ID
+ * in decimal, e.g.
+ * "Local\SAPI2SR.SpeechHistory.1.Want.4242". The writer checks for it on each
+ * text. Closing the handle (or the reader exiting or crashing) ends it. With
+ * nobody asking, the ring exists but stays empty: a reader decides which
+ * program's speech is recorded, and when - nothing is recorded by default.
  */
 #ifndef S2SH_SHARED_H
 #define S2SH_SHARED_H
@@ -21,6 +30,7 @@
 
 #define S2SH_MAP_NAME   L"Local\\SAPI2SR.SpeechHistory.1"
 #define S2SH_LOCK_NAME  L"Local\\SAPI2SR.SpeechHistory.1.Lock"
+#define S2SH_WANT_PREFIX L"Local\\SAPI2SR.SpeechHistory.1.Want."   /* + pid */
 #define S2SH_MAGIC      0x48533253u   /* "S2SH" */
 #define S2SH_VERSION    1u
 #define S2SH_ENTRIES    64u
