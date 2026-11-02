@@ -1,5 +1,20 @@
 # WoW Logintool
 
+## 4.2 (offen)
+
+**Charakter erstellen: nach dem automatischen Erkennen der Spielversion wurde
+die falsche Rasse angeklickt.** Das Tool startete mit der gespeicherten
+Spielversion Classic und baute das Menü "neuen Charakter erstellen" aus der
+Classic-Rassentabelle; dort ist Untot die Nummer 6. Als der TBC-Client erkannt
+wurde ("switching game type Classic -> BurningCrusade"), lud es die
+TBC-Tabellen neu, baute das Menü aber nicht neu. Die Menüeinträge behielten
+die Classic-Nummern, und der Klick nahm Nummer 6 der TBC-Tabelle: dort stehen
+die Draenei auf 5, Nummer 6 ist der Orc. Die Klassennummer rutscht genauso
+(Untot Priester = Nummer 3, Orc Nummer 3 = Schurke). So entstanden am
+02.11. zweimal Orcs statt Untoter. Jetzt wird nach dem Versionswechsel auch das
+Menü neu gebaut und der Menüzeiger auf die Wurzel gesetzt, wie es die
+Auswahl von Hand im Einrichtungsmenü schon immer tat. UNGETESTET am Client.
+
 ## 4.1 (2026-10-28)
 
 Die ersten vier Einträge kamen am selben Tag als stiller Nachtrag dazu: das

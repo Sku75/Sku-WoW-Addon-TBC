@@ -165,6 +165,15 @@ ApplyDetectedGametype() {
         Log("Detect: switching game type " gHasSetupGametype " -> " info.gametype)
         gHasSetupGametype := info.gametype
         LoadGameData()
+        ; The create-character menu bakes race/class INDICES into its entries
+        ; (CreateCharClosure), and those index the tables LoadGameData just
+        ; replaced. Era's "undead" is race 6; on BC the Draenei sit at 5, so 6
+        ; is the orc - the tool created two orcs for an undead that way
+        ; (2026-11-02). Rebuild the menu from the new tables, as the hand-pick
+        ; path (GametypeSelectAction) always did, and put the cursor on the new
+        ; root: the old nodes are orphans now.
+        BuildMainMenu()
+        global gCurrentItem := gMainMenu
         ; The helper loads the same data.ini section and is handed --gametype at
         ; spawn, so it has to be restarted or it keeps classifying screens with
         ; the old client's rules.
