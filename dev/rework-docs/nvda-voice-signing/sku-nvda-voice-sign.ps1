@@ -68,6 +68,9 @@ $PinnedPeHashes = @{
 	# + Patch C: a bookmark named "skuint" cancels NVDA before the text is
 	# forwarded (patch_sapi2sr_x64_interrupt.py, sapi2sr-interrupt-spec.md).
 	'5A76A572057954B9B7BF2F2E6FBE7555F79D727760370D8423ADA6E59E4C951E' = 'sapi2sr_engine.dll x64 (1.0.0.0 + Sku bookmark fix + speakText route + skuint interrupt)'
+	# + Patch E: fragments at volume 0 are not forwarded (silent parts stay
+	# silent; patch_sapi2sr_x64_volume.py, volume-test/README.md).
+	'CCCD06D1CC0996735FD51ABD731932E10132B38ED3A7FF4F1CB9FB0666DE913F' = 'sapi2sr_engine.dll x64 (1.0.0.0 + Sku bookmark fix + speakText route + skuint interrupt + volume 0 skip)'
 	'1281E2B96CD5CAC5672E8ECCD7406A3FB29F80EAA1AC3BFE99E13CBE0CFE9360' = 'sapi2sr_engine.dll x86 (1.0.0.0)'
 	# Speech history (speech-history/): our nvdaControllerClient.dll in the
 	# SAPI2SR folder, forwarding to NV Access's original (renamed
