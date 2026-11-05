@@ -2506,7 +2506,11 @@ function SkuChat:ArmEvents()
 	SkuChat:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	SkuChat:RegisterEvent("CHAT_MSG_WHISPER")
 	SkuChat:RegisterEvent("CHAT_MSG_WHISPER_INFORM")
-	SkuChat:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	-- Forever forbids addons to register the combat log event: the call is blocked and the client shows its
+	-- "Interface action failed because of an AddOn" message every time. The combat log tab stays empty there.
+	if not Sku.isForever then
+		SkuChat:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	end
 
 	-- Dispatcher callbacks for the synthetic Sku chat streams (Combat/Audio log
 	-- tabs). These are otherwise wired by tab init at PLAYER_ENTERING_WORLD;
