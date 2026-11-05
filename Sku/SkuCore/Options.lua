@@ -1231,6 +1231,22 @@ local function MacrosMenuBuilder(aParentEntry)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Tooltip text of an item id. Forever's scanning tooltip has no SetItemByID (nor SetHyperlink to shim it with); the
+-- tooltip data gives the text.
+local function tItemTooltipText(aItemID)
+	if Sku.isForever then
+		local tLines = SkuCore:TooltipDataLines(C_TooltipInfo.GetItemByID(aItemID))
+		return tLines and SkuUtil:Unescape(table.concat(tLines, "\r\n")) or nil
+	end
+	SkuUtil:ResetScanningTooltip()
+	_G["SkuScanningTooltip"]:SetItemByID(aItemID)
+	local tLines = TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions())
+	if tLines ~= "asd" and tLines ~= "" then
+		return SkuUtil:Unescape(tLines)
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local function ItemsMenuBuilder(aParentEntry)
 	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Items"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
@@ -1249,13 +1265,9 @@ local function ItemsMenuBuilder(aParentEntry)
 					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..itemName.." ("..itemCount..")"}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.itemID = itemID
-						SkuUtil:ResetScanningTooltip()
-						_G["SkuScanningTooltip"]:SetItemByID(itemID)
-						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-								local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
-							end
+						local tText = tItemTooltipText(itemID)
+						if tText then
+							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 						end
 					end
 					tHasEntries = true
@@ -1315,9 +1327,20 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 	if aIsPet == false then
 		tNumSpellTabs = GetNumSpellTabs()
 	end
+	-- Forever keeps the professions in their own book, not in a spell tab: one extra tab after the real ones
+	local tProfTab
+	if Sku.isForever and aIsPet == false then
+		tNumSpellTabs = tNumSpellTabs + 1
+		tProfTab = tNumSpellTabs
+	end
 
 	for x = 1, tNumSpellTabs do
-		local name, texture, offset, numEntries, isGuild, offspecID = GetSpellTabInfo(x)
+		local name, texture, offset, numEntries, isGuild, offspecID
+		if x == tProfTab then
+			name, offset, numEntries = L["Berufe"], 0, 0
+		else
+			name, texture, offset, numEntries, isGuild, offspecID = GetSpellTabInfo(x)
+		end
 		local tNumEntries, token = HasPetSpells()
 		if aIsPet == true then
 			numEntries = tNumEntries or 0
@@ -1337,8 +1360,21 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 		end
 		tNewMenuSubEntry.BuildChildren = function(self)
 			local tHasEntries = false
-			if numEntries > 0 then
-				for y = offset + 1, offset + numEntries do
+			local tSlots = {}
+			if x == tProfTab then
+				-- every profession has its own start and length in the spellbook (GetProfessionInfo)
+				local tProfs = {GetProfessions()}
+				for i = 1, 5 do
+					if tProfs[i] then
+						local _, _, _, _, tCount, tStart = GetProfessionInfo(tProfs[i])
+						for k = 1, (tCount or 0) do tSlots[#tSlots + 1] = (tStart or 0) + k end
+					end
+				end
+			else
+				for y = offset + 1, offset + numEntries do tSlots[#tSlots + 1] = y end
+			end
+			if #tSlots > 0 then
+				for _, y in ipairs(tSlots) do
 					local spellName, spellSubName, spellID = GetSpellBookItemName(y, aBooktype) --BOOKTYPE_PET
 					-- GetSpellBookItemName has the CLASSIC signature here and returns
 					-- only (name, rank) -- the third return is a retail addition, so
@@ -2309,13 +2345,9 @@ function SkuCore.MailMenuBuilder(self)
 											if itemLink ~= L["Empty"] then
 												local name, itemID, texture, count, quality, canUse  = GetInboxItem(x, y)
 												if itemID then
-													SkuUtil:ResetScanningTooltip()
-													_G["SkuScanningTooltip"]:SetItemByID(itemID)
-													if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-														if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-															local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-															SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
-														end
+													local tText = tItemTooltipText(itemID)
+													if tText then
+														SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 													end
 												end
 												self.selectTarget.TmpMailItemIndexAttachmentIndex = y

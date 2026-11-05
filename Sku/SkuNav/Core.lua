@@ -3687,6 +3687,12 @@ function SkuNav:GetAllLinkedWPsInRangeToCoords(aX, aY, aRange)
 		return tFoundWps
 	end
 
+	if not WaypointCacheLookupPerContintent[tPlayerContinentID] then
+		-- no waypoints known on this continent (e.g. after dying somewhere the data does not cover): empty list
+		dprint("GetAllLinkedWPsInRangeToCoords: no waypoint list for continent", tostring(tPlayerContinentID))
+		return tFoundWps
+	end
+
 	for tIndex, tName in pairs(WaypointCacheLookupPerContintent[tPlayerContinentID]) do
 		local tWpData = WaypointCache[tIndex]
 		if tWpData.links.byId then
