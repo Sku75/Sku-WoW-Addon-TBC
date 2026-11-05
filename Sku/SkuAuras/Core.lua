@@ -215,7 +215,10 @@ end
 -- OnInitialize, so this preserves the original first-load behaviour exactly.
 function SkuAuras:RegisterAuraEvents()
 	SkuAuras:RegisterEvent("PLAYER_ENTERING_WORLD")
-	SkuAuras:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	-- Forever forbids addons to register the combat log event (blocked call + client warning every time)
+	if not Sku.isForever then
+		SkuAuras:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	end
 
 	-- [v43.0] Event-driven unit + cooldown triggers.
 	--
