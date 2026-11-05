@@ -1231,6 +1231,22 @@ local function MacrosMenuBuilder(aParentEntry)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Tooltip text of an item id. Forever's scanning tooltip has no SetItemByID (nor SetHyperlink to shim it with); the
+-- tooltip data gives the text.
+local function tItemTooltipText(aItemID)
+	if Sku.isForever then
+		local tLines = SkuCore:TooltipDataLines(C_TooltipInfo.GetItemByID(aItemID))
+		return tLines and SkuUtil:Unescape(table.concat(tLines, "\r\n")) or nil
+	end
+	SkuUtil:ResetScanningTooltip()
+	_G["SkuScanningTooltip"]:SetItemByID(aItemID)
+	local tLines = TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions())
+	if tLines ~= "asd" and tLines ~= "" then
+		return SkuUtil:Unescape(tLines)
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local function ItemsMenuBuilder(aParentEntry)
 	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Items"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
@@ -1249,13 +1265,9 @@ local function ItemsMenuBuilder(aParentEntry)
 					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..itemName.." ("..itemCount..")"}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.itemID = itemID
-						SkuUtil:ResetScanningTooltip()
-						_G["SkuScanningTooltip"]:SetItemByID(itemID)
-						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-								local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
-							end
+						local tText = tItemTooltipText(itemID)
+						if tText then
+							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 						end
 					end
 					tHasEntries = true
@@ -2309,13 +2321,9 @@ function SkuCore.MailMenuBuilder(self)
 											if itemLink ~= L["Empty"] then
 												local name, itemID, texture, count, quality, canUse  = GetInboxItem(x, y)
 												if itemID then
-													SkuUtil:ResetScanningTooltip()
-													_G["SkuScanningTooltip"]:SetItemByID(itemID)
-													if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-														if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-															local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-															SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
-														end
+													local tText = tItemTooltipText(itemID)
+													if tText then
+														SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 													end
 												end
 												self.selectTarget.TmpMailItemIndexAttachmentIndex = y
