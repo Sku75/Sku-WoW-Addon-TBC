@@ -2096,7 +2096,8 @@ function SkuChat_MessageEventHandler(self, event, ...)
 					--Add Blizzard Icon, this was sent by a Dev
 					pflag = "Blizzard Gamemaster (approved by Sku): " 
 				else
-					pflag = _G["CHAT_FLAG_"..arg6] 
+					-- a sender flag the client has no text for (Forever sends "NEWCOMER" in the channels) is no prefix
+					pflag = _G["CHAT_FLAG_"..arg6] or ""
 				end
 			else
 				pflag = "" 
