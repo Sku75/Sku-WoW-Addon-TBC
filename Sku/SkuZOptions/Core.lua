@@ -4511,8 +4511,24 @@ local function tFoldAccents(aText)
 end
 SkuOptions.FoldAccents = tFoldAccents
 
+local tFilterBadNameLogged = false
 local function SkuMenuFilterMatch(aName, aFilterstring)
-	local tHayStack = slower(aName or "")
+	-- A menu node's name is always text. If some builder ever stores something else there (seen on Forever: an
+	-- addon object), slower() threw straight out of the key handler and the typed letter was lost. Such a node
+	-- simply does not match, and the first one is written to the Sku error log so the builder can be found.
+	if type(aName) ~= "string" then
+		if not tFilterBadNameLogged and _G.SkuErrorLog and _G.SkuErrorLog.Log then
+			tFilterBadNameLogged = true
+			local tParent = SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.parent
+			_G.SkuErrorLog:Log("menufilter", "menu node without text name", {
+				nameType = type(aName),
+				nameField = type(aName) == "table" and tostring(aName.name) or "",
+				parent = tParent and type(tParent.name) == "string" and tParent.name or "?",
+			})
+		end
+		return false
+	end
+	local tHayStack = slower(aName)
 	tHayStack = string.gsub(tHayStack, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
 	tHayStack = string.gsub(tHayStack, ";", " ")
 	tHayStack = string.gsub(tHayStack, "#", " ")
