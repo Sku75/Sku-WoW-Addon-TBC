@@ -492,6 +492,14 @@ end
 local function IsIssueReporterLine(aText)
 	return string.find(aText, "to submit an issue for this", 1, true) or string.find(aText, "Open Issue Report", 1, true)
 end
+-- Tooltip text of a hyperlink as one unescaped string (nil when there is none). Forever only: its scanning tooltip
+-- has no SetHyperlink, the tooltip data gives the text.
+function SkuCore:HyperlinkTooltipText(aLink)
+	if not (aLink and C_TooltipInfo and C_TooltipInfo.GetHyperlink) then return nil end
+	local tLines = SkuCore:TooltipDataLines(C_TooltipInfo.GetHyperlink(aLink))
+	return tLines and SkuUtil:Unescape(table.concat(tLines, "\r\n")) or nil
+end
+
 function SkuCore:TooltipDataLines(aData)
 	if not aData or type(aData.lines) ~= "table" then return nil end
 	local tLines = {}

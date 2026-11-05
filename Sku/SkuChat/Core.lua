@@ -2736,15 +2736,22 @@ function SkuChat:OnInitialize()
 			if self.menuOpen == false then
 				for w = 1, #tLineData.itemLinks do
 					local ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = "", ""
-					_G["SkuScanningTooltip"]:SetHyperlink(tLineData.itemLinks[w])
-
-					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-							local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+					if Sku.isForever then
+						local tText = SkuCore:HyperlinkTooltipText(tLineData.itemLinks[w])
+						if tText then
 							ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
 						end
+					else
+						_G["SkuScanningTooltip"]:SetHyperlink(tLineData.itemLinks[w])
+
+						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+								local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
+							end
+						end
+						SkuUtil:ResetScanningTooltip()
 					end
-					SkuUtil:ResetScanningTooltip()
 
 					if ltSkuCurrentLineDatalinktTextFirstLine ~= "" then
 						if w == 1 then
@@ -2832,15 +2839,22 @@ function SkuChat:OnInitialize()
 					for w = 1, #tLineDataitemLinks do
 						local ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = "", ""
 						local ltSkuCurrentLineDatalinktItemId = ""
-						_G["SkuScanningTooltip"]:SetHyperlink(tLineDataitemLinks[w])
-
-						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-								local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+						if Sku.isForever then
+							local tText = SkuCore:HyperlinkTooltipText(tLineDataitemLinks[w])
+							if tText then
 								ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
 							end
+						else
+							_G["SkuScanningTooltip"]:SetHyperlink(tLineDataitemLinks[w])
+
+							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+									local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+									ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
+								end
+							end
+							SkuUtil:ResetScanningTooltip()
 						end
-						SkuUtil:ResetScanningTooltip()
 						if ltSkuCurrentLineDatalinktTextFirstLine ~= "" then
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["link"].." "..w.." "..ltSkuCurrentLineDatalinktTextFirstLine}, SkuGenericMenuItem)
 							tNewMenuEntry.tSkuCurrentLineDatalinktTextFirstLine = ltSkuCurrentLineDatalinktTextFirstLine
