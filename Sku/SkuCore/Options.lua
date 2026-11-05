@@ -1327,9 +1327,20 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 	if aIsPet == false then
 		tNumSpellTabs = GetNumSpellTabs()
 	end
+	-- Forever keeps the professions in their own book, not in a spell tab: one extra tab after the real ones
+	local tProfTab
+	if Sku.isForever and aIsPet == false then
+		tNumSpellTabs = tNumSpellTabs + 1
+		tProfTab = tNumSpellTabs
+	end
 
 	for x = 1, tNumSpellTabs do
-		local name, texture, offset, numEntries, isGuild, offspecID = GetSpellTabInfo(x)
+		local name, texture, offset, numEntries, isGuild, offspecID
+		if x == tProfTab then
+			name, offset, numEntries = L["Berufe"], 0, 0
+		else
+			name, texture, offset, numEntries, isGuild, offspecID = GetSpellTabInfo(x)
+		end
 		local tNumEntries, token = HasPetSpells()
 		if aIsPet == true then
 			numEntries = tNumEntries or 0
@@ -1349,8 +1360,21 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 		end
 		tNewMenuSubEntry.BuildChildren = function(self)
 			local tHasEntries = false
-			if numEntries > 0 then
-				for y = offset + 1, offset + numEntries do
+			local tSlots = {}
+			if x == tProfTab then
+				-- every profession has its own start and length in the spellbook (GetProfessionInfo)
+				local tProfs = {GetProfessions()}
+				for i = 1, 5 do
+					if tProfs[i] then
+						local _, _, _, _, tCount, tStart = GetProfessionInfo(tProfs[i])
+						for k = 1, (tCount or 0) do tSlots[#tSlots + 1] = (tStart or 0) + k end
+					end
+				end
+			else
+				for y = offset + 1, offset + numEntries do tSlots[#tSlots + 1] = y end
+			end
+			if #tSlots > 0 then
+				for _, y in ipairs(tSlots) do
 					local spellName, spellSubName, spellID = GetSpellBookItemName(y, aBooktype) --BOOKTYPE_PET
 					-- GetSpellBookItemName has the CLASSIC signature here and returns
 					-- only (name, rank) -- the third return is a retail addition, so
