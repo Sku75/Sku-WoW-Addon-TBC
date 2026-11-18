@@ -1,6 +1,16 @@
 # WoW Logintool
 
-## 4.2 (offen)
+## 4.2 (2026-11-18)
+
+**Forever: Pfeiltaste auf einem Bildschirm ohne Auswahl brach mit einer
+Fehlermeldung ab.** Statt "nichts zum Auswählen auf diesem Bildschirm"
+erschien das AutoHotkey-Fehlerfenster "This local variable has not been
+assigned a value. Specifically: t" (forever.ahk, FvMove). Ursache: Der
+Scroll-Fix aus 4.1 brachte in dieselbe Funktion eine Schleife "for t in";
+AutoHotkey unterscheidet bei Namen nicht zwischen groß und klein, also galt
+der Aufruf der Übersetzungsfunktion T() dort als die noch leere Variable t.
+Die Schleifenvariable heißt jetzt tg; eine Suche über alle Skripte fand keine
+weitere Stelle dieser Art. Gemeldet von einem Nutzer (Discord, 18.11.).
 
 **Charakter erstellen: nach dem automatischen Erkennen der Spielversion wurde
 die falsche Rasse angeklickt.** Das Tool startete mit der gespeicherten

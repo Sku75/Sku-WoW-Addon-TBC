@@ -1641,14 +1641,17 @@ FvMove(delta) {
     ; is remembered until it scrolls up or the category changes.
     if (delta = 1 && cur != "" && cur.kind = "option" && IsObject(cur.data) && !gFvListEnd
             && !(gFv.index < n && gFv.targets[gFv.index + 1].kind = "option")) {
+        ; Loop variable "tg", never "t": AutoHotkey names ignore case, so a local
+        ; t would hide the translation function T() in this whole function
+        ; (the "nothing to select" line above crashed that way in 4.1).
         seen := Map()
-        for t in gFv.targets
-            if (t.kind = "option")
-                seen[t.name] := true
+        for tg in gFv.targets
+            if (tg.kind = "option")
+                seen[tg.name] := true
         name := cur.name, y0 := cur.y
         FvScrollOptions(cur, 1)
-        for i, t in gFv.targets {
-            if (t.kind = "option" && !seen.Has(t.name)) {
+        for i, tg in gFv.targets {
+            if (tg.kind = "option" && !seen.Has(tg.name)) {
                 FvMoveTo(i)
                 return
             }

@@ -117,7 +117,7 @@
          on the Forever login screens only); the signing run signs it as an
          optional third target. Login tool 4.1.
          -->
-    <Version>5.6</Version>
+    <Version>5.7</Version>
     <!-- File properties (Explorer "Details", and what antivirus reputation
          scoring reads). Left at the SDK defaults every field said just
          "SkuInstaller" and the copyright was blank, which is what throwaway
