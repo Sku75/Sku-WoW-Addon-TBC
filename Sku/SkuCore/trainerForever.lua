@@ -72,6 +72,12 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Blizzard's row (frame object) of a service index; nil while it is not built.
 local function tRowFor(aSkillIndex)
+	-- A trade skill's step ("Apprentice Tailoring", ...) is not in the list: Blizzard shows it on its own button above it.
+	local tStepIndex = GetTrainerServiceStepIndex and GetTrainerServiceStepIndex()
+	if tStepIndex and tStepIndex == aSkillIndex then
+		local tStepButton = ClassTrainerFrame.skillStepButton
+		return (tStepButton and tStepButton:IsShown()) and tStepButton or nil
+	end
 	local tBox = ClassTrainerFrame.ScrollBox
 	if not (tBox and tBox.FindFrameByPredicate) then return nil end
 	return tBox:FindFrameByPredicate(function(_, aElementData)

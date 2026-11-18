@@ -2043,10 +2043,20 @@ function SkuChat_MessageEventHandler(self, event, ...)
 				message = format(globalstring, arg2) 
 
 			elseif ( arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE") then
-				local _, accountName, battleTag, _, characterName, _, client = BNGetFriendInfoByID(arg13) 
+				local _, accountName, battleTag, _, characterName, _, client
+				if BNGetFriendInfoByID then
+					_, accountName, battleTag, _, characterName, _, client = BNGetFriendInfoByID(arg13)
+				else
+					-- Forever has no BNGetFriendInfoByID: the same data is in the account info
+					local tInfo = C_BattleNet and C_BattleNet.GetAccountInfoByID and C_BattleNet.GetAccountInfoByID(arg13)
+					local tGame = tInfo and tInfo.gameAccountInfo
+					if tInfo then
+						accountName, battleTag = tInfo.accountName, tInfo.battleTag
+						characterName, client = tGame and tGame.characterName, tGame and tGame.clientProgram
+					end
+				end
 				if (client and client ~= "") then
-					local _, _, battleTag = BNGetFriendInfoByID(arg13) 
-					characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "" 
+					characterName = (BNet_GetValidatedCharacterName and BNet_GetValidatedCharacterName(characterName, battleTag, client)) or characterName or ""
 					--local characterNameText = BNet_GetClientEmbeddedTexture(client, 14)..characterName 
 					local characterNameText = characterName 
 					local linkDisplayText = ("[%s] (%s)"):format(arg2, characterNameText) 
@@ -2736,15 +2746,22 @@ function SkuChat:OnInitialize()
 			if self.menuOpen == false then
 				for w = 1, #tLineData.itemLinks do
 					local ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = "", ""
-					_G["SkuScanningTooltip"]:SetHyperlink(tLineData.itemLinks[w])
-
-					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-							local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+					if Sku.isForever then
+						local tText = SkuCore:HyperlinkTooltipText(tLineData.itemLinks[w])
+						if tText then
 							ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
 						end
+					else
+						_G["SkuScanningTooltip"]:SetHyperlink(tLineData.itemLinks[w])
+
+						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+								local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
+							end
+						end
+						SkuUtil:ResetScanningTooltip()
 					end
-					SkuUtil:ResetScanningTooltip()
 
 					if ltSkuCurrentLineDatalinktTextFirstLine ~= "" then
 						if w == 1 then
@@ -2832,15 +2849,22 @@ function SkuChat:OnInitialize()
 					for w = 1, #tLineDataitemLinks do
 						local ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = "", ""
 						local ltSkuCurrentLineDatalinktItemId = ""
-						_G["SkuScanningTooltip"]:SetHyperlink(tLineDataitemLinks[w])
-
-						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-								local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+						if Sku.isForever then
+							local tText = SkuCore:HyperlinkTooltipText(tLineDataitemLinks[w])
+							if tText then
 								ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
 							end
+						else
+							_G["SkuScanningTooltip"]:SetHyperlink(tLineDataitemLinks[w])
+
+							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+									local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+									ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
+								end
+							end
+							SkuUtil:ResetScanningTooltip()
 						end
-						SkuUtil:ResetScanningTooltip()
 						if ltSkuCurrentLineDatalinktTextFirstLine ~= "" then
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["link"].." "..w.." "..ltSkuCurrentLineDatalinktTextFirstLine}, SkuGenericMenuItem)
 							tNewMenuEntry.tSkuCurrentLineDatalinktTextFirstLine = ltSkuCurrentLineDatalinktTextFirstLine

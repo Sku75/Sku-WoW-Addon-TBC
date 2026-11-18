@@ -2025,7 +2025,7 @@ function SkuCore:OnEnable()
 				tPlayZoneAudio("male-Draußen")
 			end
 		end
-		if IsSubmerged() == true and _G["MirrorTimer1"]:IsVisible() == true then
+		if IsSubmerged() == true and SkuCore:IsBreathTimerActive() then
 			if SkuStatus.submerged == 0 then
 				SkuStatus.submerged = GetTime()
 				SkuStatus.swimming = 0
@@ -3628,6 +3628,23 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		end
 	end)
 	]]
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Is the breath bar up? Clients with the MirrorTimer1 frame: its visibility (unchanged). Forever has no such frame
+-- (its mirror timers live in a container), so there the timer API says it: some timer with the name BREATH.
+function SkuCore:IsBreathTimerActive()
+	local tFrame = _G["MirrorTimer1"]
+	if tFrame then
+		return tFrame:IsVisible() == true
+	end
+	if GetMirrorTimerInfo then
+		for tIndex = 1, 3 do
+			local tName = GetMirrorTimerInfo(tIndex)
+			if tName == "BREATH" then return true end
+		end
+	end
+	return false
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
