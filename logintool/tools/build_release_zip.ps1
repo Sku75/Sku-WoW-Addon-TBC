@@ -17,6 +17,11 @@
 # Excluded: dev tooling (tools\, fontprobe\, helper sources), screenshots,
 # translations.xlsx, git files, logs, test artifacts.
 #
+# Next to the zip it writes WoW-Login-Tool.version.txt: the tool version
+# (gToolVersion in v2\START.ahk, the one place that number lives) as a single
+# line. It is published beside the zip on the rolling release; the installers
+# (Sku's and WowVision's) read it to decide whether a player's copy is old.
+#
 # Usage: powershell -File tools\build_release_zip.ps1 [-OutFile path]
 param(
     [string]$OutFile = ""
@@ -25,6 +30,13 @@ param(
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot          # ...\logintool
 if ($OutFile -eq "") { $OutFile = Join-Path $root "dist\WoW-Login-Tool.zip" }
+$VersionFile = Join-Path (Split-Path -Parent $OutFile) "WoW-Login-Tool.version.txt"
+
+# 0. The tool version, from the driver itself.
+$startAhk = Get-Content -Raw -Encoding UTF8 (Join-Path $root "v2\START.ahk")
+if ($startAhk -notmatch 'gToolVersion\s*:=\s*"(\d+(\.\d+)*)"') { throw "no gToolVersion in v2\START.ahk" }
+$ToolVersion = $Matches[1]
+Write-Output "Tool version $ToolVersion"
 
 # 1. Fresh helper build.
 Write-Output "Building SkuLoginSense..."
@@ -82,4 +94,7 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 $size = [math]::Round((Get-Item $OutFile).Length / 1MB, 1)
 $count = (Get-ChildItem $toolRoot -Recurse -File).Count
 Remove-Item -Recurse -Force $staging
+# ASCII, no BOM, one line: the installers trim and parse it as a version.
+[System.IO.File]::WriteAllText($VersionFile, "$ToolVersion`n", [System.Text.Encoding]::ASCII)
 Write-Output "Done: $OutFile ($size MB, $count files)"
+Write-Output "Done: $VersionFile ($ToolVersion)"

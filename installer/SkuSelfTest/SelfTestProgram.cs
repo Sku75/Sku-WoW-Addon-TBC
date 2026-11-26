@@ -737,6 +737,31 @@ namespace SkuInstaller
                 Check("one shared tool folder at the WoW base",
                       LoginToolInstaller.ResolveToolDir(fwdAddons) == LoginToolInstaller.ResolveToolDir(annAddons));
 
+                Console.WriteLine("=== login tool: version check ===");
+                Check("4.3 is newer than 4.2", LoginToolInstaller.IsNewer("4.3", "4.2"));
+                Check("4.10 is newer than 4.9", LoginToolInstaller.IsNewer("4.10", "4.9"));
+                Check("4.2 is not newer than 4.2", !LoginToolInstaller.IsNewer("4.2", "4.2"));
+                Check("4.2 = 4.2.0", !LoginToolInstaller.IsNewer("4.2.0", "4.2") && !LoginToolInstaller.IsNewer("4.2", "4.2.0"));
+                Check("4.2 is not newer than a tester's 4.3", !LoginToolInstaller.IsNewer("4.2", "4.3"));
+                Check("no marker counts as oldest", LoginToolInstaller.IsNewer("4.2", null));
+                Check("an old release tag marker counts as oldest", LoginToolInstaller.IsNewer("4.2", "v42.04"));
+                Check("unknown published version: no upgrade", !LoginToolInstaller.IsNewer(null, "4.1"));
+                Check("junk published version: no upgrade", !LoginToolInstaller.IsNewer("<html>", "4.1"));
+                Check("version file with BOM and newline", LoginToolInstaller.VersionParts("﻿4.3\r\n")?.Length == 2);
+                string ltDir = Path.Combine(Path.GetTempPath(), "SkuSelfTest_ltver_" + Guid.NewGuid().ToString("N"));
+                try
+                {
+                    Directory.CreateDirectory(Path.Combine(ltDir, "v2"));
+                    File.WriteAllText(Path.Combine(ltDir, "v2", "START.ahk"), "global gLogX := 1\r\nglobal gToolVersion := \"4.3\"\r\n");
+                    Check("deployed version read from v2\\START.ahk", LoginToolInstaller.DeployedVersion(ltDir) == "4.3");
+                    File.WriteAllText(Path.Combine(ltDir, "v2", "START.ahk"), "; no version here\r\n");
+                    Check("no gToolVersion: no deployed version", LoginToolInstaller.DeployedVersion(ltDir) == null);
+                    // the one place the real tool keeps its number must parse
+                    Check("the repo's own START.ahk has a version",
+                          LoginToolInstaller.DeployedVersion(Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\..\logintool"))) != null);
+                }
+                finally { try { Directory.Delete(ltDir, true); } catch { } }
+
                 Console.WriteLine("=== managed third-party addons ===");
                 string Keys(string product)
                 {

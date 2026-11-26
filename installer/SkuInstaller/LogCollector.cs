@@ -762,7 +762,7 @@ namespace SkuInstaller
             sb.AppendLine($"Captured:             {DateTime.Now:yyyy-MM-dd HH:mm:ss zzz}");
             sb.AppendLine($"Installer version:    {InstallerVersion()}");
             sb.AppendLine($"Latest Sku release:   {Config.MainVersion}");
-            sb.AppendLine($"Login tool version:   {Config.LoginToolVersion} (what this installer deploys)");
+            sb.AppendLine($"Login tool version:   the newest published one ({Config.LoginToolVersionAsset} on '{Config.LoginToolTag}'); installed: LoginTool\\installed-release.txt");
             sb.AppendLine($"OS:                   {Environment.OSVersion}");
             sb.AppendLine($"CLR:                  {Environment.Version}");
             sb.AppendLine($"64-bit OS:            {Environment.Is64BitOperatingSystem}");

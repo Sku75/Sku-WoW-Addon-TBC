@@ -118,12 +118,13 @@ namespace SkuInstaller
         // re-uploads WoW-Login-Tool.zip to the same 'login-tool' tag, so the
         // download URL never changes and never goes stale (installer/release.ps1
         // -PublishLoginTool). Because that tag is constant, upgrade detection can't
-        // key off it — LoginToolVersion is the freshness signal instead: bump it
-        // whenever a newer tool build is published, and LoginToolInstaller upgrades
-        // in place any user whose recorded marker predates it.
+        // key off it. The freshness signal is the small asset beside the zip,
+        // LoginToolVersionAsset: one line, the version of that zip (gToolVersion in
+        // logintool\v2\START.ahk). LoginToolInstaller upgrades in place any user
+        // whose recorded marker is older, so a tool release needs no new installer.
         public const string LoginToolTag = "login-tool";
-        public const string LoginToolVersion = "4.2";
         public const string LoginToolAsset = "WoW-Login-Tool.zip";
+        public const string LoginToolVersionAsset = "WoW-Login-Tool.version.txt";
         public const string LoginToolFolderName = "WoW Login Tool";
 
         /// <summary>Manifest filename written into the AddOns folder.</summary>

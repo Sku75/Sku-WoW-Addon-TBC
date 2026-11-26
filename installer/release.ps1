@@ -50,9 +50,11 @@ elease.ps1 -Dev -Version 43.0
 
   LOGIN TOOL (rare - a permanent "rolling" tag so BOTH the website link and the
   installer's download URL never go stale; re-uploads the asset to the same tag.
-  Bump -LoginToolVersion whenever the build changes so the installer upgrades
-  users - it writes that into Config.LoginToolVersion):
-    installer\release.ps1 -PublishLoginTool -LoginToolVersion 2.1    (tag "login-tool")
+  The version is gToolVersion in logintool\v2\START.ahk: bump it there. The
+  zip goes up with WoW-Login-Tool.version.txt, which the installers (Sku's and
+  WowVision's) read, so players get the new tool without a new installer.
+  -LoginToolVersion is optional; when given it must match START.ahk):
+    installer\release.ps1 -PublishLoginTool                          (tag "login-tool")
 
   SKUMAPPER (rare - a plain WoW addon, so handled like the Sku addon: a
   versioned release, and the script points the docs link at that version):
@@ -157,6 +159,9 @@ $SecretsFile = Join-Path $PSScriptRoot '.secrets\discord-webhooks.txt'
 $LoginToolTag   = 'login-tool'    # permanent rolling tag (website + installer)
 $LoginToolBuild = Join-Path $RepoRoot 'logintool\tools\build_release_zip.ps1'
 $LoginToolZip   = Join-Path $RepoRoot 'logintool\dist\WoW-Login-Tool.zip'
+# One line, the tool version; the installers' upgrade check reads it.
+$LoginToolVersionFile = Join-Path $RepoRoot 'logintool\dist\WoW-Login-Tool.version.txt'
+$LoginToolStart = Join-Path $RepoRoot 'logintool\v2\START.ahk'
 
 # Test builds for testers. A PERMANENT rolling tag plus a CONSTANT asset name,
 # so the link handed to a tester never changes and never needs re-sending. The
@@ -381,11 +386,11 @@ function Set-FallbackVersion($ver) {
     if ($new -eq $cs) { Note "  Config.FallbackMainVersion already $ver." } else { Write-Text $ConfigCs $new; Info "  Config.FallbackMainVersion -> $ver" }
 }
 
-function Set-LoginToolVersion($ver) {
-    if ($DryRun) { Dry "set Config.LoginToolVersion -> $ver"; return }
-    $cs = Read-Text $ConfigCs
-    $new = [regex]::Replace($cs, 'LoginToolVersion\s*=\s*"[^"]*"', "LoginToolVersion = `"$ver`"")
-    if ($new -eq $cs) { Note "  Config.LoginToolVersion already $ver." } else { Write-Text $ConfigCs $new; Info "  Config.LoginToolVersion -> $ver" }
+# The login tool version: gToolVersion in logintool\v2\START.ahk.
+function Get-LoginToolVersion {
+    $ahk = Read-Text $LoginToolStart
+    if ($ahk -notmatch 'gToolVersion\s*:=\s*"(\d+(\.\d+)*)"') { throw "no gToolVersion in $LoginToolStart" }
+    return $Matches[1]
 }
 
 # Stage the given repo-relative paths and commit+push (honours -DryRun). Skips
@@ -735,14 +740,24 @@ lassen.
 
 # --- Mode: publish/refresh the login tool (rolling tag) ---------------------
 # The installer AND the website both download from the constant 'login-tool'
-# tag, so the URL never goes stale. -LoginToolVersion is the freshness signal:
-# it is written into Config.LoginToolVersion so the installer upgrades users.
+# tag, so the URL never goes stale. WoW-Login-Tool.version.txt beside the zip
+# is the freshness signal: the installers compare it with the copy a player
+# has, so a tool release reaches players without a new installer.
 function Do-PublishLoginTool {
-    if (-not $LoginToolVersion) { throw "Give -LoginToolVersion, e.g. -PublishLoginTool -LoginToolVersion 2.1" }
+    $toolVer = Get-LoginToolVersion
+    if ($LoginToolVersion -and $LoginToolVersion -ne $toolVer) {
+        throw "-LoginToolVersion $LoginToolVersion, but logintool\v2\START.ahk says $toolVer - bump gToolVersion there"
+    }
+    $LoginToolVersion = $toolVer
     Info "=== Publish login tool v$LoginToolVersion -> rolling tag '$LoginToolTag' ==="
     if (-not (Test-Path $LoginToolBuild)) { throw "Login tool build script missing: $LoginToolBuild" }
     Exec "build WoW-Login-Tool.zip" { & powershell -NoProfile -ExecutionPolicy Bypass -File $LoginToolBuild }
     if (-not $DryRun -and -not (Test-Path $LoginToolZip)) { throw "Login tool zip missing: $LoginToolZip" }
+    if (-not $DryRun) {
+        if (-not (Test-Path $LoginToolVersionFile)) { throw "Login tool version file missing: $LoginToolVersionFile" }
+        $built = (Read-Text $LoginToolVersionFile).Trim()
+        if ($built -ne $LoginToolVersion) { throw "version file says '$built', START.ahk says '$LoginToolVersion'" }
+    }
 
     Exec "ensure rolling release '$LoginToolTag' exists (create if missing, not Latest)" {
         gh release view $LoginToolTag --repo $Slug 1>$null 2>$null
@@ -750,18 +765,19 @@ function Do-PublishLoginTool {
             gh release create $LoginToolTag --repo $Slug --title "WoW Login Tool (latest)" --notes "Rolling release: always holds the newest WoW Login Tool. Do not delete." --latest=false --target main
         } else { $global:LASTEXITCODE = 0 }
     }
+    # Zip first, version file second: an installer that sees the new number
+    # must find the new zip. (One that catches the old zip in between writes
+    # the version it actually unpacked, so the next run upgrades again.)
     Exec "upload WoW-Login-Tool.zip --clobber" { gh release upload $LoginToolTag $LoginToolZip --repo $Slug --clobber }
+    Exec "upload WoW-Login-Tool.version.txt --clobber" { gh release upload $LoginToolTag $LoginToolVersionFile --repo $Slug --clobber }
 
-    # Bump the installer's version pin + point the docs link at the rolling tag,
-    # then commit so the shipped installer upgrades users to this build.
-    Set-LoginToolVersion $LoginToolVersion
+    # Point the docs link at the rolling tag. The installers need no change:
+    # they read the version file.
     Set-DocsLoginToolRolling
     # $DocsPages, not just index.html: Set-DocsLoginToolRolling edits ALL
     # language pages; committing only index.html left -de/-fr dirty.
-    Commit-Push (@('installer/SkuInstaller/Config.cs') + $DocsPages) "login tool: publish v$LoginToolVersion (rolling '$LoginToolTag')"
-    Info "  Login tool v$LoginToolVersion published on rolling tag '$LoginToolTag' (installer + website)."
-    Note "  Rebuild + ship the installer (a -Version release, or -BackfillLatestAssets)"
-    Note "  so users get an exe that carries the new Config.LoginToolVersion pin."
+    Commit-Push $DocsPages "login tool: publish v$LoginToolVersion (rolling '$LoginToolTag')"
+    Info "  Login tool v$LoginToolVersion published on rolling tag '$LoginToolTag' (installers + website)."
 }
 
 # --- Mode: publish/refresh SkuMapper (versioned, like the Sku addon) --------
@@ -888,8 +904,7 @@ function Do-PublishInstaller {
     Commit-Push ($DocsPages + @('installer/SkuInstaller/SkuInstaller.csproj', 'docs/Patch-Notes-English.txt', 'docs/Patch-Notes-Deutsch.txt', 'docs/Patch-Notes-Francais.txt', 'docs/patchnotes')) $msg
 
     if ($NotesPage) {
-        $cfg = Read-Text $ConfigCs
-        $lt = ''; if ($cfg -match 'LoginToolVersion\s*=\s*"([^"]+)"') { $lt = $Matches[1] }
+        $lt = ''; try { $lt = Get-LoginToolVersion } catch { }
         $script:ToolsUpdate = @{ Installer = $insVer; LoginTool = $lt; Addon = ($latestTag -replace '^v', '') }
         Announce-Discord $NotesPage "https://github.com/$Slug/releases/tag/$latestTag"
         $script:ToolsUpdate = $null

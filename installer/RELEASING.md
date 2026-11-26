@@ -161,11 +161,14 @@ before it builds so it is never a surprise.
   use permanent "always latest" links; the Sku and SkuMapper links are refreshed
   by the script each release.
 - **The companion tools update separately** (they change rarely):
-  - login tool: `installer\release.ps1 -PublishLoginTool -LoginToolVersion 2.1`
+  - login tool: bump `gToolVersion` in `logintool\v2\START.ahk`, then
+    `installer\release.ps1 -PublishLoginTool`. It uploads the zip and
+    `WoW-Login-Tool.version.txt`; the installers read that file, so players
+    get the new tool without a new installer.
   - SkuMapper:  `installer\release.ps1 -PublishSkuMapper -SkuMapperVersion 4.9`
 - **One-time setup**, run once each: `-BackfillLatestAssets` (makes the "always
   latest" installer link work on the current release), and
-  `-PublishLoginTool -LoginToolVersion 2.0` (creates the login tool's permanent link).
+  `-PublishLoginTool` (creates the login tool's permanent link).
 
 ## Quick command list
 
@@ -174,6 +177,6 @@ before it builds so it is never a surprise.
 - Stay silent (skip Discord): add `-SkipDiscord`
 - Publish without the Latest badge: add `-Prerelease`
 - Test build for testers only: `-Dev -Version 43.0`
-- Login-tool update: `-PublishLoginTool -LoginToolVersion 2.1`
+- Login-tool update: `-PublishLoginTool` (version from `logintool\v2\START.ahk`)
 - SkuMapper update: `-PublishSkuMapper -SkuMapperVersion 4.9`
 - One-time fixups: `-BackfillLatestAssets`
