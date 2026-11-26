@@ -4,6 +4,21 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v43.10-tools-2 - installer 5.8 and login tool 4.3, no new addon version
+
+    Overview
+
+        Changes
+            Installer 5.8: the login tool is now updated as soon as a new version comes out. Until now a new login tool only arrived with a new installer.
+
+        Bugfixes
+            Login tool 4.3, WoW Forever, character creation: on small screens (for example 1024x768) warrior, hunter and mage were missing. All classes can be reached now.
+            Login tool 4.3, WoW Forever, character creation: two classes side by side sometimes came as one entry (for example "Hunter Mage"). They are two again.
+            Login tool 4.3, WoW Forever: the ruleset choice found no cards on small screens. Fixed.
+            Installer 5.8: the NVDA voice read parts that were meant to be silent (volume 0), for example in WowVision's health monitor. They stay silent now, as with the Windows voices.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v43.10-tools - installer 5.6 and login tool 4.1, no new addon version
 
     Overview
