@@ -337,6 +337,8 @@ end)
 SkuCore.interactFramesListHooked = {}
 SkuCore.interactFramesListManual = {
 	["ContainerFrame1"] = function(...) SkuCore:Build_BagsFrame(...) end,
+	-- the "modern" bag layout (CVar combinedBags): all bags in one window, ContainerFrame1 stays hidden then
+	["ContainerFrameCombinedBags"] = function(...) SkuCore:Build_BagsFrame(...) end,
 	--["BankFrame"] = function(...) SkuCore:Build_BankFrame(...) end,
 	["GuildBankFrame"] = function(...) SkuCore:Build_GuildBankFrame(...) end,
 	["CraftFrame"] = function(...) SkuCore:Build_CraftFrame(...) end,
@@ -383,6 +385,7 @@ SkuCore.interactFramesList = {
 	"StaticPopup3",
 	"PetStableFrame",
 	"ContainerFrame1",
+	"ContainerFrameCombinedBags",
 	--"ContainerFrame2",
 	--"ContainerFrame3",
 	--"ContainerFrame4",
@@ -3754,7 +3757,9 @@ function SkuCore:TRADE_SHOW(self, event, ...)
 	SkuCore._tTradeSlotState = {}
 	SkuCore._tTradeTargetSlotState = {}
 	SkuCore:ResetTradeAcceptState()
-	if _G["ContainerFrame1"] and _G["ContainerFrame1"]:IsVisible() ~= true then
+	local tBagsShown = (_G["ContainerFrame1"] and _G["ContainerFrame1"]:IsVisible())
+		or (_G["ContainerFrameCombinedBags"] and _G["ContainerFrameCombinedBags"]:IsVisible())
+	if _G["ContainerFrame1"] and not tBagsShown then
 		_G["MainMenuBarBackpackButton"]:Click()
 	end
 	SkuCore:CheckFrames()
@@ -4703,6 +4708,7 @@ local friendlyFrameNames = {
 	["PetStableFrame"] = L["Pet Stable"],
 	["MailFrame"] = L["Mail"],
 	["ContainerFrame1"] = L["local Bags"],
+	["ContainerFrameCombinedBags"] = L["local Bags"],
 	["SkuMenuFrame"] = L["Dropdown Menu"],
 	--["ContainerFrame2"] = L["Bag 2"],
 	--["ContainerFrame3"] = L["Bag 3"],

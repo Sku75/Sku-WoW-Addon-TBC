@@ -89,7 +89,12 @@ function SkuDispatcher:RegisterEventCallback(aEventName, aCallbackFunc, aOnlyOne
 		}
 
 		if string.sub(aEventName, 1, 4) ~= "SKU_" then
-			if Sku.IsEventValid(aEventName) then
+			-- Forever forbids addons to register the combat log event: the blocked call shows the client's "Interface
+			-- action failed because of an AddOn" message (seen when the combat module starts). The callback stays
+			-- registered, it just never fires there.
+			if Sku.isForever and aEventName == "COMBAT_LOG_EVENT_UNFILTERED" then
+				dprint("event not registered (forbidden on this client):", aEventName)
+			elseif Sku.IsEventValid(aEventName) then
 				SkuDispatcher:RegisterEvent(aEventName)
 			end
 		end
