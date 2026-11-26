@@ -4,6 +4,21 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.10-tools-2 - Installer 5.8 und Anmelde-Tool 4.3, keine neue Addon-Version
+
+    Ueberblick
+
+        Aenderungen
+            Installer 5.8: das Anmelde-Tool wird jetzt aktualisiert, sobald eine neue Version erscheint. Bisher kam ein neues Anmelde-Tool erst mit einem neuen Installer.
+
+        Fehlerbehebungen
+            Anmelde-Tool 4.3, WoW Forever, Charakter erstellen: auf kleinen Bildschirmen (zum Beispiel 1024x768) fehlten Krieger, Jaeger und Magier. Jetzt sind alle Klassen erreichbar.
+            Anmelde-Tool 4.3, WoW Forever, Charakter erstellen: zwei Klassen nebeneinander kamen manchmal als ein Eintrag (zum Beispiel "Jaegerin Magierin"). Jetzt sind es wieder zwei.
+            Anmelde-Tool 4.3, WoW Forever: die Auswahl des Regelsatzes fand auf kleinen Bildschirmen keine Karten. Behoben.
+            Installer 5.8: die NVDA-Stimme las Teile vor, die stumm sein sollten (Lautstaerke 0), zum Beispiel beim Gesundheitsmonitor von WowVision. Jetzt bleiben sie stumm, wie bei den Windows-Stimmen.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.10-tools - Installer 5.6 und Anmelde-Tool 4.1, keine neue Addon-Version
 
     Ueberblick

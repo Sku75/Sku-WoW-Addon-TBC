@@ -7,6 +7,21 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.10-tools-2 - installateur 5.8 et outil de connexion 4.3, pas de nouvelle version de l'addon
+
+    Aperçu
+
+        Changements
+            Installateur 5.8 : l'outil de connexion est maintenant mis à jour dès qu'une nouvelle version sort. Jusqu'ici, un nouvel outil de connexion n'arrivait qu'avec un nouvel installateur.
+
+        Corrections
+            Outil de connexion 4.3, WoW Forever, création de personnage : sur les petits écrans (par exemple 1024x768), guerrier, chasseur et mage manquaient. Toutes les classes sont maintenant accessibles.
+            Outil de connexion 4.3, WoW Forever, création de personnage : deux classes côte à côte arrivaient parfois en une seule entrée (par exemple « Chasseresse Mage »). Elles sont de nouveau deux.
+            Outil de connexion 4.3, WoW Forever : le choix de l'ensemble de règles ne trouvait aucune carte sur les petits écrans. Corrigé.
+            Installateur 5.8 : la voix NVDA lisait des parties censées rester muettes (volume 0), par exemple dans le moniteur de santé de WowVision. Elles restent muettes maintenant, comme avec les voix Windows.
+
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.10-tools - installateur 5.6 et outil de connexion 4.1, pas de nouvelle version de l'addon
 
     Aperçu
