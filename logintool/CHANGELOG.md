@@ -1,5 +1,41 @@
 # WoW Logintool
 
+## 4.3 (2026-11-26)
+
+**Forever, Charakter erstellen: auf einem kleinen Bildschirm fehlten drei
+Klassen.** Ein Spieler mit einem Monitor 1024x768 bekam nur Schurke, Priester,
+Hexenmeister, Paladin, Druide und Schamane angeboten; Krieger, Jäger und Magier
+fehlten. Wenn die Klassenleiste nicht in zwei Reihen passt, legt das Spiel die
+Klassen in drei Reihen an (UpdateClassButtons); das Tool suchte die
+Klassennamen nur in den untersten 220 Einheiten, also nur in zwei Reihen. Jetzt
+reicht die Suche 340 Einheiten hoch. Zeilen aus dem Rassen-Text rechts, die auf
+dem kleinen Bildschirm in die Leiste reichen ("gewesel", "auskenn"), galten
+dabei als Klassen; jetzt zählt eine Reihe nur, wenn sie mindestens zwei Namen
+im Abstand eines Symbols hat (nur die letzte Reihe darf einen einzelnen Namen
+haben, unter dem ersten Namen der Reihe darüber). Die Klassen kommen jetzt
+Reihe für Reihe von links nach rechts, in der Reihenfolge des Spiels.
+
+**Forever, Charakter erstellen: zwei Klassen als ein Eintrag.** Auf einem
+Bildschirm 2880x1800 las die Texterkennung "Jägerin Magierin" als eine Zeile,
+mittig zwischen den beiden Symbolen; das Tool bot einen Eintrag dazwischen an.
+Eine Klassenzeile, die breiter ist als der Abstand zweier Symbole, wird jetzt in
+ihre Namen geteilt, jeder auf seiner Spalte. Der abgeschnittene Text "Hohe
+Auflösung für" des Kästchens für hochauflösende Modelle gilt nicht mehr als
+Klasse. Im Spiel geprüft (26.11.).
+
+**Forever, Regelsatz: auf einem kleinen Bildschirm keine Auswahl.** Kommt die
+Seite "Wählt Euren Gameplay-Regelsatz" vor der Charakterauswahl, kennt das Tool
+den Maßstab des Bildschirms noch nicht und rechnet mit 900 Einheiten Höhe; bei
+1024x768 sind es 754. Die Karten lagen dann außerhalb des Suchbereichs, und es
+gab nichts auszuwählen. Die Seite nimmt ihren Maßstab jetzt von ihrem Titel (er
+steht fest 340 Einheiten über der Mitte). Offline geprüft, am Client UNGETESTET.
+
+**Updates kommen ohne neuen Installer an.** Neben dem Paket liegt jetzt
+WoW-Login-Tool.version.txt mit der Versionsnummer. Der Sku-Installer (ab 5.8)
+und der WowVision-Installer lesen sie und aktualisieren das Tool, wenn dort eine
+neuere Version steht. Bisher stand die Nummer fest im Installer; ein neues Tool
+erreichte die Spieler erst mit einem neuen Installer.
+
 ## 4.2 (2026-11-18)
 
 **Forever: Pfeiltaste auf einem Bildschirm ohne Auswahl brach mit einer

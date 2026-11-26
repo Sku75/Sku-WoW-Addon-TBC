@@ -23,11 +23,12 @@ CoordMode "Mouse", "Screen"
 CoordMode "Pixel", "Screen"
 SetWorkingDir A_ScriptDir "\.."  ; tool root: data\ and log.txt live here
 
-; The tool's own release number, spoken at launch and logged. Three places
-; carry this number and are bumped together at publish time: this constant,
-; the CHANGELOG heading, and Config.LoginToolVersion in the installer (which
-; also writes it into installed-release.txt on deploy).
-global gToolVersion := "4.2"
+; The tool's own release number, spoken at launch and logged. Two places
+; carry it and are bumped together at publish time: this constant and the
+; CHANGELOG heading. The release build writes it into
+; WoW-Login-Tool.version.txt, which the installers read; they write it into
+; installed-release.txt on deploy.
+global gToolVersion := "4.3"
 
 global gSettingsVersion := "3.0"
 
