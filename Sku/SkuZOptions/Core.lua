@@ -3564,10 +3564,15 @@ function SkuOptions:CreateMenuFrame()
 						if tGetLink and TooltipLines_helper and SkuScanningTooltip then
 							local tLink = tGetLink(i)
 							if tLink then
-								SkuUtil:ResetScanningTooltip()
-								SkuScanningTooltip:SetHyperlink(tLink)
-								SkuScanningTooltip:Show()
-								local tt = SkuUtil:Unescape(TooltipLines_helper(SkuScanningTooltip:GetRegions()))
+								local tt
+								if Sku.isForever then
+									tt = SkuCore:HyperlinkTooltipText(tLink)
+								else
+									SkuUtil:ResetScanningTooltip()
+									SkuScanningTooltip:SetHyperlink(tLink)
+									SkuScanningTooltip:Show()
+									tt = SkuUtil:Unescape(TooltipLines_helper(SkuScanningTooltip:GetRegions()))
+								end
 								if tt and tt ~= "" and tt ~= "asd" then tOut = tOut..L["gegenstand"]..":\r\n"..tt end
 							end
 						end
