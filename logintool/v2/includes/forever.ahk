@@ -1264,10 +1264,22 @@ FvBuild(s, screen) {
         ; Cards are 530 units tall, centred 30 units below the screen centre,
         ; title 69 units under the card top: the titles sit ~166 units above
         ; the centre. Hovering the title hovers the card.
-        yTitle := H / 2 - 166 * k
+        ; This page comes before the character screens, where k is measured,
+        ; so k may still be the 900-unit guess - 16 % off on a 1024x768
+        ; screen (754 units high there), more than the titles' tolerance. The
+        ; page title is anchored at CENTER +340 (SuperDistrict.xml), which
+        ; gives this page its own scale.
+        kr := k
+        pt := FvFind(s, "ruleset_title", true)
+        if (pt != "") {
+            kt := (H / 2 - FvCy(pt)) / 340
+            if (kt > 0.5 && kt < 5)
+                kr := kt
+        }
+        yTitle := H / 2 - 166 * kr
         for line in s["lines"] {
-            if (Abs(FvCy(line) - yTitle) < 30 * k && line["h"] < H * 0.04)
-                FvT(t, line["text"], FvCx(line), FvCy(line), "card", "", FvRulesetCardText(s, line, k))
+            if (Abs(FvCy(line) - yTitle) < 30 * kr && line["h"] < H * 0.04)
+                FvT(t, line["text"], FvCx(line), FvCy(line), "card", "", FvRulesetCardText(s, line, kr))
         }
         FvAddLine(s, t, "select")
         FvAddLine(s, t, "cancel")
