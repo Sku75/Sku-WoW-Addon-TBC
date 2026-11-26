@@ -1163,6 +1163,55 @@ FvAddAllLines(s, list) {
         FvT(list, line["text"], FvCx(line), FvCy(line), "text")
 }
 
+; One OCR line of the class bar that may hold several names side by side.
+; A single name is narrower than one column pitch (the client cuts long ones
+; to "Hexenmei..."); a wider line with several words is split into as many
+; names as its width allows, each centred on its grid column. The grid is
+; centred on the screen (UpdateClassButtons centres every row), so a column
+; sits on a half-pitch step from W/2. Class names are one word in de/en/fr.
+FvSplitClassLine(line, pitch, W) {
+    words := StrSplit(Trim(RegExReplace(line["text"], "\s+", " ")), " ")
+    if (line["w"] <= 0.95 * pitch || words.Length < 2)
+        return [line]
+    n := Min(words.Length, 2 + Floor((line["w"] - 0.95 * pitch) / pitch))
+    texts := FvSplitWords(words, n)
+    parts := []
+    half := pitch / 2
+    c0 := FvCx(line) - (n - 1) / 2 * pitch
+    names := ""
+    loop n {
+        c := c0 + (A_Index - 1) * pitch
+        c := W / 2 + Round((c - W / 2) / half) * half
+        parts.Push(Map("text", texts[A_Index], "x", c - pitch * 0.4, "y", line["y"], "w", pitch * 0.8, "h", line["h"]))
+        names .= (names = "" ? "" : " | ") texts[A_Index] " @" Round(c)
+    }
+    Log("Forever: class line '" line["text"] "' split into " names)
+    return parts
+}
+
+; Words into n groups in order, by length (one word each when the counts match).
+FvSplitWords(words, n) {
+    if (words.Length = n)
+        return words
+    total := 0
+    for w in words
+        total += StrLen(w) + 1
+    out := [], cur := "", acc := 0
+    for i, w in words {
+        cur .= (cur = "" ? "" : " ") w
+        acc += StrLen(w) + 1
+        ; close a group at its share, while every later group still gets a
+        ; word; close it anyway when the words left are just enough
+        left := words.Length - i, need := n - 1 - out.Length
+        if (out.Length < n - 1 && left >= need && (acc >= total * (out.Length + 1) / n || left = need)) {
+            out.Push(cur)
+            cur := ""
+        }
+    }
+    out.Push(cur)
+    return out
+}
+
 FvBuild(s, screen) {
     t := []
     if !SenseOk(s)
@@ -1370,6 +1419,14 @@ FvBuild(s, screen) {
                 continue
             if (line["h"] > H * 0.04 || skip.Has(FvNorm(line["text"])))
                 continue
+            ; a button text cut by its line wrap ("Hohe Auflösung für" of the
+            ; HD models box): the same start rule as FvFindStart
+            got := FvNorm(line["text"]), cut := false
+            for want in skip
+                if (StrLen(got) >= 8 && SubStr(want, 1, StrLen(got)) = got)
+                    cut := true
+            if (cut)
+                continue
             cands.Push(line)
         }
         ; The race and faction text on the right reaches down into the band
@@ -1388,6 +1445,27 @@ FvBuild(s, screen) {
         }
         for row in rowsC
             FvSort(row, (a, b) => FvCx(a) < FvCx(b))
+        ; OCR can read two neighbouring names as one line (seen live at
+        ; 2880x1800: "Jägerin Magierin", centred between their icons). The
+        ; column pitch is the closest two names in a row (icon + spacing,
+        ; 86-96 units at scale 1, less when scaled); a line wider than that
+        ; is split into its names, each on its grid column.
+        pitch := 0
+        for row in rowsC
+            loop row.Length - 1 {
+                d := FvCx(row[A_Index + 1]) - FvCx(row[A_Index])
+                if (d >= 50 * k && d <= 110 * k && (pitch = 0 || d < pitch))
+                    pitch := d
+            }
+        if (pitch = 0)
+            pitch := 90 * k
+        for ri, row in rowsC {
+            split := []
+            for line in row
+                for part in FvSplitClassLine(line, pitch, W)
+                    split.Push(part)
+            rowsC[ri] := split
+        }
         keep := []
         for i, row in rowsC {
             grid := true
